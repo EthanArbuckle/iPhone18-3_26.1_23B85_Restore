@@ -1,49 +1,49 @@
 @interface SharedTripContaineeViewController
 - (BOOL)_senderIsContact;
 - (BOOL)_shouldShowDirectionsButton;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (SharedTripContaineeViewController)initWithSharedTrip:(id)a3;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (SharedTripContaineeViewController)initWithSharedTrip:(id)trip;
 - (SharedTripsActionCoordination)actionDelegate;
-- (id)_refetchedContact:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)_refetchedContact:(id)contact;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_addContact;
 - (void)_addToContact;
 - (void)_loadActions;
-- (void)_presentPlaceCardForMapItem:(id)a3;
+- (void)_presentPlaceCardForMapItem:(id)item;
 - (void)_refreshSubscriptionToken;
-- (void)_reloadWithContact:(id)a3;
+- (void)_reloadWithContact:(id)contact;
 - (void)_updateButtons;
 - (void)_updateButtonsForLocationUpdate;
 - (void)_updateFonts;
-- (void)_updateWithTrip:(id)a3;
-- (void)applyAlphaToContent:(double)a3;
+- (void)_updateWithTrip:(id)trip;
+- (void)applyAlphaToContent:(double)content;
 - (void)blockSender;
 - (void)blockSenderAction;
 - (void)blockTrip;
 - (void)contactButtonTapped;
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4;
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4;
+- (void)contactPicker:(id)picker didSelectContact:(id)contact;
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact;
 - (void)dealloc;
-- (void)didMoveToParentViewController:(id)a3;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)directionsButtonTapped;
-- (void)headerViewButtonTapped:(id)a3 buttonType:(unint64_t)a4;
-- (void)locationManagerUpdatedLocation:(id)a3;
+- (void)headerViewButtonTapped:(id)tapped buttonType:(unint64_t)type;
+- (void)locationManagerUpdatedLocation:(id)location;
 - (void)registerActionsTableViewCellClasses;
-- (void)setSharedTrip:(id)a3;
+- (void)setSharedTrip:(id)trip;
 - (void)setupSubviews;
-- (void)sharedTripService:(id)a3 didRemoveSharedTrip:(id)a4;
-- (void)sharedTripServiceDidUpdateReceivingAvailability:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)sharedTripService:(id)service didRemoveSharedTrip:(id)trip;
+- (void)sharedTripServiceDidUpdateReceivingAvailability:(id)availability;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)tapToRadarButtonTapped;
 - (void)updateContent;
 - (void)updateTheme;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SharedTripContaineeViewController
@@ -55,24 +55,24 @@
   return WeakRetained;
 }
 
-- (void)sharedTripService:(id)a3 didRemoveSharedTrip:(id)a4
+- (void)sharedTripService:(id)service didRemoveSharedTrip:(id)trip
 {
-  v5 = a4;
-  v6 = [(SharedTripContaineeViewController *)self sharedTrip];
-  v7 = [v6 groupIdentifier];
-  v8 = [v5 groupIdentifier];
+  tripCopy = trip;
+  sharedTrip = [(SharedTripContaineeViewController *)self sharedTrip];
+  groupIdentifier = [sharedTrip groupIdentifier];
+  groupIdentifier2 = [tripCopy groupIdentifier];
 
-  LODWORD(v5) = [v7 isEqualToString:v8];
-  if (v5)
+  LODWORD(tripCopy) = [groupIdentifier isEqualToString:groupIdentifier2];
+  if (tripCopy)
   {
-    v9 = [(SharedTripContaineeViewController *)self actionDelegate];
-    [v9 closeSharedTripDetail];
+    actionDelegate = [(SharedTripContaineeViewController *)self actionDelegate];
+    [actionDelegate closeSharedTripDetail];
   }
 }
 
-- (void)sharedTripServiceDidUpdateReceivingAvailability:(id)a3
+- (void)sharedTripServiceDidUpdateReceivingAvailability:(id)availability
 {
-  [a3 receivedTrips];
+  [availability receivedTrips];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -92,15 +92,15 @@
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 groupIdentifier];
-        v11 = [(SharedTripContaineeViewController *)self sharedTrip];
-        v12 = [v11 groupIdentifier];
-        v13 = [v10 isEqualToString:v12];
+        groupIdentifier = [v9 groupIdentifier];
+        sharedTrip = [(SharedTripContaineeViewController *)self sharedTrip];
+        groupIdentifier2 = [sharedTrip groupIdentifier];
+        v13 = [groupIdentifier isEqualToString:groupIdentifier2];
 
         if (v13)
         {
           [(SharedTripContaineeViewController *)self _updateWithTrip:v9];
-          v14 = v4;
+          actionDelegate = v4;
           goto LABEL_11;
         }
       }
@@ -115,48 +115,48 @@
     }
   }
 
-  v14 = [(SharedTripContaineeViewController *)self actionDelegate];
-  [v14 closeSharedTripDetail];
+  actionDelegate = [(SharedTripContaineeViewController *)self actionDelegate];
+  [actionDelegate closeSharedTripDetail];
 LABEL_11:
 }
 
-- (void)_updateWithTrip:(id)a3
+- (void)_updateWithTrip:(id)trip
 {
-  v9 = a3;
-  v4 = [(SharedTripContaineeViewController *)self sharedTrip];
+  tripCopy = trip;
+  sharedTrip = [(SharedTripContaineeViewController *)self sharedTrip];
 
-  if (v4 == v9)
+  if (sharedTrip == tripCopy)
   {
     [(SharedTripContaineeViewController *)self updateContent];
   }
 
   else
   {
-    v5 = [(SharedTripContaineeViewController *)self sharedTrip];
-    v6 = [v5 groupIdentifier];
-    v7 = [v9 groupIdentifier];
-    v8 = [v6 isEqualToString:v7];
+    sharedTrip2 = [(SharedTripContaineeViewController *)self sharedTrip];
+    groupIdentifier = [sharedTrip2 groupIdentifier];
+    groupIdentifier2 = [tripCopy groupIdentifier];
+    v8 = [groupIdentifier isEqualToString:groupIdentifier2];
 
     if (v8)
     {
-      [(SharedTripContaineeViewController *)self setSharedTrip:v9];
+      [(SharedTripContaineeViewController *)self setSharedTrip:tripCopy];
     }
   }
 }
 
-- (void)applyAlphaToContent:(double)a3
+- (void)applyAlphaToContent:(double)content
 {
   v8.receiver = self;
   v8.super_class = SharedTripContaineeViewController;
   [(ContaineeViewController *)&v8 applyAlphaToContent:?];
-  v5 = [(SimpleContaineeViewController *)self topActionsContainerView];
-  [v5 setAlpha:a3];
+  topActionsContainerView = [(SimpleContaineeViewController *)self topActionsContainerView];
+  [topActionsContainerView setAlpha:content];
 
-  v6 = [(SimpleContaineeViewController *)self metadataContainerView];
-  [v6 setAlpha:a3];
+  metadataContainerView = [(SimpleContaineeViewController *)self metadataContainerView];
+  [metadataContainerView setAlpha:content];
 
-  v7 = [(SimpleContaineeViewController *)self actionsTableView];
-  [v7 setAlpha:a3];
+  actionsTableView = [(SimpleContaineeViewController *)self actionsTableView];
+  [actionsTableView setAlpha:content];
 }
 
 - (void)tapToRadarButtonTapped
@@ -167,54 +167,54 @@ LABEL_11:
 
 - (void)directionsButtonTapped
 {
-  v3 = [(SharedTripContaineeViewController *)self actionDelegate];
-  v4 = [(SharedTripContaineeViewController *)self sharedTrip];
-  [v3 didRequestDirectionsForSharedTrip:v4];
+  actionDelegate = [(SharedTripContaineeViewController *)self actionDelegate];
+  sharedTrip = [(SharedTripContaineeViewController *)self sharedTrip];
+  [actionDelegate didRequestDirectionsForSharedTrip:sharedTrip];
 
-  v6 = [(SharedTripContaineeViewController *)self sharedTrip];
-  v5 = [v6 _transportTypeStringForAnalytics];
-  [GEOAPPortal captureUserAction:6003 target:650 value:v5];
+  sharedTrip2 = [(SharedTripContaineeViewController *)self sharedTrip];
+  _transportTypeStringForAnalytics = [sharedTrip2 _transportTypeStringForAnalytics];
+  [GEOAPPortal captureUserAction:6003 target:650 value:_transportTypeStringForAnalytics];
 }
 
 - (void)contactButtonTapped
 {
-  v3 = [(SharedTripContaineeViewController *)self actionDelegate];
-  [v3 didRequestContactsCard];
+  actionDelegate = [(SharedTripContaineeViewController *)self actionDelegate];
+  [actionDelegate didRequestContactsCard];
 
-  v5 = [(SharedTripContaineeViewController *)self sharedTrip];
-  v4 = [v5 _transportTypeStringForAnalytics];
-  [GEOAPPortal captureUserAction:6044 target:650 value:v4];
+  sharedTrip = [(SharedTripContaineeViewController *)self sharedTrip];
+  _transportTypeStringForAnalytics = [sharedTrip _transportTypeStringForAnalytics];
+  [GEOAPPortal captureUserAction:6044 target:650 value:_transportTypeStringForAnalytics];
 }
 
-- (void)headerViewButtonTapped:(id)a3 buttonType:(unint64_t)a4
+- (void)headerViewButtonTapped:(id)tapped buttonType:(unint64_t)type
 {
-  v5 = [(SharedTripContaineeViewController *)self actionDelegate:a3];
+  v5 = [(SharedTripContaineeViewController *)self actionDelegate:tapped];
   [v5 closeSharedTripDetail];
 
-  v7 = [(SharedTripContaineeViewController *)self sharedTrip];
-  v6 = [v7 _transportTypeStringForAnalytics];
-  [GEOAPPortal captureUserAction:4 target:650 value:v6];
+  sharedTrip = [(SharedTripContaineeViewController *)self sharedTrip];
+  _transportTypeStringForAnalytics = [sharedTrip _transportTypeStringForAnalytics];
+  [GEOAPPortal captureUserAction:4 target:650 value:_transportTypeStringForAnalytics];
 }
 
 - (void)blockTrip
 {
   v3 = +[MSPSharedTripService sharedInstance];
-  v4 = [(SharedTripContaineeViewController *)self sharedTrip];
-  v5 = [v4 groupIdentifier];
-  [v3 blockSharedTripWithIdentifier:v5];
+  sharedTrip = [(SharedTripContaineeViewController *)self sharedTrip];
+  groupIdentifier = [sharedTrip groupIdentifier];
+  [v3 blockSharedTripWithIdentifier:groupIdentifier];
 
-  v7 = [(SharedTripContaineeViewController *)self sharedTrip];
-  v6 = [v7 _transportTypeStringForAnalytics];
-  [GEOAPPortal captureUserAction:9028 target:650 value:v6];
+  sharedTrip2 = [(SharedTripContaineeViewController *)self sharedTrip];
+  _transportTypeStringForAnalytics = [sharedTrip2 _transportTypeStringForAnalytics];
+  [GEOAPPortal captureUserAction:9028 target:650 value:_transportTypeStringForAnalytics];
 }
 
 - (void)blockSenderAction
 {
-  v3 = [(SharedTripContaineeViewController *)self sharedTrip];
-  v4 = [v3 senderInfo];
-  v5 = [v4 fromIdentifier];
+  sharedTrip = [(SharedTripContaineeViewController *)self sharedTrip];
+  senderInfo = [sharedTrip senderInfo];
+  fromIdentifier = [senderInfo fromIdentifier];
 
-  if (v5)
+  if (fromIdentifier)
   {
     CMFItemFromString = CreateCMFItemFromString();
     v7 = sub_1000946AC();
@@ -224,7 +224,7 @@ LABEL_11:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 138477827;
-        v13 = v5;
+        v13 = fromIdentifier;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Blocking sender handle %{private}@", &v12, 0xCu);
       }
 
@@ -243,9 +243,9 @@ LABEL_11:
   }
 
   v9 = +[MSPSharedTripService sharedInstance];
-  v10 = [(SharedTripContaineeViewController *)self sharedTrip];
-  v11 = [v10 groupIdentifier];
-  [v9 blockSharedTripWithIdentifier:v11];
+  sharedTrip2 = [(SharedTripContaineeViewController *)self sharedTrip];
+  groupIdentifier = [sharedTrip2 groupIdentifier];
+  [v9 blockSharedTripWithIdentifier:groupIdentifier];
 }
 
 - (void)blockSender
@@ -269,18 +269,18 @@ LABEL_11:
   v7 = [UIAlertController alertControllerWithTitle:0 message:v6 preferredStyle:0];
 
   [v7 setAccessibilityIdentifier:@"BlockContactAlert"];
-  v8 = [(SimpleContaineeViewController *)self actionsTableView];
-  v9 = [v7 popoverPresentationController];
-  [v9 setSourceView:v8];
+  actionsTableView = [(SimpleContaineeViewController *)self actionsTableView];
+  popoverPresentationController = [v7 popoverPresentationController];
+  [popoverPresentationController setSourceView:actionsTableView];
 
-  v10 = [(SimpleContaineeViewController *)self actionsTableView];
-  [v10 bounds];
+  actionsTableView2 = [(SimpleContaineeViewController *)self actionsTableView];
+  [actionsTableView2 bounds];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [v7 popoverPresentationController];
-  [v19 setSourceRect:{v12, v14, v16, v18}];
+  popoverPresentationController2 = [v7 popoverPresentationController];
+  [popoverPresentationController2 setSourceRect:{v12, v14, v16, v18}];
 
   v24 = _NSConcreteStackBlock;
   v25 = 3221225472;
@@ -301,50 +301,50 @@ LABEL_11:
   objc_destroyWeak(&location);
 }
 
-- (void)locationManagerUpdatedLocation:(id)a3
+- (void)locationManagerUpdatedLocation:(id)location
 {
-  v4 = [a3 lastLocation];
-  [(MapsThrottler *)self->_buttonUpdateThrottler setValue:v4];
+  lastLocation = [location lastLocation];
+  [(MapsThrottler *)self->_buttonUpdateThrottler setValue:lastLocation];
 }
 
-- (void)_reloadWithContact:(id)a3
+- (void)_reloadWithContact:(id)contact
 {
-  v4 = a3;
-  v9 = [(SharedTripContaineeViewController *)self sharedTrip];
-  v5 = [v4 identifier];
-  v6 = [v9 senderInfo];
-  [v6 setLocalContactIdentifier:v5];
+  contactCopy = contact;
+  sharedTrip = [(SharedTripContaineeViewController *)self sharedTrip];
+  identifier = [contactCopy identifier];
+  senderInfo = [sharedTrip senderInfo];
+  [senderInfo setLocalContactIdentifier:identifier];
 
-  v7 = [CNContactFormatter stringFromContact:v4 style:1000];
+  v7 = [CNContactFormatter stringFromContact:contactCopy style:1000];
 
-  v8 = [v9 senderInfo];
-  [v8 setLocalName:v7];
+  senderInfo2 = [sharedTrip senderInfo];
+  [senderInfo2 setLocalName:v7];
 
   [(SharedTripContaineeViewController *)self updateContent];
   [(SharedTripContaineeViewController *)self _loadActions];
 }
 
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4
+- (void)contactPicker:(id)picker didSelectContact:(id)contact
 {
-  v5 = a4;
-  v6 = [(SharedTripContaineeViewController *)self sharedTrip];
-  v7 = [v6 senderInfo];
-  v26 = [v7 fromIdentifier];
+  contactCopy = contact;
+  sharedTrip = [(SharedTripContaineeViewController *)self sharedTrip];
+  senderInfo = [sharedTrip senderInfo];
+  fromIdentifier = [senderInfo fromIdentifier];
 
-  v8 = [(SharedTripContaineeViewController *)self _refetchedContact:v5];
+  v8 = [(SharedTripContaineeViewController *)self _refetchedContact:contactCopy];
 
   v9 = [v8 mutableCopy];
-  v10 = [CNContact contactWithDisplayName:0 emailOrPhoneNumber:v26];
-  v11 = [v10 emailAddresses];
-  v12 = [v11 count];
+  v10 = [CNContact contactWithDisplayName:0 emailOrPhoneNumber:fromIdentifier];
+  emailAddresses = [v10 emailAddresses];
+  v12 = [emailAddresses count];
 
   if (v12)
   {
-    v13 = [v9 emailAddresses];
-    if (v13)
+    emailAddresses2 = [v9 emailAddresses];
+    if (emailAddresses2)
     {
-      v14 = [v9 emailAddresses];
-      v15 = [v14 mutableCopy];
+      emailAddresses3 = [v9 emailAddresses];
+      v15 = [emailAddresses3 mutableCopy];
     }
 
     else
@@ -352,22 +352,22 @@ LABEL_11:
       v15 = [&__NSArray0__struct mutableCopy];
     }
 
-    v16 = [v10 emailAddresses];
-    [v15 addObjectsFromArray:v16];
+    emailAddresses4 = [v10 emailAddresses];
+    [v15 addObjectsFromArray:emailAddresses4];
 
     [v9 setEmailAddresses:v15];
   }
 
-  v17 = [v10 phoneNumbers];
-  v18 = [v17 count];
+  phoneNumbers = [v10 phoneNumbers];
+  v18 = [phoneNumbers count];
 
   if (v18)
   {
-    v19 = [v9 phoneNumbers];
-    if (v19)
+    phoneNumbers2 = [v9 phoneNumbers];
+    if (phoneNumbers2)
     {
-      v20 = [v9 phoneNumbers];
-      v21 = [v20 mutableCopy];
+      phoneNumbers3 = [v9 phoneNumbers];
+      v21 = [phoneNumbers3 mutableCopy];
     }
 
     else
@@ -375,51 +375,51 @@ LABEL_11:
       v21 = [&__NSArray0__struct mutableCopy];
     }
 
-    v22 = [v10 phoneNumbers];
-    [v21 addObjectsFromArray:v22];
+    phoneNumbers4 = [v10 phoneNumbers];
+    [v21 addObjectsFromArray:phoneNumbers4];
 
     [v9 setPhoneNumbers:v21];
   }
 
   v23 = objc_alloc_init(CNSaveRequest);
   v24 = +[AddressBookManager sharedManager];
-  v25 = [v24 contactStore];
+  contactStore = [v24 contactStore];
 
   [v23 updateContact:v9];
-  [v25 executeSaveRequest:v23 error:0];
+  [contactStore executeSaveRequest:v23 error:0];
   [(SharedTripContaineeViewController *)self _reloadWithContact:v9];
 }
 
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact
 {
-  v7 = a4;
-  [a3 dismissViewControllerAnimated:1 completion:0];
-  v6 = v7;
-  if (v7)
+  contactCopy = contact;
+  [controller dismissViewControllerAnimated:1 completion:0];
+  v6 = contactCopy;
+  if (contactCopy)
   {
-    [(SharedTripContaineeViewController *)self _reloadWithContact:v7];
-    v6 = v7;
+    [(SharedTripContaineeViewController *)self _reloadWithContact:contactCopy];
+    v6 = contactCopy;
   }
 }
 
-- (id)_refetchedContact:(id)a3
+- (id)_refetchedContact:(id)contact
 {
-  v3 = a3;
+  contactCopy = contact;
   v4 = +[AddressBookManager sharedManager];
-  v5 = [v4 properties];
+  properties = [v4 properties];
 
-  if (([v3 areKeysAvailable:v5] & 1) == 0)
+  if (([contactCopy areKeysAvailable:properties] & 1) == 0)
   {
     v6 = +[AddressBookManager sharedManager];
-    v7 = [v6 contactStore];
+    contactStore = [v6 contactStore];
 
-    v8 = [v3 identifier];
-    v9 = [v7 unifiedContactWithIdentifier:v8 keysToFetch:v5 error:0];
+    identifier = [contactCopy identifier];
+    v9 = [contactStore unifiedContactWithIdentifier:identifier keysToFetch:properties error:0];
 
-    v3 = v9;
+    contactCopy = v9;
   }
 
-  return v3;
+  return contactCopy;
 }
 
 - (void)_addToContact
@@ -431,12 +431,12 @@ LABEL_11:
 
 - (void)_addContact
 {
-  v3 = [(SharedTripContaineeViewController *)self sharedTrip];
-  v4 = [v3 senderName];
-  v5 = [(SharedTripContaineeViewController *)self sharedTrip];
-  v6 = [v5 senderInfo];
-  v7 = [v6 fromIdentifier];
-  v10 = [CNContact contactWithDisplayName:v4 emailOrPhoneNumber:v7];
+  sharedTrip = [(SharedTripContaineeViewController *)self sharedTrip];
+  senderName = [sharedTrip senderName];
+  sharedTrip2 = [(SharedTripContaineeViewController *)self sharedTrip];
+  senderInfo = [sharedTrip2 senderInfo];
+  fromIdentifier = [senderInfo fromIdentifier];
+  v10 = [CNContact contactWithDisplayName:senderName emailOrPhoneNumber:fromIdentifier];
 
   v8 = [CNContactViewController viewControllerForNewContact:v10];
   [v8 setDisplayMode:1];
@@ -448,97 +448,97 @@ LABEL_11:
 
 - (BOOL)_senderIsContact
 {
-  v2 = [(SharedTripContaineeViewController *)self sharedTrip];
-  v3 = [v2 senderInfo];
-  v4 = [v3 localContactIdentifier];
-  v5 = v4 != 0;
+  sharedTrip = [(SharedTripContaineeViewController *)self sharedTrip];
+  senderInfo = [sharedTrip senderInfo];
+  localContactIdentifier = [senderInfo localContactIdentifier];
+  v5 = localContactIdentifier != 0;
 
   return v5;
 }
 
-- (void)_presentPlaceCardForMapItem:(id)a3
+- (void)_presentPlaceCardForMapItem:(id)item
 {
-  v7 = a3;
-  if (v7)
+  itemCopy = item;
+  if (itemCopy)
   {
-    v4 = [[MKMapItem alloc] initWithGeoMapItem:v7 isPlaceHolderPlace:0];
+    v4 = [[MKMapItem alloc] initWithGeoMapItem:itemCopy isPlaceHolderPlace:0];
     if (v4)
     {
       v5 = v4;
-      v6 = [(SharedTripContaineeViewController *)self actionDelegate];
-      [v6 didSelectStopWithMapItem:v5];
+      actionDelegate = [(SharedTripContaineeViewController *)self actionDelegate];
+      [actionDelegate didSelectStopWithMapItem:v5];
     }
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 section])
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy section])
   {
     v12.receiver = self;
     v12.super_class = SharedTripContaineeViewController;
-    [(SimpleContaineeViewController *)&v12 tableView:v6 didSelectRowAtIndexPath:v7];
+    [(SimpleContaineeViewController *)&v12 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   }
 
   else
   {
-    v8 = [v7 row];
-    v9 = [(SharedTripContaineeViewController *)self sharedTrip];
-    v10 = [v9 waypointInfoAtIndex:v8];
+    v8 = [pathCopy row];
+    sharedTrip = [(SharedTripContaineeViewController *)self sharedTrip];
+    v10 = [sharedTrip waypointInfoAtIndex:v8];
 
     if ([v10 hasMapItemStorage])
     {
-      v11 = [v10 mapItemStorage];
-      [(SharedTripContaineeViewController *)self _presentPlaceCardForMapItem:v11];
+      mapItemStorage = [v10 mapItemStorage];
+      [(SharedTripContaineeViewController *)self _presentPlaceCardForMapItem:mapItemStorage];
 
-      [v6 deselectRowAtIndexPath:v7 animated:1];
+      [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
     }
   }
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 section])
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy section])
   {
     v13.receiver = self;
     v13.super_class = SharedTripContaineeViewController;
-    v8 = [(SimpleContaineeViewController *)&v13 tableView:v6 shouldHighlightRowAtIndexPath:v7];
+    hasMapItemStorage = [(SimpleContaineeViewController *)&v13 tableView:viewCopy shouldHighlightRowAtIndexPath:pathCopy];
   }
 
   else
   {
-    v9 = [v7 row];
+    v9 = [pathCopy row];
 
-    v10 = [(SharedTripContaineeViewController *)self sharedTrip];
-    v11 = [v10 waypointInfoAtIndex:v9];
+    sharedTrip = [(SharedTripContaineeViewController *)self sharedTrip];
+    v11 = [sharedTrip waypointInfoAtIndex:v9];
 
-    v8 = [v11 hasMapItemStorage];
+    hasMapItemStorage = [v11 hasMapItemStorage];
   }
 
-  return v8;
+  return hasMapItemStorage;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  if ([v6 section])
+  pathCopy = path;
+  viewCopy = view;
+  if ([pathCopy section])
   {
     v48.receiver = self;
     v48.super_class = SharedTripContaineeViewController;
-    v8 = [(SimpleContaineeViewController *)&v48 tableView:v7 cellForRowAtIndexPath:v6];
+    v8 = [(SimpleContaineeViewController *)&v48 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
     goto LABEL_25;
   }
 
-  v8 = [v7 dequeueReusableCellWithIdentifier:@"StopCell" forIndexPath:v6];
+  v8 = [viewCopy dequeueReusableCellWithIdentifier:@"StopCell" forIndexPath:pathCopy];
 
   [v8 setAccessibilityIdentifier:@"SharedTripStopCell"];
-  v9 = [v6 row];
-  v7 = [(NSArray *)self->_remainingWaypoints objectAtIndexedSubscript:v9];
+  v9 = [pathCopy row];
+  viewCopy = [(NSArray *)self->_remainingWaypoints objectAtIndexedSubscript:v9];
   v10 = +[UIListContentConfiguration subtitleCellConfiguration];
   v11 = 16.0;
   if (sub_10000FA08(self) == 5)
@@ -555,8 +555,8 @@ LABEL_11:
   }
 
   [v10 setDirectionalLayoutMargins:{v14, v11, v14, v11}];
-  v15 = [v7 name];
-  [v10 setText:v15];
+  name = [viewCopy name];
+  [v10 setText:name];
 
   if (v9 >= [(NSArray *)self->_remainingETAs count])
   {
@@ -574,11 +574,11 @@ LABEL_11:
     [v16 etaTimestamp];
     v17 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
     v18 = +[NSTimeZone localTimeZone];
-    v19 = [NSDateFormatter _navigation_localizedTimestampStringForDepartureArrivalDate:v17 inTimeZone:v18 canIncludeDate:0];
+    secondaryTextProperties = [NSDateFormatter _navigation_localizedTimestampStringForDepartureArrivalDate:v17 inTimeZone:v18 canIncludeDate:0];
 
     v20 = +[NSBundle mainBundle];
     v21 = [v20 localizedStringForKey:@"[Shared Trip value:Details] Waypoint ETA" table:{@"localized string not found", 0}];
-    v22 = [NSString stringWithFormat:v21, v19, v44];
+    v22 = [NSString stringWithFormat:v21, secondaryTextProperties, v44];
 
     [v10 setSecondaryText:v22];
 LABEL_14:
@@ -586,17 +586,17 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if ([v7 hasMapItemStorage])
+  if ([viewCopy hasMapItemStorage])
   {
     v23 = [MKMapItem alloc];
-    v24 = [v7 mapItemStorage];
-    v17 = [v23 initWithGeoMapItem:v24 isPlaceHolderPlace:0];
+    mapItemStorage = [viewCopy mapItemStorage];
+    v17 = [v23 initWithGeoMapItem:mapItemStorage isPlaceHolderPlace:0];
 
-    v25 = [v17 _addressFormattedAsMultilineAddress];
-    [v10 setSecondaryText:v25];
+    _addressFormattedAsMultilineAddress = [v17 _addressFormattedAsMultilineAddress];
+    [v10 setSecondaryText:_addressFormattedAsMultilineAddress];
 
-    v19 = [v10 secondaryTextProperties];
-    [v19 setNumberOfLines:0];
+    secondaryTextProperties = [v10 secondaryTextProperties];
+    [secondaryTextProperties setNumberOfLines:0];
     goto LABEL_14;
   }
 
@@ -604,22 +604,22 @@ LABEL_15:
   v26 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleHeadline];
   v27 = [v26 fontDescriptorWithSymbolicTraits:2];
   v28 = [UIFont fontWithDescriptor:v27 size:0.0];
-  v29 = [v10 textProperties];
-  [v29 setFont:v28];
+  textProperties = [v10 textProperties];
+  [textProperties setFont:v28];
 
-  v30 = [v10 textProperties];
-  [v30 setNumberOfLines:0];
+  textProperties2 = [v10 textProperties];
+  [textProperties2 setNumberOfLines:0];
 
   v31 = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-  v32 = [v10 secondaryTextProperties];
-  [v32 setFont:v31];
+  secondaryTextProperties2 = [v10 secondaryTextProperties];
+  [secondaryTextProperties2 setFont:v31];
 
   v33 = +[UIColor secondaryLabelColor];
-  v34 = [v10 secondaryTextProperties];
-  [v34 setColor:v33];
+  secondaryTextProperties3 = [v10 secondaryTextProperties];
+  [secondaryTextProperties3 setColor:v33];
 
   [v8 setContentConfiguration:v10];
-  if ([v7 hasMapItemStorage])
+  if ([viewCopy hasMapItemStorage])
   {
     v35 = objc_alloc_init(MapsUIImageGEOFeatureSpec);
     [(MapsUIImageGEOFeatureSpec *)v35 setTransparent:0];
@@ -635,9 +635,9 @@ LABEL_15:
     }
 
     [(MapsUIImageGEOFeatureSpec *)v35 setSize:v36];
-    v37 = [v7 mapItemStorage];
-    v38 = [v37 _styleAttributes];
-    [(MapsUIImageGEOFeatureSpec *)v35 setStyle:v38];
+    mapItemStorage2 = [viewCopy mapItemStorage];
+    _styleAttributes = [mapItemStorage2 _styleAttributes];
+    [(MapsUIImageGEOFeatureSpec *)v35 setStyle:_styleAttributes];
 
     v39 = +[MapsUIImageCache sharedCache];
     v45[0] = _NSConcreteStackBlock;
@@ -651,7 +651,7 @@ LABEL_15:
 
   else
   {
-    if ([v7 hasChargingStationInfo])
+    if ([viewCopy hasChargingStationInfo])
     {
       +[GEOFeatureStyleAttributes evChargerStyleAttributes];
     }
@@ -661,8 +661,8 @@ LABEL_15:
       +[GEOFeatureStyleAttributes addressMarkerStyleAttributes];
     }
     v40 = ;
-    v41 = [(SharedTripContaineeViewController *)self traitCollection];
-    [v41 displayScale];
+    traitCollection = [(SharedTripContaineeViewController *)self traitCollection];
+    [traitCollection displayScale];
     v42 = [MKIconManager imageForStyle:v40 size:2 forScale:0 format:?];
     [v10 setImage:v42];
 
@@ -674,13 +674,13 @@ LABEL_25:
   return v8;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     v7.receiver = self;
     v7.super_class = SharedTripContaineeViewController;
-    return [(SimpleContaineeViewController *)&v7 tableView:a3 numberOfRowsInSection:?];
+    return [(SimpleContaineeViewController *)&v7 tableView:view numberOfRowsInSection:?];
   }
 
   else
@@ -691,26 +691,26 @@ LABEL_25:
   }
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   v4.receiver = self;
   v4.super_class = SharedTripContaineeViewController;
-  return [(SimpleContaineeViewController *)&v4 numberOfSectionsInTableView:a3]+ 1;
+  return [(SimpleContaineeViewController *)&v4 numberOfSectionsInTableView:view]+ 1;
 }
 
 - (void)_refreshSubscriptionToken
 {
-  v9 = [(SharedTripContaineeViewController *)self _maps_uiScene];
-  v3 = [(SharedTripContaineeViewController *)self sharedTrip];
-  if (v3 && self->_isVisible)
+  _maps_uiScene = [(SharedTripContaineeViewController *)self _maps_uiScene];
+  sharedTrip = [(SharedTripContaineeViewController *)self sharedTrip];
+  if (sharedTrip && self->_isVisible)
   {
 
-    if (v9)
+    if (_maps_uiScene)
     {
       v4 = [SharedTripSceneAwareSubscription alloc];
-      v5 = [(SharedTripContaineeViewController *)self sharedTrip];
-      v6 = [v5 groupIdentifier];
-      v7 = [(SharedTripSceneAwareSubscription *)v4 initWithTripIdentifier:v6 scene:v9];
+      sharedTrip2 = [(SharedTripContaineeViewController *)self sharedTrip];
+      groupIdentifier = [sharedTrip2 groupIdentifier];
+      v7 = [(SharedTripSceneAwareSubscription *)v4 initWithTripIdentifier:groupIdentifier scene:_maps_uiScene];
       subscriptionToken = self->_subscriptionToken;
       self->_subscriptionToken = v7;
 
@@ -722,36 +722,36 @@ LABEL_25:
   {
   }
 
-  v5 = self->_subscriptionToken;
+  sharedTrip2 = self->_subscriptionToken;
   self->_subscriptionToken = 0;
 LABEL_7:
 }
 
-- (void)setSharedTrip:(id)a3
+- (void)setSharedTrip:(id)trip
 {
-  v5 = a3;
-  if (self->_sharedTrip != v5)
+  tripCopy = trip;
+  if (self->_sharedTrip != tripCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_sharedTrip, a3);
+    v6 = tripCopy;
+    objc_storeStrong(&self->_sharedTrip, trip);
     [(SharedTripContaineeViewController *)self updateContent];
-    v5 = v6;
+    tripCopy = v6;
   }
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v4.receiver = self;
   v4.super_class = SharedTripContaineeViewController;
-  [(SharedTripContaineeViewController *)&v4 didMoveToParentViewController:a3];
+  [(SharedTripContaineeViewController *)&v4 didMoveToParentViewController:controller];
   [(SharedTripContaineeViewController *)self _refreshSubscriptionToken];
 }
 
 - (void)_updateFonts
 {
   v3 = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle1];
-  v4 = [v3 fontDescriptor];
-  v5 = [v4 fontDescriptorWithSymbolicTraits:2];
+  fontDescriptor = [v3 fontDescriptor];
+  v5 = [fontDescriptor fontDescriptorWithSymbolicTraits:2];
   v6 = [UIFont fontWithDescriptor:v5 size:0.0];
   [(UILabel *)self->_headerTitleLabel setFont:v6];
 
@@ -762,13 +762,13 @@ LABEL_7:
 
   v9 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleSubhead addingSymbolicTraits:2 options:0];
   v10 = [UIFont fontWithDescriptor:v9 size:0.0];
-  v11 = [(UIButton *)self->_directionsButton titleLabel];
-  [v11 setFont:v10];
+  titleLabel = [(UIButton *)self->_directionsButton titleLabel];
+  [titleLabel setFont:v10];
 
-  v12 = [(UIButton *)self->_directionsButton titleLabel];
-  v13 = [v12 font];
-  v14 = [(UIButton *)self->_contactButton titleLabel];
-  [v14 setFont:v13];
+  titleLabel2 = [(UIButton *)self->_directionsButton titleLabel];
+  font = [titleLabel2 font];
+  titleLabel3 = [(UIButton *)self->_contactButton titleLabel];
+  [titleLabel3 setFont:font];
 
   if (sub_10000FA08(self) == 5)
   {
@@ -782,8 +782,8 @@ LABEL_7:
   v15 = ;
   [(UILabel *)self->_headerSubtitleLabel setFont:v15];
 
-  v16 = [(UILabel *)self->_headerSubtitleLabel font];
-  [(UILabel *)self->_handleLabel setFont:v16];
+  font2 = [(UILabel *)self->_headerSubtitleLabel font];
+  [(UILabel *)self->_handleLabel setFont:font2];
 }
 
 - (void)updateTheme
@@ -794,9 +794,9 @@ LABEL_7:
   if (sub_10000FA08(self) == 5)
   {
     directionsButton = self->_directionsButton;
-    v4 = [(SharedTripContaineeViewController *)self theme];
-    v5 = [v4 keyColor];
-    [(UIButton *)directionsButton setTitleColor:v5 forState:0];
+    theme = [(SharedTripContaineeViewController *)self theme];
+    keyColor = [theme keyColor];
+    [(UIButton *)directionsButton setTitleColor:keyColor forState:0];
   }
 }
 
@@ -805,12 +805,12 @@ LABEL_7:
   v3 = +[NSBundle mainBundle];
   v4 = [v3 localizedStringForKey:@"To (destination)[SharedETA]" value:@"localized string not found" table:0];
 
-  v5 = [(SharedTripContaineeViewController *)self sharedTrip];
-  v6 = [v5 destinationName];
+  sharedTrip = [(SharedTripContaineeViewController *)self sharedTrip];
+  destinationName = [sharedTrip destinationName];
 
-  if (-[NSArray count](self->_remainingWaypoints, "count") >= 2 && [v6 length])
+  if (-[NSArray count](self->_remainingWaypoints, "count") >= 2 && [destinationName length])
   {
-    v7 = [NSString stringWithFormat:v4, v6];
+    v7 = [NSString stringWithFormat:v4, destinationName];
   }
 
   else
@@ -818,23 +818,23 @@ LABEL_7:
     v7 = 0;
   }
 
-  v8 = [(UIButton *)self->_directionsButton configuration];
+  configuration = [(UIButton *)self->_directionsButton configuration];
   v37 = v7;
-  [v8 setSubtitle:v7];
-  [(UIButton *)self->_directionsButton setConfiguration:v8];
+  [configuration setSubtitle:v7];
+  [(UIButton *)self->_directionsButton setConfiguration:configuration];
   v9 = [[NSMutableArray alloc] initWithCapacity:2];
-  v10 = [(SharedTripContaineeViewController *)self sharedTrip];
-  v11 = [v10 destinationWaypointMapItem];
+  sharedTrip2 = [(SharedTripContaineeViewController *)self sharedTrip];
+  destinationWaypointMapItem = [sharedTrip2 destinationWaypointMapItem];
 
   v12 = [CLLocation alloc];
-  [v11 coordinate];
+  [destinationWaypointMapItem coordinate];
   v14 = v13;
-  [v11 coordinate];
+  [destinationWaypointMapItem coordinate];
   v15 = [v12 initWithLatitude:v14 longitude:?];
   v16 = +[MKLocationManager sharedLocationManager];
-  v17 = [v16 lastLocation];
+  lastLocation = [v16 lastLocation];
   v36 = v15;
-  [v17 distanceFromLocation:v15];
+  [lastLocation distanceFromLocation:v15];
   v19 = v18;
 
   LODWORD(v16) = [(SharedTripContaineeViewController *)self _shouldShowDirectionsButton];
@@ -862,11 +862,11 @@ LABEL_7:
     }
   }
 
-  v22 = [(SharedTripContaineeViewController *)self sharedTrip];
-  v23 = [v22 senderInfo];
-  v24 = [v23 localContactIdentifier];
+  sharedTrip3 = [(SharedTripContaineeViewController *)self sharedTrip];
+  senderInfo = [sharedTrip3 senderInfo];
+  localContactIdentifier = [senderInfo localContactIdentifier];
 
-  v25 = [v24 length];
+  v25 = [localContactIdentifier length];
   v26 = +[AddressBookManager addressBookAllowed];
   v27 = sub_1000946AC();
   v28 = os_log_type_enabled(v27, OS_LOG_TYPE_INFO);
@@ -875,20 +875,20 @@ LABEL_7:
     if (v28)
     {
       *buf = 138477827;
-      v39 = v24;
+      v39 = localContactIdentifier;
       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "Will display Contact button for sender:%{private}@", buf, 0xCu);
     }
 
-    v29 = [(UIButton *)self->_contactButton configuration];
+    configuration2 = [(UIButton *)self->_contactButton configuration];
 
-    v30 = [(SharedTripContaineeViewController *)self sharedTrip];
-    v31 = [v30 senderInfo];
-    v32 = [v31 localName];
-    [v29 setSubtitle:v32];
+    sharedTrip4 = [(SharedTripContaineeViewController *)self sharedTrip];
+    senderInfo2 = [sharedTrip4 senderInfo];
+    localName = [senderInfo2 localName];
+    [configuration2 setSubtitle:localName];
 
-    [(UIButton *)self->_contactButton setConfiguration:v29];
+    [(UIButton *)self->_contactButton setConfiguration:configuration2];
     [v9 addObject:self->_contactButton];
-    v8 = v29;
+    configuration = configuration2;
   }
 
   else
@@ -903,24 +903,24 @@ LABEL_7:
 
       v34 = v33;
       *buf = 138478083;
-      v39 = v24;
+      v39 = localContactIdentifier;
       v40 = 2112;
       v41 = v34;
       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "Will NOT display Contact button for sender: %{private}@ (Contacts access authorized: %@)", buf, 0x16u);
     }
   }
 
-  v35 = [(SimpleContaineeViewController *)self topActionsContainerView];
-  [v35 _maps_setArrangedSubviews:v9];
+  topActionsContainerView = [(SimpleContaineeViewController *)self topActionsContainerView];
+  [topActionsContainerView _maps_setArrangedSubviews:v9];
 }
 
 - (void)_updateButtonsForLocationUpdate
 {
-  v3 = [(SharedTripContaineeViewController *)self _shouldShowDirectionsButton];
-  v4 = [(UIButton *)self->_directionsButton superview];
-  if (v3)
+  _shouldShowDirectionsButton = [(SharedTripContaineeViewController *)self _shouldShowDirectionsButton];
+  superview = [(UIButton *)self->_directionsButton superview];
+  if (_shouldShowDirectionsButton)
   {
-    if (v4)
+    if (superview)
     {
 
       return;
@@ -929,7 +929,7 @@ LABEL_7:
 
   else
   {
-    v5 = v4;
+    v5 = superview;
 
     if (!v5)
     {
@@ -942,19 +942,19 @@ LABEL_7:
 
 - (BOOL)_shouldShowDirectionsButton
 {
-  v2 = [(SharedTripContaineeViewController *)self sharedTrip];
-  v3 = [v2 destinationWaypointMapItem];
+  sharedTrip = [(SharedTripContaineeViewController *)self sharedTrip];
+  destinationWaypointMapItem = [sharedTrip destinationWaypointMapItem];
 
   v4 = [CLLocation alloc];
-  [v3 coordinate];
+  [destinationWaypointMapItem coordinate];
   v6 = v5;
-  [v3 coordinate];
+  [destinationWaypointMapItem coordinate];
   v7 = [v4 initWithLatitude:v6 longitude:?];
   v8 = +[MKLocationManager sharedLocationManager];
-  v9 = [v8 lastLocation];
+  lastLocation = [v8 lastLocation];
 
-  [v9 distanceFromLocation:v7];
-  LOBYTE(v8) = v9 == 0 || v10 >= 500.0;
+  [lastLocation distanceFromLocation:v7];
+  LOBYTE(v8) = lastLocation == 0 || v10 >= 500.0;
 
   return v8 & 1;
 }
@@ -966,41 +966,41 @@ LABEL_7:
     return;
   }
 
-  v3 = [(SharedTripContaineeViewController *)self sharedTrip];
-  v42 = [v3 destinationName];
+  sharedTrip = [(SharedTripContaineeViewController *)self sharedTrip];
+  destinationName = [sharedTrip destinationName];
 
-  v4 = [v42 length];
+  v4 = [destinationName length];
   v5 = +[NSBundle mainBundle];
   v6 = v5;
   if (v4)
   {
     v7 = [v5 localizedStringForKey:@"(person)'s route to (location) [shared eta]" value:@"localized string not found" table:0];
-    v8 = [(SharedTripContaineeViewController *)self sharedTrip];
-    v9 = [v8 senderName];
-    v10 = [(SharedTripContaineeViewController *)self sharedTrip];
-    v11 = [v10 destinationName];
-    v12 = [NSString stringWithFormat:v7, v9, v11];
+    sharedTrip2 = [(SharedTripContaineeViewController *)self sharedTrip];
+    senderName = [sharedTrip2 senderName];
+    sharedTrip3 = [(SharedTripContaineeViewController *)self sharedTrip];
+    destinationName2 = [sharedTrip3 destinationName];
+    v12 = [NSString stringWithFormat:v7, senderName, destinationName2];
     [(UILabel *)self->_headerTitleLabel setText:v12];
   }
 
   else
   {
     v7 = [v5 localizedStringForKey:@"(person)'s route [shared eta]" value:@"localized string not found" table:0];
-    v8 = [(SharedTripContaineeViewController *)self sharedTrip];
-    v9 = [v8 senderName];
-    v10 = [NSString stringWithFormat:v7, v9];
-    [(UILabel *)self->_headerTitleLabel setText:v10];
+    sharedTrip2 = [(SharedTripContaineeViewController *)self sharedTrip];
+    senderName = [sharedTrip2 senderName];
+    sharedTrip3 = [NSString stringWithFormat:v7, senderName];
+    [(UILabel *)self->_headerTitleLabel setText:sharedTrip3];
   }
 
-  v13 = [(SharedTripContaineeViewController *)self sharedTrip];
-  v14 = [v13 homeCellSubtitle];
-  [(UILabel *)self->_headerSubtitleLabel setText:v14];
+  sharedTrip4 = [(SharedTripContaineeViewController *)self sharedTrip];
+  homeCellSubtitle = [sharedTrip4 homeCellSubtitle];
+  [(UILabel *)self->_headerSubtitleLabel setText:homeCellSubtitle];
 
-  v15 = [(SharedTripContaineeViewController *)self sharedTrip];
-  v16 = [v15 senderInfo];
-  v17 = [v16 hasLocalContactIdentifier];
+  sharedTrip5 = [(SharedTripContaineeViewController *)self sharedTrip];
+  senderInfo = [sharedTrip5 senderInfo];
+  hasLocalContactIdentifier = [senderInfo hasLocalContactIdentifier];
 
-  if (v17)
+  if (hasLocalContactIdentifier)
   {
     p_handleLabel = &self->_handleLabel;
     [(UILabel *)self->_handleLabel setText:&stru_1016631F0];
@@ -1008,60 +1008,60 @@ LABEL_7:
 
   else
   {
-    v19 = [(SharedTripContaineeViewController *)self sharedTrip];
-    v20 = [v19 senderInfo];
-    v21 = [v20 fromIdentifier];
+    sharedTrip6 = [(SharedTripContaineeViewController *)self sharedTrip];
+    senderInfo2 = [sharedTrip6 senderInfo];
+    fromIdentifier = [senderInfo2 fromIdentifier];
     p_handleLabel = &self->_handleLabel;
-    [(UILabel *)self->_handleLabel setText:v21];
+    [(UILabel *)self->_handleLabel setText:fromIdentifier];
   }
 
-  [(UILabel *)*p_handleLabel setHidden:v17];
-  v22 = [(SharedTripContaineeViewController *)self sharedTrip];
-  v23 = [v22 waypointInfos];
+  [(UILabel *)*p_handleLabel setHidden:hasLocalContactIdentifier];
+  sharedTrip7 = [(SharedTripContaineeViewController *)self sharedTrip];
+  waypointInfos = [sharedTrip7 waypointInfos];
   remainingWaypoints = self->_remainingWaypoints;
-  self->_remainingWaypoints = v23;
+  self->_remainingWaypoints = waypointInfos;
 
-  v25 = [(SharedTripContaineeViewController *)self sharedTrip];
-  v26 = [v25 etaInfos];
+  sharedTrip8 = [(SharedTripContaineeViewController *)self sharedTrip];
+  etaInfos = [sharedTrip8 etaInfos];
   remainingETAs = self->_remainingETAs;
-  self->_remainingETAs = v26;
+  self->_remainingETAs = etaInfos;
 
-  v28 = [(SharedTripContaineeViewController *)self sharedTrip];
-  if ([v28 hasCurrentWaypointIndex])
+  sharedTrip9 = [(SharedTripContaineeViewController *)self sharedTrip];
+  if ([sharedTrip9 hasCurrentWaypointIndex])
   {
-    v29 = [(SharedTripContaineeViewController *)self sharedTrip];
-    v30 = [v29 currentWaypointIndex];
+    sharedTrip10 = [(SharedTripContaineeViewController *)self sharedTrip];
+    currentWaypointIndex = [sharedTrip10 currentWaypointIndex];
   }
 
   else
   {
-    v30 = 0;
+    currentWaypointIndex = 0;
   }
 
-  v31 = [(SharedTripContaineeViewController *)self sharedTrip];
-  if (![v31 hasCurrentWaypointIndex] || -[NSArray count](self->_remainingWaypoints, "count") <= v30)
+  sharedTrip11 = [(SharedTripContaineeViewController *)self sharedTrip];
+  if (![sharedTrip11 hasCurrentWaypointIndex] || -[NSArray count](self->_remainingWaypoints, "count") <= currentWaypointIndex)
   {
     goto LABEL_16;
   }
 
   v32 = [(NSArray *)self->_remainingETAs count];
 
-  if (v32 > v30)
+  if (v32 > currentWaypointIndex)
   {
-    v33 = [(NSArray *)self->_remainingWaypoints subarrayWithRange:v30, [(NSArray *)self->_remainingWaypoints count]- v30];
+    v33 = [(NSArray *)self->_remainingWaypoints subarrayWithRange:currentWaypointIndex, [(NSArray *)self->_remainingWaypoints count]- currentWaypointIndex];
     v34 = self->_remainingWaypoints;
     self->_remainingWaypoints = v33;
 
-    v35 = [(NSArray *)self->_remainingETAs subarrayWithRange:v30, [(NSArray *)self->_remainingETAs count]- v30];
-    v31 = self->_remainingETAs;
+    v35 = [(NSArray *)self->_remainingETAs subarrayWithRange:currentWaypointIndex, [(NSArray *)self->_remainingETAs count]- currentWaypointIndex];
+    sharedTrip11 = self->_remainingETAs;
     self->_remainingETAs = v35;
 LABEL_16:
   }
 
-  v36 = [(SharedTripContaineeViewController *)self sharedTrip];
-  v37 = [v36 waypointInfosCount];
+  sharedTrip12 = [(SharedTripContaineeViewController *)self sharedTrip];
+  waypointInfosCount = [sharedTrip12 waypointInfosCount];
 
-  if (v37 >= 2)
+  if (waypointInfosCount >= 2)
   {
     v38 = @"Stops [Shared ETA]";
   }
@@ -1075,8 +1075,8 @@ LABEL_16:
   v40 = [v39 localizedStringForKey:v38 value:@"localized string not found" table:0];
   [(MapsThemeLabel *)self->_destinationHeaderLabel setText:v40];
 
-  v41 = [(SimpleContaineeViewController *)self actionsTableView];
-  [v41 reloadData];
+  actionsTableView = [(SimpleContaineeViewController *)self actionsTableView];
+  [actionsTableView reloadData];
 
   [(SharedTripContaineeViewController *)self _updateButtons];
   [(SharedTripContaineeViewController *)self updateTheme];
@@ -1175,9 +1175,9 @@ LABEL_16:
   }
 
   v20 = +[GEOPlatform sharedPlatform];
-  v21 = [v20 isInternalInstall];
+  isInternalInstall = [v20 isInternalInstall];
 
-  if (v21)
+  if (isInternalInstall)
   {
     v22 = objc_alloc_init(SimpleContaineeAction);
     v23 = +[NSBundle mainBundle];
@@ -1209,11 +1209,11 @@ LABEL_16:
   objc_destroyWeak(&location);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = SharedTripContaineeViewController;
-  [(SharedTripContaineeViewController *)&v6 viewDidDisappear:a3];
+  [(SharedTripContaineeViewController *)&v6 viewDidDisappear:disappear];
   self->_isVisible = 0;
   subscriptionToken = self->_subscriptionToken;
   self->_subscriptionToken = 0;
@@ -1223,20 +1223,20 @@ LABEL_16:
   self->_refreshTimestampTimer = 0;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = SharedTripContaineeViewController;
-  [(SimpleContaineeViewController *)&v5 viewWillDisappear:a3];
+  [(SimpleContaineeViewController *)&v5 viewWillDisappear:disappear];
   v4 = +[MKLocationManager sharedLocationManager];
   [v4 stopListeningForLocationUpdates:self];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = SharedTripContaineeViewController;
-  [(SharedTripContaineeViewController *)&v10 viewDidAppear:a3];
+  [(SharedTripContaineeViewController *)&v10 viewDidAppear:appear];
   refreshTimestampTimer = self->_refreshTimestampTimer;
   if (refreshTimestampTimer)
   {
@@ -1249,16 +1249,16 @@ LABEL_16:
   v7 = self->_refreshTimestampTimer;
   self->_refreshTimestampTimer = v6;
 
-  v8 = [(SharedTripContaineeViewController *)self sharedTrip];
-  v9 = [v8 _transportTypeStringForAnalytics];
-  [GEOAPPortal captureUserAction:21 target:650 value:v9];
+  sharedTrip = [(SharedTripContaineeViewController *)self sharedTrip];
+  _transportTypeStringForAnalytics = [sharedTrip _transportTypeStringForAnalytics];
+  [GEOAPPortal captureUserAction:21 target:650 value:_transportTypeStringForAnalytics];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = SharedTripContaineeViewController;
-  [(SimpleContaineeViewController *)&v5 viewWillAppear:a3];
+  [(SimpleContaineeViewController *)&v5 viewWillAppear:appear];
   self->_isVisible = 1;
   v4 = +[MKLocationManager sharedLocationManager];
   [v4 listenForLocationUpdates:self];
@@ -1271,8 +1271,8 @@ LABEL_16:
   v4.receiver = self;
   v4.super_class = SharedTripContaineeViewController;
   [(SimpleContaineeViewController *)&v4 viewDidLoad];
-  v3 = [(SharedTripContaineeViewController *)self view];
-  [v3 setAccessibilityIdentifier:@"SharedTripView"];
+  view = [(SharedTripContaineeViewController *)self view];
+  [view setAccessibilityIdentifier:@"SharedTripView"];
 }
 
 - (void)setupSubviews
@@ -1349,37 +1349,37 @@ LABEL_16:
   v83 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [v83 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v83 addSubview:v84];
-  v81 = [v84 leadingAnchor];
-  v78 = [v83 leadingAnchor];
-  v76 = [v81 constraintEqualToAnchor:v78 constant:16.0];
+  leadingAnchor = [v84 leadingAnchor];
+  leadingAnchor2 = [v83 leadingAnchor];
+  v76 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   v90[0] = v76;
-  v74 = [v84 topAnchor];
-  v24 = [v83 topAnchor];
-  v25 = [v74 constraintEqualToAnchor:v24 constant:16.0];
+  topAnchor = [v84 topAnchor];
+  topAnchor2 = [v83 topAnchor];
+  v25 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:16.0];
   v90[1] = v25;
-  v26 = [v84 trailingAnchor];
-  v27 = [v83 trailingAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27];
+  trailingAnchor = [v84 trailingAnchor];
+  trailingAnchor2 = [v83 trailingAnchor];
+  v28 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v90[2] = v28;
-  v29 = [v84 bottomAnchor];
-  v30 = [v83 bottomAnchor];
-  v31 = [v29 constraintEqualToAnchor:v30];
+  bottomAnchor = [v84 bottomAnchor];
+  bottomAnchor2 = [v83 bottomAnchor];
+  v31 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v90[3] = v31;
   v32 = [NSArray arrayWithObjects:v90 count:4];
   [NSLayoutConstraint activateConstraints:v32];
 
-  v33 = [(SimpleContaineeViewController *)self titleHeaderView];
-  [v33 setTitleView:v83];
+  titleHeaderView = [(SimpleContaineeViewController *)self titleHeaderView];
+  [titleHeaderView setTitleView:v83];
 
   v34 = sub_10000FA08(self) == 5;
-  v35 = [(SimpleContaineeViewController *)self titleHeaderView];
-  [v35 setButtonHidden:v34];
+  titleHeaderView2 = [(SimpleContaineeViewController *)self titleHeaderView];
+  [titleHeaderView2 setButtonHidden:v34];
 
-  v36 = [(SimpleContaineeViewController *)self actionsTableView];
-  [v36 _setTopPadding:12.0];
+  actionsTableView = [(SimpleContaineeViewController *)self actionsTableView];
+  [actionsTableView _setTopPadding:12.0];
 
-  v37 = [(SimpleContaineeViewController *)self actionsTableView];
-  [v37 _setBottomPadding:10.0];
+  actionsTableView2 = [(SimpleContaineeViewController *)self actionsTableView];
+  [actionsTableView2 _setBottomPadding:10.0];
 
   v38 = [UIButton buttonWithType:0];
   directionsButton = self->_directionsButton;
@@ -1398,12 +1398,12 @@ LABEL_16:
   [(UIButton *)self->_directionsButton setConfiguration:v40];
   [(UIButton *)self->_directionsButton setAccessibilityIdentifier:@"DirectionsButton"];
   [(UIButton *)self->_directionsButton setTranslatesAutoresizingMaskIntoConstraints:0];
-  v44 = [(UIButton *)self->_directionsButton subtitleLabel];
-  [v44 setNumberOfLines:1];
+  subtitleLabel = [(UIButton *)self->_directionsButton subtitleLabel];
+  [subtitleLabel setNumberOfLines:1];
 
   [(UIButton *)self->_directionsButton addTarget:self action:"directionsButtonTapped" forControlEvents:0x2000];
-  v45 = [(SimpleContaineeViewController *)self topActionsContainerView];
-  [v45 addArrangedSubview:self->_directionsButton];
+  topActionsContainerView = [(SimpleContaineeViewController *)self topActionsContainerView];
+  [topActionsContainerView addArrangedSubview:self->_directionsButton];
 
   v46 = [UIButton buttonWithType:0];
   contactButton = self->_contactButton;
@@ -1424,8 +1424,8 @@ LABEL_16:
   [v82 setTitleAlignment:2];
   [(UIButton *)self->_contactButton setConfiguration:v82];
   [(UIButton *)self->_contactButton addTarget:self action:"contactButtonTapped" forControlEvents:0x2000];
-  v51 = [(SimpleContaineeViewController *)self topActionsContainerView];
-  [v51 addArrangedSubview:self->_contactButton];
+  topActionsContainerView2 = [(SimpleContaineeViewController *)self topActionsContainerView];
+  [topActionsContainerView2 addArrangedSubview:self->_contactButton];
 
   v52 = objc_alloc_init(MapsThemeLabel);
   destinationHeaderLabel = self->_destinationHeaderLabel;
@@ -1433,28 +1433,28 @@ LABEL_16:
 
   [(MapsThemeLabel *)self->_destinationHeaderLabel setAccessibilityIdentifier:@"DestinationHeaderLabel"];
   [(MapsThemeLabel *)self->_destinationHeaderLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v54 = [(SimpleContaineeViewController *)self metadataContainerView];
-  [v54 addSubview:self->_destinationHeaderLabel];
+  metadataContainerView = [(SimpleContaineeViewController *)self metadataContainerView];
+  [metadataContainerView addSubview:self->_destinationHeaderLabel];
 
-  v77 = [(MapsThemeLabel *)self->_destinationHeaderLabel topAnchor];
-  v79 = [(SimpleContaineeViewController *)self metadataContainerView];
-  v75 = [v79 topAnchor];
-  v73 = [v77 constraintEqualToAnchor:v75 constant:20.0];
+  topAnchor3 = [(MapsThemeLabel *)self->_destinationHeaderLabel topAnchor];
+  metadataContainerView2 = [(SimpleContaineeViewController *)self metadataContainerView];
+  topAnchor4 = [metadataContainerView2 topAnchor];
+  v73 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:20.0];
   v89[0] = v73;
-  v71 = [(MapsThemeLabel *)self->_destinationHeaderLabel leadingAnchor];
-  v72 = [(SimpleContaineeViewController *)self metadataContainerView];
-  v70 = [v72 leadingAnchor];
-  v69 = [v71 constraintEqualToAnchor:v70 constant:16.0];
+  leadingAnchor3 = [(MapsThemeLabel *)self->_destinationHeaderLabel leadingAnchor];
+  metadataContainerView3 = [(SimpleContaineeViewController *)self metadataContainerView];
+  leadingAnchor4 = [metadataContainerView3 leadingAnchor];
+  v69 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:16.0];
   v89[1] = v69;
-  v55 = [(SimpleContaineeViewController *)self metadataContainerView];
-  v56 = [v55 trailingAnchor];
-  v57 = [(MapsThemeLabel *)self->_destinationHeaderLabel trailingAnchor];
-  v58 = [v56 constraintEqualToAnchor:v57 constant:16.0];
+  metadataContainerView4 = [(SimpleContaineeViewController *)self metadataContainerView];
+  trailingAnchor3 = [metadataContainerView4 trailingAnchor];
+  trailingAnchor4 = [(MapsThemeLabel *)self->_destinationHeaderLabel trailingAnchor];
+  v58 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:16.0];
   v89[2] = v58;
-  v59 = [(SimpleContaineeViewController *)self metadataContainerView];
-  v60 = [v59 bottomAnchor];
-  v61 = [(MapsThemeLabel *)self->_destinationHeaderLabel bottomAnchor];
-  v62 = [v60 constraintEqualToAnchor:v61 constant:0.0];
+  metadataContainerView5 = [(SimpleContaineeViewController *)self metadataContainerView];
+  bottomAnchor3 = [metadataContainerView5 bottomAnchor];
+  bottomAnchor4 = [(MapsThemeLabel *)self->_destinationHeaderLabel bottomAnchor];
+  v62 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:0.0];
   v89[3] = v62;
   v63 = [NSArray arrayWithObjects:v89 count:4];
   [v80 addObjectsFromArray:v63];
@@ -1487,8 +1487,8 @@ LABEL_16:
   v4.receiver = self;
   v4.super_class = SharedTripContaineeViewController;
   [(SimpleContaineeViewController *)&v4 registerActionsTableViewCellClasses];
-  v3 = [(SimpleContaineeViewController *)self actionsTableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"StopCell"];
+  actionsTableView = [(SimpleContaineeViewController *)self actionsTableView];
+  [actionsTableView registerClass:objc_opt_class() forCellReuseIdentifier:@"StopCell"];
 }
 
 - (void)dealloc
@@ -1501,16 +1501,16 @@ LABEL_16:
   [(SimpleContaineeViewController *)&v4 dealloc];
 }
 
-- (SharedTripContaineeViewController)initWithSharedTrip:(id)a3
+- (SharedTripContaineeViewController)initWithSharedTrip:(id)trip
 {
-  v5 = a3;
+  tripCopy = trip;
   v10.receiver = self;
   v10.super_class = SharedTripContaineeViewController;
   v6 = [(SharedTripContaineeViewController *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sharedTrip, a3);
+    objc_storeStrong(&v6->_sharedTrip, trip);
     v8 = +[MSPSharedTripService sharedInstance];
     [v8 addReceivingObserver:v7];
   }

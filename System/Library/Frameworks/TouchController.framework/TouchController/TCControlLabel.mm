@@ -10,39 +10,39 @@
 + (TCControlLabel)buttonX;
 + (TCControlLabel)buttonY;
 + (TCControlLabel)directionPad;
-+ (TCControlLabel)labelWithName:(id)a3 role:(int64_t)a4;
++ (TCControlLabel)labelWithName:(id)name role:(int64_t)role;
 + (TCControlLabel)leftThumbstick;
 + (TCControlLabel)leftThumbstickButton;
 + (TCControlLabel)rightThumbstick;
 + (TCControlLabel)rightThumbstickButton;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (GCSJSONObject)jsonObject;
-- (TCControlLabel)initWithJSONObject:(id)a3;
-- (TCControlLabel)initWithName:(id)a3 role:(int64_t)a4;
+- (TCControlLabel)initWithJSONObject:(id)object;
+- (TCControlLabel)initWithName:(id)name role:(int64_t)role;
 @end
 
 @implementation TCControlLabel
 
-- (TCControlLabel)initWithName:(id)a3 role:(int64_t)a4
+- (TCControlLabel)initWithName:(id)name role:(int64_t)role
 {
-  v7 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = TCControlLabel;
   v8 = [(TCControlLabel *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_name, a3);
-    v9->_role = a4;
+    objc_storeStrong(&v8->_name, name);
+    v9->_role = role;
   }
 
   return v9;
 }
 
-+ (TCControlLabel)labelWithName:(id)a3 role:(int64_t)a4
++ (TCControlLabel)labelWithName:(id)name role:(int64_t)role
 {
-  v5 = a3;
-  v6 = [[TCControlLabel alloc] initWithName:v5 role:a4];
+  nameCopy = name;
+  v6 = [[TCControlLabel alloc] initWithName:nameCopy role:role];
 
   return v6;
 }
@@ -332,10 +332,10 @@ uint64_t __30__TCControlLabel_directionPad__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -344,10 +344,10 @@ uint64_t __30__TCControlLabel_directionPad__block_invoke()
   {
     v8.receiver = self;
     v8.super_class = TCControlLabel;
-    if ([(TCControlLabel *)&v8 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if ([(TCControlLabel *)&v8 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v5 = [(TCControlLabel *)v4 name];
-      v6 = [v5 isEqualToString:self->_name];
+      name = [(TCControlLabel *)equalCopy name];
+      v6 = [name isEqualToString:self->_name];
     }
 
     else
@@ -359,26 +359,26 @@ uint64_t __30__TCControlLabel_directionPad__block_invoke()
   return v6;
 }
 
-- (TCControlLabel)initWithJSONObject:(id)a3
+- (TCControlLabel)initWithJSONObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
     v6 = [v5 objectForKey:@"name"];
     v7 = [v5 objectForKey:@"role"];
 
     self = -[TCControlLabel initWithName:role:](self, "initWithName:role:", v6, [v7 unsignedIntValue]);
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (GCSJSONObject)jsonObject

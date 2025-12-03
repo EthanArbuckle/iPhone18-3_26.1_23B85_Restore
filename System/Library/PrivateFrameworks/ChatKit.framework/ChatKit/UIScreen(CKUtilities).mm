@@ -6,15 +6,15 @@
 
 - (BOOL)__ck_isFullscreen
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3 != 1)
+  if (userInterfaceIdiom != 1)
   {
     return 1;
   }
 
-  [a1 _mainSceneFrame];
+  [self _mainSceneFrame];
   result = 1;
   if (v4 != 0.0)
   {
@@ -22,7 +22,7 @@
     if (v5 != 0.0)
     {
       v8 = v4;
-      [a1 _referenceBounds];
+      [self _referenceBounds];
       v11 = v8 < v7;
       if (v9 < v10)
       {

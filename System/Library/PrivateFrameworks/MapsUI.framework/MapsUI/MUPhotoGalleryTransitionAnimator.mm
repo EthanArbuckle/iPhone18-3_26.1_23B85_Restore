@@ -1,7 +1,7 @@
 @interface MUPhotoGalleryTransitionAnimator
 - (MUPhotoGalleryTransitionAnimator)delegate;
-- (MUPhotoGalleryTransitionAnimator)initWithView:(id)a3 transitionView:(id)a4;
-- (void)animateTransition:(id)a3;
+- (MUPhotoGalleryTransitionAnimator)initWithView:(id)view transitionView:(id)transitionView;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation MUPhotoGalleryTransitionAnimator
@@ -13,13 +13,13 @@
   return WeakRetained;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 viewControllerForKey:*MEMORY[0x1E69DE768]];
-  v6 = [v4 viewControllerForKey:*MEMORY[0x1E69DE778]];
-  v7 = [v6 isBeingPresented];
-  if (v7)
+  transitionCopy = transition;
+  v5 = [transitionCopy viewControllerForKey:*MEMORY[0x1E69DE768]];
+  v6 = [transitionCopy viewControllerForKey:*MEMORY[0x1E69DE778]];
+  isBeingPresented = [v6 isBeingPresented];
+  if (isBeingPresented)
   {
     v8 = v6;
   }
@@ -30,43 +30,43 @@
   }
 
   v9 = v8;
-  v10 = [v9 viewControllers];
-  v11 = [v10 firstObject];
+  viewControllers = [v9 viewControllers];
+  firstObject = [viewControllers firstObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [v11 photoViewForTransition];
-    [v12 setAlpha:0.0];
-    v13 = [(MUPhotoGalleryTransitionAnimator *)self view];
-    [v13 setAlpha:0.0];
+    photoViewForTransition = [firstObject photoViewForTransition];
+    [photoViewForTransition setAlpha:0.0];
+    view = [(MUPhotoGalleryTransitionAnimator *)self view];
+    [view setAlpha:0.0];
 
-    v14 = [v4 containerView];
-    v15 = [v6 view];
-    if (v7)
+    containerView = [transitionCopy containerView];
+    view2 = [v6 view];
+    if (isBeingPresented)
     {
-      [v14 addSubview:v15];
+      [containerView addSubview:view2];
     }
 
     else
     {
-      [v14 sendSubviewToBack:v15];
+      [containerView sendSubviewToBack:view2];
     }
 
     v83 = v9;
 
-    v16 = [(MUPhotoGalleryTransitionAnimator *)self transitionView];
-    [v16 setClipsToBounds:1];
+    transitionView = [(MUPhotoGalleryTransitionAnimator *)self transitionView];
+    [transitionView setClipsToBounds:1];
 
-    v17 = [v4 containerView];
-    v18 = [(MUPhotoGalleryTransitionAnimator *)self transitionView];
-    [v17 addSubview:v18];
+    containerView2 = [transitionCopy containerView];
+    transitionView2 = [(MUPhotoGalleryTransitionAnimator *)self transitionView];
+    [containerView2 addSubview:transitionView2];
 
     v84 = v5;
-    if (v7)
+    if (isBeingPresented)
     {
-      v19 = v12;
-      [v4 finalFrameForViewController:v6];
+      v19 = photoViewForTransition;
+      [transitionCopy finalFrameForViewController:v6];
       v21 = v20;
       v23 = v22;
       Width = v24;
@@ -75,53 +75,53 @@
 
     else
     {
-      [v11 scrollViewContentOffset];
+      [firstObject scrollViewContentOffset];
       v29 = v28;
       v31 = v30;
-      [v12 frame];
+      [photoViewForTransition frame];
       v21 = CGRectGetMinX(v96) - v29;
-      [v12 frame];
+      [photoViewForTransition frame];
       v23 = CGRectGetMinY(v97) - v31;
-      [v12 frame];
+      [photoViewForTransition frame];
       Width = CGRectGetWidth(v98);
-      v19 = v12;
-      [v12 frame];
+      v19 = photoViewForTransition;
+      [photoViewForTransition frame];
       Height = CGRectGetHeight(v99);
     }
 
-    v32 = [(MUPhotoGalleryTransitionAnimator *)self view];
+    view3 = [(MUPhotoGalleryTransitionAnimator *)self view];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v34 = [(MUPhotoGalleryTransitionAnimator *)self view];
-    v35 = v34;
+    view4 = [(MUPhotoGalleryTransitionAnimator *)self view];
+    v35 = view4;
     if (isKindOfClass)
     {
-      v36 = [v34 image];
-      [v36 size];
+      image = [view4 image];
+      [image size];
       v38 = v37;
     }
 
     else
     {
-      [v34 frame];
+      [view4 frame];
       v38 = v39;
     }
 
-    v40 = [(MUPhotoGalleryTransitionAnimator *)self view];
+    view5 = [(MUPhotoGalleryTransitionAnimator *)self view];
     objc_opt_class();
     v41 = objc_opt_isKindOfClass();
-    v42 = [(MUPhotoGalleryTransitionAnimator *)self view];
-    v43 = v42;
+    view6 = [(MUPhotoGalleryTransitionAnimator *)self view];
+    v43 = view6;
     if (v41)
     {
-      v44 = [v42 image];
-      [v44 size];
+      image2 = [view6 image];
+      [image2 size];
       v46 = v45;
     }
 
     else
     {
-      [v42 frame];
+      [view6 frame];
       v46 = v47;
     }
 
@@ -153,53 +153,53 @@
     v101.size.width = Width;
     v101.size.height = Height;
     v55 = CGRectGetMidY(v101) - v54 * 0.5;
-    v56 = [v4 containerView];
-    v57 = [(MUPhotoGalleryTransitionAnimator *)self view];
-    [v57 bounds];
+    containerView3 = [transitionCopy containerView];
+    view7 = [(MUPhotoGalleryTransitionAnimator *)self view];
+    [view7 bounds];
     v59 = v58;
     v61 = v60;
     v63 = v62;
     v65 = v64;
-    v66 = [(MUPhotoGalleryTransitionAnimator *)self view];
-    [v56 convertRect:v66 fromView:{v59, v61, v63, v65}];
+    view8 = [(MUPhotoGalleryTransitionAnimator *)self view];
+    [containerView3 convertRect:view8 fromView:{v59, v61, v63, v65}];
     v68 = v67;
     v70 = v69;
     v72 = v71;
     v74 = v73;
 
-    v75 = [(MUPhotoGalleryTransitionAnimator *)self transitionView];
-    v76 = v75;
+    transitionView3 = [(MUPhotoGalleryTransitionAnimator *)self transitionView];
+    view9 = transitionView3;
     v9 = v83;
-    if (v7)
+    if (isBeingPresented)
     {
-      [v75 setFrame:{v68, v70, v72, v74}];
+      [transitionView3 setFrame:{v68, v70, v72, v74}];
 
-      v76 = [v6 view];
-      [v76 setAlpha:0.0];
+      view9 = [v6 view];
+      [view9 setAlpha:0.0];
       v50 = 1.0;
       v68 = v82;
     }
 
     else
     {
-      [v75 setFrame:{v82, v55, v53, v54}];
+      [transitionView3 setFrame:{v82, v55, v53, v54}];
       v55 = v70;
       v53 = v72;
       v54 = v74;
     }
 
-    v77 = [(MUPhotoGalleryTransitionAnimator *)self transitionView];
-    [v77 layoutIfNeeded];
+    transitionView4 = [(MUPhotoGalleryTransitionAnimator *)self transitionView];
+    [transitionView4 layoutIfNeeded];
 
     v78 = MEMORY[0x1E69DD250];
-    [(MUPhotoGalleryTransitionAnimator *)self transitionDuration:v4];
+    [(MUPhotoGalleryTransitionAnimator *)self transitionDuration:transitionCopy];
     v80 = v79;
     v88[0] = MEMORY[0x1E69E9820];
     v88[1] = 3221225472;
     v88[2] = __54__MUPhotoGalleryTransitionAnimator_animateTransition___block_invoke;
     v88[3] = &unk_1E82190E8;
     v89 = v83;
-    v90 = self;
+    selfCopy = self;
     v91 = v50;
     v92 = v68;
     v93 = v55;
@@ -211,7 +211,7 @@
     v85[3] = &unk_1E8219110;
     v85[4] = self;
     v86 = v48;
-    v87 = v4;
+    v87 = transitionCopy;
     v81 = v48;
     [v78 animateWithDuration:0x20000 delay:v88 options:v85 animations:v80 completion:0.0];
 
@@ -220,7 +220,7 @@
 
   else
   {
-    [v4 completeTransition:0];
+    [transitionCopy completeTransition:0];
   }
 }
 
@@ -255,18 +255,18 @@ void __54__MUPhotoGalleryTransitionAnimator_animateTransition___block_invoke_2(i
   [v4 photoGalleryTransitionAnimatorDidFinishAnimation];
 }
 
-- (MUPhotoGalleryTransitionAnimator)initWithView:(id)a3 transitionView:(id)a4
+- (MUPhotoGalleryTransitionAnimator)initWithView:(id)view transitionView:(id)transitionView
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  transitionViewCopy = transitionView;
   v12.receiver = self;
   v12.super_class = MUPhotoGalleryTransitionAnimator;
   v9 = [(MUPhotoGalleryTransitionAnimator *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_view, a3);
-    objc_storeStrong(&v10->_transitionView, a4);
+    objc_storeStrong(&v9->_view, view);
+    objc_storeStrong(&v10->_transitionView, transitionView);
   }
 
   return v10;

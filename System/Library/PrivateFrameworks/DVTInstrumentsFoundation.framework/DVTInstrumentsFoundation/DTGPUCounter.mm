@@ -1,22 +1,22 @@
 @interface DTGPUCounter
-- (DTGPUCounter)initWithName:(id)a3 maxValue:(unint64_t)a4;
+- (DTGPUCounter)initWithName:(id)name maxValue:(unint64_t)value;
 - (id)infoArray;
 @end
 
 @implementation DTGPUCounter
 
-- (DTGPUCounter)initWithName:(id)a3 maxValue:(unint64_t)a4
+- (DTGPUCounter)initWithName:(id)name maxValue:(unint64_t)value
 {
-  v7 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = DTGPUCounter;
   v8 = [(DTGPUCounter *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_name, a3);
-    objc_storeStrong(&v9->_functionName, a3);
-    v9->_maxValue = a4;
+    objc_storeStrong(&v8->_name, name);
+    objc_storeStrong(&v9->_functionName, name);
+    v9->_maxValue = value;
     v9->_multiplier = 1;
     v9->_requiresWeightAccumulation = ![(NSString *)v9->_name containsString:@"Bandwidth"];
   }

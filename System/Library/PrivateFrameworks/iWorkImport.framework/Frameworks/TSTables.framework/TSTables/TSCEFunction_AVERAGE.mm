@@ -1,28 +1,28 @@
 @interface TSCEFunction_AVERAGE
-+ (id)averageOfVector:(id)a3 functionSpec:(id)a4 argVector:(id)a5 argumentIndex:(int)a6;
-+ (id)averageOfVector:(id)a3 functionSpec:(id)a4 argVector:(id)a5 argumentIndex:(int)a6 criteria:(id)a7 criteriaVectorIndex:(int)a8 ignoreError:(BOOL)a9;
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)averageOfVector:(id)vector functionSpec:(id)spec argVector:(id)argVector argumentIndex:(int)index;
++ (id)averageOfVector:(id)vector functionSpec:(id)spec argVector:(id)argVector argumentIndex:(int)index criteria:(id)criteria criteriaVectorIndex:(int)vectorIndex ignoreError:(BOOL)error;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_AVERAGE
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v7 = **a5;
+  v7 = **arguments;
   v23 = 0;
-  v8 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v7, a2, a3, a4, 0, 1, &v23);
+  v8 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v7, a2, context, spec, 0, 1, &v23);
   v12 = v23;
   if (v12)
   {
-    v13 = objc_msgSend_raiseErrorOrConvert_(a3, v9, v12, v10, v11);
+    v13 = objc_msgSend_raiseErrorOrConvert_(context, v9, v12, v10, v11);
   }
 
   else
   {
-    v13 = objc_msgSend_averageOfVector_functionSpec_argVector_argumentIndex_(TSCEFunction_AVERAGE, v9, a3, a4, v8, 0);
+    v13 = objc_msgSend_averageOfVector_functionSpec_argVector_argumentIndex_(TSCEFunction_AVERAGE, v9, context, spec, v8, 0);
     if (v8)
     {
-      objc_msgSend_formatWithContext_(v8, v14, a3, v15, v16);
+      objc_msgSend_formatWithContext_(v8, v14, context, v15, v16);
     }
 
     else
@@ -37,26 +37,26 @@
   return v13;
 }
 
-+ (id)averageOfVector:(id)a3 functionSpec:(id)a4 argVector:(id)a5 argumentIndex:(int)a6
++ (id)averageOfVector:(id)vector functionSpec:(id)spec argVector:(id)argVector argumentIndex:(int)index
 {
   v8 = 0;
-  v6 = objc_msgSend_averageOfVector_functionSpec_argVector_argumentIndex_criteria_criteriaVectorIndex_ignoreError_(TSCEFunction_AVERAGE, a2, a3, a4, a5, *&a6, 0, 0, v8);
+  v6 = objc_msgSend_averageOfVector_functionSpec_argVector_argumentIndex_criteria_criteriaVectorIndex_ignoreError_(TSCEFunction_AVERAGE, a2, vector, spec, argVector, *&index, 0, 0, v8);
 
   return v6;
 }
 
-+ (id)averageOfVector:(id)a3 functionSpec:(id)a4 argVector:(id)a5 argumentIndex:(int)a6 criteria:(id)a7 criteriaVectorIndex:(int)a8 ignoreError:(BOOL)a9
++ (id)averageOfVector:(id)vector functionSpec:(id)spec argVector:(id)argVector argumentIndex:(int)index criteria:(id)criteria criteriaVectorIndex:(int)vectorIndex ignoreError:(BOOL)error
 {
-  v13 = a3;
-  v14 = a5;
-  v188 = a7;
-  v182 = v14;
+  vectorCopy = vector;
+  argVectorCopy = argVector;
+  criteriaCopy = criteria;
+  v182 = argVectorCopy;
   v19 = objc_msgSend_zero(TSCENumberValue, v15, v16, v17, v18);
-  v24 = objc_msgSend_count(v14, v20, v21, v22, v23);
-  v212[0] = v13;
-  v212[1] = a4;
+  v24 = objc_msgSend_count(argVectorCopy, v20, v21, v22, v23);
+  v212[0] = vectorCopy;
+  v212[1] = spec;
   v213 = 0;
-  v214 = a6;
+  indexCopy = index;
   *v215 = 0;
   v216 = vdupq_n_s64(0x7FFF7FFFFFFFuLL);
   v217 = 0;
@@ -65,9 +65,9 @@
   *&v215[3] = v29 != 0;
   v187 = v212[0];
   v205[0] = v187;
-  v205[1] = a4;
+  v205[1] = spec;
   v206 = 0;
-  v207 = a8;
+  vectorIndexCopy = vectorIndex;
   v208[0] = 0;
   *(v208 + 3) = 0;
   v209 = v216;
@@ -88,24 +88,24 @@ LABEL_62:
     goto LABEL_63;
   }
 
-  v180 = a4;
+  specCopy = spec;
   v181 = v19;
   v183 = 0;
   v186 = 0;
   v184 = 0;
   v34 = 0;
-  v179 = v13;
+  v179 = vectorCopy;
   v35 = 0.0;
   while (1)
   {
-    v36 = objc_msgSend_valueAtIndexPassesCriteria_index_criteria_(TSCEGridValue, v30, v205, v34, v188, v179);
+    v36 = objc_msgSend_valueAtIndexPassesCriteria_index_criteria_(TSCEGridValue, v30, v205, v34, criteriaCopy, v179);
     v41 = objc_msgSend_nilValue(TSCENilValue, v37, v38, v39, v40);
     v46 = v41;
     if (v36)
     {
-      if (a9)
+      if (error)
       {
-        v47 = objc_msgSend_valueAtIndex_accessContext_(v14, v42, v34, v212, v45);
+        v47 = objc_msgSend_valueAtIndex_accessContext_(argVectorCopy, v42, v34, v212, v45);
 
         if (objc_msgSend_isError(v47, v48, v49, v50, v51))
         {
@@ -115,7 +115,7 @@ LABEL_62:
 
       else
       {
-        v47 = objc_msgSend_valueAtIndex_accessContext_(v14, v42, v34, v212, v45);
+        v47 = objc_msgSend_valueAtIndex_accessContext_(argVectorCopy, v42, v34, v212, v45);
 
         if (objc_msgSend_isError(v47, v52, v53, v54, v55))
         {
@@ -161,7 +161,7 @@ LABEL_62:
     if (objc_msgSend_isReferenceValue(v47, v57, v58, v59, v60))
     {
       v202 = 0;
-      v62 = objc_msgSend_asReference_functionSpec_argumentIndex_outError_(v47, v42, v187, v180, a6, &v202);
+      v62 = objc_msgSend_asReference_functionSpec_argumentIndex_outError_(v47, v42, v187, specCopy, index, &v202);
       v63 = v202;
       if (v63)
       {
@@ -277,7 +277,7 @@ LABEL_26:
         if ((v183 & 1) == 0)
         {
           v194 = 0;
-          v117 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v56, v90, v187, v180, a6, &v194);
+          v117 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v56, v90, v187, specCopy, index, &v194);
           v104 = v194;
 
           if (v104)
@@ -295,7 +295,7 @@ LABEL_26:
         }
 
         v193 = 0;
-        v94 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v56, v90, v187, v180, a6, &v193);
+        v94 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v56, v90, v187, specCopy, index, &v193);
         v95 = v193;
         if (v95)
         {
@@ -307,7 +307,7 @@ LABEL_26:
         else if (objc_msgSend_dimensionsMatchModuloCurrency_(v181, v96, v94, v97, v98))
         {
           v192 = 0;
-          v103 = objc_msgSend_add_functionSpec_outError_(v181, v99, v94, v180, &v192);
+          v103 = objc_msgSend_add_functionSpec_outError_(v181, v99, v94, specCopy, &v192);
           v104 = v192;
 
           if (!v104)
@@ -326,14 +326,14 @@ LABEL_26:
         else
         {
           v19 = v181;
-          v171 = objc_msgSend_functionName(v180, v99, v100, v101, v102);
+          v171 = objc_msgSend_functionName(specCopy, v99, v100, v101, v102);
           v175 = objc_msgSend_mismatchedUnitsErrorForFunctionName_(TSCEError, v172, v171, v173, v174);
           v148 = objc_msgSend_raiseErrorOrConvert_(v187, v176, v175, v177, v178);
 
           v104 = 0;
         }
 
-        v14 = v182;
+        argVectorCopy = v182;
 
 LABEL_78:
         v140 = 0;
@@ -341,7 +341,7 @@ LABEL_78:
       }
 
 LABEL_45:
-      v14 = v182;
+      argVectorCopy = v182;
       goto LABEL_46;
     }
 
@@ -351,7 +351,7 @@ LABEL_45:
 LABEL_70:
       v19 = v181;
       v140 = v186;
-      v163 = objc_msgSend_functionName(v180, v90, v91, v92, v93);
+      v163 = objc_msgSend_functionName(specCopy, v90, v91, v92, v93);
       v167 = objc_msgSend_mixedTypeManipulationErrorForFunctionName_(TSCEError, v164, v163, v165, v166);
       v148 = objc_msgSend_raiseErrorOrConvert_(v187, v168, v167, v169, v170);
 
@@ -366,12 +366,12 @@ LABEL_70:
     }
 
     v190 = 0;
-    v108 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v56, v90, v187, v180, a6, &v190);
+    v108 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v56, v90, v187, specCopy, index, &v190);
     v104 = v190;
     objc_msgSend_timeIntervalSinceDate_(v108, v109, v186, v110, v111);
     v113 = v112;
 
-    v14 = v182;
+    argVectorCopy = v182;
     if (v104)
     {
       v19 = v181;
@@ -423,7 +423,7 @@ LABEL_46:
   }
 
   v191 = 0;
-  v121 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v56, v90, v187, v180, a6, &v191);
+  v121 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v56, v90, v187, specCopy, index, &v191);
   v122 = v191;
   if (!v122)
   {
@@ -437,7 +437,7 @@ LABEL_46:
   v148 = objc_msgSend_raiseErrorOrConvert_(v187, v123, v122, v124, v125);
   v140 = v121;
 LABEL_80:
-  v14 = v182;
+  argVectorCopy = v182;
 LABEL_63:
 
   sub_22121E580(&v203, v204[0]);

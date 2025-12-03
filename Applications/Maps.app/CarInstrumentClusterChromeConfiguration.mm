@@ -1,16 +1,16 @@
 @interface CarInstrumentClusterChromeConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isRenderedInMediaCarousel;
-- (CarInstrumentClusterChromeConfiguration)initWithInstrumentClusterSceneSettings:(id)a3;
+- (CarInstrumentClusterChromeConfiguration)initWithInstrumentClusterSceneSettings:(id)settings;
 - (NSString)description;
-- (unint64_t)_settingWithValue:(unint64_t)a3 hybridICOverrideKey:(id)a4;
+- (unint64_t)_settingWithValue:(unint64_t)value hybridICOverrideKey:(id)key;
 - (void)dealloc;
-- (void)valueChangedForGEOConfigKey:(id)a3;
+- (void)valueChangedForGEOConfigKey:(id)key;
 @end
 
 @implementation CarInstrumentClusterChromeConfiguration
 
-- (unint64_t)_settingWithValue:(unint64_t)a3 hybridICOverrideKey:(id)a4
+- (unint64_t)_settingWithValue:(unint64_t)value hybridICOverrideKey:(id)key
 {
   if (self->_isHybridInstrumentClusterConfiguration && _GEOConfigHasValue())
   {
@@ -26,12 +26,12 @@
     }
   }
 
-  return a3;
+  return value;
 }
 
-- (void)valueChangedForGEOConfigKey:(id)a3
+- (void)valueChangedForGEOConfigKey:(id)key
 {
-  v4 = [NSNotificationCenter defaultCenter:*&a3.var0];
+  v4 = [NSNotificationCenter defaultCenter:*&key.var0];
   [v4 postNotificationName:@"CarInstrumentClusterChromeConfigurationDidUpdateNotification" object:self];
 }
 
@@ -93,10 +93,10 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -106,7 +106,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = self->_showsHeadingIndicator == v5->_showsHeadingIndicator && self->_showsSpeedLimit == v5->_showsSpeedLimit && self->_showsETA == v5->_showsETA;
     }
 
@@ -131,10 +131,10 @@
   [(CarInstrumentClusterChromeConfiguration *)&v3 dealloc];
 }
 
-- (CarInstrumentClusterChromeConfiguration)initWithInstrumentClusterSceneSettings:(id)a3
+- (CarInstrumentClusterChromeConfiguration)initWithInstrumentClusterSceneSettings:(id)settings
 {
-  v4 = a3;
-  if (!v4)
+  settingsCopy = settings;
+  if (!settingsCopy)
   {
     v18 = sub_10006D178();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -168,54 +168,54 @@
   v5 = [(CarInstrumentClusterChromeConfiguration *)&v21 init];
   if (v5)
   {
-    v6 = [v4 showsCompass];
-    if ((v6 - 1) >= 3)
+    showsCompass = [settingsCopy showsCompass];
+    if ((showsCompass - 1) >= 3)
     {
       v7 = 0;
     }
 
     else
     {
-      v7 = v6;
+      v7 = showsCompass;
     }
 
     v5->_showsHeadingIndicator = v7;
-    v8 = [v4 showsSpeedLimit];
-    if ((v8 - 1) >= 3)
+    showsSpeedLimit = [settingsCopy showsSpeedLimit];
+    if ((showsSpeedLimit - 1) >= 3)
     {
       v9 = 0;
     }
 
     else
     {
-      v9 = v8;
+      v9 = showsSpeedLimit;
     }
 
     v5->_showsSpeedLimit = v9;
-    v10 = [v4 showsETA];
-    if ((v10 - 1) >= 3)
+    showsETA = [settingsCopy showsETA];
+    if ((showsETA - 1) >= 3)
     {
       v11 = 0;
     }
 
     else
     {
-      v11 = v10;
+      v11 = showsETA;
     }
 
     v5->_showsETA = v11;
-    v5->_presentationType = [v4 hostedAltScreenPresentationType];
-    v12 = [v4 layoutJustification];
-    v13 = 2 * (v12 == 3);
-    if (v12 == 2)
+    v5->_presentationType = [settingsCopy hostedAltScreenPresentationType];
+    layoutJustification = [settingsCopy layoutJustification];
+    v13 = 2 * (layoutJustification == 3);
+    if (layoutJustification == 2)
     {
       v13 = 1;
     }
 
     v5->_hybridICAlignment = v13;
-    v14 = [v4 itemType];
-    v15 = v14 == 1;
-    if (v14 == 2)
+    itemType = [settingsCopy itemType];
+    v15 = itemType == 1;
+    if (itemType == 2)
     {
       v15 = 2;
     }

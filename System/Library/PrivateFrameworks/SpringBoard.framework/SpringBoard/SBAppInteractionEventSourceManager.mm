@@ -1,21 +1,21 @@
 @interface SBAppInteractionEventSourceManager
 + (id)sharedInstance;
 - (SBAppInteractionEventSourceManager)init;
-- (id)eventSourceForWindowScene:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)eventSource:(id)a3 applicationsBecameHidden:(id)a4;
-- (void)eventSource:(id)a3 applicationsBecameVisible:(id)a4;
-- (void)eventSource:(id)a3 didBeginTransitionToMode:(int64_t)a4 withLayoutState:(id)a5 activatingElement:(id)a6 triggeredBy:(int64_t)a7;
-- (void)eventSource:(id)a3 didFinishTransitionToMode:(int64_t)a4 withLayoutState:(id)a5 activatingElement:(id)a6 triggeredBy:(int64_t)a7;
-- (void)eventSource:(id)a3 keyboardFocusChangedToApplication:(id)a4;
-- (void)eventSource:(id)a3 userDeletedApplications:(id)a4;
-- (void)eventSource:(id)a3 userDeletedWebBookmark:(id)a4;
-- (void)eventSource:(id)a3 userQuitApplicationInSwitcher:(id)a4;
-- (void)eventSource:(id)a3 userRemovedSuggestions:(id)a4;
-- (void)eventSource:(id)a3 userTouchedApplication:(id)a4;
-- (void)eventSource:(id)a3 userTouchedApplication:(id)a4 pid:(int)a5 inContext:(unsigned int)a6;
-- (void)windowSceneDidConnect:(id)a3;
-- (void)windowSceneDidDisconnect:(id)a3;
+- (id)eventSourceForWindowScene:(id)scene;
+- (void)addObserver:(id)observer;
+- (void)eventSource:(id)source applicationsBecameHidden:(id)hidden;
+- (void)eventSource:(id)source applicationsBecameVisible:(id)visible;
+- (void)eventSource:(id)source didBeginTransitionToMode:(int64_t)mode withLayoutState:(id)state activatingElement:(id)element triggeredBy:(int64_t)by;
+- (void)eventSource:(id)source didFinishTransitionToMode:(int64_t)mode withLayoutState:(id)state activatingElement:(id)element triggeredBy:(int64_t)by;
+- (void)eventSource:(id)source keyboardFocusChangedToApplication:(id)application;
+- (void)eventSource:(id)source userDeletedApplications:(id)applications;
+- (void)eventSource:(id)source userDeletedWebBookmark:(id)bookmark;
+- (void)eventSource:(id)source userQuitApplicationInSwitcher:(id)switcher;
+- (void)eventSource:(id)source userRemovedSuggestions:(id)suggestions;
+- (void)eventSource:(id)source userTouchedApplication:(id)application;
+- (void)eventSource:(id)source userTouchedApplication:(id)application pid:(int)pid inContext:(unsigned int)context;
+- (void)windowSceneDidConnect:(id)connect;
+- (void)windowSceneDidDisconnect:(id)disconnect;
 @end
 
 @implementation SBAppInteractionEventSourceManager
@@ -46,39 +46,39 @@ void __52__SBAppInteractionEventSourceManager_sharedInstance__block_invoke()
   v2 = [(SBAppInteractionEventSourceManager *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     windowScenesToEventSources = v2->_windowScenesToEventSources;
-    v2->_windowScenesToEventSources = v3;
+    v2->_windowScenesToEventSources = weakToStrongObjectsMapTable;
   }
 
   return v2;
 }
 
-- (id)eventSourceForWindowScene:(id)a3
+- (id)eventSourceForWindowScene:(id)scene
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_windowScenesToEventSources objectForKey:v4];
+  sceneCopy = scene;
+  v5 = [(NSMapTable *)self->_windowScenesToEventSources objectForKey:sceneCopy];
   if (!v5)
   {
     v5 = objc_alloc_init(SBDisplayAppInteractionEventSource);
-    [(NSMapTable *)self->_windowScenesToEventSources setObject:v5 forKey:v4];
+    [(NSMapTable *)self->_windowScenesToEventSources setObject:v5 forKey:sceneCopy];
   }
 
   return v5;
 }
 
-- (void)windowSceneDidConnect:(id)a3
+- (void)windowSceneDidConnect:(id)connect
 {
-  v4 = a3;
-  v5 = [(SBAppInteractionEventSourceManager *)self eventSourceForWindowScene:v4];
-  [v5 windowSceneDidConnect:v4];
+  connectCopy = connect;
+  v5 = [(SBAppInteractionEventSourceManager *)self eventSourceForWindowScene:connectCopy];
+  [v5 windowSceneDidConnect:connectCopy];
 
   [v5 addObserver:self];
 }
 
-- (void)windowSceneDidDisconnect:(id)a3
+- (void)windowSceneDidDisconnect:(id)disconnect
 {
-  v6 = a3;
+  disconnectCopy = disconnect;
   v4 = [(NSMapTable *)self->_windowScenesToEventSources objectForKey:?];
   v5 = v4;
   if (v4)
@@ -86,31 +86,31 @@ void __52__SBAppInteractionEventSourceManager_sharedInstance__block_invoke()
     [v4 removeObserver:self];
   }
 
-  [(NSMapTable *)self->_windowScenesToEventSources removeObjectForKey:v6];
+  [(NSMapTable *)self->_windowScenesToEventSources removeObjectForKey:disconnectCopy];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
     v6 = [MEMORY[0x277CCAA50] hashTableWithOptions:517];
     v7 = self->_observers;
     self->_observers = v6;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)eventSource:(id)a3 userRemovedSuggestions:(id)a4
+- (void)eventSource:(id)source userRemovedSuggestions:(id)suggestions
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  suggestionsCopy = suggestions;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -134,7 +134,7 @@ void __52__SBAppInteractionEventSourceManager_sharedInstance__block_invoke()
         v11 = *(*(&v12 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 eventSource:self userRemovedSuggestions:{v5, v12}];
+          [v11 eventSource:self userRemovedSuggestions:{suggestionsCopy, v12}];
         }
 
         ++v10;
@@ -148,10 +148,10 @@ void __52__SBAppInteractionEventSourceManager_sharedInstance__block_invoke()
   }
 }
 
-- (void)eventSource:(id)a3 userDeletedApplications:(id)a4
+- (void)eventSource:(id)source userDeletedApplications:(id)applications
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  applicationsCopy = applications;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -175,7 +175,7 @@ void __52__SBAppInteractionEventSourceManager_sharedInstance__block_invoke()
         v11 = *(*(&v12 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 eventSource:self userDeletedApplications:{v5, v12}];
+          [v11 eventSource:self userDeletedApplications:{applicationsCopy, v12}];
         }
 
         ++v10;
@@ -189,10 +189,10 @@ void __52__SBAppInteractionEventSourceManager_sharedInstance__block_invoke()
   }
 }
 
-- (void)eventSource:(id)a3 userQuitApplicationInSwitcher:(id)a4
+- (void)eventSource:(id)source userQuitApplicationInSwitcher:(id)switcher
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  switcherCopy = switcher;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -216,7 +216,7 @@ void __52__SBAppInteractionEventSourceManager_sharedInstance__block_invoke()
         v11 = *(*(&v12 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 eventSource:self userQuitApplicationInSwitcher:{v5, v12}];
+          [v11 eventSource:self userQuitApplicationInSwitcher:{switcherCopy, v12}];
         }
 
         ++v10;
@@ -230,10 +230,10 @@ void __52__SBAppInteractionEventSourceManager_sharedInstance__block_invoke()
   }
 }
 
-- (void)eventSource:(id)a3 applicationsBecameHidden:(id)a4
+- (void)eventSource:(id)source applicationsBecameHidden:(id)hidden
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  hiddenCopy = hidden;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -257,7 +257,7 @@ void __52__SBAppInteractionEventSourceManager_sharedInstance__block_invoke()
         v11 = *(*(&v12 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 eventSource:self applicationsBecameHidden:{v5, v12}];
+          [v11 eventSource:self applicationsBecameHidden:{hiddenCopy, v12}];
         }
 
         ++v10;
@@ -271,10 +271,10 @@ void __52__SBAppInteractionEventSourceManager_sharedInstance__block_invoke()
   }
 }
 
-- (void)eventSource:(id)a3 applicationsBecameVisible:(id)a4
+- (void)eventSource:(id)source applicationsBecameVisible:(id)visible
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  visibleCopy = visible;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -298,7 +298,7 @@ void __52__SBAppInteractionEventSourceManager_sharedInstance__block_invoke()
         v11 = *(*(&v12 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 eventSource:self applicationsBecameVisible:{v5, v12}];
+          [v11 eventSource:self applicationsBecameVisible:{visibleCopy, v12}];
         }
 
         ++v10;
@@ -312,10 +312,10 @@ void __52__SBAppInteractionEventSourceManager_sharedInstance__block_invoke()
   }
 }
 
-- (void)eventSource:(id)a3 userDeletedWebBookmark:(id)a4
+- (void)eventSource:(id)source userDeletedWebBookmark:(id)bookmark
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  bookmarkCopy = bookmark;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -339,7 +339,7 @@ void __52__SBAppInteractionEventSourceManager_sharedInstance__block_invoke()
         v11 = *(*(&v12 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 eventSource:self userDeletedWebBookmark:{v5, v12}];
+          [v11 eventSource:self userDeletedWebBookmark:{bookmarkCopy, v12}];
         }
 
         ++v10;
@@ -353,10 +353,10 @@ void __52__SBAppInteractionEventSourceManager_sharedInstance__block_invoke()
   }
 }
 
-- (void)eventSource:(id)a3 userTouchedApplication:(id)a4
+- (void)eventSource:(id)source userTouchedApplication:(id)application
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  applicationCopy = application;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -380,7 +380,7 @@ void __52__SBAppInteractionEventSourceManager_sharedInstance__block_invoke()
         v11 = *(*(&v12 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 eventSource:self userTouchedApplication:{v5, v12}];
+          [v11 eventSource:self userTouchedApplication:{applicationCopy, v12}];
         }
 
         ++v10;
@@ -394,10 +394,10 @@ void __52__SBAppInteractionEventSourceManager_sharedInstance__block_invoke()
   }
 }
 
-- (void)eventSource:(id)a3 keyboardFocusChangedToApplication:(id)a4
+- (void)eventSource:(id)source keyboardFocusChangedToApplication:(id)application
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  applicationCopy = application;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -421,7 +421,7 @@ void __52__SBAppInteractionEventSourceManager_sharedInstance__block_invoke()
         v11 = *(*(&v12 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 eventSource:self keyboardFocusChangedToApplication:{v5, v12}];
+          [v11 eventSource:self keyboardFocusChangedToApplication:{applicationCopy, v12}];
         }
 
         ++v10;
@@ -435,12 +435,12 @@ void __52__SBAppInteractionEventSourceManager_sharedInstance__block_invoke()
   }
 }
 
-- (void)eventSource:(id)a3 userTouchedApplication:(id)a4 pid:(int)a5 inContext:(unsigned int)a6
+- (void)eventSource:(id)source userTouchedApplication:(id)application pid:(int)pid inContext:(unsigned int)context
 {
-  v6 = *&a6;
-  v7 = *&a5;
+  v6 = *&context;
+  v7 = *&pid;
   v21 = *MEMORY[0x277D85DE8];
-  v9 = a4;
+  applicationCopy = application;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -464,7 +464,7 @@ void __52__SBAppInteractionEventSourceManager_sharedInstance__block_invoke()
         v15 = *(*(&v16 + 1) + 8 * v14);
         if (objc_opt_respondsToSelector())
         {
-          [v15 eventSource:self userTouchedApplication:v9 pid:v7 inContext:{v6, v16}];
+          [v15 eventSource:self userTouchedApplication:applicationCopy pid:v7 inContext:{v6, v16}];
         }
 
         ++v14;
@@ -478,11 +478,11 @@ void __52__SBAppInteractionEventSourceManager_sharedInstance__block_invoke()
   }
 }
 
-- (void)eventSource:(id)a3 didBeginTransitionToMode:(int64_t)a4 withLayoutState:(id)a5 activatingElement:(id)a6 triggeredBy:(int64_t)a7
+- (void)eventSource:(id)source didBeginTransitionToMode:(int64_t)mode withLayoutState:(id)state activatingElement:(id)element triggeredBy:(int64_t)by
 {
   v24 = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a6;
+  stateCopy = state;
+  elementCopy = element;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -506,7 +506,7 @@ void __52__SBAppInteractionEventSourceManager_sharedInstance__block_invoke()
         v17 = *(*(&v19 + 1) + 8 * v16);
         if (objc_opt_respondsToSelector())
         {
-          [v17 eventSource:self didBeginTransitionToMode:a4 withLayoutState:v10 activatingElement:v11 triggeredBy:a7];
+          [v17 eventSource:self didBeginTransitionToMode:mode withLayoutState:stateCopy activatingElement:elementCopy triggeredBy:by];
         }
 
         ++v16;
@@ -520,11 +520,11 @@ void __52__SBAppInteractionEventSourceManager_sharedInstance__block_invoke()
   }
 }
 
-- (void)eventSource:(id)a3 didFinishTransitionToMode:(int64_t)a4 withLayoutState:(id)a5 activatingElement:(id)a6 triggeredBy:(int64_t)a7
+- (void)eventSource:(id)source didFinishTransitionToMode:(int64_t)mode withLayoutState:(id)state activatingElement:(id)element triggeredBy:(int64_t)by
 {
   v24 = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a6;
+  stateCopy = state;
+  elementCopy = element;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -548,7 +548,7 @@ void __52__SBAppInteractionEventSourceManager_sharedInstance__block_invoke()
         v17 = *(*(&v19 + 1) + 8 * v16);
         if (objc_opt_respondsToSelector())
         {
-          [v17 eventSource:self didFinishTransitionToMode:a4 withLayoutState:v10 activatingElement:v11 triggeredBy:a7];
+          [v17 eventSource:self didFinishTransitionToMode:mode withLayoutState:stateCopy activatingElement:elementCopy triggeredBy:by];
         }
 
         ++v16;

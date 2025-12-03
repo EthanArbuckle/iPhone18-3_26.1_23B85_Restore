@@ -6,59 +6,59 @@
 - (uint64_t)replacementIsDeletion;
 - (uint64_t)replacementSupportsBackgroundRefresh;
 - (unsigned)replacementRelevances;
-- (void)replaceExtensionIdentity:(id)a3;
-- (void)replaceKind:(id)a3;
-- (void)replaceRelevances:(id)a3;
+- (void)replaceExtensionIdentity:(id)identity;
+- (void)replaceKind:(id)kind;
+- (void)replaceRelevances:(id)relevances;
 @end
 
 @implementation _CHSWidgetRelevancePropertiesBufChanges
 
-- (void)replaceExtensionIdentity:(id)a3
+- (void)replaceExtensionIdentity:(id)identity
 {
-  v5 = a3;
+  identityCopy = identity;
   self->_changeTypeExtensionIdentity = 1;
-  v7 = v5;
-  if (!v5)
+  v7 = identityCopy;
+  if (!identityCopy)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:1562 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:1562 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
 
-    v5 = 0;
+    identityCopy = 0;
   }
 
-  self->_replacementExtensionIdentity = [v5 unsignedIntValue];
+  self->_replacementExtensionIdentity = [identityCopy unsignedIntValue];
 }
 
-- (void)replaceKind:(id)a3
+- (void)replaceKind:(id)kind
 {
-  v5 = a3;
+  kindCopy = kind;
   self->_changeTypeKind = 1;
-  v7 = v5;
-  if (!v5)
+  v7 = kindCopy;
+  if (!kindCopy)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:1585 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:1585 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
 
-    v5 = 0;
+    kindCopy = 0;
   }
 
-  self->_replacementKind = [v5 unsignedIntValue];
+  self->_replacementKind = [kindCopy unsignedIntValue];
 }
 
-- (void)replaceRelevances:(id)a3
+- (void)replaceRelevances:(id)relevances
 {
-  v5 = a3;
+  relevancesCopy = relevances;
   self->_changeTypeRelevances = 1;
-  v7 = v5;
-  if (!v5)
+  v7 = relevancesCopy;
+  if (!relevancesCopy)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:1671 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:1671 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
 
-    v5 = 0;
+    relevancesCopy = 0;
   }
 
-  self->_replacementRelevances = [v5 unsignedIntValue];
+  self->_replacementRelevances = [relevancesCopy unsignedIntValue];
 }
 
 - (uint64_t)changeTypeRelevances
@@ -73,20 +73,20 @@
 
 - (unsigned)replacementRelevances
 {
-  if (a1)
+  if (self)
   {
-    a1 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:a1[11]];
+    self = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:self[11]];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)replacementSupportsBackgroundRefresh
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 25);
+    v1 = *(self + 25);
   }
 
   else
@@ -109,9 +109,9 @@
 
 - (uint64_t)replacementIsDeletion
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 27);
+    v1 = *(self + 27);
   }
 
   else
@@ -134,9 +134,9 @@
 
 - (double)replacementLastRelevanceUpdate
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 32);
+    return *(self + 32);
   }
 
   else

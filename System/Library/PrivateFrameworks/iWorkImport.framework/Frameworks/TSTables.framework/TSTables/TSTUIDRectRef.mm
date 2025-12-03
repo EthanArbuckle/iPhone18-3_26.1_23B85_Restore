@@ -2,7 +2,7 @@
 - (BOOL)baseToViewPreserveFlagsAreInverted;
 - (BOOL)isBaseRectangle;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValidReference;
 - (BOOL)isViewRectangle;
 - (BOOL)spansAllColumns;
@@ -14,12 +14,12 @@
 - (TSKUIDStruct)singleReferencedColumnUid;
 - (TSKUIDStruct)tableUID;
 - (TSKUIDStructTract)uidRange;
-- (TSTUIDRectRef)initWithCalcEngine:(id)a3 baseRangeRef:(const void *)a4 preserveFlags:(unsigned __int8)a5;
-- (TSTUIDRectRef)initWithCalcEngine:(id)a3 baseTractRef:(id)a4;
-- (TSTUIDRectRef)initWithCalcEngine:(id)a3 chromeRangeRef:(const void *)a4 preserveFlags:(unsigned __int8)a5;
-- (TSTUIDRectRef)initWithCalcEngine:(id)a3 tableUID:(const TSKUIDStruct *)a4 uidRange:(const void *)a5 preserveFlags:(unsigned __int8)a6;
-- (TSTUIDRectRef)initWithCalcEngine:(id)a3 viewRangeRef:(const void *)a4 preserveFlags:(unsigned __int8)a5;
-- (TSTUIDRectRef)initWithCalcEngine:(id)a3 viewTractRef:(id)a4;
+- (TSTUIDRectRef)initWithCalcEngine:(id)engine baseRangeRef:(const void *)ref preserveFlags:(unsigned __int8)flags;
+- (TSTUIDRectRef)initWithCalcEngine:(id)engine baseTractRef:(id)ref;
+- (TSTUIDRectRef)initWithCalcEngine:(id)engine chromeRangeRef:(const void *)ref preserveFlags:(unsigned __int8)flags;
+- (TSTUIDRectRef)initWithCalcEngine:(id)engine tableUID:(const TSKUIDStruct *)d uidRange:(const void *)range preserveFlags:(unsigned __int8)flags;
+- (TSTUIDRectRef)initWithCalcEngine:(id)engine viewRangeRef:(const void *)ref preserveFlags:(unsigned __int8)flags;
+- (TSTUIDRectRef)initWithCalcEngine:(id)engine viewTractRef:(id)ref;
 - (TSUModelCellCoord)baseBottomRightCoord;
 - (TSUModelCellCoord)baseTopLeftCoord;
 - (TSUViewCellCoord)viewBottomRightCoord;
@@ -27,13 +27,13 @@
 - (id).cxx_construct;
 - (id)baseTractRef;
 - (id)chromeTractRef;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)grabViewUidMapper;
 - (id)tableInfo;
 - (id)tableModel;
-- (id)uidTractListWithPurpose:(unsigned __int8)a3;
-- (id)viewCellRegionWithRangeContext:(unsigned __int8)a3;
+- (id)uidTractListWithPurpose:(unsigned __int8)purpose;
+- (id)viewCellRegionWithRangeContext:(unsigned __int8)context;
 - (id)viewTractRef;
 - (id)viewTractRefIfFullyValid;
 - (unint64_t)area;
@@ -45,33 +45,33 @@
 - (void)convertUIDRefToViewTractRef;
 - (void)convertViewTractRefToUID;
 - (void)excludeSummaryAndLabelRows;
-- (void)setBaseRangeRef:(const void *)a3 preserveFlags:(unsigned __int8)a4;
-- (void)setCalcEngine:(id)a3;
-- (void)setChromeRangeRef:(const void *)a3 preserveFlags:(unsigned __int8)a4;
-- (void)setViewPreserveFlags:(unsigned __int8)a3;
-- (void)setViewRangeRef:(const void *)a3 preserveFlags:(unsigned __int8)a4;
+- (void)setBaseRangeRef:(const void *)ref preserveFlags:(unsigned __int8)flags;
+- (void)setCalcEngine:(id)engine;
+- (void)setChromeRangeRef:(const void *)ref preserveFlags:(unsigned __int8)flags;
+- (void)setViewPreserveFlags:(unsigned __int8)flags;
+- (void)setViewRangeRef:(const void *)ref preserveFlags:(unsigned __int8)flags;
 @end
 
 @implementation TSTUIDRectRef
 
-- (TSTUIDRectRef)initWithCalcEngine:(id)a3 viewTractRef:(id)a4
+- (TSTUIDRectRef)initWithCalcEngine:(id)engine viewTractRef:(id)ref
 {
-  v6 = a3;
-  v7 = a4;
+  engineCopy = engine;
+  refCopy = ref;
   v30.receiver = self;
   v30.super_class = TSTUIDRectRef;
   v8 = [(TSTUIDRectRef *)&v30 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_calcEngine, v6);
-    v14 = objc_msgSend_copy(v7, v10, v11, v12, v13);
+    objc_storeWeak(&v8->_calcEngine, engineCopy);
+    v14 = objc_msgSend_copy(refCopy, v10, v11, v12, v13);
     lastKnownTractRef = v9->_lastKnownTractRef;
     v9->_lastKnownTractRef = v14;
 
     v9->_lastKnownTractRefIsBase = 0;
     v9->_basePreserveFlags = objc_msgSend_preserveFlags(v9->_lastKnownTractRef, v16, v17, v18, v19);
-    v9->_tableUID._lower = objc_msgSend_tableUID(v7, v20, v21, v22, v23);
+    v9->_tableUID._lower = objc_msgSend_tableUID(refCopy, v20, v21, v22, v23);
     v9->_tableUID._upper = v24;
     v28 = objc_msgSend_grabViewUidMapper(v9, v24, v25, v26, v27);
   }
@@ -79,24 +79,24 @@
   return v9;
 }
 
-- (TSTUIDRectRef)initWithCalcEngine:(id)a3 baseTractRef:(id)a4
+- (TSTUIDRectRef)initWithCalcEngine:(id)engine baseTractRef:(id)ref
 {
-  v6 = a3;
-  v7 = a4;
+  engineCopy = engine;
+  refCopy = ref;
   v30.receiver = self;
   v30.super_class = TSTUIDRectRef;
   v8 = [(TSTUIDRectRef *)&v30 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_calcEngine, v6);
-    v14 = objc_msgSend_copy(v7, v10, v11, v12, v13);
+    objc_storeWeak(&v8->_calcEngine, engineCopy);
+    v14 = objc_msgSend_copy(refCopy, v10, v11, v12, v13);
     lastKnownTractRef = v9->_lastKnownTractRef;
     v9->_lastKnownTractRef = v14;
 
     v9->_lastKnownTractRefIsBase = 1;
     v9->_basePreserveFlags = objc_msgSend_preserveFlags(v9->_lastKnownTractRef, v16, v17, v18, v19);
-    v9->_tableUID._lower = objc_msgSend_tableUID(v7, v20, v21, v22, v23);
+    v9->_tableUID._lower = objc_msgSend_tableUID(refCopy, v20, v21, v22, v23);
     v9->_tableUID._upper = v24;
     v28 = objc_msgSend_grabViewUidMapper(v9, v24, v25, v26, v27);
   }
@@ -104,60 +104,60 @@
   return v9;
 }
 
-- (TSTUIDRectRef)initWithCalcEngine:(id)a3 viewRangeRef:(const void *)a4 preserveFlags:(unsigned __int8)a5
+- (TSTUIDRectRef)initWithCalcEngine:(id)engine viewRangeRef:(const void *)ref preserveFlags:(unsigned __int8)flags
 {
-  v5 = a5;
-  v8 = a3;
+  flagsCopy = flags;
+  engineCopy = engine;
   v14.receiver = self;
   v14.super_class = TSTUIDRectRef;
   v9 = [(TSTUIDRectRef *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_calcEngine, v8);
-    objc_msgSend_setViewRangeRef_preserveFlags_(v10, v11, a4, v5, v12);
+    objc_storeWeak(&v9->_calcEngine, engineCopy);
+    objc_msgSend_setViewRangeRef_preserveFlags_(v10, v11, ref, flagsCopy, v12);
   }
 
   return v10;
 }
 
-- (TSTUIDRectRef)initWithCalcEngine:(id)a3 chromeRangeRef:(const void *)a4 preserveFlags:(unsigned __int8)a5
+- (TSTUIDRectRef)initWithCalcEngine:(id)engine chromeRangeRef:(const void *)ref preserveFlags:(unsigned __int8)flags
 {
-  v5 = a5;
-  v8 = a3;
+  flagsCopy = flags;
+  engineCopy = engine;
   v14.receiver = self;
   v14.super_class = TSTUIDRectRef;
   v9 = [(TSTUIDRectRef *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_calcEngine, v8);
-    objc_msgSend_setChromeRangeRef_preserveFlags_(v10, v11, a4, v5, v12);
+    objc_storeWeak(&v9->_calcEngine, engineCopy);
+    objc_msgSend_setChromeRangeRef_preserveFlags_(v10, v11, ref, flagsCopy, v12);
   }
 
   return v10;
 }
 
-- (TSTUIDRectRef)initWithCalcEngine:(id)a3 baseRangeRef:(const void *)a4 preserveFlags:(unsigned __int8)a5
+- (TSTUIDRectRef)initWithCalcEngine:(id)engine baseRangeRef:(const void *)ref preserveFlags:(unsigned __int8)flags
 {
-  v5 = a5;
-  v8 = a3;
+  flagsCopy = flags;
+  engineCopy = engine;
   v14.receiver = self;
   v14.super_class = TSTUIDRectRef;
   v9 = [(TSTUIDRectRef *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_calcEngine, v8);
-    objc_msgSend_setBaseRangeRef_preserveFlags_(v10, v11, a4, v5, v12);
+    objc_storeWeak(&v9->_calcEngine, engineCopy);
+    objc_msgSend_setBaseRangeRef_preserveFlags_(v10, v11, ref, flagsCopy, v12);
   }
 
   return v10;
 }
 
-- (TSTUIDRectRef)initWithCalcEngine:(id)a3 tableUID:(const TSKUIDStruct *)a4 uidRange:(const void *)a5 preserveFlags:(unsigned __int8)a6
+- (TSTUIDRectRef)initWithCalcEngine:(id)engine tableUID:(const TSKUIDStruct *)d uidRange:(const void *)range preserveFlags:(unsigned __int8)flags
 {
-  v10 = a3;
+  engineCopy = engine;
   v19.receiver = self;
   v19.super_class = TSTUIDRectRef;
   v11 = [(TSTUIDRectRef *)&v19 init];
@@ -165,15 +165,15 @@
   v13 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_calcEngine, v10);
-    v13->_tableUID = *a4;
-    if (&v12->_uidRange != a5)
+    objc_storeWeak(&v11->_calcEngine, engineCopy);
+    v13->_tableUID = *d;
+    if (&v12->_uidRange != range)
     {
-      sub_2210BD068(&v12->_uidRange._colIdList.__begin_, *a5, *(a5 + 1), (*(a5 + 1) - *a5) >> 4);
-      sub_2210BD068(&v12->_uidRange._rowIdList.__begin_, *(a5 + 3), *(a5 + 4), (*(a5 + 4) - *(a5 + 3)) >> 4);
+      sub_2210BD068(&v12->_uidRange._colIdList.__begin_, *range, *(range + 1), (*(range + 1) - *range) >> 4);
+      sub_2210BD068(&v12->_uidRange._rowIdList.__begin_, *(range + 3), *(range + 4), (*(range + 4) - *(range + 3)) >> 4);
     }
 
-    v13->_basePreserveFlags = a6;
+    v13->_basePreserveFlags = flags;
     objc_msgSend_convertUIDRefToViewTractRef(v13, v14, v15, v16, v17);
   }
 
@@ -238,9 +238,9 @@
   return v22;
 }
 
-- (void)setCalcEngine:(id)a3
+- (void)setCalcEngine:(id)engine
 {
-  objc_storeWeak(&self->_calcEngine, a3);
+  objc_storeWeak(&self->_calcEngine, engine);
   if (self->_needsUidRectUpgrade)
   {
     v12 = objc_msgSend_tableInfo(self, v4, v5, v6, v7);
@@ -263,7 +263,7 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (self->_viewUidMapper && self->_lastKnownTractRef)
   {
@@ -538,13 +538,13 @@ LABEL_23:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (self->_tableUID._lower != objc_msgSend_tableUID(v5, v6, v7, v8, v9))
     {
       goto LABEL_13;
@@ -803,32 +803,32 @@ LABEL_15:
   return basePreserveFlags;
 }
 
-- (void)setViewPreserveFlags:(unsigned __int8)a3
+- (void)setViewPreserveFlags:(unsigned __int8)flags
 {
-  v5 = a3;
-  v10._flags = a3;
-  if (objc_msgSend_baseToViewPreserveFlagsAreInverted(self, a2, a3, v3, v4))
+  flagsCopy = flags;
+  v10._flags = flags;
+  if (objc_msgSend_baseToViewPreserveFlagsAreInverted(self, a2, flags, v3, v4))
   {
-    v5 = TSUPreserveFlags::swapRowFlags(&v10);
-    v10._flags = v5;
+    flagsCopy = TSUPreserveFlags::swapRowFlags(&v10);
+    v10._flags = flagsCopy;
   }
 
-  self->_basePreserveFlags = v5;
-  objc_msgSend_setPreserveFlags_(self->_lastKnownTractRef, v7, v5, v8, v9);
+  self->_basePreserveFlags = flagsCopy;
+  objc_msgSend_setPreserveFlags_(self->_lastKnownTractRef, v7, flagsCopy, v8, v9);
 }
 
-- (void)setViewRangeRef:(const void *)a3 preserveFlags:(unsigned __int8)a4
+- (void)setViewRangeRef:(const void *)ref preserveFlags:(unsigned __int8)flags
 {
-  v4 = a4;
-  self->_tableUID = *(a3 + 1);
+  flagsCopy = flags;
+  self->_tableUID = *(ref + 1);
   viewUidMapper = self->_viewUidMapper;
   self->_viewUidMapper = 0;
 
-  v13 = *a3;
-  v12 = *(a3 + 1);
-  v14 = *a3 & 0xFFFF00000000;
+  v13 = *ref;
+  v12 = *(ref + 1);
+  v14 = *ref & 0xFFFF00000000;
   v15 = v12 & 0xFFFF00000000;
-  v16 = *a3;
+  v16 = *ref;
   if (v16 != 0x7FFFFFFF && v14 == 0x7FFF00000000 && v15 == 0x7FFF00000000)
   {
     if (v12 != 0x7FFFFFFF)
@@ -860,14 +860,14 @@ LABEL_15:
 
   v30 = objc_msgSend_grabViewUidMapper(self, v8, v9, v10, v11);
   v31 = [TSCECellTractRef alloc];
-  v35 = objc_msgSend_initWithRangeRef_(v31, v32, a3, v33, v34);
+  v35 = objc_msgSend_initWithRangeRef_(v31, v32, ref, v33, v34);
   lastKnownTractRef = self->_lastKnownTractRef;
   self->_lastKnownTractRef = v35;
 
-  objc_msgSend_setPreserveFlags_(self->_lastKnownTractRef, v37, v4, v38, v39);
+  objc_msgSend_setPreserveFlags_(self->_lastKnownTractRef, v37, flagsCopy, v38, v39);
   self->_lastKnownTractRefIsBase = 0;
 
-  objc_msgSend_setViewPreserveFlags_(self, v40, v4, v41, v42);
+  objc_msgSend_setViewPreserveFlags_(self, v40, flagsCopy, v41, v42);
 }
 
 - (RefTypeHolder<TSCERangeRef,)chromeRangeRef
@@ -891,18 +891,18 @@ LABEL_15:
   return result;
 }
 
-- (void)setChromeRangeRef:(const void *)a3 preserveFlags:(unsigned __int8)a4
+- (void)setChromeRangeRef:(const void *)ref preserveFlags:(unsigned __int8)flags
 {
-  v4 = a4;
+  flagsCopy = flags;
   viewUidMapper = self->_viewUidMapper;
   self->_viewUidMapper = 0;
 
-  self->_tableUID = *(a3 + 1);
-  v13 = *a3;
-  v12 = *(a3 + 1);
-  v14 = *a3 & 0xFFFF00000000;
+  self->_tableUID = *(ref + 1);
+  v13 = *ref;
+  v12 = *(ref + 1);
+  v14 = *ref & 0xFFFF00000000;
   v15 = v12 & 0xFFFF00000000;
-  v16 = *a3;
+  v16 = *ref;
   if (v16 != 0x7FFFFFFF && v14 == 0x7FFF00000000 && v15 == 0x7FFF00000000)
   {
     if (v12 != 0x7FFFFFFF)
@@ -948,21 +948,21 @@ LABEL_15:
   v87 = objc_msgSend_coordinateMapper(v54, v55, v56, v57, v58);
 
   v59 = [TSCECellTractRef alloc];
-  v63 = objc_msgSend_initWithRangeRef_(v59, v60, a3, v61, v62);
-  objc_msgSend_setPreserveFlags_(v63, v64, v4, v65, v66);
+  v63 = objc_msgSend_initWithRangeRef_(v59, v60, ref, v61, v62);
+  objc_msgSend_setPreserveFlags_(v63, v64, flagsCopy, v65, v66);
   v70 = objc_msgSend_viewTractRefForChromeTractRef_(v87, v67, v63, v68, v69);
   lastKnownTractRef = self->_lastKnownTractRef;
   self->_lastKnownTractRef = v70;
 
   self->_lastKnownTractRefIsBase = 0;
-  objc_msgSend_setViewPreserveFlags_(self, v72, v4, v73, v74);
+  objc_msgSend_setViewPreserveFlags_(self, v72, flagsCopy, v73, v74);
 }
 
-- (void)setBaseRangeRef:(const void *)a3 preserveFlags:(unsigned __int8)a4
+- (void)setBaseRangeRef:(const void *)ref preserveFlags:(unsigned __int8)flags
 {
-  v4 = a4;
-  self->_basePreserveFlags = a4;
-  self->_tableUID = *(a3 + 1);
+  flagsCopy = flags;
+  self->_basePreserveFlags = flags;
+  self->_tableUID = *(ref + 1);
   viewUidMapper = self->_viewUidMapper;
   self->_viewUidMapper = 0;
 
@@ -971,10 +971,10 @@ LABEL_15:
 
   if (v17)
   {
-    v22 = *(a3 + 1);
-    v23 = *a3 & 0xFFFF00000000;
+    v22 = *(ref + 1);
+    v23 = *ref & 0xFFFF00000000;
     v24 = v22 & 0xFFFF00000000;
-    v25 = *a3;
+    v25 = *ref;
     if (v25 != 0x7FFFFFFF && v23 == 0x7FFF00000000 && v24 == 0x7FFF00000000)
     {
       if (v22 != 0x7FFFFFFF)
@@ -994,8 +994,8 @@ LABEL_15:
     v52 = objc_msgSend_coordinateMapper(v47, v48, v49, v50, v51);
 
     v53 = [TSCECellTractRef alloc];
-    v57 = objc_msgSend_initWithRangeRef_(v53, v54, a3, v55, v56);
-    objc_msgSend_setPreserveFlags_(v57, v58, v4, v59, v60);
+    v57 = objc_msgSend_initWithRangeRef_(v53, v54, ref, v55, v56);
+    objc_msgSend_setPreserveFlags_(v57, v58, flagsCopy, v59, v60);
     v64 = objc_msgSend_viewTractRefForBaseTractRef_(v52, v61, v57, v62, v63);
     lastKnownTractRef = self->_lastKnownTractRef;
     self->_lastKnownTractRef = v64;
@@ -1004,8 +1004,8 @@ LABEL_15:
   else
   {
     v28 = [TSCECellTractRef alloc];
-    v32 = objc_msgSend_initWithRangeRef_(v28, v29, a3, v30, v31);
-    objc_msgSend_setPreserveFlags_(v32, v33, v4, v34, v35);
+    v32 = objc_msgSend_initWithRangeRef_(v28, v29, ref, v30, v31);
+    objc_msgSend_setPreserveFlags_(v32, v33, flagsCopy, v34, v35);
     v36 = self->_lastKnownTractRef;
     self->_lastKnownTractRef = v32;
 
@@ -1799,10 +1799,10 @@ LABEL_18:
   return (v14 | v15 | v5);
 }
 
-- (id)viewCellRegionWithRangeContext:(unsigned __int8)a3
+- (id)viewCellRegionWithRangeContext:(unsigned __int8)context
 {
-  v5 = a3;
-  v7 = objc_msgSend_tableInfo(self, a2, a3, v3, v4);
+  contextCopy = context;
+  v7 = objc_msgSend_tableInfo(self, a2, context, v3, v4);
   v12 = objc_msgSend_baseTableModel(v7, v8, v9, v10, v11);
   if ((objc_msgSend_spansAllRows(self, v13, v14, v15, v16) & 1) != 0 || objc_msgSend_spansAllColumns(self, v17, v18, v19, v20))
   {
@@ -1822,7 +1822,7 @@ LABEL_18:
     {
       do
       {
-        v44 = sub_221387DDC(*v43, v43[1], v5, v21, v23, v27, v29, v42);
+        v44 = sub_221387DDC(*v43, v43[1], contextCopy, v21, v23, v27, v29, v42);
         v47 = objc_msgSend_regionByAddingRange_(v33, v45, v44, v45, v46);
 
         v43 += 4;
@@ -1978,10 +1978,10 @@ LABEL_12:
   return v8;
 }
 
-- (id)uidTractListWithPurpose:(unsigned __int8)a3
+- (id)uidTractListWithPurpose:(unsigned __int8)purpose
 {
-  v5 = a3;
-  if (objc_msgSend_isValid(self, a2, a3, v3, v4))
+  purposeCopy = purpose;
+  if (objc_msgSend_isValid(self, a2, purpose, v3, v4))
   {
     objc_msgSend_uidRange(self, v7, v8, v9, v10);
     if (__p)
@@ -2000,7 +2000,7 @@ LABEL_12:
     v12 = [TSCEUndoTract alloc];
     objc_msgSend_uidRange(self, v13, v14, v15, v16);
     objc_msgSend_uidRange(self, v17, v18, v19, v20);
-    v25 = objc_msgSend_initWithColumnUids_rowUids_purpose_(v12, v21, v32, v31, v5);
+    v25 = objc_msgSend_initWithColumnUids_rowUids_purpose_(v12, v21, v32, v31, purposeCopy);
     if (v31[0])
     {
       v31[1] = v31[0];

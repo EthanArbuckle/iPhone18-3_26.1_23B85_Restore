@@ -15,8 +15,8 @@
 
 - (id)ea_timestampSubtitleForNow
 {
-  v2 = [MEMORY[0x277CBEAA8] date];
-  v3 = [a1 ea_timestampSubtitleForDate:v2 locale:0];
+  date = [MEMORY[0x277CBEAA8] date];
+  v3 = [self ea_timestampSubtitleForDate:date locale:0];
 
   return v3;
 }
@@ -41,13 +41,13 @@
   v6 = a4;
   if (v6 && [v5 length])
   {
-    v7 = [v5 lastPathComponent];
-    v8 = [v7 stringByDeletingPathExtension];
+    lastPathComponent = [v5 lastPathComponent];
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-    v9 = [v5 lastPathComponent];
-    v10 = [v9 pathExtension];
+    lastPathComponent2 = [v5 lastPathComponent];
+    pathExtension = [lastPathComponent2 pathExtension];
 
-    v11 = [v6 URLForResource:v8 withExtension:v10];
+    v11 = [v6 URLForResource:stringByDeletingPathExtension withExtension:pathExtension];
   }
 
   else
@@ -64,13 +64,13 @@
   v6 = a4;
   if (v6 && [v5 length])
   {
-    v7 = [v5 lastPathComponent];
-    v8 = [v7 stringByDeletingPathExtension];
+    lastPathComponent = [v5 lastPathComponent];
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-    v9 = [v5 lastPathComponent];
-    v10 = [v9 pathExtension];
+    lastPathComponent2 = [v5 lastPathComponent];
+    pathExtension = [lastPathComponent2 pathExtension];
 
-    v11 = [v6 URLForResource:v8 withExtension:v10];
+    v11 = [v6 URLForResource:stringByDeletingPathExtension withExtension:pathExtension];
   }
 
   else
@@ -108,31 +108,31 @@ LABEL_6:
 - (void)ea_updateAlertCategory:()EmergencyAlerts
 {
   v11 = *MEMORY[0x277D85DE8];
-  v2 = [a1 categoryIdentifier];
-  if ([v2 isEqualToString:@"alert-configurable"] & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", @"alert-configurable-spinner"))
+  categoryIdentifier = [self categoryIdentifier];
+  if ([categoryIdentifier isEqualToString:@"alert-configurable"] & 1) != 0 || (objc_msgSend(categoryIdentifier, "isEqualToString:", @"alert-configurable-spinner"))
   {
     v3 = EACategoryIdentifierConfigurableAlertDetailed;
 LABEL_4:
-    [a1 setCategoryIdentifier:*v3];
+    [self setCategoryIdentifier:*v3];
     goto LABEL_5;
   }
 
-  if ([v2 isEqualToString:@"alert"] & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", @"alert-spinner"))
+  if ([categoryIdentifier isEqualToString:@"alert"] & 1) != 0 || (objc_msgSend(categoryIdentifier, "isEqualToString:", @"alert-spinner"))
   {
     v3 = EACategoryIdentifierAlertDetailed;
     goto LABEL_4;
   }
 
-  if ([v2 isEqualToString:@"igneous"])
+  if ([categoryIdentifier isEqualToString:@"igneous"])
   {
 LABEL_5:
     v4 = EALogDefault;
     if (os_log_type_enabled(EALogDefault, OS_LOG_TYPE_DEFAULT))
     {
       v5 = v4;
-      v6 = [a1 categoryIdentifier];
+      categoryIdentifier2 = [self categoryIdentifier];
       v9 = 138412290;
-      v10 = v6;
+      v10 = categoryIdentifier2;
       _os_log_impl(&dword_249FC1000, v5, OS_LOG_TYPE_DEFAULT, "Alert Category updated: %@", &v9, 0xCu);
     }
 
@@ -142,7 +142,7 @@ LABEL_5:
   v8 = EALogDefault;
   if (os_log_type_enabled(EALogDefault, OS_LOG_TYPE_ERROR))
   {
-    [(UNMutableNotificationContent(EmergencyAlerts) *)v8 ea_updateAlertCategory:a1];
+    [(UNMutableNotificationContent(EmergencyAlerts) *)v8 ea_updateAlertCategory:self];
   }
 
 LABEL_7:
@@ -156,7 +156,7 @@ LABEL_7:
   v4 = a3;
   v5 = [v4 objectForKey:*MEMORY[0x277CC4100]];
   v6 = [v5 objectForKey:@"UserConfigurable"];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
   v8 = [v5 objectForKey:@"SwitchName"];
   v9 = v8;
@@ -171,7 +171,7 @@ LABEL_7:
         _os_log_impl(&dword_249FC1000, v10, OS_LOG_TYPE_DEFAULT, "Overriding user configurable category to NO", &v21, 2u);
       }
 
-      [a1 setCategoryIdentifier:@"igneous"];
+      [self setCategoryIdentifier:@"igneous"];
       goto LABEL_20;
     }
   }
@@ -186,12 +186,12 @@ LABEL_7:
   if (v11)
   {
     v12 = EACategoryIdentifierConfigurableAlertDetailed;
-    if (!v7)
+    if (!bOOLValue)
     {
       v12 = EACategoryIdentifierAlertDetailed;
     }
 
-    [a1 setCategoryIdentifier:*v12];
+    [self setCategoryIdentifier:*v12];
     v13 = [v4 objectForKey:*MEMORY[0x277CC4120]];
     ea_sendSafetyAlertTapIndication(v13, 1);
   }
@@ -212,21 +212,21 @@ LABEL_7:
       v16 = EACategoryIdentifierAlert;
     }
 
-    if (!v7)
+    if (!bOOLValue)
     {
       v15 = v16;
     }
 
-    [a1 setCategoryIdentifier:*v15];
+    [self setCategoryIdentifier:*v15];
   }
 
   v17 = EALogDefault;
   if (os_log_type_enabled(EALogDefault, OS_LOG_TYPE_DEFAULT))
   {
     v18 = v17;
-    v19 = [a1 categoryIdentifier];
+    categoryIdentifier = [self categoryIdentifier];
     v21 = 138412290;
-    v22 = v19;
+    v22 = categoryIdentifier;
     _os_log_impl(&dword_249FC1000, v18, OS_LOG_TYPE_DEFAULT, "Alert Category: %@", &v21, 0xCu);
   }
 
@@ -353,7 +353,7 @@ LABEL_18:
     }
   }
 
-  [a1 setUserInfo:v6];
+  [self setUserInfo:v6];
 }
 
 - (void)ea_setPropertiesForCellBroadcastMessage:()EmergencyAlerts withActivePhoneCall:
@@ -370,7 +370,7 @@ LABEL_18:
   v7 = [v5 objectForKey:*MEMORY[0x277CC4138]];
   v8 = [v5 objectForKey:*MEMORY[0x277CC4140]];
   v9 = [v5 objectForKey:*MEMORY[0x277CC4120]];
-  v10 = [a1 ea_getUpdatedBodyString:v9 withMessageDictionary:v5];
+  v10 = [self ea_getUpdatedBodyString:v9 withMessageDictionary:v5];
 
   if (v7)
   {
@@ -397,26 +397,26 @@ LABEL_18:
   }
 
   v14 = [v5 objectForKey:*MEMORY[0x277CC4118]];
-  v80 = [v14 BOOLValue];
+  bOOLValue = [v14 BOOLValue];
 
   v15 = [v5 objectForKey:*MEMORY[0x277CC4108]];
   v99 = [v5 objectForKey:*MEMORY[0x277CC40F0]];
   v16 = [v5 objectForKey:*MEMORY[0x277CC4100]];
   v17 = [v16 objectForKey:@"SoundIsMutableInDND"];
-  v101 = [v17 BOOLValue];
+  bOOLValue2 = [v17 BOOLValue];
 
   v18 = [v16 objectForKey:@"SoundAlertDeviceInMute"];
-  v79 = [v18 BOOLValue];
+  bOOLValue3 = [v18 BOOLValue];
 
   v19 = [v16 objectForKey:@"ShowTimestamp"];
-  v20 = [v19 BOOLValue];
+  bOOLValue4 = [v19 BOOLValue];
 
   v91 = [v16 objectForKey:@"SoundAlertPeriod"];
   v98 = v16;
   v21 = [v16 objectForKey:@"NotificationTitle"];
   v22 = [v5 objectForKey:*MEMORY[0x277CC40F8]];
   v23 = [v22 objectForKey:@"PlaySoundUntilAcknowledged"];
-  v81 = [v23 BOOLValue];
+  bOOLValue5 = [v23 BOOLValue];
 
   v24 = [v5 objectForKey:*MEMORY[0x277CC4130]];
   v87 = v24;
@@ -449,36 +449,36 @@ LABEL_18:
 
   v88 = v22;
   v28 = [v22 objectForKey:@"AllowCallAudioInterruption"];
-  v29 = [v28 BOOLValue];
+  bOOLValue6 = [v28 BOOLValue];
 
   if (![v21 length])
   {
-    v30 = [a1 ea_defaultTitle];
+    ea_defaultTitle = [self ea_defaultTitle];
 
-    v21 = v30;
+    v21 = ea_defaultTitle;
   }
 
-  v82 = v29;
+  v82 = bOOLValue6;
   v96 = v5;
   v94 = v21;
-  if (v20)
+  if (bOOLValue4)
   {
-    v31 = [a1 ea_timestampSubtitleForNow];
+    ea_timestampSubtitleForNow = [self ea_timestampSubtitleForNow];
   }
 
   else
   {
-    v31 = &stru_285D24188;
+    ea_timestampSubtitleForNow = &stru_285D24188;
   }
 
-  v32 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
   v33 = v10;
   v34 = v33;
   if ([v33 length])
   {
     for (i = 0; i < [v33 length]; ++i)
     {
-      if (![v32 characterIsMember:{objc_msgSend(v33, "characterAtIndex:", i)}])
+      if (![whitespaceAndNewlineCharacterSet characterIsMember:{objc_msgSend(v33, "characterAtIndex:", i)}])
       {
         break;
       }
@@ -506,7 +506,7 @@ LABEL_18:
         break;
       }
 
-      v39 = [v32 characterIsMember:{objc_msgSend(v34, "characterAtIndex:", v37)}];
+      v39 = [whitespaceAndNewlineCharacterSet characterIsMember:{objc_msgSend(v34, "characterAtIndex:", v37)}];
       v37 = v38 - 1;
     }
 
@@ -535,12 +535,12 @@ LABEL_18:
     }
   }
 
-  [a1 setTitle:v94];
-  [a1 setSubtitle:v31];
-  [a1 setBody:v34];
-  [a1 setShouldIgnoreDoNotDisturb:v101 ^ 1u];
-  [a1 setShouldSuppressDefaultAction:1];
-  [a1 setShouldPreemptPresentedNotification:1];
+  [self setTitle:v94];
+  [self setSubtitle:ea_timestampSubtitleForNow];
+  [self setBody:v34];
+  [self setShouldIgnoreDoNotDisturb:bOOLValue2 ^ 1u];
+  [self setShouldSuppressDefaultAction:1];
+  [self setShouldPreemptPresentedNotification:1];
   if (v99)
   {
     v43 = EALogDefault;
@@ -551,14 +551,14 @@ LABEL_18:
       _os_log_impl(&dword_249FC1000, v43, OS_LOG_TYPE_DEFAULT, "Setting speech language to: %@", buf, 0xCu);
     }
 
-    [a1 setSpeechLanguage:v99];
+    [self setSpeechLanguage:v99];
   }
 
-  v85 = v31;
+  v85 = ea_timestampSubtitleForNow;
   v95 = v15;
-  v44 = [a1 ea_bundleForBundleIdentifier:v15];
-  v45 = [a1 ea_externalToneFileURLForTone:v100 inBundle:v44];
-  v102 = [MEMORY[0x277CBEB38] dictionary];
+  v44 = [self ea_bundleForBundleIdentifier:v15];
+  v45 = [self ea_externalToneFileURLForTone:v100 inBundle:v44];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v93 = v45;
   if (!v27)
   {
@@ -580,21 +580,21 @@ LABEL_18:
   if (v49)
   {
     v50 = [v98 objectForKey:@"AlwaysDeliverPref"];
-    v51 = [v50 BOOLValue];
+    bOOLValue7 = [v50 BOOLValue];
   }
 
   else
   {
-    v51 = v80 | v81 | v79;
+    bOOLValue7 = bOOLValue | bOOLValue5 | bOOLValue3;
   }
 
-  [v47 setShouldIgnoreRingerSwitch:v51 & 1];
+  [v47 setShouldIgnoreRingerSwitch:bOOLValue7 & 1];
   v55 = EALogDefault;
   v53 = v97;
   if (os_log_type_enabled(EALogDefault, OS_LOG_TYPE_DEFAULT))
   {
     v56 = @"NO";
-    if (v51)
+    if (bOOLValue7)
     {
       v56 = @"YES";
     }
@@ -604,7 +604,7 @@ LABEL_18:
     _os_log_impl(&dword_249FC1000, v55, OS_LOG_TYPE_DEFAULT, "Always Deliver: %@", buf, 0xCu);
   }
 
-  if (v81)
+  if (bOOLValue5)
   {
     [v47 setShouldRepeat:1];
     v57 = v100;
@@ -661,13 +661,13 @@ LABEL_63:
   if (os_log_type_enabled(EALogDefault, OS_LOG_TYPE_DEFAULT))
   {
     v61 = v60;
-    v62 = [v52 shouldIgnoreAccessibilityDisabledVibrationSetting];
+    shouldIgnoreAccessibilityDisabledVibrationSetting = [v52 shouldIgnoreAccessibilityDisabledVibrationSetting];
     *buf = 67109120;
-    *v104 = v62;
+    *v104 = shouldIgnoreAccessibilityDisabledVibrationSetting;
     _os_log_impl(&dword_249FC1000, v61, OS_LOG_TYPE_DEFAULT, "Setting alert override-accessibility-vibration: %{BOOL}d", buf, 8u);
   }
 
-  v63 = [a1 ea_externalVibrationPatternFileURLForVibration:v53 inBundle:v44];
+  v63 = [self ea_externalVibrationPatternFileURLForVibration:v53 inBundle:v44];
   v83 = v44;
   if (v63)
   {
@@ -683,18 +683,18 @@ LABEL_63:
   if (os_log_type_enabled(EALogDefault, OS_LOG_TYPE_DEFAULT))
   {
     v65 = v64;
-    v66 = [v52 shouldIgnoreRingerSwitch];
-    v67 = a1;
-    v68 = [v52 shouldRepeat];
+    shouldIgnoreRingerSwitch = [v52 shouldIgnoreRingerSwitch];
+    selfCopy = self;
+    shouldRepeat = [v52 shouldRepeat];
     v69 = MEMORY[0x277CCABB0];
     [v52 maximumDuration];
     v70 = [v69 numberWithDouble:?];
     *buf = 67109890;
-    *v104 = v66;
+    *v104 = shouldIgnoreRingerSwitch;
     v45 = v93;
     *&v104[4] = 1024;
-    *&v104[6] = v68;
-    a1 = v67;
+    *&v104[6] = shouldRepeat;
+    self = selfCopy;
     v105 = 2114;
     v106 = v70;
     v107 = 1024;
@@ -704,51 +704,51 @@ LABEL_63:
     v53 = v97;
   }
 
-  v71 = a1;
-  [a1 setSound:v52];
-  [v102 setObject:MEMORY[0x277CBEC38] forKey:@"FromPhone"];
+  selfCopy2 = self;
+  [self setSound:v52];
+  [dictionary setObject:MEMORY[0x277CBEC38] forKey:@"FromPhone"];
   v72 = [v98 objectForKey:@"SoundIsMutableInRelayMode"];
   if (v72)
   {
-    [v102 setObject:v72 forKey:@"SoundIsMutableInRelayMode"];
+    [dictionary setObject:v72 forKey:@"SoundIsMutableInRelayMode"];
   }
 
   if (v95)
   {
-    [v102 setObject:v95 forKey:@"carrierBundleIdentifier"];
+    [dictionary setObject:v95 forKey:@"carrierBundleIdentifier"];
   }
 
-  v73 = [v45 path];
+  path = [v45 path];
   v74 = v45;
-  v75 = v73;
+  v75 = path;
   if (v74)
   {
-    [v102 setObject:v73 forKey:@"externalToneFileURL"];
+    [dictionary setObject:path forKey:@"externalToneFileURL"];
   }
 
   if (v100)
   {
-    [v102 setObject:v100 forKey:@"externalToneFileName"];
+    [dictionary setObject:v100 forKey:@"externalToneFileName"];
   }
 
-  v76 = [v63 path];
-  if (v76)
+  path2 = [v63 path];
+  if (path2)
   {
-    [v102 setObject:v76 forKey:@"externalVibrationPatternFileURL"];
+    [dictionary setObject:path2 forKey:@"externalVibrationPatternFileURL"];
   }
 
   if (v53)
   {
-    [v102 setObject:v53 forKey:@"externalVibrationPatternFileName"];
+    [dictionary setObject:v53 forKey:@"externalVibrationPatternFileName"];
   }
 
-  [v71 ea_updateUserInfo:v102 withMessageDictionary:v96];
-  [v71 ea_setAlertCategory:v96];
+  [selfCopy2 ea_updateUserInfo:dictionary withMessageDictionary:v96];
+  [selfCopy2 ea_setAlertCategory:v96];
   v77 = EALogDefault;
   if (os_log_type_enabled(EALogDefault, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    *v104 = v102;
+    *v104 = dictionary;
     _os_log_impl(&dword_249FC1000, v77, OS_LOG_TYPE_DEFAULT, "UserInfo dict: %@", buf, 0xCu);
   }
 

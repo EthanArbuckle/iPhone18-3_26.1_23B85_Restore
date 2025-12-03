@@ -1,17 +1,17 @@
 @interface SIOrderedEventInternal
-+ (id)deserializeFrom:(id)a3;
-- (BOOL)readFrom:(id)a3;
++ (id)deserializeFrom:(id)from;
+- (BOOL)readFrom:(id)from;
 - (SIComponentIdentifier)clusterId;
 - (SILogicalTimestampInternal)logicalTimestamp;
-- (SIOrderedEventInternal)initWithData:(id)a3;
-- (SIOrderedEventInternal)initWithLogicalTimestamp:(id)a3 messageUUID:(id)a4 tluEvent:(id)a5;
-- (SIOrderedEventInternal)initWithLogicalTimestamp:(id)a3 tluEvent:(id)a4;
+- (SIOrderedEventInternal)initWithData:(id)data;
+- (SIOrderedEventInternal)initWithLogicalTimestamp:(id)timestamp messageUUID:(id)d tluEvent:(id)event;
+- (SIOrderedEventInternal)initWithLogicalTimestamp:(id)timestamp tluEvent:(id)event;
 - (SISchemaTopLevelUnionType)tluEvent;
-- (id)copyWithZone:(void *)a3;
-- (void)setClusterId:(id)a3;
-- (void)setLogicalTimestamp:(id)a3;
-- (void)setTluEvent:(id)a3;
-- (void)writeTo:(id)a3;
+- (id)copyWithZone:(void *)zone;
+- (void)setClusterId:(id)id;
+- (void)setLogicalTimestamp:(id)timestamp;
+- (void)setTluEvent:(id)event;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIOrderedEventInternal
@@ -23,11 +23,11 @@
   return v2;
 }
 
-- (void)setLogicalTimestamp:(id)a3
+- (void)setLogicalTimestamp:(id)timestamp
 {
-  v5 = a3;
-  v6 = self;
-  sub_1A9CB0F14(a3);
+  timestampCopy = timestamp;
+  selfCopy = self;
+  sub_1A9CB0F14(timestamp);
 }
 
 - (SISchemaTopLevelUnionType)tluEvent
@@ -37,11 +37,11 @@
   return v2;
 }
 
-- (void)setTluEvent:(id)a3
+- (void)setTluEvent:(id)event
 {
-  v5 = a3;
-  v6 = self;
-  sub_1A9CB106C(a3);
+  eventCopy = event;
+  selfCopy = self;
+  sub_1A9CB106C(event);
 }
 
 - (SIComponentIdentifier)clusterId
@@ -51,30 +51,30 @@
   return v2;
 }
 
-- (void)setClusterId:(id)a3
+- (void)setClusterId:(id)id
 {
-  v5 = a3;
-  v6 = self;
-  sub_1A9CB120C(a3);
+  idCopy = id;
+  selfCopy = self;
+  sub_1A9CB120C(id);
 }
 
-- (SIOrderedEventInternal)initWithData:(id)a3
+- (SIOrderedEventInternal)initWithData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v3 = a3;
+    dataCopy = data;
     sub_1AA651884();
   }
 
   return OrderedEvent.init(data:)();
 }
 
-- (SIOrderedEventInternal)initWithLogicalTimestamp:(id)a3 messageUUID:(id)a4 tluEvent:(id)a5
+- (SIOrderedEventInternal)initWithLogicalTimestamp:(id)timestamp messageUUID:(id)d tluEvent:(id)event
 {
   v8 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB4004E0);
   MEMORY[0x1EEE9AC00](v8 - 8);
   v10 = &v14 - v9;
-  if (a4)
+  if (d)
   {
     sub_1AA651914();
     v11 = sub_1AA651944();
@@ -88,36 +88,36 @@
   }
 
   __swift_storeEnumTagSinglePayload(v10, v12, 1, v11);
-  return OrderedEvent.init(logicalTimestamp:messageUUID:tluEvent:)(a3, v10, a5);
+  return OrderedEvent.init(logicalTimestamp:messageUUID:tluEvent:)(timestamp, v10, event);
 }
 
-- (SIOrderedEventInternal)initWithLogicalTimestamp:(id)a3 tluEvent:(id)a4
+- (SIOrderedEventInternal)initWithLogicalTimestamp:(id)timestamp tluEvent:(id)event
 {
-  v5 = a3;
-  v6 = a4;
+  timestampCopy = timestamp;
+  eventCopy = event;
   return OrderedEvent.init(logicalTimestamp:tluEvent:)();
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A9CB3474(v4);
+  toCopy = to;
+  selfCopy = self;
+  sub_1A9CB3474(toCopy);
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v3 = a3;
-  v5 = a3;
-  v6 = self;
-  LOBYTE(v3) = sub_1A9CB3A6C(v3);
+  fromCopy = from;
+  fromCopy2 = from;
+  selfCopy = self;
+  LOBYTE(fromCopy) = sub_1A9CB3A6C(fromCopy);
 
-  return v3 & 1;
+  return fromCopy & 1;
 }
 
-+ (id)deserializeFrom:(id)a3
++ (id)deserializeFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = sub_1AA651884();
   v6 = v5;
 
@@ -128,9 +128,9 @@
   return v7;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   OrderedEvent.copy(with:)(v6);
 
   __swift_project_boxed_opaque_existential_1(v6, v6[3]);

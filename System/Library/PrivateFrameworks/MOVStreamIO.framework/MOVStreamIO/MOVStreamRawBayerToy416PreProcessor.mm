@@ -1,69 +1,69 @@
 @interface MOVStreamRawBayerToy416PreProcessor
-- (__CVBuffer)processedPixelBufferCopyOf:(__CVBuffer *)a3 streamData:(StreamRecordingData *)a4 error:(id *)a5;
-- (opaqueCMFormatDescription)createTrackFormatDescriptionFromStreamData:(StreamRecordingData *)a3;
-- (opaqueCMFormatDescription)formatDescriptionForPixelBuffer:(__CVBuffer *)a3 streamData:(StreamRecordingData *)a4;
+- (__CVBuffer)processedPixelBufferCopyOf:(__CVBuffer *)of streamData:(StreamRecordingData *)data error:(id *)error;
+- (opaqueCMFormatDescription)createTrackFormatDescriptionFromStreamData:(StreamRecordingData *)data;
+- (opaqueCMFormatDescription)formatDescriptionForPixelBuffer:(__CVBuffer *)buffer streamData:(StreamRecordingData *)data;
 @end
 
 @implementation MOVStreamRawBayerToy416PreProcessor
 
-- (opaqueCMFormatDescription)formatDescriptionForPixelBuffer:(__CVBuffer *)a3 streamData:(StreamRecordingData *)a4
+- (opaqueCMFormatDescription)formatDescriptionForPixelBuffer:(__CVBuffer *)buffer streamData:(StreamRecordingData *)data
 {
-  result = a4->var0;
-  if (!a4->var1)
+  result = data->var0;
+  if (!data->var1)
   {
     if (result)
     {
       CFRelease(result);
     }
 
-    result = [MOVStreamIOUtility formatForPixelBuffer:a3];
-    a4->var0 = result;
-    a4->var1 = 1;
+    result = [MOVStreamIOUtility formatForPixelBuffer:buffer];
+    data->var0 = result;
+    data->var1 = 1;
   }
 
   return result;
 }
 
-- (__CVBuffer)processedPixelBufferCopyOf:(__CVBuffer *)a3 streamData:(StreamRecordingData *)a4 error:(id *)a5
+- (__CVBuffer)processedPixelBufferCopyOf:(__CVBuffer *)of streamData:(StreamRecordingData *)data error:(id *)error
 {
-  p_var12 = &a4->var12;
-  v9 = a4->var12;
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  p_var12 = &data->var12;
+  v9 = data->var12;
+  Width = CVPixelBufferGetWidth(of);
+  Height = CVPixelBufferGetHeight(of);
   if (v9)
   {
     goto LABEL_4;
   }
 
-  v12 = [MIOPixelBufferPool createMIOPixelBufferPoolWithWidth:Width height:Height pixelFormat:2033463606 extendedPixelsPerRow:0 minBufferCount:10 bufferCacheMode:a4->var22];
+  v12 = [MIOPixelBufferPool createMIOPixelBufferPoolWithWidth:Width height:Height pixelFormat:2033463606 extendedPixelsPerRow:0 minBufferCount:10 bufferCacheMode:data->var22];
   if (v12)
   {
     objc_storeStrong(p_var12, v12);
     v9 = v12;
 LABEL_4:
-    v13 = [v9 getPixelBuffer];
-    [MIOPixelBufferUtility copyMonochromeBuffer:a3 toAlphaChannelOfBuffer:v13];
+    getPixelBuffer = [v9 getPixelBuffer];
+    [MIOPixelBufferUtility copyMonochromeBuffer:of toAlphaChannelOfBuffer:getPixelBuffer];
     goto LABEL_5;
   }
 
   v15 = [MEMORY[0x277CCA9B8] streamErrorWithMessage:@"Cannot create pixel buffer pool for RawBayer stream." code:19];
-  if (a5)
+  if (error)
   {
     v15 = v15;
-    *a5 = v15;
+    *error = v15;
   }
 
   v9 = 0;
-  v13 = 0;
+  getPixelBuffer = 0;
 LABEL_5:
 
-  return v13;
+  return getPixelBuffer;
 }
 
-- (opaqueCMFormatDescription)createTrackFormatDescriptionFromStreamData:(StreamRecordingData *)a3
+- (opaqueCMFormatDescription)createTrackFormatDescriptionFromStreamData:(StreamRecordingData *)data
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  Dimensions = CMVideoFormatDescriptionGetDimensions(a3->var0);
+  Dimensions = CMVideoFormatDescriptionGetDimensions(data->var0);
   texture = 0;
   v8 = *MEMORY[0x277CC4DE8];
   v9[0] = MEMORY[0x277CBEC10];

@@ -2,46 +2,46 @@
 - (NSURL)downloadFileURL;
 - (NSURLResponse)response;
 - (NWURLError)error;
-- (NWURLError)errorForErrorCode:(uint64_t)a3 withPOSIXCode:(void *)a4 andTask:;
-- (id)initWithResumeInfo:(void *)a3 completionHandler:;
-- (id)prepareNextRequest:(id)a3 forTask:(id)a4 error:(id *)a5;
+- (NWURLError)errorForErrorCode:(uint64_t)code withPOSIXCode:(void *)xCode andTask:;
+- (id)initWithResumeInfo:(void *)info completionHandler:;
+- (id)prepareNextRequest:(id)request forTask:(id)task error:(id *)error;
 - (int64_t)countOfBytesReceived;
-- (void)deliverCompletionForTask:(uint64_t)a1;
-- (void)populateDownloadResumeInfo:(id)a3;
-- (void)setInternalError:(uint64_t)a1;
-- (void)setIo:(uint64_t)a1;
-- (void)task:(id)a3 deliverData:(id)a4 complete:(BOOL)a5 error:(id)a6 completionHandler:(id)a7;
-- (void)task:(id)a3 deliverResponse:(id)a4 completionHandler:(id)a5;
+- (void)deliverCompletionForTask:(uint64_t)task;
+- (void)populateDownloadResumeInfo:(id)info;
+- (void)setInternalError:(uint64_t)error;
+- (void)setIo:(uint64_t)io;
+- (void)task:(id)task deliverData:(id)data complete:(BOOL)complete error:(id)error completionHandler:(id)handler;
+- (void)task:(id)task deliverResponse:(id)response completionHandler:(id)handler;
 @end
 
 @implementation NWURLSessionResponseConsumerDownload
 
-- (id)prepareNextRequest:(id)a3 forTask:(id)a4 error:(id *)a5
+- (id)prepareNextRequest:(id)request forTask:(id)task error:(id *)error
 {
   v64 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!v9)
+  requestCopy = request;
+  taskCopy = task;
+  v10 = taskCopy;
+  if (!taskCopy)
   {
     v12 = 0;
-    v13 = 0;
+    _pathToDownloadTaskFile = 0;
     goto LABEL_75;
   }
 
-  v11 = v9[53];
+  v11 = taskCopy[53];
   v12 = v11;
   if (!v11)
   {
-    v13 = 0;
+    _pathToDownloadTaskFile = 0;
     goto LABEL_75;
   }
 
-  v13 = [v11[3] _pathToDownloadTaskFile];
+  _pathToDownloadTaskFile = [v11[3] _pathToDownloadTaskFile];
 
-  if (v13)
+  if (_pathToDownloadTaskFile)
   {
-    v12 = [MEMORY[0x1E695DFF8] fileURLWithPath:v13 isDirectory:0];
+    v12 = [MEMORY[0x1E695DFF8] fileURLWithPath:_pathToDownloadTaskFile isDirectory:0];
     if (self)
     {
       objc_setProperty_atomic(self, v50, v12, 32);
@@ -76,14 +76,14 @@ LABEL_5:
     if ((self->_fd & 0x80000000) == 0)
     {
 LABEL_13:
-      v19 = [(NWURLSessionResponseConsumerDownload *)self response];
+      response = [(NWURLSessionResponseConsumerDownload *)self response];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v21 = [(NWURLSessionResponseConsumerDownload *)self response];
-        v22 = [v21 valueForHTTPHeaderField:@"ETag"];
+        response2 = [(NWURLSessionResponseConsumerDownload *)self response];
+        v22 = [response2 valueForHTTPHeaderField:@"ETag"];
         if (v22)
         {
           v23 = v22;
@@ -91,7 +91,7 @@ LABEL_13:
 
         else
         {
-          v23 = [v21 valueForHTTPHeaderField:@"Last-Modified"];
+          v23 = [response2 valueForHTTPHeaderField:@"Last-Modified"];
 
           if (!v23)
           {
@@ -101,9 +101,9 @@ LABEL_13:
 
         if (self->_countOfBytesReceivedInternal)
         {
-          v37 = [v8 mutableCopy];
+          v37 = [requestCopy mutableCopy];
           [v37 setValue:v23 forHTTPHeaderField:@"If-Range"];
-          v38 = [v8 valueForHTTPHeaderField:@"Range"];
+          v38 = [requestCopy valueForHTTPHeaderField:@"Range"];
           if ([v38 hasPrefix:@"bytes="])
           {
             v39 = [v38 componentsSeparatedByString:@"="];
@@ -140,9 +140,9 @@ LABEL_13:
                 if ([v40 hasSuffix:@"-"])
                 {
                   v42 = [v41 objectAtIndexedSubscript:0];
-                  v60 = [v42 longLongValue];
+                  longLongValue = [v42 longLongValue];
 
-                  v43 = [MEMORY[0x1E696AEC0] stringWithFormat:@"bytes=%lld-", self->_countOfBytesReceivedInternal + v60];
+                  v43 = [MEMORY[0x1E696AEC0] stringWithFormat:@"bytes=%lld-", self->_countOfBytesReceivedInternal + longLongValue];
                   [v37 setValue:v43 forHTTPHeaderField:@"Range"];
                   if (__nwlog_url_log::onceToken != -1)
                   {
@@ -162,9 +162,9 @@ LABEL_13:
                 else if ([v40 hasPrefix:@"-"])
                 {
                   v47 = [v41 objectAtIndexedSubscript:1];
-                  v61 = [v47 longLongValue];
+                  longLongValue2 = [v47 longLongValue];
 
-                  v43 = [MEMORY[0x1E696AEC0] stringWithFormat:@"bytes=-%lld", v61 - self->_countOfBytesReceivedInternal];
+                  v43 = [MEMORY[0x1E696AEC0] stringWithFormat:@"bytes=-%lld", longLongValue2 - self->_countOfBytesReceivedInternal];
                   [v37 setValue:v43 forHTTPHeaderField:@"Range"];
                   if (__nwlog_url_log::onceToken != -1)
                   {
@@ -184,12 +184,12 @@ LABEL_13:
                 else
                 {
                   v48 = [v41 objectAtIndexedSubscript:0];
-                  v62 = [v48 longLongValue];
+                  longLongValue3 = [v48 longLongValue];
 
                   v49 = [v41 objectAtIndexedSubscript:1];
-                  v59 = [v49 longLongValue];
+                  longLongValue4 = [v49 longLongValue];
 
-                  v43 = [MEMORY[0x1E696AEC0] stringWithFormat:@"bytes=%lld-%lld", self->_countOfBytesReceivedInternal + v62, v59];
+                  v43 = [MEMORY[0x1E696AEC0] stringWithFormat:@"bytes=%lld-%lld", self->_countOfBytesReceivedInternal + longLongValue3, longLongValue4];
                   [v37 setValue:v43 forHTTPHeaderField:@"Range"];
                   if (__nwlog_url_log::onceToken != -1)
                   {
@@ -246,14 +246,14 @@ LABEL_52:
 LABEL_44:
       ftruncate(self->_fd, 0);
       self->_countOfBytesReceivedInternal = 0;
-      v36 = v8;
+      v36 = requestCopy;
 LABEL_53:
 
       goto LABEL_54;
     }
 
-    v17 = objc_getProperty(self, v14, 32, 1);
-    v18 = open([v17 fileSystemRepresentation], 521, 438);
+    temporaryDirectory = objc_getProperty(self, v14, 32, 1);
+    v18 = open([temporaryDirectory fileSystemRepresentation], 521, 438);
     self->_fd = v18;
     if ((v18 & 0x80000000) == 0)
     {
@@ -273,13 +273,13 @@ LABEL_53:
   if (!objc_getProperty(self, v14, 32, 1))
   {
 LABEL_18:
-    if (!v10 || (v25 = v10[53]) == 0 || (v26 = v25, [v25[2] _directoryForDownloadedFiles], v17 = objc_claimAutoreleasedReturnValue(), v26, !v17))
+    if (!v10 || (v25 = v10[53]) == 0 || (v26 = v25, [v25[2] _directoryForDownloadedFiles], temporaryDirectory = objc_claimAutoreleasedReturnValue(), v26, !temporaryDirectory))
     {
-      v27 = [MEMORY[0x1E696AC08] defaultManager];
-      v17 = [v27 temporaryDirectory];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      temporaryDirectory = [defaultManager temporaryDirectory];
     }
 
-    v28 = [v17 URLByAppendingPathComponent:@"URLSessionDownload_XXXXXX.tmp" isDirectory:0];
+    v28 = [temporaryDirectory URLByAppendingPathComponent:@"URLSessionDownload_XXXXXX.tmp" isDirectory:0];
     if ([v28 getFileSystemRepresentation:&v63 maxLength:1024])
     {
       v29 = mkstemps(&v63, 4);
@@ -291,14 +291,14 @@ LABEL_18:
         {
           objc_setProperty_atomic(self, v31, v30, 32);
 
-          if (!v17)
+          if (!temporaryDirectory)
           {
             Property = objc_getProperty(self, v33, 32, 1);
 LABEL_28:
-            v35 = [Property lastPathComponent];
+            lastPathComponent = [Property lastPathComponent];
             if (self)
             {
-              objc_storeStrong(&self->_tempFileName, v35);
+              objc_storeStrong(&self->_tempFileName, lastPathComponent);
             }
           }
         }
@@ -306,7 +306,7 @@ LABEL_28:
         else
         {
 
-          if (!v17)
+          if (!temporaryDirectory)
           {
             Property = 0;
             goto LABEL_28;
@@ -314,31 +314,31 @@ LABEL_28:
         }
 
 LABEL_32:
-        v36 = v8;
+        v36 = requestCopy;
         goto LABEL_54;
       }
 
       v56 = **(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 8);
-      v54 = self;
+      selfCopy2 = self;
       v55 = 0;
     }
 
     else
     {
-      v54 = self;
+      selfCopy2 = self;
       v55 = -3000;
       v56 = 63;
     }
 
-    v57 = [(NWURLSessionResponseConsumerDownload *)v54 errorForErrorCode:v55 withPOSIXCode:v56 andTask:v10];
-    v58 = *a5;
-    *a5 = v57;
+    v57 = [(NWURLSessionResponseConsumerDownload *)selfCopy2 errorForErrorCode:v55 withPOSIXCode:v56 andTask:v10];
+    v58 = *error;
+    *error = v57;
 
     goto LABEL_83;
   }
 
-  v17 = objc_getProperty(self, v24, 32, 1);
-  v53 = open([v17 fileSystemRepresentation], 2561, 438);
+  temporaryDirectory = objc_getProperty(self, v24, 32, 1);
+  v53 = open([temporaryDirectory fileSystemRepresentation], 2561, 438);
   self->_fd = v53;
   if ((v53 & 0x80000000) == 0)
   {
@@ -347,8 +347,8 @@ LABEL_32:
 
 LABEL_77:
   v51 = [(NWURLSessionResponseConsumerDownload *)self errorForErrorCode:**(_ReadStatusReg(ARM64_SYSREG(3 withPOSIXCode:3 andTask:13, 0, 3)) + 8), v10];
-  v52 = *a5;
-  *a5 = v51;
+  v52 = *error;
+  *error = v51;
 
 LABEL_83:
   v36 = 0;
@@ -357,16 +357,16 @@ LABEL_54:
   return v36;
 }
 
-- (NWURLError)errorForErrorCode:(uint64_t)a3 withPOSIXCode:(void *)a4 andTask:
+- (NWURLError)errorForErrorCode:(uint64_t)code withPOSIXCode:(void *)xCode andTask:
 {
-  if (a1)
+  if (self)
   {
     v6 = MEMORY[0x1E696ABC0];
     v7 = *MEMORY[0x1E696A798];
-    v8 = a4;
-    v9 = [v6 errorWithDomain:v7 code:a3 userInfo:0];
+    xCodeCopy = xCode;
+    v9 = [v6 errorWithDomain:v7 code:code userInfo:0];
     v10 = [NWURLError alloc];
-    v11 = v8;
+    v11 = xCodeCopy;
     if (v10)
     {
       v12 = [(NWURLError *)v10 initWithErrorCode:a2];
@@ -393,15 +393,15 @@ LABEL_54:
   return v13;
 }
 
-- (void)populateDownloadResumeInfo:(id)a3
+- (void)populateDownloadResumeInfo:(id)info
 {
-  v4 = a3;
-  v7 = v4;
+  infoCopy = info;
+  v7 = infoCopy;
   if (self)
   {
     if (self->_tempFileName)
     {
-      [v4 setTempFileName:?];
+      [infoCopy setTempFileName:?];
       goto LABEL_6;
     }
 
@@ -459,26 +459,26 @@ LABEL_6:
   return self;
 }
 
-- (void)task:(id)a3 deliverData:(id)a4 complete:(BOOL)a5 error:(id)a6 completionHandler:(id)a7
+- (void)task:(id)task deliverData:(id)data complete:(BOOL)complete error:(id)error completionHandler:(id)handler
 {
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  completeCopy = complete;
+  taskCopy = task;
+  dataCopy = data;
+  errorCopy = error;
+  handlerCopy = handler;
   if (self)
   {
     if (self->_hasCompleted)
     {
 LABEL_32:
-      v15[2](v15);
+      handlerCopy[2](handlerCopy);
       goto LABEL_24;
     }
 
-    self->_hasCompleted = v9;
+    self->_hasCompleted = completeCopy;
   }
 
-  if (!v13)
+  if (!dataCopy)
   {
     size = 0;
     if (self)
@@ -491,7 +491,7 @@ LABEL_26:
     goto LABEL_7;
   }
 
-  size = dispatch_data_get_size(v13);
+  size = dispatch_data_get_size(dataCopy);
   if (!self)
   {
     goto LABEL_26;
@@ -501,29 +501,29 @@ LABEL_6:
   v17 = self->_countOfBytesReceivedInternal + size;
   self->_countOfBytesReceivedInternal = v17;
 LABEL_7:
-  [(NWURLSessionTask *)v12 setCountOfBytesReceived:v17];
+  [(NWURLSessionTask *)taskCopy setCountOfBytesReceived:v17];
   v18 = size != 0;
-  if (v14 || !v9)
+  if (errorCopy || !completeCopy)
   {
-    if (v14)
+    if (errorCopy)
     {
       if (!self)
       {
         goto LABEL_30;
       }
 
-      objc_storeStrong(&self->_internalError, a6);
+      objc_storeStrong(&self->_internalError, error);
       goto LABEL_17;
     }
   }
 
   else
   {
-    v19 = [v12 countOfBytesExpectedToReceive];
+    countOfBytesExpectedToReceive = [taskCopy countOfBytesExpectedToReceive];
     if (self)
     {
       countOfBytesReceivedInternal = self->_countOfBytesReceivedInternal;
-      if (v19 == countOfBytesReceivedInternal)
+      if (countOfBytesExpectedToReceive == countOfBytesReceivedInternal)
       {
         goto LABEL_17;
       }
@@ -531,7 +531,7 @@ LABEL_7:
 
     else
     {
-      if (!v19)
+      if (!countOfBytesExpectedToReceive)
       {
         goto LABEL_30;
       }
@@ -539,16 +539,16 @@ LABEL_7:
       countOfBytesReceivedInternal = 0;
     }
 
-    [(NWURLSessionTask *)v12 setCountOfBytesExpectedToReceive:?];
+    [(NWURLSessionTask *)taskCopy setCountOfBytesExpectedToReceive:?];
     v18 = 1;
   }
 
   if (!self)
   {
 LABEL_30:
-    if (v9)
+    if (completeCopy)
     {
-      [(NWURLSessionResponseConsumerDownload *)self deliverCompletionForTask:v12];
+      [(NWURLSessionResponseConsumerDownload *)self deliverCompletionForTask:taskCopy];
     }
 
     goto LABEL_32;
@@ -564,16 +564,16 @@ LABEL_17:
   aBlock[1] = 3221225472;
   aBlock[2] = __90__NWURLSessionResponseConsumerDownload_task_deliverData_complete_error_completionHandler___block_invoke;
   aBlock[3] = &unk_1E6A35720;
-  v36 = v9;
+  v36 = completeCopy;
   aBlock[4] = self;
-  v21 = v12;
+  v21 = taskCopy;
   v33 = v21;
   v37 = v18;
-  v34 = v15;
+  v34 = handlerCopy;
   v35 = size;
   v22 = _Block_copy(aBlock);
   v23 = v22;
-  if (v13)
+  if (dataCopy)
   {
     v24 = self->_io;
     if (v21)
@@ -605,7 +605,7 @@ LABEL_17:
     v29[4] = self;
     v30 = v21;
     v31 = v23;
-    dispatch_io_write(v24, 0, v13, v28, v29);
+    dispatch_io_write(v24, 0, dataCopy, v28, v29);
   }
 
   else
@@ -616,23 +616,23 @@ LABEL_17:
 LABEL_24:
 }
 
-- (void)setInternalError:(uint64_t)a1
+- (void)setInternalError:(uint64_t)error
 {
-  if (a1)
+  if (error)
   {
-    objc_storeStrong((a1 + 64), a2);
+    objc_storeStrong((error + 64), a2);
   }
 }
 
-- (void)deliverCompletionForTask:(uint64_t)a1
+- (void)deliverCompletionForTask:(uint64_t)task
 {
   v4 = a2;
-  if (a1)
+  if (task)
   {
-    v5 = objc_getProperty(a1, v3, 32, 1);
-    v6 = *(a1 + 64);
-    v7 = [v6 downloadTaskResumeData];
-    v8 = v7 != 0;
+    v5 = objc_getProperty(task, v3, 32, 1);
+    v6 = *(task + 64);
+    downloadTaskResumeData = [v6 downloadTaskResumeData];
+    v8 = downloadTaskResumeData != 0;
 
     if (v4)
     {
@@ -656,7 +656,7 @@ LABEL_24:
       v10 = 0;
     }
 
-    v11 = *(a1 + 40) == 0;
+    v11 = *(task + 40) == 0;
 
     if (!v5)
     {
@@ -665,7 +665,7 @@ LABEL_10:
       v15[1] = 3221225472;
       v15[2] = __65__NWURLSessionResponseConsumerDownload_deliverCompletionForTask___block_invoke;
       v15[3] = &unk_1E6A35798;
-      v15[4] = a1;
+      v15[4] = task;
       v16 = v4;
       v17 = v5;
       v18 = v6;
@@ -681,10 +681,10 @@ LABEL_10:
 LABEL_9:
     if (v6)
     {
-      if (!v7 && *(a1 + 40))
+      if (!downloadTaskResumeData && *(task + 40))
       {
-        v14 = [MEMORY[0x1E696AC08] defaultManager];
-        [v14 removeItemAtURL:v5 error:0];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+        [defaultManager removeItemAtURL:v5 error:0];
       }
 
       v5 = 0;
@@ -1083,62 +1083,62 @@ void __65__NWURLSessionResponseConsumerDownload_deliverCompletionForTask___block
   }
 }
 
-- (void)task:(id)a3 deliverResponse:(id)a4 completionHandler:(id)a5
+- (void)task:(id)task deliverResponse:(id)response completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
+  taskCopy = task;
+  responseCopy = response;
   if (self)
   {
     io = self->_io;
-    v11 = a5;
+    handlerCopy = handler;
     if (io)
     {
       dispatch_io_close(self->_io, 0);
       [NWURLSessionResponseConsumerDownload setIo:?];
     }
 
-    objc_setProperty_atomic(self, v12, v9, 24);
-    v13 = countOfBytesExpectedToReceive(v9);
+    objc_setProperty_atomic(self, v12, responseCopy, 24);
+    v13 = countOfBytesExpectedToReceive(responseCopy);
     if (self->_isResuming)
     {
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) != 0 && [v9 statusCode] == 206)
+      if ((objc_opt_isKindOfClass() & 1) != 0 && [responseCopy statusCode] == 206)
       {
         if (v13 != *MEMORY[0x1E695ABD8])
         {
           v13 += self->_countOfBytesReceivedInternal;
         }
 
-        [(NWURLSessionTask *)v8 setCountOfBytesExpectedToReceive:v13];
+        [(NWURLSessionTask *)taskCopy setCountOfBytesExpectedToReceive:v13];
         countOfBytesReceivedInternal = self->_countOfBytesReceivedInternal;
       }
 
       else
       {
         ftruncate(self->_fd, 0);
-        [(NWURLSessionTask *)v8 setCountOfBytesExpectedToReceive:v13];
+        [(NWURLSessionTask *)taskCopy setCountOfBytesExpectedToReceive:v13];
         countOfBytesReceivedInternal = 0;
       }
 
-      [(NWURLSessionTask *)v8 setCountOfBytesReceived:?];
+      [(NWURLSessionTask *)taskCopy setCountOfBytesReceived:?];
       if (!self->_calledDidResumeAtOffset)
       {
         self->_calledDidResumeAtOffset = 1;
-        v33 = [(NWURLSessionTask *)v8 delegateWrapper];
-        -[NWURLSessionDelegateWrapper downloadTask:didResumeAtOffset:expectedTotalBytes:](v33, v8, [v8 countOfBytesReceived], objc_msgSend(v8, "countOfBytesExpectedToReceive"));
+        delegateWrapper = [(NWURLSessionTask *)taskCopy delegateWrapper];
+        -[NWURLSessionDelegateWrapper downloadTask:didResumeAtOffset:expectedTotalBytes:](delegateWrapper, taskCopy, [taskCopy countOfBytesReceived], objc_msgSend(taskCopy, "countOfBytesExpectedToReceive"));
       }
     }
 
     else
     {
-      [(NWURLSessionTask *)v8 setCountOfBytesExpectedToReceive:v13];
+      [(NWURLSessionTask *)taskCopy setCountOfBytesExpectedToReceive:v13];
       self->_isResuming = 1;
       self->_calledDidResumeAtOffset = 1;
     }
 
     fd = self->_fd;
     self->_fd = -1;
-    if (v8)
+    if (taskCopy)
     {
       goto LABEL_7;
     }
@@ -1146,14 +1146,14 @@ void __65__NWURLSessionResponseConsumerDownload_deliverCompletionForTask___block
 
   else
   {
-    v34 = a5;
-    v35 = countOfBytesExpectedToReceive(v9);
-    [(NWURLSessionTask *)v8 setCountOfBytesExpectedToReceive:v35];
+    handlerCopy2 = handler;
+    v35 = countOfBytesExpectedToReceive(responseCopy);
+    [(NWURLSessionTask *)taskCopy setCountOfBytesExpectedToReceive:v35];
     fd = 0;
-    if (v8)
+    if (taskCopy)
     {
 LABEL_7:
-      v15 = v8[52];
+      v15 = taskCopy[52];
       v16 = v15;
       if (v15)
       {
@@ -1179,7 +1179,7 @@ LABEL_9:
   cleanup_handler[3] = &unk_1E6A356F8;
   cleanup_handler[4] = self;
   v38 = fd;
-  v19 = v8;
+  v19 = taskCopy;
   v37 = v19;
   v20 = dispatch_io_create(0, fd, v18, cleanup_handler);
   if (self)
@@ -1197,7 +1197,7 @@ LABEL_9:
   }
 
   dispatch_io_set_low_water(v22, 0xFFFFFFFFFFFFFFFFLL);
-  if (v8)
+  if (taskCopy)
   {
     v23 = 31;
     if (!v19[31])
@@ -1214,18 +1214,18 @@ LABEL_9:
   }
 
   v25 = v19;
-  v27 = v9;
+  v27 = responseCopy;
   if (v24)
   {
-    v28 = [(NWURLSessionDelegateWrapper *)v24 delegateFor_downloadDidReceiveResponse];
-    if (v28)
+    delegateFor_downloadDidReceiveResponse = [(NWURLSessionDelegateWrapper *)v24 delegateFor_downloadDidReceiveResponse];
+    if (delegateFor_downloadDidReceiveResponse)
     {
       v29 = v24[5];
       v39[0] = MEMORY[0x1E69E9820];
       v39[1] = 3221225472;
       v39[2] = __63__NWURLSessionDelegateWrapper_downloadTask_didReceiveResponse___block_invoke;
       v39[3] = &unk_1E6A3C038;
-      v40 = v28;
+      v40 = delegateFor_downloadDidReceiveResponse;
       v41 = v29;
       v42 = v25;
       v43 = v27;
@@ -1235,14 +1235,14 @@ LABEL_9:
     }
   }
 
-  (*(a5 + 2))(a5, 1);
+  (*(handler + 2))(handler, 1);
 }
 
-- (void)setIo:(uint64_t)a1
+- (void)setIo:(uint64_t)io
 {
-  if (a1)
+  if (io)
   {
-    objc_storeStrong((a1 + 48), 0);
+    objc_storeStrong((io + 48), 0);
   }
 }
 
@@ -1328,52 +1328,52 @@ LABEL_5:
   }
 }
 
-- (id)initWithResumeInfo:(void *)a3 completionHandler:
+- (id)initWithResumeInfo:(void *)info completionHandler:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  infoCopy = info;
+  if (self)
   {
-    v19.receiver = a1;
+    v19.receiver = self;
     v19.super_class = NWURLSessionResponseConsumerDownload;
-    a1 = objc_msgSendSuper2(&v19, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v19, sel_init);
+    if (self)
     {
-      v7 = _Block_copy(v6);
-      v8 = *(a1 + 2);
-      *(a1 + 2) = v7;
+      v7 = _Block_copy(infoCopy);
+      v8 = *(self + 2);
+      *(self + 2) = v7;
 
-      *(a1 + 3) = -1;
-      v9 = [v5 tempFileName];
-      v10 = *(a1 + 5);
-      *(a1 + 5) = v9;
+      *(self + 3) = -1;
+      tempFileName = [v5 tempFileName];
+      v10 = *(self + 5);
+      *(self + 5) = tempFileName;
 
-      if (*(a1 + 5))
+      if (*(self + 5))
       {
-        v11 = [MEMORY[0x1E696AC08] defaultManager];
-        v12 = [v11 temporaryDirectory];
-        v13 = [v12 URLByAppendingPathComponent:*(a1 + 5) isDirectory:0];
-        v14 = *(a1 + 4);
-        *(a1 + 4) = v13;
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+        temporaryDirectory = [defaultManager temporaryDirectory];
+        v13 = [temporaryDirectory URLByAppendingPathComponent:*(self + 5) isDirectory:0];
+        v14 = *(self + 4);
+        *(self + 4) = v13;
       }
 
       else
       {
-        v15 = [v5 fileURL];
-        v11 = *(a1 + 4);
-        *(a1 + 4) = v15;
+        fileURL = [v5 fileURL];
+        defaultManager = *(self + 4);
+        *(self + 4) = fileURL;
       }
 
-      v16 = [v5 response];
-      v17 = *(a1 + 3);
-      *(a1 + 3) = v16;
+      response = [v5 response];
+      v17 = *(self + 3);
+      *(self + 3) = response;
 
-      *(a1 + 9) = *(a1 + 4) != 0;
-      *(a1 + 3) = -1;
+      *(self + 9) = *(self + 4) != 0;
+      *(self + 3) = -1;
     }
   }
 
-  return a1;
+  return self;
 }
 
 @end

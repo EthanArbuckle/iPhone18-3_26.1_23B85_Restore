@@ -1,32 +1,32 @@
 @interface MSPCollectionItemReplicaStorage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addRecords:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addRecords:(id)records;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MSPCollectionItemReplicaStorage
 
-- (void)addRecords:(id)a3
+- (void)addRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   records = self->_records;
-  v8 = v4;
+  v8 = recordsCopy;
   if (!records)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_records;
     self->_records = v6;
 
-    v4 = v8;
+    recordsCopy = v8;
     records = self->_records;
   }
 
-  [(NSMutableArray *)records addObject:v4];
+  [(NSMutableArray *)records addObject:recordsCopy];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v8.receiver = self;
   v8.super_class = MSPCollectionItemReplicaStorage;
   v4 = [(MSPCollectionItemReplicaStorage *)&v8 description];
-  v5 = [(MSPCollectionItemReplicaStorage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MSPCollectionItemReplicaStorage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -44,12 +44,12 @@
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   clientIdentifier = self->_clientIdentifier;
   if (clientIdentifier)
   {
-    [v3 setObject:clientIdentifier forKey:@"clientIdentifier"];
+    [dictionary setObject:clientIdentifier forKey:@"clientIdentifier"];
   }
 
   if ([(NSMutableArray *)self->_records count])
@@ -74,8 +74,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -90,8 +90,8 @@
   unknownFields = self->_unknownFields;
   if (unknownFields)
   {
-    v14 = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
-    [v4 setObject:v14 forKey:@"Unknown Fields"];
+    dictionaryRepresentation2 = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"Unknown Fields"];
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -99,10 +99,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_clientIdentifier)
   {
     PBDataWriterWriteStringField();
@@ -140,39 +140,39 @@
     while (v7);
   }
 
-  [(PBUnknownFields *)self->_unknownFields writeTo:v4, v12];
+  [(PBUnknownFields *)self->_unknownFields writeTo:toCopy, v12];
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_clientIdentifier)
   {
-    [v8 setClientIdentifier:?];
+    [toCopy setClientIdentifier:?];
   }
 
   if ([(MSPCollectionItemReplicaStorage *)self recordsCount])
   {
-    [v8 clearRecords];
-    v4 = [(MSPCollectionItemReplicaStorage *)self recordsCount];
-    if (v4)
+    [toCopy clearRecords];
+    recordsCount = [(MSPCollectionItemReplicaStorage *)self recordsCount];
+    if (recordsCount)
     {
-      v5 = v4;
+      v5 = recordsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(MSPCollectionItemReplicaStorage *)self recordsAtIndex:i];
-        [v8 addRecords:v7];
+        [toCopy addRecords:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_clientIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_clientIdentifier copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -196,7 +196,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{zone, v16}];
         [v5 addRecords:v13];
 
         ++v12;
@@ -214,13 +214,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((clientIdentifier = self->_clientIdentifier, !(clientIdentifier | v4[2])) || -[NSString isEqual:](clientIdentifier, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((clientIdentifier = self->_clientIdentifier, !(clientIdentifier | equalCopy[2])) || -[NSString isEqual:](clientIdentifier, "isEqual:")))
   {
     records = self->_records;
-    if (records | v4[3])
+    if (records | equalCopy[3])
     {
       v7 = [(NSMutableArray *)records isEqual:?];
     }
@@ -239,11 +239,11 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
     [(MSPCollectionItemReplicaStorage *)self setClientIdentifier:?];
   }
@@ -252,7 +252,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 3);
+  v5 = *(fromCopy + 3);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

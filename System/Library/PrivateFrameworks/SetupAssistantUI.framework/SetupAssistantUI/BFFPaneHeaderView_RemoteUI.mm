@@ -1,35 +1,35 @@
 @interface BFFPaneHeaderView_RemoteUI
-- (BFFPaneHeaderView_RemoteUI)initWithAttributes:(id)a3;
-- (void)setDetailText:(id)a3 attributes:(id)a4;
-- (void)setImageAlignment:(unint64_t)a3;
-- (void)setSubHeaderText:(id)a3 attributes:(id)a4;
-- (void)setText:(id)a3 attributes:(id)a4;
+- (BFFPaneHeaderView_RemoteUI)initWithAttributes:(id)attributes;
+- (void)setDetailText:(id)text attributes:(id)attributes;
+- (void)setImageAlignment:(unint64_t)alignment;
+- (void)setSubHeaderText:(id)text attributes:(id)attributes;
+- (void)setText:(id)text attributes:(id)attributes;
 @end
 
 @implementation BFFPaneHeaderView_RemoteUI
 
-- (BFFPaneHeaderView_RemoteUI)initWithAttributes:(id)a3
+- (BFFPaneHeaderView_RemoteUI)initWithAttributes:(id)attributes
 {
   v4.receiver = self;
   v4.super_class = BFFPaneHeaderView_RemoteUI;
-  return [(BFFPaneHeaderView *)&v4 initWithFrame:a3, *MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+  return [(BFFPaneHeaderView *)&v4 initWithFrame:attributes, *MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
 }
 
-- (void)setText:(id)a3 attributes:(id)a4
+- (void)setText:(id)text attributes:(id)attributes
 {
-  v5 = a3;
-  v6 = [(BFFPaneHeaderView *)self detailTextLabel];
-  [v6 setText:v5];
+  textCopy = text;
+  detailTextLabel = [(BFFPaneHeaderView *)self detailTextLabel];
+  [detailTextLabel setText:textCopy];
 }
 
-- (void)setSubHeaderText:(id)a3 attributes:(id)a4
+- (void)setSubHeaderText:(id)text attributes:(id)attributes
 {
-  v5 = a3;
-  v6 = [(BFFPaneHeaderView *)self subLabel];
-  [v6 setText:v5];
+  textCopy = text;
+  subLabel = [(BFFPaneHeaderView *)self subLabel];
+  [subLabel setText:textCopy];
 }
 
-- (void)setDetailText:(id)a3 attributes:(id)a4
+- (void)setDetailText:(id)text attributes:(id)attributes
 {
   v4 = _BYLoggingFacility();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -39,7 +39,7 @@
   }
 }
 
-- (void)setImageAlignment:(unint64_t)a3
+- (void)setImageAlignment:(unint64_t)alignment
 {
   v3 = _BYLoggingFacility();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))

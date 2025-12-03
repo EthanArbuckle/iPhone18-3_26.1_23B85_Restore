@@ -1,22 +1,22 @@
 @interface ORKSignatureGestureRecognizer
-- (BOOL)shouldBeRequiredToFailByGestureRecognizer:(id)a3;
+- (BOOL)shouldBeRequiredToFailByGestureRecognizer:(id)recognizer;
 - (DrawingGestureRecognizerDelegate)eventDelegate;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation ORKSignatureGestureRecognizer
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count] <= 1 && -[ORKSignatureGestureRecognizer numberOfTouches](self, "numberOfTouches") < 2)
+  beganCopy = began;
+  eventCopy = event;
+  if ([beganCopy count] <= 1 && -[ORKSignatureGestureRecognizer numberOfTouches](self, "numberOfTouches") < 2)
   {
     [(ORKSignatureGestureRecognizer *)self setState:1];
-    v13 = [(ORKSignatureGestureRecognizer *)self eventDelegate];
-    [v13 gestureTouchesBegan:v6 withEvent:v7];
+    eventDelegate = [(ORKSignatureGestureRecognizer *)self eventDelegate];
+    [eventDelegate gestureTouchesBegan:beganCopy withEvent:eventCopy];
   }
 
   else
@@ -25,7 +25,7 @@
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = v6;
+    v8 = beganCopy;
     v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v9)
     {
@@ -41,7 +41,7 @@
             objc_enumerationMutation(v8);
           }
 
-          [(ORKSignatureGestureRecognizer *)self ignoreTouch:*(*(&v14 + 1) + 8 * v12) forEvent:v7, v14];
+          [(ORKSignatureGestureRecognizer *)self ignoreTouch:*(*(&v14 + 1) + 8 * v12) forEvent:eventCopy, v14];
           v12 = v12 + 1;
         }
 
@@ -54,26 +54,26 @@
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ORKSignatureGestureRecognizer *)self eventDelegate];
-  [v8 gestureTouchesMoved:v7 withEvent:v6];
+  eventCopy = event;
+  movedCopy = moved;
+  eventDelegate = [(ORKSignatureGestureRecognizer *)self eventDelegate];
+  [eventDelegate gestureTouchesMoved:movedCopy withEvent:eventCopy];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
+  eventCopy = event;
+  endedCopy = ended;
   [(ORKSignatureGestureRecognizer *)self setState:3];
-  v8 = [(ORKSignatureGestureRecognizer *)self eventDelegate];
-  [v8 gestureTouchesEnded:v7 withEvent:v6];
+  eventDelegate = [(ORKSignatureGestureRecognizer *)self eventDelegate];
+  [eventDelegate gestureTouchesEnded:endedCopy withEvent:eventCopy];
 }
 
-- (BOOL)shouldBeRequiredToFailByGestureRecognizer:(id)a3
+- (BOOL)shouldBeRequiredToFailByGestureRecognizer:(id)recognizer
 {
-  v3 = a3;
+  recognizerCopy = recognizer;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

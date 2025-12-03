@@ -1,35 +1,35 @@
 @interface SharedTripSuggestionsDataSource
-+ (void)prefetchSuggestionsAndCapabilitiesWithContext:(id)a3;
-- (BOOL)isContactSearchItemAtIndexPath:(id)a3;
++ (void)prefetchSuggestionsAndCapabilitiesWithContext:(id)context;
+- (BOOL)isContactSearchItemAtIndexPath:(id)path;
 - (BOOL)isRefreshing;
 - (BOOL)showsContactSearchItem;
 - (NSArray)contactsForDisplay;
-- (SharedTripSuggestionsDataSource)initWithSoftCellCap:(unint64_t)a3 includeActiveContacts:(BOOL)a4;
+- (SharedTripSuggestionsDataSource)initWithSoftCellCap:(unint64_t)cap includeActiveContacts:(BOOL)contacts;
 - (SharedTripSuggestionsDataSourceDelegate)delegate;
 - (UITableView)tableView;
 - (id)_recommendedContactsForDisplay;
-- (id)contactForItemIdentifier:(id)a3;
-- (id)contactForItemIndexPath:(id)a3;
+- (id)contactForItemIdentifier:(id)identifier;
+- (id)contactForItemIndexPath:(id)path;
 - (id)contactSearchItemIdentifier;
-- (id)findChangedContactsWithNewActiveSet:(id)a3 previousActiveSet:(id)a4;
-- (unint64_t)sharingStateForContact:(id)a3;
-- (void)_refreshWithActiveContacts:(id)a3;
+- (id)findChangedContactsWithNewActiveSet:(id)set previousActiveSet:(id)activeSet;
+- (unint64_t)sharingStateForContact:(id)contact;
+- (void)_refreshWithActiveContacts:(id)contacts;
 - (void)_updateFromCache;
 - (void)abandon;
-- (void)addTableView:(id)a3 cellProvider:(id)a4;
+- (void)addTableView:(id)view cellProvider:(id)provider;
 - (void)clearTableView;
-- (void)dataDidUpdateAnimatingChanges:(BOOL)a3;
+- (void)dataDidUpdateAnimatingChanges:(BOOL)changes;
 - (void)dataWillUpdate;
 - (void)dealloc;
 - (void)resetContactsForDisplayOrdering;
-- (void)setShowContactSearchItem:(BOOL)a3;
-- (void)setSoftCap:(unint64_t)a3;
-- (void)sharedTripService:(id)a3 didUpdateReceivers:(id)a4;
-- (void)sharedTripService:(id)a3 sharingDidInvalidateWithError:(id)a4;
-- (void)sharedTripServiceDidUpdateSendingAvailability:(id)a3;
-- (void)suggestionsDidUpdateInCache:(id)a3;
-- (void)suggestionsWillUpdateInCache:(id)a3;
-- (void)toggleContact:(id)a3 startSharingCompletion:(id)a4 stopSharingCompletion:(id)a5;
+- (void)setShowContactSearchItem:(BOOL)item;
+- (void)setSoftCap:(unint64_t)cap;
+- (void)sharedTripService:(id)service didUpdateReceivers:(id)receivers;
+- (void)sharedTripService:(id)service sharingDidInvalidateWithError:(id)error;
+- (void)sharedTripServiceDidUpdateSendingAvailability:(id)availability;
+- (void)suggestionsDidUpdateInCache:(id)cache;
+- (void)suggestionsWillUpdateInCache:(id)cache;
+- (void)toggleContact:(id)contact startSharingCompletion:(id)completion stopSharingCompletion:(id)sharingCompletion;
 @end
 
 @implementation SharedTripSuggestionsDataSource
@@ -44,9 +44,9 @@
   }
 
   v4 = +[SharedTripSuggestionsCache sharedInstance];
-  v5 = [v4 suggestedContacts];
+  suggestedContacts = [v4 suggestedContacts];
 
-  v6 = [NSOrderedSet orderedSetWithArray:v5];
+  v6 = [NSOrderedSet orderedSetWithArray:suggestedContacts];
   [(SharedTripSuggestionsDataSource *)self setOrderedSuggestions:v6];
 }
 
@@ -65,9 +65,9 @@
   }
 
   v2 = +[MSPSharedTripService sharedInstance];
-  v3 = [v2 canAddReceivers];
+  canAddReceivers = [v2 canAddReceivers];
 
-  return v3;
+  return canAddReceivers;
 }
 
 - (UITableView)tableView
@@ -80,12 +80,12 @@
 - (NSArray)contactsForDisplay
 {
   v3 = +[MSPSharedTripService sharedInstance];
-  v4 = [v3 canAddReceivers];
+  canAddReceivers = [v3 canAddReceivers];
 
-  if (v4)
+  if (canAddReceivers)
   {
     v23 = +[NSMutableArray array];
-    v22 = [(SharedTripSuggestionsDataSource *)self _recommendedContactsForDisplay];
+    _recommendedContactsForDisplay = [(SharedTripSuggestionsDataSource *)self _recommendedContactsForDisplay];
     v5 = [NSMutableOrderedSet orderedSetWithOrderedSet:?];
     v26 = 0u;
     v27 = 0u;
@@ -128,9 +128,9 @@
       while (v7);
     }
 
-    v13 = [v5 array];
-    v14 = v23;
-    [v23 addObjectsFromArray:v13];
+    array = [v5 array];
+    activeContacts = v23;
+    [v23 addObjectsFromArray:array];
 
     v15 = sub_1000946AC();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -145,7 +145,7 @@
     contactsForDisplay = self->_contactsForDisplay;
     self->_contactsForDisplay = v17;
 
-    v19 = self->_contactsForDisplay;
+    array2 = self->_contactsForDisplay;
   }
 
   else
@@ -157,19 +157,19 @@
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "SharedTripSuggestionsDataSource only showing active contacts, unable to add receivers at this time", buf, 2u);
     }
 
-    v14 = [(SharedTripSuggestionsDataSource *)self activeContacts];
-    v19 = [v14 array];
+    activeContacts = [(SharedTripSuggestionsDataSource *)self activeContacts];
+    array2 = [activeContacts array];
   }
 
-  return v19;
+  return array2;
 }
 
 - (id)_recommendedContactsForDisplay
 {
   if ([(SharedTripSuggestionsDataSource *)self includeActiveContacts])
   {
-    v3 = [(SharedTripSuggestionsDataSource *)self activeContacts];
-    v4 = [v3 mutableCopy];
+    activeContacts = [(SharedTripSuggestionsDataSource *)self activeContacts];
+    v4 = [activeContacts mutableCopy];
   }
 
   else
@@ -180,13 +180,13 @@
   v5 = [v4 count];
   if (v5 < [(SharedTripSuggestionsDataSource *)self softCap])
   {
-    v6 = [(SharedTripSuggestionsDataSource *)self wereActiveContacts];
-    v7 = [v6 array];
-    [v4 addObjectsFromArray:v7];
+    wereActiveContacts = [(SharedTripSuggestionsDataSource *)self wereActiveContacts];
+    array = [wereActiveContacts array];
+    [v4 addObjectsFromArray:array];
 
-    v8 = [(SharedTripSuggestionsDataSource *)self orderedSuggestions];
-    v9 = [v8 array];
-    [v4 addObjectsFromArray:v9];
+    orderedSuggestions = [(SharedTripSuggestionsDataSource *)self orderedSuggestions];
+    array2 = [orderedSuggestions array];
+    [v4 addObjectsFromArray:array2];
 
     v10 = [v4 count];
     if (v10 > [(SharedTripSuggestionsDataSource *)self softCap])
@@ -197,8 +197,8 @@
 
   if (![(SharedTripSuggestionsDataSource *)self includeActiveContacts])
   {
-    v11 = [(SharedTripSuggestionsDataSource *)self activeContacts];
-    [v4 minusOrderedSet:v11];
+    activeContacts2 = [(SharedTripSuggestionsDataSource *)self activeContacts];
+    [v4 minusOrderedSet:activeContacts2];
   }
 
   return v4;
@@ -218,61 +218,61 @@
 
 - (void)dataWillUpdate
 {
-  v3 = [(SharedTripSuggestionsDataSource *)self delegate];
+  delegate = [(SharedTripSuggestionsDataSource *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(SharedTripSuggestionsDataSource *)self delegate];
-    [v5 suggestionsDataSourceWillUpdateContactsForDisplay:self];
+    delegate2 = [(SharedTripSuggestionsDataSource *)self delegate];
+    [delegate2 suggestionsDataSourceWillUpdateContactsForDisplay:self];
   }
 }
 
 - (BOOL)isRefreshing
 {
   v2 = +[SharedTripSuggestionsCache sharedInstance];
-  v3 = [v2 isRefreshing];
+  isRefreshing = [v2 isRefreshing];
 
-  return v3;
+  return isRefreshing;
 }
 
-- (id)contactForItemIndexPath:(id)a3
+- (id)contactForItemIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SharedTripSuggestionsDataSource *)self tableViewDataSource];
-  v6 = [v5 itemIdentifierForIndexPath:v4];
+  pathCopy = path;
+  tableViewDataSource = [(SharedTripSuggestionsDataSource *)self tableViewDataSource];
+  v6 = [tableViewDataSource itemIdentifierForIndexPath:pathCopy];
 
   v7 = [(SharedTripSuggestionsDataSource *)self contactForItemIdentifier:v6];
 
   return v7;
 }
 
-- (id)contactForItemIdentifier:(id)a3
+- (id)contactForItemIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[NSMutableArray array];
-  v6 = [(SharedTripSuggestionsDataSource *)self activeContacts];
+  activeContacts = [(SharedTripSuggestionsDataSource *)self activeContacts];
 
-  if (v6)
+  if (activeContacts)
   {
-    v7 = [(SharedTripSuggestionsDataSource *)self activeContacts];
-    [v5 addObject:v7];
+    activeContacts2 = [(SharedTripSuggestionsDataSource *)self activeContacts];
+    [v5 addObject:activeContacts2];
   }
 
-  v8 = [(SharedTripSuggestionsDataSource *)self wereActiveContacts];
+  wereActiveContacts = [(SharedTripSuggestionsDataSource *)self wereActiveContacts];
 
-  if (v8)
+  if (wereActiveContacts)
   {
-    v9 = [(SharedTripSuggestionsDataSource *)self wereActiveContacts];
-    [v5 addObject:v9];
+    wereActiveContacts2 = [(SharedTripSuggestionsDataSource *)self wereActiveContacts];
+    [v5 addObject:wereActiveContacts2];
   }
 
-  v10 = [(SharedTripSuggestionsDataSource *)self orderedSuggestions];
+  orderedSuggestions = [(SharedTripSuggestionsDataSource *)self orderedSuggestions];
 
-  if (v10)
+  if (orderedSuggestions)
   {
-    v11 = [(SharedTripSuggestionsDataSource *)self orderedSuggestions];
-    [v5 addObject:v11];
+    orderedSuggestions2 = [(SharedTripSuggestionsDataSource *)self orderedSuggestions];
+    [v5 addObject:orderedSuggestions2];
   }
 
   v25 = 0u;
@@ -299,7 +299,7 @@
         v21[1] = 3221225472;
         v21[2] = sub_100BC4674;
         v21[3] = &unk_101654D78;
-        v22 = v4;
+        v22 = identifierCopy;
         v18 = [v17 indexOfObjectPassingTest:v21];
         if (v18 != 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -325,20 +325,20 @@ LABEL_17:
   return v19;
 }
 
-- (unint64_t)sharingStateForContact:(id)a3
+- (unint64_t)sharingStateForContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   v5 = +[MSPSharedTripService sharedInstance];
-  v6 = [v5 isSharingWithContact:v4];
+  v6 = [v5 isSharingWithContact:contactCopy];
 
   if (v6)
   {
-    v7 = [(SharedTripSuggestionsDataSource *)self activeContacts];
-    if ([v7 containsObject:v4])
+    activeContacts = [(SharedTripSuggestionsDataSource *)self activeContacts];
+    if ([activeContacts containsObject:contactCopy])
     {
-      v8 = [(SharedTripSuggestionsDataSource *)self initiallyActiveHandles];
-      v9 = [v4 stringValue];
-      v10 = [v8 containsObject:v9];
+      initiallyActiveHandles = [(SharedTripSuggestionsDataSource *)self initiallyActiveHandles];
+      stringValue = [contactCopy stringValue];
+      v10 = [initiallyActiveHandles containsObject:stringValue];
 
       if (v10)
       {
@@ -379,13 +379,13 @@ LABEL_17:
   [v3 provideAbandonmentFeedback];
 }
 
-- (void)toggleContact:(id)a3 startSharingCompletion:(id)a4 stopSharingCompletion:(id)a5
+- (void)toggleContact:(id)contact startSharingCompletion:(id)completion stopSharingCompletion:(id)sharingCompletion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contactCopy = contact;
+  completionCopy = completion;
+  sharingCompletionCopy = sharingCompletion;
   v11 = +[MSPSharedTripService sharedInstance];
-  v12 = [v11 isSharingWithContact:v8];
+  v12 = [v11 isSharingWithContact:contactCopy];
 
   v13 = sub_1000946AC();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG);
@@ -393,9 +393,9 @@ LABEL_17:
   {
     if (v14)
     {
-      v15 = [v8 stringValue];
+      stringValue = [contactCopy stringValue];
       *buf = 138477827;
-      v32 = v15;
+      v32 = stringValue;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "SharedTripSuggestionsDataSource toggle contact off: %{private}@", buf, 0xCu);
     }
 
@@ -405,14 +405,14 @@ LABEL_17:
     v29[2] = sub_100BC4B28;
     v29[3] = &unk_1016610B8;
     v17 = &v30;
-    v30 = v10;
-    [v16 stopSharingWithContact:v8 completion:v29];
+    v30 = sharingCompletionCopy;
+    [v16 stopSharingWithContact:contactCopy completion:v29];
 
-    v18 = [(SharedTripSuggestionsDataSource *)self initiallyActiveHandles];
-    v19 = [v18 mutableCopy];
+    initiallyActiveHandles = [(SharedTripSuggestionsDataSource *)self initiallyActiveHandles];
+    v19 = [initiallyActiveHandles mutableCopy];
 
-    v20 = [v8 stringValue];
-    [v19 removeObject:v20];
+    stringValue2 = [contactCopy stringValue];
+    [v19 removeObject:stringValue2];
 
     v21 = [v19 copy];
     [(SharedTripSuggestionsDataSource *)self setInitiallyActiveHandles:v21];
@@ -422,9 +422,9 @@ LABEL_17:
   {
     if (v14)
     {
-      v22 = [v8 stringValue];
+      stringValue3 = [contactCopy stringValue];
       *buf = 138477827;
-      v32 = v22;
+      v32 = stringValue3;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "SharedTripSuggestionsDataSource toggle contact on: %{private}@", buf, 0xCu);
     }
 
@@ -434,9 +434,9 @@ LABEL_17:
     v26[2] = sub_100BC4B40;
     v26[3] = &unk_10164CB28;
     v17 = &v27;
-    v24 = v8;
+    v24 = contactCopy;
     v27 = v24;
-    v28 = v9;
+    v28 = completionCopy;
     [v23 startSharingWithContact:v24 completion:v26];
 
     v25 = +[SharedTripSuggestionsCache sharedInstance];
@@ -459,15 +459,15 @@ LABEL_17:
   self->_contactsForDisplay = &__NSArray0__struct;
 }
 
-- (id)findChangedContactsWithNewActiveSet:(id)a3 previousActiveSet:(id)a4
+- (id)findChangedContactsWithNewActiveSet:(id)set previousActiveSet:(id)activeSet
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [NSMutableOrderedSet orderedSetWithOrderedSet:v6];
-  [v7 minusOrderedSet:v5];
-  v8 = [NSMutableOrderedSet orderedSetWithOrderedSet:v5];
+  activeSetCopy = activeSet;
+  setCopy = set;
+  v7 = [NSMutableOrderedSet orderedSetWithOrderedSet:setCopy];
+  [v7 minusOrderedSet:activeSetCopy];
+  v8 = [NSMutableOrderedSet orderedSetWithOrderedSet:activeSetCopy];
 
-  [v8 minusOrderedSet:v6];
+  [v8 minusOrderedSet:setCopy];
   v9 = [NSMutableOrderedSet orderedSetWithOrderedSet:v8];
   [v9 unionOrderedSet:v7];
   v10 = sub_1000946AC();
@@ -490,25 +490,25 @@ LABEL_17:
   return v14;
 }
 
-- (void)_refreshWithActiveContacts:(id)a3
+- (void)_refreshWithActiveContacts:(id)contacts
 {
-  v4 = a3;
-  v5 = [(SharedTripSuggestionsDataSource *)self activeContacts];
-  v6 = [v5 copy];
+  contactsCopy = contacts;
+  activeContacts = [(SharedTripSuggestionsDataSource *)self activeContacts];
+  v6 = [activeContacts copy];
   [(SharedTripSuggestionsDataSource *)self setWereActiveContacts:v6];
 
-  v7 = [[NSOrderedSet alloc] initWithArray:v4];
+  v7 = [[NSOrderedSet alloc] initWithArray:contactsCopy];
   [(SharedTripSuggestionsDataSource *)self setActiveContacts:v7];
-  v8 = [(SharedTripSuggestionsDataSource *)self wereActiveContacts];
-  v9 = [(SharedTripSuggestionsDataSource *)self findChangedContactsWithNewActiveSet:v7 previousActiveSet:v8];
+  wereActiveContacts = [(SharedTripSuggestionsDataSource *)self wereActiveContacts];
+  v9 = [(SharedTripSuggestionsDataSource *)self findChangedContactsWithNewActiveSet:v7 previousActiveSet:wereActiveContacts];
   [(SharedTripSuggestionsDataSource *)self setChangedContacts:v9];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v10 = [(SharedTripSuggestionsDataSource *)self activeContacts];
-  v11 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  activeContacts2 = [(SharedTripSuggestionsDataSource *)self activeContacts];
+  v11 = [activeContacts2 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v11)
   {
     v12 = v11;
@@ -519,7 +519,7 @@ LABEL_17:
       {
         if (*v16 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(activeContacts2);
         }
 
         if (![(NSArray *)self->_contactsForDisplay containsObject:*(*(&v15 + 1) + 8 * i)])
@@ -529,7 +529,7 @@ LABEL_17:
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v12 = [activeContacts2 countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v12)
       {
         continue;
@@ -544,9 +544,9 @@ LABEL_11:
   [(SharedTripSuggestionsDataSource *)self dataDidUpdate];
 }
 
-- (void)sharedTripService:(id)a3 didUpdateReceivers:(id)a4
+- (void)sharedTripService:(id)service didUpdateReceivers:(id)receivers
 {
-  v5 = a4;
+  receiversCopy = receivers;
   v6 = sub_1000946AC();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -554,12 +554,12 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "SharedTripSuggestionsDataSource notified didUpdateReceivers", v7, 2u);
   }
 
-  [(SharedTripSuggestionsDataSource *)self _refreshWithActiveContacts:v5];
+  [(SharedTripSuggestionsDataSource *)self _refreshWithActiveContacts:receiversCopy];
 }
 
-- (void)sharedTripServiceDidUpdateSendingAvailability:(id)a3
+- (void)sharedTripServiceDidUpdateSendingAvailability:(id)availability
 {
-  v4 = a3;
+  availabilityCopy = availability;
   v5 = sub_1000946AC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -567,48 +567,48 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "SharedTripSuggestionsDataSource notified didUpdateSendingAvailability", v7, 2u);
   }
 
-  v6 = [v4 receivers];
+  receivers = [availabilityCopy receivers];
 
-  [(SharedTripSuggestionsDataSource *)self _refreshWithActiveContacts:v6];
+  [(SharedTripSuggestionsDataSource *)self _refreshWithActiveContacts:receivers];
 }
 
-- (void)sharedTripService:(id)a3 sharingDidInvalidateWithError:(id)a4
+- (void)sharedTripService:(id)service sharingDidInvalidateWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = sub_1000946AC();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v7 = 138543362;
-    v8 = v5;
+    v8 = errorCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "SharedTripSuggestionsDataSource notified didInvalidateWithError: %{public}@", &v7, 0xCu);
   }
 
   [(SharedTripSuggestionsDataSource *)self _refreshWithActiveContacts:&__NSArray0__struct];
 }
 
-- (BOOL)isContactSearchItemAtIndexPath:(id)a3
+- (BOOL)isContactSearchItemAtIndexPath:(id)path
 {
   if (!self->_contactSearchItem)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(SharedTripSuggestionsDataSource *)self tableViewDataSource];
-  v6 = [v5 itemIdentifierForIndexPath:v4];
+  pathCopy = path;
+  tableViewDataSource = [(SharedTripSuggestionsDataSource *)self tableViewDataSource];
+  v6 = [tableViewDataSource itemIdentifierForIndexPath:pathCopy];
 
-  v7 = [(SharedTripSuggestionsDataSource *)self contactSearchItemIdentifier];
-  LOBYTE(v4) = [v6 isEqual:v7];
+  contactSearchItemIdentifier = [(SharedTripSuggestionsDataSource *)self contactSearchItemIdentifier];
+  LOBYTE(pathCopy) = [v6 isEqual:contactSearchItemIdentifier];
 
-  return v4;
+  return pathCopy;
 }
 
-- (void)setShowContactSearchItem:(BOOL)a3
+- (void)setShowContactSearchItem:(BOOL)item
 {
-  if (self->_showContactSearchItem != a3)
+  if (self->_showContactSearchItem != item)
   {
-    self->_showContactSearchItem = a3;
-    if (a3)
+    self->_showContactSearchItem = item;
+    if (item)
     {
       v5 = objc_alloc_init(SharedTripContactSearchItem);
     }
@@ -625,50 +625,50 @@ LABEL_11:
   }
 }
 
-- (void)dataDidUpdateAnimatingChanges:(BOOL)a3
+- (void)dataDidUpdateAnimatingChanges:(BOOL)changes
 {
-  v3 = a3;
-  v5 = [(SharedTripSuggestionsDataSource *)self tableViewDataSource];
+  changesCopy = changes;
+  tableViewDataSource = [(SharedTripSuggestionsDataSource *)self tableViewDataSource];
 
-  if (v5)
+  if (tableViewDataSource)
   {
-    v6 = [(SharedTripSuggestionsDataSource *)self contactsForDisplay];
-    v7 = [NSDiffableDataSourceSnapshot _maps_singleSectionSnapshotWithIdentifiersForItems:v6];
-    v8 = [(SharedTripSuggestionsDataSource *)self changedContacts];
-    v9 = [v8 count];
+    contactsForDisplay = [(SharedTripSuggestionsDataSource *)self contactsForDisplay];
+    v7 = [NSDiffableDataSourceSnapshot _maps_singleSectionSnapshotWithIdentifiersForItems:contactsForDisplay];
+    changedContacts = [(SharedTripSuggestionsDataSource *)self changedContacts];
+    v9 = [changedContacts count];
 
     if (v9)
     {
-      v10 = [(SharedTripSuggestionsDataSource *)self changedContacts];
+      changedContacts2 = [(SharedTripSuggestionsDataSource *)self changedContacts];
       v22[0] = _NSConcreteStackBlock;
       v22[1] = 3221225472;
       v22[2] = sub_100BC55C0;
       v22[3] = &unk_10164CB00;
       v22[4] = self;
-      v11 = sub_100021DB0(v10, v22);
+      v11 = sub_100021DB0(changedContacts2, v22);
 
       [v7 reconfigureItemsWithIdentifiers:v11];
     }
 
     if ([(SharedTripSuggestionsDataSource *)self showsContactSearchItem])
     {
-      v12 = [v7 sectionIdentifiers];
-      v13 = [v12 firstObject];
+      sectionIdentifiers = [v7 sectionIdentifiers];
+      firstObject = [sectionIdentifiers firstObject];
 
       contactSearchItem = self->_contactSearchItem;
       v14 = contactSearchItem;
       v15 = [NSArray arrayWithObjects:&contactSearchItem count:1];
       v16 = [v7 _maps_appendIdentifiersForSection:v14 items:v15];
 
-      if (v13 && [(SharedTripSuggestionsDataSource *)self contactSearchItemPosition]== 2)
+      if (firstObject && [(SharedTripSuggestionsDataSource *)self contactSearchItemPosition]== 2)
       {
-        v17 = [(SharedTripSuggestionsDataSource *)self contactSearchItemIdentifier];
-        [v7 moveSectionWithIdentifier:v17 beforeSectionWithIdentifier:v13];
+        contactSearchItemIdentifier = [(SharedTripSuggestionsDataSource *)self contactSearchItemIdentifier];
+        [v7 moveSectionWithIdentifier:contactSearchItemIdentifier beforeSectionWithIdentifier:firstObject];
       }
     }
 
-    v18 = [(SharedTripSuggestionsDataSource *)self tableViewDataSource];
-    [v18 applySnapshot:v7 animatingDifferences:v3];
+    tableViewDataSource2 = [(SharedTripSuggestionsDataSource *)self tableViewDataSource];
+    [tableViewDataSource2 applySnapshot:v7 animatingDifferences:changesCopy];
   }
 
   v19 = sub_1000946AC();
@@ -678,13 +678,13 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "SharedTripSuggestionsDataSource data did update", v21, 2u);
   }
 
-  v20 = [(SharedTripSuggestionsDataSource *)self delegate];
-  [v20 suggestionsDataSourceDidUpdateContactsForDisplay:self];
+  delegate = [(SharedTripSuggestionsDataSource *)self delegate];
+  [delegate suggestionsDataSourceDidUpdateContactsForDisplay:self];
 
   [(SharedTripSuggestionsDataSource *)self setChangedContacts:0];
 }
 
-- (void)suggestionsDidUpdateInCache:(id)a3
+- (void)suggestionsDidUpdateInCache:(id)cache
 {
   v4 = sub_1000946AC();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -697,7 +697,7 @@ LABEL_11:
   [(SharedTripSuggestionsDataSource *)self dataDidUpdate];
 }
 
-- (void)suggestionsWillUpdateInCache:(id)a3
+- (void)suggestionsWillUpdateInCache:(id)cache
 {
   v4 = sub_1000946AC();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -716,29 +716,29 @@ LABEL_11:
   [(SharedTripSuggestionsDataSource *)self setTableView:0];
 }
 
-- (void)addTableView:(id)a3 cellProvider:(id)a4
+- (void)addTableView:(id)view cellProvider:(id)provider
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(SharedTripSuggestionsDataSource *)self tableView];
+  viewCopy = view;
+  providerCopy = provider;
+  tableView = [(SharedTripSuggestionsDataSource *)self tableView];
 
-  if (v7 != v11)
+  if (tableView != viewCopy)
   {
-    [(SharedTripSuggestionsDataSource *)self setTableView:v11];
+    [(SharedTripSuggestionsDataSource *)self setTableView:viewCopy];
     v8 = [UITableViewDiffableDataSource alloc];
-    v9 = sub_10009ACF0(v6);
-    v10 = [v8 initWithTableView:v11 cellProvider:v9];
+    v9 = sub_10009ACF0(providerCopy);
+    v10 = [v8 initWithTableView:viewCopy cellProvider:v9];
     [(SharedTripSuggestionsDataSource *)self setTableViewDataSource:v10];
 
     [(SharedTripSuggestionsDataSource *)self dataDidUpdate];
   }
 }
 
-- (void)setSoftCap:(unint64_t)a3
+- (void)setSoftCap:(unint64_t)cap
 {
-  if (self->_softCap != a3)
+  if (self->_softCap != cap)
   {
-    self->_softCap = a3;
+    self->_softCap = cap;
     [(SharedTripSuggestionsDataSource *)self dataDidUpdateAnimatingChanges:0];
   }
 }
@@ -756,7 +756,7 @@ LABEL_11:
   [(SharedTripSuggestionsDataSource *)&v5 dealloc];
 }
 
-- (SharedTripSuggestionsDataSource)initWithSoftCellCap:(unint64_t)a3 includeActiveContacts:(BOOL)a4
+- (SharedTripSuggestionsDataSource)initWithSoftCellCap:(unint64_t)cap includeActiveContacts:(BOOL)contacts
 {
   v18.receiver = self;
   v18.super_class = SharedTripSuggestionsDataSource;
@@ -764,16 +764,16 @@ LABEL_11:
   v7 = v6;
   if (v6)
   {
-    v6->_softCap = a3;
-    v6->_includeActiveContacts = a4;
+    v6->_softCap = cap;
+    v6->_includeActiveContacts = contacts;
     v8 = [NSOrderedSet alloc];
     v9 = +[MSPSharedTripService sharedInstance];
-    v10 = [v9 receivers];
-    v11 = [v8 initWithArray:v10];
+    receivers = [v9 receivers];
+    v11 = [v8 initWithArray:receivers];
     [(SharedTripSuggestionsDataSource *)v7 setActiveContacts:v11];
 
-    v12 = [(SharedTripSuggestionsDataSource *)v7 activeContacts];
-    v13 = sub_100021DB0(v12, &stru_10164CAD8);
+    activeContacts = [(SharedTripSuggestionsDataSource *)v7 activeContacts];
+    v13 = sub_100021DB0(activeContacts, &stru_10164CAD8);
     [(SharedTripSuggestionsDataSource *)v7 setInitiallyActiveHandles:v13];
 
     v14 = +[MSPSharedTripService sharedInstance];
@@ -790,38 +790,38 @@ LABEL_11:
   return v7;
 }
 
-+ (void)prefetchSuggestionsAndCapabilitiesWithContext:(id)a3
++ (void)prefetchSuggestionsAndCapabilitiesWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   if (MSPSharedTripSharingAvailable())
   {
-    v4 = [v3 automaticSharingContacts];
-    if ([v4 count])
+    automaticSharingContacts = [contextCopy automaticSharingContacts];
+    if ([automaticSharingContacts count])
     {
       v5 = sub_1000946AC();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
         *buf = 134217984;
-        v36 = [v4 count];
+        v36 = [automaticSharingContacts count];
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "SharedTripSuggestionsDataSource:prefetch will prefetch %lu autoshare contacts", buf, 0xCu);
       }
 
       v6 = +[MSPSharedTripCapabilityLevelFetcher sharedFetcher];
-      [v6 requestCapabilityLevelsForContacts:v4];
+      [v6 requestCapabilityLevelsForContacts:automaticSharingContacts];
     }
 
-    v7 = [v3 routingToContacts];
-    if (v7)
+    routingToContacts = [contextCopy routingToContacts];
+    if (routingToContacts)
     {
       v8 = sub_1000946AC();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
-        v9 = v7;
+        v9 = routingToContacts;
         if ([v9 count])
         {
           v28 = v8;
-          v29 = v4;
-          v30 = v3;
+          v29 = automaticSharingContacts;
+          v30 = contextCopy;
           v10 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v9 count]);
           v31 = 0u;
           v32 = 0u;
@@ -891,8 +891,8 @@ LABEL_26:
               v23 = [v11 componentsJoinedByString:{@", "}];
               v24 = [NSString stringWithFormat:@"<%p> [%@]", v11, v23];
 
-              v4 = v29;
-              v3 = v30;
+              automaticSharingContacts = v29;
+              contextCopy = v30;
               v8 = v28;
               v9 = v27;
               goto LABEL_30;
@@ -917,16 +917,16 @@ LABEL_30:
     }
 
     v26 = +[SharedTripSuggestionsCache sharedInstance];
-    [v26 requestFreshSuggestionsWithSeedContacts:v7];
+    [v26 requestFreshSuggestionsWithSeedContacts:routingToContacts];
   }
 
   else
   {
-    v4 = sub_1000946AC();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+    automaticSharingContacts = sub_1000946AC();
+    if (os_log_type_enabled(automaticSharingContacts, OS_LOG_TYPE_DEBUG))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "SharedTripSuggestionsDataSource will not prefetch suggestions/capabilities, sharing not available", buf, 2u);
+      _os_log_impl(&_mh_execute_header, automaticSharingContacts, OS_LOG_TYPE_DEBUG, "SharedTripSuggestionsDataSource will not prefetch suggestions/capabilities, sharing not available", buf, 2u);
     }
   }
 }

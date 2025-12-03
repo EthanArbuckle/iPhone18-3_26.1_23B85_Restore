@@ -1,22 +1,22 @@
 @interface KCellularWcdmaScellMeasurement
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addRxInfo:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasConnectedMode:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addRxInfo:(id)info;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasConnectedMode:(BOOL)mode;
+- (void)setHasSubsId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation KCellularWcdmaScellMeasurement
 
-- (void)setHasConnectedMode:(BOOL)a3
+- (void)setHasConnectedMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 4;
   }
@@ -29,27 +29,27 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)addRxInfo:(id)a3
+- (void)addRxInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   rxInfos = self->_rxInfos;
-  v8 = v4;
+  v8 = infoCopy;
   if (!rxInfos)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_rxInfos;
     self->_rxInfos = v6;
 
-    v4 = v8;
+    infoCopy = v8;
     rxInfos = self->_rxInfos;
   }
 
-  [(NSMutableArray *)rxInfos addObject:v4];
+  [(NSMutableArray *)rxInfos addObject:infoCopy];
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 2;
   }
@@ -67,8 +67,8 @@
   v7.receiver = self;
   v7.super_class = KCellularWcdmaScellMeasurement;
   v3 = [(KCellularWcdmaScellMeasurement *)&v7 description];
-  v4 = [(KCellularWcdmaScellMeasurement *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(KCellularWcdmaScellMeasurement *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -113,8 +113,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -135,9 +135,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -188,31 +188,31 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 32) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 32) |= 1u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    *(v4 + 28) = self->_connectedMode;
-    *(v4 + 32) |= 4u;
+    *(toCopy + 28) = self->_connectedMode;
+    *(toCopy + 32) |= 4u;
   }
 
-  v10 = v4;
+  v10 = toCopy;
   if ([(KCellularWcdmaScellMeasurement *)self rxInfosCount])
   {
     [v10 clearRxInfos];
-    v6 = [(KCellularWcdmaScellMeasurement *)self rxInfosCount];
-    if (v6)
+    rxInfosCount = [(KCellularWcdmaScellMeasurement *)self rxInfosCount];
+    if (rxInfosCount)
     {
-      v7 = v6;
+      v7 = rxInfosCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(KCellularWcdmaScellMeasurement *)self rxInfoAtIndex:i];
@@ -228,9 +228,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -265,7 +265,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * i) copyWithZone:{a3, v15}];
+        v13 = [*(*(&v15 + 1) + 8 * i) copyWithZone:{zone, v15}];
         [v6 addRxInfo:v13];
       }
 
@@ -284,58 +284,58 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
   has = self->_has;
-  v6 = *(v4 + 32);
+  v6 = *(equalCopy + 32);
   if (has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_17;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
     goto LABEL_17;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 32) & 4) == 0)
+    if ((*(equalCopy + 32) & 4) == 0)
     {
       goto LABEL_17;
     }
 
-    v10 = *(v4 + 28);
+    v10 = *(equalCopy + 28);
     if (self->_connectedMode)
     {
-      if ((*(v4 + 28) & 1) == 0)
+      if ((*(equalCopy + 28) & 1) == 0)
       {
         goto LABEL_17;
       }
     }
 
-    else if (*(v4 + 28))
+    else if (*(equalCopy + 28))
     {
       goto LABEL_17;
     }
   }
 
-  else if ((*(v4 + 32) & 4) != 0)
+  else if ((*(equalCopy + 32) & 4) != 0)
   {
     goto LABEL_17;
   }
 
   rxInfos = self->_rxInfos;
-  if (!(rxInfos | *(v4 + 2)))
+  if (!(rxInfos | *(equalCopy + 2)))
   {
     goto LABEL_12;
   }
@@ -349,10 +349,10 @@ LABEL_17:
 
   has = self->_has;
 LABEL_12:
-  v8 = (*(v4 + 32) & 2) == 0;
+  v8 = (*(equalCopy + 32) & 2) == 0;
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_subsId != *(v4 + 6))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_subsId != *(equalCopy + 6))
     {
       goto LABEL_17;
     }
@@ -403,21 +403,21 @@ LABEL_6:
   return v4 ^ v3 ^ v6 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 32);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 32);
   if (v6)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v6 = *(v4 + 32);
+    v6 = *(fromCopy + 32);
   }
 
   if ((v6 & 4) != 0)
   {
-    self->_connectedMode = *(v4 + 28);
+    self->_connectedMode = *(fromCopy + 28);
     *&self->_has |= 4u;
   }
 
@@ -425,7 +425,7 @@ LABEL_6:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = *(v4 + 2);
+  v7 = *(fromCopy + 2);
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {

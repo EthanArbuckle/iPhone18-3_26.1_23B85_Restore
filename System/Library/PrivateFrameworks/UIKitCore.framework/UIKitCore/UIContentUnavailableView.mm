@@ -1,10 +1,10 @@
 @interface UIContentUnavailableView
 - (BOOL)_prefersEqualButtonAndSecondaryButtonWidths;
 - (BOOL)shouldReparentScrollViewPanGestureRecognizer;
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (NSDirectionalEdgeInsets)_alignmentInsetsForView:(id)a3;
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (NSDirectionalEdgeInsets)_alignmentInsetsForView:(id)view;
 - (NSDirectionalEdgeInsets)_scrollViewInsets;
 - (UIActivityIndicatorView)_activityIndicator;
 - (UIButton)_button;
@@ -12,33 +12,33 @@
 - (UIContentUnavailableConfiguration)configuration;
 - (UIContentUnavailableView)initWithCoder:(NSCoder *)coder;
 - (UIContentUnavailableView)initWithConfiguration:(UIContentUnavailableConfiguration *)configuration;
-- (UIContentUnavailableViewLayoutInfo)_computeLayoutInfoRestrictedToSize:(SEL)a3;
+- (UIContentUnavailableViewLayoutInfo)_computeLayoutInfoRestrictedToSize:(SEL)size;
 - (UIImageView)_imageView;
 - (UILabel)_secondaryTextLabel;
 - (UILabel)_textLabel;
 - (double)_keyboardInset;
 - (double)_preferredMaxLayoutWidth;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_applyBackgroundConfiguration:(id)a3;
-- (void)_applyConfiguration:(id)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_applyBackgroundConfiguration:(id)configuration;
+- (void)_applyConfiguration:(id)configuration;
 - (void)_checkWhetherEmbeddedInWrapperView;
-- (void)_computeButtonLayoutInfo:(UIContentUnavailableViewLayoutInfo *)a3;
-- (void)_computeLayoutInfoForView:(id)a3 info:(UIContentUnavailableViewElementLayoutInfo *)a4 layoutInfo:(UIContentUnavailableViewLayoutInfo *)a5;
-- (void)_handleKeyboardNotification:(id)a3 aboutToHide:(BOOL)a4;
-- (void)_keyboardAboutToHide:(id)a3;
-- (void)_keyboardAboutToShow:(id)a3;
-- (void)_layoutMarginsDidChangeFromOldMargins:(UIEdgeInsets)a3;
+- (void)_computeButtonLayoutInfo:(UIContentUnavailableViewLayoutInfo *)info;
+- (void)_computeLayoutInfoForView:(id)view info:(UIContentUnavailableViewElementLayoutInfo *)info layoutInfo:(UIContentUnavailableViewLayoutInfo *)layoutInfo;
+- (void)_handleKeyboardNotification:(id)notification aboutToHide:(BOOL)hide;
+- (void)_keyboardAboutToHide:(id)hide;
+- (void)_keyboardAboutToShow:(id)show;
+- (void)_layoutMarginsDidChangeFromOldMargins:(UIEdgeInsets)margins;
 - (void)_prepareForFirstIntrinsicContentSizeCalculation;
-- (void)_prepareForSecondIntrinsicContentSizeCalculationWithLayoutEngineBounds:(CGRect)a3;
+- (void)_prepareForSecondIntrinsicContentSizeCalculationWithLayoutEngineBounds:(CGRect)bounds;
 - (void)_reconfigureKeyboardLayoutAdjustment;
 - (void)didMoveToSuperview;
 - (void)didMoveToWindow;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)scrollViewDidChangeAdjustedContentInset:(id)a3;
+- (void)scrollViewDidChangeAdjustedContentInset:(id)inset;
 - (void)setConfiguration:(UIContentUnavailableConfiguration *)configuration;
 - (void)setScrollEnabled:(BOOL)scrollEnabled;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation UIContentUnavailableView
@@ -46,10 +46,10 @@
 - (void)_reconfigureKeyboardLayoutAdjustment
 {
   contentViewFlags = self->_contentViewFlags;
-  v4 = [(UIView *)self _viewControllerForAncestor];
-  v5 = [v4 _isInViewControllerThatHandlesKeyboardAvoidance];
+  _viewControllerForAncestor = [(UIView *)self _viewControllerForAncestor];
+  _isInViewControllerThatHandlesKeyboardAvoidance = [_viewControllerForAncestor _isInViewControllerThatHandlesKeyboardAvoidance];
 
-  v6 = ((_UIApplicationIsMessagesExtension() | v5) ^ 1) & *&contentViewFlags;
+  v6 = ((_UIApplicationIsMessagesExtension() | _isInViewControllerThatHandlesKeyboardAvoidance) ^ 1) & *&contentViewFlags;
   v7 = self->_contentViewFlags;
   if (((v6 ^ ((v7 & 4) == 0)) & 1) == 0)
   {
@@ -64,35 +64,35 @@
     }
 
     *&self->_contentViewFlags = v8 | v7 & 0xFFFB;
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     if (v6)
     {
-      [v9 addObserver:self selector:sel__keyboardAboutToShow_ name:@"UIKeyboardPrivateWillShowNotification" object:0];
-      [v9 addObserver:self selector:sel__keyboardAboutToHide_ name:@"UIKeyboardPrivateWillHideNotification" object:0];
-      [v9 addObserver:self selector:sel__keyboardAboutToChangeFrame_ name:@"UIKeyboardPrivateWillChangeFrameNotification" object:0];
+      [defaultCenter addObserver:self selector:sel__keyboardAboutToShow_ name:@"UIKeyboardPrivateWillShowNotification" object:0];
+      [defaultCenter addObserver:self selector:sel__keyboardAboutToHide_ name:@"UIKeyboardPrivateWillHideNotification" object:0];
+      [defaultCenter addObserver:self selector:sel__keyboardAboutToChangeFrame_ name:@"UIKeyboardPrivateWillChangeFrameNotification" object:0];
     }
 
     else
     {
-      [v9 removeObserver:self name:@"UIKeyboardPrivateWillShowNotification" object:0];
-      [v9 removeObserver:self name:@"UIKeyboardPrivateWillHideNotification" object:0];
-      [v9 removeObserver:self name:@"UIKeyboardPrivateWillChangeFrameNotification" object:0];
+      [defaultCenter removeObserver:self name:@"UIKeyboardPrivateWillShowNotification" object:0];
+      [defaultCenter removeObserver:self name:@"UIKeyboardPrivateWillHideNotification" object:0];
+      [defaultCenter removeObserver:self name:@"UIKeyboardPrivateWillChangeFrameNotification" object:0];
     }
   }
 }
 
 - (NSDirectionalEdgeInsets)_scrollViewInsets
 {
-  v3 = [(UIContentUnavailableView *)self _scrollView];
-  if (v3)
+  _scrollView = [(UIContentUnavailableView *)self _scrollView];
+  if (_scrollView)
   {
-    v4 = [(UIView *)self traitCollection];
-    v5 = [v4 layoutDirection];
+    traitCollection = [(UIView *)self traitCollection];
+    layoutDirection = [traitCollection layoutDirection];
 
-    [v3 adjustedContentInset];
+    [_scrollView adjustedContentInset];
     v9 = v8;
     v11 = v10;
-    if (v5 == 1)
+    if (layoutDirection == 1)
     {
       v12 = v7;
     }
@@ -102,7 +102,7 @@
       v12 = v6;
     }
 
-    if (v5 == 1)
+    if (layoutDirection == 1)
     {
       v13 = v6;
     }
@@ -281,7 +281,7 @@ uint64_t __42__UIContentUnavailableView_layoutSubviews__block_invoke_3(uint64_t 
 
 - (void)_checkWhetherEmbeddedInWrapperView
 {
-  v3 = [(UIView *)self superview];
+  superview = [(UIView *)self superview];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -384,8 +384,8 @@ uint64_t __42__UIContentUnavailableView_layoutSubviews__block_invoke_3(uint64_t 
     v23 = v21;
   }
 
-  v24 = [(UIContentUnavailableView *)self _scrollView];
-  [v24 setContentSize:{v20, v65 + v23}];
+  _scrollView = [(UIContentUnavailableView *)self _scrollView];
+  [_scrollView setContentSize:{v20, v65 + v23}];
 
   v111[0] = 0;
   v111[1] = v111;
@@ -448,47 +448,47 @@ uint64_t __42__UIContentUnavailableView_layoutSubviews__block_invoke_3(uint64_t 
   v74 = v28;
   v75 = v111;
   v29 = _Block_copy(v73);
-  v30 = [(UIContentUnavailableView *)self _imageView];
+  _imageView = [(UIContentUnavailableView *)self _imageView];
   v31 = (*&self->_contentViewFlags >> 3) & 1;
   v32 = v27[2];
   v69 = __src[0];
   v70 = __src[1];
   v71 = __src[2];
   v72 = *&__src[3];
-  v32(v27, v30, &v69, v31);
+  v32(v27, _imageView, &v69, v31);
 
-  v33 = [(UIContentUnavailableView *)self _activityIndicator];
+  _activityIndicator = [(UIContentUnavailableView *)self _activityIndicator];
   v34 = (*&self->_contentViewFlags >> 4) & 1;
   v35 = v27[2];
   v69 = *(&__src[17] + 8);
   v70 = *(&__src[18] + 8);
   v71 = *(&__src[19] + 8);
   v72 = *(&__src[20] + 1);
-  v35(v27, v33, &v69, v34);
+  v35(v27, _activityIndicator, &v69, v34);
 
-  v36 = [(UIContentUnavailableView *)self _textLabel];
+  _textLabel = [(UIContentUnavailableView *)self _textLabel];
   v37 = (*&self->_contentViewFlags >> 5) & 1;
   v38 = v27[2];
   v69 = *(&__src[3] + 8);
   v70 = *(&__src[4] + 8);
   v71 = *(&__src[5] + 8);
   v72 = *(&__src[6] + 1);
-  v38(v27, v36, &v69, v37);
+  v38(v27, _textLabel, &v69, v37);
 
-  v39 = [(UIContentUnavailableView *)self _secondaryTextLabel];
+  _secondaryTextLabel = [(UIContentUnavailableView *)self _secondaryTextLabel];
   v40 = (*&self->_contentViewFlags >> 6) & 1;
   v41 = v27[2];
   v69 = __src[7];
   v70 = __src[8];
   v71 = __src[9];
   v72 = *&__src[10];
-  v41(v27, v39, &v69, v40);
+  v41(v27, _secondaryTextLabel, &v69, v40);
 
   if (LOBYTE(__src[21]) == 1)
   {
-    v47 = [(UIContentUnavailableView *)self _button];
+    _button = [(UIContentUnavailableView *)self _button];
     contentViewFlags = self->_contentViewFlags;
-    v49 = [(UIContentUnavailableView *)self _secondaryButton];
+    _secondaryButton = [(UIContentUnavailableView *)self _secondaryButton];
     v50 = v29[2];
     v51 = HIBYTE(*&self->_contentViewFlags) & 1;
     v69 = *(&__src[10] + 8);
@@ -499,45 +499,45 @@ uint64_t __42__UIContentUnavailableView_layoutSubviews__block_invoke_3(uint64_t 
     v67[1] = __src[15];
     v67[2] = __src[16];
     v68 = *&__src[17];
-    v50(v29, v47, &v69, (*&contentViewFlags >> 7) & 1, v49, v67, v51);
+    v50(v29, _button, &v69, (*&contentViewFlags >> 7) & 1, _secondaryButton, v67, v51);
   }
 
   else
   {
-    v42 = [(UIContentUnavailableView *)self _button];
+    _button2 = [(UIContentUnavailableView *)self _button];
     v43 = (*&self->_contentViewFlags >> 7) & 1;
     v44 = v27[2];
     v69 = *(&__src[10] + 8);
     v70 = *(&__src[11] + 8);
     v71 = *(&__src[12] + 8);
     v72 = *(&__src[13] + 1);
-    v44(v27, v42, &v69, v43);
+    v44(v27, _button2, &v69, v43);
 
-    v47 = [(UIContentUnavailableView *)self _secondaryButton];
+    _button = [(UIContentUnavailableView *)self _secondaryButton];
     v45 = HIBYTE(*&self->_contentViewFlags) & 1;
     v46 = v27[2];
     v69 = __src[14];
     v70 = __src[15];
     v71 = __src[16];
     v72 = *&__src[17];
-    v46(v27, v47, &v69, v45);
+    v46(v27, _button, &v69, v45);
   }
 
   [self setAccessibilityElements:v106[5]];
-  v52 = [(UIContentUnavailableConfiguration *)self->_configuration imageProperties];
-  [v52 cornerRadius];
+  imageProperties = [(UIContentUnavailableConfiguration *)self->_configuration imageProperties];
+  [imageProperties cornerRadius];
   v54 = v53;
-  v55 = [(UIContentUnavailableView *)self _imageView];
-  _UIApplyCornerRadiusToView(v55, v54);
+  _imageView2 = [(UIContentUnavailableView *)self _imageView];
+  _UIApplyCornerRadiusToView(_imageView2, v54);
 
-  v56 = [(UIContentUnavailableView *)self _activityIndicator];
-  [v56 startAnimating];
+  _activityIndicator2 = [(UIContentUnavailableView *)self _activityIndicator];
+  [_activityIndicator2 startAnimating];
 
-  v57 = [(UIContentUnavailableView *)self _button];
-  [v57 setNeedsUpdateConfiguration];
+  _button3 = [(UIContentUnavailableView *)self _button];
+  [_button3 setNeedsUpdateConfiguration];
 
-  v58 = [(UIContentUnavailableView *)self _secondaryButton];
-  [v58 setNeedsUpdateConfiguration];
+  _secondaryButton2 = [(UIContentUnavailableView *)self _secondaryButton];
+  [_secondaryButton2 setNeedsUpdateConfiguration];
 
   [(UIContentUnavailableView *)self _clearInvalidFrameFlags];
   _Block_object_dispose(&v105, 8);
@@ -550,8 +550,8 @@ uint64_t __42__UIContentUnavailableView_layoutSubviews__block_invoke_3(uint64_t 
   v2 = 0.0;
   if ((*&self->_contentViewFlags & 4) != 0)
   {
-    v4 = [(UIView *)self keyboardSceneDelegate];
-    v5 = v4;
+    keyboardSceneDelegate = [(UIView *)self keyboardSceneDelegate];
+    v5 = keyboardSceneDelegate;
     if ((*&self->_contentViewFlags & 2) != 0)
     {
       x = self->_keyboardFrame.origin.x;
@@ -562,7 +562,7 @@ uint64_t __42__UIContentUnavailableView_layoutSubviews__block_invoke_3(uint64_t 
 
     else
     {
-      if (![v4 isOnScreen])
+      if (![keyboardSceneDelegate isOnScreen])
       {
 LABEL_7:
         [(UIContentUnavailableView *)self _scrollViewInsets];
@@ -592,8 +592,8 @@ void __48___UIContentUnavailableView__rebuildConstraints__block_invoke(uint64_t 
 {
   if (!configuration)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"UIContentUnavailableView.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"configuration != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIContentUnavailableView.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"configuration != nil"}];
   }
 
   v13.receiver = self;
@@ -646,20 +646,20 @@ LABEL_6:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = UIContentUnavailableView;
   [(UIView *)&v5 encodeWithCoder:?];
-  [a3 encodeObject:self->_configuration forKey:@"configuration"];
+  [coder encodeObject:self->_configuration forKey:@"configuration"];
 }
 
 - (void)setConfiguration:(UIContentUnavailableConfiguration *)configuration
 {
   if (!configuration)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"UIContentUnavailableView.m" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"configuration != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIContentUnavailableView.m" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"configuration != nil"}];
   }
 
   v5 = self->_configuration;
@@ -696,28 +696,28 @@ void __45__UIContentUnavailableView_setConfiguration___block_invoke(uint64_t a1,
   }
 }
 
-- (void)_applyConfiguration:(id)a3
+- (void)_applyConfiguration:(id)configuration
 {
-  if (!a3)
+  if (!configuration)
   {
-    v55 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v55 handleFailureInMethod:a2 object:self file:@"UIContentUnavailableView.m" lineNumber:114 description:{@"Invalid parameter not satisfying: %@", @"configuration != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIContentUnavailableView.m" lineNumber:114 description:{@"Invalid parameter not satisfying: %@", @"configuration != nil"}];
   }
 
-  objc_storeStrong(&self->_configuration, a3);
-  v5 = [a3 axesPreservingSuperviewLayoutMargins];
-  if ((v5 & 2) != 0)
+  objc_storeStrong(&self->_configuration, configuration);
+  axesPreservingSuperviewLayoutMargins = [configuration axesPreservingSuperviewLayoutMargins];
+  if ((axesPreservingSuperviewLayoutMargins & 2) != 0)
   {
-    v6 = (v5 << 63 >> 63) & 0xA | 5;
+    v6 = (axesPreservingSuperviewLayoutMargins << 63 >> 63) & 0xA | 5;
   }
 
   else
   {
-    v6 = (v5 << 63 >> 63) & 0xA;
+    v6 = (axesPreservingSuperviewLayoutMargins << 63 >> 63) & 0xA;
   }
 
   [(UIView *)self setEdgesPreservingSuperviewLayoutMargins:v6];
-  [a3 directionalLayoutMargins];
+  [configuration directionalLayoutMargins];
   [(UIView *)self setDirectionalLayoutMargins:?];
   if (!self->_scrollView)
   {
@@ -732,10 +732,10 @@ void __45__UIContentUnavailableView_setConfiguration___block_invoke(uint64_t a1,
     [(UIView *)self addSubview:self->_scrollView];
   }
 
-  v56 = [(UIView *)self traitCollection];
-  if (a3)
+  traitCollection = [(UIView *)self traitCollection];
+  if (configuration)
   {
-    v10 = *(a3 + 7) == 1;
+    v10 = *(configuration + 7) == 1;
   }
 
   else
@@ -746,11 +746,11 @@ void __45__UIContentUnavailableView_setConfiguration___block_invoke(uint64_t a1,
   [(UIScrollView *)self->_scrollView setScrollEnabled:[(UIContentUnavailableView *)self isScrollEnabled]];
   [(UIScrollView *)self->_scrollView _setIsTransientScrollView:v10];
   v11 = self->_scrollView;
-  v12 = [a3 imageProperties];
+  imageProperties = [configuration imageProperties];
   v13 = v11;
   v14 = self->_imageView;
   v15 = v14;
-  if (!v12 || (!v12[2] ? (v16 = 1) : (v16 = v10), (v16 & 1) != 0))
+  if (!imageProperties || (!imageProperties[2] ? (v16 = 1) : (v16 = v10), (v16 & 1) != 0))
   {
     if (v14 && ![(UIView *)v14 isHidden])
     {
@@ -786,14 +786,14 @@ void __45__UIContentUnavailableView_setConfiguration___block_invoke(uint64_t a1,
 
   v17 = 1;
 LABEL_25:
-  v19 = [(UIView *)v15 superview];
+  superview = [(UIView *)v15 superview];
 
-  if (v19 != v13)
+  if (superview != v13)
   {
     [(UIView *)v13 addSubview:v15];
   }
 
-  [(UIContentUnavailableImageProperties *)v12 _applyToImageView:v15];
+  [(UIContentUnavailableImageProperties *)imageProperties _applyToImageView:v15];
 LABEL_28:
 
   contentViewFlags = self->_contentViewFlags;
@@ -810,9 +810,9 @@ LABEL_28:
   *&self->_contentViewFlags = v21 | contentViewFlags & 0xFFF7;
 
   v22 = self->_scrollView;
-  v23 = [a3 imageProperties];
+  imageProperties2 = [configuration imageProperties];
   v24 = v22;
-  v25 = v23;
+  v25 = imageProperties2;
   v26 = self->_activityIndicator;
   v27 = v26;
   if (!v10)
@@ -851,9 +851,9 @@ LABEL_28:
 
   v28 = 1;
 LABEL_41:
-  v29 = [(UIView *)v27 superview];
+  superview2 = [(UIView *)v27 superview];
 
-  if (v29 != v24)
+  if (superview2 != v24)
   {
     [(UIView *)v24 addSubview:v27];
   }
@@ -875,8 +875,8 @@ LABEL_45:
   *&self->_contentViewFlags = v31 | v30 & 0xFFEF;
 
   v32 = self->_scrollView;
-  v33 = [a3 textProperties];
-  updated = _UIContentUnavailableUpdateLabelUsingTextConfiguration(v32, &self->_textLabel, v33);
+  textProperties = [configuration textProperties];
+  updated = _UIContentUnavailableUpdateLabelUsingTextConfiguration(v32, &self->_textLabel, textProperties);
   v35 = self->_contentViewFlags;
   if (updated | ((v35 & 0x20) >> 5))
   {
@@ -891,8 +891,8 @@ LABEL_45:
   *&self->_contentViewFlags = v36 | v35 & 0xFFDF;
 
   v37 = self->_scrollView;
-  v38 = [a3 secondaryTextProperties];
-  v39 = _UIContentUnavailableUpdateLabelUsingTextConfiguration(v37, &self->_secondaryTextLabel, v38);
+  secondaryTextProperties = [configuration secondaryTextProperties];
+  v39 = _UIContentUnavailableUpdateLabelUsingTextConfiguration(v37, &self->_secondaryTextLabel, secondaryTextProperties);
   v40 = self->_contentViewFlags;
   if (v39 | ((v40 & 0x40) >> 6))
   {
@@ -907,8 +907,8 @@ LABEL_45:
   *&self->_contentViewFlags = v41 | v40 & 0xFFBF;
 
   v42 = self->_scrollView;
-  v43 = [a3 buttonProperties];
-  v44 = _UIUpdateButtonUsingButtonConfiguration(v42, &self->_button, v43);
+  buttonProperties = [configuration buttonProperties];
+  v44 = _UIUpdateButtonUsingButtonConfiguration(v42, &self->_button, buttonProperties);
   v45 = self->_contentViewFlags;
   if (v44 | ((v45 & 0x80) >> 7))
   {
@@ -923,8 +923,8 @@ LABEL_45:
   *&self->_contentViewFlags = v46 | v45 & 0xFF7F;
 
   v47 = self->_scrollView;
-  v48 = [a3 secondaryButtonProperties];
-  v49 = _UIUpdateButtonUsingButtonConfiguration(v47, &self->_secondaryButton, v48);
+  secondaryButtonProperties = [configuration secondaryButtonProperties];
+  v49 = _UIUpdateButtonUsingButtonConfiguration(v47, &self->_secondaryButton, secondaryButtonProperties);
   v50 = self->_contentViewFlags;
   if (v49 | ((v50 & 0x100) >> 8))
   {
@@ -938,23 +938,23 @@ LABEL_45:
 
   *&self->_contentViewFlags = v51 | v50 & 0xFEFF;
 
-  v52 = _UIContentUnavailableConstantsForTraitCollection(v56);
+  v52 = _UIContentUnavailableConstantsForTraitCollection(traitCollection);
   -[UIView _setOverrideUserInterfaceRenderingMode:](self, "_setOverrideUserInterfaceRenderingMode:", [v52 defaultUserInterfaceRenderingMode]);
-  v53 = [a3 background];
-  [(UIContentUnavailableView *)self _applyBackgroundConfiguration:v53];
+  background = [configuration background];
+  [(UIContentUnavailableView *)self _applyBackgroundConfiguration:background];
 
   self->_preferredMaxLayoutWidth = 1.79769313e308;
   [(UIView *)self invalidateIntrinsicContentSize];
   [(UIView *)self setNeedsLayout];
 }
 
-- (void)_applyBackgroundConfiguration:(id)a3
+- (void)_applyBackgroundConfiguration:(id)configuration
 {
   backgroundView = self->_backgroundView;
   if (backgroundView)
   {
 LABEL_2:
-    [(_UISystemBackgroundView *)backgroundView setConfiguration:a3];
+    [(_UISystemBackgroundView *)backgroundView setConfiguration:configuration];
     [(_UISystemBackgroundView *)self->_backgroundView frameInContainerView:self];
     v6 = self->_backgroundView;
 
@@ -962,7 +962,7 @@ LABEL_2:
     return;
   }
 
-  if (![a3 _hasBackgroundFill])
+  if (![configuration _hasBackgroundFill])
   {
     backgroundView = self->_backgroundView;
     if (!backgroundView)
@@ -973,7 +973,7 @@ LABEL_2:
     goto LABEL_2;
   }
 
-  v7 = [[_UISystemBackgroundView alloc] initWithConfiguration:a3 containerView:self];
+  v7 = [[_UISystemBackgroundView alloc] initWithConfiguration:configuration containerView:self];
   v8 = self->_backgroundView;
   self->_backgroundView = v7;
 
@@ -1003,18 +1003,18 @@ LABEL_2:
   }
 }
 
-- (void)scrollViewDidChangeAdjustedContentInset:(id)a3
+- (void)scrollViewDidChangeAdjustedContentInset:(id)inset
 {
   [(UIView *)self setNeedsLayout];
-  v4 = [(UIView *)self _viewControllerForAncestor];
-  v5 = v4;
+  _viewControllerForAncestor = [(UIView *)self _viewControllerForAncestor];
+  v5 = _viewControllerForAncestor;
   if (*&self->_contentViewFlags)
   {
-    if ([v4 _hasAppeared])
+    if ([_viewControllerForAncestor _hasAppeared])
     {
-      v6 = [v5 transitionCoordinator];
+      transitionCoordinator = [v5 transitionCoordinator];
 
-      if (v6)
+      if (transitionCoordinator)
       {
         v7[0] = MEMORY[0x1E69E9820];
         v7[1] = 3221225472;
@@ -1027,9 +1027,9 @@ LABEL_2:
   }
 }
 
-- (void)_handleKeyboardNotification:(id)a3 aboutToHide:(BOOL)a4
+- (void)_handleKeyboardNotification:(id)notification aboutToHide:(BOOL)hide
 {
-  if (a4)
+  if (hide)
   {
     v6 = *MEMORY[0x1E695F050];
     v7 = *(MEMORY[0x1E695F050] + 8);
@@ -1039,8 +1039,8 @@ LABEL_2:
 
   else
   {
-    v10 = [(UIContentUnavailableView *)self _scrollView];
-    [_UIKeyboardLayoutAlignmentView _endFrameForNotification:a3 inView:v10];
+    _scrollView = [(UIContentUnavailableView *)self _scrollView];
+    [_UIKeyboardLayoutAlignmentView _endFrameForNotification:notification inView:_scrollView];
     v6 = v11;
     v7 = v12;
     v8 = v13;
@@ -1059,21 +1059,21 @@ LABEL_2:
     self->_keyboardFrame.size.height = v9;
     *&self->_contentViewFlags |= 2u;
     [(UIView *)self setNeedsLayout];
-    v15 = [a3 userInfo];
-    v16 = [v15 objectForKeyedSubscript:@"UIKeyboardAnimationDurationUserInfoKey"];
+    userInfo = [notification userInfo];
+    v16 = [userInfo objectForKeyedSubscript:@"UIKeyboardAnimationDurationUserInfoKey"];
     [v16 doubleValue];
     v18 = v17;
 
-    v19 = [a3 userInfo];
-    v20 = [v19 objectForKeyedSubscript:@"UIKeyboardAnimationCurveUserInfoKey"];
-    v21 = [v20 intValue];
+    userInfo2 = [notification userInfo];
+    v20 = [userInfo2 objectForKeyedSubscript:@"UIKeyboardAnimationCurveUserInfoKey"];
+    intValue = [v20 intValue];
 
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __68__UIContentUnavailableView__handleKeyboardNotification_aboutToHide___block_invoke;
     v22[3] = &unk_1E70F6848;
     v22[5] = v18;
-    v22[6] = (v21 << 16) | 6;
+    v22[6] = (intValue << 16) | 6;
     v22[4] = self;
     [UIView _performWithAnimation:v22];
     *&self->_contentViewFlags &= ~2u;
@@ -1092,29 +1092,29 @@ uint64_t __68__UIContentUnavailableView__handleKeyboardNotification_aboutToHide_
   return [UIView animateWithDuration:v2 delay:v4 options:0 animations:v1 completion:0.0];
 }
 
-- (void)_keyboardAboutToShow:(id)a3
+- (void)_keyboardAboutToShow:(id)show
 {
-  v5 = [a3 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"UIKeyboardOriginatedFromRotationUserInfoKey"];
-  v7 = [v6 BOOLValue];
+  userInfo = [show userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"UIKeyboardOriginatedFromRotationUserInfoKey"];
+  bOOLValue = [v6 BOOLValue];
 
-  if ((v7 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
 
-    [(UIContentUnavailableView *)self _handleKeyboardNotification:a3 aboutToHide:0];
+    [(UIContentUnavailableView *)self _handleKeyboardNotification:show aboutToHide:0];
   }
 }
 
-- (void)_keyboardAboutToHide:(id)a3
+- (void)_keyboardAboutToHide:(id)hide
 {
-  v5 = [a3 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"UIKeyboardOriginatedFromRotationUserInfoKey"];
-  v7 = [v6 BOOLValue];
+  userInfo = [hide userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"UIKeyboardOriginatedFromRotationUserInfoKey"];
+  bOOLValue = [v6 BOOLValue];
 
-  if ((v7 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
 
-    [(UIContentUnavailableView *)self _handleKeyboardNotification:a3 aboutToHide:1];
+    [(UIContentUnavailableView *)self _handleKeyboardNotification:hide aboutToHide:1];
   }
 }
 
@@ -1126,12 +1126,12 @@ uint64_t __68__UIContentUnavailableView__handleKeyboardNotification_aboutToHide_
   [(UIView *)&v2 _prepareForFirstIntrinsicContentSizeCalculation];
 }
 
-- (void)_prepareForSecondIntrinsicContentSizeCalculationWithLayoutEngineBounds:(CGRect)a3
+- (void)_prepareForSecondIntrinsicContentSizeCalculationWithLayoutEngineBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(UIView *)self alignmentRectForFrame:?];
   self->_preferredMaxLayoutWidth = v8;
   v9.receiver = self;
@@ -1150,32 +1150,32 @@ uint64_t __68__UIContentUnavailableView__handleKeyboardNotification_aboutToHide_
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  if (a3.width <= 0.0)
+  if (fits.width <= 0.0)
   {
-    a3.width = 1.79769313e308;
+    fits.width = 1.79769313e308;
   }
 
-  if (a3.height <= 0.0)
+  if (fits.height <= 0.0)
   {
-    a3.height = 1.79769313e308;
+    fits.height = 1.79769313e308;
   }
 
-  [(UIContentUnavailableView *)self _intrinsicSizeWithinSize:a3.width, a3.height];
+  [(UIContentUnavailableView *)self _intrinsicSizeWithinSize:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9 = 1.79769313e308;
-  if (a3.width <= 0.0)
+  if (size.width <= 0.0)
   {
-    a3.width = 1.79769313e308;
+    size.width = 1.79769313e308;
   }
 
   if (height > 0.0)
@@ -1183,13 +1183,13 @@ uint64_t __68__UIContentUnavailableView__handleKeyboardNotification_aboutToHide_
     v9 = height;
   }
 
-  [(UIContentUnavailableView *)self _intrinsicSizeWithinSize:a3.width, v9];
-  if (a4 >= 1000.0)
+  [(UIContentUnavailableView *)self _intrinsicSizeWithinSize:size.width, v9];
+  if (priority >= 1000.0)
   {
     v10 = width;
   }
 
-  if (a5 >= 1000.0)
+  if (fittingPriority >= 1000.0)
   {
     v11 = height;
   }
@@ -1203,8 +1203,8 @@ uint64_t __68__UIContentUnavailableView__handleKeyboardNotification_aboutToHide_
 {
   if (*&self->_contentViewFlags)
   {
-    v3 = [(UIContentUnavailableConfiguration *)self->_configuration background];
-    v2 = [v3 _hasBackgroundFill] ^ 1;
+    background = [(UIContentUnavailableConfiguration *)self->_configuration background];
+    v2 = [background _hasBackgroundFill] ^ 1;
   }
 
   else
@@ -1215,11 +1215,11 @@ uint64_t __68__UIContentUnavailableView__handleKeyboardNotification_aboutToHide_
   return v2;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = UIContentUnavailableView;
-  v5 = [(UIView *)&v9 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(UIView *)&v9 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {
@@ -1234,15 +1234,15 @@ uint64_t __68__UIContentUnavailableView__handleKeyboardNotification_aboutToHide_
   return v7;
 }
 
-- (UIContentUnavailableViewLayoutInfo)_computeLayoutInfoRestrictedToSize:(SEL)a3
+- (UIContentUnavailableViewLayoutInfo)_computeLayoutInfoRestrictedToSize:(SEL)size
 {
   height = a4.height;
   width = a4.width;
-  v53 = [(UIView *)self traitCollection];
+  traitCollection = [(UIView *)self traitCollection];
   v8 = self->_configuration;
-  v51 = _UIContentUnavailableConstantsForTraitCollection(v53);
+  v51 = _UIContentUnavailableConstantsForTraitCollection(traitCollection);
   v9 = [(UIView *)self effectiveUserInterfaceLayoutDirection]== UIUserInterfaceLayoutDirectionRightToLeft;
-  v10 = [(UIContentUnavailableView *)self isScrollEnabled];
+  isScrollEnabled = [(UIContentUnavailableView *)self isScrollEnabled];
   [(UIView *)self directionalLayoutMargins];
   v12 = v11;
   v14 = v13;
@@ -1260,7 +1260,7 @@ uint64_t __68__UIContentUnavailableView__handleKeyboardNotification_aboutToHide_
   }
 
   v52 = v27;
-  if (v20 + v24 < height || v10)
+  if (v20 + v24 < height || isScrollEnabled)
   {
     v29 = v20 + v24;
   }
@@ -1320,7 +1320,7 @@ uint64_t __68__UIContentUnavailableView__handleKeyboardNotification_aboutToHide_
 
   retstr->var6 = prefersSideBySideButtonAndSecondaryButton;
   retstr->var7 = v9;
-  retstr->var8 = v10;
+  retstr->var8 = isScrollEnabled;
   retstr->var9 = [(UIContentUnavailableConfiguration *)v8 alignment];
   retstr->var10.top = v20;
   retstr->var10.leading = v22;
@@ -1329,29 +1329,29 @@ uint64_t __68__UIContentUnavailableView__handleKeyboardNotification_aboutToHide_
   retstr->var11 = *v31;
   retstr->var12.width = v34;
   retstr->var12.height = v35;
-  v37 = [(UIContentUnavailableView *)self _textLabel];
-  v38 = [(UIContentUnavailableView *)self _button];
-  v39 = [(UIContentUnavailableView *)self _secondaryButton];
-  v40 = [(UIContentUnavailableView *)self _secondaryTextLabel];
-  v41 = [(UIContentUnavailableView *)self _imageView];
-  v42 = [(UIContentUnavailableView *)self _activityIndicator];
-  if (v37)
+  _textLabel = [(UIContentUnavailableView *)self _textLabel];
+  _button = [(UIContentUnavailableView *)self _button];
+  _secondaryButton = [(UIContentUnavailableView *)self _secondaryButton];
+  _secondaryTextLabel = [(UIContentUnavailableView *)self _secondaryTextLabel];
+  _imageView = [(UIContentUnavailableView *)self _imageView];
+  _activityIndicator = [(UIContentUnavailableView *)self _activityIndicator];
+  if (_textLabel)
   {
     retstr->var1.var1 = 1;
-    [(UIContentUnavailableView *)self _computeLayoutInfoForView:v37 info:&retstr->var1 layoutInfo:retstr];
+    [(UIContentUnavailableView *)self _computeLayoutInfoForView:_textLabel info:&retstr->var1 layoutInfo:retstr];
   }
 
-  if (v38 | v39)
+  if (_button | _secondaryButton)
   {
-    retstr->var3.var1 = v38 != 0;
-    retstr->var4.var1 = v39 != 0;
+    retstr->var3.var1 = _button != 0;
+    retstr->var4.var1 = _secondaryButton != 0;
     [(UIContentUnavailableView *)self _computeButtonLayoutInfo:retstr];
   }
 
-  if (v40)
+  if (_secondaryTextLabel)
   {
     var1 = retstr->var1.var1;
-    retstr->var2.var1 = v37 == 0 || var1;
+    retstr->var2.var1 = _textLabel == 0 || var1;
     v45 = 0.0;
     if (!var1 || ([(UIContentUnavailableConfiguration *)v8 textToSecondaryTextPadding], v45 = v46, v43 = 0.0, !retstr->var1.var1))
     {
@@ -1363,10 +1363,10 @@ uint64_t __68__UIContentUnavailableView__handleKeyboardNotification_aboutToHide_
 
     retstr->var2.var2.top = v45 + retstr->var2.var2.top;
     retstr->var2.var2.bottom = v43 + retstr->var2.var2.bottom;
-    [(UIContentUnavailableView *)self _computeLayoutInfoForView:v40 info:&retstr->var2 layoutInfo:retstr];
+    [(UIContentUnavailableView *)self _computeLayoutInfoForView:_secondaryTextLabel info:&retstr->var2 layoutInfo:retstr];
   }
 
-  if (v41)
+  if (_imageView)
   {
     retstr->var0.var1 = 1;
     if (retstr->var1.var1 || retstr->var2.var1 || retstr->var3.var1 || (v47 = 0.0, retstr->var4.var1))
@@ -1375,10 +1375,10 @@ uint64_t __68__UIContentUnavailableView__handleKeyboardNotification_aboutToHide_
     }
 
     retstr->var0.var2.bottom = v47 + retstr->var0.var2.bottom;
-    [(UIContentUnavailableView *)self _computeLayoutInfoForView:v41 info:retstr layoutInfo:retstr];
+    [(UIContentUnavailableView *)self _computeLayoutInfoForView:_imageView info:retstr layoutInfo:retstr];
   }
 
-  if (v42)
+  if (_activityIndicator)
   {
     retstr->var5.var1 = 1;
     if (retstr->var1.var1 || retstr->var2.var1 || retstr->var3.var1 || (v48 = 0.0, retstr->var4.var1))
@@ -1387,7 +1387,7 @@ uint64_t __68__UIContentUnavailableView__handleKeyboardNotification_aboutToHide_
     }
 
     retstr->var5.var2.bottom = v48 + retstr->var5.var2.bottom;
-    [(UIContentUnavailableView *)self _computeLayoutInfoForView:v42 info:&retstr->var5 layoutInfo:retstr];
+    [(UIContentUnavailableView *)self _computeLayoutInfoForView:_activityIndicator info:&retstr->var5 layoutInfo:retstr];
   }
 
   v49 = v29 + retstr->var11.height;
@@ -1397,31 +1397,31 @@ uint64_t __68__UIContentUnavailableView__handleKeyboardNotification_aboutToHide_
   return result;
 }
 
-- (void)_computeLayoutInfoForView:(id)a3 info:(UIContentUnavailableViewElementLayoutInfo *)a4 layoutInfo:(UIContentUnavailableViewLayoutInfo *)a5
+- (void)_computeLayoutInfoForView:(id)view info:(UIContentUnavailableViewElementLayoutInfo *)info layoutInfo:(UIContentUnavailableViewLayoutInfo *)layoutInfo
 {
   [(UIContentUnavailableView *)self _alignmentInsetsForView:?];
-  v10 = a4->var2.top + v9;
-  v12 = v11 + a4->var2.leading;
-  v14 = v13 + a4->var2.bottom;
-  v16 = v15 + a4->var2.trailing;
-  a4->var2.top = v10;
-  a4->var2.leading = v12;
-  a4->var2.bottom = v14;
-  a4->var2.trailing = v16;
-  v17 = fmax(*MEMORY[0x1E695F060], fmin(a5->var12.width - v12 - v16, a5->var12.width));
-  v18 = [(UIContentUnavailableView *)self _textLabel];
-  v19 = v18;
-  if (v18 == a3)
+  v10 = info->var2.top + v9;
+  v12 = v11 + info->var2.leading;
+  v14 = v13 + info->var2.bottom;
+  v16 = v15 + info->var2.trailing;
+  info->var2.top = v10;
+  info->var2.leading = v12;
+  info->var2.bottom = v14;
+  info->var2.trailing = v16;
+  v17 = fmax(*MEMORY[0x1E695F060], fmin(layoutInfo->var12.width - v12 - v16, layoutInfo->var12.width));
+  _textLabel = [(UIContentUnavailableView *)self _textLabel];
+  v19 = _textLabel;
+  if (_textLabel == view)
   {
   }
 
   else
   {
-    v20 = [(UIContentUnavailableView *)self _secondaryTextLabel];
+    _secondaryTextLabel = [(UIContentUnavailableView *)self _secondaryTextLabel];
 
-    if (v20 != a3)
+    if (_secondaryTextLabel != view)
     {
-      [a3 _intrinsicSizeWithinSize:{v17, 2777777.0}];
+      [view _intrinsicSizeWithinSize:{v17, 2777777.0}];
       v22 = v21;
       v24 = v23;
       goto LABEL_6;
@@ -1430,30 +1430,30 @@ uint64_t __68__UIContentUnavailableView__handleKeyboardNotification_aboutToHide_
 
   v25 = *MEMORY[0x1E695EFF8];
   v26 = *(MEMORY[0x1E695EFF8] + 8);
-  v27 = a3;
-  [v27 textRectForBounds:objc_msgSend(v27 limitedToNumberOfLines:{"numberOfLines"), v25, v26, v17, 2777777.0}];
+  viewCopy = view;
+  [viewCopy textRectForBounds:objc_msgSend(viewCopy limitedToNumberOfLines:{"numberOfLines"), v25, v26, v17, 2777777.0}];
   v22 = v28;
   v24 = v29;
 
 LABEL_6:
-  v30 = [(UIContentUnavailableView *)self _imageView];
-  v31 = v30;
-  if (v30 == a3)
+  _imageView = [(UIContentUnavailableView *)self _imageView];
+  v31 = _imageView;
+  if (_imageView == view)
   {
   }
 
   else
   {
-    v32 = [(UIContentUnavailableView *)self _activityIndicator];
+    _activityIndicator = [(UIContentUnavailableView *)self _activityIndicator];
 
-    if (v32 != a3)
+    if (_activityIndicator != view)
     {
       goto LABEL_21;
     }
   }
 
-  v33 = [(UIContentUnavailableConfiguration *)self->_configuration imageProperties];
-  [v33 maximumSize];
+  imageProperties = [(UIContentUnavailableConfiguration *)self->_configuration imageProperties];
+  [imageProperties maximumSize];
   if (v22 >= v34)
   {
     v36 = v34;
@@ -1490,18 +1490,18 @@ LABEL_21:
     v22 = v17;
   }
 
-  a4->var0.width = v22;
-  a4->var0.height = v24;
-  if (a4->var1)
+  info->var0.width = v22;
+  info->var0.height = v24;
+  if (info->var1)
   {
     v38 = v14 + v10 + v24;
     v39 = v24 > 0.0 && v22 > 0.0;
     v40 = round(v38);
-    v41 = round(a5->var12.height);
-    if (a5->var8)
+    v41 = round(layoutInfo->var12.height);
+    if (layoutInfo->var8)
     {
-      v42 = [(UIContentUnavailableView *)self _imageView];
-      v43 = v42 != a3;
+      _imageView2 = [(UIContentUnavailableView *)self _imageView];
+      v43 = _imageView2 != view;
     }
 
     else
@@ -1510,51 +1510,51 @@ LABEL_21:
     }
 
     v44 = v39 && (v40 <= v41 || v43);
-    a4->var1 = v44;
+    info->var1 = v44;
     if (v44 == 1)
     {
       width = v16 + v12 + v22;
-      height = a5->var11.height;
-      if (a5->var11.width >= width)
+      height = layoutInfo->var11.height;
+      if (layoutInfo->var11.width >= width)
       {
-        width = a5->var11.width;
+        width = layoutInfo->var11.width;
       }
 
-      a5->var11.width = width;
-      a5->var11.height = v38 + height;
-      a5->var12.height = a5->var12.height - v38;
+      layoutInfo->var11.width = width;
+      layoutInfo->var11.height = v38 + height;
+      layoutInfo->var12.height = layoutInfo->var12.height - v38;
     }
   }
 }
 
-- (void)_computeButtonLayoutInfo:(UIContentUnavailableViewLayoutInfo *)a3
+- (void)_computeButtonLayoutInfo:(UIContentUnavailableViewLayoutInfo *)info
 {
-  v93 = [(UIContentUnavailableView *)self _button];
-  v5 = [(UIContentUnavailableView *)self _secondaryButton];
+  _button = [(UIContentUnavailableView *)self _button];
+  _secondaryButton = [(UIContentUnavailableView *)self _secondaryButton];
   v6 = self->_configuration;
-  var1 = a3->var3.var1;
-  v8 = a3->var4.var1;
+  var1 = info->var3.var1;
+  v8 = info->var4.var1;
   [(UIContentUnavailableConfiguration *)v6 buttonToSecondaryButtonPadding];
   v10 = v9;
-  if (a3->var1.var1 || (v11 = 0.0, a3->var2.var1))
+  if (info->var1.var1 || (v11 = 0.0, info->var2.var1))
   {
     [(UIContentUnavailableConfiguration *)v6 textToButtonPadding];
     v11 = v12;
   }
 
-  v13 = [(UIContentUnavailableView *)self _prefersEqualButtonAndSecondaryButtonWidths];
-  v14 = a3->var6 && var1 && v8;
-  [(UIContentUnavailableView *)self _alignmentInsetsForView:v93];
+  _prefersEqualButtonAndSecondaryButtonWidths = [(UIContentUnavailableView *)self _prefersEqualButtonAndSecondaryButtonWidths];
+  v14 = info->var6 && var1 && v8;
+  [(UIContentUnavailableView *)self _alignmentInsetsForView:_button];
   v16 = v15;
-  bottom = a3->var3.var2.bottom;
-  v19 = a3->var3.var2.top + v18;
-  v21 = v20 + a3->var3.var2.leading;
-  v23 = v22 + a3->var3.var2.trailing;
-  [(UIContentUnavailableView *)self _alignmentInsetsForView:v5];
+  bottom = info->var3.var2.bottom;
+  v19 = info->var3.var2.top + v18;
+  v21 = v20 + info->var3.var2.leading;
+  v23 = v22 + info->var3.var2.trailing;
+  [(UIContentUnavailableView *)self _alignmentInsetsForView:_secondaryButton];
   v26 = v25;
-  v28 = a3->var4.var2.top + v27;
-  v29 = v24 + a3->var4.var2.leading;
-  v31 = v30 + a3->var4.var2.trailing;
+  v28 = info->var4.var2.top + v27;
+  v29 = v24 + info->var4.var2.leading;
+  v31 = v30 + info->var4.var2.trailing;
   v91 = v21;
   v92 = v23;
   if (var1 && v8)
@@ -1578,7 +1578,7 @@ LABEL_21:
 
       else
       {
-        v37 = v24 + a3->var4.var2.leading;
+        v37 = v24 + info->var4.var2.leading;
       }
 
       v34 = v37 + 0.0;
@@ -1643,36 +1643,36 @@ LABEL_21:
   v88 = v33;
   v89 = v29;
   v90 = v31;
-  v38 = a3->var4.var2.bottom;
+  v38 = info->var4.var2.bottom;
   v40 = *MEMORY[0x1E695F060];
   v39 = *(MEMORY[0x1E695F060] + 8);
-  v41 = fmax(*MEMORY[0x1E695F060], fmin(a3->var12.width - v34 - v36, a3->var12.width));
+  v41 = fmax(*MEMORY[0x1E695F060], fmin(info->var12.width - v34 - v36, info->var12.width));
   v42 = v39;
   v43 = *MEMORY[0x1E695F060];
   if (var1)
   {
-    [v93 _intrinsicSizeWithinSize:{v41, 2777777.0}];
+    [_button _intrinsicSizeWithinSize:{v41, 2777777.0}];
     v43 = v44;
   }
 
-  v45 = v13 && var1 && v8;
+  v45 = _prefersEqualButtonAndSecondaryButtonWidths && var1 && v8;
   v83 = v42;
   v85 = v16 + bottom;
   v86 = v26 + v38;
   if (v8)
   {
-    [v5 _intrinsicSizeWithinSize:{v41, 2777777.0}];
+    [_secondaryButton _intrinsicSizeWithinSize:{v41, 2777777.0}];
     v40 = v46;
     v39 = v47;
   }
 
-  v48 = [(UIContentUnavailableConfiguration *)v6 buttonProperties];
-  [v48 minimumSize];
+  buttonProperties = [(UIContentUnavailableConfiguration *)v6 buttonProperties];
+  [buttonProperties minimumSize];
   v50 = v49;
   v52 = v51;
 
-  v53 = [(UIContentUnavailableConfiguration *)v6 secondaryButtonProperties];
-  [v53 minimumSize];
+  secondaryButtonProperties = [(UIContentUnavailableConfiguration *)v6 secondaryButtonProperties];
+  [secondaryButtonProperties minimumSize];
   v55 = v54;
   v57 = v56;
 
@@ -1802,29 +1802,29 @@ LABEL_21:
     v74 = v70;
   }
 
-  if (round(v73) > round(a3->var12.width) && v14)
+  if (round(v73) > round(info->var12.width) && v14)
   {
-    a3->var6 = 0;
-    [(UIContentUnavailableView *)self _computeButtonLayoutInfo:a3];
+    info->var6 = 0;
+    [(UIContentUnavailableView *)self _computeButtonLayoutInfo:info];
     goto LABEL_89;
   }
 
   if (v64 > 0.0 && v59 > 0.0 && var1)
   {
     v77 = round(v74);
-    height = a3->var12.height;
+    height = info->var12.height;
     goto LABEL_82;
   }
 
-  height = a3->var12.height;
+  height = info->var12.height;
   if (v63 > 0.0 && v61 > 0.0 && v8)
   {
     v77 = round(v74);
 LABEL_82:
-    v79 = v77 <= round(height) || a3->var8;
-    a3->var3.var0.width = v64;
-    a3->var3.var0.height = v59;
-    v80 = a3->var3.var1;
+    v79 = v77 <= round(height) || info->var8;
+    info->var3.var0.width = v64;
+    info->var3.var0.height = v59;
+    v80 = info->var3.var1;
     if (!v79)
     {
       v80 = 0;
@@ -1835,34 +1835,34 @@ LABEL_82:
 
   v79 = 0;
   v80 = 0;
-  a3->var3.var0.width = v64;
-  a3->var3.var0.height = v59;
+  info->var3.var0.width = v64;
+  info->var3.var0.height = v59;
 LABEL_85:
-  a3->var3.var1 = v80;
-  a3->var3.var2.top = v87;
-  a3->var3.var2.leading = v91;
-  a3->var3.var2.bottom = v85;
-  a3->var3.var2.trailing = v92;
-  a3->var4.var0.width = v63;
-  a3->var4.var0.height = v61;
-  a3->var4.var1 &= v79;
-  a3->var4.var2.top = v88;
-  a3->var4.var2.leading = v89;
-  a3->var4.var2.bottom = v86;
-  a3->var4.var2.trailing = v90;
-  a3->var6 = v14;
+  info->var3.var1 = v80;
+  info->var3.var2.top = v87;
+  info->var3.var2.leading = v91;
+  info->var3.var2.bottom = v85;
+  info->var3.var2.trailing = v92;
+  info->var4.var0.width = v63;
+  info->var4.var0.height = v61;
+  info->var4.var1 &= v79;
+  info->var4.var2.top = v88;
+  info->var4.var2.leading = v89;
+  info->var4.var2.bottom = v86;
+  info->var4.var2.trailing = v90;
+  info->var6 = v14;
   if (v79)
   {
-    width = a3->var11.width;
-    v82 = a3->var11.height;
+    width = info->var11.width;
+    v82 = info->var11.height;
     if (width < v73)
     {
       width = v73;
     }
 
-    a3->var11.width = width;
-    a3->var11.height = v74 + v82;
-    a3->var12.height = height - v74;
+    info->var11.width = width;
+    info->var11.height = v74 + v82;
+    info->var12.height = height - v74;
   }
 
 LABEL_89:
@@ -1870,27 +1870,27 @@ LABEL_89:
 
 - (BOOL)_prefersEqualButtonAndSecondaryButtonWidths
 {
-  v3 = [(UIContentUnavailableView *)self _button];
-  v4 = [(UIContentUnavailableView *)self _secondaryButton];
-  v5 = [v3 _currentConfiguration];
-  if ([v5 _hasObscuringBackground])
+  _button = [(UIContentUnavailableView *)self _button];
+  _secondaryButton = [(UIContentUnavailableView *)self _secondaryButton];
+  _currentConfiguration = [_button _currentConfiguration];
+  if ([_currentConfiguration _hasObscuringBackground])
   {
-    v6 = [v4 _currentConfiguration];
-    v7 = [v6 _hasObscuringBackground];
+    _currentConfiguration2 = [_secondaryButton _currentConfiguration];
+    _hasObscuringBackground = [_currentConfiguration2 _hasObscuringBackground];
   }
 
   else
   {
-    v7 = 0;
+    _hasObscuringBackground = 0;
   }
 
-  v8 = [v3 behavioralStyle] == 2 && objc_msgSend(v4, "behavioralStyle") == 2;
-  v9 = v7 | v8;
+  v8 = [_button behavioralStyle] == 2 && objc_msgSend(_secondaryButton, "behavioralStyle") == 2;
+  v9 = _hasObscuringBackground | v8;
 
   return v9 & 1;
 }
 
-- (NSDirectionalEdgeInsets)_alignmentInsetsForView:(id)a3
+- (NSDirectionalEdgeInsets)_alignmentInsetsForView:(id)view
 {
   objc_opt_class();
   v4 = 0.0;
@@ -1899,12 +1899,12 @@ LABEL_89:
   v7 = 0.0;
   if (objc_opt_isKindOfClass())
   {
-    v8 = a3;
-    if ([v8 behavioralStyle] == 2 || (objc_msgSend(v8, "_currentConfiguration"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "_hasObscuringBackground"), v9, (v10 & 1) != 0))
+    viewCopy = view;
+    if ([viewCopy behavioralStyle] == 2 || (objc_msgSend(viewCopy, "_currentConfiguration"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "_hasObscuringBackground"), v9, (v10 & 1) != 0))
     {
-      v11 = [v8 effectiveUserInterfaceLayoutDirection];
-      [v8 alignmentRectInsets];
-      if (v11 == 1)
+      effectiveUserInterfaceLayoutDirection = [viewCopy effectiveUserInterfaceLayoutDirection];
+      [viewCopy alignmentRectInsets];
+      if (effectiveUserInterfaceLayoutDirection == 1)
       {
         v16 = v15;
       }
@@ -1914,7 +1914,7 @@ LABEL_89:
         v16 = v13;
       }
 
-      if (v11 != 1)
+      if (effectiveUserInterfaceLayoutDirection != 1)
       {
         v13 = v15;
       }
@@ -1927,8 +1927,8 @@ LABEL_89:
 
     else
     {
-      v17 = [v8 _currentConfiguration];
-      [v17 contentInsets];
+      _currentConfiguration = [viewCopy _currentConfiguration];
+      [_currentConfiguration contentInsets];
       v7 = -v18;
       v6 = -v19;
       v5 = -v20;
@@ -1947,14 +1947,14 @@ LABEL_89:
   return result;
 }
 
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size
 {
-  if (a3.width >= self->_preferredMaxLayoutWidth)
+  if (size.width >= self->_preferredMaxLayoutWidth)
   {
-    a3.width = self->_preferredMaxLayoutWidth;
+    size.width = self->_preferredMaxLayoutWidth;
   }
 
-  [(UIContentUnavailableView *)self _computeLayoutInfoRestrictedToSize:a3.width, a3.height, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  [(UIContentUnavailableView *)self _computeLayoutInfoRestrictedToSize:size.width, size.height, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   v4 = 0.0;
   v3 = 0.0;
   result.height = v4;
@@ -1962,27 +1962,27 @@ LABEL_89:
   return result;
 }
 
-- (void)_layoutMarginsDidChangeFromOldMargins:(UIEdgeInsets)a3
+- (void)_layoutMarginsDidChangeFromOldMargins:(UIEdgeInsets)margins
 {
   v4.receiver = self;
   v4.super_class = UIContentUnavailableView;
-  [(UIView *)&v4 _layoutMarginsDidChangeFromOldMargins:a3.top, a3.left, a3.bottom, a3.right];
+  [(UIView *)&v4 _layoutMarginsDidChangeFromOldMargins:margins.top, margins.left, margins.bottom, margins.right];
   [(UIView *)self invalidateIntrinsicContentSize];
   [(UIView *)self setNeedsLayout];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   if ((*&self->_contentViewFlags & 1) == 0)
   {
-    v4 = [(UIView *)self window];
+    window = [(UIView *)self window];
 
-    if (v4)
+    if (window)
     {
-      v5 = [(UIView *)self _viewControllerForAncestor];
-      v7 = [v5 contentUnavailableConfigurationState];
+      _viewControllerForAncestor = [(UIView *)self _viewControllerForAncestor];
+      contentUnavailableConfigurationState = [_viewControllerForAncestor contentUnavailableConfigurationState];
 
-      v6 = [(UIContentUnavailableConfiguration *)self->_configuration updatedConfigurationForState:v7];
+      v6 = [(UIContentUnavailableConfiguration *)self->_configuration updatedConfigurationForState:contentUnavailableConfigurationState];
       [(UIContentUnavailableView *)self _applyConfiguration:v6];
     }
   }

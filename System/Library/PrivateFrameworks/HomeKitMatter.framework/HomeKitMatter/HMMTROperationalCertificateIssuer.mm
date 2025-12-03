@@ -1,14 +1,14 @@
 @interface HMMTROperationalCertificateIssuer
 + (id)logCategory;
 + (id)shortDescription;
-- (BOOL)isEquivalentTo:(id)a3;
+- (BOOL)isEquivalentTo:(id)to;
 - (HMMTRAccessoryServerBrowser)browser;
-- (HMMTROperationalCertificateIssuer)initWithRemoteDelegate:(id)a3 fabricID:(id)a4;
-- (HMMTROperationalCertificateIssuer)initWithRootKeyPair:(id)a3 rootCertificate:(id)a4 fabricID:(id)a5;
+- (HMMTROperationalCertificateIssuer)initWithRemoteDelegate:(id)delegate fabricID:(id)d;
+- (HMMTROperationalCertificateIssuer)initWithRootKeyPair:(id)pair rootCertificate:(id)certificate fabricID:(id)d;
 - (NSString)shortDescription;
 - (id)logIdentifier;
-- (id)publicKeyFromCSRInfo:(id)a3 error:(id *)a4;
-- (void)issueOperationalCertificateForRequest:(id)a3 attestationInfo:(id)a4 controller:(id)a5 completion:(id)a6;
+- (id)publicKeyFromCSRInfo:(id)info error:(id *)error;
+- (void)issueOperationalCertificateForRequest:(id)request attestationInfo:(id)info controller:(id)controller completion:(id)completion;
 @end
 
 @implementation HMMTROperationalCertificateIssuer
@@ -30,24 +30,24 @@
 - (id)logIdentifier
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMMTROperationalCertificateIssuer *)self fabricID];
-  v4 = [v2 stringWithFormat:@"%@", v3];
+  fabricID = [(HMMTROperationalCertificateIssuer *)self fabricID];
+  v4 = [v2 stringWithFormat:@"%@", fabricID];
 
   return v4;
 }
 
-- (void)issueOperationalCertificateForRequest:(id)a3 attestationInfo:(id)a4 controller:(id)a5 completion:(id)a6
+- (void)issueOperationalCertificateForRequest:(id)request attestationInfo:(id)info controller:(id)controller completion:(id)completion
 {
   v99 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  requestCopy = request;
+  infoCopy = info;
+  controllerCopy = controller;
+  completionCopy = completion;
   v92 = 0;
-  v14 = [(HMMTROperationalCertificateIssuer *)self publicKeyFromCSRInfo:v10 error:&v92];
+  v14 = [(HMMTROperationalCertificateIssuer *)self publicKeyFromCSRInfo:requestCopy error:&v92];
   v87 = v92;
   v15 = objc_autoreleasePoolPush();
-  v16 = self;
+  selfCopy = self;
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
@@ -60,35 +60,35 @@
   }
 
   objc_autoreleasePoolPop(v15);
-  v19 = [(HMMTROperationalCertificateIssuer *)v16 rootKeyPair];
+  rootKeyPair = [(HMMTROperationalCertificateIssuer *)selfCopy rootKeyPair];
 
-  if (!v19)
+  if (!rootKeyPair)
   {
-    v47 = [(HMMTROperationalCertificateIssuer *)v16 remoteDelegate];
+    remoteDelegate = [(HMMTROperationalCertificateIssuer *)selfCopy remoteDelegate];
 
-    if (v47)
+    if (remoteDelegate)
     {
-      v48 = [(HMMTROperationalCertificateIssuer *)v16 fabricID];
+      fabricID = [(HMMTROperationalCertificateIssuer *)selfCopy fabricID];
 
-      if (!v48)
+      if (!fabricID)
       {
         goto LABEL_37;
       }
 
-      v49 = [(HMMTROperationalCertificateIssuer *)v16 commissioneeNodeID];
+      commissioneeNodeID = [(HMMTROperationalCertificateIssuer *)selfCopy commissioneeNodeID];
 
-      if (v49)
+      if (commissioneeNodeID)
       {
-        v50 = [(HMMTROperationalCertificateIssuer *)v16 remoteDelegate];
-        v51 = [(HMMTROperationalCertificateIssuer *)v16 fabricID];
-        v52 = [(HMMTROperationalCertificateIssuer *)v16 commissioneeNodeID];
+        remoteDelegate2 = [(HMMTROperationalCertificateIssuer *)selfCopy remoteDelegate];
+        fabricID2 = [(HMMTROperationalCertificateIssuer *)selfCopy fabricID];
+        commissioneeNodeID2 = [(HMMTROperationalCertificateIssuer *)selfCopy commissioneeNodeID];
         v88[0] = MEMORY[0x277D85DD0];
         v88[1] = 3221225472;
         v88[2] = __113__HMMTROperationalCertificateIssuer_issueOperationalCertificateForRequest_attestationInfo_controller_completion___block_invoke;
         v88[3] = &unk_2786EE8F0;
-        v88[4] = v16;
-        v89 = v13;
-        [v50 retrieveOperationalCertificatesForFabricID:v51 commissioneeNodeID:v52 publicKey:v14 completion:v88];
+        v88[4] = selfCopy;
+        v89 = completionCopy;
+        [remoteDelegate2 retrieveOperationalCertificatesForFabricID:fabricID2 commissioneeNodeID:commissioneeNodeID2 publicKey:v14 completion:v88];
 
 LABEL_35:
         v45 = v87;
@@ -96,17 +96,17 @@ LABEL_35:
       }
 
       v74 = objc_autoreleasePoolPush();
-      v75 = v16;
+      v75 = selfCopy;
       v76 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v76, OS_LOG_TYPE_ERROR))
       {
         HMFGetLogIdentifier();
-        v78 = v77 = v11;
+        v78 = v77 = infoCopy;
         *buf = 138543362;
         v96 = v78;
         _os_log_impl(&dword_22AEAE000, v76, OS_LOG_TYPE_ERROR, "%{public}@Cannot issue NOC because commissionee node ID was not set", buf, 0xCu);
 
-        v11 = v77;
+        infoCopy = v77;
       }
 
       objc_autoreleasePoolPop(v74);
@@ -117,17 +117,17 @@ LABEL_35:
     else
     {
       v63 = objc_autoreleasePoolPush();
-      v64 = v16;
+      v64 = selfCopy;
       v65 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v65, OS_LOG_TYPE_ERROR))
       {
         HMFGetLogIdentifier();
-        v67 = v66 = v11;
+        v67 = v66 = infoCopy;
         *buf = 138543362;
         v96 = v67;
         _os_log_impl(&dword_22AEAE000, v65, OS_LOG_TYPE_ERROR, "%{public}@NOC issuer was initialized incorrectly", buf, 0xCu);
 
-        v11 = v66;
+        infoCopy = v66;
       }
 
       objc_autoreleasePoolPop(v63);
@@ -136,14 +136,14 @@ LABEL_35:
     }
 
     v79 = [v68 hmfErrorWithCode:v69];
-    (*(v13 + 2))(v13, 0, v79);
+    (*(completionCopy + 2))(completionCopy, 0, v79);
 
     goto LABEL_35;
   }
 
-  v20 = [(HMMTROperationalCertificateIssuer *)v16 fabricID];
+  fabricID3 = [(HMMTROperationalCertificateIssuer *)selfCopy fabricID];
 
-  if (!v20)
+  if (!fabricID3)
   {
 LABEL_37:
     _HMFPreconditionFailure();
@@ -151,17 +151,17 @@ LABEL_38:
     _HMFPreconditionFailure();
   }
 
-  v21 = [(HMMTROperationalCertificateIssuer *)v16 rootCertificate];
+  rootCertificate = [(HMMTROperationalCertificateIssuer *)selfCopy rootCertificate];
 
-  if (!v21)
+  if (!rootCertificate)
   {
     goto LABEL_38;
   }
 
-  v86 = v12;
-  v22 = [(HMMTROperationalCertificateIssuer *)v16 commissioneeNodeID];
+  v86 = controllerCopy;
+  commissioneeNodeID3 = [(HMMTROperationalCertificateIssuer *)selfCopy commissioneeNodeID];
   v85 = v14;
-  if (v22)
+  if (commissioneeNodeID3)
   {
     v23 = *MEMORY[0x277CDC000];
     v24 = *MEMORY[0x277CDC028];
@@ -178,35 +178,35 @@ LABEL_38:
     if (v29)
     {
       v30 = v29;
-      v83 = v11;
-      v84 = v10;
+      v83 = infoCopy;
+      v84 = requestCopy;
       v31 = MEMORY[0x277CD5230];
-      v32 = [(HMMTROperationalCertificateIssuer *)v16 rootKeyPair];
-      v33 = [(HMMTROperationalCertificateIssuer *)v16 rootCertificate];
-      v34 = [(HMMTROperationalCertificateIssuer *)v16 fabricID];
-      v35 = [(HMMTROperationalCertificateIssuer *)v16 commissioneeNodeID];
+      rootKeyPair2 = [(HMMTROperationalCertificateIssuer *)selfCopy rootKeyPair];
+      rootCertificate2 = [(HMMTROperationalCertificateIssuer *)selfCopy rootCertificate];
+      fabricID4 = [(HMMTROperationalCertificateIssuer *)selfCopy fabricID];
+      commissioneeNodeID4 = [(HMMTROperationalCertificateIssuer *)selfCopy commissioneeNodeID];
       v90 = 0;
-      v36 = [v31 createOperationalCertificate:v32 signingCertificate:v33 operationalPublicKey:v30 fabricID:v34 nodeID:v35 caseAuthenticatedTags:0 error:&v90];
+      v36 = [v31 createOperationalCertificate:rootKeyPair2 signingCertificate:rootCertificate2 operationalPublicKey:v30 fabricID:fabricID4 nodeID:commissioneeNodeID4 caseAuthenticatedTags:0 error:&v90];
       v82 = v90;
 
       if (v36)
       {
         v37 = objc_alloc(MEMORY[0x277CD5450]);
-        v38 = [(HMMTROperationalCertificateIssuer *)v16 rootCertificate];
-        v39 = [v37 initWithOperationalCertificate:v36 intermediateCertificate:0 rootCertificate:v38 adminSubject:0];
+        rootCertificate3 = [(HMMTROperationalCertificateIssuer *)selfCopy rootCertificate];
+        v39 = [v37 initWithOperationalCertificate:v36 intermediateCertificate:0 rootCertificate:rootCertificate3 adminSubject:0];
 
         v40 = objc_autoreleasePoolPush();
-        v41 = v16;
+        v41 = selfCopy;
         v42 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
         {
           HMFGetLogIdentifier();
           v43 = v81 = v40;
-          v44 = [(HMMTROperationalCertificateIssuer *)v41 commissioneeNodeID];
+          commissioneeNodeID5 = [(HMMTROperationalCertificateIssuer *)v41 commissioneeNodeID];
           *buf = 138543618;
           v96 = v43;
           v97 = 2112;
-          v98 = v44;
+          v98 = commissioneeNodeID5;
           _os_log_impl(&dword_22AEAE000, v42, OS_LOG_TYPE_INFO, "%{public}@Successfully generated Operational Certificate for accessory with Node ID %@", buf, 0x16u);
 
           v40 = v81;
@@ -214,9 +214,9 @@ LABEL_38:
 
         objc_autoreleasePoolPop(v40);
         CFRelease(v30);
-        (*(v13 + 2))(v13, v39, 0);
-        v11 = v83;
-        v10 = v84;
+        (*(completionCopy + 2))(completionCopy, v39, 0);
+        infoCopy = v83;
+        requestCopy = v84;
         v45 = v87;
         v46 = v82;
       }
@@ -224,9 +224,9 @@ LABEL_38:
       else
       {
         v70 = objc_autoreleasePoolPush();
-        v71 = v16;
+        v71 = selfCopy;
         v72 = HMFGetOSLogHandle();
-        v10 = v84;
+        requestCopy = v84;
         v46 = v82;
         if (os_log_type_enabled(v72, OS_LOG_TYPE_ERROR))
         {
@@ -240,8 +240,8 @@ LABEL_38:
 
         objc_autoreleasePoolPop(v70);
         v39 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:15];
-        (*(v13 + 2))(v13, 0, v39);
-        v11 = v83;
+        (*(completionCopy + 2))(completionCopy, 0, v39);
+        infoCopy = v83;
         v45 = v87;
       }
     }
@@ -250,7 +250,7 @@ LABEL_38:
     {
       v57 = error;
       v58 = objc_autoreleasePoolPush();
-      v59 = v16;
+      v59 = selfCopy;
       v46 = v57;
       v60 = v59;
       v61 = HMFGetOSLogHandle();
@@ -266,7 +266,7 @@ LABEL_38:
 
       objc_autoreleasePoolPop(v58);
       v36 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:3];
-      (*(v13 + 2))(v13, 0, v36);
+      (*(completionCopy + 2))(completionCopy, 0, v36);
       v45 = v87;
     }
   }
@@ -274,7 +274,7 @@ LABEL_38:
   else
   {
     v53 = objc_autoreleasePoolPush();
-    v54 = v16;
+    v54 = selfCopy;
     v55 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
     {
@@ -286,12 +286,12 @@ LABEL_38:
 
     objc_autoreleasePoolPop(v53);
     v28 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:11];
-    (*(v13 + 2))(v13, 0, v28);
+    (*(completionCopy + 2))(completionCopy, 0, v28);
     v45 = v87;
   }
 
   v14 = v85;
-  v12 = v86;
+  controllerCopy = v86;
 LABEL_36:
 
   v80 = *MEMORY[0x277D85DE8];
@@ -331,21 +331,21 @@ void __113__HMMTROperationalCertificateIssuer_issueOperationalCertificateForRequ
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEquivalentTo:(id)a3
+- (BOOL)isEquivalentTo:(id)to
 {
-  v5 = a3;
-  v6 = [(HMMTROperationalCertificateIssuer *)self remoteDelegate];
+  toCopy = to;
+  remoteDelegate = [(HMMTROperationalCertificateIssuer *)self remoteDelegate];
 
-  if (!v6)
+  if (!remoteDelegate)
   {
-    v10 = [(HMMTROperationalCertificateIssuer *)self rootKeyPair];
+    rootKeyPair = [(HMMTROperationalCertificateIssuer *)self rootKeyPair];
 
-    if (v10)
+    if (rootKeyPair)
     {
       v11 = MEMORY[0x277CD5230];
-      v12 = [(HMMTROperationalCertificateIssuer *)self rootCertificate];
-      v13 = [v5 rootCertificate];
-      LOBYTE(v11) = [v11 isCertificate:v12 equalTo:v13];
+      rootCertificate = [(HMMTROperationalCertificateIssuer *)self rootCertificate];
+      rootCertificate2 = [toCopy rootCertificate];
+      LOBYTE(v11) = [v11 isCertificate:rootCertificate equalTo:rootCertificate2];
 
       if (v11)
       {
@@ -355,22 +355,22 @@ void __113__HMMTROperationalCertificateIssuer_issueOperationalCertificateForRequ
 
     else
     {
-      v17 = [(HMMTROperationalCertificateIssuer *)self rootCertificate];
-      if (!v17)
+      rootCertificate3 = [(HMMTROperationalCertificateIssuer *)self rootCertificate];
+      if (!rootCertificate3)
       {
-        v3 = [v5 rootCertificate];
-        if (!v3)
+        rootCertificate4 = [toCopy rootCertificate];
+        if (!rootCertificate4)
         {
           goto LABEL_13;
         }
       }
 
       v18 = MEMORY[0x277CD5230];
-      v19 = [(HMMTROperationalCertificateIssuer *)self rootCertificate];
-      v20 = [v5 rootCertificate];
-      v21 = [v18 isCertificate:v19 equalTo:v20];
+      rootCertificate5 = [(HMMTROperationalCertificateIssuer *)self rootCertificate];
+      rootCertificate6 = [toCopy rootCertificate];
+      v21 = [v18 isCertificate:rootCertificate5 equalTo:rootCertificate6];
 
-      if (v17)
+      if (rootCertificate3)
       {
 
         if (v21)
@@ -394,13 +394,13 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v7 = [(HMMTROperationalCertificateIssuer *)self remoteDelegate];
-  v8 = [v5 remoteDelegate];
-  if (v7 == v8)
+  remoteDelegate2 = [(HMMTROperationalCertificateIssuer *)self remoteDelegate];
+  remoteDelegate3 = [toCopy remoteDelegate];
+  if (remoteDelegate2 == remoteDelegate3)
   {
-    v14 = [(HMMTROperationalCertificateIssuer *)self fabricID];
-    v15 = [v5 fabricID];
-    v16 = [v14 isEqual:v15];
+    fabricID = [(HMMTROperationalCertificateIssuer *)self fabricID];
+    fabricID2 = [toCopy fabricID];
+    v16 = [fabricID isEqual:fabricID2];
 
     if ((v16 & 1) == 0)
     {
@@ -408,9 +408,9 @@ LABEL_16:
     }
 
 LABEL_13:
-    v7 = [(HMMTROperationalCertificateIssuer *)self browser];
-    v8 = [v5 browser];
-    v9 = v7 == v8;
+    remoteDelegate2 = [(HMMTROperationalCertificateIssuer *)self browser];
+    remoteDelegate3 = [toCopy browser];
+    v9 = remoteDelegate2 == remoteDelegate3;
     goto LABEL_14;
   }
 
@@ -421,37 +421,37 @@ LABEL_17:
   return v9;
 }
 
-- (HMMTROperationalCertificateIssuer)initWithRemoteDelegate:(id)a3 fabricID:(id)a4
+- (HMMTROperationalCertificateIssuer)initWithRemoteDelegate:(id)delegate fabricID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  delegateCopy = delegate;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = HMMTROperationalCertificateIssuer;
   v9 = [(HMMTROperationalCertificateIssuer *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_remoteDelegate, a3);
-    objc_storeStrong(&v10->_fabricID, a4);
+    objc_storeStrong(&v9->_remoteDelegate, delegate);
+    objc_storeStrong(&v10->_fabricID, d);
   }
 
   return v10;
 }
 
-- (HMMTROperationalCertificateIssuer)initWithRootKeyPair:(id)a3 rootCertificate:(id)a4 fabricID:(id)a5
+- (HMMTROperationalCertificateIssuer)initWithRootKeyPair:(id)pair rootCertificate:(id)certificate fabricID:(id)d
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  pairCopy = pair;
+  certificateCopy = certificate;
+  dCopy = d;
   v15.receiver = self;
   v15.super_class = HMMTROperationalCertificateIssuer;
   v12 = [(HMMTROperationalCertificateIssuer *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_rootKeyPair, a3);
-    objc_storeStrong(&v13->_rootCertificate, a4);
-    objc_storeStrong(&v13->_fabricID, a5);
+    objc_storeStrong(&v12->_rootKeyPair, pair);
+    objc_storeStrong(&v13->_rootCertificate, certificate);
+    objc_storeStrong(&v13->_fabricID, d);
   }
 
   return v13;
@@ -486,11 +486,11 @@ uint64_t __48__HMMTROperationalCertificateIssuer_logCategory__block_invoke()
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-- (id)publicKeyFromCSRInfo:(id)a3 error:(id *)a4
+- (id)publicKeyFromCSRInfo:(id)info error:(id *)error
 {
   v5 = MEMORY[0x277CD5230];
-  v6 = [a3 csr];
-  v7 = [v5 publicKeyFromCSR:v6 error:a4];
+  v6 = [info csr];
+  v7 = [v5 publicKeyFromCSR:v6 error:error];
 
   return v7;
 }

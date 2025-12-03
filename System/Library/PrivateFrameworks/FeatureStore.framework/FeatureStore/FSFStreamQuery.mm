@@ -1,7 +1,7 @@
 @interface FSFStreamQuery
 - (NSArray)interactionIds;
 - (NSString)description;
-- (void)setInteractionIds:(id)a3;
+- (void)setInteractionIds:(id)ids;
 @end
 
 @implementation FSFStreamQuery
@@ -14,16 +14,16 @@
   return v2.super.isa;
 }
 
-- (void)setInteractionIds:(id)a3
+- (void)setInteractionIds:(id)ids
 {
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   StreamQuery.interactionIds.setter(v4);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = StreamQuery.description.getter();
   v5 = v4;
 

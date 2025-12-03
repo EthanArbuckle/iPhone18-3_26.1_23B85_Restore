@@ -1,13 +1,13 @@
 @interface OrgApacheLuceneSearchTopFieldCollector_MultiComparatorLeafCollector
 - (void)dealloc;
-- (void)setScorerWithOrgApacheLuceneSearchScorer:(id)a3;
+- (void)setScorerWithOrgApacheLuceneSearchScorer:(id)scorer;
 @end
 
 @implementation OrgApacheLuceneSearchTopFieldCollector_MultiComparatorLeafCollector
 
-- (void)setScorerWithOrgApacheLuceneSearchScorer:(id)a3
+- (void)setScorerWithOrgApacheLuceneSearchScorer:(id)scorer
 {
-  JreStrongAssign(&self->scorer_, a3);
+  JreStrongAssign(&self->scorer_, scorer);
   comparators = self->comparators_;
   if (!comparators)
   {
@@ -26,7 +26,7 @@ LABEL_7:
     }
 
     ++p_elementType;
-    [v8 setScorerWithOrgApacheLuceneSearchScorer:a3];
+    [v8 setScorerWithOrgApacheLuceneSearchScorer:scorer];
   }
 }
 

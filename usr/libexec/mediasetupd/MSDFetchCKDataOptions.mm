@@ -1,5 +1,5 @@
 @interface MSDFetchCKDataOptions
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -26,9 +26,9 @@
   return [NSString stringWithFormat:@"<MSDFetchCKDataOptions: createNewZoneIfMissing: %@ userInitiatedRequest: %@>", v3, v2];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setCreateNewZoneIfMissing:{-[MSDFetchCKDataOptions createNewZoneIfMissing](self, "createNewZoneIfMissing")}];
   [v4 setUserInitiatedRequest:{-[MSDFetchCKDataOptions userInitiatedRequest](self, "userInitiatedRequest")}];
   return v4;

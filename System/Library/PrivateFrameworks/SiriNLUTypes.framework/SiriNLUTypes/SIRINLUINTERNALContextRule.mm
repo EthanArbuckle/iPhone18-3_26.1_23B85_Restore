@@ -1,26 +1,26 @@
 @interface SIRINLUINTERNALContextRule
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsSdaComparisonMode:(id)a3;
+- (int)StringAsSdaComparisonMode:(id)mode;
 - (int)sdaComparisonMode;
 - (unint64_t)hash;
-- (void)addMatchingSpans:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasApplyToPromptScenarios:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addMatchingSpans:(id)spans;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasApplyToPromptScenarios:(BOOL)scenarios;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUINTERNALContextRule
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   turnContext = self->_turnContext;
-  v6 = *(v4 + 3);
+  v6 = *(fromCopy + 3);
   if (turnContext)
   {
     if (v6)
@@ -38,7 +38,7 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = *(v4 + 1);
+  v7 = *(fromCopy + 1);
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -62,17 +62,17 @@
     while (v9);
   }
 
-  v12 = *(v4 + 36);
+  v12 = *(fromCopy + 36);
   if ((v12 & 2) != 0)
   {
-    self->_applyToPromptScenarios = *(v4 + 32);
+    self->_applyToPromptScenarios = *(fromCopy + 32);
     *&self->_has |= 2u;
-    v12 = *(v4 + 36);
+    v12 = *(fromCopy + 36);
   }
 
   if (v12)
   {
-    self->_sdaComparisonMode = *(v4 + 4);
+    self->_sdaComparisonMode = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
@@ -107,16 +107,16 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   turnContext = self->_turnContext;
-  if (turnContext | *(v4 + 3))
+  if (turnContext | *(equalCopy + 3))
   {
     if (![(SIRINLUEXTERNALTurnContext *)turnContext isEqual:?])
     {
@@ -125,7 +125,7 @@ LABEL_3:
   }
 
   matchingSpans = self->_matchingSpans;
-  if (matchingSpans | *(v4 + 1))
+  if (matchingSpans | *(equalCopy + 1))
   {
     if (![(NSMutableArray *)matchingSpans isEqual:?])
     {
@@ -135,35 +135,35 @@ LABEL_3:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0)
+    if ((*(equalCopy + 36) & 2) == 0)
     {
       goto LABEL_13;
     }
 
-    v9 = *(v4 + 32);
+    v9 = *(equalCopy + 32);
     if (self->_applyToPromptScenarios)
     {
-      if ((*(v4 + 32) & 1) == 0)
+      if ((*(equalCopy + 32) & 1) == 0)
       {
         goto LABEL_13;
       }
     }
 
-    else if (*(v4 + 32))
+    else if (*(equalCopy + 32))
     {
       goto LABEL_13;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
     goto LABEL_13;
   }
 
-  v7 = (*(v4 + 36) & 1) == 0;
+  v7 = (*(equalCopy + 36) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) != 0 && self->_sdaComparisonMode == *(v4 + 4))
+    if ((*(equalCopy + 36) & 1) != 0 && self->_sdaComparisonMode == *(equalCopy + 4))
     {
       v7 = 1;
       goto LABEL_14;
@@ -178,11 +178,11 @@ LABEL_14:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SIRINLUEXTERNALTurnContext *)self->_turnContext copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SIRINLUEXTERNALTurnContext *)self->_turnContext copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
@@ -205,7 +205,7 @@ LABEL_14:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v17 + 1) + 8 * i) copyWithZone:{a3, v17}];
+        v13 = [*(*(&v17 + 1) + 8 * i) copyWithZone:{zone, v17}];
         [v5 addMatchingSpans:v13];
       }
 
@@ -233,25 +233,25 @@ LABEL_14:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (self->_turnContext)
   {
-    [v9 setTurnContext:?];
+    [toCopy setTurnContext:?];
   }
 
   if ([(SIRINLUINTERNALContextRule *)self matchingSpansCount])
   {
-    [v9 clearMatchingSpans];
-    v4 = [(SIRINLUINTERNALContextRule *)self matchingSpansCount];
-    if (v4)
+    [toCopy clearMatchingSpans];
+    matchingSpansCount = [(SIRINLUINTERNALContextRule *)self matchingSpansCount];
+    if (matchingSpansCount)
     {
-      v5 = v4;
+      v5 = matchingSpansCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(SIRINLUINTERNALContextRule *)self matchingSpansAtIndex:i];
-        [v9 addMatchingSpans:v7];
+        [toCopy addMatchingSpans:v7];
       }
     }
   }
@@ -259,22 +259,22 @@ LABEL_14:
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v9 + 32) = self->_applyToPromptScenarios;
-    *(v9 + 36) |= 2u;
+    *(toCopy + 32) = self->_applyToPromptScenarios;
+    *(toCopy + 36) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v9 + 4) = self->_sdaComparisonMode;
-    *(v9 + 36) |= 1u;
+    *(toCopy + 4) = self->_sdaComparisonMode;
+    *(toCopy + 36) |= 1u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_turnContext)
   {
     PBDataWriterWriteSubmessage();
@@ -329,12 +329,12 @@ LABEL_14:
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   turnContext = self->_turnContext;
   if (turnContext)
   {
-    v5 = [(SIRINLUEXTERNALTurnContext *)turnContext dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"turn_context"];
+    dictionaryRepresentation = [(SIRINLUEXTERNALTurnContext *)turnContext dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"turn_context"];
   }
 
   if ([(NSMutableArray *)self->_matchingSpans count])
@@ -359,8 +359,8 @@ LABEL_14:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -369,14 +369,14 @@ LABEL_14:
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"matching_spans"];
+    [dictionary setObject:v6 forKey:@"matching_spans"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v14 = [MEMORY[0x1E696AD98] numberWithBool:self->_applyToPromptScenarios];
-    [v3 setObject:v14 forKey:@"apply_to_prompt_scenarios"];
+    [dictionary setObject:v14 forKey:@"apply_to_prompt_scenarios"];
 
     has = self->_has;
   }
@@ -402,12 +402,12 @@ LABEL_14:
       v16 = @"COMPARISON_MODE_SHALLOW";
     }
 
-    [v3 setObject:v16 forKey:@"sda_comparison_mode"];
+    [dictionary setObject:v16 forKey:@"sda_comparison_mode"];
   }
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -416,23 +416,23 @@ LABEL_14:
   v8.receiver = self;
   v8.super_class = SIRINLUINTERNALContextRule;
   v4 = [(SIRINLUINTERNALContextRule *)&v8 description];
-  v5 = [(SIRINLUINTERNALContextRule *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUINTERNALContextRule *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsSdaComparisonMode:(id)a3
+- (int)StringAsSdaComparisonMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"COMPARISON_MODE_SHALLOW"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"COMPARISON_MODE_SHALLOW"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"COMPARISON_MODE_DEEP"];
+    v4 = [modeCopy isEqualToString:@"COMPARISON_MODE_DEEP"];
   }
 
   return v4;
@@ -451,9 +451,9 @@ LABEL_14:
   }
 }
 
-- (void)setHasApplyToPromptScenarios:(BOOL)a3
+- (void)setHasApplyToPromptScenarios:(BOOL)scenarios
 {
-  if (a3)
+  if (scenarios)
   {
     v3 = 2;
   }
@@ -466,22 +466,22 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addMatchingSpans:(id)a3
+- (void)addMatchingSpans:(id)spans
 {
-  v4 = a3;
+  spansCopy = spans;
   matchingSpans = self->_matchingSpans;
-  v8 = v4;
+  v8 = spansCopy;
   if (!matchingSpans)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_matchingSpans;
     self->_matchingSpans = v6;
 
-    v4 = v8;
+    spansCopy = v8;
     matchingSpans = self->_matchingSpans;
   }
 
-  [(NSMutableArray *)matchingSpans addObject:v4];
+  [(NSMutableArray *)matchingSpans addObject:spansCopy];
 }
 
 @end

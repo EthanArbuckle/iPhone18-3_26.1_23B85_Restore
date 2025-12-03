@@ -1,42 +1,42 @@
 @interface PerformanceTraceController
 - (NSArray)supportedTracePlanNames;
 - (PerformanceTraceController)init;
-- (id)_appIsMonitoredGetter:(id)a3;
+- (id)_appIsMonitoredGetter:(id)getter;
 - (id)_appListSpecifiers;
 - (id)_customTracePlanArgsGroupSpecifiers;
-- (id)_groupSpecifiersForInstrumentationConfigID:(id)a3;
-- (id)_highFrequencyMSSValue:(id *)a3;
+- (id)_groupSpecifiersForInstrumentationConfigID:(id)d;
+- (id)_highFrequencyMSSValue:(id *)value;
 - (id)_internalPowerProfilerSpecifiers;
 - (id)_lookbackIntervalGroupSpecifiers;
 - (id)_passiveTraceGroupSpecifiers;
 - (id)_passiveTraceInstrumentationGroupSpecifiers;
 - (id)_performanceTraceGroupSpecifiers;
 - (id)_traceFileListSpecifiers;
-- (id)_updateMSS:(id)a3;
-- (id)getCustomTracePlanArgumentsText:(id)a3;
-- (id)instrumentationConfigGetter:(id)a3;
+- (id)_updateMSS:(id)s;
+- (id)getCustomTracePlanArgumentsText:(id)text;
+- (id)instrumentationConfigGetter:(id)getter;
 - (id)isAnyAppMonitoringEnabled;
 - (id)isPerformanceTraceEnabled;
-- (id)labelForInstrumentationConfigID:(id)a3;
-- (id)lookbackIntervalGetter:(id)a3;
+- (id)labelForInstrumentationConfigID:(id)d;
+- (id)lookbackIntervalGetter:(id)getter;
 - (id)specifiers;
 - (id)specifiersForEnabledState;
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4;
-- (void)_appIsMonitoredSetter:(id)a3 specifier:(id)a4;
-- (void)_presentRebootAlertForStateTransitionTo:(BOOL)a3 withCallback:(id)a4 onCancel:(id)a5;
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path;
+- (void)_appIsMonitoredSetter:(id)setter specifier:(id)specifier;
+- (void)_presentRebootAlertForStateTransitionTo:(BOOL)to withCallback:(id)callback onCancel:(id)cancel;
 - (void)_refreshAppList;
-- (void)_setEnablement:(id)a3;
-- (void)_setUserSelectedTracePlanName:(id)a3;
-- (void)_shareLog:(id)a3;
+- (void)_setEnablement:(id)enablement;
+- (void)_setUserSelectedTracePlanName:(id)name;
+- (void)_shareLog:(id)log;
 - (void)_updateCollectionDurationFooter;
 - (void)_updateLocked;
 - (void)forceReloadSpecifiers;
-- (void)instrumentationConfigSetter:(id)a3 specifier:(id)a4;
-- (void)lookbackIntervalSetter:(id)a3 specifier:(id)a4;
+- (void)instrumentationConfigSetter:(id)setter specifier:(id)specifier;
+- (void)lookbackIntervalSetter:(id)setter specifier:(id)specifier;
 - (void)reloadSpecifiers;
-- (void)setAnyAppMonitoringEnabled:(id)a3 forSpecifier:(id)a4;
-- (void)setCustomTracePlanArgumentsFromText:(id)a3 specifier:(id)a4;
-- (void)setPerformanceTraceEnabled:(id)a3 forSpecifier:(id)a4;
+- (void)setAnyAppMonitoringEnabled:(id)enabled forSpecifier:(id)specifier;
+- (void)setCustomTracePlanArgumentsFromText:(id)text specifier:(id)specifier;
+- (void)setPerformanceTraceEnabled:(id)enabled forSpecifier:(id)specifier;
 - (void)viewDidLoad;
 - (void)willBecomeActive;
 @end
@@ -49,9 +49,9 @@
   v3 = sub_19B4();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(PerformanceTraceController *)self isLocked];
+    isLocked = [(PerformanceTraceController *)self isLocked];
     v5 = @"Not locked";
-    if (v4)
+    if (isLocked)
     {
       v5 = @"Locked";
     }
@@ -87,12 +87,12 @@ LABEL_9:
 
     if (sub_1C30())
     {
-      v10 = [(PerformanceTraceController *)v2 appsFinder];
-      [v10 setDoNotFilter:1];
+      appsFinder = [(PerformanceTraceController *)v2 appsFinder];
+      [appsFinder setDoNotFilter:1];
     }
 
-    v11 = [(PerformanceTraceController *)v2 appsFinder];
-    [v11 setDelegate:v2];
+    appsFinder2 = [(PerformanceTraceController *)v2 appsFinder];
+    [appsFinder2 setDelegate:v2];
 
     cachedDeveloperAppsSpecifiers = v2->_cachedDeveloperAppsSpecifiers;
     v2->_cachedDeveloperAppsSpecifiers = &__NSArray0__struct;
@@ -156,28 +156,28 @@ LABEL_10:
   return [NSNumber numberWithBool:v2];
 }
 
-- (void)setPerformanceTraceEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setPerformanceTraceEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1FD4;
   v7[3] = &unk_C528;
-  v8 = v5;
+  v8 = bOOLValue;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1FE8;
   v6[3] = &unk_C508;
   v6[4] = self;
-  [(PerformanceTraceController *)self _presentRebootAlertForStateTransitionTo:v5 withCallback:v7 onCancel:v6];
+  [(PerformanceTraceController *)self _presentRebootAlertForStateTransitionTo:bOOLValue withCallback:v7 onCancel:v6];
 }
 
-- (void)_presentRebootAlertForStateTransitionTo:(BOOL)a3 withCallback:(id)a4 onCancel:(id)a5
+- (void)_presentRebootAlertForStateTransitionTo:(BOOL)to withCallback:(id)callback onCancel:(id)cancel
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v6)
+  toCopy = to;
+  callbackCopy = callback;
+  cancelCopy = cancel;
+  if (toCopy)
   {
     v10 = @"Enabling Performance Trace requires a restart of your device.";
   }
@@ -192,8 +192,8 @@ LABEL_10:
   v21[1] = 3221225472;
   v21[2] = sub_21B0;
   v21[3] = &unk_C550;
-  v22 = v8;
-  v12 = v8;
+  v22 = callbackCopy;
+  v12 = callbackCopy;
   v13 = [UIAlertAction actionWithTitle:@"Restart" style:2 handler:v21];
   [v11 addAction:v13];
 
@@ -201,48 +201,48 @@ LABEL_10:
   v17 = 3221225472;
   v18 = sub_224C;
   v19 = &unk_C550;
-  v20 = v9;
-  v14 = v9;
+  v20 = cancelCopy;
+  v14 = cancelCopy;
   v15 = [UIAlertAction actionWithTitle:@"Cancel" style:0 handler:&v16];
   [v11 addAction:{v15, v16, v17, v18, v19}];
 
   [(PerformanceTraceController *)self presentViewController:v11 animated:1 completion:0];
 }
 
-- (void)_setUserSelectedTracePlanName:(id)a3
+- (void)_setUserSelectedTracePlanName:(id)name
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [(PerformanceTraceController *)self performanceTracePlansGroupSpecifier];
+  nameCopy = name;
+  identifier = [nameCopy identifier];
+  performanceTracePlansGroupSpecifier = [(PerformanceTraceController *)self performanceTracePlansGroupSpecifier];
   v7 = PSRadioGroupCheckedSpecifierKey;
-  v8 = [v6 objectForKeyedSubscript:PSRadioGroupCheckedSpecifierKey];
-  v9 = [v4 isEqualToSpecifier:v8];
+  v8 = [performanceTracePlansGroupSpecifier objectForKeyedSubscript:PSRadioGroupCheckedSpecifierKey];
+  v9 = [nameCopy isEqualToSpecifier:v8];
 
   if (v9)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138543362;
-      v14 = v5;
+      v14 = identifier;
       _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Selected trace plan name didn't change (%{public}@)", &v13, 0xCu);
     }
   }
 
-  else if (v5 && (-[PerformanceTraceController supportedTracePlanNames](self, "supportedTracePlanNames"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 containsObject:v5], v10, (v11 & 1) != 0))
+  else if (identifier && (-[PerformanceTraceController supportedTracePlanNames](self, "supportedTracePlanNames"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 containsObject:identifier], v10, (v11 & 1) != 0))
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138543362;
-      v14 = v5;
+      v14 = identifier;
       _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, "User selected trace plan named %{public}@", &v13, 0xCu);
     }
 
-    [PTTraceConfig setUserSelectedTracePlanName:v5];
-    -[PerformanceTraceController setIsCustomTracePlanSelected:](self, "setIsCustomTracePlanSelected:", [v5 isEqualToString:kPTTracePlanNameCustom]);
-    -[PerformanceTraceController setIsPassiveTracePlanSelected:](self, "setIsPassiveTracePlanSelected:", [v5 isEqualToString:kPTPassiveTracePlanNamePassive]);
-    -[PerformanceTraceController setIsPowerProfilerPlanSelected:](self, "setIsPowerProfilerPlanSelected:", [v5 isEqualToString:kPTPassiveTracePlanNameLightweightPowerMetrics]);
-    v12 = [(PerformanceTraceController *)self performanceTracePlansGroupSpecifier];
-    [v12 setObject:v4 forKeyedSubscript:v7];
+    [PTTraceConfig setUserSelectedTracePlanName:identifier];
+    -[PerformanceTraceController setIsCustomTracePlanSelected:](self, "setIsCustomTracePlanSelected:", [identifier isEqualToString:kPTTracePlanNameCustom]);
+    -[PerformanceTraceController setIsPassiveTracePlanSelected:](self, "setIsPassiveTracePlanSelected:", [identifier isEqualToString:kPTPassiveTracePlanNamePassive]);
+    -[PerformanceTraceController setIsPowerProfilerPlanSelected:](self, "setIsPowerProfilerPlanSelected:", [identifier isEqualToString:kPTPassiveTracePlanNameLightweightPowerMetrics]);
+    performanceTracePlansGroupSpecifier2 = [(PerformanceTraceController *)self performanceTracePlansGroupSpecifier];
+    [performanceTracePlansGroupSpecifier2 setObject:nameCopy forKeyedSubscript:v7];
 
     [(PerformanceTraceController *)self forceReloadSpecifiers];
   }
@@ -253,7 +253,7 @@ LABEL_10:
   }
 }
 
-- (id)getCustomTracePlanArgumentsText:(id)a3
+- (id)getCustomTracePlanArgumentsText:(id)text
 {
   v3 = +[PTTraceConfig userSpecifiedCustomTracePlanArguments];
   v4 = [v3 componentsJoinedByString:@" "];
@@ -261,30 +261,30 @@ LABEL_10:
   return v4;
 }
 
-- (void)setCustomTracePlanArgumentsFromText:(id)a3 specifier:(id)a4
+- (void)setCustomTracePlanArgumentsFromText:(id)text specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  specifierCopy = specifier;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     v9 = 138543362;
-    v10 = v6;
+    v10 = textCopy;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_INFO, "User entered custom trace plan arguments: %{public}@", &v9, 0xCu);
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v6 componentsSeparatedByString:@" "];
+    v8 = [textCopy componentsSeparatedByString:@" "];
     [PTTraceConfig setUserSpecifiedCustomTracePlanArguments:v8];
   }
 
-  [(PerformanceTraceController *)self reloadSpecifier:v7];
+  [(PerformanceTraceController *)self reloadSpecifier:specifierCopy];
 }
 
-- (void)_setEnablement:(id)a3
+- (void)_setEnablement:(id)enablement
 {
-  v5 = a3;
+  enablementCopy = enablement;
   if ([(PerformanceTraceController *)self isLocked])
   {
     v4 = &__kCFBooleanFalse;
@@ -295,7 +295,7 @@ LABEL_10:
     v4 = &__kCFBooleanTrue;
   }
 
-  [v5 setObject:v4 forKeyedSubscript:PSEnabledKey];
+  [enablementCopy setObject:v4 forKeyedSubscript:PSEnabledKey];
 }
 
 - (id)_performanceTraceGroupSpecifiers
@@ -376,20 +376,20 @@ LABEL_10:
 {
   if ([(PerformanceTraceController *)self isPassiveTracePlanSelected])
   {
-    v3 = [(PerformanceTraceController *)self _passiveTraceInstrumentationGroupSpecifiers];
+    _passiveTraceInstrumentationGroupSpecifiers = [(PerformanceTraceController *)self _passiveTraceInstrumentationGroupSpecifiers];
   }
 
   else if ([(PerformanceTraceController *)self isPowerProfilerPlanSelected])
   {
-    v3 = [(PerformanceTraceController *)self _appListSpecifiers];
+    _passiveTraceInstrumentationGroupSpecifiers = [(PerformanceTraceController *)self _appListSpecifiers];
   }
 
   else
   {
-    v3 = &__NSArray0__struct;
+    _passiveTraceInstrumentationGroupSpecifiers = &__NSArray0__struct;
   }
 
-  return v3;
+  return _passiveTraceInstrumentationGroupSpecifiers;
 }
 
 - (id)_traceFileListSpecifiers
@@ -440,11 +440,11 @@ LABEL_3:
         }
 
         v16 = *(*(&v21 + 1) + 8 * i);
-        v17 = [v16 lastPathComponent];
-        v18 = [PSSpecifier preferenceSpecifierNamed:v17 target:self set:0 get:0 detail:0 cell:4 edit:0];
+        lastPathComponent = [v16 lastPathComponent];
+        v18 = [PSSpecifier preferenceSpecifierNamed:lastPathComponent target:self set:0 get:0 detail:0 cell:4 edit:0];
 
-        v19 = [v16 path];
-        [v18 setObject:v19 forKeyedSubscript:kPTFileKeyPath];
+        path = [v16 path];
+        [v18 setObject:path forKeyedSubscript:kPTFileKeyPath];
 
         [v18 setObject:objc_opt_class() forKeyedSubscript:v14];
         [v3 addObject:v18];
@@ -464,9 +464,9 @@ LABEL_4:
   return v3;
 }
 
-- (void)_shareLog:(id)a3
+- (void)_shareLog:(id)log
 {
-  v4 = [a3 propertyForKey:kPTFileKeyPath];
+  v4 = [log propertyForKey:kPTFileKeyPath];
   if ([v4 length])
   {
     v5 = [NSURL fileURLWithPath:v4 isDirectory:0];
@@ -485,10 +485,10 @@ LABEL_4:
     v9 = [NSArray arrayWithObjects:v13 count:7];
     [v8 setExcludedActivityTypes:v9];
 
-    v10 = [(PerformanceTraceController *)self navigationItem];
-    v11 = [v10 rightBarButtonItem];
-    v12 = [v8 popoverPresentationController];
-    [v12 setBarButtonItem:v11];
+    navigationItem = [(PerformanceTraceController *)self navigationItem];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
+    popoverPresentationController = [v8 popoverPresentationController];
+    [popoverPresentationController setBarButtonItem:rightBarButtonItem];
 
     [(PerformanceTraceController *)self presentViewController:v8 animated:1 completion:0];
   }
@@ -526,22 +526,22 @@ LABEL_4:
 
 - (id)specifiersForEnabledState
 {
-  v3 = [(PerformanceTraceController *)self cachedSpecifiersForEnabledState];
+  cachedSpecifiersForEnabledState = [(PerformanceTraceController *)self cachedSpecifiersForEnabledState];
 
-  if (!v3)
+  if (!cachedSpecifiersForEnabledState)
   {
     v4 = objc_alloc_init(NSMutableArray);
-    v5 = [(PerformanceTraceController *)self _performanceTraceGroupSpecifiers];
-    [v4 addObjectsFromArray:v5];
+    _performanceTraceGroupSpecifiers = [(PerformanceTraceController *)self _performanceTraceGroupSpecifiers];
+    [v4 addObjectsFromArray:_performanceTraceGroupSpecifiers];
 
-    v6 = [(PerformanceTraceController *)self _customTracePlanArgsGroupSpecifiers];
-    [v4 addObjectsFromArray:v6];
+    _customTracePlanArgsGroupSpecifiers = [(PerformanceTraceController *)self _customTracePlanArgsGroupSpecifiers];
+    [v4 addObjectsFromArray:_customTracePlanArgsGroupSpecifiers];
 
-    v7 = [(PerformanceTraceController *)self _passiveTraceGroupSpecifiers];
-    [v4 addObjectsFromArray:v7];
+    _passiveTraceGroupSpecifiers = [(PerformanceTraceController *)self _passiveTraceGroupSpecifiers];
+    [v4 addObjectsFromArray:_passiveTraceGroupSpecifiers];
 
-    v8 = [(PerformanceTraceController *)self _traceFileListSpecifiers];
-    [v4 addObjectsFromArray:v8];
+    _traceFileListSpecifiers = [(PerformanceTraceController *)self _traceFileListSpecifiers];
+    [v4 addObjectsFromArray:_traceFileListSpecifiers];
 
     [(PerformanceTraceController *)self setCachedSpecifiersForEnabledState:v4];
   }
@@ -573,13 +573,13 @@ LABEL_4:
     }
 
     [v6 setObject:v8 forKeyedSubscript:PSFooterTextGroupKey];
-    v9 = [(PerformanceTraceController *)self isPerformanceTraceEnabled];
-    v10 = [v9 BOOLValue];
+    isPerformanceTraceEnabled = [(PerformanceTraceController *)self isPerformanceTraceEnabled];
+    bOOLValue = [isPerformanceTraceEnabled BOOLValue];
 
-    if (v10)
+    if (bOOLValue)
     {
-      v11 = [(PerformanceTraceController *)self specifiersForEnabledState];
-      [v5 addObjectsFromArray:v11];
+      specifiersForEnabledState = [(PerformanceTraceController *)self specifiersForEnabledState];
+      [v5 addObjectsFromArray:specifiersForEnabledState];
     }
 
     [(PerformanceTraceController *)self _setEnablement:v7];
@@ -592,37 +592,37 @@ LABEL_4:
   return v4;
 }
 
-- (id)labelForInstrumentationConfigID:(id)a3
+- (id)labelForInstrumentationConfigID:(id)d
 {
-  v3 = a3;
-  if ([@"mss" isEqualToString:v3])
+  dCopy = d;
+  if ([@"mss" isEqualToString:dCopy])
   {
-    v4 = @"Increased CPU Sampling Rate";
+    dCopy = @"Increased CPU Sampling Rate";
   }
 
-  else if ([@"logging-metal-frame-pacing" isEqualToString:v3])
+  else if ([@"logging-metal-frame-pacing" isEqualToString:dCopy])
   {
-    v4 = @"Per-Frame Metal Metrics";
+    dCopy = @"Per-Frame Metal Metrics";
   }
 
   else
   {
-    v4 = [NSString stringWithFormat:@"UNKNOWN (%@)", v3];
+    dCopy = [NSString stringWithFormat:@"UNKNOWN (%@)", dCopy];
   }
 
-  return v4;
+  return dCopy;
 }
 
-- (id)_updateMSS:(id)a3
+- (id)_updateMSS:(id)s
 {
-  v4 = a3;
+  sCopy = s;
   v5 = sub_1BEC();
-  v6 = v5;
-  if (!v4)
+  passiveTraceConfig = v5;
+  if (!sCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      sub_6D48(v6, v12, v13, v14, v15, v16, v17, v18);
+      sub_6D48(passiveTraceConfig, v12, v13, v14, v15, v16, v17, v18);
     }
 
     goto LABEL_17;
@@ -636,10 +636,10 @@ LABEL_4:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v6 = sub_1BEC();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    passiveTraceConfig = sub_1BEC();
+    if (os_log_type_enabled(passiveTraceConfig, OS_LOG_TYPE_ERROR))
     {
-      sub_6D10(v6, v19, v20, v21, v22, v23, v24, v25);
+      sub_6D10(passiveTraceConfig, v19, v20, v21, v22, v23, v24, v25);
     }
 
 LABEL_17:
@@ -647,8 +647,8 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v7 = [v4 BOOLValue];
-  if (v7)
+  bOOLValue = [sCopy BOOLValue];
+  if (bOOLValue)
   {
     v8 = &off_CF88;
   }
@@ -663,7 +663,7 @@ LABEL_17:
   {
     v10 = @"Default";
     v27 = 138543874;
-    if (v7)
+    if (bOOLValue)
     {
       v10 = @"High";
     }
@@ -672,24 +672,24 @@ LABEL_17:
     v29 = 2114;
     v30 = v8;
     v31 = 2114;
-    v32 = v4;
+    v32 = sCopy;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Updating MSS interval to: %{public}@ (new raw value: %{public}@, value: %{public}@)", &v27, 0x20u);
   }
 
-  v6 = [(PerformanceTraceController *)self passiveTraceConfig];
-  v11 = [v6 updateMSSPMICycleInterval:v8];
+  passiveTraceConfig = [(PerformanceTraceController *)self passiveTraceConfig];
+  v11 = [passiveTraceConfig updateMSSPMICycleInterval:v8];
 LABEL_18:
 
   return v11;
 }
 
-- (void)instrumentationConfigSetter:(id)a3 specifier:(id)a4
+- (void)instrumentationConfigSetter:(id)setter specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = [a4 identifier];
-  if ([@"mss" isEqualToString:v7])
+  setterCopy = setter;
+  identifier = [specifier identifier];
+  if ([@"mss" isEqualToString:identifier])
   {
-    v8 = [(PerformanceTraceController *)self _updateMSS:v6];
+    v8 = [(PerformanceTraceController *)self _updateMSS:setterCopy];
     if (!v8)
     {
       goto LABEL_12;
@@ -698,7 +698,7 @@ LABEL_18:
 
   else
   {
-    if (![@"logging-metal-frame-pacing" isEqualToString:v7])
+    if (![@"logging-metal-frame-pacing" isEqualToString:identifier])
     {
       v11 = sub_1BEC();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -709,8 +709,8 @@ LABEL_18:
       goto LABEL_12;
     }
 
-    v9 = [(PerformanceTraceController *)self passiveTraceConfig];
-    v8 = [v9 updateMetalPerDrawableSignpostsEnabled:v6];
+    passiveTraceConfig = [(PerformanceTraceController *)self passiveTraceConfig];
+    v8 = [passiveTraceConfig updateMetalPerDrawableSignpostsEnabled:setterCopy];
 
     if (!v8)
     {
@@ -719,7 +719,7 @@ LABEL_12:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 138543362;
-        v13 = v6;
+        v13 = setterCopy;
         _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Update value: %{public}@", &v12, 0xCu);
       }
 
@@ -737,10 +737,10 @@ LABEL_14:
   [(PerformanceTraceController *)self reloadSpecifiers];
 }
 
-- (id)_highFrequencyMSSValue:(id *)a3
+- (id)_highFrequencyMSSValue:(id *)value
 {
-  v4 = [(PerformanceTraceController *)self passiveTraceConfig];
-  v5 = [v4 fetchMSSPMICycleInterval:a3];
+  passiveTraceConfig = [(PerformanceTraceController *)self passiveTraceConfig];
+  v5 = [passiveTraceConfig fetchMSSPMICycleInterval:value];
 
   if (v5)
   {
@@ -769,10 +769,10 @@ LABEL_14:
   return v6;
 }
 
-- (id)instrumentationConfigGetter:(id)a3
+- (id)instrumentationConfigGetter:(id)getter
 {
-  v4 = [a3 identifier];
-  if ([@"mss" isEqualToString:v4])
+  identifier = [getter identifier];
+  if ([@"mss" isEqualToString:identifier])
   {
     v12 = 0;
     v5 = [(PerformanceTraceController *)self _highFrequencyMSSValue:&v12];
@@ -785,7 +785,7 @@ LABEL_14:
 
   else
   {
-    if (![@"logging-metal-frame-pacing" isEqualToString:v4])
+    if (![@"logging-metal-frame-pacing" isEqualToString:identifier])
     {
       v9 = sub_1BEC();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -797,9 +797,9 @@ LABEL_14:
       goto LABEL_11;
     }
 
-    v7 = [(PerformanceTraceController *)self passiveTraceConfig];
+    passiveTraceConfig = [(PerformanceTraceController *)self passiveTraceConfig];
     v11 = 0;
-    v5 = [v7 fetchMetalPerDrawableSignpostsEnabled:&v11];
+    v5 = [passiveTraceConfig fetchMetalPerDrawableSignpostsEnabled:&v11];
     v6 = v11;
 
     if (!v6)
@@ -829,11 +829,11 @@ LABEL_14:
   return v5;
 }
 
-- (id)lookbackIntervalGetter:(id)a3
+- (id)lookbackIntervalGetter:(id)getter
 {
-  v3 = [(PerformanceTraceController *)self passiveTraceConfig];
+  passiveTraceConfig = [(PerformanceTraceController *)self passiveTraceConfig];
   v10 = 0;
-  v4 = [v3 fetchCollectLookbackInterval:&v10];
+  v4 = [passiveTraceConfig fetchCollectLookbackInterval:&v10];
   v5 = v10;
 
   if (v5)
@@ -851,12 +851,12 @@ LABEL_14:
   return v8;
 }
 
-- (void)lookbackIntervalSetter:(id)a3 specifier:(id)a4
+- (void)lookbackIntervalSetter:(id)setter specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(PerformanceTraceController *)self passiveTraceConfig];
-  v7 = +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", [v5 integerValue] * 3600.0);
-  v8 = [v6 updateCollectLookbackInterval:v7];
+  setterCopy = setter;
+  passiveTraceConfig = [(PerformanceTraceController *)self passiveTraceConfig];
+  v7 = +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", [setterCopy integerValue] * 3600.0);
+  v8 = [passiveTraceConfig updateCollectLookbackInterval:v7];
 
   v9 = sub_1BEC();
   v10 = v9;
@@ -877,13 +877,13 @@ LABEL_14:
   [(PerformanceTraceController *)self reloadSpecifierID:@"lookback-interval-group"];
 }
 
-- (id)_groupSpecifiersForInstrumentationConfigID:(id)a3
+- (id)_groupSpecifiersForInstrumentationConfigID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = objc_alloc_init(NSMutableArray);
-  v6 = [(PerformanceTraceController *)self labelForInstrumentationConfigID:v4];
+  v6 = [(PerformanceTraceController *)self labelForInstrumentationConfigID:dCopy];
   v7 = [PSSpecifier preferenceSpecifierNamed:v6 target:self set:"instrumentationConfigSetter:specifier:" get:"instrumentationConfigGetter:" detail:0 cell:6 edit:0];
-  [v7 setIdentifier:v4];
+  [v7 setIdentifier:dCopy];
 
   [(PerformanceTraceController *)self _setEnablement:v7];
   [v5 addObject:v7];
@@ -918,8 +918,8 @@ LABEL_14:
 
   v12 = [(PerformanceTraceController *)self lookbackIntervalGetter:0];
   v10 = [NSString stringWithFormat:@"The last %@ hour%@ of available data will be collected.", v12, v9];
-  v11 = [(PerformanceTraceController *)self sliderGroupSpecifier];
-  [v11 setObject:v10 forKeyedSubscript:PSFooterTextGroupKey];
+  sliderGroupSpecifier = [(PerformanceTraceController *)self sliderGroupSpecifier];
+  [sliderGroupSpecifier setObject:v10 forKeyedSubscript:PSFooterTextGroupKey];
 }
 
 - (id)_lookbackIntervalGroupSpecifiers
@@ -987,27 +987,27 @@ LABEL_14:
     while (v7);
   }
 
-  v11 = [(PerformanceTraceController *)self _lookbackIntervalGroupSpecifiers];
-  [v3 addObjectsFromArray:v11];
+  _lookbackIntervalGroupSpecifiers = [(PerformanceTraceController *)self _lookbackIntervalGroupSpecifiers];
+  [v3 addObjectsFromArray:_lookbackIntervalGroupSpecifiers];
 
   return v3;
 }
 
-- (void)setAnyAppMonitoringEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setAnyAppMonitoringEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [v5 BOOLValue];
+  enabledCopy = enabled;
+  bOOLValue = [enabledCopy BOOLValue];
   if (HTDeveloperSettingsIsInternalBuild())
   {
     v7 = sub_5878();
-    v8 = [NSNumber numberWithBool:v6];
+    v8 = [NSNumber numberWithBool:bOOLValue];
     [v7 setObject:v8 forKey:@"MonitorAnyApp"];
 
     v9 = sub_58BC();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = @"disabled";
-      if (v6)
+      if (bOOLValue)
       {
         v10 = @"enabled";
       }
@@ -1018,9 +1018,9 @@ LABEL_14:
     }
   }
 
-  v11 = [v5 BOOLValue];
-  v12 = [(PerformanceTraceController *)self appsFinder];
-  [v12 setDoNotFilter:v11];
+  bOOLValue2 = [enabledCopy BOOLValue];
+  appsFinder = [(PerformanceTraceController *)self appsFinder];
+  [appsFinder setDoNotFilter:bOOLValue2];
 
   [(PerformanceTraceController *)self forceReloadSpecifiers];
 }
@@ -1035,8 +1035,8 @@ LABEL_14:
 - (id)_appListSpecifiers
 {
   v3 = +[NSMutableArray array];
-  v4 = [(PerformanceTraceController *)self _internalPowerProfilerSpecifiers];
-  [v3 addObjectsFromArray:v4];
+  _internalPowerProfilerSpecifiers = [(PerformanceTraceController *)self _internalPowerProfilerSpecifiers];
+  [v3 addObjectsFromArray:_internalPowerProfilerSpecifiers];
 
   v5 = [PSSpecifier groupSpecifierWithID:@"MONITORABLE_APPS" name:@"Monitored apps"];
   if (sub_1C30())
@@ -1055,8 +1055,8 @@ LABEL_14:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [(PerformanceTraceController *)self cachedDeveloperAppsSpecifiers];
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  cachedDeveloperAppsSpecifiers = [(PerformanceTraceController *)self cachedDeveloperAppsSpecifiers];
+  v8 = [cachedDeveloperAppsSpecifiers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1067,7 +1067,7 @@ LABEL_14:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(cachedDeveloperAppsSpecifiers);
         }
 
         v12 = *(*(&v14 + 1) + 8 * i);
@@ -1075,7 +1075,7 @@ LABEL_14:
         [v3 addObject:v12];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [cachedDeveloperAppsSpecifiers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
@@ -1084,13 +1084,13 @@ LABEL_14:
   return v3;
 }
 
-- (void)_appIsMonitoredSetter:(id)a3 specifier:(id)a4
+- (void)_appIsMonitoredSetter:(id)setter specifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PerformanceTraceController *)self passiveTraceConfig];
+  specifierCopy = specifier;
+  setterCopy = setter;
+  passiveTraceConfig = [(PerformanceTraceController *)self passiveTraceConfig];
   v19 = 0;
-  v9 = [v8 fetchPerfPowerMetricMonitoredProcesses:&v19];
+  v9 = [passiveTraceConfig fetchPerfPowerMetricMonitoredProcesses:&v19];
   v10 = v19;
 
   if (v10)
@@ -1108,10 +1108,10 @@ LABEL_14:
   }
 
   v12 = [v9 mutableCopy];
-  v13 = [v7 BOOLValue];
+  bOOLValue = [setterCopy BOOLValue];
 
-  v14 = [v6 objectForKeyedSubscript:@"AppBundleExecutable"];
-  if (v13)
+  v14 = [specifierCopy objectForKeyedSubscript:@"AppBundleExecutable"];
+  if (bOOLValue)
   {
     [v12 addObject:v14];
   }
@@ -1121,8 +1121,8 @@ LABEL_14:
     [v12 removeObject:v14];
   }
 
-  v15 = [(PerformanceTraceController *)self passiveTraceConfig];
-  v16 = [v15 updatePerfPowerMetricMonitoredProcesses:v12];
+  passiveTraceConfig2 = [(PerformanceTraceController *)self passiveTraceConfig];
+  v16 = [passiveTraceConfig2 updatePerfPowerMetricMonitoredProcesses:v12];
 
   v17 = sub_47D4();
   v18 = v17;
@@ -1144,12 +1144,12 @@ LABEL_14:
   [(PerformanceTraceController *)self reloadSpecifiers];
 }
 
-- (id)_appIsMonitoredGetter:(id)a3
+- (id)_appIsMonitoredGetter:(id)getter
 {
-  v4 = a3;
-  v5 = [(PerformanceTraceController *)self passiveTraceConfig];
+  getterCopy = getter;
+  passiveTraceConfig = [(PerformanceTraceController *)self passiveTraceConfig];
   v13 = 0;
-  v6 = [v5 fetchPerfPowerMetricMonitoredProcesses:&v13];
+  v6 = [passiveTraceConfig fetchPerfPowerMetricMonitoredProcesses:&v13];
   v7 = v13;
 
   v8 = sub_47D4();
@@ -1174,7 +1174,7 @@ LABEL_14:
     v6 = &__NSArray0__struct;
   }
 
-  v10 = [v4 objectForKeyedSubscript:@"AppBundleExecutable"];
+  v10 = [getterCopy objectForKeyedSubscript:@"AppBundleExecutable"];
 
   v11 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 containsObject:v10]);
 
@@ -1184,14 +1184,14 @@ LABEL_14:
 - (void)_refreshAppList
 {
   objc_initWeak(&location, self);
-  v3 = [(PerformanceTraceController *)self appsFinder];
+  appsFinder = [(PerformanceTraceController *)self appsFinder];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_4A80;
   v4[3] = &unk_C5B8;
   objc_copyWeak(&v5, &location);
   v4[4] = self;
-  [v3 findApps:v4];
+  [appsFinder findApps:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1208,9 +1208,9 @@ LABEL_14:
   }
 }
 
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path
 {
-  v5 = [(PerformanceTraceController *)self indexForIndexPath:a4];
+  v5 = [(PerformanceTraceController *)self indexForIndexPath:path];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = 0;
@@ -1228,7 +1228,7 @@ LABEL_14:
       v15 = sub_5450;
       v16 = &unk_C5E0;
       v17 = v8;
-      v18 = self;
+      selfCopy = self;
       v10 = [UIContextualAction contextualActionWithStyle:1 title:@"Delete" handler:&v13];
       v19 = v10;
       v11 = [NSArray arrayWithObjects:&v19 count:1, v13, v14, v15, v16];
@@ -1249,10 +1249,10 @@ LABEL_14:
   v6.receiver = self;
   v6.super_class = PerformanceTraceController;
   [(PerformanceTraceController *)&v6 viewDidLoad];
-  v3 = [(PerformanceTraceController *)self table];
+  table = [(PerformanceTraceController *)self table];
   v4 = objc_opt_class();
   v5 = +[PerformanceTraceFileTableViewCell cellReuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [table registerClass:v4 forCellReuseIdentifier:v5];
 }
 
 @end

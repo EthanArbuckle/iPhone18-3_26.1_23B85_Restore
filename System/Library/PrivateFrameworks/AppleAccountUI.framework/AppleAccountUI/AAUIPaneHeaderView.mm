@@ -1,24 +1,24 @@
 @interface AAUIPaneHeaderView
 - (double)innerHeaderMaxY;
 - (void)layoutSubviews;
-- (void)setDetailText:(id)a3;
-- (void)setTitleText:(id)a3;
+- (void)setDetailText:(id)text;
+- (void)setTitleText:(id)text;
 @end
 
 @implementation AAUIPaneHeaderView
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
   v3.receiver = self;
   v3.super_class = AAUIPaneHeaderView;
-  [(AAUIPaneHeaderView *)&v3 setTitle:a3];
+  [(AAUIPaneHeaderView *)&v3 setTitle:text];
 }
 
-- (void)setDetailText:(id)a3
+- (void)setDetailText:(id)text
 {
   v3.receiver = self;
   v3.super_class = AAUIPaneHeaderView;
-  [(AAUIPaneHeaderView *)&v3 setDetailText:a3];
+  [(AAUIPaneHeaderView *)&v3 setDetailText:text];
 }
 
 - (void)layoutSubviews
@@ -30,8 +30,8 @@
 
 - (double)innerHeaderMaxY
 {
-  v2 = [(AAUIPaneHeaderView *)self detailLabel];
-  [v2 frame];
+  detailLabel = [(AAUIPaneHeaderView *)self detailLabel];
+  [detailLabel frame];
   MaxY = CGRectGetMaxY(v5);
 
   return MaxY;

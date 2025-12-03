@@ -1,6 +1,6 @@
 @interface PHCallsKeypadViewController
-- (PHCallsKeypadViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewDidDisappear:(BOOL)a3;
+- (PHCallsKeypadViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
@@ -8,24 +8,24 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001D2514();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1001D2FF8(a3);
+  selfCopy = self;
+  sub_1001D2FF8(disappear);
 }
 
-- (PHCallsKeypadViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PHCallsKeypadViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_1001D3B18();
 }
 

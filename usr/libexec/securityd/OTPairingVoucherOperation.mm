@@ -1,46 +1,46 @@
 @interface OTPairingVoucherOperation
-- (OTPairingVoucherOperation)initWithDependencies:(id)a3 intendedState:(id)a4 errorState:(id)a5 deviceInfo:(id)a6 peerID:(id)a7 permanentInfo:(id)a8 permanentInfoSig:(id)a9 stableInfo:(id)a10 stableInfoSig:(id)a11;
+- (OTPairingVoucherOperation)initWithDependencies:(id)dependencies intendedState:(id)state errorState:(id)errorState deviceInfo:(id)info peerID:(id)d permanentInfo:(id)permanentInfo permanentInfoSig:(id)sig stableInfo:(id)self0 stableInfoSig:(id)self1;
 - (void)groupStart;
-- (void)proceedWithKeys:(id)a3;
+- (void)proceedWithKeys:(id)keys;
 @end
 
 @implementation OTPairingVoucherOperation
 
-- (void)proceedWithKeys:(id)a3
+- (void)proceedWithKeys:(id)keys
 {
-  v22 = a3;
+  keysCopy = keys;
   objc_initWeak(&location, self);
   v4 = sub_100006274("octagon");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v22 count];
+    v5 = [keysCopy count];
     *buf = 67109120;
     v27 = v5;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "vouching with %d keysets", buf, 8u);
   }
 
-  v6 = [(OTPairingVoucherOperation *)self operationDependencies];
-  v20 = [v6 cuttlefishXPCWrapper];
-  v21 = [(OTPairingVoucherOperation *)self operationDependencies];
-  v19 = [v21 activeAccount];
-  v18 = [(OTPairingVoucherOperation *)self peerID];
-  v17 = [(OTPairingVoucherOperation *)self permanentInfo];
-  v7 = [(OTPairingVoucherOperation *)self permanentInfoSig];
-  v8 = [(OTPairingVoucherOperation *)self stableInfo];
-  v9 = [(OTPairingVoucherOperation *)self stableInfoSig];
-  v10 = [(OTPairingVoucherOperation *)self operationDependencies];
-  v11 = [v10 flowID];
-  v12 = [(OTPairingVoucherOperation *)self operationDependencies];
-  v13 = [v12 deviceSessionID];
-  v14 = [(OTPairingVoucherOperation *)self operationDependencies];
-  v15 = [v14 permittedToSendMetrics];
+  operationDependencies = [(OTPairingVoucherOperation *)self operationDependencies];
+  cuttlefishXPCWrapper = [operationDependencies cuttlefishXPCWrapper];
+  operationDependencies2 = [(OTPairingVoucherOperation *)self operationDependencies];
+  activeAccount = [operationDependencies2 activeAccount];
+  peerID = [(OTPairingVoucherOperation *)self peerID];
+  permanentInfo = [(OTPairingVoucherOperation *)self permanentInfo];
+  permanentInfoSig = [(OTPairingVoucherOperation *)self permanentInfoSig];
+  stableInfo = [(OTPairingVoucherOperation *)self stableInfo];
+  stableInfoSig = [(OTPairingVoucherOperation *)self stableInfoSig];
+  operationDependencies3 = [(OTPairingVoucherOperation *)self operationDependencies];
+  flowID = [operationDependencies3 flowID];
+  operationDependencies4 = [(OTPairingVoucherOperation *)self operationDependencies];
+  deviceSessionID = [operationDependencies4 deviceSessionID];
+  operationDependencies5 = [(OTPairingVoucherOperation *)self operationDependencies];
+  permittedToSendMetrics = [operationDependencies5 permittedToSendMetrics];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_10019B6F8;
   v23[3] = &unk_1003436C0;
   objc_copyWeak(&v24, &location);
-  LOBYTE(v16) = v15;
-  [v20 vouchWithSpecificUser:v19 peerID:v18 permanentInfo:v17 permanentInfoSig:v7 stableInfo:v8 stableInfoSig:v9 ckksKeys:v22 flowID:v11 deviceSessionID:v13 canSendMetrics:v16 reply:v23];
+  LOBYTE(v16) = permittedToSendMetrics;
+  [cuttlefishXPCWrapper vouchWithSpecificUser:activeAccount peerID:peerID permanentInfo:permanentInfo permanentInfoSig:permanentInfoSig stableInfo:stableInfo stableInfoSig:stableInfoSig ckksKeys:keysCopy flowID:flowID deviceSessionID:deviceSessionID canSendMetrics:v16 reply:v23];
 
   objc_destroyWeak(&v24);
   objc_destroyWeak(&location);
@@ -58,25 +58,25 @@
   v4 = objc_alloc_init(NSOperation);
   [(OTPairingVoucherOperation *)self setFinishedOp:v4];
 
-  v5 = [(OTPairingVoucherOperation *)self finishedOp];
-  [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:v5];
+  finishedOp = [(OTPairingVoucherOperation *)self finishedOp];
+  [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:finishedOp];
 
   objc_initWeak(buf, self);
   v6 = [AAFAnalyticsEventSecurity alloc];
-  v7 = [(OTPairingVoucherOperation *)self operationDependencies];
-  v8 = [v7 activeAccount];
-  v9 = [v8 altDSID];
-  v10 = [(OTPairingVoucherOperation *)self operationDependencies];
-  v11 = [v10 flowID];
-  v12 = [(OTPairingVoucherOperation *)self operationDependencies];
-  v13 = [v12 deviceSessionID];
-  v14 = [(OTPairingVoucherOperation *)self operationDependencies];
-  LOBYTE(v22) = [v14 permittedToSendMetrics];
-  v15 = [v6 initWithKeychainCircleMetrics:0 altDSID:v9 flowID:v11 deviceSessionID:v13 eventName:kSecurityRTCEventNameCKKSTlkFetch testsAreEnabled:0 canSendMetrics:v22 category:kSecurityRTCEventCategoryAccountDataAccessRecovery];
+  operationDependencies = [(OTPairingVoucherOperation *)self operationDependencies];
+  activeAccount = [operationDependencies activeAccount];
+  altDSID = [activeAccount altDSID];
+  operationDependencies2 = [(OTPairingVoucherOperation *)self operationDependencies];
+  flowID = [operationDependencies2 flowID];
+  operationDependencies3 = [(OTPairingVoucherOperation *)self operationDependencies];
+  deviceSessionID = [operationDependencies3 deviceSessionID];
+  operationDependencies4 = [(OTPairingVoucherOperation *)self operationDependencies];
+  LOBYTE(v22) = [operationDependencies4 permittedToSendMetrics];
+  v15 = [v6 initWithKeychainCircleMetrics:0 altDSID:altDSID flowID:flowID deviceSessionID:deviceSessionID eventName:kSecurityRTCEventNameCKKSTlkFetch testsAreEnabled:0 canSendMetrics:v22 category:kSecurityRTCEventCategoryAccountDataAccessRecovery];
 
   v16 = [OTFetchCKKSKeysOperation alloc];
-  v17 = [(OTPairingVoucherOperation *)self operationDependencies];
-  v18 = [(OTFetchCKKSKeysOperation *)v16 initWithDependencies:v17 refetchNeeded:0];
+  operationDependencies5 = [(OTPairingVoucherOperation *)self operationDependencies];
+  v18 = [(OTFetchCKKSKeysOperation *)v16 initWithDependencies:operationDependencies5 refetchNeeded:0];
 
   [(CKKSGroupOperation *)self runBeforeGroupFinished:v18];
   v23[0] = _NSConcreteStackBlock;
@@ -96,32 +96,32 @@
   objc_destroyWeak(buf);
 }
 
-- (OTPairingVoucherOperation)initWithDependencies:(id)a3 intendedState:(id)a4 errorState:(id)a5 deviceInfo:(id)a6 peerID:(id)a7 permanentInfo:(id)a8 permanentInfoSig:(id)a9 stableInfo:(id)a10 stableInfoSig:(id)a11
+- (OTPairingVoucherOperation)initWithDependencies:(id)dependencies intendedState:(id)state errorState:(id)errorState deviceInfo:(id)info peerID:(id)d permanentInfo:(id)permanentInfo permanentInfoSig:(id)sig stableInfo:(id)self0 stableInfoSig:(id)self1
 {
-  v30 = a3;
-  v29 = a4;
-  v28 = a5;
-  obj = a6;
-  v27 = a6;
-  v26 = a7;
-  v25 = a8;
-  v24 = a9;
-  v23 = a10;
-  v18 = a11;
+  dependenciesCopy = dependencies;
+  stateCopy = state;
+  errorStateCopy = errorState;
+  obj = info;
+  infoCopy = info;
+  dCopy = d;
+  permanentInfoCopy = permanentInfo;
+  sigCopy = sig;
+  stableInfoCopy = stableInfo;
+  infoSigCopy = infoSig;
   v31.receiver = self;
   v31.super_class = OTPairingVoucherOperation;
   v19 = [(CKKSGroupOperation *)&v31 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_intendedState, a4);
-    objc_storeStrong(&v20->_nextState, a5);
-    objc_storeStrong(&v20->_operationDependencies, a3);
-    objc_storeStrong(&v20->_peerID, a7);
-    objc_storeStrong(&v20->_permanentInfo, a8);
-    objc_storeStrong(&v20->_permanentInfoSig, a9);
-    objc_storeStrong(&v20->_stableInfo, a10);
-    objc_storeStrong(&v20->_stableInfoSig, a11);
+    objc_storeStrong(&v19->_intendedState, state);
+    objc_storeStrong(&v20->_nextState, errorState);
+    objc_storeStrong(&v20->_operationDependencies, dependencies);
+    objc_storeStrong(&v20->_peerID, d);
+    objc_storeStrong(&v20->_permanentInfo, permanentInfo);
+    objc_storeStrong(&v20->_permanentInfoSig, sig);
+    objc_storeStrong(&v20->_stableInfo, stableInfo);
+    objc_storeStrong(&v20->_stableInfoSig, infoSig);
     objc_storeStrong(&v20->_deviceInfo, obj);
   }
 

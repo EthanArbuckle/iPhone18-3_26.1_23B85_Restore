@@ -1,11 +1,11 @@
 @interface GKSimpleTimer
 - (GKSimpleTimer)init;
 - (void)dealloc;
-- (void)fireIn:(double)a3 fromNow:(double)a4;
+- (void)fireIn:(double)in fromNow:(double)now;
 - (void)init;
 - (void)invalidate;
-- (void)setDelegate:(id)a3;
-- (void)setTimer:(double)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setTimer:(double)timer;
 @end
 
 @implementation GKSimpleTimer
@@ -70,11 +70,11 @@
   [(GKSimpleTimer *)&v4 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v18 = *MEMORY[0x277D85DE8];
   pthread_mutex_lock(&self->_lock);
-  self->_delegate = a3;
+  self->_delegate = delegate;
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v5 = VRTraceErrorLogLevelToCSTR();
@@ -88,9 +88,9 @@
       v12 = 1024;
       v13 = 48;
       v14 = 2048;
-      v15 = self;
+      selfCopy = self;
       v16 = 2048;
-      v17 = a3;
+      delegateCopy = delegate;
       _os_log_impl(&dword_24E50C000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d [%p] simpletimer setDelegate: [%p]", &v8, 0x30u);
     }
   }
@@ -99,10 +99,10 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setTimer:(double)a3
+- (void)setTimer:(double)timer
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = self->_interval - (a3 - self->_startTime);
+  v4 = self->_interval - (timer - self->_startTime);
   if (VRTraceGetErrorLogLevelForModule() >= 8)
   {
     v5 = VRTraceErrorLogLevelToCSTR();
@@ -119,7 +119,7 @@
         v18 = 1024;
         v19 = 53;
         v20 = 2048;
-        v21 = self;
+        selfCopy2 = self;
         v22 = 2048;
         v23 = v4;
         _os_log_impl(&dword_24E50C000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d [%p] simpletimer set timer: [%.3lf]", &v14, 0x30u);
@@ -135,7 +135,7 @@
       v18 = 1024;
       v19 = 53;
       v20 = 2048;
-      v21 = self;
+      selfCopy2 = self;
       v22 = 2048;
       v23 = v4;
       _os_log_debug_impl(&dword_24E50C000, v6, OS_LOG_TYPE_DEBUG, " [%s] %s:%d [%p] simpletimer set timer: [%.3lf]", &v14, 0x30u);
@@ -166,13 +166,13 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fireIn:(double)a3 fromNow:(double)a4
+- (void)fireIn:(double)in fromNow:(double)now
 {
   pthread_mutex_lock(&self->_lock);
-  self->_startTime = a4;
-  if (a3 >= 0.0)
+  self->_startTime = now;
+  if (in >= 0.0)
   {
-    self->_interval = a3;
+    self->_interval = in;
   }
 
   if (self->_timerSource)
@@ -203,7 +203,7 @@
     dispatch_resume(v8);
   }
 
-  [(GKSimpleTimer *)self setTimer:a4];
+  [(GKSimpleTimer *)self setTimer:now];
 LABEL_8:
   pthread_mutex_unlock(&self->_lock);
 }
@@ -280,7 +280,7 @@ uint64_t __32__GKSimpleTimer_fireIn_fromNow___block_invoke(uint64_t a1)
       v12 = 1024;
       v13 = 107;
       v14 = 2048;
-      v15 = self;
+      selfCopy = self;
       v16 = 2048;
       v17 = timerSource;
       _os_log_impl(&dword_24E50C000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d [%p] simpletimer invalidate (source=%p)", &v8, 0x30u);
@@ -304,7 +304,7 @@ uint64_t __32__GKSimpleTimer_fireIn_fromNow___block_invoke(uint64_t a1)
 {
   v12 = *MEMORY[0x277D85DE8];
   v4 = 136315906;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2080;
   v7 = "[GKSimpleTimer init]";
   v8 = 1024;

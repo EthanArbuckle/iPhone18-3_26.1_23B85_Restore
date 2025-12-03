@@ -1,30 +1,30 @@
 @interface DYGTMTLCommandQueueInfo
-- (DYGTMTLCommandQueueInfo)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (DYGTMTLCommandQueueInfo)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DYGTMTLCommandQueueInfo
 
-- (DYGTMTLCommandQueueInfo)initWithCoder:(id)a3
+- (DYGTMTLCommandQueueInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = DYGTMTLCommandQueueInfo;
   v5 = [(DYGTMTLCommandQueueInfo *)&v11 init];
   if (v5)
   {
-    v5->_streamRef = [v4 decodeInt64ForKey:@"streamRef"];
-    v5->_deviceStreamRef = [v4 decodeInt64ForKey:@"deviceStreamRef"];
-    v5->_deviceAddress = [v4 decodeInt64ForKey:@"deviceAddress"];
-    v5->_toolsDeviceAddress = [v4 decodeInt64ForKey:@"toolsDeviceAddress"];
-    v5->_queueAddress = [v4 decodeInt64ForKey:@"queueAddress"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"label"];
+    v5->_streamRef = [coderCopy decodeInt64ForKey:@"streamRef"];
+    v5->_deviceStreamRef = [coderCopy decodeInt64ForKey:@"deviceStreamRef"];
+    v5->_deviceAddress = [coderCopy decodeInt64ForKey:@"deviceAddress"];
+    v5->_toolsDeviceAddress = [coderCopy decodeInt64ForKey:@"toolsDeviceAddress"];
+    v5->_queueAddress = [coderCopy decodeInt64ForKey:@"queueAddress"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"label"];
     label = v5->_label;
     v5->_label = v6;
 
-    if ([v4 containsValueForKey:@"canBeCaptured"])
+    if ([coderCopy containsValueForKey:@"canBeCaptured"])
     {
-      v8 = [v4 decodeBoolForKey:@"canBeCaptured"];
+      v8 = [coderCopy decodeBoolForKey:@"canBeCaptured"];
     }
 
     else
@@ -33,29 +33,29 @@
     }
 
     v5->_canBeCaptured = v8;
-    v5->_isOpenGLQueue = [v4 decodeBoolForKey:@"isOpenGLQueue"];
-    v5->_isInternalQueue = [v4 decodeBoolForKey:@"isInternalQueue"];
-    v5->_toolsQueueAddress = [v4 decodeInt64ForKey:@"toolsQueueAddress"];
+    v5->_isOpenGLQueue = [coderCopy decodeBoolForKey:@"isOpenGLQueue"];
+    v5->_isInternalQueue = [coderCopy decodeBoolForKey:@"isInternalQueue"];
+    v5->_toolsQueueAddress = [coderCopy decodeInt64ForKey:@"toolsQueueAddress"];
     v9 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   streamRef = self->_streamRef;
-  v5 = a3;
-  [v5 encodeInt64:streamRef forKey:@"streamRef"];
-  [v5 encodeInt64:self->_deviceAddress forKey:@"deviceAddress"];
-  [v5 encodeInt64:self->_deviceStreamRef forKey:@"deviceStreamRef"];
-  [v5 encodeInt64:self->_toolsDeviceAddress forKey:@"toolsDeviceAddress"];
-  [v5 encodeInt64:self->_queueAddress forKey:@"queueAddress"];
-  [v5 encodeInt64:self->_toolsQueueAddress forKey:@"toolsQueueAddress"];
-  [v5 encodeObject:self->_label forKey:@"label"];
-  [v5 encodeBool:self->_canBeCaptured forKey:@"canBeCaptured"];
-  [v5 encodeBool:self->_isOpenGLQueue forKey:@"isOpenGLQueue"];
-  [v5 encodeBool:self->_isInternalQueue forKey:@"isInternalQueue"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:streamRef forKey:@"streamRef"];
+  [coderCopy encodeInt64:self->_deviceAddress forKey:@"deviceAddress"];
+  [coderCopy encodeInt64:self->_deviceStreamRef forKey:@"deviceStreamRef"];
+  [coderCopy encodeInt64:self->_toolsDeviceAddress forKey:@"toolsDeviceAddress"];
+  [coderCopy encodeInt64:self->_queueAddress forKey:@"queueAddress"];
+  [coderCopy encodeInt64:self->_toolsQueueAddress forKey:@"toolsQueueAddress"];
+  [coderCopy encodeObject:self->_label forKey:@"label"];
+  [coderCopy encodeBool:self->_canBeCaptured forKey:@"canBeCaptured"];
+  [coderCopy encodeBool:self->_isOpenGLQueue forKey:@"isOpenGLQueue"];
+  [coderCopy encodeBool:self->_isInternalQueue forKey:@"isInternalQueue"];
 }
 
 @end

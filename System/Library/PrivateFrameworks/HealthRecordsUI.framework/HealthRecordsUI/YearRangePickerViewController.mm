@@ -1,18 +1,18 @@
 @interface YearRangePickerViewController
-- (_TtC15HealthRecordsUI29YearRangePickerViewController)initWithCoder:(id)a3;
-- (_TtC15HealthRecordsUI29YearRangePickerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC15HealthRecordsUI29YearRangePickerViewController)initWithStyle:(int64_t)a3;
-- (_TtC15HealthRecordsUI29YearRangePickerViewController)initWithUsingInsetStyling:(BOOL)a3;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (_TtC15HealthRecordsUI29YearRangePickerViewController)initWithCoder:(id)coder;
+- (_TtC15HealthRecordsUI29YearRangePickerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC15HealthRecordsUI29YearRangePickerViewController)initWithStyle:(int64_t)style;
+- (_TtC15HealthRecordsUI29YearRangePickerViewController)initWithUsingInsetStyling:(BOOL)styling;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation YearRangePickerViewController
 
-- (_TtC15HealthRecordsUI29YearRangePickerViewController)initWithCoder:(id)a3
+- (_TtC15HealthRecordsUI29YearRangePickerViewController)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.super.super.isa + OBJC_IVAR____TtC15HealthRecordsUI29YearRangePickerViewController_defaultCellIdentifier);
   *v3 = 1819043139;
@@ -26,11 +26,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D1252134();
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   if (*(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC15HealthRecordsUI29YearRangePickerViewController_selectedRow))
   {
@@ -43,37 +43,37 @@
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = sub_1D138D82C();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D138D7EC();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_1D1252390(v10);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_1D1252390(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = sub_1D138D82C();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D138D7EC();
-  v10 = a3;
-  v11 = self;
-  sub_1D1252944(v10);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1D1252944(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
   v4 = sub_1D138D82C();
   v5 = *(v4 - 8);
@@ -105,21 +105,21 @@
   return v9;
 }
 
-- (_TtC15HealthRecordsUI29YearRangePickerViewController)initWithUsingInsetStyling:(BOOL)a3
+- (_TtC15HealthRecordsUI29YearRangePickerViewController)initWithUsingInsetStyling:(BOOL)styling
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC15HealthRecordsUI29YearRangePickerViewController)initWithStyle:(int64_t)a3
+- (_TtC15HealthRecordsUI29YearRangePickerViewController)initWithStyle:(int64_t)style
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC15HealthRecordsUI29YearRangePickerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15HealthRecordsUI29YearRangePickerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

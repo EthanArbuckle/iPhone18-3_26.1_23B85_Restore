@@ -1,10 +1,10 @@
 @interface CSLPRFStingSettingsModelAction
-- (BOOL)isEqual:(id)a3;
-- (CSLPRFStingSettingsModelAction)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (CSLPRFStingSettingsModelAction)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CSLPRFStingSettingsModelAction
@@ -15,21 +15,21 @@
   v4 = [v3 appendObject:self->_actionIdentifier withName:@"actionIdentifier" skipIfNil:1];
   v5 = [v3 appendObject:self->_startActionIdentifier withName:@"startActionIdentifier" skipIfNil:1];
   v6 = [v3 appendObject:self->_title withName:@"title" skipIfNil:0];
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   actionIdentifier = self->_actionIdentifier;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __42__CSLPRFStingSettingsModelAction_isEqual___block_invoke;
   v20[3] = &unk_278744E18;
-  v7 = v4;
+  v7 = equalCopy;
   v21 = v7;
   v8 = [v5 appendString:actionIdentifier counterpart:v20];
   startActionIdentifier = self->_startActionIdentifier;
@@ -55,16 +55,16 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendString:self->_actionIdentifier];
-  v5 = [v3 appendString:self->_startActionIdentifier];
-  v6 = [v3 appendString:self->_title];
-  v7 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendString:self->_actionIdentifier];
+  v5 = [builder appendString:self->_startActionIdentifier];
+  v6 = [builder appendString:self->_title];
+  v7 = [builder hash];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CSLPRFStingSettingsModelAction);
   v5 = [(NSString *)self->_actionIdentifier copy];
@@ -79,23 +79,23 @@
   return v4;
 }
 
-- (CSLPRFStingSettingsModelAction)initWithCoder:(id)a3
+- (CSLPRFStingSettingsModelAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CSLPRFStingSettingsModelAction;
   v5 = [(CSLPRFStingSettingsModelAction *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"actionIdentifier"];
+    v6 = [coderCopy decodeObjectForKey:@"actionIdentifier"];
     actionIdentifier = v5->_actionIdentifier;
     v5->_actionIdentifier = v6;
 
-    v8 = [v4 decodeObjectForKey:@"startActionIdentifier"];
+    v8 = [coderCopy decodeObjectForKey:@"startActionIdentifier"];
     startActionIdentifier = v5->_startActionIdentifier;
     v5->_startActionIdentifier = v8;
 
-    v10 = [v4 decodeObjectForKey:@"title"];
+    v10 = [coderCopy decodeObjectForKey:@"title"];
     title = v5->_title;
     v5->_title = v10;
   }
@@ -103,13 +103,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   actionIdentifier = self->_actionIdentifier;
-  v5 = a3;
-  [v5 encodeObject:actionIdentifier forKey:@"actionIdentifier"];
-  [v5 encodeObject:self->_startActionIdentifier forKey:@"startActionIdentifier"];
-  [v5 encodeObject:self->_title forKey:@"title"];
+  coderCopy = coder;
+  [coderCopy encodeObject:actionIdentifier forKey:@"actionIdentifier"];
+  [coderCopy encodeObject:self->_startActionIdentifier forKey:@"startActionIdentifier"];
+  [coderCopy encodeObject:self->_title forKey:@"title"];
 }
 
 @end

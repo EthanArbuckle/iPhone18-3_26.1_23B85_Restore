@@ -1,8 +1,8 @@
 @interface MFAppStateMonitor
 + (MFAppStateMonitor)sharedInstance;
 - (EFObservable)appIsVisibleObservable;
-- (MFAppStateMonitor)initWithBundleId:(id)a3;
-- (void)_monitorDidUpdate:(void *)a3 process:(void *)a4 update:;
+- (MFAppStateMonitor)initWithBundleId:(id)id;
+- (void)_monitorDidUpdate:(void *)update process:(void *)process update:;
 - (void)dealloc;
 @end
 
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __35__MFAppStateMonitor_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -33,11 +33,11 @@ void __35__MFAppStateMonitor_sharedInstance__block_invoke(uint64_t a1)
   sharedInstance_instance = v2;
 }
 
-- (MFAppStateMonitor)initWithBundleId:(id)a3
+- (MFAppStateMonitor)initWithBundleId:(id)id
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  idCopy = id;
+  if (!idCopy)
   {
     goto LABEL_11;
   }
@@ -47,19 +47,19 @@ void __35__MFAppStateMonitor_sharedInstance__block_invoke(uint64_t a1)
   self = [(MFAppStateMonitor *)&v29 init];
   if (self)
   {
-    v5 = [MEMORY[0x1E699B830] observableObserver];
+    observableObserver = [MEMORY[0x1E699B830] observableObserver];
     observable = self->_observable;
-    self->_observable = v5;
+    self->_observable = observableObserver;
 
     v7 = MEMORY[0x1E69C75D0];
-    v8 = [MEMORY[0x1E69C7610] predicateMatchingBundleIdentifier:v4];
+    v8 = [MEMORY[0x1E69C7610] predicateMatchingBundleIdentifier:idCopy];
     v28 = 0;
     v9 = [v7 handleForPredicate:v8 error:&v28];
     v10 = v28;
 
-    v11 = [v9 currentState];
-    v12 = [v11 endowmentNamespaces];
-    v13 = [v12 containsObject:@"com.apple.frontboard.visibility"];
+    currentState = [v9 currentState];
+    endowmentNamespaces = [currentState endowmentNamespaces];
+    v13 = [endowmentNamespaces containsObject:@"com.apple.frontboard.visibility"];
     v14 = MFLogGeneral();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
@@ -79,7 +79,7 @@ void __35__MFAppStateMonitor_sharedInstance__block_invoke(uint64_t a1)
     v25[1] = 3221225472;
     v25[2] = __38__MFAppStateMonitor_initWithBundleId___block_invoke;
     v25[3] = &unk_1E7AA4BB0;
-    v18 = v4;
+    v18 = idCopy;
     v26 = v18;
     objc_copyWeak(&v27, &buf);
     v19 = [v17 monitorWithConfiguration:v25];
@@ -104,17 +104,17 @@ void __35__MFAppStateMonitor_sharedInstance__block_invoke(uint64_t a1)
     objc_destroyWeak(&buf);
 
 LABEL_11:
-    v21 = 0;
+    selfCopy = 0;
     goto LABEL_12;
   }
 
 LABEL_7:
   self = self;
-  v21 = self;
+  selfCopy = self;
 LABEL_12:
 
   v23 = *MEMORY[0x1E69E9840];
-  return v21;
+  return selfCopy;
 }
 
 void __38__MFAppStateMonitor_initWithBundleId___block_invoke(uint64_t a1, void *a2)
@@ -153,24 +153,24 @@ void __38__MFAppStateMonitor_initWithBundleId___block_invoke_2(uint64_t a1, void
   [(MFAppStateMonitor *)WeakRetained _monitorDidUpdate:v9 process:v8 update:v7];
 }
 
-- (void)_monitorDidUpdate:(void *)a3 process:(void *)a4 update:
+- (void)_monitorDidUpdate:(void *)update process:(void *)process update:
 {
   v27 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (a1)
+  updateCopy = update;
+  processCopy = process;
+  v10 = processCopy;
+  if (self)
   {
-    v11 = [v9 state];
-    v12 = [v11 taskState];
+    state = [processCopy state];
+    taskState = [state taskState];
 
-    v13 = [v10 state];
-    v14 = [v13 endowmentNamespaces];
-    v15 = [v14 containsObject:@"com.apple.frontboard.visibility"];
+    state2 = [v10 state];
+    endowmentNamespaces = [state2 endowmentNamespaces];
+    v15 = [endowmentNamespaces containsObject:@"com.apple.frontboard.visibility"];
 
     v16 = v15 ^ 1;
-    atomic_compare_exchange_strong((a1 + 8), &v16, v15);
+    atomic_compare_exchange_strong((self + 8), &v16, v15);
     if (v16 == (v15 ^ 1))
     {
       v17 = MFLogGeneral();
@@ -179,13 +179,13 @@ void __38__MFAppStateMonitor_initWithBundleId___block_invoke_2(uint64_t a1, void
         v21 = 67109632;
         v22 = v15;
         v23 = 1024;
-        v24 = v12;
+        v24 = taskState;
         v25 = 1024;
-        v26 = [v8 pid];
+        v26 = [updateCopy pid];
         _os_log_impl(&dword_1B0389000, v17, OS_LOG_TYPE_DEFAULT, "[RBSProcessMonitor] Is visible: %{BOOL}d, state: %d, pid = %d", &v21, 0x14u);
       }
 
-      v18 = *(a1 + 24);
+      v18 = *(self + 24);
       v19 = [MEMORY[0x1E696AD98] numberWithBool:v15];
       [v18 observerDidReceiveResult:v19];
     }
@@ -198,9 +198,9 @@ void __38__MFAppStateMonitor_initWithBundleId___block_invoke_2(uint64_t a1, void
         v21 = 67109632;
         v22 = v15;
         v23 = 1024;
-        v24 = v12;
+        v24 = taskState;
         v25 = 1024;
-        v26 = [v8 pid];
+        v26 = [updateCopy pid];
         _os_log_impl(&dword_1B0389000, v18, OS_LOG_TYPE_INFO, "[RBSProcessMonitor] Is visible: %{BOOL}d, state: %d, pid = %d -- (no app visibility change)", &v21, 0x14u);
       }
     }
@@ -235,14 +235,14 @@ void __38__MFAppStateMonitor_initWithBundleId___block_invoke_2(uint64_t a1, void
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_underlyingMonitor;
   }
 
   [(MFAppStateMonitor *)self invalidate];
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = MFAppStateMonitor;
   [(MFAppStateMonitor *)&v3 dealloc];
 }

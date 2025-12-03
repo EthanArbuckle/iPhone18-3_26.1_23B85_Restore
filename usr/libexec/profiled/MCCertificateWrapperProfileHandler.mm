@@ -1,39 +1,39 @@
 @interface MCCertificateWrapperProfileHandler
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6;
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error;
 @end
 
 @implementation MCCertificateWrapperProfileHandler
 
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error
 {
   v20.receiver = self;
   v20.super_class = MCCertificateWrapperProfileHandler;
-  v7 = [(MCConfigurationProfileHandler *)&v20 installWithInstaller:a3 options:a4 interactionClient:a5 outError:a6];
+  v7 = [(MCConfigurationProfileHandler *)&v20 installWithInstaller:installer options:options interactionClient:client outError:error];
   if (v7)
   {
-    v8 = [(MCProfileHandler *)self profile];
-    v9 = [v8 payloads];
-    v10 = [v9 count];
+    profile = [(MCProfileHandler *)self profile];
+    payloads = [profile payloads];
+    v10 = [payloads count];
 
     if (v10)
     {
-      v11 = [v8 payloads];
-      v12 = [v11 objectAtIndex:0];
+      payloads2 = [profile payloads];
+      v12 = [payloads2 objectAtIndex:0];
 
-      v13 = [v12 type];
-      v14 = [v13 isEqualToString:kMCCPPKCS12Type];
+      type = [v12 type];
+      v14 = [type isEqualToString:kMCCPPKCS12Type];
 
       if (v14)
       {
-        v15 = [v12 copyCertificate];
-        if (v15)
+        copyCertificate = [v12 copyCertificate];
+        if (copyCertificate)
         {
-          v16 = v15;
-          v17 = SecCertificateCopySubjectSummary(v15);
-          [v8 setDisplayName:v17];
+          v16 = copyCertificate;
+          v17 = SecCertificateCopySubjectSummary(copyCertificate);
+          [profile setDisplayName:v17];
           v21 = v16;
           v18 = [NSArray arrayWithObjects:&v21 count:1];
-          [v8 setSignerCertificates:v18];
+          [profile setSignerCertificates:v18];
 
           CFRelease(v16);
         }

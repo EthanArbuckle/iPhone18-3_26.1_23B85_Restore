@@ -1,13 +1,13 @@
 @interface ManagedConfiguration
 + (ManagedConfiguration)sharedInstance;
 - (ManagedConfiguration)init;
-- (void)MCSettingsDidChange:(id)a3;
+- (void)MCSettingsDidChange:(id)change;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)scheduleWithQueue:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)scheduleWithQueue:(id)queue;
 - (void)startMonitoring;
 - (void)stopMonitoring;
-- (void)unscheduleFromQueue:(id)a3;
+- (void)unscheduleFromQueue:(id)queue;
 @end
 
 @implementation ManagedConfiguration
@@ -132,10 +132,10 @@
   [(ManagedConfiguration *)&v4 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a3;
-  v9 = [a5 objectForKeyedSubscript:NSKeyValueChangeNewKey];
+  pathCopy = path;
+  v9 = [change objectForKeyedSubscript:NSKeyValueChangeNewKey];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -148,9 +148,9 @@
   }
 
   v11 = v10;
-  if (![v8 isEqualToString:@"megawifiprofile_diagnostic_metrics_enabled"])
+  if (![pathCopy isEqualToString:@"megawifiprofile_diagnostic_metrics_enabled"])
   {
-    if ([v8 isEqualToString:@"megawifiprofile_diagnostic_metrics_period_ms"])
+    if ([pathCopy isEqualToString:@"megawifiprofile_diagnostic_metrics_period_ms"])
     {
       if (!v11)
       {
@@ -171,11 +171,11 @@
       v20 = 2112;
       v21 = @"megawifiprofile_diagnostic_metrics_period_ms";
       v22 = 2048;
-      v23 = [(ManagedConfiguration *)self megawifiprofile_diagnostic_metrics_period_ms];
+      megawifiprofile_diagnostic_metrics_period_ms = [(ManagedConfiguration *)self megawifiprofile_diagnostic_metrics_period_ms];
       v15 = "%{public}s::%d:%@ Preference is %lu";
     }
 
-    else if ([v8 isEqualToString:@"coredata_diagnostic_metrics_enabled"])
+    else if ([pathCopy isEqualToString:@"coredata_diagnostic_metrics_enabled"])
     {
       if (!v11)
       {
@@ -196,11 +196,11 @@
       v20 = 2112;
       v21 = @"coredata_diagnostic_metrics_enabled";
       v22 = 2048;
-      v23 = [(ManagedConfiguration *)self coredata_diagnostic_metrics_enabled];
+      megawifiprofile_diagnostic_metrics_period_ms = [(ManagedConfiguration *)self coredata_diagnostic_metrics_enabled];
       v15 = "%{public}s::%d:%@ Preference is %lu";
     }
 
-    else if ([v8 isEqualToString:@"megawifiprofile_diagnostic_metrics_before_first_assoc"])
+    else if ([pathCopy isEqualToString:@"megawifiprofile_diagnostic_metrics_before_first_assoc"])
     {
       if (!v11)
       {
@@ -221,13 +221,13 @@
       v20 = 2112;
       v21 = @"megawifiprofile_diagnostic_metrics_before_first_assoc";
       v22 = 2048;
-      v23 = [(ManagedConfiguration *)self megawifiprofile_diagnostic_metrics_before_first_assoc];
+      megawifiprofile_diagnostic_metrics_period_ms = [(ManagedConfiguration *)self megawifiprofile_diagnostic_metrics_before_first_assoc];
       v15 = "%{public}s::%d:%@ Preference is %lu";
     }
 
     else
     {
-      if (![v8 isEqualToString:@"megawifiprofile_diagnostic_metrics_while_unassoc"] || !v11)
+      if (![pathCopy isEqualToString:@"megawifiprofile_diagnostic_metrics_while_unassoc"] || !v11)
       {
         goto LABEL_28;
       }
@@ -246,7 +246,7 @@
       v20 = 2112;
       v21 = @"megawifiprofile_diagnostic_metrics_while_unassoc";
       v22 = 2048;
-      v23 = [(ManagedConfiguration *)self megawifiprofile_diagnostic_metrics_while_unassoc];
+      megawifiprofile_diagnostic_metrics_period_ms = [(ManagedConfiguration *)self megawifiprofile_diagnostic_metrics_while_unassoc];
       v15 = "%{public}s::%d:%@ Preference is %lu";
     }
 
@@ -261,13 +261,13 @@ LABEL_26:
     v12 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(ManagedConfiguration *)self megawifiprofile_diagnostic_metrics_enabled];
+      megawifiprofile_diagnostic_metrics_enabled = [(ManagedConfiguration *)self megawifiprofile_diagnostic_metrics_enabled];
       v14 = "NO";
       v17 = "[ManagedConfiguration observeValueForKeyPath:ofObject:change:context:]";
       v18 = 1024;
       v19 = 190;
       v16 = 136446978;
-      if (v13)
+      if (megawifiprofile_diagnostic_metrics_enabled)
       {
         v14 = "YES";
       }
@@ -275,7 +275,7 @@ LABEL_26:
       v20 = 2112;
       v21 = @"megawifiprofile_diagnostic_metrics_enabled";
       v22 = 2080;
-      v23 = v14;
+      megawifiprofile_diagnostic_metrics_period_ms = v14;
       v15 = "%{public}s::%d:%@ Preference is %s";
       goto LABEL_26;
     }
@@ -286,9 +286,9 @@ LABEL_27:
 LABEL_28:
 }
 
-- (void)MCSettingsDidChange:(id)a3
+- (void)MCSettingsDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = objc_autoreleasePoolPush();
   v6 = WALogCategoryDefaultHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -304,11 +304,11 @@ LABEL_28:
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)scheduleWithQueue:(id)a3
+- (void)scheduleWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = objc_autoreleasePoolPush();
-  [(ManagedConfiguration *)self setQueue:v4];
+  [(ManagedConfiguration *)self setQueue:queueCopy];
   v6 = WALogCategoryInitPersistentLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -319,20 +319,20 @@ LABEL_28:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:scheduleWithQueue", buf, 0x12u);
   }
 
-  v7 = [(ManagedConfiguration *)self queue];
+  queue = [(ManagedConfiguration *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10004514C;
   block[3] = &unk_1000ED880;
   block[4] = self;
-  dispatch_async(v7, block);
+  dispatch_async(queue, block);
 
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)unscheduleFromQueue:(id)a3
+- (void)unscheduleFromQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = objc_autoreleasePoolPush();
   v6 = WALogCategoryDefaultHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))

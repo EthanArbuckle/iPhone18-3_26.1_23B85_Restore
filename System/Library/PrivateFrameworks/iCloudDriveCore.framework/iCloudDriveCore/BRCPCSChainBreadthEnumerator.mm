@@ -1,5 +1,5 @@
 @interface BRCPCSChainBreadthEnumerator
-- (BRCPCSChainBreadthEnumerator)initWithPCSChainInfo:(id)a3 clientZone:(id)a4;
+- (BRCPCSChainBreadthEnumerator)initWithPCSChainInfo:(id)info clientZone:(id)zone;
 - (id)nextObject;
 - (void)dealloc;
 - (void)nextObject;
@@ -7,19 +7,19 @@
 
 @implementation BRCPCSChainBreadthEnumerator
 
-- (BRCPCSChainBreadthEnumerator)initWithPCSChainInfo:(id)a3 clientZone:(id)a4
+- (BRCPCSChainBreadthEnumerator)initWithPCSChainInfo:(id)info clientZone:(id)zone
 {
-  v7 = a3;
-  v8 = a4;
+  infoCopy = info;
+  zoneCopy = zone;
   v15.receiver = self;
   v15.super_class = BRCPCSChainBreadthEnumerator;
   v9 = [(BRCPCSChainBreadthEnumerator *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_chainInfo, a3);
-    v11 = [(BRCPCSChainInfo *)v10->_chainInfo itemID];
-    v12 = [v8 unchainedItemInfoInServerTruthEnumeratorParentedTo:v11];
+    objc_storeStrong(&v9->_chainInfo, info);
+    itemID = [(BRCPCSChainInfo *)v10->_chainInfo itemID];
+    v12 = [zoneCopy unchainedItemInfoInServerTruthEnumeratorParentedTo:itemID];
     enumerator = v10->_enumerator;
     v10->_enumerator = v12;
   }
@@ -29,13 +29,13 @@
 
 - (id)nextObject
 {
-  v3 = [(PQLEnumeration *)self->_enumerator nextObject];
-  v4 = v3;
-  if (v3)
+  nextObject = [(PQLEnumeration *)self->_enumerator nextObject];
+  v4 = nextObject;
+  if (nextObject)
   {
-    v5 = [v3 itemID];
+    itemID = [nextObject itemID];
 
-    if (!v5)
+    if (!itemID)
     {
       [BRCPCSChainBreadthEnumerator nextObject];
     }

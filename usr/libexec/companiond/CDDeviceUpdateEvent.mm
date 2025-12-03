@@ -1,14 +1,14 @@
 @interface CDDeviceUpdateEvent
-- (CDDeviceUpdateEvent)initWithRapportDictionary:(id)a3;
+- (CDDeviceUpdateEvent)initWithRapportDictionary:(id)dictionary;
 - (NSString)description;
 - (id)makeRapportDictionary;
 @end
 
 @implementation CDDeviceUpdateEvent
 
-- (CDDeviceUpdateEvent)initWithRapportDictionary:(id)a3
+- (CDDeviceUpdateEvent)initWithRapportDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = CDDeviceUpdateEvent;
   v5 = [(CDDeviceUpdateEvent *)&v12 init];
@@ -53,9 +53,9 @@
 
   [v3 appendString:self->_deviceModel withName:@"deviceModel" skipIfEmpty:1];
   [v3 appendString:self->_deviceName withName:@"deviceName" skipIfEmpty:1];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 @end

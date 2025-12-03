@@ -3,35 +3,35 @@
 + (id)makeFaceTimeRequestsCache;
 + (id)makeIMessageRequestsCache;
 - (CNUIIDSAvailabilityProvider)init;
-- (CNUIIDSAvailabilityProvider)initWithQueryControllerWrapper:(id)a3;
-- (id)cacheForService:(int64_t)a3;
-- (id)validateHandles:(id)a3 forService:(int64_t)a4 schedulerProvider:(id)a5;
-- (void)startRequestForCacheMisses:(id)a3 service:(int64_t)a4 scheduler:(id)a5;
+- (CNUIIDSAvailabilityProvider)initWithQueryControllerWrapper:(id)wrapper;
+- (id)cacheForService:(int64_t)service;
+- (id)validateHandles:(id)handles forService:(int64_t)service schedulerProvider:(id)provider;
+- (void)startRequestForCacheMisses:(id)misses service:(int64_t)service scheduler:(id)scheduler;
 @end
 
 @implementation CNUIIDSAvailabilityProvider
 
-- (CNUIIDSAvailabilityProvider)initWithQueryControllerWrapper:(id)a3
+- (CNUIIDSAvailabilityProvider)initWithQueryControllerWrapper:(id)wrapper
 {
-  v5 = a3;
+  wrapperCopy = wrapper;
   v19.receiver = self;
   v19.super_class = CNUIIDSAvailabilityProvider;
   v6 = [(CNUIIDSAvailabilityProvider *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queryControllerWrapper, a3);
-    v8 = [objc_opt_class() makeFaceTimeRequestsCache];
+    objc_storeStrong(&v6->_queryControllerWrapper, wrapper);
+    makeFaceTimeRequestsCache = [objc_opt_class() makeFaceTimeRequestsCache];
     faceTimeRequests = v7->_faceTimeRequests;
-    v7->_faceTimeRequests = v8;
+    v7->_faceTimeRequests = makeFaceTimeRequestsCache;
 
-    v10 = [objc_opt_class() makeIMessageRequestsCache];
+    makeIMessageRequestsCache = [objc_opt_class() makeIMessageRequestsCache];
     iMessageRequests = v7->_iMessageRequests;
-    v7->_iMessageRequests = v10;
+    v7->_iMessageRequests = makeIMessageRequestsCache;
 
-    v12 = [objc_opt_class() makeExpanseRequestsCache];
+    makeExpanseRequestsCache = [objc_opt_class() makeExpanseRequestsCache];
     expanseRequests = v7->_expanseRequests;
-    v7->_expanseRequests = v12;
+    v7->_expanseRequests = makeExpanseRequestsCache;
 
     requestFutures = v7->_requestFutures;
     v7->_requestFutures = MEMORY[0x1E695E0F0];
@@ -54,8 +54,8 @@
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
 
   v4 = [CNUIDSFaceTimeHandleAvailabilityCache alloc];
-  v5 = [MEMORY[0x1E6996660] nonatomicCacheScheduler];
-  v6 = [(CNCache *)v4 initWithBoundingStrategies:v3 resourceScheduler:v5];
+  nonatomicCacheScheduler = [MEMORY[0x1E6996660] nonatomicCacheScheduler];
+  v6 = [(CNCache *)v4 initWithBoundingStrategies:v3 resourceScheduler:nonatomicCacheScheduler];
 
   [(CNCache *)v6 addDidEvictHandler:&__block_literal_global_42];
 
@@ -70,8 +70,8 @@
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
 
   v4 = [CNUIDSIMessageHandleAvailabilityCache alloc];
-  v5 = [MEMORY[0x1E6996660] nonatomicCacheScheduler];
-  v6 = [(CNCache *)v4 initWithBoundingStrategies:v3 resourceScheduler:v5];
+  nonatomicCacheScheduler = [MEMORY[0x1E6996660] nonatomicCacheScheduler];
+  v6 = [(CNCache *)v4 initWithBoundingStrategies:v3 resourceScheduler:nonatomicCacheScheduler];
 
   [(CNCache *)v6 addDidEvictHandler:&__block_literal_global_22];
 
@@ -86,8 +86,8 @@
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
 
   v4 = [CNUIDSExpanseHandleAvailabilityCache alloc];
-  v5 = [MEMORY[0x1E6996660] nonatomicCacheScheduler];
-  v6 = [(CNCache *)v4 initWithBoundingStrategies:v3 resourceScheduler:v5];
+  nonatomicCacheScheduler = [MEMORY[0x1E6996660] nonatomicCacheScheduler];
+  v6 = [(CNCache *)v4 initWithBoundingStrategies:v3 resourceScheduler:nonatomicCacheScheduler];
 
   [(CNCache *)v6 addDidEvictHandler:&__block_literal_global_25_1];
 
@@ -102,21 +102,21 @@
   return v4;
 }
 
-- (void)startRequestForCacheMisses:(id)a3 service:(int64_t)a4 scheduler:(id)a5
+- (void)startRequestForCacheMisses:(id)misses service:(int64_t)service scheduler:(id)scheduler
 {
-  v8 = a3;
-  v9 = a5;
+  missesCopy = misses;
+  schedulerCopy = scheduler;
   if (((*(*MEMORY[0x1E6996548] + 16))() & 1) == 0)
   {
-    v10 = [v8 allKeys];
-    v11 = [(CNUIIDSAvailabilityProvider *)self queryControllerWrapper];
-    v12 = [CNUIIDSRequest validateHandles:v10 forService:a4 scheduler:v9 queryControllerWrapper:v11];
+    allKeys = [missesCopy allKeys];
+    queryControllerWrapper = [(CNUIIDSAvailabilityProvider *)self queryControllerWrapper];
+    v12 = [CNUIIDSRequest validateHandles:allKeys forService:service scheduler:schedulerCopy queryControllerWrapper:queryControllerWrapper];
 
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __76__CNUIIDSAvailabilityProvider_startRequestForCacheMisses_service_scheduler___block_invoke;
     v16[3] = &unk_1E76E92E8;
-    v13 = v8;
+    v13 = missesCopy;
     v17 = v13;
     [v12 addSuccessBlock:v16];
     v14[0] = MEMORY[0x1E69E9820];
@@ -234,62 +234,62 @@ void __76__CNUIIDSAvailabilityProvider_startRequestForCacheMisses_service_schedu
   }
 }
 
-- (id)cacheForService:(int64_t)a3
+- (id)cacheForService:(int64_t)service
 {
-  if (a3 == 2)
+  if (service == 2)
   {
-    v3 = [(CNUIIDSAvailabilityProvider *)self expanseRequests];
+    expanseRequests = [(CNUIIDSAvailabilityProvider *)self expanseRequests];
   }
 
-  else if (a3 == 1)
+  else if (service == 1)
   {
-    v3 = [(CNUIIDSAvailabilityProvider *)self iMessageRequests];
+    expanseRequests = [(CNUIIDSAvailabilityProvider *)self iMessageRequests];
   }
 
   else
   {
-    if (a3)
+    if (service)
     {
       goto LABEL_8;
     }
 
-    v3 = [(CNUIIDSAvailabilityProvider *)self faceTimeRequests];
+    expanseRequests = [(CNUIIDSAvailabilityProvider *)self faceTimeRequests];
   }
 
-  a2 = v3;
+  a2 = expanseRequests;
 LABEL_8:
 
   return a2;
 }
 
-- (id)validateHandles:(id)a3 forService:(int64_t)a4 schedulerProvider:(id)a5
+- (id)validateHandles:(id)handles forService:(int64_t)service schedulerProvider:(id)provider
 {
-  v8 = a3;
+  handlesCopy = handles;
   v9 = MEMORY[0x1E695DF70];
-  v10 = a5;
-  v11 = [v9 array];
-  v12 = [MEMORY[0x1E695DF90] dictionary];
-  v13 = [(CNUIIDSAvailabilityProvider *)self cacheForService:a4];
-  v14 = [(CNUIIDSAvailabilityProvider *)self resourceLock];
+  providerCopy = provider;
+  array = [v9 array];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v13 = [(CNUIIDSAvailabilityProvider *)self cacheForService:service];
+  resourceLock = [(CNUIIDSAvailabilityProvider *)self resourceLock];
   v23 = MEMORY[0x1E69E9820];
   v24 = 3221225472;
   v25 = __76__CNUIIDSAvailabilityProvider_validateHandles_forService_schedulerProvider___block_invoke;
   v26 = &unk_1E76E9330;
-  v27 = v8;
+  v27 = handlesCopy;
   v28 = v13;
-  v29 = v12;
-  v30 = v11;
-  v15 = v11;
-  v16 = v12;
+  v29 = dictionary;
+  v30 = array;
+  v15 = array;
+  v16 = dictionary;
   v17 = v13;
-  v18 = v8;
-  [v14 performBlock:&v23];
+  v18 = handlesCopy;
+  [resourceLock performBlock:&v23];
 
-  v19 = [v10 backgroundScheduler];
-  [(CNUIIDSAvailabilityProvider *)self startRequestForCacheMisses:v16 service:a4 scheduler:v19];
+  backgroundScheduler = [providerCopy backgroundScheduler];
+  [(CNUIIDSAvailabilityProvider *)self startRequestForCacheMisses:v16 service:service scheduler:backgroundScheduler];
 
   v20 = [v15 _cn_map:&__block_literal_global_40];
-  v21 = [MEMORY[0x1E6996798] merge:v20 schedulerProvider:v10];
+  v21 = [MEMORY[0x1E6996798] merge:v20 schedulerProvider:providerCopy];
 
   return v21;
 }

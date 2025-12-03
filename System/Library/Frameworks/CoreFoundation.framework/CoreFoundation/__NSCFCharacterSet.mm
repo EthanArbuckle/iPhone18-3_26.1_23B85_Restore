@@ -1,9 +1,9 @@
 @interface __NSCFCharacterSet
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (Class)classForCoder;
 - (id)bitmapRepresentation;
 - (id)invertedSet;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation __NSCFCharacterSet
@@ -15,19 +15,19 @@
   return InvertedSet;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
 
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  return _CFNonObjCEqual(self, a3) != 0;
+  return _CFNonObjCEqual(self, equal) != 0;
 }
 
 - (id)bitmapRepresentation
@@ -52,9 +52,9 @@
   return objc_lookUpClass(v2);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (![a3 allowsKeyedCoding])
+  if (![coder allowsKeyedCoding])
   {
     return;
   }
@@ -65,7 +65,7 @@
   {
     if (KeyedCodingType == 2)
     {
-      [a3 encodeInteger:_CFCharacterSetGetKeyedCodingBuiltinType(self) forKey:@"NSBuiltinID"];
+      [coder encodeInteger:_CFCharacterSetGetKeyedCodingBuiltinType(self) forKey:@"NSBuiltinID"];
       if (!IsInverted)
       {
         return;
@@ -77,7 +77,7 @@
     if (KeyedCodingType == 3)
     {
       KeyedCodingRange = _CFCharacterSetGetKeyedCodingRange(self);
-      [a3 encodeInt64:v8 | (KeyedCodingRange << 32) forKey:@"NSRange"];
+      [coder encodeInt64:v8 | (KeyedCodingRange << 32) forKey:@"NSRange"];
       if (!IsInverted)
       {
         return;
@@ -93,27 +93,27 @@
   {
     if (KeyedCodingType == 5)
     {
-      [a3 encodeInteger:_CFCharacterSetGetKeyedCodingBuiltinType(self) forKey:@"NSBuiltinID2"];
+      [coder encodeInteger:_CFCharacterSetGetKeyedCodingBuiltinType(self) forKey:@"NSBuiltinID2"];
       if (IsInverted)
       {
-        [a3 encodeBool:1 forKey:@"NSIsInverted2"];
+        [coder encodeBool:1 forKey:@"NSIsInverted2"];
       }
     }
 
 LABEL_11:
     v9 = objc_opt_class();
     v10 = objc_lookUpClass("NSKeyedArchiver");
-    v11 = [(__NSCFCharacterSet *)self bitmapRepresentation];
+    bitmapRepresentation = [(__NSCFCharacterSet *)self bitmapRepresentation];
     if (v9 == v10)
     {
 
-      [a3 _encodePropertyList:v11 forKey:@"NSBitmap"];
+      [coder _encodePropertyList:bitmapRepresentation forKey:@"NSBitmap"];
     }
 
     else
     {
 
-      [a3 encodeObject:v11 forKey:@"NSBitmapObject"];
+      [coder encodeObject:bitmapRepresentation forKey:@"NSBitmapObject"];
     }
 
     return;
@@ -123,12 +123,12 @@ LABEL_11:
   v13 = objc_opt_class();
   if (v13 == objc_lookUpClass("NSKeyedArchiver"))
   {
-    [a3 _encodePropertyList:KeyedCodingString forKey:@"NSString"];
+    [coder _encodePropertyList:KeyedCodingString forKey:@"NSString"];
   }
 
   else
   {
-    [a3 encodeObject:KeyedCodingString forKey:@"NSStringObject"];
+    [coder encodeObject:KeyedCodingString forKey:@"NSStringObject"];
   }
 
   CFRelease(KeyedCodingString);
@@ -136,7 +136,7 @@ LABEL_11:
   {
 LABEL_24:
 
-    [a3 encodeBool:1 forKey:@"NSIsInverted"];
+    [coder encodeBool:1 forKey:@"NSIsInverted"];
   }
 }
 

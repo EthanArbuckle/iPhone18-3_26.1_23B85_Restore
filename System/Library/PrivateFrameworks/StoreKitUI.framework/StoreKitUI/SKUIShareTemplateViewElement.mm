@@ -1,7 +1,7 @@
 @interface SKUIShareTemplateViewElement
 - (NSArray)activities;
-- (id)activityForShareSheetActivityType:(id)a3;
-- (id)activityForUIActivityType:(id)a3;
+- (id)activityForShareSheetActivityType:(id)type;
+- (id)activityForUIActivityType:(id)type;
 @end
 
 @implementation SKUIShareTemplateViewElement
@@ -20,12 +20,12 @@
     }
   }
 
-  v11 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __42__SKUIShareTemplateViewElement_activities__block_invoke;
   v14[3] = &unk_2781F9640;
-  v12 = v11;
+  v12 = array;
   v15 = v12;
   [(SKUIViewElement *)self enumerateChildrenUsingBlock:v14];
 
@@ -41,10 +41,10 @@ void __42__SKUIShareTemplateViewElement_activities__block_invoke(uint64_t a1, vo
   }
 }
 
-- (id)activityForShareSheetActivityType:(id)a3
+- (id)activityForShareSheetActivityType:(id)type
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typeCopy = type;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -76,8 +76,8 @@ void __42__SKUIShareTemplateViewElement_activities__block_invoke(uint64_t a1, vo
         }
 
         v17 = *(*(&v20 + 1) + 8 * i);
-        v18 = [v17 activityType];
-        if ([v18 isEqualToString:v4])
+        activityType = [v17 activityType];
+        if ([activityType isEqualToString:typeCopy])
         {
           v14 = v17;
 
@@ -100,10 +100,10 @@ LABEL_15:
   return v14;
 }
 
-- (id)activityForUIActivityType:(id)a3
+- (id)activityForUIActivityType:(id)type
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typeCopy = type;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -116,7 +116,7 @@ LABEL_15:
     }
   }
 
-  v13 = SKUIShareSheetActivityTypeForUIActivityType(v4);
+  v13 = SKUIShareSheetActivityTypeForUIActivityType(typeCopy);
 
   [(SKUIShareTemplateViewElement *)self activities];
   v27 = 0u;
@@ -139,15 +139,15 @@ LABEL_15:
         }
 
         v20 = *(*(&v27 + 1) + 8 * i);
-        v21 = [v20 activityType];
-        if ([v21 isEqualToString:@"*"])
+        activityType = [v20 activityType];
+        if ([activityType isEqualToString:@"*"])
         {
           v22 = v20;
 
           v17 = v22;
         }
 
-        if ([v21 isEqualToString:v13])
+        if ([activityType isEqualToString:v13])
         {
           v23 = v20;
 

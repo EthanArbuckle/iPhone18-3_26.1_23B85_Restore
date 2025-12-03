@@ -2,7 +2,7 @@
 - (CGPoint)_flippedFocusPoint;
 - (CGPoint)focusPoint;
 - (CGRect)messageRect;
-- (void)setFocusPoint:(CGPoint)a3;
+- (void)setFocusPoint:(CGPoint)point;
 - (void)startAnimation;
 - (void)stopAnimation;
 @end
@@ -15,42 +15,42 @@
   v37 = [v3 URLForResource:@"Lasers" withExtension:@"ca"];
 
   v36 = [CAPackage packageWithContentsOfURL:v37 type:kCAPackageTypeCAMLBundle options:0 error:0];
-  v35 = [&off_4320 stringValue];
-  v4 = [v36 publishedObjectWithName:v35];
+  stringValue = [&off_4320 stringValue];
+  v4 = [v36 publishedObjectWithName:stringValue];
   [v4 setAllowsGroupOpacity:0];
   [v4 setAllowsGroupBlending:0];
-  v5 = [v4 sublayers];
-  v6 = [v5 objectAtIndexedSubscript:0];
+  sublayers = [v4 sublayers];
+  v6 = [sublayers objectAtIndexedSubscript:0];
   haloLayer = self->_haloLayer;
   self->_haloLayer = v6;
 
-  v8 = [v4 sublayers];
-  v34 = [v8 objectAtIndexedSubscript:1];
+  sublayers2 = [v4 sublayers];
+  v34 = [sublayers2 objectAtIndexedSubscript:1];
 
-  v9 = [v4 sublayers];
-  v10 = [v9 objectAtIndexedSubscript:1];
-  v11 = [v10 sublayers];
-  v12 = [v11 objectAtIndexedSubscript:0];
+  sublayers3 = [v4 sublayers];
+  v10 = [sublayers3 objectAtIndexedSubscript:1];
+  sublayers4 = [v10 sublayers];
+  v12 = [sublayers4 objectAtIndexedSubscript:0];
   replicatorLayer = self->_replicatorLayer;
   self->_replicatorLayer = v12;
 
-  v14 = [v4 sublayers];
-  v15 = [v14 objectAtIndexedSubscript:2];
+  sublayers5 = [v4 sublayers];
+  v15 = [sublayers5 objectAtIndexedSubscript:2];
   spotlightLayer = self->_spotlightLayer;
   self->_spotlightLayer = v15;
 
-  v17 = [v4 sublayers];
-  v18 = [v17 objectAtIndexedSubscript:1];
-  v19 = [v18 sublayers];
-  v20 = [v19 objectAtIndexedSubscript:0];
-  v21 = [v20 sublayers];
-  v22 = [v21 objectAtIndexedSubscript:0];
+  sublayers6 = [v4 sublayers];
+  v18 = [sublayers6 objectAtIndexedSubscript:1];
+  sublayers7 = [v18 sublayers];
+  v20 = [sublayers7 objectAtIndexedSubscript:0];
+  sublayers8 = [v20 sublayers];
+  v22 = [sublayers8 objectAtIndexedSubscript:0];
 
   [(CKLasersEffectView *)self bounds];
   v24 = v23;
   v26 = v25;
-  v27 = [(CKLasersEffectView *)self layer];
-  [v27 convertTime:0 fromLayer:CACurrentMediaTime()];
+  layer = [(CKLasersEffectView *)self layer];
+  [layer convertTime:0 fromLayer:CACurrentMediaTime()];
   [v4 setBeginTime:?];
 
   [v4 setPosition:{v24 * 0.5, v26 * 0.5}];
@@ -80,8 +80,8 @@
   [v28 setTimingFunction:v30];
 
   [v34 addAnimation:v28 forKey:0];
-  v31 = [(CKLasersEffectView *)self layer];
-  [v31 addSublayer:v4];
+  layer2 = [(CKLasersEffectView *)self layer];
+  [layer2 addSublayer:v4];
 
   objc_storeStrong(&self->_lasersLayer, v4);
   v32 = dispatch_time(0, 5700000000);
@@ -107,11 +107,11 @@
   return result;
 }
 
-- (void)setFocusPoint:(CGPoint)a3
+- (void)setFocusPoint:(CGPoint)point
 {
-  if (self->_focusPoint.x != a3.x || self->_focusPoint.y != a3.y)
+  if (self->_focusPoint.x != point.x || self->_focusPoint.y != point.y)
   {
-    self->_focusPoint = a3;
+    self->_focusPoint = point;
     [(CKLasersEffectView *)self _flippedFocusPoint];
     v7 = v6;
     v9 = v8;

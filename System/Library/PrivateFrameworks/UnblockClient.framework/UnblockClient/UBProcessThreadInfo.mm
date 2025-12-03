@@ -1,33 +1,33 @@
 @interface UBProcessThreadInfo
-- (UBProcessThreadInfo)initWithCoder:(id)a3;
-- (UBProcessThreadInfo)initWithProcess:(id)a3 thread:(id)a4;
+- (UBProcessThreadInfo)initWithCoder:(id)coder;
+- (UBProcessThreadInfo)initWithProcess:(id)process thread:(id)thread;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UBProcessThreadInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   process = self->_process;
-  v5 = a3;
-  [v5 encodeObject:process forKey:@"_process"];
-  [v5 encodeObject:self->_thread forKey:@"_thread"];
+  coderCopy = coder;
+  [coderCopy encodeObject:process forKey:@"_process"];
+  [coderCopy encodeObject:self->_thread forKey:@"_thread"];
 }
 
-- (UBProcessThreadInfo)initWithCoder:(id)a3
+- (UBProcessThreadInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = UBProcessThreadInfo;
   v5 = [(UBProcessThreadInfo *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_process"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_process"];
     process = v5->_process;
     v5->_process = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_thread"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_thread"];
     thread = v5->_thread;
     v5->_thread = v8;
 
@@ -37,18 +37,18 @@
   return v5;
 }
 
-- (UBProcessThreadInfo)initWithProcess:(id)a3 thread:(id)a4
+- (UBProcessThreadInfo)initWithProcess:(id)process thread:(id)thread
 {
-  v7 = a3;
-  v8 = a4;
+  processCopy = process;
+  threadCopy = thread;
   v13.receiver = self;
   v13.super_class = UBProcessThreadInfo;
   v9 = [(UBProcessThreadInfo *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_process, a3);
-    objc_storeStrong(&v10->_thread, a4);
+    objc_storeStrong(&v9->_process, process);
+    objc_storeStrong(&v10->_thread, thread);
     v11 = v10;
   }
 

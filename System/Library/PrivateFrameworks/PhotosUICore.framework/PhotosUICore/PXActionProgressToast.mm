@@ -1,49 +1,49 @@
 @interface PXActionProgressToast
 - (BOOL)isLocked;
-- (PXActionProgressToast)initWithTargetDestination:(id)a3 progress:(id)a4;
+- (PXActionProgressToast)initWithTargetDestination:(id)destination progress:(id)progress;
 - (id)_determinateProgressView;
 - (id)_mainViewController;
 - (id)_tabBarController;
 - (void)_cancel;
-- (void)_close:(id)a3;
-- (void)_errorButtonClicked:(id)a3;
-- (void)_handleContentModeChange:(id)a3;
-- (void)_handleSingleTouchTap:(id)a3;
+- (void)_close:(id)_close;
+- (void)_errorButtonClicked:(id)clicked;
+- (void)_handleContentModeChange:(id)change;
+- (void)_handleSingleTouchTap:(id)tap;
 - (void)_prepareForReuse;
 - (void)_showToast;
 - (void)_updateDeterminateProgress;
-- (void)_updateDisplayForDestination:(id)a3;
+- (void)_updateDisplayForDestination:(id)destination;
 - (void)_updateIcons;
 - (void)_updatePrimaryLabel;
 - (void)_updateSecondaryLabel;
 - (void)_updateToastMargin;
 - (void)dealloc;
-- (void)dismissAnimated:(BOOL)a3;
-- (void)dismissAnimated:(BOOL)a3 afterDelay:(double)a4;
-- (void)finishProgressMarkingAsComplete:(BOOL)a3 updatedLocalizedTitle:(id)a4 updatedLocalizedDescription:(id)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setBottomSpacing:(double)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setCloseButtonAction:(id)a3;
-- (void)setCustomSubtitleText:(id)a3;
-- (void)setErrors:(id)a3 forMediaType:(int64_t)a4;
-- (void)setLocalizedProgressText:(id)a3;
-- (void)setLocalizedTitle:(id)a3;
-- (void)setState:(int64_t)a3;
+- (void)dismissAnimated:(BOOL)animated;
+- (void)dismissAnimated:(BOOL)animated afterDelay:(double)delay;
+- (void)finishProgressMarkingAsComplete:(BOOL)complete updatedLocalizedTitle:(id)title updatedLocalizedDescription:(id)description;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setBottomSpacing:(double)spacing;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCloseButtonAction:(id)action;
+- (void)setCustomSubtitleText:(id)text;
+- (void)setErrors:(id)errors forMediaType:(int64_t)type;
+- (void)setLocalizedProgressText:(id)text;
+- (void)setLocalizedTitle:(id)title;
+- (void)setState:(int64_t)state;
 - (void)updateConstraints;
 - (void)willStartProgress;
 @end
 
 @implementation PXActionProgressToast
 
-- (void)_updateDisplayForDestination:(id)a3
+- (void)_updateDisplayForDestination:(id)destination
 {
-  v7 = a3;
-  v4 = [(PXActionProgressToast *)self targetDestination];
-  if (v4)
+  destinationCopy = destination;
+  targetDestination = [(PXActionProgressToast *)self targetDestination];
+  if (targetDestination)
   {
-    v5 = [(PXActionProgressToast *)self targetDestination];
-    v6 = [v5 isEqualToNavigationDestination:v7] ^ 1;
+    targetDestination2 = [(PXActionProgressToast *)self targetDestination];
+    v6 = [targetDestination2 isEqualToNavigationDestination:destinationCopy] ^ 1;
   }
 
   else
@@ -61,22 +61,22 @@
   }
 }
 
-- (void)_handleContentModeChange:(id)a3
+- (void)_handleContentModeChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x1E69BE9B8]];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x1E69BE9B8]];
 
   [(PXActionProgressToast *)self _updateDisplayForDestination:v5];
 }
 
 - (void)_updateIcons
 {
-  v3 = [(PXActionProgressToast *)self state];
-  if (v3 <= 4)
+  state = [(PXActionProgressToast *)self state];
+  if (state <= 4)
   {
-    v4 = 0xFu >> v3;
-    v5 = 0x18u >> v3;
-    [(UIButton *)self->_errorView setHidden:(0x17u >> v3) & 1];
+    v4 = 0xFu >> state;
+    v5 = 0x18u >> state;
+    [(UIButton *)self->_errorView setHidden:(0x17u >> state) & 1];
     [(UIImageView *)self->_checkmarkView setHidden:v4 & 1];
     progressView = self->_progressView;
 
@@ -93,8 +93,8 @@
   [(PXActionProgressToast *)self _updatePrimaryLabel];
   [(PXActionProgressToast *)self _updateSecondaryLabel];
   [(PXActionProgressToast *)self _updateToastMargin];
-  v4 = [(PXActionProgressToast *)self _determinateProgressView];
-  [v4 prepareForReuse];
+  _determinateProgressView = [(PXActionProgressToast *)self _determinateProgressView];
+  [_determinateProgressView prepareForReuse];
 
   labelContainerWidthConstraint = self->_labelContainerWidthConstraint;
 
@@ -103,22 +103,22 @@
 
 - (id)_tabBarController
 {
-  v2 = [(PXActionProgressToast *)self _mainViewController];
-  v3 = [v2 tabBarController];
+  _mainViewController = [(PXActionProgressToast *)self _mainViewController];
+  tabBarController = [_mainViewController tabBarController];
 
-  return v3;
+  return tabBarController;
 }
 
 - (id)_mainViewController
 {
-  v2 = [MEMORY[0x1E69DC668] sharedApplication];
-  v3 = [v2 px_firstKeyWindow];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  px_firstKeyWindow = [mEMORY[0x1E69DC668] px_firstKeyWindow];
 
-  v4 = [v3 rootViewController];
+  rootViewController = [px_firstKeyWindow rootViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 contentViewController];
+    contentViewController = [rootViewController contentViewController];
   }
 
   else
@@ -129,34 +129,34 @@
       goto LABEL_6;
     }
 
-    v5 = [v4 selectedViewController];
+    contentViewController = [rootViewController selectedViewController];
   }
 
-  v6 = v5;
+  v6 = contentViewController;
 
-  v4 = v6;
+  rootViewController = v6;
 LABEL_6:
 
-  return v4;
+  return rootViewController;
 }
 
 - (void)_updateToastMargin
 {
   [(PXActionProgressToast *)self bottomSpacing];
   v4 = v3;
-  v5 = [(PXActionProgressToast *)self _tabBarController];
-  v10 = v5;
-  if (v5 && ([v5 isTabBarHidden] & 1) == 0)
+  _tabBarController = [(PXActionProgressToast *)self _tabBarController];
+  v10 = _tabBarController;
+  if (_tabBarController && ([_tabBarController isTabBarHidden] & 1) == 0)
   {
-    v6 = [v10 tabBar];
-    [v6 frame];
+    tabBar = [v10 tabBar];
+    [tabBar frame];
     v8 = v9;
   }
 
   else
   {
-    v6 = [(PXActionProgressToast *)self _mainViewController];
-    [v6 px_safeAreaInsets];
+    tabBar = [(PXActionProgressToast *)self _mainViewController];
+    [tabBar px_safeAreaInsets];
     v8 = v7;
   }
 
@@ -164,16 +164,16 @@ LABEL_6:
   [(PXToast *)self->_toast setBottomMargin:?];
 }
 
-- (void)_close:(id)a3
+- (void)_close:(id)_close
 {
   if ([(PXActionProgressToast *)self state]== 1 || ![(PXActionProgressToast *)self state])
   {
-    v4 = [(PXActionProgressToast *)self closeButtonAction];
+    closeButtonAction = [(PXActionProgressToast *)self closeButtonAction];
 
-    if (v4)
+    if (closeButtonAction)
     {
-      v5 = [(PXActionProgressToast *)self closeButtonAction];
-      v5[2]();
+      closeButtonAction2 = [(PXActionProgressToast *)self closeButtonAction];
+      closeButtonAction2[2]();
     }
 
     [(PXActionProgressToast *)self _cancel];
@@ -200,123 +200,123 @@ LABEL_6:
   }
 }
 
-- (void)_errorButtonClicked:(id)a3
+- (void)_errorButtonClicked:(id)clicked
 {
-  v4 = [(PXActionProgressToast *)self errorButtonAction];
+  errorButtonAction = [(PXActionProgressToast *)self errorButtonAction];
 
-  if (v4)
+  if (errorButtonAction)
   {
-    v6 = [(PXActionProgressToast *)self errorButtonAction];
-    v5 = [(PXActionProgressToast *)self errors];
-    v6[2](v6, v5);
+    errorButtonAction2 = [(PXActionProgressToast *)self errorButtonAction];
+    errors = [(PXActionProgressToast *)self errors];
+    errorButtonAction2[2](errorButtonAction2, errors);
   }
 }
 
-- (void)_handleSingleTouchTap:(id)a3
+- (void)_handleSingleTouchTap:(id)tap
 {
-  v5 = [(PXActionProgressToast *)self _tabBarController];
-  v4 = [(PXActionProgressToast *)self targetDestination];
-  if (v4)
+  _tabBarController = [(PXActionProgressToast *)self _tabBarController];
+  targetDestination = [(PXActionProgressToast *)self targetDestination];
+  if (targetDestination)
   {
-    [v5 px_switchToTabAndNavigateToDestination:v4 options:0 completionHandler:&__block_literal_global_199607];
+    [_tabBarController px_switchToTabAndNavigateToDestination:targetDestination options:0 completionHandler:&__block_literal_global_199607];
   }
 }
 
-- (void)setCloseButtonAction:(id)a3
+- (void)setCloseButtonAction:(id)action
 {
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(action);
   closeButtonAction = self->_closeButtonAction;
   self->_closeButtonAction = v5;
 
-  [(UIButton *)self->_closeButton setHidden:a3 == 0];
+  [(UIButton *)self->_closeButton setHidden:action == 0];
 
   [(PXActionProgressToast *)self setNeedsUpdateConstraints];
 }
 
 - (void)_updateSecondaryLabel
 {
-  v3 = [(PXActionProgressToast *)self localizedProgressText];
-  [(UILabel *)self->_secondaryLabel setText:v3];
+  localizedProgressText = [(PXActionProgressToast *)self localizedProgressText];
+  [(UILabel *)self->_secondaryLabel setText:localizedProgressText];
 
   [(PXActionProgressToast *)self setNeedsUpdateConstraints];
 }
 
-- (void)setLocalizedProgressText:(id)a3
+- (void)setLocalizedProgressText:(id)text
 {
-  v9 = a3;
-  v5 = [(PXActionProgressToast *)self customSubtitleText];
+  textCopy = text;
+  customSubtitleText = [(PXActionProgressToast *)self customSubtitleText];
 
-  if (!v5)
+  if (!customSubtitleText)
   {
     v6 = self->_localizedProgressText;
     v7 = v6;
-    if (v6 == v9)
+    if (v6 == textCopy)
     {
     }
 
     else
     {
-      v8 = [(NSString *)v6 isEqualToString:v9];
+      v8 = [(NSString *)v6 isEqualToString:textCopy];
 
       if (!v8)
       {
-        objc_storeStrong(&self->_localizedProgressText, a3);
+        objc_storeStrong(&self->_localizedProgressText, text);
         [(PXActionProgressToast *)self _updateSecondaryLabel];
       }
     }
   }
 }
 
-- (void)setCustomSubtitleText:(id)a3
+- (void)setCustomSubtitleText:(id)text
 {
-  v9 = a3;
+  textCopy = text;
   v4 = self->_customSubtitleText;
   customSubtitleText = v4;
-  if (v4 != v9)
+  if (v4 != textCopy)
   {
-    v6 = [(NSString *)v4 isEqualToString:v9];
+    v6 = [(NSString *)v4 isEqualToString:textCopy];
 
-    v7 = v9;
+    v7 = textCopy;
     if (v6)
     {
       goto LABEL_5;
     }
 
-    [(PXActionProgressToast *)self setLocalizedProgressText:v9];
-    v8 = v9;
+    [(PXActionProgressToast *)self setLocalizedProgressText:textCopy];
+    v8 = textCopy;
     customSubtitleText = self->_customSubtitleText;
     self->_customSubtitleText = v8;
   }
 
-  v7 = v9;
+  v7 = textCopy;
 LABEL_5:
 }
 
 - (void)_updatePrimaryLabel
 {
-  v6 = [(PXActionProgressToast *)self localizedTitle];
+  localizedTitle = [(PXActionProgressToast *)self localizedTitle];
   v3 = [(PXActionProgressToast *)self state]!= 4 && [(PXActionProgressToast *)self state]!= 3;
-  if (v3 || !v6)
+  if (v3 || !localizedTitle)
   {
-    v4 = [(PXActionProgressToast *)self progress];
-    v5 = [v4 localizedDescription];
-    [(UILabel *)self->_primaryLabel setText:v5];
+    progress = [(PXActionProgressToast *)self progress];
+    localizedDescription = [progress localizedDescription];
+    [(UILabel *)self->_primaryLabel setText:localizedDescription];
   }
 
   else
   {
-    [(UILabel *)self->_primaryLabel setText:v6];
+    [(UILabel *)self->_primaryLabel setText:localizedTitle];
   }
 
   [(PXActionProgressToast *)self setNeedsUpdateConstraints];
 }
 
-- (void)setLocalizedTitle:(id)a3
+- (void)setLocalizedTitle:(id)title
 {
-  v8 = a3;
+  titleCopy = title;
   v5 = self->_localizedTitle;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == titleCopy)
   {
   }
 
@@ -326,39 +326,39 @@ LABEL_5:
 
     if (!v7)
     {
-      objc_storeStrong(&self->_localizedTitle, a3);
+      objc_storeStrong(&self->_localizedTitle, title);
       [(PXActionProgressToast *)self _updatePrimaryLabel];
     }
   }
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     [(PXActionProgressToast *)self _updatePrimaryLabel];
   }
 }
 
-- (void)setBottomSpacing:(double)a3
+- (void)setBottomSpacing:(double)spacing
 {
-  if (self->_bottomSpacing != a3)
+  if (self->_bottomSpacing != spacing)
   {
-    self->_bottomSpacing = a3;
+    self->_bottomSpacing = spacing;
     [(PXActionProgressToast *)self _updateToastMargin];
   }
 }
 
-- (void)finishProgressMarkingAsComplete:(BOOL)a3 updatedLocalizedTitle:(id)a4 updatedLocalizedDescription:(id)a5
+- (void)finishProgressMarkingAsComplete:(BOOL)complete updatedLocalizedTitle:(id)title updatedLocalizedDescription:(id)description
 {
-  v6 = a3;
-  v16 = a4;
-  v8 = a5;
+  completeCopy = complete;
+  titleCopy = title;
+  descriptionCopy = description;
   if ([(PXActionProgressToast *)self state]== 1)
   {
     [(PXActionProgressToast *)self setState:4];
-    if (!v6)
+    if (!completeCopy)
     {
       v14 = 1.7;
 LABEL_17:
@@ -366,31 +366,31 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    if (v16)
+    if (titleCopy)
     {
-      v9 = [(PXActionProgressToast *)self localizedTitle];
-      if (v9 == v16)
+      localizedTitle = [(PXActionProgressToast *)self localizedTitle];
+      if (localizedTitle == titleCopy)
       {
 
-        if (!v8)
+        if (!descriptionCopy)
         {
           goto LABEL_15;
         }
 
 LABEL_8:
-        v11 = [(PXActionProgressToast *)self localizedProgressText];
-        v12 = v11;
-        if (v11 == v8)
+        localizedProgressText = [(PXActionProgressToast *)self localizedProgressText];
+        v12 = localizedProgressText;
+        if (localizedProgressText == descriptionCopy)
         {
         }
 
         else
         {
-          v13 = [v8 isEqualToString:v11];
+          v13 = [descriptionCopy isEqualToString:localizedProgressText];
 
           if ((v13 & 1) == 0)
           {
-            [(PXActionProgressToast *)self setLocalizedProgressText:v8];
+            [(PXActionProgressToast *)self setLocalizedProgressText:descriptionCopy];
 LABEL_16:
             [(PXActionProgressToast *)self _updateIcons];
             v14 = 1.0;
@@ -405,15 +405,15 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v10 = [v16 isEqualToString:v9];
+      v10 = [titleCopy isEqualToString:localizedTitle];
 
       if ((v10 & 1) == 0)
       {
-        [(PXActionProgressToast *)self setLocalizedTitle:v16];
+        [(PXActionProgressToast *)self setLocalizedTitle:titleCopy];
       }
     }
 
-    if (!v8)
+    if (!descriptionCopy)
     {
       goto LABEL_15;
     }
@@ -424,11 +424,11 @@ LABEL_15:
 LABEL_18:
 }
 
-- (void)setErrors:(id)a3 forMediaType:(int64_t)a4
+- (void)setErrors:(id)errors forMediaType:(int64_t)type
 {
-  v7 = a3;
-  objc_storeStrong(&self->_errors, a3);
-  if ([v7 count])
+  errorsCopy = errors;
+  objc_storeStrong(&self->_errors, errors);
+  if ([errorsCopy count])
   {
     if ([(PXActionProgressToast *)self state]!= 1)
     {
@@ -437,42 +437,42 @@ LABEL_18:
     }
 
     [(PXActionProgressToast *)self setState:3];
-    PXLocalizedAssetCountForUsage([v7 count], a4, 0, 5);
+    PXLocalizedAssetCountForUsage([errorsCopy count], type, 0, 5);
   }
 }
 
 - (BOOL)isLocked
 {
-  v3 = [(PXActionProgressToast *)self state];
-  v4 = [(PXActionProgressToast *)self closeButtonAction];
+  state = [(PXActionProgressToast *)self state];
+  closeButtonAction = [(PXActionProgressToast *)self closeButtonAction];
 
-  return v3 == 1 && v4 != 0;
+  return state == 1 && closeButtonAction != 0;
 }
 
-- (void)dismissAnimated:(BOOL)a3
+- (void)dismissAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v6 = [(PXActionProgressToast *)self targetDestination];
+  animatedCopy = animated;
+  targetDestination = [(PXActionProgressToast *)self targetDestination];
   v5 = [_activeToasts_199612 objectForKey:?];
 
   if (v5)
   {
-    [_activeToasts_199612 removeObjectForKey:v6];
+    [_activeToasts_199612 removeObjectForKey:targetDestination];
   }
 
-  [(PXToast *)self->_toast dismissAnimated:v3];
+  [(PXToast *)self->_toast dismissAnimated:animatedCopy];
 }
 
-- (void)dismissAnimated:(BOOL)a3 afterDelay:(double)a4
+- (void)dismissAnimated:(BOOL)animated afterDelay:(double)delay
 {
   objc_initWeak(&location, self);
-  v6 = dispatch_time(0, (a4 * 1000000000.0));
+  v6 = dispatch_time(0, (delay * 1000000000.0));
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __52__PXActionProgressToast_dismissAnimated_afterDelay___block_invoke;
   block[3] = &unk_1E774A170;
   objc_copyWeak(&v8, &location);
-  v9 = a3;
+  animatedCopy = animated;
   dispatch_after(v6, MEMORY[0x1E69E96A0], block);
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -489,15 +489,15 @@ void __52__PXActionProgressToast_dismissAnimated_afterDelay___block_invoke(uint6
   v3 = _activeToasts_199612;
   if (!_activeToasts_199612)
   {
-    v4 = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
+    weakToWeakObjectsMapTable = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
     v5 = _activeToasts_199612;
-    _activeToasts_199612 = v4;
+    _activeToasts_199612 = weakToWeakObjectsMapTable;
 
     v3 = _activeToasts_199612;
   }
 
-  v6 = [(PXActionProgressToast *)self targetDestination];
-  v7 = [v3 objectForKey:v6];
+  targetDestination = [(PXActionProgressToast *)self targetDestination];
+  v7 = [v3 objectForKey:targetDestination];
 
   if (!v7)
   {
@@ -509,8 +509,8 @@ void __52__PXActionProgressToast_dismissAnimated_afterDelay___block_invoke(uint6
     [v7 dismissAnimated:1];
 LABEL_9:
     v9 = _activeToasts_199612;
-    v10 = [(PXActionProgressToast *)self targetDestination];
-    [v9 setObject:self forKey:v10];
+    targetDestination2 = [(PXActionProgressToast *)self targetDestination];
+    [v9 setObject:self forKey:targetDestination2];
 
     objc_initWeak(buf, self);
     v13[0] = MEMORY[0x1E69E9820];
@@ -549,11 +549,11 @@ void __35__PXActionProgressToast__showToast__block_invoke(uint64_t a1, void *a2)
 
 - (void)_updateDeterminateProgress
 {
-  v5 = [(PXActionProgressToast *)self _determinateProgressView];
-  v3 = [(PXActionProgressToast *)self progress];
-  [v3 fractionCompleted];
+  _determinateProgressView = [(PXActionProgressToast *)self _determinateProgressView];
+  progress = [(PXActionProgressToast *)self progress];
+  [progress fractionCompleted];
   *&v4 = v4;
-  [v5 setProgress:v4];
+  [_determinateProgressView setProgress:v4];
 }
 
 - (id)_determinateProgressView
@@ -575,29 +575,29 @@ void __35__PXActionProgressToast__showToast__block_invoke(uint64_t a1, void *a2)
 - (void)willStartProgress
 {
   [(PXActionProgressToast *)self _updateIcons];
-  v5 = [(PXActionProgressToast *)self progress];
-  v3 = [v5 localizedAdditionalDescription];
-  [(PXActionProgressToast *)self setLocalizedProgressText:v3];
+  progress = [(PXActionProgressToast *)self progress];
+  localizedAdditionalDescription = [progress localizedAdditionalDescription];
+  [(PXActionProgressToast *)self setLocalizedProgressText:localizedAdditionalDescription];
 
-  v4 = [(PXActionProgressToast *)self targetDestination];
-  [(PXActionProgressToast *)self _updateDisplayForDestination:v4];
+  targetDestination = [(PXActionProgressToast *)self targetDestination];
+  [(PXActionProgressToast *)self _updateDisplayForDestination:targetDestination];
 
   [(PXActionProgressToast *)self setState:1];
   [(PXActionProgressToast *)self _showToast];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = v10;
-  if (PXActionProgressToastContext == a6)
+  pathCopy = path;
+  v11 = pathCopy;
+  if (PXActionProgressToastContext == context)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __72__PXActionProgressToast_observeValueForKeyPath_ofObject_change_context___block_invoke;
     block[3] = &unk_1E774C620;
-    v14 = v10;
-    v15 = self;
+    v14 = pathCopy;
+    selfCopy = self;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 
@@ -605,7 +605,7 @@ void __35__PXActionProgressToast__showToast__block_invoke(uint64_t a1, void *a2)
   {
     v12.receiver = self;
     v12.super_class = PXActionProgressToast;
-    [(PXActionProgressToast *)&v12 observeValueForKeyPath:v10 ofObject:a4 change:a5 context:a6];
+    [(PXActionProgressToast *)&v12 observeValueForKeyPath:pathCopy ofObject:object change:change context:context];
   }
 }
 
@@ -672,11 +672,11 @@ void __72__PXActionProgressToast_observeValueForKeyPath_ofObject_change_context_
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = PXActionProgressToast;
-  [(PXActionProgressToast *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PXActionProgressToast *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(PXActionProgressToast *)self _updateToastMargin];
 }
 
@@ -695,8 +695,8 @@ void __72__PXActionProgressToast_observeValueForKeyPath_ofObject_change_context_
 
   else
   {
-    v6 = [(UILabel *)self->_primaryLabel widthAnchor];
-    v7 = [v6 constraintEqualToConstant:v4];
+    widthAnchor = [(UILabel *)self->_primaryLabel widthAnchor];
+    v7 = [widthAnchor constraintEqualToConstant:v4];
     v8 = self->_primaryLabelWidthConstraint;
     self->_primaryLabelWidthConstraint = v7;
 
@@ -715,8 +715,8 @@ void __72__PXActionProgressToast_observeValueForKeyPath_ofObject_change_context_
 
   else
   {
-    v13 = [(UILabel *)self->_secondaryLabel widthAnchor];
-    v14 = [v13 constraintEqualToConstant:v11];
+    widthAnchor2 = [(UILabel *)self->_secondaryLabel widthAnchor];
+    v14 = [widthAnchor2 constraintEqualToConstant:v11];
     v15 = self->_secondaryLabelWidthConstraint;
     self->_secondaryLabelWidthConstraint = v14;
 
@@ -744,8 +744,8 @@ void __72__PXActionProgressToast_observeValueForKeyPath_ofObject_change_context_
 
   else
   {
-    v19 = [(UIView *)self->_labelContainer widthAnchor];
-    v20 = [v19 constraintEqualToConstant:v4];
+    widthAnchor3 = [(UIView *)self->_labelContainer widthAnchor];
+    v20 = [widthAnchor3 constraintEqualToConstant:v4];
     v21 = self->_labelContainerWidthConstraint;
     self->_labelContainerWidthConstraint = v20;
 
@@ -772,29 +772,29 @@ void __72__PXActionProgressToast_observeValueForKeyPath_ofObject_change_context_
     [(PXActionProgressToast *)self removeConstraint:?];
   }
 
-  v22 = [(PXActionProgressToast *)self closeButtonAction];
+  closeButtonAction = [(PXActionProgressToast *)self closeButtonAction];
 
   labelContainer = self->_labelContainer;
-  if (v22)
+  if (closeButtonAction)
   {
-    v24 = [(UIView *)labelContainer centerXAnchor];
-    v25 = [(UILabel *)self->_primaryLabel centerXAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    centerXAnchor = [(UIView *)labelContainer centerXAnchor];
+    centerXAnchor2 = [(UILabel *)self->_primaryLabel centerXAnchor];
+    v26 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     primaryLabelAlignmentConstraint = self->_primaryLabelAlignmentConstraint;
     self->_primaryLabelAlignmentConstraint = v26;
 
     [(NSLayoutConstraint *)self->_primaryLabelAlignmentConstraint setActive:1];
-    v28 = [(UIView *)self->_labelContainer centerXAnchor];
-    v29 = [(UILabel *)self->_secondaryLabel centerXAnchor];
-    v30 = [v28 constraintEqualToAnchor:v29];
+    centerXAnchor3 = [(UIView *)self->_labelContainer centerXAnchor];
+    centerXAnchor4 = [(UILabel *)self->_secondaryLabel centerXAnchor];
+    v30 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     secondaryLabelAlignmentConstraint = self->_secondaryLabelAlignmentConstraint;
     self->_secondaryLabelAlignmentConstraint = v30;
 
     [(NSLayoutConstraint *)self->_secondaryLabelAlignmentConstraint setActive:1];
-    v32 = [(PXActionProgressToast *)self trailingAnchor];
+    trailingAnchor = [(PXActionProgressToast *)self trailingAnchor];
     p_closeButton = &self->_closeButton;
-    v34 = [(UIButton *)self->_closeButton trailingAnchor];
-    v35 = [v32 constraintEqualToAnchor:v34 constant:12.0];
+    trailingAnchor2 = [(UIButton *)self->_closeButton trailingAnchor];
+    v35 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:12.0];
     trailingSpacingConstraint = self->_trailingSpacingConstraint;
     self->_trailingSpacingConstraint = v35;
 
@@ -804,23 +804,23 @@ void __72__PXActionProgressToast_observeValueForKeyPath_ofObject_change_context_
 
   else
   {
-    v38 = [(UIView *)labelContainer leadingAnchor];
-    v39 = [(UILabel *)self->_primaryLabel leadingAnchor];
-    v40 = [v38 constraintEqualToAnchor:v39];
+    leadingAnchor = [(UIView *)labelContainer leadingAnchor];
+    leadingAnchor2 = [(UILabel *)self->_primaryLabel leadingAnchor];
+    v40 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v41 = self->_primaryLabelAlignmentConstraint;
     self->_primaryLabelAlignmentConstraint = v40;
 
     [(NSLayoutConstraint *)self->_primaryLabelAlignmentConstraint setActive:1];
-    v42 = [(UIView *)self->_labelContainer leadingAnchor];
-    v43 = [(UILabel *)self->_secondaryLabel leadingAnchor];
-    v44 = [v42 constraintEqualToAnchor:v43];
+    leadingAnchor3 = [(UIView *)self->_labelContainer leadingAnchor];
+    leadingAnchor4 = [(UILabel *)self->_secondaryLabel leadingAnchor];
+    v44 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v45 = self->_secondaryLabelAlignmentConstraint;
     self->_secondaryLabelAlignmentConstraint = v44;
 
     [(NSLayoutConstraint *)self->_secondaryLabelAlignmentConstraint setActive:1];
-    v46 = [(PXActionProgressToast *)self trailingAnchor];
-    v47 = [(UIView *)self->_labelContainer trailingAnchor];
-    v48 = [v46 constraintEqualToAnchor:v47 constant:22.0];
+    trailingAnchor3 = [(PXActionProgressToast *)self trailingAnchor];
+    trailingAnchor4 = [(UIView *)self->_labelContainer trailingAnchor];
+    v48 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:22.0];
     v49 = self->_trailingSpacingConstraint;
     self->_trailingSpacingConstraint = v48;
 
@@ -829,8 +829,8 @@ void __72__PXActionProgressToast_observeValueForKeyPath_ofObject_change_context_
     v37 = 0.0;
   }
 
-  v50 = [(UIButton *)*p_closeButton widthAnchor];
-  v51 = [v50 constraintEqualToConstant:v37];
+  widthAnchor4 = [(UIButton *)*p_closeButton widthAnchor];
+  v51 = [widthAnchor4 constraintEqualToConstant:v37];
   closeButtonWidthConstraint = self->_closeButtonWidthConstraint;
   self->_closeButtonWidthConstraint = v51;
 
@@ -851,19 +851,19 @@ void __72__PXActionProgressToast_observeValueForKeyPath_ofObject_change_context_
   v8 = NSStringFromSelector(sel_localizedAdditionalDescription);
   [(NSProgress *)v7 removeObserver:self forKeyPath:v8 context:PXActionProgressToastContext];
 
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v9 removeObserver:self name:*MEMORY[0x1E69BE9A8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69BE9A8] object:0];
 
   v10.receiver = self;
   v10.super_class = PXActionProgressToast;
   [(PXActionProgressToast *)&v10 dealloc];
 }
 
-- (PXActionProgressToast)initWithTargetDestination:(id)a3 progress:(id)a4
+- (PXActionProgressToast)initWithTargetDestination:(id)destination progress:(id)progress
 {
   v143[27] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  destinationCopy = destination;
+  progressCopy = progress;
   v142.receiver = self;
   v142.super_class = PXActionProgressToast;
   v9 = *MEMORY[0x1E695F058];
@@ -874,20 +874,20 @@ void __72__PXActionProgressToast_observeValueForKeyPath_ofObject_change_context_
   v14 = v13;
   if (v13)
   {
-    v141 = v7;
-    v15 = [(PXActionProgressToast *)v13 layer];
-    [v15 setCornerRadius:22.0];
+    v141 = destinationCopy;
+    layer = [(PXActionProgressToast *)v13 layer];
+    [layer setCornerRadius:22.0];
 
     [PXToastDefaultContentView configureBackgroundOfToastContentView:v14];
-    objc_storeStrong(&v14->_targetDestination, a3);
+    objc_storeStrong(&v14->_targetDestination, destination);
     p_progress = &v14->_progress;
-    objc_storeStrong(&v14->_progress, a4);
-    v140 = v8;
-    if ([v8 isIndeterminate])
+    objc_storeStrong(&v14->_progress, progress);
+    v140 = progressCopy;
+    if ([progressCopy isIndeterminate])
     {
       v17 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
-      v18 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-      [(UIView *)v17 setColor:v18];
+      secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      [(UIView *)v17 setColor:secondaryLabelColor];
 
       [(UIView *)v17 startAnimating];
     }
@@ -912,8 +912,8 @@ void __72__PXActionProgressToast_observeValueForKeyPath_ofObject_change_context_
     v25 = NSStringFromSelector(sel_localizedAdditionalDescription);
     [v24 addObserver:v14 forKeyPath:v25 options:4 context:PXActionProgressToastContext];
 
-    v139 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v139 addObserver:v14 selector:sel__handleContentModeChange_ name:*MEMORY[0x1E69BE9A8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v14 selector:sel__handleContentModeChange_ name:*MEMORY[0x1E69BE9A8] object:0];
     v26 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"checkmark.circle.fill"];
     v138 = [v26 imageWithRenderingMode:2];
 
@@ -921,16 +921,16 @@ void __72__PXActionProgressToast_observeValueForKeyPath_ofObject_change_context_
     checkmarkView = v14->_checkmarkView;
     v14->_checkmarkView = v27;
 
-    v29 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UIImageView *)v14->_checkmarkView setTintColor:v29];
+    secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UIImageView *)v14->_checkmarkView setTintColor:secondaryLabelColor2];
 
     [(PXActionProgressToast *)v14 setTranslatesAutoresizingMaskIntoConstraints:0];
     v30 = [MEMORY[0x1E69DC738] buttonWithType:0];
     errorView = v14->_errorView;
     v14->_errorView = v30;
 
-    v32 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UIButton *)v14->_errorView setTintColor:v32];
+    secondaryLabelColor3 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UIButton *)v14->_errorView setTintColor:secondaryLabelColor3];
 
     v33 = v14->_errorView;
     v34 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"exclamationmark.circle.fill"];
@@ -952,8 +952,8 @@ void __72__PXActionProgressToast_observeValueForKeyPath_ofObject_change_context_
     closeButton = v14->_closeButton;
     v14->_closeButton = v38;
 
-    v40 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UIButton *)v14->_closeButton setTintColor:v40];
+    secondaryLabelColor4 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UIButton *)v14->_closeButton setTintColor:secondaryLabelColor4];
 
     [(UIButton *)v14->_closeButton setImage:v137 forState:0];
     [(UIButton *)v14->_closeButton addTarget:v14 action:sel__close_ forControlEvents:64];
@@ -963,11 +963,11 @@ void __72__PXActionProgressToast_observeValueForKeyPath_ofObject_change_context_
     primaryLabel = v14->_primaryLabel;
     v14->_primaryLabel = v41;
 
-    v43 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v14->_primaryLabel setTextColor:v43];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v14->_primaryLabel setTextColor:labelColor];
 
-    v44 = [(PXActionProgressToast *)v14 localizedTitle];
-    [(UILabel *)v14->_primaryLabel setText:v44];
+    localizedTitle = [(PXActionProgressToast *)v14 localizedTitle];
+    [(UILabel *)v14->_primaryLabel setText:localizedTitle];
 
     [(UILabel *)v14->_primaryLabel setLineBreakMode:4];
     v45 = [MEMORY[0x1E69DB878] boldSystemFontOfSize:13.0];
@@ -982,8 +982,8 @@ void __72__PXActionProgressToast_observeValueForKeyPath_ofObject_change_context_
     secondaryLabel = v14->_secondaryLabel;
     v14->_secondaryLabel = v48;
 
-    v50 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v14->_secondaryLabel setTextColor:v50];
+    secondaryLabelColor5 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v14->_secondaryLabel setTextColor:secondaryLabelColor5];
 
     [(UILabel *)v14->_secondaryLabel setLineBreakMode:4];
     v51 = [MEMORY[0x1E69DB878] systemFontOfSize:13.0];
@@ -1016,118 +1016,118 @@ void __72__PXActionProgressToast_observeValueForKeyPath_ofObject_change_context_
     [(UIView *)v14->_leadingView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIButton *)v14->_closeButton setTranslatesAutoresizingMaskIntoConstraints:0];
     v56 = v14;
-    v57 = [(PXActionProgressToast *)v56 heightAnchor];
-    v58 = [v57 constraintEqualToConstant:44.0];
+    heightAnchor = [(PXActionProgressToast *)v56 heightAnchor];
+    v58 = [heightAnchor constraintEqualToConstant:44.0];
     [v58 setActive:1];
 
     v107 = MEMORY[0x1E696ACD8];
-    v135 = [(PXActionProgressToast *)v56 leadingAnchor];
-    v134 = [(UIView *)v14->_leadingView leadingAnchor];
-    v133 = [v135 constraintEqualToAnchor:v134 constant:-12.0];
+    leadingAnchor = [(PXActionProgressToast *)v56 leadingAnchor];
+    leadingAnchor2 = [(UIView *)v14->_leadingView leadingAnchor];
+    v133 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:-12.0];
     v143[0] = v133;
-    v132 = [(PXActionProgressToast *)v56 centerYAnchor];
-    v131 = [(UIView *)v14->_leadingView centerYAnchor];
-    v130 = [v132 constraintEqualToAnchor:v131];
+    centerYAnchor = [(PXActionProgressToast *)v56 centerYAnchor];
+    centerYAnchor2 = [(UIView *)v14->_leadingView centerYAnchor];
+    v130 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v143[1] = v130;
-    v129 = [(PXActionProgressToast *)v56 heightAnchor];
-    v128 = [(UIView *)v14->_leadingView heightAnchor];
-    v127 = [v129 constraintEqualToAnchor:v128];
+    heightAnchor2 = [(PXActionProgressToast *)v56 heightAnchor];
+    heightAnchor3 = [(UIView *)v14->_leadingView heightAnchor];
+    v127 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3];
     v143[2] = v127;
-    v126 = [(PXActionProgressToast *)v56 heightAnchor];
-    v125 = [v126 constraintGreaterThanOrEqualToConstant:80.0];
+    heightAnchor4 = [(PXActionProgressToast *)v56 heightAnchor];
+    v125 = [heightAnchor4 constraintGreaterThanOrEqualToConstant:80.0];
     v143[3] = v125;
-    v124 = [(UIView *)v14->_leadingView widthAnchor];
-    v123 = [v124 constraintEqualToConstant:18.0];
+    widthAnchor = [(UIView *)v14->_leadingView widthAnchor];
+    v123 = [widthAnchor constraintEqualToConstant:18.0];
     v143[4] = v123;
-    v122 = [(UIView *)v14->_leadingView centerXAnchor];
-    v121 = [(UIView *)v14->_progressView centerXAnchor];
-    v120 = [v122 constraintEqualToAnchor:v121];
+    centerXAnchor = [(UIView *)v14->_leadingView centerXAnchor];
+    centerXAnchor2 = [(UIView *)v14->_progressView centerXAnchor];
+    v120 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v143[5] = v120;
-    v119 = [(UIView *)v14->_leadingView centerYAnchor];
-    v118 = [(UIView *)v14->_progressView centerYAnchor];
-    v117 = [v119 constraintEqualToAnchor:v118];
+    centerYAnchor3 = [(UIView *)v14->_leadingView centerYAnchor];
+    centerYAnchor4 = [(UIView *)v14->_progressView centerYAnchor];
+    v117 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v143[6] = v117;
-    v116 = [(UIView *)v14->_leadingView centerYAnchor];
-    v115 = [(UIImageView *)v14->_checkmarkView centerYAnchor];
-    v114 = [v116 constraintEqualToAnchor:v115];
+    centerYAnchor5 = [(UIView *)v14->_leadingView centerYAnchor];
+    centerYAnchor6 = [(UIImageView *)v14->_checkmarkView centerYAnchor];
+    v114 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
     v143[7] = v114;
-    v113 = [(UIView *)v14->_leadingView centerYAnchor];
-    v112 = [(UIButton *)v14->_errorView centerYAnchor];
-    v111 = [v113 constraintEqualToAnchor:v112];
+    centerYAnchor7 = [(UIView *)v14->_leadingView centerYAnchor];
+    centerYAnchor8 = [(UIButton *)v14->_errorView centerYAnchor];
+    v111 = [centerYAnchor7 constraintEqualToAnchor:centerYAnchor8];
     v143[8] = v111;
-    v110 = [(UIView *)v14->_progressView widthAnchor];
-    v109 = [v110 constraintEqualToConstant:18.0];
+    widthAnchor2 = [(UIView *)v14->_progressView widthAnchor];
+    v109 = [widthAnchor2 constraintEqualToConstant:18.0];
     v143[9] = v109;
-    v108 = [(UIView *)v14->_progressView heightAnchor];
-    v106 = [v108 constraintEqualToConstant:18.0];
+    heightAnchor5 = [(UIView *)v14->_progressView heightAnchor];
+    v106 = [heightAnchor5 constraintEqualToConstant:18.0];
     v143[10] = v106;
-    v105 = [(UIImageView *)v14->_checkmarkView widthAnchor];
-    v104 = [v105 constraintEqualToConstant:18.0];
+    widthAnchor3 = [(UIImageView *)v14->_checkmarkView widthAnchor];
+    v104 = [widthAnchor3 constraintEqualToConstant:18.0];
     v143[11] = v104;
-    v103 = [(UIImageView *)v14->_checkmarkView heightAnchor];
-    v102 = [v103 constraintEqualToConstant:18.0];
+    heightAnchor6 = [(UIImageView *)v14->_checkmarkView heightAnchor];
+    v102 = [heightAnchor6 constraintEqualToConstant:18.0];
     v143[12] = v102;
-    v101 = [(UIButton *)v14->_errorView widthAnchor];
-    v100 = [v101 constraintEqualToConstant:18.0];
+    widthAnchor4 = [(UIButton *)v14->_errorView widthAnchor];
+    v100 = [widthAnchor4 constraintEqualToConstant:18.0];
     v143[13] = v100;
-    v99 = [(UIButton *)v14->_errorView heightAnchor];
-    v98 = [v99 constraintEqualToConstant:18.0];
+    heightAnchor7 = [(UIButton *)v14->_errorView heightAnchor];
+    v98 = [heightAnchor7 constraintEqualToConstant:18.0];
     v143[14] = v98;
     v59 = v56;
-    v97 = [(PXActionProgressToast *)v56 centerYAnchor];
-    v96 = [(UIButton *)v14->_closeButton centerYAnchor];
-    v95 = [v97 constraintEqualToAnchor:v96];
+    centerYAnchor9 = [(PXActionProgressToast *)v56 centerYAnchor];
+    centerYAnchor10 = [(UIButton *)v14->_closeButton centerYAnchor];
+    v95 = [centerYAnchor9 constraintEqualToAnchor:centerYAnchor10];
     v143[15] = v95;
-    v94 = [(UIButton *)v14->_closeButton heightAnchor];
-    v93 = [v94 constraintEqualToConstant:18.0];
+    heightAnchor8 = [(UIButton *)v14->_closeButton heightAnchor];
+    v93 = [heightAnchor8 constraintEqualToConstant:18.0];
     v143[16] = v93;
-    v92 = [(PXActionProgressToast *)v56 centerYAnchor];
-    v91 = [(UIView *)v14->_labelContainer centerYAnchor];
-    v90 = [v92 constraintEqualToAnchor:v91];
+    centerYAnchor11 = [(PXActionProgressToast *)v56 centerYAnchor];
+    centerYAnchor12 = [(UIView *)v14->_labelContainer centerYAnchor];
+    v90 = [centerYAnchor11 constraintEqualToAnchor:centerYAnchor12];
     v143[17] = v90;
-    v89 = [(UIView *)v14->_leadingView trailingAnchor];
-    v88 = [(UIView *)v14->_labelContainer leadingAnchor];
-    v87 = [v89 constraintEqualToAnchor:v88 constant:-12.0];
+    trailingAnchor = [(UIView *)v14->_leadingView trailingAnchor];
+    leadingAnchor3 = [(UIView *)v14->_labelContainer leadingAnchor];
+    v87 = [trailingAnchor constraintEqualToAnchor:leadingAnchor3 constant:-12.0];
     v143[18] = v87;
-    v86 = [(UIButton *)v14->_closeButton leadingAnchor];
-    v85 = [(UIView *)v14->_labelContainer trailingAnchor];
-    v84 = [v86 constraintEqualToAnchor:v85 constant:12.0];
+    leadingAnchor4 = [(UIButton *)v14->_closeButton leadingAnchor];
+    trailingAnchor2 = [(UIView *)v14->_labelContainer trailingAnchor];
+    v84 = [leadingAnchor4 constraintEqualToAnchor:trailingAnchor2 constant:12.0];
     v143[19] = v84;
-    v83 = [(UIView *)v14->_labelContainer topAnchor];
-    v82 = [(UILabel *)v14->_primaryLabel topAnchor];
-    v81 = [v83 constraintEqualToAnchor:v82];
+    topAnchor = [(UIView *)v14->_labelContainer topAnchor];
+    topAnchor2 = [(UILabel *)v14->_primaryLabel topAnchor];
+    v81 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v143[20] = v81;
-    v80 = [(UIView *)v14->_labelContainer bottomAnchor];
-    v79 = [(UILabel *)v14->_secondaryLabel bottomAnchor];
-    v78 = [v80 constraintEqualToAnchor:v79];
+    bottomAnchor = [(UIView *)v14->_labelContainer bottomAnchor];
+    bottomAnchor2 = [(UILabel *)v14->_secondaryLabel bottomAnchor];
+    v78 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v143[21] = v78;
-    v77 = [(UILabel *)v14->_primaryLabel bottomAnchor];
-    v76 = [(UILabel *)v14->_secondaryLabel topAnchor];
-    v75 = [v77 constraintEqualToAnchor:v76 constant:-2.0];
+    bottomAnchor3 = [(UILabel *)v14->_primaryLabel bottomAnchor];
+    topAnchor3 = [(UILabel *)v14->_secondaryLabel topAnchor];
+    v75 = [bottomAnchor3 constraintEqualToAnchor:topAnchor3 constant:-2.0];
     v143[22] = v75;
-    v74 = [(UIView *)v14->_labelContainer widthAnchor];
-    v73 = [(UILabel *)v14->_primaryLabel widthAnchor];
-    v72 = [v74 constraintGreaterThanOrEqualToAnchor:v73];
+    widthAnchor5 = [(UIView *)v14->_labelContainer widthAnchor];
+    widthAnchor6 = [(UILabel *)v14->_primaryLabel widthAnchor];
+    v72 = [widthAnchor5 constraintGreaterThanOrEqualToAnchor:widthAnchor6];
     v143[23] = v72;
-    v71 = [(UIView *)v14->_labelContainer widthAnchor];
-    v60 = [(UILabel *)v14->_secondaryLabel widthAnchor];
-    v61 = [v71 constraintGreaterThanOrEqualToAnchor:v60];
+    widthAnchor7 = [(UIView *)v14->_labelContainer widthAnchor];
+    widthAnchor8 = [(UILabel *)v14->_secondaryLabel widthAnchor];
+    v61 = [widthAnchor7 constraintGreaterThanOrEqualToAnchor:widthAnchor8];
     v143[24] = v61;
-    v62 = [(UIView *)v14->_leadingView trailingAnchor];
-    v63 = [(UIView *)v14->_labelContainer leadingAnchor];
-    v64 = [v62 constraintLessThanOrEqualToAnchor:v63];
+    trailingAnchor3 = [(UIView *)v14->_leadingView trailingAnchor];
+    leadingAnchor5 = [(UIView *)v14->_labelContainer leadingAnchor];
+    v64 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:leadingAnchor5];
     v143[25] = v64;
-    v65 = [(PXActionProgressToast *)v59 trailingAnchor];
+    trailingAnchor4 = [(PXActionProgressToast *)v59 trailingAnchor];
     v66 = v14->_labelContainer;
 
-    v67 = [(UIView *)v66 trailingAnchor];
-    v68 = [v65 constraintGreaterThanOrEqualToAnchor:v67];
+    trailingAnchor5 = [(UIView *)v66 trailingAnchor];
+    v68 = [trailingAnchor4 constraintGreaterThanOrEqualToAnchor:trailingAnchor5];
     v143[26] = v68;
     v69 = [MEMORY[0x1E695DEC8] arrayWithObjects:v143 count:27];
     [v107 activateConstraints:v69];
 
-    v7 = v141;
-    v8 = v140;
+    destinationCopy = v141;
+    progressCopy = v140;
   }
 
   return v14;

@@ -1,20 +1,20 @@
 @interface AEHTMLBookRenderingCache
-+ (void)purgeCacheForIdentifier:(id)a3;
-- (AEHTMLBookRenderingCache)initWithIdentifier:(id)a3;
-- (id)_fetchImageForKey:(id)a3 size:(CGSize)a4;
-- (id)_keyForAsset:(id)a3 size:(CGSize)a4 pageNumber:(int64_t)a5;
-- (id)findRenderingCacheOperationInQueue:(id)a3 withStorageKey:(id)a4 target:(id)a5 selector:(SEL)a6 context:(id)a7;
-- (id)imageForSize:(CGSize)a3 data:(id)a4;
-- (void)resetPrioritiesForPageNumber:(int64_t)a3;
++ (void)purgeCacheForIdentifier:(id)identifier;
+- (AEHTMLBookRenderingCache)initWithIdentifier:(id)identifier;
+- (id)_fetchImageForKey:(id)key size:(CGSize)size;
+- (id)_keyForAsset:(id)asset size:(CGSize)size pageNumber:(int64_t)number;
+- (id)findRenderingCacheOperationInQueue:(id)queue withStorageKey:(id)key target:(id)target selector:(SEL)selector context:(id)context;
+- (id)imageForSize:(CGSize)size data:(id)data;
+- (void)resetPrioritiesForPageNumber:(int64_t)number;
 @end
 
 @implementation AEHTMLBookRenderingCache
 
-- (AEHTMLBookRenderingCache)initWithIdentifier:(id)a3
+- (AEHTMLBookRenderingCache)initWithIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = AEHTMLBookRenderingCache;
-  v3 = [(AEHTMLBookRenderingCache *)&v7 initWithIdentifier:a3 memorySize:0x80000];
+  v3 = [(AEHTMLBookRenderingCache *)&v7 initWithIdentifier:identifier memorySize:0x80000];
   if (v3)
   {
     v4 = objc_alloc_init(NSOperationQueue);
@@ -28,23 +28,23 @@
   return v3;
 }
 
-+ (void)purgeCacheForIdentifier:(id)a3
++ (void)purgeCacheForIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    v3 = a3;
-    v4 = [objc_alloc(objc_opt_class()) initWithIdentifier:v3 memorySize:0];
+    identifierCopy = identifier;
+    v4 = [objc_alloc(objc_opt_class()) initWithIdentifier:identifierCopy memorySize:0];
 
     [v4 clear];
   }
 }
 
-- (id)imageForSize:(CGSize)a3 data:(id)a4
+- (id)imageForSize:(CGSize)size data:(id)data
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = v7;
+  height = size.height;
+  width = size.width;
+  dataCopy = data;
+  v8 = dataCopy;
   v9 = 0;
   v24 = 0;
   v25 = &v24;
@@ -52,7 +52,7 @@
   v27 = sub_D46D0;
   v28 = sub_D46E0;
   v29 = 0;
-  if (v7)
+  if (dataCopy)
   {
     if (width >= 16.0 && height >= 16.0)
     {
@@ -62,7 +62,7 @@
       v19 = &unk_1E5470;
       v22 = width;
       v23 = height;
-      v20 = v7;
+      v20 = dataCopy;
       v21 = &v24;
       v11 = [NSBlockOperation blockOperationWithBlock:&v16];
       accessQueue = self->_accessQueue;
@@ -79,12 +79,12 @@
   return v14;
 }
 
-- (id)findRenderingCacheOperationInQueue:(id)a3 withStorageKey:(id)a4 target:(id)a5 selector:(SEL)a6 context:(id)a7
+- (id)findRenderingCacheOperationInQueue:(id)queue withStorageKey:(id)key target:(id)target selector:(SEL)selector context:(id)context
 {
-  v9 = a3;
-  v10 = a4;
+  queueCopy = queue;
+  keyCopy = key;
   [(AEHTMLBookRenderingCache *)self operationClass];
-  [v9 operations];
+  [queueCopy operations];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -107,12 +107,12 @@
         if (v16 && (objc_opt_isKindOfClass() & 1) != 0)
         {
           v17 = v16;
-          v18 = [v17 storageKey];
-          if ([v18 isEqualToString:v10])
+          storageKey = [v17 storageKey];
+          if ([storageKey isEqualToString:keyCopy])
           {
-            v19 = [v17 isCancelled];
+            isCancelled = [v17 isCancelled];
 
-            if ((v19 & 1) == 0)
+            if ((isCancelled & 1) == 0)
             {
               goto LABEL_16;
             }
@@ -136,30 +136,30 @@ LABEL_16:
   return v17;
 }
 
-- (id)_fetchImageForKey:(id)a3 size:(CGSize)a4
+- (id)_fetchImageForKey:(id)key size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  keyCopy = key;
   if (width < 100.0)
   {
     goto LABEL_2;
   }
 
-  v9 = [(AEHTMLBookRenderingCache *)self memoryCache];
-  v8 = [v9 objectForKey:v7];
+  memoryCache = [(AEHTMLBookRenderingCache *)self memoryCache];
+  v8 = [memoryCache objectForKey:keyCopy];
 
   if (!v8)
   {
     v24 = 0;
     v10 = +[IMPersistentCacheManager sharedInstance];
-    v11 = [(AEHTMLBookRenderingCache *)self persistentCachePath];
-    v12 = [v10 cacheForPath:v11 maxSize:0];
+    persistentCachePath = [(AEHTMLBookRenderingCache *)self persistentCachePath];
+    v12 = [v10 cacheForPath:persistentCachePath maxSize:0];
 
     if ([(AEHTMLBookRenderingCache *)self serializeFormat]== 2)
     {
-      NSLog(@"Getting Image for key %@ from persistent cache", v7);
-      v13 = [v12 copyCGImageForKey:v7 resourceSize:&v24];
+      NSLog(@"Getting Image for key %@ from persistent cache", keyCopy);
+      v13 = [v12 copyCGImageForKey:keyCopy resourceSize:&v24];
       if (!v13)
       {
 
@@ -180,26 +180,26 @@ LABEL_16:
 
     else
     {
-      v19 = [v12 dataForKey:v7];
+      v19 = [v12 dataForKey:keyCopy];
       v24 = [v19 length];
       [BKPictureBookViewGeometry imageSizeForSize:width, height];
       v8 = [(AEHTMLBookRenderingCache *)self imageForSize:v19 data:?];
     }
 
     v20 = +[IMPersistentCacheManager sharedInstance];
-    v21 = [(AEHTMLBookRenderingCache *)self persistentCachePath];
-    [v20 purgeFromCache:v21];
+    persistentCachePath2 = [(AEHTMLBookRenderingCache *)self persistentCachePath];
+    [v20 purgeFromCache:persistentCachePath2];
 
     if (!v8)
     {
 
 LABEL_2:
-      v8 = [(AEHTMLBookRenderingCache *)self fetchImageForKey:v7];
+      v8 = [(AEHTMLBookRenderingCache *)self fetchImageForKey:keyCopy];
       goto LABEL_12;
     }
 
-    v22 = [(AEHTMLBookRenderingCache *)self memoryCache];
-    [v22 setObject:v8 forKey:v7 cost:v24];
+    memoryCache2 = [(AEHTMLBookRenderingCache *)self memoryCache];
+    [memoryCache2 setObject:v8 forKey:keyCopy cost:v24];
   }
 
 LABEL_12:
@@ -207,22 +207,22 @@ LABEL_12:
   return v8;
 }
 
-- (id)_keyForAsset:(id)a3 size:(CGSize)a4 pageNumber:(int64_t)a5
+- (id)_keyForAsset:(id)asset size:(CGSize)size pageNumber:(int64_t)number
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v10 = [(AEHTMLBookRenderingCache *)self keyPrefixForPage:a5];
-  v11 = [v9 assetID];
+  height = size.height;
+  width = size.width;
+  assetCopy = asset;
+  v10 = [(AEHTMLBookRenderingCache *)self keyPrefixForPage:number];
+  assetID = [assetCopy assetID];
 
-  v12 = [(AEHTMLBookRenderingCache *)self keyForAssetID:v11 prefix:v10 size:width, height];
+  height = [(AEHTMLBookRenderingCache *)self keyForAssetID:assetID prefix:v10 size:width, height];
 
-  return v12;
+  return height;
 }
 
-- (void)resetPrioritiesForPageNumber:(int64_t)a3
+- (void)resetPrioritiesForPageNumber:(int64_t)number
 {
-  if ((a3 - 1) <= 0x7FFFFFFFFFFFFFFDLL)
+  if ((number - 1) <= 0x7FFFFFFFFFFFFFFDLL)
   {
     v5 = objc_autoreleasePoolPush();
     [(AEHTMLBookRenderingCache *)self primaryImageSize];
@@ -246,18 +246,18 @@ LABEL_12:
           }
 
           v11 = *(*(&v16 + 1) + 8 * i);
-          v12 = [v11 pageNumber];
-          if (a3 - v12 >= 0)
+          pageNumber = [v11 pageNumber];
+          if (number - pageNumber >= 0)
           {
-            v13 = a3 - v12;
+            v13 = number - pageNumber;
           }
 
           else
           {
-            v13 = v12 - a3;
+            v13 = pageNumber - number;
           }
 
-          if ((a3 - v12) >= 2)
+          if ((number - pageNumber) >= 2)
           {
             v14 = 4;
           }

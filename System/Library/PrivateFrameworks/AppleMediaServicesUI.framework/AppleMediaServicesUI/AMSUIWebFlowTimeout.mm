@@ -1,6 +1,6 @@
 @interface AMSUIWebFlowTimeout
-+ (id)timeoutWithTimeout:(double)a3 queue:(id)a4 block:(id)a5;
-- (AMSUIWebFlowTimeout)initWithTimeout:(double)a3 queue:(id)a4 block:(id)a5;
++ (id)timeoutWithTimeout:(double)timeout queue:(id)queue block:(id)block;
+- (AMSUIWebFlowTimeout)initWithTimeout:(double)timeout queue:(id)queue block:(id)block;
 - (void)pause;
 - (void)reset;
 - (void)start;
@@ -8,20 +8,20 @@
 
 @implementation AMSUIWebFlowTimeout
 
-- (AMSUIWebFlowTimeout)initWithTimeout:(double)a3 queue:(id)a4 block:(id)a5
+- (AMSUIWebFlowTimeout)initWithTimeout:(double)timeout queue:(id)queue block:(id)block
 {
-  v9 = a4;
-  v10 = a5;
+  queueCopy = queue;
+  blockCopy = block;
   v16.receiver = self;
   v16.super_class = AMSUIWebFlowTimeout;
   v11 = [(AMSUIWebFlowTimeout *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    v11->_timeout = a3;
-    v11->_timeRemaining = a3;
-    objc_storeStrong(&v11->_queue, a4);
-    v13 = _Block_copy(v10);
+    v11->_timeout = timeout;
+    v11->_timeRemaining = timeout;
+    objc_storeStrong(&v11->_queue, queue);
+    v13 = _Block_copy(blockCopy);
     block = v12->_block;
     v12->_block = v13;
   }
@@ -29,18 +29,18 @@
   return v12;
 }
 
-+ (id)timeoutWithTimeout:(double)a3 queue:(id)a4 block:(id)a5
++ (id)timeoutWithTimeout:(double)timeout queue:(id)queue block:(id)block
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [objc_alloc(objc_opt_class()) initWithTimeout:v8 queue:v7 block:a3];
+  blockCopy = block;
+  queueCopy = queue;
+  v9 = [objc_alloc(objc_opt_class()) initWithTimeout:queueCopy queue:blockCopy block:timeout];
 
   return v9;
 }
 
 - (void)start
 {
-  v3 = [(AMSUIWebFlowTimeout *)self queue];
+  queue = [(AMSUIWebFlowTimeout *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __28__AMSUIWebFlowTimeout_start__block_invoke;
@@ -55,7 +55,7 @@
   v9 = v5;
   v10 = v4;
   v6 = v5;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __28__AMSUIWebFlowTimeout_start__block_invoke(uint64_t a1)
@@ -119,7 +119,7 @@ void __28__AMSUIWebFlowTimeout_start__block_invoke_2(uint64_t a1)
 
 - (void)pause
 {
-  v3 = [(AMSUIWebFlowTimeout *)self queue];
+  queue = [(AMSUIWebFlowTimeout *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __28__AMSUIWebFlowTimeout_pause__block_invoke;
@@ -134,7 +134,7 @@ void __28__AMSUIWebFlowTimeout_start__block_invoke_2(uint64_t a1)
   v9 = v5;
   v10 = v4;
   v6 = v5;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __28__AMSUIWebFlowTimeout_pause__block_invoke(uint64_t a1)
@@ -178,7 +178,7 @@ void __28__AMSUIWebFlowTimeout_pause__block_invoke(uint64_t a1)
 - (void)reset
 {
   [(AMSUIWebFlowTimeout *)self pause];
-  v3 = [(AMSUIWebFlowTimeout *)self queue];
+  queue = [(AMSUIWebFlowTimeout *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __28__AMSUIWebFlowTimeout_reset__block_invoke;
@@ -193,7 +193,7 @@ void __28__AMSUIWebFlowTimeout_pause__block_invoke(uint64_t a1)
   v9 = v5;
   v10 = v4;
   v6 = v5;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 uint64_t __28__AMSUIWebFlowTimeout_reset__block_invoke(uint64_t a1)

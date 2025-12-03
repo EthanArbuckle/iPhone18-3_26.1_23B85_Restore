@@ -1,36 +1,36 @@
 @interface MRActiveRoutesObserver
-+ (id)_computeActiveRouteIDsFromEndpoint:(id)a3 localDeviceInfo:(id)a4;
-+ (void)fetchActiveEndpointOnQueue:(id)a3 withCompletion:(id)a4;
-+ (void)fetchActiveRouteIDsWithCompletion:(id)a3;
++ (id)_computeActiveRouteIDsFromEndpoint:(id)endpoint localDeviceInfo:(id)info;
++ (void)fetchActiveEndpointOnQueue:(id)queue withCompletion:(id)completion;
++ (void)fetchActiveRouteIDsWithCompletion:(id)completion;
 - (BOOL)isLocalDeviceAirPlayActive;
 - (MRAVDistantEndpoint)activeEndpointSnapshot;
 - (MRAVEndpoint)activeEndpoint;
-- (MRActiveRoutesObserver)initWithActiveRouteIDsChangedCallback:(id)a3;
-- (MRActiveRoutesObserver)initWithActiveRouteIDsChangedCallback:(id)a3 isLocalDeviceAirplayActiveChangedCallback:(id)a4;
+- (MRActiveRoutesObserver)initWithActiveRouteIDsChangedCallback:(id)callback;
+- (MRActiveRoutesObserver)initWithActiveRouteIDsChangedCallback:(id)callback isLocalDeviceAirplayActiveChangedCallback:(id)changedCallback;
 - (MRActiveRoutesObserverOutputDeviceRemovedSnapshot)deviceRemovedSnapshot;
 - (NSArray)activeRouteIDs;
-- (void)_handleActiveSystemEndpointDidAddOutputDevice:(id)a3;
-- (void)_handleActiveSystemEndpointDidRemoveOutputDevice:(id)a3;
+- (void)_handleActiveSystemEndpointDidAddOutputDevice:(id)device;
+- (void)_handleActiveSystemEndpointDidRemoveOutputDevice:(id)device;
 - (void)_onWorkerQueue_reevaluateAPA;
 - (void)_onWorkerQueue_reevaluateASE;
-- (void)_onWorkerQueue_reevaluateWithEndpoint:(id)a3;
+- (void)_onWorkerQueue_reevaluateWithEndpoint:(id)endpoint;
 - (void)_reevaluateAPA;
 - (void)_reevaluateASE;
-- (void)_reevaluateWithEndpoint:(id)a3;
-- (void)setActiveEndpoint:(id)a3;
+- (void)_reevaluateWithEndpoint:(id)endpoint;
+- (void)setActiveEndpoint:(id)endpoint;
 @end
 
 @implementation MRActiveRoutesObserver
 
-- (MRActiveRoutesObserver)initWithActiveRouteIDsChangedCallback:(id)a3
+- (MRActiveRoutesObserver)initWithActiveRouteIDsChangedCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __64__MRActiveRoutesObserver_initWithActiveRouteIDsChangedCallback___block_invoke;
   v8[3] = &unk_1E769E878;
-  v9 = v4;
-  v5 = v4;
+  v9 = callbackCopy;
+  v5 = callbackCopy;
   v6 = [(MRActiveRoutesObserver *)self initWithActiveRouteIDsChangedCallback:v8 isLocalDeviceAirplayActiveChangedCallback:0];
 
   return v6;
@@ -47,28 +47,28 @@ uint64_t __64__MRActiveRoutesObserver_initWithActiveRouteIDsChangedCallback___bl
   return result;
 }
 
-- (MRActiveRoutesObserver)initWithActiveRouteIDsChangedCallback:(id)a3 isLocalDeviceAirplayActiveChangedCallback:(id)a4
+- (MRActiveRoutesObserver)initWithActiveRouteIDsChangedCallback:(id)callback isLocalDeviceAirplayActiveChangedCallback:(id)changedCallback
 {
-  v6 = a3;
-  v7 = a4;
+  callbackCopy = callback;
+  changedCallbackCopy = changedCallback;
   v15.receiver = self;
   v15.super_class = MRActiveRoutesObserver;
   v8 = [(MRActiveRoutesObserver *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    [(MRActiveRoutesObserver *)v8 setActiveRouteIDsChangedCallback:v6];
-    [(MRActiveRoutesObserver *)v9 setIsLocalDeviceAirPlayActiveCallback:v7];
+    [(MRActiveRoutesObserver *)v8 setActiveRouteIDsChangedCallback:callbackCopy];
+    [(MRActiveRoutesObserver *)v9 setIsLocalDeviceAirPlayActiveCallback:changedCallbackCopy];
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v11 = dispatch_queue_create("com.apple.mediaremote.MRActiveRoutesObserver", v10);
     [(MRActiveRoutesObserver *)v9 setWorkerQueue:v11];
 
     [(MRActiveRoutesObserver *)v9 setDeviceRemovedWaitInterval:3.0];
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 addObserver:v9 selector:sel__handleActiveSystemEndpointDidChange_ name:@"kMRMediaRemoteActiveSystemEndpointDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel__handleActiveSystemEndpointDidChange_ name:@"kMRMediaRemoteActiveSystemEndpointDidChangeNotification" object:0];
 
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 addObserver:v9 selector:sel__handleActiveDeviceInfoDidChange_ name:@"kMRActiveDeviceInfoDidChangeNotification" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v9 selector:sel__handleActiveDeviceInfoDidChange_ name:@"kMRActiveDeviceInfoDidChangeNotification" object:0];
 
     [(MRActiveRoutesObserver *)v9 _reevaluateASE];
     [(MRActiveRoutesObserver *)v9 _reevaluateAPA];
@@ -77,21 +77,21 @@ uint64_t __64__MRActiveRoutesObserver_initWithActiveRouteIDsChangedCallback___bl
   return v9;
 }
 
-+ (void)fetchActiveRouteIDsWithCompletion:(id)a3
++ (void)fetchActiveRouteIDsWithCompletion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    [(MRActiveRoutesObserver *)a2 fetchActiveRouteIDsWithCompletion:a1];
+    [(MRActiveRoutesObserver *)a2 fetchActiveRouteIDsWithCompletion:self];
   }
 
   v6 = qos_class_self();
-  v7 = [MEMORY[0x1E695DF00] date];
-  v8 = [MEMORY[0x1E696AFB0] UUID];
-  v9 = [v8 UUIDString];
+  date = [MEMORY[0x1E695DF00] date];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v10 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"MRActiveRoutesObserver.fetchActiveRouteIDsWithCompletion", v9];
+  v10 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"MRActiveRoutesObserver.fetchActiveRouteIDsWithCompletion", uUIDString];
   v11 = _MRLogForCategory(0xAuLL);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -104,13 +104,13 @@ uint64_t __64__MRActiveRoutesObserver_initWithActiveRouteIDsChangedCallback___bl
   v22[1] = 3221225472;
   v22[2] = __60__MRActiveRoutesObserver_fetchActiveRouteIDsWithCompletion___block_invoke;
   v22[3] = &unk_1E76A3BB8;
-  v23 = v9;
-  v24 = v7;
+  v23 = uUIDString;
+  v24 = date;
   v26 = v6;
-  v25 = v5;
-  v12 = v5;
-  v13 = v7;
-  v14 = v9;
+  v25 = completionCopy;
+  v12 = completionCopy;
+  v13 = date;
+  v14 = uUIDString;
   v15 = MEMORY[0x1A58E3570](v22);
   v16 = dispatch_get_global_queue(v6, 0);
   v19[0] = MEMORY[0x1E69E9820];
@@ -118,9 +118,9 @@ uint64_t __64__MRActiveRoutesObserver_initWithActiveRouteIDsChangedCallback___bl
   v19[2] = __60__MRActiveRoutesObserver_fetchActiveRouteIDsWithCompletion___block_invoke_2;
   v19[3] = &unk_1E76A3BE0;
   v20 = v15;
-  v21 = a1;
+  selfCopy = self;
   v17 = v15;
-  [a1 fetchActiveEndpointOnQueue:v16 withCompletion:v19];
+  [self fetchActiveEndpointOnQueue:v16 withCompletion:v19];
 
   v18 = *MEMORY[0x1E69E9840];
 }
@@ -196,21 +196,21 @@ void __60__MRActiveRoutesObserver_fetchActiveRouteIDsWithCompletion___block_invo
   (*(v2 + 16))(v2, v5);
 }
 
-+ (void)fetchActiveEndpointOnQueue:(id)a3 withCompletion:(id)a4
++ (void)fetchActiveEndpointOnQueue:(id)queue withCompletion:(id)completion
 {
   v35 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  queueCopy = queue;
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    [MRActiveRoutesObserver fetchActiveEndpointOnQueue:a2 withCompletion:a1];
+    [MRActiveRoutesObserver fetchActiveEndpointOnQueue:a2 withCompletion:self];
   }
 
-  v9 = [MEMORY[0x1E695DF00] date];
-  v10 = [MEMORY[0x1E696AFB0] UUID];
-  v11 = [v10 UUIDString];
+  date = [MEMORY[0x1E695DF00] date];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v12 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"MRActiveRoutesObserver.fetchActiveEndpointOnQueue", v11];
+  v12 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"MRActiveRoutesObserver.fetchActiveEndpointOnQueue", uUIDString];
   v13 = _MRLogForCategory(0xAuLL);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -223,19 +223,19 @@ void __60__MRActiveRoutesObserver_fetchActiveRouteIDsWithCompletion___block_invo
   v28[1] = 3221225472;
   v28[2] = __68__MRActiveRoutesObserver_fetchActiveEndpointOnQueue_withCompletion___block_invoke;
   v28[3] = &unk_1E76A2708;
-  v14 = v11;
+  v14 = uUIDString;
   v29 = v14;
-  v15 = v9;
+  v15 = date;
   v30 = v15;
-  v16 = v7;
+  v16 = queueCopy;
   v31 = v16;
-  v17 = v8;
+  v17 = completionCopy;
   v32 = v17;
   v18 = MEMORY[0x1A58E3570](v28);
   v19 = +[MRUserSettings currentSettings];
-  v20 = [v19 supportRoutingContinuity];
+  supportRoutingContinuity = [v19 supportRoutingContinuity];
 
-  if (v20)
+  if (supportRoutingContinuity)
   {
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
@@ -251,9 +251,9 @@ void __60__MRActiveRoutesObserver_fetchActiveRouteIDsWithCompletion___block_invo
   else
   {
     v22 = +[MRUserSettings currentSettings];
-    v23 = [v22 supportTopologyHealing];
+    supportTopologyHealing = [v22 supportTopologyHealing];
 
-    if (v23)
+    if (supportTopologyHealing)
     {
       v21 = +[MRAVLocalEndpoint sharedSystemAudioLocalEndpoint];
       (v18)[2](v18, v21, 0);
@@ -363,55 +363,55 @@ void __68__MRActiveRoutesObserver_fetchActiveEndpointOnQueue_withCompletion___bl
 
 - (NSArray)activeRouteIDs
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_activeRouteIDs;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_activeRouteIDs;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setActiveEndpoint:(id)a3
+- (void)setActiveEndpoint:(id)endpoint
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  endpointCopy = endpoint;
   v6 = _MRLogForCategory(0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 debugName];
+    debugName = [endpointCopy debugName];
     v20 = 138412290;
-    v21 = v7;
+    v21 = debugName;
     _os_log_impl(&dword_1A2860000, v6, OS_LOG_TYPE_DEFAULT, "[MRActiveRoutesObserver] ActiveEndpoint -> %@", &v20, 0xCu);
   }
 
-  v8 = self;
-  objc_sync_enter(v8);
-  if (v8->_activeEndpoint)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_activeEndpoint)
   {
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 removeObserver:v8 name:@"MRAVEndpointDidAddOutputDeviceNotification" object:v8->_activeEndpoint];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:selfCopy name:@"MRAVEndpointDidAddOutputDeviceNotification" object:selfCopy->_activeEndpoint];
 
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 removeObserver:v8 name:@"MRAVEndpointDidRemoveOutputDeviceNotification" object:v8->_activeEndpoint];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 removeObserver:selfCopy name:@"MRAVEndpointDidRemoveOutputDeviceNotification" object:selfCopy->_activeEndpoint];
   }
 
-  objc_storeStrong(&v8->_activeEndpoint, a3);
-  if (v8->_activeEndpoint)
+  objc_storeStrong(&selfCopy->_activeEndpoint, endpoint);
+  if (selfCopy->_activeEndpoint)
   {
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v8 selector:sel__handleActiveSystemEndpointDidAddOutputDevice_ name:@"MRAVEndpointDidAddOutputDeviceNotification" object:v8->_activeEndpoint];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:selfCopy selector:sel__handleActiveSystemEndpointDidAddOutputDevice_ name:@"MRAVEndpointDidAddOutputDeviceNotification" object:selfCopy->_activeEndpoint];
 
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 addObserver:v8 selector:sel__handleActiveSystemEndpointDidRemoveOutputDevice_ name:@"MRAVEndpointDidRemoveOutputDeviceNotification" object:v8->_activeEndpoint];
+    defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter4 addObserver:selfCopy selector:sel__handleActiveSystemEndpointDidRemoveOutputDevice_ name:@"MRAVEndpointDidRemoveOutputDeviceNotification" object:selfCopy->_activeEndpoint];
   }
 
   v13 = [MRAVDistantEndpoint alloc];
-  v14 = [v5 descriptor];
-  v15 = [(MRAVDistantEndpoint *)v13 initWithDescriptor:v14];
-  activeEndpointSnapshot = v8->_activeEndpointSnapshot;
-  v8->_activeEndpointSnapshot = v15;
+  descriptor = [endpointCopy descriptor];
+  v15 = [(MRAVDistantEndpoint *)v13 initWithDescriptor:descriptor];
+  activeEndpointSnapshot = selfCopy->_activeEndpointSnapshot;
+  selfCopy->_activeEndpointSnapshot = v15;
 
-  v17 = v8->_activeEndpointSnapshot;
+  v17 = selfCopy->_activeEndpointSnapshot;
   v18 = _MRLogForCategory(0);
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
@@ -420,58 +420,58 @@ void __68__MRActiveRoutesObserver_fetchActiveEndpointOnQueue_withCompletion___bl
     _os_log_impl(&dword_1A2860000, v18, OS_LOG_TYPE_DEFAULT, "[MRActiveRoutesObserver] Snapshot Init: %@", &v20, 0xCu);
   }
 
-  objc_sync_exit(v8);
-  [(MRActiveRoutesObserver *)v8 _reevaluateWithEndpoint:v17];
+  objc_sync_exit(selfCopy);
+  [(MRActiveRoutesObserver *)selfCopy _reevaluateWithEndpoint:v17];
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
 - (MRAVEndpoint)activeEndpoint
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_activeEndpoint;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_activeEndpoint;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (MRAVDistantEndpoint)activeEndpointSnapshot
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_activeEndpointSnapshot;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_activeEndpointSnapshot;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (BOOL)isLocalDeviceAirPlayActive
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  localDeviceAirPlayActive = v2->_localDeviceAirPlayActive;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  localDeviceAirPlayActive = selfCopy->_localDeviceAirPlayActive;
+  objc_sync_exit(selfCopy);
 
   return localDeviceAirPlayActive;
 }
 
 - (MRActiveRoutesObserverOutputDeviceRemovedSnapshot)deviceRemovedSnapshot
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_deviceRemovedSnapshot;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_deviceRemovedSnapshot;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)_handleActiveSystemEndpointDidAddOutputDevice:(id)a3
+- (void)_handleActiveSystemEndpointDidAddOutputDevice:(id)device
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"MRAVEndpointOutputDeviceUserInfoKey"];
+  userInfo = [device userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"MRAVEndpointOutputDeviceUserInfoKey"];
 
-  v6 = [(MRActiveRoutesObserver *)self workerQueue];
+  workerQueue = [(MRActiveRoutesObserver *)self workerQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __72__MRActiveRoutesObserver__handleActiveSystemEndpointDidAddOutputDevice___block_invoke;
@@ -479,7 +479,7 @@ void __68__MRActiveRoutesObserver_fetchActiveEndpointOnQueue_withCompletion___bl
   v8[4] = self;
   v9 = v5;
   v7 = v5;
-  dispatch_async(v6, v8);
+  dispatch_async(workerQueue, v8);
 }
 
 void __72__MRActiveRoutesObserver__handleActiveSystemEndpointDidAddOutputDevice___block_invoke(uint64_t a1)
@@ -519,16 +519,16 @@ void __72__MRActiveRoutesObserver__handleActiveSystemEndpointDidAddOutputDevice_
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleActiveSystemEndpointDidRemoveOutputDevice:(id)a3
+- (void)_handleActiveSystemEndpointDidRemoveOutputDevice:(id)device
 {
   v4 = MEMORY[0x1E695DF00];
-  v5 = a3;
+  deviceCopy = device;
   v6 = [v4 now];
-  v7 = [v5 userInfo];
+  userInfo = [deviceCopy userInfo];
 
-  v8 = [v7 objectForKeyedSubscript:@"MRAVEndpointOutputDeviceUserInfoKey"];
+  v8 = [userInfo objectForKeyedSubscript:@"MRAVEndpointOutputDeviceUserInfoKey"];
 
-  v9 = [(MRActiveRoutesObserver *)self workerQueue];
+  workerQueue = [(MRActiveRoutesObserver *)self workerQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __75__MRActiveRoutesObserver__handleActiveSystemEndpointDidRemoveOutputDevice___block_invoke;
@@ -538,7 +538,7 @@ void __72__MRActiveRoutesObserver__handleActiveSystemEndpointDidAddOutputDevice_
   v14 = v6;
   v10 = v6;
   v11 = v8;
-  dispatch_async(v9, block);
+  dispatch_async(workerQueue, block);
 }
 
 void __75__MRActiveRoutesObserver__handleActiveSystemEndpointDidRemoveOutputDevice___block_invoke(uint64_t a1)
@@ -678,24 +678,24 @@ void __75__MRActiveRoutesObserver__handleActiveSystemEndpointDidRemoveOutputDevi
 
 - (void)_reevaluateASE
 {
-  v3 = [(MRActiveRoutesObserver *)self workerQueue];
+  workerQueue = [(MRActiveRoutesObserver *)self workerQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __40__MRActiveRoutesObserver__reevaluateASE__block_invoke;
   block[3] = &unk_1E769A228;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workerQueue, block);
 }
 
 - (void)_reevaluateAPA
 {
-  v3 = [(MRActiveRoutesObserver *)self workerQueue];
+  workerQueue = [(MRActiveRoutesObserver *)self workerQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __40__MRActiveRoutesObserver__reevaluateAPA__block_invoke;
   block[3] = &unk_1E769A228;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workerQueue, block);
 }
 
 uint64_t __40__MRActiveRoutesObserver__reevaluateAPA__block_invoke(uint64_t a1)
@@ -708,21 +708,21 @@ uint64_t __40__MRActiveRoutesObserver__reevaluateAPA__block_invoke(uint64_t a1)
 
 - (void)_onWorkerQueue_reevaluateASE
 {
-  v3 = [(MRActiveRoutesObserver *)self workerQueue];
-  dispatch_assert_queue_V2(v3);
+  workerQueue = [(MRActiveRoutesObserver *)self workerQueue];
+  dispatch_assert_queue_V2(workerQueue);
 
   v4 = [MEMORY[0x1E695DF00] now];
   [(MRActiveRoutesObserver *)self setLastFetchAttemptToken:v4];
   v5 = objc_opt_class();
-  v6 = [(MRActiveRoutesObserver *)self workerQueue];
+  workerQueue2 = [(MRActiveRoutesObserver *)self workerQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __54__MRActiveRoutesObserver__onWorkerQueue_reevaluateASE__block_invoke;
   v8[3] = &unk_1E76A3C58;
   v9 = v4;
-  v10 = self;
+  selfCopy = self;
   v7 = v4;
-  [v5 fetchActiveEndpointOnQueue:v6 withCompletion:v8];
+  [v5 fetchActiveEndpointOnQueue:workerQueue2 withCompletion:v8];
 }
 
 void __54__MRActiveRoutesObserver__onWorkerQueue_reevaluateASE__block_invoke(uint64_t a1, void *a2)
@@ -739,57 +739,57 @@ void __54__MRActiveRoutesObserver__onWorkerQueue_reevaluateASE__block_invoke(uin
 
 - (void)_onWorkerQueue_reevaluateAPA
 {
-  v3 = [(MRActiveRoutesObserver *)self workerQueue];
-  dispatch_assert_queue_V2(v3);
+  workerQueue = [(MRActiveRoutesObserver *)self workerQueue];
+  dispatch_assert_queue_V2(workerQueue);
 
   v4 = +[MRDeviceInfoRequest localDeviceInfo];
   -[MRActiveRoutesObserver setIsLocalDeviceAirPlayActive:](self, "setIsLocalDeviceAirPlayActive:", [v4 isAirPlayActive]);
 }
 
-- (void)_reevaluateWithEndpoint:(id)a3
+- (void)_reevaluateWithEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v5 = [(MRActiveRoutesObserver *)self workerQueue];
+  endpointCopy = endpoint;
+  workerQueue = [(MRActiveRoutesObserver *)self workerQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__MRActiveRoutesObserver__reevaluateWithEndpoint___block_invoke;
   v7[3] = &unk_1E769A4A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = endpointCopy;
+  v6 = endpointCopy;
+  dispatch_async(workerQueue, v7);
 }
 
-- (void)_onWorkerQueue_reevaluateWithEndpoint:(id)a3
+- (void)_onWorkerQueue_reevaluateWithEndpoint:(id)endpoint
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(MRActiveRoutesObserver *)self workerQueue];
-  dispatch_assert_queue_V2(v6);
+  endpointCopy = endpoint;
+  workerQueue = [(MRActiveRoutesObserver *)self workerQueue];
+  dispatch_assert_queue_V2(workerQueue);
 
   v7 = +[MRDeviceInfoRequest localDeviceInfo];
   v23 = MEMORY[0x1E69E9820];
   v24 = 3221225472;
   v25 = __64__MRActiveRoutesObserver__onWorkerQueue_reevaluateWithEndpoint___block_invoke;
   v26 = &unk_1E76A3C80;
-  v27 = self;
+  selfCopy = self;
   v30 = a2;
-  v8 = v5;
+  v8 = endpointCopy;
   v28 = v8;
   v9 = v7;
   v29 = v9;
   if (__64__MRActiveRoutesObserver__onWorkerQueue_reevaluateWithEndpoint___block_invoke(&v23))
   {
     v10 = [objc_opt_class() _computeActiveRouteIDsFromEndpoint:v8 localDeviceInfo:{v9, v23, v24}];
-    v11 = [(MRActiveRoutesObserver *)self activeRouteIDs];
-    v12 = v11;
-    if (v10 == v11)
+    activeRouteIDs = [(MRActiveRoutesObserver *)self activeRouteIDs];
+    v12 = activeRouteIDs;
+    if (v10 == activeRouteIDs)
     {
     }
 
     else
     {
-      v13 = [v10 isEqual:v11];
+      v13 = [v10 isEqual:activeRouteIDs];
 
       if ((v13 & 1) == 0)
       {
@@ -801,25 +801,25 @@ void __54__MRActiveRoutesObserver__onWorkerQueue_reevaluateASE__block_invoke(uin
           _os_log_impl(&dword_1A2860000, v14, OS_LOG_TYPE_DEFAULT, "[MRActiveRoutesObserver] ActiveRouteIDs -> %@", buf, 0xCu);
         }
 
-        v15 = self;
-        objc_sync_enter(v15);
-        objc_storeStrong(&v15->_activeRouteIDs, v10);
-        deviceRemovedSnapshot = v15->_deviceRemovedSnapshot;
-        v15->_deviceRemovedSnapshot = 0;
+        selfCopy2 = self;
+        objc_sync_enter(selfCopy2);
+        objc_storeStrong(&selfCopy2->_activeRouteIDs, v10);
+        deviceRemovedSnapshot = selfCopy2->_deviceRemovedSnapshot;
+        selfCopy2->_deviceRemovedSnapshot = 0;
 
-        deviceRemovedWaitIntervalTimer = v15->_deviceRemovedWaitIntervalTimer;
-        v15->_deviceRemovedWaitIntervalTimer = 0;
+        deviceRemovedWaitIntervalTimer = selfCopy2->_deviceRemovedWaitIntervalTimer;
+        selfCopy2->_deviceRemovedWaitIntervalTimer = 0;
 
-        objc_sync_exit(v15);
-        v18 = [(MRActiveRoutesObserver *)v15 activeRouteIDsChangedCallback];
+        objc_sync_exit(selfCopy2);
+        activeRouteIDsChangedCallback = [(MRActiveRoutesObserver *)selfCopy2 activeRouteIDsChangedCallback];
 
-        if (!v18)
+        if (!activeRouteIDsChangedCallback)
         {
           goto LABEL_11;
         }
 
-        v19 = [(MRActiveRoutesObserver *)v15 activeRouteIDsChangedCallback];
-        (*&v19->_localDeviceAirPlayActive)(v19, v10);
+        selfCopy3 = [(MRActiveRoutesObserver *)selfCopy2 activeRouteIDsChangedCallback];
+        (*&selfCopy3->_localDeviceAirPlayActive)(selfCopy3, v10);
 LABEL_10:
 
 LABEL_11:
@@ -827,15 +827,15 @@ LABEL_11:
       }
     }
 
-    v19 = self;
-    objc_sync_enter(v19);
-    v20 = v19->_deviceRemovedSnapshot;
-    v19->_deviceRemovedSnapshot = 0;
+    selfCopy3 = self;
+    objc_sync_enter(selfCopy3);
+    v20 = selfCopy3->_deviceRemovedSnapshot;
+    selfCopy3->_deviceRemovedSnapshot = 0;
 
-    v21 = v19->_deviceRemovedWaitIntervalTimer;
-    v19->_deviceRemovedWaitIntervalTimer = 0;
+    v21 = selfCopy3->_deviceRemovedWaitIntervalTimer;
+    selfCopy3->_deviceRemovedWaitIntervalTimer = 0;
 
-    objc_sync_exit(v19);
+    objc_sync_exit(selfCopy3);
     goto LABEL_10;
   }
 
@@ -958,41 +958,41 @@ LABEL_26:
   return v13;
 }
 
-+ (id)_computeActiveRouteIDsFromEndpoint:(id)a3 localDeviceInfo:(id)a4
++ (id)_computeActiveRouteIDsFromEndpoint:(id)endpoint localDeviceInfo:(id)info
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  endpointCopy = endpoint;
+  infoCopy = info;
   v7 = +[MRUserSettings currentSettings];
-  v8 = [v7 supportTopologyHealing];
+  supportTopologyHealing = [v7 supportTopologyHealing];
 
-  if (v8)
+  if (supportTopologyHealing)
   {
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __77__MRActiveRoutesObserver__computeActiveRouteIDsFromEndpoint_localDeviceInfo___block_invoke;
     v20[3] = &unk_1E76A3130;
-    v9 = v5;
+    v9 = endpointCopy;
     v21 = v9;
-    v10 = v6;
+    v10 = infoCopy;
     v22 = v10;
     if ((__77__MRActiveRoutesObserver__computeActiveRouteIDsFromEndpoint_localDeviceInfo___block_invoke)(v20))
     {
-      v11 = [v10 leaderDeviceInfo];
-      v12 = [v11 groupedDevices];
-      v13 = [v12 msv_map:&__block_literal_global_64_0];
+      leaderDeviceInfo = [v10 leaderDeviceInfo];
+      groupedDevices = [leaderDeviceInfo groupedDevices];
+      v13 = [groupedDevices msv_map:&__block_literal_global_64_0];
     }
 
     else
     {
-      v11 = [v9 resolvedOutputDevices];
+      leaderDeviceInfo = [v9 resolvedOutputDevices];
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __77__MRActiveRoutesObserver__computeActiveRouteIDsFromEndpoint_localDeviceInfo___block_invoke_3;
       v18[3] = &unk_1E769B6F8;
       v19 = v10;
-      v13 = [v11 msv_map:v18];
-      v12 = v19;
+      v13 = [leaderDeviceInfo msv_map:v18];
+      groupedDevices = v19;
     }
 
     v15 = v21;
@@ -1000,11 +1000,11 @@ LABEL_26:
 
   else
   {
-    v14 = [v6 effectiveID];
-    v15 = v14;
-    if (v14)
+    effectiveID = [infoCopy effectiveID];
+    v15 = effectiveID;
+    if (effectiveID)
     {
-      v23[0] = v14;
+      v23[0] = effectiveID;
       v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
     }
 

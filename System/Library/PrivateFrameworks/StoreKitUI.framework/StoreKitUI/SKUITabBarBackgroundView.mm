@@ -1,18 +1,18 @@
 @interface SKUITabBarBackgroundView
-- (SKUITabBarBackgroundView)initWithFrame:(CGRect)a3;
+- (SKUITabBarBackgroundView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setBackdropGroupName:(id)a3;
-- (void)setBackdropStyle:(int64_t)a3;
+- (void)setBackdropGroupName:(id)name;
+- (void)setBackdropStyle:(int64_t)style;
 @end
 
 @implementation SKUITabBarBackgroundView
 
-- (SKUITabBarBackgroundView)initWithFrame:(CGRect)a3
+- (SKUITabBarBackgroundView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUITabBarBackgroundView initWithFrame:];
@@ -20,11 +20,11 @@
 
   v17.receiver = self;
   v17.super_class = SKUITabBarBackgroundView;
-  v8 = [(SKUITabBarBackgroundView *)&v17 initWithFrame:x, y, width, height];
-  v9 = v8;
-  if (v8)
+  height = [(SKUITabBarBackgroundView *)&v17 initWithFrame:x, y, width, height];
+  v9 = height;
+  if (height)
   {
-    [(SKUITabBarBackgroundView *)v8 setAutoresizingMask:18];
+    [(SKUITabBarBackgroundView *)height setAutoresizingMask:18];
     [(SKUITabBarBackgroundView *)v9 setUserInteractionEnabled:0];
     v10 = [objc_alloc(MEMORY[0x277D75DE8]) initWithPrivateStyle:10060];
     backdropView = v9->_backdropView;
@@ -36,8 +36,8 @@
     v9->_borderView = v12;
 
     v14 = v9->_borderView;
-    v15 = [MEMORY[0x277D75348] _barHairlineShadowColor];
-    [(UIView *)v14 setBackgroundColor:v15];
+    _barHairlineShadowColor = [MEMORY[0x277D75348] _barHairlineShadowColor];
+    [(UIView *)v14 setBackgroundColor:_barHairlineShadowColor];
 
     [(SKUITabBarBackgroundView *)v9 addSubview:v9->_borderView];
   }
@@ -45,20 +45,20 @@
   return v9;
 }
 
-- (void)setBackdropGroupName:(id)a3
+- (void)setBackdropGroupName:(id)name
 {
-  v5 = a3;
-  v4 = [(SKUITabBarBackgroundView *)self backdropGroupName];
-  if (v4 != v5 && ([v4 isEqualToString:v5] & 1) == 0)
+  nameCopy = name;
+  backdropGroupName = [(SKUITabBarBackgroundView *)self backdropGroupName];
+  if (backdropGroupName != nameCopy && ([backdropGroupName isEqualToString:nameCopy] & 1) == 0)
   {
-    [(_UIBackdropView *)self->_backdropView setGroupName:v5];
+    [(_UIBackdropView *)self->_backdropView setGroupName:nameCopy];
   }
 }
 
-- (void)setBackdropStyle:(int64_t)a3
+- (void)setBackdropStyle:(int64_t)style
 {
   borderView = self->_borderView;
-  if (a3 == 11050)
+  if (style == 11050)
   {
     [MEMORY[0x277D75348] _barStyleBlackHairlineShadowColor];
   }
@@ -72,7 +72,7 @@
 
   backdropView = self->_backdropView;
 
-  [(_UIBackdropView *)backdropView transitionToPrivateStyle:a3];
+  [(_UIBackdropView *)backdropView transitionToPrivateStyle:style];
 }
 
 - (void)layoutSubviews
@@ -83,8 +83,8 @@
   [(SKUITabBarBackgroundView *)self bounds];
   v4 = v3;
   [(_UIBackdropView *)self->_backdropView setFrame:?];
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  [v5 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v7 = 1.0 / v6;
 
   [(UIView *)self->_borderView setFrame:0.0, 0.0, v4, v7];

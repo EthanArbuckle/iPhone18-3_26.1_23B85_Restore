@@ -1,24 +1,24 @@
 @interface HSTBackboardBridge
-- (BOOL)handleHSDecode:(void *)a3;
-- (BOOL)handleHSEncode:(void *)a3;
-- (HSTBackboardBridge)initWithQueue:(id)a3;
+- (BOOL)handleHSDecode:(void *)decode;
+- (BOOL)handleHSEncode:(void *)encode;
+- (HSTBackboardBridge)initWithQueue:(id)queue;
 - (id).cxx_construct;
 - (void)_clear;
-- (void)_handleGetPropertyEvent:(id)a3;
-- (void)_handleMotionState:(unsigned __int8)a3 confidence:(unsigned __int8)a4;
+- (void)_handleGetPropertyEvent:(id)event;
+- (void)_handleMotionState:(unsigned __int8)state confidence:(unsigned __int8)confidence;
 - (void)_handlePowerSourceState;
 - (void)_handleProxClearedAfterOccludedWake;
-- (void)_handleScreenOrientation:(unsigned __int8)a3;
-- (void)_handleSetPropertyEvent:(id)a3;
-- (void)_handleStockholmState:(unsigned __int8)a3;
-- (void)_handleStuckTouchDetectorState:(id)a3;
-- (void)_handleTouchHand:(unsigned __int8)a3;
-- (void)_handleTouchMode:(unsigned __int16)a3;
-- (void)_handleWristState:(unsigned __int8)a3;
+- (void)_handleScreenOrientation:(unsigned __int8)orientation;
+- (void)_handleSetPropertyEvent:(id)event;
+- (void)_handleStockholmState:(unsigned __int8)state;
+- (void)_handleStuckTouchDetectorState:(id)state;
+- (void)_handleTouchHand:(unsigned __int8)hand;
+- (void)_handleTouchMode:(unsigned __int16)mode;
+- (void)_handleWristState:(unsigned __int8)state;
 - (void)dealloc;
-- (void)handleConsume:(id)a3;
-- (void)sendUSBEvent:(unsigned __int8)a3;
-- (void)sendWirelessEvent:(unsigned __int8)a3;
+- (void)handleConsume:(id)consume;
+- (void)sendUSBEvent:(unsigned __int8)event;
+- (void)sendWirelessEvent:(unsigned __int8)event;
 @end
 
 @implementation HSTBackboardBridge
@@ -117,10 +117,10 @@ LABEL_27:
   }
 }
 
-- (HSTBackboardBridge)initWithQueue:(id)a3
+- (HSTBackboardBridge)initWithQueue:(id)queue
 {
-  v5 = a3;
-  if (!v5)
+  queueCopy = queue;
+  if (!queueCopy)
   {
     v9 = +[NSAssertionHandler currentHandler];
     [v9 handleFailureInMethod:a2 object:self file:@"HSTBackboardBridge.mm" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
@@ -138,7 +138,7 @@ LABEL_27:
     handler[2] = __36__HSTBackboardBridge_initWithQueue___block_invoke;
     handler[3] = &unk_10A9A8;
     objc_copyWeak(&v17, &location);
-    if (notify_register_dispatch("com.apple.stockholm.field.on", &out_token, v5, handler))
+    if (notify_register_dispatch("com.apple.stockholm.field.on", &out_token, queueCopy, handler))
     {
       memset(__b, 170, sizeof(__b));
       basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/HIDSensingTouch/HSTPipeline/HSTBackboardBridge.mm", __b);
@@ -158,21 +158,21 @@ LABEL_27:
       v14[2] = __36__HSTBackboardBridge_initWithQueue___block_invoke_38;
       v14[3] = &unk_10A9A8;
       objc_copyWeak(&v15, &location);
-      notify_register_dispatch("com.apple.stockholm.field.off", &out_token, v5, v14);
+      notify_register_dispatch("com.apple.stockholm.field.off", &out_token, queueCopy, v14);
       std::vector<int>::push_back[abi:ne200100](&v6->_notifyTokens.__begin_, &out_token);
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = __36__HSTBackboardBridge_initWithQueue___block_invoke_40;
       v12[3] = &unk_10A9A8;
       objc_copyWeak(&v13, &location);
-      notify_register_dispatch("com.apple.stockholm.field.suspended", &out_token, v5, v12);
+      notify_register_dispatch("com.apple.stockholm.field.suspended", &out_token, queueCopy, v12);
       std::vector<int>::push_back[abi:ne200100](&v6->_notifyTokens.__begin_, &out_token);
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;
       v10[2] = __36__HSTBackboardBridge_initWithQueue___block_invoke_42;
       v10[3] = &unk_10A9A8;
       objc_copyWeak(&v11, &location);
-      notify_register_dispatch("com.apple.system.powersources", &out_token, v5, v10);
+      notify_register_dispatch("com.apple.system.powersources", &out_token, queueCopy, v10);
       std::vector<int>::push_back[abi:ne200100](&v6->_notifyTokens.__begin_, &out_token);
       objc_destroyWeak(&v11);
       v7 = v6;
@@ -238,18 +238,18 @@ void __36__HSTBackboardBridge_initWithQueue___block_invoke_42(uint64_t a1)
   [(HSStage *)&v6 dealloc];
 }
 
-- (void)_handleTouchMode:(unsigned __int16)a3
+- (void)_handleTouchMode:(unsigned __int16)mode
 {
   p_state = &self->_state;
   if (self->_state.touchMode.__engaged_)
   {
     val = p_state->touchMode.var0.__val_;
-    if (val == a3)
+    if (val == mode)
     {
       return;
     }
 
-    if (a3 & 5) == 0 && (val)
+    if (mode & 5) == 0 && (val)
     {
       v11 = 0;
       v7 = [[HSTVendorEvent alloc] initWithType:9 buffer:&v11 length:1];
@@ -259,7 +259,7 @@ void __36__HSTBackboardBridge_initWithQueue___block_invoke_42(uint64_t a1)
     }
   }
 
-  p_state->touchMode.var0.__val_ = a3;
+  p_state->touchMode.var0.__val_ = mode;
   p_state->touchMode.__engaged_ = 1;
   v8 = objc_opt_new();
   v8[2] = p_state->touchMode.var0.__val_;
@@ -268,12 +268,12 @@ void __36__HSTBackboardBridge_initWithQueue___block_invoke_42(uint64_t a1)
   [(HSStage *)&v9 handleConsume:v8];
 }
 
-- (void)_handleScreenOrientation:(unsigned __int8)a3
+- (void)_handleScreenOrientation:(unsigned __int8)orientation
 {
   p_state = &self->_state;
-  if (!self->_state.screenOrientation.__engaged_ || self->_state.screenOrientation.var0.__val_ != a3)
+  if (!self->_state.screenOrientation.__engaged_ || self->_state.screenOrientation.var0.__val_ != orientation)
   {
-    self->_state.screenOrientation = (a3 | 0x100);
+    self->_state.screenOrientation = (orientation | 0x100);
     v5 = objc_opt_new();
     v5[2] = p_state->screenOrientation.var0.__val_;
     v6.receiver = self;
@@ -282,14 +282,14 @@ void __36__HSTBackboardBridge_initWithQueue___block_invoke_42(uint64_t a1)
   }
 }
 
-- (void)_handleMotionState:(unsigned __int8)a3 confidence:(unsigned __int8)a4
+- (void)_handleMotionState:(unsigned __int8)state confidence:(unsigned __int8)confidence
 {
-  if ((a4 - 3) >= 0xFFFFFFFE)
+  if ((confidence - 3) >= 0xFFFFFFFE)
   {
     p_state = &self->_state;
-    if (!self->_state.motionState.__engaged_ || self->_state.motionState.var0.__val_ != a3)
+    if (!self->_state.motionState.__engaged_ || self->_state.motionState.var0.__val_ != state)
     {
-      self->_state.motionState = (a3 | 0x100);
+      self->_state.motionState = (state | 0x100);
       v6 = objc_opt_new();
       v6[2] = p_state->motionState.var0.__val_;
       v7.receiver = self;
@@ -299,12 +299,12 @@ void __36__HSTBackboardBridge_initWithQueue___block_invoke_42(uint64_t a1)
   }
 }
 
-- (void)_handleTouchHand:(unsigned __int8)a3
+- (void)_handleTouchHand:(unsigned __int8)hand
 {
   p_state = &self->_state;
-  if (!self->_state.touchHand.__engaged_ || self->_state.touchHand.var0.__val_ != a3)
+  if (!self->_state.touchHand.__engaged_ || self->_state.touchHand.var0.__val_ != hand)
   {
-    self->_state.touchHand = (a3 | 0x100);
+    self->_state.touchHand = (hand | 0x100);
     v5 = objc_opt_new();
     v5[2] = p_state->touchHand.var0.__val_;
     v6.receiver = self;
@@ -313,12 +313,12 @@ void __36__HSTBackboardBridge_initWithQueue___block_invoke_42(uint64_t a1)
   }
 }
 
-- (void)_handleWristState:(unsigned __int8)a3
+- (void)_handleWristState:(unsigned __int8)state
 {
   p_state = &self->_state;
-  if (!self->_state.wristState.__engaged_ || self->_state.wristState.var0.__val_ != a3)
+  if (!self->_state.wristState.__engaged_ || self->_state.wristState.var0.__val_ != state)
   {
-    self->_state.wristState = (a3 | 0x100);
+    self->_state.wristState = (state | 0x100);
     v5 = objc_opt_new();
     v5[2] = p_state->wristState.var0.__val_;
     v6.receiver = self;
@@ -327,12 +327,12 @@ void __36__HSTBackboardBridge_initWithQueue___block_invoke_42(uint64_t a1)
   }
 }
 
-- (void)_handleStockholmState:(unsigned __int8)a3
+- (void)_handleStockholmState:(unsigned __int8)state
 {
   p_state = &self->_state;
-  if (!self->_state.stockholmState.__engaged_ || self->_state.stockholmState.var0.__val_ != a3)
+  if (!self->_state.stockholmState.__engaged_ || self->_state.stockholmState.var0.__val_ != state)
   {
-    self->_state.stockholmState = (a3 | 0x100);
+    self->_state.stockholmState = (state | 0x100);
     v5 = objc_opt_new();
     v5[2] = p_state->stockholmState.var0.__val_;
     v6.receiver = self;
@@ -341,12 +341,12 @@ void __36__HSTBackboardBridge_initWithQueue___block_invoke_42(uint64_t a1)
   }
 }
 
-- (void)sendWirelessEvent:(unsigned __int8)a3
+- (void)sendWirelessEvent:(unsigned __int8)event
 {
   p_state = &self->_state;
-  if (!self->_state.wirelessChargingState.__engaged_ || self->_state.wirelessChargingState.var0.__val_ != a3)
+  if (!self->_state.wirelessChargingState.__engaged_ || self->_state.wirelessChargingState.var0.__val_ != event)
   {
-    self->_state.wirelessChargingState = (a3 | 0x100);
+    self->_state.wirelessChargingState = (event | 0x100);
     v5 = objc_opt_new();
     v5[2] = p_state->wirelessChargingState.var0.__val_;
     v6.receiver = self;
@@ -355,12 +355,12 @@ void __36__HSTBackboardBridge_initWithQueue___block_invoke_42(uint64_t a1)
   }
 }
 
-- (void)sendUSBEvent:(unsigned __int8)a3
+- (void)sendUSBEvent:(unsigned __int8)event
 {
   p_state = &self->_state;
-  if (!self->_state.usbChargingState.__engaged_ || self->_state.usbChargingState.var0.__val_ != a3)
+  if (!self->_state.usbChargingState.__engaged_ || self->_state.usbChargingState.var0.__val_ != event)
   {
-    self->_state.usbChargingState = (a3 | 0x100);
+    self->_state.usbChargingState = (event | 0x100);
     v5 = objc_opt_new();
     v5[2] = p_state->usbChargingState.var0.__val_;
     v6.receiver = self;
@@ -369,10 +369,10 @@ void __36__HSTBackboardBridge_initWithQueue___block_invoke_42(uint64_t a1)
   }
 }
 
-- (void)_handleStuckTouchDetectorState:(id)a3
+- (void)_handleStuckTouchDetectorState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"StuckTouchDetectorDisabled"];
+  stateCopy = state;
+  v5 = [stateCopy objectForKeyedSubscript:@"StuckTouchDetectorDisabled"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -384,12 +384,12 @@ void __36__HSTBackboardBridge_initWithQueue___block_invoke_42(uint64_t a1)
     v6 = 0;
   }
 
-  v7 = [v6 BOOLValue];
-  if (!self->_state.stuckTouchDetectorState.__engaged_ || self->_state.stuckTouchDetectorState.var0.__val_ != v7)
+  bOOLValue = [v6 BOOLValue];
+  if (!self->_state.stuckTouchDetectorState.__engaged_ || self->_state.stuckTouchDetectorState.var0.__val_ != bOOLValue)
   {
-    self->_state.stuckTouchDetectorState = (v7 | 0x100);
+    self->_state.stuckTouchDetectorState = (bOOLValue | 0x100);
     v8 = objc_opt_new();
-    v8[2] = v7;
+    v8[2] = bOOLValue;
     v9.receiver = self;
     v9.super_class = HSTBackboardBridge;
     [(HSStage *)&v9 handleConsume:v8];
@@ -404,10 +404,10 @@ void __36__HSTBackboardBridge_initWithQueue___block_invoke_42(uint64_t a1)
   [(HSStage *)&v4 handleConsume:v3];
 }
 
-- (void)_handleSetPropertyEvent:(id)a3
+- (void)_handleSetPropertyEvent:(id)event
 {
-  v4 = a3;
-  v5 = *(v4 + 5);
+  eventCopy = event;
+  v5 = *(eventCopy + 5);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -419,9 +419,9 @@ void __36__HSTBackboardBridge_initWithQueue___block_invoke_42(uint64_t a1)
     v6 = 0;
   }
 
-  v7 = *(v4 + 5);
+  v7 = *(eventCopy + 5);
   objc_opt_class();
-  v8 = (v4 + 16);
+  v8 = (eventCopy + 16);
   if (objc_opt_isKindOfClass())
   {
     v9 = v7;
@@ -432,16 +432,16 @@ void __36__HSTBackboardBridge_initWithQueue___block_invoke_42(uint64_t a1)
     v9 = 0;
   }
 
-  v10 = v4[39];
-  if (v4[39] < 0)
+  v10 = eventCopy[39];
+  if (eventCopy[39] < 0)
   {
-    if (*(v4 + 3) != 22)
+    if (*(eventCopy + 3) != 22)
     {
 LABEL_19:
       v98.receiver = self;
       v98.super_class = HSTBackboardBridge;
-      [(HSStage *)&v98 handleConsume:v4];
-      v10 = v4[39];
+      [(HSStage *)&v98 handleConsume:eventCopy];
+      v10 = eventCopy[39];
       goto LABEL_20;
     }
 
@@ -450,7 +450,7 @@ LABEL_19:
 
   else
   {
-    v11 = (v4 + 16);
+    v11 = (eventCopy + 16);
     if (v10 != 22)
     {
       goto LABEL_19;
@@ -468,7 +468,7 @@ LABEL_19:
 LABEL_20:
   if ((v10 & 0x80) != 0)
   {
-    if (*(v4 + 3) == 18)
+    if (*(eventCopy + 3) == 18)
     {
       v19 = **v8 == 0x7465446863756F54 && (*v8)[1] == 0x6F4D6E6F69746365;
       if (v19 && *(*v8 + 8) == 25956)
@@ -477,7 +477,7 @@ LABEL_20:
       }
     }
 
-    if (*(v4 + 3) == 18)
+    if (*(eventCopy + 3) == 18)
     {
       v21 = **v8 == 0x7465447475706E49 && (*v8)[1] == 0x6F4D6E6F69746365;
       if (v21 && *(*v8 + 8) == 25956)
@@ -506,7 +506,7 @@ LABEL_132:
       }
     }
 
-    if (*(v4 + 3) == 21)
+    if (*(eventCopy + 3) == 21)
     {
       v23 = **v8 == 0x7461745374736F48 && (*v8)[1] == 0x63696669746F4E65;
       if (v23 && *(*v8 + 13) == 0x6E6F697461636966)
@@ -527,7 +527,7 @@ LABEL_129:
             v44 = 0;
           }
 
-          v48 = [v44 BOOLValue];
+          bOOLValue = [v44 BOOLValue];
           v49 = [v97 objectForKeyedSubscript:@"PocketTouchesExpected"];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -540,7 +540,7 @@ LABEL_129:
             v50 = 0;
           }
 
-          v96 = [v50 BOOLValue];
+          bOOLValue2 = [v50 BOOLValue];
           v51 = [v97 objectForKeyedSubscript:@"FaceTouchesExpected"];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -553,7 +553,7 @@ LABEL_129:
             v52 = 0;
           }
 
-          v95 = [v52 BOOLValue];
+          bOOLValue3 = [v52 BOOLValue];
           v53 = [v97 objectForKeyedSubscript:@"CoverGestureEnabled"];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -566,7 +566,7 @@ LABEL_129:
             v54 = 0;
           }
 
-          v94 = [v54 BOOLValue];
+          bOOLValue4 = [v54 BOOLValue];
           v55 = [v97 objectForKeyedSubscript:@"WakeOnTapEnabled"];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -579,7 +579,7 @@ LABEL_129:
             v56 = 0;
           }
 
-          v93 = [v56 BOOLValue];
+          bOOLValue5 = [v56 BOOLValue];
           v57 = [v97 objectForKeyedSubscript:@"WakeOnSwipeEnabled"];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -592,7 +592,7 @@ LABEL_129:
             v58 = 0;
           }
 
-          v92 = [v58 BOOLValue];
+          bOOLValue6 = [v58 BOOLValue];
           v59 = [v97 objectForKeyedSubscript:@"WakeOnLongPressEnabled"];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -605,7 +605,7 @@ LABEL_129:
             v60 = 0;
           }
 
-          v91 = [v60 BOOLValue];
+          bOOLValue7 = [v60 BOOLValue];
           v61 = [v97 objectForKeyedSubscript:@"WakeOnTwoFingerLongPressEnabled"];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -618,7 +618,7 @@ LABEL_129:
             v62 = 0;
           }
 
-          v90 = [v62 BOOLValue];
+          bOOLValue8 = [v62 BOOLValue];
           v63 = [v97 objectForKeyedSubscript:@"WakeOnTapThroughEnabled"];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -631,7 +631,7 @@ LABEL_129:
             v64 = 0;
           }
 
-          v89 = [v64 BOOLValue];
+          bOOLValue9 = [v64 BOOLValue];
           v65 = [v97 objectForKeyedSubscript:@"WakeOnSwipeThroughEnabled"];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -644,7 +644,7 @@ LABEL_129:
             v66 = 0;
           }
 
-          v88 = [v66 BOOLValue];
+          bOOLValue10 = [v66 BOOLValue];
           v67 = [v97 objectForKeyedSubscript:@"WakeOnLongPressThroughEnabled"];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -657,7 +657,7 @@ LABEL_129:
             v68 = 0;
           }
 
-          v87 = [v68 BOOLValue];
+          bOOLValue11 = [v68 BOOLValue];
           v69 = [v97 objectForKeyedSubscript:@"ChangeSourceKeyboardUsagePair"];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -670,7 +670,7 @@ LABEL_129:
             v70 = 0;
           }
 
-          v86 = [v70 unsignedIntValue];
+          unsignedIntValue = [v70 unsignedIntValue];
           v71 = [v97 objectForKeyedSubscript:@"DisplayState"];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -683,7 +683,7 @@ LABEL_129:
             v72 = 0;
           }
 
-          v85 = [v72 unsignedIntValue];
+          unsignedIntValue2 = [v72 unsignedIntValue];
           v73 = [v97 objectForKeyedSubscript:@"DisplayState"];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -696,7 +696,7 @@ LABEL_129:
             v74 = 0;
           }
 
-          v75 = [v74 unsignedIntValue];
+          unsignedIntValue3 = [v74 unsignedIntValue];
           v76 = [v97 objectForKeyedSubscript:@"SecureIndicatorEnabled"];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -709,60 +709,60 @@ LABEL_129:
             v77 = 0;
           }
 
-          v78 = [v77 BOOLValue];
-          v79 = v75 == 3;
-          v80 = v48 | 2;
-          if (!v96)
+          bOOLValue12 = [v77 BOOLValue];
+          v79 = unsignedIntValue3 == 3;
+          v80 = bOOLValue | 2;
+          if (!bOOLValue2)
           {
-            v80 = v48;
+            v80 = bOOLValue;
           }
 
-          if (v95)
+          if (bOOLValue3)
           {
             v80 |= 4u;
           }
 
-          if (v94)
+          if (bOOLValue4)
           {
             v80 |= 8u;
           }
 
-          if (v93)
+          if (bOOLValue5)
           {
             v80 |= 0x10u;
           }
 
-          if (v92)
+          if (bOOLValue6)
           {
             v80 |= 0x20u;
           }
 
-          if (v91)
+          if (bOOLValue7)
           {
             v80 |= 0x40u;
           }
 
-          if (v90)
+          if (bOOLValue8)
           {
             v80 |= 0x800u;
           }
 
-          if (v89)
+          if (bOOLValue9)
           {
             v80 |= 0x80u;
           }
 
-          if (v88)
+          if (bOOLValue10)
           {
             v80 |= 0x100u;
           }
 
-          if (v87)
+          if (bOOLValue11)
           {
             v80 |= 0x200u;
           }
 
-          if (v86 == 786480)
+          if (unsignedIntValue == 786480)
           {
             v81 = v80 | 0x400;
           }
@@ -772,14 +772,14 @@ LABEL_129:
             v81 = v80;
           }
 
-          if ((v78 | v79))
+          if ((bOOLValue12 | v79))
           {
-            v82 = v81 | (v85 == 2) | 0x1000;
+            v82 = v81 | (unsignedIntValue2 == 2) | 0x1000;
           }
 
           else
           {
-            v82 = v81 | (v85 == 2);
+            v82 = v81 | (unsignedIntValue2 == 2);
           }
 
           [(HSTBackboardBridge *)self _handleTouchMode:v82];
@@ -800,7 +800,7 @@ LABEL_129:
       }
     }
 
-    if (*(v4 + 3) == 19)
+    if (*(eventCopy + 3) == 19)
     {
       v25 = **v8 == 0x7363696870617247 && (*v8)[1] == 0x7461746E6569724FLL;
       if (v25 && *(*v8 + 11) == 0x6E6F697461746E65)
@@ -809,7 +809,7 @@ LABEL_129:
       }
     }
 
-    if (*(v4 + 3) == 22)
+    if (*(eventCopy + 3) == 22)
     {
       v27 = **v8 == 0x63416E6F69746F4DLL && (*v8)[1] == 0x6944797469766974;
       if (v27 && *(*v8 + 14) == 0x6863746170736944)
@@ -885,7 +885,7 @@ LABEL_136:
       }
     }
 
-    if (*(v4 + 3) != 9)
+    if (*(eventCopy + 3) != 9)
     {
       goto LABEL_120;
     }
@@ -928,8 +928,8 @@ LABEL_93:
           goto LABEL_120;
         }
 
-        v17 = *v8 == 0x63416E6F69746F4DLL && *(v4 + 3) == 0x6944797469766974;
-        if (!v17 || *(v4 + 30) != 0x6863746170736944)
+        v17 = *v8 == 0x63416E6F69746F4DLL && *(eventCopy + 3) == 0x6944797469766974;
+        if (!v17 || *(eventCopy + 30) != 0x6863746170736944)
         {
           goto LABEL_120;
         }
@@ -937,7 +937,7 @@ LABEL_93:
         goto LABEL_136;
       }
 
-      if (*v8 != 0x7461745374736F48 || *(v4 + 3) != 0x63696669746F4E65 || *(v4 + 29) != 0x6E6F697461636966)
+      if (*v8 != 0x7461745374736F48 || *(eventCopy + 3) != 0x63696669746F4E65 || *(eventCopy + 29) != 0x6E6F697461636966)
       {
 LABEL_120:
         if (std::operator==[abi:ne200100]<char,std::char_traits<char>,std::allocator<char>>(v8, "WristState"))
@@ -985,7 +985,7 @@ LABEL_120:
       goto LABEL_129;
     }
 
-    if (*v8 != 0x7363696870617247 || *(v4 + 3) != 0x7461746E6569724FLL || *(v4 + 27) != 0x6E6F697461746E65)
+    if (*v8 != 0x7363696870617247 || *(eventCopy + 3) != 0x7461746E6569724FLL || *(eventCopy + 27) != 0x6E6F697461746E65)
     {
       goto LABEL_120;
     }
@@ -1009,7 +1009,7 @@ LABEL_111:
     goto LABEL_239;
   }
 
-  v29 = v4 + 16;
+  v29 = eventCopy + 16;
   if (v10 == 9)
   {
     goto LABEL_93;
@@ -1020,9 +1020,9 @@ LABEL_111:
     goto LABEL_120;
   }
 
-  if (*v8 != 0x7465446863756F54 || *(v4 + 3) != 0x6F4D6E6F69746365 || *(v4 + 16) != 25956)
+  if (*v8 != 0x7465446863756F54 || *(eventCopy + 3) != 0x6F4D6E6F69746365 || *(eventCopy + 16) != 25956)
   {
-    if (*v8 != 0x7465447475706E49 || *(v4 + 3) != 0x6F4D6E6F69746365 || *(v4 + 16) != 25956)
+    if (*v8 != 0x7465447475706E49 || *(eventCopy + 3) != 0x6F4D6E6F69746365 || *(eventCopy + 16) != 25956)
     {
       goto LABEL_120;
     }
@@ -1059,15 +1059,15 @@ LABEL_139:
 LABEL_239:
 }
 
-- (void)_handleGetPropertyEvent:(id)a3
+- (void)_handleGetPropertyEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = (v4 + 2);
-  v7 = *(v4 + 39);
+  eventCopy = event;
+  v5 = eventCopy;
+  v6 = (eventCopy + 2);
+  v7 = *(eventCopy + 39);
   if (v7 < 0)
   {
-    if (v4[3] != 10)
+    if (eventCopy[3] != 10)
     {
 LABEL_14:
       v17.receiver = self;
@@ -1115,13 +1115,13 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)handleConsume:(id)a3
+- (void)handleConsume:(id)consume
 {
-  v4 = a3;
+  consumeCopy = consume;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = consumeCopy;
   }
 
   else
@@ -1131,12 +1131,12 @@ LABEL_15:
 
   if (v5)
   {
-    [(HSTBackboardBridge *)self _handleSetPropertyEvent:v4];
+    [(HSTBackboardBridge *)self _handleSetPropertyEvent:consumeCopy];
   }
 
   else
   {
-    v6 = v4;
+    v6 = consumeCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1169,66 +1169,66 @@ LABEL_15:
   *&self->_state.usbChargingState.var0.__null_state_ = 0;
 }
 
-- (BOOL)handleHSEncode:(void *)a3
+- (BOOL)handleHSEncode:(void *)encode
 {
-  if (!*a3)
+  if (!*encode)
   {
-    *&v7 = *(a3 + 17);
+    *&v7 = *(encode + 17);
     DWORD2(v7) = 4;
-    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](a3 + 56, &v7);
-    HSUtil::Encoder::_writeTokenValue32(a3, 0xEBu, 0);
+    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](encode + 56, &v7);
+    HSUtil::Encoder::_writeTokenValue32(encode, 0xEBu, 0);
   }
 
   p_state = &self->_state;
   if (p_state->touchMode.__engaged_)
   {
-    HSUtil::Encoder::encodeUInt(a3, HSUtil::CoderKey::Literal<(char)116,(char)111,(char)117,(char)99,(char)104,(char)77,(char)111,(char)100,(char)101>::Key, p_state->touchMode.var0.__val_);
+    HSUtil::Encoder::encodeUInt(encode, HSUtil::CoderKey::Literal<(char)116,(char)111,(char)117,(char)99,(char)104,(char)77,(char)111,(char)100,(char)101>::Key, p_state->touchMode.var0.__val_);
   }
 
   if (p_state->screenOrientation.__engaged_)
   {
-    HSUtil::Encoder::encodeUInt(a3, HSUtil::CoderKey::Literal<(char)115,(char)99,(char)114,(char)101,(char)101,(char)110,(char)79,(char)114,(char)105,(char)101,(char)110,(char)116,(char)97,(char)116,(char)105,(char)111,(char)110>::Key, p_state->screenOrientation.var0.__val_);
+    HSUtil::Encoder::encodeUInt(encode, HSUtil::CoderKey::Literal<(char)115,(char)99,(char)114,(char)101,(char)101,(char)110,(char)79,(char)114,(char)105,(char)101,(char)110,(char)116,(char)97,(char)116,(char)105,(char)111,(char)110>::Key, p_state->screenOrientation.var0.__val_);
   }
 
   if (p_state->motionState.__engaged_)
   {
-    HSUtil::Encoder::encodeUInt(a3, HSUtil::CoderKey::Literal<(char)109,(char)111,(char)116,(char)105,(char)111,(char)110,(char)83,(char)116,(char)97,(char)116,(char)101>::Key, p_state->motionState.var0.__val_);
+    HSUtil::Encoder::encodeUInt(encode, HSUtil::CoderKey::Literal<(char)109,(char)111,(char)116,(char)105,(char)111,(char)110,(char)83,(char)116,(char)97,(char)116,(char)101>::Key, p_state->motionState.var0.__val_);
   }
 
   if (p_state->touchHand.__engaged_)
   {
-    HSUtil::Encoder::encodeUInt(a3, HSUtil::CoderKey::Literal<(char)116,(char)111,(char)117,(char)99,(char)104,(char)72,(char)97,(char)110,(char)100>::Key, p_state->touchHand.var0.__val_);
+    HSUtil::Encoder::encodeUInt(encode, HSUtil::CoderKey::Literal<(char)116,(char)111,(char)117,(char)99,(char)104,(char)72,(char)97,(char)110,(char)100>::Key, p_state->touchHand.var0.__val_);
   }
 
   if (p_state->wristState.__engaged_)
   {
-    HSUtil::Encoder::encodeUInt(a3, HSUtil::CoderKey::Literal<(char)119,(char)114,(char)105,(char)115,(char)116,(char)83,(char)116,(char)97,(char)116,(char)101>::Key, p_state->wristState.var0.__val_);
+    HSUtil::Encoder::encodeUInt(encode, HSUtil::CoderKey::Literal<(char)119,(char)114,(char)105,(char)115,(char)116,(char)83,(char)116,(char)97,(char)116,(char)101>::Key, p_state->wristState.var0.__val_);
   }
 
   if (p_state->stockholmState.__engaged_)
   {
-    HSUtil::Encoder::encodeUInt(a3, HSUtil::CoderKey::Literal<(char)115,(char)116,(char)111,(char)99,(char)107,(char)104,(char)111,(char)108,(char)109,(char)83,(char)116,(char)97,(char)116,(char)101>::Key, p_state->stockholmState.var0.__val_);
+    HSUtil::Encoder::encodeUInt(encode, HSUtil::CoderKey::Literal<(char)115,(char)116,(char)111,(char)99,(char)107,(char)104,(char)111,(char)108,(char)109,(char)83,(char)116,(char)97,(char)116,(char)101>::Key, p_state->stockholmState.var0.__val_);
   }
 
   if (p_state->wirelessChargingState.__engaged_)
   {
-    HSUtil::Encoder::encodeUInt(a3, HSUtil::CoderKey::Literal<(char)119,(char)105,(char)114,(char)101,(char)108,(char)101,(char)115,(char)115,(char)67,(char)104,(char)97,(char)114,(char)103,(char)105,(char)110,(char)103,(char)83,(char)116,(char)97,(char)116,(char)101>::Key, p_state->wirelessChargingState.var0.__val_);
+    HSUtil::Encoder::encodeUInt(encode, HSUtil::CoderKey::Literal<(char)119,(char)105,(char)114,(char)101,(char)108,(char)101,(char)115,(char)115,(char)67,(char)104,(char)97,(char)114,(char)103,(char)105,(char)110,(char)103,(char)83,(char)116,(char)97,(char)116,(char)101>::Key, p_state->wirelessChargingState.var0.__val_);
   }
 
   if (p_state->stuckTouchDetectorState.__engaged_)
   {
-    HSUtil::Encoder::encodeUInt(a3, HSUtil::CoderKey::Literal<(char)115,(char)116,(char)117,(char)99,(char)107,(char)84,(char)111,(char)117,(char)99,(char)104,(char)68,(char)101,(char)116,(char)101,(char)99,(char)116,(char)111,(char)114,(char)83,(char)116,(char)97,(char)116,(char)101>::Key, p_state->stuckTouchDetectorState.var0.__val_);
+    HSUtil::Encoder::encodeUInt(encode, HSUtil::CoderKey::Literal<(char)115,(char)116,(char)117,(char)99,(char)107,(char)84,(char)111,(char)117,(char)99,(char)104,(char)68,(char)101,(char)116,(char)101,(char)99,(char)116,(char)111,(char)114,(char)83,(char)116,(char)97,(char)116,(char)101>::Key, p_state->stuckTouchDetectorState.var0.__val_);
   }
 
-  if (!*a3)
+  if (!*encode)
   {
-    HSUtil::Encoder::_encodeContainerStop(a3);
+    HSUtil::Encoder::_encodeContainerStop(encode);
   }
 
   return 1;
 }
 
-- (BOOL)handleHSDecode:(void *)a3
+- (BOOL)handleHSDecode:(void *)decode
 {
   [(HSTBackboardBridge *)self _clear];
   *&v5 = 0xAAAAAAAAAAAAAAAALL;
@@ -1238,8 +1238,8 @@ LABEL_15:
   v13 = v5;
   v14 = v5;
   v12 = v5;
-  HSUtil::Decoder::decodeMap(a3, &v12);
-  if (*a3)
+  HSUtil::Decoder::decodeMap(decode, &v12);
+  if (*decode)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/HIDSensingTouch/HSTPipeline/HSTBackboardBridge.mm", __b);

@@ -1,13 +1,13 @@
 @interface CIIntegralImageProcessorGPU
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6;
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error;
 @end
 
 @implementation CIIntegralImageProcessorGPU
 
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error
 {
-  v8 = [a5 metalCommandBuffer];
-  if (!v8)
+  metalCommandBuffer = [output metalCommandBuffer];
+  if (!metalCommandBuffer)
   {
     v19 = ci_logger_api();
     v20 = os_log_type_enabled(v19, OS_LOG_TYPE_ERROR);
@@ -22,8 +22,8 @@ LABEL_9:
     return v20;
   }
 
-  v9 = v8;
-  v10 = [objc_alloc(MEMORY[0x1E69745E8]) initWithDevice:{objc_msgSend(v8, "device")}];
+  v9 = metalCommandBuffer;
+  v10 = [objc_alloc(MEMORY[0x1E69745E8]) initWithDevice:{objc_msgSend(metalCommandBuffer, "device")}];
   if (!v10)
   {
     v21 = ci_logger_api();
@@ -38,7 +38,7 @@ LABEL_9:
   }
 
   v11 = v10;
-  [objc_msgSend(a3 objectAtIndexedSubscript:{0), "region"}];
+  [objc_msgSend(inputs objectAtIndexedSubscript:{0), "region"}];
   x = v31.origin.x;
   y = v31.origin.y;
   width = v31.size.width;
@@ -77,7 +77,7 @@ LABEL_9:
     }
   }
 
-  [a5 region];
+  [output region];
   v22 = v36.origin.x;
   v23 = v36.origin.y;
   v24 = v36.size.width;
@@ -120,7 +120,7 @@ LABEL_9:
   v30[1] = v17 + v16 - (v26 + v27);
   v30[2] = 0;
   [v11 setOffset:v30];
-  [v11 encodeToCommandBuffer:v9 sourceTexture:objc_msgSend(objc_msgSend(a3 destinationTexture:{"objectAtIndexedSubscript:", 0), "metalTexture"), objc_msgSend(a5, "metalTexture")}];
+  [v11 encodeToCommandBuffer:v9 sourceTexture:objc_msgSend(objc_msgSend(inputs destinationTexture:{"objectAtIndexedSubscript:", 0), "metalTexture"), objc_msgSend(output, "metalTexture")}];
 
   LOBYTE(v20) = 1;
   return v20;

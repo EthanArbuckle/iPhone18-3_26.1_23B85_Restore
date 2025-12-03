@@ -1,15 +1,15 @@
 @interface STDynamicActivityAttributionMonitor
 - (STDynamicActivityAttributionMonitor)init;
-- (STDynamicActivityAttributionMonitor)initWithServerHandle:(id)a3;
-- (id)attributionForAttribution:(id)a3;
-- (id)attributionForClient:(id *)a3;
+- (STDynamicActivityAttributionMonitor)initWithServerHandle:(id)handle;
+- (id)attributionForAttribution:(id)attribution;
+- (id)attributionForClient:(id *)client;
 - (id)currentAttributions;
 - (id)handler;
 - (void)activate;
-- (void)currentAttributionsDidChange:(id)a3;
+- (void)currentAttributionsDidChange:(id)change;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setHandler:(id)a3;
+- (void)setHandler:(id)handler;
 @end
 
 @implementation STDynamicActivityAttributionMonitor
@@ -22,9 +22,9 @@
   return v4;
 }
 
-- (STDynamicActivityAttributionMonitor)initWithServerHandle:(id)a3
+- (STDynamicActivityAttributionMonitor)initWithServerHandle:(id)handle
 {
-  v5 = a3;
+  handleCopy = handle;
   v11.receiver = self;
   v11.super_class = STDynamicActivityAttributionMonitor;
   v6 = [(STDynamicActivityAttributionMonitor *)&v11 init];
@@ -32,7 +32,7 @@
   if (v6)
   {
     v6->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v6->_lock_server, a3);
+    objc_storeStrong(&v6->_lock_server, handle);
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
     lock_attributions = v7->_lock_attributions;
     v7->_lock_attributions = v8;
@@ -57,7 +57,7 @@
       v12 = 2114;
       v13 = v8;
       v14 = 2048;
-      v15 = self;
+      selfCopy = self;
       v16 = 2114;
       v17 = @"STDynamicActivityAttributionMonitor.m";
       v18 = 1024;
@@ -96,7 +96,7 @@
       v12 = 2114;
       v13 = v8;
       v14 = 2048;
-      v15 = self;
+      selfCopy = self;
       v16 = 2114;
       v17 = @"STDynamicActivityAttributionMonitor.m";
       v18 = 1024;
@@ -154,11 +154,11 @@
   return v4;
 }
 
-- (void)setHandler:(id)a3
+- (void)setHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 copy];
+  v5 = [handlerCopy copy];
 
   lock_handler = self->_lock_handler;
   self->_lock_handler = v5;
@@ -169,17 +169,17 @@
 - (id)currentAttributions
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSMutableDictionary *)self->_lock_attributions allValues];
+  allValues = [(NSMutableDictionary *)self->_lock_attributions allValues];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return allValues;
 }
 
-- (id)attributionForClient:(id *)a3
+- (id)attributionForClient:(id *)client
 {
   os_unfair_lock_lock(&self->_lock);
   lock_attributions = self->_lock_attributions;
-  v6 = [MEMORY[0x1E696AD98] numberWithLongLong:{BSVersionedPIDForAuditToken(), *a3->var0, *&a3->var0[2], *&a3->var0[4], *&a3->var0[6]}];
+  v6 = [MEMORY[0x1E696AD98] numberWithLongLong:{BSVersionedPIDForAuditToken(), *client->var0, *&client->var0[2], *&client->var0[4], *&client->var0[6]}];
   v7 = [(NSMutableDictionary *)lock_attributions objectForKey:v6];
 
   os_unfair_lock_unlock(&self->_lock);
@@ -187,14 +187,14 @@
   return v7;
 }
 
-- (id)attributionForAttribution:(id)a3
+- (id)attributionForAttribution:(id)attribution
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  attributionCopy = attribution;
+  v5 = attributionCopy;
+  if (attributionCopy)
   {
-    [v4 auditToken];
+    [attributionCopy auditToken];
   }
 
   else
@@ -219,8 +219,8 @@
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v9 = [(NSMutableDictionary *)self->_lock_attributions allKeys];
-      v10 = [v9 countByEnumeratingWithState:&v17 objects:v22 count:16];
+      allKeys = [(NSMutableDictionary *)self->_lock_attributions allKeys];
+      v10 = [allKeys countByEnumeratingWithState:&v17 objects:v22 count:16];
       if (v10)
       {
         v11 = v10;
@@ -231,7 +231,7 @@
           {
             if (*v18 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(allKeys);
             }
 
             v14 = *(*(&v17 + 1) + 8 * i);
@@ -242,7 +242,7 @@
             }
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v17 objects:v22 count:16];
+          v11 = [allKeys countByEnumeratingWithState:&v17 objects:v22 count:16];
           if (v11)
           {
             continue;
@@ -264,10 +264,10 @@ LABEL_16:
   return v6;
 }
 
-- (void)currentAttributionsDidChange:(id)a3
+- (void)currentAttributionsDidChange:(id)change
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   if (STSystemStatusIsInternalLoggingEnabled_onceToken != -1)
   {
     dispatch_once(&STSystemStatusIsInternalLoggingEnabled_onceToken, &__block_literal_global_56);
@@ -281,7 +281,7 @@ LABEL_16:
       *buf = 138412546;
       *&buf[4] = self;
       *&buf[12] = 2112;
-      *&buf[14] = v4;
+      *&buf[14] = changeCopy;
       _os_log_impl(&dword_1DA9C2000, v5, OS_LOG_TYPE_DEFAULT, "%@: Attributions did change: %@", buf, 0x16u);
     }
   }
@@ -292,7 +292,7 @@ LABEL_16:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = changeCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v7)
   {
@@ -331,11 +331,11 @@ LABEL_16:
   }
 
   v15 = MEMORY[0x1E1274600](self->_lock_handler);
-  v16 = [(NSMutableDictionary *)self->_lock_attributions allValues];
+  allValues = [(NSMutableDictionary *)self->_lock_attributions allValues];
   os_unfair_lock_unlock(&self->_lock);
   if (v15)
   {
-    (v15)[2](v15, v16);
+    (v15)[2](v15, allValues);
   }
 
   v17 = *MEMORY[0x1E69E9840];

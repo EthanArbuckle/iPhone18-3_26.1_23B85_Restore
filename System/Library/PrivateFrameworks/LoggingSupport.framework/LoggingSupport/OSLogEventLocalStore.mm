@@ -1,12 +1,12 @@
 @interface OSLogEventLocalStore
-- (void)prepareWithCompletionHandler:(id)a3;
+- (void)prepareWithCompletionHandler:(id)handler;
 @end
 
 @implementation OSLogEventLocalStore
 
-- (void)prepareWithCompletionHandler:(id)a3
+- (void)prepareWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [MEMORY[0x277CCAC48] progressWithTotalUnitCount:6];
   v92 = 0;
   v6 = [_OSLogCollectionReference localDBRefWithError:&v92];
@@ -19,14 +19,14 @@
       v8 = _OSLogError(6);
     }
 
-    v4[2](v4, 0, v8);
+    handlerCopy[2](handlerCopy, 0, v8);
     goto LABEL_37;
   }
 
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   [v9 setCompletedUnitCount:{objc_msgSend(v9, "completedUnitCount") + 1}];
-  progressHandler = v10->super._progressHandler;
+  progressHandler = selfCopy->super._progressHandler;
 
   if (progressHandler)
   {
@@ -34,17 +34,17 @@
     progressHandler[2](progressHandler, 0);
   }
 
-  v12 = [v6 timesyncReference];
-  v13 = [v12 fileDescriptor];
+  timesyncReference = [v6 timesyncReference];
+  fileDescriptor = [timesyncReference fileDescriptor];
 
-  v14 = _timesync_db_openat(v13, ".");
+  v14 = _timesync_db_openat(fileDescriptor, ".");
   if (!v14)
   {
     v42 = *__error();
     v43 = 12;
 LABEL_32:
     v44 = _OSLogPOSIXError(v43, v42);
-    v4[2](v4, 0, v44);
+    handlerCopy[2](handlerCopy, 0, v44);
 
     [v6 close];
     goto LABEL_37;
@@ -52,9 +52,9 @@ LABEL_32:
 
   v15 = v14;
   v16 = v9;
-  v17 = v10;
+  v17 = selfCopy;
   [v16 setCompletedUnitCount:{objc_msgSend(v16, "completedUnitCount") + 1}];
-  v18 = v10->super._progressHandler;
+  v18 = selfCopy->super._progressHandler;
 
   if (v18)
   {
@@ -63,15 +63,15 @@ LABEL_32:
   }
 
   v91 = 0;
-  v19 = [v6 diagnosticsDirectoryReference];
+  diagnosticsDirectoryReference = [v6 diagnosticsDirectoryReference];
 
-  if (!v19)
+  if (!diagnosticsDirectoryReference)
   {
 LABEL_11:
     v24 = v16;
     v25 = v17;
     [v24 setCompletedUnitCount:{objc_msgSend(v24, "completedUnitCount") + 1}];
-    v26 = v10->super._progressHandler;
+    v26 = selfCopy->super._progressHandler;
 
     if (v26)
     {
@@ -87,12 +87,12 @@ LABEL_11:
       asprintf(&v89, "%slsfw-tmp-XXXXXXX.tracev3", [v27 UTF8String]);
       if (v89)
       {
-        v87 = v19;
+        v87 = diagnosticsDirectoryReference;
         v29 = mkstemps(v89, 8);
         if (v29 == -1)
         {
           free(v89);
-          v19 = v87;
+          diagnosticsDirectoryReference = v87;
         }
 
         else
@@ -101,15 +101,15 @@ LABEL_11:
           v30 = fdopen(v29, "w+");
           free(v89);
           v31 = v30;
-          v19 = v87;
+          diagnosticsDirectoryReference = v87;
           if (v31)
           {
             v80 = v28;
             v81 = v31;
             v32 = fileno(v31);
-            v33 = [(OSLogEventStore *)v25 _relativeFilePaths];
+            _relativeFilePaths = [(OSLogEventStore *)v25 _relativeFilePaths];
 
-            if (v33)
+            if (_relativeFilePaths)
             {
               v34 = 0;
             }
@@ -129,7 +129,7 @@ LABEL_11:
             v35 = v24;
             v36 = v25;
             [v35 setCompletedUnitCount:{objc_msgSend(v35, "completedUnitCount") + 1}];
-            v37 = v10->super._progressHandler;
+            v37 = selfCopy->super._progressHandler;
             v78 = v36;
 
             if (v37)
@@ -141,29 +141,29 @@ LABEL_11:
             v84 = [[_OSLogEventStoreMetadata alloc] initWithCollection:v6 localStorePlist:v87 liveDataDescriptor:v85];
             v38 = [[OSLogEventSource alloc] initWithCollection:v6 metadata:v84 timesync:v15];
             [v35 becomeCurrentWithPendingUnitCount:1];
-            v39 = [v6 diagnosticsDirectoryReference];
+            diagnosticsDirectoryReference2 = [v6 diagnosticsDirectoryReference];
 
             v28 = v80;
             v83 = v38;
-            if (v39)
+            if (diagnosticsDirectoryReference2)
             {
               v40 = v78;
-              v41 = [(OSLogEventStore *)v78 _relativeFilePaths];
+              _relativeFilePaths2 = [(OSLogEventStore *)v78 _relativeFilePaths];
 
-              if (v41)
+              if (_relativeFilePaths2)
               {
                 [(OSLogEventStore *)v78 addFilesToSource:v38 forCollection:v6 withProgress:v35];
               }
 
               else
               {
-                v53 = [(OSLogEventStore *)v78 _progressHandler];
-                v54 = _enumerateArchiveIntoSource(v38, v6, v53, v4);
+                _progressHandler = [(OSLogEventStore *)v78 _progressHandler];
+                v54 = _enumerateArchiveIntoSource(v38, v6, _progressHandler, handlerCopy);
 
                 if ((v54 & 1) == 0)
                 {
                   fclose(v81);
-                  v19 = v87;
+                  diagnosticsDirectoryReference = v87;
                   v67 = v83;
                   v58 = v84;
 LABEL_56:
@@ -176,16 +176,16 @@ LABEL_56:
             else
             {
               v40 = v78;
-              v48 = [(OSLogEventStore *)v78 _progressHandler];
+              _progressHandler2 = [(OSLogEventStore *)v78 _progressHandler];
 
-              if (v48)
+              if (_progressHandler2)
               {
-                v77 = [MEMORY[0x277CCAC48] currentProgress];
-                v49 = [(OSLogEventStore *)v78 _progressHandler];
-                [v77 fractionCompleted];
+                currentProgress = [MEMORY[0x277CCAC48] currentProgress];
+                _progressHandler3 = [(OSLogEventStore *)v78 _progressHandler];
+                [currentProgress fractionCompleted];
                 v51 = v50;
                 v52 = _OSLogPOSIXError(18, 2);
-                (v49)[2](v49, v52, v51);
+                (_progressHandler3)[2](_progressHandler3, v52, v51);
               }
             }
 
@@ -193,7 +193,7 @@ LABEL_56:
             v55 = v35;
             v56 = v40;
             [v55 setCompletedUnitCount:{objc_msgSend(v55, "completedUnitCount")}];
-            v57 = v10->super._progressHandler;
+            v57 = selfCopy->super._progressHandler;
 
             if (v57)
             {
@@ -208,7 +208,7 @@ LABEL_53:
               v74 = v55;
               v75 = v56;
               [v74 setCompletedUnitCount:{objc_msgSend(v74, "completedUnitCount") + 1}];
-              v76 = v10->super._progressHandler;
+              v76 = selfCopy->super._progressHandler;
 
               if (v76)
               {
@@ -217,8 +217,8 @@ LABEL_53:
               }
 
               v67 = v83;
-              (v4)[2](v4, v83, 0);
-              v19 = v87;
+              (handlerCopy)[2](handlerCopy, v83, 0);
+              diagnosticsDirectoryReference = v87;
               goto LABEL_56;
             }
 
@@ -243,14 +243,14 @@ LABEL_52:
 
             v64 = v63;
             v82 = v61;
-            v65 = [v63 domain];
-            v66 = v65;
-            if (v65 == *MEMORY[0x277CCA5B8])
+            domain = [v63 domain];
+            v66 = domain;
+            if (domain == *MEMORY[0x277CCA5B8])
             {
-              v68 = [v64 code];
+              code = [v64 code];
 
               v61 = v82;
-              if (v68 == 34)
+              if (code == 34)
               {
                 goto LABEL_52;
               }
@@ -262,15 +262,15 @@ LABEL_52:
               v61 = v82;
             }
 
-            v69 = [(OSLogEventStore *)v79 _progressHandler];
+            _progressHandler4 = [(OSLogEventStore *)v79 _progressHandler];
 
-            if (v69)
+            if (_progressHandler4)
             {
-              v70 = [(OSLogEventStore *)v79 _progressHandler];
+              _progressHandler5 = [(OSLogEventStore *)v79 _progressHandler];
               [v55 fractionCompleted];
               v72 = v71;
               v73 = _OSLogInternalError(17, v86);
-              (v70)[2](v70, v73, v72);
+              (_progressHandler5)[2](_progressHandler5, v73, v72);
 
               v61 = v82;
             }
@@ -283,7 +283,7 @@ LABEL_52:
 
     v46 = __error();
     v47 = _OSLogPOSIXError(7, *v46);
-    v4[2](v4, 0, v47);
+    handlerCopy[2](handlerCopy, 0, v47);
 
     [v6 close];
 LABEL_36:
@@ -291,8 +291,8 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  v20 = [v6 diagnosticsDirectoryReference];
-  [v20 fileDescriptor];
+  diagnosticsDirectoryReference3 = [v6 diagnosticsDirectoryReference];
+  [diagnosticsDirectoryReference3 fileDescriptor];
 
   v21 = _os_trace_mmap_at();
   if (!v21)
@@ -307,13 +307,13 @@ LABEL_36:
   v23 = [MEMORY[0x277CCAC58] propertyListWithData:v22 options:0 format:0 error:&v90];
   if (v23)
   {
-    v19 = v23;
+    diagnosticsDirectoryReference = v23;
 
     goto LABEL_11;
   }
 
   v45 = _OSLogInternalError(5, v90);
-  v4[2](v4, 0, v45);
+  handlerCopy[2](handlerCopy, 0, v45);
 
   [v6 close];
 LABEL_37:

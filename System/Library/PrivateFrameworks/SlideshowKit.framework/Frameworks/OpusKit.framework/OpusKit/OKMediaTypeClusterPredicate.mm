@@ -1,6 +1,6 @@
 @interface OKMediaTypeClusterPredicate
 - (OKMediaTypeClusterPredicate)init;
-- (id)evaluateItems:(id)a3 progressBlock:(id)a4;
+- (id)evaluateItems:(id)items progressBlock:(id)block;
 - (id)title;
 - (void)dealloc;
 @end
@@ -36,7 +36,7 @@
   return [v2 localizedStringForKey:@"Type" value:@"Type" table:@"Localizable"];
 }
 
-- (id)evaluateItems:(id)a3 progressBlock:(id)a4
+- (id)evaluateItems:(id)items progressBlock:(id)block
 {
   v34 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -52,7 +52,7 @@
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v10 = [a3 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  v10 = [items countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v10)
   {
     v11 = v10;
@@ -63,7 +63,7 @@
       {
         if (*v29 != v12)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(items);
         }
 
         v14 = *(*(&v28 + 1) + 8 * i);
@@ -85,7 +85,7 @@
         [(NSMutableArray *)[(OKMediaCluster *)v16 items] addObject:v14];
       }
 
-      v11 = [a3 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      v11 = [items countByEnumeratingWithState:&v28 objects:v33 count:16];
     }
 
     while (v11);
@@ -125,8 +125,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v22 = [*(*(&v24 + 1) + 8 * j) items];
-        [v22 sortUsingDescriptors:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObject:", v17)}];
+        items = [*(*(&v24 + 1) + 8 * j) items];
+        [items sortUsingDescriptors:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObject:", v17)}];
       }
 
       v19 = [v5 countByEnumeratingWithState:&v24 objects:v32 count:16];

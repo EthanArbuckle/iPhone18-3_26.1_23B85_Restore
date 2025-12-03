@@ -1,25 +1,25 @@
 @interface SKResizeOperation
-- (BOOL)resizeLastPartitionWithError:(id *)a3;
+- (BOOL)resizeLastPartitionWithError:(id *)error;
 - (BOOL)run;
-- (SKResizeOperation)initWithDisk:(id)a3 toSize:(unint64_t)a4 withCompletionBlock:(id)a5;
-- (void)finishWithError:(id)a3;
+- (SKResizeOperation)initWithDisk:(id)disk toSize:(unint64_t)size withCompletionBlock:(id)block;
+- (void)finishWithError:(id)error;
 @end
 
 @implementation SKResizeOperation
 
-- (SKResizeOperation)initWithDisk:(id)a3 toSize:(unint64_t)a4 withCompletionBlock:(id)a5
+- (SKResizeOperation)initWithDisk:(id)disk toSize:(unint64_t)size withCompletionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  diskCopy = disk;
+  blockCopy = block;
   v14.receiver = self;
   v14.super_class = SKResizeOperation;
   v10 = [(SKManagerOperation *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    [(SKResizeOperation *)v10 setTargetDisk:v8];
-    [(SKResizeOperation *)v11 setSize:a4];
-    [(SKResizeOperation *)v11 setCallbackBlock:v9];
+    [(SKResizeOperation *)v10 setTargetDisk:diskCopy];
+    [(SKResizeOperation *)v11 setSize:size];
+    [(SKResizeOperation *)v11 setCallbackBlock:blockCopy];
     v12 = [SKProgress progressWithTotalUnitCount:100];
     [(SKManagerOperation *)v11 setSkProgress:v12];
   }
@@ -29,10 +29,10 @@
 
 - (BOOL)run
 {
-  v3 = [(SKResizeOperation *)self targetDisk];
-  v4 = [v3 isWholeDisk];
+  targetDisk = [(SKResizeOperation *)self targetDisk];
+  isWholeDisk = [targetDisk isWholeDisk];
 
-  if (v4)
+  if (isWholeDisk)
   {
     v9 = 0;
     [(SKResizeOperation *)self resizeLastPartitionWithError:&v9];
@@ -58,38 +58,38 @@
   return 1;
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v8 = a3;
-  if (!v8)
+  errorCopy = error;
+  if (!errorCopy)
   {
-    v4 = [(SKManagerOperation *)self skProgress];
-    v5 = [v4 totalUnitCount];
-    v6 = [(SKManagerOperation *)self skProgress];
-    [v6 setCompletedUnitCount:v5];
+    skProgress = [(SKManagerOperation *)self skProgress];
+    totalUnitCount = [skProgress totalUnitCount];
+    skProgress2 = [(SKManagerOperation *)self skProgress];
+    [skProgress2 setCompletedUnitCount:totalUnitCount];
   }
 
-  v7 = [(SKResizeOperation *)self callbackBlock];
-  (v7)[2](v7, v8);
+  callbackBlock = [(SKResizeOperation *)self callbackBlock];
+  (callbackBlock)[2](callbackBlock, errorCopy);
 
   [(SKManagerOperation *)self finished];
 }
 
-- (BOOL)resizeLastPartitionWithError:(id *)a3
+- (BOOL)resizeLastPartitionWithError:(id *)error
 {
   v5 = [SKLastPartitionResizer alloc];
-  v6 = [(SKResizeOperation *)self targetDisk];
-  v7 = [(SKDiskResizerBase *)v5 initWithDisk:v6 requestedSize:[(SKResizeOperation *)self size]];
+  targetDisk = [(SKResizeOperation *)self targetDisk];
+  v7 = [(SKDiskResizerBase *)v5 initWithDisk:targetDisk requestedSize:[(SKResizeOperation *)self size]];
 
-  v8 = [(SKManagerOperation *)self skProgress];
-  v9 = [(SKDiskResizerBase *)v7 progress];
-  [v8 chainChildProgress:v9 withPendingUnitCount:100];
+  skProgress = [(SKManagerOperation *)self skProgress];
+  progress = [(SKDiskResizerBase *)v7 progress];
+  [skProgress chainChildProgress:progress withPendingUnitCount:100];
 
-  v10 = [(SKLastPartitionResizer *)v7 resizeStateMachine:a3];
+  v10 = [(SKLastPartitionResizer *)v7 resizeStateMachine:error];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 runWithError:a3];
+    v12 = [v10 runWithError:error];
   }
 
   else

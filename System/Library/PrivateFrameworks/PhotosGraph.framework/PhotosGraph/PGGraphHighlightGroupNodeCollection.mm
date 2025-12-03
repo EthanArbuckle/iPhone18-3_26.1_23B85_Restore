@@ -3,7 +3,7 @@
 + (MARelation)featureOfHighlightGroup;
 + (MARelation)locationFeatureOfHighlightGroup;
 + (MARelation)momentsOfHighlightGroup;
-+ (id)highlightGroupNodesForUUIDs:(id)a3 inGraph:(id)a4;
++ (id)highlightGroupNodesForUUIDs:(id)ds inGraph:(id)graph;
 - (PGGraphFeatureNodeCollection)featuredLocationOrAreaNodes;
 - (PGGraphFeatureNodeCollection)tripFeatureNodes;
 - (PGGraphHighlightNodeCollection)highlightNodes;
@@ -37,18 +37,18 @@
 - (PGGraphHighlightTypeNodeCollection)typeNodes
 {
   v3 = +[PGGraphHasTypeEdge filter];
-  v4 = [v3 outRelation];
-  v5 = [(MANodeCollection *)PGGraphHighlightTypeNodeCollection nodesRelatedToNodes:self withRelation:v4];
+  outRelation = [v3 outRelation];
+  v5 = [(MANodeCollection *)PGGraphHighlightTypeNodeCollection nodesRelatedToNodes:self withRelation:outRelation];
 
   return v5;
 }
 
 - (id)momentNodes
 {
-  v2 = [(PGGraphHighlightGroupNodeCollection *)self highlightNodes];
-  v3 = [v2 momentNodes];
+  highlightNodes = [(PGGraphHighlightGroupNodeCollection *)self highlightNodes];
+  momentNodes = [highlightNodes momentNodes];
 
-  return v3;
+  return momentNodes;
 }
 
 - (PGGraphHighlightNodeCollection)highlightNodes
@@ -80,11 +80,11 @@
   v11[2] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277D22C90];
   v3 = +[PGGraphTripFeatureEdge filter];
-  v4 = [v3 outRelation];
-  v11[0] = v4;
+  outRelation = [v3 outRelation];
+  v11[0] = outRelation;
   v5 = +[PGGraphAreaNode filter];
-  v6 = [v5 relation];
-  v11[1] = v6;
+  relation = [v5 relation];
+  v11[1] = relation;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:2];
   v8 = [v2 chain:v7];
 
@@ -98,11 +98,11 @@
   v11[2] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277D22C90];
   v3 = +[PGGraphTripFeatureEdge filter];
-  v4 = [v3 outRelation];
-  v11[0] = v4;
+  outRelation = [v3 outRelation];
+  v11[0] = outRelation;
   v5 = +[PGGraphNamedLocationNode filter];
-  v6 = [v5 relation];
-  v11[1] = v6;
+  relation = [v5 relation];
+  v11[1] = relation;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:2];
   v8 = [v2 chain:v7];
 
@@ -114,16 +114,16 @@
 + (MARelation)featureOfHighlightGroup
 {
   v2 = +[PGGraphTripFeatureEdge filter];
-  v3 = [v2 outRelation];
+  outRelation = [v2 outRelation];
 
-  return v3;
+  return outRelation;
 }
 
-+ (id)highlightGroupNodesForUUIDs:(id)a3 inGraph:(id)a4
++ (id)highlightGroupNodesForUUIDs:(id)ds inGraph:(id)graph
 {
-  v6 = a4;
-  v7 = [PGGraphHighlightGroupNode filterWithUUIDs:a3];
-  v8 = [a1 nodesMatchingFilter:v7 inGraph:v6];
+  graphCopy = graph;
+  v7 = [PGGraphHighlightGroupNode filterWithUUIDs:ds];
+  v8 = [self nodesMatchingFilter:v7 inGraph:graphCopy];
 
   return v8;
 }

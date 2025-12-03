@@ -1,55 +1,55 @@
 @interface MLViewerNodePropertyDataSPI
-- (MLViewerNodePropertyDataSPI)initWithCoder:(id)a3;
-- (MLViewerNodePropertyDataSPI)initWithJSONDictionary:(id)a3;
-- (MLViewerNodePropertyDataSPI)initWithName:(id)a3 dataType:(unsigned int)a4 shape:(id)a5;
+- (MLViewerNodePropertyDataSPI)initWithCoder:(id)coder;
+- (MLViewerNodePropertyDataSPI)initWithJSONDictionary:(id)dictionary;
+- (MLViewerNodePropertyDataSPI)initWithName:(id)name dataType:(unsigned int)type shape:(id)shape;
 - (id)jsonDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MLViewerNodePropertyDataSPI
 
-- (MLViewerNodePropertyDataSPI)initWithName:(id)a3 dataType:(unsigned int)a4 shape:(id)a5
+- (MLViewerNodePropertyDataSPI)initWithName:(id)name dataType:(unsigned int)type shape:(id)shape
 {
-  v9 = a3;
-  v10 = a5;
+  nameCopy = name;
+  shapeCopy = shape;
   v14.receiver = self;
   v14.super_class = MLViewerNodePropertyDataSPI;
   v11 = [(MLViewerNodePropertyDataSPI *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_name, a3);
-    v12->_dataType = a4;
-    objc_storeStrong(&v12->_shape, a5);
+    objc_storeStrong(&v11->_name, name);
+    v12->_dataType = type;
+    objc_storeStrong(&v12->_shape, shape);
     v12->_isSplat = 0;
   }
 
   return v12;
 }
 
-- (MLViewerNodePropertyDataSPI)initWithJSONDictionary:(id)a3
+- (MLViewerNodePropertyDataSPI)initWithJSONDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = MLViewerNodePropertyDataSPI;
   v5 = [(MLViewerNodePropertyDataSPI *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"name"];
+    v6 = [dictionaryCopy objectForKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 objectForKey:@"dataType"];
+    v8 = [dictionaryCopy objectForKey:@"dataType"];
     v5->_dataType = [v8 unsignedIntValue];
 
-    v9 = [v4 objectForKey:@"shape"];
+    v9 = [dictionaryCopy objectForKey:@"shape"];
     shape = v5->_shape;
     v5->_shape = v9;
 
-    v11 = [v4 objectForKey:@"isSplat"];
+    v11 = [dictionaryCopy objectForKey:@"isSplat"];
     v5->_isSplat = [v11 BOOLValue];
 
-    v12 = [v4 objectForKey:@"resourceID"];
+    v12 = [dictionaryCopy objectForKey:@"resourceID"];
     resourceID = v5->_resourceID;
     v5->_resourceID = v12;
   }
@@ -59,49 +59,49 @@
 
 - (id)jsonDictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = +[MLViewerNodePropertyDataSPI type];
-  [v3 setObject:v4 forKey:@"type"];
+  [dictionary setObject:v4 forKey:@"type"];
 
-  v5 = [(MLViewerNodePropertyDataSPI *)self name];
-  [v3 setObject:v5 forKey:@"name"];
+  name = [(MLViewerNodePropertyDataSPI *)self name];
+  [dictionary setObject:name forKey:@"name"];
 
-  v6 = [(MLViewerNodePropertyDataSPI *)self resourceID];
+  resourceID = [(MLViewerNodePropertyDataSPI *)self resourceID];
 
-  if (v6)
+  if (resourceID)
   {
-    v7 = [(MLViewerNodePropertyDataSPI *)self resourceID];
-    [v3 setObject:v7 forKey:@"resourceID"];
+    resourceID2 = [(MLViewerNodePropertyDataSPI *)self resourceID];
+    [dictionary setObject:resourceID2 forKey:@"resourceID"];
   }
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[MLViewerNodePropertyDataSPI dataType](self, "dataType")}];
-  [v3 setObject:v8 forKey:@"dataType"];
+  [dictionary setObject:v8 forKey:@"dataType"];
 
-  v9 = [(MLViewerNodePropertyDataSPI *)self shape];
-  [v3 setObject:v9 forKey:@"shape"];
+  shape = [(MLViewerNodePropertyDataSPI *)self shape];
+  [dictionary setObject:shape forKey:@"shape"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithBool:self->_isSplat];
-  [v3 setObject:v10 forKey:@"isSplat"];
+  [dictionary setObject:v10 forKey:@"isSplat"];
 
-  v11 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v3];
+  v11 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:dictionary];
 
   return v11;
 }
 
-- (MLViewerNodePropertyDataSPI)initWithCoder:(id)a3
+- (MLViewerNodePropertyDataSPI)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = MLViewerNodePropertyDataSPI;
   v5 = [(MLViewerNodePropertyDataSPI *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v5->_dataType = [v4 decodeInt64ForKey:@"type"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"resourceID"];
+    v5->_dataType = [coderCopy decodeInt64ForKey:@"type"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"resourceID"];
     resourceID = v5->_resourceID;
     v5->_resourceID = v8;
 
@@ -111,12 +111,12 @@
     }
 
     v10 = allowedClasses(void)::allowedClasses;
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"shape"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"shape"];
     shape = v5->_shape;
     v5->_shape = v11;
 
-    v5->_isSplat = [v4 decodeBoolForKey:@"isSplat"];
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+    v5->_isSplat = [coderCopy decodeBoolForKey:@"isSplat"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
     raw = v5->_raw;
     v5->_raw = v13;
 
@@ -126,21 +126,21 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(MLViewerNodePropertyDataSPI *)self name];
-  [v7 encodeObject:v4 forKey:@"name"];
+  coderCopy = coder;
+  name = [(MLViewerNodePropertyDataSPI *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  [v7 encodeInt64:-[MLViewerNodePropertyDataSPI dataType](self forKey:{"dataType"), @"type"}];
-  v5 = [(MLViewerNodePropertyDataSPI *)self resourceID];
-  [v7 encodeObject:v5 forKey:@"resourceID"];
+  [coderCopy encodeInt64:-[MLViewerNodePropertyDataSPI dataType](self forKey:{"dataType"), @"type"}];
+  resourceID = [(MLViewerNodePropertyDataSPI *)self resourceID];
+  [coderCopy encodeObject:resourceID forKey:@"resourceID"];
 
-  v6 = [(MLViewerNodePropertyDataSPI *)self shape];
-  [v7 encodeObject:v6 forKey:@"shape"];
+  shape = [(MLViewerNodePropertyDataSPI *)self shape];
+  [coderCopy encodeObject:shape forKey:@"shape"];
 
-  [v7 encodeBool:self->_isSplat forKey:@"isSplat"];
-  [v7 encodeObject:self->_raw forKey:@"data"];
+  [coderCopy encodeBool:self->_isSplat forKey:@"isSplat"];
+  [coderCopy encodeObject:self->_raw forKey:@"data"];
 }
 
 @end

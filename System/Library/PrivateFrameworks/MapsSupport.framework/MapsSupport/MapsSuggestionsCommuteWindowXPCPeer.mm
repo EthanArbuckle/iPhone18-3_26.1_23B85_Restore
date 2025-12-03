@@ -1,17 +1,17 @@
 @interface MapsSuggestionsCommuteWindowXPCPeer
-- (MapsSuggestionsCommuteWindowXPCPeer)initWithXPCConnection:(id)a3 resourceDepot:(id)a4 conditions:(id)a5 doomEngine:(id)a6;
+- (MapsSuggestionsCommuteWindowXPCPeer)initWithXPCConnection:(id)connection resourceDepot:(id)depot conditions:(id)conditions doomEngine:(id)engine;
 - (NSString)description;
-- (void)commuteStatusFromDOoMEngine:(id)a3;
-- (void)commuteWindowIs:(id)a3 forNextDestination:(id)a4 travelTime:(double)a5 commuteRouteSet:(id)a6;
+- (void)commuteStatusFromDOoMEngine:(id)engine;
+- (void)commuteWindowIs:(id)is forNextDestination:(id)destination travelTime:(double)time commuteRouteSet:(id)set;
 - (void)dealloc;
 @end
 
 @implementation MapsSuggestionsCommuteWindowXPCPeer
 
-- (MapsSuggestionsCommuteWindowXPCPeer)initWithXPCConnection:(id)a3 resourceDepot:(id)a4 conditions:(id)a5 doomEngine:(id)a6
+- (MapsSuggestionsCommuteWindowXPCPeer)initWithXPCConnection:(id)connection resourceDepot:(id)depot conditions:(id)conditions doomEngine:(id)engine
 {
-  v9 = a3;
-  v10 = a6;
+  connectionCopy = connection;
+  engineCopy = engine;
   v19.receiver = self;
   v19.super_class = MapsSuggestionsCommuteWindowXPCPeer;
   v11 = [(MapsSuggestionsCommuteWindowXPCPeer *)&v19 init];
@@ -22,15 +22,15 @@
     queue = v11->_queue;
     v11->_queue = v13;
 
-    objc_storeStrong(&v11->_connection, a3);
-    objc_storeStrong(&v11->_doomEngineWrapper, a6);
+    objc_storeStrong(&v11->_connection, connection);
+    objc_storeStrong(&v11->_doomEngineWrapper, engine);
     [(MapsSuggestionsDOoMEngineWrapper *)v11->_doomEngineWrapper setStatusUpdateDelegate:v11];
     v15 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
       connection = v11->_connection;
       *buf = 138412290;
-      v21 = connection;
+      connectionCopy2 = connection;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "CommuteWindowXPCPeer{%@} created.", buf, 0xCu);
     }
 
@@ -40,11 +40,11 @@
   return v11;
 }
 
-- (void)commuteWindowIs:(id)a3 forNextDestination:(id)a4 travelTime:(double)a5 commuteRouteSet:(id)a6
+- (void)commuteWindowIs:(id)is forNextDestination:(id)destination travelTime:(double)time commuteRouteSet:(id)set
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  isCopy = is;
+  destinationCopy = destination;
+  setCopy = set;
   if (self->_queue)
   {
     objc_initWeak(location, self);
@@ -54,10 +54,10 @@
     block[2] = sub_1000089E8;
     block[3] = &unk_100065070;
     objc_copyWeak(v20, location);
-    v17 = v10;
-    v18 = v11;
-    v20[1] = *&a5;
-    v19 = v12;
+    v17 = isCopy;
+    v18 = destinationCopy;
+    v20[1] = *&time;
+    v19 = setCopy;
     dispatch_async(queue, block);
 
     objc_destroyWeak(v20);
@@ -108,19 +108,19 @@
 {
   v3 = [NSString alloc];
   v4 = objc_opt_class();
-  v5 = [(MapsSuggestionsCommuteWindowXPCPeer *)self connection];
-  v6 = [v5 debugDescription];
+  connection = [(MapsSuggestionsCommuteWindowXPCPeer *)self connection];
+  v6 = [connection debugDescription];
   v7 = [v3 initWithFormat:@"%@<%p> from %@", v4, self, v6];
 
   return v7;
 }
 
-- (void)commuteStatusFromDOoMEngine:(id)a3
+- (void)commuteStatusFromDOoMEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v5 = GEOFindOrCreateLog();
   v6 = v5;
-  if (v4)
+  if (engineCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
@@ -136,7 +136,7 @@
     v9[2] = sub_100008ECC;
     v9[3] = &unk_100065098;
     v9[4] = self;
-    v10 = v4;
+    v10 = engineCopy;
     dispatch_async(queue, v9);
   }
 

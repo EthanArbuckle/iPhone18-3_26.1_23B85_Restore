@@ -1,39 +1,39 @@
 @interface BMPBEntity
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsEntityType:(id)a3;
+- (int)StringAsEntityType:(id)type;
 - (int)entityType;
 - (unint64_t)hash;
 - (void)clearOneofValuesForEntityType;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setPersonEntity:(id)a3;
-- (void)setTopicEntity:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setPersonEntity:(id)entity;
+- (void)setTopicEntity:(id)entity;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBEntity
 
-- (void)setPersonEntity:(id)a3
+- (void)setPersonEntity:(id)entity
 {
-  v4 = a3;
+  entityCopy = entity;
   [(BMPBEntity *)self clearOneofValuesForEntityType];
   *&self->_has |= 1u;
   self->_entityType = 1;
   personEntity = self->_personEntity;
-  self->_personEntity = v4;
+  self->_personEntity = entityCopy;
 }
 
-- (void)setTopicEntity:(id)a3
+- (void)setTopicEntity:(id)entity
 {
-  v4 = a3;
+  entityCopy = entity;
   [(BMPBEntity *)self clearOneofValuesForEntityType];
   *&self->_has |= 1u;
   self->_entityType = 2;
   topicEntity = self->_topicEntity;
-  self->_topicEntity = v4;
+  self->_topicEntity = entityCopy;
 }
 
 - (int)entityType
@@ -49,20 +49,20 @@
   }
 }
 
-- (int)StringAsEntityType:(id)a3
+- (int)StringAsEntityType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PBUNSET"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"PBUNSET"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"personEntity"])
+  else if ([typeCopy isEqualToString:@"personEntity"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"topicEntity"])
+  else if ([typeCopy isEqualToString:@"topicEntity"])
   {
     v4 = 2;
   }
@@ -92,27 +92,27 @@
   v8.receiver = self;
   v8.super_class = BMPBEntity;
   v4 = [(BMPBEntity *)&v8 description];
-  v5 = [(BMPBEntity *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBEntity *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   personEntity = self->_personEntity;
   if (personEntity)
   {
-    v5 = [(BMPBPersonEntity *)personEntity dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"personEntity"];
+    dictionaryRepresentation = [(BMPBPersonEntity *)personEntity dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"personEntity"];
   }
 
   topicEntity = self->_topicEntity;
   if (topicEntity)
   {
-    v7 = [(BMPBTopicEntity *)topicEntity dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"topicEntity"];
+    dictionaryRepresentation2 = [(BMPBTopicEntity *)topicEntity dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"topicEntity"];
   }
 
   if (*&self->_has)
@@ -128,55 +128,55 @@
       v9 = off_1E6E52DD0[entityType];
     }
 
-    [v3 setObject:v9 forKey:@"entityType"];
+    [dictionary setObject:v9 forKey:@"entityType"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_personEntity)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_topicEntity)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[2] = self->_entityType;
-    *(v4 + 32) |= 1u;
+    toCopy[2] = self->_entityType;
+    *(toCopy + 32) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_personEntity)
   {
-    [v4 setPersonEntity:?];
-    v4 = v5;
+    [toCopy setPersonEntity:?];
+    toCopy = v5;
   }
 
   if (self->_topicEntity)
   {
     [v5 setTopicEntity:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -184,35 +184,35 @@
     *(v5 + 32) |= 1u;
   }
 
-  v7 = [(BMPBPersonEntity *)self->_personEntity copyWithZone:a3];
+  v7 = [(BMPBPersonEntity *)self->_personEntity copyWithZone:zone];
   v8 = v6[2];
   v6[2] = v7;
 
-  v9 = [(BMPBTopicEntity *)self->_topicEntity copyWithZone:a3];
+  v9 = [(BMPBTopicEntity *)self->_topicEntity copyWithZone:zone];
   v10 = v6[3];
   v6[3] = v9;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
-  v5 = *(v4 + 32);
+  v5 = *(equalCopy + 32);
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_entityType != *(v4 + 2))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_entityType != *(equalCopy + 2))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
 LABEL_11:
     v8 = 0;
@@ -220,13 +220,13 @@ LABEL_11:
   }
 
   personEntity = self->_personEntity;
-  if (personEntity | *(v4 + 2) && ![(BMPBPersonEntity *)personEntity isEqual:?])
+  if (personEntity | *(equalCopy + 2) && ![(BMPBPersonEntity *)personEntity isEqual:?])
   {
     goto LABEL_11;
   }
 
   topicEntity = self->_topicEntity;
-  if (topicEntity | *(v4 + 3))
+  if (topicEntity | *(equalCopy + 3))
   {
     v8 = [(BMPBTopicEntity *)topicEntity isEqual:?];
   }
@@ -257,13 +257,13 @@ LABEL_12:
   return v4 ^ [(BMPBTopicEntity *)self->_topicEntity hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[8])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[8])
   {
-    self->_entityType = v4[2];
+    self->_entityType = fromCopy[2];
     *&self->_has |= 1u;
   }
 

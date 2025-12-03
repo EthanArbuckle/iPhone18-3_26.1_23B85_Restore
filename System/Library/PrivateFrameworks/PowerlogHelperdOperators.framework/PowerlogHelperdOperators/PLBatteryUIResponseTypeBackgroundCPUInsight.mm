@@ -7,32 +7,32 @@
 
 - (void)run
 {
-  v2 = self;
+  selfCopy = self;
   v99 = *MEMORY[0x277D85DE8];
-  v3 = [(PLBatteryUIResponseTypeBackgroundCPUInsight *)self batteryBreakdown_Last10Days];
+  batteryBreakdown_Last10Days = [(PLBatteryUIResponseTypeBackgroundCPUInsight *)self batteryBreakdown_Last10Days];
 
-  if (v3)
+  if (batteryBreakdown_Last10Days)
   {
 LABEL_4:
-    v12 = [(PLBatteryUIResponseTypeBackgroundCPUInsight *)v2 batteryBreakdown_Last10Days];
+    batteryBreakdown_Last10Days2 = [(PLBatteryUIResponseTypeBackgroundCPUInsight *)selfCopy batteryBreakdown_Last10Days];
 
     v13 = PLLogCommon();
-    v4 = v13;
-    if (v12)
+    perAppUsage6 = v13;
+    if (batteryBreakdown_Last10Days2)
     {
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
-        [(PLBatteryUIResponseTypeBackgroundCPUInsight *)v4 run];
+        [(PLBatteryUIResponseTypeBackgroundCPUInsight *)perAppUsage6 run];
       }
 
-      v14 = [MEMORY[0x277CBEB38] dictionary];
-      [(PLBatteryUIResponseTypeBackgroundCPUInsight *)v2 setPerAppUsage:v14];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      [(PLBatteryUIResponseTypeBackgroundCPUInsight *)selfCopy setPerAppUsage:dictionary];
 
       v90 = 0u;
       v91 = 0u;
       v88 = 0u;
       v89 = 0u;
-      obj = [(PLBatteryUIResponseTypeBackgroundCPUInsight *)v2 batteryBreakdown_Last10Days];
+      obj = [(PLBatteryUIResponseTypeBackgroundCPUInsight *)selfCopy batteryBreakdown_Last10Days];
       v15 = [obj countByEnumeratingWithState:&v88 objects:v98 count:16];
       if (v15)
       {
@@ -92,11 +92,11 @@ LABEL_4:
 
                       if (v35 > 500.0)
                       {
-                        v36 = [(PLBatteryUIResponseTypeBackgroundCPUInsight *)v2 perAppUsage];
+                        perAppUsage = [(PLBatteryUIResponseTypeBackgroundCPUInsight *)selfCopy perAppUsage];
                         v37 = [v28 objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
-                        v38 = [v36 objectForKeyedSubscript:v37];
+                        v38 = [perAppUsage objectForKeyedSubscript:v37];
                         [v38 objectForKeyedSubscript:@"PLBatteryUISuggestionEnergyKey"];
-                        v40 = v39 = v2;
+                        v40 = v39 = selfCopy;
                         [v40 doubleValue];
                         v42 = v41;
 
@@ -105,13 +105,13 @@ LABEL_4:
                         v45 = v44;
 
                         v46 = v42 + v45;
-                        v47 = [MEMORY[0x277CBEB38] dictionary];
+                        dictionary2 = [MEMORY[0x277CBEB38] dictionary];
                         v48 = [v28 objectForKeyedSubscript:@"PLBatteryUIAppNameKey"];
-                        [v47 setObject:v48 forKeyedSubscript:@"PLBatteryUIInsightAppNameKey"];
+                        [dictionary2 setObject:v48 forKeyedSubscript:@"PLBatteryUIInsightAppNameKey"];
 
-                        [v47 setObject:v32 forKeyedSubscript:@"PLBatteryUIInsightBundleIDKey"];
+                        [dictionary2 setObject:v32 forKeyedSubscript:@"PLBatteryUIInsightBundleIDKey"];
                         v49 = [MEMORY[0x277CCABB0] numberWithDouble:v46];
-                        [v47 setObject:v49 forKeyedSubscript:@"PLBatteryUISuggestionEnergyKey"];
+                        [dictionary2 setObject:v49 forKeyedSubscript:@"PLBatteryUISuggestionEnergyKey"];
 
                         v50 = PLLogCommon();
                         if (os_log_type_enabled(v50, OS_LOG_TYPE_DEBUG))
@@ -124,11 +124,11 @@ LABEL_4:
                           _os_log_debug_impl(&dword_25EE51000, v50, OS_LOG_TYPE_DEBUG, "Background CPU Insight: %@ has %f energy", buf, 0x16u);
                         }
 
-                        v51 = [(PLBatteryUIResponseTypeBackgroundCPUInsight *)v39 perAppUsage];
+                        perAppUsage2 = [(PLBatteryUIResponseTypeBackgroundCPUInsight *)v39 perAppUsage];
                         v52 = [v28 objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
-                        [v51 setObject:v47 forKeyedSubscript:v52];
+                        [perAppUsage2 setObject:dictionary2 forKeyedSubscript:v52];
 
-                        v2 = v39;
+                        selfCopy = v39;
                         v26 = v77;
                         v23 = v78;
                       }
@@ -159,8 +159,8 @@ LABEL_4:
       v83 = 0u;
       v80 = 0u;
       v81 = 0u;
-      v79 = [(PLBatteryUIResponseTypeBackgroundCPUInsight *)v2 perAppUsage];
-      v54 = [v79 countByEnumeratingWithState:&v80 objects:v92 count:16];
+      perAppUsage3 = [(PLBatteryUIResponseTypeBackgroundCPUInsight *)selfCopy perAppUsage];
+      v54 = [perAppUsage3 countByEnumeratingWithState:&v80 objects:v92 count:16];
       if (v54)
       {
         v55 = v54;
@@ -171,61 +171,61 @@ LABEL_4:
           {
             if (*v81 != v56)
             {
-              objc_enumerationMutation(v79);
+              objc_enumerationMutation(perAppUsage3);
             }
 
             v58 = *(*(&v80 + 1) + 8 * j);
-            v59 = [(PLBatteryUIResponseTypeBackgroundCPUInsight *)v2 perAppUsage];
-            v60 = [v59 objectForKeyedSubscript:v58];
+            perAppUsage4 = [(PLBatteryUIResponseTypeBackgroundCPUInsight *)selfCopy perAppUsage];
+            v60 = [perAppUsage4 objectForKeyedSubscript:v58];
             [v60 objectForKeyedSubscript:@"PLBatteryUISuggestionEnergyKey"];
-            v62 = v61 = v2;
+            v62 = v61 = selfCopy;
             [v62 doubleValue];
             v64 = v63 * 100.0;
             +[PLUtilities defaultBatteryEnergyCapacity];
             v66 = v64 / v65;
 
             v67 = MEMORY[0x277CCABB0];
-            v68 = [(PLBatteryUIResponseTypeBackgroundCPUInsight *)v61 batteryBreakdown_Last10Days];
-            v69 = [v67 numberWithDouble:{v66 / objc_msgSend(v68, "count")}];
-            v70 = [(PLBatteryUIResponseTypeBackgroundCPUInsight *)v61 perAppUsage];
-            v71 = [v70 objectForKeyedSubscript:v58];
+            batteryBreakdown_Last10Days3 = [(PLBatteryUIResponseTypeBackgroundCPUInsight *)v61 batteryBreakdown_Last10Days];
+            v69 = [v67 numberWithDouble:{v66 / objc_msgSend(batteryBreakdown_Last10Days3, "count")}];
+            perAppUsage5 = [(PLBatteryUIResponseTypeBackgroundCPUInsight *)v61 perAppUsage];
+            v71 = [perAppUsage5 objectForKeyedSubscript:v58];
             [v71 setObject:v69 forKeyedSubscript:@"PLBatteryUISuggestionPercentKey"];
 
-            v2 = v61;
+            selfCopy = v61;
           }
 
-          v55 = [v79 countByEnumeratingWithState:&v80 objects:v92 count:16];
+          v55 = [perAppUsage3 countByEnumeratingWithState:&v80 objects:v92 count:16];
         }
 
         while (v55);
       }
 
-      v4 = [(PLBatteryUIResponseTypeBackgroundCPUInsight *)v2 perAppUsage];
-      [(PLBatteryUIResponseTypeBackgroundCPUInsight *)v2 setSuggest:[v4 count]!= 0];
+      perAppUsage6 = [(PLBatteryUIResponseTypeBackgroundCPUInsight *)selfCopy perAppUsage];
+      [(PLBatteryUIResponseTypeBackgroundCPUInsight *)selfCopy setSuggest:[perAppUsage6 count]!= 0];
     }
 
     else if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      [(PLBatteryUIResponseTypeBackgroundCPUInsight *)v4 run];
+      [(PLBatteryUIResponseTypeBackgroundCPUInsight *)perAppUsage6 run];
     }
 
     goto LABEL_42;
   }
 
-  v4 = PLBatteryUsageUIKeyFromConfiguration();
-  v5 = [(PLBatteryUIResponseTypeBackgroundCPUInsight *)v2 responderService];
-  v6 = [v5 responseCache];
-  v7 = [v6 objectForKeyedSubscript:&unk_287146C48];
-  v8 = [v7 objectForKeyedSubscript:v4];
+  perAppUsage6 = PLBatteryUsageUIKeyFromConfiguration();
+  responderService = [(PLBatteryUIResponseTypeBackgroundCPUInsight *)selfCopy responderService];
+  responseCache = [responderService responseCache];
+  v7 = [responseCache objectForKeyedSubscript:&unk_287146C48];
+  v8 = [v7 objectForKeyedSubscript:perAppUsage6];
   [v8 objectForKeyedSubscript:@"result"];
-  v10 = v9 = v2;
+  v10 = v9 = selfCopy;
   v11 = [v10 objectForKeyedSubscript:@"PLBatteryUIBreakdownKey"];
 
   if (v11)
   {
     [(PLBatteryUIResponseTypeBackgroundCPUInsight *)v9 setBatteryBreakdown_Last10Days:v11];
 
-    v2 = v9;
+    selfCopy = v9;
     goto LABEL_4;
   }
 
@@ -248,8 +248,8 @@ LABEL_42:
     v7[0] = @"PLBatteryUISuggestionTypeKey";
     v7[1] = @"PLBatteryUIPerAppUsageKey";
     v8[0] = &unk_287146C60;
-    v3 = [(PLBatteryUIResponseTypeBackgroundCPUInsight *)self perAppUsage];
-    v8[1] = v3;
+    perAppUsage = [(PLBatteryUIResponseTypeBackgroundCPUInsight *)self perAppUsage];
+    v8[1] = perAppUsage;
     v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:v7 count:2];
   }
 

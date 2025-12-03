@@ -1,20 +1,20 @@
 @interface MUPlaceActionRowItemViewModel
 - (BOOL)isEnabled;
 - (BOOL)isSelected;
-- (MUPlaceActionRowItemViewModel)initWithActionRowItem:(id)a3 menuProvider:(id)a4 style:(unint64_t)a5;
+- (MUPlaceActionRowItemViewModel)initWithActionRowItem:(id)item menuProvider:(id)provider style:(unint64_t)style;
 - (MUPlaceCardActionsRowViewMenuProvider)menuProvider;
 - (id)accessibilityIdentifier;
 - (id)actionBarSymbolName;
 - (id)analyticsButtonValue;
-- (id)buildMenuWithPresentationOptions:(id)a3;
+- (id)buildMenuWithPresentationOptions:(id)options;
 - (id)leadingActionBarItem;
 - (id)preferredBackgroundColor;
 - (id)preferredTintColor;
 - (id)symbolName;
 - (id)titleText;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setMenuProvider:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setMenuProvider:(id)provider;
 @end
 
 @implementation MUPlaceActionRowItemViewModel
@@ -28,12 +28,12 @@
 
 - (id)leadingActionBarItem
 {
-  v3 = [(MKPlaceCardActionItem *)self->_actionRowItem resolvedActionItem];
-  v4 = [v3 type];
+  resolvedActionItem = [(MKPlaceCardActionItem *)self->_actionRowItem resolvedActionItem];
+  type = [resolvedActionItem type];
 
-  if (v4 > 42)
+  if (type > 42)
   {
-    switch(v4)
+    switch(type)
     {
       case '+':
         v5 = [MUPlaceActionBarTypeRate alloc];
@@ -55,7 +55,7 @@
     goto LABEL_18;
   }
 
-  if (v4 == 37)
+  if (type == 37)
   {
     v9 = [MUPlaceActionBarTypeAdd alloc];
     v10 = 0;
@@ -64,19 +64,19 @@ LABEL_15:
     goto LABEL_18;
   }
 
-  if (v4 == 38)
+  if (type == 38)
   {
     v9 = [MUPlaceActionBarTypeAdd alloc];
     v10 = 1;
     goto LABEL_15;
   }
 
-  if (v4 != 42)
+  if (type != 42)
   {
 LABEL_13:
     v20.receiver = self;
     v20.super_class = MUPlaceActionRowItemViewModel;
-    v12 = [(MUActionRowItemViewModel *)&v20 leadingActionBarItem];
+    leadingActionBarItem = [(MUActionRowItemViewModel *)&v20 leadingActionBarItem];
     goto LABEL_19;
   }
 
@@ -87,8 +87,8 @@ LABEL_12:
 LABEL_18:
   v13 = v11;
   v14 = [MUPlaceActionBarItem alloc];
-  v15 = [(MUPlaceActionRowItemViewModel *)self accessibilityIdentifier];
-  v12 = [(MUPlaceActionBarItem *)v14 initWithType:v13 axID:v15];
+  accessibilityIdentifier = [(MUPlaceActionRowItemViewModel *)self accessibilityIdentifier];
+  leadingActionBarItem = [(MUPlaceActionBarItem *)v14 initWithType:v13 axID:accessibilityIdentifier];
 
   objc_initWeak(&location, self);
   v17[0] = MEMORY[0x1E69E9820];
@@ -96,13 +96,13 @@ LABEL_18:
   v17[2] = __53__MUPlaceActionRowItemViewModel_leadingActionBarItem__block_invoke;
   v17[3] = &unk_1E821BAC8;
   objc_copyWeak(&v18, &location);
-  [(MUPlaceActionBarItem *)v12 addHandler:v17];
+  [(MUPlaceActionBarItem *)leadingActionBarItem addHandler:v17];
   objc_destroyWeak(&v18);
   objc_destroyWeak(&location);
 
 LABEL_19:
 
-  return v12;
+  return leadingActionBarItem;
 }
 
 void __53__MUPlaceActionRowItemViewModel_leadingActionBarItem__block_invoke(uint64_t a1)
@@ -119,39 +119,39 @@ void __53__MUPlaceActionRowItemViewModel_leadingActionBarItem__block_invoke(uint
 - (id)analyticsButtonValue
 {
   v2 = MEMORY[0x1E69A24B0];
-  v3 = [(MUPlaceActionRowItemViewModel *)self actionRowItem];
-  v4 = [v3 resolvedActionItem];
-  v5 = [v2 moduleButtonForType:{MURevealedButtonModuleTypeForActionType(objc_msgSend(v4, "type"))}];
+  actionRowItem = [(MUPlaceActionRowItemViewModel *)self actionRowItem];
+  resolvedActionItem = [actionRowItem resolvedActionItem];
+  v5 = [v2 moduleButtonForType:{MURevealedButtonModuleTypeForActionType(objc_msgSend(resolvedActionItem, "type"))}];
 
   return v5;
 }
 
 - (id)preferredBackgroundColor
 {
-  v2 = [(MKPlaceCardActionItem *)self->_actionRowItem resolvedActionItem];
-  v3 = [v2 backgroundColor];
+  resolvedActionItem = [(MKPlaceCardActionItem *)self->_actionRowItem resolvedActionItem];
+  backgroundColor = [resolvedActionItem backgroundColor];
 
-  return v3;
+  return backgroundColor;
 }
 
 - (id)preferredTintColor
 {
-  v2 = [(MKPlaceCardActionItem *)self->_actionRowItem resolvedActionItem];
-  v3 = [v2 glyphColor];
+  resolvedActionItem = [(MKPlaceCardActionItem *)self->_actionRowItem resolvedActionItem];
+  glyphColor = [resolvedActionItem glyphColor];
 
-  return v3;
+  return glyphColor;
 }
 
 - (id)accessibilityIdentifier
 {
-  v2 = [(MKPlaceCardActionItem *)self->_actionRowItem resolvedActionItem];
-  [v2 type];
+  resolvedActionItem = [(MKPlaceCardActionItem *)self->_actionRowItem resolvedActionItem];
+  [resolvedActionItem type];
   v3 = MKPlaceCardActionTypeAsString();
 
   return v3;
 }
 
-- (id)buildMenuWithPresentationOptions:(id)a3
+- (id)buildMenuWithPresentationOptions:(id)options
 {
   WeakRetained = objc_loadWeakRetained(&self->_menuProvider);
   v5 = objc_opt_respondsToSelector();
@@ -170,12 +170,12 @@ void __53__MUPlaceActionRowItemViewModel_leadingActionBarItem__block_invoke(uint
   return v7;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (([v10 isEqualToString:@"enabled"] & 1) != 0 || objc_msgSend(v10, "isEqualToString:", @"selected"))
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (([pathCopy isEqualToString:@"enabled"] & 1) != 0 || objc_msgSend(pathCopy, "isEqualToString:", @"selected"))
   {
     [(MUActionRowItemViewModel *)self _notifyObserversDidUpdate];
   }
@@ -184,13 +184,13 @@ void __53__MUPlaceActionRowItemViewModel_leadingActionBarItem__block_invoke(uint
   {
     v13.receiver = self;
     v13.super_class = MUPlaceActionRowItemViewModel;
-    [(MUPlaceActionRowItemViewModel *)&v13 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(MUPlaceActionRowItemViewModel *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)setMenuProvider:(id)a3
+- (void)setMenuProvider:(id)provider
 {
-  obj = a3;
+  obj = provider;
   WeakRetained = objc_loadWeakRetained(&self->_menuProvider);
 
   v5 = obj;
@@ -204,42 +204,42 @@ void __53__MUPlaceActionRowItemViewModel_leadingActionBarItem__block_invoke(uint
 
 - (BOOL)isSelected
 {
-  v2 = [(MKPlaceCardActionItem *)self->_actionRowItem resolvedActionItem];
-  v3 = [v2 selected];
+  resolvedActionItem = [(MKPlaceCardActionItem *)self->_actionRowItem resolvedActionItem];
+  selected = [resolvedActionItem selected];
 
-  return v3;
+  return selected;
 }
 
 - (BOOL)isEnabled
 {
-  v2 = [(MKPlaceCardActionItem *)self->_actionRowItem resolvedActionItem];
-  v3 = [v2 enabled];
+  resolvedActionItem = [(MKPlaceCardActionItem *)self->_actionRowItem resolvedActionItem];
+  enabled = [resolvedActionItem enabled];
 
-  return v3;
+  return enabled;
 }
 
 - (id)actionBarSymbolName
 {
-  v2 = [(MKPlaceCardActionItem *)self->_actionRowItem resolvedActionItem];
-  v3 = [v2 actionBarGlyph];
+  resolvedActionItem = [(MKPlaceCardActionItem *)self->_actionRowItem resolvedActionItem];
+  actionBarGlyph = [resolvedActionItem actionBarGlyph];
 
-  return v3;
+  return actionBarGlyph;
 }
 
 - (id)symbolName
 {
-  v2 = [(MKPlaceCardActionItem *)self->_actionRowItem resolvedActionItem];
-  v3 = [v2 glyph];
+  resolvedActionItem = [(MKPlaceCardActionItem *)self->_actionRowItem resolvedActionItem];
+  glyph = [resolvedActionItem glyph];
 
-  return v3;
+  return glyph;
 }
 
 - (id)titleText
 {
-  v2 = [(MKPlaceCardActionItem *)self->_actionRowItem resolvedActionItem];
-  v3 = [v2 displayString];
+  resolvedActionItem = [(MKPlaceCardActionItem *)self->_actionRowItem resolvedActionItem];
+  displayString = [resolvedActionItem displayString];
 
-  return v3;
+  return displayString;
 }
 
 - (void)dealloc
@@ -251,19 +251,19 @@ void __53__MUPlaceActionRowItemViewModel_leadingActionBarItem__block_invoke(uint
   [(MUPlaceActionRowItemViewModel *)&v3 dealloc];
 }
 
-- (MUPlaceActionRowItemViewModel)initWithActionRowItem:(id)a3 menuProvider:(id)a4 style:(unint64_t)a5
+- (MUPlaceActionRowItemViewModel)initWithActionRowItem:(id)item menuProvider:(id)provider style:(unint64_t)style
 {
-  v9 = a3;
-  v10 = a4;
+  itemCopy = item;
+  providerCopy = provider;
   v14.receiver = self;
   v14.super_class = MUPlaceActionRowItemViewModel;
   v11 = [(MUActionRowItemViewModel *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_actionRowItem, a3);
-    objc_storeWeak(&v12->_menuProvider, v10);
-    v12->_style = a5;
+    objc_storeStrong(&v11->_actionRowItem, item);
+    objc_storeWeak(&v12->_menuProvider, providerCopy);
+    v12->_style = style;
     [(MKPlaceCardActionItem *)v12->_actionRowItem addObserver:v12 forKeyPath:@"enabled" options:1 context:0];
     [(MKPlaceCardActionItem *)v12->_actionRowItem addObserver:v12 forKeyPath:@"selected" options:1 context:0];
   }

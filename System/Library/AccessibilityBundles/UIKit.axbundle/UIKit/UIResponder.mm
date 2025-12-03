@@ -6,19 +6,19 @@
 
 - (uint64_t)_accessibilitySupportsRichTextEditing
 {
-  v5 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v4 = 0;
-    location = [v5 _accessibilityTextViewTextOperationResponder];
-    v2 = 0;
+    location = [selfCopy _accessibilityTextViewTextOperationResponder];
+    hasRichlyEditableSelection = 0;
     if (objc_opt_respondsToSelector())
     {
-      v2 = [location hasRichlyEditableSelection];
+      hasRichlyEditableSelection = [location hasRichlyEditableSelection];
     }
 
-    v4 = v2 & 1;
-    v6 = v2 & 1;
+    v4 = hasRichlyEditableSelection & 1;
+    v6 = hasRichlyEditableSelection & 1;
     objc_storeStrong(&location, 0);
   }
 

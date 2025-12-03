@@ -1,10 +1,10 @@
 @interface FIDSNode
-+ (id)_makeWithCoder:(id)a3;
-+ (id)appContainersForContainerRoot:(id)a3 showAllFiles:(BOOL)a4 showSystemFiles:(BOOL)a5;
-+ (void)registerClassForFIDSNodeCoding:(id)a3;
++ (id)_makeWithCoder:(id)coder;
++ (id)appContainersForContainerRoot:(id)root showAllFiles:(BOOL)files showSystemFiles:(BOOL)systemFiles;
++ (void)registerClassForFIDSNodeCoding:(id)coding;
 - (BOOL)isPopulated;
 - (BOOL)isValid;
-- (BOOL)markAsUsed:(id *)a3;
+- (BOOL)markAsUsed:(id *)used;
 - (id).cxx_construct;
 - (id)brContainer;
 - (id)brContainerDocuments;
@@ -16,29 +16,29 @@
 - (id)fileURL;
 - (id)fpDomain;
 - (id)fpItem;
-- (id)iteratorWithOptions:(unsigned int)a3;
+- (id)iteratorWithOptions:(unsigned int)options;
 - (id)shortDescription;
 - (shared_ptr<TFSInfo>)fsInfo;
-- (unint64_t)nodeIs:(unint64_t)a3 error:(id *)a4;
-- (unsigned)nodePermissions:(unsigned int)a3 error:(id *)a4;
-- (unsigned)volumeIs:(unsigned int)a3 error:(id *)a4;
-- (void)_sendNotification:(unsigned int)a3 node:(id)a4 property:(unsigned int)a5;
-- (void)dispatchEvent:(id)a3 forObserver:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (unint64_t)nodeIs:(unint64_t)is error:(id *)error;
+- (unsigned)nodePermissions:(unsigned int)permissions error:(id *)error;
+- (unsigned)volumeIs:(unsigned int)is error:(id *)error;
+- (void)_sendNotification:(unsigned int)notification node:(id)node property:(unsigned int)property;
+- (void)dispatchEvent:(id)event forObserver:(id)observer;
+- (void)encodeWithCoder:(id)coder;
 - (void)inlineProgressCancel;
-- (void)nodeRestartObservingWithOptions:(unsigned int)a3;
-- (void)synchronizeWithOptions:(unsigned int)a3 async:(BOOL)a4;
+- (void)nodeRestartObservingWithOptions:(unsigned int)options;
+- (void)synchronizeWithOptions:(unsigned int)options async:(BOOL)async;
 @end
 
 @implementation FIDSNode
 
 - (id)shortDescription
 {
-  v3 = [(FIDSNode *)self asTNode];
-  v4 = TNode::InfoLock(v3);
+  asTNode = [(FIDSNode *)self asTNode];
+  v4 = TNode::InfoLock(asTNode);
   os_unfair_lock_lock(v4);
-  v6 = *(v3 + 2);
-  v5 = *(v3 + 3);
+  v6 = *(asTNode + 2);
+  v5 = *(asTNode + 3);
   if (v5)
   {
     atomic_fetch_add_explicit(&v5->__shared_owners_, 1uLL, memory_order_relaxed);
@@ -51,17 +51,17 @@
     std::__shared_weak_count::__release_shared[abi:ne200100](v5);
   }
 
-  v8 = [(FINode *)self displayName];
-  v9 = v8;
-  v51 = v8;
+  displayName = [(FINode *)self displayName];
+  v9 = displayName;
+  v51 = displayName;
   if (v7)
   {
-    v52 = v8;
+    v52 = displayName;
   }
 
   else
   {
-    v10 = v8;
+    v10 = displayName;
     v62.fString.fRef = &stru_1F5F42870;
     CFRetain(&stru_1F5F42870);
     TString::SetStringRefAsImmutable(&v62, v10);
@@ -78,7 +78,7 @@
   CFRetain(&stru_1F5F42870);
   TString::SetStringRefAsImmutable(&v61, v14);
 
-  v15 = TNode::VirtualType(v3);
+  v15 = TNode::VirtualType(asTNode);
   if (v15)
   {
     v16 = MEMORY[0x1E696AEC0];
@@ -102,14 +102,14 @@
   TString::Append(&v61, &v62);
   TRef<__CFString const*,TRetainReleasePolicy<__CFString const*>>::~TRef(&v62.fString.fRef);
 
-  v19 = [(FINode *)self fileName];
-  if (([v9 isEqualToString:v19] & 1) == 0)
+  fileName = [(FINode *)self fileName];
+  if (([v9 isEqualToString:fileName] & 1) == 0)
   {
     v20 = MEMORY[0x1E696AEC0];
-    v21 = v19;
+    v21 = fileName;
     if ((v7 & 1) == 0)
     {
-      v22 = v19;
+      v22 = fileName;
       v60 = &stru_1F5F42870;
       CFRetain(&stru_1F5F42870);
       TString::SetStringRefAsImmutable(&v60, v22);
@@ -134,20 +134,20 @@
     v9 = v51;
   }
 
-  v24 = [(FIDSNode *)self fileURL];
-  v25 = v24;
-  if (v24)
+  fileURL = [(FIDSNode *)self fileURL];
+  v25 = fileURL;
+  if (fileURL)
   {
     if (v7)
     {
-      v26 = [(NSURL *)v24 debugDescription];
+      v26 = [(NSURL *)fileURL debugDescription];
       v58 = &stru_1F5F42870;
       CFRetain(&stru_1F5F42870);
       TString::SetStringRefAsImmutable(&v58, v26);
 
-      v27 = [(NSURL *)v25 isFileReferenceURL];
-      v28 = v27;
-      if (v27)
+      isFileReferenceURL = [(NSURL *)v25 isFileReferenceURL];
+      v28 = isFileReferenceURL;
+      if (isFileReferenceURL)
       {
         v29 = *MEMORY[0x1E695E480];
         v30 = *MEMORY[0x1E695E498];
@@ -157,10 +157,10 @@
         CFRetain(&stru_1F5F42870);
         TString::SetStringRefAsImmutable(&v55, v31);
         TRef<__CFString const*,TRetainReleasePolicy<__CFString const*>>::~TRef(&v62.fString.fRef);
-        v3 = [(NSURL *)v25 path];
+        asTNode = [(NSURL *)v25 path];
         v54.fString.fRef = &stru_1F5F42870;
         CFRetain(&stru_1F5F42870);
-        TString::SetStringRefAsImmutable(&v54, v3);
+        TString::SetStringRefAsImmutable(&v54, asTNode);
 
         fRef = v55.fString.fRef;
         v56.fString.fRef = &stru_1F5F42870;
@@ -186,7 +186,7 @@
 
       else
       {
-        v39 = TString::KEmptyString(v27);
+        v39 = TString::KEmptyString(isFileReferenceURL);
         v57.fString.fRef = &stru_1F5F42870;
         CFRetain(&stru_1F5F42870);
         TString::SetStringRefAsImmutable(&v57, *v39);
@@ -216,7 +216,7 @@
 
     else
     {
-      v38 = SanitizedURL(v24);
+      v38 = SanitizedURL(fileURL);
       v59 = &stru_1F5F42870;
       CFRetain(&stru_1F5F42870);
       TString::SetStringRefAsImmutable(&v59, v38);
@@ -235,7 +235,7 @@
 
   else
   {
-    TNode::Path(v3, &v62.fString.fRef);
+    TNode::Path(asTNode, &v62.fString.fRef);
     if (CFStringGetLength(v62.fString.fRef))
     {
       v37 = MEMORY[0x1E696AEC0];
@@ -248,10 +248,10 @@
 
       else
       {
-        v3 = SanitizedPath(&v62);
+        asTNode = SanitizedPath(&v62);
         v58 = &stru_1F5F42870;
         CFRetain(&stru_1F5F42870);
-        TString::SetStringRefAsImmutable(&v58, v3);
+        TString::SetStringRefAsImmutable(&v58, asTNode);
       }
 
       v44 = [v37 stringWithFormat:@", '%@'", v58];
@@ -327,8 +327,8 @@
 - (BOOL)isValid
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(FIDSNode *)self asTNode];
-  LOBYTE(self) = TNode::Validate(v4, v5) == 0;
+  asTNode = [(FIDSNode *)self asTNode];
+  LOBYTE(self) = TNode::Validate(asTNode, v5) == 0;
   objc_autoreleasePoolPop(v3);
   return self;
 }
@@ -348,11 +348,11 @@
 - (shared_ptr<TFSInfo>)fsInfo
 {
   v3 = v2;
-  v4 = [(FIDSNode *)self asTNode];
-  v5 = TNode::InfoLock(v4);
+  asTNode = [(FIDSNode *)self asTNode];
+  v5 = TNode::InfoLock(asTNode);
   os_unfair_lock_lock(v5);
-  v6 = *(v4 + 3);
-  *v3 = *(v4 + 2);
+  v6 = *(asTNode + 3);
+  *v3 = *(asTNode + 2);
   v3[1] = v6;
   if (v6)
   {
@@ -388,20 +388,20 @@
 - (id)fpDomain
 {
   v13 = *MEMORY[0x1E69E9840];
-  v2 = [(FIDSNode *)self fiDomain];
-  v3 = v2;
-  if (v2)
+  fiDomain = [(FIDSNode *)self fiDomain];
+  v3 = fiDomain;
+  if (fiDomain)
   {
-    v4 = [v2 domain];
-    if (!v4)
+    domain = [fiDomain domain];
+    if (!domain)
     {
       v5 = LogObj(4);
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
       {
-        v6 = [v3 domainID];
+        domainID = [v3 domainID];
         v10.fString.fRef = &stru_1F5F42870;
         CFRetain(&stru_1F5F42870);
-        TString::SetStringRefAsImmutable(&v10, v6);
+        TString::SetStringRefAsImmutable(&v10, domainID);
 
         v7 = SanitizedStr(&v10);
         *buf = 138543362;
@@ -414,26 +414,26 @@
 
   else
   {
-    v4 = 0;
+    domain = 0;
   }
 
   v8 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return domain;
 }
 
 - (id)fiDomain
 {
-  v2 = [(FINode *)self nodeRef];
+  nodeRef = [(FINode *)self nodeRef];
 
-  return NodeGetFIProviderDomain(v2, v3);
+  return NodeGetFIProviderDomain(nodeRef, v3);
 }
 
 - (BOOL)isPopulated
 {
-  v2 = [(FIDSNode *)self asTNode];
+  asTNode = [(FIDSNode *)self asTNode];
 
-  return TNode::IsPopulated(v2);
+  return TNode::IsPopulated(asTNode);
 }
 
 void __31__FIDSNode_FPv2_makeWithCoder___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -471,13 +471,13 @@ void __31__FIDSNode_FPv2_makeWithCoder___block_invoke(uint64_t a1, void *a2, voi
   v15 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_makeWithCoder:(id)a3
++ (id)_makeWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  coderCopy = coder;
+  v4 = coderCopy;
+  if (coderCopy)
   {
-    if (TNode::IsContextOpen(v3))
+    if (TNode::IsContextOpen(coderCopy))
     {
       v5 = [(TNode *)v4 decodeObjectOfClass:objc_opt_class() forKey:@"FI Type"];
       v6 = static_objc_cast<NSString,objc_object * {__strong}>(v5);
@@ -548,13 +548,13 @@ LABEL_12:
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = FIDSNode;
-  [(FINode *)&v23 encodeWithCoder:v4];
+  [(FINode *)&v23 encodeWithCoder:coderCopy];
   if ([objc_opt_class() conformsToProtocol:&unk_1F5F4BCC0])
   {
     theString = &stru_1F5F42870;
@@ -565,8 +565,8 @@ LABEL_12:
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v6 = [sSubclassMakeWithCoderRegistry allKeys];
-    v7 = [v6 countByEnumeratingWithState:&v18 objects:v24 count:16];
+    allKeys = [sSubclassMakeWithCoderRegistry allKeys];
+    v7 = [allKeys countByEnumeratingWithState:&v18 objects:v24 count:16];
     if (v7)
     {
       v8 = *v19;
@@ -576,7 +576,7 @@ LABEL_12:
         {
           if (*v19 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allKeys);
           }
 
           v10 = *(*(&v18 + 1) + 8 * i);
@@ -593,7 +593,7 @@ LABEL_12:
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v18 objects:v24 count:16];
+        v7 = [allKeys countByEnumeratingWithState:&v18 objects:v24 count:16];
         if (v7)
         {
           continue;
@@ -624,24 +624,24 @@ LABEL_14:
 
     if (CFStringGetLength(theString))
     {
-      [v4 encodeObject:theString forKey:@"FI Type"];
+      [coderCopy encodeObject:theString forKey:@"FI Type"];
     }
 
     TRef<__CFString const*,TRetainReleasePolicy<__CFString const*>>::~TRef(&theString);
   }
 
-  v15 = [(FIDSNode *)self fileURL];
-  if (v15)
+  fileURL = [(FIDSNode *)self fileURL];
+  if (fileURL)
   {
-    [v4 encodeObject:v15 forKey:@"FI URL"];
+    [coderCopy encodeObject:fileURL forKey:@"FI URL"];
   }
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)registerClassForFIDSNodeCoding:(id)a3
++ (void)registerClassForFIDSNodeCoding:(id)coding
 {
-  v3 = a3;
+  codingCopy = coding;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3321888768;
   block[2] = __43__FIDSNode_registerClassForFIDSNodeCoding___block_invoke;
@@ -653,7 +653,7 @@ LABEL_14:
 
   v4 = sSubclassMakeWithCoderRegistry;
   objc_sync_enter(v4);
-  [sSubclassMakeWithCoderRegistry setObject:objc_opt_class() forKeyedSubscript:v3];
+  [sSubclassMakeWithCoderRegistry setObject:objc_opt_class() forKeyedSubscript:codingCopy];
   objc_sync_exit(v4);
 }
 
@@ -664,11 +664,11 @@ void __43__FIDSNode_registerClassForFIDSNodeCoding___block_invoke()
   sSubclassMakeWithCoderRegistry = v0;
 }
 
-- (void)dispatchEvent:(id)a3 forObserver:(id)a4
+- (void)dispatchEvent:(id)event forObserver:(id)observer
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  NodeEventFromNodeEventRef(a3, &v13);
+  observerCopy = observer;
+  NodeEventFromNodeEventRef(event, &v13);
   v14[0] = *(TNodeEventPtr::operator->(&v13) + 64);
   TDSNotifier::AddPtrReference(v14[0]);
   v6 = *(v14[0] + 3);
@@ -686,18 +686,18 @@ void __43__FIDSNode_registerClassForFIDSNodeCoding___block_invoke()
       {
         if (objc_opt_respondsToSelector())
         {
-          [v5 openSyncStarted:v8];
+          [observerCopy openSyncStarted:v8];
         }
 
         else if (objc_opt_respondsToSelector())
         {
-          [v5 nodeOpenSyncStarted:v8];
+          [observerCopy nodeOpenSyncStarted:v8];
         }
       }
 
       else if (v10 == 20 && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        [v5 nodeShouldBeReloaded:v8];
+        [observerCopy nodeShouldBeReloaded:v8];
       }
     }
 
@@ -705,12 +705,12 @@ void __43__FIDSNode_registerClassForFIDSNodeCoding___block_invoke()
     {
       if (objc_opt_respondsToSelector())
       {
-        [v5 childChanged:v9 in:v8 for:*(TNodeEventPtr::operator->(&v13) + 16)];
+        [observerCopy childChanged:v9 in:v8 for:*(TNodeEventPtr::operator->(&v13) + 16)];
       }
 
       else if (objc_opt_respondsToSelector())
       {
-        [v5 childNodePropertyChanged:v9 forProperty:*(TNodeEventPtr::operator->(&v13) + 16)];
+        [observerCopy childNodePropertyChanged:v9 forProperty:*(TNodeEventPtr::operator->(&v13) + 16)];
       }
     }
 
@@ -718,12 +718,12 @@ void __43__FIDSNode_registerClassForFIDSNodeCoding___block_invoke()
     {
       if (objc_opt_respondsToSelector())
       {
-        [v5 openSyncCompleted:v8];
+        [observerCopy openSyncCompleted:v8];
       }
 
       else if (objc_opt_respondsToSelector())
       {
-        [v5 nodeOpenSyncCompleted:v8];
+        [observerCopy nodeOpenSyncCompleted:v8];
       }
     }
   }
@@ -738,7 +738,7 @@ void __43__FIDSNode_registerClassForFIDSNodeCoding___block_invoke()
         {
           v14[0] = v9;
           v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-          [v5 childrenAdded:v11 to:v8];
+          [observerCopy childrenAdded:v11 to:v8];
         }
 
         else
@@ -750,7 +750,7 @@ void __43__FIDSNode_registerClassForFIDSNodeCoding___block_invoke()
 
           v14[0] = v9;
           v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-          [v5 childNodesAdded:v11];
+          [observerCopy childNodesAdded:v11];
         }
       }
 
@@ -765,7 +765,7 @@ void __43__FIDSNode_registerClassForFIDSNodeCoding___block_invoke()
         {
           v14[0] = v9;
           v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-          [v5 childrenDeleted:v11 from:v8];
+          [observerCopy childrenDeleted:v11 from:v8];
         }
 
         else
@@ -777,7 +777,7 @@ void __43__FIDSNode_registerClassForFIDSNodeCoding___block_invoke()
 
           v14[0] = v9;
           v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-          [v5 childNodesDeleted:v11];
+          [observerCopy childNodesDeleted:v11];
         }
       }
 
@@ -788,12 +788,12 @@ void __43__FIDSNode_registerClassForFIDSNodeCoding___block_invoke()
     {
       if (objc_opt_respondsToSelector())
       {
-        [v5 nodeDeleted:v8];
+        [observerCopy nodeDeleted:v8];
       }
 
       else if (objc_opt_respondsToSelector())
       {
-        [v5 temporaryNodeDeleted:v8];
+        [observerCopy temporaryNodeDeleted:v8];
       }
     }
 
@@ -801,12 +801,12 @@ void __43__FIDSNode_registerClassForFIDSNodeCoding___block_invoke()
     {
       if (objc_opt_respondsToSelector())
       {
-        [v5 nodeChanged:v8 for:*(TNodeEventPtr::operator->(&v13) + 16)];
+        [observerCopy nodeChanged:v8 for:*(TNodeEventPtr::operator->(&v13) + 16)];
       }
 
       else if (objc_opt_respondsToSelector())
       {
-        [v5 nodePropertyChanged:v8 forProperty:*(TNodeEventPtr::operator->(&v13) + 16)];
+        [observerCopy nodePropertyChanged:v8 forProperty:*(TNodeEventPtr::operator->(&v13) + 16)];
       }
     }
   }
@@ -817,17 +817,17 @@ LABEL_43:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)iteratorWithOptions:(unsigned int)a3
+- (id)iteratorWithOptions:(unsigned int)options
 {
   v9 = 0;
-  v4 = [(FINode *)self nodeRef];
-  if ((a3 & 0x40000) == 0)
+  nodeRef = [(FINode *)self nodeRef];
+  if ((options & 0x40000) == 0)
   {
     NodeCreateNewRequest(0);
   }
 
   v8 = 0;
-  NodeNewIterator(v4, &v9);
+  NodeNewIterator(nodeRef, &v9);
   TRef<OpaqueNodeRequest *,TRetainReleasePolicy<OpaqueNodeRequest *>>::~TRef(&v8);
   if (v9)
   {
@@ -843,10 +843,10 @@ LABEL_43:
   return v6;
 }
 
-- (unint64_t)nodeIs:(unint64_t)a3 error:(id *)a4
+- (unint64_t)nodeIs:(unint64_t)is error:(id *)error
 {
-  v6 = [(FIDSNode *)self asTNode];
-  if (v6)
+  asTNode = [(FIDSNode *)self asTNode];
+  if (asTNode)
   {
     v7 = 0;
   }
@@ -856,74 +856,74 @@ LABEL_43:
     v7 = -8058;
   }
 
-  if (v6)
+  if (asTNode)
   {
-    a3 = TNode::NodeIs(v6, a3);
+    is = TNode::NodeIs(asTNode, is);
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = ErrorWithOSStatus(v7, 0);
+    *error = ErrorWithOSStatus(v7, 0);
   }
 
-  return a3;
+  return is;
 }
 
-- (unsigned)volumeIs:(unsigned int)a3 error:(id *)a4
+- (unsigned)volumeIs:(unsigned int)is error:(id *)error
 {
-  v8 = a3;
-  v5 = [(FIDSNode *)self asTNode];
-  if (!v5)
+  isCopy = is;
+  asTNode = [(FIDSNode *)self asTNode];
+  if (!asTNode)
   {
     v6 = -8058;
-    if (!a4)
+    if (!error)
     {
-      return v8;
+      return isCopy;
     }
 
     goto LABEL_3;
   }
 
-  v6 = TNode::VolumeIs(v5, &v8);
-  if (a4)
+  v6 = TNode::VolumeIs(asTNode, &isCopy);
+  if (error)
   {
 LABEL_3:
-    *a4 = ErrorWithOSStatus(v6, 0);
+    *error = ErrorWithOSStatus(v6, 0);
   }
 
-  return v8;
+  return isCopy;
 }
 
-- (unsigned)nodePermissions:(unsigned int)a3 error:(id *)a4
+- (unsigned)nodePermissions:(unsigned int)permissions error:(id *)error
 {
-  v8 = a3;
-  v5 = [(FIDSNode *)self asTNode];
-  if (!v5)
+  permissionsCopy = permissions;
+  asTNode = [(FIDSNode *)self asTNode];
+  if (!asTNode)
   {
     Permissions = -8058;
-    if (!a4)
+    if (!error)
     {
-      return v8;
+      return permissionsCopy;
     }
 
     goto LABEL_3;
   }
 
-  Permissions = TNode::GetPermissions(v5, &v8);
-  if (a4)
+  Permissions = TNode::GetPermissions(asTNode, &permissionsCopy);
+  if (error)
   {
 LABEL_3:
-    *a4 = ErrorWithOSStatus(Permissions, 0);
+    *error = ErrorWithOSStatus(Permissions, 0);
   }
 
-  return v8;
+  return permissionsCopy;
 }
 
 - (void)inlineProgressCancel
 {
-  v2 = [(FIDSNode *)self asTNode];
+  asTNode = [(FIDSNode *)self asTNode];
 
-  TNode::InlineProgressCancel(v2);
+  TNode::InlineProgressCancel(asTNode);
 }
 
 - (id)downloadProgress
@@ -957,8 +957,8 @@ LABEL_3:
   if (v5 == 1)
   {
     v6 = v23;
-    v7 = [v6 userInfo];
-    v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E696A858]];
+    userInfo = [v6 userInfo];
+    v8 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696A858]];
     v9 = objc_cast<NSString,objc_object * {__strong}>(v8);
 
     if (!v9 || ([v9 isEqualToString:*MEMORY[0x1E696A848]] & 1) == 0)
@@ -1017,8 +1017,8 @@ LABEL_8:
   }
 
   v5 = v22;
-  v6 = [v5 userInfo];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x1E696A858]];
+  userInfo = [v5 userInfo];
+  v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696A858]];
   v8 = objc_cast<NSString,objc_object * {__strong}>(v7);
 
   if (!v8 || ([v8 isEqualToString:*MEMORY[0x1E696A848]] & 1) != 0)
@@ -1047,11 +1047,11 @@ LABEL_9:
 
 - (id)brContainerDocuments
 {
-  v2 = [(FIDSNode *)self asTNode];
-  v3 = v2;
-  if (v2)
+  asTNode = [(FIDSNode *)self asTNode];
+  v3 = asTNode;
+  if (asTNode)
   {
-    if (TNode::VirtualType(v2) == 26)
+    if (TNode::VirtualType(asTNode) == 26)
     {
       TNode::GetAliasTarget(v3, &v6);
       v4 = TNodeFromFINode(v6);
@@ -1076,27 +1076,27 @@ LABEL_9:
   return v2;
 }
 
-- (void)nodeRestartObservingWithOptions:(unsigned int)a3
+- (void)nodeRestartObservingWithOptions:(unsigned int)options
 {
-  v4 = [(FIDSNode *)self asTNode];
-  if (v4)
+  asTNode = [(FIDSNode *)self asTNode];
+  if (asTNode)
   {
 
-    TNode::RestartCollections(v4, HIBYTE(a3) & 1);
+    TNode::RestartCollections(asTNode, HIBYTE(options) & 1);
   }
 }
 
-- (BOOL)markAsUsed:(id *)a3
+- (BOOL)markAsUsed:(id *)used
 {
-  v4 = [(FIDSNode *)self asTNode];
-  v6 = TNode::Validate(v4, v5);
+  asTNode = [(FIDSNode *)self asTNode];
+  v6 = TNode::Validate(asTNode, v5);
   v7 = v6;
   if (!v6)
   {
     v8 = TNode::InfoLock(v6);
     os_unfair_lock_lock(v8);
-    v10 = *(v4 + 2);
-    v9 = *(v4 + 3);
+    v10 = *(asTNode + 2);
+    v9 = *(asTNode + 3);
     if (v9)
     {
       atomic_fetch_add_explicit(&v9->__shared_owners_, 1uLL, memory_order_relaxed);
@@ -1125,44 +1125,44 @@ LABEL_4:
   }
 
 LABEL_5:
-  if (a3)
+  if (used)
   {
-    *a3 = ErrorWithOSStatus(v7, 0);
+    *used = ErrorWithOSStatus(v7, 0);
   }
 
   return v7 == 0;
 }
 
-- (void)synchronizeWithOptions:(unsigned int)a3 async:(BOOL)a4
+- (void)synchronizeWithOptions:(unsigned int)options async:(BOOL)async
 {
-  v4 = a4;
-  v6 = [(FIDSNode *)self asTNode];
-  if (v6)
+  asyncCopy = async;
+  asTNode = [(FIDSNode *)self asTNode];
+  if (asTNode)
   {
-    if (v4)
+    if (asyncCopy)
     {
       NodeCreateNewRequest(0);
     }
 
     v7 = 0;
     v8 = 0;
-    TNode::Synchronize(v6, &v8, a3);
+    TNode::Synchronize(asTNode, &v8, options);
     TRef<OpaqueNodeRequest *,TRetainReleasePolicy<OpaqueNodeRequest *>>::~TRef(&v7);
   }
 }
 
-- (void)_sendNotification:(unsigned int)a3 node:(id)a4 property:(unsigned int)a5
+- (void)_sendNotification:(unsigned int)notification node:(id)node property:(unsigned int)property
 {
-  v8 = a4;
-  v9 = [(FIDSNode *)self asTNode];
-  v10 = objc_cast<FIDSNode,FINode * {__strong}>(v8);
+  nodeCopy = node;
+  asTNode = [(FIDSNode *)self asTNode];
+  v10 = objc_cast<FIDSNode,FINode * {__strong}>(nodeCopy);
   TNodePtr::TNodePtr(&v11, [v10 asTNode]);
-  TNodeEvent::CreateNodeEvent(a3, &v11.fFINode, a5, &v14);
+  TNodeEvent::CreateNodeEvent(notification, &v11.fFINode, property, &v14);
 
   v11.fFINode = 0;
   v12 = 0;
   v13 = 0;
-  TNodePtr::TNodePtr(&v15, v9);
+  TNodePtr::TNodePtr(&v15, asTNode);
   TNodeEventPtrs::AddEvent(&v11, &v15, &v14);
 
   TNodeEventPtrs::SendNotifications(&v11);
@@ -1171,12 +1171,12 @@ LABEL_5:
   TNodeEventPtr::~TNodeEventPtr(&v14);
 }
 
-+ (id)appContainersForContainerRoot:(id)a3 showAllFiles:(BOOL)a4 showSystemFiles:(BOOL)a5
++ (id)appContainersForContainerRoot:(id)root showAllFiles:(BOOL)files showSystemFiles:(BOOL)systemFiles
 {
-  v7 = a3;
-  TNodePtr::TNodePtr(&v16, [v7 asTNode]);
-  v17[0] = a4;
-  v17[1] = a5;
+  rootCopy = root;
+  TNodePtr::TNodePtr(&v16, [rootCopy asTNode]);
+  v17[0] = files;
+  v17[1] = systemFiles;
   v18 = 0;
 
   TContainerFetcher::FetchContainersAndDocumentsFolders(v17, &v14);

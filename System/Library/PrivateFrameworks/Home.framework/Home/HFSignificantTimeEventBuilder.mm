@@ -1,51 +1,51 @@
 @interface HFSignificantTimeEventBuilder
-- (HFSignificantTimeEventBuilder)initWithEvent:(id)a3;
+- (HFSignificantTimeEventBuilder)initWithEvent:(id)event;
 - (NSString)description;
 - (id)buildNewEventsFromCurrentState;
-- (id)compareToObject:(id)a3;
+- (id)compareToObject:(id)object;
 - (id)comparisonKey;
-- (id)naturalLanguageNameOfType:(unint64_t)a3 withHome:(id)a4 recurrences:(id)a5;
-- (id)naturalLanguageNameWithOptions:(id)a3 recurrences:(id)a4;
+- (id)naturalLanguageNameOfType:(unint64_t)type withHome:(id)home recurrences:(id)recurrences;
+- (id)naturalLanguageNameWithOptions:(id)options recurrences:(id)recurrences;
 - (id)performValidation;
 @end
 
 @implementation HFSignificantTimeEventBuilder
 
-- (id)compareToObject:(id)a3
+- (id)compareToObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v13.receiver = self;
   v13.super_class = HFSignificantTimeEventBuilder;
-  v5 = [(HFEventBuilder *)&v13 compareToObject:v4];
+  v5 = [(HFEventBuilder *)&v13 compareToObject:objectCopy];
   if (([v5 containsCriticalDifference] & 1) == 0)
   {
-    v6 = [(HFSignificantTimeEventBuilder *)self significantEvent];
-    v7 = [v4 significantEvent];
-    v8 = [HFPropertyDifference compareObjectA:v6 toObjectB:v7 key:@"significantEvent" priority:3];
+    significantEvent = [(HFSignificantTimeEventBuilder *)self significantEvent];
+    significantEvent2 = [objectCopy significantEvent];
+    v8 = [HFPropertyDifference compareObjectA:significantEvent toObjectB:significantEvent2 key:@"significantEvent" priority:3];
     [v5 add:v8];
 
-    v9 = [(HFSignificantTimeEventBuilder *)self significantEventOffset];
-    v10 = [v4 significantEventOffset];
-    v11 = [HFPropertyDifference compareObjectA:v9 toObjectB:v10 key:@"significantEventOffset" priority:2];
+    significantEventOffset = [(HFSignificantTimeEventBuilder *)self significantEventOffset];
+    significantEventOffset2 = [objectCopy significantEventOffset];
+    v11 = [HFPropertyDifference compareObjectA:significantEventOffset toObjectB:significantEventOffset2 key:@"significantEventOffset" priority:2];
     [v5 add:v11];
   }
 
   return v5;
 }
 
-- (HFSignificantTimeEventBuilder)initWithEvent:(id)a3
+- (HFSignificantTimeEventBuilder)initWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v9.receiver = self;
   v9.super_class = HFSignificantTimeEventBuilder;
-  v5 = [(HFEventBuilder *)&v9 initWithEvent:v4];
+  v5 = [(HFEventBuilder *)&v9 initWithEvent:eventCopy];
   if (v5)
   {
-    v6 = [v4 significantEvent];
-    [(HFSignificantTimeEventBuilder *)v5 setSignificantEvent:v6];
+    significantEvent = [eventCopy significantEvent];
+    [(HFSignificantTimeEventBuilder *)v5 setSignificantEvent:significantEvent];
 
-    v7 = [v4 offset];
-    [(HFSignificantTimeEventBuilder *)v5 setSignificantEventOffset:v7];
+    offset = [eventCopy offset];
+    [(HFSignificantTimeEventBuilder *)v5 setSignificantEventOffset:offset];
   }
 
   return v5;
@@ -55,68 +55,68 @@
 {
   v3 = MEMORY[0x277CBEB98];
   v4 = objc_alloc(MEMORY[0x277CD1E00]);
-  v5 = [(HFSignificantTimeEventBuilder *)self significantEvent];
-  v6 = [(HFSignificantTimeEventBuilder *)self significantEventOffset];
-  v7 = [v4 initWithSignificantEvent:v5 offset:v6];
+  significantEvent = [(HFSignificantTimeEventBuilder *)self significantEvent];
+  significantEventOffset = [(HFSignificantTimeEventBuilder *)self significantEventOffset];
+  v7 = [v4 initWithSignificantEvent:significantEvent offset:significantEventOffset];
   v8 = [v3 setWithObject:v7];
 
   return v8;
 }
 
-- (id)naturalLanguageNameOfType:(unint64_t)a3 withHome:(id)a4 recurrences:(id)a5
+- (id)naturalLanguageNameOfType:(unint64_t)type withHome:(id)home recurrences:(id)recurrences
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [[HFTriggerNaturalLanguageOptions alloc] initWithHome:v9 nameType:a3];
+  recurrencesCopy = recurrences;
+  homeCopy = home;
+  v10 = [[HFTriggerNaturalLanguageOptions alloc] initWithHome:homeCopy nameType:type];
 
-  v11 = [(HFSignificantTimeEventBuilder *)self naturalLanguageNameWithOptions:v10 recurrences:v8];
+  v11 = [(HFSignificantTimeEventBuilder *)self naturalLanguageNameWithOptions:v10 recurrences:recurrencesCopy];
 
   return v11;
 }
 
-- (id)naturalLanguageNameWithOptions:(id)a3 recurrences:(id)a4
+- (id)naturalLanguageNameWithOptions:(id)options recurrences:(id)recurrences
 {
   v6 = MEMORY[0x277CD1EB0];
-  v7 = a4;
-  v8 = a3;
-  v9 = [(HFSignificantTimeEventBuilder *)self significantEvent];
-  v10 = [(HFSignificantTimeEventBuilder *)self significantEventOffset];
-  v11 = [v6 hf_naturalLanguageNameWithOptions:v8 significantEvent:v9 offset:v10 recurrences:v7];
+  recurrencesCopy = recurrences;
+  optionsCopy = options;
+  significantEvent = [(HFSignificantTimeEventBuilder *)self significantEvent];
+  significantEventOffset = [(HFSignificantTimeEventBuilder *)self significantEventOffset];
+  v11 = [v6 hf_naturalLanguageNameWithOptions:optionsCopy significantEvent:significantEvent offset:significantEventOffset recurrences:recurrencesCopy];
 
   return v11;
 }
 
 - (id)performValidation
 {
-  v2 = [(HFSignificantTimeEventBuilder *)self significantEvent];
+  significantEvent = [(HFSignificantTimeEventBuilder *)self significantEvent];
 
   v3 = MEMORY[0x277D2C900];
-  if (v2)
+  if (significantEvent)
   {
-    v4 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
   else
   {
     v5 = [MEMORY[0x277CCA9B8] hf_errorWithCode:33];
-    v4 = [v3 futureWithError:v5];
+    futureWithNoResult = [v3 futureWithError:v5];
   }
 
-  return v4;
+  return futureWithNoResult;
 }
 
 - (NSString)description
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
-  v4 = [(HFSignificantTimeEventBuilder *)self significantEvent];
-  [v3 appendString:v4 withName:@"significantEvent"];
+  significantEvent = [(HFSignificantTimeEventBuilder *)self significantEvent];
+  [v3 appendString:significantEvent withName:@"significantEvent"];
 
-  v5 = [(HFSignificantTimeEventBuilder *)self significantEventOffset];
-  v6 = [v3 appendObject:v5 withName:@"offset"];
+  significantEventOffset = [(HFSignificantTimeEventBuilder *)self significantEventOffset];
+  v6 = [v3 appendObject:significantEventOffset withName:@"offset"];
 
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 - (id)comparisonKey
@@ -124,10 +124,10 @@
   v3 = MEMORY[0x277CCACA8];
   v9.receiver = self;
   v9.super_class = HFSignificantTimeEventBuilder;
-  v4 = [(HFEventBuilder *)&v9 comparisonKey];
-  v5 = [(HFSignificantTimeEventBuilder *)self significantEvent];
-  v6 = [(HFSignificantTimeEventBuilder *)self significantEventOffset];
-  v7 = [v3 stringWithFormat:@"%@-%@:%@", v4, v5, v6];
+  comparisonKey = [(HFEventBuilder *)&v9 comparisonKey];
+  significantEvent = [(HFSignificantTimeEventBuilder *)self significantEvent];
+  significantEventOffset = [(HFSignificantTimeEventBuilder *)self significantEventOffset];
+  v7 = [v3 stringWithFormat:@"%@-%@:%@", comparisonKey, significantEvent, significantEventOffset];
 
   return v7;
 }

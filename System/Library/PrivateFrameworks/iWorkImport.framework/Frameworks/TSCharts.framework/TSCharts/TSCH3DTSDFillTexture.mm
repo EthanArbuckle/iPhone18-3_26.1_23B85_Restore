@@ -1,41 +1,41 @@
 @interface TSCH3DTSDFillTexture
-+ (id)textureWithTSDFill:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (TSCH3DTSDFillTexture)initWithTSDFill:(id)a3;
-- (id)databufferForDataCache:(id)a3;
++ (id)textureWithTSDFill:(id)fill;
+- (BOOL)isEqual:(id)equal;
+- (TSCH3DTSDFillTexture)initWithTSDFill:(id)fill;
+- (id)databufferForDataCache:(id)cache;
 - (unint64_t)hash;
 @end
 
 @implementation TSCH3DTSDFillTexture
 
-+ (id)textureWithTSDFill:(id)a3
++ (id)textureWithTSDFill:(id)fill
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v10 = objc_msgSend_initWithTSDFill_(v5, v6, v7, v8, v9, v4);
+  fillCopy = fill;
+  v5 = [self alloc];
+  v10 = objc_msgSend_initWithTSDFill_(v5, v6, v7, v8, v9, fillCopy);
 
   return v10;
 }
 
-- (TSCH3DTSDFillTexture)initWithTSDFill:(id)a3
+- (TSCH3DTSDFillTexture)initWithTSDFill:(id)fill
 {
-  v5 = a3;
+  fillCopy = fill;
   v9.receiver = self;
   v9.super_class = TSCH3DTSDFillTexture;
   v6 = [(TSCH3DTexture *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fill, a3);
+    objc_storeStrong(&v6->_fill, fill);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     isEqual = 1;
   }
@@ -61,7 +61,7 @@
         v13 = 1;
       }
 
-      if ((v13 || (objc_msgSend_imageData(v6, v8, v9, v10, v11), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend_context(v14, v15, v16, v17, v18), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend_imageData(v12, v20, v21, v22, v23), v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend_context(v24, v25, v26, v27, v28), v29 = objc_claimAutoreleasedReturnValue(), v29, v24, v19, v14, v19 == v29)) && (v40.receiver = self, v40.super_class = TSCH3DTSDFillTexture, [(TSCH3DTexture *)&v40 isEqual:v4]))
+      if ((v13 || (objc_msgSend_imageData(v6, v8, v9, v10, v11), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend_context(v14, v15, v16, v17, v18), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend_imageData(v12, v20, v21, v22, v23), v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend_context(v24, v25, v26, v27, v28), v29 = objc_claimAutoreleasedReturnValue(), v29, v24, v19, v14, v19 == v29)) && (v40.receiver = self, v40.super_class = TSCH3DTSDFillTexture, [(TSCH3DTexture *)&v40 isEqual:equalCopy]))
       {
         fill = self->_fill;
         v31 = v5[2];
@@ -101,7 +101,7 @@
   return v3 + objc_msgSend_hash(self->_fill, v4, v5, v6, v7);
 }
 
-- (id)databufferForDataCache:(id)a3
+- (id)databufferForDataCache:(id)cache
 {
   objc_opt_class();
   v4 = TSUDynamicCast();

@@ -1,20 +1,20 @@
 @interface _NSAttributes
-- (_NSAttributes)initWithAttributes:(id)a3 range:(_NSRange)a4;
+- (_NSAttributes)initWithAttributes:(id)attributes range:(_NSRange)range;
 - (void)dealloc;
 @end
 
 @implementation _NSAttributes
 
-- (_NSAttributes)initWithAttributes:(id)a3 range:(_NSRange)a4
+- (_NSAttributes)initWithAttributes:(id)attributes range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v9.receiver = self;
   v9.super_class = _NSAttributes;
   v7 = [(_NSAttributes *)&v9 init];
   if (v7)
   {
-    v7->_attributes = a3;
+    v7->_attributes = attributes;
     v7->_range.location = location;
     v7->_range.length = length;
   }

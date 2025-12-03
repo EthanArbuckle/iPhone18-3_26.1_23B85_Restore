@@ -1,19 +1,19 @@
 @interface ADSponsoredSearchRequest
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasClientExclusive:(BOOL)a3;
-- (void)setHasEnableImagesForDupes:(BOOL)a3;
-- (void)setHasInAllocation:(BOOL)a3;
-- (void)setHasIsBaseline:(BOOL)a3;
-- (void)setHasIsTest:(BOOL)a3;
-- (void)setHasSupportedODMLVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasClientExclusive:(BOOL)exclusive;
+- (void)setHasEnableImagesForDupes:(BOOL)dupes;
+- (void)setHasInAllocation:(BOOL)allocation;
+- (void)setHasIsBaseline:(BOOL)baseline;
+- (void)setHasIsTest:(BOOL)test;
+- (void)setHasSupportedODMLVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ADSponsoredSearchRequest
@@ -36,9 +36,9 @@ void __35__ADSponsoredSearchRequest_options__block_invoke()
   options_sOptions_10 = &unk_285104DD0;
 }
 
-- (void)setHasIsTest:(BOOL)a3
+- (void)setHasIsTest:(BOOL)test
 {
-  if (a3)
+  if (test)
   {
     v3 = 64;
   }
@@ -51,9 +51,9 @@ void __35__ADSponsoredSearchRequest_options__block_invoke()
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasIsBaseline:(BOOL)a3
+- (void)setHasIsBaseline:(BOOL)baseline
 {
-  if (a3)
+  if (baseline)
   {
     v3 = 32;
   }
@@ -66,9 +66,9 @@ void __35__ADSponsoredSearchRequest_options__block_invoke()
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasEnableImagesForDupes:(BOOL)a3
+- (void)setHasEnableImagesForDupes:(BOOL)dupes
 {
-  if (a3)
+  if (dupes)
   {
     v3 = 8;
   }
@@ -81,9 +81,9 @@ void __35__ADSponsoredSearchRequest_options__block_invoke()
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasSupportedODMLVersion:(BOOL)a3
+- (void)setHasSupportedODMLVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 2;
   }
@@ -96,9 +96,9 @@ void __35__ADSponsoredSearchRequest_options__block_invoke()
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasInAllocation:(BOOL)a3
+- (void)setHasInAllocation:(BOOL)allocation
 {
-  if (a3)
+  if (allocation)
   {
     v3 = 16;
   }
@@ -111,9 +111,9 @@ void __35__ADSponsoredSearchRequest_options__block_invoke()
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasClientExclusive:(BOOL)a3
+- (void)setHasClientExclusive:(BOOL)exclusive
 {
-  if (a3)
+  if (exclusive)
   {
     v3 = 4;
   }
@@ -132,27 +132,27 @@ void __35__ADSponsoredSearchRequest_options__block_invoke()
   v8.receiver = self;
   v8.super_class = ADSponsoredSearchRequest;
   v4 = [(ADSponsoredSearchRequest *)&v8 description];
-  v5 = [(ADSponsoredSearchRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ADSponsoredSearchRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   properties = self->_properties;
   if (properties)
   {
-    v5 = [(ADUserTargetingProperties *)properties dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"properties"];
+    dictionaryRepresentation = [(ADUserTargetingProperties *)properties dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"properties"];
   }
 
   has = self->_has;
   if ((has & 0x40) != 0)
   {
     v19 = [MEMORY[0x277CCABB0] numberWithBool:self->_isTest];
-    [v3 setObject:v19 forKey:@"isTest"];
+    [dictionary setObject:v19 forKey:@"isTest"];
 
     has = self->_has;
     if ((has & 0x20) == 0)
@@ -173,7 +173,7 @@ LABEL_5:
   }
 
   v20 = [MEMORY[0x277CCABB0] numberWithBool:self->_isBaseline];
-  [v3 setObject:v20 forKey:@"isBaseline"];
+  [dictionary setObject:v20 forKey:@"isBaseline"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -189,39 +189,39 @@ LABEL_6:
 
 LABEL_29:
   v21 = [MEMORY[0x277CCABB0] numberWithBool:self->_enableImagesForDupes];
-  [v3 setObject:v21 forKey:@"enableImagesForDupes"];
+  [dictionary setObject:v21 forKey:@"enableImagesForDupes"];
 
   if ((*&self->_has & 2) != 0)
   {
 LABEL_7:
     v7 = [MEMORY[0x277CCABB0] numberWithInt:self->_supportedODMLVersion];
-    [v3 setObject:v7 forKey:@"supportedODMLVersion"];
+    [dictionary setObject:v7 forKey:@"supportedODMLVersion"];
   }
 
 LABEL_8:
   experimentID = self->_experimentID;
   if (experimentID)
   {
-    [v3 setObject:experimentID forKey:@"experimentID"];
+    [dictionary setObject:experimentID forKey:@"experimentID"];
   }
 
   treatmentID = self->_treatmentID;
   if (treatmentID)
   {
-    [v3 setObject:treatmentID forKey:@"treatmentID"];
+    [dictionary setObject:treatmentID forKey:@"treatmentID"];
   }
 
   deploymentID = self->_deploymentID;
   if (deploymentID)
   {
-    [v3 setObject:deploymentID forKey:@"deploymentID"];
+    [dictionary setObject:deploymentID forKey:@"deploymentID"];
   }
 
   v11 = self->_has;
   if ((v11 & 0x10) != 0)
   {
     v12 = [MEMORY[0x277CCABB0] numberWithBool:self->_inAllocation];
-    [v3 setObject:v12 forKey:@"inAllocation"];
+    [dictionary setObject:v12 forKey:@"inAllocation"];
 
     v11 = self->_has;
   }
@@ -229,39 +229,39 @@ LABEL_8:
   if ((v11 & 4) != 0)
   {
     v13 = [MEMORY[0x277CCABB0] numberWithBool:self->_clientExclusive];
-    [v3 setObject:v13 forKey:@"clientExclusive"];
+    [dictionary setObject:v13 forKey:@"clientExclusive"];
   }
 
   rotatingIdentifiers = self->_rotatingIdentifiers;
   if (rotatingIdentifiers)
   {
-    v15 = [(ADRotatingIdentifiers *)rotatingIdentifiers dictionaryRepresentation];
-    [v3 setObject:v15 forKey:@"rotatingIdentifiers"];
+    dictionaryRepresentation2 = [(ADRotatingIdentifiers *)rotatingIdentifiers dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"rotatingIdentifiers"];
   }
 
   if (*&self->_has)
   {
     v16 = [MEMORY[0x277CCABB0] numberWithInt:self->_featureEnabledBitmap];
-    [v3 setObject:v16 forKey:@"featureEnabledBitmap"];
+    [dictionary setObject:v16 forKey:@"featureEnabledBitmap"];
   }
 
   jsVersion = self->_jsVersion;
   if (jsVersion)
   {
-    [v3 setObject:jsVersion forKey:@"jsVersion"];
+    [dictionary setObject:jsVersion forKey:@"jsVersion"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v14 = v4;
+  toCopy = to;
+  v14 = toCopy;
   if (self->_properties)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v14;
+    toCopy = v14;
   }
 
   has = self->_has;
@@ -269,7 +269,7 @@ LABEL_8:
   {
     isTest = self->_isTest;
     PBDataWriterWriteBOOLField();
-    v4 = v14;
+    toCopy = v14;
     has = self->_has;
     if ((has & 0x20) == 0)
     {
@@ -290,7 +290,7 @@ LABEL_5:
 
   isBaseline = self->_isBaseline;
   PBDataWriterWriteBOOLField();
-  v4 = v14;
+  toCopy = v14;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -306,32 +306,32 @@ LABEL_6:
 LABEL_29:
   enableImagesForDupes = self->_enableImagesForDupes;
   PBDataWriterWriteBOOLField();
-  v4 = v14;
+  toCopy = v14;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_7:
     supportedODMLVersion = self->_supportedODMLVersion;
     PBDataWriterWriteInt32Field();
-    v4 = v14;
+    toCopy = v14;
   }
 
 LABEL_8:
   if (self->_experimentID)
   {
     PBDataWriterWriteStringField();
-    v4 = v14;
+    toCopy = v14;
   }
 
   if (self->_treatmentID)
   {
     PBDataWriterWriteStringField();
-    v4 = v14;
+    toCopy = v14;
   }
 
   if (self->_deploymentID)
   {
     PBDataWriterWriteStringField();
-    v4 = v14;
+    toCopy = v14;
   }
 
   v7 = self->_has;
@@ -339,7 +339,7 @@ LABEL_8:
   {
     inAllocation = self->_inAllocation;
     PBDataWriterWriteBOOLField();
-    v4 = v14;
+    toCopy = v14;
     v7 = self->_has;
   }
 
@@ -347,44 +347,44 @@ LABEL_8:
   {
     clientExclusive = self->_clientExclusive;
     PBDataWriterWriteBOOLField();
-    v4 = v14;
+    toCopy = v14;
   }
 
   if (self->_rotatingIdentifiers)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v14;
+    toCopy = v14;
   }
 
   if (*&self->_has)
   {
     featureEnabledBitmap = self->_featureEnabledBitmap;
     PBDataWriterWriteInt32Field();
-    v4 = v14;
+    toCopy = v14;
   }
 
   if (self->_jsVersion)
   {
     PBDataWriterWriteStringField();
-    v4 = v14;
+    toCopy = v14;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_properties)
   {
-    [v4 setProperties:?];
-    v4 = v7;
+    [toCopy setProperties:?];
+    toCopy = v7;
   }
 
   has = self->_has;
   if ((has & 0x40) != 0)
   {
-    *(v4 + 76) = self->_isTest;
-    *(v4 + 80) |= 0x40u;
+    *(toCopy + 76) = self->_isTest;
+    *(toCopy + 80) |= 0x40u;
     has = self->_has;
     if ((has & 0x20) == 0)
     {
@@ -403,8 +403,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 75) = self->_isBaseline;
-  *(v4 + 80) |= 0x20u;
+  *(toCopy + 75) = self->_isBaseline;
+  *(toCopy + 80) |= 0x20u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -418,71 +418,71 @@ LABEL_6:
   }
 
 LABEL_29:
-  *(v4 + 73) = self->_enableImagesForDupes;
-  *(v4 + 80) |= 8u;
+  *(toCopy + 73) = self->_enableImagesForDupes;
+  *(toCopy + 80) |= 8u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_7:
-    *(v4 + 14) = self->_supportedODMLVersion;
-    *(v4 + 80) |= 2u;
+    *(toCopy + 14) = self->_supportedODMLVersion;
+    *(toCopy + 80) |= 2u;
   }
 
 LABEL_8:
   if (self->_experimentID)
   {
     [v7 setExperimentID:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_treatmentID)
   {
     [v7 setTreatmentID:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_deploymentID)
   {
     [v7 setDeploymentID:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((v6 & 0x10) != 0)
   {
-    *(v4 + 74) = self->_inAllocation;
-    *(v4 + 80) |= 0x10u;
+    *(toCopy + 74) = self->_inAllocation;
+    *(toCopy + 80) |= 0x10u;
     v6 = self->_has;
   }
 
   if ((v6 & 4) != 0)
   {
-    *(v4 + 72) = self->_clientExclusive;
-    *(v4 + 80) |= 4u;
+    *(toCopy + 72) = self->_clientExclusive;
+    *(toCopy + 80) |= 4u;
   }
 
   if (self->_rotatingIdentifiers)
   {
     [v7 setRotatingIdentifiers:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 6) = self->_featureEnabledBitmap;
-    *(v4 + 80) |= 1u;
+    *(toCopy + 6) = self->_featureEnabledBitmap;
+    *(toCopy + 80) |= 1u;
   }
 
   if (self->_jsVersion)
   {
     [v7 setJsVersion:?];
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(ADUserTargetingProperties *)self->_properties copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(ADUserTargetingProperties *)self->_properties copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
@@ -534,15 +534,15 @@ LABEL_5:
   }
 
 LABEL_6:
-  v9 = [(NSString *)self->_experimentID copyWithZone:a3];
+  v9 = [(NSString *)self->_experimentID copyWithZone:zone];
   v10 = *(v5 + 16);
   *(v5 + 16) = v9;
 
-  v11 = [(NSString *)self->_treatmentID copyWithZone:a3];
+  v11 = [(NSString *)self->_treatmentID copyWithZone:zone];
   v12 = *(v5 + 64);
   *(v5 + 64) = v11;
 
-  v13 = [(NSString *)self->_deploymentID copyWithZone:a3];
+  v13 = [(NSString *)self->_deploymentID copyWithZone:zone];
   v14 = *(v5 + 8);
   *(v5 + 8) = v13;
 
@@ -560,7 +560,7 @@ LABEL_6:
     *(v5 + 80) |= 4u;
   }
 
-  v16 = [(ADRotatingIdentifiers *)self->_rotatingIdentifiers copyWithZone:a3];
+  v16 = [(ADRotatingIdentifiers *)self->_rotatingIdentifiers copyWithZone:zone];
   v17 = *(v5 + 48);
   *(v5 + 48) = v16;
 
@@ -570,23 +570,23 @@ LABEL_6:
     *(v5 + 80) |= 1u;
   }
 
-  v18 = [(NSString *)self->_jsVersion copyWithZone:a3];
+  v18 = [(NSString *)self->_jsVersion copyWithZone:zone];
   v19 = *(v5 + 32);
   *(v5 + 32) = v18;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_48;
   }
 
   properties = self->_properties;
-  if (properties | *(v4 + 5))
+  if (properties | *(equalCopy + 5))
   {
     if (![(ADUserTargetingProperties *)properties isEqual:?])
     {
@@ -594,109 +594,109 @@ LABEL_6:
     }
   }
 
-  v6 = *(v4 + 80);
+  v6 = *(equalCopy + 80);
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((*(v4 + 80) & 0x40) == 0)
+    if ((*(equalCopy + 80) & 0x40) == 0)
     {
       goto LABEL_48;
     }
 
-    v7 = *(v4 + 76);
+    v7 = *(equalCopy + 76);
     if (self->_isTest)
     {
-      if ((*(v4 + 76) & 1) == 0)
+      if ((*(equalCopy + 76) & 1) == 0)
       {
         goto LABEL_48;
       }
     }
 
-    else if (*(v4 + 76))
+    else if (*(equalCopy + 76))
     {
       goto LABEL_48;
     }
   }
 
-  else if ((*(v4 + 80) & 0x40) != 0)
+  else if ((*(equalCopy + 80) & 0x40) != 0)
   {
     goto LABEL_48;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 80) & 0x20) == 0)
+    if ((*(equalCopy + 80) & 0x20) == 0)
     {
       goto LABEL_48;
     }
 
-    v8 = *(v4 + 75);
+    v8 = *(equalCopy + 75);
     if (self->_isBaseline)
     {
-      if ((*(v4 + 75) & 1) == 0)
+      if ((*(equalCopy + 75) & 1) == 0)
       {
         goto LABEL_48;
       }
     }
 
-    else if (*(v4 + 75))
+    else if (*(equalCopy + 75))
     {
       goto LABEL_48;
     }
   }
 
-  else if ((*(v4 + 80) & 0x20) != 0)
+  else if ((*(equalCopy + 80) & 0x20) != 0)
   {
     goto LABEL_48;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 80) & 8) == 0)
+    if ((*(equalCopy + 80) & 8) == 0)
     {
       goto LABEL_48;
     }
 
-    v9 = *(v4 + 73);
+    v9 = *(equalCopy + 73);
     if (self->_enableImagesForDupes)
     {
-      if ((*(v4 + 73) & 1) == 0)
+      if ((*(equalCopy + 73) & 1) == 0)
       {
         goto LABEL_48;
       }
     }
 
-    else if (*(v4 + 73))
+    else if (*(equalCopy + 73))
     {
       goto LABEL_48;
     }
   }
 
-  else if ((*(v4 + 80) & 8) != 0)
+  else if ((*(equalCopy + 80) & 8) != 0)
   {
     goto LABEL_48;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 80) & 2) == 0 || self->_supportedODMLVersion != *(v4 + 14))
+    if ((*(equalCopy + 80) & 2) == 0 || self->_supportedODMLVersion != *(equalCopy + 14))
     {
       goto LABEL_48;
     }
   }
 
-  else if ((*(v4 + 80) & 2) != 0)
+  else if ((*(equalCopy + 80) & 2) != 0)
   {
     goto LABEL_48;
   }
 
   experimentID = self->_experimentID;
-  if (experimentID | *(v4 + 2) && ![(NSString *)experimentID isEqual:?])
+  if (experimentID | *(equalCopy + 2) && ![(NSString *)experimentID isEqual:?])
   {
     goto LABEL_48;
   }
 
   treatmentID = self->_treatmentID;
-  if (treatmentID | *(v4 + 8))
+  if (treatmentID | *(equalCopy + 8))
   {
     if (![(NSString *)treatmentID isEqual:?])
     {
@@ -705,7 +705,7 @@ LABEL_6:
   }
 
   deploymentID = self->_deploymentID;
-  if (deploymentID | *(v4 + 1))
+  if (deploymentID | *(equalCopy + 1))
   {
     if (![(NSString *)deploymentID isEqual:?])
     {
@@ -714,63 +714,63 @@ LABEL_6:
   }
 
   has = self->_has;
-  v14 = *(v4 + 80);
+  v14 = *(equalCopy + 80);
   if ((has & 0x10) != 0)
   {
-    if ((*(v4 + 80) & 0x10) == 0)
+    if ((*(equalCopy + 80) & 0x10) == 0)
     {
       goto LABEL_48;
     }
 
-    v19 = *(v4 + 74);
+    v19 = *(equalCopy + 74);
     if (self->_inAllocation)
     {
-      if ((*(v4 + 74) & 1) == 0)
+      if ((*(equalCopy + 74) & 1) == 0)
       {
         goto LABEL_48;
       }
     }
 
-    else if (*(v4 + 74))
+    else if (*(equalCopy + 74))
     {
       goto LABEL_48;
     }
   }
 
-  else if ((*(v4 + 80) & 0x10) != 0)
+  else if ((*(equalCopy + 80) & 0x10) != 0)
   {
     goto LABEL_48;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 80) & 4) == 0)
+    if ((*(equalCopy + 80) & 4) == 0)
     {
       goto LABEL_48;
     }
 
-    v20 = *(v4 + 72);
+    v20 = *(equalCopy + 72);
     if (self->_clientExclusive)
     {
-      if ((*(v4 + 72) & 1) == 0)
+      if ((*(equalCopy + 72) & 1) == 0)
       {
         goto LABEL_48;
       }
     }
 
-    else if (*(v4 + 72))
+    else if (*(equalCopy + 72))
     {
       goto LABEL_48;
     }
   }
 
-  else if ((*(v4 + 80) & 4) != 0)
+  else if ((*(equalCopy + 80) & 4) != 0)
   {
     goto LABEL_48;
   }
 
   rotatingIdentifiers = self->_rotatingIdentifiers;
-  if (rotatingIdentifiers | *(v4 + 6))
+  if (rotatingIdentifiers | *(equalCopy + 6))
   {
     if (![(ADRotatingIdentifiers *)rotatingIdentifiers isEqual:?])
     {
@@ -780,10 +780,10 @@ LABEL_6:
     has = self->_has;
   }
 
-  v16 = *(v4 + 80);
+  v16 = *(equalCopy + 80);
   if ((has & 1) == 0)
   {
-    if ((*(v4 + 80) & 1) == 0)
+    if ((*(equalCopy + 80) & 1) == 0)
     {
       goto LABEL_62;
     }
@@ -793,14 +793,14 @@ LABEL_48:
     goto LABEL_49;
   }
 
-  if ((*(v4 + 80) & 1) == 0 || self->_featureEnabledBitmap != *(v4 + 6))
+  if ((*(equalCopy + 80) & 1) == 0 || self->_featureEnabledBitmap != *(equalCopy + 6))
   {
     goto LABEL_48;
   }
 
 LABEL_62:
   jsVersion = self->_jsVersion;
-  if (jsVersion | *(v4 + 4))
+  if (jsVersion | *(equalCopy + 4))
   {
     v17 = [(NSString *)jsVersion isEqual:?];
   }
@@ -907,12 +907,12 @@ LABEL_15:
   return v14 ^ v15 ^ v13 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ [(NSString *)self->_jsVersion hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   properties = self->_properties;
-  v6 = *(v4 + 5);
-  v11 = v4;
+  v6 = *(fromCopy + 5);
+  v11 = fromCopy;
   if (properties)
   {
     if (!v6)
@@ -933,14 +933,14 @@ LABEL_15:
     [(ADSponsoredSearchRequest *)self setProperties:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_7:
-  v7 = *(v4 + 80);
+  v7 = *(fromCopy + 80);
   if ((v7 & 0x40) != 0)
   {
-    self->_isTest = *(v4 + 76);
+    self->_isTest = *(fromCopy + 76);
     *&self->_has |= 0x40u;
-    v7 = *(v4 + 80);
+    v7 = *(fromCopy + 80);
     if ((v7 & 0x20) == 0)
     {
 LABEL_9:
@@ -953,14 +953,14 @@ LABEL_9:
     }
   }
 
-  else if ((*(v4 + 80) & 0x20) == 0)
+  else if ((*(fromCopy + 80) & 0x20) == 0)
   {
     goto LABEL_9;
   }
 
-  self->_isBaseline = *(v4 + 75);
+  self->_isBaseline = *(fromCopy + 75);
   *&self->_has |= 0x20u;
-  v7 = *(v4 + 80);
+  v7 = *(fromCopy + 80);
   if ((v7 & 8) == 0)
   {
 LABEL_10:
@@ -973,50 +973,50 @@ LABEL_10:
   }
 
 LABEL_27:
-  self->_enableImagesForDupes = *(v4 + 73);
+  self->_enableImagesForDupes = *(fromCopy + 73);
   *&self->_has |= 8u;
-  if ((*(v4 + 80) & 2) != 0)
+  if ((*(fromCopy + 80) & 2) != 0)
   {
 LABEL_11:
-    self->_supportedODMLVersion = *(v4 + 14);
+    self->_supportedODMLVersion = *(fromCopy + 14);
     *&self->_has |= 2u;
   }
 
 LABEL_12:
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(ADSponsoredSearchRequest *)self setExperimentID:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(ADSponsoredSearchRequest *)self setTreatmentID:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(ADSponsoredSearchRequest *)self setDeploymentID:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
-  v8 = *(v4 + 80);
+  v8 = *(fromCopy + 80);
   if ((v8 & 0x10) != 0)
   {
-    self->_inAllocation = *(v4 + 74);
+    self->_inAllocation = *(fromCopy + 74);
     *&self->_has |= 0x10u;
-    v8 = *(v4 + 80);
+    v8 = *(fromCopy + 80);
   }
 
   if ((v8 & 4) != 0)
   {
-    self->_clientExclusive = *(v4 + 72);
+    self->_clientExclusive = *(fromCopy + 72);
     *&self->_has |= 4u;
   }
 
   rotatingIdentifiers = self->_rotatingIdentifiers;
-  v10 = *(v4 + 6);
+  v10 = *(fromCopy + 6);
   if (rotatingIdentifiers)
   {
     if (!v10)
@@ -1037,15 +1037,15 @@ LABEL_12:
     [(ADSponsoredSearchRequest *)self setRotatingIdentifiers:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_32:
-  if (*(v4 + 80))
+  if (*(fromCopy + 80))
   {
-    self->_featureEnabledBitmap = *(v4 + 6);
+    self->_featureEnabledBitmap = *(fromCopy + 6);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(ADSponsoredSearchRequest *)self setJsVersion:?];
   }

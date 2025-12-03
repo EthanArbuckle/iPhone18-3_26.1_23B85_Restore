@@ -2,17 +2,17 @@
 + (void)initialize;
 - (BOOL)_zeroFillBuffers;
 - (BOOL)hasNonLiveConfigurationChanges;
-- (BWPixelTransferNode)initWithfractionalSourceRectEnabled:(BOOL)a3;
-- (CGFloat)_getUpdatedPrimaryCaptureRectForOutputSampleBuffer:(uint64_t)a1 inputDimensions:(CMAttachmentBearerRef)target;
+- (BWPixelTransferNode)initWithfractionalSourceRectEnabled:(BOOL)enabled;
+- (CGFloat)_getUpdatedPrimaryCaptureRectForOutputSampleBuffer:(uint64_t)buffer inputDimensions:(CMAttachmentBearerRef)target;
 - (CGRect)inputCropRect;
 - (int)maxLossyCompressionLevel;
-- (uint64_t)_convertUsingHDRProcessing:(__CVBuffer *)a3 toSDR:;
+- (uint64_t)_convertUsingHDRProcessing:(__CVBuffer *)processing toSDR:;
 - (uint64_t)_emitIfMarkerBuffer:(uint64_t)result;
 - (uint64_t)_ensureDeviceOrientationMonitor;
-- (uint64_t)_ensureIntermediatePoolWithDimensions:(uint64_t)a1;
+- (uint64_t)_ensureIntermediatePoolWithDimensions:(uint64_t)dimensions;
 - (uint64_t)_ensureRotationSession;
 - (uint64_t)_ensureTransferSession;
-- (uint64_t)_intermediateBufferDimensionsForInputDimensions:(uint64_t)a3 outputDimensions:;
+- (uint64_t)_intermediateBufferDimensionsForInputDimensions:(uint64_t)dimensions outputDimensions:;
 - (uint64_t)_makeCurrentConfigurationLive;
 - (uint64_t)_supportedOutputPixelFormats;
 - (uint64_t)_updateInputRequirements;
@@ -20,30 +20,30 @@
 - (uint64_t)_updateMetadataForOutputSampleBuffer:(uint64_t)result destinationRect:;
 - (uint64_t)_updateOutputRequirements;
 - (uint64_t)_updatePassthroughModes;
-- (unsigned)_updateLiveDeviceOrientationAffectedMetadataForOutputSampleBuffer:(double)a3 inputDims:(double)a4 inputCropRect:(double)a5;
+- (unsigned)_updateLiveDeviceOrientationAffectedMetadataForOutputSampleBuffer:(double)buffer inputDims:(double)dims inputCropRect:(double)rect;
 - (void)_ensureIntermediatePixelBufferForStillHDRToSDRConversionIfNeeded;
-- (void)_updatePrimaryCaptureRect:(uint64_t)a1 forOutputSampleBuffer:(const void *)a2;
-- (void)_updateUprightExifOrientationOnSampleBufferIfNeeded:(uint64_t)a1;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (void)_updatePrimaryCaptureRect:(uint64_t)rect forOutputSampleBuffer:(const void *)buffer;
+- (void)_updateUprightExifOrientationOnSampleBufferIfNeeded:(uint64_t)needed;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4;
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4;
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input;
+- (void)handleDroppedSample:(id)sample forInput:(id)input;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
-- (void)setAllows422To420Conversion:(BOOL)a3;
-- (void)setConversionMethodForStillImagesDuringHDRVideos:(int)a3;
-- (void)setCropMode:(int)a3;
-- (void)setEmitSampleBufferSemaphore:(id)a3;
-- (void)setMaxInputLossyCompressionLevel:(int)a3;
-- (void)setMaxLossyCompressionLevel:(int)a3;
-- (void)setMaxOutputLossyCompressionLevel:(int)a3;
-- (void)setOutputColorSpaceProperties:(int)a3;
-- (void)setOutputHeight:(unint64_t)a3;
-- (void)setOutputPixelFormat:(unsigned int)a3;
-- (void)setOutputWidth:(unint64_t)a3;
-- (void)setPassesBuffersThroughWhenPossible:(BOOL)a3;
-- (void)setPreferredOutputPixelFormats:(id)a3;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
+- (void)setAllows422To420Conversion:(BOOL)conversion;
+- (void)setConversionMethodForStillImagesDuringHDRVideos:(int)videos;
+- (void)setCropMode:(int)mode;
+- (void)setEmitSampleBufferSemaphore:(id)semaphore;
+- (void)setMaxInputLossyCompressionLevel:(int)level;
+- (void)setMaxLossyCompressionLevel:(int)level;
+- (void)setMaxOutputLossyCompressionLevel:(int)level;
+- (void)setOutputColorSpaceProperties:(int)properties;
+- (void)setOutputHeight:(unint64_t)height;
+- (void)setOutputPixelFormat:(unsigned int)format;
+- (void)setOutputWidth:(unint64_t)width;
+- (void)setPassesBuffersThroughWhenPossible:(BOOL)possible;
+- (void)setPreferredOutputPixelFormats:(id)formats;
 @end
 
 @implementation BWPixelTransferNode
@@ -53,23 +53,23 @@
   if (result)
   {
     v1 = result;
-    v2 = [*(result + 16) formatRequirements];
-    v3 = [*(v1 + 8) videoFormat];
-    v4 = v3;
-    v5 = *(v1 + 240);
-    if (!v5)
+    formatRequirements = [*(result + 16) formatRequirements];
+    videoFormat = [*(v1 + 8) videoFormat];
+    v4 = videoFormat;
+    width = *(v1 + 240);
+    if (!width)
     {
-      v5 = [v3 width];
+      width = [videoFormat width];
     }
 
-    [v2 setWidth:v5];
-    v6 = *(v1 + 248);
-    if (!v6)
+    [formatRequirements setWidth:width];
+    height = *(v1 + 248);
+    if (!height)
     {
-      v6 = [v4 height];
+      height = [v4 height];
     }
 
-    [v2 setHeight:v6];
+    [formatRequirements setHeight:height];
     if (*(v1 + 256))
     {
       v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:?];
@@ -81,7 +81,7 @@
     {
       [(BWPixelTransferNode *)v1 _supportedOutputPixelFormats];
       [OUTLINED_FUNCTION_17() setSupportedPixelFormats:?];
-      result = [v2 setPreferredPixelFormats:*(v1 + 264)];
+      result = [formatRequirements setPreferredPixelFormats:*(v1 + 264)];
     }
 
     if (*(v1 + 272))
@@ -111,13 +111,13 @@
 
 - (uint64_t)_supportedOutputPixelFormats
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v2 = ptn_supportedPixelFormats(*(a1 + 292));
-  v3 = [objc_msgSend(*(a1 + 8) "videoFormat")];
+  v2 = ptn_supportedPixelFormats(*(self + 292));
+  v3 = [objc_msgSend(*(self + 8) "videoFormat")];
   if (v3)
   {
     v4 = v3;
@@ -136,7 +136,7 @@
       v9[1] = 3221225472;
       v9[2] = __51__BWPixelTransferNode__supportedOutputPixelFormats__block_invoke;
       v9[3] = &unk_1E79902F0;
-      v9[4] = a1;
+      v9[4] = self;
       v10 = IsTenBit & (IsFullRange ^ 1);
       v11 = IsFullRange & 1;
       v12 = IsTenBit;
@@ -154,10 +154,10 @@
   if (result)
   {
     v1 = result;
-    v2 = [*(result + 8) formatRequirements];
+    formatRequirements = [*(result + 8) formatRequirements];
     v3 = ptn_supportedPixelFormats(*(v1 + 296));
 
-    return [v2 setSupportedPixelFormats:v3];
+    return [formatRequirements setSupportedPixelFormats:v3];
   }
 
   return result;
@@ -283,11 +283,11 @@ BOOL __51__BWPixelTransferNode__supportedOutputPixelFormats__block_invoke(uint64
 
 - (void)_ensureIntermediatePixelBufferForStillHDRToSDRConversionIfNeeded
 {
-  v2 = *(a1 + 400);
+  v2 = *(self + 400);
   if (v2)
   {
     CFRelease(v2);
-    *(a1 + 400) = 0;
+    *(self + 400) = 0;
   }
 }
 
@@ -408,9 +408,9 @@ BOOL __51__BWPixelTransferNode__supportedOutputPixelFormats__block_invoke(uint64
 
   if (*(v1 + 388) == 3)
   {
-    v16 = [*(v1 + 8) videoFormat];
-    v17 = [*(v1 + 16) videoFormat];
-    if (([v16 isHLGColorSpace] & 1) != 0 && (objc_msgSend(v17, "isHLGColorSpace") & 1) == 0)
+    videoFormat = [*(v1 + 8) videoFormat];
+    videoFormat2 = [*(v1 + 16) videoFormat];
+    if (([videoFormat isHLGColorSpace] & 1) != 0 && (objc_msgSend(videoFormat2, "isHLGColorSpace") & 1) == 0)
     {
       v18 = MEMORY[0x1E695E118];
       v19 = MEMORY[0x1E695E110];
@@ -431,7 +431,7 @@ BOOL __51__BWPixelTransferNode__supportedOutputPixelFormats__block_invoke(uint64
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -440,7 +440,7 @@ BOOL __51__BWPixelTransferNode__supportedOutputPixelFormats__block_invoke(uint64
   }
 }
 
-- (BWPixelTransferNode)initWithfractionalSourceRectEnabled:(BOOL)a3
+- (BWPixelTransferNode)initWithfractionalSourceRectEnabled:(BOOL)enabled
 {
   v11.receiver = self;
   v11.super_class = BWPixelTransferNode;
@@ -466,7 +466,7 @@ BOOL __51__BWPixelTransferNode__supportedOutputPixelFormats__block_invoke(uint64
     [(BWNode *)v4 setSupportsPrepareWhileRunning:1];
     v10 = [BWLimitedGMErrorLogger alloc];
     v4->_limitedGMErrorLogger = -[BWLimitedGMErrorLogger initWithName:maxLoggingCount:](v10, "initWithName:maxLoggingCount:", [MEMORY[0x1E696AEC0] stringWithFormat:@"PixelTransfer %p", v4], 10);
-    v4->_fractionalSourceRectEnabled = a3;
+    v4->_fractionalSourceRectEnabled = enabled;
   }
 
   return v4;
@@ -509,12 +509,12 @@ BOOL __51__BWPixelTransferNode__supportedOutputPixelFormats__block_invoke(uint64
   [(BWNode *)&v8 dealloc];
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4
+- (void)didSelectFormat:(id)format forInput:(id)input
 {
-  if ([a4 passthroughMode])
+  if ([input passthroughMode])
   {
-    -[BWNodeOutput setFormat:](self->super._output, "setFormat:", [a4 format]);
-    if ([a4 passthroughMode] == 1)
+    -[BWNodeOutput setFormat:](self->super._output, "setFormat:", [input format]);
+    if ([input passthroughMode] == 1)
     {
       v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Passthrough %@", -[BWNode name](self, "name")];
 
@@ -591,9 +591,9 @@ BOOL __51__BWPixelTransferNode__supportedOutputPixelFormats__block_invoke(uint64
   return self->_expectsMarkerBuffers != self->_liveExpectsMarkerBuffers || v14;
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
-  if (a4)
+  if (format)
   {
     outputFormatDescription = self->_outputFormatDescription;
     if (outputFormatDescription)
@@ -606,12 +606,12 @@ BOOL __51__BWPixelTransferNode__supportedOutputPixelFormats__block_invoke(uint64
   [(BWPixelTransferNode *)self _makeCurrentConfigurationLive];
   v10.receiver = self;
   v10.super_class = BWPixelTransferNode;
-  [(BWNode *)&v10 configurationWithID:a3 updatedFormat:a4 didBecomeLiveForInput:a5];
+  [(BWNode *)&v10 configurationWithID:d updatedFormat:format didBecomeLiveForInput:input];
 }
 
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input
 {
-  if (!a3)
+  if (!d)
   {
     outputFormatDescription = self->_outputFormatDescription;
     if (outputFormatDescription)
@@ -642,16 +642,16 @@ BOOL __51__BWPixelTransferNode__supportedOutputPixelFormats__block_invoke(uint64
 
   v10.receiver = self;
   v10.super_class = BWPixelTransferNode;
-  [(BWNode *)&v10 didReachEndOfDataForConfigurationID:a3 input:a4];
+  [(BWNode *)&v10 didReachEndOfDataForConfigurationID:d input:input];
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  v4 = a3;
+  bufferCopy = buffer;
   v6 = MEMORY[0x1E695FF58];
   if (*MEMORY[0x1E695FF58] == 1)
   {
-    BWGetOriginalPresentationTimeStampFromBuffer(a3, &v387);
+    BWGetOriginalPresentationTimeStampFromBuffer(buffer, &v387);
     time[0].origin = *&v387.value;
     *&time[0].size.width = v387.epoch;
     CMTimeGetSeconds(time);
@@ -663,7 +663,7 @@ BOOL __51__BWPixelTransferNode__supportedOutputPixelFormats__block_invoke(uint64
     [BWPixelTransferNode renderSampleBuffer:&self->_makeCurrentConfigurationLiveOnNextRenderCallback forInput:?];
   }
 
-  if (!self->_liveExpectsMarkerBuffers || ([(BWPixelTransferNode *)self _emitIfMarkerBuffer:v4]& 1) == 0)
+  if (!self->_liveExpectsMarkerBuffers || ([(BWPixelTransferNode *)self _emitIfMarkerBuffer:bufferCopy]& 1) == 0)
   {
     if (self->_doGMLogging && dword_1ED844550 != 0)
     {
@@ -683,15 +683,15 @@ BOOL __51__BWPixelTransferNode__supportedOutputPixelFormats__block_invoke(uint64
 
       if (v10)
       {
-        v11 = [(BWNode *)self name];
-        CMSampleBufferGetPresentationTimeStamp(time, v4);
+        name = [(BWNode *)self name];
+        CMSampleBufferGetPresentationTimeStamp(time, bufferCopy);
         Seconds = CMTimeGetSeconds(time);
         LODWORD(v387.value) = 136315906;
         *(&v387.value + 4) = "[BWPixelTransferNode renderSampleBuffer:forInput:]";
         LOWORD(v387.flags) = 2112;
-        *(&v387.flags + 2) = v11;
+        *(&v387.flags + 2) = name;
         HIWORD(v387.epoch) = 2048;
-        v388 = self;
+        selfCopy22 = self;
         v389 = 2048;
         *v390 = Seconds;
         LODWORD(v345) = 42;
@@ -712,13 +712,13 @@ BOOL __51__BWPixelTransferNode__supportedOutputPixelFormats__block_invoke(uint64
     v381 = *MEMORY[0x1E695F058];
     origin = *MEMORY[0x1E695F058];
     v397 = v378;
-    pixelBuffer = CMSampleBufferGetImageBuffer(v4);
+    pixelBuffer = CMSampleBufferGetImageBuffer(bufferCopy);
     fractionalSourceRectEnabled = self->_fractionalSourceRectEnabled;
     *type = 0;
     liveCropMode = self->_liveCropMode;
     if (liveCropMode == 2)
     {
-      if (!CMGetAttachment(v4, *off_1E798A3C8, 0) || !FigCFDictionaryGetCGRectIfPresent())
+      if (!CMGetAttachment(bufferCopy, *off_1E798A3C8, 0) || !FigCFDictionaryGetCGRectIfPresent())
       {
         goto LABEL_33;
       }
@@ -728,7 +728,7 @@ BOOL __51__BWPixelTransferNode__supportedOutputPixelFormats__block_invoke(uint64
     {
       if (liveCropMode == 1)
       {
-        v28 = CMGetAttachment(v4, *off_1E798A3C8, 0);
+        v28 = CMGetAttachment(bufferCopy, *off_1E798A3C8, 0);
         if (v28)
         {
           v29 = v28;
@@ -807,7 +807,7 @@ BOOL __51__BWPixelTransferNode__supportedOutputPixelFormats__block_invoke(uint64
       if ([(BWPixelTransferNode *)self appliesPrimaryCaptureRect])
       {
         v17 = *off_1E798A430;
-        v18 = CMGetAttachment(v4, *off_1E798A430, 0);
+        v18 = CMGetAttachment(bufferCopy, *off_1E798A430, 0);
         if (v18)
         {
           v19 = v18;
@@ -820,7 +820,7 @@ BOOL __51__BWPixelTransferNode__supportedOutputPixelFormats__block_invoke(uint64
           time[0].origin.y = v23;
           time[0].size.width = v24;
           time[0].size.height = v25;
-          CMSetAttachment(v4, v17, 0, 1u);
+          CMSetAttachment(bufferCopy, v17, 0, 1u);
           if (haveLiveInputCropRect)
           {
             v26 = v397.f64[0];
@@ -862,7 +862,7 @@ LABEL_45:
     }
 
     [(BWPixelTransferNode *)self _ensureDeviceOrientationMonitor];
-    v180 = CMGetAttachment(v4, *off_1E798A3C8, 0);
+    v180 = CMGetAttachment(bufferCopy, *off_1E798A3C8, 0);
     v181 = [v180 objectForKeyedSubscript:*off_1E798B540];
     v372 = v39;
     if ([v181 isEqualToString:*off_1E798A0E0])
@@ -876,8 +876,8 @@ LABEL_45:
     }
 
     IsExtensionDeviceType = BWDeviceTypeIsExtensionDeviceType([objc_msgSend(v180 objectForKeyedSubscript:{*off_1E798B238, v341, v345), "integerValue"}]);
-    v204 = [(BWDeviceOrientationMonitor *)self->_deviceOrientationMonitor mostRecentPortraitLandscapeOrientation];
-    liveRotationDegrees = [(BWDeviceOrientationMonitor *)self->_deviceOrientationMonitor rotationDegreesFromOrientation:v204 isFrontCamera:v182 isExternalCamera:IsExtensionDeviceType isMirrored:0 clientExpectsCameraMountedInLandscapeOrientation:[(BWGraph *)[(BWNode *)self graph] clientExpectsCameraMountedInLandscapeOrientation]];
+    mostRecentPortraitLandscapeOrientation = [(BWDeviceOrientationMonitor *)self->_deviceOrientationMonitor mostRecentPortraitLandscapeOrientation];
+    liveRotationDegrees = [(BWDeviceOrientationMonitor *)self->_deviceOrientationMonitor rotationDegreesFromOrientation:mostRecentPortraitLandscapeOrientation isFrontCamera:v182 isExternalCamera:IsExtensionDeviceType isMirrored:0 clientExpectsCameraMountedInLandscapeOrientation:[(BWGraph *)[(BWNode *)self graph] clientExpectsCameraMountedInLandscapeOrientation]];
     self->_liveRotationDegrees = liveRotationDegrees;
     if (self->_prevLiveDeviceOrientationCorrectionDegrees == liveRotationDegrees)
     {
@@ -889,7 +889,7 @@ LABEL_45:
       v6 = MEMORY[0x1E695FF58];
       if (dword_1ED844550)
       {
-        v385 = v4;
+        v385 = bufferCopy;
         *&v394[4] = 0;
         v394[0] = OS_LOG_TYPE_DEFAULT;
         v206 = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -906,15 +906,15 @@ LABEL_45:
 
         if (v208)
         {
-          v209 = [(BWNode *)self name];
+          name2 = [(BWNode *)self name];
           LODWORD(v387.value) = 136315906;
           *(&v387.value + 4) = "[BWPixelTransferNode renderSampleBuffer:forInput:]";
           LOWORD(v387.flags) = 2112;
-          *(&v387.flags + 2) = v209;
+          *(&v387.flags + 2) = name2;
           HIWORD(v387.epoch) = 2048;
-          v388 = self;
+          selfCopy22 = self;
           v389 = 1024;
-          *v390 = v204;
+          *v390 = mostRecentPortraitLandscapeOrientation;
           LODWORD(v345) = 38;
           v341 = &v387;
           _os_log_send_and_compose_impl();
@@ -922,7 +922,7 @@ LABEL_45:
 
         fig_log_call_emit_and_clean_up_after_send_and_compose();
         v6 = MEMORY[0x1E695FF58];
-        v4 = v385;
+        bufferCopy = v385;
         if (dword_1ED844550)
         {
           v237 = MEMORY[0x1E695FF58];
@@ -942,13 +942,13 @@ LABEL_45:
 
           if (v240)
           {
-            v241 = [(BWNode *)self name];
+            name3 = [(BWNode *)self name];
             LODWORD(v387.value) = 136315906;
             *(&v387.value + 4) = "[BWPixelTransferNode renderSampleBuffer:forInput:]";
             LOWORD(v387.flags) = 2112;
-            *(&v387.flags + 2) = v241;
+            *(&v387.flags + 2) = name3;
             HIWORD(v387.epoch) = 2048;
-            v388 = self;
+            selfCopy22 = self;
             v389 = 1024;
             *v390 = liveRotationDegrees;
             LODWORD(v345) = 38;
@@ -957,7 +957,7 @@ LABEL_45:
           }
 
           fig_log_call_emit_and_clean_up_after_send_and_compose();
-          v4 = v385;
+          bufferCopy = v385;
           v6 = v237;
         }
       }
@@ -1011,15 +1011,15 @@ LABEL_46:
 
             if (v56)
             {
-              v57 = [(BWNode *)self name];
-              CMSampleBufferGetPresentationTimeStamp(time, v4);
+              name4 = [(BWNode *)self name];
+              CMSampleBufferGetPresentationTimeStamp(time, bufferCopy);
               v58 = CMTimeGetSeconds(time);
               LODWORD(v387.value) = 136315906;
               *(&v387.value + 4) = "[BWPixelTransferNode renderSampleBuffer:forInput:]";
               LOWORD(v387.flags) = 2112;
-              *(&v387.flags + 2) = v57;
+              *(&v387.flags + 2) = name4;
               HIWORD(v387.epoch) = 2048;
-              v388 = self;
+              selfCopy22 = self;
               v389 = 2048;
               *v390 = v58;
               LODWORD(v345) = 42;
@@ -1031,7 +1031,7 @@ LABEL_46:
           }
 
           self->_doGMLogging = 0;
-          [(BWNodeOutput *)self->super._output emitSampleBuffer:v4, v341, v345];
+          [(BWNodeOutput *)self->super._output emitSampleBuffer:bufferCopy, v341, v345];
           LODWORD(v179) = 0;
 LABEL_296:
           if (*type)
@@ -1041,7 +1041,7 @@ LABEL_296:
 
           if (v179)
           {
-            CMSampleBufferGetPresentationTimeStamp(time, v4);
+            CMSampleBufferGetPresentationTimeStamp(time, bufferCopy);
             v297 = [BWDroppedSample newDroppedSampleWithReason:0x1F219BF10 pts:time];
             [(BWNodeOutput *)self->super._output emitDroppedSample:v297];
           }
@@ -1056,21 +1056,21 @@ LABEL_296:
 
         if (self->_liveAppliesUprightExifOrientationTransformToInput)
         {
-          v210 = [CMGetAttachment(v4 @"UprightExifOrientation"];
+          v210 = [CMGetAttachment(bufferCopy @"UprightExifOrientation"];
           [(BWPixelTransferNode *)self _updateLiveRotationAndFlipsToApplyUprightExifOrientation:v210];
         }
 
-        v59 = [(BWPixelBufferPool *)[(BWNodeOutput *)self->super._output livePixelBufferPool:v341] newPixelBuffer];
-        if (v59)
+        newPixelBuffer = [(BWPixelBufferPool *)[(BWNodeOutput *)self->super._output livePixelBufferPool:v341] newPixelBuffer];
+        if (newPixelBuffer)
         {
-          BWCMSampleBufferCreateCopyWithNewPixelBuffer(v4, v59, &self->_outputFormatDescription, type);
+          BWCMSampleBufferCreateCopyWithNewPixelBuffer(bufferCopy, newPixelBuffer, &self->_outputFormatDescription, type);
         }
 
         if (*type)
         {
-          v60 = CVPixelBufferGetWidth(v59);
-          destinationBuffer = v59;
-          v61 = CVPixelBufferGetHeight(v59);
+          v60 = CVPixelBufferGetWidth(newPixelBuffer);
+          destinationBuffer = newPixelBuffer;
+          v61 = CVPixelBufferGetHeight(newPixelBuffer);
           v62 = v38;
           v379 = [BWPixelTransferNode _getUpdatedPrimaryCaptureRectForOutputSampleBuffer:*type inputDimensions:?];
           v373 = v64;
@@ -1131,8 +1131,8 @@ LABEL_296:
           v86 = v60 | (v61 << 32);
           BWUpdateCameraIntrinsicsMatrixOnSampleBuffer(*type, *MEMORY[0x1E6960470], v69, LOBYTE(time[0].origin.x), v78, v77, v67, v68, v75, v71, v74, v72);
           v87 = *off_1E798A3C8;
-          v384 = v4;
-          CMGetAttachment(v4, *off_1E798A3C8, 0);
+          v384 = bufferCopy;
+          CMGetAttachment(bufferCopy, *off_1E798A3C8, 0);
           time[0].origin.x = 1.0;
           FigCFDictionaryGetCGFloatIfPresent();
           v88 = self->_liveRotationDegrees;
@@ -1179,7 +1179,7 @@ LABEL_296:
             time[0].origin.y = v100;
             time[0].size.width = v101;
             time[0].size.height = v102;
-            v103 = [CMGetAttachment(v4 v87];
+            v103 = [CMGetAttachment(bufferCopy v87];
             CGRectMakeWithDictionaryRepresentation(v103, time);
             v104 = origin.f64[0];
             v105 = v397.f64[0];
@@ -1380,14 +1380,14 @@ LABEL_296:
 
                 if (v259)
                 {
-                  v260 = [(BWNode *)self name];
+                  name5 = [(BWNode *)self name];
                   v261 = BWStringFromCGRect(origin.f64[0], origin.f64[1], v397.f64[0], v397.f64[1]);
                   LODWORD(v387.value) = 136316418;
                   *(&v387.value + 4) = "[BWPixelTransferNode renderSampleBuffer:forInput:]";
                   LOWORD(v387.flags) = 2112;
-                  *(&v387.flags + 2) = v260;
+                  *(&v387.flags + 2) = name5;
                   HIWORD(v387.epoch) = 2048;
-                  v388 = self;
+                  selfCopy22 = self;
                   v389 = 2112;
                   *v390 = v261;
                   *&v390[8] = 1024;
@@ -1399,7 +1399,7 @@ LABEL_296:
                   _os_log_send_and_compose_impl();
                 }
 
-                v4 = v384;
+                bufferCopy = v384;
                 fig_log_call_emit_and_clean_up_after_send_and_compose();
               }
             }
@@ -1414,10 +1414,10 @@ LABEL_296:
             {
               limitedGMErrorLogger = self->_limitedGMErrorLogger;
               v314 = MEMORY[0x1E696AEC0];
-              v344 = [(BWNode *)self name];
+              name6 = [(BWNode *)self name];
               v315 = v314;
-              v4 = v384;
-              -[BWLimitedGMErrorLogger logErrorNumber:errorString:](limitedGMErrorLogger, "logErrorNumber:errorString:", v179, [v315 stringWithFormat:@"%@: %p: %p: setting source crop rect transfer property to %@", v344, self, self->_transferSession, DictionaryRepresentation]);
+              bufferCopy = v384;
+              -[BWLimitedGMErrorLogger logErrorNumber:errorString:](limitedGMErrorLogger, "logErrorNumber:errorString:", v179, [v315 stringWithFormat:@"%@: %p: %p: setting source crop rect transfer property to %@", name6, self, self->_transferSession, DictionaryRepresentation]);
             }
 
             if (DictionaryRepresentation)
@@ -1455,14 +1455,14 @@ LABEL_296:
 
               if (v322)
               {
-                v323 = [(BWNode *)self name];
+                name7 = [(BWNode *)self name];
                 transferSession = self->_transferSession;
                 LODWORD(v387.value) = 136316162;
                 *(&v387.value + 4) = "[BWPixelTransferNode renderSampleBuffer:forInput:]";
                 LOWORD(v387.flags) = 2112;
-                *(&v387.flags + 2) = v323;
+                *(&v387.flags + 2) = name7;
                 HIWORD(v387.epoch) = 2048;
-                v388 = self;
+                selfCopy22 = self;
                 v389 = 1024;
                 *v390 = v319;
                 *&v390[4] = 2112;
@@ -1475,7 +1475,7 @@ LABEL_296:
               fig_log_call_emit_and_clean_up_after_send_and_compose();
               v318 = dword_1ED844550;
               LOBYTE(doGMLogging) = self->_doGMLogging;
-              v4 = v384;
+              bufferCopy = v384;
               v179 = v319;
             }
 
@@ -1498,13 +1498,13 @@ LABEL_296:
 
               if (v328)
               {
-                v329 = [(BWNode *)self name];
+                name8 = [(BWNode *)self name];
                 LODWORD(v387.value) = 136315906;
                 *(&v387.value + 4) = "[BWPixelTransferNode renderSampleBuffer:forInput:]";
                 LOWORD(v387.flags) = 2112;
-                *(&v387.flags + 2) = v329;
+                *(&v387.flags + 2) = name8;
                 HIWORD(v387.epoch) = 2048;
-                v388 = self;
+                selfCopy22 = self;
                 v389 = 2112;
                 *v390 = pixelBuffer;
                 LODWORD(v346) = 42;
@@ -1515,7 +1515,7 @@ LABEL_296:
               fig_log_call_emit_and_clean_up_after_send_and_compose();
               v318 = dword_1ED844550;
               LOBYTE(doGMLogging) = self->_doGMLogging;
-              v4 = v384;
+              bufferCopy = v384;
               v179 = v325;
             }
 
@@ -1538,13 +1538,13 @@ LABEL_296:
 
               if (v333)
               {
-                v334 = [(BWNode *)self name];
+                name9 = [(BWNode *)self name];
                 LODWORD(v387.value) = 136315906;
                 *(&v387.value + 4) = "[BWPixelTransferNode renderSampleBuffer:forInput:]";
                 LOWORD(v387.flags) = 2112;
-                *(&v387.flags + 2) = v334;
+                *(&v387.flags + 2) = name9;
                 HIWORD(v387.epoch) = 2048;
-                v388 = self;
+                selfCopy22 = self;
                 v389 = 2112;
                 *v390 = cf;
                 LODWORD(v346) = 42;
@@ -1553,7 +1553,7 @@ LABEL_296:
               }
 
               fig_log_call_emit_and_clean_up_after_send_and_compose();
-              v4 = v384;
+              bufferCopy = v384;
               v179 = v330;
             }
 
@@ -1561,13 +1561,13 @@ LABEL_296:
             {
               v335 = self->_limitedGMErrorLogger;
               v336 = MEMORY[0x1E696AEC0];
-              v337 = [(BWNode *)self name];
-              CMSampleBufferGetPresentationTimeStamp(time, v4);
+              name10 = [(BWNode *)self name];
+              CMSampleBufferGetPresentationTimeStamp(time, bufferCopy);
               v296 = cf;
-              -[BWLimitedGMErrorLogger logErrorNumber:errorString:](v335, "logErrorNumber:errorString:", v179, [v336 stringWithFormat:@"%@: %p: %.4lf: %p: transferring from %p to %p", v337, self, CMTimeGetSeconds(time), self->_transferSession, pixelBuffer, cf]);
+              -[BWLimitedGMErrorLogger logErrorNumber:errorString:](v335, "logErrorNumber:errorString:", v179, [v336 stringWithFormat:@"%@: %p: %.4lf: %p: transferring from %p to %p", name10, self, CMTimeGetSeconds(time), self->_transferSession, pixelBuffer, cf]);
               FigDebugAssert3();
 LABEL_361:
-              v59 = destinationBuffer;
+              newPixelBuffer = destinationBuffer;
               v6 = MEMORY[0x1E695FF58];
 LABEL_293:
               CFRelease(v296);
@@ -1633,7 +1633,7 @@ LABEL_92:
             if (v118)
             {
               v138 = 0.0;
-              v59 = destinationBuffer;
+              newPixelBuffer = destinationBuffer;
               if (self->_liveCropMode == 2 && (v139 = self->_liveValidOutputDimensions.width, v139 >= 1) && (v140 = self->_liveValidOutputDimensions.height, v140 >= 1))
               {
                 v403.origin.x = 0.0;
@@ -1683,7 +1683,7 @@ LABEL_92:
 
                 if (v165)
                 {
-                  v166 = [(BWNode *)self name];
+                  name11 = [(BWNode *)self name];
                   v167 = v160;
                   v168 = BWStringFromCGRect(origin.f64[0], origin.f64[1], v397.f64[0], v397.f64[1]);
                   v169 = BWStringFromCGRect(v142, v138, v89, v76);
@@ -1691,9 +1691,9 @@ LABEL_92:
                   LODWORD(v387.value) = 136316674;
                   *(&v387.value + 4) = "[BWPixelTransferNode renderSampleBuffer:forInput:]";
                   LOWORD(v387.flags) = 2112;
-                  *(&v387.flags + 2) = v166;
+                  *(&v387.flags + 2) = name11;
                   HIWORD(v387.epoch) = 2048;
-                  v388 = self;
+                  selfCopy22 = self;
                   v389 = 2112;
                   *v390 = v168;
                   v160 = v167;
@@ -1711,7 +1711,7 @@ LABEL_92:
                 fig_log_call_emit_and_clean_up_after_send_and_compose();
                 v162 = dword_1ED844550;
                 LOBYTE(v161) = self->_doGMLogging;
-                v4 = v384;
+                bufferCopy = v384;
                 v118 = v371;
               }
 
@@ -1733,13 +1733,13 @@ LABEL_92:
 
                 if (v185)
                 {
-                  v186 = [(BWNode *)self name];
+                  name12 = [(BWNode *)self name];
                   LODWORD(v387.value) = 136315906;
                   *(&v387.value + 4) = "[BWPixelTransferNode renderSampleBuffer:forInput:]";
                   LOWORD(v387.flags) = 2112;
-                  *(&v387.flags + 2) = v186;
+                  *(&v387.flags + 2) = name12;
                   HIWORD(v387.epoch) = 2048;
-                  v388 = self;
+                  selfCopy22 = self;
                   v389 = 2112;
                   *v390 = pixelBuffer;
                   LODWORD(v346) = 42;
@@ -1750,7 +1750,7 @@ LABEL_92:
                 fig_log_call_emit_and_clean_up_after_send_and_compose();
                 v162 = dword_1ED844550;
                 LOBYTE(v161) = self->_doGMLogging;
-                v4 = v384;
+                bufferCopy = v384;
                 v118 = v371;
               }
 
@@ -1772,13 +1772,13 @@ LABEL_92:
 
                 if (v189)
                 {
-                  v190 = [(BWNode *)self name];
+                  name13 = [(BWNode *)self name];
                   LODWORD(v387.value) = 136315906;
                   *(&v387.value + 4) = "[BWPixelTransferNode renderSampleBuffer:forInput:]";
                   LOWORD(v387.flags) = 2112;
-                  *(&v387.flags + 2) = v190;
+                  *(&v387.flags + 2) = name13;
                   HIWORD(v387.epoch) = 2048;
-                  v388 = self;
+                  selfCopy22 = self;
                   v389 = 2112;
                   *v390 = destinationBuffer;
                   LODWORD(v346) = 42;
@@ -1787,7 +1787,7 @@ LABEL_92:
                 }
 
                 fig_log_call_emit_and_clean_up_after_send_and_compose();
-                v4 = v384;
+                bufferCopy = v384;
                 v118 = v371;
               }
 
@@ -1795,8 +1795,8 @@ LABEL_92:
               {
                 v191 = self->_limitedGMErrorLogger;
                 v192 = MEMORY[0x1E696AEC0];
-                v193 = [(BWNode *)self name];
-                CMSampleBufferGetPresentationTimeStamp(time, v4);
+                name14 = [(BWNode *)self name];
+                CMSampleBufferGetPresentationTimeStamp(time, bufferCopy);
                 v194 = CMTimeGetSeconds(time);
                 v195 = self->_rotationSession;
                 v196 = CVPixelBufferGetPixelFormatType(pixelBuffer);
@@ -1808,10 +1808,10 @@ LABEL_92:
                 v202 = BWStringFromCGRect(v142, v138, v89, v76);
                 v349 = v201;
                 v179 = v200;
-                v59 = destinationBuffer;
+                newPixelBuffer = destinationBuffer;
                 v348 = v198;
-                v4 = v384;
-                v343 = v193;
+                bufferCopy = v384;
+                v343 = name14;
                 v6 = MEMORY[0x1E695FF58];
                 -[BWLimitedGMErrorLogger logErrorNumber:errorString:](v191, "logErrorNumber:errorString:", v179, [v192 stringWithFormat:@"%@: %p: %.4lf: %p: rotating sub-image with input %@ rect %@, dest %@ rect %@", v343, self, *&v194, v195, v197, v348, v349, v202]);
                 FigDebugAssert3();
@@ -1845,7 +1845,7 @@ LABEL_258:
                   goto LABEL_268;
                 }
 
-                FormatDescription = CMSampleBufferGetFormatDescription(v4);
+                FormatDescription = CMSampleBufferGetFormatDescription(bufferCopy);
                 Dimensions = CMVideoFormatDescriptionGetDimensions(FormatDescription);
                 [(BWPixelTransferNode *)self _updateLiveDeviceOrientationAffectedMetadataForOutputSampleBuffer:Dimensions.width inputDims:Dimensions.height inputCropRect:origin.f64[0], origin.f64[1], v397.f64[0], v397.f64[1]];
               }
@@ -1864,7 +1864,7 @@ LABEL_268:
 
               v273 = CMGetAttachment(pixelBuffer, @"RotationDegrees", 0);
 LABEL_270:
-              CMSetAttachment(v59, @"RotationDegrees", v273, 1u);
+              CMSetAttachment(newPixelBuffer, @"RotationDegrees", v273, 1u);
 LABEL_271:
               if (self->_liveFlipHorizontal)
               {
@@ -1881,21 +1881,21 @@ LABEL_271:
                   }
 
                   v287 = CMGetAttachment(pixelBuffer, @"MirroredHorizontal", 0);
-                  CMSetAttachment(v59, @"MirroredHorizontal", v287, 1u);
+                  CMSetAttachment(newPixelBuffer, @"MirroredHorizontal", v287, 1u);
                   v275 = CMGetAttachment(pixelBuffer, @"MirroredVertical", 0);
-                  v276 = v59;
+                  v276 = newPixelBuffer;
                   v274 = @"MirroredVertical";
 LABEL_276:
                   CMSetAttachment(v276, v274, v275, 1u);
 LABEL_277:
                   v277 = *MEMORY[0x1E6965F18];
                   v278 = CMGetAttachment(pixelBuffer, *MEMORY[0x1E6965F18], 0);
-                  CMSetAttachment(v59, v277, v278, 1u);
+                  CMSetAttachment(newPixelBuffer, v277, v278, 1u);
                   v279 = CMGetAttachment(pixelBuffer, @"AmbientViewingEnvironmentStrength", 0);
                   if (v279)
                   {
                     v280 = v279;
-                    IOSurface = CVPixelBufferGetIOSurface(v59);
+                    IOSurface = CVPixelBufferGetIOSurface(newPixelBuffer);
                     BWUtilitiesApplyAVEStrength(IOSurface, v280);
                   }
 
@@ -1917,15 +1917,15 @@ LABEL_277:
 
                     if (v284)
                     {
-                      v285 = [(BWNode *)self name];
+                      name15 = [(BWNode *)self name];
                       CMSampleBufferGetPresentationTimeStamp(time, *type);
                       v286 = CMTimeGetSeconds(time);
                       LODWORD(v387.value) = 136315906;
                       *(&v387.value + 4) = "[BWPixelTransferNode renderSampleBuffer:forInput:]";
                       LOWORD(v387.flags) = 2112;
-                      *(&v387.flags + 2) = v285;
+                      *(&v387.flags + 2) = name15;
                       HIWORD(v387.epoch) = 2048;
-                      v388 = self;
+                      selfCopy22 = self;
                       v389 = 2048;
                       *v390 = v286;
                       LODWORD(v346) = 42;
@@ -1934,7 +1934,7 @@ LABEL_277:
                     }
 
                     fig_log_call_emit_and_clean_up_after_send_and_compose();
-                    v59 = destinationBuffer;
+                    newPixelBuffer = destinationBuffer;
                   }
 
                   self->_doGMLogging = 0;
@@ -1954,7 +1954,7 @@ LABEL_292:
               }
 
               v275 = MEMORY[0x1E695E118];
-              v276 = v59;
+              v276 = newPixelBuffer;
               goto LABEL_276;
             }
 
@@ -2002,14 +2002,14 @@ LABEL_292:
 
                   if (v155)
                   {
-                    v156 = [(BWNode *)self name];
+                    name16 = [(BWNode *)self name];
                     v157 = self->_rotationSession;
                     LODWORD(v387.value) = 136316162;
                     *(&v387.value + 4) = "[BWPixelTransferNode renderSampleBuffer:forInput:]";
                     LOWORD(v387.flags) = 2112;
-                    *(&v387.flags + 2) = v156;
+                    *(&v387.flags + 2) = name16;
                     HIWORD(v387.epoch) = 2048;
-                    v388 = self;
+                    selfCopy22 = self;
                     v389 = 1024;
                     *v390 = v152;
                     *&v390[4] = 2112;
@@ -2022,7 +2022,7 @@ LABEL_292:
                   fig_log_call_emit_and_clean_up_after_send_and_compose();
                   v151 = dword_1ED844550;
                   LOBYTE(v150) = self->_doGMLogging;
-                  v4 = v384;
+                  bufferCopy = v384;
                 }
               }
 
@@ -2049,13 +2049,13 @@ LABEL_292:
 
                 if (v221)
                 {
-                  v222 = [(BWNode *)self name];
+                  name17 = [(BWNode *)self name];
                   LODWORD(v387.value) = 136315906;
                   *(&v387.value + 4) = "[BWPixelTransferNode renderSampleBuffer:forInput:]";
                   LOWORD(v387.flags) = 2112;
-                  *(&v387.flags + 2) = v222;
+                  *(&v387.flags + 2) = name17;
                   HIWORD(v387.epoch) = 2048;
-                  v388 = self;
+                  selfCopy22 = self;
                   v389 = 2112;
                   *v390 = pixelBuffer;
                   LODWORD(v346) = 42;
@@ -2066,7 +2066,7 @@ LABEL_292:
                 fig_log_call_emit_and_clean_up_after_send_and_compose();
                 v151 = dword_1ED844550;
                 LOBYTE(v150) = self->_doGMLogging;
-                v4 = v384;
+                bufferCopy = v384;
               }
 
               if (v150 && v151)
@@ -2087,14 +2087,14 @@ LABEL_292:
 
                 if (v225)
                 {
-                  v226 = [(BWNode *)self name];
+                  name18 = [(BWNode *)self name];
                   intermediatePixelBufferForStillHDRToSDRConversion = self->_intermediatePixelBufferForStillHDRToSDRConversion;
                   LODWORD(v387.value) = 136315906;
                   *(&v387.value + 4) = "[BWPixelTransferNode renderSampleBuffer:forInput:]";
                   LOWORD(v387.flags) = 2112;
-                  *(&v387.flags + 2) = v226;
+                  *(&v387.flags + 2) = name18;
                   HIWORD(v387.epoch) = 2048;
-                  v388 = self;
+                  selfCopy22 = self;
                   v389 = 2112;
                   *v390 = intermediatePixelBufferForStillHDRToSDRConversion;
                   LODWORD(v346) = 42;
@@ -2103,7 +2103,7 @@ LABEL_292:
                 }
 
                 fig_log_call_emit_and_clean_up_after_send_and_compose();
-                v4 = v384;
+                bufferCopy = v384;
                 v118 = 0;
               }
 
@@ -2121,7 +2121,7 @@ LABEL_292:
               v229 = self->_conversionMethodForStillImagesDuringHDRVideo;
               if (v229 != 2)
               {
-                v59 = destinationBuffer;
+                newPixelBuffer = destinationBuffer;
                 if (v229 == 4)
                 {
                   [(BWPixelTransferNode *)self _convertUsingHDRProcessing:destinationBuffer toSDR:?];
@@ -2130,7 +2130,7 @@ LABEL_292:
                 goto LABEL_258;
               }
 
-              v59 = destinationBuffer;
+              newPixelBuffer = destinationBuffer;
               v363 = VTPixelTransferSessionTransferImage(self->_transferSession, self->_intermediatePixelBufferForStillHDRToSDRConversion, destinationBuffer);
               v230 = self->_doGMLogging;
               v231 = dword_1ED844550;
@@ -2152,14 +2152,14 @@ LABEL_292:
 
                 if (v234)
                 {
-                  v235 = [(BWNode *)self name];
+                  name19 = [(BWNode *)self name];
                   v236 = self->_transferSession;
                   LODWORD(v387.value) = 136316162;
                   *(&v387.value + 4) = "[BWPixelTransferNode renderSampleBuffer:forInput:]";
                   LOWORD(v387.flags) = 2112;
-                  *(&v387.flags + 2) = v235;
+                  *(&v387.flags + 2) = name19;
                   HIWORD(v387.epoch) = 2048;
-                  v388 = self;
+                  selfCopy22 = self;
                   v389 = 1024;
                   *v390 = v363;
                   *&v390[4] = 2112;
@@ -2172,7 +2172,7 @@ LABEL_292:
                 fig_log_call_emit_and_clean_up_after_send_and_compose();
                 v231 = dword_1ED844550;
                 LOBYTE(v230) = self->_doGMLogging;
-                v4 = v384;
+                bufferCopy = v384;
                 v118 = 0;
               }
 
@@ -2197,14 +2197,14 @@ LABEL_292:
 
                   if (v264)
                   {
-                    v265 = [(BWNode *)self name];
+                    name20 = [(BWNode *)self name];
                     v266 = self->_intermediatePixelBufferForStillHDRToSDRConversion;
                     LODWORD(v387.value) = 136315906;
                     *(&v387.value + 4) = "[BWPixelTransferNode renderSampleBuffer:forInput:]";
                     LOWORD(v387.flags) = 2112;
-                    *(&v387.flags + 2) = v265;
+                    *(&v387.flags + 2) = name20;
                     HIWORD(v387.epoch) = 2048;
-                    v388 = self;
+                    selfCopy22 = self;
                     v389 = 2112;
                     *v390 = v266;
                     LODWORD(v346) = 42;
@@ -2215,7 +2215,7 @@ LABEL_292:
                   fig_log_call_emit_and_clean_up_after_send_and_compose();
                   v231 = dword_1ED844550;
                   LOBYTE(v230) = self->_doGMLogging;
-                  v4 = v384;
+                  bufferCopy = v384;
                   v118 = 0;
                 }
               }
@@ -2238,19 +2238,19 @@ LABEL_289:
                 v380 = self->_limitedGMErrorLogger;
                 rectb = MEMORY[0x1E696AEC0];
                 v374 = [(BWNode *)self name:v342];
-                CMSampleBufferGetPresentationTimeStamp(time, v4);
+                CMSampleBufferGetPresentationTimeStamp(time, bufferCopy);
                 v288 = CMTimeGetSeconds(time);
                 v289 = self->_rotationSession;
                 v290 = CVPixelBufferGetPixelFormatType(pixelBuffer);
                 v291 = BWStringFromCVPixelFormatType(v290);
                 v179 = CVPixelBufferGetWidth(pixelBuffer);
                 v292 = CVPixelBufferGetHeight(pixelBuffer);
-                v59 = destinationBuffer;
+                newPixelBuffer = destinationBuffer;
                 v293 = CVPixelBufferGetPixelFormatType(destinationBuffer);
                 v294 = BWStringFromCVPixelFormatType(v293);
                 v295 = CVPixelBufferGetWidth(destinationBuffer);
                 v347 = v291;
-                v4 = v384;
+                bufferCopy = v384;
                 -[BWLimitedGMErrorLogger logErrorNumber:errorString:](v380, "logErrorNumber:errorString:", v152, [rectb stringWithFormat:@"%@: %p: %.4lf: %p: rotating scaler rect %@ 0, 0, %lu x %lu, output %@ %lu x %lu, input %p, output %p", v374, self, *&v288, v289, v347, v179, v292, v294, v295, CVPixelBufferGetHeight(destinationBuffer), pixelBuffer, destinationBuffer]);
                 FigDebugAssert3();
                 v6 = MEMORY[0x1E695FF58];
@@ -2277,14 +2277,14 @@ LABEL_289:
 LABEL_256:
                 v118 = 0;
                 fig_log_call_emit_and_clean_up_after_send_and_compose();
-                v4 = v384;
+                bufferCopy = v384;
                 goto LABEL_257;
               }
             }
 
             else
             {
-              v59 = destinationBuffer;
+              newPixelBuffer = destinationBuffer;
               v171 = VTPixelRotationSessionRotateImage(self->_rotationSession, pixelBuffer, destinationBuffer);
               v172 = self->_doGMLogging;
               v173 = dword_1ED844550;
@@ -2306,14 +2306,14 @@ LABEL_256:
 
                 if (v176)
                 {
-                  v177 = [(BWNode *)self name];
+                  name21 = [(BWNode *)self name];
                   v178 = self->_rotationSession;
                   LODWORD(v387.value) = 136316162;
                   *(&v387.value + 4) = "[BWPixelTransferNode renderSampleBuffer:forInput:]";
                   LOWORD(v387.flags) = 2112;
-                  *(&v387.flags + 2) = v177;
+                  *(&v387.flags + 2) = name21;
                   HIWORD(v387.epoch) = 2048;
-                  v388 = self;
+                  selfCopy22 = self;
                   v389 = 1024;
                   *v390 = v171;
                   *&v390[4] = 2112;
@@ -2326,7 +2326,7 @@ LABEL_256:
                 fig_log_call_emit_and_clean_up_after_send_and_compose();
                 v173 = dword_1ED844550;
                 LOBYTE(v172) = self->_doGMLogging;
-                v4 = v384;
+                bufferCopy = v384;
                 v118 = 0;
               }
 
@@ -2348,13 +2348,13 @@ LABEL_256:
 
                 if (v213)
                 {
-                  v214 = [(BWNode *)self name];
+                  name22 = [(BWNode *)self name];
                   LODWORD(v387.value) = 136315906;
                   *(&v387.value + 4) = "[BWPixelTransferNode renderSampleBuffer:forInput:]";
                   LOWORD(v387.flags) = 2112;
-                  *(&v387.flags + 2) = v214;
+                  *(&v387.flags + 2) = name22;
                   HIWORD(v387.epoch) = 2048;
-                  v388 = self;
+                  selfCopy22 = self;
                   v389 = 2112;
                   *v390 = pixelBuffer;
                   LODWORD(v346) = 42;
@@ -2365,7 +2365,7 @@ LABEL_256:
                 fig_log_call_emit_and_clean_up_after_send_and_compose();
                 v173 = dword_1ED844550;
                 LOBYTE(v172) = self->_doGMLogging;
-                v4 = v384;
+                bufferCopy = v384;
                 v118 = 0;
               }
 
@@ -2394,15 +2394,15 @@ LABEL_256:
               }
             }
 
-            v218 = [(BWNode *)self name];
+            name23 = [(BWNode *)self name];
             LODWORD(v387.value) = 136315906;
             *(&v387.value + 4) = "[BWPixelTransferNode renderSampleBuffer:forInput:]";
             LOWORD(v387.flags) = 2112;
-            *(&v387.flags + 2) = v218;
+            *(&v387.flags + 2) = name23;
             HIWORD(v387.epoch) = 2048;
-            v388 = self;
+            selfCopy22 = self;
             v389 = 2112;
-            *v390 = v59;
+            *v390 = newPixelBuffer;
             LODWORD(v346) = 42;
             v342 = &v387;
             _os_log_send_and_compose_impl();
@@ -2411,7 +2411,7 @@ LABEL_256:
 
           [BWPixelTransferNode renderSampleBuffer:? forInput:?];
           LODWORD(v179) = LODWORD(time[0].origin.x);
-          v59 = destinationBuffer;
+          newPixelBuffer = destinationBuffer;
           v6 = MEMORY[0x1E695FF58];
         }
 
@@ -2421,9 +2421,9 @@ LABEL_256:
         }
 
 LABEL_294:
-        if (v59)
+        if (newPixelBuffer)
         {
-          CFRelease(v59);
+          CFRelease(newPixelBuffer);
         }
 
         goto LABEL_296;
@@ -2445,15 +2445,15 @@ LABEL_294:
 
       if (v305)
       {
-        v306 = [(BWNode *)self name];
+        name24 = [(BWNode *)self name];
         v307 = self->_liveRotationDegrees;
         v308 = BWStringFromCGRect(origin.f64[0], origin.f64[1], v397.f64[0], v397.f64[1]);
         LODWORD(v387.value) = 136316162;
         *(&v387.value + 4) = "[BWPixelTransferNode renderSampleBuffer:forInput:]";
         LOWORD(v387.flags) = 2112;
-        *(&v387.flags + 2) = v306;
+        *(&v387.flags + 2) = name24;
         HIWORD(v387.epoch) = 2048;
-        v388 = self;
+        selfCopy22 = self;
         v389 = 1024;
         *v390 = v307;
         *&v390[4] = 2112;
@@ -2490,13 +2490,13 @@ LABEL_294:
 
       if (v311)
       {
-        v312 = [(BWNode *)self name];
+        name25 = [(BWNode *)self name];
         LODWORD(v387.value) = 136315650;
         *(&v387.value + 4) = "[BWPixelTransferNode renderSampleBuffer:forInput:]";
         LOWORD(v387.flags) = 2112;
-        *(&v387.flags + 2) = v312;
+        *(&v387.flags + 2) = name25;
         HIWORD(v387.epoch) = 2048;
-        v388 = self;
+        selfCopy22 = self;
         LODWORD(v345) = 32;
         v341 = &v387;
         _os_log_send_and_compose_impl();
@@ -2510,29 +2510,29 @@ LABEL_294:
   }
 }
 
-- (CGFloat)_getUpdatedPrimaryCaptureRectForOutputSampleBuffer:(uint64_t)a1 inputDimensions:(CMAttachmentBearerRef)target
+- (CGFloat)_getUpdatedPrimaryCaptureRectForOutputSampleBuffer:(uint64_t)buffer inputDimensions:(CMAttachmentBearerRef)target
 {
-  if (a1)
+  if (buffer)
   {
     v3 = *(MEMORY[0x1E695F050] + 16);
     rect.origin = *MEMORY[0x1E695F050];
     rect.size = v3;
     v4 = CMGetAttachment(target, *off_1E798A430, 0);
-    if (v4 && (*(a1 + 208) || (*(a1 + 216) & 1) != 0 || *(a1 + 218) == 1))
+    if (v4 && (*(buffer + 208) || (*(buffer + 216) & 1) != 0 || *(buffer + 218) == 1))
     {
       CGRectMakeWithDictionaryRepresentation(v4, &rect);
       memset(&v8, 0, sizeof(v8));
-      if (*(a1 + 216))
+      if (*(buffer + 216))
       {
         v5 = 1;
       }
 
       else
       {
-        v5 = *(a1 + 218);
+        v5 = *(buffer + 218);
       }
 
-      FigCaptureMakeMirrorAndRotateVideoTransform(1, 1, v5 & 1, *(a1 + 208), &v8);
+      FigCaptureMakeMirrorAndRotateVideoTransform(1, 1, v5 & 1, *(buffer + 208), &v8);
       v7 = v8;
       rect = CGRectApplyAffineTransform(rect, &v7);
     }
@@ -2562,10 +2562,10 @@ LABEL_294:
         [BWPixelTransferNode _ensureTransferSession];
       }
 
-      v3 = [v1 name];
+      name = [v1 name];
       v4 = *(v1 + 336);
       v33 = 138412802;
-      v34 = v3;
+      v34 = name;
       v35 = 2048;
       v29 = v1;
       v36 = v1;
@@ -2705,7 +2705,7 @@ LABEL_294:
   return result;
 }
 
-- (uint64_t)_convertUsingHDRProcessing:(__CVBuffer *)a3 toSDR:
+- (uint64_t)_convertUsingHDRProcessing:(__CVBuffer *)processing toSDR:
 {
   if (result)
   {
@@ -2745,7 +2745,7 @@ LABEL_294:
         if (IOSurface)
         {
           v12 = IOSurface;
-          v13 = CVPixelBufferGetIOSurface(a3);
+          v13 = CVPixelBufferGetIOSurface(processing);
           if (v13)
           {
             v14 = v13;
@@ -2852,28 +2852,28 @@ LABEL_294:
   return result;
 }
 
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4
+- (void)handleDroppedSample:(id)sample forInput:(id)input
 {
   if (self->_emitSampleBufferSemaphore)
   {
     emitSampleBufferSemaphore = self->_emitSampleBufferSemaphore;
-    v5 = +[BWDroppedSample newDroppedSampleFromDroppedSample:backPressureSemaphoresToIgnore:](BWDroppedSample, "newDroppedSampleFromDroppedSample:backPressureSemaphoresToIgnore:", a3, [MEMORY[0x1E695DEC8] arrayWithObjects:&emitSampleBufferSemaphore count:1]);
+    sampleCopy = +[BWDroppedSample newDroppedSampleFromDroppedSample:backPressureSemaphoresToIgnore:](BWDroppedSample, "newDroppedSampleFromDroppedSample:backPressureSemaphoresToIgnore:", sample, [MEMORY[0x1E695DEC8] arrayWithObjects:&emitSampleBufferSemaphore count:1]);
   }
 
   else
   {
-    v5 = a3;
+    sampleCopy = sample;
   }
 
-  v6 = v5;
-  [(BWNodeOutput *)self->super._output emitDroppedSample:v5];
+  v6 = sampleCopy;
+  [(BWNodeOutput *)self->super._output emitDroppedSample:sampleCopy];
 }
 
-- (void)setCropMode:(int)a3
+- (void)setCropMode:(int)mode
 {
-  if (self->_cropMode != a3)
+  if (self->_cropMode != mode)
   {
-    self->_cropMode = a3;
+    self->_cropMode = mode;
     [(BWPixelTransferNode *)self _updatePassthroughModes];
   }
 }
@@ -2891,62 +2891,62 @@ LABEL_294:
   return result;
 }
 
-- (void)setPassesBuffersThroughWhenPossible:(BOOL)a3
+- (void)setPassesBuffersThroughWhenPossible:(BOOL)possible
 {
-  if (self->_passesBuffersThroughWhenPossible != a3)
+  if (self->_passesBuffersThroughWhenPossible != possible)
   {
-    self->_passesBuffersThroughWhenPossible = a3;
+    self->_passesBuffersThroughWhenPossible = possible;
     [(BWPixelTransferNode *)self _updatePassthroughModes];
   }
 }
 
-- (void)setOutputWidth:(unint64_t)a3
+- (void)setOutputWidth:(unint64_t)width
 {
-  if (self->_outputWidth != a3)
+  if (self->_outputWidth != width)
   {
-    self->_outputWidth = a3;
+    self->_outputWidth = width;
     [(BWPixelTransferNode *)self _updateOutputRequirements];
   }
 }
 
-- (void)setOutputHeight:(unint64_t)a3
+- (void)setOutputHeight:(unint64_t)height
 {
-  if (self->_outputHeight != a3)
+  if (self->_outputHeight != height)
   {
-    self->_outputHeight = a3;
+    self->_outputHeight = height;
     [(BWPixelTransferNode *)self _updateOutputRequirements];
   }
 }
 
-- (void)setOutputPixelFormat:(unsigned int)a3
+- (void)setOutputPixelFormat:(unsigned int)format
 {
-  if (self->_outputPixelFormat != a3)
+  if (self->_outputPixelFormat != format)
   {
-    self->_outputPixelFormat = a3;
+    self->_outputPixelFormat = format;
     [(BWPixelTransferNode *)self _updateOutputRequirements];
   }
 }
 
-- (void)setPreferredOutputPixelFormats:(id)a3
+- (void)setPreferredOutputPixelFormats:(id)formats
 {
-  if (([a3 isEqualToArray:self->_preferredOutputPixelFormats] & 1) == 0)
+  if (([formats isEqualToArray:self->_preferredOutputPixelFormats] & 1) == 0)
   {
-    [(BWPixelTransferNode *)&self->_preferredOutputPixelFormats setPreferredOutputPixelFormats:a3, self];
+    [(BWPixelTransferNode *)&self->_preferredOutputPixelFormats setPreferredOutputPixelFormats:formats, self];
   }
 }
 
-- (void)setOutputColorSpaceProperties:(int)a3
+- (void)setOutputColorSpaceProperties:(int)properties
 {
-  if (self->_outputColorSpaceProperties != a3)
+  if (self->_outputColorSpaceProperties != properties)
   {
-    self->_outputColorSpaceProperties = a3;
+    self->_outputColorSpaceProperties = properties;
     [(BWPixelTransferNode *)self _updateOutputRequirements];
   }
 }
 
-- (void)setMaxLossyCompressionLevel:(int)a3
+- (void)setMaxLossyCompressionLevel:(int)level
 {
-  v3 = *&a3;
+  v3 = *&level;
   [(BWPixelTransferNode *)self setMaxInputLossyCompressionLevel:?];
 
   [(BWPixelTransferNode *)self setMaxOutputLossyCompressionLevel:v3];
@@ -2965,54 +2965,54 @@ LABEL_294:
   }
 }
 
-- (void)setMaxInputLossyCompressionLevel:(int)a3
+- (void)setMaxInputLossyCompressionLevel:(int)level
 {
-  if (self->_maxInputLossyCompressionLevel != a3)
+  if (self->_maxInputLossyCompressionLevel != level)
   {
-    self->_maxInputLossyCompressionLevel = a3;
+    self->_maxInputLossyCompressionLevel = level;
     [(BWPixelTransferNode *)self _updateInputRequirements];
   }
 }
 
-- (void)setMaxOutputLossyCompressionLevel:(int)a3
+- (void)setMaxOutputLossyCompressionLevel:(int)level
 {
-  if (self->_maxOutputLossyCompressionLevel != a3)
+  if (self->_maxOutputLossyCompressionLevel != level)
   {
-    self->_maxOutputLossyCompressionLevel = a3;
+    self->_maxOutputLossyCompressionLevel = level;
     [(BWPixelTransferNode *)self _updateOutputRequirements];
   }
 }
 
-- (void)setEmitSampleBufferSemaphore:(id)a3
+- (void)setEmitSampleBufferSemaphore:(id)semaphore
 {
   emitSampleBufferSemaphore = self->_emitSampleBufferSemaphore;
-  if (emitSampleBufferSemaphore != a3)
+  if (emitSampleBufferSemaphore != semaphore)
   {
 
-    self->_emitSampleBufferSemaphore = a3;
+    self->_emitSampleBufferSemaphore = semaphore;
   }
 }
 
-- (void)setConversionMethodForStillImagesDuringHDRVideos:(int)a3
+- (void)setConversionMethodForStillImagesDuringHDRVideos:(int)videos
 {
-  if (a3 == 3 && self->_fractionalSourceRectEnabled)
+  if (videos == 3 && self->_fractionalSourceRectEnabled)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"Internal inconsistency, conversionMethodForStillImagesDuringHDRVideos(%d) can not be set when fractional rects is enabled", 3), 0}]);
   }
 
-  if (self->_conversionMethodForStillImagesDuringHDRVideo != a3)
+  if (self->_conversionMethodForStillImagesDuringHDRVideo != videos)
   {
-    self->_conversionMethodForStillImagesDuringHDRVideo = a3;
+    self->_conversionMethodForStillImagesDuringHDRVideo = videos;
 
     [(BWPixelTransferNode *)self _updateOutputRequirements];
   }
 }
 
-- (void)setAllows422To420Conversion:(BOOL)a3
+- (void)setAllows422To420Conversion:(BOOL)conversion
 {
-  if (self->_allows422To420Conversion != a3)
+  if (self->_allows422To420Conversion != conversion)
   {
-    self->_allows422To420Conversion = a3;
+    self->_allows422To420Conversion = conversion;
     [(BWPixelTransferNode *)self _updateOutputRequirements];
   }
 }
@@ -3096,7 +3096,7 @@ LABEL_294:
   return result;
 }
 
-- (uint64_t)_intermediateBufferDimensionsForInputDimensions:(uint64_t)a3 outputDimensions:
+- (uint64_t)_intermediateBufferDimensionsForInputDimensions:(uint64_t)dimensions outputDimensions:
 {
   if (result)
   {
@@ -3114,9 +3114,9 @@ LABEL_294:
       v4 = COERCE_DOUBLE(__PAIR64__(a2, HIDWORD(a2)));
     }
 
-    v7 = vcvt_f32_s32(vext_s8(__PAIR64__(a3, HIDWORD(a3)), *&v4, 4uLL));
+    v7 = vcvt_f32_s32(vext_s8(__PAIR64__(dimensions, HIDWORD(dimensions)), *&v4, 4uLL));
     *&v4 = vdiv_f32(v7, vdup_lane_s32(v7, 1)).f32[0];
-    v8 = SHIDWORD(a3) / SHIDWORD(v4);
+    v8 = SHIDWORD(dimensions) / SHIDWORD(v4);
     if (*&v4 <= 4.0)
     {
       if (*&v4 < 0.25 && v8 > 4.0)
@@ -3142,8 +3142,8 @@ LABEL_294:
 
         *&v24.f64[0] = vmovn_s64(vcvtq_s64_f64(vrndpq_f64(vmulq_f64(v24, _Q3))));
         v16 = COERCE_DOUBLE(vadd_s32(*&v24.f64[0], *&v24.f64[0]));
-        v22.i64[0] = SHIDWORD(a3);
-        v22.i64[1] = a3;
+        v22.i64[0] = SHIDWORD(dimensions);
+        v22.i64[1] = dimensions;
         __asm { FMOV            V4.2D, #4.0 }
 
         v27 = vmovn_s64(vcvtq_s64_f64(vrndmq_f64(vmulq_f64(vmulq_f64(vcvtq_f64_s64(v22), _Q4), _Q3))));
@@ -3214,8 +3214,8 @@ LABEL_32:
       return v18 | v20;
     }
 
-    v10.i64[0] = SHIDWORD(a3);
-    v10.i64[1] = a3;
+    v10.i64[0] = SHIDWORD(dimensions);
+    v10.i64[1] = dimensions;
     __asm { FMOV            V1.2D, #0.25 }
 
     v14 = vmulq_f64(vcvtq_f64_s64(v10), _Q1);
@@ -3229,33 +3229,33 @@ LABEL_32:
   return result;
 }
 
-- (uint64_t)_ensureIntermediatePoolWithDimensions:(uint64_t)a1
+- (uint64_t)_ensureIntermediatePoolWithDimensions:(uint64_t)dimensions
 {
-  if (a1)
+  if (dimensions)
   {
     v4 = HIDWORD(a2);
-    if (*(a1 + 352) != a2)
+    if (*(dimensions + 352) != a2)
     {
       v5 = objc_autoreleasePoolPush();
       v6 = objc_alloc_init(BWVideoFormatRequirements);
-      v7 = [*(a1 + 8) liveFormat];
-      v8 = [a1 name];
-      if (!v8)
+      liveFormat = [*(dimensions + 8) liveFormat];
+      name = [dimensions name];
+      if (!name)
       {
-        v8 = @"PixelTransfer";
+        name = @"PixelTransfer";
       }
 
-      v9 = [(__CFString *)v8 stringByAppendingString:@" Intermediate"];
+      v9 = [(__CFString *)name stringByAppendingString:@" Intermediate"];
       [(BWVideoFormatRequirements *)v6 setWidth:a2];
       [(BWVideoFormatRequirements *)v6 setHeight:a2 >> 32];
-      v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v7, "pixelFormat")}];
+      v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(liveFormat, "pixelFormat")}];
       -[BWVideoFormatRequirements setSupportedPixelFormats:](v6, "setSupportedPixelFormats:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v15 count:1]);
       v14 = v6;
       v10 = +[BWVideoFormat formatByResolvingRequirements:](BWVideoFormat, "formatByResolvingRequirements:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v14 count:1]);
       if (v10)
       {
         v11 = v10;
-        if (*(a1 + 432) == 1 && dword_1ED844550)
+        if (*(dimensions + 432) == 1 && dword_1ED844550)
         {
           os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
           os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
@@ -3263,9 +3263,9 @@ LABEL_32:
           fig_log_call_emit_and_clean_up_after_send_and_compose();
         }
 
-        *(a1 + 344) = -[BWPixelBufferPool initWithVideoFormat:capacity:name:memoryPool:]([BWPixelBufferPool alloc], "initWithVideoFormat:capacity:name:memoryPool:", v11, 1, v9, [*(a1 + 16) memoryPool]);
-        *(a1 + 352) = a2;
-        *(a1 + 356) = v4;
+        *(dimensions + 344) = -[BWPixelBufferPool initWithVideoFormat:capacity:name:memoryPool:]([BWPixelBufferPool alloc], "initWithVideoFormat:capacity:name:memoryPool:", v11, 1, v9, [*(dimensions + 16) memoryPool]);
+        *(dimensions + 352) = a2;
+        *(dimensions + 356) = v4;
       }
 
       else
@@ -3338,12 +3338,12 @@ LABEL_13:
     result = CGRectMakeWithDictionaryRepresentation([result objectForKeyedSubscript:{*off_1E798B7A0, *&v26.origin, v11}], &v26);
     if (result)
     {
-      v12 = [*(v2 + 8) liveFormat];
-      v13 = [*(v2 + 16) liveFormat];
-      [v13 width];
-      [v12 width];
-      [v13 height];
-      [v12 height];
+      liveFormat = [*(v2 + 8) liveFormat];
+      liveFormat2 = [*(v2 + 16) liveFormat];
+      [liveFormat2 width];
+      [liveFormat width];
+      [liveFormat2 height];
+      [liveFormat height];
       v14 = OUTLINED_FUNCTION_11_10();
       v16 = FigCaptureCeilFloatToMultipleOf(v14, v15);
       v17 = OUTLINED_FUNCTION_11_10();
@@ -3364,13 +3364,13 @@ LABEL_13:
   return result;
 }
 
-- (void)_updateUprightExifOrientationOnSampleBufferIfNeeded:(uint64_t)a1
+- (void)_updateUprightExifOrientationOnSampleBufferIfNeeded:(uint64_t)needed
 {
-  if (a1)
+  if (needed)
   {
     v3 = [CMGetAttachment(target @"UprightExifOrientation"];
     v4 = v3;
-    if (*(a1 + 212) || (*(a1 + 217) & 1) != 0)
+    if (*(needed + 212) || (*(needed + 217) & 1) != 0)
     {
       v5 = 0;
       if (v3)
@@ -3381,7 +3381,7 @@ LABEL_13:
 
     else
     {
-      v5 = *(a1 + 219) ^ 1;
+      v5 = *(needed + 219) ^ 1;
       if (v3)
       {
 LABEL_5:
@@ -3390,7 +3390,7 @@ LABEL_5:
           v14 = 0;
           v6 = FigCaptureRotationDegreesAndMirroringFromExifOrientation(v3, &v14);
           v13 = 0;
-          v7 = ptn_rotationDegreesAndMirroringFromLiveConfiguration(*(a1 + 212), *(a1 + 217), *(a1 + 219), &v13);
+          v7 = ptn_rotationDegreesAndMirroringFromLiveConfiguration(*(needed + 212), *(needed + 217), *(needed + 219), &v13);
           if (v14 != v13 && (v7 == 270 || v7 == 90))
           {
             v6 += 180;
@@ -3405,13 +3405,13 @@ LABEL_5:
       }
     }
 
-    *(a1 + 328) = v4;
+    *(needed + 328) = v4;
   }
 }
 
-- (void)_updatePrimaryCaptureRect:(uint64_t)a1 forOutputSampleBuffer:(const void *)a2
+- (void)_updatePrimaryCaptureRect:(uint64_t)rect forOutputSampleBuffer:(const void *)buffer
 {
-  if (a1)
+  if (rect)
   {
     OUTLINED_FUNCTION_9_7();
     v3 = *off_1E798A430;
@@ -3422,7 +3422,7 @@ LABEL_5:
       {
         v8.origin.x = OUTLINED_FUNCTION_3_1();
         DictionaryRepresentation = CGRectCreateDictionaryRepresentation(v8);
-        CMSetAttachment(a2, v3, DictionaryRepresentation, 1u);
+        CMSetAttachment(buffer, v3, DictionaryRepresentation, 1u);
         if (DictionaryRepresentation)
         {
 
@@ -3433,14 +3433,14 @@ LABEL_5:
   }
 }
 
-- (unsigned)_updateLiveDeviceOrientationAffectedMetadataForOutputSampleBuffer:(double)a3 inputDims:(double)a4 inputCropRect:(double)a5
+- (unsigned)_updateLiveDeviceOrientationAffectedMetadataForOutputSampleBuffer:(double)buffer inputDims:(double)dims inputCropRect:(double)rect
 {
   v125 = a7;
   v126 = a8;
-  v121 = a5;
+  rectCopy = rect;
   v122 = a6;
-  v123 = a3;
-  v124 = a4;
+  bufferCopy = buffer;
+  dimsCopy = dims;
   if (result)
   {
     v8 = result;
@@ -3469,7 +3469,7 @@ LABEL_5:
           v140 = 0u;
           obj = [v101 allKeys];
           v102 = [obj countByEnumeratingWithState:&v137 objects:v136 count:16];
-          v11 = 0;
+          dictionary = 0;
           if (v102)
           {
             v100 = *v138;
@@ -3489,7 +3489,7 @@ LABEL_5:
             {
               for (i = 0; i != v102; i = v91 + 1)
               {
-                v107 = v11;
+                v107 = dictionary;
                 if (*v138 != v100)
                 {
                   objc_enumerationMutation(obj);
@@ -3508,7 +3508,7 @@ LABEL_5:
                 if (v19)
                 {
                   v20 = v19;
-                  v21 = 0;
+                  array = 0;
                   v22 = *v133;
                   do
                   {
@@ -3530,7 +3530,7 @@ LABEL_5:
                       if (v25)
                       {
                         v29 = CGRectMakeWithDictionaryRepresentation(v25, &rect);
-                        OUTLINED_FUNCTION_0_23(v37, v38, v39, v40, v41, v42, v43, v44, v29, v30, v31, v32, v33, v34, v35, v36, v93, v94, v95, v96, v97, v98, obj, v100, v101, v102, v103, v104, v105, v106, v107, v108, v109, v110, v111, v112, v113, v114, v115, v116, v117, v118, v119, v120, v121, v122, v123, v124, v125, v126, v127, v128, v129, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+                        OUTLINED_FUNCTION_0_23(v37, v38, v39, v40, v41, v42, v43, v44, v29, v30, v31, v32, v33, v34, v35, v36, v93, v94, v95, v96, v97, v98, obj, v100, v101, v102, v103, v104, v105, v106, v107, v108, v109, v110, v111, v112, v113, v114, v115, v116, v117, v118, v119, v120, rectCopy, v122, bufferCopy, dimsCopy, v125, v126, v127, v128, v129, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
                         v27 = v45;
                         v26 = v46;
                       }
@@ -3546,7 +3546,7 @@ LABEL_5:
                         if (v47)
                         {
                           v52 = CGRectMakeWithDictionaryRepresentation(v47, &rect);
-                          v51 = OUTLINED_FUNCTION_0_23(v60, v61, v62, v63, v64, v65, v66, v67, v52, v53, v54, v55, v56, v57, v58, v59, v93, v94, v95, v96, v97, v98, obj, v100, v101, v102, v103, v104, v105, v106, v107, v108, v109, v110, v111, v112, v113, v114, v115, v116, v117, v118, v119, v120, v121, v122, v123, v124, v125, v126, v127, v128, v129, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+                          v51 = OUTLINED_FUNCTION_0_23(v60, v61, v62, v63, v64, v65, v66, v67, v52, v53, v54, v55, v56, v57, v58, v59, v93, v94, v95, v96, v97, v98, obj, v100, v101, v102, v103, v104, v105, v106, v107, v108, v109, v110, v111, v112, v113, v114, v115, v116, v117, v118, v119, v120, rectCopy, v122, bufferCopy, dimsCopy, v125, v126, v127, v128, v129, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
                           v49 = v68;
                         }
 
@@ -3557,7 +3557,7 @@ LABEL_5:
                         if (v69)
                         {
                           v70 = CGRectMakeWithDictionaryRepresentation(v69, &rect);
-                          OUTLINED_FUNCTION_0_23(v78, v79, v80, v81, v82, v83, v84, v85, v70, v71, v72, v73, v74, v75, v76, v77, v93, v94, v95, v96, v97, v98, obj, v100, v101, v102, v103, v104, v105, v106, v107, v108, v109, v110, v111, v112, v113, v114, v115, v116, v117, v118, v119, v120, v121, v122, v123, v124, v125, v126, v127, v128, v129, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+                          OUTLINED_FUNCTION_0_23(v78, v79, v80, v81, v82, v83, v84, v85, v70, v71, v72, v73, v74, v75, v76, v77, v93, v94, v95, v96, v97, v98, obj, v100, v101, v102, v103, v104, v105, v106, v107, v108, v109, v110, v111, v112, v113, v114, v115, v116, v117, v118, v119, v120, rectCopy, v122, bufferCopy, dimsCopy, v125, v126, v127, v128, v129, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
                           v15 = v86;
                           v14 = v87;
                         }
@@ -3615,12 +3615,12 @@ LABEL_5:
                           FigCFDictionarySetInt32();
                         }
 
-                        if (!v21)
+                        if (!array)
                         {
-                          v21 = [MEMORY[0x1E695DF70] array];
+                          array = [MEMORY[0x1E695DF70] array];
                         }
 
-                        [v21 addObject:v88];
+                        [array addObject:v88];
                         v20 = v115;
                       }
 
@@ -3636,27 +3636,27 @@ LABEL_5:
 
                 else
                 {
-                  v21 = 0;
+                  array = 0;
                 }
 
-                if ([v21 count])
+                if ([array count])
                 {
                   v91 = v106;
-                  v11 = v107;
+                  dictionary = v107;
                   if (!v107)
                   {
-                    v11 = [MEMORY[0x1E695DF90] dictionary];
+                    dictionary = [MEMORY[0x1E695DF90] dictionary];
                   }
 
                   v92 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v103];
-                  [v92 setObject:v21 forKeyedSubscript:v105];
-                  [v11 setObject:objc_msgSend(MEMORY[0x1E695DF20] forKeyedSubscript:{"dictionaryWithDictionary:", v92), v104}];
+                  [v92 setObject:array forKeyedSubscript:v105];
+                  [dictionary setObject:objc_msgSend(MEMORY[0x1E695DF20] forKeyedSubscript:{"dictionaryWithDictionary:", v92), v104}];
                 }
 
                 else
                 {
                   v91 = v106;
-                  v11 = v107;
+                  dictionary = v107;
                 }
               }
 
@@ -3666,7 +3666,7 @@ LABEL_5:
             while (v102);
           }
 
-          [v98 setObject:v11 forKeyedSubscript:v97];
+          [v98 setObject:dictionary forKeyedSubscript:v97];
           return [OUTLINED_FUNCTION_4_3() setObject:? forKeyedSubscript:?];
         }
       }

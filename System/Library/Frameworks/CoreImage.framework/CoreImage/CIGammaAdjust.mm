@@ -43,9 +43,9 @@
     return 0;
   }
 
-  v3 = [(CIGammaAdjust *)self _isIdentity];
+  _isIdentity = [(CIGammaAdjust *)self _isIdentity];
   inputImage = self->inputImage;
-  if (v3)
+  if (_isIdentity)
   {
     v5 = inputImage;
 

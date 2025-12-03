@@ -1,13 +1,13 @@
 @interface UGCRatingCategoryCell
-- (UGCRatingCategoryCell)initWithCurrentState:(int64_t)a3 isInlineMode:(BOOL)a4;
+- (UGCRatingCategoryCell)initWithCurrentState:(int64_t)state isInlineMode:(BOOL)mode;
 - (UGCRatingCategoryCellDelegate)delegate;
 - (void)_setupConstraints;
-- (void)_setupSubviewsWithState:(int64_t)a3;
-- (void)_updateState:(int64_t)a3;
-- (void)likeDislikeViewDidSelectDislike:(id)a3;
-- (void)likeDislikeViewDidSelectLike:(id)a3;
-- (void)setAppleRatingViewModel:(id)a3;
-- (void)setCurrentState:(int64_t)a3 animated:(BOOL)a4;
+- (void)_setupSubviewsWithState:(int64_t)state;
+- (void)_updateState:(int64_t)state;
+- (void)likeDislikeViewDidSelectDislike:(id)dislike;
+- (void)likeDislikeViewDidSelectLike:(id)like;
+- (void)setAppleRatingViewModel:(id)model;
+- (void)setCurrentState:(int64_t)state animated:(BOOL)animated;
 @end
 
 @implementation UGCRatingCategoryCell
@@ -19,75 +19,75 @@
   return WeakRetained;
 }
 
-- (void)setAppleRatingViewModel:(id)a3
+- (void)setAppleRatingViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   appleRatingViewModel = self->_appleRatingViewModel;
-  if (appleRatingViewModel != v5)
+  if (appleRatingViewModel != modelCopy)
   {
-    v8 = v5;
-    v7 = [(MURatingPercentageViewModel *)appleRatingViewModel isEqual:v5];
-    v5 = v8;
+    v8 = modelCopy;
+    v7 = [(MURatingPercentageViewModel *)appleRatingViewModel isEqual:modelCopy];
+    modelCopy = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_appleRatingViewModel, a3);
+      objc_storeStrong(&self->_appleRatingViewModel, model);
       [(MUAppleRatingRowView *)self->_categoryView setViewModel:self->_appleRatingViewModel];
       [(UGCRatingCategoryLikeDislikeView *)self->_likeDislikeView setViewModel:self->_appleRatingViewModel];
-      v5 = v8;
+      modelCopy = v8;
     }
   }
 }
 
-- (void)setCurrentState:(int64_t)a3 animated:(BOOL)a4
+- (void)setCurrentState:(int64_t)state animated:(BOOL)animated
 {
-  if (self->_currentState != a3)
+  if (self->_currentState != state)
   {
-    self->_currentState = a3;
+    self->_currentState = state;
     [UGCRatingCategoryLikeDislikeView setCurrentState:"setCurrentState:animated:" animated:?];
   }
 }
 
-- (void)_updateState:(int64_t)a3
+- (void)_updateState:(int64_t)state
 {
-  if (self->_currentState != a3)
+  if (self->_currentState != state)
   {
     [UGCRatingCategoryCell setCurrentState:"setCurrentState:animated:" animated:?];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained ratingCategoryCellChangedState:a3 forKey:self->_key];
+    [WeakRetained ratingCategoryCellChangedState:state forKey:self->_key];
   }
 }
 
-- (void)likeDislikeViewDidSelectDislike:(id)a3
+- (void)likeDislikeViewDidSelectDislike:(id)dislike
 {
-  v4 = a3;
+  dislikeCopy = dislike;
   currentState = self->_currentState;
   objc_initWeak(&location, self);
-  v6 = [(UGCRatingCategoryCell *)self delegate];
+  delegate = [(UGCRatingCategoryCell *)self delegate];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100D32B30;
   v7[3] = &unk_101652E88;
   objc_copyWeak(v8, &location);
   v8[1] = (currentState != 1);
-  [v6 ratingCategoryCell:self presentInformedConsentIfNeededWithCompletion:v7];
+  [delegate ratingCategoryCell:self presentInformedConsentIfNeededWithCompletion:v7];
 
   objc_destroyWeak(v8);
   objc_destroyWeak(&location);
 }
 
-- (void)likeDislikeViewDidSelectLike:(id)a3
+- (void)likeDislikeViewDidSelectLike:(id)like
 {
-  v4 = a3;
+  likeCopy = like;
   currentState = self->_currentState;
   objc_initWeak(&location, self);
-  v6 = [(UGCRatingCategoryCell *)self delegate];
+  delegate = [(UGCRatingCategoryCell *)self delegate];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100D32C9C;
   v7[3] = &unk_101652E88;
   objc_copyWeak(v8, &location);
   v8[1] = (2 * (currentState != 2));
-  [v6 ratingCategoryCell:self presentInformedConsentIfNeededWithCompletion:v7];
+  [delegate ratingCategoryCell:self presentInformedConsentIfNeededWithCompletion:v7];
 
   objc_destroyWeak(v8);
   objc_destroyWeak(&location);
@@ -96,8 +96,8 @@
 - (void)_setupConstraints
 {
   v3 = [MUStackLayout alloc];
-  v4 = [(UGCRatingCategoryCell *)self layoutMarginsGuide];
-  v5 = [v3 initWithContainer:v4 axis:0];
+  layoutMarginsGuide = [(UGCRatingCategoryCell *)self layoutMarginsGuide];
+  v5 = [v3 initWithContainer:layoutMarginsGuide axis:0];
 
   likeDislikeView = self->_likeDislikeView;
   v9[0] = self->_categoryView;
@@ -113,9 +113,9 @@
   [v5 activate];
 }
 
-- (void)_setupSubviewsWithState:(int64_t)a3
+- (void)_setupSubviewsWithState:(int64_t)state
 {
-  self->_currentState = a3;
+  self->_currentState = state;
   v5 = 16.0;
   if (self->_isInlineMode)
   {
@@ -128,7 +128,7 @@
   self->_categoryView = v6;
 
   [(MUAppleRatingRowView *)self->_categoryView setBottomHairlineHidden:1];
-  v8 = [[UGCRatingCategoryLikeDislikeView alloc] initWithCurrentState:a3 isInlineMode:self->_isInlineMode];
+  v8 = [[UGCRatingCategoryLikeDislikeView alloc] initWithCurrentState:state isInlineMode:self->_isInlineMode];
   likeDislikeView = self->_likeDislikeView;
   self->_likeDislikeView = v8;
 
@@ -139,7 +139,7 @@
   [(UGCRatingCategoryCell *)self addSubview:v10];
 }
 
-- (UGCRatingCategoryCell)initWithCurrentState:(int64_t)a3 isInlineMode:(BOOL)a4
+- (UGCRatingCategoryCell)initWithCurrentState:(int64_t)state isInlineMode:(BOOL)mode
 {
   v11.receiver = self;
   v11.super_class = UGCRatingCategoryCell;
@@ -147,12 +147,12 @@
   v7 = v6;
   if (v6)
   {
-    v6->_isInlineMode = a4;
+    v6->_isInlineMode = mode;
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
     [(UGCRatingCategoryCell *)v7 setAccessibilityIdentifier:v9];
 
-    [(UGCRatingCategoryCell *)v7 _setupSubviewsWithState:a3];
+    [(UGCRatingCategoryCell *)v7 _setupSubviewsWithState:state];
     [(UGCRatingCategoryCell *)v7 _setupConstraints];
   }
 

@@ -1,10 +1,10 @@
 @interface PCLocationDirectionEstimatorConfig
-- (PCLocationDirectionEstimatorConfig)initWithMinTravelTimeSec:(double)a3 fullEffectTimeSec:(double)a4 minDistanceToDestinationM:(double)a5 minReliableDistanceM:(double)a6 maxLocationUncertaintyM:(double)a7;
+- (PCLocationDirectionEstimatorConfig)initWithMinTravelTimeSec:(double)sec fullEffectTimeSec:(double)timeSec minDistanceToDestinationM:(double)m minReliableDistanceM:(double)distanceM maxLocationUncertaintyM:(double)uncertaintyM;
 @end
 
 @implementation PCLocationDirectionEstimatorConfig
 
-- (PCLocationDirectionEstimatorConfig)initWithMinTravelTimeSec:(double)a3 fullEffectTimeSec:(double)a4 minDistanceToDestinationM:(double)a5 minReliableDistanceM:(double)a6 maxLocationUncertaintyM:(double)a7
+- (PCLocationDirectionEstimatorConfig)initWithMinTravelTimeSec:(double)sec fullEffectTimeSec:(double)timeSec minDistanceToDestinationM:(double)m minReliableDistanceM:(double)distanceM maxLocationUncertaintyM:(double)uncertaintyM
 {
   v16.receiver = self;
   v16.super_class = PCLocationDirectionEstimatorConfig;
@@ -12,11 +12,11 @@
   v13 = v12;
   if (v12)
   {
-    v12->_minTravelTimeSec = a3;
-    v12->_fullEffectTimeSec = a4;
-    v12->_minDistanceToDestinationM = a5;
-    v12->_minReliableDistanceM = a6;
-    v12->_maxLocationUncertaintyM = a7;
+    v12->_minTravelTimeSec = sec;
+    v12->_fullEffectTimeSec = timeSec;
+    v12->_minDistanceToDestinationM = m;
+    v12->_minReliableDistanceM = distanceM;
+    v12->_maxLocationUncertaintyM = uncertaintyM;
     v14 = v12;
   }
 

@@ -7,10 +7,10 @@
 - (id)msp_shortDescription
 {
   v2 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@:", objc_opt_class()];
-  v3 = [a1 identifiers];
-  v4 = [v3 isPlaceholder];
+  identifiers = [self identifiers];
+  isPlaceholder = [identifiers isPlaceholder];
 
-  if (v4)
+  if (isPlaceholder)
   {
     [v2 appendString:@" placeholder"];
   }

@@ -8,11 +8,11 @@
 
 - (double)viewCornerRadius
 {
-  v2 = [(ICAbstractTextAttachment *)self attachment];
-  v3 = [v2 preferredViewSize];
+  attachment = [(ICAbstractTextAttachment *)self attachment];
+  preferredViewSize = [attachment preferredViewSize];
 
   result = 12.0;
-  if (v3 == 1)
+  if (preferredViewSize == 1)
   {
     return 16.0;
   }
@@ -23,15 +23,15 @@
 - (id)attachmentFileWrapper
 {
   objc_opt_class();
-  v3 = [(ICAbstractTextAttachment *)self attachment];
-  v4 = [v3 attachmentModel];
+  attachment = [(ICAbstractTextAttachment *)self attachment];
+  attachmentModel = [attachment attachmentModel];
   v5 = ICDynamicCast();
-  v6 = [v5 blockingGeneratePDFURL];
+  blockingGeneratePDFURL = [v5 blockingGeneratePDFURL];
 
-  if (v6)
+  if (blockingGeneratePDFURL)
   {
     v11 = 0;
-    v7 = [objc_alloc(MEMORY[0x1E696AC38]) initWithURL:v6 options:0 error:&v11];
+    v7 = [objc_alloc(MEMORY[0x1E696AC38]) initWithURL:blockingGeneratePDFURL options:0 error:&v11];
     v8 = v11;
     if (!v7)
     {
@@ -55,7 +55,7 @@
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1D4171000, a2, OS_LOG_TYPE_ERROR, "Failed to create file wrapper from generated PDF: %@", &v2, 0xCu);
 }
 

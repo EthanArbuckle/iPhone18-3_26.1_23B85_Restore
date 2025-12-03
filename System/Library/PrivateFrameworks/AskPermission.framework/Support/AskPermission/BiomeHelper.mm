@@ -1,44 +1,44 @@
 @interface BiomeHelper
-+ (BOOL)donateToBiomeWithRequestIdentifier:(id)a3 withError:(id *)a4;
-+ (id)_requestInfoForIndentifier:(id)a3 withError:(id *)a4;
-+ (int)_mapRequestStatusToBiomeStatus:(int64_t)a3;
-+ (void)donateToBiomeWithRequest:(id)a3;
-+ (void)donateToBiomeWithRequests:(id)a3;
++ (BOOL)donateToBiomeWithRequestIdentifier:(id)identifier withError:(id *)error;
++ (id)_requestInfoForIndentifier:(id)indentifier withError:(id *)error;
++ (int)_mapRequestStatusToBiomeStatus:(int64_t)status;
++ (void)donateToBiomeWithRequest:(id)request;
++ (void)donateToBiomeWithRequests:(id)requests;
 @end
 
 @implementation BiomeHelper
 
-+ (void)donateToBiomeWithRequest:(id)a3
++ (void)donateToBiomeWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = +[APLogConfig sharedDaemonConfig];
   if (!v5)
   {
     v5 = +[APLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = v7;
-    v9 = [v4 uniqueIdentifier];
+    uniqueIdentifier = [requestCopy uniqueIdentifier];
     *buf = 138543618;
     v38 = v7;
     v39 = 2112;
-    v40 = v9;
-    _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Donating to Biome Stream - Identifier: %@", buf, 0x16u);
+    v40 = uniqueIdentifier;
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Donating to Biome Stream - Identifier: %@", buf, 0x16u);
   }
 
-  v10 = [v4 modifiedDate];
-  if (v10)
+  modifiedDate = [requestCopy modifiedDate];
+  if (modifiedDate)
   {
-    [v4 modifiedDate];
+    [requestCopy modifiedDate];
   }
 
   else
   {
-    [v4 createdDate];
+    [requestCopy createdDate];
   }
   v11 = ;
   [v11 timeIntervalSinceReferenceDate];
@@ -46,28 +46,28 @@
 
   v36 = [NSNumber numberWithDouble:v13];
   v35 = [BMFamilyAskToBuy alloc];
-  v34 = [v4 uniqueIdentifier];
-  v30 = [v4 requesterDSID];
-  v33 = [v4 approverDSID];
-  v32 = [a1 _mapRequestStatusToBiomeStatus:{objc_msgSend(v4, "status")}];
-  v31 = [v4 itemTitle];
-  v29 = [v4 itemDescription];
-  v28 = [v4 localizedPrice];
-  v27 = [v4 thumbnailURLString];
-  v14 = [v4 ageRating];
-  v15 = [v4 starRating];
-  v16 = [v4 productType];
-  v17 = [v4 productURL];
-  v18 = [v17 absoluteString];
-  v19 = [v35 initWithRequestID:v34 eventTime:v36 userID:v30 actionUserID:v33 status:v32 itemTitle:v31 itemDescription:v29 itemLocalizedPrice:v28 thumbnailPath:v27 ageRating:v14 starRating:v15 productType:v16 isActionUserDevice:&__kCFBooleanFalse storeLink:v18];
+  uniqueIdentifier2 = [requestCopy uniqueIdentifier];
+  requesterDSID = [requestCopy requesterDSID];
+  approverDSID = [requestCopy approverDSID];
+  v32 = [self _mapRequestStatusToBiomeStatus:{objc_msgSend(requestCopy, "status")}];
+  itemTitle = [requestCopy itemTitle];
+  itemDescription = [requestCopy itemDescription];
+  localizedPrice = [requestCopy localizedPrice];
+  thumbnailURLString = [requestCopy thumbnailURLString];
+  ageRating = [requestCopy ageRating];
+  starRating = [requestCopy starRating];
+  productType = [requestCopy productType];
+  productURL = [requestCopy productURL];
+  absoluteString = [productURL absoluteString];
+  v19 = [v35 initWithRequestID:uniqueIdentifier2 eventTime:v36 userID:requesterDSID actionUserID:approverDSID status:v32 itemTitle:itemTitle itemDescription:itemDescription itemLocalizedPrice:localizedPrice thumbnailPath:thumbnailURLString ageRating:ageRating starRating:starRating productType:productType isActionUserDevice:&__kCFBooleanFalse storeLink:absoluteString];
 
   if (v19)
   {
     v20 = BiomeLibrary();
-    v21 = [v20 Family];
-    v22 = [v21 AskToBuy];
-    v23 = [v22 source];
-    [v23 sendEvent:v19];
+    family = [v20 Family];
+    askToBuy = [family AskToBuy];
+    source = [askToBuy source];
+    [source sendEvent:v19];
   }
 
   else
@@ -78,29 +78,29 @@
       v20 = +[APLogConfig sharedConfig];
     }
 
-    v21 = [v20 OSLogObject];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    family = [v20 OSLogObject];
+    if (os_log_type_enabled(family, OS_LOG_TYPE_ERROR))
     {
       v24 = objc_opt_class();
       v25 = v24;
-      v26 = [v4 compile];
+      compile = [requestCopy compile];
       *buf = 138543618;
       v38 = v24;
       v39 = 2112;
-      v40 = v26;
-      _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "%{public}@: Biome Event failed to create from Request: %@", buf, 0x16u);
+      v40 = compile;
+      _os_log_impl(&_mh_execute_header, family, OS_LOG_TYPE_ERROR, "%{public}@: Biome Event failed to create from Request: %@", buf, 0x16u);
     }
   }
 }
 
-+ (void)donateToBiomeWithRequests:(id)a3
++ (void)donateToBiomeWithRequests:(id)requests
 {
-  v4 = a3;
+  requestsCopy = requests;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [requestsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -112,32 +112,32 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(requestsCopy);
         }
 
-        [a1 donateToBiomeWithRequest:*(*(&v9 + 1) + 8 * v8)];
+        [self donateToBiomeWithRequest:*(*(&v9 + 1) + 8 * v8)];
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [requestsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-+ (BOOL)donateToBiomeWithRequestIdentifier:(id)a3 withError:(id *)a4
++ (BOOL)donateToBiomeWithRequestIdentifier:(id)identifier withError:(id *)error
 {
   v23 = 0;
-  v6 = [a1 _requestInfoForIndentifier:a3 withError:&v23];
+  v6 = [self _requestInfoForIndentifier:identifier withError:&v23];
   v7 = v23;
-  v8 = [v6 object];
+  object = [v6 object];
   objc_opt_class();
   v9 = 0;
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    v9 = object;
   }
 
   v10 = +[APLogConfig sharedDaemonConfig];
@@ -146,24 +146,24 @@
     v10 = +[APLogConfig sharedConfig];
   }
 
-  v11 = [v10 OSLogObject];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v10 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v12 = objc_opt_class();
-    v13 = a4;
+    errorCopy = error;
     v14 = v12;
-    v15 = [v6 object];
+    object2 = [v6 object];
     *buf = 138543618;
     v25 = v12;
     v26 = 2112;
-    v27 = v15;
-    _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: Request Info: %@.", buf, 0x16u);
+    v27 = object2;
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Request Info: %@.", buf, 0x16u);
 
-    a4 = v13;
+    error = errorCopy;
   }
 
   v16 = [[ApprovalRequest alloc] initWithCloudPushDictionary:v9];
-  [a1 donateToBiomeWithRequest:v16];
+  [self donateToBiomeWithRequest:v16];
   if (v7)
   {
     v17 = +[APLogConfig sharedDaemonConfig];
@@ -172,8 +172,8 @@
       v17 = +[APLogConfig sharedConfig];
     }
 
-    v18 = [v17 OSLogObject];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v17 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v19 = objc_opt_class();
       *buf = 138543618;
@@ -181,24 +181,24 @@
       v26 = 2112;
       v27 = v7;
       v20 = v19;
-      _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%{public}@: Error requesting info for Biome donation - %@", buf, 0x16u);
+      _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: Error requesting info for Biome donation - %@", buf, 0x16u);
     }
   }
 
-  if (a4)
+  if (error)
   {
     v21 = v7;
-    *a4 = v7;
+    *error = v7;
   }
 
   return v7 == 0;
 }
 
-+ (int)_mapRequestStatusToBiomeStatus:(int64_t)a3
++ (int)_mapRequestStatusToBiomeStatus:(int64_t)status
 {
-  if ((a3 + 1) < 3)
+  if ((status + 1) < 3)
   {
-    return a3 + 2;
+    return status + 2;
   }
 
   else
@@ -207,39 +207,39 @@
   }
 }
 
-+ (id)_requestInfoForIndentifier:(id)a3 withError:(id *)a4
++ (id)_requestInfoForIndentifier:(id)indentifier withError:(id *)error
 {
-  v5 = a3;
+  indentifierCopy = indentifier;
   v6 = +[AMSBag sharedBag];
-  v7 = [v6 retrieveRequestURL];
+  retrieveRequestURL = [v6 retrieveRequestURL];
 
   v34 = @"requestId";
-  v35 = v5;
+  v35 = indentifierCopy;
   v8 = [NSDictionary dictionaryWithObjects:&v35 forKeys:&v34 count:1];
   v9 = objc_alloc_init(URLRequestEncoder);
-  v10 = [(URLRequestEncoder *)v9 requestWithMethod:4 bagURL:v7 parameters:v8];
+  v10 = [(URLRequestEncoder *)v9 requestWithMethod:4 bagURL:retrieveRequestURL parameters:v8];
   v31 = 0;
   v11 = [v10 resultWithTimeout:&v31 error:60.0];
   v12 = v31;
   if (v11)
   {
-    v27 = v7;
-    v28 = a4;
-    v29 = v5;
+    v27 = retrieveRequestURL;
+    errorCopy = error;
+    v29 = indentifierCopy;
     v13 = +[APLogConfig sharedDaemonConfig];
     if (!v13)
     {
       v13 = +[APLogConfig sharedConfig];
     }
 
-    v14 = [v13 OSLogObject];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v13 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v15 = objc_opt_class();
       *buf = 138543362;
       v33 = v15;
       v16 = v15;
-      _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}@: Encoded request successfully", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Encoded request successfully", buf, 0xCu);
     }
 
     v17 = +[URLSession sharedSession];
@@ -257,22 +257,22 @@
         v21 = +[APLogConfig sharedConfig];
       }
 
-      v22 = [v21 OSLogObject];
-      if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+      oSLogObject2 = [v21 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
       {
         v23 = objc_opt_class();
         *buf = 138543362;
         v33 = v23;
         v24 = v23;
-        _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "%{public}@: Received server result", buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: Received server result", buf, 0xCu);
       }
     }
 
     v12 = v20;
-    a4 = v28;
-    v5 = v29;
-    v7 = v27;
-    if (v28)
+    error = errorCopy;
+    indentifierCopy = v29;
+    retrieveRequestURL = v27;
+    if (errorCopy)
     {
       goto LABEL_13;
     }
@@ -281,11 +281,11 @@
   else
   {
     v19 = 0;
-    if (a4)
+    if (error)
     {
 LABEL_13:
       v25 = v12;
-      *a4 = v12;
+      *error = v12;
     }
   }
 

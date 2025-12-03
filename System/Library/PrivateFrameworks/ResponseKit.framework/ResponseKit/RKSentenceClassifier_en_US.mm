@@ -1,24 +1,24 @@
 @interface RKSentenceClassifier_en_US
-+ (id)preProcessTextMessageForLinguisticTagger:(id)a3;
-- (id)addSentenceTerminatorQuestion:(id)a3;
++ (id)preProcessTextMessageForLinguisticTagger:(id)tagger;
+- (id)addSentenceTerminatorQuestion:(id)question;
 - (id)classifySentence;
 - (void)analyzeSentence;
 @end
 
 @implementation RKSentenceClassifier_en_US
 
-+ (id)preProcessTextMessageForLinguisticTagger:(id)a3
++ (id)preProcessTextMessageForLinguisticTagger:(id)tagger
 {
   v19[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCAAE8];
-  v4 = a3;
+  taggerCopy = tagger;
   v5 = [v3 alloc];
   v19[0] = *MEMORY[0x277CCA3E0];
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
   v7 = [v5 initWithTagSchemes:v6 options:6];
 
-  [v7 setString:v4];
-  v8 = [v4 mutableCopy];
+  [v7 setString:taggerCopy];
+  v8 = [taggerCopy mutableCopy];
 
   v9 = [v8 length];
   v16[0] = MEMORY[0x277D85DD0];
@@ -37,11 +37,11 @@
   return v10;
 }
 
-- (id)addSentenceTerminatorQuestion:(id)a3
+- (id)addSentenceTerminatorQuestion:(id)question
 {
   v6.receiver = self;
   v6.super_class = RKSentenceClassifier_en_US;
-  v3 = [(RKSentenceClassifier *)&v6 addSentenceTerminatorQuestion:a3];
+  v3 = [(RKSentenceClassifier *)&v6 addSentenceTerminatorQuestion:question];
   v4 = [v3 stringByAppendingString:@"?"];
 
   return v4;
@@ -50,14 +50,14 @@
 - (void)analyzeSentence
 {
   v15[5] = *MEMORY[0x277D85DE8];
-  v3 = [(RKSentenceClassifier *)self sentenceEntities];
-  [v3 enumerateObjectsUsingBlock:&__block_literal_global_3];
+  sentenceEntities = [(RKSentenceClassifier *)self sentenceEntities];
+  [sentenceEntities enumerateObjectsUsingBlock:&__block_literal_global_3];
 
   v14.receiver = self;
   v14.super_class = RKSentenceClassifier_en_US;
   [(RKSentenceClassifier *)&v14 analyzeSentence];
-  v4 = [MEMORY[0x277CBEA60] array];
-  [(RKSentenceClassifier *)self setInversions:v4];
+  array = [MEMORY[0x277CBEA60] array];
+  [(RKSentenceClassifier *)self setInversions:array];
 
   v5 = [MEMORY[0x277CBEB98] setWithArray:&unk_2874E6EE0];
   v6 = MEMORY[0x277CBEB98];
@@ -71,7 +71,7 @@
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:5];
   v10 = [v6 setWithArray:v9];
 
-  v11 = [(RKSentenceClassifier *)self sentenceEntities];
+  sentenceEntities2 = [(RKSentenceClassifier *)self sentenceEntities];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __45__RKSentenceClassifier_en_US_analyzeSentence__block_invoke_2;
@@ -79,7 +79,7 @@
   v13[4] = v10;
   v13[5] = self;
   v13[6] = v5;
-  [v11 enumerateObjectsUsingBlock:v13];
+  [sentenceEntities2 enumerateObjectsUsingBlock:v13];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -90,8 +90,8 @@
   if (![v3 sentenceType])
   {
     v4 = [MEMORY[0x277CCAC30] predicateWithFormat:@"lemma == 'please'"];
-    v5 = [(RKSentenceClassifier *)self sentenceEntities];
-    v6 = [v5 filteredArrayUsingPredicate:v4];
+    sentenceEntities = [(RKSentenceClassifier *)self sentenceEntities];
+    v6 = [sentenceEntities filteredArrayUsingPredicate:v4];
     v7 = [v6 count];
 
     if (v7)
@@ -104,9 +104,9 @@
   {
     v60.receiver = self;
     v60.super_class = RKSentenceClassifier_en_US;
-    v8 = [(RKSentenceClassifier *)&v60 classifySentence];
+    classifySentence = [(RKSentenceClassifier *)&v60 classifySentence];
 
-    v3 = v8;
+    v3 = classifySentence;
   }
 
   if ([v3 sentenceType] == 6)
@@ -123,7 +123,7 @@
     v53[1] = v53;
     v53[2] = 0x2020000000;
     v54 = 0;
-    v9 = [(RKSentenceClassifier *)self sentenceEntities];
+    sentenceEntities2 = [(RKSentenceClassifier *)self sentenceEntities];
     v48[0] = MEMORY[0x277D85DD0];
     v48[1] = 3221225472;
     v48[2] = __46__RKSentenceClassifier_en_US_classifySentence__block_invoke;
@@ -134,20 +134,20 @@
     v10 = v3;
     v49 = v10;
     v52 = v55;
-    [v9 enumerateObjectsUsingBlock:v48];
+    [sentenceEntities2 enumerateObjectsUsingBlock:v48];
 
     if (v57[3])
     {
       goto LABEL_10;
     }
 
-    v11 = [(RKSentenceClassifier *)self sentenceEntities];
-    v12 = [(RKSentenceClassifier *)self alternatives];
-    v13 = [(RKSentenceClassifier *)self alternatives];
-    v14 = [v12 objectAtIndexedSubscript:{objc_msgSend(v13, "count") - 1}];
-    v15 = [v11 objectAtIndexedSubscript:{objc_msgSend(v14, "rangeValue")}];
-    v16 = [v15 word];
-    v17 = [v16 isEqualToString:@"so"];
+    sentenceEntities3 = [(RKSentenceClassifier *)self sentenceEntities];
+    alternatives = [(RKSentenceClassifier *)self alternatives];
+    alternatives2 = [(RKSentenceClassifier *)self alternatives];
+    v14 = [alternatives objectAtIndexedSubscript:{objc_msgSend(alternatives2, "count") - 1}];
+    v15 = [sentenceEntities3 objectAtIndexedSubscript:{objc_msgSend(v14, "rangeValue")}];
+    word = [v15 word];
+    v17 = [word isEqualToString:@"so"];
 
     if (v17)
     {
@@ -163,21 +163,21 @@ LABEL_10:
 
   if (![v3 sentenceType])
   {
-    v18 = [(RKSentenceClassifier *)self interrogatives];
+    interrogatives = [(RKSentenceClassifier *)self interrogatives];
     v46[0] = MEMORY[0x277D85DD0];
     v46[1] = 3221225472;
     v46[2] = __46__RKSentenceClassifier_en_US_classifySentence__block_invoke_3;
     v46[3] = &unk_279B0FDE8;
     v46[4] = self;
     v47 = v3;
-    [v18 enumerateObjectsUsingBlock:v46];
+    [interrogatives enumerateObjectsUsingBlock:v46];
   }
 
   if ([v3 sentenceType] == 19)
   {
     v19 = [MEMORY[0x277CCAC30] predicateWithFormat:@"partOfSpeech == %@ && lemma == 'time'", *MEMORY[0x277CCA368]];
-    v20 = [(RKSentenceClassifier *)self sentenceEntities];
-    v21 = [v20 filteredArrayUsingPredicate:v19];
+    sentenceEntities4 = [(RKSentenceClassifier *)self sentenceEntities];
+    v21 = [sentenceEntities4 filteredArrayUsingPredicate:v19];
     v22 = [v21 count];
 
     if (v22)
@@ -204,8 +204,8 @@ LABEL_20:
     v29 = *MEMORY[0x277CCA418];
     v30 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(partOfSpeech == %@ && lemma == 'will') || (partOfSpeech == %@ && lemma == 'next')", *MEMORY[0x277CCA418], *MEMORY[0x277CCA3C0]];
     v31 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(partOfSpeech == %@ && string.lowercaseString IN %@) || (partOfSpeech == %@ && lemma == 'last')", v29, v19, *MEMORY[0x277CCA320]];
-    v32 = [(RKSentenceClassifier *)self sentenceEntities];
-    v33 = [v32 filteredArrayUsingPredicate:v28];
+    sentenceEntities5 = [(RKSentenceClassifier *)self sentenceEntities];
+    v33 = [sentenceEntities5 filteredArrayUsingPredicate:v28];
     v34 = [v33 count];
 
     if (v34)
@@ -215,8 +215,8 @@ LABEL_20:
 
     else
     {
-      v36 = [(RKSentenceClassifier *)self sentenceEntities];
-      v37 = [v36 filteredArrayUsingPredicate:v31];
+      sentenceEntities6 = [(RKSentenceClassifier *)self sentenceEntities];
+      v37 = [sentenceEntities6 filteredArrayUsingPredicate:v31];
       v38 = [v37 count];
 
       if (v38)
@@ -226,8 +226,8 @@ LABEL_20:
 
       else
       {
-        v39 = [(RKSentenceClassifier *)self sentenceEntities];
-        v40 = [v39 filteredArrayUsingPredicate:v30];
+        sentenceEntities7 = [(RKSentenceClassifier *)self sentenceEntities];
+        v40 = [sentenceEntities7 filteredArrayUsingPredicate:v30];
         v41 = [v40 count];
 
         if (!v41)
@@ -246,8 +246,8 @@ LABEL_29:
   }
 
   v19 = [MEMORY[0x277CCAC30] predicateWithFormat:@"partOfSpeech == %@ && lemma == 'you'", *MEMORY[0x277CCA3C8]];
-  v25 = [(RKSentenceClassifier *)self sentenceEntities];
-  v26 = [v25 filteredArrayUsingPredicate:v19];
+  sentenceEntities8 = [(RKSentenceClassifier *)self sentenceEntities];
+  v26 = [sentenceEntities8 filteredArrayUsingPredicate:v19];
   v27 = [v26 count];
 
   if (v27)
@@ -262,14 +262,14 @@ LABEL_30:
 LABEL_31:
   if (![v3 sentenceType])
   {
-    v42 = [(RKSentenceClassifier *)self inversions];
+    inversions = [(RKSentenceClassifier *)self inversions];
     v44[0] = MEMORY[0x277D85DD0];
     v44[1] = 3221225472;
     v44[2] = __46__RKSentenceClassifier_en_US_classifySentence__block_invoke_4;
     v44[3] = &unk_279B10370;
     v44[4] = self;
     v45 = v3;
-    [v42 enumerateObjectsUsingBlock:v44];
+    [inversions enumerateObjectsUsingBlock:v44];
   }
 
   if (![v3 sentenceType] && -[RKSentenceClassifier sentenceHasQuestionTerminator](self, "sentenceHasQuestionTerminator"))

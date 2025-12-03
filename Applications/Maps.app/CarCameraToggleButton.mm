@@ -1,7 +1,7 @@
 @interface CarCameraToggleButton
-- (CarCameraToggleButton)initWithFrame:(CGRect)a3;
+- (CarCameraToggleButton)initWithFrame:(CGRect)frame;
 - (id)accessibilityUserInputLabels;
-- (void)setButtonState:(unint64_t)a3;
+- (void)setButtonState:(unint64_t)state;
 @end
 
 @implementation CarCameraToggleButton
@@ -11,15 +11,15 @@
   v3 = +[NSBundle mainBundle];
   v4 = [v3 localizedStringForKey:@"CarPlay_Camera" value:@"localized string not found" table:0];
 
-  v5 = [(CarCameraToggleButton *)self buttonState];
-  if (v5 == 2)
+  buttonState = [(CarCameraToggleButton *)self buttonState];
+  if (buttonState == 2)
   {
     v6 = @"CarPlay_Detail";
   }
 
   else
   {
-    if (v5 != 1)
+    if (buttonState != 1)
     {
       goto LABEL_6;
     }
@@ -38,35 +38,35 @@ LABEL_6:
   return v9;
 }
 
-- (void)setButtonState:(unint64_t)a3
+- (void)setButtonState:(unint64_t)state
 {
-  if (self->_buttonState == a3)
+  if (self->_buttonState == state)
   {
     return;
   }
 
-  self->_buttonState = a3;
-  if (a3 > 2)
+  self->_buttonState = state;
+  if (state > 2)
   {
     v6 = @".Unknown";
   }
 
   else
   {
-    v6 = *(&off_1016373E0 + a3);
+    v6 = *(&off_1016373E0 + state);
   }
 
   v7 = [@"CarCameraToggleButton" stringByAppendingString:v6];
   [(CarCameraToggleButton *)self setAccessibilityIdentifier:v7];
 
-  if (a3 == 2)
+  if (state == 2)
   {
     v8 = &OBJC_IVAR___CarCameraToggleButton__detailImage;
   }
 
   else
   {
-    if (a3 != 1)
+    if (state != 1)
     {
       v9 = 0;
       goto LABEL_11;
@@ -81,7 +81,7 @@ LABEL_11:
   [(CarFocusableImageButton *)self setImage:v9];
 }
 
-- (CarCameraToggleButton)initWithFrame:(CGRect)a3
+- (CarCameraToggleButton)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = CarCameraToggleButton;
@@ -93,8 +93,8 @@ LABEL_11:
     v3->_detailImage = v4;
 
     v6 = +[CarDisplayController sharedInstance];
-    v7 = [v6 screenTraitCollection];
-    v8 = [UIImage imageNamed:@"CameraModeOverview" inBundle:0 compatibleWithTraitCollection:v7];
+    screenTraitCollection = [v6 screenTraitCollection];
+    v8 = [UIImage imageNamed:@"CameraModeOverview" inBundle:0 compatibleWithTraitCollection:screenTraitCollection];
     v9 = [v8 imageWithRenderingMode:2];
     overviewImage = v3->_overviewImage;
     v3->_overviewImage = v9;

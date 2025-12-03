@@ -1,7 +1,7 @@
 @interface CDPLocalDevice
 + (BOOL)hasLocalSecret;
 + (id)sharedInstance;
-- (BOOL)currentProcessHasEntitlement:(id)a3;
+- (BOOL)currentProcessHasEntitlement:(id)entitlement;
 - (CDPLocalDevice)init;
 - (NSNumber)localSecretGeneration;
 - (id)deviceClass;
@@ -85,9 +85,9 @@ uint64_t __32__CDPLocalDevice_sharedInstance__block_invoke()
 + (BOOL)hasLocalSecret
 {
   v2 = +[CDPLocalDevice sharedInstance];
-  v3 = [v2 hasLocalSecret];
+  hasLocalSecret = [v2 hasLocalSecret];
 
-  return v3;
+  return hasLocalSecret;
 }
 
 - (NSNumber)localSecretGeneration
@@ -195,9 +195,9 @@ LABEL_16:
   return v2;
 }
 
-- (BOOL)currentProcessHasEntitlement:(id)a3
+- (BOOL)currentProcessHasEntitlement:(id)entitlement
 {
-  v3 = a3;
+  entitlementCopy = entitlement;
   if (currentProcessHasEntitlement__onceToken != -1)
   {
     [CDPLocalDevice currentProcessHasEntitlement:];
@@ -206,13 +206,13 @@ LABEL_16:
   if (currentProcessHasEntitlement__taskRef)
   {
     error = 0;
-    v4 = SecTaskCopyValueForEntitlement(currentProcessHasEntitlement__taskRef, v3, &error);
+    v4 = SecTaskCopyValueForEntitlement(currentProcessHasEntitlement__taskRef, entitlementCopy, &error);
     if (error)
     {
       v5 = _CDPLogSystem();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
       {
-        [(CDPLocalDevice *)v3 currentProcessHasEntitlement:?];
+        [(CDPLocalDevice *)entitlementCopy currentProcessHasEntitlement:?];
       }
 
       CFRelease(error);
@@ -220,12 +220,12 @@ LABEL_16:
 
     if (v4 && (v6 = CFGetTypeID(v4), v6 == CFBooleanGetTypeID()))
     {
-      v7 = [v4 BOOLValue];
+      bOOLValue = [v4 BOOLValue];
     }
 
     else
     {
-      v7 = 0;
+      bOOLValue = 0;
     }
   }
 
@@ -237,10 +237,10 @@ LABEL_16:
       [CDPLocalDevice currentProcessHasEntitlement:];
     }
 
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
 SecTaskRef __47__CDPLocalDevice_currentProcessHasEntitlement___block_invoke()

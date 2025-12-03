@@ -5,16 +5,16 @@
 + (id)_expirationConcurrentQueue;
 + (id)_extensionDictionary;
 + (id)_extensionMainStoryboard;
-+ (void)_startListening:(BOOL)a3;
++ (void)_startListening:(BOOL)listening;
 - (BOOL)_shouldCreatePrincipalObject;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (EXConcreteExtensionContextVendor)init;
-- (void)_addExtensionContext:(id)a3;
-- (void)_beginRequestWithExtensionItems:(id)a3 listenerEndpoint:(id)a4 withContextUUID:(id)a5 completion:(id)a6;
-- (void)_onGlobalStateQueueOnly_setPrincipalObject:(id)a3 forUUID:(id)a4;
-- (void)_removeExtensionContext:(id)a3;
-- (void)_setPrincipalObject:(id)a3 forUUID:(id)a4;
-- (void)_tearDownContextWithUUID:(id)a3;
+- (void)_addExtensionContext:(id)context;
+- (void)_beginRequestWithExtensionItems:(id)items listenerEndpoint:(id)endpoint withContextUUID:(id)d completion:(id)completion;
+- (void)_onGlobalStateQueueOnly_setPrincipalObject:(id)object forUUID:(id)d;
+- (void)_removeExtensionContext:(id)context;
+- (void)_setPrincipalObject:(id)object forUUID:(id)d;
+- (void)_tearDownContextWithUUID:(id)d;
 @end
 
 @implementation EXConcreteExtensionContextVendor
@@ -91,15 +91,15 @@ void __56__EXConcreteExtensionContextVendor__extensionDictionary__block_invoke()
 {
   v6.receiver = self;
   v6.super_class = EXConcreteExtensionContextVendor;
-  v2 = [(_NSExtensionContextVendor *)&v6 _init];
-  if (v2)
+  _init = [(_NSExtensionContextVendor *)&v6 _init];
+  if (_init)
   {
     v3 = objc_opt_new();
-    extensionContexts = v2->__extensionContexts;
-    v2->__extensionContexts = v3;
+    extensionContexts = _init->__extensionContexts;
+    _init->__extensionContexts = v3;
   }
 
-  return v2;
+  return _init;
 }
 
 - (BOOL)_shouldCreatePrincipalObject
@@ -201,13 +201,13 @@ LABEL_14:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_startListening:(BOOL)a3
++ (void)_startListening:(BOOL)listening
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __52__EXConcreteExtensionContextVendor__startListening___block_invoke;
   block[3] = &__block_descriptor_33_e5_v8__0l;
-  v4 = a3;
+  listeningCopy = listening;
   if (_startListening__onceToken != -1)
   {
     dispatch_once(&_startListening__onceToken, block);
@@ -296,9 +296,9 @@ void __62__EXConcreteExtensionContextVendor__expirationConcurrentQueue__block_in
   _expirationConcurrentQueue_queue = v0;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   +[EXXPCUtil assertIsExtensionProcess];
   v6 = [objc_msgSend(objc_opt_class() "_extensionContextClass")];
   v7 = _EXLegacyLog();
@@ -308,37 +308,37 @@ void __62__EXConcreteExtensionContextVendor__expirationConcurrentQueue__block_in
   }
 
   v8 = [EXExtensionContextImplementation _extensionContextHostProtocolWithAllowedErrorClasses:v6];
-  [v5 setRemoteObjectInterface:v8];
+  [connectionCopy setRemoteObjectInterface:v8];
 
   v9 = [EXExtensionContextImplementation _extensionContextVendorProtocolWithAllowedErrorClasses:v6];
-  [v5 setExportedInterface:v9];
+  [connectionCopy setExportedInterface:v9];
 
-  [v5 setExportedObject:self];
-  [v5 resume];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy resume];
 
   return 1;
 }
 
-- (void)_beginRequestWithExtensionItems:(id)a3 listenerEndpoint:(id)a4 withContextUUID:(id)a5 completion:(id)a6
+- (void)_beginRequestWithExtensionItems:(id)items listenerEndpoint:(id)endpoint withContextUUID:(id)d completion:(id)completion
 {
   v39 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  itemsCopy = items;
+  endpointCopy = endpoint;
+  dCopy = d;
+  completionCopy = completion;
   v14 = _EXLegacyLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543874;
-    v34 = v12;
+    v34 = dCopy;
     v35 = 2114;
-    v36 = v11;
+    v36 = endpointCopy;
     v37 = 2112;
-    v38 = v10;
+    v38 = itemsCopy;
     _os_log_debug_impl(&dword_1847D1000, v14, OS_LOG_TYPE_DEBUG, "beginning request with UUID: %{public}@ with endpoint: %{public}@ for items: %@", buf, 0x20u);
   }
 
-  v15 = [MEMORY[0x1E696B0B8] currentConnection];
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
   v16 = _os_activity_create(&dword_1847D1000, "beginning extension request", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v17 = _EXExtensionGetGlobalStateQueue(0);
   block[0] = MEMORY[0x1E69E9820];
@@ -346,17 +346,17 @@ void __62__EXConcreteExtensionContextVendor__expirationConcurrentQueue__block_in
   block[2] = __112__EXConcreteExtensionContextVendor__beginRequestWithExtensionItems_listenerEndpoint_withContextUUID_completion___block_invoke;
   block[3] = &unk_1E6E4E410;
   v26 = v16;
-  v27 = v10;
-  v28 = v11;
-  v29 = v12;
-  v30 = v15;
-  v31 = self;
-  v32 = v13;
-  v18 = v13;
-  v19 = v15;
-  v20 = v12;
-  v21 = v11;
-  v22 = v10;
+  v27 = itemsCopy;
+  v28 = endpointCopy;
+  v29 = dCopy;
+  v30 = currentConnection;
+  selfCopy = self;
+  v32 = completionCopy;
+  v18 = completionCopy;
+  v19 = currentConnection;
+  v20 = dCopy;
+  v21 = endpointCopy;
+  v22 = itemsCopy;
   v23 = v16;
   dispatch_async(v17, block);
 
@@ -553,17 +553,17 @@ void __112__EXConcreteExtensionContextVendor__beginRequestWithExtensionItems_lis
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_tearDownContextWithUUID:(id)a3
+- (void)_tearDownContextWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = _EXExtensionGetGlobalStateQueue(0);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__EXConcreteExtensionContextVendor__tearDownContextWithUUID___block_invoke;
   v7[3] = &unk_1E6E4DB10;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(v5, v7);
 }
 
@@ -593,15 +593,15 @@ void __61__EXConcreteExtensionContextVendor__tearDownContextWithUUID___block_inv
   [*(*(a1 + 32) + 8) removeObjectForKey:*(a1 + 40)];
 }
 
-- (void)_addExtensionContext:(id)a3
+- (void)_addExtensionContext:(id)context
 {
-  v7 = a3;
+  contextCopy = context;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     extensionContexts = self->__extensionContexts;
-    v5 = [v7 _UUID];
-    [(NSMutableDictionary *)extensionContexts setObject:v7 forKey:v5];
+    _UUID = [contextCopy _UUID];
+    [(NSMutableDictionary *)extensionContexts setObject:contextCopy forKey:_UUID];
   }
 
   else
@@ -616,15 +616,15 @@ void __61__EXConcreteExtensionContextVendor__tearDownContextWithUUID___block_inv
   }
 }
 
-- (void)_removeExtensionContext:(id)a3
+- (void)_removeExtensionContext:(id)context
 {
-  v7 = a3;
+  contextCopy = context;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     extensionContexts = self->__extensionContexts;
-    v5 = [v7 _UUID];
-    [(NSMutableDictionary *)extensionContexts removeObjectForKey:v5];
+    _UUID = [contextCopy _UUID];
+    [(NSMutableDictionary *)extensionContexts removeObjectForKey:_UUID];
   }
 
   else
@@ -639,31 +639,31 @@ void __61__EXConcreteExtensionContextVendor__tearDownContextWithUUID___block_inv
   }
 }
 
-- (void)_setPrincipalObject:(id)a3 forUUID:(id)a4
+- (void)_setPrincipalObject:(id)object forUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  dCopy = d;
   v8 = _EXExtensionGetGlobalStateQueue(0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__EXConcreteExtensionContextVendor__setPrincipalObject_forUUID___block_invoke;
   block[3] = &unk_1E6E4E438;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = objectCopy;
+  v13 = dCopy;
+  v9 = dCopy;
+  v10 = objectCopy;
   dispatch_async(v8, block);
 }
 
-- (void)_onGlobalStateQueueOnly_setPrincipalObject:(id)a3 forUUID:(id)a4
+- (void)_onGlobalStateQueueOnly_setPrincipalObject:(id)object forUUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  objectCopy = object;
   v8 = _EXExtensionGetGlobalStateQueue(0);
   dispatch_assert_queue_V2(v8);
 
-  if (!v7)
+  if (!objectCopy)
   {
     v9 = _EXDefaultLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -672,14 +672,14 @@ void __61__EXConcreteExtensionContextVendor__tearDownContextWithUUID___block_inv
     }
   }
 
-  v10 = [(NSMutableDictionary *)self->__extensionPrincipalObjects objectForKey:v6];
+  v10 = [(NSMutableDictionary *)self->__extensionPrincipalObjects objectForKey:dCopy];
 
   if (v10)
   {
     v11 = _EXDefaultLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
     {
-      [EXConcreteExtensionContextVendor _onGlobalStateQueueOnly_setPrincipalObject:v6 forUUID:?];
+      [EXConcreteExtensionContextVendor _onGlobalStateQueueOnly_setPrincipalObject:dCopy forUUID:?];
     }
   }
 
@@ -693,10 +693,10 @@ void __61__EXConcreteExtensionContextVendor__tearDownContextWithUUID___block_inv
     extensionPrincipalObjects = self->__extensionPrincipalObjects;
   }
 
-  [(NSMutableDictionary *)extensionPrincipalObjects setObject:v7 forKey:v6];
-  v15 = [(NSMutableDictionary *)self->__extensionContexts objectForKey:v6];
-  v16 = [v15 internalImplementation];
-  [v16 _setPrincipalObject:v7];
+  [(NSMutableDictionary *)extensionPrincipalObjects setObject:objectCopy forKey:dCopy];
+  v15 = [(NSMutableDictionary *)self->__extensionContexts objectForKey:dCopy];
+  internalImplementation = [v15 internalImplementation];
+  [internalImplementation _setPrincipalObject:objectCopy];
 }
 
 void __60__EXConcreteExtensionContextVendor__extensionPrincipalClass__block_invoke_cold_1()

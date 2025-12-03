@@ -1,15 +1,15 @@
 @interface CBSensorActivityDataProvider
 - (CBSensorActivityAttribution)mostRecentCameraAndMicrophoneSensorActivityAttribution;
 - (CBSensorActivityDataProvider)init;
-- (CBSensorActivityDataProvider)initWithSystemStatusServer:(id)a3;
+- (CBSensorActivityDataProvider)initWithSystemStatusServer:(id)server;
 - (NSSet)activeAndRecentSensorActivityAttributions;
 - (NSSet)activeCameraAndMicrophoneActivityAttributions;
 - (id)_recentCameraAndMicrophoneActivityAttributions;
-- (void)_handleNewDomainData:(id)a3;
+- (void)_handleNewDomainData:(id)data;
 - (void)_notifyObserversOfActivityChange;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation CBSensorActivityDataProvider
@@ -22,15 +22,15 @@
   return v4;
 }
 
-- (CBSensorActivityDataProvider)initWithSystemStatusServer:(id)a3
+- (CBSensorActivityDataProvider)initWithSystemStatusServer:(id)server
 {
-  v4 = a3;
+  serverCopy = server;
   v17.receiver = self;
   v17.super_class = CBSensorActivityDataProvider;
   v5 = [(CBSensorActivityDataProvider *)&v17 init];
   if (v5)
   {
-    v6 = [[STUIDataAccessStatusDomain alloc] initWithServerHandle:v4];
+    v6 = [[STUIDataAccessStatusDomain alloc] initWithServerHandle:serverCopy];
     dataAccessDomain = v5->_dataAccessDomain;
     v5->_dataAccessDomain = v6;
 
@@ -55,8 +55,8 @@
     observers = v5->_observers;
     v5->_observers = v11;
 
-    v13 = [(STUIDataAccessStatusDomain *)v5->_dataAccessDomain data];
-    [(CBSensorActivityDataProvider *)v5 _handleNewDomainData:v13];
+    data = [(STUIDataAccessStatusDomain *)v5->_dataAccessDomain data];
+    [(CBSensorActivityDataProvider *)v5 _handleNewDomainData:data];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(buf);
@@ -73,40 +73,40 @@
   [(CBSensorActivityDataProvider *)&v3 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = observerCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Adding sensor activity data provider observer %@", &v7, 0xCu);
   }
 
-  v6 = [(CBSensorActivityDataProvider *)self observers];
-  [v6 addObject:v4];
+  observers = [(CBSensorActivityDataProvider *)self observers];
+  [observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = observerCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Removing sensor activity data provider observer %@", &v7, 0xCu);
   }
 
-  v6 = [(CBSensorActivityDataProvider *)self observers];
-  [v6 removeObject:v4];
+  observers = [(CBSensorActivityDataProvider *)self observers];
+  [observers removeObject:observerCopy];
 }
 
 - (NSSet)activeAndRecentSensorActivityAttributions
 {
-  v3 = [(CBSensorActivityDataProvider *)self activeSensorActivityAttributions];
-  v4 = [v3 mutableCopy];
+  activeSensorActivityAttributions = [(CBSensorActivityDataProvider *)self activeSensorActivityAttributions];
+  v4 = [activeSensorActivityAttributions mutableCopy];
   v5 = v4;
   if (v4)
   {
@@ -120,8 +120,8 @@
 
   v7 = v6;
 
-  v8 = [(CBSensorActivityDataProvider *)self recentSensorActivityAttributions];
-  [v7 unionSet:v8];
+  recentSensorActivityAttributions = [(CBSensorActivityDataProvider *)self recentSensorActivityAttributions];
+  [v7 unionSet:recentSensorActivityAttributions];
 
   v9 = [v7 copy];
 
@@ -130,21 +130,21 @@
 
 - (NSSet)activeCameraAndMicrophoneActivityAttributions
 {
-  v2 = [(CBSensorActivityDataProvider *)self activeSensorActivityAttributions];
-  v3 = [v2 objectsPassingTest:&stru_10007DB08];
+  activeSensorActivityAttributions = [(CBSensorActivityDataProvider *)self activeSensorActivityAttributions];
+  v3 = [activeSensorActivityAttributions objectsPassingTest:&stru_10007DB08];
 
   return v3;
 }
 
 - (CBSensorActivityAttribution)mostRecentCameraAndMicrophoneSensorActivityAttribution
 {
-  v2 = [(CBSensorActivityDataProvider *)self _recentCameraAndMicrophoneActivityAttributions];
-  v3 = [v2 lastObject];
+  _recentCameraAndMicrophoneActivityAttributions = [(CBSensorActivityDataProvider *)self _recentCameraAndMicrophoneActivityAttributions];
+  lastObject = [_recentCameraAndMicrophoneActivityAttributions lastObject];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = v2;
+  v4 = _recentCameraAndMicrophoneActivityAttributions;
   v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
@@ -160,21 +160,21 @@
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        if (v9 != v3)
+        if (v9 != lastObject)
         {
-          v10 = [*(*(&v14 + 1) + 8 * i) bundleIdentifier];
-          v11 = [v3 bundleIdentifier];
-          if ([v10 isEqualToString:v11])
+          bundleIdentifier = [*(*(&v14 + 1) + 8 * i) bundleIdentifier];
+          bundleIdentifier2 = [lastObject bundleIdentifier];
+          if ([bundleIdentifier isEqualToString:bundleIdentifier2])
           {
-            v12 = [v9 sensor];
+            sensor = [v9 sensor];
 
-            if (v12)
+            if (sensor)
             {
               continue;
             }
 
-            v10 = v3;
-            v3 = v9;
+            bundleIdentifier = lastObject;
+            lastObject = v9;
           }
 
           else
@@ -189,18 +189,18 @@
     while (v6);
   }
 
-  return v3;
+  return lastObject;
 }
 
 - (id)_recentCameraAndMicrophoneActivityAttributions
 {
-  v2 = [(CBSensorActivityDataProvider *)self recentSensorActivityAttributions];
+  recentSensorActivityAttributions = [(CBSensorActivityDataProvider *)self recentSensorActivityAttributions];
   v3 = +[NSMutableArray array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = v2;
+  v4 = recentSensorActivityAttributions;
   v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
@@ -233,23 +233,23 @@
   return v10;
 }
 
-- (void)_handleNewDomainData:(id)a3
+- (void)_handleNewDomainData:(id)data
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dataCopy = data;
+  v5 = dataCopy;
+  if (dataCopy)
   {
-    v6 = [v4 activeAttributionData];
-    v7 = [v6 dataAccessAttributions];
+    activeAttributionData = [dataCopy activeAttributionData];
+    dataAccessAttributions = [activeAttributionData dataAccessAttributions];
 
-    v8 = [v7 bs_map:&stru_10007DB48];
+    v8 = [dataAccessAttributions bs_map:&stru_10007DB48];
     v9 = [NSSet setWithArray:v8];
 
     [(CBSensorActivityDataProvider *)self setActiveSensorActivityAttributions:v9];
-    v10 = [v5 recentAttributionData];
-    v11 = [v10 dataAccessAttributions];
+    recentAttributionData = [v5 recentAttributionData];
+    dataAccessAttributions2 = [recentAttributionData dataAccessAttributions];
 
-    v12 = [v11 bs_map:&stru_10007DB68];
+    v12 = [dataAccessAttributions2 bs_map:&stru_10007DB68];
     v13 = [NSSet setWithArray:v12];
 
     [(CBSensorActivityDataProvider *)self setRecentSensorActivityAttributions:v13];
@@ -260,8 +260,8 @@
     v14 = +[NSSet set];
     [(CBSensorActivityDataProvider *)self setActiveSensorActivityAttributions:v14];
 
-    v7 = +[NSSet set];
-    [(CBSensorActivityDataProvider *)self setRecentSensorActivityAttributions:v7];
+    dataAccessAttributions = +[NSSet set];
+    [(CBSensorActivityDataProvider *)self setRecentSensorActivityAttributions:dataAccessAttributions];
   }
 
   v15 = CheckerBoardLogHandleForCategory();
@@ -276,8 +276,8 @@
 
 - (void)_notifyObserversOfActivityChange
 {
-  v3 = [(CBSensorActivityDataProvider *)self observers];
-  v4 = [v3 copy];
+  observers = [(CBSensorActivityDataProvider *)self observers];
+  v4 = [observers copy];
 
   v12 = 0u;
   v13 = 0u;

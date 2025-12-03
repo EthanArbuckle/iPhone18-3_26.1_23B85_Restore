@@ -1,13 +1,13 @@
 @interface PhotosSecondaryToolbarLensControl
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC12PhotosUICore33PhotosSecondaryToolbarLensControl)initWithCoder:(id)a3;
-- (_TtC12PhotosUICore33PhotosSecondaryToolbarLensControl)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC12PhotosUICore33PhotosSecondaryToolbarLensControl)initWithCoder:(id)coder;
+- (_TtC12PhotosUICore33PhotosSecondaryToolbarLensControl)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation PhotosSecondaryToolbarLensControl
 
-- (_TtC12PhotosUICore33PhotosSecondaryToolbarLensControl)initWithCoder:(id)a3
+- (_TtC12PhotosUICore33PhotosSecondaryToolbarLensControl)initWithCoder:(id)coder
 {
   *(&self->super.super._responderFlags + OBJC_IVAR____TtC12PhotosUICore33PhotosSecondaryToolbarLensControl_delegate) = 0;
   swift_unknownObjectWeakInit();
@@ -28,7 +28,7 @@
   sub_1A524D9E4();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   [*(&self->super.super.super.isa + OBJC_IVAR____TtC12PhotosUICore33PhotosSecondaryToolbarLensControl_lensControl) sizeThatFits_];
   result.height = v4;
@@ -36,7 +36,7 @@
   return result;
 }
 
-- (_TtC12PhotosUICore33PhotosSecondaryToolbarLensControl)initWithFrame:(CGRect)a3
+- (_TtC12PhotosUICore33PhotosSecondaryToolbarLensControl)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

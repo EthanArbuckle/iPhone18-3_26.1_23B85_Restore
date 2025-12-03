@@ -1,9 +1,9 @@
 @interface HWSharedRenderQueueApplicationObserver
 - (HWSharedRenderQueueApplicationObserver)init;
 - (NSOperationQueue)operationQueue;
-- (void)_applicationDidBecomeActive:(id)a3;
-- (void)_applicationDidEnterBackground:(id)a3;
-- (void)_applicationWillEnterForeground:(id)a3;
+- (void)_applicationDidBecomeActive:(id)active;
+- (void)_applicationDidEnterBackground:(id)background;
+- (void)_applicationWillEnterForeground:(id)foreground;
 - (void)dealloc;
 @end
 
@@ -39,22 +39,22 @@
   [(HWSharedRenderQueueApplicationObserver *)&v4 dealloc];
 }
 
-- (void)_applicationDidEnterBackground:(id)a3
+- (void)_applicationDidEnterBackground:(id)background
 {
-  v3 = [(HWSharedRenderQueueApplicationObserver *)self operationQueue];
-  [v3 setSuspended:1];
+  operationQueue = [(HWSharedRenderQueueApplicationObserver *)self operationQueue];
+  [operationQueue setSuspended:1];
 }
 
-- (void)_applicationWillEnterForeground:(id)a3
+- (void)_applicationWillEnterForeground:(id)foreground
 {
-  v3 = [(HWSharedRenderQueueApplicationObserver *)self operationQueue];
-  [v3 setSuspended:0];
+  operationQueue = [(HWSharedRenderQueueApplicationObserver *)self operationQueue];
+  [operationQueue setSuspended:0];
 }
 
-- (void)_applicationDidBecomeActive:(id)a3
+- (void)_applicationDidBecomeActive:(id)active
 {
-  v3 = [(HWSharedRenderQueueApplicationObserver *)self operationQueue];
-  [v3 setSuspended:0];
+  operationQueue = [(HWSharedRenderQueueApplicationObserver *)self operationQueue];
+  [operationQueue setSuspended:0];
 }
 
 - (NSOperationQueue)operationQueue

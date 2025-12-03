@@ -1,32 +1,32 @@
 @interface IPProgressServerDefaultBehavior
-- (BOOL)transport:(id)a3 shouldAcceptConnection:(id)a4;
+- (BOOL)transport:(id)transport shouldAcceptConnection:(id)connection;
 - (IPProgressServerBehaviorDelegate)delegate;
-- (IPProgressServerDefaultBehavior)initWithTransport:(id)a3 stateUpdateSink:(id)a4;
-- (id)activeInstallationsForClient:(id)a3;
-- (id)allInstallableStatesForClient:(id)a3;
-- (id)progressForIdentity:(id)a3 forClient:(id)a4 error:(id *)a5;
-- (void)identityWasUninstalled:(id)a3;
-- (void)progressForIdentity:(id)a3 finishedWithState:(unint64_t)a4;
-- (void)progressForIdentityInitiated:(id)a3;
+- (IPProgressServerDefaultBehavior)initWithTransport:(id)transport stateUpdateSink:(id)sink;
+- (id)activeInstallationsForClient:(id)client;
+- (id)allInstallableStatesForClient:(id)client;
+- (id)progressForIdentity:(id)identity forClient:(id)client error:(id *)error;
+- (void)identityWasUninstalled:(id)uninstalled;
+- (void)progressForIdentity:(id)identity finishedWithState:(unint64_t)state;
+- (void)progressForIdentityInitiated:(id)initiated;
 - (void)resume;
-- (void)transport:(id)a3 acceptedClient:(id)a4;
+- (void)transport:(id)transport acceptedClient:(id)client;
 @end
 
 @implementation IPProgressServerDefaultBehavior
 
-- (IPProgressServerDefaultBehavior)initWithTransport:(id)a3 stateUpdateSink:(id)a4
+- (IPProgressServerDefaultBehavior)initWithTransport:(id)transport stateUpdateSink:(id)sink
 {
-  v7 = a3;
-  v8 = a4;
+  transportCopy = transport;
+  sinkCopy = sink;
   v12.receiver = self;
   v12.super_class = IPProgressServerDefaultBehavior;
   v9 = [(IPProgressServerDefaultBehavior *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_transport, a3);
+    objc_storeStrong(&v9->_transport, transport);
     [(IPServerXPCTransport *)v10->_transport setDelegate:v10];
-    objc_storeStrong(&v10->_stateSink, a4);
+    objc_storeStrong(&v10->_stateSink, sink);
   }
 
   return v10;
@@ -49,14 +49,14 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)progressForIdentity:(id)a3 finishedWithState:(unint64_t)a4
+- (void)progressForIdentity:(id)identity finishedWithState:(unint64_t)state
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (a4 <= 2)
+  identityCopy = identity;
+  v7 = identityCopy;
+  if (state <= 2)
   {
-    if (a4 < 3)
+    if (state < 3)
     {
       v8 = _IPServerLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -64,7 +64,7 @@
         *v23 = 138412546;
         *&v23[4] = v7;
         v24 = 2048;
-        v25 = a4;
+        stateCopy = state;
         _os_log_impl(&dword_254C69000, v8, OS_LOG_TYPE_DEFAULT, "Progress for %@ finished with strange install state %llu", v23, 0x16u);
       }
     }
@@ -73,31 +73,31 @@
     goto LABEL_26;
   }
 
-  if (a4 == 3)
+  if (state == 3)
   {
     v9 = 2;
   }
 
   else
   {
-    if (a4 != 4)
+    if (state != 4)
     {
-      v9 = a4 == 5;
+      v9 = state == 5;
       goto LABEL_26;
     }
 
     v9 = 3;
   }
 
-  v10 = v6;
+  v10 = identityCopy;
   *v23 = 0;
   v11 = [v10 findApplicationRecordWithError:v23];
   v12 = *v23;
   v13 = v12;
   if (v11)
   {
-    v14 = [v11 identities];
-    v15 = [v14 containsObject:v10];
+    identities = [v11 identities];
+    v15 = [identities containsObject:v10];
 
     if (v15)
     {
@@ -107,16 +107,16 @@
     goto LABEL_23;
   }
 
-  v16 = [v12 domain];
-  if (![v16 isEqual:*MEMORY[0x277CCA590]])
+  domain = [v12 domain];
+  if (![domain isEqual:*MEMORY[0x277CCA590]])
   {
 
     goto LABEL_19;
   }
 
-  v17 = [v13 code];
+  code = [v13 code];
 
-  if (v17 != -10814)
+  if (code != -10814)
   {
 LABEL_19:
     v18 = _IPDefaultLog();
@@ -133,7 +133,7 @@ LABEL_23:
     *v23 = 138412546;
     *&v23[4] = v10;
     v24 = 1024;
-    LODWORD(v25) = v9;
+    LODWORD(stateCopy) = v9;
     _os_log_impl(&dword_254C69000, v19, OS_LOG_TYPE_DEFAULT, "Progress ended for identity %@ with reason %u and identity no longer exists; synthesizing identity unavailable event", v23, 0x12u);
   }
 
@@ -147,25 +147,25 @@ LABEL_26:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)progressForIdentityInitiated:(id)a3
+- (void)progressForIdentityInitiated:(id)initiated
 {
   stateSink = self->_stateSink;
-  v4 = a3;
-  v5 = [[IPStateUpdateMessage alloc] initWithType:1 identity:v4];
+  initiatedCopy = initiated;
+  v5 = [[IPStateUpdateMessage alloc] initWithType:1 identity:initiatedCopy];
 
   [(IPStateUpdateStreamSink *)stateSink sendUpdateMessage:v5];
 }
 
-- (void)identityWasUninstalled:(id)a3
+- (void)identityWasUninstalled:(id)uninstalled
 {
   stateSink = self->_stateSink;
-  v4 = a3;
-  v5 = [[IPStateUpdateMessage alloc] initWithType:4 identity:v4];
+  uninstalledCopy = uninstalled;
+  v5 = [[IPStateUpdateMessage alloc] initWithType:4 identity:uninstalledCopy];
 
   [(IPStateUpdateStreamSink *)stateSink sendUpdateMessage:v5];
 }
 
-- (id)activeInstallationsForClient:(id)a3
+- (id)activeInstallationsForClient:(id)client
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = [WeakRetained activeInstallationsForBehavior:self];
@@ -185,16 +185,16 @@ LABEL_26:
   return v7;
 }
 
-- (id)progressForIdentity:(id)a3 forClient:(id)a4 error:(id *)a5
+- (id)progressForIdentity:(id)identity forClient:(id)client error:(id *)error
 {
-  v7 = a3;
+  identityCopy = identity;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v9 = [WeakRetained serverBehavior:self progressForIdentity:v7 error:a5];
+  v9 = [WeakRetained serverBehavior:self progressForIdentity:identityCopy error:error];
 
   return v9;
 }
 
-- (id)allInstallableStatesForClient:(id)a3
+- (id)allInstallableStatesForClient:(id)client
 {
   v25 = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -220,8 +220,8 @@ LABEL_26:
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
-        v12 = [v11 identity];
-        [v4 setObject:v11 forKey:v12];
+        identity = [v11 identity];
+        [v4 setObject:v11 forKey:identity];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -230,20 +230,20 @@ LABEL_26:
     while (v8);
   }
 
-  v13 = [MEMORY[0x277CC1EB0] sharedDatabaseContext];
+  mEMORY[0x277CC1EB0] = [MEMORY[0x277CC1EB0] sharedDatabaseContext];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __65__IPProgressServerDefaultBehavior_allInstallableStatesForClient___block_invoke;
   v18[3] = &unk_2797B22C8;
   v19 = v4;
   v14 = v4;
-  [v13 accessUsingBlock:v18];
+  [mEMORY[0x277CC1EB0] accessUsingBlock:v18];
 
-  v15 = [v14 allValues];
+  allValues = [v14 allValues];
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return allValues;
 }
 
 void __65__IPProgressServerDefaultBehavior_allInstallableStatesForClient___block_invoke(uint64_t a1, char a2, void *a3)
@@ -343,20 +343,20 @@ LABEL_15:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)transport:(id)a3 shouldAcceptConnection:(id)a4
+- (BOOL)transport:(id)transport shouldAcceptConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(self) = [WeakRetained serverBehavior:self shouldAcceptConnection:v5];
+  LOBYTE(self) = [WeakRetained serverBehavior:self shouldAcceptConnection:connectionCopy];
 
   return self;
 }
 
-- (void)transport:(id)a3 acceptedClient:(id)a4
+- (void)transport:(id)transport acceptedClient:(id)client
 {
-  v5 = a4;
+  clientCopy = client;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained serverBehavior:self acceptedClient:v5];
+  [WeakRetained serverBehavior:self acceptedClient:clientCopy];
 }
 
 - (IPProgressServerBehaviorDelegate)delegate

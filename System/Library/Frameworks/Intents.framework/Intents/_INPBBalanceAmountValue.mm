@@ -1,49 +1,49 @@
 @interface _INPBBalanceAmountValue
-- (BOOL)isEqual:(id)a3;
-- (_INPBBalanceAmountValue)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBBalanceAmountValue)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsType:(id)a3;
+- (int)StringAsType:(id)type;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setType:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setType:(int)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBBalanceAmountValue
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBBalanceAmountValue *)self currencyAmount];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"currencyAmount"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  currencyAmount = [(_INPBBalanceAmountValue *)self currencyAmount];
+  dictionaryRepresentation = [currencyAmount dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"currencyAmount"];
 
-  v6 = [(_INPBBalanceAmountValue *)self customAmount];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"customAmount"];
+  customAmount = [(_INPBBalanceAmountValue *)self customAmount];
+  dictionaryRepresentation2 = [customAmount dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"customAmount"];
 
   if ([(_INPBBalanceAmountValue *)self hasType])
   {
-    v8 = [(_INPBBalanceAmountValue *)self type];
-    if ((v8 - 1) >= 3)
+    type = [(_INPBBalanceAmountValue *)self type];
+    if ((type - 1) >= 3)
     {
-      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v8];
+      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", type];
     }
 
     else
     {
-      v9 = off_1E7281118[(v8 - 1)];
+      v9 = off_1E7281118[(type - 1)];
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"type"];
+    [dictionary setObject:v9 forKeyedSubscript:@"type"];
   }
 
-  v10 = [(_INPBBalanceAmountValue *)self valueMetadata];
-  v11 = [v10 dictionaryRepresentation];
-  [v3 setObject:v11 forKeyedSubscript:@"valueMetadata"];
+  valueMetadata = [(_INPBBalanceAmountValue *)self valueMetadata];
+  dictionaryRepresentation3 = [valueMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"valueMetadata"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -63,28 +63,28 @@
   return v4 ^ v3 ^ v5 ^ [(_INPBValueMetadata *)self->_valueMetadata hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
-  v5 = [(_INPBBalanceAmountValue *)self currencyAmount];
-  v6 = [v4 currencyAmount];
-  if ((v5 != 0) == (v6 == 0))
+  currencyAmount = [(_INPBBalanceAmountValue *)self currencyAmount];
+  currencyAmount2 = [equalCopy currencyAmount];
+  if ((currencyAmount != 0) == (currencyAmount2 == 0))
   {
     goto LABEL_20;
   }
 
-  v7 = [(_INPBBalanceAmountValue *)self currencyAmount];
-  if (v7)
+  currencyAmount3 = [(_INPBBalanceAmountValue *)self currencyAmount];
+  if (currencyAmount3)
   {
-    v8 = v7;
-    v9 = [(_INPBBalanceAmountValue *)self currencyAmount];
-    v10 = [v4 currencyAmount];
-    v11 = [v9 isEqual:v10];
+    v8 = currencyAmount3;
+    currencyAmount4 = [(_INPBBalanceAmountValue *)self currencyAmount];
+    currencyAmount5 = [equalCopy currencyAmount];
+    v11 = [currencyAmount4 isEqual:currencyAmount5];
 
     if (!v11)
     {
@@ -96,20 +96,20 @@
   {
   }
 
-  v5 = [(_INPBBalanceAmountValue *)self customAmount];
-  v6 = [v4 customAmount];
-  if ((v5 != 0) == (v6 == 0))
+  currencyAmount = [(_INPBBalanceAmountValue *)self customAmount];
+  currencyAmount2 = [equalCopy customAmount];
+  if ((currencyAmount != 0) == (currencyAmount2 == 0))
   {
     goto LABEL_20;
   }
 
-  v12 = [(_INPBBalanceAmountValue *)self customAmount];
-  if (v12)
+  customAmount = [(_INPBBalanceAmountValue *)self customAmount];
+  if (customAmount)
   {
-    v13 = v12;
-    v14 = [(_INPBBalanceAmountValue *)self customAmount];
-    v15 = [v4 customAmount];
-    v16 = [v14 isEqual:v15];
+    v13 = customAmount;
+    customAmount2 = [(_INPBBalanceAmountValue *)self customAmount];
+    customAmount3 = [equalCopy customAmount];
+    v16 = [customAmount2 isEqual:customAmount3];
 
     if (!v16)
     {
@@ -121,30 +121,30 @@
   {
   }
 
-  v17 = [(_INPBBalanceAmountValue *)self hasType];
-  if (v17 != [v4 hasType])
+  hasType = [(_INPBBalanceAmountValue *)self hasType];
+  if (hasType != [equalCopy hasType])
   {
     goto LABEL_21;
   }
 
   if ([(_INPBBalanceAmountValue *)self hasType])
   {
-    if ([v4 hasType])
+    if ([equalCopy hasType])
     {
       type = self->_type;
-      if (type != [v4 type])
+      if (type != [equalCopy type])
       {
         goto LABEL_21;
       }
     }
   }
 
-  v5 = [(_INPBBalanceAmountValue *)self valueMetadata];
-  v6 = [v4 valueMetadata];
-  if ((v5 != 0) != (v6 == 0))
+  currencyAmount = [(_INPBBalanceAmountValue *)self valueMetadata];
+  currencyAmount2 = [equalCopy valueMetadata];
+  if ((currencyAmount != 0) != (currencyAmount2 == 0))
   {
-    v19 = [(_INPBBalanceAmountValue *)self valueMetadata];
-    if (!v19)
+    valueMetadata = [(_INPBBalanceAmountValue *)self valueMetadata];
+    if (!valueMetadata)
     {
 
 LABEL_24:
@@ -152,10 +152,10 @@ LABEL_24:
       goto LABEL_22;
     }
 
-    v20 = v19;
-    v21 = [(_INPBBalanceAmountValue *)self valueMetadata];
-    v22 = [v4 valueMetadata];
-    v23 = [v21 isEqual:v22];
+    v20 = valueMetadata;
+    valueMetadata2 = [(_INPBBalanceAmountValue *)self valueMetadata];
+    valueMetadata3 = [equalCopy valueMetadata];
+    v23 = [valueMetadata2 isEqual:valueMetadata3];
 
     if (v23)
     {
@@ -175,13 +175,13 @@ LABEL_22:
   return v24;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBBalanceAmountValue allocWithZone:](_INPBBalanceAmountValue init];
-  v6 = [(_INPBCurrencyAmountValue *)self->_currencyAmount copyWithZone:a3];
+  v6 = [(_INPBCurrencyAmountValue *)self->_currencyAmount copyWithZone:zone];
   [(_INPBBalanceAmountValue *)v5 setCurrencyAmount:v6];
 
-  v7 = [(_INPBDecimalNumberValue *)self->_customAmount copyWithZone:a3];
+  v7 = [(_INPBDecimalNumberValue *)self->_customAmount copyWithZone:zone];
   [(_INPBBalanceAmountValue *)v5 setCustomAmount:v7];
 
   if ([(_INPBBalanceAmountValue *)self hasType])
@@ -189,52 +189,52 @@ LABEL_22:
     [(_INPBBalanceAmountValue *)v5 setType:[(_INPBBalanceAmountValue *)self type]];
   }
 
-  v8 = [(_INPBValueMetadata *)self->_valueMetadata copyWithZone:a3];
+  v8 = [(_INPBValueMetadata *)self->_valueMetadata copyWithZone:zone];
   [(_INPBBalanceAmountValue *)v5 setValueMetadata:v8];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBBalanceAmountValue *)self data];
+  coderCopy = coder;
+  data = [(_INPBBalanceAmountValue *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBBalanceAmountValue)initWithCoder:(id)a3
+- (_INPBBalanceAmountValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBBalanceAmountValue *)self initWithData:v6];
+    self = [(_INPBBalanceAmountValue *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
-  v4 = [(_INPBBalanceAmountValue *)self currencyAmount];
+  toCopy = to;
+  currencyAmount = [(_INPBBalanceAmountValue *)self currencyAmount];
 
-  if (v4)
+  if (currencyAmount)
   {
-    v5 = [(_INPBBalanceAmountValue *)self currencyAmount];
+    currencyAmount2 = [(_INPBBalanceAmountValue *)self currencyAmount];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_INPBBalanceAmountValue *)self customAmount];
+  customAmount = [(_INPBBalanceAmountValue *)self customAmount];
 
-  if (v6)
+  if (customAmount)
   {
-    v7 = [(_INPBBalanceAmountValue *)self customAmount];
+    customAmount2 = [(_INPBBalanceAmountValue *)self customAmount];
     PBDataWriterWriteSubmessage();
   }
 
@@ -244,32 +244,32 @@ LABEL_22:
     PBDataWriterWriteInt32Field();
   }
 
-  v9 = [(_INPBBalanceAmountValue *)self valueMetadata];
+  valueMetadata = [(_INPBBalanceAmountValue *)self valueMetadata];
 
-  v10 = v12;
-  if (v9)
+  v10 = toCopy;
+  if (valueMetadata)
   {
-    v11 = [(_INPBBalanceAmountValue *)self valueMetadata];
+    valueMetadata2 = [(_INPBBalanceAmountValue *)self valueMetadata];
     PBDataWriterWriteSubmessage();
 
-    v10 = v12;
+    v10 = toCopy;
   }
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"MONEY"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"MONEY"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"POINTS"])
+  else if ([typeCopy isEqualToString:@"POINTS"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"MILES"])
+  else if ([typeCopy isEqualToString:@"MILES"])
   {
     v4 = 3;
   }
@@ -282,10 +282,10 @@ LABEL_22:
   return v4;
 }
 
-- (void)setType:(int)a3
+- (void)setType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -293,7 +293,7 @@ LABEL_22:
   else
   {
     *&self->_has = has | 1;
-    self->_type = a3;
+    self->_type = type;
   }
 }
 

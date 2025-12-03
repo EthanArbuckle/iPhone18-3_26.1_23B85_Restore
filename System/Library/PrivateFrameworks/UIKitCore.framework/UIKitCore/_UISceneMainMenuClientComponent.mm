@@ -1,30 +1,30 @@
 @interface _UISceneMainMenuClientComponent
-- (id)handlePrivateActions:(id)a3;
-- (void)_baseMainMenuDidUpdate:(id)a3;
-- (void)_mainMenuManager:(id)a3 userDidInvokeCommand:(id)a4;
-- (void)scene:(id)a3 didUpdateSettings:(id)a4;
-- (void)setScene:(id)a3;
+- (id)handlePrivateActions:(id)actions;
+- (void)_baseMainMenuDidUpdate:(id)update;
+- (void)_mainMenuManager:(id)manager userDidInvokeCommand:(id)command;
+- (void)scene:(id)scene didUpdateSettings:(id)settings;
+- (void)setScene:(id)scene;
 @end
 
 @implementation _UISceneMainMenuClientComponent
 
-- (void)setScene:(id)a3
+- (void)setScene:(id)scene
 {
   v3.receiver = self;
   v3.super_class = _UISceneMainMenuClientComponent;
-  [(FBSSceneComponent *)&v3 setScene:a3];
+  [(FBSSceneComponent *)&v3 setScene:scene];
 }
 
-- (id)handlePrivateActions:(id)a3
+- (id)handlePrivateActions:(id)actions
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  actionsCopy = actions;
   v4 = [MEMORY[0x1E695DFA8] set];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = actionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -78,43 +78,43 @@
   return v4;
 }
 
-- (void)_baseMainMenuDidUpdate:(id)a3
+- (void)_baseMainMenuDidUpdate:(id)update
 {
   v6 = +[_UIBaseMenuDidInvalidateNotificationAction action];
-  v4 = [(FBSSceneComponent *)self scene];
+  scene = [(FBSSceneComponent *)self scene];
   v5 = [MEMORY[0x1E695DFD8] setWithObject:v6];
-  [v4 sendPrivateActions:v5];
+  [scene sendPrivateActions:v5];
 }
 
-- (void)_mainMenuManager:(id)a3 userDidInvokeCommand:(id)a4
+- (void)_mainMenuManager:(id)manager userDidInvokeCommand:(id)command
 {
-  v5 = a4;
-  v8 = [[_UIMainMenuCommandInvocationNotificationAction alloc] initWithCommandInvocationNotification:v5];
+  commandCopy = command;
+  v8 = [[_UIMainMenuCommandInvocationNotificationAction alloc] initWithCommandInvocationNotification:commandCopy];
 
-  v6 = [(FBSSceneComponent *)self scene];
+  scene = [(FBSSceneComponent *)self scene];
   v7 = [MEMORY[0x1E695DFD8] setWithObject:v8];
-  [v6 sendPrivateActions:v7];
+  [scene sendPrivateActions:v7];
 }
 
-- (void)scene:(id)a3 didUpdateSettings:(id)a4
+- (void)scene:(id)scene didUpdateSettings:(id)settings
 {
-  v13 = a4;
-  v5 = [v13 settingsDiff];
-  v6 = [v5 containsProperty:sel_isHostObservingMainMenu];
+  settingsCopy = settings;
+  settingsDiff = [settingsCopy settingsDiff];
+  v6 = [settingsDiff containsProperty:sel_isHostObservingMainMenu];
 
-  v7 = v13;
+  v7 = settingsCopy;
   if (v6)
   {
-    v8 = [v13 settings];
-    v9 = [v8 isHostObservingMainMenu];
+    settings = [settingsCopy settings];
+    isHostObservingMainMenu = [settings isHostObservingMainMenu];
 
     v10 = +[_UIMainMenuManager sharedManager];
     v11 = [v10 isActiveObserver:self];
 
-    if (!v9 || (v11 & 1) != 0)
+    if (!isHostObservingMainMenu || (v11 & 1) != 0)
     {
-      v7 = v13;
-      if (v9 & 1 | ((v11 & 1) == 0))
+      v7 = settingsCopy;
+      if (isHostObservingMainMenu & 1 | ((v11 & 1) == 0))
       {
         goto LABEL_8;
       }
@@ -129,7 +129,7 @@
       [v12 addMainMenuObserver:self];
     }
 
-    v7 = v13;
+    v7 = settingsCopy;
   }
 
 LABEL_8:

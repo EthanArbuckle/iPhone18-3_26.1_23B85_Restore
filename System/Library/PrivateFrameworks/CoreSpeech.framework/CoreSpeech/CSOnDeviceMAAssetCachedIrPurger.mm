@@ -1,16 +1,16 @@
 @interface CSOnDeviceMAAssetCachedIrPurger
-+ (id)purgeCachedIrForMAAsset:(id)a3 cachedIrDir:(id)a4;
++ (id)purgeCachedIrForMAAsset:(id)asset cachedIrDir:(id)dir;
 @end
 
 @implementation CSOnDeviceMAAssetCachedIrPurger
 
-+ (id)purgeCachedIrForMAAsset:(id)a3 cachedIrDir:(id)a4
++ (id)purgeCachedIrForMAAsset:(id)asset cachedIrDir:(id)dir
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3 && v5)
+  dirCopy = dir;
+  v6 = dirCopy;
+  if (asset && dirCopy)
   {
-    v7 = [a3 getCSAssetOfType:0];
+    v7 = [asset getCSAssetOfType:0];
     v8 = [CSOnDeviceCompilationUtils getCachedIrsFromCSAsset:v7 cachedIrDir:v6];
     v23 = 0u;
     v24 = 0u;

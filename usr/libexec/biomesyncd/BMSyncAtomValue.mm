@@ -1,29 +1,29 @@
 @interface BMSyncAtomValue
-+ (id)atomValueFromData:(id)a3 version:(int64_t)a4;
-- (BMSyncAtomValue)initWithAtomType:(unint64_t)a3 value:(id)a4 version:(int64_t)a5;
-- (BMSyncAtomValue)initWithCoder:(id)a3;
-- (BMSyncAtomValue)initWithProto:(id)a3;
-- (BMSyncAtomValue)initWithProtoData:(id)a3;
++ (id)atomValueFromData:(id)data version:(int64_t)version;
+- (BMSyncAtomValue)initWithAtomType:(unint64_t)type value:(id)value version:(int64_t)version;
+- (BMSyncAtomValue)initWithCoder:(id)coder;
+- (BMSyncAtomValue)initWithProto:(id)proto;
+- (BMSyncAtomValue)initWithProtoData:(id)data;
 - (id)encodeAsProto;
 - (id)proto;
 - (id)serialize;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BMSyncAtomValue
 
-- (BMSyncAtomValue)initWithAtomType:(unint64_t)a3 value:(id)a4 version:(int64_t)a5
+- (BMSyncAtomValue)initWithAtomType:(unint64_t)type value:(id)value version:(int64_t)version
 {
-  v9 = a4;
+  valueCopy = value;
   v13.receiver = self;
   v13.super_class = BMSyncAtomValue;
   v10 = [(BMSyncAtomValue *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_type = a3;
-    objc_storeStrong(&v10->_value, a4);
-    v11->_version = a5;
+    v10->_type = type;
+    objc_storeStrong(&v10->_value, value);
+    v11->_version = version;
   }
 
   return v11;
@@ -31,21 +31,21 @@
 
 - (id)encodeAsProto
 {
-  v2 = [(BMSyncAtomValue *)self proto];
-  v3 = [v2 data];
+  proto = [(BMSyncAtomValue *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMSyncAtomValue)initWithProto:(id)a3
+- (BMSyncAtomValue)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = protoCopy;
       if (sub_1000492F0(v5) && sub_100049450(v5))
       {
         v6 = [BMStoreEventAtomValue alloc];
@@ -53,7 +53,7 @@
         v8 = [(BMStoreEventAtomValue *)v6 initWithProto:v7];
 
         self = [(BMSyncAtomValue *)self initWithAtomType:sub_10004927C(v5) value:v8 version:1];
-        v9 = self;
+        selfCopy = self;
 LABEL_13:
 
         goto LABEL_14;
@@ -75,56 +75,56 @@ LABEL_13:
       }
     }
 
-    v9 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
-  v9 = 0;
+  selfCopy = 0;
 LABEL_14:
 
-  return v9;
+  return selfCopy;
 }
 
-- (BMSyncAtomValue)initWithProtoData:(id)a3
+- (BMSyncAtomValue)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBSyncAtomValue alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBSyncAtomValue alloc] initWithData:dataCopy];
 
     self = [(BMSyncAtomValue *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
   sub_1000492A8(v3, [(BMSyncAtomValue *)self type]);
-  v4 = [(BMSyncAtomValue *)self value];
-  v5 = [v4 proto];
+  value = [(BMSyncAtomValue *)self value];
+  proto = [value proto];
 
-  sub_1000494FC(v3, v5);
+  sub_1000494FC(v3, proto);
 
   return v3;
 }
 
-+ (id)atomValueFromData:(id)a3 version:(int64_t)a4
++ (id)atomValueFromData:(id)data version:(int64_t)version
 {
-  v6 = a3;
-  if (a4 == 1)
+  dataCopy = data;
+  if (version == 1)
   {
-    v7 = [[a1 alloc] initWithProtoData:v6];
+    v7 = [[self alloc] initWithProtoData:dataCopy];
   }
 
-  else if (a4)
+  else if (version)
   {
     v11 = __biome_log_for_category();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -138,7 +138,7 @@ LABEL_14:
   else
   {
     v14 = 0;
-    v7 = [NSKeyedUnarchiver unarchivedObjectOfClass:a1 fromData:v6 error:&v14];
+    v7 = [NSKeyedUnarchiver unarchivedObjectOfClass:self fromData:dataCopy error:&v14];
     v8 = v14;
     if (v8)
     {
@@ -176,7 +176,7 @@ LABEL_14:
   version = self->_version;
   if (version == 1)
   {
-    v4 = [(BMSyncAtomValue *)self serializeProto];
+    serializeProto = [(BMSyncAtomValue *)self serializeProto];
   }
 
   else if (version)
@@ -206,13 +206,13 @@ LABEL_14:
       _os_log_impl(&_mh_execute_header, v8, v9, "cannot serialize atom value with version %lu", &buf, 0xCu);
     }
 
-    v4 = 0;
+    serializeProto = 0;
   }
 
   else
   {
     v14 = 0;
-    v4 = [NSKeyedArchiver archivedDataWithRootObject:self requiringSecureCoding:1 error:&v14];
+    serializeProto = [NSKeyedArchiver archivedDataWithRootObject:self requiringSecureCoding:1 error:&v14];
     v5 = v14;
     if (v5)
     {
@@ -242,28 +242,28 @@ LABEL_14:
     }
   }
 
-  return v4;
+  return serializeProto;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v6 = a3;
+  coderCopy = coder;
   v5 = [NSNumber numberWithUnsignedInteger:type];
-  [v6 encodeObject:v5 forKey:@"atomType"];
+  [coderCopy encodeObject:v5 forKey:@"atomType"];
 
-  [v6 encodeObject:self->_value forKey:@"atomValue"];
+  [coderCopy encodeObject:self->_value forKey:@"atomValue"];
 }
 
-- (BMSyncAtomValue)initWithCoder:(id)a3
+- (BMSyncAtomValue)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"atomType"];
-  v6 = [v5 unsignedIntegerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"atomType"];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"atomValue"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"atomValue"];
 
-  v8 = [(BMSyncAtomValue *)self initWithAtomType:v6 value:v7 version:0];
+  v8 = [(BMSyncAtomValue *)self initWithAtomType:unsignedIntegerValue value:v7 version:0];
   return v8;
 }
 

@@ -1,14 +1,14 @@
 @interface MCResourceStatus
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MCResourceStatus
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_18E31F078(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_18E31F078(coderCopy);
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface SubjectLiftViewDelegate
-- (CGRect)contentsRectForImageAnalysisInteraction:(id)a3;
+- (CGRect)contentsRectForImageAnalysisInteraction:(id)interaction;
 - (_TtC6Tamale23SubjectLiftViewDelegate)init;
 @end
 
 @implementation SubjectLiftViewDelegate
 
-- (CGRect)contentsRectForImageAnalysisInteraction:(id)a3
+- (CGRect)contentsRectForImageAnalysisInteraction:(id)interaction
 {
   sub_100005650(self + OBJC_IVAR____TtC6Tamale23SubjectLiftViewDelegate_frame, v16);
   v5 = *&self->frame[OBJC_IVAR____TtC6Tamale23SubjectLiftViewDelegate_boundingBoxInImageCoordinates + 8];
   v19[0] = *(&self->super.isa + OBJC_IVAR____TtC6Tamale23SubjectLiftViewDelegate_boundingBoxInImageCoordinates);
   v19[1] = v5;
   v20 = self->frame[OBJC_IVAR____TtC6Tamale23SubjectLiftViewDelegate_boundingBoxInImageCoordinates + 24];
-  v6 = a3;
-  v7 = self;
-  sub_10005C9A0(v6, v16, v19, v17);
+  interactionCopy = interaction;
+  selfCopy = self;
+  sub_10005C9A0(interactionCopy, v16, v19, v17);
   v8 = *v17;
   v9 = *&v17[1];
   v10 = *&v17[2];

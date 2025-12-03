@@ -1,31 +1,31 @@
 @interface GTSharedMemoryTransport_capture
-- (BOOL)_clientConnect:(id *)a3;
-- (BOOL)_createAndRunSources:(id *)a3;
-- (BOOL)_initializeSMRegion:(sm_region_header *)a3 size:(unint64_t)a4 name:(const char *)a5 error:(id *)a6;
-- (BOOL)_openSMRegion:(sm_region_header *)a3 size:(unint64_t)a4 name:(const char *)a5 error:(id *)a6;
-- (BOOL)_serverConnect:(id *)a3;
-- (BOOL)send:(id)a3 inReplyTo:(id)a4 error:(id *)a5 replyQueue:(id)a6 timeout:(unint64_t)a7 handler:(id)a8;
+- (BOOL)_clientConnect:(id *)connect;
+- (BOOL)_createAndRunSources:(id *)sources;
+- (BOOL)_initializeSMRegion:(sm_region_header *)region size:(unint64_t)size name:(const char *)name error:(id *)error;
+- (BOOL)_openSMRegion:(sm_region_header *)region size:(unint64_t)size name:(const char *)name error:(id *)error;
+- (BOOL)_serverConnect:(id *)connect;
+- (BOOL)send:(id)send inReplyTo:(id)to error:(id *)error replyQueue:(id)queue timeout:(unint64_t)timeout handler:(id)handler;
 - (GTSharedMemoryTransport_capture)init;
-- (GTSharedMemoryTransport_capture)initWithMode:(int)a3 initialMessageSerial:(unsigned int)a4;
+- (GTSharedMemoryTransport_capture)initWithMode:(int)mode initialMessageSerial:(unsigned int)serial;
 - (id)connect;
-- (int64_t)_read:(void *)a3 size:(unint64_t)a4;
-- (int64_t)_write:(const void *)a3 size:(unint64_t)a4;
+- (int64_t)_read:(void *)_read size:(unint64_t)size;
+- (int64_t)_write:(const void *)_write size:(unint64_t)size;
 - (unint64_t)_computeBytesAvailableToRead;
 - (unint64_t)_computeBytesAvailableToWrite;
 - (void)_accumulateMessageBytes;
-- (void)_copyFromSM:(void *)a3 size:(unint64_t)a4;
-- (void)_copyToSM:(const void *)a3 size:(int64_t)a4;
+- (void)_copyFromSM:(void *)m size:(unint64_t)size;
+- (void)_copyToSM:(const void *)m size:(int64_t)size;
 - (void)_dequeueIncomingMessages;
 - (void)_dequeuePacket;
 - (void)_invalidate;
-- (void)_mapSharedMemoryFile:(int)a3 size:(unint64_t)a4 error:(id *)a5;
+- (void)_mapSharedMemoryFile:(int)file size:(unint64_t)size error:(id *)error;
 - (void)_relayPacket;
 - (void)_tearDownSharedMemory;
-- (void)_updateReaderOffset:(unint64_t)a3;
+- (void)_updateReaderOffset:(unint64_t)offset;
 - (void)_waitEAGAIN;
 - (void)dealloc;
-- (void)setRelayTransport:(id)a3;
-- (void)setUrl:(id)a3;
+- (void)setRelayTransport:(id)transport;
+- (void)setUrl:(id)url;
 @end
 
 @implementation GTSharedMemoryTransport_capture
@@ -115,8 +115,8 @@ LABEL_24:
 
 - (void)_dequeuePacket
 {
-  v3 = [(GTSharedMemoryTransport_capture *)self _computeBytesAvailableToRead];
-  if (v3 <= 3)
+  _computeBytesAvailableToRead = [(GTSharedMemoryTransport_capture *)self _computeBytesAvailableToRead];
+  if (_computeBytesAvailableToRead <= 3)
   {
     v5 = objc_autoreleasePoolPush();
     [(GTBaseStreamTransport_capture *)self _scheduleInvalidation:[GTError_capture errorWithDomain:@"DYErrorDomain" code:259 userInfo:0]];
@@ -126,7 +126,7 @@ LABEL_24:
 
   else
   {
-    v4 = v3;
+    v4 = _computeBytesAvailableToRead;
     v7 = 0;
     [(GTSharedMemoryTransport_capture *)self _copyFromSM:&v7 size:4];
     if (v4 < v7)
@@ -159,9 +159,9 @@ LABEL_24:
   }
 }
 
-- (int64_t)_read:(void *)a3 size:(unint64_t)a4
+- (int64_t)_read:(void *)_read size:(unint64_t)size
 {
-  if (!a4)
+  if (!size)
   {
     return 0;
   }
@@ -169,18 +169,18 @@ LABEL_24:
   currentPacketBytesLeft = self->_currentPacketBytesLeft;
   if (currentPacketBytesLeft)
   {
-    if (currentPacketBytesLeft >= a4)
+    if (currentPacketBytesLeft >= size)
     {
-      v6 = a4;
+      sizeCopy = size;
     }
 
     else
     {
-      v6 = self->_currentPacketBytesLeft;
+      sizeCopy = self->_currentPacketBytesLeft;
     }
 
-    [(GTSharedMemoryTransport_capture *)self _copyFromSM:a3 size:v6];
-    self->_currentPacketBytesLeft -= v6;
+    [(GTSharedMemoryTransport_capture *)self _copyFromSM:_read size:sizeCopy];
+    self->_currentPacketBytesLeft -= sizeCopy;
   }
 
   else
@@ -189,47 +189,47 @@ LABEL_24:
     return -1;
   }
 
-  return v6;
+  return sizeCopy;
 }
 
-- (void)_copyFromSM:(void *)a3 size:(unint64_t)a4
+- (void)_copyFromSM:(void *)m size:(unint64_t)size
 {
   v6 = atomic_load(self->_incomingShmem + 5);
-  memcpy(a3, self->_incomingBuffer + v6, a4);
+  memcpy(m, self->_incomingBuffer + v6, size);
 
-  [(GTSharedMemoryTransport_capture *)self _updateReaderOffset:v6 + a4];
+  [(GTSharedMemoryTransport_capture *)self _updateReaderOffset:v6 + size];
 }
 
-- (void)_updateReaderOffset:(unint64_t)a3
+- (void)_updateReaderOffset:(unint64_t)offset
 {
   incomingShmem = self->_incomingShmem;
   v4 = incomingShmem[7];
-  if (v4 > a3)
+  if (v4 > offset)
   {
     LODWORD(v4) = 0;
   }
 
-  atomic_store(a3 - v4, incomingShmem + 5);
+  atomic_store(offset - v4, incomingShmem + 5);
 }
 
-- (int64_t)_write:(const void *)a3 size:(unint64_t)a4
+- (int64_t)_write:(const void *)_write size:(unint64_t)size
 {
-  v4 = a4;
-  if (a4)
+  sizeCopy = size;
+  if (size)
   {
     v7 = atomic_load(&self->super.super._invalid);
     atomic_store(v7, self->_outgoingShmem);
-    v8 = [(GTSharedMemoryTransport_capture *)self _computeBytesAvailableToWrite];
-    if (v8 > 4)
+    _computeBytesAvailableToWrite = [(GTSharedMemoryTransport_capture *)self _computeBytesAvailableToWrite];
+    if (_computeBytesAvailableToWrite > 4)
     {
-      if (v8 - 4 < v4)
+      if (_computeBytesAvailableToWrite - 4 < sizeCopy)
       {
-        v4 = v8 - 4;
+        sizeCopy = _computeBytesAvailableToWrite - 4;
       }
 
-      v10 = v4 + 4;
+      v10 = sizeCopy + 4;
       [(GTSharedMemoryTransport_capture *)self _copyToSM:&v10 size:4];
-      [(GTSharedMemoryTransport_capture *)self _copyToSM:a3 size:v4];
+      [(GTSharedMemoryTransport_capture *)self _copyToSM:_write size:sizeCopy];
       atomic_fetch_add(self->_outgoingShmem + 1, 1u);
     }
 
@@ -240,7 +240,7 @@ LABEL_24:
     }
   }
 
-  return v4;
+  return sizeCopy;
 }
 
 - (void)_waitEAGAIN
@@ -258,18 +258,18 @@ LABEL_24:
   while (v3++ < 4);
 }
 
-- (void)_copyToSM:(const void *)a3 size:(int64_t)a4
+- (void)_copyToSM:(const void *)m size:(int64_t)size
 {
   v6 = atomic_load(self->_outgoingShmem + 4);
-  memcpy(self->_outgoingBuffer + v6, a3, a4);
+  memcpy(self->_outgoingBuffer + v6, m, size);
   outgoingShmem = self->_outgoingShmem;
   v8 = outgoingShmem[7];
-  if (v6 + a4 < v8)
+  if (v6 + size < v8)
   {
     LODWORD(v8) = 0;
   }
 
-  atomic_store(v6 + a4 - v8, outgoingShmem + 4);
+  atomic_store(v6 + size - v8, outgoingShmem + 4);
 }
 
 - (unint64_t)_computeBytesAvailableToRead
@@ -371,37 +371,37 @@ LABEL_24:
   return v3;
 }
 
-- (BOOL)_clientConnect:(id *)a3
+- (BOOL)_clientConnect:(id *)connect
 {
   [-[GTSharedMemoryTransport_capture _getSharedMemoryNameWithSuffix:](self _getSharedMemoryNameWithSuffix:{@"c", "getCString:maxLength:encoding:", self->_sendName, 64, 1}];
   [-[GTSharedMemoryTransport_capture _getSharedMemoryNameWithSuffix:](self _getSharedMemoryNameWithSuffix:{@"s", "getCString:maxLength:encoding:", self->_receiveName, 64, 1}];
-  if (![(GTSharedMemoryTransport_capture *)self _openSMRegion:&self->_incomingShmem size:self->_sm_region_size_small name:self->_receiveName error:a3]|| ![(GTSharedMemoryTransport_capture *)self _openSMRegion:&self->_outgoingShmem size:self->_sm_region_size_large name:self->_sendName error:a3])
+  if (![(GTSharedMemoryTransport_capture *)self _openSMRegion:&self->_incomingShmem size:self->_sm_region_size_small name:self->_receiveName error:connect]|| ![(GTSharedMemoryTransport_capture *)self _openSMRegion:&self->_outgoingShmem size:self->_sm_region_size_large name:self->_sendName error:connect])
   {
     return 0;
   }
 
   [(GTSharedMemoryTransport_capture *)self _setupIOBuffers];
-  result = [(GTSharedMemoryTransport_capture *)self _createAndRunSources:a3];
+  result = [(GTSharedMemoryTransport_capture *)self _createAndRunSources:connect];
   self->_masterSMRegion = self->_outgoingShmem;
   return result;
 }
 
-- (BOOL)_serverConnect:(id *)a3
+- (BOOL)_serverConnect:(id *)connect
 {
   [-[GTSharedMemoryTransport_capture _getSharedMemoryNameWithSuffix:](self _getSharedMemoryNameWithSuffix:{@"s", "getCString:maxLength:encoding:", self->_sendName, 64, 1}];
   [-[GTSharedMemoryTransport_capture _getSharedMemoryNameWithSuffix:](self _getSharedMemoryNameWithSuffix:{@"c", "getCString:maxLength:encoding:", self->_receiveName, 64, 1}];
-  if (![(GTSharedMemoryTransport_capture *)self _initializeSMRegion:&self->_outgoingShmem size:self->_sm_region_size_small name:self->_sendName error:a3]|| ![(GTSharedMemoryTransport_capture *)self _initializeSMRegion:&self->_incomingShmem size:self->_sm_region_size_large name:self->_receiveName error:a3])
+  if (![(GTSharedMemoryTransport_capture *)self _initializeSMRegion:&self->_outgoingShmem size:self->_sm_region_size_small name:self->_sendName error:connect]|| ![(GTSharedMemoryTransport_capture *)self _initializeSMRegion:&self->_incomingShmem size:self->_sm_region_size_large name:self->_receiveName error:connect])
   {
     return 0;
   }
 
   [(GTSharedMemoryTransport_capture *)self _setupIOBuffers];
-  result = [(GTSharedMemoryTransport_capture *)self _createAndRunSources:a3];
+  result = [(GTSharedMemoryTransport_capture *)self _createAndRunSources:connect];
   self->_masterSMRegion = self->_incomingShmem;
   return result;
 }
 
-- (BOOL)_createAndRunSources:(id *)a3
+- (BOOL)_createAndRunSources:(id *)sources
 {
   pthread_attr_init(&v16);
   pthread_attr_setdetachstate(&v16, 2);
@@ -428,11 +428,11 @@ LABEL_24:
   return 1;
 }
 
-- (BOOL)_openSMRegion:(sm_region_header *)a3 size:(unint64_t)a4 name:(const char *)a5 error:(id *)a6
+- (BOOL)_openSMRegion:(sm_region_header *)region size:(unint64_t)size name:(const char *)name error:(id *)error
 {
   for (i = 0; ; ++i)
   {
-    v12 = shm_open(a5, 2, 6);
+    v12 = shm_open(name, 2, 6);
     if (v12 != -1)
     {
       break;
@@ -455,34 +455,34 @@ LABEL_24:
   }
 
   v14 = v12;
-  if (((a4 + vm_page_size - 1) & -vm_page_size) <= 0x8000)
+  if (((size + vm_page_size - 1) & -vm_page_size) <= 0x8000)
   {
     v15 = 0x8000;
   }
 
   else
   {
-    v15 = (a4 + vm_page_size - 1) & -vm_page_size;
+    v15 = (size + vm_page_size - 1) & -vm_page_size;
   }
 
-  v16 = [(GTSharedMemoryTransport_capture *)self _mapSharedMemoryFile:v12 size:v15 error:a6];
+  v16 = [(GTSharedMemoryTransport_capture *)self _mapSharedMemoryFile:v12 size:v15 error:error];
   if (v16)
   {
     v17 = v16;
     close(v14);
-    if (shm_unlink(a5) != -1)
+    if (shm_unlink(name) != -1)
     {
-      *a3 = v17;
+      *region = v17;
       LOBYTE(v16) = 1;
       return v16;
     }
 
 LABEL_17:
-    if (a6)
+    if (error)
     {
       v18 = [NSError errorWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
       LOBYTE(v16) = 0;
-      *a6 = v18;
+      *error = v18;
     }
 
     else
@@ -494,26 +494,26 @@ LABEL_17:
   return v16;
 }
 
-- (BOOL)_initializeSMRegion:(sm_region_header *)a3 size:(unint64_t)a4 name:(const char *)a5 error:(id *)a6
+- (BOOL)_initializeSMRegion:(sm_region_header *)region size:(unint64_t)size name:(const char *)name error:(id *)error
 {
-  if (((a4 + vm_page_size - 1) & -vm_page_size) <= 0x8000)
+  if (((size + vm_page_size - 1) & -vm_page_size) <= 0x8000)
   {
     v9 = 0x8000;
   }
 
   else
   {
-    v9 = (a4 + vm_page_size - 1) & -vm_page_size;
+    v9 = (size + vm_page_size - 1) & -vm_page_size;
   }
 
-  v10 = shm_open(a5, 2562, 390);
+  v10 = shm_open(name, 2562, 390);
   if (v10 == -1 || (v11 = v10, ftruncate(v10, v9) == -1))
   {
-    if (a6)
+    if (error)
     {
       v15 = [NSError errorWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
       LOBYTE(v12) = 0;
-      *a6 = v15;
+      *error = v15;
     }
 
     else
@@ -524,7 +524,7 @@ LABEL_17:
 
   else
   {
-    v12 = [(GTSharedMemoryTransport_capture *)self _mapSharedMemoryFile:v11 size:v9 error:a6];
+    v12 = [(GTSharedMemoryTransport_capture *)self _mapSharedMemoryFile:v11 size:v9 error:error];
     if (v12)
     {
       v13 = v12;
@@ -539,7 +539,7 @@ LABEL_17:
       atomic_store(0, v13 + 5);
       *(v13 + 6) = v9;
       *(v13 + 7) = v9 - 0x4000;
-      *a3 = v13;
+      *region = v13;
       LOBYTE(v12) = 1;
     }
   }
@@ -578,29 +578,29 @@ LABEL_17:
   }
 }
 
-- (void)_mapSharedMemoryFile:(int)a3 size:(unint64_t)a4 error:(id *)a5
+- (void)_mapSharedMemoryFile:(int)file size:(unint64_t)size error:(id *)error
 {
-  v8 = [(GTSharedMemoryTransport_capture *)self _calculateVMRegionMapSize:a4];
+  v8 = [(GTSharedMemoryTransport_capture *)self _calculateVMRegionMapSize:size];
   v9 = mmap(0, v8, 0, 4098, -1, 0);
   if (v9 == -1)
   {
-    if (!a5)
+    if (!error)
     {
       return 0;
     }
 
     v10 = 0;
-    *a5 = [NSError errorWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
+    *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
   }
 
   else
   {
     v10 = v9;
-    if (mmap(v9, a4, 3, 17, a3, 0) != v9 || mmap(&v10[a4], a4 - 0x4000, 3, 17, a3, 0x4000) != &v10[a4])
+    if (mmap(v9, size, 3, 17, file, 0) != v9 || mmap(&v10[size], size - 0x4000, 3, 17, file, 0x4000) != &v10[size])
     {
-      if (a5)
+      if (error)
       {
-        *a5 = [NSError errorWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
+        *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
       }
 
       munmap(v10, v8);
@@ -611,15 +611,15 @@ LABEL_17:
   return v10;
 }
 
-- (BOOL)send:(id)a3 inReplyTo:(id)a4 error:(id *)a5 replyQueue:(id)a6 timeout:(unint64_t)a7 handler:(id)a8
+- (BOOL)send:(id)send inReplyTo:(id)to error:(id *)error replyQueue:(id)queue timeout:(unint64_t)timeout handler:(id)handler
 {
   if (self->_deferred)
   {
     v13 = objc_alloc_init(GTBufferedSendOperation_capture);
-    [(GTBufferedSendOperation_capture *)v13 setMessage:a3];
-    [(GTBufferedSendOperation_capture *)v13 setReplyTo:a4];
-    [(GTBufferedSendOperation_capture *)v13 setQueue:a6];
-    [(GTBufferedSendOperation_capture *)v13 setReplyBlock:a8];
+    [(GTBufferedSendOperation_capture *)v13 setMessage:send];
+    [(GTBufferedSendOperation_capture *)v13 setReplyTo:to];
+    [(GTBufferedSendOperation_capture *)v13 setQueue:queue];
+    [(GTBufferedSendOperation_capture *)v13 setReplyBlock:handler];
     [(NSMutableArray *)self->_bufferedMessages addObject:v13];
     return 1;
   }
@@ -628,11 +628,11 @@ LABEL_17:
   {
     v15.receiver = self;
     v15.super_class = GTSharedMemoryTransport_capture;
-    return [(GTTransport_capture *)&v15 send:a3 inReplyTo:a4 error:a5 replyQueue:a6 timeout:a7 handler:a8];
+    return [(GTTransport_capture *)&v15 send:send inReplyTo:to error:error replyQueue:queue timeout:timeout handler:handler];
   }
 }
 
-- (void)setRelayTransport:(id)a3
+- (void)setRelayTransport:(id)transport
 {
   queue = self->super.super._queue;
   v4[0] = _NSConcreteStackBlock;
@@ -640,13 +640,13 @@ LABEL_17:
   v4[2] = __45__GTSharedMemoryTransport_setRelayTransport___block_invoke;
   v4[3] = &unk_2F2550;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = transport;
   dispatch_sync(queue, v4);
 }
 
-- (void)setUrl:(id)a3
+- (void)setUrl:(id)url
 {
-  if (!a3)
+  if (!url)
   {
     __assert_rtn("[GTSharedMemoryTransport setUrl:]", ", 0, "newUrl != nil"");
   }
@@ -676,7 +676,7 @@ LABEL_17:
     goto LABEL_23;
   }
 
-  if (([objc_msgSend(a3 "scheme")] & 1) == 0 && (objc_msgSend(objc_msgSend(a3, "scheme"), "isEqualToString:", @"dysmtdeferred") & 1) == 0)
+  if (([objc_msgSend(url "scheme")] & 1) == 0 && (objc_msgSend(objc_msgSend(url, "scheme"), "isEqualToString:", @"dysmtdeferred") & 1) == 0)
   {
     if (s_logUsingOsLog == 1)
     {
@@ -684,7 +684,7 @@ LABEL_17:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
       {
         *buf = 136315138;
-        v16 = [objc_msgSend(a3 "absoluteString")];
+        v16 = [objc_msgSend(url "absoluteString")];
         v7 = "fail: url scheme has to be dysmt: %s";
         goto LABEL_17;
       }
@@ -694,14 +694,14 @@ LABEL_23:
     }
 
     v12 = __stderrp;
-    v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"fail: url scheme has to be dysmt: %s", [objc_msgSend(a3 "absoluteString")]);
+    v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"fail: url scheme has to be dysmt: %s", [objc_msgSend(url "absoluteString")]);
 LABEL_22:
     [(NSString *)v13 UTF8String];
     fprintf(v12, "%s\n");
     goto LABEL_23;
   }
 
-  if (![objc_msgSend(a3 "path")])
+  if (![objc_msgSend(url "path")])
   {
     if (s_logUsingOsLog == 1)
     {
@@ -709,7 +709,7 @@ LABEL_22:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
       {
         *buf = 136315138;
-        v16 = [objc_msgSend(a3 "absoluteString")];
+        v16 = [objc_msgSend(url "absoluteString")];
         v7 = "fail: url path cannot be nil or empty: %s";
 LABEL_17:
         v8 = v10;
@@ -723,7 +723,7 @@ LABEL_18:
     }
 
     v12 = __stderrp;
-    v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"fail: url path cannot be nil or empty: %s", [objc_msgSend(a3 "absoluteString")]);
+    v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"fail: url path cannot be nil or empty: %s", [objc_msgSend(url "absoluteString")]);
     goto LABEL_22;
   }
 
@@ -732,7 +732,7 @@ LABEL_18:
   block[1] = 3221225472;
   block[2] = __34__GTSharedMemoryTransport_setUrl___block_invoke;
   block[3] = &unk_2F2550;
-  block[4] = a3;
+  block[4] = url;
   block[5] = self;
   dispatch_sync(queue, block);
 }
@@ -744,7 +744,7 @@ LABEL_18:
   [(GTBaseStreamTransport_capture *)&v3 dealloc];
 }
 
-- (GTSharedMemoryTransport_capture)initWithMode:(int)a3 initialMessageSerial:(unsigned int)a4
+- (GTSharedMemoryTransport_capture)initWithMode:(int)mode initialMessageSerial:(unsigned int)serial
 {
   v16.receiver = self;
   v16.super_class = GTSharedMemoryTransport_capture;
@@ -755,14 +755,14 @@ LABEL_18:
     return v7;
   }
 
-  v6->_mode = a3;
-  if ((a3 - 3) <= 0xFFFFFFFD)
+  v6->_mode = mode;
+  if ((mode - 3) <= 0xFFFFFFFD)
   {
     v15 = "_mode == kDYSharedMemoryTransportModeClient || _mode == kDYSharedMemoryTransportModeServer";
     goto LABEL_12;
   }
 
-  atomic_store(a4, &v6->super.super._messageCounter.__a_.__a_value);
+  atomic_store(serial, &v6->super.super._messageCounter.__a_.__a_value);
   v8 = CFUUIDCreate(kCFAllocatorDefault);
   v9 = [NSURL alloc];
   v10 = CFHash(v8);

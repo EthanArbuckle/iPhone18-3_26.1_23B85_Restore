@@ -1,26 +1,26 @@
 @interface PKAccountWebServicePassDetailsResponse
-- (PKAccountWebServicePassDetailsResponse)initWithData:(id)a3;
+- (PKAccountWebServicePassDetailsResponse)initWithData:(id)data;
 @end
 
 @implementation PKAccountWebServicePassDetailsResponse
 
-- (PKAccountWebServicePassDetailsResponse)initWithData:(id)a3
+- (PKAccountWebServicePassDetailsResponse)initWithData:(id)data
 {
   v46 = *MEMORY[0x1E69E9840];
   v40.receiver = self;
   v40.super_class = PKAccountWebServicePassDetailsResponse;
-  v3 = [(PKWebServiceResponse *)&v40 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v40 initWithData:data];
   v4 = v3;
   if (!v3)
   {
     goto LABEL_28;
   }
 
-  v5 = [(PKWebServiceResponse *)v3 JSONObject];
+  jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = jSONObject;
     v7 = [v6 PKStringForKey:@"provisioningIdentifier"];
     provisioningIdentifier = v4->_provisioningIdentifier;
     v4->_provisioningIdentifier = v7;

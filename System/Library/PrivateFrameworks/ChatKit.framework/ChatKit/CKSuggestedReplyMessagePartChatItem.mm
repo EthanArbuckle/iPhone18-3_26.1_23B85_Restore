@@ -1,7 +1,7 @@
 @interface CKSuggestedReplyMessagePartChatItem
 - (Class)balloonViewClass;
 - (_TtC7ChatKit35CKSuggestedReplyMessagePartChatItem)init;
-- (_TtC7ChatKit35CKSuggestedReplyMessagePartChatItem)initWithNotification:(id)a3 maxWidth:(double)a4;
+- (_TtC7ChatKit35CKSuggestedReplyMessagePartChatItem)initWithNotification:(id)notification maxWidth:(double)width;
 @end
 
 @implementation CKSuggestedReplyMessagePartChatItem
@@ -20,7 +20,7 @@
   return result;
 }
 
-- (_TtC7ChatKit35CKSuggestedReplyMessagePartChatItem)initWithNotification:(id)a3 maxWidth:(double)a4
+- (_TtC7ChatKit35CKSuggestedReplyMessagePartChatItem)initWithNotification:(id)notification maxWidth:(double)width
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

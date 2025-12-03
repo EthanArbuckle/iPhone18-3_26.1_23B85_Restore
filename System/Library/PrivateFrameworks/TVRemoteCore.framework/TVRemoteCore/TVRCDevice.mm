@@ -1,39 +1,39 @@
 @interface TVRCDevice
-- (BOOL)containsIdentifier:(id)a3;
-- (BOOL)isEqualToDevice:(id)a3;
+- (BOOL)containsIdentifier:(id)identifier;
+- (BOOL)isEqualToDevice:(id)device;
 - (BOOL)isInEditingSession;
 - (BOOL)supportsFindMyRemote;
 - (NSSet)allIdentifiers;
-- (TVRCDevice)initWithDeviceIdentifier:(id)a3;
+- (TVRCDevice)initWithDeviceIdentifier:(id)identifier;
 - (TVRCDeviceDelegate)delegate;
 - (id)_deviceStateDictionary;
 - (id)description;
-- (void)_connectWithConnectionContext:(int64_t)a3;
-- (void)_deviceEncounteredAuthChallengeType:(int64_t)a3 attributes:(int64_t)a4 codeToEnterOnDevice:(id)a5 throttleSeconds:(int64_t)a6;
-- (void)_deviceUpdatedState:(id)a3;
+- (void)_connectWithConnectionContext:(int64_t)context;
+- (void)_deviceEncounteredAuthChallengeType:(int64_t)type attributes:(int64_t)attributes codeToEnterOnDevice:(id)device throttleSeconds:(int64_t)seconds;
+- (void)_deviceUpdatedState:(id)state;
 - (void)_disconnectDeviceDueToConnectionInterruption;
-- (void)_sendRTIDataPayload:(id)a3;
-- (void)addItemWithMediaIdentifier:(id)a3 completion:(id)a4;
+- (void)_sendRTIDataPayload:(id)payload;
+- (void)addItemWithMediaIdentifier:(id)identifier completion:(id)completion;
 - (void)dealloc;
-- (void)disconnectWithType:(unint64_t)a3;
-- (void)fetchLaunchableAppsWithCompletion:(id)a3;
-- (void)fetchUpNextInfoWithPaginationToken:(id)a3 completion:(id)a4;
-- (void)launchAppWithBundleID:(id)a3 completion:(id)a4;
-- (void)markAsWatchedWithMediaIdentifier:(id)a3 completion:(id)a4;
-- (void)playItem:(id)a3 completion:(id)a4;
-- (void)removeItemWithMediaIdentifier:(id)a3 completion:(id)a4;
-- (void)sendButtonEvent:(id)a3;
-- (void)sendGameControllerEvent:(id)a3;
-- (void)sendTouchEvent:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)disconnectWithType:(unint64_t)type;
+- (void)fetchLaunchableAppsWithCompletion:(id)completion;
+- (void)fetchUpNextInfoWithPaginationToken:(id)token completion:(id)completion;
+- (void)launchAppWithBundleID:(id)d completion:(id)completion;
+- (void)markAsWatchedWithMediaIdentifier:(id)identifier completion:(id)completion;
+- (void)playItem:(id)item completion:(id)completion;
+- (void)removeItemWithMediaIdentifier:(id)identifier completion:(id)completion;
+- (void)sendButtonEvent:(id)event;
+- (void)sendGameControllerEvent:(id)event;
+- (void)sendTouchEvent:(id)event;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation TVRCDevice
 
-- (TVRCDevice)initWithDeviceIdentifier:(id)a3
+- (TVRCDevice)initWithDeviceIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = TVRCDevice;
   v5 = [(TVRCDevice *)&v16 init];
@@ -45,13 +45,13 @@
       *buf = 136315650;
       v18 = "[TVRCDevice initWithDeviceIdentifier:]";
       v19 = 2114;
-      v20 = v4;
+      v20 = identifierCopy;
       v21 = 2114;
       v22 = v5;
       _os_log_impl(&dword_26CF7F000, v6, OS_LOG_TYPE_DEFAULT, "%s identifier:%{public}@, %{public}@", buf, 0x20u);
     }
 
-    v7 = [v4 copy];
+    v7 = [identifierCopy copy];
     identifier = v5->_identifier;
     v5->_identifier = v7;
 
@@ -71,23 +71,23 @@
   return v5;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = _TVRCGeneralLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315650;
     v8 = "[TVRCDevice setDelegate:]";
     v9 = 2114;
-    v10 = v4;
+    v10 = delegateCopy;
     v11 = 2114;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_26CF7F000, v5, OS_LOG_TYPE_DEFAULT, "%s delegate:%{public}@, %{public}@", &v7, 0x20u);
   }
 
-  objc_storeWeak(&self->_delegate, v4);
+  objc_storeWeak(&self->_delegate, delegateCopy);
   v6 = *MEMORY[0x277D85DE8];
 }
 
@@ -100,13 +100,13 @@
     *buf = 136315394;
     v9 = "[TVRCDevice dealloc]";
     v10 = 2114;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_26CF7F000, v3, OS_LOG_TYPE_DEFAULT, "%s %{public}@", buf, 0x16u);
   }
 
   v4 = +[TVRCXPCClient sharedInstance];
-  v5 = [(TVRCDevice *)self identifier];
-  [v4 removeEventObserver:self forDeviceWithIdentifier:v5];
+  identifier = [(TVRCDevice *)self identifier];
+  [v4 removeEventObserver:self forDeviceWithIdentifier:identifier];
 
   v7.receiver = self;
   v7.super_class = TVRCDevice;
@@ -117,11 +117,11 @@
 - (id)description
 {
   v3 = [objc_alloc(MEMORY[0x277CCAB68]) initWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(TVRCDevice *)self name];
-  v5 = v4;
-  if (v4)
+  name = [(TVRCDevice *)self name];
+  v5 = name;
+  if (name)
   {
-    [v3 appendFormat:@" %@", v4];
+    [v3 appendFormat:@" %@", name];
   }
 
   if (self->_identifier)
@@ -157,193 +157,193 @@
 
 - (id)_deviceStateDictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(TVRCDevice *)self name];
-  [v3 setObject:v4 forKeyedSubscript:@"name"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  name = [(TVRCDevice *)self name];
+  [dictionary setObject:name forKeyedSubscript:@"name"];
 
-  v5 = [(TVRCDevice *)self identifier];
-  [v3 setObject:v5 forKeyedSubscript:@"identifier"];
+  identifier = [(TVRCDevice *)self identifier];
+  [dictionary setObject:identifier forKeyedSubscript:@"identifier"];
 
-  v6 = [(TVRCDevice *)self model];
-  [v3 setObject:v6 forKeyedSubscript:@"model"];
+  model = [(TVRCDevice *)self model];
+  [dictionary setObject:model forKeyedSubscript:@"model"];
 
   v7 = TVRCDeviceConnectionTypeDescription([(TVRCDevice *)self connectionType]);
-  [v3 setObject:v7 forKeyedSubscript:@"connectionType"];
+  [dictionary setObject:v7 forKeyedSubscript:@"connectionType"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithInteger:{-[TVRCDevice connectionState](self, "connectionState")}];
-  [v3 setObject:v8 forKeyedSubscript:@"connectionState"];
+  [dictionary setObject:v8 forKeyedSubscript:@"connectionState"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithBool:{-[TVRCDevice isPaired](self, "isPaired")}];
-  [v3 setObject:v9 forKeyedSubscript:@"paired"];
+  [dictionary setObject:v9 forKeyedSubscript:@"paired"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithBool:{-[TVRCDevice supportsDirectCaptionQueries](self, "supportsDirectCaptionQueries")}];
-  [v3 setObject:v10 forKeyedSubscript:@"supportsDirectCaptionQueries"];
+  [dictionary setObject:v10 forKeyedSubscript:@"supportsDirectCaptionQueries"];
 
   v11 = [MEMORY[0x277CCABB0] numberWithBool:{-[TVRCDevice supportsFindMyRemote](self, "supportsFindMyRemote")}];
-  [v3 setObject:v11 forKeyedSubscript:@"supportsFindMyRemote"];
+  [dictionary setObject:v11 forKeyedSubscript:@"supportsFindMyRemote"];
 
   v12 = [MEMORY[0x277CCABB0] numberWithBool:{-[TVRCDevice supportsTouchEvents](self, "supportsTouchEvents")}];
-  [v3 setObject:v12 forKeyedSubscript:@"supportsTouchEvents"];
+  [dictionary setObject:v12 forKeyedSubscript:@"supportsTouchEvents"];
 
   v13 = [MEMORY[0x277CCABB0] numberWithInteger:{-[TVRCDevice attentionState](self, "attentionState")}];
-  [v3 setObject:v13 forKeyedSubscript:@"attentionState"];
+  [dictionary setObject:v13 forKeyedSubscript:@"attentionState"];
 
-  v14 = [(TVRCDevice *)self deviceState];
-  v15 = [v14 alternateIdentifiers];
-  [v3 setObject:v15 forKeyedSubscript:@"alternateIdentifiers"];
+  deviceState = [(TVRCDevice *)self deviceState];
+  alternateIdentifiers = [deviceState alternateIdentifiers];
+  [dictionary setObject:alternateIdentifiers forKeyedSubscript:@"alternateIdentifiers"];
 
-  v16 = [v3 copy];
+  v16 = [dictionary copy];
 
   return v16;
 }
 
-- (void)_connectWithConnectionContext:(int64_t)a3
+- (void)_connectWithConnectionContext:(int64_t)context
 {
   if (![(TVRCDeviceState *)self->_deviceState connectionState])
   {
     v5 = +[TVRCXPCClient sharedInstance];
-    [v5 openConnectionToDeviceWithIdentifier:self->_identifier connectionContext:a3];
+    [v5 openConnectionToDeviceWithIdentifier:self->_identifier connectionContext:context];
   }
 }
 
-- (void)disconnectWithType:(unint64_t)a3
+- (void)disconnectWithType:(unint64_t)type
 {
   v10 = *MEMORY[0x277D85DE8];
   v5 = _TVRCGeneralLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134217984;
-    v9 = a3;
+    typeCopy = type;
     _os_log_impl(&dword_26CF7F000, v5, OS_LOG_TYPE_DEFAULT, "TVRCDevice disconnecting with type: %ld", &v8, 0xCu);
   }
 
   [(TVRCDeviceState *)self->_deviceState setConnectionState:0];
   v6 = +[TVRCXPCClient sharedInstance];
-  [v6 closeConnectionToDeviceWithIdentifier:self->_identifier withType:a3];
+  [v6 closeConnectionToDeviceWithIdentifier:self->_identifier withType:type];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendButtonEvent:(id)a3
+- (void)sendButtonEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = +[TVRCXPCClient sharedInstance];
-  [v5 sendButtonEvent:v4 toDeviceWithIdentifier:self->_identifier];
+  [v5 sendButtonEvent:eventCopy toDeviceWithIdentifier:self->_identifier];
 }
 
-- (void)sendTouchEvent:(id)a3
+- (void)sendTouchEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = +[TVRCXPCClient sharedInstance];
-  [v5 sendTouchEvent:v4 toDeviceWithIdentifier:self->_identifier];
+  [v5 sendTouchEvent:eventCopy toDeviceWithIdentifier:self->_identifier];
 }
 
-- (void)sendGameControllerEvent:(id)a3
+- (void)sendGameControllerEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = +[TVRCXPCClient sharedInstance];
-  [v5 sendGameControllerEvent:v4 toDeviceWithIdentifier:self->_identifier];
+  [v5 sendGameControllerEvent:eventCopy toDeviceWithIdentifier:self->_identifier];
 }
 
-- (BOOL)containsIdentifier:(id)a3
+- (BOOL)containsIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(TVRCDevice *)self allIdentifiers];
-  v6 = [v5 containsObject:v4];
+  identifierCopy = identifier;
+  allIdentifiers = [(TVRCDevice *)self allIdentifiers];
+  v6 = [allIdentifiers containsObject:identifierCopy];
 
   return v6;
 }
 
-- (BOOL)isEqualToDevice:(id)a3
+- (BOOL)isEqualToDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 info];
-  v6 = [v4 identifier];
+  deviceCopy = device;
+  info = [deviceCopy info];
+  identifier = [deviceCopy identifier];
 
-  if ([(TVRCDevice *)self containsIdentifier:v6])
+  if ([(TVRCDevice *)self containsIdentifier:identifier])
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [v5 mediaRemoteID];
-    if ([(TVRCDevice *)self containsIdentifier:v8])
+    mediaRemoteID = [info mediaRemoteID];
+    if ([(TVRCDevice *)self containsIdentifier:mediaRemoteID])
     {
       v7 = 1;
     }
 
     else
     {
-      v9 = [v5 airplayID];
-      v7 = [(TVRCDevice *)self containsIdentifier:v9];
+      airplayID = [info airplayID];
+      v7 = [(TVRCDevice *)self containsIdentifier:airplayID];
     }
   }
 
   return v7;
 }
 
-- (void)fetchUpNextInfoWithPaginationToken:(id)a3 completion:(id)a4
+- (void)fetchUpNextInfoWithPaginationToken:(id)token completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  tokenCopy = token;
   v8 = +[TVRCXPCClient sharedInstance];
-  [v8 fetchUpNextInfoForDeviceWithIdentifier:self->_identifier paginationToken:v7 completion:v6];
+  [v8 fetchUpNextInfoForDeviceWithIdentifier:self->_identifier paginationToken:tokenCopy completion:completionCopy];
 }
 
-- (void)markAsWatchedWithMediaIdentifier:(id)a3 completion:(id)a4
+- (void)markAsWatchedWithMediaIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v8 = +[TVRCXPCClient sharedInstance];
-  [v8 markAsWatchedForDeviceWithIdentifier:self->_identifier mediaIdentifier:v7 completion:v6];
+  [v8 markAsWatchedForDeviceWithIdentifier:self->_identifier mediaIdentifier:identifierCopy completion:completionCopy];
 }
 
-- (void)addItemWithMediaIdentifier:(id)a3 completion:(id)a4
+- (void)addItemWithMediaIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v8 = +[TVRCXPCClient sharedInstance];
-  [v8 addItemForDeviceWithIdentifier:self->_identifier mediaIdentifier:v7 completion:v6];
+  [v8 addItemForDeviceWithIdentifier:self->_identifier mediaIdentifier:identifierCopy completion:completionCopy];
 }
 
-- (void)removeItemWithMediaIdentifier:(id)a3 completion:(id)a4
+- (void)removeItemWithMediaIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v8 = +[TVRCXPCClient sharedInstance];
-  [v8 removeItemForDeviceWithIdentifier:self->_identifier mediaIdentifier:v7 completion:v6];
+  [v8 removeItemForDeviceWithIdentifier:self->_identifier mediaIdentifier:identifierCopy completion:completionCopy];
 }
 
-- (void)playItem:(id)a3 completion:(id)a4
+- (void)playItem:(id)item completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  itemCopy = item;
   v8 = +[TVRCXPCClient sharedInstance];
-  [v8 playItem:v7 deviceIdentifier:self->_identifier completion:v6];
+  [v8 playItem:itemCopy deviceIdentifier:self->_identifier completion:completionCopy];
 }
 
-- (void)fetchLaunchableAppsWithCompletion:(id)a3
+- (void)fetchLaunchableAppsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[TVRCXPCClient sharedInstance];
-  [v5 fetchLaunchableAppsForDeviceWithIdentifier:self->_identifier completion:v4];
+  [v5 fetchLaunchableAppsForDeviceWithIdentifier:self->_identifier completion:completionCopy];
 }
 
-- (void)launchAppWithBundleID:(id)a3 completion:(id)a4
+- (void)launchAppWithBundleID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dCopy = d;
   v8 = +[TVRCXPCClient sharedInstance];
-  [v8 launchAppForDeviceWithIdentifier:self->_identifier bundleID:v7 completion:v6];
+  [v8 launchAppForDeviceWithIdentifier:self->_identifier bundleID:dCopy completion:completionCopy];
 }
 
 - (BOOL)isInEditingSession
 {
-  v2 = [(TVRCDeviceState *)self->_deviceState keyboardState];
-  v3 = [v2 isEditing];
+  keyboardState = [(TVRCDeviceState *)self->_deviceState keyboardState];
+  isEditing = [keyboardState isEditing];
 
-  return v3;
+  return isEditing;
 }
 
 - (BOOL)supportsFindMyRemote
@@ -353,10 +353,10 @@
     return 1;
   }
 
-  v4 = [(TVRCDeviceState *)self->_deviceState pairedRemoteInfo];
-  v5 = [v4 supportsFindMy];
+  pairedRemoteInfo = [(TVRCDeviceState *)self->_deviceState pairedRemoteInfo];
+  supportsFindMy = [pairedRemoteInfo supportsFindMy];
 
-  return v5;
+  return supportsFindMy;
 }
 
 - (NSSet)allIdentifiers
@@ -364,71 +364,71 @@
   identifier = self->_identifier;
   if (identifier)
   {
-    v4 = identifier;
+    identifier = identifier;
   }
 
   else
   {
-    v5 = [(TVRCDevice *)self deviceState];
-    v4 = [v5 identifier];
+    deviceState = [(TVRCDevice *)self deviceState];
+    identifier = [deviceState identifier];
   }
 
-  v6 = [MEMORY[0x277CBEB58] setWithObject:v4];
-  v7 = [(TVRCDevice *)self name];
+  v6 = [MEMORY[0x277CBEB58] setWithObject:identifier];
+  name = [(TVRCDevice *)self name];
 
-  if (v7)
+  if (name)
   {
-    v8 = [(TVRCDevice *)self name];
-    [v6 addObject:v8];
+    name2 = [(TVRCDevice *)self name];
+    [v6 addObject:name2];
   }
 
-  v9 = [(TVRCDevice *)self deviceState];
-  v10 = [v9 idsIdentifier];
+  deviceState2 = [(TVRCDevice *)self deviceState];
+  idsIdentifier = [deviceState2 idsIdentifier];
 
-  if (v10)
+  if (idsIdentifier)
   {
-    v11 = [(TVRCDevice *)self deviceState];
-    v12 = [v11 idsIdentifier];
-    [v6 addObject:v12];
+    deviceState3 = [(TVRCDevice *)self deviceState];
+    idsIdentifier2 = [deviceState3 idsIdentifier];
+    [v6 addObject:idsIdentifier2];
   }
 
-  v13 = [(TVRCDevice *)self deviceState];
-  v14 = [v13 alternateIdentifiers];
-  v15 = [v14 allValues];
-  [v6 addObjectsFromArray:v15];
+  deviceState4 = [(TVRCDevice *)self deviceState];
+  alternateIdentifiers = [deviceState4 alternateIdentifiers];
+  allValues = [alternateIdentifiers allValues];
+  [v6 addObjectsFromArray:allValues];
 
   v16 = [v6 copy];
 
   return v16;
 }
 
-- (void)_deviceUpdatedState:(id)a3
+- (void)_deviceUpdatedState:(id)state
 {
   v124 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  stateCopy = state;
   v6 = _TVRCGeneralLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v119 = "[TVRCDevice _deviceUpdatedState:]";
     v120 = 2048;
-    v121 = self;
+    selfCopy = self;
     v122 = 2114;
-    v123 = v5;
+    v123 = stateCopy;
     _os_log_impl(&dword_26CF7F000, v6, OS_LOG_TYPE_DEFAULT, "%s - device:<%p> state: %{public}@ ", buf, 0x20u);
   }
 
-  v7 = [v5 alternateIdentifiers];
-  v8 = [v7 allValues];
+  alternateIdentifiers = [stateCopy alternateIdentifiers];
+  allValues = [alternateIdentifiers allValues];
 
   v9 = MEMORY[0x277CBEB98];
-  v10 = [v5 alternateIdentifiers];
-  v11 = [v10 allValues];
-  v12 = [v9 setWithArray:v11];
+  alternateIdentifiers2 = [stateCopy alternateIdentifiers];
+  allValues2 = [alternateIdentifiers2 allValues];
+  v12 = [v9 setWithArray:allValues2];
 
   identifier = self->_identifier;
-  v14 = [v5 identifier];
-  LOBYTE(identifier) = [(NSString *)identifier isEqualToString:v14];
+  identifier = [stateCopy identifier];
+  LOBYTE(identifier) = [(NSString *)identifier isEqualToString:identifier];
 
   if ((identifier & 1) == 0)
   {
@@ -436,17 +436,17 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v16 = self->_identifier;
-      v17 = [v5 identifier];
+      identifier2 = [stateCopy identifier];
       *buf = 138412546;
       v119 = v16;
       v120 = 2112;
-      v121 = v17;
+      selfCopy = identifier2;
       _os_log_impl(&dword_26CF7F000, v15, OS_LOG_TYPE_DEFAULT, "Identifiers do NOT match - old: %@ new: %@", buf, 0x16u);
     }
 
-    v18 = [(TVRCDeviceState *)self->_deviceState idsIdentifier];
-    v19 = [v5 idsIdentifier];
-    v20 = [v18 isEqualToString:v19];
+    idsIdentifier = [(TVRCDeviceState *)self->_deviceState idsIdentifier];
+    idsIdentifier2 = [stateCopy idsIdentifier];
+    v20 = [idsIdentifier isEqualToString:idsIdentifier2];
 
     if (v20)
     {
@@ -456,19 +456,19 @@
         goto LABEL_13;
       }
 
-      v22 = [(TVRCDeviceState *)self->_deviceState idsIdentifier];
-      v23 = [v5 idsIdentifier];
+      idsIdentifier3 = [(TVRCDeviceState *)self->_deviceState idsIdentifier];
+      idsIdentifier4 = [stateCopy idsIdentifier];
       *buf = 138412546;
-      v119 = v22;
+      v119 = idsIdentifier3;
       v120 = 2112;
-      v121 = v23;
+      selfCopy = idsIdentifier4;
       _os_log_impl(&dword_26CF7F000, v21, OS_LOG_TYPE_DEFAULT, "Found matching IDS identifiers - old: %@ new: %@", buf, 0x16u);
     }
 
     else
     {
-      v24 = [(TVRCDevice *)self allIdentifiers];
-      v25 = [v12 intersectsSet:v24];
+      allIdentifiers = [(TVRCDevice *)self allIdentifiers];
+      v25 = [v12 intersectsSet:allIdentifiers];
 
       if (!v25)
       {
@@ -481,19 +481,19 @@
         goto LABEL_13;
       }
 
-      v22 = [(TVRCDevice *)self allIdentifiers];
+      idsIdentifier3 = [(TVRCDevice *)self allIdentifiers];
       *buf = 138412546;
-      v119 = v22;
+      v119 = idsIdentifier3;
       v120 = 2112;
-      v121 = v8;
+      selfCopy = allValues;
       _os_log_impl(&dword_26CF7F000, v21, OS_LOG_TYPE_DEFAULT, "Found matching alternate identifiers - old: %@ new: %@", buf, 0x16u);
     }
 
 LABEL_13:
-    v26 = [(TVRCDeviceState *)self->_deviceState linkType];
-    if (v26 == [v5 linkType])
+    linkType = [(TVRCDeviceState *)self->_deviceState linkType];
+    if (linkType == [stateCopy linkType])
     {
-      v27 = [v5 identifier];
+      identifier3 = [stateCopy identifier];
       v28 = _TVRCGeneralLog();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
@@ -501,33 +501,33 @@ LABEL_13:
         *buf = 138412546;
         v119 = v29;
         v120 = 2112;
-        v121 = v27;
+        selfCopy = identifier3;
         _os_log_impl(&dword_26CF7F000, v28, OS_LOG_TYPE_DEFAULT, "Updating identifier - old: %@ new: %@", buf, 0x16u);
       }
 
-      [(TVRCDevice *)self setIdentifier:v27];
+      [(TVRCDevice *)self setIdentifier:identifier3];
     }
   }
 
 LABEL_17:
   v30 = self->_identifier;
-  v31 = [v5 identifier];
-  if ([(NSString *)v30 isEqualToString:v31])
+  identifier4 = [stateCopy identifier];
+  if ([(NSString *)v30 isEqualToString:identifier4])
   {
 
     goto LABEL_20;
   }
 
-  v32 = [(TVRCDevice *)v8 containsObject:self->_identifier];
+  v32 = [(TVRCDevice *)allValues containsObject:self->_identifier];
 
   if (v32)
   {
 LABEL_20:
     v33 = self->_deviceState;
-    objc_storeStrong(&self->_deviceState, a3);
+    objc_storeStrong(&self->_deviceState, state);
     info = self->_info;
-    v35 = [v5 alternateIdentifiers];
-    [(TVRCDeviceInfo *)info _populateValidIdentifiers:v35];
+    alternateIdentifiers3 = [stateCopy alternateIdentifiers];
+    [(TVRCDeviceInfo *)info _populateValidIdentifiers:alternateIdentifiers3];
 
     v36 = _TVRCGeneralLog();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
@@ -541,11 +541,11 @@ LABEL_20:
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v119 = v5;
+      v119 = stateCopy;
       _os_log_impl(&dword_26CF7F000, v37, OS_LOG_TYPE_DEFAULT, "New state: %{public}@", buf, 0xCu);
     }
 
-    if (!-[TVRCDeviceState connectionState](v33, "connectionState") && [v5 connectionState] == 1)
+    if (!-[TVRCDeviceState connectionState](v33, "connectionState") && [stateCopy connectionState] == 1)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       v39 = objc_opt_respondsToSelector();
@@ -557,7 +557,7 @@ LABEL_20:
       }
     }
 
-    if (-[TVRCDeviceState connectionState](v33, "connectionState") != 2 && [v5 connectionState] == 2)
+    if (-[TVRCDeviceState connectionState](v33, "connectionState") != 2 && [stateCopy connectionState] == 2)
     {
       v41 = objc_loadWeakRetained(&self->_delegate);
       v42 = objc_opt_respondsToSelector();
@@ -577,15 +577,15 @@ LABEL_20:
       goto LABEL_87;
     }
 
-    if (-[TVRCDeviceState connectionState](v33, "connectionState") && ![v5 connectionState])
+    if (-[TVRCDeviceState connectionState](v33, "connectionState") && ![stateCopy connectionState])
     {
-      if ([v5 disconnectReason] == 1)
+      if ([stateCopy disconnectReason] == 1)
       {
         v46 = +[TVRCPreferredDeviceManager sharedInstance];
-        v47 = [v46 preferredDevice];
+        preferredDevice = [v46 preferredDevice];
 
-        v48 = [v47 allIdentifiers];
-        v49 = [v48 containsObject:self->_identifier];
+        allIdentifiers2 = [preferredDevice allIdentifiers];
+        v49 = [allIdentifiers2 containsObject:self->_identifier];
 
         if (v49)
         {
@@ -597,16 +597,16 @@ LABEL_20:
       goto LABEL_44;
     }
 
-    if (!-[TVRCDeviceState connectionState](v33, "connectionState") && ![v5 connectionState])
+    if (!-[TVRCDeviceState connectionState](v33, "connectionState") && ![stateCopy connectionState])
     {
-      v45 = [v5 disconnectError];
-      if (v45)
+      disconnectError = [stateCopy disconnectError];
+      if (disconnectError)
       {
 
         goto LABEL_44;
       }
 
-      if ([v5 disconnectReason] < 5)
+      if ([stateCopy disconnectReason] < 5)
       {
 LABEL_44:
         v51 = objc_loadWeakRetained(&self->_delegate);
@@ -615,30 +615,30 @@ LABEL_44:
         if (v52)
         {
           v53 = objc_loadWeakRetained(&self->_delegate);
-          v54 = [v5 disconnectReason];
-          v55 = [v5 disconnectError];
-          [v53 device:self disconnectedForReason:v54 error:v55];
+          disconnectReason = [stateCopy disconnectReason];
+          disconnectError2 = [stateCopy disconnectError];
+          [v53 device:self disconnectedForReason:disconnectReason error:disconnectError2];
         }
       }
     }
 
-    v56 = [(TVRCDeviceState *)v33 supportedButtons];
-    v57 = [v5 supportedButtons];
-    v58 = [v56 isEqualToSet:v57];
+    supportedButtons = [(TVRCDeviceState *)v33 supportedButtons];
+    supportedButtons2 = [stateCopy supportedButtons];
+    v58 = [supportedButtons isEqualToSet:supportedButtons2];
 
     if ((v58 & 1) == 0)
     {
-      v59 = [(TVRCDeviceState *)v33 supportedButtons];
-      v60 = [v59 mutableCopy];
+      supportedButtons3 = [(TVRCDeviceState *)v33 supportedButtons];
+      v60 = [supportedButtons3 mutableCopy];
 
-      v61 = [v5 supportedButtons];
-      [v60 minusSet:v61];
+      supportedButtons4 = [stateCopy supportedButtons];
+      [v60 minusSet:supportedButtons4];
 
-      v62 = [v5 supportedButtons];
-      v63 = [v62 mutableCopy];
+      supportedButtons5 = [stateCopy supportedButtons];
+      v63 = [supportedButtons5 mutableCopy];
 
-      v64 = [(TVRCDeviceState *)v33 supportedButtons];
-      [v63 minusSet:v64];
+      supportedButtons6 = [(TVRCDeviceState *)v33 supportedButtons];
+      [v63 minusSet:supportedButtons6];
 
       v65 = objc_loadWeakRetained(&self->_delegate);
       v66 = objc_opt_respondsToSelector();
@@ -650,9 +650,9 @@ LABEL_44:
       }
     }
 
-    v68 = [(TVRCDeviceState *)v33 name];
-    v69 = [v5 name];
-    v70 = [v68 isEqualToString:v69];
+    name = [(TVRCDeviceState *)v33 name];
+    name2 = [stateCopy name];
+    v70 = [name isEqualToString:name2];
 
     if ((v70 & 1) == 0)
     {
@@ -669,36 +669,36 @@ LABEL_44:
       [v74 setPreferredDevice:self];
     }
 
-    v75 = [(TVRCDeviceState *)v33 supportsFindMyRemote];
-    if (v75 != [v5 supportsFindMyRemote] || (-[TVRCDeviceState pairedRemoteInfo](v33, "pairedRemoteInfo"), v76 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "pairedRemoteInfo"), v77 = objc_claimAutoreleasedReturnValue(), v78 = objc_msgSend(v76, "isEqualToRemoteInfo:", v77), v77, v76, (v78 & 1) == 0))
+    supportsFindMyRemote = [(TVRCDeviceState *)v33 supportsFindMyRemote];
+    if (supportsFindMyRemote != [stateCopy supportsFindMyRemote] || (-[TVRCDeviceState pairedRemoteInfo](v33, "pairedRemoteInfo"), v76 = objc_claimAutoreleasedReturnValue(), objc_msgSend(stateCopy, "pairedRemoteInfo"), v77 = objc_claimAutoreleasedReturnValue(), v78 = objc_msgSend(v76, "isEqualToRemoteInfo:", v77), v77, v76, (v78 & 1) == 0))
     {
       v79 = _TVRCGeneralLog();
       if (os_log_type_enabled(v79, OS_LOG_TYPE_DEFAULT))
       {
-        v80 = [v5 supportsFindMyRemote];
+        supportsFindMyRemote2 = [stateCopy supportsFindMyRemote];
         *buf = 67109120;
-        LODWORD(v119) = v80;
+        LODWORD(v119) = supportsFindMyRemote2;
         _os_log_impl(&dword_26CF7F000, v79, OS_LOG_TYPE_DEFAULT, "Updated supportsFindMyRemote: %d", buf, 8u);
       }
 
       v81 = _TVRCGeneralLog();
       if (os_log_type_enabled(v81, OS_LOG_TYPE_DEFAULT))
       {
-        v82 = [v5 pairedRemoteInfo];
+        pairedRemoteInfo = [stateCopy pairedRemoteInfo];
         *buf = 138412290;
-        v119 = v82;
+        v119 = pairedRemoteInfo;
         _os_log_impl(&dword_26CF7F000, v81, OS_LOG_TYPE_DEFAULT, "Updated pairedRemoteInfo: %@", buf, 0xCu);
       }
 
-      if ([v5 supportsFindMyRemote])
+      if ([stateCopy supportsFindMyRemote])
       {
-        v83 = 1;
+        supportsFindMy = 1;
       }
 
       else
       {
-        v84 = [v5 pairedRemoteInfo];
-        v83 = [v84 supportsFindMy];
+        pairedRemoteInfo2 = [stateCopy pairedRemoteInfo];
+        supportsFindMy = [pairedRemoteInfo2 supportsFindMy];
       }
 
       v85 = objc_loadWeakRetained(&self->_delegate);
@@ -707,22 +707,22 @@ LABEL_44:
       if (v86)
       {
         v87 = objc_loadWeakRetained(&self->_delegate);
-        [v87 device:self supportsFindMyRemote:v83];
+        [v87 device:self supportsFindMyRemote:supportsFindMy];
       }
     }
 
-    v88 = [(TVRCDeviceState *)v33 nowPlayingInfo];
-    v89 = [v5 nowPlayingInfo];
-    v90 = [v88 isEqualToNowPlayingInfo:v89];
+    nowPlayingInfo = [(TVRCDeviceState *)v33 nowPlayingInfo];
+    nowPlayingInfo2 = [stateCopy nowPlayingInfo];
+    v90 = [nowPlayingInfo isEqualToNowPlayingInfo:nowPlayingInfo2];
 
     if ((v90 & 1) == 0)
     {
       v91 = _TVRCGeneralLog();
       if (os_log_type_enabled(v91, OS_LOG_TYPE_DEFAULT))
       {
-        v92 = [v5 nowPlayingInfo];
+        nowPlayingInfo3 = [stateCopy nowPlayingInfo];
         *buf = 138412290;
-        v119 = v92;
+        v119 = nowPlayingInfo3;
         _os_log_impl(&dword_26CF7F000, v91, OS_LOG_TYPE_DEFAULT, "Updated nowPlayingInfo: %@", buf, 0xCu);
       }
 
@@ -732,31 +732,31 @@ LABEL_44:
       if (v94)
       {
         v95 = objc_loadWeakRetained(&self->_delegate);
-        v96 = [v5 nowPlayingInfo];
-        [v95 device:self updatedNowPlayingInfo:v96];
+        nowPlayingInfo4 = [stateCopy nowPlayingInfo];
+        [v95 device:self updatedNowPlayingInfo:nowPlayingInfo4];
       }
     }
 
-    v97 = [(TVRCDeviceState *)v33 siriRemoteFindingState];
-    if (v97 != [v5 siriRemoteFindingState])
+    siriRemoteFindingState = [(TVRCDeviceState *)v33 siriRemoteFindingState];
+    if (siriRemoteFindingState != [stateCopy siriRemoteFindingState])
     {
       v98 = _TVRCGeneralLog();
       if (os_log_type_enabled(v98, OS_LOG_TYPE_DEFAULT))
       {
-        v99 = [v5 siriRemoteFindingState];
-        if (v99 < 7 && ((0x77u >> v99) & 1) != 0)
+        siriRemoteFindingState2 = [stateCopy siriRemoteFindingState];
+        if (siriRemoteFindingState2 < 7 && ((0x77u >> siriRemoteFindingState2) & 1) != 0)
         {
-          v100 = off_279D82B48[v99];
+          v102 = off_279D82B48[siriRemoteFindingState2];
         }
 
         else
         {
           v101 = MEMORY[0x277CCACA8];
-          v102 = [MEMORY[0x277CCABB0] numberWithInteger:v99];
-          v100 = [v101 stringWithFormat:@"Unknown %@", v102];
+          v102 = [MEMORY[0x277CCABB0] numberWithInteger:siriRemoteFindingState2];
+          v102 = [v101 stringWithFormat:@"Unknown %@", v102];
         }
 
-        v103 = v100;
+        v103 = v102;
         *buf = 138543362;
         v119 = v103;
         _os_log_impl(&dword_26CF7F000, v98, OS_LOG_TYPE_DEFAULT, "Updated siriRemoteFindingState: %{public}@", buf, 0xCu);
@@ -768,28 +768,28 @@ LABEL_44:
       if (v105)
       {
         v106 = objc_loadWeakRetained(&self->_delegate);
-        [v106 device:self updatedSiriRemoteFindingSessionState:{objc_msgSend(v5, "siriRemoteFindingState")}];
+        [v106 device:self updatedSiriRemoteFindingSessionState:{objc_msgSend(stateCopy, "siriRemoteFindingState")}];
       }
     }
 
-    v107 = [(TVRCDeviceState *)v33 attentionState];
-    if (v107 != [v5 attentionState])
+    attentionState = [(TVRCDeviceState *)v33 attentionState];
+    if (attentionState != [stateCopy attentionState])
     {
       v108 = _TVRCGeneralLog();
       if (os_log_type_enabled(v108, OS_LOG_TYPE_DEFAULT))
       {
-        v109 = [v5 attentionState];
-        if ((v109 - 1) >= 3)
+        attentionState2 = [stateCopy attentionState];
+        if ((attentionState2 - 1) >= 3)
         {
-          v110 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %ld)", v109];
+          v109 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %ld)", attentionState2];
         }
 
         else
         {
-          v110 = off_279D82B80[v109 - 1];
+          v109 = off_279D82B80[attentionState2 - 1];
         }
 
-        v111 = v110;
+        v111 = v109;
         *buf = 138543362;
         v119 = v111;
         _os_log_impl(&dword_26CF7F000, v108, OS_LOG_TYPE_DEFAULT, "Updated attentionState: %{public}@", buf, 0xCu);
@@ -801,31 +801,31 @@ LABEL_44:
       if (v113)
       {
         v114 = objc_loadWeakRetained(&self->_delegate);
-        [v114 device:self updatedAttentionState:{objc_msgSend(v5, "attentionState")}];
+        [v114 device:self updatedAttentionState:{objc_msgSend(stateCopy, "attentionState")}];
       }
     }
 
 LABEL_87:
     keyboardController = self->_keyboardController;
-    v116 = [v5 keyboardState];
-    [(TVRCKeyboardController *)keyboardController _setCurrentState:v116];
+    keyboardState = [stateCopy keyboardState];
+    [(TVRCKeyboardController *)keyboardController _setCurrentState:keyboardState];
   }
 
   v117 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_deviceEncounteredAuthChallengeType:(int64_t)a3 attributes:(int64_t)a4 codeToEnterOnDevice:(id)a5 throttleSeconds:(int64_t)a6
+- (void)_deviceEncounteredAuthChallengeType:(int64_t)type attributes:(int64_t)attributes codeToEnterOnDevice:(id)device throttleSeconds:(int64_t)seconds
 {
-  v10 = a5;
+  deviceCopy = device;
   objc_copyWeak(&to, &self->_delegate);
   v11 = objc_loadWeakRetained(&to);
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [[TVRCDeviceAuthenticationChallenge alloc] _initWithDeviceIdentifier:self->_identifier challengeType:a3 codeToEnterOnDevice:v10];
-    [v13 setChallengeAttributes:a4];
-    [v13 setThrottleSeconds:a6];
+    v13 = [[TVRCDeviceAuthenticationChallenge alloc] _initWithDeviceIdentifier:self->_identifier challengeType:type codeToEnterOnDevice:deviceCopy];
+    [v13 setChallengeAttributes:attributes];
+    [v13 setThrottleSeconds:seconds];
     v14 = objc_loadWeakRetained(&to);
     [v14 device:self encounteredAuthenticationChallenge:v13];
   }
@@ -858,11 +858,11 @@ LABEL_87:
   }
 }
 
-- (void)_sendRTIDataPayload:(id)a3
+- (void)_sendRTIDataPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   v5 = +[TVRCXPCClient sharedInstance];
-  [v5 sendInputTextPayload:v4 toDeviceWithIdentifier:self->_identifier];
+  [v5 sendInputTextPayload:payloadCopy toDeviceWithIdentifier:self->_identifier];
 }
 
 - (TVRCDeviceDelegate)delegate

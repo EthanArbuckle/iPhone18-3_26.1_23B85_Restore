@@ -1,20 +1,20 @@
 @interface _UISceneHostGeometryHostComponent
 - (_TtC5UIKit33_UISceneHostGeometryHostComponent)init;
-- (_TtC5UIKit33_UISceneHostGeometryHostComponent)initWithScene:(id)a3;
-- (void)sceneDidInvalidate:(id)a3 withContext:(id)a4;
+- (_TtC5UIKit33_UISceneHostGeometryHostComponent)initWithScene:(id)scene;
+- (void)sceneDidInvalidate:(id)invalidate withContext:(id)context;
 @end
 
 @implementation _UISceneHostGeometryHostComponent
 
-- (void)sceneDidInvalidate:(id)a3 withContext:(id)a4
+- (void)sceneDidInvalidate:(id)invalidate withContext:(id)context
 {
   v7 = 0;
   memset(v6, 0, sizeof(v6));
-  v4 = self;
+  selfCopy = self;
   sub_188EA9CA0(v6);
   v5 = OBJC_IVAR____TtC5UIKit33_UISceneHostGeometryHostComponent_geometryDriver;
   swift_beginAccess();
-  sub_188EAA368(v6, v4 + v5);
+  sub_188EAA368(v6, selfCopy + v5);
   swift_endAccess();
 }
 
@@ -31,7 +31,7 @@
   return [(_UISceneHostGeometryHostComponent *)&v6 init];
 }
 
-- (_TtC5UIKit33_UISceneHostGeometryHostComponent)initWithScene:(id)a3
+- (_TtC5UIKit33_UISceneHostGeometryHostComponent)initWithScene:(id)scene
 {
   ObjectType = swift_getObjectType();
   *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit33_UISceneHostGeometryHostComponent_currentHandle) = 0;
@@ -42,7 +42,7 @@
   v9.receiver = self;
   v9.super_class = ObjectType;
   swift_unknownObjectRetain();
-  v7 = [(FBSSceneComponent *)&v9 initWithScene:a3];
+  v7 = [(FBSSceneComponent *)&v9 initWithScene:scene];
   swift_unknownObjectRelease();
   if (v7)
   {

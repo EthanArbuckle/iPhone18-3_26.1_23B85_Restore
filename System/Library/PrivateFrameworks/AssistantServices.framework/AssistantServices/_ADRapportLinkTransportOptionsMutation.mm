@@ -1,5 +1,5 @@
 @interface _ADRapportLinkTransportOptionsMutation
-- (_ADRapportLinkTransportOptionsMutation)initWithBase:(id)a3;
+- (_ADRapportLinkTransportOptionsMutation)initWithBase:(id)base;
 - (int64_t)getAllowsAWDL;
 - (int64_t)getAllowsBLE;
 - (int64_t)getAllowsBTPipe;
@@ -102,16 +102,16 @@
   }
 }
 
-- (_ADRapportLinkTransportOptionsMutation)initWithBase:(id)a3
+- (_ADRapportLinkTransportOptionsMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _ADRapportLinkTransportOptionsMutation;
   v6 = [(_ADRapportLinkTransportOptionsMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

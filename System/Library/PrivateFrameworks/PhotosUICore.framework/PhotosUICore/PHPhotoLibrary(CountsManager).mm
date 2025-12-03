@@ -6,16 +6,16 @@
 
 - (PXSharedLibrarySharingSuggestionsCountsManager)px_sharedLibrarySharingSuggestionsCountsManager
 {
-  v1 = a1;
-  objc_sync_enter(v1);
-  v2 = objc_getAssociatedObject(v1, sel_px_sharedLibrarySharingSuggestionsCountsManager);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v2 = objc_getAssociatedObject(selfCopy, sel_px_sharedLibrarySharingSuggestionsCountsManager);
   if (!v2)
   {
-    v2 = [[PXSharedLibrarySharingSuggestionsCountsManager alloc] initWithPhotoLibrary:v1];
+    v2 = [[PXSharedLibrarySharingSuggestionsCountsManager alloc] initWithPhotoLibrary:selfCopy];
   }
 
-  objc_setAssociatedObject(v1, sel_px_sharedLibrarySharingSuggestionsCountsManager, v2, 0x301);
-  objc_sync_exit(v1);
+  objc_setAssociatedObject(selfCopy, sel_px_sharedLibrarySharingSuggestionsCountsManager, v2, 0x301);
+  objc_sync_exit(selfCopy);
 
   return v2;
 }

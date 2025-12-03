@@ -1,11 +1,11 @@
 @interface STAdminPersistenceController
 + (STAdminPersistenceController)sharedController;
-- (BOOL)saveContext:(id)a3 error:(id *)a4;
+- (BOOL)saveContext:(id)context error:(id *)error;
 - (STAdminPersistenceController)init;
 - (id)newBackgroundContext;
 - (id)viewContext;
-- (void)performBackgroundTask:(id)a3;
-- (void)performBackgroundTaskAndWait:(id)a3;
+- (void)performBackgroundTask:(id)task;
+- (void)performBackgroundTaskAndWait:(id)wait;
 @end
 
 @implementation STAdminPersistenceController
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __48__STAdminPersistenceController_sharedController__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedController_onceToken != -1)
   {
     dispatch_once(&sharedController_onceToken, block);
@@ -57,7 +57,7 @@ void __48__STAdminPersistenceController_sharedController__block_invoke(uint64_t 
   v3 = v2;
   if (v2)
   {
-    v4 = [(STPersistenceController *)v2 persistentContainer];
+    persistentContainer = [(STPersistenceController *)v2 persistentContainer];
     if (+[STAdminPersistenceController isUnitTestRunning])
     {
       v5 = +[STLog persistence];
@@ -75,7 +75,7 @@ void __48__STAdminPersistenceController_sharedController__block_invoke(uint64_t 
       [v6 setOption:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E695D3C0]];
       v21[0] = v6;
       v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
-      [v4 setPersistentStoreDescriptions:v8];
+      [persistentContainer setPersistentStoreDescriptions:v8];
 
       v9 = +[STLog persistence];
       if (!os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -89,7 +89,7 @@ void __48__STAdminPersistenceController_sharedController__block_invoke(uint64_t 
       v6 = +[STPersistenceConfiguration localPersistentXPCStoreDescription];
       v16 = v6;
       v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v16 count:1];
-      [v4 setPersistentStoreDescriptions:v10];
+      [persistentContainer setPersistentStoreDescriptions:v10];
 
       v9 = +[STLog persistence];
       if (!os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -101,7 +101,7 @@ LABEL_9:
         v13[2] = __36__STAdminPersistenceController_init__block_invoke;
         v13[3] = &unk_1E7CE6920;
         v14 = v3;
-        [v4 loadPersistentStoresWithCompletionHandler:v13];
+        [persistentContainer loadPersistentStoresWithCompletionHandler:v13];
 
         goto LABEL_10;
       }
@@ -155,28 +155,28 @@ void __36__STAdminPersistenceController_init__block_invoke(uint64_t a1, void *a2
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)saveContext:(id)a3 error:(id *)a4
+- (BOOL)saveContext:(id)context error:(id *)error
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(STPersistenceController *)self localStore];
+  contextCopy = context;
+  localStore = [(STPersistenceController *)self localStore];
 
-  if ([v6 hasChanges])
+  if ([contextCopy hasChanges])
   {
-    if (v7)
+    if (localStore)
     {
-      v8 = [(STPersistenceController *)self persistentContainer];
-      v9 = [v8 persistentStoreCoordinator];
-      v10 = [(STPersistenceController *)self localStore];
-      v18[0] = v10;
+      persistentContainer = [(STPersistenceController *)self persistentContainer];
+      persistentStoreCoordinator = [persistentContainer persistentStoreCoordinator];
+      localStore2 = [(STPersistenceController *)self localStore];
+      v18[0] = localStore2;
       v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
-      v12 = [v9 currentPersistentHistoryTokenFromStores:v11];
+      v12 = [persistentStoreCoordinator currentPersistentHistoryTokenFromStores:v11];
     }
 
-    v13 = [_TtC14ScreenTimeCore20STConsistencyChecker validateWithManagedObjectContext:v6 error:a4];
-    if (!a4 || v13)
+    v13 = [_TtC14ScreenTimeCore20STConsistencyChecker validateWithManagedObjectContext:contextCopy error:error];
+    if (!error || v13)
     {
-      v15 = [v6 save:a4];
+      v15 = [contextCopy save:error];
     }
 
     else
@@ -184,7 +184,7 @@ void __36__STAdminPersistenceController_init__block_invoke(uint64_t a1, void *a2
       v14 = +[STLog persistence];
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        [STAdminPersistenceController saveContext:a4 error:v14];
+        [STAdminPersistenceController saveContext:error error:v14];
       }
 
       v15 = 0;
@@ -200,18 +200,18 @@ void __36__STAdminPersistenceController_init__block_invoke(uint64_t a1, void *a2
   return v15;
 }
 
-- (void)performBackgroundTask:(id)a3
+- (void)performBackgroundTask:(id)task
 {
-  v4 = a3;
-  v5 = [(STAdminPersistenceController *)self viewContext];
+  taskCopy = task;
+  viewContext = [(STAdminPersistenceController *)self viewContext];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54__STAdminPersistenceController_performBackgroundTask___block_invoke;
   v7[3] = &unk_1E7CE6948;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performBlock:v7];
+  v8 = taskCopy;
+  v6 = taskCopy;
+  [viewContext performBlock:v7];
 }
 
 void __54__STAdminPersistenceController_performBackgroundTask___block_invoke(uint64_t a1)
@@ -224,18 +224,18 @@ void __54__STAdminPersistenceController_performBackgroundTask___block_invoke(uin
   }
 }
 
-- (void)performBackgroundTaskAndWait:(id)a3
+- (void)performBackgroundTaskAndWait:(id)wait
 {
-  v4 = a3;
-  v5 = [(STAdminPersistenceController *)self viewContext];
+  waitCopy = wait;
+  viewContext = [(STAdminPersistenceController *)self viewContext];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__STAdminPersistenceController_performBackgroundTaskAndWait___block_invoke;
   v7[3] = &unk_1E7CE6948;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performBlockAndWait:v7];
+  v8 = waitCopy;
+  v6 = waitCopy;
+  [viewContext performBlockAndWait:v7];
 }
 
 void __61__STAdminPersistenceController_performBackgroundTaskAndWait___block_invoke(uint64_t a1)
@@ -250,22 +250,22 @@ void __61__STAdminPersistenceController_performBackgroundTaskAndWait___block_inv
 
 - (id)newBackgroundContext
 {
-  v2 = [(STPersistenceController *)self persistentContainer];
-  v3 = [v2 newBackgroundContext];
+  persistentContainer = [(STPersistenceController *)self persistentContainer];
+  newBackgroundContext = [persistentContainer newBackgroundContext];
 
-  [v3 setMergePolicy:*MEMORY[0x1E695D370]];
-  return v3;
+  [newBackgroundContext setMergePolicy:*MEMORY[0x1E695D370]];
+  return newBackgroundContext;
 }
 
 - (id)viewContext
 {
-  v2 = [(STPersistenceController *)self persistentContainer];
-  v3 = [v2 viewContext];
+  persistentContainer = [(STPersistenceController *)self persistentContainer];
+  viewContext = [persistentContainer viewContext];
 
-  [v3 setAutomaticallyMergesChangesFromParent:1];
-  [v3 setMergePolicy:*MEMORY[0x1E695D370]];
+  [viewContext setAutomaticallyMergesChangesFromParent:1];
+  [viewContext setMergePolicy:*MEMORY[0x1E695D370]];
 
-  return v3;
+  return viewContext;
 }
 
 - (void)saveContext:(uint64_t *)a1 error:(NSObject *)a2 .cold.1(uint64_t *a1, NSObject *a2)

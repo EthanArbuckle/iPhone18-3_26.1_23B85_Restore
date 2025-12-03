@@ -2,27 +2,27 @@
 - (BOOL)canPersistMetrics;
 - (LocalKeychainAnalytics)init;
 - (void)processPendingMessages;
-- (void)reportKeychainBackupEnd:(BOOL)a3 error:(id)a4;
-- (void)reportKeychainBackupStartWithType:(int)a3;
-- (void)reportKeychainUpgradeOutcome:(int)a3 attributes:(id)a4;
+- (void)reportKeychainBackupEnd:(BOOL)end error:(id)error;
+- (void)reportKeychainBackupStartWithType:(int)type;
+- (void)reportKeychainUpgradeOutcome:(int)outcome attributes:(id)attributes;
 @end
 
 @implementation LocalKeychainAnalytics
 
-- (void)reportKeychainBackupEnd:(BOOL)a3 error:(id)a4
+- (void)reportKeychainBackupEnd:(BOOL)end error:(id)error
 {
-  v4 = a3;
+  endCopy = end;
   v19[3] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF00] date];
-  [v7 timeIntervalSinceDate:self->_backupStartTime];
+  errorCopy = error;
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSinceDate:self->_backupStartTime];
   v9 = 100 * ((v8 + 0.05) * 10.0);
   v10 = [MEMORY[0x1E696AD98] numberWithInteger:v9];
   [(SFAnalytics *)self logMetric:v10 withName:@"LKAMetricBackupDuration"];
 
-  if (v4)
+  if (endCopy)
   {
-    [(SFAnalytics *)self setDateProperty:v7 forKey:@"backupLastSuccess"];
+    [(SFAnalytics *)self setDateProperty:date forKey:@"backupLastSuccess"];
     [(SFAnalytics *)self logSuccessForEventNamed:@"LKAEventBackup" timestampBucket:2];
   }
 
@@ -31,7 +31,7 @@
     v11 = [(SFAnalytics *)self datePropertyForKey:@"backupLastSuccess"];
     v12 = [SFAnalytics fuzzyDaysSinceDate:v11];
 
-    if ([v6 code] != -25308 || v12)
+    if ([errorCopy code] != -25308 || v12)
     {
       v18[0] = @"daysSinceSuccess";
       v13 = [MEMORY[0x1E696AD98] numberWithInteger:v12];
@@ -43,32 +43,32 @@
       v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_backupType];
       v19[2] = v15;
       v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:3];
-      [(SFAnalytics *)self logResultForEvent:@"LKAEventBackup" hardFailure:1 result:v6 withAttributes:v16 timestampBucket:2];
+      [(SFAnalytics *)self logResultForEvent:@"LKAEventBackup" hardFailure:1 result:errorCopy withAttributes:v16 timestampBucket:2];
     }
   }
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportKeychainBackupStartWithType:(int)a3
+- (void)reportKeychainBackupStartWithType:(int)type
 {
-  v5 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   backupStartTime = self->_backupStartTime;
-  self->_backupStartTime = v5;
+  self->_backupStartTime = date;
 
-  self->_backupType = a3;
+  self->_backupType = type;
 }
 
-- (void)reportKeychainUpgradeOutcome:(int)a3 attributes:(id)a4
+- (void)reportKeychainUpgradeOutcome:(int)outcome attributes:(id)attributes
 {
-  if (a3)
+  if (outcome)
   {
-    [(SFAnalytics *)self logHardFailureForEventNamed:@"LKAEventUpgrade" withAttributes:a4];
+    [(SFAnalytics *)self logHardFailureForEventNamed:@"LKAEventUpgrade" withAttributes:attributes];
   }
 
   else
   {
-    [(SFAnalytics *)self logSuccessForEventNamed:@"LKAEventUpgrade", a4];
+    [(SFAnalytics *)self logSuccessForEventNamed:@"LKAEventUpgrade", attributes];
   }
 }
 
@@ -130,10 +130,10 @@ void __48__LocalKeychainAnalytics_processPendingMessages__block_invoke(uint64_t 
 
 - (BOOL)canPersistMetrics
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  probablyInClassD = v2->_probablyInClassD;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  probablyInClassD = selfCopy->_probablyInClassD;
+  objc_sync_exit(selfCopy);
 
   if (!probablyInClassD)
   {
@@ -146,7 +146,7 @@ void __48__LocalKeychainAnalytics_processPendingMessages__block_invoke(uint64_t 
   v5[1] = 3221225472;
   v5[2] = __43__LocalKeychainAnalytics_canPersistMetrics__block_invoke;
   v5[3] = &unk_1E70E4300;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   if (canPersistMetrics_onceToken != -1)
   {
     dispatch_once(&canPersistMetrics_onceToken, v5);

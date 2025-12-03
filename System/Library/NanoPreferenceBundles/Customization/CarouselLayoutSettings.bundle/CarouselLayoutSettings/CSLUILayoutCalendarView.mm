@@ -1,6 +1,6 @@
 @interface CSLUILayoutCalendarView
 - (CSLUILayoutCalendarView)init;
-- (void)calendarIconSource:(id)a3 updatedIcon:(id)a4 circularIcon:(id)a5;
+- (void)calendarIconSource:(id)source updatedIcon:(id)icon circularIcon:(id)circularIcon;
 - (void)dealloc;
 @end
 
@@ -9,9 +9,9 @@
 - (CSLUILayoutCalendarView)init
 {
   v3 = +[CSLUICalendarIconSource sharedInstance];
-  v4 = [v3 calendarIcon];
+  calendarIcon = [v3 calendarIcon];
 
-  [v4 size];
+  [calendarIcon size];
   v6 = v5;
   v12.receiver = self;
   v12.super_class = CSLUILayoutCalendarView;
@@ -19,7 +19,7 @@
   if (v7)
   {
     v8 = [[UIImageView alloc] initWithFrame:{0.0, 0.0, v6, v6}];
-    v9 = [CSLUILayoutIconView circleMaskImage:v4];
+    v9 = [CSLUILayoutIconView circleMaskImage:calendarIcon];
     [v8 setImage:v9];
 
     objc_storeWeak(&v7->_imageView, v8);
@@ -41,9 +41,9 @@
   [(CSLUILayoutCalendarView *)&v4 dealloc];
 }
 
-- (void)calendarIconSource:(id)a3 updatedIcon:(id)a4 circularIcon:(id)a5
+- (void)calendarIconSource:(id)source updatedIcon:(id)icon circularIcon:(id)circularIcon
 {
-  v7 = [CSLUILayoutIconView circleMaskImage:a4];
+  v7 = [CSLUILayoutIconView circleMaskImage:icon];
   WeakRetained = objc_loadWeakRetained(&self->_imageView);
   [WeakRetained setImage:v7];
 }

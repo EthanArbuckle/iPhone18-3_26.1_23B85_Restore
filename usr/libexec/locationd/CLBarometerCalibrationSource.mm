@@ -1,11 +1,11 @@
 @interface CLBarometerCalibrationSource
-- (CLBarometerCalibrationSource)initWithUniverse:(id)a3 delegate:(id)a4;
+- (CLBarometerCalibrationSource)initWithUniverse:(id)universe delegate:(id)delegate;
 - (void)dealloc;
 @end
 
 @implementation CLBarometerCalibrationSource
 
-- (CLBarometerCalibrationSource)initWithUniverse:(id)a3 delegate:(id)a4
+- (CLBarometerCalibrationSource)initWithUniverse:(id)universe delegate:(id)delegate
 {
   v10.receiver = self;
   v10.super_class = CLBarometerCalibrationSource;
@@ -13,8 +13,8 @@
   v8 = v7;
   if (v7)
   {
-    v7->_universe = a3;
-    v7->_delegate = a4;
+    v7->_universe = universe;
+    v7->_delegate = delegate;
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
       sub_1018F5530(a2, v8);

@@ -1,16 +1,16 @@
 @interface DDRProgress
-- (DDRProgress)initWithTotalDuration:(double)a3 totalTaskCount:(int64_t)a4 progressTickInterval:(double)a5;
+- (DDRProgress)initWithTotalDuration:(double)duration totalTaskCount:(int64_t)count progressTickInterval:(double)interval;
 - (DDRProgressDelegate)delegate;
 - (void)_incrementCurrentResetTaskProgress;
 - (void)_lock_noteTaskCompleted;
 - (void)_lock_resetTaskTimer;
-- (void)noteTaskBeginningWithName:(id)a3 duration:(double)a4;
+- (void)noteTaskBeginningWithName:(id)name duration:(double)duration;
 - (void)noteTaskCompleted;
 @end
 
 @implementation DDRProgress
 
-- (DDRProgress)initWithTotalDuration:(double)a3 totalTaskCount:(int64_t)a4 progressTickInterval:(double)a5
+- (DDRProgress)initWithTotalDuration:(double)duration totalTaskCount:(int64_t)count progressTickInterval:(double)interval
 {
   v11.receiver = self;
   v11.super_class = DDRProgress;
@@ -21,37 +21,37 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218496;
-      v13 = a3;
+      durationCopy = duration;
       v14 = 2048;
-      v15 = a4;
+      countCopy = count;
       v16 = 2048;
-      v17 = a5;
+      intervalCopy = interval;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Initialize DDRProgress with totalDuration: %lf, totalTaskCount: %ld and tick interval of %lf", buf, 0x20u);
     }
 
-    [(DDRProgress *)v8 setTotalEstimateTimeOfCompletion:a3];
+    [(DDRProgress *)v8 setTotalEstimateTimeOfCompletion:duration];
     [(DDRProgress *)v8 setCompletedProgress:0.0];
     [(DDRProgress *)v8 setCurrentTaskEstimate:0.0];
     [(DDRProgress *)v8 setCurrentTaskProgress:0.0];
     [(DDRProgress *)v8 setAllResetTasksCompleted:0];
-    [(DDRProgress *)v8 setNumberOfTaskRemaining:a4];
-    [(DDRProgress *)v8 setNumberOfTotalTask:a4];
-    [(DDRProgress *)v8 setTickInterval:a5];
+    [(DDRProgress *)v8 setNumberOfTaskRemaining:count];
+    [(DDRProgress *)v8 setNumberOfTotalTask:count];
+    [(DDRProgress *)v8 setTickInterval:interval];
     [(DDRProgress *)v8 setLock:0];
   }
 
   return v8;
 }
 
-- (void)noteTaskBeginningWithName:(id)a3 duration:(double)a4
+- (void)noteTaskBeginningWithName:(id)name duration:(double)duration
 {
-  v6 = a3;
+  nameCopy = name;
   os_unfair_lock_lock(&self->_lock);
   v7 = DDRLogForCategory(1uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v20 = v6;
+    v20 = nameCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Setting reset task:%@", buf, 0xCu);
   }
 
@@ -61,14 +61,14 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v20 = v6;
+      v20 = nameCopy;
       v21 = 2048;
-      v22 = a4;
+      durationCopy = duration;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Setting currrent reset task:%@, estimate time:%lf, have not complete all tasks", buf, 0x16u);
     }
 
-    [(DDRProgress *)self setCurrentResetTask:v6];
-    [(DDRProgress *)self setCurrentTaskEstimate:a4];
+    [(DDRProgress *)self setCurrentResetTask:nameCopy];
+    [(DDRProgress *)self setCurrentTaskEstimate:duration];
     objc_initWeak(buf, self);
     v9 = [BSTimer alloc];
     [(DDRProgress *)self tickInterval];
@@ -84,8 +84,8 @@
     v15 = [v9 initWithFireInterval:v14 repeatInterval:v17 leewayInterval:v11 queue:v13 handler:0.0];
     [(DDRProgress *)self setTickTimer:v15];
 
-    v16 = [(DDRProgress *)self tickTimer];
-    [v16 schedule];
+    tickTimer = [(DDRProgress *)self tickTimer];
+    [tickTimer schedule];
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(buf);
@@ -108,21 +108,21 @@
   v3 = DDRLogForCategory(1uLL);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(DDRProgress *)self currentResetTask];
+    currentResetTask = [(DDRProgress *)self currentResetTask];
     *v44 = 138412290;
-    *&v44[4] = v4;
+    *&v44[4] = currentResetTask;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Increment task progress for: %@", v44, 0xCu);
   }
 
   if ([(DDRProgress *)self allResetTasksCompleted])
   {
-    v5 = DDRLogForCategory(1uLL);
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    delegate = DDRLogForCategory(1uLL);
+    if (os_log_type_enabled(delegate, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(DDRProgress *)self currentResetTask];
+      currentResetTask2 = [(DDRProgress *)self currentResetTask];
       *v44 = 138412290;
-      *&v44[4] = v6;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "In Increment task progress for: %@, all task have completed", v44, 0xCu);
+      *&v44[4] = currentResetTask2;
+      _os_log_impl(&_mh_execute_header, delegate, OS_LOG_TYPE_DEFAULT, "In Increment task progress for: %@, all task have completed", v44, 0xCu);
     }
 
 LABEL_33:
@@ -130,16 +130,16 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  v7 = [(DDRProgress *)self currentResetTask];
-  v8 = [v7 length];
+  currentResetTask3 = [(DDRProgress *)self currentResetTask];
+  v8 = [currentResetTask3 length];
 
   if (!v8)
   {
-    v5 = DDRLogForCategory(1uLL);
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    delegate = DDRLogForCategory(1uLL);
+    if (os_log_type_enabled(delegate, OS_LOG_TYPE_DEFAULT))
     {
       *v44 = 0;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "In Increment task progress, the current task already completed, might need to adjust the task estimate time of completion", v44, 2u);
+      _os_log_impl(&_mh_execute_header, delegate, OS_LOG_TYPE_DEFAULT, "In Increment task progress, the current task already completed, might need to adjust the task estimate time of completion", v44, 2u);
     }
 
     goto LABEL_33;
@@ -159,12 +159,12 @@ LABEL_33:
     v16 = DDRLogForCategory(1uLL);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(DDRProgress *)self currentResetTask];
+      currentResetTask4 = [(DDRProgress *)self currentResetTask];
       [(DDRProgress *)self currentTaskProgress];
       v19 = v18;
       [(DDRProgress *)self currentTaskEstimate];
       *v44 = 138412802;
-      *&v44[4] = v17;
+      *&v44[4] = currentResetTask4;
       *&v44[12] = 2048;
       *&v44[14] = v19;
       v45 = 2048;
@@ -192,18 +192,18 @@ LABEL_33:
           goto LABEL_11;
         }
 
-        v11 = [(DDRProgress *)self currentResetTask];
+        currentResetTask5 = [(DDRProgress *)self currentResetTask];
         *v44 = 138412290;
-        *&v44[4] = v11;
+        *&v44[4] = currentResetTask5;
         v12 = "Not enough time to increment progress of task: %@, just complete it. Consider increase the estimate time of completion";
         goto LABEL_10;
       }
 
       if (v32)
       {
-        v33 = [(DDRProgress *)self currentResetTask];
+        currentResetTask6 = [(DDRProgress *)self currentResetTask];
         *v44 = 138412290;
-        *&v44[4] = v33;
+        *&v44[4] = currentResetTask6;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "We are slowing down the progress increment to be 1/3 of the time left of current reset task: %@", v44, 0xCu);
       }
 
@@ -216,9 +216,9 @@ LABEL_33:
       v26 = DDRLogForCategory(1uLL);
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
-        v27 = [(DDRProgress *)self currentResetTask];
+        currentResetTask7 = [(DDRProgress *)self currentResetTask];
         *v44 = 138412290;
-        *&v44[4] = v27;
+        *&v44[4] = currentResetTask7;
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Current task %@ progress increment as normal", v44, 0xCu);
       }
     }
@@ -227,9 +227,9 @@ LABEL_33:
     v35 = DDRLogForCategory(1uLL);
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
-      v36 = [(DDRProgress *)self currentResetTask];
+      currentResetTask8 = [(DDRProgress *)self currentResetTask];
       *v44 = 138412290;
-      *&v44[4] = v36;
+      *&v44[4] = currentResetTask8;
       _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "Update the current task progress: %@", v44, 0xCu);
     }
 
@@ -247,17 +247,17 @@ LABEL_33:
       _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEFAULT, "Compute total progress percentage: %lf", v44, 0xCu);
     }
 
-    v5 = [(DDRProgress *)self delegate];
-    [v5 progressDidUpdateWithPercentage:v42];
+    delegate = [(DDRProgress *)self delegate];
+    [delegate progressDidUpdateWithPercentage:v42];
     goto LABEL_33;
   }
 
   v10 = DDRLogForCategory(1uLL);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(DDRProgress *)self currentResetTask];
+    currentResetTask5 = [(DDRProgress *)self currentResetTask];
     *v44 = 138412290;
-    *&v44[4] = v11;
+    *&v44[4] = currentResetTask5;
     v12 = "In Increment task progress for: %@, the estimate time of completion is 0";
 LABEL_10:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, v12, v44, 0xCu);
@@ -274,8 +274,8 @@ LABEL_34:
 - (void)_lock_resetTaskTimer
 {
   os_unfair_lock_assert_owner(&self->_lock);
-  v3 = [(DDRProgress *)self tickTimer];
-  [v3 cancel];
+  tickTimer = [(DDRProgress *)self tickTimer];
+  [tickTimer cancel];
 
   [(DDRProgress *)self setTickTimer:0];
 }
@@ -290,8 +290,8 @@ LABEL_34:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Completing current reset task", v36, 2u);
   }
 
-  v4 = [(DDRProgress *)self currentResetTask];
-  v5 = [v4 length];
+  currentResetTask = [(DDRProgress *)self currentResetTask];
+  v5 = [currentResetTask length];
 
   if (v5)
   {
@@ -303,14 +303,14 @@ LABEL_34:
     v9 = DDRLogForCategory(1uLL);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(DDRProgress *)self currentResetTask];
+      currentResetTask2 = [(DDRProgress *)self currentResetTask];
       [(DDRProgress *)self currentTaskEstimate];
       v12 = v11;
       [(DDRProgress *)self completedProgress];
       v14 = v13;
       [(DDRProgress *)self totalEstimateTimeOfCompletion];
       *v36 = 138413058;
-      *&v36[4] = v10;
+      *&v36[4] = currentResetTask2;
       *&v36[12] = 2048;
       *&v36[14] = v12;
       v37 = 2048;
@@ -339,14 +339,14 @@ LABEL_34:
   [(DDRProgress *)self totalEstimateTimeOfCompletion];
   if (v31 == 0.0)
   {
-    v32 = [(DDRProgress *)self currentResetTask];
-    v33 = [v32 length];
+    currentResetTask3 = [(DDRProgress *)self currentResetTask];
+    v33 = [currentResetTask3 length];
 
     if (v33)
     {
       [(DDRProgress *)self _lock_resetTaskTimer];
-      v34 = [(DDRProgress *)self numberOfTotalTask];
-      v35 = (v34 - [(DDRProgress *)self numberOfTaskRemaining]);
+      numberOfTotalTask = [(DDRProgress *)self numberOfTotalTask];
+      v35 = (numberOfTotalTask - [(DDRProgress *)self numberOfTaskRemaining]);
       v19 = v35 / [(DDRProgress *)self numberOfTotalTask];
       v20 = DDRLogForCategory(1uLL);
       if (!os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -361,8 +361,8 @@ LABEL_8:
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, v21, v36, 0xCu);
 LABEL_9:
 
-      v22 = [(DDRProgress *)self delegate];
-      [v22 progressDidUpdateWithPercentage:v19];
+      delegate = [(DDRProgress *)self delegate];
+      [delegate progressDidUpdateWithPercentage:v19];
 
       [(DDRProgress *)self setCurrentTaskProgress:0.0];
       [(DDRProgress *)self setCurrentTaskEstimate:0.0];
@@ -378,11 +378,11 @@ LABEL_9:
   v27 = DDRLogForCategory(0);
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
   {
-    v28 = [(DDRProgress *)self numberOfTaskRemaining];
+    numberOfTaskRemaining = [(DDRProgress *)self numberOfTaskRemaining];
     *v36 = 134218240;
     *&v36[4] = v26;
     *&v36[12] = 2048;
-    *&v36[14] = v28;
+    *&v36[14] = numberOfTaskRemaining;
     _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "Difference is %lf, remaining task is %ld", v36, 0x16u);
   }
 
@@ -397,8 +397,8 @@ LABEL_9:
     }
 
     [(DDRProgress *)self setAllResetTasksCompleted:1];
-    v30 = [(DDRProgress *)self delegate];
-    [v30 didCompleteAllTasks];
+    delegate2 = [(DDRProgress *)self delegate];
+    [delegate2 didCompleteAllTasks];
   }
 }
 

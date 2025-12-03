@@ -1,5 +1,5 @@
 @interface SXAutoPlacementMargin
-- (SXAutoPlacementMargin)initWithTop:(_SXConvertibleValue)a3 bottom:(_SXConvertibleValue)a4;
+- (SXAutoPlacementMargin)initWithTop:(_SXConvertibleValue)top bottom:(_SXConvertibleValue)bottom;
 - (_SXConvertibleValue)bottom;
 - (_SXConvertibleValue)left;
 - (_SXConvertibleValue)right;
@@ -8,12 +8,12 @@
 
 @implementation SXAutoPlacementMargin
 
-- (SXAutoPlacementMargin)initWithTop:(_SXConvertibleValue)a3 bottom:(_SXConvertibleValue)a4
+- (SXAutoPlacementMargin)initWithTop:(_SXConvertibleValue)top bottom:(_SXConvertibleValue)bottom
 {
-  unit = a4.unit;
-  value = a4.value;
-  v6 = a3.unit;
-  v7 = a3.value;
+  unit = bottom.unit;
+  value = bottom.value;
+  v6 = top.unit;
+  v7 = top.value;
   v9.receiver = self;
   v9.super_class = SXAutoPlacementMargin;
   result = [(SXAutoPlacementMargin *)&v9 init];

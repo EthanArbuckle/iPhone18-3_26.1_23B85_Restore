@@ -1,6 +1,6 @@
 @interface SuggestedRouteBannerTitleView
 - (CGSize)intrinsicContentSize;
-- (_TtC13MediaRemoteUI29SuggestedRouteBannerTitleView)initWithFrame:(CGRect)a3;
+- (_TtC13MediaRemoteUI29SuggestedRouteBannerTitleView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -8,7 +8,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100003418();
   v5 = v4;
 
@@ -31,7 +31,7 @@
   static Published.subscript.setter();
 }
 
-- (_TtC13MediaRemoteUI29SuggestedRouteBannerTitleView)initWithFrame:(CGRect)a3
+- (_TtC13MediaRemoteUI29SuggestedRouteBannerTitleView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

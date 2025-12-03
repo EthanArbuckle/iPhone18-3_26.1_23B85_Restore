@@ -1,14 +1,14 @@
 @interface MPMediaItem
-+ (BOOL)_isValidItemProperty:(id)a3;
-+ (BOOL)canFilterByProperty:(id)a3;
++ (BOOL)_isValidItemProperty:(id)property;
++ (BOOL)canFilterByProperty:(id)property;
 + (NSString)persistentIDPropertyForGroupingType:(MPMediaGrouping)groupingType;
 + (NSString)titlePropertyForGroupingType:(MPMediaGrouping)groupingType;
 + (id)MPSD_mediaItemPropertiesForDownloadability;
-+ (id)ULIDPropertyForGroupingType:(int64_t)a3;
++ (id)ULIDPropertyForGroupingType:(int64_t)type;
 + (id)dynamicProperties;
-+ (id)fallbackTitlePropertyForGroupingType:(int64_t)a3;
-+ (id)itemFromModelObject:(id)a3;
-+ (id)itemFromSong:(id)a3;
++ (id)fallbackTitlePropertyForGroupingType:(int64_t)type;
++ (id)itemFromModelObject:(id)object;
++ (id)itemFromSong:(id)song;
 + (void)_createFilterableDictionary;
 - (BOOL)MPSD_isDownloadInProgress;
 - (BOOL)existsInLibrary;
@@ -16,7 +16,7 @@
 - (BOOL)hasProtectedAsset;
 - (BOOL)isCloudItem;
 - (BOOL)isCompilation;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isExplicitItem;
 - (BOOL)isITunesU;
 - (BOOL)isPreorder;
@@ -28,9 +28,9 @@
 - (MPMediaEntityPersistentID)composerPersistentID;
 - (MPMediaEntityPersistentID)genrePersistentID;
 - (MPMediaEntityPersistentID)podcastPersistentID;
-- (MPMediaItem)initWithCoder:(id)a3;
-- (MPMediaItem)initWithMultiverseIdentifier:(id)a3 library:(id)a4;
-- (MPMediaItem)initWithPersistentID:(unint64_t)a3;
+- (MPMediaItem)initWithCoder:(id)coder;
+- (MPMediaItem)initWithMultiverseIdentifier:(id)identifier library:(id)library;
+- (MPMediaItem)initWithPersistentID:(unint64_t)d;
 - (MPMediaType)mediaType;
 - (NSString)effectiveAlbumArtist;
 - (NSTimeInterval)bookmarkTime;
@@ -46,29 +46,29 @@
 - (double)effectiveStopTime;
 - (double)startTime;
 - (double)stopTime;
-- (id)_artworkCatalogWithArtworkType:(int64_t)a3;
-- (id)chapterOfType:(int64_t)a3 atIndex:(unint64_t)a4;
-- (id)chapterOfType:(int64_t)a3 atTime:(double)a4;
-- (id)chaptersOfType:(int64_t)a3;
+- (id)_artworkCatalogWithArtworkType:(int64_t)type;
+- (id)chapterOfType:(int64_t)type atIndex:(unint64_t)index;
+- (id)chapterOfType:(int64_t)type atTime:(double)time;
+- (id)chaptersOfType:(int64_t)type;
 - (id)multiverseIdentifier;
-- (id)predicateForProperty:(id)a3;
-- (id)valueForProperty:(id)a3;
-- (id)valuesForProperties:(id)a3;
-- (unint64_t)countOfChaptersOfType:(int64_t)a3;
+- (id)predicateForProperty:(id)property;
+- (id)valueForProperty:(id)property;
+- (id)valuesForProperties:(id)properties;
+- (unint64_t)countOfChaptersOfType:(int64_t)type;
 - (unint64_t)playCountSinceSync;
 - (unint64_t)skipCountSinceSync;
 - (unint64_t)year;
 - (void)clearLocationProperties;
-- (void)encodeWithCoder:(id)a3;
-- (void)gaplessHeuristicInfo:(unsigned int *)a3 durationInSamples:(unint64_t *)a4 lastPacketsResync:(unint64_t *)a5 encodingDelay:(unsigned int *)a6 encodingDrain:(unsigned int *)a7;
-- (void)populateLocationPropertiesWithPath:(id)a3 assetProtectionType:(int64_t)a4;
-- (void)populateLocationPropertiesWithPath:(id)a3 assetProtectionType:(int64_t)a4 completionBlock:(id)a5;
-- (void)setHasBeenPlayed:(BOOL)a3;
-- (void)setPlayCount:(unint64_t)a3;
-- (void)setPlayCountSinceSync:(unint64_t)a3;
-- (void)setRating:(unint64_t)a3;
-- (void)setSkipCount:(unint64_t)a3;
-- (void)setSkipCountSinceSync:(unint64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)gaplessHeuristicInfo:(unsigned int *)info durationInSamples:(unint64_t *)samples lastPacketsResync:(unint64_t *)resync encodingDelay:(unsigned int *)delay encodingDrain:(unsigned int *)drain;
+- (void)populateLocationPropertiesWithPath:(id)path assetProtectionType:(int64_t)type;
+- (void)populateLocationPropertiesWithPath:(id)path assetProtectionType:(int64_t)type completionBlock:(id)block;
+- (void)setHasBeenPlayed:(BOOL)played;
+- (void)setPlayCount:(unint64_t)count;
+- (void)setPlayCountSinceSync:(unint64_t)sync;
+- (void)setRating:(unint64_t)rating;
+- (void)setSkipCount:(unint64_t)count;
+- (void)setSkipCountSinceSync:(unint64_t)sync;
 @end
 
 @implementation MPMediaItem
@@ -286,8 +286,8 @@
 
 - (BOOL)MPSD_isDownloadInProgress
 {
-  v3 = [objc_opt_class() MPSD_mediaItemPropertiesForDownloadability];
-  v4 = [(MPMediaItem *)self valuesForProperties:v3];
+  mPSD_mediaItemPropertiesForDownloadability = [objc_opt_class() MPSD_mediaItemPropertiesForDownloadability];
+  v4 = [(MPMediaItem *)self valuesForProperties:mPSD_mediaItemPropertiesForDownloadability];
   v5 = +[MPStoreDownloadManager sharedManager];
   v6 = [v5 downloadForMediaItem:self];
 
@@ -324,10 +324,10 @@ void __83__MPMediaItem_MPStoreDownloadAdditions__MPSD_mediaItemPropertiesForDown
   MPSD_mediaItemPropertiesForDownloadability_sMediaItemPropertiesForDownloadability = v0;
 }
 
-- (id)_artworkCatalogWithArtworkType:(int64_t)a3
+- (id)_artworkCatalogWithArtworkType:(int64_t)type
 {
   v22 = 0;
-  if (a3 == 1)
+  if (type == 1)
   {
     v5 = _MPMediaItemPropertyFetchableArtworkSource;
     v6 = _MPMediaItemPropertyFetchableArtworkToken;
@@ -336,7 +336,7 @@ void __83__MPMediaItem_MPStoreDownloadAdditions__MPSD_mediaItemPropertiesForDown
 
   else
   {
-    if (a3 != 2)
+    if (type != 2)
     {
       v8 = 0;
       v10 = 0;
@@ -360,23 +360,23 @@ void __83__MPMediaItem_MPStoreDownloadAdditions__MPSD_mediaItemPropertiesForDown
 
 LABEL_11:
   v12 = [MPMediaLibraryArtworkRequest alloc];
-  v13 = [(MPMediaEntity *)self mediaLibrary];
-  v14 = [(MPMediaLibraryArtworkRequest *)v12 initWithLibrary:v13 identifier:[(MPMediaEntity *)self persistentID] entityType:0 artworkType:a3];
+  mediaLibrary = [(MPMediaEntity *)self mediaLibrary];
+  v14 = [(MPMediaLibraryArtworkRequest *)v12 initWithLibrary:mediaLibrary identifier:[(MPMediaEntity *)self persistentID] entityType:0 artworkType:type];
 
   [(MPMediaLibraryArtworkRequest *)v14 setAvailableArtworkToken:v8];
   [(MPMediaLibraryArtworkRequest *)v14 setFetchableArtworkToken:v9];
   [(MPMediaLibraryArtworkRequest *)v14 setFetchableArtworkSource:v10];
   v15 = [MPArtworkCatalog alloc];
-  v16 = [(MPMediaEntity *)self mediaLibrary];
-  v17 = [v16 artworkDataSource];
-  v18 = [(MPArtworkCatalog *)v15 initWithToken:v14 dataSource:v17];
+  mediaLibrary2 = [(MPMediaEntity *)self mediaLibrary];
+  artworkDataSource = [mediaLibrary2 artworkDataSource];
+  v18 = [(MPArtworkCatalog *)v15 initWithToken:v14 dataSource:artworkDataSource];
 
-  v19 = [(MPMediaEntity *)self mediaLibrary];
-  v20 = [v19 artworkDataSource];
-  LODWORD(v17) = [v20 areRepresentationsAvailableForCatalog:v18];
+  mediaLibrary3 = [(MPMediaEntity *)self mediaLibrary];
+  artworkDataSource2 = [mediaLibrary3 artworkDataSource];
+  LODWORD(artworkDataSource) = [artworkDataSource2 areRepresentationsAvailableForCatalog:v18];
 
   v11 = 0;
-  if (v17)
+  if (artworkDataSource)
   {
     v11 = v18;
   }
@@ -389,17 +389,17 @@ LABEL_14:
 - (BOOL)isPreorder
 {
   v2 = [(MPMediaItem *)self valueForProperty:@"isPreorder"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)gaplessHeuristicInfo:(unsigned int *)a3 durationInSamples:(unint64_t *)a4 lastPacketsResync:(unint64_t *)a5 encodingDelay:(unsigned int *)a6 encodingDrain:(unsigned int *)a7
+- (void)gaplessHeuristicInfo:(unsigned int *)info durationInSamples:(unint64_t *)samples lastPacketsResync:(unint64_t *)resync encodingDelay:(unsigned int *)delay encodingDrain:(unsigned int *)drain
 {
-  if (!a3 || !a4 || !a5 || !a6 || !a7)
+  if (!info || !samples || !resync || !delay || !drain)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"MPMediaItem.m" lineNumber:1345 description:@"invalid parameter"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaItem.m" lineNumber:1345 description:@"invalid parameter"];
   }
 
   if (gaplessHeuristicInfo_durationInSamples_lastPacketsResync_encodingDelay_encodingDrain____once != -1)
@@ -411,11 +411,11 @@ LABEL_14:
   v15[1] = 3221225472;
   v15[2] = __100__MPMediaItem_gaplessHeuristicInfo_durationInSamples_lastPacketsResync_encodingDelay_encodingDrain___block_invoke_2;
   v15[3] = &__block_descriptor_72_e25_v32__0__NSString_8_16_B24l;
-  v15[4] = a3;
-  v15[5] = a4;
-  v15[6] = a6;
-  v15[7] = a7;
-  v15[8] = a5;
+  v15[4] = info;
+  v15[5] = samples;
+  v15[6] = delay;
+  v15[7] = drain;
+  v15[8] = resync;
   [(MPMediaEntity *)self enumerateValuesForProperties:gaplessHeuristicInfo_durationInSamples_lastPacketsResync_encodingDelay_encodingDrain____properties usingBlock:v15];
 }
 
@@ -472,7 +472,7 @@ void __100__MPMediaItem_gaplessHeuristicInfo_durationInSamples_lastPacketsResync
   gaplessHeuristicInfo_durationInSamples_lastPacketsResync_encodingDelay_encodingDrain____properties = v0;
 }
 
-- (unint64_t)countOfChaptersOfType:(int64_t)a3
+- (unint64_t)countOfChaptersOfType:(int64_t)type
 {
   v16 = *MEMORY[0x1E69E9840];
   v4 = [(MPMediaItem *)self valueForProperty:@"chapters"];
@@ -495,7 +495,7 @@ void __100__MPMediaItem_gaplessHeuristicInfo_durationInSamples_lastPacketsResync
           objc_enumerationMutation(v4);
         }
 
-        if ([*(*(&v11 + 1) + 8 * i) chapterType] == a3)
+        if ([*(*(&v11 + 1) + 8 * i) chapterType] == type)
         {
           ++v7;
         }
@@ -515,10 +515,10 @@ void __100__MPMediaItem_gaplessHeuristicInfo_durationInSamples_lastPacketsResync
   return v7;
 }
 
-- (id)chapterOfType:(int64_t)a3 atTime:(double)a4
+- (id)chapterOfType:(int64_t)type atTime:(double)time
 {
   v20 = *MEMORY[0x1E69E9840];
-  [(MPMediaItem *)self chaptersOfType:a3];
+  [(MPMediaItem *)self chaptersOfType:type];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -538,12 +538,12 @@ void __100__MPMediaItem_gaplessHeuristicInfo_durationInSamples_lastPacketsResync
 
         v9 = *(*(&v15 + 1) + 8 * i);
         [v9 playbackTime];
-        if (v10 <= a4)
+        if (v10 <= time)
         {
           [v9 playbackTime];
           v12 = v11;
           [v9 playbackDuration];
-          if (v12 + v13 > a4)
+          if (v12 + v13 > time)
           {
             v6 = v9;
             goto LABEL_12;
@@ -566,7 +566,7 @@ LABEL_12:
   return v6;
 }
 
-- (id)chapterOfType:(int64_t)a3 atIndex:(unint64_t)a4
+- (id)chapterOfType:(int64_t)type atIndex:(unint64_t)index
 {
   v20 = *MEMORY[0x1E69E9840];
   [(MPMediaItem *)self valueForProperty:@"chapters"];
@@ -590,9 +590,9 @@ LABEL_12:
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        if ([v12 chapterType] == a3)
+        if ([v12 chapterType] == type)
         {
-          if (v9 == a4)
+          if (v9 == index)
           {
             v13 = v12;
             goto LABEL_13;
@@ -618,7 +618,7 @@ LABEL_13:
   return v13;
 }
 
-- (id)chaptersOfType:(int64_t)a3
+- (id)chaptersOfType:(int64_t)type
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = [(MPMediaItem *)self valueForProperty:@"chapters"];
@@ -643,7 +643,7 @@ LABEL_13:
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        if ([v11 chapterType] == a3)
+        if ([v11 chapterType] == type)
         {
           [v5 addObject:v11];
         }
@@ -673,118 +673,118 @@ LABEL_13:
 - (BOOL)isExplicitItem
 {
   v2 = [(MPMediaItem *)self valueForProperty:@"isExplicit"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSUInteger)discCount
 {
   v2 = [(MPMediaItem *)self valueForProperty:@"discCount"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (NSUInteger)discNumber
 {
   v2 = [(MPMediaItem *)self valueForProperty:@"discNumber"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (NSUInteger)albumTrackNumber
 {
   v2 = [(MPMediaItem *)self valueForProperty:@"albumTrackNumber"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (BOOL)rememberBookmarkTime
 {
   v2 = [(MPMediaItem *)self valueForProperty:@"rememberBookmarkTime"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setHasBeenPlayed:(BOOL)a3
+- (void)setHasBeenPlayed:(BOOL)played
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:played];
   [(MPMediaItem *)self setValue:v4 forProperty:@"hasBeenPlayed" withCompletionBlock:0];
 }
 
 - (BOOL)hasBeenPlayed
 {
   v2 = [(MPMediaItem *)self valueForProperty:@"hasBeenPlayed"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setSkipCountSinceSync:(unint64_t)a3
+- (void)setSkipCountSinceSync:(unint64_t)sync
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:sync];
   [(MPMediaItem *)self setValue:v4 forProperty:@"skipCountSinceSync" withCompletionBlock:0];
 }
 
 - (unint64_t)skipCountSinceSync
 {
   v2 = [(MPMediaItem *)self valueForProperty:@"skipCountSinceSync"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
-- (void)setSkipCount:(unint64_t)a3
+- (void)setSkipCount:(unint64_t)count
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:count];
   [(MPMediaItem *)self setValue:v4 forProperty:@"skipCount" withCompletionBlock:0];
 }
 
 - (NSUInteger)skipCount
 {
   v2 = [(MPMediaItem *)self valueForProperty:@"skipCount"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
-- (void)setPlayCountSinceSync:(unint64_t)a3
+- (void)setPlayCountSinceSync:(unint64_t)sync
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:sync];
   [(MPMediaItem *)self setValue:v4 forProperty:@"playCountSinceSync" withCompletionBlock:0];
 }
 
 - (unint64_t)playCountSinceSync
 {
   v2 = [(MPMediaItem *)self valueForProperty:@"playCountSinceSync"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
-- (void)setPlayCount:(unint64_t)a3
+- (void)setPlayCount:(unint64_t)count
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:count];
   [(MPMediaItem *)self setValue:v4 forProperty:@"playCount" withCompletionBlock:0];
 }
 
 - (NSUInteger)playCount
 {
   v2 = [(MPMediaItem *)self valueForProperty:@"playCount"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
-- (id)predicateForProperty:(id)a3
+- (id)predicateForProperty:(id)property
 {
-  v4 = a3;
-  v5 = [(MPMediaItem *)self valueForProperty:v4];
-  v6 = [MPMediaPropertyPredicate predicateWithValue:v5 forProperty:v4];
+  propertyCopy = property;
+  v5 = [(MPMediaItem *)self valueForProperty:propertyCopy];
+  v6 = [MPMediaPropertyPredicate predicateWithValue:v5 forProperty:propertyCopy];
 
   return v6;
 }
@@ -792,31 +792,31 @@ LABEL_13:
 - (unint64_t)year
 {
   v2 = [(MPMediaItem *)self valueForProperty:@"year"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
-- (void)setRating:(unint64_t)a3
+- (void)setRating:(unint64_t)rating
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:rating];
   [(MPMediaItem *)self setValue:v4 forProperty:@"rating" withCompletionBlock:0];
 }
 
 - (NSUInteger)rating
 {
   v2 = [(MPMediaItem *)self valueForProperty:@"rating"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (MPMediaEntityPersistentID)podcastPersistentID
 {
   v2 = [(MPMediaItem *)self valueForProperty:@"podcastPID"];
-  v3 = [v2 unsignedLongLongValue];
+  unsignedLongLongValue = [v2 unsignedLongLongValue];
 
-  return v3;
+  return unsignedLongLongValue;
 }
 
 - (double)effectiveStopTime
@@ -861,41 +861,41 @@ LABEL_13:
 - (MPMediaType)mediaType
 {
   v2 = [(MPMediaItem *)self valueForProperty:@"mediaType"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (BOOL)hasProtectedAsset
 {
   v2 = [(MPMediaItem *)self valueForProperty:@"hasProtectedAsset"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isCloudItem
 {
   v2 = [(MPMediaItem *)self valueForProperty:@"isCloudItem"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isCompilation
 {
   v2 = [(MPMediaItem *)self valueForProperty:@"isCompilation"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isITunesU
 {
   v2 = [(MPMediaItem *)self valueForProperty:@"isITunesU"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isRental
@@ -911,9 +911,9 @@ LABEL_13:
   }
 
   v4 = [(MPMediaItem *)self valueForProperty:@"isRental"];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 void __23__MPMediaItem_isRental__block_invoke()
@@ -938,17 +938,17 @@ void __23__MPMediaItem_isRental__block_invoke()
 - (MPMediaEntityPersistentID)genrePersistentID
 {
   v2 = [(MPMediaItem *)self valueForProperty:@"genrePID"];
-  v3 = [v2 unsignedLongLongValue];
+  unsignedLongLongValue = [v2 unsignedLongLongValue];
 
-  return v3;
+  return unsignedLongLongValue;
 }
 
 - (MPMediaEntityPersistentID)composerPersistentID
 {
   v2 = [(MPMediaItem *)self valueForProperty:@"composerPID"];
-  v3 = [v2 unsignedLongLongValue];
+  unsignedLongLongValue = [v2 unsignedLongLongValue];
 
-  return v3;
+  return unsignedLongLongValue;
 }
 
 - (NSTimeInterval)bookmarkTime
@@ -963,41 +963,41 @@ void __23__MPMediaItem_isRental__block_invoke()
 - (NSUInteger)beatsPerMinute
 {
   v2 = [(MPMediaItem *)self valueForProperty:@"beatsPerMinute"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (MPMediaEntityPersistentID)artistPersistentID
 {
   v2 = [(MPMediaItem *)self valueForProperty:@"artistPID"];
-  v3 = [v2 unsignedLongLongValue];
+  unsignedLongLongValue = [v2 unsignedLongLongValue];
 
-  return v3;
+  return unsignedLongLongValue;
 }
 
 - (NSUInteger)albumTrackCount
 {
   v2 = [(MPMediaItem *)self valueForProperty:@"albumTrackCount"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (MPMediaEntityPersistentID)albumArtistPersistentID
 {
   v2 = [(MPMediaItem *)self valueForProperty:@"albumArtistPID"];
-  v3 = [v2 unsignedLongLongValue];
+  unsignedLongLongValue = [v2 unsignedLongLongValue];
 
-  return v3;
+  return unsignedLongLongValue;
 }
 
 - (MPMediaEntityPersistentID)albumPersistentID
 {
   v2 = [(MPMediaItem *)self valueForProperty:@"albumPID"];
-  v3 = [v2 unsignedLongLongValue];
+  unsignedLongLongValue = [v2 unsignedLongLongValue];
 
-  return v3;
+  return unsignedLongLongValue;
 }
 
 - (NSString)effectiveAlbumArtist
@@ -1021,35 +1021,35 @@ void __23__MPMediaItem_isRental__block_invoke()
 
 - (id)multiverseIdentifier
 {
-  v3 = [(MPMediaEntity *)self mediaLibrary];
-  v4 = [v3 multiverseIdentifierForTrackWithPersistentID:{-[MPMediaEntity persistentID](self, "persistentID")}];
+  mediaLibrary = [(MPMediaEntity *)self mediaLibrary];
+  v4 = [mediaLibrary multiverseIdentifierForTrackWithPersistentID:{-[MPMediaEntity persistentID](self, "persistentID")}];
 
   return v4;
 }
 
 - (void)clearLocationProperties
 {
-  v3 = [(MPMediaEntity *)self mediaLibrary];
-  [v3 clearLocationPropertiesOfItem:self];
+  mediaLibrary = [(MPMediaEntity *)self mediaLibrary];
+  [mediaLibrary clearLocationPropertiesOfItem:self];
 
   [(MPMediaEntity *)self invalidateCachedProperties];
 }
 
-- (void)populateLocationPropertiesWithPath:(id)a3 assetProtectionType:(int64_t)a4 completionBlock:(id)a5
+- (void)populateLocationPropertiesWithPath:(id)path assetProtectionType:(int64_t)type completionBlock:(id)block
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(MPMediaEntity *)self mediaLibrary];
-  [v10 populateLocationPropertiesOfItem:self withPath:v9 assetProtectionType:a4 completionBlock:v8];
+  blockCopy = block;
+  pathCopy = path;
+  mediaLibrary = [(MPMediaEntity *)self mediaLibrary];
+  [mediaLibrary populateLocationPropertiesOfItem:self withPath:pathCopy assetProtectionType:type completionBlock:blockCopy];
 
   [(MPMediaEntity *)self invalidateCachedProperties];
 }
 
-- (void)populateLocationPropertiesWithPath:(id)a3 assetProtectionType:(int64_t)a4
+- (void)populateLocationPropertiesWithPath:(id)path assetProtectionType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [(MPMediaEntity *)self mediaLibrary];
-  [v7 populateLocationPropertiesOfItem:self withPath:v6 assetProtectionType:a4];
+  pathCopy = path;
+  mediaLibrary = [(MPMediaEntity *)self mediaLibrary];
+  [mediaLibrary populateLocationPropertiesOfItem:self withPath:pathCopy assetProtectionType:type];
 
   [(MPMediaEntity *)self invalidateCachedProperties];
 }
@@ -1059,149 +1059,149 @@ void __23__MPMediaItem_isRental__block_invoke()
   v4 = [objc_opt_class() instanceMethodForSelector:a2];
   if (v4 == [objc_opt_class() instanceMethodForSelector:a2])
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     v9 = NSStringFromSelector(a2);
-    [v6 handleFailureInMethod:a2 object:self file:@"MPMediaItem.m" lineNumber:484 description:{@"Subclass %@ must implement -%@ defined in %@.", v8, v9, @"[MPMediaItem class]"}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaItem.m" lineNumber:484 description:{@"Subclass %@ must implement -%@ defined in %@.", v8, v9, @"[MPMediaItem class]"}];
   }
 
   return 1;
 }
 
-- (id)valuesForProperties:(id)a3
+- (id)valuesForProperties:(id)properties
 {
   v5 = [objc_opt_class() instanceMethodForSelector:a2];
   if (v5 == [objc_opt_class() instanceMethodForSelector:a2])
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
     v10 = NSStringFromSelector(a2);
-    [v7 handleFailureInMethod:a2 object:self file:@"MPMediaItem.m" lineNumber:473 description:{@"Subclass %@ must implement -%@ defined in %@.", v9, v10, @"[MPMediaItem class]"}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaItem.m" lineNumber:473 description:{@"Subclass %@ must implement -%@ defined in %@.", v9, v10, @"[MPMediaItem class]"}];
   }
 
   return 0;
 }
 
-- (id)valueForProperty:(id)a3
+- (id)valueForProperty:(id)property
 {
-  v5 = a3;
-  v6 = [objc_opt_class() _isValidItemProperty:v5];
+  propertyCopy = property;
+  v6 = [objc_opt_class() _isValidItemProperty:propertyCopy];
 
   if (v6)
   {
     v7 = [objc_opt_class() instanceMethodForSelector:a2];
     if (v7 == [objc_opt_class() instanceMethodForSelector:a2])
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
       v12 = NSStringFromSelector(a2);
-      [v9 handleFailureInMethod:a2 object:self file:@"MPMediaItem.m" lineNumber:468 description:{@"Subclass %@ must implement -%@ defined in %@.", v11, v12, @"[MPMediaItem class]"}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaItem.m" lineNumber:468 description:{@"Subclass %@ must implement -%@ defined in %@.", v11, v12, @"[MPMediaItem class]"}];
     }
   }
 
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5 = [objc_opt_class() instanceMethodForSelector:a2];
   if (v5 == [objc_opt_class() instanceMethodForSelector:a2])
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     v8 = NSStringFromSelector(a2);
-    [v9 handleFailureInMethod:a2 object:self file:@"MPMediaItem.m" lineNumber:444 description:{@"Subclass %@ must implement -%@ defined in %@.", v7, v8, @"[MPMediaItem class]"}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaItem.m" lineNumber:444 description:{@"Subclass %@ must implement -%@ defined in %@.", v7, v8, @"[MPMediaItem class]"}];
   }
 }
 
-- (MPMediaItem)initWithCoder:(id)a3
+- (MPMediaItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = +[MPMediaLibrary defaultMediaLibrary];
-  v6 = [v5 decodeItemWithCoder:v4];
+  v6 = [v5 decodeItemWithCoder:coderCopy];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [(MPMediaEntity *)self persistentID])
   {
-    v5 = [(MPMediaEntity *)self persistentID];
-    v6 = v5 == [v4 persistentID];
+    persistentID = [(MPMediaEntity *)self persistentID];
+    v6 = persistentID == [equalCopy persistentID];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = MPMediaItem;
-    v6 = [(MPMediaEntity *)&v8 isEqual:v4];
+    v6 = [(MPMediaEntity *)&v8 isEqual:equalCopy];
   }
 
   return v6;
 }
 
-- (MPMediaItem)initWithMultiverseIdentifier:(id)a3 library:(id)a4
+- (MPMediaItem)initWithMultiverseIdentifier:(id)identifier library:(id)library
 {
   v57[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 hasSagaId] && objc_msgSend(v5, "sagaId"))
+  identifierCopy = identifier;
+  libraryCopy = library;
+  if ([identifierCopy hasSagaId] && objc_msgSend(identifierCopy, "sagaId"))
   {
-    v7 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v5, "sagaId")}];
+    v7 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(identifierCopy, "sagaId")}];
     v8 = [MPMediaPropertyPredicate predicateWithValue:v7 forProperty:@"storeSagaID"];
 
     v9 = [MPMediaQuery alloc];
     v10 = [MEMORY[0x1E695DFD8] setWithObject:v8];
-    v11 = [(MPMediaQuery *)v9 initWithFilterPredicates:v10 library:v6];
+    v11 = [(MPMediaQuery *)v9 initWithFilterPredicates:v10 library:libraryCopy];
 
-    v12 = [(MPMediaQuery *)v11 items];
-    if ([v12 count])
+    items = [(MPMediaQuery *)v11 items];
+    if ([items count])
     {
 LABEL_8:
-      v18 = [v12 firstObject];
+      firstObject = [items firstObject];
 
-      v19 = v18;
-      v20 = v19;
+      selfCopy = firstObject;
+      v20 = selfCopy;
       goto LABEL_30;
     }
   }
 
-  if ([v5 hasCloudUniversalLibraryId])
+  if ([identifierCopy hasCloudUniversalLibraryId])
   {
-    v13 = [v5 cloudUniversalLibraryId];
-    v14 = [v13 length];
+    cloudUniversalLibraryId = [identifierCopy cloudUniversalLibraryId];
+    v14 = [cloudUniversalLibraryId length];
 
     if (v14)
     {
-      v15 = [v5 cloudUniversalLibraryId];
-      v8 = [MPMediaPropertyPredicate predicateWithValue:v15 forProperty:@"cloudUniversalLibraryID"];
+      cloudUniversalLibraryId2 = [identifierCopy cloudUniversalLibraryId];
+      v8 = [MPMediaPropertyPredicate predicateWithValue:cloudUniversalLibraryId2 forProperty:@"cloudUniversalLibraryID"];
 
       v16 = [MPMediaQuery alloc];
       v17 = [MEMORY[0x1E695DFD8] setWithObject:v8];
-      v11 = [(MPMediaQuery *)v16 initWithFilterPredicates:v17 library:v6];
+      v11 = [(MPMediaQuery *)v16 initWithFilterPredicates:v17 library:libraryCopy];
 
-      v12 = [(MPMediaQuery *)v11 items];
-      if ([v12 count])
+      items = [(MPMediaQuery *)v11 items];
+      if ([items count])
       {
         goto LABEL_8;
       }
     }
   }
 
-  if ([v5 hasStoreId] && objc_msgSend(v5, "storeId"))
+  if ([identifierCopy hasStoreId] && objc_msgSend(identifierCopy, "storeId"))
   {
-    v21 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v5, "storeId")}];
+    v21 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(identifierCopy, "storeId")}];
     v22 = [MPMediaPropertyPredicate predicateWithValue:v21 forProperty:@"storeItemAdamID"];
     v57[0] = v22;
-    v23 = v5;
-    v24 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v5, "storeId")}];
+    v23 = identifierCopy;
+    v24 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(identifierCopy, "storeId")}];
     v25 = [MPMediaPropertyPredicate predicateWithValue:v24 forProperty:@"subscriptionStoreItemAdamID"];
     v57[1] = v25;
     v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v57 count:2];
@@ -1209,34 +1209,34 @@ LABEL_8:
 
     v28 = [MPMediaQuery alloc];
     v29 = [MEMORY[0x1E695DFD8] setWithObject:v27];
-    v30 = [(MPMediaQuery *)v28 initWithFilterPredicates:v29 library:v6];
+    v30 = [(MPMediaQuery *)v28 initWithFilterPredicates:v29 library:libraryCopy];
 
-    v31 = [(MPMediaQuery *)v30 items];
-    if ([v31 count])
+    items2 = [(MPMediaQuery *)v30 items];
+    if ([items2 count])
     {
-      v32 = [v31 firstObject];
+      firstObject2 = [items2 firstObject];
 
-      v19 = v32;
-      v20 = v19;
-      v5 = v23;
+      selfCopy = firstObject2;
+      v20 = selfCopy;
+      identifierCopy = v23;
       goto LABEL_30;
     }
 
-    v5 = v23;
+    identifierCopy = v23;
   }
 
-  v50 = v6;
-  v33 = [v50 uniqueIdentifier];
+  v50 = libraryCopy;
+  uniqueIdentifier = [v50 uniqueIdentifier];
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v34 = [v5 libraryIdentifiers];
-  v20 = [v34 countByEnumeratingWithState:&v52 objects:v56 count:16];
+  libraryIdentifiers = [identifierCopy libraryIdentifiers];
+  v20 = [libraryIdentifiers countByEnumeratingWithState:&v52 objects:v56 count:16];
   if (v20)
   {
-    v47 = v6;
-    v48 = v5;
+    v47 = libraryCopy;
+    v48 = identifierCopy;
     v35 = *v53;
     while (2)
     {
@@ -1244,37 +1244,37 @@ LABEL_8:
       {
         if (*v53 != v35)
         {
-          objc_enumerationMutation(v34);
+          objc_enumerationMutation(libraryIdentifiers);
         }
 
         v37 = *(*(&v52 + 1) + 8 * i);
-        v51 = [v37 libraryId];
-        v38 = [v37 libraryName];
-        if ([v38 length] && objc_msgSend(v38, "isEqualToString:", v33))
+        libraryId = [v37 libraryId];
+        libraryName = [v37 libraryName];
+        if ([libraryName length] && objc_msgSend(libraryName, "isEqualToString:", uniqueIdentifier))
         {
-          v39 = [MPMediaPersistentIDsPredicate predicateWithPersistentIDs:&v51 count:8 shouldContain:1];
+          v39 = [MPMediaPersistentIDsPredicate predicateWithPersistentIDs:&libraryId count:8 shouldContain:1];
           v40 = [MPMediaQuery alloc];
           v41 = [MEMORY[0x1E695DFD8] setWithObject:v39];
           v42 = [(MPMediaQuery *)v40 initWithFilterPredicates:v41 library:v50];
 
           [(MPMediaQuery *)v42 setShouldIncludeNonLibraryEntities:1];
-          v43 = [(MPMediaQuery *)v42 items];
-          if ([v43 count])
+          items3 = [(MPMediaQuery *)v42 items];
+          if ([items3 count])
           {
-            v44 = [v43 firstObject];
+            firstObject3 = [items3 firstObject];
 
-            v45 = v44;
-            v19 = v45;
+            v45 = firstObject3;
+            selfCopy = v45;
 
             v20 = v45;
-            v6 = v47;
-            v5 = v48;
+            libraryCopy = v47;
+            identifierCopy = v48;
             goto LABEL_29;
           }
         }
       }
 
-      v20 = [v34 countByEnumeratingWithState:&v52 objects:v56 count:16];
+      v20 = [libraryIdentifiers countByEnumeratingWithState:&v52 objects:v56 count:16];
       if (v20)
       {
         continue;
@@ -1283,36 +1283,36 @@ LABEL_8:
       break;
     }
 
-    v6 = v47;
-    v5 = v48;
+    libraryCopy = v47;
+    identifierCopy = v48;
   }
 
-  v19 = self;
+  selfCopy = self;
 LABEL_29:
 
 LABEL_30:
   return v20;
 }
 
-- (MPMediaItem)initWithPersistentID:(unint64_t)a3
+- (MPMediaItem)initWithPersistentID:(unint64_t)d
 {
   v5 = +[MPMediaLibrary defaultMediaLibrary];
-  v6 = [v5 itemWithPersistentID:a3];
+  v6 = [v5 itemWithPersistentID:d];
 
   return v6;
 }
 
-+ (BOOL)_isValidItemProperty:(id)a3
++ (BOOL)_isValidItemProperty:(id)property
 {
-  v4 = a3;
+  propertyCopy = property;
   v5 = __filterableDictionary;
   if (!__filterableDictionary)
   {
-    [a1 _createFilterableDictionary];
+    [self _createFilterableDictionary];
     v5 = __filterableDictionary;
   }
 
-  v6 = CFDictionaryContainsKey(v5, [v4 hash]) != 0;
+  v6 = CFDictionaryContainsKey(v5, [propertyCopy hash]) != 0;
 
   return v6;
 }
@@ -1347,9 +1347,9 @@ void __32__MPMediaItem_dynamicProperties__block_invoke()
   dynamicProperties_sProperties = v0;
 }
 
-+ (id)fallbackTitlePropertyForGroupingType:(int64_t)a3
++ (id)fallbackTitlePropertyForGroupingType:(int64_t)type
 {
-  if (a3 == 8)
+  if (type == 8)
   {
     return @"artist";
   }
@@ -1373,33 +1373,33 @@ void __32__MPMediaItem_dynamicProperties__block_invoke()
   }
 }
 
-+ (id)ULIDPropertyForGroupingType:(int64_t)a3
++ (id)ULIDPropertyForGroupingType:(int64_t)type
 {
   v3 = @"cloudUniversalLibraryID";
-  if (a3 <= 9)
+  if (type <= 9)
   {
-    if (a3 > 5)
+    if (type > 5)
     {
-      if (a3 == 6)
+      if (type == 6)
       {
         v7 = @"cloudPlaylistUniversalLibraryID";
         v10 = @"cloudPlaylistUniversalLibraryID";
         goto LABEL_25;
       }
 
-      v9 = a3 == 7;
+      v9 = type == 7;
       v8 = @"podcastPID";
     }
 
     else
     {
       v8 = @"storeCloudAlbumID";
-      if (a3 == 3)
+      if (type == 3)
       {
         v3 = @"albumArtistCloudUniversalLibraryID";
       }
 
-      v9 = a3 == 1;
+      v9 = type == 1;
     }
 
     if (v9)
@@ -1418,32 +1418,32 @@ void __32__MPMediaItem_dynamicProperties__block_invoke()
     v4 = @"storeCloudAlbumID";
     v5 = @"storeCloudAlbumID";
     v6 = @"storeCloudAlbumID";
-    if (a3 != 17)
+    if (type != 17)
     {
       v6 = @"cloudUniversalLibraryID";
     }
 
-    if (a3 != 13)
+    if (type != 13)
     {
       v5 = v6;
     }
 
-    if (a3 != 12)
+    if (type != 12)
     {
       v4 = v5;
     }
 
-    if (a3 == 11)
+    if (type == 11)
     {
       v3 = @"storeCloudAlbumID";
     }
 
-    if (a3 == 10)
+    if (type == 10)
     {
       v3 = @"storeCloudAlbumID";
     }
 
-    if (a3 <= 11)
+    if (type <= 11)
     {
       v7 = v3;
     }
@@ -1509,50 +1509,50 @@ LABEL_25:
   return v3;
 }
 
-+ (BOOL)canFilterByProperty:(id)a3
++ (BOOL)canFilterByProperty:(id)property
 {
-  v4 = a3;
+  propertyCopy = property;
   v5 = __filterableDictionary;
   if (!__filterableDictionary)
   {
-    [a1 _createFilterableDictionary];
+    [self _createFilterableDictionary];
     v5 = __filterableDictionary;
   }
 
-  if (CFDictionaryGetValue(v5, [v4 hash]))
+  if (CFDictionaryGetValue(v5, [propertyCopy hash]))
   {
     v6 = 1;
   }
 
   else
   {
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = &OBJC_METACLASS___MPMediaItem;
-    v6 = objc_msgSendSuper2(&v8, sel_canFilterByProperty_, v4);
+    v6 = objc_msgSendSuper2(&v8, sel_canFilterByProperty_, propertyCopy);
   }
 
   return v6;
 }
 
-+ (id)itemFromSong:(id)a3
++ (id)itemFromSong:(id)song
 {
-  v3 = [MPModelGenericObject genericObjectWithModelObject:a3];
+  v3 = [MPModelGenericObject genericObjectWithModelObject:song];
   v4 = [MPMediaItem itemFromModelObject:v3];
 
   return v4;
 }
 
-+ (id)itemFromModelObject:(id)a3
++ (id)itemFromModelObject:(id)object
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  objectCopy = object;
+  v4 = objectCopy;
+  if (objectCopy)
   {
-    v5 = [v3 identifiers];
-    v6 = [v5 library];
-    v7 = [v6 persistentID];
+    identifiers = [objectCopy identifiers];
+    library = [identifiers library];
+    persistentID = [library persistentID];
 
-    if (!v7 || (([v4 identifiers], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "library"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "databaseID"), v10 = objc_claimAutoreleasedReturnValue(), +[MPMediaLibrary mediaLibraryWithUniqueIdentifier:](MPMediaLibrary, "mediaLibraryWithUniqueIdentifier:", v10), v11 = objc_claimAutoreleasedReturnValue(), (v12 = v11) == 0) ? (+[MPMediaLibrary deviceMediaLibrary](MPMediaLibrary, "deviceMediaLibrary"), v13 = objc_claimAutoreleasedReturnValue()) : (v13 = v11), v15 = v13, v12, v10, v9, v8, objc_msgSend(v15, "itemWithPersistentID:", v7), v14 = objc_claimAutoreleasedReturnValue(), v15, !v14))
+    if (!persistentID || (([v4 identifiers], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "library"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "databaseID"), v10 = objc_claimAutoreleasedReturnValue(), +[MPMediaLibrary mediaLibraryWithUniqueIdentifier:](MPMediaLibrary, "mediaLibraryWithUniqueIdentifier:", v10), v11 = objc_claimAutoreleasedReturnValue(), (v12 = v11) == 0) ? (+[MPMediaLibrary deviceMediaLibrary](MPMediaLibrary, "deviceMediaLibrary"), v13 = objc_claimAutoreleasedReturnValue()) : (v13 = v11), v15 = v13, v12, v10, v9, v8, objc_msgSend(v15, "itemWithPersistentID:", persistentID), v14 = objc_claimAutoreleasedReturnValue(), v15, !v14))
     {
       v14 = [[MPModelObjectMediaItem alloc] initWithModelObject:v4];
     }

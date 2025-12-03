@@ -1,13 +1,13 @@
 @interface __NSImmutableTextStorage
-+ (__NSImmutableTextStorage)allocWithZone:(_NSZone *)a3;
-- (__NSImmutableTextStorage)initWithAttributedString:(id)a3;
++ (__NSImmutableTextStorage)allocWithZone:(_NSZone *)zone;
+- (__NSImmutableTextStorage)initWithAttributedString:(id)string;
 - (void)dealloc;
 - (void)release;
 @end
 
 @implementation __NSImmutableTextStorage
 
-+ (__NSImmutableTextStorage)allocWithZone:(_NSZone *)a3
++ (__NSImmutableTextStorage)allocWithZone:(_NSZone *)zone
 {
   os_unfair_lock_lock_with_options();
   v5 = __NSImmutableTextStorageCacheNextIndex;
@@ -15,9 +15,9 @@
   {
     os_unfair_lock_unlock(&__NSImmutableTextStorageLock);
 LABEL_5:
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = &OBJC_METACLASS_____NSImmutableTextStorage;
-    return objc_msgSendSuper2(&v8, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v8, sel_allocWithZone_, zone);
   }
 
   --__NSImmutableTextStorageCacheNextIndex;
@@ -53,38 +53,38 @@ LABEL_5:
   }
 }
 
-- (__NSImmutableTextStorage)initWithAttributedString:(id)a3
+- (__NSImmutableTextStorage)initWithAttributedString:(id)string
 {
-  v4 = self;
+  selfCopy = self;
   if (!self->_layoutManager)
   {
     v10.receiver = self;
     v10.super_class = __NSImmutableTextStorage;
     v6 = [(NSTextStorage *)&v10 init];
-    v4 = v6;
+    selfCopy = v6;
     if (!v6)
     {
-      return v4;
+      return selfCopy;
     }
 
     if (!v6->_layoutManager)
     {
       v7 = objc_alloc_init(NSLayoutManager);
-      v4->_layoutManager = v7;
+      selfCopy->_layoutManager = v7;
       [(NSLayoutManager *)v7 setAllowsNonContiguousLayout:0];
-      [(NSLayoutManager *)v4->_layoutManager setBackgroundLayoutEnabled:0];
-      [(NSLayoutManager *)v4->_layoutManager setLimitsLayoutForSuspiciousContents:1];
-      [(NSTextStorage *)v4 addLayoutManager:v4->_layoutManager];
+      [(NSLayoutManager *)selfCopy->_layoutManager setBackgroundLayoutEnabled:0];
+      [(NSLayoutManager *)selfCopy->_layoutManager setLimitsLayoutForSuspiciousContents:1];
+      [(NSTextStorage *)selfCopy addLayoutManager:selfCopy->_layoutManager];
       v8 = [NSTextContainer alloc];
       v9 = [(NSTextContainer *)v8 initWithSize:*MEMORY[0x1E696AA88], *(MEMORY[0x1E696AA88] + 8)];
-      v4->_textContainer = v9;
+      selfCopy->_textContainer = v9;
       [(NSTextContainer *)v9 setLineFragmentPadding:0.0];
-      [(NSLayoutManager *)v4->_layoutManager addTextContainer:v4->_textContainer];
+      [(NSLayoutManager *)selfCopy->_layoutManager addTextContainer:selfCopy->_textContainer];
     }
   }
 
-  v4->_contents = a3;
-  return v4;
+  selfCopy->_contents = string;
+  return selfCopy;
 }
 
 - (void)dealloc

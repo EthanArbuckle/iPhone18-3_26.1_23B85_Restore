@@ -1,42 +1,42 @@
 @interface GlassBarCompressionAnimation
-- (void)attachedToScrollView:(id)a3;
+- (void)attachedToScrollView:(id)view;
 - (void)detached;
-- (void)detachedFromScrollView:(id)a3;
-- (void)reloadWithTraitCollection:(id)a3;
-- (void)updateWithPercentage:(double)a3;
+- (void)detachedFromScrollView:(id)view;
+- (void)reloadWithTraitCollection:(id)collection;
+- (void)updateWithPercentage:(double)percentage;
 @end
 
 @implementation GlassBarCompressionAnimation
 
-- (void)attachedToScrollView:(id)a3
+- (void)attachedToScrollView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  GlassBarCompressionAnimation.attached(to:)(v4);
+  viewCopy = view;
+  selfCopy = self;
+  GlassBarCompressionAnimation.attached(to:)(viewCopy);
 }
 
-- (void)detachedFromScrollView:(id)a3
+- (void)detachedFromScrollView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  GlassBarCompressionAnimation.detached(from:)(v5);
+  viewCopy = view;
+  selfCopy = self;
+  GlassBarCompressionAnimation.detached(from:)(selfCopy);
 }
 
 - (void)detached
 {
-  v2 = self;
+  selfCopy = self;
   GlassBarCompressionAnimation.detached()();
 }
 
-- (void)updateWithPercentage:(double)a3
+- (void)updateWithPercentage:(double)percentage
 {
-  v4 = self;
-  GlassBarCompressionAnimation.update(withPercentage:)(a3);
+  selfCopy = self;
+  GlassBarCompressionAnimation.update(withPercentage:)(percentage);
 }
 
-- (void)reloadWithTraitCollection:(id)a3
+- (void)reloadWithTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v7.value.super.isa = self;
   isa = v7.value.super.isa;
   GlassBarCompressionAnimation.reload(with:)(v7);

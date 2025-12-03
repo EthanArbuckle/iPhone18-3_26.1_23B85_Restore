@@ -14,8 +14,8 @@
 
 + (id)telephonyUIBodyShortFont
 {
-  v2 = [MEMORY[0x1E69DB880] telephonyUIBodyShortFontDescriptor];
-  v3 = [a1 telephonyUIFontWithDescriptor:v2];
+  telephonyUIBodyShortFontDescriptor = [MEMORY[0x1E69DB880] telephonyUIBodyShortFontDescriptor];
+  v3 = [self telephonyUIFontWithDescriptor:telephonyUIBodyShortFontDescriptor];
 
   return v3;
 }
@@ -23,8 +23,8 @@
 + (id)telephonyUIBodyShortEmphasizedFont
 {
   v0 = MEMORY[0x1E69DB878];
-  v1 = [MEMORY[0x1E69DB880] telephonyUIBodyShortEmphasizedFontDescriptor];
-  v2 = [v0 telephonyUIFontWithDescriptor:v1];
+  telephonyUIBodyShortEmphasizedFontDescriptor = [MEMORY[0x1E69DB880] telephonyUIBodyShortEmphasizedFontDescriptor];
+  v2 = [v0 telephonyUIFontWithDescriptor:telephonyUIBodyShortEmphasizedFontDescriptor];
 
   return v2;
 }
@@ -32,8 +32,8 @@
 + (id)telephonyUIBodyShortItalicFont
 {
   v0 = MEMORY[0x1E69DB878];
-  v1 = [MEMORY[0x1E69DB880] telephonyUIBodyShortItalicFontDescriptor];
-  v2 = [v0 telephonyUIFontWithDescriptor:v1];
+  telephonyUIBodyShortItalicFontDescriptor = [MEMORY[0x1E69DB880] telephonyUIBodyShortItalicFontDescriptor];
+  v2 = [v0 telephonyUIFontWithDescriptor:telephonyUIBodyShortItalicFontDescriptor];
 
   return v2;
 }
@@ -41,8 +41,8 @@
 + (id)telephonyUIFootnoteShortFont
 {
   v0 = MEMORY[0x1E69DB878];
-  v1 = [MEMORY[0x1E69DB880] telephonyUIFootnoteShortFontDescriptor];
-  v2 = [v0 telephonyUIFontWithDescriptor:v1];
+  telephonyUIFootnoteShortFontDescriptor = [MEMORY[0x1E69DB880] telephonyUIFootnoteShortFontDescriptor];
+  v2 = [v0 telephonyUIFontWithDescriptor:telephonyUIFootnoteShortFontDescriptor];
 
   return v2;
 }
@@ -50,8 +50,8 @@
 + (id)telephonyUISubheadlineShortFont
 {
   v0 = MEMORY[0x1E69DB878];
-  v1 = [MEMORY[0x1E69DB880] telephonyUISubheadlineShortFontDescriptor];
-  v2 = [v0 telephonyUIFontWithDescriptor:v1];
+  telephonyUISubheadlineShortFontDescriptor = [MEMORY[0x1E69DB880] telephonyUISubheadlineShortFontDescriptor];
+  v2 = [v0 telephonyUIFontWithDescriptor:telephonyUISubheadlineShortFontDescriptor];
 
   return v2;
 }
@@ -59,8 +59,8 @@
 + (id)telephonyUISubheadlineShortEmphasizedFont
 {
   v0 = MEMORY[0x1E69DB878];
-  v1 = [MEMORY[0x1E69DB880] telephonyUISubheadlineShortEmphasizedFontDescriptor];
-  v2 = [v0 telephonyUIFontWithDescriptor:v1];
+  telephonyUISubheadlineShortEmphasizedFontDescriptor = [MEMORY[0x1E69DB880] telephonyUISubheadlineShortEmphasizedFontDescriptor];
+  v2 = [v0 telephonyUIFontWithDescriptor:telephonyUISubheadlineShortEmphasizedFontDescriptor];
 
   return v2;
 }
@@ -69,12 +69,12 @@
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v0 = MEMORY[0x1E69DB878];
-  v1 = [MEMORY[0x1E69DB880] telephonyUISubheadlineShortSemiboldFontDescriptor];
+  telephonyUISubheadlineShortSemiboldFontDescriptor = [MEMORY[0x1E69DB880] telephonyUISubheadlineShortSemiboldFontDescriptor];
   v8 = *MEMORY[0x1E69DB990];
   v2 = [MEMORY[0x1E696AD98] numberWithDouble:*MEMORY[0x1E69DB980]];
   v9[0] = v2;
   v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-  v4 = [v1 fontDescriptorByAddingAttributes:v3];
+  v4 = [telephonyUISubheadlineShortSemiboldFontDescriptor fontDescriptorByAddingAttributes:v3];
   v5 = [v0 telephonyUIFontWithDescriptor:v4];
 
   v6 = *MEMORY[0x1E69E9840];
@@ -97,8 +97,8 @@
   v15[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
 
-  v6 = [a1 fontDescriptor];
-  v7 = [v6 fontDescriptorByAddingAttributes:v5];
+  fontDescriptor = [self fontDescriptor];
+  v7 = [fontDescriptor fontDescriptorByAddingAttributes:v5];
 
   v8 = [MEMORY[0x1E69DB878] fontWithDescriptor:v7 size:0.0];
 
@@ -109,10 +109,10 @@
 
 + (id)telephonyUIFontWithDescriptor:()TelephonyUI
 {
-  v1 = [a1 fontWithDescriptor:0.0 size:?];
-  v2 = [v1 withCaseSensitiveAttribute];
+  v1 = [self fontWithDescriptor:0.0 size:?];
+  withCaseSensitiveAttribute = [v1 withCaseSensitiveAttribute];
 
-  return v2;
+  return withCaseSensitiveAttribute;
 }
 
 @end

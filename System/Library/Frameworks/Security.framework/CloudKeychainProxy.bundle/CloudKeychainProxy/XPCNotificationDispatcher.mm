@@ -1,54 +1,54 @@
 @interface XPCNotificationDispatcher
 + (id)dispatcher;
 - (XPCNotificationDispatcher)init;
-- (void)addListener:(id)a3;
-- (void)notification:(const char *)a3;
-- (void)removeListener:(id)a3;
+- (void)addListener:(id)listener;
+- (void)notification:(const char *)notification;
+- (void)removeListener:(id)listener;
 @end
 
 @implementation XPCNotificationDispatcher
 
-- (void)removeListener:(id)a3
+- (void)removeListener:(id)listener
 {
-  v4 = a3;
-  v5 = [(XPCNotificationDispatcher *)self queue];
+  listenerCopy = listener;
+  queue = [(XPCNotificationDispatcher *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000176C;
   v7[3] = &unk_100018D68;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = listenerCopy;
+  v6 = listenerCopy;
+  dispatch_sync(queue, v7);
 }
 
-- (void)addListener:(id)a3
+- (void)addListener:(id)listener
 {
-  v4 = a3;
-  v5 = [(XPCNotificationDispatcher *)self queue];
+  listenerCopy = listener;
+  queue = [(XPCNotificationDispatcher *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100001874;
   v7[3] = &unk_100018D68;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = listenerCopy;
+  v6 = listenerCopy;
+  dispatch_sync(queue, v7);
 }
 
-- (void)notification:(const char *)a3
+- (void)notification:(const char *)notification
 {
-  v5 = [(XPCNotificationDispatcher *)self listeners];
-  [v5 compact];
+  listeners = [(XPCNotificationDispatcher *)self listeners];
+  [listeners compact];
 
-  v6 = [(XPCNotificationDispatcher *)self listeners];
-  v7 = [v6 allObjects];
+  listeners2 = [(XPCNotificationDispatcher *)self listeners];
+  allObjects = [listeners2 allObjects];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10000199C;
   v8[3] = &unk_100018850;
-  v8[4] = a3;
-  [v7 enumerateObjectsUsingBlock:v8];
+  v8[4] = notification;
+  [allObjects enumerateObjectsUsingBlock:v8];
 }
 
 - (XPCNotificationDispatcher)init
@@ -65,13 +65,13 @@
     [(XPCNotificationDispatcher *)v2 setListeners:v4];
 
     objc_initWeak(&location, v2);
-    v5 = [(XPCNotificationDispatcher *)v2 queue];
+    queue = [(XPCNotificationDispatcher *)v2 queue];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100000F90;
     v7[3] = &unk_100018830;
     objc_copyWeak(&v8, &location);
-    xpc_set_event_stream_handler("com.apple.notifyd.matching", v5, v7);
+    xpc_set_event_stream_handler("com.apple.notifyd.matching", queue, v7);
 
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);

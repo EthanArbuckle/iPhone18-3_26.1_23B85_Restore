@@ -1,12 +1,12 @@
 @interface CNPhoneNumberHelper
-+ (BOOL)isStringPhoneNumber:(id)a3;
++ (BOOL)isStringPhoneNumber:(id)number;
 + (NSString)currentCountryCode;
 + (NSString)homeCountryCode;
-+ (id)countryCodeForNumber:(id)a3;
++ (id)countryCodeForNumber:(id)number;
 + (id)defaultCountryCode;
-+ (id)internationalizedFormattedNumber:(id)a3 countryCode:(id)a4;
-+ (id)internationalizedUnformattedNumber:(id)a3 countryCode:(id)a4;
-+ (id)lastFourDigitsForNumber:(id)a3;
++ (id)internationalizedFormattedNumber:(id)number countryCode:(id)code;
++ (id)internationalizedUnformattedNumber:(id)number countryCode:(id)code;
++ (id)lastFourDigitsForNumber:(id)number;
 + (id)makePhoneNumberRegex;
 + (void)makePhoneNumberRegex;
 @end
@@ -15,34 +15,34 @@
 
 + (id)defaultCountryCode
 {
-  v2 = [a1 homeCountryCode];
-  if (!v2)
+  homeCountryCode = [self homeCountryCode];
+  if (!homeCountryCode)
   {
     v3 = +[(CNEnvironmentBase *)CNEnvironment];
-    v4 = [v3 currentLocale];
-    v5 = [v4 objectForKey:*MEMORY[0x1E695D978]];
-    v6 = [v5 lowercaseString];
+    currentLocale = [v3 currentLocale];
+    v5 = [currentLocale objectForKey:*MEMORY[0x1E695D978]];
+    lowercaseString = [v5 lowercaseString];
 
-    if (v6)
+    if (lowercaseString)
     {
-      v2 = v6;
+      homeCountryCode = lowercaseString;
     }
 
     else
     {
-      v2 = @"us";
+      homeCountryCode = @"us";
     }
   }
 
-  return v2;
+  return homeCountryCode;
 }
 
 + (NSString)homeCountryCode
 {
   v2 = +[(CNEnvironmentBase *)CNEnvironment];
-  v3 = [v2 homeCountryCode];
+  homeCountryCode = [v2 homeCountryCode];
 
-  return v3;
+  return homeCountryCode;
 }
 
 + (id)makePhoneNumberRegex
@@ -62,12 +62,12 @@
   return v2;
 }
 
-+ (id)lastFourDigitsForNumber:(id)a3
++ (id)lastFourDigitsForNumber:(id)number
 {
-  if (a3)
+  if (number)
   {
-    v4 = a3;
-    v5 = [a1 countryCodeForNumber:v4];
+    numberCopy = number;
+    v5 = [self countryCodeForNumber:numberCopy];
     FourDigitsOfLocalNumber = _PNCopyLastFourDigitsOfLocalNumber();
   }
 
@@ -82,32 +82,32 @@
 + (NSString)currentCountryCode
 {
   v2 = +[(CNEnvironmentBase *)CNEnvironment];
-  v3 = [v2 currentCountryCode];
+  currentCountryCode = [v2 currentCountryCode];
 
-  return v3;
+  return currentCountryCode;
 }
 
-+ (id)countryCodeForNumber:(id)a3
++ (id)countryCodeForNumber:(id)number
 {
   v4 = PNCopyBestGuessCountryCodeForNumber();
   if (off_1EF440708(&__block_literal_global_120, v4))
   {
-    v5 = [a1 defaultCountryCode];
+    defaultCountryCode = [self defaultCountryCode];
   }
 
   else
   {
-    v5 = v4;
+    defaultCountryCode = v4;
   }
 
-  v6 = v5;
+  v6 = defaultCountryCode;
 
   return v6;
 }
 
-+ (id)internationalizedFormattedNumber:(id)a3 countryCode:(id)a4
++ (id)internationalizedFormattedNumber:(id)number countryCode:(id)code
 {
-  v4 = a4;
+  codeCopy = code;
   v5 = PNCopyBestGuessNormalizedNumberForCountry();
   if (v5)
   {
@@ -138,9 +138,9 @@
   return String;
 }
 
-+ (id)internationalizedUnformattedNumber:(id)a3 countryCode:(id)a4
++ (id)internationalizedUnformattedNumber:(id)number countryCode:(id)code
 {
-  v4 = a4;
+  codeCopy = code;
   v5 = PNCopyBestGuessNormalizedNumberForCountry();
   if (v5)
   {
@@ -171,14 +171,14 @@
   return String;
 }
 
-+ (BOOL)isStringPhoneNumber:(id)a3
++ (BOOL)isStringPhoneNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__CNPhoneNumberHelper_isStringPhoneNumber___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (isStringPhoneNumber__cn_once_token_1 != -1)
   {
     dispatch_once(&isStringPhoneNumber__cn_once_token_1, block);
@@ -187,7 +187,7 @@
   if (isStringPhoneNumber__cn_once_object_1)
   {
     v5 = isStringPhoneNumber__cn_once_object_1;
-    v6 = [v5 numberOfMatchesInString:v4 options:4 range:{0, objc_msgSend(v4, "length")}];
+    v6 = [v5 numberOfMatchesInString:numberCopy options:4 range:{0, objc_msgSend(numberCopy, "length")}];
 
     v7 = v6 == 1;
   }

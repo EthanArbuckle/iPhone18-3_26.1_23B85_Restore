@@ -1,23 +1,23 @@
 @interface MFConversationViewCell
-- (MFConversationViewCell)initWithFrame:(CGRect)a3;
-- (void)applyLayoutAttributes:(id)a3;
+- (MFConversationViewCell)initWithFrame:(CGRect)frame;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutMarginsDidChange;
 - (void)prepareForReuse;
-- (void)setDisplayMetrics:(id)a3;
+- (void)setDisplayMetrics:(id)metrics;
 @end
 
 @implementation MFConversationViewCell
 
-- (MFConversationViewCell)initWithFrame:(CGRect)a3
+- (MFConversationViewCell)initWithFrame:(CGRect)frame
 {
   v24.receiver = self;
   v24.super_class = MFConversationViewCell;
-  v3 = [(MFConversationViewCell *)&v24 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MFConversationViewCell *)&v24 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(MFConversationViewCell *)v3 contentView];
-    [v5 setClipsToBounds:1];
+    contentView = [(MFConversationViewCell *)v3 contentView];
+    [contentView setClipsToBounds:1];
 
     [(MFConversationViewCell *)v4 setPreservesSuperviewLayoutMargins:1];
     v6 = [UIView alloc];
@@ -25,27 +25,27 @@
     v7 = [v6 initWithFrame:?];
     [(MFConversationViewCell *)v4 setContentWrapperView:v7];
 
-    v8 = [(MFConversationViewCell *)v4 contentWrapperView];
-    [v8 setAutoresizingMask:18];
+    contentWrapperView = [(MFConversationViewCell *)v4 contentWrapperView];
+    [contentWrapperView setAutoresizingMask:18];
 
-    v9 = [(MFConversationViewCell *)v4 contentWrapperView];
-    [(MFConversationViewCell *)v4 addSubview:v9];
+    contentWrapperView2 = [(MFConversationViewCell *)v4 contentWrapperView];
+    [(MFConversationViewCell *)v4 addSubview:contentWrapperView2];
 
-    v10 = [(MFConversationViewCell *)v4 contentWrapperView];
-    v11 = [(MFConversationViewCell *)v4 contentView];
-    [v10 addSubview:v11];
+    contentWrapperView3 = [(MFConversationViewCell *)v4 contentWrapperView];
+    contentView2 = [(MFConversationViewCell *)v4 contentView];
+    [contentWrapperView3 addSubview:contentView2];
 
-    v12 = [(MFConversationViewCell *)v4 contentWrapperView];
-    [v12 setInsetsLayoutMarginsFromSafeArea:0];
+    contentWrapperView4 = [(MFConversationViewCell *)v4 contentWrapperView];
+    [contentWrapperView4 setInsetsLayoutMarginsFromSafeArea:0];
 
-    v13 = [(MFConversationViewCell *)v4 contentView];
-    [v13 setPreservesSuperviewLayoutMargins:1];
+    contentView3 = [(MFConversationViewCell *)v4 contentView];
+    [contentView3 setPreservesSuperviewLayoutMargins:1];
 
-    v14 = [(MFConversationViewCell *)v4 contentView];
-    [v14 setInsetsLayoutMarginsFromSafeArea:0];
+    contentView4 = [(MFConversationViewCell *)v4 contentView];
+    [contentView4 setInsetsLayoutMarginsFromSafeArea:0];
 
-    v15 = [(MFConversationViewCell *)v4 contentView];
-    [v15 setLayoutMargins:{0.0, 31.0, 0.0, 31.0}];
+    contentView5 = [(MFConversationViewCell *)v4 contentView];
+    [contentView5 setLayoutMargins:{0.0, 31.0, 0.0, 31.0}];
 
     if (qword_1006DD4C0 != -1)
     {
@@ -55,15 +55,15 @@
     if (byte_1006DD4B8 == 1)
     {
       v16 = +[UIColor lightGrayColor];
-      v17 = [v16 CGColor];
-      v18 = [(MFConversationViewCell *)v4 layer];
-      [v18 setBorderColor:v17];
+      cGColor = [v16 CGColor];
+      layer = [(MFConversationViewCell *)v4 layer];
+      [layer setBorderColor:cGColor];
 
       v19 = +[UIScreen mainScreen];
       [v19 scale];
       v21 = v20;
-      v22 = [(MFConversationViewCell *)v4 layer];
-      [v22 setBorderWidth:1.0 / v21];
+      layer2 = [(MFConversationViewCell *)v4 layer];
+      [layer2 setBorderWidth:1.0 / v21];
     }
 
     [(MFConversationViewCell *)v4 setInsetsLayoutMarginsFromSafeArea:0];
@@ -72,12 +72,12 @@
   return v4;
 }
 
-- (void)setDisplayMetrics:(id)a3
+- (void)setDisplayMetrics:(id)metrics
 {
-  v5 = a3;
+  metricsCopy = metrics;
   if (([(MFMessageDisplayMetrics *)self->_displayMetrics isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_displayMetrics, a3);
+    objc_storeStrong(&self->_displayMetrics, metrics);
     [(MFConversationViewCell *)self _displayMetricsDidChange];
   }
 }
@@ -92,8 +92,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(MFConversationViewCell *)self contentView];
-  [v11 layoutMargins];
+  contentView = [(MFConversationViewCell *)self contentView];
+  [contentView layoutMargins];
   v16 = v15;
   if (v10 < 31.0)
   {
@@ -118,19 +118,19 @@
   {
   }
 
-  v19 = [(MFConversationViewCell *)self contentView];
-  [v19 setLayoutMargins:{v4, v6, v8, v10}];
+  contentView2 = [(MFConversationViewCell *)self contentView];
+  [contentView2 setLayoutMargins:{v4, v6, v8, v10}];
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v7.receiver = self;
   v7.super_class = MFConversationViewCell;
-  [(MFConversationViewCell *)&v7 applyLayoutAttributes:v4];
-  v5 = [v4 zIndex];
-  v6 = [(MFConversationViewCell *)self layer];
-  [v6 setZPosition:v5];
+  [(MFConversationViewCell *)&v7 applyLayoutAttributes:attributesCopy];
+  zIndex = [attributesCopy zIndex];
+  layer = [(MFConversationViewCell *)self layer];
+  [layer setZPosition:zIndex];
 }
 
 - (void)prepareForReuse
@@ -141,8 +141,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(MFConversationViewCell *)self contentWrapperView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  contentWrapperView = [(MFConversationViewCell *)self contentWrapperView];
+  [contentWrapperView setFrame:{v4, v6, v8, v10}];
 
   v12.receiver = self;
   v12.super_class = MFConversationViewCell;

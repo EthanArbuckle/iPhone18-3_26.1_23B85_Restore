@@ -3,25 +3,25 @@
 + (id)sharedDomAccessoryArbitrator;
 - (DOMAccessoryArbitrator)init;
 - (id)createUserNotificationDict;
-- (id)jobType:(id)a3 jobType:(int *)a4;
-- (void)addBadDevicesToDialogDictBody:(id)a3;
-- (void)addMatchingThings:(id)a3 matchJob:(id)a4;
-- (void)addNotification:(id)a3 matchJob:(id)a4;
-- (void)addPersonality:(id)a3 matchJob:(id)a4;
+- (id)jobType:(id)type jobType:(int *)jobType;
+- (void)addBadDevicesToDialogDictBody:(id)body;
+- (void)addMatchingThings:(id)things matchJob:(id)job;
+- (void)addNotification:(id)notification matchJob:(id)job;
+- (void)addPersonality:(id)personality matchJob:(id)job;
 - (void)dealloc;
 - (void)displayDialog;
 - (void)displayOverCurrentDialog;
-- (void)loadLaunchdJobsAtPath:(id)a3;
-- (void)matchDevice:(id)a3;
-- (void)overcurrentCondition:(unsigned int)a3;
-- (void)probePersonalitiesForService:(unsigned int)a3 ofDevice:(id)a4 inGroup:(id)a5;
-- (void)registerOffendingDomDevice:(id)a3;
+- (void)loadLaunchdJobsAtPath:(id)path;
+- (void)matchDevice:(id)device;
+- (void)overcurrentCondition:(unsigned int)condition;
+- (void)probePersonalitiesForService:(unsigned int)service ofDevice:(id)device inGroup:(id)group;
+- (void)registerOffendingDomDevice:(id)device;
 - (void)releaseOverCurrentDialog;
-- (void)scanPlistsAtPath:(id)a3 execBlock:(id)a4;
+- (void)scanPlistsAtPath:(id)path execBlock:(id)block;
 - (void)scheduleDialog;
-- (void)unregisterOffendingDomDevice:(id)a3;
-- (void)userDismissedNotification:(__CFUserNotification *)a3;
-- (void)userDismissedOvercurrentNotification:(__CFUserNotification *)a3;
+- (void)unregisterOffendingDomDevice:(id)device;
+- (void)userDismissedNotification:(__CFUserNotification *)notification;
+- (void)userDismissedOvercurrentNotification:(__CFUserNotification *)notification;
 @end
 
 @implementation DOMAccessoryArbitrator
@@ -110,9 +110,9 @@
   [(DOMAccessoryArbitrator *)&v4 dealloc];
 }
 
-- (void)registerOffendingDomDevice:(id)a3
+- (void)registerOffendingDomDevice:(id)device
 {
-  v7 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->mainQ);
   badDevices = self->badDevices;
   if (!badDevices)
@@ -124,23 +124,23 @@
     badDevices = self->badDevices;
   }
 
-  [(NSMutableArray *)badDevices addObject:v7];
+  [(NSMutableArray *)badDevices addObject:deviceCopy];
   [(DOMAccessoryArbitrator *)self scheduleDialog];
 }
 
-- (void)unregisterOffendingDomDevice:(id)a3
+- (void)unregisterOffendingDomDevice:(id)device
 {
   mainQ = self->mainQ;
-  v5 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(mainQ);
-  [(NSMutableArray *)self->badDevices removeObject:v5];
+  [(NSMutableArray *)self->badDevices removeObject:deviceCopy];
 
   [(DOMAccessoryArbitrator *)self displayDialog];
 }
 
-- (void)addBadDevicesToDialogDictBody:(id)a3
+- (void)addBadDevicesToDialogDictBody:(id)body
 {
-  v16 = a3;
+  bodyCopy = body;
   v4 = [NSMutableArray arrayWithCapacity:0];
   v18 = 0u;
   v19 = 0u;
@@ -162,10 +162,10 @@
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [v9 dialogBodyKey];
-        v11 = [v9 name];
+        dialogBodyKey = [v9 dialogBodyKey];
+        name = [v9 name];
 
-        if (v11)
+        if (name)
         {
           [v9 name];
         }
@@ -175,13 +175,13 @@
           sub_10000626C(@"Accessory");
         }
         v12 = ;
-        v13 = [NSString stringWithFormat:v10, v12];
+        v13 = [NSString stringWithFormat:dialogBodyKey, v12];
         [v4 addObject:v13];
 
         if ([v9 isThunderboltDevice])
         {
           v14 = sub_10000626C(@"Cannot Use Thunderbolt Accessory");
-          [v16 setObject:v14 forKey:kCFUserNotificationAlertHeaderKey];
+          [bodyCopy setObject:v14 forKey:kCFUserNotificationAlertHeaderKey];
         }
       }
 
@@ -192,7 +192,7 @@
   }
 
   v15 = [v4 componentsJoinedByString:@"\n"];
-  [v16 setObject:v15 forKey:kCFUserNotificationAlertMessageKey];
+  [bodyCopy setObject:v15 forKey:kCFUserNotificationAlertMessageKey];
 }
 
 - (id)createUserNotificationDict
@@ -211,16 +211,16 @@
   return v3;
 }
 
-- (void)userDismissedNotification:(__CFUserNotification *)a3
+- (void)userDismissedNotification:(__CFUserNotification *)notification
 {
   dispatch_assert_queue_V2(self->mainQ);
-  if (a3)
+  if (notification)
   {
-    if (self->notificationRef != a3 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
+    if (self->notificationRef != notification && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       notificationRef = self->notificationRef;
       v6 = 134218240;
-      v7 = a3;
+      notificationCopy = notification;
       v8 = 2048;
       v9 = notificationRef;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "notification %p is not the same as notificationRef %p", &v6, 0x16u);
@@ -231,15 +231,15 @@
   }
 }
 
-- (void)userDismissedOvercurrentNotification:(__CFUserNotification *)a3
+- (void)userDismissedOvercurrentNotification:(__CFUserNotification *)notification
 {
-  if (a3)
+  if (notification)
   {
-    if (self->overcurrentNotificationRef != a3 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
+    if (self->overcurrentNotificationRef != notification && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       overcurrentNotificationRef = self->overcurrentNotificationRef;
       v6 = 134218240;
-      v7 = a3;
+      notificationCopy = notification;
       v8 = 2048;
       v9 = overcurrentNotificationRef;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "notification %p is not the same as overcurrentNotificationRef %p", &v6, 0x16u);
@@ -438,35 +438,35 @@
   dispatch_resume(v5);
 }
 
-- (void)addPersonality:(id)a3 matchJob:(id)a4
+- (void)addPersonality:(id)personality matchJob:(id)job
 {
-  v6 = a3;
-  v7 = a4;
+  personalityCopy = personality;
+  jobCopy = job;
   notification = 0;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    IOServiceAddMatchingNotification([(DOMAccessoryArbitrator *)self ioNotificationPort], "IOServiceFirstMatch", v6, sub_100002DCC, v7, &notification);
-    sub_100002DCC(v7, notification);
+    IOServiceAddMatchingNotification([(DOMAccessoryArbitrator *)self ioNotificationPort], "IOServiceFirstMatch", personalityCopy, sub_100002DCC, jobCopy, &notification);
+    sub_100002DCC(jobCopy, notification);
   }
 }
 
-- (void)addNotification:(id)a3 matchJob:(id)a4
+- (void)addNotification:(id)notification matchJob:(id)job
 {
-  name = a3;
-  v5 = a4;
+  name = notification;
+  jobCopy = job;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-    CFNotificationCenterAddObserver(DarwinNotifyCenter, v5, sub_100002F38, name, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+    CFNotificationCenterAddObserver(DarwinNotifyCenter, jobCopy, sub_100002F38, name, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
   }
 }
 
-- (void)addMatchingThings:(id)a3 matchJob:(id)a4
+- (void)addMatchingThings:(id)things matchJob:(id)job
 {
-  v6 = a3;
-  v7 = a4;
+  thingsCopy = things;
+  jobCopy = job;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -474,7 +474,7 @@
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = v6;
+    v8 = thingsCopy;
     v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v9)
     {
@@ -491,14 +491,14 @@
           }
 
           v13 = *(*(&v14 + 1) + 8 * v12);
-          if ([v7 jobType] == 1)
+          if ([jobCopy jobType] == 1)
           {
-            [(DOMAccessoryArbitrator *)self addNotification:v13 matchJob:v7];
+            [(DOMAccessoryArbitrator *)self addNotification:v13 matchJob:jobCopy];
           }
 
-          else if (![v7 jobType])
+          else if (![jobCopy jobType])
           {
-            [(DOMAccessoryArbitrator *)self addPersonality:v13 matchJob:v7];
+            [(DOMAccessoryArbitrator *)self addPersonality:v13 matchJob:jobCopy];
           }
 
           v12 = v12 + 1;
@@ -512,27 +512,27 @@
     }
   }
 
-  else if ([v7 jobType] == 1)
+  else if ([jobCopy jobType] == 1)
   {
-    [(DOMAccessoryArbitrator *)self addNotification:v6 matchJob:v7];
+    [(DOMAccessoryArbitrator *)self addNotification:thingsCopy matchJob:jobCopy];
   }
 
-  else if (![v7 jobType])
+  else if (![jobCopy jobType])
   {
-    [(DOMAccessoryArbitrator *)self addPersonality:v6 matchJob:v7];
+    [(DOMAccessoryArbitrator *)self addPersonality:thingsCopy matchJob:jobCopy];
   }
 }
 
-- (void)scanPlistsAtPath:(id)a3 execBlock:(id)a4
+- (void)scanPlistsAtPath:(id)path execBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  pathCopy = path;
+  blockCopy = block;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v7 = +[NSFileManager defaultManager];
-  v8 = [v7 enumeratorAtPath:v5];
+  v8 = [v7 enumeratorAtPath:pathCopy];
 
   v9 = [v8 countByEnumeratingWithState:&v15 objects:v21 count:16];
   if (v9)
@@ -549,11 +549,11 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [v5 stringByAppendingPathComponent:*(*(&v15 + 1) + 8 * v12)];
+        v13 = [pathCopy stringByAppendingPathComponent:*(*(&v15 + 1) + 8 * v12)];
         v14 = [NSDictionary dictionaryWithContentsOfFile:v13];
         if (v14)
         {
-          v6[2](v6, v14);
+          blockCopy[2](blockCopy, v14);
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
           {
             sub_100008388(buf, v13, &v20);
@@ -571,10 +571,10 @@
   }
 }
 
-- (id)jobType:(id)a3 jobType:(int *)a4
+- (id)jobType:(id)type jobType:(int *)jobType
 {
-  v5 = a3;
-  v6 = [v5 objectForKey:@"LaunchBuddyIOServiceMatching"];
+  typeCopy = type;
+  v6 = [typeCopy objectForKey:@"LaunchBuddyIOServiceMatching"];
   if (v6)
   {
     v7 = v6;
@@ -583,7 +583,7 @@
 
   else
   {
-    v9 = [v5 objectForKey:@"LaunchBuddyNotificationLaunching"];
+    v9 = [typeCopy objectForKey:@"LaunchBuddyNotificationLaunching"];
     if (v9)
     {
       v7 = v9;
@@ -592,7 +592,7 @@
 
     else
     {
-      v7 = [v5 objectForKey:@"LaunchBuddyIOKitLaunching"];
+      v7 = [typeCopy objectForKey:@"LaunchBuddyIOKitLaunching"];
       if (!v7)
       {
         goto LABEL_8;
@@ -602,42 +602,42 @@
     }
   }
 
-  *a4 = v8;
+  *jobType = v8;
 LABEL_8:
 
   return v7;
 }
 
-- (void)loadLaunchdJobsAtPath:(id)a3
+- (void)loadLaunchdJobsAtPath:(id)path
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100003794;
   v3[3] = &unk_1000106C0;
   v3[4] = self;
-  [(DOMAccessoryArbitrator *)self scanPlistsAtPath:a3 execBlock:v3];
+  [(DOMAccessoryArbitrator *)self scanPlistsAtPath:path execBlock:v3];
 }
 
-- (void)probePersonalitiesForService:(unsigned int)a3 ofDevice:(id)a4 inGroup:(id)a5
+- (void)probePersonalitiesForService:(unsigned int)service ofDevice:(id)device inGroup:(id)group
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(DOMAccessoryArbitrator *)self personalities];
+  deviceCopy = device;
+  groupCopy = group;
+  personalities = [(DOMAccessoryArbitrator *)self personalities];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100003A28;
   v13[3] = &unk_100010788;
-  v16 = a3;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
-  [v10 enumerateObjectsUsingBlock:v13];
+  serviceCopy = service;
+  v14 = deviceCopy;
+  v15 = groupCopy;
+  v11 = groupCopy;
+  v12 = deviceCopy;
+  [personalities enumerateObjectsUsingBlock:v13];
 }
 
-- (void)matchDevice:(id)a3
+- (void)matchDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   group = dispatch_group_create();
   iterator = 0;
   v38 = objc_alloc_init(NSMutableSet);
@@ -647,8 +647,8 @@ LABEL_8:
   v57 = sub_1000042A4;
   v58 = sub_1000042B4;
   v59 = 0;
-  v40 = v4;
-  if (IORegistryEntryCreateIterator([v4 io_service], "IOService", 1u, &iterator))
+  v40 = deviceCopy;
+  if (IORegistryEntryCreateIterator([deviceCopy io_service], "IOService", 1u, &iterator))
   {
     v34 = &_os_log_default;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -658,12 +658,12 @@ LABEL_8:
       sub_1000083D4(v36, buf);
     }
 
-    v19 = 0;
+    winningDomPersonality = 0;
   }
 
   else
   {
-    v37 = self;
+    selfCopy = self;
     do
     {
       IOIteratorReset(iterator);
@@ -727,7 +727,7 @@ LABEL_8:
 
     while (!IOIteratorIsValid(iterator));
     IOObjectRelease(iterator);
-    v13 = v37;
+    v13 = selfCopy;
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
@@ -746,10 +746,10 @@ LABEL_8:
             objc_enumerationMutation(v14);
           }
 
-          v18 = [*(*(&v41 + 1) + 8 * j) unsignedIntValue];
-          IOServiceWaitQuiet(v18, 0);
-          [(DOMAccessoryArbitrator *)v13 probePersonalitiesForService:v18 ofDevice:v40 inGroup:group];
-          IOObjectRelease(v18);
+          unsignedIntValue = [*(*(&v41 + 1) + 8 * j) unsignedIntValue];
+          IOServiceWaitQuiet(unsignedIntValue, 0);
+          [(DOMAccessoryArbitrator *)v13 probePersonalitiesForService:unsignedIntValue ofDevice:v40 inGroup:group];
+          IOObjectRelease(unsignedIntValue);
         }
 
         v15 = [v14 countByEnumeratingWithState:&v41 objects:v73 count:16];
@@ -758,49 +758,49 @@ LABEL_8:
       while (v15);
     }
 
-    -[DOMAccessoryArbitrator probePersonalitiesForService:ofDevice:inGroup:](v37, "probePersonalitiesForService:ofDevice:inGroup:", [v40 io_service], v40, group);
+    -[DOMAccessoryArbitrator probePersonalitiesForService:ofDevice:inGroup:](selfCopy, "probePersonalitiesForService:ofDevice:inGroup:", [v40 io_service], v40, group);
     dispatch_group_wait(group, 0xFFFFFFFFFFFFFFFFLL);
-    v19 = [v40 winningDomPersonality];
+    winningDomPersonality = [v40 winningDomPersonality];
     v20 = &_os_log_default;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v40 name];
-      if (v19)
+      name = [v40 name];
+      if (winningDomPersonality)
       {
-        v22 = [v19 personalityName];
+        personalityName = [winningDomPersonality personalityName];
       }
 
       else
       {
-        v22 = @"nobody";
+        personalityName = @"nobody";
       }
 
-      v23 = [v40 winningScore];
-      v24 = [(DOMAccessoryArbitrator *)v37 iOSDeviceThreshold];
-      v25 = [v40 properties];
-      v26 = sub_100006574(v25);
+      winningScore = [v40 winningScore];
+      iOSDeviceThreshold = [(DOMAccessoryArbitrator *)selfCopy iOSDeviceThreshold];
+      properties = [v40 properties];
+      v26 = sub_100006574(properties);
       v27 = sub_100006574(v55[5]);
       *buf = 138413570;
-      v62 = v21;
+      v62 = name;
       v63 = 2112;
-      v64 = v22;
+      v64 = personalityName;
       v65 = 2112;
-      v66 = v23;
+      v66 = winningScore;
       v67 = 2048;
-      v68 = v24;
+      v68 = iOSDeviceThreshold;
       v69 = 2112;
       v70 = v26;
       v71 = 2112;
       v72 = v27;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Device: %@, winner: %@, probeScore: %@, iOSDeviceThreshold: %lld, properties: %@ children: %@", buf, 0x3Eu);
 
-      if (v19)
+      if (winningDomPersonality)
       {
       }
     }
 
-    v28 = v37;
-    if (!v19 || [v19 testAgainstDeviceThreshold] && (objc_msgSend(v40, "winningScore"), v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(v29, "longLongValue"), v31 = v30 < -[DOMAccessoryArbitrator iOSDeviceThreshold](v37, "iOSDeviceThreshold"), v29, v28 = v37, v31) || objc_msgSend(v19, "require9Pin", v37) && !MGGetBoolAnswer())
+    v28 = selfCopy;
+    if (!winningDomPersonality || [winningDomPersonality testAgainstDeviceThreshold] && (objc_msgSend(v40, "winningScore"), v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(v29, "longLongValue"), v31 = v30 < -[DOMAccessoryArbitrator iOSDeviceThreshold](selfCopy, "iOSDeviceThreshold"), v29, v28 = selfCopy, v31) || objc_msgSend(winningDomPersonality, "require9Pin", selfCopy) && !MGGetBoolAnswer())
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
@@ -815,20 +815,20 @@ LABEL_8:
       v32 = &_os_log_default;
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
-        v33 = [v19 personalityName];
+        personalityName2 = [winningDomPersonality personalityName];
         *buf = 138412290;
-        v62 = v33;
+        v62 = personalityName2;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "starting winner: %@", buf, 0xCu);
       }
 
-      [v19 startWithDomDevice:v40];
+      [winningDomPersonality startWithDomDevice:v40];
     }
   }
 
   _Block_object_dispose(&v54, 8);
 }
 
-- (void)overcurrentCondition:(unsigned int)a3
+- (void)overcurrentCondition:(unsigned int)condition
 {
   if (self->_ioOvercurrentNotificationPort)
   {
@@ -840,16 +840,16 @@ LABEL_8:
 
   else
   {
-    IOServiceWaitQuiet(a3, 0);
+    IOServiceWaitQuiet(condition, 0);
     v5 = IONotificationPortCreate(kIOMainPortDefault);
     self->_ioOvercurrentNotificationPort = v5;
     if (v5)
     {
       IONotificationPortSetDispatchQueue(v5, &_dispatch_main_q);
-      CFProperty = IORegistryEntryCreateCFProperty(a3, @"OvercurrentCount", kCFAllocatorDefault, 0);
-      v7 = [CFProperty unsignedIntValue];
+      CFProperty = IORegistryEntryCreateCFProperty(condition, @"OvercurrentCount", kCFAllocatorDefault, 0);
+      unsignedIntValue = [CFProperty unsignedIntValue];
       v8 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-      if (v7)
+      if (unsignedIntValue)
       {
         if (v8)
         {
@@ -858,7 +858,7 @@ LABEL_8:
           _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%s: OCP active. Putting up dialog", &v9, 0xCu);
         }
 
-        if (!self->_io_overcurrentNotification && IOServiceAddInterestNotification(self->_ioOvercurrentNotificationPort, a3, "IOGeneralInterest", sub_100004A68, self, &self->_io_overcurrentNotification) && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+        if (!self->_io_overcurrentNotification && IOServiceAddInterestNotification(self->_ioOvercurrentNotificationPort, condition, "IOGeneralInterest", sub_100004A68, self, &self->_io_overcurrentNotification) && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
         {
           sub_1000085A4();
         }

@@ -8,48 +8,48 @@
 
 - (void)ax_enumerateElementsUsingBlock:()OBAdditions
 {
-  v5 = a1;
+  selfCopy = self;
   info = a3;
-  CGPathApply([a1 CGPath], info, CGPathEnumerationCallback);
+  CGPathApply([self CGPath], info, CGPathEnumerationCallback);
 }
 
 - (id)ax_description
 {
-  v2 = [a1 CGPath];
-  PathBoundingBox = CGPathGetPathBoundingBox(v2);
+  cGPath = [self CGPath];
+  PathBoundingBox = CGPathGetPathBoundingBox(cGPath);
   x = PathBoundingBox.origin.x;
   y = PathBoundingBox.origin.y;
   width = PathBoundingBox.size.width;
   height = PathBoundingBox.size.height;
-  BoundingBox = CGPathGetBoundingBox(v2);
+  BoundingBox = CGPathGetBoundingBox(cGPath);
   v7 = BoundingBox.origin.x;
   v8 = BoundingBox.origin.y;
   v9 = BoundingBox.size.width;
   v10 = BoundingBox.size.height;
-  v11 = [MEMORY[0x29EDBA050] string];
-  [v11 appendFormat:@"%@ <%p>\n", objc_opt_class(), a1];
+  string = [MEMORY[0x29EDBA050] string];
+  [string appendFormat:@"%@ <%p>\n", objc_opt_class(), self];
   v23.origin.x = x;
   v23.origin.y = y;
   v23.size.width = width;
   v23.size.height = height;
   v12 = NSStringFromCGRect(v23);
-  [v11 appendFormat:@"  Bounds: %@\n", v12];
+  [string appendFormat:@"  Bounds: %@\n", v12];
 
   v24.origin.x = v7;
   v24.origin.y = v8;
   v24.size.width = v9;
   v24.size.height = v10;
   v13 = NSStringFromCGRect(v24);
-  [v11 appendFormat:@"  Control Point Bounds: %@\n", v13];
+  [string appendFormat:@"  Control Point Bounds: %@\n", v13];
 
   v17[0] = MEMORY[0x29EDCA5F8];
   v17[1] = 3221225472;
   v17[2] = __43__UIBezierPath_OBAdditions__ax_description__block_invoke;
   v17[3] = &unk_29F31F758;
-  v18 = v11;
-  v19 = a1;
-  v14 = v11;
-  [a1 ax_enumerateElementsUsingBlock:v17];
+  v18 = string;
+  selfCopy = self;
+  v14 = string;
+  [self ax_enumerateElementsUsingBlock:v17];
   v15 = [v14 copy];
 
   return v15;

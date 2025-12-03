@@ -1,35 +1,35 @@
 @interface MTUISwitchTableViewCell
-- (MTUISwitchTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (MTUISwitchTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (MTUISwitchTableViewCellDelegate)delegate;
-- (void)setSwitchStateEnabled:(BOOL)a3;
-- (void)switchAction:(id)a3;
+- (void)setSwitchStateEnabled:(BOOL)enabled;
+- (void)switchAction:(id)action;
 @end
 
 @implementation MTUISwitchTableViewCell
 
-- (MTUISwitchTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (MTUISwitchTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v13.receiver = self;
   v13.super_class = MTUISwitchTableViewCell;
-  v4 = [(MTUIBaseTableViewCell *)&v13 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(MTUIBaseTableViewCell *)&v13 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_opt_new();
     [(MTUISwitchTableViewCell *)v4 setEnabledSwitch:v5];
 
-    v6 = [MEMORY[0x277D75348] systemGreenColor];
-    v7 = [(MTUISwitchTableViewCell *)v4 enabledSwitch];
-    [v7 setOnTintColor:v6];
+    systemGreenColor = [MEMORY[0x277D75348] systemGreenColor];
+    enabledSwitch = [(MTUISwitchTableViewCell *)v4 enabledSwitch];
+    [enabledSwitch setOnTintColor:systemGreenColor];
 
-    v8 = [MEMORY[0x277D75348] mtui_switchTintColor];
-    v9 = [(MTUISwitchTableViewCell *)v4 enabledSwitch];
-    [v9 setTintColor:v8];
+    mtui_switchTintColor = [MEMORY[0x277D75348] mtui_switchTintColor];
+    enabledSwitch2 = [(MTUISwitchTableViewCell *)v4 enabledSwitch];
+    [enabledSwitch2 setTintColor:mtui_switchTintColor];
 
-    v10 = [(MTUISwitchTableViewCell *)v4 enabledSwitch];
-    [v10 addTarget:v4 action:sel_switchAction_ forControlEvents:4096];
+    enabledSwitch3 = [(MTUISwitchTableViewCell *)v4 enabledSwitch];
+    [enabledSwitch3 addTarget:v4 action:sel_switchAction_ forControlEvents:4096];
 
-    v11 = [(MTUISwitchTableViewCell *)v4 enabledSwitch];
-    [(MTUISwitchTableViewCell *)v4 setAccessoryView:v11];
+    enabledSwitch4 = [(MTUISwitchTableViewCell *)v4 enabledSwitch];
+    [(MTUISwitchTableViewCell *)v4 setAccessoryView:enabledSwitch4];
 
     [(MTUISwitchTableViewCell *)v4 setSelectionStyle:0];
   }
@@ -37,23 +37,23 @@
   return v4;
 }
 
-- (void)switchAction:(id)a3
+- (void)switchAction:(id)action
 {
-  v6 = a3;
-  v4 = [(MTUISwitchTableViewCell *)self delegate];
+  actionCopy = action;
+  delegate = [(MTUISwitchTableViewCell *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
-    v5 = [(MTUISwitchTableViewCell *)self delegate];
-    [v5 switchDidChangeToState:objc_msgSend(v6 senderCell:{"isOn"), self}];
+    delegate2 = [(MTUISwitchTableViewCell *)self delegate];
+    [delegate2 switchDidChangeToState:objc_msgSend(actionCopy senderCell:{"isOn"), self}];
   }
 }
 
-- (void)setSwitchStateEnabled:(BOOL)a3
+- (void)setSwitchStateEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(MTUISwitchTableViewCell *)self enabledSwitch];
-  [v4 setOn:v3];
+  enabledCopy = enabled;
+  enabledSwitch = [(MTUISwitchTableViewCell *)self enabledSwitch];
+  [enabledSwitch setOn:enabledCopy];
 }
 
 - (MTUISwitchTableViewCellDelegate)delegate

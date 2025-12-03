@@ -1,27 +1,27 @@
 @interface SUUICollectionView
 - (CGRect)bounds;
-- (SUUICollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4;
+- (SUUICollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout;
 - (id)collectionViewLayout;
 - (void)_updateIndexBarControlFrame;
 - (void)_updateShowsScrollIndicators;
 - (void)layoutSubviews;
-- (void)setCollectionViewLayout:(id)a3 animated:(BOOL)a4;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setContentOffset:(CGPoint)a3 animated:(BOOL)a4;
-- (void)setDelegate:(id)a3;
-- (void)setIndexBarControl:(id)a3;
-- (void)setRefreshControl:(id)a3;
-- (void)setShowsHorizontalScrollIndicator:(BOOL)a3;
-- (void)setShowsVerticalScrollIndicator:(BOOL)a3;
+- (void)setCollectionViewLayout:(id)layout animated:(BOOL)animated;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setContentOffset:(CGPoint)offset animated:(BOOL)animated;
+- (void)setDelegate:(id)delegate;
+- (void)setIndexBarControl:(id)control;
+- (void)setRefreshControl:(id)control;
+- (void)setShowsHorizontalScrollIndicator:(BOOL)indicator;
+- (void)setShowsVerticalScrollIndicator:(BOOL)indicator;
 @end
 
 @implementation SUUICollectionView
 
-- (SUUICollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4
+- (SUUICollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout
 {
   v7.receiver = self;
   v7.super_class = SUUICollectionView;
-  v4 = [(SUUICollectionView *)&v7 initWithFrame:a4 collectionViewLayout:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(SUUICollectionView *)&v7 initWithFrame:layout collectionViewLayout:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v4;
   if (v4)
   {
@@ -39,37 +39,37 @@
   pendingCollectionViewLayout = self->_pendingCollectionViewLayout;
   if (pendingCollectionViewLayout)
   {
-    v3 = pendingCollectionViewLayout;
+    collectionViewLayout = pendingCollectionViewLayout;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = SUUICollectionView;
-    v3 = [(SUUICollectionView *)&v5 collectionViewLayout];
+    collectionViewLayout = [(SUUICollectionView *)&v5 collectionViewLayout];
   }
 
-  return v3;
+  return collectionViewLayout;
 }
 
-- (void)setCollectionViewLayout:(id)a3 animated:(BOOL)a4
+- (void)setCollectionViewLayout:(id)layout animated:(BOOL)animated
 {
-  v4 = a4;
-  objc_storeStrong(&self->_pendingCollectionViewLayout, a3);
-  v7 = a3;
+  animatedCopy = animated;
+  objc_storeStrong(&self->_pendingCollectionViewLayout, layout);
+  layoutCopy = layout;
   v9.receiver = self;
   v9.super_class = SUUICollectionView;
-  [(SUUICollectionView *)&v9 setCollectionViewLayout:v7 animated:v4];
+  [(SUUICollectionView *)&v9 setCollectionViewLayout:layoutCopy animated:animatedCopy];
   pendingCollectionViewLayout = self->_pendingCollectionViewLayout;
   self->_pendingCollectionViewLayout = 0;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v6.receiver = self;
   v6.super_class = SUUICollectionView;
-  v4 = a3;
-  [(SUUICollectionView *)&v6 setDelegate:v4];
+  delegateCopy = delegate;
+  [(SUUICollectionView *)&v6 setDelegate:delegateCopy];
   v5 = objc_opt_respondsToSelector();
 
   self->_delegateWantsWillLayoutSubviews = v5 & 1;
@@ -96,8 +96,8 @@
 {
   if (self->_delegateWantsWillLayoutSubviews)
   {
-    v3 = [(SUUICollectionView *)self delegate];
-    [v3 SUUICollectionViewWillLayoutSubviews:self];
+    delegate = [(SUUICollectionView *)self delegate];
+    [delegate SUUICollectionViewWillLayoutSubviews:self];
   }
 
   if (self->_refreshControl)
@@ -111,45 +111,45 @@
   [(SUUICollectionView *)self _updateIndexBarControlFrame];
 }
 
-- (void)setContentOffset:(CGPoint)a3 animated:(BOOL)a4
+- (void)setContentOffset:(CGPoint)offset animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = SUUICollectionView;
-  [(SUUICollectionView *)&v5 setContentOffset:a4 animated:a3.x, a3.y];
+  [(SUUICollectionView *)&v5 setContentOffset:animated animated:offset.x, offset.y];
   [(SUUICollectionView *)self _updateIndexBarControlFrame];
 }
 
-- (void)setShowsHorizontalScrollIndicator:(BOOL)a3
+- (void)setShowsHorizontalScrollIndicator:(BOOL)indicator
 {
-  if (self->_externalShowsHorizontalScrollIndicator != a3)
+  if (self->_externalShowsHorizontalScrollIndicator != indicator)
   {
-    self->_externalShowsHorizontalScrollIndicator = a3;
+    self->_externalShowsHorizontalScrollIndicator = indicator;
     [(SUUICollectionView *)self _updateShowsScrollIndicators];
   }
 }
 
-- (void)setShowsVerticalScrollIndicator:(BOOL)a3
+- (void)setShowsVerticalScrollIndicator:(BOOL)indicator
 {
-  if (self->_externalShowsVerticalScrollIndicator != a3)
+  if (self->_externalShowsVerticalScrollIndicator != indicator)
   {
-    self->_externalShowsVerticalScrollIndicator = a3;
+    self->_externalShowsVerticalScrollIndicator = indicator;
     [(SUUICollectionView *)self _updateShowsScrollIndicators];
   }
 }
 
-- (void)setIndexBarControl:(id)a3
+- (void)setIndexBarControl:(id)control
 {
-  v5 = a3;
+  controlCopy = control;
   indexBarControl = self->_indexBarControl;
-  v7 = v5;
-  if (indexBarControl != v5)
+  v7 = controlCopy;
+  if (indexBarControl != controlCopy)
   {
     if ([(SUUIIndexBarControl *)indexBarControl isDescendantOfView:self])
     {
       [(SUUIIndexBarControl *)self->_indexBarControl removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_indexBarControl, a3);
+    objc_storeStrong(&self->_indexBarControl, control);
     [(SUUICollectionView *)self _updateShowsScrollIndicators];
     [(SUUICollectionView *)self setNeedsLayout];
     indexBarControl = self->_indexBarControl;
@@ -162,31 +162,31 @@
   }
 }
 
-- (void)setRefreshControl:(id)a3
+- (void)setRefreshControl:(id)control
 {
-  v5 = a3;
+  controlCopy = control;
   refreshControl = self->_refreshControl;
-  if (refreshControl != v5)
+  if (refreshControl != controlCopy)
   {
-    v7 = v5;
+    v7 = controlCopy;
     if (refreshControl)
     {
       [(UIRefreshControl *)refreshControl removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_refreshControl, a3);
+    objc_storeStrong(&self->_refreshControl, control);
     refreshControl = [(SUUICollectionView *)self _addContentSubview:self->_refreshControl atBack:1];
-    v5 = v7;
+    controlCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](refreshControl, v5);
+  MEMORY[0x2821F96F8](refreshControl, controlCopy);
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
   v3.receiver = self;
   v3.super_class = SUUICollectionView;
-  [(SUUICollectionView *)&v3 setContentInset:a3.top, a3.left, a3.bottom, a3.right];
+  [(SUUICollectionView *)&v3 setContentInset:inset.top, inset.left, inset.bottom, inset.right];
 }
 
 - (void)_updateIndexBarControlFrame

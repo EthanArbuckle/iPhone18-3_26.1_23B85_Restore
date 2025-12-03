@@ -1,41 +1,41 @@
 @interface WFJavaScriptStringRemoteQuarantineRequest
 + (id)JSONKeyPathsByPropertyKey;
-- (WFJavaScriptStringRemoteQuarantineRequest)initWithWorkflow:(id)a3 runtimeType:(unint64_t)a4 targetURL:(id)a5 preRuntimeVariableString:(id)a6 runtimeString:(id)a7;
+- (WFJavaScriptStringRemoteQuarantineRequest)initWithWorkflow:(id)workflow runtimeType:(unint64_t)type targetURL:(id)l preRuntimeVariableString:(id)string runtimeString:(id)runtimeString;
 @end
 
 @implementation WFJavaScriptStringRemoteQuarantineRequest
 
-- (WFJavaScriptStringRemoteQuarantineRequest)initWithWorkflow:(id)a3 runtimeType:(unint64_t)a4 targetURL:(id)a5 preRuntimeVariableString:(id)a6 runtimeString:(id)a7
+- (WFJavaScriptStringRemoteQuarantineRequest)initWithWorkflow:(id)workflow runtimeType:(unint64_t)type targetURL:(id)l preRuntimeVariableString:(id)string runtimeString:(id)runtimeString
 {
   v43 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  workflowCopy = workflow;
+  lCopy = l;
+  stringCopy = string;
+  runtimeStringCopy = runtimeString;
   v34.receiver = self;
   v34.super_class = WFJavaScriptStringRemoteQuarantineRequest;
   v16 = [(WFBaseRemoteQuarantineRequest *)&v34 init];
   if (v16)
   {
-    v33 = v13;
-    v17 = [v12 actions];
-    v18 = [v17 valueForKey:@"identifier"];
-    v19 = v18;
+    v33 = lCopy;
+    actions = [workflowCopy actions];
+    v18 = [actions valueForKey:@"identifier"];
+    array = v18;
     if (!v18)
     {
-      v19 = [MEMORY[0x1E695DEC8] array];
+      array = [MEMORY[0x1E695DEC8] array];
     }
 
-    objc_storeStrong(&v16->_actionList, v19);
+    objc_storeStrong(&v16->_actionList, array);
     if (!v18)
     {
     }
 
-    v16->_runtimeType = a4;
-    objc_storeStrong(&v16->_targetURL, a5);
-    v20 = [v14 serializedRepresentation];
+    v16->_runtimeType = type;
+    objc_storeStrong(&v16->_targetURL, l);
+    serializedRepresentation = [stringCopy serializedRepresentation];
     v21 = objc_opt_class();
-    v22 = v20;
+    v22 = serializedRepresentation;
     if (v22 && (objc_opt_isKindOfClass() & 1) == 0)
     {
       v24 = getWFGeneralLogObject();
@@ -65,13 +65,13 @@
     preRuntimeJavaScriptSerializedRepresentation = v16->_preRuntimeJavaScriptSerializedRepresentation;
     v16->_preRuntimeJavaScriptSerializedRepresentation = v23;
 
-    v28 = [v14 stringByReplacingVariablesWithNames];
+    stringByReplacingVariablesWithNames = [stringCopy stringByReplacingVariablesWithNames];
     preRuntimeJavaScriptString = v16->_preRuntimeJavaScriptString;
-    v16->_preRuntimeJavaScriptString = v28;
+    v16->_preRuntimeJavaScriptString = stringByReplacingVariablesWithNames;
 
-    objc_storeStrong(&v16->_runtimeJavaScriptString, a7);
+    objc_storeStrong(&v16->_runtimeJavaScriptString, runtimeString);
     v30 = v16;
-    v13 = v33;
+    lCopy = v33;
   }
 
   v31 = *MEMORY[0x1E69E9840];
@@ -81,7 +81,7 @@
 + (id)JSONKeyPathsByPropertyKey
 {
   v9[6] = *MEMORY[0x1E69E9840];
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___WFJavaScriptStringRemoteQuarantineRequest;
   v2 = objc_msgSendSuper2(&v7, sel_JSONKeyPathsByPropertyKey);
   v3 = [v2 mutableCopy];

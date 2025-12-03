@@ -1,8 +1,8 @@
 @interface NTKParmesanAnalyticsReporter
 + (NTKParmesanAnalyticsReporter)shared;
 - (NTKParmesanAnalyticsReporter)init;
-- (void)sendAddedNewParmesanFaceEvent:(id)a3;
-- (void)sendParmesanFaceSnapshotEvent:(id)a3;
+- (void)sendAddedNewParmesanFaceEvent:(id)event;
+- (void)sendParmesanFaceSnapshotEvent:(id)event;
 @end
 
 @implementation NTKParmesanAnalyticsReporter
@@ -27,18 +27,18 @@
   return [(NTKParmesanAnalyticsReporter *)&v3 init];
 }
 
-- (void)sendParmesanFaceSnapshotEvent:(id)a3
+- (void)sendParmesanFaceSnapshotEvent:(id)event
 {
-  v4 = a3;
-  v5 = self;
-  sub_23BF846C8(v4);
+  eventCopy = event;
+  selfCopy = self;
+  sub_23BF846C8(eventCopy);
 }
 
-- (void)sendAddedNewParmesanFaceEvent:(id)a3
+- (void)sendAddedNewParmesanFaceEvent:(id)event
 {
-  v4 = a3;
-  v5 = self;
-  sub_23BF84C44(v4);
+  eventCopy = event;
+  selfCopy = self;
+  sub_23BF84C44(eventCopy);
 }
 
 @end

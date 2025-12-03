@@ -1,12 +1,12 @@
 @interface MASDPlainAsset
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MASDPlainAsset
@@ -17,92 +17,92 @@
   v8.receiver = self;
   v8.super_class = MASDPlainAsset;
   v4 = [(MASDPlainAsset *)&v8 description];
-  v5 = [(MASDPlainAsset *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MASDPlainAsset *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_type];
-  [v3 setObject:v4 forKey:@"type"];
+  [dictionary setObject:v4 forKey:@"type"];
 
   label = self->_label;
   if (label)
   {
-    [v3 setObject:label forKey:@"label"];
+    [dictionary setObject:label forKey:@"label"];
   }
 
   v6 = [MEMORY[0x277CCABB0] numberWithDouble:self->_creationTime];
-  [v3 setObject:v6 forKey:@"creationTime"];
+  [dictionary setObject:v6 forKey:@"creationTime"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithDouble:self->_lastUpdatedTime];
-  [v3 setObject:v7 forKey:@"lastUpdatedTime"];
+  [dictionary setObject:v7 forKey:@"lastUpdatedTime"];
 
   lastUpdateOSVersion = self->_lastUpdateOSVersion;
   if (lastUpdateOSVersion)
   {
-    [v3 setObject:lastUpdateOSVersion forKey:@"lastUpdateOSVersion"];
+    [dictionary setObject:lastUpdateOSVersion forKey:@"lastUpdateOSVersion"];
   }
 
   lastUpdateAlgorithmVersion = self->_lastUpdateAlgorithmVersion;
   if (lastUpdateAlgorithmVersion)
   {
-    [v3 setObject:lastUpdateAlgorithmVersion forKey:@"lastUpdateAlgorithmVersion"];
+    [dictionary setObject:lastUpdateAlgorithmVersion forKey:@"lastUpdateAlgorithmVersion"];
   }
 
   assetData = self->_assetData;
   if (assetData)
   {
-    [v3 setObject:assetData forKey:@"assetData"];
+    [dictionary setObject:assetData forKey:@"assetData"];
   }
 
   if (*&self->_has)
   {
     v11 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_assetState];
-    [v3 setObject:v11 forKey:@"assetState"];
+    [dictionary setObject:v11 forKey:@"assetState"];
   }
 
   enrollmentIdentifier = self->_enrollmentIdentifier;
   if (enrollmentIdentifier)
   {
-    [v3 setObject:enrollmentIdentifier forKey:@"enrollmentIdentifier"];
+    [dictionary setObject:enrollmentIdentifier forKey:@"enrollmentIdentifier"];
   }
 
   creatorAttest = self->_creatorAttest;
   if (creatorAttest)
   {
-    [v3 setObject:creatorAttest forKey:@"creatorAttest"];
+    [dictionary setObject:creatorAttest forKey:@"creatorAttest"];
   }
 
   serverAttest = self->_serverAttest;
   if (serverAttest)
   {
-    [v3 setObject:serverAttest forKey:@"serverAttest"];
+    [dictionary setObject:serverAttest forKey:@"serverAttest"];
   }
 
   deviceIdentifier = self->_deviceIdentifier;
   if (deviceIdentifier)
   {
-    [v3 setObject:deviceIdentifier forKey:@"deviceIdentifier"];
+    [dictionary setObject:deviceIdentifier forKey:@"deviceIdentifier"];
   }
 
   deviceName = self->_deviceName;
   if (deviceName)
   {
-    [v3 setObject:deviceName forKey:@"deviceName"];
+    [dictionary setObject:deviceName forKey:@"deviceName"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   type = self->_type;
-  v10 = v4;
+  v10 = toCopy;
   PBDataWriterWriteInt64Field();
   if (self->_label)
   {
@@ -168,20 +168,20 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[4] = self->_type;
-  v6 = v4;
+  toCopy = to;
+  toCopy[4] = self->_type;
+  v6 = toCopy;
   if (self->_label)
   {
-    [v4 setLabel:?];
-    v4 = v6;
+    [toCopy setLabel:?];
+    toCopy = v6;
   }
 
-  v4[2] = *&self->_creationTime;
-  v4[3] = *&self->_lastUpdatedTime;
-  [v4 setLastUpdateOSVersion:self->_lastUpdateOSVersion];
+  toCopy[2] = *&self->_creationTime;
+  toCopy[3] = *&self->_lastUpdatedTime;
+  [toCopy setLastUpdateOSVersion:self->_lastUpdateOSVersion];
   if (self->_lastUpdateAlgorithmVersion)
   {
     [v6 setLastUpdateAlgorithmVersion:?];
@@ -230,25 +230,25 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 32) = self->_type;
-  v6 = [(NSString *)self->_label copyWithZone:a3];
+  v6 = [(NSString *)self->_label copyWithZone:zone];
   v7 = *(v5 + 80);
   *(v5 + 80) = v6;
 
   *(v5 + 16) = self->_creationTime;
   *(v5 + 24) = self->_lastUpdatedTime;
-  v8 = [(NSString *)self->_lastUpdateOSVersion copyWithZone:a3];
+  v8 = [(NSString *)self->_lastUpdateOSVersion copyWithZone:zone];
   v9 = *(v5 + 96);
   *(v5 + 96) = v8;
 
-  v10 = [(NSString *)self->_lastUpdateAlgorithmVersion copyWithZone:a3];
+  v10 = [(NSString *)self->_lastUpdateAlgorithmVersion copyWithZone:zone];
   v11 = *(v5 + 88);
   *(v5 + 88) = v10;
 
-  v12 = [(NSData *)self->_assetData copyWithZone:a3];
+  v12 = [(NSData *)self->_assetData copyWithZone:zone];
   v13 = *(v5 + 40);
   *(v5 + 40) = v12;
 
@@ -258,44 +258,44 @@
     *(v5 + 112) |= 1u;
   }
 
-  v14 = [(NSString *)self->_enrollmentIdentifier copyWithZone:a3];
+  v14 = [(NSString *)self->_enrollmentIdentifier copyWithZone:zone];
   v15 = *(v5 + 72);
   *(v5 + 72) = v14;
 
-  v16 = [(NSData *)self->_creatorAttest copyWithZone:a3];
+  v16 = [(NSData *)self->_creatorAttest copyWithZone:zone];
   v17 = *(v5 + 48);
   *(v5 + 48) = v16;
 
-  v18 = [(NSData *)self->_serverAttest copyWithZone:a3];
+  v18 = [(NSData *)self->_serverAttest copyWithZone:zone];
   v19 = *(v5 + 104);
   *(v5 + 104) = v18;
 
-  v20 = [(NSString *)self->_deviceIdentifier copyWithZone:a3];
+  v20 = [(NSString *)self->_deviceIdentifier copyWithZone:zone];
   v21 = *(v5 + 56);
   *(v5 + 56) = v20;
 
-  v22 = [(NSString *)self->_deviceName copyWithZone:a3];
+  v22 = [(NSString *)self->_deviceName copyWithZone:zone];
   v23 = *(v5 + 64);
   *(v5 + 64) = v22;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
-  if (self->_type != *(v4 + 4))
+  if (self->_type != *(equalCopy + 4))
   {
     goto LABEL_28;
   }
 
   label = self->_label;
-  if (label | *(v4 + 10))
+  if (label | *(equalCopy + 10))
   {
     if (![(NSString *)label isEqual:?])
     {
@@ -303,18 +303,18 @@
     }
   }
 
-  if (self->_creationTime != *(v4 + 2))
+  if (self->_creationTime != *(equalCopy + 2))
   {
     goto LABEL_28;
   }
 
-  if (self->_lastUpdatedTime != *(v4 + 3))
+  if (self->_lastUpdatedTime != *(equalCopy + 3))
   {
     goto LABEL_28;
   }
 
   lastUpdateOSVersion = self->_lastUpdateOSVersion;
-  if (lastUpdateOSVersion | *(v4 + 12))
+  if (lastUpdateOSVersion | *(equalCopy + 12))
   {
     if (![(NSString *)lastUpdateOSVersion isEqual:?])
     {
@@ -323,7 +323,7 @@
   }
 
   lastUpdateAlgorithmVersion = self->_lastUpdateAlgorithmVersion;
-  if (lastUpdateAlgorithmVersion | *(v4 + 11))
+  if (lastUpdateAlgorithmVersion | *(equalCopy + 11))
   {
     if (![(NSString *)lastUpdateAlgorithmVersion isEqual:?])
     {
@@ -332,7 +332,7 @@
   }
 
   assetData = self->_assetData;
-  if (assetData | *(v4 + 5))
+  if (assetData | *(equalCopy + 5))
   {
     if (![(NSData *)assetData isEqual:?])
     {
@@ -340,16 +340,16 @@
     }
   }
 
-  v9 = *(v4 + 112);
+  v9 = *(equalCopy + 112);
   if (*&self->_has)
   {
-    if ((*(v4 + 112) & 1) == 0 || self->_assetState != *(v4 + 1))
+    if ((*(equalCopy + 112) & 1) == 0 || self->_assetState != *(equalCopy + 1))
     {
       goto LABEL_28;
     }
   }
 
-  else if (*(v4 + 112))
+  else if (*(equalCopy + 112))
   {
 LABEL_28:
     v15 = 0;
@@ -357,13 +357,13 @@ LABEL_28:
   }
 
   enrollmentIdentifier = self->_enrollmentIdentifier;
-  if (enrollmentIdentifier | *(v4 + 9) && ![(NSString *)enrollmentIdentifier isEqual:?])
+  if (enrollmentIdentifier | *(equalCopy + 9) && ![(NSString *)enrollmentIdentifier isEqual:?])
   {
     goto LABEL_28;
   }
 
   creatorAttest = self->_creatorAttest;
-  if (creatorAttest | *(v4 + 6))
+  if (creatorAttest | *(equalCopy + 6))
   {
     if (![(NSData *)creatorAttest isEqual:?])
     {
@@ -372,7 +372,7 @@ LABEL_28:
   }
 
   serverAttest = self->_serverAttest;
-  if (serverAttest | *(v4 + 13))
+  if (serverAttest | *(equalCopy + 13))
   {
     if (![(NSData *)serverAttest isEqual:?])
     {
@@ -381,7 +381,7 @@ LABEL_28:
   }
 
   deviceIdentifier = self->_deviceIdentifier;
-  if (deviceIdentifier | *(v4 + 7))
+  if (deviceIdentifier | *(equalCopy + 7))
   {
     if (![(NSString *)deviceIdentifier isEqual:?])
     {
@@ -390,7 +390,7 @@ LABEL_28:
   }
 
   deviceName = self->_deviceName;
-  if (deviceName | *(v4 + 8))
+  if (deviceName | *(equalCopy + 8))
   {
     v15 = [(NSString *)deviceName isEqual:?];
   }
@@ -489,71 +489,71 @@ LABEL_29:
   return v27 ^ v31 ^ [(NSString *)self->_deviceName hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_type = *(v4 + 4);
-  v5 = v4;
-  if (*(v4 + 10))
+  fromCopy = from;
+  self->_type = *(fromCopy + 4);
+  v5 = fromCopy;
+  if (*(fromCopy + 10))
   {
     [(MASDPlainAsset *)self setLabel:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  self->_creationTime = *(v4 + 2);
-  self->_lastUpdatedTime = *(v4 + 3);
-  if (*(v4 + 12))
+  self->_creationTime = *(fromCopy + 2);
+  self->_lastUpdatedTime = *(fromCopy + 3);
+  if (*(fromCopy + 12))
   {
     [(MASDPlainAsset *)self setLastUpdateOSVersion:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(MASDPlainAsset *)self setLastUpdateAlgorithmVersion:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(MASDPlainAsset *)self setAssetData:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 112))
+  if (*(fromCopy + 112))
   {
-    self->_assetState = *(v4 + 1);
+    self->_assetState = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(MASDPlainAsset *)self setEnrollmentIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(MASDPlainAsset *)self setCreatorAttest:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(MASDPlainAsset *)self setServerAttest:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(MASDPlainAsset *)self setDeviceIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(MASDPlainAsset *)self setDeviceName:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

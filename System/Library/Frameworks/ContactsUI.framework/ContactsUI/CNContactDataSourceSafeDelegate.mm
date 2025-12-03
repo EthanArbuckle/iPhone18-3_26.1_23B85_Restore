@@ -1,7 +1,7 @@
 @interface CNContactDataSourceSafeDelegate
 - (CNContactDataSourceDelegate)delegate;
-- (CNContactDataSourceSafeDelegate)initWithDelegate:(id)a3;
-- (void)contactDataSourceDidChange:(id)a3;
+- (CNContactDataSourceSafeDelegate)initWithDelegate:(id)delegate;
+- (void)contactDataSourceDidChange:(id)change;
 @end
 
 @implementation CNContactDataSourceSafeDelegate
@@ -13,29 +13,29 @@
   return WeakRetained;
 }
 
-- (void)contactDataSourceDidChange:(id)a3
+- (void)contactDataSourceDidChange:(id)change
 {
-  v7 = a3;
-  v4 = [(CNContactDataSourceSafeDelegate *)self delegate];
+  changeCopy = change;
+  delegate = [(CNContactDataSourceSafeDelegate *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CNContactDataSourceSafeDelegate *)self delegate];
-    [v6 contactDataSourceDidChange:v7];
+    delegate2 = [(CNContactDataSourceSafeDelegate *)self delegate];
+    [delegate2 contactDataSourceDidChange:changeCopy];
   }
 }
 
-- (CNContactDataSourceSafeDelegate)initWithDelegate:(id)a3
+- (CNContactDataSourceSafeDelegate)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = CNContactDataSourceSafeDelegate;
   v5 = [(CNContactDataSourceSafeDelegate *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = v6;
   }
 

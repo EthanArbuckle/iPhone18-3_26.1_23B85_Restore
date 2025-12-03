@@ -1,12 +1,12 @@
 @interface BKTouchDeliveryPolicyServer
 + (id)sharedServer;
 - (BKTouchDeliveryPolicyServer)init;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)shouldCancelTouchesDeliveredToContextId:(unsigned int)a3 withInitialTouchTimestamp:(double)a4;
-- (id)filterDestinations:(id)a3;
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)shouldCancelTouchesDeliveredToContextId:(unsigned int)id withInitialTouchTimestamp:(double)timestamp;
+- (id)filterDestinations:(id)destinations;
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply;
 - (void)dealloc;
-- (void)ipc_addPolicy:(id)a3;
+- (void)ipc_addPolicy:(id)policy;
 @end
 
 @implementation BKTouchDeliveryPolicyServer
@@ -23,31 +23,31 @@
   return v3;
 }
 
-- (BOOL)shouldCancelTouchesDeliveredToContextId:(unsigned int)a3 withInitialTouchTimestamp:(double)a4
+- (BOOL)shouldCancelTouchesDeliveredToContextId:(unsigned int)id withInitialTouchTimestamp:(double)timestamp
 {
-  v6 = [(BKTouchDeliveryPolicyServer *)self _policy];
+  _policy = [(BKTouchDeliveryPolicyServer *)self _policy];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000A0974;
   v10[3] = &unk_1000FD648;
-  v11 = a3;
-  *&v10[4] = a4;
-  v7 = [v6 reducePolicyToObjectWithBlock:v10];
-  v8 = [v7 BOOLValue];
+  idCopy = id;
+  *&v10[4] = timestamp;
+  v7 = [_policy reducePolicyToObjectWithBlock:v10];
+  bOOLValue = [v7 BOOLValue];
 
-  return v8;
+  return bOOLValue;
 }
 
-- (id)filterDestinations:(id)a3
+- (id)filterDestinations:(id)destinations
 {
-  v4 = a3;
-  v24 = [(BKTouchDeliveryPolicyServer *)self _policy];
+  destinationsCopy = destinations;
+  _policy = [(BKTouchDeliveryPolicyServer *)self _policy];
   v5 = [[NSMutableArray alloc] initWithCapacity:8];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v4;
+  obj = destinationsCopy;
   v6 = [obj countByEnumeratingWithState:&v28 objects:v38 count:16];
   if (v6)
   {
@@ -109,8 +109,8 @@ LABEL_16:
           v8 = v11;
           v26 = v8;
           v27 = v12;
-          v14 = [v24 reducePolicyToObjectWithBlock:v25];
-          v15 = [v14 BOOLValue];
+          v14 = [_policy reducePolicyToObjectWithBlock:v25];
+          bOOLValue = [v14 BOOLValue];
           v16 = BKLogTouchDeliveryPolicy();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
           {
@@ -130,11 +130,11 @@ LABEL_16:
             v34 = 1024;
             v35 = v20;
             v36 = 1024;
-            v37 = v15;
+            v37 = bOOLValue;
             _os_log_debug_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "%X -> %X: %{BOOL}u", buf, 0x14u);
           }
 
-          if (!v15)
+          if (!bOOLValue)
           {
 
             goto LABEL_27;
@@ -169,50 +169,50 @@ LABEL_27:
   return v5;
 }
 
-- (void)ipc_addPolicy:(id)a3
+- (void)ipc_addPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000A1008;
   v10[3] = &unk_1000FD4D0;
   v10[4] = self;
-  v5 = [v4 reducePolicyToObjectWithBlock:v10];
-  v6 = [(BKTouchDeliveryPolicyServer *)self _policy];
-  v7 = [v6 policyIncludingPolicy:v4];
+  v5 = [policyCopy reducePolicyToObjectWithBlock:v10];
+  _policy = [(BKTouchDeliveryPolicyServer *)self _policy];
+  v7 = [_policy policyIncludingPolicy:policyCopy];
   [(BKTouchDeliveryPolicyServer *)self _queue_setPolicy:v7];
 
   v8 = BKLogTouchDeliveryPolicy();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(BKTouchDeliveryPolicyServer *)self _policy];
+    _policy2 = [(BKTouchDeliveryPolicyServer *)self _policy];
     *buf = 138543618;
-    v12 = v4;
+    v12 = policyCopy;
     v13 = 2114;
-    v14 = v9;
+    v14 = _policy2;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "TDPS server got new policy %{public}@, [self _policy] is now %{public}@", buf, 0x16u);
   }
 }
 
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply
 {
-  v6 = a3;
-  v7 = a4;
-  if (sel_isEqual([v7 selector], "ipc_addPolicy:"))
+  connectionCopy = connection;
+  invocationCopy = invocation;
+  if (sel_isEqual([invocationCopy selector], "ipc_addPolicy:"))
   {
     v18 = 0;
-    [v7 getArgument:&v18 atIndex:2];
+    [invocationCopy getArgument:&v18 atIndex:2];
     v8 = v18;
     v13 = _NSConcreteStackBlock;
     v14 = 3221225472;
     v15 = sub_1000A1558;
     v16 = &unk_1000FD4D0;
-    v9 = v6;
+    v9 = connectionCopy;
     v17 = v9;
     v10 = [v8 reducePolicyToObjectWithBlock:&v13];
     if ([v10 BOOLValue])
     {
-      [v7 invoke];
+      [invocationCopy invoke];
     }
 
     else
@@ -231,17 +231,17 @@ LABEL_27:
 
   else
   {
-    [v7 invoke];
+    [invocationCopy invoke];
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = BKLogTouchDeliveryPolicy();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    [v5 processIdentifier];
+    [connectionCopy processIdentifier];
     v7 = BSProcessDescriptionForPID();
     v10 = 138543362;
     v11 = v7;
@@ -249,12 +249,12 @@ LABEL_27:
   }
 
   v8 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___BKSTouchDeliveryPolicyServerInterface];
-  [v5 setExportedInterface:v8];
+  [connectionCopy setExportedInterface:v8];
 
-  [v5 setExportedObject:self];
-  [v5 _setQueue:self->_queue];
-  [v5 setDelegate:self];
-  [v5 resume];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy _setQueue:self->_queue];
+  [connectionCopy setDelegate:self];
+  [connectionCopy resume];
 
   return 1;
 }

@@ -8,7 +8,7 @@
 - (id)SHA1Hash
 {
   v5 = *MEMORY[0x277D85DE8];
-  CC_SHA1([a1 bytes], objc_msgSend(a1, "length"), md);
+  CC_SHA1([self bytes], objc_msgSend(self, "length"), md);
   v1 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:md length:20];
   v2 = *MEMORY[0x277D85DE8];
 
@@ -18,11 +18,11 @@
 - (id)hexEncoding
 {
   v2 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  v3 = [a1 length];
-  v4 = [a1 bytes];
+  v3 = [self length];
+  bytes = [self bytes];
   if (v3)
   {
-    v5 = v4;
+    v5 = bytes;
     do
     {
       v6 = *v5++;

@@ -1,38 +1,38 @@
 @interface HFServiceItemProvider
 - (HFCharacteristicValueSource)valueSource;
-- (HFServiceItemProvider)initWithHome:(id)a3 serviceTypes:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HFServiceItemProvider)initWithHome:(id)home serviceTypes:(id)types;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)invalidationReasons;
 - (id)reloadItems;
 @end
 
 @implementation HFServiceItemProvider
 
-- (HFServiceItemProvider)initWithHome:(id)a3 serviceTypes:(id)a4
+- (HFServiceItemProvider)initWithHome:(id)home serviceTypes:(id)types
 {
-  v7 = a3;
-  v8 = a4;
+  homeCopy = home;
+  typesCopy = types;
   v17.receiver = self;
   v17.super_class = HFServiceItemProvider;
   v9 = [(HFItemProvider *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    v11 = &OBJC_IVAR___HFServiceItemProvider__home;
-    objc_storeStrong(&v9->_home, a3);
+    hf_standardServiceTypes = &OBJC_IVAR___HFServiceItemProvider__home;
+    objc_storeStrong(&v9->_home, home);
     v12 = [MEMORY[0x277CBEB58] set];
     serviceItems = v10->_serviceItems;
     v10->_serviceItems = v12;
 
-    v14 = [v8 copy];
-    v15 = v14;
+    v14 = [typesCopy copy];
+    allObjects = v14;
     if (!v14)
     {
-      v11 = [MEMORY[0x277CD1D90] hf_standardServiceTypes];
-      v15 = [v11 allObjects];
+      hf_standardServiceTypes = [MEMORY[0x277CD1D90] hf_standardServiceTypes];
+      allObjects = [hf_standardServiceTypes allObjects];
     }
 
-    objc_storeStrong(&v10->_serviceTypes, v15);
+    objc_storeStrong(&v10->_serviceTypes, allObjects);
     if (!v14)
     {
     }
@@ -41,12 +41,12 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFServiceItemProvider *)self home];
-  v6 = [(HFServiceItemProvider *)self serviceTypes];
-  v7 = [v4 initWithHome:v5 serviceTypes:v6];
+  home = [(HFServiceItemProvider *)self home];
+  serviceTypes = [(HFServiceItemProvider *)self serviceTypes];
+  v7 = [v4 initWithHome:home serviceTypes:serviceTypes];
 
   return v7;
 }
@@ -201,11 +201,11 @@ id __36__HFServiceItemProvider_reloadItems__block_invoke_5(uint64_t a1, void *a2
   v8[2] = *MEMORY[0x277D85DE8];
   v7.receiver = self;
   v7.super_class = HFServiceItemProvider;
-  v2 = [(HFItemProvider *)&v7 invalidationReasons];
+  invalidationReasons = [(HFItemProvider *)&v7 invalidationReasons];
   v8[0] = @"service";
   v8[1] = @"accessory";
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];
-  v4 = [v2 setByAddingObjectsFromArray:v3];
+  v4 = [invalidationReasons setByAddingObjectsFromArray:v3];
 
   v5 = *MEMORY[0x277D85DE8];
 
@@ -214,20 +214,20 @@ id __36__HFServiceItemProvider_reloadItems__block_invoke_5(uint64_t a1, void *a2
 
 - (HFCharacteristicValueSource)valueSource
 {
-  v3 = [(HFServiceItemProvider *)self overrideValueSource];
+  overrideValueSource = [(HFServiceItemProvider *)self overrideValueSource];
 
-  if (v3)
+  if (overrideValueSource)
   {
-    v4 = [(HFServiceItemProvider *)self overrideValueSource];
+    overrideValueSource2 = [(HFServiceItemProvider *)self overrideValueSource];
   }
 
   else
   {
-    v5 = [(HFServiceItemProvider *)self home];
-    v4 = [v5 hf_characteristicValueManager];
+    home = [(HFServiceItemProvider *)self home];
+    overrideValueSource2 = [home hf_characteristicValueManager];
   }
 
-  return v4;
+  return overrideValueSource2;
 }
 
 @end

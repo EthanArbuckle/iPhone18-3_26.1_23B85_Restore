@@ -1,10 +1,10 @@
 @interface VCAudioRelayIOControllerSettings
-- (VCAudioRelayIOControllerSettings)initWithAudioFormat:(const tagVCAudioFrameFormat *)a3 remoteCodecInfo:(const _VCRemoteCodecInfo *)a4;
+- (VCAudioRelayIOControllerSettings)initWithAudioFormat:(const tagVCAudioFrameFormat *)format remoteCodecInfo:(const _VCRemoteCodecInfo *)info;
 @end
 
 @implementation VCAudioRelayIOControllerSettings
 
-- (VCAudioRelayIOControllerSettings)initWithAudioFormat:(const tagVCAudioFrameFormat *)a3 remoteCodecInfo:(const _VCRemoteCodecInfo *)a4
+- (VCAudioRelayIOControllerSettings)initWithAudioFormat:(const tagVCAudioFrameFormat *)format remoteCodecInfo:(const _VCRemoteCodecInfo *)info
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -12,12 +12,12 @@
   result = [(VCAudioRelayIOControllerSettings *)&v9 init];
   if (result)
   {
-    v7 = *&a3->format.mSampleRate;
-    v8 = *&a3->format.mBytesPerPacket;
-    *&result->_audioFormat.format.mBitsPerChannel = *&a3->format.mBitsPerChannel;
+    v7 = *&format->format.mSampleRate;
+    v8 = *&format->format.mBytesPerPacket;
+    *&result->_audioFormat.format.mBitsPerChannel = *&format->format.mBitsPerChannel;
     *&result->_audioFormat.format.mBytesPerPacket = v8;
     *&result->_audioFormat.format.mSampleRate = v7;
-    result->_remoteCodecInfo = *a4;
+    result->_remoteCodecInfo = *info;
   }
 
   return result;

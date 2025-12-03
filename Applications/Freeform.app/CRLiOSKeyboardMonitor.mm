@@ -1,7 +1,7 @@
 @interface CRLiOSKeyboardMonitor
-+ (BOOL)isKeyboardFrameChanging:(id)a3;
-+ (BOOL)isLocalKeyboardForNotification:(id)a3;
-+ (BOOL)isNullInputView:(id)a3;
++ (BOOL)isKeyboardFrameChanging:(id)changing;
++ (BOOL)isLocalKeyboardForNotification:(id)notification;
++ (BOOL)isNullInputView:(id)view;
 + (BOOL)keyboardIsAnimating;
 + (BOOL)keyboardIsAnimatingInOrDocking;
 + (BOOL)keyboardIsAnimatingOutOrUndocking;
@@ -9,39 +9,39 @@
 + (BOOL)keyboardIsVisibleAndUndocked;
 + (BOOL)undockedKeyboardWillHide;
 + (BOOL)undockedKeyboardWillShow;
-+ (CGRect)p_localKeyboardFrameFromReportedFrame:(CGRect)a3 screenBounds:(CGRect)a4 inputView:(id)a5;
++ (CGRect)p_localKeyboardFrameFromReportedFrame:(CGRect)frame screenBounds:(CGRect)bounds inputView:(id)view;
 + (id)sharedKeyboardMonitor;
-+ (void)addKeyboardObserver:(id)a3;
-+ (void)addModalKeyboardObserver:(id)a3;
-+ (void)afterKeyboardAnimationPerformBlock:(id)a3;
-+ (void)removeKeyboardObserver:(id)a3;
-+ (void)removeModalKeyboardObserver:(id)a3;
-- (BOOL)p_isFrameCorrespondingToRotatedKeyboard:(CGRect)a3;
-- (BOOL)p_isFrameCorrespondingToUndockedKeyboard:(CGRect)a3;
-- (BOOL)p_isNotificationCorrespondingToUndockedKeyboardWillHide:(id)a3;
-- (BOOL)p_isNotificationCorrespondingToUndockedKeyboardWillShow:(id)a3;
++ (void)addKeyboardObserver:(id)observer;
++ (void)addModalKeyboardObserver:(id)observer;
++ (void)afterKeyboardAnimationPerformBlock:(id)block;
++ (void)removeKeyboardObserver:(id)observer;
++ (void)removeModalKeyboardObserver:(id)observer;
+- (BOOL)p_isFrameCorrespondingToRotatedKeyboard:(CGRect)keyboard;
+- (BOOL)p_isFrameCorrespondingToUndockedKeyboard:(CGRect)keyboard;
+- (BOOL)p_isNotificationCorrespondingToUndockedKeyboardWillHide:(id)hide;
+- (BOOL)p_isNotificationCorrespondingToUndockedKeyboardWillShow:(id)show;
 - (CGRect)keyboardFrame;
 - (CRLiOSKeyboardMonitor)init;
-- (double)onScreenHeightInWindow:(id)a3;
-- (double)p_verticalSpacingFromWindow:(id)a3 toWindow:(id)a4;
+- (double)onScreenHeightInWindow:(id)window;
+- (double)p_verticalSpacingFromWindow:(id)window toWindow:(id)toWindow;
 - (id)p_observersToNotify;
-- (void)addKeyboardObserver:(id)a3;
-- (void)addModalKeyboardObserver:(id)a3;
-- (void)afterKeyboardAnimationPerformBlock:(id)a3;
+- (void)addKeyboardObserver:(id)observer;
+- (void)addModalKeyboardObserver:(id)observer;
+- (void)afterKeyboardAnimationPerformBlock:(id)block;
 - (void)p_clearKeyboardIsAnimatingInTimer;
-- (void)p_enumerateObserversUsingBlock:(id)a3;
+- (void)p_enumerateObserversUsingBlock:(id)block;
 - (void)p_installKeyboardNotifications;
-- (void)p_keyboardDidChangeFrame:(id)a3;
-- (void)p_keyboardDidHideOrUndock:(id)a3;
-- (void)p_keyboardDidShowOrDock:(id)a3;
-- (void)p_keyboardWillChangeFrame:(id)a3;
-- (void)p_keyboardWillHideOrUndock:(id)a3;
-- (void)p_keyboardWillShowOrDock:(id)a3;
-- (void)p_performAnimationCompletionBlocksWithVisible:(BOOL)a3;
+- (void)p_keyboardDidChangeFrame:(id)frame;
+- (void)p_keyboardDidHideOrUndock:(id)undock;
+- (void)p_keyboardDidShowOrDock:(id)dock;
+- (void)p_keyboardWillChangeFrame:(id)frame;
+- (void)p_keyboardWillHideOrUndock:(id)undock;
+- (void)p_keyboardWillShowOrDock:(id)dock;
+- (void)p_performAnimationCompletionBlocksWithVisible:(BOOL)visible;
 - (void)p_scheduleKeyboardIsAnimatingInTimer;
-- (void)p_updateKeyboardInfoFromNotification:(id)a3;
-- (void)removeKeyboardObserver:(id)a3;
-- (void)removeModalKeyboardObserver:(id)a3;
+- (void)p_updateKeyboardInfoFromNotification:(id)notification;
+- (void)removeKeyboardObserver:(id)observer;
+- (void)removeModalKeyboardObserver:(id)observer;
 @end
 
 @implementation CRLiOSKeyboardMonitor
@@ -97,34 +97,34 @@
   [v3 addObserver:self selector:"p_keyboardDidChangeFrame:" name:UIKeyboardDidChangeFrameNotification object:0];
 }
 
-- (void)p_enumerateObserversUsingBlock:(id)a3
+- (void)p_enumerateObserversUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(CRLiOSKeyboardMonitor *)self p_observersToNotify];
+  blockCopy = block;
+  p_observersToNotify = [(CRLiOSKeyboardMonitor *)self p_observersToNotify];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1003A705C;
   v7[3] = &unk_10185BAB8;
-  v8 = v4;
-  v6 = v4;
-  [v5 crl_enumerateNonNullPointersUsingBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [p_observersToNotify crl_enumerateNonNullPointersUsingBlock:v7];
 }
 
 - (id)p_observersToNotify
 {
-  v3 = [(CRLiOSKeyboardMonitor *)self modalKeyboardObservers];
-  v4 = [v3 count];
+  modalKeyboardObservers = [(CRLiOSKeyboardMonitor *)self modalKeyboardObservers];
+  v4 = [modalKeyboardObservers count];
 
   if (v4)
   {
-    v5 = +[NSHashTable weakObjectsHashTable];
+    keyboardObservers2 = +[NSHashTable weakObjectsHashTable];
     v6 = +[NSPointerArray weakObjectsPointerArray];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v7 = [(CRLiOSKeyboardMonitor *)self modalKeyboardObservers];
-    v8 = [v7 countByEnumeratingWithState:&v27 objects:v32 count:16];
+    modalKeyboardObservers2 = [(CRLiOSKeyboardMonitor *)self modalKeyboardObservers];
+    v8 = [modalKeyboardObservers2 countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v8)
     {
       v9 = v8;
@@ -135,16 +135,16 @@
         {
           if (*v28 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(modalKeyboardObservers2);
           }
 
           v12 = *(*(&v27 + 1) + 8 * i);
-          v13 = [v12 keyboardObserversWindow];
-          [v5 addObject:v13];
+          keyboardObserversWindow = [v12 keyboardObserversWindow];
+          [keyboardObservers2 addObject:keyboardObserversWindow];
           [v6 addPointer:v12];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v27 objects:v32 count:16];
+        v9 = [modalKeyboardObservers2 countByEnumeratingWithState:&v27 objects:v32 count:16];
       }
 
       while (v9);
@@ -154,8 +154,8 @@
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v14 = [(CRLiOSKeyboardMonitor *)self keyboardObservers];
-    v15 = [v14 countByEnumeratingWithState:&v23 objects:v31 count:16];
+    keyboardObservers = [(CRLiOSKeyboardMonitor *)self keyboardObservers];
+    v15 = [keyboardObservers countByEnumeratingWithState:&v23 objects:v31 count:16];
     if (v15)
     {
       v16 = v15;
@@ -166,12 +166,12 @@
         {
           if (*v24 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(keyboardObservers);
           }
 
           v19 = *(*(&v23 + 1) + 8 * j);
-          v20 = [v19 keyboardObserversWindow];
-          v21 = [v5 containsObject:v20];
+          keyboardObserversWindow2 = [v19 keyboardObserversWindow];
+          v21 = [keyboardObservers2 containsObject:keyboardObserversWindow2];
 
           if ((v21 & 1) == 0)
           {
@@ -179,7 +179,7 @@
           }
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v23 objects:v31 count:16];
+        v16 = [keyboardObservers countByEnumeratingWithState:&v23 objects:v31 count:16];
       }
 
       while (v16);
@@ -188,16 +188,16 @@
 
   else
   {
-    v5 = [(CRLiOSKeyboardMonitor *)self keyboardObservers];
-    v6 = [v5 copy];
+    keyboardObservers2 = [(CRLiOSKeyboardMonitor *)self keyboardObservers];
+    v6 = [keyboardObservers2 copy];
   }
 
   return v6;
 }
 
-- (void)p_keyboardWillShowOrDock:(id)a3
+- (void)p_keyboardWillShowOrDock:(id)dock
 {
-  v4 = a3;
+  dockCopy = dock;
   if (qword_101AD5B40 != -1)
   {
     sub_101361FE4();
@@ -211,14 +211,14 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  [(CRLiOSKeyboardMonitor *)self p_updateKeyboardInfoFromNotification:v4];
+  [(CRLiOSKeyboardMonitor *)self p_updateKeyboardInfoFromNotification:dockCopy];
   width = self->_keyboardFrame.size.width;
   if (width == 0.0 || fabs(width) < 0.00999999978 || (height = self->_keyboardFrame.size.height, height == 0.0) || fabs(height) < 0.00999999978 || (onScreenHeight = self->_onScreenHeight, onScreenHeight == 0.0) || fabs(onScreenHeight) < 0.00999999978)
   {
     self->_weAreFakingAHideEvent = 1;
     if (self->_keyboardIsVisibleAndDocked)
     {
-      [(CRLiOSKeyboardMonitor *)self p_keyboardWillHideOrUndock:v4];
+      [(CRLiOSKeyboardMonitor *)self p_keyboardWillHideOrUndock:dockCopy];
     }
 
     else
@@ -242,14 +242,14 @@
     v9[1] = 3221225472;
     v9[2] = sub_1003A7558;
     v9[3] = &unk_10185BB40;
-    v10 = v4;
+    v10 = dockCopy;
     [(CRLiOSKeyboardMonitor *)self p_enumerateObserversUsingBlock:v9];
   }
 }
 
-- (void)p_keyboardDidShowOrDock:(id)a3
+- (void)p_keyboardDidShowOrDock:(id)dock
 {
-  v4 = a3;
+  dockCopy = dock;
   if (qword_101AD5B40 != -1)
   {
     sub_101361FF8();
@@ -267,7 +267,7 @@
   {
     if (!self->_suppressDidHide)
     {
-      [(CRLiOSKeyboardMonitor *)self p_keyboardDidHideOrUndock:v4];
+      [(CRLiOSKeyboardMonitor *)self p_keyboardDidHideOrUndock:dockCopy];
     }
 
     *&self->_weAreFakingAHideEvent = 256;
@@ -276,22 +276,22 @@
 
   else if (self->_keyboardIsAnimatingInOrDocking)
   {
-    [(CRLiOSKeyboardMonitor *)self p_updateKeyboardInfoFromNotification:v4];
+    [(CRLiOSKeyboardMonitor *)self p_updateKeyboardInfoFromNotification:dockCopy];
     self->_keyboardIsAnimatingInOrDocking = 0;
     [(CRLiOSKeyboardMonitor *)self p_clearKeyboardIsAnimatingInTimer];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1003A7798;
     v6[3] = &unk_10185BB40;
-    v7 = v4;
+    v7 = dockCopy;
     [(CRLiOSKeyboardMonitor *)self p_enumerateObserversUsingBlock:v6];
     [(CRLiOSKeyboardMonitor *)self p_performAnimationCompletionBlocksWithVisible:1];
   }
 }
 
-- (void)p_keyboardWillHideOrUndock:(id)a3
+- (void)p_keyboardWillHideOrUndock:(id)undock
 {
-  v4 = a3;
+  undockCopy = undock;
   if (qword_101AD5B40 != -1)
   {
     sub_10136200C();
@@ -306,7 +306,7 @@
   }
 
   self->_suppressDidHide = 0;
-  [(CRLiOSKeyboardMonitor *)self p_updateKeyboardInfoFromNotification:v4];
+  [(CRLiOSKeyboardMonitor *)self p_updateKeyboardInfoFromNotification:undockCopy];
   if (self->_keyboardIsAnimatingInOrDocking)
   {
     self->_keyboardIsAnimatingInOrDocking = 0;
@@ -322,14 +322,14 @@
     v6[1] = 3221225472;
     v6[2] = sub_1003A7A1C;
     v6[3] = &unk_10185BB40;
-    v7 = v4;
+    v7 = undockCopy;
     [(CRLiOSKeyboardMonitor *)self p_enumerateObserversUsingBlock:v6];
   }
 }
 
-- (void)p_keyboardDidHideOrUndock:(id)a3
+- (void)p_keyboardDidHideOrUndock:(id)undock
 {
-  v4 = a3;
+  undockCopy = undock;
   if (qword_101AD5B40 != -1)
   {
     sub_101362020();
@@ -345,13 +345,13 @@
 
   if (self->_keyboardIsAnimatingOutOrUndocking)
   {
-    [(CRLiOSKeyboardMonitor *)self p_updateKeyboardInfoFromNotification:v4];
+    [(CRLiOSKeyboardMonitor *)self p_updateKeyboardInfoFromNotification:undockCopy];
     self->_keyboardIsAnimatingOutOrUndocking = 0;
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1003A7C28;
     v6[3] = &unk_10185BB40;
-    v7 = v4;
+    v7 = undockCopy;
     [(CRLiOSKeyboardMonitor *)self p_enumerateObserversUsingBlock:v6];
     [(CRLiOSKeyboardMonitor *)self p_performAnimationCompletionBlocksWithVisible:0];
     self->_lastHideWasFake = 0;
@@ -360,16 +360,16 @@
 
 - (void)p_clearKeyboardIsAnimatingInTimer
 {
-  v3 = [(CRLiOSKeyboardMonitor *)self keyboardIsAnimatingInTimer];
-  [v3 invalidate];
+  keyboardIsAnimatingInTimer = [(CRLiOSKeyboardMonitor *)self keyboardIsAnimatingInTimer];
+  [keyboardIsAnimatingInTimer invalidate];
 
   [(CRLiOSKeyboardMonitor *)self setKeyboardIsAnimatingInTimer:0];
 }
 
 - (void)p_scheduleKeyboardIsAnimatingInTimer
 {
-  v3 = [(CRLiOSKeyboardMonitor *)self keyboardIsAnimatingInTimer];
-  [v3 invalidate];
+  keyboardIsAnimatingInTimer = [(CRLiOSKeyboardMonitor *)self keyboardIsAnimatingInTimer];
+  [keyboardIsAnimatingInTimer invalidate];
 
   objc_initWeak(&location, self);
   v5 = _NSConcreteStackBlock;
@@ -384,40 +384,40 @@
   objc_destroyWeak(&location);
 }
 
-- (void)addKeyboardObserver:(id)a3
+- (void)addKeyboardObserver:(id)observer
 {
-  v7 = a3;
-  v4 = [(CRLiOSKeyboardMonitor *)self keyboardObservers];
-  v5 = [v4 crl_indexOfPointer:v7];
+  observerCopy = observer;
+  keyboardObservers = [(CRLiOSKeyboardMonitor *)self keyboardObservers];
+  v5 = [keyboardObservers crl_indexOfPointer:observerCopy];
 
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [(CRLiOSKeyboardMonitor *)self keyboardObservers];
-    [v6 addPointer:v7];
+    keyboardObservers2 = [(CRLiOSKeyboardMonitor *)self keyboardObservers];
+    [keyboardObservers2 addPointer:observerCopy];
   }
 }
 
-- (void)removeKeyboardObserver:(id)a3
+- (void)removeKeyboardObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CRLiOSKeyboardMonitor *)self keyboardObservers];
-  v6 = [v5 crl_indexOfPointer:v4];
+  observerCopy = observer;
+  keyboardObservers = [(CRLiOSKeyboardMonitor *)self keyboardObservers];
+  v6 = [keyboardObservers crl_indexOfPointer:observerCopy];
 
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [(CRLiOSKeyboardMonitor *)self keyboardObservers];
-    [v7 removePointerAtIndex:v6];
+    keyboardObservers2 = [(CRLiOSKeyboardMonitor *)self keyboardObservers];
+    [keyboardObservers2 removePointerAtIndex:v6];
   }
 
-  v8 = [(CRLiOSKeyboardMonitor *)self keyboardObservers];
-  [v8 compact];
+  keyboardObservers3 = [(CRLiOSKeyboardMonitor *)self keyboardObservers];
+  [keyboardObservers3 compact];
 }
 
-- (void)addModalKeyboardObserver:(id)a3
+- (void)addModalKeyboardObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CRLiOSKeyboardMonitor *)self modalKeyboardObservers];
-  v6 = [v5 containsObject:v4];
+  observerCopy = observer;
+  modalKeyboardObservers = [(CRLiOSKeyboardMonitor *)self modalKeyboardObservers];
+  v6 = [modalKeyboardObservers containsObject:observerCopy];
 
   if (v6)
   {
@@ -450,21 +450,21 @@
 
   else
   {
-    v10 = [(CRLiOSKeyboardMonitor *)self modalKeyboardObservers];
-    [v10 addObject:v4];
+    modalKeyboardObservers2 = [(CRLiOSKeyboardMonitor *)self modalKeyboardObservers];
+    [modalKeyboardObservers2 addObject:observerCopy];
   }
 }
 
-- (void)removeModalKeyboardObserver:(id)a3
+- (void)removeModalKeyboardObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CRLiOSKeyboardMonitor *)self modalKeyboardObservers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  modalKeyboardObservers = [(CRLiOSKeyboardMonitor *)self modalKeyboardObservers];
+  [modalKeyboardObservers removeObject:observerCopy];
 }
 
-- (void)afterKeyboardAnimationPerformBlock:(id)a3
+- (void)afterKeyboardAnimationPerformBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (qword_101AD5B40 != -1)
   {
     sub_1013621CC();
@@ -479,51 +479,51 @@
   }
 
   completionBlocks = self->_completionBlocks;
-  v7 = [v4 copy];
+  v7 = [blockCopy copy];
   v8 = objc_retainBlock(v7);
   [(NSMutableArray *)completionBlocks addObject:v8];
 }
 
-+ (void)addKeyboardObserver:(id)a3
++ (void)addKeyboardObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [a1 sharedKeyboardMonitor];
-  [v5 addKeyboardObserver:v4];
+  observerCopy = observer;
+  sharedKeyboardMonitor = [self sharedKeyboardMonitor];
+  [sharedKeyboardMonitor addKeyboardObserver:observerCopy];
 }
 
-+ (void)removeKeyboardObserver:(id)a3
++ (void)removeKeyboardObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [a1 sharedKeyboardMonitor];
-  [v5 removeKeyboardObserver:v4];
+  observerCopy = observer;
+  sharedKeyboardMonitor = [self sharedKeyboardMonitor];
+  [sharedKeyboardMonitor removeKeyboardObserver:observerCopy];
 }
 
-+ (void)addModalKeyboardObserver:(id)a3
++ (void)addModalKeyboardObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [a1 sharedKeyboardMonitor];
-  [v5 addModalKeyboardObserver:v4];
+  observerCopy = observer;
+  sharedKeyboardMonitor = [self sharedKeyboardMonitor];
+  [sharedKeyboardMonitor addModalKeyboardObserver:observerCopy];
 }
 
-+ (void)removeModalKeyboardObserver:(id)a3
++ (void)removeModalKeyboardObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [a1 sharedKeyboardMonitor];
-  [v5 removeModalKeyboardObserver:v4];
+  observerCopy = observer;
+  sharedKeyboardMonitor = [self sharedKeyboardMonitor];
+  [sharedKeyboardMonitor removeModalKeyboardObserver:observerCopy];
 }
 
-+ (BOOL)isKeyboardFrameChanging:(id)a3
++ (BOOL)isKeyboardFrameChanging:(id)changing
 {
-  v3 = a3;
+  changingCopy = changing;
   v4 = objc_opt_class();
-  v5 = [v3 userInfo];
-  v6 = [v5 objectForKey:UIKeyboardFrameBeginUserInfoKey];
+  userInfo = [changingCopy userInfo];
+  v6 = [userInfo objectForKey:UIKeyboardFrameBeginUserInfoKey];
   v7 = sub_100014370(v4, v6);
 
   v8 = objc_opt_class();
-  v9 = [v3 userInfo];
+  userInfo2 = [changingCopy userInfo];
 
-  v10 = [v9 objectForKey:UIKeyboardFrameEndUserInfoKey];
+  v10 = [userInfo2 objectForKey:UIKeyboardFrameEndUserInfoKey];
   v11 = sub_100014370(v8, v10);
 
   if (!v7)
@@ -623,75 +623,75 @@ LABEL_24:
 
 + (BOOL)keyboardIsVisibleAndDocked
 {
-  v2 = [a1 sharedKeyboardMonitor];
-  v3 = [v2 keyboardIsVisibleAndDocked];
+  sharedKeyboardMonitor = [self sharedKeyboardMonitor];
+  keyboardIsVisibleAndDocked = [sharedKeyboardMonitor keyboardIsVisibleAndDocked];
 
-  return v3;
+  return keyboardIsVisibleAndDocked;
 }
 
 + (BOOL)keyboardIsVisibleAndUndocked
 {
-  v2 = [a1 sharedKeyboardMonitor];
-  v3 = [v2 keyboardIsVisibleAndUndocked];
+  sharedKeyboardMonitor = [self sharedKeyboardMonitor];
+  keyboardIsVisibleAndUndocked = [sharedKeyboardMonitor keyboardIsVisibleAndUndocked];
 
-  return v3;
+  return keyboardIsVisibleAndUndocked;
 }
 
 + (BOOL)undockedKeyboardWillShow
 {
-  v2 = [a1 sharedKeyboardMonitor];
-  v3 = [v2 undockedKeyboardWillShow];
+  sharedKeyboardMonitor = [self sharedKeyboardMonitor];
+  undockedKeyboardWillShow = [sharedKeyboardMonitor undockedKeyboardWillShow];
 
-  return v3;
+  return undockedKeyboardWillShow;
 }
 
 + (BOOL)undockedKeyboardWillHide
 {
-  v2 = [a1 sharedKeyboardMonitor];
-  v3 = [v2 undockedKeyboardWillHide];
+  sharedKeyboardMonitor = [self sharedKeyboardMonitor];
+  undockedKeyboardWillHide = [sharedKeyboardMonitor undockedKeyboardWillHide];
 
-  return v3;
+  return undockedKeyboardWillHide;
 }
 
 + (BOOL)keyboardIsAnimating
 {
-  v2 = [a1 sharedKeyboardMonitor];
-  v3 = [v2 keyboardIsAnimating];
+  sharedKeyboardMonitor = [self sharedKeyboardMonitor];
+  keyboardIsAnimating = [sharedKeyboardMonitor keyboardIsAnimating];
 
-  return v3;
+  return keyboardIsAnimating;
 }
 
 + (BOOL)keyboardIsAnimatingInOrDocking
 {
-  v2 = [a1 sharedKeyboardMonitor];
-  v3 = [v2 keyboardIsAnimatingInOrDocking];
+  sharedKeyboardMonitor = [self sharedKeyboardMonitor];
+  keyboardIsAnimatingInOrDocking = [sharedKeyboardMonitor keyboardIsAnimatingInOrDocking];
 
-  return v3;
+  return keyboardIsAnimatingInOrDocking;
 }
 
 + (BOOL)keyboardIsAnimatingOutOrUndocking
 {
-  v2 = [a1 sharedKeyboardMonitor];
-  v3 = [v2 keyboardIsAnimatingOutOrUndocking];
+  sharedKeyboardMonitor = [self sharedKeyboardMonitor];
+  keyboardIsAnimatingOutOrUndocking = [sharedKeyboardMonitor keyboardIsAnimatingOutOrUndocking];
 
-  return v3;
+  return keyboardIsAnimatingOutOrUndocking;
 }
 
-+ (void)afterKeyboardAnimationPerformBlock:(id)a3
++ (void)afterKeyboardAnimationPerformBlock:(id)block
 {
-  v4 = a3;
-  v5 = [a1 sharedKeyboardMonitor];
-  [v5 afterKeyboardAnimationPerformBlock:v4];
+  blockCopy = block;
+  sharedKeyboardMonitor = [self sharedKeyboardMonitor];
+  [sharedKeyboardMonitor afterKeyboardAnimationPerformBlock:blockCopy];
 }
 
-+ (BOOL)isLocalKeyboardForNotification:(id)a3
++ (BOOL)isLocalKeyboardForNotification:(id)notification
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKey:UIKeyboardIsLocalUserInfoKey];
+  userInfo = [notification userInfo];
+  v4 = [userInfo objectForKey:UIKeyboardIsLocalUserInfoKey];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
@@ -722,17 +722,17 @@ LABEL_24:
     v9 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLKit/CRLiOSKeyboardMonitor.m"];
     [CRLAssertionHandler handleFailureInFunction:v8 file:v9 lineNumber:399 isFatal:0 description:"invalid nil value for '%{public}s'", "localUserKeyValue"];
 
-    v6 = 1;
+    bOOLValue = 1;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
-+ (BOOL)isNullInputView:(id)a3
++ (BOOL)isNullInputView:(id)view
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  viewCopy = view;
+  v4 = viewCopy;
+  if (!viewCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -763,7 +763,7 @@ LABEL_24:
     goto LABEL_14;
   }
 
-  if (![v3 translatesAutoresizingMaskIntoConstraints] || (objc_msgSend(v4, "autoresizingMask") & 0x10) != 0)
+  if (![viewCopy translatesAutoresizingMaskIntoConstraints] || (objc_msgSend(v4, "autoresizingMask") & 0x10) != 0)
   {
 LABEL_14:
     v6 = 0;
@@ -777,20 +777,20 @@ LABEL_15:
   return v6;
 }
 
-+ (CGRect)p_localKeyboardFrameFromReportedFrame:(CGRect)a3 screenBounds:(CGRect)a4 inputView:(id)a5
++ (CGRect)p_localKeyboardFrameFromReportedFrame:(CGRect)frame screenBounds:(CGRect)bounds inputView:(id)view
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3.size.height;
-  v10 = a3.size.width;
-  v11 = a3.origin.y;
-  v12 = a3.origin.x;
-  v14 = a5;
-  if (v14)
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v9 = frame.size.height;
+  v10 = frame.size.width;
+  v11 = frame.origin.y;
+  v12 = frame.origin.x;
+  viewCopy = view;
+  if (viewCopy)
   {
-    if ([a1 isNullInputView:v14])
+    if ([self isNullInputView:viewCopy])
     {
       v21.origin.x = x;
       v21.origin.y = y;
@@ -837,9 +837,9 @@ LABEL_15:
   return result;
 }
 
-- (void)p_updateKeyboardInfoFromNotification:(id)a3
+- (void)p_updateKeyboardInfoFromNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   if (qword_101AD5B40 != -1)
   {
     sub_10136268C();
@@ -853,16 +853,16 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s", &v38, 0xCu);
   }
 
-  v6 = [v4 userInfo];
-  self->_isLocalKeyboard = [CRLiOSKeyboardMonitor isLocalKeyboardForNotification:v4];
+  userInfo = [notificationCopy userInfo];
+  self->_isLocalKeyboard = [CRLiOSKeyboardMonitor isLocalKeyboardForNotification:notificationCopy];
   v7 = objc_opt_class();
-  v8 = [v6 objectForKey:UIKeyboardFrameEndUserInfoKey];
+  v8 = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
   v9 = sub_100014370(v7, v8);
 
   if (v9)
   {
     v10 = +[UIApplication sharedApplication];
-    v11 = [v10 keyWindow];
+    keyWindow = [v10 keyWindow];
 
     [v9 CGRectValue];
     v16 = v12;
@@ -878,9 +878,9 @@ LABEL_15:
       v26 = v25;
       v28 = v27;
 
-      v29 = [v11 firstResponder];
-      v30 = [v29 inputView];
-      [CRLiOSKeyboardMonitor p_localKeyboardFrameFromReportedFrame:v30 screenBounds:v16 inputView:v17, v18, v19, v22, v24, v26, v28];
+      firstResponder = [keyWindow firstResponder];
+      inputView = [firstResponder inputView];
+      [CRLiOSKeyboardMonitor p_localKeyboardFrameFromReportedFrame:inputView screenBounds:v16 inputView:v17, v18, v19, v22, v24, v26, v28];
       self->_keyboardFrame.origin.x = v31;
       self->_keyboardFrame.origin.y = v32;
       self->_keyboardFrame.size.width = v33;
@@ -895,16 +895,16 @@ LABEL_15:
       self->_keyboardFrame.size.height = v15;
     }
 
-    [(CRLiOSKeyboardMonitor *)self onScreenHeightInWindow:v11];
+    [(CRLiOSKeyboardMonitor *)self onScreenHeightInWindow:keyWindow];
     self->_onScreenHeight = v35;
   }
 
-  v36 = [v6 objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+  v36 = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
   [v36 doubleValue];
   self->_keyboardAnimationDuration = v37;
 }
 
-- (void)p_performAnimationCompletionBlocksWithVisible:(BOOL)a3
+- (void)p_performAnimationCompletionBlocksWithVisible:(BOOL)visible
 {
   if (qword_101AD5B40 != -1)
   {
@@ -944,7 +944,7 @@ LABEL_15:
         v12[2] = sub_1003A9700;
         v12[3] = &unk_10183D140;
         v12[4] = v11;
-        v13 = a3;
+        visibleCopy = visible;
         dispatch_async(&_dispatch_main_q, v12);
       }
 
@@ -957,31 +957,31 @@ LABEL_15:
   [(NSMutableArray *)self->_completionBlocks removeAllObjects];
 }
 
-- (BOOL)p_isFrameCorrespondingToUndockedKeyboard:(CGRect)a3
+- (BOOL)p_isFrameCorrespondingToUndockedKeyboard:(CGRect)keyboard
 {
-  if (![UIDevice crl_padUI:a3.origin.x])
+  if (![UIDevice crl_padUI:keyboard.origin.x])
   {
     return 0;
   }
 
   v4 = +[UIApplication sharedApplication];
-  v5 = [v4 keyWindow];
+  keyWindow = [v4 keyWindow];
 
-  v6 = [v5 subviews];
-  v7 = [v6 firstObject];
+  subviews = [keyWindow subviews];
+  firstObject = [subviews firstObject];
 
-  [v7 convertRect:0 fromView:{self->_keyboardFrame.origin.x, self->_keyboardFrame.origin.y, self->_keyboardFrame.size.width, self->_keyboardFrame.size.height}];
+  [firstObject convertRect:0 fromView:{self->_keyboardFrame.origin.x, self->_keyboardFrame.origin.y, self->_keyboardFrame.size.width, self->_keyboardFrame.size.height}];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  [v5 frame];
-  [v7 convertRect:0 fromView:?];
+  [keyWindow frame];
+  [firstObject convertRect:0 fromView:?];
   MaxY = CGRectGetMaxY(v24);
   if ([(CRLiOSKeyboardMonitor *)self p_isFrameCorrespondingToRotatedKeyboard:self->_keyboardFrame.origin.x, self->_keyboardFrame.origin.y, self->_keyboardFrame.size.width, self->_keyboardFrame.size.height])
   {
-    v17 = [v5 coordinateSpace];
-    [v17 bounds];
+    coordinateSpace = [keyWindow coordinateSpace];
+    [coordinateSpace bounds];
     v19 = v18;
     v21 = v20;
 
@@ -997,9 +997,9 @@ LABEL_15:
   return v22;
 }
 
-- (BOOL)p_isFrameCorrespondingToRotatedKeyboard:(CGRect)a3
+- (BOOL)p_isFrameCorrespondingToRotatedKeyboard:(CGRect)keyboard
 {
-  Width = CGRectGetWidth(a3);
+  Width = CGRectGetWidth(keyboard);
   v4 = +[UIScreen mainScreen];
   [v4 bounds];
   v5 = Width == CGRectGetHeight(v7);
@@ -1007,9 +1007,9 @@ LABEL_15:
   return v5;
 }
 
-- (double)onScreenHeightInWindow:(id)a3
+- (double)onScreenHeightInWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   v5 = 0.0;
   if (CGRectGetHeight(self->_keyboardFrame) > 0.0 && ![(CRLiOSKeyboardMonitor *)self p_isFrameCorrespondingToUndockedKeyboard:self->_keyboardFrame.origin.x, self->_keyboardFrame.origin.y, self->_keyboardFrame.size.width, self->_keyboardFrame.size.height])
   {
@@ -1019,13 +1019,13 @@ LABEL_15:
       [v6 bounds];
       Width = CGRectGetWidth(v12);
 
-      [(CRLiOSKeyboardMonitor *)self p_verticalSpacingFromWindow:v4 toWindow:0];
+      [(CRLiOSKeyboardMonitor *)self p_verticalSpacingFromWindow:windowCopy toWindow:0];
       Height = Width - v8;
     }
 
     else
     {
-      [v4 bounds];
+      [windowCopy bounds];
       Height = CGRectGetHeight(v13);
     }
 
@@ -1041,17 +1041,17 @@ LABEL_15:
   return v5;
 }
 
-- (double)p_verticalSpacingFromWindow:(id)a3 toWindow:(id)a4
+- (double)p_verticalSpacingFromWindow:(id)window toWindow:(id)toWindow
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  windowCopy = window;
+  toWindowCopy = toWindow;
+  v8 = toWindowCopy;
   v9 = 0.0;
-  if (v7 != v6 && self->_onScreenHeight != 0.0)
+  if (toWindowCopy != windowCopy && self->_onScreenHeight != 0.0)
   {
-    if (v7)
+    if (toWindowCopy)
     {
-      [v7 frame];
+      [toWindowCopy frame];
       Height = CGRectGetHeight(v13);
     }
 
@@ -1062,16 +1062,16 @@ LABEL_15:
       Height = CGRectGetHeight(v14);
     }
 
-    [v6 frame];
+    [windowCopy frame];
     v9 = fmax((Height - CGRectGetHeight(v15)) * 0.5, 0.0);
   }
 
   return v9;
 }
 
-- (BOOL)p_isNotificationCorrespondingToUndockedKeyboardWillShow:(id)a3
+- (BOOL)p_isNotificationCorrespondingToUndockedKeyboardWillShow:(id)show
 {
-  v4 = a3;
+  showCopy = show;
   if (qword_101AD5B40 != -1)
   {
     sub_1013626B4();
@@ -1086,13 +1086,13 @@ LABEL_15:
   }
 
   v6 = objc_opt_class();
-  v7 = [v4 userInfo];
-  v8 = [v7 objectForKey:UIKeyboardFrameBeginUserInfoKey];
+  userInfo = [showCopy userInfo];
+  v8 = [userInfo objectForKey:UIKeyboardFrameBeginUserInfoKey];
   v9 = sub_100014370(v6, v8);
 
   v10 = objc_opt_class();
-  v11 = [v4 userInfo];
-  v12 = [v11 objectForKey:UIKeyboardFrameEndUserInfoKey];
+  userInfo2 = [showCopy userInfo];
+  v12 = [userInfo2 objectForKey:UIKeyboardFrameEndUserInfoKey];
   v13 = sub_100014370(v10, v12);
 
   v14 = 0;
@@ -1124,9 +1124,9 @@ LABEL_15:
   return v14;
 }
 
-- (BOOL)p_isNotificationCorrespondingToUndockedKeyboardWillHide:(id)a3
+- (BOOL)p_isNotificationCorrespondingToUndockedKeyboardWillHide:(id)hide
 {
-  v3 = a3;
+  hideCopy = hide;
   if (qword_101AD5B40 != -1)
   {
     sub_1013626C8();
@@ -1141,13 +1141,13 @@ LABEL_15:
   }
 
   v5 = objc_opt_class();
-  v6 = [v3 userInfo];
-  v7 = [v6 objectForKey:UIKeyboardFrameBeginUserInfoKey];
+  userInfo = [hideCopy userInfo];
+  v7 = [userInfo objectForKey:UIKeyboardFrameBeginUserInfoKey];
   v8 = sub_100014370(v5, v7);
 
   v9 = objc_opt_class();
-  v10 = [v3 userInfo];
-  v11 = [v10 objectForKey:UIKeyboardFrameEndUserInfoKey];
+  userInfo2 = [hideCopy userInfo];
+  v11 = [userInfo2 objectForKey:UIKeyboardFrameEndUserInfoKey];
   v12 = sub_100014370(v9, v11);
 
   v13 = 0;
@@ -1163,9 +1163,9 @@ LABEL_15:
   return v13;
 }
 
-- (void)p_keyboardWillChangeFrame:(id)a3
+- (void)p_keyboardWillChangeFrame:(id)frame
 {
-  v4 = a3;
+  frameCopy = frame;
   if (qword_101AD5B40 != -1)
   {
     sub_1013626DC();
@@ -1181,21 +1181,21 @@ LABEL_15:
 
   if (!self->_keyboardIsAnimatingInOrDocking && !self->_keyboardIsAnimatingOutOrUndocking)
   {
-    [(CRLiOSKeyboardMonitor *)self p_updateKeyboardInfoFromNotification:v4];
-    self->_undockedKeyboardWillShow = [(CRLiOSKeyboardMonitor *)self p_isNotificationCorrespondingToUndockedKeyboardWillShow:v4];
-    self->_undockedKeyboardWillHide = [(CRLiOSKeyboardMonitor *)self p_isNotificationCorrespondingToUndockedKeyboardWillHide:v4];
+    [(CRLiOSKeyboardMonitor *)self p_updateKeyboardInfoFromNotification:frameCopy];
+    self->_undockedKeyboardWillShow = [(CRLiOSKeyboardMonitor *)self p_isNotificationCorrespondingToUndockedKeyboardWillShow:frameCopy];
+    self->_undockedKeyboardWillHide = [(CRLiOSKeyboardMonitor *)self p_isNotificationCorrespondingToUndockedKeyboardWillHide:frameCopy];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1003AA0BC;
     v6[3] = &unk_10185BB40;
-    v7 = v4;
+    v7 = frameCopy;
     [(CRLiOSKeyboardMonitor *)self p_enumerateObserversUsingBlock:v6];
   }
 }
 
-- (void)p_keyboardDidChangeFrame:(id)a3
+- (void)p_keyboardDidChangeFrame:(id)frame
 {
-  v4 = a3;
+  frameCopy = frame;
   if (qword_101AD5B40 != -1)
   {
     sub_1013626F0();
@@ -1211,13 +1211,13 @@ LABEL_15:
 
   if (!self->_keyboardIsAnimatingInOrDocking && !self->_keyboardIsAnimatingOutOrUndocking)
   {
-    [(CRLiOSKeyboardMonitor *)self p_updateKeyboardInfoFromNotification:v4];
+    [(CRLiOSKeyboardMonitor *)self p_updateKeyboardInfoFromNotification:frameCopy];
     *&self->_undockedKeyboardWillShow = 0;
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_1003AA2E4;
     v7[3] = &unk_10185BB40;
-    v8 = v4;
+    v8 = frameCopy;
     [(CRLiOSKeyboardMonitor *)self p_enumerateObserversUsingBlock:v7];
     v6 = self->_keyboardFrame.size.height > 0.0 || self->_keyboardFrame.size.width > 0.0;
     [(CRLiOSKeyboardMonitor *)self p_performAnimationCompletionBlocksWithVisible:v6];

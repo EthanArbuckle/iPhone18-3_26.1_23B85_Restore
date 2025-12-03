@@ -2,27 +2,27 @@
 - (WBSPerSitePreferenceManagerDefaultsDelegate)defaultsDelegate;
 - (WBSPerSitePreferenceManagerDelegate)delegate;
 - (WBSPerSitePreferenceManagerStorageDelegate)storageDelegate;
-- (id)defaultPreferenceValueForPreference:(id)a3;
-- (id)validateValue:(id)a3 forPreference:(id)a4;
-- (id)valueOfPreference:(id)a3 forDomain:(id)a4;
-- (void)_recursivelySetDefaultPreferenceValues:(id)a3 orderedKeys:(id)a4 currentIndex:(int64_t)a5 existingResult:(BOOL)a6 completionHandler:(id)a7;
-- (void)getAllDomainsConfiguredForPreference:(id)a3 usingBlock:(id)a4;
-- (void)getDefaultPreferenceValueForPreference:(id)a3 completionHandler:(id)a4;
-- (void)getValueOfPreference:(id)a3 forDomain:(id)a4 withTimeout:(id)a5 usingBlock:(id)a6;
-- (void)removePreferenceValuesForDomains:(id)a3 fromPreference:(id)a4 completionHandler:(id)a5;
-- (void)setDefaultPreferenceValues:(id)a3 completionHandler:(id)a4;
-- (void)setDefaultValue:(id)a3 ofPreference:(id)a4 completionHandler:(id)a5;
-- (void)setValue:(id)a3 ofPreference:(id)a4 forDomain:(id)a5 completionHandler:(id)a6;
+- (id)defaultPreferenceValueForPreference:(id)preference;
+- (id)validateValue:(id)value forPreference:(id)preference;
+- (id)valueOfPreference:(id)preference forDomain:(id)domain;
+- (void)_recursivelySetDefaultPreferenceValues:(id)values orderedKeys:(id)keys currentIndex:(int64_t)index existingResult:(BOOL)result completionHandler:(id)handler;
+- (void)getAllDomainsConfiguredForPreference:(id)preference usingBlock:(id)block;
+- (void)getDefaultPreferenceValueForPreference:(id)preference completionHandler:(id)handler;
+- (void)getValueOfPreference:(id)preference forDomain:(id)domain withTimeout:(id)timeout usingBlock:(id)block;
+- (void)removePreferenceValuesForDomains:(id)domains fromPreference:(id)preference completionHandler:(id)handler;
+- (void)setDefaultPreferenceValues:(id)values completionHandler:(id)handler;
+- (void)setDefaultValue:(id)value ofPreference:(id)preference completionHandler:(id)handler;
+- (void)setValue:(id)value ofPreference:(id)preference forDomain:(id)domain completionHandler:(id)handler;
 @end
 
 @implementation WBSPerSitePreferenceManager
 
-- (void)setValue:(id)a3 ofPreference:(id)a4 forDomain:(id)a5 completionHandler:(id)a6
+- (void)setValue:(id)value ofPreference:(id)preference forDomain:(id)domain completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  valueCopy = value;
+  preferenceCopy = preference;
+  domainCopy = domain;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_storageDelegate);
 
   if (WeakRetained)
@@ -31,17 +31,17 @@
     v15[1] = 3221225472;
     v15[2] = __81__WBSPerSitePreferenceManager_setValue_ofPreference_forDomain_completionHandler___block_invoke;
     v15[3] = &unk_1E7FC9338;
-    v16 = v10;
-    v20 = v13;
-    v17 = self;
-    v18 = v11;
-    v19 = v12;
+    v16 = valueCopy;
+    v20 = handlerCopy;
+    selfCopy = self;
+    v18 = preferenceCopy;
+    v19 = domainCopy;
     [(WBSPerSitePreferenceManager *)self getValueOfPreference:v18 forDomain:v19 withTimeout:0 usingBlock:v15];
   }
 
   else
   {
-    (*(v13 + 2))(v13, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -100,21 +100,21 @@ void __81__WBSPerSitePreferenceManager_setValue_ofPreference_forDomain_completio
   }
 }
 
-- (void)getValueOfPreference:(id)a3 forDomain:(id)a4 withTimeout:(id)a5 usingBlock:(id)a6
+- (void)getValueOfPreference:(id)preference forDomain:(id)domain withTimeout:(id)timeout usingBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  preferenceCopy = preference;
+  domainCopy = domain;
+  timeoutCopy = timeout;
+  blockCopy = block;
   WeakRetained = objc_loadWeakRetained(&self->_storageDelegate);
   v15 = WeakRetained;
   if (WeakRetained)
   {
-    v16 = [WeakRetained perSitePreferencesStore];
-    v17 = [v15 preferenceNameForPreference:v10];
-    if (v12)
+    perSitePreferencesStore = [WeakRetained perSitePreferencesStore];
+    v17 = [v15 preferenceNameForPreference:preferenceCopy];
+    if (timeoutCopy)
     {
-      [v12 interval];
+      [timeoutCopy interval];
       v19 = v18;
     }
 
@@ -127,13 +127,13 @@ void __81__WBSPerSitePreferenceManager_setValue_ofPreference_forDomain_completio
     v20[1] = 3221225472;
     v20[2] = __85__WBSPerSitePreferenceManager_getValueOfPreference_forDomain_withTimeout_usingBlock___block_invoke;
     v20[3] = &unk_1E7FC93B0;
-    v21 = v10;
-    v22 = v12;
-    v23 = self;
+    v21 = preferenceCopy;
+    v22 = timeoutCopy;
+    selfCopy = self;
     v24 = v15;
-    v25 = v11;
-    v26 = v13;
-    [v16 getValueOfPreference:v17 forDomain:v25 withTimeoutInterval:v20 completionHandler:v19];
+    v25 = domainCopy;
+    v26 = blockCopy;
+    [perSitePreferencesStore getValueOfPreference:v17 forDomain:v25 withTimeoutInterval:v20 completionHandler:v19];
   }
 }
 
@@ -236,19 +236,19 @@ LABEL_11:
 LABEL_16:
 }
 
-- (id)valueOfPreference:(id)a3 forDomain:(id)a4
+- (id)valueOfPreference:(id)preference forDomain:(id)domain
 {
-  v6 = a3;
-  v7 = a4;
+  preferenceCopy = preference;
+  domainCopy = domain;
   WeakRetained = objc_loadWeakRetained(&self->_storageDelegate);
   v9 = WeakRetained;
   if (WeakRetained)
   {
-    v10 = [WeakRetained perSitePreferencesStore];
-    v11 = [v9 preferenceNameForPreference:v6];
-    v12 = [v10 valueOfPreference:v11 forDomain:v7];
+    perSitePreferencesStore = [WeakRetained perSitePreferencesStore];
+    v11 = [v9 preferenceNameForPreference:preferenceCopy];
+    v12 = [perSitePreferencesStore valueOfPreference:v11 forDomain:domainCopy];
 
-    v13 = [(WBSPerSitePreferenceManager *)self validateValue:v12 forPreference:v6];
+    v13 = [(WBSPerSitePreferenceManager *)self validateValue:v12 forPreference:preferenceCopy];
     v14 = v13;
     if (v13)
     {
@@ -259,13 +259,13 @@ LABEL_16:
     {
       if (v12 && [(WBSPerSitePreferenceManager *)self shouldDeleteUnrecognizedPreference])
       {
-        v17 = [v9 perSitePreferencesStore];
-        v18 = [MEMORY[0x1E695DFD8] setWithObject:v7];
-        v19 = [v9 preferenceNameForPreference:v6];
-        [v17 removePreferenceValuesForDomains:v18 fromPreference:v19 completionHandler:0];
+        perSitePreferencesStore2 = [v9 perSitePreferencesStore];
+        v18 = [MEMORY[0x1E695DFD8] setWithObject:domainCopy];
+        v19 = [v9 preferenceNameForPreference:preferenceCopy];
+        [perSitePreferencesStore2 removePreferenceValuesForDomains:v18 fromPreference:v19 completionHandler:0];
       }
 
-      v15 = [(WBSPerSitePreferenceManager *)self defaultPreferenceValueForPreference:v6];
+      v15 = [(WBSPerSitePreferenceManager *)self defaultPreferenceValueForPreference:preferenceCopy];
     }
 
     v16 = v15;
@@ -279,18 +279,18 @@ LABEL_16:
   return v16;
 }
 
-- (id)defaultPreferenceValueForPreference:(id)a3
+- (id)defaultPreferenceValueForPreference:(id)preference
 {
-  v4 = a3;
+  preferenceCopy = preference;
   WeakRetained = objc_loadWeakRetained(&self->_defaultsDelegate);
   v6 = WeakRetained;
   if (WeakRetained)
   {
-    v7 = [WeakRetained preferenceNameForPreference:v4];
-    v8 = [v6 perSitePreferencesStore];
-    v9 = [v8 defaultValueForPreference:v7];
+    v7 = [WeakRetained preferenceNameForPreference:preferenceCopy];
+    perSitePreferencesStore = [v6 perSitePreferencesStore];
+    v9 = [perSitePreferencesStore defaultValueForPreference:v7];
 
-    v10 = [(WBSPerSitePreferenceManager *)self validateValue:v9 forPreference:v4];
+    v10 = [(WBSPerSitePreferenceManager *)self validateValue:v9 forPreference:preferenceCopy];
     v11 = v10;
     if (v10)
     {
@@ -299,7 +299,7 @@ LABEL_16:
 
     else
     {
-      v12 = [v6 defaultPreferenceValueForPreferenceIfNotCustomized:v4];
+      v12 = [v6 defaultPreferenceValueForPreferenceIfNotCustomized:preferenceCopy];
     }
 
     v13 = v12;
@@ -313,31 +313,31 @@ LABEL_16:
   return v13;
 }
 
-- (void)getDefaultPreferenceValueForPreference:(id)a3 completionHandler:(id)a4
+- (void)getDefaultPreferenceValueForPreference:(id)preference completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  preferenceCopy = preference;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_defaultsDelegate);
   v9 = WeakRetained;
   if (WeakRetained)
   {
-    v10 = [WeakRetained preferenceNameForPreference:v6];
-    v11 = [v9 perSitePreferencesStore];
+    null = [WeakRetained preferenceNameForPreference:preferenceCopy];
+    perSitePreferencesStore = [v9 perSitePreferencesStore];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __88__WBSPerSitePreferenceManager_getDefaultPreferenceValueForPreference_completionHandler___block_invoke;
     v12[3] = &unk_1E7FC93D8;
-    v16 = v7;
+    v16 = handlerCopy;
     v13 = v9;
-    v14 = v6;
-    v15 = self;
-    [v11 getDefaultValueForPreference:v10 completionHandler:v12];
+    v14 = preferenceCopy;
+    selfCopy = self;
+    [perSitePreferencesStore getDefaultValueForPreference:null completionHandler:v12];
   }
 
   else
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
-    (*(v7 + 2))(v7, v10);
+    null = [MEMORY[0x1E695DFB0] null];
+    (*(handlerCopy + 2))(handlerCopy, null);
   }
 }
 
@@ -368,24 +368,24 @@ void __88__WBSPerSitePreferenceManager_getDefaultPreferenceValueForPreference_co
   }
 }
 
-- (void)setDefaultValue:(id)a3 ofPreference:(id)a4 completionHandler:(id)a5
+- (void)setDefaultValue:(id)value ofPreference:(id)preference completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  valueCopy = value;
+  preferenceCopy = preference;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_defaultsDelegate);
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __78__WBSPerSitePreferenceManager_setDefaultValue_ofPreference_completionHandler___block_invoke;
   v16[3] = &unk_1E7FC9400;
-  v17 = v8;
+  v17 = valueCopy;
   v18 = WeakRetained;
-  v19 = v9;
-  v20 = v10;
-  v12 = v9;
+  v19 = preferenceCopy;
+  v20 = handlerCopy;
+  v12 = preferenceCopy;
   v13 = WeakRetained;
-  v14 = v10;
-  v15 = v8;
+  v14 = handlerCopy;
+  v15 = valueCopy;
   [(WBSPerSitePreferenceManager *)self getDefaultPreferenceValueForPreference:v12 completionHandler:v16];
 }
 
@@ -427,43 +427,43 @@ uint64_t __78__WBSPerSitePreferenceManager_setDefaultValue_ofPreference_completi
   return result;
 }
 
-- (void)setDefaultPreferenceValues:(id)a3 completionHandler:(id)a4
+- (void)setDefaultPreferenceValues:(id)values completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 allKeys];
-  [(WBSPerSitePreferenceManager *)self _recursivelySetDefaultPreferenceValues:v7 orderedKeys:v8 currentIndex:0 existingResult:1 completionHandler:v6];
+  handlerCopy = handler;
+  valuesCopy = values;
+  allKeys = [valuesCopy allKeys];
+  [(WBSPerSitePreferenceManager *)self _recursivelySetDefaultPreferenceValues:valuesCopy orderedKeys:allKeys currentIndex:0 existingResult:1 completionHandler:handlerCopy];
 }
 
-- (void)_recursivelySetDefaultPreferenceValues:(id)a3 orderedKeys:(id)a4 currentIndex:(int64_t)a5 existingResult:(BOOL)a6 completionHandler:(id)a7
+- (void)_recursivelySetDefaultPreferenceValues:(id)values orderedKeys:(id)keys currentIndex:(int64_t)index existingResult:(BOOL)result completionHandler:(id)handler
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  if ([v12 count] <= a5)
+  resultCopy = result;
+  valuesCopy = values;
+  keysCopy = keys;
+  handlerCopy = handler;
+  if ([valuesCopy count] <= index)
   {
-    if (v14)
+    if (handlerCopy)
     {
-      v14[2](v14, v8);
+      handlerCopy[2](handlerCopy, resultCopy);
     }
   }
 
   else
   {
     objc_initWeak(&location, self);
-    v15 = [v13 objectAtIndexedSubscript:a5];
-    v16 = [v12 objectForKeyedSubscript:v15];
+    v15 = [keysCopy objectAtIndexedSubscript:index];
+    v16 = [valuesCopy objectForKeyedSubscript:v15];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __128__WBSPerSitePreferenceManager__recursivelySetDefaultPreferenceValues_orderedKeys_currentIndex_existingResult_completionHandler___block_invoke;
     v17[3] = &unk_1E7FC9428;
     objc_copyWeak(v21, &location);
-    v18 = v12;
-    v19 = v13;
-    v21[1] = a5;
-    v22 = v8;
-    v20 = v14;
+    v18 = valuesCopy;
+    v19 = keysCopy;
+    v21[1] = index;
+    v22 = resultCopy;
+    v20 = handlerCopy;
     [(WBSPerSitePreferenceManager *)self setDefaultValue:v16 ofPreference:v15 completionHandler:v17];
 
     objc_destroyWeak(v21);
@@ -477,28 +477,28 @@ void __128__WBSPerSitePreferenceManager__recursivelySetDefaultPreferenceValues_o
   [WeakRetained _recursivelySetDefaultPreferenceValues:*(a1 + 32) orderedKeys:*(a1 + 40) currentIndex:*(a1 + 64) + 1 existingResult:(*(a1 + 72) & a2) completionHandler:*(a1 + 48)];
 }
 
-- (void)getAllDomainsConfiguredForPreference:(id)a3 usingBlock:(id)a4
+- (void)getAllDomainsConfiguredForPreference:(id)preference usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  preferenceCopy = preference;
+  blockCopy = block;
   WeakRetained = objc_loadWeakRetained(&self->_storageDelegate);
   v9 = WeakRetained;
   if (WeakRetained)
   {
-    v10 = [WeakRetained perSitePreferencesStore];
-    v11 = [v9 preferenceNameForPreference:v6];
+    perSitePreferencesStore = [WeakRetained perSitePreferencesStore];
+    v11 = [v9 preferenceNameForPreference:preferenceCopy];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __79__WBSPerSitePreferenceManager_getAllDomainsConfiguredForPreference_usingBlock___block_invoke;
     v13[3] = &unk_1E7FC9450;
-    v14 = v7;
-    [v10 getAllDomainsConfiguredForPreference:v11 completionHandler:v13];
+    v14 = blockCopy;
+    [perSitePreferencesStore getAllDomainsConfiguredForPreference:v11 completionHandler:v13];
   }
 
   else
   {
     v12 = [MEMORY[0x1E695DFD8] set];
-    (*(v7 + 2))(v7, v12);
+    (*(blockCopy + 2))(blockCopy, v12);
   }
 }
 
@@ -516,31 +516,31 @@ void __79__WBSPerSitePreferenceManager_getAllDomainsConfiguredForPreference_usin
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-- (void)removePreferenceValuesForDomains:(id)a3 fromPreference:(id)a4 completionHandler:(id)a5
+- (void)removePreferenceValuesForDomains:(id)domains fromPreference:(id)preference completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  domainsCopy = domains;
+  preferenceCopy = preference;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_storageDelegate);
   v12 = WeakRetained;
   if (WeakRetained)
   {
-    v13 = [WeakRetained perSitePreferencesStore];
-    v14 = [v12 preferenceNameForPreference:v9];
+    perSitePreferencesStore = [WeakRetained perSitePreferencesStore];
+    v14 = [v12 preferenceNameForPreference:preferenceCopy];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __97__WBSPerSitePreferenceManager_removePreferenceValuesForDomains_fromPreference_completionHandler___block_invoke;
     v15[3] = &unk_1E7FC5038;
-    v18 = v10;
+    v18 = handlerCopy;
     v15[4] = self;
-    v16 = v9;
-    v17 = v8;
-    [v13 removePreferenceValuesForDomains:v17 fromPreference:v14 completionHandler:v15];
+    v16 = preferenceCopy;
+    v17 = domainsCopy;
+    [perSitePreferencesStore removePreferenceValuesForDomains:v17 fromPreference:v14 completionHandler:v15];
   }
 
-  else if (v10)
+  else if (handlerCopy)
   {
-    (*(v10 + 2))(v10, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -602,13 +602,13 @@ void __97__WBSPerSitePreferenceManager_removePreferenceValuesForDomains_fromPref
   }
 }
 
-- (id)validateValue:(id)a3 forPreference:(id)a4
+- (id)validateValue:(id)value forPreference:(id)preference
 {
-  v6 = a3;
-  v7 = [(WBSPerSitePreferenceManager *)self valuesForPreference:a4];
-  if ([v7 containsObject:v6])
+  valueCopy = value;
+  v7 = [(WBSPerSitePreferenceManager *)self valuesForPreference:preference];
+  if ([v7 containsObject:valueCopy])
   {
-    v8 = v6;
+    v8 = valueCopy;
   }
 
   else

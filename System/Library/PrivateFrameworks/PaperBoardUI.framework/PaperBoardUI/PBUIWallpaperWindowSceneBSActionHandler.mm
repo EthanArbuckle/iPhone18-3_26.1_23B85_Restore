@@ -1,17 +1,17 @@
 @interface PBUIWallpaperWindowSceneBSActionHandler
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6;
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context;
 @end
 
 @implementation PBUIWallpaperWindowSceneBSActionHandler
 
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 mutableCopy];
+  actionsCopy = actions;
+  iSceneCopy = iScene;
+  v9 = [actionsCopy mutableCopy];
   v10 = objc_opt_class();
-  v11 = v8;
+  v11 = iSceneCopy;
   if (v10)
   {
     if (objc_opt_isKindOfClass())
@@ -35,12 +35,12 @@
   if (v13)
   {
     v22 = v11;
-    v23 = v7;
+    v23 = actionsCopy;
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v14 = v7;
+    v14 = actionsCopy;
     v15 = [v14 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (!v15)
     {
@@ -113,7 +113,7 @@
 LABEL_25:
 
         v11 = v22;
-        v7 = v23;
+        actionsCopy = v23;
         break;
       }
     }

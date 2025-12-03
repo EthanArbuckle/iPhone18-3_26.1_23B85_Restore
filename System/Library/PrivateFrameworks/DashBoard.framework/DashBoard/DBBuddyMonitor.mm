@@ -1,10 +1,10 @@
 @interface DBBuddyMonitor
 - (DBBuddyMonitor)init;
 - (void)_updateBuddyFinished;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
-- (void)setBuddyFinished:(BOOL)a3;
+- (void)removeObserver:(id)observer;
+- (void)setBuddyFinished:(BOOL)finished;
 @end
 
 @implementation DBBuddyMonitor
@@ -37,28 +37,28 @@
   [(DBBuddyMonitor *)&v4 dealloc];
 }
 
-- (void)setBuddyFinished:(BOOL)a3
+- (void)setBuddyFinished:(BOOL)finished
 {
-  if (self->_buddyFinished != a3)
+  if (self->_buddyFinished != finished)
   {
-    self->_buddyFinished = a3;
-    v5 = [(DBBuddyMonitor *)self observers];
-    [v5 buddyMonitorDidChangeFinished:self];
+    self->_buddyFinished = finished;
+    observers = [(DBBuddyMonitor *)self observers];
+    [observers buddyMonitorDidChangeFinished:self];
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBBuddyMonitor *)self observers];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  observers = [(DBBuddyMonitor *)self observers];
+  [observers addObserver:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBBuddyMonitor *)self observers];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  observers = [(DBBuddyMonitor *)self observers];
+  [observers removeObserver:observerCopy];
 }
 
 - (void)_updateBuddyFinished

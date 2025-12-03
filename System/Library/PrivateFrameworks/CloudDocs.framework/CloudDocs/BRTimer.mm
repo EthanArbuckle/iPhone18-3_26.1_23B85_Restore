@@ -1,30 +1,30 @@
 @interface BRTimer
-- (BRTimer)initWithName:(id)a3 interval:(double)a4 callbackQueue:(id)a5 block:(id)a6;
+- (BRTimer)initWithName:(id)name interval:(double)interval callbackQueue:(id)queue block:(id)block;
 - (void)dealloc;
 - (void)stop;
 @end
 
 @implementation BRTimer
 
-- (BRTimer)initWithName:(id)a3 interval:(double)a4 callbackQueue:(id)a5 block:(id)a6
+- (BRTimer)initWithName:(id)name interval:(double)interval callbackQueue:(id)queue block:(id)block
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  queueCopy = queue;
+  blockCopy = block;
   v32.receiver = self;
   v32.super_class = BRTimer;
   v14 = [(BRTimer *)&v32 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_name, a3);
-    objc_storeStrong(&v15->_queue, a5);
+    objc_storeStrong(&v14->_name, name);
+    objc_storeStrong(&v15->_queue, queue);
     v16 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v15->_queue);
     timer = v15->_timer;
     v15->_timer = v16;
 
-    v18 = dispatch_time(0, (a4 * 1000000000.0));
-    dispatch_source_set_timer(v15->_timer, v18, (a4 * 1000000000.0), (a4 * 1000000000.0) / 0xAuLL);
+    v18 = dispatch_time(0, (interval * 1000000000.0));
+    dispatch_source_set_timer(v15->_timer, v18, (interval * 1000000000.0), (interval * 1000000000.0) / 0xAuLL);
     objc_initWeak(&location, v15);
     v19 = v15->_timer;
     v28[0] = MEMORY[0x1E69E9820];
@@ -32,7 +32,7 @@
     v28[2] = __53__BRTimer_initWithName_interval_callbackQueue_block___block_invoke;
     v28[3] = &unk_1E7A16430;
     objc_copyWeak(&v30, &location);
-    v29 = v13;
+    v29 = blockCopy;
     v20 = v19;
     v21 = v28;
     v22 = v20;
@@ -66,7 +66,7 @@ void __53__BRTimer_initWithName_interval_callbackQueue_block___block_invoke(uint
 - (void)dealloc
 {
   v5 = *MEMORY[0x1E69E9840];
-  v1 = *(a1 + 24);
+  v1 = *(self + 24);
   OUTLINED_FUNCTION_0_3();
   OUTLINED_FUNCTION_6(&dword_1AE2A9000, v2, v3, "[DEBUG] dealloc timer %@%@");
   v4 = *MEMORY[0x1E69E9840];
@@ -75,7 +75,7 @@ void __53__BRTimer_initWithName_interval_callbackQueue_block___block_invoke(uint
 - (void)stop
 {
   v5 = *MEMORY[0x1E69E9840];
-  v1 = *(a1 + 24);
+  v1 = *(self + 24);
   OUTLINED_FUNCTION_0_3();
   OUTLINED_FUNCTION_6(&dword_1AE2A9000, v2, v3, "[DEBUG] stop timer %@%@");
   v4 = *MEMORY[0x1E69E9840];

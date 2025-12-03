@@ -1,57 +1,57 @@
 @interface CRLiOSScribbleInteractionDelegate
-- (BOOL)_indirectScribbleInteractionShouldDisableInputAssistant:(id)a3;
-- (BOOL)_scribbleInteractionShouldDisableInputAssistant:(id)a3;
-- (BOOL)indirectScribbleInteraction:(id)a3 isElementFocused:(id)a4;
-- (BOOL)indirectScribbleInteraction:(id)a3 shouldDelayFocusForElement:(id)a4;
-- (BOOL)p_isElementFocused:(id)a3;
-- (BOOL)scribbleInteraction:(id)a3 shouldBeginAtLocation:(CGPoint)a4;
-- (CGRect)indirectScribbleInteraction:(id)a3 frameForElement:(id)a4;
-- (CGRect)p_expandedScribbleFrameForElement:(id)a3;
-- (CRLiOSScribbleInteractionDelegate)initWithEditingProvider:(id)a3 scribbleInteractionObserver:(id)a4;
+- (BOOL)_indirectScribbleInteractionShouldDisableInputAssistant:(id)assistant;
+- (BOOL)_scribbleInteractionShouldDisableInputAssistant:(id)assistant;
+- (BOOL)indirectScribbleInteraction:(id)interaction isElementFocused:(id)focused;
+- (BOOL)indirectScribbleInteraction:(id)interaction shouldDelayFocusForElement:(id)element;
+- (BOOL)p_isElementFocused:(id)focused;
+- (BOOL)scribbleInteraction:(id)interaction shouldBeginAtLocation:(CGPoint)location;
+- (CGRect)indirectScribbleInteraction:(id)interaction frameForElement:(id)element;
+- (CGRect)p_expandedScribbleFrameForElement:(id)element;
+- (CRLiOSScribbleInteractionDelegate)initWithEditingProvider:(id)provider scribbleInteractionObserver:(id)observer;
 - (CRLiOSScribbleInteractionEditingProvider)editingProvider;
 - (CRLiOSScribbleInteractionObserver)scribbleObserver;
-- (id)p_absoluteScribbleCapableElementWithIdentifier:(id)a3;
-- (id)p_containedScribbleElementForContainerScribbleElement:(id)a3;
-- (id)p_currentEditingTextInputResponderForElementIdentifer:(id)a3;
+- (id)p_absoluteScribbleCapableElementWithIdentifier:(id)identifier;
+- (id)p_containedScribbleElementForContainerScribbleElement:(id)element;
+- (id)p_currentEditingTextInputResponderForElementIdentifer:(id)identifer;
 - (id)p_insertedScribbleElementProvider;
-- (id)p_scribbleCapableElementsForRect:(CGRect)a3;
-- (id)p_scribbleElementIdentifiersInRect:(CGRect)a3;
-- (void)indirectScribbleInteraction:(id)a3 didFinishWritingInElement:(id)a4;
-- (void)indirectScribbleInteraction:(id)a3 focusElementIfNeeded:(id)a4 referencePoint:(CGPoint)a5 completion:(id)a6;
-- (void)indirectScribbleInteraction:(id)a3 requestElementsInRect:(CGRect)a4 completion:(id)a5;
-- (void)indirectScribbleInteraction:(id)a3 willBeginWritingInElement:(id)a4;
+- (id)p_scribbleCapableElementsForRect:(CGRect)rect;
+- (id)p_scribbleElementIdentifiersInRect:(CGRect)rect;
+- (void)indirectScribbleInteraction:(id)interaction didFinishWritingInElement:(id)element;
+- (void)indirectScribbleInteraction:(id)interaction focusElementIfNeeded:(id)needed referencePoint:(CGPoint)point completion:(id)completion;
+- (void)indirectScribbleInteraction:(id)interaction requestElementsInRect:(CGRect)rect completion:(id)completion;
+- (void)indirectScribbleInteraction:(id)interaction willBeginWritingInElement:(id)element;
 @end
 
 @implementation CRLiOSScribbleInteractionDelegate
 
-- (CRLiOSScribbleInteractionDelegate)initWithEditingProvider:(id)a3 scribbleInteractionObserver:(id)a4
+- (CRLiOSScribbleInteractionDelegate)initWithEditingProvider:(id)provider scribbleInteractionObserver:(id)observer
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  observerCopy = observer;
   v13.receiver = self;
   v13.super_class = CRLiOSScribbleInteractionDelegate;
   v8 = [(CRLiOSScribbleInteractionDelegate *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_editingProvider, v6);
+    objc_storeWeak(&v8->_editingProvider, providerCopy);
     v10 = +[NSUUID UUID];
     rootIdentifier = v9->_rootIdentifier;
     v9->_rootIdentifier = v10;
 
-    objc_storeWeak(&v9->_scribbleObserver, v7);
+    objc_storeWeak(&v9->_scribbleObserver, observerCopy);
   }
 
   return v9;
 }
 
-- (void)indirectScribbleInteraction:(id)a3 focusElementIfNeeded:(id)a4 referencePoint:(CGPoint)a5 completion:(id)a6
+- (void)indirectScribbleInteraction:(id)interaction focusElementIfNeeded:(id)needed referencePoint:(CGPoint)point completion:(id)completion
 {
-  y = a5.y;
-  x = a5.x;
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  y = point.y;
+  x = point.x;
+  interactionCopy = interaction;
+  neededCopy = needed;
+  completionCopy = completion;
   if (qword_101AD5CE8 != -1)
   {
     sub_10138ED34();
@@ -69,18 +69,18 @@
     *buf = 138543874;
     v41 = v38;
     v42 = 2114;
-    v43 = v13;
+    v43 = neededCopy;
     v44 = 2114;
     v45 = v39;
     _os_log_debug_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEBUG, "%{public}@\n %{public}@, focusReferencePoint: %{public}@", buf, 0x20u);
   }
 
   v17 = objc_opt_class();
-  v18 = sub_100013F00(v17, v13);
+  v18 = sub_100013F00(v17, neededCopy);
   v19 = [(CRLiOSScribbleInteractionDelegate *)self p_absoluteScribbleCapableElementWithIdentifier:v18];
-  v20 = [(CRLiOSScribbleInteractionDelegate *)self rootIdentifier];
+  rootIdentifier = [(CRLiOSScribbleInteractionDelegate *)self rootIdentifier];
 
-  if (v18 != v20)
+  if (v18 != rootIdentifier)
   {
     if (v19)
     {
@@ -90,10 +90,10 @@
     goto LABEL_13;
   }
 
-  v21 = [(CRLiOSScribbleInteractionDelegate *)self p_insertedScribbleElementProvider];
-  if ([v21 canInsertScribbleElementAtPoint:{x, y}])
+  p_insertedScribbleElementProvider = [(CRLiOSScribbleInteractionDelegate *)self p_insertedScribbleElementProvider];
+  if ([p_insertedScribbleElementProvider canInsertScribbleElementAtPoint:{x, y}])
   {
-    v22 = [v21 insertedScribbleElementAtPoint:{x, y}];
+    v22 = [p_insertedScribbleElementProvider insertedScribbleElementAtPoint:{x, y}];
     v23 = v22;
     if (v22)
     {
@@ -150,29 +150,29 @@ LABEL_22:
 
   if (([v19 scribbleElementIsFocused] & 1) == 0)
   {
-    v29 = [v19 scribbleEditingBlock];
+    scribbleEditingBlock = [v19 scribbleEditingBlock];
 
-    if (v29)
+    if (scribbleEditingBlock)
     {
-      v30 = [v19 scribbleEditingBlock];
-      v30[2](v30, 0, x, y);
+      scribbleEditingBlock2 = [v19 scribbleEditingBlock];
+      scribbleEditingBlock2[2](scribbleEditingBlock2, 0, x, y);
     }
   }
 
-  v31 = [v19 scribbleIdentifier];
-  v32 = [(CRLiOSScribbleInteractionDelegate *)self p_currentEditingTextInputResponderForElementIdentifer:v31];
+  scribbleIdentifier = [v19 scribbleIdentifier];
+  v32 = [(CRLiOSScribbleInteractionDelegate *)self p_currentEditingTextInputResponderForElementIdentifer:scribbleIdentifier];
 
   if (v32)
   {
-    v33 = [v19 prepareForScribbleBlock];
+    prepareForScribbleBlock = [v19 prepareForScribbleBlock];
 
-    if (!v33)
+    if (!prepareForScribbleBlock)
     {
       goto LABEL_42;
     }
 
-    v34 = [v19 prepareForScribbleBlock];
-    v34[2](x, y);
+    prepareForScribbleBlock2 = [v19 prepareForScribbleBlock];
+    prepareForScribbleBlock2[2](x, y);
   }
 
   else
@@ -199,40 +199,40 @@ LABEL_22:
       sub_10130DA10(v35);
     }
 
-    v34 = [NSString stringWithUTF8String:"[CRLiOSScribbleInteractionDelegate indirectScribbleInteraction:focusElementIfNeeded:referencePoint:completion:]"];
+    prepareForScribbleBlock2 = [NSString stringWithUTF8String:"[CRLiOSScribbleInteractionDelegate indirectScribbleInteraction:focusElementIfNeeded:referencePoint:completion:]"];
     v36 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLiOSScribbleInteractionDelegate.m"];
-    [CRLAssertionHandler handleFailureInFunction:v34 file:v36 lineNumber:78 isFatal:0 description:"invalid nil value for '%{public}s'", "inputResponder"];
+    [CRLAssertionHandler handleFailureInFunction:prepareForScribbleBlock2 file:v36 lineNumber:78 isFatal:0 description:"invalid nil value for '%{public}s'", "inputResponder"];
   }
 
 LABEL_42:
-  if (v14)
+  if (completionCopy)
   {
-    v14[2](v14, v32);
+    completionCopy[2](completionCopy, v32);
   }
 }
 
-- (BOOL)indirectScribbleInteraction:(id)a3 shouldDelayFocusForElement:(id)a4
+- (BOOL)indirectScribbleInteraction:(id)interaction shouldDelayFocusForElement:(id)element
 {
-  v6 = a4;
-  v7 = [(CRLiOSScribbleInteractionDelegate *)self rootIdentifier];
+  elementCopy = element;
+  rootIdentifier = [(CRLiOSScribbleInteractionDelegate *)self rootIdentifier];
 
-  if (v7 == v6)
+  if (rootIdentifier == elementCopy)
   {
-    v10 = 1;
+    shouldDelayScribbleFocus = 1;
   }
 
   else
   {
-    v8 = [(CRLiOSScribbleInteractionDelegate *)self p_absoluteScribbleCapableElementWithIdentifier:v6];
+    v8 = [(CRLiOSScribbleInteractionDelegate *)self p_absoluteScribbleCapableElementWithIdentifier:elementCopy];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 shouldDelayScribbleFocus];
+      shouldDelayScribbleFocus = [v8 shouldDelayScribbleFocus];
     }
 
     else
     {
-      v10 = 0;
+      shouldDelayScribbleFocus = 0;
     }
   }
 
@@ -247,7 +247,7 @@ LABEL_42:
     v13 = v11;
     v14 = NSStringFromSelector(a2);
     v15 = @"NO";
-    if (v10)
+    if (shouldDelayScribbleFocus)
     {
       v15 = @"YES";
     }
@@ -256,18 +256,18 @@ LABEL_42:
     v17 = 138543874;
     v18 = v14;
     v19 = 2114;
-    v20 = v6;
+    v20 = elementCopy;
     v21 = 2114;
     v22 = v16;
     _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "%{public}@\n %{public}@ -> %{public}@", &v17, 0x20u);
   }
 
-  return v10;
+  return shouldDelayScribbleFocus;
 }
 
-- (void)indirectScribbleInteraction:(id)a3 willBeginWritingInElement:(id)a4
+- (void)indirectScribbleInteraction:(id)interaction willBeginWritingInElement:(id)element
 {
-  v5 = a4;
+  elementCopy = element;
   WeakRetained = objc_loadWeakRetained(&self->_scribbleObserver);
   [WeakRetained willBeginScribbleWithDelegate:self];
 
@@ -282,35 +282,35 @@ LABEL_42:
     sub_10138F010(v7);
   }
 
-  v8 = [(CRLiOSScribbleInteractionDelegate *)self p_absoluteScribbleCapableElementWithIdentifier:v5];
+  v8 = [(CRLiOSScribbleInteractionDelegate *)self p_absoluteScribbleCapableElementWithIdentifier:elementCopy];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 willBeginWritingBlock];
+    willBeginWritingBlock = [v8 willBeginWritingBlock];
 
-    if (v10)
+    if (willBeginWritingBlock)
     {
-      v11 = [v9 willBeginWritingBlock];
-      v11[2]();
+      willBeginWritingBlock2 = [v9 willBeginWritingBlock];
+      willBeginWritingBlock2[2]();
     }
   }
 
-  v12 = [(CRLiOSScribbleInteractionDelegate *)self editingProvider];
-  v13 = [(CRLiOSScribbleInteractionDelegate *)self rootIdentifier];
-  [v12 scribbleInteractionWillBeginWritingScribbleElementWillBeInserted:v13 == v5];
+  editingProvider = [(CRLiOSScribbleInteractionDelegate *)self editingProvider];
+  rootIdentifier = [(CRLiOSScribbleInteractionDelegate *)self rootIdentifier];
+  [editingProvider scribbleInteractionWillBeginWritingScribbleElementWillBeInserted:rootIdentifier == elementCopy];
 }
 
-- (BOOL)p_isElementFocused:(id)a3
+- (BOOL)p_isElementFocused:(id)focused
 {
-  v4 = [(CRLiOSScribbleInteractionDelegate *)self p_absoluteScribbleCapableElementWithIdentifier:a3];
+  v4 = [(CRLiOSScribbleInteractionDelegate *)self p_absoluteScribbleCapableElementWithIdentifier:focused];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 scribbleElementIsFocused];
-    v7 = [(CRLiOSScribbleInteractionDelegate *)self editingProvider];
-    v8 = [v7 currentEditingTextInputResponder];
+    scribbleElementIsFocused = [v4 scribbleElementIsFocused];
+    editingProvider = [(CRLiOSScribbleInteractionDelegate *)self editingProvider];
+    currentEditingTextInputResponder = [editingProvider currentEditingTextInputResponder];
 
-    if (v6 && !v8)
+    if (scribbleElementIsFocused && !currentEditingTextInputResponder)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -342,16 +342,16 @@ LABEL_42:
 
   else
   {
-    LOBYTE(v6) = 0;
+    LOBYTE(scribbleElementIsFocused) = 0;
   }
 
-  return v6;
+  return scribbleElementIsFocused;
 }
 
-- (BOOL)indirectScribbleInteraction:(id)a3 isElementFocused:(id)a4
+- (BOOL)indirectScribbleInteraction:(id)interaction isElementFocused:(id)focused
 {
-  v6 = a4;
-  v7 = [(CRLiOSScribbleInteractionDelegate *)self p_isElementFocused:v6];
+  focusedCopy = focused;
+  v7 = [(CRLiOSScribbleInteractionDelegate *)self p_isElementFocused:focusedCopy];
   if (qword_101AD5CE8 != -1)
   {
     sub_10138F188();
@@ -372,7 +372,7 @@ LABEL_42:
     v14 = 138543874;
     v15 = v11;
     v16 = 2114;
-    v17 = v6;
+    v17 = focusedCopy;
     v18 = 2114;
     v19 = v13;
     _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "%{public}@\n %{public}@ -> %{public}@", &v14, 0x20u);
@@ -381,35 +381,35 @@ LABEL_42:
   return v7;
 }
 
-- (CGRect)indirectScribbleInteraction:(id)a3 frameForElement:(id)a4
+- (CGRect)indirectScribbleInteraction:(id)interaction frameForElement:(id)element
 {
-  v7 = a3;
-  v8 = a4;
+  interactionCopy = interaction;
+  elementCopy = element;
   v9 = objc_opt_class();
-  v10 = sub_100013F00(v9, v8);
-  v11 = [(CRLiOSScribbleInteractionDelegate *)self rootIdentifier];
+  v10 = sub_100013F00(v9, elementCopy);
+  rootIdentifier = [(CRLiOSScribbleInteractionDelegate *)self rootIdentifier];
 
-  if (v10 == v11)
+  if (v10 == rootIdentifier)
   {
-    v17 = [v7 view];
-    [v17 bounds];
+    view = [interactionCopy view];
+    [view bounds];
     x = v18;
     y = v20;
     width = v22;
     height = v24;
 
-    v26 = [(CRLiOSScribbleInteractionDelegate *)self p_insertedScribbleElementProvider];
-    v12 = v26;
-    if (!v26)
+    p_insertedScribbleElementProvider = [(CRLiOSScribbleInteractionDelegate *)self p_insertedScribbleElementProvider];
+    v12 = p_insertedScribbleElementProvider;
+    if (!p_insertedScribbleElementProvider)
     {
       goto LABEL_8;
     }
 
-    [v26 rectForInsertingScribbleElements];
+    [p_insertedScribbleElementProvider rectForInsertingScribbleElements];
     goto LABEL_6;
   }
 
-  v12 = [(CRLiOSScribbleInteractionDelegate *)self p_absoluteScribbleCapableElementWithIdentifier:v8];
+  v12 = [(CRLiOSScribbleInteractionDelegate *)self p_absoluteScribbleCapableElementWithIdentifier:elementCopy];
   if (v12)
   {
     [(CRLiOSScribbleInteractionDelegate *)self p_expandedScribbleFrameForElement:v12];
@@ -445,7 +445,7 @@ LABEL_8:
     v35 = 138543874;
     v36 = v33;
     v37 = 2114;
-    v38 = v8;
+    v38 = elementCopy;
     v39 = 2114;
     v40 = v34;
     _os_log_debug_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEBUG, "%{public}@\n %{public}@ -> %{public}@", &v35, 0x20u);
@@ -462,14 +462,14 @@ LABEL_8:
   return result;
 }
 
-- (void)indirectScribbleInteraction:(id)a3 requestElementsInRect:(CGRect)a4 completion:(id)a5
+- (void)indirectScribbleInteraction:(id)interaction requestElementsInRect:(CGRect)rect completion:(id)completion
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a3;
-  v13 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  interactionCopy = interaction;
+  completionCopy = completion;
   if (width < 300.0 || height < 300.0)
   {
     if (qword_101AD5CE8 != -1)
@@ -492,8 +492,8 @@ LABEL_8:
     height = v21;
   }
 
-  v22 = [(CRLiOSScribbleInteractionDelegate *)self p_scribbleElementIdentifiersInRect:x, y, width, height];
-  v13[2](v13, v22);
+  height = [(CRLiOSScribbleInteractionDelegate *)self p_scribbleElementIdentifiersInRect:x, y, width, height];
+  completionCopy[2](completionCopy, height);
   if (qword_101AD5CE8 != -1)
   {
     sub_10138F2C0();
@@ -514,14 +514,14 @@ LABEL_8:
     v29 = 2114;
     v30 = v26;
     v31 = 2114;
-    v32 = v22;
+    v32 = height;
     _os_log_debug_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEBUG, "%{public}@\n %{public}@ -> %{public}@", &v27, 0x20u);
   }
 }
 
-- (void)indirectScribbleInteraction:(id)a3 didFinishWritingInElement:(id)a4
+- (void)indirectScribbleInteraction:(id)interaction didFinishWritingInElement:(id)element
 {
-  v5 = a4;
+  elementCopy = element;
   WeakRetained = objc_loadWeakRetained(&self->_scribbleObserver);
   [WeakRetained didFinishScribbleWithDelegate:self];
 
@@ -537,31 +537,31 @@ LABEL_8:
   }
 
   v8 = objc_opt_class();
-  v9 = sub_100013F00(v8, v5);
+  v9 = sub_100013F00(v8, elementCopy);
   v10 = [(CRLiOSScribbleInteractionDelegate *)self p_absoluteScribbleCapableElementWithIdentifier:v9];
-  v11 = [(CRLiOSScribbleInteractionDelegate *)self rootIdentifier];
+  rootIdentifier = [(CRLiOSScribbleInteractionDelegate *)self rootIdentifier];
 
-  if (v9 == v11 || v10)
+  if (v9 == rootIdentifier || v10)
   {
-    v12 = [(CRLiOSScribbleInteractionDelegate *)self editingProvider];
-    [v12 scribbleInteractionDidFinishWriting];
+    editingProvider = [(CRLiOSScribbleInteractionDelegate *)self editingProvider];
+    [editingProvider scribbleInteractionDidFinishWriting];
   }
 }
 
-- (BOOL)_indirectScribbleInteractionShouldDisableInputAssistant:(id)a3
+- (BOOL)_indirectScribbleInteractionShouldDisableInputAssistant:(id)assistant
 {
-  v3 = [(CRLiOSScribbleInteractionDelegate *)self editingProvider];
-  v4 = [v3 wantsSystemInputAssistantForScribble];
+  editingProvider = [(CRLiOSScribbleInteractionDelegate *)self editingProvider];
+  wantsSystemInputAssistantForScribble = [editingProvider wantsSystemInputAssistantForScribble];
 
-  return v4 ^ 1;
+  return wantsSystemInputAssistantForScribble ^ 1;
 }
 
-- (BOOL)scribbleInteraction:(id)a3 shouldBeginAtLocation:(CGPoint)a4
+- (BOOL)scribbleInteraction:(id)interaction shouldBeginAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [(CRLiOSScribbleInteractionDelegate *)self editingProvider];
-  v8 = [v7 shouldBeginScribblingAtPoint:{x, y}];
+  y = location.y;
+  x = location.x;
+  editingProvider = [(CRLiOSScribbleInteractionDelegate *)self editingProvider];
+  v8 = [editingProvider shouldBeginScribblingAtPoint:{x, y}];
 
   if (qword_101AD5CE8 != -1)
   {
@@ -595,48 +595,48 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)_scribbleInteractionShouldDisableInputAssistant:(id)a3
+- (BOOL)_scribbleInteractionShouldDisableInputAssistant:(id)assistant
 {
-  v3 = [(CRLiOSScribbleInteractionDelegate *)self editingProvider];
-  v4 = [v3 wantsSystemInputAssistantForScribble];
+  editingProvider = [(CRLiOSScribbleInteractionDelegate *)self editingProvider];
+  wantsSystemInputAssistantForScribble = [editingProvider wantsSystemInputAssistantForScribble];
 
-  return v4 ^ 1;
+  return wantsSystemInputAssistantForScribble ^ 1;
 }
 
-- (id)p_currentEditingTextInputResponderForElementIdentifer:(id)a3
+- (id)p_currentEditingTextInputResponderForElementIdentifer:(id)identifer
 {
-  if ([(CRLiOSScribbleInteractionDelegate *)self p_isElementFocused:a3])
+  if ([(CRLiOSScribbleInteractionDelegate *)self p_isElementFocused:identifer])
   {
-    v4 = [(CRLiOSScribbleInteractionDelegate *)self editingProvider];
-    v5 = [v4 currentEditingTextInputResponder];
+    editingProvider = [(CRLiOSScribbleInteractionDelegate *)self editingProvider];
+    currentEditingTextInputResponder = [editingProvider currentEditingTextInputResponder];
   }
 
   else
   {
-    v5 = 0;
+    currentEditingTextInputResponder = 0;
   }
 
-  return v5;
+  return currentEditingTextInputResponder;
 }
 
 - (id)p_insertedScribbleElementProvider
 {
-  v2 = [(CRLiOSScribbleInteractionDelegate *)self editingProvider];
-  v9 = sub_1003035DC(v2, 1, v3, v4, v5, v6, v7, v8, &OBJC_PROTOCOL___CRLiOSScribbleInteractionInsertedScribbleElementProvider);
+  editingProvider = [(CRLiOSScribbleInteractionDelegate *)self editingProvider];
+  v9 = sub_1003035DC(editingProvider, 1, v3, v4, v5, v6, v7, v8, &OBJC_PROTOCOL___CRLiOSScribbleInteractionInsertedScribbleElementProvider);
 
   return v9;
 }
 
-- (id)p_containedScribbleElementForContainerScribbleElement:(id)a3
+- (id)p_containedScribbleElementForContainerScribbleElement:(id)element
 {
-  v4 = a3;
-  v5 = [(CRLiOSScribbleInteractionDelegate *)self editingProvider];
+  elementCopy = element;
+  editingProvider = [(CRLiOSScribbleInteractionDelegate *)self editingProvider];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CRLiOSScribbleInteractionDelegate *)self editingProvider];
-    v8 = [v7 containedScribbleElementForContainerScribbleElement:v4];
+    editingProvider2 = [(CRLiOSScribbleInteractionDelegate *)self editingProvider];
+    v8 = [editingProvider2 containedScribbleElementForContainerScribbleElement:elementCopy];
   }
 
   else
@@ -647,23 +647,23 @@ LABEL_8:
   return v8;
 }
 
-- (id)p_absoluteScribbleCapableElementWithIdentifier:(id)a3
+- (id)p_absoluteScribbleCapableElementWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_opt_class();
-  v6 = sub_100013F00(v5, v4);
+  v6 = sub_100013F00(v5, identifierCopy);
 
-  v7 = [(CRLiOSScribbleInteractionDelegate *)self rootIdentifier];
+  rootIdentifier = [(CRLiOSScribbleInteractionDelegate *)self rootIdentifier];
 
-  if (v6 == v7 || v6 == 0)
+  if (v6 == rootIdentifier || v6 == 0)
   {
     v10 = 0;
   }
 
   else
   {
-    v9 = [(CRLiOSScribbleInteractionDelegate *)self editingProvider];
-    v10 = [v9 scribbleCapableElementWithIdentifier:v6];
+    editingProvider = [(CRLiOSScribbleInteractionDelegate *)self editingProvider];
+    v10 = [editingProvider scribbleCapableElementWithIdentifier:v6];
 
     if (v10)
     {
@@ -681,27 +681,27 @@ LABEL_8:
   return v10;
 }
 
-- (id)p_scribbleCapableElementsForRect:(CGRect)a3
+- (id)p_scribbleCapableElementsForRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(CRLiOSScribbleInteractionDelegate *)self editingProvider];
-  v8 = [v7 scribbleCapableElementsForRect:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  editingProvider = [(CRLiOSScribbleInteractionDelegate *)self editingProvider];
+  v8 = [editingProvider scribbleCapableElementsForRect:{x, y, width, height}];
 
   return v8;
 }
 
-- (CGRect)p_expandedScribbleFrameForElement:(id)a3
+- (CGRect)p_expandedScribbleFrameForElement:(id)element
 {
-  v4 = a3;
-  [v4 scaledScribbleEditingFrame];
+  elementCopy = element;
+  [elementCopy scaledScribbleEditingFrame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [v4 hitToleranceInsetsWithDefaultInsets:{-60.0, -60.0, -60.0, -60.0}];
+  [elementCopy hitToleranceInsetsWithDefaultInsets:{-60.0, -60.0, -60.0, -60.0}];
   v76 = v16;
   v77 = v13;
   v17 = v15;
@@ -992,19 +992,19 @@ LABEL_8:
   return result;
 }
 
-- (id)p_scribbleElementIdentifiersInRect:(CGRect)a3
+- (id)p_scribbleElementIdentifiersInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v9 = objc_alloc_init(NSMutableArray);
-  v10 = [(CRLiOSScribbleInteractionDelegate *)self p_scribbleCapableElementsForRect:x, y, width, height];
-  v11 = [(CRLiOSScribbleInteractionDelegate *)self p_insertedScribbleElementProvider];
-  if (v11 && [v11 canInsertScribbleElementAtPoint:{sub_100120414(x, y, width, height)}])
+  height = [(CRLiOSScribbleInteractionDelegate *)self p_scribbleCapableElementsForRect:x, y, width, height];
+  p_insertedScribbleElementProvider = [(CRLiOSScribbleInteractionDelegate *)self p_insertedScribbleElementProvider];
+  if (p_insertedScribbleElementProvider && [p_insertedScribbleElementProvider canInsertScribbleElementAtPoint:{sub_100120414(x, y, width, height)}])
   {
-    v12 = [(CRLiOSScribbleInteractionDelegate *)self rootIdentifier];
-    [v9 addObject:v12];
+    rootIdentifier = [(CRLiOSScribbleInteractionDelegate *)self rootIdentifier];
+    [v9 addObject:rootIdentifier];
 
     if (qword_101AD5CE8 != -1)
     {
@@ -1022,7 +1022,7 @@ LABEL_8:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v14 = v10;
+  v14 = height;
   v15 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v15)
   {
@@ -1037,8 +1037,8 @@ LABEL_8:
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v21 + 1) + 8 * i) scribbleIdentifier];
-        [v9 crl_addNonNilObject:v19];
+        scribbleIdentifier = [*(*(&v21 + 1) + 8 * i) scribbleIdentifier];
+        [v9 crl_addNonNilObject:scribbleIdentifier];
       }
 
       v16 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];

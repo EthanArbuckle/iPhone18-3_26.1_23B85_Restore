@@ -1,25 +1,25 @@
 @interface VITextAnnotation
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)normalizedBoundingBox;
-- (VITextAnnotation)initWithText:(id)a3 normalizedBoundingBox:(CGRect)a4 confidence:(float)a5;
+- (VITextAnnotation)initWithText:(id)text normalizedBoundingBox:(CGRect)box confidence:(float)confidence;
 - (unint64_t)hash;
 @end
 
 @implementation VITextAnnotation
 
-- (VITextAnnotation)initWithText:(id)a3 normalizedBoundingBox:(CGRect)a4 confidence:(float)a5
+- (VITextAnnotation)initWithText:(id)text normalizedBoundingBox:(CGRect)box confidence:(float)confidence
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  textCopy = text;
   v16.receiver = self;
   v16.super_class = VITextAnnotation;
   v12 = [(VITextAnnotation *)&v16 init];
   if (v12)
   {
-    v13 = [v11 copy];
+    v13 = [textCopy copy];
     text = v12->_text;
     v12->_text = v13;
 
@@ -27,16 +27,16 @@
     v12->_normalizedBoundingBox.origin.y = y;
     v12->_normalizedBoundingBox.size.width = width;
     v12->_normalizedBoundingBox.size.height = height;
-    v12->_confidence = a5;
+    v12->_confidence = confidence;
   }
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     IsEqual = 1;
   }
@@ -46,7 +46,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -60,8 +60,8 @@
     if (confidence == v8 && ([(VITextAnnotation *)v6 normalizedBoundingBox], v17.origin.x = v9, v17.origin.y = v10, v17.size.width = v11, v17.size.height = v12, CGRectEqualToRect(self->_normalizedBoundingBox, v17)))
     {
       text = self->_text;
-      v14 = [(VITextAnnotation *)v6 text];
-      IsEqual = VIObjectIsEqual(text, v14);
+      text = [(VITextAnnotation *)v6 text];
+      IsEqual = VIObjectIsEqual(text, text);
     }
 
     else

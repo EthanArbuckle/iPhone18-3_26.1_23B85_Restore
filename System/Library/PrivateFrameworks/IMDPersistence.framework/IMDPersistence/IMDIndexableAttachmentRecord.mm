@@ -1,83 +1,83 @@
 @interface IMDIndexableAttachmentRecord
-- (IMDIndexableAttachmentRecord)initWithAttachmentRecord:(id)a3;
-- (IMDIndexableAttachmentRecord)initWithDictionaryRepresentation:(id)a3;
+- (IMDIndexableAttachmentRecord)initWithAttachmentRecord:(id)record;
+- (IMDIndexableAttachmentRecord)initWithDictionaryRepresentation:(id)representation;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation IMDIndexableAttachmentRecord
 
-- (IMDIndexableAttachmentRecord)initWithAttachmentRecord:(id)a3
+- (IMDIndexableAttachmentRecord)initWithAttachmentRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v35.receiver = self;
   v35.super_class = IMDIndexableAttachmentRecord;
   v7 = [(IMDIndexableAttachmentRecord *)&v35 init];
   if (v7)
   {
-    objc_msgSend__writeIfNeededForPreviewGenerationStateMigration(v4, v5, v6);
-    v10 = objc_msgSend_guid(v4, v8, v9);
+    objc_msgSend__writeIfNeededForPreviewGenerationStateMigration(recordCopy, v5, v6);
+    v10 = objc_msgSend_guid(recordCopy, v8, v9);
     guid = v7->_guid;
     v7->_guid = v10;
 
-    v14 = objc_msgSend_path(v4, v12, v13);
+    v14 = objc_msgSend_path(recordCopy, v12, v13);
     path = v7->_path;
     v7->_path = v14;
 
-    v18 = objc_msgSend_transferName(v4, v16, v17);
+    v18 = objc_msgSend_transferName(recordCopy, v16, v17);
     name = v7->_name;
     v7->_name = v18;
 
-    v22 = objc_msgSend_attributionInfo(v4, v20, v21);
+    v22 = objc_msgSend_attributionInfo(recordCopy, v20, v21);
     attributionInfo = v7->_attributionInfo;
     v7->_attributionInfo = v22;
 
-    v7->_commSafetySensitive = objc_msgSend_isCommSafetySensitive(v4, v24, v25);
-    v7->_sticker = objc_msgSend_isSticker(v4, v26, v27);
-    v30 = objc_msgSend_utiString(v4, v28, v29);
+    v7->_commSafetySensitive = objc_msgSend_isCommSafetySensitive(recordCopy, v24, v25);
+    v7->_sticker = objc_msgSend_isSticker(recordCopy, v26, v27);
+    v30 = objc_msgSend_utiString(recordCopy, v28, v29);
     uti = v7->_uti;
     v7->_uti = v30;
 
-    v7->_previewGenerationState = objc_msgSend_previewGenerationState(v4, v32, v33);
+    v7->_previewGenerationState = objc_msgSend_previewGenerationState(recordCopy, v32, v33);
   }
 
   return v7;
 }
 
-- (IMDIndexableAttachmentRecord)initWithDictionaryRepresentation:(id)a3
+- (IMDIndexableAttachmentRecord)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v34.receiver = self;
   v34.super_class = IMDIndexableAttachmentRecord;
   v6 = [(IMDIndexableAttachmentRecord *)&v34 init];
   if (v6)
   {
-    v7 = objc_msgSend_objectForKeyedSubscript_(v4, v5, @"guid");
+    v7 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v5, @"guid");
     guid = v6->_guid;
     v6->_guid = v7;
 
-    v10 = objc_msgSend_objectForKeyedSubscript_(v4, v9, @"path");
+    v10 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v9, @"path");
     path = v6->_path;
     v6->_path = v10;
 
-    v13 = objc_msgSend_objectForKeyedSubscript_(v4, v12, @"name");
+    v13 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v12, @"name");
     name = v6->_name;
     v6->_name = v13;
 
-    v16 = objc_msgSend_objectForKeyedSubscript_(v4, v15, @"attributionInfo");
+    v16 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v15, @"attributionInfo");
     attributionInfo = v6->_attributionInfo;
     v6->_attributionInfo = v16;
 
-    v19 = objc_msgSend_objectForKeyedSubscript_(v4, v18, @"isCommSafetySensitive");
+    v19 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v18, @"isCommSafetySensitive");
     v6->_commSafetySensitive = objc_msgSend_BOOLValue(v19, v20, v21);
 
-    v23 = objc_msgSend_objectForKeyedSubscript_(v4, v22, @"isSticker");
+    v23 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v22, @"isSticker");
     v6->_sticker = objc_msgSend_BOOLValue(v23, v24, v25);
 
-    v27 = objc_msgSend_objectForKeyedSubscript_(v4, v26, @"uti");
+    v27 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v26, @"uti");
     uti = v6->_uti;
     v6->_uti = v27;
 
-    v30 = objc_msgSend_objectForKeyedSubscript_(v4, v29, @"previewGenerationState");
+    v30 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v29, @"previewGenerationState");
     v6->_previewGenerationState = objc_msgSend_integerValue(v30, v31, v32);
   }
 

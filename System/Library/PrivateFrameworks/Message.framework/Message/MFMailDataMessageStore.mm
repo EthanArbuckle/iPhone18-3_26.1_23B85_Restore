@@ -1,6 +1,6 @@
 @interface MFMailDataMessageStore
 - (MFMailboxUid)mailbox;
-- (id)storageLocationForAttachment:(id)a3 withMessage:(id)a4;
+- (id)storageLocationForAttachment:(id)attachment withMessage:(id)message;
 @end
 
 @implementation MFMailDataMessageStore
@@ -9,19 +9,19 @@
 {
   v4.receiver = self;
   v4.super_class = MFMailDataMessageStore;
-  v2 = [(MFDataMessageStore *)&v4 mailboxUid];
+  mailboxUid = [(MFDataMessageStore *)&v4 mailboxUid];
 
-  return v2;
+  return mailboxUid;
 }
 
-- (id)storageLocationForAttachment:(id)a3 withMessage:(id)a4
+- (id)storageLocationForAttachment:(id)attachment withMessage:(id)message
 {
-  v5 = a3;
-  v6 = [a4 parentPart];
-  v7 = [v6 mimeBody];
-  v8 = [v7 message];
+  attachmentCopy = attachment;
+  parentPart = [message parentPart];
+  mimeBody = [parentPart mimeBody];
+  message = [mimeBody message];
 
-  v9 = [v8 storageLocationForAttachment:v5];
+  v9 = [message storageLocationForAttachment:attachmentCopy];
 
   return v9;
 }

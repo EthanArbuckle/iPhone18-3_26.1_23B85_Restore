@@ -1,26 +1,26 @@
 @interface PXSharedLibraryAssistantDatePickerViewController
 - (PXAssistantViewControllerDelegate)assistantViewControllerDelegate;
-- (PXSharedLibraryAssistantDatePickerViewController)initWithViewModel:(id)a3;
-- (id)_datePickerCellForTableView:(id)a3;
-- (id)_startDateCellForTableView:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (PXSharedLibraryAssistantDatePickerViewController)initWithViewModel:(id)model;
+- (id)_datePickerCellForTableView:(id)view;
+- (id)_startDateCellForTableView:(id)view;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_continueAssistant;
-- (void)_datePickerDidChange:(id)a3;
-- (void)_resetPickerWithDate:(id)a3;
+- (void)_datePickerDidChange:(id)change;
+- (void)_resetPickerWithDate:(id)date;
 - (void)_updateFooterText;
 - (void)_updateHeaderText;
 - (void)_updateStartDateCell;
-- (void)_updateViewModelForStartDate:(id)a3 completionHandler:(id)a4;
-- (void)continueButtonTapped:(id)a3;
-- (void)footerTextWithCompletion:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)_updateViewModelForStartDate:(id)date completionHandler:(id)handler;
+- (void)continueButtonTapped:(id)tapped;
+- (void)footerTextWithCompletion:(id)completion;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)resetPickerDate;
 - (void)restorePickerDate;
 - (void)skipPickedDateAndContinue;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)truncateAndSetPickedDate:(id)a3;
-- (void)usePickedDateAndContinueWithCompletionHandler:(id)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)truncateAndSetPickedDate:(id)date;
+- (void)usePickedDateAndContinueWithCompletionHandler:(id)handler;
 - (void)viewDidLoad;
 @end
 
@@ -33,9 +33,9 @@
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if ((a4 & 0x2088) != 0 && PXSharedLibraryAssistantDatePickerViewModelObservationContext == a5)
+  if ((change & 0x2088) != 0 && PXSharedLibraryAssistantDatePickerViewModelObservationContext == context)
   {
     [(PXSharedLibraryAssistantDatePickerViewController *)self resetPickerDate];
     [(PXSharedLibraryAssistantDatePickerViewController *)self _updateStartDateCell];
@@ -45,21 +45,21 @@
   }
 }
 
-- (void)continueButtonTapped:(id)a3
+- (void)continueButtonTapped:(id)tapped
 {
-  v4 = [(OBBaseWelcomeController *)self navigationItem];
-  v5 = [(PXSharedLibraryAssistantDatePickerViewController *)self titleButton];
-  [v4 setHidesBackButton:1];
-  [v5 setEnabled:0];
-  [v5 showsBusyIndicator];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  titleButton = [(PXSharedLibraryAssistantDatePickerViewController *)self titleButton];
+  [navigationItem setHidesBackButton:1];
+  [titleButton setEnabled:0];
+  [titleButton showsBusyIndicator];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __73__PXSharedLibraryAssistantDatePickerViewController_continueButtonTapped___block_invoke;
   v8[3] = &unk_1E774C620;
-  v9 = v5;
-  v10 = v4;
-  v6 = v4;
-  v7 = v5;
+  v9 = titleButton;
+  v10 = navigationItem;
+  v6 = navigationItem;
+  v7 = titleButton;
   [(PXSharedLibraryAssistantDatePickerViewController *)self usePickedDateAndContinueWithCompletionHandler:v8];
 }
 
@@ -76,15 +76,15 @@ uint64_t __73__PXSharedLibraryAssistantDatePickerViewController_continueButtonTa
 {
   v3 = PXLocalizedSharedLibraryString(@"PXSharedLibraryAssistant_DateSelection_Title");
   v9 = 0;
-  v4 = [(PXSharedLibraryAssistantDatePickerViewController *)self viewModel];
-  v5 = [v4 localizedSelectedPeopleWithAdditionalPeopleCount:&v9];
+  viewModel = [(PXSharedLibraryAssistantDatePickerViewController *)self viewModel];
+  v5 = [viewModel localizedSelectedPeopleWithAdditionalPeopleCount:&v9];
 
   v6 = PXSharedLibraryAssistantDateSelectionSubtitle(v5, v9);
-  v7 = [(PXSharedLibraryAssistantDatePickerViewController *)self headerView];
-  [v7 setTitle:v3];
+  headerView = [(PXSharedLibraryAssistantDatePickerViewController *)self headerView];
+  [headerView setTitle:v3];
 
-  v8 = [(PXSharedLibraryAssistantDatePickerViewController *)self headerView];
-  [v8 setDetailText:v6];
+  headerView2 = [(PXSharedLibraryAssistantDatePickerViewController *)self headerView];
+  [headerView2 setDetailText:v6];
 }
 
 - (void)_updateFooterText
@@ -108,25 +108,25 @@ void __69__PXSharedLibraryAssistantDatePickerViewController__updateFooterText__b
 
 - (void)_updateStartDateCell
 {
-  v8 = [MEMORY[0x1E69DCC28] valueCellConfiguration];
+  valueCellConfiguration = [MEMORY[0x1E69DCC28] valueCellConfiguration];
   v3 = PXLocalizedSharedLibraryString(@"PXSharedLibraryAssistant_DateSelection_PickerDetail");
-  [v8 setText:v3];
+  [valueCellConfiguration setText:v3];
 
-  v4 = [(PXSharedLibraryAssistantDatePickerViewController *)self pickedDate];
-  v5 = PXSharedLibraryAssistantCustomizeRulesExcludingFromStartDate(v4);
-  [v8 setSecondaryText:v5];
+  pickedDate = [(PXSharedLibraryAssistantDatePickerViewController *)self pickedDate];
+  v5 = PXSharedLibraryAssistantCustomizeRulesExcludingFromStartDate(pickedDate);
+  [valueCellConfiguration setSecondaryText:v5];
 
-  v6 = [MEMORY[0x1E69DC888] systemBlueColor];
-  v7 = [v8 secondaryTextProperties];
-  [v7 setColor:v6];
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  secondaryTextProperties = [valueCellConfiguration secondaryTextProperties];
+  [secondaryTextProperties setColor:systemBlueColor];
 
-  [(UITableViewCell *)self->_startDateCell setContentConfiguration:v8];
+  [(UITableViewCell *)self->_startDateCell setContentConfiguration:valueCellConfiguration];
 }
 
-- (void)_datePickerDidChange:(id)a3
+- (void)_datePickerDidChange:(id)change
 {
-  v4 = [a3 date];
-  [(PXSharedLibraryAssistantDatePickerViewController *)self truncateAndSetPickedDate:v4];
+  date = [change date];
+  [(PXSharedLibraryAssistantDatePickerViewController *)self truncateAndSetPickedDate:date];
 
   [(PXSharedLibraryAssistantDatePickerViewController *)self setHasCustomDate:1];
   [(PXSharedLibraryAssistantDatePickerViewController *)self _updateStartDateCell];
@@ -134,7 +134,7 @@ void __69__PXSharedLibraryAssistantDatePickerViewController__updateFooterText__b
   [(PXSharedLibraryAssistantDatePickerViewController *)self _updateFooterText];
 }
 
-- (id)_datePickerCellForTableView:(id)a3
+- (id)_datePickerCellForTableView:(id)view
 {
   v28[4] = *MEMORY[0x1E69E9840];
   datePickerCell = self->_datePickerCell;
@@ -144,8 +144,8 @@ void __69__PXSharedLibraryAssistantDatePickerViewController__updateFooterText__b
     v6 = self->_datePickerCell;
     self->_datePickerCell = v5;
 
-    v7 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-    [(UITableViewCell *)self->_datePickerCell setBackgroundColor:v7];
+    secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    [(UITableViewCell *)self->_datePickerCell setBackgroundColor:secondarySystemBackgroundColor];
 
     v8 = objc_alloc_init(MEMORY[0x1E69DC920]);
     datePicker = self->_datePicker;
@@ -155,31 +155,31 @@ void __69__PXSharedLibraryAssistantDatePickerViewController__updateFooterText__b
     [(UIDatePicker *)self->_datePicker _setCustomFontDesign:*MEMORY[0x1E69DB8D8]];
     [(UIDatePicker *)self->_datePicker setDatePickerMode:1];
     [(UIDatePicker *)self->_datePicker setPreferredDatePickerStyle:3];
-    v10 = [(PXSharedLibraryAssistantDatePickerViewController *)self pickedDate];
-    [(UIDatePicker *)self->_datePicker setDate:v10];
+    pickedDate = [(PXSharedLibraryAssistantDatePickerViewController *)self pickedDate];
+    [(UIDatePicker *)self->_datePicker setDate:pickedDate];
 
-    v11 = [MEMORY[0x1E695DF00] date];
-    [(UIDatePicker *)self->_datePicker setMaximumDate:v11];
+    date = [MEMORY[0x1E695DF00] date];
+    [(UIDatePicker *)self->_datePicker setMaximumDate:date];
 
     [(UIDatePicker *)self->_datePicker addTarget:self action:sel__datePickerDidChange_ forControlEvents:4096];
-    v12 = [(UITableViewCell *)self->_datePickerCell contentView];
-    [v12 addSubview:self->_datePicker];
+    contentView = [(UITableViewCell *)self->_datePickerCell contentView];
+    [contentView addSubview:self->_datePicker];
     v22 = MEMORY[0x1E696ACD8];
-    v27 = [(UIDatePicker *)self->_datePicker topAnchor];
-    v26 = [v12 topAnchor];
-    v25 = [v27 constraintEqualToAnchor:v26];
+    topAnchor = [(UIDatePicker *)self->_datePicker topAnchor];
+    topAnchor2 = [contentView topAnchor];
+    v25 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v28[0] = v25;
-    v24 = [(UIDatePicker *)self->_datePicker leadingAnchor];
-    v23 = [v12 leadingAnchor];
-    v21 = [v24 constraintEqualToAnchor:v23];
+    leadingAnchor = [(UIDatePicker *)self->_datePicker leadingAnchor];
+    leadingAnchor2 = [contentView leadingAnchor];
+    v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v28[1] = v21;
-    v13 = [(UIDatePicker *)self->_datePicker bottomAnchor];
-    v14 = [v12 bottomAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    bottomAnchor = [(UIDatePicker *)self->_datePicker bottomAnchor];
+    bottomAnchor2 = [contentView bottomAnchor];
+    v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v28[2] = v15;
-    v16 = [(UIDatePicker *)self->_datePicker trailingAnchor];
-    v17 = [v12 trailingAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    trailingAnchor = [(UIDatePicker *)self->_datePicker trailingAnchor];
+    trailingAnchor2 = [contentView trailingAnchor];
+    v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v28[3] = v18;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:4];
     [v22 activateConstraints:v19];
@@ -190,7 +190,7 @@ void __69__PXSharedLibraryAssistantDatePickerViewController__updateFooterText__b
   return datePickerCell;
 }
 
-- (id)_startDateCellForTableView:(id)a3
+- (id)_startDateCellForTableView:(id)view
 {
   startDateCell = self->_startDateCell;
   if (!startDateCell)
@@ -199,8 +199,8 @@ void __69__PXSharedLibraryAssistantDatePickerViewController__updateFooterText__b
     v6 = self->_startDateCell;
     self->_startDateCell = v5;
 
-    v7 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-    [(UITableViewCell *)self->_startDateCell setBackgroundColor:v7];
+    secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    [(UITableViewCell *)self->_startDateCell setBackgroundColor:secondarySystemBackgroundColor];
 
     [(PXSharedLibraryAssistantDatePickerViewController *)self _updateStartDateCell];
     startDateCell = self->_startDateCell;
@@ -209,13 +209,13 @@ void __69__PXSharedLibraryAssistantDatePickerViewController__updateFooterText__b
   return startDateCell;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  [v6 deselectRowAtIndexPath:v7 animated:1];
-  v8 = [v7 row];
+  viewCopy = view;
+  pathCopy = path;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  v8 = [pathCopy row];
 
   if (!v8)
   {
@@ -227,39 +227,39 @@ void __69__PXSharedLibraryAssistantDatePickerViewController__updateFooterText__b
     {
       v13 = v10;
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v13 count:1];
-      [v6 deleteRowsAtIndexPaths:v12 withRowAnimation:100];
+      [viewCopy deleteRowsAtIndexPaths:v12 withRowAnimation:100];
     }
 
     else
     {
       v14[0] = v10;
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-      [v6 insertRowsAtIndexPaths:v12 withRowAnimation:100];
+      [viewCopy insertRowsAtIndexPaths:v12 withRowAnimation:100];
     }
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 item];
-  if (v9 == 1)
+  viewCopy = view;
+  pathCopy = path;
+  item = [pathCopy item];
+  if (item == 1)
   {
-    v10 = [(PXSharedLibraryAssistantDatePickerViewController *)self _datePickerCellForTableView:v7];
+    v10 = [(PXSharedLibraryAssistantDatePickerViewController *)self _datePickerCellForTableView:viewCopy];
   }
 
   else
   {
-    if (v9)
+    if (item)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryAssistantDatePickerViewController+iOS.m" lineNumber:106 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryAssistantDatePickerViewController+iOS.m" lineNumber:106 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    v10 = [(PXSharedLibraryAssistantDatePickerViewController *)self _startDateCellForTableView:v7];
+    v10 = [(PXSharedLibraryAssistantDatePickerViewController *)self _startDateCellForTableView:viewCopy];
   }
 
   v11 = v10;
@@ -267,7 +267,7 @@ void __69__PXSharedLibraryAssistantDatePickerViewController__updateFooterText__b
   return v11;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   if (self->_isShowingFullPicker)
   {
@@ -290,41 +290,41 @@ void __69__PXSharedLibraryAssistantDatePickerViewController__updateFooterText__b
   v3 = objc_alloc(MEMORY[0x1E69DD020]);
   v4 = [v3 initWithFrame:2 style:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v4 setBackgroundColor:v5];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [v4 setBackgroundColor:systemBackgroundColor];
 
   [v4 setDataSource:self];
   [v4 setDelegate:self];
   [(OBTableWelcomeController *)self setTableView:v4];
-  v6 = [MEMORY[0x1E69B7D00] boldButton];
+  boldButton = [MEMORY[0x1E69B7D00] boldButton];
   titleButton = self->_titleButton;
-  self->_titleButton = v6;
+  self->_titleButton = boldButton;
 
   v8 = self->_titleButton;
   v9 = PXLocalizedSharedLibraryString(@"PXSharedLibraryAssistant_ButtonTitle_Continue");
   [(OBBoldTrayButton *)v8 setTitle:v9 forState:0];
 
   [(OBBoldTrayButton *)self->_titleButton addTarget:self action:sel_continueButtonTapped_ forControlEvents:0x2000];
-  v10 = [(PXSharedLibraryAssistantDatePickerViewController *)self buttonTray];
-  [v10 addButton:self->_titleButton];
+  buttonTray = [(PXSharedLibraryAssistantDatePickerViewController *)self buttonTray];
+  [buttonTray addButton:self->_titleButton];
 
   v11 = [MEMORY[0x1E69DCBA0] keyCommandWithInput:@"\r" modifierFlags:0 action:sel_continueButtonTapped_];
   [(PXSharedLibraryAssistantDatePickerViewController *)self addKeyCommand:v11];
 
-  v12 = [MEMORY[0x1E69B7D38] linkButton];
+  linkButton = [MEMORY[0x1E69B7D38] linkButton];
   v13 = PXLocalizedSharedLibraryString(@"PXSharedLibraryAssistant_ButtonTitle_Skip");
-  [v12 setTitle:v13 forState:0];
+  [linkButton setTitle:v13 forState:0];
 
-  [v12 addTarget:self action:sel_skipButtonTapped_ forControlEvents:0x2000];
-  v14 = [(PXSharedLibraryAssistantDatePickerViewController *)self buttonTray];
-  [v14 addButton:v12];
+  [linkButton addTarget:self action:sel_skipButtonTapped_ forControlEvents:0x2000];
+  buttonTray2 = [(PXSharedLibraryAssistantDatePickerViewController *)self buttonTray];
+  [buttonTray2 addButton:linkButton];
 
   [(PXSharedLibraryAssistantDatePickerViewController *)self _updateFooterText];
 }
 
-- (PXSharedLibraryAssistantDatePickerViewController)initWithViewModel:(id)a3
+- (PXSharedLibraryAssistantDatePickerViewController)initWithViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v6 = PXLocalizedSharedLibraryString(@"PXSharedLibraryAssistant_DateSelection_Title");
   v10.receiver = self;
   v10.super_class = PXSharedLibraryAssistantDatePickerViewController;
@@ -332,15 +332,15 @@ void __69__PXSharedLibraryAssistantDatePickerViewController__updateFooterText__b
 
   if (v7)
   {
-    objc_storeStrong(&v7->_viewModel, a3);
-    v8 = [(PXSharedLibraryAssistantViewModel *)v7->_viewModel startDate];
+    objc_storeStrong(&v7->_viewModel, model);
+    startDate = [(PXSharedLibraryAssistantViewModel *)v7->_viewModel startDate];
 
-    if (v8)
+    if (startDate)
     {
       [(PXSharedLibraryAssistantDatePickerViewController *)v7 setHasCustomDate:1];
     }
 
-    [v5 registerChangeObserver:v7 context:PXSharedLibraryAssistantDatePickerViewModelObservationContext];
+    [modelCopy registerChangeObserver:v7 context:PXSharedLibraryAssistantDatePickerViewModelObservationContext];
   }
 
   return v7;
@@ -349,40 +349,40 @@ void __69__PXSharedLibraryAssistantDatePickerViewController__updateFooterText__b
 - (void)_continueAssistant
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = [(PXSharedLibraryAssistantDatePickerViewController *)self assistantViewControllerDelegate];
-  if (!v3)
+  assistantViewControllerDelegate = [(PXSharedLibraryAssistantDatePickerViewController *)self assistantViewControllerDelegate];
+  if (!assistantViewControllerDelegate)
   {
     PXAssertGetLog();
   }
 
-  [v3 stepForwardInAssistantForAssistantViewController:self];
+  [assistantViewControllerDelegate stepForwardInAssistantForAssistantViewController:self];
 }
 
-- (void)_updateViewModelForStartDate:(id)a3 completionHandler:(id)a4
+- (void)_updateViewModelForStartDate:(id)date completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXSharedLibraryAssistantDatePickerViewController *)self viewModel];
-  v9 = [v8 personUUIDs];
-  v10 = v9;
-  if (v6)
+  dateCopy = date;
+  handlerCopy = handler;
+  viewModel = [(PXSharedLibraryAssistantDatePickerViewController *)self viewModel];
+  personUUIDs = [viewModel personUUIDs];
+  v10 = personUUIDs;
+  if (dateCopy)
   {
     v11 = 2;
   }
 
   else
   {
-    v11 = 2 * ([v9 count] != 0);
+    v11 = 2 * ([personUUIDs count] != 0);
   }
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __109__PXSharedLibraryAssistantDatePickerViewController_Internal___updateViewModelForStartDate_completionHandler___block_invoke;
   v13[3] = &unk_1E7746200;
-  v14 = v6;
+  v14 = dateCopy;
   v15 = v11;
-  v12 = v6;
-  [v8 performChanges:v13 shareCountsCompletionHandler:v7];
+  v12 = dateCopy;
+  [viewModel performChanges:v13 shareCountsCompletionHandler:handlerCopy];
 }
 
 void __109__PXSharedLibraryAssistantDatePickerViewController_Internal___updateViewModelForStartDate_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -393,18 +393,18 @@ void __109__PXSharedLibraryAssistantDatePickerViewController_Internal___updateVi
   [v4 setAutoSharePolicy:*(a1 + 40)];
 }
 
-- (void)usePickedDateAndContinueWithCompletionHandler:(id)a3
+- (void)usePickedDateAndContinueWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PXSharedLibraryAssistantDatePickerViewController *)self pickedDate];
+  handlerCopy = handler;
+  pickedDate = [(PXSharedLibraryAssistantDatePickerViewController *)self pickedDate];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __108__PXSharedLibraryAssistantDatePickerViewController_Internal__usePickedDateAndContinueWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E774C2F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [(PXSharedLibraryAssistantDatePickerViewController *)self _updateViewModelForStartDate:v5 completionHandler:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [(PXSharedLibraryAssistantDatePickerViewController *)self _updateViewModelForStartDate:pickedDate completionHandler:v7];
 }
 
 uint64_t __108__PXSharedLibraryAssistantDatePickerViewController_Internal__usePickedDateAndContinueWithCompletionHandler___block_invoke(uint64_t a1)
@@ -425,33 +425,33 @@ uint64_t __108__PXSharedLibraryAssistantDatePickerViewController_Internal__usePi
   [(PXSharedLibraryAssistantDatePickerViewController *)self _updateViewModelForStartDate:0 completionHandler:v2];
 }
 
-- (void)_resetPickerWithDate:(id)a3
+- (void)_resetPickerWithDate:(id)date
 {
-  v4 = a3;
-  [(PXSharedLibraryAssistantDatePickerViewController *)self truncateAndSetPickedDate:v4];
-  v5 = [(PXSharedLibraryAssistantDatePickerViewController *)self datePicker];
-  [v5 setDate:v4];
+  dateCopy = date;
+  [(PXSharedLibraryAssistantDatePickerViewController *)self truncateAndSetPickedDate:dateCopy];
+  datePicker = [(PXSharedLibraryAssistantDatePickerViewController *)self datePicker];
+  [datePicker setDate:dateCopy];
 }
 
 - (void)resetPickerDate
 {
-  v4 = [(PXSharedLibraryAssistantDatePickerViewController *)self viewModel];
-  v3 = [v4 suggestedStartDate];
-  if (![(PXSharedLibraryAssistantDatePickerViewController *)self hasCustomDate]&& v3)
+  viewModel = [(PXSharedLibraryAssistantDatePickerViewController *)self viewModel];
+  suggestedStartDate = [viewModel suggestedStartDate];
+  if (![(PXSharedLibraryAssistantDatePickerViewController *)self hasCustomDate]&& suggestedStartDate)
   {
-    [v4 performChanges:&__block_literal_global_216085];
-    [(PXSharedLibraryAssistantDatePickerViewController *)self _resetPickerWithDate:v3];
+    [viewModel performChanges:&__block_literal_global_216085];
+    [(PXSharedLibraryAssistantDatePickerViewController *)self _resetPickerWithDate:suggestedStartDate];
   }
 }
 
 - (void)restorePickerDate
 {
-  v3 = [(PXSharedLibraryAssistantDatePickerViewController *)self viewModel];
-  v4 = [v3 startDate];
+  viewModel = [(PXSharedLibraryAssistantDatePickerViewController *)self viewModel];
+  startDate = [viewModel startDate];
 
-  if (v4)
+  if (startDate)
   {
-    [(PXSharedLibraryAssistantDatePickerViewController *)self _resetPickerWithDate:v4];
+    [(PXSharedLibraryAssistantDatePickerViewController *)self _resetPickerWithDate:startDate];
   }
 
   else
@@ -460,44 +460,44 @@ uint64_t __108__PXSharedLibraryAssistantDatePickerViewController_Internal__usePi
   }
 }
 
-- (void)truncateAndSetPickedDate:(id)a3
+- (void)truncateAndSetPickedDate:(id)date
 {
-  v8 = a3;
-  if (!v8)
+  dateCopy = date;
+  if (!dateCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryAssistantDatePickerViewController+Internal.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"date"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryAssistantDatePickerViewController+Internal.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"date"}];
   }
 
-  v5 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v6 = [v8 px_dateTruncatedToCalendarUnit:16 calendar:v5];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v6 = [dateCopy px_dateTruncatedToCalendarUnit:16 calendar:currentCalendar];
 
   [(PXSharedLibraryAssistantDatePickerViewController *)self setPickedDate:v6];
 }
 
-- (void)footerTextWithCompletion:(id)a3
+- (void)footerTextWithCompletion:(id)completion
 {
-  v5 = a3;
-  if (!v5)
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryAssistantDatePickerViewController+Internal.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryAssistantDatePickerViewController+Internal.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
   }
 
-  v6 = [(PXSharedLibraryAssistantDatePickerViewController *)self viewModel];
-  v7 = [v6 sourceLibraryInfo];
-  v8 = [(PXSharedLibraryAssistantDatePickerViewController *)self pickedDate];
-  v9 = [v6 personUUIDs];
+  viewModel = [(PXSharedLibraryAssistantDatePickerViewController *)self viewModel];
+  sourceLibraryInfo = [viewModel sourceLibraryInfo];
+  pickedDate = [(PXSharedLibraryAssistantDatePickerViewController *)self pickedDate];
+  personUUIDs = [viewModel personUUIDs];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __87__PXSharedLibraryAssistantDatePickerViewController_Internal__footerTextWithCompletion___block_invoke;
   v13[3] = &unk_1E77461B8;
-  v14 = v6;
-  v15 = self;
-  v16 = v5;
-  v10 = v5;
-  v11 = v6;
-  [v7 fetchEstimatedAssetsCountsForStartDate:v8 personUUIDs:v9 completion:v13];
+  v14 = viewModel;
+  selfCopy = self;
+  v16 = completionCopy;
+  v10 = completionCopy;
+  v11 = viewModel;
+  [sourceLibraryInfo fetchEstimatedAssetsCountsForStartDate:pickedDate personUUIDs:personUUIDs completion:v13];
 }
 
 void __87__PXSharedLibraryAssistantDatePickerViewController_Internal__footerTextWithCompletion___block_invoke(uint64_t a1, __int128 *a2)

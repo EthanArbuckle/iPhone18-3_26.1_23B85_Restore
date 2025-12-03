@@ -11,12 +11,12 @@
   v6.super_class = SBScreenLongevitySettings;
   [(PTSettings *)&v6 setDefaultValues];
   v3 = +[SBDefaults localDefaults];
-  v4 = [v3 screenLongevityDefaults];
+  screenLongevityDefaults = [v3 screenLongevityDefaults];
 
   self->_ignoreAutoLockSetToNever = 0;
   self->_overrideEnablement = 0;
   self->_enablement = 0;
-  [v4 dimInterval];
+  [screenLongevityDefaults dimInterval];
   self->_dimInterval = v5;
   self->_waitInterval = 60.0;
   self->_minimalFaceDetectionInterval = 4.0;

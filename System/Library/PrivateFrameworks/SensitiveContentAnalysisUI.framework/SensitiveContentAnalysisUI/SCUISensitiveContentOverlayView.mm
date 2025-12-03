@@ -1,23 +1,23 @@
 @interface SCUISensitiveContentOverlayView
-- (SCUISensitiveContentOverlayView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (SCUISensitiveContentOverlayView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)onAnalysisChanged;
 - (id)onReportEvidenceRequested;
 - (void)clear;
-- (void)configureWithAnalysis:(id)a3;
-- (void)configureWithParticipant:(id)a3 analysis:(id)a4;
-- (void)setHostingView:(id)a3;
-- (void)setOnAnalysisChanged:(id)a3;
-- (void)setOnBlockParticipant:(id)a3;
-- (void)setOnDeleteContent:(id)a3;
-- (void)setOnEndCall:(id)a3;
-- (void)setOnHideContent:(id)a3;
-- (void)setOnLeaveConversation:(id)a3;
-- (void)setOnMessageSomeone:(id)a3;
-- (void)setOnReportEvidenceRequested:(id)a3;
-- (void)setOnShieldUp:(id)a3;
-- (void)setOnShowContent:(id)a3;
-- (void)setOnUnsubscribe:(id)a3;
+- (void)configureWithAnalysis:(id)analysis;
+- (void)configureWithParticipant:(id)participant analysis:(id)analysis;
+- (void)setHostingView:(id)view;
+- (void)setOnAnalysisChanged:(id)changed;
+- (void)setOnBlockParticipant:(id)participant;
+- (void)setOnDeleteContent:(id)content;
+- (void)setOnEndCall:(id)call;
+- (void)setOnHideContent:(id)content;
+- (void)setOnLeaveConversation:(id)conversation;
+- (void)setOnMessageSomeone:(id)someone;
+- (void)setOnReportEvidenceRequested:(id)requested;
+- (void)setOnShieldUp:(id)up;
+- (void)setOnShowContent:(id)content;
+- (void)setOnUnsubscribe:(id)unsubscribe;
 @end
 
 @implementation SCUISensitiveContentOverlayView
@@ -46,9 +46,9 @@
   return v4;
 }
 
-- (void)setOnAnalysisChanged:(id)a3
+- (void)setOnAnalysisChanged:(id)changed
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(changed);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -67,13 +67,13 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_1BC635484(v7);
 }
 
-- (void)setOnShowContent:(id)a3
+- (void)setOnShowContent:(id)content
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(content);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -92,13 +92,13 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_1BC635484(v7);
 }
 
-- (void)setOnHideContent:(id)a3
+- (void)setOnHideContent:(id)content
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(content);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -117,13 +117,13 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_1BC635484(v7);
 }
 
-- (void)setOnDeleteContent:(id)a3
+- (void)setOnDeleteContent:(id)content
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(content);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -142,13 +142,13 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_1BC635484(v7);
 }
 
-- (void)setOnShieldUp:(id)a3
+- (void)setOnShieldUp:(id)up
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(up);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -167,13 +167,13 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_1BC635484(v7);
 }
 
-- (void)setOnMessageSomeone:(id)a3
+- (void)setOnMessageSomeone:(id)someone
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(someone);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -192,13 +192,13 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_1BC635484(v7);
 }
 
-- (void)setOnLeaveConversation:(id)a3
+- (void)setOnLeaveConversation:(id)conversation
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(conversation);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -217,7 +217,7 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_1BC635484(v7);
 }
 
@@ -245,9 +245,9 @@
   return v4;
 }
 
-- (void)setOnReportEvidenceRequested:(id)a3
+- (void)setOnReportEvidenceRequested:(id)requested
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(requested);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -266,13 +266,13 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_1BC635484(v7);
 }
 
-- (void)setOnBlockParticipant:(id)a3
+- (void)setOnBlockParticipant:(id)participant
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(participant);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -291,13 +291,13 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_1BC635484(v7);
 }
 
-- (void)setOnEndCall:(id)a3
+- (void)setOnEndCall:(id)call
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(call);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -316,13 +316,13 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_1BC635484(v7);
 }
 
-- (void)setOnUnsubscribe:(id)a3
+- (void)setOnUnsubscribe:(id)unsubscribe
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(unsubscribe);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -341,26 +341,26 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_1BC635484(v7);
 }
 
-- (void)setHostingView:(id)a3
+- (void)setHostingView:(id)view
 {
   v4 = *(self + OBJC_IVAR___SCUISensitiveContentOverlayView_hostingView);
-  *(self + OBJC_IVAR___SCUISensitiveContentOverlayView_hostingView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___SCUISensitiveContentOverlayView_hostingView) = view;
+  viewCopy = view;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v15.receiver = self;
   v15.super_class = SCUISensitiveContentOverlayView;
-  v7 = self;
-  v8 = a4;
-  v9 = [(SCUISensitiveContentOverlayView *)&v15 hitTest:v8 withEvent:x, y];
+  selfCopy = self;
+  eventCopy = event;
+  v9 = [(SCUISensitiveContentOverlayView *)&v15 hitTest:eventCopy withEvent:x, y];
   if (!v9)
   {
 
@@ -368,10 +368,10 @@
   }
 
   v11 = v9;
-  v12 = (*(**(v7 + OBJC_IVAR___SCUISensitiveContentOverlayView_state) + 464))(v9, v10);
+  v12 = (*(**(selfCopy + OBJC_IVAR___SCUISensitiveContentOverlayView_state) + 464))(v9, v10);
 
   v13 = v11;
-  v7 = v11;
+  selfCopy = v11;
   if ((v12 & 1) == 0)
   {
 LABEL_5:
@@ -382,37 +382,37 @@ LABEL_5:
   return v13;
 }
 
-- (void)configureWithParticipant:(id)a3 analysis:(id)a4
+- (void)configureWithParticipant:(id)participant analysis:(id)analysis
 {
   v7 = type metadata accessor for SCUISensitiveContentOverlayView.Kind(0);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x1EEE9AC00](v7);
   v10 = (&v16 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0));
-  *v10 = a3;
-  v10[1] = a4;
+  *v10 = participant;
+  v10[1] = analysis;
   v10[2] = nullsub_1;
   v10[3] = 0;
   swift_storeEnumTagMultiPayload();
-  v11 = a3;
-  v12 = a4;
-  v13 = v11;
-  v14 = v12;
-  v15 = self;
+  participantCopy = participant;
+  analysisCopy = analysis;
+  v13 = participantCopy;
+  v14 = analysisCopy;
+  selfCopy = self;
   SCUISensitiveContentOverlayView.configure(_:)(v10);
 
   sub_1BC741C4C(v10, type metadata accessor for SCUISensitiveContentOverlayView.Kind);
 }
 
-- (void)configureWithAnalysis:(id)a3
+- (void)configureWithAnalysis:(id)analysis
 {
   v5 = type metadata accessor for SCUISensitiveContentOverlayView.Kind(0);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5);
   v8 = (&v11 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0));
-  *v8 = a3;
+  *v8 = analysis;
   swift_storeEnumTagMultiPayload();
-  v9 = a3;
-  v10 = self;
+  analysisCopy = analysis;
+  selfCopy = self;
   SCUISensitiveContentOverlayView.configure(_:)(v8);
 
   sub_1BC741C4C(v8, type metadata accessor for SCUISensitiveContentOverlayView.Kind);
@@ -421,11 +421,11 @@ LABEL_5:
 - (void)clear
 {
   v2 = *(**(self + OBJC_IVAR___SCUISensitiveContentOverlayView_state) + 328);
-  v3 = self;
+  selfCopy = self;
   v2(0);
 }
 
-- (SCUISensitiveContentOverlayView)initWithFrame:(CGRect)a3
+- (SCUISensitiveContentOverlayView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,53 +1,53 @@
 @interface STHistoricalUsageViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
 @end
 
 @implementation STHistoricalUsageViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"STHistoricalUsageViewController" hasInstanceMethod:@"titleView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STHistoricalUsageViewController" hasInstanceMethod:@"selectedWeekGraphViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STHistoricalUsageViewController" hasInstanceMethod:@"selectedDayGraphViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STHistoricalUsageViewController" hasInstanceMethod:@"currentViewMode" withFullSignature:{"q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"STHistoricalUsageViewController" hasInstanceMethod:@"titleView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STHistoricalUsageViewController" hasInstanceMethod:@"selectedWeekGraphViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STHistoricalUsageViewController" hasInstanceMethod:@"selectedDayGraphViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STHistoricalUsageViewController" hasInstanceMethod:@"currentViewMode" withFullSignature:{"q", 0}];
 }
 
 - (id)accessibilityElements
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = [(STHistoricalUsageViewControllerAccessibility *)self safeUIViewForKey:@"titleView"];
-  [v3 axSafelyAddObject:v4];
+  [array axSafelyAddObject:v4];
 
   v5 = [(STHistoricalUsageViewControllerAccessibility *)self safeIntegerForKey:@"currentViewMode"];
   v6 = [(STHistoricalUsageViewControllerAccessibility *)self safeValueForKey:@"selectedWeekGraphViewController"];
-  v7 = [v6 accessibilityElements];
+  accessibilityElements = [v6 accessibilityElements];
 
-  v8 = [v7 ax_filteredArrayUsingBlock:&__block_literal_global_2];
-  v9 = [v8 firstObject];
+  v8 = [accessibilityElements ax_filteredArrayUsingBlock:&__block_literal_global_2];
+  firstObject = [v8 firstObject];
 
-  [v9 setMode:0];
+  [firstObject setMode:0];
   v10 = accessibilityLocalizedString(@"weekly.summary.chart");
-  [v9 setAccessibilityLabel:v10];
+  [firstObject setAccessibilityLabel:v10];
 
-  [v3 axSafelyAddObjectsFromArray:v7];
+  [array axSafelyAddObjectsFromArray:accessibilityElements];
   if (v5 == 1)
   {
     v11 = [(STHistoricalUsageViewControllerAccessibility *)self safeValueForKey:@"selectedDayGraphViewController"];
-    v12 = [v11 accessibilityElements];
+    accessibilityElements2 = [v11 accessibilityElements];
 
-    v13 = [v12 ax_filteredArrayUsingBlock:&__block_literal_global_307];
-    v14 = [v13 firstObject];
+    v13 = [accessibilityElements2 ax_filteredArrayUsingBlock:&__block_literal_global_307];
+    firstObject2 = [v13 firstObject];
 
-    [v14 setMode:1];
+    [firstObject2 setMode:1];
     v15 = accessibilityLocalizedString(@"daily.summary.chart");
-    [v14 setAccessibilityLabel:v15];
+    [firstObject2 setAccessibilityLabel:v15];
 
-    [v3 axSafelyAddObjectsFromArray:v12];
+    [array axSafelyAddObjectsFromArray:accessibilityElements2];
   }
 
-  return v3;
+  return array;
 }
 
 uint64_t __69__STHistoricalUsageViewControllerAccessibility_accessibilityElements__block_invoke(uint64_t a1, void *a2)

@@ -2,10 +2,10 @@
 - (void)dealloc;
 - (void)locateAdaptiveTriggerComponent;
 - (void)locateControllerManagerApp;
-- (void)observeChangesForAdaptiveTriggers:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)sendAdaptiveTriggerPayload:(id)a3;
-- (void)sendAdaptiveTriggerPayloadDict:(id)a3;
+- (void)observeChangesForAdaptiveTriggers:(id)triggers;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)sendAdaptiveTriggerPayload:(id)payload;
+- (void)sendAdaptiveTriggerPayloadDict:(id)dict;
 - (void)setModeFeedbackWithResistiveStrengths:(GCDualSenseAdaptiveTriggerPositionalResistiveStrengths *)positionalResistiveStrengths;
 - (void)setModeFeedbackWithStartPosition:(float)startPosition resistiveStrength:(float)resistiveStrength;
 - (void)setModeOff;
@@ -13,7 +13,7 @@
 - (void)setModeVibrationWithAmplitudes:(GCDualSenseAdaptiveTriggerPositionalAmplitudes *)positionalAmplitudes frequency:(float)frequency;
 - (void)setModeVibrationWithStartPosition:(float)startPosition amplitude:(float)amplitude frequency:(float)frequency;
 - (void)setModeWeaponWithStartPosition:(float)startPosition endPosition:(float)endPosition resistiveStrength:(float)resistiveStrength;
-- (void)stopObservingChangesForAdaptiveTriggers:(id)a3;
+- (void)stopObservingChangesForAdaptiveTriggers:(id)triggers;
 - (void)updateStatus;
 @end
 
@@ -189,8 +189,8 @@
 
 - (void)setModeOff
 {
-  v3 = [[GCDeviceAdaptiveTriggersPayload alloc] initOff];
-  [(GCDualSenseAdaptiveTrigger *)self sendAdaptiveTriggerPayload:v3];
+  initOff = [[GCDeviceAdaptiveTriggersPayload alloc] initOff];
+  [(GCDualSenseAdaptiveTrigger *)self sendAdaptiveTriggerPayload:initOff];
 }
 
 - (void)locateControllerManagerApp
@@ -211,9 +211,9 @@
   }
 }
 
-- (void)sendAdaptiveTriggerPayload:(id)a3
+- (void)sendAdaptiveTriggerPayload:(id)payload
 {
-  v7 = a3;
+  payloadCopy = payload;
   [(GCDualSenseAdaptiveTrigger *)self locateAdaptiveTriggerComponent];
   adaptiveTriggers = self->_adaptiveTriggers;
   if (adaptiveTriggers)
@@ -228,51 +228,51 @@
       [(GCAdaptiveTriggers *)adaptiveTriggers leftTrigger];
     }
     v5 = ;
-    if (([v5 isEqual:v7] & 1) == 0)
+    if (([v5 isEqual:payloadCopy] & 1) == 0)
     {
       v6 = self->_adaptiveTriggers;
       if (self->_index)
       {
-        [(GCAdaptiveTriggers *)v6 setRightTrigger:v7];
+        [(GCAdaptiveTriggers *)v6 setRightTrigger:payloadCopy];
       }
 
       else
       {
-        [(GCAdaptiveTriggers *)v6 setLeftTrigger:v7];
+        [(GCAdaptiveTriggers *)v6 setLeftTrigger:payloadCopy];
       }
     }
   }
 }
 
-- (void)sendAdaptiveTriggerPayloadDict:(id)a3
+- (void)sendAdaptiveTriggerPayloadDict:(id)dict
 {
-  v8 = a3;
+  dictCopy = dict;
   [(GCDualSenseAdaptiveTrigger *)self locateControllerManagerApp];
   hidInfo = self->_hidInfo;
   if (hidInfo)
   {
-    [(GCControllerHIDInfo *)hidInfo setProperty:v8 forKey:@"AdaptiveTriggerPayload"];
+    [(GCControllerHIDInfo *)hidInfo setProperty:dictCopy forKey:@"AdaptiveTriggerPayload"];
     index = self->_index;
     adaptiveTriggers = self->_adaptiveTriggers;
-    v7 = [[GCDeviceAdaptiveTriggersPayload alloc] initOff];
+    initOff = [[GCDeviceAdaptiveTriggersPayload alloc] initOff];
     if (index)
     {
-      [(GCAdaptiveTriggers *)adaptiveTriggers setRightTrigger:v7];
+      [(GCAdaptiveTriggers *)adaptiveTriggers setRightTrigger:initOff];
     }
 
     else
     {
-      [(GCAdaptiveTriggers *)adaptiveTriggers setLeftTrigger:v7];
+      [(GCAdaptiveTriggers *)adaptiveTriggers setLeftTrigger:initOff];
     }
   }
 
   MEMORY[0x1EEE66BE0]();
 }
 
-- (void)observeChangesForAdaptiveTriggers:(id)a3
+- (void)observeChangesForAdaptiveTriggers:(id)triggers
 {
-  v4 = a3;
-  if (v4)
+  triggersCopy = triggers;
+  if (triggersCopy)
   {
     if (self->_index)
     {
@@ -284,16 +284,16 @@
       v5 = @"leftStatus";
     }
 
-    v6 = v4;
-    [v4 addObserver:self forKeyPath:v5 options:0 context:0];
-    v4 = v6;
+    v6 = triggersCopy;
+    [triggersCopy addObserver:self forKeyPath:v5 options:0 context:0];
+    triggersCopy = v6;
   }
 }
 
-- (void)stopObservingChangesForAdaptiveTriggers:(id)a3
+- (void)stopObservingChangesForAdaptiveTriggers:(id)triggers
 {
-  v4 = a3;
-  if (v4)
+  triggersCopy = triggers;
+  if (triggersCopy)
   {
     if (self->_index)
     {
@@ -305,9 +305,9 @@
       v5 = @"leftStatus";
     }
 
-    v6 = v4;
-    [v4 removeObserver:self forKeyPath:v5];
-    v4 = v6;
+    v6 = triggersCopy;
+    [triggersCopy removeObserver:self forKeyPath:v5];
+    triggersCopy = v6;
   }
 }
 
@@ -325,16 +325,16 @@
     [(GCAdaptiveTriggers *)adaptiveTriggers leftStatus];
   }
   v17 = ;
-  v5 = [v17 mode];
-  v6 = [v5 unsignedIntValue];
+  mode = [v17 mode];
+  unsignedIntValue = [mode unsignedIntValue];
 
-  if ([(GCDualSenseAdaptiveTrigger *)self mode]!= v6)
+  if ([(GCDualSenseAdaptiveTrigger *)self mode]!= unsignedIntValue)
   {
-    [(GCDualSenseAdaptiveTrigger *)self setMode:v6];
+    [(GCDualSenseAdaptiveTrigger *)self setMode:unsignedIntValue];
   }
 
-  v7 = [v17 armPosition];
-  v8 = [v7 unsignedIntValue] / 9.0;
+  armPosition = [v17 armPosition];
+  v8 = [armPosition unsignedIntValue] / 9.0;
 
   [(GCDualSenseAdaptiveTrigger *)self armPosition];
   if (v8 != *&v9)
@@ -343,49 +343,49 @@
     [(GCDualSenseAdaptiveTrigger *)self setArmPosition:v9];
   }
 
-  v10 = [v17 status];
-  v11 = [v10 unsignedIntValue];
+  status = [v17 status];
+  unsignedIntValue2 = [status unsignedIntValue];
 
-  v12 = [(GCDualSenseAdaptiveTrigger *)self mode];
+  mode2 = [(GCDualSenseAdaptiveTrigger *)self mode];
   v13 = -1;
-  if (v12 <= GCDualSenseAdaptiveTriggerModeWeapon)
+  if (mode2 <= GCDualSenseAdaptiveTriggerModeWeapon)
   {
-    if (v12 == GCDualSenseAdaptiveTriggerModeFeedback)
+    if (mode2 == GCDualSenseAdaptiveTriggerModeFeedback)
     {
-      v13 = v11 == 1;
+      v13 = unsignedIntValue2 == 1;
       goto LABEL_26;
     }
 
-    if (v12 != GCDualSenseAdaptiveTriggerModeWeapon)
+    if (mode2 != GCDualSenseAdaptiveTriggerModeWeapon)
     {
       goto LABEL_26;
     }
 
     v14 = 2;
-    if (v11 == 2)
+    if (unsignedIntValue2 == 2)
     {
       v14 = 4;
     }
 
-    v15 = v11 == 1;
+    v15 = unsignedIntValue2 == 1;
     v16 = 3;
     goto LABEL_19;
   }
 
-  if (v12 != GCDualSenseAdaptiveTriggerModeVibration)
+  if (mode2 != GCDualSenseAdaptiveTriggerModeVibration)
   {
-    if (v12 != GCDualSenseAdaptiveTriggerModeSlopeFeedback)
+    if (mode2 != GCDualSenseAdaptiveTriggerModeSlopeFeedback)
     {
       goto LABEL_26;
     }
 
     v14 = 7;
-    if (v11 == 2)
+    if (unsignedIntValue2 == 2)
     {
       v14 = 9;
     }
 
-    v15 = v11 == 1;
+    v15 = unsignedIntValue2 == 1;
     v16 = 8;
 LABEL_19:
     if (v15)
@@ -401,7 +401,7 @@ LABEL_19:
     goto LABEL_26;
   }
 
-  if (v11 == 1)
+  if (unsignedIntValue2 == 1)
   {
     v13 = 6;
   }
@@ -418,13 +418,13 @@ LABEL_26:
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = v10;
-  if (self->_adaptiveTriggers == a4)
+  pathCopy = path;
+  v11 = pathCopy;
+  if (self->_adaptiveTriggers == object)
   {
-    if (([v10 isEqualToString:@"leftStatus"] & 1) != 0 || objc_msgSend(v11, "isEqualToString:", @"rightStatus"))
+    if (([pathCopy isEqualToString:@"leftStatus"] & 1) != 0 || objc_msgSend(v11, "isEqualToString:", @"rightStatus"))
     {
       [(GCDualSenseAdaptiveTrigger *)self updateStatus];
     }
@@ -434,7 +434,7 @@ LABEL_26:
   {
     v12.receiver = self;
     v12.super_class = GCDualSenseAdaptiveTrigger;
-    [(GCDualSenseAdaptiveTrigger *)&v12 observeValueForKeyPath:v10 ofObject:a4 change:a5 context:a6];
+    [(GCDualSenseAdaptiveTrigger *)&v12 observeValueForKeyPath:pathCopy ofObject:object change:change context:context];
   }
 }
 

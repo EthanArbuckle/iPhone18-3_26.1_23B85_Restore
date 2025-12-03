@@ -1,15 +1,15 @@
 @interface HUDIOReport
 + (id)instance;
 - (BOOL)_createIOReportSubscription;
-- (BOOL)_createTimer:(unint64_t)a3;
-- (BOOL)_loadIOReportChannels:(id)a3 subGroup:(id)a4 channels:(__CFDictionary *)a5;
-- (BOOL)_parseCPUChannel:(id)a3 sampleIndex:(unsigned int)a4;
+- (BOOL)_createTimer:(unint64_t)timer;
+- (BOOL)_loadIOReportChannels:(id)channels subGroup:(id)group channels:(__CFDictionary *)a5;
+- (BOOL)_parseCPUChannel:(id)channel sampleIndex:(unsigned int)index;
 - (HUDIOReport)init;
 - (id).cxx_construct;
-- (void)_addSamplesToRecords:(double *)a3 numSample:(unsigned int)a4 totalPackge:(double)a5;
+- (void)_addSamplesToRecords:(double *)records numSample:(unsigned int)sample totalPackge:(double)packge;
 - (void)dealloc;
 - (void)sample;
-- (void)startSampling:(unint64_t)a3;
+- (void)startSampling:(unint64_t)sampling;
 - (void)suspendSampling;
 @end
 
@@ -46,7 +46,7 @@ void __23__HUDIOReport_instance__block_invoke(id a1)
     {
       if (![(HUDIOReport *)v3 _createIOReportSubscription])
       {
-        v10 = 0;
+        selfCopy = 0;
         self = v4;
         goto LABEL_12;
       }
@@ -80,23 +80,23 @@ void __23__HUDIOReport_instance__block_invoke(id a1)
     }
 
     self = v4;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
 LABEL_12:
 
-  return v10;
+  return selfCopy;
 }
 
-- (BOOL)_loadIOReportChannels:(id)a3 subGroup:(id)a4 channels:(__CFDictionary *)a5
+- (BOOL)_loadIOReportChannels:(id)channels subGroup:(id)group channels:(__CFDictionary *)a5
 {
-  v6 = a3;
-  v7 = a4;
+  channelsCopy = channels;
+  groupCopy = group;
   if (IOReportCopyChannelsInGroup() && IOReportMergeChannels() != 1)
   {
     v8 = 1;
@@ -111,9 +111,9 @@ LABEL_12:
   return v8;
 }
 
-- (BOOL)_parseCPUChannel:(id)a3 sampleIndex:(unsigned int)a4
+- (BOOL)_parseCPUChannel:(id)channel sampleIndex:(unsigned int)index
 {
-  v4 = a3;
+  channelCopy = channel;
   v9 = 0;
   v10 = 0;
   v11 = 0;
@@ -200,17 +200,17 @@ uint64_t __42__HUDIOReport__createIOReportSubscription__block_invoke(uint64_t a1
   return result;
 }
 
-- (BOOL)_createTimer:(unint64_t)a3
+- (BOOL)_createTimer:(unint64_t)timer
 {
   timer = self->_timer;
   if (timer)
   {
-    if (self->_sampleInterval == a3)
+    if (self->_sampleInterval == timer)
     {
       return 0;
     }
 
-    self->_sampleInterval = a3;
+    self->_sampleInterval = timer;
     dispatch_source_cancel(timer);
     v6 = self->_timer;
     self->_timer = 0;
@@ -218,7 +218,7 @@ uint64_t __42__HUDIOReport__createIOReportSubscription__block_invoke(uint64_t a1
 
   else
   {
-    self->_sampleInterval = a3;
+    self->_sampleInterval = timer;
   }
 
   v7 = HUDDispatchQueueGet(timer);
@@ -263,9 +263,9 @@ void __28__HUDIOReport__createTimer___block_invoke(uint64_t a1)
   [(HUDIOReport *)&v4 dealloc];
 }
 
-- (void)startSampling:(unint64_t)a3
+- (void)startSampling:(unint64_t)sampling
 {
-  if ([(HUDIOReport *)self _createTimer:a3])
+  if ([(HUDIOReport *)self _createTimer:sampling])
   {
     timer = self->_timer;
     if (timer)
@@ -286,10 +286,10 @@ void __28__HUDIOReport__createTimer___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_addSamplesToRecords:(double *)a3 numSample:(unsigned int)a4 totalPackge:(double)a5
+- (void)_addSamplesToRecords:(double *)records numSample:(unsigned int)sample totalPackge:(double)packge
 {
-  v8 = [(HUDIOReport *)self _currentTime];
-  v9 = v8;
+  _currentTime = [(HUDIOReport *)self _currentTime];
+  v9 = _currentTime;
   begin = self->_samplePoints.dies.__begin_;
   end = self->_samplePoints.dies.__end_;
   if (begin == end)
@@ -318,48 +318,48 @@ void __28__HUDIOReport__createTimer___block_invoke(uint64_t a1)
       {
         for (j = *i; j != *(i + 8); ++j)
         {
-          if (*j < a4)
+          if (*j < sample)
           {
-            v15 = v15 + a3[*j];
+            v15 = v15 + records[*j];
           }
         }
 
         for (k = *(i + 24); k != *(i + 32); ++k)
         {
-          if (*k < a4)
+          if (*k < sample)
           {
-            v14 = v14 + a3[*k];
+            v14 = v14 + records[*k];
           }
         }
       }
 
-      if (*begin >= a4)
+      if (*begin >= sample)
       {
         v13 = v15 + v14;
       }
 
       else
       {
-        v13 = v13 + a3[*begin];
+        v13 = v13 + records[*begin];
       }
 
       v22 = *(begin + 2);
-      if (v22 < a4)
+      if (v22 < sample)
       {
-        v17 = v17 + a3[v22];
+        v17 = v17 + records[v22];
       }
 
       v23 = *(begin + 1);
-      if (v23 < a4)
+      if (v23 < sample)
       {
-        v16 = v16 + a3[v23];
+        v16 = v16 + records[v23];
       }
 
       for (m = *(begin + 6); m != *(begin + 7); ++m)
       {
-        if (*m < a4)
+        if (*m < sample)
         {
-          v18 = v18 + a3[*m];
+          v18 = v18 + records[*m];
         }
       }
 
@@ -373,7 +373,7 @@ void __28__HUDIOReport__createTimer___block_invoke(uint64_t a1)
   time = self->_previousSample.time;
   if (time)
   {
-    v26 = (v8 - time) / 1000000000.0;
+    v26 = (_currentTime - time) / 1000000000.0;
     v27 = (v15 - self->_previousSample.samples[1]) / v26;
     v35 = (v14 - self->_previousSample.samples[2]) / v26;
     v36 = (v16 - self->_previousSample.samples[5]) / v26;
@@ -395,46 +395,46 @@ void __28__HUDIOReport__createTimer___block_invoke(uint64_t a1)
   self->_previousSample.samples[6] = v18;
   gpuSampleIndex = self->_samplePoints.gpuSampleIndex;
   v29 = 0.0;
-  if (gpuSampleIndex < a4)
+  if (gpuSampleIndex < sample)
   {
-    v29 = a3[gpuSampleIndex] + 0.0;
+    v29 = records[gpuSampleIndex] + 0.0;
   }
 
   v30 = self->_previousSample.time;
   if (!v30)
   {
     self->_previousSample.samples[3] = v29;
-    v32 = v12 + v29;
+    packgeCopy3 = v12 + v29;
     goto LABEL_41;
   }
 
   HUDValueHistoryRecordAddValue(&self->_records[2].averageSinceBeginning, (v29 - self->_previousSample.samples[3]) / ((v9 - v30) / 1000000000.0));
   v31 = self->_previousSample.time;
   self->_previousSample.samples[3] = v29;
-  v32 = v12 + v29;
+  packgeCopy3 = v12 + v29;
   if (!v31)
   {
 LABEL_41:
-    v33 = a5;
+    packgeCopy2 = packge;
     goto LABEL_42;
   }
 
-  v33 = a5;
-  if (a5 != 0.0)
+  packgeCopy2 = packge;
+  if (packge != 0.0)
   {
-    v32 = a5;
+    packgeCopy3 = packge;
   }
 
-  HUDValueHistoryRecordAddValue(&self->_records[6].bucketCounts[7], (v32 - self->_previousSample.samples[7]) / ((v9 - v31) / 1000000000.0));
+  HUDValueHistoryRecordAddValue(&self->_records[6].bucketCounts[7], (packgeCopy3 - self->_previousSample.samples[7]) / ((v9 - v31) / 1000000000.0));
 LABEL_42:
-  if (v33 == 0.0)
+  if (packgeCopy2 == 0.0)
   {
-    v34 = v32;
+    v34 = packgeCopy3;
   }
 
   else
   {
-    v34 = v33;
+    v34 = packgeCopy2;
   }
 
   self->_previousSample.samples[7] = v34;

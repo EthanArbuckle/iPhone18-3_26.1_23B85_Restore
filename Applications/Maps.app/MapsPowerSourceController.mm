@@ -5,8 +5,8 @@
 - (void)_handleNotifyCallback;
 - (void)_updateChargingState;
 - (void)dealloc;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation MapsPowerSourceController
@@ -17,7 +17,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v4 = 134349056;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Got update notification", &v4, 0xCu);
   }
 
@@ -122,9 +122,9 @@ LABEL_15:
     else
     {
       v16 = [v9 objectForKey:@"Show Charging UI"];
-      v17 = [v16 BOOLValue];
+      bOOLValue = [v16 BOOLValue];
 
-      if (!v17)
+      if (!bOOLValue)
       {
         v13 = sub_10006A450();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -153,9 +153,9 @@ LABEL_14:
     }
 
     v20 = [(__CFDictionary *)v18 objectForKey:@"IsWireless"];
-    v21 = [v20 BOOLValue];
+    bOOLValue2 = [v20 BOOLValue];
 
-    if (v21)
+    if (bOOLValue2)
     {
 
       v24 = 3;
@@ -209,7 +209,7 @@ LABEL_34:
 
     v30 = v29;
     *v35 = 134349570;
-    v36 = self;
+    selfCopy = self;
     v37 = 2048;
     v38 = v24;
     v39 = 2112;
@@ -244,36 +244,36 @@ LABEL_34:
   return v3;
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = sub_10006A450();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v6 = 134349314;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
-    v9 = v4;
+    v9 = observerCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}p] Unregistering observer: %@", &v6, 0x16u);
   }
 
-  [(GEOObserverHashTable *)self->_powerSourceObservers unregisterObserver:v4];
+  [(GEOObserverHashTable *)self->_powerSourceObservers unregisterObserver:observerCopy];
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = sub_10006A450();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v6 = 134349314;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
-    v9 = v4;
+    v9 = observerCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}p] Registering observer: %@", &v6, 0x16u);
   }
 
-  [(GEOObserverHashTable *)self->_powerSourceObservers registerObserver:v4];
+  [(GEOObserverHashTable *)self->_powerSourceObservers registerObserver:observerCopy];
 }
 
 - (void)dealloc
@@ -282,7 +282,7 @@ LABEL_34:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Deallocating", buf, 0xCu);
   }
 

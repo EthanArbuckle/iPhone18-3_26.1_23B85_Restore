@@ -1,50 +1,50 @@
 @interface FigCaptureVisionDataSinkConfiguration
-- (BOOL)isEqual:(id)a3;
-- (FigCaptureVisionDataSinkConfiguration)initWithXPCEncoding:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FigCaptureVisionDataSinkConfiguration)initWithXPCEncoding:(id)encoding;
 - (NSDictionary)embeddedCaptureDeviceConfiguration;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
 - (id)description;
 - (void)dealloc;
-- (void)setMaxBurstDuration:(id *)a3;
+- (void)setMaxBurstDuration:(id *)duration;
 @end
 
 @implementation FigCaptureVisionDataSinkConfiguration
 
-- (FigCaptureVisionDataSinkConfiguration)initWithXPCEncoding:(id)a3
+- (FigCaptureVisionDataSinkConfiguration)initWithXPCEncoding:(id)encoding
 {
   v15.receiver = self;
   v15.super_class = FigCaptureVisionDataSinkConfiguration;
   v4 = [(FigCaptureSinkConfiguration *)&v15 initWithXPCEncoding:?];
   if (v4)
   {
-    v5 = xpc_dictionary_get_double(a3, "maxFrameRate");
+    v5 = xpc_dictionary_get_double(encoding, "maxFrameRate");
     *(&v4->super._deferredStartEnabled + 1) = v5;
-    v6 = xpc_dictionary_get_double(a3, "maxBurstFrameRate");
+    v6 = xpc_dictionary_get_double(encoding, "maxBurstFrameRate");
     v4->_maxFrameRate = v6;
     FigXPCMessageGetCMTime();
-    HIDWORD(v4->_maxBurstDuration.epoch) = xpc_dictionary_get_uint64(a3, "gaussianPyramidOctavesCount");
-    *&v7 = xpc_dictionary_get_double(a3, "gaussianPyramidBaseOctaveDownscalingFactor");
+    HIDWORD(v4->_maxBurstDuration.epoch) = xpc_dictionary_get_uint64(encoding, "gaussianPyramidOctavesCount");
+    *&v7 = xpc_dictionary_get_double(encoding, "gaussianPyramidBaseOctaveDownscalingFactor");
     v4->_gaussianPyramidOctavesCount = v7;
-    LODWORD(v4->_gaussianPyramidBaseOctaveDownscalingFactor) = xpc_dictionary_get_uint64(a3, "maxKeypointsCount");
-    *&v8 = xpc_dictionary_get_double(a3, "keypointDetectionThreshold");
+    LODWORD(v4->_gaussianPyramidBaseOctaveDownscalingFactor) = xpc_dictionary_get_uint64(encoding, "maxKeypointsCount");
+    *&v8 = xpc_dictionary_get_double(encoding, "keypointDetectionThreshold");
     v4->_maxKeypointsCount = v8;
-    LOBYTE(v4->_keypointDetectionThreshold) = xpc_dictionary_get_BOOL(a3, "featureBinningEnabled");
-    BYTE1(v4->_keypointDetectionThreshold) = xpc_dictionary_get_BOOL(a3, "featureOrientationAssignmentEnabled");
-    BYTE2(v4->_keypointDetectionThreshold) = xpc_dictionary_get_BOOL(a3, "dynamicThresholdingEnabled");
-    *&v4->_featureBinningEnabled = xpc_dictionary_get_uint64(a3, "keypointDetectionFlowType");
-    v4->_subPixelThreshold = xpc_dictionary_get_uint64(a3, "subPixelThreshold");
-    v4->_featureMatchingEnabled = xpc_dictionary_get_BOOL(a3, "featureMatchingEnabled");
-    v4->_featureMatchingDescriptorSize = xpc_dictionary_get_uint64(a3, "featureMatchingDescriptorSize");
-    v9 = xpc_dictionary_get_double(a3, "orientationDistanceThreshold");
+    LOBYTE(v4->_keypointDetectionThreshold) = xpc_dictionary_get_BOOL(encoding, "featureBinningEnabled");
+    BYTE1(v4->_keypointDetectionThreshold) = xpc_dictionary_get_BOOL(encoding, "featureOrientationAssignmentEnabled");
+    BYTE2(v4->_keypointDetectionThreshold) = xpc_dictionary_get_BOOL(encoding, "dynamicThresholdingEnabled");
+    *&v4->_featureBinningEnabled = xpc_dictionary_get_uint64(encoding, "keypointDetectionFlowType");
+    v4->_subPixelThreshold = xpc_dictionary_get_uint64(encoding, "subPixelThreshold");
+    v4->_featureMatchingEnabled = xpc_dictionary_get_BOOL(encoding, "featureMatchingEnabled");
+    v4->_featureMatchingDescriptorSize = xpc_dictionary_get_uint64(encoding, "featureMatchingDescriptorSize");
+    v9 = xpc_dictionary_get_double(encoding, "orientationDistanceThreshold");
     v4->_orientationDistanceThreshold = v9;
-    v10 = xpc_dictionary_get_double(a3, "sigmaDistanceThreshold");
+    v10 = xpc_dictionary_get_double(encoding, "sigmaDistanceThreshold");
     v4->_sigmaDistanceThreshold = v10;
-    v11 = xpc_dictionary_get_double(a3, "squareDistanceDisparityFraction");
+    v11 = xpc_dictionary_get_double(encoding, "squareDistanceDisparityFraction");
     v4->_squareDistanceDisparityFraction = v11;
-    v4->_hammingDistanceThreshold = xpc_dictionary_get_uint64(a3, "hammingDistanceThreshold");
+    v4->_hammingDistanceThreshold = xpc_dictionary_get_uint64(encoding, "hammingDistanceThreshold");
     length = 0;
-    data = xpc_dictionary_get_data(a3, "laccConfigAndMetadata", &length);
+    data = xpc_dictionary_get_data(encoding, "laccConfigAndMetadata", &length);
     if (data)
     {
       v4->_laccConfigAndMetadata = [MEMORY[0x1E695DEF0] dataWithBytes:data length:length];
@@ -58,44 +58,44 @@
 {
   v13.receiver = self;
   v13.super_class = FigCaptureVisionDataSinkConfiguration;
-  v3 = [(FigCaptureSinkConfiguration *)&v13 copyXPCEncoding];
+  copyXPCEncoding = [(FigCaptureSinkConfiguration *)&v13 copyXPCEncoding];
   [(FigCaptureVisionDataSinkConfiguration *)self maxFrameRate];
-  xpc_dictionary_set_double(v3, "maxFrameRate", v4);
+  xpc_dictionary_set_double(copyXPCEncoding, "maxFrameRate", v4);
   [(FigCaptureVisionDataSinkConfiguration *)self maxBurstFrameRate];
-  xpc_dictionary_set_double(v3, "maxBurstFrameRate", v5);
+  xpc_dictionary_set_double(copyXPCEncoding, "maxBurstFrameRate", v5);
   if (self)
   {
     [(FigCaptureVisionDataSinkConfiguration *)self maxBurstDuration];
   }
 
   FigXPCMessageSetCMTime();
-  xpc_dictionary_set_uint64(v3, "gaussianPyramidOctavesCount", [(FigCaptureVisionDataSinkConfiguration *)self gaussianPyramidOctavesCount]);
+  xpc_dictionary_set_uint64(copyXPCEncoding, "gaussianPyramidOctavesCount", [(FigCaptureVisionDataSinkConfiguration *)self gaussianPyramidOctavesCount]);
   [(FigCaptureVisionDataSinkConfiguration *)self gaussianPyramidBaseOctaveDownscalingFactor];
-  xpc_dictionary_set_double(v3, "gaussianPyramidBaseOctaveDownscalingFactor", v6);
-  xpc_dictionary_set_uint64(v3, "maxKeypointsCount", [(FigCaptureVisionDataSinkConfiguration *)self maxKeypointsCount]);
+  xpc_dictionary_set_double(copyXPCEncoding, "gaussianPyramidBaseOctaveDownscalingFactor", v6);
+  xpc_dictionary_set_uint64(copyXPCEncoding, "maxKeypointsCount", [(FigCaptureVisionDataSinkConfiguration *)self maxKeypointsCount]);
   [(FigCaptureVisionDataSinkConfiguration *)self keypointDetectionThreshold];
-  xpc_dictionary_set_double(v3, "keypointDetectionThreshold", v7);
-  xpc_dictionary_set_BOOL(v3, "featureBinningEnabled", [(FigCaptureVisionDataSinkConfiguration *)self featureBinningEnabled]);
-  xpc_dictionary_set_BOOL(v3, "featureOrientationAssignmentEnabled", [(FigCaptureVisionDataSinkConfiguration *)self featureOrientationAssignmentEnabled]);
-  xpc_dictionary_set_BOOL(v3, "dynamicThresholdingEnabled", [(FigCaptureVisionDataSinkConfiguration *)self isDynamicThresholdingEnabled]);
-  xpc_dictionary_set_uint64(v3, "keypointDetectionFlowType", [(FigCaptureVisionDataSinkConfiguration *)self keypointDetectionFlowType]);
-  xpc_dictionary_set_uint64(v3, "subPixelThreshold", [(FigCaptureVisionDataSinkConfiguration *)self subPixelThreshold]);
-  xpc_dictionary_set_BOOL(v3, "featureMatchingEnabled", [(FigCaptureVisionDataSinkConfiguration *)self isFeatureMatchingEnabled]);
-  xpc_dictionary_set_uint64(v3, "featureMatchingDescriptorSize", [(FigCaptureVisionDataSinkConfiguration *)self featureMatchingDescriptorSize]);
+  xpc_dictionary_set_double(copyXPCEncoding, "keypointDetectionThreshold", v7);
+  xpc_dictionary_set_BOOL(copyXPCEncoding, "featureBinningEnabled", [(FigCaptureVisionDataSinkConfiguration *)self featureBinningEnabled]);
+  xpc_dictionary_set_BOOL(copyXPCEncoding, "featureOrientationAssignmentEnabled", [(FigCaptureVisionDataSinkConfiguration *)self featureOrientationAssignmentEnabled]);
+  xpc_dictionary_set_BOOL(copyXPCEncoding, "dynamicThresholdingEnabled", [(FigCaptureVisionDataSinkConfiguration *)self isDynamicThresholdingEnabled]);
+  xpc_dictionary_set_uint64(copyXPCEncoding, "keypointDetectionFlowType", [(FigCaptureVisionDataSinkConfiguration *)self keypointDetectionFlowType]);
+  xpc_dictionary_set_uint64(copyXPCEncoding, "subPixelThreshold", [(FigCaptureVisionDataSinkConfiguration *)self subPixelThreshold]);
+  xpc_dictionary_set_BOOL(copyXPCEncoding, "featureMatchingEnabled", [(FigCaptureVisionDataSinkConfiguration *)self isFeatureMatchingEnabled]);
+  xpc_dictionary_set_uint64(copyXPCEncoding, "featureMatchingDescriptorSize", [(FigCaptureVisionDataSinkConfiguration *)self featureMatchingDescriptorSize]);
   [(FigCaptureVisionDataSinkConfiguration *)self orientationDistanceThreshold];
-  xpc_dictionary_set_double(v3, "orientationDistanceThreshold", v8);
+  xpc_dictionary_set_double(copyXPCEncoding, "orientationDistanceThreshold", v8);
   [(FigCaptureVisionDataSinkConfiguration *)self sigmaDistanceThreshold];
-  xpc_dictionary_set_double(v3, "sigmaDistanceThreshold", v9);
+  xpc_dictionary_set_double(copyXPCEncoding, "sigmaDistanceThreshold", v9);
   [(FigCaptureVisionDataSinkConfiguration *)self squareDistanceDisparityFraction];
-  xpc_dictionary_set_double(v3, "squareDistanceDisparityFraction", v10);
-  xpc_dictionary_set_uint64(v3, "hammingDistanceThreshold", [(FigCaptureVisionDataSinkConfiguration *)self hammingDistanceThreshold]);
+  xpc_dictionary_set_double(copyXPCEncoding, "squareDistanceDisparityFraction", v10);
+  xpc_dictionary_set_uint64(copyXPCEncoding, "hammingDistanceThreshold", [(FigCaptureVisionDataSinkConfiguration *)self hammingDistanceThreshold]);
   laccConfigAndMetadata = self->_laccConfigAndMetadata;
   if (laccConfigAndMetadata)
   {
-    xpc_dictionary_set_data(v3, "laccConfigAndMetadata", [(NSData *)laccConfigAndMetadata bytes], [(NSData *)self->_laccConfigAndMetadata length]);
+    xpc_dictionary_set_data(copyXPCEncoding, "laccConfigAndMetadata", [(NSData *)laccConfigAndMetadata bytes], [(NSData *)self->_laccConfigAndMetadata length]);
   }
 
-  return v3;
+  return copyXPCEncoding;
 }
 
 - (void)dealloc
@@ -107,7 +107,7 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v30.receiver = self;
   v30.super_class = FigCaptureVisionDataSinkConfiguration;
   v28 = [(FigCaptureSinkConfiguration *)&v30 description];
@@ -126,34 +126,34 @@
   }
 
   Seconds = CMTimeGetSeconds(&time);
-  v27 = [(FigCaptureVisionDataSinkConfiguration *)self gaussianPyramidOctavesCount];
+  gaussianPyramidOctavesCount = [(FigCaptureVisionDataSinkConfiguration *)self gaussianPyramidOctavesCount];
   [(FigCaptureVisionDataSinkConfiguration *)self gaussianPyramidBaseOctaveDownscalingFactor];
   v10 = v9;
-  v11 = [(FigCaptureVisionDataSinkConfiguration *)self maxKeypointsCount];
+  maxKeypointsCount = [(FigCaptureVisionDataSinkConfiguration *)self maxKeypointsCount];
   [(FigCaptureVisionDataSinkConfiguration *)self keypointDetectionThreshold];
   v13 = v12;
-  v14 = [(FigCaptureVisionDataSinkConfiguration *)self featureBinningEnabled];
-  v15 = [(FigCaptureVisionDataSinkConfiguration *)self featureOrientationAssignmentEnabled];
-  v16 = [(FigCaptureVisionDataSinkConfiguration *)self isDynamicThresholdingEnabled];
-  v17 = [(FigCaptureVisionDataSinkConfiguration *)self keypointDetectionFlowType];
-  v18 = [(FigCaptureVisionDataSinkConfiguration *)self subPixelThreshold];
-  v19 = [(FigCaptureVisionDataSinkConfiguration *)self isFeatureMatchingEnabled];
-  v20 = [(FigCaptureVisionDataSinkConfiguration *)self featureMatchingDescriptorSize];
+  featureBinningEnabled = [(FigCaptureVisionDataSinkConfiguration *)self featureBinningEnabled];
+  featureOrientationAssignmentEnabled = [(FigCaptureVisionDataSinkConfiguration *)self featureOrientationAssignmentEnabled];
+  isDynamicThresholdingEnabled = [(FigCaptureVisionDataSinkConfiguration *)self isDynamicThresholdingEnabled];
+  keypointDetectionFlowType = [(FigCaptureVisionDataSinkConfiguration *)self keypointDetectionFlowType];
+  subPixelThreshold = [(FigCaptureVisionDataSinkConfiguration *)self subPixelThreshold];
+  isFeatureMatchingEnabled = [(FigCaptureVisionDataSinkConfiguration *)self isFeatureMatchingEnabled];
+  featureMatchingDescriptorSize = [(FigCaptureVisionDataSinkConfiguration *)self featureMatchingDescriptorSize];
   [(FigCaptureVisionDataSinkConfiguration *)self orientationDistanceThreshold];
   v22 = v21;
   [(FigCaptureVisionDataSinkConfiguration *)self sigmaDistanceThreshold];
   v24 = v23;
   [(FigCaptureVisionDataSinkConfiguration *)self squareDistanceDisparityFraction];
-  [v3 appendFormat:@"%@ maxFPS:%.0f maxBurstFPS:%.0f maxBurstDur:%.3f octaves:%d downscaleBy:%.3f maxKeypoints:%d keypointDetectionThreshold:%.3f featureBinning:%d orientationAware:%d dynamicThresholding:%d keypointDetectionFlow:%d subPixelThreshold:%lu featureMatching:%d featureMatchingDescriptorSize:%d orientationDistanceThreshold:%f sigmaDistanceThreshold:%f squareDistanceDisparityThreshold:%f hammingDistanceThreshold:%lu", v28, *&v5, *&v7, *&Seconds, v27, *&v10, v11, *&v13, v14, v15, v16, v17, v18, v19, v20, *&v22, *&v24, v25, -[FigCaptureVisionDataSinkConfiguration hammingDistanceThreshold](self, "hammingDistanceThreshold")];
+  [string appendFormat:@"%@ maxFPS:%.0f maxBurstFPS:%.0f maxBurstDur:%.3f octaves:%d downscaleBy:%.3f maxKeypoints:%d keypointDetectionThreshold:%.3f featureBinning:%d orientationAware:%d dynamicThresholding:%d keypointDetectionFlow:%d subPixelThreshold:%lu featureMatching:%d featureMatchingDescriptorSize:%d orientationDistanceThreshold:%f sigmaDistanceThreshold:%f squareDistanceDisparityThreshold:%f hammingDistanceThreshold:%lu", v28, *&v5, *&v7, *&Seconds, gaussianPyramidOctavesCount, *&v10, maxKeypointsCount, *&v13, featureBinningEnabled, featureOrientationAssignmentEnabled, isDynamicThresholdingEnabled, keypointDetectionFlowType, subPixelThreshold, isFeatureMatchingEnabled, featureMatchingDescriptorSize, *&v22, *&v24, v25, -[FigCaptureVisionDataSinkConfiguration hammingDistanceThreshold](self, "hammingDistanceThreshold")];
   if ([(FigCaptureVisionDataSinkConfiguration *)self laccConfigAndMetadata])
   {
-    [v3 appendFormat:@" LACCConfigAndMetadata:%@", -[FigCaptureVisionDataSinkConfiguration laccConfigAndMetadata](self, "laccConfigAndMetadata")];
+    [string appendFormat:@" LACCConfigAndMetadata:%@", -[FigCaptureVisionDataSinkConfiguration laccConfigAndMetadata](self, "laccConfigAndMetadata")];
   }
 
-  return [MEMORY[0x1E696AEC0] stringWithString:v3];
+  return [MEMORY[0x1E696AEC0] stringWithString:string];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v17.receiver = self;
   v17.super_class = FigCaptureVisionDataSinkConfiguration;
@@ -185,13 +185,13 @@
   *&v12 = self->_squareDistanceDisparityFraction;
   [v5 setSquareDistanceDisparityFraction:v12];
   [v5 setHammingDistanceThreshold:self->_hammingDistanceThreshold];
-  v13 = [(NSData *)self->_laccConfigAndMetadata copyWithZone:a3];
+  v13 = [(NSData *)self->_laccConfigAndMetadata copyWithZone:zone];
   [v5 setLaccConfigAndMetadata:v13];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v7.receiver = self;
   v7.super_class = FigCaptureVisionDataSinkConfiguration;
@@ -201,7 +201,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      LOBYTE(v5) = -[NSDictionary isEqual:](-[FigCaptureVisionDataSinkConfiguration embeddedCaptureDeviceConfiguration](self, "embeddedCaptureDeviceConfiguration"), "isEqual:", [a3 embeddedCaptureDeviceConfiguration]);
+      LOBYTE(v5) = -[NSDictionary isEqual:](-[FigCaptureVisionDataSinkConfiguration embeddedCaptureDeviceConfiguration](self, "embeddedCaptureDeviceConfiguration"), "isEqual:", [equal embeddedCaptureDeviceConfiguration]);
     }
 
     else
@@ -218,7 +218,7 @@
   v3 = *MEMORY[0x1E695E480];
   time = *&self->_maxBurstFrameRate;
   v4 = CMTimeCopyAsDictionary(&time, v3);
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v18[0] = *off_1E798CBC0;
   LODWORD(v6) = *(&self->super._deferredStartEnabled + 1);
   v19[0] = [MEMORY[0x1E696AD98] numberWithFloat:{v6, v18[0]}];
@@ -265,20 +265,20 @@
   v19[16] = [MEMORY[0x1E696AD98] numberWithFloat:v15];
   v18[17] = *off_1E798CB90;
   v19[17] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_hammingDistanceThreshold];
-  [v5 addEntriesFromDictionary:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v19, v18, 18)}];
+  [dictionary addEntriesFromDictionary:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v19, v18, 18)}];
   laccConfigAndMetadata = self->_laccConfigAndMetadata;
   if (laccConfigAndMetadata)
   {
-    [v5 setObject:laccConfigAndMetadata forKeyedSubscript:*off_1E798CBA8];
+    [dictionary setObject:laccConfigAndMetadata forKeyedSubscript:*off_1E798CBA8];
   }
 
-  return [MEMORY[0x1E695DF20] dictionaryWithDictionary:v5];
+  return [MEMORY[0x1E695DF20] dictionaryWithDictionary:dictionary];
 }
 
-- (void)setMaxBurstDuration:(id *)a3
+- (void)setMaxBurstDuration:(id *)duration
 {
-  var3 = a3->var3;
-  *&self->_maxBurstFrameRate = *&a3->var0;
+  var3 = duration->var3;
+  *&self->_maxBurstFrameRate = *&duration->var0;
   *&self->_maxBurstDuration.flags = var3;
 }
 

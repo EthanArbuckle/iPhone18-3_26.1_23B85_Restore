@@ -1,6 +1,6 @@
 @interface UIKeyboardTypingStyleEstimator
 - (UIKeyboardTypingStyleEstimatorDelegate)delegate;
-- (void)_setTypingStyleEstimation:(unint64_t)a3;
+- (void)_setTypingStyleEstimation:(unint64_t)estimation;
 - (void)beganContinuousPath;
 - (void)cancelContinuousPath;
 - (void)endedContinuousPath;
@@ -8,26 +8,26 @@
 
 @implementation UIKeyboardTypingStyleEstimator
 
-- (void)_setTypingStyleEstimation:(unint64_t)a3
+- (void)_setTypingStyleEstimation:(unint64_t)estimation
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (self->_currentTypingStyle != a3)
+  if (self->_currentTypingStyle != estimation)
   {
-    self->_currentTypingStyle = a3;
+    self->_currentTypingStyle = estimation;
     CategoryCachedImpl = __UILogGetCategoryCachedImpl("TypingStyleDebug", &_setTypingStyleEstimation____s_category);
     if (*CategoryCachedImpl)
     {
       v9 = *(CategoryCachedImpl + 8);
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        if (a3 - 1 > 2)
+        if (estimation - 1 > 2)
         {
           v10 = @"(None)";
         }
 
         else
         {
-          v10 = off_1E71196B8[a3 - 1];
+          v10 = off_1E71196B8[estimation - 1];
         }
 
         v12 = 138412290;
@@ -43,7 +43,7 @@
     if (v7)
     {
       v8 = objc_loadWeakRetained(&self->_delegate);
-      [v8 typingStyleEstimator:self didChangeTypingStyleEstimate:a3];
+      [v8 typingStyleEstimator:self didChangeTypingStyleEstimate:estimation];
     }
   }
 }

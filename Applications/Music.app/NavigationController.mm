@@ -1,38 +1,38 @@
 @interface NavigationController
 - (NSArray)viewControllers;
 - (UINavigationControllerDelegate)delegate;
-- (_TtC5Music20NavigationController)initWithCoder:(id)a3;
-- (_TtC5Music20NavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (_TtC5Music20NavigationController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC5Music20NavigationController)initWithRootViewController:(id)a3;
-- (void)attachPalette:(id)a3 isPinned:(BOOL)a4;
-- (void)detachPalette:(id)a3;
-- (void)navigationController:(id)a3 didShowViewController:(id)a4;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)pushViewController:(id)a3 animated:(BOOL)a4;
-- (void)setDelegate:(id)a3;
-- (void)setViewControllers:(id)a3;
+- (_TtC5Music20NavigationController)initWithCoder:(id)coder;
+- (_TtC5Music20NavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (_TtC5Music20NavigationController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC5Music20NavigationController)initWithRootViewController:(id)controller;
+- (void)attachPalette:(id)palette isPinned:(BOOL)pinned;
+- (void)detachPalette:(id)palette;
+- (void)navigationController:(id)controller didShowViewController:(id)viewController;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)pushViewController:(id)controller animated:(BOOL)animated;
+- (void)setDelegate:(id)delegate;
+- (void)setViewControllers:(id)controllers;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation NavigationController
 
-- (_TtC5Music20NavigationController)initWithRootViewController:(id)a3
+- (_TtC5Music20NavigationController)initWithRootViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = [(NavigationController *)self init];
-  [(NavigationController *)v5 pushViewController:v4 animated:0];
+  [(NavigationController *)v5 pushViewController:controllerCopy animated:0];
 
   return v5;
 }
 
-- (_TtC5Music20NavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (_TtC5Music20NavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
-  if (!a3)
+  if (!class)
   {
     ObjCClassMetadata = 0;
-    if (a4)
+    if (toolbarClass)
     {
       goto LABEL_3;
     }
@@ -43,7 +43,7 @@ LABEL_5:
   }
 
   ObjCClassMetadata = swift_getObjCClassMetadata();
-  if (!a4)
+  if (!toolbarClass)
   {
     goto LABEL_5;
   }
@@ -71,19 +71,19 @@ LABEL_3:
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100038A14();
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  if (a3)
+  if (delegate)
   {
-    if (a3 == self)
+    if (delegate == self)
     {
       v4.receiver = self;
       v4.super_class = type metadata accessor for NavigationController();
-      [(NavigationController *)&v4 setDelegate:a3];
+      [(NavigationController *)&v4 setDelegate:delegate];
     }
   }
 }
@@ -92,22 +92,22 @@ LABEL_3:
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for NavigationController();
-  v2 = [(NavigationController *)&v4 delegate];
+  delegate = [(NavigationController *)&v4 delegate];
 
-  return v2;
+  return delegate;
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v5 = a5;
-  v7 = a4;
-  v10 = self;
-  v8 = [v7 navigationItem];
+  animatedCopy = animated;
+  viewControllerCopy = viewController;
+  selfCopy = self;
+  navigationItem = [viewControllerCopy navigationItem];
   v9 = sub_10005A544() & 1;
 
-  if (v9 != [(NavigationController *)v10 isNavigationBarHidden])
+  if (v9 != [(NavigationController *)selfCopy isNavigationBarHidden])
   {
-    [(NavigationController *)v10 setNavigationBarHidden:v9 animated:v5];
+    [(NavigationController *)selfCopy setNavigationBarHidden:v9 animated:animatedCopy];
   }
 }
 
@@ -117,16 +117,16 @@ LABEL_3:
   v6.super_class = type metadata accessor for NavigationController();
   v2 = v6.receiver;
   [(NavigationController *)&v6 viewDidLayoutSubviews];
-  v3 = [v2 topViewController];
-  if (v3)
+  topViewController = [v2 topViewController];
+  if (topViewController)
   {
-    v4 = v3;
-    v5 = [v3 navigationItem];
-    sub_100796418(v5);
+    v4 = topViewController;
+    navigationItem = [topViewController navigationItem];
+    sub_100796418(navigationItem);
   }
 }
 
-- (_TtC5Music20NavigationController)initWithCoder:(id)a3
+- (_TtC5Music20NavigationController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC5Music20NavigationController__pushingViewController) = 0;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC5Music20NavigationController_existingTopPalette) = 0;
@@ -135,44 +135,44 @@ LABEL_3:
   return result;
 }
 
-- (void)setViewControllers:(id)a3
+- (void)setViewControllers:(id)controllers
 {
   sub_100009F78(0, &qword_101183D40);
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   sub_1007966E4(v4);
 }
 
-- (void)attachPalette:(id)a3 isPinned:(BOOL)a4
+- (void)attachPalette:(id)palette isPinned:(BOOL)pinned
 {
-  v7 = a3;
-  v8 = self;
-  sub_1007968E4(a3, a4);
+  paletteCopy = palette;
+  selfCopy = self;
+  sub_1007968E4(palette, pinned);
 }
 
-- (void)detachPalette:(id)a3
+- (void)detachPalette:(id)palette
 {
-  v5 = a3;
-  v6 = self;
-  sub_100796B34(a3);
+  paletteCopy = palette;
+  selfCopy = self;
+  sub_100796B34(palette);
 }
 
-- (void)pushViewController:(id)a3 animated:(BOOL)a4
+- (void)pushViewController:(id)controller animated:(BOOL)animated
 {
-  v6 = a3;
-  v7 = self;
-  sub_100796EB8(v6, a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_100796EB8(controllerCopy, animated);
 }
 
-- (void)navigationController:(id)a3 didShowViewController:(id)a4
+- (void)navigationController:(id)controller didShowViewController:(id)viewController
 {
-  v4 = self;
-  v5 = [(NavigationController *)v4 existingPaletteForEdge:2];
-  v6 = *(&v4->super.super.super.super.super.isa + OBJC_IVAR____TtC5Music20NavigationController_existingTopPalette);
-  *(&v4->super.super.super.super.super.isa + OBJC_IVAR____TtC5Music20NavigationController_existingTopPalette) = v5;
+  selfCopy = self;
+  v5 = [(NavigationController *)selfCopy existingPaletteForEdge:2];
+  v6 = *(&selfCopy->super.super.super.super.super.isa + OBJC_IVAR____TtC5Music20NavigationController_existingTopPalette);
+  *(&selfCopy->super.super.super.super.super.isa + OBJC_IVAR____TtC5Music20NavigationController_existingTopPalette) = v5;
 }
 
-- (_TtC5Music20NavigationController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5Music20NavigationController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

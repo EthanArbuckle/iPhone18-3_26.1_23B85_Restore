@@ -2,8 +2,8 @@
 - (SKUIEmbeddedMediaView)mediaView;
 - (UIEdgeInsets)contentInset;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setContentInset:(UIEdgeInsets)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setContentInset:(UIEdgeInsets)inset;
 @end
 
 @implementation SKUIMediaCollectionViewCell
@@ -25,30 +25,30 @@
   mediaView = self->_mediaView;
   if (!mediaView)
   {
-    v12 = [(SKUIMediaCollectionViewCell *)self contentView];
+    contentView = [(SKUIMediaCollectionViewCell *)self contentView];
     v13 = [SKUIEmbeddedMediaView alloc];
-    [v12 bounds];
+    [contentView bounds];
     v18 = [(SKUIEmbeddedMediaView *)v13 initWithFrame:v14 + self->_contentInset.left, v15 + self->_contentInset.top, v16 - (self->_contentInset.left + self->_contentInset.right), v17 - (self->_contentInset.top + self->_contentInset.bottom)];
     v19 = self->_mediaView;
     self->_mediaView = v18;
 
     v20 = self->_mediaView;
-    v21 = [(SKUIMediaCollectionViewCell *)self backgroundColor];
-    [(SKUIEmbeddedMediaView *)v20 setBackgroundColor:v21];
+    backgroundColor = [(SKUIMediaCollectionViewCell *)self backgroundColor];
+    [(SKUIEmbeddedMediaView *)v20 setBackgroundColor:backgroundColor];
 
-    [v12 addSubview:self->_mediaView];
+    [contentView addSubview:self->_mediaView];
     mediaView = self->_mediaView;
   }
 
   return mediaView;
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  right = a3.right;
-  left = a3.left;
-  bottom = a3.bottom;
-  top = a3.top;
+  right = inset.right;
+  left = inset.left;
+  bottom = inset.bottom;
+  top = inset.top;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -93,14 +93,14 @@
   v17.super_class = SKUIMediaCollectionViewCell;
   [(SKUICollectionViewCell *)&v17 layoutSubviews];
   mediaView = self->_mediaView;
-  v12 = [(SKUIMediaCollectionViewCell *)self contentView];
-  [v12 bounds];
+  contentView = [(SKUIMediaCollectionViewCell *)self contentView];
+  [contentView bounds];
   [(SKUIEmbeddedMediaView *)mediaView setFrame:v13 + self->_contentInset.left, v14 + self->_contentInset.top, v15 - (self->_contentInset.left + self->_contentInset.right), v16 - (self->_contentInset.top + self->_contentInset.bottom)];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -113,10 +113,10 @@
     }
   }
 
-  [(SKUIEmbeddedMediaView *)self->_mediaView setBackgroundColor:v4];
+  [(SKUIEmbeddedMediaView *)self->_mediaView setBackgroundColor:colorCopy];
   v13.receiver = self;
   v13.super_class = SKUIMediaCollectionViewCell;
-  [(SKUICollectionViewCell *)&v13 setBackgroundColor:v4];
+  [(SKUICollectionViewCell *)&v13 setBackgroundColor:colorCopy];
 }
 
 - (UIEdgeInsets)contentInset

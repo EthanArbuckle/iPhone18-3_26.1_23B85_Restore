@@ -1,5 +1,5 @@
 @interface SBDropShadowSettings
-+ (id)moduleWithSectionTitle:(id)a3;
++ (id)moduleWithSectionTitle:(id)title;
 - (void)setDefaultValues;
 @end
 
@@ -17,11 +17,11 @@
   [(SBDropShadowSettings *)self setContinuousCornerRadius:20.0];
 }
 
-+ (id)moduleWithSectionTitle:(id)a3
++ (id)moduleWithSectionTitle:(id)title
 {
   v21[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277D43290];
-  v4 = a3;
+  titleCopy = title;
   v5 = [v3 rowWithTitle:@"Opacity" valueKeyPath:@"opacity"];
   v6 = [MEMORY[0x277D43290] rowWithTitle:@"Shadow Radius" valueKeyPath:@"radius"];
   v7 = [v6 minValue:0.0 maxValue:100.0];
@@ -42,7 +42,7 @@
   v20[3] = v11;
   v20[4] = v13;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:5];
-  v16 = [v14 sectionWithRows:v15 title:v4];
+  v16 = [v14 sectionWithRows:v15 title:titleCopy];
 
   v21[0] = v16;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];

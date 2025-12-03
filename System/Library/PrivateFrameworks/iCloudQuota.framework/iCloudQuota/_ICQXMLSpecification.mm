@@ -1,33 +1,33 @@
 @interface _ICQXMLSpecification
-- (_ICQXMLSpecification)initWithPlaceholderInfo:(id)a3;
-- (id)placeholderReplacementsWithDeviceInfo:(id)a3;
-- (id)stringForPlaceholder:(id)a3 withDeviceInfo:(id)a4;
+- (_ICQXMLSpecification)initWithPlaceholderInfo:(id)info;
+- (id)placeholderReplacementsWithDeviceInfo:(id)info;
+- (id)stringForPlaceholder:(id)placeholder withDeviceInfo:(id)info;
 @end
 
 @implementation _ICQXMLSpecification
 
-- (_ICQXMLSpecification)initWithPlaceholderInfo:(id)a3
+- (_ICQXMLSpecification)initWithPlaceholderInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v6 = [(_ICQXMLSpecification *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_placeholderInfo, a3);
+    objc_storeStrong(&v6->_placeholderInfo, info);
   }
 
   return v7;
 }
 
-- (id)stringForPlaceholder:(id)a3 withDeviceInfo:(id)a4
+- (id)stringForPlaceholder:(id)placeholder withDeviceInfo:(id)info
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length]> 2)
+  placeholderCopy = placeholder;
+  infoCopy = info;
+  if ([placeholderCopy length]> 2)
   {
     placeholderInfo = self->_placeholderInfo;
-    v11 = [v6 substringFromIndex:2];
+    v11 = [placeholderCopy substringFromIndex:2];
     v8 = [(NSDictionary *)placeholderInfo objectForKeyedSubscript:v11];
 
     v12 = _ICQGetLogSystem();
@@ -44,7 +44,7 @@
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v31 = 138412290;
-        v32 = v6;
+        v32 = placeholderCopy;
         _os_log_impl(&dword_275572000, v16, OS_LOG_TYPE_DEFAULT, "No placeholder info found for %@ in offer", &v31, 0xCu);
       }
 
@@ -65,7 +65,7 @@
 
     else
     {
-      v19 = v7;
+      v19 = infoCopy;
       if (!v19)
       {
         v21 = [v8 objectForKeyedSubscript:@"appId"];
@@ -90,19 +90,19 @@
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
         v24 = [v19 key];
-        v25 = [v19 wordsToReplace];
+        wordsToReplace = [v19 wordsToReplace];
         v31 = 138412546;
         v32 = v24;
         v33 = 2112;
-        v34 = v25;
+        v34 = wordsToReplace;
         _os_log_impl(&dword_275572000, v23, OS_LOG_TYPE_DEFAULT, "key = %@  wordsToReplace = %@", &v31, 0x16u);
       }
 
       v26 = [v19 key];
       v27 = [_ICQHelperFunctions stringFromTemplates:v16 key:v26];
 
-      v28 = [v19 wordsToReplace];
-      v9 = [_ICQHelperFunctions replaceWordsIn:v27 with:v28];
+      wordsToReplace2 = [v19 wordsToReplace];
+      v9 = [_ICQHelperFunctions replaceWordsIn:v27 with:wordsToReplace2];
     }
 
 LABEL_21:
@@ -114,7 +114,7 @@ LABEL_22:
   v8 = _ICQGetLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    [_ICQXMLSpecification stringForPlaceholder:v6 withDeviceInfo:v8];
+    [_ICQXMLSpecification stringForPlaceholder:placeholderCopy withDeviceInfo:v8];
   }
 
   v9 = 0;
@@ -125,9 +125,9 @@ LABEL_23:
   return v9;
 }
 
-- (id)placeholderReplacementsWithDeviceInfo:(id)a3
+- (id)placeholderReplacementsWithDeviceInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = [MEMORY[0x277CBEC10] mutableCopy];
   placeholderInfo = self->_placeholderInfo;
   v11 = MEMORY[0x277D85DD0];
@@ -135,8 +135,8 @@ LABEL_23:
   v13 = __62___ICQXMLSpecification_placeholderReplacementsWithDeviceInfo___block_invoke;
   v14 = &unk_27A652BE8;
   v15 = v5;
-  v16 = v4;
-  v7 = v4;
+  v16 = infoCopy;
+  v7 = infoCopy;
   v8 = v5;
   [(NSDictionary *)placeholderInfo enumerateKeysAndObjectsUsingBlock:&v11];
   v9 = [v8 copy];

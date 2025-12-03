@@ -1,20 +1,20 @@
 @interface DBTSSepratedBySpacesPreprocessor
 - (DBTSSepratedBySpacesPreprocessor)init;
-- (id)preprocessPrintString:(id)a3 withLocationMap:(id *)a4 isEightDot:(BOOL)a5 textFormattingRanges:(id)a6;
+- (id)preprocessPrintString:(id)string withLocationMap:(id *)map isEightDot:(BOOL)dot textFormattingRanges:(id)ranges;
 - (void)dealloc;
 @end
 
 @implementation DBTSSepratedBySpacesPreprocessor
 
-- (id)preprocessPrintString:(id)a3 withLocationMap:(id *)a4 isEightDot:(BOOL)a5 textFormattingRanges:(id)a6
+- (id)preprocessPrintString:(id)string withLocationMap:(id *)map isEightDot:(BOOL)dot textFormattingRanges:(id)ranges
 {
-  v8 = a3;
-  v9 = v8;
-  if (v8)
+  stringCopy = string;
+  v9 = stringCopy;
+  if (stringCopy)
   {
-    v10 = [(__CFString *)v8 length];
+    v10 = [(__CFString *)stringCopy length];
     v11 = +[NSMutableString string];
-    if (a4)
+    if (map)
     {
       v12 = [NSMutableData dataWithLength:0];
     }
@@ -24,13 +24,13 @@
       v12 = 0;
     }
 
-    v33 = a4;
+    mapCopy = map;
     v34 = v12;
-    v13 = [(DBTSSepratedBySpacesPreprocessor *)self tokenizerUnit];
+    tokenizerUnit = [(DBTSSepratedBySpacesPreprocessor *)self tokenizerUnit];
     v37.location = 0;
     v32 = v10;
     v37.length = v10;
-    v14 = CFStringTokenizerCreate(0, v9, v37, v13, self->_locale);
+    v14 = CFStringTokenizerCreate(0, v9, v37, tokenizerUnit, self->_locale);
     if (CFStringTokenizerAdvanceToNextToken(v14))
     {
       do
@@ -102,10 +102,10 @@
       while (v26 != v18);
     }
 
-    if (v33)
+    if (mapCopy)
     {
       v30 = v34;
-      *v33 = v34;
+      *mapCopy = v34;
     }
   }
 

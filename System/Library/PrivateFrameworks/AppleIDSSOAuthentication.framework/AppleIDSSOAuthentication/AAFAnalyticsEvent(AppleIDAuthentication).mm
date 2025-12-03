@@ -20,7 +20,7 @@
   v9 = a5;
   v10 = a4;
   v11 = [v8 startEventNameForService:a3];
-  v12 = [a1 aida_analyticsEventWithEventName:v11 accountManager:v10 authenticationResults:v9];
+  v12 = [self aida_analyticsEventWithEventName:v11 accountManager:v10 authenticationResults:v9];
 
   return v12;
 }
@@ -32,7 +32,7 @@
   v14 = a5;
   v15 = a4;
   v16 = [v12 finishEventNameForService:a3];
-  v17 = [a1 aida_analyticsEventWithEventName:v16 accountManager:v15 authenticationResults:v14];
+  v17 = [self aida_analyticsEventWithEventName:v16 accountManager:v15 authenticationResults:v14];
 
   [v17 aida_updateEventWithSuccess:a6 error:v13];
 
@@ -45,7 +45,7 @@
   v9 = a5;
   v10 = a4;
   v11 = [v8 eventNameForService:a3];
-  v12 = [a1 aida_analyticsEventWithEventName:v11 accountManager:v10 authenticationResults:v9];
+  v12 = [self aida_analyticsEventWithEventName:v11 accountManager:v10 authenticationResults:v9];
 
   return v12;
 }
@@ -54,7 +54,7 @@
 {
   v8 = a5;
   v9 = a4;
-  v10 = [a1 aida_analyticsEventWithEventName:a3];
+  v10 = [self aida_analyticsEventWithEventName:a3];
   [v10 aida_updateTelemetryIdsWithAuthenticationResults:v8 accountManager:v9];
 
   return v10;
@@ -71,9 +71,9 @@
 
 - (void)aida_updateEventWithSuccess:()AppleIDAuthentication error:
 {
-  [a1 populateUnderlyingErrorsStartingWithRootError:a4];
+  [self populateUnderlyingErrorsStartingWithRootError:a4];
   v6 = [MEMORY[0x1E696AD98] numberWithBool:a3];
-  [a1 setObject:v6 forKeyedSubscript:*MEMORY[0x1E6985E40]];
+  [self setObject:v6 forKeyedSubscript:*MEMORY[0x1E6985E40]];
 }
 
 - (void)aida_updateTelemetryIdsWithAuthenticationResults:()AppleIDAuthentication accountManager:
@@ -84,10 +84,10 @@
   if (v8)
   {
     v9 = [v7 telemetryDeviceSessionIDForAccount:v8];
-    [a1 setObject:v9 forKeyedSubscript:*MEMORY[0x1E6985E38]];
+    [self setObject:v9 forKeyedSubscript:*MEMORY[0x1E6985E38]];
 
     v10 = [v6 objectForKeyedSubscript:*MEMORY[0x1E698DBE0]];
-    [a1 setObject:v10 forKeyedSubscript:*MEMORY[0x1E6985E50]];
+    [self setObject:v10 forKeyedSubscript:*MEMORY[0x1E6985E50]];
   }
 
   else

@@ -1,10 +1,10 @@
 @interface DBIconManager
 - (SBIconListLayoutProvider)listLayoutProvider;
 - (_TtC9DashBoard13DBIconManager)init;
-- (id)imageViewForIconView:(id)a3;
-- (void)_configureRootFolderConfiguration:(id)a3;
-- (void)precacheImagesForRootIconsWithTraitCollection:(id)a3;
-- (void)setListLayoutProvider:(id)a3;
+- (id)imageViewForIconView:(id)view;
+- (void)_configureRootFolderConfiguration:(id)configuration;
+- (void)precacheImagesForRootIconsWithTraitCollection:(id)collection;
+- (void)setListLayoutProvider:(id)provider;
 @end
 
 @implementation DBIconManager
@@ -15,7 +15,7 @@
   return v2;
 }
 
-- (void)setListLayoutProvider:(id)a3
+- (void)setListLayoutProvider:(id)provider
 {
   type metadata accessor for DBIconListLayoutProvider();
   v4 = swift_dynamicCastClass();
@@ -26,7 +26,7 @@
   }
 }
 
-- (id)imageViewForIconView:(id)a3
+- (id)imageViewForIconView:(id)view
 {
   type metadata accessor for DBIconImageView();
   v3 = DBIconImageView.__allocating_init()();
@@ -34,21 +34,21 @@
   return v3;
 }
 
-- (void)_configureRootFolderConfiguration:(id)a3
+- (void)_configureRootFolderConfiguration:(id)configuration
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for DBIconManager();
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = v6.receiver;
-  [(SBHIconManager *)&v6 _configureRootFolderConfiguration:v4];
-  [v4 setAdditionalPartialPagesToKeepVisible_];
+  [(SBHIconManager *)&v6 _configureRootFolderConfiguration:configurationCopy];
+  [configurationCopy setAdditionalPartialPagesToKeepVisible_];
 }
 
-- (void)precacheImagesForRootIconsWithTraitCollection:(id)a3
+- (void)precacheImagesForRootIconsWithTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = self;
-  DBIconManager.precacheImagesForRootIcons(with:)(v4);
+  collectionCopy = collection;
+  selfCopy = self;
+  DBIconManager.precacheImagesForRootIcons(with:)(collectionCopy);
 }
 
 - (_TtC9DashBoard13DBIconManager)init

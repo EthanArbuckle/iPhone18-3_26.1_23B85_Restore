@@ -1,5 +1,5 @@
 @interface DNDAppActionsBox
-- (DNDAppActionsBox)initWithCoder:(id)a3;
+- (DNDAppActionsBox)initWithCoder:(id)coder;
 - (id)appConfigurationActionsForModeIdentifier;
 @end
 
@@ -45,9 +45,9 @@
   return v3;
 }
 
-- (DNDAppActionsBox)initWithCoder:(id)a3
+- (DNDAppActionsBox)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   if (NSClassFromString(&cfstr_Lnaction.isa))
   {
     v5 = MEMORY[0x277CBEB98];
@@ -55,7 +55,7 @@
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v5 setWithObjects:{v6, v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"boxed"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"boxed"];
 
     v11 = objc_alloc_init(DNDAppActionsBox);
     [(DNDAppActionsBox *)v11 setAppActionsForModeIdentifier:v10];

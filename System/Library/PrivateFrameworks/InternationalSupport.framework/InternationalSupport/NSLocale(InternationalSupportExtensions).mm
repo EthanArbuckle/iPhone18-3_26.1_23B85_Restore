@@ -52,8 +52,8 @@
 + (id)_globalPreferredLanguages
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v0 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v1 = [v0 persistentDomainForName:*MEMORY[0x1E696A400]];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v1 = [standardUserDefaults persistentDomainForName:*MEMORY[0x1E696A400]];
   v2 = [v1 objectForKeyedSubscript:@"AppleLanguages"];
 
   if (!v2 || ![v2 count])
@@ -91,8 +91,8 @@
 - (__CFString)numberingSystem
 {
   v1 = MEMORY[0x1E695DF58];
-  v2 = [a1 localeIdentifier];
-  v3 = [v1 componentsFromLocaleIdentifier:v2];
+  localeIdentifier = [self localeIdentifier];
+  v3 = [v1 componentsFromLocaleIdentifier:localeIdentifier];
   v4 = [v3 mutableCopy];
 
   v5 = [v4 objectForKeyedSubscript:@"numbers"];
@@ -129,7 +129,7 @@
   block[1] = 3221225472;
   block[2] = __63__NSLocale_InternationalSupportExtensions__baseSystemLanguages__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (baseSystemLanguages___onceToken != -1)
   {
     dispatch_once(&baseSystemLanguages___onceToken, block);
@@ -143,9 +143,9 @@
 + (id)supportedLanguages
 {
   v1 = MEMORY[0x1E695DFD8];
-  v2 = [a1 _languagesToExemplarStrings];
-  v3 = [v2 allKeys];
-  v4 = [v1 setWithArray:v3];
+  _languagesToExemplarStrings = [self _languagesToExemplarStrings];
+  allKeys = [_languagesToExemplarStrings allKeys];
+  v4 = [v1 setWithArray:allKeys];
 
   return v4;
 }
@@ -155,15 +155,15 @@
   v4 = a3;
   if (v4)
   {
-    v5 = [a1 _languagesToExemplarStrings];
-    v6 = [v5 objectForKey:v4];
+    _languagesToExemplarStrings = [self _languagesToExemplarStrings];
+    v6 = [_languagesToExemplarStrings objectForKey:v4];
 
     if (!v6)
     {
       v7 = [MEMORY[0x1E695DF58] canonicalLanguageIdentifierFromString:v4];
 
-      v8 = [a1 _languagesToExemplarStrings];
-      v6 = [v8 objectForKey:v7];
+      _languagesToExemplarStrings2 = [self _languagesToExemplarStrings];
+      v6 = [_languagesToExemplarStrings2 objectForKey:v7];
 
       v4 = v7;
     }
@@ -183,25 +183,25 @@
   v11 = a4;
   if (a6 == 2)
   {
-    v12 = [a1 _supportedKeyboardLanguages];
+    _supportedKeyboardLanguages = [self _supportedKeyboardLanguages];
     goto LABEL_5;
   }
 
   if (a6 == 1)
   {
-    v12 = [MEMORY[0x1E695DF58] systemLanguages];
+    _supportedKeyboardLanguages = [MEMORY[0x1E695DF58] systemLanguages];
 LABEL_5:
-    v13 = v12;
+    v13 = _supportedKeyboardLanguages;
     goto LABEL_7;
   }
 
   v13 = 0;
 LABEL_7:
-  v14 = [a1 _languagesForRegion:v10 subdivision:v11 withThreshold:a5];
+  v14 = [self _languagesForRegion:v10 subdivision:v11 withThreshold:a5];
   v15 = v14;
   if (v13)
   {
-    v16 = [a1 matchedLanguagesFromAvailableLanguages:v13 forPreferredLanguages:v14];
+    v16 = [self matchedLanguagesFromAvailableLanguages:v13 forPreferredLanguages:v14];
   }
 
   else
@@ -246,17 +246,17 @@ LABEL_7:
 
   if (v12)
   {
-    v5 = [v12 array];
+    array = [v12 array];
   }
 
   else
   {
-    v5 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return array;
 }
 
 + (id)supportedRegions
@@ -275,12 +275,12 @@ LABEL_7:
 {
   v3 = a3;
   v4 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v3];
-  v5 = [v4 countryCode];
+  countryCode = [v4 countryCode];
 
-  if (![v5 length])
+  if (![countryCode length])
   {
-    v6 = [v3 lowercaseString];
-    v7 = [v6 isEqualToString:@"en"];
+    lowercaseString = [v3 lowercaseString];
+    v7 = [lowercaseString isEqualToString:@"en"];
 
     if (v7)
     {
@@ -291,13 +291,13 @@ LABEL_7:
     v9 = MEMORY[0x1E695DF58];
     v10 = [MEMORY[0x1E695DF58] _addLikelySubtagsForLocaleIdentifier:v3];
     v11 = [v9 localeWithLocaleIdentifier:v10];
-    v12 = [v11 countryCode];
+    countryCode2 = [v11 countryCode];
 
-    v5 = v12;
+    countryCode = countryCode2;
   }
 
-  v8 = v5;
-  v5 = v8;
+  v8 = countryCode;
+  countryCode = v8;
 LABEL_6:
 
   return v8;
@@ -305,7 +305,7 @@ LABEL_6:
 
 + (id)_availableRegionsOfType:()InternationalSupportExtensions
 {
-  v0 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   uregion_getAvailable();
   v1 = uenum_next();
   if (v1)
@@ -313,7 +313,7 @@ LABEL_6:
     for (i = v1; ; i = v4)
     {
       v3 = [MEMORY[0x1E696AEC0] stringWithCString:i encoding:4];
-      [v0 addObject:v3];
+      [array addObject:v3];
 
       v4 = uenum_next();
       if (!v4)
@@ -325,7 +325,7 @@ LABEL_6:
 
   uenum_close();
 
-  return v0;
+  return array;
 }
 
 + (id)_containingRegionOfType:()InternationalSupportExtensions forRegion:
@@ -377,15 +377,15 @@ LABEL_6:
   if ([v4 length])
   {
     v6 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v4];
-    v7 = [v6 regionCode];
-    if ([v7 length])
+    regionCode = [v6 regionCode];
+    if ([regionCode length])
     {
     }
 
     else
     {
-      v8 = [v6 scriptCode];
-      v9 = [v8 length];
+      scriptCode = [v6 scriptCode];
+      v9 = [scriptCode length];
 
       v5 = v4;
       if (!v9)
@@ -402,7 +402,7 @@ LABEL_6:
 
     [v12 removeObjectForKey:*MEMORY[0x1E695D978]];
     v13 = [MEMORY[0x1E695DF58] localeIdentifierFromComponents:v12];
-    v5 = [a1 _normalizedLanguageIdentifierFromString:v13];
+    v5 = [self _normalizedLanguageIdentifierFromString:v13];
 
     goto LABEL_6;
   }
@@ -441,13 +441,13 @@ LABEL_7:
     v9 = v8;
     if ([v7 length])
     {
-      v10 = [a1 baseLanguageFromLanguage:v8];
+      v10 = [self baseLanguageFromLanguage:v8];
       v11 = [MEMORY[0x1E695DF58] componentsFromLocaleIdentifier:v10];
       v12 = [v11 mutableCopy];
 
       [v12 setObject:v7 forKeyedSubscript:*MEMORY[0x1E695D978]];
       v13 = [MEMORY[0x1E695DF58] localeIdentifierFromComponents:v12];
-      v9 = [a1 _normalizedLanguageIdentifierFromString:v13];
+      v9 = [self _normalizedLanguageIdentifierFromString:v13];
     }
   }
 
@@ -461,32 +461,32 @@ LABEL_7:
   if ([v3 count])
   {
     v4 = [MEMORY[0x1E696AAE8] preferredLocalizationsFromArray:0x1F373C110 forPreferences:v3];
-    v5 = [v4 firstObject];
+    firstObject = [v4 firstObject];
 
-    v6 = [MEMORY[0x1E695DF58] baseLanguageFromLanguage:v5];
+    v6 = [MEMORY[0x1E695DF58] baseLanguageFromLanguage:firstObject];
     v7 = MEMORY[0x1E696AAE8];
-    v8 = [MEMORY[0x1E695DF58] _deviceLanguages];
-    v9 = [v7 preferredLocalizationsFromArray:v8 forPreferences:v3];
-    v10 = [v9 firstObject];
+    _deviceLanguages = [MEMORY[0x1E695DF58] _deviceLanguages];
+    v9 = [v7 preferredLocalizationsFromArray:_deviceLanguages forPreferences:v3];
+    firstObject2 = [v9 firstObject];
 
     v11 = MEMORY[0x1E696AAE8];
-    v36[0] = v10;
+    v36[0] = firstObject2;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:1];
     v13 = [v11 preferredLocalizationsFromArray:0x1F373C110 forPreferences:v12];
-    v14 = [v13 firstObject];
+    firstObject3 = [v13 firstObject];
 
-    v15 = [MEMORY[0x1E695DF58] baseLanguageFromLanguage:v14];
-    v16 = [MEMORY[0x1E695DFA0] orderedSet];
-    v17 = v16;
-    if (v5 && v6 && v14 && v15)
+    v15 = [MEMORY[0x1E695DF58] baseLanguageFromLanguage:firstObject3];
+    orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
+    v17 = orderedSet;
+    if (firstObject && v6 && firstObject3 && v15)
     {
-      [v16 addObject:v5];
+      [orderedSet addObject:firstObject];
       if (([v6 isEqualToString:v15] & 1) == 0)
       {
         [v17 addObject:v6];
       }
 
-      [v17 addObject:v14];
+      [v17 addObject:firstObject3];
       [v17 addObject:v15];
     }
 
@@ -500,13 +500,13 @@ LABEL_7:
         v24 = 2114;
         v25 = v21;
         v26 = 2114;
-        v27 = v5;
+        v27 = firstObject;
         v28 = 2114;
         v29 = v6;
         v30 = 2114;
-        v31 = v10;
+        v31 = firstObject2;
         v32 = 2114;
-        v33 = v14;
+        v33 = firstObject3;
         v34 = 2114;
         v35 = v15;
         _os_log_fault_impl(&dword_1B869D000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT, "%s: Unable to minimize languages. languages = [ %{public}@ ], minimizedLanguage = %{public}@, , minimizedLanguageBase = %{public}@, deviceLanguage = %{public}@, minimizedDeviceLanguage = %{public}@, minimizedDeviceLanguageBase = %{public}@", &v22, 0x48u);
@@ -515,25 +515,25 @@ LABEL_7:
       [v17 addObjectsFromArray:v3];
     }
 
-    v18 = [v17 array];
+    array = [v17 array];
   }
 
   else
   {
-    v18 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
   }
 
   v19 = *MEMORY[0x1E69E9840];
 
-  return v18;
+  return array;
 }
 
 - (id)localizedStringForLanguage:()InternationalSupportExtensions context:length:
 {
   v8 = a3;
   v9 = objc_opt_class();
-  v10 = [a1 languageIdentifier];
-  v11 = [v9 _displayNameForLanguage:v8 displayLanguage:v10 context:a4 length:a5];
+  languageIdentifier = [self languageIdentifier];
+  v11 = [v9 _displayNameForLanguage:v8 displayLanguage:languageIdentifier context:a4 length:a5];
 
   return v11;
 }
@@ -543,7 +543,7 @@ LABEL_7:
   v10 = a4;
   v11 = a3;
   v12 = [objc_opt_class() _normalizedLanguageIdentifierFromString:v11];
-  v13 = [a1 _displayNameForNormalizedLanguage:v12 context:a5 displayLanguage:v10 length:a6];
+  v13 = [self _displayNameForNormalizedLanguage:v12 context:a5 displayLanguage:v10 length:a6];
 
   if ([v13 isEqualToString:v12])
   {
@@ -564,8 +564,8 @@ LABEL_7:
 {
   v8 = a3;
   v9 = objc_opt_class();
-  v10 = [a1 languageIdentifier];
-  v11 = [v9 _displayNameForRegion:v8 displayLanguage:v10 context:a4 short:a5];
+  languageIdentifier = [self languageIdentifier];
+  v11 = [v9 _displayNameForRegion:v8 displayLanguage:languageIdentifier context:a4 short:a5];
 
   return v11;
 }
@@ -577,15 +577,15 @@ LABEL_7:
   v12 = a4;
   v13 = objc_opt_class();
   v14 = [v12 length];
-  v15 = v12;
+  firstObject = v12;
   if (!v14)
   {
-    a1 = [MEMORY[0x1E696AAE8] mainBundle];
-    v6 = [a1 preferredLocalizations];
-    v15 = [v6 firstObject];
+    self = [MEMORY[0x1E696AAE8] mainBundle];
+    preferredLocalizations = [self preferredLocalizations];
+    firstObject = [preferredLocalizations firstObject];
   }
 
-  v16 = [v13 _normalizedLanguageIdentifierFromString:v15];
+  v16 = [v13 _normalizedLanguageIdentifierFromString:firstObject];
 
   if (!v14)
   {
@@ -671,14 +671,14 @@ LABEL_7:
         v33 = v13;
         v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v33 count:1];
         v16 = [v14 preferredLocalizationsFromArray:v7 forPreferences:v15];
-        v17 = [v16 firstObject];
+        firstObject = [v16 firstObject];
 
-        if (v17)
+        if (firstObject)
         {
           v18 = [MEMORY[0x1E695DF58] componentsFromLocaleIdentifier:v13];
           v19 = [v18 objectForKeyedSubscript:v11];
 
-          v20 = [MEMORY[0x1E695DF58] componentsFromLocaleIdentifier:v17];
+          v20 = [MEMORY[0x1E695DF58] componentsFromLocaleIdentifier:firstObject];
           v21 = [v20 objectForKeyedSubscript:v11];
 
           if (v19)
@@ -691,9 +691,9 @@ LABEL_7:
             v22 = 1;
           }
 
-          if (!v22 && (([v19 isEqualToString:v21] & 1) != 0 || objc_msgSend(MEMORY[0x1E695DF58], "_locale:hasCommonParentWith:", v17, v13)))
+          if (!v22 && (([v19 isEqualToString:v21] & 1) != 0 || objc_msgSend(MEMORY[0x1E695DF58], "_locale:hasCommonParentWith:", firstObject, v13)))
           {
-            [v27 addObject:v17];
+            [v27 addObject:firstObject];
           }
         }
       }
@@ -704,11 +704,11 @@ LABEL_7:
     while (v9);
   }
 
-  v23 = [v27 array];
+  array = [v27 array];
 
   v24 = *MEMORY[0x1E69E9840];
 
-  return v23;
+  return array;
 }
 
 + (id)relatedLanguagesForLanguage:()InternationalSupportExtensions
@@ -720,11 +720,11 @@ LABEL_7:
     +[NSLocale(InternationalSupportExtensions) relatedLanguagesForLanguage:];
   }
 
-  v5 = [MEMORY[0x1E695DFA0] orderedSet];
-  v6 = [relatedLanguagesForLanguage____relatedLanguages allKeys];
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
+  allKeys = [relatedLanguagesForLanguage____relatedLanguages allKeys];
   v36[0] = v4;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:1];
-  v8 = [a1 mostPreferredLanguageOf:v6 withPreferredLanguages:v7 forUsage:0 options:0];
+  v8 = [self mostPreferredLanguageOf:allKeys withPreferredLanguages:v7 forUsage:0 options:0];
 
   if (v8)
   {
@@ -739,13 +739,13 @@ LABEL_7:
   if ([v9 count])
   {
     v10 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v4];
-    v11 = [v10 countryCode];
+    countryCode = [v10 countryCode];
 
-    v30 = v11;
-    if ([v11 length])
+    v30 = countryCode;
+    if ([countryCode length])
     {
       v27 = v8;
-      v28 = v5;
+      v28 = orderedSet;
       v29 = v4;
       v12 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v9, "count")}];
       v31 = 0u;
@@ -770,8 +770,8 @@ LABEL_7:
 
             v18 = *(*(&v31 + 1) + 8 * i);
             v19 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v18];
-            v20 = [v19 countryCode];
-            v21 = [v20 length];
+            countryCode2 = [v19 countryCode];
+            v21 = [countryCode2 length];
 
             if (v21)
             {
@@ -791,7 +791,7 @@ LABEL_7:
         while (v15);
       }
 
-      v5 = v28;
+      orderedSet = v28;
       [v28 addObjectsFromArray:v12];
 
       v4 = v29;
@@ -801,27 +801,27 @@ LABEL_7:
 
     else
     {
-      [v5 addObjectsFromArray:v9];
+      [orderedSet addObjectsFromArray:v9];
     }
   }
 
-  v23 = [v5 array];
+  array = [orderedSet array];
 
   v24 = *MEMORY[0x1E69E9840];
 
-  return v23;
+  return array;
 }
 
 + (id)languagesByAddingRelatedLanguagesToLanguages:()InternationalSupportExtensions
 {
   v41 = *MEMORY[0x1E69E9840];
   v3 = a3;
-  v30 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
   if ([v3 count])
   {
     v4 = MEMORY[0x1E695DF58];
-    v5 = [v3 firstObject];
-    v6 = [v4 scriptCodeFromLanguage:v5];
+    firstObject = [v3 firstObject];
+    v6 = [v4 scriptCodeFromLanguage:firstObject];
     v7 = [v6 isEqualToString:@"Latn"];
 
     v37 = 0u;
@@ -846,8 +846,8 @@ LABEL_7:
 
           v28 = *(*(&v35 + 1) + 8 * v9);
           v29 = v9;
-          v10 = [a1 relatedLanguagesForLanguage:?];
-          v11 = [MEMORY[0x1E695DF70] array];
+          v10 = [self relatedLanguagesForLanguage:?];
+          array = [MEMORY[0x1E695DF70] array];
           v31 = 0u;
           v32 = 0u;
           v33 = 0u;
@@ -870,9 +870,9 @@ LABEL_7:
                 v17 = *(*(&v31 + 1) + 8 * i);
                 if (([v8 containsObject:v17] & 1) == 0)
                 {
-                  if (!v7 || ([MEMORY[0x1E695DF58] scriptCodeFromLanguage:v17], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "isEqualToString:", @"Latn"), v18, v20 = v30, (v19 & 1) == 0))
+                  if (!v7 || ([MEMORY[0x1E695DF58] scriptCodeFromLanguage:v17], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "isEqualToString:", @"Latn"), v18, v20 = orderedSet, (v19 & 1) == 0))
                   {
-                    v20 = v11;
+                    v20 = array;
                   }
 
                   [v20 addObject:v17];
@@ -885,8 +885,8 @@ LABEL_7:
             while (v14);
           }
 
-          [v30 addObject:v28];
-          [v30 addObjectsFromArray:v11];
+          [orderedSet addObject:v28];
+          [orderedSet addObjectsFromArray:array];
 
           v9 = v29 + 1;
         }
@@ -901,11 +901,11 @@ LABEL_7:
     v3 = v24;
   }
 
-  v21 = [v30 array];
+  array2 = [orderedSet array];
 
   v22 = *MEMORY[0x1E69E9840];
 
-  return v21;
+  return array2;
 }
 
 + (id)availableSpokenLanguages
@@ -914,7 +914,7 @@ LABEL_7:
   block[1] = 3221225472;
   block[2] = __68__NSLocale_InternationalSupportExtensions__availableSpokenLanguages__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (availableSpokenLanguages___onceToken != -1)
   {
     dispatch_once(&availableSpokenLanguages___onceToken, block);
@@ -931,24 +931,24 @@ LABEL_7:
   v3 = a3;
   v4 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v3];
   v5 = MEMORY[0x1E695DF58];
-  v6 = [&unk_1F373A850 allKeys];
+  allKeys = [&unk_1F373A850 allKeys];
   v16[0] = v3;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
-  v8 = [v5 matchedLanguagesFromAvailableLanguages:v6 forPreferredLanguages:v7];
-  v9 = [v8 firstObject];
+  v8 = [v5 matchedLanguagesFromAvailableLanguages:allKeys forPreferredLanguages:v7];
+  firstObject = [v8 firstObject];
 
-  if (v9)
+  if (firstObject)
   {
-    v10 = [&unk_1F373A850 objectForKeyedSubscript:v9];
+    v10 = [&unk_1F373A850 objectForKeyedSubscript:firstObject];
   }
 
   else
   {
-    v11 = [v4 languageCode];
-    if (v11)
+    languageCode = [v4 languageCode];
+    if (languageCode)
     {
-      v12 = [v4 languageCode];
-      v15 = v12;
+      languageCode2 = [v4 languageCode];
+      v15 = languageCode2;
       v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v15 count:1];
     }
 
@@ -998,17 +998,17 @@ LABEL_7:
         }
 
         v13 = *(*(&v43 + 1) + 8 * i);
-        v14 = [a1 spokenLanguagesForLanguage:v13];
+        v14 = [self spokenLanguagesForLanguage:v13];
         [v7 addObjectsFromArray:v14];
 
         if (a4)
         {
           v15 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v13];
-          v16 = [v15 countryCode];
+          countryCode = [v15 countryCode];
 
-          if (v16)
+          if (countryCode)
           {
-            [v8 addObject:v16];
+            [v8 addObject:countryCode];
           }
         }
       }
@@ -1063,7 +1063,7 @@ LABEL_7:
                 }
 
                 v24 = [MEMORY[0x1E695DF58] languageFromLanguage:*(*(&v35 + 1) + 8 * j) byReplacingRegion:v18];
-                v25 = [a1 spokenLanguagesForLanguage:v24];
+                v25 = [self spokenLanguagesForLanguage:v24];
                 [v7 addObjectsFromArray:v25];
               }
 
@@ -1086,22 +1086,22 @@ LABEL_7:
     v8 = v29;
   }
 
-  v26 = [v7 array];
+  array = [v7 array];
 
   v27 = *MEMORY[0x1E69E9840];
 
-  return v26;
+  return array;
 }
 
 - (uint64_t)isEquivalentTo:()InternationalSupportExtensions
 {
   v4 = a3;
-  v5 = [a1 localeIdentifier];
-  v6 = [v4 localeIdentifier];
+  localeIdentifier = [self localeIdentifier];
+  localeIdentifier2 = [v4 localeIdentifier];
 
-  v7 = [MEMORY[0x1E695DF58] _addLikelySubtagsForLocaleIdentifier:v5];
+  v7 = [MEMORY[0x1E695DF58] _addLikelySubtagsForLocaleIdentifier:localeIdentifier];
 
-  v8 = [MEMORY[0x1E695DF58] _addLikelySubtagsForLocaleIdentifier:v6];
+  v8 = [MEMORY[0x1E695DF58] _addLikelySubtagsForLocaleIdentifier:localeIdentifier2];
 
   v9 = [v7 isEqualToString:v8];
   return v9;
@@ -1110,16 +1110,16 @@ LABEL_7:
 - (id)availableNumberingSystems
 {
   v26 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v3 = MEMORY[0x1E695DF58];
-  v4 = [a1 localeIdentifier];
-  v5 = [v3 componentsFromLocaleIdentifier:v4];
+  localeIdentifier = [self localeIdentifier];
+  v5 = [v3 componentsFromLocaleIdentifier:localeIdentifier];
   v6 = [v5 mutableCopy];
 
   v7 = [v6 objectForKeyedSubscript:@"numbers"];
   if ([v7 length])
   {
-    [v2 addObject:v7];
+    [array addObject:v7];
   }
 
   v20 = v7;
@@ -1165,9 +1165,9 @@ LABEL_7:
             if (v15)
             {
               v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v15];
-              if (([v2 containsObject:v16] & 1) == 0)
+              if (([array containsObject:v16] & 1) == 0)
               {
-                [v2 addObject:v16];
+                [array addObject:v16];
               }
             }
           }
@@ -1182,22 +1182,22 @@ LABEL_7:
     while (v10);
   }
 
-  if (([v2 containsObject:@"latn"] & 1) == 0)
+  if (([array containsObject:@"latn"] & 1) == 0)
   {
-    [v2 addObject:@"latn"];
+    [array addObject:@"latn"];
   }
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v2;
+  return array;
 }
 
 - (id)localizedStringForNumberingSystem:()InternationalSupportExtensions short:
 {
   v6 = MEMORY[0x1E695DF58];
   v7 = a3;
-  v8 = [a1 localeIdentifier];
-  v9 = [v6 componentsFromLocaleIdentifier:v8];
+  localeIdentifier = [self localeIdentifier];
+  v9 = [v6 componentsFromLocaleIdentifier:localeIdentifier];
   v10 = [v9 mutableCopy];
 
   [v10 setObject:v7 forKeyedSubscript:@"numbers"];
@@ -1227,9 +1227,9 @@ LABEL_7:
   v0 = MEMORY[0x1EEE9AC00]();
   v2 = v1;
   v31 = *MEMORY[0x1E69E9840];
-  v3 = [v0 countryCode];
-  v4 = [v3 lowercaseString];
-  v5 = [&unk_1F3737C40 objectForKeyedSubscript:v4];
+  countryCode = [v0 countryCode];
+  lowercaseString = [countryCode lowercaseString];
+  v5 = [&unk_1F3737C40 objectForKeyedSubscript:lowercaseString];
 
   if (v2 && [v5 count])
   {
@@ -1310,7 +1310,7 @@ LABEL_7:
 
 - (uint64_t)positionOfDayPeriodInFormattedTime
 {
-  v1 = [MEMORY[0x1E696AB78] dateFormatFromTemplate:@"j" options:0 locale:a1];
+  v1 = [MEMORY[0x1E696AB78] dateFormatFromTemplate:@"j" options:0 locale:self];
   if (![v1 length])
   {
 LABEL_16:
@@ -1381,7 +1381,7 @@ LABEL_17:
 {
   v60 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
@@ -1389,7 +1389,7 @@ LABEL_17:
   v6 = v4;
   v7 = [v6 countByEnumeratingWithState:&v53 objects:v59 count:16];
   v39 = v6;
-  v40 = v5;
+  v40 = array;
   if (v7)
   {
     v8 = v7;
@@ -1404,28 +1404,28 @@ LABEL_17:
         }
 
         v11 = [objc_opt_class() _normalizedLanguageIdentifierFromString:*(*(&v53 + 1) + 8 * i)];
-        v12 = [&unk_1F3737CE0 objectForKeyedSubscript:v11];
-        if (!v12)
+        uppercaseString = [&unk_1F3737CE0 objectForKeyedSubscript:v11];
+        if (!uppercaseString)
         {
           v13 = [MEMORY[0x1E695DF58] baseLanguageFromLanguage:v11];
-          v12 = [&unk_1F3737CE0 objectForKeyedSubscript:v13];
-          if (!v12)
+          uppercaseString = [&unk_1F3737CE0 objectForKeyedSubscript:v13];
+          if (!uppercaseString)
           {
-            v14 = [MEMORY[0x1E695DF58] ISOLanguageCodes];
+            iSOLanguageCodes = [MEMORY[0x1E695DF58] ISOLanguageCodes];
             v15 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v11];
-            v16 = [v15 languageCode];
-            v12 = &stru_1F3737388;
-            if ([v14 containsObject:v16])
+            languageCode = [v15 languageCode];
+            uppercaseString = &stru_1F3737388;
+            if ([iSOLanguageCodes containsObject:languageCode])
             {
-              v12 = [v16 uppercaseString];
+              uppercaseString = [languageCode uppercaseString];
             }
 
             v6 = v39;
-            v5 = v40;
+            array = v40;
           }
         }
 
-        [v5 addObject:{v12, v39, v40}];
+        [array addObject:{uppercaseString, v39, v40}];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v53 objects:v59 count:16];
@@ -1436,14 +1436,14 @@ LABEL_17:
 
   if (a4)
   {
-    v44 = [MEMORY[0x1E695DF70] array];
-    v17 = [MEMORY[0x1E695DF90] dictionary];
-    v18 = [MEMORY[0x1E695DF90] dictionary];
+    array2 = [MEMORY[0x1E695DF70] array];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
-    obj = v5;
+    obj = array;
     v19 = [obj countByEnumeratingWithState:&v49 objects:v58 count:16];
     if (v19)
     {
@@ -1461,16 +1461,16 @@ LABEL_17:
 
           v24 = [*(*(&v49 + 1) + 8 * j) componentsSeparatedByString:{@" ", v39, v40}];
           v25 = [v24 objectAtIndexedSubscript:0];
-          v26 = [v17 objectForKey:v25];
+          v26 = [dictionary objectForKey:v25];
 
           if (v26)
           {
-            v27 = v18;
+            v27 = dictionary2;
           }
 
           else
           {
-            v27 = v17;
+            v27 = dictionary;
           }
 
           [v27 setObject:v22 forKey:v25];
@@ -1504,7 +1504,7 @@ LABEL_17:
           v32 = *(*(&v45 + 1) + 8 * k);
           v33 = [v32 componentsSeparatedByString:{@" ", v39, v40}];
           v34 = [v33 objectAtIndexedSubscript:0];
-          v35 = [v18 objectForKey:v34];
+          v35 = [dictionary2 objectForKey:v34];
 
           if (v35)
           {
@@ -1516,7 +1516,7 @@ LABEL_17:
             v36 = v34;
           }
 
-          [v44 addObject:v36];
+          [array2 addObject:v36];
         }
 
         v29 = [obja countByEnumeratingWithState:&v45 objects:v57 count:16];
@@ -1526,17 +1526,17 @@ LABEL_17:
     }
 
     v6 = v39;
-    v5 = v40;
+    array = v40;
   }
 
   else
   {
-    v44 = v5;
+    array2 = array;
   }
 
   v37 = *MEMORY[0x1E69E9840];
 
-  return v44;
+  return array2;
 }
 
 - (id)displayNameForLanguage:()InternationalSupportExtensions displayLanguage:context:
@@ -1561,7 +1561,7 @@ LABEL_17:
 {
   v10 = a5;
   v11 = a3;
-  v12 = [a1 _displayNameForNormalizedLanguage:v11 context:a4 displayLanguage:v10 length:a6 isCalcium:{objc_msgSend(a1, "isOnCalciumDevice")}];
+  v12 = [self _displayNameForNormalizedLanguage:v11 context:a4 displayLanguage:v10 length:a6 isCalcium:{objc_msgSend(self, "isOnCalciumDevice")}];
 
   return v12;
 }
@@ -1571,7 +1571,7 @@ LABEL_17:
   v50[1] = *MEMORY[0x1E69E9840];
   v10 = a3;
   v11 = a5;
-  v48 = a1;
+  selfCopy = self;
   v12 = objc_opt_class();
   v13 = 0x1E696A000uLL;
   if ([v11 length])
@@ -1581,10 +1581,10 @@ LABEL_17:
 
   else
   {
-    v15 = [MEMORY[0x1E696AAE8] mainBundle];
-    v16 = [v15 preferredLocalizations];
-    v17 = [v16 firstObject];
-    v14 = [v12 _normalizedLanguageIdentifierFromString:v17];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    preferredLocalizations = [mainBundle preferredLocalizations];
+    firstObject = [preferredLocalizations firstObject];
+    v14 = [v12 _normalizedLanguageIdentifierFromString:firstObject];
   }
 
   v18 = 0x1E695D000uLL;
@@ -1592,32 +1592,32 @@ LABEL_17:
   {
     v19 = [&unk_1F37399C8 objectForKeyedSubscript:v10];
     v20 = MEMORY[0x1E696AAE8];
-    v21 = [v19 allKeys];
-    v22 = [&unk_1F373C5D8 arrayByAddingObjectsFromArray:v21];
+    allKeys = [v19 allKeys];
+    v22 = [&unk_1F373C5D8 arrayByAddingObjectsFromArray:allKeys];
     v50[0] = v14;
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:1];
     v24 = [v20 preferredLocalizationsFromArray:v22 forPreferences:v23];
-    v25 = [v24 firstObject];
+    firstObject2 = [v24 firstObject];
 
-    if (![v25 length])
+    if (![firstObject2 length])
     {
       goto LABEL_10;
     }
 
-    if ([v25 isEqualToString:@"zxx"])
+    if ([firstObject2 isEqualToString:@"zxx"])
     {
       goto LABEL_10;
     }
 
-    v26 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v25];
-    v27 = [v26 languageCode];
+    v26 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:firstObject2];
+    languageCode = [v26 languageCode];
     v28 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v14];
-    v29 = [v28 languageCode];
-    v30 = [v27 isEqualToString:v29];
+    languageCode2 = [v28 languageCode];
+    v30 = [languageCode isEqualToString:languageCode2];
 
     if (v30)
     {
-      v31 = [v19 objectForKeyedSubscript:v25];
+      v31 = [v19 objectForKeyedSubscript:firstObject2];
 
       v13 = 0x1E696A000;
       v18 = 0x1E695D000;
@@ -1638,32 +1638,32 @@ LABEL_10:
 
   v32 = [&unk_1F3739978 objectForKeyedSubscript:v10];
   v33 = *(v13 + 2792);
-  v34 = [v32 allKeys];
-  v35 = [&unk_1F373C5F0 arrayByAddingObjectsFromArray:v34];
+  allKeys2 = [v32 allKeys];
+  v35 = [&unk_1F373C5F0 arrayByAddingObjectsFromArray:allKeys2];
   v49 = v14;
   v36 = [*(v18 + 3784) arrayWithObjects:&v49 count:1];
   v37 = [v33 preferredLocalizationsFromArray:v35 forPreferences:v36];
-  v38 = [v37 firstObject];
+  firstObject3 = [v37 firstObject];
 
-  if (![v38 length])
+  if (![firstObject3 length])
   {
     goto LABEL_16;
   }
 
-  if ([v38 isEqualToString:@"zxx"])
+  if ([firstObject3 isEqualToString:@"zxx"])
   {
     goto LABEL_16;
   }
 
-  v39 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v38];
-  v40 = [v39 languageCode];
+  v39 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:firstObject3];
+  languageCode3 = [v39 languageCode];
   v41 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v14];
-  v42 = [v41 languageCode];
-  v43 = [v40 isEqualToString:v42];
+  languageCode4 = [v41 languageCode];
+  v43 = [languageCode3 isEqualToString:languageCode4];
 
   if (v43)
   {
-    v31 = [v32 objectForKeyedSubscript:v38];
+    v31 = [v32 objectForKeyedSubscript:firstObject3];
 
     if (v31)
     {
@@ -1680,7 +1680,7 @@ LABEL_16:
   v44 = uldn_openForContext();
   if (v44)
   {
-    v31 = [v48 _ICUdisplayNameForLanguage:v10 capitalization:v44];
+    v31 = [selfCopy _ICUdisplayNameForLanguage:v10 capitalization:v44];
     uldn_close();
   }
 
@@ -1750,7 +1750,7 @@ LABEL_20:
 + (id)_normalizedLanguageIdentifierFromString:()InternationalSupportExtensions
 {
   v4 = a3;
-  if (v4 && ([a1 _languagesToExemplarStrings], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "objectForKey:", v4), v6 = objc_claimAutoreleasedReturnValue(), v6, v5, !v6))
+  if (v4 && ([self _languagesToExemplarStrings], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "objectForKey:", v4), v6 = objc_claimAutoreleasedReturnValue(), v6, v5, !v6))
   {
     v8 = [MEMORY[0x1E695DF58] canonicalLanguageIdentifierFromString:v4];
     v9 = v4;
@@ -1804,8 +1804,8 @@ LABEL_20:
 {
   v58 = *MEMORY[0x1E69E9840];
   v8 = a4;
-  v9 = [a3 uppercaseString];
-  v10 = [v8 uppercaseString];
+  uppercaseString = [a3 uppercaseString];
+  uppercaseString2 = [v8 uppercaseString];
 
   v11 = 0.05;
   if (a5 != 1)
@@ -1823,18 +1823,18 @@ LABEL_20:
     v12 = v11;
   }
 
-  if ([v10 length])
+  if ([uppercaseString2 length])
   {
-    v13 = [a1 _regionLanguageDataForRegionCode:v9 subdivisionCode:v10];
+    v13 = [self _regionLanguageDataForRegionCode:uppercaseString subdivisionCode:uppercaseString2];
     v14 = [v13 objectForKeyedSubscript:@"all"];
     v15 = __90__NSLocale_InternationalSupportExtensions___languagesForRegion_subdivision_withThreshold___block_invoke(v14, v13, @"override", a5);
     if (!v15 || (v16 = v15, [MEMORY[0x1E695DFB8] orderedSetWithArray:v15], v17 = objc_claimAutoreleasedReturnValue(), v16, !v17))
     {
       v50 = v13;
-      v51 = v10;
-      v18 = v9;
+      v51 = uppercaseString2;
+      v18 = uppercaseString;
       v19 = [v14 keysSortedByValueUsingComparator:&__block_literal_global_271];
-      v20 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v53 = 0u;
       v54 = 0u;
       v55 = 0u;
@@ -1864,7 +1864,7 @@ LABEL_11:
             break;
           }
 
-          [v20 addObject:v26];
+          [array addObject:v26];
           if (v23 == ++v25)
           {
             v23 = [v21 countByEnumeratingWithState:&v53 objects:v57 count:16];
@@ -1878,40 +1878,40 @@ LABEL_11:
         }
       }
 
-      v30 = [v20 count];
-      v9 = v18;
-      v10 = v51;
+      v30 = [array count];
+      uppercaseString = v18;
+      uppercaseString2 = v51;
       v13 = v50;
       if (v30)
       {
         v31 = __90__NSLocale_InternationalSupportExtensions___languagesForRegion_subdivision_withThreshold___block_invoke(v30, v50, @"remove", a5);
         if ([v31 count])
         {
-          [v20 removeObjectsInArray:v31];
+          [array removeObjectsInArray:v31];
         }
       }
 
-      v17 = [MEMORY[0x1E695DFB8] orderedSetWithArray:v20];
+      v17 = [MEMORY[0x1E695DFB8] orderedSetWithArray:array];
     }
   }
 
   else
   {
-    v13 = [a1 _regionLanguageDataForRegionCode:v9 subdivisionCode:0];
+    v13 = [self _regionLanguageDataForRegionCode:uppercaseString subdivisionCode:0];
     v35 = __90__NSLocale_InternationalSupportExtensions___languagesForRegion_subdivision_withThreshold___block_invoke(v13, v13, @"override", a5);
     if (!v35 || (v36 = v35, [MEMORY[0x1E695DFB8] orderedSetWithArray:v35], v17 = objc_claimAutoreleasedReturnValue(), v36, !v17))
     {
       v52 = 0;
-      [v9 UTF8String];
+      [uppercaseString UTF8String];
       LanguagesForRegion = ualoc_getLanguagesForRegion();
       v50 = v13;
-      v51 = v10;
+      v51 = uppercaseString2;
       v38 = [MEMORY[0x1E695DF70] arrayWithCapacity:LanguagesForRegion];
       v48[1] = v48;
       MEMORY[0x1EEE9AC00]();
       v40 = v48 - v39;
-      v41 = v9;
-      v49 = v9;
+      v41 = uppercaseString;
+      v49 = uppercaseString;
       [v41 UTF8String];
       ualoc_getLanguagesForRegion();
       if (v52 <= 0 && LanguagesForRegion >= 1)
@@ -1933,7 +1933,7 @@ LABEL_11:
       }
 
       v46 = [v38 count];
-      v10 = v51;
+      uppercaseString2 = v51;
       v13 = v50;
       if (v46)
       {
@@ -1946,15 +1946,15 @@ LABEL_11:
 
       v17 = [MEMORY[0x1E695DFB8] orderedSetWithArray:v38];
 
-      v9 = v49;
+      uppercaseString = v49;
     }
   }
 
-  v32 = [v17 array];
+  array2 = [v17 array];
 
   v33 = *MEMORY[0x1E69E9840];
 
-  return v32;
+  return array2;
 }
 
 + (id)_regionLanguageDataForRegionCode:()InternationalSupportExtensions subdivisionCode:
@@ -2015,7 +2015,7 @@ LABEL_11:
 {
   v4 = a3;
   v5 = [MEMORY[0x1E695DF70] arrayWithObject:v4];
-  v6 = [a1 _parentLocaleIdentifierForIdentifier:v4];
+  v6 = [self _parentLocaleIdentifierForIdentifier:v4];
   if (v6)
   {
     v7 = v6;
@@ -2032,7 +2032,7 @@ LABEL_11:
       }
 
       [v5 addObject:v7];
-      v8 = [a1 _parentLocaleIdentifierForIdentifier:v7];
+      v8 = [self _parentLocaleIdentifierForIdentifier:v7];
 
       v7 = v8;
     }
@@ -2047,11 +2047,11 @@ LABEL_11:
 {
   v6 = MEMORY[0x1E695DFD8];
   v7 = a4;
-  v8 = [a1 _parentLocaleIdentifiersForIdentifier:a3];
+  v8 = [self _parentLocaleIdentifiersForIdentifier:a3];
   v9 = [v6 setWithArray:v8];
 
   v10 = MEMORY[0x1E695DFD8];
-  v11 = [a1 _parentLocaleIdentifiersForIdentifier:v7];
+  v11 = [self _parentLocaleIdentifiersForIdentifier:v7];
 
   v12 = [v10 setWithArray:v11];
 

@@ -1,11 +1,11 @@
 @interface TPSSearchResultViewModel
 - (BOOL)hasStartedSearch;
 - (TPSAppSearchQuery)searchQuery;
-- (id)footerForTip:(id)a3;
+- (id)footerForTip:(id)tip;
 - (id)tipActionHandler;
 - (void)reset;
-- (void)setSearchQuery:(id)a3;
-- (void)setTipActionHandler:(id)a3;
+- (void)setSearchQuery:(id)query;
+- (void)setTipActionHandler:(id)handler;
 @end
 
 @implementation TPSSearchResultViewModel
@@ -14,7 +14,7 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   sub_220BCC4C0();
 
   v4 = OBJC_IVAR____TtC6TipsUI18SearchResultsModel_searchQuery;
@@ -24,22 +24,22 @@
   return v5;
 }
 
-- (void)setSearchQuery:(id)a3
+- (void)setSearchQuery:(id)query
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v5 = a3;
-  v6 = self;
+  queryCopy = query;
+  selfCopy = self;
   sub_220BCC4C0();
 
-  sub_220BA9234(a3);
+  sub_220BA9234(query);
 }
 
 - (BOOL)hasStartedSearch
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   sub_220BCC4C0();
 
   v5 = sub_220BA9DC8(v4);
@@ -51,7 +51,7 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   sub_220BCC4C0();
 
   v4 = aBlock[0] + OBJC_IVAR____TtC6TipsUI18SearchResultsModel_tipActionHandler;
@@ -74,9 +74,9 @@
   return v5;
 }
 
-- (void)setTipActionHandler:(id)a3
+- (void)setTipActionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -91,7 +91,7 @@
 
   swift_getKeyPath();
   swift_getKeyPath();
-  v6 = self;
+  selfCopy = self;
   sub_220BCC4C0();
 
   v7 = (v9 + OBJC_IVAR____TtC6TipsUI18SearchResultsModel_tipActionHandler);
@@ -104,15 +104,15 @@
 
 - (void)reset
 {
-  v2 = self;
+  selfCopy = self;
   sub_220BC5198();
 }
 
-- (id)footerForTip:(id)a3
+- (id)footerForTip:(id)tip
 {
-  v4 = a3;
-  v5 = self;
-  SearchResultsViewModel.footer(for:)(v4);
+  tipCopy = tip;
+  selfCopy = self;
+  SearchResultsViewModel.footer(for:)(tipCopy);
   v7 = v6;
 
   if (v7)

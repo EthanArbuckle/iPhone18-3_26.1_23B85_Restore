@@ -1,20 +1,20 @@
 @interface DDResultTracker
-- (BOOL)addResultIfAppropriate:(__DDResult *)a3 referenceDate:(id)a4 referenceTimeZone:(id)a5;
-- (DDResultTracker)initWithReferenceResult:(__DDResult *)a3;
+- (BOOL)addResultIfAppropriate:(__DDResult *)appropriate referenceDate:(id)date referenceTimeZone:(id)zone;
+- (DDResultTracker)initWithReferenceResult:(__DDResult *)result;
 - (id)results;
 - (void)dealloc;
 @end
 
 @implementation DDResultTracker
 
-- (DDResultTracker)initWithReferenceResult:(__DDResult *)a3
+- (DDResultTracker)initWithReferenceResult:(__DDResult *)result
 {
   v13.receiver = self;
   v13.super_class = DDResultTracker;
   v4 = [(DDResultTracker *)&v13 init];
   if (v4)
   {
-    *(v4 + 12) = CFRetain(a3);
+    *(v4 + 12) = CFRetain(result);
     *(v4 + 6) = DDResultGetRange();
     v5 = *(v4 + 12);
     Category = DDResultGetCategory();
@@ -61,11 +61,11 @@
   [(DDResultTracker *)&v4 dealloc];
 }
 
-- (BOOL)addResultIfAppropriate:(__DDResult *)a3 referenceDate:(id)a4 referenceTimeZone:(id)a5
+- (BOOL)addResultIfAppropriate:(__DDResult *)appropriate referenceDate:(id)date referenceTimeZone:(id)zone
 {
   v55 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  dateCopy = date;
+  zoneCopy = zone;
   if (!self->totalCountRemaining)
   {
     goto LABEL_14;
@@ -102,12 +102,12 @@ LABEL_44:
         --self->totalCountRemaining;
         if (v12 < 1)
         {
-          [(NSMutableArray *)self->resultsAfter addObject:a3];
+          [(NSMutableArray *)self->resultsAfter addObject:appropriate];
         }
 
         else
         {
-          [(NSMutableArray *)self->resultsBefore insertObject:a3 atIndex:0];
+          [(NSMutableArray *)self->resultsBefore insertObject:appropriate atIndex:0];
         }
 
         goto LABEL_47;
@@ -128,7 +128,7 @@ LABEL_47:
     {
       if (!self->existingAddressResult)
       {
-        self->existingAddressResult = a3;
+        self->existingAddressResult = appropriate;
         goto LABEL_44;
       }
 
@@ -175,11 +175,11 @@ LABEL_19:
       v39 = [v21 countByEnumeratingWithState:&v47 objects:v54 count:16];
       if (v39)
       {
-        v37 = v8;
+        v37 = dateCopy;
         v22 = *v48;
         v23 = *MEMORY[0x277D04198];
         v41 = v21;
-        v42 = v9;
+        v42 = zoneCopy;
         v36 = *v48;
         while (2)
         {
@@ -236,8 +236,8 @@ LABEL_29:
               }
 
               v16 = 1;
-              v8 = v37;
-              v9 = v42;
+              dateCopy = v37;
+              zoneCopy = v42;
               goto LABEL_48;
             }
 
@@ -245,7 +245,7 @@ LABEL_36:
 
             v24 = v40 + 1;
             v21 = v41;
-            v9 = v42;
+            zoneCopy = v42;
             v22 = v36;
           }
 
@@ -259,7 +259,7 @@ LABEL_36:
           break;
         }
 
-        v8 = v37;
+        dateCopy = v37;
       }
 
       else

@@ -1,26 +1,26 @@
 @interface CKAllPredicateValidator
-- (BOOL)validate:(id)a3 error:(id *)a4;
-- (CKAllPredicateValidator)initWithValidators:(id)a3;
+- (BOOL)validate:(id)validate error:(id *)error;
+- (CKAllPredicateValidator)initWithValidators:(id)validators;
 - (id)CKPropertiesDescription;
 @end
 
 @implementation CKAllPredicateValidator
 
-- (CKAllPredicateValidator)initWithValidators:(id)a3
+- (CKAllPredicateValidator)initWithValidators:(id)validators
 {
   v7.receiver = self;
   v7.super_class = CKAllPredicateValidator;
-  v3 = a3;
+  validatorsCopy = validators;
   v4 = [(CKAllPredicateValidator *)&v7 init];
-  objc_msgSend_setValidators_(v4, v5, v3, v7.receiver, v7.super_class);
+  objc_msgSend_setValidators_(v4, v5, validatorsCopy, v7.receiver, v7.super_class);
 
   return v4;
 }
 
-- (BOOL)validate:(id)a3 error:(id *)a4
+- (BOOL)validate:(id)validate error:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  validateCopy = validate;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -42,17 +42,17 @@
         }
 
         v17 = *(*(&v25 + 1) + 8 * i);
-        if (a4)
+        if (error)
         {
           v24 = v14;
-          v18 = objc_msgSend_validate_error_(v17, v12, v6, &v24);
+          v18 = objc_msgSend_validate_error_(v17, v12, validateCopy, &v24);
           v19 = v24;
 
           if ((v18 & 1) == 0)
           {
             v20 = v19;
             v21 = 0;
-            *a4 = v19;
+            *error = v19;
             v14 = v19;
             goto LABEL_17;
           }
@@ -60,7 +60,7 @@
           v14 = v19;
         }
 
-        else if ((objc_msgSend_validate_error_(v17, v12, v6, 0) & 1) == 0)
+        else if ((objc_msgSend_validate_error_(v17, v12, validateCopy, 0) & 1) == 0)
         {
           v21 = 0;
           goto LABEL_17;

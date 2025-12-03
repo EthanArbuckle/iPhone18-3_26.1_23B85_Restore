@@ -1,15 +1,15 @@
 @interface ENUIRegionFAQWebsiteCell
-- (ENUIRegionFAQWebsiteCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (ENUIRegionFAQWebsiteCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)commonInit;
 @end
 
 @implementation ENUIRegionFAQWebsiteCell
 
-- (ENUIRegionFAQWebsiteCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (ENUIRegionFAQWebsiteCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = ENUIRegionFAQWebsiteCell;
-  v4 = [(ENUIRegionFAQWebsiteCell *)&v7 initWithStyle:3 reuseIdentifier:a4];
+  v4 = [(ENUIRegionFAQWebsiteCell *)&v7 initWithStyle:3 reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -24,45 +24,45 @@
   v3 = objc_opt_new();
   [(ENUIRegionFAQWebsiteCell *)self setTitleLabel:v3];
 
-  v4 = [(ENUIRegionFAQWebsiteCell *)self titleLabel];
-  [v4 setNumberOfLines:0];
+  titleLabel = [(ENUIRegionFAQWebsiteCell *)self titleLabel];
+  [titleLabel setNumberOfLines:0];
 
   v5 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-  v6 = [(ENUIRegionFAQWebsiteCell *)self titleLabel];
-  [v6 setFont:v5];
+  titleLabel2 = [(ENUIRegionFAQWebsiteCell *)self titleLabel];
+  [titleLabel2 setFont:v5];
 
   v7 = +[UIColor systemBlueColor];
-  v8 = [(ENUIRegionFAQWebsiteCell *)self titleLabel];
-  [v8 setTextColor:v7];
+  titleLabel3 = [(ENUIRegionFAQWebsiteCell *)self titleLabel];
+  [titleLabel3 setTextColor:v7];
 
   v9 = ENUILocalizedString();
-  v10 = [(ENUIRegionFAQWebsiteCell *)self titleLabel];
-  [v10 setText:v9];
+  titleLabel4 = [(ENUIRegionFAQWebsiteCell *)self titleLabel];
+  [titleLabel4 setText:v9];
 
-  v11 = [(ENUIRegionFAQWebsiteCell *)self titleLabel];
+  titleLabel5 = [(ENUIRegionFAQWebsiteCell *)self titleLabel];
   LODWORD(v12) = 1148846080;
-  [v11 setContentCompressionResistancePriority:0 forAxis:v12];
+  [titleLabel5 setContentCompressionResistancePriority:0 forAxis:v12];
 
   v13 = objc_opt_new();
   [(ENUIRegionFAQWebsiteCell *)self setLinkArrowImageView:v13];
 
-  v14 = [(ENUIRegionFAQWebsiteCell *)self linkArrowImageView];
-  [v14 setContentMode:1];
+  linkArrowImageView = [(ENUIRegionFAQWebsiteCell *)self linkArrowImageView];
+  [linkArrowImageView setContentMode:1];
 
   v15 = +[UIColor systemBlueColor];
-  v16 = [(ENUIRegionFAQWebsiteCell *)self linkArrowImageView];
-  [v16 setTintColor:v15];
+  linkArrowImageView2 = [(ENUIRegionFAQWebsiteCell *)self linkArrowImageView];
+  [linkArrowImageView2 setTintColor:v15];
 
   v17 = [UIImage systemImageNamed:@"arrow.up.forward.app.fill"];
   v18 = [v17 imageWithRenderingMode:2];
-  v19 = [(ENUIRegionFAQWebsiteCell *)self linkArrowImageView];
-  [v19 setImage:v18];
+  linkArrowImageView3 = [(ENUIRegionFAQWebsiteCell *)self linkArrowImageView];
+  [linkArrowImageView3 setImage:v18];
 
   v20 = [UIStackView alloc];
-  v21 = [(ENUIRegionFAQWebsiteCell *)self titleLabel];
-  v49[0] = v21;
-  v22 = [(ENUIRegionFAQWebsiteCell *)self linkArrowImageView];
-  v49[1] = v22;
+  titleLabel6 = [(ENUIRegionFAQWebsiteCell *)self titleLabel];
+  v49[0] = titleLabel6;
+  linkArrowImageView4 = [(ENUIRegionFAQWebsiteCell *)self linkArrowImageView];
+  v49[1] = linkArrowImageView4;
   v23 = objc_opt_new();
   v49[2] = v23;
   v24 = [NSArray arrayWithObjects:v49 count:3];
@@ -71,32 +71,32 @@
   [v25 setAxis:0];
   [v25 setSpacing:4.0];
   [v25 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v26 = [(ENUIRegionFAQWebsiteCell *)self contentView];
-  [v26 addSubview:v25];
+  contentView = [(ENUIRegionFAQWebsiteCell *)self contentView];
+  [contentView addSubview:v25];
 
-  v46 = [v25 leadingAnchor];
-  v47 = [(ENUIRegionFAQWebsiteCell *)self contentView];
-  v45 = [v47 layoutMarginsGuide];
-  v44 = [v45 leadingAnchor];
-  v43 = [v46 constraintEqualToAnchor:v44];
+  leadingAnchor = [v25 leadingAnchor];
+  contentView2 = [(ENUIRegionFAQWebsiteCell *)self contentView];
+  layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v43 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v48[0] = v43;
-  v41 = [v25 trailingAnchor];
-  v42 = [(ENUIRegionFAQWebsiteCell *)self contentView];
-  v40 = [v42 layoutMarginsGuide];
-  v39 = [v40 trailingAnchor];
-  v38 = [v41 constraintEqualToAnchor:v39];
+  trailingAnchor = [v25 trailingAnchor];
+  contentView3 = [(ENUIRegionFAQWebsiteCell *)self contentView];
+  layoutMarginsGuide2 = [contentView3 layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+  v38 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v48[1] = v38;
-  v36 = [v25 topAnchor];
-  v37 = [(ENUIRegionFAQWebsiteCell *)self contentView];
-  v27 = [v37 layoutMarginsGuide];
-  v28 = [v27 topAnchor];
-  v29 = [v36 constraintEqualToAnchor:v28 constant:4.0];
+  topAnchor = [v25 topAnchor];
+  contentView4 = [(ENUIRegionFAQWebsiteCell *)self contentView];
+  layoutMarginsGuide3 = [contentView4 layoutMarginsGuide];
+  topAnchor2 = [layoutMarginsGuide3 topAnchor];
+  v29 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:4.0];
   v48[2] = v29;
-  v30 = [v25 bottomAnchor];
-  v31 = [(ENUIRegionFAQWebsiteCell *)self contentView];
-  v32 = [v31 layoutMarginsGuide];
-  v33 = [v32 bottomAnchor];
-  v34 = [v30 constraintEqualToAnchor:v33 constant:-4.0];
+  bottomAnchor = [v25 bottomAnchor];
+  contentView5 = [(ENUIRegionFAQWebsiteCell *)self contentView];
+  layoutMarginsGuide4 = [contentView5 layoutMarginsGuide];
+  bottomAnchor2 = [layoutMarginsGuide4 bottomAnchor];
+  v34 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-4.0];
   v48[3] = v34;
   v35 = [NSArray arrayWithObjects:v48 count:4];
   [NSLayoutConstraint activateConstraints:v35];

@@ -1,29 +1,29 @@
 @interface ATXHeuristicCreateCalendarEventActionMaker
-- (ATXHeuristicCreateCalendarEventActionMaker)initWithCoder:(id)a3;
-- (ATXHeuristicCreateCalendarEventActionMaker)initWithTitle:(id)a3 subtitle:(id)a4 event:(id)a5 suggestionsInfoUniqueKey:(id)a6;
+- (ATXHeuristicCreateCalendarEventActionMaker)initWithCoder:(id)coder;
+- (ATXHeuristicCreateCalendarEventActionMaker)initWithTitle:(id)title subtitle:(id)subtitle event:(id)event suggestionsInfoUniqueKey:(id)key;
 - (id)_makeAction;
 - (void)_makeAction;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXHeuristicCreateCalendarEventActionMaker
 
-- (ATXHeuristicCreateCalendarEventActionMaker)initWithTitle:(id)a3 subtitle:(id)a4 event:(id)a5 suggestionsInfoUniqueKey:(id)a6
+- (ATXHeuristicCreateCalendarEventActionMaker)initWithTitle:(id)title subtitle:(id)subtitle event:(id)event suggestionsInfoUniqueKey:(id)key
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  eventCopy = event;
+  keyCopy = key;
   v18.receiver = self;
   v18.super_class = ATXHeuristicCreateCalendarEventActionMaker;
   v15 = [(ATXHeuristicCreateCalendarEventActionMaker *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->super._title, a3);
-    objc_storeStrong(&v16->super._subtitle, a4);
-    objc_storeStrong(&v16->_event, a5);
-    objc_storeStrong(&v16->_suggestionsInfoUniqueKey, a6);
+    objc_storeStrong(&v15->super._title, title);
+    objc_storeStrong(&v16->super._subtitle, subtitle);
+    objc_storeStrong(&v16->_event, event);
+    objc_storeStrong(&v16->_suggestionsInfoUniqueKey, key);
   }
 
   return v16;
@@ -58,8 +58,8 @@ LABEL_10:
   }
 
   pthread_mutex_lock(&_makeAction_actionHandlerLock);
-  v4 = [MEMORY[0x277CC5A30] sharedInstance];
-  v5 = [v4 createEventIntentForEvent:v3 withSuggestionsInfoUniqueKey:self->_suggestionsInfoUniqueKey];
+  mEMORY[0x277CC5A30] = [MEMORY[0x277CC5A30] sharedInstance];
+  v5 = [mEMORY[0x277CC5A30] createEventIntentForEvent:v3 withSuggestionsInfoUniqueKey:self->_suggestionsInfoUniqueKey];
 
   pthread_mutex_unlock(&_makeAction_actionHandlerLock);
   v6 = INIntentWithTypedIntent();
@@ -100,27 +100,27 @@ LABEL_19:
   return v9;
 }
 
-- (ATXHeuristicCreateCalendarEventActionMaker)initWithCoder:(id)a3
+- (ATXHeuristicCreateCalendarEventActionMaker)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = ATXHeuristicCreateCalendarEventActionMaker;
-  v5 = [(ATXHeuristicActionMaker *)&v15 initWithCoder:v4];
+  v5 = [(ATXHeuristicActionMaker *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->super._title;
     v5->super._title = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
     subtitle = v5->super._subtitle;
     v5->super._subtitle = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"event"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"event"];
     event = v5->_event;
     v5->_event = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"suggestionsInfoUniqueKey"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"suggestionsInfoUniqueKey"];
     suggestionsInfoUniqueKey = v5->_suggestionsInfoUniqueKey;
     v5->_suggestionsInfoUniqueKey = v12;
   }
@@ -128,20 +128,20 @@ LABEL_19:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = ATXHeuristicCreateCalendarEventActionMaker;
-  v4 = a3;
-  [(ATXHeuristicActionMaker *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_event forKey:{@"event", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_suggestionsInfoUniqueKey forKey:@"suggestionsInfoUniqueKey"];
+  coderCopy = coder;
+  [(ATXHeuristicActionMaker *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_event forKey:{@"event", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_suggestionsInfoUniqueKey forKey:@"suggestionsInfoUniqueKey"];
 }
 
 - (void)_makeAction
 {
   v9 = *MEMORY[0x277D85DE8];
-  v1 = [a1 heuristic];
+  heuristic = [self heuristic];
   OUTLINED_FUNCTION_0_0(&dword_23E3EA000, v2, v3, "Failed to create Intent because of nil ekEvent. Heuristic: %@.", v4, v5, v6, v7, 2u);
 
   v8 = *MEMORY[0x277D85DE8];

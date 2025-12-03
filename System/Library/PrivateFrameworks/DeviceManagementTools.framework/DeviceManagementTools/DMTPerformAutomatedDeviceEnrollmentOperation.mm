@@ -1,34 +1,34 @@
 @interface DMTPerformAutomatedDeviceEnrollmentOperation
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4;
-- (DMTPerformAutomatedDeviceEnrollmentOperation)initWithRequest:(id)a3 prerequisiteReceiver:(id)a4 enrollmentInitiator:(id)a5;
-- (void)runWithRequest:(id)a3;
++ (BOOL)validateRequest:(id)request error:(id *)error;
+- (DMTPerformAutomatedDeviceEnrollmentOperation)initWithRequest:(id)request prerequisiteReceiver:(id)receiver enrollmentInitiator:(id)initiator;
+- (void)runWithRequest:(id)request;
 @end
 
 @implementation DMTPerformAutomatedDeviceEnrollmentOperation
 
-- (DMTPerformAutomatedDeviceEnrollmentOperation)initWithRequest:(id)a3 prerequisiteReceiver:(id)a4 enrollmentInitiator:(id)a5
+- (DMTPerformAutomatedDeviceEnrollmentOperation)initWithRequest:(id)request prerequisiteReceiver:(id)receiver enrollmentInitiator:(id)initiator
 {
-  v9 = a4;
-  v10 = a5;
+  receiverCopy = receiver;
+  initiatorCopy = initiator;
   v14.receiver = self;
   v14.super_class = DMTPerformAutomatedDeviceEnrollmentOperation;
-  v11 = [(CATTaskOperation *)&v14 initWithRequest:a3];
+  v11 = [(CATTaskOperation *)&v14 initWithRequest:request];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_prerequisiteReceiver, a4);
-    objc_storeStrong(&v12->_enrollmentInitiator, a5);
+    objc_storeStrong(&v11->_prerequisiteReceiver, receiver);
+    objc_storeStrong(&v12->_enrollmentInitiator, initiator);
   }
 
   return v12;
 }
 
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4
++ (BOOL)validateRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v16.receiver = a1;
+  requestCopy = request;
+  v16.receiver = self;
   v16.super_class = &OBJC_METACLASS___DMTPerformAutomatedDeviceEnrollmentOperation;
-  if (!objc_msgSendSuper2(&v16, sel_validateRequest_error_, v6, a4))
+  if (!objc_msgSendSuper2(&v16, sel_validateRequest_error_, requestCopy, error))
   {
     goto LABEL_9;
   }
@@ -36,9 +36,9 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
-    v8 = [v7 nonce];
-    if (v8 && (v9 = v8, [v7 nonce], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "length"), v10, v9, v11))
+    v7 = requestCopy;
+    nonce = [v7 nonce];
+    if (nonce && (v9 = nonce, [v7 nonce], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "length"), v10, v9, v11))
     {
       if ([v7 effectiveNetworkConfiguration])
       {
@@ -56,14 +56,14 @@ LABEL_20:
       v14 = _DMTLogGeneral_logObj_3;
       if (os_log_type_enabled(_DMTLogGeneral_logObj_3, OS_LOG_TYPE_ERROR))
       {
-        [DMTPerformAutomatedDeviceEnrollmentOperation validateRequest:v14 error:a1];
-        if (a4)
+        [DMTPerformAutomatedDeviceEnrollmentOperation validateRequest:v14 error:self];
+        if (error)
         {
           goto LABEL_17;
         }
       }
 
-      else if (a4)
+      else if (error)
       {
 LABEL_17:
         v13 = &unk_285B5BDE8;
@@ -71,12 +71,12 @@ LABEL_17:
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       v13 = &unk_285B5BDC0;
 LABEL_12:
       DMTErrorWithCodeAndUserInfo(2, v13);
-      *a4 = v12 = 0;
+      *error = v12 = 0;
       goto LABEL_20;
     }
 
@@ -84,10 +84,10 @@ LABEL_12:
     goto LABEL_20;
   }
 
-  if (a4)
+  if (error)
   {
     DMTErrorWithCodeAndUserInfo(2, &unk_285B5BD98);
-    *a4 = v12 = 0;
+    *error = v12 = 0;
   }
 
   else
@@ -101,9 +101,9 @@ LABEL_21:
   return v12;
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
-  v14 = a3;
+  requestCopy = request;
   if ([(DMTPerformAutomatedDeviceEnrollmentOperation *)self isExecuting])
   {
     if ([(DMTPerformAutomatedDeviceEnrollmentOperation *)self isCancelled])
@@ -114,18 +114,18 @@ LABEL_21:
 
     else
     {
-      v5 = [(DMTPerformAutomatedDeviceEnrollmentOperation *)self prerequisiteReceiver];
-      v6 = [v14 networkCredential];
-      v7 = [v14 networkPayload];
-      v8 = [v14 nonce];
-      v9 = [v14 automationBehavior];
-      v10 = [v14 organizationName];
-      v11 = [v14 organizationType];
-      v12 = [v14 mdmServerName];
-      [v5 setNetworkCredential:v6 networkPayload:v7 enrollmentNonce:v8 postEnrollmentBehavior:v9 organizationName:v10 organizationType:v11 mdmServerName:v12 networkConfiguration:{objc_msgSend(v14, "effectiveNetworkConfiguration")}];
+      prerequisiteReceiver = [(DMTPerformAutomatedDeviceEnrollmentOperation *)self prerequisiteReceiver];
+      networkCredential = [requestCopy networkCredential];
+      networkPayload = [requestCopy networkPayload];
+      nonce = [requestCopy nonce];
+      automationBehavior = [requestCopy automationBehavior];
+      organizationName = [requestCopy organizationName];
+      organizationType = [requestCopy organizationType];
+      mdmServerName = [requestCopy mdmServerName];
+      [prerequisiteReceiver setNetworkCredential:networkCredential networkPayload:networkPayload enrollmentNonce:nonce postEnrollmentBehavior:automationBehavior organizationName:organizationName organizationType:organizationType mdmServerName:mdmServerName networkConfiguration:{objc_msgSend(requestCopy, "effectiveNetworkConfiguration")}];
 
-      v13 = [(DMTPerformAutomatedDeviceEnrollmentOperation *)self enrollmentInitiator];
-      [v13 beginAutomatedDeviceEnrollment];
+      enrollmentInitiator = [(DMTPerformAutomatedDeviceEnrollmentOperation *)self enrollmentInitiator];
+      [enrollmentInitiator beginAutomatedDeviceEnrollment];
 
       [(DMTPerformAutomatedDeviceEnrollmentOperation *)self endOperationWithResultObject:0];
     }

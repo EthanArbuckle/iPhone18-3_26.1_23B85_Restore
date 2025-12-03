@@ -1,7 +1,7 @@
 @interface UIScrollView
-- (CGPoint)tui_contentOffsetForScrollingToRect:(CGRect)a3 atScrollPosition:(unint64_t)a4 delegate:(id)a5;
+- (CGPoint)tui_contentOffsetForScrollingToRect:(CGRect)rect atScrollPosition:(unint64_t)position delegate:(id)delegate;
 - (UIEdgeInsets)tui_revealableContentPadding;
-- (void)tui_scrollToRect:(CGRect)a3 atScrollPosition:(unint64_t)a4 animated:(BOOL)a5 delegate:(id)a6;
+- (void)tui_scrollToRect:(CGRect)rect atScrollPosition:(unint64_t)position animated:(BOOL)animated delegate:(id)delegate;
 @end
 
 @implementation UIScrollView
@@ -28,13 +28,13 @@
   return result;
 }
 
-- (CGPoint)tui_contentOffsetForScrollingToRect:(CGRect)a3 atScrollPosition:(unint64_t)a4 delegate:(id)a5
+- (CGPoint)tui_contentOffsetForScrollingToRect:(CGRect)rect atScrollPosition:(unint64_t)position delegate:(id)delegate
 {
-  rect = a3.size.height;
-  x = a3.origin.x;
-  y = a3.origin.y;
-  rect2 = a3.size.width;
-  v7 = a5;
+  rect = rect.size.height;
+  x = rect.origin.x;
+  y = rect.origin.y;
+  rect2 = rect.size.width;
+  delegateCopy = delegate;
   [(UIScrollView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -46,9 +46,9 @@
   v21 = v20;
   v23 = v22;
   [(UIScrollView *)self tui_revealableContentPadding];
-  if (v7)
+  if (delegateCopy)
   {
-    [v7 contentInsetsForScrollingToRectWithContentInsets:{v17, v19, v21, v23}];
+    [delegateCopy contentInsetsForScrollingToRectWithContentInsets:{v17, v19, v21, v23}];
     v17 = v24;
     v19 = v25;
     v21 = v26;
@@ -61,16 +61,16 @@
   v31 = v15 - (v21 + v17);
   v32 = x;
   v33 = y;
-  if (a4)
+  if (position)
   {
     v39 = x;
     v40 = y;
     goto LABEL_10;
   }
 
-  v34 = rect;
+  rectCopy8 = rect;
   v35 = rect2;
-  if ((a4 & 2) != 0)
+  if ((position & 2) != 0)
   {
     v108.origin.x = x;
     v108.origin.y = y;
@@ -83,17 +83,17 @@
     v109.size.height = v31;
     v37 = MidY + CGRectGetHeight(v109) * -0.5;
 LABEL_14:
-    v34 = rect;
+    rectCopy8 = rect;
     goto LABEL_15;
   }
 
-  if ((a4 & 4) != 0)
+  if ((position & 4) != 0)
   {
     v44 = x;
     v45 = y;
     v46 = rect2;
 LABEL_13:
-    v47 = v34;
+    v47 = rectCopy8;
     MaxY = CGRectGetMaxY(*&v44);
     v110.origin.x = v28;
     v110.origin.y = v29;
@@ -107,7 +107,7 @@ LABEL_13:
   v105.origin.y = v29;
   v105.size.width = v30;
   v105.size.height = v31;
-  v36 = rect;
+  rectCopy3 = rect;
   v37 = v29;
   if (CGRectContainsRect(v105, *&v32))
   {
@@ -129,8 +129,8 @@ LABEL_13:
     v40 = y;
 LABEL_10:
     v41 = rect2;
-    v34 = rect;
-    v42 = rect;
+    rectCopy8 = rect;
+    rectCopy5 = rect;
     v37 = CGRectGetMinY(*&v39);
     goto LABEL_15;
   }
@@ -138,7 +138,7 @@ LABEL_10:
   v125.origin.x = x;
   v125.origin.y = y;
   v125.size.width = rect2;
-  v34 = rect;
+  rectCopy8 = rect;
   v125.size.height = rect;
   v90 = CGRectGetMaxY(v125);
   v126.origin.x = v28;
@@ -156,23 +156,23 @@ LABEL_10:
   }
 
 LABEL_15:
-  if ((a4 & 8) != 0)
+  if ((position & 8) != 0)
   {
     v56 = x;
     v57 = y;
     v58 = rect2;
-    v59 = v34;
+    rectCopy7 = rectCopy8;
     goto LABEL_22;
   }
 
   v49 = x;
   v50 = y;
-  if ((a4 & 0x10) != 0)
+  if ((position & 0x10) != 0)
   {
     v114.origin.x = x;
     v114.origin.y = y;
     v114.size.width = rect2;
-    v114.size.height = v34;
+    v114.size.height = rectCopy8;
     MidX = CGRectGetMidX(v114);
     v115.origin.x = v28;
     v115.origin.y = v29;
@@ -182,13 +182,13 @@ LABEL_15:
     goto LABEL_26;
   }
 
-  if ((a4 & 0x20) != 0)
+  if ((position & 0x20) != 0)
   {
     v61 = x;
     v62 = y;
 LABEL_25:
     v63 = rect2;
-    v64 = v34;
+    v64 = rectCopy8;
     MaxX = CGRectGetMaxX(*&v61);
     v116.origin.x = v28;
     v116.origin.y = v29;
@@ -203,7 +203,7 @@ LABEL_25:
   v111.size.width = v30;
   v111.size.height = v31;
   v51 = rect2;
-  v52 = v34;
+  v52 = rectCopy8;
   v53 = CGRectContainsRect(v111, *&v49);
   v54 = v28;
   if (v53)
@@ -214,7 +214,7 @@ LABEL_25:
   v112.origin.x = x;
   v112.origin.y = y;
   v112.size.width = rect2;
-  v112.size.height = v34;
+  v112.size.height = rectCopy8;
   MinX = CGRectGetMinX(v112);
   v113.origin.x = v28;
   v113.origin.y = v29;
@@ -225,7 +225,7 @@ LABEL_25:
     v56 = x;
     v57 = y;
     v58 = rect2;
-    v59 = rect;
+    rectCopy7 = rect;
 LABEL_22:
     v54 = CGRectGetMinX(*&v56);
     goto LABEL_26;
@@ -234,7 +234,7 @@ LABEL_22:
   v127.origin.x = x;
   v127.origin.y = y;
   v127.size.width = rect2;
-  v34 = rect;
+  rectCopy8 = rect;
   v127.size.height = rect;
   v94 = CGRectGetMaxX(v127);
   v128.origin.x = v28;
@@ -256,11 +256,11 @@ LABEL_26:
   v68 = v30;
   v69 = v54 - v19;
   v70 = v37 - v17;
-  if (v7)
+  if (delegateCopy)
   {
     v71 = v29;
     v72 = v66;
-    [v7 contentOffsetFromProposedContentOffset:a4 atScrollPosition:{v69, v70}];
+    [delegateCopy contentOffsetFromProposedContentOffset:position atScrollPosition:{v69, v70}];
     v93 = v73;
   }
 
@@ -356,19 +356,19 @@ LABEL_26:
   return result;
 }
 
-- (void)tui_scrollToRect:(CGRect)a3 atScrollPosition:(unint64_t)a4 animated:(BOOL)a5 delegate:(id)a6
+- (void)tui_scrollToRect:(CGRect)rect atScrollPosition:(unint64_t)position animated:(BOOL)animated delegate:(id)delegate
 {
-  v6 = a5;
-  [(UIScrollView *)self tui_contentOffsetForScrollingToRect:a4 atScrollPosition:a6 delegate:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  animatedCopy = animated;
+  [(UIScrollView *)self tui_contentOffsetForScrollingToRect:position atScrollPosition:delegate delegate:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v10 = v9;
   v11 = v8;
   if (v9 == 0.0 && v8 < 0.0)
   {
 
-    [(UIScrollView *)self _scrollToTopIfPossible:v6];
+    [(UIScrollView *)self _scrollToTopIfPossible:animatedCopy];
   }
 
-  else if (v6)
+  else if (animatedCopy)
   {
 
     [(UIScrollView *)self setContentOffset:1 animated:?];

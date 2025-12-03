@@ -3,7 +3,7 @@
 - (BOOL)featureEnabled;
 - (BOOL)welcomeScreenShouldShow;
 - (id)resolveNotificationAuthorizationPromise;
-- (id)welcomeScreenViewControllerWithCompletion:(id)a3;
+- (id)welcomeScreenViewControllerWithCompletion:(id)completion;
 - (void)requestAuthorizationFromAMS;
 @end
 
@@ -31,9 +31,9 @@
     v4 = [v3 BOOLForKey:@"BKWelcomeNotificationWarmingItem.warmingSheetShown"];
 
     v5 = +[UIApplication sharedApplication];
-    v6 = [v5 launchedToTest];
+    launchedToTest = [v5 launchedToTest];
 
-    if (v4 & 1) != 0 || (v6)
+    if (v4 & 1) != 0 || (launchedToTest)
     {
       return;
     }
@@ -41,15 +41,15 @@
     v7 = +[AMSUserNotificationAuthorizationTask engagementRequestForFullSheet];
     [(BKWelcomeNotificationWarmingItem *)self setNotificationAuthorizationPromise:v7];
 
-    v9 = [(BKWelcomeNotificationWarmingItem *)self notificationAuthorizationPromise];
-    v8 = [v9 continueWithBlock:&stru_100A06C30];
+    notificationAuthorizationPromise = [(BKWelcomeNotificationWarmingItem *)self notificationAuthorizationPromise];
+    v8 = [notificationAuthorizationPromise continueWithBlock:&stru_100A06C30];
     [(BKWelcomeNotificationWarmingItem *)self setNotificationAuthorizationPromise:v8];
   }
 
   else
   {
-    v9 = +[BKNotificationManager sharedInstance];
-    [v9 requestAuthorizationWithCompletion:0];
+    notificationAuthorizationPromise = +[BKNotificationManager sharedInstance];
+    [notificationAuthorizationPromise requestAuthorizationWithCompletion:0];
   }
 }
 
@@ -63,16 +63,16 @@
 
 - (id)resolveNotificationAuthorizationPromise
 {
-  v3 = [(BKWelcomeNotificationWarmingItem *)self resolveNotificationAuthorizationPromiseNextRetry];
-  [v3 timeIntervalSinceNow];
+  resolveNotificationAuthorizationPromiseNextRetry = [(BKWelcomeNotificationWarmingItem *)self resolveNotificationAuthorizationPromiseNextRetry];
+  [resolveNotificationAuthorizationPromiseNextRetry timeIntervalSinceNow];
   v5 = v4;
 
   if (v5 <= 0.0)
   {
-    v6 = [(BKWelcomeNotificationWarmingItem *)self notificationAuthorizationPromise];
+    notificationAuthorizationPromise = [(BKWelcomeNotificationWarmingItem *)self notificationAuthorizationPromise];
     v8 = +[NSDate date];
     v14 = 0;
-    v7 = [v6 resultWithTimeout:&v14 error:5.0];
+    v7 = [notificationAuthorizationPromise resultWithTimeout:&v14 error:5.0];
     v9 = v14;
     [v8 timeIntervalSinceNow];
     if (!v7 && v9 && v10 <= -5.0)
@@ -90,11 +90,11 @@
 
   else
   {
-    v6 = BSUIWelcomeScreenLog();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    notificationAuthorizationPromise = BSUIWelcomeScreenLog();
+    if (os_log_type_enabled(notificationAuthorizationPromise, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "A recent attempt to resolve the authorization status promise timed out. Assuming we still can't resolve it.", buf, 2u);
+      _os_log_impl(&_mh_execute_header, notificationAuthorizationPromise, OS_LOG_TYPE_DEFAULT, "A recent attempt to resolve the authorization status promise timed out. Assuming we still can't resolve it.", buf, 2u);
     }
 
     v7 = 0;
@@ -105,19 +105,19 @@
 
 - (BOOL)welcomeScreenShouldShow
 {
-  v3 = [(BKWelcomeNotificationWarmingItem *)self resolveNotificationAuthorizationPromise];
+  resolveNotificationAuthorizationPromise = [(BKWelcomeNotificationWarmingItem *)self resolveNotificationAuthorizationPromise];
   v4 = 0;
-  if ([(BKWelcomeNotificationWarmingItem *)self featureEnabled]&& v3)
+  if ([(BKWelcomeNotificationWarmingItem *)self featureEnabled]&& resolveNotificationAuthorizationPromise)
   {
-    if ([v3 authorizationStatus])
+    if ([resolveNotificationAuthorizationPromise authorizationStatus])
     {
       v4 = 0;
     }
 
     else
     {
-      v5 = [v3 request];
-      v4 = v5 != 0;
+      request = [resolveNotificationAuthorizationPromise request];
+      v4 = request != 0;
     }
   }
 
@@ -147,7 +147,7 @@
       v10 = @"No";
     }
 
-    if ([v3 authorizationStatus])
+    if ([resolveNotificationAuthorizationPromise authorizationStatus])
     {
       v11 = @"No";
     }
@@ -157,9 +157,9 @@
       v11 = @"Yes";
     }
 
-    v12 = [v3 request];
+    request2 = [resolveNotificationAuthorizationPromise request];
     v15 = 138544130;
-    if (v12)
+    if (request2)
     {
       v13 = @"Yes";
     }
@@ -182,25 +182,25 @@
   return v4;
 }
 
-- (id)welcomeScreenViewControllerWithCompletion:(id)a3
+- (id)welcomeScreenViewControllerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(BKWelcomeNotificationWarmingItem *)self featureEnabled])
   {
-    v5 = [(BKWelcomeNotificationWarmingItem *)self resolveNotificationAuthorizationPromise];
-    v6 = [v5 request];
-    [v6 setMetricsOverlay:&off_100A43C00];
+    resolveNotificationAuthorizationPromise = [(BKWelcomeNotificationWarmingItem *)self resolveNotificationAuthorizationPromise];
+    request = [resolveNotificationAuthorizationPromise request];
+    [request setMetricsOverlay:&off_100A43C00];
     v7 = [AMSUIEngagementTaskViewController alloc];
     v8 = +[BUBag defaultBag];
-    v9 = [v7 initWithRequest:v6 bag:v8];
+    v9 = [v7 initWithRequest:request bag:v8];
 
-    v10 = [v9 startEngagement];
+    startEngagement = [v9 startEngagement];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1000D4F1C;
     v12[3] = &unk_100A06C58;
-    v13 = v4;
-    [v10 addFinishBlock:v12];
+    v13 = completionCopy;
+    [startEngagement addFinishBlock:v12];
   }
 
   else

@@ -4,7 +4,7 @@
 - (id)openAppleIntelligenceURL;
 - (id)openStorageManagement;
 - (void)cancelDownloadTask;
-- (void)updateFooterWithSpecifier:(id)a3 settings:(id)a4;
+- (void)updateFooterWithSpecifier:(id)specifier settings:(id)settings;
 @end
 
 @implementation GMFooterUtility
@@ -18,7 +18,7 @@
 
 - (id)fetchLanguageVariants
 {
-  v2 = self;
+  selfCopy = self;
   sub_2413F5F9C(&unk_285316FA0);
   swift_arrayDestroy();
 
@@ -27,12 +27,12 @@
   return v3;
 }
 
-- (void)updateFooterWithSpecifier:(id)a3 settings:(id)a4
+- (void)updateFooterWithSpecifier:(id)specifier settings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_2413F3DDC(v6, v7);
+  specifierCopy = specifier;
+  settingsCopy = settings;
+  selfCopy = self;
+  sub_2413F3DDC(specifierCopy, settingsCopy);
 }
 
 - (void)cancelDownloadTask
@@ -113,11 +113,11 @@
   v12 = &v24 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x28223BE20](v10);
   v14 = &v24 - v13;
-  v15 = [objc_opt_self() currentDevice];
-  v16 = [v15 sf_isiPad];
+  currentDevice = [objc_opt_self() currentDevice];
+  sf_isiPad = [currentDevice sf_isiPad];
 
   v17 = (v8 + 48);
-  if (v16)
+  if (sf_isiPad)
   {
     sub_24140E23C();
     if ((*v17)(v6, 1, v7) == 1)

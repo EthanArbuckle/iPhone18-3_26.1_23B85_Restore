@@ -1,13 +1,13 @@
 @interface PLModelMigrationAction_FixSignExtended32bSceneIdentifiers
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_FixSignExtended32bSceneIdentifiers
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v93 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLSceneClassification entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -25,7 +25,7 @@
   v50[1] = 3221225472;
   v50[2] = __105__PLModelMigrationAction_FixSignExtended32bSceneIdentifiers_performActionWithManagedObjectContext_error___block_invoke;
   v50[3] = &unk_1E7575B30;
-  v13 = v6;
+  v13 = contextCopy;
   v51 = v13;
   v49[0] = MEMORY[0x1E69E9820];
   v49[1] = 3221225472;
@@ -50,17 +50,17 @@
 
     if (v18)
     {
-      v19 = [(PLModelMigrationActionCore *)self logger];
-      v20 = v19 == 0;
+      logger = [(PLModelMigrationActionCore *)self logger];
+      v20 = logger == 0;
 
       if (v20)
       {
         v34 = PLMigrationGetLog();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
         {
-          v35 = [v53[5] completedUnitCount];
+          completedUnitCount = [v53[5] completedUnitCount];
           *buf = 134217984;
-          *&buf[4] = v35;
+          *&buf[4] = completedUnitCount;
           _os_log_impl(&dword_19BF1F000, v34, OS_LOG_TYPE_INFO, "Corrected sign extension on %lu scene classifications", buf, 0xCu);
         }
       }
@@ -100,9 +100,9 @@
         memset(buf, 0, sizeof(buf));
         v21 = PLMigrationGetLog();
         os_log_type_enabled(v21, OS_LOG_TYPE_INFO);
-        v22 = [v53[5] completedUnitCount];
+        completedUnitCount2 = [v53[5] completedUnitCount];
         v58 = 134217984;
-        v59 = v22;
+        v59 = completedUnitCount2;
         LODWORD(v45) = 12;
         v23 = _os_log_send_and_compose_impl();
 
@@ -126,8 +126,8 @@
 
     if (v26)
     {
-      v27 = [(PLModelMigrationActionCore *)self logger];
-      v28 = v27 == 0;
+      logger2 = [(PLModelMigrationActionCore *)self logger];
+      v28 = logger2 == 0;
 
       if (v28)
       {
@@ -146,7 +146,7 @@
 
       else
       {
-        v46 = a4;
+        errorCopy = error;
         v91 = 0u;
         v92 = 0u;
         v89 = 0u;
@@ -189,7 +189,7 @@
         LODWORD(v45) = 22;
         v32 = _os_log_send_and_compose_impl();
 
-        a4 = v46;
+        error = errorCopy;
         v33 = [(PLModelMigrationActionCore *)self logger:&v58];
         [v33 logWithMessage:v32 fromCodeLocation:"PLModelMigrationActions_18000.m" type:{767, 16}];
 
@@ -206,7 +206,7 @@
   [(PLModelMigrationActionCore *)self finalizeProgress];
   v40 = v16;
   v41 = v40;
-  if (a4)
+  if (error)
   {
     v42 = v15;
   }
@@ -219,7 +219,7 @@
   if ((v42 & 1) == 0)
   {
     v43 = v40;
-    *a4 = v41;
+    *error = v41;
   }
 
   _Block_object_dispose(&v52, 8);

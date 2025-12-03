@@ -1,10 +1,10 @@
 @interface LiveCaptionsSystemObserver
-- (void)guidedAccessStatusChanged:(id)a3;
+- (void)guidedAccessStatusChanged:(id)changed;
 @end
 
 @implementation LiveCaptionsSystemObserver
 
-- (void)guidedAccessStatusChanged:(id)a3
+- (void)guidedAccessStatusChanged:(id)changed
 {
   v3 = sub_B8FF0();
   v4 = *(v3 - 8);

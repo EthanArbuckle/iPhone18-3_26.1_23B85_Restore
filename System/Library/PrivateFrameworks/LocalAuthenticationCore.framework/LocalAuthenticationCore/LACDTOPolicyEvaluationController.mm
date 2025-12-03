@@ -1,44 +1,44 @@
 @interface LACDTOPolicyEvaluationController
-- (BOOL)_verifyHasRequiredOptions:(id)a3 forPolicy:(int64_t)a4 error:(id *)a5;
-- (LACDTOPolicyEvaluationController)initWithEnvironment:(id)a3 evaluationIdentifierFactory:(id)a4 device:(id)a5;
-- (id)_errorCodesToFilterForOptions:(id)a3;
-- (id)_mapResult:(id)a3 filterCodes:(id)a4;
-- (id)_updateEvaluationOptions:(id)a3 forPolicy:(int64_t)a4 environment:(id)a5;
-- (void)_evaluateRequest:(id)a3 completion:(id)a4;
-- (void)_evaluateRequest:(id)a3 environment:(id)a4 completion:(id)a5;
-- (void)_forEachObserver:(id)a3;
-- (void)_notifyObserversAboutEvaluation:(id)a3;
-- (void)_notifyObserversAboutEvaluation:(id)a3 result:(id)a4;
-- (void)postProcessRequest:(id)a3 result:(id)a4 completion:(id)a5;
-- (void)processRequest:(id)a3 configuration:(id)a4 completion:(id)a5;
+- (BOOL)_verifyHasRequiredOptions:(id)options forPolicy:(int64_t)policy error:(id *)error;
+- (LACDTOPolicyEvaluationController)initWithEnvironment:(id)environment evaluationIdentifierFactory:(id)factory device:(id)device;
+- (id)_errorCodesToFilterForOptions:(id)options;
+- (id)_mapResult:(id)result filterCodes:(id)codes;
+- (id)_updateEvaluationOptions:(id)options forPolicy:(int64_t)policy environment:(id)environment;
+- (void)_evaluateRequest:(id)request completion:(id)completion;
+- (void)_evaluateRequest:(id)request environment:(id)environment completion:(id)completion;
+- (void)_forEachObserver:(id)observer;
+- (void)_notifyObserversAboutEvaluation:(id)evaluation;
+- (void)_notifyObserversAboutEvaluation:(id)evaluation result:(id)result;
+- (void)postProcessRequest:(id)request result:(id)result completion:(id)completion;
+- (void)processRequest:(id)request configuration:(id)configuration completion:(id)completion;
 @end
 
 @implementation LACDTOPolicyEvaluationController
 
-- (LACDTOPolicyEvaluationController)initWithEnvironment:(id)a3 evaluationIdentifierFactory:(id)a4 device:(id)a5
+- (LACDTOPolicyEvaluationController)initWithEnvironment:(id)environment evaluationIdentifierFactory:(id)factory device:(id)device
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  environmentCopy = environment;
+  factoryCopy = factory;
+  deviceCopy = device;
+  if (!environmentCopy)
   {
     [LACDTOPolicyEvaluationController initWithEnvironment:evaluationIdentifierFactory:device:];
   }
 
-  v12 = v11;
+  v12 = deviceCopy;
   v20.receiver = self;
   v20.super_class = LACDTOPolicyEvaluationController;
   v13 = [(LACDTOPolicyEvaluationController *)&v20 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_environment, a3);
-    v15 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    objc_storeStrong(&v13->_environment, environment);
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v14->_observers;
-    v14->_observers = v15;
+    v14->_observers = weakObjectsHashTable;
 
-    objc_storeStrong(&v14->_device, a5);
-    objc_storeStrong(&v14->_evaluationIdentifierFactory, a4);
+    objc_storeStrong(&v14->_device, device);
+    objc_storeStrong(&v14->_evaluationIdentifierFactory, factory);
     v17 = objc_opt_new();
     pendingRequests = v14->_pendingRequests;
     v14->_pendingRequests = v17;
@@ -47,20 +47,20 @@
   return v14;
 }
 
-- (void)processRequest:(id)a3 configuration:(id)a4 completion:(id)a5
+- (void)processRequest:(id)request configuration:(id)configuration completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  configurationCopy = configuration;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __76__LACDTOPolicyEvaluationController_processRequest_configuration_completion___block_invoke;
   v13[3] = &unk_1E7A96CA8;
   objc_copyWeak(&v16, &location);
-  v11 = v8;
+  v11 = requestCopy;
   v14 = v11;
-  v12 = v10;
+  v12 = completionCopy;
   v15 = v12;
   [(LACDTOPolicyEvaluationController *)self _evaluateRequest:v11 completion:v13];
 
@@ -84,14 +84,14 @@ void __76__LACDTOPolicyEvaluationController_processRequest_configuration_complet
   }
 }
 
-- (void)postProcessRequest:(id)a3 result:(id)a4 completion:(id)a5
+- (void)postProcessRequest:(id)request result:(id)result completion:(id)completion
 {
   v41 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  resultCopy = result;
+  completionCopy = completion;
   pendingRequests = self->_pendingRequests;
-  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v8, "identifier")}];
+  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(requestCopy, "identifier")}];
   v13 = [(NSMutableDictionary *)pendingRequests objectForKeyedSubscript:v12];
 
   objc_initWeak(&location, self);
@@ -100,22 +100,22 @@ void __76__LACDTOPolicyEvaluationController_processRequest_configuration_complet
   aBlock[2] = __73__LACDTOPolicyEvaluationController_postProcessRequest_result_completion___block_invoke;
   aBlock[3] = &unk_1E7A96CD0;
   objc_copyWeak(&v38, &location);
-  v14 = v10;
+  v14 = completionCopy;
   v37 = v14;
-  v15 = v8;
+  v15 = requestCopy;
   v36 = v15;
   v16 = _Block_copy(aBlock);
   if (v13)
   {
-    v17 = v9;
-    v18 = [v15 options];
+    v17 = resultCopy;
+    options = [v15 options];
     v19 = [MEMORY[0x1E696AD98] numberWithInteger:1062];
-    v20 = [v18 objectForKeyedSubscript:v19];
+    v20 = [options objectForKeyedSubscript:v19];
 
     if ([v20 BOOLValue])
     {
-      v21 = [v15 options];
-      v22 = [(LACDTOPolicyEvaluationController *)self _errorCodesToFilterForOptions:v21];
+      options2 = [v15 options];
+      v22 = [(LACDTOPolicyEvaluationController *)self _errorCodesToFilterForOptions:options2];
 
       v23 = [(LACDTOPolicyEvaluationController *)self _mapResult:v17 filterCodes:v22];
 
@@ -144,7 +144,7 @@ void __76__LACDTOPolicyEvaluationController_processRequest_configuration_complet
       -[LACDTOPolicyEvaluationController postProcessRequest:result:completion:].cold.1(buf, [v15 identifier], v27);
     }
 
-    v16[2](v16, v9);
+    v16[2](v16, resultCopy);
   }
 
   objc_destroyWeak(&v38);
@@ -181,26 +181,26 @@ LACDTOMutablePolicyEvaluationResult *__73__LACDTOPolicyEvaluationController_post
   return v4;
 }
 
-- (void)_evaluateRequest:(id)a3 completion:(id)a4
+- (void)_evaluateRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 policy];
-  v9 = [v6 options];
-  if (![(LACDTOPolicyEvaluationController *)self canProcessRequest:v6])
+  requestCopy = request;
+  completionCopy = completion;
+  policy = [requestCopy policy];
+  options = [requestCopy options];
+  if (![(LACDTOPolicyEvaluationController *)self canProcessRequest:requestCopy])
   {
-    v11 = [LACEvaluationResult resultWithNext:v6];
-    v7[2](v7, 0, v11);
+    v11 = [LACEvaluationResult resultWithNext:requestCopy];
+    completionCopy[2](completionCopy, 0, v11);
     goto LABEL_9;
   }
 
   v21 = 0;
-  v10 = [(LACDTOPolicyEvaluationController *)self _verifyHasRequiredOptions:v9 forPolicy:v8 error:&v21];
+  v10 = [(LACDTOPolicyEvaluationController *)self _verifyHasRequiredOptions:options forPolicy:policy error:&v21];
   v11 = v21;
   if (!v10)
   {
     v13 = [LACEvaluationResult resultWithFailure:v11];
-    v7[2](v7, 0, v13);
+    completionCopy[2](completionCopy, 0, v13);
 LABEL_8:
 
     goto LABEL_9;
@@ -210,7 +210,7 @@ LABEL_8:
   {
     v13 = [LACError errorWithCode:-1008 subcode:1 debugDescription:@"DTO policies are not available before first unlock"];
     v14 = [LACEvaluationResult resultWithFailure:v13];
-    v7[2](v7, 0, v14);
+    completionCopy[2](completionCopy, 0, v14);
 
     goto LABEL_8;
   }
@@ -222,11 +222,11 @@ LABEL_8:
   v15[2] = __64__LACDTOPolicyEvaluationController__evaluateRequest_completion___block_invoke;
   v15[3] = &unk_1E7A96D20;
   objc_copyWeak(v19, &location);
-  v18 = v7;
-  v16 = v6;
-  v17 = v9;
-  v19[1] = v8;
-  [(LACDTOEnvironmentProviding *)environment fetchEnvironmentForPolicy:v8 options:v17 completion:v15];
+  v18 = completionCopy;
+  v16 = requestCopy;
+  v17 = options;
+  v19[1] = policy;
+  [(LACDTOEnvironmentProviding *)environment fetchEnvironmentForPolicy:policy options:v17 completion:v15];
 
   objc_destroyWeak(v19);
   objc_destroyWeak(&location);
@@ -258,11 +258,11 @@ void __64__LACDTOPolicyEvaluationController__evaluateRequest_completion___block_
   }
 }
 
-- (BOOL)_verifyHasRequiredOptions:(id)a3 forPolicy:(int64_t)a4 error:(id *)a5
+- (BOOL)_verifyHasRequiredOptions:(id)options forPolicy:(int64_t)policy error:(id *)error
 {
   v48[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (a4 == 1026 && ([MEMORY[0x1E696AD98] numberWithInteger:1000], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "objectForKeyedSubscript:", v8), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "BOOLValue"), v9, v8, (v10 & 1) == 0))
+  optionsCopy = options;
+  if (policy == 1026 && ([MEMORY[0x1E696AD98] numberWithInteger:1000], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(optionsCopy, "objectForKeyedSubscript:", v8), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "BOOLValue"), v9, v8, (v10 & 1) == 0))
   {
     v12 = MEMORY[0x1E695DF90];
     v13 = [MEMORY[0x1E696AD98] numberWithInteger:1066];
@@ -272,7 +272,7 @@ void __64__LACDTOPolicyEvaluationController__evaluateRequest_completion___block_
     v15 = [v12 dictionaryWithDictionary:v14];
 
     v16 = [MEMORY[0x1E696AD98] numberWithInteger:1000];
-    v17 = [v7 objectForKeyedSubscript:v16];
+    v17 = [optionsCopy objectForKeyedSubscript:v16];
 
     if (!v17 || ([v17 BOOLValue] & 1) == 0)
     {
@@ -298,7 +298,7 @@ void __64__LACDTOPolicyEvaluationController__evaluateRequest_completion___block_
     if (v22)
     {
       v23 = v22;
-      v37 = a5;
+      errorCopy = error;
       v38 = v17;
       v24 = *v41;
       while (2)
@@ -311,14 +311,14 @@ void __64__LACDTOPolicyEvaluationController__evaluateRequest_completion___block_
           }
 
           v26 = *(*(&v40 + 1) + 8 * i);
-          v27 = [v7 objectForKeyedSubscript:v26];
+          v27 = [optionsCopy objectForKeyedSubscript:v26];
           if (!v27)
           {
             goto LABEL_17;
           }
 
           v28 = v27;
-          v29 = [v7 objectForKeyedSubscript:v26];
+          v29 = [optionsCopy objectForKeyedSubscript:v26];
           v30 = [v15 objectForKeyedSubscript:v26];
           isKindOfClass = objc_opt_isKindOfClass();
 
@@ -329,9 +329,9 @@ LABEL_17:
             v33 = NSStringFromClass(v32);
 
             v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Missing required option (%d) with type '%@'", objc_msgSend(v26, "integerValue"), v33];
-            if (v37)
+            if (errorCopy)
             {
-              *v37 = [LACError errorWithCode:-1001 debugDescription:v34];
+              *errorCopy = [LACError errorWithCode:-1001 debugDescription:v34];
             }
 
             v11 = 0;
@@ -369,23 +369,23 @@ LABEL_21:
   return v11;
 }
 
-- (id)_updateEvaluationOptions:(id)a3 forPolicy:(int64_t)a4 environment:(id)a5
+- (id)_updateEvaluationOptions:(id)options forPolicy:(int64_t)policy environment:(id)environment
 {
-  v8 = a5;
+  environmentCopy = environment;
   v9 = MEMORY[0x1E695DF90];
-  v10 = a3;
-  v11 = [v9 dictionaryWithDictionary:v10];
+  optionsCopy = options;
+  v11 = [v9 dictionaryWithDictionary:optionsCopy];
   v12 = [MEMORY[0x1E696AD98] numberWithInteger:1037];
-  v13 = [v10 objectForKeyedSubscript:v12];
+  v13 = [optionsCopy objectForKeyedSubscript:v12];
 
   if (v13)
   {
     goto LABEL_4;
   }
 
-  v14 = [v8 isDTOEnabled];
+  isDTOEnabled = [environmentCopy isDTOEnabled];
 
-  if (v14)
+  if (isDTOEnabled)
   {
     v12 = [LACLocalizationUtils encodeLocalizationKey:@"ENTER_PASSCODE" shouldUseDeviceVariant:1];
     v13 = [MEMORY[0x1E696AD98] numberWithInteger:1037];
@@ -393,7 +393,7 @@ LABEL_21:
 LABEL_4:
   }
 
-  if (([v8 allowsAuthenticationFallbacks] & 1) == 0)
+  if (([environmentCopy allowsAuthenticationFallbacks] & 1) == 0)
   {
     v15 = [MEMORY[0x1E696AD98] numberWithInteger:1024];
     v16 = MEMORY[0x1E695E118];
@@ -411,7 +411,7 @@ LABEL_4:
     v20 = [MEMORY[0x1E696AD98] numberWithInteger:-1001];
     [v11 setObject:v16 forKeyedSubscript:v20];
 
-    if (a4 != 1028)
+    if (policy != 1028)
     {
       if ([(LACDTODeviceInfoProvider *)self->_device biometryType]== 2)
       {
@@ -435,13 +435,13 @@ LABEL_4:
   }
 
 LABEL_12:
-  if (([v8 allowsGracePeriodUI] & 1) == 0)
+  if (([environmentCopy allowsGracePeriodUI] & 1) == 0)
   {
     v24 = [MEMORY[0x1E696AD98] numberWithInteger:1073];
     [v11 setObject:MEMORY[0x1E695E118] forKeyedSubscript:v24];
   }
 
-  if (a4 == 1028)
+  if (policy == 1028)
   {
     v25 = [MEMORY[0x1E696AD98] numberWithInteger:1090];
     [v11 setObject:MEMORY[0x1E695E118] forKeyedSubscript:v25];
@@ -460,18 +460,18 @@ LABEL_12:
   return v11;
 }
 
-- (void)_evaluateRequest:(id)a3 environment:(id)a4 completion:(id)a5
+- (void)_evaluateRequest:(id)request environment:(id)environment completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 policy];
-  v12 = [v8 options];
-  v13 = [v8 client];
+  requestCopy = request;
+  environmentCopy = environment;
+  completionCopy = completion;
+  policy = [requestCopy policy];
+  options = [requestCopy options];
+  client = [requestCopy client];
   evaluationIdentifierFactory = self->_evaluationIdentifierFactory;
   v15 = [MEMORY[0x1E696AD98] numberWithInteger:1066];
-  v16 = [v12 objectForKeyedSubscript:v15];
-  v17 = [(LACDTOPolicyEvaluationIdentifierFactory *)evaluationIdentifierFactory evaluationIdentifierForClient:v13 ratchetIdentifier:v16];
+  v16 = [options objectForKeyedSubscript:v15];
+  v17 = [(LACDTOPolicyEvaluationIdentifierFactory *)evaluationIdentifierFactory evaluationIdentifierForClient:client ratchetIdentifier:v16];
 
   v28 = MEMORY[0x1E69E9820];
   v29 = 3221225472;
@@ -479,15 +479,15 @@ LABEL_12:
   v31 = &unk_1E7A96D48;
   v18 = v17;
   v32 = v18;
-  v35 = v11;
-  v19 = v12;
+  v35 = policy;
+  v19 = options;
   v33 = v19;
-  v20 = v9;
+  v20 = environmentCopy;
   v34 = v20;
   v21 = __76__LACDTOPolicyEvaluationController__evaluateRequest_environment_completion___block_invoke(&v28);
   [(LACDTOPolicyEvaluationController *)self _notifyObserversAboutEvaluation:v21, v28, v29];
-  v22 = [v8 payload];
-  v23 = [v22 mutableCopy];
+  payload = [requestCopy payload];
+  v23 = [payload mutableCopy];
   v24 = v23;
   if (v23)
   {
@@ -503,9 +503,9 @@ LABEL_12:
 
   [v26 setObject:v18 forKeyedSubscript:@"kLAEvaluationRequestPayloadKeyDTORequestIdentifier"];
   [v26 setObject:v20 forKeyedSubscript:@"kLAEvaluationRequestPayloadKeyDTOEnvironment"];
-  [v8 updatePayload:v26];
-  v27 = [LACEvaluationResult resultWithNext:v8];
-  v10[2](v10, v21, v27);
+  [requestCopy updatePayload:v26];
+  v27 = [LACEvaluationResult resultWithNext:requestCopy];
+  completionCopy[2](completionCopy, v21, v27);
 }
 
 LACDTOMutablePolicyEvaluationRequest *__76__LACDTOPolicyEvaluationController__evaluateRequest_environment_completion___block_invoke(void *a1)
@@ -518,13 +518,13 @@ LACDTOMutablePolicyEvaluationRequest *__76__LACDTOPolicyEvaluationController__ev
   return v2;
 }
 
-- (void)_notifyObserversAboutEvaluation:(id)a3
+- (void)_notifyObserversAboutEvaluation:(id)evaluation
 {
-  v4 = a3;
+  evaluationCopy = evaluation;
   v5 = LACLogDTOEvaluation();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(LACDTOPolicyEvaluationController *)v4 _notifyObserversAboutEvaluation:v5];
+    [(LACDTOPolicyEvaluationController *)evaluationCopy _notifyObserversAboutEvaluation:v5];
   }
 
   v7[0] = MEMORY[0x1E69E9820];
@@ -532,19 +532,19 @@ LACDTOMutablePolicyEvaluationRequest *__76__LACDTOPolicyEvaluationController__ev
   v7[2] = __68__LACDTOPolicyEvaluationController__notifyObserversAboutEvaluation___block_invoke;
   v7[3] = &unk_1E7A96D70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = evaluationCopy;
+  v6 = evaluationCopy;
   [(LACDTOPolicyEvaluationController *)self _forEachObserver:v7];
 }
 
-- (void)_notifyObserversAboutEvaluation:(id)a3 result:(id)a4
+- (void)_notifyObserversAboutEvaluation:(id)evaluation result:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  evaluationCopy = evaluation;
+  resultCopy = result;
   v8 = LACLogDTOEvaluation();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [LACDTOPolicyEvaluationController _notifyObserversAboutEvaluation:v7 result:v8];
+    [LACDTOPolicyEvaluationController _notifyObserversAboutEvaluation:resultCopy result:v8];
   }
 
   v11[0] = MEMORY[0x1E69E9820];
@@ -552,17 +552,17 @@ LACDTOMutablePolicyEvaluationRequest *__76__LACDTOPolicyEvaluationController__ev
   v11[2] = __75__LACDTOPolicyEvaluationController__notifyObserversAboutEvaluation_result___block_invoke;
   v11[3] = &unk_1E7A96D98;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = evaluationCopy;
+  v13 = resultCopy;
+  v9 = resultCopy;
+  v10 = evaluationCopy;
   [(LACDTOPolicyEvaluationController *)self _forEachObserver:v11];
 }
 
-- (void)_forEachObserver:(id)a3
+- (void)_forEachObserver:(id)observer
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -583,7 +583,7 @@ LACDTOMutablePolicyEvaluationRequest *__76__LACDTOPolicyEvaluationController__ev
           objc_enumerationMutation(v5);
         }
 
-        v4[2](v4, *(*(&v11 + 1) + 8 * v9++));
+        observerCopy[2](observerCopy, *(*(&v11 + 1) + 8 * v9++));
       }
 
       while (v7 != v9);
@@ -596,21 +596,21 @@ LACDTOMutablePolicyEvaluationRequest *__76__LACDTOPolicyEvaluationController__ev
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_mapResult:(id)a3 filterCodes:(id)a4
+- (id)_mapResult:(id)result filterCodes:(id)codes
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  resultCopy = result;
+  codesCopy = codes;
+  if (resultCopy)
   {
-    v8 = [v6 error];
-    if (v8)
+    error = [resultCopy error];
+    if (error)
     {
       v20 = 0u;
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v9 = v7;
+      v9 = codesCopy;
       v10 = [v9 countByEnumeratingWithState:&v18 objects:v26 count:16];
       if (v10)
       {
@@ -625,15 +625,15 @@ LACDTOMutablePolicyEvaluationRequest *__76__LACDTOPolicyEvaluationController__ev
               objc_enumerationMutation(v9);
             }
 
-            if (+[LACError error:hasCode:](LACError, "error:hasCode:", v8, [*(*(&v18 + 1) + 8 * i) integerValue]))
+            if (+[LACError error:hasCode:](LACError, "error:hasCode:", error, [*(*(&v18 + 1) + 8 * i) integerValue]))
             {
               v15 = LACLogDTO();
               if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412546;
-                v23 = self;
+                selfCopy = self;
                 v24 = 2112;
-                v25 = v8;
+                v25 = error;
                 _os_log_impl(&dword_1B0233000, v15, OS_LOG_TYPE_DEFAULT, "%@ mapping error %@ to success", buf, 0x16u);
               }
 
@@ -654,7 +654,7 @@ LACDTOMutablePolicyEvaluationRequest *__76__LACDTOPolicyEvaluationController__ev
       }
     }
 
-    v14 = v6;
+    v14 = resultCopy;
 LABEL_17:
   }
 
@@ -668,13 +668,13 @@ LABEL_17:
   return v14;
 }
 
-- (id)_errorCodesToFilterForOptions:(id)a3
+- (id)_errorCodesToFilterForOptions:(id)options
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  optionsCopy = options;
   v4 = objc_opt_new();
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:1062];
-  v6 = [v3 objectForKeyedSubscript:v5];
+  v6 = [optionsCopy objectForKeyedSubscript:v5];
 
   if ([v6 BOOLValue])
   {
@@ -686,11 +686,11 @@ LABEL_17:
     [v4 addObjectsFromArray:v9];
   }
 
-  v10 = [v4 allObjects];
+  allObjects = [v4 allObjects];
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v10;
+  return allObjects;
 }
 
 - (void)postProcessRequest:(uint8_t *)buf result:(int)a2 completion:(os_log_t)log .cold.1(uint8_t *buf, int a2, os_log_t log)

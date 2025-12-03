@@ -13,7 +13,7 @@
   v22 = __Block_byref_object_copy__73;
   v23 = __Block_byref_object_dispose__73;
   v24 = 0;
-  v9 = [v8 managedObjectContext];
+  managedObjectContext = [v8 managedObjectContext];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __100__ICMarkupUtilities_UI__dataToEditForAttachment_includeMarkupModelData_embedMarkupModelDataInImage___block_invoke;
@@ -22,9 +22,9 @@
   v14 = v10;
   v15 = &v19;
   v17 = a4;
-  v16 = a1;
+  selfCopy = self;
   v18 = a5;
-  [v9 performBlockAndWait:v13];
+  [managedObjectContext performBlockAndWait:v13];
 
   v11 = v20[5];
   _Block_object_dispose(&v19, 8);

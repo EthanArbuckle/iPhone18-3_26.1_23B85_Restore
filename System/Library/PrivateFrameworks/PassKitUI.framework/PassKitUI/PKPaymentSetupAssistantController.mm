@@ -1,37 +1,37 @@
 @interface PKPaymentSetupAssistantController
-- (BOOL)isFollowupNeededReturningRequirements:(unint64_t *)a3;
-- (PKPaymentSetupAssistantController)initWithSetupAssistant:(unint64_t)a3 setupAssistantContext:(id)a4;
-- (PKPaymentSetupAssistantController)initWithSetupAssistantContext:(id)a3;
-- (void)_bridgeStartingViewControllerForPaymentSetupContext:(int64_t)a3 completion:(id)a4;
-- (void)_phoneStartingViewControllerForPaymentSetupContext:(int64_t)a3 completion:(id)a4;
-- (void)_setupAssistantViewControllerWithCompletion:(id)a3;
-- (void)prepareForPresentationWithCompletion:(id)a3;
+- (BOOL)isFollowupNeededReturningRequirements:(unint64_t *)requirements;
+- (PKPaymentSetupAssistantController)initWithSetupAssistant:(unint64_t)assistant setupAssistantContext:(id)context;
+- (PKPaymentSetupAssistantController)initWithSetupAssistantContext:(id)context;
+- (void)_bridgeStartingViewControllerForPaymentSetupContext:(int64_t)context completion:(id)completion;
+- (void)_phoneStartingViewControllerForPaymentSetupContext:(int64_t)context completion:(id)completion;
+- (void)_setupAssistantViewControllerWithCompletion:(id)completion;
+- (void)prepareForPresentationWithCompletion:(id)completion;
 @end
 
 @implementation PKPaymentSetupAssistantController
 
-- (PKPaymentSetupAssistantController)initWithSetupAssistantContext:(id)a3
+- (PKPaymentSetupAssistantController)initWithSetupAssistantContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = PKPaymentSetupAssistantController;
-  v6 = [(PKPaymentSetupAssistantCoreController *)&v9 initWithSetupAssistantContext:v5];
+  v6 = [(PKPaymentSetupAssistantCoreController *)&v9 initWithSetupAssistantContext:contextCopy];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_setupAssistantContext, a3);
+    objc_storeStrong(&v6->_setupAssistantContext, context);
   }
 
   return v7;
 }
 
-- (PKPaymentSetupAssistantController)initWithSetupAssistant:(unint64_t)a3 setupAssistantContext:(id)a4
+- (PKPaymentSetupAssistantController)initWithSetupAssistant:(unint64_t)assistant setupAssistantContext:(id)context
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  contextCopy = context;
+  v7 = contextCopy;
+  if (contextCopy)
   {
-    if (a3 == 2)
+    if (assistant == 2)
     {
       v8 = 2;
     }
@@ -41,7 +41,7 @@
       v8 = 1;
     }
 
-    if ([v6 setupAssistant] != v8)
+    if ([contextCopy setupAssistant] != v8)
     {
       [v7 setSetupAssistant:v8];
     }
@@ -51,14 +51,14 @@
 
   else
   {
-    v10 = [[PKSetupAssistantContext alloc] initWithSetupAssistant:a3];
+    v10 = [[PKSetupAssistantContext alloc] initWithSetupAssistant:assistant];
     v9 = [(PKPaymentSetupAssistantController *)self initWithSetupAssistantContext:v10];
   }
 
   return v9;
 }
 
-- (BOOL)isFollowupNeededReturningRequirements:(unint64_t *)a3
+- (BOOL)isFollowupNeededReturningRequirements:(unint64_t *)requirements
 {
   v7 = 0;
   v8 = &v7;
@@ -71,7 +71,7 @@
   v6[3] = &unk_1E8018D50;
   v6[4] = self;
   v6[5] = &v7;
-  v6[6] = a3;
+  v6[6] = requirements;
   [(PKSetupAssistantContext *)setupAssistantContext prepareForFollowupQueryWithHandler:v6];
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
@@ -85,18 +85,18 @@ uint64_t __75__PKPaymentSetupAssistantController_isFollowupNeededReturningRequir
   return result;
 }
 
-- (void)prepareForPresentationWithCompletion:(id)a3
+- (void)prepareForPresentationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __74__PKPaymentSetupAssistantController_prepareForPresentationWithCompletion___block_invoke;
     v7[3] = &unk_1E8018DA0;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     [(PKPaymentSetupAssistantCoreController *)self _extendedSetupAssistantNeedsToRunWithCompletion:v7];
   }
 
@@ -134,14 +134,14 @@ void __74__PKPaymentSetupAssistantController_prepareForPresentationWithCompletio
   }
 }
 
-- (void)_setupAssistantViewControllerWithCompletion:(id)a3
+- (void)_setupAssistantViewControllerWithCompletion:(id)completion
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = [(PKSetupAssistantContext *)self->_setupAssistantContext setupAssistant];
-    if (v5 == 2)
+    setupAssistant = [(PKSetupAssistantContext *)self->_setupAssistantContext setupAssistant];
+    if (setupAssistant == 2)
     {
       if ([(PKPaymentSetupAssistantController *)self _isExpressSetupAssistant])
       {
@@ -153,10 +153,10 @@ void __74__PKPaymentSetupAssistantController_prepareForPresentationWithCompletio
         v8 = 5;
       }
 
-      [(PKPaymentSetupAssistantController *)self _bridgeStartingViewControllerForPaymentSetupContext:v8 completion:v4];
+      [(PKPaymentSetupAssistantController *)self _bridgeStartingViewControllerForPaymentSetupContext:v8 completion:completionCopy];
     }
 
-    else if (v5 == 1)
+    else if (setupAssistant == 1)
     {
       if ([(PKPaymentSetupAssistantController *)self _isExpressSetupAssistant])
       {
@@ -168,7 +168,7 @@ void __74__PKPaymentSetupAssistantController_prepareForPresentationWithCompletio
         v6 = 1;
       }
 
-      [(PKPaymentSetupAssistantController *)self _phoneStartingViewControllerForPaymentSetupContext:v6 completion:v4];
+      [(PKPaymentSetupAssistantController *)self _phoneStartingViewControllerForPaymentSetupContext:v6 completion:completionCopy];
     }
 
     else
@@ -176,13 +176,13 @@ void __74__PKPaymentSetupAssistantController_prepareForPresentationWithCompletio
       v9 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [(PKSetupAssistantContext *)self->_setupAssistantContext setupAssistant];
+        setupAssistant2 = [(PKSetupAssistantContext *)self->_setupAssistantContext setupAssistant];
         v11 = 134217984;
-        v12 = v10;
+        v12 = setupAssistant2;
         _os_log_impl(&dword_1BD026000, v9, OS_LOG_TYPE_DEFAULT, "Error: _setupAssistantViewControllerWithCompletion called with unsupported type %lu. File a radar!", &v11, 0xCu);
       }
 
-      v4[2](v4, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
@@ -197,10 +197,10 @@ void __74__PKPaymentSetupAssistantController_prepareForPresentationWithCompletio
   }
 }
 
-- (void)_bridgeStartingViewControllerForPaymentSetupContext:(int64_t)a3 completion:(id)a4
+- (void)_bridgeStartingViewControllerForPaymentSetupContext:(int64_t)context completion:(id)completion
 {
   v47 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  completionCopy = completion;
   v8 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -218,7 +218,7 @@ void __74__PKPaymentSetupAssistantController_prepareForPresentationWithCompletio
   aBlock[2] = __100__PKPaymentSetupAssistantController__bridgeStartingViewControllerForPaymentSetupContext_completion___block_invoke;
   aBlock[3] = &unk_1E8018DC8;
   v42 = a2;
-  v11 = v7;
+  v11 = completionCopy;
   v41 = v11;
   v12 = _Block_copy(aBlock);
   if (self->_setupAssistantContext)
@@ -226,12 +226,12 @@ void __74__PKPaymentSetupAssistantController_prepareForPresentationWithCompletio
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = self->_setupAssistantContext;
-      v14 = [(PKSetupAssistantContext *)v13 parentFamilyMember];
-      v15 = [(PKSetupAssistantContext *)v13 pairingFamilyMember];
-      if (v15)
+      watchPaymentWebService = self->_setupAssistantContext;
+      parentFamilyMember = [(PKSetupAssistantContext *)watchPaymentWebService parentFamilyMember];
+      pairingFamilyMember = [(PKSetupAssistantContext *)watchPaymentWebService pairingFamilyMember];
+      if (pairingFamilyMember)
       {
-        v16 = v14 == 0;
+        v16 = parentFamilyMember == 0;
       }
 
       else
@@ -241,39 +241,39 @@ void __74__PKPaymentSetupAssistantController_prepareForPresentationWithCompletio
 
       if (!v16)
       {
-        v31 = a3;
-        v17 = [getNPKCompanionAgentConnectionClass_2[0]() watchPeerPaymentWebService];
-        v18 = [MEMORY[0x1E69B9020] sharedService];
-        v30 = v17;
-        v19 = [v17 targetDevice];
-        v28 = [v19 account];
+        contextCopy = context;
+        watchPeerPaymentWebService = [getNPKCompanionAgentConnectionClass_2[0]() watchPeerPaymentWebService];
+        mEMORY[0x1E69B9020] = [MEMORY[0x1E69B9020] sharedService];
+        v30 = watchPeerPaymentWebService;
+        targetDevice = [watchPeerPaymentWebService targetDevice];
+        account = [targetDevice account];
 
-        v29 = v18;
-        v20 = [v18 targetDevice];
-        v21 = [v20 account];
+        v29 = mEMORY[0x1E69B9020];
+        targetDevice2 = [mEMORY[0x1E69B9020] targetDevice];
+        account2 = [targetDevice2 account];
 
         buf[0] = 0;
-        [(PKPaymentSetupAssistantCoreController *)self _shouldRunAppleCashFlow:buf shouldRunPaymentSetupFlow:0 pairingFamilyMember:v15 pairingPeerPaymentAccount:v28 parentFamilyMember:v14 parentPeerPaymentAccount:v21];
+        [(PKPaymentSetupAssistantCoreController *)self _shouldRunAppleCashFlow:buf shouldRunPaymentSetupFlow:0 pairingFamilyMember:pairingFamilyMember pairingPeerPaymentAccount:account parentFamilyMember:parentFamilyMember parentPeerPaymentAccount:account2];
         if (buf[0] == 1)
         {
           v22 = [PKSetupAssistantPeerPaymentAddAssociatedAccountViewController alloc];
-          v23 = [(PKSetupAssistantContext *)v13 dataProvider];
-          v24 = [(PKSetupAssistantContext *)v13 peerPaymentDelegate];
-          v25 = [(PKSetupAssistantPeerPaymentAddAssociatedAccountViewController *)v22 initWithPairingFamilyMember:v15 parentFamilyMember:v14 webService:v30 passLibraryDataProvider:v23 delegate:v24 context:v31];
-          v32 = v21;
+          dataProvider = [(PKSetupAssistantContext *)watchPaymentWebService dataProvider];
+          peerPaymentDelegate = [(PKSetupAssistantContext *)watchPaymentWebService peerPaymentDelegate];
+          v25 = [(PKSetupAssistantPeerPaymentAddAssociatedAccountViewController *)v22 initWithPairingFamilyMember:pairingFamilyMember parentFamilyMember:parentFamilyMember webService:v30 passLibraryDataProvider:dataProvider delegate:peerPaymentDelegate context:contextCopy];
+          v32 = account2;
           v26 = v25;
 
           v12[2](v12, v26);
           goto LABEL_18;
         }
 
-        a3 = v31;
+        context = contextCopy;
       }
     }
   }
 
-  v13 = [getNPKCompanionAgentConnectionClass_2[0]() watchPaymentWebService];
-  v27 = [(PKPaymentSetupAssistantCoreController *)self _provisioningControllerWithWebService:v13];
+  watchPaymentWebService = [getNPKCompanionAgentConnectionClass_2[0]() watchPaymentWebService];
+  v27 = [(PKPaymentSetupAssistantCoreController *)self _provisioningControllerWithWebService:watchPaymentWebService];
   if (PKIsAltAccountPairedOrPairing())
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -293,12 +293,12 @@ void __74__PKPaymentSetupAssistantController_prepareForPresentationWithCompletio
   v34 = v27;
   v38 = a2;
   v37 = v12;
-  v35 = self;
-  v39 = a3;
-  v14 = v27;
-  [(PKPaymentSetupAssistantCoreController *)self _preflightPaymentSetupProvisioningController:v14 completion:v33];
+  selfCopy = self;
+  contextCopy2 = context;
+  parentFamilyMember = v27;
+  [(PKPaymentSetupAssistantCoreController *)self _preflightPaymentSetupProvisioningController:parentFamilyMember completion:v33];
 
-  v15 = v36;
+  pairingFamilyMember = v36;
 LABEL_18:
 }
 
@@ -428,10 +428,10 @@ uint64_t __100__PKPaymentSetupAssistantController__bridgeStartingViewControllerF
   }
 }
 
-- (void)_phoneStartingViewControllerForPaymentSetupContext:(int64_t)a3 completion:(id)a4
+- (void)_phoneStartingViewControllerForPaymentSetupContext:(int64_t)context completion:(id)completion
 {
   v31 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  completionCopy = completion;
   v8 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -449,21 +449,21 @@ uint64_t __100__PKPaymentSetupAssistantController__bridgeStartingViewControllerF
   aBlock[2] = __99__PKPaymentSetupAssistantController__phoneStartingViewControllerForPaymentSetupContext_completion___block_invoke;
   aBlock[3] = &unk_1E8018E68;
   v25 = a2;
-  v11 = v7;
+  v11 = completionCopy;
   aBlock[4] = self;
   v24 = v11;
-  v26 = a3;
+  contextCopy = context;
   v12 = _Block_copy(aBlock);
-  v13 = [(PKPaymentSetupAssistantCoreController *)self provisioningController];
-  if (v13 && ([(PKPaymentSetupAssistantCoreController *)self preflightState]& 2) != 0)
+  provisioningController = [(PKPaymentSetupAssistantCoreController *)self provisioningController];
+  if (provisioningController && ([(PKPaymentSetupAssistantCoreController *)self preflightState]& 2) != 0)
   {
-    v16 = [(PKPaymentSetupAssistantCoreController *)self preflightState];
+    preflightState = [(PKPaymentSetupAssistantCoreController *)self preflightState];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v17 = NSStringFromSelector(a2);
       v18 = v17;
       v19 = @"NO";
-      if ((v16 & 4) != 0)
+      if ((preflightState & 4) != 0)
       {
         v19 = @"YES";
       }
@@ -475,22 +475,22 @@ uint64_t __100__PKPaymentSetupAssistantController__bridgeStartingViewControllerF
       _os_log_impl(&dword_1BD026000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ Preflight already completed, using result with allowsManualEntry: %@", buf, 0x16u);
     }
 
-    v12[2](v12, v13, 1, (v16 >> 2) & 1);
+    v12[2](v12, provisioningController, 1, (preflightState >> 2) & 1);
   }
 
   else
   {
-    v14 = [MEMORY[0x1E69B8EF8] sharedService];
-    v15 = [(PKPaymentSetupAssistantCoreController *)self _provisioningControllerWithWebService:v14];
+    mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+    v15 = [(PKPaymentSetupAssistantCoreController *)self _provisioningControllerWithWebService:mEMORY[0x1E69B8EF8]];
 
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __99__PKPaymentSetupAssistantController__phoneStartingViewControllerForPaymentSetupContext_completion___block_invoke_87;
     v20[3] = &unk_1E8018E90;
     v22 = v12;
-    v13 = v15;
-    v21 = v13;
-    [(PKPaymentSetupAssistantCoreController *)self _preflightPaymentSetupProvisioningController:v13 completion:v20];
+    provisioningController = v15;
+    v21 = provisioningController;
+    [(PKPaymentSetupAssistantCoreController *)self _preflightPaymentSetupProvisioningController:provisioningController completion:v20];
   }
 }
 

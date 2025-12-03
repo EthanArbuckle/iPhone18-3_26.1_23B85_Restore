@@ -1,6 +1,6 @@
 @interface _CPUIBaseTableCell
 + (UIColor)disabledHighlightedColor;
-+ (id)cellForTableView:(id)a3;
++ (id)cellForTableView:(id)view;
 - (void)_updateTintColors;
 @end
 
@@ -18,8 +18,8 @@
     +[_CPUIBaseTableCell disabledColor];
   }
   v3 = ;
-  v4 = [(_CPUIBaseTableCell *)self textLabel];
-  [v4 setTextColor:v3];
+  textLabel = [(_CPUIBaseTableCell *)self textLabel];
+  [textLabel setTextColor:v3];
 
   if ([(_CPUIBaseTableCell *)self itemEnabled])
   {
@@ -31,8 +31,8 @@
     +[_CPUIBaseTableCell disabledHighlightedColor];
   }
   v5 = ;
-  v6 = [(_CPUIBaseTableCell *)self textLabel];
-  [v6 setHighlightedTextColor:v5];
+  textLabel2 = [(_CPUIBaseTableCell *)self textLabel];
+  [textLabel2 setHighlightedTextColor:v5];
 
   if ([(_CPUIBaseTableCell *)self itemEnabled])
   {
@@ -44,8 +44,8 @@
     +[_CPUIBaseTableCell disabledColor];
   }
   v7 = ;
-  v8 = [(_CPUIBaseTableCell *)self detailTextLabel];
-  [v8 setTextColor:v7];
+  detailTextLabel = [(_CPUIBaseTableCell *)self detailTextLabel];
+  [detailTextLabel setTextColor:v7];
 
   if ([(_CPUIBaseTableCell *)self itemEnabled])
   {
@@ -57,19 +57,19 @@
     +[_CPUIBaseTableCell disabledHighlightedColor];
   }
   v10 = ;
-  v9 = [(_CPUIBaseTableCell *)self detailTextLabel];
-  [v9 setHighlightedTextColor:v10];
+  detailTextLabel2 = [(_CPUIBaseTableCell *)self detailTextLabel];
+  [detailTextLabel2 setHighlightedTextColor:v10];
 }
 
-+ (id)cellForTableView:(id)a3
++ (id)cellForTableView:(id)view
 {
-  v4 = a3;
-  v5 = [a1 identifier];
-  v6 = [v4 dequeueReusableCellWithIdentifier:v5];
+  viewCopy = view;
+  identifier = [self identifier];
+  v6 = [viewCopy dequeueReusableCellWithIdentifier:identifier];
 
   if (!v6)
   {
-    v6 = [[a1 alloc] initWithStyle:3 reuseIdentifier:v5];
+    v6 = [[self alloc] initWithStyle:3 reuseIdentifier:identifier];
     [v6 configureCell];
   }
 
@@ -78,8 +78,8 @@
 
 + (UIColor)disabledHighlightedColor
 {
-  v2 = [MEMORY[0x277D75348] _carSystemFocusLabelColor];
-  v3 = [v2 colorWithAlphaComponent:0.25];
+  _carSystemFocusLabelColor = [MEMORY[0x277D75348] _carSystemFocusLabelColor];
+  v3 = [_carSystemFocusLabelColor colorWithAlphaComponent:0.25];
 
   return v3;
 }

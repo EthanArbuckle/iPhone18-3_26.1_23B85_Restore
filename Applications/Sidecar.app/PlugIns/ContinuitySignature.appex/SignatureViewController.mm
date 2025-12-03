@@ -1,7 +1,7 @@
 @interface SignatureViewController
-- (SignatureViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)receivedItems:(id)a3;
-- (void)signatureViewSignatureUpdated:(id)a3;
+- (SignatureViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)receivedItems:(id)items;
+- (void)signatureViewSignatureUpdated:(id)updated;
 - (void)viewDidLoad;
 @end
 
@@ -9,21 +9,21 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000015A4();
 }
 
-- (void)receivedItems:(id)a3
+- (void)receivedItems:(id)items
 {
   sub_100003A24(0, &qword_10000C640, SidecarItem_ptr);
   v4 = sub_100003C2C();
-  v5 = self;
+  selfCopy = self;
   sub_1000021FC(v4);
 }
 
-- (SignatureViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SignatureViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_100003C0C();
     v7 = v6;
@@ -35,14 +35,14 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_100002A34(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_100002A34(v5, v7, bundle);
 }
 
-- (void)signatureViewSignatureUpdated:(id)a3
+- (void)signatureViewSignatureUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = self;
+  updatedCopy = updated;
+  selfCopy = self;
   sub_100002E44();
 }
 

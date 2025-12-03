@@ -1,28 +1,28 @@
 @interface CCSetConfiguration
 + (id)syncableSetConfigurations;
-- (CCSetConfiguration)initWithSetIdentifier:(id)a3 setUUID:(id)a4 resourceDomain:(unint64_t)a5 configuredDescriptors:(id)a6 syncPolicy:(id)a7;
+- (CCSetConfiguration)initWithSetIdentifier:(id)identifier setUUID:(id)d resourceDomain:(unint64_t)domain configuredDescriptors:(id)descriptors syncPolicy:(id)policy;
 - (unsigned)itemType;
 @end
 
 @implementation CCSetConfiguration
 
-- (CCSetConfiguration)initWithSetIdentifier:(id)a3 setUUID:(id)a4 resourceDomain:(unint64_t)a5 configuredDescriptors:(id)a6 syncPolicy:(id)a7
+- (CCSetConfiguration)initWithSetIdentifier:(id)identifier setUUID:(id)d resourceDomain:(unint64_t)domain configuredDescriptors:(id)descriptors syncPolicy:(id)policy
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  dCopy = d;
+  descriptorsCopy = descriptors;
+  policyCopy = policy;
   v20.receiver = self;
   v20.super_class = CCSetConfiguration;
   v17 = [(CCSetConfiguration *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_setIdentifier, a3);
-    objc_storeStrong(&v18->_setUUID, a4);
-    v18->_resourceDomain = a5;
-    objc_storeStrong(&v18->_configuredDescriptors, a6);
-    objc_storeStrong(&v18->_syncPolicy, a7);
+    objc_storeStrong(&v17->_setIdentifier, identifier);
+    objc_storeStrong(&v18->_setUUID, d);
+    v18->_resourceDomain = domain;
+    objc_storeStrong(&v18->_configuredDescriptors, descriptors);
+    objc_storeStrong(&v18->_syncPolicy, policy);
   }
 
   return v18;
@@ -61,14 +61,14 @@
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v9 syncPolicy];
-        if (v10)
+        syncPolicy = [v9 syncPolicy];
+        if (syncPolicy)
         {
-          v11 = v10;
-          v12 = [v9 syncPolicy];
-          v13 = [v12 platformPolicies];
+          v11 = syncPolicy;
+          syncPolicy2 = [v9 syncPolicy];
+          platformPolicies = [syncPolicy2 platformPolicies];
 
-          if (v13)
+          if (platformPolicies)
           {
             [v3 addObject:v9];
           }

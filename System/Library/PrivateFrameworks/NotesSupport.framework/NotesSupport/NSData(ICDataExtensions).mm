@@ -18,9 +18,9 @@
   v11 = *MEMORY[0x1E69E9840];
   memset(&c, 0, sizeof(c));
   CC_MD5_Init(&c);
-  CC_MD5_Update(&c, [a1 bytes], objc_msgSend(a1, "length"));
+  CC_MD5_Update(&c, [self bytes], objc_msgSend(self, "length"));
   CC_MD5_Final(md, &c);
-  v2 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   for (i = 0; i != 16; ++i)
   {
     v4 = md[i];
@@ -47,16 +47,16 @@
       v7 = v6 | 0x30;
     }
 
-    [v2 appendFormat:@"%c%c", v5, v7];
+    [string appendFormat:@"%c%c", v5, v7];
   }
 
-  return v2;
+  return string;
 }
 
 - (id)ic_sha256
 {
   v2 = [MEMORY[0x1E695DF88] dataWithLength:32];
-  CC_SHA256([a1 bytes], objc_msgSend(a1, "length"), objc_msgSend(v2, "mutableBytes"));
+  CC_SHA256([self bytes], objc_msgSend(self, "length"), objc_msgSend(v2, "mutableBytes"));
   v3 = [v2 base64EncodedStringWithOptions:0];
 
   return v3;
@@ -64,7 +64,7 @@
 
 - (id)ic_stringValue
 {
-  v1 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:a1 encoding:4];
+  v1 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:self encoding:4];
 
   return v1;
 }
@@ -72,11 +72,11 @@
 - (uint64_t)ic_unsignedIntegerValue
 {
   v4 = 0;
-  v2 = [a1 length];
+  v2 = [self length];
   result = 0;
   if (v2 == 8)
   {
-    [a1 getBytes:&v4 length:8];
+    [self getBytes:&v4 length:8];
     return v4;
   }
 

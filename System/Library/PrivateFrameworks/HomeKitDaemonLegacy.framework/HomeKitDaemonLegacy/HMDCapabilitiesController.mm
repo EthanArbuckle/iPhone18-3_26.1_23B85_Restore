@@ -1,9 +1,9 @@
 @interface HMDCapabilitiesController
 + (id)logCategory;
-- (BOOL)areCurrentAccessoryCapabilitiesPresentAndDifferent:(id)a3;
-- (BOOL)areCurrentResidentCapabilitiesPresentAndDifferent:(id)a3;
+- (BOOL)areCurrentAccessoryCapabilitiesPresentAndDifferent:(id)different;
+- (BOOL)areCurrentResidentCapabilitiesPresentAndDifferent:(id)different;
 - (HMAccessoryCapabilities)currentAccessoryCapabilitiesInternal;
-- (HMDCapabilitiesController)initWithQueue:(id)a3 dataSource:(id)a4;
+- (HMDCapabilitiesController)initWithQueue:(id)queue dataSource:(id)source;
 - (HMResidentCapabilities)currentResidentCapabilitiesInternal;
 - (id)_lastCachedAccessoryCapabilities;
 - (id)_lastCachedResidentCapabilities;
@@ -13,28 +13,28 @@
 - (id)encodedCurrentResidentCapabilities;
 - (id)homeUUID;
 - (id)logIdentifier;
-- (void)_postCurrentAccessoryCapabilitiesEventIfNeeded:(uint64_t)a1;
-- (void)_postCurrentResidentCapabilitiesEventIfNeeded:(uint64_t)a1;
+- (void)_postCurrentAccessoryCapabilitiesEventIfNeeded:(uint64_t)needed;
+- (void)_postCurrentResidentCapabilitiesEventIfNeeded:(uint64_t)needed;
 - (void)currentAccessoryDidBecomeAvailable;
-- (void)didRemoveCurrentAccessory:(id)a3;
-- (void)setAccessoryUUID:(uint64_t)a1;
-- (void)setCurrentAccessoryCapabilitiesInternal:(id)a3;
-- (void)setCurrentResidentCapabilitiesInternal:(id)a3;
-- (void)setHomeUUID:(uint64_t)a1;
+- (void)didRemoveCurrentAccessory:(id)accessory;
+- (void)setAccessoryUUID:(uint64_t)d;
+- (void)setCurrentAccessoryCapabilitiesInternal:(id)internal;
+- (void)setCurrentResidentCapabilitiesInternal:(id)internal;
+- (void)setHomeUUID:(uint64_t)d;
 - (void)updateCurrentAccessoryCapabilities;
 @end
 
 @implementation HMDCapabilitiesController
 
-- (BOOL)areCurrentResidentCapabilitiesPresentAndDifferent:(id)a3
+- (BOOL)areCurrentResidentCapabilitiesPresentAndDifferent:(id)different
 {
-  v4 = a3;
-  v5 = [(HMDCapabilitiesController *)self _lastCachedResidentCapabilities];
-  v6 = [objc_alloc(MEMORY[0x277CD1D60]) initWithProtoData:v4];
+  differentCopy = different;
+  _lastCachedResidentCapabilities = [(HMDCapabilitiesController *)self _lastCachedResidentCapabilities];
+  v6 = [objc_alloc(MEMORY[0x277CD1D60]) initWithProtoData:differentCopy];
 
-  if (v5)
+  if (_lastCachedResidentCapabilities)
   {
-    v7 = [v5 isLocalEqual:v6] ^ 1;
+    v7 = [_lastCachedResidentCapabilities isLocalEqual:v6] ^ 1;
   }
 
   else
@@ -47,23 +47,23 @@
 
 - (id)_lastCachedResidentCapabilities
 {
-  if (a1)
+  if (self)
   {
     v2 = MEMORY[0x277CD16F0];
     v3 = *MEMORY[0x277CCEA88];
-    v4 = [(HMDCapabilitiesController *)a1 homeUUID];
-    v5 = [(HMDCapabilitiesController *)a1 accessoryUUID];
-    v6 = [v2 topicFromSuffixID:v3 homeUUID:v4 accessoryUUID:v5];
+    homeUUID = [(HMDCapabilitiesController *)self homeUUID];
+    accessoryUUID = [(HMDCapabilitiesController *)self accessoryUUID];
+    v6 = [v2 topicFromSuffixID:v3 homeUUID:homeUUID accessoryUUID:accessoryUUID];
 
-    WeakRetained = objc_loadWeakRetained((a1 + 56));
-    v8 = [WeakRetained eventStoreReadHandle];
-    v9 = [v8 lastEventForTopic:v6];
+    WeakRetained = objc_loadWeakRetained((self + 56));
+    eventStoreReadHandle = [WeakRetained eventStoreReadHandle];
+    v9 = [eventStoreReadHandle lastEventForTopic:v6];
 
     if (v9)
     {
       v10 = objc_alloc(MEMORY[0x277CD1D60]);
-      v11 = [v9 encodedData];
-      v12 = [v10 initWithProtoData:v11];
+      encodedData = [v9 encodedData];
+      v12 = [v10 initWithProtoData:encodedData];
     }
 
     else
@@ -82,11 +82,11 @@
 
 - (id)homeUUID
 {
-  if (a1)
+  if (self)
   {
     os_unfair_lock_lock_with_options();
-    v2 = *(a1 + 16);
-    os_unfair_lock_unlock((a1 + 8));
+    v2 = *(self + 16);
+    os_unfair_lock_unlock((self + 8));
   }
 
   else
@@ -99,11 +99,11 @@
 
 - (id)accessoryUUID
 {
-  if (a1)
+  if (self)
   {
     os_unfair_lock_lock_with_options();
-    v2 = *(a1 + 24);
-    os_unfair_lock_unlock((a1 + 8));
+    v2 = *(self + 24);
+    os_unfair_lock_unlock((self + 8));
   }
 
   else
@@ -114,15 +114,15 @@
   return v2;
 }
 
-- (BOOL)areCurrentAccessoryCapabilitiesPresentAndDifferent:(id)a3
+- (BOOL)areCurrentAccessoryCapabilitiesPresentAndDifferent:(id)different
 {
-  v4 = a3;
-  v5 = [(HMDCapabilitiesController *)self _lastCachedAccessoryCapabilities];
-  v6 = [objc_alloc(MEMORY[0x277CD1678]) initWithProtoData:v4];
+  differentCopy = different;
+  _lastCachedAccessoryCapabilities = [(HMDCapabilitiesController *)self _lastCachedAccessoryCapabilities];
+  v6 = [objc_alloc(MEMORY[0x277CD1678]) initWithProtoData:differentCopy];
 
-  if (v5)
+  if (_lastCachedAccessoryCapabilities)
   {
-    v7 = [v5 isLocalEqual:v6] ^ 1;
+    v7 = [_lastCachedAccessoryCapabilities isLocalEqual:v6] ^ 1;
   }
 
   else
@@ -135,23 +135,23 @@
 
 - (id)_lastCachedAccessoryCapabilities
 {
-  if (a1)
+  if (self)
   {
     v2 = MEMORY[0x277CD16F0];
     v3 = *MEMORY[0x277CCEA50];
-    v4 = [(HMDCapabilitiesController *)a1 homeUUID];
-    v5 = [(HMDCapabilitiesController *)a1 accessoryUUID];
-    v6 = [v2 topicFromSuffixID:v3 homeUUID:v4 accessoryUUID:v5];
+    homeUUID = [(HMDCapabilitiesController *)self homeUUID];
+    accessoryUUID = [(HMDCapabilitiesController *)self accessoryUUID];
+    v6 = [v2 topicFromSuffixID:v3 homeUUID:homeUUID accessoryUUID:accessoryUUID];
 
-    WeakRetained = objc_loadWeakRetained((a1 + 56));
-    v8 = [WeakRetained eventStoreReadHandle];
-    v9 = [v8 lastEventForTopic:v6];
+    WeakRetained = objc_loadWeakRetained((self + 56));
+    eventStoreReadHandle = [WeakRetained eventStoreReadHandle];
+    v9 = [eventStoreReadHandle lastEventForTopic:v6];
 
     if (v9)
     {
       v10 = objc_alloc(MEMORY[0x277CD1678]);
-      v11 = [v9 encodedData];
-      v12 = [v10 initWithProtoData:v11];
+      encodedData = [v9 encodedData];
+      v12 = [v10 initWithProtoData:encodedData];
     }
 
     else
@@ -168,9 +168,9 @@
   return v12;
 }
 
-- (void)didRemoveCurrentAccessory:(id)a3
+- (void)didRemoveCurrentAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   if (self)
   {
     queue = self->_queue;
@@ -186,8 +186,8 @@
   v7[2] = __55__HMDCapabilitiesController_didRemoveCurrentAccessory___block_invoke;
   v7[3] = &unk_2797359B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = accessoryCopy;
+  v6 = accessoryCopy;
   dispatch_async(queue, v7);
 }
 
@@ -218,31 +218,31 @@ void __55__HMDCapabilitiesController_didRemoveCurrentAccessory___block_invoke(ui
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAccessoryUUID:(uint64_t)a1
+- (void)setAccessoryUUID:(uint64_t)d
 {
   v5 = a2;
-  if (a1)
+  if (d)
   {
     os_unfair_lock_lock_with_options();
     v3 = [v5 copy];
-    v4 = *(a1 + 24);
-    *(a1 + 24) = v3;
+    v4 = *(d + 24);
+    *(d + 24) = v3;
 
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_unlock((d + 8));
   }
 }
 
-- (void)setHomeUUID:(uint64_t)a1
+- (void)setHomeUUID:(uint64_t)d
 {
   v5 = a2;
-  if (a1)
+  if (d)
   {
     os_unfair_lock_lock_with_options();
     v3 = [v5 copy];
-    v4 = *(a1 + 16);
-    *(a1 + 16) = v3;
+    v4 = *(d + 16);
+    *(d + 16) = v3;
 
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_unlock((d + 8));
   }
 }
 
@@ -388,34 +388,34 @@ LABEL_24:
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_postCurrentAccessoryCapabilitiesEventIfNeeded:(uint64_t)a1
+- (void)_postCurrentAccessoryCapabilitiesEventIfNeeded:(uint64_t)needed
 {
   v33 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (needed)
   {
-    dispatch_assert_queue_V2(*(a1 + 48));
-    WeakRetained = objc_loadWeakRetained((a1 + 56));
+    dispatch_assert_queue_V2(*(needed + 48));
+    WeakRetained = objc_loadWeakRetained((needed + 56));
     if (WeakRetained)
     {
-      v5 = [(HMDCapabilitiesController *)a1 homeUUID];
-      if (v5)
+      homeUUID = [(HMDCapabilitiesController *)needed homeUUID];
+      if (homeUUID)
       {
-        v6 = v5;
-        v7 = [(HMDCapabilitiesController *)a1 accessoryUUID];
+        v6 = homeUUID;
+        accessoryUUID = [(HMDCapabilitiesController *)needed accessoryUUID];
 
-        if (v7)
+        if (accessoryUUID)
         {
           v8 = MEMORY[0x277CD16F0];
           v9 = *MEMORY[0x277CCEA50];
-          v10 = [(HMDCapabilitiesController *)a1 homeUUID];
-          v11 = [(HMDCapabilitiesController *)a1 accessoryUUID];
-          v12 = [v8 topicFromSuffixID:v9 homeUUID:v10 accessoryUUID:v11];
+          homeUUID2 = [(HMDCapabilitiesController *)needed homeUUID];
+          accessoryUUID2 = [(HMDCapabilitiesController *)needed accessoryUUID];
+          v12 = [v8 topicFromSuffixID:v9 homeUUID:homeUUID2 accessoryUUID:accessoryUUID2];
 
-          v13 = [(HMDCapabilitiesController *)a1 _lastCachedAccessoryCapabilities];
-          v14 = [v3 isLocalEqual:v13];
+          _lastCachedAccessoryCapabilities = [(HMDCapabilitiesController *)needed _lastCachedAccessoryCapabilities];
+          v14 = [v3 isLocalEqual:_lastCachedAccessoryCapabilities];
           v15 = objc_autoreleasePoolPush();
-          v16 = a1;
+          neededCopy = needed;
           v17 = HMFGetOSLogHandle();
           v18 = v17;
           if (v14)
@@ -447,18 +447,18 @@ LABEL_24:
 
             objc_autoreleasePoolPop(v15);
             v21 = objc_alloc(MEMORY[0x277D174A0]);
-            v22 = [v3 pbCapabilities];
-            v23 = [v22 data];
-            v24 = [(HMDCapabilitiesController *)v16 _metadataForEvent];
-            v25 = [v21 initWithEventData:v23 metadata:v24];
+            pbCapabilities = [v3 pbCapabilities];
+            data = [pbCapabilities data];
+            _metadataForEvent = [(HMDCapabilitiesController *)neededCopy _metadataForEvent];
+            v25 = [v21 initWithEventData:data metadata:_metadataForEvent];
 
-            v26 = [WeakRetained eventForwarder];
+            eventForwarder = [WeakRetained eventForwarder];
             v28[0] = MEMORY[0x277D85DD0];
             v28[1] = 3221225472;
             v28[2] = __76__HMDCapabilitiesController__postCurrentAccessoryCapabilitiesEventIfNeeded___block_invoke;
             v28[3] = &unk_2797359D8;
-            v28[4] = v16;
-            [v26 forwardEvent:v25 topic:v12 completion:v28];
+            v28[4] = neededCopy;
+            [eventForwarder forwardEvent:v25 topic:v12 completion:v28];
           }
         }
       }
@@ -468,37 +468,37 @@ LABEL_24:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_postCurrentResidentCapabilitiesEventIfNeeded:(uint64_t)a1
+- (void)_postCurrentResidentCapabilitiesEventIfNeeded:(uint64_t)needed
 {
   v34 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (needed)
   {
-    dispatch_assert_queue_V2(*(a1 + 48));
-    WeakRetained = objc_loadWeakRetained((a1 + 56));
+    dispatch_assert_queue_V2(*(needed + 48));
+    WeakRetained = objc_loadWeakRetained((needed + 56));
     if (WeakRetained)
     {
-      v5 = [(HMDCapabilitiesController *)a1 homeUUID];
-      if (v5)
+      homeUUID = [(HMDCapabilitiesController *)needed homeUUID];
+      if (homeUUID)
       {
-        v6 = v5;
-        v7 = [(HMDCapabilitiesController *)a1 accessoryUUID];
+        v6 = homeUUID;
+        accessoryUUID = [(HMDCapabilitiesController *)needed accessoryUUID];
 
-        if (v7)
+        if (accessoryUUID)
         {
           v8 = MEMORY[0x277CD16F0];
           v9 = *MEMORY[0x277CCEA88];
-          v10 = [(HMDCapabilitiesController *)a1 homeUUID];
-          v11 = [(HMDCapabilitiesController *)a1 accessoryUUID];
-          v12 = [v8 topicFromSuffixID:v9 homeUUID:v10 accessoryUUID:v11];
+          homeUUID2 = [(HMDCapabilitiesController *)needed homeUUID];
+          accessoryUUID2 = [(HMDCapabilitiesController *)needed accessoryUUID];
+          v12 = [v8 topicFromSuffixID:v9 homeUUID:homeUUID2 accessoryUUID:accessoryUUID2];
 
-          v13 = [(HMDCapabilitiesController *)a1 _lastCachedResidentCapabilities];
-          if ([v3 isLocalEqual:v13])
+          _lastCachedResidentCapabilities = [(HMDCapabilitiesController *)needed _lastCachedResidentCapabilities];
+          if ([v3 isLocalEqual:_lastCachedResidentCapabilities])
           {
             if (v3)
             {
               v14 = objc_autoreleasePoolPush();
-              v15 = a1;
+              neededCopy = needed;
               v16 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
               {
@@ -517,7 +517,7 @@ LABEL_24:
           else
           {
             v18 = objc_autoreleasePoolPush();
-            v19 = a1;
+            neededCopy2 = needed;
             v20 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
             {
@@ -531,18 +531,18 @@ LABEL_24:
 
             objc_autoreleasePoolPop(v18);
             v22 = objc_alloc(MEMORY[0x277D174A0]);
-            v23 = [v3 pbCapabilities];
-            v24 = [v23 data];
-            v25 = [(HMDCapabilitiesController *)v19 _metadataForEvent];
-            v26 = [v22 initWithEventData:v24 metadata:v25];
+            pbCapabilities = [v3 pbCapabilities];
+            data = [pbCapabilities data];
+            _metadataForEvent = [(HMDCapabilitiesController *)neededCopy2 _metadataForEvent];
+            v26 = [v22 initWithEventData:data metadata:_metadataForEvent];
 
-            v27 = [WeakRetained eventForwarder];
+            eventForwarder = [WeakRetained eventForwarder];
             v29[0] = MEMORY[0x277D85DD0];
             v29[1] = 3221225472;
             v29[2] = __75__HMDCapabilitiesController__postCurrentResidentCapabilitiesEventIfNeeded___block_invoke;
             v29[3] = &unk_2797359D8;
-            v29[4] = v19;
-            [v27 forwardEvent:v26 topic:v12 completion:v29];
+            v29[4] = neededCopy2;
+            [eventForwarder forwardEvent:v26 topic:v12 completion:v29];
           }
         }
       }
@@ -555,10 +555,10 @@ LABEL_24:
 - (id)_metadataForEvent
 {
   v2 = objc_alloc(MEMORY[0x277D174B0]);
-  v3 = [(HMDCapabilitiesController *)a1 accessoryUUID];
-  v4 = [v3 UUIDString];
+  accessoryUUID = [(HMDCapabilitiesController *)self accessoryUUID];
+  uUIDString = [accessoryUUID UUIDString];
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
-  v5 = [v2 initWithSource:v4 cachePolicy:2 combineType:2 timestamp:?];
+  v5 = [v2 initWithSource:uUIDString cachePolicy:2 combineType:2 timestamp:?];
 
   return v5;
 }
@@ -607,28 +607,28 @@ void __76__HMDCapabilitiesController__postCurrentAccessoryCapabilitiesEventIfNee
 
 - (id)encodedCurrentResidentCapabilities
 {
-  v2 = [(HMDCapabilitiesController *)self currentResidentCapabilitiesInternal];
-  v3 = [v2 pbCapabilities];
-  v4 = [v3 data];
+  currentResidentCapabilitiesInternal = [(HMDCapabilitiesController *)self currentResidentCapabilitiesInternal];
+  pbCapabilities = [currentResidentCapabilitiesInternal pbCapabilities];
+  data = [pbCapabilities data];
 
-  return v4;
+  return data;
 }
 
 - (id)encodedCurrentAccessoryCapabilities
 {
-  v2 = [(HMDCapabilitiesController *)self currentAccessoryCapabilitiesInternal];
-  v3 = [v2 pbCapabilities];
-  v4 = [v3 data];
+  currentAccessoryCapabilitiesInternal = [(HMDCapabilitiesController *)self currentAccessoryCapabilitiesInternal];
+  pbCapabilities = [currentAccessoryCapabilitiesInternal pbCapabilities];
+  data = [pbCapabilities data];
 
-  return v4;
+  return data;
 }
 
-- (void)setCurrentResidentCapabilitiesInternal:(id)a3
+- (void)setCurrentResidentCapabilitiesInternal:(id)internal
 {
-  v4 = a3;
+  internalCopy = internal;
   os_unfair_lock_lock_with_options();
   currentResidentCapabilitiesInternal = self->_currentResidentCapabilitiesInternal;
-  self->_currentResidentCapabilitiesInternal = v4;
+  self->_currentResidentCapabilitiesInternal = internalCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -642,12 +642,12 @@ void __76__HMDCapabilitiesController__postCurrentAccessoryCapabilitiesEventIfNee
   return v3;
 }
 
-- (void)setCurrentAccessoryCapabilitiesInternal:(id)a3
+- (void)setCurrentAccessoryCapabilitiesInternal:(id)internal
 {
-  v4 = a3;
+  internalCopy = internal;
   os_unfair_lock_lock_with_options();
   currentAccessoryCapabilitiesInternal = self->_currentAccessoryCapabilitiesInternal;
-  self->_currentAccessoryCapabilitiesInternal = v4;
+  self->_currentAccessoryCapabilitiesInternal = internalCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -667,30 +667,30 @@ void __76__HMDCapabilitiesController__postCurrentAccessoryCapabilitiesEventIfNee
   if (self && (WeakRetained = objc_loadWeakRetained(&self->_dataSource)) != 0)
   {
     v4 = WeakRetained;
-    v5 = [WeakRetained createCurrentAccessoryCapabilities];
-    v6 = [(HMDCapabilitiesController *)self _lastCachedAccessoryCapabilities];
-    v7 = v6;
-    if (v6 && [v6 isLocalEqual:v5])
+    createCurrentAccessoryCapabilities = [WeakRetained createCurrentAccessoryCapabilities];
+    _lastCachedAccessoryCapabilities = [(HMDCapabilitiesController *)self _lastCachedAccessoryCapabilities];
+    v7 = _lastCachedAccessoryCapabilities;
+    if (_lastCachedAccessoryCapabilities && [_lastCachedAccessoryCapabilities isLocalEqual:createCurrentAccessoryCapabilities])
     {
       v8 = v7;
 
-      v5 = v8;
+      createCurrentAccessoryCapabilities = v8;
     }
 
-    objc_storeStrong(&self->_currentAccessoryCapabilitiesInternal, v5);
-    v9 = [v4 createCurrentResidentCapabilities];
-    v10 = [(HMDCapabilitiesController *)self _lastCachedResidentCapabilities];
-    v11 = v10;
-    if (v10 && [v10 isLocalEqual:v9])
+    objc_storeStrong(&self->_currentAccessoryCapabilitiesInternal, createCurrentAccessoryCapabilities);
+    createCurrentResidentCapabilities = [v4 createCurrentResidentCapabilities];
+    _lastCachedResidentCapabilities = [(HMDCapabilitiesController *)self _lastCachedResidentCapabilities];
+    v11 = _lastCachedResidentCapabilities;
+    if (_lastCachedResidentCapabilities && [_lastCachedResidentCapabilities isLocalEqual:createCurrentResidentCapabilities])
     {
       v12 = v11;
 
-      v9 = v12;
+      createCurrentResidentCapabilities = v12;
     }
 
-    objc_storeStrong(&self->_currentResidentCapabilitiesInternal, v9);
+    objc_storeStrong(&self->_currentResidentCapabilitiesInternal, createCurrentResidentCapabilities);
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
@@ -701,23 +701,23 @@ void __76__HMDCapabilitiesController__postCurrentAccessoryCapabilitiesEventIfNee
     }
 
     objc_autoreleasePoolPop(v13);
-    queue = v14->_queue;
+    queue = selfCopy->_queue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __63__HMDCapabilitiesController_updateCurrentAccessoryCapabilities__block_invoke;
     block[3] = &unk_279734960;
-    block[4] = v14;
-    v26 = v5;
-    v27 = v9;
-    v18 = v9;
-    v19 = v5;
+    block[4] = selfCopy;
+    v26 = createCurrentAccessoryCapabilities;
+    v27 = createCurrentResidentCapabilities;
+    v18 = createCurrentResidentCapabilities;
+    v19 = createCurrentAccessoryCapabilities;
     dispatch_async(queue, block);
   }
 
   else
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy2 = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
@@ -742,10 +742,10 @@ void __63__HMDCapabilitiesController_updateCurrentAccessoryCapabilities__block_i
   [(HMDCapabilitiesController *)v2 _postCurrentResidentCapabilitiesEventIfNeeded:v3];
 }
 
-- (HMDCapabilitiesController)initWithQueue:(id)a3 dataSource:(id)a4
+- (HMDCapabilitiesController)initWithQueue:(id)queue dataSource:(id)source
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  sourceCopy = source;
   v16.receiver = self;
   v16.super_class = HMDCapabilitiesController;
   v9 = [(HMDCapabilitiesController *)&v16 init];
@@ -753,15 +753,15 @@ void __63__HMDCapabilitiesController_updateCurrentAccessoryCapabilities__block_i
   if (v9)
   {
     v9->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v9->_queue, a3);
-    objc_storeWeak(&v10->_dataSource, v8);
-    v11 = [v8 currentAccessoryHomeUUID];
+    objc_storeStrong(&v9->_queue, queue);
+    objc_storeWeak(&v10->_dataSource, sourceCopy);
+    currentAccessoryHomeUUID = [sourceCopy currentAccessoryHomeUUID];
     homeUUID = v10->_homeUUID;
-    v10->_homeUUID = v11;
+    v10->_homeUUID = currentAccessoryHomeUUID;
 
-    v13 = [v8 currentAccessoryUUID];
+    currentAccessoryUUID = [sourceCopy currentAccessoryUUID];
     accessoryUUID = v10->_accessoryUUID;
-    v10->_accessoryUUID = v13;
+    v10->_accessoryUUID = currentAccessoryUUID;
   }
 
   [(HMDCapabilitiesController *)v10 updateCurrentAccessoryCapabilities];
@@ -771,10 +771,10 @@ void __63__HMDCapabilitiesController_updateCurrentAccessoryCapabilities__block_i
 
 - (id)logIdentifier
 {
-  v2 = [(HMDCapabilitiesController *)self accessoryUUID];
-  v3 = [v2 UUIDString];
+  accessoryUUID = [(HMDCapabilitiesController *)self accessoryUUID];
+  uUIDString = [accessoryUUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 + (id)logCategory

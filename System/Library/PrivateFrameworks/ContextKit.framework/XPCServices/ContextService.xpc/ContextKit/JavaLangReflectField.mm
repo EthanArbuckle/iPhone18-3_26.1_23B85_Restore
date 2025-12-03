@@ -1,34 +1,34 @@
 @interface JavaLangReflectField
-+ (JavaLangReflectField)fieldWithIvar:(objc_ivar *)a3 withClass:(id)a4 withMetadata:(id)a5;
-+ (id)propertyName:(id)a3;
-+ (id)variableName:(id)a3;
-- (BOOL)getBooleanWithId:(id)a3;
++ (JavaLangReflectField)fieldWithIvar:(objc_ivar *)ivar withClass:(id)class withMetadata:(id)metadata;
++ (id)propertyName:(id)name;
++ (id)variableName:(id)name;
+- (BOOL)getBooleanWithId:(id)id;
 - (BOOL)isEnumConstant;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isSynthetic;
-- (JavaLangReflectField)initWithIvar:(objc_ivar *)a3 withClass:(id)a4 withMetadata:(id)a5;
+- (JavaLangReflectField)initWithIvar:(objc_ivar *)ivar withClass:(id)class withMetadata:(id)metadata;
 - (NSString)description;
-- (char)getByteWithId:(id)a3;
-- (double)getDoubleWithId:(id)a3;
-- (float)getFloatWithId:(id)a3;
+- (char)getByteWithId:(id)id;
+- (double)getDoubleWithId:(id)id;
+- (float)getFloatWithId:(id)id;
 - (id)getDeclaredAnnotations;
 - (id)getGenericType;
 - (id)getType;
-- (id)getWithId:(id)a3;
+- (id)getWithId:(id)id;
 - (id)propertyName;
 - (id)toGenericString;
-- (int)getIntWithId:(id)a3;
+- (int)getIntWithId:(id)id;
 - (int)getModifiers;
-- (int64_t)getLongWithId:(id)a3;
-- (signed)getShortWithId:(id)a3;
-- (unsigned)getCharWithId:(id)a3;
+- (int64_t)getLongWithId:(id)id;
+- (signed)getShortWithId:(id)id;
+- (unsigned)getCharWithId:(id)id;
 - (void)dealloc;
-- (void)setWithId:(id)a3 withId:(id)a4;
+- (void)setWithId:(id)id withId:(id)withId;
 @end
 
 @implementation JavaLangReflectField
 
-- (JavaLangReflectField)initWithIvar:(objc_ivar *)a3 withClass:(id)a4 withMetadata:(id)a5
+- (JavaLangReflectField)initWithIvar:(objc_ivar *)ivar withClass:(id)class withMetadata:(id)metadata
 {
   v11.receiver = self;
   v11.super_class = JavaLangReflectField;
@@ -36,17 +36,17 @@
   v9 = v8;
   if (v8)
   {
-    v8->ivar_ = a3;
-    v8->declaringClass_ = a4;
-    v8->metadata_ = a5;
+    v8->ivar_ = ivar;
+    v8->declaringClass_ = class;
+    v8->metadata_ = metadata;
   }
 
   return v9;
 }
 
-+ (JavaLangReflectField)fieldWithIvar:(objc_ivar *)a3 withClass:(id)a4 withMetadata:(id)a5
++ (JavaLangReflectField)fieldWithIvar:(objc_ivar *)ivar withClass:(id)class withMetadata:(id)metadata
 {
-  v5 = [[JavaLangReflectField alloc] initWithIvar:a3 withClass:a4 withMetadata:a5];
+  v5 = [[JavaLangReflectField alloc] initWithIvar:ivar withClass:class withMetadata:metadata];
   v6 = v5;
   return v5;
 }
@@ -65,103 +65,103 @@
   }
 
   v5 = [(__CFString *)v4 length];
-  v6 = [(JavaLangReflectField *)self getType];
+  getType = [(JavaLangReflectField *)self getType];
   v7 = [-[JavaLangReflectField getDeclaringClass](self "getDeclaringClass")];
-  v8 = [(JavaLangReflectField *)self propertyName];
+  propertyName = [(JavaLangReflectField *)self propertyName];
   if (v5)
   {
-    return [NSString stringWithFormat:@"%@ %@ %@.%@", v4, v6, v7, v8];
+    return [NSString stringWithFormat:@"%@ %@ %@.%@", v4, getType, v7, propertyName];
   }
 
   else
   {
-    return [NSString stringWithFormat:@"%@ %@.%@", v6, v7, v8, v10];
+    return [NSString stringWithFormat:@"%@ %@.%@", getType, v7, propertyName, v10];
   }
 }
 
-- (id)getWithId:(id)a3
+- (id)getWithId:(id)id
 {
   v7 = 0;
-  v5 = [(JavaLangReflectField *)self getType];
-  sub_10022FD08(&v7, self, a3, v5);
-  return [v5 __boxValue:&v7];
+  getType = [(JavaLangReflectField *)self getType];
+  sub_10022FD08(&v7, self, id, getType);
+  return [getType __boxValue:&v7];
 }
 
-- (BOOL)getBooleanWithId:(id)a3
+- (BOOL)getBooleanWithId:(id)id
 {
   v4 = 0;
-  sub_10022FD08(&v4, self, a3, +[IOSClass BOOLeanClass]);
+  sub_10022FD08(&v4, self, id, +[IOSClass BOOLeanClass]);
   return v4;
 }
 
-- (char)getByteWithId:(id)a3
+- (char)getByteWithId:(id)id
 {
   v4 = 0;
-  sub_10022FD08(&v4, self, a3, +[IOSClass byteClass]);
+  sub_10022FD08(&v4, self, id, +[IOSClass byteClass]);
   return v4;
 }
 
-- (unsigned)getCharWithId:(id)a3
+- (unsigned)getCharWithId:(id)id
 {
   v4 = 0;
-  sub_10022FD08(&v4, self, a3, +[IOSClass charClass]);
+  sub_10022FD08(&v4, self, id, +[IOSClass charClass]);
   return v4;
 }
 
-- (double)getDoubleWithId:(id)a3
+- (double)getDoubleWithId:(id)id
 {
   v4 = 0.0;
-  sub_10022FD08(&v4, self, a3, +[IOSClass doubleClass]);
+  sub_10022FD08(&v4, self, id, +[IOSClass doubleClass]);
   return v4;
 }
 
-- (float)getFloatWithId:(id)a3
+- (float)getFloatWithId:(id)id
 {
   v4 = 0;
-  sub_10022FD08(&v4, self, a3, +[IOSClass floatClass]);
+  sub_10022FD08(&v4, self, id, +[IOSClass floatClass]);
   return *&v4;
 }
 
-- (int)getIntWithId:(id)a3
+- (int)getIntWithId:(id)id
 {
   v4 = 0;
-  sub_10022FD08(&v4, self, a3, +[IOSClass intClass]);
+  sub_10022FD08(&v4, self, id, +[IOSClass intClass]);
   return v4;
 }
 
-- (int64_t)getLongWithId:(id)a3
+- (int64_t)getLongWithId:(id)id
 {
   v4 = 0;
-  sub_10022FD08(&v4, self, a3, +[IOSClass longClass]);
+  sub_10022FD08(&v4, self, id, +[IOSClass longClass]);
   return v4;
 }
 
-- (signed)getShortWithId:(id)a3
+- (signed)getShortWithId:(id)id
 {
   v4 = 0;
-  sub_10022FD08(&v4, self, a3, +[IOSClass shortClass]);
+  sub_10022FD08(&v4, self, id, +[IOSClass shortClass]);
   return v4;
 }
 
-- (void)setWithId:(id)a3 withId:(id)a4
+- (void)setWithId:(id)id withId:(id)withId
 {
-  v7 = [(JavaLangReflectField *)self getType];
-  v8 = [v7 isPrimitive];
-  if ((v8 & 1) == 0)
+  getType = [(JavaLangReflectField *)self getType];
+  isPrimitive = [getType isPrimitive];
+  if ((isPrimitive & 1) == 0)
   {
-    v9 = [(JavaLangReflectField *)self getWithId:a3];
+    v9 = [(JavaLangReflectField *)self getWithId:id];
   }
 
   v11 = 0;
-  if (([v7 __unboxValue:a4 toRawValue:&v11] & 1) == 0)
+  if (([getType __unboxValue:withId toRawValue:&v11] & 1) == 0)
   {
     objc_exception_throw([[JavaLangIllegalArgumentException alloc] initWithNSString:@"field type mismatch"]);
   }
 
-  sub_10023016C(&v11, self, a3, v7);
-  if ((v8 & 1) == 0)
+  sub_10023016C(&v11, self, id, getType);
+  if ((isPrimitive & 1) == 0)
   {
-    v10 = a4;
+    withIdCopy = withId;
   }
 }
 
@@ -169,9 +169,9 @@
 {
   if (self->metadata_)
   {
-    v2 = [(JavaFieldMetadata *)self->metadata_ type];
+    type = [(JavaFieldMetadata *)self->metadata_ type];
 
-    return TypeToClass(v2);
+    return TypeToClass(type);
   }
 
   else if (self->ivar_)
@@ -195,25 +195,25 @@
 
 - (id)getGenericType
 {
-  v3 = [(JavaLangReflectField *)self getType];
+  getType = [(JavaLangReflectField *)self getType];
   metadata = self->metadata_;
   if (metadata)
   {
-    v5 = [(JavaFieldMetadata *)metadata genericSignature];
-    if (v5)
+    genericSignature = [(JavaFieldMetadata *)metadata genericSignature];
+    if (genericSignature)
     {
-      v6 = v5;
+      v6 = genericSignature;
       v7 = [[LibcoreReflectGenericSignatureParser alloc] initWithJavaLangClassLoader:JavaLangClassLoader_getSystemClassLoader()];
       [(LibcoreReflectGenericSignatureParser *)v7 parseForFieldWithJavaLangReflectGenericDeclaration:self->declaringClass_ withNSString:v6];
       fieldType = v7->fieldType_;
       if (fieldType)
       {
-        v3 = fieldType;
+        getType = fieldType;
       }
     }
   }
 
-  return v3;
+  return getType;
 }
 
 - (int)getModifiers
@@ -234,36 +234,36 @@
 {
   if (self->metadata_)
   {
-    v2 = [(JavaFieldMetadata *)self->metadata_ name];
+    name = [(JavaFieldMetadata *)self->metadata_ name];
   }
 
   else
   {
-    v2 = [NSString stringWithUTF8String:ivar_getName(self->ivar_)];
+    name = [NSString stringWithUTF8String:ivar_getName(self->ivar_)];
   }
 
-  return [JavaLangReflectField propertyName:v2];
+  return [JavaLangReflectField propertyName:name];
 }
 
-+ (id)propertyName:(id)a3
++ (id)propertyName:(id)name
 {
-  v4 = [a3 length] - 1;
-  if ([a3 characterAtIndex:v4] != 95)
+  v4 = [name length] - 1;
+  if ([name characterAtIndex:v4] != 95)
   {
-    return a3;
+    return name;
   }
 
-  return [a3 substringToIndex:v4];
+  return [name substringToIndex:v4];
 }
 
-+ (id)variableName:(id)a3
++ (id)variableName:(id)name
 {
-  if ([a3 characterAtIndex:{objc_msgSend(a3, "length") - 1}] == 95)
+  if ([name characterAtIndex:{objc_msgSend(name, "length") - 1}] == 95)
   {
-    return a3;
+    return name;
   }
 
-  return [a3 stringByAppendingString:@"_"];
+  return [name stringByAppendingString:@"_"];
 }
 
 - (BOOL)isSynthetic
@@ -287,17 +287,17 @@
 
   else
   {
-    v4 = [(IOSClass *)self->declaringClass_ isEnum];
-    if (v4)
+    isEnum = [(IOSClass *)self->declaringClass_ isEnum];
+    if (isEnum)
     {
-      v5 = [(JavaLangReflectField *)self getType];
+      getType = [(JavaLangReflectField *)self getType];
       declaringClass = self->declaringClass_;
 
-      LOBYTE(v4) = [v5 isEqual:declaringClass];
+      LOBYTE(isEnum) = [getType isEqual:declaringClass];
     }
   }
 
-  return v4;
+  return isEnum;
 }
 
 - (id)toGenericString
@@ -318,24 +318,24 @@
     v4 = [(__CFString *)v4 stringByAppendingString:@" "];
   }
 
-  v5 = [(JavaLangReflectField *)self getGenericType];
-  if ([v5 conformsToProtocol:&OBJC_PROTOCOL___JavaLangReflectTypeVariable])
+  getGenericType = [(JavaLangReflectField *)self getGenericType];
+  if ([getGenericType conformsToProtocol:&OBJC_PROTOCOL___JavaLangReflectTypeVariable])
   {
-    v6 = [v5 getName];
+    getName = [getGenericType getName];
   }
 
   else
   {
-    v6 = [v5 description];
+    getName = [getGenericType description];
   }
 
-  return +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@%@ %@.%@", v4, v6, [-[JavaLangReflectField getDeclaringClass](self "getDeclaringClass")], -[JavaLangReflectField propertyName](self, "propertyName"));
+  return +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@%@ %@.%@", v4, getName, [-[JavaLangReflectField getDeclaringClass](self "getDeclaringClass")], -[JavaLangReflectField propertyName](self, "propertyName"));
 }
 
 - (id)getDeclaredAnnotations
 {
-  v3 = [(IOSClass *)self->declaringClass_ objcClass];
-  if (v3 && JreFindClassMethod(v3, [[NSString stringWithFormat:?])
+  objcClass = [(IOSClass *)self->declaringClass_ objcClass];
+  if (objcClass && JreFindClassMethod(objcClass, [[NSString stringWithFormat:?])
   {
 
     method_invoke();
@@ -351,18 +351,18 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || self->declaringClass_ != *(a3 + 3))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || self->declaringClass_ != *(equal + 3))
   {
     return 0;
   }
 
-  v6 = [(JavaLangReflectField *)self propertyName];
-  v7 = [a3 propertyName];
+  propertyName = [(JavaLangReflectField *)self propertyName];
+  propertyName2 = [equal propertyName];
 
-  return [v6 isEqual:v7];
+  return [propertyName isEqual:propertyName2];
 }
 
 - (void)dealloc

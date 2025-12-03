@@ -1,9 +1,9 @@
 @interface MIOMultiArrayShapeConstraint
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MIOMultiArrayShapeConstraint)init;
-- (MIOMultiArrayShapeConstraint)initWithEnumeratedShapes:(id)a3;
-- (MIOMultiArrayShapeConstraint)initWithSizeRangeForDimension:(id)a3;
-- (MIOMultiArrayShapeConstraint)initWithSpecification:(const void *)a3;
+- (MIOMultiArrayShapeConstraint)initWithEnumeratedShapes:(id)shapes;
+- (MIOMultiArrayShapeConstraint)initWithSizeRangeForDimension:(id)dimension;
+- (MIOMultiArrayShapeConstraint)initWithSpecification:(const void *)specification;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -31,15 +31,15 @@
   return v3;
 }
 
-- (MIOMultiArrayShapeConstraint)initWithSizeRangeForDimension:(id)a3
+- (MIOMultiArrayShapeConstraint)initWithSizeRangeForDimension:(id)dimension
 {
-  v4 = a3;
+  dimensionCopy = dimension;
   v5 = [(MIOMultiArrayShapeConstraint *)self init];
   v6 = v5;
   if (v5)
   {
     v5->_type = 3;
-    v7 = [v4 copy];
+    v7 = [dimensionCopy copy];
     sizeRangeForDimension = v6->_sizeRangeForDimension;
     v6->_sizeRangeForDimension = v7;
 
@@ -51,17 +51,17 @@
   return v6;
 }
 
-- (MIOMultiArrayShapeConstraint)initWithEnumeratedShapes:(id)a3
+- (MIOMultiArrayShapeConstraint)initWithEnumeratedShapes:(id)shapes
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  shapesCopy = shapes;
   v5 = [(MIOMultiArrayShapeConstraint *)self init];
   v35 = v5;
-  if (v4)
+  if (shapesCopy)
   {
-    if ([v4 count])
+    if ([shapesCopy count])
     {
-      v6 = [v4 objectAtIndexedSubscript:0];
+      v6 = [shapesCopy objectAtIndexedSubscript:0];
       v7 = [v6 count];
 
       if (v7)
@@ -69,8 +69,8 @@
         if (v5)
         {
           v5->_type = 2;
-          v8 = [MEMORY[0x1E695DFB8] orderedSetWithArray:v4];
-          v34 = v4;
+          v8 = [MEMORY[0x1E695DFB8] orderedSetWithArray:shapesCopy];
+          v34 = shapesCopy;
           shapeSet = v5->_shapeSet;
           v5->_shapeSet = v8;
 
@@ -174,7 +174,7 @@
 
           free(v16);
           free(v18);
-          v4 = v34;
+          shapesCopy = v34;
         }
       }
     }
@@ -218,15 +218,15 @@ void __57__MIOMultiArrayShapeConstraint_initWithEnumeratedShapes___block_invoke(
   *(v10 + 8 * a3) = v11;
 }
 
-- (MIOMultiArrayShapeConstraint)initWithSpecification:(const void *)a3
+- (MIOMultiArrayShapeConstraint)initWithSpecification:(const void *)specification
 {
-  v5 = *(a3 + 15);
+  v5 = *(specification + 15);
   if (v5 == 31)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if (*(a3 + 15) == 31)
+    if (*(specification + 15) == 31)
     {
-      v19 = *(a3 + 5);
+      v19 = *(specification + 5);
     }
 
     else
@@ -279,9 +279,9 @@ void __57__MIOMultiArrayShapeConstraint_initWithEnumeratedShapes___block_invoke(
   if (v5 == 21)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if (*(a3 + 15) == 21)
+    if (*(specification + 15) == 21)
     {
-      v7 = *(a3 + 5);
+      v7 = *(specification + 5);
     }
 
     else
@@ -347,14 +347,14 @@ LABEL_29:
 {
   v29 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E696AD60]);
-  v4 = [(MIOMultiArrayShapeConstraint *)self type];
+  type = [(MIOMultiArrayShapeConstraint *)self type];
   v5 = @"unspecified";
-  if (v4 == 3)
+  if (type == 3)
   {
     v5 = @"ranges";
   }
 
-  if (v4 == 2)
+  if (type == 2)
   {
     v5 = @"enumerated";
   }
@@ -366,8 +366,8 @@ LABEL_29:
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v7 = [(MIOMultiArrayShapeConstraint *)self enumeratedShapes];
-    v8 = [v7 countByEnumeratingWithState:&v23 objects:v28 count:16];
+    enumeratedShapes = [(MIOMultiArrayShapeConstraint *)self enumeratedShapes];
+    v8 = [enumeratedShapes countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v8)
     {
       v9 = *v24;
@@ -377,14 +377,14 @@ LABEL_29:
         {
           if (*v24 != v9)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(enumeratedShapes);
           }
 
           v11 = [*(*(&v23 + 1) + 8 * i) componentsJoinedByString:{@", "}];
           [v6 appendFormat:@"(%@) ", v11];
         }
 
-        v8 = [v7 countByEnumeratingWithState:&v23 objects:v28 count:16];
+        v8 = [enumeratedShapes countByEnumeratingWithState:&v23 objects:v28 count:16];
       }
 
       while (v8);
@@ -402,8 +402,8 @@ LABEL_29:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v7 = [(MIOMultiArrayShapeConstraint *)self sizeRangeForDimension];
-    v12 = [v7 countByEnumeratingWithState:&v19 objects:v27 count:16];
+    enumeratedShapes = [(MIOMultiArrayShapeConstraint *)self sizeRangeForDimension];
+    v12 = [enumeratedShapes countByEnumeratingWithState:&v19 objects:v27 count:16];
     if (v12)
     {
       v13 = *v20;
@@ -413,14 +413,14 @@ LABEL_29:
         {
           if (*v20 != v13)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(enumeratedShapes);
           }
 
-          v15 = [*(*(&v19 + 1) + 8 * j) MIORangeValue];
-          [v6 appendFormat:@"[%zd, %zd] ", v15, v16];
+          mIORangeValue = [*(*(&v19 + 1) + 8 * j) MIORangeValue];
+          [v6 appendFormat:@"[%zd, %zd] ", mIORangeValue, v16];
         }
 
-        v12 = [v7 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        v12 = [enumeratedShapes countByEnumeratingWithState:&v19 objects:v27 count:16];
       }
 
       while (v12);
@@ -433,10 +433,10 @@ LABEL_23:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -446,15 +446,15 @@ LABEL_23:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MIOMultiArrayShapeConstraint *)self type];
-      if (v6 == [(MIOMultiArrayShapeConstraint *)v5 type])
+      v5 = equalCopy;
+      type = [(MIOMultiArrayShapeConstraint *)self type];
+      if (type == [(MIOMultiArrayShapeConstraint *)v5 type])
       {
         if ([(MIOMultiArrayShapeConstraint *)self type]== 2)
         {
-          v7 = [(MIOMultiArrayShapeConstraint *)self enumeratedShapes];
-          v8 = [(MIOMultiArrayShapeConstraint *)v5 enumeratedShapes];
-          v9 = [v7 isEqual:v8];
+          enumeratedShapes = [(MIOMultiArrayShapeConstraint *)self enumeratedShapes];
+          enumeratedShapes2 = [(MIOMultiArrayShapeConstraint *)v5 enumeratedShapes];
+          v9 = [enumeratedShapes isEqual:enumeratedShapes2];
         }
 
         else
@@ -465,9 +465,9 @@ LABEL_23:
             goto LABEL_13;
           }
 
-          v7 = [(MIOMultiArrayShapeConstraint *)self sizeRangeForDimension];
-          v8 = [(MIOMultiArrayShapeConstraint *)v5 sizeRangeForDimension];
-          v9 = [v7 isEqual:v8];
+          enumeratedShapes = [(MIOMultiArrayShapeConstraint *)self sizeRangeForDimension];
+          enumeratedShapes2 = [(MIOMultiArrayShapeConstraint *)v5 sizeRangeForDimension];
+          v9 = [enumeratedShapes isEqual:enumeratedShapes2];
         }
 
         v10 = v9;
@@ -493,13 +493,13 @@ LABEL_14:
 
 - (unint64_t)hash
 {
-  v3 = [(MIOMultiArrayShapeConstraint *)self type];
-  v4 = [(MIOMultiArrayShapeConstraint *)self enumeratedShapes];
-  v5 = [v4 hash];
-  v6 = [(MIOMultiArrayShapeConstraint *)self sizeRangeForDimension];
-  v7 = [v6 hash];
+  type = [(MIOMultiArrayShapeConstraint *)self type];
+  enumeratedShapes = [(MIOMultiArrayShapeConstraint *)self enumeratedShapes];
+  v5 = [enumeratedShapes hash];
+  sizeRangeForDimension = [(MIOMultiArrayShapeConstraint *)self sizeRangeForDimension];
+  v7 = [sizeRangeForDimension hash];
 
-  return v5 ^ v3 ^ v7;
+  return v5 ^ type ^ v7;
 }
 
 @end

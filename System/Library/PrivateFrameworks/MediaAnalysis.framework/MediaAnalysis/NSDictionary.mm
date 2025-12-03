@@ -10,8 +10,8 @@
 
 - (id)vcp_effectsResult
 {
-  v2 = [(NSDictionary *)self vcp_results];
-  v3 = [v2 objectForKeyedSubscript:MediaAnalysisLivePhotoEffectsResultsKey];
+  vcp_results = [(NSDictionary *)self vcp_results];
+  v3 = [vcp_results objectForKeyedSubscript:MediaAnalysisLivePhotoEffectsResultsKey];
   v4 = [v3 objectAtIndexedSubscript:0];
   v5 = [v4 objectForKeyedSubscript:MediaAnalysisResultAttributesKey];
 
@@ -50,15 +50,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)vcp_longExposureSugestionState
@@ -67,24 +67,24 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (id)vcp_recipe
 {
   v2 = [(NSDictionary *)self objectForKey:MediaAnalysisResultLivePhotoEffectsRecipeAttributeKey];
   v3 = [[VCPProtoLivePhotoEffectsRecipe alloc] initWithData:v2];
-  v4 = [v3 exportToLegacyDictionary];
+  exportToLegacyDictionary = [v3 exportToLegacyDictionary];
 
-  return v4;
+  return exportToLegacyDictionary;
 }
 
 @end

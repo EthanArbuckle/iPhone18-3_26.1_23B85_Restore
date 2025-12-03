@@ -1,38 +1,38 @@
 @interface LAPSCurrentPasscodeService
-- (BOOL)canChangePasscodeWithError:(id *)a3;
+- (BOOL)canChangePasscodeWithError:(id *)error;
 - (BOOL)hasPasscode;
-- (LAPSCurrentPasscodeService)initWithPersistence:(id)a3;
-- (LAPSCurrentPasscodeService)initWithPersistence:(id)a3 options:(id)a4;
+- (LAPSCurrentPasscodeService)initWithPersistence:(id)persistence;
+- (LAPSCurrentPasscodeService)initWithPersistence:(id)persistence options:(id)options;
 - (id)passcodeType;
 - (int64_t)backoffTimeout;
 - (int64_t)failedPasscodeAttempts;
-- (void)_reportPasscodeChangedTo:(id)a3;
-- (void)verifyPasscode:(id)a3 completion:(id)a4;
+- (void)_reportPasscodeChangedTo:(id)to;
+- (void)verifyPasscode:(id)passcode completion:(id)completion;
 @end
 
 @implementation LAPSCurrentPasscodeService
 
-- (LAPSCurrentPasscodeService)initWithPersistence:(id)a3
+- (LAPSCurrentPasscodeService)initWithPersistence:(id)persistence
 {
-  v4 = a3;
+  persistenceCopy = persistence;
   v5 = objc_alloc_init(LAPSCurrentPasscodeServiceOptions);
-  v6 = [(LAPSCurrentPasscodeService *)self initWithPersistence:v4 options:v5];
+  v6 = [(LAPSCurrentPasscodeService *)self initWithPersistence:persistenceCopy options:v5];
 
   return v6;
 }
 
-- (LAPSCurrentPasscodeService)initWithPersistence:(id)a3 options:(id)a4
+- (LAPSCurrentPasscodeService)initWithPersistence:(id)persistence options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
+  persistenceCopy = persistence;
+  optionsCopy = options;
   v12.receiver = self;
   v12.super_class = LAPSCurrentPasscodeService;
   v9 = [(LAPSCurrentPasscodeService *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_persistence, a3);
-    objc_storeStrong(&v10->_options, a4);
+    objc_storeStrong(&v9->_persistence, persistence);
+    objc_storeStrong(&v10->_options, options);
   }
 
   return v10;
@@ -40,56 +40,56 @@
 
 - (BOOL)hasPasscode
 {
-  v2 = [(LAPSCurrentPasscodeService *)self persistence];
-  v3 = [v2 hasPasscode];
+  persistence = [(LAPSCurrentPasscodeService *)self persistence];
+  hasPasscode = [persistence hasPasscode];
 
-  return v3;
+  return hasPasscode;
 }
 
 - (int64_t)backoffTimeout
 {
-  v2 = [(LAPSCurrentPasscodeService *)self persistence];
-  v3 = [v2 backoffTimeout];
-  v4 = v3;
-  if (!v3)
+  persistence = [(LAPSCurrentPasscodeService *)self persistence];
+  backoffTimeout = [persistence backoffTimeout];
+  v4 = backoffTimeout;
+  if (!backoffTimeout)
   {
-    v3 = &unk_284B87678;
+    backoffTimeout = &unk_284B87678;
   }
 
-  v5 = [v3 integerValue];
+  integerValue = [backoffTimeout integerValue];
 
-  return v5;
+  return integerValue;
 }
 
 - (id)passcodeType
 {
-  v2 = [(LAPSCurrentPasscodeService *)self persistence];
-  v3 = [v2 passcodeType];
+  persistence = [(LAPSCurrentPasscodeService *)self persistence];
+  passcodeType = [persistence passcodeType];
 
-  return v3;
+  return passcodeType;
 }
 
 - (int64_t)failedPasscodeAttempts
 {
-  v2 = [(LAPSCurrentPasscodeService *)self persistence];
-  v3 = [v2 failedPasscodeAttempts];
-  v4 = v3;
-  if (!v3)
+  persistence = [(LAPSCurrentPasscodeService *)self persistence];
+  failedPasscodeAttempts = [persistence failedPasscodeAttempts];
+  v4 = failedPasscodeAttempts;
+  if (!failedPasscodeAttempts)
   {
-    v3 = &unk_284B87678;
+    failedPasscodeAttempts = &unk_284B87678;
   }
 
-  v5 = [v3 integerValue];
+  integerValue = [failedPasscodeAttempts integerValue];
 
-  return v5;
+  return integerValue;
 }
 
-- (void)verifyPasscode:(id)a3 completion:(id)a4
+- (void)verifyPasscode:(id)passcode completion:(id)completion
 {
-  v11 = a4;
-  v6 = a3;
-  v7 = [(LAPSCurrentPasscodeService *)self persistence];
-  v8 = [v7 verifyPasscode:v6];
+  completionCopy = completion;
+  passcodeCopy = passcode;
+  persistence = [(LAPSCurrentPasscodeService *)self persistence];
+  v8 = [persistence verifyPasscode:passcodeCopy];
 
   if (v8)
   {
@@ -113,30 +113,30 @@
     }
 
     v10 = v9;
-    v11[2](v11, v9);
+    completionCopy[2](completionCopy, v9);
   }
 
   else
   {
-    v11[2](v11, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (BOOL)canChangePasscodeWithError:(id *)a3
+- (BOOL)canChangePasscodeWithError:(id *)error
 {
-  v4 = [(LAPSPasscodePersistence *)self->_persistence canChangePasscode];
-  v5 = v4;
-  if (a3 && (v4 & 1) == 0)
+  canChangePasscode = [(LAPSPasscodePersistence *)self->_persistence canChangePasscode];
+  v5 = canChangePasscode;
+  if (error && (canChangePasscode & 1) == 0)
   {
-    *a3 = [LAPSErrorBuilder genericErrorWithDebugDescription:@"Passcode change is not allowed"];
+    *error = [LAPSErrorBuilder genericErrorWithDebugDescription:@"Passcode change is not allowed"];
   }
 
   return v5;
 }
 
-- (void)_reportPasscodeChangedTo:(id)a3
+- (void)_reportPasscodeChangedTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = LACLogPasscodeService();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -144,8 +144,8 @@
     _os_log_impl(&dword_238BCD000, v5, OS_LOG_TYPE_DEFAULT, "CDP update will start", v7, 2u);
   }
 
-  v6 = [(LAPSCurrentPasscodeService *)self persistence];
-  [v6 reportPasscodeDidChangeTo:v4 completion:&__block_literal_global_1];
+  persistence = [(LAPSCurrentPasscodeService *)self persistence];
+  [persistence reportPasscodeDidChangeTo:toCopy completion:&__block_literal_global_1];
 }
 
 void __55__LAPSCurrentPasscodeService__reportPasscodeChangedTo___block_invoke(uint64_t a1, void *a2)

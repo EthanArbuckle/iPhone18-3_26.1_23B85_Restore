@@ -1,12 +1,12 @@
 @interface PhotosAppSpec
-+ (id)specForIdiom:(int64_t)a3;
++ (id)specForIdiom:(int64_t)idiom;
 @end
 
 @implementation PhotosAppSpec
 
-+ (id)specForIdiom:(int64_t)a3
++ (id)specForIdiom:(int64_t)idiom
 {
-  if (!a3)
+  if (!idiom)
   {
     v4 = &off_100058B58;
 LABEL_5:
@@ -15,7 +15,7 @@ LABEL_5:
     return v5;
   }
 
-  if (a3 == 1)
+  if (idiom == 1)
   {
     v4 = off_100058B50;
     goto LABEL_5;

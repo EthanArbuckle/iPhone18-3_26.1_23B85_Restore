@@ -1,59 +1,59 @@
 @interface PLKUILegibilitySettingsBackgroundContentDescriptor
-- (BOOL)isEqual:(id)a3;
-- (CGSize)sizeForContentSize:(CGSize)a3;
-- (PLKUILegibilitySettingsBackgroundContentDescriptor)initWithLegibilitySettings:(id)a3 strength:(double)a4;
+- (BOOL)isEqual:(id)equal;
+- (CGSize)sizeForContentSize:(CGSize)size;
+- (PLKUILegibilitySettingsBackgroundContentDescriptor)initWithLegibilitySettings:(id)settings strength:(double)strength;
 - (id)cacheKey;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 - (unint64_t)hash;
-- (void)plk_renderWithContext:(id)a3;
+- (void)plk_renderWithContext:(id)context;
 @end
 
 @implementation PLKUILegibilitySettingsBackgroundContentDescriptor
 
-- (PLKUILegibilitySettingsBackgroundContentDescriptor)initWithLegibilitySettings:(id)a3 strength:(double)a4
+- (PLKUILegibilitySettingsBackgroundContentDescriptor)initWithLegibilitySettings:(id)settings strength:(double)strength
 {
-  v6 = a3;
-  v7 = [v6 shadowColor];
+  settingsCopy = settings;
+  shadowColor = [settingsCopy shadowColor];
   v11.receiver = self;
   v11.super_class = PLKUILegibilitySettingsBackgroundContentDescriptor;
-  v8 = [(PLKLegibilityContentDescriptor *)&v11 initWithContentColor:v7];
+  v8 = [(PLKLegibilityContentDescriptor *)&v11 initWithContentColor:shadowColor];
 
   if (v8)
   {
-    v9 = v6;
-    if (!v6)
+    v9 = settingsCopy;
+    if (!settingsCopy)
     {
       v9 = [MEMORY[0x277D760A8] sharedInstanceForStyle:0];
     }
 
     objc_storeStrong(&v8->_legibilitySettings, v9);
-    if (!v6)
+    if (!settingsCopy)
     {
     }
 
-    v8->_strength = a4;
+    v8->_strength = strength;
   }
 
   return v8;
 }
 
-- (CGSize)sizeForContentSize:(CGSize)a3
+- (CGSize)sizeForContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = MEMORY[0x277D755B8];
-  v6 = [(_UILegibilitySettings *)self->_legibilitySettings style];
+  style = [(_UILegibilitySettings *)self->_legibilitySettings style];
 
-  [v5 _legibilityImageSizeForSize:v6 style:{width, height}];
+  [v5 _legibilityImageSizeForSize:style style:{width, height}];
   result.height = v8;
   result.width = v7;
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -62,10 +62,10 @@
   {
     v16.receiver = self;
     v16.super_class = PLKUILegibilitySettingsBackgroundContentDescriptor;
-    if ([(PLKLegibilityBackgroundContentDescriptor *)&v16 isEqual:v4])
+    if ([(PLKLegibilityBackgroundContentDescriptor *)&v16 isEqual:equalCopy])
     {
       v5 = objc_opt_class();
-      v6 = v4;
+      v6 = equalCopy;
       if (v5)
       {
         if (objc_opt_isKindOfClass())
@@ -86,9 +86,9 @@
 
       v9 = v7;
 
-      v10 = [(PLKUILegibilitySettingsBackgroundContentDescriptor *)v9 legibilitySettings];
-      v11 = [(PLKUILegibilitySettingsBackgroundContentDescriptor *)self legibilitySettings];
-      if ([v10 isEqual:v11])
+      legibilitySettings = [(PLKUILegibilitySettingsBackgroundContentDescriptor *)v9 legibilitySettings];
+      legibilitySettings2 = [(PLKUILegibilitySettingsBackgroundContentDescriptor *)self legibilitySettings];
+      if ([legibilitySettings isEqual:legibilitySettings2])
       {
         [(PLKUILegibilitySettingsBackgroundContentDescriptor *)v9 strength];
         v13 = v12;
@@ -113,14 +113,14 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [(PLKUILegibilitySettingsBackgroundContentDescriptor *)self legibilitySettings];
-  v5 = [v3 appendObject:v4];
+  builder = [MEMORY[0x277CF0C40] builder];
+  legibilitySettings = [(PLKUILegibilitySettingsBackgroundContentDescriptor *)self legibilitySettings];
+  v5 = [builder appendObject:legibilitySettings];
 
   [(PLKUILegibilitySettingsBackgroundContentDescriptor *)self strength];
   *&v6 = v6;
-  v7 = [v3 appendFloat:v6];
-  v8 = [v3 hash];
+  v7 = [builder appendFloat:v6];
+  v8 = [builder hash];
 
   return v8;
 }
@@ -132,8 +132,8 @@
   if (!cacheKey)
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [(PLKUILegibilitySettingsBackgroundContentDescriptor *)self legibilitySettings];
-    v13[0] = v5;
+    legibilitySettings = [(PLKUILegibilitySettingsBackgroundContentDescriptor *)self legibilitySettings];
+    v13[0] = legibilitySettings;
     v6 = MEMORY[0x277CCABB0];
     [(PLKUILegibilitySettingsBackgroundContentDescriptor *)self strength];
     v7 = [v6 numberWithDouble:?];
@@ -151,21 +151,21 @@
   return cacheKey;
 }
 
-- (void)plk_renderWithContext:(id)a3
+- (void)plk_renderWithContext:(id)context
 {
-  v6 = [a3 currentImage];
-  [v6 size];
-  v4 = [v6 plk_isAlphaMask];
-  v5 = [(PLKUILegibilitySettingsBackgroundContentDescriptor *)self legibilitySettings];
+  currentImage = [context currentImage];
+  [currentImage size];
+  plk_isAlphaMask = [currentImage plk_isAlphaMask];
+  legibilitySettings = [(PLKUILegibilitySettingsBackgroundContentDescriptor *)self legibilitySettings];
   [(PLKUILegibilitySettingsBackgroundContentDescriptor *)self strength];
-  [v6 _drawImageForLegibilitySettings:v5 strength:v4 size:? alphaOnly:?];
+  [currentImage _drawImageForLegibilitySettings:legibilitySettings strength:plk_isAlphaMask size:? alphaOnly:?];
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v11.receiver = self;
   v11.super_class = PLKUILegibilitySettingsBackgroundContentDescriptor;
-  v4 = [(PLKLegibilityBackgroundContentDescriptor *)&v11 descriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(PLKLegibilityBackgroundContentDescriptor *)&v11 descriptionBuilderWithMultilinePrefix:prefix];
   v5 = [v4 appendObject:self->_legibilitySettings withName:@"legibilitySettings"];
   v6 = [v4 appendFloat:@"strength" withName:self->_strength];
   v7 = [v4 appendObject:self->_cacheKey withName:@"cacheKey"];

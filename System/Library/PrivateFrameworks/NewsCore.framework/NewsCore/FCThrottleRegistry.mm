@@ -1,10 +1,10 @@
 @interface FCThrottleRegistry
 + (FCThrottleRegistry)shared;
-- (BOOL)shouldThrottleGroup:(id)a3 outRetryAfter:(double *)a4;
+- (BOOL)shouldThrottleGroup:(id)group outRetryAfter:(double *)after;
 - (FCThrottleRegistry)init;
-- (void)processError:(id)a3 forGroup:(id)a4;
-- (void)processURLResponse:(id)a3 forGroup:(id)a4;
-- (void)throttleGroup:(id)a3 retryAfter:(double)a4;
+- (void)processError:(id)error forGroup:(id)group;
+- (void)processURLResponse:(id)response forGroup:(id)group;
+- (void)throttleGroup:(id)group retryAfter:(double)after;
 @end
 
 @implementation FCThrottleRegistry
@@ -21,14 +21,14 @@
   return v3;
 }
 
-- (BOOL)shouldThrottleGroup:(id)a3 outRetryAfter:(double *)a4
+- (BOOL)shouldThrottleGroup:(id)group outRetryAfter:(double *)after
 {
   v6 = sub_1B67D964C();
   v8 = v7;
-  v9 = self;
-  LOBYTE(a4) = sub_1B6441388(v6, v8, a4);
+  selfCopy = self;
+  LOBYTE(after) = sub_1B6441388(v6, v8, after);
 
-  return a4 & 1;
+  return after & 1;
 }
 
 - (FCThrottleRegistry)init
@@ -43,36 +43,36 @@
   return result;
 }
 
-- (void)processError:(id)a3 forGroup:(id)a4
+- (void)processError:(id)error forGroup:(id)group
 {
   v6 = sub_1B67D964C();
   v8 = v7;
-  v9 = a3;
-  v10 = self;
+  errorCopy = error;
+  selfCopy = self;
   v11 = sub_1B67D854C();
-  v12 = [v11 fc_retryAfter];
+  fc_retryAfter = [v11 fc_retryAfter];
 
-  if (v12)
+  if (fc_retryAfter)
   {
-    [v12 doubleValue];
+    [fc_retryAfter doubleValue];
     sub_1B6503FA8(v6, v8);
   }
 }
 
-- (void)processURLResponse:(id)a3 forGroup:(id)a4
+- (void)processURLResponse:(id)response forGroup:(id)group
 {
   v6 = sub_1B67D964C();
   v8 = v7;
-  v9 = a3;
-  v10 = self;
-  sub_1B650414C(v9, v6, v8);
+  responseCopy = response;
+  selfCopy = self;
+  sub_1B650414C(responseCopy, v6, v8);
 }
 
-- (void)throttleGroup:(id)a3 retryAfter:(double)a4
+- (void)throttleGroup:(id)group retryAfter:(double)after
 {
   v5 = sub_1B67D964C();
   v7 = v6;
-  v8 = self;
+  selfCopy = self;
   sub_1B6503FA8(v5, v7);
 }
 

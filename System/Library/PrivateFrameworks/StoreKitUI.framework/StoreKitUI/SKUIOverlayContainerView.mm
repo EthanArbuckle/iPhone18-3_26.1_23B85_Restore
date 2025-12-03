@@ -1,14 +1,14 @@
 @interface SKUIOverlayContainerView
-- (void)setFrame:(CGRect)a3;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation SKUIOverlayContainerView
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = SKUIOverlayContainerView;
-  [(SKUIOverlayContainerView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(SKUIOverlayContainerView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(SKUIOverlayContainerView *)self sendActionsForControlEvents:4096];
 }
 

@@ -1,5 +1,5 @@
 @interface PGGraphMomentsDeletion
-- (PGGraphMomentsDeletion)initWithMomentUUIDs:(id)a3;
+- (PGGraphMomentsDeletion)initWithMomentUUIDs:(id)ds;
 - (id)description;
 @end
 
@@ -16,16 +16,16 @@
   return v5;
 }
 
-- (PGGraphMomentsDeletion)initWithMomentUUIDs:(id)a3
+- (PGGraphMomentsDeletion)initWithMomentUUIDs:(id)ds
 {
-  v5 = a3;
+  dsCopy = ds;
   v9.receiver = self;
   v9.super_class = PGGraphMomentsDeletion;
   v6 = [(PGGraphMomentsDeletion *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_momentUUIDs, a3);
+    objc_storeStrong(&v6->_momentUUIDs, ds);
   }
 
   return v7;

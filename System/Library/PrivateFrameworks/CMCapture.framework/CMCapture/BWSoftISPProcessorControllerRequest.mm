@@ -1,16 +1,16 @@
 @interface BWSoftISPProcessorControllerRequest
-- (BWSoftISPProcessorControllerRequest)initWithInput:(id)a3 delegate:(id)a4;
+- (BWSoftISPProcessorControllerRequest)initWithInput:(id)input delegate:(id)delegate;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation BWSoftISPProcessorControllerRequest
 
-- (BWSoftISPProcessorControllerRequest)initWithInput:(id)a3 delegate:(id)a4
+- (BWSoftISPProcessorControllerRequest)initWithInput:(id)input delegate:(id)delegate
 {
   v6.receiver = self;
   v6.super_class = BWSoftISPProcessorControllerRequest;
-  v4 = [(BWStillImageProcessorControllerRequest *)&v6 initWithInput:a3 delegate:a4];
+  v4 = [(BWStillImageProcessorControllerRequest *)&v6 initWithInput:input delegate:delegate];
   if (v4)
   {
     objc_opt_self();

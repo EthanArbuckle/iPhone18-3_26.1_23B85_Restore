@@ -1,20 +1,20 @@
 @interface HDMedicationClusterQueryServer
-- (HDMedicationClusterQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
-- (id)_queryMedicationsWithConfiguration:(uint64_t)a3 errorOut:;
-- (id)_queryMedicationsWithExistingMedications:(void *)a1 errorOut:(void *)a2;
-- (id)_queryMedicationsWithMachineReadableCode:(uint64_t)a3 errorOut:;
-- (id)_queryMedicationsWithScanResult:(void *)a1 errorOut:(void *)a2;
-- (id)_queryMedicationsWithSearchTokens:(void *)a1 errorOut:(void *)a2;
+- (HDMedicationClusterQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
+- (id)_queryMedicationsWithConfiguration:(uint64_t)configuration errorOut:;
+- (id)_queryMedicationsWithExistingMedications:(void *)medications errorOut:(void *)out;
+- (id)_queryMedicationsWithMachineReadableCode:(uint64_t)code errorOut:;
+- (id)_queryMedicationsWithScanResult:(void *)result errorOut:(void *)out;
+- (id)_queryMedicationsWithSearchTokens:(void *)tokens errorOut:(void *)out;
 - (void)_queue_start;
 @end
 
 @implementation HDMedicationClusterQueryServer
 
-- (HDMedicationClusterQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDMedicationClusterQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
   v7.receiver = self;
   v7.super_class = HDMedicationClusterQueryServer;
-  return [(HDQueryServer *)&v7 initWithUUID:a3 configuration:a4 client:a5 delegate:a6];
+  return [(HDQueryServer *)&v7 initWithUUID:d configuration:configuration client:client delegate:delegate];
 }
 
 - (void)_queue_start
@@ -22,39 +22,39 @@
   v9.receiver = self;
   v9.super_class = HDMedicationClusterQueryServer;
   [(HDQueryServer *)&v9 _queue_start];
-  v3 = [(HDQueryServer *)self queryUUID];
-  v4 = [(HDQueryServer *)self clientProxy];
-  v5 = [(HDQueryServer *)self configuration];
+  queryUUID = [(HDQueryServer *)self queryUUID];
+  clientProxy = [(HDQueryServer *)self clientProxy];
+  configuration = [(HDQueryServer *)self configuration];
   v8 = 0;
-  v6 = [(HDMedicationClusterQueryServer *)self _queryMedicationsWithConfiguration:v5 errorOut:&v8];
+  v6 = [(HDMedicationClusterQueryServer *)self _queryMedicationsWithConfiguration:configuration errorOut:&v8];
   v7 = v8;
 
   if (v6)
   {
-    [v4 client_deliverResults:v6 queryUUID:v3];
+    [clientProxy client_deliverResults:v6 queryUUID:queryUUID];
   }
 
   else
   {
     if (!v7)
     {
-      v7 = [MEMORY[0x277CCA9B8] hk_error:122 format:{@"Query operation returned nil without an error. queryUUID=[%@]", v3}];
+      v7 = [MEMORY[0x277CCA9B8] hk_error:122 format:{@"Query operation returned nil without an error. queryUUID=[%@]", queryUUID}];
     }
 
-    [v4 client_deliverError:v7 forQuery:v3];
+    [clientProxy client_deliverError:v7 forQuery:queryUUID];
   }
 }
 
-- (id)_queryMedicationsWithConfiguration:(uint64_t)a3 errorOut:
+- (id)_queryMedicationsWithConfiguration:(uint64_t)configuration errorOut:
 {
   v6 = a2;
   v7 = v6;
-  if (a1)
+  if (self)
   {
     switch([v6 queryType])
     {
       case 0:
-        [MEMORY[0x277CCA9B8] hk_assignError:a3 code:3 format:@"Received queryType none"];
+        [MEMORY[0x277CCA9B8] hk_assignError:configuration code:3 format:@"Received queryType none"];
         goto LABEL_4;
       case 1:
         v14 = OUTLINED_FUNCTION_0_9();
@@ -88,16 +88,16 @@ LABEL_4:
   return v3;
 }
 
-- (id)_queryMedicationsWithScanResult:(void *)a1 errorOut:(void *)a2
+- (id)_queryMedicationsWithScanResult:(void *)result errorOut:(void *)out
 {
-  if (a1)
+  if (result)
   {
-    v4 = a2;
-    [v4 scanResult];
+    outCopy = out;
+    [outCopy scanResult];
     objc_claimAutoreleasedReturnValue();
     [OUTLINED_FUNCTION_2_3() limit];
 
-    [a1 profile];
+    [result profile];
     objc_claimAutoreleasedReturnValue();
     v5 = [OUTLINED_FUNCTION_1_9() medicationClustersFromScanResult:? limit:? profile:? errorOut:?];
   }
@@ -110,53 +110,53 @@ LABEL_4:
   return v5;
 }
 
-- (id)_queryMedicationsWithMachineReadableCode:(uint64_t)a3 errorOut:
+- (id)_queryMedicationsWithMachineReadableCode:(uint64_t)code errorOut:
 {
-  v4 = a1;
+  selfCopy = self;
   v14[1] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v13 = 0;
     v6 = a2;
     [v6 machineReadableCode];
     objc_claimAutoreleasedReturnValue();
-    v7 = [OUTLINED_FUNCTION_2_3() codeAttributeType];
+    codeAttributeType = [OUTLINED_FUNCTION_2_3() codeAttributeType];
 
-    v8 = [v4 profile];
-    v9 = [HDMedicationSearchEngine medicationCluster:&v13 machineReadableCode:v3 codeAttributeType:v7 profile:v8 errorOut:a3];
+    profile = [selfCopy profile];
+    v9 = [HDMedicationSearchEngine medicationCluster:&v13 machineReadableCode:v3 codeAttributeType:codeAttributeType profile:profile errorOut:code];
     v10 = v13;
 
-    v4 = 0;
+    selfCopy = 0;
     if (v9)
     {
       if (v10)
       {
         v14[0] = v10;
-        v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
+        selfCopy = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
       }
 
       else
       {
-        v4 = MEMORY[0x277CBEBF8];
+        selfCopy = MEMORY[0x277CBEBF8];
       }
     }
   }
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return selfCopy;
 }
 
-- (id)_queryMedicationsWithSearchTokens:(void *)a1 errorOut:(void *)a2
+- (id)_queryMedicationsWithSearchTokens:(void *)tokens errorOut:(void *)out
 {
-  if (a1)
+  if (tokens)
   {
-    v4 = a2;
-    [v4 textSearchTokens];
+    outCopy = out;
+    [outCopy textSearchTokens];
     objc_claimAutoreleasedReturnValue();
     [OUTLINED_FUNCTION_2_3() limit];
 
-    [a1 profile];
+    [tokens profile];
     objc_claimAutoreleasedReturnValue();
     v5 = [OUTLINED_FUNCTION_1_9() medicationClustersFromTextSearchTokens:? limit:? profile:? errorOut:?];
   }
@@ -169,17 +169,17 @@ LABEL_4:
   return v5;
 }
 
-- (id)_queryMedicationsWithExistingMedications:(void *)a1 errorOut:(void *)a2
+- (id)_queryMedicationsWithExistingMedications:(void *)medications errorOut:(void *)out
 {
-  if (a1)
+  if (medications)
   {
-    v4 = a2;
-    [v4 existingMedications];
+    outCopy = out;
+    [outCopy existingMedications];
     objc_claimAutoreleasedReturnValue();
-    v5 = [OUTLINED_FUNCTION_2_3() sinceDate];
-    [v4 limit];
+    sinceDate = [OUTLINED_FUNCTION_2_3() sinceDate];
+    [outCopy limit];
 
-    [a1 profile];
+    [medications profile];
     objc_claimAutoreleasedReturnValue();
     v6 = [OUTLINED_FUNCTION_1_9() medicationClustersForCHRImportWithExistingMedications:? sinceDate:? limit:? profile:? errorOut:?];
   }

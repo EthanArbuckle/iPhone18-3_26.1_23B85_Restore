@@ -1,32 +1,32 @@
 @interface CNMonogrammer
-+ (id)_initialsForContact:(id)a3;
-+ (id)descriptorForRequiredKeysIncludingImage:(BOOL)a3;
-+ (int64_t)monogramTypeForContact:(id)a3;
++ (id)_initialsForContact:(id)contact;
++ (id)descriptorForRequiredKeysIncludingImage:(BOOL)image;
++ (int64_t)monogramTypeForContact:(id)contact;
 - (CNMonogrammer)init;
-- (CNMonogrammer)initWithStyle:(int64_t)a3 diameter:(double)a4;
+- (CNMonogrammer)initWithStyle:(int64_t)style diameter:(double)diameter;
 - (NSArray)keysToFetch;
 - (UIImage)knockoutMaskMonogram;
 - (UIImage)questionMarkMonogram;
 - (UIImage)silhouetteMonogram;
-- (id)_copyMonogramWithImageData:(id)a3;
-- (id)_copyMonogramWithInitials:(id)a3;
+- (id)_copyMonogramWithImageData:(id)data;
+- (id)_copyMonogramWithInitials:(id)initials;
 - (id)_copyMonogramWithKnockoutMask;
 - (id)_copyMonogramWithSilhouette;
-- (id)_initialsForFirstName:(id)a3 lastName:(id)a4;
-- (id)monogramForContact:(id)a3;
-- (id)monogramForContact:(id)a3 isContactImage:(BOOL *)a4;
-- (id)monogramForContacts:(id)a3;
-- (id)monogramForPersonWithFirstName:(id)a3 lastName:(id)a4;
+- (id)_initialsForFirstName:(id)name lastName:(id)lastName;
+- (id)monogramForContact:(id)contact;
+- (id)monogramForContact:(id)contact isContactImage:(BOOL *)image;
+- (id)monogramForContacts:(id)contacts;
+- (id)monogramForPersonWithFirstName:(id)name lastName:(id)lastName;
 - (void)_clearMonogramCache;
 - (void)dealloc;
 - (void)monogramsAsFlatImages;
 - (void)monogramsForStark;
-- (void)monogramsWithTint:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setDiameter:(double)a3;
-- (void)setFont:(id)a3;
-- (void)setTextColor:(id)a3;
-- (void)setTextKnockout:(BOOL)a3;
+- (void)monogramsWithTint:(id)tint;
+- (void)setBackgroundColor:(id)color;
+- (void)setDiameter:(double)diameter;
+- (void)setFont:(id)font;
+- (void)setTextColor:(id)color;
+- (void)setTextKnockout:(BOOL)knockout;
 @end
 
 @implementation CNMonogrammer
@@ -78,9 +78,9 @@
   silhouetteMonogram = self->_silhouetteMonogram;
   if (!silhouetteMonogram)
   {
-    v4 = [(CNMonogrammer *)self _copyMonogramWithSilhouette];
+    _copyMonogramWithSilhouette = [(CNMonogrammer *)self _copyMonogramWithSilhouette];
     v5 = self->_silhouetteMonogram;
-    self->_silhouetteMonogram = v4;
+    self->_silhouetteMonogram = _copyMonogramWithSilhouette;
 
     silhouetteMonogram = self->_silhouetteMonogram;
   }
@@ -120,17 +120,17 @@
   return v5;
 }
 
-- (id)_copyMonogramWithInitials:(id)a3
+- (id)_copyMonogramWithInitials:(id)initials
 {
   v31[2] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!initials)
   {
     return 0;
   }
 
   diameter = self->_diameter;
   scale = self->_scale;
-  v6 = a3;
+  initialsCopy = initials;
   v32.width = diameter;
   v32.height = diameter;
   UIGraphicsBeginImageContextWithOptions(v32, 0, scale);
@@ -152,7 +152,7 @@
 
   v31[1] = tintColor;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:&v29 count:2];
-  v13 = [v8 initWithString:v6 attributes:v12];
+  v13 = [v8 initWithString:initialsCopy attributes:v12];
 
   [v13 size];
   v28 = self->_scale;
@@ -183,22 +183,22 @@
   return v26;
 }
 
-- (id)_copyMonogramWithImageData:(id)a3
+- (id)_copyMonogramWithImageData:(id)data
 {
-  if (!a3)
+  if (!data)
   {
     return 0;
   }
 
   diameter = self->_diameter;
   scale = self->_scale;
-  v5 = a3;
+  dataCopy = data;
   v10.width = diameter;
   v10.height = diameter;
   UIGraphicsBeginImageContextWithOptions(v10, 0, scale);
   v6 = [MEMORY[0x1E69DC728] bezierPathWithOvalInRect:{0.0, 0.0, diameter, diameter}];
   [v6 addClip];
-  v7 = [MEMORY[0x1E69DCAB8] imageWithData:v5];
+  v7 = [MEMORY[0x1E69DCAB8] imageWithData:dataCopy];
 
   [v7 drawInRect:{0.0, 0.0, diameter, diameter}];
   v8 = UIGraphicsGetImageFromCurrentImageContext();
@@ -207,20 +207,20 @@
   return v8;
 }
 
-- (id)_initialsForFirstName:(id)a3 lastName:(id)a4
+- (id)_initialsForFirstName:(id)name lastName:(id)lastName
 {
-  v5 = a3;
-  v6 = a4;
-  if (!(v5 | v6) || !_isRomanName(v5) || !_isRomanName(v6))
+  nameCopy = name;
+  lastNameCopy = lastName;
+  if (!(nameCopy | lastNameCopy) || !_isRomanName(nameCopy) || !_isRomanName(lastNameCopy))
   {
     goto LABEL_12;
   }
 
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [v5 length];
+  v8 = [nameCopy length];
   if (v8)
   {
-    v9 = [v5 substringWithRange:{0, 1}];
+    v9 = [nameCopy substringWithRange:{0, 1}];
   }
 
   else
@@ -228,7 +228,7 @@
     v9 = &stru_1F0CE7398;
   }
 
-  if (![v6 length])
+  if (![lastNameCopy length])
   {
     v11 = [v7 stringWithFormat:@"%@%@", v9, &stru_1F0CE7398];
     if (!v8)
@@ -239,7 +239,7 @@
     goto LABEL_9;
   }
 
-  v10 = [v6 substringWithRange:{0, 1}];
+  v10 = [lastNameCopy substringWithRange:{0, 1}];
   v11 = [v7 stringWithFormat:@"%@%@", v9, v10];
 
   if (v8)
@@ -256,9 +256,9 @@ LABEL_10:
 LABEL_12:
   v11 = 0;
 LABEL_13:
-  v12 = [v11 uppercaseString];
+  uppercaseString = [v11 uppercaseString];
 
-  return v12;
+  return uppercaseString;
 }
 
 - (void)_clearMonogramCache
@@ -287,9 +287,9 @@ LABEL_13:
   knockoutMaskMonogram = self->_knockoutMaskMonogram;
   if (!knockoutMaskMonogram)
   {
-    v4 = [(CNMonogrammer *)self _copyMonogramWithKnockoutMask];
+    _copyMonogramWithKnockoutMask = [(CNMonogrammer *)self _copyMonogramWithKnockoutMask];
     v5 = self->_knockoutMaskMonogram;
-    self->_knockoutMaskMonogram = v4;
+    self->_knockoutMaskMonogram = _copyMonogramWithKnockoutMask;
 
     knockoutMaskMonogram = self->_knockoutMaskMonogram;
   }
@@ -312,19 +312,19 @@ LABEL_13:
   return questionMarkMonogram;
 }
 
-- (id)monogramForContacts:(id)a3
+- (id)monogramForContacts:(id)contacts
 {
-  v4 = a3;
-  if ([v4 count] == 1)
+  contactsCopy = contacts;
+  if ([contactsCopy count] == 1)
   {
-    v5 = [v4 firstObject];
-    v6 = [(CNMonogrammer *)self monogramForContact:v5];
+    firstObject = [contactsCopy firstObject];
+    v6 = [(CNMonogrammer *)self monogramForContact:firstObject];
 LABEL_3:
 
     goto LABEL_11;
   }
 
-  if ([v4 count] >= 2)
+  if ([contactsCopy count] >= 2)
   {
     v7 = (self->_diameter + self->_diameter) / 3.0;
     subMonogrammer = self->_subMonogrammer;
@@ -337,14 +337,14 @@ LABEL_3:
       subMonogrammer = self->_subMonogrammer;
     }
 
-    v11 = [v4 objectAtIndexedSubscript:0];
-    v5 = [(CNMonogrammer *)subMonogrammer monogramForContact:v11];
+    v11 = [contactsCopy objectAtIndexedSubscript:0];
+    firstObject = [(CNMonogrammer *)subMonogrammer monogramForContact:v11];
 
     v12 = self->_subMonogrammer;
-    v13 = [v4 objectAtIndexedSubscript:1];
+    v13 = [contactsCopy objectAtIndexedSubscript:1];
     v14 = [(CNMonogrammer *)v12 monogramForContact:v13];
 
-    if (v5 && v14)
+    if (firstObject && v14)
     {
       diameter = self->_diameter;
       v16 = diameter - v7;
@@ -353,14 +353,14 @@ LABEL_3:
       v26.width = diameter;
       v26.height = diameter;
       UIGraphicsBeginImageContextWithOptions(v26, 0, 0.0);
-      v19 = [MEMORY[0x1E69DC888] clearColor];
-      [v19 set];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      [clearColor set];
 
       [v17 fill];
-      [v5 drawInRect:0 blendMode:0.0 alpha:{0.0, v7, v7, 1.0}];
+      [firstObject drawInRect:0 blendMode:0.0 alpha:{0.0, v7, v7, 1.0}];
       v20 = round(self->_diameter / 12.0);
-      v21 = [MEMORY[0x1E69DC888] clearColor];
-      [v21 set];
+      clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+      [clearColor2 set];
 
       v22 = MEMORY[0x1E69DC728];
       v27.origin.x = v16;
@@ -391,167 +391,167 @@ LABEL_11:
   return v6;
 }
 
-- (id)monogramForPersonWithFirstName:(id)a3 lastName:(id)a4
+- (id)monogramForPersonWithFirstName:(id)name lastName:(id)lastName
 {
-  v5 = [(CNMonogrammer *)self _initialsForFirstName:a3 lastName:a4];
+  v5 = [(CNMonogrammer *)self _initialsForFirstName:name lastName:lastName];
   v6 = [(CNMonogrammer *)self _copyMonogramWithInitials:v5];
 
   if (v6)
   {
-    v7 = v6;
+    silhouetteMonogram = v6;
   }
 
   else
   {
-    v7 = [(CNMonogrammer *)self silhouetteMonogram];
+    silhouetteMonogram = [(CNMonogrammer *)self silhouetteMonogram];
   }
 
-  v8 = v7;
+  v8 = silhouetteMonogram;
 
   return v8;
 }
 
-- (id)monogramForContact:(id)a3
+- (id)monogramForContact:(id)contact
 {
   v5 = 0;
-  v3 = [(CNMonogrammer *)self monogramForContact:a3 isContactImage:&v5];
+  v3 = [(CNMonogrammer *)self monogramForContact:contact isContactImage:&v5];
 
   return v3;
 }
 
-- (id)monogramForContact:(id)a3 isContactImage:(BOOL *)a4
+- (id)monogramForContact:(id)contact isContactImage:(BOOL *)image
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contactCopy = contact;
   v7 = [objc_opt_class() descriptorForRequiredKeysIncludingImage:0];
   v15[0] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  [v6 assertKeysAreAvailable:v8];
+  [contactCopy assertKeysAreAvailable:v8];
 
-  if (a4)
+  if (image)
   {
-    *a4 = 0;
+    *image = 0;
   }
 
   if (self->_diameter == 0.0)
   {
-    v9 = 0;
+    silhouetteMonogram = 0;
   }
 
   else
   {
-    if (!v6)
+    if (!contactCopy)
     {
       goto LABEL_14;
     }
 
-    if ([v6 isKeyAvailable:*MEMORY[0x1E695C400]] && (objc_msgSend(v6, "thumbnailImageData"), (v10 = objc_claimAutoreleasedReturnValue()) != 0) || objc_msgSend(v6, "isKeyAvailable:", *MEMORY[0x1E695C278]) && (objc_msgSend(v6, "imageData"), (v10 = objc_claimAutoreleasedReturnValue()) != 0))
+    if ([contactCopy isKeyAvailable:*MEMORY[0x1E695C400]] && (objc_msgSend(contactCopy, "thumbnailImageData"), (v10 = objc_claimAutoreleasedReturnValue()) != 0) || objc_msgSend(contactCopy, "isKeyAvailable:", *MEMORY[0x1E695C278]) && (objc_msgSend(contactCopy, "imageData"), (v10 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v11 = v10;
       v12 = [(CNMonogrammer *)self _copyMonogramWithImageData:v10];
-      v9 = v12;
-      if (a4)
+      silhouetteMonogram = v12;
+      if (image)
       {
-        *a4 = v12 != 0;
+        *image = v12 != 0;
       }
     }
 
     else
     {
-      v13 = [objc_opt_class() _initialsForContact:v6];
-      v9 = [(CNMonogrammer *)self _copyMonogramWithInitials:v13];
+      v13 = [objc_opt_class() _initialsForContact:contactCopy];
+      silhouetteMonogram = [(CNMonogrammer *)self _copyMonogramWithInitials:v13];
 
       v11 = 0;
     }
 
-    if (!v9)
+    if (!silhouetteMonogram)
     {
 LABEL_14:
-      v9 = [(CNMonogrammer *)self silhouetteMonogram];
+      silhouetteMonogram = [(CNMonogrammer *)self silhouetteMonogram];
     }
   }
 
-  return v9;
+  return silhouetteMonogram;
 }
 
-- (void)setTextKnockout:(BOOL)a3
+- (void)setTextKnockout:(BOOL)knockout
 {
-  if (self->_textKnockout != a3)
+  if (self->_textKnockout != knockout)
   {
-    self->_textKnockout = a3;
+    self->_textKnockout = knockout;
     [(CNMonogrammer *)self _clearMonogramCache];
   }
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   p_textColor = &self->_textColor;
-  if (self->_textColor != v5)
+  if (self->_textColor != colorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_textColor, a3);
+    v7 = colorCopy;
+    objc_storeStrong(p_textColor, color);
     p_textColor = [(CNMonogrammer *)self _clearMonogramCache];
-    v5 = v7;
+    colorCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](p_textColor, v5);
+  MEMORY[0x1EEE66BB8](p_textColor, colorCopy);
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v5 = a3;
+  fontCopy = font;
   p_font = &self->_font;
-  if (self->_font != v5)
+  if (self->_font != fontCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_font, a3);
+    v7 = fontCopy;
+    objc_storeStrong(p_font, font);
     p_font = [(CNMonogrammer *)self _clearMonogramCache];
-    v5 = v7;
+    fontCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](p_font, v5);
+  MEMORY[0x1EEE66BB8](p_font, fontCopy);
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   p_backgroundColor = &self->_backgroundColor;
-  if (self->_backgroundColor != v5)
+  if (self->_backgroundColor != colorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_backgroundColor, a3);
+    v7 = colorCopy;
+    objc_storeStrong(p_backgroundColor, color);
     p_backgroundColor = [(CNMonogrammer *)self _clearMonogramCache];
-    v5 = v7;
+    colorCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](p_backgroundColor, v5);
+  MEMORY[0x1EEE66BB8](p_backgroundColor, colorCopy);
 }
 
-- (void)setDiameter:(double)a3
+- (void)setDiameter:(double)diameter
 {
-  if (self->_diameter != a3)
+  if (self->_diameter != diameter)
   {
-    self->_diameter = a3;
+    self->_diameter = diameter;
     [(CNMonogrammer *)self _clearMonogramCache];
   }
 }
 
 - (void)monogramsForStark
 {
-  v4 = [MEMORY[0x1E69DCEB0] _carScreen];
-  [v4 scale];
+  _carScreen = [MEMORY[0x1E69DCEB0] _carScreen];
+  [_carScreen scale];
   self->_scale = v3;
 }
 
-- (void)monogramsWithTint:(id)a3
+- (void)monogramsWithTint:(id)tint
 {
-  v5 = a3;
+  tintCopy = tint;
   if (self->_monogrammerStyle <= 1uLL)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_tintColor, a3);
-    v5 = v6;
+    v6 = tintCopy;
+    objc_storeStrong(&self->_tintColor, tint);
+    tintCopy = v6;
   }
 }
 
@@ -575,7 +575,7 @@ LABEL_14:
   [(CNMonogrammer *)&v3 dealloc];
 }
 
-- (CNMonogrammer)initWithStyle:(int64_t)a3 diameter:(double)a4
+- (CNMonogrammer)initWithStyle:(int64_t)style diameter:(double)diameter
 {
   v28.receiver = self;
   v28.super_class = CNMonogrammer;
@@ -586,13 +586,13 @@ LABEL_14:
     return v7;
   }
 
-  v6->_diameter = a4;
+  v6->_diameter = diameter;
   v6->_innerBorderWidth = 1.0;
   tintColor = v6->_tintColor;
   v6->_tintColor = 0;
 
   v7->_scale = 0.0;
-  if (a4 <= 14.0)
+  if (diameter <= 14.0)
   {
     v11 = MEMORY[0x1E69DB878];
     v12 = *MEMORY[0x1E69DB978];
@@ -603,7 +603,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (a4 <= 20.0)
+  if (diameter <= 20.0)
   {
     v11 = MEMORY[0x1E69DB878];
     v12 = *MEMORY[0x1E69DB978];
@@ -611,7 +611,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (a4 <= 32.0)
+  if (diameter <= 32.0)
   {
     v11 = MEMORY[0x1E69DB878];
     v12 = *MEMORY[0x1E69DB978];
@@ -619,14 +619,14 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (a4 <= 45.0)
+  if (diameter <= 45.0)
   {
     v9 = [MEMORY[0x1E69DB878] systemFontOfSize:17.0 weight:*MEMORY[0x1E69DB978]];
     v10 = @"silhouette-M";
     goto LABEL_20;
   }
 
-  if (a4 <= 60.0)
+  if (diameter <= 60.0)
   {
     v26 = MEMORY[0x1E69DB878];
     v27 = 24.0;
@@ -636,21 +636,21 @@ LABEL_37:
     goto LABEL_20;
   }
 
-  if (a4 <= 76.0)
+  if (diameter <= 76.0)
   {
     v26 = MEMORY[0x1E69DB878];
     v27 = 30.0;
     goto LABEL_37;
   }
 
-  if (a4 <= 96.0)
+  if (diameter <= 96.0)
   {
     v26 = MEMORY[0x1E69DB878];
     v27 = 38.0;
     goto LABEL_37;
   }
 
-  if (a4 <= 118.0)
+  if (diameter <= 118.0)
   {
     v9 = [MEMORY[0x1E69DB878] systemFontOfSize:48.0];
 LABEL_40:
@@ -658,20 +658,20 @@ LABEL_40:
     goto LABEL_20;
   }
 
-  if (a4 <= 120.0)
+  if (diameter <= 120.0)
   {
     v9 = [MEMORY[0x1E69DB878] systemFontOfSize:52.0 weight:*MEMORY[0x1E69DB988]];
     goto LABEL_40;
   }
 
-  if (a4 <= 148.0)
+  if (diameter <= 148.0)
   {
     v9 = [MEMORY[0x1E69DB878] systemFontOfSize:52.0];
     v10 = @"silhouette-ATV-L";
     goto LABEL_20;
   }
 
-  if (a4 <= 178.0)
+  if (diameter <= 178.0)
   {
     v9 = [MEMORY[0x1E69DB878] systemFontOfSize:76.0];
 LABEL_44:
@@ -679,13 +679,13 @@ LABEL_44:
     goto LABEL_20;
   }
 
-  if (a4 <= 180.0)
+  if (diameter <= 180.0)
   {
     v9 = [MEMORY[0x1E69DB878] systemFontOfSize:76.0 weight:*MEMORY[0x1E69DB988]];
     goto LABEL_44;
   }
 
-  if (a4 <= 250.0)
+  if (diameter <= 250.0)
   {
     v9 = [MEMORY[0x1E69DB878] systemFontOfSize:87.0];
     v10 = @"silhouette-ATV-XXL";
@@ -704,17 +704,17 @@ LABEL_20:
   silhouetteImageName = v7->_silhouetteImageName;
   v7->_silhouetteImageName = &v10->isa;
 
-  v7->_monogrammerStyle = a3;
-  if (a3 > 1)
+  v7->_monogrammerStyle = style;
+  if (style > 1)
   {
-    if (a3 == 2)
+    if (style == 2)
     {
       v20 = +[CNUIColorRepository monogrammerBackgroundLightColor];
     }
 
     else
     {
-      if (a3 != 3)
+      if (style != 3)
       {
         return v7;
       }
@@ -725,33 +725,33 @@ LABEL_20:
     backgroundColor = v7->_backgroundColor;
     v7->_backgroundColor = v20;
 
-    v18 = [MEMORY[0x1E69DC888] clearColor];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
 LABEL_30:
     v19 = 1;
     goto LABEL_31;
   }
 
-  if (!a3)
+  if (!style)
   {
     v21 = +[CNUIColorRepository monogrammerBackgroundWhiteColor];
     v22 = v7->_backgroundColor;
     v7->_backgroundColor = v21;
 
-    v18 = +[CNUIColorRepository monogrammerBackTextWhiteColor];
+    clearColor = +[CNUIColorRepository monogrammerBackTextWhiteColor];
     goto LABEL_30;
   }
 
-  if (a3 == 1)
+  if (style == 1)
   {
     v16 = +[CNUIColorRepository monogrammerBackgroundGrayColor];
     v17 = v7->_backgroundColor;
     v7->_backgroundColor = v16;
 
-    v18 = +[CNUIColorRepository monogrammerTextGrayColor];
+    clearColor = +[CNUIColorRepository monogrammerTextGrayColor];
     v19 = 0;
 LABEL_31:
     textColor = v7->_textColor;
-    v7->_textColor = v18;
+    v7->_textColor = clearColor;
 
     v7->_textKnockout = v19;
   }
@@ -787,25 +787,25 @@ LABEL_31:
   return v7;
 }
 
-+ (id)_initialsForContact:(id)a3
++ (id)_initialsForContact:(id)contact
 {
-  v3 = a3;
-  if ([v3 contactType])
+  contactCopy = contact;
+  if ([contactCopy contactType])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [v3 givenName];
-    v6 = [v3 familyName];
-    if (v5 | v6 && _isRomanName(v5) && _isRomanName(v6))
+    givenName = [contactCopy givenName];
+    familyName = [contactCopy familyName];
+    if (givenName | familyName && _isRomanName(givenName) && _isRomanName(familyName))
     {
       v7 = MEMORY[0x1E696AEC0];
-      v8 = [v5 length];
+      v8 = [givenName length];
       if (v8)
       {
-        v9 = [v5 substringWithRange:{0, 1}];
+        v9 = [givenName substringWithRange:{0, 1}];
       }
 
       else
@@ -813,9 +813,9 @@ LABEL_31:
         v9 = &stru_1F0CE7398;
       }
 
-      if ([v6 length])
+      if ([familyName length])
       {
-        v12 = [v6 substringWithRange:{0, 1}];
+        v12 = [familyName substringWithRange:{0, 1}];
         v4 = [v7 stringWithFormat:@"%@%@", v9, v12];
       }
 
@@ -841,22 +841,22 @@ LABEL_31:
     v4 = 0;
   }
 
-  v10 = [v4 uppercaseString];
+  uppercaseString = [v4 uppercaseString];
 
-  return v10;
+  return uppercaseString;
 }
 
-+ (int64_t)monogramTypeForContact:(id)a3
++ (int64_t)monogramTypeForContact:(id)contact
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  contactCopy = contact;
+  v5 = contactCopy;
+  if (contactCopy)
   {
-    v6 = [v4 isKeyAvailable:*MEMORY[0x1E695C400]];
+    v6 = [contactCopy isKeyAvailable:*MEMORY[0x1E695C400]];
     if (v6)
     {
-      v7 = [v5 thumbnailImageData];
-      if (v7)
+      thumbnailImageData = [v5 thumbnailImageData];
+      if (thumbnailImageData)
       {
 
 LABEL_20:
@@ -867,32 +867,32 @@ LABEL_20:
 
     if ([v5 isKeyAvailable:*MEMORY[0x1E695C278]])
     {
-      v8 = [v5 imageData];
-      if (v8)
+      imageData = [v5 imageData];
+      if (imageData)
       {
-        v9 = 1;
+        imageDataAvailable = 1;
       }
 
       else if ([v5 isKeyAvailable:*MEMORY[0x1E695C270]])
       {
-        v9 = [v5 imageDataAvailable];
+        imageDataAvailable = [v5 imageDataAvailable];
       }
 
       else
       {
-        v9 = 0;
+        imageDataAvailable = 0;
       }
 
       if (v6)
       {
 LABEL_19:
-        if (v9)
+        if (imageDataAvailable)
         {
           goto LABEL_20;
         }
 
 LABEL_14:
-        v11 = [a1 _initialsForContact:v5];
+        v11 = [self _initialsForContact:v5];
         v10 = v11 != 0;
 
         goto LABEL_21;
@@ -901,7 +901,7 @@ LABEL_14:
 
     else if ([v5 isKeyAvailable:*MEMORY[0x1E695C270]])
     {
-      v9 = [v5 imageDataAvailable];
+      imageDataAvailable = [v5 imageDataAvailable];
       if (v6)
       {
         goto LABEL_19;
@@ -910,14 +910,14 @@ LABEL_14:
 
     else
     {
-      v9 = 0;
+      imageDataAvailable = 0;
       if (v6)
       {
         goto LABEL_19;
       }
     }
 
-    if (v9)
+    if (imageDataAvailable)
     {
       goto LABEL_20;
     }
@@ -931,9 +931,9 @@ LABEL_21:
   return v10;
 }
 
-+ (id)descriptorForRequiredKeysIncludingImage:(BOOL)a3
++ (id)descriptorForRequiredKeysIncludingImage:(BOOL)image
 {
-  if (a3)
+  if (image)
   {
     if (descriptorForRequiredKeysIncludingImage__cn_once_token_1 != -1)
     {

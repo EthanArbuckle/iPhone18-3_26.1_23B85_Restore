@@ -1,21 +1,21 @@
 @interface IDSSignInServiceUserInfo
-- (IDSSignInServiceUserInfo)initWithUserType:(unint64_t)a3 status:(unint64_t)a4;
+- (IDSSignInServiceUserInfo)initWithUserType:(unint64_t)type status:(unint64_t)status;
 - (id)description;
 @end
 
 @implementation IDSSignInServiceUserInfo
 
-- (IDSSignInServiceUserInfo)initWithUserType:(unint64_t)a3 status:(unint64_t)a4
+- (IDSSignInServiceUserInfo)initWithUserType:(unint64_t)type status:(unint64_t)status
 {
   if (_IDSRunningInDaemon())
   {
-    v7 = [MEMORY[0x1E69A6138] signInController];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    signInController = [MEMORY[0x1E69A6138] signInController];
+    if (os_log_type_enabled(signInController, OS_LOG_TYPE_ERROR))
     {
       sub_195B28A4C();
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -25,15 +25,15 @@
     v9 = [(IDSSignInServiceUserInfo *)&v11 init];
     if (v9)
     {
-      v9->_type = a3;
-      v9->_status = a4;
+      v9->_type = type;
+      v9->_status = status;
     }
 
     self = v9;
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (id)description

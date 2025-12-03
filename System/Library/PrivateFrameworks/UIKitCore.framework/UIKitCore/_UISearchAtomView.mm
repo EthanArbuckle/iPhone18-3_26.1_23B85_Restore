@@ -1,29 +1,29 @@
 @interface _UISearchAtomView
-+ (id)_defaultAtomForegroundColorForTraitCollection:(id)a3;
-+ (id)defaultAtomBackgroundColorForTraitCollection:(id)a3;
++ (id)_defaultAtomForegroundColorForTraitCollection:(id)collection;
++ (id)defaultAtomBackgroundColorForTraitCollection:(id)collection;
 - (UIColor)_atomForegroundColor;
-- (_UISearchAtomView)initWithFrame:(CGRect)a3;
+- (_UISearchAtomView)initWithFrame:(CGRect)frame;
 - (double)viewportWidth;
 - (void)_dynamicUserInterfaceTraitDidChange;
-- (void)_setAtomForegroundColor:(id)a3;
+- (void)_setAtomForegroundColor:(id)color;
 - (void)_updateColors;
-- (void)setAtomBackgroundColor:(id)a3;
-- (void)setAtomFont:(id)a3;
-- (void)setEnabled:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSelectionStyle:(int64_t)a3 animated:(BOOL)a4;
-- (void)setViewportWidth:(double)a3;
+- (void)setAtomBackgroundColor:(id)color;
+- (void)setAtomFont:(id)font;
+- (void)setEnabled:(BOOL)enabled animated:(BOOL)animated;
+- (void)setSelectionStyle:(int64_t)style animated:(BOOL)animated;
+- (void)setViewportWidth:(double)width;
 - (void)tintColorDidChange;
 - (void)updateConstraints;
 @end
 
 @implementation _UISearchAtomView
 
-- (_UISearchAtomView)initWithFrame:(CGRect)a3
+- (_UISearchAtomView)initWithFrame:(CGRect)frame
 {
   v82[8] = *MEMORY[0x1E69E9840];
   v79.receiver = self;
   v79.super_class = _UISearchAtomView;
-  v3 = [(UIView *)&v79 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v79 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[_UIVisualStyleRegistry defaultRegistry];
@@ -46,13 +46,13 @@
     backgroundView = v3->_backgroundView;
     v3->_backgroundView = v15;
 
-    v78 = [(_UISearchAtomViewVisualStyle *)v3->_visualStyle defaultFont];
+    defaultFont = [(_UISearchAtomViewVisualStyle *)v3->_visualStyle defaultFont];
     v17 = [[UILabel alloc] initWithFrame:v11, v12, v13, v14];
     textLabel = v3->_textLabel;
     v3->_textLabel = v17;
 
     [(UILabel *)v3->_textLabel setAllowsDefaultTighteningForTruncation:1];
-    [(UILabel *)v3->_textLabel setFont:v78];
+    [(UILabel *)v3->_textLabel setFont:defaultFont];
     [(UILabel *)v3->_textLabel setNumberOfLines:1];
     [(UILabel *)v3->_textLabel setTextAlignment:4];
     LODWORD(v19) = 1132068864;
@@ -71,8 +71,8 @@
     [(UIView *)v3->_leadingImage setContentHuggingPriority:0 forAxis:v24];
     LODWORD(v25) = 1148846080;
     [(UIView *)v3->_leadingImage setContentHuggingPriority:1 forAxis:v25];
-    v26 = [(_UISearchAtomView *)v3 atomFont];
-    v27 = [UIImageSymbolConfiguration configurationWithFont:v26 scale:1];
+    atomFont = [(_UISearchAtomView *)v3 atomFont];
+    v27 = [UIImageSymbolConfiguration configurationWithFont:atomFont scale:1];
     [(UIImageView *)v3->_leadingImage setPreferredSymbolConfiguration:v27];
 
     [(UIView *)v3->_backgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -88,76 +88,76 @@
     v31 = v30;
     [(UIView *)v3->_backgroundView _setContinuousCornerRadius:?];
     [(UIView *)v3 _setContinuousCornerRadius:v31];
-    v32 = [(UIView *)v3 widthAnchor];
+    widthAnchor = [(UIView *)v3 widthAnchor];
     [(_UISearchAtomViewVisualStyle *)v3->_visualStyle maximumFallbackWidth];
-    v33 = [v32 constraintLessThanOrEqualToConstant:?];
+    v33 = [widthAnchor constraintLessThanOrEqualToConstant:?];
     [(_UISearchAtomView *)v3 setMaximumAtomWidthConstraint:v33];
 
-    v77 = [(UIView *)v3 trailingAnchor];
-    v76 = [(UIView *)v3->_textLabel trailingAnchor];
+    trailingAnchor = [(UIView *)v3 trailingAnchor];
+    trailingAnchor2 = [(UIView *)v3->_textLabel trailingAnchor];
     [(_UISearchAtomViewVisualStyle *)v3->_visualStyle contentHorizontalPadding];
-    v75 = [v77 constraintEqualToAnchor:v76 constant:?];
+    v75 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:?];
     v82[0] = v75;
-    v74 = [(UIView *)v3->_textLabel topAnchor];
-    v73 = [(UIView *)v3 topAnchor];
-    v72 = [v74 constraintEqualToAnchor:v73 constant:v29];
+    topAnchor = [(UIView *)v3->_textLabel topAnchor];
+    topAnchor2 = [(UIView *)v3 topAnchor];
+    v72 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v29];
     v82[1] = v72;
-    v71 = [(UIView *)v3 bottomAnchor];
-    v70 = [(UIView *)v3->_textLabel bottomAnchor];
-    v69 = [v71 constraintEqualToAnchor:v70 constant:v29];
+    bottomAnchor = [(UIView *)v3 bottomAnchor];
+    bottomAnchor2 = [(UIView *)v3->_textLabel bottomAnchor];
+    v69 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:v29];
     v82[2] = v69;
-    v68 = [(UIView *)v3->_backgroundView leadingAnchor];
-    v67 = [(UIView *)v3 leadingAnchor];
-    v66 = [v68 constraintEqualToAnchor:v67];
+    leadingAnchor = [(UIView *)v3->_backgroundView leadingAnchor];
+    leadingAnchor2 = [(UIView *)v3 leadingAnchor];
+    v66 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v82[3] = v66;
-    v65 = [(UIView *)v3->_backgroundView trailingAnchor];
-    v64 = [(UIView *)v3 trailingAnchor];
-    v34 = [v65 constraintEqualToAnchor:v64];
+    trailingAnchor3 = [(UIView *)v3->_backgroundView trailingAnchor];
+    trailingAnchor4 = [(UIView *)v3 trailingAnchor];
+    v34 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v82[4] = v34;
-    v35 = [(UIView *)v3->_backgroundView topAnchor];
-    v36 = [(UIView *)v3 topAnchor];
-    v37 = [v35 constraintEqualToAnchor:v36];
+    topAnchor3 = [(UIView *)v3->_backgroundView topAnchor];
+    topAnchor4 = [(UIView *)v3 topAnchor];
+    v37 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v82[5] = v37;
-    v38 = [(UIView *)v3->_backgroundView bottomAnchor];
-    v39 = [(UIView *)v3 bottomAnchor];
-    v40 = [v38 constraintEqualToAnchor:v39];
+    bottomAnchor3 = [(UIView *)v3->_backgroundView bottomAnchor];
+    bottomAnchor4 = [(UIView *)v3 bottomAnchor];
+    v40 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v82[6] = v40;
-    v41 = [(_UISearchAtomView *)v3 maximumAtomWidthConstraint];
-    v82[7] = v41;
+    maximumAtomWidthConstraint = [(_UISearchAtomView *)v3 maximumAtomWidthConstraint];
+    v82[7] = maximumAtomWidthConstraint;
     v42 = [MEMORY[0x1E695DEC8] arrayWithObjects:v82 count:8];
     [(_UISearchAtomView *)v3 setDefaultConstraints:v42];
 
-    v43 = [(UIView *)v3->_leadingImage centerYAnchor];
-    v44 = [(UIView *)v3->_textLabel centerYAnchor];
-    v45 = [v43 constraintEqualToAnchor:v44];
+    centerYAnchor = [(UIView *)v3->_leadingImage centerYAnchor];
+    centerYAnchor2 = [(UIView *)v3->_textLabel centerYAnchor];
+    v45 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [(_UISearchAtomView *)v3 setImageCenterYConstraint:v45];
 
-    v46 = [(UIView *)v3->_leadingImage lastBaselineAnchor];
-    v47 = [(UIView *)v3->_textLabel lastBaselineAnchor];
-    v48 = [v46 constraintEqualToAnchor:v47];
+    lastBaselineAnchor = [(UIView *)v3->_leadingImage lastBaselineAnchor];
+    lastBaselineAnchor2 = [(UIView *)v3->_textLabel lastBaselineAnchor];
+    v48 = [lastBaselineAnchor constraintEqualToAnchor:lastBaselineAnchor2];
     [(_UISearchAtomView *)v3 setImageBaselineConstraint:v48];
 
-    v49 = [(UIView *)v3->_leadingImage leadingAnchor];
-    v50 = [(UIView *)v3 leadingAnchor];
+    leadingAnchor3 = [(UIView *)v3->_leadingImage leadingAnchor];
+    leadingAnchor4 = [(UIView *)v3 leadingAnchor];
     [(_UISearchAtomViewVisualStyle *)v3->_visualStyle contentHorizontalPadding];
-    v51 = [v49 constraintEqualToAnchor:v50 constant:?];
+    v51 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:?];
     v81[0] = v51;
-    v52 = [(UIView *)v3->_textLabel leadingAnchor];
-    v53 = [(UIView *)v3->_leadingImage trailingAnchor];
+    leadingAnchor5 = [(UIView *)v3->_textLabel leadingAnchor];
+    trailingAnchor5 = [(UIView *)v3->_leadingImage trailingAnchor];
     [(_UISearchAtomViewVisualStyle *)v3->_visualStyle imageTextSpacing];
-    v54 = [v52 constraintEqualToAnchor:v53 constant:?];
+    v54 = [leadingAnchor5 constraintEqualToAnchor:trailingAnchor5 constant:?];
     v81[1] = v54;
     v55 = [MEMORY[0x1E695DEC8] arrayWithObjects:v81 count:2];
     [(_UISearchAtomView *)v3 setWithImageConstraints:v55];
 
-    v56 = [(UIView *)v3->_textLabel leadingAnchor];
-    v57 = [(UIView *)v3 leadingAnchor];
+    leadingAnchor6 = [(UIView *)v3->_textLabel leadingAnchor];
+    leadingAnchor7 = [(UIView *)v3 leadingAnchor];
     [(_UISearchAtomViewVisualStyle *)v3->_visualStyle contentHorizontalPadding];
-    v58 = [v56 constraintEqualToAnchor:v57 constant:?];
+    v58 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7 constant:?];
     v80[0] = v58;
-    v59 = [(UIView *)v3->_leadingImage leadingAnchor];
-    v60 = [(UIView *)v3 leadingAnchor];
-    v61 = [v59 constraintEqualToAnchor:v60];
+    leadingAnchor8 = [(UIView *)v3->_leadingImage leadingAnchor];
+    leadingAnchor9 = [(UIView *)v3 leadingAnchor];
+    v61 = [leadingAnchor8 constraintEqualToAnchor:leadingAnchor9];
     v80[1] = v61;
     v62 = [MEMORY[0x1E695DEC8] arrayWithObjects:v80 count:2];
     [(_UISearchAtomView *)v3 setWithoutImageConstraints:v62];
@@ -166,48 +166,48 @@
   return v3;
 }
 
-+ (id)defaultAtomBackgroundColorForTraitCollection:(id)a3
++ (id)defaultAtomBackgroundColorForTraitCollection:(id)collection
 {
-  v3 = a3;
+  collectionCopy = collection;
   v4 = objc_alloc_init(_UISearchAtomView);
-  v5 = [v3 userInterfaceIdiom];
+  userInterfaceIdiom = [collectionCopy userInterfaceIdiom];
 
-  v6 = [_UIVisualStyleRegistry registryForIdiom:v5];
+  v6 = [_UIVisualStyleRegistry registryForIdiom:userInterfaceIdiom];
   v7 = [v6 visualStyleClassForStylableClass:objc_opt_class()];
 
   v8 = [[v7 alloc] initWithInstance:v4];
-  v9 = [v8 defaultAtomBackgroundColor];
+  defaultAtomBackgroundColor = [v8 defaultAtomBackgroundColor];
 
-  return v9;
+  return defaultAtomBackgroundColor;
 }
 
-+ (id)_defaultAtomForegroundColorForTraitCollection:(id)a3
++ (id)_defaultAtomForegroundColorForTraitCollection:(id)collection
 {
-  v3 = a3;
+  collectionCopy = collection;
   v4 = objc_alloc_init(_UISearchAtomView);
-  v5 = [v3 userInterfaceIdiom];
+  userInterfaceIdiom = [collectionCopy userInterfaceIdiom];
 
-  v6 = [_UIVisualStyleRegistry registryForIdiom:v5];
+  v6 = [_UIVisualStyleRegistry registryForIdiom:userInterfaceIdiom];
   v7 = [v6 visualStyleClassForStylableClass:objc_opt_class()];
 
   v8 = [[v7 alloc] initWithInstance:v4];
-  v9 = [v8 defaultTextAndImageColor];
+  defaultTextAndImageColor = [v8 defaultTextAndImageColor];
 
-  return v9;
+  return defaultTextAndImageColor;
 }
 
-- (void)setAtomBackgroundColor:(id)a3
+- (void)setAtomBackgroundColor:(id)color
 {
-  v5 = a3;
-  v7 = v5;
-  if (!v5)
+  colorCopy = color;
+  v7 = colorCopy;
+  if (!colorCopy)
   {
     v6 = objc_opt_class();
-    v3 = [(UIView *)self traitCollection];
-    v5 = [v6 defaultAtomBackgroundColorForTraitCollection:v3];
+    traitCollection = [(UIView *)self traitCollection];
+    colorCopy = [v6 defaultAtomBackgroundColorForTraitCollection:traitCollection];
   }
 
-  objc_storeStrong(&self->_atomBackgroundColor, v5);
+  objc_storeStrong(&self->_atomBackgroundColor, colorCopy);
   if (!v7)
   {
   }
@@ -215,9 +215,9 @@
   [(_UISearchAtomView *)self _updateColors];
 }
 
-- (void)_setAtomForegroundColor:(id)a3
+- (void)_setAtomForegroundColor:(id)color
 {
-  objc_storeStrong(&self->_customAtomForegroundColor, a3);
+  objc_storeStrong(&self->_customAtomForegroundColor, color);
 
   [(_UISearchAtomView *)self _updateColors];
 }
@@ -227,27 +227,27 @@
   customAtomForegroundColor = self->_customAtomForegroundColor;
   if (customAtomForegroundColor)
   {
-    v3 = customAtomForegroundColor;
+    defaultTextAndImageColor = customAtomForegroundColor;
   }
 
   else
   {
-    v3 = [(_UISearchAtomViewVisualStyle *)self->_visualStyle defaultTextAndImageColor];
+    defaultTextAndImageColor = [(_UISearchAtomViewVisualStyle *)self->_visualStyle defaultTextAndImageColor];
   }
 
-  return v3;
+  return defaultTextAndImageColor;
 }
 
-- (void)setAtomFont:(id)a3
+- (void)setAtomFont:(id)font
 {
-  v4 = a3;
-  if (!v4)
+  fontCopy = font;
+  if (!fontCopy)
   {
-    v4 = [(_UISearchAtomViewVisualStyle *)self->_visualStyle defaultFont];
+    fontCopy = [(_UISearchAtomViewVisualStyle *)self->_visualStyle defaultFont];
   }
 
-  v6 = v4;
-  [(UILabel *)self->_textLabel setFont:v4];
+  v6 = fontCopy;
+  [(UILabel *)self->_textLabel setFont:fontCopy];
   v5 = [UIImageSymbolConfiguration configurationWithFont:v6 scale:1];
   [(UIImageView *)self->_leadingImage setPreferredSymbolConfiguration:v5];
   [(UIView *)self setNeedsLayout];
@@ -260,17 +260,17 @@
   [(UIView *)&v11 updateConstraints];
   v3 = objc_opt_new();
   v4 = objc_opt_new();
-  v5 = [(UIImageView *)self->_leadingImage image];
+  image = [(UIImageView *)self->_leadingImage image];
 
   [v3 addObjectsFromArray:self->_defaultConstraints];
-  if (v5)
+  if (image)
   {
     [v3 addObjectsFromArray:self->_withImageConstraints];
     [v4 addObjectsFromArray:self->_withoutImageConstraints];
-    v6 = [(UIImageView *)self->_leadingImage _currentImage];
-    v7 = [v6 hasBaseline];
+    _currentImage = [(UIImageView *)self->_leadingImage _currentImage];
+    hasBaseline = [_currentImage hasBaseline];
 
-    if (v7)
+    if (hasBaseline)
     {
       v8 = &OBJC_IVAR____UISearchAtomView__imageBaselineConstraint;
     }
@@ -280,7 +280,7 @@
       v8 = &OBJC_IVAR____UISearchAtomView__imageCenterYConstraint;
     }
 
-    if (v7)
+    if (hasBaseline)
     {
       v9 = &OBJC_IVAR____UISearchAtomView__imageCenterYConstraint;
     }
@@ -334,13 +334,13 @@
   }
 
   v3 = +[UITraitCollection _currentTraitCollectionIfExists];
-  v4 = [(UIView *)self traitCollection];
-  [UITraitCollection setCurrentTraitCollection:v4];
+  traitCollection = [(UIView *)self traitCollection];
+  [UITraitCollection setCurrentTraitCollection:traitCollection];
 
   v5 = _UISetCurrentFallbackEnvironment(self);
-  v6 = [(_UISearchAtomBackgroundView *)self->_backgroundView selectionStyle];
+  selectionStyle = [(_UISearchAtomBackgroundView *)self->_backgroundView selectionStyle];
   visualStyle = self->_visualStyle;
-  if (v6)
+  if (selectionStyle)
   {
     v8 = (*&self->_flags & 1) == 0;
   }
@@ -354,14 +354,14 @@
   {
     if (*&self->_flags)
     {
-      v9 = [(_UISearchAtomViewVisualStyle *)visualStyle defaultAtomBackgroundBlurEffect];
+      defaultAtomBackgroundBlurEffect = [(_UISearchAtomViewVisualStyle *)visualStyle defaultAtomBackgroundBlurEffect];
       v10 = self->_atomBackgroundColor;
     }
 
     else
     {
-      v9 = [(_UISearchAtomViewVisualStyle *)visualStyle disabledAtomBackgroundBlurEffect];
-      if (v9)
+      defaultAtomBackgroundBlurEffect = [(_UISearchAtomViewVisualStyle *)visualStyle disabledAtomBackgroundBlurEffect];
+      if (defaultAtomBackgroundBlurEffect)
       {
         +[UIColor clearColor];
       }
@@ -376,52 +376,52 @@
     }
 
     v14 = v10;
-    v15 = [(_UISearchAtomView *)self _atomForegroundColor];
+    _atomForegroundColor = [(_UISearchAtomView *)self _atomForegroundColor];
   }
 
   else
   {
-    v11 = [(_UISearchAtomViewVisualStyle *)visualStyle defaultSelectedAtomBackgroundColor];
-    v12 = v11;
-    if (v11)
+    defaultSelectedAtomBackgroundColor = [(_UISearchAtomViewVisualStyle *)visualStyle defaultSelectedAtomBackgroundColor];
+    v12 = defaultSelectedAtomBackgroundColor;
+    if (defaultSelectedAtomBackgroundColor)
     {
-      v13 = v11;
+      tintColor = defaultSelectedAtomBackgroundColor;
     }
 
     else
     {
-      v13 = [(UIView *)self tintColor];
+      tintColor = [(UIView *)self tintColor];
     }
 
-    v14 = v13;
-    v15 = [(_UISearchAtomViewVisualStyle *)self->_visualStyle defaultSelectedTextAndImageColor];
+    v14 = tintColor;
+    _atomForegroundColor = [(_UISearchAtomViewVisualStyle *)self->_visualStyle defaultSelectedTextAndImageColor];
 
-    v9 = 0;
+    defaultAtomBackgroundBlurEffect = 0;
   }
 
   [(_UISearchAtomViewVisualStyle *)self->_visualStyle updateColorsWithBackgroundColor:v14];
   [(UIView *)self->_backgroundView setBackgroundColor:v14];
-  [(_UISearchAtomBackgroundView *)self->_backgroundView setBlurEffect:v9];
-  [(UIColor *)v14 _luminanceDifferenceFromColor:v15];
+  [(_UISearchAtomBackgroundView *)self->_backgroundView setBlurEffect:defaultAtomBackgroundBlurEffect];
+  [(UIColor *)v14 _luminanceDifferenceFromColor:_atomForegroundColor];
   v18 = v17;
   [(_UISearchAtomViewVisualStyle *)self->_visualStyle minimumTextConstrastRatio];
   if (v18 < v19)
   {
-    v20 = [(_UISearchAtomViewVisualStyle *)self->_visualStyle textContrastFallbackColor];
+    textContrastFallbackColor = [(_UISearchAtomViewVisualStyle *)self->_visualStyle textContrastFallbackColor];
 
-    v15 = v20;
+    _atomForegroundColor = textContrastFallbackColor;
   }
 
   if (*&self->_flags)
   {
-    [(UILabel *)self->_textLabel setTextColor:v15];
-    [(UIView *)self->_leadingImage setTintColor:v15];
+    [(UILabel *)self->_textLabel setTextColor:_atomForegroundColor];
+    [(UIView *)self->_leadingImage setTintColor:_atomForegroundColor];
   }
 
   else
   {
     [(_UISearchAtomViewVisualStyle *)self->_visualStyle disabledAlpha];
-    v21 = [v15 colorWithAlphaComponent:?];
+    v21 = [_atomForegroundColor colorWithAlphaComponent:?];
     [(UILabel *)self->_textLabel setTextColor:v21];
     [(UIView *)self->_leadingImage setTintColor:v21];
   }
@@ -446,15 +446,15 @@
   [(_UISearchAtomView *)self _updateColors];
 }
 
-- (void)setEnabled:(BOOL)a3 animated:(BOOL)a4
+- (void)setEnabled:(BOOL)enabled animated:(BOOL)animated
 {
   flags = self->_flags;
-  if ((flags & 1) != a3)
+  if ((flags & 1) != enabled)
   {
     aBlock[9] = v4;
     aBlock[10] = v5;
-    v7 = a4;
-    *&self->_flags = flags & 0xFE | a3;
+    animatedCopy = animated;
+    *&self->_flags = flags & 0xFE | enabled;
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __41___UISearchAtomView_setEnabled_animated___block_invoke;
@@ -462,7 +462,7 @@
     aBlock[4] = self;
     v9 = _Block_copy(aBlock);
     v10 = v9;
-    if (v7)
+    if (animatedCopy)
     {
       [UIView transitionWithView:self duration:5242880 options:v9 animations:0 completion:0.35];
     }
@@ -474,31 +474,31 @@
   }
 }
 
-- (void)setSelectionStyle:(int64_t)a3 animated:(BOOL)a4
+- (void)setSelectionStyle:(int64_t)style animated:(BOOL)animated
 {
-  [(_UISearchAtomBackgroundView *)self->_backgroundView setSelectionStyle:a3, a4];
+  [(_UISearchAtomBackgroundView *)self->_backgroundView setSelectionStyle:style, animated];
 
   [(_UISearchAtomView *)self _updateColors];
 }
 
-- (void)setViewportWidth:(double)a3
+- (void)setViewportWidth:(double)width
 {
   [(_UISearchAtomViewVisualStyle *)self->_visualStyle maximumAtomWidthFraction];
-  v6 = v5 * a3;
+  v6 = v5 * width;
   [(_UISearchAtomViewVisualStyle *)self->_visualStyle maximumFallbackWidth];
   if (v6 < v7)
   {
     v6 = v7;
   }
 
-  v8 = [(_UISearchAtomView *)self maximumAtomWidthConstraint];
-  [v8 setConstant:v6];
+  maximumAtomWidthConstraint = [(_UISearchAtomView *)self maximumAtomWidthConstraint];
+  [maximumAtomWidthConstraint setConstant:v6];
 }
 
 - (double)viewportWidth
 {
-  v2 = [(_UISearchAtomView *)self maximumAtomWidthConstraint];
-  [v2 constant];
+  maximumAtomWidthConstraint = [(_UISearchAtomView *)self maximumAtomWidthConstraint];
+  [maximumAtomWidthConstraint constant];
   v4 = v3;
 
   return v4;

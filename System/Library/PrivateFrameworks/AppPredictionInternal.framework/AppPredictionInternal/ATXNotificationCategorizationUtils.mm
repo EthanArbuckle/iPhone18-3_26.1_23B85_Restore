@@ -1,25 +1,25 @@
 @interface ATXNotificationCategorizationUtils
-+ (id)megadomeEntityIDFromNotification:(id)a3;
-+ (id)megadomePersonRelationshipFromEntityID:(id)a3;
++ (id)megadomeEntityIDFromNotification:(id)notification;
++ (id)megadomePersonRelationshipFromEntityID:(id)d;
 @end
 
 @implementation ATXNotificationCategorizationUtils
 
-+ (id)megadomeEntityIDFromNotification:(id)a3
++ (id)megadomeEntityIDFromNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v4 = objc_alloc_init(ATXMegadomeContextualPersonRelationships);
-  v5 = [v3 title];
+  title = [notificationCopy title];
   v20 = 0;
-  v6 = [(ATXMegadomeContextualPersonRelationships *)v4 megadomePersonIDFromName:v5 error:&v20];
+  v6 = [(ATXMegadomeContextualPersonRelationships *)v4 megadomePersonIDFromName:title error:&v20];
   v7 = v20;
 
   if (![v6 length])
   {
-    v8 = [v3 contactIDs];
-    v9 = [v8 firstObject];
+    contactIDs = [notificationCopy contactIDs];
+    firstObject = [contactIDs firstObject];
     v19 = v7;
-    v10 = [(ATXMegadomeContextualPersonRelationships *)v4 megadomePersonIDFromContactID:v9 error:&v19];
+    v10 = [(ATXMegadomeContextualPersonRelationships *)v4 megadomePersonIDFromContactID:firstObject error:&v19];
     v11 = v19;
 
     v6 = v10;
@@ -28,9 +28,9 @@
 
   if (![v6 length])
   {
-    v14 = [v3 threadID];
+    threadID = [notificationCopy threadID];
     v18 = v7;
-    v15 = [(ATXMegadomeContextualPersonRelationships *)v4 megadomePersonIDFromPhoneNumber:v14 error:&v18];
+    v15 = [(ATXMegadomeContextualPersonRelationships *)v4 megadomePersonIDFromPhoneNumber:threadID error:&v18];
     v16 = v18;
 
     v6 = v15;
@@ -63,9 +63,9 @@ LABEL_10:
   return v13;
 }
 
-+ (id)megadomePersonRelationshipFromEntityID:(id)a3
++ (id)megadomePersonRelationshipFromEntityID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -88,7 +88,7 @@ LABEL_10:
   v14 = &v21;
   v6 = v5;
   v12 = v6;
-  [(ATXMegadomeContextualPersonRelationships *)v4 entityRelationshipsFrom:v3 completionHandler:v11];
+  [(ATXMegadomeContextualPersonRelationships *)v4 entityRelationshipsFrom:dCopy completionHandler:v11];
   v7 = v6;
   v8 = dispatch_time(0, 5000000000);
   dispatch_semaphore_wait(v7, v8);

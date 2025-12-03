@@ -1,12 +1,12 @@
 @interface TUIHBox
-- (void)setChildrenUsesModifiers:(BOOL)a3;
+- (void)setChildrenUsesModifiers:(BOOL)modifiers;
 @end
 
 @implementation TUIHBox
 
-- (void)setChildrenUsesModifiers:(BOOL)a3
+- (void)setChildrenUsesModifiers:(BOOL)modifiers
 {
-  if (a3)
+  if (modifiers)
   {
     v3 = 4;
   }

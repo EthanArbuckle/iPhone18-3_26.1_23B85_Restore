@@ -1,27 +1,27 @@
 @interface CSComplicationLayoutElement
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)size;
-- (CSComplicationLayoutElement)initWithIdentifier:(id)a3 complicationFamily:(unint64_t)a4 size:(CGSize)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CSComplicationLayoutElement)initWithIdentifier:(id)identifier complicationFamily:(unint64_t)family size:(CGSize)size;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)gridWidth;
 - (unint64_t)hash;
 @end
 
 @implementation CSComplicationLayoutElement
 
-- (CSComplicationLayoutElement)initWithIdentifier:(id)a3 complicationFamily:(unint64_t)a4 size:(CGSize)a5
+- (CSComplicationLayoutElement)initWithIdentifier:(id)identifier complicationFamily:(unint64_t)family size:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v10 = a3;
+  height = size.height;
+  width = size.width;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = CSComplicationLayoutElement;
   v11 = [(CSComplicationLayoutElement *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_identifier, a3);
-    v12->_complicationFamily = a4;
+    objc_storeStrong(&v11->_identifier, identifier);
+    v12->_complicationFamily = family;
     v12->_size.width = width;
     v12->_size.height = height;
   }
@@ -29,10 +29,10 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -43,10 +43,10 @@
     if (objc_opt_isKindOfClass())
     {
       identifier = self->_identifier;
-      v6 = [(CSComplicationLayoutElement *)v4 identifier];
-      if ([(NSString *)identifier isEqualToString:v6]&& (complicationFamily = self->_complicationFamily, complicationFamily == [(CSComplicationLayoutElement *)v4 complicationFamily]))
+      identifier = [(CSComplicationLayoutElement *)equalCopy identifier];
+      if ([(NSString *)identifier isEqualToString:identifier]&& (complicationFamily = self->_complicationFamily, complicationFamily == [(CSComplicationLayoutElement *)equalCopy complicationFamily]))
       {
-        [(CSComplicationLayoutElement *)v4 size];
+        [(CSComplicationLayoutElement *)equalCopy size];
         v10 = self->_size.height == v9 && self->_size.width == v8;
       }
 
@@ -89,7 +89,7 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CSComplicationLayoutElement alloc];
   identifier = self->_identifier;

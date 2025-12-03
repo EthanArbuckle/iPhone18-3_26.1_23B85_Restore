@@ -1,30 +1,30 @@
 @interface MusicKit_SoftLinking_CoverArtworkRecipe
-- (MusicKit_SoftLinking_CoverArtworkRecipe)initWithExpression:(int64_t)a3 version:(id)a4 backgroundColor:(CGColor *)a5 primaryColor:(CGColor *)a6 secondaryColor:(CGColor *)a7 tertiaryColor:(CGColor *)a8 textColor:(CGColor *)a9;
+- (MusicKit_SoftLinking_CoverArtworkRecipe)initWithExpression:(int64_t)expression version:(id)version backgroundColor:(CGColor *)color primaryColor:(CGColor *)primaryColor secondaryColor:(CGColor *)secondaryColor tertiaryColor:(CGColor *)tertiaryColor textColor:(CGColor *)textColor;
 - (NSString)stringRepresentation;
-- (id)_stringFromColor:(CGColor *)a3;
-- (id)_stringFromExpression:(int64_t)a3;
-- (id)createArtworkCatalogWithPlaylistName:(id)a3;
+- (id)_stringFromColor:(CGColor *)color;
+- (id)_stringFromExpression:(int64_t)expression;
+- (id)createArtworkCatalogWithPlaylistName:(id)name;
 - (id)description;
 @end
 
 @implementation MusicKit_SoftLinking_CoverArtworkRecipe
 
-- (MusicKit_SoftLinking_CoverArtworkRecipe)initWithExpression:(int64_t)a3 version:(id)a4 backgroundColor:(CGColor *)a5 primaryColor:(CGColor *)a6 secondaryColor:(CGColor *)a7 tertiaryColor:(CGColor *)a8 textColor:(CGColor *)a9
+- (MusicKit_SoftLinking_CoverArtworkRecipe)initWithExpression:(int64_t)expression version:(id)version backgroundColor:(CGColor *)color primaryColor:(CGColor *)primaryColor secondaryColor:(CGColor *)secondaryColor tertiaryColor:(CGColor *)tertiaryColor textColor:(CGColor *)textColor
 {
-  v16 = a4;
+  versionCopy = version;
   v20.receiver = self;
   v20.super_class = MusicKit_SoftLinking_CoverArtworkRecipe;
   v17 = [(MusicKit_SoftLinking_CoverArtworkRecipe *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    v17->_expression = a3;
-    objc_storeStrong(&v17->_version, a4);
-    objc_storeStrong(&v18->_backgroundColor, a5);
-    objc_storeStrong(&v18->_primaryColor, a6);
-    objc_storeStrong(&v18->_secondaryColor, a7);
-    objc_storeStrong(&v18->_tertiaryColor, a8);
-    objc_storeStrong(&v18->_textColor, a9);
+    v17->_expression = expression;
+    objc_storeStrong(&v17->_version, version);
+    objc_storeStrong(&v18->_backgroundColor, color);
+    objc_storeStrong(&v18->_primaryColor, primaryColor);
+    objc_storeStrong(&v18->_secondaryColor, secondaryColor);
+    objc_storeStrong(&v18->_tertiaryColor, tertiaryColor);
+    objc_storeStrong(&v18->_textColor, textColor);
   }
 
   return v18;
@@ -37,8 +37,8 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 initWithFormat:@"<%@: %p", v5, self];
 
-  v7 = [(MusicKit_SoftLinking_CoverArtworkRecipe *)self stringRepresentation];
-  [v6 appendFormat:@"; %@", v7];
+  stringRepresentation = [(MusicKit_SoftLinking_CoverArtworkRecipe *)self stringRepresentation];
+  [v6 appendFormat:@"; %@", stringRepresentation];
 
   [v6 appendString:@">"];
 
@@ -85,10 +85,10 @@
   return v5;
 }
 
-- (id)createArtworkCatalogWithPlaylistName:(id)a3
+- (id)createArtworkCatalogWithPlaylistName:(id)name
 {
-  v4 = a3;
-  v5 = [[MusicKit_SoftLinking_CoverArtworkToken alloc] initWithCoverArtworkRecipe:self playlistName:v4];
+  nameCopy = name;
+  v5 = [[MusicKit_SoftLinking_CoverArtworkToken alloc] initWithCoverArtworkRecipe:self playlistName:nameCopy];
 
   if (v5)
   {
@@ -103,23 +103,23 @@
   return v6;
 }
 
-- (id)_stringFromExpression:(int64_t)a3
+- (id)_stringFromExpression:(int64_t)expression
 {
-  if ((a3 - 1) > 7)
+  if ((expression - 1) > 7)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_278229908 + a3 - 1);
+    return *(&off_278229908 + expression - 1);
   }
 }
 
-- (id)_stringFromColor:(CGColor *)a3
+- (id)_stringFromColor:(CGColor *)color
 {
-  NumberOfComponents = CGColorGetNumberOfComponents(a3);
-  Components = CGColorGetComponents(a3);
+  NumberOfComponents = CGColorGetNumberOfComponents(color);
+  Components = CGColorGetComponents(color);
   v6 = NumberOfComponents - 2;
   if (NumberOfComponents - 2 >= 2)
   {

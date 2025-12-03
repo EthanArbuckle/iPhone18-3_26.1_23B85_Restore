@@ -1,7 +1,7 @@
 @interface FCTranslationManager
-- (FCTranslationManager)initWithContentContext:(id)a3;
+- (FCTranslationManager)initWithContentContext:(id)context;
 - (FCTranslationProvider)possiblyUnfetchedTranslationProvider;
-- (void)fetchTranslationProvider:(id)a3;
+- (void)fetchTranslationProvider:(id)provider;
 @end
 
 @implementation FCTranslationManager
@@ -9,9 +9,9 @@
 - (FCTranslationProvider)possiblyUnfetchedTranslationProvider
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v3 = [(FCTranslationManager *)self translationMap];
+  translationMap = [(FCTranslationManager *)self translationMap];
 
-  if (v3)
+  if (translationMap)
   {
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
@@ -23,17 +23,17 @@
 
   else
   {
-    v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v6 = [v5 objectForKey:@"translationMapResourceID"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v6 = [standardUserDefaults objectForKey:@"translationMapResourceID"];
 
     if (v6)
     {
       v7 = v6;
       v8 = [FCResourcesFetchOperation alloc];
-      v9 = [(FCTranslationManager *)self contentContext];
+      contentContext = [(FCTranslationManager *)self contentContext];
       v29[0] = v7;
       v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1];
-      v11 = [(FCResourcesFetchOperation *)v8 initWithContext:v9 resourceIDs:v10 downloadAssets:0];
+      v11 = [(FCResourcesFetchOperation *)v8 initWithContext:contentContext resourceIDs:v10 downloadAssets:0];
 
       [(FCFetchOperation *)v11 setCachePolicy:3];
       [(FCFetchOperation *)v11 setCanSendFetchCompletionSynchronously:1];
@@ -76,15 +76,15 @@
   return v4;
 }
 
-- (FCTranslationManager)initWithContentContext:(id)a3
+- (FCTranslationManager)initWithContentContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = FCTranslationManager;
   v5 = [(FCTranslationManager *)&v11 init];
   contentContext = v5->_contentContext;
-  v5->_contentContext = v4;
-  v7 = v4;
+  v5->_contentContext = contextCopy;
+  v7 = contextCopy;
 
   v8 = [[FCAsyncSerialQueue alloc] initWithQualityOfService:25];
   queue = v5->_queue;
@@ -229,20 +229,20 @@ void __60__FCTranslationManager_possiblyUnfetchedTranslationProvider__block_invo
   v33 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchTranslationProvider:(id)a3
+- (void)fetchTranslationProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   objc_initWeak(&location, self);
-  v5 = [(FCTranslationManager *)self queue];
+  queue = [(FCTranslationManager *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__FCTranslationManager_fetchTranslationProvider___block_invoke;
   v7[3] = &unk_1E7C44238;
-  v6 = v4;
+  v6 = providerCopy;
   v8 = v6;
   objc_copyWeak(&v9, &location);
   v7[4] = self;
-  [v5 enqueueBlock:v7];
+  [queue enqueueBlock:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);

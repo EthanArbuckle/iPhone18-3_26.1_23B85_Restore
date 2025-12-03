@@ -1,24 +1,24 @@
 @interface THStudyOptions
 - (BOOL)shouldShowAllAnnotationStyles;
-- (BOOL)shouldShowAnnotationStyle:(int)a3;
-- (THStudyOptions)initWithUserDefaults:(id)a3;
-- (void)addObserver:(id)a3;
+- (BOOL)shouldShowAnnotationStyle:(int)style;
+- (THStudyOptions)initWithUserDefaults:(id)defaults;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
 - (void)p_registerDefaults;
-- (void)p_setShouldShowAllAnnotationStyles:(BOOL)a3;
-- (void)p_setShouldShowAnnotationStyle:(int)a3 to:(BOOL)a4;
-- (void)removeObserver:(id)a3;
-- (void)setShowAnnotations:(BOOL)a3;
-- (void)setShowVocabulary:(BOOL)a3;
-- (void)setShuffle:(BOOL)a3;
+- (void)p_setShouldShowAllAnnotationStyles:(BOOL)styles;
+- (void)p_setShouldShowAnnotationStyle:(int)style to:(BOOL)to;
+- (void)removeObserver:(id)observer;
+- (void)setShowAnnotations:(BOOL)annotations;
+- (void)setShowVocabulary:(BOOL)vocabulary;
+- (void)setShuffle:(BOOL)shuffle;
 - (void)showAll;
 @end
 
 @implementation THStudyOptions
 
-- (THStudyOptions)initWithUserDefaults:(id)a3
+- (THStudyOptions)initWithUserDefaults:(id)defaults
 {
-  if (!a3)
+  if (!defaults)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
@@ -29,9 +29,9 @@
   v6 = v5;
   if (v5)
   {
-    if (a3)
+    if (defaults)
     {
-      v5->_userDefaults = a3;
+      v5->_userDefaults = defaults;
       v6->_observers = objc_alloc_init(TSUMutablePointerSet);
       [(THStudyOptions *)v6 p_registerDefaults];
     }
@@ -53,40 +53,40 @@
   [(THStudyOptions *)&v3 dealloc];
 }
 
-- (void)setShuffle:(BOOL)a3
+- (void)setShuffle:(BOOL)shuffle
 {
-  v3 = a3;
+  shuffleCopy = shuffle;
   [(TSUMutablePointerSet *)self->_observers makeObjectsPerformSelector:"studyOptionsWillChangeShuffle:" withObject:self];
-  [(THBookUserDefaults *)self->_userDefaults setBool:v3 forKey:@"THStudyOptionsShouldShuffle"];
+  [(THBookUserDefaults *)self->_userDefaults setBool:shuffleCopy forKey:@"THStudyOptionsShouldShuffle"];
   observers = self->_observers;
 
   [(TSUMutablePointerSet *)observers makeObjectsPerformSelector:"studyOptionsDidChangeShuffle:" withObject:self];
 }
 
-- (void)setShowAnnotations:(BOOL)a3
+- (void)setShowAnnotations:(BOOL)annotations
 {
-  v3 = a3;
+  annotationsCopy = annotations;
   [(TSUMutablePointerSet *)self->_observers makeObjectsPerformSelector:"studyOptionsWillChangeFilterOptions:" withObject:self];
-  [(THBookUserDefaults *)self->_userDefaults setBool:v3 forKey:@"THStudyOptionsShouldShowAnnotations"];
+  [(THBookUserDefaults *)self->_userDefaults setBool:annotationsCopy forKey:@"THStudyOptionsShouldShowAnnotations"];
   observers = self->_observers;
 
   [(TSUMutablePointerSet *)observers makeObjectsPerformSelector:"studyOptionsDidChangeFilterOptions:" withObject:self];
 }
 
-- (void)setShowVocabulary:(BOOL)a3
+- (void)setShowVocabulary:(BOOL)vocabulary
 {
-  v3 = a3;
+  vocabularyCopy = vocabulary;
   [(TSUMutablePointerSet *)self->_observers makeObjectsPerformSelector:"studyOptionsWillChangeFilterOptions:" withObject:self];
-  [(THBookUserDefaults *)self->_userDefaults setBool:v3 forKey:@"THStudyOptionsShouldShowVocabulary"];
+  [(THBookUserDefaults *)self->_userDefaults setBool:vocabularyCopy forKey:@"THStudyOptionsShouldShowVocabulary"];
   observers = self->_observers;
 
   [(TSUMutablePointerSet *)observers makeObjectsPerformSelector:"studyOptionsDidChangeFilterOptions:" withObject:self];
 }
 
-- (BOOL)shouldShowAnnotationStyle:(int)a3
+- (BOOL)shouldShowAnnotationStyle:(int)style
 {
   v3 = 6;
-  for (i = &off_5621A0; *(i - 2) != a3; i += 2)
+  for (i = &off_5621A0; *(i - 2) != style; i += 2)
   {
     if (!--v3)
     {
@@ -143,12 +143,12 @@
   [(TSUMutablePointerSet *)observers makeObjectsPerformSelector:"studyOptionsDidChangeFilterOptions:" withObject:self];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   if (!self->_observers)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
-    if (a3)
+    if (observer)
     {
       goto LABEL_3;
     }
@@ -158,7 +158,7 @@ LABEL_7:
     return;
   }
 
-  if (!a3)
+  if (!observer)
   {
     goto LABEL_7;
   }
@@ -166,15 +166,15 @@ LABEL_7:
 LABEL_3:
   observers = self->_observers;
 
-  [(TSUMutablePointerSet *)observers addObject:a3];
+  [(TSUMutablePointerSet *)observers addObject:observer];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   if (!self->_observers)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
-    if (a3)
+    if (observer)
     {
       goto LABEL_3;
     }
@@ -184,7 +184,7 @@ LABEL_7:
     return;
   }
 
-  if (!a3)
+  if (!observer)
   {
     goto LABEL_7;
   }
@@ -192,16 +192,16 @@ LABEL_7:
 LABEL_3:
   observers = self->_observers;
 
-  [(TSUMutablePointerSet *)observers removeObject:a3];
+  [(TSUMutablePointerSet *)observers removeObject:observer];
 }
 
-- (void)p_setShouldShowAnnotationStyle:(int)a3 to:(BOOL)a4
+- (void)p_setShouldShowAnnotationStyle:(int)style to:(BOOL)to
 {
-  v4 = a4;
+  toCopy = to;
   [(TSUMutablePointerSet *)self->_observers makeObjectsPerformSelector:"studyOptionsWillChangeFilterOptions:" withObject:self];
   v7 = &off_5621A0;
   v8 = 6;
-  while (*(v7 - 2) != a3)
+  while (*(v7 - 2) != style)
   {
     v7 += 2;
     if (!--v8)
@@ -210,21 +210,21 @@ LABEL_3:
     }
   }
 
-  [(THBookUserDefaults *)self->_userDefaults setBool:v4 forKey:*v7];
+  [(THBookUserDefaults *)self->_userDefaults setBool:toCopy forKey:*v7];
 LABEL_6:
   observers = self->_observers;
 
   [(TSUMutablePointerSet *)observers makeObjectsPerformSelector:"studyOptionsDidChangeFilterOptions:" withObject:self];
 }
 
-- (void)p_setShouldShowAllAnnotationStyles:(BOOL)a3
+- (void)p_setShouldShowAllAnnotationStyles:(BOOL)styles
 {
-  v3 = a3;
+  stylesCopy = styles;
   [(TSUMutablePointerSet *)self->_observers makeObjectsPerformSelector:"studyOptionsWillChangeFilterOptions:" withObject:self];
   v5 = &dword_8;
   do
   {
-    [(THBookUserDefaults *)self->_userDefaults setBool:v3 forKey:*(&kHighlightInfos + v5)];
+    [(THBookUserDefaults *)self->_userDefaults setBool:stylesCopy forKey:*(&kHighlightInfos + v5)];
     v5 += 16;
   }
 
@@ -250,8 +250,8 @@ LABEL_6:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(NSMutableDictionary *)v3 allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allKeys = [(NSMutableDictionary *)v3 allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -262,7 +262,7 @@ LABEL_6:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
@@ -273,7 +273,7 @@ LABEL_6:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);

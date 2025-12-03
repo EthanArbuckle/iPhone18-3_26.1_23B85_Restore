@@ -1,17 +1,17 @@
 @interface EKEvent
-+ (BOOL)_calendarsAreSharedToMeInSameSourceAndHaveSameOwner:(id)a3;
-+ (BOOL)_notDetachedOccurrenceOfEvent:(id)a3 existsInDateRangeWithStartDate:(id)a4 endDate:(id)a5 inTimeZone:(id)a6;
-+ (BOOL)_validateSpanForRemove:(int64_t)a3 error:(id *)a4;
-+ (BOOL)isMultiDayTimedEventWithStartDate:(id)a3 endDate:(id)a4 allDay:(BOOL)a5 inCalendar:(id)a6;
++ (BOOL)_calendarsAreSharedToMeInSameSourceAndHaveSameOwner:(id)owner;
++ (BOOL)_notDetachedOccurrenceOfEvent:(id)event existsInDateRangeWithStartDate:(id)date endDate:(id)endDate inTimeZone:(id)zone;
++ (BOOL)_validateSpanForRemove:(int64_t)remove error:(id *)error;
++ (BOOL)isMultiDayTimedEventWithStartDate:(id)date endDate:(id)endDate allDay:(BOOL)day inCalendar:(id)calendar;
 + (EKEvent)eventWithEventStore:(EKEventStore *)eventStore;
 + (id)EKObjectChangeSummarizer_multiValueDiffKeys;
 + (id)EKObjectChangeSummarizer_singleValueDiffKeys;
 + (id)_basicChangesRequiringSpanAll;
-+ (id)_locationStringForLocations:(id)a3;
-+ (id)_modifiedNotificationUserInfoWithIdentifier:(id)a3 forRevert:(BOOL)a4;
++ (id)_locationStringForLocations:(id)locations;
++ (id)_modifiedNotificationUserInfoWithIdentifier:(id)identifier forRevert:(BOOL)revert;
 + (id)_relatedCachedTimeKeys;
-+ (id)eventFromICSEvent:(id)a3 inStore:(id)a4;
-+ (id)generateUniqueIDWithEvent:(id)a3 originalEvent:(id)a4 calendar:(id)a5;
++ (id)eventFromICSEvent:(id)event inStore:(id)store;
++ (id)generateUniqueIDWithEvent:(id)event originalEvent:(id)originalEvent calendar:(id)calendar;
 + (id)knownKeysToSkipForFutureChanges;
 + (id)knownKeysToUseForFutureChanges;
 + (id)knownPerUserPropertyKeys;
@@ -19,22 +19,22 @@
 + (id)knownRelationshipSingleValueKeys;
 + (id)knownRequireRSVPKeys;
 + (id)knownSingleValueKeysForComparison;
-+ (id)uniqueIDForDetachedOccurrenceOfEvent:(id)a3 withOriginalStartDate:(id)a4 timeZone:(id)a5 allDay:(BOOL)a6;
-+ (int64_t)_coercedEventAvailabilityForDesiredAvailability:(int64_t)a3 supportedAvailabilities:(unint64_t)a4;
-+ (int64_t)_eventAvailabilityForParticipantStatus:(int64_t)a3 supportedEventAvailabilities:(unint64_t)a4 isAllDayEvent:(BOOL)a5;
-+ (int64_t)ekWeekDayFromVCSWeekDay:(unint64_t)a3;
-+ (void)_detachOrSliceEvent:(id)a3 withSpan:(int64_t)a4 savingEvent:(id)a5 withOriginalStartDate:(id)a6 newStartDate:(id)a7;
++ (id)uniqueIDForDetachedOccurrenceOfEvent:(id)event withOriginalStartDate:(id)date timeZone:(id)zone allDay:(BOOL)day;
++ (int64_t)_coercedEventAvailabilityForDesiredAvailability:(int64_t)availability supportedAvailabilities:(unint64_t)availabilities;
++ (int64_t)_eventAvailabilityForParticipantStatus:(int64_t)status supportedEventAvailabilities:(unint64_t)availabilities isAllDayEvent:(BOOL)event;
++ (int64_t)ekWeekDayFromVCSWeekDay:(unint64_t)day;
++ (void)_detachOrSliceEvent:(id)event withSpan:(int64_t)span savingEvent:(id)savingEvent withOriginalStartDate:(id)date newStartDate:(id)startDate;
 - (BOOL)_attemptToUpdateComplexRecurrenceRule;
-- (BOOL)_canMoveOrCopyFromCalendar:(id)a3 toCalendar:(id)a4 allowedRequirements:(int64_t)a5 error:(id *)a6;
-- (BOOL)_cancelWithSpan:(int64_t)a3 error:(id *)a4;
+- (BOOL)_canMoveOrCopyFromCalendar:(id)calendar toCalendar:(id)toCalendar allowedRequirements:(int64_t)requirements error:(id *)error;
+- (BOOL)_cancelWithSpan:(int64_t)span error:(id *)error;
 - (BOOL)_changesRequireDetachOrSlice;
-- (BOOL)_checkStartDateConstraintAgainstDate:(id)a3 timeZone:(id)a4 error:(id *)a5;
+- (BOOL)_checkStartDateConstraintAgainstDate:(id)date timeZone:(id)zone error:(id *)error;
 - (BOOL)_couldBeJunkCommon;
 - (BOOL)_detectedConferenceURLOnBackingObjectMayBeInvalid;
-- (BOOL)_diff:(id)a3 isDifferentFromCommittedEventHelperRequiresReschedule:(BOOL)a4;
-- (BOOL)_eligibleForTravelAdvisoriesIncludePotential:(BOOL)a3;
+- (BOOL)_diff:(id)_diff isDifferentFromCommittedEventHelperRequiresReschedule:(BOOL)reschedule;
+- (BOOL)_eligibleForTravelAdvisoriesIncludePotential:(BOOL)potential;
 - (BOOL)_eventIsTheOnlyRemainingOccurrence;
-- (BOOL)_fetchedEventIsConflict:(id)a3 forStartDate:(id)a4 endDate:(id)a5;
+- (BOOL)_fetchedEventIsConflict:(id)conflict forStartDate:(id)date endDate:(id)endDate;
 - (BOOL)_hasAbsoluteAlarms;
 - (BOOL)_hasBasicChangesRequiringSpanAll;
 - (BOOL)_hasExternalIDOrDeliverySource;
@@ -44,29 +44,29 @@
 - (BOOL)_isOnlyChangeToAttendeesSelfAttendeeParticipationStatus;
 - (BOOL)_isOriginalOccurrenceStartDateSameAsCommittedStartDate;
 - (BOOL)_isParticipationStatusDirty;
-- (BOOL)_isSignificantlyDetachedComparedToMaster:(id)a3 shouldIgnorePartStat:(BOOL)a4;
+- (BOOL)_isSignificantlyDetachedComparedToMaster:(id)master shouldIgnorePartStat:(BOOL)stat;
 - (BOOL)_isSimpleRepeatingEvent;
-- (BOOL)_isValidAttendee:(id)a3 forCalendar:(id)a4 selfAttendeeIsValid:(BOOL)a5;
-- (BOOL)_multiValueRelatedObject:(id)a3 isAlsoASingleValueRelatedObjectForKey:(id)a4;
+- (BOOL)_isValidAttendee:(id)attendee forCalendar:(id)calendar selfAttendeeIsValid:(BOOL)valid;
+- (BOOL)_multiValueRelatedObject:(id)object isAlsoASingleValueRelatedObjectForKey:(id)key;
 - (BOOL)_needsAttendeePartStatReset;
 - (BOOL)_noRemainingEarlierOccurrences;
-- (BOOL)_occurrenceExistsOnDate:(id)a3 timeZone:(id)a4;
-- (BOOL)_requirementsToMoveOrCopyToCalendarHelperAllowedToMoveOrCopyEventFromCalendar:(id)a3 toCalendar:(id)a4;
-- (BOOL)_requirementsToMoveToCalendarHelperAlterationsRequiredToMoveEventFromCalendar:(id)a3 toCalendar:(id)a4;
-- (BOOL)_requirementsToMoveToCalendarHelperDuplicationRequiredToMoveEventFromCalendar:(id)a3 toCalendar:(id)a4;
-- (BOOL)_requirementsToMoveToCalendarHelperNeedToRemoveOriginalToMoveEventFromCalendar:(id)a3 toCalendar:(id)a4;
-- (BOOL)_requirementsToMoveToCalendarHelperReinviteAttendeesRequiredToMoveEventFromCalendar:(id)a3 toCalendar:(id)a4;
-- (BOOL)_requirementsToMoveToCalendarHelperRemoveAttendeesRequiredToMoveEventFromCalendar:(id)a3 toCalendar:(id)a4;
+- (BOOL)_occurrenceExistsOnDate:(id)date timeZone:(id)zone;
+- (BOOL)_requirementsToMoveOrCopyToCalendarHelperAllowedToMoveOrCopyEventFromCalendar:(id)calendar toCalendar:(id)toCalendar;
+- (BOOL)_requirementsToMoveToCalendarHelperAlterationsRequiredToMoveEventFromCalendar:(id)calendar toCalendar:(id)toCalendar;
+- (BOOL)_requirementsToMoveToCalendarHelperDuplicationRequiredToMoveEventFromCalendar:(id)calendar toCalendar:(id)toCalendar;
+- (BOOL)_requirementsToMoveToCalendarHelperNeedToRemoveOriginalToMoveEventFromCalendar:(id)calendar toCalendar:(id)toCalendar;
+- (BOOL)_requirementsToMoveToCalendarHelperReinviteAttendeesRequiredToMoveEventFromCalendar:(id)calendar toCalendar:(id)toCalendar;
+- (BOOL)_requirementsToMoveToCalendarHelperRemoveAttendeesRequiredToMoveEventFromCalendar:(id)calendar toCalendar:(id)toCalendar;
 - (BOOL)_reset;
-- (BOOL)_revertIncludingCoCommits:(BOOL)a3;
-- (BOOL)_saveUndetachedOccurrenceWithError:(id *)a3;
+- (BOOL)_revertIncludingCoCommits:(BOOL)commits;
+- (BOOL)_saveUndetachedOccurrenceWithError:(id *)error;
 - (BOOL)_shouldAlertInviteeDeclines;
-- (BOOL)_shouldCancelInsteadOfDeleteWithSpan:(int64_t)a3;
+- (BOOL)_shouldCancelInsteadOfDeleteWithSpan:(int64_t)span;
 - (BOOL)_shouldDeclineInsteadOfDelete;
-- (BOOL)_shouldPreserveFutureWhenSlicingWithStartDate:(id)a3 newStartDate:(id)a4;
-- (BOOL)_suggestedStartDateHelperRecurrenceRuleRequiresExpansion:(id)a3 forDate:(id)a4;
-- (BOOL)_userAddressesRepresentInvitedAttendee:(id)a3 checkEmailAddresses:(BOOL)a4;
-- (BOOL)_validateDatesAndRecurrencesGivenSpan:(int64_t)a3 error:(id *)a4;
+- (BOOL)_shouldPreserveFutureWhenSlicingWithStartDate:(id)date newStartDate:(id)startDate;
+- (BOOL)_suggestedStartDateHelperRecurrenceRuleRequiresExpansion:(id)expansion forDate:(id)date;
+- (BOOL)_userAddressesRepresentInvitedAttendee:(id)attendee checkEmailAddresses:(BOOL)addresses;
+- (BOOL)_validateDatesAndRecurrencesGivenSpan:(int64_t)span error:(id *)error;
 - (BOOL)allowsAllDayModifications;
 - (BOOL)allowsAttendeesModifications;
 - (BOOL)allowsAvailabilityModifications;
@@ -75,7 +75,7 @@
 - (BOOL)allowsParticipationStatusModifications;
 - (BOOL)allowsPrivacyLevelModifications;
 - (BOOL)allowsProposedTimeModifications;
-- (BOOL)allowsRecurrenceModificationsForSpan:(int64_t)a3;
+- (BOOL)allowsRecurrenceModificationsForSpan:(int64_t)span;
 - (BOOL)allowsResponseCommentModifications;
 - (BOOL)allowsSpansOtherThanThisEvent;
 - (BOOL)allowsTravelTimeModifications;
@@ -85,37 +85,37 @@
 - (BOOL)canWeInferUpdateToComplexRecurrenceRule;
 - (BOOL)changingAllDayPropertyIsAllowed;
 - (BOOL)conferenceURLForDisplayCached;
-- (BOOL)conformsToRecurrenceRules:(id)a3;
+- (BOOL)conformsToRecurrenceRules:(id)rules;
 - (BOOL)currentUserMayActAsOrganizer;
 - (BOOL)disallowProposeNewTime;
 - (BOOL)durationOverlapsRecurrenceInterval;
 - (BOOL)firedTTL;
-- (BOOL)futureOccurrencesCannotBeAffectedByChangingStartDateToDate:(id)a3;
+- (BOOL)futureOccurrencesCannotBeAffectedByChangingStartDateToDate:(id)date;
 - (BOOL)hasADateChangeAndComplexRecurrenceWeDontKnowHowToUpdate;
 - (BOOL)hasAttendeeProposedTimes;
 - (BOOL)hasChangesRequiringSpanAll;
 - (BOOL)hasCustomRecurrence;
 - (BOOL)hasPredictedLocation;
 - (BOOL)hasValidEventAction;
-- (BOOL)isAttendeeSameAsOrganizer:(id)a3;
+- (BOOL)isAttendeeSameAsOrganizer:(id)organizer;
 - (BOOL)isBirthday;
 - (BOOL)isCurrentUserInvitedAttendee;
 - (BOOL)isDetached;
-- (BOOL)isDifferentAndHasForwardedAttendeesWithDiff:(id)a3;
-- (BOOL)isDifferentAndHasNewProposedTimeWithDiff:(id)a3;
-- (BOOL)isDifferentAndHasUnscheduledAttendeesWithDiff:(id)a3;
-- (BOOL)isDifferentAndModifiedAttendeesWithDiff:(id)a3;
-- (BOOL)isDifferentExceptingPerUserPropertiesWithDiff:(id)a3;
+- (BOOL)isDifferentAndHasForwardedAttendeesWithDiff:(id)diff;
+- (BOOL)isDifferentAndHasNewProposedTimeWithDiff:(id)diff;
+- (BOOL)isDifferentAndHasUnscheduledAttendeesWithDiff:(id)diff;
+- (BOOL)isDifferentAndModifiedAttendeesWithDiff:(id)diff;
+- (BOOL)isDifferentExceptingPerUserPropertiesWithDiff:(id)diff;
 - (BOOL)isDifferentFromCommittedEventAndHasUnscheduledAttendees;
 - (BOOL)isDifferentFromCommittedEventAndRequiresRSVP;
 - (BOOL)isDifferentFromCommittedEventAndRequiresReschedule;
 - (BOOL)isEditable;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isFirstOccurrence;
 - (BOOL)isFirstOccurrenceIncludingSlices;
 - (BOOL)isFloating;
 - (BOOL)isMasterOrDetachedOccurrence;
-- (BOOL)isMultiDayTimedEventInCalendar:(id)a3;
+- (BOOL)isMultiDayTimedEventInCalendar:(id)calendar;
 - (BOOL)isNewRecurringSeries;
 - (BOOL)isOrWasIntegrationEvent;
 - (BOOL)isOrWasPartOfRecurringSeries;
@@ -132,10 +132,10 @@
 - (BOOL)needsGeocoding;
 - (BOOL)overlapsWithOrIsSameDayAsEventInSeries;
 - (BOOL)refresh;
-- (BOOL)removeWithSpan:(int64_t)a3 error:(id *)a4;
+- (BOOL)removeWithSpan:(int64_t)span error:(id *)error;
 - (BOOL)requiresDetach;
 - (BOOL)responseMustApplyToAll;
-- (BOOL)saveWithSpan:(int64_t)a3 error:(id *)a4;
+- (BOOL)saveWithSpan:(int64_t)span error:(id *)error;
 - (BOOL)seriesHasOutOfOrderEvents;
 - (BOOL)seriesHasOverlappingOrOnSameDayOrOutOfOrderEvents;
 - (BOOL)serverSupportedProposeNewTime;
@@ -144,17 +144,17 @@
 - (BOOL)supportsJunkReporting;
 - (BOOL)supportsParticipationStatusModificationsWithoutNotification;
 - (BOOL)travelAdvisoryBehaviorIsEffectivelyEnabled;
-- (BOOL)updateWithGeocodedMapItemAndSaveWithCommit:(id)a3 eventStore:(id)a4 error:(id *)a5;
+- (BOOL)updateWithGeocodedMapItemAndSaveWithCommit:(id)commit eventStore:(id)store error:(id *)error;
 - (BOOL)validateOccurrenceDateStillMatchesRecurrenceRules;
-- (BOOL)validateRecurrenceRule:(id)a3 error:(id *)a4;
-- (BOOL)validateWithSpan:(int64_t)a3 error:(id *)a4;
+- (BOOL)validateRecurrenceRule:(id)rule error:(id *)error;
+- (BOOL)validateWithSpan:(int64_t)span error:(id *)error;
 - (EKCalendarDate)originalOccurrenceEndDate;
 - (EKCalendarDate)originalOccurrenceStartDate;
 - (EKCalendarDate)startCalendarDateIncludingTravelTime;
 - (EKEvent)init;
-- (EKEvent)initWithEventStore:(id)a3;
-- (EKEvent)initWithPersistentObject:(id)a3 objectForCopy:(id)a4;
-- (EKEvent)initWithPersistentObject:(id)a3 occurrenceDate:(id)a4;
+- (EKEvent)initWithEventStore:(id)store;
+- (EKEvent)initWithPersistentObject:(id)object objectForCopy:(id)copy;
+- (EKEvent)initWithPersistentObject:(id)object occurrenceDate:(id)date;
 - (EKEventAvailability)availability;
 - (EKEventStatus)status;
 - (EKRecurrenceIdentifier)recurrenceIdentifier;
@@ -189,57 +189,57 @@
 - (double)durationIncludingTravel;
 - (double)travelTime;
 - (id)URL;
-- (id)_adjustDateIfFloatingForDate:(id)a3;
-- (id)_buildConferenceStringFromNotesWithoutConference:(id)a3 serializedConference:(id)a4;
+- (id)_adjustDateIfFloatingForDate:(id)date;
+- (id)_buildConferenceStringFromNotesWithoutConference:(id)conference serializedConference:(id)serializedConference;
 - (id)_cachedPredictedLocation;
-- (id)_calculateDurationWithStart:(id)a3 end:(id)a4 allDay:(BOOL)a5;
+- (id)_calculateDurationWithStart:(id)start end:(id)end allDay:(BOOL)day;
 - (id)_committedEndDate;
 - (id)_committedStartDate;
 - (id)_conferenceRoomDisplayStrings;
 - (id)_defaultAlarmOffset;
 - (id)_detectConferenceURL;
-- (id)_ekRecurrenceRuleFromICSRecurrenceRule:(id)a3;
-- (id)_ekRecurrenceRuleFromVCSRecurrenceRule:(id)a3;
-- (id)_eventKitPropertyKeyForCalendarItemErrorPropertyKey:(id)a3;
+- (id)_ekRecurrenceRuleFromICSRecurrenceRule:(id)rule;
+- (id)_ekRecurrenceRuleFromVCSRecurrenceRule:(id)rule;
+- (id)_eventKitPropertyKeyForCalendarItemErrorPropertyKey:(id)key;
 - (id)_firstNonConferenceRoomLocationTitle;
 - (id)_generateNewUniqueID;
-- (id)_keysToChangeForDuplicateWithOptions:(int64_t)a3;
+- (id)_keysToChangeForDuplicateWithOptions:(int64_t)options;
 - (id)_lastRecurrenceDate;
-- (id)_leftoversInDates:(id)a3 withGeneratedDates:(id)a4;
+- (id)_leftoversInDates:(id)dates withGeneratedDates:(id)generatedDates;
 - (id)_nextReminderOccurrenceDate;
 - (id)_nsCalendar;
-- (id)_occurrenceDatesForCount:(unint64_t)a3;
+- (id)_occurrenceDatesForCount:(unint64_t)count;
 - (id)_originallyCommittedVirtualConference;
-- (id)_pinDate:(id)a3 withPinMode:(unint64_t)a4;
+- (id)_pinDate:(id)date withPinMode:(unint64_t)mode;
 - (id)_prioritizedConferencesSources;
 - (id)_travelTimeInternalDescription;
-- (id)_updateMasterDate:(id)a3 forChangeToOccurrenceDate:(id)a4 fromOriginalOccurrenceDate:(id)a5;
-- (id)adjustedPersistedDateForDate:(id)a3 withAdjustmentMode:(unint64_t)a4 pinMode:(unint64_t)a5 clientCalendarDate:(id *)a6;
+- (id)_updateMasterDate:(id)date forChangeToOccurrenceDate:(id)occurrenceDate fromOriginalOccurrenceDate:(id)originalOccurrenceDate;
+- (id)adjustedPersistedDateForDate:(id)date withAdjustmentMode:(unint64_t)mode pinMode:(unint64_t)pinMode clientCalendarDate:(id *)calendarDate;
 - (id)attendeesNotIncludingOrganizer;
 - (id)attendeesNotIncludingOrganizerOrLocationsOrResources;
 - (id)cachedPredictedLocation;
 - (id)coCommitEvents;
 - (id)committedConstraints;
 - (id)committedCopy;
-- (id)committedValueForKey:(id)a3;
+- (id)committedValueForKey:(id)key;
 - (id)conferenceURLDetected;
 - (id)conferenceURLForDisplay;
 - (id)constraints;
-- (id)copyToCalendar:(id)a3 withOptions:(int64_t)a4;
+- (id)copyToCalendar:(id)calendar withOptions:(int64_t)options;
 - (id)defaultAlarm;
 - (id)defaultAlarms;
 - (id)diffFromCommitted;
 - (id)displayNotes;
-- (id)duplicateWithOptions:(int64_t)a3;
-- (id)earliestOccurrenceEndingAfter:(id)a3 excludeSignificantDetachments:(BOOL)a4 excludeCanceledDetachments:(BOOL)a5 excludeDeclinedDetachments:(BOOL)a6;
+- (id)duplicateWithOptions:(int64_t)options;
+- (id)earliestOccurrenceEndingAfter:(id)after excludeSignificantDetachments:(BOOL)detachments excludeCanceledDetachments:(BOOL)canceledDetachments excludeDeclinedDetachments:(BOOL)declinedDetachments;
 - (id)effectiveTimeZone;
 - (id)masterEvent;
 - (id)nextOccurrence;
-- (id)nextOccurrenceOrDetachmentAfter:(id)a3;
-- (id)potentialConflictOccurrenceDatesInTimePeriod:(double *)a3;
+- (id)nextOccurrenceOrDetachmentAfter:(id)after;
+- (id)potentialConflictOccurrenceDatesInTimePeriod:(double *)period;
 - (id)predictedLocation;
 - (id)previousOccurrence;
-- (id)previousOccurrenceOrDetachmentBefore:(id)a3;
+- (id)previousOccurrenceOrDetachmentBefore:(id)before;
 - (id)previouslySavedCopy;
 - (id)privacyDescription;
 - (id)privacyLevelString;
@@ -249,23 +249,23 @@
 - (id)roomAttendees;
 - (id)scanForConflicts;
 - (id)singleRecurrenceRule;
-- (id)snapshotCopyWithPropertyKeysToCopy:(id)a3 propertyKeysToSkip:(id)a4;
-- (id)startOfDayForEndDateInCalendar:(id)a3;
-- (id)startOfDayForStartDateInCalendar:(id)a3;
-- (id)suggestedStartDateForCurrentRecurrenceRuleWithSimulatedNowDate:(id)a3;
+- (id)snapshotCopyWithPropertyKeysToCopy:(id)copy propertyKeysToSkip:(id)skip;
+- (id)startOfDayForEndDateInCalendar:(id)calendar;
+- (id)startOfDayForStartDateInCalendar:(id)calendar;
+- (id)suggestedStartDateForCurrentRecurrenceRuleWithSimulatedNowDate:(id)date;
 - (id)title;
 - (int)externalTrackingStatus;
 - (int64_t)_parentParticipationStatus;
-- (int64_t)compareOriginalStartDateWithEvent:(id)a3;
-- (int64_t)compareStartDateIncludingTravelWithEvent:(id)a3;
+- (int64_t)compareOriginalStartDateWithEvent:(id)event;
+- (int64_t)compareStartDateIncludingTravelWithEvent:(id)event;
 - (int64_t)currentUserGeneralizedParticipantRole;
-- (int64_t)daysSpannedInCalendar:(id)a3;
+- (int64_t)daysSpannedInCalendar:(id)calendar;
 - (int64_t)locationPredictionState;
 - (int64_t)participationStatus;
 - (int64_t)pendingParticipationStatus;
 - (int64_t)privacyLevel;
-- (int64_t)requirementsToMoveFromCalendar:(id)a3 toCalendar:(id)a4;
-- (int64_t)requirementsToMoveToCalendar:(id)a3;
+- (int64_t)requirementsToMoveFromCalendar:(id)calendar toCalendar:(id)toCalendar;
+- (int64_t)requirementsToMoveToCalendar:(id)calendar;
 - (int64_t)selfParticipantStatus;
 - (int64_t)specialDayType;
 - (int64_t)travelAdvisoryBehavior;
@@ -281,130 +281,130 @@
 - (unsigned)invitationChangedProperties;
 - (void)_addNewAttendeesToRecentsIfNeeded;
 - (void)_addOrganizerToRecentsIfNeeded;
-- (void)_adjustAfterMovingOrCopyingFromOldCalendar:(id)a3 toNewCalendar:(id)a4 cachedConstraintsForOldCalendar:(id)a5 savingItem:(id)a6;
-- (void)_adjustAttachmentsAfterMovingOrCopyingFromCalendar:(id)a3 toCalendar:(id)a4 cachedConstraintsForOldCalendar:(id)a5 savingItem:(id)a6;
-- (void)_adjustAttendeesAfterMovingOrCopyingFromCalendar:(id)a3 toCalendar:(id)a4;
-- (void)_adjustAvailabilityAfterMovingOrCopyingFromCalendar:(id)a3 toCalendar:(id)a4;
-- (void)_adjustExternalFieldsAfterMovingOrCopyingFromCalendar:(id)a3 toCalendar:(id)a4 cachedConstraintsForOldCalendar:(id)a5;
-- (void)_adjustPrivacyAfterMovingOrCopyingFromCalendar:(id)a3 toCalendar:(id)a4 cachedConstraintsForOldCalendar:(id)a5 savingItem:(id)a6;
-- (void)_adjustRecurrenceRulesAfterMovingOrCopyingFromCalendar:(id)a3 toCalendar:(id)a4 notes:(id)a5;
-- (void)_adjustTimeZoneAfterMovingOrCopyingToCalendar:(id)a3 notes:(id)a4;
-- (void)_adjustURLAfterMovingOrCopyingToCalendar:(id)a3 notes:(id)a4;
+- (void)_adjustAfterMovingOrCopyingFromOldCalendar:(id)calendar toNewCalendar:(id)newCalendar cachedConstraintsForOldCalendar:(id)oldCalendar savingItem:(id)item;
+- (void)_adjustAttachmentsAfterMovingOrCopyingFromCalendar:(id)calendar toCalendar:(id)toCalendar cachedConstraintsForOldCalendar:(id)oldCalendar savingItem:(id)item;
+- (void)_adjustAttendeesAfterMovingOrCopyingFromCalendar:(id)calendar toCalendar:(id)toCalendar;
+- (void)_adjustAvailabilityAfterMovingOrCopyingFromCalendar:(id)calendar toCalendar:(id)toCalendar;
+- (void)_adjustExternalFieldsAfterMovingOrCopyingFromCalendar:(id)calendar toCalendar:(id)toCalendar cachedConstraintsForOldCalendar:(id)oldCalendar;
+- (void)_adjustPrivacyAfterMovingOrCopyingFromCalendar:(id)calendar toCalendar:(id)toCalendar cachedConstraintsForOldCalendar:(id)oldCalendar savingItem:(id)item;
+- (void)_adjustRecurrenceRulesAfterMovingOrCopyingFromCalendar:(id)calendar toCalendar:(id)toCalendar notes:(id)notes;
+- (void)_adjustTimeZoneAfterMovingOrCopyingToCalendar:(id)calendar notes:(id)notes;
+- (void)_adjustURLAfterMovingOrCopyingToCalendar:(id)calendar notes:(id)notes;
 - (void)_applyTimeChangesToMaster;
 - (void)_assignAllAttachmentsNewIdentities;
 - (void)_cancelDetachedEvents;
 - (void)_clearAttendeeChangedFlags;
-- (void)_clearExceptionDatesAndUpdateDetachedOriginalDates:(id)a3;
+- (void)_clearExceptionDatesAndUpdateDetachedOriginalDates:(id)dates;
 - (void)_clearLocationPredictionCacheIfNotFrozen;
 - (void)_clearLocationPredictionCacheIfNotFrozenHoldingLock;
 - (void)_clearOriginalDateFields;
 - (void)_deleteErrorIfInvalid;
-- (void)_deleteFromOccurrenceDateOnward:(id)a3 includeSlices:(BOOL)a4;
+- (void)_deleteFromOccurrenceDateOnward:(id)onward includeSlices:(BOOL)slices;
 - (void)_deleteThisOccurrence;
-- (void)_deleteWithSpan:(int64_t)a3;
-- (void)_detachOrSliceWithSpan:(int64_t)a3 withOriginalStartDate:(id)a4 newStartDate:(id)a5;
-- (void)_duplicateAddedAttachmentsToDetachedEvents:(id)a3;
-- (void)_extendConferenceURLExpirationDateToDate:(id)a3;
+- (void)_deleteWithSpan:(int64_t)span;
+- (void)_detachOrSliceWithSpan:(int64_t)span withOriginalStartDate:(id)date newStartDate:(id)startDate;
+- (void)_duplicateAddedAttachmentsToDetachedEvents:(id)events;
+- (void)_extendConferenceURLExpirationDateToDate:(id)date;
 - (void)_filterExceptionDatesAndDetachments;
 - (void)_hasRecurrenceRuleChangeRequiringSpanAll;
-- (void)_propagateChangesToDetachedEvents:(id)a3 originalItemBeforeSave:(id)a4 startDateOffset:(id)a5 duration:(id)a6 calendar:(id)a7;
-- (void)_propagateChangesToSlice:(id)a3 originalItemBeforeSave:(id)a4 startDateOffset:(id)a5 duration:(id)a6 calendar:(id)a7 updateRecurrenceEnd:(BOOL)a8;
+- (void)_propagateChangesToDetachedEvents:(id)events originalItemBeforeSave:(id)save startDateOffset:(id)offset duration:(id)duration calendar:(id)calendar;
+- (void)_propagateChangesToSlice:(id)slice originalItemBeforeSave:(id)save startDateOffset:(id)offset duration:(id)duration calendar:(id)calendar updateRecurrenceEnd:(BOOL)end;
 - (void)_recursivelyAssignAllAttachmentsNewIdentities;
 - (void)_removeInvalidAlarmsDuringSave;
-- (void)_respondToProposedTimeFromAttendee:(id)a3 shouldAccept:(BOOL)a4;
+- (void)_respondToProposedTimeFromAttendee:(id)attendee shouldAccept:(BOOL)accept;
 - (void)_saveUndeletedDetachedOccurrence;
-- (void)_setEndDateUnadjustedForLegacyClients:(id)a3 allowSettingIfNotEditable:(BOOL)a4;
-- (void)_setInvitationChangedProperty:(BOOL)a3 forFlag:(unsigned int)a4;
+- (void)_setEndDateUnadjustedForLegacyClients:(id)clients allowSettingIfNotEditable:(BOOL)editable;
+- (void)_setInvitationChangedProperty:(BOOL)property forFlag:(unsigned int)flag;
 - (void)_setInvitationStatusAlertedIfNecessary;
 - (void)_setInvitationStatusUnalertedIfNecessary;
-- (void)_setStartDate:(id)a3 andClearProposedTimes:(BOOL)a4 allowSettingIfNotEditable:(BOOL)a5;
-- (void)_snoozeAlarm:(id)a3 withTimeIntervalFromNow:(double)a4 orTargetDate:(id)a5 pinsTriggerToStartDate:(BOOL)a6;
-- (void)_updateEndDateForDate:(id)a3 withAdjustmentMode:(unint64_t)a4 adjustStartDate:(BOOL)a5;
+- (void)_setStartDate:(id)date andClearProposedTimes:(BOOL)times allowSettingIfNotEditable:(BOOL)editable;
+- (void)_snoozeAlarm:(id)alarm withTimeIntervalFromNow:(double)now orTargetDate:(id)date pinsTriggerToStartDate:(BOOL)startDate;
+- (void)_updateEndDateForDate:(id)date withAdjustmentMode:(unint64_t)mode adjustStartDate:(BOOL)startDate;
 - (void)_updateModifiedProperties;
 - (void)_updateModifiedPropertiesForThisEventAndAllDetachments;
-- (void)_updateRecurrenceEndDateForEvent:(id)a3 calendar:(id)a4 withOffset:(id)a5;
-- (void)_updateRecurrenceEndDatesWithAdjustmentMode:(unint64_t)a3;
-- (void)_updateSelfAttendeeToMatchSelfAttendee:(id)a3;
+- (void)_updateRecurrenceEndDateForEvent:(id)event calendar:(id)calendar withOffset:(id)offset;
+- (void)_updateRecurrenceEndDatesWithAdjustmentMode:(unint64_t)mode;
+- (void)_updateSelfAttendeeToMatchSelfAttendee:(id)attendee;
 - (void)_updateSelfFromDetachedEventIfNeededForDelete;
-- (void)_updateStartDateForDate:(id)a3 withAdjustmentMode:(unint64_t)a4 adjustEndDate:(BOOL)a5;
+- (void)_updateStartDateForDate:(id)date withAdjustmentMode:(unint64_t)mode adjustEndDate:(BOOL)endDate;
 - (void)_updateUUIDForNewParticipants;
 - (void)_updateVideoConferenceOnlyModified;
 - (void)_willSave;
-- (void)addConferenceRooms:(id)a3;
-- (void)adjustedDatesForDate:(id)a3 persistedDateIsInUTC:(BOOL)a4 withAdjustmentMode:(unint64_t)a5 pinMode:(unint64_t)a6 outClientCalendarDate:(id *)a7 outPersistedDate:(id *)a8;
-- (void)applyChangesFromEvent:(id)a3 toEvent:(id)a4 ignoringDifferencesFrom:(id)a5;
+- (void)addConferenceRooms:(id)rooms;
+- (void)adjustedDatesForDate:(id)date persistedDateIsInUTC:(BOOL)c withAdjustmentMode:(unint64_t)mode pinMode:(unint64_t)pinMode outClientCalendarDate:(id *)calendarDate outPersistedDate:(id *)persistedDate;
+- (void)applyChangesFromEvent:(id)event toEvent:(id)toEvent ignoringDifferencesFrom:(id)from;
 - (void)clearCachedTimeValues;
 - (void)clearInvitationStatus;
 - (void)clearVirtualConferenceURLsQueuedForInvalidation;
-- (void)confirmPredictedLocation:(id)a3;
+- (void)confirmPredictedLocation:(id)location;
 - (void)dismissAcceptedProposeNewTimeNotification;
 - (void)dismissAttendeeRepliedNotification;
-- (void)forceSetTimeZone:(id)a3;
+- (void)forceSetTimeZone:(id)zone;
 - (void)invalidateRemovedVirtualConferences;
-- (void)invalidateVirtualConferenceURLIfNeededOnCommit:(id)a3;
+- (void)invalidateVirtualConferenceURLIfNeededOnCommit:(id)commit;
 - (void)makeRecurrenceEndCountBased;
 - (void)makeRecurrenceEndDateBased;
 - (void)markAsCommitted;
 - (void)markAsSaved;
 - (void)markAsUndeleted;
-- (void)markAsUndetachedWithStartDate:(id)a3 endDate:(id)a4;
+- (void)markAsUndetachedWithStartDate:(id)date endDate:(id)endDate;
 - (void)markEventAsAttendeeForward;
-- (void)parsedConference:(id *)a3 andNotes:(id *)a4;
+- (void)parsedConference:(id *)conference andNotes:(id *)notes;
 - (void)postModifiedNotification;
-- (void)postModifiedNotificationWithUserInfo:(id)a3;
-- (void)prefetchAttendeesWithAdditionalProperties:(id)a3;
-- (void)rebaseSkippingRelationProperties:(id)a3;
-- (void)rebaseSkippingRelationProperties:(id)a3 toEventStore:(id)a4;
-- (void)rebaseToEventStore:(id)a3;
+- (void)postModifiedNotificationWithUserInfo:(id)info;
+- (void)prefetchAttendeesWithAdditionalProperties:(id)properties;
+- (void)rebaseSkippingRelationProperties:(id)properties;
+- (void)rebaseSkippingRelationProperties:(id)properties toEventStore:(id)store;
+- (void)rebaseToEventStore:(id)store;
 - (void)rejectPredictedLocation;
-- (void)removeConferenceRooms:(id)a3;
+- (void)removeConferenceRooms:(id)rooms;
 - (void)removeServerRefreshRelatedProperties;
 - (void)reset;
 - (void)rollback;
 - (void)setAvailability:(EKEventAvailability)availability;
-- (void)setBirthdayContact:(id)a3;
-- (void)setCachedJunkStatus:(unint64_t)a3;
-- (void)setCalendar:(id)a3;
-- (void)setColor:(id)a3;
-- (void)setConferenceURL:(id)a3;
-- (void)setDisplayNotes:(id)a3;
-- (void)setEndDateRaw:(id)a3;
-- (void)setEndLocation:(id)a3;
-- (void)setFlag:(unint64_t)a3 value:(BOOL)a4;
-- (void)setFlags:(unint64_t)a3;
-- (void)setImage:(id)a3;
-- (void)setInvitationStatus:(unint64_t)a3;
-- (void)setIsAlerted:(BOOL)a3;
-- (void)setIsJunk:(BOOL)a3 shouldSave:(BOOL)a4;
-- (void)setJunkStatus:(unint64_t)a3;
-- (void)setLocationPredictionAllowed:(BOOL)a3;
-- (void)setLocationPredictionState:(int64_t)a3;
-- (void)setLocations:(id)a3;
-- (void)setNotes:(id)a3;
-- (void)setNotesCommon:(id)a3;
-- (void)setParticipationStatus:(int64_t)a3;
-- (void)setPredictedLocationFrozen:(BOOL)a3;
-- (void)setPrivacyLevel:(int64_t)a3;
-- (void)setPrivacyLevelWithoutVerifyingPrivacyModificationsAllowed:(int64_t)a3;
-- (void)setProposedStartDate:(id)a3;
-- (void)setRecurrenceRule:(id)a3;
-- (void)setRecurrenceRuleFromICSString:(id)a3;
-- (void)setRecurrenceRules:(id)a3;
-- (void)setSpecialDayType:(int64_t)a3;
-- (void)setStartDateComponentsPreservingDuration:(id)a3;
-- (void)setStartDateRaw:(id)a3;
-- (void)setStatus:(int64_t)a3;
+- (void)setBirthdayContact:(id)contact;
+- (void)setCachedJunkStatus:(unint64_t)status;
+- (void)setCalendar:(id)calendar;
+- (void)setColor:(id)color;
+- (void)setConferenceURL:(id)l;
+- (void)setDisplayNotes:(id)notes;
+- (void)setEndDateRaw:(id)raw;
+- (void)setEndLocation:(id)location;
+- (void)setFlag:(unint64_t)flag value:(BOOL)value;
+- (void)setFlags:(unint64_t)flags;
+- (void)setImage:(id)image;
+- (void)setInvitationStatus:(unint64_t)status;
+- (void)setIsAlerted:(BOOL)alerted;
+- (void)setIsJunk:(BOOL)junk shouldSave:(BOOL)save;
+- (void)setJunkStatus:(unint64_t)status;
+- (void)setLocationPredictionAllowed:(BOOL)allowed;
+- (void)setLocationPredictionState:(int64_t)state;
+- (void)setLocations:(id)locations;
+- (void)setNotes:(id)notes;
+- (void)setNotesCommon:(id)common;
+- (void)setParticipationStatus:(int64_t)status;
+- (void)setPredictedLocationFrozen:(BOOL)frozen;
+- (void)setPrivacyLevel:(int64_t)level;
+- (void)setPrivacyLevelWithoutVerifyingPrivacyModificationsAllowed:(int64_t)allowed;
+- (void)setProposedStartDate:(id)date;
+- (void)setRecurrenceRule:(id)rule;
+- (void)setRecurrenceRuleFromICSString:(id)string;
+- (void)setRecurrenceRules:(id)rules;
+- (void)setSpecialDayType:(int64_t)type;
+- (void)setStartDateComponentsPreservingDuration:(id)duration;
+- (void)setStartDateRaw:(id)raw;
+- (void)setStatus:(int64_t)status;
 - (void)setStructuredLocation:(EKStructuredLocation *)structuredLocation;
-- (void)setStructuredLocation:(id)a3 preserveConferenceRooms:(BOOL)a4;
-- (void)setSuggestionInfo:(id)a3;
-- (void)setTimeZone:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setTravelAdvisoryBehavior:(int64_t)a3;
-- (void)setTravelTime:(double)a3;
-- (void)setURL:(id)a3;
-- (void)setVirtualConference:(id)a3;
+- (void)setStructuredLocation:(id)location preserveConferenceRooms:(BOOL)rooms;
+- (void)setSuggestionInfo:(id)info;
+- (void)setTimeZone:(id)zone;
+- (void)setTitle:(id)title;
+- (void)setTravelAdvisoryBehavior:(int64_t)behavior;
+- (void)setTravelTime:(double)time;
+- (void)setURL:(id)l;
+- (void)setVirtualConference:(id)conference;
 - (void)updateDefaultAlarms;
-- (void)updateWithVCSEntity:(id)a3 inCalendar:(id)a4;
+- (void)updateWithVCSEntity:(id)entity inCalendar:(id)calendar;
 @end
 
 @implementation EKEvent
@@ -428,12 +428,12 @@
 
 - (BOOL)_isOriginalOccurrenceStartDateSameAsCommittedStartDate
 {
-  v3 = [(EKEvent *)self originalOccurrenceStartDate];
-  v4 = [(EKEvent *)self _committedStartDate];
-  [v4 timeIntervalSinceReferenceDate];
+  originalOccurrenceStartDate = [(EKEvent *)self originalOccurrenceStartDate];
+  _committedStartDate = [(EKEvent *)self _committedStartDate];
+  [_committedStartDate timeIntervalSinceReferenceDate];
   v6 = v5;
 
-  [v3 absoluteTime];
+  [originalOccurrenceStartDate absoluteTime];
   v8 = v7;
   v9 = [(EKObject *)self _previousValueForKey:*MEMORY[0x1E69926D0]];
   v10 = v9;
@@ -455,7 +455,7 @@
   block[1] = 3221225472;
   block[2] = __42__EKEvent_knownRelationshipMultiValueKeys__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (knownRelationshipMultiValueKeys_onceToken_2 != -1)
   {
     dispatch_once(&knownRelationshipMultiValueKeys_onceToken_2, block);
@@ -473,34 +473,34 @@
     return 1;
   }
 
-  v4 = [(EKCalendarItem *)self originalItem];
+  originalItem = [(EKCalendarItem *)self originalItem];
   if ([(EKCalendarItem *)self hasRecurrenceRules]|| ([(EKCalendarItem *)self originalItem], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    if (v4)
+    if (originalItem)
     {
-      v6 = [(EKEvent *)self originalStartDate];
-      v7 = [v4 _committedStartDate];
-      v3 = [v6 isEqualToDate:v7];
+      originalStartDate = [(EKEvent *)self originalStartDate];
+      _committedStartDate = [originalItem _committedStartDate];
+      _isOriginalOccurrenceStartDateSameAsCommittedStartDate = [originalStartDate isEqualToDate:_committedStartDate];
     }
 
     else
     {
-      v3 = [(EKEvent *)self _isOriginalOccurrenceStartDateSameAsCommittedStartDate];
+      _isOriginalOccurrenceStartDateSameAsCommittedStartDate = [(EKEvent *)self _isOriginalOccurrenceStartDateSameAsCommittedStartDate];
     }
   }
 
   else
   {
-    v3 = 1;
+    _isOriginalOccurrenceStartDateSameAsCommittedStartDate = 1;
   }
 
-  return v3;
+  return _isOriginalOccurrenceStartDateSameAsCommittedStartDate;
 }
 
 - (BOOL)isFloating
 {
-  v2 = [(EKCalendarItem *)self timeZone];
-  v3 = v2 == 0;
+  timeZone = [(EKCalendarItem *)self timeZone];
+  v3 = timeZone == 0;
 
   return v3;
 }
@@ -511,7 +511,7 @@
   block[1] = 3221225472;
   block[2] = __43__EKEvent_knownRelationshipSingleValueKeys__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (knownRelationshipSingleValueKeys_onceToken_2 != -1)
   {
     dispatch_once(&knownRelationshipSingleValueKeys_onceToken_2, block);
@@ -555,31 +555,31 @@
 
 - (id)effectiveTimeZone
 {
-  v3 = [(EKCalendarItem *)self timeZone];
-  if (!v3)
+  timeZone = [(EKCalendarItem *)self timeZone];
+  if (!timeZone)
   {
-    v4 = [(EKObject *)self eventStore];
-    v3 = [v4 timeZone];
+    eventStore = [(EKObject *)self eventStore];
+    timeZone = [eventStore timeZone];
   }
 
-  return v3;
+  return timeZone;
 }
 
 - (EKStructuredLocation)structuredLocation
 {
-  v3 = [(EKEvent *)self predictedLocation];
-  v4 = v3;
-  if (v3)
+  predictedLocation = [(EKEvent *)self predictedLocation];
+  v4 = predictedLocation;
+  if (predictedLocation)
   {
-    v5 = v3;
+    structuredLocationWithoutPrediction = predictedLocation;
   }
 
   else
   {
-    v5 = [(EKCalendarItem *)self structuredLocationWithoutPrediction];
+    structuredLocationWithoutPrediction = [(EKCalendarItem *)self structuredLocationWithoutPrediction];
   }
 
-  v6 = v5;
+  v6 = structuredLocationWithoutPrediction;
 
   return v6;
 }
@@ -588,22 +588,22 @@
 {
   v15.receiver = self;
   v15.super_class = EKEvent;
-  v3 = [(EKCalendarItem *)&v15 title];
-  v4 = [(__CFString *)v3 length];
-  v5 = [(EKEvent *)self privacyLevel];
-  if (![(EKObject *)self isNew]&& (!v4 ? (v6 = (v5 & 0xFFFFFFFFFFFFFFFELL) == 2) : (v6 = 0), v6))
+  title = [(EKCalendarItem *)&v15 title];
+  v4 = [(__CFString *)title length];
+  privacyLevel = [(EKEvent *)self privacyLevel];
+  if (![(EKObject *)self isNew]&& (!v4 ? (v6 = (privacyLevel & 0xFFFFFFFFFFFFFFFELL) == 2) : (v6 = 0), v6))
   {
     v7 = EKBundle();
     v8 = [v7 localizedStringForKey:@"Private Event" value:&stru_1F1B49D68 table:0];
 
-    v3 = v8;
+    title = v8;
   }
 
   else
   {
-    v9 = [(EKEvent *)self birthdayContactIdentifier];
+    birthdayContactIdentifier = [(EKEvent *)self birthdayContactIdentifier];
 
-    if (v9)
+    if (birthdayContactIdentifier)
     {
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
@@ -616,13 +616,13 @@
   }
 
   v11 = &stru_1F1B49D68;
-  if (v3)
+  if (title)
   {
-    v11 = v3;
+    v11 = title;
   }
 
   v10 = v11;
-  v3 = v10;
+  title = v10;
 LABEL_13:
   v12 = v10;
 
@@ -635,15 +635,15 @@ LABEL_13:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (NSDate)proposedStartDate
@@ -665,12 +665,12 @@ LABEL_13:
 
 - (BOOL)isProposedTimeEvent
 {
-  v3 = [(EKEvent *)self proposedStartDate];
-  if (v3)
+  proposedStartDate = [(EKEvent *)self proposedStartDate];
+  if (proposedStartDate)
   {
-    v4 = [(EKEvent *)self proposedStartDate];
-    v5 = [(EKEvent *)self startDate];
-    v6 = [v4 isEqualToDate:v5];
+    proposedStartDate2 = [(EKEvent *)self proposedStartDate];
+    startDate = [(EKEvent *)self startDate];
+    v6 = [proposedStartDate2 isEqualToDate:startDate];
   }
 
   else
@@ -684,9 +684,9 @@ LABEL_13:
 - (EKEventStatus)status
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E69929E0]];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 void __43__EKEvent_knownRelationshipSingleValueKeys__block_invoke(uint64_t a1)
@@ -741,8 +741,8 @@ void __42__EKEvent_knownRelationshipMultiValueKeys__block_invoke(uint64_t a1)
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v3 = [(EKCalendarItem *)self attendees];
-    v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    attendees = [(EKCalendarItem *)self attendees];
+    v4 = [attendees countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v4)
     {
       v5 = v4;
@@ -753,7 +753,7 @@ void __42__EKEvent_knownRelationshipMultiValueKeys__block_invoke(uint64_t a1)
         {
           if (*v17 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(attendees);
           }
 
           v8 = *(*(&v16 + 1) + 8 * i);
@@ -765,9 +765,9 @@ void __42__EKEvent_knownRelationshipMultiValueKeys__block_invoke(uint64_t a1)
             if (v10)
             {
               v11 = v10;
-              v12 = [v9 proposedStartDateStatus];
+              proposedStartDateStatus = [v9 proposedStartDateStatus];
 
-              if (v12 != 3)
+              if (proposedStartDateStatus != 3)
               {
 
                 v13 = 1;
@@ -777,7 +777,7 @@ void __42__EKEvent_knownRelationshipMultiValueKeys__block_invoke(uint64_t a1)
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v5 = [attendees countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v5)
         {
           continue;
@@ -808,9 +808,9 @@ LABEL_16:
   v5[3] = &unk_1E77FCF40;
   v5[4] = self;
   v2 = [(EKObject *)self cachedValueForKey:@"eKEventIntegrationTypeKey" populateBlock:v5];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (unint64_t)hash
@@ -818,8 +818,8 @@ LABEL_16:
   v8.receiver = self;
   v8.super_class = EKEvent;
   v3 = [(EKObject *)&v8 hash];
-  v4 = [(EKEvent *)self occurrenceStartDate];
-  [v4 absoluteTime];
+  occurrenceStartDate = [(EKEvent *)self occurrenceStartDate];
+  [occurrenceStartDate absoluteTime];
   v6 = v5;
 
   return v3 ^ v6;
@@ -827,22 +827,22 @@ LABEL_16:
 
 - (NSDate)endDateUnadjustedForLegacyClients
 {
-  v2 = [(EKEvent *)self occurrenceEndDate];
-  v3 = [v2 date];
+  occurrenceEndDate = [(EKEvent *)self occurrenceEndDate];
+  date = [occurrenceEndDate date];
 
-  return v3;
+  return date;
 }
 
 - (NSString)eventIdentifier
 {
-  v3 = [(EKCalendarItem *)self uniqueID];
-  v4 = [(EKObject *)self eventStore];
-  v5 = [v4 sourceIdentifierForEvent:self];
+  uniqueID = [(EKCalendarItem *)self uniqueID];
+  eventStore = [(EKObject *)self eventStore];
+  v5 = [eventStore sourceIdentifierForEvent:self];
 
   v6 = 0;
-  if (v3 && v5)
+  if (uniqueID && v5)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", v5, *MEMORY[0x1E6993180], v3];
+    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", v5, *MEMORY[0x1E6993180], uniqueID];
   }
 
   return v6;
@@ -850,26 +850,26 @@ LABEL_16:
 
 - (NSString)locationWithoutPrediction
 {
-  v3 = [(EKEvent *)self preferredLocationWithoutPrediction];
-  v4 = [v3 title];
+  preferredLocationWithoutPrediction = [(EKEvent *)self preferredLocationWithoutPrediction];
+  title = [preferredLocationWithoutPrediction title];
 
-  v5 = [(EKEvent *)self preferredLocationWithoutPrediction];
-  v6 = [v5 address];
+  preferredLocationWithoutPrediction2 = [(EKEvent *)self preferredLocationWithoutPrediction];
+  address = [preferredLocationWithoutPrediction2 address];
 
-  v7 = [MEMORY[0x1E6992FD8] fullDisplayStringWithTitle:v4 address:v6];
+  v7 = [MEMORY[0x1E6992FD8] fullDisplayStringWithTitle:title address:address];
 
   return v7;
 }
 
 - (EKStructuredLocation)preferredLocationWithoutPrediction
 {
-  v3 = [(EKCalendarItem *)self clientLocation];
-  if (!v3)
+  clientLocation = [(EKCalendarItem *)self clientLocation];
+  if (!clientLocation)
   {
-    v3 = [(EKCalendarItem *)self structuredLocationWithoutPrediction];
+    clientLocation = [(EKCalendarItem *)self structuredLocationWithoutPrediction];
   }
 
-  return v3;
+  return clientLocation;
 }
 
 - (EKVirtualConference)virtualConference
@@ -877,27 +877,27 @@ LABEL_16:
   v5 = 0;
   [(EKEvent *)self parsedConference:&v5 andNotes:0];
   v2 = v5;
-  v3 = [v2 conference];
+  conference = [v2 conference];
 
-  return v3;
+  return conference;
 }
 
 - (BOOL)conferenceURLForDisplayCached
 {
-  v3 = [(EKCalendarItem *)self calendar];
-  v4 = [v3 source];
-  v5 = [v4 sourceType];
+  calendar = [(EKCalendarItem *)self calendar];
+  source = [calendar source];
+  sourceType = [source sourceType];
 
-  if (v5 == 2)
+  if (sourceType == 2)
   {
-    v6 = [(EKObject *)self cachedValueForKey:@"conferenceURLDetectedKey" populateBlock:0];
-    v7 = v6 != 0;
+    conferenceURL = [(EKObject *)self cachedValueForKey:@"conferenceURLDetectedKey" populateBlock:0];
+    v7 = conferenceURL != 0;
   }
 
   else
   {
-    v6 = [(EKEvent *)self conferenceURL];
-    if (v6)
+    conferenceURL = [(EKEvent *)self conferenceURL];
+    if (conferenceURL)
     {
       v7 = 1;
     }
@@ -914,8 +914,8 @@ LABEL_16:
 
 - (NSArray)locationsWithoutPrediction
 {
-  v2 = [(EKEvent *)self locationWithoutPrediction];
-  v3 = [v2 componentsSeparatedByString:@" "];;
+  locationWithoutPrediction = [(EKEvent *)self locationWithoutPrediction];
+  v3 = [locationWithoutPrediction componentsSeparatedByString:@" "];;
 
   return v3;
 }
@@ -923,9 +923,9 @@ LABEL_16:
 - (unint64_t)flags
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E69925D8]];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (unint64_t)reminderOccurrenceType
@@ -935,13 +935,13 @@ LABEL_16:
     return 0;
   }
 
-  v3 = [MEMORY[0x1E695DF00] CalSimulatedDateForNow];
-  v4 = [(EKEvent *)self startDate];
+  calSimulatedDateForNow = [MEMORY[0x1E695DF00] CalSimulatedDateForNow];
+  startDate = [(EKEvent *)self startDate];
   v5 = MEMORY[0x1E695DEE8];
-  v6 = [MEMORY[0x1E695DFE8] defaultTimeZone];
-  v7 = [v5 CalGregorianCalendarForTimeZone:v6];
+  defaultTimeZone = [MEMORY[0x1E695DFE8] defaultTimeZone];
+  v7 = [v5 CalGregorianCalendarForTimeZone:defaultTimeZone];
 
-  v8 = [v4 compareDateIgnoringTimeComponents:v3 inCalendar:v7];
+  v8 = [startDate compareDateIgnoringTimeComponents:calSimulatedDateForNow inCalendar:v7];
   if (v8)
   {
     if (v8 == 1)
@@ -959,8 +959,8 @@ LABEL_16:
 
     else
     {
-      v9 = [(EKEvent *)self _nextReminderOccurrenceDate];
-      v8 = [v9 compareDateIgnoringTimeComponents:v3 inCalendar:v7] != 1;
+      _nextReminderOccurrenceDate = [(EKEvent *)self _nextReminderOccurrenceDate];
+      v8 = [_nextReminderOccurrenceDate compareDateIgnoringTimeComponents:calSimulatedDateForNow inCalendar:v7] != 1;
     }
   }
 
@@ -969,8 +969,8 @@ LABEL_16:
 
 - (BOOL)isBirthday
 {
-  v2 = [(EKEvent *)self birthdayContactIdentifier];
-  v3 = v2 != 0;
+  birthdayContactIdentifier = [(EKEvent *)self birthdayContactIdentifier];
+  v3 = birthdayContactIdentifier != 0;
 
   return v3;
 }
@@ -993,19 +993,19 @@ LABEL_16:
 
 - (int64_t)participationStatus
 {
-  v2 = [(EKCalendarItem *)self selfAttendee];
-  v3 = v2;
-  if (v2)
+  selfAttendee = [(EKCalendarItem *)self selfAttendee];
+  v3 = selfAttendee;
+  if (selfAttendee)
   {
-    v4 = [v2 participantStatus];
+    participantStatus = [selfAttendee participantStatus];
   }
 
   else
   {
-    v4 = 2;
+    participantStatus = 2;
   }
 
-  return v4;
+  return participantStatus;
 }
 
 - (int64_t)currentUserGeneralizedParticipantRole
@@ -1020,9 +1020,9 @@ LABEL_16:
     return 2;
   }
 
-  v4 = [(EKCalendarItem *)self selfAttendee];
+  selfAttendee = [(EKCalendarItem *)self selfAttendee];
 
-  if (v4)
+  if (selfAttendee)
   {
     return 1;
   }
@@ -1045,10 +1045,10 @@ LABEL_16:
 
 - (BOOL)isOriginalItemPhantom
 {
-  v2 = [(EKCalendarItem *)self originalItem];
-  v3 = [v2 isPhantom];
+  originalItem = [(EKCalendarItem *)self originalItem];
+  isPhantom = [originalItem isPhantom];
 
-  return v3;
+  return isPhantom;
 }
 
 id __31__EKEvent_recurrenceIdentifier__block_invoke(uint64_t a1)
@@ -1062,35 +1062,35 @@ id __31__EKEvent_recurrenceIdentifier__block_invoke(uint64_t a1)
 
 - (NSDate)recurrenceDate
 {
-  v3 = [(EKEvent *)self originalStartDate];
-  v4 = v3;
-  if (v3)
+  originalStartDate = [(EKEvent *)self originalStartDate];
+  v4 = originalStartDate;
+  if (originalStartDate)
   {
-    v5 = v3;
+    date = originalStartDate;
   }
 
   else if ([(EKCalendarItem *)self hasRecurrenceRules])
   {
-    v6 = [(EKEvent *)self originalOccurrenceStartDate];
-    v5 = [v6 date];
+    originalOccurrenceStartDate = [(EKEvent *)self originalOccurrenceStartDate];
+    date = [originalOccurrenceStartDate date];
 
-    v7 = [(EKCalendarItem *)self timeZone];
+    timeZone = [(EKCalendarItem *)self timeZone];
 
-    if (!v7)
+    if (!timeZone)
     {
-      v8 = [(EKEvent *)self effectiveTimeZone];
-      v9 = [v5 dateInTimeZone:0 fromTimeZone:v8];
+      effectiveTimeZone = [(EKEvent *)self effectiveTimeZone];
+      v9 = [date dateInTimeZone:0 fromTimeZone:effectiveTimeZone];
 
-      v5 = v9;
+      date = v9;
     }
   }
 
   else
   {
-    v5 = 0;
+    date = 0;
   }
 
-  return v5;
+  return date;
 }
 
 - (EKRecurrenceIdentifier)recurrenceIdentifier
@@ -1110,32 +1110,32 @@ id __31__EKEvent_recurrenceIdentifier__block_invoke(uint64_t a1)
   appEntityIdentifierOverride = self->_appEntityIdentifierOverride;
   if (appEntityIdentifierOverride)
   {
-    v3 = appEntityIdentifierOverride;
+    uUID = appEntityIdentifierOverride;
 LABEL_5:
-    v5 = v3;
+    identifierString = uUID;
     goto LABEL_6;
   }
 
   if ([(EKEvent *)self isDetached])
   {
-    v3 = [(EKCalendarItem *)self UUID];
+    uUID = [(EKCalendarItem *)self UUID];
     goto LABEL_5;
   }
 
-  v7 = [(EKEvent *)self recurrenceIdentifier];
-  v5 = [v7 identifierString];
+  recurrenceIdentifier = [(EKEvent *)self recurrenceIdentifier];
+  identifierString = [recurrenceIdentifier identifierString];
 
 LABEL_6:
 
-  return v5;
+  return identifierString;
 }
 
 - (int64_t)travelRoutingMode
 {
   v2 = MEMORY[0x1E6992FD8];
-  v3 = [(EKCalendarItem *)self travelStartLocation];
-  v4 = [v3 routing];
-  v5 = [v2 routingModeEnumForCalRouteType:v4];
+  travelStartLocation = [(EKCalendarItem *)self travelStartLocation];
+  routing = [travelStartLocation routing];
+  v5 = [v2 routingModeEnumForCalRouteType:routing];
 
   return v5;
 }
@@ -1149,10 +1149,10 @@ LABEL_6:
   return fmax(v4, 0.0);
 }
 
-- (void)setIsJunk:(BOOL)a3 shouldSave:(BOOL)a4
+- (void)setIsJunk:(BOOL)junk shouldSave:(BOOL)save
 {
-  v4 = a4;
-  if (a3)
+  saveCopy = save;
+  if (junk)
   {
     v7 = 1;
   }
@@ -1163,11 +1163,11 @@ LABEL_6:
   }
 
   [(EKEvent *)self setJunkStatus:v7];
-  if (v4)
+  if (saveCopy)
   {
-    v8 = [(EKObject *)self eventStore];
+    eventStore = [(EKObject *)self eventStore];
     v11 = 0;
-    [v8 saveEvent:self span:2 commit:1 error:&v11];
+    [eventStore saveEvent:self span:2 commit:1 error:&v11];
     v9 = v11;
 
     if (v9)
@@ -1175,7 +1175,7 @@ LABEL_6:
       v10 = EKLogHandle;
       if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR))
       {
-        [(EKEvent(EKEvent_Shared) *)a3 setIsJunk:v9 shouldSave:v10];
+        [(EKEvent(EKEvent_Shared) *)junk setIsJunk:v9 shouldSave:v10];
       }
     }
   }
@@ -1189,9 +1189,9 @@ LABEL_6:
   v5[3] = &unk_1E77FCF40;
   v5[4] = self;
   v2 = [(EKObject *)self cachedValueForKey:@"cachedJunkStatus" populateBlock:v5];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 id __43__EKEvent_EKEvent_Shared__cachedJunkStatus__block_invoke(uint64_t a1)
@@ -1266,9 +1266,9 @@ LABEL_14:
   return v6;
 }
 
-- (void)setCachedJunkStatus:(unint64_t)a3
+- (void)setCachedJunkStatus:(unint64_t)status
 {
-  if (a3)
+  if (status)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
     [(EKObject *)self setCachedValue:v4 forKey:@"cachedJunkStatus"];
@@ -1283,10 +1283,10 @@ LABEL_14:
 
 - (BOOL)_couldBeJunkCommon
 {
-  v2 = [(EKEvent *)self cachedJunkStatus];
+  cachedJunkStatus = [(EKEvent *)self cachedJunkStatus];
   v3 = +[EKLogSubsystem junk];
   v4 = os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG);
-  if (v2 == 3)
+  if (cachedJunkStatus == 3)
   {
     if (v4)
     {
@@ -1299,31 +1299,31 @@ LABEL_14:
     [EKEvent(EKEvent_Shared) _couldBeJunkCommon];
   }
 
-  return v2 == 3;
+  return cachedJunkStatus == 3;
 }
 
 - (NSArray)locations
 {
-  v2 = [(EKCalendarItem *)self location];
-  v3 = [v2 componentsSeparatedByString:@" "];;
+  location = [(EKCalendarItem *)self location];
+  v3 = [location componentsSeparatedByString:@" "];;
 
   return v3;
 }
 
-- (void)setLocations:(id)a3
+- (void)setLocations:(id)locations
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _locationStringForLocations:v4];
+  locationsCopy = locations;
+  v5 = [objc_opt_class() _locationStringForLocations:locationsCopy];
 
   [(EKCalendarItem *)self setLocation:v5];
 }
 
-+ (id)_locationStringForLocations:(id)a3
++ (id)_locationStringForLocations:(id)locations
 {
-  v3 = a3;
-  if ([v3 count])
+  locationsCopy = locations;
+  if ([locationsCopy count])
   {
-    v4 = [v3 componentsJoinedByString:@" "];;
+    v4 = [locationsCopy componentsJoinedByString:@" "];;
   }
 
   else
@@ -1334,14 +1334,14 @@ LABEL_14:
   return v4;
 }
 
-- (void)setNotesCommon:(id)a3
+- (void)setNotesCommon:(id)common
 {
   [(EKEvent *)self clearDetectedConferenceURL];
 
   [(EKEvent *)self clearParsedConference];
 }
 
-- (void)parsedConference:(id *)a3 andNotes:(id *)a4
+- (void)parsedConference:(id *)conference andNotes:(id *)notes
 {
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -1349,18 +1349,18 @@ LABEL_14:
   v12[3] = &unk_1E77FCF40;
   v12[4] = self;
   v6 = [(EKObject *)self cachedValueForKey:@"parsedConferenceKey" populateBlock:v12];
-  v7 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (v6 == v7)
+  if (v6 == null)
   {
-    if (a3)
+    if (conference)
     {
-      *a3 = 0;
+      *conference = 0;
     }
 
-    if (a4)
+    if (notes)
     {
-      *a4 = 0;
+      *notes = 0;
     }
   }
 
@@ -1368,16 +1368,16 @@ LABEL_14:
   {
     v8 = [v6 objectForKey:@"parseResult"];
     v9 = [v6 objectForKey:@"notes"];
-    if (a3)
+    if (conference)
     {
       v10 = v8;
-      *a3 = v8;
+      *conference = v8;
     }
 
-    if (a4)
+    if (notes)
     {
       v11 = v9;
-      *a4 = v9;
+      *notes = v9;
     }
   }
 }
@@ -1431,34 +1431,34 @@ id __53__EKEvent_EKEvent_Shared__parsedConference_andNotes___block_invoke(uint64
 
 - (id)conferenceURLForDisplay
 {
-  v3 = [(EKCalendarItem *)self calendar];
-  v4 = [v3 source];
-  v5 = [v4 sourceType];
+  calendar = [(EKCalendarItem *)self calendar];
+  source = [calendar source];
+  sourceType = [source sourceType];
 
-  if (v5 == 2)
+  if (sourceType == 2)
   {
-    v6 = [(EKEvent *)self conferenceURLDetected];
-    if (!v6)
+    conferenceURLDetected = [(EKEvent *)self conferenceURLDetected];
+    if (!conferenceURLDetected)
     {
-      v7 = [(EKEvent *)self conferenceURL];
+      conferenceURL = [(EKEvent *)self conferenceURL];
       goto LABEL_7;
     }
 
     goto LABEL_5;
   }
 
-  v6 = [(EKEvent *)self conferenceURL];
-  if (v6)
+  conferenceURLDetected = [(EKEvent *)self conferenceURL];
+  if (conferenceURLDetected)
   {
 LABEL_5:
-    v7 = v6;
-    v6 = v7;
+    conferenceURL = conferenceURLDetected;
+    conferenceURLDetected = conferenceURL;
     goto LABEL_7;
   }
 
-  v7 = [(EKEvent *)self conferenceURLDetected];
+  conferenceURL = [(EKEvent *)self conferenceURLDetected];
 LABEL_7:
-  v8 = v7;
+  v8 = conferenceURL;
 
   return v8;
 }
@@ -1472,12 +1472,12 @@ LABEL_7:
     v8[2] = __48__EKEvent_EKEvent_Shared__conferenceURLDetected__block_invoke;
     v8[3] = &unk_1E77FCF40;
     v8[4] = self;
-    v3 = [(EKObject *)self cachedValueForKey:@"conferenceURLDetectedKey" populateBlock:v8];
-    v4 = [MEMORY[0x1E695DFB0] null];
+    conferenceURLDetectedString = [(EKObject *)self cachedValueForKey:@"conferenceURLDetectedKey" populateBlock:v8];
+    null = [MEMORY[0x1E695DFB0] null];
 
-    if (v3 != v4)
+    if (conferenceURLDetectedString != null)
     {
-      v5 = v3;
+      v5 = conferenceURLDetectedString;
 LABEL_6:
       v6 = v5;
       goto LABEL_8;
@@ -1486,10 +1486,10 @@ LABEL_6:
 
   else
   {
-    v3 = [(EKEvent *)self conferenceURLDetectedString];
-    if (v3)
+    conferenceURLDetectedString = [(EKEvent *)self conferenceURLDetectedString];
+    if (conferenceURLDetectedString)
     {
-      v5 = [MEMORY[0x1E695DFF8] URLWithString:v3];
+      v5 = [MEMORY[0x1E695DFF8] URLWithString:conferenceURLDetectedString];
       goto LABEL_6;
     }
   }
@@ -1526,15 +1526,15 @@ id __48__EKEvent_EKEvent_Shared__conferenceURLDetected__block_invoke(uint64_t a1
     return 1;
   }
 
-  v5 = [(EKCalendarItem *)self preferredLocation];
-  if ([v5 _hasChangesForKey:*MEMORY[0x1E6992A88]])
+  preferredLocation = [(EKCalendarItem *)self preferredLocation];
+  if ([preferredLocation _hasChangesForKey:*MEMORY[0x1E6992A88]])
   {
     v3 = 1;
   }
 
   else
   {
-    v3 = [v5 _hasChangesForKey:*MEMORY[0x1E6992A30]];
+    v3 = [preferredLocation _hasChangesForKey:*MEMORY[0x1E6992A30]];
   }
 
   return v3;
@@ -1543,8 +1543,8 @@ id __48__EKEvent_EKEvent_Shared__conferenceURLDetected__block_invoke(uint64_t a1
 - (id)_detectConferenceURL
 {
   v2 = MEMORY[0x1E6992F40];
-  v3 = [(EKEvent *)self _prioritizedConferencesSources];
-  v4 = [v2 conferenceURLFromSources:v3];
+  _prioritizedConferencesSources = [(EKEvent *)self _prioritizedConferencesSources];
+  v4 = [v2 conferenceURLFromSources:_prioritizedConferencesSources];
 
   return v4;
 }
@@ -1552,20 +1552,20 @@ id __48__EKEvent_EKEvent_Shared__conferenceURLDetected__block_invoke(uint64_t a1
 - (id)_prioritizedConferencesSources
 {
   v3 = objc_opt_new();
-  v4 = [(EKEvent *)self locationWithoutPrediction];
+  locationWithoutPrediction = [(EKEvent *)self locationWithoutPrediction];
 
-  if (v4)
+  if (locationWithoutPrediction)
   {
-    v5 = [(EKEvent *)self locationWithoutPrediction];
-    [v3 addObject:v5];
+    locationWithoutPrediction2 = [(EKEvent *)self locationWithoutPrediction];
+    [v3 addObject:locationWithoutPrediction2];
   }
 
-  v6 = [(EKEvent *)self displayNotes];
+  displayNotes = [(EKEvent *)self displayNotes];
 
-  if (v6)
+  if (displayNotes)
   {
-    v7 = [(EKEvent *)self displayNotes];
-    [v3 addObject:v7];
+    displayNotes2 = [(EKEvent *)self displayNotes];
+    [v3 addObject:displayNotes2];
   }
 
   v8 = [(EKEvent *)self URL];
@@ -1573,8 +1573,8 @@ id __48__EKEvent_EKEvent_Shared__conferenceURLDetected__block_invoke(uint64_t a1
   if (v8)
   {
     v9 = [(EKEvent *)self URL];
-    v10 = [v9 absoluteString];
-    [v3 addObject:v10];
+    absoluteString = [v9 absoluteString];
+    [v3 addObject:absoluteString];
   }
 
   return v3;
@@ -1586,7 +1586,7 @@ id __48__EKEvent_EKEvent_Shared__conferenceURLDetected__block_invoke(uint64_t a1
   block[1] = 3221225472;
   block[2] = __81__EKEvent_EKObjectChangeSummarizer__EKObjectChangeSummarizer_singleValueDiffKeys__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (EKObjectChangeSummarizer_singleValueDiffKeys_onceToken_150 != -1)
   {
     dispatch_once(&EKObjectChangeSummarizer_singleValueDiffKeys_onceToken_150, block);
@@ -1644,7 +1644,7 @@ void __81__EKEvent_EKObjectChangeSummarizer__EKObjectChangeSummarizer_singleValu
   block[1] = 3221225472;
   block[2] = __80__EKEvent_EKObjectChangeSummarizer__EKObjectChangeSummarizer_multiValueDiffKeys__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (EKObjectChangeSummarizer_multiValueDiffKeys_onceToken_154 != -1)
   {
     dispatch_once(&EKObjectChangeSummarizer_multiValueDiffKeys_onceToken_154, block);
@@ -1765,7 +1765,7 @@ void __41__EKEvent_knownKeysToUseForFutureChanges__block_invoke()
   block[1] = 3221225472;
   block[2] = __44__EKEvent_knownSingleValueKeysForComparison__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (knownSingleValueKeysForComparison_onceToken_4 != -1)
   {
     dispatch_once(&knownSingleValueKeysForComparison_onceToken_4, block);
@@ -1830,7 +1830,7 @@ void __44__EKEvent_knownSingleValueKeysForComparison__block_invoke(uint64_t a1)
 + (EKEvent)eventWithEventStore:(EKEventStore *)eventStore
 {
   v4 = eventStore;
-  v5 = [[a1 alloc] initWithEventStore:v4];
+  v5 = [[self alloc] initWithEventStore:v4];
 
   return v5;
 }
@@ -1842,41 +1842,41 @@ void __44__EKEvent_knownSingleValueKeysForComparison__block_invoke(uint64_t a1)
   return 0;
 }
 
-- (EKEvent)initWithEventStore:(id)a3
+- (EKEvent)initWithEventStore:(id)store
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR))
+  storeCopy = store;
+  if (!storeCopy && os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR))
   {
     [EKEvent initWithEventStore:];
   }
 
   v5 = objc_alloc_init(EKPersistentEvent);
-  [v4 _registerObject:v5];
+  [storeCopy _registerObject:v5];
   v6 = [(EKEvent *)self initWithPersistentObject:v5 occurrenceDate:0];
   v7 = EKUUIDString();
   [(EKCalendarItem *)v6 setCalendarItemIdentifier:v7];
 
-  v8 = [v4 timeZone];
-  [(EKEvent *)v6 setTimeZone:v8];
+  timeZone = [storeCopy timeZone];
+  [(EKEvent *)v6 setTimeZone:timeZone];
 
-  v9 = [(EKEvent *)v6 defaultAlarms];
-  v10 = [v9 anyObject];
+  defaultAlarms = [(EKEvent *)v6 defaultAlarms];
+  anyObject = [defaultAlarms anyObject];
 
-  if (!v10)
+  if (!anyObject)
   {
-    v10 = [EKAlarm alarmWithRelativeOffset:0.0];
-    [v10 setDefaultAlarm:1];
+    anyObject = [EKAlarm alarmWithRelativeOffset:0.0];
+    [anyObject setDefaultAlarm:1];
   }
 
-  [(EKCalendarItem *)v6 addAlarm:v10];
+  [(EKCalendarItem *)v6 addAlarm:anyObject];
 
   return v6;
 }
 
-- (EKEvent)initWithPersistentObject:(id)a3 objectForCopy:(id)a4
+- (EKEvent)initWithPersistentObject:(id)object objectForCopy:(id)copy
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  copyCopy = copy;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v9 = MEMORY[0x1E695D940];
@@ -1893,50 +1893,50 @@ void __44__EKEvent_knownSingleValueKeysForComparison__block_invoke(uint64_t a1)
     [v11 raise];
   }
 
-  v12 = v7;
-  v13 = [v12 originalOccurrenceStartDate];
-  v14 = [v13 date];
-  v15 = [(EKEvent *)self initWithPersistentObject:v6 occurrenceDate:v14];
+  v12 = copyCopy;
+  originalOccurrenceStartDate = [v12 originalOccurrenceStartDate];
+  date = [originalOccurrenceStartDate date];
+  v15 = [(EKEvent *)self initWithPersistentObject:objectCopy occurrenceDate:date];
 
-  LOBYTE(v14) = v12[92];
-  v15->_isMainOccurrence = v14;
+  LOBYTE(date) = v12[92];
+  v15->_isMainOccurrence = date;
 
   return v15;
 }
 
-- (EKEvent)initWithPersistentObject:(id)a3 occurrenceDate:(id)a4
+- (EKEvent)initWithPersistentObject:(id)object occurrenceDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  objectCopy = object;
+  dateCopy = date;
+  if (!objectCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Can't create EKEvent without persistent event"];
   }
 
   v26.receiver = self;
   v26.super_class = EKEvent;
-  v8 = [(EKObject *)&v26 initWithPersistentObject:v6];
+  v8 = [(EKObject *)&v26 initWithPersistentObject:objectCopy];
   v9 = v8;
   if (v8)
   {
     v8->_locationPredictionLock._os_unfair_lock_opaque = 0;
     v8->_locationPredictionAllowed = 1;
     [(EKEvent *)v8 setOccurrenceIsAllDay:[(EKEvent *)v8 _isAllDay]];
-    v10 = [(EKEvent *)v9 startDateRaw];
+    startDateRaw = [(EKEvent *)v9 startDateRaw];
     v25 = 0;
-    v11 = [(EKEvent *)v9 adjustedPersistedDateForDate:v10 withAdjustmentMode:1 pinMode:0 clientCalendarDate:&v25];
+    v11 = [(EKEvent *)v9 adjustedPersistedDateForDate:startDateRaw withAdjustmentMode:1 pinMode:0 clientCalendarDate:&v25];
     v12 = v25;
 
-    v13 = [(EKEvent *)v9 endDateRaw];
+    endDateRaw = [(EKEvent *)v9 endDateRaw];
     v24 = 0;
-    v14 = [(EKEvent *)v9 adjustedPersistedDateForDate:v13 withAdjustmentMode:1 pinMode:1 clientCalendarDate:&v24];
+    v14 = [(EKEvent *)v9 adjustedPersistedDateForDate:endDateRaw withAdjustmentMode:1 pinMode:1 clientCalendarDate:&v24];
     v15 = v24;
 
-    if (v7)
+    if (dateCopy)
     {
       v16 = MEMORY[0x1E69930C8];
-      v17 = [(EKEvent *)v9 effectiveTimeZone];
-      v18 = [v16 calendarDateWithDate:v7 timeZone:v17];
+      effectiveTimeZone = [(EKEvent *)v9 effectiveTimeZone];
+      v18 = [v16 calendarDateWithDate:dateCopy timeZone:effectiveTimeZone];
 
       [(EKEvent *)v9 setOccurrenceStartDate:v18];
       v19 = [(EKEvent *)v9 _calculateDurationWithStart:v12 end:v15 allDay:[(EKEvent *)v9 occurrenceIsAllDay]];
@@ -1963,24 +1963,24 @@ void __44__EKEvent_knownSingleValueKeysForComparison__block_invoke(uint64_t a1)
     v21 = ![(EKEvent *)v9 isDetached]&& [(EKEvent *)v9 isFirstOccurrence];
     v9->_isMainOccurrence = v21;
     [(EKEvent *)v9 _invalidateRecurrenceIdentifier];
-    if ([v6 isNew] && -[EKEvent isReminderIntegrationEvent](v9, "isReminderIntegrationEvent") && !-[EKEvent isDetached](v9, "isDetached"))
+    if ([objectCopy isNew] && -[EKEvent isReminderIntegrationEvent](v9, "isReminderIntegrationEvent") && !-[EKEvent isDetached](v9, "isDetached"))
     {
-      v22 = [v6 eventStore];
-      [v22 addPendingIntegrationEvent:v9];
+      eventStore = [objectCopy eventStore];
+      [eventStore addPendingIntegrationEvent:v9];
     }
   }
 
   return v9;
 }
 
-- (id)_calculateDurationWithStart:(id)a3 end:(id)a4 allDay:(BOOL)a5
+- (id)_calculateDurationWithStart:(id)start end:(id)end allDay:(BOOL)day
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (a5)
+  startCopy = start;
+  endCopy = end;
+  v9 = endCopy;
+  if (day)
   {
-    v10 = [v8 differenceAsDateComponents:v7 units:242];
+    v10 = [endCopy differenceAsDateComponents:startCopy units:242];
     if ([v10 hour] <= 11)
     {
       [v10 setDay:{objc_msgSend(v10, "day") - 1}];
@@ -1993,24 +1993,24 @@ void __44__EKEvent_knownSingleValueKeysForComparison__block_invoke(uint64_t a1)
 
   else
   {
-    v11 = [v7 timeZone];
-    v12 = [v7 date];
-    v13 = [v9 date];
-    v14 = [v11 secondsFromGMTForDate:v12];
-    v15 = [v11 secondsFromGMTForDate:v13];
+    timeZone = [startCopy timeZone];
+    date = [startCopy date];
+    date2 = [v9 date];
+    v14 = [timeZone secondsFromGMTForDate:date];
+    v15 = [timeZone secondsFromGMTForDate:date2];
     v16 = v14 <= v15;
     v17 = v14 - v15;
     if (v16)
     {
 
-      v10 = [v9 differenceAsDateComponents:v7 units:242];
+      v10 = [v9 differenceAsDateComponents:startCopy units:242];
     }
 
     else
     {
-      v18 = [v7 calendar];
-      v19 = [v12 dateByAddingTimeInterval:v17];
-      v10 = [v18 components:242 fromDate:v19 toDate:v13 options:0];
+      calendar = [startCopy calendar];
+      v19 = [date dateByAddingTimeInterval:v17];
+      v10 = [calendar components:242 fromDate:v19 toDate:date2 options:0];
     }
   }
 
@@ -2019,38 +2019,38 @@ void __44__EKEvent_knownSingleValueKeysForComparison__block_invoke(uint64_t a1)
 
 - (NSString)eventOccurrenceID
 {
-  v2 = [(EKEvent *)self recurrenceIdentifier];
-  v3 = [v2 identifierString];
+  recurrenceIdentifier = [(EKEvent *)self recurrenceIdentifier];
+  identifierString = [recurrenceIdentifier identifierString];
 
-  return v3;
+  return identifierString;
 }
 
 - (NSURL)externalURL
 {
-  v3 = [(EKCalendarItem *)self calendar];
-  v4 = v3;
-  if (v3)
+  calendar = [(EKCalendarItem *)self calendar];
+  v4 = calendar;
+  if (calendar)
   {
-    v5 = [v3 source];
-    v6 = v5;
-    if (v5)
+    source = [calendar source];
+    v6 = source;
+    if (source)
     {
-      v7 = [v5 sourceIdentifier];
-      if (v7)
+      sourceIdentifier = [source sourceIdentifier];
+      if (sourceIdentifier)
       {
-        v8 = [(EKEvent *)self uniqueId];
-        if (v8)
+        uniqueId = [(EKEvent *)self uniqueId];
+        if (uniqueId)
         {
           if (externalURL_onceToken != -1)
           {
             [EKEvent externalURL];
           }
 
-          v9 = [v7 stringByAddingPercentEncodingWithAllowedCharacters:externalURL_allowedCharacters];
-          v10 = [v8 stringByAddingPercentEncodingWithAllowedCharacters:externalURL_allowedCharacters];
+          v9 = [sourceIdentifier stringByAddingPercentEncodingWithAllowedCharacters:externalURL_allowedCharacters];
+          v10 = [uniqueId stringByAddingPercentEncodingWithAllowedCharacters:externalURL_allowedCharacters];
           v11 = MEMORY[0x1E696AEC0];
-          v12 = [(EKEvent *)self startDate];
-          [v12 timeIntervalSinceReferenceDate];
+          startDate = [(EKEvent *)self startDate];
+          [startDate timeIntervalSinceReferenceDate];
           v14 = [v11 stringWithFormat:@"x-apple-calevent://%@/%@?o=%lld", v9, v10, v13];
 
           v15 = [MEMORY[0x1E695DFF8] URLWithString:v14];
@@ -2093,10 +2093,10 @@ void __22__EKEvent_externalURL__block_invoke()
   externalURL_allowedCharacters = v1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -2106,22 +2106,22 @@ void __22__EKEvent_externalURL__block_invoke()
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v7 = [(EKObject *)v4 objectID];
-      v8 = [(EKObject *)self objectID];
-      if ([v7 isEqual:v8])
+      objectID = [(EKObject *)equalCopy objectID];
+      objectID2 = [(EKObject *)self objectID];
+      if ([objectID isEqual:objectID2])
       {
-        v9 = [(EKEvent *)v4 originalOccurrenceStartDate];
-        v10 = [(EKEvent *)self originalOccurrenceStartDate];
-        if (v9 == v10)
+        originalOccurrenceStartDate = [(EKEvent *)equalCopy originalOccurrenceStartDate];
+        originalOccurrenceStartDate2 = [(EKEvent *)self originalOccurrenceStartDate];
+        if (originalOccurrenceStartDate == originalOccurrenceStartDate2)
         {
           v6 = 1;
         }
 
         else
         {
-          v11 = [(EKEvent *)v4 originalOccurrenceStartDate];
-          v12 = [(EKEvent *)self originalOccurrenceStartDate];
-          v6 = [v11 isEqual:v12];
+          originalOccurrenceStartDate3 = [(EKEvent *)equalCopy originalOccurrenceStartDate];
+          originalOccurrenceStartDate4 = [(EKEvent *)self originalOccurrenceStartDate];
+          v6 = [originalOccurrenceStartDate3 isEqual:originalOccurrenceStartDate4];
         }
       }
 
@@ -2140,19 +2140,19 @@ void __22__EKEvent_externalURL__block_invoke()
   return v6;
 }
 
-+ (id)_modifiedNotificationUserInfoWithIdentifier:(id)a3 forRevert:(BOOL)a4
++ (id)_modifiedNotificationUserInfoWithIdentifier:(id)identifier forRevert:(BOOL)revert
 {
-  v4 = a4;
+  revertCopy = revert;
   v17[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  identifierCopy = identifier;
+  v6 = identifierCopy;
+  if (identifierCopy)
   {
-    if (v4)
+    if (revertCopy)
     {
       v16[0] = @"EKEventStoreModifiedEventIdentifier";
       v16[1] = @"EKEventStoreRevert";
-      v17[0] = v5;
+      v17[0] = identifierCopy;
       v17[1] = MEMORY[0x1E695E118];
       v7 = MEMORY[0x1E695DF20];
       v8 = v17;
@@ -2163,7 +2163,7 @@ void __22__EKEvent_externalURL__block_invoke()
     else
     {
       v14 = @"EKEventStoreModifiedEventIdentifier";
-      v15 = v5;
+      v15 = identifierCopy;
       v7 = MEMORY[0x1E695DF20];
       v8 = &v15;
       v9 = &v14;
@@ -2186,18 +2186,18 @@ void __22__EKEvent_externalURL__block_invoke()
 - (void)postModifiedNotification
 {
   v3 = objc_opt_class();
-  v5 = [(EKObject *)self uniqueIdentifier];
-  v4 = [v3 _modifiedNotificationUserInfoWithIdentifier:v5 forRevert:0];
+  uniqueIdentifier = [(EKObject *)self uniqueIdentifier];
+  v4 = [v3 _modifiedNotificationUserInfoWithIdentifier:uniqueIdentifier forRevert:0];
   [(EKEvent *)self postModifiedNotificationWithUserInfo:v4];
 }
 
-- (void)postModifiedNotificationWithUserInfo:(id)a3
+- (void)postModifiedNotificationWithUserInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 postNotificationName:@"EKEventModifiedNotification" object:self userInfo:v4];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"EKEventModifiedNotification" object:self userInfo:infoCopy];
   }
 
   else
@@ -2207,7 +2207,7 @@ void __22__EKEvent_externalURL__block_invoke()
     v6[2] = __48__EKEvent_postModifiedNotificationWithUserInfo___block_invoke;
     v6[3] = &unk_1E77FD580;
     v6[4] = self;
-    v7 = v4;
+    v7 = infoCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v6);
   }
 }
@@ -2220,55 +2220,55 @@ void __48__EKEvent_postModifiedNotificationWithUserInfo___block_invoke(uint64_t 
 
 - (BOOL)needsGeocoding
 {
-  v2 = self;
-  v3 = [(EKObject *)self eventStore];
-  LOBYTE(v2) = [v3 needsGeocodingForEvent:v2];
+  selfCopy = self;
+  eventStore = [(EKObject *)self eventStore];
+  LOBYTE(selfCopy) = [eventStore needsGeocodingForEvent:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)constraints
 {
-  v3 = [(EKObject *)self eventStore];
-  v4 = [v3 cachedConstraintsForEvent:self];
+  eventStore = [(EKObject *)self eventStore];
+  v4 = [eventStore cachedConstraintsForEvent:self];
 
   return v4;
 }
 
-- (id)committedValueForKey:(id)a3
+- (id)committedValueForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:*MEMORY[0x1E69926C8]])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:*MEMORY[0x1E69926C8]])
   {
-    v5 = [(EKEvent *)self originalOccurrenceStartDate];
+    originalOccurrenceStartDate = [(EKEvent *)self originalOccurrenceStartDate];
 LABEL_5:
-    v6 = v5;
-    v7 = [v5 date];
+    v6 = originalOccurrenceStartDate;
+    date = [originalOccurrenceStartDate date];
 
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E6992968]])
+  if ([keyCopy isEqualToString:*MEMORY[0x1E6992968]])
   {
-    v5 = [(EKEvent *)self originalOccurrenceEndDate];
+    originalOccurrenceStartDate = [(EKEvent *)self originalOccurrenceEndDate];
     goto LABEL_5;
   }
 
   v9.receiver = self;
   v9.super_class = EKEvent;
-  v7 = [(EKObject *)&v9 committedValueForKey:v4];
+  date = [(EKObject *)&v9 committedValueForKey:keyCopy];
 LABEL_7:
 
-  return v7;
+  return date;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   [(EKEvent *)self _clearLocationPredictionCacheIfNotFrozen];
   v5.receiver = self;
   v5.super_class = EKEvent;
-  [(EKCalendarItem *)&v5 setTitle:v4];
+  [(EKCalendarItem *)&v5 setTitle:titleCopy];
 }
 
 id __16__EKEvent_title__block_invoke(uint64_t a1)
@@ -2293,15 +2293,15 @@ id __16__EKEvent_title__block_invoke(uint64_t a1)
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (void)updateDefaultAlarms
@@ -2311,8 +2311,8 @@ id __16__EKEvent_title__block_invoke(uint64_t a1)
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(EKCalendarItem *)self alarms];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  alarms = [(EKCalendarItem *)self alarms];
+  v4 = [alarms countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2323,17 +2323,17 @@ id __16__EKEvent_title__block_invoke(uint64_t a1)
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(alarms);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
         if ([v8 isDefaultAlarm] && (objc_msgSend(v8, "isAbsolute") & 1) == 0)
         {
-          v9 = [(EKEvent *)self _defaultAlarmOffset];
-          v10 = v9;
-          if (v9)
+          _defaultAlarmOffset = [(EKEvent *)self _defaultAlarmOffset];
+          v10 = _defaultAlarmOffset;
+          if (_defaultAlarmOffset)
           {
-            [v9 doubleValue];
+            [_defaultAlarmOffset doubleValue];
             if (v11 != 9.22337204e18)
             {
               [v10 doubleValue];
@@ -2343,7 +2343,7 @@ id __16__EKEvent_title__block_invoke(uint64_t a1)
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [alarms countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -2352,17 +2352,17 @@ id __16__EKEvent_title__block_invoke(uint64_t a1)
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateRecurrenceEndDatesWithAdjustmentMode:(unint64_t)a3
+- (void)_updateRecurrenceEndDatesWithAdjustmentMode:(unint64_t)mode
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = self;
-  v6 = [(EKCalendarItem *)self recurrenceRules];
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  selfCopy = self;
+  recurrenceRules = [(EKCalendarItem *)self recurrenceRules];
+  v7 = [recurrenceRules countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2373,46 +2373,46 @@ id __16__EKEvent_title__block_invoke(uint64_t a1)
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(recurrenceRules);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 recurrenceEnd];
-        v13 = [v12 endDate];
+        recurrenceEnd = [v11 recurrenceEnd];
+        endDate = [recurrenceEnd endDate];
 
-        if (v13)
+        if (endDate)
         {
-          v14 = [(EKEvent *)v5 adjustedPersistedDateForDate:v13 withAdjustmentMode:a3 pinMode:1 clientCalendarDate:0];
+          v14 = [(EKEvent *)selfCopy adjustedPersistedDateForDate:endDate withAdjustmentMode:mode pinMode:1 clientCalendarDate:0];
           v15 = [EKRecurrenceEnd recurrenceEndWithEndDate:v14];
           [v11 setRecurrenceEnd:v15];
         }
 
-        [v4 addObject:v11];
+        [array addObject:v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [recurrenceRules countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v8);
   }
 
-  [(EKEvent *)v5 setRecurrenceRules:v4];
+  [(EKEvent *)selfCopy setRecurrenceRules:array];
   v16 = *MEMORY[0x1E69E9840];
 }
 
 - (EKCalendarDate)startCalendarDateIncludingTravelTime
 {
   v3 = MEMORY[0x1E69930C8];
-  v4 = [(EKEvent *)self startDateIncludingTravel];
-  v5 = [(EKCalendarItem *)self timeZone];
-  v6 = [v3 calendarDateWithDate:v4 timeZone:v5];
+  startDateIncludingTravel = [(EKEvent *)self startDateIncludingTravel];
+  timeZone = [(EKCalendarItem *)self timeZone];
+  v6 = [v3 calendarDateWithDate:startDateIncludingTravel timeZone:timeZone];
 
   return v6;
 }
 
-- (void)setStartDateRaw:(id)a3
+- (void)setStartDateRaw:(id)raw
 {
-  [(EKObject *)self setSingleChangedValue:a3 forKey:*MEMORY[0x1E69926C8]];
+  [(EKObject *)self setSingleChangedValue:raw forKey:*MEMORY[0x1E69926C8]];
 
   [(EKEvent *)self clearCachedTimeValues];
 }
@@ -2429,9 +2429,9 @@ id __16__EKEvent_title__block_invoke(uint64_t a1)
 
 - (NSDateComponents)startDateComponents
 {
-  v3 = [(EKEvent *)self isAllDay];
+  isAllDay = [(EKEvent *)self isAllDay];
   occurrenceStartDate = self->_occurrenceStartDate;
-  if (v3)
+  if (isAllDay)
   {
     [(EKCalendarDate *)occurrenceStartDate dayComponents];
   }
@@ -2449,23 +2449,23 @@ id __16__EKEvent_title__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)setStartDateComponentsPreservingDuration:(id)a3
+- (void)setStartDateComponentsPreservingDuration:(id)duration
 {
-  v24 = a3;
-  v4 = [v24 CalHasTimeComponents];
-  v5 = [MEMORY[0x1E6992FB0] shared];
-  [v5 defaultEventDuration];
+  durationCopy = duration;
+  calHasTimeComponents = [durationCopy CalHasTimeComponents];
+  mEMORY[0x1E6992FB0] = [MEMORY[0x1E6992FB0] shared];
+  [mEMORY[0x1E6992FB0] defaultEventDuration];
   v7 = v6;
 
   if ([(EKEvent *)self isAllDay])
   {
-    v8 = [(EKEvent *)self endDateUnadjustedForLegacyClients];
-    v9 = [v8 dateByAddingTimeInterval:1.0];
+    endDateUnadjustedForLegacyClients = [(EKEvent *)self endDateUnadjustedForLegacyClients];
+    v9 = [endDateUnadjustedForLegacyClients dateByAddingTimeInterval:1.0];
 
-    v10 = [MEMORY[0x1E695DFE8] defaultTimeZone];
-    v11 = [MEMORY[0x1E695DEE8] CalGregorianCalendarForTimeZone:v10];
-    v12 = [(EKEvent *)self startDate];
-    v13 = [v11 components:16 fromDate:v12 toDate:v9 options:0];
+    defaultTimeZone = [MEMORY[0x1E695DFE8] defaultTimeZone];
+    v11 = [MEMORY[0x1E695DEE8] CalGregorianCalendarForTimeZone:defaultTimeZone];
+    startDate = [(EKEvent *)self startDate];
+    v13 = [v11 components:16 fromDate:startDate toDate:v9 options:0];
 
     v14 = [v13 day];
   }
@@ -2477,25 +2477,25 @@ id __16__EKEvent_title__block_invoke(uint64_t a1)
     v14 = 1;
   }
 
-  v16 = [v24 timeZone];
-  v17 = v16;
-  if (v16)
+  timeZone = [durationCopy timeZone];
+  v17 = timeZone;
+  if (timeZone)
   {
-    v18 = v16;
+    defaultTimeZone2 = timeZone;
   }
 
   else
   {
-    v18 = [MEMORY[0x1E695DFE8] defaultTimeZone];
+    defaultTimeZone2 = [MEMORY[0x1E695DFE8] defaultTimeZone];
   }
 
-  v19 = v18;
-  v20 = [MEMORY[0x1E695DEE8] CalGregorianCalendarForTimeZone:v18];
-  v21 = [v20 dateFromComponents:v24];
-  [(EKEvent *)self setAllDay:v4 ^ 1u];
+  v19 = defaultTimeZone2;
+  v20 = [MEMORY[0x1E695DEE8] CalGregorianCalendarForTimeZone:defaultTimeZone2];
+  v21 = [v20 dateFromComponents:durationCopy];
+  [(EKEvent *)self setAllDay:calHasTimeComponents ^ 1u];
   [(EKEvent *)self setTimeZone:v17];
   [(EKEvent *)self setStartDate:v21];
-  if (v4)
+  if (calHasTimeComponents)
   {
     v22 = [v21 dateByAddingTimeInterval:v7];
   }
@@ -2509,35 +2509,35 @@ id __16__EKEvent_title__block_invoke(uint64_t a1)
   [(EKEvent *)self setEndDateUnadjustedForLegacyClients:v22];
 }
 
-- (id)_pinDate:(id)a3 withPinMode:(unint64_t)a4
+- (id)_pinDate:(id)date withPinMode:(unint64_t)mode
 {
-  v6 = a3;
+  dateCopy = date;
   if ([(EKEvent *)self isAllDay])
   {
-    if (a4 == 1)
+    if (mode == 1)
     {
-      v7 = [(EKEvent *)self effectiveTimeZone];
-      v8 = [v6 ek_ios_dateForEndOfDayInTimeZone:v7];
+      effectiveTimeZone = [(EKEvent *)self effectiveTimeZone];
+      v8 = [dateCopy ek_ios_dateForEndOfDayInTimeZone:effectiveTimeZone];
       goto LABEL_8;
     }
 
-    if (!a4)
+    if (!mode)
     {
-      v7 = [(EKEvent *)self effectiveTimeZone];
-      v8 = [v6 dateForDayInTimeZone:v7];
+      effectiveTimeZone = [(EKEvent *)self effectiveTimeZone];
+      v8 = [dateCopy dateForDayInTimeZone:effectiveTimeZone];
 LABEL_8:
       v11 = v8;
 
       goto LABEL_11;
     }
 
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Invalid pin mode: %d", a4}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Invalid pin mode: %d", mode}];
   }
 
-  else if (v6)
+  else if (dateCopy)
   {
     v9 = MEMORY[0x1E695DF00];
-    [v6 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     v11 = [v9 dateWithTimeIntervalSinceReferenceDate:floor(v10)];
     goto LABEL_11;
   }
@@ -2548,40 +2548,40 @@ LABEL_11:
   return v11;
 }
 
-- (id)adjustedPersistedDateForDate:(id)a3 withAdjustmentMode:(unint64_t)a4 pinMode:(unint64_t)a5 clientCalendarDate:(id *)a6
+- (id)adjustedPersistedDateForDate:(id)date withAdjustmentMode:(unint64_t)mode pinMode:(unint64_t)pinMode clientCalendarDate:(id *)calendarDate
 {
-  v10 = a3;
-  v11 = [(EKEvent *)self isFloating]|| [(EKEvent *)self isAllDay];
+  dateCopy = date;
+  isAllDay = [(EKEvent *)self isFloating]|| [(EKEvent *)self isAllDay];
   v15 = 0;
-  [(EKEvent *)self adjustedDatesForDate:v10 persistedDateIsInUTC:v11 withAdjustmentMode:a4 pinMode:a5 outClientCalendarDate:a6 outPersistedDate:&v15];
+  [(EKEvent *)self adjustedDatesForDate:dateCopy persistedDateIsInUTC:isAllDay withAdjustmentMode:mode pinMode:pinMode outClientCalendarDate:calendarDate outPersistedDate:&v15];
   v12 = v15;
   v13 = v15;
 
   return v12;
 }
 
-- (void)adjustedDatesForDate:(id)a3 persistedDateIsInUTC:(BOOL)a4 withAdjustmentMode:(unint64_t)a5 pinMode:(unint64_t)a6 outClientCalendarDate:(id *)a7 outPersistedDate:(id *)a8
+- (void)adjustedDatesForDate:(id)date persistedDateIsInUTC:(BOOL)c withAdjustmentMode:(unint64_t)mode pinMode:(unint64_t)pinMode outClientCalendarDate:(id *)calendarDate outPersistedDate:(id *)persistedDate
 {
-  v12 = a4;
-  v21 = a3;
-  v14 = [(EKEvent *)self effectiveTimeZone];
-  if (a5 == 1)
+  cCopy = c;
+  dateCopy = date;
+  effectiveTimeZone = [(EKEvent *)self effectiveTimeZone];
+  if (mode == 1)
   {
-    if (v12)
+    if (cCopy)
     {
-      v18 = [v21 dateInTimeZone:v14 fromTimeZone:0];
+      v18 = [dateCopy dateInTimeZone:effectiveTimeZone fromTimeZone:0];
     }
 
     else
     {
-      v18 = v21;
+      v18 = dateCopy;
     }
 
     v16 = v18;
-    v17 = v21;
+    v17 = dateCopy;
 LABEL_12:
     v19 = v17;
-    if (!a7)
+    if (!calendarDate)
     {
       goto LABEL_14;
     }
@@ -2589,13 +2589,13 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (!a5)
+  if (!mode)
   {
-    v15 = [(EKEvent *)self _pinDate:v21 withPinMode:a6];
+    v15 = [(EKEvent *)self _pinDate:dateCopy withPinMode:pinMode];
     v16 = v15;
-    if (v12)
+    if (cCopy)
     {
-      v17 = [v15 dateInTimeZone:0 fromTimeZone:v14];
+      v17 = [v15 dateInTimeZone:0 fromTimeZone:effectiveTimeZone];
     }
 
     else
@@ -2609,69 +2609,69 @@ LABEL_12:
 
   v16 = 0;
   v19 = 0;
-  if (a7)
+  if (calendarDate)
   {
 LABEL_13:
-    *a7 = [MEMORY[0x1E69930C8] calendarDateWithDate:v16 timeZone:v14];
+    *calendarDate = [MEMORY[0x1E69930C8] calendarDateWithDate:v16 timeZone:effectiveTimeZone];
   }
 
 LABEL_14:
-  if (a8)
+  if (persistedDate)
   {
     v20 = v19;
-    *a8 = v19;
+    *persistedDate = v19;
   }
 }
 
-- (void)_updateStartDateForDate:(id)a3 withAdjustmentMode:(unint64_t)a4 adjustEndDate:(BOOL)a5
+- (void)_updateStartDateForDate:(id)date withAdjustmentMode:(unint64_t)mode adjustEndDate:(BOOL)endDate
 {
-  v5 = a5;
-  v8 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
   if (![(EKObject *)self isNew]&& !self->_originalOccurrenceStartDate)
   {
-    v9 = [(EKEvent *)self occurrenceStartDate];
-    [(EKEvent *)self setOriginalOccurrenceStartDate:v9];
+    occurrenceStartDate = [(EKEvent *)self occurrenceStartDate];
+    [(EKEvent *)self setOriginalOccurrenceStartDate:occurrenceStartDate];
 
-    v10 = [(EKEvent *)self occurrenceEndDate];
-    [(EKEvent *)self setOriginalOccurrenceEndDate:v10];
+    occurrenceEndDate = [(EKEvent *)self occurrenceEndDate];
+    [(EKEvent *)self setOriginalOccurrenceEndDate:occurrenceEndDate];
   }
 
   v16 = 0;
-  v11 = [(EKEvent *)self adjustedPersistedDateForDate:v8 withAdjustmentMode:a4 pinMode:0 clientCalendarDate:&v16];
+  v11 = [(EKEvent *)self adjustedPersistedDateForDate:dateCopy withAdjustmentMode:mode pinMode:0 clientCalendarDate:&v16];
   v12 = v16;
   [(EKEvent *)self setOccurrenceStartDate:v12];
   [(EKEvent *)self setStartDateRaw:v11];
-  if (v5 && ![(EKEvent *)self isEndDateDirty])
+  if (endDateCopy && ![(EKEvent *)self isEndDateDirty])
   {
-    v13 = [(EKEvent *)self endDateUnadjustedForLegacyClients];
-    v14 = [(EKEvent *)self adjustedPersistedDateForDate:v13 withAdjustmentMode:a4 pinMode:1 clientCalendarDate:0];
+    endDateUnadjustedForLegacyClients = [(EKEvent *)self endDateUnadjustedForLegacyClients];
+    v14 = [(EKEvent *)self adjustedPersistedDateForDate:endDateUnadjustedForLegacyClients withAdjustmentMode:mode pinMode:1 clientCalendarDate:0];
 
-    v15 = [(EKObject *)self changeSet];
-    [v15 forceChangeValue:v14 forKey:*MEMORY[0x1E6992968]];
+    changeSet = [(EKObject *)self changeSet];
+    [changeSet forceChangeValue:v14 forKey:*MEMORY[0x1E6992968]];
   }
 }
 
-- (void)_setStartDate:(id)a3 andClearProposedTimes:(BOOL)a4 allowSettingIfNotEditable:(BOOL)a5
+- (void)_setStartDate:(id)date andClearProposedTimes:(BOOL)times allowSettingIfNotEditable:(BOOL)editable
 {
-  v6 = a4;
+  timesCopy = times;
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (a5 || [(EKEvent *)self isEditable])
+  dateCopy = date;
+  if (editable || [(EKEvent *)self isEditable])
   {
-    v9 = [(EKEvent *)self startDate];
-    v10 = [v9 isEqual:v8];
+    startDate = [(EKEvent *)self startDate];
+    v10 = [startDate isEqual:dateCopy];
 
     if ((v10 & 1) == 0)
     {
-      [(EKEvent *)self _updateStartDateForDate:v8 withAdjustmentMode:0];
-      if (v6)
+      [(EKEvent *)self _updateStartDateForDate:dateCopy withAdjustmentMode:0];
+      if (timesCopy)
       {
         v20 = 0u;
         v21 = 0u;
         v18 = 0u;
         v19 = 0u;
-        v11 = [(EKCalendarItem *)self attendees];
-        v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        attendees = [(EKCalendarItem *)self attendees];
+        v12 = [attendees countByEnumeratingWithState:&v18 objects:v22 count:16];
         if (v12)
         {
           v13 = v12;
@@ -2682,7 +2682,7 @@ LABEL_14:
             {
               if (*v19 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(attendees);
               }
 
               v16 = *(*(&v18 + 1) + 8 * i);
@@ -2693,7 +2693,7 @@ LABEL_14:
               [v16 setProposedStartDateStatus:0];
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+            v13 = [attendees countByEnumeratingWithState:&v18 objects:v22 count:16];
           }
 
           while (v13);
@@ -2707,10 +2707,10 @@ LABEL_14:
 
 - (double)duration
 {
-  v3 = [(EKEvent *)self occurrenceEndDate];
-  v4 = [v3 date];
-  v5 = [(EKCalendarDate *)self->_occurrenceStartDate date];
-  [v4 timeIntervalSinceDate:v5];
+  occurrenceEndDate = [(EKEvent *)self occurrenceEndDate];
+  date = [occurrenceEndDate date];
+  date2 = [(EKCalendarDate *)self->_occurrenceStartDate date];
+  [date timeIntervalSinceDate:date2];
   v7 = v6;
 
   return v7;
@@ -2724,79 +2724,79 @@ LABEL_14:
   return v4 + v5;
 }
 
-- (void)setEndDateRaw:(id)a3
+- (void)setEndDateRaw:(id)raw
 {
-  [(EKObject *)self setSingleChangedValue:a3 forKey:*MEMORY[0x1E6992968]];
+  [(EKObject *)self setSingleChangedValue:raw forKey:*MEMORY[0x1E6992968]];
 
   [(EKEvent *)self clearCachedTimeValues];
 }
 
-- (void)_setEndDateUnadjustedForLegacyClients:(id)a3 allowSettingIfNotEditable:(BOOL)a4
+- (void)_setEndDateUnadjustedForLegacyClients:(id)clients allowSettingIfNotEditable:(BOOL)editable
 {
-  v8 = a3;
-  if (a4 || [(EKEvent *)self isEditable])
+  clientsCopy = clients;
+  if (editable || [(EKEvent *)self isEditable])
   {
-    v6 = [(EKEvent *)self endDateUnadjustedForLegacyClients];
-    v7 = [v6 isEqual:v8];
+    endDateUnadjustedForLegacyClients = [(EKEvent *)self endDateUnadjustedForLegacyClients];
+    v7 = [endDateUnadjustedForLegacyClients isEqual:clientsCopy];
 
     if ((v7 & 1) == 0)
     {
-      [(EKEvent *)self _updateEndDateForDate:v8 withAdjustmentMode:0];
+      [(EKEvent *)self _updateEndDateForDate:clientsCopy withAdjustmentMode:0];
     }
   }
 }
 
-- (void)_updateEndDateForDate:(id)a3 withAdjustmentMode:(unint64_t)a4 adjustStartDate:(BOOL)a5
+- (void)_updateEndDateForDate:(id)date withAdjustmentMode:(unint64_t)mode adjustStartDate:(BOOL)startDate
 {
-  v5 = a5;
-  v8 = a3;
+  startDateCopy = startDate;
+  dateCopy = date;
   if (![(EKObject *)self isNew]&& !self->_originalOccurrenceEndDate)
   {
-    v9 = [(EKEvent *)self occurrenceStartDate];
-    [(EKEvent *)self setOriginalOccurrenceStartDate:v9];
+    occurrenceStartDate = [(EKEvent *)self occurrenceStartDate];
+    [(EKEvent *)self setOriginalOccurrenceStartDate:occurrenceStartDate];
 
-    v10 = [(EKEvent *)self occurrenceEndDate];
-    [(EKEvent *)self setOriginalOccurrenceEndDate:v10];
+    occurrenceEndDate = [(EKEvent *)self occurrenceEndDate];
+    [(EKEvent *)self setOriginalOccurrenceEndDate:occurrenceEndDate];
   }
 
   v18 = 0;
-  v11 = [(EKEvent *)self adjustedPersistedDateForDate:v8 withAdjustmentMode:a4 pinMode:1 clientCalendarDate:&v18];
+  v11 = [(EKEvent *)self adjustedPersistedDateForDate:dateCopy withAdjustmentMode:mode pinMode:1 clientCalendarDate:&v18];
   v12 = v18;
   [(EKEvent *)self setOccurrenceEndDate:v12];
-  v13 = [(EKEvent *)self endDateRaw];
-  v14 = [v13 isEqual:v11];
+  endDateRaw = [(EKEvent *)self endDateRaw];
+  v14 = [endDateRaw isEqual:v11];
 
   if ((v14 & 1) == 0)
   {
     [(EKEvent *)self setEndDateRaw:v11];
-    if (v5 && ![(EKEvent *)self isStartDateDirty])
+    if (startDateCopy && ![(EKEvent *)self isStartDateDirty])
     {
-      v15 = [(EKEvent *)self startDate];
-      v16 = [(EKEvent *)self adjustedPersistedDateForDate:v15 withAdjustmentMode:a4 pinMode:0 clientCalendarDate:0];
+      startDate = [(EKEvent *)self startDate];
+      v16 = [(EKEvent *)self adjustedPersistedDateForDate:startDate withAdjustmentMode:mode pinMode:0 clientCalendarDate:0];
 
-      v17 = [(EKObject *)self changeSet];
-      [v17 forceChangeValue:v16 forKey:*MEMORY[0x1E69926C8]];
+      changeSet = [(EKObject *)self changeSet];
+      [changeSet forceChangeValue:v16 forKey:*MEMORY[0x1E69926C8]];
     }
   }
 }
 
-- (void)forceSetTimeZone:(id)a3
+- (void)forceSetTimeZone:(id)zone
 {
   v3.receiver = self;
   v3.super_class = EKEvent;
-  [(EKCalendarItem *)&v3 setTimeZone:a3];
+  [(EKCalendarItem *)&v3 setTimeZone:zone];
 }
 
-- (void)setTimeZone:(id)a3
+- (void)setTimeZone:(id)zone
 {
-  v4 = a3;
-  v5 = [(EKCalendarItem *)self timeZone];
+  zoneCopy = zone;
+  timeZone = [(EKCalendarItem *)self timeZone];
   if ([(EKEvent *)self isEditable])
   {
     v18.receiver = self;
     v18.super_class = EKEvent;
-    [(EKCalendarItem *)&v18 setTimeZone:v4];
-    if (v4)
+    [(EKCalendarItem *)&v18 setTimeZone:zoneCopy];
+    if (zoneCopy)
     {
       if ([(EKEvent *)self isAllDay])
       {
@@ -2811,7 +2811,7 @@ LABEL_14:
         [(EKObject *)self setSingleChangedValue:v7 forKey:*MEMORY[0x1E6992600]];
       }
 
-      if (v5)
+      if (timeZone)
       {
         if (![(EKEvent *)self _settingTimeZoneChangesStartEndDates])
         {
@@ -2826,33 +2826,33 @@ LABEL_14:
 
     else
     {
-      v8 = v5 != 0;
+      v8 = timeZone != 0;
     }
 
-    v9 = [(EKEvent *)self startDate];
-    [(EKEvent *)self _updateStartDateForDate:v9 withAdjustmentMode:0];
+    startDate = [(EKEvent *)self startDate];
+    [(EKEvent *)self _updateStartDateForDate:startDate withAdjustmentMode:0];
 
-    v10 = [(EKEvent *)self endDateUnadjustedForLegacyClients];
-    [(EKEvent *)self _updateEndDateForDate:v10 withAdjustmentMode:0];
+    endDateUnadjustedForLegacyClients = [(EKEvent *)self endDateUnadjustedForLegacyClients];
+    [(EKEvent *)self _updateEndDateForDate:endDateUnadjustedForLegacyClients withAdjustmentMode:0];
 
     if ([(EKEvent *)self _settingTimeZoneChangesStartEndDates])
     {
       if (!v8)
       {
-        v11 = [(EKObject *)self eventStore];
-        v12 = [v11 timeZone];
+        eventStore = [(EKObject *)self eventStore];
+        timeZone2 = [eventStore timeZone];
 
-        v5 = v12;
+        timeZone = timeZone2;
       }
 
 LABEL_16:
-      v13 = [(EKEvent *)self effectiveTimeZone];
-      v14 = [(EKEvent *)self startDate];
-      v15 = [v14 dateInTimeZone:v13 fromTimeZone:v5];
+      effectiveTimeZone = [(EKEvent *)self effectiveTimeZone];
+      startDate2 = [(EKEvent *)self startDate];
+      v15 = [startDate2 dateInTimeZone:effectiveTimeZone fromTimeZone:timeZone];
 
       [(EKEvent *)self setStartDate:v15];
-      v16 = [(EKEvent *)self endDateUnadjustedForLegacyClients];
-      v17 = [v16 dateInTimeZone:v13 fromTimeZone:v5];
+      endDateUnadjustedForLegacyClients2 = [(EKEvent *)self endDateUnadjustedForLegacyClients];
+      v17 = [endDateUnadjustedForLegacyClients2 dateInTimeZone:effectiveTimeZone fromTimeZone:timeZone];
 
       [(EKEvent *)self setEndDateUnadjustedForLegacyClients:v17];
     }
@@ -2865,22 +2865,22 @@ LABEL_17:
 {
   if ([(EKObject *)self isNew])
   {
-    v3 = [(EKEvent *)self startDate];
+    startDate = [(EKEvent *)self startDate];
   }
 
   else
   {
     v4 = [(EKObject *)self _previousValueForKey:*MEMORY[0x1E69926C8]];
-    v5 = [(EKEvent *)self originalOccurrenceIsAllDay];
-    if (v5)
+    originalOccurrenceIsAllDay = [(EKEvent *)self originalOccurrenceIsAllDay];
+    if (originalOccurrenceIsAllDay)
     {
-      v6 = [(EKEvent *)self originalOccurrenceIsAllDay];
-      v7 = [v6 BOOLValue];
+      originalOccurrenceIsAllDay2 = [(EKEvent *)self originalOccurrenceIsAllDay];
+      bOOLValue = [originalOccurrenceIsAllDay2 BOOLValue];
     }
 
     else
     {
-      v7 = [(EKEvent *)self occurrenceIsAllDay];
+      bOOLValue = [(EKEvent *)self occurrenceIsAllDay];
     }
 
     v8 = [(EKObject *)self _previousValueForKey:*MEMORY[0x1E69926D0]];
@@ -2888,34 +2888,34 @@ LABEL_17:
     v10 = v9 == 0;
 
     v13 = 0;
-    [(EKEvent *)self adjustedDatesForDate:v4 persistedDateIsInUTC:(v10 | v7) & 1 withAdjustmentMode:1 pinMode:0 outClientCalendarDate:&v13 outPersistedDate:0];
+    [(EKEvent *)self adjustedDatesForDate:v4 persistedDateIsInUTC:(v10 | bOOLValue) & 1 withAdjustmentMode:1 pinMode:0 outClientCalendarDate:&v13 outPersistedDate:0];
     v11 = v13;
-    v3 = [v11 date];
+    startDate = [v11 date];
   }
 
-  return v3;
+  return startDate;
 }
 
 - (NSDate)initialEndDate
 {
   if ([(EKObject *)self isNew])
   {
-    v3 = [(EKEvent *)self endDateUnadjustedForLegacyClients];
+    endDateUnadjustedForLegacyClients = [(EKEvent *)self endDateUnadjustedForLegacyClients];
   }
 
   else
   {
     v4 = [(EKObject *)self _previousValueForKey:*MEMORY[0x1E6992968]];
-    v5 = [(EKEvent *)self originalOccurrenceIsAllDay];
-    if (v5)
+    originalOccurrenceIsAllDay = [(EKEvent *)self originalOccurrenceIsAllDay];
+    if (originalOccurrenceIsAllDay)
     {
-      v6 = [(EKEvent *)self originalOccurrenceIsAllDay];
-      v7 = [v6 BOOLValue];
+      originalOccurrenceIsAllDay2 = [(EKEvent *)self originalOccurrenceIsAllDay];
+      bOOLValue = [originalOccurrenceIsAllDay2 BOOLValue];
     }
 
     else
     {
-      v7 = [(EKEvent *)self occurrenceIsAllDay];
+      bOOLValue = [(EKEvent *)self occurrenceIsAllDay];
     }
 
     v8 = [(EKObject *)self _previousValueForKey:*MEMORY[0x1E69926D0]];
@@ -2923,12 +2923,12 @@ LABEL_17:
     v10 = v9 == 0;
 
     v13 = 0;
-    [(EKEvent *)self adjustedDatesForDate:v4 persistedDateIsInUTC:(v10 | v7) & 1 withAdjustmentMode:1 pinMode:1 outClientCalendarDate:&v13 outPersistedDate:0];
+    [(EKEvent *)self adjustedDatesForDate:v4 persistedDateIsInUTC:(v10 | bOOLValue) & 1 withAdjustmentMode:1 pinMode:1 outClientCalendarDate:&v13 outPersistedDate:0];
     v11 = v13;
-    v3 = [v11 date];
+    endDateUnadjustedForLegacyClients = [v11 date];
   }
 
-  return v3;
+  return endDateUnadjustedForLegacyClients;
 }
 
 - (BOOL)isMasterOrDetachedOccurrence
@@ -2946,80 +2946,80 @@ LABEL_17:
   originalOccurrenceEndDate = self->_originalOccurrenceEndDate;
   if (originalOccurrenceEndDate)
   {
-    v3 = originalOccurrenceEndDate;
+    occurrenceEndDate = originalOccurrenceEndDate;
   }
 
   else
   {
-    v3 = [(EKEvent *)self occurrenceEndDate];
+    occurrenceEndDate = [(EKEvent *)self occurrenceEndDate];
   }
 
-  return v3;
+  return occurrenceEndDate;
 }
 
 - (NSDate)occurrenceDate
 {
   if ([MEMORY[0x1E6992F30] isProgramSDKAtLeast:0x7E90000FFFFFFFFLL] && -[EKEvent isDetached](self, "isDetached"))
   {
-    v3 = [(EKEvent *)self originalStartDate];
+    originalStartDate = [(EKEvent *)self originalStartDate];
   }
 
   else
   {
-    v4 = [(EKEvent *)self occurrenceStartDate];
-    v3 = [v4 date];
+    occurrenceStartDate = [(EKEvent *)self occurrenceStartDate];
+    originalStartDate = [occurrenceStartDate date];
   }
 
-  return v3;
+  return originalStartDate;
 }
 
-- (void)setStatus:(int64_t)a3
+- (void)setStatus:(int64_t)status
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:status];
   [(EKObject *)self setSingleChangedValue:v4 forKey:*MEMORY[0x1E69929E0]];
 }
 
 - (int64_t)locationPredictionState
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E69929A0]];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)setLocationPredictionState:(int64_t)a3
+- (void)setLocationPredictionState:(int64_t)state
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:state];
   [(EKObject *)self setSingleChangedValue:v4 forKey:*MEMORY[0x1E69929A0]];
 }
 
 - (BOOL)firedTTL
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992978]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)_isParticipationStatusDirty
 {
-  v2 = [(EKCalendarItem *)self selfAttendee];
-  v3 = [v2 _isParticipantStatusDirty];
+  selfAttendee = [(EKCalendarItem *)self selfAttendee];
+  _isParticipantStatusDirty = [selfAttendee _isParticipantStatusDirty];
 
-  return v3;
+  return _isParticipantStatusDirty;
 }
 
 - (BOOL)_isOnlyChangeToAttendeesSelfAttendeeParticipationStatus
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(EKCalendarItem *)self selfAttendee];
-  if (v3)
+  selfAttendee = [(EKCalendarItem *)self selfAttendee];
+  if (selfAttendee)
   {
     v4 = [(EKObject *)self _previousValueForKey:*MEMORY[0x1E6992650]];
     if (v4)
     {
       v5 = [MEMORY[0x1E695DFD8] setWithObjects:{*MEMORY[0x1E6992538], *MEMORY[0x1E6992530], 0}];
-      if (+[EKObject _compareAllKnownKeysExceptKeys:forObject:againstObject:compareIdentityKeys:](EKObject, "_compareAllKnownKeysExceptKeys:forObject:againstObject:compareIdentityKeys:", v5, v3, v4, 0) && (-[EKObject changeSet](self, "changeSet"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 hasUnsavedMultiValueRemovalForKey:*MEMORY[0x1E6992568]], v6, (v7 & 1) == 0))
+      if (+[EKObject _compareAllKnownKeysExceptKeys:forObject:againstObject:compareIdentityKeys:](EKObject, "_compareAllKnownKeysExceptKeys:forObject:againstObject:compareIdentityKeys:", v5, selfAttendee, v4, 0) && (-[EKObject changeSet](self, "changeSet"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 hasUnsavedMultiValueRemovalForKey:*MEMORY[0x1E6992568]], v6, (v7 & 1) == 0))
       {
         [(EKCalendarItem *)self attendeesRaw];
         v17 = 0u;
@@ -3041,7 +3041,7 @@ LABEL_17:
               }
 
               v14 = *(*(&v17 + 1) + 8 * i);
-              if (v14 != v3 && ([v14 hasChanges] & 1) != 0)
+              if (v14 != selfAttendee && ([v14 hasChanges] & 1) != 0)
               {
                 v8 = 0;
                 goto LABEL_19;
@@ -3083,30 +3083,30 @@ LABEL_19:
   return v8;
 }
 
-- (void)setParticipationStatus:(int64_t)a3
+- (void)setParticipationStatus:(int64_t)status
 {
   if (![(EKEvent *)self allowsParticipationStatusModifications])
   {
     return;
   }
 
-  v5 = [(EKCalendarItem *)self selfAttendee];
-  if (!v5)
+  selfAttendee = [(EKCalendarItem *)self selfAttendee];
+  if (!selfAttendee)
   {
     goto LABEL_16;
   }
 
-  v12 = v5;
-  v6 = [v5 participantStatus] == a3;
-  v5 = v12;
+  v12 = selfAttendee;
+  v6 = [selfAttendee participantStatus] == status;
+  selfAttendee = v12;
   if (v6)
   {
     goto LABEL_16;
   }
 
-  [v12 setParticipantStatus:a3];
+  [v12 setParticipantStatus:status];
   [(EKCalendarItem *)self setModifiedProperties:[(EKCalendarItem *)self modifiedProperties]| 0x40];
-  if (a3 == 3)
+  if (status == 3)
   {
     v7 = 1;
   }
@@ -3114,8 +3114,8 @@ LABEL_19:
   else
   {
     v8 = objc_opt_class();
-    v9 = [(EKCalendarItem *)self calendar];
-    v7 = [v8 _eventAvailabilityForParticipantStatus:a3 supportedEventAvailabilities:objc_msgSend(v9 isAllDayEvent:{"supportedEventAvailabilities"), -[EKEvent isAllDay](self, "isAllDay")}];
+    calendar = [(EKCalendarItem *)self calendar];
+    v7 = [v8 _eventAvailabilityForParticipantStatus:status supportedEventAvailabilities:objc_msgSend(calendar isAllDayEvent:{"supportedEventAvailabilities"), -[EKEvent isAllDay](self, "isAllDay")}];
 
     if (v7 == -1 || [(EKEvent *)self isAllDay]&& [(EKEvent *)self availability]!= EKEventAvailabilityFree)
     {
@@ -3125,20 +3125,20 @@ LABEL_19:
 
   [(EKEvent *)self setAvailability:v7];
 LABEL_11:
-  v10 = [(EKCalendarItem *)self calendar];
-  v11 = [v10 source];
-  if ([v11 sourceType] != 1)
+  calendar2 = [(EKCalendarItem *)self calendar];
+  source = [calendar2 source];
+  if ([source sourceType] != 1)
   {
 
     goto LABEL_15;
   }
 
-  v5 = v12;
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  selfAttendee = v12;
+  if ((status & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     [(EKEvent *)self setProposedStartDate:0];
 LABEL_15:
-    v5 = v12;
+    selfAttendee = v12;
   }
 
 LABEL_16:
@@ -3146,11 +3146,11 @@ LABEL_16:
 
 - (BOOL)supportsParticipationStatusModificationsWithoutNotification
 {
-  v4 = [(EKCalendarItem *)self organizer];
-  if (v4)
+  organizer = [(EKCalendarItem *)self organizer];
+  if (organizer)
   {
-    v2 = [(EKCalendarItem *)self organizer];
-    if ([v2 scheduleAgent] == 1)
+    organizer2 = [(EKCalendarItem *)self organizer];
+    if ([organizer2 scheduleAgent] == 1)
     {
       v5 = 1;
 LABEL_8:
@@ -3159,20 +3159,20 @@ LABEL_8:
     }
   }
 
-  v6 = [(EKEvent *)self constraints];
-  if ([v6 supportsInvitationModificationsWithoutNotification])
+  constraints = [(EKEvent *)self constraints];
+  if ([constraints supportsInvitationModificationsWithoutNotification])
   {
     v5 = 1;
   }
 
   else
   {
-    v7 = [(EKCalendarItem *)self calendar];
-    v8 = [v7 source];
-    v5 = [v8 sourceType] == 0;
+    calendar = [(EKCalendarItem *)self calendar];
+    source = [calendar source];
+    v5 = [source sourceType] == 0;
   }
 
-  if (v4)
+  if (organizer)
   {
     goto LABEL_8;
   }
@@ -3182,17 +3182,17 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)_userAddressesRepresentInvitedAttendee:(id)a3 checkEmailAddresses:(BOOL)a4
+- (BOOL)_userAddressesRepresentInvitedAttendee:(id)attendee checkEmailAddresses:(BOOL)addresses
 {
-  v36 = a4;
+  addressesCopy = addresses;
   v47 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  attendeeCopy = attendee;
   v6 = [MEMORY[0x1E695DFA8] set];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v7 = v5;
+  v7 = attendeeCopy;
   v8 = [v7 countByEnumeratingWithState:&v41 objects:v46 count:16];
   if (v8)
   {
@@ -3207,9 +3207,9 @@ LABEL_9:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v41 + 1) + 8 * i) stringRemovingMailto];
-        v13 = [v12 lowercaseString];
-        [v6 addObject:v13];
+        stringRemovingMailto = [*(*(&v41 + 1) + 8 * i) stringRemovingMailto];
+        lowercaseString = [stringRemovingMailto lowercaseString];
+        [v6 addObject:lowercaseString];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v41 objects:v46 count:16];
@@ -3218,13 +3218,13 @@ LABEL_9:
     while (v9);
   }
 
-  v14 = [(EKCalendarItem *)self organizer];
-  v15 = [v14 URL];
-  v16 = [v15 absoluteString];
-  v17 = [v16 stringRemovingMailto];
-  v18 = [v17 lowercaseString];
+  organizer = [(EKCalendarItem *)self organizer];
+  v15 = [organizer URL];
+  absoluteString = [v15 absoluteString];
+  stringRemovingMailto2 = [absoluteString stringRemovingMailto];
+  lowercaseString2 = [stringRemovingMailto2 lowercaseString];
 
-  if ([v6 containsObject:v18])
+  if ([v6 containsObject:lowercaseString2])
   {
     v19 = 0;
   }
@@ -3240,7 +3240,7 @@ LABEL_9:
     if (v20)
     {
       v21 = v20;
-      v34 = v18;
+      v34 = lowercaseString2;
       v22 = *v38;
       while (2)
       {
@@ -3253,22 +3253,22 @@ LABEL_9:
 
           v24 = *(*(&v37 + 1) + 8 * j);
           v25 = [v24 URL];
-          v26 = [v25 absoluteString];
-          v27 = [v26 stringRemovingMailto];
-          v28 = [v27 lowercaseString];
+          absoluteString2 = [v25 absoluteString];
+          stringRemovingMailto3 = [absoluteString2 stringRemovingMailto];
+          lowercaseString3 = [stringRemovingMailto3 lowercaseString];
 
-          if (v28 && ([v6 containsObject:v28] & 1) != 0)
+          if (lowercaseString3 && ([v6 containsObject:lowercaseString3] & 1) != 0)
           {
             goto LABEL_26;
           }
 
-          if (v36)
+          if (addressesCopy)
           {
-            v29 = [v24 emailAddress];
-            v30 = [v29 stringRemovingMailto];
-            v31 = [v30 lowercaseString];
+            emailAddress = [v24 emailAddress];
+            stringRemovingMailto4 = [emailAddress stringRemovingMailto];
+            lowercaseString4 = [stringRemovingMailto4 lowercaseString];
 
-            if (v31 && ([v6 containsObject:v31] & 1) != 0)
+            if (lowercaseString4 && ([v6 containsObject:lowercaseString4] & 1) != 0)
             {
 
 LABEL_26:
@@ -3289,7 +3289,7 @@ LABEL_26:
 
       v19 = 0;
 LABEL_27:
-      v18 = v34;
+      lowercaseString2 = v34;
     }
 
     else
@@ -3309,18 +3309,18 @@ LABEL_27:
     return 0;
   }
 
-  v3 = [(EKCalendarItem *)self selfAttendee];
-  v4 = v3 != 0;
+  selfAttendee = [(EKCalendarItem *)self selfAttendee];
+  v4 = selfAttendee != 0;
 
   return v4;
 }
 
 - (BOOL)currentUserMayActAsOrganizer
 {
-  v3 = [(EKCalendarItem *)self calendar];
-  v4 = [v3 allowsContentModifications];
+  calendar = [(EKCalendarItem *)self calendar];
+  allowsContentModifications = [calendar allowsContentModifications];
 
-  if (!v4)
+  if (!allowsContentModifications)
   {
     return 0;
   }
@@ -3330,11 +3330,11 @@ LABEL_27:
     return 1;
   }
 
-  v6 = [(EKCalendarItem *)self calendar];
-  if ([v6 allowsScheduling])
+  calendar2 = [(EKCalendarItem *)self calendar];
+  if ([calendar2 allowsScheduling])
   {
-    v7 = [(EKCalendarItem *)self calendar];
-    v5 = [v7 sharingStatus] == 2 && -[EKCalendarItem isOrganizedBySharedCalendarOwner](self, "isOrganizedBySharedCalendarOwner");
+    calendar3 = [(EKCalendarItem *)self calendar];
+    v5 = [calendar3 sharingStatus] == 2 && -[EKCalendarItem isOrganizedBySharedCalendarOwner](self, "isOrganizedBySharedCalendarOwner");
   }
 
   else
@@ -3352,31 +3352,31 @@ LABEL_27:
   [(EKCalendarItem *)self setModifiedProperties:v3];
 }
 
-+ (int64_t)_eventAvailabilityForParticipantStatus:(int64_t)a3 supportedEventAvailabilities:(unint64_t)a4 isAllDayEvent:(BOOL)a5
++ (int64_t)_eventAvailabilityForParticipantStatus:(int64_t)status supportedEventAvailabilities:(unint64_t)availabilities isAllDayEvent:(BOOL)event
 {
   v5 = -1;
-  if (a4)
+  if (availabilities)
   {
     v5 = 1;
   }
 
   v6 = -1;
-  if (a3 == 4)
+  if (status == 4)
   {
-    v6 = (a4 >> 1) & 2;
+    v6 = (availabilities >> 1) & 2;
   }
 
-  if (a3 == 2)
+  if (status == 2)
   {
     v6 = 0;
   }
 
-  if (a5)
+  if (event)
   {
     v6 = v5;
   }
 
-  if (a4)
+  if (availabilities)
   {
     return v6;
   }
@@ -3389,88 +3389,88 @@ LABEL_27:
 
 - (int64_t)_parentParticipationStatus
 {
-  v2 = [(EKCalendarItem *)self originalItem];
-  v3 = v2;
-  if (v2)
+  originalItem = [(EKCalendarItem *)self originalItem];
+  v3 = originalItem;
+  if (originalItem)
   {
-    v4 = [v2 participationStatus];
+    participationStatus = [originalItem participationStatus];
   }
 
   else
   {
-    v4 = 0;
+    participationStatus = 0;
   }
 
-  return v4;
+  return participationStatus;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
   v4 = *MEMORY[0x1E6992980];
-  v5 = a3;
-  [(EKObject *)self updateMeltedAndCachedSingleRelationObject:v5 forKey:v4 frozenClass:objc_opt_class()];
+  imageCopy = image;
+  [(EKObject *)self updateMeltedAndCachedSingleRelationObject:imageCopy forKey:v4 frozenClass:objc_opt_class()];
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
   v4 = *MEMORY[0x1E6992948];
-  v5 = a3;
-  [(EKObject *)self updateMeltedAndCachedSingleRelationObject:v5 forKey:v4 frozenClass:objc_opt_class()];
+  colorCopy = color;
+  [(EKObject *)self updateMeltedAndCachedSingleRelationObject:colorCopy forKey:v4 frozenClass:objc_opt_class()];
 }
 
 - (NSInteger)birthdayPersonID
 {
-  v2 = [(EKEvent *)self birthdayID];
-  v3 = v2;
-  if (v2)
+  birthdayID = [(EKEvent *)self birthdayID];
+  v3 = birthdayID;
+  if (birthdayID)
   {
-    v4 = [v2 integerValue];
+    integerValue = [birthdayID integerValue];
   }
 
   else
   {
-    v4 = -1;
+    integerValue = -1;
   }
 
-  return v4;
+  return integerValue;
 }
 
-- (void)setBirthdayContact:(id)a3
+- (void)setBirthdayContact:(id)contact
 {
-  v4 = a3;
-  v5 = [v4 CalDisplayName];
-  [(EKObject *)self setSingleChangedValue:v5 forKey:*MEMORY[0x1E6992930]];
+  contactCopy = contact;
+  calDisplayName = [contactCopy CalDisplayName];
+  [(EKObject *)self setSingleChangedValue:calDisplayName forKey:*MEMORY[0x1E6992930]];
 
-  v6 = [v4 identifier];
+  identifier = [contactCopy identifier];
 
-  [(EKEvent *)self setBirthdayContactIdentifier:v6];
+  [(EKEvent *)self setBirthdayContactIdentifier:identifier];
 }
 
 - (BOOL)isNewRecurringSeries
 {
   if ([(EKEvent *)self isDetached])
   {
-    LOBYTE(v3) = 0;
+    LOBYTE(hasRecurrenceRules) = 0;
   }
 
   else
   {
-    v3 = [(EKCalendarItem *)self hasRecurrenceRules];
-    if (v3)
+    hasRecurrenceRules = [(EKCalendarItem *)self hasRecurrenceRules];
+    if (hasRecurrenceRules)
     {
-      LOBYTE(v3) = ![(EKCalendarItem *)self _hadRecurrenceRules];
+      LOBYTE(hasRecurrenceRules) = ![(EKCalendarItem *)self _hadRecurrenceRules];
     }
   }
 
-  return v3;
+  return hasRecurrenceRules;
 }
 
 - (id)recurrenceRule
 {
   if ([(EKCalendarItem *)self hasRecurrenceRules])
   {
-    v3 = [(EKCalendarItem *)self recurrenceRules];
-    v4 = [v3 objectAtIndex:0];
+    recurrenceRules = [(EKCalendarItem *)self recurrenceRules];
+    v4 = [recurrenceRules objectAtIndex:0];
   }
 
   else
@@ -3481,12 +3481,12 @@ LABEL_27:
   return v4;
 }
 
-- (void)setRecurrenceRule:(id)a3
+- (void)setRecurrenceRule:(id)rule
 {
-  v5 = a3;
-  if (v5)
+  ruleCopy = rule;
+  if (ruleCopy)
   {
-    v4 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{v5, 0}];
+    v4 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{ruleCopy, 0}];
     [(EKEvent *)self setRecurrenceRules:v4];
   }
 
@@ -3496,11 +3496,11 @@ LABEL_27:
   }
 }
 
-- (void)setRecurrenceRules:(id)a3
+- (void)setRecurrenceRules:(id)rules
 {
   v4.receiver = self;
   v4.super_class = EKEvent;
-  [(EKCalendarItem *)&v4 setRecurrenceRules:a3];
+  [(EKCalendarItem *)&v4 setRecurrenceRules:rules];
   [(EKEvent *)self clearNextCachedReminderOccurrenceDate];
 }
 
@@ -3508,50 +3508,50 @@ LABEL_27:
 {
   if ([(EKEvent *)self isDetached])
   {
-    v3 = [(EKCalendarItem *)self originalItem];
-    v4 = [v3 singleRecurrenceRule];
+    originalItem = [(EKCalendarItem *)self originalItem];
+    singleRecurrenceRule = [originalItem singleRecurrenceRule];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = EKEvent;
-    v4 = [(EKCalendarItem *)&v6 singleRecurrenceRule];
+    singleRecurrenceRule = [(EKCalendarItem *)&v6 singleRecurrenceRule];
   }
 
-  return v4;
+  return singleRecurrenceRule;
 }
 
 - (void)makeRecurrenceEndDateBased
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v3 = [(EKCalendarItem *)self recurrenceRules];
-  v4 = [v3 lastObject];
+  recurrenceRules = [(EKCalendarItem *)self recurrenceRules];
+  lastObject = [recurrenceRules lastObject];
 
-  if (v4)
+  if (lastObject)
   {
-    v5 = [v4 recurrenceEnd];
-    v6 = [v5 endDate];
+    recurrenceEnd = [lastObject recurrenceEnd];
+    endDate = [recurrenceEnd endDate];
 
-    if (!v6)
+    if (!endDate)
     {
-      v7 = [(EKEvent *)self _lastRecurrenceDate];
-      v8 = [MEMORY[0x1E695DEE8] sharedAutoupdatingCurrentCalendar];
-      v9 = [v8 copy];
+      _lastRecurrenceDate = [(EKEvent *)self _lastRecurrenceDate];
+      mEMORY[0x1E695DEE8] = [MEMORY[0x1E695DEE8] sharedAutoupdatingCurrentCalendar];
+      v9 = [mEMORY[0x1E695DEE8] copy];
 
-      v10 = [(EKEvent *)self effectiveTimeZone];
-      [v9 setTimeZone:v10];
+      effectiveTimeZone = [(EKEvent *)self effectiveTimeZone];
+      [v9 setTimeZone:effectiveTimeZone];
 
-      v11 = [v7 dateByAddingDays:1 inCalendar:v9];
+      v11 = [_lastRecurrenceDate dateByAddingDays:1 inCalendar:v9];
 
       v12 = [v11 dateRemovingTimeComponentsInCalendar:v9];
 
-      v6 = [v12 dateByAddingTimeInterval:-1.0];
+      endDate = [v12 dateByAddingTimeInterval:-1.0];
     }
 
-    v13 = [EKRecurrenceEnd recurrenceEndWithEndDate:v6];
-    [v4 setRecurrenceEnd:v13];
-    v16[0] = v4;
+    v13 = [EKRecurrenceEnd recurrenceEndWithEndDate:endDate];
+    [lastObject setRecurrenceEnd:v13];
+    v16[0] = lastObject;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
     [(EKEvent *)self setRecurrenceRules:v14];
   }
@@ -3559,61 +3559,61 @@ LABEL_27:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_occurrenceDatesForCount:(unint64_t)a3
+- (id)_occurrenceDatesForCount:(unint64_t)count
 {
-  v5 = [(EKEvent *)self masterEvent];
-  v6 = [v5 startDate];
-  v7 = [(EKEvent *)self _adjustDateIfFloatingForDate:v6];
+  masterEvent = [(EKEvent *)self masterEvent];
+  startDate = [masterEvent startDate];
+  v7 = [(EKEvent *)self _adjustDateIfFloatingForDate:startDate];
 
   v8 = objc_alloc_init(EKRecurrenceGenerator);
-  v9 = [(EKCalendarItem *)self recurrenceRules];
-  v10 = [v9 lastObject];
-  v11 = [MEMORY[0x1E695DF00] distantFuture];
-  v12 = [(EKEvent *)self effectiveTimeZone];
+  recurrenceRules = [(EKCalendarItem *)self recurrenceRules];
+  lastObject = [recurrenceRules lastObject];
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+  effectiveTimeZone = [(EKEvent *)self effectiveTimeZone];
   LOBYTE(v15) = 0;
-  v13 = [(EKRecurrenceGenerator *)v8 copyOccurrenceDatesWithEKEvent:self recurrenceRule:v10 startDate:v7 endDate:v11 timeZone:v12 exceptionDates:0 limit:a3 adjustDatesForAllDayEvents:v15];
+  v13 = [(EKRecurrenceGenerator *)v8 copyOccurrenceDatesWithEKEvent:self recurrenceRule:lastObject startDate:v7 endDate:distantFuture timeZone:effectiveTimeZone exceptionDates:0 limit:count adjustDatesForAllDayEvents:v15];
 
   return v13;
 }
 
 - (id)_lastRecurrenceDate
 {
-  v3 = [(EKCalendarItem *)self recurrenceRules];
-  v4 = [v3 lastObject];
+  recurrenceRules = [(EKCalendarItem *)self recurrenceRules];
+  lastObject = [recurrenceRules lastObject];
 
-  v5 = [v4 recurrenceEnd];
-  v6 = [v5 occurrenceCount];
+  recurrenceEnd = [lastObject recurrenceEnd];
+  occurrenceCount = [recurrenceEnd occurrenceCount];
 
-  if (v6)
+  if (occurrenceCount)
   {
-    v7 = [v4 recurrenceEnd];
-    v8 = -[EKEvent _occurrenceDatesForCount:](self, "_occurrenceDatesForCount:", [v7 occurrenceCount]);
+    recurrenceEnd2 = [lastObject recurrenceEnd];
+    endDateUnadjustedForLegacyClients = -[EKEvent _occurrenceDatesForCount:](self, "_occurrenceDatesForCount:", [recurrenceEnd2 occurrenceCount]);
 
-    [v8 lastObject];
+    [endDateUnadjustedForLegacyClients lastObject];
   }
 
   else
   {
-    v8 = [(EKEvent *)self endDateUnadjustedForLegacyClients];
-    [(EKEvent *)self _adjustDateIfFloatingForDate:v8];
+    endDateUnadjustedForLegacyClients = [(EKEvent *)self endDateUnadjustedForLegacyClients];
+    [(EKEvent *)self _adjustDateIfFloatingForDate:endDateUnadjustedForLegacyClients];
   }
   v9 = ;
 
   return v9;
 }
 
-- (id)_adjustDateIfFloatingForDate:(id)a3
+- (id)_adjustDateIfFloatingForDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   if ([(EKEvent *)self isFloating])
   {
-    v5 = [(EKEvent *)self effectiveTimeZone];
-    v6 = [v4 dateInTimeZone:0 fromTimeZone:v5];
+    effectiveTimeZone = [(EKEvent *)self effectiveTimeZone];
+    v6 = [dateCopy dateInTimeZone:0 fromTimeZone:effectiveTimeZone];
   }
 
   else
   {
-    v6 = v4;
+    v6 = dateCopy;
   }
 
   return v6;
@@ -3622,39 +3622,39 @@ LABEL_27:
 - (void)makeRecurrenceEndCountBased
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v3 = [(EKEvent *)self singleRecurrenceRule];
-  v4 = v3;
-  if (!v3)
+  singleRecurrenceRule = [(EKEvent *)self singleRecurrenceRule];
+  v4 = singleRecurrenceRule;
+  if (!singleRecurrenceRule)
   {
     goto LABEL_18;
   }
 
-  v5 = [v3 recurrenceEnd];
-  v6 = [v5 occurrenceCount];
+  recurrenceEnd = [singleRecurrenceRule recurrenceEnd];
+  occurrenceCount = [recurrenceEnd occurrenceCount];
 
-  if (!v6)
+  if (!occurrenceCount)
   {
-    v7 = [v4 recurrenceEnd];
-    v8 = [v7 endDate];
-    if (v8)
+    recurrenceEnd2 = [v4 recurrenceEnd];
+    endDate = [recurrenceEnd2 endDate];
+    if (endDate)
     {
 
 LABEL_7:
-      v10 = [(EKEvent *)self masterEvent];
-      v11 = [v10 startDate];
-      v12 = [(EKEvent *)self _adjustDateIfFloatingForDate:v11];
+      masterEvent = [(EKEvent *)self masterEvent];
+      startDate = [masterEvent startDate];
+      v12 = [(EKEvent *)self _adjustDateIfFloatingForDate:startDate];
 
       if (v12)
       {
-        v13 = [(EKEvent *)self endDateUnadjustedForLegacyClients];
-        v14 = [(EKEvent *)self _adjustDateIfFloatingForDate:v13];
+        endDateUnadjustedForLegacyClients = [(EKEvent *)self endDateUnadjustedForLegacyClients];
+        v14 = [(EKEvent *)self _adjustDateIfFloatingForDate:endDateUnadjustedForLegacyClients];
 
-        v15 = [v4 recurrenceEnd];
-        v16 = [v15 endDate];
-        v17 = v16;
-        if (v16)
+        recurrenceEnd3 = [v4 recurrenceEnd];
+        endDate2 = [recurrenceEnd3 endDate];
+        v17 = endDate2;
+        if (endDate2)
         {
-          v18 = v16;
+          v18 = endDate2;
         }
 
         else
@@ -3665,40 +3665,40 @@ LABEL_7:
         v19 = v18;
 
         v20 = objc_alloc_init(EKRecurrenceGenerator);
-        v21 = [(EKEvent *)self effectiveTimeZone];
+        effectiveTimeZone = [(EKEvent *)self effectiveTimeZone];
         LOBYTE(v27) = 0;
-        v22 = [(EKRecurrenceGenerator *)v20 copyOccurrenceDatesWithEKEvent:self recurrenceRule:v4 startDate:v12 endDate:v19 timeZone:v21 exceptionDates:0 limit:0 adjustDatesForAllDayEvents:v27];
+        v22 = [(EKRecurrenceGenerator *)v20 copyOccurrenceDatesWithEKEvent:self recurrenceRule:v4 startDate:v12 endDate:v19 timeZone:effectiveTimeZone exceptionDates:0 limit:0 adjustDatesForAllDayEvents:v27];
 
-        v6 = [v22 count];
+        occurrenceCount = [v22 count];
       }
 
       else
       {
-        v6 = 0;
+        occurrenceCount = 0;
       }
 
       goto LABEL_14;
     }
 
-    v9 = [(EKEvent *)self isMainOccurrence];
+    isMainOccurrence = [(EKEvent *)self isMainOccurrence];
 
-    if (!v9)
+    if (!isMainOccurrence)
     {
       goto LABEL_7;
     }
 
-    v6 = 0;
+    occurrenceCount = 0;
   }
 
 LABEL_14:
-  if (v6 <= 1)
+  if (occurrenceCount <= 1)
   {
     v23 = 1;
   }
 
   else
   {
-    v23 = v6;
+    v23 = occurrenceCount;
   }
 
   v24 = [EKRecurrenceEnd recurrenceEndWithOccurrenceCount:v23];
@@ -3715,9 +3715,9 @@ LABEL_18:
 {
   if ([(EKCalendarItem *)self hasComplexRecurrence])
   {
-    v3 = [(EKEvent *)self singleRecurrenceRule];
-    v4 = [v3 daysOfTheYear];
-    if ([v4 count])
+    singleRecurrenceRule = [(EKEvent *)self singleRecurrenceRule];
+    daysOfTheYear = [singleRecurrenceRule daysOfTheYear];
+    if ([daysOfTheYear count])
     {
       v5 = 0;
 LABEL_4:
@@ -3726,8 +3726,8 @@ LABEL_11:
       return v5;
     }
 
-    v6 = [v3 weeksOfTheYear];
-    v7 = [v6 count];
+    weeksOfTheYear = [singleRecurrenceRule weeksOfTheYear];
+    v7 = [weeksOfTheYear count];
 
     if (v7)
     {
@@ -3735,19 +3735,19 @@ LABEL_11:
       goto LABEL_11;
     }
 
-    if (![v3 frequency] || objc_msgSend(v3, "frequency") == 1)
+    if (![singleRecurrenceRule frequency] || objc_msgSend(singleRecurrenceRule, "frequency") == 1)
     {
       v5 = 1;
       goto LABEL_11;
     }
 
-    v4 = [v3 daysOfTheWeek];
-    v9 = [v3 daysOfTheMonth];
-    v10 = [v3 setPositions];
-    v11 = [v3 monthsOfTheYear];
-    if ([v3 frequency] == 2)
+    daysOfTheYear = [singleRecurrenceRule daysOfTheWeek];
+    daysOfTheMonth = [singleRecurrenceRule daysOfTheMonth];
+    setPositions = [singleRecurrenceRule setPositions];
+    monthsOfTheYear = [singleRecurrenceRule monthsOfTheYear];
+    if ([singleRecurrenceRule frequency] == 2)
     {
-      if ([v9 count] && !objc_msgSend(v10, "count") || objc_msgSend(v4, "count") == 1 && objc_msgSend(v10, "count") == 1 || objc_msgSend(v4, "count") == 7 && objc_msgSend(v10, "count") == 1)
+      if ([daysOfTheMonth count] && !objc_msgSend(setPositions, "count") || objc_msgSend(daysOfTheYear, "count") == 1 && objc_msgSend(setPositions, "count") == 1 || objc_msgSend(daysOfTheYear, "count") == 7 && objc_msgSend(setPositions, "count") == 1)
       {
         v5 = 1;
 LABEL_25:
@@ -3756,9 +3756,9 @@ LABEL_25:
       }
     }
 
-    else if ([v3 frequency] == 3 && !objc_msgSend(v10, "count") && objc_msgSend(v4, "count") <= 1)
+    else if ([singleRecurrenceRule frequency] == 3 && !objc_msgSend(setPositions, "count") && objc_msgSend(daysOfTheYear, "count") <= 1)
     {
-      v5 = [v11 count] != 0;
+      v5 = [monthsOfTheYear count] != 0;
       goto LABEL_25;
     }
 
@@ -3781,10 +3781,10 @@ LABEL_25:
     return 0;
   }
 
-  v3 = [(EKEvent *)self startDate];
-  v4 = [(EKEvent *)self occurrenceStartDate];
-  v5 = [v4 timeZone];
-  v6 = [(EKEvent *)self _occurrenceExistsOnDate:v3 timeZone:v5];
+  startDate = [(EKEvent *)self startDate];
+  occurrenceStartDate = [(EKEvent *)self occurrenceStartDate];
+  timeZone = [occurrenceStartDate timeZone];
+  v6 = [(EKEvent *)self _occurrenceExistsOnDate:startDate timeZone:timeZone];
 
   if (v6)
   {
@@ -3796,45 +3796,45 @@ LABEL_25:
 
 - (BOOL)hasCustomRecurrence
 {
-  v3 = [(EKEvent *)self singleRecurrenceRule];
-  v4 = [MEMORY[0x1E695DEE8] sharedAutoupdatingCurrentCalendar];
-  v5 = [(EKCalendarItem *)self timeZone];
-  [v4 setTimeZone:v5];
+  singleRecurrenceRule = [(EKEvent *)self singleRecurrenceRule];
+  mEMORY[0x1E695DEE8] = [MEMORY[0x1E695DEE8] sharedAutoupdatingCurrentCalendar];
+  timeZone = [(EKCalendarItem *)self timeZone];
+  [mEMORY[0x1E695DEE8] setTimeZone:timeZone];
 
-  if (!v3)
+  if (!singleRecurrenceRule)
   {
     goto LABEL_4;
   }
 
-  v6 = [(EKEvent *)self startDate];
+  startDate = [(EKEvent *)self startDate];
 
-  if (v6)
+  if (startDate)
   {
-    if ([v3 isPinnedToEndOfFrequency])
+    if ([singleRecurrenceRule isPinnedToEndOfFrequency])
     {
 LABEL_4:
-      LOBYTE(v6) = 0;
+      LOBYTE(startDate) = 0;
       goto LABEL_30;
     }
 
-    v7 = [(EKEvent *)self startDate];
-    v8 = [v4 components:536 fromDate:v7];
+    startDate2 = [(EKEvent *)self startDate];
+    v8 = [mEMORY[0x1E695DEE8] components:536 fromDate:startDate2];
 
-    if ([v3 frequency])
+    if ([singleRecurrenceRule frequency])
     {
-      if ([v3 frequency] == 1)
+      if ([singleRecurrenceRule frequency] == 1)
       {
-        if ([v3 interval] == 1)
+        if ([singleRecurrenceRule interval] == 1)
         {
-          v9 = [v3 daysOfTheWeek];
-          v6 = v9;
-          if (v9)
+          daysOfTheWeek = [singleRecurrenceRule daysOfTheWeek];
+          startDate = daysOfTheWeek;
+          if (daysOfTheWeek)
           {
-            if ([v9 count] == 1)
+            if ([daysOfTheWeek count] == 1)
             {
-              v10 = [v6 objectAtIndexedSubscript:0];
-              v11 = [v10 dayOfTheWeek];
-              v12 = [v8 weekday];
+              v10 = [startDate objectAtIndexedSubscript:0];
+              dayOfTheWeek = [v10 dayOfTheWeek];
+              weekday = [v8 weekday];
               goto LABEL_11;
             }
 
@@ -3847,46 +3847,46 @@ LABEL_29:
         }
 
 LABEL_28:
-        LOBYTE(v6) = 1;
+        LOBYTE(startDate) = 1;
         goto LABEL_29;
       }
 
-      if ([v3 frequency] != 2)
+      if ([singleRecurrenceRule frequency] != 2)
       {
-        if ([v3 frequency] != 3)
+        if ([singleRecurrenceRule frequency] != 3)
         {
           goto LABEL_28;
         }
 
-        if ([v3 interval] != 1)
+        if ([singleRecurrenceRule interval] != 1)
         {
           goto LABEL_28;
         }
 
-        v16 = [v3 daysOfTheWeek];
-        v17 = [v16 count];
+        daysOfTheWeek2 = [singleRecurrenceRule daysOfTheWeek];
+        v17 = [daysOfTheWeek2 count];
 
         if (v17)
         {
           goto LABEL_28;
         }
 
-        v18 = [v3 monthsOfTheYear];
-        v6 = v18;
-        if (!v18)
+        monthsOfTheYear = [singleRecurrenceRule monthsOfTheYear];
+        startDate = monthsOfTheYear;
+        if (!monthsOfTheYear)
         {
           goto LABEL_29;
         }
 
-        if ([v18 count] == 1)
+        if ([monthsOfTheYear count] == 1)
         {
-          v10 = [v6 objectAtIndexedSubscript:0];
-          v11 = [v10 integerValue];
-          v12 = [v8 month];
+          v10 = [startDate objectAtIndexedSubscript:0];
+          dayOfTheWeek = [v10 integerValue];
+          weekday = [v8 month];
 LABEL_11:
-          v13 = v12;
+          v13 = weekday;
 
-          if (v11 != v13)
+          if (dayOfTheWeek != v13)
           {
             goto LABEL_28;
           }
@@ -3899,27 +3899,27 @@ LABEL_27:
         goto LABEL_28;
       }
 
-      if ([v3 interval] != 1)
+      if ([singleRecurrenceRule interval] != 1)
       {
         goto LABEL_28;
       }
 
-      v14 = [v3 daysOfTheWeek];
-      v15 = [v14 count];
+      daysOfTheWeek3 = [singleRecurrenceRule daysOfTheWeek];
+      v15 = [daysOfTheWeek3 count];
 
       if (v15)
       {
         goto LABEL_28;
       }
 
-      v6 = [v3 daysOfTheMonth];
-      if ([v6 count])
+      startDate = [singleRecurrenceRule daysOfTheMonth];
+      if ([startDate count])
       {
-        if ([v6 count] == 1)
+        if ([startDate count] == 1)
         {
-          v10 = [v6 objectAtIndexedSubscript:0];
-          v11 = [v10 integerValue];
-          v12 = [v8 day];
+          v10 = [startDate objectAtIndexedSubscript:0];
+          dayOfTheWeek = [v10 integerValue];
+          weekday = [v8 day];
           goto LABEL_11;
         }
 
@@ -3927,47 +3927,47 @@ LABEL_27:
       }
     }
 
-    else if ([v3 interval] != 1)
+    else if ([singleRecurrenceRule interval] != 1)
     {
       goto LABEL_28;
     }
 
 LABEL_14:
-    LOBYTE(v6) = 0;
+    LOBYTE(startDate) = 0;
     goto LABEL_29;
   }
 
 LABEL_30:
 
-  return v6;
+  return startDate;
 }
 
-- (BOOL)futureOccurrencesCannotBeAffectedByChangingStartDateToDate:(id)a3
+- (BOOL)futureOccurrencesCannotBeAffectedByChangingStartDateToDate:(id)date
 {
-  v4 = a3;
-  v5 = [(EKCalendarItem *)self recurrenceRules];
-  v6 = [v5 firstObject];
+  dateCopy = date;
+  recurrenceRules = [(EKCalendarItem *)self recurrenceRules];
+  firstObject = [recurrenceRules firstObject];
 
-  if ([v6 hasDuplicateMonthsOfYear])
+  if ([firstObject hasDuplicateMonthsOfYear])
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [v6 endDate];
-    if ([v4 isAfterDate:v8])
+    endDate = [firstObject endDate];
+    if ([dateCopy isAfterDate:endDate])
     {
       v7 = 1;
     }
 
     else
     {
-      v9 = [(EKEvent *)self startDate];
-      v10 = [(EKEvent *)self _nsCalendar];
-      if ([v6 newStartDateIsInvalid:v4 currentStartDate:v9 calendar:v10])
+      startDate = [(EKEvent *)self startDate];
+      _nsCalendar = [(EKEvent *)self _nsCalendar];
+      if ([firstObject newStartDateIsInvalid:dateCopy currentStartDate:startDate calendar:_nsCalendar])
       {
-        v7 = [v6 interval] > 1;
+        v7 = [firstObject interval] > 1;
       }
 
       else
@@ -3988,15 +3988,15 @@ LABEL_30:
   }
 
   v3 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992920]];
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
 - (void)setAvailability:(EKEventAvailability)availability
 {
-  v5 = [(EKEvent *)self allowsAvailabilityModifications];
-  if (availability != EKEventAvailabilityNotSupported && v5)
+  allowsAvailabilityModifications = [(EKEvent *)self allowsAvailabilityModifications];
+  if (availability != EKEventAvailabilityNotSupported && allowsAvailabilityModifications)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithInteger:availability];
     [(EKObject *)self setSingleChangedValue:v6 forKey:*MEMORY[0x1E6992920]];
@@ -4005,36 +4005,36 @@ LABEL_30:
 
 - (id)_defaultAlarmOffset
 {
-  v3 = [(EKEvent *)self isAllDay];
-  v4 = [(EKCalendarItem *)self calendar];
-  v5 = [v4 source];
-  v6 = v5;
-  if (!v3)
+  isAllDay = [(EKEvent *)self isAllDay];
+  calendar = [(EKCalendarItem *)self calendar];
+  source = [calendar source];
+  v6 = source;
+  if (!isAllDay)
   {
-    v7 = [v5 defaultAlarmOffset];
-    if (!v7)
+    defaultAlarmOffset = [source defaultAlarmOffset];
+    if (!defaultAlarmOffset)
     {
-      v8 = [(EKObject *)self eventStore];
-      v9 = [v8 defaultTimedAlarmOffset];
+      eventStore = [(EKObject *)self eventStore];
+      defaultTimedAlarmOffset = [eventStore defaultTimedAlarmOffset];
       goto LABEL_7;
     }
 
 LABEL_5:
-    v7 = v7;
-    v10 = v7;
+    defaultAlarmOffset = defaultAlarmOffset;
+    v10 = defaultAlarmOffset;
     goto LABEL_8;
   }
 
-  v7 = [v5 defaultAllDayAlarmOffset];
-  if (v7)
+  defaultAlarmOffset = [source defaultAllDayAlarmOffset];
+  if (defaultAlarmOffset)
   {
     goto LABEL_5;
   }
 
-  v8 = [(EKObject *)self eventStore];
-  v9 = [v8 defaultAllDayAlarmOffset];
+  eventStore = [(EKObject *)self eventStore];
+  defaultTimedAlarmOffset = [eventStore defaultAllDayAlarmOffset];
 LABEL_7:
-  v10 = v9;
+  v10 = defaultTimedAlarmOffset;
 
 LABEL_8:
 
@@ -4043,11 +4043,11 @@ LABEL_8:
 
 - (BOOL)shouldHaveDefaultAlarms
 {
-  v2 = [(EKEvent *)self _defaultAlarmOffset];
-  v3 = v2;
-  if (v2)
+  _defaultAlarmOffset = [(EKEvent *)self _defaultAlarmOffset];
+  v3 = _defaultAlarmOffset;
+  if (_defaultAlarmOffset)
   {
-    v4 = [v2 integerValue] != 0x7FFFFFFFFFFFFFFFLL;
+    v4 = [_defaultAlarmOffset integerValue] != 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
@@ -4065,8 +4065,8 @@ LABEL_8:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(EKCalendarItem *)self alarms];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  alarms = [(EKCalendarItem *)self alarms];
+  v4 = [alarms countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -4077,7 +4077,7 @@ LABEL_3:
     {
       if (*v14 != v6)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(alarms);
       }
 
       v8 = *(*(&v13 + 1) + 8 * v7);
@@ -4088,7 +4088,7 @@ LABEL_3:
 
       if (v5 == ++v7)
       {
-        v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v5 = [alarms countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v5)
         {
           goto LABEL_3;
@@ -4098,9 +4098,9 @@ LABEL_3:
       }
     }
 
-    v9 = v8;
+    anyObject = v8;
 
-    if (v9)
+    if (anyObject)
     {
       goto LABEL_12;
     }
@@ -4111,20 +4111,20 @@ LABEL_3:
 LABEL_9:
   }
 
-  v10 = [(EKEvent *)self defaultAlarms];
-  v9 = [v10 anyObject];
+  defaultAlarms = [(EKEvent *)self defaultAlarms];
+  anyObject = [defaultAlarms anyObject];
 
 LABEL_12:
   v11 = *MEMORY[0x1E69E9840];
 
-  return v9;
+  return anyObject;
 }
 
 - (id)defaultAlarms
 {
-  v2 = [(EKEvent *)self _defaultAlarmOffset];
-  v3 = v2;
-  if (v2 && [v2 integerValue] != 0x7FFFFFFFFFFFFFFFLL && (+[EKAlarm alarmWithRelativeOffset:](EKAlarm, "alarmWithRelativeOffset:", objc_msgSend(v3, "integerValue")), v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "setDefaultAlarm:", 1), v4))
+  _defaultAlarmOffset = [(EKEvent *)self _defaultAlarmOffset];
+  v3 = _defaultAlarmOffset;
+  if (_defaultAlarmOffset && [_defaultAlarmOffset integerValue] != 0x7FFFFFFFFFFFFFFFLL && (+[EKAlarm alarmWithRelativeOffset:](EKAlarm, "alarmWithRelativeOffset:", objc_msgSend(v3, "integerValue")), v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "setDefaultAlarm:", 1), v4))
   {
     v5 = [MEMORY[0x1E695DFD8] setWithObject:v4];
   }
@@ -4140,22 +4140,22 @@ LABEL_12:
 - (NSString)virtualConferenceTextRepresentation
 {
   v25 = *MEMORY[0x1E69E9840];
-  v2 = [(EKEvent *)self virtualConference];
-  v3 = [MEMORY[0x1E696AD60] string];
-  v4 = [v2 title];
+  virtualConference = [(EKEvent *)self virtualConference];
+  string = [MEMORY[0x1E696AD60] string];
+  title = [virtualConference title];
 
-  if (v4)
+  if (title)
   {
-    v5 = [v2 title];
-    [v3 appendFormat:@"%@\n\n", v5];
+    title2 = [virtualConference title];
+    [string appendFormat:@"%@\n\n", title2];
   }
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [v2 joinMethods];
-  v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  joinMethods = [virtualConference joinMethods];
+  v7 = [joinMethods countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
     v8 = v7;
@@ -4166,40 +4166,40 @@ LABEL_12:
       {
         if (*v21 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(joinMethods);
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
-        v12 = [v11 title];
+        title3 = [v11 title];
 
-        if (v12)
+        if (title3)
         {
-          v13 = [v11 title];
-          [v3 appendFormat:@"%@\n", v13];
+          title4 = [v11 title];
+          [string appendFormat:@"%@\n", title4];
         }
 
         v14 = [v11 URL];
-        v15 = [v14 absoluteString];
-        [v3 appendFormat:@"%@\n\n", v15];
+        absoluteString = [v14 absoluteString];
+        [string appendFormat:@"%@\n\n", absoluteString];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v8 = [joinMethods countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v8);
   }
 
-  v16 = [v2 conferenceDetails];
+  conferenceDetails = [virtualConference conferenceDetails];
 
-  if (v16)
+  if (conferenceDetails)
   {
-    v17 = [v2 conferenceDetails];
-    [v3 appendString:v17];
+    conferenceDetails2 = [virtualConference conferenceDetails];
+    [string appendString:conferenceDetails2];
   }
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return string;
 }
 
 - (id)_originallyCommittedVirtualConference
@@ -4208,44 +4208,44 @@ LABEL_12:
   if (v2)
   {
     v3 = [EKConferencePersistence deserializeConference:v2];
-    v4 = [v3 conference];
+    conference = [v3 conference];
   }
 
   else
   {
-    v4 = 0;
+    conference = 0;
   }
 
-  return v4;
+  return conference;
 }
 
-- (void)setVirtualConference:(id)a3
+- (void)setVirtualConference:(id)conference
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(EKEvent *)self virtualConference];
-  v6 = v5;
-  if (v5)
+  conferenceCopy = conference;
+  virtualConference = [(EKEvent *)self virtualConference];
+  v6 = virtualConference;
+  if (virtualConference)
   {
-    if (![v5 isWritable])
+    if (![virtualConference isWritable])
     {
       goto LABEL_21;
     }
 
-    if (v4)
+    if (conferenceCopy)
     {
-      if (![v4 isWritable])
+      if (![conferenceCopy isWritable])
       {
 LABEL_11:
-        v13 = [(EKEvent *)self _originallyCommittedVirtualConference];
-        if (([v13 isEqual:v6] & 1) == 0)
+        _originallyCommittedVirtualConference = [(EKEvent *)self _originallyCommittedVirtualConference];
+        if (([_originallyCommittedVirtualConference isEqual:v6] & 1) == 0)
         {
           v23 = 0u;
           v24 = 0u;
           v21 = 0u;
           v22 = 0u;
-          v14 = [v6 joinMethods];
-          v15 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
+          joinMethods = [v6 joinMethods];
+          v15 = [joinMethods countByEnumeratingWithState:&v21 objects:v25 count:16];
           if (v15)
           {
             v16 = v15;
@@ -4256,14 +4256,14 @@ LABEL_11:
               {
                 if (*v22 != v17)
                 {
-                  objc_enumerationMutation(v14);
+                  objc_enumerationMutation(joinMethods);
                 }
 
                 v19 = [*(*(&v21 + 1) + 8 * i) URL];
                 [EKConferenceUtils invalidateConferenceURL:v19];
               }
 
-              v16 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
+              v16 = [joinMethods countByEnumeratingWithState:&v21 objects:v25 count:16];
             }
 
             while (v16);
@@ -4273,26 +4273,26 @@ LABEL_11:
         goto LABEL_21;
       }
 
-      v7 = [EKConferencePersistence serializeConference:v4];
-      v8 = [(EKEvent *)self displayNotes];
-      v9 = [(EKEvent *)self _buildConferenceStringFromNotesWithoutConference:v8 serializedConference:v7];
+      displayNotes2 = [EKConferencePersistence serializeConference:conferenceCopy];
+      displayNotes = [(EKEvent *)self displayNotes];
+      v9 = [(EKEvent *)self _buildConferenceStringFromNotesWithoutConference:displayNotes serializedConference:displayNotes2];
       [(EKEvent *)self setNotes:v9];
     }
 
     else
     {
-      v7 = [(EKEvent *)self displayNotes];
-      [(EKEvent *)self setNotes:v7];
+      displayNotes2 = [(EKEvent *)self displayNotes];
+      [(EKEvent *)self setNotes:displayNotes2];
     }
 
     goto LABEL_11;
   }
 
-  if (v4 && [v4 isWritable])
+  if (conferenceCopy && [conferenceCopy isWritable])
   {
-    v10 = [EKConferencePersistence serializeConference:v4];
-    v11 = [(EKCalendarItem *)self notes];
-    v12 = [(EKEvent *)self _buildConferenceStringFromNotesWithoutConference:v11 serializedConference:v10];
+    v10 = [EKConferencePersistence serializeConference:conferenceCopy];
+    notes = [(EKCalendarItem *)self notes];
+    v12 = [(EKEvent *)self _buildConferenceStringFromNotesWithoutConference:notes serializedConference:v10];
     [(EKEvent *)self setNotes:v12];
   }
 
@@ -4301,13 +4301,13 @@ LABEL_21:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)invalidateVirtualConferenceURLIfNeededOnCommit:(id)a3
+- (void)invalidateVirtualConferenceURLIfNeededOnCommit:(id)commit
 {
-  v4 = a3;
-  if (v4)
+  commitCopy = commit;
+  if (commitCopy)
   {
     virtualConferenceURLsToInvalidateOnCommit = self->_virtualConferenceURLsToInvalidateOnCommit;
-    v8 = v4;
+    v8 = commitCopy;
     if (!virtualConferenceURLsToInvalidateOnCommit)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -4354,8 +4354,8 @@ LABEL_21:
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
-        v9 = [(EKObject *)self eventStore];
-        [EKConferenceUtils invalidateConferenceURLIfNeeded:v8 inEventStore:v9];
+        eventStore = [(EKObject *)self eventStore];
+        [EKConferenceUtils invalidateConferenceURLIfNeeded:v8 inEventStore:eventStore];
 
         ++v7;
       }
@@ -4370,28 +4370,28 @@ LABEL_21:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_buildConferenceStringFromNotesWithoutConference:(id)a3 serializedConference:(id)a4
+- (id)_buildConferenceStringFromNotesWithoutConference:(id)conference serializedConference:(id)serializedConference
 {
-  v5 = a4;
-  if (a3)
+  serializedConferenceCopy = serializedConference;
+  if (conference)
   {
-    v6 = a3;
+    conferenceCopy = conference;
   }
 
   else
   {
-    v6 = &stru_1F1B49D68;
+    conferenceCopy = &stru_1F1B49D68;
   }
 
-  v7 = [MEMORY[0x1E696AD60] stringWithString:v6];
-  if ([v7 length] && objc_msgSend(v5, "length") && (objc_msgSend(v7, "hasSuffix:", @"\n\n") & 1) == 0)
+  v7 = [MEMORY[0x1E696AD60] stringWithString:conferenceCopy];
+  if ([v7 length] && objc_msgSend(serializedConferenceCopy, "length") && (objc_msgSend(v7, "hasSuffix:", @"\n\n") & 1) == 0)
   {
     [v7 appendString:@"\n\n"];
   }
 
-  if ([v5 length])
+  if ([serializedConferenceCopy length])
   {
-    [v7 appendString:v5];
+    [v7 appendString:serializedConferenceCopy];
   }
 
   return v7;
@@ -4399,19 +4399,19 @@ LABEL_21:
 
 - (int64_t)specialDayType
 {
-  v3 = [(EKCalendarItem *)self calendar];
-  v4 = [v3 isChinaHolidayCalendar];
+  calendar = [(EKCalendarItem *)self calendar];
+  isChinaHolidayCalendar = [calendar isChinaHolidayCalendar];
 
-  if (!v4)
+  if (!isChinaHolidayCalendar)
   {
     return 0;
   }
 
-  v5 = [(EKEvent *)self specialDayString];
-  v6 = v5;
-  if (v5)
+  specialDayString = [(EKEvent *)self specialDayString];
+  v6 = specialDayString;
+  if (specialDayString)
   {
-    if ([v5 isEqualToString:*MEMORY[0x1E69E3DE0]])
+    if ([specialDayString isEqualToString:*MEMORY[0x1E69E3DE0]])
     {
       v7 = 1;
     }
@@ -4435,18 +4435,18 @@ LABEL_21:
   return v7;
 }
 
-- (void)setSpecialDayType:(int64_t)a3
+- (void)setSpecialDayType:(int64_t)type
 {
-  if (a3)
+  if (type)
   {
-    if (a3 == 3)
+    if (type == 3)
     {
       v3 = MEMORY[0x1E69E3DD8];
     }
 
     else
     {
-      if (a3 != 1)
+      if (type != 1)
       {
         return;
       }
@@ -4454,10 +4454,10 @@ LABEL_21:
       v3 = MEMORY[0x1E69E3DE0];
     }
 
-    a3 = *v3;
+    type = *v3;
   }
 
-  [(EKEvent *)self setSpecialDayString:a3];
+  [(EKEvent *)self setSpecialDayString:type];
 }
 
 - (void)removeServerRefreshRelatedProperties
@@ -4467,24 +4467,24 @@ LABEL_21:
   [(EKCalendarItem *)self setExternalID:0];
 }
 
-- (void)setFlags:(unint64_t)a3
+- (void)setFlags:(unint64_t)flags
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:flags];
   [(EKObject *)self setSingleChangedValue:v4 forKey:*MEMORY[0x1E69925D8]];
 }
 
-- (void)setFlag:(unint64_t)a3 value:(BOOL)a4
+- (void)setFlag:(unint64_t)flag value:(BOOL)value
 {
-  v4 = a4;
-  v7 = [(EKEvent *)self flags];
-  if (v4)
+  valueCopy = value;
+  flags = [(EKEvent *)self flags];
+  if (valueCopy)
   {
-    v8 = v7 | a3;
+    v8 = flags | flag;
   }
 
   else
   {
-    v8 = v7 & ~a3;
+    v8 = flags & ~flag;
   }
 
   [(EKEvent *)self setFlags:v8];
@@ -4493,26 +4493,26 @@ LABEL_21:
 - (unint64_t)invitationStatus
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992990]];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
-- (void)setInvitationStatus:(unint64_t)a3
+- (void)setInvitationStatus:(unint64_t)status
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:status];
   [(EKObject *)self setSingleChangedValue:v4 forKey:*MEMORY[0x1E6992990]];
 }
 
 - (void)clearInvitationStatus
 {
-  v2 = [(EKObject *)self persistentObject];
-  [v2 unloadPropertyForKey:*MEMORY[0x1E6992990]];
+  persistentObject = [(EKObject *)self persistentObject];
+  [persistentObject unloadPropertyForKey:*MEMORY[0x1E6992990]];
 }
 
-- (void)setIsAlerted:(BOOL)a3
+- (void)setIsAlerted:(BOOL)alerted
 {
-  if (a3)
+  if (alerted)
   {
     [(EKEvent *)self _setInvitationStatusAlertedIfNecessary];
   }
@@ -4534,9 +4534,9 @@ LABEL_21:
 
 - (void)_setInvitationStatusUnalertedIfNecessary
 {
-  v3 = [(EKEvent *)self invitationChangedProperties];
-  v4 = [(EKEvent *)self _shouldAlertInviteeDeclines];
-  if (v3 != 32 || v4)
+  invitationChangedProperties = [(EKEvent *)self invitationChangedProperties];
+  _shouldAlertInviteeDeclines = [(EKEvent *)self _shouldAlertInviteeDeclines];
+  if (invitationChangedProperties != 32 || _shouldAlertInviteeDeclines)
   {
     v6 = 3;
   }
@@ -4551,19 +4551,19 @@ LABEL_21:
 
 - (BOOL)_shouldAlertInviteeDeclines
 {
-  v2 = [(EKObject *)self eventStore];
-  v3 = [v2 preferences];
-  v4 = [v3 alertInviteeDeclines];
+  eventStore = [(EKObject *)self eventStore];
+  preferences = [eventStore preferences];
+  alertInviteeDeclines = [preferences alertInviteeDeclines];
 
-  return v4;
+  return alertInviteeDeclines;
 }
 
 - (int)externalTrackingStatus
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992970]];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (id)_travelTimeInternalDescription
@@ -4577,10 +4577,10 @@ LABEL_21:
   else
   {
     v3 = v2;
-    v4 = [MEMORY[0x1E695DEE8] currentCalendar];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
     v5 = objc_alloc_init(MEMORY[0x1E695DF00]);
     v6 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeInterval:v5 sinceDate:v3];
-    v7 = [v4 components:96 fromDate:v5 toDate:v6 options:0];
+    v7 = [currentCalendar components:96 fromDate:v5 toDate:v6 options:0];
     if ([v7 hour])
     {
       [MEMORY[0x1E696AEC0] localizedStringWithFormat:@"%ld hours, %ld minutes", objc_msgSend(v7, "hour"), objc_msgSend(v7, "minute")];
@@ -4598,30 +4598,30 @@ LABEL_21:
 
 - (NSDate)startDateIncludingTravel
 {
-  v3 = [(EKEvent *)self startDate];
+  startDate = [(EKEvent *)self startDate];
   [(EKEvent *)self travelTime];
-  v5 = [v3 dateByAddingTimeInterval:-v4];
+  v5 = [startDate dateByAddingTimeInterval:-v4];
 
   return v5;
 }
 
-- (void)setTravelTime:(double)a3
+- (void)setTravelTime:(double)time
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:{fmax(a3, 0.0)}];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:{fmax(time, 0.0)}];
   [(EKObject *)self setSingleChangedValue:v4 forKey:*MEMORY[0x1E69929F8]];
 }
 
-- (void)setProposedStartDate:(id)a3
+- (void)setProposedStartDate:(id)date
 {
-  v4 = a3;
-  v5 = [(EKCalendarItem *)self selfAttendee];
-  if (v5 && (v6 = v5, v7 = [(EKCalendarItem *)self isExternallyOrganizedInvitation], v6, v7))
+  dateCopy = date;
+  selfAttendee = [(EKCalendarItem *)self selfAttendee];
+  if (selfAttendee && (v6 = selfAttendee, v7 = [(EKCalendarItem *)self isExternallyOrganizedInvitation], v6, v7))
   {
-    [(EKObject *)self setSingleChangedValue:v4 forKey:*MEMORY[0x1E69929C0]];
-    v8 = [(EKCalendarItem *)self selfAttendee];
-    [v8 setProposedStartDate:v4 forEvent:self];
+    [(EKObject *)self setSingleChangedValue:dateCopy forKey:*MEMORY[0x1E69929C0]];
+    selfAttendee2 = [(EKCalendarItem *)self selfAttendee];
+    [selfAttendee2 setProposedStartDate:dateCopy forEvent:self];
 
-    if (v4)
+    if (dateCopy)
     {
       [(EKEvent *)self setInvitationStatus:0];
     }
@@ -4639,9 +4639,9 @@ LABEL_21:
 
 - (NSDate)proposedEndDate
 {
-  v3 = [(EKEvent *)self proposedStartDate];
+  proposedStartDate = [(EKEvent *)self proposedStartDate];
   [(EKEvent *)self duration];
-  v4 = [v3 dateByAddingTimeInterval:?];
+  v4 = [proposedStartDate dateByAddingTimeInterval:?];
 
   return v4;
 }
@@ -4653,82 +4653,82 @@ LABEL_21:
     return 0;
   }
 
-  v4 = [(EKObject *)self eventStore];
-  v5 = [v4 skipModificationValidation];
+  eventStore = [(EKObject *)self eventStore];
+  skipModificationValidation = [eventStore skipModificationValidation];
 
-  if (v5 & 1) != 0 || ([MEMORY[0x1E6992FA0] currentProcessHasSyncClientEntitlement])
+  if (skipModificationValidation & 1) != 0 || ([MEMORY[0x1E6992FA0] currentProcessHasSyncClientEntitlement])
   {
     return 1;
   }
 
   if ([(EKEvent *)self currentUserMayActAsOrganizer])
   {
-    v7 = 1;
+    canForward = 1;
   }
 
   else if ([(EKCalendarItem *)self isExternallyOrganizedInvitation])
   {
-    v7 = [(EKEvent *)self canForward];
+    canForward = [(EKEvent *)self canForward];
   }
 
   else
   {
-    v7 = 0;
+    canForward = 0;
   }
 
-  v8 = [(EKEvent *)self constraints];
-  v9 = [v8 supportsOutgoingInvitations];
+  constraints = [(EKEvent *)self constraints];
+  supportsOutgoingInvitations = [constraints supportsOutgoingInvitations];
 
-  v3 = 0;
-  if (v7 && v9)
+  isDefaultSchedulingCalendar = 0;
+  if (canForward && supportsOutgoingInvitations)
   {
-    v10 = [(EKCalendarItem *)self calendar];
-    if ([v10 allowsScheduling])
+    calendar = [(EKCalendarItem *)self calendar];
+    if ([calendar allowsScheduling])
     {
-      v11 = [(EKCalendarItem *)self calendar];
-      v12 = [v11 allowsContentModifications];
+      calendar2 = [(EKCalendarItem *)self calendar];
+      allowsContentModifications = [calendar2 allowsContentModifications];
 
-      if (!v12)
+      if (!allowsContentModifications)
       {
         return 0;
       }
 
-      v10 = [(EKEvent *)self constraints];
-      if ([v10 requiresOutgoingInvitationsInDefaultCalendar])
+      calendar = [(EKEvent *)self constraints];
+      if ([calendar requiresOutgoingInvitationsInDefaultCalendar])
       {
-        v13 = [(EKCalendarItem *)self hasAttendees];
+        hasAttendees = [(EKCalendarItem *)self hasAttendees];
 
-        if (v13)
+        if (hasAttendees)
         {
           return 1;
         }
 
-        v10 = [(EKCalendarItem *)self calendar];
-        v3 = [v10 isDefaultSchedulingCalendar];
+        calendar = [(EKCalendarItem *)self calendar];
+        isDefaultSchedulingCalendar = [calendar isDefaultSchedulingCalendar];
       }
 
       else
       {
-        v3 = 1;
+        isDefaultSchedulingCalendar = 1;
       }
     }
 
     else
     {
-      v3 = 0;
+      isDefaultSchedulingCalendar = 0;
     }
   }
 
-  return v3;
+  return isDefaultSchedulingCalendar;
 }
 
 - (BOOL)allowsTravelTimeModifications
 {
-  v3 = [(EKCalendarItem *)self calendar];
-  if ([v3 allowsContentModifications])
+  calendar = [(EKCalendarItem *)self calendar];
+  if ([calendar allowsContentModifications])
   {
-    v4 = [(EKEvent *)self constraints];
-    if ([v4 supportsTravelTime])
+    constraints = [(EKEvent *)self constraints];
+    if ([constraints supportsTravelTime])
     {
       v5 = ![(EKEvent *)self isAllDay];
     }
@@ -4749,14 +4749,14 @@ LABEL_21:
 
 - (BOOL)allowsPrivacyLevelModifications
 {
-  v3 = [(EKObject *)self eventStore];
-  v4 = [v3 skipModificationValidation];
+  eventStore = [(EKObject *)self eventStore];
+  skipModificationValidation = [eventStore skipModificationValidation];
 
-  if ((v4 & 1) == 0)
+  if ((skipModificationValidation & 1) == 0)
   {
-    v6 = [(EKCalendarItem *)self calendar];
-    v7 = [(EKEvent *)self constraints];
-    if ([v7 supportsPrivateEvents])
+    calendar = [(EKCalendarItem *)self calendar];
+    constraints = [(EKEvent *)self constraints];
+    if ([constraints supportsPrivateEvents])
     {
       if ([MEMORY[0x1E6992FA0] currentProcessHasSyncClientEntitlement])
       {
@@ -4767,24 +4767,24 @@ LABEL_10:
         return v5;
       }
 
-      v8 = [v6 source];
-      v9 = [v8 isDelegate];
+      source = [calendar source];
+      isDelegate = [source isDelegate];
 
-      v10 = [v6 sharingStatus];
-      if (v10 == 2 || !v9)
+      sharingStatus = [calendar sharingStatus];
+      if (sharingStatus == 2 || !isDelegate)
       {
-        if (v10 == 2)
+        if (sharingStatus == 2)
         {
           goto LABEL_9;
         }
       }
 
-      else if (([v7 allowsPrivateEventAccessByDelegate] & 1) == 0)
+      else if (([constraints allowsPrivateEventAccessByDelegate] & 1) == 0)
       {
         goto LABEL_9;
       }
 
-      if ([v7 prohibitsPrivateEventsWithAttendees])
+      if ([constraints prohibitsPrivateEventsWithAttendees])
       {
         v5 = ![(EKCalendarItem *)self hasAttendees];
         goto LABEL_10;
@@ -4813,8 +4813,8 @@ LABEL_9:
 
     if (![(EKEvent *)self isDetached])
     {
-      v4 = [(EKCalendarItem *)self detachedItems];
-      v3 = [v4 count] == 0;
+      detachedItems = [(EKCalendarItem *)self detachedItems];
+      v3 = [detachedItems count] == 0;
 
       return v3;
     }
@@ -4823,34 +4823,34 @@ LABEL_9:
   return 0;
 }
 
-- (void)setPrivacyLevel:(int64_t)a3
+- (void)setPrivacyLevel:(int64_t)level
 {
   if ([(EKEvent *)self allowsPrivacyLevelModifications])
   {
-    v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v5 = [MEMORY[0x1E696AD98] numberWithInteger:level];
     [(EKObject *)self setSingleChangedValue:v5 forKey:*MEMORY[0x1E69929B8]];
   }
 }
 
-- (void)setPrivacyLevelWithoutVerifyingPrivacyModificationsAllowed:(int64_t)a3
+- (void)setPrivacyLevelWithoutVerifyingPrivacyModificationsAllowed:(int64_t)allowed
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:allowed];
   [(EKObject *)self setSingleChangedValue:v4 forKey:*MEMORY[0x1E69929B8]];
 }
 
 - (BOOL)locationIsAConferenceRoom
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(EKEvent *)self locationWithoutPrediction];
-  v4 = v3;
-  if (v3 && [v3 length] && -[EKCalendarItem hasAttendees](self, "hasAttendees"))
+  locationWithoutPrediction = [(EKEvent *)self locationWithoutPrediction];
+  v4 = locationWithoutPrediction;
+  if (locationWithoutPrediction && [locationWithoutPrediction length] && -[EKCalendarItem hasAttendees](self, "hasAttendees"))
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [(EKCalendarItem *)self attendees];
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    attendees = [(EKCalendarItem *)self attendees];
+    v6 = [attendees countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
       v7 = *v15;
@@ -4860,14 +4860,14 @@ LABEL_9:
         {
           if (*v15 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(attendees);
           }
 
           v9 = *(*(&v14 + 1) + 8 * i);
           if ([v9 participantType] == 2)
           {
-            v10 = [v9 name];
-            v11 = [v10 isEqualToString:v4];
+            name = [v9 name];
+            v11 = [name isEqualToString:v4];
 
             if (v11)
             {
@@ -4877,7 +4877,7 @@ LABEL_9:
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v6 = [attendees countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v6)
         {
           continue;
@@ -4902,23 +4902,23 @@ LABEL_17:
 - (unsigned)invitationChangedProperties
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992988]];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
-- (void)_setInvitationChangedProperty:(BOOL)a3 forFlag:(unsigned int)a4
+- (void)_setInvitationChangedProperty:(BOOL)property forFlag:(unsigned int)flag
 {
-  v5 = a3;
-  v7 = [(EKEvent *)self invitationChangedProperties];
-  if (v5)
+  propertyCopy = property;
+  invitationChangedProperties = [(EKEvent *)self invitationChangedProperties];
+  if (propertyCopy)
   {
-    v8 = v7 | a4;
+    v8 = invitationChangedProperties | flag;
   }
 
   else
   {
-    v8 = v7 & ~a4;
+    v8 = invitationChangedProperties & ~flag;
   }
 
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v8];
@@ -4931,41 +4931,41 @@ LABEL_17:
   v4 = v3;
   if (v3 && [v3 BOOLValue])
   {
-    v5 = [(EKEvent *)self constraints];
-    v6 = [v5 supportsEventForwarding];
+    constraints = [(EKEvent *)self constraints];
+    supportsEventForwarding = [constraints supportsEventForwarding];
   }
 
   else
   {
-    v6 = 0;
+    supportsEventForwarding = 0;
   }
 
-  return v6;
+  return supportsEventForwarding;
 }
 
 - (BOOL)serverSupportedProposeNewTime
 {
-  v3 = [(EKEvent *)self constraints];
-  if ([v3 allowsProposeNewTime])
+  constraints = [(EKEvent *)self constraints];
+  if ([constraints allowsProposeNewTime])
   {
-    v4 = 1;
+    supportsResponseComments = 1;
   }
 
   else
   {
-    v5 = [(EKEvent *)self constraints];
-    v4 = [v5 supportsResponseComments];
+    constraints2 = [(EKEvent *)self constraints];
+    supportsResponseComments = [constraints2 supportsResponseComments];
   }
 
-  return v4;
+  return supportsResponseComments;
 }
 
 - (BOOL)disallowProposeNewTime
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992960]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)allowsProposedTimeModifications
@@ -4985,47 +4985,47 @@ LABEL_17:
     goto LABEL_13;
   }
 
-  v3 = [(EKCalendarItem *)self calendar];
-  v4 = [v3 allowsContentModifications];
+  calendar = [(EKCalendarItem *)self calendar];
+  allowsContentModifications = [calendar allowsContentModifications];
 
-  if (!v4)
+  if (!allowsContentModifications)
   {
     goto LABEL_13;
   }
 
-  v5 = [(EKCalendarItem *)self isExternallyOrganizedInvitation];
-  if (v5)
+  isExternallyOrganizedInvitation = [(EKCalendarItem *)self isExternallyOrganizedInvitation];
+  if (isExternallyOrganizedInvitation)
   {
-    v6 = [(EKCalendarItem *)self selfAttendee];
+    selfAttendee = [(EKCalendarItem *)self selfAttendee];
 
-    if (v6)
+    if (selfAttendee)
     {
       if (![(EKCalendarItem *)self isOrganizedBySharedCalendarOwner])
       {
-        v7 = [(EKCalendarItem *)self calendar];
-        v8 = [v7 allowsScheduling];
+        calendar2 = [(EKCalendarItem *)self calendar];
+        allowsScheduling = [calendar2 allowsScheduling];
 
-        if (v8)
+        if (allowsScheduling)
         {
           if ([(EKEvent *)self serverSupportedProposeNewTime])
           {
             goto LABEL_12;
           }
 
-          v9 = [(EKCalendarItem *)self organizer];
-          v10 = [v9 emailAddress];
+          organizer = [(EKCalendarItem *)self organizer];
+          emailAddress = [organizer emailAddress];
 
-          if (v10)
+          if (emailAddress)
           {
-            v11 = [(EKCalendarItem *)self calendar];
-            v12 = [v11 source];
-            v13 = [v12 hasOwnerEmailAddress];
+            calendar3 = [(EKCalendarItem *)self calendar];
+            source = [calendar3 source];
+            hasOwnerEmailAddress = [source hasOwnerEmailAddress];
 
-            if (v13)
+            if (hasOwnerEmailAddress)
             {
 LABEL_12:
-              LOBYTE(v5) = 1;
-              return v5;
+              LOBYTE(isExternallyOrganizedInvitation) = 1;
+              return isExternallyOrganizedInvitation;
             }
           }
         }
@@ -5033,10 +5033,10 @@ LABEL_12:
     }
 
 LABEL_13:
-    LOBYTE(v5) = 0;
+    LOBYTE(isExternallyOrganizedInvitation) = 0;
   }
 
-  return v5;
+  return isExternallyOrganizedInvitation;
 }
 
 - (BOOL)supportsAddingAttachments
@@ -5046,35 +5046,35 @@ LABEL_13:
     return 0;
   }
 
-  v3 = [(EKCalendarItem *)self calendar];
-  v4 = [v3 allowsContentModifications];
+  calendar = [(EKCalendarItem *)self calendar];
+  allowsContentModifications = [calendar allowsContentModifications];
 
-  if (!v4)
+  if (!allowsContentModifications)
   {
     return 0;
   }
 
-  v5 = [(EKEvent *)self constraints];
-  v6 = [v5 supportsAttachments];
+  constraints = [(EKEvent *)self constraints];
+  supportsAttachments = [constraints supportsAttachments];
 
-  return v6;
+  return supportsAttachments;
 }
 
-- (void)setNotes:(id)a3
+- (void)setNotes:(id)notes
 {
-  v4 = a3;
-  v5 = [(EKCalendarItem *)self notes];
-  if ([v5 isEqual:v4])
+  notesCopy = notes;
+  notes = [(EKCalendarItem *)self notes];
+  if ([notes isEqual:notesCopy])
   {
   }
 
   else
   {
-    if ([v4 isEqualToString:&stru_1F1B49D68])
+    if ([notesCopy isEqualToString:&stru_1F1B49D68])
     {
-      v6 = [(EKCalendarItem *)self notes];
+      notes2 = [(EKCalendarItem *)self notes];
 
-      if (!v6)
+      if (!notes2)
       {
         goto LABEL_8;
       }
@@ -5086,8 +5086,8 @@ LABEL_13:
 
     v7.receiver = self;
     v7.super_class = EKEvent;
-    [(EKCalendarItem *)&v7 setNotes:v4];
-    [(EKEvent *)self setNotesCommon:v4];
+    [(EKCalendarItem *)&v7 setNotes:notesCopy];
+    [(EKEvent *)self setNotesCommon:notesCopy];
   }
 
 LABEL_8:
@@ -5102,56 +5102,56 @@ LABEL_8:
   v4 = v11;
   if (v3)
   {
-    v5 = [v3 range];
-    v7 = [v4 stringByReplacingCharactersInRange:v5 withString:{v6, &stru_1F1B49D68}];
+    range = [v3 range];
+    v7 = [v4 stringByReplacingCharactersInRange:range withString:{v6, &stru_1F1B49D68}];
 
     if (![v7 hasSuffix:@"\n\n"])
     {
       goto LABEL_6;
     }
 
-    v8 = [v7 substringToIndex:{objc_msgSend(v7, "length") - 2}];
+    notes = [v7 substringToIndex:{objc_msgSend(v7, "length") - 2}];
   }
 
   else
   {
-    v8 = [(EKCalendarItem *)self notes];
+    notes = [(EKCalendarItem *)self notes];
     v7 = v4;
   }
 
-  v7 = v8;
+  v7 = notes;
 LABEL_6:
-  v9 = [v7 CDVStringByXMLUnquoting];
+  cDVStringByXMLUnquoting = [v7 CDVStringByXMLUnquoting];
 
-  return v9;
+  return cDVStringByXMLUnquoting;
 }
 
-- (void)setDisplayNotes:(id)a3
+- (void)setDisplayNotes:(id)notes
 {
-  v4 = a3;
+  notesCopy = notes;
   v11 = 0;
   v12 = 0;
   [(EKEvent *)self parsedConference:&v12 andNotes:&v11];
   v5 = v12;
   v6 = v11;
-  v7 = v4;
+  v7 = notesCopy;
   if (v5)
   {
-    v8 = [v5 range];
-    v10 = [v6 substringWithRange:{v8, v9}];
-    v7 = [(EKEvent *)self _buildConferenceStringFromNotesWithoutConference:v4 serializedConference:v10];
+    range = [v5 range];
+    v10 = [v6 substringWithRange:{range, v9}];
+    v7 = [(EKEvent *)self _buildConferenceStringFromNotesWithoutConference:notesCopy serializedConference:v10];
   }
 
   [(EKEvent *)self setNotes:v7];
 }
 
-- (void)setURL:(id)a3
+- (void)setURL:(id)l
 {
   v5.receiver = self;
   v5.super_class = EKEvent;
-  v4 = a3;
-  [(EKCalendarItem *)&v5 setURL:v4];
-  [(EKEvent *)self setURLCommon:v4, v5.receiver, v5.super_class];
+  lCopy = l;
+  [(EKCalendarItem *)&v5 setURL:lCopy];
+  [(EKEvent *)self setURLCommon:lCopy, v5.receiver, v5.super_class];
 }
 
 - (id)URL
@@ -5169,8 +5169,8 @@ LABEL_6:
   {
     v6 = MEMORY[0x1E695DFF8];
     v7 = MEMORY[0x1E696AEC0];
-    v8 = [(EKEvent *)self birthdayContactIdentifier];
-    v9 = [v7 stringWithFormat:@"addressbook://%@", v8];
+    birthdayContactIdentifier = [(EKEvent *)self birthdayContactIdentifier];
+    v9 = [v7 stringWithFormat:@"addressbook://%@", birthdayContactIdentifier];
     v5 = [v6 URLWithString:v9];
   }
 
@@ -5192,28 +5192,28 @@ LABEL_6:
   [(EKEvent *)self clearDetectedConferenceURL];
 }
 
-- (void)setStructuredLocation:(id)a3 preserveConferenceRooms:(BOOL)a4
+- (void)setStructuredLocation:(id)location preserveConferenceRooms:(BOOL)rooms
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (a4)
+  locationCopy = location;
+  if (rooms)
   {
     v7 = MEMORY[0x1E695DF70];
-    v8 = [(EKEvent *)self _conferenceRoomDisplayStrings];
-    v9 = [v7 arrayWithArray:v8];
+    _conferenceRoomDisplayStrings = [(EKEvent *)self _conferenceRoomDisplayStrings];
+    v9 = [v7 arrayWithArray:_conferenceRoomDisplayStrings];
 
-    if (v6)
+    if (locationCopy)
     {
-      v10 = [v6 title];
+      title = [locationCopy title];
 
-      if (v10)
+      if (title)
       {
         v25 = 0u;
         v26 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v11 = [v6 title];
-        v12 = [v11 componentsSeparatedByString:@" "];;
+        title2 = [locationCopy title];
+        v12 = [title2 componentsSeparatedByString:@" "];;
 
         v13 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
         if (v13)
@@ -5244,29 +5244,29 @@ LABEL_6:
       }
     }
 
-    [(EKEvent *)self setStructuredLocation:v6];
+    [(EKEvent *)self setStructuredLocation:locationCopy];
     v18 = [objc_opt_class() _locationStringForLocations:v9];
-    v19 = [(EKEvent *)self structuredLocation];
+    structuredLocation = [(EKEvent *)self structuredLocation];
 
-    if (v19)
+    if (structuredLocation)
     {
-      v20 = [(EKEvent *)self structuredLocation];
-      [v20 setTitle:v18];
+      structuredLocation2 = [(EKEvent *)self structuredLocation];
+      [structuredLocation2 setTitle:v18];
     }
 
     else
     {
-      v20 = [EKStructuredLocation locationWithTitle:v18];
-      [(EKEvent *)self setStructuredLocation:v20];
+      structuredLocation2 = [EKStructuredLocation locationWithTitle:v18];
+      [(EKEvent *)self setStructuredLocation:structuredLocation2];
     }
   }
 
   else
   {
-    v21 = [(EKEvent *)self roomAttendees];
-    [(EKEvent *)self removeConferenceRooms:v21];
+    roomAttendees = [(EKEvent *)self roomAttendees];
+    [(EKEvent *)self removeConferenceRooms:roomAttendees];
 
-    [(EKEvent *)self setStructuredLocation:v6];
+    [(EKEvent *)self setStructuredLocation:locationCopy];
   }
 
   v22 = *MEMORY[0x1E69E9840];
@@ -5274,22 +5274,22 @@ LABEL_6:
 
 - (id)roomAttendees
 {
-  v2 = [(EKCalendarItem *)self attendees];
+  attendees = [(EKCalendarItem *)self attendees];
   v3 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_153];
-  v4 = [v2 filteredArrayUsingPredicate:v3];
+  v4 = [attendees filteredArrayUsingPredicate:v3];
 
   return v4;
 }
 
-- (void)addConferenceRooms:(id)a3
+- (void)addConferenceRooms:(id)rooms
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  roomsCopy = rooms;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [roomsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -5301,32 +5301,32 @@ LABEL_6:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(roomsCopy);
         }
 
         [(EKCalendarItem *)self addAttendee:*(*(&v11 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [roomsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  v9 = [(EKEvent *)self structuredLocation];
-  [(EKEvent *)self setStructuredLocation:v9 preserveConferenceRooms:1];
+  structuredLocation = [(EKEvent *)self structuredLocation];
+  [(EKEvent *)self setStructuredLocation:structuredLocation preserveConferenceRooms:1];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeConferenceRooms:(id)a3
+- (void)removeConferenceRooms:(id)rooms
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(EKEvent *)self roomAttendees];
-  v6 = [MEMORY[0x1E695DF70] arrayWithArray:v5];
-  [v6 removeObjectsInArray:v4];
+  roomsCopy = rooms;
+  roomAttendees = [(EKEvent *)self roomAttendees];
+  v6 = [MEMORY[0x1E695DF70] arrayWithArray:roomAttendees];
+  [v6 removeObjectsInArray:roomsCopy];
   if ([v6 count])
   {
     v24 = 0;
@@ -5334,22 +5334,22 @@ LABEL_6:
 
   else
   {
-    v7 = [(EKEvent *)self locations];
-    v8 = [v7 count];
-    v24 = v8 == [v5 count];
+    locations = [(EKEvent *)self locations];
+    v8 = [locations count];
+    v24 = v8 == [roomAttendees count];
   }
 
   v9 = MEMORY[0x1E695DF70];
-  v10 = [(EKEvent *)self structuredLocation];
-  v11 = [v10 title];
-  v12 = [v11 componentsSeparatedByString:@" "];;
+  structuredLocation = [(EKEvent *)self structuredLocation];
+  title = [structuredLocation title];
+  v12 = [title componentsSeparatedByString:@" "];;
   v13 = [v9 arrayWithArray:v12];
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v14 = v4;
+  v14 = roomsCopy;
   v15 = [v14 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v15)
   {
@@ -5365,10 +5365,10 @@ LABEL_6:
         }
 
         v19 = *(*(&v25 + 1) + 8 * i);
-        v20 = [v19 displayString];
-        if (v20)
+        displayString = [v19 displayString];
+        if (displayString)
         {
-          [v13 removeObject:v20];
+          [v13 removeObject:displayString];
         }
 
         [(EKCalendarItem *)self removeAttendee:v19];
@@ -5388,8 +5388,8 @@ LABEL_6:
   else
   {
     v21 = [objc_opt_class() _locationStringForLocations:v13];
-    v22 = [(EKEvent *)self structuredLocation];
-    [v22 setTitle:v21];
+    structuredLocation2 = [(EKEvent *)self structuredLocation];
+    [structuredLocation2 setTitle:v21];
   }
 
   v23 = *MEMORY[0x1E69E9840];
@@ -5398,13 +5398,13 @@ LABEL_6:
 - (id)_conferenceRoomDisplayStrings
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(EKEvent *)self roomAttendees];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  roomAttendees = [(EKEvent *)self roomAttendees];
+  v5 = [roomAttendees countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -5415,17 +5415,17 @@ LABEL_6:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(roomAttendees);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) displayString];
-        if (v9)
+        displayString = [*(*(&v12 + 1) + 8 * i) displayString];
+        if (displayString)
         {
-          [v3 addObject:v9];
+          [array addObject:displayString];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [roomAttendees countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -5433,26 +5433,26 @@ LABEL_6:
 
   v10 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return array;
 }
 
 - (id)_firstNonConferenceRoomLocationTitle
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = [(EKEvent *)self locationsWithoutPrediction];
+  locationsWithoutPrediction = [(EKEvent *)self locationsWithoutPrediction];
   if ([(EKCalendarItem *)self hasAttendees])
   {
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    obj = v3;
+    obj = locationsWithoutPrediction;
     v4 = [obj countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v4)
     {
       v5 = v4;
       v21 = *v27;
-      v19 = v3;
+      v19 = locationsWithoutPrediction;
       while (1)
       {
         v6 = 0;
@@ -5467,8 +5467,8 @@ LABEL_5:
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v8 = [(EKCalendarItem *)self attendees];
-        v9 = [v8 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        attendees = [(EKCalendarItem *)self attendees];
+        v9 = [attendees countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (!v9)
         {
           break;
@@ -5482,14 +5482,14 @@ LABEL_9:
         {
           if (*v23 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(attendees);
           }
 
           v13 = *(*(&v22 + 1) + 8 * v12);
           if ([v13 participantType] == 2)
           {
-            v14 = [v13 name];
-            v15 = [v14 isEqualToString:v7];
+            name = [v13 name];
+            v15 = [name isEqualToString:v7];
 
             if (v15)
             {
@@ -5499,7 +5499,7 @@ LABEL_9:
 
           if (v10 == ++v12)
           {
-            v10 = [v8 countByEnumeratingWithState:&v22 objects:v30 count:16];
+            v10 = [attendees countByEnumeratingWithState:&v22 objects:v30 count:16];
             if (v10)
             {
               goto LABEL_9;
@@ -5516,7 +5516,7 @@ LABEL_9:
 
         v5 = [obj countByEnumeratingWithState:&v26 objects:v31 count:16];
         v16 = 0;
-        v3 = v19;
+        locationsWithoutPrediction = v19;
         if (!v5)
         {
           goto LABEL_23;
@@ -5526,7 +5526,7 @@ LABEL_9:
 LABEL_21:
 
       v16 = v7;
-      v3 = v19;
+      locationsWithoutPrediction = v19;
     }
 
     else
@@ -5581,16 +5581,16 @@ id __35__EKEvent__cachedPredictedLocation__block_invoke(uint64_t a1)
 - (id)cachedPredictedLocation
 {
   os_unfair_lock_lock(&self->_locationPredictionLock);
-  v3 = [(EKEvent *)self _cachedPredictedLocation];
+  _cachedPredictedLocation = [(EKEvent *)self _cachedPredictedLocation];
   os_unfair_lock_unlock(&self->_locationPredictionLock);
 
-  return v3;
+  return _cachedPredictedLocation;
 }
 
 - (id)predictedLocation
 {
-  v3 = [(EKEvent *)self cachedPredictedLocation];
-  v4 = [v3 fetchPredictedLocationWithDelegate:self];
+  cachedPredictedLocation = [(EKEvent *)self cachedPredictedLocation];
+  v4 = [cachedPredictedLocation fetchPredictedLocationWithDelegate:self];
 
   return v4;
 }
@@ -5611,29 +5611,29 @@ id __35__EKEvent__cachedPredictedLocation__block_invoke(uint64_t a1)
   os_unfair_lock_unlock(&self->_locationPredictionLock);
 }
 
-- (void)confirmPredictedLocation:(id)a3
+- (void)confirmPredictedLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   [(EKEvent *)self setPredictedLocationFrozen:0];
-  if (!v4)
+  if (!locationCopy)
   {
-    v4 = [(EKEvent *)self structuredLocation];
+    locationCopy = [(EKEvent *)self structuredLocation];
   }
 
-  v8 = [v4 duplicate];
+  duplicate = [locationCopy duplicate];
 
-  [v8 setPredictedLOI:0];
+  [duplicate setPredictedLOI:0];
   if (-[EKEvent isEditable](self, "isEditable") && (-[EKEvent constraints](self, "constraints"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 supportsStructuredLocations], v5, v6))
   {
-    [(EKEvent *)self setStructuredLocation:v8];
+    [(EKEvent *)self setStructuredLocation:duplicate];
   }
 
   else
   {
-    v7 = [(EKEvent *)self locationWithoutPrediction];
-    [v8 setDerivedFrom:v7];
+    locationWithoutPrediction = [(EKEvent *)self locationWithoutPrediction];
+    [duplicate setDerivedFrom:locationWithoutPrediction];
 
-    [(EKCalendarItem *)self setClientLocation:v8];
+    [(EKCalendarItem *)self setClientLocation:duplicate];
   }
 
   [(EKEvent *)self setLocationPredictionState:2];
@@ -5642,32 +5642,32 @@ id __35__EKEvent__cachedPredictedLocation__block_invoke(uint64_t a1)
 - (void)rejectPredictedLocation
 {
   [(EKEvent *)self setPredictedLocationFrozen:0];
-  v3 = [(EKEvent *)self preferredLocationWithoutPrediction];
-  [(EKEvent *)self setStructuredLocation:v3];
+  preferredLocationWithoutPrediction = [(EKEvent *)self preferredLocationWithoutPrediction];
+  [(EKEvent *)self setStructuredLocation:preferredLocationWithoutPrediction];
 
   [(EKEvent *)self setLocationPredictionState:3];
 }
 
 - (BOOL)hasPredictedLocation
 {
-  v2 = [(EKCalendarItem *)self preferredLocation];
-  v3 = [v2 isPrediction];
+  preferredLocation = [(EKCalendarItem *)self preferredLocation];
+  isPrediction = [preferredLocation isPrediction];
 
-  return v3;
+  return isPrediction;
 }
 
-- (void)setPredictedLocationFrozen:(BOOL)a3
+- (void)setPredictedLocationFrozen:(BOOL)frozen
 {
-  v3 = a3;
+  frozenCopy = frozen;
   os_unfair_lock_lock(&self->_locationPredictionLock);
-  if (self->_locationPredictionFrozen != v3)
+  if (self->_locationPredictionFrozen != frozenCopy)
   {
-    self->_locationPredictionFrozen = v3;
-    if (v3)
+    self->_locationPredictionFrozen = frozenCopy;
+    if (frozenCopy)
     {
-      v5 = [(EKEvent *)self _cachedPredictedLocation];
-      v6 = [v5 frozenCopy];
-      [(EKObject *)self setCachedValue:v6 forKey:@"PredictedLocation"];
+      _cachedPredictedLocation = [(EKEvent *)self _cachedPredictedLocation];
+      frozenCopy = [_cachedPredictedLocation frozenCopy];
+      [(EKObject *)self setCachedValue:frozenCopy forKey:@"PredictedLocation"];
     }
 
     else
@@ -5679,14 +5679,14 @@ id __35__EKEvent__cachedPredictedLocation__block_invoke(uint64_t a1)
   os_unfair_lock_unlock(&self->_locationPredictionLock);
 }
 
-- (void)setLocationPredictionAllowed:(BOOL)a3
+- (void)setLocationPredictionAllowed:(BOOL)allowed
 {
-  v3 = a3;
+  allowedCopy = allowed;
   os_unfair_lock_lock(&self->_locationPredictionLock);
-  if (self->_locationPredictionAllowed != v3)
+  if (self->_locationPredictionAllowed != allowedCopy)
   {
-    self->_locationPredictionAllowed = v3;
-    if (v3)
+    self->_locationPredictionAllowed = allowedCopy;
+    if (allowedCopy)
     {
       [(EKEvent *)self _clearLocationPredictionCacheIfNotFrozenHoldingLock];
     }
@@ -5697,10 +5697,10 @@ id __35__EKEvent__cachedPredictedLocation__block_invoke(uint64_t a1)
 
 - (NSURL)conferenceURL
 {
-  v2 = [(EKEvent *)self conferenceURLString];
-  if (v2)
+  conferenceURLString = [(EKEvent *)self conferenceURLString];
+  if (conferenceURLString)
   {
-    v3 = [MEMORY[0x1E695DFF8] URLWithString:v2];
+    v3 = [MEMORY[0x1E695DFF8] URLWithString:conferenceURLString];
   }
 
   else
@@ -5711,16 +5711,16 @@ id __35__EKEvent__cachedPredictedLocation__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setConferenceURL:(id)a3
+- (void)setConferenceURL:(id)l
 {
-  v4 = [a3 absoluteString];
-  [(EKEvent *)self setConferenceURLString:v4];
+  absoluteString = [l absoluteString];
+  [(EKEvent *)self setConferenceURLString:absoluteString];
 }
 
-- (void)setCalendar:(id)a3
+- (void)setCalendar:(id)calendar
 {
-  v5 = a3;
-  if (!v5)
+  calendarCopy = calendar;
+  if (!calendarCopy)
   {
     v12.receiver = self;
     v12.super_class = EKEvent;
@@ -5728,16 +5728,16 @@ id __35__EKEvent__cachedPredictedLocation__block_invoke(uint64_t a1)
     goto LABEL_11;
   }
 
-  v6 = [(EKCalendarItem *)self calendar];
-  v7 = [v6 source];
-  if (v7 || ([v5 source], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  calendar = [(EKCalendarItem *)self calendar];
+  source = [calendar source];
+  if (source || ([calendarCopy source], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v8 = [(EKCalendarItem *)self calendar];
-    v9 = [v8 source];
-    v10 = [v5 source];
-    v11 = [v9 isEqual:v10] ^ 1;
+    calendar2 = [(EKCalendarItem *)self calendar];
+    source2 = [calendar2 source];
+    source3 = [calendarCopy source];
+    v11 = [source2 isEqual:source3] ^ 1;
 
-    if (v7)
+    if (source)
     {
       goto LABEL_9;
     }
@@ -5751,7 +5751,7 @@ id __35__EKEvent__cachedPredictedLocation__block_invoke(uint64_t a1)
 LABEL_9:
   v12.receiver = self;
   v12.super_class = EKEvent;
-  [(EKCalendarItem *)&v12 setCalendar:v5];
+  [(EKCalendarItem *)&v12 setCalendar:calendarCopy];
   if (v11)
   {
     [(EKEvent *)self updateDefaultAlarms];
@@ -5761,70 +5761,70 @@ LABEL_11:
   [(EKEvent *)self clearIntegrationType];
 }
 
-- (void)setEndLocation:(id)a3
+- (void)setEndLocation:(id)location
 {
   v4 = *MEMORY[0x1E69925A8];
-  v5 = a3;
-  [(EKObject *)self updateMeltedAndCachedSingleRelationObject:v5 forKey:v4 frozenClass:+[EKStructuredLocation frozenClass]];
+  locationCopy = location;
+  [(EKObject *)self updateMeltedAndCachedSingleRelationObject:locationCopy forKey:v4 frozenClass:+[EKStructuredLocation frozenClass]];
 }
 
 - (BOOL)isTentative
 {
-  v3 = [(EKEvent *)self participationStatus];
-  if (v3 == 2)
+  participationStatus = [(EKEvent *)self participationStatus];
+  if (participationStatus == 2)
   {
     return 0;
   }
 
-  v4 = v3;
+  v4 = participationStatus;
   if (![(EKCalendarItem *)self isExternallyOrganizedInvitation])
   {
     return 0;
   }
 
-  v5 = [(EKEvent *)self status];
-  v6 = v5 != EKEventStatusCanceled;
-  if (v4 == 4 && v5 != EKEventStatusCanceled)
+  status = [(EKEvent *)self status];
+  statusesAreAccurate = status != EKEventStatusCanceled;
+  if (v4 == 4 && status != EKEventStatusCanceled)
   {
-    v7 = [(EKEvent *)self constraints];
-    v8 = v7;
-    if (v7)
+    constraints = [(EKEvent *)self constraints];
+    v8 = constraints;
+    if (constraints)
     {
-      v6 = [v7 statusesAreAccurate];
+      statusesAreAccurate = [constraints statusesAreAccurate];
     }
 
     else
     {
-      v6 = 1;
+      statusesAreAccurate = 1;
     }
   }
 
-  return v6;
+  return statusesAreAccurate;
 }
 
 - (NSComparisonResult)compareStartDateWithEvent:(EKEvent *)other
 {
   v4 = other;
-  v5 = [(EKEvent *)self occurrenceStartDate];
-  v6 = [(EKEvent *)v4 occurrenceStartDate];
+  occurrenceStartDate = [(EKEvent *)self occurrenceStartDate];
+  occurrenceStartDate2 = [(EKEvent *)v4 occurrenceStartDate];
 
-  v7 = [v5 compare:v6];
+  v7 = [occurrenceStartDate compare:occurrenceStartDate2];
   return v7;
 }
 
-- (int64_t)compareStartDateIncludingTravelWithEvent:(id)a3
+- (int64_t)compareStartDateIncludingTravelWithEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(EKEvent *)self startDateIncludingTravel];
-  v6 = [v4 startDateIncludingTravel];
+  eventCopy = event;
+  startDateIncludingTravel = [(EKEvent *)self startDateIncludingTravel];
+  startDateIncludingTravel2 = [eventCopy startDateIncludingTravel];
 
-  v7 = [v5 compare:v6];
+  v7 = [startDateIncludingTravel compare:startDateIncludingTravel2];
   return v7;
 }
 
-- (int64_t)compareOriginalStartDateWithEvent:(id)a3
+- (int64_t)compareOriginalStartDateWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if ([(EKEvent *)self isDetached])
   {
     [(EKEvent *)self originalStartDate];
@@ -5835,14 +5835,14 @@ LABEL_11:
     [(EKEvent *)self startDate];
   }
   v5 = ;
-  if ([v4 isDetached])
+  if ([eventCopy isDetached])
   {
-    [v4 originalStartDate];
+    [eventCopy originalStartDate];
   }
 
   else
   {
-    [v4 startDate];
+    [eventCopy startDate];
   }
   v6 = ;
   v7 = [v5 compare:v6];
@@ -5852,88 +5852,88 @@ LABEL_11:
 
 - (BOOL)isEditable
 {
-  v3 = [(EKObject *)self eventStore];
-  if ([v3 skipModificationValidation])
+  eventStore = [(EKObject *)self eventStore];
+  if ([eventStore skipModificationValidation])
   {
 
     return 1;
   }
 
-  v4 = [MEMORY[0x1E6992FA0] currentProcessHasSyncClientEntitlement];
+  currentProcessHasSyncClientEntitlement = [MEMORY[0x1E6992FA0] currentProcessHasSyncClientEntitlement];
 
-  if (v4)
+  if (currentProcessHasSyncClientEntitlement)
   {
     return 1;
   }
 
   v7.receiver = self;
   v7.super_class = EKEvent;
-  v6 = [(EKCalendarItem *)&v7 isEditable];
-  return ![(EKEvent *)self isPrivateEventSharedToMe]& v6;
+  isEditable = [(EKCalendarItem *)&v7 isEditable];
+  return ![(EKEvent *)self isPrivateEventSharedToMe]& isEditable;
 }
 
 - (BOOL)isPrivateEventSharedToMe
 {
-  v3 = [(EKEvent *)self privacyLevel];
-  v4 = [(EKCalendarItem *)self calendar];
-  v5 = [v4 source];
-  v6 = [v5 isDelegate];
+  privacyLevel = [(EKEvent *)self privacyLevel];
+  calendar = [(EKCalendarItem *)self calendar];
+  source = [calendar source];
+  isDelegate = [source isDelegate];
 
-  v7 = [(EKCalendarItem *)self calendar];
-  v8 = [v7 sharingStatus];
+  calendar2 = [(EKCalendarItem *)self calendar];
+  sharingStatus = [calendar2 sharingStatus];
 
-  if (v8 == 2)
+  if (sharingStatus == 2)
   {
     v9 = 1;
   }
 
   else
   {
-    v9 = v6;
+    v9 = isDelegate;
   }
 
-  return v3 && v9;
+  return privacyLevel && v9;
 }
 
-- (BOOL)allowsRecurrenceModificationsForSpan:(int64_t)a3
+- (BOOL)allowsRecurrenceModificationsForSpan:(int64_t)span
 {
-  v5 = [(EKEvent *)self isEditable];
+  isEditable = [(EKEvent *)self isEditable];
   if ([(EKEvent *)self isDetached])
   {
-    if (a3 != 1 && a3 != 4)
+    if (span != 1 && span != 4)
     {
-      v6 = [(EKCalendarItem *)self calendar];
+      calendar = [(EKCalendarItem *)self calendar];
 
-      if (v6)
+      if (calendar)
       {
-        v7 = [(EKEvent *)self constraints];
-        v5 = [v7 supportsRecurrencesOnDetachedEvents];
+        constraints = [(EKEvent *)self constraints];
+        isEditable = [constraints supportsRecurrencesOnDetachedEvents];
       }
     }
   }
 
-  return v5;
+  return isEditable;
 }
 
 - (BOOL)allowsCalendarModifications
 {
   v5.receiver = self;
   v5.super_class = EKEvent;
-  v3 = [(EKCalendarItem *)&v5 allowsCalendarModifications];
-  if (v3)
+  allowsCalendarModifications = [(EKCalendarItem *)&v5 allowsCalendarModifications];
+  if (allowsCalendarModifications)
   {
     if ([(EKObject *)self isNew])
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(allowsCalendarModifications) = 1;
     }
 
     else
     {
-      LOBYTE(v3) = ![(EKCalendarItem *)self isExternallyOrganizedInvitation];
+      LOBYTE(allowsCalendarModifications) = ![(EKCalendarItem *)self isExternallyOrganizedInvitation];
     }
   }
 
-  return v3;
+  return allowsCalendarModifications;
 }
 
 - (BOOL)responseMustApplyToAll
@@ -5943,27 +5943,27 @@ LABEL_11:
     return 0;
   }
 
-  v3 = [(EKEvent *)self constraints];
-  v4 = [v3 mustAcknowledgeMasterEvent];
+  constraints = [(EKEvent *)self constraints];
+  mustAcknowledgeMasterEvent = [constraints mustAcknowledgeMasterEvent];
 
-  if (!v4)
+  if (!mustAcknowledgeMasterEvent)
   {
     return 0;
   }
 
-  v5 = [(EKCalendarItem *)self originalItem];
-  v6 = v5;
-  if (v5)
+  originalItem = [(EKCalendarItem *)self originalItem];
+  v6 = originalItem;
+  if (originalItem)
   {
-    v7 = v5;
+    selfCopy = originalItem;
   }
 
   else
   {
-    v7 = self;
+    selfCopy = self;
   }
 
-  v8 = v7;
+  v8 = selfCopy;
 
   if ([(EKEvent *)v8 participationStatus]== 1)
   {
@@ -5972,8 +5972,8 @@ LABEL_11:
 
   else
   {
-    v10 = [(EKCalendarItem *)v8 externalID];
-    v9 = v10 == 0;
+    externalID = [(EKCalendarItem *)v8 externalID];
+    v9 = externalID == 0;
   }
 
   return v9;
@@ -5982,23 +5982,23 @@ LABEL_11:
 - (BOOL)_changesRequireDetachOrSlice
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(EKObject *)self changeSet];
-  v4 = [v3 changedKeys];
+  changeSet = [(EKObject *)self changeSet];
+  changedKeys = [changeSet changedKeys];
 
-  v5 = [v4 count];
+  v5 = [changedKeys count];
   v6 = [MEMORY[0x1E695DFA8] setWithObject:*MEMORY[0x1E6992570]];
-  v7 = [(EKEvent *)self constraints];
-  v8 = [v7 requiresSamePrivacyLevelAcrossRecurrenceSeries];
+  constraints = [(EKEvent *)self constraints];
+  requiresSamePrivacyLevelAcrossRecurrenceSeries = [constraints requiresSamePrivacyLevelAcrossRecurrenceSeries];
 
-  if (v8)
+  if (requiresSamePrivacyLevelAcrossRecurrenceSeries)
   {
     [v6 addObject:*MEMORY[0x1E69929B8]];
   }
 
-  v9 = [(EKEvent *)self constraints];
-  if ([v9 prohibitsDetachmentOnCommentChange])
+  constraints2 = [(EKEvent *)self constraints];
+  if ([constraints2 prohibitsDetachmentOnCommentChange])
   {
-    v10 = [v4 containsObject:*MEMORY[0x1E69929C0]];
+    v10 = [changedKeys containsObject:*MEMORY[0x1E69929C0]];
 
     if ((v10 & 1) == 0)
     {
@@ -6024,8 +6024,8 @@ LABEL_11:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v11 = v6;
-  v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  allObjects = v6;
+  v12 = [allObjects countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (!v12)
   {
     v16 = 1;
@@ -6040,13 +6040,13 @@ LABEL_11:
     {
       if (*v20 != v14)
       {
-        objc_enumerationMutation(v11);
+        objc_enumerationMutation(allObjects);
       }
 
-      v5 -= [v4 containsObject:{*(*(&v19 + 1) + 8 * i), v19}];
+      v5 -= [changedKeys containsObject:{*(*(&v19 + 1) + 8 * i), v19}];
     }
 
-    v13 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v13 = [allObjects countByEnumeratingWithState:&v19 objects:v23 count:16];
   }
 
   while (v13);
@@ -6059,8 +6059,8 @@ LABEL_11:
 LABEL_17:
   if (![(EKObject *)self _hasChangesForKey:*MEMORY[0x1E6992648]])
   {
-    v11 = [v6 allObjects];
-    v16 = [(EKObject *)self hasUnsavedChangesIgnoreKeys:v11];
+    allObjects = [v6 allObjects];
+    v16 = [(EKObject *)self hasUnsavedChangesIgnoreKeys:allObjects];
 LABEL_21:
 
     goto LABEL_22;
@@ -6088,10 +6088,10 @@ LABEL_22:
 {
   if ([(EKEvent *)self isDetached])
   {
-    v3 = [(EKEvent *)self singleRecurrenceRule];
-    v4 = [v3 hasChanges];
+    singleRecurrenceRule = [(EKEvent *)self singleRecurrenceRule];
+    hasChanges = [singleRecurrenceRule hasChanges];
 
-    if (v4)
+    if (hasChanges)
     {
       return 0;
     }
@@ -6120,9 +6120,9 @@ LABEL_22:
     return 1;
   }
 
-  v4 = [(EKCalendarItem *)self calendar];
-  v5 = [v4 source];
-  v3 = [v5 sourceType] != 1;
+  calendar = [(EKCalendarItem *)self calendar];
+  source = [calendar source];
+  v3 = [source sourceType] != 1;
 
   return v3;
 }
@@ -6177,18 +6177,18 @@ void __40__EKEvent__basicChangesRequiringSpanAll__block_invoke()
 
 - (BOOL)_hasBasicChangesRequiringSpanAll
 {
-  v3 = [objc_opt_class() _basicChangesRequiringSpanAll];
+  _basicChangesRequiringSpanAll = [objc_opt_class() _basicChangesRequiringSpanAll];
   if ([(EKEvent *)self _hasOrHadRecurrenceRule])
   {
-    v4 = [(EKObject *)self hasUnsavedChangesInKeys:v3];
+    v4 = [(EKObject *)self hasUnsavedChangesInKeys:_basicChangesRequiringSpanAll];
   }
 
   else
   {
-    v5 = [(EKCalendarItem *)self originalItem];
-    if ([v5 _hasOrHadRecurrenceRule])
+    originalItem = [(EKCalendarItem *)self originalItem];
+    if ([originalItem _hasOrHadRecurrenceRule])
     {
-      v4 = [(EKObject *)self hasUnsavedChangesInKeys:v3];
+      v4 = [(EKObject *)self hasUnsavedChangesInKeys:_basicChangesRequiringSpanAll];
     }
 
     else
@@ -6204,31 +6204,31 @@ void __40__EKEvent__basicChangesRequiringSpanAll__block_invoke()
 {
   v3 = [(EKObject *)self _previousValueForKey:*MEMORY[0x1E6992648]];
   v4 = [v3 count];
-  v5 = [(EKCalendarItem *)self hasRecurrenceRules];
-  if (!v5 || v4)
+  hasRecurrenceRules = [(EKCalendarItem *)self hasRecurrenceRules];
+  if (!hasRecurrenceRules || v4)
   {
-    if (!v5)
+    if (!hasRecurrenceRules)
     {
       LOBYTE(v6) = v4 != 0;
       goto LABEL_13;
     }
 
-    v7 = [(EKCalendarItem *)self recurrenceRules];
-    if ([v7 count] == 1)
+    recurrenceRules = [(EKCalendarItem *)self recurrenceRules];
+    if ([recurrenceRules count] == 1)
     {
       v8 = [v3 count];
 
       if (v8 == 1)
       {
 LABEL_12:
-        v10 = [(EKCalendarItem *)self recurrenceRules];
-        v11 = [v10 firstObject];
+        recurrenceRules2 = [(EKCalendarItem *)self recurrenceRules];
+        firstObject = [recurrenceRules2 firstObject];
 
         v12 = [EKRecurrenceRule alloc];
-        v13 = [v3 anyObject];
-        v14 = [(EKObject *)v12 initWithPersistentObject:v13];
+        anyObject = [v3 anyObject];
+        v14 = [(EKObject *)v12 initWithPersistentObject:anyObject];
 
-        v6 = [v11 isEqualToRecurrenceRule:v14] ^ 1;
+        v6 = [firstObject isEqualToRecurrenceRule:v14] ^ 1;
         goto LABEL_13;
       }
     }
@@ -6254,35 +6254,35 @@ LABEL_13:
 
 - (BOOL)automaticLocationGeocodingAllowed
 {
-  v2 = [(EKCalendarItem *)self calendar];
-  v3 = [v2 automaticEventLocationGeocodingAllowed];
+  calendar = [(EKCalendarItem *)self calendar];
+  automaticEventLocationGeocodingAllowed = [calendar automaticEventLocationGeocodingAllowed];
 
-  return v3;
+  return automaticEventLocationGeocodingAllowed;
 }
 
-- (BOOL)_eligibleForTravelAdvisoriesIncludePotential:(BOOL)a3
+- (BOOL)_eligibleForTravelAdvisoriesIncludePotential:(BOOL)potential
 {
-  v3 = a3;
+  potentialCopy = potential;
   if ([(EKEvent *)self isAllDay]|| [(EKEvent *)self selfParticipantStatus]== 3 || [(EKEvent *)self status]== EKEventStatusCanceled || [(EKEvent *)self locationIsAConferenceRoom])
   {
     return 0;
   }
 
-  v7 = [(EKCalendarItem *)self preferredLocation];
-  if (([v7 hasKnownSpatialData] & 1) != 0 || v3 && -[EKEvent automaticLocationGeocodingAllowed](self, "automaticLocationGeocodingAllowed"))
+  preferredLocation = [(EKCalendarItem *)self preferredLocation];
+  if (([preferredLocation hasKnownSpatialData] & 1) != 0 || potentialCopy && -[EKEvent automaticLocationGeocodingAllowed](self, "automaticLocationGeocodingAllowed"))
   {
-    if ([v7 isPrediction] && (objc_msgSend(v7, "predictedLOI"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "type"), v8, v9 <= 1))
+    if ([preferredLocation isPrediction] && (objc_msgSend(preferredLocation, "predictedLOI"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "type"), v8, v9 <= 1))
     {
-      v10 = [(EKEvent *)self conferenceURLForDisplay];
-      if (v10)
+      conferenceURLForDisplay = [(EKEvent *)self conferenceURLForDisplay];
+      if (conferenceURLForDisplay)
       {
         v5 = 0;
       }
 
       else
       {
-        v11 = [(EKEvent *)self virtualConference];
-        v5 = v11 == 0;
+        virtualConference = [(EKEvent *)self virtualConference];
+        v5 = virtualConference == 0;
       }
     }
 
@@ -6306,82 +6306,82 @@ LABEL_13:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  return v4;
+  return integerValue;
 }
 
-- (void)setTravelAdvisoryBehavior:(int64_t)a3
+- (void)setTravelAdvisoryBehavior:(int64_t)behavior
 {
   if ([(EKEvent *)self eligibleForTravelAdvisories])
   {
-    v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v5 = [MEMORY[0x1E696AD98] numberWithInteger:behavior];
     [(EKObject *)self setSingleChangedValue:v5 forKey:*MEMORY[0x1E69929F0]];
   }
 }
 
 - (BOOL)travelAdvisoryBehaviorIsEffectivelyEnabled
 {
-  v2 = [(EKEvent *)self travelAdvisoryBehavior];
-  if (v2 == 2)
+  travelAdvisoryBehavior = [(EKEvent *)self travelAdvisoryBehavior];
+  if (travelAdvisoryBehavior == 2)
   {
     return 0;
   }
 
-  if (v2)
+  if (travelAdvisoryBehavior)
   {
     return 1;
   }
 
-  v3 = [MEMORY[0x1E6992DF0] shared];
-  v4 = [v3 get_enableTravelAdvisoriesForAutomaticBehavior];
+  mEMORY[0x1E6992DF0] = [MEMORY[0x1E6992DF0] shared];
+  get_enableTravelAdvisoriesForAutomaticBehavior = [mEMORY[0x1E6992DF0] get_enableTravelAdvisoriesForAutomaticBehavior];
 
-  return v4;
+  return get_enableTravelAdvisoriesForAutomaticBehavior;
 }
 
 - (unint64_t)junkStatus
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992998]];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
-- (void)setJunkStatus:(unint64_t)a3
+- (void)setJunkStatus:(unint64_t)status
 {
   [(EKEvent *)self setCachedJunkStatus:?];
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:status];
   [(EKObject *)self setSingleChangedValue:v5 forKey:*MEMORY[0x1E6992998]];
 }
 
 - (NSString)sendersEmail
 {
-  v2 = [(EKCalendarItem *)self organizer];
-  v3 = [v2 emailAddress];
+  organizer = [(EKCalendarItem *)self organizer];
+  emailAddress = [organizer emailAddress];
 
-  return v3;
+  return emailAddress;
 }
 
 - (NSString)sendersPhoneNumber
 {
-  v2 = [(EKCalendarItem *)self organizer];
-  v3 = [v2 phoneNumber];
+  organizer = [(EKCalendarItem *)self organizer];
+  phoneNumber = [organizer phoneNumber];
 
-  return v3;
+  return phoneNumber;
 }
 
 - (BOOL)supportsJunkReporting
 {
-  v2 = [(EKCalendarItem *)self calendar];
-  v3 = [v2 supportsJunkReporting];
+  calendar = [(EKCalendarItem *)self calendar];
+  supportsJunkReporting = [calendar supportsJunkReporting];
 
-  return v3;
+  return supportsJunkReporting;
 }
 
 + (id)_relatedCachedTimeKeys
@@ -6414,22 +6414,22 @@ void __33__EKEvent__relatedCachedTimeKeys__block_invoke()
 
 - (void)clearCachedTimeValues
 {
-  v3 = [objc_opt_class() _relatedCachedTimeKeys];
-  [(EKObject *)self clearCachedValuesForKeys:v3];
+  _relatedCachedTimeKeys = [objc_opt_class() _relatedCachedTimeKeys];
+  [(EKObject *)self clearCachedValuesForKeys:_relatedCachedTimeKeys];
 }
 
-- (id)startOfDayForStartDateInCalendar:(id)a3
+- (id)startOfDayForStartDateInCalendar:(id)calendar
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _relatedCachedTimeKeys];
+  calendarCopy = calendar;
+  _relatedCachedTimeKeys = [objc_opt_class() _relatedCachedTimeKeys];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __44__EKEvent_startOfDayForStartDateInCalendar___block_invoke;
   v9[3] = &unk_1E77FF050;
-  v10 = v4;
-  v11 = self;
-  v6 = v4;
-  v7 = [(EKObject *)self cachedValueForKey:@"cachedStartOfDayForStartDate" expectingCachedValue:v6 forMasterKey:@"cachedTimeValuesCalendar" relatedKeys:v5 populateBlock:v9];
+  v10 = calendarCopy;
+  selfCopy = self;
+  v6 = calendarCopy;
+  v7 = [(EKObject *)self cachedValueForKey:@"cachedStartOfDayForStartDate" expectingCachedValue:v6 forMasterKey:@"cachedTimeValuesCalendar" relatedKeys:_relatedCachedTimeKeys populateBlock:v9];
 
   return v7;
 }
@@ -6443,18 +6443,18 @@ id __44__EKEvent_startOfDayForStartDateInCalendar___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)startOfDayForEndDateInCalendar:(id)a3
+- (id)startOfDayForEndDateInCalendar:(id)calendar
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _relatedCachedTimeKeys];
+  calendarCopy = calendar;
+  _relatedCachedTimeKeys = [objc_opt_class() _relatedCachedTimeKeys];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __42__EKEvent_startOfDayForEndDateInCalendar___block_invoke;
   v9[3] = &unk_1E77FF050;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
-  v7 = [(EKObject *)self cachedValueForKey:@"cachedStartOfDayForEndDate" expectingCachedValue:v6 forMasterKey:@"cachedTimeValuesCalendar" relatedKeys:v5 populateBlock:v9];
+  v10 = calendarCopy;
+  v6 = calendarCopy;
+  v7 = [(EKObject *)self cachedValueForKey:@"cachedStartOfDayForEndDate" expectingCachedValue:v6 forMasterKey:@"cachedTimeValuesCalendar" relatedKeys:_relatedCachedTimeKeys populateBlock:v9];
 
   return v7;
 }
@@ -6467,21 +6467,21 @@ id __42__EKEvent_startOfDayForEndDateInCalendar___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (int64_t)daysSpannedInCalendar:(id)a3
+- (int64_t)daysSpannedInCalendar:(id)calendar
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _relatedCachedTimeKeys];
+  calendarCopy = calendar;
+  _relatedCachedTimeKeys = [objc_opt_class() _relatedCachedTimeKeys];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __33__EKEvent_daysSpannedInCalendar___block_invoke;
   v13 = &unk_1E77FF050;
-  v14 = self;
-  v15 = v4;
-  v6 = v4;
-  v7 = [(EKObject *)self cachedValueForKey:@"cachedDaysSpanned" expectingCachedValue:v6 forMasterKey:@"cachedTimeValuesCalendar" relatedKeys:v5 populateBlock:&v10];
+  selfCopy = self;
+  v15 = calendarCopy;
+  v6 = calendarCopy;
+  v7 = [(EKObject *)self cachedValueForKey:@"cachedDaysSpanned" expectingCachedValue:v6 forMasterKey:@"cachedTimeValuesCalendar" relatedKeys:_relatedCachedTimeKeys populateBlock:&v10];
 
-  v8 = [v7 integerValue];
-  return v8;
+  integerValue = [v7 integerValue];
+  return integerValue;
 }
 
 uint64_t __33__EKEvent_daysSpannedInCalendar___block_invoke(uint64_t a1)
@@ -6496,30 +6496,30 @@ uint64_t __33__EKEvent_daysSpannedInCalendar___block_invoke(uint64_t a1)
   return [v6 numberWithInteger:v5];
 }
 
-- (BOOL)isMultiDayTimedEventInCalendar:(id)a3
+- (BOOL)isMultiDayTimedEventInCalendar:(id)calendar
 {
-  v4 = a3;
-  v5 = [(EKEvent *)self startDate];
-  if (v5 && (v6 = v5, [(EKEvent *)self endDateUnadjustedForLegacyClients], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
+  calendarCopy = calendar;
+  startDate = [(EKEvent *)self startDate];
+  if (startDate && (v6 = startDate, [(EKEvent *)self endDateUnadjustedForLegacyClients], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
   {
-    v8 = [objc_opt_class() _relatedCachedTimeKeys];
+    _relatedCachedTimeKeys = [objc_opt_class() _relatedCachedTimeKeys];
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = __42__EKEvent_isMultiDayTimedEventInCalendar___block_invoke;
     v15 = &unk_1E77FF050;
-    v16 = self;
-    v17 = v4;
-    v9 = [(EKObject *)self cachedValueForKey:@"cachedIsMultiDayTimedEvent" expectingCachedValue:v17 forMasterKey:@"cachedTimeValuesCalendar" relatedKeys:v8 populateBlock:&v12];
+    selfCopy = self;
+    v17 = calendarCopy;
+    v9 = [(EKObject *)self cachedValueForKey:@"cachedIsMultiDayTimedEvent" expectingCachedValue:v17 forMasterKey:@"cachedTimeValuesCalendar" relatedKeys:_relatedCachedTimeKeys populateBlock:&v12];
 
-    v10 = [v9 BOOLValue];
+    bOOLValue = [v9 BOOLValue];
   }
 
   else
   {
-    v10 = 0;
+    bOOLValue = 0;
   }
 
-  return v10;
+  return bOOLValue;
 }
 
 id __42__EKEvent_isMultiDayTimedEventInCalendar___block_invoke(uint64_t a1)
@@ -6534,28 +6534,28 @@ id __42__EKEvent_isMultiDayTimedEventInCalendar___block_invoke(uint64_t a1)
   return v7;
 }
 
-+ (BOOL)isMultiDayTimedEventWithStartDate:(id)a3 endDate:(id)a4 allDay:(BOOL)a5 inCalendar:(id)a6
++ (BOOL)isMultiDayTimedEventWithStartDate:(id)date endDate:(id)endDate allDay:(BOOL)day inCalendar:(id)calendar
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  dateCopy = date;
+  endDateCopy = endDate;
+  calendarCopy = calendar;
   v12 = 0;
-  if (v9 && v10 && !a5)
+  if (dateCopy && endDateCopy && !day)
   {
-    if ([v9 isSameDayAsDate:v10 inCalendar:v11])
+    if ([dateCopy isSameDayAsDate:endDateCopy inCalendar:calendarCopy])
     {
       v12 = 0;
     }
 
     else
     {
-      v13 = [v11 startOfDayForDate:v9];
-      v14 = [v13 dateByAddingDays:1 inCalendar:v11];
-      v15 = [v14 dateOnlyComponentsInCalendar:v11];
+      v13 = [calendarCopy startOfDayForDate:dateCopy];
+      v14 = [v13 dateByAddingDays:1 inCalendar:calendarCopy];
+      v15 = [v14 dateOnlyComponentsInCalendar:calendarCopy];
 
       [v15 setHour:5];
-      v16 = [v11 dateFromComponents:v15];
-      v12 = [v10 isAfterDate:v16];
+      v16 = [calendarCopy dateFromComponents:v15];
+      v12 = [endDateCopy isAfterDate:v16];
     }
   }
 
@@ -6570,17 +6570,17 @@ id __42__EKEvent_isMultiDayTimedEventInCalendar___block_invoke(uint64_t a1)
   [(EKEvent *)self setOriginalOccurrenceIsAllDay:0];
 }
 
-- (id)snapshotCopyWithPropertyKeysToCopy:(id)a3 propertyKeysToSkip:(id)a4
+- (id)snapshotCopyWithPropertyKeysToCopy:(id)copy propertyKeysToSkip:(id)skip
 {
   v9.receiver = self;
   v9.super_class = EKEvent;
-  v5 = [(EKObject *)&v9 snapshotCopyWithPropertyKeysToCopy:a3 propertyKeysToSkip:a4];
+  v5 = [(EKObject *)&v9 snapshotCopyWithPropertyKeysToCopy:copy propertyKeysToSkip:skip];
   [v5 setOccurrenceIsAllDay:{-[EKEvent occurrenceIsAllDay](self, "occurrenceIsAllDay")}];
-  v6 = [(EKEvent *)self occurrenceStartDate];
-  [v5 setOccurrenceStartDate:v6];
+  occurrenceStartDate = [(EKEvent *)self occurrenceStartDate];
+  [v5 setOccurrenceStartDate:occurrenceStartDate];
 
-  v7 = [(EKEvent *)self occurrenceEndDate];
-  [v5 setOccurrenceEndDate:v7];
+  occurrenceEndDate = [(EKEvent *)self occurrenceEndDate];
+  [v5 setOccurrenceEndDate:occurrenceEndDate];
 
   return v5;
 }
@@ -6589,43 +6589,43 @@ id __42__EKEvent_isMultiDayTimedEventInCalendar___block_invoke(uint64_t a1)
 {
   v9.receiver = self;
   v9.super_class = EKEvent;
-  v3 = [(EKObject *)&v9 previouslySavedCopy];
-  v4 = [(EKEvent *)self originalOccurrenceIsAllDay];
+  previouslySavedCopy = [(EKObject *)&v9 previouslySavedCopy];
+  originalOccurrenceIsAllDay = [(EKEvent *)self originalOccurrenceIsAllDay];
 
-  if (v4)
+  if (originalOccurrenceIsAllDay)
   {
-    v5 = [(EKEvent *)self originalOccurrenceIsAllDay];
-    [v3 setOccurrenceIsAllDay:{objc_msgSend(v5, "BOOLValue")}];
+    originalOccurrenceIsAllDay2 = [(EKEvent *)self originalOccurrenceIsAllDay];
+    [previouslySavedCopy setOccurrenceIsAllDay:{objc_msgSend(originalOccurrenceIsAllDay2, "BOOLValue")}];
   }
 
   else
   {
-    [v3 setOccurrenceIsAllDay:{-[EKEvent occurrenceIsAllDay](self, "occurrenceIsAllDay")}];
+    [previouslySavedCopy setOccurrenceIsAllDay:{-[EKEvent occurrenceIsAllDay](self, "occurrenceIsAllDay")}];
   }
 
-  v6 = [(EKEvent *)self originalOccurrenceStartDate];
-  [v3 setOccurrenceStartDate:v6];
+  originalOccurrenceStartDate = [(EKEvent *)self originalOccurrenceStartDate];
+  [previouslySavedCopy setOccurrenceStartDate:originalOccurrenceStartDate];
 
-  v7 = [(EKEvent *)self originalOccurrenceEndDate];
-  [v3 setOccurrenceEndDate:v7];
+  originalOccurrenceEndDate = [(EKEvent *)self originalOccurrenceEndDate];
+  [previouslySavedCopy setOccurrenceEndDate:originalOccurrenceEndDate];
 
-  return v3;
+  return previouslySavedCopy;
 }
 
 - (int64_t)pendingParticipationStatus
 {
-  v2 = [(EKCalendarItem *)self selfAttendee];
-  v3 = [v2 pendingStatus];
+  selfAttendee = [(EKCalendarItem *)self selfAttendee];
+  pendingStatus = [selfAttendee pendingStatus];
 
-  return v3;
+  return pendingStatus;
 }
 
 - (BOOL)allowsAvailabilityModifications
 {
-  v3 = [(EKObject *)self eventStore];
-  v4 = [v3 skipModificationValidation];
+  eventStore = [(EKObject *)self eventStore];
+  skipModificationValidation = [eventStore skipModificationValidation];
 
-  if (v4)
+  if (skipModificationValidation)
   {
     return 1;
   }
@@ -6635,10 +6635,10 @@ id __42__EKEvent_isMultiDayTimedEventInCalendar___block_invoke(uint64_t a1)
     return 0;
   }
 
-  v6 = [(EKCalendarItem *)self calendar];
-  v7 = [v6 supportedEventAvailabilities];
+  calendar = [(EKCalendarItem *)self calendar];
+  supportedEventAvailabilities = [calendar supportedEventAvailabilities];
 
-  if (!v7)
+  if (!supportedEventAvailabilities)
   {
     return 0;
   }
@@ -6648,25 +6648,25 @@ id __42__EKEvent_isMultiDayTimedEventInCalendar___block_invoke(uint64_t a1)
     return 1;
   }
 
-  v8 = [(EKCalendarItem *)self calendar];
-  v5 = [v8 sharingStatus] != 2;
+  calendar2 = [(EKCalendarItem *)self calendar];
+  v5 = [calendar2 sharingStatus] != 2;
 
   return v5;
 }
 
 - (BOOL)_hasExternalIDOrDeliverySource
 {
-  v3 = [(EKCalendarItem *)self externalID];
+  externalID = [(EKCalendarItem *)self externalID];
 
-  if (v3)
+  if (externalID)
   {
     return 1;
   }
 
-  v4 = [(EKCalendarItem *)self originalItem];
-  v5 = [v4 externalID];
+  originalItem = [(EKCalendarItem *)self originalItem];
+  externalID2 = [originalItem externalID];
 
-  if (v5)
+  if (externalID2)
   {
     return 1;
   }
@@ -6681,8 +6681,8 @@ id __42__EKEvent_isMultiDayTimedEventInCalendar___block_invoke(uint64_t a1)
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(EKEvent *)self actions];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  actions = [(EKEvent *)self actions];
+  v3 = [actions countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = *v12;
@@ -6692,16 +6692,16 @@ id __42__EKEvent_isMultiDayTimedEventInCalendar___block_invoke(uint64_t a1)
       {
         if (*v12 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(actions);
         }
 
         v6 = *(*(&v11 + 1) + 8 * i);
-        v7 = [v6 externalID];
-        if (v7)
+        externalID = [v6 externalID];
+        if (externalID)
         {
-          v8 = [v6 externalFolderID];
+          externalFolderID = [v6 externalFolderID];
 
-          if (v8)
+          if (externalFolderID)
           {
 
             LOBYTE(v3) = 1;
@@ -6710,7 +6710,7 @@ id __42__EKEvent_isMultiDayTimedEventInCalendar___block_invoke(uint64_t a1)
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v3 = [actions countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v3)
       {
         continue;
@@ -6728,10 +6728,10 @@ LABEL_12:
 
 - (BOOL)allowsParticipationStatusModifications
 {
-  v3 = [(EKObject *)self eventStore];
-  v4 = [v3 skipModificationValidation];
+  eventStore = [(EKObject *)self eventStore];
+  skipModificationValidation = [eventStore skipModificationValidation];
 
-  if (v4)
+  if (skipModificationValidation)
   {
     return 1;
   }
@@ -6741,27 +6741,27 @@ LABEL_12:
     return 0;
   }
 
-  v7 = [(EKEvent *)self status];
-  v8 = [(EKCalendarItem *)self isExternallyOrganizedInvitation];
-  v9 = [(EKCalendarItem *)self selfAttendee];
+  status = [(EKEvent *)self status];
+  isExternallyOrganizedInvitation = [(EKCalendarItem *)self isExternallyOrganizedInvitation];
+  selfAttendee = [(EKCalendarItem *)self selfAttendee];
 
   v5 = 0;
-  if (v7 != EKEventStatusCanceled && v8 && v9)
+  if (status != EKEventStatusCanceled && isExternallyOrganizedInvitation && selfAttendee)
   {
     if ([(EKCalendarItem *)self isOrganizedBySharedCalendarOwner])
     {
       return 0;
     }
 
-    v10 = [(EKEvent *)self constraints];
-    v11 = [(EKCalendarItem *)self calendar];
-    v12 = v11;
+    constraints = [(EKEvent *)self constraints];
+    calendar = [(EKCalendarItem *)self calendar];
+    v12 = calendar;
     v5 = 0;
-    if (v10 && v11)
+    if (constraints && calendar)
     {
-      v13 = [(EKCalendarItem *)self organizer];
+      organizer = [(EKCalendarItem *)self organizer];
       objc_opt_class();
-      v5 = (objc_opt_isKindOfClass() & 1) != 0 && [v13 scheduleAgent] != 1 && objc_msgSend(v12, "allowsContentModifications") && (!objc_msgSend(v10, "proposedStatusRequiredForResponse") || v7 == EKEventStatusConfirmed) && objc_msgSend(v10, "supportsInvitationModifications") && objc_msgSend(v12, "allowsScheduling") && (!objc_msgSend(v10, "deliverySourceOrExternalIDRequiredForResponse") || -[EKEvent _hasExternalIDOrDeliverySource](self, "_hasExternalIDOrDeliverySource")) && (-[EKEvent participationStatus](self, "participationStatus") != 3 || !objc_msgSend(v10, "declinedStatusChangeRequiresNoPendingStatus") || !-[EKEvent pendingParticipationStatus](self, "pendingParticipationStatus"));
+      v5 = (objc_opt_isKindOfClass() & 1) != 0 && [organizer scheduleAgent] != 1 && objc_msgSend(v12, "allowsContentModifications") && (!objc_msgSend(constraints, "proposedStatusRequiredForResponse") || status == EKEventStatusConfirmed) && objc_msgSend(constraints, "supportsInvitationModifications") && objc_msgSend(v12, "allowsScheduling") && (!objc_msgSend(constraints, "deliverySourceOrExternalIDRequiredForResponse") || -[EKEvent _hasExternalIDOrDeliverySource](self, "_hasExternalIDOrDeliverySource")) && (-[EKEvent participationStatus](self, "participationStatus") != 3 || !objc_msgSend(constraints, "declinedStatusChangeRequiresNoPendingStatus") || !-[EKEvent pendingParticipationStatus](self, "pendingParticipationStatus"));
     }
   }
 
@@ -6775,8 +6775,8 @@ LABEL_12:
   v17 = [(EKCalendarItem *)&v18 description];
   if ([(EKCalendarItem *)self hasRecurrenceRules])
   {
-    v3 = [(EKCalendarItem *)self recurrenceRules];
-    v16 = [v3 objectAtIndex:0];
+    recurrenceRules = [(EKCalendarItem *)self recurrenceRules];
+    v16 = [recurrenceRules objectAtIndex:0];
   }
 
   else
@@ -6786,15 +6786,15 @@ LABEL_12:
 
   v15 = MEMORY[0x1E696AEC0];
   v14 = objc_opt_class();
-  v4 = [(EKCalendarItem *)self location];
-  v5 = [(EKEvent *)self structuredLocation];
-  v6 = [(EKEvent *)self startDate];
-  v7 = [(EKEvent *)self endDate];
-  v8 = [(EKEvent *)self isAllDay];
-  v9 = [(EKEvent *)self isFloating];
-  v10 = [(EKEvent *)self _travelTimeInternalDescription];
-  v11 = [(EKCalendarItem *)self travelStartLocation];
-  v12 = [v15 stringWithFormat:@"%@ <%p>\n{\n\t %@ \n\t location = \t%@; \n\t structuredLocation = \t%@; \n\t startDate = \t%@; \n\t endDate = \t\t%@; \n\t allDay = \t\t%u; \n\t floating = \t%u; \n\t recurrence = \t%@; \n\t travelTime = \t%@; \n\t startLocation = \t%@;\n};", v14, self, v17, v4, v5, v6, v7, v8, v9, v16, v10, v11];;
+  location = [(EKCalendarItem *)self location];
+  structuredLocation = [(EKEvent *)self structuredLocation];
+  startDate = [(EKEvent *)self startDate];
+  endDate = [(EKEvent *)self endDate];
+  isAllDay = [(EKEvent *)self isAllDay];
+  isFloating = [(EKEvent *)self isFloating];
+  _travelTimeInternalDescription = [(EKEvent *)self _travelTimeInternalDescription];
+  travelStartLocation = [(EKCalendarItem *)self travelStartLocation];
+  v12 = [v15 stringWithFormat:@"%@ <%p>\n{\n\t %@ \n\t location = \t%@; \n\t structuredLocation = \t%@; \n\t startDate = \t%@; \n\t endDate = \t\t%@; \n\t allDay = \t\t%u; \n\t floating = \t%u; \n\t recurrence = \t%@; \n\t travelTime = \t%@; \n\t startLocation = \t%@;\n};", v14, self, v17, location, structuredLocation, startDate, endDate, isAllDay, isFloating, v16, _travelTimeInternalDescription, travelStartLocation];;
 
   return v12;
 }
@@ -6803,12 +6803,12 @@ LABEL_12:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(EKObject *)self objectID];
-  v6 = [v5 rowID];
-  v7 = [(EKCalendarItem *)self UUID];
-  v8 = [(EKEvent *)self startDate];
-  v9 = [v8 debugDescription];
-  v10 = [v3 stringWithFormat:@"<%@ rowid=[%d] UUID=[%@] start-date=[%@]>", v4, v6, v7, v9];
+  objectID = [(EKObject *)self objectID];
+  rowID = [objectID rowID];
+  uUID = [(EKCalendarItem *)self UUID];
+  startDate = [(EKEvent *)self startDate];
+  v9 = [startDate debugDescription];
+  v10 = [v3 stringWithFormat:@"<%@ rowid=[%d] UUID=[%@] start-date=[%@]>", v4, rowID, uUID, v9];
 
   return v10;
 }
@@ -6826,8 +6826,8 @@ LABEL_12:
   if ([(EKCalendarItem *)self _hadRecurrenceRules])
   {
     v3 = objc_alloc_init(EKRecurrenceGenerator);
-    v4 = [(EKEvent *)self originalOccurrenceStartDate];
-    v5 = [(EKRecurrenceGenerator *)v3 isOccurrenceDate:v4 validForEvent:self];
+    originalOccurrenceStartDate = [(EKEvent *)self originalOccurrenceStartDate];
+    v5 = [(EKRecurrenceGenerator *)v3 isOccurrenceDate:originalOccurrenceStartDate validForEvent:self];
 
     if (!v5)
     {
@@ -6838,42 +6838,42 @@ LABEL_12:
   return result;
 }
 
-- (void)_snoozeAlarm:(id)a3 withTimeIntervalFromNow:(double)a4 orTargetDate:(id)a5 pinsTriggerToStartDate:(BOOL)a6
+- (void)_snoozeAlarm:(id)alarm withTimeIntervalFromNow:(double)now orTargetDate:(id)date pinsTriggerToStartDate:(BOOL)startDate
 {
-  v27 = a3;
-  v10 = a5;
-  if (v27)
+  alarmCopy = alarm;
+  dateCopy = date;
+  if (alarmCopy)
   {
-    v11 = [MEMORY[0x1E695DF00] date];
-    v12 = [(EKEvent *)self constraints];
-    v13 = [v12 snoozeAlarmRequiresDetach];
+    date = [MEMORY[0x1E695DF00] date];
+    constraints = [(EKEvent *)self constraints];
+    snoozeAlarmRequiresDetach = [constraints snoozeAlarmRequiresDetach];
 
-    if (v13)
+    if (snoozeAlarmRequiresDetach)
     {
-      v14 = v27;
+      duplicate = alarmCopy;
       [(EKEvent *)self setRequiresDetachDueToSnoozedAlarm:1];
     }
 
     else
     {
-      v14 = [v27 duplicate];
-      [v27 setAcknowledgedDate:v11];
+      duplicate = [alarmCopy duplicate];
+      [alarmCopy setAcknowledgedDate:date];
     }
 
-    [v14 setDefaultAlarm:0];
-    if (!v10)
+    [duplicate setDefaultAlarm:0];
+    if (!dateCopy)
     {
-      v10 = [v11 dateByAddingTimeInterval:a4];
+      dateCopy = [date dateByAddingTimeInterval:now];
     }
 
-    v15 = [(EKEvent *)self startDate];
-    v16 = [v11 isAfterDate:v15];
+    startDate = [(EKEvent *)self startDate];
+    v16 = [date isAfterDate:startDate];
 
-    v17 = [(EKEvent *)self startDate];
-    [v10 timeIntervalSinceDate:v17];
+    startDate2 = [(EKEvent *)self startDate];
+    [dateCopy timeIntervalSinceDate:startDate2];
     v19 = v18;
 
-    v20 = !a6;
+    v20 = !startDate;
     if (v19 <= 0.0)
     {
       v20 = 1;
@@ -6882,8 +6882,8 @@ LABEL_12:
     v21 = (v20 | v16) ^ 1;
     if (v19 > 0.0 && (((v20 | v16) ^ 1) & 1) == 0)
     {
-      v22 = [(EKEvent *)self constraints];
-      v21 = [v22 supportsAlarmsTriggeringAfterStartDate] ^ 1;
+      constraints2 = [(EKEvent *)self constraints];
+      v21 = [constraints2 supportsAlarmsTriggeringAfterStartDate] ^ 1;
     }
 
     v23 = 0.0;
@@ -6892,20 +6892,20 @@ LABEL_12:
       v23 = v19;
     }
 
-    [v14 setRelativeOffset:v23];
-    v24 = [(EKEvent *)self constraints];
-    v25 = [v24 snoozeAlarmRequiresDetach];
+    [duplicate setRelativeOffset:v23];
+    constraints3 = [(EKEvent *)self constraints];
+    snoozeAlarmRequiresDetach2 = [constraints3 snoozeAlarmRequiresDetach];
 
-    if (v25)
+    if (snoozeAlarmRequiresDetach2)
     {
       [(EKCalendarItem *)self setModifiedProperties:[(EKCalendarItem *)self modifiedProperties]| 0x80];
     }
 
     else
     {
-      v26 = [(EKCalendarItem *)self findOriginalAlarmStartingWith:v27];
-      [v14 setOriginalAlarm:v26];
-      [(EKCalendarItem *)self addAlarm:v14];
+      v26 = [(EKCalendarItem *)self findOriginalAlarmStartingWith:alarmCopy];
+      [duplicate setOriginalAlarm:v26];
+      [(EKCalendarItem *)self addAlarm:duplicate];
     }
   }
 }
@@ -6914,26 +6914,26 @@ LABEL_12:
 {
   v5.receiver = self;
   v5.super_class = EKEvent;
-  v2 = [(EKCalendarItem *)&v5 propertiesThatCanBeModifiedOnReadOnlyCalendars];
-  v3 = [v2 setByAddingObject:*MEMORY[0x1E6992580]];
+  propertiesThatCanBeModifiedOnReadOnlyCalendars = [(EKCalendarItem *)&v5 propertiesThatCanBeModifiedOnReadOnlyCalendars];
+  v3 = [propertiesThatCanBeModifiedOnReadOnlyCalendars setByAddingObject:*MEMORY[0x1E6992580]];
 
   return v3;
 }
 
-- (BOOL)validateWithSpan:(int64_t)a3 error:(id *)a4
+- (BOOL)validateWithSpan:(int64_t)span error:(id *)error
 {
   v73 = *MEMORY[0x1E69E9840];
   v70.receiver = self;
   v70.super_class = EKEvent;
-  LODWORD(v7) = [(EKCalendarItem *)&v70 validate:a4];
+  LODWORD(v7) = [(EKCalendarItem *)&v70 validate:error];
   if (v7)
   {
-    v8 = [(EKCalendarItem *)self calendar];
-    v9 = [v8 allowEvents];
+    calendar = [(EKCalendarItem *)self calendar];
+    allowEvents = [calendar allowEvents];
 
-    if ((v9 & 1) == 0)
+    if ((allowEvents & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v15 = MEMORY[0x1E696ABC0];
         v16 = 22;
@@ -6945,11 +6945,11 @@ LABEL_102:
       goto LABEL_103;
     }
 
-    v10 = [(EKEvent *)self startDate];
+    startDate = [(EKEvent *)self startDate];
 
-    if (!v10)
+    if (!startDate)
     {
-      if (a4)
+      if (error)
       {
         v15 = MEMORY[0x1E696ABC0];
         v16 = 2;
@@ -6959,11 +6959,11 @@ LABEL_102:
       goto LABEL_102;
     }
 
-    v11 = [(EKEvent *)self endDateUnadjustedForLegacyClients];
+    endDateUnadjustedForLegacyClients = [(EKEvent *)self endDateUnadjustedForLegacyClients];
 
-    if (!v11)
+    if (!endDateUnadjustedForLegacyClients)
     {
-      if (a4)
+      if (error)
       {
         v15 = MEMORY[0x1E696ABC0];
         v16 = 3;
@@ -6973,13 +6973,13 @@ LABEL_102:
       goto LABEL_102;
     }
 
-    v12 = [(EKEvent *)self startDate];
-    v13 = [(EKEvent *)self endDateUnadjustedForLegacyClients];
-    v14 = [v12 compare:v13];
+    startDate2 = [(EKEvent *)self startDate];
+    endDateUnadjustedForLegacyClients2 = [(EKEvent *)self endDateUnadjustedForLegacyClients];
+    v14 = [startDate2 compare:endDateUnadjustedForLegacyClients2];
 
     if (v14 >= 1)
     {
-      if (a4)
+      if (error)
       {
         v15 = MEMORY[0x1E696ABC0];
         v16 = 4;
@@ -6987,17 +6987,17 @@ LABEL_18:
         v18 = [v15 errorWithEKErrorCode:v16];
         v7 = v18;
         LOBYTE(v7) = 0;
-        *a4 = v18;
+        *error = v18;
         goto LABEL_103;
       }
 
       goto LABEL_102;
     }
 
-    v17 = [(EKEvent *)self _isParticipationStatusDirty];
-    if (a3 == 1 && v17)
+    _isParticipationStatusDirty = [(EKEvent *)self _isParticipationStatusDirty];
+    if (span == 1 && _isParticipationStatusDirty)
     {
-      if (a4)
+      if (error)
       {
         v15 = MEMORY[0x1E696ABC0];
         v16 = 13;
@@ -7012,10 +7012,10 @@ LABEL_18:
     {
       if ([(EKCalendarItem *)self hasRecurrenceRules])
       {
-        v20 = [(EKCalendarItem *)self recurrenceRules];
-        v21 = [v20 objectAtIndexedSubscript:0];
+        recurrenceRules = [(EKCalendarItem *)self recurrenceRules];
+        v21 = [recurrenceRules objectAtIndexedSubscript:0];
 
-        if (v21 && ![(EKEvent *)self validateRecurrenceRule:v21 error:a4])
+        if (v21 && ![(EKEvent *)self validateRecurrenceRule:v21 error:error])
         {
 
           goto LABEL_102;
@@ -7028,14 +7028,14 @@ LABEL_18:
       }
     }
 
-    LODWORD(v7) = [(EKEvent *)self _validateDatesAndRecurrencesGivenSpan:a3 error:a4];
+    LODWORD(v7) = [(EKEvent *)self _validateDatesAndRecurrencesGivenSpan:span error:error];
     if (!v7)
     {
       goto LABEL_103;
     }
 
-    v22 = [(EKObject *)self eventStore];
-    if ([v22 skipModificationValidation] & 1) != 0 || (objc_msgSend(MEMORY[0x1E6992FA0], "currentProcessHasSyncClientEntitlement"))
+    eventStore = [(EKObject *)self eventStore];
+    if ([eventStore skipModificationValidation] & 1) != 0 || (objc_msgSend(MEMORY[0x1E6992FA0], "currentProcessHasSyncClientEntitlement"))
     {
     }
 
@@ -7043,9 +7043,9 @@ LABEL_18:
     {
       if ([(EKObject *)self isNew])
       {
-        v28 = [(EKCalendarItem *)self hasAttendees];
+        hasAttendees = [(EKCalendarItem *)self hasAttendees];
 
-        if (!v28)
+        if (!hasAttendees)
         {
           goto LABEL_30;
         }
@@ -7082,8 +7082,8 @@ LABEL_18:
                   objc_enumerationMutation(obj);
                 }
 
-                v56 = [*(*(&v66 + 1) + 8 * i) changeSet];
-                v57 = [v56 hasUnsavedChangeForKey:v53];
+                changeSet = [*(*(&v66 + 1) + 8 * i) changeSet];
+                v57 = [changeSet hasUnsavedChangeForKey:v53];
 
                 v54 &= v57 ^ 1;
               }
@@ -7099,9 +7099,9 @@ LABEL_18:
             v54 = 1;
           }
 
-          if (a4 && v54)
+          if (error && v54)
           {
-            *a4 = [MEMORY[0x1E696ABC0] errorWithEKErrorCode:41];
+            *error = [MEMORY[0x1E696ABC0] errorWithEKErrorCode:41];
           }
 
           v19 = v60;
@@ -7118,8 +7118,8 @@ LABEL_18:
         v31 = [v30 valueForKey:*MEMORY[0x1E6992B08]];
 
         v32 = MEMORY[0x1E695DF70];
-        v33 = [v31 allObjects];
-        v34 = [v32 arrayWithArray:v33];
+        allObjects = [v31 allObjects];
+        v34 = [v32 arrayWithArray:allObjects];
 
         v64 = 0u;
         v65 = 0u;
@@ -7151,9 +7151,9 @@ LABEL_18:
 
         v40 = [v34 count];
         v41 = v40;
-        if (a4 && v40)
+        if (error && v40)
         {
-          *a4 = [MEMORY[0x1E696ABC0] errorWithEKErrorCode:41];
+          *error = [MEMORY[0x1E696ABC0] errorWithEKErrorCode:41];
 
           goto LABEL_102;
         }
@@ -7166,12 +7166,12 @@ LABEL_18:
 
       else if ([(EKCalendarItem *)self hasAttendees])
       {
-        v42 = [(EKCalendarItem *)self calendar];
-        v43 = [v42 allowsScheduling];
+        calendar2 = [(EKCalendarItem *)self calendar];
+        allowsScheduling = [calendar2 allowsScheduling];
 
-        if ((v43 & 1) == 0)
+        if ((allowsScheduling & 1) == 0)
         {
-          if (a4)
+          if (error)
           {
             v15 = MEMORY[0x1E696ABC0];
             v16 = 0;
@@ -7186,7 +7186,7 @@ LABEL_18:
 LABEL_30:
     if ([(EKObject *)self _hasChangesForKey:*MEMORY[0x1E6992558]]&& ![(EKCalendarItem *)self allowsAlarmModifications])
     {
-      if (a4)
+      if (error)
       {
         v15 = MEMORY[0x1E696ABC0];
         v16 = 40;
@@ -7196,9 +7196,9 @@ LABEL_30:
       goto LABEL_102;
     }
 
-    if ([(EKObject *)self _hasChangesForKey:v19]&& ![(EKEvent *)self allowsRecurrenceModificationsForSpan:a3])
+    if ([(EKObject *)self _hasChangesForKey:v19]&& ![(EKEvent *)self allowsRecurrenceModificationsForSpan:span])
     {
-      if (a4)
+      if (error)
       {
         v15 = MEMORY[0x1E696ABC0];
         v16 = 39;
@@ -7210,7 +7210,7 @@ LABEL_30:
 
     if ([(EKObject *)self _hasChangesForKey:*MEMORY[0x1E69929B8]]&& ![(EKEvent *)self allowsPrivacyLevelModifications])
     {
-      if (a4)
+      if (error)
       {
         v15 = MEMORY[0x1E696ABC0];
         v16 = 38;
@@ -7222,50 +7222,50 @@ LABEL_30:
 
     if ([(EKObject *)self _hasChangesForKey:*MEMORY[0x1E6992948]])
     {
-      v23 = [(EKCalendarItem *)self calendar];
-      v24 = [v23 source];
+      calendar3 = [(EKCalendarItem *)self calendar];
+      source = [calendar3 source];
 
-      v25 = [(EKEvent *)self color];
-      v26 = [v25 source];
-      v27 = v26;
-      if (v26 && v24)
+      color = [(EKEvent *)self color];
+      source2 = [color source];
+      v27 = source2;
+      if (source2 && source)
       {
-        if (([v24 isEqual:v26] & 1) == 0)
+        if (([source isEqual:source2] & 1) == 0)
         {
-          if (a4)
+          if (error)
           {
-            *a4 = [MEMORY[0x1E696ABC0] errorWithEKErrorCode:71];
+            *error = [MEMORY[0x1E696ABC0] errorWithEKErrorCode:71];
           }
 
           goto LABEL_102;
         }
       }
 
-      else if (v24 && v25 && !v26)
+      else if (source && color && !source2)
       {
-        [v25 setSource:v24];
+        [color setSource:source];
       }
     }
 
-    v44 = [(EKEvent *)self constraints];
-    if (![v44 supportsStructuredLocations])
+    constraints = [(EKEvent *)self constraints];
+    if (![constraints supportsStructuredLocations])
     {
-      v45 = [(EKCalendarItem *)self calendar];
-      if (![v45 isSuggestedEventCalendar])
+      calendar4 = [(EKCalendarItem *)self calendar];
+      if (![calendar4 isSuggestedEventCalendar])
       {
-        v46 = [(EKCalendarItem *)self calendar];
-        v47 = [v46 isNaturalLanguageSuggestedEventCalendar];
+        calendar5 = [(EKCalendarItem *)self calendar];
+        isNaturalLanguageSuggestedEventCalendar = [calendar5 isNaturalLanguageSuggestedEventCalendar];
 
-        if ((v47 & 1) == 0)
+        if ((isNaturalLanguageSuggestedEventCalendar & 1) == 0)
         {
           if ([(EKObject *)self _hasChangesForKey:@"endLocation"])
           {
-            v48 = [(EKEvent *)self endLocation];
-            v49 = [v48 isStructured];
+            endLocation = [(EKEvent *)self endLocation];
+            isStructured = [endLocation isStructured];
 
-            if (v49)
+            if (isStructured)
             {
-              if (a4)
+              if (error)
               {
                 v15 = MEMORY[0x1E696ABC0];
                 v16 = 19;
@@ -7313,20 +7313,20 @@ LABEL_103:
 
     v4 = v3;
     _Block_object_dispose(&v13, 8);
-    v5 = [v3 newObjectID];
-    v6 = [v5 urlRepresentation];
-    v7 = [v6 absoluteString];
+    newObjectID = [v3 newObjectID];
+    urlRepresentation = [newObjectID urlRepresentation];
+    absoluteString = [urlRepresentation absoluteString];
   }
 
   else
   {
     v8 = objc_opt_class();
-    v9 = [(EKCalendarItem *)self originalItem];
-    v10 = [(EKCalendarItem *)self calendar];
-    v7 = [v8 generateUniqueIDWithEvent:self originalEvent:v9 calendar:v10];
+    originalItem = [(EKCalendarItem *)self originalItem];
+    calendar = [(EKCalendarItem *)self calendar];
+    absoluteString = [v8 generateUniqueIDWithEvent:self originalEvent:originalItem calendar:calendar];
   }
 
-  return v7;
+  return absoluteString;
 }
 
 - (void)_willSave
@@ -7337,13 +7337,13 @@ LABEL_103:
   [(EKEvent *)self _removeInvalidAlarmsDuringSave];
 }
 
-- (BOOL)saveWithSpan:(int64_t)a3 error:(id *)a4
+- (BOOL)saveWithSpan:(int64_t)span error:(id *)error
 {
-  v6 = self;
+  selfCopy = self;
   v291 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   if (![(EKObject *)self hasChanges])
@@ -7351,11 +7351,11 @@ LABEL_103:
     goto LABEL_9;
   }
 
-  if ([(EKObject *)v6 isUndeleted])
+  if ([(EKObject *)selfCopy isUndeleted])
   {
-    if (a3 && a3 != 3)
+    if (span && span != 3)
     {
-      if (!a4)
+      if (!error)
       {
         goto LABEL_34;
       }
@@ -7367,9 +7367,9 @@ LABEL_32:
       goto LABEL_33;
     }
 
-    if ([(EKEvent *)v6 isDetached])
+    if ([(EKEvent *)selfCopy isDetached])
     {
-      [(EKEvent *)v6 _saveUndeletedDetachedOccurrence];
+      [(EKEvent *)selfCopy _saveUndeletedDetachedOccurrence];
 LABEL_9:
       v7 = 1;
 LABEL_10:
@@ -7377,16 +7377,16 @@ LABEL_10:
       return v7;
     }
 
-    if ([(EKCalendarItem *)v6 hasRecurrenceRules])
+    if ([(EKCalendarItem *)selfCopy hasRecurrenceRules])
     {
-      if (a4)
+      if (error)
       {
         v10 = MEMORY[0x1E696ABC0];
         v11 = @"Cannot undelete an event that is part of a recurring series and not detached";
         v12 = 5;
 LABEL_33:
         [v10 errorWithEKErrorCode:v12 description:v11];
-        *a4 = v7 = 0;
+        *error = v7 = 0;
         goto LABEL_10;
       }
 
@@ -7396,34 +7396,34 @@ LABEL_34:
     }
   }
 
-  if (![(EKEvent *)v6 isUndetached])
+  if (![(EKEvent *)selfCopy isUndetached])
   {
-    v14 = a3;
-    if ((a3 - 4) >= 0xFFFFFFFFFFFFFFFELL)
+    spanCopy = span;
+    if ((span - 4) >= 0xFFFFFFFFFFFFFFFELL)
     {
-      if ([(EKEvent *)v6 isDetached])
+      if ([(EKEvent *)selfCopy isDetached])
       {
-        v14 = 0;
+        spanCopy = 0;
       }
 
       else
       {
-        v14 = 4;
+        spanCopy = 4;
       }
     }
 
-    if ([(EKObject *)v6 _hasChangesForKey:*MEMORY[0x1E6992620]])
+    if ([(EKObject *)selfCopy _hasChangesForKey:*MEMORY[0x1E6992620]])
     {
-      v15 = [(EKEvent *)v6 _originallyCommittedVirtualConference];
-      v16 = [(EKEvent *)v6 virtualConference];
-      if ([v15 isEqual:v16])
+      _originallyCommittedVirtualConference = [(EKEvent *)selfCopy _originallyCommittedVirtualConference];
+      virtualConference = [(EKEvent *)selfCopy virtualConference];
+      if ([_originallyCommittedVirtualConference isEqual:virtualConference])
       {
         v237 = 0;
       }
 
       else
       {
-        v237 = v15;
+        v237 = _originallyCommittedVirtualConference;
       }
     }
 
@@ -7432,22 +7432,22 @@ LABEL_34:
       v237 = 0;
     }
 
-    if ([(EKEvent *)v6 _detectedConferenceURLOnBackingObjectMayBeInvalid])
+    if ([(EKEvent *)selfCopy _detectedConferenceURLOnBackingObjectMayBeInvalid])
     {
-      v17 = [(EKEvent *)v6 conferenceURLDetected];
-      v18 = [v17 absoluteString];
-      [(EKObject *)v6 setSingleChangedValue:v18 forKey:*MEMORY[0x1E6992950]];
+      conferenceURLDetected = [(EKEvent *)selfCopy conferenceURLDetected];
+      absoluteString = [conferenceURLDetected absoluteString];
+      [(EKObject *)selfCopy setSingleChangedValue:absoluteString forKey:*MEMORY[0x1E6992950]];
     }
 
-    if ([(EKEvent *)v6 _needsAttendeePartStatReset])
+    if ([(EKEvent *)selfCopy _needsAttendeePartStatReset])
     {
-      [(EKEvent *)v6 dismissAttendeeRepliedNotification];
+      [(EKEvent *)selfCopy dismissAttendeeRepliedNotification];
       v280 = 0u;
       v281 = 0u;
       v278 = 0u;
       v279 = 0u;
-      v19 = [(EKEvent *)v6 attendeesNotIncludingOrganizer];
-      v20 = [v19 countByEnumeratingWithState:&v278 objects:v290 count:16];
+      attendeesNotIncludingOrganizer = [(EKEvent *)selfCopy attendeesNotIncludingOrganizer];
+      v20 = [attendeesNotIncludingOrganizer countByEnumeratingWithState:&v278 objects:v290 count:16];
       if (v20)
       {
         v21 = v20;
@@ -7458,13 +7458,13 @@ LABEL_34:
           {
             if (*v279 != v22)
             {
-              objc_enumerationMutation(v19);
+              objc_enumerationMutation(attendeesNotIncludingOrganizer);
             }
 
             [*(*(&v278 + 1) + 8 * i) setParticipantStatus:1];
           }
 
-          v21 = [v19 countByEnumeratingWithState:&v278 objects:v290 count:16];
+          v21 = [attendeesNotIncludingOrganizer countByEnumeratingWithState:&v278 objects:v290 count:16];
         }
 
         while (v21);
@@ -7472,33 +7472,33 @@ LABEL_34:
     }
 
     v240 = *MEMORY[0x1E6992968];
-    v24 = [(EKEvent *)v6 committedValueForKey:?];
-    v25 = [MEMORY[0x1E695DF00] date];
+    v24 = [(EKEvent *)selfCopy committedValueForKey:?];
+    date = [MEMORY[0x1E695DF00] date];
     v236 = v24;
-    v26 = [v24 compare:v25];
+    v26 = [v24 compare:date];
     v27 = MEMORY[0x1E6992648];
     if (v26 == -1)
     {
-      v37 = [(EKEvent *)v6 virtualConference];
+      virtualConference2 = [(EKEvent *)selfCopy virtualConference];
 
-      if (v37)
+      if (virtualConference2)
       {
-        if ([(EKObject *)v6 _hasChangesForKey:*v27])
+        if ([(EKObject *)selfCopy _hasChangesForKey:*v27])
         {
-          v231 = [(EKCalendarItem *)v6 hasRecurrenceRules];
+          hasRecurrenceRules = [(EKCalendarItem *)selfCopy hasRecurrenceRules];
           goto LABEL_50;
         }
 
-        if ([(EKObject *)v6 _hasChangesForKey:v240])
+        if ([(EKObject *)selfCopy _hasChangesForKey:v240])
         {
-          v55 = [(EKEvent *)v6 endDateUnadjustedForLegacyClients];
-          v231 = [v25 compare:v55] == -1;
+          endDateUnadjustedForLegacyClients = [(EKEvent *)selfCopy endDateUnadjustedForLegacyClients];
+          hasRecurrenceRules = [date compare:endDateUnadjustedForLegacyClients] == -1;
 
 LABEL_50:
-          v235 = v25;
-          if ([(EKObject *)v6 isPropertyUnavailable:*MEMORY[0x1E6992568]])
+          v235 = date;
+          if ([(EKObject *)selfCopy isPropertyUnavailable:*MEMORY[0x1E6992568]])
           {
-            if ([(EKObject *)v6 isPropertyUnavailable:*MEMORY[0x1E6992650]])
+            if ([(EKObject *)selfCopy isPropertyUnavailable:*MEMORY[0x1E6992650]])
             {
               goto LABEL_75;
             }
@@ -7512,12 +7512,12 @@ LABEL_50:
             v277 = 0u;
             v274 = 0u;
             v275 = 0u;
-            v29 = [(EKCalendarItem *)v6 attendees];
-            v30 = [v29 countByEnumeratingWithState:&v274 objects:v289 count:16];
+            attendees = [(EKCalendarItem *)selfCopy attendees];
+            v30 = [attendees countByEnumeratingWithState:&v274 objects:v289 count:16];
             if (v30)
             {
               v31 = v30;
-              v32 = v14;
+              v32 = spanCopy;
               v33 = *v275;
               v34 = *MEMORY[0x1E6992538];
               while (2)
@@ -7526,7 +7526,7 @@ LABEL_50:
                 {
                   if (*v275 != v33)
                   {
-                    objc_enumerationMutation(v29);
+                    objc_enumerationMutation(attendees);
                   }
 
                   v36 = *(*(&v274 + 1) + 8 * j);
@@ -7538,7 +7538,7 @@ LABEL_50:
                   }
                 }
 
-                v31 = [v29 countByEnumeratingWithState:&v274 objects:v289 count:16];
+                v31 = [attendees countByEnumeratingWithState:&v274 objects:v289 count:16];
                 if (v31)
                 {
                   continue;
@@ -7549,7 +7549,7 @@ LABEL_50:
 
               v28 = 0;
 LABEL_67:
-              v14 = v32;
+              spanCopy = v32;
               v27 = MEMORY[0x1E6992648];
             }
 
@@ -7558,7 +7558,7 @@ LABEL_67:
               v28 = 0;
             }
 
-            if ([(EKObject *)v6 isPropertyUnavailable:*MEMORY[0x1E6992650]])
+            if ([(EKObject *)selfCopy isPropertyUnavailable:*MEMORY[0x1E6992650]])
             {
               if (!v28)
               {
@@ -7569,97 +7569,97 @@ LABEL_67:
             }
           }
 
-          v38 = [(EKCalendarItem *)v6 selfAttendee];
-          v39 = [v38 _hasChangesForKey:*MEMORY[0x1E6992538]];
+          selfAttendee = [(EKCalendarItem *)selfCopy selfAttendee];
+          v39 = [selfAttendee _hasChangesForKey:*MEMORY[0x1E6992538]];
 
           if (v28 & 1) != 0 || (v39)
           {
 LABEL_74:
-            v40 = [MEMORY[0x1E695DF00] date];
-            [(EKEvent *)v6 setParticipationStatusModifiedDate:v40];
+            date2 = [MEMORY[0x1E695DF00] date];
+            [(EKEvent *)selfCopy setParticipationStatusModifiedDate:date2];
           }
 
 LABEL_75:
           v41 = *MEMORY[0x1E6992920];
-          if ([(EKObject *)v6 _hasChangesForKey:*MEMORY[0x1E6992920]])
+          if ([(EKObject *)selfCopy _hasChangesForKey:*MEMORY[0x1E6992920]])
           {
-            v42 = [(EKCalendarItem *)v6 calendar];
-            v43 = [v42 supportedEventAvailabilities];
+            calendar = [(EKCalendarItem *)selfCopy calendar];
+            supportedEventAvailabilities = [calendar supportedEventAvailabilities];
 
-            if (!v43)
+            if (!supportedEventAvailabilities)
             {
-              [(EKObject *)v6 setSingleChangedValue:&unk_1F1B6AC30 forKey:v41];
+              [(EKObject *)selfCopy setSingleChangedValue:&unk_1F1B6AC30 forKey:v41];
             }
           }
 
-          v230 = [(EKEvent *)v6 isMasterOrDetachedOccurrence];
-          v44 = [(EKEvent *)v6 originalOccurrenceStartDate];
-          v45 = [v44 date];
+          isMasterOrDetachedOccurrence = [(EKEvent *)selfCopy isMasterOrDetachedOccurrence];
+          originalOccurrenceStartDate = [(EKEvent *)selfCopy originalOccurrenceStartDate];
+          date3 = [originalOccurrenceStartDate date];
 
           v46 = *MEMORY[0x1E69926C8];
-          if ([(EKObject *)v6 _hasChangesForKey:*MEMORY[0x1E69926C8]]|| [(EKObject *)v6 _hasChangesForKey:v240]|| [(EKObject *)v6 _hasChangesForKey:*MEMORY[0x1E6992600]])
+          if ([(EKObject *)selfCopy _hasChangesForKey:*MEMORY[0x1E69926C8]]|| [(EKObject *)selfCopy _hasChangesForKey:v240]|| [(EKObject *)selfCopy _hasChangesForKey:*MEMORY[0x1E6992600]])
           {
-            v47 = [(EKEvent *)v6 recurrenceDate];
-            if (v47)
+            recurrenceDate = [(EKEvent *)selfCopy recurrenceDate];
+            if (recurrenceDate)
             {
               v273 = 0;
-              v48 = [(EKEvent *)v6 adjustedPersistedDateForDate:v47 withAdjustmentMode:1 pinMode:0 clientCalendarDate:&v273];
+              v48 = [(EKEvent *)selfCopy adjustedPersistedDateForDate:recurrenceDate withAdjustmentMode:1 pinMode:0 clientCalendarDate:&v273];
               v49 = v273;
-              v50 = [v49 date];
+              date4 = [v49 date];
 
-              v45 = v50;
+              date3 = date4;
             }
           }
 
-          v51 = [(EKObject *)v6 _hasChangesForKey:v46];
-          v52 = [MEMORY[0x1E695DEE8] currentCalendar];
-          v244 = [v52 copy];
+          v51 = [(EKObject *)selfCopy _hasChangesForKey:v46];
+          currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+          v244 = [currentCalendar copy];
 
           v229 = v51;
           if (v51)
           {
-            if (v14)
+            if (spanCopy)
             {
-              if (![(EKObject *)v6 _hasChangesForKey:*v27])
+              if (![(EKObject *)selfCopy _hasChangesForKey:*v27])
               {
-                v53 = [(EKEvent *)v6 startDate];
-                v54 = [v45 isSameDayAsDate:v53 inCalendar:v244];
+                startDate = [(EKEvent *)selfCopy startDate];
+                v54 = [date3 isSameDayAsDate:startDate inCalendar:v244];
 
                 if ((v54 & 1) == 0)
                 {
-                  if ([(EKCalendarItem *)v6 hasComplexRecurrence])
+                  if ([(EKCalendarItem *)selfCopy hasComplexRecurrence])
                   {
-                    if (![(EKEvent *)v6 _attemptToUpdateComplexRecurrenceRule])
+                    if (![(EKEvent *)selfCopy _attemptToUpdateComplexRecurrenceRule])
                     {
-                      v14 = 0;
+                      spanCopy = 0;
                     }
                   }
 
                   else
                   {
-                    [(EKCalendarItem *)v6 pinRecurrenceRuleToEndsOfFreqency];
+                    [(EKCalendarItem *)selfCopy pinRecurrenceRuleToEndsOfFreqency];
                   }
                 }
               }
             }
           }
 
-          v56 = [(EKObject *)v6 eventStore];
-          v239 = v45;
-          if ([v56 eventAccessLevel] == 1)
+          eventStore = [(EKObject *)selfCopy eventStore];
+          v239 = date3;
+          if ([eventStore eventAccessLevel] == 1)
           {
-            v57 = [(EKCalendarItem *)v6 calendar];
-            v58 = [v57 isNew];
+            calendar2 = [(EKCalendarItem *)selfCopy calendar];
+            isNew = [calendar2 isNew];
 
-            if (v58)
+            if (isNew)
             {
-              if (a4)
+              if (error)
               {
                 v59 = [MEMORY[0x1E696ABC0] errorWithEKErrorCode:61];
-                v60 = 0;
+                previouslySavedCopy = 0;
 LABEL_99:
                 v7 = 0;
-                *a4 = v59;
+                *error = v59;
 LABEL_119:
                 v67 = v236;
                 v68 = v237;
@@ -7668,7 +7668,7 @@ LABEL_293:
                 goto LABEL_10;
               }
 
-              v60 = 0;
+              previouslySavedCopy = 0;
               goto LABEL_118;
             }
           }
@@ -7678,20 +7678,20 @@ LABEL_293:
           }
 
           v238 = v46;
-          if ([(EKObject *)v6 isNew])
+          if ([(EKObject *)selfCopy isNew])
           {
-            v60 = 0;
+            previouslySavedCopy = 0;
           }
 
           else
           {
-            v61 = [(EKEvent *)v6 _changesRequireDetachOrSlice];
-            if ([(EKEvent *)v6 isDetached])
+            _changesRequireDetachOrSlice = [(EKEvent *)selfCopy _changesRequireDetachOrSlice];
+            if ([(EKEvent *)selfCopy isDetached])
             {
-              v62 = [objc_opt_class() _allowSlicingFromDetachedOccurrence];
-              if (v14 == 1)
+              _allowSlicingFromDetachedOccurrence = [objc_opt_class() _allowSlicingFromDetachedOccurrence];
+              if (spanCopy == 1)
               {
-                v63 = v62;
+                v63 = _allowSlicingFromDetachedOccurrence;
               }
 
               else
@@ -7701,7 +7701,7 @@ LABEL_293:
 
               if (v63)
               {
-                v64 = v14;
+                v64 = spanCopy;
               }
 
               else
@@ -7709,42 +7709,42 @@ LABEL_293:
                 v64 = 0;
               }
 
-              v65 = v64 == 1 && v61;
+              v65 = v64 == 1 && _changesRequireDetachOrSlice;
               if (v64)
               {
-                v66 = [(EKCalendarItem *)v6 originalItem];
-                v60 = [v66 previouslySavedCopy];
+                originalItem = [(EKCalendarItem *)selfCopy originalItem];
+                previouslySavedCopy = [originalItem previouslySavedCopy];
               }
 
               else
               {
-                v14 = 0;
-                v60 = 0;
+                spanCopy = 0;
+                previouslySavedCopy = 0;
               }
             }
 
             else
             {
-              v65 = v61 && [(EKCalendarItem *)v6 _hadRecurrenceRules];
-              v60 = [(EKEvent *)v6 previouslySavedCopy];
+              v65 = _changesRequireDetachOrSlice && [(EKCalendarItem *)selfCopy _hadRecurrenceRules];
+              previouslySavedCopy = [(EKEvent *)selfCopy previouslySavedCopy];
             }
 
-            if ([(EKObject *)v6 _hasChangesForKey:*MEMORY[0x1E6992570]])
+            if ([(EKObject *)selfCopy _hasChangesForKey:*MEMORY[0x1E6992570]])
             {
-              v241 = a3;
-              v69 = [(EKCalendarItem *)v6 calendar];
-              [(EKCalendarItem *)v6 moveToCalendar:v69];
+              spanCopy2 = span;
+              calendar3 = [(EKCalendarItem *)selfCopy calendar];
+              [(EKCalendarItem *)selfCopy moveToCalendar:calendar3];
 
-              if ([(EKEvent *)v6 isDetached])
+              if ([(EKEvent *)selfCopy isDetached])
               {
-                v70 = [(EKCalendarItem *)v6 originalItem];
-                v71 = [v70 calendar];
-                v72 = [(EKCalendarItem *)v6 calendar];
-                v73 = [v71 isEqual:v72];
+                originalItem2 = [(EKCalendarItem *)selfCopy originalItem];
+                calendar4 = [originalItem2 calendar];
+                calendar5 = [(EKCalendarItem *)selfCopy calendar];
+                v73 = [calendar4 isEqual:calendar5];
 
                 if ((v73 & 1) == 0)
                 {
-                  if (a4)
+                  if (error)
                   {
                     v59 = [MEMORY[0x1E696ABC0] errorWithEKErrorCode:37];
                     goto LABEL_99;
@@ -7757,14 +7757,14 @@ LABEL_118:
               }
 
               v245 = v65;
-              v74 = v60;
-              v227 = v14;
+              v74 = previouslySavedCopy;
+              v227 = spanCopy;
               v271 = 0u;
               v272 = 0u;
               v269 = 0u;
               v270 = 0u;
-              v75 = [(EKCalendarItem *)v6 detachedItems];
-              v76 = [v75 countByEnumeratingWithState:&v269 objects:v288 count:16];
+              detachedItems = [(EKCalendarItem *)selfCopy detachedItems];
+              v76 = [detachedItems countByEnumeratingWithState:&v269 objects:v288 count:16];
               if (v76)
               {
                 v77 = v76;
@@ -7775,29 +7775,29 @@ LABEL_118:
                   {
                     if (*v270 != v78)
                     {
-                      objc_enumerationMutation(v75);
+                      objc_enumerationMutation(detachedItems);
                     }
 
-                    v80 = [*(*(&v269 + 1) + 8 * k) calendar];
-                    v81 = [(EKCalendarItem *)v6 calendar];
-                    v82 = [v80 isEqual:v81];
+                    calendar6 = [*(*(&v269 + 1) + 8 * k) calendar];
+                    calendar7 = [(EKCalendarItem *)selfCopy calendar];
+                    v82 = [calendar6 isEqual:calendar7];
 
                     if ((v82 & 1) == 0)
                     {
-                      if (a4)
+                      if (error)
                       {
-                        *a4 = [MEMORY[0x1E696ABC0] errorWithEKErrorCode:37];
+                        *error = [MEMORY[0x1E696ABC0] errorWithEKErrorCode:37];
                       }
 
                       v7 = 0;
                       v67 = v236;
                       v68 = v237;
-                      v60 = v74;
+                      previouslySavedCopy = v74;
                       goto LABEL_293;
                     }
                   }
 
-                  v77 = [v75 countByEnumeratingWithState:&v269 objects:v288 count:16];
+                  v77 = [detachedItems countByEnumeratingWithState:&v269 objects:v288 count:16];
                   if (v77)
                   {
                     continue;
@@ -7807,281 +7807,281 @@ LABEL_118:
                 }
               }
 
-              v14 = v227;
-              v60 = v74;
-              a3 = v241;
+              spanCopy = v227;
+              previouslySavedCopy = v74;
+              span = spanCopy2;
               v65 = v245;
             }
 
-            if ([(EKEvent *)v6 _isParticipationStatusDirty]&& !v14)
+            if ([(EKEvent *)selfCopy _isParticipationStatusDirty]&& !spanCopy)
             {
-              if (-[EKCalendarItem hasRecurrenceRules](v6, "hasRecurrenceRules") && (-[EKEvent constraints](v6, "constraints"), v83 = objc_claimAutoreleasedReturnValue(), v84 = [v83 mustAcknowledgeMasterEvent], v83, v84))
+              if (-[EKCalendarItem hasRecurrenceRules](selfCopy, "hasRecurrenceRules") && (-[EKEvent constraints](selfCopy, "constraints"), v83 = objc_claimAutoreleasedReturnValue(), v84 = [v83 mustAcknowledgeMasterEvent], v83, v84))
               {
-                if ([(EKEvent *)v6 responseMustApplyToAll])
+                if ([(EKEvent *)selfCopy responseMustApplyToAll])
                 {
-                  v14 = 4;
+                  spanCopy = 4;
                 }
 
                 else
                 {
-                  v14 = 0;
+                  spanCopy = 0;
                 }
               }
 
               else
               {
-                v14 = 0;
+                spanCopy = 0;
               }
             }
 
-            v85 = [(EKEvent *)v6 constraints];
-            v86 = [v85 snoozeAlarmRequiresDetach];
+            constraints = [(EKEvent *)selfCopy constraints];
+            snoozeAlarmRequiresDetach = [constraints snoozeAlarmRequiresDetach];
 
-            if (v86 && [(EKEvent *)v6 requiresDetachDueToSnoozedAlarm])
+            if (snoozeAlarmRequiresDetach && [(EKEvent *)selfCopy requiresDetachDueToSnoozedAlarm])
             {
-              v14 = 0;
+              spanCopy = 0;
             }
 
-            if ([(EKObject *)v6 _hasChangesForKey:v238]|| [(EKObject *)v6 _hasChangesForKey:v240]|| [(EKObject *)v6 _hasChangesForKey:*MEMORY[0x1E6992600]])
+            if ([(EKObject *)selfCopy _hasChangesForKey:v238]|| [(EKObject *)selfCopy _hasChangesForKey:v240]|| [(EKObject *)selfCopy _hasChangesForKey:*MEMORY[0x1E6992600]])
             {
-              [(EKCalendarItem *)v6 removeAllSnoozedAlarms];
+              [(EKCalendarItem *)selfCopy removeAllSnoozedAlarms];
             }
 
-            else if ([(EKCalendarItem *)v6 isAlarmAcknowledgedPropertyDirty])
+            else if ([(EKCalendarItem *)selfCopy isAlarmAcknowledgedPropertyDirty])
             {
-              [(EKCalendarItem *)v6 removeAcknowledgedSnoozedAlarms];
+              [(EKCalendarItem *)selfCopy removeAcknowledgedSnoozedAlarms];
             }
 
-            if ([(EKEvent *)v6 isFirstOccurrence]&& v14 == 1)
+            if ([(EKEvent *)selfCopy isFirstOccurrence]&& spanCopy == 1)
             {
-              v14 = 4;
+              spanCopy = 4;
             }
 
-            if (v14 != 4 && v65)
+            if (spanCopy != 4 && v65)
             {
-              v87 = [(EKEvent *)v6 originalOccurrenceStartDate];
-              v88 = [v87 date];
+              originalOccurrenceStartDate2 = [(EKEvent *)selfCopy originalOccurrenceStartDate];
+              date5 = [originalOccurrenceStartDate2 date];
 
-              v89 = [(EKEvent *)v6 occurrenceStartDate];
-              v90 = [v89 date];
+              occurrenceStartDate = [(EKEvent *)selfCopy occurrenceStartDate];
+              date6 = [occurrenceStartDate date];
 
-              if ([(EKEvent *)v6 isFloating])
+              if ([(EKEvent *)selfCopy isFloating])
               {
-                v91 = [(EKObject *)v6 eventStore];
-                v92 = [v91 timeZone];
-                v93 = [v88 dateInTimeZone:0 fromTimeZone:v92];
+                eventStore2 = [(EKObject *)selfCopy eventStore];
+                timeZone = [eventStore2 timeZone];
+                v93 = [date5 dateInTimeZone:0 fromTimeZone:timeZone];
 
-                v94 = [(EKObject *)v6 eventStore];
-                v95 = [v94 timeZone];
-                v96 = [v90 dateInTimeZone:0 fromTimeZone:v95];
+                eventStore3 = [(EKObject *)selfCopy eventStore];
+                timeZone2 = [eventStore3 timeZone];
+                v96 = [date6 dateInTimeZone:0 fromTimeZone:timeZone2];
 
-                v88 = v93;
-                v90 = v96;
+                date5 = v93;
+                date6 = v96;
               }
 
-              [(EKEvent *)v6 _detachOrSliceWithSpan:v14 withOriginalStartDate:v88 newStartDate:v90];
+              [(EKEvent *)selfCopy _detachOrSliceWithSpan:spanCopy withOriginalStartDate:date5 newStartDate:date6];
             }
 
-            if ([(EKEvent *)v6 requiresDetachDueToSnoozedAlarm])
+            if ([(EKEvent *)selfCopy requiresDetachDueToSnoozedAlarm])
             {
-              [(EKEvent *)v6 setRequiresDetachDueToSnoozedAlarm:0];
+              [(EKEvent *)selfCopy setRequiresDetachDueToSnoozedAlarm:0];
             }
 
-            else if (([(EKCalendarItem *)v6 modifiedProperties]& 0x80) != 0)
+            else if (([(EKCalendarItem *)selfCopy modifiedProperties]& 0x80) != 0)
             {
-              [(EKCalendarItem *)v6 setModifiedProperties:[(EKCalendarItem *)v6 modifiedProperties]& 0xFFFFFF7FLL];
+              [(EKCalendarItem *)selfCopy setModifiedProperties:[(EKCalendarItem *)selfCopy modifiedProperties]& 0xFFFFFF7FLL];
             }
 
-            [(EKCalendarItem *)v6 _updateModifiedAlarmByAcknowledging];
-            if (([(EKCalendarItem *)v6 modifiedProperties]& 0x200) != 0 && ![(EKObject *)v6 _hasChangesForKey:*MEMORY[0x1E6992990]])
+            [(EKCalendarItem *)selfCopy _updateModifiedAlarmByAcknowledging];
+            if (([(EKCalendarItem *)selfCopy modifiedProperties]& 0x200) != 0 && ![(EKObject *)selfCopy _hasChangesForKey:*MEMORY[0x1E6992990]])
             {
-              [(EKCalendarItem *)v6 setModifiedProperties:[(EKCalendarItem *)v6 modifiedProperties]& 0xFFFFFDFFLL];
+              [(EKCalendarItem *)selfCopy setModifiedProperties:[(EKCalendarItem *)selfCopy modifiedProperties]& 0xFFFFFDFFLL];
             }
           }
 
-          [(EKCalendarItem *)v6 addOrganizerAndSelfAttendeeForNewInvitation];
-          [(EKCalendarItem *)v6 removeLastExtraneousOrganizerAndSelfAttendee];
-          [(EKEvent *)v6 _updateUUIDForNewParticipants];
-          v97 = [(EKEvent *)v6 constraints];
-          v98 = [v97 requiresOccurrencesConformToRecurrenceRule];
+          [(EKCalendarItem *)selfCopy addOrganizerAndSelfAttendeeForNewInvitation];
+          [(EKCalendarItem *)selfCopy removeLastExtraneousOrganizerAndSelfAttendee];
+          [(EKEvent *)selfCopy _updateUUIDForNewParticipants];
+          constraints2 = [(EKEvent *)selfCopy constraints];
+          requiresOccurrencesConformToRecurrenceRule = [constraints2 requiresOccurrencesConformToRecurrenceRule];
 
-          if (v98)
+          if (requiresOccurrencesConformToRecurrenceRule)
           {
-            if ([(EKEvent *)v6 _isSimpleRepeatingEvent])
+            if ([(EKEvent *)selfCopy _isSimpleRepeatingEvent])
             {
-              v99 = [(EKCalendarItem *)v6 recurrenceRules];
-              v100 = [(EKEvent *)v6 conformsToRecurrenceRules:v99];
+              recurrenceRules = [(EKCalendarItem *)selfCopy recurrenceRules];
+              v100 = [(EKEvent *)selfCopy conformsToRecurrenceRules:recurrenceRules];
 
               if (!v100)
               {
-                if (v14)
+                if (spanCopy)
                 {
-                  v101 = [(EKCalendarItem *)v6 recurrenceRules];
-                  v102 = [v101 objectAtIndexedSubscript:0];
+                  recurrenceRules2 = [(EKCalendarItem *)selfCopy recurrenceRules];
+                  v102 = [recurrenceRules2 objectAtIndexedSubscript:0];
 
-                  v103 = [v102 frequency];
-                  v104 = [v102 interval];
-                  v105 = [v102 recurrenceEnd];
-                  v106 = [EKRecurrenceRule recurrenceRuleWithType:v103 interval:v104 end:v105];
+                  frequency = [v102 frequency];
+                  interval = [v102 interval];
+                  recurrenceEnd = [v102 recurrenceEnd];
+                  v106 = [EKRecurrenceRule recurrenceRuleWithType:frequency interval:interval end:recurrenceEnd];
                   v287 = v106;
                   v107 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v287 count:1];
-                  [(EKEvent *)v6 setRecurrenceRules:v107];
+                  [(EKEvent *)selfCopy setRecurrenceRules:v107];
                 }
               }
             }
           }
 
-          if ([(EKEvent *)v6 _isParticipationStatusDirty])
+          if ([(EKEvent *)selfCopy _isParticipationStatusDirty])
           {
-            v108 = [(EKEvent *)v6 constraints];
-            v109 = [v108 mustAcknowledgeMasterEvent];
+            constraints3 = [(EKEvent *)selfCopy constraints];
+            mustAcknowledgeMasterEvent = [constraints3 mustAcknowledgeMasterEvent];
 
-            if (v109)
+            if (mustAcknowledgeMasterEvent)
             {
-              if ([(EKEvent *)v6 isDetached]&& v14 == 4)
+              if ([(EKEvent *)selfCopy isDetached]&& spanCopy == 4)
               {
-                v110 = [(EKCalendarItem *)v6 originalItem];
-                if (v110)
+                originalItem3 = [(EKCalendarItem *)selfCopy originalItem];
+                if (originalItem3)
                 {
-                  v111 = [(EKEvent *)v6 participationStatus];
-                  if (v111 == 3)
+                  participationStatus = [(EKEvent *)selfCopy participationStatus];
+                  if (participationStatus == 3)
                   {
                     v112 = 4;
                   }
 
                   else
                   {
-                    v112 = v111;
+                    v112 = participationStatus;
                   }
 
-                  [v110 setParticipationStatus:v112];
+                  [originalItem3 setParticipationStatus:v112];
                 }
               }
             }
           }
 
           v113 = *MEMORY[0x1E6992980];
-          if ([(EKObject *)v6 _hasChangesForKey:*MEMORY[0x1E6992980]])
+          if ([(EKObject *)selfCopy _hasChangesForKey:*MEMORY[0x1E6992980]])
           {
-            v114 = [(EKEvent *)v6 image];
-            v115 = [(EKCalendarItem *)v6 calendar];
-            [v114 saveInCalendar:v115];
+            image = [(EKEvent *)selfCopy image];
+            calendar8 = [(EKCalendarItem *)selfCopy calendar];
+            [image saveInCalendar:calendar8];
 
-            v116 = [(EKObject *)v6 changeSet];
-            v117 = [(EKEvent *)v6 image];
-            v118 = [v117 backingObject];
-            [v116 forceChangeValue:v118 forKey:v113];
+            changeSet = [(EKObject *)selfCopy changeSet];
+            image2 = [(EKEvent *)selfCopy image];
+            backingObject = [image2 backingObject];
+            [changeSet forceChangeValue:backingObject forKey:v113];
           }
 
-          if ([(EKEvent *)v6 isDetached])
+          if ([(EKEvent *)selfCopy isDetached])
           {
             v119 = *MEMORY[0x1E6992648];
-            if ([(EKObject *)v6 _hasChangesForKey:*MEMORY[0x1E6992648]])
+            if ([(EKObject *)selfCopy _hasChangesForKey:*MEMORY[0x1E6992648]])
             {
-              v120 = [(EKCalendarItem *)v6 recurrenceRules];
-              v121 = [(EKCalendarItem *)v6 originalItem];
-              [v121 setRecurrenceRules:v120];
+              recurrenceRules3 = [(EKCalendarItem *)selfCopy recurrenceRules];
+              originalItem4 = [(EKCalendarItem *)selfCopy originalItem];
+              [originalItem4 setRecurrenceRules:recurrenceRules3];
 
-              v122 = [(EKCalendarItem *)v6 originalItem];
-              LOBYTE(v121) = [v122 hasRecurrenceRules];
+              originalItem5 = [(EKCalendarItem *)selfCopy originalItem];
+              LOBYTE(originalItem4) = [originalItem5 hasRecurrenceRules];
 
-              v123 = [(EKCalendarItem *)v6 originalItem];
-              v124 = v123;
-              if (v121)
+              originalItem6 = [(EKCalendarItem *)selfCopy originalItem];
+              originalItem7 = originalItem6;
+              if (originalItem4)
               {
-                [v123 _filterExceptionDatesAndDetachments];
+                [originalItem6 _filterExceptionDatesAndDetachments];
               }
 
               else
               {
-                [v123 setExceptionDates:0];
+                [originalItem6 setExceptionDates:0];
 
-                v124 = [(EKCalendarItem *)v6 originalItem];
-                [v124 setDetachedItems:0];
+                originalItem7 = [(EKCalendarItem *)selfCopy originalItem];
+                [originalItem7 setDetachedItems:0];
               }
 
-              v125 = [(EKCalendarItem *)v6 originalItem];
-              [v125 _updateModifiedProperties];
+              originalItem8 = [(EKCalendarItem *)selfCopy originalItem];
+              [originalItem8 _updateModifiedProperties];
 
-              v126 = [(EKCalendarItem *)v6 originalItem];
-              [v126 updatePersistentValueForKeyIfNeeded:v119];
+              originalItem9 = [(EKCalendarItem *)selfCopy originalItem];
+              [originalItem9 updatePersistentValueForKeyIfNeeded:v119];
 
-              v127 = [(EKCalendarItem *)v6 originalItem];
-              [(EKObject *)v6 addCoCommitObject:v127];
+              originalItem10 = [(EKCalendarItem *)selfCopy originalItem];
+              [(EKObject *)selfCopy addCoCommitObject:originalItem10];
 
-              v128 = [(EKObject *)v6 changeSet];
+              changeSet2 = [(EKObject *)selfCopy changeSet];
               v286 = v119;
               v129 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v286 count:1];
-              [v128 rollbackChangesForKeys:v129];
+              [changeSet2 rollbackChangesForKeys:v129];
 
-              [(EKObject *)v6 emptyMeltedCacheForKey:v119];
+              [(EKObject *)selfCopy emptyMeltedCacheForKey:v119];
             }
           }
 
-          v132 = a3 != 3 && v14 != 0 && v60 != 0;
-          v133 = [(EKCalendarItem *)v6 timeZone];
-          [v244 setTimeZone:v133];
+          v132 = span != 3 && spanCopy != 0 && previouslySavedCopy != 0;
+          timeZone3 = [(EKCalendarItem *)selfCopy timeZone];
+          [v244 setTimeZone:timeZone3];
 
           v134 = MEMORY[0x1E6992598];
-          v228 = v14;
-          v234 = v60;
+          v228 = spanCopy;
+          v234 = previouslySavedCopy;
           if (v132)
           {
             v135 = 0x1E695D000uLL;
             v136 = objc_opt_new();
-            v137 = [(EKCalendarItem *)v6 originalItem];
-            v138 = v137;
-            if (v137)
+            originalItem11 = [(EKCalendarItem *)selfCopy originalItem];
+            v138 = originalItem11;
+            if (originalItem11)
             {
-              v139 = v137;
+              v139 = originalItem11;
             }
 
             else
             {
-              v139 = v6;
+              v139 = selfCopy;
             }
 
             v140 = v139;
 
-            v141 = [v140 singleRecurrenceRule];
-            v142 = [v141 recurrenceEnd];
+            singleRecurrenceRule = [v140 singleRecurrenceRule];
+            recurrenceEnd2 = [singleRecurrenceRule recurrenceEnd];
 
             v243 = v136;
             v226 = v140;
-            v225 = v142;
-            if (v142)
+            v225 = recurrenceEnd2;
+            if (recurrenceEnd2)
             {
-              if ([v142 occurrenceCount])
+              if ([recurrenceEnd2 occurrenceCount])
               {
                 v143 = objc_alloc_init(EKRecurrenceGenerator);
-                v144 = [v140 singleRecurrenceRule];
+                singleRecurrenceRule2 = [v140 singleRecurrenceRule];
                 [v226 startDate];
                 v146 = v145 = v134;
-                v147 = [MEMORY[0x1E695DF00] distantFuture];
-                v148 = [(EKEvent *)v6 effectiveTimeZone];
-                v149 = v142;
-                v150 = v148;
+                distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+                effectiveTimeZone = [(EKEvent *)selfCopy effectiveTimeZone];
+                v149 = recurrenceEnd2;
+                v150 = effectiveTimeZone;
                 LOBYTE(v224) = 0;
-                v151 = a3;
-                v152 = -[EKRecurrenceGenerator copyOccurrenceDatesWithEKEvent:recurrenceRule:startDate:endDate:timeZone:exceptionDates:limit:adjustDatesForAllDayEvents:](v143, "copyOccurrenceDatesWithEKEvent:recurrenceRule:startDate:endDate:timeZone:exceptionDates:limit:adjustDatesForAllDayEvents:", v226, v144, v146, v147, v148, 0, [v149 occurrenceCount], v224);
+                spanCopy3 = span;
+                v152 = -[EKRecurrenceGenerator copyOccurrenceDatesWithEKEvent:recurrenceRule:startDate:endDate:timeZone:exceptionDates:limit:adjustDatesForAllDayEvents:](v143, "copyOccurrenceDatesWithEKEvent:recurrenceRule:startDate:endDate:timeZone:exceptionDates:limit:adjustDatesForAllDayEvents:", v226, singleRecurrenceRule2, v146, distantFuture, effectiveTimeZone, 0, [v149 occurrenceCount], v224);
 
                 v136 = v243;
                 v134 = v145;
                 v135 = 0x1E695D000;
 
                 v140 = v226;
-                v142 = [v152 lastObject];
+                recurrenceEnd2 = [v152 lastObject];
 
-                a3 = v151;
+                span = spanCopy3;
               }
 
               else
               {
-                v142 = [v142 endDate];
+                recurrenceEnd2 = [recurrenceEnd2 endDate];
               }
             }
 
-            v242 = a3;
+            spanCopy4 = span;
             if (v228 == 4)
             {
               [v140 emptyMeltedCacheForKey:*v134];
@@ -8091,8 +8091,8 @@ LABEL_118:
             v268 = 0u;
             v265 = 0u;
             v266 = 0u;
-            v153 = [v140 detachedItems];
-            v154 = [v153 countByEnumeratingWithState:&v265 objects:v285 count:16];
+            detachedItems2 = [v140 detachedItems];
+            v154 = [detachedItems2 countByEnumeratingWithState:&v265 objects:v285 count:16];
             if (v154)
             {
               v155 = v154;
@@ -8103,14 +8103,14 @@ LABEL_118:
                 {
                   if (*v266 != v156)
                   {
-                    objc_enumerationMutation(v153);
+                    objc_enumerationMutation(detachedItems2);
                   }
 
                   v158 = *(*(&v265 + 1) + 8 * m);
-                  if (v142)
+                  if (recurrenceEnd2)
                   {
-                    v159 = [*(*(&v265 + 1) + 8 * m) startDate];
-                    v160 = [v159 isBeforeOrSameDayAsDate:v142 inCalendar:v244];
+                    startDate2 = [*(*(&v265 + 1) + 8 * m) startDate];
+                    v160 = [startDate2 isBeforeOrSameDayAsDate:recurrenceEnd2 inCalendar:v244];
 
                     v136 = v243;
                     if (!v160)
@@ -8122,24 +8122,24 @@ LABEL_118:
                   [v136 addObject:v158];
                 }
 
-                v155 = [v153 countByEnumeratingWithState:&v265 objects:v285 count:16];
+                v155 = [detachedItems2 countByEnumeratingWithState:&v265 objects:v285 count:16];
               }
 
               while (v155);
             }
 
-            if ([(EKEvent *)v6 isDetached])
+            if ([(EKEvent *)selfCopy isDetached])
             {
-              v161 = [(EKCalendarItem *)v6 originalItem];
-              [v136 addObject:v161];
+              originalItem12 = [(EKCalendarItem *)selfCopy originalItem];
+              [v136 addObject:originalItem12];
             }
 
-            v162 = [(EKEvent *)v6 startDate];
-            v233 = [v244 components:254 fromDate:v239 toDate:v162 options:0];
+            startDate3 = [(EKEvent *)selfCopy startDate];
+            v233 = [v244 components:254 fromDate:v239 toDate:startDate3 options:0];
 
-            v163 = [(EKEvent *)v6 occurrenceStartDate];
-            v164 = [(EKEvent *)v6 occurrenceEndDate];
-            v232 = [(EKEvent *)v6 _calculateDurationWithStart:v163 end:v164 allDay:[(EKEvent *)v6 occurrenceIsAllDay]];
+            occurrenceStartDate2 = [(EKEvent *)selfCopy occurrenceStartDate];
+            occurrenceEndDate = [(EKEvent *)selfCopy occurrenceEndDate];
+            v232 = [(EKEvent *)selfCopy _calculateDurationWithStart:occurrenceStartDate2 end:occurrenceEndDate allDay:[(EKEvent *)selfCopy occurrenceIsAllDay]];
 
             v165 = *(v135 + 3952);
             v246 = objc_opt_new();
@@ -8147,11 +8147,11 @@ LABEL_118:
             v262 = 0u;
             v263 = 0u;
             v264 = 0u;
-            v166 = [(EKObject *)v6 eventStore];
-            v167 = [v166 eventsWithSameRecurrenceSetAsEvent:v6];
+            eventStore4 = [(EKObject *)selfCopy eventStore];
+            v167 = [eventStore4 eventsWithSameRecurrenceSetAsEvent:selfCopy];
 
             v168 = [v167 countByEnumeratingWithState:&v261 objects:v284 count:16];
-            v169 = v242;
+            v169 = spanCopy4;
             if (v168)
             {
               v170 = v168;
@@ -8171,13 +8171,13 @@ LABEL_118:
                     goto LABEL_228;
                   }
 
-                  v174 = [*(*(&v261 + 1) + 8 * n) startDate];
-                  [(EKEvent *)v6 startDate];
-                  v176 = v175 = v6;
-                  v177 = [v174 isAfterDate:v176];
+                  startDate4 = [*(*(&v261 + 1) + 8 * n) startDate];
+                  [(EKEvent *)selfCopy startDate];
+                  v176 = v175 = selfCopy;
+                  v177 = [startDate4 isAfterDate:v176];
 
-                  v6 = v175;
-                  v169 = v242;
+                  selfCopy = v175;
+                  v169 = spanCopy4;
                   if (v177)
                   {
 LABEL_228:
@@ -8204,42 +8204,42 @@ LABEL_228:
             v233 = 0;
           }
 
-          [(EKObject *)v6 insertPersistentObjectIfNeeded];
-          [(EKEvent *)v6 _willSave];
-          [(EKEvent *)v6 _updateVideoConferenceOnlyModified];
-          v178 = [(EKObject *)v6 eventStore];
-          v179 = [v178 allowsIntegrationModifications];
+          [(EKObject *)selfCopy insertPersistentObjectIfNeeded];
+          [(EKEvent *)selfCopy _willSave];
+          [(EKEvent *)selfCopy _updateVideoConferenceOnlyModified];
+          eventStore5 = [(EKObject *)selfCopy eventStore];
+          allowsIntegrationModifications = [eventStore5 allowsIntegrationModifications];
 
-          if ((v179 & 1) == 0 && [(EKEvent *)v6 isOrWasIntegrationEvent])
+          if ((allowsIntegrationModifications & 1) == 0 && [(EKEvent *)selfCopy isOrWasIntegrationEvent])
           {
-            v180 = [(EKObject *)v6 eventStore];
-            v181 = [(EKObject *)v6 backingObject];
-            [v180 _markObjectUncommittable:v181];
+            eventStore6 = [(EKObject *)selfCopy eventStore];
+            backingObject2 = [(EKObject *)selfCopy backingObject];
+            [eventStore6 _markObjectUncommittable:backingObject2];
 
-            v182 = [(EKObject *)v6 persistentObject];
-            if (![v182 isNew])
+            persistentObject = [(EKObject *)selfCopy persistentObject];
+            if (![persistentObject isNew])
             {
 LABEL_242:
 
               goto LABEL_243;
             }
 
-            v183 = [(EKEvent *)v6 isDetached];
+            isDetached = [(EKEvent *)selfCopy isDetached];
 
-            if (!v183)
+            if (!isDetached)
             {
               v184 = v134;
-              v182 = [(EKEvent *)v6 committedValueForKey:*MEMORY[0x1E6992700]];
-              v185 = [(EKCalendarItem *)v6 uniqueID];
-              v186 = v185;
-              if (v182 && v185 && ([v185 isEqualToString:v182] & 1) == 0 && !-[EKEvent isDetached](v6, "isDetached"))
+              persistentObject = [(EKEvent *)selfCopy committedValueForKey:*MEMORY[0x1E6992700]];
+              uniqueID = [(EKCalendarItem *)selfCopy uniqueID];
+              v186 = uniqueID;
+              if (persistentObject && uniqueID && ([uniqueID isEqualToString:persistentObject] & 1) == 0 && !-[EKEvent isDetached](selfCopy, "isDetached"))
               {
-                v187 = [(EKObject *)v6 eventStore];
-                [v187 pendingIntegrationEventChangedIdentifierFrom:v182 to:v186];
+                eventStore7 = [(EKObject *)selfCopy eventStore];
+                [eventStore7 pendingIntegrationEventChangedIdentifierFrom:persistentObject to:v186];
               }
 
-              v188 = [(EKObject *)v6 eventStore];
-              [v188 addPendingIntegrationEvent:v6];
+              eventStore8 = [(EKObject *)selfCopy eventStore];
+              [eventStore8 addPendingIntegrationEvent:selfCopy];
 
               v134 = v184;
               goto LABEL_242;
@@ -8255,23 +8255,23 @@ LABEL_243:
           v194 = *MEMORY[0x1E6992648];
           v195 = v190;
           v196 = [MEMORY[0x1E695DFD8] setWithObjects:{v238, v240, *MEMORY[0x1E69925A0], v190, *MEMORY[0x1E6992630], *MEMORY[0x1E6992618], *MEMORY[0x1E69929A8], *MEMORY[0x1E6992648], 0}];
-          [(EKObject *)v6 updatePersistentObjectSkippingProperties:v196];
+          [(EKObject *)selfCopy updatePersistentObjectSkippingProperties:v196];
 
           if (v132)
           {
             if ([v243 count])
             {
-              [(EKEvent *)v6 _propagateChangesToDetachedEvents:v243 originalItemBeforeSave:v234 startDateOffset:v233 duration:v232 calendar:v244];
+              [(EKEvent *)selfCopy _propagateChangesToDetachedEvents:v243 originalItemBeforeSave:v234 startDateOffset:v233 duration:v232 calendar:v244];
             }
 
             if ([v246 count])
             {
-              [(EKEvent *)v6 _updateRecurrenceEndDateForEvent:v6 calendar:v244 withOffset:v233];
+              [(EKEvent *)selfCopy _updateRecurrenceEndDateForEvent:selfCopy calendar:v244 withOffset:v233];
               v255[0] = MEMORY[0x1E69E9820];
               v255[1] = 3221225472;
               v255[2] = __30__EKEvent_saveWithSpan_error___block_invoke;
               v255[3] = &unk_1E77FF078;
-              v255[4] = v6;
+              v255[4] = selfCopy;
               v256 = v234;
               v257 = v233;
               v258 = v232;
@@ -8282,74 +8282,74 @@ LABEL_243:
           }
 
           v197 = *MEMORY[0x1E6992600];
-          if ([(EKObject *)v6 _hasChangesForKey:*MEMORY[0x1E6992600]])
+          if ([(EKObject *)selfCopy _hasChangesForKey:*MEMORY[0x1E6992600]])
           {
-            v198 = v6;
-            v199 = [MEMORY[0x1E696AD98] numberWithBool:{-[EKEvent occurrenceIsAllDay](v6, "occurrenceIsAllDay")}];
+            v198 = selfCopy;
+            v199 = [MEMORY[0x1E696AD98] numberWithBool:{-[EKEvent occurrenceIsAllDay](selfCopy, "occurrenceIsAllDay")}];
             [(EKEvent *)v198 setOriginalOccurrenceIsAllDay:v199];
 
-            v6 = v198;
+            selfCopy = v198;
           }
 
-          if (v229 && ![(EKObject *)v6 isNew]&& v228)
+          if (v229 && ![(EKObject *)selfCopy isNew]&& v228)
           {
-            [(EKEvent *)v6 _clearExceptionDatesAndUpdateDetachedOriginalDates:v6];
+            [(EKEvent *)selfCopy _clearExceptionDatesAndUpdateDetachedOriginalDates:selfCopy];
           }
 
-          else if ([(EKObject *)v6 _hasChangesForKey:v194])
+          else if ([(EKObject *)selfCopy _hasChangesForKey:v194])
           {
-            if ([(EKCalendarItem *)v6 hasRecurrenceRules])
+            if ([(EKCalendarItem *)selfCopy hasRecurrenceRules])
             {
-              [(EKEvent *)v6 _filterExceptionDatesAndDetachments];
+              [(EKEvent *)selfCopy _filterExceptionDatesAndDetachments];
             }
 
             else
             {
-              [(EKCalendarItem *)v6 setExceptionDates:0];
-              [(EKCalendarItem *)v6 setDetachedItems:0];
+              [(EKCalendarItem *)selfCopy setExceptionDates:0];
+              [(EKCalendarItem *)selfCopy setDetachedItems:0];
             }
           }
 
-          [(EKObject *)v6 updatePersistentValueForKeyIfNeeded:v193];
-          if (!v230 && [(EKCalendarItem *)v6 hasRecurrenceRules]&& v228 == 4)
+          [(EKObject *)selfCopy updatePersistentValueForKeyIfNeeded:v193];
+          if (!isMasterOrDetachedOccurrence && [(EKCalendarItem *)selfCopy hasRecurrenceRules]&& v228 == 4)
           {
-            [(EKEvent *)v6 _applyTimeChangesToMaster];
+            [(EKEvent *)selfCopy _applyTimeChangesToMaster];
           }
 
           else
           {
-            [(EKObject *)v6 updatePersistentValueForKeyIfNeeded:v238];
-            [(EKObject *)v6 updatePersistentValueForKeyIfNeeded:v240];
+            [(EKObject *)selfCopy updatePersistentValueForKeyIfNeeded:v238];
+            [(EKObject *)selfCopy updatePersistentValueForKeyIfNeeded:v240];
           }
 
-          [(EKObject *)v6 updatePersistentValueForKeyIfNeeded:v189];
-          [(EKObject *)v6 updatePersistentValueForKeyIfNeeded:v191];
-          [(EKEvent *)v6 _updateModifiedPropertiesForThisEventAndAllDetachments];
-          v200 = [(EKCalendarItem *)v6 originalItem];
-          v201 = v200;
-          if (v200)
+          [(EKObject *)selfCopy updatePersistentValueForKeyIfNeeded:v189];
+          [(EKObject *)selfCopy updatePersistentValueForKeyIfNeeded:v191];
+          [(EKEvent *)selfCopy _updateModifiedPropertiesForThisEventAndAllDetachments];
+          originalItem13 = [(EKCalendarItem *)selfCopy originalItem];
+          v201 = originalItem13;
+          if (originalItem13)
           {
-            v202 = v200;
+            v202 = originalItem13;
           }
 
           else
           {
-            v202 = v6;
+            v202 = selfCopy;
           }
 
           v203 = v202;
 
           [(EKObject *)v203 updatePersistentValueForKeyIfNeeded:v195];
-          v204 = v6;
-          if ([(EKObject *)v6 _hasChangesForKey:v197]|| [(EKObject *)v6 _hasChangesForKey:v194])
+          v204 = selfCopy;
+          if ([(EKObject *)selfCopy _hasChangesForKey:v197]|| [(EKObject *)selfCopy _hasChangesForKey:v194])
           {
-            if ([(EKEvent *)v6 isAllDay])
+            if ([(EKEvent *)selfCopy isAllDay])
             {
-              v205 = [(EKCalendarItem *)v6 recurrenceRules];
-              v206 = [v205 lastObject];
-              v207 = [v206 endDate];
+              recurrenceRules4 = [(EKCalendarItem *)selfCopy recurrenceRules];
+              lastObject = [recurrenceRules4 lastObject];
+              endDate = [lastObject endDate];
 
-              if (v207)
+              if (endDate)
               {
                 [(EKEvent *)v204 _updateRecurrenceEndDatesWithAdjustmentMode:0];
               }
@@ -8359,16 +8359,16 @@ LABEL_243:
           [(EKObject *)v203 updatePersistentValueForKeyIfNeeded:v194];
           [(EKObject *)v204 updatePersistentValueForKeyIfNeeded:v192];
           [(EKEvent *)v204 setPredictedLocationFrozen:0];
-          v208 = [(EKEvent *)v204 occurrenceStartDate];
-          [(EKEvent *)v204 setOriginalOccurrenceStartDate:v208];
+          occurrenceStartDate3 = [(EKEvent *)v204 occurrenceStartDate];
+          [(EKEvent *)v204 setOriginalOccurrenceStartDate:occurrenceStartDate3];
 
-          v209 = [(EKEvent *)v204 occurrenceEndDate];
-          [(EKEvent *)v204 setOriginalOccurrenceEndDate:v209];
+          occurrenceEndDate2 = [(EKEvent *)v204 occurrenceEndDate];
+          [(EKEvent *)v204 setOriginalOccurrenceEndDate:occurrenceEndDate2];
 
           [(EKEvent *)v204 _invalidateRecurrenceIdentifier];
           v68 = v237;
           v210 = v204;
-          v60 = v234;
+          previouslySavedCopy = v234;
           if (v203 == v204)
           {
             [(EKObject *)v204 cachedMeltedObjectsForMultiValueKey:v195];
@@ -8415,8 +8415,8 @@ LABEL_243:
             v250 = 0u;
             v247 = 0u;
             v248 = 0u;
-            v217 = [v237 joinMethods];
-            v218 = [v217 countByEnumeratingWithState:&v247 objects:v282 count:16];
+            joinMethods = [v237 joinMethods];
+            v218 = [joinMethods countByEnumeratingWithState:&v247 objects:v282 count:16];
             if (v218)
             {
               v219 = v218;
@@ -8427,21 +8427,21 @@ LABEL_243:
                 {
                   if (*v248 != v220)
                   {
-                    objc_enumerationMutation(v217);
+                    objc_enumerationMutation(joinMethods);
                   }
 
                   v222 = [*(*(&v247 + 1) + 8 * jj) URL];
                   [(EKEvent *)v210 invalidateVirtualConferenceURLIfNeededOnCommit:v222];
                 }
 
-                v219 = [v217 countByEnumeratingWithState:&v247 objects:v282 count:16];
+                v219 = [joinMethods countByEnumeratingWithState:&v247 objects:v282 count:16];
               }
 
               while (v219);
             }
           }
 
-          if (v231)
+          if (hasRecurrenceRules)
           {
             v223 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:31622400.0];
             [(EKEvent *)v210 _extendConferenceURLExpirationDateToDate:v223];
@@ -8454,13 +8454,13 @@ LABEL_243:
       }
     }
 
-    v231 = 0;
+    hasRecurrenceRules = 0;
     goto LABEL_50;
   }
 
-  if (a3 && a3 != 3)
+  if (span && span != 3)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_34;
     }
@@ -8472,7 +8472,7 @@ LABEL_243:
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return [(EKEvent *)v6 _saveUndetachedOccurrenceWithError:a4];
+  return [(EKEvent *)selfCopy _saveUndetachedOccurrenceWithError:error];
 }
 
 void __30__EKEvent_saveWithSpan_error___block_invoke(void *a1, void *a2, uint64_t a3)
@@ -8500,12 +8500,12 @@ void __30__EKEvent_saveWithSpan_error___block_invoke(void *a1, void *a2, uint64_
 - (void)_deleteErrorIfInvalid
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(EKCalendarItem *)self syncError];
-  v4 = v3;
-  if (v3 && ([v3 isNew] & 1) == 0)
+  syncError = [(EKCalendarItem *)self syncError];
+  v4 = syncError;
+  if (syncError && ([syncError isNew] & 1) == 0)
   {
-    v5 = [v4 userInfo];
-    v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E6992E70]];
+    userInfo = [v4 userInfo];
+    v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E6992E70]];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -8559,15 +8559,15 @@ LABEL_15:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_eventKitPropertyKeyForCalendarItemErrorPropertyKey:(id)a3
+- (id)_eventKitPropertyKeyForCalendarItemErrorPropertyKey:(id)key
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v9 = *MEMORY[0x1E6992E78];
   v10[0] = *MEMORY[0x1E6992560];
   v3 = MEMORY[0x1E695DF20];
-  v4 = a3;
+  keyCopy = key;
   v5 = [v3 dictionaryWithObjects:v10 forKeys:&v9 count:1];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  v6 = [v5 objectForKeyedSubscript:keyCopy];
 
   v7 = *MEMORY[0x1E69E9840];
 
@@ -8577,42 +8577,42 @@ LABEL_15:
 - (void)_saveUndeletedDetachedOccurrence
 {
   [(EKObject *)self _initChangeSetIfNone];
-  v12 = [(EKCalendarItem *)self originalItem];
-  v3 = [(EKEvent *)self originalStartDate];
-  [v12 _removeExceptionDate:v3];
+  originalItem = [(EKCalendarItem *)self originalItem];
+  originalStartDate = [(EKEvent *)self originalStartDate];
+  [originalItem _removeExceptionDate:originalStartDate];
 
-  [v12 updatePersistentValueForKeyIfNeeded:*MEMORY[0x1E69925A0]];
-  v4 = [(EKObject *)self frozenObject];
+  [originalItem updatePersistentValueForKeyIfNeeded:*MEMORY[0x1E69925A0]];
+  frozenObject = [(EKObject *)self frozenObject];
   v5 = *MEMORY[0x1E6992598];
-  [v12 addMultiChangedObjectValue:v4 forKey:*MEMORY[0x1E6992598]];
+  [originalItem addMultiChangedObjectValue:frozenObject forKey:*MEMORY[0x1E6992598]];
 
-  [v12 emptyMeltedCacheForKey:v5];
-  v6 = [(EKObject *)self changeSet];
-  v7 = [v12 frozenObject];
+  [originalItem emptyMeltedCacheForKey:v5];
+  changeSet = [(EKObject *)self changeSet];
+  frozenObject2 = [originalItem frozenObject];
   v8 = *MEMORY[0x1E6992630];
-  [v6 forceChangeValue:v7 forKey:*MEMORY[0x1E6992630]];
+  [changeSet forceChangeValue:frozenObject2 forKey:*MEMORY[0x1E6992630]];
 
-  v9 = [(EKObject *)self changeSet];
-  v10 = [(EKEvent *)self _generateNewUniqueID];
+  changeSet2 = [(EKObject *)self changeSet];
+  _generateNewUniqueID = [(EKEvent *)self _generateNewUniqueID];
   v11 = *MEMORY[0x1E6992700];
-  [v9 forceChangeValue:v10 forKey:*MEMORY[0x1E6992700]];
+  [changeSet2 forceChangeValue:_generateNewUniqueID forKey:*MEMORY[0x1E6992700]];
 
   [(EKObject *)self updatePersistentValueForKeyIfNeeded:v11];
   [(EKObject *)self updatePersistentValueForKeyIfNeeded:v8];
-  [(EKObject *)self addCoCommitObject:v12];
+  [(EKObject *)self addCoCommitObject:originalItem];
   [(EKObject *)self insertPersistentObjectIfNeeded];
 }
 
-- (BOOL)_saveUndetachedOccurrenceWithError:(id *)a3
+- (BOOL)_saveUndetachedOccurrenceWithError:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = [(EKEvent *)self masterEvent];
+  masterEvent = [(EKEvent *)self masterEvent];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [v4 detachedItems];
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  detachedItems = [masterEvent detachedItems];
+  v6 = [detachedItems countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
     v7 = v6;
@@ -8623,13 +8623,13 @@ LABEL_3:
     {
       if (*v20 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(detachedItems);
       }
 
       v10 = *(*(&v19 + 1) + 8 * v9);
-      v11 = [v10 originalStartDate];
-      v12 = [(EKEvent *)self startDate];
-      v13 = [v11 isEqualToDate:v12];
+      originalStartDate = [v10 originalStartDate];
+      startDate = [(EKEvent *)self startDate];
+      v13 = [originalStartDate isEqualToDate:startDate];
 
       if (v13)
       {
@@ -8638,7 +8638,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v7 = [detachedItems countByEnumeratingWithState:&v19 objects:v23 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -8665,10 +8665,10 @@ LABEL_3:
 LABEL_9:
 
 LABEL_12:
-    if (a3)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithEKErrorCode:5 description:@"Cannot undetach an event that is not detached"];
-      *a3 = v15 = 0;
+      *error = v15 = 0;
     }
 
     else
@@ -8681,20 +8681,20 @@ LABEL_12:
   return v15;
 }
 
-- (void)_extendConferenceURLExpirationDateToDate:(id)a3
+- (void)_extendConferenceURLExpirationDateToDate:(id)date
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(EKEvent *)self virtualConference];
-  v6 = v5;
-  if (v4)
+  dateCopy = date;
+  virtualConference = [(EKEvent *)self virtualConference];
+  v6 = virtualConference;
+  if (dateCopy)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = [v5 joinMethods];
-    v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    joinMethods = [virtualConference joinMethods];
+    v8 = [joinMethods countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
       v9 = v8;
@@ -8706,17 +8706,17 @@ LABEL_12:
         {
           if (*v15 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(joinMethods);
           }
 
           v12 = [*(*(&v14 + 1) + 8 * v11) URL];
-          [EKConferenceUtils renewConferenceURL:v12 toDate:v4];
+          [EKConferenceUtils renewConferenceURL:v12 toDate:dateCopy];
 
           ++v11;
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v9 = [joinMethods countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v9);
@@ -8743,18 +8743,18 @@ LABEL_12:
   }
 
   v18 = [(EKEvent *)self committedValueForKey:v3];
-  v4 = [(EKCalendarItem *)self notes];
+  notes = [(EKCalendarItem *)self notes];
   v5 = [MEMORY[0x1E6992F38] deserializeConference:v18];
-  v6 = [MEMORY[0x1E6992F38] deserializeConference:v4];
-  v7 = [v5 conference];
-  v8 = [v6 conference];
-  if (v7 == 0) != (v8 != 0) && (!v7 || ([v7 isEqual:v8]))
+  v6 = [MEMORY[0x1E6992F38] deserializeConference:notes];
+  conference = [v5 conference];
+  conference2 = [v6 conference];
+  if (conference == 0) != (conference2 != 0) && (!conference || ([conference isEqual:conference2]))
   {
     goto LABEL_14;
   }
 
-  v9 = [v5 range];
-  v11 = [v18 stringByReplacingCharactersInRange:v9 withString:{v10, &stru_1F1B49D68}];
+  range = [v5 range];
+  v11 = [v18 stringByReplacingCharactersInRange:range withString:{v10, &stru_1F1B49D68}];
   if ([v11 hasSuffix:@"\n\n"])
   {
     v12 = [v11 substringToIndex:{objc_msgSend(v11, "length") - 2}];
@@ -8762,8 +8762,8 @@ LABEL_12:
     v11 = v12;
   }
 
-  v13 = [v6 range];
-  v15 = [v4 stringByReplacingCharactersInRange:v13 withString:{v14, &stru_1F1B49D68}];
+  range2 = [v6 range];
+  v15 = [notes stringByReplacingCharactersInRange:range2 withString:{v14, &stru_1F1B49D68}];
   if ([v15 hasSuffix:@"\n\n"])
   {
     v16 = [v15 substringToIndex:{objc_msgSend(v15, "length") - 2}];
@@ -8793,9 +8793,9 @@ LABEL_16:
 - (void)_updateModifiedProperties
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = [a1 modifiedProperties];
-  v7 = [a1 modifiedProperties];
-  if (v7 == a2)
+  modifiedProperties = [self modifiedProperties];
+  modifiedProperties2 = [self modifiedProperties];
+  if (modifiedProperties2 == a2)
   {
     v8 = @"Modified properties changed: NO";
   }
@@ -8805,44 +8805,44 @@ LABEL_16:
     v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Modified properties changed: YES. Old modified properties: %u", a2];
   }
 
-  v9 = [a1 clearModifiedFlags];
-  v10 = [a1 privacyDescription];
+  clearModifiedFlags = [self clearModifiedFlags];
+  privacyDescription = [self privacyDescription];
   *buf = 67109890;
-  v13 = v6;
+  v13 = modifiedProperties;
   v14 = 2114;
   v15 = v8;
   v16 = 2048;
-  v17 = v9;
+  v17 = clearModifiedFlags;
   v18 = 2114;
-  v19 = v10;
+  v19 = privacyDescription;
   _os_log_debug_impl(&dword_1A805E000, a3, OS_LOG_TYPE_DEBUG, "Updated modified properties: %u. %{public}@. Clear modified flags: %lu. Event: %{public}@", buf, 0x26u);
 
-  if (v7 != a2)
+  if (modifiedProperties2 != a2)
   {
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)applyChangesFromEvent:(id)a3 toEvent:(id)a4 ignoringDifferencesFrom:(id)a5
+- (void)applyChangesFromEvent:(id)event toEvent:(id)toEvent ignoringDifferencesFrom:(id)from
 {
   v19[5] = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  toEventCopy = toEvent;
   v9 = MEMORY[0x1E695DFA8];
-  v10 = a5;
-  v11 = a3;
+  fromCopy = from;
+  eventCopy = event;
   v12 = +[EKEvent knownKeysToSkipForFutureChanges];
   v13 = [v9 setWithArray:v12];
 
-  v14 = [(EKEvent *)self constraints];
-  LODWORD(v12) = [v14 requiresSeparateFilesForAllAttachments];
+  constraints = [(EKEvent *)self constraints];
+  LODWORD(v12) = [constraints requiresSeparateFilesForAllAttachments];
 
   if (v12)
   {
     [v13 addObject:*MEMORY[0x1E6992560]];
   }
 
-  if (([v8 isSelfOrganized] & 1) == 0 && objc_msgSend(v8, "isSignificantlyDetachedIgnoringParticipation"))
+  if (([toEventCopy isSelfOrganized] & 1) == 0 && objc_msgSend(toEventCopy, "isSignificantlyDetachedIgnoringParticipation"))
   {
     v15 = *MEMORY[0x1E6992538];
     v19[0] = *MEMORY[0x1E6992530];
@@ -8856,119 +8856,119 @@ LABEL_16:
   }
 
   [v13 addObject:*MEMORY[0x1E6992650]];
-  [EKObject addChangesFromObject:v11 toObject:v8 exceptWhereObjectIsDifferentFrom:v10 skippingChanges:v13];
+  [EKObject addChangesFromObject:eventCopy toObject:toEventCopy exceptWhereObjectIsDifferentFrom:fromCopy skippingChanges:v13];
 
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateRecurrenceEndDateForEvent:(id)a3 calendar:(id)a4 withOffset:(id)a5
+- (void)_updateRecurrenceEndDateForEvent:(id)event calendar:(id)calendar withOffset:(id)offset
 {
-  v27 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v27 singleRecurrenceRule];
-  v10 = v9;
-  if (v9)
+  eventCopy = event;
+  calendarCopy = calendar;
+  offsetCopy = offset;
+  singleRecurrenceRule = [eventCopy singleRecurrenceRule];
+  v10 = singleRecurrenceRule;
+  if (singleRecurrenceRule)
   {
-    if ([v9 interval] >= 1)
+    if ([singleRecurrenceRule interval] >= 1)
     {
-      v11 = [v10 recurrenceEnd];
-      v12 = [v11 endDate];
+      recurrenceEnd = [v10 recurrenceEnd];
+      endDate = [recurrenceEnd endDate];
 
-      if (v12)
+      if (endDate)
       {
-        v13 = [v10 recurrenceEnd];
-        v14 = [v13 endDate];
-        v26 = [v7 dateByAddingComponents:v8 toDate:v14 options:0];
+        recurrenceEnd2 = [v10 recurrenceEnd];
+        endDate2 = [recurrenceEnd2 endDate];
+        v26 = [calendarCopy dateByAddingComponents:offsetCopy toDate:endDate2 options:0];
 
         v25 = [EKRecurrenceRule alloc];
-        v24 = [v10 frequency];
-        v23 = [v10 interval];
-        v22 = [v10 daysOfTheWeek];
-        v15 = [v10 daysOfTheMonth];
-        v16 = [v10 monthsOfTheYear];
-        v17 = [v10 weeksOfTheYear];
-        v18 = [v10 daysOfTheYear];
-        v19 = [v10 setPositions];
+        frequency = [v10 frequency];
+        interval = [v10 interval];
+        daysOfTheWeek = [v10 daysOfTheWeek];
+        daysOfTheMonth = [v10 daysOfTheMonth];
+        monthsOfTheYear = [v10 monthsOfTheYear];
+        weeksOfTheYear = [v10 weeksOfTheYear];
+        daysOfTheYear = [v10 daysOfTheYear];
+        setPositions = [v10 setPositions];
         v20 = [EKRecurrenceEnd recurrenceEndWithEndDate:v26];
-        v21 = [(EKRecurrenceRule *)v25 initRecurrenceWithFrequency:v24 interval:v23 daysOfTheWeek:v22 daysOfTheMonth:v15 monthsOfTheYear:v16 weeksOfTheYear:v17 daysOfTheYear:v18 setPositions:v19 end:v20];
+        v21 = [(EKRecurrenceRule *)v25 initRecurrenceWithFrequency:frequency interval:interval daysOfTheWeek:daysOfTheWeek daysOfTheMonth:daysOfTheMonth monthsOfTheYear:monthsOfTheYear weeksOfTheYear:weeksOfTheYear daysOfTheYear:daysOfTheYear setPositions:setPositions end:v20];
 
-        [v27 removeRecurrenceRule:v10];
-        [v27 addRecurrenceRule:v21];
+        [eventCopy removeRecurrenceRule:v10];
+        [eventCopy addRecurrenceRule:v21];
       }
     }
   }
 }
 
-- (void)_propagateChangesToSlice:(id)a3 originalItemBeforeSave:(id)a4 startDateOffset:(id)a5 duration:(id)a6 calendar:(id)a7 updateRecurrenceEnd:(BOOL)a8
+- (void)_propagateChangesToSlice:(id)slice originalItemBeforeSave:(id)save startDateOffset:(id)offset duration:(id)duration calendar:(id)calendar updateRecurrenceEnd:(BOOL)end
 {
-  v8 = a8;
+  endCopy = end;
   v59 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  [(EKEvent *)self applyChangesFromEvent:self toEvent:v14 ignoringDifferencesFrom:v15];
-  v19 = [v15 startCalendarDate];
-  v20 = [v19 dayTimeComponents];
+  sliceCopy = slice;
+  saveCopy = save;
+  offsetCopy = offset;
+  durationCopy = duration;
+  calendarCopy = calendar;
+  [(EKEvent *)self applyChangesFromEvent:self toEvent:sliceCopy ignoringDifferencesFrom:saveCopy];
+  startCalendarDate = [saveCopy startCalendarDate];
+  dayTimeComponents = [startCalendarDate dayTimeComponents];
 
-  v21 = [v14 startCalendarDate];
-  v22 = [v21 dayTimeComponents];
+  startCalendarDate2 = [sliceCopy startCalendarDate];
+  dayTimeComponents2 = [startCalendarDate2 dayTimeComponents];
 
-  if (v8)
+  if (endCopy)
   {
-    [v14 _updateRecurrenceEndDateForEvent:v14 calendar:v18 withOffset:v16];
+    [sliceCopy _updateRecurrenceEndDateForEvent:sliceCopy calendar:calendarCopy withOffset:offsetCopy];
   }
 
-  v23 = [v20 hour];
-  if (v23 != [v22 hour] || (v24 = objc_msgSend(v20, "minute"), v24 != objc_msgSend(v22, "minute")) || (v25 = objc_msgSend(v20, "second"), v25 != objc_msgSend(v22, "second")))
+  hour = [dayTimeComponents hour];
+  if (hour != [dayTimeComponents2 hour] || (v24 = objc_msgSend(dayTimeComponents, "minute"), v24 != objc_msgSend(dayTimeComponents2, "minute")) || (v25 = objc_msgSend(dayTimeComponents, "second"), v25 != objc_msgSend(dayTimeComponents2, "second")))
   {
-    [v16 setHour:0];
-    [v16 setMinute:0];
-    [v16 setSecond:0];
+    [offsetCopy setHour:0];
+    [offsetCopy setMinute:0];
+    [offsetCopy setSecond:0];
   }
 
-  v48 = v20;
-  [v14 duration];
+  v48 = dayTimeComponents;
+  [sliceCopy duration];
   v27 = v26;
-  v28 = [v14 startDate];
-  v29 = [v18 dateByAddingComponents:v16 toDate:v28 options:0];
-  [v14 setStartDate:v29];
+  startDate = [sliceCopy startDate];
+  v29 = [calendarCopy dateByAddingComponents:offsetCopy toDate:startDate options:0];
+  [sliceCopy setStartDate:v29];
 
-  [v15 duration];
-  v47 = v22;
+  [saveCopy duration];
+  v47 = dayTimeComponents2;
   if (v30 == v27)
   {
-    v31 = [v14 occurrenceStartDate];
-    v32 = [v31 calendarDateByComponentwiseAddingComponents:v17];
-    v33 = [v32 date];
+    occurrenceStartDate = [sliceCopy occurrenceStartDate];
+    v32 = [occurrenceStartDate calendarDateByComponentwiseAddingComponents:durationCopy];
+    date = [v32 date];
   }
 
   else
   {
-    v31 = [v14 startDate];
-    v33 = [v31 dateByAddingTimeInterval:v27];
+    occurrenceStartDate = [sliceCopy startDate];
+    date = [occurrenceStartDate dateByAddingTimeInterval:v27];
   }
 
-  v46 = v33;
-  [v14 _updateEndDateForDate:v33 withAdjustmentMode:0];
-  [v14 _updateModifiedProperties];
-  [v14 updatePersistentObjectSkippingProperties:0];
-  [(EKObject *)self addCoCommitObject:v14];
-  v34 = [v14 detachedItems];
-  v51 = v15;
-  v49 = v18;
-  v50 = v17;
-  [(EKEvent *)self _propagateChangesToDetachedEvents:v34 originalItemBeforeSave:v15 startDateOffset:v16 duration:v17 calendar:v18];
+  v46 = date;
+  [sliceCopy _updateEndDateForDate:date withAdjustmentMode:0];
+  [sliceCopy _updateModifiedProperties];
+  [sliceCopy updatePersistentObjectSkippingProperties:0];
+  [(EKObject *)self addCoCommitObject:sliceCopy];
+  detachedItems = [sliceCopy detachedItems];
+  v51 = saveCopy;
+  v49 = calendarCopy;
+  v50 = durationCopy;
+  [(EKEvent *)self _propagateChangesToDetachedEvents:detachedItems originalItemBeforeSave:saveCopy startDateOffset:offsetCopy duration:durationCopy calendar:calendarCopy];
 
   v55 = 0u;
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v52 = v14;
-  v35 = [v14 detachedItems];
-  v36 = [v35 countByEnumeratingWithState:&v53 objects:v58 count:16];
+  v52 = sliceCopy;
+  detachedItems2 = [sliceCopy detachedItems];
+  v36 = [detachedItems2 countByEnumeratingWithState:&v53 objects:v58 count:16];
   if (v36)
   {
     v37 = v36;
@@ -8980,7 +8980,7 @@ LABEL_16:
       {
         if (*v54 != v38)
         {
-          objc_enumerationMutation(v35);
+          objc_enumerationMutation(detachedItems2);
         }
 
         v41 = *(*(&v53 + 1) + 8 * i);
@@ -8992,7 +8992,7 @@ LABEL_16:
         [v41 updatePersistentObjectSkippingProperties:v44];
       }
 
-      v37 = [v35 countByEnumeratingWithState:&v53 objects:v58 count:16];
+      v37 = [detachedItems2 countByEnumeratingWithState:&v53 objects:v58 count:16];
     }
 
     while (v37);
@@ -9001,22 +9001,22 @@ LABEL_16:
   v45 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_propagateChangesToDetachedEvents:(id)a3 originalItemBeforeSave:(id)a4 startDateOffset:(id)a5 duration:(id)a6 calendar:(id)a7
+- (void)_propagateChangesToDetachedEvents:(id)events originalItemBeforeSave:(id)save startDateOffset:(id)offset duration:(id)duration calendar:(id)calendar
 {
   v103 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v82 = a4;
-  v76 = a5;
-  v75 = a6;
-  v13 = a7;
-  v14 = [(EKEvent *)self constraints];
-  v74 = [v14 requiresSeparateFilesForAllAttachments];
+  eventsCopy = events;
+  saveCopy = save;
+  offsetCopy = offset;
+  durationCopy = duration;
+  calendarCopy = calendar;
+  constraints = [(EKEvent *)self constraints];
+  requiresSeparateFilesForAllAttachments = [constraints requiresSeparateFilesForAllAttachments];
 
   v97 = 0u;
   v98 = 0u;
   v95 = 0u;
   v96 = 0u;
-  v15 = v12;
+  v15 = eventsCopy;
   v16 = [v15 countByEnumeratingWithState:&v95 objects:v102 count:16];
   if (v16)
   {
@@ -9034,7 +9034,7 @@ LABEL_16:
         v20 = *(*(&v95 + 1) + 8 * i);
         if (([v20 isEqual:self] & 1) == 0)
         {
-          [(EKEvent *)self applyChangesFromEvent:self toEvent:v20 ignoringDifferencesFrom:v82];
+          [(EKEvent *)self applyChangesFromEvent:self toEvent:v20 ignoringDifferencesFrom:saveCopy];
         }
       }
 
@@ -9050,13 +9050,13 @@ LABEL_16:
   v92 = 0u;
   obj = v15;
   v21 = [obj countByEnumeratingWithState:&v91 objects:v101 count:16];
-  v22 = v76;
+  v22 = offsetCopy;
   if (v21)
   {
     v23 = v21;
     v24 = *v92;
     v78 = *v92;
-    v79 = self;
+    selfCopy = self;
     do
     {
       v25 = 0;
@@ -9069,10 +9069,10 @@ LABEL_16:
         }
 
         v26 = *(*(&v91 + 1) + 8 * v25);
-        v27 = [v26 originalStartDate];
-        if (v27)
+        originalStartDate = [v26 originalStartDate];
+        if (originalStartDate)
         {
-          v28 = [v13 dateByAddingComponents:v22 toDate:v27 options:0];
+          v28 = [calendarCopy dateByAddingComponents:v22 toDate:originalStartDate options:0];
           [v26 setOriginalStartDate:v28];
 
           if ([v26 isEqual:self])
@@ -9081,7 +9081,7 @@ LABEL_16:
           }
 
           v29 = MEMORY[0x1E69930C8];
-          v30 = v27;
+          startDate = originalStartDate;
         }
 
         else
@@ -9092,32 +9092,32 @@ LABEL_16:
           }
 
           v29 = MEMORY[0x1E69930C8];
-          v30 = [v26 startDate];
-          v77 = v30;
+          startDate = [v26 startDate];
+          v77 = startDate;
         }
 
-        v31 = [v13 timeZone];
-        v32 = [v29 calendarDateWithDate:v30 timeZone:v31];
+        timeZone = [calendarCopy timeZone];
+        v32 = [v29 calendarDateWithDate:startDate timeZone:timeZone];
 
-        if (!v27)
+        if (!originalStartDate)
         {
         }
 
         v33 = MEMORY[0x1E69930C8];
-        v34 = [v26 startDate];
-        v35 = v13;
-        v36 = [v13 timeZone];
-        v37 = [v33 calendarDateWithDate:v34 timeZone:v36];
+        startDate2 = [v26 startDate];
+        v35 = calendarCopy;
+        timeZone2 = [calendarCopy timeZone];
+        v37 = [v33 calendarDateWithDate:startDate2 timeZone:timeZone2];
 
         v38 = objc_opt_new();
-        v39 = [v32 hour];
-        if (v39 == [v37 hour])
+        hour = [v32 hour];
+        if (hour == [v37 hour])
         {
-          v40 = [v32 minute];
-          if (v40 == [v37 minute])
+          minute = [v32 minute];
+          if (minute == [v37 minute])
           {
-            v41 = [v32 second];
-            if (v41 == [v37 second])
+            second = [v32 second];
+            if (second == [v37 second])
             {
               [v38 setHour:{objc_msgSend(v22, "hour")}];
               [v38 setMinute:{objc_msgSend(v22, "minute")}];
@@ -9129,11 +9129,11 @@ LABEL_16:
         v42 = [v32 era];
         if (v42 == [v37 era])
         {
-          v43 = [v32 year];
-          if (v43 == [v37 year])
+          year = [v32 year];
+          if (year == [v37 year])
           {
-            v44 = [v32 month];
-            if (v44 == [v37 month])
+            month = [v32 month];
+            if (month == [v37 month])
             {
               v45 = [v32 day];
               if (v45 == [v37 day])
@@ -9149,30 +9149,30 @@ LABEL_16:
 
         [v26 duration];
         v47 = v46;
-        v48 = [v26 startDate];
-        v49 = [v35 dateByAddingComponents:v38 toDate:v48 options:0];
+        startDate3 = [v26 startDate];
+        v49 = [v35 dateByAddingComponents:v38 toDate:startDate3 options:0];
         [v26 setStartDate:v49];
 
-        [v82 duration];
+        [saveCopy duration];
         if (v50 == v47)
         {
-          v51 = [v26 occurrenceStartDate];
-          v52 = [v51 calendarDateByComponentwiseAddingComponents:v75];
-          v53 = [v52 date];
+          occurrenceStartDate = [v26 occurrenceStartDate];
+          v52 = [occurrenceStartDate calendarDateByComponentwiseAddingComponents:durationCopy];
+          date = [v52 date];
 
-          v22 = v76;
+          v22 = offsetCopy;
         }
 
         else
         {
-          v51 = [v26 startDate];
-          v53 = [v51 dateByAddingTimeInterval:v47];
+          occurrenceStartDate = [v26 startDate];
+          date = [occurrenceStartDate dateByAddingTimeInterval:v47];
         }
 
-        [v26 _updateEndDateForDate:v53 withAdjustmentMode:0];
-        v13 = v35;
+        [v26 _updateEndDateForDate:date withAdjustmentMode:0];
+        calendarCopy = v35;
         v24 = v78;
-        self = v79;
+        self = selfCopy;
         v23 = v80;
 LABEL_35:
 
@@ -9190,15 +9190,15 @@ LABEL_35:
   v55 = +[EKEvent knownKeysToUseForFutureChanges];
   v56 = [v54 setWithArray:v55];
 
-  if (v74)
+  if (requiresSeparateFilesForAllAttachments)
   {
     [v56 removeObject:*MEMORY[0x1E6992560]];
     [(EKEvent *)self _duplicateAddedAttachmentsToDetachedEvents:obj];
   }
 
-  v57 = [(EKCalendarItem *)self selfAttendee];
-  v58 = [(EKObject *)self changeSet];
-  v59 = [v58 hasUnsavedChangeForKey:*MEMORY[0x1E6992650]];
+  selfAttendee = [(EKCalendarItem *)self selfAttendee];
+  changeSet = [(EKObject *)self changeSet];
+  v59 = [changeSet hasUnsavedChangeForKey:*MEMORY[0x1E6992650]];
 
   if (v59)
   {
@@ -9221,7 +9221,7 @@ LABEL_35:
             objc_enumerationMutation(v60);
           }
 
-          [*(*(&v87 + 1) + 8 * j) _updateSelfAttendeeToMatchSelfAttendee:v57];
+          [*(*(&v87 + 1) + 8 * j) _updateSelfAttendeeToMatchSelfAttendee:selfAttendee];
         }
 
         v62 = [v60 countByEnumeratingWithState:&v87 objects:v100 count:16];
@@ -9264,12 +9264,12 @@ LABEL_35:
       while (v66);
     }
 
-    v70 = [(EKEvent *)self originalStartDate];
+    originalStartDate2 = [(EKEvent *)self originalStartDate];
 
-    if (v70)
+    if (originalStartDate2)
     {
-      v71 = [(EKEvent *)self originalStartDate];
-      v72 = [v13 dateByAddingComponents:v76 toDate:v71 options:0];
+      originalStartDate3 = [(EKEvent *)self originalStartDate];
+      v72 = [calendarCopy dateByAddingComponents:offsetCopy toDate:originalStartDate3 options:0];
       [(EKEvent *)self setOriginalStartDate:v72];
     }
   }
@@ -9291,18 +9291,18 @@ void __102__EKEvent__propagateChangesToDetachedEvents_originalItemBeforeSave_sta
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateSelfAttendeeToMatchSelfAttendee:(id)a3
+- (void)_updateSelfAttendeeToMatchSelfAttendee:(id)attendee
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  attendeeCopy = attendee;
+  if (attendeeCopy)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [(EKCalendarItem *)self attendeesRaw];
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    attendeesRaw = [(EKCalendarItem *)self attendeesRaw];
+    v6 = [attendeesRaw countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = *v12;
@@ -9312,18 +9312,18 @@ void __102__EKEvent__propagateChangesToDetachedEvents_originalItemBeforeSave_sta
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(attendeesRaw);
           }
 
           v9 = *(*(&v11 + 1) + 8 * i);
-          if ([v9 isEqualToParticipant:v4])
+          if ([v9 isEqualToParticipant:attendeeCopy])
           {
             v6 = v9;
             goto LABEL_12;
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [attendeesRaw countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v6)
         {
           continue;
@@ -9346,14 +9346,14 @@ LABEL_12:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_multiValueRelatedObject:(id)a3 isAlsoASingleValueRelatedObjectForKey:(id)a4
+- (BOOL)_multiValueRelatedObject:(id)object isAlsoASingleValueRelatedObjectForKey:(id)key
 {
-  v6 = a3;
-  if ([a4 isEqualToString:*MEMORY[0x1E6992568]])
+  objectCopy = object;
+  if ([key isEqualToString:*MEMORY[0x1E6992568]])
   {
-    v7 = v6;
-    v8 = [(EKCalendarItem *)self selfAttendee];
-    v9 = [v7 isEqualToParticipant:v8];
+    v7 = objectCopy;
+    selfAttendee = [(EKCalendarItem *)self selfAttendee];
+    v9 = [v7 isEqualToParticipant:selfAttendee];
   }
 
   else
@@ -9364,20 +9364,20 @@ LABEL_12:
   return v9;
 }
 
-- (void)_duplicateAddedAttachmentsToDetachedEvents:(id)a3
+- (void)_duplicateAddedAttachmentsToDetachedEvents:(id)events
 {
   v60 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(EKObject *)self changeSet];
+  eventsCopy = events;
+  changeSet = [(EKObject *)self changeSet];
   v6 = *MEMORY[0x1E6992560];
-  v7 = [v5 hasUnsavedMultiValueAdditionForKey:*MEMORY[0x1E6992560]];
+  v7 = [changeSet hasUnsavedMultiValueAdditionForKey:*MEMORY[0x1E6992560]];
 
   if (v7)
   {
-    v39 = self;
-    v8 = [(EKObject *)self changeSet];
-    v9 = [v8 multiValueAdditions];
-    v10 = [v9 objectForKeyedSubscript:v6];
+    selfCopy = self;
+    changeSet2 = [(EKObject *)self changeSet];
+    multiValueAdditions = [changeSet2 multiValueAdditions];
+    v10 = [multiValueAdditions objectForKeyedSubscript:v6];
 
     v11 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v10, "count")}];
     v51 = 0u;
@@ -9400,10 +9400,10 @@ LABEL_12:
           }
 
           v17 = *(*(&v51 + 1) + 8 * i);
-          v18 = [v17 uniqueIdentifier];
-          if (v18)
+          uniqueIdentifier = [v17 uniqueIdentifier];
+          if (uniqueIdentifier)
           {
-            [v11 addObject:v18];
+            [v11 addObject:uniqueIdentifier];
           }
 
           else
@@ -9424,15 +9424,15 @@ LABEL_12:
       while (v14);
     }
 
-    v40 = v4;
+    v40 = eventsCopy;
 
     v20 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v12, "count")}];
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v21 = [(EKCalendarItem *)v39 attachments];
-    v22 = [v21 countByEnumeratingWithState:&v47 objects:v56 count:16];
+    attachments = [(EKCalendarItem *)selfCopy attachments];
+    v22 = [attachments countByEnumeratingWithState:&v47 objects:v56 count:16];
     if (v22)
     {
       v23 = v22;
@@ -9443,12 +9443,12 @@ LABEL_12:
         {
           if (*v48 != v24)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(attachments);
           }
 
           v26 = *(*(&v47 + 1) + 8 * j);
-          v27 = [v26 uniqueIdentifier];
-          v28 = [v11 containsObject:v27];
+          uniqueIdentifier2 = [v26 uniqueIdentifier];
+          v28 = [v11 containsObject:uniqueIdentifier2];
 
           if (v28)
           {
@@ -9456,7 +9456,7 @@ LABEL_12:
           }
         }
 
-        v23 = [v21 countByEnumeratingWithState:&v47 objects:v56 count:16];
+        v23 = [attachments countByEnumeratingWithState:&v47 objects:v56 count:16];
       }
 
       while (v23);
@@ -9507,7 +9507,7 @@ LABEL_12:
       while (v35);
     }
 
-    v4 = v40;
+    eventsCopy = v40;
   }
 
   v38 = *MEMORY[0x1E69E9840];
@@ -9562,10 +9562,10 @@ void __54__EKEvent__duplicateAddedAttachmentsToDetachedEvents___block_invoke(uin
   {
     if (v4)
     {
-      v5 = [(EKCalendarItem *)self organizer];
-      if ([v5 isNew])
+      organizer = [(EKCalendarItem *)self organizer];
+      if ([organizer isNew])
       {
-        v6 = v5;
+        v6 = organizer;
       }
 
       else
@@ -9576,12 +9576,12 @@ void __54__EKEvent__duplicateAddedAttachmentsToDetachedEvents___block_invoke(uin
       if (v3)
       {
 LABEL_11:
-        v8 = [(EKCalendarItem *)self attendeesRaw];
+        attendeesRaw = [(EKCalendarItem *)self attendeesRaw];
         v46 = 0u;
         v47 = 0u;
         v48 = 0u;
         v49 = 0u;
-        v9 = [v8 countByEnumeratingWithState:&v46 objects:v51 count:16];
+        v9 = [attendeesRaw countByEnumeratingWithState:&v46 objects:v51 count:16];
         if (v9)
         {
           v10 = v9;
@@ -9593,7 +9593,7 @@ LABEL_11:
             {
               if (*v47 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(attendeesRaw);
               }
 
               v13 = *(*(&v46 + 1) + 8 * i);
@@ -9601,14 +9601,14 @@ LABEL_11:
               {
                 if (!v7)
                 {
-                  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v8, "count")}];
+                  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(attendeesRaw, "count")}];
                 }
 
                 [v7 addObject:v13];
               }
             }
 
-            v10 = [v8 countByEnumeratingWithState:&v46 objects:v51 count:16];
+            v10 = [attendeesRaw countByEnumeratingWithState:&v46 objects:v51 count:16];
           }
 
           while (v10);
@@ -9635,19 +9635,19 @@ LABEL_43:
 LABEL_26:
         v14 = objc_opt_new();
         v15 = objc_opt_new();
-        v16 = [(EKCalendarItem *)self originalItem];
-        v17 = v16;
-        if (v16)
+        originalItem = [(EKCalendarItem *)self originalItem];
+        v17 = originalItem;
+        if (originalItem)
         {
-          v18 = v16;
+          selfCopy = originalItem;
         }
 
         else
         {
-          v18 = self;
+          selfCopy = self;
         }
 
-        v19 = v18;
+        v19 = selfCopy;
 
         v42[0] = MEMORY[0x1E69E9820];
         v42[1] = 3221225472;
@@ -9664,8 +9664,8 @@ LABEL_26:
         v22 = MEMORY[0x1E6992B08];
         if (v6)
         {
-          v23 = [v6 generateSemanticIdentifier];
-          v24 = [v20 objectForKeyedSubscript:v23];
+          generateSemanticIdentifier = [v6 generateSemanticIdentifier];
+          v24 = [v20 objectForKeyedSubscript:generateSemanticIdentifier];
           if (v24)
           {
             [v6 setUUID:v24];
@@ -9696,8 +9696,8 @@ LABEL_26:
               }
 
               v31 = *(*(&v38 + 1) + 8 * j);
-              v32 = [v31 generateSemanticIdentifier];
-              v33 = [v21 objectForKeyedSubscript:v32];
+              generateSemanticIdentifier2 = [v31 generateSemanticIdentifier];
+              v33 = [v21 objectForKeyedSubscript:generateSemanticIdentifier2];
               if (v33)
               {
                 [v31 setUUID:v33];
@@ -9810,52 +9810,52 @@ void __40__EKEvent__updateUUIDForNewParticipants__block_invoke_2(void *a1, void 
 
 - (BOOL)isSignificantlyDetached
 {
-  v2 = self;
-  v3 = [(EKCalendarItem *)self originalItem];
-  LOBYTE(v2) = [(EKEvent *)v2 _isSignificantlyDetachedComparedToMaster:v3 shouldIgnorePartStat:0];
+  selfCopy = self;
+  originalItem = [(EKCalendarItem *)self originalItem];
+  LOBYTE(selfCopy) = [(EKEvent *)selfCopy _isSignificantlyDetachedComparedToMaster:originalItem shouldIgnorePartStat:0];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)isSignificantlyDetachedIgnoringParticipation
 {
-  v2 = self;
-  v3 = [(EKCalendarItem *)self originalItem];
-  LOBYTE(v2) = [(EKEvent *)v2 _isSignificantlyDetachedComparedToMaster:v3 shouldIgnorePartStat:1];
+  selfCopy = self;
+  originalItem = [(EKCalendarItem *)self originalItem];
+  LOBYTE(selfCopy) = [(EKEvent *)selfCopy _isSignificantlyDetachedComparedToMaster:originalItem shouldIgnorePartStat:1];
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)_isSignificantlyDetachedComparedToMaster:(id)a3 shouldIgnorePartStat:(BOOL)a4
+- (BOOL)_isSignificantlyDetachedComparedToMaster:(id)master shouldIgnorePartStat:(BOOL)stat
 {
   v54 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  masterCopy = master;
+  v7 = masterCopy;
+  if (!masterCopy)
   {
     v13 = EKLogHandle;
     if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_INFO))
     {
       v14 = v13;
-      v15 = [(EKEvent *)self privacyDescription];
+      privacyDescription = [(EKEvent *)self privacyDescription];
       v52 = 138543362;
-      v53 = v15;
+      v53 = privacyDescription;
       _os_log_impl(&dword_1A805E000, v14, OS_LOG_TYPE_INFO, "Event %{public}@ is not significantly detached because it is not detached", &v52, 0xCu);
     }
 
     goto LABEL_7;
   }
 
-  if ([v6 isPhantom])
+  if ([masterCopy isPhantom])
   {
     v8 = EKLogHandle;
     v9 = 1;
     if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_INFO))
     {
       v10 = v8;
-      v11 = [(EKEvent *)self privacyDescription];
+      privacyDescription2 = [(EKEvent *)self privacyDescription];
       v52 = 138543362;
-      v53 = v11;
+      v53 = privacyDescription2;
       v12 = "Event %{public}@ is significantly detached because its master is a phantom";
 LABEL_31:
       _os_log_impl(&dword_1A805E000, v10, OS_LOG_TYPE_INFO, v12, &v52, 0xCu);
@@ -9866,27 +9866,27 @@ LABEL_31:
     goto LABEL_35;
   }
 
-  v16 = [(EKEvent *)self startDate];
-  v17 = [(EKEvent *)self originalStartDate];
-  v18 = [v16 isEqualToDate:v17];
+  startDate = [(EKEvent *)self startDate];
+  originalStartDate = [(EKEvent *)self originalStartDate];
+  v18 = [startDate isEqualToDate:originalStartDate];
 
   if (v18)
   {
-    v19 = [(EKEvent *)self occurrenceStartDate];
-    v20 = [(EKEvent *)self occurrenceEndDate];
-    v21 = [v7 occurrenceStartDate];
-    v22 = [v7 occurrenceEndDate];
-    v23 = -[EKEvent _calculateDurationWithStart:end:allDay:](self, "_calculateDurationWithStart:end:allDay:", v21, v22, [v7 occurrenceIsAllDay]);
-    v24 = [v19 calendarDateByComponentwiseAddingComponents:v23];
-    if (([v24 isEqual:v20] & 1) == 0)
+    occurrenceStartDate = [(EKEvent *)self occurrenceStartDate];
+    occurrenceEndDate = [(EKEvent *)self occurrenceEndDate];
+    occurrenceStartDate2 = [v7 occurrenceStartDate];
+    occurrenceEndDate2 = [v7 occurrenceEndDate];
+    v23 = -[EKEvent _calculateDurationWithStart:end:allDay:](self, "_calculateDurationWithStart:end:allDay:", occurrenceStartDate2, occurrenceEndDate2, [v7 occurrenceIsAllDay]);
+    v24 = [occurrenceStartDate calendarDateByComponentwiseAddingComponents:v23];
+    if (([v24 isEqual:occurrenceEndDate] & 1) == 0)
     {
       v42 = EKLogHandle;
       if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_INFO))
       {
         v43 = v42;
-        v44 = [(EKEvent *)self privacyDescription];
+        privacyDescription3 = [(EKEvent *)self privacyDescription];
         v52 = 138543362;
-        v53 = v44;
+        v53 = privacyDescription3;
         _os_log_impl(&dword_1A805E000, v43, OS_LOG_TYPE_INFO, "Event %{public}@ is significantly detached because its end date differs", &v52, 0xCu);
       }
 
@@ -9894,14 +9894,14 @@ LABEL_31:
       goto LABEL_35;
     }
 
-    v25 = [(EKEvent *)self locationWithoutPrediction];
-    if (v25 || ([v7 locationWithoutPrediction], (v20 = objc_claimAutoreleasedReturnValue()) != 0))
+    locationWithoutPrediction = [(EKEvent *)self locationWithoutPrediction];
+    if (locationWithoutPrediction || ([v7 locationWithoutPrediction], (occurrenceEndDate = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v26 = [(EKEvent *)self locationWithoutPrediction];
-      v27 = [v7 locationWithoutPrediction];
-      v28 = [v26 isEqualToString:v27];
+      locationWithoutPrediction2 = [(EKEvent *)self locationWithoutPrediction];
+      locationWithoutPrediction3 = [v7 locationWithoutPrediction];
+      v28 = [locationWithoutPrediction2 isEqualToString:locationWithoutPrediction3];
 
-      if (v25)
+      if (locationWithoutPrediction)
       {
 
         if (v28)
@@ -9927,22 +9927,22 @@ LABEL_31:
       }
 
       v10 = v47;
-      v11 = [(EKEvent *)self privacyDescription];
+      privacyDescription2 = [(EKEvent *)self privacyDescription];
       v52 = 138543362;
-      v53 = v11;
+      v53 = privacyDescription2;
       v12 = "Event %{public}@ is significantly detached because its location differs";
       goto LABEL_31;
     }
 
 LABEL_14:
-    v29 = [(EKEvent *)self title];
-    if (v29 || ([v7 title], (v20 = objc_claimAutoreleasedReturnValue()) != 0))
+    title = [(EKEvent *)self title];
+    if (title || ([v7 title], (occurrenceEndDate = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v30 = [(EKEvent *)self title];
-      v31 = [v7 title];
-      v32 = [v30 isEqualToString:v31];
+      title2 = [(EKEvent *)self title];
+      title3 = [v7 title];
+      v32 = [title2 isEqualToString:title3];
 
-      if (v29)
+      if (title)
       {
 
         if (v32)
@@ -9959,9 +9959,9 @@ LABEL_40:
         }
 
         v10 = v48;
-        v11 = [(EKEvent *)self privacyDescription];
+        privacyDescription2 = [(EKEvent *)self privacyDescription];
         v52 = 138543362;
-        v53 = v11;
+        v53 = privacyDescription2;
         v12 = "Event %{public}@ is significantly detached because its title differs";
         goto LABEL_31;
       }
@@ -9973,8 +9973,8 @@ LABEL_40:
     }
 
 LABEL_18:
-    v33 = [(EKEvent *)self status];
-    if (v33 != [v7 status])
+    status = [(EKEvent *)self status];
+    if (status != [v7 status])
     {
       v49 = EKLogHandle;
       v9 = 1;
@@ -9984,25 +9984,25 @@ LABEL_18:
       }
 
       v10 = v49;
-      v11 = [(EKEvent *)self privacyDescription];
+      privacyDescription2 = [(EKEvent *)self privacyDescription];
       v52 = 138543362;
-      v53 = v11;
+      v53 = privacyDescription2;
       v12 = "Event %{public}@ is significantly detached because its status differs";
       goto LABEL_31;
     }
 
-    if (!a4)
+    if (!stat)
     {
       if ([(EKCalendarItem *)self isExternallyOrganizedInvitation])
       {
-        v33 = [(EKEvent *)self participationStatus];
-        v34 = [v7 participationStatus];
-        if (v33 != v34)
+        status = [(EKEvent *)self participationStatus];
+        participationStatus = [v7 participationStatus];
+        if (status != participationStatus)
         {
-          v35 = v34;
-          v33 = [EKParticipant needsResponseForParticipantStatus:v33];
+          v35 = participationStatus;
+          status = [EKParticipant needsResponseForParticipantStatus:status];
           v36 = [EKParticipant needsResponseForParticipantStatus:v35];
-          if (!v33 || !v36)
+          if (!status || !v36)
           {
             v51 = EKLogHandle;
             v9 = 1;
@@ -10012,9 +10012,9 @@ LABEL_18:
             }
 
             v10 = v51;
-            v11 = [(EKEvent *)self privacyDescription];
+            privacyDescription2 = [(EKEvent *)self privacyDescription];
             v52 = 138543362;
-            v53 = v11;
+            v53 = privacyDescription2;
             v12 = "Event %{public}@ is significantly detached because it is externally organized and its participation status differs";
             goto LABEL_31;
           }
@@ -10022,14 +10022,14 @@ LABEL_18:
       }
     }
 
-    v37 = [(EKCalendarItem *)self organizer];
-    if (v37 || ([v7 organizer], (v33 = objc_claimAutoreleasedReturnValue()) != EKEventStatusNone))
+    organizer = [(EKCalendarItem *)self organizer];
+    if (organizer || ([v7 organizer], (status = objc_claimAutoreleasedReturnValue()) != EKEventStatusNone))
     {
-      v38 = [(EKCalendarItem *)self organizer];
-      v39 = [v7 organizer];
-      v40 = [v38 isEqualToParticipant:v39];
+      organizer2 = [(EKCalendarItem *)self organizer];
+      organizer3 = [v7 organizer];
+      v40 = [organizer2 isEqualToParticipant:organizer3];
 
-      if (v37)
+      if (organizer)
       {
 
         if ((v40 & 1) == 0)
@@ -10052,9 +10052,9 @@ LABEL_45:
           }
 
           v10 = v50;
-          v11 = [(EKEvent *)self privacyDescription];
+          privacyDescription2 = [(EKEvent *)self privacyDescription];
           v52 = 138543362;
-          v53 = v11;
+          v53 = privacyDescription2;
           v12 = "Event %{public}@ is significantly detached because its organizer differs";
           goto LABEL_31;
         }
@@ -10071,9 +10071,9 @@ LABEL_7:
   if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_INFO))
   {
     v10 = v41;
-    v11 = [(EKEvent *)self privacyDescription];
+    privacyDescription2 = [(EKEvent *)self privacyDescription];
     v52 = 138543362;
-    v53 = v11;
+    v53 = privacyDescription2;
     v12 = "Event %{public}@ is significantly detached because its start date differs";
     goto LABEL_31;
   }
@@ -10084,17 +10084,17 @@ LABEL_35:
   return v9;
 }
 
-- (id)_updateMasterDate:(id)a3 forChangeToOccurrenceDate:(id)a4 fromOriginalOccurrenceDate:(id)a5
+- (id)_updateMasterDate:(id)date forChangeToOccurrenceDate:(id)occurrenceDate fromOriginalOccurrenceDate:(id)originalOccurrenceDate
 {
-  v6 = a3;
-  v7 = [(EKEvent *)self originalOccurrenceStartDate];
-  v8 = [(EKEvent *)self occurrenceStartDate];
-  v9 = [v8 differenceAsDateComponents:v7 units:254];
-  v10 = [v6 calendarDateByComponentwiseAddingComponents:v9];
+  dateCopy = date;
+  originalOccurrenceStartDate = [(EKEvent *)self originalOccurrenceStartDate];
+  occurrenceStartDate = [(EKEvent *)self occurrenceStartDate];
+  v9 = [occurrenceStartDate differenceAsDateComponents:originalOccurrenceStartDate units:254];
+  v10 = [dateCopy calendarDateByComponentwiseAddingComponents:v9];
 
-  v11 = [v10 date];
+  date = [v10 date];
 
-  return v11;
+  return date;
 }
 
 - (void)_applyTimeChangesToMaster
@@ -10107,15 +10107,15 @@ LABEL_35:
   if (v4 || v6)
   {
     v8 = [EKEvent alloc];
-    v9 = [(EKObject *)self persistentObject];
-    v18 = [(EKEvent *)v8 initWithPersistentObject:v9];
+    persistentObject = [(EKObject *)self persistentObject];
+    v18 = [(EKEvent *)v8 initWithPersistentObject:persistentObject];
 
     if (v4)
     {
-      v10 = [(EKEvent *)v18 occurrenceStartDate];
-      v11 = [(EKEvent *)self occurrenceStartDate];
-      v12 = [(EKEvent *)self originalOccurrenceStartDate];
-      v13 = [(EKEvent *)self _updateMasterDate:v10 forChangeToOccurrenceDate:v11 fromOriginalOccurrenceDate:v12];
+      occurrenceStartDate = [(EKEvent *)v18 occurrenceStartDate];
+      occurrenceStartDate2 = [(EKEvent *)self occurrenceStartDate];
+      originalOccurrenceStartDate = [(EKEvent *)self originalOccurrenceStartDate];
+      v13 = [(EKEvent *)self _updateMasterDate:occurrenceStartDate forChangeToOccurrenceDate:occurrenceStartDate2 fromOriginalOccurrenceDate:originalOccurrenceStartDate];
       [(EKEvent *)v18 setStartDateRaw:v13];
 
       [(EKObject *)v18 updatePersistentValueForKeyIfNeeded:v3];
@@ -10123,10 +10123,10 @@ LABEL_35:
 
     if (v7)
     {
-      v14 = [(EKEvent *)v18 occurrenceEndDate];
-      v15 = [(EKEvent *)self occurrenceEndDate];
-      v16 = [(EKEvent *)self originalOccurrenceEndDate];
-      v17 = [(EKEvent *)self _updateMasterDate:v14 forChangeToOccurrenceDate:v15 fromOriginalOccurrenceDate:v16];
+      occurrenceEndDate = [(EKEvent *)v18 occurrenceEndDate];
+      occurrenceEndDate2 = [(EKEvent *)self occurrenceEndDate];
+      originalOccurrenceEndDate = [(EKEvent *)self originalOccurrenceEndDate];
+      v17 = [(EKEvent *)self _updateMasterDate:occurrenceEndDate forChangeToOccurrenceDate:occurrenceEndDate2 fromOriginalOccurrenceDate:originalOccurrenceEndDate];
       [(EKEvent *)v18 setEndDateRaw:v17];
 
       [(EKObject *)v18 updatePersistentValueForKeyIfNeeded:v5];
@@ -10134,14 +10134,14 @@ LABEL_35:
   }
 }
 
-- (void)_clearExceptionDatesAndUpdateDetachedOriginalDates:(id)a3
+- (void)_clearExceptionDatesAndUpdateDetachedOriginalDates:(id)dates
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  datesCopy = dates;
   if ([(EKEvent *)self isDetached])
   {
-    v5 = [(EKCalendarItem *)self originalItem];
-    [v5 _clearExceptionDatesAndUpdateDetachedOriginalDates:v4];
+    originalItem = [(EKCalendarItem *)self originalItem];
+    [originalItem _clearExceptionDatesAndUpdateDetachedOriginalDates:datesCopy];
   }
 
   else
@@ -10149,8 +10149,8 @@ LABEL_35:
     [(EKCalendarItem *)self setExceptionDates:0];
     if (![(EKEvent *)self isAllDay])
     {
-      v6 = [(EKCalendarItem *)self detachedItems];
-      if ([v6 count])
+      detachedItems = [(EKCalendarItem *)self detachedItems];
+      if ([detachedItems count])
       {
         if ([(EKEvent *)self isFloating])
         {
@@ -10162,16 +10162,16 @@ LABEL_35:
           [(EKCalendarItem *)self timeZone];
         }
         v7 = ;
-        v8 = [(EKEvent *)self startDateRaw];
-        [v8 timeIntervalSinceReferenceDate];
+        startDateRaw = [(EKEvent *)self startDateRaw];
+        [startDateRaw timeIntervalSinceReferenceDate];
         MEMORY[0x1AC568C80](v7);
 
         v32 = 0u;
         v33 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v24 = v6;
-        obj = v6;
+        v24 = detachedItems;
+        obj = detachedItems;
         v9 = [obj countByEnumeratingWithState:&v30 objects:v35 count:16];
         if (v9)
         {
@@ -10187,9 +10187,9 @@ LABEL_35:
               }
 
               v13 = *(*(&v30 + 1) + 8 * i);
-              if ([v13 isEqual:v4])
+              if ([v13 isEqual:datesCopy])
               {
-                v14 = v4;
+                v14 = datesCopy;
               }
 
               else
@@ -10198,8 +10198,8 @@ LABEL_35:
               }
 
               v15 = v14;
-              v16 = [v15 originalStartDate];
-              [v16 timeIntervalSinceReferenceDate];
+              originalStartDate = [v15 originalStartDate];
+              [originalStartDate timeIntervalSinceReferenceDate];
               MEMORY[0x1AC568C80](v7);
               v17 = MEMORY[0x1E695DF00];
               CalGregorianDateGetAbsoluteTimeWithFallbackToDefaultTimeZone();
@@ -10214,7 +10214,7 @@ LABEL_35:
           while (v10);
         }
 
-        v6 = v24;
+        detachedItems = v24;
       }
     }
 
@@ -10222,8 +10222,8 @@ LABEL_35:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v5 = [(EKCalendarItem *)self recurrenceRules];
-    v19 = [v5 countByEnumeratingWithState:&v26 objects:v34 count:16];
+    originalItem = [(EKCalendarItem *)self recurrenceRules];
+    v19 = [originalItem countByEnumeratingWithState:&v26 objects:v34 count:16];
     if (v19)
     {
       v20 = v19;
@@ -10234,13 +10234,13 @@ LABEL_35:
         {
           if (*v27 != v21)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(originalItem);
           }
 
           [*(*(&v26 + 1) + 8 * j) invalidateCachedEndDate];
         }
 
-        v20 = [v5 countByEnumeratingWithState:&v26 objects:v34 count:16];
+        v20 = [originalItem countByEnumeratingWithState:&v26 objects:v34 count:16];
       }
 
       while (v20);
@@ -10255,41 +10255,41 @@ LABEL_35:
   v182[1] = *MEMORY[0x1E69E9840];
   if ([(EKCalendarItem *)self hasComplexRecurrence])
   {
-    v3 = [(EKEvent *)self singleRecurrenceRule];
+    singleRecurrenceRule = [(EKEvent *)self singleRecurrenceRule];
     v4 = MEMORY[0x1E695DEE8];
-    v5 = [(EKCalendarItem *)self timeZone];
-    v6 = [v4 CalGregorianCalendarForTimeZone:v5];
+    timeZone = [(EKCalendarItem *)self timeZone];
+    v6 = [v4 CalGregorianCalendarForTimeZone:timeZone];
 
     [v6 setFirstWeekday:1];
-    v7 = [(EKEvent *)self originalOccurrenceStartDate];
-    v8 = [v7 date];
-    v9 = [v6 components:5656 fromDate:v8];
+    originalOccurrenceStartDate = [(EKEvent *)self originalOccurrenceStartDate];
+    date = [originalOccurrenceStartDate date];
+    v9 = [v6 components:5656 fromDate:date];
 
-    v10 = [(EKEvent *)self startDate];
-    v11 = [v6 components:5656 fromDate:v10];
+    startDate = [(EKEvent *)self startDate];
+    v11 = [v6 components:5656 fromDate:startDate];
 
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __48__EKEvent__attemptToUpdateComplexRecurrenceRule__block_invoke;
     aBlock[3] = &unk_1E77FF110;
-    v12 = v3;
+    v12 = singleRecurrenceRule;
     v168 = v12;
     v13 = v11;
     v169 = v13;
     v14 = v9;
     v170 = v14;
-    v171 = self;
+    selfCopy = self;
     v15 = v6;
     v172 = v15;
     v16 = _Block_copy(aBlock);
-    v17 = [v12 setPositions];
-    if ([(EKRecurrenceRule *)v17 count]> 1)
+    setPositions = [v12 setPositions];
+    if ([(EKRecurrenceRule *)setPositions count]> 1)
     {
       goto LABEL_12;
     }
 
-    v18 = [v12 weeksOfTheYear];
-    if ([(EKRecurrenceDayOfWeek *)v18 count])
+    weeksOfTheYear = [v12 weeksOfTheYear];
+    if ([(EKRecurrenceDayOfWeek *)weeksOfTheYear count])
     {
 LABEL_4:
       v19 = 0;
@@ -10299,8 +10299,8 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v20 = [v12 daysOfTheYear];
-    v21 = [v20 count];
+    daysOfTheYear = [v12 daysOfTheYear];
+    v21 = [daysOfTheYear count];
 
     if (v21)
     {
@@ -10313,43 +10313,43 @@ LABEL_14:
 
     if ([v12 frequency] == 1)
     {
-      v17 = [v12 daysOfTheWeek];
-      v18 = [v12 daysOfTheMonth];
-      if ([(EKRecurrenceDayOfWeek *)v18 count])
+      setPositions = [v12 daysOfTheWeek];
+      weeksOfTheYear = [v12 daysOfTheMonth];
+      if ([(EKRecurrenceDayOfWeek *)weeksOfTheYear count])
       {
         goto LABEL_4;
       }
 
-      v22 = [v12 monthsOfTheYear];
-      v23 = [v22 count];
+      monthsOfTheYear = [v12 monthsOfTheYear];
+      v23 = [monthsOfTheYear count];
 
       if (!v23)
       {
-        if ([(EKRecurrenceRule *)v17 count]== 1)
+        if ([(EKRecurrenceRule *)setPositions count]== 1)
         {
-          v38 = [(EKRecurrenceRule *)v17 objectAtIndexedSubscript:0];
-          v39 = [v38 dayOfTheWeek];
-          v40 = [v13 weekday];
+          v38 = [(EKRecurrenceRule *)setPositions objectAtIndexedSubscript:0];
+          dayOfTheWeek = [v38 dayOfTheWeek];
+          weekday = [v13 weekday];
 
-          if (v39 == v40)
+          if (dayOfTheWeek == weekday)
           {
             v147 = [EKRecurrenceRule alloc];
-            v41 = [v12 frequency];
-            v42 = [v12 interval];
-            v43 = [v12 recurrenceEnd];
-            v18 = [(EKRecurrenceRule *)v147 initRecurrenceWithFrequency:v41 interval:v42 daysOfTheWeek:0 daysOfTheMonth:0 monthsOfTheYear:0 weeksOfTheYear:0 daysOfTheYear:0 setPositions:0 end:v43];
+            frequency = [v12 frequency];
+            interval = [v12 interval];
+            recurrenceEnd = [v12 recurrenceEnd];
+            weeksOfTheYear = [(EKRecurrenceRule *)v147 initRecurrenceWithFrequency:frequency interval:interval daysOfTheWeek:0 daysOfTheMonth:0 monthsOfTheYear:0 weeksOfTheYear:0 daysOfTheYear:0 setPositions:0 end:recurrenceEnd];
 
-            [(EKEvent *)self setRecurrenceRule:v18];
+            [(EKEvent *)self setRecurrenceRule:weeksOfTheYear];
             v19 = 1;
             goto LABEL_5;
           }
         }
 
-        else if ([(EKRecurrenceRule *)v17 count]>= 2)
+        else if ([(EKRecurrenceRule *)setPositions count]>= 2)
         {
-          v18 = -[EKRecurrenceDayOfWeek initWithDayOfTheWeek:weekNumber:]([EKRecurrenceDayOfWeek alloc], "initWithDayOfTheWeek:weekNumber:", [v13 weekday], 0);
+          weeksOfTheYear = -[EKRecurrenceDayOfWeek initWithDayOfTheWeek:weekNumber:]([EKRecurrenceDayOfWeek alloc], "initWithDayOfTheWeek:weekNumber:", [v13 weekday], 0);
           v45 = objc_alloc(MEMORY[0x1E695DF70]);
-          v182[0] = v18;
+          v182[0] = weeksOfTheYear;
           v46 = [MEMORY[0x1E695DEC8] arrayWithObjects:v182 count:1];
           obj = [v45 initWithArray:v46];
 
@@ -10357,8 +10357,8 @@ LABEL_14:
           v166 = 0u;
           v163 = 0u;
           v164 = 0u;
-          v17 = v17;
-          v137 = [(EKRecurrenceRule *)v17 countByEnumeratingWithState:&v163 objects:v181 count:16];
+          setPositions = setPositions;
+          v137 = [(EKRecurrenceRule *)setPositions countByEnumeratingWithState:&v163 objects:v181 count:16];
           if (v137)
           {
             v130 = *v164;
@@ -10368,25 +10368,25 @@ LABEL_14:
               {
                 if (*v164 != v130)
                 {
-                  objc_enumerationMutation(v17);
+                  objc_enumerationMutation(setPositions);
                 }
 
                 v48 = *(*(&v163 + 1) + 8 * i);
                 if ([v48 weekNumber] || (v148 = objc_msgSend(v48, "dayOfTheWeek"), v148 == objc_msgSend(v13, "weekday")))
                 {
                   v19 = 0;
-                  v51 = v17;
+                  v51 = setPositions;
                   goto LABEL_87;
                 }
 
-                v149 = [v48 dayOfTheWeek];
-                if (v149 != [v14 weekday])
+                dayOfTheWeek2 = [v48 dayOfTheWeek];
+                if (dayOfTheWeek2 != [v14 weekday])
                 {
                   [obj addObject:v48];
                 }
               }
 
-              v137 = [(EKRecurrenceRule *)v17 countByEnumeratingWithState:&v163 objects:v181 count:16];
+              v137 = [(EKRecurrenceRule *)setPositions countByEnumeratingWithState:&v163 objects:v181 count:16];
               if (v137)
               {
                 continue;
@@ -10398,10 +10398,10 @@ LABEL_14:
 
           [obj sortUsingComparator:&__block_literal_global_268];
           v150 = [EKRecurrenceRule alloc];
-          v138 = [v12 frequency];
-          v49 = [v12 interval];
-          v50 = [v12 recurrenceEnd];
-          v51 = [(EKRecurrenceRule *)v150 initRecurrenceWithFrequency:v138 interval:v49 daysOfTheWeek:obj daysOfTheMonth:0 monthsOfTheYear:0 weeksOfTheYear:0 daysOfTheYear:0 setPositions:0 end:v50];
+          frequency2 = [v12 frequency];
+          interval2 = [v12 interval];
+          recurrenceEnd2 = [v12 recurrenceEnd];
+          v51 = [(EKRecurrenceRule *)v150 initRecurrenceWithFrequency:frequency2 interval:interval2 daysOfTheWeek:obj daysOfTheMonth:0 monthsOfTheYear:0 weeksOfTheYear:0 daysOfTheYear:0 setPositions:0 end:recurrenceEnd2];
 
           [(EKEvent *)self setRecurrenceRule:v51];
           v19 = 1;
@@ -10421,54 +10421,54 @@ LABEL_12:
 
     if ([v12 frequency] == 2)
     {
-      v17 = [v12 daysOfTheWeek];
-      v18 = [v12 daysOfTheMonth];
-      v26 = [v12 setPositions];
-      if ([v26 count] == 1 && !-[EKRecurrenceRule count](v17, "count") || -[EKRecurrenceDayOfWeek count](v18, "count") && objc_msgSend(v26, "count"))
+      setPositions = [v12 daysOfTheWeek];
+      weeksOfTheYear = [v12 daysOfTheMonth];
+      setPositions2 = [v12 setPositions];
+      if ([setPositions2 count] == 1 && !-[EKRecurrenceRule count](setPositions, "count") || -[EKRecurrenceDayOfWeek count](weeksOfTheYear, "count") && objc_msgSend(setPositions2, "count"))
       {
         goto LABEL_100;
       }
 
-      v146 = v26;
-      v27 = [v12 monthsOfTheYear];
-      v28 = [v27 count];
+      v146 = setPositions2;
+      monthsOfTheYear2 = [v12 monthsOfTheYear];
+      v28 = [monthsOfTheYear2 count];
 
       if (!v28)
       {
-        if ([(EKRecurrenceDayOfWeek *)v18 count]== 1)
+        if ([(EKRecurrenceDayOfWeek *)weeksOfTheYear count]== 1)
         {
-          v29 = [(EKRecurrenceDayOfWeek *)v18 objectAtIndexedSubscript:0];
-          v135 = [v29 integerValue];
+          v29 = [(EKRecurrenceDayOfWeek *)weeksOfTheYear objectAtIndexedSubscript:0];
+          integerValue = [v29 integerValue];
           v30 = [v13 day];
 
-          if (v135 == v30)
+          if (integerValue == v30)
           {
 LABEL_24:
             v136 = [EKRecurrenceRule alloc];
-            v128 = [v12 frequency];
-            v31 = [v12 interval];
-            v32 = [v12 recurrenceEnd];
-            v33 = [(EKRecurrenceRule *)v136 initRecurrenceWithFrequency:v128 interval:v31 daysOfTheWeek:0 daysOfTheMonth:0 monthsOfTheYear:0 weeksOfTheYear:0 daysOfTheYear:0 setPositions:0 end:v32];
+            frequency3 = [v12 frequency];
+            interval3 = [v12 interval];
+            recurrenceEnd3 = [v12 recurrenceEnd];
+            v33 = [(EKRecurrenceRule *)v136 initRecurrenceWithFrequency:frequency3 interval:interval3 daysOfTheWeek:0 daysOfTheMonth:0 monthsOfTheYear:0 weeksOfTheYear:0 daysOfTheYear:0 setPositions:0 end:recurrenceEnd3];
 
-            v34 = self;
+            selfCopy2 = self;
             v35 = v33;
-            [(EKEvent *)v34 setRecurrenceRule:v33];
+            [(EKEvent *)selfCopy2 setRecurrenceRule:v33];
             v19 = 1;
 LABEL_93:
-            v26 = v146;
+            setPositions2 = v146;
 
             goto LABEL_101;
           }
 
           v19 = 1;
 LABEL_30:
-          v26 = v146;
+          setPositions2 = v146;
 LABEL_101:
 
           goto LABEL_5;
         }
 
-        if ([(EKRecurrenceDayOfWeek *)v18 count]>= 2)
+        if ([(EKRecurrenceDayOfWeek *)weeksOfTheYear count]>= 2)
         {
           v52 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v13, "day")}];
           v53 = objc_alloc(MEMORY[0x1E695DF70]);
@@ -10481,8 +10481,8 @@ LABEL_101:
           v162 = 0u;
           v159 = 0u;
           v160 = 0u;
-          v114 = v18;
-          obja = v18;
+          v114 = weeksOfTheYear;
+          obja = weeksOfTheYear;
           v139 = [(EKRecurrenceDayOfWeek *)obja countByEnumeratingWithState:&v159 objects:v179 count:16];
           if (v139)
           {
@@ -10497,15 +10497,15 @@ LABEL_101:
                 }
 
                 v56 = *(*(&v159 + 1) + 8 * j);
-                v57 = [v56 integerValue];
-                if (v57 == [v13 day])
+                integerValue2 = [v56 integerValue];
+                if (integerValue2 == [v13 day])
                 {
                   v19 = 0;
                   goto LABEL_92;
                 }
 
-                v58 = [v56 integerValue];
-                if (v58 != [v14 day])
+                integerValue3 = [v56 integerValue];
+                if (integerValue3 != [v14 day])
                 {
                   [v116 addObject:v56];
                 }
@@ -10523,10 +10523,10 @@ LABEL_101:
 
           [v116 sortUsingComparator:&__block_literal_global_271];
           v140 = [EKRecurrenceRule alloc];
-          v132 = [v12 frequency];
-          v59 = [v12 interval];
-          v60 = [v12 recurrenceEnd];
-          v61 = [(EKRecurrenceRule *)v140 initRecurrenceWithFrequency:v132 interval:v59 daysOfTheWeek:0 daysOfTheMonth:v116 monthsOfTheYear:0 weeksOfTheYear:0 daysOfTheYear:0 setPositions:0 end:v60];
+          frequency4 = [v12 frequency];
+          interval4 = [v12 interval];
+          recurrenceEnd4 = [v12 recurrenceEnd];
+          v61 = [(EKRecurrenceRule *)v140 initRecurrenceWithFrequency:frequency4 interval:interval4 daysOfTheWeek:0 daysOfTheMonth:v116 monthsOfTheYear:0 weeksOfTheYear:0 daysOfTheYear:0 setPositions:0 end:recurrenceEnd4];
 
           obja = v61;
           [(EKEvent *)self setRecurrenceRule:v61];
@@ -10534,62 +10534,62 @@ LABEL_101:
 LABEL_92:
 
           v35 = v110;
-          v18 = v114;
+          weeksOfTheYear = v114;
           goto LABEL_93;
         }
 
-        if ([(EKRecurrenceRule *)v17 count]== 1)
+        if ([(EKRecurrenceRule *)setPositions count]== 1)
         {
           v133 = [EKRecurrenceRule alloc];
           objd = [v12 frequency];
-          v119 = [v12 interval];
+          interval5 = [v12 interval];
           v143 = v16[2](v16);
           v178 = v143;
           v19 = 1;
           v86 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v178 count:1];
-          v115 = [v12 recurrenceEnd];
-          v111 = [(EKRecurrenceRule *)v133 initRecurrenceWithFrequency:objd interval:v119 daysOfTheWeek:v86 daysOfTheMonth:0 monthsOfTheYear:0 weeksOfTheYear:0 daysOfTheYear:0 setPositions:0 end:v115];
+          recurrenceEnd5 = [v12 recurrenceEnd];
+          v111 = [(EKRecurrenceRule *)v133 initRecurrenceWithFrequency:objd interval:interval5 daysOfTheWeek:v86 daysOfTheMonth:0 monthsOfTheYear:0 weeksOfTheYear:0 daysOfTheYear:0 setPositions:0 end:recurrenceEnd5];
 
-          v87 = self;
+          selfCopy3 = self;
           v35 = v111;
-          [(EKEvent *)v87 setRecurrenceRule:v111];
+          [(EKEvent *)selfCopy3 setRecurrenceRule:v111];
           goto LABEL_93;
         }
 
-        v26 = v146;
-        if (-[EKRecurrenceRule count](v17, "count") == 7 && [v146 count] == 1)
+        setPositions2 = v146;
+        if (-[EKRecurrenceRule count](setPositions, "count") == 7 && [v146 count] == 1)
         {
           v88 = [v146 objectAtIndexedSubscript:0];
-          v89 = [v88 integerValue];
+          integerValue4 = [v88 integerValue];
 
-          if (v89 > 0)
+          if (integerValue4 > 0)
           {
             goto LABEL_24;
           }
 
           v90 = [v146 objectAtIndexedSubscript:0];
-          v91 = [v90 integerValue];
+          integerValue5 = [v90 integerValue];
 
-          if (v91 < 0)
+          if (integerValue5 < 0)
           {
-            v92 = [(EKEvent *)self startDate];
-            v93 = [v15 daysInMonthContainingDate:v92];
+            startDate2 = [(EKEvent *)self startDate];
+            v93 = [v15 daysInMonthContainingDate:startDate2];
 
             v94 = v93 - [v13 day];
             if (v94 <= 1)
             {
               v134 = [EKRecurrenceRule alloc];
               obje = [v12 frequency];
-              v120 = [v12 interval];
+              interval6 = [v12 interval];
               v144 = [MEMORY[0x1E696AD98] numberWithInteger:~v94];
               v177 = v144;
               v95 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v177 count:1];
-              v96 = [v12 recurrenceEnd];
-              v112 = [(EKRecurrenceRule *)v134 initRecurrenceWithFrequency:obje interval:v120 daysOfTheWeek:v17 daysOfTheMonth:0 monthsOfTheYear:0 weeksOfTheYear:0 daysOfTheYear:0 setPositions:v95 end:v96];
+              recurrenceEnd6 = [v12 recurrenceEnd];
+              v112 = [(EKRecurrenceRule *)v134 initRecurrenceWithFrequency:obje interval:interval6 daysOfTheWeek:setPositions daysOfTheMonth:0 monthsOfTheYear:0 weeksOfTheYear:0 daysOfTheYear:0 setPositions:v95 end:recurrenceEnd6];
 
-              v97 = self;
+              selfCopy4 = self;
               v35 = v112;
-              [(EKEvent *)v97 setRecurrenceRule:v112];
+              [(EKEvent *)selfCopy4 setRecurrenceRule:v112];
               v19 = 1;
               goto LABEL_93;
             }
@@ -10615,26 +10615,26 @@ LABEL_29:
       goto LABEL_8;
     }
 
-    v17 = [v12 daysOfTheWeek];
-    v18 = [v12 setPositions];
-    v26 = [v12 monthsOfTheYear];
-    if ([(EKRecurrenceDayOfWeek *)v18 count]== 1 && ![(EKRecurrenceRule *)v17 count])
+    setPositions = [v12 daysOfTheWeek];
+    weeksOfTheYear = [v12 setPositions];
+    setPositions2 = [v12 monthsOfTheYear];
+    if ([(EKRecurrenceDayOfWeek *)weeksOfTheYear count]== 1 && ![(EKRecurrenceRule *)setPositions count])
     {
       goto LABEL_100;
     }
 
-    v146 = v26;
-    v36 = [v12 daysOfTheMonth];
-    v37 = [v36 count];
+    v146 = setPositions2;
+    daysOfTheMonth = [v12 daysOfTheMonth];
+    v37 = [daysOfTheMonth count];
 
-    if (v37 || [(EKRecurrenceDayOfWeek *)v18 count]&& [(EKRecurrenceRule *)v17 count]!= 1 && [(EKRecurrenceRule *)v17 count]!= 7)
+    if (v37 || [(EKRecurrenceDayOfWeek *)weeksOfTheYear count]&& [(EKRecurrenceRule *)setPositions count]!= 1 && [(EKRecurrenceRule *)setPositions count]!= 7)
     {
       goto LABEL_29;
     }
 
-    v44 = [v13 month];
-    v113 = v18;
-    if (v44 == [v14 month])
+    month = [v13 month];
+    v113 = weeksOfTheYear;
+    if (month == [v14 month])
     {
       v129 = v146;
     }
@@ -10667,8 +10667,8 @@ LABEL_29:
             }
 
             v66 = *(*(&v155 + 1) + 8 * k);
-            v67 = [v66 integerValue];
-            if (v67 == [v13 month])
+            integerValue6 = [v66 integerValue];
+            if (integerValue6 == [v13 month])
             {
               v84 = objb;
 
@@ -10677,8 +10677,8 @@ LABEL_29:
               goto LABEL_109;
             }
 
-            v68 = [v66 integerValue];
-            if (v68 != [v14 month])
+            integerValue7 = [v66 integerValue];
+            if (integerValue7 != [v14 month])
             {
               [v129 addObject:v66];
             }
@@ -10695,25 +10695,25 @@ LABEL_29:
       }
 
       [v129 sortUsingComparator:&__block_literal_global_273];
-      v18 = v113;
+      weeksOfTheYear = v113;
     }
 
-    if ([(EKRecurrenceRule *)v17 count]== 7 && [(EKRecurrenceDayOfWeek *)v18 count]== 1)
+    if ([(EKRecurrenceRule *)setPositions count]== 7 && [(EKRecurrenceDayOfWeek *)weeksOfTheYear count]== 1)
     {
-      v69 = [(EKRecurrenceDayOfWeek *)v18 objectAtIndexedSubscript:0];
-      v70 = [v69 integerValue];
+      v69 = [(EKRecurrenceDayOfWeek *)weeksOfTheYear objectAtIndexedSubscript:0];
+      integerValue8 = [v69 integerValue];
 
-      if (v70 > 0)
+      if (integerValue8 > 0)
       {
 LABEL_79:
         v71 = [EKRecurrenceRule alloc];
-        v152 = [v12 frequency];
-        v72 = [v12 interval];
-        v73 = [v12 recurrenceEnd];
-        v108 = v73;
+        frequency5 = [v12 frequency];
+        interval7 = [v12 interval];
+        recurrenceEnd7 = [v12 recurrenceEnd];
+        v108 = recurrenceEnd7;
         v74 = v71;
-        v75 = v152;
-        v76 = v72;
+        v75 = frequency5;
+        v76 = interval7;
         v77 = 0;
 LABEL_108:
         v84 = v129;
@@ -10724,14 +10724,14 @@ LABEL_108:
         goto LABEL_109;
       }
 
-      v18 = v113;
+      weeksOfTheYear = v113;
       v99 = [(EKRecurrenceDayOfWeek *)v113 objectAtIndexedSubscript:0];
-      v100 = [v99 integerValue];
+      integerValue9 = [v99 integerValue];
 
-      if (v100 < 0)
+      if (integerValue9 < 0)
       {
-        v101 = [(EKEvent *)self startDate];
-        v102 = [v15 daysInMonthContainingDate:v101];
+        startDate3 = [(EKEvent *)self startDate];
+        v102 = [v15 daysInMonthContainingDate:startDate3];
 
         v103 = v102 - [v13 day];
         if (v103 > 1)
@@ -10740,18 +10740,18 @@ LABEL_108:
         }
 
         v104 = [EKRecurrenceRule alloc];
-        v145 = [v12 frequency];
+        frequency6 = [v12 frequency];
         objf = [v12 interval];
         v153 = [MEMORY[0x1E696AD98] numberWithInteger:~v103];
         v174 = v153;
         v118 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v174 count:1];
-        v79 = [v12 recurrenceEnd];
+        recurrenceEnd8 = [v12 recurrenceEnd];
         v107 = v118;
-        v109 = v79;
+        v109 = recurrenceEnd8;
         v80 = v104;
-        v81 = v145;
+        v81 = frequency6;
         v82 = objf;
-        v83 = v17;
+        v83 = setPositions;
 LABEL_82:
         v84 = v129;
         v85 = [(EKRecurrenceRule *)v80 initRecurrenceWithFrequency:v81 interval:v82 daysOfTheWeek:v83 daysOfTheMonth:0 monthsOfTheYear:v129 weeksOfTheYear:0 daysOfTheYear:0 setPositions:v107 end:v109];
@@ -10760,51 +10760,51 @@ LABEL_82:
         v19 = 1;
 LABEL_109:
 
-        v26 = v84;
-        v18 = v113;
+        setPositions2 = v84;
+        weeksOfTheYear = v113;
         goto LABEL_101;
       }
     }
 
     else
     {
-      if ([(EKRecurrenceRule *)v17 count]== 1)
+      if ([(EKRecurrenceRule *)setPositions count]== 1)
       {
         objc = [EKRecurrenceRule alloc];
-        v78 = [v12 frequency];
-        v142 = [v12 interval];
+        frequency7 = [v12 frequency];
+        interval8 = [v12 interval];
         v153 = v16[2](v16);
         v173 = v153;
         v118 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v173 count:1];
-        v79 = [v12 recurrenceEnd];
+        recurrenceEnd8 = [v12 recurrenceEnd];
         v107 = 0;
-        v109 = v79;
+        v109 = recurrenceEnd8;
         v80 = objc;
-        v81 = v78;
-        v82 = v142;
+        v81 = frequency7;
+        v82 = interval8;
         v83 = v118;
         goto LABEL_82;
       }
 
-      if (![(EKRecurrenceRule *)v17 count])
+      if (![(EKRecurrenceRule *)setPositions count])
       {
-        v98 = [v13 month];
-        if (v98 == [v14 month])
+        month2 = [v13 month];
+        if (month2 == [v14 month])
         {
           v19 = 1;
-          v26 = v129;
+          setPositions2 = v129;
           goto LABEL_101;
         }
 
         v105 = [EKRecurrenceRule alloc];
-        v154 = [v12 frequency];
-        v106 = [v12 interval];
-        v73 = [v12 recurrenceEnd];
-        v108 = v73;
+        frequency8 = [v12 frequency];
+        interval9 = [v12 interval];
+        recurrenceEnd7 = [v12 recurrenceEnd];
+        v108 = recurrenceEnd7;
         v74 = v105;
-        v75 = v154;
-        v76 = v106;
-        v77 = v17;
+        v75 = frequency8;
+        v76 = interval9;
+        v77 = setPositions;
         goto LABEL_108;
       }
     }
@@ -10914,8 +10914,8 @@ uint64_t __48__EKEvent__attemptToUpdateComplexRecurrenceRule__block_invoke_2(uin
 - (void)_filterExceptionDatesAndDetachments
 {
   v87 = *MEMORY[0x1E69E9840];
-  v3 = [(EKObject *)self changeSet];
-  v4 = [v3 hasUnsavedMultiValueRemovalForKey:*MEMORY[0x1E6992648]];
+  changeSet = [(EKObject *)self changeSet];
+  v4 = [changeSet hasUnsavedMultiValueRemovalForKey:*MEMORY[0x1E6992648]];
 
   if (v4)
   {
@@ -10928,8 +10928,8 @@ uint64_t __48__EKEvent__attemptToUpdateComplexRecurrenceRule__block_invoke_2(uin
     v82 = 0u;
     v79 = 0u;
     v80 = 0u;
-    v6 = [(EKCalendarItem *)self recurrenceRules];
-    v7 = [v6 countByEnumeratingWithState:&v79 objects:v86 count:16];
+    recurrenceRules = [(EKCalendarItem *)self recurrenceRules];
+    v7 = [recurrenceRules countByEnumeratingWithState:&v79 objects:v86 count:16];
     if (v7)
     {
       v8 = v7;
@@ -10940,7 +10940,7 @@ uint64_t __48__EKEvent__attemptToUpdateComplexRecurrenceRule__block_invoke_2(uin
         {
           if (*v80 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(recurrenceRules);
           }
 
           if ([*(*(&v79 + 1) + 8 * i) dirtyStateMayAffectExceptionDates])
@@ -10950,7 +10950,7 @@ uint64_t __48__EKEvent__attemptToUpdateComplexRecurrenceRule__block_invoke_2(uin
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v79 objects:v86 count:16];
+        v8 = [recurrenceRules countByEnumeratingWithState:&v79 objects:v86 count:16];
         if (v8)
         {
           continue;
@@ -10964,13 +10964,13 @@ uint64_t __48__EKEvent__attemptToUpdateComplexRecurrenceRule__block_invoke_2(uin
 LABEL_13:
   }
 
-  v11 = [(EKCalendarItem *)self exceptionDates];
-  v12 = [(EKCalendarItem *)self detachedItems];
-  v13 = v12;
-  if (!v11)
+  exceptionDates = [(EKCalendarItem *)self exceptionDates];
+  detachedItems = [(EKCalendarItem *)self detachedItems];
+  v13 = detachedItems;
+  if (!exceptionDates)
   {
     v14 = 0;
-    if (v12)
+    if (detachedItems)
     {
       goto LABEL_16;
     }
@@ -10980,7 +10980,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v14 = [v11 count] != 0;
+  v14 = [exceptionDates count] != 0;
   if (!v13)
   {
     goto LABEL_18;
@@ -10991,24 +10991,24 @@ LABEL_16:
 LABEL_19:
   if ((v5 & v14 & 1) != 0 || v15)
   {
-    v16 = [(EKEvent *)self startDateRaw];
+    startDateRaw = [(EKEvent *)self startDateRaw];
     if (v5)
     {
-      v64 = [v11 allObjects];
-      v17 = [(EKCalendarItem *)self exceptionDatesAdjustedForFloatingEvents];
-      v18 = [v17 allObjects];
+      allObjects = [exceptionDates allObjects];
+      exceptionDatesAdjustedForFloatingEvents = [(EKCalendarItem *)self exceptionDatesAdjustedForFloatingEvents];
+      allObjects2 = [exceptionDatesAdjustedForFloatingEvents allObjects];
     }
 
     else
     {
-      v18 = MEMORY[0x1E695E0F0];
-      v64 = MEMORY[0x1E695E0F0];
+      allObjects2 = MEMORY[0x1E695E0F0];
+      allObjects = MEMORY[0x1E695E0F0];
     }
 
-    v63 = v18;
-    v19 = [v18 valueForKeyPath:@"@max.self"];
+    v63 = allObjects2;
+    v19 = [allObjects2 valueForKeyPath:@"@max.self"];
     v20 = v19;
-    v65 = v16;
+    v65 = startDateRaw;
     if (v19)
     {
       v21 = v19;
@@ -11016,21 +11016,21 @@ LABEL_19:
 
     else
     {
-      v21 = v16;
+      v21 = startDateRaw;
     }
 
     v66 = v21;
 
     v22 = MEMORY[0x1E695DF90];
-    v23 = [(EKCalendarItem *)self detachedItems];
-    v24 = [v22 dictionaryWithCapacity:{objc_msgSend(v23, "count")}];
+    detachedItems2 = [(EKCalendarItem *)self detachedItems];
+    v24 = [v22 dictionaryWithCapacity:{objc_msgSend(detachedItems2, "count")}];
 
     v77 = 0u;
     v78 = 0u;
     v75 = 0u;
     v76 = 0u;
-    v25 = [(EKCalendarItem *)self detachedItems];
-    v26 = [v25 countByEnumeratingWithState:&v75 objects:v85 count:16];
+    detachedItems3 = [(EKCalendarItem *)self detachedItems];
+    v26 = [detachedItems3 countByEnumeratingWithState:&v75 objects:v85 count:16];
     if (v26)
     {
       v27 = v26;
@@ -11041,22 +11041,22 @@ LABEL_19:
         {
           if (*v76 != v28)
           {
-            objc_enumerationMutation(v25);
+            objc_enumerationMutation(detachedItems3);
           }
 
           v30 = *(*(&v75 + 1) + 8 * j);
-          v31 = [v30 originalStartDate];
-          [v24 setObject:v30 forKeyedSubscript:v31];
+          originalStartDate = [v30 originalStartDate];
+          [v24 setObject:v30 forKeyedSubscript:originalStartDate];
         }
 
-        v27 = [v25 countByEnumeratingWithState:&v75 objects:v85 count:16];
+        v27 = [detachedItems3 countByEnumeratingWithState:&v75 objects:v85 count:16];
       }
 
       while (v27);
     }
 
-    v32 = [v24 allKeys];
-    v33 = [v32 valueForKeyPath:@"@max.self"];
+    allKeys = [v24 allKeys];
+    v33 = [allKeys valueForKeyPath:@"@max.self"];
     v34 = v33;
     v35 = v65;
     if (v33)
@@ -11074,21 +11074,21 @@ LABEL_19:
     v38 = [v66 laterDate:v37];
     v39 = [v38 dateByAddingTimeInterval:1.0];
 
-    v40 = [(EKCalendarItem *)self timeZone];
+    timeZone = [(EKCalendarItem *)self timeZone];
     v41 = objc_alloc_init(EKRecurrenceGenerator);
     LOBYTE(v58) = 1;
-    v42 = [(EKRecurrenceGenerator *)v41 copyOccurrenceDatesWithEKEvent:self startDate:v65 endDate:v39 timeZone:v40 exceptionDates:0 limit:0 adjustDatesForAllDayEvents:v58];
+    v42 = [(EKRecurrenceGenerator *)v41 copyOccurrenceDatesWithEKEvent:self startDate:v65 endDate:v39 timeZone:timeZone exceptionDates:0 limit:0 adjustDatesForAllDayEvents:v58];
     if ([v42 count])
     {
       v59 = v41;
-      v60 = v40;
+      v60 = timeZone;
       v61 = v39;
       v62 = v37;
       v73 = 0u;
       v74 = 0u;
       v71 = 0u;
       v72 = 0u;
-      v43 = v64;
+      v43 = allObjects;
       v44 = [v43 countByEnumeratingWithState:&v71 objects:v84 count:16];
       if (v44)
       {
@@ -11116,8 +11116,8 @@ LABEL_19:
         while (v45);
       }
 
-      v49 = [v24 allKeys];
-      v50 = [(EKEvent *)self _leftoversInDates:v49 withGeneratedDates:v42];
+      allKeys2 = [v24 allKeys];
+      v50 = [(EKEvent *)self _leftoversInDates:allKeys2 withGeneratedDates:v42];
 
       v69 = 0u;
       v70 = 0u;
@@ -11152,7 +11152,7 @@ LABEL_19:
       v39 = v61;
       v37 = v62;
       v41 = v59;
-      v40 = v60;
+      timeZone = v60;
     }
 
     else
@@ -11165,12 +11165,12 @@ LABEL_19:
   v57 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_leftoversInDates:(id)a3 withGeneratedDates:(id)a4
+- (id)_leftoversInDates:(id)dates withGeneratedDates:(id)generatedDates
 {
   v5 = MEMORY[0x1E695DFD8];
-  v6 = a3;
-  v7 = [v5 setWithArray:a4];
-  v8 = [MEMORY[0x1E695DFA8] setWithArray:v6];
+  datesCopy = dates;
+  v7 = [v5 setWithArray:generatedDates];
+  v8 = [MEMORY[0x1E695DFA8] setWithArray:datesCopy];
 
   v9 = [v8 mutableCopy];
   [v9 intersectSet:v7];
@@ -11184,16 +11184,16 @@ LABEL_19:
   v80 = *MEMORY[0x1E69E9840];
   if (![(EKObject *)self isPropertyUnavailable:*MEMORY[0x1E6992558]])
   {
-    v3 = [(EKCalendarItem *)self alarms];
-    if ([v3 count])
+    alarms = [(EKCalendarItem *)self alarms];
+    if ([alarms count])
     {
-      v4 = [(EKEvent *)self constraints];
-      v5 = [v4 supportsAlarmTriggerDates];
+      constraints = [(EKEvent *)self constraints];
+      supportsAlarmTriggerDates = [constraints supportsAlarmTriggerDates];
 
-      if ((v5 & 1) == 0)
+      if ((supportsAlarmTriggerDates & 1) == 0)
       {
-        v6 = [(EKCalendarItem *)self alarms];
-        v7 = [v6 copy];
+        alarms2 = [(EKCalendarItem *)self alarms];
+        v7 = [alarms2 copy];
 
         v74 = 0u;
         v75 = 0u;
@@ -11218,14 +11218,14 @@ LABEL_19:
               if ([v13 isAbsolute])
               {
                 [(EKCalendarItem *)self removeAlarm:v13];
-                v14 = [(EKEvent *)self constraints];
-                v15 = [v14 supportsAlarmTriggerIntervals];
+                constraints2 = [(EKEvent *)self constraints];
+                supportsAlarmTriggerIntervals = [constraints2 supportsAlarmTriggerIntervals];
 
-                if (v15)
+                if (supportsAlarmTriggerIntervals)
                 {
-                  v16 = [v13 absoluteDate];
-                  v17 = [(EKEvent *)self startDate];
-                  [v16 timeIntervalSinceDate:v17];
+                  absoluteDate = [v13 absoluteDate];
+                  startDate = [(EKEvent *)self startDate];
+                  [absoluteDate timeIntervalSinceDate:startDate];
                   v19 = v18;
 
                   v20 = [EKAlarm alarmWithRelativeOffset:v19];
@@ -11241,13 +11241,13 @@ LABEL_19:
         }
       }
 
-      v21 = [(EKEvent *)self constraints];
-      v22 = [v21 supportsAlarmTriggerIntervals];
+      constraints3 = [(EKEvent *)self constraints];
+      supportsAlarmTriggerIntervals2 = [constraints3 supportsAlarmTriggerIntervals];
 
-      if ((v22 & 1) == 0)
+      if ((supportsAlarmTriggerIntervals2 & 1) == 0)
       {
-        v23 = [(EKCalendarItem *)self alarms];
-        v24 = [v23 copy];
+        alarms3 = [(EKCalendarItem *)self alarms];
+        v24 = [alarms3 copy];
 
         v70 = 0u;
         v71 = 0u;
@@ -11282,13 +11282,13 @@ LABEL_19:
         }
       }
 
-      v31 = [(EKEvent *)self constraints];
-      v32 = [v31 supportsAlarmsTriggeringAfterStartDate];
+      constraints4 = [(EKEvent *)self constraints];
+      supportsAlarmsTriggeringAfterStartDate = [constraints4 supportsAlarmsTriggeringAfterStartDate];
 
-      if ((v32 & 1) == 0)
+      if ((supportsAlarmsTriggeringAfterStartDate & 1) == 0)
       {
-        v33 = [(EKCalendarItem *)self alarms];
-        v34 = [v33 copy];
+        alarms4 = [(EKCalendarItem *)self alarms];
+        v34 = [alarms4 copy];
 
         v66 = 0u;
         v67 = 0u;
@@ -11326,9 +11326,9 @@ LABEL_36:
               continue;
             }
 
-            v41 = [v40 absoluteDate];
-            v42 = [(EKEvent *)self startDate];
-            v43 = [v41 compare:v42];
+            absoluteDate2 = [v40 absoluteDate];
+            startDate2 = [(EKEvent *)self startDate];
+            v43 = [absoluteDate2 compare:startDate2];
 
             if (v43 == 1)
             {
@@ -11346,11 +11346,11 @@ LABEL_39:
         }
       }
 
-      v45 = [(EKEvent *)self constraints];
-      LODWORD(v46) = [v45 maxAlarmsAllowed];
+      constraints5 = [(EKEvent *)self constraints];
+      LODWORD(v46) = [constraints5 maxAlarmsAllowed];
 
-      v47 = [(EKCalendarItem *)self sortedAlarms];
-      v48 = [v47 count];
+      sortedAlarms = [(EKCalendarItem *)self sortedAlarms];
+      v48 = [sortedAlarms count];
       if ((v46 & 0x80000000) == 0)
       {
         v49 = v48;
@@ -11359,7 +11359,7 @@ LABEL_39:
         {
           do
           {
-            v50 = [v47 objectAtIndexedSubscript:v46];
+            v50 = [sortedAlarms objectAtIndexedSubscript:v46];
             [(EKCalendarItem *)self removeAlarm:v50];
 
             ++v46;
@@ -11370,17 +11370,17 @@ LABEL_39:
       }
     }
 
-    v51 = [(EKEvent *)self constraints];
-    v52 = [v51 supportsDefaultAlarms];
+    constraints6 = [(EKEvent *)self constraints];
+    supportsDefaultAlarms = [constraints6 supportsDefaultAlarms];
 
-    if ((v52 & 1) == 0)
+    if ((supportsDefaultAlarms & 1) == 0)
     {
-      v53 = [(EKCalendarItem *)self allAlarms];
+      allAlarms = [(EKCalendarItem *)self allAlarms];
       v60 = 0u;
       v61 = 0u;
       v62 = 0u;
       v63 = 0u;
-      v54 = [v53 countByEnumeratingWithState:&v60 objects:v76 count:16];
+      v54 = [allAlarms countByEnumeratingWithState:&v60 objects:v76 count:16];
       if (v54)
       {
         v55 = v54;
@@ -11391,7 +11391,7 @@ LABEL_39:
           {
             if (*v61 != v56)
             {
-              objc_enumerationMutation(v53);
+              objc_enumerationMutation(allAlarms);
             }
 
             v58 = *(*(&v60 + 1) + 8 * m);
@@ -11401,7 +11401,7 @@ LABEL_39:
             }
           }
 
-          v55 = [v53 countByEnumeratingWithState:&v60 objects:v76 count:16];
+          v55 = [allAlarms countByEnumeratingWithState:&v60 objects:v76 count:16];
         }
 
         while (v55);
@@ -11412,31 +11412,31 @@ LABEL_39:
   v59 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_adjustRecurrenceRulesAfterMovingOrCopyingFromCalendar:(id)a3 toCalendar:(id)a4 notes:(id)a5
+- (void)_adjustRecurrenceRulesAfterMovingOrCopyingFromCalendar:(id)calendar toCalendar:(id)toCalendar notes:(id)notes
 {
-  v41 = a4;
-  v7 = a5;
+  toCalendarCopy = toCalendar;
+  notesCopy = notes;
   if (![(EKCalendarItem *)self hasRecurrenceRules])
   {
     goto LABEL_29;
   }
 
-  v8 = [(EKCalendarItem *)self recurrenceRules];
-  v9 = [v41 constraints];
-  v10 = [v9 maxRecurrencesAllowed];
+  recurrenceRules = [(EKCalendarItem *)self recurrenceRules];
+  constraints = [toCalendarCopy constraints];
+  maxRecurrencesAllowed = [constraints maxRecurrencesAllowed];
 
-  v11 = [v8 count];
-  if ((v10 & 0x80000000) == 0)
+  v11 = [recurrenceRules count];
+  if ((maxRecurrencesAllowed & 0x80000000) == 0)
   {
-    v12 = v11 - v10;
-    if (v11 > v10)
+    v12 = v11 - maxRecurrencesAllowed;
+    if (v11 > maxRecurrencesAllowed)
     {
       do
       {
-        v13 = [(EKCalendarItem *)self recurrenceRules];
-        v14 = [v13 firstObject];
+        recurrenceRules2 = [(EKCalendarItem *)self recurrenceRules];
+        firstObject = [recurrenceRules2 firstObject];
 
-        [(EKCalendarItem *)self removeRecurrenceRule:v14];
+        [(EKCalendarItem *)self removeRecurrenceRule:firstObject];
         --v12;
       }
 
@@ -11444,25 +11444,25 @@ LABEL_39:
     }
   }
 
-  v15 = [v8 firstObject];
-  if ([v15 frequency] != 2)
+  firstObject2 = [recurrenceRules firstObject];
+  if ([firstObject2 frequency] != 2)
   {
 LABEL_11:
-    if ([v15 frequency] == 3)
+    if ([firstObject2 frequency] == 3)
     {
-      v20 = [v15 monthsOfTheYear];
-      if ([v20 count] <= 1)
+      monthsOfTheYear = [firstObject2 monthsOfTheYear];
+      if ([monthsOfTheYear count] <= 1)
       {
       }
 
       else
       {
-        v21 = [v41 constraints];
-        v22 = [v21 prohibitsMultipleMonthsInYearlyRecurrence];
+        constraints2 = [toCalendarCopy constraints];
+        prohibitsMultipleMonthsInYearlyRecurrence = [constraints2 prohibitsMultipleMonthsInYearlyRecurrence];
 
-        if (v22)
+        if (prohibitsMultipleMonthsInYearlyRecurrence)
         {
-          v19 = [v15 copy];
+          v19 = [firstObject2 copy];
           [v19 setMonthsOfTheYear:0];
           if (!v19)
           {
@@ -11470,17 +11470,17 @@ LABEL_11:
           }
 
 LABEL_21:
-          if (v7)
+          if (notesCopy)
           {
             v25 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
             v26 = [v25 localizedStringForKey:@"repeat" value:&stru_1F1B49D68 table:0];
 
-            v27 = [(EKEvent *)self startDate];
-            v28 = [v15 humanReadableDescriptionWithStartDate:v27];
-            [v7 appendFormat:@"\n%@:%@", v26, v28];
+            startDate = [(EKEvent *)self startDate];
+            v28 = [firstObject2 humanReadableDescriptionWithStartDate:startDate];
+            [notesCopy appendFormat:@"\n%@:%@", v26, v28];
           }
 
-          [(EKCalendarItem *)self removeRecurrenceRule:v15];
+          [(EKCalendarItem *)self removeRecurrenceRule:firstObject2];
           [(EKCalendarItem *)self addRecurrenceRule:v19];
 
           goto LABEL_24;
@@ -11488,25 +11488,25 @@ LABEL_21:
       }
     }
 
-    if ([v15 frequency] != 3)
+    if ([firstObject2 frequency] != 3)
     {
       goto LABEL_24;
     }
 
-    if ([v15 interval] < 2)
+    if ([firstObject2 interval] < 2)
     {
       goto LABEL_24;
     }
 
-    v23 = [v41 constraints];
-    v24 = [v23 prohibitsYearlyRecurrenceInterval];
+    constraints3 = [toCalendarCopy constraints];
+    prohibitsYearlyRecurrenceInterval = [constraints3 prohibitsYearlyRecurrenceInterval];
 
-    if (!v24)
+    if (!prohibitsYearlyRecurrenceInterval)
     {
       goto LABEL_24;
     }
 
-    v19 = [v15 copy];
+    v19 = [firstObject2 copy];
     [v19 setInterval:1];
     if (!v19)
     {
@@ -11516,22 +11516,22 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v16 = [v15 daysOfTheMonth];
-  if ([v16 count] <= 1)
+  daysOfTheMonth = [firstObject2 daysOfTheMonth];
+  if ([daysOfTheMonth count] <= 1)
   {
 
     goto LABEL_11;
   }
 
-  v17 = [v41 constraints];
-  v18 = [v17 prohibitsMultipleDaysInMonthlyRecurrence];
+  constraints4 = [toCalendarCopy constraints];
+  prohibitsMultipleDaysInMonthlyRecurrence = [constraints4 prohibitsMultipleDaysInMonthlyRecurrence];
 
-  if (!v18)
+  if (!prohibitsMultipleDaysInMonthlyRecurrence)
   {
     goto LABEL_11;
   }
 
-  v19 = [v15 copy];
+  v19 = [firstObject2 copy];
   [v19 setDaysOfTheMonth:0];
   if (v19)
   {
@@ -11539,26 +11539,26 @@ LABEL_21:
   }
 
 LABEL_24:
-  v29 = [v41 constraints];
-  v30 = [v29 requiresOccurrencesConformToRecurrenceRule];
+  constraints5 = [toCalendarCopy constraints];
+  requiresOccurrencesConformToRecurrenceRule = [constraints5 requiresOccurrencesConformToRecurrenceRule];
 
-  if (v30)
+  if (requiresOccurrencesConformToRecurrenceRule)
   {
-    v31 = [(EKEvent *)self suggestedStartDateForCurrentRecurrenceRule];
-    v32 = [(EKEvent *)self startDate];
-    v33 = [v32 isEqualToDate:v31];
+    suggestedStartDateForCurrentRecurrenceRule = [(EKEvent *)self suggestedStartDateForCurrentRecurrenceRule];
+    startDate2 = [(EKEvent *)self startDate];
+    v33 = [startDate2 isEqualToDate:suggestedStartDateForCurrentRecurrenceRule];
 
     if ((v33 & 1) == 0)
     {
-      v34 = [(EKEvent *)self endDateUnadjustedForLegacyClients];
-      v35 = [(EKEvent *)self startDate];
-      [v34 timeIntervalSinceDate:v35];
+      endDateUnadjustedForLegacyClients = [(EKEvent *)self endDateUnadjustedForLegacyClients];
+      startDate3 = [(EKEvent *)self startDate];
+      [endDateUnadjustedForLegacyClients timeIntervalSinceDate:startDate3];
       v37 = v36;
 
-      [(EKEvent *)self setStartDate:v31];
+      [(EKEvent *)self setStartDate:suggestedStartDateForCurrentRecurrenceRule];
       v38 = MEMORY[0x1E695DF00];
-      v39 = [(EKEvent *)self startDate];
-      v40 = [v38 dateWithTimeInterval:v39 sinceDate:v37];
+      startDate4 = [(EKEvent *)self startDate];
+      v40 = [v38 dateWithTimeInterval:startDate4 sinceDate:v37];
       [(EKEvent *)self setEndDateUnadjustedForLegacyClients:v40];
     }
   }
@@ -11566,91 +11566,91 @@ LABEL_24:
 LABEL_29:
 }
 
-- (void)_adjustAfterMovingOrCopyingFromOldCalendar:(id)a3 toNewCalendar:(id)a4 cachedConstraintsForOldCalendar:(id)a5 savingItem:(id)a6
+- (void)_adjustAfterMovingOrCopyingFromOldCalendar:(id)calendar toNewCalendar:(id)newCalendar cachedConstraintsForOldCalendar:(id)oldCalendar savingItem:(id)item
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  [(EKEvent *)self _adjustAttendeesAfterMovingOrCopyingFromCalendar:v13 toCalendar:v12];
-  [(EKEvent *)self _adjustPrivacyAfterMovingOrCopyingFromCalendar:v13 toCalendar:v12 cachedConstraintsForOldCalendar:v11 savingItem:v10];
-  [(EKEvent *)self _adjustAvailabilityAfterMovingOrCopyingFromCalendar:v13 toCalendar:v12];
-  [(EKEvent *)self _adjustScheduleAgentAfterMovingOrCopyingFromCalendar:v13 toCalendar:v12 cachedConstraintsForOldCalendar:v11];
-  [(EKEvent *)self _adjustAttachmentsAfterMovingOrCopyingFromCalendar:v13 toCalendar:v12 cachedConstraintsForOldCalendar:v11 savingItem:v10];
+  itemCopy = item;
+  oldCalendarCopy = oldCalendar;
+  newCalendarCopy = newCalendar;
+  calendarCopy = calendar;
+  [(EKEvent *)self _adjustAttendeesAfterMovingOrCopyingFromCalendar:calendarCopy toCalendar:newCalendarCopy];
+  [(EKEvent *)self _adjustPrivacyAfterMovingOrCopyingFromCalendar:calendarCopy toCalendar:newCalendarCopy cachedConstraintsForOldCalendar:oldCalendarCopy savingItem:itemCopy];
+  [(EKEvent *)self _adjustAvailabilityAfterMovingOrCopyingFromCalendar:calendarCopy toCalendar:newCalendarCopy];
+  [(EKEvent *)self _adjustScheduleAgentAfterMovingOrCopyingFromCalendar:calendarCopy toCalendar:newCalendarCopy cachedConstraintsForOldCalendar:oldCalendarCopy];
+  [(EKEvent *)self _adjustAttachmentsAfterMovingOrCopyingFromCalendar:calendarCopy toCalendar:newCalendarCopy cachedConstraintsForOldCalendar:oldCalendarCopy savingItem:itemCopy];
 
   v21 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  [(EKEvent *)self _adjustURLAfterMovingOrCopyingToCalendar:v12 notes:v21];
-  [(EKEvent *)self _adjustAlarmsAfterMovingOrCopyingFromCalendar:v13 toCalendar:v12];
-  [(EKEvent *)self _adjustRecurrenceRulesAfterMovingOrCopyingFromCalendar:v13 toCalendar:v12 notes:v21];
-  [(EKEvent *)self _adjustTimeZoneAfterMovingOrCopyingToCalendar:v12 notes:v21];
-  [(EKEvent *)self _adjustExternalFieldsAfterMovingOrCopyingFromCalendar:v13 toCalendar:v12 cachedConstraintsForOldCalendar:v11];
+  [(EKEvent *)self _adjustURLAfterMovingOrCopyingToCalendar:newCalendarCopy notes:v21];
+  [(EKEvent *)self _adjustAlarmsAfterMovingOrCopyingFromCalendar:calendarCopy toCalendar:newCalendarCopy];
+  [(EKEvent *)self _adjustRecurrenceRulesAfterMovingOrCopyingFromCalendar:calendarCopy toCalendar:newCalendarCopy notes:v21];
+  [(EKEvent *)self _adjustTimeZoneAfterMovingOrCopyingToCalendar:newCalendarCopy notes:v21];
+  [(EKEvent *)self _adjustExternalFieldsAfterMovingOrCopyingFromCalendar:calendarCopy toCalendar:newCalendarCopy cachedConstraintsForOldCalendar:oldCalendarCopy];
 
   if ([v21 length])
   {
     v14 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v15 = [v14 localizedStringForKey:@"The following information couldn’t be added to Exchange:" value:&stru_1F1B49D68 table:0];
 
-    v16 = [(EKCalendarItem *)self notes];
-    v17 = [v16 length];
+    notes = [(EKCalendarItem *)self notes];
+    v17 = [notes length];
     v18 = MEMORY[0x1E696AEC0];
     if (v17)
     {
-      v19 = [(EKCalendarItem *)self notes];
-      v20 = [v18 stringWithFormat:@"%@\n\n%@%@", v19, v15, v21];
+      notes2 = [(EKCalendarItem *)self notes];
+      v20 = [v18 stringWithFormat:@"%@\n\n%@%@", notes2, v15, v21];
       [(EKEvent *)self setNotes:v20];
     }
 
     else
     {
-      v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v15, v21];
-      [(EKEvent *)self setNotes:v19];
+      notes2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v15, v21];
+      [(EKEvent *)self setNotes:notes2];
     }
   }
 
   [(EKEvent *)self _invalidateRecurrenceIdentifier];
 }
 
-- (void)_adjustExternalFieldsAfterMovingOrCopyingFromCalendar:(id)a3 toCalendar:(id)a4 cachedConstraintsForOldCalendar:(id)a5
+- (void)_adjustExternalFieldsAfterMovingOrCopyingFromCalendar:(id)calendar toCalendar:(id)toCalendar cachedConstraintsForOldCalendar:(id)oldCalendar
 {
-  v19 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  calendarCopy = calendar;
+  toCalendarCopy = toCalendar;
+  oldCalendarCopy = oldCalendar;
+  v10 = oldCalendarCopy;
+  if (oldCalendarCopy)
   {
-    v11 = v9;
+    constraints = oldCalendarCopy;
   }
 
   else
   {
-    v11 = [v19 constraints];
+    constraints = [calendarCopy constraints];
   }
 
-  v12 = v11;
-  v13 = [v11 externalDataFormat];
-  v14 = [v8 constraints];
-  v15 = [v14 externalDataFormat];
+  v12 = constraints;
+  externalDataFormat = [constraints externalDataFormat];
+  constraints2 = [toCalendarCopy constraints];
+  externalDataFormat2 = [constraints2 externalDataFormat];
 
-  if (v13 != v15)
+  if (externalDataFormat != externalDataFormat2)
   {
     [(EKCalendarItem *)self setExternalData:0];
-    v16 = [(EKObject *)self eventStore];
-    v17 = [v16 eventAccessLevel];
+    eventStore = [(EKObject *)self eventStore];
+    eventAccessLevel = [eventStore eventAccessLevel];
 
-    if (v17 == 1)
+    if (eventAccessLevel == 1)
     {
-      v18 = [(EKObject *)self changeSet];
-      [v18 forceChangeValue:0 forKey:*MEMORY[0x1E69925B8]];
+      changeSet = [(EKObject *)self changeSet];
+      [changeSet forceChangeValue:0 forKey:*MEMORY[0x1E69925B8]];
     }
   }
 }
 
-- (void)_adjustAttendeesAfterMovingOrCopyingFromCalendar:(id)a3 toCalendar:(id)a4
+- (void)_adjustAttendeesAfterMovingOrCopyingFromCalendar:(id)calendar toCalendar:(id)toCalendar
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([(EKEvent *)self _requirementsToMoveToCalendarHelperRemoveAttendeesRequiredToMoveEventFromCalendar:v6 toCalendar:v7])
+  calendarCopy = calendar;
+  toCalendarCopy = toCalendar;
+  if ([(EKEvent *)self _requirementsToMoveToCalendarHelperRemoveAttendeesRequiredToMoveEventFromCalendar:calendarCopy toCalendar:toCalendarCopy])
   {
     [(EKCalendarItem *)self setAttendees:0];
     [(EKCalendarItem *)self setOrganizer:0];
@@ -11658,18 +11658,18 @@ LABEL_29:
 
   else
   {
-    v8 = [v6 source];
-    v9 = [v7 source];
-    v10 = [v8 isEqual:v9];
+    source = [calendarCopy source];
+    source2 = [toCalendarCopy source];
+    v10 = [source isEqual:source2];
 
     if (v10)
     {
-      v11 = 0;
+      organizer = 0;
     }
 
     else
     {
-      v11 = [(EKCalendarItem *)self organizer];
+      organizer = [(EKCalendarItem *)self organizer];
       [(EKCalendarItem *)self setOrganizer:0];
       [(EKCalendarItem *)self setSelfAttendee:0];
       [(EKCalendarItem *)self addOrganizerAndSelfAttendeeForNewInvitation];
@@ -11679,8 +11679,8 @@ LABEL_29:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v12 = [(EKCalendarItem *)self attendees];
-    v13 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    attendees = [(EKCalendarItem *)self attendees];
+    v13 = [attendees countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v13)
     {
       v14 = v13;
@@ -11691,17 +11691,17 @@ LABEL_29:
         {
           if (*v20 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(attendees);
           }
 
           v17 = *(*(&v19 + 1) + 8 * i);
-          if (([v11 isEqualToParticipant:v17] & 1) != 0 || !-[EKEvent _isValidAttendee:forCalendar:selfAttendeeIsValid:](self, "_isValidAttendee:forCalendar:selfAttendeeIsValid:", v17, v7, 1))
+          if (([organizer isEqualToParticipant:v17] & 1) != 0 || !-[EKEvent _isValidAttendee:forCalendar:selfAttendeeIsValid:](self, "_isValidAttendee:forCalendar:selfAttendeeIsValid:", v17, toCalendarCopy, 1))
           {
             [(EKCalendarItem *)self removeAttendee:v17];
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v14 = [attendees countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v14);
@@ -11711,12 +11711,12 @@ LABEL_29:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_adjustPrivacyAfterMovingOrCopyingFromCalendar:(id)a3 toCalendar:(id)a4 cachedConstraintsForOldCalendar:(id)a5 savingItem:(id)a6
+- (void)_adjustPrivacyAfterMovingOrCopyingFromCalendar:(id)calendar toCalendar:(id)toCalendar cachedConstraintsForOldCalendar:(id)oldCalendar savingItem:(id)item
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  calendarCopy = calendar;
+  toCalendarCopy = toCalendar;
+  oldCalendarCopy = oldCalendar;
+  itemCopy = item;
   if ([(EKEvent *)self isPrivacySet]&& ![(EKEvent *)self allowsPrivacyLevelModifications])
   {
     [(EKEvent *)self setPrivacyLevelWithoutVerifyingPrivacyModificationsAllowed:0];
@@ -11724,42 +11724,42 @@ LABEL_29:
 
   else
   {
-    if (v12)
+    if (oldCalendarCopy)
     {
-      v14 = v12;
+      constraints = oldCalendarCopy;
     }
 
     else
     {
-      v14 = [v10 constraints];
+      constraints = [calendarCopy constraints];
     }
 
-    v15 = v14;
-    v16 = [v11 constraints];
-    v17 = [v16 requiresSamePrivacyLevelAcrossRecurrenceSeries];
+    v15 = constraints;
+    constraints2 = [toCalendarCopy constraints];
+    requiresSamePrivacyLevelAcrossRecurrenceSeries = [constraints2 requiresSamePrivacyLevelAcrossRecurrenceSeries];
 
-    v18 = [v15 requiresSamePrivacyLevelAcrossRecurrenceSeries];
-    v19 = [v11 constraints];
-    v20 = +[EKSource _calEventPrivacyLevelToEKPrivacyLevel:](EKSource, "_calEventPrivacyLevelToEKPrivacyLevel:", [v19 strictestEventPrivateValue]);
+    requiresSamePrivacyLevelAcrossRecurrenceSeries2 = [v15 requiresSamePrivacyLevelAcrossRecurrenceSeries];
+    constraints3 = [toCalendarCopy constraints];
+    v20 = +[EKSource _calEventPrivacyLevelToEKPrivacyLevel:](EKSource, "_calEventPrivacyLevelToEKPrivacyLevel:", [constraints3 strictestEventPrivateValue]);
 
-    if (v20 != +[EKSource _calEventPrivacyLevelToEKPrivacyLevel:](EKSource, "_calEventPrivacyLevelToEKPrivacyLevel:", [v15 strictestEventPrivateValue]) || (v17 & (v18 ^ 1)) != 0)
+    if (v20 != +[EKSource _calEventPrivacyLevelToEKPrivacyLevel:](EKSource, "_calEventPrivacyLevelToEKPrivacyLevel:", [v15 strictestEventPrivateValue]) || (requiresSamePrivacyLevelAcrossRecurrenceSeries & (requiresSamePrivacyLevelAcrossRecurrenceSeries2 ^ 1)) != 0)
     {
       v21 = 0;
       v28 = 0;
       v29 = &v28;
       v30 = 0x2020000000;
       v31 = 0;
-      if (v17)
+      if (requiresSamePrivacyLevelAcrossRecurrenceSeries)
       {
         v22 = [(EKEvent *)self privacyLevel]!= 0;
         *(v29 + 24) = v22;
-        v23 = [(EKCalendarItem *)self detachedItems];
+        detachedItems = [(EKCalendarItem *)self detachedItems];
         v27[0] = MEMORY[0x1E69E9820];
         v27[1] = 3221225472;
         v27[2] = __112__EKEvent__adjustPrivacyAfterMovingOrCopyingFromCalendar_toCalendar_cachedConstraintsForOldCalendar_savingItem___block_invoke;
         v27[3] = &unk_1E77FF178;
         v27[4] = &v28;
-        [v23 enumerateObjectsUsingBlock:v27];
+        [detachedItems enumerateObjectsUsingBlock:v27];
 
         v21 = *(v29 + 24);
       }
@@ -11770,11 +11770,11 @@ LABEL_29:
       v25[3] = &__block_descriptor_41_e24_v16__0__EKCalendarItem_8l;
       v26 = v21 & 1;
       v25[4] = v20;
-      [(EKCalendarItem *)self _recursivelyPerformBlockOnSelfAndDetachedItems:v25 forSavingItem:v13];
+      [(EKCalendarItem *)self _recursivelyPerformBlockOnSelfAndDetachedItems:v25 forSavingItem:itemCopy];
       _Block_object_dispose(&v28, 8);
     }
 
-    v10 = v24;
+    calendarCopy = v24;
   }
 }
 
@@ -11799,24 +11799,24 @@ void __112__EKEvent__adjustPrivacyAfterMovingOrCopyingFromCalendar_toCalendar_ca
   }
 }
 
-- (void)_adjustAvailabilityAfterMovingOrCopyingFromCalendar:(id)a3 toCalendar:(id)a4
+- (void)_adjustAvailabilityAfterMovingOrCopyingFromCalendar:(id)calendar toCalendar:(id)toCalendar
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(EKObject *)self eventStore];
-  v9 = [v8 eventAccessLevel];
+  calendarCopy = calendar;
+  toCalendarCopy = toCalendar;
+  eventStore = [(EKObject *)self eventStore];
+  eventAccessLevel = [eventStore eventAccessLevel];
 
-  if (v9 != 1)
+  if (eventAccessLevel != 1)
   {
-    v10 = [v6 source];
-    v11 = [v7 source];
-    v12 = [v10 sourceType];
-    v13 = [v11 sourceType];
-    if (v12 == 5 && v13 != 5)
+    source = [calendarCopy source];
+    source2 = [toCalendarCopy source];
+    sourceType = [source sourceType];
+    sourceType2 = [source2 sourceType];
+    if (sourceType == 5 && sourceType2 != 5)
     {
-      v14 = [(EKEvent *)self suggestionInfo];
+      suggestionInfo = [(EKEvent *)self suggestionInfo];
 
-      if (v14)
+      if (suggestionInfo)
       {
         v22 = 0;
         v23 = &v22;
@@ -11846,10 +11846,10 @@ void __112__EKEvent__adjustPrivacyAfterMovingOrCopyingFromCalendar_toCalendar_ca
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v17 = [v16 integerValue];
+            integerValue = [v16 integerValue];
             v18 = objc_opt_class();
-            v19 = [(EKCalendarItem *)self calendar];
-            v20 = [v18 _coercedEventAvailabilityForDesiredAvailability:v17 supportedAvailabilities:{objc_msgSend(v19, "supportedEventAvailabilities")}];
+            calendar = [(EKCalendarItem *)self calendar];
+            v20 = [v18 _coercedEventAvailabilityForDesiredAvailability:integerValue supportedAvailabilities:{objc_msgSend(calendar, "supportedEventAvailabilities")}];
 
             [(EKEvent *)self setAvailability:v20];
           }
@@ -11859,51 +11859,51 @@ void __112__EKEvent__adjustPrivacyAfterMovingOrCopyingFromCalendar_toCalendar_ca
   }
 }
 
-- (void)_adjustAttachmentsAfterMovingOrCopyingFromCalendar:(id)a3 toCalendar:(id)a4 cachedConstraintsForOldCalendar:(id)a5 savingItem:(id)a6
+- (void)_adjustAttachmentsAfterMovingOrCopyingFromCalendar:(id)calendar toCalendar:(id)toCalendar cachedConstraintsForOldCalendar:(id)oldCalendar savingItem:(id)item
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 source];
-  v15 = [v11 source];
-  v16 = [v14 isEqual:v15];
+  calendarCopy = calendar;
+  toCalendarCopy = toCalendar;
+  oldCalendarCopy = oldCalendar;
+  itemCopy = item;
+  source = [calendarCopy source];
+  source2 = [toCalendarCopy source];
+  v16 = [source isEqual:source2];
 
   if ((v16 & 1) == 0)
   {
-    if (v12)
+    if (oldCalendarCopy)
     {
-      v17 = v12;
+      constraints = oldCalendarCopy;
     }
 
     else
     {
-      v17 = [v10 constraints];
+      constraints = [calendarCopy constraints];
     }
 
-    v18 = v17;
-    v19 = [v11 constraints];
-    if ([v19 supportsAttachments])
+    v18 = constraints;
+    constraints2 = [toCalendarCopy constraints];
+    if ([constraints2 supportsAttachments])
     {
-      v20 = [v11 constraints];
-      if (![v20 requiresOpeningAttachmentAsLink])
+      constraints3 = [toCalendarCopy constraints];
+      if (![constraints3 requiresOpeningAttachmentAsLink])
       {
-        v21 = [v18 requiresOpeningAttachmentAsLink];
+        requiresOpeningAttachmentAsLink = [v18 requiresOpeningAttachmentAsLink];
 
-        if ((v21 & 1) == 0)
+        if ((requiresOpeningAttachmentAsLink & 1) == 0)
         {
-          if (self == v13)
+          if (self == itemCopy)
           {
-            v22 = [(EKCalendarItem *)self originalItem];
-            if (!v22)
+            selfCopy = [(EKCalendarItem *)self originalItem];
+            if (!selfCopy)
             {
-              v22 = self;
+              selfCopy = self;
             }
 
-            v23 = [v11 constraints];
-            v24 = [v23 requiresSeparateFilesForAllAttachments];
+            constraints4 = [toCalendarCopy constraints];
+            requiresSeparateFilesForAllAttachments = [constraints4 requiresSeparateFilesForAllAttachments];
 
-            if (v24)
+            if (requiresSeparateFilesForAllAttachments)
             {
               v25 = 0;
             }
@@ -11918,9 +11918,9 @@ void __112__EKEvent__adjustPrivacyAfterMovingOrCopyingFromCalendar_toCalendar_ca
             v27[2] = __116__EKEvent__adjustAttachmentsAfterMovingOrCopyingFromCalendar_toCalendar_cachedConstraintsForOldCalendar_savingItem___block_invoke;
             v27[3] = &unk_1E77FF1C0;
             v28 = v25;
-            v29 = self;
+            selfCopy2 = self;
             v26 = v25;
-            [(EKCalendarItem *)v22 _recursivelyPerformBlockOnSelfAndDetachedItems:v27 forSavingItem:self];
+            [(EKCalendarItem *)selfCopy _recursivelyPerformBlockOnSelfAndDetachedItems:v27 forSavingItem:self];
           }
 
           goto LABEL_10;
@@ -12011,30 +12011,30 @@ LABEL_11:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_adjustURLAfterMovingOrCopyingToCalendar:(id)a3 notes:(id)a4
+- (void)_adjustURLAfterMovingOrCopyingToCalendar:(id)calendar notes:(id)notes
 {
-  v17 = a3;
-  v6 = a4;
+  calendarCopy = calendar;
+  notesCopy = notes;
   v7 = [(EKEvent *)self URL];
   if (v7)
   {
     v8 = v7;
-    v9 = [v17 constraints];
-    v10 = [v9 supportsURLField];
+    constraints = [calendarCopy constraints];
+    supportsURLField = [constraints supportsURLField];
 
-    if ((v10 & 1) == 0)
+    if ((supportsURLField & 1) == 0)
     {
-      if (v6)
+      if (notesCopy)
       {
         v11 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
         v12 = [v11 localizedStringForKey:@"url" value:&stru_1F1B49D68 table:0];
 
         v13 = MEMORY[0x1E696AEC0];
         v14 = [(EKEvent *)self URL];
-        v15 = [v14 absoluteString];
-        v16 = [v13 stringWithFormat:@"\n%@:%@", v12, v15];
+        absoluteString = [v14 absoluteString];
+        v16 = [v13 stringWithFormat:@"\n%@:%@", v12, absoluteString];
 
-        [v6 appendString:v16];
+        [notesCopy appendString:v16];
       }
 
       [(EKEvent *)self setURL:0];
@@ -12042,22 +12042,22 @@ LABEL_11:
   }
 }
 
-- (void)_adjustTimeZoneAfterMovingOrCopyingToCalendar:(id)a3 notes:(id)a4
+- (void)_adjustTimeZoneAfterMovingOrCopyingToCalendar:(id)calendar notes:(id)notes
 {
-  v15 = a3;
-  v6 = a4;
-  v7 = [(EKCalendarItem *)self timeZone];
-  if (!v7 && ![(EKEvent *)self isAllDay])
+  calendarCopy = calendar;
+  notesCopy = notes;
+  timeZone = [(EKCalendarItem *)self timeZone];
+  if (!timeZone && ![(EKEvent *)self isAllDay])
   {
-    v8 = [v15 constraints];
-    v9 = [v8 supportsFloatingTimeZone];
+    constraints = [calendarCopy constraints];
+    supportsFloatingTimeZone = [constraints supportsFloatingTimeZone];
 
-    if (v9)
+    if (supportsFloatingTimeZone)
     {
       goto LABEL_8;
     }
 
-    if (v6)
+    if (notesCopy)
     {
       v10 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
       v11 = [v10 localizedStringForKey:@"time zone" value:&stru_1F1B49D68 table:0];
@@ -12066,51 +12066,51 @@ LABEL_11:
       v13 = [v12 localizedStringForKey:@"Floating" value:&stru_1F1B49D68 table:0];
 
       v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"\n%@:%@", v11, v13];
-      [v6 appendString:v14];
+      [notesCopy appendString:v14];
     }
 
-    v7 = [MEMORY[0x1E695DFE8] localTimeZone];
-    [(EKEvent *)self setTimeZone:v7];
+    timeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+    [(EKEvent *)self setTimeZone:timeZone];
   }
 
 LABEL_8:
 }
 
-+ (int64_t)_coercedEventAvailabilityForDesiredAvailability:(int64_t)a3 supportedAvailabilities:(unint64_t)a4
++ (int64_t)_coercedEventAvailabilityForDesiredAvailability:(int64_t)availability supportedAvailabilities:(unint64_t)availabilities
 {
-  if (a4)
+  if (availabilities)
   {
-    result = a3;
-    if (a3 <= 0)
+    result = availability;
+    if (availability <= 0)
     {
-      if (a3 == -1)
+      if (availability == -1)
       {
         return result;
       }
 
-      if (!a3 && (a4 & 1) != 0)
+      if (!availability && (availabilities & 1) != 0)
       {
         return 0;
       }
     }
 
-    else if (a3 == 1)
+    else if (availability == 1)
     {
-      if ((a4 & 2) != 0)
+      if ((availabilities & 2) != 0)
       {
         return 1;
       }
     }
 
-    else if (a3 == 2)
+    else if (availability == 2)
     {
-      if ((a4 & 4) != 0)
+      if ((availabilities & 4) != 0)
       {
         return 2;
       }
     }
 
-    else if (a3 == 3 && (a4 & 8) != 0)
+    else if (availability == 3 && (availabilities & 8) != 0)
     {
       return 3;
     }
@@ -12148,42 +12148,42 @@ LABEL_8:
 
   else
   {
-    v3 = [(EKEvent *)self uniqueId];
-    v4 = [(EKCalendarItem *)self calendarItemIdentifier];
-    v5 = [(EKCalendarItem *)self externalID];
+    uniqueId = [(EKEvent *)self uniqueId];
+    calendarItemIdentifier = [(EKCalendarItem *)self calendarItemIdentifier];
+    externalID = [(EKCalendarItem *)self externalID];
     v9.receiver = self;
     v9.super_class = EKEvent;
     [(EKObject *)&v9 markAsUndeleted];
     [(EKObject *)self _initChangeSetIfNone];
-    v6 = [(EKObject *)self changeSet];
-    [v6 forceChangeValue:v3 forKey:*MEMORY[0x1E6992700]];
+    changeSet = [(EKObject *)self changeSet];
+    [changeSet forceChangeValue:uniqueId forKey:*MEMORY[0x1E6992700]];
 
-    v7 = [(EKObject *)self changeSet];
-    [v7 forceChangeValue:v4 forKey:*MEMORY[0x1E6992B08]];
+    changeSet2 = [(EKObject *)self changeSet];
+    [changeSet2 forceChangeValue:calendarItemIdentifier forKey:*MEMORY[0x1E6992B08]];
 
-    v8 = [(EKObject *)self changeSet];
-    [v8 forceChangeValue:v5 forKey:*MEMORY[0x1E69925C0]];
+    changeSet3 = [(EKObject *)self changeSet];
+    [changeSet3 forceChangeValue:externalID forKey:*MEMORY[0x1E69925C0]];
   }
 }
 
-- (void)markAsUndetachedWithStartDate:(id)a3 endDate:(id)a4
+- (void)markAsUndetachedWithStartDate:(id)date endDate:(id)endDate
 {
-  v8 = a4;
-  v6 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
   [(EKObject *)self _initChangeSetIfNone];
-  v7 = [(EKObject *)self changeSet];
-  [v7 setIsUndetached:1];
+  changeSet = [(EKObject *)self changeSet];
+  [changeSet setIsUndetached:1];
 
-  [(EKEvent *)self setStartDate:v6];
-  [(EKEvent *)self setEndDateUnadjustedForLegacyClients:v8];
+  [(EKEvent *)self setStartDate:dateCopy];
+  [(EKEvent *)self setEndDateUnadjustedForLegacyClients:endDateCopy];
 }
 
 - (BOOL)isUndetached
 {
-  v2 = [(EKObject *)self changeSet];
-  v3 = [v2 isUndetached];
+  changeSet = [(EKObject *)self changeSet];
+  isUndetached = [changeSet isUndetached];
 
-  return v3;
+  return isUndetached;
 }
 
 - (BOOL)isOrWasIntegrationEvent
@@ -12200,11 +12200,11 @@ LABEL_8:
   }
 
   v5 = [(EKObject *)self _previousValueForKey:v4];
-  v6 = [(EKObject *)self eventStore];
-  v7 = [v5 meltedObjectInStore:v6];
+  eventStore = [(EKObject *)self eventStore];
+  v7 = [v5 meltedObjectInStore:eventStore];
 
-  v8 = [v7 source];
-  v3 = [v8 sourceType] == 6;
+  source = [v7 source];
+  v3 = [source sourceType] == 6;
 
   return v3;
 }
@@ -12292,26 +12292,26 @@ void *__38__EKEvent__nextReminderOccurrenceDate__block_invoke(uint64_t a1)
 - (id)privacySafeIntegrationEventDescription
 {
   v3 = MEMORY[0x1E696AD60];
-  v4 = [(EKCalendarItem *)self uniqueID];
-  v5 = [v3 stringWithFormat:@"[Event: %@: ", v4];
+  uniqueID = [(EKCalendarItem *)self uniqueID];
+  v5 = [v3 stringWithFormat:@"[Event: %@: ", uniqueID];
 
-  v6 = [(EKCalendarItem *)self timeZone];
-  v7 = v6;
-  if (v6)
+  timeZone = [(EKCalendarItem *)self timeZone];
+  v7 = timeZone;
+  if (timeZone)
   {
-    v8 = v6;
+    defaultTimeZone = timeZone;
   }
 
   else
   {
-    v8 = [MEMORY[0x1E695DFE8] defaultTimeZone];
+    defaultTimeZone = [MEMORY[0x1E695DFE8] defaultTimeZone];
   }
 
-  v32 = v8;
-  v9 = [MEMORY[0x1E695DEE8] CalGregorianCalendarForTimeZone:v8];
-  v10 = [(EKEvent *)self isAllDay];
-  v11 = v10;
-  if (v10)
+  v32 = defaultTimeZone;
+  v9 = [MEMORY[0x1E695DEE8] CalGregorianCalendarForTimeZone:defaultTimeZone];
+  isAllDay = [(EKEvent *)self isAllDay];
+  v11 = isAllDay;
+  if (isAllDay)
   {
     v12 = 28;
   }
@@ -12321,46 +12321,46 @@ void *__38__EKEvent__nextReminderOccurrenceDate__block_invoke(uint64_t a1)
     v12 = 124;
   }
 
-  v13 = [(EKEvent *)self startDate];
+  startDate = [(EKEvent *)self startDate];
   v31 = v9;
-  v14 = [v9 components:v12 fromDate:v13];
-  v15 = [v14 year];
-  v16 = [v14 month];
+  v14 = [v9 components:v12 fromDate:startDate];
+  year = [v14 year];
+  month = [v14 month];
   v17 = [v14 day];
   v18 = v17;
   if (v11)
   {
-    [v5 appendFormat:@"%li-%li-%li", v15, v16, v17, v27, v28];
+    [v5 appendFormat:@"%li-%li-%li", year, month, v17, v27, v28];
   }
 
   else
   {
-    v19 = [v14 hour];
-    v20 = [v14 minute];
+    hour = [v14 hour];
+    minute = [v14 minute];
     if (v7)
     {
-      v29 = v20;
-      v30 = v19;
-      v21 = [v7 abbreviationForDate:v13];
+      v29 = minute;
+      v30 = hour;
+      v21 = [v7 abbreviationForDate:startDate];
       v22 = v21;
       if (v21)
       {
-        v23 = v21;
+        name = v21;
       }
 
       else
       {
-        v23 = [v7 name];
+        name = [v7 name];
       }
 
-      v24 = v23;
+      v24 = name;
 
-      [v5 appendFormat:@"%li-%li-%li %li:%02li %@", v15, v16, v18, v30, v29, v24];
+      [v5 appendFormat:@"%li-%li-%li %li:%02li %@", year, month, v18, v30, v29, v24];
     }
 
     else
     {
-      [v5 appendFormat:@"%li-%li-%li %li:%02li float", v15, v16, v18, v19, v20];
+      [v5 appendFormat:@"%li-%li-%li %li:%02li float", year, month, v18, hour, minute];
     }
   }
 
@@ -12385,14 +12385,14 @@ void *__38__EKEvent__nextReminderOccurrenceDate__block_invoke(uint64_t a1)
 {
   if ([(EKEvent *)self _isParticipationStatusDirty])
   {
-    v3 = [(EKEvent *)self participationStatus];
-    if (v3 == 4 || v3 == 2)
+    participationStatus = [(EKEvent *)self participationStatus];
+    if (participationStatus == 4 || participationStatus == 2)
     {
-      v7 = [(EKCalendarItem *)self organizer];
-      v4 = [v7 name];
-      v5 = [v7 emailAddress];
-      v6 = [v7 phoneNumber];
-      [EKRecents recordRecentForContactWithName:v4 emailAddress:v5 phoneNumber:v6];
+      organizer = [(EKCalendarItem *)self organizer];
+      name = [organizer name];
+      emailAddress = [organizer emailAddress];
+      phoneNumber = [organizer phoneNumber];
+      [EKRecents recordRecentForContactWithName:name emailAddress:emailAddress phoneNumber:phoneNumber];
     }
   }
 }
@@ -12403,21 +12403,21 @@ void *__38__EKEvent__nextReminderOccurrenceDate__block_invoke(uint64_t a1)
   v3 = *MEMORY[0x1E6992568];
   if ([(EKObject *)self _hasChangesForKey:*MEMORY[0x1E6992568]])
   {
-    v4 = [(EKObject *)self changeSet];
-    v5 = [v4 unsavedMultiValueAddedObjectsForKey:v3];
+    changeSet = [(EKObject *)self changeSet];
+    v5 = [changeSet unsavedMultiValueAddedObjectsForKey:v3];
 
     if ([v5 count])
     {
       v6 = MEMORY[0x1E695DF90];
-      v7 = [(EKCalendarItem *)self attendees];
-      v8 = [v6 dictionaryWithCapacity:{objc_msgSend(v7, "count")}];
+      attendees = [(EKCalendarItem *)self attendees];
+      v8 = [v6 dictionaryWithCapacity:{objc_msgSend(attendees, "count")}];
 
       v34 = 0u;
       v35 = 0u;
       v32 = 0u;
       v33 = 0u;
-      v9 = [(EKCalendarItem *)self attendees];
-      v10 = [v9 countByEnumeratingWithState:&v32 objects:v37 count:16];
+      attendees2 = [(EKCalendarItem *)self attendees];
+      v10 = [attendees2 countByEnumeratingWithState:&v32 objects:v37 count:16];
       if (v10)
       {
         v11 = v10;
@@ -12428,15 +12428,15 @@ void *__38__EKEvent__nextReminderOccurrenceDate__block_invoke(uint64_t a1)
           {
             if (*v33 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(attendees2);
             }
 
             v14 = *(*(&v32 + 1) + 8 * i);
-            v15 = [v14 uniqueIdentifier];
-            [v8 setObject:v14 forKeyedSubscript:v15];
+            uniqueIdentifier = [v14 uniqueIdentifier];
+            [v8 setObject:v14 forKeyedSubscript:uniqueIdentifier];
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v32 objects:v37 count:16];
+          v11 = [attendees2 countByEnumeratingWithState:&v32 objects:v37 count:16];
         }
 
         while (v11);
@@ -12462,16 +12462,16 @@ void *__38__EKEvent__nextReminderOccurrenceDate__block_invoke(uint64_t a1)
               objc_enumerationMutation(obj);
             }
 
-            v20 = [*(*(&v28 + 1) + 8 * j) uniqueIdentifier];
-            v21 = [v8 objectForKeyedSubscript:v20];
+            uniqueIdentifier2 = [*(*(&v28 + 1) + 8 * j) uniqueIdentifier];
+            v21 = [v8 objectForKeyedSubscript:uniqueIdentifier2];
 
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v22 = [v21 name];
-              v23 = [v21 emailAddress];
-              v24 = [v21 phoneNumber];
-              [EKRecents recordRecentForContactWithName:v22 emailAddress:v23 phoneNumber:v24];
+              name = [v21 name];
+              emailAddress = [v21 emailAddress];
+              phoneNumber = [v21 phoneNumber];
+              [EKRecents recordRecentForContactWithName:name emailAddress:emailAddress phoneNumber:phoneNumber];
             }
           }
 
@@ -12538,9 +12538,9 @@ void *__38__EKEvent__nextReminderOccurrenceDate__block_invoke(uint64_t a1)
     return 0;
   }
 
-  v9 = [(EKEvent *)self _committedStartDate];
+  _committedStartDate = [(EKEvent *)self _committedStartDate];
   v22 = 0;
-  v10 = [(EKEvent *)self adjustedPersistedDateForDate:v9 withAdjustmentMode:1 pinMode:0 clientCalendarDate:&v22];
+  v10 = [(EKEvent *)self adjustedPersistedDateForDate:_committedStartDate withAdjustmentMode:1 pinMode:0 clientCalendarDate:&v22];
   v11 = v22;
   v12 = v22;
 
@@ -12550,15 +12550,15 @@ void *__38__EKEvent__nextReminderOccurrenceDate__block_invoke(uint64_t a1)
     objc_storeStrong(&self->_occurrenceStartDate, v11);
   }
 
-  v13 = [(EKEvent *)self _committedEndDate];
+  _committedEndDate = [(EKEvent *)self _committedEndDate];
   v21 = 0;
   v14 = 1;
-  v15 = [(EKEvent *)self adjustedPersistedDateForDate:v13 withAdjustmentMode:1 pinMode:1 clientCalendarDate:&v21];
+  v15 = [(EKEvent *)self adjustedPersistedDateForDate:_committedEndDate withAdjustmentMode:1 pinMode:1 clientCalendarDate:&v21];
   v16 = v21;
 
   v17 = [(EKEvent *)self _calculateDurationWithStart:v12 end:v16 allDay:[(EKEvent *)self _isAllDay]];
-  v18 = [(EKEvent *)self occurrenceStartDate];
-  v19 = [v18 calendarDateByComponentwiseAddingComponents:v17];
+  occurrenceStartDate = [(EKEvent *)self occurrenceStartDate];
+  v19 = [occurrenceStartDate calendarDateByComponentwiseAddingComponents:v17];
   [(EKEvent *)self setOccurrenceEndDate:v19];
 
   [(EKEvent *)self setOccurrenceIsAllDay:[(EKEvent *)self _isAllDay]];
@@ -12568,25 +12568,25 @@ void *__38__EKEvent__nextReminderOccurrenceDate__block_invoke(uint64_t a1)
 - (id)coCommitEvents
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(EKObject *)self persistentObject];
-  v4 = [v3 coCommitObjects];
-  v5 = [v4 count];
+  persistentObject = [(EKObject *)self persistentObject];
+  coCommitObjects = [persistentObject coCommitObjects];
+  v5 = [coCommitObjects count];
 
   if (v5)
   {
     v6 = MEMORY[0x1E695DF70];
-    v7 = [(EKObject *)self persistentObject];
-    v8 = [v7 coCommitObjects];
-    v9 = [v6 arrayWithCapacity:{objc_msgSend(v8, "count")}];
+    persistentObject2 = [(EKObject *)self persistentObject];
+    coCommitObjects2 = [persistentObject2 coCommitObjects];
+    v9 = [v6 arrayWithCapacity:{objc_msgSend(coCommitObjects2, "count")}];
 
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v10 = [(EKObject *)self persistentObject];
-    v11 = [v10 coCommitObjects];
+    persistentObject3 = [(EKObject *)self persistentObject];
+    coCommitObjects3 = [persistentObject3 coCommitObjects];
 
-    v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    v12 = [coCommitObjects3 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v12)
     {
       v13 = v12;
@@ -12597,7 +12597,7 @@ void *__38__EKEvent__nextReminderOccurrenceDate__block_invoke(uint64_t a1)
         {
           if (*v21 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(coCommitObjects3);
           }
 
           v16 = *(*(&v20 + 1) + 8 * i);
@@ -12609,7 +12609,7 @@ void *__38__EKEvent__nextReminderOccurrenceDate__block_invoke(uint64_t a1)
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v13 = [coCommitObjects3 countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v13);
@@ -12626,37 +12626,37 @@ void *__38__EKEvent__nextReminderOccurrenceDate__block_invoke(uint64_t a1)
   return v9;
 }
 
-- (BOOL)_revertIncludingCoCommits:(BOOL)a3
+- (BOOL)_revertIncludingCoCommits:(BOOL)commits
 {
-  v3 = a3;
+  commitsCopy = commits;
   v35 = *MEMORY[0x1E69E9840];
-  v5 = [(EKObject *)self uniqueIdentifier];
+  uniqueIdentifier = [(EKObject *)self uniqueIdentifier];
   if ([(EKObject *)self hasNeverBeenCommitted])
   {
-    v6 = [(EKEvent *)self isDetached];
+    isDetached = [(EKEvent *)self isDetached];
   }
 
   else
   {
-    v6 = 0;
+    isDetached = 0;
   }
 
-  v7 = [(EKCalendarItem *)self originalItem];
-  v8 = [(EKEvent *)self occurrenceStartDate];
-  v9 = [(EKEvent *)self occurrenceEndDate];
-  v10 = [(EKEvent *)self occurrenceIsAllDay];
-  v11 = v10;
-  if (v3)
+  originalItem = [(EKCalendarItem *)self originalItem];
+  occurrenceStartDate = [(EKEvent *)self occurrenceStartDate];
+  occurrenceEndDate = [(EKEvent *)self occurrenceEndDate];
+  occurrenceIsAllDay = [(EKEvent *)self occurrenceIsAllDay];
+  v11 = occurrenceIsAllDay;
+  if (commitsCopy)
   {
-    v28 = v8;
-    v12 = v10;
-    v13 = v7;
+    v28 = occurrenceStartDate;
+    v12 = occurrenceIsAllDay;
+    v13 = originalItem;
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v14 = [(EKEvent *)self coCommitEvents];
-    v15 = [v14 countByEnumeratingWithState:&v30 objects:v34 count:16];
+    coCommitEvents = [(EKEvent *)self coCommitEvents];
+    v15 = [coCommitEvents countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v15)
     {
       v16 = v15;
@@ -12668,63 +12668,63 @@ void *__38__EKEvent__nextReminderOccurrenceDate__block_invoke(uint64_t a1)
         {
           if (*v31 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(coCommitEvents);
           }
 
           [*(*(&v30 + 1) + 8 * v18++) _revertIncludingCoCommits:0];
         }
 
         while (v16 != v18);
-        v16 = [v14 countByEnumeratingWithState:&v30 objects:v34 count:16];
+        v16 = [coCommitEvents countByEnumeratingWithState:&v30 objects:v34 count:16];
       }
 
       while (v16);
     }
 
-    v7 = v13;
+    originalItem = v13;
     v11 = v12;
-    v8 = v28;
+    occurrenceStartDate = v28;
   }
 
   v29.receiver = self;
   v29.super_class = EKEvent;
-  v19 = [(EKObject *)&v29 revert];
-  if (v6)
+  revert = [(EKObject *)&v29 revert];
+  if (isDetached)
   {
-    v20 = [v7 backingObject];
-    [(EKObject *)self setBackingObject:v20];
+    backingObject = [originalItem backingObject];
+    [(EKObject *)self setBackingObject:backingObject];
 
     [(EKObject *)self _resetAfterUpdatingChangeSetOrBackingObject];
     [(EKEvent *)self reset];
-    [(EKEvent *)self setOccurrenceStartDate:v8];
-    [(EKEvent *)self setOccurrenceEndDate:v9];
+    [(EKEvent *)self setOccurrenceStartDate:occurrenceStartDate];
+    [(EKEvent *)self setOccurrenceEndDate:occurrenceEndDate];
     [(EKEvent *)self setOccurrenceIsAllDay:v11];
   }
 
   else
   {
-    v21 = [(EKEvent *)self originalOccurrenceStartDate];
-    [(EKEvent *)self setOccurrenceStartDate:v21];
+    originalOccurrenceStartDate = [(EKEvent *)self originalOccurrenceStartDate];
+    [(EKEvent *)self setOccurrenceStartDate:originalOccurrenceStartDate];
 
-    v22 = [(EKEvent *)self originalOccurrenceEndDate];
-    [(EKEvent *)self setOccurrenceEndDate:v22];
+    originalOccurrenceEndDate = [(EKEvent *)self originalOccurrenceEndDate];
+    [(EKEvent *)self setOccurrenceEndDate:originalOccurrenceEndDate];
 
-    v23 = [(EKEvent *)self originalOccurrenceIsAllDay];
+    originalOccurrenceIsAllDay = [(EKEvent *)self originalOccurrenceIsAllDay];
 
-    if (v23)
+    if (originalOccurrenceIsAllDay)
     {
-      v24 = [(EKEvent *)self originalOccurrenceIsAllDay];
-      -[EKEvent setOccurrenceIsAllDay:](self, "setOccurrenceIsAllDay:", [v24 BOOLValue]);
+      originalOccurrenceIsAllDay2 = [(EKEvent *)self originalOccurrenceIsAllDay];
+      -[EKEvent setOccurrenceIsAllDay:](self, "setOccurrenceIsAllDay:", [originalOccurrenceIsAllDay2 BOOLValue]);
     }
   }
 
   [(EKEvent *)self _clearOriginalDateFields];
   [(EKEvent *)self setPredictedLocationFrozen:0];
-  v25 = [objc_opt_class() _modifiedNotificationUserInfoWithIdentifier:v5 forRevert:1];
+  v25 = [objc_opt_class() _modifiedNotificationUserInfoWithIdentifier:uniqueIdentifier forRevert:1];
   [(EKEvent *)self postModifiedNotificationWithUserInfo:v25];
 
   v26 = *MEMORY[0x1E69E9840];
-  return v19;
+  return revert;
 }
 
 - (void)rollback
@@ -12732,9 +12732,9 @@ void *__38__EKEvent__nextReminderOccurrenceDate__block_invoke(uint64_t a1)
   v24 = *MEMORY[0x1E69E9840];
   if ([(EKObject *)self _hasChangesForKey:*MEMORY[0x1E6992620]])
   {
-    v3 = [(EKEvent *)self virtualConference];
-    v4 = [(EKEvent *)self _originallyCommittedVirtualConference];
-    v5 = [v3 isEqual:v4];
+    virtualConference = [(EKEvent *)self virtualConference];
+    _originallyCommittedVirtualConference = [(EKEvent *)self _originallyCommittedVirtualConference];
+    v5 = [virtualConference isEqual:_originallyCommittedVirtualConference];
 
     if ((v5 & 1) == 0)
     {
@@ -12742,10 +12742,10 @@ void *__38__EKEvent__nextReminderOccurrenceDate__block_invoke(uint64_t a1)
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v6 = [(EKEvent *)self virtualConference];
-      v7 = [v6 joinMethods];
+      virtualConference2 = [(EKEvent *)self virtualConference];
+      joinMethods = [virtualConference2 joinMethods];
 
-      v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v8 = [joinMethods countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v8)
       {
         v9 = v8;
@@ -12757,7 +12757,7 @@ void *__38__EKEvent__nextReminderOccurrenceDate__block_invoke(uint64_t a1)
           {
             if (*v20 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(joinMethods);
             }
 
             v12 = [*(*(&v19 + 1) + 8 * v11) URL];
@@ -12767,7 +12767,7 @@ void *__38__EKEvent__nextReminderOccurrenceDate__block_invoke(uint64_t a1)
           }
 
           while (v9 != v11);
-          v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+          v9 = [joinMethods countByEnumeratingWithState:&v19 objects:v23 count:16];
         }
 
         while (v9);
@@ -12781,18 +12781,18 @@ void *__38__EKEvent__nextReminderOccurrenceDate__block_invoke(uint64_t a1)
   [(EKEvent *)self clearDetectedConferenceURL];
   [(EKEvent *)self clearParsedConference];
   [(EKEvent *)self clearVirtualConferenceURLsQueuedForInvalidation];
-  v13 = [(EKEvent *)self originalOccurrenceStartDate];
-  [(EKEvent *)self setOccurrenceStartDate:v13];
+  originalOccurrenceStartDate = [(EKEvent *)self originalOccurrenceStartDate];
+  [(EKEvent *)self setOccurrenceStartDate:originalOccurrenceStartDate];
 
-  v14 = [(EKEvent *)self originalOccurrenceEndDate];
-  [(EKEvent *)self setOccurrenceEndDate:v14];
+  originalOccurrenceEndDate = [(EKEvent *)self originalOccurrenceEndDate];
+  [(EKEvent *)self setOccurrenceEndDate:originalOccurrenceEndDate];
 
-  v15 = [(EKEvent *)self originalOccurrenceIsAllDay];
+  originalOccurrenceIsAllDay = [(EKEvent *)self originalOccurrenceIsAllDay];
 
-  if (v15)
+  if (originalOccurrenceIsAllDay)
   {
-    v16 = [(EKEvent *)self originalOccurrenceIsAllDay];
-    -[EKEvent setOccurrenceIsAllDay:](self, "setOccurrenceIsAllDay:", [v16 BOOLValue]);
+    originalOccurrenceIsAllDay2 = [(EKEvent *)self originalOccurrenceIsAllDay];
+    -[EKEvent setOccurrenceIsAllDay:](self, "setOccurrenceIsAllDay:", [originalOccurrenceIsAllDay2 BOOLValue]);
   }
 
   [(EKEvent *)self setPredictedLocationFrozen:0];
@@ -12801,19 +12801,19 @@ void *__38__EKEvent__nextReminderOccurrenceDate__block_invoke(uint64_t a1)
 
 - (id)nextOccurrence
 {
-  v3 = [(EKEvent *)self startDate];
-  v4 = [(EKEvent *)self nextOccurrenceOrDetachmentAfter:v3];
+  startDate = [(EKEvent *)self startDate];
+  v4 = [(EKEvent *)self nextOccurrenceOrDetachmentAfter:startDate];
 
   return v4;
 }
 
-- (id)nextOccurrenceOrDetachmentAfter:(id)a3
+- (id)nextOccurrenceOrDetachmentAfter:(id)after
 {
   v59 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(EKEvent *)self singleRecurrenceRule];
+  afterCopy = after;
+  singleRecurrenceRule = [(EKEvent *)self singleRecurrenceRule];
 
-  if (v5)
+  if (singleRecurrenceRule)
   {
     v6 = objc_alloc_init(EKRecurrenceGenerator);
     v52 = 0;
@@ -12838,35 +12838,35 @@ void *__38__EKEvent__nextReminderOccurrenceDate__block_invoke(uint64_t a1)
     aBlock[3] = &unk_1E77FF1E8;
     v31 = v6;
     v37 = v31;
-    v38 = v4;
+    v38 = afterCopy;
     v39 = &v52;
     v40 = &v46;
     v41 = &v42;
     v7 = _Block_copy(aBlock);
-    v8 = [(EKEvent *)self masterEvent];
-    v9 = v8;
-    if (v8)
+    masterEvent = [(EKEvent *)self masterEvent];
+    v9 = masterEvent;
+    if (masterEvent)
     {
-      v10 = v8;
+      selfCopy = masterEvent;
     }
 
     else
     {
-      v10 = self;
+      selfCopy = self;
     }
 
-    v11 = v10;
+    v11 = selfCopy;
 
-    v12 = [(EKEvent *)v11 recurrenceSet];
+    recurrenceSet = [(EKEvent *)v11 recurrenceSet];
 
-    if (v12)
+    if (recurrenceSet)
     {
       v34 = 0u;
       v35 = 0u;
       v32 = 0u;
       v33 = 0u;
-      v13 = [(EKObject *)self eventStore];
-      v14 = [v13 eventsWithSameRecurrenceSetAsEvent:v11];
+      eventStore = [(EKObject *)self eventStore];
+      v14 = [eventStore eventsWithSameRecurrenceSetAsEvent:v11];
 
       v15 = [v14 countByEnumeratingWithState:&v32 objects:v58 count:16];
       if (v15)
@@ -12882,11 +12882,11 @@ void *__38__EKEvent__nextReminderOccurrenceDate__block_invoke(uint64_t a1)
             }
 
             v18 = *(*(&v32 + 1) + 8 * i);
-            v19 = [v18 masterEvent];
-            v20 = v19;
-            if (v19)
+            masterEvent2 = [v18 masterEvent];
+            v20 = masterEvent2;
+            if (masterEvent2)
             {
-              v21 = v19;
+              v21 = masterEvent2;
             }
 
             else
@@ -12914,18 +12914,18 @@ void *__38__EKEvent__nextReminderOccurrenceDate__block_invoke(uint64_t a1)
       if ((v43[3] & 1) == 0)
       {
         v25 = [EKEvent alloc];
-        v26 = [v47[5] persistentObject];
-        v27 = [(EKEvent *)v25 initWithPersistentObject:v26 occurrenceDate:v53[5]];
+        persistentObject = [v47[5] persistentObject];
+        v27 = [(EKEvent *)v25 initWithPersistentObject:persistentObject occurrenceDate:v53[5]];
         v28 = v47[5];
         v47[5] = v27;
       }
 
-      v24 = v47[5];
+      selfCopy2 = v47[5];
     }
 
     else
     {
-      v24 = 0;
+      selfCopy2 = 0;
     }
 
     _Block_object_dispose(&v42, 8);
@@ -12936,23 +12936,23 @@ void *__38__EKEvent__nextReminderOccurrenceDate__block_invoke(uint64_t a1)
 
   else
   {
-    v22 = [(EKEvent *)self startDate];
-    v23 = [v22 isAfterDate:v4];
+    startDate = [(EKEvent *)self startDate];
+    v23 = [startDate isAfterDate:afterCopy];
 
     if (v23)
     {
-      v24 = self;
+      selfCopy2 = self;
     }
 
     else
     {
-      v24 = 0;
+      selfCopy2 = 0;
     }
   }
 
   v29 = *MEMORY[0x1E69E9840];
 
-  return v24;
+  return selfCopy2;
 }
 
 void __43__EKEvent_nextOccurrenceOrDetachmentAfter___block_invoke(void *a1, void *a2)
@@ -13087,19 +13087,19 @@ void __43__EKEvent_nextOccurrenceOrDetachmentAfter___block_invoke(void *a1, void
 
 - (id)previousOccurrence
 {
-  v3 = [(EKEvent *)self startDate];
-  v4 = [(EKEvent *)self previousOccurrenceOrDetachmentBefore:v3];
+  startDate = [(EKEvent *)self startDate];
+  v4 = [(EKEvent *)self previousOccurrenceOrDetachmentBefore:startDate];
 
   return v4;
 }
 
-- (id)previousOccurrenceOrDetachmentBefore:(id)a3
+- (id)previousOccurrenceOrDetachmentBefore:(id)before
 {
   v60 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(EKEvent *)self singleRecurrenceRule];
+  beforeCopy = before;
+  singleRecurrenceRule = [(EKEvent *)self singleRecurrenceRule];
 
-  if (v5)
+  if (singleRecurrenceRule)
   {
     v6 = objc_alloc_init(EKRecurrenceGenerator);
     v53 = 0;
@@ -13124,36 +13124,36 @@ void __43__EKEvent_nextOccurrenceOrDetachmentAfter___block_invoke(void *a1, void
     aBlock[3] = &unk_1E77FF238;
     v31 = v6;
     v37 = v31;
-    v38 = v4;
-    v39 = self;
+    v38 = beforeCopy;
+    selfCopy = self;
     v40 = &v53;
     v41 = &v47;
     v42 = &v43;
     v7 = _Block_copy(aBlock);
-    v8 = [(EKEvent *)self masterEvent];
-    v9 = v8;
-    if (v8)
+    masterEvent = [(EKEvent *)self masterEvent];
+    v9 = masterEvent;
+    if (masterEvent)
     {
-      v10 = v8;
+      selfCopy2 = masterEvent;
     }
 
     else
     {
-      v10 = self;
+      selfCopy2 = self;
     }
 
-    v11 = v10;
+    v11 = selfCopy2;
 
-    v12 = [(EKEvent *)v11 recurrenceSet];
+    recurrenceSet = [(EKEvent *)v11 recurrenceSet];
 
-    if (v12)
+    if (recurrenceSet)
     {
       v34 = 0u;
       v35 = 0u;
       v32 = 0u;
       v33 = 0u;
-      v13 = [(EKObject *)self eventStore];
-      v14 = [v13 eventsWithSameRecurrenceSetAsEvent:v11];
+      eventStore = [(EKObject *)self eventStore];
+      v14 = [eventStore eventsWithSameRecurrenceSetAsEvent:v11];
 
       v15 = [v14 countByEnumeratingWithState:&v32 objects:v59 count:16];
       if (v15)
@@ -13169,11 +13169,11 @@ void __43__EKEvent_nextOccurrenceOrDetachmentAfter___block_invoke(void *a1, void
             }
 
             v18 = *(*(&v32 + 1) + 8 * i);
-            v19 = [v18 masterEvent];
-            v20 = v19;
-            if (v19)
+            masterEvent2 = [v18 masterEvent];
+            v20 = masterEvent2;
+            if (masterEvent2)
             {
-              v21 = v19;
+              v21 = masterEvent2;
             }
 
             else
@@ -13201,18 +13201,18 @@ void __43__EKEvent_nextOccurrenceOrDetachmentAfter___block_invoke(void *a1, void
       if ((v44[3] & 1) == 0)
       {
         v25 = [EKEvent alloc];
-        v26 = [v48[5] persistentObject];
-        v27 = [(EKEvent *)v25 initWithPersistentObject:v26 occurrenceDate:v54[5]];
+        persistentObject = [v48[5] persistentObject];
+        v27 = [(EKEvent *)v25 initWithPersistentObject:persistentObject occurrenceDate:v54[5]];
         v28 = v48[5];
         v48[5] = v27;
       }
 
-      v24 = v48[5];
+      selfCopy3 = v48[5];
     }
 
     else
     {
-      v24 = 0;
+      selfCopy3 = 0;
     }
 
     _Block_object_dispose(&v43, 8);
@@ -13223,23 +13223,23 @@ void __43__EKEvent_nextOccurrenceOrDetachmentAfter___block_invoke(void *a1, void
 
   else
   {
-    v22 = [(EKEvent *)self startDate];
-    v23 = [v22 isBeforeDate:v4];
+    startDate = [(EKEvent *)self startDate];
+    v23 = [startDate isBeforeDate:beforeCopy];
 
     if (v23)
     {
-      v24 = self;
+      selfCopy3 = self;
     }
 
     else
     {
-      v24 = 0;
+      selfCopy3 = 0;
     }
   }
 
   v29 = *MEMORY[0x1E69E9840];
 
-  return v24;
+  return selfCopy3;
 }
 
 void __48__EKEvent_previousOccurrenceOrDetachmentBefore___block_invoke(uint64_t a1, void *a2)
@@ -13395,21 +13395,21 @@ void __48__EKEvent_previousOccurrenceOrDetachmentBefore___block_invoke_2(uint64_
 LABEL_7:
 }
 
-- (id)earliestOccurrenceEndingAfter:(id)a3 excludeSignificantDetachments:(BOOL)a4 excludeCanceledDetachments:(BOOL)a5 excludeDeclinedDetachments:(BOOL)a6
+- (id)earliestOccurrenceEndingAfter:(id)after excludeSignificantDetachments:(BOOL)detachments excludeCanceledDetachments:(BOOL)canceledDetachments excludeDeclinedDetachments:(BOOL)declinedDetachments
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
+  declinedDetachmentsCopy = declinedDetachments;
+  canceledDetachmentsCopy = canceledDetachments;
+  detachmentsCopy = detachments;
   v65 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  afterCopy = after;
   if ([(EKCalendarItem *)self hasRecurrenceRules])
   {
-    v54 = v10;
+    v54 = afterCopy;
     v53 = objc_alloc_init(EKRecurrenceGenerator);
-    v11 = [(EKCalendarItem *)self exceptionDates];
-    v51 = [(EKCalendarItem *)self detachedItems];
-    v12 = [v51 allObjects];
-    v13 = [v12 sortedArrayUsingSelector:sel_compareStartDateWithEvent_];
+    exceptionDates = [(EKCalendarItem *)self exceptionDates];
+    detachedItems = [(EKCalendarItem *)self detachedItems];
+    allObjects = [detachedItems allObjects];
+    v13 = [allObjects sortedArrayUsingSelector:sel_compareStartDateWithEvent_];
 
     v61 = 0u;
     v62 = 0u;
@@ -13417,11 +13417,11 @@ LABEL_7:
     v60 = 0u;
     v14 = v13;
     v15 = [v14 countByEnumeratingWithState:&v59 objects:v64 count:16];
-    v52 = v11;
+    v52 = exceptionDates;
     if (v15)
     {
       v16 = v15;
-      v48 = self;
+      selfCopy = self;
       v17 = *v60;
       while (2)
       {
@@ -13433,10 +13433,10 @@ LABEL_7:
           }
 
           v19 = *(*(&v59 + 1) + 8 * i);
-          if ((!v8 || ([*(*(&v59 + 1) + 8 * i) isSignificantlyDetached] & 1) == 0) && (!v7 || objc_msgSend(v19, "status") != 3) && (!v6 || objc_msgSend(v19, "selfParticipantStatus") != 3))
+          if ((!detachmentsCopy || ([*(*(&v59 + 1) + 8 * i) isSignificantlyDetached] & 1) == 0) && (!canceledDetachmentsCopy || objc_msgSend(v19, "status") != 3) && (!declinedDetachmentsCopy || objc_msgSend(v19, "selfParticipantStatus") != 3))
           {
-            v20 = [v19 endDateUnadjustedForLegacyClients];
-            v21 = [v20 CalIsAfterDate:v54];
+            endDateUnadjustedForLegacyClients = [v19 endDateUnadjustedForLegacyClients];
+            v21 = [endDateUnadjustedForLegacyClients CalIsAfterDate:v54];
 
             if (v21)
             {
@@ -13457,8 +13457,8 @@ LABEL_7:
 
       v50 = 0;
 LABEL_20:
-      v11 = v52;
-      self = v48;
+      exceptionDates = v52;
+      self = selfCopy;
     }
 
     else
@@ -13468,7 +13468,7 @@ LABEL_20:
 
     if ([v14 count])
     {
-      v25 = [v11 mutableCopy];
+      v25 = [exceptionDates mutableCopy];
       if (!v25)
       {
         v25 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v14, "count")}];
@@ -13499,10 +13499,10 @@ LABEL_20:
             objc_enumerationMutation(v26);
           }
 
-          v31 = [*(*(&v55 + 1) + 8 * j) recurrenceDate];
-          if (v31)
+          recurrenceDate = [*(*(&v55 + 1) + 8 * j) recurrenceDate];
+          if (recurrenceDate)
           {
-            [v25 addObject:v31];
+            [v25 addObject:recurrenceDate];
           }
         }
 
@@ -13513,9 +13513,9 @@ LABEL_20:
     }
 
     [(EKEvent *)self duration];
-    v10 = v54;
+    afterCopy = v54;
     v33 = [v54 dateByAddingTimeInterval:-v32];
-    v34 = [(EKCalendarItem *)self recurrenceRules];
+    recurrenceRules = [(EKCalendarItem *)self recurrenceRules];
     if (v25)
     {
       v35 = v25;
@@ -13523,15 +13523,15 @@ LABEL_20:
 
     else
     {
-      v35 = v11;
+      v35 = exceptionDates;
     }
 
-    v36 = [(EKEvent *)self startCalendarDate];
+    startCalendarDate = [(EKEvent *)self startCalendarDate];
     v37 = MEMORY[0x1E69930C8];
-    v38 = [MEMORY[0x1E695DFE8] defaultTimeZone];
+    defaultTimeZone = [MEMORY[0x1E695DFE8] defaultTimeZone];
     v49 = v33;
-    v39 = [v37 calendarDateWithDate:v33 timeZone:v38];
-    v40 = [(EKRecurrenceGenerator *)v53 nextOccurrenceDateWithEKRecurrences:v34 forCalendarItem:self exceptionDates:v35 initialDate:v36 afterDate:v39];
+    v39 = [v37 calendarDateWithDate:v33 timeZone:defaultTimeZone];
+    v40 = [(EKRecurrenceGenerator *)v53 nextOccurrenceDateWithEKRecurrences:recurrenceRules forCalendarItem:self exceptionDates:v35 initialDate:startCalendarDate afterDate:v39];
 
     if (v40)
     {
@@ -13539,8 +13539,8 @@ LABEL_20:
       if (!v50 || ([v50 startDate], v42 = objc_claimAutoreleasedReturnValue(), v43 = objc_msgSend(v42, "CalIsBeforeDate:", v40), v42, !v43))
       {
         v44 = [EKEvent alloc];
-        v45 = [(EKObject *)self persistentObject];
-        v24 = [(EKEvent *)v44 initWithPersistentObject:v45 occurrenceDate:v40];
+        persistentObject = [(EKObject *)self persistentObject];
+        selfCopy2 = [(EKEvent *)v44 initWithPersistentObject:persistentObject occurrenceDate:v40];
 
 LABEL_45:
         goto LABEL_46;
@@ -13552,59 +13552,59 @@ LABEL_45:
       v41 = v50;
     }
 
-    v24 = [v41 copy];
+    selfCopy2 = [v41 copy];
     goto LABEL_45;
   }
 
-  v22 = [(EKEvent *)self endDateUnadjustedForLegacyClients];
-  v23 = [v22 CalIsAfterDate:v10];
+  endDateUnadjustedForLegacyClients2 = [(EKEvent *)self endDateUnadjustedForLegacyClients];
+  v23 = [endDateUnadjustedForLegacyClients2 CalIsAfterDate:afterCopy];
 
   if (v23)
   {
-    v24 = self;
+    selfCopy2 = self;
   }
 
   else
   {
-    v24 = 0;
+    selfCopy2 = 0;
   }
 
 LABEL_46:
 
   v46 = *MEMORY[0x1E69E9840];
 
-  return v24;
+  return selfCopy2;
 }
 
-- (id)copyToCalendar:(id)a3 withOptions:(int64_t)a4
+- (id)copyToCalendar:(id)calendar withOptions:(int64_t)options
 {
-  v6 = a3;
-  v7 = [(EKCalendarItem *)self calendar];
-  v8 = [(EKEvent *)self _requirementsToMoveToCalendarHelperRemoveAttendeesRequiredToMoveEventFromCalendar:v7 toCalendar:v6];
+  calendarCopy = calendar;
+  calendar = [(EKCalendarItem *)self calendar];
+  v8 = [(EKEvent *)self _requirementsToMoveToCalendarHelperRemoveAttendeesRequiredToMoveEventFromCalendar:calendar toCalendar:calendarCopy];
 
   if (v8)
   {
-    v9 = a4 | 4;
+    optionsCopy = options | 4;
   }
 
   else
   {
-    v9 = a4;
+    optionsCopy = options;
   }
 
-  v10 = [(EKEvent *)self duplicateWithOptions:v9];
-  [v10 setCalendar:v6];
-  v11 = [(EKCalendarItem *)self calendar];
+  v10 = [(EKEvent *)self duplicateWithOptions:optionsCopy];
+  [v10 setCalendar:calendarCopy];
+  calendar2 = [(EKCalendarItem *)self calendar];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __38__EKEvent_copyToCalendar_withOptions___block_invoke;
   v18[3] = &unk_1E77FF260;
-  v19 = v11;
-  v20 = v6;
+  v19 = calendar2;
+  v20 = calendarCopy;
   v12 = v10;
   v21 = v12;
-  v13 = v6;
-  v14 = v11;
+  v13 = calendarCopy;
+  v14 = calendar2;
   [v12 _recursivelyPerformBlockOnSelfAndDetachedItems:v18 forSavingItem:v12];
   v15 = v21;
   v16 = v12;
@@ -13612,18 +13612,18 @@ LABEL_46:
   return v16;
 }
 
-- (id)duplicateWithOptions:(int64_t)a3
+- (id)duplicateWithOptions:(int64_t)options
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = [(EKObject *)self duplicate];
-  v19 = self;
-  v6 = [(EKEvent *)self _keysToChangeForDuplicateWithOptions:a3];
-  v7 = [v6 allKeys];
+  duplicate = [(EKObject *)self duplicate];
+  selfCopy = self;
+  v6 = [(EKEvent *)self _keysToChangeForDuplicateWithOptions:options];
+  allKeys = [v6 allKeys];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v8 = [allKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
     v9 = v8;
@@ -13634,54 +13634,54 @@ LABEL_46:
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
         v13 = [v6 objectForKeyedSubscript:v12];
-        v14 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
 
-        if (v13 == v14)
+        if (v13 == null)
         {
 
           v13 = 0;
         }
 
-        [v5 setValue:v13 forKey:v12];
+        [duplicate setValue:v13 forKey:v12];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v9 = [allKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v9);
   }
 
-  if ((a3 & 0x20) != 0)
+  if ((options & 0x20) != 0)
   {
-    [v5 removeAllSnoozedAlarms];
+    [duplicate removeAllSnoozedAlarms];
   }
 
-  if ((a3 & 2) != 0)
+  if ((options & 2) != 0)
   {
-    v15 = [(EKEvent *)v19 startDate];
-    [v5 _updateStartDateForDate:v15 withAdjustmentMode:0];
+    startDate = [(EKEvent *)selfCopy startDate];
+    [duplicate _updateStartDateForDate:startDate withAdjustmentMode:0];
 
-    v16 = [(EKEvent *)v19 endDateUnadjustedForLegacyClients];
-    [v5 _updateEndDateForDate:v16 withAdjustmentMode:0];
+    endDateUnadjustedForLegacyClients = [(EKEvent *)selfCopy endDateUnadjustedForLegacyClients];
+    [duplicate _updateEndDateForDate:endDateUnadjustedForLegacyClients withAdjustmentMode:0];
   }
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return duplicate;
 }
 
-- (id)_keysToChangeForDuplicateWithOptions:(int64_t)a3
+- (id)_keysToChangeForDuplicateWithOptions:(int64_t)options
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  if (v3)
+  optionsCopy = options;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if (optionsCopy)
   {
-    if ((v3 & 2) == 0)
+    if ((optionsCopy & 2) == 0)
     {
       goto LABEL_3;
     }
@@ -13689,18 +13689,18 @@ LABEL_46:
 
   else
   {
-    v7 = [MEMORY[0x1E695DF00] date];
-    if (!v7 || (v8 = v7, v9 = MEMORY[0x1E695DF00], [v7 timeIntervalSinceReferenceDate], objc_msgSend(v9, "dateWithTimeIntervalSinceReferenceDate:", floor(v10)), v11 = objc_claimAutoreleasedReturnValue(), v8, !v11))
+    date = [MEMORY[0x1E695DF00] date];
+    if (!date || (v8 = date, v9 = MEMORY[0x1E695DF00], [date timeIntervalSinceReferenceDate], objc_msgSend(v9, "dateWithTimeIntervalSinceReferenceDate:", floor(v10)), null = objc_claimAutoreleasedReturnValue(), v8, !null))
     {
-      v11 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
-    [v4 setObject:v11 forKeyedSubscript:*MEMORY[0x1E6992588]];
+    [dictionary setObject:null forKeyedSubscript:*MEMORY[0x1E6992588]];
 
-    if ((v3 & 2) == 0)
+    if ((optionsCopy & 2) == 0)
     {
 LABEL_3:
-      if ((v3 & 4) == 0)
+      if ((optionsCopy & 4) == 0)
       {
         goto LABEL_4;
       }
@@ -13709,25 +13709,25 @@ LABEL_3:
     }
   }
 
-  v12 = [MEMORY[0x1E695DFB0] null];
-  [v4 setObject:v12 forKeyedSubscript:*MEMORY[0x1E6992648]];
+  null2 = [MEMORY[0x1E695DFB0] null];
+  [dictionary setObject:null2 forKeyedSubscript:*MEMORY[0x1E6992648]];
 
-  v13 = [MEMORY[0x1E695DFB0] null];
-  [v4 setObject:v13 forKeyedSubscript:*MEMORY[0x1E6992598]];
+  null3 = [MEMORY[0x1E695DFB0] null];
+  [dictionary setObject:null3 forKeyedSubscript:*MEMORY[0x1E6992598]];
 
-  v14 = [MEMORY[0x1E695DFB0] null];
-  [v4 setObject:v14 forKeyedSubscript:*MEMORY[0x1E6992630]];
+  null4 = [MEMORY[0x1E695DFB0] null];
+  [dictionary setObject:null4 forKeyedSubscript:*MEMORY[0x1E6992630]];
 
-  v15 = [MEMORY[0x1E695DFB0] null];
-  [v4 setObject:v15 forKeyedSubscript:*MEMORY[0x1E69929A8]];
+  null5 = [MEMORY[0x1E695DFB0] null];
+  [dictionary setObject:null5 forKeyedSubscript:*MEMORY[0x1E69929A8]];
 
-  v16 = [MEMORY[0x1E695DFB0] null];
-  [v4 setObject:v16 forKeyedSubscript:*MEMORY[0x1E69925A0]];
+  null6 = [MEMORY[0x1E695DFB0] null];
+  [dictionary setObject:null6 forKeyedSubscript:*MEMORY[0x1E69925A0]];
 
-  if ((v3 & 4) == 0)
+  if ((optionsCopy & 4) == 0)
   {
 LABEL_4:
-    if ((v3 & 8) == 0)
+    if ((optionsCopy & 8) == 0)
     {
       goto LABEL_5;
     }
@@ -13736,28 +13736,28 @@ LABEL_4:
   }
 
 LABEL_15:
-  v17 = [MEMORY[0x1E695DFB0] null];
-  [v4 setObject:v17 forKeyedSubscript:*MEMORY[0x1E6992568]];
+  null7 = [MEMORY[0x1E695DFB0] null];
+  [dictionary setObject:null7 forKeyedSubscript:*MEMORY[0x1E6992568]];
 
-  v18 = [MEMORY[0x1E695DFB0] null];
-  [v4 setObject:v18 forKeyedSubscript:*MEMORY[0x1E6992650]];
+  null8 = [MEMORY[0x1E695DFB0] null];
+  [dictionary setObject:null8 forKeyedSubscript:*MEMORY[0x1E6992650]];
 
-  v19 = [MEMORY[0x1E695DFB0] null];
-  [v4 setObject:v19 forKeyedSubscript:*MEMORY[0x1E6992628]];
+  null9 = [MEMORY[0x1E695DFB0] null];
+  [dictionary setObject:null9 forKeyedSubscript:*MEMORY[0x1E6992628]];
 
-  v20 = [MEMORY[0x1E695DFB0] null];
-  [v4 setObject:v20 forKeyedSubscript:*MEMORY[0x1E69929B0]];
+  null10 = [MEMORY[0x1E695DFB0] null];
+  [dictionary setObject:null10 forKeyedSubscript:*MEMORY[0x1E69929B0]];
 
-  [v4 setObject:&unk_1F1B6AC48 forKeyedSubscript:*MEMORY[0x1E6992990]];
-  [v4 setObject:&unk_1F1B6AC60 forKeyedSubscript:*MEMORY[0x1E6992988]];
-  v21 = [MEMORY[0x1E695DFB0] null];
-  [v4 setObject:v21 forKeyedSubscript:*MEMORY[0x1E69929D0]];
+  [dictionary setObject:&unk_1F1B6AC48 forKeyedSubscript:*MEMORY[0x1E6992990]];
+  [dictionary setObject:&unk_1F1B6AC60 forKeyedSubscript:*MEMORY[0x1E6992988]];
+  null11 = [MEMORY[0x1E695DFB0] null];
+  [dictionary setObject:null11 forKeyedSubscript:*MEMORY[0x1E69929D0]];
 
-  [v4 setObject:&unk_1F1B6AC48 forKeyedSubscript:*MEMORY[0x1E6992998]];
-  if ((v3 & 8) == 0)
+  [dictionary setObject:&unk_1F1B6AC48 forKeyedSubscript:*MEMORY[0x1E6992998]];
+  if ((optionsCopy & 8) == 0)
   {
 LABEL_5:
-    if ((v3 & 0x10) == 0)
+    if ((optionsCopy & 0x10) == 0)
     {
       goto LABEL_7;
     }
@@ -13766,19 +13766,19 @@ LABEL_5:
   }
 
 LABEL_16:
-  v22 = [MEMORY[0x1E695DFB0] null];
-  [v4 setObject:v22 forKeyedSubscript:*MEMORY[0x1E6992560]];
+  null12 = [MEMORY[0x1E695DFB0] null];
+  [dictionary setObject:null12 forKeyedSubscript:*MEMORY[0x1E6992560]];
 
-  if ((v3 & 0x10) != 0)
+  if ((optionsCopy & 0x10) != 0)
   {
 LABEL_6:
-    v5 = [MEMORY[0x1E695DFB0] null];
-    [v4 setObject:v5 forKeyedSubscript:@"suggestionInfo"];
+    null13 = [MEMORY[0x1E695DFB0] null];
+    [dictionary setObject:null13 forKeyedSubscript:@"suggestionInfo"];
   }
 
 LABEL_7:
 
-  return v4;
+  return dictionary;
 }
 
 - (unint64_t)countOfAttendeeProposedTimes
@@ -13790,8 +13790,8 @@ LABEL_7:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v3 = [(EKCalendarItem *)self attendees];
-    v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    attendees = [(EKCalendarItem *)self attendees];
+    v4 = [attendees countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v4)
     {
       v5 = v4;
@@ -13803,7 +13803,7 @@ LABEL_7:
         {
           if (*v17 != v7)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(attendees);
           }
 
           v9 = *(*(&v16 + 1) + 8 * i);
@@ -13815,9 +13815,9 @@ LABEL_7:
             if (v11)
             {
               v12 = v11;
-              v13 = [v10 proposedStartDateStatus];
+              proposedStartDateStatus = [v10 proposedStartDateStatus];
 
-              if (v13 != 3)
+              if (proposedStartDateStatus != 3)
               {
                 ++v6;
               }
@@ -13825,7 +13825,7 @@ LABEL_7:
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v5 = [attendees countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v5);
@@ -13848,59 +13848,59 @@ LABEL_7:
 
 - (id)committedConstraints
 {
-  v3 = [(EKObject *)self eventStore];
-  v4 = [v3 eventAccessLevel];
+  eventStore = [(EKObject *)self eventStore];
+  eventAccessLevel = [eventStore eventAccessLevel];
 
-  if (v4 == 1)
+  if (eventAccessLevel == 1)
   {
-    v5 = [(EKObject *)self eventStore];
-    v6 = [(EKObject *)self CADObjectID];
-    v7 = [v5 cachedConstraintsForEventOrSourceWithCADObjectID:v6];
+    eventStore2 = [(EKObject *)self eventStore];
+    cADObjectID = [(EKObject *)self CADObjectID];
+    constraints = [eventStore2 cachedConstraintsForEventOrSourceWithCADObjectID:cADObjectID];
   }
 
   else
   {
-    v5 = [(EKEvent *)self committedValueForKey:*MEMORY[0x1E6992570]];
-    v7 = [v5 constraints];
+    eventStore2 = [(EKEvent *)self committedValueForKey:*MEMORY[0x1E6992570]];
+    constraints = [eventStore2 constraints];
   }
 
-  return v7;
+  return constraints;
 }
 
-- (BOOL)validateRecurrenceRule:(id)a3 error:(id *)a4
+- (BOOL)validateRecurrenceRule:(id)rule error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  ruleCopy = rule;
+  v7 = ruleCopy;
+  if (ruleCopy)
   {
-    v8 = [v6 frequency];
-    v9 = [(EKEvent *)self constraints];
+    frequency = [ruleCopy frequency];
+    constraints = [(EKEvent *)self constraints];
     if ([(EKObject *)self _hasChangesForKey:*MEMORY[0x1E6992570]])
     {
-      v10 = [(EKEvent *)self committedConstraints];
+      committedConstraints = [(EKEvent *)self committedConstraints];
     }
 
     else
     {
-      v10 = 0;
+      committedConstraints = 0;
     }
 
     v12 = EKBundle();
     v13 = [v12 localizedStringForKey:@"Choose another way to repeat this event or move it to another calendar." value:&stru_1F1B49D68 table:0];
-    if ([v10 prohibitsMultipleMonthsInYearlyRecurrence])
+    if ([committedConstraints prohibitsMultipleMonthsInYearlyRecurrence])
     {
-      if ([v9 prohibitsMultipleMonthsInYearlyRecurrence])
+      if ([constraints prohibitsMultipleMonthsInYearlyRecurrence])
       {
-        if (v8 == 3)
+        if (frequency == 3)
         {
-          v14 = [v7 monthsOfTheYear];
-          v15 = [v14 count];
+          monthsOfTheYear = [v7 monthsOfTheYear];
+          v15 = [monthsOfTheYear count];
 
           if (v15 >= 2)
           {
             v16 = [v12 localizedStringForKey:@"This Calendar Cannot Repeat Events on Multiple Months in a Year" value:&stru_1F1B49D68 table:0];
             v17 = 45;
-            if (!a4)
+            if (!error)
             {
               goto LABEL_18;
             }
@@ -13911,20 +13911,20 @@ LABEL_7:
       }
     }
 
-    if ([v10 prohibitsMultipleDaysInMonthlyRecurrence] && objc_msgSend(v9, "prohibitsMultipleDaysInMonthlyRecurrence") && v8 == 2 && (objc_msgSend(v7, "daysOfTheMonth"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "count"), v18, v19 >= 2))
+    if ([committedConstraints prohibitsMultipleDaysInMonthlyRecurrence] && objc_msgSend(constraints, "prohibitsMultipleDaysInMonthlyRecurrence") && frequency == 2 && (objc_msgSend(v7, "daysOfTheMonth"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "count"), v18, v19 >= 2))
     {
       v16 = [v12 localizedStringForKey:@"This Calendar Cannot Repeat Events on Multiple Days in a Month" value:&stru_1F1B49D68 table:0];
       v17 = 46;
-      if (a4)
+      if (error)
       {
 LABEL_17:
-        *a4 = [MEMORY[0x1E696ABC0] errorWithEKErrorCode:v17 description:v13 reason:v16];
+        *error = [MEMORY[0x1E696ABC0] errorWithEKErrorCode:v17 description:v13 reason:v16];
       }
     }
 
     else
     {
-      if (![v10 prohibitsYearlyRecurrenceInterval] || !objc_msgSend(v9, "prohibitsYearlyRecurrenceInterval") || objc_msgSend(v7, "frequency") != 3 || objc_msgSend(v7, "interval") < 2)
+      if (![committedConstraints prohibitsYearlyRecurrenceInterval] || !objc_msgSend(constraints, "prohibitsYearlyRecurrenceInterval") || objc_msgSend(v7, "frequency") != 3 || objc_msgSend(v7, "interval") < 2)
       {
         v11 = 1;
         goto LABEL_26;
@@ -13935,7 +13935,7 @@ LABEL_17:
       v16 = [v20 localizedStringWithFormat:v21, objc_msgSend(v7, "interval")];
 
       v17 = 47;
-      if (a4)
+      if (error)
       {
         goto LABEL_17;
       }
@@ -13957,8 +13957,8 @@ LABEL_27:
 
 - (BOOL)overlapsWithOrIsSameDayAsEventInSeries
 {
-  v3 = [(EKEvent *)self occurrenceStartDate];
-  if (!v3)
+  occurrenceStartDate = [(EKEvent *)self occurrenceStartDate];
+  if (!occurrenceStartDate)
   {
     return 0;
   }
@@ -13970,34 +13970,34 @@ LABEL_27:
     return 0;
   }
 
-  v5 = [(EKCalendarDate *)self->_originalOccurrenceStartDate date];
-  v6 = [(EKEvent *)self startDate];
-  v7 = [(EKCalendarItem *)self timeZone];
+  date = [(EKCalendarDate *)self->_originalOccurrenceStartDate date];
+  startDate = [(EKEvent *)self startDate];
+  timeZone = [(EKCalendarItem *)self timeZone];
   if (![(EKEvent *)self isFloating])
   {
-    v8 = [(EKObject *)self eventStore];
-    v9 = [v8 timeZone];
-    v10 = [v5 dateInTimeZone:v7 fromTimeZone:v9];
+    eventStore = [(EKObject *)self eventStore];
+    timeZone2 = [eventStore timeZone];
+    v10 = [date dateInTimeZone:timeZone fromTimeZone:timeZone2];
 
-    v11 = [(EKObject *)self eventStore];
-    v12 = [v11 timeZone];
-    v13 = [v6 dateInTimeZone:v7 fromTimeZone:v12];
+    eventStore2 = [(EKObject *)self eventStore];
+    timeZone3 = [eventStore2 timeZone];
+    v13 = [startDate dateInTimeZone:timeZone fromTimeZone:timeZone3];
 
-    v6 = v13;
-    v5 = v10;
+    startDate = v13;
+    date = v10;
   }
 
-  v14 = [v5 dateForStartOfDayInTimeZone:v7];
-  v15 = [v6 dateForStartOfDayInTimeZone:v7];
+  v14 = [date dateForStartOfDayInTimeZone:timeZone];
+  v15 = [startDate dateForStartOfDayInTimeZone:timeZone];
   [v14 timeIntervalSinceReferenceDate];
   v17 = v16;
   [v15 timeIntervalSinceReferenceDate];
   if (vabdd_f64(v17, v18) >= 2.22044605e-16)
   {
-    v20 = [(EKEvent *)self startDate];
-    v21 = [(EKEvent *)self occurrenceStartDate];
-    v22 = [v21 timeZone];
-    v19 = [(EKEvent *)self _occurrenceExistsOnDate:v20 timeZone:v22];
+    startDate2 = [(EKEvent *)self startDate];
+    occurrenceStartDate2 = [(EKEvent *)self occurrenceStartDate];
+    timeZone4 = [occurrenceStartDate2 timeZone];
+    v19 = [(EKEvent *)self _occurrenceExistsOnDate:startDate2 timeZone:timeZone4];
   }
 
   else
@@ -14008,17 +14008,17 @@ LABEL_27:
   return v19;
 }
 
-- (BOOL)_validateDatesAndRecurrencesGivenSpan:(int64_t)a3 error:(id *)a4
+- (BOOL)_validateDatesAndRecurrencesGivenSpan:(int64_t)span error:(id *)error
 {
   if (([MEMORY[0x1E6992FA0] currentProcessHasSyncClientEntitlement] & 1) == 0)
   {
-    v8 = [(EKEvent *)self constraints];
-    if (v8)
+    constraints = [(EKEvent *)self constraints];
+    if (constraints)
     {
-      v9 = [(EKEvent *)self startDate];
-      [v9 timeIntervalSinceReferenceDate];
-      v10 = [(EKObject *)self eventStore];
-      v11 = [v10 timeZone];
+      startDate = [(EKEvent *)self startDate];
+      [startDate timeIntervalSinceReferenceDate];
+      eventStore = [(EKObject *)self eventStore];
+      timeZone = [eventStore timeZone];
       GregorianDateWithFallbackToDefaultTimeZone = CalAbsoluteTimeGetGregorianDateWithFallbackToDefaultTimeZone();
       v14 = v13;
 
@@ -14028,24 +14028,24 @@ LABEL_27:
         v14 = v15;
       }
 
-      v16 = [(EKObject *)self eventStore];
-      v17 = [v16 timeZone];
-      v18 = [(EKEvent *)self _checkStartDateConstraintAgainstDate:GregorianDateWithFallbackToDefaultTimeZone timeZone:v14 error:v17, a4];
+      eventStore2 = [(EKObject *)self eventStore];
+      timeZone2 = [eventStore2 timeZone];
+      error = [(EKEvent *)self _checkStartDateConstraintAgainstDate:GregorianDateWithFallbackToDefaultTimeZone timeZone:v14 error:timeZone2, error];
 
-      if (!v18)
+      if (!error)
       {
         goto LABEL_28;
       }
 
-      if ([v8 eventDurationConstrainedToRecurrenceInterval] && -[EKEvent durationOverlapsRecurrenceInterval](self, "durationOverlapsRecurrenceInterval"))
+      if ([constraints eventDurationConstrainedToRecurrenceInterval] && -[EKEvent durationOverlapsRecurrenceInterval](self, "durationOverlapsRecurrenceInterval"))
       {
-        if (a4)
+        if (error)
         {
           v19 = MEMORY[0x1E696ABC0];
           v20 = 7;
 LABEL_20:
           [v19 errorWithEKErrorCode:v20];
-          *a4 = v7 = 0;
+          *error = v7 = 0;
 LABEL_29:
 
           return v7;
@@ -14056,24 +14056,24 @@ LABEL_29:
 
       if (![(EKObject *)self isNew])
       {
-        v21 = [v8 requiresOccurrencesConformToRecurrenceRule];
-        if (a3)
+        requiresOccurrencesConformToRecurrenceRule = [constraints requiresOccurrencesConformToRecurrenceRule];
+        if (span)
         {
-          if (v21)
+          if (requiresOccurrencesConformToRecurrenceRule)
           {
-            v22 = [(EKCalendarItem *)self recurrenceRules];
-            v23 = [(EKEvent *)self conformsToRecurrenceRules:v22];
+            recurrenceRules = [(EKCalendarItem *)self recurrenceRules];
+            v23 = [(EKEvent *)self conformsToRecurrenceRules:recurrenceRules];
 
             if (!v23 && ![(EKEvent *)self _isSimpleRepeatingEvent])
             {
-              if (a4)
+              if (error)
               {
                 v24 = MEMORY[0x1E696ABC0];
                 v25 = EKBundle();
                 v26 = [v25 localizedStringForKey:@"Choose another way to repeat this event or move it to another calendar." value:&stru_1F1B49D68 table:0];
                 v27 = EKBundle();
                 v28 = [v27 localizedStringForKey:@"That calendar does not allow events to start outside of their recurrence patterns." value:&stru_1F1B49D68 table:0];
-                *a4 = [v24 errorWithEKErrorCode:13 description:v26 reason:v28];
+                *error = [v24 errorWithEKErrorCode:13 description:v26 reason:v28];
               }
 
               goto LABEL_28;
@@ -14082,9 +14082,9 @@ LABEL_29:
         }
       }
 
-      if ([v8 occurrencesMustOccurOnSeparateDays] && -[EKEvent overlapsWithOrIsSameDayAsEventInSeries](self, "overlapsWithOrIsSameDayAsEventInSeries"))
+      if ([constraints occurrencesMustOccurOnSeparateDays] && -[EKEvent overlapsWithOrIsSameDayAsEventInSeries](self, "overlapsWithOrIsSameDayAsEventInSeries"))
       {
-        if (a4)
+        if (error)
         {
           v19 = MEMORY[0x1E696ABC0];
           v20 = 10;
@@ -14096,9 +14096,9 @@ LABEL_28:
         goto LABEL_29;
       }
 
-      if ([v8 occurrenceOrderEnforcedAfterDetachment] && -[EKEvent isOutOfOrderWithEventInSeries](self, "isOutOfOrderWithEventInSeries"))
+      if ([constraints occurrenceOrderEnforcedAfterDetachment] && -[EKEvent isOutOfOrderWithEventInSeries](self, "isOutOfOrderWithEventInSeries"))
       {
-        if (a4)
+        if (error)
         {
           v19 = MEMORY[0x1E696ABC0];
           v20 = 69;
@@ -14119,26 +14119,26 @@ LABEL_28:
 - (BOOL)durationOverlapsRecurrenceInterval
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [(EKCalendarItem *)self recurrenceRules];
-  if ([v3 count])
+  recurrenceRules = [(EKCalendarItem *)self recurrenceRules];
+  if ([recurrenceRules count])
   {
     v4 = MEMORY[0x1E695DEE8];
-    v5 = [(EKObject *)self eventStore];
-    v6 = [v5 timeZone];
-    v7 = [v4 CalGregorianCalendarForTimeZone:v6];
+    eventStore = [(EKObject *)self eventStore];
+    timeZone = [eventStore timeZone];
+    v7 = [v4 CalGregorianCalendarForTimeZone:timeZone];
 
-    v8 = [(EKEvent *)self startDate];
-    v9 = [(EKEvent *)self endDateUnadjustedForLegacyClients];
+    startDate = [(EKEvent *)self startDate];
+    endDateUnadjustedForLegacyClients = [(EKEvent *)self endDateUnadjustedForLegacyClients];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v10 = v3;
+    v10 = recurrenceRules;
     v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v11)
     {
       v12 = v11;
-      v22 = v3;
+      v22 = recurrenceRules;
       v13 = *v24;
       v14 = 1;
       do
@@ -14153,9 +14153,9 @@ LABEL_28:
           v16 = *(*(&v23 + 1) + 8 * i);
           if ([v16 interval] >= 1)
           {
-            v17 = [v16 dateComponents];
-            v18 = [v7 dateByAddingComponents:v17 toDate:v8 options:0];
-            v14 &= [v18 CalIsBeforeDate:v9] ^ 1;
+            dateComponents = [v16 dateComponents];
+            v18 = [v7 dateByAddingComponents:dateComponents toDate:startDate options:0];
+            v14 &= [v18 CalIsBeforeDate:endDateUnadjustedForLegacyClients] ^ 1;
           }
         }
 
@@ -14164,7 +14164,7 @@ LABEL_28:
 
       while (v12);
       v19 = v14 ^ 1;
-      v3 = v22;
+      recurrenceRules = v22;
     }
 
     else
@@ -14182,19 +14182,19 @@ LABEL_28:
   return v19 & 1;
 }
 
-+ (BOOL)_notDetachedOccurrenceOfEvent:(id)a3 existsInDateRangeWithStartDate:(id)a4 endDate:(id)a5 inTimeZone:(id)a6
++ (BOOL)_notDetachedOccurrenceOfEvent:(id)event existsInDateRangeWithStartDate:(id)date endDate:(id)endDate inTimeZone:(id)zone
 {
-  v9 = a3;
-  v40 = a4;
-  v10 = a5;
-  v11 = a6;
-  if ([v9 hasRecurrenceRules])
+  eventCopy = event;
+  dateCopy = date;
+  endDateCopy = endDate;
+  zoneCopy = zone;
+  if ([eventCopy hasRecurrenceRules])
   {
-    v12 = [v9 recurrenceRules];
-    [v9 duration];
+    recurrenceRules = [eventCopy recurrenceRules];
+    [eventCopy duration];
     v14 = v13;
-    v39 = v12;
-    if ([v12 count])
+    v39 = recurrenceRules;
+    if ([recurrenceRules count])
     {
       LOBYTE(v15) = 0;
       v16 = 0;
@@ -14202,10 +14202,10 @@ LABEL_28:
       v42 = 0;
       v17 = 0;
       v18 = v14;
-      v43 = v9;
+      v43 = eventCopy;
       while (1)
       {
-        v19 = v40;
+        v19 = dateCopy;
         if ((v15 & 1) == 0)
         {
           break;
@@ -14221,14 +14221,14 @@ LABEL_36:
 
       while (1)
       {
-        if (![v19 CalIsBeforeOrSameAsDate:v10])
+        if (![v19 CalIsBeforeOrSameAsDate:endDateCopy])
         {
           goto LABEL_36;
         }
 
         v20 = objc_alloc_init(EKRecurrenceGenerator);
         LOBYTE(v37) = 1;
-        v21 = [(EKRecurrenceGenerator *)v20 copyOccurrenceDatesWithEKEvent:v9 startDate:v19 endDate:v10 timeZone:v11 exceptionDates:0 limit:1 adjustDatesForAllDayEvents:v37];
+        v21 = [(EKRecurrenceGenerator *)v20 copyOccurrenceDatesWithEKEvent:eventCopy startDate:v19 endDate:endDateCopy timeZone:zoneCopy exceptionDates:0 limit:1 adjustDatesForAllDayEvents:v37];
         if (![v21 count])
         {
           v23 = 0;
@@ -14239,7 +14239,7 @@ LABEL_35:
 
         v22 = [v21 objectAtIndex:0];
         v23 = v22;
-        if (!v22 || ![v22 CalIsBeforeOrSameAsDate:v10])
+        if (!v22 || ![v22 CalIsBeforeOrSameAsDate:endDateCopy])
         {
           goto LABEL_35;
         }
@@ -14251,11 +14251,11 @@ LABEL_35:
 
         if (!v16)
         {
-          v24 = [v9 exceptionDatesAdjustedForFloatingEvents];
-          v25 = v24;
-          if (v24)
+          exceptionDatesAdjustedForFloatingEvents = [eventCopy exceptionDatesAdjustedForFloatingEvents];
+          v25 = exceptionDatesAdjustedForFloatingEvents;
+          if (exceptionDatesAdjustedForFloatingEvents)
           {
-            v26 = v24;
+            v26 = exceptionDatesAdjustedForFloatingEvents;
           }
 
           else
@@ -14265,8 +14265,8 @@ LABEL_35:
 
           v16 = v26;
 
-          v27 = [v43 detachedItems];
-          v28 = [v27 valueForKey:@"originalStartDate"];
+          detachedItems = [v43 detachedItems];
+          v28 = [detachedItems valueForKey:@"originalStartDate"];
 
           if (v28)
           {
@@ -14281,7 +14281,7 @@ LABEL_35:
             v41 = [MEMORY[0x1E695DFE8] timeZoneWithName:@"UTC"];
           }
 
-          v9 = v43;
+          eventCopy = v43;
         }
 
         if (v42)
@@ -14303,16 +14303,16 @@ LABEL_31:
       v31 = v30;
       if (v41)
       {
-        v32 = v11;
-        if (!v11)
+        v32 = zoneCopy;
+        if (!zoneCopy)
         {
-          v38 = [MEMORY[0x1E695DFE8] defaultTimeZone];
-          v32 = v38;
+          defaultTimeZone = [MEMORY[0x1E695DFE8] defaultTimeZone];
+          v32 = defaultTimeZone;
         }
 
         v33 = [v31 dateInTimeZone:v41 fromTimeZone:v32];
 
-        if (!v11)
+        if (!zoneCopy)
         {
         }
       }
@@ -14338,7 +14338,7 @@ LABEL_29:
         v15 = 1;
       }
 
-      v9 = v43;
+      eventCopy = v43;
       goto LABEL_31;
     }
 
@@ -14356,31 +14356,31 @@ LABEL_40:
   return v15 & 1;
 }
 
-- (BOOL)_occurrenceExistsOnDate:(id)a3 timeZone:(id)a4
+- (BOOL)_occurrenceExistsOnDate:(id)date timeZone:(id)zone
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(EKEvent *)self requiresDetach];
-  v9 = self;
-  v10 = v9;
-  v11 = v9;
-  if (!v8)
+  dateCopy = date;
+  zoneCopy = zone;
+  requiresDetach = [(EKEvent *)self requiresDetach];
+  selfCopy = self;
+  v10 = selfCopy;
+  v11 = selfCopy;
+  if (!requiresDetach)
   {
-    v12 = [(EKCalendarItem *)v9 originalItem];
-    if (!v12)
+    originalItem = [(EKCalendarItem *)selfCopy originalItem];
+    if (!originalItem)
     {
       v15 = 0;
       v11 = v10;
       goto LABEL_22;
     }
 
-    v11 = v12;
+    v11 = originalItem;
   }
 
-  v13 = [v6 dateForStartOfDayInTimeZone:v7];
-  v14 = [v13 ek_ios_dateForEndOfDayInTimeZone:v7];
-  if ([objc_opt_class() _notDetachedOccurrenceOfEvent:v11 existsInDateRangeWithStartDate:v13 endDate:v14 inTimeZone:v7])
+  v13 = [dateCopy dateForStartOfDayInTimeZone:zoneCopy];
+  v14 = [v13 ek_ios_dateForEndOfDayInTimeZone:zoneCopy];
+  if ([objc_opt_class() _notDetachedOccurrenceOfEvent:v11 existsInDateRangeWithStartDate:v13 endDate:v14 inTimeZone:zoneCopy])
   {
     v15 = 1;
   }
@@ -14389,13 +14389,13 @@ LABEL_40:
   {
     v30 = v14;
     v31 = v11;
-    v32 = v6;
-    v16 = [v11 detachedItems];
+    v32 = dateCopy;
+    detachedItems = [v11 detachedItems];
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v17 = [v16 countByEnumeratingWithState:&v33 objects:v37 count:16];
+    v17 = [detachedItems countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v17)
     {
       v18 = v17;
@@ -14407,21 +14407,21 @@ LABEL_40:
         {
           if (*v34 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(detachedItems);
           }
 
           v21 = *(*(&v33 + 1) + 8 * i);
           if (([v21 isEqual:v10] & 1) == 0)
           {
-            v22 = [v21 startDate];
+            startDate = [v21 startDate];
             if ([v21 isFloating])
             {
-              v23 = [v22 dateInTimeZone:v7 fromTimeZone:0];
+              v23 = [startDate dateInTimeZone:zoneCopy fromTimeZone:0];
 
-              v22 = v23;
+              startDate = v23;
             }
 
-            v24 = [v22 dateForStartOfDayInTimeZone:v7];
+            v24 = [startDate dateForStartOfDayInTimeZone:zoneCopy];
             [v13 timeIntervalSinceReferenceDate];
             v26 = v25;
             [v24 timeIntervalSinceReferenceDate];
@@ -14429,7 +14429,7 @@ LABEL_40:
           }
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v33 objects:v37 count:16];
+        v18 = [detachedItems countByEnumeratingWithState:&v33 objects:v37 count:16];
       }
 
       while (v18);
@@ -14441,7 +14441,7 @@ LABEL_40:
     }
 
     v11 = v31;
-    v6 = v32;
+    dateCopy = v32;
     v14 = v30;
   }
 
@@ -14450,13 +14450,13 @@ LABEL_22:
   return v15 & 1;
 }
 
-- (BOOL)_checkStartDateConstraintAgainstDate:(id)a3 timeZone:(id)a4 error:(id *)a5
+- (BOOL)_checkStartDateConstraintAgainstDate:(id)date timeZone:(id)zone error:(id *)error
 {
-  v6 = a4;
-  v7 = [(EKEvent *)self constraints];
-  v8 = [v7 futureStartDateLimitedToOccurrenceCacheBounds];
+  zoneCopy = zone;
+  constraints = [(EKEvent *)self constraints];
+  futureStartDateLimitedToOccurrenceCacheBounds = [constraints futureStartDateLimitedToOccurrenceCacheBounds];
 
-  if (v8)
+  if (futureStartDateLimitedToOccurrenceCacheBounds)
   {
     CalEventOccurrenceCacheCopyBoundsForTimeZone();
   }
@@ -14464,14 +14464,14 @@ LABEL_22:
   return 1;
 }
 
-- (BOOL)conformsToRecurrenceRules:(id)a3
+- (BOOL)conformsToRecurrenceRules:(id)rules
 {
   v28 = *MEMORY[0x1E69E9840];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = a3;
+  obj = rules;
   v4 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v4)
   {
@@ -14490,16 +14490,16 @@ LABEL_22:
         if ([v8 frequency])
         {
           v9 = objc_alloc_init(EKRecurrenceGenerator);
-          v10 = [(EKEvent *)self startDate];
-          v11 = [(EKCalendarItem *)self timeZone];
-          v12 = [v10 dateForDayInTimeZone:v11];
+          startDate = [(EKEvent *)self startDate];
+          timeZone = [(EKCalendarItem *)self timeZone];
+          v12 = [startDate dateForDayInTimeZone:timeZone];
 
-          v13 = [(EKEvent *)self endDateUnadjustedForLegacyClients];
-          v14 = [(EKCalendarItem *)self timeZone];
-          v15 = [v13 ek_ios_dateForEndOfDayInTimeZone:v14];
+          endDateUnadjustedForLegacyClients = [(EKEvent *)self endDateUnadjustedForLegacyClients];
+          timeZone2 = [(EKCalendarItem *)self timeZone];
+          v15 = [endDateUnadjustedForLegacyClients ek_ios_dateForEndOfDayInTimeZone:timeZone2];
 
-          v16 = [(EKCalendarItem *)self timeZone];
-          v17 = [(EKRecurrenceGenerator *)v9 copyOccurrenceDatesWithEKEvent:self recurrenceRule:v8 startDate:v12 endDate:v15 timeZone:v16 limit:1];
+          timeZone3 = [(EKCalendarItem *)self timeZone];
+          v17 = [(EKRecurrenceGenerator *)v9 copyOccurrenceDatesWithEKEvent:self recurrenceRule:v8 startDate:v12 endDate:v15 timeZone:timeZone3 limit:1];
 
           v18 = [v17 count];
           if (!v18)
@@ -14529,16 +14529,16 @@ LABEL_12:
 
 - (BOOL)allowsSpansOtherThanThisEvent
 {
-  v3 = [(EKEvent *)self constraints];
-  v4 = [v3 requiresOccurrencesConformToRecurrenceRule];
+  constraints = [(EKEvent *)self constraints];
+  requiresOccurrencesConformToRecurrenceRule = [constraints requiresOccurrencesConformToRecurrenceRule];
 
-  if (!v4 || [(EKEvent *)self _isSimpleRepeatingEvent])
+  if (!requiresOccurrencesConformToRecurrenceRule || [(EKEvent *)self _isSimpleRepeatingEvent])
   {
     return 1;
   }
 
-  v6 = [(EKCalendarItem *)self recurrenceRules];
-  v7 = [(EKEvent *)self conformsToRecurrenceRules:v6];
+  recurrenceRules = [(EKCalendarItem *)self recurrenceRules];
+  v7 = [(EKEvent *)self conformsToRecurrenceRules:recurrenceRules];
 
   return v7;
 }
@@ -14550,8 +14550,8 @@ LABEL_12:
     return 0;
   }
 
-  v3 = [(EKEvent *)self constraints];
-  if ([v3 supportsResponseComments])
+  constraints = [(EKEvent *)self constraints];
+  if ([constraints supportsResponseComments])
   {
     v4 = [(EKCalendarItem *)self actionsState]== 0;
   }
@@ -14566,62 +14566,62 @@ LABEL_12:
 
 - (BOOL)allowsClearingCommentsAsOrganizer
 {
-  v2 = [(EKEvent *)self constraints];
-  v3 = [v2 supportsClearingPrivateComments];
+  constraints = [(EKEvent *)self constraints];
+  supportsClearingPrivateComments = [constraints supportsClearingPrivateComments];
 
-  return v3;
+  return supportsClearingPrivateComments;
 }
 
 - (BOOL)_isSimpleRepeatingEvent
 {
-  v3 = [(EKCalendarItem *)self recurrenceRules];
-  if ([v3 count] == 1)
+  recurrenceRules = [(EKCalendarItem *)self recurrenceRules];
+  if ([recurrenceRules count] == 1)
   {
-    v4 = [(EKCalendarItem *)self recurrenceRules];
-    v5 = [v4 objectAtIndexedSubscript:0];
-    v6 = [v5 isSimpleRule];
+    recurrenceRules2 = [(EKCalendarItem *)self recurrenceRules];
+    v5 = [recurrenceRules2 objectAtIndexedSubscript:0];
+    isSimpleRule = [v5 isSimpleRule];
   }
 
   else
   {
-    v6 = 0;
+    isSimpleRule = 0;
   }
 
-  return v6;
+  return isSimpleRule;
 }
 
-- (BOOL)_shouldCancelInsteadOfDeleteWithSpan:(int64_t)a3
+- (BOOL)_shouldCancelInsteadOfDeleteWithSpan:(int64_t)span
 {
-  if (a3 == 3)
+  if (span == 3)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    v14 = v13;
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v14 = currentHandler;
     v15 = @"EKSpanAutomaticChange not allowed here";
     v16 = a2;
-    v17 = self;
+    selfCopy2 = self;
     v18 = 7323;
 LABEL_16:
-    [v13 handleFailureInMethod:v16 object:v17 file:@"EKEvent.m" lineNumber:v18 description:v15];
+    [currentHandler handleFailureInMethod:v16 object:selfCopy2 file:@"EKEvent.m" lineNumber:v18 description:v15];
 
     goto LABEL_3;
   }
 
-  if (a3 == 2)
+  if (span == 2)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    v14 = v13;
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v14 = currentHandler;
     v15 = @"EKSpanEveryOccurrenceUnlessAlreadyDetached not allowed here";
     v16 = a2;
-    v17 = self;
+    selfCopy2 = self;
     v18 = 7324;
     goto LABEL_16;
   }
 
 LABEL_3:
-  v6 = [(EKEvent *)self constraints];
-  v7 = [v6 shouldCancelDeletedEvents];
+  constraints = [(EKEvent *)self constraints];
+  shouldCancelDeletedEvents = [constraints shouldCancelDeletedEvents];
 
-  if (!v7 || [(EKEvent *)self isDetached]|| ![(EKCalendarItem *)self _hadAttendees])
+  if (!shouldCancelDeletedEvents || [(EKEvent *)self isDetached]|| ![(EKCalendarItem *)self _hadAttendees])
   {
     return 0;
   }
@@ -14630,15 +14630,15 @@ LABEL_3:
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 isCurrentUser];
-    if ((a3 & 0xFFFFFFFFFFFFFFFBLL) != 0)
+    isCurrentUser = [v8 isCurrentUser];
+    if ((span & 0xFFFFFFFFFFFFFFFBLL) != 0)
     {
       v11 = 0;
     }
 
     else
     {
-      v11 = v10;
+      v11 = isCurrentUser;
     }
   }
 
@@ -14652,10 +14652,10 @@ LABEL_3:
 
 - (BOOL)_shouldDeclineInsteadOfDelete
 {
-  v3 = [(EKEvent *)self constraints];
-  v4 = [v3 shouldDeclineDeletedInvitations];
+  constraints = [(EKEvent *)self constraints];
+  shouldDeclineDeletedInvitations = [constraints shouldDeclineDeletedInvitations];
 
-  if (!v4 || ![(EKCalendarItem *)self _hadAttendees])
+  if (!shouldDeclineDeletedInvitations || ![(EKCalendarItem *)self _hadAttendees])
   {
     return 0;
   }
@@ -14667,37 +14667,37 @@ LABEL_3:
   return v7;
 }
 
-- (void)_deleteWithSpan:(int64_t)a3
+- (void)_deleteWithSpan:(int64_t)span
 {
   v52 = *MEMORY[0x1E69E9840];
-  if (a3 >= 1)
+  if (span >= 1)
   {
-    if (a3 > 1)
+    if (span > 1)
     {
-      switch(a3)
+      switch(span)
       {
         case 4:
           if ([(EKEvent *)self isDetached])
           {
-            v14 = [(EKCalendarItem *)self originalItem];
+            selfCopy = [(EKCalendarItem *)self originalItem];
           }
 
           else
           {
-            v14 = self;
+            selfCopy = self;
           }
 
-          v4 = v14;
-          v23 = [(EKEvent *)v14 recurrenceSet];
+          originalItem2 = selfCopy;
+          recurrenceSet = [(EKEvent *)selfCopy recurrenceSet];
 
-          if (v23)
+          if (recurrenceSet)
           {
             v44 = 0u;
             v45 = 0u;
             v42 = 0u;
             v43 = 0u;
-            v24 = [(EKObject *)self eventStore];
-            v25 = [v24 eventsWithSameRecurrenceSetAsEvent:v4];
+            eventStore = [(EKObject *)self eventStore];
+            v25 = [eventStore eventsWithSameRecurrenceSetAsEvent:originalItem2];
 
             v26 = [v25 countByEnumeratingWithState:&v42 objects:v50 count:16];
             if (v26)
@@ -14714,9 +14714,9 @@ LABEL_3:
                   }
 
                   v30 = *(*(&v42 + 1) + 8 * i);
-                  v31 = [v30 eventOccurrenceID];
-                  v32 = [(EKEvent *)self eventOccurrenceID];
-                  v33 = [v31 isEqualToString:v32];
+                  eventOccurrenceID = [v30 eventOccurrenceID];
+                  eventOccurrenceID2 = [(EKEvent *)self eventOccurrenceID];
+                  v33 = [eventOccurrenceID isEqualToString:eventOccurrenceID2];
 
                   if ((v33 & 1) == 0)
                   {
@@ -14733,64 +14733,64 @@ LABEL_3:
             }
           }
 
-          [v4 _deleteSelfAndDetached];
+          [originalItem2 _deleteSelfAndDetached];
 LABEL_52:
 
           goto LABEL_53;
         case 3:
-          v36 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
           v37 = @"EKSpanAutomaticChange not allowed here";
-          v41 = v36;
+          originalStartDate = currentHandler;
           v38 = a2;
-          v39 = self;
+          selfCopy3 = self;
           v40 = 7368;
           break;
         case 2:
-          v36 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
           v37 = @"EKSpanEveryOccurrenceUnlessAlreadyDetached not allowed here";
-          v41 = v36;
+          originalStartDate = currentHandler;
           v38 = a2;
-          v39 = self;
+          selfCopy3 = self;
           v40 = 7369;
           break;
         default:
           goto LABEL_53;
       }
 
-      [v36 handleFailureInMethod:v38 object:v39 file:@"EKEvent.m" lineNumber:v40 description:v37];
+      [currentHandler handleFailureInMethod:v38 object:selfCopy3 file:@"EKEvent.m" lineNumber:v40 description:v37];
     }
 
     else
     {
       if ([(EKEvent *)self isDetached])
       {
-        v41 = [(EKEvent *)self originalStartDate];
+        originalStartDate = [(EKEvent *)self originalStartDate];
       }
 
       else
       {
-        v16 = [(EKEvent *)self originalOccurrenceStartDate];
-        v41 = [v16 date];
+        originalOccurrenceStartDate = [(EKEvent *)self originalOccurrenceStartDate];
+        originalStartDate = [originalOccurrenceStartDate date];
       }
 
       if ([(EKEvent *)self isFloating])
       {
-        v17 = [(EKObject *)self eventStore];
-        v18 = [v17 timeZone];
-        v19 = [v41 dateInTimeZone:0 fromTimeZone:v18];
+        eventStore2 = [(EKObject *)self eventStore];
+        timeZone = [eventStore2 timeZone];
+        v19 = [originalStartDate dateInTimeZone:0 fromTimeZone:timeZone];
 
-        v41 = v19;
+        originalStartDate = v19;
       }
 
       if ([(EKEvent *)self isDetached])
       {
-        v20 = [(EKCalendarItem *)self originalItem];
-        [v20 _deleteFromOccurrenceDateOnward:v41 includeSlices:1];
+        originalItem = [(EKCalendarItem *)self originalItem];
+        [originalItem _deleteFromOccurrenceDateOnward:originalStartDate includeSlices:1];
       }
 
       else
       {
-        [(EKEvent *)self _deleteFromOccurrenceDateOnward:v41 includeSlices:1];
+        [(EKEvent *)self _deleteFromOccurrenceDateOnward:originalStartDate includeSlices:1];
       }
     }
 
@@ -14799,7 +14799,7 @@ LABEL_52:
 
   else
   {
-    if (a3)
+    if (span)
     {
 LABEL_53:
       v34 = *MEMORY[0x1E69E9840];
@@ -14808,16 +14808,16 @@ LABEL_53:
 
     if ([(EKEvent *)self isDetached])
     {
-      v4 = [(EKCalendarItem *)self originalItem];
-      v5 = [(EKEvent *)self originalStartDate];
-      [v4 _addExceptionDate:v5];
+      originalItem2 = [(EKCalendarItem *)self originalItem];
+      originalStartDate2 = [(EKEvent *)self originalStartDate];
+      [originalItem2 _addExceptionDate:originalStartDate2];
 
       v48 = 0u;
       v49 = 0u;
       v46 = 0u;
       v47 = 0u;
-      v6 = [v4 detachedItems];
-      v7 = [v6 countByEnumeratingWithState:&v46 objects:v51 count:16];
+      detachedItems = [originalItem2 detachedItems];
+      v7 = [detachedItems countByEnumeratingWithState:&v46 objects:v51 count:16];
       if (v7)
       {
         v8 = v7;
@@ -14828,7 +14828,7 @@ LABEL_6:
         {
           if (*v47 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(detachedItems);
           }
 
           v11 = *(*(&v46 + 1) + 8 * v10);
@@ -14839,7 +14839,7 @@ LABEL_6:
 
           if (v8 == ++v10)
           {
-            v8 = [v6 countByEnumeratingWithState:&v46 objects:v51 count:16];
+            v8 = [detachedItems countByEnumeratingWithState:&v46 objects:v51 count:16];
             if (v8)
             {
               goto LABEL_6;
@@ -14856,21 +14856,21 @@ LABEL_6:
           goto LABEL_26;
         }
 
-        [v4 _removeDetachedItem:v15];
-        v6 = v15;
+        [originalItem2 _removeDetachedItem:v15];
+        detachedItems = v15;
       }
 
 LABEL_25:
 
 LABEL_26:
       [(EKCalendarItem *)self _deleteSelfAndDetached];
-      [(EKObject *)self addCoCommitObject:v4];
+      [(EKObject *)self addCoCommitObject:originalItem2];
       goto LABEL_52;
     }
 
-    v12 = [(EKEvent *)self singleRecurrenceRule];
+    singleRecurrenceRule = [(EKEvent *)self singleRecurrenceRule];
 
-    if (v12)
+    if (singleRecurrenceRule)
     {
       v13 = *MEMORY[0x1E69E9840];
 
@@ -14886,16 +14886,16 @@ LABEL_26:
   }
 }
 
-- (void)_deleteFromOccurrenceDateOnward:(id)a3 includeSlices:(BOOL)a4
+- (void)_deleteFromOccurrenceDateOnward:(id)onward includeSlices:(BOOL)slices
 {
-  v4 = a4;
+  slicesCopy = slices;
   v104 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v68 = [(EKEvent *)self _committedStartDate];
-  v7 = [(EKCalendarItem *)self timeZone];
-  if (v7)
+  onwardCopy = onward;
+  _committedStartDate = [(EKEvent *)self _committedStartDate];
+  timeZone = [(EKCalendarItem *)self timeZone];
+  if (timeZone)
   {
-    if (!v4)
+    if (!slicesCopy)
     {
       goto LABEL_15;
     }
@@ -14903,8 +14903,8 @@ LABEL_26:
 
   else
   {
-    v7 = CalTimeZoneCopyCFTimeZone();
-    if (!v4)
+    timeZone = CalTimeZoneCopyCFTimeZone();
+    if (!slicesCopy)
     {
       goto LABEL_15;
     }
@@ -14914,8 +14914,8 @@ LABEL_26:
   v98 = 0u;
   v95 = 0u;
   v96 = 0u;
-  v8 = [(EKObject *)self eventStore];
-  v9 = [v8 eventsWithSameRecurrenceSetAsEvent:self];
+  eventStore = [(EKObject *)self eventStore];
+  v9 = [eventStore eventsWithSameRecurrenceSetAsEvent:self];
 
   v10 = [v9 countByEnumeratingWithState:&v95 objects:v103 count:16];
   if (v10)
@@ -14932,8 +14932,8 @@ LABEL_26:
         }
 
         v14 = *(*(&v95 + 1) + 8 * i);
-        v15 = [v14 startDate];
-        v16 = [v15 isAfterDate:v6];
+        startDate = [v14 startDate];
+        v16 = [startDate isAfterDate:onwardCopy];
 
         if (v16)
         {
@@ -14949,11 +14949,11 @@ LABEL_26:
   }
 
 LABEL_15:
-  v17 = [(EKEvent *)self constraints];
-  v18 = [v17 recurrenceSeriesMustIncludeMoreThanFirstOccurrence];
+  constraints = [(EKEvent *)self constraints];
+  recurrenceSeriesMustIncludeMoreThanFirstOccurrence = [constraints recurrenceSeriesMustIncludeMoreThanFirstOccurrence];
 
-  v74 = v18;
-  if (v18)
+  v74 = recurrenceSeriesMustIncludeMoreThanFirstOccurrence;
+  if (recurrenceSeriesMustIncludeMoreThanFirstOccurrence)
   {
     v73 = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
@@ -14963,11 +14963,11 @@ LABEL_15:
     v73 = 0;
   }
 
-  v19 = [(EKCalendarItem *)self recurrenceRules];
-  if ([v19 count])
+  recurrenceRules = [(EKCalendarItem *)self recurrenceRules];
+  if ([recurrenceRules count])
   {
-    v20 = v68;
-    v21 = [v6 dateByAddingTimeInterval:-1.0];
+    v20 = _committedStartDate;
+    v21 = [onwardCopy dateByAddingTimeInterval:-1.0];
     v76 = objc_alloc_init(EKRecurrenceGenerator);
   }
 
@@ -14982,14 +14982,14 @@ LABEL_15:
   v94 = 0u;
   v91 = 0u;
   v92 = 0u;
-  obj = v19;
+  obj = recurrenceRules;
   v71 = v20;
   v72 = v21;
   v78 = [obj countByEnumeratingWithState:&v91 objects:v102 count:16];
   if (v78)
   {
     v77 = *v92;
-    v69 = v7;
+    v69 = timeZone;
 LABEL_23:
     v22 = 0;
     while (1)
@@ -15000,14 +15000,14 @@ LABEL_23:
       }
 
       v23 = *(*(&v91 + 1) + 8 * v22);
-      v24 = [v23 recurrenceEnd];
-      if (![v24 occurrenceCount])
+      recurrenceEnd = [v23 recurrenceEnd];
+      if (![recurrenceEnd occurrenceCount])
       {
         break;
       }
 
       LOBYTE(v67) = [(EKEvent *)self isAllDay];
-      v25 = [(EKRecurrenceGenerator *)v76 copyOccurrenceDatesWithEKEvent:self recurrenceRule:v23 startDate:v20 endDate:v21 timeZone:v7 exceptionDates:0 limit:0 adjustDatesForAllDayEvents:v67];
+      v25 = [(EKRecurrenceGenerator *)v76 copyOccurrenceDatesWithEKEvent:self recurrenceRule:v23 startDate:v20 endDate:v21 timeZone:timeZone exceptionDates:0 limit:0 adjustDatesForAllDayEvents:v67];
       v26 = [v25 count];
       v27 = v26;
       if (v26 >= 2)
@@ -15047,15 +15047,15 @@ LABEL_48:
       }
     }
 
-    v28 = [v24 endDate];
-    v25 = v28;
-    if (v28 && ![v28 CalIsAfterOrSameAsDate:v6])
+    endDate = [recurrenceEnd endDate];
+    v25 = endDate;
+    if (endDate && ![endDate CalIsAfterOrSameAsDate:onwardCopy])
     {
       goto LABEL_48;
     }
 
     LOBYTE(v67) = 0;
-    v29 = [(EKRecurrenceGenerator *)v76 copyOccurrenceDatesWithEKEvent:self recurrenceRule:v23 startDate:v20 endDate:v21 timeZone:v7 exceptionDates:0 limit:0 adjustDatesForAllDayEvents:v67];
+    v29 = [(EKRecurrenceGenerator *)v76 copyOccurrenceDatesWithEKEvent:self recurrenceRule:v23 startDate:v20 endDate:v21 timeZone:timeZone exceptionDates:0 limit:0 adjustDatesForAllDayEvents:v67];
     v30 = v29;
     if (v74)
     {
@@ -15070,8 +15070,8 @@ LABEL_48:
         goto LABEL_47;
       }
 
-      v32 = [v30 lastObject];
-      v33 = [EKRecurrenceEnd recurrenceEndWithEndDate:v32];
+      lastObject = [v30 lastObject];
+      v33 = [EKRecurrenceEnd recurrenceEndWithEndDate:lastObject];
       [v23 setRecurrenceEnd:v33];
 
       v20 = v71;
@@ -15079,8 +15079,8 @@ LABEL_48:
 
     else
     {
-      v34 = [v29 lastObject];
-      if (!v34)
+      lastObject2 = [v29 lastObject];
+      if (!lastObject2)
       {
         [(EKCalendarItem *)self _deleteSelfAndDetached];
 
@@ -15090,7 +15090,7 @@ LABEL_48:
         goto LABEL_82;
       }
 
-      v35 = v34;
+      v35 = lastObject2;
       if ([(EKEvent *)self isAllDay])
       {
         v36 = [EKRecurrenceEnd recurrenceEndWithEndDate:v35];
@@ -15100,17 +15100,17 @@ LABEL_48:
       else
       {
         v37 = MEMORY[0x1E69930C8];
-        v38 = [(EKEvent *)self effectiveTimeZone];
-        v36 = [v37 calendarDateWithDate:v35 timeZone:v38];
+        effectiveTimeZone = [(EKEvent *)self effectiveTimeZone];
+        v36 = [v37 calendarDateWithDate:v35 timeZone:effectiveTimeZone];
 
-        v39 = [v36 calendarDateForEndOfDay];
-        [v39 date];
+        calendarDateForEndOfDay = [v36 calendarDateForEndOfDay];
+        [calendarDateForEndOfDay date];
         v40 = v70 = v30;
 
         v41 = [EKRecurrenceEnd recurrenceEndWithEndDate:v40];
         [v23 setRecurrenceEnd:v41];
 
-        v7 = v69;
+        timeZone = v69;
         v30 = v70;
       }
 
@@ -15153,22 +15153,22 @@ LABEL_50:
     while (v44);
   }
 
-  v47 = [(EKCalendarItem *)self recurrenceRules];
-  v48 = [v47 count];
+  recurrenceRules2 = [(EKCalendarItem *)self recurrenceRules];
+  v48 = [recurrenceRules2 count];
 
   if (!v48)
   {
     [(EKEvent *)self _updateSelfFromDetachedEventIfNeededForDelete];
   }
 
-  v49 = [(EKCalendarItem *)self detachedItems];
-  v50 = [v49 allObjects];
+  detachedItems = [(EKCalendarItem *)self detachedItems];
+  allObjects = [detachedItems allObjects];
 
   v85 = 0u;
   v86 = 0u;
   v83 = 0u;
   v84 = 0u;
-  v51 = v50;
+  v51 = allObjects;
   v52 = [v51 countByEnumeratingWithState:&v83 objects:v100 count:16];
   if (v52)
   {
@@ -15186,8 +15186,8 @@ LABEL_50:
         v56 = *(*(&v83 + 1) + 8 * k);
         if (([v56 hasRecurrenceRules] & 1) == 0)
         {
-          v57 = [v56 originalStartDate];
-          if ([v57 CalIsAfterOrSameAsDate:v6])
+          originalStartDate = [v56 originalStartDate];
+          if ([originalStartDate CalIsAfterOrSameAsDate:onwardCopy])
           {
             [(EKCalendarItem *)self _removeDetachedItem:v56];
           }
@@ -15200,14 +15200,14 @@ LABEL_50:
     while (v53);
   }
 
-  v58 = [(EKCalendarItem *)self exceptionDates];
-  v59 = [v58 allObjects];
+  exceptionDates = [(EKCalendarItem *)self exceptionDates];
+  allObjects2 = [exceptionDates allObjects];
 
   v81 = 0u;
   v82 = 0u;
   v79 = 0u;
   v80 = 0u;
-  v25 = v59;
+  v25 = allObjects2;
   v60 = [v25 countByEnumeratingWithState:&v79 objects:v99 count:16];
   if (v60)
   {
@@ -15223,7 +15223,7 @@ LABEL_50:
         }
 
         v64 = *(*(&v79 + 1) + 8 * m);
-        if ([v64 CalIsAfterDate:v6])
+        if ([v64 CalIsAfterDate:onwardCopy])
         {
           [(EKCalendarItem *)self _removeExceptionDate:v64];
         }
@@ -15235,7 +15235,7 @@ LABEL_50:
     while (v61);
   }
 
-  v24 = v25;
+  recurrenceEnd = v25;
   v20 = v71;
   v21 = v72;
   v65 = obj;
@@ -15247,13 +15247,13 @@ LABEL_82:
 - (void)_updateSelfFromDetachedEventIfNeededForDelete
 {
   v78 = *MEMORY[0x1E69E9840];
-  v3 = [(EKEvent *)self _committedStartDate];
+  _committedStartDate = [(EKEvent *)self _committedStartDate];
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
-  v4 = [(EKCalendarItem *)self detachedItems];
-  v5 = [v4 countByEnumeratingWithState:&v69 objects:v77 count:16];
+  detachedItems = [(EKCalendarItem *)self detachedItems];
+  v5 = [detachedItems countByEnumeratingWithState:&v69 objects:v77 count:16];
   if (v5)
   {
     v6 = v5;
@@ -15264,12 +15264,12 @@ LABEL_3:
     {
       if (*v70 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(detachedItems);
       }
 
       v9 = *(*(&v69 + 1) + 8 * v8);
-      v10 = [v9 originalStartDate];
-      v11 = [v10 isEqualToDate:v3];
+      originalStartDate = [v9 originalStartDate];
+      v11 = [originalStartDate isEqualToDate:_committedStartDate];
 
       if (v11)
       {
@@ -15278,7 +15278,7 @@ LABEL_3:
 
       if (v6 == ++v8)
       {
-        v6 = [v4 countByEnumeratingWithState:&v69 objects:v77 count:16];
+        v6 = [detachedItems countByEnumeratingWithState:&v69 objects:v77 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -15295,28 +15295,28 @@ LABEL_3:
       goto LABEL_45;
     }
 
-    v13 = [v12 startDate];
-    [(EKEvent *)self setStartDate:v13];
+    startDate = [v12 startDate];
+    [(EKEvent *)self setStartDate:startDate];
 
-    v14 = [v12 endDateUnadjustedForLegacyClients];
-    [(EKEvent *)self setEndDateUnadjustedForLegacyClients:v14];
+    endDateUnadjustedForLegacyClients = [v12 endDateUnadjustedForLegacyClients];
+    [(EKEvent *)self setEndDateUnadjustedForLegacyClients:endDateUnadjustedForLegacyClients];
 
-    v15 = [v12 timeZone];
-    [(EKEvent *)self setTimeZone:v15];
+    timeZone = [v12 timeZone];
+    [(EKEvent *)self setTimeZone:timeZone];
 
-    v16 = [v12 title];
-    [(EKEvent *)self setTitle:v16];
+    title = [v12 title];
+    [(EKEvent *)self setTitle:title];
 
-    v17 = [v12 structuredLocationWithoutPrediction];
-    v18 = [v17 duplicate];
-    [(EKEvent *)self setStructuredLocation:v18];
+    structuredLocationWithoutPrediction = [v12 structuredLocationWithoutPrediction];
+    duplicate = [structuredLocationWithoutPrediction duplicate];
+    [(EKEvent *)self setStructuredLocation:duplicate];
 
-    v19 = [v12 clientLocation];
-    v20 = [v19 duplicate];
-    [(EKCalendarItem *)self setClientLocation:v20];
+    clientLocation = [v12 clientLocation];
+    duplicate2 = [clientLocation duplicate];
+    [(EKCalendarItem *)self setClientLocation:duplicate2];
 
-    v21 = [v12 notes];
-    [(EKEvent *)self setNotes:v21];
+    notes = [v12 notes];
+    [(EKEvent *)self setNotes:notes];
 
     -[EKEvent setStatus:](self, "setStatus:", [v12 status]);
     -[EKEvent setAvailability:](self, "setAvailability:", [v12 availability]);
@@ -15332,8 +15332,8 @@ LABEL_3:
     v68 = 0u;
     v65 = 0u;
     v66 = 0u;
-    v23 = [v12 alarms];
-    v24 = [v23 countByEnumeratingWithState:&v65 objects:v76 count:16];
+    alarms = [v12 alarms];
+    v24 = [alarms countByEnumeratingWithState:&v65 objects:v76 count:16];
     if (v24)
     {
       v25 = v24;
@@ -15344,22 +15344,22 @@ LABEL_3:
         {
           if (*v66 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(alarms);
           }
 
-          v28 = [*(*(&v65 + 1) + 8 * i) duplicate];
-          [(EKCalendarItem *)self addAlarm:v28];
+          duplicate3 = [*(*(&v65 + 1) + 8 * i) duplicate];
+          [(EKCalendarItem *)self addAlarm:duplicate3];
         }
 
-        v25 = [v23 countByEnumeratingWithState:&v65 objects:v76 count:16];
+        v25 = [alarms countByEnumeratingWithState:&v65 objects:v76 count:16];
       }
 
       while (v25);
     }
 
-    v29 = [(EKCalendarItem *)self selfAttendee];
-    v30 = [(EKCalendarItem *)self attendees];
-    v31 = [v30 copy];
+    selfAttendee = [(EKCalendarItem *)self selfAttendee];
+    attendees = [(EKCalendarItem *)self attendees];
+    v31 = [attendees copy];
 
     v63 = 0u;
     v64 = 0u;
@@ -15381,7 +15381,7 @@ LABEL_3:
           }
 
           v37 = *(*(&v61 + 1) + 8 * j);
-          if (([v37 isEqual:v29] & 1) == 0)
+          if (([v37 isEqual:selfAttendee] & 1) == 0)
           {
             [(EKCalendarItem *)self removeAttendee:v37];
           }
@@ -15393,14 +15393,14 @@ LABEL_3:
       while (v34);
     }
 
-    v38 = [v12 selfAttendee];
+    selfAttendee2 = [v12 selfAttendee];
 
     v59 = 0u;
     v60 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v39 = [v12 attendees];
-    v40 = [v39 countByEnumeratingWithState:&v57 objects:v74 count:16];
+    attendees2 = [v12 attendees];
+    v40 = [attendees2 countByEnumeratingWithState:&v57 objects:v74 count:16];
     if (v40)
     {
       v41 = v40;
@@ -15411,18 +15411,18 @@ LABEL_3:
         {
           if (*v58 != v42)
           {
-            objc_enumerationMutation(v39);
+            objc_enumerationMutation(attendees2);
           }
 
           v44 = *(*(&v57 + 1) + 8 * k);
-          if (([v44 isEqual:v38] & 1) == 0)
+          if (([v44 isEqual:selfAttendee2] & 1) == 0)
           {
             v45 = [v44 copy];
             [(EKCalendarItem *)self addAttendee:v45];
           }
         }
 
-        v41 = [v39 countByEnumeratingWithState:&v57 objects:v74 count:16];
+        v41 = [attendees2 countByEnumeratingWithState:&v57 objects:v74 count:16];
       }
 
       while (v41);
@@ -15433,8 +15433,8 @@ LABEL_3:
     v56 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v46 = [v12 attachments];
-    v47 = [v46 countByEnumeratingWithState:&v53 objects:v73 count:16];
+    attachments = [v12 attachments];
+    v47 = [attachments countByEnumeratingWithState:&v53 objects:v73 count:16];
     if (v47)
     {
       v48 = v47;
@@ -15445,14 +15445,14 @@ LABEL_3:
         {
           if (*v54 != v49)
           {
-            objc_enumerationMutation(v46);
+            objc_enumerationMutation(attachments);
           }
 
-          v51 = [*(*(&v53 + 1) + 8 * m) duplicate];
-          [(EKCalendarItem *)self addAttachment:v51];
+          duplicate4 = [*(*(&v53 + 1) + 8 * m) duplicate];
+          [(EKCalendarItem *)self addAttachment:duplicate4];
         }
 
-        v48 = [v46 countByEnumeratingWithState:&v53 objects:v73 count:16];
+        v48 = [attachments countByEnumeratingWithState:&v53 objects:v73 count:16];
       }
 
       while (v48);
@@ -15464,7 +15464,7 @@ LABEL_3:
   else
   {
 LABEL_9:
-    v12 = v4;
+    v12 = detachedItems;
   }
 
 LABEL_45:
@@ -15474,34 +15474,34 @@ LABEL_45:
 - (void)_deleteThisOccurrence
 {
   v63 = *MEMORY[0x1E69E9840];
-  v40 = [(EKEvent *)self originalOccurrenceStartDate];
-  v37 = [v40 date];
+  originalOccurrenceStartDate = [(EKEvent *)self originalOccurrenceStartDate];
+  date = [originalOccurrenceStartDate date];
   if ([(EKEvent *)self isFloating])
   {
-    v3 = [(EKObject *)self eventStore];
-    v4 = [v3 timeZone];
-    v5 = [v37 dateInTimeZone:0 fromTimeZone:v4];
+    eventStore = [(EKObject *)self eventStore];
+    timeZone = [eventStore timeZone];
+    v5 = [date dateInTimeZone:0 fromTimeZone:timeZone];
 
-    v37 = v5;
+    date = v5;
   }
 
-  v6 = [(EKCalendarItem *)self exceptionDates];
-  v7 = [v6 mutableCopy];
+  exceptionDates = [(EKCalendarItem *)self exceptionDates];
+  v7 = [exceptionDates mutableCopy];
 
   v44 = v7;
-  [v7 addObject:v37];
+  [v7 addObject:date];
   v45 = objc_alloc_init(EKRecurrenceGenerator);
-  v36 = [(EKEvent *)self _committedStartDate];
+  _committedStartDate = [(EKEvent *)self _committedStartDate];
   v8 = MEMORY[0x1E69930C8];
-  v9 = [(EKCalendarItem *)self timeZone];
-  v10 = [v8 calendarDateWithDate:v36 timeZone:v9];
+  timeZone2 = [(EKCalendarItem *)self timeZone];
+  v10 = [v8 calendarDateWithDate:_committedStartDate timeZone:timeZone2];
 
   v60 = 0u;
   v61 = 0u;
   v59 = 0u;
   v58 = 0u;
-  v11 = [(EKCalendarItem *)self recurrenceRules];
-  v12 = [v11 copy];
+  recurrenceRules = [(EKCalendarItem *)self recurrenceRules];
+  v12 = [recurrenceRules copy];
 
   obj = v12;
   v43 = [v12 countByEnumeratingWithState:&v58 objects:v62 count:16];
@@ -15535,32 +15535,32 @@ LABEL_45:
         goto LABEL_29;
       }
 
-      v18 = [v15 recurrenceEnd];
-      if (v18)
+      recurrenceEnd = [v15 recurrenceEnd];
+      if (recurrenceEnd)
       {
         v19 = [MEMORY[0x1E695DEC8] arrayWithObject:v15];
-        v20 = [(EKRecurrenceGenerator *)v45 nextOccurrenceDateWithEKRecurrences:v19 forCalendarItem:self exceptionDates:v44 initialDate:v10 afterDate:v40];
+        v20 = [(EKRecurrenceGenerator *)v45 nextOccurrenceDateWithEKRecurrences:v19 forCalendarItem:self exceptionDates:v44 initialDate:v10 afterDate:originalOccurrenceStartDate];
 
         if (!v20)
         {
-          v21 = [(EKEvent *)self _committedStartDate];
+          _committedStartDate2 = [(EKEvent *)self _committedStartDate];
           if ([(EKEvent *)self isFloating])
           {
-            v22 = [(EKObject *)self eventStore];
-            v23 = [v22 timeZone];
-            v24 = [v21 dateInTimeZone:0 fromTimeZone:v23];
+            eventStore2 = [(EKObject *)self eventStore];
+            timeZone3 = [eventStore2 timeZone];
+            v24 = [_committedStartDate2 dateInTimeZone:0 fromTimeZone:timeZone3];
 
-            v21 = v24;
+            _committedStartDate2 = v24;
           }
 
-          v25 = [v18 endDate];
+          endDate = [recurrenceEnd endDate];
 
-          v26 = v25 == 0;
-          v27 = [v40 date];
-          v28 = [(EKCalendarItem *)self timeZone];
+          v26 = endDate == 0;
+          date2 = [originalOccurrenceStartDate date];
+          timeZone4 = [(EKCalendarItem *)self timeZone];
           if (v26)
           {
-            v29 = [(EKRecurrenceGenerator *)v45 copyOccurrenceDatesWithEKEvent:self recurrenceRule:v15 startDate:v21 endDate:v27 timeZone:v28 exceptionDates:0 limit:0];
+            v29 = [(EKRecurrenceGenerator *)v45 copyOccurrenceDatesWithEKEvent:self recurrenceRule:v15 startDate:_committedStartDate2 endDate:date2 timeZone:timeZone4 exceptionDates:0 limit:0];
 
             v54 = 0;
             v55 = &v54;
@@ -15594,22 +15594,22 @@ LABEL_45:
 
           else
           {
-            v29 = [(EKRecurrenceGenerator *)v45 copyOccurrenceDatesWithEKEvent:self recurrenceRule:v15 startDate:v21 endDate:v27 timeZone:v28 exceptionDates:v44 limit:0];
+            v29 = [(EKRecurrenceGenerator *)v45 copyOccurrenceDatesWithEKEvent:self recurrenceRule:v15 startDate:_committedStartDate2 endDate:date2 timeZone:timeZone4 exceptionDates:v44 limit:0];
 
             if ([v29 count])
             {
-              v30 = [v29 lastObject];
+              lastObject = [v29 lastObject];
             }
 
             else
             {
-              v32 = [MEMORY[0x1E696AAA8] currentHandler];
-              [v32 handleFailureInMethod:a2 object:self file:@"EKEvent.m" lineNumber:7779 description:@"Unexpected number of occurrences (0) remaining in series after deleting the last remaining occurrence."];
+              currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+              [currentHandler handleFailureInMethod:a2 object:self file:@"EKEvent.m" lineNumber:7779 description:@"Unexpected number of occurrences (0) remaining in series after deleting the last remaining occurrence."];
 
-              v30 = 0;
+              lastObject = 0;
             }
 
-            v31 = [EKRecurrenceEnd recurrenceEndWithEndDate:v30];
+            v31 = [EKRecurrenceEnd recurrenceEndWithEndDate:lastObject];
           }
 
           [v15 setRecurrenceEnd:v31];
@@ -15625,7 +15625,7 @@ LABEL_45:
 
       else
       {
-        v41 = [(EKRecurrenceGenerator *)v45 occurrenceDate:v40 matchesRecurrenceRule:v15 forEvent:self includeDetachedEventsInSeries:1];
+        v41 = [(EKRecurrenceGenerator *)v45 occurrenceDate:originalOccurrenceStartDate matchesRecurrenceRule:v15 forEvent:self includeDetachedEventsInSeries:1];
       }
 
 LABEL_28:
@@ -15640,12 +15640,12 @@ LABEL_29:
 
   if (v41)
   {
-    [(EKCalendarItem *)self _addExceptionDate:v37];
+    [(EKCalendarItem *)self _addExceptionDate:date];
   }
 
 LABEL_34:
-  v33 = [(EKCalendarItem *)self recurrenceRules];
-  v34 = [v33 count] == 0;
+  recurrenceRules2 = [(EKCalendarItem *)self recurrenceRules];
+  v34 = [recurrenceRules2 count] == 0;
 
   if (v34)
   {
@@ -15673,67 +15673,67 @@ uint64_t __32__EKEvent__deleteThisOccurrence__block_invoke(uint64_t a1, uint64_t
   return result;
 }
 
-- (BOOL)_cancelWithSpan:(int64_t)a3 error:(id *)a4
+- (BOOL)_cancelWithSpan:(int64_t)span error:(id *)error
 {
   v44 = *MEMORY[0x1E69E9840];
-  switch(a3)
+  switch(span)
   {
     case 4:
-      [(EKEvent *)self setStatus:3, a4];
+      [(EKEvent *)self setStatus:3, error];
       [(EKEvent *)self _cancelDetachedEvents];
       v17 = 1;
       goto LABEL_11;
     case 3:
-      v33 = [MEMORY[0x1E696AAA8] currentHandler];
-      v34 = v33;
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      v34 = currentHandler;
       v35 = @"EKSpanAutomaticChange not allowed here";
       v36 = a2;
-      v37 = self;
+      selfCopy2 = self;
       v38 = 7858;
       break;
     case 2:
-      v33 = [MEMORY[0x1E696AAA8] currentHandler];
-      v34 = v33;
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      v34 = currentHandler;
       v35 = @"EKSpanEveryOccurrenceUnlessAlreadyDetached not allowed here";
       v36 = a2;
-      v37 = self;
+      selfCopy2 = self;
       v38 = 7859;
       break;
     default:
       goto LABEL_4;
   }
 
-  [v33 handleFailureInMethod:v36 object:v37 file:@"EKEvent.m" lineNumber:v38 description:v35];
+  [currentHandler handleFailureInMethod:v36 object:selfCopy2 file:@"EKEvent.m" lineNumber:v38 description:v35];
 
 LABEL_4:
   if ([(EKCalendarItem *)self _hadRecurrenceRules])
   {
-    v7 = [(EKEvent *)self originalOccurrenceStartDate];
-    v8 = [v7 date];
+    originalOccurrenceStartDate = [(EKEvent *)self originalOccurrenceStartDate];
+    date = [originalOccurrenceStartDate date];
 
-    v9 = [(EKEvent *)self occurrenceStartDate];
-    v10 = [v9 date];
+    occurrenceStartDate = [(EKEvent *)self occurrenceStartDate];
+    date2 = [occurrenceStartDate date];
 
     if ([(EKEvent *)self isFloating])
     {
-      v11 = [(EKObject *)self eventStore];
-      v12 = [v11 timeZone];
-      v13 = [v8 dateInTimeZone:0 fromTimeZone:v12];
+      eventStore = [(EKObject *)self eventStore];
+      timeZone = [eventStore timeZone];
+      v13 = [date dateInTimeZone:0 fromTimeZone:timeZone];
 
-      v14 = [(EKObject *)self eventStore];
-      v15 = [v14 timeZone];
-      v16 = [v10 dateInTimeZone:0 fromTimeZone:v15];
+      eventStore2 = [(EKObject *)self eventStore];
+      timeZone2 = [eventStore2 timeZone];
+      v16 = [date2 dateInTimeZone:0 fromTimeZone:timeZone2];
 
-      v10 = v16;
-      v8 = v13;
+      date2 = v16;
+      date = v13;
     }
 
-    [(EKEvent *)self _detachOrSliceWithSpan:a3 withOriginalStartDate:v8 newStartDate:v10];
+    [(EKEvent *)self _detachOrSliceWithSpan:span withOriginalStartDate:date newStartDate:date2];
     [(EKObject *)self insertPersistentObjectIfNeeded];
   }
 
   [(EKEvent *)self setStatus:3];
-  if (a3 == 1)
+  if (span == 1)
   {
     v17 = 0;
 LABEL_11:
@@ -15741,8 +15741,8 @@ LABEL_11:
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v18 = [(EKObject *)self eventStore];
-    v19 = [v18 eventsWithSameRecurrenceSetAsEvent:self];
+    eventStore3 = [(EKObject *)self eventStore];
+    v19 = [eventStore3 eventsWithSameRecurrenceSetAsEvent:self];
 
     v20 = [v19 countByEnumeratingWithState:&v39 objects:v43 count:16];
     if (v20)
@@ -15759,9 +15759,9 @@ LABEL_11:
           }
 
           v24 = *(*(&v39 + 1) + 8 * i);
-          v25 = [v24 eventOccurrenceID];
-          v26 = [(EKEvent *)self eventOccurrenceID];
-          v27 = [v25 isEqualToString:v26];
+          eventOccurrenceID = [v24 eventOccurrenceID];
+          eventOccurrenceID2 = [(EKEvent *)self eventOccurrenceID];
+          v27 = [eventOccurrenceID isEqualToString:eventOccurrenceID2];
 
           if ((v27 & 1) == 0)
           {
@@ -15801,8 +15801,8 @@ LABEL_11:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(EKCalendarItem *)self detachedItems];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  detachedItems = [(EKCalendarItem *)self detachedItems];
+  v3 = [detachedItems countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -15814,14 +15814,14 @@ LABEL_11:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(detachedItems);
         }
 
         [*(*(&v8 + 1) + 8 * v6++) setStatus:3];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [detachedItems countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -15830,17 +15830,17 @@ LABEL_11:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)_validateSpanForRemove:(int64_t)a3 error:(id *)a4
++ (BOOL)_validateSpanForRemove:(int64_t)remove error:(id *)error
 {
   result = 1;
-  if (a3 >= 2 && a3 != 2 && a3 != 4)
+  if (remove >= 2 && remove != 2 && remove != 4)
   {
-    if (a4)
+    if (error)
     {
       v6 = [MEMORY[0x1E696ABC0] errorWithEKErrorCode:13];
       v7 = v6;
       result = 0;
-      *a4 = v6;
+      *error = v6;
     }
 
     else
@@ -15852,11 +15852,11 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)removeWithSpan:(int64_t)a3 error:(id *)a4
+- (BOOL)removeWithSpan:(int64_t)span error:(id *)error
 {
-  v5 = a3;
+  spanCopy = span;
   v29 = *MEMORY[0x1E69E9840];
-  v7 = [objc_opt_class() _validateSpanForRemove:a3 error:a4];
+  v7 = [objc_opt_class() _validateSpanForRemove:span error:error];
   if (!v7)
   {
     goto LABEL_36;
@@ -15864,42 +15864,42 @@ LABEL_11:
 
   if (-[EKEvent isDetached](self, "isDetached") && ![objc_opt_class() _allowSlicingFromDetachedOccurrence])
   {
-    v5 = 0;
+    spanCopy = 0;
   }
 
   if (![(EKEvent *)self isOrWasPartOfRecurringSeries])
   {
-    v8 = [(EKEvent *)self recurrenceSet];
+    recurrenceSet = [(EKEvent *)self recurrenceSet];
 
-    if (!v8)
+    if (!recurrenceSet)
     {
 LABEL_12:
-      v5 = 4;
+      spanCopy = 4;
       goto LABEL_14;
     }
   }
 
-  if (!v5)
+  if (!spanCopy)
   {
     goto LABEL_10;
   }
 
-  if (v5 == 2)
+  if (spanCopy == 2)
   {
     if ([(EKEvent *)self isDetached])
     {
 LABEL_10:
       if ([(EKEvent *)self _eventIsTheOnlyRemainingOccurrence])
       {
-        v9 = [(EKEvent *)self recurrenceSet];
-        v10 = v9 == 0;
+        recurrenceSet2 = [(EKEvent *)self recurrenceSet];
+        v10 = recurrenceSet2 == 0;
 
-        v5 = 4 * v10;
+        spanCopy = 4 * v10;
       }
 
       else
       {
-        v5 = 0;
+        spanCopy = 0;
       }
 
       goto LABEL_14;
@@ -15909,14 +15909,14 @@ LABEL_10:
   }
 
 LABEL_14:
-  if ([(EKEvent *)self isFirstOccurrenceIncludingSlices]&& v5 == 1)
+  if ([(EKEvent *)self isFirstOccurrenceIncludingSlices]&& spanCopy == 1)
   {
-    v5 = 4;
+    spanCopy = 4;
   }
 
-  if ([(EKEvent *)self _shouldCancelInsteadOfDeleteWithSpan:v5])
+  if ([(EKEvent *)self _shouldCancelInsteadOfDeleteWithSpan:spanCopy])
   {
-    v7 = [(EKEvent *)self _cancelWithSpan:v5 error:a4];
+    v7 = [(EKEvent *)self _cancelWithSpan:spanCopy error:error];
     if (!v7)
     {
       goto LABEL_36;
@@ -15925,16 +15925,16 @@ LABEL_14:
 
   else if ([(EKEvent *)self _shouldDeclineInsteadOfDelete])
   {
-    v11 = [(EKEvent *)self recurrenceSet];
+    recurrenceSet3 = [(EKEvent *)self recurrenceSet];
 
-    if (v11)
+    if (recurrenceSet3)
     {
       v26 = 0u;
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v12 = [(EKObject *)self eventStore];
-      v13 = [v12 eventsWithSameRecurrenceSetAsEvent:self];
+      eventStore = [(EKObject *)self eventStore];
+      v13 = [eventStore eventsWithSameRecurrenceSetAsEvent:self];
 
       v14 = [v13 countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v14)
@@ -15953,9 +15953,9 @@ LABEL_14:
             v18 = *(*(&v24 + 1) + 8 * i);
             [v18 setParticipationStatus:3];
             [v18 setInvitationStatus:0];
-            v19 = [v18 eventOccurrenceID];
-            v20 = [(EKEvent *)self eventOccurrenceID];
-            v21 = [v19 isEqualToString:v20];
+            eventOccurrenceID = [v18 eventOccurrenceID];
+            eventOccurrenceID2 = [(EKEvent *)self eventOccurrenceID];
+            v21 = [eventOccurrenceID isEqualToString:eventOccurrenceID2];
 
             if ((v21 & 1) == 0)
             {
@@ -15979,11 +15979,11 @@ LABEL_14:
 
   else
   {
-    [(EKEvent *)self _deleteWithSpan:v5];
+    [(EKEvent *)self _deleteWithSpan:spanCopy];
   }
 
   [(EKObject *)self updatePersistentObject];
-  if (!v5)
+  if (!spanCopy)
   {
     [(EKObject *)self clearCachedValueForKey:@"isFirstOccurrenceIncludingSlices"];
   }
@@ -16002,9 +16002,9 @@ LABEL_36:
   v5[3] = &unk_1E77FCF40;
   v5[4] = self;
   v2 = [(EKObject *)self cachedValueForKey:@"isFirstOccurrenceIncludingSlices" populateBlock:v5];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 id __43__EKEvent_isFirstOccurrenceIncludingSlices__block_invoke(uint64_t a1)
@@ -16063,13 +16063,13 @@ uint64_t __43__EKEvent_isFirstOccurrenceIncludingSlices__block_invoke_2(uint64_t
 
 - (id)masterEvent
 {
-  v3 = [(EKCalendarItem *)self originalItem];
-  if (v3 || ([(EKCalendarItem *)self _hadRecurrenceRules]|| [(EKEvent *)self isPhantom]) && (v3 = self) != 0)
+  originalItem = [(EKCalendarItem *)self originalItem];
+  if (originalItem || ([(EKCalendarItem *)self _hadRecurrenceRules]|| [(EKEvent *)self isPhantom]) && (originalItem = self) != 0)
   {
-    v4 = v3;
+    v4 = originalItem;
     v5 = [EKEvent alloc];
-    v6 = [(EKObject *)v4 persistentObject];
-    v7 = [(EKEvent *)v5 initWithPersistentObject:v6];
+    persistentObject = [(EKObject *)v4 persistentObject];
+    v7 = [(EKEvent *)v5 initWithPersistentObject:persistentObject];
   }
 
   else
@@ -16085,7 +16085,7 @@ uint64_t __43__EKEvent_isFirstOccurrenceIncludingSlices__block_invoke_2(uint64_t
   v47 = *MEMORY[0x1E69E9840];
   if ([(EKEvent *)self isDetached])
   {
-    v3 = [(EKCalendarItem *)self originalItem];
+    selfCopy = [(EKCalendarItem *)self originalItem];
   }
 
   else
@@ -16096,46 +16096,46 @@ uint64_t __43__EKEvent_isFirstOccurrenceIncludingSlices__block_invoke_2(uint64_t
       goto LABEL_32;
     }
 
-    v3 = self;
+    selfCopy = self;
   }
 
-  v4 = v3;
-  if ([(EKEvent *)v3 isPhantom])
+  v4 = selfCopy;
+  if ([(EKEvent *)selfCopy isPhantom])
   {
-    v5 = [(EKCalendarItem *)v4 detachedItems];
-    v6 = [v5 count] < 2;
+    detachedItems = [(EKCalendarItem *)v4 detachedItems];
+    v6 = [detachedItems count] < 2;
   }
 
   else
   {
-    v7 = [(EKObject *)self eventStore];
-    v8 = [v7 eventsWithSameRecurrenceSetAsEvent:v4];
+    eventStore = [(EKObject *)self eventStore];
+    v8 = [eventStore eventsWithSameRecurrenceSetAsEvent:v4];
     v9 = [v8 count];
 
     if (v9 <= 1)
     {
-      v10 = [(EKEvent *)self originalOccurrenceStartDate];
-      v11 = [v10 date];
+      originalOccurrenceStartDate = [(EKEvent *)self originalOccurrenceStartDate];
+      date = [originalOccurrenceStartDate date];
       if ([(EKEvent *)self isFloating])
       {
-        v12 = [(EKObject *)self eventStore];
-        v13 = [v12 timeZone];
-        v14 = [v11 dateInTimeZone:0 fromTimeZone:v13];
+        eventStore2 = [(EKObject *)self eventStore];
+        timeZone = [eventStore2 timeZone];
+        v14 = [date dateInTimeZone:0 fromTimeZone:timeZone];
 
-        v11 = v14;
+        date = v14;
       }
 
-      v15 = [(EKCalendarItem *)v4 exceptionDates];
-      if (v15)
+      exceptionDates = [(EKCalendarItem *)v4 exceptionDates];
+      if (exceptionDates)
       {
-        v16 = v15;
-        v17 = [(EKCalendarItem *)v4 exceptionDates];
-        v18 = [v17 setByAddingObject:v11];
+        v16 = exceptionDates;
+        exceptionDates2 = [(EKCalendarItem *)v4 exceptionDates];
+        v18 = [exceptionDates2 setByAddingObject:date];
       }
 
       else
       {
-        v18 = [MEMORY[0x1E695DFD8] setWithObject:v11];
+        v18 = [MEMORY[0x1E695DFD8] setWithObject:date];
       }
 
       v19 = [v18 count];
@@ -16148,8 +16148,8 @@ uint64_t __43__EKEvent_isFirstOccurrenceIncludingSlices__block_invoke_2(uint64_t
       if (v20)
       {
         v21 = v20;
-        v36 = v11;
-        v37 = v10;
+        v36 = date;
+        v37 = originalOccurrenceStartDate;
         v40 = v19 + 2;
         v41 = v18;
         v39 = *v43;
@@ -16166,22 +16166,22 @@ uint64_t __43__EKEvent_isFirstOccurrenceIncludingSlices__block_invoke_2(uint64_t
             v24 = *(*(&v42 + 1) + 8 * i);
             v25 = objc_alloc_init(EKRecurrenceGenerator);
             v26 = [(EKEvent *)self committedValueForKey:v22];
-            v27 = [v26 BOOLValue];
+            bOOLValue = [v26 BOOLValue];
 
-            if (v27)
+            if (bOOLValue)
             {
-              v28 = [(EKObject *)self eventStore];
-              v29 = [v28 timeZone];
+              eventStore3 = [(EKObject *)self eventStore];
+              timeZone2 = [eventStore3 timeZone];
             }
 
             else
             {
-              v29 = [(EKCalendarItem *)v4 timeZone];
+              timeZone2 = [(EKCalendarItem *)v4 timeZone];
             }
 
-            v30 = [MEMORY[0x1E695DF00] distantPast];
-            v31 = [MEMORY[0x1E695DF00] distantFuture];
-            v32 = [(EKRecurrenceGenerator *)v25 copyOccurrenceDatesWithEKEvent:v4 recurrenceRule:v24 startDate:v30 endDate:v31 timeZone:v29 exceptionDates:v41 limit:v40];
+            distantPast = [MEMORY[0x1E695DF00] distantPast];
+            distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+            v32 = [(EKRecurrenceGenerator *)v25 copyOccurrenceDatesWithEKEvent:v4 recurrenceRule:v24 startDate:distantPast endDate:distantFuture timeZone:timeZone2 exceptionDates:v41 limit:v40];
 
             v33 = [v32 count];
             if (v33)
@@ -16202,8 +16202,8 @@ uint64_t __43__EKEvent_isFirstOccurrenceIncludingSlices__block_invoke_2(uint64_t
 
         v6 = 1;
 LABEL_28:
-        v11 = v36;
-        v10 = v37;
+        date = v36;
+        originalOccurrenceStartDate = v37;
         v18 = v41;
       }
 
@@ -16232,43 +16232,43 @@ LABEL_32:
   }
 
   v3 = [(EKEvent *)self committedValueForKey:*MEMORY[0x1E6992600]];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  v5 = [(EKEvent *)self isFloating]& (v4 ^ 1);
+  v5 = [(EKEvent *)self isFloating]& (bOOLValue ^ 1);
   if (v5)
   {
-    v6 = [(EKObject *)self eventStore];
-    v7 = [v6 timeZone];
+    eventStore = [(EKObject *)self eventStore];
+    timeZone = [eventStore timeZone];
   }
 
   else
   {
-    v7 = [(EKCalendarItem *)self timeZone];
+    timeZone = [(EKCalendarItem *)self timeZone];
   }
 
-  v9 = [(EKEvent *)self originalOccurrenceStartDate];
-  v10 = [v9 date];
+  originalOccurrenceStartDate = [(EKEvent *)self originalOccurrenceStartDate];
+  date = [originalOccurrenceStartDate date];
 
   if (v5)
   {
-    v11 = [v10 dateInTimeZone:0 fromTimeZone:v7];
+    v11 = [date dateInTimeZone:0 fromTimeZone:timeZone];
 
-    v10 = v11;
+    date = v11;
   }
 
   if ([(EKEvent *)self isDetached])
   {
-    v12 = [(EKCalendarItem *)self originalItem];
+    selfCopy = [(EKCalendarItem *)self originalItem];
   }
 
   else
   {
-    v12 = self;
+    selfCopy = self;
   }
 
-  v13 = v12;
-  v14 = [(EKObject *)self eventStore];
-  v15 = [v14 eventsWithSameRecurrenceSetAsEvent:v13];
+  v13 = selfCopy;
+  eventStore2 = [(EKObject *)self eventStore];
+  v15 = [eventStore2 eventsWithSameRecurrenceSetAsEvent:v13];
 
   v32 = v15;
   v16 = [v15 sortedArrayUsingComparator:&__block_literal_global_394];
@@ -16278,9 +16278,9 @@ LABEL_32:
   }
 
   v17 = [v16 objectAtIndexedSubscript:0];
-  v18 = [v17 startDate];
-  v19 = [(EKEvent *)v13 startDate];
-  v20 = [v18 isBeforeDate:v19];
+  startDate = [v17 startDate];
+  startDate2 = [(EKEvent *)v13 startDate];
+  v20 = [startDate isBeforeDate:startDate2];
 
   if (v20)
   {
@@ -16290,29 +16290,29 @@ LABEL_32:
   else
   {
 LABEL_14:
-    v31 = v7;
-    v21 = [(EKCalendarItem *)v13 recurrenceRules];
-    v22 = [v21 firstObject];
+    v31 = timeZone;
+    recurrenceRules = [(EKCalendarItem *)v13 recurrenceRules];
+    firstObject = [recurrenceRules firstObject];
 
-    v23 = [(EKCalendarItem *)v13 exceptionDates];
-    v24 = [v23 count] + 1;
+    exceptionDates = [(EKCalendarItem *)v13 exceptionDates];
+    v24 = [exceptionDates count] + 1;
     v25 = objc_alloc_init(EKRecurrenceGenerator);
-    if (v4)
+    if (bOOLValue)
     {
-      v26 = [(EKObject *)self eventStore];
-      v27 = [v26 timeZone];
+      eventStore3 = [(EKObject *)self eventStore];
+      timeZone2 = [eventStore3 timeZone];
     }
 
     else
     {
-      v27 = [(EKCalendarItem *)v13 timeZone];
+      timeZone2 = [(EKCalendarItem *)v13 timeZone];
     }
 
-    v28 = [MEMORY[0x1E695DF00] distantPast];
-    v29 = [(EKRecurrenceGenerator *)v25 copyOccurrenceDatesWithEKEvent:v13 recurrenceRule:v22 startDate:v28 endDate:v10 timeZone:v27 exceptionDates:v23 limit:v24];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
+    v29 = [(EKRecurrenceGenerator *)v25 copyOccurrenceDatesWithEKEvent:v13 recurrenceRule:firstObject startDate:distantPast endDate:date timeZone:timeZone2 exceptionDates:exceptionDates limit:v24];
 
     v8 = [v29 count] == 0;
-    v7 = v31;
+    timeZone = v31;
   }
 
   return v8;
@@ -16328,53 +16328,53 @@ uint64_t __41__EKEvent__noRemainingEarlierOccurrences__block_invoke(uint64_t a1,
   return v7;
 }
 
-- (void)rebaseToEventStore:(id)a3
+- (void)rebaseToEventStore:(id)store
 {
-  v4 = a3;
-  v5 = [(EKEvent *)self constraints];
-  v6 = [v5 requiresSeparateFilesForAllAttachments];
+  storeCopy = store;
+  constraints = [(EKEvent *)self constraints];
+  requiresSeparateFilesForAllAttachments = [constraints requiresSeparateFilesForAllAttachments];
 
-  v8 = [(EKCalendarItem *)self selfAttendee];
+  selfAttendee = [(EKCalendarItem *)self selfAttendee];
   v7 = [MEMORY[0x1E695DFD8] setWithObjects:{*MEMORY[0x1E6992918], *MEMORY[0x1E69926F0], *MEMORY[0x1E6992650], 0}];
-  [(EKEvent *)self rebaseSkippingRelationProperties:v7 toEventStore:v4];
+  [(EKEvent *)self rebaseSkippingRelationProperties:v7 toEventStore:storeCopy];
 
-  if (v6)
+  if (requiresSeparateFilesForAllAttachments)
   {
     [(EKEvent *)self _recursivelyAssignAllAttachmentsNewIdentities];
   }
 
-  if (v8)
+  if (selfAttendee)
   {
-    [(EKEvent *)self _updateSelfAttendeeToMatchSelfAttendee:v8];
+    [(EKEvent *)self _updateSelfAttendeeToMatchSelfAttendee:selfAttendee];
   }
 }
 
-- (void)rebaseSkippingRelationProperties:(id)a3 toEventStore:(id)a4
+- (void)rebaseSkippingRelationProperties:(id)properties toEventStore:(id)store
 {
   v65 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(EKCalendarItem *)self allAlarms];
+  propertiesCopy = properties;
+  storeCopy = store;
+  allAlarms = [(EKCalendarItem *)self allAlarms];
   v9 = *MEMORY[0x1E6992558];
-  v10 = [v6 setByAddingObject:*MEMORY[0x1E6992558]];
+  v10 = [propertiesCopy setByAddingObject:*MEMORY[0x1E6992558]];
   v61.receiver = self;
   v61.super_class = EKEvent;
-  [(EKObject *)&v61 rebaseSkippingRelationProperties:v10 toEventStore:v7];
+  [(EKObject *)&v61 rebaseSkippingRelationProperties:v10 toEventStore:storeCopy];
 
-  if (([v6 containsObject:v9] & 1) == 0)
+  if (([propertiesCopy containsObject:v9] & 1) == 0)
   {
-    v44 = v6;
+    v44 = propertiesCopy;
     v11 = objc_alloc(MEMORY[0x1E695DF90]);
-    v45 = self;
-    v12 = [(EKCalendarItem *)self allAlarms];
-    v13 = [v11 initWithCapacity:{objc_msgSend(v12, "count")}];
+    selfCopy = self;
+    allAlarms2 = [(EKCalendarItem *)self allAlarms];
+    v13 = [v11 initWithCapacity:{objc_msgSend(allAlarms2, "count")}];
 
     v59 = 0u;
     v60 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v43 = v8;
-    v14 = v8;
+    v43 = allAlarms;
+    v14 = allAlarms;
     v15 = [v14 countByEnumeratingWithState:&v57 objects:v64 count:16];
     if (v15)
     {
@@ -16392,15 +16392,15 @@ uint64_t __41__EKEvent__noRemainingEarlierOccurrences__block_invoke(uint64_t a1,
           v19 = *(*(&v57 + 1) + 8 * i);
           if ([v19 isSnoozed])
           {
-            v20 = [v19 originalAlarm];
-            v21 = [v20 UUID];
-            v22 = [v13 objectForKeyedSubscript:v21];
+            originalAlarm = [v19 originalAlarm];
+            uUID = [originalAlarm UUID];
+            v22 = [v13 objectForKeyedSubscript:uUID];
 
             if (!v22)
             {
               v22 = objc_opt_new();
-              v23 = [v20 UUID];
-              [v13 setObject:v22 forKeyedSubscript:v23];
+              uUID2 = [originalAlarm UUID];
+              [v13 setObject:v22 forKeyedSubscript:uUID2];
             }
 
             [v22 addObject:v19];
@@ -16414,8 +16414,8 @@ uint64_t __41__EKEvent__noRemainingEarlierOccurrences__block_invoke(uint64_t a1,
     }
 
     v24 = MEMORY[0x1E695DFA8];
-    v25 = [(EKCalendarItem *)v45 allAlarms];
-    v26 = [v24 setWithCapacity:{objc_msgSend(v25, "count")}];
+    allAlarms3 = [(EKCalendarItem *)selfCopy allAlarms];
+    v26 = [v24 setWithCapacity:{objc_msgSend(allAlarms3, "count")}];
 
     v55 = 0u;
     v56 = 0u;
@@ -16442,15 +16442,15 @@ uint64_t __41__EKEvent__noRemainingEarlierOccurrences__block_invoke(uint64_t a1,
           v31 = *(*(&v53 + 1) + 8 * v30);
           if (([v31 isSnoozed] & 1) == 0)
           {
-            v32 = [v31 duplicateToEventStore:v7];
+            v32 = [v31 duplicateToEventStore:storeCopy];
             [v26 addObject:v32];
             v51 = 0u;
             v52 = 0u;
             v49 = 0u;
             v50 = 0u;
-            v33 = [v31 UUID];
+            uUID3 = [v31 UUID];
             v34 = v13;
-            v35 = [v13 objectForKeyedSubscript:v33];
+            v35 = [v13 objectForKeyedSubscript:uUID3];
 
             v36 = [v35 countByEnumeratingWithState:&v49 objects:v62 count:16];
             if (v36)
@@ -16466,7 +16466,7 @@ uint64_t __41__EKEvent__noRemainingEarlierOccurrences__block_invoke(uint64_t a1,
                     objc_enumerationMutation(v35);
                   }
 
-                  v40 = [*(*(&v49 + 1) + 8 * j) duplicateToEventStore:v7];
+                  v40 = [*(*(&v49 + 1) + 8 * j) duplicateToEventStore:storeCopy];
                   [v40 setOriginalAlarm:v32];
                   [v26 addObject:v40];
                 }
@@ -16492,27 +16492,27 @@ uint64_t __41__EKEvent__noRemainingEarlierOccurrences__block_invoke(uint64_t a1,
       while (v28);
     }
 
-    v41 = [v26 allObjects];
-    [(EKCalendarItem *)v45 setAllAlarms:v41];
+    allObjects = [v26 allObjects];
+    [(EKCalendarItem *)selfCopy setAllAlarms:allObjects];
 
-    v8 = v43;
-    v6 = v44;
+    allAlarms = v43;
+    propertiesCopy = v44;
   }
 
   v42 = *MEMORY[0x1E69E9840];
 }
 
-- (void)rebaseSkippingRelationProperties:(id)a3
+- (void)rebaseSkippingRelationProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [(EKEvent *)self constraints];
-  if ([v5 requiresSeparateFilesForAllAttachments])
+  propertiesCopy = properties;
+  constraints = [(EKEvent *)self constraints];
+  if ([constraints requiresSeparateFilesForAllAttachments])
   {
-    v6 = [v4 containsObject:*MEMORY[0x1E6992560]];
+    v6 = [propertiesCopy containsObject:*MEMORY[0x1E6992560]];
 
     v7.receiver = self;
     v7.super_class = EKEvent;
-    [(EKObject *)&v7 rebaseSkippingRelationProperties:v4];
+    [(EKObject *)&v7 rebaseSkippingRelationProperties:propertiesCopy];
 
     if ((v6 & 1) == 0)
     {
@@ -16525,7 +16525,7 @@ uint64_t __41__EKEvent__noRemainingEarlierOccurrences__block_invoke(uint64_t a1,
 
     v7.receiver = self;
     v7.super_class = EKEvent;
-    [(EKObject *)&v7 rebaseSkippingRelationProperties:v4];
+    [(EKObject *)&v7 rebaseSkippingRelationProperties:propertiesCopy];
   }
 }
 
@@ -16537,8 +16537,8 @@ uint64_t __41__EKEvent__noRemainingEarlierOccurrences__block_invoke(uint64_t a1,
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [(EKCalendarItem *)self detachedItems];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  detachedItems = [(EKCalendarItem *)self detachedItems];
+  v4 = [detachedItems countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -16550,14 +16550,14 @@ uint64_t __41__EKEvent__noRemainingEarlierOccurrences__block_invoke(uint64_t a1,
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(detachedItems);
         }
 
         [*(*(&v9 + 1) + 8 * v7++) _assignAllAttachmentsNewIdentities];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [detachedItems countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -16573,8 +16573,8 @@ uint64_t __41__EKEvent__noRemainingEarlierOccurrences__block_invoke(uint64_t a1,
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(EKCalendarItem *)self attachments];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  attachments = [(EKCalendarItem *)self attachments];
+  v3 = [attachments countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -16586,14 +16586,14 @@ uint64_t __41__EKEvent__noRemainingEarlierOccurrences__block_invoke(uint64_t a1,
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(attachments);
         }
 
         [*(*(&v8 + 1) + 8 * v6++) assignNewIdentity];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [attachments countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -16602,56 +16602,56 @@ uint64_t __41__EKEvent__noRemainingEarlierOccurrences__block_invoke(uint64_t a1,
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_shouldPreserveFutureWhenSlicingWithStartDate:(id)a3 newStartDate:(id)a4
+- (BOOL)_shouldPreserveFutureWhenSlicingWithStartDate:(id)date newStartDate:(id)startDate
 {
-  v4 = [(EKEvent *)self constraints:a3];
-  v5 = [v4 supportsRecurrenceSplit];
+  v4 = [(EKEvent *)self constraints:date];
+  supportsRecurrenceSplit = [v4 supportsRecurrenceSplit];
 
-  return v5;
+  return supportsRecurrenceSplit;
 }
 
-- (void)_detachOrSliceWithSpan:(int64_t)a3 withOriginalStartDate:(id)a4 newStartDate:(id)a5
+- (void)_detachOrSliceWithSpan:(int64_t)span withOriginalStartDate:(id)date newStartDate:(id)startDate
 {
-  v8 = self;
-  v9 = a5;
-  v10 = a4;
-  v17 = v8;
-  if ([(EKEvent *)v8 isDetached])
+  selfCopy = self;
+  startDateCopy = startDate;
+  dateCopy = date;
+  v17 = selfCopy;
+  if ([(EKEvent *)selfCopy isDetached])
   {
-    if (!a3)
+    if (!span)
     {
       v11 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Cannot detach an already detached occurrence" userInfo:0];
       [v11 raise];
     }
 
     v12 = [EKEvent alloc];
-    v13 = [(EKCalendarItem *)v8 originalItem];
-    v14 = [v13 persistentObject];
-    v15 = [(EKEvent *)v8 originalStartDate];
-    v17 = [(EKEvent *)v12 initWithPersistentObject:v14 occurrenceDate:v15];
+    originalItem = [(EKCalendarItem *)selfCopy originalItem];
+    persistentObject = [originalItem persistentObject];
+    originalStartDate = [(EKEvent *)selfCopy originalStartDate];
+    v17 = [(EKEvent *)v12 initWithPersistentObject:persistentObject occurrenceDate:originalStartDate];
 
-    if ([(EKObject *)v8 _hasChangesForKey:*MEMORY[0x1E6992648]])
+    if ([(EKObject *)selfCopy _hasChangesForKey:*MEMORY[0x1E6992648]])
     {
-      v16 = [(EKCalendarItem *)v8 recurrenceRules];
-      [(EKEvent *)v17 setRecurrenceRules:v16];
+      recurrenceRules = [(EKCalendarItem *)selfCopy recurrenceRules];
+      [(EKEvent *)v17 setRecurrenceRules:recurrenceRules];
     }
   }
 
-  [objc_opt_class() _detachOrSliceEvent:v17 withSpan:a3 savingEvent:v8 withOriginalStartDate:v10 newStartDate:v9];
+  [objc_opt_class() _detachOrSliceEvent:v17 withSpan:span savingEvent:selfCopy withOriginalStartDate:dateCopy newStartDate:startDateCopy];
 
-  v8->_isMainOccurrence = ![(EKEvent *)v8 isDetached];
+  selfCopy->_isMainOccurrence = ![(EKEvent *)selfCopy isDetached];
 }
 
-+ (void)_detachOrSliceEvent:(id)a3 withSpan:(int64_t)a4 savingEvent:(id)a5 withOriginalStartDate:(id)a6 newStartDate:(id)a7
++ (void)_detachOrSliceEvent:(id)event withSpan:(int64_t)span savingEvent:(id)savingEvent withOriginalStartDate:(id)date newStartDate:(id)startDate
 {
   v198 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  if (a4 == 1)
+  eventCopy = event;
+  savingEventCopy = savingEvent;
+  dateCopy = date;
+  startDateCopy = startDate;
+  if (span == 1)
   {
-    v15 = [v12 _shouldPreserveFutureWhenSlicingWithStartDate:v13 newStartDate:v14];
+    v15 = [savingEventCopy _shouldPreserveFutureWhenSlicingWithStartDate:dateCopy newStartDate:startDateCopy];
   }
 
   else
@@ -16659,27 +16659,27 @@ uint64_t __41__EKEvent__noRemainingEarlierOccurrences__block_invoke(uint64_t a1,
     v15 = 0;
   }
 
-  v142 = [v12 isFirstOccurrence];
-  v154 = [v13 isEqual:v14];
-  v16 = [v12 originalStartDate];
-  v17 = v16;
-  if (v16)
+  isFirstOccurrence = [savingEventCopy isFirstOccurrence];
+  v154 = [dateCopy isEqual:startDateCopy];
+  originalStartDate = [savingEventCopy originalStartDate];
+  v17 = originalStartDate;
+  if (originalStartDate)
   {
-    v18 = v16;
+    v18 = originalStartDate;
   }
 
   else
   {
-    v18 = v13;
+    v18 = dateCopy;
   }
 
   v157 = v18;
 
-  v19 = [v12 masterEvent];
-  v20 = [v11 selfAttendee];
-  v147 = [v11 attendees];
-  v145 = [v11 alarms];
-  v144 = [v11 recurrenceRules];
+  masterEvent = [savingEventCopy masterEvent];
+  selfAttendee = [eventCopy selfAttendee];
+  attendees = [eventCopy attendees];
+  alarms = [eventCopy alarms];
+  recurrenceRules = [eventCopy recurrenceRules];
   v21 = *MEMORY[0x1E6992918];
   v22 = *MEMORY[0x1E69926F0];
   v23 = *MEMORY[0x1E6992650];
@@ -16688,12 +16688,12 @@ uint64_t __41__EKEvent__noRemainingEarlierOccurrences__block_invoke(uint64_t a1,
   {
     v153 = *MEMORY[0x1E6992598];
     v24 = [MEMORY[0x1E695DFD8] setWithObjects:{v21, v22, *MEMORY[0x1E6992598], v23, 0}];
-    [v19 rebaseSkippingRelationProperties:v24];
+    [masterEvent rebaseSkippingRelationProperties:v24];
 
-    v25 = [v11 _generateNewUniqueID];
-    [v19 setUniqueID:v25];
+    _generateNewUniqueID = [eventCopy _generateNewUniqueID];
+    [masterEvent setUniqueID:_generateNewUniqueID];
 
-    [v12 addCoCommitObject:v19];
+    [savingEventCopy addCoCommitObject:masterEvent];
   }
 
   else
@@ -16701,103 +16701,103 @@ uint64_t __41__EKEvent__noRemainingEarlierOccurrences__block_invoke(uint64_t a1,
     v153 = *MEMORY[0x1E6992598];
     v26 = [MEMORY[0x1E695DFA8] setWithObjects:{v21, v22, *MEMORY[0x1E6992568], v23, *MEMORY[0x1E69925A0], *MEMORY[0x1E6992598], *MEMORY[0x1E6992558], 0}];
     v27 = v26;
-    if (!a4)
+    if (!span)
     {
       [v26 addObject:*MEMORY[0x1E6992648]];
     }
 
-    v28 = [v11 persistentObject];
-    [v11 rebaseSkippingRelationProperties:v27];
-    v29 = [v11 persistentObject];
-    [v29 addCoCommitObject:v28];
+    persistentObject = [eventCopy persistentObject];
+    [eventCopy rebaseSkippingRelationProperties:v27];
+    persistentObject2 = [eventCopy persistentObject];
+    [persistentObject2 addCoCommitObject:persistentObject];
 
-    v30 = [v27 allObjects];
-    [v11 emptyMeltedCacheForKeys:v30];
+    allObjects = [v27 allObjects];
+    [eventCopy emptyMeltedCacheForKeys:allObjects];
 
-    v31 = [v11 _generateNewUniqueID];
-    [v11 setUniqueID:v31];
+    _generateNewUniqueID2 = [eventCopy _generateNewUniqueID];
+    [eventCopy setUniqueID:_generateNewUniqueID2];
 
-    if (v12 != v11)
+    if (savingEventCopy != eventCopy)
     {
-      [v12 addCoCommitObject:v11];
-      if ([v12 _hasChangesForKey:*MEMORY[0x1E6992570]])
+      [savingEventCopy addCoCommitObject:eventCopy];
+      if ([savingEventCopy _hasChangesForKey:*MEMORY[0x1E6992570]])
       {
-        v32 = [v12 calendar];
-        [v11 setCalendar:v32];
+        calendar = [savingEventCopy calendar];
+        [eventCopy setCalendar:calendar];
       }
     }
 
     v15 = 0;
   }
 
-  if (a4 == 1)
+  if (span == 1)
   {
-    v33 = [v11 recurrenceSet];
+    recurrenceSet = [eventCopy recurrenceSet];
 
-    if (!v33)
+    if (!recurrenceSet)
     {
-      v34 = [v19 recurrenceSet];
+      recurrenceSet2 = [masterEvent recurrenceSet];
 
-      if (v34)
+      if (recurrenceSet2)
       {
-        v35 = [v19 recurrenceSet];
-        [v11 setRecurrenceSet:v35];
+        recurrenceSet3 = [masterEvent recurrenceSet];
+        [eventCopy setRecurrenceSet:recurrenceSet3];
       }
 
       else
       {
-        v35 = [MEMORY[0x1E696AFB0] UUID];
-        v36 = [v35 UUIDString];
-        [v11 setRecurrenceSet:v36];
+        recurrenceSet3 = [MEMORY[0x1E696AFB0] UUID];
+        uUIDString = [recurrenceSet3 UUIDString];
+        [eventCopy setRecurrenceSet:uUIDString];
       }
     }
 
-    v37 = [v11 recurrenceSet];
-    [v19 setRecurrenceSet:v37];
+    recurrenceSet4 = [eventCopy recurrenceSet];
+    [masterEvent setRecurrenceSet:recurrenceSet4];
   }
 
-  [v12 setStartDateRaw:v14];
-  [v12 duration];
-  v38 = [v14 dateByAddingTimeInterval:?];
-  [v12 setEndDateRaw:v38];
+  [savingEventCopy setStartDateRaw:startDateCopy];
+  [savingEventCopy duration];
+  v38 = [startDateCopy dateByAddingTimeInterval:?];
+  [savingEventCopy setEndDateRaw:v38];
 
-  if (v11 != v12)
+  if (eventCopy != savingEventCopy)
   {
-    [v11 setStartDateRaw:v157];
-    [v19 duration];
+    [eventCopy setStartDateRaw:v157];
+    [masterEvent duration];
     v39 = [v157 dateByAddingTimeInterval:?];
-    [v11 setEndDateRaw:v39];
+    [eventCopy setEndDateRaw:v39];
   }
 
-  v146 = v12;
-  v143 = a4;
-  v151 = v19;
+  v146 = savingEventCopy;
+  spanCopy = span;
+  v151 = masterEvent;
   if (v15)
   {
-    [v19 _updateSelfAttendeeToMatchSelfAttendee:v20];
+    [masterEvent _updateSelfAttendeeToMatchSelfAttendee:selfAttendee];
   }
 
   else
   {
-    [v11 setAttendees:MEMORY[0x1E695E0F0]];
-    v40 = [v11 constraints];
-    v41 = [v40 attendeesUseDeletedByOrganizerStatus];
+    [eventCopy setAttendees:MEMORY[0x1E695E0F0]];
+    constraints = [eventCopy constraints];
+    attendeesUseDeletedByOrganizerStatus = [constraints attendeesUseDeletedByOrganizerStatus];
 
-    if (v41)
+    if (attendeesUseDeletedByOrganizerStatus)
     {
-      v136 = v20;
-      v138 = v14;
-      v140 = v13;
+      v136 = selfAttendee;
+      v138 = startDateCopy;
+      v140 = dateCopy;
       v42 = MEMORY[0x1E695DFD8];
-      v43 = [v147 valueForKey:*MEMORY[0x1E6992B08]];
+      v43 = [attendees valueForKey:*MEMORY[0x1E6992B08]];
       v44 = [v42 setWithArray:v43];
 
       v188 = 0u;
       v189 = 0u;
       v186 = 0u;
       v187 = 0u;
-      v45 = [v19 attendees];
-      v46 = [v45 countByEnumeratingWithState:&v186 objects:v197 count:16];
+      attendees2 = [masterEvent attendees];
+      v46 = [attendees2 countByEnumeratingWithState:&v186 objects:v197 count:16];
       if (v46)
       {
         v47 = v46;
@@ -16808,41 +16808,41 @@ uint64_t __41__EKEvent__noRemainingEarlierOccurrences__block_invoke(uint64_t a1,
           {
             if (*v187 != v48)
             {
-              objc_enumerationMutation(v45);
+              objc_enumerationMutation(attendees2);
             }
 
             v50 = *(*(&v186 + 1) + 8 * i);
-            v51 = [v50 UUID];
-            v52 = [v44 containsObject:v51];
+            uUID = [v50 UUID];
+            v52 = [v44 containsObject:uUID];
 
             if ((v52 & 1) == 0)
             {
               v53 = [EKAttendee alloc];
-              v54 = [v50 persistentObject];
-              v55 = [(EKObject *)v53 initWithPersistentObject:v54];
+              persistentObject3 = [v50 persistentObject];
+              v55 = [(EKObject *)v53 initWithPersistentObject:persistentObject3];
 
               [(EKObject *)v55 rebase];
               [(EKAttendee *)v55 setParticipantStatus:-1];
-              [v11 addAttendee:v55];
+              [eventCopy addAttendee:v55];
             }
           }
 
-          v47 = [v45 countByEnumeratingWithState:&v186 objects:v197 count:16];
+          v47 = [attendees2 countByEnumeratingWithState:&v186 objects:v197 count:16];
         }
 
         while (v47);
       }
 
-      v14 = v138;
-      v13 = v140;
-      v20 = v136;
+      startDateCopy = v138;
+      dateCopy = v140;
+      selfAttendee = v136;
     }
 
     v184 = 0u;
     v185 = 0u;
     v182 = 0u;
     v183 = 0u;
-    v56 = v147;
+    v56 = attendees;
     v57 = [v56 countByEnumeratingWithState:&v182 objects:v196 count:16];
     if (v57)
     {
@@ -16858,16 +16858,16 @@ uint64_t __41__EKEvent__noRemainingEarlierOccurrences__block_invoke(uint64_t a1,
           }
 
           v61 = *(*(&v182 + 1) + 8 * j);
-          v62 = [v61 isEqual:v20];
+          v62 = [v61 isEqual:selfAttendee];
           [v61 rebase];
-          [v11 addAttendee:v61];
+          [eventCopy addAttendee:v61];
           if (v62)
           {
-            [v11 setSelfAttendee:v20];
-            v63 = [v61 persistentObject];
-            [v20 setPersistentObject:v63];
+            [eventCopy setSelfAttendee:selfAttendee];
+            persistentObject4 = [v61 persistentObject];
+            [selfAttendee setPersistentObject:persistentObject4];
 
-            [v20 _resetAfterUpdatingChangeSetOrBackingObject];
+            [selfAttendee _resetAfterUpdatingChangeSetOrBackingObject];
           }
         }
 
@@ -16877,14 +16877,14 @@ uint64_t __41__EKEvent__noRemainingEarlierOccurrences__block_invoke(uint64_t a1,
       while (v58);
     }
 
-    [v11 setAllAlarms:MEMORY[0x1E695E0F0]];
+    [eventCopy setAllAlarms:MEMORY[0x1E695E0F0]];
     v180 = 0u;
     v181 = 0u;
     v178 = 0u;
     v179 = 0u;
-    v64 = v145;
+    v64 = alarms;
     v65 = [v64 countByEnumeratingWithState:&v178 objects:v195 count:16];
-    v19 = v151;
+    masterEvent = v151;
     if (v65)
     {
       v66 = v65;
@@ -16900,7 +16900,7 @@ uint64_t __41__EKEvent__noRemainingEarlierOccurrences__block_invoke(uint64_t a1,
 
           v69 = *(*(&v178 + 1) + 8 * k);
           [v69 rebaseForDetachment];
-          [v11 addAlarm:v69];
+          [eventCopy addAlarm:v69];
         }
 
         v66 = [v64 countByEnumeratingWithState:&v178 objects:v195 count:16];
@@ -16909,14 +16909,14 @@ uint64_t __41__EKEvent__noRemainingEarlierOccurrences__block_invoke(uint64_t a1,
       while (v66);
     }
 
-    v12 = v146;
-    a4 = v143;
+    savingEventCopy = v146;
+    span = spanCopy;
     v15 = v156;
   }
 
-  if (a4 == 1)
+  if (span == 1)
   {
-    if (v11 == v12)
+    if (eventCopy == savingEventCopy)
     {
       v70 = v154;
     }
@@ -16930,12 +16930,12 @@ uint64_t __41__EKEvent__noRemainingEarlierOccurrences__block_invoke(uint64_t a1,
     {
       if (v15)
       {
-        v71 = [v11 exceptionDates];
+        exceptionDates = [eventCopy exceptionDates];
         v174 = 0u;
         v175 = 0u;
         v176 = 0u;
         v177 = 0u;
-        v72 = [v71 countByEnumeratingWithState:&v174 objects:v194 count:16];
+        v72 = [exceptionDates countByEnumeratingWithState:&v174 objects:v194 count:16];
         if (v72)
         {
           v73 = v72;
@@ -16946,17 +16946,17 @@ uint64_t __41__EKEvent__noRemainingEarlierOccurrences__block_invoke(uint64_t a1,
             {
               if (*v175 != v74)
               {
-                objc_enumerationMutation(v71);
+                objc_enumerationMutation(exceptionDates);
               }
 
               v76 = *(*(&v174 + 1) + 8 * m);
               if ([v76 CalIsBeforeDate:v157])
               {
-                [v11 _removeExceptionDate:v76];
+                [eventCopy _removeExceptionDate:v76];
               }
             }
 
-            v73 = [v71 countByEnumeratingWithState:&v174 objects:v194 count:16];
+            v73 = [exceptionDates countByEnumeratingWithState:&v174 objects:v194 count:16];
           }
 
           while (v73);
@@ -16969,8 +16969,8 @@ uint64_t __41__EKEvent__noRemainingEarlierOccurrences__block_invoke(uint64_t a1,
         v173 = 0u;
         v170 = 0u;
         v171 = 0u;
-        v71 = [v19 exceptionDates];
-        v77 = [v71 countByEnumeratingWithState:&v170 objects:v193 count:16];
+        exceptionDates = [masterEvent exceptionDates];
+        v77 = [exceptionDates countByEnumeratingWithState:&v170 objects:v193 count:16];
         if (v77)
         {
           v78 = v77;
@@ -16981,17 +16981,17 @@ uint64_t __41__EKEvent__noRemainingEarlierOccurrences__block_invoke(uint64_t a1,
             {
               if (*v171 != v79)
               {
-                objc_enumerationMutation(v71);
+                objc_enumerationMutation(exceptionDates);
               }
 
               v81 = *(*(&v170 + 1) + 8 * n);
               if ([v81 CalIsAfterDate:v157])
               {
-                [v11 _addExceptionDate:v81];
+                [eventCopy _addExceptionDate:v81];
               }
             }
 
-            v78 = [v71 countByEnumeratingWithState:&v170 objects:v193 count:16];
+            v78 = [exceptionDates countByEnumeratingWithState:&v170 objects:v193 count:16];
           }
 
           while (v78);
@@ -17001,25 +17001,25 @@ uint64_t __41__EKEvent__noRemainingEarlierOccurrences__block_invoke(uint64_t a1,
 
     else
     {
-      [v11 setExceptionDates:0];
+      [eventCopy setExceptionDates:0];
     }
 
-    v139 = v14;
-    v141 = v13;
-    v155 = v11;
-    v149 = [v19 startDate];
-    v150 = [v19 timeZone];
-    if (!v150)
+    v139 = startDateCopy;
+    v141 = dateCopy;
+    v155 = eventCopy;
+    startDate = [masterEvent startDate];
+    timeZone = [masterEvent timeZone];
+    if (!timeZone)
     {
-      v150 = CalTimeZoneCopyCFTimeZone();
+      timeZone = CalTimeZoneCopyCFTimeZone();
     }
 
-    v137 = v20;
+    v137 = selfAttendee;
     v168 = 0u;
     v169 = 0u;
     v166 = 0u;
     v167 = 0u;
-    v82 = v144;
+    v82 = recurrenceRules;
     v83 = [v82 countByEnumeratingWithState:&v166 objects:v192 count:16];
     if (v83)
     {
@@ -17035,30 +17035,30 @@ uint64_t __41__EKEvent__noRemainingEarlierOccurrences__block_invoke(uint64_t a1,
           }
 
           v87 = *(*(&v166 + 1) + 8 * ii);
-          v88 = [v87 recurrenceEnd];
-          v89 = [v88 endDate];
-          if (v89 && (v90 = v89, [v88 endDate], v91 = objc_claimAutoreleasedReturnValue(), v92 = objc_msgSend(v91, "CalIsBeforeDate:", v157), v91, v90, v92))
+          recurrenceEnd = [v87 recurrenceEnd];
+          endDate = [recurrenceEnd endDate];
+          if (endDate && (v90 = endDate, [recurrenceEnd endDate], v91 = objc_claimAutoreleasedReturnValue(), v92 = objc_msgSend(v91, "CalIsBeforeDate:", v157), v91, v90, v92))
           {
             [v155 removeRecurrenceRule:v87];
           }
 
-          else if ([v88 occurrenceCount])
+          else if ([recurrenceEnd occurrenceCount])
           {
-            v93 = [v88 occurrenceCount];
+            occurrenceCount = [recurrenceEnd occurrenceCount];
             v94 = objc_alloc_init(EKRecurrenceGenerator);
             v95 = [v157 dateByAddingTimeInterval:-1.0];
             LOBYTE(v135) = 0;
-            v96 = [(EKRecurrenceGenerator *)v94 copyOccurrenceDatesWithEKEvent:v151 recurrenceRule:v87 startDate:v149 endDate:v95 timeZone:v150 exceptionDates:0 limit:0 adjustDatesForAllDayEvents:v135];
+            v96 = [(EKRecurrenceGenerator *)v94 copyOccurrenceDatesWithEKEvent:v151 recurrenceRule:v87 startDate:startDate endDate:v95 timeZone:timeZone exceptionDates:0 limit:0 adjustDatesForAllDayEvents:v135];
 
             v97 = [v96 count];
-            if (v93 == v97)
+            if (occurrenceCount == v97)
             {
               [v155 removeRecurrenceRule:v87];
             }
 
             else
             {
-              v98 = [EKRecurrenceEnd recurrenceEndWithOccurrenceCount:v93 - v97];
+              v98 = [EKRecurrenceEnd recurrenceEndWithOccurrenceCount:occurrenceCount - v97];
               [v87 setRecurrenceEnd:v98];
             }
           }
@@ -17097,9 +17097,9 @@ uint64_t __41__EKEvent__noRemainingEarlierOccurrences__block_invoke(uint64_t a1,
     v164 = 0u;
     v165 = 0u;
     v152 = v101;
-    v103 = [v101 detachedItems];
-    v104 = [v103 countByEnumeratingWithState:&v162 objects:v191 count:16];
-    v12 = v146;
+    detachedItems = [v101 detachedItems];
+    v104 = [detachedItems countByEnumeratingWithState:&v162 objects:v191 count:16];
+    savingEventCopy = v146;
     if (v104)
     {
       v105 = v104;
@@ -17111,7 +17111,7 @@ uint64_t __41__EKEvent__noRemainingEarlierOccurrences__block_invoke(uint64_t a1,
         {
           if (*v163 != v106)
           {
-            objc_enumerationMutation(v103);
+            objc_enumerationMutation(detachedItems);
           }
 
           v108 = *(*(&v162 + 1) + 8 * jj);
@@ -17121,31 +17121,31 @@ uint64_t __41__EKEvent__noRemainingEarlierOccurrences__block_invoke(uint64_t a1,
             v109 = v146;
           }
 
-          v110 = [v109 originalStartDate];
-          if (v156 == [v110 CalIsBeforeDate:v157])
+          originalStartDate2 = [v109 originalStartDate];
+          if (v156 == [originalStartDate2 CalIsBeforeDate:v157])
           {
             [v152 _removeDetachedItem:v108];
-            v111 = [v109 persistentObject];
-            v112 = [v111 isNew];
+            persistentObject5 = [v109 persistentObject];
+            isNew = [persistentObject5 isNew];
 
-            if ((v112 & 1) == 0)
+            if ((isNew & 1) == 0)
             {
-              v113 = [v109 persistentObject];
+              persistentObject6 = [v109 persistentObject];
               [v109 rebase];
-              v114 = [v155 eventStore];
-              [v114 _deleteObject:v113];
+              eventStore = [v155 eventStore];
+              [eventStore _deleteObject:persistentObject6];
 
-              v115 = [v146 persistentObject];
-              [v115 addCoCommitObject:v113];
+              persistentObject7 = [v146 persistentObject];
+              [persistentObject7 addCoCommitObject:persistentObject6];
             }
 
-            v116 = [v109 frozenObject];
-            [v102 addMultiChangedObjectValue:v116 forKey:v153];
+            frozenObject = [v109 frozenObject];
+            [v102 addMultiChangedObjectValue:frozenObject forKey:v153];
 
             [v109 setOriginalItem:v102];
             v117 = objc_opt_class();
-            v118 = [v102 calendar];
-            v119 = [v117 generateUniqueIDWithEvent:v109 originalEvent:v102 calendar:v118];
+            calendar2 = [v102 calendar];
+            v119 = [v117 generateUniqueIDWithEvent:v109 originalEvent:v102 calendar:calendar2];
             [v109 setUniqueID:v119];
 
             if (v109 != v146)
@@ -17158,31 +17158,31 @@ uint64_t __41__EKEvent__noRemainingEarlierOccurrences__block_invoke(uint64_t a1,
           }
         }
 
-        v105 = [v103 countByEnumeratingWithState:&v162 objects:v191 count:16];
+        v105 = [detachedItems countByEnumeratingWithState:&v162 objects:v191 count:16];
       }
 
       while (v105);
     }
 
     [v102 emptyMeltedCacheForKey:v153];
-    v19 = v151;
+    masterEvent = v151;
     [v151 _deleteFromOccurrenceDateOnward:v157 includeSlices:0];
 
-    v11 = v155;
-    v14 = v139;
-    v13 = v141;
-    v20 = v137;
-    a4 = v143;
+    eventCopy = v155;
+    startDateCopy = v139;
+    dateCopy = v141;
+    selfAttendee = v137;
+    span = spanCopy;
   }
 
-  if (v142)
+  if (isFirstOccurrence)
   {
     v160 = 0u;
     v161 = 0u;
     v158 = 0u;
     v159 = 0u;
-    v121 = [v19 alarms];
-    v122 = [v121 countByEnumeratingWithState:&v158 objects:v190 count:16];
+    alarms2 = [masterEvent alarms];
+    v122 = [alarms2 countByEnumeratingWithState:&v158 objects:v190 count:16];
     if (v122)
     {
       v123 = v122;
@@ -17193,59 +17193,59 @@ uint64_t __41__EKEvent__noRemainingEarlierOccurrences__block_invoke(uint64_t a1,
         {
           if (*v159 != v124)
           {
-            objc_enumerationMutation(v121);
+            objc_enumerationMutation(alarms2);
           }
 
           v126 = *(*(&v158 + 1) + 8 * kk);
           if ([v126 isAbsolute])
           {
-            [v19 removeAlarm:v126];
+            [masterEvent removeAlarm:v126];
           }
         }
 
-        v123 = [v121 countByEnumeratingWithState:&v158 objects:v190 count:16];
+        v123 = [alarms2 countByEnumeratingWithState:&v158 objects:v190 count:16];
       }
 
       while (v123);
     }
 
-    v12 = v146;
-    a4 = v143;
+    savingEventCopy = v146;
+    span = spanCopy;
   }
 
-  if (a4)
+  if (span)
   {
-    [v19 _updatePersistentObjectOfSelfAndDetachedItemsExceptForSavingItem:v12];
-    [v19 updatePersistentValueForKeyIfNeeded:v153];
+    [masterEvent _updatePersistentObjectOfSelfAndDetachedItemsExceptForSavingItem:savingEventCopy];
+    [masterEvent updatePersistentValueForKeyIfNeeded:v153];
   }
 
   else
   {
-    v127 = [v11 frozenObject];
-    [v19 addMultiChangedObjectValue:v127 forKey:v153];
+    frozenObject2 = [eventCopy frozenObject];
+    [masterEvent addMultiChangedObjectValue:frozenObject2 forKey:v153];
 
-    [v19 emptyMeltedCacheForKey:v153];
-    [v11 setOriginalItem:v19];
-    [v11 setOriginalStartDate:v13];
+    [masterEvent emptyMeltedCacheForKey:v153];
+    [eventCopy setOriginalItem:masterEvent];
+    [eventCopy setOriginalStartDate:dateCopy];
     v128 = objc_opt_class();
-    v129 = [v19 calendar];
-    v130 = [v128 generateUniqueIDWithEvent:v11 originalEvent:v19 calendar:v129];
-    [v11 setUniqueID:v130];
+    calendar3 = [masterEvent calendar];
+    v130 = [v128 generateUniqueIDWithEvent:eventCopy originalEvent:masterEvent calendar:calendar3];
+    [eventCopy setUniqueID:v130];
 
     v131 = [MEMORY[0x1E695DFD8] setWithObject:v153];
-    [v19 updatePersistentObjectSkippingProperties:v131];
+    [masterEvent updatePersistentObjectSkippingProperties:v131];
   }
 
-  v132 = [v11 eventStore];
-  [v132 _addObjectToPendingCommits:v19];
+  eventStore2 = [eventCopy eventStore];
+  [eventStore2 _addObjectToPendingCommits:masterEvent];
 
-  [v12 emptyMeltedCacheForKey:*MEMORY[0x1E6992630]];
-  if (v11 != v12)
+  [savingEventCopy emptyMeltedCacheForKey:*MEMORY[0x1E6992630]];
+  if (eventCopy != savingEventCopy)
   {
-    [v11 _updatePersistentObjectOfSelfAndDetachedItemsExceptForSavingItem:v12];
-    [v11 updatePersistentValueForKeyIfNeeded:v153];
-    v133 = [v11 eventStore];
-    [v133 _addObjectToPendingCommits:v11];
+    [eventCopy _updatePersistentObjectOfSelfAndDetachedItemsExceptForSavingItem:savingEventCopy];
+    [eventCopy updatePersistentValueForKeyIfNeeded:v153];
+    eventStore3 = [eventCopy eventStore];
+    [eventStore3 _addObjectToPendingCommits:eventCopy];
   }
 
   v134 = *MEMORY[0x1E69E9840];
@@ -17253,49 +17253,49 @@ uint64_t __41__EKEvent__noRemainingEarlierOccurrences__block_invoke(uint64_t a1,
 
 - (id)privacyLevelString
 {
-  v2 = [(EKEvent *)self privacyLevel];
-  if (v2 > 3)
+  privacyLevel = [(EKEvent *)self privacyLevel];
+  if (privacyLevel > 3)
   {
     return 0;
   }
 
   else
   {
-    return off_1E77FF370[v2];
+    return off_1E77FF370[privacyLevel];
   }
 }
 
-- (void)setSuggestionInfo:(id)a3
+- (void)setSuggestionInfo:(id)info
 {
   v4 = *MEMORY[0x1E69929E8];
-  v5 = a3;
-  [(EKObject *)self updateMeltedAndCachedSingleRelationObject:v5 forKey:v4 frozenClass:objc_opt_class()];
+  infoCopy = info;
+  [(EKObject *)self updateMeltedAndCachedSingleRelationObject:infoCopy forKey:v4 frozenClass:objc_opt_class()];
 }
 
-- (BOOL)_fetchedEventIsConflict:(id)a3 forStartDate:(id)a4 endDate:(id)a5
+- (BOOL)_fetchedEventIsConflict:(id)conflict forStartDate:(id)date endDate:(id)endDate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(EKEvent *)self uniqueId];
-  v12 = [v11 componentsSeparatedByString:@"/RID="];
-  v13 = [v12 firstObject];
+  conflictCopy = conflict;
+  dateCopy = date;
+  endDateCopy = endDate;
+  uniqueId = [(EKEvent *)self uniqueId];
+  v12 = [uniqueId componentsSeparatedByString:@"/RID="];
+  firstObject = [v12 firstObject];
 
-  v14 = [v8 uniqueId];
-  v15 = [v14 componentsSeparatedByString:@"/RID="];
-  v16 = [v15 firstObject];
+  uniqueId2 = [conflictCopy uniqueId];
+  v15 = [uniqueId2 componentsSeparatedByString:@"/RID="];
+  firstObject2 = [v15 firstObject];
 
-  if (([v13 isEqual:v16] & 1) == 0 && objc_msgSend(v8, "status") != 3 && objc_msgSend(v8, "participationStatus") != 3 && (objc_msgSend(v8, "status") || (objc_msgSend(v8, "isAllDay") & 1) == 0) && (!objc_msgSend(v8, "status") || objc_msgSend(v8, "availability") != 1))
+  if (([firstObject isEqual:firstObject2] & 1) == 0 && objc_msgSend(conflictCopy, "status") != 3 && objc_msgSend(conflictCopy, "participationStatus") != 3 && (objc_msgSend(conflictCopy, "status") || (objc_msgSend(conflictCopy, "isAllDay") & 1) == 0) && (!objc_msgSend(conflictCopy, "status") || objc_msgSend(conflictCopy, "availability") != 1))
   {
-    v17 = [v8 endDateUnadjustedForLegacyClients];
-    if ([v17 isEqualToDate:v9])
+    endDateUnadjustedForLegacyClients = [conflictCopy endDateUnadjustedForLegacyClients];
+    if ([endDateUnadjustedForLegacyClients isEqualToDate:dateCopy])
     {
     }
 
     else
     {
-      v18 = [v8 startDate];
-      v19 = [v18 isEqualToDate:v10];
+      startDate = [conflictCopy startDate];
+      v19 = [startDate isEqualToDate:endDateCopy];
 
       if (!v19)
       {
@@ -17311,7 +17311,7 @@ LABEL_12:
   return v20;
 }
 
-- (id)potentialConflictOccurrenceDatesInTimePeriod:(double *)a3
+- (id)potentialConflictOccurrenceDatesInTimePeriod:(double *)period
 {
   v22[1] = *MEMORY[0x1E69E9840];
   if ([(EKEvent *)self isAllDay]|| ([(EKEvent *)self endDateUnadjustedForLegacyClients], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
@@ -17321,18 +17321,18 @@ LABEL_12:
 
   else
   {
-    v6 = [(EKEvent *)self startDate];
-    v22[0] = v6;
+    startDate = [(EKEvent *)self startDate];
+    v22[0] = startDate;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
 
-    v8 = [(EKCalendarItem *)self recurrenceRules];
-    v9 = [v8 firstObject];
+    recurrenceRules = [(EKCalendarItem *)self recurrenceRules];
+    firstObject = [recurrenceRules firstObject];
 
     v10 = 0;
-    if (v9 && [v9 frequency] != 3)
+    if (firstObject && [firstObject frequency] != 3)
     {
-      v11 = [v9 frequency];
-      if (v11 > 2)
+      frequency = [firstObject frequency];
+      if (frequency > 2)
       {
         v12 = 1;
         v10 = 0x417E133800000000;
@@ -17340,16 +17340,16 @@ LABEL_12:
 
       else
       {
-        v10 = qword_1A81C3DB8[v11];
-        v12 = qword_1A81C3DD0[v11];
+        v10 = qword_1A81C3DB8[frequency];
+        v12 = qword_1A81C3DD0[frequency];
       }
 
       v13 = objc_alloc_init(EKRecurrenceGenerator);
-      v14 = [(EKEvent *)self startCalendarDate];
-      v15 = [v14 date];
-      v16 = [MEMORY[0x1E695DF00] distantFuture];
-      v17 = [(EKCalendarItem *)self timeZone];
-      v18 = [(EKRecurrenceGenerator *)v13 copyOccurrenceDatesWithEKEvent:self recurrenceRule:v9 startDate:v15 endDate:v16 timeZone:v17 limit:v12];
+      startCalendarDate = [(EKEvent *)self startCalendarDate];
+      date = [startCalendarDate date];
+      distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+      timeZone = [(EKCalendarItem *)self timeZone];
+      v18 = [(EKRecurrenceGenerator *)v13 copyOccurrenceDatesWithEKEvent:self recurrenceRule:firstObject startDate:date endDate:distantFuture timeZone:timeZone limit:v12];
 
       if ([v18 count] > v12)
       {
@@ -17361,9 +17361,9 @@ LABEL_12:
       v7 = v18;
     }
 
-    if (a3)
+    if (period)
     {
-      *a3 = v10;
+      *period = v10;
     }
   }
 
@@ -17382,16 +17382,16 @@ LABEL_12:
 
   else
   {
-    v4 = [(EKCalendarItem *)self calendar];
-    v5 = [v4 source];
+    calendar = [(EKCalendarItem *)self calendar];
+    source = [calendar source];
 
     v6 = MEMORY[0x1E695DF70];
-    v7 = [v5 calendarsForEntityType:0];
-    v8 = [v7 allObjects];
-    v9 = [v6 arrayWithArray:v8];
+    v7 = [source calendarsForEntityType:0];
+    allObjects = [v7 allObjects];
+    v9 = [v6 arrayWithArray:allObjects];
 
-    v75 = v5;
-    v10 = [v5 supportsAvailabilityRequests];
+    v75 = source;
+    supportsAvailabilityRequests = [source supportsAvailabilityRequests];
     v107 = 0u;
     v108 = 0u;
     v109 = 0u;
@@ -17412,7 +17412,7 @@ LABEL_12:
           }
 
           v16 = *(*(&v107 + 1) + 8 * i);
-          if (v10 && ![*(*(&v107 + 1) + 8 * i) isAffectingAvailability] || !objc_msgSend(v16, "allowsScheduling") || (objc_msgSend(v16, "isFacebookBirthdayCalendar") & 1) != 0 || (objc_msgSend(v16, "isSubscribedHolidayCalendar") & 1) != 0 || (objc_msgSend(v16, "isSuggestedEventCalendar") & 1) != 0 || objc_msgSend(v16, "isNaturalLanguageSuggestedEventCalendar"))
+          if (supportsAvailabilityRequests && ![*(*(&v107 + 1) + 8 * i) isAffectingAvailability] || !objc_msgSend(v16, "allowsScheduling") || (objc_msgSend(v16, "isFacebookBirthdayCalendar") & 1) != 0 || (objc_msgSend(v16, "isSubscribedHolidayCalendar") & 1) != 0 || (objc_msgSend(v16, "isSuggestedEventCalendar") & 1) != 0 || objc_msgSend(v16, "isNaturalLanguageSuggestedEventCalendar"))
           {
             [v9 removeObject:v16];
           }
@@ -17448,9 +17448,9 @@ LABEL_12:
     {
       v71 = v21;
       v77 = objc_opt_new();
-      v44 = [(EKEvent *)self endDateUnadjustedForLegacyClients];
-      v45 = [(EKEvent *)self startDate];
-      [v44 timeIntervalSinceDate:v45];
+      endDateUnadjustedForLegacyClients = [(EKEvent *)self endDateUnadjustedForLegacyClients];
+      startDate = [(EKEvent *)self startDate];
+      [endDateUnadjustedForLegacyClients timeIntervalSinceDate:startDate];
       v47 = v46;
 
       v95 = 0u;
@@ -17480,11 +17480,11 @@ LABEL_12:
             v53 = [MEMORY[0x1E695DF00] dateWithTimeInterval:v52 sinceDate:{v47, v71}];
             if (v22[2](v22, v52) && (v22)[2](v22, v53))
             {
-              v54 = [(EKObject *)self eventStore];
-              v55 = [v54 predicateForEventsWithStartDate:v52 endDate:v53 calendars:v9 loadDefaultProperties:0];
+              eventStore = [(EKObject *)self eventStore];
+              v55 = [eventStore predicateForEventsWithStartDate:v52 endDate:v53 calendars:v9 loadDefaultProperties:0];
 
-              v56 = [(EKObject *)self eventStore];
-              v57 = [v56 eventsMatchingPredicate:v55];
+              eventStore2 = [(EKObject *)self eventStore];
+              v57 = [eventStore2 eventsMatchingPredicate:v55];
 
               v91 = 0u;
               v92 = 0u;
@@ -17550,33 +17550,33 @@ LABEL_53:
 
       v64 = v49;
       v65 = MEMORY[0x1E6992F70];
-      v66 = [(EKEvent *)self startCalendarDate];
-      v67 = [v66 date];
-      v24 = [v65 rangeWithStartDate:v67 duration:v106];
+      startCalendarDate = [(EKEvent *)self startCalendarDate];
+      date = [startCalendarDate date];
+      endDateUnadjustedForLegacyClients2 = [v65 rangeWithStartDate:date duration:v106];
 
       v63 = v77;
-      v43 = [EKConflictDetails infoWithConflictsInSeries:obja outOf:v64 withPeriod:v24 conflictingDates:v77];
+      v43 = [EKConflictDetails infoWithConflictsInSeries:obja outOf:v64 withPeriod:endDateUnadjustedForLegacyClients2 conflictingDates:v77];
       v21 = v71;
       v17 = v73;
     }
 
     else
     {
-      v23 = [(EKEvent *)self startDate];
-      v24 = [(EKEvent *)self endDateUnadjustedForLegacyClients];
-      v76 = v23;
-      if (v22[2](v22, v23) && ((v22[2])(v22, v24) & 1) != 0)
+      startDate2 = [(EKEvent *)self startDate];
+      endDateUnadjustedForLegacyClients2 = [(EKEvent *)self endDateUnadjustedForLegacyClients];
+      v76 = startDate2;
+      if (v22[2](v22, startDate2) && ((v22[2])(v22, endDateUnadjustedForLegacyClients2) & 1) != 0)
       {
         v70 = v21;
         v72 = v17;
-        v25 = [(EKObject *)self eventStore];
-        v26 = [(EKEvent *)self startDate];
-        v27 = [(EKEvent *)self endDateUnadjustedForLegacyClients];
-        v28 = [v25 predicateForEventsWithStartDate:v26 endDate:v27 calendars:v9 loadDefaultProperties:0];
+        eventStore3 = [(EKObject *)self eventStore];
+        startDate3 = [(EKEvent *)self startDate];
+        endDateUnadjustedForLegacyClients3 = [(EKEvent *)self endDateUnadjustedForLegacyClients];
+        v28 = [eventStore3 predicateForEventsWithStartDate:startDate3 endDate:endDateUnadjustedForLegacyClients3 calendars:v9 loadDefaultProperties:0];
 
-        v29 = [(EKObject *)self eventStore];
+        eventStore4 = [(EKObject *)self eventStore];
         v80 = v28;
-        v30 = [v29 eventsMatchingPredicate:v28];
+        v30 = [eventStore4 eventsMatchingPredicate:v28];
 
         v99 = 0u;
         v100 = 0u;
@@ -17595,22 +17595,22 @@ LABEL_53:
           {
             for (m = 0; m != v32; ++m)
             {
-              v36 = v24;
+              v36 = endDateUnadjustedForLegacyClients2;
               if (*v98 != v85)
               {
                 objc_enumerationMutation(obj);
               }
 
               v37 = *(*(&v97 + 1) + 8 * m);
-              v38 = [(EKEvent *)self startDate];
-              v39 = [(EKEvent *)self endDateUnadjustedForLegacyClients];
-              v40 = [(EKEvent *)self _fetchedEventIsConflict:v37 forStartDate:v38 endDate:v39];
+              startDate4 = [(EKEvent *)self startDate];
+              endDateUnadjustedForLegacyClients4 = [(EKEvent *)self endDateUnadjustedForLegacyClients];
+              v40 = [(EKEvent *)self _fetchedEventIsConflict:v37 forStartDate:startDate4 endDate:endDateUnadjustedForLegacyClients4];
 
               if (v40)
               {
-                v41 = [v37 isTentative];
-                v33 += v41 ^ 1;
-                v34 += v41;
+                isTentative = [v37 isTentative];
+                v33 += isTentative ^ 1;
+                v34 += isTentative;
                 if (v33 + v34 == 1)
                 {
                   v42 = v37;
@@ -17621,14 +17621,14 @@ LABEL_53:
                   v42 = 0;
                 }
 
-                v24 = v36;
+                endDateUnadjustedForLegacyClients2 = v36;
 
                 v87 = v42;
               }
 
               else
               {
-                v24 = v36;
+                endDateUnadjustedForLegacyClients2 = v36;
               }
             }
 
@@ -17657,7 +17657,7 @@ LABEL_53:
       else
       {
         v43 = [EKConflictDetails infoWithConflicts:0 needsAction:0 event:0];
-        v63 = v23;
+        v63 = startDate2;
       }
     }
   }
@@ -17683,60 +17683,60 @@ uint64_t __27__EKEvent_scanForConflicts__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-- (BOOL)updateWithGeocodedMapItemAndSaveWithCommit:(id)a3 eventStore:(id)a4 error:(id *)a5
+- (BOOL)updateWithGeocodedMapItemAndSaveWithCommit:(id)commit eventStore:(id)store error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(EKCalendarItem *)self structuredLocationWithoutPrediction];
-  v11 = [v10 duplicate];
+  storeCopy = store;
+  commitCopy = commit;
+  structuredLocationWithoutPrediction = [(EKCalendarItem *)self structuredLocationWithoutPrediction];
+  duplicate = [structuredLocationWithoutPrediction duplicate];
 
-  [v11 updateFromMapItem:v9];
+  [duplicate updateFromMapItem:commitCopy];
   if (![(EKEvent *)self isEditable])
   {
     goto LABEL_6;
   }
 
-  v12 = [(EKEvent *)self constraints];
-  if (([v12 supportsStructuredLocations] & 1) == 0)
+  constraints = [(EKEvent *)self constraints];
+  if (([constraints supportsStructuredLocations] & 1) == 0)
   {
 
     goto LABEL_6;
   }
 
-  v13 = [(EKEvent *)self constraints];
-  v14 = [v13 supportsAutoGeocodingStructuredLocations];
+  constraints2 = [(EKEvent *)self constraints];
+  supportsAutoGeocodingStructuredLocations = [constraints2 supportsAutoGeocodingStructuredLocations];
 
-  if (!v14)
+  if (!supportsAutoGeocodingStructuredLocations)
   {
 LABEL_6:
-    [(EKCalendarItem *)self setClientLocation:v11];
+    [(EKCalendarItem *)self setClientLocation:duplicate];
     goto LABEL_7;
   }
 
-  [(EKEvent *)self setStructuredLocation:v11];
+  [(EKEvent *)self setStructuredLocation:duplicate];
 LABEL_7:
-  v15 = [v8 saveEvent:self span:3 commit:1 error:a5];
+  v15 = [storeCopy saveEvent:self span:3 commit:1 error:error];
 
   return v15;
 }
 
 - (NSURL)launchURL
 {
-  v3 = [(EKObject *)self objectID];
-  v4 = [v3 databaseID];
+  objectID = [(EKObject *)self objectID];
+  databaseID = [objectID databaseID];
   v5 = *MEMORY[0x1E6992E18];
   v6 = MEMORY[0x1E695DFF8];
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [(EKEvent *)self startDate];
-  [v8 timeIntervalSinceReferenceDate];
-  if (v4 == v5)
+  startDate = [(EKEvent *)self startDate];
+  [startDate timeIntervalSinceReferenceDate];
+  if (databaseID == v5)
   {
-    [v7 stringWithFormat:@"calshow:%lf?eventid=%d", v9, objc_msgSend(v3, "rowID"), v13];
+    [v7 stringWithFormat:@"calshow:%lf?eventid=%d", v9, objc_msgSend(objectID, "rowID"), v13];
   }
 
   else
   {
-    [v7 stringWithFormat:@"calshow:%lf?eventid=%d_%d", v9, objc_msgSend(v3, "databaseID"), objc_msgSend(v3, "rowID")];
+    [v7 stringWithFormat:@"calshow:%lf?eventid=%d_%d", v9, objc_msgSend(objectID, "databaseID"), objc_msgSend(objectID, "rowID")];
   }
   v10 = ;
   v11 = [v6 URLWithString:v10];
@@ -17744,24 +17744,24 @@ LABEL_7:
   return v11;
 }
 
-+ (id)generateUniqueIDWithEvent:(id)a3 originalEvent:(id)a4 calendar:(id)a5
++ (id)generateUniqueIDWithEvent:(id)event originalEvent:(id)originalEvent calendar:(id)calendar
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 constraints];
-  v9 = [v8 requiresMSFormattedUID];
+  eventCopy = event;
+  originalEventCopy = originalEvent;
+  constraints = [eventCopy constraints];
+  requiresMSFormattedUID = [constraints requiresMSFormattedUID];
 
-  if (v9)
+  if (requiresMSFormattedUID)
   {
-    v10 = [v6 startTimeZone];
-    if (v10)
+    startTimeZone = [eventCopy startTimeZone];
+    if (startTimeZone)
     {
-      if (v7)
+      if (originalEventCopy)
       {
 LABEL_4:
-        v11 = [v7 uniqueID];
-        v12 = [v6 originalStartDate];
-        [v6 isAllDay];
+        uniqueID = [originalEventCopy uniqueID];
+        originalStartDate = [eventCopy originalStartDate];
+        [eventCopy isAllDay];
         v13 = _EKMSUUIDStringForDetachedEvent();
 
 LABEL_11:
@@ -17771,8 +17771,8 @@ LABEL_11:
 
     else
     {
-      v10 = [MEMORY[0x1E695DFE8] defaultTimeZone];
-      if (v7)
+      startTimeZone = [MEMORY[0x1E695DFE8] defaultTimeZone];
+      if (originalEventCopy)
       {
         goto LABEL_4;
       }
@@ -17782,60 +17782,60 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if ([v7 isReminderIntegrationEvent])
+  if ([originalEventCopy isReminderIntegrationEvent])
   {
-    v14 = [v7 uniqueID];
+    uniqueID2 = [originalEventCopy uniqueID];
   }
 
   else
   {
-    if (v7)
+    if (originalEventCopy)
     {
       v15 = MEMORY[0x1E696AEC0];
-      v16 = [v7 uniqueID];
-      v17 = [v6 originalStartDate];
-      [v17 timeIntervalSinceReferenceDate];
-      v13 = [v15 stringWithFormat:@"%@/RID=%llu", v16, v18];
+      uniqueID3 = [originalEventCopy uniqueID];
+      originalStartDate2 = [eventCopy originalStartDate];
+      [originalStartDate2 timeIntervalSinceReferenceDate];
+      v13 = [v15 stringWithFormat:@"%@/RID=%llu", uniqueID3, v18];
 
       goto LABEL_14;
     }
 
-    v14 = EKUUIDString();
+    uniqueID2 = EKUUIDString();
   }
 
-  v13 = v14;
+  v13 = uniqueID2;
 LABEL_14:
 
   return v13;
 }
 
-+ (id)uniqueIDForDetachedOccurrenceOfEvent:(id)a3 withOriginalStartDate:(id)a4 timeZone:(id)a5 allDay:(BOOL)a6
++ (id)uniqueIDForDetachedOccurrenceOfEvent:(id)event withOriginalStartDate:(id)date timeZone:(id)zone allDay:(BOOL)day
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 constraints];
-  v12 = [v11 requiresMSFormattedUID];
+  eventCopy = event;
+  zoneCopy = zone;
+  dateCopy = date;
+  constraints = [eventCopy constraints];
+  requiresMSFormattedUID = [constraints requiresMSFormattedUID];
 
-  if (v12)
+  if (requiresMSFormattedUID)
   {
-    if (!v9)
+    if (!zoneCopy)
     {
-      v9 = [MEMORY[0x1E695DFE8] defaultTimeZone];
+      zoneCopy = [MEMORY[0x1E695DFE8] defaultTimeZone];
     }
 
-    v13 = [v8 uniqueID];
+    uniqueID = [eventCopy uniqueID];
     v14 = _EKMSUUIDStringForDetachedEvent();
   }
 
   else
   {
     v15 = MEMORY[0x1E696AEC0];
-    v13 = [v8 uniqueID];
-    [v10 timeIntervalSinceReferenceDate];
+    uniqueID = [eventCopy uniqueID];
+    [dateCopy timeIntervalSinceReferenceDate];
     v17 = v16;
 
-    v14 = [v15 stringWithFormat:@"%@/RID=%llu", v13, v17];
+    v14 = [v15 stringWithFormat:@"%@/RID=%llu", uniqueID, v17];
   }
 
   return v14;
@@ -17867,8 +17867,8 @@ LABEL_14:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(EKCalendarItem *)self attendees];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  attendees = [(EKCalendarItem *)self attendees];
+  v4 = [attendees countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -17880,7 +17880,7 @@ LABEL_14:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(attendees);
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
@@ -17897,7 +17897,7 @@ LABEL_14:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [attendees countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -17906,14 +17906,14 @@ LABEL_14:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_respondToProposedTimeFromAttendee:(id)a3 shouldAccept:(BOOL)a4
+- (void)_respondToProposedTimeFromAttendee:(id)attendee shouldAccept:(BOOL)accept
 {
-  v4 = a4;
-  v14 = a3;
-  [v14 setCommentChanged:0];
-  [v14 setStatusChanged:0];
-  [v14 setProposedStartDateChanged:0];
-  if (v4)
+  acceptCopy = accept;
+  attendeeCopy = attendee;
+  [attendeeCopy setCommentChanged:0];
+  [attendeeCopy setStatusChanged:0];
+  [attendeeCopy setProposedStartDateChanged:0];
+  if (acceptCopy)
   {
     v6 = 2;
   }
@@ -17923,16 +17923,16 @@ LABEL_14:
     v6 = 3;
   }
 
-  [v14 setProposedStartDateStatus:v6];
-  v7 = v14;
-  if (v4)
+  [attendeeCopy setProposedStartDateStatus:v6];
+  v7 = attendeeCopy;
+  if (acceptCopy)
   {
-    v8 = [v14 proposedStartDateForEvent:self];
+    v8 = [attendeeCopy proposedStartDateForEvent:self];
     if (v8)
     {
-      v9 = [(EKEvent *)self endDateUnadjustedForLegacyClients];
-      v10 = [(EKEvent *)self startDate];
-      [v9 timeIntervalSinceDate:v10];
+      endDateUnadjustedForLegacyClients = [(EKEvent *)self endDateUnadjustedForLegacyClients];
+      startDate = [(EKEvent *)self startDate];
+      [endDateUnadjustedForLegacyClients timeIntervalSinceDate:startDate];
       v12 = v11;
 
       [(EKEvent *)self setStartDate:v8];
@@ -17942,7 +17942,7 @@ LABEL_14:
 
     [(EKEvent *)self dismissAcceptedProposeNewTimeNotification];
 
-    v7 = v14;
+    v7 = attendeeCopy;
   }
 }
 
@@ -17951,31 +17951,31 @@ LABEL_14:
   if ([(EKEvent *)self isDetached]&& [(EKObject *)self hasNeverBeenCommitted])
   {
     v3 = objc_alloc(objc_opt_class());
-    v4 = [(EKCalendarItem *)self originalItem];
-    v5 = [v4 persistentObject];
-    v6 = [(EKEvent *)self originalStartDate];
-    v7 = [v3 initWithPersistentObject:v5 occurrenceDate:v6];
+    originalItem = [(EKCalendarItem *)self originalItem];
+    persistentObject = [originalItem persistentObject];
+    originalStartDate = [(EKEvent *)self originalStartDate];
+    v7 = [v3 initWithPersistentObject:persistentObject occurrenceDate:originalStartDate];
 
-    v8 = [v7 committedCopy];
+    committedCopy = [v7 committedCopy];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = EKEvent;
-    v8 = [(EKObject *)&v10 committedCopy];
+    committedCopy = [(EKObject *)&v10 committedCopy];
   }
 
-  return v8;
+  return committedCopy;
 }
 
 - (id)diffFromCommitted
 {
-  v3 = [(EKEvent *)self committedCopy];
-  v4 = v3;
-  if (v3)
+  committedCopy = [(EKEvent *)self committedCopy];
+  v4 = committedCopy;
+  if (committedCopy)
   {
-    [v3 diffWithObject:self];
+    [committedCopy diffWithObject:self];
   }
 
   else
@@ -18041,86 +18041,86 @@ void __35__EKEvent_knownPerUserPropertyKeys__block_invoke()
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_diff:(id)a3 isDifferentFromCommittedEventHelperRequiresReschedule:(BOOL)a4
+- (BOOL)_diff:(id)_diff isDifferentFromCommittedEventHelperRequiresReschedule:(BOOL)reschedule
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(EKEvent *)self isDifferentWithDiff:v6];
-  v8 = [v6 differentKeys];
-  if (-[EKCalendarItem hasAttendees](self, "hasAttendees") || [v8 containsObject:*MEMORY[0x1E6992568]])
+  rescheduleCopy = reschedule;
+  _diffCopy = _diff;
+  v7 = [(EKEvent *)self isDifferentWithDiff:_diffCopy];
+  differentKeys = [_diffCopy differentKeys];
+  if (-[EKCalendarItem hasAttendees](self, "hasAttendees") || [differentKeys containsObject:*MEMORY[0x1E6992568]])
   {
     v9 = MEMORY[0x1E695DFA8];
-    v10 = [objc_opt_class() knownRequireRSVPKeys];
-    v11 = [v9 setWithArray:v10];
+    knownRequireRSVPKeys = [objc_opt_class() knownRequireRSVPKeys];
+    masterEvent = [v9 setWithArray:knownRequireRSVPKeys];
 
-    v12 = [v6 firstObject];
-    v13 = [v6 secondObject];
-    if (([v12 isDetached] & 1) == 0 && objc_msgSend(v13, "isDetached"))
+    firstObject = [_diffCopy firstObject];
+    secondObject = [_diffCopy secondObject];
+    if (([firstObject isDetached] & 1) == 0 && objc_msgSend(secondObject, "isDetached"))
     {
-      v14 = [v12 startDate];
-      v15 = [v13 startDate];
-      v16 = [v14 isEqual:v15];
+      startDate = [firstObject startDate];
+      startDate2 = [secondObject startDate];
+      v16 = [startDate isEqual:startDate2];
 
       if (v16)
       {
-        [v11 removeObject:*MEMORY[0x1E69926C8]];
+        [masterEvent removeObject:*MEMORY[0x1E69926C8]];
       }
 
-      v17 = [v12 endDateUnadjustedForLegacyClients];
-      v18 = [v13 endDateUnadjustedForLegacyClients];
-      v19 = [v17 isEqual:v18];
+      endDateUnadjustedForLegacyClients = [firstObject endDateUnadjustedForLegacyClients];
+      endDateUnadjustedForLegacyClients2 = [secondObject endDateUnadjustedForLegacyClients];
+      v19 = [endDateUnadjustedForLegacyClients isEqual:endDateUnadjustedForLegacyClients2];
 
       if (v19)
       {
-        [v11 removeObject:*MEMORY[0x1E6992968]];
+        [masterEvent removeObject:*MEMORY[0x1E6992968]];
       }
 
-      [v11 removeObject:*MEMORY[0x1E6992648]];
+      [masterEvent removeObject:*MEMORY[0x1E6992648]];
     }
 
-    if (v4)
+    if (rescheduleCopy)
     {
-      [v11 addObject:*MEMORY[0x1E6992568]];
-      [v11 addObject:*MEMORY[0x1E69929D0]];
+      [masterEvent addObject:*MEMORY[0x1E6992568]];
+      [masterEvent addObject:*MEMORY[0x1E69929D0]];
     }
 
-    v20 = [v12 location];
-    v21 = [v13 location];
-    v22 = [v20 isEqual:v21];
+    location = [firstObject location];
+    location2 = [secondObject location];
+    v22 = [location isEqual:location2];
 
     if (v22)
     {
-      [v11 removeObject:*MEMORY[0x1E69926D8]];
+      [masterEvent removeObject:*MEMORY[0x1E69926D8]];
     }
 
-    v23 = [v8 intersectsSet:v11];
+    hasAttendees = [differentKeys intersectsSet:masterEvent];
   }
 
   else
   {
     if (!v7)
     {
-      v23 = 0;
+      hasAttendees = 0;
       goto LABEL_16;
     }
 
-    v11 = [(EKEvent *)self masterEvent];
-    v23 = [v11 hasAttendees];
+    masterEvent = [(EKEvent *)self masterEvent];
+    hasAttendees = [masterEvent hasAttendees];
   }
 
 LABEL_16:
-  return v23;
+  return hasAttendees;
 }
 
-- (BOOL)isDifferentAndModifiedAttendeesWithDiff:(id)a3
+- (BOOL)isDifferentAndModifiedAttendeesWithDiff:(id)diff
 {
-  v4 = a3;
-  if ([(EKEvent *)self isDifferentWithDiff:v4])
+  diffCopy = diff;
+  if ([(EKEvent *)self isDifferentWithDiff:diffCopy])
   {
-    v5 = [v4 differentKeys];
-    if ([v5 containsObject:*MEMORY[0x1E6992568]] && (objc_msgSend(v5, "containsObject:", *MEMORY[0x1E6992920]) & 1) == 0)
+    differentKeys = [diffCopy differentKeys];
+    if ([differentKeys containsObject:*MEMORY[0x1E6992568]] && (objc_msgSend(differentKeys, "containsObject:", *MEMORY[0x1E6992920]) & 1) == 0)
     {
-      v6 = [v5 containsObject:*MEMORY[0x1E6992650]] ^ 1;
+      v6 = [differentKeys containsObject:*MEMORY[0x1E6992650]] ^ 1;
     }
 
     else
@@ -18137,21 +18137,21 @@ LABEL_16:
   return v6;
 }
 
-- (BOOL)isDifferentAndHasForwardedAttendeesWithDiff:(id)a3
+- (BOOL)isDifferentAndHasForwardedAttendeesWithDiff:(id)diff
 {
-  v4 = a3;
-  v5 = [(EKEvent *)self status]!= EKEventStatusCanceled && [(EKEvent *)self currentUserGeneralizedParticipantRole]== 1 && [(EKEvent *)self allowsAttendeesModifications]&& [(EKEvent *)self isDifferentAndModifiedAttendeesWithDiff:v4];
+  diffCopy = diff;
+  v5 = [(EKEvent *)self status]!= EKEventStatusCanceled && [(EKEvent *)self currentUserGeneralizedParticipantRole]== 1 && [(EKEvent *)self allowsAttendeesModifications]&& [(EKEvent *)self isDifferentAndModifiedAttendeesWithDiff:diffCopy];
 
   return v5;
 }
 
-- (BOOL)isDifferentAndHasNewProposedTimeWithDiff:(id)a3
+- (BOOL)isDifferentAndHasNewProposedTimeWithDiff:(id)diff
 {
-  v4 = a3;
-  if ([(EKEvent *)self isDifferentWithDiff:v4])
+  diffCopy = diff;
+  if ([(EKEvent *)self isDifferentWithDiff:diffCopy])
   {
-    v5 = [v4 summaryDictionary];
-    v6 = [v5 objectForKey:*MEMORY[0x1E69929C0]];
+    summaryDictionary = [diffCopy summaryDictionary];
+    v6 = [summaryDictionary objectForKey:*MEMORY[0x1E69929C0]];
     v7 = v6 != 0;
   }
 
@@ -18163,18 +18163,18 @@ LABEL_16:
   return v7;
 }
 
-- (BOOL)isDifferentExceptingPerUserPropertiesWithDiff:(id)a3
+- (BOOL)isDifferentExceptingPerUserPropertiesWithDiff:(id)diff
 {
-  v4 = a3;
-  if ([(EKEvent *)self isDifferentWithDiff:v4])
+  diffCopy = diff;
+  if ([(EKEvent *)self isDifferentWithDiff:diffCopy])
   {
     v5 = MEMORY[0x1E695DFA8];
-    v6 = [objc_opt_class() knownPerUserPropertyKeys];
-    v7 = [v5 setWithArray:v6];
+    knownPerUserPropertyKeys = [objc_opt_class() knownPerUserPropertyKeys];
+    v7 = [v5 setWithArray:knownPerUserPropertyKeys];
 
     v8 = objc_alloc(MEMORY[0x1E695DFA8]);
-    v9 = [v4 differentKeys];
-    v10 = [v8 initWithSet:v9];
+    differentKeys = [diffCopy differentKeys];
+    v10 = [v8 initWithSet:differentKeys];
 
     [v10 minusSet:v7];
     v11 = [v10 count] != 0;
@@ -18190,27 +18190,27 @@ LABEL_16:
 
 - (BOOL)isDifferentFromCommittedEventAndRequiresReschedule
 {
-  v2 = self;
-  v3 = [(EKEvent *)self diffFromCommitted];
-  LOBYTE(v2) = [(EKEvent *)v2 isDifferentAndRequiresRescheduleWithDiff:v3];
+  selfCopy = self;
+  diffFromCommitted = [(EKEvent *)self diffFromCommitted];
+  LOBYTE(selfCopy) = [(EKEvent *)selfCopy isDifferentAndRequiresRescheduleWithDiff:diffFromCommitted];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)isDifferentFromCommittedEventAndRequiresRSVP
 {
-  v2 = self;
-  v3 = [(EKEvent *)self diffFromCommitted];
-  LOBYTE(v2) = [(EKEvent *)v2 isDifferentAndRequiresRSVPWithDiff:v3];
+  selfCopy = self;
+  diffFromCommitted = [(EKEvent *)self diffFromCommitted];
+  LOBYTE(selfCopy) = [(EKEvent *)selfCopy isDifferentAndRequiresRSVPWithDiff:diffFromCommitted];
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)isDifferentAndHasUnscheduledAttendeesWithDiff:(id)a3
+- (BOOL)isDifferentAndHasUnscheduledAttendeesWithDiff:(id)diff
 {
-  v3 = [a3 summaryDictionary];
+  summaryDictionary = [diff summaryDictionary];
   v4 = [EKDiff summaryKeyForMultiValueAddOfPropertyKey:*MEMORY[0x1E6992568]];
-  v5 = [v3 objectForKey:v4];
+  v5 = [summaryDictionary objectForKey:v4];
   v6 = v5 != 0;
 
   return v6;
@@ -18218,20 +18218,20 @@ LABEL_16:
 
 - (BOOL)isDifferentFromCommittedEventAndHasUnscheduledAttendees
 {
-  v2 = self;
-  v3 = [(EKEvent *)self diffFromCommitted];
-  LOBYTE(v2) = [(EKEvent *)v2 isDifferentAndHasUnscheduledAttendeesWithDiff:v3];
+  selfCopy = self;
+  diffFromCommitted = [(EKEvent *)self diffFromCommitted];
+  LOBYTE(selfCopy) = [(EKEvent *)selfCopy isDifferentAndHasUnscheduledAttendeesWithDiff:diffFromCommitted];
 
-  return v2;
+  return selfCopy;
 }
 
-- (int64_t)requirementsToMoveFromCalendar:(id)a3 toCalendar:(id)a4
+- (int64_t)requirementsToMoveFromCalendar:(id)calendar toCalendar:(id)toCalendar
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(EKEvent *)self _requirementsToMoveOrCopyToCalendarHelperAllowedToMoveOrCopyEventFromCalendar:v6 toCalendar:v7])
+  calendarCopy = calendar;
+  toCalendarCopy = toCalendar;
+  if ([(EKEvent *)self _requirementsToMoveOrCopyToCalendarHelperAllowedToMoveOrCopyEventFromCalendar:calendarCopy toCalendar:toCalendarCopy])
   {
-    if ([(EKEvent *)self _requirementsToMoveToCalendarHelperDuplicationRequiredToMoveEventFromCalendar:v6 toCalendar:v7])
+    if ([(EKEvent *)self _requirementsToMoveToCalendarHelperDuplicationRequiredToMoveEventFromCalendar:calendarCopy toCalendar:toCalendarCopy])
     {
       v8 = 4;
     }
@@ -18241,7 +18241,7 @@ LABEL_16:
       v8 = 0;
     }
 
-    if ([(EKEvent *)self _requirementsToMoveToCalendarHelperAlterationsRequiredToMoveEventFromCalendar:v6 toCalendar:v7])
+    if ([(EKEvent *)self _requirementsToMoveToCalendarHelperAlterationsRequiredToMoveEventFromCalendar:calendarCopy toCalendar:toCalendarCopy])
     {
       v9 = v8 | 8;
     }
@@ -18251,16 +18251,16 @@ LABEL_16:
       v9 = v8;
     }
 
-    if ([(EKEvent *)self _requirementsToMoveToCalendarHelperReinviteAttendeesRequiredToMoveEventFromCalendar:v6 toCalendar:v7])
+    if ([(EKEvent *)self _requirementsToMoveToCalendarHelperReinviteAttendeesRequiredToMoveEventFromCalendar:calendarCopy toCalendar:toCalendarCopy])
     {
       v10 = v9 | 0x20;
-      if (!_bitmaskContainsOption(v9 | 0x20, 4) && [(EKEvent *)self _requirementsToMoveToCalendarHelperNeedToRemoveOriginalToMoveEventFromCalendar:v6 toCalendar:v7])
+      if (!_bitmaskContainsOption(v9 | 0x20, 4) && [(EKEvent *)self _requirementsToMoveToCalendarHelperNeedToRemoveOriginalToMoveEventFromCalendar:calendarCopy toCalendar:toCalendarCopy])
       {
         v10 = v9 | 0x30;
       }
     }
 
-    else if ([(EKEvent *)self _requirementsToMoveToCalendarHelperRemoveAttendeesRequiredToMoveEventFromCalendar:v6 toCalendar:v7])
+    else if ([(EKEvent *)self _requirementsToMoveToCalendarHelperRemoveAttendeesRequiredToMoveEventFromCalendar:calendarCopy toCalendar:toCalendarCopy])
     {
       v10 = v9 | 0x40;
     }
@@ -18289,34 +18289,34 @@ LABEL_16:
   return v11;
 }
 
-- (int64_t)requirementsToMoveToCalendar:(id)a3
+- (int64_t)requirementsToMoveToCalendar:(id)calendar
 {
-  v4 = a3;
-  v5 = [(EKCalendarItem *)self calendar];
-  v6 = [(EKEvent *)self requirementsToMoveFromCalendar:v5 toCalendar:v4];
+  calendarCopy = calendar;
+  calendar = [(EKCalendarItem *)self calendar];
+  v6 = [(EKEvent *)self requirementsToMoveFromCalendar:calendar toCalendar:calendarCopy];
 
   return v6;
 }
 
-- (BOOL)_canMoveOrCopyFromCalendar:(id)a3 toCalendar:(id)a4 allowedRequirements:(int64_t)a5 error:(id *)a6
+- (BOOL)_canMoveOrCopyFromCalendar:(id)calendar toCalendar:(id)toCalendar allowedRequirements:(int64_t)requirements error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [v11 source];
-  if (v12)
+  calendarCopy = calendar;
+  toCalendarCopy = toCalendar;
+  source = [toCalendarCopy source];
+  if (source)
   {
-    v13 = [v11 source];
-    v14 = [v13 isEnabledForEvents];
+    source2 = [toCalendarCopy source];
+    isEnabledForEvents = [source2 isEnabledForEvents];
   }
 
   else
   {
-    v14 = 1;
+    isEnabledForEvents = 1;
   }
 
-  if (![v11 allowEvents] || (v14 & 1) == 0)
+  if (![toCalendarCopy allowEvents] || (isEnabledForEvents & 1) == 0)
   {
-    if (a6)
+    if (error)
     {
       v17 = 22;
       goto LABEL_15;
@@ -18327,21 +18327,21 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if ([v11 type] == 6 || objc_msgSend(v10, "type") == 6)
+  if ([toCalendarCopy type] == 6 || objc_msgSend(calendarCopy, "type") == 6)
   {
     goto LABEL_21;
   }
 
-  if (([v10 isEqual:v11] & 1) != 0 || (-[EKEvent constraints](self, "constraints"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "requiresOutgoingInvitationsInDefaultCalendar"), v15, !v16) || !-[EKCalendarItem isSelfOrganizedInvitation](self, "isSelfOrganizedInvitation"))
+  if (([calendarCopy isEqual:toCalendarCopy] & 1) != 0 || (-[EKEvent constraints](self, "constraints"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "requiresOutgoingInvitationsInDefaultCalendar"), v15, !v16) || !-[EKCalendarItem isSelfOrganizedInvitation](self, "isSelfOrganizedInvitation"))
   {
-    v19 = [(EKEvent *)self requirementsToMoveFromCalendar:v10 toCalendar:v11];
-    if (v19 != 2 && _bitmaskContainsOption(a5, v19))
+    v19 = [(EKEvent *)self requirementsToMoveFromCalendar:calendarCopy toCalendar:toCalendarCopy];
+    if (v19 != 2 && _bitmaskContainsOption(requirements, v19))
     {
       v18 = 1;
       goto LABEL_22;
     }
 
-    if (a6)
+    if (error)
     {
       v17 = 0;
       goto LABEL_15;
@@ -18350,7 +18350,7 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  if (!a6)
+  if (!error)
   {
     goto LABEL_21;
   }
@@ -18358,7 +18358,7 @@ LABEL_21:
   v17 = 12;
 LABEL_15:
   [MEMORY[0x1E696ABC0] errorWithEKErrorCode:v17];
-  *a6 = v18 = 0;
+  *error = v18 = 0;
 LABEL_22:
 
   return v18;
@@ -18367,15 +18367,15 @@ LABEL_22:
 - (BOOL)seriesHasOutOfOrderEvents
 {
   v48 = *MEMORY[0x1E69E9840];
-  v3 = [(EKCalendarItem *)self recurrenceRules];
-  if (![v3 count])
+  recurrenceRules = [(EKCalendarItem *)self recurrenceRules];
+  if (![recurrenceRules count])
   {
 
     goto LABEL_14;
   }
 
-  v4 = [(EKCalendarItem *)self detachedItems];
-  v5 = [v4 count];
+  detachedItems = [(EKCalendarItem *)self detachedItems];
+  v5 = [detachedItems count];
 
   if (!v5)
   {
@@ -18384,15 +18384,15 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v34 = [(EKEvent *)self masterEvent];
-  v6 = [MEMORY[0x1E695DF00] distantPast];
+  masterEvent = [(EKEvent *)self masterEvent];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
   v7 = objc_opt_new();
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v8 = [v34 detachedItems];
-  v9 = [v8 countByEnumeratingWithState:&v43 objects:v47 count:16];
+  detachedItems2 = [masterEvent detachedItems];
+  v9 = [detachedItems2 countByEnumeratingWithState:&v43 objects:v47 count:16];
   if (v9)
   {
     v10 = *v44;
@@ -18402,45 +18402,45 @@ LABEL_14:
       {
         if (*v44 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(detachedItems2);
         }
 
         v12 = *(*(&v43 + 1) + 8 * i);
-        v13 = [v12 startDate];
-        [v7 setObject:v12 forKeyedSubscript:v13];
+        startDate = [v12 startDate];
+        [v7 setObject:v12 forKeyedSubscript:startDate];
 
-        v14 = [v12 startDate];
-        v15 = [v14 isAfterDate:v6];
+        startDate2 = [v12 startDate];
+        v15 = [startDate2 isAfterDate:distantPast];
 
         if (v15)
         {
-          v16 = [v12 startDate];
+          startDate3 = [v12 startDate];
 
-          v6 = v16;
+          distantPast = startDate3;
         }
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v43 objects:v47 count:16];
+      v9 = [detachedItems2 countByEnumeratingWithState:&v43 objects:v47 count:16];
     }
 
     while (v9);
   }
 
-  v17 = [(EKCalendarItem *)self recurrenceRules];
-  v18 = [v17 objectAtIndexedSubscript:0];
+  recurrenceRules2 = [(EKCalendarItem *)self recurrenceRules];
+  v18 = [recurrenceRules2 objectAtIndexedSubscript:0];
 
   v19 = MEMORY[0x1E695DEE8];
-  v20 = [(EKCalendarItem *)self timeZone];
-  v21 = [v19 CalGregorianCalendarForTimeZone:v20];
+  timeZone = [(EKCalendarItem *)self timeZone];
+  v21 = [v19 CalGregorianCalendarForTimeZone:timeZone];
 
-  v22 = [v18 dateComponents];
-  v23 = [v21 dateByAddingComponents:v22 toDate:v6 options:0];
+  dateComponents = [v18 dateComponents];
+  v23 = [v21 dateByAddingComponents:dateComponents toDate:distantPast options:0];
 
   v24 = objc_alloc_init(EKRecurrenceGenerator);
-  v25 = [v34 startDate];
-  v26 = [(EKCalendarItem *)self timeZone];
+  startDate4 = [masterEvent startDate];
+  timeZone2 = [(EKCalendarItem *)self timeZone];
   LOBYTE(v33) = 1;
-  v27 = [(EKRecurrenceGenerator *)v24 copyOccurrenceDatesWithEKEvent:self startDate:v25 endDate:v23 timeZone:v26 exceptionDates:0 limit:0 adjustDatesForAllDayEvents:v33];
+  v27 = [(EKRecurrenceGenerator *)v24 copyOccurrenceDatesWithEKEvent:self startDate:startDate4 endDate:v23 timeZone:timeZone2 exceptionDates:0 limit:0 adjustDatesForAllDayEvents:v33];
 
   v39 = 0;
   v40 = &v39;
@@ -18505,33 +18505,33 @@ void __36__EKEvent_seriesHasOutOfOrderEvents__block_invoke(uint64_t a1, uint64_t
 - (BOOL)isOutOfOrderWithEventInSeries
 {
   v56 = *MEMORY[0x1E69E9840];
-  v3 = [(EKCalendarItem *)self originalItem];
-  v4 = [(EKCalendarItem *)self recurrenceRules];
-  v5 = [v4 count];
+  selfCopy = [(EKCalendarItem *)self originalItem];
+  recurrenceRules = [(EKCalendarItem *)self recurrenceRules];
+  v5 = [recurrenceRules count];
 
-  if (v5 || v3)
+  if (v5 || selfCopy)
   {
-    if (!v3)
+    if (!selfCopy)
     {
-      v3 = self;
+      selfCopy = self;
     }
 
-    v7 = [(EKEvent *)self originalStartDate];
-    if (!v7)
+    originalStartDate = [(EKEvent *)self originalStartDate];
+    if (!originalStartDate)
     {
-      v8 = [(EKEvent *)self originalOccurrenceStartDate];
-      v7 = [v8 date];
+      originalOccurrenceStartDate = [(EKEvent *)self originalOccurrenceStartDate];
+      originalStartDate = [originalOccurrenceStartDate date];
     }
 
     [(EKEvent *)self startDate];
-    v45 = v44 = v3;
-    v9 = [(EKCalendarItem *)v3 detachedItems];
-    v10 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v9, "count")}];
+    v45 = v44 = selfCopy;
+    detachedItems = [(EKCalendarItem *)selfCopy detachedItems];
+    v10 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(detachedItems, "count")}];
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v11 = v9;
+    v11 = detachedItems;
     v12 = [v11 countByEnumeratingWithState:&v50 objects:v55 count:16];
     if (v12)
     {
@@ -18547,19 +18547,19 @@ void __36__EKEvent_seriesHasOutOfOrderEvents__block_invoke(uint64_t a1, uint64_t
           }
 
           v16 = *(*(&v50 + 1) + 8 * i);
-          v17 = [v16 originalStartDate];
-          v18 = [v17 compare:v7];
+          originalStartDate2 = [v16 originalStartDate];
+          v18 = [originalStartDate2 compare:originalStartDate];
           if (v18)
           {
             v19 = v18;
-            [v10 addObject:v17];
-            v20 = [v16 startDate];
-            v21 = [v20 compare:v45];
+            [v10 addObject:originalStartDate2];
+            startDate = [v16 startDate];
+            v21 = [startDate compare:v45];
 
             if (v21 != v19)
             {
               LOBYTE(v6) = 1;
-              v23 = v11;
+              exceptionDates = v11;
               v22 = v44;
               goto LABEL_37;
             }
@@ -18577,9 +18577,9 @@ void __36__EKEvent_seriesHasOutOfOrderEvents__block_invoke(uint64_t a1, uint64_t
     }
 
     v22 = v44;
-    v23 = [(EKCalendarItem *)v44 exceptionDates];
+    exceptionDates = [(EKCalendarItem *)v44 exceptionDates];
     v24 = v45;
-    v25 = [v45 isBeforeDate:v7];
+    v25 = [v45 isBeforeDate:originalStartDate];
     if (v25)
     {
       v26 = v45;
@@ -18587,32 +18587,32 @@ void __36__EKEvent_seriesHasOutOfOrderEvents__block_invoke(uint64_t a1, uint64_t
 
     else
     {
-      v26 = v7;
+      v26 = originalStartDate;
     }
 
     if (v25)
     {
-      v24 = v7;
+      v24 = originalStartDate;
     }
 
-    v17 = v26;
+    originalStartDate2 = v26;
     v43 = v24;
     v27 = objc_alloc_init(EKRecurrenceGenerator);
-    v28 = [(EKEvent *)v44 effectiveTimeZone];
-    v29 = [(EKCalendarItem *)v44 recurrenceRules];
-    v30 = [v29 firstObject];
+    effectiveTimeZone = [(EKEvent *)v44 effectiveTimeZone];
+    recurrenceRules2 = [(EKCalendarItem *)v44 recurrenceRules];
+    firstObject = [recurrenceRules2 firstObject];
 
     LOBYTE(v39) = 1;
-    v41 = v28;
+    v41 = effectiveTimeZone;
     v42 = v27;
-    v40 = v30;
-    v31 = v30;
+    v40 = firstObject;
+    v31 = firstObject;
     v32 = v43;
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v33 = [(EKRecurrenceGenerator *)v27 copyOccurrenceDatesWithEKEvent:v44 recurrenceRule:v31 startDate:v17 endDate:v43 timeZone:v28 exceptionDates:0 limit:0 adjustDatesForAllDayEvents:v39];
+    v33 = [(EKRecurrenceGenerator *)v27 copyOccurrenceDatesWithEKEvent:v44 recurrenceRule:v31 startDate:originalStartDate2 endDate:v43 timeZone:effectiveTimeZone exceptionDates:0 limit:0 adjustDatesForAllDayEvents:v39];
     v6 = [v33 countByEnumeratingWithState:&v46 objects:v54 count:16];
     if (v6)
     {
@@ -18627,7 +18627,7 @@ void __36__EKEvent_seriesHasOutOfOrderEvents__block_invoke(uint64_t a1, uint64_t
           }
 
           v36 = *(*(&v46 + 1) + 8 * j);
-          if (([v36 isEqualToDate:v7] & 1) == 0 && (objc_msgSend(v23, "containsObject:", v36) & 1) == 0 && !objc_msgSend(v10, "containsObject:", v36))
+          if (([v36 isEqualToDate:originalStartDate] & 1) == 0 && (objc_msgSend(exceptionDates, "containsObject:", v36) & 1) == 0 && !objc_msgSend(v10, "containsObject:", v36))
           {
             LOBYTE(v6) = 1;
             goto LABEL_35;
@@ -18663,15 +18663,15 @@ LABEL_37:
 - (BOOL)seriesHasOverlappingOrOnSameDayOrOutOfOrderEvents
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(EKCalendarItem *)self recurrenceRuleString];
+  recurrenceRuleString = [(EKCalendarItem *)self recurrenceRuleString];
 
-  if (v3)
+  if (recurrenceRuleString)
   {
-    v4 = [(EKEvent *)self masterEvent];
-    if ([v4 overlapsWithOrIsSameDayAsEventInSeries])
+    masterEvent = [(EKEvent *)self masterEvent];
+    if ([masterEvent overlapsWithOrIsSameDayAsEventInSeries])
     {
 LABEL_14:
-      v10 = 1;
+      seriesHasOutOfOrderEvents = 1;
     }
 
     else
@@ -18680,8 +18680,8 @@ LABEL_14:
       v16 = 0u;
       v13 = 0u;
       v14 = 0u;
-      v5 = [(EKCalendarItem *)self detachedItems];
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      detachedItems = [(EKCalendarItem *)self detachedItems];
+      v6 = [detachedItems countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         v7 = v6;
@@ -18692,7 +18692,7 @@ LABEL_14:
           {
             if (*v14 != v8)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(detachedItems);
             }
 
             if ([*(*(&v13 + 1) + 8 * i) overlapsWithOrIsSameDayAsEventInSeries])
@@ -18702,7 +18702,7 @@ LABEL_14:
             }
           }
 
-          v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+          v7 = [detachedItems countByEnumeratingWithState:&v13 objects:v17 count:16];
           if (v7)
           {
             continue;
@@ -18712,41 +18712,41 @@ LABEL_14:
         }
       }
 
-      v10 = [(EKEvent *)self seriesHasOutOfOrderEvents];
+      seriesHasOutOfOrderEvents = [(EKEvent *)self seriesHasOutOfOrderEvents];
     }
   }
 
   else
   {
-    v10 = 0;
+    seriesHasOutOfOrderEvents = 0;
   }
 
   v11 = *MEMORY[0x1E69E9840];
-  return v10;
+  return seriesHasOutOfOrderEvents;
 }
 
-- (BOOL)_requirementsToMoveOrCopyToCalendarHelperAllowedToMoveOrCopyEventFromCalendar:(id)a3 toCalendar:(id)a4
+- (BOOL)_requirementsToMoveOrCopyToCalendarHelperAllowedToMoveOrCopyEventFromCalendar:(id)calendar toCalendar:(id)toCalendar
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v7 allowsContentModifications] & 1) == 0)
+  calendarCopy = calendar;
+  toCalendarCopy = toCalendar;
+  if (([toCalendarCopy allowsContentModifications] & 1) == 0)
   {
-    v8 = [(EKEvent *)self suggestionInfo];
-    if (!v8)
+    suggestionInfo = [(EKEvent *)self suggestionInfo];
+    if (!suggestionInfo)
     {
       goto LABEL_17;
     }
 
-    v9 = v8;
-    v10 = [v7 isSuggestedEventCalendar];
+    v9 = suggestionInfo;
+    isSuggestedEventCalendar = [toCalendarCopy isSuggestedEventCalendar];
 
-    if (!v10)
+    if (!isSuggestedEventCalendar)
     {
       goto LABEL_17;
     }
   }
 
-  if ([v6 sharingStatus] == 2)
+  if ([calendarCopy sharingStatus] == 2)
   {
     if (![(EKEvent *)self privacyLevel])
     {
@@ -18756,24 +18756,24 @@ LABEL_14:
 
   else
   {
-    v11 = [v6 source];
-    if (([v11 isDelegate] & 1) == 0)
+    source = [calendarCopy source];
+    if (([source isDelegate] & 1) == 0)
     {
 
       goto LABEL_11;
     }
 
-    v12 = [(EKEvent *)self privacyLevel];
+    privacyLevel = [(EKEvent *)self privacyLevel];
 
-    if (!v12)
+    if (!privacyLevel)
     {
 LABEL_11:
-      v13 = [v7 constraints];
-      if ([v13 eventDurationConstrainedToRecurrenceInterval])
+      constraints = [toCalendarCopy constraints];
+      if ([constraints eventDurationConstrainedToRecurrenceInterval])
       {
-        v14 = [(EKEvent *)self durationOverlapsRecurrenceInterval];
+        durationOverlapsRecurrenceInterval = [(EKEvent *)self durationOverlapsRecurrenceInterval];
 
-        if (v14)
+        if (durationOverlapsRecurrenceInterval)
         {
           goto LABEL_17;
         }
@@ -18783,12 +18783,12 @@ LABEL_11:
       {
       }
 
-      v15 = [v7 constraints];
-      if ([v15 occurrencesMustOccurOnSeparateDays])
+      constraints2 = [toCalendarCopy constraints];
+      if ([constraints2 occurrencesMustOccurOnSeparateDays])
       {
-        v16 = [(EKEvent *)self seriesHasOverlappingOrOnSameDayOrOutOfOrderEvents];
+        seriesHasOverlappingOrOnSameDayOrOutOfOrderEvents = [(EKEvent *)self seriesHasOverlappingOrOnSameDayOrOutOfOrderEvents];
 
-        if (v16)
+        if (seriesHasOverlappingOrOnSameDayOrOutOfOrderEvents)
         {
           goto LABEL_17;
         }
@@ -18819,8 +18819,8 @@ LABEL_18:
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v3 = [(EKCalendarItem *)self alarms];
-    v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    alarms = [(EKCalendarItem *)self alarms];
+    v4 = [alarms countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v4)
     {
       v5 = *v11;
@@ -18830,19 +18830,19 @@ LABEL_18:
         {
           if (*v11 != v5)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(alarms);
           }
 
-          v7 = [*(*(&v10 + 1) + 8 * i) absoluteDate];
+          absoluteDate = [*(*(&v10 + 1) + 8 * i) absoluteDate];
 
-          if (v7)
+          if (absoluteDate)
           {
             LOBYTE(v4) = 1;
             goto LABEL_13;
           }
         }
 
-        v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v4 = [alarms countByEnumeratingWithState:&v10 objects:v14 count:16];
         if (v4)
         {
           continue;
@@ -18868,52 +18868,52 @@ LABEL_13:
 {
   if ([(EKEvent *)self isAllDay]|| ([(EKCalendarItem *)self timeZone], v3 = objc_claimAutoreleasedReturnValue(), v3, !v3))
   {
-    v6 = [MEMORY[0x1E695DEE8] CalGregorianGMTCalendar];
+    calGregorianGMTCalendar = [MEMORY[0x1E695DEE8] CalGregorianGMTCalendar];
   }
 
   else
   {
     v4 = MEMORY[0x1E695DEE8];
-    v5 = [(EKCalendarItem *)self timeZone];
-    v6 = [v4 CalGregorianCalendarForTimeZone:v5];
+    timeZone = [(EKCalendarItem *)self timeZone];
+    calGregorianGMTCalendar = [v4 CalGregorianCalendarForTimeZone:timeZone];
   }
 
-  return v6;
+  return calGregorianGMTCalendar;
 }
 
-- (BOOL)_suggestedStartDateHelperRecurrenceRuleRequiresExpansion:(id)a3 forDate:(id)a4
+- (BOOL)_suggestedStartDateHelperRecurrenceRuleRequiresExpansion:(id)expansion forDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 frequency] == 3)
+  expansionCopy = expansion;
+  dateCopy = date;
+  if ([expansionCopy frequency] == 3)
   {
-    v8 = [v6 daysOfTheYear];
-    if ([v8 count])
+    daysOfTheYear = [expansionCopy daysOfTheYear];
+    if ([daysOfTheYear count])
     {
     }
 
     else
     {
-      v11 = [v6 monthsOfTheYear];
-      v12 = [v11 count];
+      monthsOfTheYear = [expansionCopy monthsOfTheYear];
+      v12 = [monthsOfTheYear count];
 
       if (v12)
       {
-        v13 = [(EKEvent *)self _nsCalendar];
-        v14 = [v13 component:8 fromDate:v7];
+        _nsCalendar = [(EKEvent *)self _nsCalendar];
+        v14 = [_nsCalendar component:8 fromDate:dateCopy];
 
-        v10 = [v6 monthsOfTheYear];
-        v15 = [MEMORY[0x1E696AD98] numberWithInteger:v14];
-        v9 = [v10 containsObject:v15] ^ 1;
+        monthsOfTheYear2 = [expansionCopy monthsOfTheYear];
+        daysOfTheWeek = [MEMORY[0x1E696AD98] numberWithInteger:v14];
+        v9 = [monthsOfTheYear2 containsObject:daysOfTheWeek] ^ 1;
         goto LABEL_22;
       }
     }
   }
 
-  if (([v6 isPinnedToEndOfFrequency] & 1) == 0)
+  if (([expansionCopy isPinnedToEndOfFrequency] & 1) == 0)
   {
-    v10 = [v6 daysOfTheMonth];
-    if ([v10 count])
+    monthsOfTheYear2 = [expansionCopy daysOfTheMonth];
+    if ([monthsOfTheYear2 count])
     {
       LOBYTE(v9) = 1;
 LABEL_23:
@@ -18921,40 +18921,40 @@ LABEL_23:
       goto LABEL_24;
     }
 
-    v15 = [v6 daysOfTheWeek];
-    if ([v15 count])
+    daysOfTheWeek = [expansionCopy daysOfTheWeek];
+    if ([daysOfTheWeek count])
     {
       LOBYTE(v9) = 1;
     }
 
     else
     {
-      v16 = [v6 daysOfTheYear];
-      if ([v16 count])
+      daysOfTheYear2 = [expansionCopy daysOfTheYear];
+      if ([daysOfTheYear2 count])
       {
         LOBYTE(v9) = 1;
       }
 
       else
       {
-        v17 = [v6 monthsOfTheYear];
-        if ([v17 count])
+        monthsOfTheYear3 = [expansionCopy monthsOfTheYear];
+        if ([monthsOfTheYear3 count])
         {
           LOBYTE(v9) = 1;
         }
 
         else
         {
-          v18 = [v6 setPositions];
-          if ([v18 count])
+          setPositions = [expansionCopy setPositions];
+          if ([setPositions count])
           {
             LOBYTE(v9) = 1;
           }
 
           else
           {
-            v19 = [v6 weeksOfTheYear];
-            LOBYTE(v9) = [v19 count] != 0;
+            weeksOfTheYear = [expansionCopy weeksOfTheYear];
+            LOBYTE(v9) = [weeksOfTheYear count] != 0;
           }
         }
       }
@@ -18971,109 +18971,109 @@ LABEL_24:
   return v9;
 }
 
-- (id)suggestedStartDateForCurrentRecurrenceRuleWithSimulatedNowDate:(id)a3
+- (id)suggestedStartDateForCurrentRecurrenceRuleWithSimulatedNowDate:(id)date
 {
-  v4 = a3;
-  v5 = [(EKEvent *)self startDate];
-  v6 = [(EKCalendarItem *)self recurrenceRules];
-  v7 = [v6 firstObject];
+  dateCopy = date;
+  startDate = [(EKEvent *)self startDate];
+  recurrenceRules = [(EKCalendarItem *)self recurrenceRules];
+  firstObject = [recurrenceRules firstObject];
 
-  if (v7 && [(EKEvent *)self _suggestedStartDateHelperRecurrenceRuleRequiresExpansion:v7 forDate:v5])
+  if (firstObject && [(EKEvent *)self _suggestedStartDateHelperRecurrenceRuleRequiresExpansion:firstObject forDate:startDate])
   {
-    if ([v7 interval] != 1)
+    if ([firstObject interval] != 1)
     {
-      v8 = [v7 copy];
+      v8 = [firstObject copy];
 
       [v8 setInterval:1];
-      v7 = v8;
+      firstObject = v8;
     }
 
-    v9 = [(EKEvent *)self _nsCalendar];
-    v10 = [v9 copy];
+    _nsCalendar = [(EKEvent *)self _nsCalendar];
+    v10 = [_nsCalendar copy];
 
-    [v10 setFirstWeekday:{objc_msgSend(v7, "firstDayOfTheWeek")}];
-    if (v4)
+    [v10 setFirstWeekday:{objc_msgSend(firstObject, "firstDayOfTheWeek")}];
+    if (dateCopy)
     {
-      v11 = v4;
+      date = dateCopy;
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
     }
 
-    v12 = v11;
+    v12 = date;
     v13 = MEMORY[0x1E695DF00];
-    v14 = [(EKEvent *)self startDate];
+    startDate2 = [(EKEvent *)self startDate];
     v29 = v12;
-    v15 = [v13 dateWithDatePartFromDate:v12 timePartFromDate:v14 inCalendar:v10];
+    v15 = [v13 dateWithDatePartFromDate:v12 timePartFromDate:startDate2 inCalendar:v10];
 
-    v16 = [(EKEvent *)self startDate];
-    LODWORD(v12) = [v16 isSameWeekAsDate:v15 inCalendar:v10];
+    startDate3 = [(EKEvent *)self startDate];
+    LODWORD(v12) = [startDate3 isSameWeekAsDate:v15 inCalendar:v10];
 
-    v17 = [(EKEvent *)self startDate];
-    v18 = v17;
+    startDate4 = [(EKEvent *)self startDate];
+    startDate6 = startDate4;
     if (v12)
     {
-      if ([v17 isBeforeDate:v15])
+      if ([startDate4 isBeforeDate:v15])
       {
-        v19 = [(EKEvent *)self startDate];
+        startDate5 = [(EKEvent *)self startDate];
       }
 
       else
       {
-        v19 = v15;
+        startDate5 = v15;
       }
     }
 
     else
     {
-      v20 = [v17 isAfterDate:v15];
+      v20 = [startDate4 isAfterDate:v15];
 
-      v18 = [(EKEvent *)self startDate];
+      startDate6 = [(EKEvent *)self startDate];
       if (!v20)
       {
 LABEL_15:
         v22 = MEMORY[0x1E69930C8];
-        v23 = [(EKCalendarItem *)self timeZone];
-        v24 = [v22 calendarDateWithDate:v18 timeZone:v23];
+        timeZone = [(EKCalendarItem *)self timeZone];
+        v24 = [v22 calendarDateWithDate:startDate6 timeZone:timeZone];
 
         v25 = objc_alloc_init(EKRecurrenceGenerator);
         [(CalRecurrenceGenerator *)v25 setOnlyIncludeInitialDateIfItMatchesRecurrence:1];
-        v26 = [(EKCalendarItem *)self recurrenceRules];
-        v27 = [(EKRecurrenceGenerator *)v25 nextOccurrenceDateWithEKRecurrences:v26 forCalendarItem:self initialDate:v24 afterDate:v24 inclusive:1];
+        recurrenceRules2 = [(EKCalendarItem *)self recurrenceRules];
+        v27 = [(EKRecurrenceGenerator *)v25 nextOccurrenceDateWithEKRecurrences:recurrenceRules2 forCalendarItem:self initialDate:v24 afterDate:v24 inclusive:1];
 
-        v5 = v27;
+        startDate = v27;
         goto LABEL_16;
       }
 
-      v19 = [v18 roundToCurrentWeekInCalendar:v10 withFirstWeekdayIndex:{objc_msgSend(v7, "firstDayOfTheWeek")}];
+      startDate5 = [startDate6 roundToCurrentWeekInCalendar:v10 withFirstWeekdayIndex:{objc_msgSend(firstObject, "firstDayOfTheWeek")}];
     }
 
-    v21 = v19;
+    v21 = startDate5;
 
-    v18 = v21;
+    startDate6 = v21;
     goto LABEL_15;
   }
 
 LABEL_16:
 
-  return v5;
+  return startDate;
 }
 
-- (BOOL)_isValidAttendee:(id)a3 forCalendar:(id)a4 selfAttendeeIsValid:(BOOL)a5
+- (BOOL)_isValidAttendee:(id)attendee forCalendar:(id)calendar selfAttendeeIsValid:(BOOL)valid
 {
-  v5 = a5;
+  validCopy = valid;
   v42 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!v5 || (-[EKCalendarItem selfAttendee](self, "selfAttendee"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 isEqualToParticipant:v8], v10, (v11 & 1) == 0))
+  attendeeCopy = attendee;
+  calendarCopy = calendar;
+  if (!validCopy || (-[EKCalendarItem selfAttendee](self, "selfAttendee"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 isEqualToParticipant:attendeeCopy], v10, (v11 & 1) == 0))
   {
-    v13 = [v8 URL];
-    v14 = [MEMORY[0x1E695DFF8] URLForNoMail];
-    v15 = [v13 isEqual:v14];
+    v13 = [attendeeCopy URL];
+    uRLForNoMail = [MEMORY[0x1E695DFF8] URLForNoMail];
+    v15 = [v13 isEqual:uRLForNoMail];
 
-    if (v15 & 1) != 0 || ([v9 ownerIdentityAddress], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v13, "isEqual:", v16), v16, (v17))
+    if (v15 & 1) != 0 || ([calendarCopy ownerIdentityAddress], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v13, "isEqual:", v16), v16, (v17))
     {
       v12 = 0;
 LABEL_31:
@@ -19081,12 +19081,12 @@ LABEL_31:
       goto LABEL_32;
     }
 
-    v18 = [v8 emailAddress];
-    v19 = [v9 ownerIdentityAddress];
-    v20 = [v19 resourceSpecifier];
+    emailAddress = [attendeeCopy emailAddress];
+    ownerIdentityAddress = [calendarCopy ownerIdentityAddress];
+    resourceSpecifier = [ownerIdentityAddress resourceSpecifier];
 
-    v21 = [v9 ownerIdentityEmail];
-    if ([v18 isEqual:v21])
+    ownerIdentityEmail = [calendarCopy ownerIdentityEmail];
+    if ([emailAddress isEqual:ownerIdentityEmail])
     {
 
 LABEL_10:
@@ -19096,35 +19096,35 @@ LABEL_30:
       goto LABEL_31;
     }
 
-    v22 = [v18 isEqual:v20];
+    v22 = [emailAddress isEqual:resourceSpecifier];
 
     if (v22)
     {
       goto LABEL_10;
     }
 
-    v23 = [v8 phoneNumber];
-    v24 = [v9 ownerIdentityPhoneNumber];
-    if ([v23 isEqual:v24])
+    phoneNumber = [attendeeCopy phoneNumber];
+    ownerIdentityPhoneNumber = [calendarCopy ownerIdentityPhoneNumber];
+    if ([phoneNumber isEqual:ownerIdentityPhoneNumber])
     {
     }
 
     else
     {
-      v25 = [v23 isEqual:v20];
+      v25 = [phoneNumber isEqual:resourceSpecifier];
 
       if ((v25 & 1) == 0)
       {
-        v36 = [v13 absoluteString];
+        absoluteString = [v13 absoluteString];
         v37 = 0u;
         v38 = 0u;
         v39 = 0u;
         v40 = 0u;
-        v26 = [v9 source];
-        v27 = [v26 ownerAddresses];
+        source = [calendarCopy source];
+        ownerAddresses = [source ownerAddresses];
 
-        obj = v27;
-        v28 = [v27 countByEnumeratingWithState:&v37 objects:v41 count:16];
+        obj = ownerAddresses;
+        v28 = [ownerAddresses countByEnumeratingWithState:&v37 objects:v41 count:16];
         if (v28)
         {
           v29 = v28;
@@ -19139,7 +19139,7 @@ LABEL_30:
               }
 
               v32 = *(*(&v37 + 1) + 8 * i);
-              if ([v18 isEqual:v32] & 1) != 0 || (objc_msgSend(v23, "isEqual:", v32) & 1) != 0 || (objc_msgSend(v36, "isEqual:", v32))
+              if ([emailAddress isEqual:v32] & 1) != 0 || (objc_msgSend(phoneNumber, "isEqual:", v32) & 1) != 0 || (objc_msgSend(absoluteString, "isEqual:", v32))
               {
                 v12 = 0;
                 goto LABEL_28;
@@ -19184,16 +19184,16 @@ LABEL_32:
 - (id)attendeesNotIncludingOrganizer
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(EKCalendarItem *)self attendees];
-  v4 = [(EKCalendarItem *)self organizer];
+  attendees = [(EKCalendarItem *)self attendees];
+  organizer = [(EKCalendarItem *)self organizer];
 
-  if (v4)
+  if (organizer)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = v3;
+    v5 = attendees;
     v6 = [v5 countByEnumeratingWithState:&v16 objects:v21 count:16];
     if (v6)
     {
@@ -19234,7 +19234,7 @@ LABEL_32:
 
   else
   {
-    v11 = v3;
+    v11 = attendees;
   }
 
   v13 = v11;
@@ -19245,16 +19245,16 @@ LABEL_14:
   return v13;
 }
 
-- (BOOL)isAttendeeSameAsOrganizer:(id)a3
+- (BOOL)isAttendeeSameAsOrganizer:(id)organizer
 {
-  v4 = a3;
-  if (v4)
+  organizerCopy = organizer;
+  if (organizerCopy)
   {
-    v5 = [(EKCalendarItem *)self organizer];
-    if (v5)
+    organizer = [(EKCalendarItem *)self organizer];
+    if (organizer)
     {
-      v6 = [(EKCalendarItem *)self organizer];
-      v7 = [v6 isEqualToParticipant:v4];
+      organizer2 = [(EKCalendarItem *)self organizer];
+      v7 = [organizer2 isEqualToParticipant:organizerCopy];
     }
 
     else
@@ -19274,26 +19274,26 @@ LABEL_14:
 - (id)attendeesNotIncludingOrganizerOrLocationsOrResources
 {
   v3 = objc_alloc(MEMORY[0x1E695DF70]);
-  v4 = [(EKCalendarItem *)self attendees];
-  v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  attendees = [(EKCalendarItem *)self attendees];
+  v5 = [v3 initWithCapacity:{objc_msgSend(attendees, "count")}];
 
-  v6 = [(EKCalendarItem *)self organizer];
-  if (([v6 isNew] & 1) != 0 || (v12 = objc_msgSend(v6, "existsInStore"), !v6) || v12)
+  organizer = [(EKCalendarItem *)self organizer];
+  if (([organizer isNew] & 1) != 0 || (v12 = objc_msgSend(organizer, "existsInStore"), !organizer) || v12)
   {
-    v7 = [(EKCalendarItem *)self attendees];
-    v8 = [(EKObject *)self eventStore];
-    v9 = [EKObject objectsIDsExistingInStoreFromObjects:v7 eventStore:v8];
+    attendees2 = [(EKCalendarItem *)self attendees];
+    eventStore = [(EKObject *)self eventStore];
+    v9 = [EKObject objectsIDsExistingInStoreFromObjects:attendees2 eventStore:eventStore];
 
-    v10 = [(EKCalendarItem *)self attendees];
+    attendees3 = [(EKCalendarItem *)self attendees];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __63__EKEvent_attendeesNotIncludingOrganizerOrLocationsOrResources__block_invoke;
     v15[3] = &unk_1E77FF320;
     v16 = v9;
-    v17 = v6;
+    v17 = organizer;
     v18 = v5;
     v11 = v9;
-    [v10 enumerateObjectsUsingBlock:v15];
+    [attendees3 enumerateObjectsUsingBlock:v15];
   }
 
   v13 = [MEMORY[0x1E695DEC8] arrayWithArray:v5];
@@ -19336,32 +19336,32 @@ LABEL_12:
 LABEL_8:
 }
 
-- (void)prefetchAttendeesWithAdditionalProperties:(id)a3
+- (void)prefetchAttendeesWithAdditionalProperties:(id)properties
 {
-  v8 = a3;
+  propertiesCopy = properties;
   v4 = +[EKPersistentAttendee defaultPropertiesToLoad];
   v5 = v4;
-  if ([v8 count])
+  if ([propertiesCopy count])
   {
-    v5 = [v8 arrayByAddingObjectsFromArray:v4];
+    v5 = [propertiesCopy arrayByAddingObjectsFromArray:v4];
   }
 
-  v6 = [(EKObject *)self eventStore];
-  v7 = [(EKCalendarItem *)self attendeesRaw];
-  [v6 ensureLoadedProperties:v5 forObjects:v7];
+  eventStore = [(EKObject *)self eventStore];
+  attendeesRaw = [(EKCalendarItem *)self attendeesRaw];
+  [eventStore ensureLoadedProperties:v5 forObjects:attendeesRaw];
 }
 
-- (BOOL)_requirementsToMoveToCalendarHelperAlterationsRequiredToMoveEventFromCalendar:(id)a3 toCalendar:(id)a4
+- (BOOL)_requirementsToMoveToCalendarHelperAlterationsRequiredToMoveEventFromCalendar:(id)calendar toCalendar:(id)toCalendar
 {
   v54 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  calendarCopy = calendar;
+  toCalendarCopy = toCalendar;
   if ([(EKEvent *)self isPrivacySet])
   {
-    v8 = [v7 source];
-    if ([v8 supportsPrivateEvents])
+    source = [toCalendarCopy source];
+    if ([source supportsPrivateEvents])
     {
-      v9 = [v7 sharingStatus] == 2;
+      v9 = [toCalendarCopy sharingStatus] == 2;
     }
 
     else
@@ -19375,53 +19375,53 @@ LABEL_8:
     v9 = 0;
   }
 
-  v10 = [(EKCalendarItem *)self alarms];
-  if ([v10 count] < 2)
+  alarms = [(EKCalendarItem *)self alarms];
+  if ([alarms count] < 2)
   {
     v11 = 0;
   }
 
   else
   {
-    v11 = [v7 supportsMultipleAlarms] ^ 1;
+    v11 = [toCalendarCopy supportsMultipleAlarms] ^ 1;
   }
 
   v12 = v11 | v9;
 
   if ([(EKEvent *)self _hasAbsoluteAlarms])
   {
-    v13 = [v7 constraints];
-    v12 |= [v13 supportsAlarmTriggerDates] ^ 1;
+    constraints = [toCalendarCopy constraints];
+    v12 |= [constraints supportsAlarmTriggerDates] ^ 1;
   }
 
   if ([(EKCalendarItem *)self hasRecurrenceRules])
   {
-    v14 = [v7 constraints];
-    if ([v14 requiresOccurrencesConformToRecurrenceRule])
+    constraints2 = [toCalendarCopy constraints];
+    if ([constraints2 requiresOccurrencesConformToRecurrenceRule])
     {
-      v15 = [(EKEvent *)self startDate];
-      v16 = [(EKEvent *)self suggestedStartDateForCurrentRecurrenceRule];
-      v12 |= [v15 isEqualToDate:v16] ^ 1;
+      startDate = [(EKEvent *)self startDate];
+      suggestedStartDateForCurrentRecurrenceRule = [(EKEvent *)self suggestedStartDateForCurrentRecurrenceRule];
+      v12 |= [startDate isEqualToDate:suggestedStartDateForCurrentRecurrenceRule] ^ 1;
     }
   }
 
   v17 = [(EKEvent *)self URL];
   if (v17)
   {
-    v18 = [v7 constraints];
-    v19 = [v18 supportsURLField] ^ 1;
+    constraints3 = [toCalendarCopy constraints];
+    v19 = [constraints3 supportsURLField] ^ 1;
 
     v12 |= v19;
   }
 
-  v20 = [v6 source];
-  v21 = [v20 sourceIdentifier];
-  v22 = [v7 source];
-  v23 = [v22 sourceIdentifier];
-  if (([v21 isEqualToString:v23] & 1) == 0)
+  source2 = [calendarCopy source];
+  sourceIdentifier = [source2 sourceIdentifier];
+  source3 = [toCalendarCopy source];
+  sourceIdentifier2 = [source3 sourceIdentifier];
+  if (([sourceIdentifier isEqualToString:sourceIdentifier2] & 1) == 0)
   {
-    v24 = [(EKCalendarItem *)self attachments];
-    v25 = [v24 count];
+    attachments = [(EKCalendarItem *)self attachments];
+    v25 = [attachments count];
 
     if (v25)
     {
@@ -19429,17 +19429,17 @@ LABEL_8:
     }
   }
 
-  v26 = [(EKCalendarItem *)self timeZone];
-  if (v26)
+  timeZone = [(EKCalendarItem *)self timeZone];
+  if (timeZone)
   {
   }
 
   else
   {
-    v27 = [v7 constraints];
-    v28 = [v27 supportsFloatingTimeZone];
+    constraints4 = [toCalendarCopy constraints];
+    supportsFloatingTimeZone = [constraints4 supportsFloatingTimeZone];
 
-    if ((v28 & 1) == 0)
+    if ((supportsFloatingTimeZone & 1) == 0)
     {
       v12 |= ![(EKEvent *)self isAllDay];
     }
@@ -19447,11 +19447,11 @@ LABEL_8:
 
   if ([(EKCalendarItem *)self hasAttendees])
   {
-    v29 = [v6 source];
-    v30 = [v29 sourceIdentifier];
-    v31 = [v7 source];
-    v32 = [v31 sourceIdentifier];
-    v33 = [v30 isEqualToString:v32];
+    source4 = [calendarCopy source];
+    sourceIdentifier3 = [source4 sourceIdentifier];
+    source5 = [toCalendarCopy source];
+    sourceIdentifier4 = [source5 sourceIdentifier];
+    v33 = [sourceIdentifier3 isEqualToString:sourceIdentifier4];
 
     if ((v33 & 1) == 0)
     {
@@ -19459,8 +19459,8 @@ LABEL_8:
       v52 = 0u;
       v49 = 0u;
       v50 = 0u;
-      v34 = [(EKCalendarItem *)self attendees];
-      v35 = [v34 countByEnumeratingWithState:&v49 objects:v53 count:16];
+      attendees = [(EKCalendarItem *)self attendees];
+      v35 = [attendees countByEnumeratingWithState:&v49 objects:v53 count:16];
       if (v35)
       {
         v36 = v35;
@@ -19471,17 +19471,17 @@ LABEL_8:
           {
             if (*v50 != v37)
             {
-              objc_enumerationMutation(v34);
+              objc_enumerationMutation(attendees);
             }
 
-            if (![(EKEvent *)self isValidAttendee:*(*(&v49 + 1) + 8 * i) forCalendar:v7])
+            if (![(EKEvent *)self isValidAttendee:*(*(&v49 + 1) + 8 * i) forCalendar:toCalendarCopy])
             {
               LOBYTE(v12) = 1;
               goto LABEL_37;
             }
           }
 
-          v36 = [v34 countByEnumeratingWithState:&v49 objects:v53 count:16];
+          v36 = [attendees countByEnumeratingWithState:&v49 objects:v53 count:16];
           if (v36)
           {
             continue;
@@ -19494,43 +19494,43 @@ LABEL_8:
 LABEL_37:
     }
 
-    if (![v6 type] && objc_msgSend(v7, "type") != 2 && objc_msgSend(v7, "type"))
+    if (![calendarCopy type] && objc_msgSend(toCalendarCopy, "type") != 2 && objc_msgSend(toCalendarCopy, "type"))
     {
-      v39 = [(EKCalendarItem *)self organizer];
-      LOBYTE(v12) = v12 | ([v39 scheduleAgent] != 1);
+      organizer = [(EKCalendarItem *)self organizer];
+      LOBYTE(v12) = v12 | ([organizer scheduleAgent] != 1);
     }
   }
 
   if ([(EKCalendarItem *)self hasRecurrenceRules])
   {
-    v40 = [(EKCalendarItem *)self recurrenceRules];
-    v41 = [v40 firstObject];
+    recurrenceRules = [(EKCalendarItem *)self recurrenceRules];
+    firstObject = [recurrenceRules firstObject];
 
-    if ([v41 frequency] == 2)
+    if ([firstObject frequency] == 2)
     {
-      v42 = [v41 daysOfTheMonth];
-      if ([v42 count] >= 2)
+      daysOfTheMonth = [firstObject daysOfTheMonth];
+      if ([daysOfTheMonth count] >= 2)
       {
-        v43 = [v7 constraints];
-        LOBYTE(v12) = v12 | [v43 prohibitsMultipleDaysInMonthlyRecurrence];
+        constraints5 = [toCalendarCopy constraints];
+        LOBYTE(v12) = v12 | [constraints5 prohibitsMultipleDaysInMonthlyRecurrence];
       }
     }
 
     v12 &= 1u;
-    if ([v41 frequency] == 3)
+    if ([firstObject frequency] == 3)
     {
-      v44 = [v41 monthsOfTheYear];
-      if ([v44 count] >= 2)
+      monthsOfTheYear = [firstObject monthsOfTheYear];
+      if ([monthsOfTheYear count] >= 2)
       {
-        v45 = [v7 constraints];
-        v12 |= [v45 prohibitsMultipleMonthsInYearlyRecurrence];
+        constraints6 = [toCalendarCopy constraints];
+        v12 |= [constraints6 prohibitsMultipleMonthsInYearlyRecurrence];
       }
     }
 
-    if ([v41 frequency] == 3 && objc_msgSend(v41, "interval") >= 2)
+    if ([firstObject frequency] == 3 && objc_msgSend(firstObject, "interval") >= 2)
     {
-      v46 = [v7 constraints];
-      LOBYTE(v12) = v12 | [v46 prohibitsYearlyRecurrenceInterval];
+      constraints7 = [toCalendarCopy constraints];
+      LOBYTE(v12) = v12 | [constraints7 prohibitsYearlyRecurrenceInterval];
     }
   }
 
@@ -19538,23 +19538,23 @@ LABEL_37:
   return v12 & 1;
 }
 
-+ (BOOL)_calendarsAreSharedToMeInSameSourceAndHaveSameOwner:(id)a3
++ (BOOL)_calendarsAreSharedToMeInSameSourceAndHaveSameOwner:(id)owner
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  ownerCopy = owner;
+  if ([ownerCopy count])
   {
-    v4 = [v3 objectAtIndexedSubscript:0];
-    v5 = [v4 source];
+    v4 = [ownerCopy objectAtIndexedSubscript:0];
+    source = [v4 source];
 
-    v6 = [v3 objectAtIndexedSubscript:0];
-    v7 = [v6 sharedOwnerAddress];
+    v6 = [ownerCopy objectAtIndexedSubscript:0];
+    sharedOwnerAddress = [v6 sharedOwnerAddress];
 
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v8 = v3;
+    v8 = ownerCopy;
     v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v9)
     {
@@ -19575,13 +19575,13 @@ LABEL_37:
             goto LABEL_13;
           }
 
-          v14 = [v13 source];
-          v15 = [v5 isEqual:v14];
+          source2 = [v13 source];
+          v15 = [source isEqual:source2];
 
           if (v15)
           {
-            v16 = [v13 sharedOwnerAddress];
-            v17 = [v7 isEqualToString:v16];
+            sharedOwnerAddress2 = [v13 sharedOwnerAddress];
+            v17 = [sharedOwnerAddress isEqualToString:sharedOwnerAddress2];
 
             if (v17)
             {
@@ -19622,37 +19622,37 @@ LABEL_16:
   return v18;
 }
 
-- (BOOL)_requirementsToMoveToCalendarHelperDuplicationRequiredToMoveEventFromCalendar:(id)a3 toCalendar:(id)a4
+- (BOOL)_requirementsToMoveToCalendarHelperDuplicationRequiredToMoveEventFromCalendar:(id)calendar toCalendar:(id)toCalendar
 {
   v25[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 allowsContentModifications])
+  calendarCopy = calendar;
+  toCalendarCopy = toCalendar;
+  if ([calendarCopy allowsContentModifications])
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [v6 isSuggestedEventCalendar] ^ 1;
+    v8 = [calendarCopy isSuggestedEventCalendar] ^ 1;
   }
 
   if ([(EKCalendarItem *)self hasAttendees])
   {
-    if ([v6 type] && (-[EKCalendarItem organizer](self, "organizer"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "scheduleAgent"), v9, v10 != 1))
+    if ([calendarCopy type] && (-[EKCalendarItem organizer](self, "organizer"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "scheduleAgent"), v9, v10 != 1))
     {
       if ([(EKEvent *)self isCurrentUserInvitedAttendee]|| ![(EKEvent *)self currentUserMayActAsOrganizer])
       {
-        if ([v6 sharingStatus] == 2 || objc_msgSend(v7, "sharingStatus") == 2)
+        if ([calendarCopy sharingStatus] == 2 || objc_msgSend(toCalendarCopy, "sharingStatus") == 2)
         {
-          v25[0] = v6;
-          v25[1] = v7;
+          v25[0] = calendarCopy;
+          v25[1] = toCalendarCopy;
           v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:2];
           v15 = ![EKEvent _calendarsAreSharedToMeInSameSourceAndHaveSameOwner:v14];
 
-          if ([v6 sharingStatus] == 2)
+          if ([calendarCopy sharingStatus] == 2)
           {
-            v16 = [v6 allowsScheduling] ^ 1;
+            v16 = [calendarCopy allowsScheduling] ^ 1;
           }
 
           else
@@ -19661,9 +19661,9 @@ LABEL_16:
           }
 
           v17 = v16 | v15;
-          if ([v7 sharingStatus] == 2)
+          if ([toCalendarCopy sharingStatus] == 2)
           {
-            v18 = [v7 allowsScheduling] ^ 1;
+            v18 = [toCalendarCopy allowsScheduling] ^ 1;
           }
 
           else
@@ -19676,20 +19676,20 @@ LABEL_16:
 
         else
         {
-          v19 = [v6 source];
-          v20 = [v19 sourceIdentifier];
-          v21 = [v7 source];
-          v22 = [v21 sourceIdentifier];
-          v8 |= [v20 isEqualToString:v22] ^ 1;
+          source = [calendarCopy source];
+          sourceIdentifier = [source sourceIdentifier];
+          source2 = [toCalendarCopy source];
+          sourceIdentifier2 = [source2 sourceIdentifier];
+          v8 |= [sourceIdentifier isEqualToString:sourceIdentifier2] ^ 1;
         }
       }
     }
 
     else if ([(EKEvent *)self isCurrentUserInvitedAttendee])
     {
-      v11 = [v7 sharingStatus];
-      v12 = [v7 type];
-      if (v11 == 2 || v12 == 2)
+      sharingStatus = [toCalendarCopy sharingStatus];
+      type = [toCalendarCopy type];
+      if (sharingStatus == 2 || type == 2)
       {
         LOBYTE(v8) = 1;
       }
@@ -19700,13 +19700,13 @@ LABEL_16:
   return v8;
 }
 
-- (BOOL)_requirementsToMoveToCalendarHelperNeedToRemoveOriginalToMoveEventFromCalendar:(id)a3 toCalendar:(id)a4
+- (BOOL)_requirementsToMoveToCalendarHelperNeedToRemoveOriginalToMoveEventFromCalendar:(id)calendar toCalendar:(id)toCalendar
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(EKCalendarItem *)self organizer];
-  if ([v8 scheduleAgent] == 1)
+  calendarCopy = calendar;
+  toCalendarCopy = toCalendar;
+  organizer = [(EKCalendarItem *)self organizer];
+  if ([organizer scheduleAgent] == 1)
   {
 
 LABEL_9:
@@ -19714,25 +19714,25 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v9 = [v6 type];
+  type = [calendarCopy type];
 
-  if (!v9 || ![(EKCalendarItem *)self hasAttendees])
+  if (!type || ![(EKCalendarItem *)self hasAttendees])
   {
     goto LABEL_9;
   }
 
-  v19[0] = v6;
-  v19[1] = v7;
+  v19[0] = calendarCopy;
+  v19[1] = toCalendarCopy;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
-  v11 = [v6 source];
-  v12 = [v11 sourceIdentifier];
-  v13 = [v7 source];
-  v14 = [v13 sourceIdentifier];
-  v15 = [v12 isEqualToString:v14];
+  source = [calendarCopy source];
+  sourceIdentifier = [source sourceIdentifier];
+  source2 = [toCalendarCopy source];
+  sourceIdentifier2 = [source2 sourceIdentifier];
+  v15 = [sourceIdentifier isEqualToString:sourceIdentifier2];
 
   if (v15)
   {
-    if ([v6 sharingStatus] == 2 || objc_msgSend(v7, "sharingStatus") == 2)
+    if ([calendarCopy sharingStatus] == 2 || objc_msgSend(toCalendarCopy, "sharingStatus") == 2)
     {
       v16 = ![EKEvent _calendarsAreSharedToMeInSameSourceAndHaveSameOwner:v10];
     }
@@ -19753,46 +19753,46 @@ LABEL_10:
   return v16;
 }
 
-- (BOOL)_requirementsToMoveToCalendarHelperReinviteAttendeesRequiredToMoveEventFromCalendar:(id)a3 toCalendar:(id)a4
+- (BOOL)_requirementsToMoveToCalendarHelperReinviteAttendeesRequiredToMoveEventFromCalendar:(id)calendar toCalendar:(id)toCalendar
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  calendarCopy = calendar;
+  toCalendarCopy = toCalendar;
   if (![(EKCalendarItem *)self hasAttendees]|| ![(EKEvent *)self currentUserMayActAsOrganizer])
   {
     goto LABEL_17;
   }
 
-  v8 = [(EKCalendarItem *)self organizer];
-  if ([v8 scheduleAgent] != 1)
+  organizer = [(EKCalendarItem *)self organizer];
+  if ([organizer scheduleAgent] != 1)
   {
-    v9 = [v6 type];
+    type = [calendarCopy type];
 
-    if (!v9 || [v6 type] != 2 && objc_msgSend(v7, "type") == 2 || objc_msgSend(v6, "sharingStatus") == 2 && objc_msgSend(v7, "sharingStatus") != 2 && -[EKEvent isCurrentUserInvitedAttendee](self, "isCurrentUserInvitedAttendee"))
+    if (!type || [calendarCopy type] != 2 && objc_msgSend(toCalendarCopy, "type") == 2 || objc_msgSend(calendarCopy, "sharingStatus") == 2 && objc_msgSend(toCalendarCopy, "sharingStatus") != 2 && -[EKEvent isCurrentUserInvitedAttendee](self, "isCurrentUserInvitedAttendee"))
     {
       goto LABEL_17;
     }
 
-    if ([v6 sharingStatus] == 2 || objc_msgSend(v7, "sharingStatus") == 2)
+    if ([calendarCopy sharingStatus] == 2 || objc_msgSend(toCalendarCopy, "sharingStatus") == 2)
     {
-      if ([v6 sharingStatus] != 2 || (objc_msgSend(v6, "allowsScheduling") & 1) != 0 || objc_msgSend(v7, "sharingStatus") != 2 || (objc_msgSend(v7, "allowsScheduling") & 1) != 0)
+      if ([calendarCopy sharingStatus] != 2 || (objc_msgSend(calendarCopy, "allowsScheduling") & 1) != 0 || objc_msgSend(toCalendarCopy, "sharingStatus") != 2 || (objc_msgSend(toCalendarCopy, "allowsScheduling") & 1) != 0)
       {
         goto LABEL_17;
       }
 
-      v17[0] = v6;
-      v17[1] = v7;
-      v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
-      v10 = ![EKEvent _calendarsAreSharedToMeInSameSourceAndHaveSameOwner:v13];
+      v17[0] = calendarCopy;
+      v17[1] = toCalendarCopy;
+      source = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
+      v10 = ![EKEvent _calendarsAreSharedToMeInSameSourceAndHaveSameOwner:source];
     }
 
     else
     {
-      v13 = [v6 source];
-      v14 = [v13 sourceIdentifier];
-      v15 = [v7 source];
-      v16 = [v15 sourceIdentifier];
-      v10 = [v14 isEqualToString:v16] ^ 1;
+      source = [calendarCopy source];
+      sourceIdentifier = [source sourceIdentifier];
+      source2 = [toCalendarCopy source];
+      sourceIdentifier2 = [source2 sourceIdentifier];
+      v10 = [sourceIdentifier isEqualToString:sourceIdentifier2] ^ 1;
     }
 
     goto LABEL_18;
@@ -19806,25 +19806,25 @@ LABEL_18:
   return v10;
 }
 
-- (BOOL)_requirementsToMoveToCalendarHelperRemoveAttendeesRequiredToMoveEventFromCalendar:(id)a3 toCalendar:(id)a4
+- (BOOL)_requirementsToMoveToCalendarHelperRemoveAttendeesRequiredToMoveEventFromCalendar:(id)calendar toCalendar:(id)toCalendar
 {
-  v6 = a3;
-  v7 = a4;
+  calendarCopy = calendar;
+  toCalendarCopy = toCalendar;
   if ([(EKCalendarItem *)self hasAttendees])
   {
-    if ([v6 type] != 2 && objc_msgSend(v7, "type") == 2 || objc_msgSend(v6, "sharingStatus") == 2 && objc_msgSend(v7, "sharingStatus") != 2 && -[EKEvent isCurrentUserInvitedAttendee](self, "isCurrentUserInvitedAttendee"))
+    if ([calendarCopy type] != 2 && objc_msgSend(toCalendarCopy, "type") == 2 || objc_msgSend(calendarCopy, "sharingStatus") == 2 && objc_msgSend(toCalendarCopy, "sharingStatus") != 2 && -[EKEvent isCurrentUserInvitedAttendee](self, "isCurrentUserInvitedAttendee"))
     {
       v8 = 1;
     }
 
     else
     {
-      v8 = [(EKEvent *)self _requirementsToMoveToCalendarHelperDuplicationRequiredToMoveEventFromCalendar:v6 toCalendar:v7];
+      v8 = [(EKEvent *)self _requirementsToMoveToCalendarHelperDuplicationRequiredToMoveEventFromCalendar:calendarCopy toCalendar:toCalendarCopy];
       if ([(EKEvent *)self currentUserMayActAsOrganizer])
       {
-        if ([v7 sharingStatus] == 2)
+        if ([toCalendarCopy sharingStatus] == 2)
         {
-          v9 = [v7 allowsScheduling] ^ 1;
+          v9 = [toCalendarCopy allowsScheduling] ^ 1;
         }
 
         else
@@ -19845,25 +19845,25 @@ LABEL_18:
   return v8;
 }
 
-+ (id)eventFromICSEvent:(id)a3 inStore:(id)a4
++ (id)eventFromICSEvent:(id)event inStore:(id)store
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  eventCopy = event;
+  storeCopy = store;
   v7 = objc_autoreleasePoolPush();
   v8 = objc_alloc_init(MEMORY[0x1E69E3C68]);
-  v19[0] = v5;
+  v19[0] = eventCopy;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
   [v8 setComponents:v9 options:0];
 
   v10 = [objc_alloc(MEMORY[0x1E69E3CB0]) initWithCalendar:v8];
   v11 = [v10 ICSDataWithOptions:0];
   v12 = [[EKEventStore alloc] initWithEKOptions:48];
-  v13 = [(EKEventStore *)v12 defaultCalendarForNewEvents];
-  v14 = [(EKEventStore *)v12 importICSData:v11 intoCalendar:v13 options:*MEMORY[0x1E6992E28]];
+  defaultCalendarForNewEvents = [(EKEventStore *)v12 defaultCalendarForNewEvents];
+  v14 = [(EKEventStore *)v12 importICSData:v11 intoCalendar:defaultCalendarForNewEvents options:*MEMORY[0x1E6992E28]];
 
-  v15 = [v14 firstObject];
-  v16 = [v15 duplicateToEventStore:v6];
+  firstObject = [v14 firstObject];
+  v16 = [firstObject duplicateToEventStore:storeCopy];
   [v16 setCalendar:0];
 
   objc_autoreleasePoolPop(v7);
@@ -19872,11 +19872,11 @@ LABEL_18:
   return v16;
 }
 
-- (void)setRecurrenceRuleFromICSString:(id)a3
+- (void)setRecurrenceRuleFromICSString:(id)string
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E69E3CD8] recurrenceRuleFromICSString:v4];
+  stringCopy = string;
+  v5 = [MEMORY[0x1E69E3CD8] recurrenceRuleFromICSString:stringCopy];
   if (v5)
   {
     v6 = [(EKEvent *)self _ekRecurrenceRuleFromICSRecurrenceRule:v5];
@@ -19893,18 +19893,18 @@ LABEL_18:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_ekRecurrenceRuleFromICSRecurrenceRule:(id)a3
+- (id)_ekRecurrenceRuleFromICSRecurrenceRule:(id)rule
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  ruleCopy = rule;
+  if (ruleCopy)
   {
-    v26 = self;
+    selfCopy = self;
     context = objc_autoreleasePoolPush();
     v5 = objc_opt_new();
     [v5 setSummary:@"Temp event"];
-    v28 = v4;
-    v30[0] = v4;
+    v28 = ruleCopy;
+    v30[0] = ruleCopy;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:1];
     [v5 setRrule:v6];
 
@@ -19913,8 +19913,8 @@ LABEL_18:
     v9 = [v7 initWithValue:v8];
     [v5 setDtstart:v9];
 
-    v10 = [v5 dtstart];
-    [v5 setDtend:v10];
+    dtstart = [v5 dtstart];
+    [v5 setDtend:dtstart];
 
     v11 = objc_alloc_init(MEMORY[0x1E69E3C68]);
     v29 = v5;
@@ -19924,17 +19924,17 @@ LABEL_18:
     v13 = [objc_alloc(MEMORY[0x1E69E3CB0]) initWithCalendar:v11];
     v14 = [v13 ICSDataWithOptions:0];
     v15 = [[EKEventStore alloc] initWithEKOptions:48];
-    v16 = [(EKEventStore *)v15 defaultCalendarForNewEvents];
-    v17 = [(EKEventStore *)v15 importICSData:v14 intoCalendar:v16 options:0];
+    defaultCalendarForNewEvents = [(EKEventStore *)v15 defaultCalendarForNewEvents];
+    v17 = [(EKEventStore *)v15 importICSData:v14 intoCalendar:defaultCalendarForNewEvents options:0];
 
-    v18 = [v17 firstObject];
-    v19 = [v18 recurrenceRules];
-    v20 = [v19 lastObject];
+    firstObject = [v17 firstObject];
+    recurrenceRules = [firstObject recurrenceRules];
+    lastObject = [recurrenceRules lastObject];
 
-    if (v20)
+    if (lastObject)
     {
-      v21 = [(EKObject *)v26 eventStore];
-      v22 = [v20 duplicateToEventStore:v21];
+      eventStore = [(EKObject *)selfCopy eventStore];
+      v22 = [lastObject duplicateToEventStore:eventStore];
     }
 
     else
@@ -19947,10 +19947,10 @@ LABEL_18:
       v22 = 0;
     }
 
-    v4 = v28;
+    ruleCopy = v28;
 
     objc_autoreleasePoolPop(context);
-    if (v20)
+    if (lastObject)
     {
       v23 = v22;
     }
@@ -19971,40 +19971,40 @@ LABEL_18:
   return v23;
 }
 
-- (void)updateWithVCSEntity:(id)a3 inCalendar:(id)a4
+- (void)updateWithVCSEntity:(id)entity inCalendar:(id)calendar
 {
   v73[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  entityCopy = entity;
   v70.receiver = self;
   v70.super_class = EKEvent;
-  [(EKCalendarItem *)&v70 updateWithVCSEntity:v6 inCalendar:a4];
-  v7 = v6;
-  v8 = [v7 startDate];
-  v9 = [(EKEvent *)self effectiveTimeZone];
-  v10 = [v8 nsDateWithLocalTimeZone:v9];
+  [(EKCalendarItem *)&v70 updateWithVCSEntity:entityCopy inCalendar:calendar];
+  v7 = entityCopy;
+  startDate = [v7 startDate];
+  effectiveTimeZone = [(EKEvent *)self effectiveTimeZone];
+  v10 = [startDate nsDateWithLocalTimeZone:effectiveTimeZone];
 
-  v11 = [v7 endDate];
-  v12 = [(EKEvent *)self effectiveTimeZone];
-  v13 = [v11 nsDateWithLocalTimeZone:v12];
+  endDate = [v7 endDate];
+  effectiveTimeZone2 = [(EKEvent *)self effectiveTimeZone];
+  v13 = [endDate nsDateWithLocalTimeZone:effectiveTimeZone2];
 
-  if ([v8 floating])
+  if ([startDate floating])
   {
     [(EKEvent *)self setTimeZone:0];
   }
 
   else
   {
-    v14 = [(EKEvent *)self effectiveTimeZone];
-    [(EKEvent *)self setTimeZone:v14];
+    effectiveTimeZone3 = [(EKEvent *)self effectiveTimeZone];
+    [(EKEvent *)self setTimeZone:effectiveTimeZone3];
   }
 
-  -[EKEvent setAllDay:](self, "setAllDay:", [v8 dateOnly]);
+  -[EKEvent setAllDay:](self, "setAllDay:", [startDate dateOnly]);
   [(EKEvent *)self setStartDate:v10];
   [(EKEvent *)self setEndDateUnadjustedForLegacyClients:v13];
   v15 = [v7 propertyForName:@"LOCATION"];
-  v16 = [v15 singleValue];
-  v17 = [v16 value];
-  v18 = [v17 componentsJoinedByString:@" "];;
+  singleValue = [v15 singleValue];
+  value = [singleValue value];
+  v18 = [value componentsJoinedByString:@" "];;
 
   if ([v18 length])
   {
@@ -20014,12 +20014,12 @@ LABEL_18:
   }
 
   v20 = [v7 propertyForName:@"RRULE"];
-  v21 = [v20 singleValue];
-  v22 = [v21 value];
+  singleValue2 = [v20 singleValue];
+  value2 = [singleValue2 value];
 
-  if (v22)
+  if (value2)
   {
-    v23 = [(EKEvent *)self _ekRecurrenceRuleFromVCSRecurrenceRule:v22];
+    v23 = [(EKEvent *)self _ekRecurrenceRuleFromVCSRecurrenceRule:value2];
     v24 = v23;
     if (v23)
     {
@@ -20031,50 +20031,50 @@ LABEL_18:
 
   v61 = v10;
   v26 = [v7 propertyForName:@"TRANSP"];
-  v27 = [v26 singleValue];
-  v28 = [v27 value];
-  v29 = [v28 unsignedIntegerValue];
+  singleValue3 = [v26 singleValue];
+  value3 = [singleValue3 value];
+  unsignedIntegerValue = [value3 unsignedIntegerValue];
 
-  if (v29 > 2)
+  if (unsignedIntegerValue > 2)
   {
-    if (v29 == 3)
+    if (unsignedIntegerValue == 3)
     {
-      v31 = [(EKCalendarItem *)self calendar];
-      if (([v31 supportedEventAvailabilities] & 0x10) != 0)
+      calendar = [(EKCalendarItem *)self calendar];
+      if (([calendar supportedEventAvailabilities] & 0x10) != 0)
       {
-        v29 = 4;
+        unsignedIntegerValue = 4;
       }
 
       else
       {
-        v29 = 3;
+        unsignedIntegerValue = 3;
       }
     }
 
     else
     {
-      if (v29 != 4)
+      if (unsignedIntegerValue != 4)
       {
-        v29 = 0;
+        unsignedIntegerValue = 0;
         goto LABEL_26;
       }
 
-      v31 = [(EKCalendarItem *)self calendar];
-      if (([v31 supportedEventAvailabilities] & 0x20) != 0)
+      calendar = [(EKCalendarItem *)self calendar];
+      if (([calendar supportedEventAvailabilities] & 0x20) != 0)
       {
-        v29 = 5;
+        unsignedIntegerValue = 5;
       }
 
       else
       {
-        v29 = 3;
+        unsignedIntegerValue = 3;
       }
     }
 
     goto LABEL_26;
   }
 
-  if (v29 == 2)
+  if (unsignedIntegerValue == 2)
   {
     v30 = 2;
   }
@@ -20084,16 +20084,16 @@ LABEL_18:
     v30 = 0;
   }
 
-  if (v29 != 1)
+  if (unsignedIntegerValue != 1)
   {
-    v29 = v30;
+    unsignedIntegerValue = v30;
   }
 
 LABEL_26:
-  [(EKEvent *)self setAvailability:v29];
+  [(EKEvent *)self setAvailability:unsignedIntegerValue];
   v59 = v18;
   v60 = v13;
-  v57 = v22;
+  v57 = value2;
   if (![v7 hasPropertyWithName:@"STATUS"])
   {
 LABEL_31:
@@ -20101,16 +20101,16 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  v32 = [v7 propertyForName:{@"STATUS", v22, v18, v13}];
-  v33 = [v32 singleValue];
-  v34 = [v33 value];
-  v35 = [v34 unsignedIntegerValue];
+  v32 = [v7 propertyForName:{@"STATUS", value2, v18, v13}];
+  singleValue4 = [v32 singleValue];
+  value4 = [singleValue4 value];
+  unsignedIntegerValue2 = [value4 unsignedIntegerValue];
 
-  if (v35)
+  if (unsignedIntegerValue2)
   {
-    if (v35 != 7)
+    if (unsignedIntegerValue2 != 7)
     {
-      if (v35 == 1)
+      if (unsignedIntegerValue2 == 1)
       {
         v36 = 1;
         goto LABEL_32;
@@ -20134,9 +20134,9 @@ LABEL_32:
   v66 = 0u;
   v67 = 0u;
   v37 = [v7 propertyForName:@"ATTENDEE"];
-  v38 = [v37 values];
+  values = [v37 values];
 
-  v39 = [v38 countByEnumeratingWithState:&v66 objects:v72 count:16];
+  v39 = [values countByEnumeratingWithState:&v66 objects:v72 count:16];
   if (v39)
   {
     v40 = v39;
@@ -20147,29 +20147,29 @@ LABEL_32:
       {
         if (*v67 != v41)
         {
-          objc_enumerationMutation(v38);
+          objc_enumerationMutation(values);
         }
 
-        v43 = [*(*(&v66 + 1) + 8 * i) value];
-        v44 = [EKAttendee attendeeWithName:0 url:v43];
+        value5 = [*(*(&v66 + 1) + 8 * i) value];
+        v44 = [EKAttendee attendeeWithName:0 url:value5];
         [(EKCalendarItem *)self addAttendee:v44];
       }
 
-      v40 = [v38 countByEnumeratingWithState:&v66 objects:v72 count:16];
+      v40 = [values countByEnumeratingWithState:&v66 objects:v72 count:16];
     }
 
     while (v40);
   }
 
   v45 = [v7 propertyForName:@"EXDATE"];
-  v46 = [v45 values];
+  values2 = [v45 values];
 
-  v47 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v46, "count")}];
+  v47 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(values2, "count")}];
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v48 = v46;
+  v48 = values2;
   v49 = [v48 countByEnumeratingWithState:&v62 objects:v71 count:16];
   if (v49)
   {
@@ -20184,8 +20184,8 @@ LABEL_32:
           objc_enumerationMutation(v48);
         }
 
-        v53 = [*(*(&v62 + 1) + 8 * j) value];
-        v54 = [v53 nsDateWithLocalTimeZone:0];
+        value6 = [*(*(&v62 + 1) + 8 * j) value];
+        v54 = [value6 nsDateWithLocalTimeZone:0];
         [v47 addObject:v54];
       }
 
@@ -20196,27 +20196,27 @@ LABEL_32:
   }
 
   [(EKCalendarItem *)self setExceptionDates:v47];
-  v55 = [(EKObject *)self eventStore];
-  [v55 saveEvent:self span:1 commit:0 error:0];
+  eventStore = [(EKObject *)self eventStore];
+  [eventStore saveEvent:self span:1 commit:0 error:0];
 
   v56 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_ekRecurrenceRuleFromVCSRecurrenceRule:(id)a3
+- (id)_ekRecurrenceRuleFromVCSRecurrenceRule:(id)rule
 {
   v51 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  ruleCopy = rule;
+  v4 = ruleCopy;
+  if (!ruleCopy)
   {
     goto LABEL_35;
   }
 
-  v5 = [v3 recurrenceType];
+  recurrenceType = [ruleCopy recurrenceType];
   v6 = 0;
-  if (v5 > 4)
+  if (recurrenceType > 4)
   {
-    if ((v5 - 5) < 2)
+    if ((recurrenceType - 5) < 2)
     {
       v6 = 3;
     }
@@ -20224,11 +20224,11 @@ LABEL_32:
     goto LABEL_9;
   }
 
-  if ((v5 - 3) >= 2)
+  if ((recurrenceType - 3) >= 2)
   {
-    if (v5)
+    if (recurrenceType)
     {
-      v6 = v5 == 2;
+      v6 = recurrenceType == 2;
       goto LABEL_9;
     }
 
@@ -20252,12 +20252,12 @@ LABEL_9:
 
   else
   {
-    v7 = [v4 endDate];
+    endDate = [v4 endDate];
 
-    if (v7)
+    if (endDate)
     {
-      v8 = [v4 endDate];
-      v9 = [v8 nsDateWithLocalTimeZone:0];
+      endDate2 = [v4 endDate];
+      v9 = [endDate2 nsDateWithLocalTimeZone:0];
 
       v34 = [[EKRecurrenceEnd alloc] initWithEndDate:v9];
     }
@@ -20269,8 +20269,8 @@ LABEL_9:
   }
 
   v10 = MEMORY[0x1E695DF70];
-  v11 = [v4 weekdayList];
-  v12 = [v10 arrayWithCapacity:{objc_msgSend(v11, "count")}];
+  weekdayList = [v4 weekdayList];
+  v12 = [v10 arrayWithCapacity:{objc_msgSend(weekdayList, "count")}];
 
   v47 = 0u;
   v48 = 0u;
@@ -20296,8 +20296,8 @@ LABEL_9:
         }
 
         v17 = *(*(&v45 + 1) + 8 * v16);
-        v18 = [v4 occurrenceList];
-        v19 = [v18 count];
+        occurrenceList = [v4 occurrenceList];
+        v19 = [occurrenceList count];
 
         if (v19)
         {
@@ -20305,8 +20305,8 @@ LABEL_9:
           v44 = 0u;
           v41 = 0u;
           v42 = 0u;
-          v20 = [v4 occurrenceList];
-          v21 = [v20 countByEnumeratingWithState:&v41 objects:v49 count:16];
+          occurrenceList2 = [v4 occurrenceList];
+          v21 = [occurrenceList2 countByEnumeratingWithState:&v41 objects:v49 count:16];
           if (v21)
           {
             v22 = v21;
@@ -20318,14 +20318,14 @@ LABEL_9:
               {
                 if (*v42 != v23)
                 {
-                  objc_enumerationMutation(v20);
+                  objc_enumerationMutation(occurrenceList2);
                 }
 
                 v25 = +[EKRecurrenceDayOfWeek dayOfWeek:weekNumber:](EKRecurrenceDayOfWeek, "dayOfWeek:weekNumber:", [objc_opt_class() ekWeekDayFromVCSWeekDay:{objc_msgSend(v17, "unsignedIntegerValue")}], objc_msgSend(*(*(&v41 + 1) + 8 * i), "integerValue"));
                 [v12 addObject:v25];
               }
 
-              v22 = [v20 countByEnumeratingWithState:&v41 objects:v49 count:16];
+              v22 = [occurrenceList2 countByEnumeratingWithState:&v41 objects:v49 count:16];
             }
 
             while (v22);
@@ -20338,8 +20338,8 @@ LABEL_9:
 
         else
         {
-          v20 = +[EKRecurrenceDayOfWeek dayOfWeek:](EKRecurrenceDayOfWeek, "dayOfWeek:", [objc_opt_class() ekWeekDayFromVCSWeekDay:{objc_msgSend(v17, "unsignedIntegerValue")}]);
-          [v12 addObject:v20];
+          occurrenceList2 = +[EKRecurrenceDayOfWeek dayOfWeek:](EKRecurrenceDayOfWeek, "dayOfWeek:", [objc_opt_class() ekWeekDayFromVCSWeekDay:{objc_msgSend(v17, "unsignedIntegerValue")}]);
+          [v12 addObject:occurrenceList2];
         }
 
         ++v16;
@@ -20353,11 +20353,11 @@ LABEL_9:
   }
 
   v26 = [EKRecurrenceRule alloc];
-  v27 = [v4 interval];
-  v28 = [v4 dayNumberList];
-  v29 = [v4 monthList];
-  v30 = [v4 dayList];
-  v31 = [(EKRecurrenceRule *)v26 initRecurrenceWithFrequency:v35 interval:v27 daysOfTheWeek:v12 daysOfTheMonth:v28 monthsOfTheYear:v29 weeksOfTheYear:0 daysOfTheYear:v30 setPositions:0 end:v34];
+  interval = [v4 interval];
+  dayNumberList = [v4 dayNumberList];
+  monthList = [v4 monthList];
+  dayList = [v4 dayList];
+  v31 = [(EKRecurrenceRule *)v26 initRecurrenceWithFrequency:v35 interval:interval daysOfTheWeek:v12 daysOfTheMonth:dayNumberList monthsOfTheYear:monthList weeksOfTheYear:0 daysOfTheYear:dayList setPositions:0 end:v34];
 
 LABEL_36:
   v32 = *MEMORY[0x1E69E9840];
@@ -20365,11 +20365,11 @@ LABEL_36:
   return v31;
 }
 
-+ (int64_t)ekWeekDayFromVCSWeekDay:(unint64_t)a3
++ (int64_t)ekWeekDayFromVCSWeekDay:(unint64_t)day
 {
-  if (a3 - 1 < 6)
+  if (day - 1 < 6)
   {
-    return a3 + 1;
+    return day + 1;
   }
 
   else
@@ -20408,13 +20408,13 @@ void __43__EKEvent_EKEvent_Shared__cachedJunkStatus__block_invoke_cold_3()
 - (void)_hasRecurrenceRuleChangeRequiringSpanAll
 {
   v11 = *MEMORY[0x1E69E9840];
-  v5 = a1;
-  v6 = [a2 recurrenceRules];
+  selfCopy = self;
+  recurrenceRules = [a2 recurrenceRules];
   v8[0] = 67109376;
-  v8[1] = [v6 count];
+  v8[1] = [recurrenceRules count];
   v9 = 1024;
   v10 = [a3 count];
-  _os_log_error_impl(&dword_1A805E000, v5, OS_LOG_TYPE_ERROR, "Calling _hasRecurrenceRuleChangeRequiringSpanAll on an event that has or had multiple recurrence rules is not supported. Results may be unpredictable. Current count = %d, previous = %d", v8, 0xEu);
+  _os_log_error_impl(&dword_1A805E000, selfCopy, OS_LOG_TYPE_ERROR, "Calling _hasRecurrenceRuleChangeRequiringSpanAll on an event that has or had multiple recurrence rules is not supported. Results may be unpredictable. Current count = %d, previous = %d", v8, 0xEu);
 
   v7 = *MEMORY[0x1E69E9840];
 }

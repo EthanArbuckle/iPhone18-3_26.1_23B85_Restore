@@ -1,21 +1,21 @@
 @interface CHAchievementsRecentAndRelevantDataSource
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForFooterInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (CHAchievementsRecentAndRelevantDataSource)initWithDataProvider:(id)a3 collectionView:(id)a4 localizationProvider:(id)a5 badgeImageFactory:(id)a6;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForFooterInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (CHAchievementsRecentAndRelevantDataSource)initWithDataProvider:(id)provider collectionView:(id)view localizationProvider:(id)localizationProvider badgeImageFactory:(id)factory;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
 - (double)cellWidth;
 - (double)collectionView:layout:minimumInteritemSpacingForSectionAtIndex:;
 - (double)maxCellHeight;
 - (double)preferredCollectionViewHeight;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
-- (void)achievementsDataProviderDidUpdate:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
+- (void)achievementsDataProviderDidUpdate:(id)update;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)fontChanged:(id)a3;
+- (void)fontChanged:(id)changed;
 @end
 
 @implementation CHAchievementsRecentAndRelevantDataSource
@@ -30,29 +30,29 @@
   return *&qword_1008F9940;
 }
 
-- (CHAchievementsRecentAndRelevantDataSource)initWithDataProvider:(id)a3 collectionView:(id)a4 localizationProvider:(id)a5 badgeImageFactory:(id)a6
+- (CHAchievementsRecentAndRelevantDataSource)initWithDataProvider:(id)provider collectionView:(id)view localizationProvider:(id)localizationProvider badgeImageFactory:(id)factory
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  providerCopy = provider;
+  viewCopy = view;
+  localizationProviderCopy = localizationProvider;
+  factoryCopy = factory;
   v33.receiver = self;
   v33.super_class = CHAchievementsRecentAndRelevantDataSource;
   v15 = [(CHAchievementsRecentAndRelevantDataSource *)&v33 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_dataProvider, a3);
+    objc_storeStrong(&v15->_dataProvider, provider);
     [(AAUIAchievementsDataProvider *)v16->_dataProvider addRecentAndRelevantSectionObserver:v16];
-    objc_storeStrong(&v16->_localizationProvider, a5);
-    objc_storeStrong(&v16->_badgeImageFactory, a6);
-    objc_storeStrong(&v16->_collectionView, a4);
+    objc_storeStrong(&v16->_localizationProvider, localizationProvider);
+    objc_storeStrong(&v16->_badgeImageFactory, factory);
+    objc_storeStrong(&v16->_collectionView, view);
     [(UICollectionView *)v16->_collectionView setDataSource:v16];
     [(UICollectionView *)v16->_collectionView setDelegate:v16];
-    v31 = [(UICollectionView *)v16->_collectionView collectionViewLayout];
-    [v31 setScrollDirection:1];
+    collectionViewLayout = [(UICollectionView *)v16->_collectionView collectionViewLayout];
+    [collectionViewLayout setScrollDirection:1];
     collectionView = v16->_collectionView;
-    v32 = v11;
+    v32 = providerCopy;
     v18 = objc_opt_class();
     v19 = objc_opt_class();
     v20 = NSStringFromClass(v19);
@@ -75,19 +75,19 @@
     v29 = +[NSNotificationCenter defaultCenter];
     [v29 addObserver:v16 selector:"fontChanged:" name:UIContentSizeCategoryDidChangeNotification object:0];
 
-    v11 = v32;
+    providerCopy = v32;
     [(CHAchievementsRecentAndRelevantDataSource *)v16 invalidateMaxCellHeight];
   }
 
   return v16;
 }
 
-- (void)fontChanged:(id)a3
+- (void)fontChanged:(id)changed
 {
   [(CHAchievementsRecentAndRelevantDataSource *)self invalidateMaxCellHeight];
-  v5 = [(CHAchievementsRecentAndRelevantDataSource *)self collectionView];
-  v4 = [v5 collectionViewLayout];
-  [v4 invalidateLayout];
+  collectionView = [(CHAchievementsRecentAndRelevantDataSource *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 }
 
 - (double)preferredCollectionViewHeight
@@ -123,8 +123,8 @@
   maxCellHeight = self->_maxCellHeight;
   if (maxCellHeight < 0.0)
   {
-    v4 = [(CHAchievementsRecentAndRelevantDataSource *)self collectionView];
-    v5 = [(CHAchievementsRecentAndRelevantDataSource *)self numberOfSectionsInCollectionView:v4];
+    collectionView = [(CHAchievementsRecentAndRelevantDataSource *)self collectionView];
+    v5 = [(CHAchievementsRecentAndRelevantDataSource *)self numberOfSectionsInCollectionView:collectionView];
 
     if (v5 < 1)
     {
@@ -137,8 +137,8 @@
       maxCellHeight = 0.0;
       do
       {
-        v7 = [(CHAchievementsRecentAndRelevantDataSource *)self collectionView];
-        v8 = [(CHAchievementsRecentAndRelevantDataSource *)self collectionView:v7 numberOfItemsInSection:v6];
+        collectionView2 = [(CHAchievementsRecentAndRelevantDataSource *)self collectionView];
+        v8 = [(CHAchievementsRecentAndRelevantDataSource *)self collectionView:collectionView2 numberOfItemsInSection:v6];
 
         if (v8 >= 1)
         {
@@ -146,13 +146,13 @@
           do
           {
             v10 = [NSIndexPath indexPathForItem:v9 inSection:v6];
-            v11 = [(CHAchievementsRecentAndRelevantDataSource *)self dataProvider];
-            v12 = [v11 recentAndRelevantAchievementAtIndexPath:v10];
+            dataProvider = [(CHAchievementsRecentAndRelevantDataSource *)self dataProvider];
+            v12 = [dataProvider recentAndRelevantAchievementAtIndexPath:v10];
 
             [(CHAchievementsRecentAndRelevantDataSource *)self cellWidth];
             v14 = v13;
-            v15 = [(CHAchievementsRecentAndRelevantDataSource *)self localizationProvider];
-            [CHAchievementsCellContentView cellHeightForAchievement:v12 preferredWidth:1 appliesLargeCellInsets:v15 locProvider:v14];
+            localizationProvider = [(CHAchievementsRecentAndRelevantDataSource *)self localizationProvider];
+            [CHAchievementsCellContentView cellHeightForAchievement:v12 preferredWidth:1 appliesLargeCellInsets:localizationProvider locProvider:v14];
             v17 = v16;
 
             if (maxCellHeight < v17)
@@ -161,16 +161,16 @@
             }
 
             ++v9;
-            v18 = [(CHAchievementsRecentAndRelevantDataSource *)self collectionView];
-            v19 = [(CHAchievementsRecentAndRelevantDataSource *)self collectionView:v18 numberOfItemsInSection:v6];
+            collectionView3 = [(CHAchievementsRecentAndRelevantDataSource *)self collectionView];
+            v19 = [(CHAchievementsRecentAndRelevantDataSource *)self collectionView:collectionView3 numberOfItemsInSection:v6];
           }
 
           while (v9 < v19);
         }
 
         ++v6;
-        v20 = [(CHAchievementsRecentAndRelevantDataSource *)self collectionView];
-        v21 = [(CHAchievementsRecentAndRelevantDataSource *)self numberOfSectionsInCollectionView:v20];
+        collectionView4 = [(CHAchievementsRecentAndRelevantDataSource *)self collectionView];
+        v21 = [(CHAchievementsRecentAndRelevantDataSource *)self numberOfSectionsInCollectionView:collectionView4];
       }
 
       while (v6 < v21);
@@ -190,46 +190,46 @@
   [(CHAchievementsRecentAndRelevantDataSource *)&v3 dealloc];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CHAchievementsRecentAndRelevantDataSource *)self dataProvider];
-  v9 = [v8 recentAndRelevantAchievementAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  dataProvider = [(CHAchievementsRecentAndRelevantDataSource *)self dataProvider];
+  v9 = [dataProvider recentAndRelevantAchievementAtIndexPath:pathCopy];
 
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  v12 = [v7 dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:v6];
+  v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:pathCopy];
 
   [(CHAchievementsRecentAndRelevantDataSource *)self cellWidth];
   [v12 setPreferredWidth:?];
   [v12 setAppliesLargeCellInset:1];
-  v13 = [(CHAchievementsRecentAndRelevantDataSource *)self badgeImageFactory];
-  v14 = [(CHAchievementsRecentAndRelevantDataSource *)self localizationProvider];
-  [v12 configureWithAchievement:v9 badgeImageFactory:v13 locProvider:v14];
+  badgeImageFactory = [(CHAchievementsRecentAndRelevantDataSource *)self badgeImageFactory];
+  localizationProvider = [(CHAchievementsRecentAndRelevantDataSource *)self localizationProvider];
+  [v12 configureWithAchievement:v9 badgeImageFactory:badgeImageFactory locProvider:localizationProvider];
 
   return v12;
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
-  v3 = [(CHAchievementsRecentAndRelevantDataSource *)self dataProvider];
-  v4 = [v3 numberOfRecentAndRelevantSections];
+  dataProvider = [(CHAchievementsRecentAndRelevantDataSource *)self dataProvider];
+  numberOfRecentAndRelevantSections = [dataProvider numberOfRecentAndRelevantSections];
 
-  return v4;
+  return numberOfRecentAndRelevantSections;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v5 = [(CHAchievementsRecentAndRelevantDataSource *)self dataProvider];
-  v6 = [v5 numberOfItemsInRecentAndRelevantSection:a4];
+  dataProvider = [(CHAchievementsRecentAndRelevantDataSource *)self dataProvider];
+  v6 = [dataProvider numberOfItemsInRecentAndRelevantSection:section];
 
   return v6;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  [(CHAchievementsRecentAndRelevantDataSource *)self cellWidth:a3];
+  [(CHAchievementsRecentAndRelevantDataSource *)self cellWidth:view];
   v7 = v6;
   [(CHAchievementsRecentAndRelevantDataSource *)self maxCellHeight];
   v9 = v8;
@@ -239,11 +239,11 @@
   return result;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
   left = 10.0;
   top = 0.0;
-  if (a5)
+  if (index)
   {
     bottom = 0.0;
     right = 10.0;
@@ -251,7 +251,7 @@
 
   else
   {
-    v9 = [(CHAchievementsRecentAndRelevantDataSource *)self collectionView:a3 numberOfItemsInSection:0];
+    v9 = [(CHAchievementsRecentAndRelevantDataSource *)self collectionView:view numberOfItemsInSection:0];
     right = 29.0;
     bottom = 0.0;
     if (v9 <= 0)
@@ -272,9 +272,9 @@
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
-  if ([(CHAchievementsRecentAndRelevantDataSource *)self collectionView:a3 numberOfItemsInSection:a5]< 1)
+  if ([(CHAchievementsRecentAndRelevantDataSource *)self collectionView:view numberOfItemsInSection:section]< 1)
   {
     width = CGSizeZero.width;
     height = CGSizeZero.height;
@@ -282,8 +282,8 @@
 
   else
   {
-    v7 = [(CHAchievementsRecentAndRelevantDataSource *)self dataProvider];
-    v8 = [v7 headerStringForSection:a5 isRecentAndRelevant:1];
+    dataProvider = [(CHAchievementsRecentAndRelevantDataSource *)self dataProvider];
+    v8 = [dataProvider headerStringForSection:section isRecentAndRelevant:1];
 
     [CHAchievementsSectionHeaderView preferredSizeForSectionName:v8];
     height = v9;
@@ -297,7 +297,7 @@
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForFooterInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForFooterInSection:(int64_t)section
 {
   width = CGSizeZero.width;
   height = CGSizeZero.height;
@@ -306,40 +306,40 @@
   return result;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:UICollectionElementKindSectionHeader] && -[CHAchievementsRecentAndRelevantDataSource collectionView:numberOfItemsInSection:](self, "collectionView:numberOfItemsInSection:", v8, objc_msgSend(v10, "section")) >= 1)
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
+  if ([kindCopy isEqualToString:UICollectionElementKindSectionHeader] && -[CHAchievementsRecentAndRelevantDataSource collectionView:numberOfItemsInSection:](self, "collectionView:numberOfItemsInSection:", viewCopy, objc_msgSend(pathCopy, "section")) >= 1)
   {
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    v13 = [v8 dequeueReusableSupplementaryViewOfKind:v9 withReuseIdentifier:v12 forIndexPath:v10];
+    v13 = [viewCopy dequeueReusableSupplementaryViewOfKind:kindCopy withReuseIdentifier:v12 forIndexPath:pathCopy];
 
     [v13 setHidesKeyLine:1];
-    v14 = [(CHAchievementsRecentAndRelevantDataSource *)self dataProvider];
-    v15 = [v14 headerStringForSection:objc_msgSend(v10 isRecentAndRelevant:{"section"), 1}];
+    dataProvider = [(CHAchievementsRecentAndRelevantDataSource *)self dataProvider];
+    v15 = [dataProvider headerStringForSection:objc_msgSend(pathCopy isRecentAndRelevant:{"section"), 1}];
     [v13 configureWithSectionName:v15];
 
 LABEL_13:
     goto LABEL_14;
   }
 
-  if ([v9 isEqualToString:UICollectionElementKindSectionFooter] && !objc_msgSend(v10, "section") && -[CHAchievementsRecentAndRelevantDataSource collectionView:numberOfItemsInSection:](self, "collectionView:numberOfItemsInSection:", v8, objc_msgSend(v10, "section")) >= 1)
+  if ([kindCopy isEqualToString:UICollectionElementKindSectionFooter] && !objc_msgSend(pathCopy, "section") && -[CHAchievementsRecentAndRelevantDataSource collectionView:numberOfItemsInSection:](self, "collectionView:numberOfItemsInSection:", viewCopy, objc_msgSend(pathCopy, "section")) >= 1)
   {
     v17 = objc_opt_class();
     v18 = NSStringFromClass(v17);
-    v13 = [v8 dequeueReusableSupplementaryViewOfKind:v9 withReuseIdentifier:v18 forIndexPath:v10];
+    v13 = [viewCopy dequeueReusableSupplementaryViewOfKind:kindCopy withReuseIdentifier:v18 forIndexPath:pathCopy];
 
-    v14 = +[UIColor separatorColor];
-    [v13 setBackgroundColor:v14];
+    dataProvider = +[UIColor separatorColor];
+    [v13 setBackgroundColor:dataProvider];
     goto LABEL_13;
   }
 
-  if ([v9 isEqualToString:UICollectionElementKindSectionHeader] || objc_msgSend(v9, "isEqualToString:", UICollectionElementKindSectionFooter))
+  if ([kindCopy isEqualToString:UICollectionElementKindSectionHeader] || objc_msgSend(kindCopy, "isEqualToString:", UICollectionElementKindSectionFooter))
   {
-    v16 = [v8 dequeueReusableSupplementaryViewOfKind:v9 withReuseIdentifier:@"EMPTY" forIndexPath:v10];
+    v16 = [viewCopy dequeueReusableSupplementaryViewOfKind:kindCopy withReuseIdentifier:@"EMPTY" forIndexPath:pathCopy];
   }
 
   else
@@ -353,35 +353,35 @@ LABEL_14:
   return v13;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v21 = a4;
-  v6 = a3;
-  [v6 deselectItemAtIndexPath:v21 animated:1];
-  v7 = [v6 cellForItemAtIndexPath:v21];
+  pathCopy = path;
+  viewCopy = view;
+  [viewCopy deselectItemAtIndexPath:pathCopy animated:1];
+  v7 = [viewCopy cellForItemAtIndexPath:pathCopy];
 
-  v8 = [(CHAchievementsRecentAndRelevantDataSource *)self achievementTappedHandler];
+  achievementTappedHandler = [(CHAchievementsRecentAndRelevantDataSource *)self achievementTappedHandler];
 
-  if (v8)
+  if (achievementTappedHandler)
   {
-    v9 = [(CHAchievementsRecentAndRelevantDataSource *)self achievementTappedHandler];
-    v10 = [(CHAchievementsRecentAndRelevantDataSource *)self dataProvider];
-    v11 = [v10 recentAndRelevantAchievementAtIndexPath:v21];
+    achievementTappedHandler2 = [(CHAchievementsRecentAndRelevantDataSource *)self achievementTappedHandler];
+    dataProvider = [(CHAchievementsRecentAndRelevantDataSource *)self dataProvider];
+    v11 = [dataProvider recentAndRelevantAchievementAtIndexPath:pathCopy];
     [v7 badgeRect];
     v13 = v12;
     v15 = v14;
     v17 = v16;
     v19 = v18;
-    v20 = [v7 contentView];
-    (v9)[2](v9, v11, v20, v7, v13, v15, v17, v19);
+    contentView = [v7 contentView];
+    (achievementTappedHandler2)[2](achievementTappedHandler2, v11, contentView, v7, v13, v15, v17, v19);
   }
 }
 
-- (void)achievementsDataProviderDidUpdate:(id)a3
+- (void)achievementsDataProviderDidUpdate:(id)update
 {
   [(CHAchievementsRecentAndRelevantDataSource *)self invalidateMaxCellHeight];
-  v4 = [(CHAchievementsRecentAndRelevantDataSource *)self collectionView];
-  [v4 reloadData];
+  collectionView = [(CHAchievementsRecentAndRelevantDataSource *)self collectionView];
+  [collectionView reloadData];
 }
 
 @end

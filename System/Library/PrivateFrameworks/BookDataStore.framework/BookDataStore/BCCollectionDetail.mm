@@ -1,9 +1,9 @@
 @interface BCCollectionDetail
 - (NSString)debugDescription;
 - (id)mutableCopy;
-- (void)_configureFromCollectionDetail:(id)a3 withMergers:(id)a4;
-- (void)configureFromCloudData:(id)a3 withMergers:(id)a4;
-- (void)resolveConflictsFromRecord:(id)a3 withResolvers:(id)a4;
+- (void)_configureFromCollectionDetail:(id)detail withMergers:(id)mergers;
+- (void)configureFromCloudData:(id)data withMergers:(id)mergers;
+- (void)resolveConflictsFromRecord:(id)record withResolvers:(id)resolvers;
 @end
 
 @implementation BCCollectionDetail
@@ -15,13 +15,13 @@
   return MEMORY[0x1EEE66B58](v2, sel_initWithCloudData_);
 }
 
-- (void)configureFromCloudData:(id)a3 withMergers:(id)a4
+- (void)configureFromCloudData:(id)data withMergers:(id)mergers
 {
-  v5 = a4;
+  mergersCopy = mergers;
   v6 = BUProtocolCast();
   if (v6)
   {
-    [(BCCollectionDetail *)self _configureFromCollectionDetail:v6 withMergers:v5];
+    [(BCCollectionDetail *)self _configureFromCollectionDetail:v6 withMergers:mergersCopy];
   }
 
   else
@@ -34,22 +34,22 @@
   }
 }
 
-- (void)_configureFromCollectionDetail:(id)a3 withMergers:(id)a4
+- (void)_configureFromCollectionDetail:(id)detail withMergers:(id)mergers
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  detailCopy = detail;
   v21.receiver = self;
   v21.super_class = BCCollectionDetail;
-  [(BCCloudData *)&v21 configureFromCloudData:v6 withMergers:a4];
-  v7 = [v6 collectionID];
-  [(NSManagedObject *)self setDifferentString:v7 forKey:@"collectionID"];
+  [(BCCloudData *)&v21 configureFromCloudData:detailCopy withMergers:mergers];
+  collectionID = [detailCopy collectionID];
+  [(NSManagedObject *)self setDifferentString:collectionID forKey:@"collectionID"];
 
-  v8 = [v6 name];
+  name = [detailCopy name];
 
-  if (v8)
+  if (name)
   {
-    v9 = [v6 name];
-    [(NSManagedObject *)self setDifferentString:v9 forKey:@"name"];
+    name2 = [detailCopy name];
+    [(NSManagedObject *)self setDifferentString:name2 forKey:@"name"];
   }
 
   else
@@ -57,35 +57,35 @@
     [(NSManagedObject *)self setDifferentString:&stru_1F5E67610 forKey:@"name"];
   }
 
-  v10 = [v6 collectionDescription];
-  [(NSManagedObject *)self setDifferentString:v10 forKey:@"collectionDescription"];
+  collectionDescription = [detailCopy collectionDescription];
+  [(NSManagedObject *)self setDifferentString:collectionDescription forKey:@"collectionDescription"];
 
-  v11 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v6, "hidden")}];
+  v11 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(detailCopy, "hidden")}];
   [(NSManagedObject *)self setDifferentNumber:v11 forKey:@"hidden"];
 
-  v12 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v6, "sortOrder")}];
+  v12 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(detailCopy, "sortOrder")}];
   [(NSManagedObject *)self setDifferentNumber:v12 forKey:@"sortOrder"];
 
-  v13 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v6, "sortMode")}];
+  v13 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(detailCopy, "sortMode")}];
   [(NSManagedObject *)self setDifferentNumber:v13 forKey:@"sortMode"];
 
-  v14 = [MEMORY[0x1E698F550] shared];
-  v15 = [v14 verboseLoggingEnabled];
+  mEMORY[0x1E698F550] = [MEMORY[0x1E698F550] shared];
+  verboseLoggingEnabled = [mEMORY[0x1E698F550] verboseLoggingEnabled];
 
-  if (v15)
+  if (verboseLoggingEnabled)
   {
     v16 = BDSCloudKitDevelopmentLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(BCCollectionDetail *)self collectionID];
+      collectionID2 = [(BCCollectionDetail *)self collectionID];
       v18 = [(BCCollectionDetail *)self debugDescription];
-      v19 = [v6 collectionID];
+      collectionID3 = [detailCopy collectionID];
       *buf = 138543874;
-      v23 = v17;
+      v23 = collectionID2;
       v24 = 2112;
       v25 = v18;
       v26 = 2114;
-      v27 = v19;
+      v27 = collectionID3;
       _os_log_impl(&dword_1E45E0000, v16, OS_LOG_TYPE_DEFAULT, "\\BCCollectionDetail configured: %{public}@ %@ from assetDetail:%{public}@\\"", buf, 0x20u);
     }
   }
@@ -93,18 +93,18 @@
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)resolveConflictsFromRecord:(id)a3 withResolvers:(id)a4
+- (void)resolveConflictsFromRecord:(id)record withResolvers:(id)resolvers
 {
   v55 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  recordCopy = record;
   v48.receiver = self;
   v48.super_class = BCCollectionDetail;
-  [(BCCloudData *)&v48 resolveConflictsFromRecord:v6 withResolvers:a4];
-  if (v6)
+  [(BCCloudData *)&v48 resolveConflictsFromRecord:recordCopy withResolvers:resolvers];
+  if (recordCopy)
   {
-    v7 = [BCCloudData localIdentifierFromRecord:v6];
-    v8 = [(BCCollectionDetail *)self collectionID];
-    v9 = [v8 isEqualToString:v7];
+    v7 = [BCCloudData localIdentifierFromRecord:recordCopy];
+    collectionID = [(BCCollectionDetail *)self collectionID];
+    v9 = [collectionID isEqualToString:v7];
 
     if ((v9 & 1) == 0)
     {
@@ -117,15 +117,15 @@
       [(BCCollectionDetail *)self setCollectionID:v7];
     }
 
-    v11 = [(BCCollectionDetail *)self modificationDate];
-    if (v11)
+    modificationDate = [(BCCollectionDetail *)self modificationDate];
+    if (modificationDate)
     {
-      v12 = v11;
-      v13 = [(BCCollectionDetail *)self modificationDate];
-      [v13 timeIntervalSinceReferenceDate];
+      v12 = modificationDate;
+      modificationDate2 = [(BCCollectionDetail *)self modificationDate];
+      [modificationDate2 timeIntervalSinceReferenceDate];
       v15 = v14;
-      v16 = [v6 modificationDate];
-      [v16 timeIntervalSinceReferenceDate];
+      modificationDate3 = [recordCopy modificationDate];
+      [modificationDate3 timeIntervalSinceReferenceDate];
       v18 = v17;
 
       if (v15 > v18)
@@ -133,24 +133,24 @@
         v19 = BDSCloudKitLog();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
         {
-          v20 = [(BCCollectionDetail *)self collectionID];
-          v21 = [v6 recordID];
-          v22 = [v21 recordName];
-          v23 = [(BCCollectionDetail *)self modificationDate];
-          [v23 timeIntervalSinceReferenceDate];
+          collectionID2 = [(BCCollectionDetail *)self collectionID];
+          recordID = [recordCopy recordID];
+          recordName = [recordID recordName];
+          modificationDate4 = [(BCCollectionDetail *)self modificationDate];
+          [modificationDate4 timeIntervalSinceReferenceDate];
           v25 = v24;
-          v26 = [v6 modificationDate];
-          [v26 timeIntervalSinceReferenceDate];
+          modificationDate5 = [recordCopy modificationDate];
+          [modificationDate5 timeIntervalSinceReferenceDate];
           v27 = @"newer";
           *buf = 138543874;
-          v50 = v20;
+          v50 = collectionID2;
           v51 = 2114;
           if (v25 == v28)
           {
             v27 = @"the same";
           }
 
-          v52 = v22;
+          v52 = recordName;
           v53 = 2114;
           v54 = v27;
           _os_log_impl(&dword_1E45E0000, v19, OS_LOG_TYPE_INFO, "BCCollectionDetail %{public}@ Resolving conflicts from record %{public}@, keeping my properties as my modification date is %{public}@.", buf, 0x20u);
@@ -161,13 +161,13 @@
       }
     }
 
-    v47 = [v6 objectForKey:@"hidden"];
+    v47 = [recordCopy objectForKey:@"hidden"];
     [NSManagedObject setDifferentNumber:"setDifferentNumber:forKey:" forKey:?];
-    v46 = [v6 objectForKey:@"sortOrder"];
+    v46 = [recordCopy objectForKey:@"sortOrder"];
     [NSManagedObject setDifferentNumber:"setDifferentNumber:forKey:" forKey:?];
-    v29 = [v6 objectForKey:@"sortMode"];
+    v29 = [recordCopy objectForKey:@"sortMode"];
     [(NSManagedObject *)self setDifferentNumber:v29 forKey:@"sortMode"];
-    v30 = [v6 objectForKey:@"name"];
+    v30 = [recordCopy objectForKey:@"name"];
     v31 = v30;
     if (v30)
     {
@@ -180,40 +180,40 @@
     }
 
     [(NSManagedObject *)self setDifferentString:v32 forKey:@"name"];
-    v33 = [(BCCollectionDetail *)self name];
+    name = [(BCCollectionDetail *)self name];
 
-    if (!v33)
+    if (!name)
     {
       [(BCCollectionDetail *)self setName:&stru_1F5E67610];
     }
 
-    v34 = [v6 objectForKey:@"collectionDescription"];
+    v34 = [recordCopy objectForKey:@"collectionDescription"];
     if (v34)
     {
       [(NSManagedObject *)self setDifferentString:v34 forKey:@"collectionDescription"];
     }
 
-    v35 = [v6 modificationDate];
-    [(NSManagedObject *)self setDifferentDate:v35 forKey:@"modificationDate"];
-    v36 = [(BCCollectionDetail *)self hasChanges];
-    v37 = [MEMORY[0x1E698F550] shared];
-    v38 = [v37 verboseLoggingEnabled];
+    modificationDate6 = [recordCopy modificationDate];
+    [(NSManagedObject *)self setDifferentDate:modificationDate6 forKey:@"modificationDate"];
+    hasChanges = [(BCCollectionDetail *)self hasChanges];
+    mEMORY[0x1E698F550] = [MEMORY[0x1E698F550] shared];
+    verboseLoggingEnabled = [mEMORY[0x1E698F550] verboseLoggingEnabled];
 
-    if (v36)
+    if (hasChanges)
     {
-      if (v38)
+      if (verboseLoggingEnabled)
       {
         v39 = BDSCloudKitDevelopmentLog();
         if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
         {
-          v40 = [(BCCollectionDetail *)self collectionID];
-          v45 = [v6 recordID];
-          v41 = [v45 recordName];
+          collectionID3 = [(BCCollectionDetail *)self collectionID];
+          recordID2 = [recordCopy recordID];
+          recordName2 = [recordID2 recordName];
           v42 = [(BCCollectionDetail *)self debugDescription];
           *buf = 138543874;
-          v50 = v40;
+          v50 = collectionID3;
           v51 = 2112;
-          v52 = v41;
+          v52 = recordName2;
           v53 = 2112;
           v54 = v42;
           v43 = "\\BCCollectionDetail %{public}@ Resolving: Adopted properties from record: %@ %@\\"";
@@ -227,19 +227,19 @@ LABEL_29:
       }
     }
 
-    else if (v38)
+    else if (verboseLoggingEnabled)
     {
       v39 = BDSCloudKitDevelopmentLog();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
       {
-        v40 = [(BCCollectionDetail *)self collectionID];
-        v45 = [v6 recordID];
-        v41 = [v45 recordName];
+        collectionID3 = [(BCCollectionDetail *)self collectionID];
+        recordID2 = [recordCopy recordID];
+        recordName2 = [recordID2 recordName];
         v42 = [(BCCollectionDetail *)self debugDescription];
         *buf = 138543874;
-        v50 = v40;
+        v50 = collectionID3;
         v51 = 2112;
-        v52 = v41;
+        v52 = recordName2;
         v53 = 2112;
         v54 = v42;
         v43 = "\\BCCollectionDetail %{public}@ Resolving: Identical properties from record: %@ %@\\"";
@@ -266,9 +266,9 @@ LABEL_32:
 - (NSString)debugDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(BCCollectionDetail *)self collectionID];
-  v5 = [(BCCollectionDetail *)self name];
-  v6 = [(BCCollectionDetail *)self collectionDescription];
+  collectionID = [(BCCollectionDetail *)self collectionID];
+  name = [(BCCollectionDetail *)self name];
+  collectionDescription = [(BCCollectionDetail *)self collectionDescription];
   if ([(BCCollectionDetail *)self hidden])
   {
     v7 = @"YES";
@@ -279,7 +279,7 @@ LABEL_32:
     v7 = @"NO";
   }
 
-  v8 = [v3 stringWithFormat:@"collectionID: %@, Name: %@, Description: %@ hidden:%@ sortOrder:%d sortMode %d", v4, v5, v6, v7, -[BCCollectionDetail sortOrder](self, "sortOrder"), -[BCCollectionDetail sortMode](self, "sortMode")];
+  v8 = [v3 stringWithFormat:@"collectionID: %@, Name: %@, Description: %@ hidden:%@ sortOrder:%d sortMode %d", collectionID, name, collectionDescription, v7, -[BCCollectionDetail sortOrder](self, "sortOrder"), -[BCCollectionDetail sortMode](self, "sortMode")];
 
   return v8;
 }

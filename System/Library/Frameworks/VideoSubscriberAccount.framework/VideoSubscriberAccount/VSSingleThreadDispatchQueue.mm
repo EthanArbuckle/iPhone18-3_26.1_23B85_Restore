@@ -1,19 +1,19 @@
 @interface VSSingleThreadDispatchQueue
 + (id)currentQueue;
-- (VSSingleThreadDispatchQueue)initWithName:(id)a3;
+- (VSSingleThreadDispatchQueue)initWithName:(id)name;
 - (int64_t)state;
 - (void)_threadMain;
-- (void)dispatchBlock:(id)a3;
-- (void)dispatchBlockSync:(id)a3;
-- (void)startWithCompletionHandler:(id)a3;
+- (void)dispatchBlock:(id)block;
+- (void)dispatchBlockSync:(id)sync;
+- (void)startWithCompletionHandler:(id)handler;
 - (void)stop;
 @end
 
 @implementation VSSingleThreadDispatchQueue
 
-- (VSSingleThreadDispatchQueue)initWithName:(id)a3
+- (VSSingleThreadDispatchQueue)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = VSSingleThreadDispatchQueue;
   v5 = [(VSSingleThreadDispatchQueue *)&v11 init];
@@ -23,7 +23,7 @@
     blocks = v5->_blocks;
     v5->_blocks = v6;
 
-    v8 = [v4 copy];
+    v8 = [nameCopy copy];
     name = v5->_name;
     v5->_name = v8;
   }
@@ -33,23 +33,23 @@
 
 + (id)currentQueue
 {
-  v2 = [MEMORY[0x277CCACC8] currentThread];
-  v3 = [v2 threadDictionary];
-  v4 = [v3 objectForKey:@"VSSingleThreadDispatchQueueThreadKey"];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v4 = [threadDictionary objectForKey:@"VSSingleThreadDispatchQueueThreadKey"];
 
   return v4;
 }
 
-- (void)startWithCompletionHandler:(id)a3
+- (void)startWithCompletionHandler:(id)handler
 {
-  [(VSSingleThreadDispatchQueue *)self setStartCompletionBlock:a3];
+  [(VSSingleThreadDispatchQueue *)self setStartCompletionBlock:handler];
   v9 = [objc_alloc(MEMORY[0x277CCACC8]) initWithTarget:self selector:sel__threadMain object:0];
   [(VSSingleThreadDispatchQueue *)self setUnderlyingThread:?];
-  v4 = [(VSSingleThreadDispatchQueue *)self name];
-  v5 = v4;
-  if (v4)
+  name = [(VSSingleThreadDispatchQueue *)self name];
+  v5 = name;
+  if (name)
   {
-    v6 = v4;
+    v6 = name;
   }
 
   else
@@ -64,32 +64,32 @@
   [v9 start];
 }
 
-- (void)dispatchBlock:(id)a3
+- (void)dispatchBlock:(id)block
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(VSSingleThreadDispatchQueue *)v4 blocks];
-  v6 = [v7 copy];
-  [v5 addObject:v6];
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  blocks = [(VSSingleThreadDispatchQueue *)selfCopy blocks];
+  v6 = [blockCopy copy];
+  [blocks addObject:v6];
 
-  CFRunLoopSourceSignal([(VSSingleThreadDispatchQueue *)v4 runLoopSource]);
-  CFRunLoopWakeUp([(VSSingleThreadDispatchQueue *)v4 underlyingRunLoop]);
-  objc_sync_exit(v4);
+  CFRunLoopSourceSignal([(VSSingleThreadDispatchQueue *)selfCopy runLoopSource]);
+  CFRunLoopWakeUp([(VSSingleThreadDispatchQueue *)selfCopy underlyingRunLoop]);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)dispatchBlockSync:(id)a3
+- (void)dispatchBlockSync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   v5 = objc_alloc_init(VSSemaphore);
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __49__VSSingleThreadDispatchQueue_dispatchBlockSync___block_invoke;
   v11 = &unk_278B737F8;
   v12 = v5;
-  v13 = v4;
+  v13 = syncCopy;
   v6 = v5;
-  v7 = v4;
+  v7 = syncCopy;
   [(VSSingleThreadDispatchQueue *)self dispatchBlock:&v8];
   [(VSSemaphore *)v6 wait:v8];
 }
@@ -116,10 +116,10 @@ uint64_t __49__VSSingleThreadDispatchQueue_dispatchBlockSync___block_invoke(uint
 
 - (int64_t)state
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  state = v2->_state;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  state = selfCopy->_state;
+  objc_sync_exit(selfCopy);
 
   return state;
 }
@@ -149,13 +149,13 @@ uint64_t __49__VSSingleThreadDispatchQueue_dispatchBlockSync___block_invoke(uint
   [(VSSingleThreadDispatchQueue *)self setRunLoopSource:v6];
   v7 = *MEMORY[0x277CBF058];
   CFRunLoopAddSource(Current, v6, *MEMORY[0x277CBF058]);
-  v8 = [MEMORY[0x277CCACC8] currentThread];
-  v9 = [v8 threadDictionary];
-  [v9 setObject:self forKey:@"VSSingleThreadDispatchQueueThreadKey"];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  [threadDictionary setObject:self forKey:@"VSSingleThreadDispatchQueueThreadKey"];
 
-  v10 = [(VSSingleThreadDispatchQueue *)self startCompletionBlock];
+  startCompletionBlock = [(VSSingleThreadDispatchQueue *)self startCompletionBlock];
 
-  if (v10)
+  if (startCompletionBlock)
   {
     objc_initWeak(&location, self);
     v14[0] = MEMORY[0x277D85DD0];
@@ -180,10 +180,10 @@ uint64_t __49__VSSingleThreadDispatchQueue_dispatchBlockSync___block_invoke(uint
   CFRunLoopSourceInvalidate(v6);
   [(VSSingleThreadDispatchQueue *)self setRunLoopSource:0];
   [(VSSingleThreadDispatchQueue *)self setUnderlyingRunLoop:0];
-  v13 = self;
-  objc_sync_enter(v13);
-  [(VSSingleThreadDispatchQueue *)v13 setState:1];
-  objc_sync_exit(v13);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(VSSingleThreadDispatchQueue *)selfCopy setState:1];
+  objc_sync_exit(selfCopy);
 
   objc_autoreleasePoolPop(v4);
 }

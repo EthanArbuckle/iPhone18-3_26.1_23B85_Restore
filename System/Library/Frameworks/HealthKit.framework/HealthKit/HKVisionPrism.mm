@@ -1,14 +1,14 @@
 @interface HKVisionPrism
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKVisionPrism)initWithAmount:(HKQuantity *)amount angle:(HKQuantity *)angle eye:(HKVisionEye)eye;
-- (HKVisionPrism)initWithCoder:(id)a3;
+- (HKVisionPrism)initWithCoder:(id)coder;
 - (HKVisionPrism)initWithVerticalAmount:(HKQuantity *)verticalAmount verticalBase:(HKPrismBase)verticalBase horizontalAmount:(HKQuantity *)horizontalAmount horizontalBase:(HKPrismBase)horizontalBase eye:(HKVisionEye)eye;
 - (id)description;
 - (void)_setPolarValues;
 - (void)_setRectangularValues;
 - (void)_validatePolar;
 - (void)_validateRectangular;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKVisionPrism
@@ -125,10 +125,10 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -138,16 +138,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
+      v7 = equalCopy;
       amount = self->_amount;
-      v9 = [(HKVisionPrism *)v7 amount];
-      if (amount == v9)
+      amount = [(HKVisionPrism *)v7 amount];
+      if (amount == amount)
       {
         goto LABEL_9;
       }
 
-      v10 = [(HKVisionPrism *)v7 amount];
-      if (!v10)
+      amount2 = [(HKVisionPrism *)v7 amount];
+      if (!amount2)
       {
         v12 = 0;
 LABEL_17:
@@ -155,16 +155,16 @@ LABEL_17:
         goto LABEL_18;
       }
 
-      v3 = v10;
+      v3 = amount2;
       v11 = self->_amount;
-      v4 = [(HKVisionPrism *)v7 amount];
-      if ([(HKQuantity *)v11 isEqual:v4])
+      amount3 = [(HKVisionPrism *)v7 amount];
+      if ([(HKQuantity *)v11 isEqual:amount3])
       {
 LABEL_9:
         angle = self->_angle;
-        v14 = [(HKVisionPrism *)v7 angle];
-        v15 = v14;
-        if (angle == v14)
+        angle = [(HKVisionPrism *)v7 angle];
+        v15 = angle;
+        if (angle == angle)
         {
 
           v12 = 1;
@@ -172,13 +172,13 @@ LABEL_9:
 
         else
         {
-          v16 = [(HKVisionPrism *)v7 angle];
-          if (v16)
+          angle2 = [(HKVisionPrism *)v7 angle];
+          if (angle2)
           {
-            v17 = v16;
+            v17 = angle2;
             v18 = self->_angle;
-            v19 = [(HKVisionPrism *)v7 angle];
-            v12 = [(HKQuantity *)v18 isEqual:v19];
+            angle3 = [(HKVisionPrism *)v7 angle];
+            v12 = [(HKQuantity *)v18 isEqual:angle3];
           }
 
           else
@@ -188,7 +188,7 @@ LABEL_9:
           }
         }
 
-        if (amount == v9)
+        if (amount == amount)
         {
           goto LABEL_17;
         }
@@ -210,21 +210,21 @@ LABEL_18:
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   amount = self->_amount;
-  v5 = a3;
-  [v5 encodeObject:amount forKey:@"Amount"];
-  [v5 encodeObject:self->_angle forKey:@"Base"];
-  [v5 encodeInteger:self->_eye forKey:@"Eye"];
+  coderCopy = coder;
+  [coderCopy encodeObject:amount forKey:@"Amount"];
+  [coderCopy encodeObject:self->_angle forKey:@"Base"];
+  [coderCopy encodeInteger:self->_eye forKey:@"Eye"];
 }
 
-- (HKVisionPrism)initWithCoder:(id)a3
+- (HKVisionPrism)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Amount"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Base"];
-  v7 = [v4 decodeIntegerForKey:@"Eye"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Amount"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Base"];
+  v7 = [coderCopy decodeIntegerForKey:@"Eye"];
 
   v8 = [(HKVisionPrism *)self initWithAmount:v5 angle:v6 eye:v7];
   return v8;

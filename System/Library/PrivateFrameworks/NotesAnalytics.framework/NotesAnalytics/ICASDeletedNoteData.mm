@@ -1,20 +1,20 @@
 @interface ICASDeletedNoteData
-- (ICASDeletedNoteData)initWithDeletedNoteCount:(id)a3;
+- (ICASDeletedNoteData)initWithDeletedNoteCount:(id)count;
 - (id)toDict;
 @end
 
 @implementation ICASDeletedNoteData
 
-- (ICASDeletedNoteData)initWithDeletedNoteCount:(id)a3
+- (ICASDeletedNoteData)initWithDeletedNoteCount:(id)count
 {
-  v5 = a3;
+  countCopy = count;
   v9.receiver = self;
   v9.super_class = ICASDeletedNoteData;
   v6 = [(ICASDeletedNoteData *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_deletedNoteCount, a3);
+    objc_storeStrong(&v6->_deletedNoteCount, count);
   }
 
   return v7;
@@ -24,19 +24,19 @@
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v9 = @"deletedNoteCount";
-  v3 = [(ICASDeletedNoteData *)self deletedNoteCount];
-  if (v3)
+  deletedNoteCount = [(ICASDeletedNoteData *)self deletedNoteCount];
+  if (deletedNoteCount)
   {
-    v4 = [(ICASDeletedNoteData *)self deletedNoteCount];
+    deletedNoteCount2 = [(ICASDeletedNoteData *)self deletedNoteCount];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    deletedNoteCount2 = objc_opt_new();
   }
 
-  v5 = v4;
-  v10[0] = v4;
+  v5 = deletedNoteCount2;
+  v10[0] = deletedNoteCount2;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
   v7 = *MEMORY[0x277D85DE8];

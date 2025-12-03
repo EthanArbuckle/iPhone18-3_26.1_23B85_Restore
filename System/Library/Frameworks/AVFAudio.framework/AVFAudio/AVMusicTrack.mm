@@ -1,7 +1,7 @@
 @interface AVMusicTrack
 - (AVBeatRange)loopRange;
 - (AVMusicTimeStamp)offsetTime;
-- (AVMusicTrack)initWithImpl:(MusicTrackImpl *)a3;
+- (AVMusicTrack)initWithImpl:(MusicTrackImpl *)impl;
 - (BOOL)isLoopingEnabled;
 - (BOOL)isMuted;
 - (BOOL)isSoloed;
@@ -16,15 +16,15 @@
 - (void)copyEventsInRange:(AVBeatRange)range fromTrack:(AVMusicTrack *)sourceTrack insertAtBeat:(AVMusicTimeStamp)insertStartBeat;
 - (void)cutEventsInRange:(AVBeatRange)range;
 - (void)dealloc;
-- (void)doAddAUPresetEvent:(id)a3 atBeat:(double)a4;
-- (void)doAddExtendedNoteOnEvent:(id)a3 atBeat:(double)a4;
-- (void)doAddExtendedTempoEvent:(id)a3 atBeat:(double)a4;
-- (void)doAddMIDIChannelEvent:(id)a3 atBeat:(double)a4;
-- (void)doAddMIDIMetaEvent:(id)a3 atBeat:(double)a4;
-- (void)doAddMIDINoteEvent:(id)a3 atBeat:(double)a4;
-- (void)doAddMIDISysexEvent:(id)a3 atBeat:(double)a4;
-- (void)doAddParameterEvent:(id)a3 atBeat:(double)a4;
-- (void)doAddUserEvent:(id)a3 atBeat:(double)a4;
+- (void)doAddAUPresetEvent:(id)event atBeat:(double)beat;
+- (void)doAddExtendedNoteOnEvent:(id)event atBeat:(double)beat;
+- (void)doAddExtendedTempoEvent:(id)event atBeat:(double)beat;
+- (void)doAddMIDIChannelEvent:(id)event atBeat:(double)beat;
+- (void)doAddMIDIMetaEvent:(id)event atBeat:(double)beat;
+- (void)doAddMIDINoteEvent:(id)event atBeat:(double)beat;
+- (void)doAddMIDISysexEvent:(id)event atBeat:(double)beat;
+- (void)doAddParameterEvent:(id)event atBeat:(double)beat;
+- (void)doAddUserEvent:(id)event atBeat:(double)beat;
 - (void)enumerateEventsInRange:(AVBeatRange)range usingBlock:(AVMusicEventEnumerationBlock)block;
 - (void)moveEventsInRange:(AVBeatRange)range byAmount:(AVMusicTimeStamp)beatAmount;
 - (void)setDestinationAudioUnit:(AVAudioUnit *)destinationAudioUnit;
@@ -435,7 +435,7 @@ LABEL_18:
   [(AVMusicTrack *)&v4 dealloc];
 }
 
-- (AVMusicTrack)initWithImpl:(MusicTrackImpl *)a3
+- (AVMusicTrack)initWithImpl:(MusicTrackImpl *)impl
 {
   v7.receiver = self;
   v7.super_class = AVMusicTrack;
@@ -443,12 +443,12 @@ LABEL_18:
   v5 = v4;
   if (v4)
   {
-    v4->_impl = a3;
+    v4->_impl = impl;
   }
 
-  else if (a3)
+  else if (impl)
   {
-    MusicTrackImpl::~MusicTrackImpl(a3);
+    MusicTrackImpl::~MusicTrackImpl(impl);
     MEMORY[0x1BFAF5800]();
   }
 
@@ -460,14 +460,14 @@ LABEL_18:
   length = range.length;
   start = range.start;
   v8 = block;
-  v9 = [(AVMusicTrack *)self createEventIterator];
-  v10 = v9;
+  createEventIterator = [(AVMusicTrack *)self createEventIterator];
+  v10 = createEventIterator;
   if (length != 1.79769313e308)
   {
     length = start + length;
   }
 
-  [v9 seek:start];
+  [createEventIterator seek:start];
   while ([v10 hasCurrentEvent])
   {
     v35 = 0.0;
@@ -529,8 +529,8 @@ LABEL_18:
     {
       if (!v34)
       {
-        v17 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v17 handleFailureInMethod:a2 object:self file:@"AVAudioSequencer.mm" lineNumber:598 description:@"Should never get a NULL event type"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"AVAudioSequencer.mm" lineNumber:598 description:@"Should never get a NULL event type"];
 
 LABEL_23:
         v11 = 0;
@@ -587,7 +587,7 @@ LABEL_30:
       if (v34 == 7)
       {
 LABEL_38:
-        v24 = [v11 message];
+        message = [v11 message];
       }
 
       else
@@ -603,10 +603,10 @@ LABEL_38:
         }
 
 LABEL_46:
-        v24 = [v11 event];
+        message = [v11 event];
       }
 
-      v28 = v24;
+      v28 = message;
       v26 = *&__n[1];
       v27 = __n[0];
       v29 = v28;
@@ -648,7 +648,7 @@ LABEL_51:
   v9 = sourceTrack;
   impl = self->_impl;
   v14 = v9;
-  v11 = [(AVMusicTrack *)v9 track];
+  track = [(AVMusicTrack *)v9 track];
   if (length == 1.79769313e308)
   {
     v12 = length;
@@ -659,7 +659,7 @@ LABEL_51:
     v12 = start + length;
   }
 
-  v13 = MusicTrackMerge(v11, start, v12, *impl, mergeStartBeat);
+  v13 = MusicTrackMerge(track, start, v12, *impl, mergeStartBeat);
   _AVAE_CheckNoErr("/Library/Caches/com.apple.xbs/Sources/AVFAudio/Source/AVFAudio/AVAudioEngine/AVAudioSequencerImpl.mm", 630, "CopyMergeEvents", "MusicTrackMerge(inSourceTrack, inSourceStartBeat, inSourceEndBeat, mTrack, inInsertBeat)", v13, 0);
 }
 
@@ -670,7 +670,7 @@ LABEL_51:
   v9 = sourceTrack;
   impl = self->_impl;
   v14 = v9;
-  v11 = [(AVMusicTrack *)v9 track];
+  track = [(AVMusicTrack *)v9 track];
   if (length == 1.79769313e308)
   {
     v12 = length;
@@ -681,7 +681,7 @@ LABEL_51:
     v12 = start + length;
   }
 
-  v13 = MusicTrackCopyInsert(v11, start, v12, *impl, insertStartBeat);
+  v13 = MusicTrackCopyInsert(track, start, v12, *impl, insertStartBeat);
   _AVAE_CheckNoErr("/Library/Caches/com.apple.xbs/Sources/AVFAudio/Source/AVFAudio/AVAudioEngine/AVAudioSequencerImpl.mm", 618, "CopyInsertEvents", "MusicTrackCopyInsert(inSourceTrack, inSourceStartBeat, inSourceEndBeat, mTrack, inInsertBeat)", v13, 0);
 }
 
@@ -808,69 +808,69 @@ LABEL_51:
   }
 }
 
-- (void)doAddAUPresetEvent:(id)a3 atBeat:(double)a4
+- (void)doAddAUPresetEvent:(id)event atBeat:(double)beat
 {
-  v7 = a3;
-  v6 = MusicTrackNewAUPresetEvent(*self->_impl, a4, [v7 event]);
+  eventCopy = event;
+  v6 = MusicTrackNewAUPresetEvent(*self->_impl, beat, [eventCopy event]);
   _AVAE_CheckNoErr("/Library/Caches/com.apple.xbs/Sources/AVFAudio/Source/AVFAudio/AVAudioEngine/AVAudioSequencerImpl.mm", 672, "AddEvent", "MusicTrackNewAUPresetEvent(mTrack, inTimeStamp, &inEvent)", v6, 0);
 }
 
-- (void)doAddUserEvent:(id)a3 atBeat:(double)a4
+- (void)doAddUserEvent:(id)event atBeat:(double)beat
 {
-  v7 = a3;
-  v6 = MusicTrackNewUserEvent(*self->_impl, a4, [v7 userData]);
+  eventCopy = event;
+  v6 = MusicTrackNewUserEvent(*self->_impl, beat, [eventCopy userData]);
   _AVAE_CheckNoErr("/Library/Caches/com.apple.xbs/Sources/AVFAudio/Source/AVFAudio/AVAudioEngine/AVAudioSequencerImpl.mm", 667, "AddEvent", "MusicTrackNewUserEvent(mTrack, inTimeStamp, &inEvent)", v6, 0);
 }
 
-- (void)doAddMIDIMetaEvent:(id)a3 atBeat:(double)a4
+- (void)doAddMIDIMetaEvent:(id)event atBeat:(double)beat
 {
-  v7 = a3;
-  v6 = MusicTrackNewMetaEvent(*self->_impl, a4, [v7 metaEvent]);
+  eventCopy = event;
+  v6 = MusicTrackNewMetaEvent(*self->_impl, beat, [eventCopy metaEvent]);
   _AVAE_CheckNoErr("/Library/Caches/com.apple.xbs/Sources/AVFAudio/Source/AVFAudio/AVAudioEngine/AVAudioSequencerImpl.mm", 662, "AddEvent", "MusicTrackNewMetaEvent(mTrack, inTimeStamp, &inEvent)", v6, 0);
 }
 
-- (void)doAddExtendedTempoEvent:(id)a3 atBeat:(double)a4
+- (void)doAddExtendedTempoEvent:(id)event atBeat:(double)beat
 {
-  v6 = a3;
+  eventCopy = event;
   impl = self->_impl;
-  v10 = v6;
-  [v6 tempo];
-  v9 = MusicTrackNewExtendedTempoEvent(*impl, a4, v8);
+  v10 = eventCopy;
+  [eventCopy tempo];
+  v9 = MusicTrackNewExtendedTempoEvent(*impl, beat, v8);
   _AVAE_CheckNoErr("/Library/Caches/com.apple.xbs/Sources/AVFAudio/Source/AVFAudio/AVAudioEngine/AVAudioSequencerImpl.mm", 677, "AddExtendedTempoEvent", "MusicTrackNewExtendedTempoEvent(mTrack, inTimeStamp, inTempo)", v9, 0);
 }
 
-- (void)doAddParameterEvent:(id)a3 atBeat:(double)a4
+- (void)doAddParameterEvent:(id)event atBeat:(double)beat
 {
-  v7 = a3;
-  v6 = MusicTrackNewParameterEvent(*self->_impl, a4, [v7 event]);
+  eventCopy = event;
+  v6 = MusicTrackNewParameterEvent(*self->_impl, beat, [eventCopy event]);
   _AVAE_CheckNoErr("/Library/Caches/com.apple.xbs/Sources/AVFAudio/Source/AVFAudio/AVAudioEngine/AVAudioSequencerImpl.mm", 657, "AddEvent", "MusicTrackNewParameterEvent(mTrack, inTimeStamp, &inEvent)", v6, 0);
 }
 
-- (void)doAddExtendedNoteOnEvent:(id)a3 atBeat:(double)a4
+- (void)doAddExtendedNoteOnEvent:(id)event atBeat:(double)beat
 {
-  v7 = a3;
-  v6 = MusicTrackNewExtendedNoteEvent(*self->_impl, a4, [v7 event]);
+  eventCopy = event;
+  v6 = MusicTrackNewExtendedNoteEvent(*self->_impl, beat, [eventCopy event]);
   _AVAE_CheckNoErr("/Library/Caches/com.apple.xbs/Sources/AVFAudio/Source/AVFAudio/AVAudioEngine/AVAudioSequencerImpl.mm", 652, "AddEvent", "MusicTrackNewExtendedNoteEvent(mTrack, inTimeStamp, &inEvent)", v6, 0);
 }
 
-- (void)doAddMIDISysexEvent:(id)a3 atBeat:(double)a4
+- (void)doAddMIDISysexEvent:(id)event atBeat:(double)beat
 {
-  v7 = a3;
-  v6 = MusicTrackNewMIDIRawDataEvent(*self->_impl, a4, [v7 rawData]);
+  eventCopy = event;
+  v6 = MusicTrackNewMIDIRawDataEvent(*self->_impl, beat, [eventCopy rawData]);
   _AVAE_CheckNoErr("/Library/Caches/com.apple.xbs/Sources/AVFAudio/Source/AVFAudio/AVAudioEngine/AVAudioSequencerImpl.mm", 647, "AddEvent", "MusicTrackNewMIDIRawDataEvent(mTrack, inTimeStamp, &inEvent)", v6, 0);
 }
 
-- (void)doAddMIDIChannelEvent:(id)a3 atBeat:(double)a4
+- (void)doAddMIDIChannelEvent:(id)event atBeat:(double)beat
 {
-  v7 = a3;
-  v6 = MusicTrackNewMIDIChannelEvent(*self->_impl, a4, [v7 message]);
+  eventCopy = event;
+  v6 = MusicTrackNewMIDIChannelEvent(*self->_impl, beat, [eventCopy message]);
   _AVAE_CheckNoErr("/Library/Caches/com.apple.xbs/Sources/AVFAudio/Source/AVFAudio/AVAudioEngine/AVAudioSequencerImpl.mm", 642, "AddEvent", "MusicTrackNewMIDIChannelEvent(mTrack, inTimeStamp, &inEvent)", v6, 0);
 }
 
-- (void)doAddMIDINoteEvent:(id)a3 atBeat:(double)a4
+- (void)doAddMIDINoteEvent:(id)event atBeat:(double)beat
 {
-  v7 = a3;
-  v6 = MusicTrackNewMIDINoteEvent(*self->_impl, a4, [v7 message]);
+  eventCopy = event;
+  v6 = MusicTrackNewMIDINoteEvent(*self->_impl, beat, [eventCopy message]);
   _AVAE_CheckNoErr("/Library/Caches/com.apple.xbs/Sources/AVFAudio/Source/AVFAudio/AVAudioEngine/AVAudioSequencerImpl.mm", 637, "AddEvent", "MusicTrackNewMIDINoteEvent(mTrack, inTimeStamp, &inEvent)", v6, 0);
 }
 

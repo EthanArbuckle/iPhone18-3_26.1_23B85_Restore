@@ -1,15 +1,15 @@
 @interface NeverTemplatedImage
 - (_TtC15SafetyMonitorUIP33_0136281DCC3F5D58BE1F34FEE765118619NeverTemplatedImage)init;
-- (_TtC15SafetyMonitorUIP33_0136281DCC3F5D58BE1F34FEE765118619NeverTemplatedImage)initWithCGImage:(CGImage *)a3 imageOrientation:(int64_t)a4;
-- (_TtC15SafetyMonitorUIP33_0136281DCC3F5D58BE1F34FEE765118619NeverTemplatedImage)initWithData:(id)a3;
-- (_TtC15SafetyMonitorUIP33_0136281DCC3F5D58BE1F34FEE765118619NeverTemplatedImage)initWithData:(id)a3 scale:(double)a4;
+- (_TtC15SafetyMonitorUIP33_0136281DCC3F5D58BE1F34FEE765118619NeverTemplatedImage)initWithCGImage:(CGImage *)image imageOrientation:(int64_t)orientation;
+- (_TtC15SafetyMonitorUIP33_0136281DCC3F5D58BE1F34FEE765118619NeverTemplatedImage)initWithData:(id)data;
+- (_TtC15SafetyMonitorUIP33_0136281DCC3F5D58BE1F34FEE765118619NeverTemplatedImage)initWithData:(id)data scale:(double)scale;
 @end
 
 @implementation NeverTemplatedImage
 
-- (_TtC15SafetyMonitorUIP33_0136281DCC3F5D58BE1F34FEE765118619NeverTemplatedImage)initWithData:(id)a3
+- (_TtC15SafetyMonitorUIP33_0136281DCC3F5D58BE1F34FEE765118619NeverTemplatedImage)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = sub_264783A14();
   v7 = v6;
 
@@ -26,16 +26,16 @@
   return v9;
 }
 
-- (_TtC15SafetyMonitorUIP33_0136281DCC3F5D58BE1F34FEE765118619NeverTemplatedImage)initWithData:(id)a3 scale:(double)a4
+- (_TtC15SafetyMonitorUIP33_0136281DCC3F5D58BE1F34FEE765118619NeverTemplatedImage)initWithData:(id)data scale:(double)scale
 {
-  v6 = a3;
+  dataCopy = data;
   v7 = sub_264783A14();
   v9 = v8;
 
   v10 = sub_264783A04();
   v13.receiver = self;
   v13.super_class = type metadata accessor for NeverTemplatedImage();
-  v11 = [(NeverTemplatedImage *)&v13 initWithData:v10 scale:a4];
+  v11 = [(NeverTemplatedImage *)&v13 initWithData:v10 scale:scale];
   sub_264655264(v7, v9);
 
   if (v11)
@@ -52,12 +52,12 @@
   return [(NeverTemplatedImage *)&v3 init];
 }
 
-- (_TtC15SafetyMonitorUIP33_0136281DCC3F5D58BE1F34FEE765118619NeverTemplatedImage)initWithCGImage:(CGImage *)a3 imageOrientation:(int64_t)a4
+- (_TtC15SafetyMonitorUIP33_0136281DCC3F5D58BE1F34FEE765118619NeverTemplatedImage)initWithCGImage:(CGImage *)image imageOrientation:(int64_t)orientation
 {
   v9.receiver = self;
   v9.super_class = type metadata accessor for NeverTemplatedImage();
-  v6 = a3;
-  v7 = [(NeverTemplatedImage *)&v9 initWithCGImage:v6 imageOrientation:a4];
+  imageCopy = image;
+  v7 = [(NeverTemplatedImage *)&v9 initWithCGImage:imageCopy imageOrientation:orientation];
 
   if (v7)
   {

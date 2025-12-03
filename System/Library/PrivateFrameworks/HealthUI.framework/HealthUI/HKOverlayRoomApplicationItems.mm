@@ -1,37 +1,37 @@
 @interface HKOverlayRoomApplicationItems
-+ (HKOverlayRoomApplicationItems)applicationItemsWithItems:(id)a3;
++ (HKOverlayRoomApplicationItems)applicationItemsWithItems:(id)items;
 @end
 
 @implementation HKOverlayRoomApplicationItems
 
-+ (HKOverlayRoomApplicationItems)applicationItemsWithItems:(id)a3
++ (HKOverlayRoomApplicationItems)applicationItemsWithItems:(id)items
 {
-  v3 = a3;
+  itemsCopy = items;
   v4 = objc_alloc_init(HKOverlayRoomApplicationItems);
-  v5 = [v3 healthStore];
-  [(HKOverlayRoomApplicationItems *)v4 setHealthStore:v5];
+  healthStore = [itemsCopy healthStore];
+  [(HKOverlayRoomApplicationItems *)v4 setHealthStore:healthStore];
 
-  v6 = [v3 timeScopeController];
-  [(HKOverlayRoomApplicationItems *)v4 setTimeScopeController:v6];
+  timeScopeController = [itemsCopy timeScopeController];
+  [(HKOverlayRoomApplicationItems *)v4 setTimeScopeController:timeScopeController];
 
-  v7 = [v3 dateCache];
-  [(HKOverlayRoomApplicationItems *)v4 setDateCache:v7];
+  dateCache = [itemsCopy dateCache];
+  [(HKOverlayRoomApplicationItems *)v4 setDateCache:dateCache];
 
-  v8 = [v3 unitController];
-  [(HKOverlayRoomApplicationItems *)v4 setUnitController:v8];
+  unitController = [itemsCopy unitController];
+  [(HKOverlayRoomApplicationItems *)v4 setUnitController:unitController];
 
-  v9 = [v3 chartDataCacheController];
-  [(HKOverlayRoomApplicationItems *)v4 setChartDataCacheController:v9];
+  chartDataCacheController = [itemsCopy chartDataCacheController];
+  [(HKOverlayRoomApplicationItems *)v4 setChartDataCacheController:chartDataCacheController];
 
-  v10 = [v3 sampleTypeUpdateController];
-  [(HKOverlayRoomApplicationItems *)v4 setSampleTypeUpdateController:v10];
+  sampleTypeUpdateController = [itemsCopy sampleTypeUpdateController];
+  [(HKOverlayRoomApplicationItems *)v4 setSampleTypeUpdateController:sampleTypeUpdateController];
 
-  v11 = [v3 sampleDateRangeController];
-  [(HKOverlayRoomApplicationItems *)v4 setSampleDateRangeController:v11];
+  sampleDateRangeController = [itemsCopy sampleDateRangeController];
+  [(HKOverlayRoomApplicationItems *)v4 setSampleDateRangeController:sampleDateRangeController];
 
-  v12 = [v3 displayTypeController];
+  displayTypeController = [itemsCopy displayTypeController];
 
-  [(HKOverlayRoomApplicationItems *)v4 setDisplayTypeController:v12];
+  [(HKOverlayRoomApplicationItems *)v4 setDisplayTypeController:displayTypeController];
 
   return v4;
 }

@@ -1,53 +1,53 @@
 @interface ISLivePhotoVitalityFilter
-- (ISLivePhotoVitalityFilter)initWithSettings:(id)a3;
-- (void)performInputChanges:(id)a3;
-- (void)setState:(int64_t)a3;
+- (ISLivePhotoVitalityFilter)initWithSettings:(id)settings;
+- (void)performInputChanges:(id)changes;
+- (void)setState:(int64_t)state;
 @end
 
 @implementation ISLivePhotoVitalityFilter
 
-- (void)performInputChanges:(id)a3
+- (void)performInputChanges:(id)changes
 {
-  v5 = a3;
-  v4 = [(ISLivePhotoVitalityFilter *)self isPerformingInputChanges];
+  changesCopy = changes;
+  isPerformingInputChanges = [(ISLivePhotoVitalityFilter *)self isPerformingInputChanges];
   [(ISLivePhotoVitalityFilter *)self _setPerformingInputChanges:1];
-  if (v5)
+  if (changesCopy)
   {
-    v5[2](v5);
+    changesCopy[2](changesCopy);
   }
 
-  [(ISLivePhotoVitalityFilter *)self _setPerformingInputChanges:v4];
-  if (!v4)
+  [(ISLivePhotoVitalityFilter *)self _setPerformingInputChanges:isPerformingInputChanges];
+  if (!isPerformingInputChanges)
   {
     [(ISLivePhotoVitalityFilter *)self updateOutput];
   }
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
-    v4 = [(ISLivePhotoVitalityFilter *)self outputChangeHandler];
+    self->_state = state;
+    outputChangeHandler = [(ISLivePhotoVitalityFilter *)self outputChangeHandler];
 
-    if (v4)
+    if (outputChangeHandler)
     {
-      v5 = [(ISLivePhotoVitalityFilter *)self outputChangeHandler];
-      v5[2](v5, self);
+      outputChangeHandler2 = [(ISLivePhotoVitalityFilter *)self outputChangeHandler];
+      outputChangeHandler2[2](outputChangeHandler2, self);
     }
   }
 }
 
-- (ISLivePhotoVitalityFilter)initWithSettings:(id)a3
+- (ISLivePhotoVitalityFilter)initWithSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   v9.receiver = self;
   v9.super_class = ISLivePhotoVitalityFilter;
   v6 = [(ISLivePhotoVitalityFilter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_settings, a3);
+    objc_storeStrong(&v6->_settings, settings);
   }
 
   return v7;

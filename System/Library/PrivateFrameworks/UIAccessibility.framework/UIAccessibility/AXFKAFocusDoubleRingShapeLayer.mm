@@ -2,9 +2,9 @@
 - (AXFKAFocusDoubleRingShapeLayer)init;
 - (CGColor)strokeColorForTopLayer;
 - (double)lineWidthForTopLayer;
-- (id)topLayerFocusRingColorForTintColor:(id)a3;
+- (id)topLayerFocusRingColorForTintColor:(id)color;
 - (void)_updateTopLayerPath;
-- (void)setPath:(CGPath *)a3;
+- (void)setPath:(CGPath *)path;
 - (void)updateAppearance;
 @end
 
@@ -20,46 +20,46 @@
     v3 = +[AXFKAFocusRingBorderShapeLayer layer];
     [(AXFKAFocusDoubleRingShapeLayer *)v2 setTopBorderLayer:v3];
 
-    v4 = [(AXFKAFocusDoubleRingShapeLayer *)v2 topBorderLayer];
-    [(AXFKAFocusDoubleRingShapeLayer *)v2 addSublayer:v4];
+    topBorderLayer = [(AXFKAFocusDoubleRingShapeLayer *)v2 topBorderLayer];
+    [(AXFKAFocusDoubleRingShapeLayer *)v2 addSublayer:topBorderLayer];
 
-    v5 = [(AXFKAFocusDoubleRingShapeLayer *)v2 topBorderLayer];
-    [v5 setFillColor:0];
+    topBorderLayer2 = [(AXFKAFocusDoubleRingShapeLayer *)v2 topBorderLayer];
+    [topBorderLayer2 setFillColor:0];
   }
 
   return v2;
 }
 
-- (void)setPath:(CGPath *)a3
+- (void)setPath:(CGPath *)path
 {
   v4.receiver = self;
   v4.super_class = AXFKAFocusDoubleRingShapeLayer;
-  [(AXFKAFocusRingShapeLayer *)&v4 setPath:a3];
+  [(AXFKAFocusRingShapeLayer *)&v4 setPath:path];
   [(AXFKAFocusDoubleRingShapeLayer *)self _updateTopLayerPath];
 }
 
 - (void)_updateTopLayerPath
 {
-  v3 = [(AXFKAFocusRingShapeLayer *)self bottomBorderLayer];
-  v4 = [v3 path];
+  bottomBorderLayer = [(AXFKAFocusRingShapeLayer *)self bottomBorderLayer];
+  path = [bottomBorderLayer path];
 
-  if (v4)
+  if (path)
   {
-    v5 = [(AXFKAFocusDoubleRingShapeLayer *)self topBorderLayer];
-    [v5 unscaledLineWidth];
+    topBorderLayer = [(AXFKAFocusDoubleRingShapeLayer *)self topBorderLayer];
+    [topBorderLayer unscaledLineWidth];
     v7 = v6;
     [(AXFKAFocusRingShapeLayer *)self borderScale];
     v9 = v7 * v8;
-    v10 = [(AXFKAFocusDoubleRingShapeLayer *)self topBorderLayer];
-    [v10 setLineWidth:v9];
+    topBorderLayer2 = [(AXFKAFocusDoubleRingShapeLayer *)self topBorderLayer];
+    [topBorderLayer2 setLineWidth:v9];
 
-    v11 = [(AXFKAFocusDoubleRingShapeLayer *)self topBorderLayer];
-    [(AXFKAFocusRingShapeLayer *)self insetForFocusRingBorder:v11];
+    topBorderLayer3 = [(AXFKAFocusDoubleRingShapeLayer *)self topBorderLayer];
+    [(AXFKAFocusRingShapeLayer *)self insetForFocusRingBorder:topBorderLayer3];
     v13 = v12;
 
     v14 = MEMORY[0x1E69DC728];
-    v15 = [(AXFKAFocusRingShapeLayer *)self bottomBorderLayer];
-    v16 = [v14 bezierPathWithCGPath:{objc_msgSend(v15, "path")}];
+    bottomBorderLayer2 = [(AXFKAFocusRingShapeLayer *)self bottomBorderLayer];
+    v16 = [v14 bezierPathWithCGPath:{objc_msgSend(bottomBorderLayer2, "path")}];
 
     [v16 bounds];
     x = v39.origin.x;
@@ -106,9 +106,9 @@
     v36 = v37;
     [v16 applyTransform:&v36];
     [v16 closePath];
-    v29 = [v16 CGPath];
-    v30 = [(AXFKAFocusDoubleRingShapeLayer *)self topBorderLayer];
-    [v30 setPath:v29];
+    cGPath = [v16 CGPath];
+    topBorderLayer4 = [(AXFKAFocusDoubleRingShapeLayer *)self topBorderLayer];
+    [topBorderLayer4 setPath:cGPath];
   }
 }
 
@@ -129,24 +129,24 @@
       v3 = 0;
     }
 
-    v4 = [(AXFKAFocusDoubleRingShapeLayer *)self topBorderLayer];
-    [v4 setRingPosition:v3];
+    topBorderLayer = [(AXFKAFocusDoubleRingShapeLayer *)self topBorderLayer];
+    [topBorderLayer setRingPosition:v3];
 
     [(AXFKAFocusDoubleRingShapeLayer *)self lineWidthForTopLayer];
     v6 = v5;
-    v7 = [(AXFKAFocusDoubleRingShapeLayer *)self topBorderLayer];
-    [v7 setUnscaledLineWidth:v6];
+    topBorderLayer2 = [(AXFKAFocusDoubleRingShapeLayer *)self topBorderLayer];
+    [topBorderLayer2 setUnscaledLineWidth:v6];
 
-    v8 = [(AXFKAFocusDoubleRingShapeLayer *)self strokeColorForTopLayer];
+    strokeColorForTopLayer = [(AXFKAFocusDoubleRingShapeLayer *)self strokeColorForTopLayer];
   }
 
   else
   {
-    v8 = 0;
+    strokeColorForTopLayer = 0;
   }
 
-  v9 = [(AXFKAFocusDoubleRingShapeLayer *)self topBorderLayer];
-  [v9 setStrokeColor:v8];
+  topBorderLayer3 = [(AXFKAFocusDoubleRingShapeLayer *)self topBorderLayer];
+  [topBorderLayer3 setStrokeColor:strokeColorForTopLayer];
 
   [(AXFKAFocusDoubleRingShapeLayer *)self _updateTopLayerPath];
 }
@@ -175,9 +175,9 @@
       v4 = 4.0;
     }
 
-    v5 = [(AXFKAFocusRingShapeLayer *)self kind];
+    kind = [(AXFKAFocusRingShapeLayer *)self kind];
     v6 = 1.0;
-    if (v5 == 1)
+    if (kind == 1)
     {
       v6 = 1.5;
     }
@@ -190,7 +190,7 @@
 
 - (CGColor)strokeColorForTopLayer
 {
-  v3 = [(AXFKAFocusRingShapeLayer *)self ringColorRef];
+  ringColorRef = [(AXFKAFocusRingShapeLayer *)self ringColorRef];
   if ([(AXFKAFocusRingShapeLayer *)self increaseContrast])
   {
     if ([(AXFKAFocusRingShapeLayer *)self interfaceStyle]== 2)
@@ -203,19 +203,19 @@
       [MEMORY[0x1E69DC888] blackColor];
     }
     v4 = ;
-    v10 = [v4 CGColor];
+    cGColor = [v4 CGColor];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69DC888] colorWithCGColor:v3];
+    v4 = [MEMORY[0x1E69DC888] colorWithCGColor:ringColorRef];
     if ([(AXFKAFocusRingShapeLayer *)self useDefaultRingColor])
     {
-      v5 = [(AXFKAFocusRingShapeLayer *)self tintColor];
-      v6 = v5;
-      if (v5)
+      tintColor = [(AXFKAFocusRingShapeLayer *)self tintColor];
+      v6 = tintColor;
+      if (tintColor)
       {
-        v7 = v5;
+        v7 = tintColor;
       }
 
       else
@@ -229,21 +229,21 @@
     }
 
     v9 = [(AXFKAFocusDoubleRingShapeLayer *)self topLayerFocusRingColorForTintColor:v4];
-    v10 = [v9 CGColor];
+    cGColor = [v9 CGColor];
   }
 
-  return v10;
+  return cGColor;
 }
 
-- (id)topLayerFocusRingColorForTintColor:(id)a3
+- (id)topLayerFocusRingColorForTintColor:(id)color
 {
-  v4 = a3;
-  if (a3)
+  colorCopy = color;
+  if (color)
   {
     var8[0] = 0.0;
     v19 = 0.0;
     v20 = 0.0;
-    [a3 getHue:var8 saturation:&v20 brightness:&v19 alpha:0];
+    [color getHue:var8 saturation:&v20 brightness:&v19 alpha:0];
     v5 = v19 + v19 * v20 * -0.5;
     v6 = 0.0;
     v7 = v5 == 0.0 || v5 == 1.0;
@@ -283,11 +283,11 @@
       v6 = 2.0 - (v14 + v14) / v17;
     }
 
-    v4 = [MEMORY[0x1E69DC888] colorWithHue:var8[0] saturation:v6 brightness:? alpha:?];
+    colorCopy = [MEMORY[0x1E69DC888] colorWithHue:var8[0] saturation:v6 brightness:? alpha:?];
     v3 = var8[2];
   }
 
-  return v4;
+  return colorCopy;
 }
 
 @end

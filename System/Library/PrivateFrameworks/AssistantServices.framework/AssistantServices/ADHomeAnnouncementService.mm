@@ -1,10 +1,10 @@
 @interface ADHomeAnnouncementService
 + (id)sharedService;
-- (ADHomeAnnouncementService)initWithInstanceContext:(id)a3;
+- (ADHomeAnnouncementService)initWithInstanceContext:(id)context;
 - (BOOL)_shouldStopPlaybackWhenRequestBegins;
 - (void)_stopPlayback;
 - (void)_stopPlaybackIfNeeded;
-- (void)requestLifecycleObserver:(id)a3 requestWillBeginWithInfo:(id)a4 origin:(int64_t)a5 client:(id)a6;
+- (void)requestLifecycleObserver:(id)observer requestWillBeginWithInfo:(id)info origin:(int64_t)origin client:(id)client;
 - (void)stopPlayback;
 @end
 
@@ -66,7 +66,7 @@
   [(AFNotifyObserver *)notifyObserver getStateWithCompletion:v5];
 }
 
-- (void)requestLifecycleObserver:(id)a3 requestWillBeginWithInfo:(id)a4 origin:(int64_t)a5 client:(id)a6
+- (void)requestLifecycleObserver:(id)observer requestWillBeginWithInfo:(id)info origin:(int64_t)origin client:(id)client
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -77,9 +77,9 @@
   dispatch_async(queue, block);
 }
 
-- (ADHomeAnnouncementService)initWithInstanceContext:(id)a3
+- (ADHomeAnnouncementService)initWithInstanceContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v18.receiver = self;
   v18.super_class = ADHomeAnnouncementService;
   v5 = [(ADHomeAnnouncementService *)&v18 init];
@@ -91,9 +91,9 @@
     queue = v5->_queue;
     v5->_queue = v7;
 
-    if (v4)
+    if (contextCopy)
     {
-      v9 = v4;
+      v9 = contextCopy;
     }
 
     else

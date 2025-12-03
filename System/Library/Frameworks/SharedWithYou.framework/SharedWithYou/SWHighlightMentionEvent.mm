@@ -1,28 +1,28 @@
 @interface SWHighlightMentionEvent
-- (SWHighlightMentionEvent)initWithCoder:(id)a3;
+- (SWHighlightMentionEvent)initWithCoder:(id)coder;
 - (SWHighlightMentionEvent)initWithHighlight:(SWHighlight *)highlight mentionedPersonCloudKitShareHandle:(NSString *)handle;
 - (SWHighlightMentionEvent)initWithHighlight:(SWHighlight *)highlight mentionedPersonIdentity:(SWPersonIdentity *)identity;
-- (SWHighlightMentionEvent)initWithHighlightURL:(id)a3 mentionedPersonHandle:(id)a4 mentionedPersonIdentity:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SWHighlightMentionEvent)initWithHighlightURL:(id)l mentionedPersonHandle:(id)handle mentionedPersonIdentity:(id)identity;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SWHighlightMentionEvent
 
-- (SWHighlightMentionEvent)initWithHighlightURL:(id)a3 mentionedPersonHandle:(id)a4 mentionedPersonIdentity:(id)a5
+- (SWHighlightMentionEvent)initWithHighlightURL:(id)l mentionedPersonHandle:(id)handle mentionedPersonIdentity:(id)identity
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  lCopy = l;
+  handleCopy = handle;
+  identityCopy = identity;
   v15.receiver = self;
   v15.super_class = SWHighlightMentionEvent;
   v12 = [(SWHighlightMentionEvent *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_highlightURL, a3);
-    objc_storeStrong(&v13->_mentionedPersonHandle, a4);
-    objc_storeStrong(&v13->_mentionedPersonIdentity, a5);
+    objc_storeStrong(&v12->_highlightURL, l);
+    objc_storeStrong(&v13->_mentionedPersonHandle, handle);
+    objc_storeStrong(&v13->_mentionedPersonIdentity, identity);
   }
 
   return v13;
@@ -46,41 +46,41 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SWHighlightMentionEvent *)self highlightURL];
+  coderCopy = coder;
+  highlightURL = [(SWHighlightMentionEvent *)self highlightURL];
   v6 = NSStringFromSelector(sel_highlightURL);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:highlightURL forKey:v6];
 
-  v7 = [(SWHighlightMentionEvent *)self mentionedPersonHandle];
+  mentionedPersonHandle = [(SWHighlightMentionEvent *)self mentionedPersonHandle];
   v8 = NSStringFromSelector(sel_mentionedPersonHandle);
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:mentionedPersonHandle forKey:v8];
 
-  v10 = [(SWHighlightMentionEvent *)self mentionedPersonIdentity];
+  mentionedPersonIdentity = [(SWHighlightMentionEvent *)self mentionedPersonIdentity];
   v9 = NSStringFromSelector(sel_mentionedPersonIdentity);
-  [v4 encodeObject:v10 forKey:v9];
+  [coderCopy encodeObject:mentionedPersonIdentity forKey:v9];
 }
 
-- (SWHighlightMentionEvent)initWithCoder:(id)a3
+- (SWHighlightMentionEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_highlightURL);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = objc_opt_class();
   v9 = NSStringFromSelector(sel_mentionedPersonHandle);
-  v10 = [v4 decodeObjectOfClass:v8 forKey:v9];
+  v10 = [coderCopy decodeObjectOfClass:v8 forKey:v9];
 
   v11 = objc_opt_class();
   v12 = NSStringFromSelector(sel_mentionedPersonIdentity);
-  v13 = [v4 decodeObjectOfClass:v11 forKey:v12];
+  v13 = [coderCopy decodeObjectOfClass:v11 forKey:v12];
 
   if (v7)
   {
     self = [(SWHighlightMentionEvent *)self initWithHighlightURL:v7 mentionedPersonHandle:v10 mentionedPersonIdentity:v13];
-    v14 = self;
+    selfCopy = self;
   }
 
   else
@@ -91,19 +91,19 @@
       [SWHighlightMentionEvent initWithCoder:v15];
     }
 
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(SWHighlightMentionEvent *)self highlightURL];
-  v6 = [(SWHighlightMentionEvent *)self mentionedPersonHandle];
-  v7 = [(SWHighlightMentionEvent *)self mentionedPersonIdentity];
-  v8 = [v4 initWithHighlightURL:v5 mentionedPersonHandle:v6 mentionedPersonIdentity:v7];
+  highlightURL = [(SWHighlightMentionEvent *)self highlightURL];
+  mentionedPersonHandle = [(SWHighlightMentionEvent *)self mentionedPersonHandle];
+  mentionedPersonIdentity = [(SWHighlightMentionEvent *)self mentionedPersonIdentity];
+  v8 = [v4 initWithHighlightURL:highlightURL mentionedPersonHandle:mentionedPersonHandle mentionedPersonIdentity:mentionedPersonIdentity];
 
   return v8;
 }

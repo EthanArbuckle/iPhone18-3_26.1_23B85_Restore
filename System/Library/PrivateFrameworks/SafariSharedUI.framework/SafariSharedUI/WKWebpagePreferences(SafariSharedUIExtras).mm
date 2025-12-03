@@ -22,7 +22,7 @@
     v5 = 0;
   }
 
-  return [a1 _setNetworkConnectionIntegrityPolicy:v5];
+  return [self _setNetworkConnectionIntegrityPolicy:v5];
 }
 
 @end

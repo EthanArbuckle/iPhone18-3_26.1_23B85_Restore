@@ -1,12 +1,12 @@
 @interface BuddyLockdownModeController
 + (id)cloudConfigSkipKey;
 - (BOOL)controllerNeedsToRun;
-- (BOOL)enableTappedAndReturnError:(id *)a3;
+- (BOOL)enableTappedAndReturnError:(id *)error;
 - (BYRunState)runState;
-- (_TtC5Setup27BuddyLockdownModeController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC5Setup27BuddyLockdownModeController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (_TtC5Setup27BuddyLockdownModeController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC5Setup27BuddyLockdownModeController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (_TtP5Setup20LockdownModeProvider_)lockdownModeProvider;
-- (void)setSetupMethod:(id)a3;
+- (void)setSetupMethod:(id)method;
 - (void)setUpLaterTapped;
 - (void)viewDidLoad;
 @end
@@ -15,13 +15,13 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10002C814();
 }
 
-- (BOOL)enableTappedAndReturnError:(id *)a3
+- (BOOL)enableTappedAndReturnError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   sub_10002CA70();
 
   return 1;
@@ -29,7 +29,7 @@
 
 - (void)setUpLaterTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_10002D2E4();
 }
 
@@ -47,11 +47,11 @@
   return v2;
 }
 
-- (void)setSetupMethod:(id)a3
+- (void)setSetupMethod:(id)method
 {
   v4 = *&self->super.OBWelcomeController_opaque[OBJC_IVAR____TtC5Setup27BuddyLockdownModeController_setupMethod];
-  *&self->super.OBWelcomeController_opaque[OBJC_IVAR____TtC5Setup27BuddyLockdownModeController_setupMethod] = a3;
-  v3 = a3;
+  *&self->super.OBWelcomeController_opaque[OBJC_IVAR____TtC5Setup27BuddyLockdownModeController_setupMethod] = method;
+  methodCopy = method;
 }
 
 + (id)cloudConfigSkipKey
@@ -64,20 +64,20 @@
 
 - (BOOL)controllerNeedsToRun
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10002DB90();
 
   return v3 & 1;
 }
 
-- (_TtC5Setup27BuddyLockdownModeController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC5Setup27BuddyLockdownModeController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC5Setup27BuddyLockdownModeController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC5Setup27BuddyLockdownModeController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

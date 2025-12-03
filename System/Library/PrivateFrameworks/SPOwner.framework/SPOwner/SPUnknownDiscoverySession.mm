@@ -1,26 +1,26 @@
 @interface SPUnknownDiscoverySession
 + (id)exportedInterface;
 + (id)remoteInterface;
-- (SPUnknownDiscoverySession)initWithPreviousState:(id)a3;
+- (SPUnknownDiscoverySession)initWithPreviousState:(id)state;
 - (SPUnknownDiscoveryXPCProtocol)proxy;
-- (void)discoveredUnknownAccessory:(id)a3;
-- (void)fetchEncryptedPayloadForUnknownBeacon:(id)a3 completion:(id)a4;
-- (void)interruptionHandler:(id)a3;
-- (void)invalidationHandler:(id)a3;
-- (void)lostUnknownAccessory:(id)a3;
-- (void)startDiscoveryWithCompletion:(id)a3;
-- (void)startDiscoveryWithScanRate:(int64_t)a3 timeout:(double)a4 completion:(id)a5;
+- (void)discoveredUnknownAccessory:(id)accessory;
+- (void)fetchEncryptedPayloadForUnknownBeacon:(id)beacon completion:(id)completion;
+- (void)interruptionHandler:(id)handler;
+- (void)invalidationHandler:(id)handler;
+- (void)lostUnknownAccessory:(id)accessory;
+- (void)startDiscoveryWithCompletion:(id)completion;
+- (void)startDiscoveryWithScanRate:(int64_t)rate timeout:(double)timeout completion:(id)completion;
 - (void)stop;
-- (void)stopDiscoveryWithCompletion:(id)a3;
-- (void)unknownAccessoryDiscoveryError:(id)a3;
+- (void)stopDiscoveryWithCompletion:(id)completion;
+- (void)unknownAccessoryDiscoveryError:(id)error;
 - (void)unknownAccessoryDiscoveryFinished;
 @end
 
 @implementation SPUnknownDiscoverySession
 
-- (SPUnknownDiscoverySession)initWithPreviousState:(id)a3
+- (SPUnknownDiscoverySession)initWithPreviousState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v18.receiver = self;
   v18.super_class = SPUnknownDiscoverySession;
   v5 = [(SPUnknownDiscoverySession *)&v18 init];
@@ -36,9 +36,9 @@
     callbackQueue = v5->_callbackQueue;
     v5->_callbackQueue = v10;
 
-    if (v4)
+    if (stateCopy)
     {
-      v12 = v4;
+      v12 = stateCopy;
       state = v5->_state;
       v5->_state = v12;
     }
@@ -56,29 +56,29 @@
   return v5;
 }
 
-- (void)interruptionHandler:(id)a3
+- (void)interruptionHandler:(id)handler
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = LogCategory_UnknownDiscovery();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = handlerCopy;
     _os_log_impl(&dword_2643D0000, v5, OS_LOG_TYPE_DEFAULT, "SPUnknownDiscoverySession: interruptionHandler %@", buf, 0xCu);
   }
 
-  v6 = [(SPUnknownDiscoverySession *)self sessionInvalidatedCallback];
+  sessionInvalidatedCallback = [(SPUnknownDiscoverySession *)self sessionInvalidatedCallback];
 
-  if (v6)
+  if (sessionInvalidatedCallback)
   {
-    v7 = [(SPUnknownDiscoverySession *)self callbackQueue];
+    callbackQueue = [(SPUnknownDiscoverySession *)self callbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __49__SPUnknownDiscoverySession_interruptionHandler___block_invoke;
     block[3] = &unk_279B58AE8;
     block[4] = self;
-    dispatch_sync(v7, block);
+    dispatch_sync(callbackQueue, block);
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -90,30 +90,30 @@ void __49__SPUnknownDiscoverySession_interruptionHandler___block_invoke(uint64_t
   v1[2]();
 }
 
-- (void)invalidationHandler:(id)a3
+- (void)invalidationHandler:(id)handler
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = LogCategory_UnknownDiscovery();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = handlerCopy;
     _os_log_impl(&dword_2643D0000, v5, OS_LOG_TYPE_DEFAULT, "SPUnknownDiscoverySession: invalidationHandler %@", buf, 0xCu);
   }
 
   [(SPUnknownDiscoverySession *)self setSession:0];
-  v6 = [(SPUnknownDiscoverySession *)self sessionInvalidatedCallback];
+  sessionInvalidatedCallback = [(SPUnknownDiscoverySession *)self sessionInvalidatedCallback];
 
-  if (v6)
+  if (sessionInvalidatedCallback)
   {
-    v7 = [(SPUnknownDiscoverySession *)self callbackQueue];
+    callbackQueue = [(SPUnknownDiscoverySession *)self callbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __49__SPUnknownDiscoverySession_invalidationHandler___block_invoke;
     block[3] = &unk_279B58AE8;
     block[4] = self;
-    dispatch_sync(v7, block);
+    dispatch_sync(callbackQueue, block);
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -128,16 +128,16 @@ void __49__SPUnknownDiscoverySession_invalidationHandler___block_invoke(uint64_t
 - (SPUnknownDiscoveryXPCProtocol)proxy
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [(SPUnknownDiscoverySession *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SPUnknownDiscoverySession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(SPUnknownDiscoverySession *)self session];
+  session = [(SPUnknownDiscoverySession *)self session];
 
-  if (!v4)
+  if (!session)
   {
-    v5 = [(SPUnknownDiscoverySession *)self serviceDescription];
+    serviceDescription = [(SPUnknownDiscoverySession *)self serviceDescription];
 
-    if (!v5)
+    if (!serviceDescription)
     {
       aBlock[0] = MEMORY[0x277D85DD0];
       aBlock[1] = 3221225472;
@@ -160,30 +160,30 @@ void __49__SPUnknownDiscoverySession_invalidationHandler___block_invoke(uint64_t
     }
 
     v13 = objc_alloc(MEMORY[0x277D07BA8]);
-    v14 = [(SPUnknownDiscoverySession *)self serviceDescription];
-    v15 = [v13 initWithServiceDescription:v14];
+    serviceDescription2 = [(SPUnknownDiscoverySession *)self serviceDescription];
+    v15 = [v13 initWithServiceDescription:serviceDescription2];
     [(SPUnknownDiscoverySession *)self setSession:v15];
 
     v16 = LogCategory_UnknownDiscovery();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(SPUnknownDiscoverySession *)self serviceDescription];
-      v18 = [v17 machService];
+      serviceDescription3 = [(SPUnknownDiscoverySession *)self serviceDescription];
+      machService = [serviceDescription3 machService];
       *buf = 138412290;
-      v27 = v18;
+      v27 = machService;
       _os_log_impl(&dword_2643D0000, v16, OS_LOG_TYPE_DEFAULT, "SPUnknownDiscoverySession: Establishing XPC connection to %@", buf, 0xCu);
     }
 
-    v19 = [(SPUnknownDiscoverySession *)self session];
-    [v19 resume];
+    session2 = [(SPUnknownDiscoverySession *)self session];
+    [session2 resume];
   }
 
-  v20 = [(SPUnknownDiscoverySession *)self session];
-  v21 = [v20 proxy];
+  session3 = [(SPUnknownDiscoverySession *)self session];
+  proxy = [session3 proxy];
 
   v22 = *MEMORY[0x277D85DE8];
 
-  return v21;
+  return proxy;
 }
 
 + (id)exportedInterface
@@ -224,16 +224,16 @@ uint64_t __44__SPUnknownDiscoverySession_remoteInterface__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)startDiscoveryWithCompletion:(id)a3
+- (void)startDiscoveryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __58__SPUnknownDiscoverySession_startDiscoveryWithCompletion___block_invoke;
   v6[3] = &unk_279B58B80;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   _os_activity_initiate(&dword_2643D0000, "SPUnknownDiscoverySession.startDiscovery", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 
@@ -284,18 +284,18 @@ void __58__SPUnknownDiscoverySession_startDiscoveryWithCompletion___block_invoke
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startDiscoveryWithScanRate:(int64_t)a3 timeout:(double)a4 completion:(id)a5
+- (void)startDiscoveryWithScanRate:(int64_t)rate timeout:(double)timeout completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __75__SPUnknownDiscoverySession_startDiscoveryWithScanRate_timeout_completion___block_invoke;
   v10[3] = &unk_279B58C50;
-  v11 = v8;
-  v12 = a3;
-  v13 = a4;
+  v11 = completionCopy;
+  rateCopy = rate;
+  timeoutCopy = timeout;
   v10[4] = self;
-  v9 = v8;
+  v9 = completionCopy;
   _os_activity_initiate(&dword_2643D0000, "SPUnknownDiscoverySession.startDiscoveryWithScanRate:timeout:completion:", OS_ACTIVITY_FLAG_DEFAULT, v10);
 }
 
@@ -351,16 +351,16 @@ void __75__SPUnknownDiscoverySession_startDiscoveryWithScanRate_timeout_completi
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopDiscoveryWithCompletion:(id)a3
+- (void)stopDiscoveryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __57__SPUnknownDiscoverySession_stopDiscoveryWithCompletion___block_invoke;
   v6[3] = &unk_279B58B80;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   _os_activity_initiate(&dword_2643D0000, "SPUnknownDiscoverySession.stopDiscovery", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 
@@ -420,13 +420,13 @@ void __57__SPUnknownDiscoverySession_stopDiscoveryWithCompletion___block_invoke_
     _os_log_impl(&dword_2643D0000, v3, OS_LOG_TYPE_DEFAULT, "[SPUnknownDiscoverySession stop]", buf, 2u);
   }
 
-  v4 = [(SPUnknownDiscoverySession *)self queue];
+  queue = [(SPUnknownDiscoverySession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __33__SPUnknownDiscoverySession_stop__block_invoke;
   block[3] = &unk_279B58AE8;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(queue, block);
 }
 
 uint64_t __33__SPUnknownDiscoverySession_stop__block_invoke(uint64_t a1)
@@ -442,31 +442,31 @@ uint64_t __33__SPUnknownDiscoverySession_stop__block_invoke(uint64_t a1)
   return [v3 setSession:0];
 }
 
-- (void)fetchEncryptedPayloadForUnknownBeacon:(id)a3 completion:(id)a4
+- (void)fetchEncryptedPayloadForUnknownBeacon:(id)beacon completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  beaconCopy = beacon;
+  completionCopy = completion;
   v8 = LogCategory_UnknownDiscovery();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = v6;
+    v18 = beaconCopy;
     _os_log_impl(&dword_2643D0000, v8, OS_LOG_TYPE_DEFAULT, "[SPUnknownDiscoverySession fetchEncryptedPayloadForUnknownBeacon]. Beacon %@", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
-  v9 = [(SPUnknownDiscoverySession *)self queue];
+  queue = [(SPUnknownDiscoverySession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __78__SPUnknownDiscoverySession_fetchEncryptedPayloadForUnknownBeacon_completion___block_invoke;
   block[3] = &unk_279B58BA8;
   objc_copyWeak(&v16, buf);
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v14 = beaconCopy;
+  v15 = completionCopy;
+  v10 = completionCopy;
+  v11 = beaconCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(buf);
@@ -480,9 +480,9 @@ void __78__SPUnknownDiscoverySession_fetchEncryptedPayloadForUnknownBeacon_compl
   [v2 fetchEncryptedPayloadForUnknownBeacon:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)discoveredUnknownAccessory:(id)a3
+- (void)discoveredUnknownAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   v5 = LogCategory_UnknownDiscovery();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -490,15 +490,15 @@ void __78__SPUnknownDiscoverySession_fetchEncryptedPayloadForUnknownBeacon_compl
     _os_log_impl(&dword_2643D0000, v5, OS_LOG_TYPE_DEFAULT, "discoveredUnknownAccessory() called from daemon", buf, 2u);
   }
 
-  v6 = [(SPUnknownDiscoverySession *)self queue];
+  queue = [(SPUnknownDiscoverySession *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __56__SPUnknownDiscoverySession_discoveredUnknownAccessory___block_invoke;
   v8[3] = &unk_279B58C78;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_sync(v6, v8);
+  v9 = accessoryCopy;
+  v7 = accessoryCopy;
+  dispatch_sync(queue, v8);
 }
 
 void __56__SPUnknownDiscoverySession_discoveredUnknownAccessory___block_invoke(uint64_t a1)
@@ -560,9 +560,9 @@ void __56__SPUnknownDiscoverySession_discoveredUnknownAccessory___block_invoke_7
   v2[2](v2, *(a1 + 40));
 }
 
-- (void)lostUnknownAccessory:(id)a3
+- (void)lostUnknownAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   v5 = LogCategory_UnknownDiscovery();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -570,15 +570,15 @@ void __56__SPUnknownDiscoverySession_discoveredUnknownAccessory___block_invoke_7
     _os_log_impl(&dword_2643D0000, v5, OS_LOG_TYPE_DEFAULT, "lostUnknownAccessory() called from daemon", buf, 2u);
   }
 
-  v6 = [(SPUnknownDiscoverySession *)self queue];
+  queue = [(SPUnknownDiscoverySession *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __50__SPUnknownDiscoverySession_lostUnknownAccessory___block_invoke;
   v8[3] = &unk_279B58C78;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_sync(v6, v8);
+  v9 = accessoryCopy;
+  v7 = accessoryCopy;
+  dispatch_sync(queue, v8);
 }
 
 void __50__SPUnknownDiscoverySession_lostUnknownAccessory___block_invoke(uint64_t a1)
@@ -616,27 +616,27 @@ void __50__SPUnknownDiscoverySession_lostUnknownAccessory___block_invoke_2(uint6
   v4[2](v4, v3);
 }
 
-- (void)unknownAccessoryDiscoveryError:(id)a3
+- (void)unknownAccessoryDiscoveryError:(id)error
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = LogCategory_UnknownDiscovery();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = errorCopy;
     _os_log_impl(&dword_2643D0000, v5, OS_LOG_TYPE_DEFAULT, "[unknownAccessoryDiscoveryError called from client]. Error %@", buf, 0xCu);
   }
 
-  v6 = [(SPUnknownDiscoverySession *)self callbackQueue];
+  callbackQueue = [(SPUnknownDiscoverySession *)self callbackQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __60__SPUnknownDiscoverySession_unknownAccessoryDiscoveryError___block_invoke;
   v9[3] = &unk_279B58C78;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
-  dispatch_sync(v6, v9);
+  v10 = errorCopy;
+  v7 = errorCopy;
+  dispatch_sync(callbackQueue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -656,13 +656,13 @@ void __60__SPUnknownDiscoverySession_unknownAccessoryDiscoveryError___block_invo
     _os_log_impl(&dword_2643D0000, v3, OS_LOG_TYPE_DEFAULT, "[unknownAccessoryDiscoveryFinished called from client].", buf, 2u);
   }
 
-  v4 = [(SPUnknownDiscoverySession *)self callbackQueue];
+  callbackQueue = [(SPUnknownDiscoverySession *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__SPUnknownDiscoverySession_unknownAccessoryDiscoveryFinished__block_invoke;
   block[3] = &unk_279B58AE8;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(callbackQueue, block);
 }
 
 void __62__SPUnknownDiscoverySession_unknownAccessoryDiscoveryFinished__block_invoke(uint64_t a1)

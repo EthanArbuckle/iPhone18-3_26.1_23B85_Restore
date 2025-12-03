@@ -1,12 +1,12 @@
 @interface _CDContextValue
 + (NSSet)supportedContextValueClasses;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CDContextValue)init;
-- (_CDContextValue)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_CDContextValue)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _CDContextValue
@@ -18,9 +18,9 @@
   v2 = [(_CDContextValue *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     metadata = v2->_metadata;
-    v2->_metadata = v3;
+    v2->_metadata = dictionary;
   }
 
   return v2;
@@ -38,32 +38,32 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   metadata = self->_metadata;
-  v5 = a3;
+  coderCopy = coder;
   v6 = [(NSMutableDictionary *)metadata objectForKeyedSubscript:@"_CDContextMetadataDataKey"];
-  [v5 encodeObject:v6 forKey:@"value"];
+  [coderCopy encodeObject:v6 forKey:@"value"];
 
   v7 = [(NSMutableDictionary *)self->_metadata objectForKeyedSubscript:@"_CDContextMetadataTransitionDateKey"];
-  [v5 encodeObject:v7 forKey:@"lastModified"];
+  [coderCopy encodeObject:v7 forKey:@"lastModified"];
 }
 
-- (_CDContextValue)initWithCoder:(id)a3
+- (_CDContextValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = _CDContextValue;
   v5 = [(_CDContextValue *)&v12 init];
   if (v5)
   {
     v6 = +[_CDContextValue supportedContextValueClasses];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"value"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"value"];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastModified"];
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastModified"];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     metadata = v5->_metadata;
-    v5->_metadata = v9;
+    v5->_metadata = dictionary;
 
     [(NSMutableDictionary *)v5->_metadata setObject:v7 forKeyedSubscript:@"_CDContextMetadataDataKey"];
     [(NSMutableDictionary *)v5->_metadata setObject:v8 forKeyedSubscript:@"_CDContextMetadataTransitionDateKey"];
@@ -72,19 +72,19 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [v4 metadata];
-  [v5 addEntriesFromDictionary:self->_metadata];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  metadata = [v4 metadata];
+  [metadata addEntriesFromDictionary:self->_metadata];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -94,11 +94,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(_CDContextValue *)self value];
-      v7 = [(_CDContextValue *)v5 value];
+      v5 = equalCopy;
+      value = [(_CDContextValue *)self value];
+      value2 = [(_CDContextValue *)v5 value];
 
-      v8 = [v6 isEqual:v7];
+      v8 = [value isEqual:value2];
     }
 
     else
@@ -112,8 +112,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(_CDContextValue *)self value];
-  v3 = [v2 hash];
+  value = [(_CDContextValue *)self value];
+  v3 = [value hash];
 
   return v3;
 }
@@ -122,12 +122,12 @@
 {
   v3 = self->_metadata;
   objc_sync_enter(v3);
-  v4 = [(_CDContextValue *)self value];
-  v5 = [v4 description];
+  value = [(_CDContextValue *)self value];
+  v5 = [value description];
 
-  v6 = [(_CDContextValue *)self lastModifiedDate];
-  v7 = [MEMORY[0x1E695DF58] currentLocale];
-  v8 = [v6 descriptionWithLocale:v7];
+  lastModifiedDate = [(_CDContextValue *)self lastModifiedDate];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v8 = [lastModifiedDate descriptionWithLocale:currentLocale];
 
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: Updated at %@", v5, v8];
 

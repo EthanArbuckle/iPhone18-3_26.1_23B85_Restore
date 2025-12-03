@@ -1,8 +1,8 @@
 @interface SleepOnboardingChangeDetector
 - (_TtC20SleepHealthAppPlugin29SleepOnboardingChangeDetector)init;
-- (void)featureAvailabilityProvidingDidUpdatePairedDeviceCapability:(id)a3;
-- (void)sleepStore:(id)a3 sleepEventRecordDidChange:(id)a4;
-- (void)sleepStore:(id)a3 sleepSettingsDidChange:(id)a4;
+- (void)featureAvailabilityProvidingDidUpdatePairedDeviceCapability:(id)capability;
+- (void)sleepStore:(id)store sleepEventRecordDidChange:(id)change;
+- (void)sleepStore:(id)store sleepSettingsDidChange:(id)change;
 @end
 
 @implementation SleepOnboardingChangeDetector
@@ -14,27 +14,27 @@
   return result;
 }
 
-- (void)sleepStore:(id)a3 sleepEventRecordDidChange:(id)a4
+- (void)sleepStore:(id)store sleepEventRecordDidChange:(id)change
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_29E61FF38(v7, "[%{public}s]: Sleep event record did change: %{public}s", &OBJC_IVAR____TtC20SleepHealthAppPlugin29SleepOnboardingChangeDetector_sleepEventRecord);
+  storeCopy = store;
+  changeCopy = change;
+  selfCopy = self;
+  sub_29E61FF38(changeCopy, "[%{public}s]: Sleep event record did change: %{public}s", &OBJC_IVAR____TtC20SleepHealthAppPlugin29SleepOnboardingChangeDetector_sleepEventRecord);
 }
 
-- (void)sleepStore:(id)a3 sleepSettingsDidChange:(id)a4
+- (void)sleepStore:(id)store sleepSettingsDidChange:(id)change
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_29E61FF38(v7, "[%{public}s]: Sleep settings did change: %{public}s", &OBJC_IVAR____TtC20SleepHealthAppPlugin29SleepOnboardingChangeDetector_sleepSettings);
+  storeCopy = store;
+  changeCopy = change;
+  selfCopy = self;
+  sub_29E61FF38(changeCopy, "[%{public}s]: Sleep settings did change: %{public}s", &OBJC_IVAR____TtC20SleepHealthAppPlugin29SleepOnboardingChangeDetector_sleepSettings);
 }
 
-- (void)featureAvailabilityProvidingDidUpdatePairedDeviceCapability:(id)a3
+- (void)featureAvailabilityProvidingDidUpdatePairedDeviceCapability:(id)capability
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_29E61EE28(a3);
+  selfCopy = self;
+  sub_29E61EE28(capability);
   sub_29E751758();
 }
 

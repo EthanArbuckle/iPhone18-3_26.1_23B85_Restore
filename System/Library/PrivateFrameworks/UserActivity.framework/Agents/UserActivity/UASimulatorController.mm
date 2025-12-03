@@ -2,21 +2,21 @@
 - (BOOL)active;
 - (BOOL)terminate;
 - (NSSet)simulators;
-- (UASimulatorController)initWithManager:(id)a3;
+- (UASimulatorController)initWithManager:(id)manager;
 - (id)simulatorStatus;
 - (id)statusString;
-- (void)addSimulator:(id)a3;
-- (void)removeSimulator:(id)a3;
+- (void)addSimulator:(id)simulator;
+- (void)removeSimulator:(id)simulator;
 @end
 
 @implementation UASimulatorController
 
-- (UASimulatorController)initWithManager:(id)a3
+- (UASimulatorController)initWithManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = UASimulatorController;
-  v5 = [(UACornerActionManagerHandler *)&v11 initWithManager:v4 name:@"SimCreator"];
+  v5 = [(UACornerActionManagerHandler *)&v11 initWithManager:managerCopy name:@"SimCreator"];
   if (v5)
   {
     v6 = dispatch_queue_create("simulator", 0);
@@ -33,43 +33,43 @@
 
 - (NSSet)simulators
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableSet *)v2->_simulators copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableSet *)selfCopy->_simulators copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)addSimulator:(id)a3
+- (void)addSimulator:(id)simulator
 {
   obj = self;
-  v4 = a3;
+  simulatorCopy = simulator;
   objc_sync_enter(obj);
-  [(NSMutableSet *)obj->_simulators addObject:v4];
+  [(NSMutableSet *)obj->_simulators addObject:simulatorCopy];
 
   objc_sync_exit(obj);
 }
 
-- (void)removeSimulator:(id)a3
+- (void)removeSimulator:(id)simulator
 {
-  v4 = a3;
-  if (v4)
+  simulatorCopy = simulator;
+  if (simulatorCopy)
   {
-    v6 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    [(NSMutableSet *)v5->_simulators removeObject:v6];
-    objc_sync_exit(v5);
+    v6 = simulatorCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(NSMutableSet *)selfCopy->_simulators removeObject:v6];
+    objc_sync_exit(selfCopy);
 
-    v4 = v6;
+    simulatorCopy = v6;
   }
 }
 
 - (BOOL)active
 {
-  v2 = [(UASimulatorController *)self simulators];
-  v3 = [v2 count] != 0;
+  simulators = [(UASimulatorController *)self simulators];
+  v3 = [simulators count] != 0;
 
   return v3;
 }
@@ -78,8 +78,8 @@
 {
   v15.receiver = self;
   v15.super_class = UASimulatorController;
-  v3 = [(UACornerActionManagerHandler *)&v15 terminate];
-  if (v3)
+  terminate = [(UACornerActionManagerHandler *)&v15 terminate];
+  if (terminate)
   {
     v4 = sub_100001A30(0);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -92,8 +92,8 @@
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v5 = [(UASimulatorController *)self simulators];
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v16 count:16];
+    simulators = [(UASimulatorController *)self simulators];
+    v6 = [simulators countByEnumeratingWithState:&v10 objects:v16 count:16];
     if (v6)
     {
       v7 = *v11;
@@ -104,7 +104,7 @@
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(simulators);
           }
 
           [*(*(&v10 + 1) + 8 * v8) terminate];
@@ -112,20 +112,20 @@
         }
 
         while (v6 != v8);
-        v6 = [v5 countByEnumeratingWithState:&v10 objects:v16 count:16];
+        v6 = [simulators countByEnumeratingWithState:&v10 objects:v16 count:16];
       }
 
       while (v6);
     }
   }
 
-  return v3;
+  return terminate;
 }
 
 - (id)statusString
 {
-  v3 = [(UASimulatorController *)self simulators];
-  v4 = [v3 count];
+  simulators = [(UASimulatorController *)self simulators];
+  v4 = [simulators count];
 
   if (v4)
   {
@@ -134,8 +134,8 @@
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [(UASimulatorController *)self simulators];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    simulators2 = [(UASimulatorController *)self simulators];
+    v7 = [simulators2 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = *v15;
@@ -145,14 +145,14 @@
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(simulators2);
           }
 
-          v10 = [*(*(&v14 + 1) + 8 * i) statusString];
-          [v5 appendFormat:@"%@\n", v10];
+          statusString = [*(*(&v14 + 1) + 8 * i) statusString];
+          [v5 appendFormat:@"%@\n", statusString];
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [simulators2 countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v7);
@@ -201,8 +201,8 @@
         if (v7)
         {
           v9 = mach_error_string(v7);
-          v10 = [v6 statusString];
-          v11 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"(ERROR %d/%s for simulator %@"), v8, v9, v10;
+          statusString = [v6 statusString];
+          v11 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"(ERROR %d/%s for simulator %@"), v8, v9, statusString;
 
           v3 = v11;
         }

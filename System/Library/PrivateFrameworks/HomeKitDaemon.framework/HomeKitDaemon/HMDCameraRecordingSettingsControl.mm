@@ -1,15 +1,15 @@
 @interface HMDCameraRecordingSettingsControl
 + (NSArray)audioConfigurationsByPreferenceOrder;
-+ (id)audioBitRateForCodecConfiguration:(id)a3;
-+ (id)audioCodecForCodecConfiguration:(id)a3;
-+ (id)h264ProfileForCodecConfiguration:(id)a3;
++ (id)audioBitRateForCodecConfiguration:(id)configuration;
++ (id)audioCodecForCodecConfiguration:(id)configuration;
++ (id)h264ProfileForCodecConfiguration:(id)configuration;
 + (id)logCategory;
-+ (id)videoCodecForCodecConfiguration:(id)a3;
-- (BOOL)_shouldReconfigureForChangedCharacteristic:(id)a3;
++ (id)videoCodecForCodecConfiguration:(id)configuration;
+- (BOOL)_shouldReconfigureForChangedCharacteristic:(id)characteristic;
 - (BOOL)isCameraConfiguredForRecording;
 - (BOOL)isPrimaryResident;
-- (HMDCameraRecordingSettingsControl)initWithWorkQueue:(id)a3 accessory:(id)a4 recordingManagementService:(id)a5;
-- (HMDCameraRecordingSettingsControl)initWithWorkQueue:(id)a3 accessory:(id)a4 recordingManagementService:(id)a5 featuresDataSource:(id)a6 notificationCenter:(id)a7;
+- (HMDCameraRecordingSettingsControl)initWithWorkQueue:(id)queue accessory:(id)accessory recordingManagementService:(id)service;
+- (HMDCameraRecordingSettingsControl)initWithWorkQueue:(id)queue accessory:(id)accessory recordingManagementService:(id)service featuresDataSource:(id)source notificationCenter:(id)center;
 - (HMDCameraRecordingSettingsControlDelegate)delegate;
 - (HMDCharacteristic)recordingActiveCharacteristic;
 - (HMDCharacteristic)recordingSelectedConfigurationCharacteristic;
@@ -18,41 +18,41 @@
 - (HMDCharacteristic)recordingSupportedVideoConfigurationCharacteristic;
 - (HMDHAPAccessory)accessory;
 - (NSArray)videoConfigurationsByPreferenceOrder;
-- (id)_dataValueForCharacteristicOfType:(id)a3 inResponses:(id)a4;
-- (id)_generalRecordingConfigurationInResponses:(id)a3;
-- (id)_isRecordingActiveValueInResponses:(id)a3;
-- (id)_numberValueForCharacteristicOfType:(id)a3 inResponses:(id)a4;
+- (id)_dataValueForCharacteristicOfType:(id)type inResponses:(id)responses;
+- (id)_generalRecordingConfigurationInResponses:(id)responses;
+- (id)_isRecordingActiveValueInResponses:(id)responses;
+- (id)_numberValueForCharacteristicOfType:(id)type inResponses:(id)responses;
 - (id)_preferredAudioConfigurationOverride;
 - (id)_preferredVideoConfigurationOverride;
 - (id)_recordingAudioConfiguration;
 - (id)_recordingGeneralConfiguration;
 - (id)_recordingVideoConfiguration;
-- (id)_selectedRecordingConfigurationInResponses:(id)a3;
-- (id)_supportedAudioConfigurationInResponses:(id)a3;
-- (id)_supportedVideoConfigurationInResponses:(id)a3;
+- (id)_selectedRecordingConfigurationInResponses:(id)responses;
+- (id)_supportedAudioConfigurationInResponses:(id)responses;
+- (id)_supportedVideoConfigurationInResponses:(id)responses;
 - (id)characteristicsToMonitor;
 - (id)logIdentifier;
-- (void)_handleCurrentIsRecordingActive:(id)a3 selectedConfiguration:(id)a4;
-- (void)_handleSupportedConfigurationCharacteristicsReadResponses:(id)a3;
-- (void)_invokePendingConfigureCompletionHandlersWithError:(id)a3;
-- (void)_invokePendingConfigureCompletionHandlersWithGeneralConfiguration:(id)a3;
-- (void)_invokePendingConfigureCompletionHandlersWithGeneralConfiguration:(id)a3 error:(id)a4;
+- (void)_handleCurrentIsRecordingActive:(id)active selectedConfiguration:(id)configuration;
+- (void)_handleSupportedConfigurationCharacteristicsReadResponses:(id)responses;
+- (void)_invokePendingConfigureCompletionHandlersWithError:(id)error;
+- (void)_invokePendingConfigureCompletionHandlersWithGeneralConfiguration:(id)configuration;
+- (void)_invokePendingConfigureCompletionHandlersWithGeneralConfiguration:(id)configuration error:(id)error;
 - (void)_readCameraRecordingSettings;
 - (void)_readSupportedCameraRecordingConfiguration;
-- (void)_setSelectedRecordingConfiguration:(id)a3;
-- (void)_updateSelectedRecordingConfiguration:(id)a3;
+- (void)_setSelectedRecordingConfiguration:(id)configuration;
+- (void)_updateSelectedRecordingConfiguration:(id)configuration;
 - (void)_writeCameraRecordingSettings;
 - (void)configureCameraRecordingSettings;
-- (void)configureCameraRecordingSettingsWithCompletion:(id)a3;
+- (void)configureCameraRecordingSettingsWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)enableCharacteristicNotifications;
-- (void)handleAccessoryConnectedNotification:(id)a3;
-- (void)handleAccessoryDisconnectedNotification:(id)a3;
+- (void)handleAccessoryConnectedNotification:(id)notification;
+- (void)handleAccessoryDisconnectedNotification:(id)notification;
 - (void)handleAccessoryIsNotConfiguredError;
-- (void)handleCharacteristicsChangedNotification:(id)a3;
-- (void)handleCharacteristicsUpdatedNotification:(id)a3;
-- (void)handleHomePersonManagerSettingsDidChangeNotification:(id)a3;
-- (void)reconfigureCameraRecordingSettingsWithReason:(id)a3;
+- (void)handleCharacteristicsChangedNotification:(id)notification;
+- (void)handleCharacteristicsUpdatedNotification:(id)notification;
+- (void)handleHomePersonManagerSettingsDidChangeNotification:(id)notification;
+- (void)reconfigureCameraRecordingSettingsWithReason:(id)reason;
 - (void)start;
 @end
 
@@ -75,63 +75,63 @@
 - (id)logIdentifier
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDCameraRecordingSettingsControl *)self accessory];
-  v5 = [v4 name];
-  v6 = [(HMDCameraRecordingSettingsControl *)self recordingService];
-  v7 = [v6 instanceID];
-  v8 = [v3 stringWithFormat:@"%@/%@", v5, v7];
+  accessory = [(HMDCameraRecordingSettingsControl *)self accessory];
+  name = [accessory name];
+  recordingService = [(HMDCameraRecordingSettingsControl *)self recordingService];
+  instanceID = [recordingService instanceID];
+  v8 = [v3 stringWithFormat:@"%@/%@", name, instanceID];
 
   return v8;
 }
 
 - (BOOL)isCameraConfiguredForRecording
 {
-  v2 = self;
-  v3 = [(HMDCameraRecordingSettingsControl *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  selfCopy = self;
+  workQueue = [(HMDCameraRecordingSettingsControl *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDCameraRecordingSettingsControl *)v2 currentSelectedConfiguration];
-  LOBYTE(v2) = v4 != 0;
+  currentSelectedConfiguration = [(HMDCameraRecordingSettingsControl *)selfCopy currentSelectedConfiguration];
+  LOBYTE(selfCopy) = currentSelectedConfiguration != 0;
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)_setSelectedRecordingConfiguration:(id)a3
+- (void)_setSelectedRecordingConfiguration:(id)configuration
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCameraRecordingSettingsControl *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  configurationCopy = configuration;
+  workQueue = [(HMDCameraRecordingSettingsControl *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDCameraRecordingSettingsControl *)self accessory];
-  v7 = [v6 home];
+  accessory = [(HMDCameraRecordingSettingsControl *)self accessory];
+  home = [accessory home];
 
-  if (v7)
+  if (home)
   {
-    v8 = [(HMDCameraRecordingSettingsControl *)self recordingService];
-    v9 = [v8 findCharacteristicWithType:@"00000209-0000-1000-8000-0026BB765291"];
+    recordingService = [(HMDCameraRecordingSettingsControl *)self recordingService];
+    v9 = [recordingService findCharacteristicWithType:@"00000209-0000-1000-8000-0026BB765291"];
 
-    v10 = [v4 tlvData];
-    v11 = [HMDCharacteristicWriteRequest writeRequestWithCharacteristic:v9 value:v10 authorizationData:0 type:0];
+    tlvData = [configurationCopy tlvData];
+    v11 = [HMDCharacteristicWriteRequest writeRequestWithCharacteristic:v9 value:tlvData authorizationData:0 type:0];
 
     v23 = v11;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v23 count:1];
-    v13 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __72__HMDCameraRecordingSettingsControl__setSelectedRecordingConfiguration___block_invoke;
     v20[3] = &unk_278686658;
     v20[4] = self;
     v21 = v11;
-    v22 = v4;
+    v22 = configurationCopy;
     v14 = v11;
-    [v7 writeCharacteristicValues:v12 source:1070 biomeSource:0 identifier:v13 transport:0 qualityOfService:-1 withCompletionHandler:v20];
+    [home writeCharacteristicValues:v12 source:1070 biomeSource:0 identifier:uUID transport:0 qualityOfService:-1 withCompletionHandler:v20];
   }
 
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
@@ -213,24 +213,24 @@ void __72__HMDCameraRecordingSettingsControl__setSelectedRecordingConfiguration_
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_invokePendingConfigureCompletionHandlersWithGeneralConfiguration:(id)a3 error:(id)a4
+- (void)_invokePendingConfigureCompletionHandlersWithGeneralConfiguration:(id)configuration error:(id)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDCameraRecordingSettingsControl *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  configurationCopy = configuration;
+  errorCopy = error;
+  workQueue = [(HMDCameraRecordingSettingsControl *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if ((v6 == 0) != (v7 != 0))
+  if ((configurationCopy == 0) != (errorCopy != 0))
   {
     _HMFPreconditionFailure();
   }
 
-  v9 = [(HMDCameraRecordingSettingsControl *)self pendingConfigureCompletionHandlers];
-  v10 = [v9 copy];
+  pendingConfigureCompletionHandlers = [(HMDCameraRecordingSettingsControl *)self pendingConfigureCompletionHandlers];
+  v10 = [pendingConfigureCompletionHandlers copy];
 
-  v11 = [(HMDCameraRecordingSettingsControl *)self pendingConfigureCompletionHandlers];
-  [v11 removeAllObjects];
+  pendingConfigureCompletionHandlers2 = [(HMDCameraRecordingSettingsControl *)self pendingConfigureCompletionHandlers];
+  [pendingConfigureCompletionHandlers2 removeAllObjects];
 
   v20 = 0u;
   v21 = 0u;
@@ -266,15 +266,15 @@ void __72__HMDCameraRecordingSettingsControl__setSelectedRecordingConfiguration_
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_invokePendingConfigureCompletionHandlersWithError:(id)a3
+- (void)_invokePendingConfigureCompletionHandlersWithError:(id)error
 {
-  v8 = a3;
-  v4 = [(HMDCameraRecordingSettingsControl *)self workQueue];
-  dispatch_assert_queue_V2(v4);
+  errorCopy = error;
+  workQueue = [(HMDCameraRecordingSettingsControl *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (v8)
+  if (errorCopy)
   {
-    [(HMDCameraRecordingSettingsControl *)self _invokePendingConfigureCompletionHandlersWithGeneralConfiguration:0 error:v8];
+    [(HMDCameraRecordingSettingsControl *)self _invokePendingConfigureCompletionHandlersWithGeneralConfiguration:0 error:errorCopy];
   }
 
   else
@@ -284,15 +284,15 @@ void __72__HMDCameraRecordingSettingsControl__setSelectedRecordingConfiguration_
   }
 }
 
-- (void)_invokePendingConfigureCompletionHandlersWithGeneralConfiguration:(id)a3
+- (void)_invokePendingConfigureCompletionHandlersWithGeneralConfiguration:(id)configuration
 {
-  v9 = a3;
-  v4 = [(HMDCameraRecordingSettingsControl *)self workQueue];
-  dispatch_assert_queue_V2(v4);
+  configurationCopy = configuration;
+  workQueue = [(HMDCameraRecordingSettingsControl *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (v9)
+  if (configurationCopy)
   {
-    [(HMDCameraRecordingSettingsControl *)self _invokePendingConfigureCompletionHandlersWithGeneralConfiguration:v9 error:0];
+    [(HMDCameraRecordingSettingsControl *)self _invokePendingConfigureCompletionHandlersWithGeneralConfiguration:configurationCopy error:0];
   }
 
   else
@@ -302,19 +302,19 @@ void __72__HMDCameraRecordingSettingsControl__setSelectedRecordingConfiguration_
   }
 }
 
-- (id)_numberValueForCharacteristicOfType:(id)a3 inResponses:(id)a4
+- (id)_numberValueForCharacteristicOfType:(id)type inResponses:(id)responses
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDCameraRecordingSettingsControl *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  typeCopy = type;
+  responsesCopy = responses;
+  workQueue = [(HMDCameraRecordingSettingsControl *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = v7;
+  v9 = responsesCopy;
   v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v10)
   {
@@ -330,16 +330,16 @@ LABEL_3:
       }
 
       v14 = *(*(&v24 + 1) + 8 * v13);
-      v15 = [v14 request];
-      v16 = [v15 characteristic];
-      v17 = [v16 type];
-      v18 = [v17 isEqualToString:v6];
+      request = [v14 request];
+      characteristic = [request characteristic];
+      type = [characteristic type];
+      v18 = [type isEqualToString:typeCopy];
 
       if (v18)
       {
-        v19 = [v14 value];
+        value = [v14 value];
         objc_opt_class();
-        v20 = (objc_opt_isKindOfClass() & 1) != 0 ? v19 : 0;
+        v20 = (objc_opt_isKindOfClass() & 1) != 0 ? value : 0;
         v21 = v20;
 
         if (v21)
@@ -364,27 +364,27 @@ LABEL_3:
   else
   {
 LABEL_13:
-    v19 = 0;
+    value = 0;
   }
 
   v22 = *MEMORY[0x277D85DE8];
 
-  return v19;
+  return value;
 }
 
-- (id)_dataValueForCharacteristicOfType:(id)a3 inResponses:(id)a4
+- (id)_dataValueForCharacteristicOfType:(id)type inResponses:(id)responses
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDCameraRecordingSettingsControl *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  typeCopy = type;
+  responsesCopy = responses;
+  workQueue = [(HMDCameraRecordingSettingsControl *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = v7;
+  v9 = responsesCopy;
   v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v10)
   {
@@ -400,16 +400,16 @@ LABEL_3:
       }
 
       v14 = *(*(&v24 + 1) + 8 * v13);
-      v15 = [v14 request];
-      v16 = [v15 characteristic];
-      v17 = [v16 type];
-      v18 = [v17 isEqualToString:v6];
+      request = [v14 request];
+      characteristic = [request characteristic];
+      type = [characteristic type];
+      v18 = [type isEqualToString:typeCopy];
 
       if (v18)
       {
-        v19 = [v14 value];
+        value = [v14 value];
         objc_opt_class();
-        v20 = (objc_opt_isKindOfClass() & 1) != 0 ? v19 : 0;
+        v20 = (objc_opt_isKindOfClass() & 1) != 0 ? value : 0;
         v21 = v20;
 
         if (v21)
@@ -434,22 +434,22 @@ LABEL_3:
   else
   {
 LABEL_13:
-    v19 = 0;
+    value = 0;
   }
 
   v22 = *MEMORY[0x277D85DE8];
 
-  return v19;
+  return value;
 }
 
-- (id)_supportedVideoConfigurationInResponses:(id)a3
+- (id)_supportedVideoConfigurationInResponses:(id)responses
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCameraRecordingSettingsControl *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  responsesCopy = responses;
+  workQueue = [(HMDCameraRecordingSettingsControl *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDCameraRecordingSettingsControl *)self _dataValueForCharacteristicOfType:@"00000206-0000-1000-8000-0026BB765291" inResponses:v4];
+  v6 = [(HMDCameraRecordingSettingsControl *)self _dataValueForCharacteristicOfType:@"00000206-0000-1000-8000-0026BB765291" inResponses:responsesCopy];
   if (v6)
   {
     v7 = [(HAPTLVBase *)[HMDCameraRecordingSupportedVideoConfiguration alloc] initWithTLVData:v6];
@@ -459,7 +459,7 @@ LABEL_13:
     }
 
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -475,7 +475,7 @@ LABEL_7:
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy2 = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -496,14 +496,14 @@ LABEL_9:
   return v7;
 }
 
-- (id)_supportedAudioConfigurationInResponses:(id)a3
+- (id)_supportedAudioConfigurationInResponses:(id)responses
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCameraRecordingSettingsControl *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  responsesCopy = responses;
+  workQueue = [(HMDCameraRecordingSettingsControl *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDCameraRecordingSettingsControl *)self _dataValueForCharacteristicOfType:@"00000207-0000-1000-8000-0026BB765291" inResponses:v4];
+  v6 = [(HMDCameraRecordingSettingsControl *)self _dataValueForCharacteristicOfType:@"00000207-0000-1000-8000-0026BB765291" inResponses:responsesCopy];
   if (v6)
   {
     v7 = [(HAPTLVBase *)[HMDCameraRecordingSupportedAudioConfiguration alloc] initWithTLVData:v6];
@@ -513,7 +513,7 @@ LABEL_9:
     }
 
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -529,7 +529,7 @@ LABEL_7:
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy2 = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -550,14 +550,14 @@ LABEL_9:
   return v7;
 }
 
-- (id)_generalRecordingConfigurationInResponses:(id)a3
+- (id)_generalRecordingConfigurationInResponses:(id)responses
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCameraRecordingSettingsControl *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  responsesCopy = responses;
+  workQueue = [(HMDCameraRecordingSettingsControl *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDCameraRecordingSettingsControl *)self _dataValueForCharacteristicOfType:@"00000205-0000-1000-8000-0026BB765291" inResponses:v4];
+  v6 = [(HMDCameraRecordingSettingsControl *)self _dataValueForCharacteristicOfType:@"00000205-0000-1000-8000-0026BB765291" inResponses:responsesCopy];
   if (v6)
   {
     v7 = [(HAPTLVBase *)[HMDCameraRecordingGeneralConfiguration alloc] initWithTLVData:v6];
@@ -567,7 +567,7 @@ LABEL_9:
     }
 
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -583,7 +583,7 @@ LABEL_7:
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy2 = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -604,14 +604,14 @@ LABEL_9:
   return v7;
 }
 
-- (id)_selectedRecordingConfigurationInResponses:(id)a3
+- (id)_selectedRecordingConfigurationInResponses:(id)responses
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCameraRecordingSettingsControl *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  responsesCopy = responses;
+  workQueue = [(HMDCameraRecordingSettingsControl *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDCameraRecordingSettingsControl *)self _dataValueForCharacteristicOfType:@"00000209-0000-1000-8000-0026BB765291" inResponses:v4];
+  v6 = [(HMDCameraRecordingSettingsControl *)self _dataValueForCharacteristicOfType:@"00000209-0000-1000-8000-0026BB765291" inResponses:responsesCopy];
   if (v6)
   {
     v7 = [(HAPTLVBase *)[HMDCameraRecordingSelectedConfiguration alloc] initWithTLVData:v6];
@@ -621,7 +621,7 @@ LABEL_9:
     }
 
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -637,7 +637,7 @@ LABEL_7:
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy2 = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -658,14 +658,14 @@ LABEL_9:
   return v7;
 }
 
-- (id)_isRecordingActiveValueInResponses:(id)a3
+- (id)_isRecordingActiveValueInResponses:(id)responses
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCameraRecordingSettingsControl *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  responsesCopy = responses;
+  workQueue = [(HMDCameraRecordingSettingsControl *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDCameraRecordingSettingsControl *)self _numberValueForCharacteristicOfType:*MEMORY[0x277CCF748] inResponses:v4];
+  v6 = [(HMDCameraRecordingSettingsControl *)self _numberValueForCharacteristicOfType:*MEMORY[0x277CCF748] inResponses:responsesCopy];
   v7 = v6;
   if (v6)
   {
@@ -675,7 +675,7 @@ LABEL_9:
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -693,51 +693,51 @@ LABEL_9:
   return v7;
 }
 
-- (void)_handleSupportedConfigurationCharacteristicsReadResponses:(id)a3
+- (void)_handleSupportedConfigurationCharacteristicsReadResponses:(id)responses
 {
   v52 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCameraRecordingSettingsControl *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  responsesCopy = responses;
+  workQueue = [(HMDCameraRecordingSettingsControl *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDCameraRecordingSettingsControl *)self _isRecordingActiveValueInResponses:v4];
+  v6 = [(HMDCameraRecordingSettingsControl *)self _isRecordingActiveValueInResponses:responsesCopy];
   if ([v6 BOOLValue])
   {
-    v7 = [(HMDCameraRecordingSettingsControl *)self _generalRecordingConfigurationInResponses:v4];
+    v7 = [(HMDCameraRecordingSettingsControl *)self _generalRecordingConfigurationInResponses:responsesCopy];
     [(HMDCameraRecordingSettingsControl *)self setSupportedRecordingConfiguration:v7];
 
-    v8 = [(HMDCameraRecordingSettingsControl *)self _supportedVideoConfigurationInResponses:v4];
+    v8 = [(HMDCameraRecordingSettingsControl *)self _supportedVideoConfigurationInResponses:responsesCopy];
     [(HMDCameraRecordingSettingsControl *)self setSupportedVideoConfiguration:v8];
 
-    v9 = [(HMDCameraRecordingSettingsControl *)self _supportedAudioConfigurationInResponses:v4];
+    v9 = [(HMDCameraRecordingSettingsControl *)self _supportedAudioConfigurationInResponses:responsesCopy];
     [(HMDCameraRecordingSettingsControl *)self setSupportedAudioConfiguration:v9];
 
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v13 = HMFGetLogIdentifier();
-      v14 = [(HMDCameraRecordingSettingsControl *)v11 supportedRecordingConfiguration];
+      supportedRecordingConfiguration = [(HMDCameraRecordingSettingsControl *)selfCopy supportedRecordingConfiguration];
       v48 = 138543618;
       v49 = v13;
       v50 = 2112;
-      v51 = v14;
+      v51 = supportedRecordingConfiguration;
       _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_INFO, "%{public}@Updating supported recording configuration to: %@", &v48, 0x16u);
     }
 
     objc_autoreleasePoolPop(v10);
     v15 = objc_autoreleasePoolPush();
-    v16 = v11;
+    v16 = selfCopy;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       v18 = HMFGetLogIdentifier();
-      v19 = [(HMDCameraRecordingSettingsControl *)v16 supportedVideoConfiguration];
+      supportedVideoConfiguration = [(HMDCameraRecordingSettingsControl *)v16 supportedVideoConfiguration];
       v48 = 138543618;
       v49 = v18;
       v50 = 2112;
-      v51 = v19;
+      v51 = supportedVideoConfiguration;
       _os_log_impl(&dword_229538000, v17, OS_LOG_TYPE_INFO, "%{public}@Updating supported video configuration to: %@", &v48, 0x16u);
     }
 
@@ -748,23 +748,23 @@ LABEL_9:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
       v23 = HMFGetLogIdentifier();
-      v24 = [(HMDCameraRecordingSettingsControl *)v21 supportedAudioConfiguration];
+      supportedAudioConfiguration = [(HMDCameraRecordingSettingsControl *)v21 supportedAudioConfiguration];
       v48 = 138543618;
       v49 = v23;
       v50 = 2112;
-      v51 = v24;
+      v51 = supportedAudioConfiguration;
       _os_log_impl(&dword_229538000, v22, OS_LOG_TYPE_INFO, "%{public}@Updating supported audio configuration to: %@", &v48, 0x16u);
     }
 
     objc_autoreleasePoolPop(v20);
-    v25 = [(HMDCameraRecordingSettingsControl *)v21 _recordingGeneralConfiguration];
-    v26 = [(HMDCameraRecordingSettingsControl *)v21 _recordingVideoConfiguration];
-    v27 = [(HMDCameraRecordingSettingsControl *)v21 _recordingAudioConfiguration];
+    _recordingGeneralConfiguration = [(HMDCameraRecordingSettingsControl *)v21 _recordingGeneralConfiguration];
+    _recordingVideoConfiguration = [(HMDCameraRecordingSettingsControl *)v21 _recordingVideoConfiguration];
+    _recordingAudioConfiguration = [(HMDCameraRecordingSettingsControl *)v21 _recordingAudioConfiguration];
     v28 = objc_autoreleasePoolPush();
     v29 = v21;
     v30 = HMFGetOSLogHandle();
     v31 = v30;
-    if (v25 && v26 && v27)
+    if (_recordingGeneralConfiguration && _recordingVideoConfiguration && _recordingAudioConfiguration)
     {
       if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
       {
@@ -772,7 +772,7 @@ LABEL_9:
         v48 = 138543618;
         v49 = v32;
         v50 = 2112;
-        v51 = v25;
+        v51 = _recordingGeneralConfiguration;
         _os_log_impl(&dword_229538000, v31, OS_LOG_TYPE_INFO, "%{public}@Setting selected general configuration: %@", &v48, 0x16u);
       }
 
@@ -786,7 +786,7 @@ LABEL_9:
         v48 = 138543618;
         v49 = v36;
         v50 = 2112;
-        v51 = v26;
+        v51 = _recordingVideoConfiguration;
         _os_log_impl(&dword_229538000, v35, OS_LOG_TYPE_INFO, "%{public}@Setting selected video configuration: %@", &v48, 0x16u);
       }
 
@@ -800,12 +800,12 @@ LABEL_9:
         v48 = 138543618;
         v49 = v40;
         v50 = 2112;
-        v51 = v27;
+        v51 = _recordingAudioConfiguration;
         _os_log_impl(&dword_229538000, v39, OS_LOG_TYPE_INFO, "%{public}@Setting selected audio configuration: %@", &v48, 0x16u);
       }
 
       objc_autoreleasePoolPop(v37);
-      v41 = [[HMDCameraRecordingSelectedConfiguration alloc] initWithGeneralConfiguration:v25 videoCodecConfiguration:v26 audioCodecConfiguration:v27];
+      v41 = [[HMDCameraRecordingSelectedConfiguration alloc] initWithGeneralConfiguration:_recordingGeneralConfiguration videoCodecConfiguration:_recordingVideoConfiguration audioCodecConfiguration:_recordingAudioConfiguration];
       [(HMDCameraRecordingSettingsControl *)v38 _setSelectedRecordingConfiguration:v41];
     }
 
@@ -828,7 +828,7 @@ LABEL_9:
   else
   {
     v42 = objc_autoreleasePoolPush();
-    v43 = self;
+    selfCopy2 = self;
     v44 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
     {
@@ -841,9 +841,9 @@ LABEL_9:
     }
 
     objc_autoreleasePoolPop(v42);
-    [(HMDCameraRecordingSettingsControl *)v43 setCurrentSelectedConfiguration:0];
-    v25 = [MEMORY[0x277CCA9B8] hmErrorWithCode:48];
-    [(HMDCameraRecordingSettingsControl *)v43 _invokePendingConfigureCompletionHandlersWithError:v25];
+    [(HMDCameraRecordingSettingsControl *)selfCopy2 setCurrentSelectedConfiguration:0];
+    _recordingGeneralConfiguration = [MEMORY[0x277CCA9B8] hmErrorWithCode:48];
+    [(HMDCameraRecordingSettingsControl *)selfCopy2 _invokePendingConfigureCompletionHandlersWithError:_recordingGeneralConfiguration];
   }
 
   v47 = *MEMORY[0x277D85DE8];
@@ -852,40 +852,40 @@ LABEL_9:
 - (void)_readSupportedCameraRecordingConfiguration
 {
   v17[4] = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCameraRecordingSettingsControl *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDCameraRecordingSettingsControl *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDCameraRecordingSettingsControl *)self recordingActiveCharacteristic];
-  v5 = [HMDCharacteristicRequest requestWithCharacteristic:v4];
+  recordingActiveCharacteristic = [(HMDCameraRecordingSettingsControl *)self recordingActiveCharacteristic];
+  v5 = [HMDCharacteristicRequest requestWithCharacteristic:recordingActiveCharacteristic];
   v17[0] = v5;
-  v6 = [(HMDCameraRecordingSettingsControl *)self recordingSupportedGeneralConfigurationCharacteristic];
-  v7 = [HMDCharacteristicRequest requestWithCharacteristic:v6];
+  recordingSupportedGeneralConfigurationCharacteristic = [(HMDCameraRecordingSettingsControl *)self recordingSupportedGeneralConfigurationCharacteristic];
+  v7 = [HMDCharacteristicRequest requestWithCharacteristic:recordingSupportedGeneralConfigurationCharacteristic];
   v17[1] = v7;
-  v8 = [(HMDCameraRecordingSettingsControl *)self recordingSupportedAudioConfigurationCharacteristic];
-  v9 = [HMDCharacteristicRequest requestWithCharacteristic:v8];
+  recordingSupportedAudioConfigurationCharacteristic = [(HMDCameraRecordingSettingsControl *)self recordingSupportedAudioConfigurationCharacteristic];
+  v9 = [HMDCharacteristicRequest requestWithCharacteristic:recordingSupportedAudioConfigurationCharacteristic];
   v17[2] = v9;
-  v10 = [(HMDCameraRecordingSettingsControl *)self recordingSupportedVideoConfigurationCharacteristic];
-  v11 = [HMDCharacteristicRequest requestWithCharacteristic:v10];
+  recordingSupportedVideoConfigurationCharacteristic = [(HMDCameraRecordingSettingsControl *)self recordingSupportedVideoConfigurationCharacteristic];
+  v11 = [HMDCharacteristicRequest requestWithCharacteristic:recordingSupportedVideoConfigurationCharacteristic];
   v17[3] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:4];
 
-  v13 = [(HMDCameraRecordingSettingsControl *)self accessory];
-  v14 = [(HMDCameraRecordingSettingsControl *)self workQueue];
+  accessory = [(HMDCameraRecordingSettingsControl *)self accessory];
+  workQueue2 = [(HMDCameraRecordingSettingsControl *)self workQueue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __79__HMDCameraRecordingSettingsControl__readSupportedCameraRecordingConfiguration__block_invoke;
   v16[3] = &unk_278682F48;
   v16[4] = self;
-  [v13 readCharacteristicValues:v12 source:1070 queue:v14 completionHandler:v16];
+  [accessory readCharacteristicValues:v12 source:1070 queue:workQueue2 completionHandler:v16];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleCurrentIsRecordingActive:(id)a3 selectedConfiguration:(id)a4
+- (void)_handleCurrentIsRecordingActive:(id)active selectedConfiguration:(id)configuration
 {
   v55[5] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  activeCopy = active;
+  configurationCopy = configuration;
   v55[0] = *MEMORY[0x277CCF748];
   v55[1] = @"00000205-0000-1000-8000-0026BB765291";
   v55[2] = @"00000207-0000-1000-8000-0026BB765291";
@@ -912,13 +912,13 @@ LABEL_9:
         }
 
         v13 = *(*(&v46 + 1) + 8 * v12);
-        v14 = [(HMDCameraRecordingSettingsControl *)self recordingService];
-        v15 = [v14 findCharacteristicWithType:v13];
+        recordingService = [(HMDCameraRecordingSettingsControl *)self recordingService];
+        v15 = [recordingService findCharacteristicWithType:v13];
 
         if (!v15)
         {
           v36 = objc_autoreleasePoolPush();
-          v37 = self;
+          selfCopy = self;
           v38 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
           {
@@ -931,11 +931,11 @@ LABEL_9:
           }
 
           objc_autoreleasePoolPop(v36);
-          [(HMDCameraRecordingSettingsControl *)v37 setCurrentSelectedConfiguration:0];
+          [(HMDCameraRecordingSettingsControl *)selfCopy setCurrentSelectedConfiguration:0];
           v40 = [MEMORY[0x277CCA9B8] hmErrorWithCode:48];
-          [(HMDCameraRecordingSettingsControl *)v37 _invokePendingConfigureCompletionHandlersWithError:v40];
+          [(HMDCameraRecordingSettingsControl *)selfCopy _invokePendingConfigureCompletionHandlersWithError:v40];
 
-          v35 = v8;
+          generalConfiguration2 = v8;
           goto LABEL_25;
         }
 
@@ -953,41 +953,41 @@ LABEL_9:
     }
   }
 
-  if ([v6 BOOLValue])
+  if ([activeCopy BOOLValue])
   {
-    v16 = [(HMDCameraRecordingSettingsControl *)self currentSelectedConfiguration];
-    v17 = [v16 tlvData];
-    v18 = [v7 tlvData];
-    v19 = [v17 isEqualToData:v18];
+    currentSelectedConfiguration = [(HMDCameraRecordingSettingsControl *)self currentSelectedConfiguration];
+    tlvData = [currentSelectedConfiguration tlvData];
+    tlvData2 = [configurationCopy tlvData];
+    v19 = [tlvData isEqualToData:tlvData2];
 
     if ((v19 & 1) == 0)
     {
       v20 = objc_autoreleasePoolPush();
-      v21 = self;
+      selfCopy2 = self;
       v22 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
         v23 = HMFGetLogIdentifier();
-        v24 = [v7 generalConfiguration];
+        generalConfiguration = [configurationCopy generalConfiguration];
         *buf = 138543618;
         v51 = v23;
         v52 = 2112;
-        v53 = v24;
+        v53 = generalConfiguration;
         _os_log_impl(&dword_229538000, v22, OS_LOG_TYPE_INFO, "%{public}@Updating selected general configuration: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v20);
       v25 = objc_autoreleasePoolPush();
-      v26 = v21;
+      v26 = selfCopy2;
       v27 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
       {
         v28 = HMFGetLogIdentifier();
-        v29 = [v7 videoConfiguration];
+        videoConfiguration = [configurationCopy videoConfiguration];
         *buf = 138543618;
         v51 = v28;
         v52 = 2112;
-        v53 = v29;
+        v53 = videoConfiguration;
         _os_log_impl(&dword_229538000, v27, OS_LOG_TYPE_INFO, "%{public}@Updating selected video configuration: %@", buf, 0x16u);
       }
 
@@ -998,26 +998,26 @@ LABEL_9:
       if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
       {
         v33 = HMFGetLogIdentifier();
-        v34 = [v7 audioConfiguration];
+        audioConfiguration = [configurationCopy audioConfiguration];
         *buf = 138543618;
         v51 = v33;
         v52 = 2112;
-        v53 = v34;
+        v53 = audioConfiguration;
         _os_log_impl(&dword_229538000, v32, OS_LOG_TYPE_INFO, "%{public}@Updating selected audio configuration: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v30);
-      [(HMDCameraRecordingSettingsControl *)v31 _updateSelectedRecordingConfiguration:v7];
+      [(HMDCameraRecordingSettingsControl *)v31 _updateSelectedRecordingConfiguration:configurationCopy];
     }
 
-    v35 = [v7 generalConfiguration];
-    [(HMDCameraRecordingSettingsControl *)self _invokePendingConfigureCompletionHandlersWithGeneralConfiguration:v35];
+    generalConfiguration2 = [configurationCopy generalConfiguration];
+    [(HMDCameraRecordingSettingsControl *)self _invokePendingConfigureCompletionHandlersWithGeneralConfiguration:generalConfiguration2];
   }
 
   else
   {
     v41 = objc_autoreleasePoolPush();
-    v42 = self;
+    selfCopy3 = self;
     v43 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
     {
@@ -1025,14 +1025,14 @@ LABEL_9:
       *buf = 138543618;
       v51 = v44;
       v52 = 2112;
-      v53 = v6;
+      v53 = activeCopy;
       _os_log_impl(&dword_229538000, v43, OS_LOG_TYPE_INFO, "%{public}@Recording active is disabled: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v41);
-    [(HMDCameraRecordingSettingsControl *)v42 setCurrentSelectedConfiguration:0];
-    v35 = [MEMORY[0x277CCA9B8] hmErrorWithCode:48];
-    [(HMDCameraRecordingSettingsControl *)v42 _invokePendingConfigureCompletionHandlersWithError:v35];
+    [(HMDCameraRecordingSettingsControl *)selfCopy3 setCurrentSelectedConfiguration:0];
+    generalConfiguration2 = [MEMORY[0x277CCA9B8] hmErrorWithCode:48];
+    [(HMDCameraRecordingSettingsControl *)selfCopy3 _invokePendingConfigureCompletionHandlersWithError:generalConfiguration2];
   }
 
 LABEL_25:
@@ -1043,19 +1043,19 @@ LABEL_25:
 - (void)_readCameraRecordingSettings
 {
   v45 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCameraRecordingSettingsControl *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDCameraRecordingSettingsControl *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDCameraRecordingSettingsControl *)self recordingActiveCharacteristic];
-  v5 = [(HMDCameraRecordingSettingsControl *)self recordingSelectedConfigurationCharacteristic];
-  v6 = v5;
-  if (v4 && v5)
+  recordingActiveCharacteristic = [(HMDCameraRecordingSettingsControl *)self recordingActiveCharacteristic];
+  recordingSelectedConfigurationCharacteristic = [(HMDCameraRecordingSettingsControl *)self recordingSelectedConfigurationCharacteristic];
+  v6 = recordingSelectedConfigurationCharacteristic;
+  if (recordingActiveCharacteristic && recordingSelectedConfigurationCharacteristic)
   {
-    v7 = [v4 value];
+    value = [recordingActiveCharacteristic value];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v7;
+      v8 = value;
     }
 
     else
@@ -1065,11 +1065,11 @@ LABEL_25:
 
     v9 = v8;
 
-    v10 = [v6 value];
+    value2 = [v6 value];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = v10;
+      v11 = value2;
     }
 
     else
@@ -1097,12 +1097,12 @@ LABEL_25:
     else
     {
       v21 = objc_autoreleasePoolPush();
-      v22 = self;
+      selfCopy = self;
       v23 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
       {
         v24 = HMFGetLogIdentifier();
-        [(HMDCameraRecordingSettingsControl *)v22 canUseCachedCharacteristicValues];
+        [(HMDCameraRecordingSettingsControl *)selfCopy canUseCachedCharacteristicValues];
         v25 = HMFBooleanToString();
         v26 = v25;
         v27 = @"<nil>";
@@ -1133,34 +1133,34 @@ LABEL_25:
       }
 
       objc_autoreleasePoolPop(v21);
-      v29 = [HMDCharacteristicRequest requestWithCharacteristic:v4];
+      v29 = [HMDCharacteristicRequest requestWithCharacteristic:recordingActiveCharacteristic];
       v36[0] = v29;
       v30 = [HMDCharacteristicRequest requestWithCharacteristic:v6];
       v36[1] = v30;
       v31 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:2];
 
-      v32 = [(HMDCameraRecordingSettingsControl *)v22 accessory];
-      v33 = [(HMDCameraRecordingSettingsControl *)v22 workQueue];
+      accessory = [(HMDCameraRecordingSettingsControl *)selfCopy accessory];
+      workQueue2 = [(HMDCameraRecordingSettingsControl *)selfCopy workQueue];
       v35[0] = MEMORY[0x277D85DD0];
       v35[1] = 3221225472;
       v35[2] = __65__HMDCameraRecordingSettingsControl__readCameraRecordingSettings__block_invoke;
       v35[3] = &unk_278682F48;
-      v35[4] = v22;
-      [v32 readCharacteristicValues:v31 source:1070 queue:v33 completionHandler:v35];
+      v35[4] = selfCopy;
+      [accessory readCharacteristicValues:v31 source:1070 queue:workQueue2 completionHandler:v35];
     }
   }
 
   else
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy2 = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       v17 = HMFGetLogIdentifier();
       v18 = v17;
       v19 = @"<nil>";
-      if (v4)
+      if (recordingActiveCharacteristic)
       {
         v20 = @"<not nil>";
       }
@@ -1186,7 +1186,7 @@ LABEL_25:
 
     objc_autoreleasePoolPop(v14);
     v9 = [MEMORY[0x277CCA9B8] hmErrorWithCode:48];
-    [(HMDCameraRecordingSettingsControl *)v15 _invokePendingConfigureCompletionHandlersWithError:v9];
+    [(HMDCameraRecordingSettingsControl *)selfCopy2 _invokePendingConfigureCompletionHandlersWithError:v9];
   }
 
   v34 = *MEMORY[0x277D85DE8];
@@ -1307,16 +1307,16 @@ void __65__HMDCameraRecordingSettingsControl__readCameraRecordingSettings__block
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateSelectedRecordingConfiguration:(id)a3
+- (void)_updateSelectedRecordingConfiguration:(id)configuration
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCameraRecordingSettingsControl *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  configurationCopy = configuration;
+  workQueue = [(HMDCameraRecordingSettingsControl *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  [(HMDCameraRecordingSettingsControl *)self setCurrentSelectedConfiguration:v4];
+  [(HMDCameraRecordingSettingsControl *)self setCurrentSelectedConfiguration:configurationCopy];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -1327,11 +1327,11 @@ void __65__HMDCameraRecordingSettingsControl__readCameraRecordingSettings__block
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [(HMDCameraRecordingSettingsControl *)v7 delegate];
-  [v10 recordingSettingsControlDidConfigure:v7];
+  delegate = [(HMDCameraRecordingSettingsControl *)selfCopy delegate];
+  [delegate recordingSettingsControlDidConfigure:selfCopy];
 
-  v11 = [v4 generalConfiguration];
-  [(HMDCameraRecordingSettingsControl *)v7 _invokePendingConfigureCompletionHandlersWithGeneralConfiguration:v11];
+  generalConfiguration = [configurationCopy generalConfiguration];
+  [(HMDCameraRecordingSettingsControl *)selfCopy _invokePendingConfigureCompletionHandlersWithGeneralConfiguration:generalConfiguration];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -1339,16 +1339,16 @@ void __65__HMDCameraRecordingSettingsControl__readCameraRecordingSettings__block
 - (void)_writeCameraRecordingSettings
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCameraRecordingSettingsControl *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDCameraRecordingSettingsControl *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDCameraRecordingSettingsControl *)self currentSelectedConfiguration];
+  currentSelectedConfiguration = [(HMDCameraRecordingSettingsControl *)self currentSelectedConfiguration];
 
-  if (v4)
+  if (currentSelectedConfiguration)
   {
-    v12 = [(HMDCameraRecordingSettingsControl *)self currentSelectedConfiguration];
-    v5 = [v12 generalConfiguration];
-    [(HMDCameraRecordingSettingsControl *)self _invokePendingConfigureCompletionHandlersWithGeneralConfiguration:v5];
+    currentSelectedConfiguration2 = [(HMDCameraRecordingSettingsControl *)self currentSelectedConfiguration];
+    generalConfiguration = [currentSelectedConfiguration2 generalConfiguration];
+    [(HMDCameraRecordingSettingsControl *)self _invokePendingConfigureCompletionHandlersWithGeneralConfiguration:generalConfiguration];
 
     v6 = *MEMORY[0x277D85DE8];
   }
@@ -1356,7 +1356,7 @@ void __65__HMDCameraRecordingSettingsControl__readCameraRecordingSettings__block
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -1367,16 +1367,16 @@ void __65__HMDCameraRecordingSettingsControl__readCameraRecordingSettings__block
     }
 
     objc_autoreleasePoolPop(v7);
-    [(HMDCameraRecordingSettingsControl *)v8 _readSupportedCameraRecordingConfiguration];
+    [(HMDCameraRecordingSettingsControl *)selfCopy _readSupportedCameraRecordingConfiguration];
     v11 = *MEMORY[0x277D85DE8];
   }
 }
 
-- (BOOL)_shouldReconfigureForChangedCharacteristic:(id)a3
+- (BOOL)_shouldReconfigureForChangedCharacteristic:(id)characteristic
 {
-  v4 = a3;
-  v5 = [(HMDCameraRecordingSettingsControl *)self recordingActiveCharacteristic];
-  v6 = [v4 isEqual:v5];
+  characteristicCopy = characteristic;
+  recordingActiveCharacteristic = [(HMDCameraRecordingSettingsControl *)self recordingActiveCharacteristic];
+  v6 = [characteristicCopy isEqual:recordingActiveCharacteristic];
 
   if (v6)
   {
@@ -1390,8 +1390,8 @@ void __65__HMDCameraRecordingSettingsControl__readCameraRecordingSettings__block
 
   else
   {
-    v8 = [(HMDCameraRecordingSettingsControl *)self recordingSelectedConfigurationCharacteristic];
-    v7 = [v4 isEqual:v8];
+    recordingSelectedConfigurationCharacteristic = [(HMDCameraRecordingSettingsControl *)self recordingSelectedConfigurationCharacteristic];
+    v7 = [characteristicCopy isEqual:recordingSelectedConfigurationCharacteristic];
   }
 
   return v7;
@@ -1399,21 +1399,21 @@ void __65__HMDCameraRecordingSettingsControl__readCameraRecordingSettings__block
 
 - (void)handleAccessoryIsNotConfiguredError
 {
-  v3 = [(HMDCameraRecordingSettingsControl *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDCameraRecordingSettingsControl *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   [(HMDCameraRecordingSettingsControl *)self reconfigureCameraRecordingSettingsWithReason:@"Handling accessory is not configured error"];
 }
 
-- (void)reconfigureCameraRecordingSettingsWithReason:(id)a3
+- (void)reconfigureCameraRecordingSettingsWithReason:(id)reason
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCameraRecordingSettingsControl *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  reasonCopy = reason;
+  workQueue = [(HMDCameraRecordingSettingsControl *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -1421,30 +1421,30 @@ void __65__HMDCameraRecordingSettingsControl__readCameraRecordingSettings__block
     v11 = 138543618;
     v12 = v9;
     v13 = 2112;
-    v14 = v4;
+    v14 = reasonCopy;
     _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@Reconfiguring camera recording settings: %@", &v11, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  [(HMDCameraRecordingSettingsControl *)v7 setCurrentSelectedConfiguration:0];
-  [(HMDCameraRecordingSettingsControl *)v7 configureCameraRecordingSettings];
+  [(HMDCameraRecordingSettingsControl *)selfCopy setCurrentSelectedConfiguration:0];
+  [(HMDCameraRecordingSettingsControl *)selfCopy configureCameraRecordingSettings];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configureCameraRecordingSettingsWithCompletion:(id)a3
+- (void)configureCameraRecordingSettingsWithCompletion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCameraRecordingSettingsControl *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  workQueue = [(HMDCameraRecordingSettingsControl *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDCameraRecordingSettingsControl *)self pendingConfigureCompletionHandlers];
-  v7 = _Block_copy(v4);
-  [v6 addObject:v7];
+  pendingConfigureCompletionHandlers = [(HMDCameraRecordingSettingsControl *)self pendingConfigureCompletionHandlers];
+  v7 = _Block_copy(completionCopy);
+  [pendingConfigureCompletionHandlers addObject:v7];
 
-  v8 = [(HMDCameraRecordingSettingsControl *)self pendingConfigureCompletionHandlers];
-  v9 = [v8 count];
+  pendingConfigureCompletionHandlers2 = [(HMDCameraRecordingSettingsControl *)self pendingConfigureCompletionHandlers];
+  v9 = [pendingConfigureCompletionHandlers2 count];
 
   if (v9 < 2)
   {
@@ -1462,7 +1462,7 @@ void __65__HMDCameraRecordingSettingsControl__readCameraRecordingSettings__block
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -1480,8 +1480,8 @@ void __65__HMDCameraRecordingSettingsControl__readCameraRecordingSettings__block
 
 - (void)configureCameraRecordingSettings
 {
-  v3 = [(HMDCameraRecordingSettingsControl *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDCameraRecordingSettingsControl *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   [(HMDCameraRecordingSettingsControl *)self configureCameraRecordingSettingsWithCompletion:&__block_literal_global_194329];
 }
@@ -1490,12 +1490,12 @@ void __65__HMDCameraRecordingSettingsControl__readCameraRecordingSettings__block
 {
   v16 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = HMFGetLogIdentifier();
-    clientIdentifier = v4->_clientIdentifier;
+    clientIdentifier = selfCopy->_clientIdentifier;
     *buf = 138543618;
     v13 = v6;
     v14 = 2112;
@@ -1504,11 +1504,11 @@ void __65__HMDCameraRecordingSettingsControl__readCameraRecordingSettings__block
   }
 
   objc_autoreleasePoolPop(v3);
-  WeakRetained = objc_loadWeakRetained(&v4->_accessory);
-  v9 = [(HMDCameraRecordingSettingsControl *)v4 characteristicsToMonitor];
-  [WeakRetained enableNotification:0 forCharacteristics:v9 message:0 clientIdentifier:v4->_clientIdentifier];
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_accessory);
+  characteristicsToMonitor = [(HMDCameraRecordingSettingsControl *)selfCopy characteristicsToMonitor];
+  [WeakRetained enableNotification:0 forCharacteristics:characteristicsToMonitor message:0 clientIdentifier:selfCopy->_clientIdentifier];
 
-  v11.receiver = v4;
+  v11.receiver = selfCopy;
   v11.super_class = HMDCameraRecordingSettingsControl;
   [(HMDCameraRecordingSettingsControl *)&v11 dealloc];
   v10 = *MEMORY[0x277D85DE8];
@@ -1517,28 +1517,28 @@ void __65__HMDCameraRecordingSettingsControl__readCameraRecordingSettings__block
 - (void)enableCharacteristicNotifications
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCameraRecordingSettingsControl *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDCameraRecordingSettingsControl *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = HMFGetLogIdentifier();
-    v8 = [(HMDCameraRecordingSettingsControl *)v5 characteristicsToMonitor];
+    characteristicsToMonitor = [(HMDCameraRecordingSettingsControl *)selfCopy characteristicsToMonitor];
     v13 = 138543618;
     v14 = v7;
     v15 = 2112;
-    v16 = v8;
+    v16 = characteristicsToMonitor;
     _os_log_impl(&dword_229538000, v6, OS_LOG_TYPE_INFO, "%{public}@Enabling notification for characteristics: %@", &v13, 0x16u);
   }
 
   objc_autoreleasePoolPop(v4);
-  v9 = [(HMDCameraRecordingSettingsControl *)v5 accessory];
-  v10 = [(HMDCameraRecordingSettingsControl *)v5 characteristicsToMonitor];
-  v11 = [(HMDCameraRecordingSettingsControl *)v5 clientIdentifier];
-  [v9 enableNotification:1 forCharacteristics:v10 message:0 clientIdentifier:v11];
+  accessory = [(HMDCameraRecordingSettingsControl *)selfCopy accessory];
+  characteristicsToMonitor2 = [(HMDCameraRecordingSettingsControl *)selfCopy characteristicsToMonitor];
+  clientIdentifier = [(HMDCameraRecordingSettingsControl *)selfCopy clientIdentifier];
+  [accessory enableNotification:1 forCharacteristics:characteristicsToMonitor2 message:0 clientIdentifier:clientIdentifier];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -1546,26 +1546,26 @@ void __65__HMDCameraRecordingSettingsControl__readCameraRecordingSettings__block
 - (id)_recordingAudioConfiguration
 {
   v91 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCameraRecordingSettingsControl *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDCameraRecordingSettingsControl *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDCameraRecordingSettingsControl *)self _preferredAudioConfigurationOverride];
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = v5;
-  if (v4)
+  _preferredAudioConfigurationOverride = [(HMDCameraRecordingSettingsControl *)self _preferredAudioConfigurationOverride];
+  array = [MEMORY[0x277CBEB18] array];
+  v6 = array;
+  if (_preferredAudioConfigurationOverride)
   {
-    [v5 addObject:v4];
+    [array addObject:_preferredAudioConfigurationOverride];
   }
 
-  v61 = v4;
+  v61 = _preferredAudioConfigurationOverride;
   p_superclass = &OBJC_METACLASS___HMDRemoteDestinationFormatter.superclass;
   v8 = +[HMDCameraRecordingSettingsControl audioConfigurationsByPreferenceOrder];
   [v6 addObjectsFromArray:v8];
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
-  v60 = v10;
+  v60 = selfCopy;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
@@ -1575,7 +1575,7 @@ void __65__HMDCameraRecordingSettingsControl__readCameraRecordingSettings__block
     v90 = v6;
     _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_INFO, "%{public}@Preferred audio parameters: %@", buf, 0x16u);
 
-    v10 = v60;
+    selfCopy = v60;
   }
 
   objc_autoreleasePoolPop(v9);
@@ -1583,11 +1583,11 @@ void __65__HMDCameraRecordingSettingsControl__readCameraRecordingSettings__block
   v81 = 0u;
   v78 = 0u;
   v79 = 0u;
-  v13 = [(HMDCameraRecordingSettingsControl *)v10 supportedAudioConfiguration];
-  v14 = [v13 codecConfigurations];
+  supportedAudioConfiguration = [(HMDCameraRecordingSettingsControl *)selfCopy supportedAudioConfiguration];
+  codecConfigurations = [supportedAudioConfiguration codecConfigurations];
 
-  obj = v14;
-  v64 = [v14 countByEnumeratingWithState:&v78 objects:v86 count:16];
+  obj = codecConfigurations;
+  v64 = [codecConfigurations countByEnumeratingWithState:&v78 objects:v86 count:16];
   v15 = 0;
   v16 = 0;
   if (v64)
@@ -1621,11 +1621,11 @@ void __65__HMDCameraRecordingSettingsControl__readCameraRecordingSettings__block
             v74 = 0u;
             v75 = 0u;
             v59 = v19;
-            v21 = [v19 parameters];
-            v22 = [v21 audioSampleRates];
+            parameters = [v19 parameters];
+            audioSampleRates = [parameters audioSampleRates];
 
-            v68 = v22;
-            v23 = [v22 countByEnumeratingWithState:&v74 objects:v85 count:16];
+            v68 = audioSampleRates;
+            v23 = [audioSampleRates countByEnumeratingWithState:&v74 objects:v85 count:16];
             if (v23)
             {
               v24 = v23;
@@ -1661,8 +1661,8 @@ LABEL_19:
                       }
 
                       v33 = *(*(&v70 + 1) + 8 * v32);
-                      v34 = [v33 sampleRate];
-                      if ([v26 type] == v34)
+                      sampleRate = [v33 sampleRate];
+                      if ([v26 type] == sampleRate)
                       {
                         break;
                       }
@@ -1693,8 +1693,8 @@ LABEL_19:
                     v53 = [MEMORY[0x277CBEA60] arrayWithObjects:&v83 count:1];
                     v82 = v51;
                     v54 = [MEMORY[0x277CBEA60] arrayWithObjects:&v82 count:1];
-                    v55 = [v35 bitRate];
-                    v56 = [(HMDCameraRecordingAudioCodecParameters *)v52 initWithChannelCount:&unk_283E73CD0 bitRateModes:v53 audioSampleRates:v54 maxAudioBitRate:v55];
+                    bitRate = [v35 bitRate];
+                    v56 = [(HMDCameraRecordingAudioCodecParameters *)v52 initWithChannelCount:&unk_283E73CD0 bitRateModes:v53 audioSampleRates:v54 maxAudioBitRate:bitRate];
 
                     v16 = v63;
                     v50 = [[HMDCameraRecordingAudioCodecConfiguration alloc] initWithAudioCodec:v63 codecParameters:v56];
@@ -1720,7 +1720,7 @@ LABEL_27:
             }
 
             v36 = objc_autoreleasePoolPush();
-            v10 = v60;
+            selfCopy = v60;
             v37 = v60;
             v38 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
@@ -1742,7 +1742,7 @@ LABEL_27:
           {
             v43 = v19;
             v36 = objc_autoreleasePoolPush();
-            v44 = v10;
+            v44 = selfCopy;
             v38 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
             {
@@ -1762,7 +1762,7 @@ LABEL_27:
         {
           v40 = v19;
           v36 = objc_autoreleasePoolPush();
-          v41 = v10;
+          v41 = selfCopy;
           v38 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
           {
@@ -1787,7 +1787,7 @@ LABEL_27:
   }
 
   v46 = objc_autoreleasePoolPush();
-  v47 = v10;
+  v47 = selfCopy;
   v48 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
   {
@@ -1808,63 +1808,63 @@ LABEL_44:
 
 - (HMDCharacteristic)recordingSelectedConfigurationCharacteristic
 {
-  v2 = [(HMDCameraRecordingSettingsControl *)self recordingService];
-  v3 = [v2 findCharacteristicWithType:@"00000209-0000-1000-8000-0026BB765291"];
+  recordingService = [(HMDCameraRecordingSettingsControl *)self recordingService];
+  v3 = [recordingService findCharacteristicWithType:@"00000209-0000-1000-8000-0026BB765291"];
 
   return v3;
 }
 
 - (HMDCharacteristic)recordingSupportedVideoConfigurationCharacteristic
 {
-  v2 = [(HMDCameraRecordingSettingsControl *)self recordingService];
-  v3 = [v2 findCharacteristicWithType:@"00000206-0000-1000-8000-0026BB765291"];
+  recordingService = [(HMDCameraRecordingSettingsControl *)self recordingService];
+  v3 = [recordingService findCharacteristicWithType:@"00000206-0000-1000-8000-0026BB765291"];
 
   return v3;
 }
 
 - (HMDCharacteristic)recordingSupportedAudioConfigurationCharacteristic
 {
-  v2 = [(HMDCameraRecordingSettingsControl *)self recordingService];
-  v3 = [v2 findCharacteristicWithType:@"00000207-0000-1000-8000-0026BB765291"];
+  recordingService = [(HMDCameraRecordingSettingsControl *)self recordingService];
+  v3 = [recordingService findCharacteristicWithType:@"00000207-0000-1000-8000-0026BB765291"];
 
   return v3;
 }
 
 - (HMDCharacteristic)recordingSupportedGeneralConfigurationCharacteristic
 {
-  v2 = [(HMDCameraRecordingSettingsControl *)self recordingService];
-  v3 = [v2 findCharacteristicWithType:@"00000205-0000-1000-8000-0026BB765291"];
+  recordingService = [(HMDCameraRecordingSettingsControl *)self recordingService];
+  v3 = [recordingService findCharacteristicWithType:@"00000205-0000-1000-8000-0026BB765291"];
 
   return v3;
 }
 
 - (HMDCharacteristic)recordingActiveCharacteristic
 {
-  v2 = [(HMDCameraRecordingSettingsControl *)self recordingService];
-  v3 = [v2 findCharacteristicWithType:*MEMORY[0x277CCF748]];
+  recordingService = [(HMDCameraRecordingSettingsControl *)self recordingService];
+  v3 = [recordingService findCharacteristicWithType:*MEMORY[0x277CCF748]];
 
   return v3;
 }
 
 - (BOOL)isPrimaryResident
 {
-  v2 = [(HMDCameraRecordingSettingsControl *)self accessory];
-  v3 = [v2 home];
-  v4 = [v3 isCurrentDeviceConfirmedPrimaryResident];
+  accessory = [(HMDCameraRecordingSettingsControl *)self accessory];
+  home = [accessory home];
+  isCurrentDeviceConfirmedPrimaryResident = [home isCurrentDeviceConfirmedPrimaryResident];
 
-  return v4;
+  return isCurrentDeviceConfirmedPrimaryResident;
 }
 
 - (id)characteristicsToMonitor
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(HMDCameraRecordingSettingsControl *)self recordingActiveCharacteristic];
-  [v3 na_safeAddObject:v4];
+  array = [MEMORY[0x277CBEB18] array];
+  recordingActiveCharacteristic = [(HMDCameraRecordingSettingsControl *)self recordingActiveCharacteristic];
+  [array na_safeAddObject:recordingActiveCharacteristic];
 
-  v5 = [(HMDCameraRecordingSettingsControl *)self recordingSelectedConfigurationCharacteristic];
-  [v3 na_safeAddObject:v5];
+  recordingSelectedConfigurationCharacteristic = [(HMDCameraRecordingSettingsControl *)self recordingSelectedConfigurationCharacteristic];
+  [array na_safeAddObject:recordingSelectedConfigurationCharacteristic];
 
-  v6 = [v3 copy];
+  v6 = [array copy];
 
   return v6;
 }
@@ -1872,21 +1872,21 @@ LABEL_44:
 - (id)_recordingVideoConfiguration
 {
   v68 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCameraRecordingSettingsControl *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDCameraRecordingSettingsControl *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v45 = [(HMDCameraRecordingSettingsControl *)self _preferredVideoConfigurationOverride];
-  v46 = [MEMORY[0x277CBEB18] array];
-  if (v45)
+  _preferredVideoConfigurationOverride = [(HMDCameraRecordingSettingsControl *)self _preferredVideoConfigurationOverride];
+  array = [MEMORY[0x277CBEB18] array];
+  if (_preferredVideoConfigurationOverride)
   {
-    [v46 addObject:?];
+    [array addObject:?];
   }
 
-  v4 = [(HMDCameraRecordingSettingsControl *)self videoConfigurationsByPreferenceOrder];
-  [v46 addObjectsFromArray:v4];
+  videoConfigurationsByPreferenceOrder = [(HMDCameraRecordingSettingsControl *)self videoConfigurationsByPreferenceOrder];
+  [array addObjectsFromArray:videoConfigurationsByPreferenceOrder];
 
   v5 = objc_autoreleasePoolPush();
-  v49 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -1894,7 +1894,7 @@ LABEL_44:
     *buf = 138543618;
     *&buf[4] = v7;
     *&buf[12] = 2112;
-    *&buf[14] = v46;
+    *&buf[14] = array;
     _os_log_impl(&dword_229538000, v6, OS_LOG_TYPE_INFO, "%{public}@Video parameters in order of preference: %@", buf, 0x16u);
   }
 
@@ -1909,8 +1909,8 @@ LABEL_44:
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v8 = [(HMDCameraRecordingSettingsControl *)v49 supportedVideoConfiguration];
-  obj = [v8 codecConfigurations];
+  supportedVideoConfiguration = [(HMDCameraRecordingSettingsControl *)selfCopy supportedVideoConfiguration];
+  obj = [supportedVideoConfiguration codecConfigurations];
 
   v9 = [obj countByEnumeratingWithState:&v52 objects:v63 count:16];
   if (v9)
@@ -1943,23 +1943,23 @@ LABEL_44:
             v51[3] = &unk_27867E888;
             v51[4] = v14;
             v51[5] = buf;
-            v17 = [v46 na_firstObjectPassingTest:v51];
+            v17 = [array na_firstObjectPassingTest:v51];
             if (v17)
             {
 
               v26 = [HMDCameraRecordingVideoAttributes alloc];
-              v27 = [v17 resolution];
-              obja = [(HMDCameraRecordingVideoAttributes *)v26 initWithResolution:v27 frameRate:*(*&buf[8] + 40)];
+              resolution = [v17 resolution];
+              obja = [(HMDCameraRecordingVideoAttributes *)v26 initWithResolution:resolution frameRate:*(*&buf[8] + 40)];
               v50 = -[HMDCameraRecordingH264Level initWithH264Level:]([HMDCameraRecordingH264Level alloc], "initWithH264Level:", [v17 h264Level]);
               v28 = [HMDCameraRecordingVideoCodecParameters alloc];
               v58 = v16;
               v29 = [MEMORY[0x277CBEA60] arrayWithObjects:&v58 count:1];
               v57 = v50;
               v30 = [MEMORY[0x277CBEA60] arrayWithObjects:&v57 count:1];
-              v31 = [v17 bitRateByFrameRate];
-              v32 = [v31 objectForKeyedSubscript:*(*&buf[8] + 40)];
-              v33 = [v17 keyFrameInterval];
-              v34 = [(HMDCameraRecordingVideoCodecParameters *)v28 initWithProfiles:v29 levels:v30 bitRate:v32 iFrameInterval:v33];
+              bitRateByFrameRate = [v17 bitRateByFrameRate];
+              v32 = [bitRateByFrameRate objectForKeyedSubscript:*(*&buf[8] + 40)];
+              keyFrameInterval = [v17 keyFrameInterval];
+              v34 = [(HMDCameraRecordingVideoCodecParameters *)v28 initWithProfiles:v29 levels:v30 bitRate:v32 iFrameInterval:keyFrameInterval];
 
               v35 = [HMDCameraRecordingVideoCodecConfiguration alloc];
               v56 = obja;
@@ -1976,7 +1976,7 @@ LABEL_44:
           else
           {
             v22 = objc_autoreleasePoolPush();
-            v23 = v49;
+            v23 = selfCopy;
             v24 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
             {
@@ -1996,7 +1996,7 @@ LABEL_44:
         else
         {
           v18 = objc_autoreleasePoolPush();
-          v19 = v49;
+          v19 = selfCopy;
           v20 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
           {
@@ -2029,16 +2029,16 @@ LABEL_44:
   }
 
   v38 = objc_autoreleasePoolPush();
-  v39 = v49;
+  v39 = selfCopy;
   v40 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
   {
     v41 = HMFGetLogIdentifier();
-    v42 = [(HMDCameraRecordingSettingsControl *)v39 supportedVideoConfiguration];
+    supportedVideoConfiguration2 = [(HMDCameraRecordingSettingsControl *)v39 supportedVideoConfiguration];
     *v59 = 138543618;
     v60 = v41;
     v61 = 2112;
-    v62 = v42;
+    v62 = supportedVideoConfiguration2;
     _os_log_impl(&dword_229538000, v40, OS_LOG_TYPE_ERROR, "%{public}@Failed to select video configuration from supported video configuration: %@", v59, 0x16u);
   }
 
@@ -2134,20 +2134,20 @@ uint64_t __65__HMDCameraRecordingSettingsControl__recordingVideoConfiguration__b
 - (id)_preferredAudioConfigurationOverride
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCameraRecordingSettingsControl *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDCameraRecordingSettingsControl *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDCameraRecordingSettingsControl *)self recordingConfigurationOverrides];
-  v5 = [v4 hmf_numberForKey:@"audioBitRate"];
+  recordingConfigurationOverrides = [(HMDCameraRecordingSettingsControl *)self recordingConfigurationOverrides];
+  v5 = [recordingConfigurationOverrides hmf_numberForKey:@"audioBitRate"];
 
-  v6 = [(HMDCameraRecordingSettingsControl *)self recordingConfigurationOverrides];
-  v7 = [v6 hmf_numberForKey:@"audioSampleRate"];
+  recordingConfigurationOverrides2 = [(HMDCameraRecordingSettingsControl *)self recordingConfigurationOverrides];
+  v7 = [recordingConfigurationOverrides2 hmf_numberForKey:@"audioSampleRate"];
 
   v8 = 0;
   if (v5 && v7)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -2173,32 +2173,32 @@ uint64_t __65__HMDCameraRecordingSettingsControl__recordingVideoConfiguration__b
 - (id)_preferredVideoConfigurationOverride
 {
   v45 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCameraRecordingSettingsControl *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDCameraRecordingSettingsControl *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDCameraRecordingSettingsControl *)self recordingConfigurationOverrides];
-  v5 = [v4 hmf_numberForKey:@"keyFrameInterval"];
+  recordingConfigurationOverrides = [(HMDCameraRecordingSettingsControl *)self recordingConfigurationOverrides];
+  v5 = [recordingConfigurationOverrides hmf_numberForKey:@"keyFrameInterval"];
 
-  v6 = [(HMDCameraRecordingSettingsControl *)self recordingConfigurationOverrides];
-  v7 = [v6 hmf_numberForKey:@"frameRate"];
+  recordingConfigurationOverrides2 = [(HMDCameraRecordingSettingsControl *)self recordingConfigurationOverrides];
+  v7 = [recordingConfigurationOverrides2 hmf_numberForKey:@"frameRate"];
 
-  v8 = [(HMDCameraRecordingSettingsControl *)self recordingConfigurationOverrides];
-  v9 = [v8 hmf_numberForKey:@"imageWidth"];
+  recordingConfigurationOverrides3 = [(HMDCameraRecordingSettingsControl *)self recordingConfigurationOverrides];
+  v9 = [recordingConfigurationOverrides3 hmf_numberForKey:@"imageWidth"];
 
-  v10 = [(HMDCameraRecordingSettingsControl *)self recordingConfigurationOverrides];
-  v11 = [v10 hmf_numberForKey:@"imageHeight"];
+  recordingConfigurationOverrides4 = [(HMDCameraRecordingSettingsControl *)self recordingConfigurationOverrides];
+  v11 = [recordingConfigurationOverrides4 hmf_numberForKey:@"imageHeight"];
 
-  v12 = [(HMDCameraRecordingSettingsControl *)self recordingConfigurationOverrides];
-  v13 = [v12 hmf_numberForKey:@"videoBitrate"];
+  recordingConfigurationOverrides5 = [(HMDCameraRecordingSettingsControl *)self recordingConfigurationOverrides];
+  v13 = [recordingConfigurationOverrides5 hmf_numberForKey:@"videoBitrate"];
 
-  v14 = [(HMDCameraRecordingSettingsControl *)self recordingConfigurationOverrides];
-  v15 = [v14 hmf_numberForKey:@"h264Level"];
+  recordingConfigurationOverrides6 = [(HMDCameraRecordingSettingsControl *)self recordingConfigurationOverrides];
+  v15 = [recordingConfigurationOverrides6 hmf_numberForKey:@"h264Level"];
 
   v16 = 0;
   if (v5 && v7 && v9 && v11 && v13 && v15)
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
@@ -2227,11 +2227,11 @@ uint64_t __65__HMDCameraRecordingSettingsControl__recordingVideoConfiguration__b
     objc_autoreleasePoolPop(v17);
     v22 = [[HMDCameraRecordingVideoAttributes alloc] initWithImageWidth:v9 imageHeight:v11 frameRate:v7];
     v23 = [HMDCameraRecordingPreferredVideoConfiguration alloc];
-    v24 = [(HMDCameraRecordingVideoAttributes *)v22 resolution];
+    resolution = [(HMDCameraRecordingVideoAttributes *)v22 resolution];
     v29 = v7;
     v30 = v13;
     v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
-    v16 = -[HMDCameraRecordingPreferredVideoConfiguration initWithResolution:bitRateByFrameRate:keyFrameInterval:h264Level:](v23, "initWithResolution:bitRateByFrameRate:keyFrameInterval:h264Level:", v24, v25, v5, [v15 integerValue]);
+    v16 = -[HMDCameraRecordingPreferredVideoConfiguration initWithResolution:bitRateByFrameRate:keyFrameInterval:h264Level:](v23, "initWithResolution:bitRateByFrameRate:keyFrameInterval:h264Level:", resolution, v25, v5, [v15 integerValue]);
   }
 
   v26 = *MEMORY[0x277D85DE8];
@@ -2242,11 +2242,11 @@ uint64_t __65__HMDCameraRecordingSettingsControl__recordingVideoConfiguration__b
 - (id)_recordingGeneralConfiguration
 {
   v86 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCameraRecordingSettingsControl *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDCameraRecordingSettingsControl *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDCameraRecordingSettingsControl *)self recordingConfigurationOverrides];
-  v5 = [v4 hmf_numberForKey:@"prebufferLength"];
+  recordingConfigurationOverrides = [(HMDCameraRecordingSettingsControl *)self recordingConfigurationOverrides];
+  v5 = [recordingConfigurationOverrides hmf_numberForKey:@"prebufferLength"];
 
   if (v5)
   {
@@ -2259,13 +2259,13 @@ uint64_t __65__HMDCameraRecordingSettingsControl__recordingVideoConfiguration__b
   }
 
   v7 = v6;
-  v8 = [(HMDCameraRecordingSettingsControl *)self supportedRecordingConfiguration];
-  v9 = [v8 prebufferLength];
+  supportedRecordingConfiguration = [(HMDCameraRecordingSettingsControl *)self supportedRecordingConfiguration];
+  prebufferLength = [supportedRecordingConfiguration prebufferLength];
 
-  if (!v9)
+  if (!prebufferLength)
   {
     v46 = objc_autoreleasePoolPush();
-    v47 = self;
+    selfCopy = self;
     v48 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
     {
@@ -2280,9 +2280,9 @@ uint64_t __65__HMDCameraRecordingSettingsControl__recordingVideoConfiguration__b
     goto LABEL_40;
   }
 
-  if ([v7 compare:v9] == 1)
+  if ([v7 compare:prebufferLength] == 1)
   {
-    v10 = v9;
+    v10 = prebufferLength;
   }
 
   else
@@ -2292,7 +2292,7 @@ uint64_t __65__HMDCameraRecordingSettingsControl__recordingVideoConfiguration__b
 
   v11 = v10;
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy2 = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
@@ -2304,26 +2304,26 @@ uint64_t __65__HMDCameraRecordingSettingsControl__recordingVideoConfiguration__b
     v82 = 2112;
     v83 = v7;
     v84 = 2112;
-    v85 = v9;
+    v85 = prebufferLength;
     _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_INFO, "%{public}@Selecting prebuffer length of %@ because preferred length is %@ and supported length is %@", buf, 0x2Au);
   }
 
   v66 = v11;
-  v67 = v9;
+  v67 = prebufferLength;
   v68 = v7;
   v69 = v5;
 
   objc_autoreleasePoolPop(v12);
-  v16 = [(HMDCameraRecordingSettingsControl *)v13 supportedRecordingConfiguration];
-  v17 = [v16 eventTriggerOptions];
+  supportedRecordingConfiguration2 = [(HMDCameraRecordingSettingsControl *)selfCopy2 supportedRecordingConfiguration];
+  eventTriggerOptions = [supportedRecordingConfiguration2 eventTriggerOptions];
 
   v18 = objc_autoreleasePoolPush();
-  v19 = v13;
+  v19 = selfCopy2;
   v20 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
     v21 = HMFGetLogIdentifier();
-    v22 = HMDCameraRecordingEventTriggerOptionsAsString(v17);
+    v22 = HMDCameraRecordingEventTriggerOptionsAsString(eventTriggerOptions);
     *buf = 138543618;
     v79 = v21;
     v80 = 2112;
@@ -2331,11 +2331,11 @@ uint64_t __65__HMDCameraRecordingSettingsControl__recordingVideoConfiguration__b
     _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_INFO, "%{public}@Selecting event trigger options of %@", buf, 0x16u);
   }
 
-  v64 = v17;
+  v64 = eventTriggerOptions;
 
   objc_autoreleasePoolPop(v18);
-  v23 = [(HMDCameraRecordingSettingsControl *)v19 recordingConfigurationOverrides];
-  v24 = [v23 hmf_numberForKey:@"fragmentLength"];
+  recordingConfigurationOverrides2 = [(HMDCameraRecordingSettingsControl *)v19 recordingConfigurationOverrides];
+  v24 = [recordingConfigurationOverrides2 hmf_numberForKey:@"fragmentLength"];
 
   v65 = v24;
   if (v24)
@@ -2353,11 +2353,11 @@ uint64_t __65__HMDCameraRecordingSettingsControl__recordingVideoConfiguration__b
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
-  v26 = [(HMDCameraRecordingSettingsControl *)v19 supportedRecordingConfiguration];
-  v27 = [v26 mediaContainerConfigurations];
+  supportedRecordingConfiguration3 = [(HMDCameraRecordingSettingsControl *)v19 supportedRecordingConfiguration];
+  mediaContainerConfigurations = [supportedRecordingConfiguration3 mediaContainerConfigurations];
 
-  obj = v27;
-  v28 = [v27 countByEnumeratingWithState:&v72 objects:v77 count:16];
+  obj = mediaContainerConfigurations;
+  v28 = [mediaContainerConfigurations countByEnumeratingWithState:&v72 objects:v77 count:16];
   if (!v28)
   {
 LABEL_30:
@@ -2395,10 +2395,10 @@ LABEL_17:
     }
 
     v33 = *(*(&v72 + 1) + 8 * v31);
-    v34 = [v33 container];
-    v35 = [v34 type];
+    container = [v33 container];
+    type = [container type];
 
-    if (!v35)
+    if (!type)
     {
       break;
     }
@@ -2430,10 +2430,10 @@ LABEL_28:
     }
   }
 
-  v40 = [v33 parameters];
-  v41 = [v40 fragmentLength];
+  parameters = [v33 parameters];
+  fragmentLength = [parameters fragmentLength];
 
-  if ([v71 compare:v41] == 1)
+  if ([v71 compare:fragmentLength] == 1)
   {
     v42 = objc_autoreleasePoolPush();
     v43 = v19;
@@ -2458,8 +2458,8 @@ LABEL_28:
 
   v51 = [[HMDCameraRecordingMediaContainerParameters alloc] initWithFragmentLength:v71];
   v52 = [HMDCameraRecordingMediaContainerConfiguration alloc];
-  v53 = [v33 container];
-  v54 = [(HMDCameraRecordingMediaContainerConfiguration *)v52 initWithMediaContainer:v53 containerParameters:v51];
+  container2 = [v33 container];
+  v54 = [(HMDCameraRecordingMediaContainerConfiguration *)v52 initWithMediaContainer:container2 containerParameters:v51];
 
   if (!v54)
   {
@@ -2475,7 +2475,7 @@ LABEL_28:
   v7 = v68;
   v5 = v69;
 LABEL_39:
-  v9 = v67;
+  prebufferLength = v67;
 
 LABEL_40:
   v62 = *MEMORY[0x277D85DE8];
@@ -2483,18 +2483,18 @@ LABEL_40:
   return v50;
 }
 
-- (void)handleHomePersonManagerSettingsDidChangeNotification:(id)a3
+- (void)handleHomePersonManagerSettingsDidChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(HMDCameraRecordingSettingsControl *)self workQueue];
+  notificationCopy = notification;
+  workQueue = [(HMDCameraRecordingSettingsControl *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __90__HMDCameraRecordingSettingsControl_handleHomePersonManagerSettingsDidChangeNotification___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __90__HMDCameraRecordingSettingsControl_handleHomePersonManagerSettingsDidChangeNotification___block_invoke(uint64_t a1)
@@ -2525,18 +2525,18 @@ void __90__HMDCameraRecordingSettingsControl_handleHomePersonManagerSettingsDidC
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleCharacteristicsChangedNotification:(id)a3
+- (void)handleCharacteristicsChangedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(HMDCameraRecordingSettingsControl *)self workQueue];
+  notificationCopy = notification;
+  workQueue = [(HMDCameraRecordingSettingsControl *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __78__HMDCameraRecordingSettingsControl_handleCharacteristicsChangedNotification___block_invoke;
   v7[3] = &unk_27868A750;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __78__HMDCameraRecordingSettingsControl_handleCharacteristicsChangedNotification___block_invoke(uint64_t a1)
@@ -2575,18 +2575,18 @@ void __78__HMDCameraRecordingSettingsControl_handleCharacteristicsChangedNotific
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleCharacteristicsUpdatedNotification:(id)a3
+- (void)handleCharacteristicsUpdatedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(HMDCameraRecordingSettingsControl *)self workQueue];
+  notificationCopy = notification;
+  workQueue = [(HMDCameraRecordingSettingsControl *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __78__HMDCameraRecordingSettingsControl_handleCharacteristicsUpdatedNotification___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __78__HMDCameraRecordingSettingsControl_handleCharacteristicsUpdatedNotification___block_invoke(uint64_t a1)
@@ -2615,18 +2615,18 @@ void __78__HMDCameraRecordingSettingsControl_handleCharacteristicsUpdatedNotific
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAccessoryConnectedNotification:(id)a3
+- (void)handleAccessoryConnectedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(HMDCameraRecordingSettingsControl *)self workQueue];
+  notificationCopy = notification;
+  workQueue = [(HMDCameraRecordingSettingsControl *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __74__HMDCameraRecordingSettingsControl_handleAccessoryConnectedNotification___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(workQueue, v7);
 }
 
 uint64_t __74__HMDCameraRecordingSettingsControl_handleAccessoryConnectedNotification___block_invoke(uint64_t a1)
@@ -2652,18 +2652,18 @@ uint64_t __74__HMDCameraRecordingSettingsControl_handleAccessoryConnectedNotific
   return result;
 }
 
-- (void)handleAccessoryDisconnectedNotification:(id)a3
+- (void)handleAccessoryDisconnectedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(HMDCameraRecordingSettingsControl *)self workQueue];
+  notificationCopy = notification;
+  workQueue = [(HMDCameraRecordingSettingsControl *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __77__HMDCameraRecordingSettingsControl_handleAccessoryDisconnectedNotification___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(workQueue, v7);
 }
 
 uint64_t __77__HMDCameraRecordingSettingsControl_handleAccessoryDisconnectedNotification___block_invoke(uint64_t a1)
@@ -2693,11 +2693,11 @@ uint64_t __77__HMDCameraRecordingSettingsControl_handleAccessoryDisconnectedNoti
 - (void)start
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCameraRecordingSettingsControl *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDCameraRecordingSettingsControl *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -2708,11 +2708,11 @@ uint64_t __77__HMDCameraRecordingSettingsControl_handleAccessoryDisconnectedNoti
   }
 
   objc_autoreleasePoolPop(v4);
-  v8 = [(HMDCameraRecordingSettingsControl *)v5 accessory];
-  if (!v8)
+  accessory = [(HMDCameraRecordingSettingsControl *)selfCopy accessory];
+  if (!accessory)
   {
     v21 = objc_autoreleasePoolPush();
-    v26 = v5;
+    v26 = selfCopy;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
@@ -2725,32 +2725,32 @@ uint64_t __77__HMDCameraRecordingSettingsControl_handleAccessoryDisconnectedNoti
     goto LABEL_12;
   }
 
-  v9 = [(HMDCameraRecordingSettingsControl *)v5 notificationCenter];
-  [v9 addObserver:v5 selector:sel_handleAccessoryConnectedNotification_ name:@"HMDAccessoryConnectedNotification" object:v8];
+  notificationCenter = [(HMDCameraRecordingSettingsControl *)selfCopy notificationCenter];
+  [notificationCenter addObserver:selfCopy selector:sel_handleAccessoryConnectedNotification_ name:@"HMDAccessoryConnectedNotification" object:accessory];
 
-  v10 = [(HMDCameraRecordingSettingsControl *)v5 notificationCenter];
-  [v10 addObserver:v5 selector:sel_handleAccessoryDisconnectedNotification_ name:@"HMDAccessoryDisconnectedNotification" object:v8];
+  notificationCenter2 = [(HMDCameraRecordingSettingsControl *)selfCopy notificationCenter];
+  [notificationCenter2 addObserver:selfCopy selector:sel_handleAccessoryDisconnectedNotification_ name:@"HMDAccessoryDisconnectedNotification" object:accessory];
 
-  v11 = [(HMDCameraRecordingSettingsControl *)v5 notificationCenter];
-  [v11 addObserver:v5 selector:sel_handleCharacteristicsUpdatedNotification_ name:@"kHMDNotificationCharacteristicsUpdated" object:v8];
+  notificationCenter3 = [(HMDCameraRecordingSettingsControl *)selfCopy notificationCenter];
+  [notificationCenter3 addObserver:selfCopy selector:sel_handleCharacteristicsUpdatedNotification_ name:@"kHMDNotificationCharacteristicsUpdated" object:accessory];
 
-  v12 = [(HMDCameraRecordingSettingsControl *)v5 notificationCenter];
-  [v12 addObserver:v5 selector:sel_handleCharacteristicsChangedNotification_ name:@"HMDAccessoryCharacteristicsChangedNotification" object:v8];
+  notificationCenter4 = [(HMDCameraRecordingSettingsControl *)selfCopy notificationCenter];
+  [notificationCenter4 addObserver:selfCopy selector:sel_handleCharacteristicsChangedNotification_ name:@"HMDAccessoryCharacteristicsChangedNotification" object:accessory];
 
-  v13 = [(HMDCameraRecordingSettingsControl *)v5 notificationCenter];
-  v14 = [v8 home];
-  [v13 addObserver:v5 selector:sel_handleHomePersonManagerSettingsDidChangeNotification_ name:@"HMDHomePersonManagerSettingsDidChangeNotification" object:v14];
+  notificationCenter5 = [(HMDCameraRecordingSettingsControl *)selfCopy notificationCenter];
+  home = [accessory home];
+  [notificationCenter5 addObserver:selfCopy selector:sel_handleHomePersonManagerSettingsDidChangeNotification_ name:@"HMDHomePersonManagerSettingsDidChangeNotification" object:home];
 
-  [(HMDCameraRecordingSettingsControl *)v5 enableCharacteristicNotifications];
-  [(HMDCameraRecordingSettingsControl *)v5 configureCameraRecordingSettings];
-  v15 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v16 = [v15 preferenceForKey:@"recordingConfigurationOverrides"];
-  v17 = [v16 value];
+  [(HMDCameraRecordingSettingsControl *)selfCopy enableCharacteristicNotifications];
+  [(HMDCameraRecordingSettingsControl *)selfCopy configureCameraRecordingSettings];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v16 = [mEMORY[0x277D0F8D0] preferenceForKey:@"recordingConfigurationOverrides"];
+  value = [v16 value];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = v17;
+    v18 = value;
   }
 
   else
@@ -2760,22 +2760,22 @@ uint64_t __77__HMDCameraRecordingSettingsControl_handleAccessoryDisconnectedNoti
 
   v19 = v18;
 
-  [(HMDCameraRecordingSettingsControl *)v5 setRecordingConfigurationOverrides:v19];
-  v20 = [(HMDCameraRecordingSettingsControl *)v5 recordingConfigurationOverrides];
+  [(HMDCameraRecordingSettingsControl *)selfCopy setRecordingConfigurationOverrides:v19];
+  recordingConfigurationOverrides = [(HMDCameraRecordingSettingsControl *)selfCopy recordingConfigurationOverrides];
 
-  if (v20)
+  if (recordingConfigurationOverrides)
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = v5;
+    v22 = selfCopy;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
       v24 = HMFGetLogIdentifier();
-      v25 = [(HMDCameraRecordingSettingsControl *)v22 recordingConfigurationOverrides];
+      recordingConfigurationOverrides2 = [(HMDCameraRecordingSettingsControl *)v22 recordingConfigurationOverrides];
       v29 = 138543618;
       v30 = v24;
       v31 = 2112;
-      v32 = v25;
+      v32 = recordingConfigurationOverrides2;
       _os_log_impl(&dword_229538000, v23, OS_LOG_TYPE_INFO, "%{public}@Using recording configuration overrides: %@", &v29, 0x16u);
     }
 
@@ -2790,8 +2790,8 @@ LABEL_12:
 - (NSArray)videoConfigurationsByPreferenceOrder
 {
   v51[3] = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCameraRecordingSettingsControl *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDCameraRecordingSettingsControl *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v50[0] = &unk_283E73B38;
   v50[1] = &unk_283E73B68;
@@ -2815,15 +2815,15 @@ LABEL_12:
   v47[2] = &unk_283E73C10;
   v38 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v47 forKeys:v46 count:3];
   v5 = v4;
-  v6 = [(HMDCameraRecordingSettingsControl *)self accessory];
-  v7 = [v6 home];
-  v8 = [v7 personManagerSettings];
-  v9 = [v8 isFaceClassificationEnabled];
+  accessory = [(HMDCameraRecordingSettingsControl *)self accessory];
+  home = [accessory home];
+  personManagerSettings = [home personManagerSettings];
+  isFaceClassificationEnabled = [personManagerSettings isFaceClassificationEnabled];
 
   v10 = v5;
   v11 = v5;
   v12 = v5;
-  if (v9)
+  if (isFaceClassificationEnabled)
   {
     v44[0] = &unk_283E73B38;
     v44[1] = &unk_283E73B68;
@@ -2872,68 +2872,68 @@ LABEL_12:
   v27 = [[HMDCameraRecordingPreferredVideoConfiguration alloc] initWithResolution:21 bitRateByFrameRate:v38 keyFrameInterval:&unk_283E73BB0 h264Level:2];
   v26 = [[HMDCameraRecordingPreferredVideoConfiguration alloc] initWithResolution:20 bitRateByFrameRate:v11 keyFrameInterval:&unk_283E73BB0 h264Level:2];
   v21 = [[HMDCameraRecordingPreferredVideoConfiguration alloc] initWithResolution:19 bitRateByFrameRate:v16 keyFrameInterval:&unk_283E73BB0 h264Level:0];
-  v22 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (_os_feature_enabled_impl())
   {
-    [v22 addObject:v34];
+    [array addObject:v34];
   }
 
-  [v22 addObject:v17];
-  [v22 addObject:v18];
-  [v22 addObject:v19];
-  [v22 addObject:v20];
-  [v22 addObject:v37];
-  [v22 addObject:v36];
+  [array addObject:v17];
+  [array addObject:v18];
+  [array addObject:v19];
+  [array addObject:v20];
+  [array addObject:v37];
+  [array addObject:v36];
   if (_os_feature_enabled_impl())
   {
-    [v22 addObject:v35];
+    [array addObject:v35];
   }
 
-  [v22 addObject:v33];
-  [v22 addObject:v32];
-  [v22 addObject:v29];
-  [v22 addObject:v28];
-  [v22 addObject:v31];
-  [v22 addObject:v30];
-  [v22 addObject:v27];
-  [v22 addObject:v26];
-  [v22 addObject:v21];
-  v25 = [v22 copy];
+  [array addObject:v33];
+  [array addObject:v32];
+  [array addObject:v29];
+  [array addObject:v28];
+  [array addObject:v31];
+  [array addObject:v30];
+  [array addObject:v27];
+  [array addObject:v26];
+  [array addObject:v21];
+  v25 = [array copy];
 
   v23 = *MEMORY[0x277D85DE8];
 
   return v25;
 }
 
-- (HMDCameraRecordingSettingsControl)initWithWorkQueue:(id)a3 accessory:(id)a4 recordingManagementService:(id)a5 featuresDataSource:(id)a6 notificationCenter:(id)a7
+- (HMDCameraRecordingSettingsControl)initWithWorkQueue:(id)queue accessory:(id)accessory recordingManagementService:(id)service featuresDataSource:(id)source notificationCenter:(id)center
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (!v13)
+  queueCopy = queue;
+  accessoryCopy = accessory;
+  serviceCopy = service;
+  sourceCopy = source;
+  centerCopy = center;
+  if (!queueCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  if (!v14)
+  if (!accessoryCopy)
   {
 LABEL_9:
     _HMFPreconditionFailure();
     goto LABEL_10;
   }
 
-  if (!v15)
+  if (!serviceCopy)
   {
 LABEL_10:
     _HMFPreconditionFailure();
     goto LABEL_11;
   }
 
-  v18 = v17;
-  if (!v17)
+  v18 = centerCopy;
+  if (!centerCopy)
   {
 LABEL_11:
     v29 = _HMFPreconditionFailure();
@@ -2946,34 +2946,34 @@ LABEL_11:
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_workQueue, a3);
-    objc_storeWeak(&v20->_accessory, v14);
-    objc_storeStrong(&v20->_recordingService, a5);
-    objc_storeStrong(&v20->_notificationCenter, a7);
-    objc_storeStrong(&v20->_featuresDataSource, a6);
+    objc_storeStrong(&v19->_workQueue, queue);
+    objc_storeWeak(&v20->_accessory, accessoryCopy);
+    objc_storeStrong(&v20->_recordingService, service);
+    objc_storeStrong(&v20->_notificationCenter, center);
+    objc_storeStrong(&v20->_featuresDataSource, source);
     v21 = MEMORY[0x277CCACA8];
-    v22 = [MEMORY[0x277CCAD78] UUID];
-    v23 = [v22 UUIDString];
-    v24 = [v21 stringWithFormat:@"%@.HMDCameraRecordingSettingsControl.%@", @"com.apple.HomeKitDaemon.Local", v23];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v24 = [v21 stringWithFormat:@"%@.HMDCameraRecordingSettingsControl.%@", @"com.apple.HomeKitDaemon.Local", uUIDString];
     clientIdentifier = v20->_clientIdentifier;
     v20->_clientIdentifier = v24;
 
-    v26 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     pendingConfigureCompletionHandlers = v20->_pendingConfigureCompletionHandlers;
-    v20->_pendingConfigureCompletionHandlers = v26;
+    v20->_pendingConfigureCompletionHandlers = array;
   }
 
   return v20;
 }
 
-- (HMDCameraRecordingSettingsControl)initWithWorkQueue:(id)a3 accessory:(id)a4 recordingManagementService:(id)a5
+- (HMDCameraRecordingSettingsControl)initWithWorkQueue:(id)queue accessory:(id)accessory recordingManagementService:(id)service
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  serviceCopy = service;
+  accessoryCopy = accessory;
+  queueCopy = queue;
   v11 = +[HMDFeaturesDataSource defaultDataSource];
-  v12 = [MEMORY[0x277CCAB98] defaultCenter];
-  v13 = [(HMDCameraRecordingSettingsControl *)self initWithWorkQueue:v10 accessory:v9 recordingManagementService:v8 featuresDataSource:v11 notificationCenter:v12];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  v13 = [(HMDCameraRecordingSettingsControl *)self initWithWorkQueue:queueCopy accessory:accessoryCopy recordingManagementService:serviceCopy featuresDataSource:v11 notificationCenter:defaultCenter];
 
   return v13;
 }
@@ -2998,36 +2998,36 @@ void __48__HMDCameraRecordingSettingsControl_logCategory__block_invoke()
   logCategory__hmf_once_v71 = v1;
 }
 
-+ (id)audioCodecForCodecConfiguration:(id)a3
++ (id)audioCodecForCodecConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [v3 codec];
-  v5 = [HMDCameraRecordingSettingsControl isSupportedAudioCodec:v4];
+  configurationCopy = configuration;
+  codec = [configurationCopy codec];
+  v5 = [HMDCameraRecordingSettingsControl isSupportedAudioCodec:codec];
 
   if (v5)
   {
-    v6 = [v3 codec];
+    codec2 = [configurationCopy codec];
   }
 
   else
   {
-    v6 = 0;
+    codec2 = 0;
   }
 
-  return v6;
+  return codec2;
 }
 
-+ (id)audioBitRateForCodecConfiguration:(id)a3
++ (id)audioBitRateForCodecConfiguration:(id)configuration
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [a3 parameters];
-  v4 = [v3 bitRateModes];
+  parameters = [configuration parameters];
+  bitRateModes = [parameters bitRateModes];
 
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [bitRateModes countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = *v12;
@@ -3037,7 +3037,7 @@ void __48__HMDCameraRecordingSettingsControl_logCategory__block_invoke()
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(bitRateModes);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -3048,7 +3048,7 @@ void __48__HMDCameraRecordingSettingsControl_logCategory__block_invoke()
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [bitRateModes countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;
@@ -3065,36 +3065,36 @@ LABEL_11:
   return v5;
 }
 
-+ (id)videoCodecForCodecConfiguration:(id)a3
++ (id)videoCodecForCodecConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 codec];
-  LODWORD(a1) = [a1 isSupportedVideoCodec:v5];
+  configurationCopy = configuration;
+  codec = [configurationCopy codec];
+  LODWORD(self) = [self isSupportedVideoCodec:codec];
 
-  if (a1)
+  if (self)
   {
-    v6 = [v4 codec];
+    codec2 = [configurationCopy codec];
   }
 
   else
   {
-    v6 = 0;
+    codec2 = 0;
   }
 
-  return v6;
+  return codec2;
 }
 
-+ (id)h264ProfileForCodecConfiguration:(id)a3
++ (id)h264ProfileForCodecConfiguration:(id)configuration
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [a3 parameters];
-  v4 = [v3 profiles];
+  parameters = [configuration parameters];
+  profiles = [parameters profiles];
 
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [profiles countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = *v12;
@@ -3104,7 +3104,7 @@ LABEL_11:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(profiles);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -3115,7 +3115,7 @@ LABEL_11:
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [profiles countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;
@@ -3138,7 +3138,7 @@ LABEL_11:
   block[1] = 3221225472;
   block[2] = __73__HMDCameraRecordingSettingsControl_audioConfigurationsByPreferenceOrder__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (audioConfigurationsByPreferenceOrder_onceToken != -1)
   {
     dispatch_once(&audioConfigurationsByPreferenceOrder_onceToken, block);

@@ -1,29 +1,29 @@
 @interface WebBasePluginPackage
-+ (id)pluginWithPath:(id)a3;
++ (id)pluginWithPath:(id)path;
 - (BOOL)getPluginInfoFromPLists;
 - (BOOL)isJavaPlugIn;
-- (BOOL)isNativeLibraryData:(id)a3;
+- (BOOL)isNativeLibraryData:(id)data;
 - (BOOL)isQuickTimePlugIn;
 - (BOOL)load;
-- (BOOL)supportsExtension:(const void *)a3;
-- (BOOL)supportsMIMEType:(const void *)a3;
+- (BOOL)supportsExtension:(const void *)extension;
+- (BOOL)supportsMIMEType:(const void *)type;
 - (String)bundleIdentifier;
 - (String)bundleVersion;
-- (WebBasePluginPackage)initWithPath:(id)a3;
+- (WebBasePluginPackage)initWithPath:(id)path;
 - (id).cxx_construct;
-- (id)MIMETypeForExtension:(const void *)a3;
-- (id)_objectForInfoDictionaryKey:(id)a3;
-- (id)pListForPath:(id)a3 createFile:(BOOL)a4;
+- (id)MIMETypeForExtension:(const void *)extension;
+- (id)_objectForInfoDictionaryKey:(id)key;
+- (id)pListForPath:(id)path createFile:(BOOL)file;
 - (void)createPropertyListFile;
 - (void)dealloc;
-- (void)wasAddedToPluginDatabase:(id)a3;
+- (void)wasAddedToPluginDatabase:(id)database;
 @end
 
 @implementation WebBasePluginPackage
 
-+ (id)pluginWithPath:(id)a3
++ (id)pluginWithPath:(id)path
 {
-  result = [[WebPluginPackage alloc] initWithPath:a3];
+  result = [[WebPluginPackage alloc] initWithPath:path];
   if (result)
   {
     v4 = result;
@@ -34,7 +34,7 @@
   return result;
 }
 
-- (WebBasePluginPackage)initWithPath:(id)a3
+- (WebBasePluginPackage)initWithPath:(id)path
 {
   v18.receiver = self;
   v18.super_class = WebBasePluginPackage;
@@ -44,7 +44,7 @@
     return v4;
   }
 
-  MEMORY[0x1CCA63A40](&v17, [a3 stringByResolvingSymlinksInPath]);
+  MEMORY[0x1CCA63A40](&v17, [path stringByResolvingSymlinksInPath]);
   v6 = v17;
   v17 = 0;
   m_ptr = v4->path.m_impl.m_ptr;
@@ -120,16 +120,16 @@
   }
 }
 
-- (id)pListForPath:(id)a3 createFile:(BOOL)a4
+- (id)pListForPath:(id)path createFile:(BOOL)file
 {
-  if (a4)
+  if (file)
   {
-    v4 = a3;
+    pathCopy = path;
     [(WebBasePluginPackage *)self createPropertyListFile];
-    a3 = v4;
+    path = pathCopy;
   }
 
-  result = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:a3];
+  result = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:path];
   if (result)
   {
     v6 = result;
@@ -141,13 +141,13 @@
   return result;
 }
 
-- (id)_objectForInfoDictionaryKey:(id)a3
+- (id)_objectForInfoDictionaryKey:(id)key
 {
   result = CFBundleGetInfoDictionary(self->cfBundle.m_ptr);
   if (result)
   {
 
-    return CFDictionaryGetValue(result, a3);
+    return CFDictionaryGetValue(result, key);
   }
 
   return result;
@@ -158,22 +158,22 @@
   v110 = *MEMORY[0x1E69E9840];
   if (self->cfBundle.m_ptr)
   {
-    v2 = self;
+    selfCopy = self;
     v3 = [(WebBasePluginPackage *)self _objectForInfoDictionaryKey:@"WebPluginMIMETypes"];
     if (v3)
     {
       v4 = v3;
-      v5 = [v3 keyEnumerator];
-      v6 = [v5 nextObject];
-      if (v6)
+      keyEnumerator = [v3 keyEnumerator];
+      nextObject = [keyEnumerator nextObject];
+      if (nextObject)
       {
-        v7 = v6;
+        nextObject2 = nextObject;
         v87 = v4;
-        v88 = v2;
-        v86 = v5;
+        v88 = selfCopy;
+        v86 = keyEnumerator;
         while (1)
         {
-          v8 = [v4 objectForKey:{v7, v86, v87, v88}];
+          v8 = [v4 objectForKey:{nextObject2, v86, v87, v88}];
           v9 = [v8 objectForKey:@"WebPluginTypeEnabled"];
           if (!v9 || [v9 BOOLValue])
           {
@@ -181,8 +181,8 @@
           }
 
 LABEL_94:
-          v7 = [v5 nextObject];
-          if (!v7)
+          nextObject2 = [keyEnumerator nextObject];
+          if (!nextObject2)
           {
             goto LABEL_100;
           }
@@ -192,7 +192,7 @@ LABEL_94:
         *v105 = 0u;
         v10 = [objc_msgSend(v8 objectForKey:{@"WebPluginExtensions", "_web_lowercaseStrings"}];
         v89 = v8;
-        v90 = v7;
+        v90 = nextObject2;
         v102 = 0u;
         v103 = 0u;
         v100 = 0u;
@@ -306,8 +306,8 @@ LABEL_94:
         v27 = v95;
         v95 = 0;
         v4 = v87;
-        v2 = v88;
-        v5 = v86;
+        selfCopy = v88;
+        keyEnumerator = v86;
         if (v27)
         {
           v106 = v27;
@@ -544,7 +544,7 @@ LABEL_87:
       }
 
 LABEL_100:
-      m_ptr = v2->path.m_impl.m_ptr;
+      m_ptr = selfCopy->path.m_impl.m_ptr;
       if (m_ptr)
       {
         atomic_fetch_add_explicit(m_ptr, 2u, memory_order_relaxed);
@@ -561,18 +561,18 @@ LABEL_100:
         v84 = &stru_1F472E7E8;
       }
 
-      v66 = [(WTF::StringImpl *)v104[0] lastPathComponent];
+      lastPathComponent = [(WTF::StringImpl *)v104[0] lastPathComponent];
       v67 = v104[0];
       v104[0] = 0;
       if (v67)
       {
       }
 
-      MEMORY[0x1CCA63A40](v104, v66);
+      MEMORY[0x1CCA63A40](v104, lastPathComponent);
       v69 = v104[0];
       v104[0] = 0;
-      v70 = v2->pluginInfo.file.m_impl.m_ptr;
-      v2->pluginInfo.file.m_impl.m_ptr = v69;
+      v70 = selfCopy->pluginInfo.file.m_impl.m_ptr;
+      selfCopy->pluginInfo.file.m_impl.m_ptr = v69;
       if (v70)
       {
         if (atomic_fetch_add_explicit(v70, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -588,7 +588,7 @@ LABEL_100:
         }
       }
 
-      v72 = [(WebBasePluginPackage *)v2 _objectForInfoDictionaryKey:@"WebPluginName"];
+      v72 = [(WebBasePluginPackage *)selfCopy _objectForInfoDictionaryKey:@"WebPluginName"];
       if (v72)
       {
         v73 = v72;
@@ -596,14 +596,14 @@ LABEL_100:
 
       else
       {
-        v73 = v66;
+        v73 = lastPathComponent;
       }
 
       MEMORY[0x1CCA63A40](v104, v73);
       v75 = v104[0];
       v104[0] = 0;
-      v76 = v2->pluginInfo.name.m_impl.m_ptr;
-      v2->pluginInfo.name.m_impl.m_ptr = v75;
+      v76 = selfCopy->pluginInfo.name.m_impl.m_ptr;
+      selfCopy->pluginInfo.name.m_impl.m_ptr = v75;
       if (v76)
       {
         if (atomic_fetch_add_explicit(v76, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -619,7 +619,7 @@ LABEL_100:
         }
       }
 
-      v78 = [(WebBasePluginPackage *)v2 _objectForInfoDictionaryKey:@"WebPluginDescription"];
+      v78 = [(WebBasePluginPackage *)selfCopy _objectForInfoDictionaryKey:@"WebPluginDescription"];
       if (v78)
       {
         v79 = v78;
@@ -627,14 +627,14 @@ LABEL_100:
 
       else
       {
-        v79 = v66;
+        v79 = lastPathComponent;
       }
 
       MEMORY[0x1CCA63A40](v104, v79);
       v81 = v104[0];
       v104[0] = 0;
-      v82 = v2->pluginInfo.desc.m_impl.m_ptr;
-      v2->pluginInfo.desc.m_impl.m_ptr = v81;
+      v82 = selfCopy->pluginInfo.desc.m_impl.m_ptr;
+      selfCopy->pluginInfo.desc.m_impl.m_ptr = v81;
       if (v82)
       {
         if (atomic_fetch_add_explicit(v82, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -650,7 +650,7 @@ LABEL_100:
         }
       }
 
-      v2->pluginInfo.isApplicationPlugin = 0;
+      selfCopy->pluginInfo.isApplicationPlugin = 0;
       LOBYTE(v3) = 1;
     }
   }
@@ -682,7 +682,7 @@ LABEL_100:
   [(WebBasePluginPackage *)&v3 dealloc];
 }
 
-- (BOOL)supportsExtension:(const void *)a3
+- (BOOL)supportsExtension:(const void *)extension
 {
   m_size = self->pluginInfo.mimes.m_size;
   if (!m_size)
@@ -703,7 +703,7 @@ LABEL_3:
   }
 
   v7 = 0;
-  while ((WTF::equal(*(*(m_buffer + 2) + 8 * v7), *a3, a3) & 1) == 0)
+  while ((WTF::equal(*(*(m_buffer + 2) + 8 * v7), *extension, extension) & 1) == 0)
   {
     if (++v7 >= *(m_buffer + 7))
     {
@@ -714,7 +714,7 @@ LABEL_3:
   return 1;
 }
 
-- (BOOL)supportsMIMEType:(const void *)a3
+- (BOOL)supportsMIMEType:(const void *)type
 {
   m_size = self->pluginInfo.mimes.m_size;
   if (!m_size)
@@ -728,7 +728,7 @@ LABEL_3:
   {
     v7 = *m_buffer;
     m_buffer = (m_buffer + 32);
-    result = WTF::equal(v7, *a3, a3);
+    result = WTF::equal(v7, *type, type);
     if (result)
     {
       break;
@@ -742,7 +742,7 @@ LABEL_3:
   return result;
 }
 
-- (id)MIMETypeForExtension:(const void *)a3
+- (id)MIMETypeForExtension:(const void *)extension
 {
   m_size = self->pluginInfo.mimes.m_size;
   if (!m_size)
@@ -763,7 +763,7 @@ LABEL_3:
   }
 
   v7 = 0;
-  while ((WTF::equal(*(*(m_buffer + 2) + 8 * v7), *a3, a3) & 1) == 0)
+  while ((WTF::equal(*(*(m_buffer + 2) + 8 * v7), *extension, extension) & 1) == 0)
   {
     if (++v7 >= *(m_buffer + 7))
     {
@@ -869,9 +869,9 @@ LABEL_13:
   return result;
 }
 
-- (BOOL)isNativeLibraryData:(id)a3
+- (BOOL)isNativeLibraryData:(id)data
 {
-  v4 = [a3 length];
+  v4 = [data length];
   v5 = v4 + 3;
   v6 = (v4 + 3) >> 2;
   v44 = v47;
@@ -880,11 +880,11 @@ LABEL_13:
   if (v4 + 3 < 0x204)
   {
     v7 = v47;
-    if (!a3)
+    if (!data)
     {
 LABEL_4:
       v8 = 0;
-      v9 = 0;
+      bytes = 0;
       goto LABEL_7;
     }
   }
@@ -901,14 +901,14 @@ LABEL_4:
     v45 = v6;
     v44 = v7;
     LODWORD(v6) = v46;
-    if (!a3)
+    if (!data)
     {
       goto LABEL_4;
     }
   }
 
-  v9 = [a3 bytes];
-  v8 = [a3 length];
+  bytes = [data bytes];
+  v8 = [data length];
   if (4 * v6 < v8)
   {
     __break(0xC471u);
@@ -916,7 +916,7 @@ LABEL_4:
   }
 
 LABEL_7:
-  memcpy(v7, v9, v8);
+  memcpy(v7, bytes, v8);
   v42[0] = 0;
   v42[1] = 0;
   v43 = 0;
@@ -1140,7 +1140,7 @@ LABEL_56:
   return v22;
 }
 
-- (void)wasAddedToPluginDatabase:(id)a3
+- (void)wasAddedToPluginDatabase:(id)database
 {
   pluginDatabases = self->pluginDatabases;
   if (pluginDatabases)
@@ -1149,13 +1149,13 @@ LABEL_56:
 
   else
   {
-    v5 = a3;
+    databaseCopy = database;
     pluginDatabases = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    a3 = v5;
+    database = databaseCopy;
     self->pluginDatabases = pluginDatabases;
   }
 
-  [(NSMutableSet *)pluginDatabases addObject:a3];
+  [(NSMutableSet *)pluginDatabases addObject:database];
 }
 
 - (String)bundleIdentifier

@@ -1,22 +1,22 @@
 @interface TSCEPartialResultTreeEnumerator
-- (TSCEPartialResultTreeEnumerator)initWithPartialResultTree:(id)a3;
+- (TSCEPartialResultTreeEnumerator)initWithPartialResultTree:(id)tree;
 - (id).cxx_construct;
 - (id)nextResult;
 @end
 
 @implementation TSCEPartialResultTreeEnumerator
 
-- (TSCEPartialResultTreeEnumerator)initWithPartialResultTree:(id)a3
+- (TSCEPartialResultTreeEnumerator)initWithPartialResultTree:(id)tree
 {
-  v5 = a3;
+  treeCopy = tree;
   v14.receiver = self;
   v14.super_class = TSCEPartialResultTreeEnumerator;
   v6 = [(TSCEPartialResultTreeEnumerator *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_tree, a3);
-    v13 = objc_msgSend_root(v5, v8, v9, v10, v11);
+    objc_storeStrong(&v6->_tree, tree);
+    v13 = objc_msgSend_root(treeCopy, v8, v9, v10, v11);
     sub_2212E30F4(&v7->_inProgressStack.__begin_, &v13);
   }
 

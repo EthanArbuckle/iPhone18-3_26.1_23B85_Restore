@@ -1,7 +1,7 @@
 @interface UIColor
 + (NSArray)readableTypeIdentifiersForItemProvider;
 + (NSArray)writableTypeIdentifiersForItemProvider;
-+ (UIColor)allocWithZone:(_NSZone *)a3;
++ (UIColor)allocWithZone:(_NSZone *)zone;
 + (UIColor)blackColor;
 + (UIColor)blueColor;
 + (UIColor)brownColor;
@@ -14,8 +14,8 @@
 + (UIColor)colorWithHue:(CGFloat)hue saturation:(CGFloat)saturation brightness:(CGFloat)brightness alpha:(CGFloat)alpha;
 + (UIColor)colorWithPatternImage:(UIImage *)image;
 + (UIColor)colorWithRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha;
-+ (UIColor)colorWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6 exposure:(double)a7;
-+ (UIColor)colorWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6 linearExposure:(double)a7;
++ (UIColor)colorWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha exposure:(double)exposure;
++ (UIColor)colorWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha linearExposure:(double)exposure;
 + (UIColor)colorWithWhite:(CGFloat)white alpha:(CGFloat)alpha;
 + (UIColor)cyanColor;
 + (UIColor)darkGrayColor;
@@ -78,8 +78,8 @@
 + (id)_accessibilityButtonShapesDisabledBackgroundColorOnDark;
 + (id)_accessibilityButtonShapesNoBlendModeBackgroundColorOnDark;
 + (id)_accessibilityButtonShapesNoBlendModeBackgroundColorOnLight;
-+ (id)_accessibilityDarkenedColorForColor:(id)a3;
-+ (id)_accessibilityLightenedColorForColor:(id)a3;
++ (id)_accessibilityDarkenedColorForColor:(id)color;
++ (id)_accessibilityLightenedColorForColor:(id)color;
 + (id)_alertControllerDimmingViewColor;
 + (id)_alertDefaultActionBackgroundColor;
 + (id)_alertDestructiveActionBackgroundColor;
@@ -95,17 +95,17 @@
 + (id)_carSystemQuaternaryColor;
 + (id)_carSystemSecondaryColor;
 + (id)_carSystemTertiaryColor;
-+ (id)_colorWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6 boost:(double)a7;
-+ (id)_composedColorFromSourceColor:(void *)a3 destinationColor:(void *)a4 tintColor:(void *)a5 alpha:;
++ (id)_colorWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha boost:(double)boost;
++ (id)_composedColorFromSourceColor:(void *)color destinationColor:(void *)destinationColor tintColor:(void *)tintColor alpha:;
 + (id)_controlForegroundColor;
 + (id)_controlHighlightColor;
 + (id)_controlShadowColor;
 + (id)_controlVibrantBottomBackgroundColor;
 + (id)_controlVibrantTopBackgroundColor;
-+ (id)_convertColorPickerColor:(id)a3 fromUserInterfaceStyle:(int64_t)a4 to:(int64_t)a5;
-+ (id)_disabledColorForColor:(uint64_t)a1;
-+ (id)_dynamicCatalogColorForNibEncodingWithName:(id)a3 genericColor:(id)a4;
-+ (id)_dynamicColorWithColorsByTraitCollection:(id)a3;
++ (id)_convertColorPickerColor:(id)color fromUserInterfaceStyle:(int64_t)style to:(int64_t)to;
++ (id)_disabledColorForColor:(uint64_t)color;
++ (id)_dynamicCatalogColorForNibEncodingWithName:(id)name genericColor:(id)color;
++ (id)_dynamicColorWithColorsByTraitCollection:(id)collection;
 + (id)_dynamicTestColor;
 + (id)_externalSystemDarkGrayColor;
 + (id)_externalSystemExtraDarkGrayColor;
@@ -113,10 +113,10 @@
 + (id)_externalSystemMidGrayColor;
 + (id)_externalSystemSuperDarkGrayColor;
 + (id)_externalSystemWhiteColor;
-+ (id)_focusedCarSystemColor:(id)a3;
-+ (id)_grayColorForFontSize:(double)a3;
++ (id)_focusedCarSystemColor:(id)color;
++ (id)_grayColorForFontSize:(double)size;
 + (id)_groupTableHeaderFooterTextColor;
-+ (id)_legibleForegroundColorForBackgroundColor:(id)a3 traitCollection:(id)a4;
++ (id)_legibleForegroundColorForBackgroundColor:(id)color traitCollection:(id)collection;
 + (id)_monochromeCellImageTintColor;
 + (id)_pageControlIndicatorColor;
 + (id)_pageControlPlatterIndicatorColor;
@@ -130,10 +130,10 @@
 + (id)_switchOffImageColor;
 + (id)_systemBlueColor2;
 + (id)_systemChromeShadowColor;
-+ (id)_systemColorForColor:(void *)a3 withName:;
++ (id)_systemColorForColor:(void *)color withName:;
 + (id)_systemColorSelectorTable;
-+ (id)_systemColorWithName:(id)a3;
-+ (id)_systemColorWithUnvalidatedName:(id)a3;
++ (id)_systemColorWithName:(id)name;
++ (id)_systemColorWithUnvalidatedName:(id)name;
 + (id)_systemDestructiveTintColor;
 + (id)_systemInteractionTintColor;
 + (id)_systemMidGrayTintColor;
@@ -145,7 +145,7 @@
 + (id)_tvAppKeyColorOrDefaultTint;
 + (id)_tvInterfaceStyleDarkContentColor;
 + (id)_tvInterfaceStyleLightContentColor;
-+ (id)_unfocusedCarSystemColor:(id)a3;
++ (id)_unfocusedCarSystemColor:(id)color;
 + (id)_webContentBackgroundColor;
 + (id)_windowBackgroundColor;
 + (id)externalSystemGreenColor;
@@ -156,7 +156,7 @@
 + (id)keyboardFocusIndicatorColor;
 + (id)noContentDarkGradientBackgroundColor;
 + (id)noContentLightGradientBackgroundColor;
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5;
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error;
 + (id)pinStripeColor;
 + (id)sectionHeaderBackgroundColor;
 + (id)sectionHeaderBorderColor;
@@ -222,42 +222,42 @@
 + (id)textFieldAtomPurpleColor;
 + (id)textGrammarIndicatorColor;
 + (void)initialize;
-- (BOOL)_isSimilarToColor:(id)a3 withinPercentage:(double)a4;
+- (BOOL)_isSimilarToColor:(id)color withinPercentage:(double)percentage;
 - (CGColor)cgColor;
 - (NSString)_accessibilityNameWithLuma;
 - (NSString)accessibilityName;
-- (UIColor)colorWithProminence:(int64_t)a3;
+- (UIColor)colorWithProminence:(int64_t)prominence;
 - (UIColor)initWithCGColor:(CGColorRef)cgColor;
 - (UIColor)initWithCIColor:(CIColor *)ciColor;
-- (UIColor)initWithCoder:(id)a3;
+- (UIColor)initWithCoder:(id)coder;
 - (UIColor)initWithDisplayP3Red:(CGFloat)displayP3Red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha;
 - (UIColor)initWithDynamicProvider:(void *)dynamicProvider;
 - (UIColor)initWithHue:(CGFloat)hue saturation:(CGFloat)saturation brightness:(CGFloat)brightness alpha:(CGFloat)alpha;
-- (UIColor)initWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5;
+- (UIColor)initWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error;
 - (UIColor)initWithPatternImage:(UIImage *)image;
 - (UIColor)initWithRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha;
-- (UIColor)initWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6 exposure:(double)a7;
-- (UIColor)initWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6 linearExposure:(double)a7;
+- (UIColor)initWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha exposure:(double)exposure;
+- (UIColor)initWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha linearExposure:(double)exposure;
 - (UIColor)initWithWhite:(CGFloat)white alpha:(CGFloat)alpha;
 - (UIColor)standardDynamicRangeColor;
-- (double)_colorDifferenceFromColor:(id)a3;
+- (double)_colorDifferenceFromColor:(id)color;
 - (double)_contentHeadroom;
-- (double)_distanceFrom:(id)a3;
+- (double)_distanceFrom:(id)from;
 - (double)_luminance;
-- (double)_luminanceDifferenceFromColor:(id)a3;
+- (double)_luminanceDifferenceFromColor:(id)color;
 - (double)linearExposure;
-- (id)_colorBlendedWithColor:(id)a3 compositingFilter:(id)a4;
-- (id)_colorBlendedWithColors:(id)a3;
+- (id)_colorBlendedWithColor:(id)color compositingFilter:(id)filter;
+- (id)_colorBlendedWithColors:(id)colors;
 - (id)_debugName;
-- (id)_initWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6 boost:(double)a7;
+- (id)_initWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha boost:(double)boost;
 - (id)_inverseColor;
-- (id)_resolvedBackgroundColorWithTraitCollection:(void *)a1;
-- (id)_resolvedMaterialWithTraitCollection:(id)a3;
-- (id)colorByApplyingContentHeadroom:(double)a3;
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4;
+- (id)_resolvedBackgroundColorWithTraitCollection:(void *)collection;
+- (id)_resolvedMaterialWithTraitCollection:(id)collection;
+- (id)colorByApplyingContentHeadroom:(double)headroom;
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler;
 - (id)styleString;
-- (void)_setSystemColorName:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setSystemColorName:(id)name;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIColor
@@ -514,7 +514,7 @@ void __23__UIColor__appKeyColor__block_invoke()
 {
   v3 = objc_opt_self();
 
-  if (v3 == a1)
+  if (v3 == self)
   {
     v4 = UIColorPlaceholder();
   }
@@ -1829,7 +1829,7 @@ void __56__UIColor__InProgressSPI__tableCellPlainBackgroundColor__block_invoke()
   if (!tableCellBlueTextColor_tableCellBlueTextColor)
   {
     v4 = +[UIColor systemBlueColor];
-    v5 = [(UIColor *)a1 _systemColorForColor:v4 withName:@"tableCellBlueTextColor"];
+    v5 = [(UIColor *)self _systemColorForColor:v4 withName:@"tableCellBlueTextColor"];
     v6 = tableCellBlueTextColor_tableCellBlueTextColor;
     tableCellBlueTextColor_tableCellBlueTextColor = v5;
 
@@ -1871,9 +1871,9 @@ void __44__UIColor__barStyleBlackHairlineShadowColor__block_invoke()
 
 - (CGColor)cgColor
 {
-  v2 = self;
+  selfCopy = self;
 
-  return [(UIColor *)v2 CGColor];
+  return [(UIColor *)selfCopy CGColor];
 }
 
 void __38__UIColor___halfTransparentWhiteColor__block_invoke()
@@ -3797,12 +3797,12 @@ void __20__UIColor_blueColor__block_invoke()
 - (double)_luminance
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [(UIColor *)self CGColor];
+  cGColor = [(UIColor *)self CGColor];
   v3 = 0.0;
-  if (v2)
+  if (cGColor)
   {
-    v4 = v2;
-    Components = CGColorGetComponents(v2);
+    v4 = cGColor;
+    Components = CGColorGetComponents(cGColor);
     Alpha = CGColorGetAlpha(v4);
     ColorSpace = CGColorGetColorSpace(v4);
     if (Components)
@@ -4594,12 +4594,12 @@ void __22__UIColor_orangeColor__block_invoke()
   return v3;
 }
 
-+ (id)_legibleForegroundColorForBackgroundColor:(id)a3 traitCollection:(id)a4
++ (id)_legibleForegroundColorForBackgroundColor:(id)color traitCollection:(id)collection
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 resolvedColorWithTraitCollection_];
-  [v7 _luminance];
+  colorCopy = color;
+  collectionCopy = collection;
+  resolvedColorWithTraitCollection_ = [colorCopy resolvedColorWithTraitCollection_];
+  [resolvedColorWithTraitCollection_ _luminance];
   v9 = v8;
 
   v10 = swift_allocObject();
@@ -4612,18 +4612,18 @@ void __22__UIColor_orangeColor__block_invoke()
   v15[2] = sub_188BC2240;
   v15[3] = &block_descriptor_41_1;
   v12 = _Block_copy(v15);
-  v13 = [v11 initWithDynamicProvider_];
+  initWithDynamicProvider_ = [v11 initWithDynamicProvider_];
 
   _Block_release(v12);
 
-  return v13;
+  return initWithDynamicProvider_;
 }
 
 - (NSString)accessibilityName
 {
-  v2 = [(UIColor *)self CGColor];
+  cGColor = [(UIColor *)self CGColor];
 
-  return AXNameFromColor(v2);
+  return AXNameFromColor(cGColor);
 }
 
 - (NSString)_accessibilityNameWithLuma
@@ -4650,8 +4650,8 @@ void __22__UIColor_orangeColor__block_invoke()
     return v3(self, 1);
   }
 
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  result = [v5 handleFailureInFunction:objc_msgSend(MEMORY[0x1E696AEC0] file:"stringWithUTF8String:" lineNumber:"NSString *_AXColorStringForColor(UIColor * description:{NSUInteger)"), @"UIAccessibility.m", 63, @"%s", dlerror()}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  result = [currentHandler handleFailureInFunction:objc_msgSend(MEMORY[0x1E696AEC0] file:"stringWithUTF8String:" lineNumber:"NSString *_AXColorStringForColor(UIColor * description:{NSUInteger)"), @"UIAccessibility.m", 63, @"%s", dlerror()}];
   __break(1u);
   return result;
 }
@@ -4671,7 +4671,7 @@ void __22__UIColor_orangeColor__block_invoke()
   return v3;
 }
 
-- (double)_distanceFrom:(id)a3
+- (double)_distanceFrom:(id)from
 {
   v12 = 0.0;
   v13 = 0.0;
@@ -4679,9 +4679,9 @@ void __22__UIColor_orangeColor__block_invoke()
   v11 = 0.0;
   v8 = 0.0;
   v9 = 0.0;
-  v4 = a3;
+  fromCopy = from;
   v5 = [(UIColor *)self getRed:&v13 green:&v12 blue:&v11 alpha:0];
-  v6 = [v4 getRed:&v10 green:&v9 blue:&v8 alpha:0];
+  v6 = [fromCopy getRed:&v10 green:&v9 blue:&v8 alpha:0];
 
   result = 1.79769313e308;
   if (v5)
@@ -4695,19 +4695,19 @@ void __22__UIColor_orangeColor__block_invoke()
   return result;
 }
 
-+ (UIColor)allocWithZone:(_NSZone *)a3
++ (UIColor)allocWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_self();
-  if (v5 == a1)
+  if (v5 == self)
   {
     v6 = UIColorPlaceholder();
   }
 
   else
   {
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = &OBJC_METACLASS___UIColor;
-    v6 = objc_msgSendSuper2(&v9, sel_allocWithZone_, a3);
+    v6 = objc_msgSendSuper2(&v9, sel_allocWithZone_, zone);
   }
 
   v7 = v6;
@@ -4793,55 +4793,55 @@ LABEL_9:
   return v6;
 }
 
-+ (id)_systemColorWithName:(id)a3
++ (id)_systemColorWithName:(id)name
 {
-  v5 = a3;
-  v6 = _selectorForColorName(v5);
+  nameCopy = name;
+  v6 = _selectorForColorName(nameCopy);
   if (!v6)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"UIColor.m" lineNumber:1934 description:{@"Invalid system color name: %@", v5}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIColor.m" lineNumber:1934 description:{@"Invalid system color name: %@", nameCopy}];
   }
 
-  v7 = [a1 performSelector:v6];
+  v7 = [self performSelector:v6];
 
   return v7;
 }
 
-+ (id)_systemColorWithUnvalidatedName:(id)a3
++ (id)_systemColorWithUnvalidatedName:(id)name
 {
-  v4 = _selectorForColorName(a3);
+  v4 = _selectorForColorName(name);
   if (v4)
   {
-    v4 = [a1 performSelector:v4];
+    v4 = [self performSelector:v4];
   }
 
   return v4;
 }
 
-+ (id)_systemColorForColor:(void *)a3 withName:
++ (id)_systemColorForColor:(void *)color withName:
 {
-  v4 = a3;
+  colorCopy = color;
   v5 = a2;
   objc_opt_self();
   v6 = objc_alloc(objc_opt_class());
-  v7 = [v5 CGColor];
+  cGColor = [v5 CGColor];
 
-  v8 = [v6 initWithCGColor:v7];
-  [v8 _setSystemColorName:v4];
+  v8 = [v6 initWithCGColor:cGColor];
+  [v8 _setSystemColorName:colorCopy];
 
   return v8;
 }
 
-+ (id)_composedColorFromSourceColor:(void *)a3 destinationColor:(void *)a4 tintColor:(void *)a5 alpha:
++ (id)_composedColorFromSourceColor:(void *)color destinationColor:(void *)destinationColor tintColor:(void *)tintColor alpha:
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  colorCopy = color;
+  destinationColorCopy = destinationColor;
+  tintColorCopy = tintColor;
   objc_opt_self();
-  if (!v9)
+  if (!destinationColorCopy)
   {
-    v9 = +[UIColor whiteColor];
+    destinationColorCopy = +[UIColor whiteColor];
   }
 
   v26 = 0.0;
@@ -4852,44 +4852,44 @@ LABEL_9:
   v23 = 0.0;
   v20 = 0.0;
   v21 = 0.0;
-  [v8 getRed:&v27 green:&v26 blue:&v25 alpha:&v24];
-  [v9 getRed:&v23 green:&v22 blue:&v21 alpha:&v20];
+  [colorCopy getRed:&v27 green:&v26 blue:&v25 alpha:&v24];
+  [destinationColorCopy getRed:&v23 green:&v22 blue:&v21 alpha:&v20];
   v11 = v27 * v20 + v23 * (1.0 - v24);
   v12 = v20 * v26 + (1.0 - v24) * v22;
   v13 = v20 * v25 + (1.0 - v24) * v21;
-  if (v10)
+  if (tintColorCopy)
   {
     v18 = 0.0;
     v19 = 0.0;
     v16 = 0.0;
     v17 = 0.0;
-    [v10 getRed:&v19 green:&v18 blue:&v17 alpha:&v16];
+    [tintColorCopy getRed:&v19 green:&v18 blue:&v17 alpha:&v16];
     v11 = v19 + v11 * (1.0 - v16);
     v12 = v18 + v12 * (1.0 - v16);
     v13 = v17 + v13 * (1.0 - v16);
   }
 
-  v14 = [UIColor colorWithRed:v11 green:v12 blue:v13 alpha:a1];
+  v14 = [UIColor colorWithRed:v11 green:v12 blue:v13 alpha:self];
 
   return v14;
 }
 
-+ (id)_accessibilityDarkenedColorForColor:(id)a3
++ (id)_accessibilityDarkenedColorForColor:(id)color
 {
-  v3 = a3;
-  if ([v3 _isDynamic])
+  colorCopy = color;
+  if ([colorCopy _isDynamic])
   {
-    v4 = [v3 _highContrastDynamicColor];
+    _highContrastDynamicColor = [colorCopy _highContrastDynamicColor];
     goto LABEL_16;
   }
 
-  v5 = v3;
+  v5 = colorCopy;
   objc_opt_self();
-  v6 = [v5 _systemColorName];
+  _systemColorName = [v5 _systemColorName];
 
-  if (v6 && [v6 length] >= 8 && objc_msgSend(v6, "hasPrefix:", @"system"))
+  if (_systemColorName && [_systemColorName length] >= 8 && objc_msgSend(_systemColorName, "hasPrefix:", @"system"))
   {
-    v7 = [v6 substringFromIndex:6];
+    v7 = [_systemColorName substringFromIndex:6];
     v8 = [@"systemDark" stringByAppendingString:v7];
 
     v9 = _selectorForColorName(v8);
@@ -4906,7 +4906,7 @@ LABEL_9:
     if (v10)
     {
       v16 = v10;
-      v4 = v16;
+      _highContrastDynamicColor = v16;
       goto LABEL_15;
     }
   }
@@ -4944,21 +4944,21 @@ LABEL_9:
   v14 = [UIColor alloc];
   v15 = [(UIColor *)v14 initWithHue:v20 saturation:v19 brightness:v18 * 0.8 alpha:v21];
 LABEL_14:
-  v4 = v15;
+  _highContrastDynamicColor = v15;
   v16 = 0;
 LABEL_15:
 
 LABEL_16:
 
-  return v4;
+  return _highContrastDynamicColor;
 }
 
-+ (id)_accessibilityLightenedColorForColor:(id)a3
++ (id)_accessibilityLightenedColorForColor:(id)color
 {
-  v3 = a3;
-  if ([v3 _isDynamic])
+  colorCopy = color;
+  if ([colorCopy _isDynamic])
   {
-    v4 = [v3 _highContrastDynamicColor];
+    _highContrastDynamicColor = [colorCopy _highContrastDynamicColor];
   }
 
   else
@@ -4967,7 +4967,7 @@ LABEL_16:
     v16 = 0.0;
     v17 = 0;
     v15 = 0.0;
-    [v3 getRed:&v18 green:&v17 blue:&v16 alpha:&v15];
+    [colorCopy getRed:&v18 green:&v17 blue:&v16 alpha:&v15];
 
     v13 = 0.0;
     v14 = 0.0;
@@ -4992,13 +4992,13 @@ LABEL_16:
     v8 = v12 * v7;
     v9 = v13 * (v7 + -1.25 + 1.0);
     v10 = [UIColor alloc];
-    v4 = [(UIColor *)v10 initWithHue:v14 saturation:v9 brightness:v8 alpha:v15];
+    _highContrastDynamicColor = [(UIColor *)v10 initWithHue:v14 saturation:v9 brightness:v8 alpha:v15];
   }
 
-  return v4;
+  return _highContrastDynamicColor;
 }
 
-+ (id)_disabledColorForColor:(uint64_t)a1
++ (id)_disabledColorForColor:(uint64_t)color
 {
   v2 = a2;
   objc_opt_self();
@@ -5071,13 +5071,13 @@ id __34__UIColor__disabledColorForColor___block_invoke(uint64_t a1, void *a2)
   return v7;
 }
 
-+ (id)_dynamicCatalogColorForNibEncodingWithName:(id)a3 genericColor:(id)a4
++ (id)_dynamicCatalogColorForNibEncodingWithName:(id)name genericColor:(id)color
 {
-  v6 = a4;
-  v7 = a3;
+  colorCopy = color;
+  nameCopy = name;
   v8 = [UIDynamicCatalogColor alloc];
-  v9 = v7;
-  v10 = v6;
+  v9 = nameCopy;
+  v10 = colorCopy;
   v11 = v10;
   if (!v8)
   {
@@ -5094,8 +5094,8 @@ id __34__UIColor__disabledColorForColor___block_invoke(uint64_t a1, void *a2)
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:sel__initForNibEncodingWithName_genericColor_ object:v8 file:@"UIColor.m" lineNumber:5067 description:{@"Invalid parameter not satisfying: %@", @"name != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel__initForNibEncodingWithName_genericColor_ object:v8 file:@"UIColor.m" lineNumber:5067 description:{@"Invalid parameter not satisfying: %@", @"name != nil"}];
 
     if (v11)
     {
@@ -5103,8 +5103,8 @@ id __34__UIColor__disabledColorForColor___block_invoke(uint64_t a1, void *a2)
     }
   }
 
-  v15 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v15 handleFailureInMethod:sel__initForNibEncodingWithName_genericColor_ object:v8 file:@"UIColor.m" lineNumber:5068 description:{@"Invalid parameter not satisfying: %@", @"genericColor != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:sel__initForNibEncodingWithName_genericColor_ object:v8 file:@"UIColor.m" lineNumber:5068 description:{@"Invalid parameter not satisfying: %@", @"genericColor != nil"}];
 
 LABEL_4:
   v16.receiver = v8;
@@ -5113,8 +5113,8 @@ LABEL_4:
   v8 = v12;
   if (v12)
   {
-    objc_storeStrong(v12 + 3, a3);
-    objc_storeStrong(&v8->_genericColor, a4);
+    objc_storeStrong(v12 + 3, name);
+    objc_storeStrong(&v8->_genericColor, color);
   }
 
 LABEL_6:
@@ -5143,7 +5143,7 @@ LABEL_6:
   return [v10 initWithRed:red green:green blue:blue alpha:alpha];
 }
 
-- (UIColor)initWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6 linearExposure:(double)a7
+- (UIColor)initWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha linearExposure:(double)exposure
 {
   if (qword_1ED49BF20 != -1)
   {
@@ -5155,7 +5155,7 @@ LABEL_6:
   return v8;
 }
 
-+ (UIColor)colorWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6 linearExposure:(double)a7
++ (UIColor)colorWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha linearExposure:(double)exposure
 {
   if (qword_1ED49BF20 != -1)
   {
@@ -5165,33 +5165,33 @@ LABEL_6:
   return _UICreateBoostedRGBColor();
 }
 
-- (UIColor)initWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6 exposure:(double)a7
+- (UIColor)initWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha exposure:(double)exposure
 {
-  v12 = 0.0;
-  if (a7 >= 0.0)
+  exposureCopy = 0.0;
+  if (exposure >= 0.0)
   {
-    v12 = a7;
+    exposureCopy = exposure;
   }
 
-  v13 = exp2(v12);
+  v13 = exp2(exposureCopy);
 
-  return [(UIColor *)self initWithRed:a3 green:a4 blue:a5 alpha:a6 linearExposure:v13];
+  return [(UIColor *)self initWithRed:red green:green blue:blue alpha:alpha linearExposure:v13];
 }
 
-+ (UIColor)colorWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6 exposure:(double)a7
++ (UIColor)colorWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha exposure:(double)exposure
 {
-  v12 = 0.0;
-  if (a7 >= 0.0)
+  exposureCopy = 0.0;
+  if (exposure >= 0.0)
   {
-    v12 = a7;
+    exposureCopy = exposure;
   }
 
-  v13 = exp2(v12);
+  v13 = exp2(exposureCopy);
 
-  return [a1 colorWithRed:a3 green:a4 blue:a5 alpha:a6 linearExposure:v13];
+  return [self colorWithRed:red green:green blue:blue alpha:alpha linearExposure:v13];
 }
 
-- (id)_initWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6 boost:(double)a7
+- (id)_initWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha boost:(double)boost
 {
   if (qword_1ED49BF20 != -1)
   {
@@ -5203,7 +5203,7 @@ LABEL_6:
   return v8;
 }
 
-+ (id)_colorWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6 boost:(double)a7
++ (id)_colorWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha boost:(double)boost
 {
   if (qword_1ED49BF20 != -1)
   {
@@ -5213,16 +5213,16 @@ LABEL_6:
   return _UICreateBoostedRGBColor();
 }
 
-- (id)colorByApplyingContentHeadroom:(double)a3
+- (id)colorByApplyingContentHeadroom:(double)headroom
 {
-  if (a3 >= 1.0)
+  if (headroom >= 1.0)
   {
-    v4 = a3;
+    headroomCopy = headroom;
   }
 
   else
   {
-    v4 = 1.0;
+    headroomCopy = 1.0;
   }
 
   if ([(UIColor *)self _isDynamic])
@@ -5232,13 +5232,13 @@ LABEL_6:
     v7[2] = __42__UIColor_colorByApplyingContentHeadroom___block_invoke;
     v7[3] = &unk_1E710BCA0;
     v7[4] = self;
-    *&v7[5] = v4;
+    *&v7[5] = headroomCopy;
     v5 = [UIColor colorWithDynamicProvider:v7];
   }
 
   else
   {
-    v5 = _UIApplyHeadroom(self, v4);
+    v5 = _UIApplyHeadroom(self, headroomCopy);
   }
 
   return v5;
@@ -5325,31 +5325,31 @@ id __36__UIColor_standardDynamicRangeColor__block_invoke(uint64_t a1, uint64_t a
   return [v10 initWithDisplayP3Red:displayP3Red green:green blue:blue alpha:alpha];
 }
 
-- (UIColor)initWithCoder:(id)a3
+- (UIColor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UIDynamicModifiedBaseColor"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UIDynamicModifiedBaseColor"];
   v6 = v5;
   if (!v5 || ![v5 _isDynamic])
   {
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UIDynamicCatalogName"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UIDynamicCatalogName"];
     if ([v11 length])
     {
-      if ([v4 decodeBoolForKey:@"UIDynamicCatalogUseNibBundle"])
+      if ([coderCopy decodeBoolForKey:@"UIDynamicCatalogUseNibBundle"])
       {
-        v12 = UIResourceBundleForNIBBeingDecodedWithCoder(v4);
+        v12 = UIResourceBundleForNIBBeingDecodedWithCoder(coderCopy);
       }
 
       else
       {
-        v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UIDynamicCatalogBundleIdentifier"];
-        v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UIDynamicCatalogBundleLibraryName"];
+        v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UIDynamicCatalogBundleIdentifier"];
+        v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UIDynamicCatalogBundleLibraryName"];
         v12 = [MEMORY[0x1E696AAE8] _bundleWithIdentifier:v13 andLibraryName:v14];
       }
 
-      v15 = [UIColor colorNamed:v11 inBundle:v12 compatibleWithTraitCollection:0];
+      selfCopy = [UIColor colorNamed:v11 inBundle:v12 compatibleWithTraitCollection:0];
 
-      if (v15)
+      if (selfCopy)
       {
         goto LABEL_40;
       }
@@ -5365,17 +5365,17 @@ id __36__UIColor_standardDynamicRangeColor__block_invoke(uint64_t a1, uint64_t a
       qword_1ED49B328 = v19;
     }
 
-    v21 = [v4 decodeObjectOfClasses:? forKey:?];
+    v21 = [coderCopy decodeObjectOfClasses:? forKey:?];
     if ([v21 count])
     {
-      v15 = [[UIDynamicAppDefinedColor alloc] initWithColorsByTraitCollection:v21];
+      selfCopy = [[UIDynamicAppDefinedColor alloc] initWithColorsByTraitCollection:v21];
 LABEL_39:
 
 LABEL_40:
       goto LABEL_41;
     }
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UISystemColorName"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UISystemColorName"];
     v23 = v22;
     if (v22)
     {
@@ -5390,25 +5390,25 @@ LABEL_40:
 LABEL_38:
           self = v26;
 
-          v15 = self;
+          selfCopy = self;
           goto LABEL_39;
         }
       }
 
-      else if (([v4 containsValueForKey:@"UIColorComponentCount"] & 1) == 0)
+      else if (([coderCopy containsValueForKey:@"UIColorComponentCount"] & 1) == 0)
       {
         [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E696A490] format:{@"Unknown system color name: %@", v23}];
       }
     }
 
-    v27 = _UIColorDecodeComponentForKey(v4, @"UIHeadroom", @"UIHeadroom-Double");
-    v28 = [v4 decodeIntForKey:@"UIColorComponentCount"];
+    v27 = _UIColorDecodeComponentForKey(coderCopy, @"UIHeadroom", @"UIHeadroom-Double");
+    v28 = [coderCopy decodeIntForKey:@"UIColorComponentCount"];
     v29 = 1.0;
     if (v27 > 1.0)
     {
       if (v28 == 2)
       {
-        _UIColorDecodeComponentForKey(v4, @"UIWhite", @"UIWhite-Double");
+        _UIColorDecodeComponentForKey(coderCopy, @"UIWhite", @"UIWhite-Double");
       }
 
       else
@@ -5428,20 +5428,20 @@ LABEL_31:
           goto LABEL_38;
         }
 
-        _UIColorDecodeComponentForKey(v4, @"UIRed", @"UIRed-Double");
-        _UIColorDecodeComponentForKey(v4, @"UIGreen", @"UIGreen-Double");
-        _UIColorDecodeComponentForKey(v4, @"UIBlue", @"UIBlue-Double");
+        _UIColorDecodeComponentForKey(coderCopy, @"UIRed", @"UIRed-Double");
+        _UIColorDecodeComponentForKey(coderCopy, @"UIGreen", @"UIGreen-Double");
+        _UIColorDecodeComponentForKey(coderCopy, @"UIBlue", @"UIBlue-Double");
       }
 
-      _UIColorDecodeComponentForKey(v4, @"UIAlpha", @"UIAlpha-Double");
+      _UIColorDecodeComponentForKey(coderCopy, @"UIAlpha", @"UIAlpha-Double");
       goto LABEL_31;
     }
 
     if (v28 == 2)
     {
-      v35 = _UIColorDecodeComponentForKey(v4, @"UIWhite", @"UIWhite-Double");
-      v36 = _UIColorDecodeComponentForKey(v4, @"UIAlpha", @"UIAlpha-Double");
-      v37 = self;
+      v35 = _UIColorDecodeComponentForKey(coderCopy, @"UIWhite", @"UIWhite-Double");
+      v36 = _UIColorDecodeComponentForKey(coderCopy, @"UIAlpha", @"UIAlpha-Double");
+      selfCopy3 = self;
       v29 = v35;
     }
 
@@ -5449,29 +5449,29 @@ LABEL_31:
     {
       if (v28 == 4)
       {
-        v30 = _UIColorDecodeComponentForKey(v4, @"UIRed", @"UIRed-Double");
-        v31 = _UIColorDecodeComponentForKey(v4, @"UIGreen", @"UIGreen-Double");
-        v32 = _UIColorDecodeComponentForKey(v4, @"UIBlue", @"UIBlue-Double");
-        v33 = [(UIColor *)self initWithRed:v30 green:v31 blue:v32 alpha:_UIColorDecodeComponentForKey(v4, @"UIAlpha", @"UIAlpha-Double")];
+        v30 = _UIColorDecodeComponentForKey(coderCopy, @"UIRed", @"UIRed-Double");
+        v31 = _UIColorDecodeComponentForKey(coderCopy, @"UIGreen", @"UIGreen-Double");
+        v32 = _UIColorDecodeComponentForKey(coderCopy, @"UIBlue", @"UIBlue-Double");
+        v33 = [(UIColor *)self initWithRed:v30 green:v31 blue:v32 alpha:_UIColorDecodeComponentForKey(coderCopy, @"UIAlpha", @"UIAlpha-Double")];
 LABEL_37:
         v26 = v33;
         goto LABEL_38;
       }
 
       v36 = 0.0;
-      v37 = self;
+      selfCopy3 = self;
     }
 
-    v33 = [(UIColor *)v37 initWithWhite:v29 alpha:v36];
+    v33 = [(UIColor *)selfCopy3 initWithWhite:v29 alpha:v36];
     goto LABEL_37;
   }
 
-  [v4 decodeDoubleForKey:@"UIDynamicModifiedAlphaComponent"];
+  [coderCopy decodeDoubleForKey:@"UIDynamicModifiedAlphaComponent"];
   v8 = v7;
-  v9 = [v4 decodeIntegerForKey:@"UIDynamicModifiedContrast"];
-  if ([v4 containsValueForKey:@"UIDynamicModifiedProminence"])
+  v9 = [coderCopy decodeIntegerForKey:@"UIDynamicModifiedContrast"];
+  if ([coderCopy containsValueForKey:@"UIDynamicModifiedProminence"])
   {
-    v10 = [v4 decodeIntegerForKey:@"UIDynamicModifiedProminence"];
+    v10 = [coderCopy decodeIntegerForKey:@"UIDynamicModifiedProminence"];
   }
 
   else
@@ -5479,39 +5479,39 @@ LABEL_37:
     v10 = -1;
   }
 
-  v15 = [[UIDynamicModifiedColor alloc] initWithBaseColor:v6 alphaComponent:v9 contrast:v10 prominence:v8];
+  selfCopy = [[UIDynamicModifiedColor alloc] initWithBaseColor:v6 alphaComponent:v9 contrast:v10 prominence:v8];
 LABEL_41:
 
-  return v15;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(UIColor *)self _systemColorName];
-  if (v6)
+  coderCopy = coder;
+  _systemColorName = [(UIColor *)self _systemColorName];
+  if (_systemColorName)
   {
-    [v5 encodeObject:v6 forKey:@"UISystemColorName"];
+    [coderCopy encodeObject:_systemColorName forKey:@"UISystemColorName"];
   }
 
-  v7 = [(UIColor *)self cgColor];
-  NumberOfComponents = CGColorGetNumberOfComponents(v7);
-  [v5 encodeInt:NumberOfComponents forKey:@"UIColorComponentCount"];
+  cgColor = [(UIColor *)self cgColor];
+  NumberOfComponents = CGColorGetNumberOfComponents(cgColor);
+  [coderCopy encodeInt:NumberOfComponents forKey:@"UIColorComponentCount"];
   [(UIColor *)self _contentHeadroom];
   if (v9 > 1.0)
   {
-    _UIColorEncodeComponentForKey(v5, @"UIHeadroom", @"UIHeadroom-Double", v9);
+    _UIColorEncodeComponentForKey(coderCopy, @"UIHeadroom", @"UIHeadroom-Double", v9);
   }
 
   if (NumberOfComponents == 2)
   {
     v18 = 0.0;
-    if (v7)
+    if (cgColor)
     {
-      Components = CGColorGetComponents(v7);
-      Alpha = CGColorGetAlpha(v7);
-      ColorSpace = CGColorGetColorSpace(v7);
+      Components = CGColorGetComponents(cgColor);
+      Alpha = CGColorGetAlpha(cgColor);
+      ColorSpace = CGColorGetColorSpace(cgColor);
       v22 = 0.0;
       if (Components)
       {
@@ -5555,9 +5555,9 @@ LABEL_41:
     }
 
 LABEL_36:
-    _UIColorEncodeComponentForKey(v5, @"UIWhite", @"UIWhite-Double", v18);
-    _UIColorEncodeComponentForKey(v5, @"UIAlpha", @"UIAlpha-Double", v22);
-    v30 = v5;
+    _UIColorEncodeComponentForKey(coderCopy, @"UIWhite", @"UIWhite-Double", v18);
+    _UIColorEncodeComponentForKey(coderCopy, @"UIAlpha", @"UIAlpha-Double", v22);
+    v30 = coderCopy;
     if (v22 == 1.0)
     {
       [MEMORY[0x1E696AEC0] stringWithFormat:@"%.3g", *&v18, v32];
@@ -5576,11 +5576,11 @@ LABEL_36:
   if (NumberOfComponents == 4)
   {
     v10 = 0.0;
-    if (v7)
+    if (cgColor)
     {
-      v11 = CGColorGetComponents(v7);
-      v12 = CGColorGetAlpha(v7);
-      v13 = CGColorGetColorSpace(v7);
+      v11 = CGColorGetComponents(cgColor);
+      v12 = CGColorGetAlpha(cgColor);
+      v13 = CGColorGetColorSpace(cgColor);
       v14 = 0.0;
       v15 = 0.0;
       v16 = 0.0;
@@ -5631,11 +5631,11 @@ LABEL_36:
     }
 
 LABEL_31:
-    _UIColorEncodeComponentForKey(v5, @"UIRed", @"UIRed-Double", v10);
-    _UIColorEncodeComponentForKey(v5, @"UIGreen", @"UIGreen-Double", v14);
-    _UIColorEncodeComponentForKey(v5, @"UIBlue", @"UIBlue-Double", v15);
-    _UIColorEncodeComponentForKey(v5, @"UIAlpha", @"UIAlpha-Double", v16);
-    v26 = v5;
+    _UIColorEncodeComponentForKey(coderCopy, @"UIRed", @"UIRed-Double", v10);
+    _UIColorEncodeComponentForKey(coderCopy, @"UIGreen", @"UIGreen-Double", v14);
+    _UIColorEncodeComponentForKey(coderCopy, @"UIBlue", @"UIBlue-Double", v15);
+    _UIColorEncodeComponentForKey(coderCopy, @"UIAlpha", @"UIAlpha-Double", v16);
+    v26 = coderCopy;
     if (v16 == 1.0)
     {
       [MEMORY[0x1E696AEC0] stringWithFormat:@"%.3g %.3g %.3g", *&v10, *&v14, *&v15, v33, v34, v35];
@@ -5649,17 +5649,17 @@ LABEL_31:
     v28 = @"NSRGB";
     v29 = 2;
 LABEL_40:
-    v31 = [v27 UTF8String];
-    [v5 encodeBytes:v31 length:strlen(v31) forKey:v28];
-    [v5 encodeInteger:v29 forKey:@"NSColorSpace"];
+    uTF8String = [v27 UTF8String];
+    [coderCopy encodeBytes:uTF8String length:strlen(uTF8String) forKey:v28];
+    [coderCopy encodeInteger:v29 forKey:@"NSColorSpace"];
 
     goto LABEL_41;
   }
 
-  v24 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v24 handleFailureInMethod:a2 object:self file:@"UIColor.m" lineNumber:2529 description:@"Only RGBA or White color spaces are supported in this situation."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIColor.m" lineNumber:2529 description:@"Only RGBA or White color spaces are supported in this situation."];
 
-  v25 = v5;
+  v25 = coderCopy;
 LABEL_41:
 }
 
@@ -6146,65 +6146,65 @@ void __41__UIColor_infoTextOverPinStripeTextColor__block_invoke()
   [v2 _setSystemColorName:v3];
 }
 
-- (void)_setSystemColorName:(id)a3
+- (void)_setSystemColorName:(id)name
 {
-  v6 = a3;
+  nameCopy = name;
   systemColorName = self->_systemColorName;
   if (systemColorName)
   {
-    v10 = v6;
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"UIColor.m" lineNumber:2763 description:{@"can only set the system color name of a color once, but attempting to change %@ from %@ to %@", self, self->_systemColorName, v10}];
+    v10 = nameCopy;
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIColor.m" lineNumber:2763 description:{@"can only set the system color name of a color once, but attempting to change %@ from %@ to %@", self, self->_systemColorName, v10}];
 
-    v6 = v10;
+    nameCopy = v10;
     systemColorName = self->_systemColorName;
   }
 
-  if (systemColorName != v6)
+  if (systemColorName != nameCopy)
   {
-    v9 = v6;
-    objc_storeStrong(&self->_systemColorName, a3);
-    v6 = v9;
+    v9 = nameCopy;
+    objc_storeStrong(&self->_systemColorName, name);
+    nameCopy = v9;
   }
 }
 
 - (id)_debugName
 {
-  v3 = [(UIColor *)self _systemColorName];
-  if (!v3)
+  _systemColorName = [(UIColor *)self _systemColorName];
+  if (!_systemColorName)
   {
-    v3 = objc_getAssociatedObject(self, &_debugName_key);
+    _systemColorName = objc_getAssociatedObject(self, &_debugName_key);
   }
 
-  return v3;
+  return _systemColorName;
 }
 
-- (BOOL)_isSimilarToColor:(id)a3 withinPercentage:(double)a4
+- (BOOL)_isSimilarToColor:(id)color withinPercentage:(double)percentage
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  colorCopy = color;
+  if (!colorCopy)
   {
     goto LABEL_42;
   }
 
-  if (a4 < 0.00000011920929)
+  if (percentage < 0.00000011920929)
   {
-    LOBYTE(self) = [(UIColor *)self isEqual:v6];
+    LOBYTE(self) = [(UIColor *)self isEqual:colorCopy];
     goto LABEL_43;
   }
 
-  v7 = [(UIColor *)self CGColor];
-  self = [v6 CGColor];
-  ColorSpace = CGColorGetColorSpace(v7);
+  cGColor = [(UIColor *)self CGColor];
+  self = [colorCopy CGColor];
+  ColorSpace = CGColorGetColorSpace(cGColor);
   if (ColorSpace != CGColorGetColorSpace(self))
   {
     v9 = 0.0;
-    if (v7)
+    if (cGColor)
     {
-      Components = CGColorGetComponents(v7);
-      Alpha = CGColorGetAlpha(v7);
-      v12 = CGColorGetColorSpace(v7);
+      Components = CGColorGetComponents(cGColor);
+      Alpha = CGColorGetAlpha(cGColor);
+      v12 = CGColorGetColorSpace(cGColor);
       if (Components)
       {
         v13 = v12;
@@ -6299,9 +6299,9 @@ LABEL_27:
         }
       }
 
-      if ((v14 & 1) == 0 && vabdd_f64(v9, *v24) <= a4 && vabdd_f64(v15, v24[1]) <= a4 && vabdd_f64(v17, v24[2]) <= a4)
+      if ((v14 & 1) == 0 && vabdd_f64(v9, *v24) <= percentage && vabdd_f64(v15, v24[1]) <= percentage && vabdd_f64(v17, v24[2]) <= percentage)
       {
-        LOBYTE(self) = vabdd_f64(v16, v24[3]) <= a4;
+        LOBYTE(self) = vabdd_f64(v16, v24[3]) <= percentage;
         goto LABEL_43;
       }
     }
@@ -6312,7 +6312,7 @@ LABEL_42:
   }
 
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
-  NumberOfComponents = CGColorGetNumberOfComponents(v7);
+  NumberOfComponents = CGColorGetNumberOfComponents(cGColor);
   v20 = CGColorGetNumberOfComponents(self);
   if (has_internal_diagnostics)
   {
@@ -6337,19 +6337,19 @@ LABEL_42:
     }
   }
 
-  v21 = CGColorGetComponents(v7);
+  v21 = CGColorGetComponents(cGColor);
   v22 = CGColorGetComponents(self);
-  if (CGColorGetNumberOfComponents(v7))
+  if (CGColorGetNumberOfComponents(cGColor))
   {
     v23 = 0;
     LOBYTE(self) = 1;
     do
     {
-      LOBYTE(self) = self & (vabdd_f64(v21[v23], v22[v23]) <= a4);
+      LOBYTE(self) = self & (vabdd_f64(v21[v23], v22[v23]) <= percentage);
       ++v23;
     }
 
-    while (CGColorGetNumberOfComponents(v7) > v23);
+    while (CGColorGetNumberOfComponents(cGColor) > v23);
   }
 
   else
@@ -6362,19 +6362,19 @@ LABEL_43:
   return self;
 }
 
-- (double)_colorDifferenceFromColor:(id)a3
+- (double)_colorDifferenceFromColor:(id)color
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UIColor *)self CGColor];
+  colorCopy = color;
+  cGColor = [(UIColor *)self CGColor];
   v6 = 0.0;
-  if (!v5)
+  if (!cGColor)
   {
     goto LABEL_13;
   }
 
-  v7 = v5;
-  Components = CGColorGetComponents(v5);
+  v7 = cGColor;
+  Components = CGColorGetComponents(cGColor);
   Alpha = CGColorGetAlpha(v7);
   ColorSpace = CGColorGetColorSpace(v7);
   if (!Components)
@@ -6428,11 +6428,11 @@ LABEL_11:
   v15 = Components[2];
   v16 = Components[3];
 LABEL_14:
-  v17 = [v4 CGColor];
-  if (v17)
+  cGColor2 = [colorCopy CGColor];
+  if (cGColor2)
   {
-    v18 = v17;
-    v19 = CGColorGetComponents(v17);
+    v18 = cGColor2;
+    v19 = CGColorGetComponents(cGColor2);
     v20 = CGColorGetAlpha(v18);
     v21 = CGColorGetColorSpace(v18);
     if (v19)
@@ -6479,23 +6479,23 @@ LABEL_27:
   return v6;
 }
 
-- (double)_luminanceDifferenceFromColor:(id)a3
+- (double)_luminanceDifferenceFromColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   [(UIColor *)self _luminance];
   v6 = v5;
-  [v4 _luminance];
+  [colorCopy _luminance];
   v8 = v7;
 
   return vabdd_f64(v6, v8);
 }
 
-- (id)_colorBlendedWithColor:(id)a3 compositingFilter:(id)a4
+- (id)_colorBlendedWithColor:(id)color compositingFilter:(id)filter
 {
-  v6 = a4;
-  if (!a3 || (v58 = 0.0, v59 = 0.0, v56 = 0.0, v57 = 0.0, [a3 getRed:&v59 green:&v58 blue:&v57 alpha:&v56], fabs(v56) < 2.22044605e-16))
+  filterCopy = filter;
+  if (!color || (v58 = 0.0, v59 = 0.0, v56 = 0.0, v57 = 0.0, [color getRed:&v59 green:&v58 blue:&v57 alpha:&v56], fabs(v56) < 2.22044605e-16))
   {
-    v7 = self;
+    selfCopy2 = self;
     goto LABEL_10;
   }
 
@@ -6504,8 +6504,8 @@ LABEL_27:
   v52 = 0.0;
   v53 = 0.0;
   [(UIColor *)self getRed:&v55 green:&v54 blue:&v53 alpha:&v52];
-  v7 = self;
-  if (!v6 || ([v6 isEqualToString:*MEMORY[0x1E6979CC0]] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", *MEMORY[0x1E6979D40]))
+  selfCopy2 = self;
+  if (!filterCopy || ([filterCopy isEqualToString:*MEMORY[0x1E6979CC0]] & 1) != 0 || objc_msgSend(filterCopy, "isEqualToString:", *MEMORY[0x1E6979D40]))
   {
     v8 = 1.0;
     v9 = 1.0 - v56;
@@ -6522,7 +6522,7 @@ LABEL_27:
     goto LABEL_9;
   }
 
-  if ([v6 isEqualToString:*MEMORY[0x1E6979CA8]])
+  if ([filterCopy isEqualToString:*MEMORY[0x1E6979CA8]])
   {
     v15 = v56;
     v16 = 1.0 - v56;
@@ -6538,11 +6538,11 @@ LABEL_27:
 LABEL_9:
     v13 = [UIColor colorWithRed:v12 green:v11 blue:v8 alpha:?];
 
-    v7 = v13;
+    selfCopy2 = v13;
     goto LABEL_10;
   }
 
-  if ([v6 isEqualToString:*MEMORY[0x1E6979D18]])
+  if ([filterCopy isEqualToString:*MEMORY[0x1E6979D18]])
   {
     v21 = v56;
     v22 = 1.0 - v56;
@@ -6556,7 +6556,7 @@ LABEL_18:
     goto LABEL_27;
   }
 
-  if ([v6 isEqualToString:*MEMORY[0x1E6979CD0]])
+  if ([filterCopy isEqualToString:*MEMORY[0x1E6979CD0]])
   {
     v25 = (v59 + v59) * v55;
     if (v55 >= 0.5)
@@ -6584,7 +6584,7 @@ LABEL_18:
     goto LABEL_27;
   }
 
-  if ([v6 isEqualToString:*MEMORY[0x1E69798C0]])
+  if ([filterCopy isEqualToString:*MEMORY[0x1E69798C0]])
   {
     v29 = v59;
     v15 = v56;
@@ -6612,7 +6612,7 @@ LABEL_18:
     goto LABEL_15;
   }
 
-  if ([v6 isEqualToString:*MEMORY[0x1E6979C30]])
+  if ([filterCopy isEqualToString:*MEMORY[0x1E6979C30]])
   {
     v31 = v59;
     v15 = v56;
@@ -6640,7 +6640,7 @@ LABEL_18:
     goto LABEL_15;
   }
 
-  if ([v6 isEqualToString:*MEMORY[0x1E6979860]])
+  if ([filterCopy isEqualToString:*MEMORY[0x1E6979860]])
   {
     v33 = 1.0;
     v34 = 1.0;
@@ -6669,7 +6669,7 @@ LABEL_18:
     goto LABEL_27;
   }
 
-  if ([v6 isEqualToString:*MEMORY[0x1E6979850]])
+  if ([filterCopy isEqualToString:*MEMORY[0x1E6979850]])
   {
     v38 = v55 * v52;
     v39 = 0.0;
@@ -6701,7 +6701,7 @@ LABEL_18:
     goto LABEL_9;
   }
 
-  if ([v6 isEqualToString:*MEMORY[0x1E6979CF8]])
+  if ([filterCopy isEqualToString:*MEMORY[0x1E6979CF8]])
   {
     v21 = v56;
     v22 = 1.0 - v56;
@@ -6712,7 +6712,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if ([v6 isEqualToString:*MEMORY[0x1E6979CE8]])
+  if ([filterCopy isEqualToString:*MEMORY[0x1E6979CE8]])
   {
     v47 = v56;
     v48 = v52;
@@ -6727,19 +6727,19 @@ LABEL_18:
 
 LABEL_10:
 
-  return v7;
+  return selfCopy2;
 }
 
-- (id)_colorBlendedWithColors:(id)a3
+- (id)_colorBlendedWithColors:(id)colors
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
+  colorsCopy = colors;
+  selfCopy = self;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [colorsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -6747,28 +6747,28 @@ LABEL_10:
     do
     {
       v9 = 0;
-      v10 = v5;
+      v10 = selfCopy;
       do
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(colorsCopy);
         }
 
-        v5 = [(UIColor *)v10 _colorBlendedWithColor:*(*(&v12 + 1) + 8 * v9)];
+        selfCopy = [(UIColor *)v10 _colorBlendedWithColor:*(*(&v12 + 1) + 8 * v9)];
 
         ++v9;
-        v10 = v5;
+        v10 = selfCopy;
       }
 
       while (v7 != v9);
-      v7 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [colorsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 
-  return v5;
+  return selfCopy;
 }
 
 + (id)pinStripeColor
@@ -6831,7 +6831,7 @@ void __25__UIColor_lightTextColor__block_invoke()
   if (!tableGroupedSeparatorLightColor_tableGroupedSeparatorLightColor)
   {
     v4 = [UIColor colorWithRed:0.783921569 green:0.780392157 blue:0.8 alpha:1.0];
-    v5 = [(UIColor *)a1 _systemColorForColor:v4 withName:@"tableGroupedSeparatorLightColor"];
+    v5 = [(UIColor *)self _systemColorForColor:v4 withName:@"tableGroupedSeparatorLightColor"];
     v6 = tableGroupedSeparatorLightColor_tableGroupedSeparatorLightColor;
     tableGroupedSeparatorLightColor_tableGroupedSeparatorLightColor = v5;
 
@@ -7241,8 +7241,8 @@ void __69__UIColor__accessibilityButtonShapesNoBlendModeBackgroundColorOnDark__b
   v2 = noContentDarkGradientBackgroundColor_noContentDarkGradientBackgroundColor;
   if (!noContentDarkGradientBackgroundColor_noContentDarkGradientBackgroundColor)
   {
-    v3 = [objc_opt_self() mainScreen];
-    [v3 scale];
+    mainScreen = [objc_opt_self() mainScreen];
+    [mainScreen scale];
     v5 = v4;
     v6 = [[UIGradient alloc] initVerticalWithValues:&__kNoContentDarkBackgroundGradientValues];
     _UIGraphicsBeginImageContextWithOptions(1, 0, 20.0, 1024.0, v5);
@@ -7284,9 +7284,9 @@ void __40__UIColor__translucentPaperTextureColor__block_invoke()
   [v2 _setSystemColorName:v3];
 }
 
-+ (id)_grayColorForFontSize:(double)a3
++ (id)_grayColorForFontSize:(double)size
 {
-  v3 = [UIColor colorWithWhite:1.0 alpha:dbl_18A67C2E0[a3 < 40.0]];
+  v3 = [UIColor colorWithWhite:1.0 alpha:dbl_18A67C2E0[size < 40.0]];
 
   return v3;
 }
@@ -7317,31 +7317,31 @@ void __37__UIColor__webContentBackgroundColor__block_invoke()
 + (UIColor)colorNamed:(NSString *)name inBundle:(NSBundle *)bundle compatibleWithTraitCollection:(UITraitCollection *)traitCollection
 {
   v7 = name;
-  v8 = bundle;
+  mainBundle = bundle;
   v9 = traitCollection;
-  if (!v8)
+  if (!mainBundle)
   {
-    v8 = [MEMORY[0x1E696AAE8] mainBundle];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
   }
 
-  v10 = [_UIAssetManager assetManagerForBundle:v8];
+  v10 = [_UIAssetManager assetManagerForBundle:mainBundle];
   v11 = [v10 colorNamed:v7 withTraitCollection:v9];
 
   return v11;
 }
 
-- (id)_resolvedMaterialWithTraitCollection:(id)a3
+- (id)_resolvedMaterialWithTraitCollection:(id)collection
 {
-  v4 = a3;
-  if ([v4 _userInterfaceRenderingMode] == 2)
+  collectionCopy = collection;
+  if ([collectionCopy _userInterfaceRenderingMode] == 2)
   {
-    if (!_UISolariumEnabled() || ([_UIMaterial _solariumMaterialForColor:self traitCollection:v4], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!_UISolariumEnabled() || ([_UIMaterial _solariumMaterialForColor:self traitCollection:collectionCopy], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v6 = [(UIColor *)self _systemColorName];
-      v5 = [_UIMaterial materialForSystemColorName:v6];
+      _systemColorName = [(UIColor *)self _systemColorName];
+      v5 = [_UIMaterial materialForSystemColorName:_systemColorName];
     }
 
-    if ([v5 isVibrant] && objc_msgSend(v4, "_vibrancy") != 1)
+    if ([v5 isVibrant] && objc_msgSend(collectionCopy, "_vibrancy") != 1)
     {
       v7 = 0;
     }
@@ -7360,10 +7360,10 @@ void __37__UIColor__webContentBackgroundColor__block_invoke()
   return v7;
 }
 
-+ (id)_dynamicColorWithColorsByTraitCollection:(id)a3
++ (id)_dynamicColorWithColorsByTraitCollection:(id)collection
 {
-  v3 = a3;
-  v4 = [[UIDynamicAppDefinedColor alloc] initWithColorsByTraitCollection:v3];
+  collectionCopy = collection;
+  v4 = [[UIDynamicAppDefinedColor alloc] initWithColorsByTraitCollection:collectionCopy];
 
   return v4;
 }
@@ -7384,12 +7384,12 @@ void __37__UIColor__webContentBackgroundColor__block_invoke()
   return &v5->super.super;
 }
 
-- (id)_resolvedBackgroundColorWithTraitCollection:(void *)a1
+- (id)_resolvedBackgroundColorWithTraitCollection:(void *)collection
 {
   v3 = a2;
-  if (a1)
+  if (collection)
   {
-    v4 = a1;
+    collectionCopy = collection;
     if ([v3 accessibilityContrast] != 1 || objc_msgSend(v3, "userInterfaceStyle") != 2)
     {
       goto LABEL_9;
@@ -7399,34 +7399,34 @@ void __37__UIColor__webContentBackgroundColor__block_invoke()
 
     v6 = +[UIColor systemGray3Color];
     v7 = v6;
-    if (v5 != v4)
+    if (v5 != collectionCopy)
     {
 
       v8 = +[UIColor systemGray4Color];
       v9 = v8;
-      if (v7 == v4)
+      if (v7 == collectionCopy)
       {
         goto LABEL_15;
       }
 
       v10 = +[UIColor systemGray5Color];
       v7 = v10;
-      if (v9 != v4)
+      if (v9 != collectionCopy)
       {
 
         v11 = +[UIColor systemGray6Color];
         v9 = v11;
-        if (v7 != v4)
+        if (v7 != collectionCopy)
         {
 
-          if (v9 == v4)
+          if (v9 == collectionCopy)
           {
             v12 = +[UIColor systemBlackColor];
             goto LABEL_10;
           }
 
 LABEL_9:
-          v12 = v4;
+          v12 = collectionCopy;
 LABEL_10:
           v7 = v12;
           goto LABEL_11;
@@ -7442,10 +7442,10 @@ LABEL_11:
     v13 = objc_opt_self();
     v14 = [v3 traitCollectionByReplacingNSIntegerValue:1 forTrait:v13];
 
-    a1 = [v7 resolvedColorWithTraitCollection:v14];
+    collection = [v7 resolvedColorWithTraitCollection:v14];
   }
 
-  return a1;
+  return collection;
 }
 
 + (id)_monochromeCellImageTintColor
@@ -8563,12 +8563,12 @@ void __56__UIColor__InProgressSPI___carSystemFocusSecondaryColor__block_invoke()
   qword_1ED49BE88 = v10;
 }
 
-+ (id)_focusedCarSystemColor:(id)a3
++ (id)_focusedCarSystemColor:(id)color
 {
-  v3 = a3;
+  colorCopy = color;
   v4 = +[UIColor _labelColor];
 
-  if (v4 == v3)
+  if (v4 == colorCopy)
   {
     v7 = +[UIColor _carSystemFocusLabelColor];
   }
@@ -8577,7 +8577,7 @@ void __56__UIColor__InProgressSPI___carSystemFocusSecondaryColor__block_invoke()
   {
     v5 = +[UIColor _carSystemPrimaryColor];
 
-    if (v5 == v3)
+    if (v5 == colorCopy)
     {
       v7 = +[UIColor _carSystemFocusPrimaryColor];
     }
@@ -8586,14 +8586,14 @@ void __56__UIColor__InProgressSPI___carSystemFocusSecondaryColor__block_invoke()
     {
       v6 = +[UIColor _carSystemSecondaryColor];
 
-      if (v6 == v3)
+      if (v6 == colorCopy)
       {
         v7 = +[UIColor _carSystemFocusSecondaryColor];
       }
 
       else
       {
-        v7 = v3;
+        v7 = colorCopy;
       }
     }
   }
@@ -8603,12 +8603,12 @@ void __56__UIColor__InProgressSPI___carSystemFocusSecondaryColor__block_invoke()
   return v8;
 }
 
-+ (id)_unfocusedCarSystemColor:(id)a3
++ (id)_unfocusedCarSystemColor:(id)color
 {
-  v3 = a3;
+  colorCopy = color;
   v4 = +[UIColor _carSystemFocusLabelColor];
 
-  if (v4 == v3)
+  if (v4 == colorCopy)
   {
     v7 = +[UIColor _labelColor];
   }
@@ -8617,7 +8617,7 @@ void __56__UIColor__InProgressSPI___carSystemFocusSecondaryColor__block_invoke()
   {
     v5 = +[UIColor _carSystemFocusPrimaryColor];
 
-    if (v5 == v3)
+    if (v5 == colorCopy)
     {
       v7 = +[UIColor _carSystemPrimaryColor];
     }
@@ -8626,14 +8626,14 @@ void __56__UIColor__InProgressSPI___carSystemFocusSecondaryColor__block_invoke()
     {
       v6 = +[UIColor _carSystemFocusSecondaryColor];
 
-      if (v6 == v3)
+      if (v6 == colorCopy)
       {
         v7 = +[UIColor _carSystemSecondaryColor];
       }
 
       else
       {
-        v7 = v3;
+        v7 = colorCopy;
       }
     }
   }
@@ -8716,11 +8716,11 @@ void __60__UIColor__InProgressSPI___tvInterfaceStyleDarkContentColor__block_invo
   return v5;
 }
 
-- (UIColor)colorWithProminence:(int64_t)a3
+- (UIColor)colorWithProminence:(int64_t)prominence
 {
-  if ([(UIColor *)self prominence]== a3)
+  if ([(UIColor *)self prominence]== prominence)
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
@@ -8732,10 +8732,10 @@ void __60__UIColor__InProgressSPI___tvInterfaceStyleDarkContentColor__block_invo
     v9[3] = &unk_1E70F3870;
     v9[4] = self;
     v7 = [(UIDynamicProviderColor *)v6 initWithProvider:v9];
-    v5 = [[UIDynamicModifiedColor alloc] initWithBaseColor:v7 alphaComponent:0xFFFFFFFFFFFFFFFFLL contrast:a3 prominence:1.79769313e308];
+    selfCopy = [[UIDynamicModifiedColor alloc] initWithBaseColor:v7 alphaComponent:0xFFFFFFFFFFFFFFFFLL contrast:prominence prominence:1.79769313e308];
   }
 
-  return v5;
+  return selfCopy;
 }
 
 + (NSArray)readableTypeIdentifiersForItemProvider
@@ -8747,15 +8747,15 @@ void __60__UIColor__InProgressSPI___tvInterfaceStyleDarkContentColor__block_invo
   return v2;
 }
 
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E6982C40] _typeWithIdentifier:v7 allowUndeclared:1];
+  dataCopy = data;
+  identifierCopy = identifier;
+  v8 = [MEMORY[0x1E6982C40] _typeWithIdentifier:identifierCopy allowUndeclared:1];
   v9 = [MEMORY[0x1E6982C40] _typeWithIdentifier:@"com.apple.uikit.color" allowUndeclared:1];
   if ([v8 conformsToType:v9])
   {
-    v10 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v6 error:0];
+    v10 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:dataCopy error:0];
     v11 = [v10 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x1E696A508]];
     [v10 finishDecoding];
   }
@@ -8770,12 +8770,12 @@ void __60__UIColor__InProgressSPI___tvInterfaceStyleDarkContentColor__block_invo
   return v11;
 }
 
-- (UIColor)initWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5
+- (UIColor)initWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  identifierCopy = identifier;
+  dataCopy = data;
   v10 = [(UIColor *)self init];
-  v11 = [objc_opt_class() objectWithItemProviderData:v9 typeIdentifier:v8 error:a5];
+  v11 = [objc_opt_class() objectWithItemProviderData:dataCopy typeIdentifier:identifierCopy error:error];
 
   v12 = v11;
   return v12;
@@ -8790,33 +8790,33 @@ void __60__UIColor__InProgressSPI___tvInterfaceStyleDarkContentColor__block_invo
   return v2;
 }
 
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler
 {
-  v6 = a4;
-  if ([a3 isEqualToString:@"com.apple.uikit.color"])
+  handlerCopy = handler;
+  if ([identifier isEqualToString:@"com.apple.uikit.color"])
   {
     v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self requiringSecureCoding:1 error:0];
-    v6[2](v6, v7, 0);
+    handlerCopy[2](handlerCopy, v7, 0);
   }
 
   else
   {
-    v6[2](v6, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0);
   }
 
   return 0;
 }
 
-+ (id)_convertColorPickerColor:(id)a3 fromUserInterfaceStyle:(int64_t)a4 to:(int64_t)a5
++ (id)_convertColorPickerColor:(id)color fromUserInterfaceStyle:(int64_t)style to:(int64_t)to
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = v7;
-  if (a5 && a4 && a4 != a5)
+  colorCopy = color;
+  v8 = colorCopy;
+  if (to && style && style != to)
   {
     v17[0] = xmmword_18A6829D8;
     v17[1] = unk_18A6829E8;
-    ConvertedToSRGB = DKUCGColorCreateConvertedToSRGB([v7 CGColor]);
+    ConvertedToSRGB = DKUCGColorCreateConvertedToSRGB([colorCopy CGColor]);
     DKUColorGetRGBAComponents(ConvertedToSRGB, v17);
     v15 = xmmword_18A6829D8;
     v16 = unk_18A6829E8;
@@ -8834,7 +8834,7 @@ void __60__UIColor__InProgressSPI___tvInterfaceStyleDarkContentColor__block_invo
 
   else
   {
-    v12 = v7;
+    v12 = colorCopy;
   }
 
   v13 = v12;

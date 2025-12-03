@@ -6,9 +6,9 @@
 
 - (uint64_t)uri
 {
-  v1 = [a1 objectID];
+  objectID = [self objectID];
 
-  return [v1 URIRepresentation];
+  return [objectID URIRepresentation];
 }
 
 @end

@@ -1,27 +1,27 @@
 @interface _SYSharedServiceDB
-+ (id)sharedInstanceForServiceName:(id)a3;
-+ (void)_releaseSharedInstanceForServiceName:(id)a3;
++ (id)sharedInstanceForServiceName:(id)name;
++ (void)_releaseSharedInstanceForServiceName:(id)name;
 + (void)initialize;
 + (void)pairingStorePathWasReset;
-- (BOOL)_LOCKED_createOrOpenDBForServiceName:(id)a3 error:(id *)a4;
+- (BOOL)_LOCKED_createOrOpenDBForServiceName:(id)name error:(id *)error;
 - (BOOL)_LOCKED_ensureDBExists;
-- (BOOL)_LOCKED_hasSchemaVersionForClient:(id)a3;
-- (BOOL)_addSkipBackupAttributeToItemAtPath:(id)a3 error:(id *)a4;
-- (BOOL)_ensureParentExists:(id)a3 error:(id *)a4;
-- (BOOL)_runTransactionBlock:(id)a3 exclusive:(BOOL)a4;
+- (BOOL)_LOCKED_hasSchemaVersionForClient:(id)client;
+- (BOOL)_addSkipBackupAttributeToItemAtPath:(id)path error:(id *)error;
+- (BOOL)_ensureParentExists:(id)exists error:(id *)error;
+- (BOOL)_runTransactionBlock:(id)block exclusive:(BOOL)exclusive;
 - (NSString)_dbPath;
-- (_SYSharedServiceDB)initWithServiceName:(id)a3;
-- (int64_t)_LOCKED_getClientVersion:(id)a3;
-- (int64_t)schemaVersionForClient:(id)a3;
+- (_SYSharedServiceDB)initWithServiceName:(id)name;
+- (int64_t)_LOCKED_getClientVersion:(id)version;
+- (int64_t)schemaVersionForClient:(id)client;
 - (void)_LOCKED_ensureDBExists;
-- (void)_LOCKED_ensureSchemaVersionsTableInDB:(sqlite3 *)a3;
-- (void)_LOCKED_runSchemaUpdate:(id)a3 forClientNamed:(id)a4;
-- (void)_LOCKED_setVersion:(int64_t)a3 forClient:(id)a4;
+- (void)_LOCKED_ensureSchemaVersionsTableInDB:(sqlite3 *)b;
+- (void)_LOCKED_runSchemaUpdate:(id)update forClientNamed:(id)named;
+- (void)_LOCKED_setVersion:(int64_t)version forClient:(id)client;
 - (void)_ensureSchemaVersionsTable;
 - (void)dealloc;
-- (void)setSchemaVersion:(int64_t)a3 forClient:(id)a4;
-- (void)updateSchemaForClient:(id)a3 usingBlock:(id)a4;
-- (void)withDBRef:(id)a3;
+- (void)setSchemaVersion:(int64_t)version forClient:(id)client;
+- (void)updateSchemaForClient:(id)client usingBlock:(id)block;
+- (void)withDBRef:(id)ref;
 @end
 
 @implementation _SYSharedServiceDB
@@ -68,7 +68,7 @@
 - (void)_LOCKED_ensureDBExists
 {
   v8 = *MEMORY[0x1E69E9840];
-  v7 = *a1;
+  v7 = *self;
   OUTLINED_FUNCTION_2_0();
   _os_log_error_impl(v1, v2, v3, v4, v5, 0x16u);
   v6 = *MEMORY[0x1E69E9840];
@@ -76,10 +76,10 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    v2 = [v3 addObserverForName:@"SYDeviceTargetedNewDeviceNotification" object:0 queue:0 usingBlock:&__block_literal_global_0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    v2 = [defaultCenter addObserverForName:@"SYDeviceTargetedNewDeviceNotification" object:0 queue:0 usingBlock:&__block_literal_global_0];
   }
 }
 
@@ -93,18 +93,18 @@
   os_unfair_lock_unlock(&__tableLock);
 }
 
-+ (id)sharedInstanceForServiceName:(id)a3
++ (id)sharedInstanceForServiceName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = GetServiceInstanceTable();
   os_unfair_lock_lock(&__tableLock);
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:nameCopy];
   if (!v5)
   {
-    v5 = [[_SYWeakServiceDBRef alloc] initWithServiceName:v3];
+    v5 = [[_SYWeakServiceDBRef alloc] initWithServiceName:nameCopy];
     if (v5)
     {
-      [v4 setObject:v5 forKey:v3];
+      [v4 setObject:v5 forKey:nameCopy];
     }
   }
 
@@ -114,9 +114,9 @@
   return v6;
 }
 
-- (_SYSharedServiceDB)initWithServiceName:(id)a3
+- (_SYSharedServiceDB)initWithServiceName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = _SYSharedServiceDB;
   v6 = [(_SYSharedServiceDB *)&v12 init];
@@ -124,7 +124,7 @@
   if (v6)
   {
     v6->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v6->_name, a3);
+    objc_storeStrong(&v6->_name, name);
     v8 = objc_opt_new();
     schemaSetupCallbacks = v7->_schemaSetupCallbacks;
     v7->_schemaSetupCallbacks = v8;
@@ -149,18 +149,18 @@
   [(_SYSharedServiceDB *)&v4 dealloc];
 }
 
-- (BOOL)_addSkipBackupAttributeToItemAtPath:(id)a3 error:(id *)a4
+- (BOOL)_addSkipBackupAttributeToItemAtPath:(id)path error:(id *)error
 {
-  v5 = [MEMORY[0x1E695DFF8] fileURLWithPath:a3];
-  LOBYTE(a4) = [v5 setResourceValue:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E695DB80] error:a4];
+  v5 = [MEMORY[0x1E695DFF8] fileURLWithPath:path];
+  LOBYTE(error) = [v5 setResourceValue:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E695DB80] error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)_ensureParentExists:(id)a3 error:(id *)a4
+- (BOOL)_ensureParentExists:(id)exists error:(id *)error
 {
   v24[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  existsCopy = exists;
   v7 = *MEMORY[0x1E696A328];
   v23[0] = *MEMORY[0x1E696A360];
   v23[1] = v7;
@@ -174,10 +174,10 @@
   while (1)
   {
 
-    v11 = [MEMORY[0x1E696AC08] defaultManager];
-    v12 = [v6 stringByDeletingLastPathComponent];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    stringByDeletingLastPathComponent = [existsCopy stringByDeletingLastPathComponent];
     v22 = 0;
-    v13 = [v11 createDirectoryAtPath:v12 withIntermediateDirectories:1 attributes:v8 error:&v22];
+    v13 = [defaultManager createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:v8 error:&v22];
     v9 = v22;
 
     if (v13)
@@ -189,24 +189,24 @@ LABEL_5:
       }
 
 LABEL_6:
-      if (a4)
+      if (error)
       {
         v16 = v9;
-        *a4 = v9;
+        *error = v9;
       }
 
       goto LABEL_14;
     }
 
-    v14 = [v9 domain];
-    if (![v14 isEqualToString:v10])
+    domain = [v9 domain];
+    if (![domain isEqualToString:v10])
     {
       break;
     }
 
-    v15 = [v9 code];
+    code = [v9 code];
 
-    if (v15 != 516)
+    if (code != 516)
     {
       goto LABEL_5;
     }
@@ -218,8 +218,8 @@ LABEL_6:
   }
 
 LABEL_9:
-  v17 = [v6 stringByDeletingLastPathComponent];
-  v18 = [(_SYSharedServiceDB *)self _addSkipBackupAttributeToItemAtPath:v17 error:a4];
+  stringByDeletingLastPathComponent2 = [existsCopy stringByDeletingLastPathComponent];
+  v18 = [(_SYSharedServiceDB *)self _addSkipBackupAttributeToItemAtPath:stringByDeletingLastPathComponent2 error:error];
 
   if (!v18)
   {
@@ -231,7 +231,7 @@ LABEL_9:
     v19 = qword_1EDE73430;
     if (os_log_type_enabled(qword_1EDE73430, OS_LOG_TYPE_ERROR))
     {
-      [_SYSharedServiceDB _ensureParentExists:a4 error:v19];
+      [_SYSharedServiceDB _ensureParentExists:error error:v19];
     }
   }
 
@@ -241,9 +241,9 @@ LABEL_14:
   return v9 == 0;
 }
 
-- (BOOL)_LOCKED_hasSchemaVersionForClient:(id)a3
+- (BOOL)_LOCKED_hasSchemaVersionForClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   ppStmt = 0;
   v5 = sqlite3_prepare_v2(self->_db, "SELECT count(*) FROM _clients WHERE name=?", -1, &ppStmt, 0);
   if (v5)
@@ -266,7 +266,7 @@ LABEL_14:
 
   else
   {
-    sqlite3_bind_text(ppStmt, 1, [v4 UTF8String], -1, 0);
+    sqlite3_bind_text(ppStmt, 1, [clientCopy UTF8String], -1, 0);
     v7 = sqlite3_step(ppStmt);
     v6 = 0;
     if (v7 && v7 != 101)
@@ -298,9 +298,9 @@ LABEL_14:
   return v6;
 }
 
-- (int64_t)_LOCKED_getClientVersion:(id)a3
+- (int64_t)_LOCKED_getClientVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   ppStmt = 0;
   v5 = sqlite3_prepare_v2(self->_db, "SELECT schema_version FROM _clients WHERE name=?", -1, &ppStmt, 0);
   if (v5)
@@ -323,7 +323,7 @@ LABEL_14:
 
   else
   {
-    sqlite3_bind_text(ppStmt, 1, [v4 UTF8String], -1, 0);
+    sqlite3_bind_text(ppStmt, 1, [versionCopy UTF8String], -1, 0);
     v7 = sqlite3_step(ppStmt);
     v6 = 0;
     if (v7 && v7 != 101)
@@ -355,12 +355,12 @@ LABEL_14:
   return v6;
 }
 
-- (void)_LOCKED_setVersion:(int64_t)a3 forClient:(id)a4
+- (void)_LOCKED_setVersion:(int64_t)version forClient:(id)client
 {
-  v4 = a3;
-  v6 = a4;
+  versionCopy = version;
+  clientCopy = client;
   ppStmt = 0;
-  v7 = [(_SYSharedServiceDB *)self _LOCKED_hasSchemaVersionForClient:v6];
+  v7 = [(_SYSharedServiceDB *)self _LOCKED_hasSchemaVersionForClient:clientCopy];
   db = self->_db;
   if (v7)
   {
@@ -387,8 +387,8 @@ LABEL_14:
 
   else
   {
-    sqlite3_bind_int(ppStmt, 1, v4);
-    sqlite3_bind_text(ppStmt, 2, [v6 UTF8String], -1, 0);
+    sqlite3_bind_int(ppStmt, 1, versionCopy);
+    sqlite3_bind_text(ppStmt, 2, [clientCopy UTF8String], -1, 0);
     v10 = sqlite3_step(ppStmt);
     if (v10 && v10 != 101)
     {
@@ -407,12 +407,12 @@ LABEL_14:
   }
 }
 
-- (void)_LOCKED_ensureSchemaVersionsTableInDB:(sqlite3 *)a3
+- (void)_LOCKED_ensureSchemaVersionsTableInDB:(sqlite3 *)b
 {
   v5 = [(_SYSharedServiceDB *)self _LOCKED_getClientVersion:@"self"];
   if (!v5)
   {
-    sqlite3_exec(a3, "CREATE TABLE IF NOT EXISTS _clients (name TEXT, schema_version TEXT, tstamp TEXT)", 0, 0, 0);
+    sqlite3_exec(b, "CREATE TABLE IF NOT EXISTS _clients (name TEXT, schema_version TEXT, tstamp TEXT)", 0, 0, 0);
     v5 = 1;
   }
 
@@ -429,15 +429,15 @@ LABEL_14:
   [(_SYSharedServiceDB *)self withDBRef:v2];
 }
 
-- (BOOL)_LOCKED_createOrOpenDBForServiceName:(id)a3 error:(id *)a4
+- (BOOL)_LOCKED_createOrOpenDBForServiceName:(id)name error:(id *)error
 {
-  v6 = a3;
+  nameCopy = name;
   v7 = SYServiceDataPath();
-  v8 = [v7 stringByAppendingPathComponent:v6];
+  v8 = [v7 stringByAppendingPathComponent:nameCopy];
 
   v9 = [v8 stringByAppendingPathExtension:@"db"];
 
-  if (![(_SYSharedServiceDB *)self _ensureParentExists:v9 error:a4])
+  if (![(_SYSharedServiceDB *)self _ensureParentExists:v9 error:error])
   {
     goto LABEL_11;
   }
@@ -477,10 +477,10 @@ LABEL_14:
     self->_db = 0;
   }
 
-  if (a4)
+  if (error)
   {
     NSErrorFromSQLiteError(v10);
-    *a4 = v13 = 0;
+    *error = v13 = 0;
   }
 
   else
@@ -494,14 +494,14 @@ LABEL_12:
   return v13;
 }
 
-- (int64_t)schemaVersionForClient:(id)a3
+- (int64_t)schemaVersionForClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   os_unfair_lock_lock(&self->_lock);
   v5 = os_transaction_create();
   if ([(_SYSharedServiceDB *)self _LOCKED_ensureDBExists])
   {
-    v6 = [(_SYSharedServiceDB *)self _LOCKED_getClientVersion:v4];
+    v6 = [(_SYSharedServiceDB *)self _LOCKED_getClientVersion:clientCopy];
   }
 
   else
@@ -514,70 +514,70 @@ LABEL_12:
   return v6;
 }
 
-- (void)setSchemaVersion:(int64_t)a3 forClient:(id)a4
+- (void)setSchemaVersion:(int64_t)version forClient:(id)client
 {
-  v7 = a4;
+  clientCopy = client;
   os_unfair_lock_lock(&self->_lock);
   v6 = os_transaction_create();
   if ([(_SYSharedServiceDB *)self _LOCKED_ensureDBExists])
   {
-    [(_SYSharedServiceDB *)self _LOCKED_setVersion:a3 forClient:v7];
+    [(_SYSharedServiceDB *)self _LOCKED_setVersion:version forClient:clientCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_LOCKED_runSchemaUpdate:(id)a3 forClientNamed:(id)a4
+- (void)_LOCKED_runSchemaUpdate:(id)update forClientNamed:(id)named
 {
-  v10 = a3;
-  v6 = a4;
+  updateCopy = update;
+  namedCopy = named;
   v7 = os_transaction_create();
-  v8 = [(_SYSharedServiceDB *)self _LOCKED_getClientVersion:v6];
-  v9 = v10[2](v10, self->_db, v8);
+  v8 = [(_SYSharedServiceDB *)self _LOCKED_getClientVersion:namedCopy];
+  v9 = updateCopy[2](updateCopy, self->_db, v8);
   if (v9 != v8)
   {
-    [(_SYSharedServiceDB *)self _LOCKED_setVersion:v9 forClient:v6];
+    [(_SYSharedServiceDB *)self _LOCKED_setVersion:v9 forClient:namedCopy];
   }
 }
 
-- (void)updateSchemaForClient:(id)a3 usingBlock:(id)a4
+- (void)updateSchemaForClient:(id)client usingBlock:(id)block
 {
-  v9 = a3;
-  v6 = a4;
+  clientCopy = client;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_lock);
   v7 = os_transaction_create();
   if (self->_db)
   {
-    [(_SYSharedServiceDB *)self _LOCKED_runSchemaUpdate:v6 forClientNamed:v9];
+    [(_SYSharedServiceDB *)self _LOCKED_runSchemaUpdate:blockCopy forClientNamed:clientCopy];
   }
 
   else
   {
-    v8 = MEMORY[0x1E12E11B0](v6);
-    [(NSMutableDictionary *)self->_schemaSetupCallbacks setObject:v8 forKeyedSubscript:v9];
+    v8 = MEMORY[0x1E12E11B0](blockCopy);
+    [(NSMutableDictionary *)self->_schemaSetupCallbacks setObject:v8 forKeyedSubscript:clientCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)withDBRef:(id)a3
+- (void)withDBRef:(id)ref
 {
-  v5 = a3;
+  refCopy = ref;
   os_unfair_lock_lock(&self->_lock);
   v4 = os_transaction_create();
   if ([(_SYSharedServiceDB *)self _LOCKED_ensureDBExists])
   {
-    v5[2](v5, self->_db);
+    refCopy[2](refCopy, self->_db);
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)_runTransactionBlock:(id)a3 exclusive:(BOOL)a4
+- (BOOL)_runTransactionBlock:(id)block exclusive:(BOOL)exclusive
 {
-  v4 = a4;
+  exclusiveCopy = exclusive;
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_lock);
   v7 = os_transaction_create();
   if (![(_SYSharedServiceDB *)self _LOCKED_ensureDBExists])
@@ -590,7 +590,7 @@ LABEL_14:
   }
 
   errmsg = 0;
-  if (v4)
+  if (exclusiveCopy)
   {
     v8 = "BEGIN EXCLUSIVE TRANSACTION";
   }
@@ -623,7 +623,7 @@ LABEL_14:
     goto LABEL_12;
   }
 
-  if (!v6[2](v6, self->_db))
+  if (!blockCopy[2](blockCopy, self->_db))
   {
 LABEL_23:
     v15 = sqlite3_exec(self->_db, "ROLLBACK TRANSACTION", 0, 0, &errmsg);
@@ -641,7 +641,7 @@ LABEL_23:
     if (os_log_type_enabled(qword_1EDE73430, OS_LOG_TYPE_ERROR))
     {
       v17 = "non-exclusive";
-      if (v4)
+      if (exclusiveCopy)
       {
         v17 = "exclusive";
       }
@@ -693,7 +693,7 @@ LABEL_29:
     if (os_log_type_enabled(qword_1EDE73430, OS_LOG_TYPE_ERROR))
     {
       v19 = "non-exclusive";
-      if (v4)
+      if (exclusiveCopy)
       {
         v19 = "exclusive";
       }
@@ -734,13 +734,13 @@ LABEL_15:
   return v10;
 }
 
-+ (void)_releaseSharedInstanceForServiceName:(id)a3
++ (void)_releaseSharedInstanceForServiceName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v3 = GetServiceInstanceTable();
   os_unfair_lock_lock(&__tableLock);
   v4 = objc_autoreleasePoolPush();
-  [v3 removeObjectForKey:v5];
+  [v3 removeObjectForKey:nameCopy];
   objc_autoreleasePoolPop(v4);
   os_unfair_lock_unlock(&__tableLock);
 }

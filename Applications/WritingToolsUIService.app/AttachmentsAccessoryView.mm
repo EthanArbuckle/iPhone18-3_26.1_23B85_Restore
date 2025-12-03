@@ -1,18 +1,18 @@
 @interface AttachmentsAccessoryView
 - (CGSize)systemLayoutSizeFittingSize:(CGSize)result;
-- (_TtC21WritingToolsUIServiceP33_C936B4EAF778CD52602455D3431E6E0E24AttachmentsAccessoryView)initWithCoder:(id)a3;
-- (_TtC21WritingToolsUIServiceP33_C936B4EAF778CD52602455D3431E6E0E24AttachmentsAccessoryView)initWithFrame:(CGRect)a3;
+- (_TtC21WritingToolsUIServiceP33_C936B4EAF778CD52602455D3431E6E0E24AttachmentsAccessoryView)initWithCoder:(id)coder;
+- (_TtC21WritingToolsUIServiceP33_C936B4EAF778CD52602455D3431E6E0E24AttachmentsAccessoryView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation AttachmentsAccessoryView
 
-- (_TtC21WritingToolsUIServiceP33_C936B4EAF778CD52602455D3431E6E0E24AttachmentsAccessoryView)initWithFrame:(CGRect)a3
+- (_TtC21WritingToolsUIServiceP33_C936B4EAF778CD52602455D3431E6E0E24AttachmentsAccessoryView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = (self + OBJC_IVAR____TtC21WritingToolsUIServiceP33_C936B4EAF778CD52602455D3431E6E0E24AttachmentsAccessoryView_inset);
   *v8 = xmmword_1001D91A0;
   v8[1] = xmmword_1001D91B0;
@@ -20,12 +20,12 @@
   *(&self->super.super.super.isa + v9) = [objc_allocWithZone(type metadata accessor for AttachmentCollectionView()) init];
   v12.receiver = self;
   v12.super_class = type metadata accessor for AttachmentsAccessoryView();
-  v10 = [(AttachmentsAccessoryView *)&v12 initWithFrame:x, y, width, height];
-  [(AttachmentsAccessoryView *)v10 addSubview:*(&v10->super.super.super.isa + OBJC_IVAR____TtC21WritingToolsUIServiceP33_C936B4EAF778CD52602455D3431E6E0E24AttachmentsAccessoryView_collectionView)];
-  return v10;
+  height = [(AttachmentsAccessoryView *)&v12 initWithFrame:x, y, width, height];
+  [(AttachmentsAccessoryView *)height addSubview:*(&height->super.super.super.isa + OBJC_IVAR____TtC21WritingToolsUIServiceP33_C936B4EAF778CD52602455D3431E6E0E24AttachmentsAccessoryView_collectionView)];
+  return height;
 }
 
-- (_TtC21WritingToolsUIServiceP33_C936B4EAF778CD52602455D3431E6E0E24AttachmentsAccessoryView)initWithCoder:(id)a3
+- (_TtC21WritingToolsUIServiceP33_C936B4EAF778CD52602455D3431E6E0E24AttachmentsAccessoryView)initWithCoder:(id)coder
 {
   v3 = (self + OBJC_IVAR____TtC21WritingToolsUIServiceP33_C936B4EAF778CD52602455D3431E6E0E24AttachmentsAccessoryView_inset);
   *v3 = xmmword_1001D91A0;

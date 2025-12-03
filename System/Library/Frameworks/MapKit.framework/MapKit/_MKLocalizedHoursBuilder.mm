@@ -1,34 +1,34 @@
 @interface _MKLocalizedHoursBuilder
-+ (id)localizedHoursDayRangeString:(id)a3;
-- (BOOL)_isCurrentTimeSingular:(id)a3;
++ (id)localizedHoursDayRangeString:(id)string;
+- (BOOL)_isCurrentTimeSingular:(id)singular;
 - (BOOL)_isOpenAtClosingSoon;
 - (NSArray)AMPMSymbols;
 - (NSDate)compareDate;
 - (NSString)localizedOpenState;
 - (NSString)localizedOperatingHours;
 - (UIColor)hoursStateLabelColor;
-- (_MKLocalizedHoursBuilder)initWithBusinessHours:(id)a3 timeZone:(id)a4 localizedHoursStringOptions:(unint64_t)a5 conciseStyle:(BOOL)a6 openAt:(id)a7;
-- (_MKLocalizedHoursBuilder)initWithMapItem:(id)a3 localizedHoursStringOptions:(unint64_t)a4;
-- (_MKLocalizedHoursBuilder)initWithMapItem:(id)a3 localizedHoursStringOptions:(unint64_t)a4 conciseStyle:(BOOL)a5 openAt:(id)a6;
-- (_MKLocalizedHoursBuilder)initWithMapItemForMessageForBusiness:(id)a3 localizedHoursStringOptions:(unint64_t)a4;
-- (id)_findNextOperatingWeekday:(int64_t)a3;
-- (id)_formatedOperatingHourString:(id)a3 timeZone:(id)a4 weekday:(int64_t)a5;
-- (id)_formattedStringForHourRangesWithStartAndEndDates:(id)a3 timeZone:(id)a4;
-- (id)_localizedTimeStringFromDate:(id)a3 timezone:(id)a4;
-- (id)_updateLocalizedOperatingHoursString:(unint64_t)a3;
-- (id)concatenateStrings:(id)a3 joinedByString:(id)a4;
-- (id)formatData:(id)a3;
-- (id)showClosingSoonHour:(id)a3 timeZone:(id)a4;
+- (_MKLocalizedHoursBuilder)initWithBusinessHours:(id)hours timeZone:(id)zone localizedHoursStringOptions:(unint64_t)options conciseStyle:(BOOL)style openAt:(id)at;
+- (_MKLocalizedHoursBuilder)initWithMapItem:(id)item localizedHoursStringOptions:(unint64_t)options;
+- (_MKLocalizedHoursBuilder)initWithMapItem:(id)item localizedHoursStringOptions:(unint64_t)options conciseStyle:(BOOL)style openAt:(id)at;
+- (_MKLocalizedHoursBuilder)initWithMapItemForMessageForBusiness:(id)business localizedHoursStringOptions:(unint64_t)options;
+- (id)_findNextOperatingWeekday:(int64_t)weekday;
+- (id)_formatedOperatingHourString:(id)string timeZone:(id)zone weekday:(int64_t)weekday;
+- (id)_formattedStringForHourRangesWithStartAndEndDates:(id)dates timeZone:(id)zone;
+- (id)_localizedTimeStringFromDate:(id)date timezone:(id)timezone;
+- (id)_updateLocalizedOperatingHoursString:(unint64_t)string;
+- (id)concatenateStrings:(id)strings joinedByString:(id)string;
+- (id)formatData:(id)data;
+- (id)showClosingSoonHour:(id)hour timeZone:(id)zone;
 - (int64_t)state;
 - (void)_commonInit;
-- (void)_resetLocalizedBuilder:(BOOL)a3;
-- (void)_resetLocalizedStrings:(BOOL)a3;
+- (void)_resetLocalizedBuilder:(BOOL)builder;
+- (void)_resetLocalizedStrings:(BOOL)strings;
 - (void)_updateLocalizedString;
-- (void)setGeoMapItemOpeningHourOptions:(unint64_t)a3;
-- (void)setLocalizedHoursStringOptions:(unint64_t)a3;
-- (void)setOperatingHours:(id)a3;
-- (void)setTimeZone:(id)a3;
-- (void)updateHoursLabelColorWithDefaultLabelColor:(id)a3;
+- (void)setGeoMapItemOpeningHourOptions:(unint64_t)options;
+- (void)setLocalizedHoursStringOptions:(unint64_t)options;
+- (void)setOperatingHours:(id)hours;
+- (void)setTimeZone:(id)zone;
+- (void)updateHoursLabelColorWithDefaultLabelColor:(id)color;
 @end
 
 @implementation _MKLocalizedHoursBuilder
@@ -36,22 +36,22 @@
 - (NSArray)AMPMSymbols
 {
   v2 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:2];
-  v3 = [hoursFormatter AMSymbol];
-  v4 = [v3 length];
+  aMSymbol = [hoursFormatter AMSymbol];
+  v4 = [aMSymbol length];
 
   if (v4)
   {
-    v5 = [hoursFormatter AMSymbol];
-    [v2 addObject:v5];
+    aMSymbol2 = [hoursFormatter AMSymbol];
+    [v2 addObject:aMSymbol2];
   }
 
-  v6 = [hoursFormatter PMSymbol];
-  v7 = [v6 length];
+  pMSymbol = [hoursFormatter PMSymbol];
+  v7 = [pMSymbol length];
 
   if (v7)
   {
-    v8 = [hoursFormatter PMSymbol];
-    [v2 addObject:v8];
+    pMSymbol2 = [hoursFormatter PMSymbol];
+    [v2 addObject:pMSymbol2];
   }
 
   v9 = [v2 copy];
@@ -59,10 +59,10 @@
   return v9;
 }
 
-- (id)concatenateStrings:(id)a3 joinedByString:(id)a4
+- (id)concatenateStrings:(id)strings joinedByString:(id)string
 {
-  v5 = a3;
-  v6 = a4;
+  stringsCopy = strings;
+  stringCopy = string;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -85,23 +85,23 @@
 
   if (*(v14 + 24) == 1)
   {
-    v8 = [v5 reverseObjectEnumerator];
-    v9 = [v8 allObjects];
+    reverseObjectEnumerator = [stringsCopy reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
 
-    v5 = v9;
+    stringsCopy = allObjects;
   }
 
-  v10 = [v5 componentsJoinedByString:v6];
+  v10 = [stringsCopy componentsJoinedByString:stringCopy];
 
   _Block_object_dispose(&v13, 8);
 
   return v10;
 }
 
-- (id)formatData:(id)a3
+- (id)formatData:(id)data
 {
   v125 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v5 = MEMORY[0x1E695E0F0];
   v6 = [MEMORY[0x1E695E0F0] mutableCopy];
   v7 = [v5 mutableCopy];
@@ -111,18 +111,18 @@
   if (self->_timeZone)
   {
     v98 = v10;
-    v11 = [MEMORY[0x1E695DEE8] currentCalendar];
-    [v11 setTimeZone:self->_timeZone];
-    v106 = self;
-    v97 = [(_MKLocalizedHoursBuilder *)self compareDate];
-    v88 = [v11 components:512 fromDate:?];
-    v96 = [v88 weekday];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    [currentCalendar setTimeZone:self->_timeZone];
+    selfCopy = self;
+    compareDate = [(_MKLocalizedHoursBuilder *)self compareDate];
+    v88 = [currentCalendar components:512 fromDate:?];
+    weekday = [v88 weekday];
     v116 = 0u;
     v117 = 0u;
     v118 = 0u;
     v119 = 0u;
-    v89 = v4;
-    obj = v4;
+    v89 = dataCopy;
+    obj = dataCopy;
     v99 = [obj countByEnumeratingWithState:&v116 objects:v124 count:16];
     if (v99)
     {
@@ -131,7 +131,7 @@
       v92 = v6;
       v93 = v8;
       v95 = v9;
-      v100 = v11;
+      v100 = currentCalendar;
       do
       {
         v12 = 0;
@@ -144,16 +144,16 @@
 
           v103 = v12;
           v13 = *(*(&v116 + 1) + 8 * v12);
-          v14 = [v11 components:28 fromDate:v97];
-          [v14 setDay:{objc_msgSend(v13, "dayOfWeekRange") - v96 + objc_msgSend(v14, "day")}];
+          v14 = [currentCalendar components:28 fromDate:compareDate];
+          [v14 setDay:{objc_msgSend(v13, "dayOfWeekRange") - weekday + objc_msgSend(v14, "day")}];
           [v13 dayOfWeekRange];
           v16 = v15;
           v102 = v14;
           if (v15 == 1)
           {
             v17 = dayOfWeekFormatterFull;
-            [v11 dateFromComponents:v14];
-            v19 = v18 = v11;
+            [currentCalendar dateFromComponents:v14];
+            v19 = v18 = currentCalendar;
             v20 = [v17 stringFromDate:v19];
 
             v21 = dayOfWeekFormatterShort;
@@ -218,15 +218,15 @@
           [v98 addObject:v43];
 
           v44 = MEMORY[0x1E695DF70];
-          v45 = [v13 openIntervals];
-          v46 = [v44 arrayWithCapacity:{objc_msgSend(v45, "count")}];
+          openIntervals = [v13 openIntervals];
+          v46 = [v44 arrayWithCapacity:{objc_msgSend(openIntervals, "count")}];
 
           v47 = MEMORY[0x1E695DF70];
-          v48 = [v13 openIntervals];
-          v49 = [v47 arrayWithCapacity:{objc_msgSend(v48, "count")}];
+          openIntervals2 = [v13 openIntervals];
+          v49 = [v47 arrayWithCapacity:{objc_msgSend(openIntervals2, "count")}];
 
-          v50 = [v13 openIntervals];
-          v51 = [v50 count];
+          openIntervals3 = [v13 openIntervals];
+          v51 = [openIntervals3 count];
 
           if (v51)
           {
@@ -235,14 +235,14 @@
             v115 = 0u;
             v112 = 0u;
             v113 = 0u;
-            v107 = [v13 openIntervals];
-            v52 = [v107 countByEnumeratingWithState:&v112 objects:v123 count:16];
+            openIntervals4 = [v13 openIntervals];
+            v52 = [openIntervals4 countByEnumeratingWithState:&v112 objects:v123 count:16];
             if (v52)
             {
               v53 = v52;
               v111 = *v113;
               v54 = 0x1E696A000uLL;
-              v56 = v107;
+              v56 = openIntervals4;
               v55 = v46;
               do
               {
@@ -274,27 +274,27 @@
                   {
                     v67 = v49;
                     v68 = hoursFormatter;
-                    v69 = [v58 startDate];
-                    v66 = [v68 stringFromDate:v69];
+                    startDate = [v58 startDate];
+                    v66 = [v68 stringFromDate:startDate];
 
                     v70 = hoursFormatter;
-                    v71 = [v58 endDate];
-                    v72 = [v70 stringFromDate:v71];
+                    endDate = [v58 endDate];
+                    v72 = [v70 stringFromDate:endDate];
 
                     v73 = *(v54 + 3776);
                     v74 = _MKLocalizedStringFromThisBundle(@"Operating Hours Range");
                     v75 = [v73 stringWithFormat:v74, v66, v72];
 
                     [v55 addObject:v75];
-                    v76 = [v58 startDate];
-                    v122[0] = v76;
-                    v77 = [v58 endDate];
-                    v122[1] = v77;
+                    startDate2 = [v58 startDate];
+                    v122[0] = startDate2;
+                    endDate2 = [v58 endDate];
+                    v122[1] = endDate2;
                     v78 = [MEMORY[0x1E695DEC8] arrayWithObjects:v122 count:2];
-                    v60 = [(_MKLocalizedHoursBuilder *)v106 _formattedStringForHourRangesWithStartAndEndDates:v78 timeZone:v106->_timeZone];
+                    v60 = [(_MKLocalizedHoursBuilder *)selfCopy _formattedStringForHourRangesWithStartAndEndDates:v78 timeZone:selfCopy->_timeZone];
 
                     v49 = v67;
-                    v56 = v107;
+                    v56 = openIntervals4;
 
                     v55 = v109;
                     v54 = 0x1E696A000;
@@ -316,7 +316,7 @@
             else
             {
               v8 = v93;
-              v79 = v107;
+              v79 = openIntervals4;
               v55 = v46;
             }
           }
@@ -334,7 +334,7 @@
           [v95 addObject:v49];
 
           v12 = v103 + 1;
-          v11 = v100;
+          currentCalendar = v100;
         }
 
         while (v103 + 1 != v99);
@@ -353,11 +353,11 @@
     v121[2] = v8;
     v121[3] = v9;
     v120[4] = @"CurrentHours";
-    v80 = [(_MKLocalizedHoursBuilder *)v106 localizedOperatingHours];
-    v81 = v80;
-    if (v80)
+    localizedOperatingHours = [(_MKLocalizedHoursBuilder *)selfCopy localizedOperatingHours];
+    v81 = localizedOperatingHours;
+    if (localizedOperatingHours)
     {
-      v82 = v80;
+      v82 = localizedOperatingHours;
     }
 
     else
@@ -367,11 +367,11 @@
 
     v121[4] = v82;
     v120[5] = @"CurrentOpenState";
-    v83 = [(_MKLocalizedHoursBuilder *)v106 localizedOpenState];
-    v84 = v83;
-    if (v83)
+    localizedOpenState = [(_MKLocalizedHoursBuilder *)selfCopy localizedOpenState];
+    v84 = localizedOpenState;
+    if (localizedOpenState)
     {
-      v85 = v83;
+      v85 = localizedOpenState;
     }
 
     else
@@ -385,7 +385,7 @@
     v86 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v121 forKeys:v120 count:7];
 
     v10 = v98;
-    v4 = v89;
+    dataCopy = v89;
   }
 
   else
@@ -396,9 +396,9 @@
   return v86;
 }
 
-- (void)updateHoursLabelColorWithDefaultLabelColor:(id)a3
+- (void)updateHoursLabelColorWithDefaultLabelColor:(id)color
 {
-  v13 = a3;
+  colorCopy = color;
   if (!MapsFeature_IsEnabled_SearchAndDiscovery() || ![(GEOResultRefinementTime *)self->_openAt isSelected]|| ([(GEOResultRefinementTime *)self->_openAt timeStamp], v4 <= 0.0) || [(_MKLocalizedHoursBuilder *)self _isOpenAtClosingSoon])
   {
     if (self->_isOpeningSoon || self->_isClosingSoon)
@@ -425,30 +425,30 @@ LABEL_14:
     }
   }
 
-  if (v13)
+  if (colorCopy)
   {
-    v9 = v13;
+    v9 = colorCopy;
     goto LABEL_14;
   }
 
   hoursStateLabelColor = +[MKInfoCardThemeManager currentTheme];
-  v11 = [hoursStateLabelColor textColor];
+  textColor = [hoursStateLabelColor textColor];
   v12 = self->_hoursStateLabelColor;
-  self->_hoursStateLabelColor = v11;
+  self->_hoursStateLabelColor = textColor;
 
 LABEL_15:
 }
 
-- (id)_formattedStringForHourRangesWithStartAndEndDates:(id)a3 timeZone:(id)a4
+- (id)_formattedStringForHourRangesWithStartAndEndDates:(id)dates timeZone:(id)zone
 {
   if ((self->_localizedHoursStringOptions & 0x100) != 0)
   {
-    [MEMORY[0x1E696AEC0] _navigation_formattedStringForHourRanges:a3 timeZone:a4 delimeter:@"\n"];
+    [MEMORY[0x1E696AEC0] _navigation_formattedStringForHourRanges:dates timeZone:zone delimeter:@"\n"];
   }
 
   else
   {
-    [MEMORY[0x1E696AEC0] _navigation_formattedStringForHourRanges:a3 timeZone:a4];
+    [MEMORY[0x1E696AEC0] _navigation_formattedStringForHourRanges:dates timeZone:zone];
   }
   v4 = ;
 
@@ -457,39 +457,39 @@ LABEL_15:
 
 - (BOOL)_isOpenAtClosingSoon
 {
-  v3 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v4 = [(_MKLocalizedHoursBuilder *)self timeZone];
-  [v3 setTimeZone:v4];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  timeZone = [(_MKLocalizedHoursBuilder *)self timeZone];
+  [currentCalendar setTimeZone:timeZone];
 
   v5 = MEMORY[0x1E69A2370];
-  v6 = [(_MKLocalizedHoursBuilder *)self compareDate];
-  v7 = [(GEOBusinessHours *)self->_operatingHours placeDailyNormalizedHours];
-  v8 = [v5 getWeekdayForDate:v6 inNormalizedHours:v7 timeZone:self->_timeZone];
+  compareDate = [(_MKLocalizedHoursBuilder *)self compareDate];
+  placeDailyNormalizedHours = [(GEOBusinessHours *)self->_operatingHours placeDailyNormalizedHours];
+  v8 = [v5 getWeekdayForDate:compareDate inNormalizedHours:placeDailyNormalizedHours timeZone:self->_timeZone];
 
   v9 = MEMORY[0x1E69A2368];
-  v10 = [(GEOBusinessHours *)self->_operatingHours placeDailyHours];
-  v11 = [v9 getPlaceDailyHoursForWeekday:v8 placeDailyHours:v10];
+  placeDailyHours = [(GEOBusinessHours *)self->_operatingHours placeDailyHours];
+  v11 = [v9 getPlaceDailyHoursForWeekday:v8 placeDailyHours:placeDailyHours];
 
-  v12 = [v11 openIntervals];
-  v13 = [v12 lastObject];
-  v14 = [v13 endDate];
+  openIntervals = [v11 openIntervals];
+  lastObject = [openIntervals lastObject];
+  endDate = [lastObject endDate];
 
-  if (v14)
+  if (endDate)
   {
-    v15 = [(_MKLocalizedHoursBuilder *)self compareDate];
-    v16 = [v3 components:224 fromDate:v15];
+    compareDate2 = [(_MKLocalizedHoursBuilder *)self compareDate];
+    v16 = [currentCalendar components:224 fromDate:compareDate2];
 
-    v17 = [v3 components:224 fromDate:v14];
-    v18 = [v17 hour];
-    if (v18 < [v16 hour])
+    v17 = [currentCalendar components:224 fromDate:endDate];
+    hour = [v17 hour];
+    if (hour < [v16 hour])
     {
       [v17 setHour:{objc_msgSend(v17, "hour") + 24}];
     }
 
-    v19 = [v17 hour];
-    v20 = [v17 minute];
-    v21 = [v16 hour];
-    v22 = (v20 - [v16 minute] + 60 * (v19 - v21)) * 60.0;
+    hour2 = [v17 hour];
+    minute = [v17 minute];
+    hour3 = [v16 hour];
+    v22 = (minute - [v16 minute] + 60 * (hour2 - hour3)) * 60.0;
     isClosingSoon = v22 < [(GEOBusinessHours *)self->_operatingHours closingSoonThresdholdInSeconds];
   }
 
@@ -501,10 +501,10 @@ LABEL_15:
   return isClosingSoon;
 }
 
-- (id)_findNextOperatingWeekday:(int64_t)a3
+- (id)_findNextOperatingWeekday:(int64_t)weekday
 {
-  v5 = [(GEOBusinessHours *)self->_operatingHours operatingWeekdays];
-  if (![v5 count])
+  operatingWeekdays = [(GEOBusinessHours *)self->_operatingHours operatingWeekdays];
+  if (![operatingWeekdays count])
   {
     v13 = MEMORY[0x1E696AEC0];
     v14 = _MKLocalizedStringFromThisBundle(@"Business Hours [Permanently Closed]");
@@ -514,16 +514,16 @@ LABEL_12:
     goto LABEL_14;
   }
 
-  v6 = a3 % 7 + 1;
+  v6 = weekday % 7 + 1;
   v7 = 7;
   while (1)
   {
     v8 = MEMORY[0x1E69A2368];
-    v9 = [(GEOBusinessHours *)self->_operatingHours placeDailyHours];
-    v10 = [v8 getPlaceDailyHoursForWeekday:v6 placeDailyHours:v9];
+    placeDailyHours = [(GEOBusinessHours *)self->_operatingHours placeDailyHours];
+    v10 = [v8 getPlaceDailyHoursForWeekday:v6 placeDailyHours:placeDailyHours];
 
-    v11 = [v10 openIntervals];
-    v12 = [v11 count];
+    openIntervals = [v10 openIntervals];
+    v12 = [openIntervals count];
 
     if (v12)
     {
@@ -560,25 +560,25 @@ LABEL_14:
   return v18;
 }
 
-- (id)_localizedTimeStringFromDate:(id)a3 timezone:(id)a4
+- (id)_localizedTimeStringFromDate:(id)date timezone:(id)timezone
 {
-  v5 = a3;
-  v6 = a4;
+  dateCopy = date;
+  timezoneCopy = timezone;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __66___MKLocalizedHoursBuilder__localizedTimeStringFromDate_timezone___block_invoke;
   block[3] = &unk_1E76CDB38;
-  v7 = v6;
+  v7 = timezoneCopy;
   v16 = v7;
   if (_localizedTimeStringFromDate_timezone__oneTimeToken != -1)
   {
     dispatch_once(&_localizedTimeStringFromDate_timezone__oneTimeToken, block);
   }
 
-  v8 = [_localizedTimeStringFromDate_timezone__formatter dateFormat];
-  v9 = [v8 rangeOfString:@"a"];
+  dateFormat = [_localizedTimeStringFromDate_timezone__formatter dateFormat];
+  v9 = [dateFormat rangeOfString:@"a"];
 
-  v10 = [_localizedTimeStringFromDate_timezone__calendar component:64 fromDate:v5];
+  v10 = [_localizedTimeStringFromDate_timezone__calendar component:64 fromDate:dateCopy];
   [_localizedTimeStringFromDate_timezone__formatter setTimeZone:v7];
   if (v10)
   {
@@ -601,30 +601,30 @@ LABEL_14:
   }
 
   [_localizedTimeStringFromDate_timezone__formatter setLocalizedDateFormatFromTemplate:v12];
-  v13 = [_localizedTimeStringFromDate_timezone__formatter stringFromDate:v5];
+  v13 = [_localizedTimeStringFromDate_timezone__formatter stringFromDate:dateCopy];
 
   return v13;
 }
 
-- (BOOL)_isCurrentTimeSingular:(id)a3
+- (BOOL)_isCurrentTimeSingular:(id)singular
 {
   v3 = _isCurrentTimeSingular__oneTimeToken;
-  v4 = a3;
+  singularCopy = singular;
   if (v3 != -1)
   {
     dispatch_once(&_isCurrentTimeSingular__oneTimeToken, &__block_literal_global_29227);
   }
 
-  v5 = [_isCurrentTimeSingular__calendar component:32 fromDate:v4];
+  v5 = [_isCurrentTimeSingular__calendar component:32 fromDate:singularCopy];
 
   return v5 == 1;
 }
 
-- (id)showClosingSoonHour:(id)a3 timeZone:(id)a4
+- (id)showClosingSoonHour:(id)hour timeZone:(id)zone
 {
-  v6 = a4;
-  v7 = a3;
-  if ([(_MKLocalizedHoursBuilder *)self _isCurrentTimeSingular:v7])
+  zoneCopy = zone;
+  hourCopy = hour;
+  if ([(_MKLocalizedHoursBuilder *)self _isCurrentTimeSingular:hourCopy])
   {
     v8 = @"Business Hours [Closing Soon] 1:xx";
   }
@@ -636,53 +636,53 @@ LABEL_14:
 
   v9 = _MKLocalizedStringFromThisBundle(v8);
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [(_MKLocalizedHoursBuilder *)self _localizedTimeStringFromDate:v7 timezone:v6];
+  v11 = [(_MKLocalizedHoursBuilder *)self _localizedTimeStringFromDate:hourCopy timezone:zoneCopy];
 
   v12 = [v10 stringWithFormat:v9, v11];
 
   return v12;
 }
 
-- (id)_formatedOperatingHourString:(id)a3 timeZone:(id)a4 weekday:(int64_t)a5
+- (id)_formatedOperatingHourString:(id)string timeZone:(id)zone weekday:(int64_t)weekday
 {
   v60 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  stringCopy = string;
+  zoneCopy = zone;
   if (self->_isClosedTodayAllDay)
   {
-    v10 = [(_MKLocalizedHoursBuilder *)self _findNextOperatingWeekday:a5];
+    v10 = [(_MKLocalizedHoursBuilder *)self _findNextOperatingWeekday:weekday];
     goto LABEL_49;
   }
 
   if (self->_isOpenTodayAllDay)
   {
     v11 = MEMORY[0x1E696AEC0];
-    v12 = _MKLocalizedStringFromThisBundle(@"Business Hours [Open All Day]");
-    v10 = [v11 stringWithFormat:v12];
+    currentCalendar = _MKLocalizedStringFromThisBundle(@"Business Hours [Open All Day]");
+    v10 = [v11 stringWithFormat:currentCalendar];
     goto LABEL_48;
   }
 
-  v12 = [MEMORY[0x1E695DEE8] currentCalendar];
-  [v12 setTimeZone:v9];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  [currentCalendar setTimeZone:zoneCopy];
   if ([(GEOResultRefinementTime *)self->_openAt isSelected])
   {
     [(GEOResultRefinementTime *)self->_openAt timeStamp];
     if (v13 > 0.0)
     {
-      v14 = [v8 openIntervals];
-      v15 = [v14 lastObject];
-      v16 = [v15 endDate];
+      openIntervals = [stringCopy openIntervals];
+      lastObject = [openIntervals lastObject];
+      endDate = [lastObject endDate];
 
-      if (v16)
+      if (endDate)
       {
         if ([(_MKLocalizedHoursBuilder *)self _isOpenAtClosingSoon])
         {
-          v10 = [(_MKLocalizedHoursBuilder *)self showClosingSoonHour:v16 timeZone:v9];
+          v10 = [(_MKLocalizedHoursBuilder *)self showClosingSoonHour:endDate timeZone:zoneCopy];
         }
 
         else
         {
-          if ([(_MKLocalizedHoursBuilder *)self _isCurrentTimeSingular:v16])
+          if ([(_MKLocalizedHoursBuilder *)self _isCurrentTimeSingular:endDate])
           {
             v45 = @"Business Hours [Open till] 1:xx";
           }
@@ -694,7 +694,7 @@ LABEL_14:
 
           v47 = _MKLocalizedStringFromThisBundle(v45);
           v48 = MEMORY[0x1E696AEC0];
-          v49 = [(_MKLocalizedHoursBuilder *)self _localizedTimeStringFromDate:v16 timezone:v9];
+          v49 = [(_MKLocalizedHoursBuilder *)self _localizedTimeStringFromDate:endDate timezone:zoneCopy];
           v10 = [v48 stringWithFormat:v47, v49];
         }
       }
@@ -710,12 +710,12 @@ LABEL_39:
     }
   }
 
-  v50 = a5;
+  weekdayCopy = weekday;
   v57 = 0u;
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  obj = [v8 openIntervals];
+  obj = [stringCopy openIntervals];
   v17 = [obj countByEnumeratingWithState:&v55 objects:v59 count:16];
   if (!v17)
   {
@@ -724,8 +724,8 @@ LABEL_39:
 
   v18 = v17;
   v54 = *v56;
-  v51 = v9;
-  v52 = v8;
+  v51 = zoneCopy;
+  v52 = stringCopy;
   while (2)
   {
     for (i = 0; i != v18; ++i)
@@ -736,40 +736,40 @@ LABEL_39:
       }
 
       v20 = *(*(&v55 + 1) + 8 * i);
-      v21 = [(_MKLocalizedHoursBuilder *)self compareDate];
-      v22 = [v12 component:32 fromDate:v21];
+      compareDate = [(_MKLocalizedHoursBuilder *)self compareDate];
+      v22 = [currentCalendar component:32 fromDate:compareDate];
 
-      v23 = [v20 startDate];
-      v24 = [v12 component:32 fromDate:v23];
+      startDate = [v20 startDate];
+      v24 = [currentCalendar component:32 fromDate:startDate];
 
-      v25 = [v20 startDate];
-      v26 = [v12 component:64 fromDate:v25];
+      startDate2 = [v20 startDate];
+      v26 = [currentCalendar component:64 fromDate:startDate2];
 
-      v27 = [v20 endDate];
-      v28 = [v20 startDate];
-      [v27 timeIntervalSinceDate:v28];
+      endDate2 = [v20 endDate];
+      startDate3 = [v20 startDate];
+      [endDate2 timeIntervalSinceDate:startDate3];
       v30 = (v29 + (60 * v26)) / 3600;
 
       v31 = v30 + v24;
-      v32 = [v20 endDate];
-      v33 = [v12 component:64 fromDate:v32];
+      endDate3 = [v20 endDate];
+      v33 = [currentCalendar component:64 fromDate:endDate3];
 
-      v34 = [(_MKLocalizedHoursBuilder *)self compareDate];
-      v35 = [v12 component:64 fromDate:v34];
+      compareDate2 = [(_MKLocalizedHoursBuilder *)self compareDate];
+      v35 = [currentCalendar component:64 fromDate:compareDate2];
 
       if (v22 >= v31 && (v22 != v31 || v35 > v33))
       {
         continue;
       }
 
-      v16 = [v20 startDate];
-      v37 = [v20 endDate];
+      endDate = [v20 startDate];
+      endDate4 = [v20 endDate];
 
-      if (self->_isOpeningSoon && v16)
+      if (self->_isOpeningSoon && endDate)
       {
-        v9 = v51;
-        v8 = v52;
-        if ([(_MKLocalizedHoursBuilder *)self _isCurrentTimeSingular:v16])
+        zoneCopy = v51;
+        stringCopy = v52;
+        if ([(_MKLocalizedHoursBuilder *)self _isCurrentTimeSingular:endDate])
         {
           v38 = @"Business Hours [Opening Soon] 1:xx";
         }
@@ -782,19 +782,19 @@ LABEL_39:
 
       else
       {
-        v9 = v51;
-        v8 = v52;
-        if (self->_isClosingSoon && v37)
+        zoneCopy = v51;
+        stringCopy = v52;
+        if (self->_isClosingSoon && endDate4)
         {
-          v10 = [(_MKLocalizedHoursBuilder *)self showClosingSoonHour:v37 timeZone:v51];
+          v10 = [(_MKLocalizedHoursBuilder *)self showClosingSoonHour:endDate4 timeZone:v51];
 LABEL_38:
 
           goto LABEL_39;
         }
 
-        if (self->_isCurrentlyOpen && v37)
+        if (self->_isCurrentlyOpen && endDate4)
         {
-          if ([(_MKLocalizedHoursBuilder *)self _isCurrentTimeSingular:v37])
+          if ([(_MKLocalizedHoursBuilder *)self _isCurrentTimeSingular:endDate4])
           {
             v39 = @"Business Hours [Open till] 1:xx";
           }
@@ -806,8 +806,8 @@ LABEL_38:
 
           v40 = _MKLocalizedStringFromThisBundle(v39);
           v41 = MEMORY[0x1E696AEC0];
-          v42 = self;
-          v43 = v37;
+          selfCopy2 = self;
+          v43 = endDate4;
           goto LABEL_37;
         }
 
@@ -816,12 +816,12 @@ LABEL_38:
           goto LABEL_47;
         }
 
-        if (!v16)
+        if (!endDate)
         {
           goto LABEL_23;
         }
 
-        if ([(_MKLocalizedHoursBuilder *)self _isCurrentTimeSingular:v16])
+        if ([(_MKLocalizedHoursBuilder *)self _isCurrentTimeSingular:endDate])
         {
           v38 = @"Business Hours [Closed till time] 1:xx";
         }
@@ -834,18 +834,18 @@ LABEL_38:
 
       v40 = _MKLocalizedStringFromThisBundle(v38);
       v41 = MEMORY[0x1E696AEC0];
-      v42 = self;
-      v43 = v16;
+      selfCopy2 = self;
+      v43 = endDate;
 LABEL_37:
-      v44 = [(_MKLocalizedHoursBuilder *)v42 _localizedTimeStringFromDate:v43 timezone:v9];
+      v44 = [(_MKLocalizedHoursBuilder *)selfCopy2 _localizedTimeStringFromDate:v43 timezone:zoneCopy];
       v10 = [v41 stringWithFormat:v40, v44];
 
       goto LABEL_38;
     }
 
     v18 = [obj countByEnumeratingWithState:&v55 objects:v59 count:16];
-    v9 = v51;
-    v8 = v52;
+    zoneCopy = v51;
+    stringCopy = v52;
     if (v18)
     {
       continue;
@@ -856,12 +856,12 @@ LABEL_37:
 
 LABEL_22:
 
-  v37 = 0;
-  v16 = 0;
+  endDate4 = 0;
+  endDate = 0;
   if (self->_isCurrentlyClosed)
   {
 LABEL_23:
-    v10 = [(_MKLocalizedHoursBuilder *)self _findNextOperatingWeekday:v50];
+    v10 = [(_MKLocalizedHoursBuilder *)self _findNextOperatingWeekday:weekdayCopy];
 
     goto LABEL_48;
   }
@@ -876,7 +876,7 @@ LABEL_49:
   return v10;
 }
 
-- (id)_updateLocalizedOperatingHoursString:(unint64_t)a3
+- (id)_updateLocalizedOperatingHoursString:(unint64_t)string
 {
   v64 = *MEMORY[0x1E69E9840];
   geoMapItemOpeningHourOptions = self->_geoMapItemOpeningHourOptions;
@@ -900,16 +900,16 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v7 = a3;
+  stringCopy = string;
   v9 = MEMORY[0x1E69A2370];
-  v10 = [(_MKLocalizedHoursBuilder *)self compareDate];
-  v11 = [(GEOBusinessHours *)self->_operatingHours placeDailyNormalizedHours];
-  v12 = [v9 getWeekdayForDate:v10 inNormalizedHours:v11 timeZone:self->_timeZone];
+  compareDate = [(_MKLocalizedHoursBuilder *)self compareDate];
+  placeDailyNormalizedHours = [(GEOBusinessHours *)self->_operatingHours placeDailyNormalizedHours];
+  v12 = [v9 getWeekdayForDate:compareDate inNormalizedHours:placeDailyNormalizedHours timeZone:self->_timeZone];
 
   v13 = MEMORY[0x1E69A2368];
-  v14 = [(GEOBusinessHours *)self->_operatingHours placeDailyHours];
+  placeDailyHours = [(GEOBusinessHours *)self->_operatingHours placeDailyHours];
   v53 = v12;
-  v15 = [v13 getPlaceDailyHoursForWeekday:v12 placeDailyHours:v14];
+  v15 = [v13 getPlaceDailyHoursForWeekday:v12 placeDailyHours:placeDailyHours];
 
   v16 = objc_opt_new();
   v55 = 0u;
@@ -917,8 +917,8 @@ LABEL_5:
   v57 = 0u;
   v58 = 0u;
   v54 = v15;
-  v17 = [v15 openIntervals];
-  v18 = [v17 countByEnumeratingWithState:&v55 objects:v63 count:16];
+  openIntervals = [v15 openIntervals];
+  v18 = [openIntervals countByEnumeratingWithState:&v55 objects:v63 count:16];
   if (v18)
   {
     v19 = v18;
@@ -929,28 +929,28 @@ LABEL_5:
       {
         if (*v56 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(openIntervals);
         }
 
         v22 = *(*(&v55 + 1) + 8 * i);
-        v23 = [v22 startDate];
-        if (v23)
+        startDate = [v22 startDate];
+        if (startDate)
         {
-          v24 = v23;
-          v25 = [v22 endDate];
+          v24 = startDate;
+          endDate = [v22 endDate];
 
-          if (v25)
+          if (endDate)
           {
-            v26 = [v22 startDate];
-            [v16 addObject:v26];
+            startDate2 = [v22 startDate];
+            [v16 addObject:startDate2];
 
-            v27 = [v22 endDate];
-            [v16 addObject:v27];
+            endDate2 = [v22 endDate];
+            [v16 addObject:endDate2];
           }
         }
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v55 objects:v63 count:16];
+      v19 = [openIntervals countByEnumeratingWithState:&v55 objects:v63 count:16];
     }
 
     while (v19);
@@ -960,7 +960,7 @@ LABEL_5:
   {
     if (self->_isClosedTodayAllDay)
     {
-      if ((v7 & 0x10) == 0)
+      if ((stringCopy & 0x10) == 0)
       {
         v29 = @"Closed Today";
 LABEL_22:
@@ -979,14 +979,14 @@ LABEL_26:
 
     if (self->_isOpenTodayAllDay)
     {
-      if ((v7 & 0x28) != 0)
+      if ((stringCopy & 0x28) != 0)
       {
         goto LABEL_26;
       }
 
       v36 = _MKLocalizedStringFromThisBundle(@"Placecard Full Hours, open");
       v37 = MEMORY[0x1E696AEC0];
-      if ((v7 & 4) != 0)
+      if ((stringCopy & 4) != 0)
       {
         v38 = twentyFourHourAbbreviatedFormatter;
       }
@@ -1007,15 +1007,15 @@ LABEL_79:
     {
       if (self->_isOpeningSoon)
       {
-        if (v7)
+        if (stringCopy)
         {
           v29 = @"Opening Soon";
           goto LABEL_22;
         }
 
-        if ((v7 & 2) == 0)
+        if ((stringCopy & 2) == 0)
         {
-          if (v7 < 0)
+          if (stringCopy < 0)
           {
             v31 = [(_MKLocalizedHoursBuilder *)self _formattedStringForHourRangesWithStartAndEndDates:v16 timeZone:self->_timeZone];
             v32 = [v31 length];
@@ -1058,15 +1058,15 @@ LABEL_75:
 
       else
       {
-        if (v7)
+        if (stringCopy)
         {
           v29 = @"Closed Now";
           goto LABEL_22;
         }
 
-        if ((v7 & 2) == 0)
+        if ((stringCopy & 2) == 0)
         {
-          if (v7 < 0)
+          if (stringCopy < 0)
           {
             v31 = [(_MKLocalizedHoursBuilder *)self _formattedStringForHourRangesWithStartAndEndDates:v16 timeZone:self->_timeZone];
             v44 = [v31 length];
@@ -1108,15 +1108,15 @@ LABEL_75:
 
       if (self->_isClosingSoon)
       {
-        if (v7)
+        if (stringCopy)
         {
           v29 = @"Closing Soon";
           goto LABEL_22;
         }
 
-        if ((v7 & 2) == 0)
+        if ((stringCopy & 2) == 0)
         {
-          if (v7 < 0)
+          if (stringCopy < 0)
           {
             v31 = [(_MKLocalizedHoursBuilder *)self _formattedStringForHourRangesWithStartAndEndDates:v16 timeZone:self->_timeZone];
             v47 = [v31 length];
@@ -1134,7 +1134,7 @@ LABEL_75:
             goto LABEL_72;
           }
 
-          if ((v7 & 8) != 0)
+          if ((stringCopy & 8) != 0)
           {
             goto LABEL_26;
           }
@@ -1155,20 +1155,20 @@ LABEL_75:
 
       else
       {
-        if ((v7 & 8) != 0)
+        if ((stringCopy & 8) != 0)
         {
           goto LABEL_26;
         }
 
-        if (v7)
+        if (stringCopy)
         {
           v29 = @"Open";
           goto LABEL_22;
         }
 
-        if ((v7 & 2) == 0)
+        if ((stringCopy & 2) == 0)
         {
-          if (v7 < 0)
+          if (stringCopy < 0)
           {
             v31 = [(_MKLocalizedHoursBuilder *)self _formattedStringForHourRangesWithStartAndEndDates:v16 timeZone:self->_timeZone];
             v40 = [v31 length];
@@ -1298,9 +1298,9 @@ LABEL_82:
   compareDate = self->_compareDate;
   if (!compareDate)
   {
-    v4 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v5 = self->_compareDate;
-    self->_compareDate = v4;
+    self->_compareDate = date;
 
     compareDate = self->_compareDate;
   }
@@ -1340,47 +1340,47 @@ LABEL_82:
   return localizedOperatingHours;
 }
 
-- (void)setOperatingHours:(id)a3
+- (void)setOperatingHours:(id)hours
 {
-  v5 = a3;
-  if (self->_operatingHours != v5)
+  hoursCopy = hours;
+  if (self->_operatingHours != hoursCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_operatingHours, a3);
+    v6 = hoursCopy;
+    objc_storeStrong(&self->_operatingHours, hours);
     self->_geoMapItemOpeningHourOptions = [MEMORY[0x1E69A21D0] _geoMapItemOpeningHoursOptionsForBusinessHours:self->_operatingHours compareDate:self->_compareDate timeZone:self->_timeZone];
     [(_MKLocalizedHoursBuilder *)self _updateLocalizedString];
-    v5 = v6;
+    hoursCopy = v6;
   }
 }
 
-- (void)setLocalizedHoursStringOptions:(unint64_t)a3
+- (void)setLocalizedHoursStringOptions:(unint64_t)options
 {
-  if (self->_localizedHoursStringOptions != a3)
+  if (self->_localizedHoursStringOptions != options)
   {
-    self->_localizedHoursStringOptions = a3;
+    self->_localizedHoursStringOptions = options;
     [(_MKLocalizedHoursBuilder *)self _updateLocalizedString];
   }
 }
 
-- (void)setGeoMapItemOpeningHourOptions:(unint64_t)a3
+- (void)setGeoMapItemOpeningHourOptions:(unint64_t)options
 {
-  if (self->_geoMapItemOpeningHourOptions != a3)
+  if (self->_geoMapItemOpeningHourOptions != options)
   {
-    self->_geoMapItemOpeningHourOptions = a3;
+    self->_geoMapItemOpeningHourOptions = options;
     [(_MKLocalizedHoursBuilder *)self _updateLocalizedString];
   }
 }
 
-- (void)setTimeZone:(id)a3
+- (void)setTimeZone:(id)zone
 {
-  v5 = a3;
-  if (v5)
+  zoneCopy = zone;
+  if (zoneCopy)
   {
-    objc_storeStrong(&self->_timeZone, a3);
+    objc_storeStrong(&self->_timeZone, zone);
     [monthAndDayFormatter setTimeZone:self->_timeZone];
-    [dayOfWeekFormatterFull setTimeZone:v5];
-    [dayOfWeekFormatterShort setTimeZone:v5];
-    [hoursFormatter setTimeZone:v5];
+    [dayOfWeekFormatterFull setTimeZone:zoneCopy];
+    [dayOfWeekFormatterShort setTimeZone:zoneCopy];
+    [hoursFormatter setTimeZone:zoneCopy];
     [(_MKLocalizedHoursBuilder *)self _updateLocalizedString];
   }
 
@@ -1390,7 +1390,7 @@ LABEL_82:
   }
 }
 
-- (void)_resetLocalizedStrings:(BOOL)a3
+- (void)_resetLocalizedStrings:(BOOL)strings
 {
   localizedOpenState = self->_localizedOpenState;
   self->_localizedOpenState = &stru_1F15B23C0;
@@ -1399,9 +1399,9 @@ LABEL_82:
   self->_localizedOperatingHours = &stru_1F15B23C0;
 }
 
-- (void)_resetLocalizedBuilder:(BOOL)a3
+- (void)_resetLocalizedBuilder:(BOOL)builder
 {
-  v3 = a3;
+  builderCopy = builder;
   *&self->_geoMapItemOpeningHourOptions = xmmword_1A30F6EF0;
   timeZone = self->_timeZone;
   self->_timeZone = 0;
@@ -1409,13 +1409,13 @@ LABEL_82:
   operatingHours = self->_operatingHours;
   self->_operatingHours = 0;
 
-  v7 = [MEMORY[0x1E69DC888] clearColor];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
   hoursStateLabelColor = self->_hoursStateLabelColor;
-  self->_hoursStateLabelColor = v7;
+  self->_hoursStateLabelColor = clearColor;
 
   self->_state = 0;
 
-  [(_MKLocalizedHoursBuilder *)self _resetLocalizedStrings:v3];
+  [(_MKLocalizedHoursBuilder *)self _resetLocalizedStrings:builderCopy];
 }
 
 - (void)_commonInit
@@ -1431,50 +1431,50 @@ LABEL_82:
   }
 }
 
-- (_MKLocalizedHoursBuilder)initWithMapItemForMessageForBusiness:(id)a3 localizedHoursStringOptions:(unint64_t)a4
+- (_MKLocalizedHoursBuilder)initWithMapItemForMessageForBusiness:(id)business localizedHoursStringOptions:(unint64_t)options
 {
-  v6 = a3;
-  v7 = [v6 _geoMapItem];
-  v8 = [v7 _messageLink];
-  v9 = [v8 messageBusinessHours];
-  v10 = [v6 _geoMapItem];
+  businessCopy = business;
+  _geoMapItem = [businessCopy _geoMapItem];
+  _messageLink = [_geoMapItem _messageLink];
+  messageBusinessHours = [_messageLink messageBusinessHours];
+  _geoMapItem2 = [businessCopy _geoMapItem];
 
-  v11 = [v10 _messageLink];
-  v12 = [v11 timeZone];
-  v13 = [(_MKLocalizedHoursBuilder *)self initWithBusinessHours:v9 timeZone:v12 localizedHoursStringOptions:a4 conciseStyle:0 openAt:0];
+  _messageLink2 = [_geoMapItem2 _messageLink];
+  timeZone = [_messageLink2 timeZone];
+  v13 = [(_MKLocalizedHoursBuilder *)self initWithBusinessHours:messageBusinessHours timeZone:timeZone localizedHoursStringOptions:options conciseStyle:0 openAt:0];
 
   return v13;
 }
 
-- (_MKLocalizedHoursBuilder)initWithMapItem:(id)a3 localizedHoursStringOptions:(unint64_t)a4 conciseStyle:(BOOL)a5 openAt:(id)a6
+- (_MKLocalizedHoursBuilder)initWithMapItem:(id)item localizedHoursStringOptions:(unint64_t)options conciseStyle:(BOOL)style openAt:(id)at
 {
-  v6 = a5;
-  v10 = a6;
-  v11 = a3;
-  v12 = [v11 _businessHours];
-  v13 = [v12 objectAtIndex:0];
-  v14 = [v11 timeZone];
+  styleCopy = style;
+  atCopy = at;
+  itemCopy = item;
+  _businessHours = [itemCopy _businessHours];
+  v13 = [_businessHours objectAtIndex:0];
+  timeZone = [itemCopy timeZone];
 
-  v15 = [(_MKLocalizedHoursBuilder *)self initWithBusinessHours:v13 timeZone:v14 localizedHoursStringOptions:a4 conciseStyle:v6 openAt:v10];
+  v15 = [(_MKLocalizedHoursBuilder *)self initWithBusinessHours:v13 timeZone:timeZone localizedHoursStringOptions:options conciseStyle:styleCopy openAt:atCopy];
   return v15;
 }
 
-- (_MKLocalizedHoursBuilder)initWithMapItem:(id)a3 localizedHoursStringOptions:(unint64_t)a4
+- (_MKLocalizedHoursBuilder)initWithMapItem:(id)item localizedHoursStringOptions:(unint64_t)options
 {
-  v6 = a3;
-  v7 = [v6 _businessHours];
-  v8 = [v7 objectAtIndex:0];
-  v9 = [v6 timeZone];
+  itemCopy = item;
+  _businessHours = [itemCopy _businessHours];
+  v8 = [_businessHours objectAtIndex:0];
+  timeZone = [itemCopy timeZone];
 
-  v10 = [(_MKLocalizedHoursBuilder *)self initWithBusinessHours:v8 timeZone:v9 localizedHoursStringOptions:a4 conciseStyle:0 openAt:0];
+  v10 = [(_MKLocalizedHoursBuilder *)self initWithBusinessHours:v8 timeZone:timeZone localizedHoursStringOptions:options conciseStyle:0 openAt:0];
   return v10;
 }
 
-- (_MKLocalizedHoursBuilder)initWithBusinessHours:(id)a3 timeZone:(id)a4 localizedHoursStringOptions:(unint64_t)a5 conciseStyle:(BOOL)a6 openAt:(id)a7
+- (_MKLocalizedHoursBuilder)initWithBusinessHours:(id)hours timeZone:(id)zone localizedHoursStringOptions:(unint64_t)options conciseStyle:(BOOL)style openAt:(id)at
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
+  hoursCopy = hours;
+  zoneCopy = zone;
+  atCopy = at;
   v23.receiver = self;
   v23.super_class = _MKLocalizedHoursBuilder;
   v16 = [(_MKLocalizedHoursBuilder *)&v23 init];
@@ -1482,49 +1482,49 @@ LABEL_82:
   if (v16)
   {
     [(_MKLocalizedHoursBuilder *)v16 _commonInit];
-    v17->_isUsingConciseStyle = a6;
-    objc_storeStrong(&v17->_openAt, a7);
-    v18 = [MEMORY[0x1E695DF00] date];
-    v19 = [MEMORY[0x1E69A21D0] _geoMapItemOpeningHoursOptionsForBusinessHours:v13 compareDate:v18 timeZone:v14];
-    if (!v14 || (v20 = v19, (v19 & 1) != 0))
+    v17->_isUsingConciseStyle = style;
+    objc_storeStrong(&v17->_openAt, at);
+    date = [MEMORY[0x1E695DF00] date];
+    v19 = [MEMORY[0x1E69A21D0] _geoMapItemOpeningHoursOptionsForBusinessHours:hoursCopy compareDate:date timeZone:zoneCopy];
+    if (!zoneCopy || (v20 = v19, (v19 & 1) != 0))
     {
-      [(_MKLocalizedHoursBuilder *)v17 _resetLocalizedBuilder:v14 == 0];
+      [(_MKLocalizedHoursBuilder *)v17 _resetLocalizedBuilder:zoneCopy == 0];
     }
 
     else
     {
-      objc_storeStrong(&v17->_operatingHours, a3);
+      objc_storeStrong(&v17->_operatingHours, hours);
       v17->_geoMapItemOpeningHourOptions = v20;
-      v17->_localizedHoursStringOptions = a5;
+      v17->_localizedHoursStringOptions = options;
       compareDate = v17->_compareDate;
-      v17->_compareDate = v18;
+      v17->_compareDate = date;
 
-      [(_MKLocalizedHoursBuilder *)v17 setTimeZone:v14];
+      [(_MKLocalizedHoursBuilder *)v17 setTimeZone:zoneCopy];
     }
   }
 
   return v17;
 }
 
-+ (id)localizedHoursDayRangeString:(id)a3
++ (id)localizedHoursDayRangeString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 startDate];
+  stringCopy = string;
+  startDate = [stringCopy startDate];
 
-  if (v4)
+  if (startDate)
   {
-    v5 = [v3 endDate];
+    endDate = [stringCopy endDate];
 
     v6 = MEMORY[0x1E696AEC0];
-    if (v5)
+    if (endDate)
     {
       v7 = _MKLocalizedStringFromThisBundle(@"Placecard Full Hours Weekday Range");
       v8 = monthAndDayFormatter;
-      v9 = [v3 startDate];
-      v10 = [v8 stringFromDate:v9];
+      startDate2 = [stringCopy startDate];
+      v10 = [v8 stringFromDate:startDate2];
       v11 = monthAndDayFormatter;
-      v12 = [v3 endDate];
-      v13 = [v11 stringFromDate:v12];
+      endDate2 = [stringCopy endDate];
+      v13 = [v11 stringFromDate:endDate2];
       v14 = [v6 stringWithFormat:v7, v10, v13];
     }
 
@@ -1532,8 +1532,8 @@ LABEL_82:
     {
       v7 = _MKLocalizedStringFromThisBundle(@"Placecard Full Hours Starting Day");
       v15 = monthAndDayFormatter;
-      v9 = [v3 startDate];
-      v10 = [v15 stringFromDate:v9];
+      startDate2 = [stringCopy startDate];
+      v10 = [v15 stringFromDate:startDate2];
       v14 = [v6 stringWithFormat:v7, v10];
     }
   }

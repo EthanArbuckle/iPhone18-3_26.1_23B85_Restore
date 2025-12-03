@@ -1,22 +1,22 @@
 @interface FBWorkspaceEventDispatcher
 + (uint64_t)callOutQueue;
-- (BOOL)canCreateLocalSceneWithIdentity:(uint64_t)a1;
+- (BOOL)canCreateLocalSceneWithIdentity:(uint64_t)identity;
 - (FBWorkspaceEventDispatcher)init;
-- (id)_initWithDomain:(id *)a1;
-- (id)_initWithDomain:(void *)a3 connectionStore:(void *)a4 preregisteredWorkspaces:;
-- (id)registerSourceWithProcessHandle:(uint64_t)a1;
-- (id)registerTarget:(uint64_t)a1;
+- (id)_initWithDomain:(id *)domain;
+- (id)_initWithDomain:(void *)domain connectionStore:(void *)store preregisteredWorkspaces:;
+- (id)registerSourceWithProcessHandle:(uint64_t)handle;
+- (id)registerTarget:(uint64_t)target;
 - (uint64_t)domain;
-- (uint64_t)handleSceneRequest:(void *)a3 fromSource:;
-- (void)_callOutQueue_dispatchHandshakeFromSource:(void *)a3 toTarget:;
-- (void)_callOutQueue_dispatchSceneRequestsFromSource:(void *)a3 toTarget:;
-- (void)_callOutQueue_handleSceneRequest:(void *)a3 fromSource:;
-- (void)_callOutQueue_noteHandshakeFromSource:(void *)a3 withRemnants:;
-- (void)_noteReceivedInvalidationHandlerForAssertion:(uint64_t)a1;
-- (void)_noteSourceDidInvalidate:(void *)a3 withPIDNumber:;
+- (uint64_t)handleSceneRequest:(void *)request fromSource:;
+- (void)_callOutQueue_dispatchHandshakeFromSource:(void *)source toTarget:;
+- (void)_callOutQueue_dispatchSceneRequestsFromSource:(void *)source toTarget:;
+- (void)_callOutQueue_handleSceneRequest:(void *)request fromSource:;
+- (void)_callOutQueue_noteHandshakeFromSource:(void *)source withRemnants:;
+- (void)_noteReceivedInvalidationHandlerForAssertion:(uint64_t)assertion;
+- (void)_noteSourceDidInvalidate:(void *)invalidate withPIDNumber:;
 - (void)dealloc;
-- (void)handleLocalSceneRequest:(uint64_t)a1;
-- (void)noteHandshakeFromSource:(void *)a3 withRemnants:;
+- (void)handleLocalSceneRequest:(uint64_t)request;
+- (void)noteHandshakeFromSource:(void *)source withRemnants:;
 @end
 
 @implementation FBWorkspaceEventDispatcher
@@ -52,7 +52,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"FBWorkspaceEventDispatcher.m";
     v17 = 1024;
@@ -68,14 +68,14 @@
   return result;
 }
 
-- (id)_initWithDomain:(void *)a3 connectionStore:(void *)a4 preregisteredWorkspaces:
+- (id)_initWithDomain:(void *)domain connectionStore:(void *)store preregisteredWorkspaces:
 {
   v67 = *MEMORY[0x1E69E9840];
   v8 = a2;
-  v48 = a3;
-  v47 = a4;
+  domainCopy = domain;
+  storeCopy = store;
   v45 = v8;
-  if (a1)
+  if (self)
   {
     v9 = v8;
     if (!v9)
@@ -90,7 +90,7 @@
       [FBWorkspaceEventDispatcher _initWithDomain:v10 connectionStore:sel__initWithDomain_connectionStore_preregisteredWorkspaces_ preregisteredWorkspaces:?];
     }
 
-    v11 = v48;
+    v11 = domainCopy;
     if (!v11)
     {
       [FBWorkspaceEventDispatcher _initWithDomain:? connectionStore:? preregisteredWorkspaces:?];
@@ -103,7 +103,7 @@
       [FBWorkspaceEventDispatcher _initWithDomain:v12 connectionStore:sel__initWithDomain_connectionStore_preregisteredWorkspaces_ preregisteredWorkspaces:?];
     }
 
-    v13 = v47;
+    v13 = storeCopy;
     if (!v13)
     {
       [FBWorkspaceEventDispatcher _initWithDomain:? connectionStore:? preregisteredWorkspaces:?];
@@ -116,20 +116,20 @@
       [FBWorkspaceEventDispatcher _initWithDomain:v14 connectionStore:sel__initWithDomain_connectionStore_preregisteredWorkspaces_ preregisteredWorkspaces:?];
     }
 
-    v60.receiver = a1;
+    v60.receiver = self;
     v60.super_class = FBWorkspaceEventDispatcher;
     v15 = objc_msgSendSuper2(&v60, sel_init);
     val = v15;
     if (v15)
     {
       objc_storeStrong(v15 + 1, a2);
-      objc_storeStrong(val + 2, a3);
+      objc_storeStrong(val + 2, domain);
       v16 = [v14 copy];
       v17 = val[3];
       val[3] = v16;
 
-      v18 = [(FBWorkspaceConnectionsStateStore *)val[2] state];
-      v46 = [v18 processIdentifiers];
+      state = [(FBWorkspaceConnectionsStateStore *)val[2] state];
+      processIdentifiers = [state processIdentifiers];
 
       v19 = [MEMORY[0x1E696AD18] mapTableWithKeyOptions:0x10000 valueOptions:517];
       v20 = val[5];
@@ -141,15 +141,15 @@
 
       *(val + 18) = 0;
       lock = (val + 9);
-      v23 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v24 = val[4];
-      val[4] = v23;
+      val[4] = dictionary;
 
       v25 = objc_opt_new();
       v26 = val[8];
       val[8] = v25;
 
-      v49 = [v46 count];
+      v49 = [processIdentifiers count];
       if (v49)
       {
         objc_initWeak(&location, val);
@@ -164,7 +164,7 @@
         v56 = 0u;
         v53 = 0u;
         v54 = 0u;
-        obj = v46;
+        obj = processIdentifiers;
         v28 = [obj countByEnumeratingWithState:&v53 objects:v66 count:16];
         if (v28)
         {
@@ -239,7 +239,7 @@
         objc_destroyWeak(&location);
       }
 
-      [FBWorkspaceEventDispatcher _initWithDomain:v46 connectionStore:? preregisteredWorkspaces:?];
+      [FBWorkspaceEventDispatcher _initWithDomain:processIdentifiers connectionStore:? preregisteredWorkspaces:?];
     }
   }
 
@@ -259,12 +259,12 @@ void __86__FBWorkspaceEventDispatcher__initWithDomain_connectionStore_preregiste
   [(FBWorkspaceEventDispatcher *)WeakRetained _noteReceivedInvalidationHandlerForAssertion:v3];
 }
 
-- (id)registerSourceWithProcessHandle:(uint64_t)a1
+- (id)registerSourceWithProcessHandle:(uint64_t)handle
 {
   v32 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (handle)
   {
     v5 = v3;
     if (!v5)
@@ -287,8 +287,8 @@ void __86__FBWorkspaceEventDispatcher__initWithDomain_connectionStore_preregiste
 
     v8 = v7;
     v9 = [MEMORY[0x1E696AD98] numberWithInt:v7];
-    os_unfair_lock_lock((a1 + 72));
-    v10 = [*(a1 + 32) objectForKey:v9];
+    os_unfair_lock_lock((handle + 72));
+    v10 = [*(handle + 32) objectForKey:v9];
     if (v10)
     {
       if (v8 != getpid())
@@ -312,7 +312,7 @@ void __86__FBWorkspaceEventDispatcher__initWithDomain_connectionStore_preregiste
 
     else
     {
-      objc_initWeak(&location, a1);
+      objc_initWeak(&location, handle);
       v13 = [FBWorkspaceEventDispatcherSource alloc];
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
@@ -322,22 +322,22 @@ void __86__FBWorkspaceEventDispatcher__initWithDomain_connectionStore_preregiste
       v14 = v9;
       v25 = v14;
       v10 = [(FBWorkspaceEventDispatcherSource *)v13 _initWithProcessHandle:v6 invalidationBlock:v24];
-      v15 = *(a1 + 32);
+      v15 = *(handle + 32);
       v12 = v15 == 0;
       if (v15)
       {
-        v11 = [*(a1 + 56) objectForKey:v14];
+        v11 = [*(handle + 56) objectForKey:v14];
         if (v11)
         {
-          [*(a1 + 56) removeObjectForKey:v14];
-          if (![*(a1 + 56) count])
+          [*(handle + 56) removeObjectForKey:v14];
+          if (![*(handle + 56) count])
           {
-            v16 = *(a1 + 56);
-            *(a1 + 56) = 0;
+            v16 = *(handle + 56);
+            *(handle + 56) = 0;
           }
         }
 
-        [*(a1 + 32) setObject:v10 forKey:v14];
+        [*(handle + 32) setObject:v10 forKey:v14];
         v17 = FBLogProcessWorkspace();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
@@ -348,10 +348,10 @@ void __86__FBWorkspaceEventDispatcher__initWithDomain_connectionStore_preregiste
           _os_log_impl(&dword_1A89DD000, v17, OS_LOG_TYPE_DEFAULT, "Registering Source for %{public}@ : %{public}@", buf, 0x16u);
         }
 
-        v18 = [v14 rbs_pid];
-        if (v18 != getpid() && [*(a1 + 64) addProcessIdentifier:v14])
+        rbs_pid = [v14 rbs_pid];
+        if (rbs_pid != getpid() && [*(handle + 64) addProcessIdentifier:v14])
         {
-          [(FBWorkspaceConnectionsStateStore *)*(a1 + 16) setState:?];
+          [(FBWorkspaceConnectionsStateStore *)*(handle + 16) setState:?];
         }
       }
 
@@ -366,7 +366,7 @@ void __86__FBWorkspaceEventDispatcher__initWithDomain_connectionStore_preregiste
       objc_destroyWeak(&location);
     }
 
-    os_unfair_lock_unlock((a1 + 72));
+    os_unfair_lock_unlock((handle + 72));
     [v11 invalidate];
     if (v12)
     {
@@ -389,7 +389,7 @@ void __86__FBWorkspaceEventDispatcher__initWithDomain_connectionStore_preregiste
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"must call _invalidateWithCompletion: before dealloc"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_12();
     v4 = NSStringFromClass(v3);
@@ -402,22 +402,22 @@ void __86__FBWorkspaceEventDispatcher__initWithDomain_connectionStore_preregiste
   __break(0);
 }
 
-- (id)registerTarget:(uint64_t)a1
+- (id)registerTarget:(uint64_t)target
 {
   v42 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (target)
   {
     objc_opt_self();
-    v4 = [MEMORY[0x1E698F4D0] mainQueue];
-    [v4 assertBarrierOnQueue];
+    mainQueue = [MEMORY[0x1E698F4D0] mainQueue];
+    [mainQueue assertBarrierOnQueue];
 
     if (!v3)
     {
       [FBWorkspaceEventDispatcher registerTarget:?];
     }
 
-    v5 = [v3 workspaceIdentifier];
+    workspaceIdentifier = [v3 workspaceIdentifier];
     objc_initWeak(&location, v3);
     v6 = objc_alloc(MEMORY[0x1E698E778]);
     v26[0] = MEMORY[0x1E69E9820];
@@ -425,13 +425,13 @@ void __86__FBWorkspaceEventDispatcher__initWithDomain_connectionStore_preregiste
     v26[2] = __45__FBWorkspaceEventDispatcher_registerTarget___block_invoke;
     v26[3] = &unk_1E783B378;
     objc_copyWeak(v28, &location);
-    v26[4] = a1;
-    v7 = v5;
+    v26[4] = target;
+    v7 = workspaceIdentifier;
     v27 = v7;
     v28[1] = sel_registerTarget_;
     v8 = [v6 initWithIdentifier:@"com.apple.frontboard.workspace-events.registration.target" forReason:v7 invalidationBlock:v26];
-    os_unfair_lock_lock((a1 + 72));
-    v9 = [*(a1 + 40) objectForKey:v7];
+    os_unfair_lock_lock((target + 72));
+    v9 = [*(target + 40) objectForKey:v7];
     if (v9)
     {
       v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"already have a target registered for %@: %@", v7, v9];
@@ -447,7 +447,7 @@ void __86__FBWorkspaceEventDispatcher__initWithDomain_connectionStore_preregiste
         v32 = 2114;
         v33 = v20;
         v34 = 2048;
-        v35 = a1;
+        targetCopy = target;
         v36 = 2114;
         v37 = @"FBWorkspaceEventDispatcher.m";
         v38 = 1024;
@@ -463,7 +463,7 @@ void __86__FBWorkspaceEventDispatcher__initWithDomain_connectionStore_preregiste
       [FBWorkspaceEventDispatcher registerTarget:v22];
     }
 
-    [*(a1 + 40) setObject:v3 forKey:v7];
+    [*(target + 40) setObject:v3 forKey:v7];
     v10 = FBLogProcessWorkspace();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
@@ -474,19 +474,19 @@ void __86__FBWorkspaceEventDispatcher__initWithDomain_connectionStore_preregiste
       _os_log_impl(&dword_1A89DD000, v10, OS_LOG_TYPE_DEFAULT, "Registering Target for %{public}@: %{public}@", buf, 0x16u);
     }
 
-    os_unfair_lock_unlock((a1 + 72));
-    [*(a1 + 48) addObject:v7];
+    os_unfair_lock_unlock((target + 72));
+    [*(target + 48) addObject:v7];
     objc_opt_self();
-    v11 = [MEMORY[0x1E698F4D0] mainQueue];
+    mainQueue2 = [MEMORY[0x1E698F4D0] mainQueue];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __45__FBWorkspaceEventDispatcher_registerTarget___block_invoke_80;
     v23[3] = &unk_1E783B3A0;
     objc_copyWeak(&v25, &location);
-    v23[4] = a1;
+    v23[4] = target;
     v12 = v7;
     v24 = v12;
-    [v11 performAsync:v23];
+    [mainQueue2 performAsync:v23];
 
     objc_destroyWeak(&v25);
     objc_destroyWeak(v28);
@@ -637,24 +637,24 @@ void __62__FBWorkspaceEventDispatcher_registerSourceWithProcessHandle___block_in
   [(FBWorkspaceEventDispatcher *)WeakRetained _noteSourceDidInvalidate:v3 withPIDNumber:*(a1 + 32)];
 }
 
-- (void)_noteSourceDidInvalidate:(void *)a3 withPIDNumber:
+- (void)_noteSourceDidInvalidate:(void *)invalidate withPIDNumber:
 {
   v41 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  invalidateCopy = invalidate;
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 72));
-    v7 = *(a1 + 32);
+    os_unfair_lock_lock((self + 72));
+    v7 = *(self + 32);
     if (v7)
     {
-      v8 = [v7 objectForKey:v6];
+      v8 = [v7 objectForKey:invalidateCopy];
 
       if (v8 != v5)
       {
         v26 = MEMORY[0x1E696AEC0];
-        v27 = [*(a1 + 32) objectForKey:v6];
-        v28 = [v26 stringWithFormat:@"source mismatch for %@ : actual=%p expected=%p", v6, v27, v5];
+        v27 = [*(self + 32) objectForKey:invalidateCopy];
+        v28 = [v26 stringWithFormat:@"source mismatch for %@ : actual=%p expected=%p", invalidateCopy, v27, v5];
 
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
@@ -670,22 +670,22 @@ void __62__FBWorkspaceEventDispatcher_registerSourceWithProcessHandle___block_in
       v9 = FBLogProcessWorkspace();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [v5 processHandle];
+        processHandle = [v5 processHandle];
         *buf = 138543362;
-        v40 = v10;
+        v40 = processHandle;
         _os_log_impl(&dword_1A89DD000, v9, OS_LOG_TYPE_DEFAULT, "Removing source registration for processHandle: %{public}@", buf, 0xCu);
       }
 
-      [*(a1 + 32) removeObjectForKey:v6];
+      [*(self + 32) removeObjectForKey:invalidateCopy];
       v11 = objc_opt_new();
-      v12 = *(a1 + 64);
-      *(a1 + 64) = v11;
+      v12 = *(self + 64);
+      *(self + 64) = v11;
 
       v35 = 0u;
       v36 = 0u;
       v33 = 0u;
       v34 = 0u;
-      v13 = *(a1 + 32);
+      v13 = *(self + 32);
       v14 = [v13 countByEnumeratingWithState:&v33 objects:v38 count:16];
       if (v14)
       {
@@ -701,10 +701,10 @@ void __62__FBWorkspaceEventDispatcher_registerSourceWithProcessHandle___block_in
             }
 
             v18 = *(*(&v33 + 1) + 8 * i);
-            v19 = [v18 rbs_pid];
-            if (v19 != getpid())
+            rbs_pid = [v18 rbs_pid];
+            if (rbs_pid != getpid())
             {
-              [*(a1 + 64) addProcessIdentifier:v18];
+              [*(self + 64) addProcessIdentifier:v18];
             }
           }
 
@@ -718,7 +718,7 @@ void __62__FBWorkspaceEventDispatcher_registerSourceWithProcessHandle___block_in
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v20 = *(a1 + 56);
+      v20 = *(self + 56);
       v21 = [v20 countByEnumeratingWithState:&v29 objects:v37 count:16];
       if (v21)
       {
@@ -733,7 +733,7 @@ void __62__FBWorkspaceEventDispatcher_registerSourceWithProcessHandle___block_in
               objc_enumerationMutation(v20);
             }
 
-            [*(a1 + 64) addProcessIdentifier:*(*(&v29 + 1) + 8 * j)];
+            [*(self + 64) addProcessIdentifier:*(*(&v29 + 1) + 8 * j)];
           }
 
           v22 = [v20 countByEnumeratingWithState:&v29 objects:v37 count:16];
@@ -742,21 +742,21 @@ void __62__FBWorkspaceEventDispatcher_registerSourceWithProcessHandle___block_in
         while (v22);
       }
 
-      [(FBWorkspaceConnectionsStateStore *)*(a1 + 16) setState:?];
+      [(FBWorkspaceConnectionsStateStore *)*(self + 16) setState:?];
     }
 
-    os_unfair_lock_unlock((a1 + 72));
+    os_unfair_lock_unlock((self + 72));
   }
 
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)noteHandshakeFromSource:(void *)a3 withRemnants:
+- (void)noteHandshakeFromSource:(void *)source withRemnants:
 {
   v26 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  sourceCopy = source;
+  if (self)
   {
     v7 = v5;
     if (!v7)
@@ -771,7 +771,7 @@ void __62__FBWorkspaceEventDispatcher_registerSourceWithProcessHandle___block_in
       [FBWorkspaceEventDispatcher noteHandshakeFromSource:v8 withRemnants:sel_noteHandshakeFromSource_withRemnants_];
     }
 
-    v9 = v6;
+    v9 = sourceCopy;
     if (!v9)
     {
       [FBWorkspaceEventDispatcher noteHandshakeFromSource:? withRemnants:?];
@@ -825,17 +825,17 @@ void __62__FBWorkspaceEventDispatcher_registerSourceWithProcessHandle___block_in
       while (v14);
     }
 
-    [(FBWorkspaceEventDispatcher *)v11 noteHandshakeFromSource:v20 withRemnants:a1, v8];
+    [(FBWorkspaceEventDispatcher *)v11 noteHandshakeFromSource:v20 withRemnants:self, v8];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (uint64_t)handleSceneRequest:(void *)a3 fromSource:
+- (uint64_t)handleSceneRequest:(void *)request fromSource:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  requestCopy = request;
+  if (self)
   {
     v7 = v5;
     if (!v7)
@@ -850,7 +850,7 @@ void __62__FBWorkspaceEventDispatcher_registerSourceWithProcessHandle___block_in
       [FBWorkspaceEventDispatcher handleSceneRequest:v8 fromSource:sel_handleSceneRequest_fromSource_];
     }
 
-    v9 = v6;
+    v9 = requestCopy;
     if (!v9)
     {
       [FBWorkspaceEventDispatcher handleSceneRequest:? fromSource:?];
@@ -863,32 +863,32 @@ void __62__FBWorkspaceEventDispatcher_registerSourceWithProcessHandle___block_in
       [FBWorkspaceEventDispatcher handleSceneRequest:v10 fromSource:sel_handleSceneRequest_fromSource_];
     }
 
-    v11 = [v8 targetIdentifier];
-    v12 = [*(a1 + 24) objectForKey:v11];
+    targetIdentifier = [v8 targetIdentifier];
+    v12 = [*(self + 24) objectForKey:targetIdentifier];
 
-    if (v11 && (v12 || ([v8 requiresTargetPreregistration] & 1) == 0))
+    if (targetIdentifier && (v12 || ([v8 requiresTargetPreregistration] & 1) == 0))
     {
       objc_opt_self();
-      v13 = [MEMORY[0x1E698F4D0] mainQueue];
+      mainQueue = [MEMORY[0x1E698F4D0] mainQueue];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __60__FBWorkspaceEventDispatcher_handleSceneRequest_fromSource___block_invoke;
       v15[3] = &unk_1E783B300;
-      v15[4] = a1;
+      v15[4] = self;
       v16 = v8;
       v17 = v10;
-      [v13 performAsync:v15];
+      [mainQueue performAsync:v15];
 
-      a1 = 1;
+      self = 1;
     }
 
     else
     {
-      a1 = 0;
+      self = 0;
     }
   }
 
-  return a1;
+  return self;
 }
 
 uint64_t __81__FBWorkspaceEventDispatcher__callOutQueue_dispatchHandshakeFromSource_toTarget___block_invoke(uint64_t a1, void *a2)
@@ -902,34 +902,34 @@ uint64_t __81__FBWorkspaceEventDispatcher__callOutQueue_dispatchHandshakeFromSou
   return v7;
 }
 
-- (id)_initWithDomain:(id *)a1
+- (id)_initWithDomain:(id *)domain
 {
-  v2 = a1;
-  if (a1)
+  domainCopy = domain;
+  if (domain)
   {
     v3 = a2;
     v4 = [FBWorkspaceConnectionsStateStore alloc];
-    v5 = [(FBWorkspaceDomain *)v3 reconnectShmemIdentifier];
-    v6 = [(FBWorkspaceConnectionsStateStore *)v4 _initWithIdentifier:v5];
-    v7 = [(FBWorkspaceDomain *)v3 preregisteredWorkspaces];
-    v8 = [(FBWorkspaceEventDispatcher *)v2 _initWithDomain:v3 connectionStore:v6 preregisteredWorkspaces:v7];
+    reconnectShmemIdentifier = [(FBWorkspaceDomain *)v3 reconnectShmemIdentifier];
+    v6 = [(FBWorkspaceConnectionsStateStore *)v4 _initWithIdentifier:reconnectShmemIdentifier];
+    preregisteredWorkspaces = [(FBWorkspaceDomain *)v3 preregisteredWorkspaces];
+    v8 = [(FBWorkspaceEventDispatcher *)domainCopy _initWithDomain:v3 connectionStore:v6 preregisteredWorkspaces:preregisteredWorkspaces];
 
-    v2 = v8;
+    domainCopy = v8;
   }
 
-  return v2;
+  return domainCopy;
 }
 
-- (void)_noteReceivedInvalidationHandlerForAssertion:(uint64_t)a1
+- (void)_noteReceivedInvalidationHandlerForAssertion:(uint64_t)assertion
 {
   v48 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (assertion)
   {
-    os_unfair_lock_lock((a1 + 72));
-    if (*(a1 + 32))
+    os_unfair_lock_lock((assertion + 72));
+    if (*(assertion + 32))
     {
-      v4 = *(a1 + 56);
+      v4 = *(assertion + 56);
       v43[0] = MEMORY[0x1E69E9820];
       v43[1] = 3221225472;
       v43[2] = __75__FBWorkspaceEventDispatcher__noteReceivedInvalidationHandlerForAssertion___block_invoke;
@@ -957,7 +957,7 @@ uint64_t __81__FBWorkspaceEventDispatcher__callOutQueue_dispatchHandshakeFromSou
                 objc_enumerationMutation(v6);
               }
 
-              v11 = [*(a1 + 56) removeObjectForKey:*(*(&v39 + 1) + 8 * i)];
+              v11 = [*(assertion + 56) removeObjectForKey:*(*(&v39 + 1) + 8 * i)];
             }
 
             v8 = OUTLINED_FUNCTION_11(v11, v12, &v39, v47);
@@ -967,14 +967,14 @@ uint64_t __81__FBWorkspaceEventDispatcher__callOutQueue_dispatchHandshakeFromSou
         }
 
         v13 = objc_opt_new();
-        v14 = *(a1 + 64);
-        *(a1 + 64) = v13;
+        v14 = *(assertion + 64);
+        *(assertion + 64) = v13;
 
         v37 = 0u;
         v38 = 0u;
         v35 = 0u;
         v36 = 0u;
-        v15 = *(a1 + 32);
+        v15 = *(assertion + 32);
         v16 = [v15 countByEnumeratingWithState:&v35 objects:v46 count:16];
         if (v16)
         {
@@ -990,11 +990,11 @@ uint64_t __81__FBWorkspaceEventDispatcher__callOutQueue_dispatchHandshakeFromSou
               }
 
               v20 = *(*(&v35 + 1) + 8 * j);
-              v21 = [v20 rbs_pid];
+              rbs_pid = [v20 rbs_pid];
               v22 = getpid();
-              if (v21 != v22)
+              if (rbs_pid != v22)
               {
-                v22 = [*(a1 + 64) addProcessIdentifier:v20];
+                v22 = [*(assertion + 64) addProcessIdentifier:v20];
               }
             }
 
@@ -1005,7 +1005,7 @@ uint64_t __81__FBWorkspaceEventDispatcher__callOutQueue_dispatchHandshakeFromSou
         }
 
         OUTLINED_FUNCTION_10();
-        v24 = *(a1 + 56);
+        v24 = *(assertion + 56);
         v25 = [v24 countByEnumeratingWithState:v33 objects:v45 count:16];
         if (v25)
         {
@@ -1020,7 +1020,7 @@ uint64_t __81__FBWorkspaceEventDispatcher__callOutQueue_dispatchHandshakeFromSou
                 objc_enumerationMutation(v24);
               }
 
-              v29 = [*(a1 + 64) addProcessIdentifier:*(v33[1] + 8 * k)];
+              v29 = [*(assertion + 64) addProcessIdentifier:*(v33[1] + 8 * k)];
             }
 
             v26 = OUTLINED_FUNCTION_11(v29, v30, v33, v45);
@@ -1029,61 +1029,61 @@ uint64_t __81__FBWorkspaceEventDispatcher__callOutQueue_dispatchHandshakeFromSou
           while (v26);
         }
 
-        [(FBWorkspaceConnectionsStateStore *)*(a1 + 16) setState:?];
+        [(FBWorkspaceConnectionsStateStore *)*(assertion + 16) setState:?];
       }
 
-      if (![*(a1 + 56) count])
+      if (![*(assertion + 56) count])
       {
-        v31 = *(a1 + 56);
-        *(a1 + 56) = 0;
+        v31 = *(assertion + 56);
+        *(assertion + 56) = 0;
       }
     }
 
-    os_unfair_lock_unlock((a1 + 72));
+    os_unfair_lock_unlock((assertion + 72));
   }
 
   v32 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_callOutQueue_dispatchHandshakeFromSource:(void *)a3 toTarget:
+- (void)_callOutQueue_dispatchHandshakeFromSource:(void *)source toTarget:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  sourceCopy = source;
+  if (self)
   {
     objc_opt_self();
-    v7 = [MEMORY[0x1E698F4D0] mainQueue];
-    [v7 assertBarrierOnQueue];
+    mainQueue = [MEMORY[0x1E698F4D0] mainQueue];
+    [mainQueue assertBarrierOnQueue];
 
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __81__FBWorkspaceEventDispatcher__callOutQueue_dispatchHandshakeFromSource_toTarget___block_invoke;
     v11[3] = &unk_1E783B418;
-    v12 = v6;
+    v12 = sourceCopy;
     v8 = [v5 consumeRemnantsPassingTest:v11];
     if (v8)
     {
       v9 = [FBSceneClientHandshake alloc];
-      v10 = [v5 processHandle];
-      [(FBSceneClientHandshake *)v9 _initWithHandle:v10 remnants:v8];
+      processHandle = [v5 processHandle];
+      [(FBSceneClientHandshake *)v9 _initWithHandle:processHandle remnants:v8];
       [OUTLINED_FUNCTION_7() didReceiveHandshake:?];
     }
   }
 }
 
-- (void)_callOutQueue_dispatchSceneRequestsFromSource:(void *)a3 toTarget:
+- (void)_callOutQueue_dispatchSceneRequestsFromSource:(void *)source toTarget:
 {
   v53 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  sourceCopy = source;
+  if (self)
   {
     objc_opt_self();
-    v7 = [MEMORY[0x1E698F4D0] mainQueue];
-    [v7 assertBarrierOnQueue];
+    mainQueue = [MEMORY[0x1E698F4D0] mainQueue];
+    [mainQueue assertBarrierOnQueue];
 
-    v8 = [v6 workspaceIdentifier];
-    v9 = [v5 dequeueSceneRequestsForTargetIdentifier:v8];
+    workspaceIdentifier = [sourceCopy workspaceIdentifier];
+    v9 = [v5 dequeueSceneRequestsForTargetIdentifier:workspaceIdentifier];
 
     v18 = OUTLINED_FUNCTION_13(v10, v11, v12, v13, v14, v15, v16, v17, v33, v35, v37, v39, v41, v43, v45, v47, v49, v51);
     if (v18)
@@ -1101,8 +1101,8 @@ uint64_t __81__FBWorkspaceEventDispatcher__callOutQueue_dispatchHandshakeFromSou
           }
 
           v22 = *(v36 + 8 * v21);
-          v23 = [v5 processHandle];
-          [v6 didReceiveSceneRequest:v22 fromHandle:v23];
+          processHandle = [v5 processHandle];
+          [sourceCopy didReceiveSceneRequest:v22 fromHandle:processHandle];
 
           ++v21;
         }
@@ -1118,28 +1118,28 @@ uint64_t __81__FBWorkspaceEventDispatcher__callOutQueue_dispatchHandshakeFromSou
   v32 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_callOutQueue_noteHandshakeFromSource:(void *)a3 withRemnants:
+- (void)_callOutQueue_noteHandshakeFromSource:(void *)source withRemnants:
 {
   v43 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  sourceCopy = source;
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 72));
-    v7 = *(a1 + 32);
+    os_unfair_lock_lock((self + 72));
+    v7 = *(self + 32);
     v8 = MEMORY[0x1E696AD98];
-    v9 = [v5 processHandle];
-    [v8 numberWithInt:{objc_msgSend(v9, "rbs_pid")}];
+    processHandle = [v5 processHandle];
+    [v8 numberWithInt:{objc_msgSend(processHandle, "rbs_pid")}];
     objc_claimAutoreleasedReturnValue();
     v10 = [OUTLINED_FUNCTION_7() objectForKey:?];
 
     if (v10 == v5)
     {
-      v21 = [v5 noteHandshakeWithRemnants:v6];
-      v22 = NSAllMapTableValues(*(a1 + 40));
+      v21 = [v5 noteHandshakeWithRemnants:sourceCopy];
+      v22 = NSAllMapTableValues(*(self + 40));
       v13 = [v22 copy];
 
-      os_unfair_lock_unlock((a1 + 72));
+      os_unfair_lock_unlock((self + 72));
       if (v21)
       {
         v37 = 0u;
@@ -1162,13 +1162,13 @@ uint64_t __81__FBWorkspaceEventDispatcher__callOutQueue_dispatchHandshakeFromSou
               }
 
               v27 = *(*(&v35 + 1) + 8 * i);
-              v28 = *(a1 + 48);
-              v29 = [v27 workspaceIdentifier];
-              LOBYTE(v28) = [v28 containsObject:v29];
+              v28 = *(self + 48);
+              workspaceIdentifier = [v27 workspaceIdentifier];
+              LOBYTE(v28) = [v28 containsObject:workspaceIdentifier];
 
               if ((v28 & 1) == 0)
               {
-                [(FBWorkspaceEventDispatcher *)a1 _callOutQueue_dispatchHandshakeFromSource:v5 toTarget:v27];
+                [(FBWorkspaceEventDispatcher *)self _callOutQueue_dispatchHandshakeFromSource:v5 toTarget:v27];
               }
             }
 
@@ -1192,13 +1192,13 @@ uint64_t __81__FBWorkspaceEventDispatcher__callOutQueue_dispatchHandshakeFromSou
 
     else
     {
-      os_unfair_lock_unlock((a1 + 72));
+      os_unfair_lock_unlock((self + 72));
       v11 = FBLogProcessWorkspace();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [v5 processHandle];
+        processHandle2 = [v5 processHandle];
         *buf = 67240192;
-        v41 = [v12 rbs_pid];
+        rbs_pid = [processHandle2 rbs_pid];
         _os_log_impl(&dword_1A89DD000, v11, OS_LOG_TYPE_DEFAULT, "Ignoring invalid source handshake for %{public}i", buf, 8u);
       }
 
@@ -1206,7 +1206,7 @@ uint64_t __81__FBWorkspaceEventDispatcher__callOutQueue_dispatchHandshakeFromSou
     }
 
     OUTLINED_FUNCTION_10();
-    v14 = v6;
+    v14 = sourceCopy;
     v15 = [v14 countByEnumeratingWithState:v33 objects:v39 count:16];
     if (v15)
     {
@@ -1221,10 +1221,10 @@ uint64_t __81__FBWorkspaceEventDispatcher__callOutQueue_dispatchHandshakeFromSou
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(v33[1] + 8 * j) invalidate];
+          invalidate = [*(v33[1] + 8 * j) invalidate];
         }
 
-        v16 = OUTLINED_FUNCTION_11(v19, v20, v33, v39);
+        v16 = OUTLINED_FUNCTION_11(invalidate, v20, v33, v39);
       }
 
       while (v16);
@@ -1236,40 +1236,40 @@ LABEL_25:
   v32 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_callOutQueue_handleSceneRequest:(void *)a3 fromSource:
+- (void)_callOutQueue_handleSceneRequest:(void *)request fromSource:
 {
   v24 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  requestCopy = request;
+  if (self)
   {
-    v7 = [v5 targetIdentifier];
-    v8 = [*(a1 + 24) objectForKey:v7];
+    targetIdentifier = [v5 targetIdentifier];
+    v8 = [*(self + 24) objectForKey:targetIdentifier];
 
-    os_unfair_lock_lock((a1 + 72));
-    v9 = *(a1 + 32);
+    os_unfair_lock_lock((self + 72));
+    v9 = *(self + 32);
     v10 = MEMORY[0x1E696AD98];
-    v11 = [v6 processHandle];
-    v12 = [v10 numberWithInt:{objc_msgSend(v11, "rbs_pid")}];
+    processHandle = [requestCopy processHandle];
+    v12 = [v10 numberWithInt:{objc_msgSend(processHandle, "rbs_pid")}];
     v13 = [v9 objectForKey:v12];
 
-    if (v13 == v6)
+    if (v13 == requestCopy)
     {
-      v16 = [*(a1 + 40) objectForKey:v7];
+      v16 = [*(self + 40) objectForKey:targetIdentifier];
       if (v8 | v16)
       {
         v17 = v16;
-        [v6 enqueueSceneRequest:v5];
-        os_unfair_lock_unlock((a1 + 72));
+        [requestCopy enqueueSceneRequest:v5];
+        os_unfair_lock_unlock((self + 72));
         if (v17)
         {
-          v18 = *(a1 + 48);
-          v19 = [v17 workspaceIdentifier];
-          LOBYTE(v18) = [v18 containsObject:v19];
+          v18 = *(self + 48);
+          workspaceIdentifier = [v17 workspaceIdentifier];
+          LOBYTE(v18) = [v18 containsObject:workspaceIdentifier];
 
           if ((v18 & 1) == 0)
           {
-            [(FBWorkspaceEventDispatcher *)a1 _callOutQueue_dispatchSceneRequestsFromSource:v6 toTarget:v17];
+            [(FBWorkspaceEventDispatcher *)self _callOutQueue_dispatchSceneRequestsFromSource:requestCopy toTarget:v17];
           }
 
           goto LABEL_15;
@@ -1287,27 +1287,27 @@ LABEL_15:
 
       else
       {
-        os_unfair_lock_unlock((a1 + 72));
+        os_unfair_lock_unlock((self + 72));
       }
 
       v14 = FBLogProcessWorkspace();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v23 = v7;
+        v23 = targetIdentifier;
         _os_log_impl(&dword_1A89DD000, v14, OS_LOG_TYPE_DEFAULT, "Denying scene request because target workspace %{public}@ does not exist", buf, 0xCu);
       }
     }
 
     else
     {
-      os_unfair_lock_unlock((a1 + 72));
+      os_unfair_lock_unlock((self + 72));
       v14 = FBLogProcessWorkspace();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [v6 processHandle];
+        processHandle2 = [requestCopy processHandle];
         *buf = 67240192;
-        LODWORD(v23) = [v15 rbs_pid];
+        LODWORD(v23) = [processHandle2 rbs_pid];
         _os_log_impl(&dword_1A89DD000, v14, OS_LOG_TYPE_DEFAULT, "Ignoring scene request from invalid source registration for %{public}i", buf, 8u);
       }
     }
@@ -1323,24 +1323,24 @@ LABEL_16:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)canCreateLocalSceneWithIdentity:(uint64_t)a1
+- (BOOL)canCreateLocalSceneWithIdentity:(uint64_t)identity
 {
-  if (!a1)
+  if (!identity)
   {
     return 0;
   }
 
   v3 = a2;
   objc_opt_self();
-  v4 = [MEMORY[0x1E698F4D0] mainQueue];
-  [v4 assertBarrierOnQueue];
+  mainQueue = [MEMORY[0x1E698F4D0] mainQueue];
+  [mainQueue assertBarrierOnQueue];
 
-  v5 = [v3 workspaceIdentifier];
+  workspaceIdentifier = [v3 workspaceIdentifier];
 
-  v6 = [*(a1 + 24) objectForKey:v5];
+  v6 = [*(identity + 24) objectForKey:workspaceIdentifier];
 
-  os_unfair_lock_lock((a1 + 72));
-  v7 = *(a1 + 32);
+  os_unfair_lock_lock((identity + 72));
+  v7 = *(identity + 32);
   v8 = MEMORY[0x1E696AD98];
   [MEMORY[0x1E696AD98] numberWithInt:getpid()];
   objc_claimAutoreleasedReturnValue();
@@ -1348,7 +1348,7 @@ LABEL_16:
 
   if (v9)
   {
-    v10 = [*(a1 + 40) objectForKey:v5];
+    v10 = [*(identity + 40) objectForKey:workspaceIdentifier];
     v11 = (v6 | v10) != 0;
   }
 
@@ -1357,32 +1357,32 @@ LABEL_16:
     v11 = 0;
   }
 
-  os_unfair_lock_unlock((a1 + 72));
+  os_unfair_lock_unlock((identity + 72));
 
   return v11;
 }
 
-- (void)handleLocalSceneRequest:(uint64_t)a1
+- (void)handleLocalSceneRequest:(uint64_t)request
 {
   v3 = a2;
-  if (a1)
+  if (request)
   {
     objc_opt_self();
-    v4 = [MEMORY[0x1E698F4D0] mainQueue];
-    [v4 assertBarrierOnQueue];
+    mainQueue = [MEMORY[0x1E698F4D0] mainQueue];
+    [mainQueue assertBarrierOnQueue];
 
-    os_unfair_lock_lock((a1 + 72));
-    v5 = *(a1 + 32);
+    os_unfair_lock_lock((request + 72));
+    v5 = *(request + 32);
     v6 = [MEMORY[0x1E696AD98] numberWithInt:getpid()];
     v7 = [v5 objectForKey:v6];
 
-    os_unfair_lock_unlock((a1 + 72));
+    os_unfair_lock_unlock((request + 72));
     if (v7)
     {
       v10 = [MEMORY[0x1E695DFD8] set];
-      [(FBWorkspaceEventDispatcher *)a1 _callOutQueue_noteHandshakeFromSource:v7 withRemnants:v10];
+      [(FBWorkspaceEventDispatcher *)request _callOutQueue_noteHandshakeFromSource:v7 withRemnants:v10];
 
-      [(FBWorkspaceEventDispatcher *)a1 _callOutQueue_handleSceneRequest:v3 fromSource:v7];
+      [(FBWorkspaceEventDispatcher *)request _callOutQueue_handleSceneRequest:v3 fromSource:v7];
     }
 
     else

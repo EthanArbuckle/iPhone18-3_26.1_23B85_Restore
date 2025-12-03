@@ -1,24 +1,24 @@
 @interface PKPaymentSetupAssistantCoreController
 + (id)requiredPaymentSetupFileURLs;
-- (BOOL)_bridgeNeedsToRun:(unint64_t *)a3;
-- (BOOL)_hasManuallyAddedSecureElementPasses:(BOOL)a3;
-- (BOOL)_macNeedsToRun:(unint64_t *)a3;
-- (BOOL)_phoneNeedsToRun:(unint64_t *)a3;
-- (BOOL)_setupAssistantNeedsToRunReturningRequirements:(unint64_t *)a3;
-- (PKPaymentSetupAssistantCoreController)initWithSetupAssistantContext:(id)a3;
+- (BOOL)_bridgeNeedsToRun:(unint64_t *)run;
+- (BOOL)_hasManuallyAddedSecureElementPasses:(BOOL)passes;
+- (BOOL)_macNeedsToRun:(unint64_t *)run;
+- (BOOL)_phoneNeedsToRun:(unint64_t *)run;
+- (BOOL)_setupAssistantNeedsToRunReturningRequirements:(unint64_t *)requirements;
+- (PKPaymentSetupAssistantCoreController)initWithSetupAssistantContext:(id)context;
 - (id)_bridgeContextDefaultLocalCredential;
 - (id)_defaultWebService;
 - (id)_peerPaymentCredential;
-- (id)_provisioningContextWithProvisioningController:(id)a3 setupAssistantCredentials:(id)a4 maximumSelectable:(unint64_t)a5;
-- (id)_provisioningControllerWithWebService:(id)a3;
-- (id)_setupAssistantCredentialForPaymentCredential:(id)a3;
-- (id)_setupAssistantCredentialForPaymentPass:(id)a3;
-- (unint64_t)_specialCaseSEPassCountInPassLibrary:(id)a3;
-- (void)_expressCardRemovalProvisioningContext:(id)a3;
-- (void)_expressSetupProvisioningContext:(id)a3;
-- (void)_extendedSetupAssistantNeedsToRunWithCompletion:(id)a3;
-- (void)_preflightPaymentSetupProvisioningController:(id)a3 completion:(id)a4;
-- (void)_shouldRunAppleCashFlow:(BOOL *)a3 shouldRunPaymentSetupFlow:(BOOL *)a4 pairingFamilyMember:(id)a5 pairingPeerPaymentAccount:(id)a6 parentFamilyMember:(id)a7 parentPeerPaymentAccount:(id)a8;
+- (id)_provisioningContextWithProvisioningController:(id)controller setupAssistantCredentials:(id)credentials maximumSelectable:(unint64_t)selectable;
+- (id)_provisioningControllerWithWebService:(id)service;
+- (id)_setupAssistantCredentialForPaymentCredential:(id)credential;
+- (id)_setupAssistantCredentialForPaymentPass:(id)pass;
+- (unint64_t)_specialCaseSEPassCountInPassLibrary:(id)library;
+- (void)_expressCardRemovalProvisioningContext:(id)context;
+- (void)_expressSetupProvisioningContext:(id)context;
+- (void)_extendedSetupAssistantNeedsToRunWithCompletion:(id)completion;
+- (void)_preflightPaymentSetupProvisioningController:(id)controller completion:(id)completion;
+- (void)_shouldRunAppleCashFlow:(BOOL *)flow shouldRunPaymentSetupFlow:(BOOL *)setupFlow pairingFamilyMember:(id)member pairingPeerPaymentAccount:(id)account parentFamilyMember:(id)familyMember parentPeerPaymentAccount:(id)paymentAccount;
 @end
 
 @implementation PKPaymentSetupAssistantCoreController
@@ -39,25 +39,25 @@
   return v2;
 }
 
-- (PKPaymentSetupAssistantCoreController)initWithSetupAssistantContext:(id)a3
+- (PKPaymentSetupAssistantCoreController)initWithSetupAssistantContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = PKPaymentSetupAssistantCoreController;
   v6 = [(PKPaymentSetupAssistantCoreController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_setupAssistantContext, a3);
+    objc_storeStrong(&v6->_setupAssistantContext, context);
     v7->_preflightState = 0;
   }
 
   return v7;
 }
 
-- (void)_extendedSetupAssistantNeedsToRunWithCompletion:(id)a3
+- (void)_extendedSetupAssistantNeedsToRunWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v24 = 0;
   v20 = 0;
   v21 = &v20;
@@ -73,7 +73,7 @@
   {
     v5 = 1;
 LABEL_5:
-    v4[2](v4, v5 & 1);
+    completionCopy[2](completionCopy, v5 & 1);
     goto LABEL_6;
   }
 
@@ -83,15 +83,15 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v6 = [(PKPaymentSetupAssistantCoreController *)self _defaultWebService];
+  _defaultWebService = [(PKPaymentSetupAssistantCoreController *)self _defaultWebService];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __89__PKPaymentSetupAssistantCoreController__extendedSetupAssistantNeedsToRunWithCompletion___block_invoke;
   aBlock[3] = &unk_1E79DFAF8;
   v18 = &v20;
-  v7 = v6;
+  v7 = _defaultWebService;
   v16 = v7;
-  v8 = v4;
+  v8 = completionCopy;
   v17 = v8;
   v19 = v24;
   v9 = _Block_copy(aBlock);
@@ -146,7 +146,7 @@ uint64_t __89__PKPaymentSetupAssistantCoreController__extendedSetupAssistantNeed
   }
 }
 
-- (BOOL)_setupAssistantNeedsToRunReturningRequirements:(unint64_t *)a3
+- (BOOL)_setupAssistantNeedsToRunReturningRequirements:(unint64_t *)requirements
 {
   v16 = *MEMORY[0x1E69E9840];
   v6 = PKLogFacilityTypeGetObject(0x2AuLL);
@@ -161,29 +161,29 @@ uint64_t __89__PKPaymentSetupAssistantCoreController__extendedSetupAssistantNeed
     _os_log_impl(&dword_1AD337000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ with context: %@", &v12, 0x16u);
   }
 
-  v9 = [(PKPaymentSetupAssistantContextProtocol *)self->_setupAssistantContext setupAssistant];
-  if (v9 == 2)
+  setupAssistant = [(PKPaymentSetupAssistantContextProtocol *)self->_setupAssistantContext setupAssistant];
+  if (setupAssistant == 2)
   {
-    return [(PKPaymentSetupAssistantCoreController *)self _bridgeNeedsToRun:a3];
+    return [(PKPaymentSetupAssistantCoreController *)self _bridgeNeedsToRun:requirements];
   }
 
-  if (v9 == 1)
+  if (setupAssistant == 1)
   {
-    return [(PKPaymentSetupAssistantCoreController *)self _phoneNeedsToRun:a3];
+    return [(PKPaymentSetupAssistantCoreController *)self _phoneNeedsToRun:requirements];
   }
 
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(PKPaymentSetupAssistantContextProtocol *)self->_setupAssistantContext setupAssistant];
+    setupAssistant2 = [(PKPaymentSetupAssistantContextProtocol *)self->_setupAssistantContext setupAssistant];
     v12 = 134217984;
-    v13 = v11;
+    v13 = setupAssistant2;
     _os_log_impl(&dword_1AD337000, v6, OS_LOG_TYPE_DEFAULT, "Error: _setupAssistantNeedsToRunReturningRequirements called with unsupported type %lu. File a radar!", &v12, 0xCu);
   }
 
   return 0;
 }
 
-- (BOOL)_phoneNeedsToRun:(unint64_t *)a3
+- (BOOL)_phoneNeedsToRun:(unint64_t *)run
 {
   v15 = *MEMORY[0x1E69E9840];
   v5 = [PKSetupAssistantRequirementsChecker alloc];
@@ -192,9 +192,9 @@ uint64_t __89__PKPaymentSetupAssistantCoreController__extendedSetupAssistantNeed
 
   v8 = [(PKSetupAssistantRequirementsChecker *)v7 checkPhoneRequirementsWithContext:self->_setupAssistantContext];
   v9 = v8;
-  if (a3)
+  if (run)
   {
-    *a3 = [v8 missingRequirements];
+    *run = [v8 missingRequirements];
   }
 
   v10 = PKLogFacilityTypeGetObject(0x2AuLL);
@@ -205,21 +205,21 @@ uint64_t __89__PKPaymentSetupAssistantCoreController__extendedSetupAssistantNeed
     _os_log_impl(&dword_1AD337000, v10, OS_LOG_TYPE_DEFAULT, "Does Phone Apple Pay Buddy Need to Run?: %{public}@", &v13, 0xCu);
   }
 
-  v11 = [v9 shouldRun];
-  return v11;
+  shouldRun = [v9 shouldRun];
+  return shouldRun;
 }
 
-- (BOOL)_bridgeNeedsToRun:(unint64_t *)a3
+- (BOOL)_bridgeNeedsToRun:(unint64_t *)run
 {
   v42 = *MEMORY[0x1E69E9840];
   if ([(PKPaymentSetupAssistantContextProtocol *)self->_setupAssistantContext conformsToProtocol:&unk_1F247CEA8])
   {
     v6 = self->_setupAssistantContext;
-    v7 = [(PKPaymentSetupAssistantContextProtocol *)v6 parentFamilyMember];
-    v8 = [(PKPaymentSetupAssistantContextProtocol *)v6 pairingFamilyMember];
-    if (v8)
+    parentFamilyMember = [(PKPaymentSetupAssistantContextProtocol *)v6 parentFamilyMember];
+    pairingFamilyMember = [(PKPaymentSetupAssistantContextProtocol *)v6 pairingFamilyMember];
+    if (pairingFamilyMember)
     {
-      v9 = v7 == 0;
+      v9 = parentFamilyMember == 0;
     }
 
     else
@@ -229,34 +229,34 @@ uint64_t __89__PKPaymentSetupAssistantCoreController__extendedSetupAssistantNeed
 
     if (!v9)
     {
-      v19 = [getNPKCompanionAgentConnectionClass_4[0]() watchPeerPaymentWebService];
+      watchPeerPaymentWebService = [getNPKCompanionAgentConnectionClass_4[0]() watchPeerPaymentWebService];
       v20 = +[PKPeerPaymentWebService sharedService];
-      v32 = v19;
-      v21 = [v19 targetDevice];
-      v22 = [v21 account];
+      v32 = watchPeerPaymentWebService;
+      targetDevice = [watchPeerPaymentWebService targetDevice];
+      account = [targetDevice account];
 
-      v23 = [v20 targetDevice];
-      v24 = [v23 account];
+      targetDevice2 = [v20 targetDevice];
+      account2 = [targetDevice2 account];
 
       v25 = PKLogFacilityTypeGetObject(0xCuLL);
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138413058;
-        v35 = v8;
+        v35 = pairingFamilyMember;
         v36 = 2112;
-        v37 = v7;
+        v37 = parentFamilyMember;
         v38 = 2112;
-        v39 = v22;
+        v39 = account;
         v40 = 2112;
-        v41 = v24;
+        v41 = account2;
         _os_log_impl(&dword_1AD337000, v25, OS_LOG_TYPE_DEFAULT, "Checking if bridge setup assistant needs to run for pairing member %@, parent member %@, and pairingPeerPaymentAccount %@, parentFamilyMember %@", buf, 0x2Au);
       }
 
       v33 = 0;
-      [(PKPaymentSetupAssistantCoreController *)self _shouldRunAppleCashFlow:&v33 shouldRunPaymentSetupFlow:&v33 + 1 pairingFamilyMember:v8 pairingPeerPaymentAccount:v22 parentFamilyMember:v7 parentPeerPaymentAccount:v24];
-      if (a3)
+      [(PKPaymentSetupAssistantCoreController *)self _shouldRunAppleCashFlow:&v33 shouldRunPaymentSetupFlow:&v33 + 1 pairingFamilyMember:pairingFamilyMember pairingPeerPaymentAccount:account parentFamilyMember:parentFamilyMember parentPeerPaymentAccount:account2];
+      if (run)
       {
-        *a3 = 0;
+        *run = 0;
       }
 
       v18 = v33;
@@ -301,22 +301,22 @@ LABEL_42:
   {
     v16 = 0;
     v18 = 0;
-    if (!a3)
+    if (!run)
     {
       return v18;
     }
 
 LABEL_20:
-    *a3 = v16;
+    *run = v16;
     return v18;
   }
 
   v10 = +[PKPaymentWebServiceTargetDevice localTargetDevice];
-  v11 = [v10 appleAccountInformation];
+  appleAccountInformation = [v10 appleAccountInformation];
 
-  v12 = [v11 aidaAccountAvailable];
-  v13 = [v11 aaAlternateDSID];
-  v14 = PKIsBeneficiaryAccountWithAltDsid(v13);
+  aidaAccountAvailable = [appleAccountInformation aidaAccountAvailable];
+  aaAlternateDSID = [appleAccountInformation aaAlternateDSID];
+  v14 = PKIsBeneficiaryAccountWithAltDsid(aaAlternateDSID);
 
   if (v14)
   {
@@ -328,8 +328,8 @@ LABEL_20:
     }
   }
 
-  v16 = v12 ^ 1u;
-  if ([v11 isManagedAppleAccount])
+  v16 = aidaAccountAvailable ^ 1u;
+  if ([appleAccountInformation isManagedAppleAccount])
   {
     v17 = PKLogFacilityTypeGetObject(0x2AuLL);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -350,7 +350,7 @@ LABEL_20:
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     v30 = @"NO";
-    if (v12)
+    if (aidaAccountAvailable)
     {
       v30 = @"YES";
     }
@@ -363,11 +363,11 @@ LABEL_20:
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v35 = (v12 ^ 1u);
+    v35 = (aidaAccountAvailable ^ 1u);
     _os_log_impl(&dword_1AD337000, v17, OS_LOG_TYPE_DEFAULT, "Does Bridge Apple Pay Buddy Need to Run?: YES (Requirements mask %li)", buf, 0xCu);
   }
 
-  if (a3)
+  if (run)
   {
     goto LABEL_20;
   }
@@ -375,16 +375,16 @@ LABEL_20:
   return v18;
 }
 
-- (BOOL)_macNeedsToRun:(unint64_t *)a3
+- (BOOL)_macNeedsToRun:(unint64_t *)run
 {
   v14 = *MEMORY[0x1E69E9840];
   v5 = +[PKPaymentWebServiceTargetDevice localTargetDevice];
   v6 = [[PKSetupAssistantRequirementsChecker alloc] initWithTargetDevice:v5];
   v7 = [(PKSetupAssistantRequirementsChecker *)v6 checkMacRequirementsWithContext:self->_setupAssistantContext];
   v8 = v7;
-  if (a3)
+  if (run)
   {
-    *a3 = [v7 missingRequirements];
+    *run = [v7 missingRequirements];
   }
 
   v9 = PKLogFacilityTypeGetObject(0x2AuLL);
@@ -395,27 +395,27 @@ LABEL_20:
     _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, "Does Mac Apple Pay Buddy Need to Run?: %{public}@", &v12, 0xCu);
   }
 
-  v10 = [v8 shouldRun];
-  return v10;
+  shouldRun = [v8 shouldRun];
+  return shouldRun;
 }
 
-- (void)_preflightPaymentSetupProvisioningController:(id)a3 completion:(id)a4
+- (void)_preflightPaymentSetupProvisioningController:(id)controller completion:(id)completion
 {
   v77 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  controllerCopy = controller;
+  completionCopy = completion;
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  if (v9)
+  if (completionCopy)
   {
-    if (v8)
+    if (controllerCopy)
     {
-      v12 = [v8 webService];
-      v43 = v12;
-      if (v12)
+      webService = [controllerCopy webService];
+      v43 = webService;
+      if (webService)
       {
-        v42 = [v12 targetDevice];
-        if (-[PKPaymentSetupAssistantContextProtocol setupAssistant](self->_setupAssistantContext, "setupAssistant") != 2 && (objc_opt_respondsToSelector() & 1) != 0 && ([v42 currentPassbookState] & 2) != 0)
+        targetDevice = [webService targetDevice];
+        if (-[PKPaymentSetupAssistantContextProtocol setupAssistant](self->_setupAssistantContext, "setupAssistant") != 2 && (objc_opt_respondsToSelector() & 1) != 0 && ([targetDevice currentPassbookState] & 2) != 0)
         {
           v38 = PKLogFacilityTypeGetObject(0x2AuLL);
           if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
@@ -425,12 +425,12 @@ LABEL_20:
             _os_log_impl(&dword_1AD337000, v38, OS_LOG_TYPE_DEFAULT, "%@ Preflight Error: Wallet deleted from device, we should not be presented during Buddy", v73, 0xCu);
           }
 
-          (*(v9 + 2))(v9, 0, 0);
+          (*(completionCopy + 2))(completionCopy, 0, 0);
         }
 
         else
         {
-          objc_storeStrong(&self->_provisioningController, a3);
+          objc_storeStrong(&self->_provisioningController, controller);
           self->_preflightState = 0;
           v65[0] = 0;
           v65[1] = v65;
@@ -444,9 +444,9 @@ LABEL_20:
           v74 = __Block_byref_object_copy__70;
           v75 = __Block_byref_object_dispose__70;
           v76 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v13);
-          v15 = [(PKPaymentSetupAssistantContextProtocol *)self->_setupAssistantContext setupAssistant];
+          setupAssistant = [(PKPaymentSetupAssistantContextProtocol *)self->_setupAssistantContext setupAssistant];
           v16 = *(*&v73[8] + 40);
-          if (v15 == 2)
+          if (setupAssistant == 2)
           {
             v17 = 80000000000;
           }
@@ -469,11 +469,11 @@ LABEL_20:
           v63[1] = a2;
           v61 = v73;
           v62 = v65;
-          v60 = v9;
+          v60 = completionCopy;
           v20 = v43;
           v57 = v20;
-          v58 = v42;
-          v21 = v8;
+          v58 = targetDevice;
+          v21 = controllerCopy;
           v59 = v21;
           v22 = _Block_copy(aBlock);
           v41 = v11;
@@ -524,7 +524,7 @@ LABEL_20:
           v30 = v24;
           v49[1] = a2;
           v45 = v30;
-          v46 = self;
+          selfCopy = self;
           v31 = v25;
           v48 = v31;
           v47 = v21;
@@ -552,7 +552,7 @@ LABEL_20:
           _os_log_impl(&dword_1AD337000, v36, OS_LOG_TYPE_DEFAULT, "%@ Preflight Error: No webservice for Buddy provisioning preflight in %@", v73, 0x16u);
         }
 
-        (*(v9 + 2))(v9, 0, 0);
+        (*(completionCopy + 2))(completionCopy, 0, 0);
       }
     }
 
@@ -569,7 +569,7 @@ LABEL_20:
         _os_log_impl(&dword_1AD337000, v34, OS_LOG_TYPE_DEFAULT, "%@ Preflight Error: No controller for Buddy provisioning preflight in %@", v73, 0x16u);
       }
 
-      (*(v9 + 2))(v9, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
   }
 
@@ -955,13 +955,13 @@ void __97__PKPaymentSetupAssistantCoreController__preflightPaymentSetupProvision
 - (id)_bridgeContextDefaultLocalCredential
 {
   v2 = +[PKPaymentService paymentService];
-  v3 = [v2 defaultPaymentPassUniqueIdentifier];
-  if (v3)
+  defaultPaymentPassUniqueIdentifier = [v2 defaultPaymentPassUniqueIdentifier];
+  if (defaultPaymentPassUniqueIdentifier)
   {
     v4 = +[PKPassLibrary sharedInstance];
-    v5 = [v4 peerPaymentPassUniqueID];
-    v6 = v3;
-    v7 = v5;
+    peerPaymentPassUniqueID = [v4 peerPaymentPassUniqueID];
+    v6 = defaultPaymentPassUniqueIdentifier;
+    v7 = peerPaymentPassUniqueID;
     v8 = v7;
     if (v6 == v7)
     {
@@ -981,11 +981,11 @@ void __97__PKPaymentSetupAssistantCoreController__preflightPaymentSetupProvision
       {
 LABEL_13:
         v12 = [v4 passWithUniqueID:v6];
-        v11 = [v12 paymentPass];
+        paymentPass = [v12 paymentPass];
 
-        if (v11 && [v11 supportsSerialNumberBasedProvisioning]&& ([v11 requiresTransferSerialNumberBasedProvisioning]& 1) == 0)
+        if (paymentPass && [paymentPass supportsSerialNumberBasedProvisioning]&& ([paymentPass requiresTransferSerialNumberBasedProvisioning]& 1) == 0)
         {
-          v10 = [[PKPaymentLocalPassCredential alloc] initWithPaymentPass:v11];
+          v10 = [[PKPaymentLocalPassCredential alloc] initWithPaymentPass:paymentPass];
           goto LABEL_20;
         }
 
@@ -1004,11 +1004,11 @@ LABEL_20:
       }
     }
 
-    v11 = PKLogFacilityTypeGetObject(0x2AuLL);
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    paymentPass = PKLogFacilityTypeGetObject(0x2AuLL);
+    if (os_log_type_enabled(paymentPass, OS_LOG_TYPE_DEFAULT))
     {
       *v16 = 0;
-      _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "Default phone pass is Apple Cash, do not offer it", v16, 2u);
+      _os_log_impl(&dword_1AD337000, paymentPass, OS_LOG_TYPE_DEFAULT, "Default phone pass is Apple Cash, do not offer it", v16, 2u);
     }
 
     goto LABEL_19;
@@ -1027,13 +1027,13 @@ LABEL_21:
   return v10;
 }
 
-- (unint64_t)_specialCaseSEPassCountInPassLibrary:(id)a3
+- (unint64_t)_specialCaseSEPassCountInPassLibrary:(id)library
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 passesOfType:1];
-  v18 = v3;
-  v5 = [v3 peerPaymentPassUniqueID];
+  libraryCopy = library;
+  v4 = [libraryCopy passesOfType:1];
+  v18 = libraryCopy;
+  peerPaymentPassUniqueID = [libraryCopy peerPaymentPassUniqueID];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -1073,8 +1073,8 @@ LABEL_9:
 
         if ([v12 hasAssociatedPeerPaymentAccount])
         {
-          v14 = [v12 uniqueID];
-          v15 = [v14 isEqualToString:v5];
+          uniqueID = [v12 uniqueID];
+          v15 = [uniqueID isEqualToString:peerPaymentPassUniqueID];
 
           if (v15)
           {
@@ -1108,13 +1108,13 @@ LABEL_9:
   v9 = 0;
 LABEL_21:
 
-  if (v5 && (v19 & 1) == 0)
+  if (peerPaymentPassUniqueID && (v19 & 1) == 0)
   {
     v16 = PKLogFacilityTypeGetObject(0x2AuLL);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v25 = v5;
+      v25 = peerPaymentPassUniqueID;
       _os_log_impl(&dword_1AD337000, v16, OS_LOG_TYPE_DEFAULT, "Peer payment passID %@ found but no pass found in library", buf, 0xCu);
     }
   }
@@ -1126,14 +1126,14 @@ LABEL_21:
 {
   v18 = *MEMORY[0x1E69E9840];
   v2 = +[PKPeerPaymentWebService sharedService];
-  v3 = [v2 targetDevice];
-  v4 = [v3 account];
+  targetDevice = [v2 targetDevice];
+  account = [targetDevice account];
 
-  v5 = [v4 state];
-  v6 = [v4 stage];
-  if (v5 == 1 && (v6 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  state = [account state];
+  stage = [account stage];
+  if (state == 1 && (stage & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
-    v12 = [[PKPeerPaymentCredential alloc] initWithPeerPaymentAccount:v4];
+    v12 = [[PKPeerPaymentCredential alloc] initWithPeerPaymentAccount:account];
     if (v12)
     {
       goto LABEL_11;
@@ -1149,11 +1149,11 @@ LABEL_21:
 
   else
   {
-    v8 = v6;
+    v8 = stage;
     v9 = PKLogFacilityTypeGetObject(0xCuLL);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = PKPeerPaymentAccountStateToString(v5);
+      v10 = PKPeerPaymentAccountStateToString(state);
       v11 = PKPeerPaymentAccountStageToString(v8);
       v14 = 138543618;
       v15 = v10;
@@ -1169,27 +1169,27 @@ LABEL_11:
   return v12;
 }
 
-- (id)_provisioningContextWithProvisioningController:(id)a3 setupAssistantCredentials:(id)a4 maximumSelectable:(unint64_t)a5
+- (id)_provisioningContextWithProvisioningController:(id)controller setupAssistantCredentials:(id)credentials maximumSelectable:(unint64_t)selectable
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[PKPaymentSetupAssistantCoreProvisioningContext alloc] initWithProvisioningController:v8 setupAssistantCredentials:v7 maximumSelectable:a5];
+  credentialsCopy = credentials;
+  controllerCopy = controller;
+  v9 = [[PKPaymentSetupAssistantCoreProvisioningContext alloc] initWithProvisioningController:controllerCopy setupAssistantCredentials:credentialsCopy maximumSelectable:selectable];
 
   return v9;
 }
 
-- (id)_setupAssistantCredentialForPaymentCredential:(id)a3
+- (id)_setupAssistantCredentialForPaymentCredential:(id)credential
 {
-  v3 = a3;
-  v4 = [[PKPaymentSetupAssistantCoreCredential alloc] initWithPaymentCredential:v3];
+  credentialCopy = credential;
+  v4 = [[PKPaymentSetupAssistantCoreCredential alloc] initWithPaymentCredential:credentialCopy];
 
   return v4;
 }
 
-- (id)_setupAssistantCredentialForPaymentPass:(id)a3
+- (id)_setupAssistantCredentialForPaymentPass:(id)pass
 {
-  v3 = a3;
-  v4 = [[PKPaymentSetupAssistantCoreCredential alloc] initWithPaymentPass:v3];
+  passCopy = pass;
+  v4 = [[PKPaymentSetupAssistantCoreCredential alloc] initWithPaymentPass:passCopy];
 
   return v4;
 }
@@ -1197,15 +1197,15 @@ LABEL_11:
 - (id)_defaultWebService
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [(PKPaymentSetupAssistantContextProtocol *)self->_setupAssistantContext setupAssistant];
-  if (v3 == 2)
+  setupAssistant = [(PKPaymentSetupAssistantContextProtocol *)self->_setupAssistantContext setupAssistant];
+  if (setupAssistant == 2)
   {
-    v4 = [getNPKCompanionAgentConnectionClass_4[0]() watchPaymentWebService];
+    watchPaymentWebService = [getNPKCompanionAgentConnectionClass_4[0]() watchPaymentWebService];
   }
 
-  else if (v3 == 1)
+  else if (setupAssistant == 1)
   {
-    v4 = +[PKPaymentWebService sharedService];
+    watchPaymentWebService = +[PKPaymentWebService sharedService];
   }
 
   else
@@ -1213,34 +1213,34 @@ LABEL_11:
     v5 = PKLogFacilityTypeGetObject(0x2AuLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(PKPaymentSetupAssistantContextProtocol *)self->_setupAssistantContext setupAssistant];
+      setupAssistant2 = [(PKPaymentSetupAssistantContextProtocol *)self->_setupAssistantContext setupAssistant];
       v8 = 134217984;
-      v9 = v6;
+      v9 = setupAssistant2;
       _os_log_impl(&dword_1AD337000, v5, OS_LOG_TYPE_DEFAULT, "Error: _defaultWebService called with unsupported type %lu. File a radar!", &v8, 0xCu);
     }
 
-    v4 = 0;
+    watchPaymentWebService = 0;
   }
 
-  return v4;
+  return watchPaymentWebService;
 }
 
-- (id)_provisioningControllerWithWebService:(id)a3
+- (id)_provisioningControllerWithWebService:(id)service
 {
-  v4 = a3;
-  v5 = [[PKPaymentProvisioningController alloc] initWithWebService:v4];
+  serviceCopy = service;
+  v5 = [[PKPaymentProvisioningController alloc] initWithWebService:serviceCopy];
 
-  v6 = [(PKPaymentSetupAssistantContextProtocol *)self->_setupAssistantContext externalizedContext];
-  [(PKPaymentProvisioningController *)v5 storeExternalizedAuth:v6];
+  externalizedContext = [(PKPaymentSetupAssistantContextProtocol *)self->_setupAssistantContext externalizedContext];
+  [(PKPaymentProvisioningController *)v5 storeExternalizedAuth:externalizedContext];
 
   return v5;
 }
 
-- (void)_shouldRunAppleCashFlow:(BOOL *)a3 shouldRunPaymentSetupFlow:(BOOL *)a4 pairingFamilyMember:(id)a5 pairingPeerPaymentAccount:(id)a6 parentFamilyMember:(id)a7 parentPeerPaymentAccount:(id)a8
+- (void)_shouldRunAppleCashFlow:(BOOL *)flow shouldRunPaymentSetupFlow:(BOOL *)setupFlow pairingFamilyMember:(id)member pairingPeerPaymentAccount:(id)account parentFamilyMember:(id)familyMember parentPeerPaymentAccount:(id)paymentAccount
 {
-  v13 = a5;
-  v14 = a7;
-  v15 = a8;
+  memberCopy = member;
+  familyMemberCopy = familyMember;
+  paymentAccountCopy = paymentAccount;
   if (PKDaemonIsAvailable())
   {
     v16 = PKStoreDemoModeEnabled() ^ 1;
@@ -1251,18 +1251,18 @@ LABEL_11:
     v16 = 0;
   }
 
-  if ([v14 isMe])
+  if ([familyMemberCopy isMe])
   {
-    v17 = [v14 isOrganizer];
+    isOrganizer = [familyMemberCopy isOrganizer];
   }
 
   else
   {
-    v17 = 0;
+    isOrganizer = 0;
   }
 
-  v18 = [v13 altDSID];
-  if (!v13 || !v14)
+  altDSID = [memberCopy altDSID];
+  if (!memberCopy || !familyMemberCopy)
   {
     v21 = PKLogFacilityTypeGetObject(0xCuLL);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -1275,7 +1275,7 @@ LABEL_11:
 LABEL_42:
 
     v25 = 0;
-    if (!a3)
+    if (!flow)
     {
       goto LABEL_44;
     }
@@ -1283,7 +1283,7 @@ LABEL_42:
     goto LABEL_43;
   }
 
-  if ((v17 & 1) == 0)
+  if ((isOrganizer & 1) == 0)
   {
     v19 = PKLogFacilityTypeGetObject(0xCuLL);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -1299,7 +1299,7 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  if (!v15)
+  if (!paymentAccountCopy)
   {
     v19 = PKLogFacilityTypeGetObject(0xCuLL);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -1312,7 +1312,7 @@ LABEL_35:
     goto LABEL_35;
   }
 
-  if (a6)
+  if (account)
   {
     v19 = PKLogFacilityTypeGetObject(0xCuLL);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -1327,7 +1327,7 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  v22 = [v15 peerPaymentAccountWithAltDSID:v18];
+  v22 = [paymentAccountCopy peerPaymentAccountWithAltDSID:altDSID];
 
   if (v22)
   {
@@ -1342,10 +1342,10 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  v23 = [v15 accountInvitationWithAltDSID:v18];
-  v24 = [v23 status];
+  v23 = [paymentAccountCopy accountInvitationWithAltDSID:altDSID];
+  status = [v23 status];
 
-  if (v24 == 1)
+  if (status == 1)
   {
     v19 = PKLogFacilityTypeGetObject(0xCuLL);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -1358,7 +1358,7 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  if (![v13 memberType] || objc_msgSend(v13, "memberType") == -1)
+  if (![memberCopy memberType] || objc_msgSend(memberCopy, "memberType") == -1)
   {
     v19 = PKLogFacilityTypeGetObject(0xCuLL);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -1371,7 +1371,7 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  if (([v15 supportsFamilySharing] & 1) == 0)
+  if (([paymentAccountCopy supportsFamilySharing] & 1) == 0)
   {
     v19 = PKLogFacilityTypeGetObject(0xCuLL);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -1385,7 +1385,7 @@ LABEL_34:
   }
 
 LABEL_36:
-  if ([v14 memberType] || (objc_msgSend(v14, "isParent") & 1) == 0)
+  if ([familyMemberCopy memberType] || (objc_msgSend(familyMemberCopy, "isParent") & 1) == 0)
   {
     v21 = PKLogFacilityTypeGetObject(0x2AuLL);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -1398,22 +1398,22 @@ LABEL_36:
   }
 
   v25 = 1;
-  if (a3)
+  if (flow)
   {
 LABEL_43:
-    *a3 = v16;
+    *flow = v16;
   }
 
 LABEL_44:
-  if (a4)
+  if (setupFlow)
   {
-    *a4 = v25;
+    *setupFlow = v25;
   }
 }
 
-- (BOOL)_hasManuallyAddedSecureElementPasses:(BOOL)a3
+- (BOOL)_hasManuallyAddedSecureElementPasses:(BOOL)passes
 {
-  v3 = a3;
+  passesCopy = passes;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __78__PKPaymentSetupAssistantCoreController__hasManuallyAddedSecureElementPasses___block_invoke;
@@ -1429,7 +1429,7 @@ LABEL_44:
   if (qword_1EB5B7E80 != -1)
   {
     dispatch_once(&qword_1EB5B7E80, v8);
-    if (v3)
+    if (passesCopy)
     {
       goto LABEL_3;
     }
@@ -1439,7 +1439,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (!v3)
+  if (!passesCopy)
   {
     goto LABEL_5;
   }
@@ -1487,19 +1487,19 @@ uint64_t __78__PKPaymentSetupAssistantCoreController__hasManuallyAddedSecureElem
   return result;
 }
 
-- (void)_expressSetupProvisioningContext:(id)a3
+- (void)_expressSetupProvisioningContext:(id)context
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  contextCopy = context;
+  v5 = contextCopy;
+  if (contextCopy)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __74__PKPaymentSetupAssistantCoreController__expressSetupProvisioningContext___block_invoke;
     v7[3] = &unk_1E79DFC80;
     v7[4] = self;
-    v8 = v4;
+    v8 = contextCopy;
     [(PKPaymentSetupAssistantCoreController *)self _extendedSetupAssistantNeedsToRunWithCompletion:v7];
   }
 
@@ -1680,24 +1680,24 @@ uint64_t __74__PKPaymentSetupAssistantCoreController__expressSetupProvisioningCo
   return v8;
 }
 
-- (void)_expressCardRemovalProvisioningContext:(id)a3
+- (void)_expressCardRemovalProvisioningContext:(id)context
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  contextCopy = context;
+  v6 = contextCopy;
+  if (contextCopy)
   {
-    v28 = v5;
+    v28 = contextCopy;
     v7 = +[PKPassLibrary sharedInstance];
     v8 = [v7 passesOfType:1];
     v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v8, "count")}];
     v27 = v7;
-    v10 = [v7 peerPaymentPassUniqueID];
+    peerPaymentPassUniqueID = [v7 peerPaymentPassUniqueID];
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
     v33[2] = __80__PKPaymentSetupAssistantCoreController__expressCardRemovalProvisioningContext___block_invoke;
     v33[3] = &unk_1E79DFCA8;
-    v11 = v10;
+    v11 = peerPaymentPassUniqueID;
     v34 = v11;
     v12 = [v8 sortedArrayUsingComparator:v33];
 
@@ -1724,23 +1724,23 @@ uint64_t __74__PKPaymentSetupAssistantCoreController__expressSetupProvisioningCo
         }
 
         v18 = *(*(&v29 + 1) + 8 * i);
-        v19 = [v18 paymentPass];
-        if (v19)
+        paymentPass = [v18 paymentPass];
+        if (paymentPass)
         {
-          v20 = [v18 uniqueID];
-          if (![v20 isEqualToString:v11])
+          uniqueID = [v18 uniqueID];
+          if (![uniqueID isEqualToString:v11])
           {
 
 LABEL_12:
-            v22 = [(PKPaymentSetupAssistantCoreController *)self _setupAssistantCredentialForPaymentPass:v19];
+            v22 = [(PKPaymentSetupAssistantCoreController *)self _setupAssistantCredentialForPaymentPass:paymentPass];
             [v9 safelyAddObject:v22];
 
             goto LABEL_13;
           }
 
-          v21 = [v19 activationState];
+          activationState = [paymentPass activationState];
 
-          if (v21 != 4)
+          if (activationState != 4)
           {
             goto LABEL_12;
           }

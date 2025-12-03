@@ -7,10 +7,10 @@
 - (BOOL)hasAScheduledSyncSession;
 - (BOOL)isClientInForeground;
 - (BOOL)isMinglingEnabled;
-- (BOOL)isSynchronizationDisabledWithReasonError:(id *)a3;
-- (BOOL)waitForEngineElementToBeBlocked:(id)a3 timeout:(double)a4;
+- (BOOL)isSynchronizationDisabledWithReasonError:(id *)error;
+- (BOOL)waitForEngineElementToBeBlocked:(id)blocked timeout:(double)timeout;
 - (CPLEngineLibrary)engineLibrary;
-- (CPLEngineScheduler)initWithEngineLibrary:(id)a3;
+- (CPLEngineScheduler)initWithEngineLibrary:(id)library;
 - (CPLSyncSessionConfiguration)configuration;
 - (id)_minimalDateForFirstSync;
 - (id)_pathToFirstSynchronizationMarker;
@@ -20,50 +20,50 @@
 - (void)_disableFastRelaunchProtection;
 - (void)_disableRetryAfterLocked;
 - (void)_disableSynchronizationBecauseContainerHasBeenWipedLocked;
-- (void)_disableSynchronizationWithReasonLocked:(id)a3;
-- (void)_enableSynchronizationWithReasonLocked:(id)a3;
-- (void)_handleResetAnchorWithError:(id)a3 completionHandler:(id)a4;
-- (void)_handleResetClientCacheWithError:(id)a3 completionHandler:(id)a4;
-- (void)_handleResetCloudCacheWithError:(id)a3 completionHandler:(id)a4;
-- (void)_handleResetGlobalAnchorWithError:(id)a3 completionHandler:(id)a4;
-- (void)_keepSessionInformation:(id)a3;
-- (void)_noteServerIsUnavailableWithErrorLocked:(id)a3 reason:(id)a4;
+- (void)_disableSynchronizationWithReasonLocked:(id)locked;
+- (void)_enableSynchronizationWithReasonLocked:(id)locked;
+- (void)_handleResetAnchorWithError:(id)error completionHandler:(id)handler;
+- (void)_handleResetClientCacheWithError:(id)error completionHandler:(id)handler;
+- (void)_handleResetCloudCacheWithError:(id)error completionHandler:(id)handler;
+- (void)_handleResetGlobalAnchorWithError:(id)error completionHandler:(id)handler;
+- (void)_keepSessionInformation:(id)information;
+- (void)_noteServerIsUnavailableWithErrorLocked:(id)locked reason:(id)reason;
 - (void)_noteSignificantEvent;
-- (void)_noteSyncSession:(id)a3 failedDuringPhase:(unint64_t)a4 withError:(id)a5;
-- (void)_noteSyncSessionNeededFromState:(unint64_t)a3 minimumDelay:(double)intervalForRetry;
-- (void)_noteSyncSessionNeededFromState:(unint64_t)a3 proposedScheduleDate:(id)a4;
-- (void)_noteSyncSessionNeededFromStateDontRewindImmediately:(unint64_t)a3;
+- (void)_noteSyncSession:(id)session failedDuringPhase:(unint64_t)phase withError:(id)error;
+- (void)_noteSyncSessionNeededFromState:(unint64_t)state minimumDelay:(double)intervalForRetry;
+- (void)_noteSyncSessionNeededFromState:(unint64_t)state proposedScheduleDate:(id)date;
+- (void)_noteSyncSessionNeededFromStateDontRewindImmediately:(unint64_t)immediately;
 - (void)_prepareFirstSession;
 - (void)_reallyNoteServerHasChangesLocked;
-- (void)_reallyStartSyncSession:(id)a3;
+- (void)_reallyStartSyncSession:(id)session;
 - (void)_reallyUnscheduleSession;
 - (void)_resetFirstSynchronizationMarker;
 - (void)_scheduleNextSyncSession;
 - (void)_setRequiredFirstState:(unint64_t)requiredFirstState;
-- (void)_startRequiredSyncSession:(id)a3;
+- (void)_startRequiredSyncSession:(id)session;
 - (void)_stopPreparingFirstSession;
 - (void)_unscheduleNextSyncSession;
 - (void)_updateLastSyncDateIfNecessaryLocked;
 - (void)_updateOverridingForeground;
 - (void)_writeFirstSynchronizationMarker;
-- (void)blockAllSyncSessionsWithReason:(id)a3 onlyIfBlocked:(BOOL)a4 block:(id)a5;
-- (void)blockEngineElement:(id)a3;
-- (void)closeAndDeactivate:(BOOL)a3 completionHandler:(id)a4;
+- (void)blockAllSyncSessionsWithReason:(id)reason onlyIfBlocked:(BOOL)blocked block:(id)block;
+- (void)blockEngineElement:(id)element;
+- (void)closeAndDeactivate:(BOOL)deactivate completionHandler:(id)handler;
 - (void)disableMingling;
-- (void)disableSynchronizationIfBlockedWithReason:(id)a3 completionHandler:(id)a4;
-- (void)disableSynchronizationWithReason:(id)a3;
+- (void)disableSynchronizationIfBlockedWithReason:(id)reason completionHandler:(id)handler;
+- (void)disableSynchronizationWithReason:(id)reason;
 - (void)enableMingling;
-- (void)enableSynchronizationWithReason:(id)a3;
-- (void)forceStartSyncSession:(id)a3 withMinimalPhase:(unint64_t)a4;
-- (void)getCurrentRequiredStateWithCompletionHandler:(id)a3;
-- (void)getStatusDictionaryWithCompletionHandler:(id)a3;
-- (void)getStatusWithCompletionHandler:(id)a3;
+- (void)enableSynchronizationWithReason:(id)reason;
+- (void)forceStartSyncSession:(id)session withMinimalPhase:(unint64_t)phase;
+- (void)getCurrentRequiredStateWithCompletionHandler:(id)handler;
+- (void)getStatusDictionaryWithCompletionHandler:(id)handler;
+- (void)getStatusWithCompletionHandler:(id)handler;
 - (void)kickOffSyncSession;
-- (void)noteBlockedStateHasChanged:(id)a3;
+- (void)noteBlockedStateHasChanged:(id)changed;
 - (void)noteClientIsBeginningSignificantWork;
 - (void)noteClientIsEndingSignificantWork;
 - (void)noteClientIsInBackground;
-- (void)noteClientIsInForegroundQuietly:(BOOL)a3;
+- (void)noteClientIsInForegroundQuietly:(BOOL)quietly;
 - (void)noteClientIsInSyncWithClientCache;
 - (void)noteClientIsNotInSyncWithClientCache;
 - (void)noteClientNeedsToPull;
@@ -74,26 +74,26 @@
 - (void)noteScopeListNeedsUpdate;
 - (void)noteScopeNeedsToPullFromTransport;
 - (void)noteScopeNeedsToPushHighPriorityToTransport;
-- (void)noteScopeNeedsToPushToTransportWithChangeTypes:(unint64_t)a3;
+- (void)noteScopeNeedsToPushToTransportWithChangeTypes:(unint64_t)types;
 - (void)noteScopeNeedsToUploadComputeState;
 - (void)noteScopeNeedsUpdate;
 - (void)noteServerHasChanges;
-- (void)noteServerIsUnavailableWithError:(id)a3;
+- (void)noteServerIsUnavailableWithError:(id)error;
 - (void)noteServerMightBeAvailableNow;
 - (void)noteStoreNeedsCleanup;
 - (void)noteStoreNeedsSetup;
 - (void)noteStoreNeedsToUpdateDisabledFeatures;
-- (void)noteSyncSession:(id)a3 failedDuringPhase:(unint64_t)a4 withError:(id)a5;
-- (void)noteSyncSession:(id)a3 stateWillBeAttempted:(unint64_t)a4;
-- (void)noteSyncSessionSucceeded:(id)a3;
+- (void)noteSyncSession:(id)session failedDuringPhase:(unint64_t)phase withError:(id)error;
+- (void)noteSyncSession:(id)session stateWillBeAttempted:(unint64_t)attempted;
+- (void)noteSyncSessionSucceeded:(id)succeeded;
 - (void)noteTransportNeedsUpdate;
-- (void)openWithCompletionHandler:(id)a3;
+- (void)openWithCompletionHandler:(id)handler;
 - (void)resetBackoffInterval;
-- (void)startRequiredSyncSessionNow:(id)a3;
-- (void)testKey:(id)a3 value:(id)a4 completionHandler:(id)a5;
-- (void)unblockEngineElement:(id)a3;
-- (void)unblockEngineElementOnce:(id)a3;
-- (void)willRunEngineElement:(id)a3;
+- (void)startRequiredSyncSessionNow:(id)now;
+- (void)testKey:(id)key value:(id)value completionHandler:(id)handler;
+- (void)unblockEngineElement:(id)element;
+- (void)unblockEngineElementOnce:(id)once;
+- (void)willRunEngineElement:(id)element;
 @end
 
 @implementation CPLEngineScheduler
@@ -113,10 +113,10 @@
   currentSession = self->_currentSession;
   if (currentSession)
   {
-    v5 = [(CPLSyncSession *)currentSession requiredStateAtEndOfSyncSession];
-    if (pendingRequiredFirstState >= v5)
+    requiredStateAtEndOfSyncSession = [(CPLSyncSession *)currentSession requiredStateAtEndOfSyncSession];
+    if (pendingRequiredFirstState >= requiredStateAtEndOfSyncSession)
     {
-      pendingRequiredFirstState = v5;
+      pendingRequiredFirstState = requiredStateAtEndOfSyncSession;
     }
   }
 
@@ -133,8 +133,8 @@
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_engineLibrary);
-    v8 = [MEMORY[0x1E695DF00] date];
-    [WeakRetained updateLastSuccessfullSyncDate:v8];
+    date = [MEMORY[0x1E695DF00] date];
+    [WeakRetained updateLastSuccessfullSyncDate:date];
 
     self->_needsToUpdateLastSyncDate = 0;
   }
@@ -166,11 +166,11 @@
   return WeakRetained;
 }
 
-- (void)testKey:(id)a3 value:(id)a4 completionHandler:(id)a5
+- (void)testKey:(id)key value:(id)value completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  if ([a3 isEqualToString:@"server-unavailable"])
+  valueCopy = value;
+  handlerCopy = handler;
+  if ([key isEqualToString:@"server-unavailable"])
   {
     queue = self->_queue;
     v14[0] = MEMORY[0x1E69E9820];
@@ -178,8 +178,8 @@
     v14[2] = __54__CPLEngineScheduler_testKey_value_completionHandler___block_invoke;
     v14[3] = &unk_1E861B3D0;
     v14[4] = self;
-    v15 = v8;
-    v16 = v9;
+    v15 = valueCopy;
+    v16 = handlerCopy;
     v11 = v14;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -193,7 +193,7 @@
 
   else
   {
-    (*(v9 + 2))(v9, 0, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0);
   }
 }
 
@@ -210,36 +210,36 @@ uint64_t __54__CPLEngineScheduler_testKey_value_completionHandler___block_invoke
 
 - (BOOL)hasAScheduledSyncSession
 {
-  v2 = self;
+  selfCopy = self;
   dispatch_sync(self->_queue, &__block_literal_global_310);
   v3 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ASSIGN_CURRENT, QOS_CLASS_DEFAULT, 0, &__block_literal_global_312_7517);
-  v4 = [(CPLEngineScheduler *)v2 engineLibrary];
-  v5 = [v4 store];
+  engineLibrary = [(CPLEngineScheduler *)selfCopy engineLibrary];
+  store = [engineLibrary store];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __46__CPLEngineScheduler_hasAScheduledSyncSession__block_invoke_3;
   v15[3] = &unk_1E861C660;
   v16 = v3;
   v6 = v3;
-  v7 = [v5 performReadTransactionWithBlock:v15];
+  v7 = [store performReadTransactionWithBlock:v15];
 
   dispatch_block_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  queue = v2->_queue;
+  queue = selfCopy->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __46__CPLEngineScheduler_hasAScheduledSyncSession__block_invoke_4;
   block[3] = &unk_1E861A850;
-  block[4] = v2;
+  block[4] = selfCopy;
   block[5] = &v11;
   dispatch_sync(queue, block);
-  LOBYTE(v2) = *(v12 + 24);
+  LOBYTE(selfCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
 
-  return v2;
+  return selfCopy;
 }
 
 uint64_t __46__CPLEngineScheduler_hasAScheduledSyncSession__block_invoke_4(uint64_t result)
@@ -263,15 +263,15 @@ uint64_t __46__CPLEngineScheduler_hasAScheduledSyncSession__block_invoke_4(uint6
 {
   dispatch_sync(self->_queue, &__block_literal_global_306);
   v3 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ASSIGN_CURRENT, QOS_CLASS_DEFAULT, 0, &__block_literal_global_308);
-  v4 = [(CPLEngineScheduler *)self engineLibrary];
-  v5 = [v4 store];
+  engineLibrary = [(CPLEngineScheduler *)self engineLibrary];
+  store = [engineLibrary store];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __35__CPLEngineScheduler_requiredState__block_invoke_3;
   v16[3] = &unk_1E861C660;
   v17 = v3;
   v6 = v3;
-  v7 = [v5 performReadTransactionWithBlock:v16];
+  v7 = [store performReadTransactionWithBlock:v16];
 
   dispatch_block_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
   v12 = 0;
@@ -296,9 +296,9 @@ uint64_t __46__CPLEngineScheduler_hasAScheduledSyncSession__block_invoke_4(uint6
 {
   if (self->_didWriteFirstSyncMarker)
   {
-    v3 = [MEMORY[0x1E696AC08] defaultManager];
-    v4 = [(CPLEngineScheduler *)self _pathToFirstSynchronizationMarker];
-    [v3 removeItemAtURL:v4 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    _pathToFirstSynchronizationMarker = [(CPLEngineScheduler *)self _pathToFirstSynchronizationMarker];
+    [defaultManager removeItemAtURL:_pathToFirstSynchronizationMarker error:0];
 
     self->_didWriteFirstSyncMarker = 0;
   }
@@ -307,8 +307,8 @@ uint64_t __46__CPLEngineScheduler_hasAScheduledSyncSession__block_invoke_4(uint6
 - (id)_minimalDateForFirstSync
 {
   v3 = objc_alloc(MEMORY[0x1E695DF20]);
-  v4 = [(CPLEngineScheduler *)self _pathToFirstSynchronizationMarker];
-  v5 = [v3 initWithContentsOfURL:v4];
+  _pathToFirstSynchronizationMarker = [(CPLEngineScheduler *)self _pathToFirstSynchronizationMarker];
+  v5 = [v3 initWithContentsOfURL:_pathToFirstSynchronizationMarker];
 
   if (v5)
   {
@@ -341,37 +341,37 @@ LABEL_7:
 {
   v8[1] = *MEMORY[0x1E69E9840];
   self->_didWriteFirstSyncMarker = 1;
-  v3 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v7 = @"date";
-  v8[0] = v3;
+  v8[0] = date;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
-  v5 = [(CPLEngineScheduler *)self _pathToFirstSynchronizationMarker];
-  [v4 writeToURL:v5 atomically:1];
+  _pathToFirstSynchronizationMarker = [(CPLEngineScheduler *)self _pathToFirstSynchronizationMarker];
+  [v4 writeToURL:_pathToFirstSynchronizationMarker atomically:1];
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
 - (id)_pathToFirstSynchronizationMarker
 {
-  v2 = [(CPLEngineScheduler *)self engineLibrary];
-  v3 = [v2 clientLibraryBaseURL];
-  v4 = [v3 URLByAppendingPathComponent:@"lastsyncafterlaunch.plist" isDirectory:0];
+  engineLibrary = [(CPLEngineScheduler *)self engineLibrary];
+  clientLibraryBaseURL = [engineLibrary clientLibraryBaseURL];
+  v4 = [clientLibraryBaseURL URLByAppendingPathComponent:@"lastsyncafterlaunch.plist" isDirectory:0];
 
   return v4;
 }
 
-- (void)getStatusDictionaryWithCompletionHandler:(id)a3
+- (void)getStatusDictionaryWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __63__CPLEngineScheduler_getStatusDictionaryWithCompletionHandler___block_invoke;
   v19[3] = &unk_1E861C638;
   v19[4] = self;
-  v5 = v4;
+  v5 = handlerCopy;
   v20 = v5;
   v6 = MEMORY[0x1E128EBA0](v19);
-  v7 = [(CPLEngineScheduler *)self platformObject];
+  platformObject = [(CPLEngineScheduler *)self platformObject];
   if (objc_opt_respondsToSelector())
   {
     v17[0] = MEMORY[0x1E69E9820];
@@ -381,7 +381,7 @@ LABEL_7:
     v17[4] = self;
     v18 = v6;
     v8 = v6;
-    [v7 getStatusDictionaryWithCompletionHandler:v17];
+    [platformObject getStatusDictionaryWithCompletionHandler:v17];
     v9 = v18;
   }
 
@@ -582,18 +582,18 @@ uint64_t __63__CPLEngineScheduler_getStatusDictionaryWithCompletionHandler___blo
   return v4();
 }
 
-- (void)getStatusWithCompletionHandler:(id)a3
+- (void)getStatusWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __53__CPLEngineScheduler_getStatusWithCompletionHandler___block_invoke;
   v19[3] = &unk_1E861C5E8;
   v19[4] = self;
-  v5 = v4;
+  v5 = handlerCopy;
   v20 = v5;
   v6 = MEMORY[0x1E128EBA0](v19);
-  v7 = [(CPLEngineScheduler *)self platformObject];
+  platformObject = [(CPLEngineScheduler *)self platformObject];
   if (objc_opt_respondsToSelector())
   {
     v17[0] = MEMORY[0x1E69E9820];
@@ -603,7 +603,7 @@ uint64_t __63__CPLEngineScheduler_getStatusDictionaryWithCompletionHandler___blo
     v17[4] = self;
     v18 = v6;
     v8 = v6;
-    [v7 getStatusWithCompletionHandler:v17];
+    [platformObject getStatusWithCompletionHandler:v17];
     v9 = v18;
   }
 
@@ -1066,23 +1066,23 @@ LABEL_7:
 
 - (id)componentName
 {
-  v2 = [(CPLEngineScheduler *)self platformObject];
-  v3 = [v2 componentName];
+  platformObject = [(CPLEngineScheduler *)self platformObject];
+  componentName = [platformObject componentName];
 
-  return v3;
+  return componentName;
 }
 
-- (void)closeAndDeactivate:(BOOL)a3 completionHandler:(id)a4
+- (void)closeAndDeactivate:(BOOL)deactivate completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __59__CPLEngineScheduler_closeAndDeactivate_completionHandler___block_invoke;
   v12[3] = &unk_1E861F2E8;
-  v14 = a3;
+  deactivateCopy = deactivate;
   v12[4] = self;
-  v13 = v6;
+  v13 = handlerCopy;
   v8 = v12;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1090,7 +1090,7 @@ LABEL_7:
   block[3] = &unk_1E861B4E0;
   v16 = v8;
   v9 = queue;
-  v10 = v6;
+  v10 = handlerCopy;
   v11 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v9, v11);
 }
@@ -1122,8 +1122,8 @@ void __59__CPLEngineScheduler_closeAndDeactivate_completionHandler___block_invok
 
     self->_preparingFirstSessionStartDate = 0;
 
-    v5 = [(CPLEngineScheduler *)self platformObject];
-    [v5 unschedulePersistedSyncSession];
+    platformObject = [(CPLEngineScheduler *)self platformObject];
+    [platformObject unschedulePersistedSyncSession];
   }
 }
 
@@ -1132,17 +1132,17 @@ void __59__CPLEngineScheduler_closeAndDeactivate_completionHandler___block_invok
   dispatch_assert_queue_V2(self->_queue);
   if (!self->_preparingFirstSessionStartDate)
   {
-    v3 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     preparingFirstSessionStartDate = self->_preparingFirstSessionStartDate;
-    self->_preparingFirstSessionStartDate = v3;
+    self->_preparingFirstSessionStartDate = date;
 
-    v5 = [(CPLEngineScheduler *)self platformObject];
+    platformObject = [(CPLEngineScheduler *)self platformObject];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __42__CPLEngineScheduler__prepareFirstSession__block_invoke;
     v6[3] = &unk_1E861C598;
     v6[4] = self;
-    [v5 schedulePersistedSyncSessionIfAvailableWithCompletionHandler:v6];
+    [platformObject schedulePersistedSyncSessionIfAvailableWithCompletionHandler:v6];
   }
 }
 
@@ -1413,18 +1413,18 @@ void __42__CPLEngineScheduler__prepareFirstSession__block_invoke_2_155(uint64_t 
   }
 }
 
-- (void)openWithCompletionHandler:(id)a3
+- (void)openWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CPLEngineScheduler *)self platformObject];
+  handlerCopy = handler;
+  platformObject = [(CPLEngineScheduler *)self platformObject];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__CPLEngineScheduler_openWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E861B618;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 openWithCompletionHandler:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [platformObject openWithCompletionHandler:v7];
 }
 
 void __48__CPLEngineScheduler_openWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1486,16 +1486,16 @@ uint64_t __48__CPLEngineScheduler_openWithCompletionHandler___block_invoke_2(uin
   return v3();
 }
 
-- (void)getCurrentRequiredStateWithCompletionHandler:(id)a3
+- (void)getCurrentRequiredStateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __67__CPLEngineScheduler_getCurrentRequiredStateWithCompletionHandler___block_invoke;
   v10[3] = &unk_1E861ECD0;
   v10[4] = self;
-  v11 = v4;
+  v11 = handlerCopy;
   v6 = v10;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1503,7 +1503,7 @@ uint64_t __48__CPLEngineScheduler_openWithCompletionHandler___block_invoke_2(uin
   block[3] = &unk_1E861B4E0;
   v13 = v6;
   v7 = queue;
-  v8 = v4;
+  v8 = handlerCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }
@@ -1511,9 +1511,9 @@ uint64_t __48__CPLEngineScheduler_openWithCompletionHandler___block_invoke_2(uin
 - (CPLSyncSessionConfiguration)configuration
 {
   WeakRetained = objc_loadWeakRetained(&self->_engineLibrary);
-  v3 = [WeakRetained configuration];
+  configuration = [WeakRetained configuration];
 
-  return v3;
+  return configuration;
 }
 
 - (void)resetBackoffInterval
@@ -1575,14 +1575,14 @@ uint64_t __42__CPLEngineScheduler_resetBackoffInterval__block_invoke(uint64_t a1
   v11[1] = v11;
   v11[2] = 0x2020000000;
   v12 = 0;
-  v3 = [(CPLEngineScheduler *)self engineLibrary];
-  v4 = [v3 store];
+  engineLibrary = [(CPLEngineScheduler *)self engineLibrary];
+  store = [engineLibrary store];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __41__CPLEngineScheduler_noteQuotaHasChanged__block_invoke;
   v8[3] = &unk_1E8620A60;
-  v5 = v4;
+  v5 = store;
   v9 = v5;
   v10 = v11;
   v7[0] = MEMORY[0x1E69E9820];
@@ -1797,16 +1797,16 @@ LABEL_22:
   return v17;
 }
 
-- (void)noteBlockedStateHasChanged:(id)a3
+- (void)noteBlockedStateHasChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   queue = self->_queue;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __49__CPLEngineScheduler_noteBlockedStateHasChanged___block_invoke;
   v10[3] = &unk_1E861B290;
   v10[4] = self;
-  v11 = v4;
+  v11 = changedCopy;
   v6 = v10;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1814,7 +1814,7 @@ LABEL_22:
   block[3] = &unk_1E861B4E0;
   v13 = v6;
   v7 = queue;
-  v8 = v4;
+  v8 = changedCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }
@@ -1842,31 +1842,31 @@ void __49__CPLEngineScheduler_noteBlockedStateHasChanged___block_invoke(uint64_t
   }
 }
 
-- (void)noteSyncSession:(id)a3 failedDuringPhase:(unint64_t)a4 withError:(id)a5
+- (void)noteSyncSession:(id)session failedDuringPhase:(unint64_t)phase withError:(id)error
 {
-  v8 = a3;
-  v9 = a5;
-  if ([v9 isCPLOperationDeferredError] && objc_msgSend(v8, "shouldConsiderRequestingMoreTime"))
+  sessionCopy = session;
+  errorCopy = error;
+  if ([errorCopy isCPLOperationDeferredError] && objc_msgSend(sessionCopy, "shouldConsiderRequestingMoreTime"))
   {
-    v10 = [(CPLEngineScheduler *)self engineLibrary];
-    v11 = [v10 store];
+    engineLibrary = [(CPLEngineScheduler *)self engineLibrary];
+    store = [engineLibrary store];
 
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __66__CPLEngineScheduler_noteSyncSession_failedDuringPhase_withError___block_invoke;
     v14[3] = &unk_1E861C570;
-    v15 = v11;
-    v16 = v8;
-    v17 = self;
-    v19 = a4;
-    v18 = v9;
-    v12 = v11;
+    v15 = store;
+    v16 = sessionCopy;
+    selfCopy = self;
+    phaseCopy = phase;
+    v18 = errorCopy;
+    v12 = store;
     v13 = [v12 performReadTransactionWithBlock:v14];
   }
 
   else
   {
-    [(CPLEngineScheduler *)self _noteSyncSession:v8 failedDuringPhase:a4 withError:v9];
+    [(CPLEngineScheduler *)self _noteSyncSession:sessionCopy failedDuringPhase:phase withError:errorCopy];
   }
 }
 
@@ -1896,20 +1896,20 @@ uint64_t __66__CPLEngineScheduler_noteSyncSession_failedDuringPhase_withError___
   return result;
 }
 
-- (void)_noteSyncSession:(id)a3 failedDuringPhase:(unint64_t)a4 withError:(id)a5
+- (void)_noteSyncSession:(id)session failedDuringPhase:(unint64_t)phase withError:(id)error
 {
-  v9 = a3;
-  v10 = a5;
+  sessionCopy = session;
+  errorCopy = error;
   queue = self->_queue;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __67__CPLEngineScheduler__noteSyncSession_failedDuringPhase_withError___block_invoke;
   v17[3] = &unk_1E861C548;
   v17[4] = self;
-  v18 = v9;
-  v19 = v10;
+  v18 = sessionCopy;
+  v19 = errorCopy;
   v20 = a2;
-  v21 = a4;
+  phaseCopy = phase;
   v12 = v17;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1917,8 +1917,8 @@ uint64_t __66__CPLEngineScheduler_noteSyncSession_failedDuringPhase_withError___
   block[3] = &unk_1E861B4E0;
   v23 = v12;
   v13 = queue;
-  v14 = v10;
-  v15 = v9;
+  v14 = errorCopy;
+  v15 = sessionCopy;
   v16 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v13, v16);
 }
@@ -2562,11 +2562,11 @@ void __67__CPLEngineScheduler__noteSyncSession_failedDuringPhase_withError___blo
   [v2 noteSyncSession:*(a1 + 40) failedWithError:*(a1 + 48)];
 }
 
-- (void)_handleResetGlobalAnchorWithError:(id)a3 completionHandler:(id)a4
+- (void)_handleResetGlobalAnchorWithError:(id)error completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = [a3 userInfo];
-  v9 = [v8 objectForKeyedSubscript:@"CPLErrorResetReason"];
+  handlerCopy = handler;
+  userInfo = [error userInfo];
+  v9 = [userInfo objectForKeyedSubscript:@"CPLErrorResetReason"];
   v10 = v9;
   v11 = @"needs refresh";
   if (v9)
@@ -2576,25 +2576,25 @@ void __67__CPLEngineScheduler__noteSyncSession_failedDuringPhase_withError___blo
 
   v12 = v11;
 
-  v13 = [(CPLEngineScheduler *)self engineLibrary];
-  v14 = [v13 store];
+  engineLibrary = [(CPLEngineScheduler *)self engineLibrary];
+  store = [engineLibrary store];
 
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __74__CPLEngineScheduler__handleResetGlobalAnchorWithError_completionHandler___block_invoke;
   v22[3] = &unk_1E86205B8;
-  v23 = v14;
+  v23 = store;
   v24 = v12;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __74__CPLEngineScheduler__handleResetGlobalAnchorWithError_completionHandler___block_invoke_123;
   v19[3] = &unk_1E861C4F8;
-  v20 = v7;
+  v20 = handlerCopy;
   v21 = a2;
   v19[4] = self;
-  v15 = v7;
+  v15 = handlerCopy;
   v16 = v12;
-  v17 = v14;
+  v17 = store;
   v18 = [v17 performWriteTransactionWithBlock:v22 completionHandler:v19];
 }
 
@@ -2664,11 +2664,11 @@ uint64_t __74__CPLEngineScheduler__handleResetGlobalAnchorWithError_completionHa
   return v6;
 }
 
-- (void)_handleResetAnchorWithError:(id)a3 completionHandler:(id)a4
+- (void)_handleResetAnchorWithError:(id)error completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = [a3 userInfo];
-  v9 = [v8 objectForKeyedSubscript:@"CPLErrorResetReason"];
+  handlerCopy = handler;
+  userInfo = [error userInfo];
+  v9 = [userInfo objectForKeyedSubscript:@"CPLErrorResetReason"];
   v10 = v9;
   v11 = @"needs refresh";
   if (v9)
@@ -2678,28 +2678,28 @@ uint64_t __74__CPLEngineScheduler__handleResetGlobalAnchorWithError_completionHa
 
   v12 = v11;
 
-  v13 = [v8 objectForKeyedSubscript:@"CPLErrorScopeIdentifiers"];
-  v14 = [(CPLEngineScheduler *)self engineLibrary];
-  v15 = [v14 store];
+  v13 = [userInfo objectForKeyedSubscript:@"CPLErrorScopeIdentifiers"];
+  engineLibrary = [(CPLEngineScheduler *)self engineLibrary];
+  store = [engineLibrary store];
 
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __68__CPLEngineScheduler__handleResetAnchorWithError_completionHandler___block_invoke;
   v24[3] = &unk_1E861F1D0;
   v25 = v13;
-  v26 = v15;
+  v26 = store;
   v27 = v12;
-  v28 = self;
+  selfCopy = self;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __68__CPLEngineScheduler__handleResetAnchorWithError_completionHandler___block_invoke_119;
   v21[3] = &unk_1E861C4F8;
-  v22 = v7;
+  v22 = handlerCopy;
   v23 = a2;
   v21[4] = self;
-  v16 = v7;
+  v16 = handlerCopy;
   v17 = v12;
-  v18 = v15;
+  v18 = store;
   v19 = v13;
   v20 = [v18 performWriteTransactionWithBlock:v24 completionHandler:v21];
 }
@@ -2852,14 +2852,14 @@ LABEL_26:
   return v7;
 }
 
-- (void)_handleResetCloudCacheWithError:(id)a3 completionHandler:(id)a4
+- (void)_handleResetCloudCacheWithError:(id)error completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = [a3 userInfo];
-  v9 = [v8 objectForKey:@"CPLErrorResetReason"];
+  handlerCopy = handler;
+  userInfo = [error userInfo];
+  v9 = [userInfo objectForKey:@"CPLErrorResetReason"];
 
-  v10 = [(CPLEngineScheduler *)self engineLibrary];
-  v11 = [v10 store];
+  engineLibrary = [(CPLEngineScheduler *)self engineLibrary];
+  store = [engineLibrary store];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __72__CPLEngineScheduler__handleResetCloudCacheWithError_completionHandler___block_invoke;
@@ -2870,12 +2870,12 @@ LABEL_26:
   v15[1] = 3221225472;
   v15[2] = __72__CPLEngineScheduler__handleResetCloudCacheWithError_completionHandler___block_invoke_3;
   v15[3] = &unk_1E861C4F8;
-  v16 = v7;
+  v16 = handlerCopy;
   v17 = a2;
   v15[4] = self;
-  v12 = v7;
+  v12 = handlerCopy;
   v13 = v9;
-  v14 = [v11 performWriteTransactionWithBlock:v18 completionHandler:v15];
+  v14 = [store performWriteTransactionWithBlock:v18 completionHandler:v15];
 }
 
 void __72__CPLEngineScheduler__handleResetCloudCacheWithError_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -2949,14 +2949,14 @@ uint64_t __72__CPLEngineScheduler__handleResetCloudCacheWithError_completionHand
   return v8;
 }
 
-- (void)_handleResetClientCacheWithError:(id)a3 completionHandler:(id)a4
+- (void)_handleResetClientCacheWithError:(id)error completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = [a3 userInfo];
-  v9 = [v8 objectForKey:@"CPLErrorResetReason"];
+  handlerCopy = handler;
+  userInfo = [error userInfo];
+  v9 = [userInfo objectForKey:@"CPLErrorResetReason"];
 
-  v10 = [(CPLEngineScheduler *)self engineLibrary];
-  v11 = [v10 store];
+  engineLibrary = [(CPLEngineScheduler *)self engineLibrary];
+  store = [engineLibrary store];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __73__CPLEngineScheduler__handleResetClientCacheWithError_completionHandler___block_invoke;
@@ -2967,12 +2967,12 @@ uint64_t __72__CPLEngineScheduler__handleResetCloudCacheWithError_completionHand
   v15[1] = 3221225472;
   v15[2] = __73__CPLEngineScheduler__handleResetClientCacheWithError_completionHandler___block_invoke_3;
   v15[3] = &unk_1E861C4F8;
-  v16 = v7;
+  v16 = handlerCopy;
   v17 = a2;
   v15[4] = self;
-  v12 = v7;
+  v12 = handlerCopy;
   v13 = v9;
-  v14 = [v11 performWriteTransactionWithBlock:v18 completionHandler:v15];
+  v14 = [store performWriteTransactionWithBlock:v18 completionHandler:v15];
 }
 
 void __73__CPLEngineScheduler__handleResetClientCacheWithError_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -3039,16 +3039,16 @@ uint64_t __73__CPLEngineScheduler__handleResetClientCacheWithError_completionHan
   return v8;
 }
 
-- (void)noteSyncSessionSucceeded:(id)a3
+- (void)noteSyncSessionSucceeded:(id)succeeded
 {
-  v5 = a3;
+  succeededCopy = succeeded;
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __47__CPLEngineScheduler_noteSyncSessionSucceeded___block_invoke;
   v11[3] = &unk_1E861B128;
   v11[4] = self;
-  v12 = v5;
+  v12 = succeededCopy;
   v13 = a2;
   v7 = v11;
   block[0] = MEMORY[0x1E69E9820];
@@ -3057,7 +3057,7 @@ uint64_t __73__CPLEngineScheduler__handleResetClientCacheWithError_completionHan
   block[3] = &unk_1E861B4E0;
   v15 = v7;
   v8 = queue;
-  v9 = v5;
+  v9 = succeededCopy;
   v10 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v8, v10);
 }
@@ -3213,37 +3213,37 @@ LABEL_29:
   v34 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_keepSessionInformation:(id)a3
+- (void)_keepSessionInformation:(id)information
 {
-  v4 = a3;
-  v5 = [v4 popSessionInformation];
+  informationCopy = information;
+  popSessionInformation = [informationCopy popSessionInformation];
   lastSessionInformation = self->_lastSessionInformation;
-  self->_lastSessionInformation = v5;
+  self->_lastSessionInformation = popSessionInformation;
 
-  v7 = [v4 scopeIdentifiersExcludedFromMingling];
-  v8 = [v7 allObjects];
+  scopeIdentifiersExcludedFromMingling = [informationCopy scopeIdentifiersExcludedFromMingling];
+  allObjects = [scopeIdentifiersExcludedFromMingling allObjects];
   lastScopeIdentifiersExludedFromMingling = self->_lastScopeIdentifiersExludedFromMingling;
-  self->_lastScopeIdentifiersExludedFromMingling = v8;
+  self->_lastScopeIdentifiersExludedFromMingling = allObjects;
 
-  v12 = [v4 scopeIdentifiersExcludedFromPushToTransport];
+  scopeIdentifiersExcludedFromPushToTransport = [informationCopy scopeIdentifiersExcludedFromPushToTransport];
 
-  v10 = [v12 allObjects];
+  allObjects2 = [scopeIdentifiersExcludedFromPushToTransport allObjects];
   lastScopeIdentifiersExcludedFromPushToTransport = self->_lastScopeIdentifiersExcludedFromPushToTransport;
-  self->_lastScopeIdentifiersExcludedFromPushToTransport = v10;
+  self->_lastScopeIdentifiersExcludedFromPushToTransport = allObjects2;
 }
 
-- (void)noteSyncSession:(id)a3 stateWillBeAttempted:(unint64_t)a4
+- (void)noteSyncSession:(id)session stateWillBeAttempted:(unint64_t)attempted
 {
-  v7 = a3;
+  sessionCopy = session;
   queue = self->_queue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __59__CPLEngineScheduler_noteSyncSession_stateWillBeAttempted___block_invoke;
   v13[3] = &unk_1E861C4D0;
   v13[4] = self;
-  v14 = v7;
+  v14 = sessionCopy;
   v15 = a2;
-  v16 = a4;
+  attemptedCopy = attempted;
   v9 = v13;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -3251,7 +3251,7 @@ LABEL_29:
   block[3] = &unk_1E861B4E0;
   v18 = v9;
   v10 = queue;
-  v11 = v7;
+  v11 = sessionCopy;
   v12 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v10, v12);
 }
@@ -3453,16 +3453,16 @@ void *__47__CPLEngineScheduler_noteNetworkStateDidChange__block_invoke(uint64_t 
   dispatch_async(v4, v5);
 }
 
-- (void)noteServerIsUnavailableWithError:(id)a3
+- (void)noteServerIsUnavailableWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   queue = self->_queue;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __55__CPLEngineScheduler_noteServerIsUnavailableWithError___block_invoke;
   v10[3] = &unk_1E861B290;
   v10[4] = self;
-  v11 = v4;
+  v11 = errorCopy;
   v6 = v10;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -3470,16 +3470,16 @@ void *__47__CPLEngineScheduler_noteNetworkStateDidChange__block_invoke(uint64_t 
   block[3] = &unk_1E861B4E0;
   v13 = v6;
   v7 = queue;
-  v8 = v4;
+  v8 = errorCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }
 
-- (void)_noteServerIsUnavailableWithErrorLocked:(id)a3 reason:(id)a4
+- (void)_noteServerIsUnavailableWithErrorLocked:(id)locked reason:(id)reason
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  lockedCopy = locked;
+  reasonCopy = reason;
   unavailabilityLimitDate = self->_unavailabilityLimitDate;
   if (!unavailabilityLimitDate)
   {
@@ -3495,12 +3495,12 @@ void *__47__CPLEngineScheduler_noteNetworkStateDidChange__block_invoke(uint64_t 
   if (!self->_unavailabilityLimitDate)
   {
 LABEL_8:
-    v11 = [(CPLEngineScheduler *)self engineLibrary];
-    v12 = [v11 syncManager];
-    [v12 cancelCurrentSyncSession];
+    engineLibrary = [(CPLEngineScheduler *)self engineLibrary];
+    syncManager = [engineLibrary syncManager];
+    [syncManager cancelCurrentSyncSession];
 
-    v13 = [v6 userInfo];
-    v10 = [v13 objectForKey:@"CPLErrorRetryAfterDate"];
+    userInfo = [lockedCopy userInfo];
+    v10 = [userInfo objectForKey:@"CPLErrorRetryAfterDate"];
 
     if (v10)
     {
@@ -3538,16 +3538,16 @@ LABEL_14:
       }
     }
 
-    if (v7)
+    if (reasonCopy)
     {
-      v21 = v7;
+      v21 = reasonCopy;
       unavailabilityReason = self->_unavailabilityReason;
       self->_unavailabilityReason = v21;
     }
 
     else
     {
-      unavailabilityReason = [v6 userInfo];
+      unavailabilityReason = [lockedCopy userInfo];
       v23 = [unavailabilityReason objectForKeyedSubscript:@"CPLErrorRetryAfterReason"];
       v24 = self->_unavailabilityReason;
       self->_unavailabilityReason = v23;
@@ -3640,7 +3640,7 @@ uint64_t __69__CPLEngineScheduler__noteServerIsUnavailableWithErrorLocked_reason
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isSynchronizationDisabledWithReasonError:(id *)a3
+- (BOOL)isSynchronizationDisabledWithReasonError:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -3662,9 +3662,9 @@ uint64_t __69__CPLEngineScheduler__noteServerIsUnavailableWithErrorLocked_reason
   block[6] = &v8;
   dispatch_sync(queue, block);
   v5 = *(v15 + 24);
-  if (a3 && (v15[3] & 1) != 0)
+  if (error && (v15[3] & 1) != 0)
   {
-    *a3 = v9[5];
+    *error = v9[5];
     v5 = *(v15 + 24);
   }
 
@@ -4007,17 +4007,17 @@ void __58__CPLEngineScheduler_noteClientIsBeginningSignificantWork__block_invoke
   }
 }
 
-- (void)unblockEngineElementOnce:(id)a3
+- (void)unblockEngineElementOnce:(id)once
 {
-  v4 = a3;
+  onceCopy = once;
   blockingLock = self->_blockingLock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__CPLEngineScheduler_unblockEngineElementOnce___block_invoke;
   v7[3] = &unk_1E861B290;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = onceCopy;
+  v6 = onceCopy;
   dispatch_sync(blockingLock, v7);
 }
 
@@ -4058,19 +4058,19 @@ void __47__CPLEngineScheduler_unblockEngineElementOnce___block_invoke(uint64_t a
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)waitForEngineElementToBeBlocked:(id)a3 timeout:(double)a4
+- (BOOL)waitForEngineElementToBeBlocked:(id)blocked timeout:(double)timeout
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v19 = [MEMORY[0x1E695DF00] date];
-  if (a4 <= 0.0)
+  blockedCopy = blocked;
+  date = [MEMORY[0x1E695DF00] date];
+  if (timeout <= 0.0)
   {
     [MEMORY[0x1E695DF00] distantFuture];
   }
 
   else
   {
-    [v19 dateByAddingTimeInterval:a4];
+    [date dateByAddingTimeInterval:timeout];
   }
   v7 = ;
   v20 = 0;
@@ -4100,7 +4100,7 @@ void __47__CPLEngineScheduler_unblockEngineElementOnce___block_invoke(uint64_t a
     block[2] = __62__CPLEngineScheduler_waitForEngineElementToBeBlocked_timeout___block_invoke;
     block[3] = &unk_1E86209B8;
     block[4] = self;
-    v22 = v6;
+    v22 = blockedCopy;
     v23 = &v25;
     v24 = &v29;
     dispatch_sync(blockingLock, block);
@@ -4116,9 +4116,9 @@ void __47__CPLEngineScheduler_unblockEngineElementOnce___block_invoke(uint64_t a
       v12 = __CPLSchedulerOSLogDomain_7603();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        [v19 timeIntervalSinceNow];
+        [date timeIntervalSinceNow];
         *buf = v18;
-        v36 = v6;
+        v36 = blockedCopy;
         v37 = 2048;
         v38 = -v13;
         _os_log_impl(&dword_1DC05A000, v12, OS_LOG_TYPE_DEFAULT, "Engine is blocked on %@ - waited for %.2fs", buf, 0x16u);
@@ -4200,10 +4200,10 @@ LABEL_12:
   }
 }
 
-- (void)willRunEngineElement:(id)a3
+- (void)willRunEngineElement:(id)element
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  elementCopy = element;
   v5 = 0;
   v24 = 0;
   v25 = &v24;
@@ -4227,7 +4227,7 @@ LABEL_12:
     block[3] = &unk_1E86209B8;
     v18 = &v20;
     block[4] = self;
-    v9 = v4;
+    v9 = elementCopy;
     v17 = v9;
     v19 = &v24;
     dispatch_sync(blockingLock, block);
@@ -4240,7 +4240,7 @@ LABEL_12:
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
           *buf = v15;
-          v31 = v4;
+          v31 = elementCopy;
           _os_log_impl(&dword_1DC05A000, v11, OS_LOG_TYPE_DEFAULT, "Blocked engine for %@", buf, 0xCu);
         }
       }
@@ -4262,7 +4262,7 @@ LABEL_12:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = v15;
-        v31 = v4;
+        v31 = elementCopy;
         _os_log_impl(&dword_1DC05A000, v13, OS_LOG_TYPE_DEFAULT, "Unblocked engine for %@", buf, 0xCu);
       }
 
@@ -4409,18 +4409,18 @@ LABEL_32:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unblockEngineElement:(id)a3
+- (void)unblockEngineElement:(id)element
 {
-  v5 = a3;
+  elementCopy = element;
   blockingLock = self->_blockingLock;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__CPLEngineScheduler_unblockEngineElement___block_invoke;
   block[3] = &unk_1E861B128;
   block[4] = self;
-  v9 = v5;
+  v9 = elementCopy;
   v10 = a2;
-  v7 = v5;
+  v7 = elementCopy;
   dispatch_async(blockingLock, block);
 }
 
@@ -4513,17 +4513,17 @@ LABEL_20:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)blockEngineElement:(id)a3
+- (void)blockEngineElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   blockingLock = self->_blockingLock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __41__CPLEngineScheduler_blockEngineElement___block_invoke;
   v7[3] = &unk_1E861B290;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = elementCopy;
+  v6 = elementCopy;
   dispatch_async(blockingLock, v7);
 }
 
@@ -4598,18 +4598,18 @@ LABEL_16:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)blockAllSyncSessionsWithReason:(id)a3 onlyIfBlocked:(BOOL)a4 block:(id)a5
+- (void)blockAllSyncSessionsWithReason:(id)reason onlyIfBlocked:(BOOL)blocked block:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  reasonCopy = reason;
+  blockCopy = block;
   queue = self->_queue;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __73__CPLEngineScheduler_blockAllSyncSessionsWithReason_onlyIfBlocked_block___block_invoke;
   v16[3] = &unk_1E861ADE8;
-  v19 = a4;
-  v17 = v8;
-  v18 = v9;
+  blockedCopy = blocked;
+  v17 = reasonCopy;
+  v18 = blockCopy;
   v16[4] = self;
   v11 = v16;
   block[0] = MEMORY[0x1E69E9820];
@@ -4618,8 +4618,8 @@ LABEL_16:
   block[3] = &unk_1E861B4E0;
   v21 = v11;
   v12 = queue;
-  v13 = v8;
-  v14 = v9;
+  v13 = reasonCopy;
+  v14 = blockCopy;
   v15 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v12, v15);
 }
@@ -4658,16 +4658,16 @@ void __73__CPLEngineScheduler_blockAllSyncSessionsWithReason_onlyIfBlocked_block
   (*(a1[6] + 16))();
 }
 
-- (void)enableSynchronizationWithReason:(id)a3
+- (void)enableSynchronizationWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   queue = self->_queue;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __54__CPLEngineScheduler_enableSynchronizationWithReason___block_invoke;
   v10[3] = &unk_1E861B290;
   v10[4] = self;
-  v11 = v4;
+  v11 = reasonCopy;
   v6 = v10;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -4675,7 +4675,7 @@ void __73__CPLEngineScheduler_blockAllSyncSessionsWithReason_onlyIfBlocked_block
   block[3] = &unk_1E861B4E0;
   v13 = v6;
   v7 = queue;
-  v8 = v4;
+  v8 = reasonCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }
@@ -4699,11 +4699,11 @@ uint64_t __54__CPLEngineScheduler_enableSynchronizationWithReason___block_invoke
   return [v2 _enableSynchronizationWithReasonLocked:v4];
 }
 
-- (void)_enableSynchronizationWithReasonLocked:(id)a3
+- (void)_enableSynchronizationWithReasonLocked:(id)locked
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (![(NSCountedSet *)self->_disablingReasons countForObject:v5])
+  lockedCopy = locked;
+  if (![(NSCountedSet *)self->_disablingReasons countForObject:lockedCopy])
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -4714,20 +4714,20 @@ uint64_t __54__CPLEngineScheduler_enableSynchronizationWithReason___block_invoke
         *buf = 138412546;
         v19 = v14;
         v20 = 2112;
-        v21 = v5;
+        v21 = lockedCopy;
         _os_log_impl(&dword_1DC05A000, v13, OS_LOG_TYPE_ERROR, "%@ has been called too many times with reason '%@'", buf, 0x16u);
       }
     }
 
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLEngineScheduler.m"];
     v17 = NSStringFromSelector(a2);
-    [v15 handleFailureInMethod:a2 object:self file:v16 lineNumber:913 description:{@"%@ has been called too many times with reason '%@'", v17, v5}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v16 lineNumber:913 description:{@"%@ has been called too many times with reason '%@'", v17, lockedCopy}];
 
     abort();
   }
 
-  [(NSCountedSet *)self->_disablingReasons removeObject:v5];
+  [(NSCountedSet *)self->_disablingReasons removeObject:lockedCopy];
   if ([(NSCountedSet *)self->_disablingReasons count])
   {
     if ((_CPLSilentLogging & 1) == 0)
@@ -4735,10 +4735,10 @@ uint64_t __54__CPLEngineScheduler_enableSynchronizationWithReason___block_invoke
       v6 = __CPLSchedulerOSLogDomain_7603();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [(NSCountedSet *)self->_disablingReasons allObjects];
-        v8 = [v7 componentsJoinedByString:{@", "}];
+        allObjects = [(NSCountedSet *)self->_disablingReasons allObjects];
+        v8 = [allObjects componentsJoinedByString:{@", "}];
         *buf = 138543618;
-        v19 = v5;
+        v19 = lockedCopy;
         v20 = 2114;
         v21 = v8;
         _os_log_impl(&dword_1DC05A000, v6, OS_LOG_TYPE_DEFAULT, "Reenabling synchonization for reason '%{public}@'. Synchronization is still disabled for reasons: %{public}@", buf, 0x16u);
@@ -4754,7 +4754,7 @@ uint64_t __54__CPLEngineScheduler_enableSynchronizationWithReason___block_invoke
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v19 = v5;
+        v19 = lockedCopy;
         _os_log_impl(&dword_1DC05A000, v11, OS_LOG_TYPE_DEFAULT, "Reenabling synchonization for reason '%{public}@'. Synchronization is now fully enabled", buf, 0xCu);
       }
     }
@@ -4769,7 +4769,7 @@ uint64_t __54__CPLEngineScheduler_enableSynchronizationWithReason___block_invoke
       {
         v10 = [CPLEngineSyncManager shortDescriptionForState:self->_requiredFirstState];
         *buf = 138543618;
-        v19 = v5;
+        v19 = lockedCopy;
         v20 = 2114;
         v21 = v10;
         _os_log_impl(&dword_1DC05A000, v9, OS_LOG_TYPE_DEFAULT, "Reenabling synchonization for reason '%{public}@'. Synchronization is now fully enabled and should restart soon from at least %{public}@", buf, 0x16u);
@@ -4786,17 +4786,17 @@ uint64_t __54__CPLEngineScheduler_enableSynchronizationWithReason___block_invoke
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)disableSynchronizationIfBlockedWithReason:(id)a3 completionHandler:(id)a4
+- (void)disableSynchronizationIfBlockedWithReason:(id)reason completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  handlerCopy = handler;
   queue = self->_queue;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __82__CPLEngineScheduler_disableSynchronizationIfBlockedWithReason_completionHandler___block_invoke;
   v14[3] = &unk_1E861ABE0;
-  v15 = v6;
-  v16 = v7;
+  v15 = reasonCopy;
+  v16 = handlerCopy;
   v14[4] = self;
   v9 = v14;
   block[0] = MEMORY[0x1E69E9820];
@@ -4805,8 +4805,8 @@ uint64_t __54__CPLEngineScheduler_enableSynchronizationWithReason___block_invoke
   block[3] = &unk_1E861B4E0;
   v18 = v9;
   v10 = queue;
-  v11 = v6;
-  v12 = v7;
+  v11 = reasonCopy;
+  v12 = handlerCopy;
   v13 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v10, v13);
 }
@@ -4841,16 +4841,16 @@ void __82__CPLEngineScheduler_disableSynchronizationIfBlockedWithReason_completi
   }
 }
 
-- (void)disableSynchronizationWithReason:(id)a3
+- (void)disableSynchronizationWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   queue = self->_queue;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __55__CPLEngineScheduler_disableSynchronizationWithReason___block_invoke;
   v10[3] = &unk_1E861B290;
   v10[4] = self;
-  v11 = v4;
+  v11 = reasonCopy;
   v6 = v10;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -4858,7 +4858,7 @@ void __82__CPLEngineScheduler_disableSynchronizationIfBlockedWithReason_completi
   block[3] = &unk_1E861B4E0;
   v13 = v6;
   v7 = queue;
-  v8 = v4;
+  v8 = reasonCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }
@@ -4882,30 +4882,30 @@ uint64_t __55__CPLEngineScheduler_disableSynchronizationWithReason___block_invok
   return [v2 _disableSynchronizationWithReasonLocked:v4];
 }
 
-- (void)_disableSynchronizationWithReasonLocked:(id)a3
+- (void)_disableSynchronizationWithReasonLocked:(id)locked
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lockedCopy = locked;
   if ((_CPLSilentLogging & 1) == 0)
   {
     v5 = __CPLSchedulerOSLogDomain_7603();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543362;
-      v10 = v4;
+      v10 = lockedCopy;
       _os_log_impl(&dword_1DC05A000, v5, OS_LOG_TYPE_DEFAULT, "Disabling synchronization for reason '%{public}@'", &v9, 0xCu);
     }
   }
 
-  [(NSCountedSet *)self->_disablingReasons addObject:v4];
+  [(NSCountedSet *)self->_disablingReasons addObject:lockedCopy];
   if (self->_nextSession)
   {
     [(CPLEngineScheduler *)self _unscheduleNextSyncSession];
   }
 
-  v6 = [(CPLEngineScheduler *)self engineLibrary];
-  v7 = [v6 syncManager];
-  [v7 cancelCurrentSyncSession];
+  engineLibrary = [(CPLEngineScheduler *)self engineLibrary];
+  syncManager = [engineLibrary syncManager];
+  [syncManager cancelCurrentSyncSession];
 
   v8 = *MEMORY[0x1E69E9840];
 }
@@ -5044,7 +5044,7 @@ uint64_t __46__CPLEngineScheduler_noteClientIsInBackground__block_invoke(uint64_
   return result;
 }
 
-- (void)noteClientIsInForegroundQuietly:(BOOL)a3
+- (void)noteClientIsInForegroundQuietly:(BOOL)quietly
 {
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
@@ -5052,7 +5052,7 @@ uint64_t __46__CPLEngineScheduler_noteClientIsInBackground__block_invoke(uint64_
   v7[2] = __54__CPLEngineScheduler_noteClientIsInForegroundQuietly___block_invoke;
   v7[3] = &unk_1E861F7F0;
   v7[4] = self;
-  v8 = a3;
+  quietlyCopy = quietly;
   v4 = v7;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -5377,10 +5377,10 @@ _BYTE *__42__CPLEngineScheduler_noteServerHasChanges__block_invoke_2(uint64_t a1
 - (void)_reallyNoteServerHasChangesLocked
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(CPLEngineScheduler *)self engineLibrary];
-  v4 = [v3 store];
+  engineLibrary = [(CPLEngineScheduler *)self engineLibrary];
+  store = [engineLibrary store];
 
-  if ([v4 shouldSyncScopeList])
+  if ([store shouldSyncScopeList])
   {
     unavailabilityLimitDate = self->_unavailabilityLimitDate;
     if (unavailabilityLimitDate)
@@ -5411,7 +5411,7 @@ _BYTE *__42__CPLEngineScheduler_noteServerHasChanges__block_invoke_2(uint64_t a1
     v9[1] = 3221225472;
     v9[2] = __55__CPLEngineScheduler__reallyNoteServerHasChangesLocked__block_invoke;
     v9[3] = &unk_1E86205E0;
-    v10 = v4;
+    v10 = store;
     v8 = [v10 performWriteTransactionWithBlock:v9 completionHandler:&__block_literal_global_7727];
   }
 
@@ -5436,11 +5436,11 @@ uint64_t __55__CPLEngineScheduler__reallyNoteServerHasChangesLocked__block_invok
   return v4;
 }
 
-- (void)_noteSyncSessionNeededFromStateDontRewindImmediately:(unint64_t)a3
+- (void)_noteSyncSessionNeededFromStateDontRewindImmediately:(unint64_t)immediately
 {
   v19 = *MEMORY[0x1E69E9840];
   currentSyncState = self->_currentSyncState;
-  if (currentSyncState <= a3 || currentSyncState > 0xB)
+  if (currentSyncState <= immediately || currentSyncState > 0xB)
   {
     v7 = *MEMORY[0x1E69E9840];
 
@@ -5449,14 +5449,14 @@ uint64_t __55__CPLEngineScheduler__reallyNoteServerHasChangesLocked__block_invok
 
   else
   {
-    if (self->_requiredFirstState > a3 && self->_pendingRequiredFirstState > a3)
+    if (self->_requiredFirstState > immediately && self->_pendingRequiredFirstState > immediately)
     {
       if ((_CPLSilentLogging & 1) == 0)
       {
         v8 = __CPLSchedulerOSLogDomain_7603();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
-          v9 = [CPLEngineSyncManager shortDescriptionForState:a3];
+          v9 = [CPLEngineSyncManager shortDescriptionForState:immediately];
           v10 = [CPLEngineSyncManager shortDescriptionForState:self->_currentSyncState];
           v11 = [CPLEngineSyncManager shortDescriptionForState:11];
           v13 = 138543874;
@@ -5469,7 +5469,7 @@ uint64_t __55__CPLEngineScheduler__reallyNoteServerHasChangesLocked__block_invok
         }
       }
 
-      self->_pendingRequiredFirstState = a3;
+      self->_pendingRequiredFirstState = immediately;
     }
 
     v12 = *MEMORY[0x1E69E9840];
@@ -5600,17 +5600,17 @@ uint64_t __55__CPLEngineScheduler_noteClientIsInSyncWithClientCache__block_invok
 
 - (void)noteClientNeedsToPull
 {
-  v3 = [(CPLEngineScheduler *)self engineLibrary];
-  v4 = [v3 store];
+  engineLibrary = [(CPLEngineScheduler *)self engineLibrary];
+  store = [engineLibrary store];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __43__CPLEngineScheduler_noteClientNeedsToPull__block_invoke;
   v8[3] = &unk_1E86200D0;
-  v9 = v4;
-  v10 = v3;
-  v11 = self;
-  v5 = v3;
-  v6 = v4;
+  v9 = store;
+  v10 = engineLibrary;
+  selfCopy = self;
+  v5 = engineLibrary;
+  v6 = store;
   v7 = [v6 performReadTransactionWithBlock:v8];
 }
 
@@ -5741,21 +5741,21 @@ void __55__CPLEngineScheduler_noteScopeNeedsToPullFromTransport__block_invoke(ui
   [v4 noteServerHasChanges];
 }
 
-- (void)noteScopeNeedsToPushToTransportWithChangeTypes:(unint64_t)a3
+- (void)noteScopeNeedsToPushToTransportWithChangeTypes:(unint64_t)types
 {
-  v3 = 122;
+  typesCopy = 122;
   queue = self->_queue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __69__CPLEngineScheduler_noteScopeNeedsToPushToTransportWithChangeTypes___block_invoke;
   v8[3] = &unk_1E861B100;
-  if (a3)
+  if (types)
   {
-    v3 = a3;
+    typesCopy = types;
   }
 
   v8[4] = self;
-  v8[5] = v3;
+  v8[5] = typesCopy;
   v5 = v8;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -6188,17 +6188,17 @@ uint64_t __40__CPLEngineScheduler_kickOffSyncSession__block_invoke(uint64_t a1)
   return [*(a1 + 32) _noteSyncSessionNeededFromState:1 proposedScheduleDate:0];
 }
 
-- (void)forceStartSyncSession:(id)a3 withMinimalPhase:(unint64_t)a4
+- (void)forceStartSyncSession:(id)session withMinimalPhase:(unint64_t)phase
 {
-  v6 = a3;
+  sessionCopy = session;
   queue = self->_queue;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __61__CPLEngineScheduler_forceStartSyncSession_withMinimalPhase___block_invoke;
   v12[3] = &unk_1E861B128;
   v12[4] = self;
-  v13 = v6;
-  v14 = a4;
+  v13 = sessionCopy;
+  phaseCopy = phase;
   v8 = v12;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -6206,7 +6206,7 @@ uint64_t __40__CPLEngineScheduler_kickOffSyncSession__block_invoke(uint64_t a1)
   block[3] = &unk_1E861B4E0;
   v16 = v8;
   v9 = queue;
-  v10 = v6;
+  v10 = sessionCopy;
   v11 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v9, v11);
 }
@@ -6255,16 +6255,16 @@ uint64_t __61__CPLEngineScheduler_forceStartSyncSession_withMinimalPhase___block
   return [v10 _startRequiredSyncSession:v13];
 }
 
-- (void)startRequiredSyncSessionNow:(id)a3
+- (void)startRequiredSyncSessionNow:(id)now
 {
-  v4 = a3;
+  nowCopy = now;
   queue = self->_queue;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __50__CPLEngineScheduler_startRequiredSyncSessionNow___block_invoke;
   v10[3] = &unk_1E861B290;
   v10[4] = self;
-  v11 = v4;
+  v11 = nowCopy;
   v6 = v10;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -6272,7 +6272,7 @@ uint64_t __61__CPLEngineScheduler_forceStartSyncSession_withMinimalPhase___block
   block[3] = &unk_1E861B4E0;
   v13 = v6;
   v7 = queue;
-  v8 = v4;
+  v8 = nowCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }
@@ -6360,20 +6360,20 @@ LABEL_14:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_noteSyncSessionNeededFromState:(unint64_t)a3 minimumDelay:(double)intervalForRetry
+- (void)_noteSyncSessionNeededFromState:(unint64_t)state minimumDelay:(double)intervalForRetry
 {
   if (self->_requiredFirstState == 14 && (v6 = intervalForRetry, intervalForRetry = self->_intervalForRetry, intervalForRetry < v6))
   {
-    v7 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     unavailabilityLimitDate = self->_unavailabilityLimitDate;
-    if (unavailabilityLimitDate && ([(NSDate *)unavailabilityLimitDate timeIntervalSinceDate:v7], v9 >= v6))
+    if (unavailabilityLimitDate && ([(NSDate *)unavailabilityLimitDate timeIntervalSinceDate:date], v9 >= v6))
     {
       v11 = 0;
     }
 
     else
     {
-      v11 = [v7 dateByAddingTimeInterval:v6];
+      v11 = [date dateByAddingTimeInterval:v6];
     }
 
     v10 = v11;
@@ -6385,13 +6385,13 @@ LABEL_14:
   }
 
   v12 = v10;
-  [(CPLEngineScheduler *)self _noteSyncSessionNeededFromState:a3 proposedScheduleDate:v10, intervalForRetry];
+  [(CPLEngineScheduler *)self _noteSyncSessionNeededFromState:state proposedScheduleDate:v10, intervalForRetry];
 }
 
-- (void)_noteSyncSessionNeededFromState:(unint64_t)a3 proposedScheduleDate:(id)a4
+- (void)_noteSyncSessionNeededFromState:(unint64_t)state proposedScheduleDate:(id)date
 {
   v44 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  dateCopy = date;
   unavailabilityLimitDate = self->_unavailabilityLimitDate;
   if (unavailabilityLimitDate)
   {
@@ -6405,14 +6405,14 @@ LABEL_14:
   if (self->_opened)
   {
     pendingRequiredFirstState = self->_pendingRequiredFirstState;
-    if (pendingRequiredFirstState <= 0xD && pendingRequiredFirstState >= a3)
+    if (pendingRequiredFirstState <= 0xD && pendingRequiredFirstState >= state)
     {
       self->_pendingRequiredFirstState = 14;
     }
 
-    objc_storeStrong(&self->_proposedScheduleDate, a4);
+    objc_storeStrong(&self->_proposedScheduleDate, date);
     requiredFirstState = self->_requiredFirstState;
-    if (requiredFirstState > a3 && self->_intervalForRetry > 5.0)
+    if (requiredFirstState > state && self->_intervalForRetry > 5.0)
     {
       if ((_CPLSilentLogging & 1) == 0)
       {
@@ -6420,7 +6420,7 @@ LABEL_14:
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
           intervalForRetry = self->_intervalForRetry;
-          v15 = [CPLEngineSyncManager shortDescriptionForState:a3];
+          v15 = [CPLEngineSyncManager shortDescriptionForState:state];
           v38 = 134218242;
           v39 = intervalForRetry;
           v40 = 2114;
@@ -6439,21 +6439,21 @@ LABEL_14:
       requiredFirstState = self->_requiredFirstState;
     }
 
-    if (requiredFirstState >= a3)
+    if (requiredFirstState >= state)
     {
       if ((_CPLSilentLogging & 1) == 0)
       {
         v24 = __CPLSchedulerOSLogDomain_7603();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
-          v25 = [CPLEngineSyncManager shortDescriptionForState:a3];
+          v25 = [CPLEngineSyncManager shortDescriptionForState:state];
           v38 = 138543362;
           v39 = *&v25;
           _os_log_impl(&dword_1DC05A000, v24, OS_LOG_TYPE_DEFAULT, "We are asked to schedule a sync session from %{public}@", &v38, 0xCu);
         }
       }
 
-      [(CPLEngineScheduler *)self _setRequiredFirstState:a3];
+      [(CPLEngineScheduler *)self _setRequiredFirstState:state];
       ++self->_currentRequestGeneration;
       currentSession = self->_currentSession;
       if (currentSession)
@@ -6464,7 +6464,7 @@ LABEL_14:
           if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
           {
             v28 = self->_currentSession;
-            v29 = [CPLEngineSyncManager shortDescriptionForState:a3];
+            v29 = [CPLEngineSyncManager shortDescriptionForState:state];
             v38 = 138543618;
             v39 = *&v28;
             v40 = 2114;
@@ -6487,7 +6487,7 @@ LABEL_14:
     }
 
     currentSyncState = self->_currentSyncState;
-    if (self->_currentSession && currentSyncState >= a3)
+    if (self->_currentSession && currentSyncState >= state)
     {
       if (_CPLSilentLogging)
       {
@@ -6501,7 +6501,7 @@ LABEL_14:
       }
 
       v20 = [CPLEngineSyncManager shortDescriptionForState:self->_currentSyncState];
-      v21 = [CPLEngineSyncManager shortDescriptionForState:a3];
+      v21 = [CPLEngineSyncManager shortDescriptionForState:state];
       v22 = [CPLEngineSyncManager shortDescriptionForState:self->_requiredFirstState];
       v38 = 138543874;
       v39 = *&v20;
@@ -6514,7 +6514,7 @@ LABEL_14:
 
     else
     {
-      if (currentSyncState >= a3)
+      if (currentSyncState >= state)
       {
         nextSession = self->_nextSession;
         if (!nextSession || self->_deferDate || ([(CPLSyncSession *)nextSession expectedDate], v37 = objc_claimAutoreleasedReturnValue(), v37, !v37))
@@ -6535,15 +6535,15 @@ LABEL_14:
             goto LABEL_55;
           }
 
-          v31 = [CPLEngineSyncManager shortDescriptionForState:a3];
+          v31 = [CPLEngineSyncManager shortDescriptionForState:state];
           v32 = [CPLEngineSyncManager shortDescriptionForState:self->_requiredFirstState];
-          v33 = [(CPLSyncSession *)self->_nextSession whenItWillStartDescription];
+          whenItWillStartDescription = [(CPLSyncSession *)self->_nextSession whenItWillStartDescription];
           v38 = 138543874;
           v39 = *&v31;
           v40 = 2114;
           v41 = v32;
           v42 = 2114;
-          v43 = v33;
+          v43 = whenItWillStartDescription;
           _os_log_impl(&dword_1DC05A000, v19, OS_LOG_TYPE_DEFAULT, "We are asked to schedule a sync session from %{public}@ but we have already been asked to start from %{public}@ (should happen %{public}@)", &v38, 0x20u);
         }
 
@@ -6577,7 +6577,7 @@ LABEL_56:
             goto LABEL_60;
           }
 
-          v31 = [CPLEngineSyncManager shortDescriptionForState:a3];
+          v31 = [CPLEngineSyncManager shortDescriptionForState:state];
           v32 = [CPLEngineSyncManager shortDescriptionForState:self->_requiredFirstState];
           v38 = 138543618;
           v39 = *&v31;
@@ -6601,7 +6601,7 @@ LABEL_56:
       }
 
       v20 = [CPLEngineSyncManager shortDescriptionForState:self->_currentSyncState];
-      v21 = [CPLEngineSyncManager shortDescriptionForState:a3];
+      v21 = [CPLEngineSyncManager shortDescriptionForState:state];
       v38 = 138543618;
       v39 = *&v20;
       v40 = 2114;
@@ -6630,10 +6630,10 @@ LABEL_60:
 
 - (BOOL)_allowsJustInCaseSessions
 {
-  v2 = [(CPLEngineScheduler *)self engineLibrary];
-  v3 = [v2 isSystemLibrary];
+  engineLibrary = [(CPLEngineScheduler *)self engineLibrary];
+  isSystemLibrary = [engineLibrary isSystemLibrary];
 
-  return v3;
+  return isSystemLibrary;
 }
 
 - (void)_unscheduleNextSyncSession
@@ -6648,8 +6648,8 @@ LABEL_60:
 {
   if (self->_nextSession)
   {
-    v3 = [(CPLEngineScheduler *)self platformObject];
-    [v3 unscheduleSyncSession:self->_nextSession];
+    platformObject = [(CPLEngineScheduler *)self platformObject];
+    [platformObject unscheduleSyncSession:self->_nextSession];
 
     nextSession = self->_nextSession;
     self->_nextSession = 0;
@@ -6724,9 +6724,9 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    v14 = [(CPLSyncSession *)nextSession expectedDate];
+    expectedDate = [(CPLSyncSession *)nextSession expectedDate];
 
-    if (!v14)
+    if (!expectedDate)
     {
       if (_CPLSilentLogging)
       {
@@ -6745,8 +6745,8 @@ LABEL_14:
       goto LABEL_14;
     }
 
-    v12 = [(CPLSyncSession *)self->_nextSession expectedDate];
-    [v12 timeIntervalSinceNow];
+    expectedDate2 = [(CPLSyncSession *)self->_nextSession expectedDate];
+    [expectedDate2 timeIntervalSinceNow];
     if (v15 > intervalForRetry)
     {
       if ((_CPLSilentLogging & 1) == 0)
@@ -6803,8 +6803,8 @@ LABEL_45:
 
         if (self->_protectAgainstFastRelaunch)
         {
-          v33 = [(CPLEngineScheduler *)self _minimalDateForFirstSync];
-          if (v33 && [v32 compare:v33] == -1)
+          _minimalDateForFirstSync = [(CPLEngineScheduler *)self _minimalDateForFirstSync];
+          if (_minimalDateForFirstSync && [v32 compare:_minimalDateForFirstSync] == -1)
           {
             if ((_CPLSilentLogging & 1) == 0)
             {
@@ -6816,15 +6816,15 @@ LABEL_45:
               }
             }
 
-            v35 = v33;
+            v35 = _minimalDateForFirstSync;
 
             self->_delayedFirstSyncBecauseOfRapidLaunch = 1;
             v32 = v35;
           }
         }
 
-        v36 = [(CPLEngineScheduler *)self platformObject];
-        v37 = [v36 scheduleNextSyncSessionAtDate:v32];
+        platformObject = [(CPLEngineScheduler *)self platformObject];
+        v37 = [platformObject scheduleNextSyncSessionAtDate:v32];
         v38 = self->_nextSession;
         self->_nextSession = v37;
 
@@ -6844,9 +6844,9 @@ LABEL_44:
       v30 = __CPLSchedulerOSLogDomain_7603();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
       {
-        v31 = [(CPLSyncSession *)self->_nextSession whenItWillStartDescription];
+        whenItWillStartDescription = [(CPLSyncSession *)self->_nextSession whenItWillStartDescription];
         v41 = 138543362;
-        v42 = v31;
+        v42 = whenItWillStartDescription;
         _os_log_impl(&dword_1DC05A000, v30, OS_LOG_TYPE_DEBUG, "No need to reschedule a sync session. A session is expected to start %{public}@", &v41, 0xCu);
       }
     }
@@ -6861,13 +6861,13 @@ LABEL_44:
 
   if ((_CPLSilentLogging & 1) == 0)
   {
-    v12 = __CPLSchedulerOSLogDomain_7603();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    expectedDate2 = __CPLSchedulerOSLogDomain_7603();
+    if (os_log_type_enabled(expectedDate2, OS_LOG_TYPE_DEFAULT))
     {
       currentSession = self->_currentSession;
       v41 = 138543362;
       v42 = currentSession;
-      _os_log_impl(&dword_1DC05A000, v12, OS_LOG_TYPE_DEFAULT, "No need to schedule a sync session as we are already in the middle of %{public}@", &v41, 0xCu);
+      _os_log_impl(&dword_1DC05A000, expectedDate2, OS_LOG_TYPE_DEFAULT, "No need to schedule a sync session as we are already in the middle of %{public}@", &v41, 0xCu);
     }
 
 LABEL_42:
@@ -6877,10 +6877,10 @@ LABEL_56:
   v40 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_startRequiredSyncSession:(id)a3
+- (void)_startRequiredSyncSession:(id)session
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sessionCopy = session;
   unavailabilityLimitDate = self->_unavailabilityLimitDate;
   if (unavailabilityLimitDate)
   {
@@ -6898,7 +6898,7 @@ LABEL_56:
       nextSession = self->_nextSession;
       if (nextSession)
       {
-        if (nextSession == v4)
+        if (nextSession == sessionCopy)
         {
           if (self->_deferDate && (_CPLSilentLogging & 1) == 0)
           {
@@ -6906,12 +6906,12 @@ LABEL_56:
             if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
             {
               v16 = 138543362;
-              v17 = v4;
+              v17 = sessionCopy;
               _os_log_impl(&dword_1DC05A000, v15, OS_LOG_TYPE_DEFAULT, "Restarting deferred %{public}@", &v16, 0xCu);
             }
           }
 
-          [(CPLEngineScheduler *)self _reallyStartSyncSession:v4];
+          [(CPLEngineScheduler *)self _reallyStartSyncSession:sessionCopy];
         }
 
         else if ((_CPLSilentLogging & 1) == 0)
@@ -6921,7 +6921,7 @@ LABEL_56:
           {
             v12 = self->_nextSession;
             v16 = 138412546;
-            v17 = v4;
+            v17 = sessionCopy;
             v18 = 2112;
             v19 = v12;
             v9 = "Dropping request for sync session %@ from implementation as we scheduled %@";
@@ -6938,7 +6938,7 @@ LABEL_19:
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
         {
           v16 = 138412290;
-          v17 = v4;
+          v17 = sessionCopy;
           _os_log_impl(&dword_1DC05A000, v14, OS_LOG_TYPE_DEBUG, "Dropping request for sync session %@ from implementation as we cancelled that scheduling", &v16, 0xCu);
         }
       }
@@ -6951,7 +6951,7 @@ LABEL_19:
       {
         currentSession = self->_currentSession;
         v16 = 138412546;
-        v17 = v4;
+        v17 = sessionCopy;
         v18 = 2112;
         v19 = currentSession;
         v9 = "Dropping request for sync session %@ from implementation as we are already in the middle of %@";
@@ -6981,12 +6981,12 @@ LABEL_18:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_reallyStartSyncSession:(id)a3
+- (void)_reallyStartSyncSession:(id)session
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  sessionCopy = session;
   currentSession = self->_currentSession;
-  if (currentSession != v5 && currentSession != 0)
+  if (currentSession != sessionCopy && currentSession != 0)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -6995,16 +6995,16 @@ LABEL_18:
       {
         v22 = self->_currentSession;
         *buf = 138412546;
-        v26 = v5;
+        v26 = sessionCopy;
         v27 = 2112;
         v28 = v22;
         _os_log_impl(&dword_1DC05A000, v21, OS_LOG_TYPE_ERROR, "Trying to start %@ while %@ is already running", buf, 0x16u);
       }
     }
 
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v24 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLEngineScheduler.m"];
-    [v23 handleFailureInMethod:a2 object:self file:v24 lineNumber:274 description:{@"Trying to start %@ while %@ is already running", v5, self->_currentSession}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v24 lineNumber:274 description:{@"Trying to start %@ while %@ is already running", sessionCopy, self->_currentSession}];
 
     abort();
   }
@@ -7030,13 +7030,13 @@ LABEL_18:
     if (self->_requiredFirstState < 7 || (-[CPLEngineScheduler engineLibrary](self, "engineLibrary"), v14 = objc_claimAutoreleasedReturnValue(), [v14 store], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "isClientInSyncWithClientCache"), v15, v14, v16) && self->_requiredFirstState <= 0xD)
     {
       self->_lastRequestGeneration = self->_currentRequestGeneration;
-      [CPLEngineScheduler _startSyncSession:"_startSyncSession:withMinimalPhase:rewind:" withMinimalPhase:v5 rewind:?];
+      [CPLEngineScheduler _startSyncSession:"_startSyncSession:withMinimalPhase:rewind:" withMinimalPhase:sessionCopy rewind:?];
     }
 
     else if (!self->_currentSession)
     {
-      v20 = [(CPLEngineScheduler *)self platformObject];
-      [v20 noteSyncSessionSucceeded:v5];
+      platformObject = [(CPLEngineScheduler *)self platformObject];
+      [platformObject noteSyncSessionSucceeded:sessionCopy];
     }
   }
 
@@ -7054,8 +7054,8 @@ LABEL_18:
 
     if (!self->_currentSession)
     {
-      v18 = [(CPLEngineScheduler *)self platformObject];
-      [v18 noteSyncSessionSucceeded:v5];
+      platformObject2 = [(CPLEngineScheduler *)self platformObject];
+      [platformObject2 noteSyncSessionSucceeded:sessionCopy];
 
       [(CPLEngineScheduler *)self _scheduleNextSyncSession];
     }
@@ -7104,9 +7104,9 @@ LABEL_18:
   {
     if (!foregroundCalls || !self->_nextSession && !self->_currentSession)
     {
-      v4 = [(CPLEngineScheduler *)self engineLibrary];
-      v5 = [v4 systemMonitor];
-      [v5 stopOverridingSystemBudgets:8 reason:2];
+      engineLibrary = [(CPLEngineScheduler *)self engineLibrary];
+      systemMonitor = [engineLibrary systemMonitor];
+      [systemMonitor stopOverridingSystemBudgets:8 reason:2];
       v6 = 0;
 LABEL_9:
 
@@ -7116,9 +7116,9 @@ LABEL_9:
 
   else if (foregroundCalls && self->_currentSession)
   {
-    v4 = [(CPLEngineScheduler *)self engineLibrary];
-    v5 = [v4 systemMonitor];
-    [v5 startOverridingSystemBudgets:8 reason:2];
+    engineLibrary = [(CPLEngineScheduler *)self engineLibrary];
+    systemMonitor = [engineLibrary systemMonitor];
+    [systemMonitor startOverridingSystemBudgets:8 reason:2];
     v6 = 1;
     goto LABEL_9;
   }
@@ -7127,21 +7127,21 @@ LABEL_9:
 - (void)_noteSignificantEvent
 {
   predictor = self->_predictor;
-  v3 = [MEMORY[0x1E695DF00] date];
-  [(CPLSyncSessionPredictor *)predictor updatePredictedDate:v3 forType:@"lastEvent"];
+  date = [MEMORY[0x1E695DF00] date];
+  [(CPLSyncSessionPredictor *)predictor updatePredictedDate:date forType:@"lastEvent"];
 }
 
-- (CPLEngineScheduler)initWithEngineLibrary:(id)a3
+- (CPLEngineScheduler)initWithEngineLibrary:(id)library
 {
   v41 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  libraryCopy = library;
   v38.receiver = self;
   v38.super_class = CPLEngineScheduler;
   v6 = [(CPLEngineScheduler *)&v38 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_engineLibrary, v5);
+    objc_storeWeak(&v6->_engineLibrary, libraryCopy);
     v8 = CPLCopyDefaultSerialQueueAttributes();
     v9 = dispatch_queue_create("com.apple.cpl.scheduler", v8);
     queue = v7->_queue;
@@ -7178,8 +7178,8 @@ LABEL_9:
     v7->_protectAgainstFastRelaunch = 1;
     v23 = [CPLSyncSessionPredictor alloc];
     WeakRetained = objc_loadWeakRetained(&v7->_engineLibrary);
-    v25 = [WeakRetained libraryIdentifier];
-    v26 = [(CPLSyncSessionPredictor *)v23 initWithIdentifier:v25];
+    libraryIdentifier = [WeakRetained libraryIdentifier];
+    v26 = [(CPLSyncSessionPredictor *)v23 initWithIdentifier:libraryIdentifier];
     predictor = v7->_predictor;
     v7->_predictor = v26;
 
@@ -7203,9 +7203,9 @@ LABEL_9:
         }
       }
 
-      v36 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v37 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLEngineScheduler.m"];
-      [v36 handleFailureInMethod:a2 object:v7 file:v37 lineNumber:196 description:{@"No platform object specified for %@", objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:v7 file:v37 lineNumber:196 description:{@"No platform object specified for %@", objc_opt_class()}];
 
       abort();
     }
@@ -7248,8 +7248,8 @@ uint64_t __35__CPLEngineScheduler_validElements__block_invoke()
 
 + (BOOL)shouldShowBackgroundSchedulingStatusInTransport
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"CPLLegacyBackgroundSchedulingStatus"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"CPLLegacyBackgroundSchedulingStatus"];
 
   return v3;
 }

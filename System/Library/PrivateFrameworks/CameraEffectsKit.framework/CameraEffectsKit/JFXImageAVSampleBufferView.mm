@@ -1,15 +1,15 @@
 @interface JFXImageAVSampleBufferView
-- (JFXImageAVSampleBufferView)initWithCoder:(id)a3;
-- (JFXImageAVSampleBufferView)initWithFrame:(CGRect)a3;
+- (JFXImageAVSampleBufferView)initWithCoder:(id)coder;
+- (JFXImageAVSampleBufferView)initWithFrame:(CGRect)frame;
 - (opaqueCMSampleBuffer)createCMSampleBufferFromJTImage;
 - (void)JFXImageAVSampleBufferView_commonInit;
-- (void)drawSampleBufferToLayer:(opaqueCMSampleBuffer *)a3;
-- (void)setContentMode:(int64_t)a3;
-- (void)setEnableDebugDrawing:(BOOL)a3;
-- (void)setFlipX:(BOOL)a3;
-- (void)setFlipY:(BOOL)a3;
-- (void)setJtImage:(id)a3;
-- (void)setRenderingType:(int64_t)a3;
+- (void)drawSampleBufferToLayer:(opaqueCMSampleBuffer *)layer;
+- (void)setContentMode:(int64_t)mode;
+- (void)setEnableDebugDrawing:(BOOL)drawing;
+- (void)setFlipX:(BOOL)x;
+- (void)setFlipY:(BOOL)y;
+- (void)setJtImage:(id)image;
+- (void)setRenderingType:(int64_t)type;
 - (void)updateDebugDrawing;
 @end
 
@@ -24,11 +24,11 @@
   }
 
   v3 = *MEMORY[0x277CE5DD0];
-  v4 = [(JFXImageAVSampleBufferView *)self sampleBufferDisplayLayer];
-  [v4 setVideoGravity:v3];
+  sampleBufferDisplayLayer = [(JFXImageAVSampleBufferView *)self sampleBufferDisplayLayer];
+  [sampleBufferDisplayLayer setVideoGravity:v3];
 
-  v5 = [(JFXImageAVSampleBufferView *)self layer];
-  [v5 setMasksToBounds:1];
+  layer = [(JFXImageAVSampleBufferView *)self layer];
+  [layer setMasksToBounds:1];
 
   self->_enableDebugDrawing = JFXImageAVSampleBufferView_commonInit_s_enableDebugDrawing;
   [(JFXImageAVSampleBufferView *)self setRenderingType:-1];
@@ -37,53 +37,53 @@
     v6 = objc_opt_new();
     [(JFXImageAVSampleBufferView *)self setHdrBadgeDebug:v6];
 
-    v7 = [(JFXImageAVSampleBufferView *)self hdrBadgeDebug];
-    [v7 setText:@"HDR"];
+    hdrBadgeDebug = [(JFXImageAVSampleBufferView *)self hdrBadgeDebug];
+    [hdrBadgeDebug setText:@"HDR"];
 
-    v8 = [MEMORY[0x277D75348] whiteColor];
-    v9 = [(JFXImageAVSampleBufferView *)self hdrBadgeDebug];
-    [v9 setTextColor:v8];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    hdrBadgeDebug2 = [(JFXImageAVSampleBufferView *)self hdrBadgeDebug];
+    [hdrBadgeDebug2 setTextColor:whiteColor];
 
     v10 = [MEMORY[0x277D74300] systemFontOfSize:24.0];
-    v11 = [(JFXImageAVSampleBufferView *)self hdrBadgeDebug];
-    [v11 setFont:v10];
+    hdrBadgeDebug3 = [(JFXImageAVSampleBufferView *)self hdrBadgeDebug];
+    [hdrBadgeDebug3 setFont:v10];
 
-    v12 = [MEMORY[0x277D75348] clearColor];
-    v13 = [(JFXImageAVSampleBufferView *)self hdrBadgeDebug];
-    [v13 setBackgroundColor:v12];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    hdrBadgeDebug4 = [(JFXImageAVSampleBufferView *)self hdrBadgeDebug];
+    [hdrBadgeDebug4 setBackgroundColor:clearColor];
 
-    v14 = [MEMORY[0x277D75348] blackColor];
-    v15 = [v14 CGColor];
-    v16 = [(JFXImageAVSampleBufferView *)self hdrBadgeDebug];
-    v17 = [v16 layer];
-    [v17 setShadowColor:v15];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    cGColor = [blackColor CGColor];
+    hdrBadgeDebug5 = [(JFXImageAVSampleBufferView *)self hdrBadgeDebug];
+    layer2 = [hdrBadgeDebug5 layer];
+    [layer2 setShadowColor:cGColor];
 
-    v18 = [(JFXImageAVSampleBufferView *)self hdrBadgeDebug];
-    v19 = [v18 layer];
-    [v19 setShadowOffset:{1.0, 1.0}];
+    hdrBadgeDebug6 = [(JFXImageAVSampleBufferView *)self hdrBadgeDebug];
+    layer3 = [hdrBadgeDebug6 layer];
+    [layer3 setShadowOffset:{1.0, 1.0}];
 
-    v20 = [(JFXImageAVSampleBufferView *)self hdrBadgeDebug];
-    v21 = [v20 layer];
+    hdrBadgeDebug7 = [(JFXImageAVSampleBufferView *)self hdrBadgeDebug];
+    layer4 = [hdrBadgeDebug7 layer];
     LODWORD(v22) = 1.0;
-    [v21 setShadowOpacity:v22];
+    [layer4 setShadowOpacity:v22];
 
-    v23 = [(JFXImageAVSampleBufferView *)self hdrBadgeDebug];
-    v24 = [v23 layer];
-    [v24 setShadowRadius:3.0];
+    hdrBadgeDebug8 = [(JFXImageAVSampleBufferView *)self hdrBadgeDebug];
+    layer5 = [hdrBadgeDebug8 layer];
+    [layer5 setShadowRadius:3.0];
 
-    v25 = [(JFXImageAVSampleBufferView *)self hdrBadgeDebug];
-    [(JFXImageAVSampleBufferView *)self addSubview:v25];
+    hdrBadgeDebug9 = [(JFXImageAVSampleBufferView *)self hdrBadgeDebug];
+    [(JFXImageAVSampleBufferView *)self addSubview:hdrBadgeDebug9];
 
-    v26 = [(JFXImageAVSampleBufferView *)self hdrBadgeDebug];
-    [v26 sizeToFit];
+    hdrBadgeDebug10 = [(JFXImageAVSampleBufferView *)self hdrBadgeDebug];
+    [hdrBadgeDebug10 sizeToFit];
 
-    v27 = [(JFXImageAVSampleBufferView *)self hdrBadgeDebug];
-    [v27 frame];
+    hdrBadgeDebug11 = [(JFXImageAVSampleBufferView *)self hdrBadgeDebug];
+    [hdrBadgeDebug11 frame];
     v29 = v28;
     v31 = v30;
 
-    v32 = [(JFXImageAVSampleBufferView *)self hdrBadgeDebug];
-    [v32 setFrame:{20.0, 20.0, v29, v31}];
+    hdrBadgeDebug12 = [(JFXImageAVSampleBufferView *)self hdrBadgeDebug];
+    [hdrBadgeDebug12 setFrame:{20.0, 20.0, v29, v31}];
   }
 }
 
@@ -99,11 +99,11 @@ void __67__JFXImageAVSampleBufferView_JFXImageAVSampleBufferView_commonInit__blo
   }
 }
 
-- (JFXImageAVSampleBufferView)initWithFrame:(CGRect)a3
+- (JFXImageAVSampleBufferView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = JFXImageAVSampleBufferView;
-  v3 = [(JFXImageAVSampleBufferView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(JFXImageAVSampleBufferView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -113,11 +113,11 @@ void __67__JFXImageAVSampleBufferView_JFXImageAVSampleBufferView_commonInit__blo
   return v4;
 }
 
-- (JFXImageAVSampleBufferView)initWithCoder:(id)a3
+- (JFXImageAVSampleBufferView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = JFXImageAVSampleBufferView;
-  v3 = [(JFXImageAVSampleBufferView *)&v6 initWithCoder:a3];
+  v3 = [(JFXImageAVSampleBufferView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -127,77 +127,77 @@ void __67__JFXImageAVSampleBufferView_JFXImageAVSampleBufferView_commonInit__blo
   return v4;
 }
 
-- (void)setContentMode:(int64_t)a3
+- (void)setContentMode:(int64_t)mode
 {
   v6.receiver = self;
   v6.super_class = JFXImageAVSampleBufferView;
-  [(JFXImageAVSampleBufferView *)&v6 setContentMode:a3];
+  [(JFXImageAVSampleBufferView *)&v6 setContentMode:mode];
   v4 = *MEMORY[0x277CE5DD8];
-  v5 = [(JFXImageAVSampleBufferView *)self sampleBufferDisplayLayer];
-  [v5 setVideoGravity:v4];
+  sampleBufferDisplayLayer = [(JFXImageAVSampleBufferView *)self sampleBufferDisplayLayer];
+  [sampleBufferDisplayLayer setVideoGravity:v4];
 }
 
-- (void)setJtImage:(id)a3
+- (void)setJtImage:(id)image
 {
-  v5 = a3;
-  if (self->_jtImage != v5)
+  imageCopy = image;
+  if (self->_jtImage != imageCopy)
   {
-    v14 = v5;
-    objc_storeStrong(&self->_jtImage, a3);
+    v14 = imageCopy;
+    objc_storeStrong(&self->_jtImage, image);
     jtImage = self->_jtImage;
     if (jtImage)
     {
-      v7 = [(JTImage *)jtImage pvImageBuffer];
-      [v7 canCreateCVPixelBuffer];
+      pvImageBuffer = [(JTImage *)jtImage pvImageBuffer];
+      [pvImageBuffer canCreateCVPixelBuffer];
 
       jtImage = self->_jtImage;
     }
 
-    v8 = [(JTImage *)jtImage pvImageBuffer];
-    v9 = [v8 cvPixelBuffer];
+    pvImageBuffer2 = [(JTImage *)jtImage pvImageBuffer];
+    cvPixelBuffer = [pvImageBuffer2 cvPixelBuffer];
 
-    if (v9)
+    if (cvPixelBuffer)
     {
-      v10 = [MEMORY[0x277D415E0] jfx_getColorSpaceFromPixelBuffer:v9];
-      PixelFormatType = CVPixelBufferGetPixelFormatType(v9);
+      v10 = [MEMORY[0x277D415E0] jfx_getColorSpaceFromPixelBuffer:cvPixelBuffer];
+      PixelFormatType = CVPixelBufferGetPixelFormatType(cvPixelBuffer);
       if ([v10 isHDRSpace] && PixelFormatType == 2016686640)
       {
-        v12 = [(JFXImageAVSampleBufferView *)self createCMSampleBufferFromJTImage];
-        [(JFXImageAVSampleBufferView *)self drawSampleBufferToLayer:v12];
-        CFRelease(v12);
+        createCMSampleBufferFromJTImage = [(JFXImageAVSampleBufferView *)self createCMSampleBufferFromJTImage];
+        [(JFXImageAVSampleBufferView *)self drawSampleBufferToLayer:createCMSampleBufferFromJTImage];
+        CFRelease(createCMSampleBufferFromJTImage);
       }
     }
 
     else
     {
-      v13 = [(JFXImageAVSampleBufferView *)self sampleBufferDisplayLayer];
-      [v13 setContents:0];
+      sampleBufferDisplayLayer = [(JFXImageAVSampleBufferView *)self sampleBufferDisplayLayer];
+      [sampleBufferDisplayLayer setContents:0];
 
       [(JFXImageAVSampleBufferView *)self setRenderingType:-1];
     }
 
-    v5 = v14;
+    imageCopy = v14;
   }
 }
 
-- (void)setRenderingType:(int64_t)a3
+- (void)setRenderingType:(int64_t)type
 {
-  if (self->_renderingType != a3)
+  if (self->_renderingType != type)
   {
-    self->_renderingType = a3;
+    self->_renderingType = type;
     [(JFXImageAVSampleBufferView *)self updateDebugDrawing];
   }
 }
 
-- (void)setFlipX:(BOOL)a3
+- (void)setFlipX:(BOOL)x
 {
-  if (self->_flipX != a3)
+  if (self->_flipX != x)
   {
     v11 = v3;
     v12 = v4;
-    self->_flipX = a3;
+    self->_flipX = x;
     v6 = 1.0;
-    if (a3)
+    if (x)
     {
       v7 = -1.0;
     }
@@ -213,21 +213,21 @@ void __67__JFXImageAVSampleBufferView_JFXImageAVSampleBufferView_commonInit__blo
     }
 
     CGAffineTransformMakeScale(&v10, v7, v6);
-    v8 = [(JFXImageAVSampleBufferView *)self layer];
+    layer = [(JFXImageAVSampleBufferView *)self layer];
     v9 = v10;
-    [v8 setAffineTransform:&v9];
+    [layer setAffineTransform:&v9];
 
     [(JFXImageAVSampleBufferView *)self setNeedsDisplay];
   }
 }
 
-- (void)setFlipY:(BOOL)a3
+- (void)setFlipY:(BOOL)y
 {
-  if (self->_flipY != a3)
+  if (self->_flipY != y)
   {
     v11 = v3;
     v12 = v4;
-    self->_flipY = a3;
+    self->_flipY = y;
     v6 = 1.0;
     if (self->_flipX)
     {
@@ -239,25 +239,25 @@ void __67__JFXImageAVSampleBufferView_JFXImageAVSampleBufferView_commonInit__blo
       v7 = 1.0;
     }
 
-    if (a3)
+    if (y)
     {
       v6 = -1.0;
     }
 
     CGAffineTransformMakeScale(&v10, v7, v6);
-    v8 = [(JFXImageAVSampleBufferView *)self layer];
+    layer = [(JFXImageAVSampleBufferView *)self layer];
     v9 = v10;
-    [v8 setAffineTransform:&v9];
+    [layer setAffineTransform:&v9];
 
     [(JFXImageAVSampleBufferView *)self setNeedsDisplay];
   }
 }
 
-- (void)setEnableDebugDrawing:(BOOL)a3
+- (void)setEnableDebugDrawing:(BOOL)drawing
 {
-  if (self->_enableDebugDrawing != a3)
+  if (self->_enableDebugDrawing != drawing)
   {
-    self->_enableDebugDrawing = a3;
+    self->_enableDebugDrawing = drawing;
     [(JFXImageAVSampleBufferView *)self updateDebugDrawing];
   }
 }
@@ -268,15 +268,15 @@ void __67__JFXImageAVSampleBufferView_JFXImageAVSampleBufferView_commonInit__blo
   if (self->_enableDebugDrawing)
   {
     v4 = [JFXImageView colorFromRenderingType:self->_renderingType];
-    v5 = [v4 CGColor];
-    v6 = [(JFXImageAVSampleBufferView *)self layer];
-    [v6 setBorderColor:v5];
+    cGColor = [v4 CGColor];
+    layer = [(JFXImageAVSampleBufferView *)self layer];
+    [layer setBorderColor:cGColor];
 
     v3 = 4.0;
   }
 
-  v7 = [(JFXImageAVSampleBufferView *)self layer];
-  [v7 setBorderWidth:v3];
+  layer2 = [(JFXImageAVSampleBufferView *)self layer];
+  [layer2 setBorderWidth:v3];
 }
 
 - (opaqueCMSampleBuffer)createCMSampleBufferFromJTImage
@@ -284,10 +284,10 @@ void __67__JFXImageAVSampleBufferView_JFXImageAVSampleBufferView_commonInit__blo
   result = self->_jtImage;
   if (result)
   {
-    v4 = [(opaqueCMSampleBuffer *)result pvImageBuffer];
-    v5 = [v4 canCreateCVPixelBuffer];
+    pvImageBuffer = [(opaqueCMSampleBuffer *)result pvImageBuffer];
+    canCreateCVPixelBuffer = [pvImageBuffer canCreateCVPixelBuffer];
 
-    if (v5 && (sampleBufferOut = 0, -[JTImage pvImageBuffer](self->_jtImage, "pvImageBuffer"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 cvPixelBuffer], v6, v7) && (formatDescriptionOut = 0, v8 = *MEMORY[0x277CBECE8], CMVideoFormatDescriptionCreateForImageBuffer(*MEMORY[0x277CBECE8], v7, &formatDescriptionOut), formatDescriptionOut))
+    if (canCreateCVPixelBuffer && (sampleBufferOut = 0, -[JTImage pvImageBuffer](self->_jtImage, "pvImageBuffer"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 cvPixelBuffer], v6, v7) && (formatDescriptionOut = 0, v8 = *MEMORY[0x277CBECE8], CMVideoFormatDescriptionCreateForImageBuffer(*MEMORY[0x277CBECE8], v7, &formatDescriptionOut), formatDescriptionOut))
     {
       *&v11.duration.value = *MEMORY[0x277CC08F0];
       v11.duration.epoch = *(MEMORY[0x277CC08F0] + 16);
@@ -314,18 +314,18 @@ void __67__JFXImageAVSampleBufferView_JFXImageAVSampleBufferView_commonInit__blo
   return result;
 }
 
-- (void)drawSampleBufferToLayer:(opaqueCMSampleBuffer *)a3
+- (void)drawSampleBufferToLayer:(opaqueCMSampleBuffer *)layer
 {
-  if (a3)
+  if (layer)
   {
-    v5 = [(JFXImageAVSampleBufferView *)self sampleBufferDisplayLayer];
-    v4 = [v5 status];
-    if (([v5 requiresFlushToResumeDecoding] & 1) != 0 || v4 == 2)
+    sampleBufferDisplayLayer = [(JFXImageAVSampleBufferView *)self sampleBufferDisplayLayer];
+    status = [sampleBufferDisplayLayer status];
+    if (([sampleBufferDisplayLayer requiresFlushToResumeDecoding] & 1) != 0 || status == 2)
     {
-      [v5 flush];
+      [sampleBufferDisplayLayer flush];
     }
 
-    [v5 enqueueSampleBuffer:a3];
+    [sampleBufferDisplayLayer enqueueSampleBuffer:layer];
   }
 }
 

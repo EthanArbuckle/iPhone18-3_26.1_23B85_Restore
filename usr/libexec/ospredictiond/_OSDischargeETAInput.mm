@@ -1,31 +1,31 @@
 @interface _OSDischargeETAInput
-- (_OSDischargeETAInput)initWithStart_soc:(double)a3 end_soc:(double)a4 temperature:(double)a5 power:(double)a6 prev_median_tt10:(double)a7;
-- (id)featureValueForName:(id)a3;
+- (_OSDischargeETAInput)initWithStart_soc:(double)start_soc end_soc:(double)end_soc temperature:(double)temperature power:(double)power prev_median_tt10:(double)prev_median_tt10;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation _OSDischargeETAInput
 
-- (_OSDischargeETAInput)initWithStart_soc:(double)a3 end_soc:(double)a4 temperature:(double)a5 power:(double)a6 prev_median_tt10:(double)a7
+- (_OSDischargeETAInput)initWithStart_soc:(double)start_soc end_soc:(double)end_soc temperature:(double)temperature power:(double)power prev_median_tt10:(double)prev_median_tt10
 {
   v13.receiver = self;
   v13.super_class = _OSDischargeETAInput;
   result = [(_OSDischargeETAInput *)&v13 init];
   if (result)
   {
-    result->_start_soc = a3;
-    result->_end_soc = a4;
-    result->_temperature = a5;
-    result->_power = a6;
-    result->_prev_median_tt10 = a7;
+    result->_start_soc = start_soc;
+    result->_end_soc = end_soc;
+    result->_temperature = temperature;
+    result->_power = power;
+    result->_prev_median_tt10 = prev_median_tt10;
   }
 
   return result;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"start_soc"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"start_soc"])
   {
     [(_OSDischargeETAInput *)self start_soc];
 LABEL_11:
@@ -33,25 +33,25 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ([v4 isEqualToString:@"end_soc"])
+  if ([nameCopy isEqualToString:@"end_soc"])
   {
     [(_OSDischargeETAInput *)self end_soc];
     goto LABEL_11;
   }
 
-  if ([v4 isEqualToString:@"temperature"])
+  if ([nameCopy isEqualToString:@"temperature"])
   {
     [(_OSDischargeETAInput *)self temperature];
     goto LABEL_11;
   }
 
-  if ([v4 isEqualToString:@"power"])
+  if ([nameCopy isEqualToString:@"power"])
   {
     [(_OSDischargeETAInput *)self power];
     goto LABEL_11;
   }
 
-  if ([v4 isEqualToString:@"prev_median_tt10"])
+  if ([nameCopy isEqualToString:@"prev_median_tt10"])
   {
     [(_OSDischargeETAInput *)self prev_median_tt10];
     goto LABEL_11;

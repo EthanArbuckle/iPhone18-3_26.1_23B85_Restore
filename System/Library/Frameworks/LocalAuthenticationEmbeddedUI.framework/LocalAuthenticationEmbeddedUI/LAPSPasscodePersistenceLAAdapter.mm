@@ -1,12 +1,12 @@
 @interface LAPSPasscodePersistenceLAAdapter
-- (BOOL)canRemovePasscode:(id *)a3;
-- (id)_localizedErrorMessageForBiometryType:(int64_t)a3;
-- (id)_localizedErrorTitleForBiometryType:(int64_t)a3;
+- (BOOL)canRemovePasscode:(id *)passcode;
+- (id)_localizedErrorMessageForBiometryType:(int64_t)type;
+- (id)_localizedErrorTitleForBiometryType:(int64_t)type;
 @end
 
 @implementation LAPSPasscodePersistenceLAAdapter
 
-- (BOOL)canRemovePasscode:(id *)a3
+- (BOOL)canRemovePasscode:(id *)passcode
 {
   v27 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CD4790]);
@@ -33,8 +33,8 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v14 = [v5 biometryType];
-  if (!v14)
+  biometryType = [v5 biometryType];
+  if (!biometryType)
   {
     v7 = LACLogPasscodeService();
     if (!os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -49,7 +49,7 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v15 = v14;
+  v15 = biometryType;
   v23[0] = *MEMORY[0x277CCA068];
   v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Biometry Enrolled (%@)", v6];
   v24[0] = v16;
@@ -64,10 +64,10 @@ LABEL_5:
   v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:4];
   v7 = [LAPSErrorBuilder errorWithCode:8 userInfo:v19];
 
-  if (a3)
+  if (passcode)
   {
     v20 = v7;
-    *a3 = v7;
+    *passcode = v7;
   }
 
   v21 = LACLogPasscodeService();
@@ -83,9 +83,9 @@ LABEL_7:
   return v11;
 }
 
-- (id)_localizedErrorTitleForBiometryType:(int64_t)a3
+- (id)_localizedErrorTitleForBiometryType:(int64_t)type
 {
-  switch(a3)
+  switch(type)
   {
     case 4:
       v3 = +[LALocalizedString passcodeRemovalNotAllowedTitleOpticID];
@@ -104,9 +104,9 @@ LABEL_7:
   return v3;
 }
 
-- (id)_localizedErrorMessageForBiometryType:(int64_t)a3
+- (id)_localizedErrorMessageForBiometryType:(int64_t)type
 {
-  switch(a3)
+  switch(type)
   {
     case 4:
       v3 = +[LALocalizedString passcodeRemovalNotAllowedTextOpticID];

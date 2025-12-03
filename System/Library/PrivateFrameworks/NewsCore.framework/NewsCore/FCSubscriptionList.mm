@@ -1,20 +1,20 @@
 @interface FCSubscriptionList
 + (id)backingRecordZoneIDs;
-+ (id)commandsToMergeLocalDataToCloud:(id)a3 privateDataDirectory:(id)a4;
++ (id)commandsToMergeLocalDataToCloud:(id)cloud privateDataDirectory:(id)directory;
 + (id)desiredKeys;
-+ (id)subscriptionIDForTagID:(id)a3 type:(unint64_t)a4;
-- (BOOL)addSubscriptionForTagID:(id)a3 type:(unint64_t)a4 origin:(unint64_t)a5 groupID:(id)a6 notificationsEnabled:(BOOL)a7;
-- (BOOL)appendSubscriptionForTagID:(id)a3 type:(unint64_t)a4;
++ (id)subscriptionIDForTagID:(id)d type:(unint64_t)type;
+- (BOOL)addSubscriptionForTagID:(id)d type:(unint64_t)type origin:(unint64_t)origin groupID:(id)iD notificationsEnabled:(BOOL)enabled;
+- (BOOL)appendSubscriptionForTagID:(id)d type:(unint64_t)type;
 - (BOOL)canAddSubscription;
-- (BOOL)canHelpRestoreZoneName:(id)a3;
-- (BOOL)hasAutoFavoriteSubscriptionForTagID:(id)a3;
-- (BOOL)hasIgnoredSubscriptionForTagID:(id)a3;
-- (BOOL)hasMutedSubscriptionForTagID:(id)a3;
-- (BOOL)hasNotificationsEnabledForTagID:(id)a3;
-- (BOOL)hasSubscriptionForTagID:(id)a3;
-- (BOOL)moveSubscriptionForTagID:(id)a3 toIndex:(unint64_t)a4;
-- (BOOL)setNotificationsEnabled:(BOOL)a3 forTagID:(id)a4;
-- (FCSubscriptionList)initWithContext:(id)a3 pushNotificationCenter:(id)a4 storeDirectory:(id)a5;
+- (BOOL)canHelpRestoreZoneName:(id)name;
+- (BOOL)hasAutoFavoriteSubscriptionForTagID:(id)d;
+- (BOOL)hasIgnoredSubscriptionForTagID:(id)d;
+- (BOOL)hasMutedSubscriptionForTagID:(id)d;
+- (BOOL)hasNotificationsEnabledForTagID:(id)d;
+- (BOOL)hasSubscriptionForTagID:(id)d;
+- (BOOL)moveSubscriptionForTagID:(id)d toIndex:(unint64_t)index;
+- (BOOL)setNotificationsEnabled:(BOOL)enabled forTagID:(id)d;
+- (FCSubscriptionList)initWithContext:(id)context pushNotificationCenter:(id)center storeDirectory:(id)directory;
 - (NSArray)rankedAllSubscribedTagIDs;
 - (NSDictionary)subscriptionsBySubscriptionID;
 - (NSOrderedSet)orderedSubscribedTagIDs;
@@ -24,27 +24,27 @@
 - (NSSet)ignoredTagIDs;
 - (NSSet)mutedTagIDs;
 - (NSSet)subscribedTagIDs;
-- (id)_reconcileSubscriptions:(uint64_t)a1;
-- (id)allKnownRecordNamesWithinRecordZoneWithID:(id)a3;
-- (id)recordsForRestoringZoneName:(id)a3;
-- (id)subscriptionForTagID:(id)a3 type:(unint64_t)a4;
-- (id)subscriptionForTagIDOfAnyType:(id)a3;
-- (id)subscriptionsForType:(unint64_t)a3;
-- (void)_localAddSubscriptions:(void *)a3 changeSubscriptions:(void *)a4 removeSubscriptions:;
-- (void)_modifyRemoteSubscriptions:(void *)a1;
+- (id)_reconcileSubscriptions:(uint64_t)subscriptions;
+- (id)allKnownRecordNamesWithinRecordZoneWithID:(id)d;
+- (id)recordsForRestoringZoneName:(id)name;
+- (id)subscriptionForTagID:(id)d type:(unint64_t)type;
+- (id)subscriptionForTagIDOfAnyType:(id)type;
+- (id)subscriptionsForType:(unint64_t)type;
+- (void)_localAddSubscriptions:(void *)subscriptions changeSubscriptions:(void *)changeSubscriptions removeSubscriptions:;
+- (void)_modifyRemoteSubscriptions:(void *)subscriptions;
 - (void)_newSubscriptionOrder;
 - (void)_regenerateSortedSubscriptions;
-- (void)addObserver:(id)a3;
-- (void)addSubscriptionsForTagIDs:(id)a3 typeProvider:(id)a4 originProvider:(id)a5 completion:(id)a6;
+- (void)addObserver:(id)observer;
+- (void)addSubscriptionsForTagIDs:(id)ds typeProvider:(id)provider originProvider:(id)originProvider completion:(id)completion;
 - (void)assignOrderToTagSubscriptionsIfNeeded;
-- (void)handleSyncDidResetLocalDataForRecordZoneWithID:(id)a3;
-- (void)handleSyncWithChangedRecords:(id)a3 deletedRecordNames:(id)a4;
+- (void)handleSyncDidResetLocalDataForRecordZoneWithID:(id)d;
+- (void)handleSyncWithChangedRecords:(id)records deletedRecordNames:(id)names;
 - (void)loadLocalCachesFromStore;
-- (void)removeObserver:(id)a3;
-- (void)removeSubscriptionForTagID:(id)a3 type:(unint64_t)a4;
-- (void)removeSubscriptionsForTagIDs:(id)a3 typeProvider:(id)a4 completion:(id)a5;
-- (void)reorderSubscriptionOrderForOrderedIdentifiers:(id)a3;
-- (void)setMutableSubscriptionsBySubscriptionID:(uint64_t)a1;
+- (void)removeObserver:(id)observer;
+- (void)removeSubscriptionForTagID:(id)d type:(unint64_t)type;
+- (void)removeSubscriptionsForTagIDs:(id)ds typeProvider:(id)provider completion:(id)completion;
+- (void)reorderSubscriptionOrderForOrderedIdentifiers:(id)identifiers;
+- (void)setMutableSubscriptionsBySubscriptionID:(uint64_t)d;
 @end
 
 @implementation FCSubscriptionList
@@ -52,14 +52,14 @@
 - (void)loadLocalCachesFromStore
 {
   v39 = *MEMORY[0x1E69E9840];
-  v27 = [MEMORY[0x1E695DF90] dictionary];
-  v3 = [(FCPrivateDataController *)self localStore];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  localStore = [(FCPrivateDataController *)self localStore];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v4 = [v3 allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v30 objects:v38 count:16];
+  allKeys = [localStore allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v5)
   {
     v6 = v5;
@@ -70,7 +70,7 @@
       {
         if (*v31 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v30 + 1) + 8 * i);
@@ -78,7 +78,7 @@
         {
           v10 = v9;
           objc_opt_class();
-          v11 = [v3 objectForKey:v10];
+          v11 = [localStore objectForKey:v10];
           if (v11)
           {
             if (objc_opt_isKindOfClass())
@@ -105,7 +105,7 @@
             v17 = v16;
             if (v16 && v10 && ([v16 isDeprecated] & 1) == 0)
             {
-              [v27 setObject:v17 forKey:v10];
+              [dictionary setObject:v17 forKey:v10];
             }
           }
 
@@ -127,14 +127,14 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v30 objects:v38 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v30 objects:v38 count:16];
     }
 
     while (v6);
   }
 
-  v22 = [v27 allValues];
-  v23 = [(FCSubscriptionList *)self _reconcileSubscriptions:v22];
+  allValues = [dictionary allValues];
+  v23 = [(FCSubscriptionList *)self _reconcileSubscriptions:allValues];
 
   if (self)
   {
@@ -161,7 +161,7 @@
 - (void)_regenerateSortedSubscriptions
 {
   v45 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_28;
   }
@@ -171,15 +171,15 @@
   v4 = objc_opt_new();
   v5 = objc_opt_new();
   v6 = objc_opt_new();
-  self = a1;
-  v7 = a1[18];
+  self = self;
+  v7 = self[18];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v30 = v7;
-  v8 = [v7 allValues];
-  v9 = [v8 countByEnumeratingWithState:&v34 objects:v44 count:16];
+  allValues = [v7 allValues];
+  v9 = [allValues countByEnumeratingWithState:&v34 objects:v44 count:16];
   if (!v9)
   {
     goto LABEL_25;
@@ -193,25 +193,25 @@
     {
       if (*v35 != v11)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(allValues);
       }
 
       v13 = *(*(&v34 + 1) + 8 * i);
-      v14 = [v13 subscriptionType];
-      if (v14 > 2)
+      subscriptionType = [v13 subscriptionType];
+      if (subscriptionType > 2)
       {
-        switch(v14)
+        switch(subscriptionType)
         {
           case 3:
-            v15 = [v13 tagID];
+            tagID = [v13 tagID];
             v16 = v4;
             break;
           case 4:
-            v15 = [v13 tagID];
+            tagID = [v13 tagID];
             v16 = v5;
             break;
           case 5:
-            v15 = [v13 tagID];
+            tagID = [v13 tagID];
             v16 = v6;
             break;
           default:
@@ -221,23 +221,23 @@
         goto LABEL_21;
       }
 
-      if (!v14)
+      if (!subscriptionType)
       {
-        v15 = [v13 tagID];
+        tagID = [v13 tagID];
         v16 = v2;
 LABEL_21:
-        [v16 addObject:v15];
+        [v16 addObject:tagID];
         goto LABEL_22;
       }
 
-      if (v14 != 1)
+      if (subscriptionType != 1)
       {
-        if (v14 != 2)
+        if (subscriptionType != 2)
         {
           continue;
         }
 
-        v15 = [v13 tagID];
+        tagID = [v13 tagID];
         v16 = v3;
         goto LABEL_21;
       }
@@ -247,7 +247,7 @@ LABEL_21:
         continue;
       }
 
-      v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"pending subscriptions are deprecated and should be filtered when loading from the cache"];
+      tagID = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"pending subscriptions are deprecated and should be filtered when loading from the cache"];
       *buf = 136315906;
       v39 = "[FCSubscriptionList _regenerateSortedSubscriptions]";
       v40 = 2080;
@@ -255,12 +255,12 @@ LABEL_21:
       v42 = 1024;
       LODWORD(v43[0]) = 1277;
       WORD2(v43[0]) = 2114;
-      *(v43 + 6) = v15;
+      *(v43 + 6) = tagID;
       _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 LABEL_22:
     }
 
-    v10 = [v8 countByEnumeratingWithState:&v34 objects:v44 count:16];
+    v10 = [allValues countByEnumeratingWithState:&v34 objects:v44 count:16];
   }
 
   while (v10);
@@ -280,14 +280,14 @@ LABEL_25:
 
   v19 = v2;
   objc_setProperty_nonatomic_copy(self, v18, v2, 104);
-  v20 = [v2 allObjects];
+  allObjects = [v2 allObjects];
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __52__FCSubscriptionList__regenerateSortedSubscriptions__block_invoke;
   v32[3] = &unk_1E7C3F390;
   v33 = v30;
   v21 = v30;
-  v22 = [v20 sortedArrayUsingComparator:v32];
+  v22 = [allObjects sortedArrayUsingComparator:v32];
 
   v23 = [MEMORY[0x1E695DFB8] orderedSetWithArray:v22];
   objc_setProperty_nonatomic_copy(self, v24, v23, 96);
@@ -507,19 +507,19 @@ void __51__FCSubscriptionList_subscriptionsBySubscriptionID__block_invoke(uint64
 - (void)assignOrderToTagSubscriptionsIfNeeded
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(FCSubscriptionList *)self subscriptionsBySubscriptionID];
-  v4 = [v3 allValues];
-  v5 = [v4 fc_arrayByTransformingWithBlock:&__block_literal_global_91];
+  subscriptionsBySubscriptionID = [(FCSubscriptionList *)self subscriptionsBySubscriptionID];
+  allValues = [subscriptionsBySubscriptionID allValues];
+  v5 = [allValues fc_arrayByTransformingWithBlock:&__block_literal_global_91];
 
-  v6 = [(FCSubscriptionList *)self subscribedTagRanker];
+  subscribedTagRanker = [(FCSubscriptionList *)self subscribedTagRanker];
 
-  if (v6)
+  if (subscribedTagRanker)
   {
     v15 = MEMORY[0x1E69E9820];
     v16 = 3221225472;
     v17 = __59__FCSubscriptionList_assignOrderToTagSubscriptionsIfNeeded__block_invoke_2;
     v18 = &unk_1E7C3C550;
-    v19 = self;
+    selfCopy = self;
     v7 = v5;
     v8 = &v15;
     if (self)
@@ -527,7 +527,7 @@ void __51__FCSubscriptionList_subscriptionsBySubscriptionID__block_invoke(uint64
       if (!v7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         v12 = objc_alloc(MEMORY[0x1E696AEC0]);
-        v13 = [v12 initWithFormat:@"Invalid parameter not satisfying %s", "tagSubscriptions", v15, v16, v17, v18, v19];
+        selfCopy = [v12 initWithFormat:@"Invalid parameter not satisfying %s", "tagSubscriptions", v15, v16, v17, v18, selfCopy];
         *buf = 136315906;
         *&buf[4] = "[FCSubscriptionList _assignOrderToTagSubscriptions:withCompletion:]";
         *&buf[12] = 2080;
@@ -535,12 +535,12 @@ void __51__FCSubscriptionList_subscriptionsBySubscriptionID__block_invoke(uint64
         *&buf[22] = 1024;
         LODWORD(v21) = 937;
         WORD2(v21) = 2114;
-        *(&v21 + 6) = v13;
+        *(&v21 + 6) = selfCopy;
         _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
       }
 
-      v9 = [(FCSubscriptionList *)self subscribedTagRanker];
-      if (!v9 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+      subscribedTagRanker2 = [(FCSubscriptionList *)self subscribedTagRanker];
+      if (!subscribedTagRanker2 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"invalid nil value for '%s'", "tagRanker"];
         *buf = 136315906;
@@ -558,10 +558,10 @@ void __51__FCSubscriptionList_subscriptionsBySubscriptionID__block_invoke(uint64
       *&buf[8] = 3221225472;
       *&buf[16] = __68__FCSubscriptionList__assignOrderToTagSubscriptions_withCompletion___block_invoke;
       *&v21 = &unk_1E7C38FF0;
-      *(&v21 + 1) = v9;
+      *(&v21 + 1) = subscribedTagRanker2;
       v22 = v7;
       v23 = v8;
-      v10 = v9;
+      v10 = subscribedTagRanker2;
       [FCTaskScheduler scheduleLowPriorityBlock:buf];
     }
   }
@@ -716,11 +716,11 @@ void __35__FCSubscriptionList_ignoredTagIDs__block_invoke(uint64_t a1)
   objc_storeStrong((*(*(a1 + 40) + 8) + 40), v2);
 }
 
-- (FCSubscriptionList)initWithContext:(id)a3 pushNotificationCenter:(id)a4 storeDirectory:(id)a5
+- (FCSubscriptionList)initWithContext:(id)context pushNotificationCenter:(id)center storeDirectory:(id)directory
 {
   v9.receiver = self;
   v9.super_class = FCSubscriptionList;
-  v5 = [(FCPrivateDataController *)&v9 initWithContext:a3 pushNotificationCenter:a4 storeDirectory:a5];
+  v5 = [(FCPrivateDataController *)&v9 initWithContext:context pushNotificationCenter:center storeDirectory:directory];
   if (v5)
   {
     v6 = objc_alloc_init(FCMTWriterLock);
@@ -739,21 +739,21 @@ void __59__FCSubscriptionList_assignOrderToTagSubscriptionsIfNeeded__block_invok
   [(FCSubscriptionList *)*(a1 + 32) _modifyRemoteSubscriptions:v4];
 }
 
-- (void)_localAddSubscriptions:(void *)a3 changeSubscriptions:(void *)a4 removeSubscriptions:
+- (void)_localAddSubscriptions:(void *)subscriptions changeSubscriptions:(void *)changeSubscriptions removeSubscriptions:
 {
   v114 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  subscriptionsCopy = subscriptions;
+  changeSubscriptionsCopy = changeSubscriptions;
+  if (self)
   {
     [MEMORY[0x1E696AF00] isMainThread];
     v71 = objc_opt_new();
     v70 = objc_opt_new();
     v69 = objc_opt_new();
-    if (v9)
+    if (changeSubscriptionsCopy)
     {
-      v10 = v9;
+      v10 = changeSubscriptionsCopy;
     }
 
     else
@@ -762,27 +762,27 @@ void __59__FCSubscriptionList_assignOrderToTagSubscriptionsIfNeeded__block_invok
     }
 
     v67 = [MEMORY[0x1E695DFA8] setWithArray:v10];
-    v11 = [a1 localStore];
-    v12 = [a1[18] mutableCopy];
-    v13 = [MEMORY[0x1E695DF70] array];
-    [v13 addObjectsFromArray:v7];
-    [v13 addObjectsFromArray:v8];
-    v14 = [v13 fc_setByTransformingWithBlock:&__block_literal_global_79_0];
+    localStore = [self localStore];
+    v12 = [self[18] mutableCopy];
+    array = [MEMORY[0x1E695DF70] array];
+    [array addObjectsFromArray:v7];
+    [array addObjectsFromArray:subscriptionsCopy];
+    v14 = [array fc_setByTransformingWithBlock:&__block_literal_global_79_0];
     v99[0] = MEMORY[0x1E69E9820];
     v99[1] = 3221225472;
     v99[2] = __85__FCSubscriptionList__localAddSubscriptions_changeSubscriptions_removeSubscriptions___block_invoke_2;
     v99[3] = &unk_1E7C41320;
     v15 = v14;
     v100 = v15;
-    v16 = v13;
+    v16 = array;
     v101 = v16;
     [v12 enumerateKeysAndObjectsUsingBlock:v99];
     v61 = v16;
-    v17 = [(FCSubscriptionList *)a1 _reconcileSubscriptions:v16];
-    v62 = v9;
-    if ([v9 count])
+    v17 = [(FCSubscriptionList *)self _reconcileSubscriptions:v16];
+    v62 = changeSubscriptionsCopy;
+    if ([changeSubscriptionsCopy count])
     {
-      v18 = [v9 fc_setByTransformingWithBlock:&__block_literal_global_82_0];
+      v18 = [changeSubscriptionsCopy fc_setByTransformingWithBlock:&__block_literal_global_82_0];
       v19 = [v18 mutableCopy];
     }
 
@@ -806,10 +806,10 @@ void __59__FCSubscriptionList_assignOrderToTagSubscriptionsIfNeeded__block_invok
     aBlock[1] = 3221225472;
     aBlock[2] = __85__FCSubscriptionList__localAddSubscriptions_changeSubscriptions_removeSubscriptions___block_invoke_5;
     aBlock[3] = &unk_1E7C41370;
-    aBlock[4] = a1;
+    aBlock[4] = self;
     v59 = v20;
     v92 = v59;
-    v65 = v11;
+    v65 = localStore;
     v93 = v65;
     v72 = v12;
     v94 = v72;
@@ -847,14 +847,14 @@ void __59__FCSubscriptionList_assignOrderToTagSubscriptionsIfNeeded__block_invok
       while (v24);
     }
 
-    v66 = a1;
+    selfCopy = self;
 
     v85 = 0u;
     v86 = 0u;
     v83 = 0u;
     v84 = 0u;
-    v63 = v8;
-    obj = v8;
+    v63 = subscriptionsCopy;
+    obj = subscriptionsCopy;
     v28 = [obj countByEnumeratingWithState:&v83 objects:v112 count:16];
     if (v28)
     {
@@ -870,8 +870,8 @@ void __59__FCSubscriptionList_assignOrderToTagSubscriptionsIfNeeded__block_invok
           }
 
           v32 = *(*(&v83 + 1) + 8 * j);
-          v33 = [v32 subscriptionID];
-          v34 = [v72 objectForKeyedSubscript:v33];
+          subscriptionID = [v32 subscriptionID];
+          v34 = [v72 objectForKeyedSubscript:subscriptionID];
 
           if (!v34 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
@@ -888,9 +888,9 @@ void __59__FCSubscriptionList_assignOrderToTagSubscriptionsIfNeeded__block_invok
           }
 
           v35 = MEMORY[0x1E69E58C0];
-          v36 = [v34 order];
-          v37 = [v32 order];
-          v38 = [v35 nf_object:v36 isEqualToObject:v37];
+          order = [v34 order];
+          order2 = [v32 order];
+          v38 = [v35 nf_object:order isEqualToObject:order2];
 
           if ((v21)[2](v21, v32))
           {
@@ -945,16 +945,16 @@ void __59__FCSubscriptionList_assignOrderToTagSubscriptionsIfNeeded__block_invok
 
     if ([v40 count])
     {
-      v47 = [v40 allObjects];
-      [v72 removeObjectsForKeys:v47];
+      allObjects = [v40 allObjects];
+      [v72 removeObjectsForKeys:allObjects];
     }
 
-    v48 = v66[19];
+    v48 = selfCopy[19];
     v77[0] = MEMORY[0x1E69E9820];
     v77[1] = 3221225472;
     v77[2] = __85__FCSubscriptionList__localAddSubscriptions_changeSubscriptions_removeSubscriptions___block_invoke_85;
     v77[3] = &unk_1E7C36C58;
-    v77[4] = v66;
+    v77[4] = selfCopy;
     v49 = v72;
     v78 = v49;
     [v48 performWriteSync:v77];
@@ -962,8 +962,8 @@ void __59__FCSubscriptionList_assignOrderToTagSubscriptionsIfNeeded__block_invok
     v76 = 0u;
     v73 = 0u;
     v74 = 0u;
-    v50 = [v66 observers];
-    v51 = [v50 copy];
+    observers = [selfCopy observers];
+    v51 = [observers copy];
 
     v52 = [v51 countByEnumeratingWithState:&v73 objects:v102 count:16];
     if (v52)
@@ -982,7 +982,7 @@ void __59__FCSubscriptionList_assignOrderToTagSubscriptionsIfNeeded__block_invok
           v56 = *(*(&v73 + 1) + 8 * m);
           if (objc_opt_respondsToSelector())
           {
-            [v56 subscriptionList:v66 didAddSubscriptions:v71 changeSubscriptions:v70 moveSubscriptions:v69 removeSubscriptions:v67];
+            [v56 subscriptionList:selfCopy didAddSubscriptions:v71 changeSubscriptions:v70 moveSubscriptions:v69 removeSubscriptions:v67];
           }
         }
 
@@ -992,49 +992,49 @@ void __59__FCSubscriptionList_assignOrderToTagSubscriptionsIfNeeded__block_invok
       while (v53);
     }
 
-    v8 = v63;
+    subscriptionsCopy = v63;
     v7 = v64;
-    v9 = v62;
+    changeSubscriptionsCopy = v62;
   }
 
   v57 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_modifyRemoteSubscriptions:(void *)a1
+- (void)_modifyRemoteSubscriptions:(void *)subscriptions
 {
   v4 = a2;
-  if (a1 && [v4 count])
+  if (subscriptions && [v4 count])
   {
     v3 = [[FCModifySubscriptionsCommand alloc] initWithSubscriptions:v4 merge:0];
-    [a1 addCommandToCommandQueue:v3];
+    [subscriptions addCommandToCommandQueue:v3];
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   v3.receiver = self;
   v3.super_class = FCSubscriptionList;
-  [(FCPrivateDataController *)&v3 addObserver:a3];
+  [(FCPrivateDataController *)&v3 addObserver:observer];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v3.receiver = self;
   v3.super_class = FCSubscriptionList;
-  [(FCPrivateDataController *)&v3 removeObserver:a3];
+  [(FCPrivateDataController *)&v3 removeObserver:observer];
 }
 
-- (id)_reconcileSubscriptions:(uint64_t)a1
+- (id)_reconcileSubscriptions:(uint64_t)subscriptions
 {
-  if (a1)
+  if (subscriptions)
   {
     v2 = [a2 fc_dictionaryOfSortedObjectsWithKeyBlock:&__block_literal_global_95];
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __46__FCSubscriptionList__reconcileSubscriptions___block_invoke_2;
     v6[3] = &unk_1E7C3F720;
-    v4 = v3;
+    v4 = dictionary;
     v7 = v4;
     [v2 enumerateKeysAndObjectsUsingBlock:v6];
   }
@@ -1047,11 +1047,11 @@ void __59__FCSubscriptionList_assignOrderToTagSubscriptionsIfNeeded__block_invok
   return v4;
 }
 
-- (void)setMutableSubscriptionsBySubscriptionID:(uint64_t)a1
+- (void)setMutableSubscriptionsBySubscriptionID:(uint64_t)d
 {
-  if (a1)
+  if (d)
   {
-    objc_storeStrong((a1 + 144), a2);
+    objc_storeStrong((d + 144), a2);
   }
 }
 
@@ -1074,18 +1074,18 @@ void __59__FCSubscriptionList_assignOrderToTagSubscriptionsIfNeeded__block_invok
   return v2;
 }
 
-- (void)handleSyncWithChangedRecords:(id)a3 deletedRecordNames:(id)a4
+- (void)handleSyncWithChangedRecords:(id)records deletedRecordNames:(id)names
 {
   v125 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v84 = a4;
+  recordsCopy = records;
+  namesCopy = names;
   [MEMORY[0x1E696AF00] isMainThread];
   v109 = 0u;
   v110 = 0u;
   v111 = 0u;
   v112 = 0u;
-  v7 = [(FCPrivateDataController *)self observers];
-  v8 = [v7 copy];
+  observers = [(FCPrivateDataController *)self observers];
+  v8 = [observers copy];
 
   v9 = [v8 countByEnumeratingWithState:&v109 objects:v116 count:16];
   if (v9)
@@ -1121,12 +1121,12 @@ void __59__FCSubscriptionList_assignOrderToTagSubscriptionsIfNeeded__block_invok
   v106 = 0u;
   v107 = 0u;
   v108 = 0u;
-  obj = v6;
+  obj = recordsCopy;
   v93 = [obj countByEnumeratingWithState:&v105 objects:v115 count:16];
   if (v93)
   {
     v92 = *v106;
-    v91 = self;
+    selfCopy = self;
     do
     {
       v14 = 0;
@@ -1138,7 +1138,7 @@ void __59__FCSubscriptionList_assignOrderToTagSubscriptionsIfNeeded__block_invok
         }
 
         v15 = *(*(&v105 + 1) + 8 * v14);
-        v16 = v15;
+        recordName2 = v15;
         if (!self)
         {
           v40 = 0;
@@ -1148,15 +1148,15 @@ LABEL_59:
         }
 
         v17 = [v15 objectForKeyedSubscript:@"subscriptionType"];
-        v18 = [v16 objectForKeyedSubscript:@"subscriptionOrder"];
-        v19 = [v16 objectForKeyedSubscript:@"subscriptionOrigin"];
+        v18 = [recordName2 objectForKeyedSubscript:@"subscriptionOrder"];
+        v19 = [recordName2 objectForKeyedSubscript:@"subscriptionOrigin"];
         v20 = FCSubscriptionOriginFromFCCKSubscriptionOrigin([v19 unsignedIntegerValue]);
-        v21 = [v16 recordID];
-        v22 = [v21 recordName];
+        recordID = [recordName2 recordID];
+        recordName = [recordID recordName];
 
         if (!v17 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
-          v56 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"missing subscription type from record: %@", v16];
+          v56 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"missing subscription type from record: %@", recordName2];
           *buf = 136315906;
           v118 = "[FCSubscriptionList _subscriptionFromRecord:]";
           v119 = 2080;
@@ -1168,37 +1168,37 @@ LABEL_59:
           _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
         }
 
-        v23 = [v16 objectForKeyedSubscript:@"dateAdded"];
+        v23 = [recordName2 objectForKeyedSubscript:@"dateAdded"];
         v24 = v23;
         v95 = v19;
         v96 = v18;
-        v25 = v22;
+        v25 = recordName;
         if (v23)
         {
-          v26 = v23;
+          creationDate = v23;
         }
 
         else
         {
-          v26 = [v16 creationDate];
+          creationDate = [recordName2 creationDate];
         }
 
-        v94 = v26;
+        v94 = creationDate;
 
-        v27 = [v16 recordID];
-        v28 = [v27 zoneID];
-        v29 = [v28 zoneName];
-        v30 = [v29 isEqualToString:@"SensitiveSubscriptions"];
+        recordID2 = [recordName2 recordID];
+        zoneID = [recordID2 zoneID];
+        zoneName = [zoneID zoneName];
+        v30 = [zoneName isEqualToString:@"SensitiveSubscriptions"];
 
         if ([v17 isEqualToString:@"tag"])
         {
-          v31 = [v16 objectForKeyedSubscript:@"tagID"];
+          v31 = [recordName2 objectForKeyedSubscript:@"tagID"];
           v32 = [v31 length];
 
           if (v32)
           {
-            v33 = [v16 objectForKeyedSubscript:@"tagID"];
-            v34 = [v16 objectForKeyedSubscript:@"notificationsEnabled"];
+            v33 = [recordName2 objectForKeyedSubscript:@"tagID"];
+            v34 = [recordName2 objectForKeyedSubscript:@"notificationsEnabled"];
             v81 = v30;
             LOBYTE(v80) = [v34 BOOLValue];
             v35 = v94;
@@ -1213,13 +1213,13 @@ LABEL_59:
 
         else if ([v17 isEqualToString:@"mutedTag"])
         {
-          v38 = [v16 objectForKeyedSubscript:@"tagID"];
+          v38 = [recordName2 objectForKeyedSubscript:@"tagID"];
           v39 = [v38 length];
 
           if (v39)
           {
-            v33 = [v16 objectForKeyedSubscript:@"tagID"];
-            v34 = [v16 objectForKeyedSubscript:@"groupID"];
+            v33 = [recordName2 objectForKeyedSubscript:@"tagID"];
+            v34 = [recordName2 objectForKeyedSubscript:@"groupID"];
             v82 = v30;
             LOBYTE(v80) = 0;
             v35 = v94;
@@ -1232,12 +1232,12 @@ LABEL_59:
 
         else if ([v17 isEqualToString:@"autoFavoriteTag"])
         {
-          v41 = [v16 objectForKeyedSubscript:@"tagID"];
+          v41 = [recordName2 objectForKeyedSubscript:@"tagID"];
           v42 = [v41 length];
 
           if (v42)
           {
-            v33 = [v16 objectForKeyedSubscript:@"tagID"];
+            v33 = [recordName2 objectForKeyedSubscript:@"tagID"];
             v83 = v30;
             LOBYTE(v80) = 0;
             v35 = v94;
@@ -1252,12 +1252,12 @@ LABEL_59:
 
         else if ([v17 isEqualToString:@"groupableTag"])
         {
-          v46 = [v16 objectForKeyedSubscript:@"tagID"];
+          v46 = [recordName2 objectForKeyedSubscript:@"tagID"];
           v47 = [v46 length];
 
           if (v47)
           {
-            v33 = [v16 objectForKeyedSubscript:@"tagID"];
+            v33 = [recordName2 objectForKeyedSubscript:@"tagID"];
             v83 = v30;
             LOBYTE(v80) = 0;
             v35 = v94;
@@ -1272,12 +1272,12 @@ LABEL_59:
 
         else if ([v17 isEqualToString:@"ignoredTag"])
         {
-          v48 = [v16 objectForKeyedSubscript:@"tagID"];
+          v48 = [recordName2 objectForKeyedSubscript:@"tagID"];
           v49 = [v48 length];
 
           if (v49)
           {
-            v33 = [v16 objectForKeyedSubscript:@"tagID"];
+            v33 = [recordName2 objectForKeyedSubscript:@"tagID"];
             v83 = v30;
             LOBYTE(v80) = 0;
             v35 = v94;
@@ -1308,7 +1308,7 @@ LABEL_40:
               *buf = 138543618;
               v118 = v17;
               v119 = 2112;
-              v120 = v16;
+              v120 = recordName2;
               _os_log_impl(&dword_1B63EF000, v57, OS_LOG_TYPE_DEFAULT, "ignoring unrecognized subscription type '%{public}@' from record: %@", buf, 0x16u);
             }
 
@@ -1318,15 +1318,15 @@ LABEL_40:
             goto LABEL_52;
           }
 
-          v51 = [v16 objectForKeyedSubscript:@"pollingURL"];
-          v52 = [v16 objectForKeyedSubscript:@"url"];
+          v51 = [recordName2 objectForKeyedSubscript:@"pollingURL"];
+          v52 = [recordName2 objectForKeyedSubscript:@"url"];
           if ([v51 length] && objc_msgSend(v52, "length"))
           {
             [MEMORY[0x1E695DFF8] URLWithString:v51];
             v53 = v86 = v51;
             [MEMORY[0x1E695DFF8] URLWithString:v52];
             v54 = v85 = v52;
-            v55 = [v16 objectForKeyedSubscript:@"title"];
+            v55 = [recordName2 objectForKeyedSubscript:@"title"];
             v36 = v25;
             v35 = v94;
             v40 = [FCSubscription pendingSubscriptionWithSubscriptionID:v25 url:v54 title:v55 pollingURL:v53 dateAdded:v94];
@@ -1338,7 +1338,7 @@ LABEL_40:
 
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
-          v61 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"subscription record is missing metadata: %@", v16];
+          v61 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"subscription record is missing metadata: %@", recordName2];
           *buf = 136315906;
           v118 = "[FCSubscriptionList _subscriptionFromRecord:]";
           v119 = 2080;
@@ -1360,16 +1360,16 @@ LABEL_53:
 
         if (v40)
         {
-          self = v91;
+          self = selfCopy;
           if ([v40 isDeprecated])
           {
             goto LABEL_61;
           }
 
-          v58 = [v16 recordID];
-          v16 = [v58 recordName];
+          recordID3 = [recordName2 recordID];
+          recordName2 = [recordID3 recordName];
 
-          v59 = [(NSMutableDictionary *)v91->_mutableSubscriptionsBySubscriptionID objectForKey:v16];
+          v59 = [(NSMutableDictionary *)selfCopy->_mutableSubscriptionsBySubscriptionID objectForKey:recordName2];
           if (v59)
           {
             v60 = v87;
@@ -1385,7 +1385,7 @@ LABEL_53:
           goto LABEL_59;
         }
 
-        self = v91;
+        self = selfCopy;
 LABEL_61:
 
         ++v14;
@@ -1403,7 +1403,7 @@ LABEL_61:
   v104 = 0u;
   v101 = 0u;
   v102 = 0u;
-  v63 = v84;
+  v63 = namesCopy;
   v64 = [v63 countByEnumeratingWithState:&v101 objects:v114 count:16];
   if (v64)
   {
@@ -1451,8 +1451,8 @@ LABEL_61:
   v100 = 0u;
   v97 = 0u;
   v98 = 0u;
-  v71 = [(FCPrivateDataController *)self observers];
-  v72 = [v71 copy];
+  observers2 = [(FCPrivateDataController *)self observers];
+  v72 = [observers2 copy];
 
   v73 = [v72 countByEnumeratingWithState:&v97 objects:v113 count:16];
   if (v73)
@@ -1484,14 +1484,14 @@ LABEL_61:
   v78 = *MEMORY[0x1E69E9840];
 }
 
-- (id)allKnownRecordNamesWithinRecordZoneWithID:(id)a3
+- (id)allKnownRecordNamesWithinRecordZoneWithID:(id)d
 {
   v4 = MEMORY[0x1E696AF00];
-  v5 = a3;
+  dCopy = d;
   [v4 isMainThread];
-  v6 = [v5 zoneName];
+  zoneName = [dCopy zoneName];
 
-  v7 = [v6 isEqualToString:@"Subscriptions"];
+  v7 = [zoneName isEqualToString:@"Subscriptions"];
   if (self)
   {
     mutableSubscriptionsBySubscriptionID = self->_mutableSubscriptionsBySubscriptionID;
@@ -1502,13 +1502,13 @@ LABEL_61:
     mutableSubscriptionsBySubscriptionID = 0;
   }
 
-  v9 = [(NSMutableDictionary *)mutableSubscriptionsBySubscriptionID allValues];
+  allValues = [(NSMutableDictionary *)mutableSubscriptionsBySubscriptionID allValues];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __64__FCSubscriptionList_allKnownRecordNamesWithinRecordZoneWithID___block_invoke;
   v12[3] = &__block_descriptor_40_e34___NSString_16__0__FCSubscription_8l;
   v12[4] = v7 ^ 1u;
-  v10 = [v9 fc_arrayByTransformingWithBlock:v12];
+  v10 = [allValues fc_arrayByTransformingWithBlock:v12];
 
   return v10;
 }
@@ -1529,19 +1529,19 @@ id __64__FCSubscriptionList_allKnownRecordNamesWithinRecordZoneWithID___block_in
   return v4;
 }
 
-- (void)handleSyncDidResetLocalDataForRecordZoneWithID:(id)a3
+- (void)handleSyncDidResetLocalDataForRecordZoneWithID:(id)d
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 zoneName];
-  if (([v5 isEqualToString:@"Subscriptions"] & 1) == 0)
+  dCopy = d;
+  zoneName = [dCopy zoneName];
+  if (([zoneName isEqualToString:@"Subscriptions"] & 1) == 0)
   {
 LABEL_12:
 
     goto LABEL_13;
   }
 
-  v6 = [(FCSubscriptionList *)self allKnownRecordNamesWithinRecordZoneWithID:v4];
+  v6 = [(FCSubscriptionList *)self allKnownRecordNamesWithinRecordZoneWithID:dCopy];
   v7 = [v6 count];
 
   if (!v7)
@@ -1550,10 +1550,10 @@ LABEL_12:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = [(FCPrivateDataController *)self observers];
-    v5 = [v8 copy];
+    observers = [(FCPrivateDataController *)self observers];
+    zoneName = [observers copy];
 
-    v9 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v9 = [zoneName countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v9)
     {
       v10 = v9;
@@ -1565,7 +1565,7 @@ LABEL_12:
         {
           if (*v16 != v11)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(zoneName);
           }
 
           v13 = *(*(&v15 + 1) + 8 * v12);
@@ -1578,7 +1578,7 @@ LABEL_12:
         }
 
         while (v10 != v12);
-        v10 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v10 = [zoneName countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v10);
@@ -1608,17 +1608,17 @@ LABEL_13:
   return v6;
 }
 
-+ (id)commandsToMergeLocalDataToCloud:(id)a3 privateDataDirectory:(id)a4
++ (id)commandsToMergeLocalDataToCloud:(id)cloud privateDataDirectory:(id)directory
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v28 = [MEMORY[0x1E695DF70] array];
+  cloudCopy = cloud;
+  array = [MEMORY[0x1E695DF70] array];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v6 = [v5 allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v29 objects:v38 count:16];
+  allKeys = [cloudCopy allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v29 objects:v38 count:16];
   if (v7)
   {
     v9 = v7;
@@ -1632,14 +1632,14 @@ LABEL_13:
       {
         if (*v30 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v12 = *(*(&v29 + 1) + 8 * v11);
-        if (([a1 isLocalStoreKeyInternal:{v12, v26}] & 1) == 0)
+        if (([self isLocalStoreKeyInternal:{v12, v26}] & 1) == 0)
         {
           objc_opt_class();
-          v13 = [v5 objectForKey:v12];
+          v13 = [cloudCopy objectForKey:v12];
           if (v13)
           {
             if (objc_opt_isKindOfClass())
@@ -1666,7 +1666,7 @@ LABEL_13:
             v17 = v16;
             if (v16 && ([v16 isDeprecated]& 1) == 0)
             {
-              [v28 addObject:v17];
+              [array addObject:v17];
             }
 
 LABEL_16:
@@ -1696,14 +1696,14 @@ LABEL_16:
       }
 
       while (v9 != v11);
-      v21 = [v6 countByEnumeratingWithState:&v29 objects:v38 count:16];
+      v21 = [allKeys countByEnumeratingWithState:&v29 objects:v38 count:16];
       v9 = v21;
     }
 
     while (v21);
   }
 
-  v22 = [[FCModifySubscriptionsCommand alloc] initWithSubscriptions:v28 merge:1];
+  v22 = [[FCModifySubscriptionsCommand alloc] initWithSubscriptions:array merge:1];
   v33 = v22;
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v33 count:1];
 
@@ -1712,32 +1712,32 @@ LABEL_16:
   return v23;
 }
 
-- (BOOL)canHelpRestoreZoneName:(id)a3
+- (BOOL)canHelpRestoreZoneName:(id)name
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Subscriptions"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"Subscriptions"])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"SensitiveSubscriptions"];
+    v4 = [nameCopy isEqualToString:@"SensitiveSubscriptions"];
   }
 
   return v4;
 }
 
-- (id)recordsForRestoringZoneName:(id)a3
+- (id)recordsForRestoringZoneName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__42;
   v16 = __Block_byref_object_dispose__42;
   v17 = 0;
-  if ([v4 isEqualToString:@"Subscriptions"])
+  if ([nameCopy isEqualToString:@"Subscriptions"])
   {
     if (self)
     {
@@ -1761,7 +1761,7 @@ LABEL_16:
 
   else
   {
-    if (![v4 isEqualToString:@"SensitiveSubscriptions"])
+    if (![nameCopy isEqualToString:@"SensitiveSubscriptions"])
     {
       goto LABEL_10;
     }
@@ -1825,19 +1825,19 @@ void __50__FCSubscriptionList_recordsForRestoringZoneName___block_invoke_3(uint6
   *(v5 + 40) = v4;
 }
 
-+ (id)subscriptionIDForTagID:(id)a3 type:(unint64_t)a4
++ (id)subscriptionIDForTagID:(id)d type:(unint64_t)type
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (a4 <= 2)
+  dCopy = d;
+  if (type <= 2)
   {
-    if (!a4)
+    if (!type)
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@-%@", @"tag", v5, @"subscription"];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@-%@", @"tag", dCopy, @"subscription"];
       goto LABEL_12;
     }
 
-    if (a4 == 2)
+    if (type == 2)
     {
       v6 = MEMORY[0x1E696AEC0];
       v7 = FCCKSubscriptionTypeMutedTag;
@@ -1847,7 +1847,7 @@ void __50__FCSubscriptionList_recordsForRestoringZoneName___block_invoke_3(uint6
 
   else
   {
-    switch(a4)
+    switch(type)
     {
       case 3uLL:
         v6 = MEMORY[0x1E696AEC0];
@@ -1861,7 +1861,7 @@ void __50__FCSubscriptionList_recordsForRestoringZoneName___block_invoke_3(uint6
         v6 = MEMORY[0x1E696AEC0];
         v7 = FCCKSubscriptionTypeIgnoredTag;
 LABEL_11:
-        [v6 stringWithFormat:@"%@-%@", *v7, v5, v12];
+        [v6 stringWithFormat:@"%@-%@", *v7, dCopy, v12];
         v8 = LABEL_12:;
         goto LABEL_13;
     }
@@ -1935,21 +1935,21 @@ void __116__FCSubscriptionList_addSubscriptionsForTagIDs_typeProvider_originProv
     v1 = result;
     v2 = -1000000000000000;
     v3 = MEMORY[0x1E696AD98];
-    v4 = [result orderedSubscribedTagIDs];
-    v5 = [v4 firstObject];
+    orderedSubscribedTagIDs = [result orderedSubscribedTagIDs];
+    firstObject = [orderedSubscribedTagIDs firstObject];
 
-    if (v5)
+    if (firstObject)
     {
-      v6 = [FCSubscriptionList subscriptionIDForTagID:v5 type:0];
+      v6 = [FCSubscriptionList subscriptionIDForTagID:firstObject type:0];
       if (v6)
       {
         v7 = v6;
-        v8 = [v1 subscriptionsBySubscriptionID];
-        v9 = [v8 objectForKeyedSubscript:v7];
-        v10 = [v9 order];
-        v11 = [v10 longLongValue];
+        subscriptionsBySubscriptionID = [v1 subscriptionsBySubscriptionID];
+        v9 = [subscriptionsBySubscriptionID objectForKeyedSubscript:v7];
+        order = [v9 order];
+        longLongValue = [order longLongValue];
 
-        v2 = v11 - 1000000000000000;
+        v2 = longLongValue - 1000000000000000;
       }
     }
 
@@ -1960,13 +1960,13 @@ void __116__FCSubscriptionList_addSubscriptionsForTagIDs_typeProvider_originProv
   return result;
 }
 
-- (BOOL)addSubscriptionForTagID:(id)a3 type:(unint64_t)a4 origin:(unint64_t)a5 groupID:(id)a6 notificationsEnabled:(BOOL)a7
+- (BOOL)addSubscriptionForTagID:(id)d type:(unint64_t)type origin:(unint64_t)origin groupID:(id)iD notificationsEnabled:(BOOL)enabled
 {
   v40 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a6;
+  dCopy = d;
+  iDCopy = iD;
   [MEMORY[0x1E696AF00] isMainThread];
-  if (!v12 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!dCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v28 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "tagID != nil"];
     *buf = 136315906;
@@ -1980,7 +1980,7 @@ void __116__FCSubscriptionList_addSubscriptionsForTagIDs_typeProvider_originProv
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v14 = [FCSubscriptionList subscriptionIDForTagID:v12 type:a4];
+  v14 = [FCSubscriptionList subscriptionIDForTagID:dCopy type:type];
   if (self)
   {
     mutableSubscriptionsBySubscriptionID = self->_mutableSubscriptionsBySubscriptionID;
@@ -1995,13 +1995,13 @@ void __116__FCSubscriptionList_addSubscriptionsForTagIDs_typeProvider_originProv
 
   if (!v16)
   {
-    v17 = [(FCSubscriptionList *)self _newSubscriptionOrder];
-    v18 = [MEMORY[0x1E695DF00] date];
-    v19 = a5;
-    v20 = v18;
+    _newSubscriptionOrder = [(FCSubscriptionList *)self _newSubscriptionOrder];
+    date = [MEMORY[0x1E695DF00] date];
+    originCopy = origin;
+    v20 = date;
     if (self)
     {
-      v21 = a4 - 3 >= 3;
+      v21 = type - 3 >= 3;
     }
 
     else
@@ -2010,8 +2010,8 @@ void __116__FCSubscriptionList_addSubscriptionsForTagIDs_typeProvider_originProv
     }
 
     v22 = !v21;
-    LOBYTE(v29) = a7;
-    v23 = [FCSubscription subscriptionWithSubscriptionID:v14 tagID:v12 type:a4 order:v17 origin:v19 groupID:v13 dateAdded:v18 notificationsEnabled:v29 zone:v22];
+    LOBYTE(v29) = enabled;
+    v23 = [FCSubscription subscriptionWithSubscriptionID:v14 tagID:dCopy type:type order:_newSubscriptionOrder origin:originCopy groupID:iDCopy dateAdded:date notificationsEnabled:v29 zone:v22];
 
     v31 = v23;
     v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v31 count:1];
@@ -2026,18 +2026,18 @@ void __116__FCSubscriptionList_addSubscriptionsForTagIDs_typeProvider_originProv
   return v16 == 0;
 }
 
-- (void)addSubscriptionsForTagIDs:(id)a3 typeProvider:(id)a4 originProvider:(id)a5 completion:(id)a6
+- (void)addSubscriptionsForTagIDs:(id)ds typeProvider:(id)provider originProvider:(id)originProvider completion:(id)completion
 {
   v28 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  providerCopy = provider;
+  originProviderCopy = originProvider;
+  completionCopy = completion;
   if (self)
   {
-    v13 = a3;
+    dsCopy = ds;
     v14 = objc_opt_new();
     [MEMORY[0x1E696AF00] isMainThread];
-    if (!v13 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+    if (!dsCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v19 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "tagIDs != nil"];
       *buf = 136315906;
@@ -2056,34 +2056,34 @@ void __116__FCSubscriptionList_addSubscriptionsForTagIDs_typeProvider_originProv
     *&buf[8] = 3221225472;
     *&buf[16] = __116__FCSubscriptionList_addSubscriptionsForTagIDs_typeProvider_originProvider_groupID_notificationsEnabled_completion___block_invoke;
     *&v21 = &unk_1E7C41230;
-    v25 = v10;
+    v25 = providerCopy;
     *(&v21 + 1) = self;
-    v26 = v11;
+    v26 = originProviderCopy;
     v22 = 0;
     v27 = 0;
     v16 = v15;
     v23 = v16;
     v17 = v14;
     v24 = v17;
-    [v13 enumerateObjectsUsingBlock:buf];
+    [dsCopy enumerateObjectsUsingBlock:buf];
 
     [(FCSubscriptionList *)&self->super.super.isa _localAddSubscriptions:v16 changeSubscriptions:0 removeSubscriptions:0];
     [(FCSubscriptionList *)self _modifyRemoteSubscriptions:v16];
-    if (v12)
+    if (completionCopy)
     {
-      v12[2](v12, v17);
+      completionCopy[2](completionCopy, v17);
     }
   }
 
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)appendSubscriptionForTagID:(id)a3 type:(unint64_t)a4
+- (BOOL)appendSubscriptionForTagID:(id)d type:(unint64_t)type
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dCopy = d;
   [MEMORY[0x1E696AF00] isMainThread];
-  if (!v6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!dCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v27 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "tagID != nil"];
     *buf = 136315906;
@@ -2097,7 +2097,7 @@ void __116__FCSubscriptionList_addSubscriptionsForTagIDs_typeProvider_originProv
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v7 = [FCSubscriptionList subscriptionIDForTagID:v6 type:a4];
+  v7 = [FCSubscriptionList subscriptionIDForTagID:dCopy type:type];
   if (self)
   {
     mutableSubscriptionsBySubscriptionID = self->_mutableSubscriptionsBySubscriptionID;
@@ -2116,21 +2116,21 @@ void __116__FCSubscriptionList_addSubscriptionsForTagIDs_typeProvider_originProv
     {
       v10 = 1000000000000000;
       v31 = MEMORY[0x1E696AD98];
-      v11 = [(FCSubscriptionList *)self orderedSubscribedTagIDs];
-      v12 = [v11 lastObject];
+      orderedSubscribedTagIDs = [(FCSubscriptionList *)self orderedSubscribedTagIDs];
+      lastObject = [orderedSubscribedTagIDs lastObject];
 
-      if (v12)
+      if (lastObject)
       {
-        v13 = [FCSubscriptionList subscriptionIDForTagID:v12 type:0];
+        v13 = [FCSubscriptionList subscriptionIDForTagID:lastObject type:0];
         if (v13)
         {
           v14 = v13;
-          v30 = [(FCSubscriptionList *)self subscriptionsBySubscriptionID];
-          v15 = [v30 objectForKeyedSubscript:v14];
-          v16 = [v15 order];
-          v29 = [v16 longLongValue];
+          subscriptionsBySubscriptionID = [(FCSubscriptionList *)self subscriptionsBySubscriptionID];
+          v15 = [subscriptionsBySubscriptionID objectForKeyedSubscript:v14];
+          order = [v15 order];
+          longLongValue = [order longLongValue];
 
-          v10 = v29 + 1000000000000000;
+          v10 = longLongValue + 1000000000000000;
         }
       }
 
@@ -2142,11 +2142,11 @@ void __116__FCSubscriptionList_addSubscriptionsForTagIDs_typeProvider_originProv
       v17 = 0;
     }
 
-    v18 = [MEMORY[0x1E695DF00] date];
-    v19 = v18;
+    date = [MEMORY[0x1E695DF00] date];
+    v19 = date;
     if (self)
     {
-      v20 = a4 - 3 >= 3;
+      v20 = type - 3 >= 3;
     }
 
     else
@@ -2156,7 +2156,7 @@ void __116__FCSubscriptionList_addSubscriptionsForTagIDs_typeProvider_originProv
 
     v21 = !v20;
     LOBYTE(v28) = 0;
-    v22 = [FCSubscription subscriptionWithSubscriptionID:v7 tagID:v6 type:a4 order:v17 origin:0 groupID:0 dateAdded:v18 notificationsEnabled:v28 zone:v21];
+    v22 = [FCSubscription subscriptionWithSubscriptionID:v7 tagID:dCopy type:type order:v17 origin:0 groupID:0 dateAdded:date notificationsEnabled:v28 zone:v21];
 
     v33 = v22;
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v33 count:1];
@@ -2171,15 +2171,15 @@ void __116__FCSubscriptionList_addSubscriptionsForTagIDs_typeProvider_originProv
   return v9 == 0;
 }
 
-- (void)removeSubscriptionsForTagIDs:(id)a3 typeProvider:(id)a4 completion:(id)a5
+- (void)removeSubscriptionsForTagIDs:(id)ds typeProvider:(id)provider completion:(id)completion
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  providerCopy = provider;
+  completionCopy = completion;
   v10 = MEMORY[0x1E696AF00];
-  v11 = a3;
+  dsCopy = ds;
   [v10 isMainThread];
-  if (!v11 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!dsCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "tagIDs != nil"];
     *buf = 136315906;
@@ -2198,12 +2198,12 @@ void __116__FCSubscriptionList_addSubscriptionsForTagIDs_typeProvider_originProv
   v21[1] = 3221225472;
   v21[2] = __75__FCSubscriptionList_removeSubscriptionsForTagIDs_typeProvider_completion___block_invoke;
   v21[3] = &unk_1E7C41258;
-  v23 = v8;
+  v23 = providerCopy;
   v21[4] = self;
   v13 = v12;
   v22 = v13;
-  v14 = v8;
-  v15 = [v11 fc_arrayByTransformingWithBlock:v21];
+  v14 = providerCopy;
+  v15 = [dsCopy fc_arrayByTransformingWithBlock:v21];
 
   if ([v15 count])
   {
@@ -2217,9 +2217,9 @@ void __116__FCSubscriptionList_addSubscriptionsForTagIDs_typeProvider_originProv
     }
   }
 
-  if (v9)
+  if (completionCopy)
   {
-    v9[2](v9, v13);
+    completionCopy[2](completionCopy, v13);
   }
 
   v19 = *MEMORY[0x1E69E9840];
@@ -2254,14 +2254,14 @@ id __75__FCSubscriptionList_removeSubscriptionsForTagIDs_typeProvider_completion
   return v7;
 }
 
-- (void)removeSubscriptionForTagID:(id)a3 type:(unint64_t)a4
+- (void)removeSubscriptionForTagID:(id)d type:(unint64_t)type
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dCopy = d;
   [MEMORY[0x1E696AF00] isMainThread];
-  if (v6)
+  if (dCopy)
   {
-    v7 = [FCSubscriptionList subscriptionIDForTagID:v6 type:a4];
+    v7 = [FCSubscriptionList subscriptionIDForTagID:dCopy type:type];
     if (self)
     {
       mutableSubscriptionsBySubscriptionID = self->_mutableSubscriptionsBySubscriptionID;
@@ -2310,44 +2310,44 @@ id __75__FCSubscriptionList_removeSubscriptionsForTagIDs_typeProvider_completion
 
 - (NSArray)rankedAllSubscribedTagIDs
 {
-  v3 = [(FCSubscriptionList *)self subscribedTagRanker];
-  v4 = [(FCSubscriptionList *)self allSubscribedTagIDs];
-  v5 = [v4 allObjects];
-  v6 = [v3 rankTagIDsDescending:v5];
+  subscribedTagRanker = [(FCSubscriptionList *)self subscribedTagRanker];
+  allSubscribedTagIDs = [(FCSubscriptionList *)self allSubscribedTagIDs];
+  allObjects = [allSubscribedTagIDs allObjects];
+  v6 = [subscribedTagRanker rankTagIDsDescending:allObjects];
 
   return v6;
 }
 
-- (id)subscriptionsForType:(unint64_t)a3
+- (id)subscriptionsForType:(unint64_t)type
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a3 <= 2)
+  if (type <= 2)
   {
-    if (!a3)
+    if (!type)
     {
-      v3 = [(FCSubscriptionList *)self subscribedTagIDs];
+      subscribedTagIDs = [(FCSubscriptionList *)self subscribedTagIDs];
       goto LABEL_15;
     }
 
-    if (a3 == 2)
+    if (type == 2)
     {
-      v3 = [(FCSubscriptionList *)self mutedTagIDs];
+      subscribedTagIDs = [(FCSubscriptionList *)self mutedTagIDs];
       goto LABEL_15;
     }
   }
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 3uLL:
-        v3 = [(FCSubscriptionList *)self autoFavoriteTagIDs];
+        subscribedTagIDs = [(FCSubscriptionList *)self autoFavoriteTagIDs];
         goto LABEL_15;
       case 4uLL:
-        v3 = [(FCSubscriptionList *)self groupableTagIDs];
+        subscribedTagIDs = [(FCSubscriptionList *)self groupableTagIDs];
         goto LABEL_15;
       case 5uLL:
-        v3 = [(FCSubscriptionList *)self ignoredTagIDs];
+        subscribedTagIDs = [(FCSubscriptionList *)self ignoredTagIDs];
         goto LABEL_15;
     }
   }
@@ -2366,26 +2366,26 @@ id __75__FCSubscriptionList_removeSubscriptionsForTagIDs_typeProvider_completion
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v7, 0x26u);
   }
 
-  v3 = 0;
+  subscribedTagIDs = 0;
 LABEL_15:
   v4 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return subscribedTagIDs;
 }
 
 - (BOOL)canAddSubscription
 {
-  v2 = [(FCSubscriptionList *)self subscribedTagIDs];
-  v3 = [v2 count] < 0xFA;
+  subscribedTagIDs = [(FCSubscriptionList *)self subscribedTagIDs];
+  v3 = [subscribedTagIDs count] < 0xFA;
 
   return v3;
 }
 
-- (BOOL)hasSubscriptionForTagID:(id)a3
+- (BOOL)hasSubscriptionForTagID:(id)d
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  dCopy = d;
+  if (!dCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "tagID != nil"];
     *buf = 136315906;
@@ -2399,17 +2399,17 @@ LABEL_15:
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v5 = [(FCSubscriptionList *)self subscribedTagIDs];
-  v6 = [v5 containsObject:v4];
+  subscribedTagIDs = [(FCSubscriptionList *)self subscribedTagIDs];
+  v6 = [subscribedTagIDs containsObject:dCopy];
 
   v7 = *MEMORY[0x1E69E9840];
   return v6;
 }
 
-- (id)subscriptionForTagID:(id)a3 type:(unint64_t)a4
+- (id)subscriptionForTagID:(id)d type:(unint64_t)type
 {
-  v6 = a3;
-  v7 = [FCSubscriptionList subscriptionIDForTagID:v6 type:a4];
+  dCopy = d;
+  v7 = [FCSubscriptionList subscriptionIDForTagID:dCopy type:type];
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -2459,16 +2459,16 @@ void __48__FCSubscriptionList_subscriptionForTagID_type___block_invoke(void *a1)
   *(v5 + 40) = v4;
 }
 
-- (id)subscriptionForTagIDOfAnyType:(id)a3
+- (id)subscriptionForTagIDOfAnyType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__42;
   v18 = __Block_byref_object_dispose__42;
   v19 = 0;
-  if (v4)
+  if (typeCopy)
   {
     if (self)
     {
@@ -2485,9 +2485,9 @@ void __48__FCSubscriptionList_subscriptionForTagID_type___block_invoke(void *a1)
     v10[1] = 3221225472;
     v10[2] = __52__FCSubscriptionList_subscriptionForTagIDOfAnyType___block_invoke;
     v10[3] = &unk_1E7C412A8;
-    v12 = self;
+    selfCopy = self;
     v13 = &v14;
-    v11 = v4;
+    v11 = typeCopy;
     [(FCMTWriterLock *)v6 performReadSync:v10];
 
     v7 = v15[5];
@@ -2610,22 +2610,22 @@ void __41__FCSubscriptionList_allSubscribedTagIDs__block_invoke_2(uint64_t a1, v
   }
 }
 
-- (BOOL)hasNotificationsEnabledForTagID:(id)a3
+- (BOOL)hasNotificationsEnabledForTagID:(id)d
 {
-  v3 = [(FCSubscriptionList *)self subscriptionForTagID:a3];
-  v4 = [v3 notificationsEnabled];
+  v3 = [(FCSubscriptionList *)self subscriptionForTagID:d];
+  notificationsEnabled = [v3 notificationsEnabled];
 
-  return v4;
+  return notificationsEnabled;
 }
 
-- (BOOL)setNotificationsEnabled:(BOOL)a3 forTagID:(id)a4
+- (BOOL)setNotificationsEnabled:(BOOL)enabled forTagID:(id)d
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  dCopy = d;
   [MEMORY[0x1E696AF00] isMainThread];
-  if (v6)
+  if (dCopy)
   {
-    v7 = [FCSubscriptionList subscriptionIDForTagID:v6 type:0];
+    v7 = [FCSubscriptionList subscriptionIDForTagID:dCopy type:0];
     if (self)
     {
       mutableSubscriptionsBySubscriptionID = self->_mutableSubscriptionsBySubscriptionID;
@@ -2641,15 +2641,15 @@ void __41__FCSubscriptionList_allSubscribedTagIDs__block_invoke_2(uint64_t a1, v
     v11 = v9 != 0;
     if (v9)
     {
-      v12 = [v9 subscriptionID];
-      v13 = [v10 tagID];
-      v14 = [v10 order];
+      subscriptionID = [v9 subscriptionID];
+      tagID = [v10 tagID];
+      order = [v10 order];
       v25 = v7;
-      v15 = [v10 subscriptionOrigin];
+      subscriptionOrigin = [v10 subscriptionOrigin];
       [v10 dateAdded];
       v16 = v24 = v11;
-      LOBYTE(v23) = a3;
-      v17 = [FCSubscription subscriptionWithSubscriptionID:v12 tagID:v13 type:0 order:v14 origin:v15 groupID:0 dateAdded:v16 notificationsEnabled:v23 zone:0];
+      LOBYTE(v23) = enabled;
+      v17 = [FCSubscription subscriptionWithSubscriptionID:subscriptionID tagID:tagID type:0 order:order origin:subscriptionOrigin groupID:0 dateAdded:v16 notificationsEnabled:v23 zone:0];
 
       v27 = v17;
       v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v27 count:1];
@@ -2687,43 +2687,43 @@ void __41__FCSubscriptionList_allSubscribedTagIDs__block_invoke_2(uint64_t a1, v
   return v11;
 }
 
-- (BOOL)hasMutedSubscriptionForTagID:(id)a3
+- (BOOL)hasMutedSubscriptionForTagID:(id)d
 {
-  v4 = a3;
-  v5 = [(FCSubscriptionList *)self mutedTagIDs];
-  v6 = [v5 containsObject:v4];
+  dCopy = d;
+  mutedTagIDs = [(FCSubscriptionList *)self mutedTagIDs];
+  v6 = [mutedTagIDs containsObject:dCopy];
 
   return v6;
 }
 
-- (BOOL)hasIgnoredSubscriptionForTagID:(id)a3
+- (BOOL)hasIgnoredSubscriptionForTagID:(id)d
 {
-  v4 = a3;
-  v5 = [(FCSubscriptionList *)self ignoredTagIDs];
-  v6 = [v5 containsObject:v4];
+  dCopy = d;
+  ignoredTagIDs = [(FCSubscriptionList *)self ignoredTagIDs];
+  v6 = [ignoredTagIDs containsObject:dCopy];
 
   return v6;
 }
 
-- (BOOL)hasAutoFavoriteSubscriptionForTagID:(id)a3
+- (BOOL)hasAutoFavoriteSubscriptionForTagID:(id)d
 {
-  v4 = a3;
-  v5 = [(FCSubscriptionList *)self autoFavoriteTagIDs];
-  v6 = [v5 containsObject:v4];
+  dCopy = d;
+  autoFavoriteTagIDs = [(FCSubscriptionList *)self autoFavoriteTagIDs];
+  v6 = [autoFavoriteTagIDs containsObject:dCopy];
 
   return v6;
 }
 
-- (BOOL)moveSubscriptionForTagID:(id)a3 toIndex:(unint64_t)a4
+- (BOOL)moveSubscriptionForTagID:(id)d toIndex:(unint64_t)index
 {
-  v6 = a3;
+  dCopy = d;
   [MEMORY[0x1E696AF00] isMainThread];
-  v7 = [(FCSubscriptionList *)self subscribedTagIDs];
-  v8 = [v7 count];
+  subscribedTagIDs = [(FCSubscriptionList *)self subscribedTagIDs];
+  v8 = [subscribedTagIDs count];
 
-  if (v6)
+  if (dCopy)
   {
-    v9 = v8 > a4;
+    v9 = v8 > index;
   }
 
   else
@@ -2734,8 +2734,8 @@ void __41__FCSubscriptionList_allSubscribedTagIDs__block_invoke_2(uint64_t a1, v
   v10 = v9;
   if (v10)
   {
-    v11 = [(FCSubscriptionList *)self orderedSubscribedTagIDs];
-    v12 = [v11 mutableCopy];
+    orderedSubscribedTagIDs = [(FCSubscriptionList *)self orderedSubscribedTagIDs];
+    v12 = [orderedSubscribedTagIDs mutableCopy];
 
     v13 = MEMORY[0x1E695DEC8];
     v19[0] = MEMORY[0x1E69E9820];
@@ -2743,9 +2743,9 @@ void __41__FCSubscriptionList_allSubscribedTagIDs__block_invoke_2(uint64_t a1, v
     v19[2] = __55__FCSubscriptionList_moveSubscriptionForTagID_toIndex___block_invoke;
     v19[3] = &unk_1E7C412D0;
     v20 = v12;
-    v22 = self;
-    v23 = a4;
-    v21 = v6;
+    selfCopy = self;
+    indexCopy = index;
+    v21 = dCopy;
     v14 = v12;
     v15 = [v13 fc_array:v19];
     v16 = [[FCTagSubscriptionOrderAssigner alloc] initWithInitialOrder:1000000000000000 orderSpacing:?];
@@ -2782,16 +2782,16 @@ void __55__FCSubscriptionList_moveSubscriptionForTagID_toIndex___block_invoke(ui
   }
 }
 
-- (void)reorderSubscriptionOrderForOrderedIdentifiers:(id)a3
+- (void)reorderSubscriptionOrderForOrderedIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   [MEMORY[0x1E696AF00] isMainThread];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __68__FCSubscriptionList_reorderSubscriptionOrderForOrderedIdentifiers___block_invoke;
   v15[3] = &unk_1E7C412F8;
   v15[4] = self;
-  v5 = [v4 fc_arrayByTransformingWithBlock:v15];
+  v5 = [identifiersCopy fc_arrayByTransformingWithBlock:v15];
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if ([v5 count])
   {
@@ -2800,9 +2800,9 @@ void __55__FCSubscriptionList_moveSubscriptionForTagID_toIndex___block_invoke(ui
     do
     {
       v9 = [v5 objectAtIndexedSubscript:v8];
-      v10 = [v9 order];
+      order = [v9 order];
       v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v7];
-      v12 = [v10 isEqualToNumber:v11];
+      v12 = [order isEqualToNumber:v11];
 
       if ((v12 & 1) == 0)
       {

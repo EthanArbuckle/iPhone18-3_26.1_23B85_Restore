@@ -1,47 +1,47 @@
 @interface SUUILockupSwooshArtworkLoader
-- (BOOL)loadImageForItem:(id)a3 reason:(int64_t)a4;
-- (BOOL)loadImageForVideo:(id)a3 reason:(int64_t)a4;
-- (SUUILockupSwooshArtworkLoader)initWithArtworkLoader:(id)a3 swoosh:(id)a4;
-- (id)placeholderImageForItem:(id)a3;
-- (id)placeholderImageForVideo:(id)a3;
-- (void)loadImagesForNextPageWithReason:(int64_t)a3;
-- (void)setImage:(id)a3 forRequest:(id)a4;
+- (BOOL)loadImageForItem:(id)item reason:(int64_t)reason;
+- (BOOL)loadImageForVideo:(id)video reason:(int64_t)reason;
+- (SUUILockupSwooshArtworkLoader)initWithArtworkLoader:(id)loader swoosh:(id)swoosh;
+- (id)placeholderImageForItem:(id)item;
+- (id)placeholderImageForVideo:(id)video;
+- (void)loadImagesForNextPageWithReason:(int64_t)reason;
+- (void)setImage:(id)image forRequest:(id)request;
 @end
 
 @implementation SUUILockupSwooshArtworkLoader
 
-- (SUUILockupSwooshArtworkLoader)initWithArtworkLoader:(id)a3 swoosh:(id)a4
+- (SUUILockupSwooshArtworkLoader)initWithArtworkLoader:(id)loader swoosh:(id)swoosh
 {
-  v6 = a4;
+  swooshCopy = swoosh;
   v13.receiver = self;
   v13.super_class = SUUILockupSwooshArtworkLoader;
-  v7 = [(SUUISwooshArtworkLoader *)&v13 initWithArtworkLoader:a3 swoosh:v6];
+  v7 = [(SUUISwooshArtworkLoader *)&v13 initWithArtworkLoader:loader swoosh:swooshCopy];
   if (v7)
   {
-    v8 = [v6 artworkContext];
+    artworkContext = [swooshCopy artworkContext];
     context = v7->_context;
-    v7->_context = v8;
+    v7->_context = artworkContext;
 
-    v10 = [v6 videoImageConsumer];
+    videoImageConsumer = [swooshCopy videoImageConsumer];
     videoImageConsumer = v7->_videoImageConsumer;
-    v7->_videoImageConsumer = v10;
+    v7->_videoImageConsumer = videoImageConsumer;
   }
 
   return v7;
 }
 
-- (BOOL)loadImageForItem:(id)a3 reason:(int64_t)a4
+- (BOOL)loadImageForItem:(id)item reason:(int64_t)reason
 {
-  v6 = a3;
-  v7 = [(SUUIItemArtworkContext *)self->_context URLForItem:v6];
+  itemCopy = item;
+  v7 = [(SUUIItemArtworkContext *)self->_context URLForItem:itemCopy];
   if (v7)
   {
     v8 = objc_alloc_init(SUUIArtworkRequest);
-    v9 = [(SUUIItemArtworkContext *)self->_context dataConsumerForItem:v6];
+    v9 = [(SUUIItemArtworkContext *)self->_context dataConsumerForItem:itemCopy];
     [(SUUIArtworkRequest *)v8 setDataConsumer:v9];
 
     [(SUUIArtworkRequest *)v8 setURL:v7];
-    v10 = [(SUUISwooshArtworkLoader *)self loadImageForObject:v6 artworkRequest:v8 reason:a4];
+    v10 = [(SUUISwooshArtworkLoader *)self loadImageForObject:itemCopy artworkRequest:v8 reason:reason];
   }
 
   else
@@ -52,14 +52,14 @@
   return v10;
 }
 
-- (BOOL)loadImageForVideo:(id)a3 reason:(int64_t)a4
+- (BOOL)loadImageForVideo:(id)video reason:(int64_t)reason
 {
-  v6 = a3;
+  videoCopy = video;
   [(SUUIVideoImageDataConsumer *)self->_videoImageConsumer landscapeSize];
   v8 = v7;
   v10 = v9;
-  v11 = [v6 artworks];
-  v12 = [v11 bestArtworkForScaledSize:{v8, v10}];
+  artworks = [videoCopy artworks];
+  v12 = [artworks bestArtworkForScaledSize:{v8, v10}];
   v13 = [v12 URL];
 
   if (v13)
@@ -67,7 +67,7 @@
     v14 = objc_alloc_init(SUUIArtworkRequest);
     [(SUUIArtworkRequest *)v14 setDataConsumer:self->_videoImageConsumer];
     [(SUUIArtworkRequest *)v14 setURL:v13];
-    v15 = [(SUUISwooshArtworkLoader *)self loadImageForObject:v6 artworkRequest:v14 reason:a4];
+    v15 = [(SUUISwooshArtworkLoader *)self loadImageForObject:videoCopy artworkRequest:v14 reason:reason];
   }
 
   else
@@ -78,17 +78,17 @@
   return v15;
 }
 
-- (id)placeholderImageForItem:(id)a3
+- (id)placeholderImageForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(SUUISwooshArtworkLoader *)self swooshViewController];
-  v6 = [v5 artworkContext];
-  v7 = [v6 placeholderImageForItem:v4];
+  itemCopy = item;
+  swooshViewController = [(SUUISwooshArtworkLoader *)self swooshViewController];
+  artworkContext = [swooshViewController artworkContext];
+  v7 = [artworkContext placeholderImageForItem:itemCopy];
 
   return v7;
 }
 
-- (id)placeholderImageForVideo:(id)a3
+- (id)placeholderImageForVideo:(id)video
 {
   videoPlaceholderImage = self->_videoPlaceholderImage;
   if (!videoPlaceholderImage)
@@ -103,12 +103,12 @@
   return videoPlaceholderImage;
 }
 
-- (void)loadImagesForNextPageWithReason:(int64_t)a3
+- (void)loadImagesForNextPageWithReason:(int64_t)reason
 {
-  v5 = [(SUUISwooshArtworkLoader *)self swooshViewController];
-  v15 = [v5 lockups];
+  swooshViewController = [(SUUISwooshArtworkLoader *)self swooshViewController];
+  lockups = [swooshViewController lockups];
 
-  v6 = [v15 count];
+  v6 = [lockups count];
   if (v6 >= 1)
   {
     v7 = v6;
@@ -116,17 +116,17 @@
     v9 = 1;
     do
     {
-      v10 = [v15 objectAtIndex:v9 - 1];
-      v11 = [v10 item];
-      if (v11)
+      v10 = [lockups objectAtIndex:v9 - 1];
+      item = [v10 item];
+      if (item)
       {
-        v12 = [(SUUILockupSwooshArtworkLoader *)self loadImageForItem:v11 reason:a3];
-        v13 = [v11 videos];
-        v14 = [v13 firstObject];
+        v12 = [(SUUILockupSwooshArtworkLoader *)self loadImageForItem:item reason:reason];
+        videos = [item videos];
+        firstObject = [videos firstObject];
 
-        if (v14)
+        if (firstObject)
         {
-          [(SUUILockupSwooshArtworkLoader *)self loadImageForVideo:v14 reason:a3];
+          [(SUUILockupSwooshArtworkLoader *)self loadImageForVideo:firstObject reason:reason];
         }
 
         v8 += v12;
@@ -144,15 +144,15 @@
   }
 }
 
-- (void)setImage:(id)a3 forRequest:(id)a4
+- (void)setImage:(id)image forRequest:(id)request
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v20 = a4;
-  v7 = [v20 requestIdentifier];
-  v8 = [(SUUISwooshArtworkLoader *)self swooshViewController];
-  v22 = [v8 lockups];
-  [v8 indexPathsForVisibleItems];
+  imageCopy = image;
+  requestCopy = request;
+  requestIdentifier = [requestCopy requestIdentifier];
+  swooshViewController = [(SUUISwooshArtworkLoader *)self swooshViewController];
+  lockups = [swooshViewController lockups];
+  [swooshViewController indexPathsForVisibleItems];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -162,8 +162,8 @@
   {
     v10 = v9;
     v11 = *v25;
-    v18 = v8;
-    v19 = v6;
+    v18 = swooshViewController;
+    v19 = imageCopy;
     while (2)
     {
       for (i = 0; i != v10; ++i)
@@ -174,27 +174,27 @@
         }
 
         v13 = *(*(&v24 + 1) + 8 * i);
-        v14 = [v22 objectAtIndex:{objc_msgSend(v13, "item")}];
-        v15 = [v14 item];
-        if (v15)
+        v14 = [lockups objectAtIndex:{objc_msgSend(v13, "item")}];
+        item = [v14 item];
+        if (item)
         {
-          if ([(SUUISwooshArtworkLoader *)self artworkRequestIdentifierForObject:v15]== v7)
+          if ([(SUUISwooshArtworkLoader *)self artworkRequestIdentifierForObject:item]== requestIdentifier)
           {
-            v8 = v18;
-            v6 = v19;
+            swooshViewController = v18;
+            imageCopy = v19;
             [v18 setImage:v19 forItemAtIndex:{objc_msgSend(v13, "item")}];
 LABEL_16:
 
             goto LABEL_17;
           }
 
-          v16 = [v15 videos];
-          v17 = [v16 firstObject];
+          videos = [item videos];
+          firstObject = [videos firstObject];
 
-          if (v17 && [(SUUISwooshArtworkLoader *)self artworkRequestIdentifierForObject:v17]== v7)
+          if (firstObject && [(SUUISwooshArtworkLoader *)self artworkRequestIdentifierForObject:firstObject]== requestIdentifier)
           {
-            v8 = v18;
-            v6 = v19;
+            swooshViewController = v18;
+            imageCopy = v19;
             [v18 setVideoThumbnail:v19 forItemAtIndex:{objc_msgSend(v13, "item")}];
 
             goto LABEL_16;
@@ -203,8 +203,8 @@ LABEL_16:
       }
 
       v10 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
-      v8 = v18;
-      v6 = v19;
+      swooshViewController = v18;
+      imageCopy = v19;
       if (v10)
       {
         continue;
@@ -218,7 +218,7 @@ LABEL_17:
 
   v23.receiver = self;
   v23.super_class = SUUILockupSwooshArtworkLoader;
-  [(SUUISwooshArtworkLoader *)&v23 setImage:v6 forRequest:v20];
+  [(SUUISwooshArtworkLoader *)&v23 setImage:imageCopy forRequest:requestCopy];
 }
 
 @end

@@ -1,25 +1,25 @@
 @interface SBExternalHomeGestureFloatingSwitcherModifier
 - (CGRect)containerViewBounds;
-- (SBExternalHomeGestureFloatingSwitcherModifier)initWithGestureID:(id)a3 initialFloatingConfiguration:(int64_t)a4 interfaceOrientation:(int64_t)a5;
-- (id)animationAttributesForLayoutElement:(id)a3;
+- (SBExternalHomeGestureFloatingSwitcherModifier)initWithGestureID:(id)d initialFloatingConfiguration:(int64_t)configuration interfaceOrientation:(int64_t)orientation;
+- (id)animationAttributesForLayoutElement:(id)element;
 - (id)appLayoutsToResignActive;
-- (id)handleGestureEvent:(id)a3;
-- (void)_updateForGestureDidBeginOrChangeWithEvent:(id)a3;
-- (void)didMoveToParentModifier:(id)a3;
+- (id)handleGestureEvent:(id)event;
+- (void)_updateForGestureDidBeginOrChangeWithEvent:(id)event;
+- (void)didMoveToParentModifier:(id)modifier;
 @end
 
 @implementation SBExternalHomeGestureFloatingSwitcherModifier
 
-- (SBExternalHomeGestureFloatingSwitcherModifier)initWithGestureID:(id)a3 initialFloatingConfiguration:(int64_t)a4 interfaceOrientation:(int64_t)a5
+- (SBExternalHomeGestureFloatingSwitcherModifier)initWithGestureID:(id)d initialFloatingConfiguration:(int64_t)configuration interfaceOrientation:(int64_t)orientation
 {
   v11.receiver = self;
   v11.super_class = SBExternalHomeGestureFloatingSwitcherModifier;
-  v7 = [(SBGestureSwitcherModifier *)&v11 initWithGestureID:a3];
+  v7 = [(SBGestureSwitcherModifier *)&v11 initWithGestureID:d];
   v8 = v7;
   if (v7)
   {
-    v7->_initialFloatingConfiguration = a4;
-    v7->_interfaceOrientation = a5;
+    v7->_initialFloatingConfiguration = configuration;
+    v7->_interfaceOrientation = orientation;
     v9 = SBFloatingConfigurationIsStashed(v7->_initialFloatingConfiguration) || v8->_initialFloatingConfiguration == 0;
     v8->_stashed = v9;
   }
@@ -27,12 +27,12 @@
   return v8;
 }
 
-- (void)didMoveToParentModifier:(id)a3
+- (void)didMoveToParentModifier:(id)modifier
 {
   v13.receiver = self;
   v13.super_class = SBExternalHomeGestureFloatingSwitcherModifier;
   [(SBChainableModifier *)&v13 didMoveToParentModifier:?];
-  if (a3)
+  if (modifier)
   {
     initialFloatingConfiguration = self->_initialFloatingConfiguration;
     if (!SBFloatingConfigurationIsStashed(initialFloatingConfiguration))
@@ -53,9 +53,9 @@
     self->_stashedContainerViewBounds.origin.y = v7;
     self->_stashedContainerViewBounds.size.width = v8;
     self->_stashedContainerViewBounds.size.height = v9;
-    v10 = [(SBExternalHomeGestureFloatingSwitcherModifier *)self isRTLEnabled];
+    isRTLEnabled = [(SBExternalHomeGestureFloatingSwitcherModifier *)self isRTLEnabled];
     v11 = 3;
-    if (v10)
+    if (isRTLEnabled)
     {
       v11 = 4;
     }
@@ -96,11 +96,11 @@
   return result;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v6.receiver = self;
   v6.super_class = SBExternalHomeGestureFloatingSwitcherModifier;
-  v3 = [(SBGestureSwitcherModifier *)&v6 animationAttributesForLayoutElement:a3];
+  v3 = [(SBGestureSwitcherModifier *)&v6 animationAttributesForLayoutElement:element];
   v4 = [v3 mutableCopy];
 
   [v4 setUpdateMode:3];
@@ -115,53 +115,53 @@
   {
     v8 = &unk_283372488;
     v2 = MEMORY[0x277CBEB98];
-    v3 = [(SBExternalHomeGestureFloatingSwitcherModifier *)self appLayouts];
-    v4 = [v2 setWithArray:v3];
+    appLayouts = [(SBExternalHomeGestureFloatingSwitcherModifier *)self appLayouts];
+    v4 = [v2 setWithArray:appLayouts];
     v9[0] = v4;
-    v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
+    appLayoutsToResignActive = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = SBExternalHomeGestureFloatingSwitcherModifier;
-    v5 = [(SBExternalHomeGestureFloatingSwitcherModifier *)&v7 appLayoutsToResignActive];
+    appLayoutsToResignActive = [(SBExternalHomeGestureFloatingSwitcherModifier *)&v7 appLayoutsToResignActive];
   }
 
-  return v5;
+  return appLayoutsToResignActive;
 }
 
-- (id)handleGestureEvent:(id)a3
+- (id)handleGestureEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   v10.receiver = self;
   v10.super_class = SBExternalHomeGestureFloatingSwitcherModifier;
-  v6 = [(SBGestureSwitcherModifier *)&v10 handleGestureEvent:v5];
-  v7 = [v5 phase];
-  if ((v7 - 1) < 2)
+  v6 = [(SBGestureSwitcherModifier *)&v10 handleGestureEvent:eventCopy];
+  phase = [eventCopy phase];
+  if ((phase - 1) < 2)
   {
-    [(SBExternalHomeGestureFloatingSwitcherModifier *)self _updateForGestureDidBeginOrChangeWithEvent:v5];
+    [(SBExternalHomeGestureFloatingSwitcherModifier *)self _updateForGestureDidBeginOrChangeWithEvent:eventCopy];
   }
 
-  else if (v7 == 3)
+  else if (phase == 3)
   {
     [(SBChainableModifier *)self setState:1];
   }
 
-  else if (!v7)
+  else if (!phase)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"SBExternalHomeGestureFloatingSwitcherModifier.m" lineNumber:119 description:@"Should not be getting PhasePossible"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SBExternalHomeGestureFloatingSwitcherModifier.m" lineNumber:119 description:@"Should not be getting PhasePossible"];
   }
 
   return v6;
 }
 
-- (void)_updateForGestureDidBeginOrChangeWithEvent:(id)a3
+- (void)_updateForGestureDidBeginOrChangeWithEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4;
-  if (!self->_stashed && [v4 phase] == 1 && objc_msgSend(v5, "type") != 3)
+  eventCopy = event;
+  v5 = eventCopy;
+  if (!self->_stashed && [eventCopy phase] == 1 && objc_msgSend(v5, "type") != 3)
   {
     v6 = [[SBHomeGestureDockSwitcherModifier alloc] initWithDelegate:self startingEnvironmentMode:3 requireVerticalSwipeToTrackDock:1];
     dockModifier = self->_dockModifier;

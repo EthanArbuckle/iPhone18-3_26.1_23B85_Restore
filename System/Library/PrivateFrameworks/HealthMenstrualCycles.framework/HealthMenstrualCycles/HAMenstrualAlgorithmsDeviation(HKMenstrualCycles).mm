@@ -7,12 +7,12 @@
 
 - (HKMCUnconfirmedDeviation)hkmc_deviationOfType:()HKMenstrualCycles
 {
-  v5 = [a1 julianDayOfAnalysisWindowStart];
-  v6 = [a1 julianDayOfAnalysisWindowEnd];
-  v7 = v6 - [a1 julianDayOfAnalysisWindowStart] + 1;
+  julianDayOfAnalysisWindowStart = [self julianDayOfAnalysisWindowStart];
+  julianDayOfAnalysisWindowEnd = [self julianDayOfAnalysisWindowEnd];
+  v7 = julianDayOfAnalysisWindowEnd - [self julianDayOfAnalysisWindowStart] + 1;
   v8 = [HKMCUnconfirmedDeviation alloc];
-  v9 = [a1 metricsForCoreAnalytics];
-  v10 = [(HKMCUnconfirmedDeviation *)v8 initWithType:a3 days:v5 analyticsMetadata:v7, v9];
+  metricsForCoreAnalytics = [self metricsForCoreAnalytics];
+  v10 = [(HKMCUnconfirmedDeviation *)v8 initWithType:a3 days:julianDayOfAnalysisWindowStart analyticsMetadata:v7, metricsForCoreAnalytics];
 
   return v10;
 }
@@ -20,10 +20,10 @@
 - (id)hkmc_description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(a1, "julianDayOfAnalysisWindowStart")}];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(a1, "julianDayOfAnalysisWindowEnd")}];
-  v5 = [a1 metricsForCoreAnalytics];
-  v6 = [v2 stringWithFormat:@"<analysis window: %@ - %@, analytics: %@>", v3, v4, v5];
+  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(self, "julianDayOfAnalysisWindowStart")}];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(self, "julianDayOfAnalysisWindowEnd")}];
+  metricsForCoreAnalytics = [self metricsForCoreAnalytics];
+  v6 = [v2 stringWithFormat:@"<analysis window: %@ - %@, analytics: %@>", v3, v4, metricsForCoreAnalytics];
 
   return v6;
 }

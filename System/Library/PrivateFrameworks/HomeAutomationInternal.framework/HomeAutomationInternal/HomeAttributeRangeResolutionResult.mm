@@ -1,25 +1,25 @@
 @interface HomeAttributeRangeResolutionResult
-+ (id)confirmationRequiredWithHomeAttributeRangeToConfirm:(id)a3;
-+ (id)confirmationRequiredWithObjectToConfirm:(id)a3;
-+ (id)disambiguationWithHomeAttributeRangesToDisambiguate:(id)a3;
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3;
-+ (id)successWithResolvedHomeAttributeRange:(id)a3;
-+ (id)successWithResolvedObject:(id)a3;
-- (HomeAttributeRangeResolutionResult)initWithJSONDictionary:(id)a3 forIntent:(id)a4;
++ (id)confirmationRequiredWithHomeAttributeRangeToConfirm:(id)confirm;
++ (id)confirmationRequiredWithObjectToConfirm:(id)confirm;
++ (id)disambiguationWithHomeAttributeRangesToDisambiguate:(id)disambiguate;
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate;
++ (id)successWithResolvedHomeAttributeRange:(id)range;
++ (id)successWithResolvedObject:(id)object;
+- (HomeAttributeRangeResolutionResult)initWithJSONDictionary:(id)dictionary forIntent:(id)intent;
 @end
 
 @implementation HomeAttributeRangeResolutionResult
 
-+ (id)successWithResolvedHomeAttributeRange:(id)a3
++ (id)successWithResolvedHomeAttributeRange:(id)range
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = sub_252E2E16C(v4);
+  rangeCopy = range;
+  v5 = sub_252E2E16C(rangeCopy);
 
   return v5;
 }
 
-+ (id)disambiguationWithHomeAttributeRangesToDisambiguate:(id)a3
++ (id)disambiguationWithHomeAttributeRangesToDisambiguate:(id)disambiguate
 {
   type metadata accessor for HomeAttributeRange();
   v3 = sub_252E37264();
@@ -29,45 +29,45 @@
   return v4;
 }
 
-+ (id)confirmationRequiredWithHomeAttributeRangeToConfirm:(id)a3
++ (id)confirmationRequiredWithHomeAttributeRangeToConfirm:(id)confirm
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = sub_252E2E384(a3);
+  confirmCopy = confirm;
+  v5 = sub_252E2E384(confirm);
 
   return v5;
 }
 
-+ (id)successWithResolvedObject:(id)a3
++ (id)successWithResolvedObject:(id)object
 {
   result = sub_252E37B04();
   __break(1u);
   return result;
 }
 
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate
 {
   result = sub_252E37B04();
   __break(1u);
   return result;
 }
 
-+ (id)confirmationRequiredWithObjectToConfirm:(id)a3
++ (id)confirmationRequiredWithObjectToConfirm:(id)confirm
 {
   result = sub_252E37B04();
   __break(1u);
   return result;
 }
 
-- (HomeAttributeRangeResolutionResult)initWithJSONDictionary:(id)a3 forIntent:(id)a4
+- (HomeAttributeRangeResolutionResult)initWithJSONDictionary:(id)dictionary forIntent:(id)intent
 {
   sub_252E36E44();
-  v6 = a4;
+  intentCopy = intent;
   v7 = sub_252E36E24();
 
   v10.receiver = self;
   v10.super_class = type metadata accessor for HomeAttributeRangeResolutionResult();
-  v8 = [(HomeAttributeRangeResolutionResult *)&v10 initWithJSONDictionary:v7 forIntent:v6];
+  v8 = [(HomeAttributeRangeResolutionResult *)&v10 initWithJSONDictionary:v7 forIntent:intentCopy];
 
   if (v8)
   {

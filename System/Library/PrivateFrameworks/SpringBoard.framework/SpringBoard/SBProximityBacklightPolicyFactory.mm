@@ -1,17 +1,17 @@
 @interface SBProximityBacklightPolicyFactory
-+ (id)createNewProximityBacklightPolicyWithBacklightController:(id)a3 sensorModeController:(id)a4;
++ (id)createNewProximityBacklightPolicyWithBacklightController:(id)controller sensorModeController:(id)modeController;
 @end
 
 @implementation SBProximityBacklightPolicyFactory
 
-+ (id)createNewProximityBacklightPolicyWithBacklightController:(id)a3 sensorModeController:(id)a4
++ (id)createNewProximityBacklightPolicyWithBacklightController:(id)controller sensorModeController:(id)modeController
 {
-  v5 = a4;
-  v6 = a3;
+  modeControllerCopy = modeController;
+  controllerCopy = controller;
   v7 = objc_alloc_init(SBProximityBacklightPolicyConfiguration);
-  [(SBProximityBacklightPolicyConfiguration *)v7 setBacklightController:v6];
+  [(SBProximityBacklightPolicyConfiguration *)v7 setBacklightController:controllerCopy];
 
-  [(SBProximityBacklightPolicyConfiguration *)v7 setSensorModeController:v5];
+  [(SBProximityBacklightPolicyConfiguration *)v7 setSensorModeController:modeControllerCopy];
   v8 = +[SBProximityDomain rootSettings];
   [(SBProximityBacklightPolicyConfiguration *)v7 setProximitySettings:v8];
 
@@ -30,8 +30,8 @@
 
   if (!__sb__runningInSpringBoard())
   {
-    v11 = [MEMORY[0x277D75418] currentDevice];
-    if ([v11 userInterfaceIdiom])
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice userInterfaceIdiom])
     {
     }
 

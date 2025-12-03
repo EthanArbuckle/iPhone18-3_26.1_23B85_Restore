@@ -1,46 +1,46 @@
 @interface MDTSession
-+ (id)lookupSessionForPort:(unsigned int)a3;
-+ (void)removeSession:(id)a3;
-- (MDTSession)initWithServerPort:(unsigned int)a3 clientPort:(unsigned int)a4 pid:(int)a5;
++ (id)lookupSessionForPort:(unsigned int)port;
++ (void)removeSession:(id)session;
+- (MDTSession)initWithServerPort:(unsigned int)port clientPort:(unsigned int)clientPort pid:(int)pid;
 - (void)dealloc;
 - (void)finalize;
 - (void)invalidate;
-- (void)returnStatusWithDestURL:(id)a3 error:(id)a4;
+- (void)returnStatusWithDestURL:(id)l error:(id)error;
 @end
 
 @implementation MDTSession
 
-+ (id)lookupSessionForPort:(unsigned int)a3
++ (id)lookupSessionForPort:(unsigned int)port
 {
   v4 = qword_10000C6E0;
   objc_sync_enter(qword_10000C6E0);
-  Value = CFDictionaryGetValue(qword_10000C6E8, a3);
+  Value = CFDictionaryGetValue(qword_10000C6E8, port);
   objc_sync_exit(v4);
   return Value;
 }
 
-+ (void)removeSession:(id)a3
++ (void)removeSession:(id)session
 {
-  v3 = [a3 serverPort];
+  serverPort = [session serverPort];
   v4 = qword_10000C6E0;
   objc_sync_enter(qword_10000C6E0);
-  if (CFDictionaryGetValue(qword_10000C6E8, v3))
+  if (CFDictionaryGetValue(qword_10000C6E8, serverPort))
   {
-    CFDictionaryRemoveValue(qword_10000C6E8, v3);
+    CFDictionaryRemoveValue(qword_10000C6E8, serverPort);
     --qword_10000C6F0;
   }
 
   objc_sync_exit(v4);
 }
 
-- (MDTSession)initWithServerPort:(unsigned int)a3 clientPort:(unsigned int)a4 pid:(int)a5
+- (MDTSession)initWithServerPort:(unsigned int)port clientPort:(unsigned int)clientPort pid:(int)pid
 {
   v9.receiver = self;
   v9.super_class = MDTSession;
   result = [(MDTSession *)&v9 init];
-  result->_server = a3;
-  result->_client = a4;
-  result->_pid = a5;
+  result->_server = port;
+  result->_client = clientPort;
+  result->_pid = pid;
   result->_valid = 1;
   return result;
 }
@@ -76,10 +76,10 @@
   }
 }
 
-- (void)returnStatusWithDestURL:(id)a3 error:(id)a4
+- (void)returnStatusWithDestURL:(id)l error:(id)error
 {
-  v7 = sub_100003870(a4);
-  v8 = sub_100002FBC(a3, v7);
+  v7 = sub_100003870(error);
+  v8 = sub_100002FBC(l, v7);
   if (v8)
   {
     v9 = v8;
@@ -114,13 +114,13 @@
         BytePtr = 0;
 LABEL_11:
         CFRelease(v9);
-        if (a4)
+        if (error)
         {
           goto LABEL_12;
         }
 
 LABEL_5:
-        v15 = 0;
+        code = 0;
         goto LABEL_13;
       }
     }
@@ -134,15 +134,15 @@ LABEL_5:
   v12 = 0;
   BytePtr = 0;
   v11 = 0;
-  if (!a4)
+  if (!error)
   {
     goto LABEL_5;
   }
 
 LABEL_12:
-  v15 = [a4 code];
+  code = [error code];
 LABEL_13:
-  sub_100003A10(self->_client, v15, BytePtr, Length);
+  sub_100003A10(self->_client, code, BytePtr, Length);
   if (v11)
   {
     CFRelease(v11);

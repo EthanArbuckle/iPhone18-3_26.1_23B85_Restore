@@ -1,64 +1,64 @@
 @interface HMDPendingResponse
-+ (id)tupleForMessage:(id)a3 originalRequestIdentifier:(id)a4 requestCount:(unint64_t)a5 withCompletionHandler:(id)a6;
++ (id)tupleForMessage:(id)message originalRequestIdentifier:(id)identifier requestCount:(unint64_t)count withCompletionHandler:(id)handler;
 - (id)description;
 - (id)retrieveAndClearAllResponses;
 - (id)retrieveAndClearLatestResponses;
-- (void)addResponsesToPendingResponse:(id)a3;
-- (void)addToPendingResponses:(id)a3;
+- (void)addResponsesToPendingResponse:(id)response;
+- (void)addToPendingResponses:(id)responses;
 @end
 
 @implementation HMDPendingResponse
 
 - (id)retrieveAndClearLatestResponses
 {
-  v3 = [(HMDPendingResponse *)self latestResponses];
-  v4 = [v3 copy];
+  latestResponses = [(HMDPendingResponse *)self latestResponses];
+  v4 = [latestResponses copy];
 
-  v5 = [(HMDPendingResponse *)self latestResponses];
-  [v5 removeAllObjects];
+  latestResponses2 = [(HMDPendingResponse *)self latestResponses];
+  [latestResponses2 removeAllObjects];
 
   return v4;
 }
 
 - (id)retrieveAndClearAllResponses
 {
-  v3 = [(HMDPendingResponse *)self allResponses];
-  v4 = [v3 copy];
+  allResponses = [(HMDPendingResponse *)self allResponses];
+  v4 = [allResponses copy];
 
-  v5 = [(HMDPendingResponse *)self allResponses];
-  [v5 removeAllObjects];
+  allResponses2 = [(HMDPendingResponse *)self allResponses];
+  [allResponses2 removeAllObjects];
 
-  v6 = [(HMDPendingResponse *)self latestResponses];
-  [v6 removeAllObjects];
+  latestResponses = [(HMDPendingResponse *)self latestResponses];
+  [latestResponses removeAllObjects];
 
   return v4;
 }
 
-- (void)addResponsesToPendingResponse:(id)a3
+- (void)addResponsesToPendingResponse:(id)response
 {
-  v4 = a3;
-  v5 = [(HMDPendingResponse *)self allResponses];
-  [v5 addObjectsFromArray:v4];
+  responseCopy = response;
+  allResponses = [(HMDPendingResponse *)self allResponses];
+  [allResponses addObjectsFromArray:responseCopy];
 
-  v6 = [(HMDPendingResponse *)self latestResponses];
-  [v6 addObjectsFromArray:v4];
+  latestResponses = [(HMDPendingResponse *)self latestResponses];
+  [latestResponses addObjectsFromArray:responseCopy];
 
-  v7 = [v4 count];
+  v7 = [responseCopy count];
   v8 = [(HMDPendingResponse *)self pendingResponseCount]- v7;
 
   [(HMDPendingResponse *)self setPendingResponseCount:v8];
 }
 
-- (void)addToPendingResponses:(id)a3
+- (void)addToPendingResponses:(id)responses
 {
-  if (a3)
+  if (responses)
   {
-    v4 = a3;
-    v5 = [(HMDPendingResponse *)self allResponses];
-    [v5 addObject:v4];
+    responsesCopy = responses;
+    allResponses = [(HMDPendingResponse *)self allResponses];
+    [allResponses addObject:responsesCopy];
 
-    v6 = [(HMDPendingResponse *)self latestResponses];
-    [v6 addObject:v4];
+    latestResponses = [(HMDPendingResponse *)self latestResponses];
+    [latestResponses addObject:responsesCopy];
 
     v7 = [(HMDPendingResponse *)self pendingResponseCount]- 1;
 
@@ -69,31 +69,31 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDPendingResponse *)self requestMessage];
-  v5 = [v4 identifier];
-  v6 = [v3 stringWithFormat:@"Pending Response for request: %@, total requests: %tu pending responses: %tu", v5, -[HMDPendingResponse totalRequestsCount](self, "totalRequestsCount"), -[HMDPendingResponse pendingResponseCount](self, "pendingResponseCount")];
+  requestMessage = [(HMDPendingResponse *)self requestMessage];
+  identifier = [requestMessage identifier];
+  v6 = [v3 stringWithFormat:@"Pending Response for request: %@, total requests: %tu pending responses: %tu", identifier, -[HMDPendingResponse totalRequestsCount](self, "totalRequestsCount"), -[HMDPendingResponse pendingResponseCount](self, "pendingResponseCount")];
 
   return v6;
 }
 
-+ (id)tupleForMessage:(id)a3 originalRequestIdentifier:(id)a4 requestCount:(unint64_t)a5 withCompletionHandler:(id)a6
++ (id)tupleForMessage:(id)message originalRequestIdentifier:(id)identifier requestCount:(unint64_t)count withCompletionHandler:(id)handler
 {
-  v9 = a6;
-  v10 = a4;
-  v11 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  messageCopy = message;
   v12 = objc_alloc_init(HMDPendingResponse);
-  [(HMDPendingResponse *)v12 setRequestMessage:v11];
+  [(HMDPendingResponse *)v12 setRequestMessage:messageCopy];
 
-  [(HMDPendingResponse *)v12 setOriginalRequestIdentifier:v10];
-  [(HMDPendingResponse *)v12 setTotalRequestsCount:a5];
-  [(HMDPendingResponse *)v12 setPendingResponseCount:a5];
-  v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:a5];
+  [(HMDPendingResponse *)v12 setOriginalRequestIdentifier:identifierCopy];
+  [(HMDPendingResponse *)v12 setTotalRequestsCount:count];
+  [(HMDPendingResponse *)v12 setPendingResponseCount:count];
+  v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:count];
   [(HMDPendingResponse *)v12 setAllResponses:v13];
 
-  v14 = [MEMORY[0x277CBEB18] arrayWithCapacity:a5];
+  v14 = [MEMORY[0x277CBEB18] arrayWithCapacity:count];
   [(HMDPendingResponse *)v12 setLatestResponses:v14];
 
-  [(HMDPendingResponse *)v12 setResponseHandler:v9];
+  [(HMDPendingResponse *)v12 setResponseHandler:handlerCopy];
   [(HMDPendingResponse *)v12 setCreationTime:CFAbsoluteTimeGetCurrent()];
 
   return v12;

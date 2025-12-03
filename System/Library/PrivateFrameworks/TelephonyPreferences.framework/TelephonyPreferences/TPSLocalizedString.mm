@@ -1,7 +1,7 @@
 @interface TPSLocalizedString
 + (NSBundle)classBundle;
-+ (id)localizedStringForKey:(id)a3;
-+ (id)localizedStringFromTable:(id)a3 forKey:(id)a4;
++ (id)localizedStringForKey:(id)key;
++ (id)localizedStringFromTable:(id)table forKey:(id)key;
 @end
 
 @implementation TPSLocalizedString
@@ -14,21 +14,21 @@
   return [v2 bundleForClass:v3];
 }
 
-+ (id)localizedStringForKey:(id)a3
++ (id)localizedStringForKey:(id)key
 {
-  v4 = a3;
-  v5 = [a1 localizationTableName];
-  v6 = [a1 localizedStringFromTable:v5 forKey:v4];
+  keyCopy = key;
+  localizationTableName = [self localizationTableName];
+  v6 = [self localizedStringFromTable:localizationTableName forKey:keyCopy];
 
   return v6;
 }
 
-+ (id)localizedStringFromTable:(id)a3 forKey:(id)a4
++ (id)localizedStringFromTable:(id)table forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 classBundle];
-  v9 = [v8 localizedStringForKey:v6 value:&stru_282D54710 table:v7];
+  keyCopy = key;
+  tableCopy = table;
+  classBundle = [self classBundle];
+  v9 = [classBundle localizedStringForKey:keyCopy value:&stru_282D54710 table:tableCopy];
 
   return v9;
 }

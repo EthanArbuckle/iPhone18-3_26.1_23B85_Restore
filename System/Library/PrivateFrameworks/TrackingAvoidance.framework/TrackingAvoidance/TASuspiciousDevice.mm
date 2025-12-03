@@ -1,24 +1,24 @@
 @interface TASuspiciousDevice
-+ (id)convertTAForceSurfaceReasonToString:(unint64_t)a3;
-+ (id)convertTANotificationImmediacyTypeToString:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (TASuspiciousDevice)initWithCoder:(id)a3;
-- (TASuspiciousDevice)initWithLatestAdv:(id)a3 detectionSummary:(id)a4 date:(id)a5 locHistory:(id)a6 detectionMetrics:(id)a7 detectionType:(unint64_t)a8 immediacyType:(unint64_t)a9 accessoryInfo:(id)a10 forceSurfaceReason:(unint64_t)a11;
++ (id)convertTAForceSurfaceReasonToString:(unint64_t)string;
++ (id)convertTANotificationImmediacyTypeToString:(unint64_t)string;
+- (BOOL)isEqual:(id)equal;
+- (TASuspiciousDevice)initWithCoder:(id)coder;
+- (TASuspiciousDevice)initWithLatestAdv:(id)adv detectionSummary:(id)summary date:(id)date locHistory:(id)history detectionMetrics:(id)metrics detectionType:(unint64_t)type immediacyType:(unint64_t)immediacyType accessoryInfo:(id)self0 forceSurfaceReason:(unint64_t)self1;
 - (id)description;
 - (id)descriptionDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TASuspiciousDevice
 
-- (TASuspiciousDevice)initWithLatestAdv:(id)a3 detectionSummary:(id)a4 date:(id)a5 locHistory:(id)a6 detectionMetrics:(id)a7 detectionType:(unint64_t)a8 immediacyType:(unint64_t)a9 accessoryInfo:(id)a10 forceSurfaceReason:(unint64_t)a11
+- (TASuspiciousDevice)initWithLatestAdv:(id)adv detectionSummary:(id)summary date:(id)date locHistory:(id)history detectionMetrics:(id)metrics detectionType:(unint64_t)type immediacyType:(unint64_t)immediacyType accessoryInfo:(id)self0 forceSurfaceReason:(unint64_t)self1
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a10;
+  advCopy = adv;
+  summaryCopy = summary;
+  dateCopy = date;
+  historyCopy = history;
+  metricsCopy = metrics;
+  infoCopy = info;
   v37.receiver = self;
   v37.super_class = TASuspiciousDevice;
   v22 = [(TASuspiciousDevice *)&v37 init];
@@ -28,34 +28,34 @@
   }
 
   v23 = 0;
-  if (v16 && v17 && v18 && v19)
+  if (advCopy && summaryCopy && dateCopy && historyCopy)
   {
-    v24 = [v16 address];
-    v25 = [v24 copy];
+    address = [advCopy address];
+    v25 = [address copy];
     address = v22->_address;
     v22->_address = v25;
 
-    v27 = [v17 copy];
+    v27 = [summaryCopy copy];
     detectionSummary = v22->_detectionSummary;
     v22->_detectionSummary = v27;
 
-    v29 = [v18 copy];
+    v29 = [dateCopy copy];
     date = v22->_date;
     v22->_date = v29;
 
-    v31 = [v16 copy];
+    v31 = [advCopy copy];
     latestAdvertisement = v22->_latestAdvertisement;
     v22->_latestAdvertisement = v31;
 
-    v33 = [v19 copy];
+    v33 = [historyCopy copy];
     locationHistory = v22->_locationHistory;
     v22->_locationHistory = v33;
 
-    objc_storeStrong(&v22->_detectionMetrics, a7);
-    v22->_detectionType = a8;
-    v22->_immediacyType = a9;
-    objc_storeStrong(&v22->_accessoryInfo, a10);
-    v22->_forceSurfaceReason = a11;
+    objc_storeStrong(&v22->_detectionMetrics, metrics);
+    v22->_detectionType = type;
+    v22->_immediacyType = immediacyType;
+    objc_storeStrong(&v22->_accessoryInfo, info);
+    v22->_forceSurfaceReason = reason;
 LABEL_7:
     v23 = v22;
   }
@@ -63,10 +63,10 @@ LABEL_7:
   return v23;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -76,39 +76,39 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(TASuspiciousDevice *)self address];
-      v7 = [(TASuspiciousDevice *)v5 address];
-      v65 = v6;
-      if (v6 != v7)
+      v5 = equalCopy;
+      address = [(TASuspiciousDevice *)self address];
+      address2 = [(TASuspiciousDevice *)v5 address];
+      v65 = address;
+      if (address != address2)
       {
-        v8 = [(TASuspiciousDevice *)self address];
-        v9 = [(TASuspiciousDevice *)v5 address];
-        v63 = v8;
-        if (![v8 isEqual:v9])
+        address3 = [(TASuspiciousDevice *)self address];
+        address4 = [(TASuspiciousDevice *)v5 address];
+        v63 = address3;
+        if (![address3 isEqual:address4])
         {
           v10 = 0;
           goto LABEL_56;
         }
 
-        v60 = v9;
+        v60 = address4;
       }
 
-      v11 = [(TASuspiciousDevice *)self detectionSummary];
-      v12 = [(TASuspiciousDevice *)v5 detectionSummary];
-      v64 = v11;
-      if (v11 != v12)
+      detectionSummary = [(TASuspiciousDevice *)self detectionSummary];
+      detectionSummary2 = [(TASuspiciousDevice *)v5 detectionSummary];
+      v64 = detectionSummary;
+      if (detectionSummary != detectionSummary2)
       {
-        v13 = [(TASuspiciousDevice *)self detectionSummary];
-        v14 = [(TASuspiciousDevice *)v5 detectionSummary];
-        if (![v13 isEqual:v14])
+        detectionSummary3 = [(TASuspiciousDevice *)self detectionSummary];
+        detectionSummary4 = [(TASuspiciousDevice *)v5 detectionSummary];
+        if (![detectionSummary3 isEqual:detectionSummary4])
         {
           v10 = 0;
 LABEL_54:
 
 LABEL_55:
-          v9 = v60;
-          if (v65 == v7)
+          address4 = v60;
+          if (v65 == address2)
           {
 LABEL_57:
 
@@ -120,27 +120,27 @@ LABEL_56:
           goto LABEL_57;
         }
 
-        v57 = v14;
-        v58 = v13;
+        v57 = detectionSummary4;
+        v58 = detectionSummary3;
       }
 
-      v15 = [(TASuspiciousDevice *)self date];
-      v61 = [(TASuspiciousDevice *)v5 date];
-      v62 = v15;
-      if (v15 != v61)
+      date = [(TASuspiciousDevice *)self date];
+      date2 = [(TASuspiciousDevice *)v5 date];
+      v62 = date;
+      if (date != date2)
       {
-        v16 = [(TASuspiciousDevice *)self date];
+        date3 = [(TASuspiciousDevice *)self date];
         [(TASuspiciousDevice *)v5 date];
-        v17 = v55 = v16;
-        if (![v16 isEqual:?])
+        v17 = v55 = date3;
+        if (![date3 isEqual:?])
         {
           v10 = 0;
 LABEL_52:
 
 LABEL_53:
-          v14 = v57;
-          v13 = v58;
-          if (v64 == v12)
+          detectionSummary4 = v57;
+          detectionSummary3 = v58;
+          if (v64 == detectionSummary2)
           {
             goto LABEL_55;
           }
@@ -151,23 +151,23 @@ LABEL_53:
         v54 = v17;
       }
 
-      v18 = [(TASuspiciousDevice *)self latestAdvertisement];
-      v56 = [(TASuspiciousDevice *)v5 latestAdvertisement];
-      v59 = v18;
-      if (v18 != v56)
+      latestAdvertisement = [(TASuspiciousDevice *)self latestAdvertisement];
+      latestAdvertisement2 = [(TASuspiciousDevice *)v5 latestAdvertisement];
+      v59 = latestAdvertisement;
+      if (latestAdvertisement != latestAdvertisement2)
       {
-        v19 = [(TASuspiciousDevice *)self latestAdvertisement];
+        latestAdvertisement3 = [(TASuspiciousDevice *)self latestAdvertisement];
         [(TASuspiciousDevice *)v5 latestAdvertisement];
-        v20 = v52 = v19;
-        if (![v19 isEqual:?])
+        v20 = v52 = latestAdvertisement3;
+        if (![latestAdvertisement3 isEqual:?])
         {
           v10 = 0;
-          v25 = v56;
+          v25 = latestAdvertisement2;
 LABEL_50:
 
 LABEL_51:
           v17 = v54;
-          if (v62 == v61)
+          if (v62 == date2)
           {
             goto LABEL_53;
           }
@@ -178,25 +178,25 @@ LABEL_51:
         v51 = v20;
       }
 
-      v21 = [(TASuspiciousDevice *)self locationHistory];
-      v53 = [(TASuspiciousDevice *)v5 locationHistory];
-      if (v21 != v53)
+      locationHistory = [(TASuspiciousDevice *)self locationHistory];
+      locationHistory2 = [(TASuspiciousDevice *)v5 locationHistory];
+      if (locationHistory != locationHistory2)
       {
-        v22 = v21;
-        v23 = [(TASuspiciousDevice *)self locationHistory];
+        v22 = locationHistory;
+        locationHistory3 = [(TASuspiciousDevice *)self locationHistory];
         [(TASuspiciousDevice *)v5 locationHistory];
-        v24 = v50 = v23;
-        if (![v23 isEqual:?])
+        v24 = v50 = locationHistory3;
+        if (![locationHistory3 isEqual:?])
         {
           v10 = 0;
-          v32 = v53;
-          v21 = v22;
+          v32 = locationHistory2;
+          locationHistory = v22;
 LABEL_48:
 
 LABEL_49:
-          v25 = v56;
+          v25 = latestAdvertisement2;
           v20 = v51;
-          if (v59 == v56)
+          if (v59 == latestAdvertisement2)
           {
             goto LABEL_51;
           }
@@ -204,42 +204,42 @@ LABEL_49:
           goto LABEL_50;
         }
 
-        v21 = v22;
+        locationHistory = v22;
         v49 = v24;
       }
 
-      v26 = [(TASuspiciousDevice *)self detectionMetrics];
-      v27 = [(TASuspiciousDevice *)v5 detectionMetrics];
-      v28 = v27;
-      if (v26 == v27)
+      detectionMetrics = [(TASuspiciousDevice *)self detectionMetrics];
+      detectionMetrics2 = [(TASuspiciousDevice *)v5 detectionMetrics];
+      v28 = detectionMetrics2;
+      if (detectionMetrics == detectionMetrics2)
       {
-        v30 = v27;
-        v31 = v26;
+        v30 = detectionMetrics2;
+        v31 = detectionMetrics;
       }
 
       else
       {
-        v29 = [(TASuspiciousDevice *)self detectionMetrics];
-        v48 = [(TASuspiciousDevice *)v5 detectionMetrics];
-        if (![v29 isEqual:?])
+        detectionMetrics3 = [(TASuspiciousDevice *)self detectionMetrics];
+        detectionMetrics4 = [(TASuspiciousDevice *)v5 detectionMetrics];
+        if (![detectionMetrics3 isEqual:?])
         {
           v10 = 0;
           goto LABEL_46;
         }
 
-        v47 = v29;
+        v47 = detectionMetrics3;
         v30 = v28;
-        v31 = v26;
+        v31 = detectionMetrics;
       }
 
-      v33 = [(TASuspiciousDevice *)self detectionType];
-      if (v33 == [(TASuspiciousDevice *)v5 detectionType])
+      detectionType = [(TASuspiciousDevice *)self detectionType];
+      if (detectionType == [(TASuspiciousDevice *)v5 detectionType])
       {
-        v34 = [(TASuspiciousDevice *)self accessoryInfo];
-        v35 = [(TASuspiciousDevice *)v5 accessoryInfo];
-        v46 = v34;
-        v36 = v34 == v35;
-        v26 = v31;
+        accessoryInfo = [(TASuspiciousDevice *)self accessoryInfo];
+        accessoryInfo2 = [(TASuspiciousDevice *)v5 accessoryInfo];
+        v46 = accessoryInfo;
+        v36 = accessoryInfo == accessoryInfo2;
+        detectionMetrics = v31;
         if (v36)
         {
           v44 = v31;
@@ -248,28 +248,28 @@ LABEL_49:
 
         else
         {
-          v37 = [(TASuspiciousDevice *)self accessoryInfo];
+          accessoryInfo3 = [(TASuspiciousDevice *)self accessoryInfo];
           [(TASuspiciousDevice *)v5 accessoryInfo];
-          v45 = v43 = v37;
-          v38 = [v37 isEqual:?];
+          v45 = v43 = accessoryInfo3;
+          v38 = [accessoryInfo3 isEqual:?];
           v28 = v30;
           if (!v38)
           {
             v10 = 0;
-            v29 = v47;
+            detectionMetrics3 = v47;
             v41 = v45;
             goto LABEL_44;
           }
 
-          v44 = v26;
+          v44 = detectionMetrics;
         }
 
-        v29 = v47;
-        v39 = [(TASuspiciousDevice *)self immediacyType];
-        if (v39 == [(TASuspiciousDevice *)v5 immediacyType])
+        detectionMetrics3 = v47;
+        immediacyType = [(TASuspiciousDevice *)self immediacyType];
+        if (immediacyType == [(TASuspiciousDevice *)v5 immediacyType])
         {
-          v40 = [(TASuspiciousDevice *)self forceSurfaceReason];
-          v10 = v40 == [(TASuspiciousDevice *)v5 forceSurfaceReason];
+          forceSurfaceReason = [(TASuspiciousDevice *)self forceSurfaceReason];
+          v10 = forceSurfaceReason == [(TASuspiciousDevice *)v5 forceSurfaceReason];
         }
 
         else
@@ -277,13 +277,13 @@ LABEL_49:
           v10 = 0;
         }
 
-        v26 = v44;
+        detectionMetrics = v44;
         v41 = v45;
-        if (v46 == v35)
+        if (v46 == accessoryInfo2)
         {
 LABEL_45:
 
-          if (v26 == v28)
+          if (detectionMetrics == v28)
           {
             goto LABEL_47;
           }
@@ -297,17 +297,17 @@ LABEL_44:
       }
 
       v10 = 0;
-      v26 = v31;
+      detectionMetrics = v31;
       v28 = v30;
-      v36 = v26 == v30;
-      v29 = v47;
+      v36 = detectionMetrics == v30;
+      detectionMetrics3 = v47;
       if (v36)
       {
 LABEL_47:
 
-        v32 = v53;
+        v32 = locationHistory2;
         v24 = v49;
-        if (v21 == v53)
+        if (locationHistory == locationHistory2)
         {
           goto LABEL_49;
         }
@@ -336,15 +336,15 @@ LABEL_58:
   v18 = NSStringFromClass(v4);
   v20[0] = v18;
   v19[1] = @"Address";
-  v5 = [(NSData *)self->_address hexString];
+  hexString = [(NSData *)self->_address hexString];
   detectionSummary = self->_detectionSummary;
   date = self->_date;
-  v20[1] = v5;
+  v20[1] = hexString;
   v20[2] = detectionSummary;
   v19[2] = @"Summary";
   v19[3] = @"Date";
-  v8 = [(NSDate *)date getDateString];
-  v20[3] = v8;
+  getDateString = [(NSDate *)date getDateString];
+  v20[3] = getDateString;
   v19[4] = @"DeviceType";
   v9 = [TASPAdvertisement TASPAdvertisementDeviceTypeToString:[(TASPAdvertisement *)self->_latestAdvertisement getDeviceType]];
   v20[4] = v9;
@@ -355,25 +355,25 @@ LABEL_58:
   v11 = [TASuspiciousDevice convertTANotificationImmediacyTypeToString:self->_immediacyType];
   v20[6] = v11;
   v19[7] = @"AISInfo";
-  v12 = [(TASuspiciousDevice *)self accessoryInfo];
-  if (v12)
+  accessoryInfo = [(TASuspiciousDevice *)self accessoryInfo];
+  if (accessoryInfo)
   {
-    v2 = [(TASuspiciousDevice *)self accessoryInfo];
-    v13 = [v2 descriptionDictionary];
+    accessoryInfo2 = [(TASuspiciousDevice *)self accessoryInfo];
+    descriptionDictionary = [accessoryInfo2 descriptionDictionary];
   }
 
   else
   {
-    v13 = &stru_287F632C0;
+    descriptionDictionary = &stru_287F632C0;
   }
 
-  v20[7] = v13;
+  v20[7] = descriptionDictionary;
   v19[8] = @"ForceReason";
   v14 = [TASuspiciousDevice convertTAForceSurfaceReasonToString:self->_forceSurfaceReason];
   v20[8] = v14;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:9];
 
-  if (v12)
+  if (accessoryInfo)
   {
   }
 
@@ -384,9 +384,9 @@ LABEL_58:
 
 - (id)description
 {
-  v3 = [(TASuspiciousDevice *)self descriptionDictionary];
+  descriptionDictionary = [(TASuspiciousDevice *)self descriptionDictionary];
   v10 = 0;
-  v4 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:v3 error:&v10];
+  v4 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:descriptionDictionary error:&v10];
   v5 = v10;
   if (v5)
   {
@@ -396,41 +396,41 @@ LABEL_58:
       [(TAOutgoingRequests *)v6 description];
     }
 
-    v7 = [MEMORY[0x277CCACA8] string];
+    string = [MEMORY[0x277CCACA8] string];
   }
 
   else
   {
-    v7 = v4;
+    string = v4;
   }
 
-  v8 = v7;
+  v8 = string;
 
   return v8;
 }
 
-+ (id)convertTANotificationImmediacyTypeToString:(unint64_t)a3
++ (id)convertTANotificationImmediacyTypeToString:(unint64_t)string
 {
-  if (a3 - 1 > 2)
+  if (string - 1 > 2)
   {
     return @"Never";
   }
 
   else
   {
-    return off_279DD1888[a3 - 1];
+    return off_279DD1888[string - 1];
   }
 }
 
-+ (id)convertTAForceSurfaceReasonToString:(unint64_t)a3
++ (id)convertTAForceSurfaceReasonToString:(unint64_t)string
 {
   v3 = @"None";
-  if (a3 == 1)
+  if (string == 1)
   {
     v3 = @"ArriveHome";
   }
 
-  if (a3 == 2)
+  if (string == 2)
   {
     return @"BeepOnMove";
   }
@@ -441,56 +441,56 @@ LABEL_58:
   }
 }
 
-- (TASuspiciousDevice)initWithCoder:(id)a3
+- (TASuspiciousDevice)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"LastAdvertisement"];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LastAdvertisement"];
   v5 = MEMORY[0x277CBEB98];
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = [v5 setWithObjects:{v6, v7, objc_opt_class(), 0}];
-  v9 = [v3 decodeObjectOfClasses:v8 forKey:@"Summary"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"Summary"];
 
-  v10 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"Date"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Date"];
   v11 = MEMORY[0x277CBEB98];
   v12 = objc_opt_class();
   v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-  v14 = [v3 decodeObjectOfClasses:v13 forKey:@"LocationHistory"];
+  v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"LocationHistory"];
 
-  v15 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"Metrics"];
-  v16 = [v3 decodeInt32ForKey:@"Type"];
-  v17 = [v3 decodeIntegerForKey:@"Immediacy"];
-  v18 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AISInfo"];
-  v19 = [v3 decodeIntegerForKey:@"ForceReason"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Metrics"];
+  v16 = [coderCopy decodeInt32ForKey:@"Type"];
+  v17 = [coderCopy decodeIntegerForKey:@"Immediacy"];
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AISInfo"];
+  v19 = [coderCopy decodeIntegerForKey:@"ForceReason"];
 
   v20 = [(TASuspiciousDevice *)self initWithLatestAdv:v4 detectionSummary:v9 date:v10 locHistory:v14 detectionMetrics:v15 detectionType:v16 immediacyType:v17 accessoryInfo:v18 forceSurfaceReason:v19];
   return v20;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v10 = a3;
-  v4 = [(TASuspiciousDevice *)self latestAdvertisement];
-  [v10 encodeObject:v4 forKey:@"LastAdvertisement"];
+  coderCopy = coder;
+  latestAdvertisement = [(TASuspiciousDevice *)self latestAdvertisement];
+  [coderCopy encodeObject:latestAdvertisement forKey:@"LastAdvertisement"];
 
-  v5 = [(TASuspiciousDevice *)self detectionSummary];
-  [v10 encodeObject:v5 forKey:@"Summary"];
+  detectionSummary = [(TASuspiciousDevice *)self detectionSummary];
+  [coderCopy encodeObject:detectionSummary forKey:@"Summary"];
 
-  v6 = [(TASuspiciousDevice *)self date];
-  [v10 encodeObject:v6 forKey:@"Date"];
+  date = [(TASuspiciousDevice *)self date];
+  [coderCopy encodeObject:date forKey:@"Date"];
 
-  v7 = [(TASuspiciousDevice *)self locationHistory];
-  [v10 encodeObject:v7 forKey:@"LocationHistory"];
+  locationHistory = [(TASuspiciousDevice *)self locationHistory];
+  [coderCopy encodeObject:locationHistory forKey:@"LocationHistory"];
 
-  v8 = [(TASuspiciousDevice *)self detectionMetrics];
-  [v10 encodeObject:v8 forKey:@"Metrics"];
+  detectionMetrics = [(TASuspiciousDevice *)self detectionMetrics];
+  [coderCopy encodeObject:detectionMetrics forKey:@"Metrics"];
 
-  [v10 encodeInt32:-[TASuspiciousDevice detectionType](self forKey:{"detectionType"), @"Type"}];
-  [v10 encodeInteger:-[TASuspiciousDevice immediacyType](self forKey:{"immediacyType"), @"Immediacy"}];
-  v9 = [(TASuspiciousDevice *)self accessoryInfo];
-  [v10 encodeObject:v9 forKey:@"AISInfo"];
+  [coderCopy encodeInt32:-[TASuspiciousDevice detectionType](self forKey:{"detectionType"), @"Type"}];
+  [coderCopy encodeInteger:-[TASuspiciousDevice immediacyType](self forKey:{"immediacyType"), @"Immediacy"}];
+  accessoryInfo = [(TASuspiciousDevice *)self accessoryInfo];
+  [coderCopy encodeObject:accessoryInfo forKey:@"AISInfo"];
 
-  [v10 encodeInteger:-[TASuspiciousDevice forceSurfaceReason](self forKey:{"forceSurfaceReason"), @"ForceReason"}];
+  [coderCopy encodeInteger:-[TASuspiciousDevice forceSurfaceReason](self forKey:{"forceSurfaceReason"), @"ForceReason"}];
 }
 
 @end

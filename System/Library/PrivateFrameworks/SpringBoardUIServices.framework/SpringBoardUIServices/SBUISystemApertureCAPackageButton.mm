@@ -1,39 +1,39 @@
 @interface SBUISystemApertureCAPackageButton
-- (BOOL)_updateStateAnimated:(BOOL)a3;
-- (BOOL)setState:(id)a3 animated:(BOOL)a4;
+- (BOOL)_updateStateAnimated:(BOOL)animated;
+- (BOOL)setState:(id)state animated:(BOOL)animated;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SBUISystemApertureCAPackageButton)initWithPackageProvider:(id)a3 state:(id)a4 primaryAction:(id)a5;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SBUISystemApertureCAPackageButton)initWithPackageProvider:(id)provider state:(id)state primaryAction:(id)action;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation SBUISystemApertureCAPackageButton
 
-- (SBUISystemApertureCAPackageButton)initWithPackageProvider:(id)a3 state:(id)a4 primaryAction:(id)a5
+- (SBUISystemApertureCAPackageButton)initWithPackageProvider:(id)provider state:(id)state primaryAction:(id)action
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v10)
+  providerCopy = provider;
+  stateCopy = state;
+  actionCopy = action;
+  if (!providerCopy)
   {
     [SBUISystemApertureCAPackageButton initWithPackageProvider:a2 state:self primaryAction:?];
   }
 
-  v13 = v12;
-  v14 = [v10 providedView];
-  [v14 frame];
+  v13 = actionCopy;
+  providedView = [providerCopy providedView];
+  [providedView frame];
   v18.receiver = self;
   v18.super_class = SBUISystemApertureCAPackageButton;
   v15 = [(SBUISystemApertureCAPackageButton *)&v18 initWithFrame:v13 primaryAction:?];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_packageProvider, a3);
-    objc_storeStrong(&v16->_state, a4);
-    [v14 setUserInteractionEnabled:0];
-    [(SBUISystemApertureCAPackageButton *)v16 addSubview:v14];
-    if (v11)
+    objc_storeStrong(&v15->_packageProvider, provider);
+    objc_storeStrong(&v16->_state, state);
+    [providedView setUserInteractionEnabled:0];
+    [(SBUISystemApertureCAPackageButton *)v16 addSubview:providedView];
+    if (stateCopy)
     {
       [(SBUISystemApertureCAPackageButton *)v16 _updateStateAnimated:0];
     }
@@ -42,24 +42,24 @@
   return v16;
 }
 
-- (BOOL)setState:(id)a3 animated:(BOOL)a4
+- (BOOL)setState:(id)state animated:(BOOL)animated
 {
-  v4 = a4;
-  objc_storeStrong(&self->_state, a3);
+  animatedCopy = animated;
+  objc_storeStrong(&self->_state, state);
 
-  return [(SBUISystemApertureCAPackageButton *)self _updateStateAnimated:v4];
+  return [(SBUISystemApertureCAPackageButton *)self _updateStateAnimated:animatedCopy];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v7.receiver = self;
   v7.super_class = SBUISystemApertureCAPackageButton;
-  v5 = [(SBUISystemApertureCAPackageButton *)&v7 isHighlighted];
+  isHighlighted = [(SBUISystemApertureCAPackageButton *)&v7 isHighlighted];
   v6.receiver = self;
   v6.super_class = SBUISystemApertureCAPackageButton;
-  [(SBUISystemApertureCAPackageButton *)&v6 setHighlighted:v3];
-  if (v5 != v3)
+  [(SBUISystemApertureCAPackageButton *)&v6 setHighlighted:highlightedCopy];
+  if (isHighlighted != highlightedCopy)
   {
     [(SBUISystemApertureCAPackageButton *)self _updateStateAnimated:1];
   }
@@ -75,18 +75,18 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SBUISystemApertureCustomContentProvider *)self->_packageProvider providedView];
-  [v11 setBounds:{v4, v6, v8, v10}];
+  providedView = [(SBUISystemApertureCustomContentProvider *)self->_packageProvider providedView];
+  [providedView setBounds:{v4, v6, v8, v10}];
   UIRectGetCenter();
-  [v11 setCenter:?];
+  [providedView setCenter:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(SBUISystemApertureCustomContentProvider *)self->_packageProvider providedView];
-  [v5 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  providedView = [(SBUISystemApertureCustomContentProvider *)self->_packageProvider providedView];
+  [providedView sizeThatFits:{width, height}];
   v7 = v6;
   v9 = v8;
 
@@ -99,8 +99,8 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(SBUISystemApertureCustomContentProvider *)self->_packageProvider providedView];
-  [v2 intrinsicContentSize];
+  providedView = [(SBUISystemApertureCustomContentProvider *)self->_packageProvider providedView];
+  [providedView intrinsicContentSize];
   v4 = v3;
   v6 = v5;
 
@@ -111,9 +111,9 @@
   return result;
 }
 
-- (BOOL)_updateStateAnimated:(BOOL)a3
+- (BOOL)_updateStateAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = self->_state;
   if ([(SBUISystemApertureCAPackageButton *)self isHighlighted])
   {
@@ -122,7 +122,7 @@
     v5 = v6;
   }
 
-  v7 = [(SBUISystemApertureCAPackageContentProvider *)self->_packageProvider setState:v5 animated:v3];
+  v7 = [(SBUISystemApertureCAPackageContentProvider *)self->_packageProvider setState:v5 animated:animatedCopy];
 
   return v7;
 }

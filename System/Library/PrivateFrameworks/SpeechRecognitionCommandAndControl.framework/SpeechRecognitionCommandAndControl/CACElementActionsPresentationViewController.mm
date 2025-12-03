@@ -1,15 +1,15 @@
 @interface CACElementActionsPresentationViewController
-+ (BOOL)canShowElementActionsForElement:(id)a3;
++ (BOOL)canShowElementActionsForElement:(id)element;
 + (id)_elementActionManager;
 - (CACElementActionsPresentationViewController)init;
 - (CACElementActionsPresentationViewControllerDelegate)elementActionsDelegate;
 - (CGRect)sourceRect;
-- (id)actionForAXAction:(id)a3;
-- (void)performHideWithCompletion:(id)a3;
-- (void)prepareForPopoverPresentation:(id)a3;
-- (void)setElement:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (id)actionForAXAction:(id)action;
+- (void)performHideWithCompletion:(id)completion;
+- (void)prepareForPopoverPresentation:(id)presentation;
+- (void)setElement:(id)element;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CACElementActionsPresentationViewController
@@ -27,31 +27,31 @@
     alertController = v2->_alertController;
     v2->_alertController = v5;
 
-    v7 = [(UIAlertController *)v2->_alertController popoverPresentationController];
-    [v7 setDelegate:v2];
+    popoverPresentationController = [(UIAlertController *)v2->_alertController popoverPresentationController];
+    [popoverPresentationController setDelegate:v2];
   }
 
   return v2;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = CACElementActionsPresentationViewController;
-  [(CACElementActionsPresentationViewController *)&v5 viewDidAppear:a3];
-  v4 = [(CACElementActionsPresentationViewController *)self alertController];
-  [(CACElementActionsPresentationViewController *)self presentViewController:v4 animated:1 completion:0];
+  [(CACElementActionsPresentationViewController *)&v5 viewDidAppear:appear];
+  alertController = [(CACElementActionsPresentationViewController *)self alertController];
+  [(CACElementActionsPresentationViewController *)self presentViewController:alertController animated:1 completion:0];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [(CACElementActionsPresentationViewController *)self alertController];
-  [v5 dismissViewControllerAnimated:1 completion:0];
+  disappearCopy = disappear;
+  alertController = [(CACElementActionsPresentationViewController *)self alertController];
+  [alertController dismissViewControllerAnimated:1 completion:0];
 
   v6.receiver = self;
   v6.super_class = CACElementActionsPresentationViewController;
-  [(CACElementActionsPresentationViewController *)&v6 viewWillDisappear:v3];
+  [(CACElementActionsPresentationViewController *)&v6 viewWillDisappear:disappearCopy];
 }
 
 + (id)_elementActionManager
@@ -75,22 +75,22 @@ void __68__CACElementActionsPresentationViewController__elementActionManager__bl
   _elementActionManager_sElementActionManager_0 = v1;
 }
 
-+ (BOOL)canShowElementActionsForElement:(id)a3
++ (BOOL)canShowElementActionsForElement:(id)element
 {
-  v4 = a3;
-  v5 = [a1 _elementActionManager];
-  v6 = [v5 canShowActionsForElement:v4];
+  elementCopy = element;
+  _elementActionManager = [self _elementActionManager];
+  v6 = [_elementActionManager canShowActionsForElement:elementCopy];
 
   return v6;
 }
 
-- (void)setElement:(id)a3
+- (void)setElement:(id)element
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_element, a3);
-  v6 = [objc_opt_class() _elementActionManager];
-  v7 = [v6 actionsForElement:v5];
+  elementCopy = element;
+  objc_storeStrong(&self->_element, element);
+  _elementActionManager = [objc_opt_class() _elementActionManager];
+  v7 = [_elementActionManager actionsForElement:elementCopy];
 
   v22 = 0u;
   v23 = 0u;
@@ -113,8 +113,8 @@ void __68__CACElementActionsPresentationViewController__elementActionManager__bl
         }
 
         v13 = [(CACElementActionsPresentationViewController *)self actionForAXAction:*(*(&v20 + 1) + 8 * v12)];
-        v14 = [(CACElementActionsPresentationViewController *)self alertController];
-        [v14 addAction:v13];
+        alertController = [(CACElementActionsPresentationViewController *)self alertController];
+        [alertController addAction:v13];
 
         ++v12;
       }
@@ -135,23 +135,23 @@ void __68__CACElementActionsPresentationViewController__elementActionManager__bl
   v19[4] = self;
   v17 = [v15 actionWithTitle:v16 style:1 handler:v19];
 
-  v18 = [(CACElementActionsPresentationViewController *)self alertController];
-  [v18 addAction:v17];
+  alertController2 = [(CACElementActionsPresentationViewController *)self alertController];
+  [alertController2 addAction:v17];
 }
 
-- (id)actionForAXAction:(id)a3
+- (id)actionForAXAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = MEMORY[0x277D750F8];
-  v6 = [v4 name];
+  name = [actionCopy name];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __65__CACElementActionsPresentationViewController_actionForAXAction___block_invoke;
   v10[3] = &unk_279CEB320;
   v10[4] = self;
-  v11 = v4;
-  v7 = v4;
-  v8 = [v5 actionWithTitle:v6 style:0 handler:v10];
+  v11 = actionCopy;
+  v7 = actionCopy;
+  v8 = [v5 actionWithTitle:name style:0 handler:v10];
 
   return v8;
 }
@@ -198,27 +198,27 @@ void __65__CACElementActionsPresentationViewController_actionForAXAction___block
   [v2 performAction:*(a1 + 40)];
 }
 
-- (void)prepareForPopoverPresentation:(id)a3
+- (void)prepareForPopoverPresentation:(id)presentation
 {
-  v4 = a3;
-  v5 = [(CACElementActionsPresentationViewController *)self view];
-  [v4 setSourceView:v5];
+  presentationCopy = presentation;
+  view = [(CACElementActionsPresentationViewController *)self view];
+  [presentationCopy setSourceView:view];
 
-  [v4 setCanOverlapSourceViewRect:1];
+  [presentationCopy setCanOverlapSourceViewRect:1];
   [(CACElementActionsPresentationViewController *)self sourceRect];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(CACElementActionsPresentationViewController *)self view];
-  [v4 setSourceRect:{CACViewRectFromPortraitUpRect(v14, v7, v9, v11, v13)}];
+  view2 = [(CACElementActionsPresentationViewController *)self view];
+  [presentationCopy setSourceRect:{CACViewRectFromPortraitUpRect(view2, v7, v9, v11, v13)}];
 }
 
-- (void)performHideWithCompletion:(id)a3
+- (void)performHideWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CACElementActionsPresentationViewController *)self elementActionsDelegate];
-  [v5 elementActionsPresentationViewController:self hideWithCompletion:v4];
+  completionCopy = completion;
+  elementActionsDelegate = [(CACElementActionsPresentationViewController *)self elementActionsDelegate];
+  [elementActionsDelegate elementActionsPresentationViewController:self hideWithCompletion:completionCopy];
 }
 
 - (CACElementActionsPresentationViewControllerDelegate)elementActionsDelegate

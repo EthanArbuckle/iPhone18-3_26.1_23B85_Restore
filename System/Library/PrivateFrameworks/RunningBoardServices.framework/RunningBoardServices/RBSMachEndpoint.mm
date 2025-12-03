@@ -1,13 +1,13 @@
 @interface RBSMachEndpoint
 - (BOOL)_isCachedPortValid;
-- (BOOL)_isEquivalentToEndpoint:(id)a3;
+- (BOOL)_isEquivalentToEndpoint:(id)endpoint;
 - (NSString)description;
 - (OS_xpc_object)endpoint;
 - (RBSMachEndpoint)init;
-- (RBSMachEndpoint)initWithRBSXPCCoder:(id)a3;
+- (RBSMachEndpoint)initWithRBSXPCCoder:(id)coder;
 - (id)_copy;
-- (id)_initWithName:(id)a3 nonLaunching:(BOOL)a4 port:(id)a5;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (id)_initWithName:(id)name nonLaunching:(BOOL)launching port:(id)port;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSMachEndpoint
@@ -51,20 +51,20 @@
 
 - (RBSMachEndpoint)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"RBSMachEndpoint.m" lineNumber:32 description:@"cannot call -init on RBSMachEndpoint"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"RBSMachEndpoint.m" lineNumber:32 description:@"cannot call -init on RBSMachEndpoint"];
 
   return 0;
 }
 
-- (id)_initWithName:(id)a3 nonLaunching:(BOOL)a4 port:(id)a5
+- (id)_initWithName:(id)name nonLaunching:(BOOL)launching port:(id)port
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
-  if (v9)
+  nameCopy = name;
+  portCopy = port;
+  v11 = portCopy;
+  if (nameCopy)
   {
-    if (v10)
+    if (portCopy)
     {
       goto LABEL_3;
     }
@@ -91,12 +91,12 @@ LABEL_3:
   v12 = [(RBSMachEndpoint *)&v17 init];
   if (v12)
   {
-    v13 = [v9 copy];
+    v13 = [nameCopy copy];
     name = v12->_name;
     v12->_name = v13;
 
-    v12->_nonLaunching = a4;
-    objc_storeStrong(&v12->_port, a5);
+    v12->_nonLaunching = launching;
+    objc_storeStrong(&v12->_port, port);
     v12->_lock._os_unfair_lock_opaque = 0;
     getterCache_endpoint = v12->_getterCache_endpoint;
     v12->_getterCache_endpoint = 0;
@@ -117,17 +117,17 @@ LABEL_3:
   return v5;
 }
 
-- (BOOL)_isEquivalentToEndpoint:(id)a3
+- (BOOL)_isEquivalentToEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  endpointCopy = endpoint;
+  v5 = endpointCopy;
+  if (self == endpointCopy)
   {
     v10 = 1;
     goto LABEL_15;
   }
 
-  if (!v4)
+  if (!endpointCopy)
   {
     goto LABEL_13;
   }
@@ -176,24 +176,24 @@ LABEL_15:
   return v10;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_name forKey:@"name"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_name forKey:@"name"];
   if (self->_nonLaunching)
   {
-    [v4 encodeBool:1 forKey:@"nonLaunching"];
+    [coderCopy encodeBool:1 forKey:@"nonLaunching"];
   }
 
-  [v4 encodeXPCObject:self->_port forKey:@"port"];
+  [coderCopy encodeXPCObject:self->_port forKey:@"port"];
 }
 
-- (RBSMachEndpoint)initWithRBSXPCCoder:(id)a3
+- (RBSMachEndpoint)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v6 = [v4 decodeBoolForKey:@"nonLaunching"];
-  v7 = [v4 decodeXPCObjectOfType:MEMORY[0x1E69E9EC0] forKey:@"port"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v6 = [coderCopy decodeBoolForKey:@"nonLaunching"];
+  v7 = [coderCopy decodeXPCObjectOfType:MEMORY[0x1E69E9EC0] forKey:@"port"];
 
   v8 = [(RBSMachEndpoint *)self _initWithName:v5 nonLaunching:v6 port:v7];
   return v8;
@@ -214,9 +214,9 @@ LABEL_15:
     v6 = @"NO";
   }
 
-  v7 = [(RBSMachEndpoint *)self _isCachedPortValid];
+  _isCachedPortValid = [(RBSMachEndpoint *)self _isCachedPortValid];
   v8 = @"Invalid";
-  if (v7)
+  if (_isCachedPortValid)
   {
     v8 = @"YES";
   }

@@ -7,7 +7,7 @@
 - (id)titleString;
 - (void)_addContinueButton;
 - (void)learnMoreLinkPressed;
-- (void)okayButtonPressed:(id)a3;
+- (void)okayButtonPressed:(id)pressed;
 - (void)viewDidLoad;
 @end
 
@@ -26,20 +26,20 @@
   v16.super_class = DepthSetupSafetyController;
   [(DepthSetupSafetyController *)&v16 viewDidLoad];
   v3 = [UIImage systemImageNamed:@"water.waves.and.arrow.down.trianglebadge.exclamationmark"];
-  v4 = [(DepthSetupSafetyController *)self headerView];
-  [v4 setIcon:v3 accessibilityLabel:0];
+  headerView = [(DepthSetupSafetyController *)self headerView];
+  [headerView setIcon:v3 accessibilityLabel:0];
 
   v5 = +[UIColor systemBlackColor];
-  v6 = [(DepthSetupSafetyController *)self contentView];
-  [v6 setBackgroundColor:v5];
+  contentView = [(DepthSetupSafetyController *)self contentView];
+  [contentView setBackgroundColor:v5];
 
-  v7 = [(DepthSetupSafetyController *)self headerView];
-  v8 = [(DepthSetupSafetyController *)self titleString];
-  [v7 setTitle:v8];
+  headerView2 = [(DepthSetupSafetyController *)self headerView];
+  titleString = [(DepthSetupSafetyController *)self titleString];
+  [headerView2 setTitle:titleString];
 
-  v9 = [(DepthSetupSafetyController *)self headerView];
-  v10 = [(DepthSetupSafetyController *)self detailText];
-  [v9 setDetailText:v10];
+  headerView3 = [(DepthSetupSafetyController *)self headerView];
+  detailText = [(DepthSetupSafetyController *)self detailText];
+  [headerView3 setDetailText:detailText];
 
   [(DepthSetupSafetyController *)self _addContinueButton];
   v11 = [NSBundle bundleForClass:objc_opt_class()];
@@ -48,8 +48,8 @@
 
   v13 = [NSBundle bundleForClass:objc_opt_class()];
   v14 = [v13 localizedStringForKey:@"CHARON_SAFETY_DETAIL_BULLET2" value:&stru_8308 table:@"Localizable"];
-  v15 = [(DepthSetupSafetyController *)self _learnMoreLink];
-  [(DepthSetupSafetyController *)self addBulletedListItemWithTitle:v14 description:0 accessoryButton:v15];
+  _learnMoreLink = [(DepthSetupSafetyController *)self _learnMoreLink];
+  [(DepthSetupSafetyController *)self addBulletedListItemWithTitle:v14 description:0 accessoryButton:_learnMoreLink];
 }
 
 - (id)_learnMoreLink
@@ -64,8 +64,8 @@
   [v3 setTitle:v6 forState:0];
 
   v7 = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-  v8 = [v3 titleLabel];
-  [v8 setFont:v7];
+  titleLabel = [v3 titleLabel];
+  [titleLabel setFont:v7];
 
   return v3;
 }
@@ -84,11 +84,11 @@
   v6 = [UIColor colorWithWhite:0.7 alpha:1.0];
   [v9 setTitleColor:v6 forState:2];
 
-  v7 = [(DepthSetupSafetyController *)self okayButtonTitle];
-  [v9 setTitle:v7 forState:0];
+  okayButtonTitle = [(DepthSetupSafetyController *)self okayButtonTitle];
+  [v9 setTitle:okayButtonTitle forState:0];
 
-  v8 = [(DepthSetupSafetyController *)self buttonTray];
-  [v8 addButton:v9];
+  buttonTray = [(DepthSetupSafetyController *)self buttonTray];
+  [buttonTray addButton:v9];
 }
 
 - (void)learnMoreLinkPressed
@@ -128,10 +128,10 @@
   return v3;
 }
 
-- (void)okayButtonPressed:(id)a3
+- (void)okayButtonPressed:(id)pressed
 {
-  v4 = [(DepthSetupSafetyController *)self miniFlowDelegate];
-  [v4 miniFlowStepComplete:self];
+  miniFlowDelegate = [(DepthSetupSafetyController *)self miniFlowDelegate];
+  [miniFlowDelegate miniFlowStepComplete:self];
 }
 
 - (BPSSetupMiniFlowControllerDelegate)miniFlowDelegate

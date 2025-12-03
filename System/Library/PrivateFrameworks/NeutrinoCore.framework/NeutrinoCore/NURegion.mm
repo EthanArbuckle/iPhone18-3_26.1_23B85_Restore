@@ -1,49 +1,49 @@
 @interface NURegion
-+ (NURegion)regionWithRect:(id *)a3;
-+ (NURegion)regionWithRegion:(id)a3;
++ (NURegion)regionWithRect:(id *)rect;
++ (NURegion)regionWithRegion:(id)region;
 + (id)region;
 - ($41299696D20B6C925B74A5D5E4D5CC87)bounds;
-- (BOOL)includesRect:(id *)a3;
-- (BOOL)intersectsRect:(id *)a3;
-- (BOOL)intersectsRegion:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)includesRect:(id *)rect;
+- (BOOL)intersectsRect:(id *)rect;
+- (BOOL)intersectsRegion:(id)region;
+- (BOOL)isEqual:(id)equal;
 - (NURegion)init;
-- (NURegion)initWithRect:(id *)a3;
-- (NURegion)initWithRegion:(id)a3;
-- (NURegion)regionWithSubregionsOfMinimumDensity:(double)a3;
+- (NURegion)initWithRect:(id *)rect;
+- (NURegion)initWithRegion:(id)region;
+- (NURegion)regionWithSubregionsOfMinimumDensity:(double)density;
 - (double)area;
 - (double)density;
-- (id)convertImageRegion:(id)a3 fromRect:(id *)a4 toRect:(id *)a5;
+- (id)convertImageRegion:(id)region fromRect:(id *)rect toRect:(id *)toRect;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)regionByAddingRect:(id *)a3;
-- (id)regionByAddingRegion:(id)a3;
-- (id)regionByApplyingAffineTransform:(CGAffineTransform *)a3 roundPolicy:(int64_t)a4;
-- (id)regionByApplyingOrientation:(int64_t)a3 imageSize:(id)a4;
-- (id)regionByClippingToRect:(id *)a3;
-- (id)regionByClippingToRegion:(id)a3;
-- (id)regionByExcludingRect:(id *)a3;
-- (id)regionByExcludingRegion:(id)a3;
-- (id)regionByFlippingInRect:(id *)a3;
-- (id)regionByGrowingBy:(id)a3;
-- (id)regionByGrowingBy:(id)a3 inRect:(id *)a4;
-- (id)regionByRemovingRect:(id *)a3;
-- (id)regionByRemovingRegion:(id)a3;
-- (id)regionByScalingBy:(CGPoint)a3 withRounding:(int64_t)a4;
-- (id)regionByShrinkingBy:(id)a3;
-- (id)regionByShrinkingBy:(id)a3 inRect:(id *)a4;
-- (id)regionByTranslatingBy:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)regionByAddingRect:(id *)rect;
+- (id)regionByAddingRegion:(id)region;
+- (id)regionByApplyingAffineTransform:(CGAffineTransform *)transform roundPolicy:(int64_t)policy;
+- (id)regionByApplyingOrientation:(int64_t)orientation imageSize:(id)size;
+- (id)regionByClippingToRect:(id *)rect;
+- (id)regionByClippingToRegion:(id)region;
+- (id)regionByExcludingRect:(id *)rect;
+- (id)regionByExcludingRegion:(id)region;
+- (id)regionByFlippingInRect:(id *)rect;
+- (id)regionByGrowingBy:(id)by;
+- (id)regionByGrowingBy:(id)by inRect:(id *)rect;
+- (id)regionByRemovingRect:(id *)rect;
+- (id)regionByRemovingRegion:(id)region;
+- (id)regionByScalingBy:(CGPoint)by withRounding:(int64_t)rounding;
+- (id)regionByShrinkingBy:(id)by;
+- (id)regionByShrinkingBy:(id)by inRect:(id *)rect;
+- (id)regionByTranslatingBy:(id)by;
 - (void)dealloc;
-- (void)enumerateRects:(id)a3;
+- (void)enumerateRects:(id)rects;
 @end
 
 @implementation NURegion
 
 - (double)density
 {
-  v3 = [(NURegion *)self isEmpty];
+  isEmpty = [(NURegion *)self isEmpty];
   result = 1.0;
-  if (!v3)
+  if (!isEmpty)
   {
     [(NURegion *)self area];
     v6 = v5;
@@ -73,20 +73,20 @@
   return result;
 }
 
-- (BOOL)includesRect:(id *)a3
+- (BOOL)includesRect:(id *)rect
 {
   imp = self->_imp;
-  var1 = a3->var1;
-  v6[0] = a3->var0;
+  var1 = rect->var1;
+  v6[0] = rect->var0;
   v6[1] = var1;
   return NU::Region::includes(imp, v6);
 }
 
-- (BOOL)intersectsRegion:(id)a3
+- (BOOL)intersectsRegion:(id)region
 {
-  if (a3)
+  if (region)
   {
-    return NU::Region::intersects(self->_imp, *(a3 + 1));
+    return NU::Region::intersects(self->_imp, *(region + 1));
   }
 
   else
@@ -95,11 +95,11 @@
   }
 }
 
-- (BOOL)intersectsRect:(id *)a3
+- (BOOL)intersectsRect:(id *)rect
 {
   imp = self->_imp;
-  var1 = a3->var1;
-  v6[0] = a3->var0;
+  var1 = rect->var1;
+  v6[0] = rect->var0;
   v6[1] = var1;
   return NU::Region::intersects(imp, v6);
 }
@@ -113,25 +113,25 @@
   return result;
 }
 
-- (void)enumerateRects:(id)a3
+- (void)enumerateRects:(id)rects
 {
-  v4 = a3;
+  rectsCopy = rects;
   for (i = *(self->_imp + 2); i; i = *i)
   {
     v6 = *(i + 2);
     v7[0] = *(i + 1);
     v7[1] = v6;
-    v4[2](v4, v7);
+    rectsCopy[2](rectsCopy, v7);
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 isEqualToRegion:self];
+    v5 = [equalCopy isEqualToRegion:self];
   }
 
   else
@@ -142,26 +142,26 @@
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [NUMutableRegion allocWithZone:a3];
+  v4 = [NUMutableRegion allocWithZone:zone];
 
   return [(NURegion *)v4 initWithRegion:self];
 }
 
-+ (NURegion)regionWithRegion:(id)a3
++ (NURegion)regionWithRegion:(id)region
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithRegion:v4];
+  regionCopy = region;
+  v5 = [[self alloc] initWithRegion:regionCopy];
 
   return v5;
 }
 
-+ (NURegion)regionWithRect:(id *)a3
++ (NURegion)regionWithRect:(id *)rect
 {
-  v4 = [a1 alloc];
-  var1 = a3->var1;
-  v8[0] = a3->var0;
+  v4 = [self alloc];
+  var1 = rect->var1;
+  v8[0] = rect->var0;
   v8[1] = var1;
   v6 = [v4 initWithRect:v8];
 
@@ -170,19 +170,19 @@
 
 + (id)region
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __23__NURegion_description__block_invoke;
   v11[3] = &unk_1E810B178;
-  v4 = v3;
+  v4 = array;
   v12 = v4;
   [(NURegion *)self enumerateRects:v11];
   v5 = MEMORY[0x1E696AEC0];
@@ -214,11 +214,11 @@ void __23__NURegion_description__block_invoke(uint64_t a1, void *a2)
   [(NURegion *)&v5 dealloc];
 }
 
-- (NURegion)initWithRegion:(id)a3
+- (NURegion)initWithRegion:(id)region
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  regionCopy = region;
+  if (!regionCopy)
   {
     v6 = NUAssertLogger();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -237,8 +237,8 @@ void __23__NURegion_description__block_invoke(uint64_t a1, void *a2)
       if (v10)
       {
         v13 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v15 = [v14 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v15 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v22 = v13;
         v23 = 2114;
@@ -249,8 +249,8 @@ void __23__NURegion_description__block_invoke(uint64_t a1, void *a2)
 
     else if (v10)
     {
-      v11 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v12 = [v11 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v12 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v22 = v12;
       _os_log_error_impl(&dword_1C0184000, v9, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -269,7 +269,7 @@ void __23__NURegion_description__block_invoke(uint64_t a1, void *a2)
   return 0;
 }
 
-- (NURegion)initWithRect:(id *)a3
+- (NURegion)initWithRect:(id *)rect
 {
   v4.receiver = self;
   v4.super_class = NURegion;
@@ -293,10 +293,10 @@ void __23__NURegion_description__block_invoke(uint64_t a1, void *a2)
   return 0;
 }
 
-- (NURegion)regionWithSubregionsOfMinimumDensity:(double)a3
+- (NURegion)regionWithSubregionsOfMinimumDensity:(double)density
 {
   v51 = *MEMORY[0x1E69E9840];
-  if (a3 < 0.0 || a3 > 1.0)
+  if (density < 0.0 || density > 1.0)
   {
     v29 = NUAssertLogger();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -315,8 +315,8 @@ void __23__NURegion_description__block_invoke(uint64_t a1, void *a2)
       if (v33)
       {
         v36 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v37 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v38 = [v37 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v38 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v36;
         *&buf[12] = 2114;
@@ -327,8 +327,8 @@ void __23__NURegion_description__block_invoke(uint64_t a1, void *a2)
 
     else if (v33)
     {
-      v34 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v35 = [v34 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v35 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v35;
       _os_log_error_impl(&dword_1C0184000, v32, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -339,7 +339,7 @@ void __23__NURegion_description__block_invoke(uint64_t a1, void *a2)
 
   v6 = objc_alloc_init(NUMutableRegion);
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v43 = self;
+  selfCopy = self;
   [v7 addObject:self];
   while ([v7 count])
   {
@@ -358,14 +358,14 @@ void __23__NURegion_description__block_invoke(uint64_t a1, void *a2)
       _os_log_debug_impl(&dword_1C0184000, v8, OS_LOG_TYPE_DEBUG, "Dense subregions: %@, result: %@", buf, 0x16u);
     }
 
-    v9 = [v7 lastObject];
+    lastObject = [v7 lastObject];
     [v7 removeLastObject];
-    [v9 density];
-    if (v10 >= a3)
+    [lastObject density];
+    if (v10 >= density)
     {
-      if (v9)
+      if (lastObject)
       {
-        [v9 bounds];
+        [lastObject bounds];
       }
 
       else
@@ -379,9 +379,9 @@ void __23__NURegion_description__block_invoke(uint64_t a1, void *a2)
     else
     {
       memset(buf, 0, sizeof(buf));
-      if (v9)
+      if (lastObject)
       {
-        [v9 bounds];
+        [lastObject bounds];
         v12 = *buf;
         v11 = *&buf[8];
         v13 = *&buf[16] / 2;
@@ -400,7 +400,7 @@ void __23__NURegion_description__block_invoke(uint64_t a1, void *a2)
       v47 = v11;
       v48 = v13;
       v49 = v14;
-      v15 = [v9 regionByClippingToRect:&v46];
+      v15 = [lastObject regionByClippingToRect:&v46];
       [v7 addObject:v15];
 
       v16 = v14 + v11;
@@ -409,7 +409,7 @@ void __23__NURegion_description__block_invoke(uint64_t a1, void *a2)
       v47 = v16;
       v48 = v13;
       v49 = v17;
-      v18 = [v9 regionByClippingToRect:&v46];
+      v18 = [lastObject regionByClippingToRect:&v46];
       [v7 addObject:v18];
 
       v19 = v13 + v12;
@@ -418,14 +418,14 @@ void __23__NURegion_description__block_invoke(uint64_t a1, void *a2)
       v47 = v16;
       v48 = v20;
       v49 = v17;
-      v21 = [v9 regionByClippingToRect:&v46];
+      v21 = [lastObject regionByClippingToRect:&v46];
       [v7 addObject:v21];
 
       v46 = v19;
       v47 = *&buf[8];
       v48 = v20;
       v49 = v16 - *&buf[8];
-      v22 = [v9 regionByClippingToRect:&v46];
+      v22 = [lastObject regionByClippingToRect:&v46];
       [v7 addObject:v22];
     }
   }
@@ -435,7 +435,7 @@ void __23__NURegion_description__block_invoke(uint64_t a1, void *a2)
   v44[1] = 3221225472;
   v44[2] = __61__NURegion_Mutability__regionWithSubregionsOfMinimumDensity___block_invoke;
   v44[3] = &unk_1E810B1A0;
-  v44[4] = v43;
+  v44[4] = selfCopy;
   v24 = v23;
   v45 = v24;
   [(NURegion *)v6 enumerateRects:v44];
@@ -483,193 +483,193 @@ void __61__NURegion_Mutability__regionWithSubregionsOfMinimumDensity___block_inv
   [v7 addRect:&v8];
 }
 
-- (id)convertImageRegion:(id)a3 fromRect:(id *)a4 toRect:(id *)a5
+- (id)convertImageRegion:(id)region fromRect:(id *)rect toRect:(id *)toRect
 {
-  var0 = a5->var1.var0;
-  var1 = a5->var1.var1;
-  v9 = a4->var1.var0;
-  v10 = a4->var1.var1;
-  v11 = [a3 mutableCopy];
-  [v11 translateBy:{-a4->var0.var0, -a4->var0.var1}];
+  var0 = toRect->var1.var0;
+  var1 = toRect->var1.var1;
+  v9 = rect->var1.var0;
+  v10 = rect->var1.var1;
+  v11 = [region mutableCopy];
+  [v11 translateBy:{-rect->var0.var0, -rect->var0.var1}];
   [v11 scaleBy:2 withRounding:{var0 / v9, var1 / v10}];
-  [v11 translateBy:{a5->var0.var0, a5->var0.var1}];
+  [v11 translateBy:{toRect->var0.var0, toRect->var0.var1}];
 
   return v11;
 }
 
-- (id)regionByFlippingInRect:(id *)a3
+- (id)regionByFlippingInRect:(id *)rect
 {
   v4 = [(NURegion *)self mutableCopy];
-  var1 = a3->var1;
-  v7[0] = a3->var0;
+  var1 = rect->var1;
+  v7[0] = rect->var0;
   v7[1] = var1;
   [v4 flipInRect:v7];
 
   return v4;
 }
 
-- (id)regionByApplyingAffineTransform:(CGAffineTransform *)a3 roundPolicy:(int64_t)a4
+- (id)regionByApplyingAffineTransform:(CGAffineTransform *)transform roundPolicy:(int64_t)policy
 {
   v6 = [(NURegion *)self mutableCopy];
-  v7 = *&a3->c;
-  v9[0] = *&a3->a;
+  v7 = *&transform->c;
+  v9[0] = *&transform->a;
   v9[1] = v7;
-  v9[2] = *&a3->tx;
-  [v6 applyAffineTransform:v9 roundPolicy:a4];
+  v9[2] = *&transform->tx;
+  [v6 applyAffineTransform:v9 roundPolicy:policy];
 
   return v6;
 }
 
-- (id)regionByApplyingOrientation:(int64_t)a3 imageSize:(id)a4
+- (id)regionByApplyingOrientation:(int64_t)orientation imageSize:(id)size
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
+  var1 = size.var1;
+  var0 = size.var0;
   v7 = [(NURegion *)self mutableCopy];
-  [v7 applyOrientation:a3 imageSize:{var0, var1}];
+  [v7 applyOrientation:orientation imageSize:{var0, var1}];
 
   return v7;
 }
 
-- (id)regionByShrinkingBy:(id)a3 inRect:(id *)a4
+- (id)regionByShrinkingBy:(id)by inRect:(id *)rect
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = by.var1;
+  var0 = by.var0;
   v7 = [(NURegion *)self mutableCopy];
-  v8 = a4->var1;
-  v10[0] = a4->var0;
+  v8 = rect->var1;
+  v10[0] = rect->var0;
   v10[1] = v8;
   [v7 shrinkBy:var0 inRect:{var1, v10}];
 
   return v7;
 }
 
-- (id)regionByShrinkingBy:(id)a3
+- (id)regionByShrinkingBy:(id)by
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = by.var1;
+  var0 = by.var0;
   v5 = [(NURegion *)self mutableCopy];
   [v5 shrinkBy:{var0, var1}];
 
   return v5;
 }
 
-- (id)regionByGrowingBy:(id)a3 inRect:(id *)a4
+- (id)regionByGrowingBy:(id)by inRect:(id *)rect
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = by.var1;
+  var0 = by.var0;
   v7 = [(NURegion *)self mutableCopy];
-  v8 = a4->var1;
-  v10[0] = a4->var0;
+  v8 = rect->var1;
+  v10[0] = rect->var0;
   v10[1] = v8;
   [v7 growBy:var0 inRect:{var1, v10}];
 
   return v7;
 }
 
-- (id)regionByGrowingBy:(id)a3
+- (id)regionByGrowingBy:(id)by
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = by.var1;
+  var0 = by.var0;
   v5 = [(NURegion *)self mutableCopy];
   [v5 growBy:{var0, var1}];
 
   return v5;
 }
 
-- (id)regionByTranslatingBy:(id)a3
+- (id)regionByTranslatingBy:(id)by
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = by.var1;
+  var0 = by.var0;
   v5 = [(NURegion *)self mutableCopy];
   [v5 translateBy:{var0, var1}];
 
   return v5;
 }
 
-- (id)regionByScalingBy:(CGPoint)a3 withRounding:(int64_t)a4
+- (id)regionByScalingBy:(CGPoint)by withRounding:(int64_t)rounding
 {
-  y = a3.y;
-  x = a3.x;
+  y = by.y;
+  x = by.x;
   v7 = [(NURegion *)self mutableCopy];
-  [v7 scaleBy:a4 withRounding:{x, y}];
+  [v7 scaleBy:rounding withRounding:{x, y}];
 
   return v7;
 }
 
-- (id)regionByExcludingRegion:(id)a3
+- (id)regionByExcludingRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   v5 = [(NURegion *)self mutableCopy];
-  [v5 diffWithRegion:v4];
+  [v5 diffWithRegion:regionCopy];
 
   return v5;
 }
 
-- (id)regionByExcludingRect:(id *)a3
+- (id)regionByExcludingRect:(id *)rect
 {
   v4 = [(NURegion *)self mutableCopy];
-  var1 = a3->var1;
-  v7[0] = a3->var0;
+  var1 = rect->var1;
+  v7[0] = rect->var0;
   v7[1] = var1;
   [v4 diffWithRect:v7];
 
   return v4;
 }
 
-- (id)regionByClippingToRegion:(id)a3
+- (id)regionByClippingToRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   v5 = [(NURegion *)self mutableCopy];
-  [v5 clipToRegion:v4];
+  [v5 clipToRegion:regionCopy];
 
   return v5;
 }
 
-- (id)regionByClippingToRect:(id *)a3
+- (id)regionByClippingToRect:(id *)rect
 {
   v4 = [(NURegion *)self mutableCopy];
-  var1 = a3->var1;
-  v7[0] = a3->var0;
+  var1 = rect->var1;
+  v7[0] = rect->var0;
   v7[1] = var1;
   [v4 clipToRect:v7];
 
   return v4;
 }
 
-- (id)regionByRemovingRegion:(id)a3
+- (id)regionByRemovingRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   v5 = [(NURegion *)self mutableCopy];
-  [v5 removeRegion:v4];
+  [v5 removeRegion:regionCopy];
 
   return v5;
 }
 
-- (id)regionByRemovingRect:(id *)a3
+- (id)regionByRemovingRect:(id *)rect
 {
   v4 = [(NURegion *)self mutableCopy];
-  var1 = a3->var1;
-  v7[0] = a3->var0;
+  var1 = rect->var1;
+  v7[0] = rect->var0;
   v7[1] = var1;
   [v4 removeRect:v7];
 
   return v4;
 }
 
-- (id)regionByAddingRegion:(id)a3
+- (id)regionByAddingRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   v5 = [(NURegion *)self mutableCopy];
-  [v5 addRegion:v4];
+  [v5 addRegion:regionCopy];
 
   return v5;
 }
 
-- (id)regionByAddingRect:(id *)a3
+- (id)regionByAddingRect:(id *)rect
 {
   v4 = [(NURegion *)self mutableCopy];
-  var1 = a3->var1;
-  v7[0] = a3->var0;
+  var1 = rect->var1;
+  v7[0] = rect->var0;
   v7[1] = var1;
   [v4 addRect:v7];
 

@@ -1,57 +1,57 @@
 @interface STGenericIntentRequest
-- (STGenericIntentRequest)initWithAppIdentifier:(id)a3 intentString:(id)a4 utterance:(id)a5 info:(id)a6;
-- (STGenericIntentRequest)initWithCoder:(id)a3;
+- (STGenericIntentRequest)initWithAppIdentifier:(id)identifier intentString:(id)string utterance:(id)utterance info:(id)info;
+- (STGenericIntentRequest)initWithCoder:(id)coder;
 - (id)_af_analyticsContextDescription;
-- (id)responseWithCode:(int64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)responseWithCode:(int64_t)code;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STGenericIntentRequest
 
-- (STGenericIntentRequest)initWithCoder:(id)a3
+- (STGenericIntentRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = STGenericIntentRequest;
-  v5 = [(AFSiriRequest *)&v13 initWithCoder:v4];
+  v5 = [(AFSiriRequest *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_intentString"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_intentString"];
     intentString = v5->_intentString;
     v5->_intentString = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_utterance"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_utterance"];
     utterance = v5->_utterance;
     v5->_utterance = v8;
 
-    v10 = [v4 decodePropertyListForKey:@"_info"];
+    v10 = [coderCopy decodePropertyListForKey:@"_info"];
     info = v5->_info;
     v5->_info = v10;
 
-    v5->__launchToForeground = [v4 decodeBoolForKey:@"__launchToForeground"];
+    v5->__launchToForeground = [coderCopy decodeBoolForKey:@"__launchToForeground"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = STGenericIntentRequest;
-  v4 = a3;
-  [(AFSiriRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_intentString forKey:{@"_intentString", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_utterance forKey:@"_utterance"];
-  [v4 encodeObject:self->_info forKey:@"_info"];
-  [v4 encodeBool:self->__launchToForeground forKey:@"__launchToForeground"];
+  coderCopy = coder;
+  [(AFSiriRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_intentString forKey:{@"_intentString", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_utterance forKey:@"_utterance"];
+  [coderCopy encodeObject:self->_info forKey:@"_info"];
+  [coderCopy encodeBool:self->__launchToForeground forKey:@"__launchToForeground"];
 }
 
-- (id)responseWithCode:(int64_t)a3
+- (id)responseWithCode:(int64_t)code
 {
-  if (a3)
+  if (code)
   {
     v4 = [(AFSiriResponse *)[STGenericIntentResponse alloc] _initWithRequest:self];
-    [v4 setResponseCode:a3];
+    [v4 setResponseCode:code];
   }
 
   else
@@ -62,30 +62,30 @@
   return v4;
 }
 
-- (STGenericIntentRequest)initWithAppIdentifier:(id)a3 intentString:(id)a4 utterance:(id)a5 info:(id)a6
+- (STGenericIntentRequest)initWithAppIdentifier:(id)identifier intentString:(id)string utterance:(id)utterance info:(id)info
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  stringCopy = string;
+  utteranceCopy = utterance;
+  infoCopy = info;
   v24.receiver = self;
   v24.super_class = STGenericIntentRequest;
   v14 = [(AFSiriRequest *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [identifierCopy copy];
     appIdentifier = v14->_appIdentifier;
     v14->_appIdentifier = v15;
 
-    v17 = [v11 copy];
+    v17 = [stringCopy copy];
     intentString = v14->_intentString;
     v14->_intentString = v17;
 
-    v19 = [v12 copy];
+    v19 = [utteranceCopy copy];
     utterance = v14->_utterance;
     v14->_utterance = v19;
 
-    v21 = [v13 copy];
+    v21 = [infoCopy copy];
     info = v14->_info;
     v14->_info = v21;
 
@@ -99,27 +99,27 @@
 {
   v10.receiver = self;
   v10.super_class = STGenericIntentRequest;
-  v3 = [(AFSiriRequest *)&v10 _af_analyticsContextDescription];
-  v4 = [(STGenericIntentRequest *)self appIdentifier];
-  if (v4)
+  _af_analyticsContextDescription = [(AFSiriRequest *)&v10 _af_analyticsContextDescription];
+  appIdentifier = [(STGenericIntentRequest *)self appIdentifier];
+  if (appIdentifier)
   {
-    [v3 setObject:v4 forKey:*MEMORY[0x277CEEFA0]];
+    [_af_analyticsContextDescription setObject:appIdentifier forKey:*MEMORY[0x277CEEFA0]];
   }
 
-  v5 = [(STGenericIntentRequest *)self _launchToForeground];
-  v6 = [MEMORY[0x277CCABB0] numberWithBool:!v5];
-  [v3 setObject:v6 forKey:@"backgroundLaunch"];
+  _launchToForeground = [(STGenericIntentRequest *)self _launchToForeground];
+  v6 = [MEMORY[0x277CCABB0] numberWithBool:!_launchToForeground];
+  [_af_analyticsContextDescription setObject:v6 forKey:@"backgroundLaunch"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithBool:{-[STGenericIntentRequest _launchToForeground](self, "_launchToForeground")}];
-  [v3 setObject:v7 forKey:@"presentsResults"];
+  [_af_analyticsContextDescription setObject:v7 forKey:@"presentsResults"];
 
-  v8 = [(STGenericIntentRequest *)self intentString];
-  if (v8)
+  intentString = [(STGenericIntentRequest *)self intentString];
+  if (intentString)
   {
-    [v3 setObject:v8 forKey:@"intentString"];
+    [_af_analyticsContextDescription setObject:intentString forKey:@"intentString"];
   }
 
-  return v3;
+  return _af_analyticsContextDescription;
 }
 
 @end

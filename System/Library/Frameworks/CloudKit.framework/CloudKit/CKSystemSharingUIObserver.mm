@@ -1,8 +1,8 @@
 @interface CKSystemSharingUIObserver
 + (void)initialize;
 - (CKSystemSharingUIObserver)initWithContainer:(CKContainer *)container;
-- (void)_locked_handleSharingUIUpdatedShare:(id)a3 recordID:(id)a4 isDeleted:(BOOL)a5 error:(id)a6;
-- (void)handleSharingUIUpdatedShare:(id)a3 recordID:(id)a4 isDeleted:(BOOL)a5 error:(id)a6;
+- (void)_locked_handleSharingUIUpdatedShare:(id)share recordID:(id)d isDeleted:(BOOL)deleted error:(id)error;
+- (void)handleSharingUIUpdatedShare:(id)share recordID:(id)d isDeleted:(BOOL)deleted error:(id)error;
 - (void)setSystemSharingUIDidSaveShareBlock:(void *)systemSharingUIDidSaveShareBlock;
 - (void)setSystemSharingUIDidStopSharingBlock:(void *)systemSharingUIDidStopSharingBlock;
 - (void)systemSharingUIDidSaveShareBlock;
@@ -167,42 +167,42 @@ LABEL_5:
   return v5;
 }
 
-- (void)handleSharingUIUpdatedShare:(id)a3 recordID:(id)a4 isDeleted:(BOOL)a5 error:(id)a6
+- (void)handleSharingUIUpdatedShare:(id)share recordID:(id)d isDeleted:(BOOL)deleted error:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  shareCopy = share;
+  dCopy = d;
+  errorCopy = error;
   v15 = objc_msgSend_callbackQueue(self, v13, v14);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_18859EB68;
   block[3] = &unk_1E70BE528;
   block[4] = self;
-  v20 = v10;
-  v23 = a5;
-  v21 = v11;
-  v22 = v12;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = shareCopy;
+  deletedCopy = deleted;
+  v21 = dCopy;
+  v22 = errorCopy;
+  v16 = errorCopy;
+  v17 = dCopy;
+  v18 = shareCopy;
   dispatch_sync(v15, block);
 }
 
-- (void)_locked_handleSharingUIUpdatedShare:(id)a3 recordID:(id)a4 isDeleted:(BOOL)a5 error:(id)a6
+- (void)_locked_handleSharingUIUpdatedShare:(id)share recordID:(id)d isDeleted:(BOOL)deleted error:(id)error
 {
-  v7 = a5;
+  deletedCopy = deleted;
   v48 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v14 = a6;
-  if (v11)
+  shareCopy = share;
+  dCopy = d;
+  errorCopy = error;
+  if (dCopy)
   {
-    v15 = v11;
+    v15 = dCopy;
   }
 
   else
   {
-    v15 = objc_msgSend_recordID(v10, v12, v13);
+    v15 = objc_msgSend_recordID(shareCopy, v12, v13);
   }
 
   v16 = v15;
@@ -217,7 +217,7 @@ LABEL_5:
     v35 = @"NO";
     v40 = 138412802;
     v41 = v16;
-    if (v7)
+    if (deletedCopy)
     {
       v35 = @"YES";
     }
@@ -225,18 +225,18 @@ LABEL_5:
     v42 = 2114;
     v43 = v35;
     v44 = 2112;
-    v45 = v14;
+    v45 = errorCopy;
     _os_log_debug_impl(&dword_1883EA000, v17, OS_LOG_TYPE_DEBUG, "Handle sharing UI updated called with share: %@, deleted: %{public}@, error: %@", &v40, 0x20u);
   }
 
-  if (!v7)
+  if (!deletedCopy)
   {
     v25 = objc_msgSend_systemSharingUIDidSaveShareBlock(self, v18, v19);
     if (v25)
     {
       v23 = v25;
-      v24 = objc_msgSend_CKClientSuitableError(v14, v26, v27);
-      (v23)[2](v23, v16, v10, v24);
+      v24 = objc_msgSend_CKClientSuitableError(errorCopy, v26, v27);
+      (v23)[2](v23, v16, shareCopy, v24);
       goto LABEL_12;
     }
 
@@ -274,16 +274,16 @@ LABEL_30:
 
     v42 = 2112;
     v43 = v38;
-    if (!v14)
+    if (!errorCopy)
     {
       v37 = &stru_1EFA32970;
     }
 
     v44 = 2114;
     v45 = v37;
-    if (v14)
+    if (errorCopy)
     {
-      v39 = v14;
+      v39 = errorCopy;
     }
 
     else
@@ -334,16 +334,16 @@ LABEL_46:
 
     v42 = 2112;
     v43 = v31;
-    if (!v14)
+    if (!errorCopy)
     {
       v30 = &stru_1EFA32970;
     }
 
     v44 = 2114;
     v45 = v30;
-    if (v14)
+    if (errorCopy)
     {
-      v32 = v14;
+      v32 = errorCopy;
     }
 
     else
@@ -358,7 +358,7 @@ LABEL_46:
   }
 
   v23 = v20;
-  v24 = objc_msgSend_CKClientSuitableError(v14, v21, v22);
+  v24 = objc_msgSend_CKClientSuitableError(errorCopy, v21, v22);
   (v23[2])(v23, v16, v24);
 LABEL_12:
 

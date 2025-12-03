@@ -1,44 +1,44 @@
 @interface ATXLocationManager
-+ (id)debugDescriptionForCLLocation:(id)a3;
-+ (id)stringForLOIType:(int64_t)a3;
-- (ATXLocationManager)initWithGPS:(id)a3 routine:(id)a4 stateStore:(id)a5 now:(id)a6 modeGlobals:(id)a7;
-- (ATXLocationManager)initWithStateStore:(id)a3 modeGlobals:(id)a4;
-- (BOOL)isAvailableLocationOfInterestType:(int64_t)a3;
-- (BOOL)isLocationNearKnownTypeLocationOfInterest:(id)a3;
++ (id)debugDescriptionForCLLocation:(id)location;
++ (id)stringForLOIType:(int64_t)type;
+- (ATXLocationManager)initWithGPS:(id)s routine:(id)routine stateStore:(id)store now:(id)now modeGlobals:(id)globals;
+- (ATXLocationManager)initWithStateStore:(id)store modeGlobals:(id)globals;
+- (BOOL)isAvailableLocationOfInterestType:(int64_t)type;
+- (BOOL)isLocationNearKnownTypeLocationOfInterest:(id)interest;
 - (BOOL)isNearFrequentLocationOfInterest;
 - (BOOL)isNearKnownTypeLocationOfInterest;
 - (BOOL)isNearKnownTypeOrFrequentLocationOfInterest;
 - (BOOL)isTourist;
 - (NSDate)now;
-- (double)_distanceOfCurrentLocationFrom:(id)a3;
-- (id)_currentLocationAndNeedsUpdate_RequestPreciseLocation:(BOOL)a3;
-- (id)_updateLocationsOfInterestWithCurrentLocation:(id)a3;
+- (double)_distanceOfCurrentLocationFrom:(id)from;
+- (id)_currentLocationAndNeedsUpdate_RequestPreciseLocation:(BOOL)location;
+- (id)_updateLocationsOfInterestWithCurrentLocation:(id)location;
 - (id)cachedLocationOfInterestAtCurrentLocation;
-- (id)getPredictedExitTimesFromLOIName:(id)a3 startDate:(id)a4;
-- (id)getPredictedLocationsOfInterestFromLOIName:(id)a3 startDate:(id)a4;
+- (id)getPredictedExitTimesFromLOIName:(id)name startDate:(id)date;
+- (id)getPredictedLocationsOfInterestFromLOIName:(id)name startDate:(id)date;
 - (id)locationOfInterestAtCurrentLocation;
 - (id)predictedExitTimes;
 - (id)predictedLocationsOfInterest;
 - (id)previousLOIAndCurrentLOI;
-- (unint64_t)getCurrentRoutineModeWithCurrentDate:(id)a3;
-- (void)_fetchLocationOfInterest:(int64_t)a3 inGroup:(id)a4;
-- (void)_gotLocation:(id)a3 forLocationOfInterest:(int64_t)a4;
-- (void)_handleRoutineError:(id)a3 forThing:(id)a4;
-- (void)_updateCurrentLocationOfInterestIfTimeElapsedWithCompletionHandler:(id)a3;
+- (unint64_t)getCurrentRoutineModeWithCurrentDate:(id)date;
+- (void)_fetchLocationOfInterest:(int64_t)interest inGroup:(id)group;
+- (void)_gotLocation:(id)location forLocationOfInterest:(int64_t)interest;
+- (void)_handleRoutineError:(id)error forThing:(id)thing;
+- (void)_updateCurrentLocationOfInterestIfTimeElapsedWithCompletionHandler:(id)handler;
 - (void)_updatePredictedExitTimesIfTimeElapsed;
 - (void)_updatePredictedLocationsOfInterestIfTimeElapsed;
 - (void)clearLocationOfInterest;
-- (void)didChangeLocationEnabled:(BOOL)a3;
-- (void)fetchAllLocationsOfInterest:(id)a3;
-- (void)fetchLOILocationOfType:(int64_t)a3 reply:(id)a4;
-- (void)getCurrentLocationWithCompletionHandler:(id)a3;
-- (void)gotState:(id)a3;
-- (void)locationManagerGPS:(id)a3 didEnterRegionWithIdentifier:(id)a4;
-- (void)locationManagerGPS:(id)a3 didExitRegionWithIdentifier:(id)a4;
-- (void)locationOfInterestAtCurrentLocationWithCompletionHandler:(id)a3;
+- (void)didChangeLocationEnabled:(BOOL)enabled;
+- (void)fetchAllLocationsOfInterest:(id)interest;
+- (void)fetchLOILocationOfType:(int64_t)type reply:(id)reply;
+- (void)getCurrentLocationWithCompletionHandler:(id)handler;
+- (void)gotState:(id)state;
+- (void)locationManagerGPS:(id)s didEnterRegionWithIdentifier:(id)identifier;
+- (void)locationManagerGPS:(id)s didExitRegionWithIdentifier:(id)identifier;
+- (void)locationOfInterestAtCurrentLocationWithCompletionHandler:(id)handler;
 - (void)updateCurrentLocationOfInterest;
 - (void)updateCurrentLocationOfInterestIfTimeElapsed;
-- (void)updateCurrentLocationOfInterestWithCompletionHandler:(id)a3;
+- (void)updateCurrentLocationOfInterestWithCompletionHandler:(id)handler;
 - (void)updatePredictedExitTimes;
 - (void)updatePredictedLocationsOfInterest;
 @end
@@ -47,10 +47,10 @@
 
 - (void)updateCurrentLocationOfInterest
 {
-  v3 = [(ATXLocationManager *)self getCurrentLocation];
-  if (v3)
+  getCurrentLocation = [(ATXLocationManager *)self getCurrentLocation];
+  if (getCurrentLocation)
   {
-    v4 = [(ATXLocationManager *)self _updateLocationsOfInterestWithCurrentLocation:v3];
+    v4 = [(ATXLocationManager *)self _updateLocationsOfInterestWithCurrentLocation:getCurrentLocation];
     v5 = [MEMORY[0x277D425A0] waitForGroup:v4 timeoutSeconds:1.0];
     v6 = __atxlog_handle_default();
     v7 = v6;
@@ -183,34 +183,34 @@ void __46__ATXLocationManager_previousLOIAndCurrentLOI__block_invoke(uint64_t a1
   *(v13 + 40) = v12;
 }
 
-- (ATXLocationManager)initWithStateStore:(id)a3 modeGlobals:(id)a4
+- (ATXLocationManager)initWithStateStore:(id)store modeGlobals:(id)globals
 {
-  v6 = a4;
-  v7 = a3;
+  globalsCopy = globals;
+  storeCopy = store;
   v8 = +[ATXLocationManagerGPSCoreLocation sharedInstance];
   v9 = objc_opt_new();
-  v10 = [(ATXLocationManager *)self initWithGPS:v8 routine:v9 stateStore:v7 now:0 modeGlobals:v6];
+  v10 = [(ATXLocationManager *)self initWithGPS:v8 routine:v9 stateStore:storeCopy now:0 modeGlobals:globalsCopy];
 
   return v10;
 }
 
-- (ATXLocationManager)initWithGPS:(id)a3 routine:(id)a4 stateStore:(id)a5 now:(id)a6 modeGlobals:(id)a7
+- (ATXLocationManager)initWithGPS:(id)s routine:(id)routine stateStore:(id)store now:(id)now modeGlobals:(id)globals
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v34 = a6;
-  v33 = a7;
-  if (v14)
+  sCopy = s;
+  routineCopy = routine;
+  storeCopy = store;
+  nowCopy = now;
+  globalsCopy = globals;
+  if (sCopy)
   {
-    if (v15)
+    if (routineCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
     [ATXLocationManager initWithGPS:a2 routine:self stateStore:? now:? modeGlobals:?];
-    if (v16)
+    if (storeCopy)
     {
       goto LABEL_4;
     }
@@ -219,13 +219,13 @@ LABEL_8:
   }
 
   [ATXLocationManager initWithGPS:a2 routine:self stateStore:? now:? modeGlobals:?];
-  if (!v15)
+  if (!routineCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v16)
+  if (storeCopy)
   {
     goto LABEL_4;
   }
@@ -239,14 +239,14 @@ LABEL_4:
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_modeGlobals, a7);
+    objc_storeStrong(&v17->_modeGlobals, globals);
     __asm { FMOV            V0.2D, #3.0 }
 
     *&v18->_predictedNextLOITimeout = _Q0;
-    objc_storeStrong(&v18->_gps, a3);
-    objc_storeStrong(&v18->_routine, a4);
-    objc_storeStrong(&v18->_stateStore, a5);
-    objc_storeStrong(&v18->_now, a6);
+    objc_storeStrong(&v18->_gps, s);
+    objc_storeStrong(&v18->_routine, routine);
+    objc_storeStrong(&v18->_stateStore, store);
+    objc_storeStrong(&v18->_now, now);
     v24 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v25 = dispatch_queue_create("ATXLocationManager_LOIUpdateQueue", v24);
     loiUpdateQueue = v18->_loiUpdateQueue;
@@ -258,7 +258,7 @@ LABEL_4:
     lock = v18->_lock;
     v18->_lock = v29;
 
-    [v14 setDelegate:v18];
+    [sCopy setDelegate:v18];
     objc_initWeak(&location, v18);
     v31 = v18->_lock;
     v35[0] = MEMORY[0x277D85DD0];
@@ -353,7 +353,7 @@ void __69__ATXLocationManager_initWithGPS_routine_stateStore_now_modeGlobals___b
   }
 }
 
-- (id)_currentLocationAndNeedsUpdate_RequestPreciseLocation:(BOOL)a3
+- (id)_currentLocationAndNeedsUpdate_RequestPreciseLocation:(BOOL)location
 {
   v46 = *MEMORY[0x277D85DE8];
   v30 = 0;
@@ -377,7 +377,7 @@ void __69__ATXLocationManager_initWithGPS_routine_stateStore_now_modeGlobals___b
   v18[1] = 3221225472;
   v18[2] = __76__ATXLocationManager__currentLocationAndNeedsUpdate_RequestPreciseLocation___block_invoke;
   v18[3] = &unk_279AB8580;
-  v19 = a3;
+  locationCopy = location;
   v18[4] = self;
   v18[5] = &v30;
   v18[6] = &v26;
@@ -530,15 +530,15 @@ void __64__ATXLocationManager_getCurrentLocation_RequestPreciseLocation___block_
   v6[2] = v4;
 }
 
-- (void)getCurrentLocationWithCompletionHandler:(id)a3
+- (void)getCurrentLocationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (([(ATXLocationManagerGPS *)self->_gps locationEnabled]& 1) != 0)
   {
     v5 = [(ATXLocationManager *)self _currentLocationAndNeedsUpdate_RequestPreciseLocation:0];
-    v6 = [v5 first];
-    v7 = [v5 second];
-    if ([v7 BOOLValue])
+    first = [v5 first];
+    second = [v5 second];
+    if ([second BOOLValue])
     {
       v8 = __atxlog_handle_default();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -552,13 +552,13 @@ void __64__ATXLocationManager_getCurrentLocation_RequestPreciseLocation___block_
       v10[2] = __62__ATXLocationManager_getCurrentLocationWithCompletionHandler___block_invoke;
       v10[3] = &unk_279AB85D0;
       v10[4] = self;
-      v11 = v4;
+      v11 = handlerCopy;
       [(ATXLocationManagerGPS *)gps updateLocationWithCompletionHandler:v10];
     }
 
     else
     {
-      (*(v4 + 2))(v4, v6, 0);
+      (*(handlerCopy + 2))(handlerCopy, first, 0);
     }
   }
 
@@ -566,7 +566,7 @@ void __64__ATXLocationManager_getCurrentLocation_RequestPreciseLocation___block_
   {
     [(ATXLocationManager *)self clearLocationOfInterest];
     v5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:13 userInfo:0];
-    (*(v4 + 2))(v4, 0, v5);
+    (*(handlerCopy + 2))(handlerCopy, 0, v5);
   }
 }
 
@@ -607,25 +607,25 @@ void __62__ATXLocationManager_getCurrentLocationWithCompletionHandler___block_in
   v6[2] = v4;
 }
 
-- (id)_updateLocationsOfInterestWithCurrentLocation:(id)a3
+- (id)_updateLocationsOfInterestWithCurrentLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v5 = dispatch_group_create();
-  [v4 horizontalAccuracy];
+  [locationCopy horizontalAccuracy];
   if (v6 <= 200.0)
   {
     dispatch_group_enter(v5);
     routine = self->_routine;
-    v9 = [(ATXLocationParameters *)self->_modeGlobals locationOfInterestSearchRadius];
+    locationOfInterestSearchRadius = [(ATXLocationParameters *)self->_modeGlobals locationOfInterestSearchRadius];
     v13 = MEMORY[0x277D85DD0];
     v14 = 3221225472;
     v15 = __68__ATXLocationManager__updateLocationsOfInterestWithCurrentLocation___block_invoke;
     v16 = &unk_279AB85F8;
-    v17 = self;
+    selfCopy = self;
     v10 = v5;
     v18 = v10;
-    [(ATXLocationManagerRoutine *)routine fetchClosestLOIWithinDistance:v4 ofLocation:&v13 reply:v9];
-    [(ATXLocationManager *)self _fetchLocationOfInterest:0 inGroup:v10, v13, v14, v15, v16, v17];
+    [(ATXLocationManagerRoutine *)routine fetchClosestLOIWithinDistance:locationCopy ofLocation:&v13 reply:locationOfInterestSearchRadius];
+    [(ATXLocationManager *)self _fetchLocationOfInterest:0 inGroup:v10, v13, v14, v15, v16, selfCopy];
     [(ATXLocationManager *)self _fetchLocationOfInterest:1 inGroup:v10];
     [(ATXLocationManager *)self _fetchLocationOfInterest:2 inGroup:v10];
     [(ATXLocationManager *)self _fetchLocationOfInterest:3 inGroup:v10];
@@ -673,16 +673,16 @@ void __68__ATXLocationManager__updateLocationsOfInterestWithCurrentLocation___bl
   dispatch_group_leave(*(a1 + 40));
 }
 
-- (void)updateCurrentLocationOfInterestWithCompletionHandler:(id)a3
+- (void)updateCurrentLocationOfInterestWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __75__ATXLocationManager_updateCurrentLocationOfInterestWithCompletionHandler___block_invoke;
   v6[3] = &unk_279AB85D0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(ATXLocationManager *)self getCurrentLocationWithCompletionHandler:v6];
 }
 
@@ -768,11 +768,11 @@ void __55__ATXLocationManager_invalidateLocationOfInterestCache__block_invoke(ui
   v3[5] = v4;
 }
 
-- (void)fetchLOILocationOfType:(int64_t)a3 reply:(id)a4
+- (void)fetchLOILocationOfType:(int64_t)type reply:(id)reply
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [ATXLocationManager stringForLOIType:a3];
+  replyCopy = reply;
+  v7 = [ATXLocationManager stringForLOIType:type];
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -802,7 +802,7 @@ void __55__ATXLocationManager_invalidateLocationOfInterestCache__block_invoke(ui
       _os_log_impl(&dword_260C9F000, v9, OS_LOG_TYPE_DEFAULT, "Using cached %@ LOI", buf, 0xCu);
     }
 
-    v6[2](v6, v21[5], 0);
+    replyCopy[2](replyCopy, v21[5], 0);
   }
 
   else
@@ -822,9 +822,9 @@ void __55__ATXLocationManager_invalidateLocationOfInterestCache__block_invoke(ui
     v13[3] = &unk_279AB86B8;
     v13[4] = self;
     v14 = v7;
-    v15 = v6;
-    v16 = a3;
-    [(ATXLocationManagerRoutine *)routine fetchLOILocationOfType:a3 reply:v13];
+    v15 = replyCopy;
+    typeCopy = type;
+    [(ATXLocationManagerRoutine *)routine fetchLOILocationOfType:type reply:v13];
   }
 
   _Block_object_dispose(&v20, 8);
@@ -936,31 +936,31 @@ void __51__ATXLocationManager_fetchLOILocationOfType_reply___block_invoke_2(uint
   *(v4 + 40) = v3;
 }
 
-- (void)_fetchLocationOfInterest:(int64_t)a3 inGroup:(id)a4
+- (void)_fetchLocationOfInterest:(int64_t)interest inGroup:(id)group
 {
-  v6 = a4;
-  dispatch_group_enter(v6);
+  groupCopy = group;
+  dispatch_group_enter(groupCopy);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __55__ATXLocationManager__fetchLocationOfInterest_inGroup___block_invoke;
   v8[3] = &unk_279AB86E0;
-  v9 = v6;
-  v7 = v6;
-  [(ATXLocationManager *)self fetchLOILocationOfType:a3 reply:v8];
+  v9 = groupCopy;
+  v7 = groupCopy;
+  [(ATXLocationManager *)self fetchLOILocationOfType:interest reply:v8];
 }
 
-- (void)_gotLocation:(id)a3 forLocationOfInterest:(int64_t)a4
+- (void)_gotLocation:(id)location forLocationOfInterest:(int64_t)interest
 {
-  v6 = a3;
+  locationCopy = location;
   lock = self->_lock;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __57__ATXLocationManager__gotLocation_forLocationOfInterest___block_invoke;
   v9[3] = &unk_279AB8708;
-  v11 = self;
-  v12 = a4;
-  v10 = v6;
-  v8 = v6;
+  selfCopy = self;
+  interestCopy = interest;
+  v10 = locationCopy;
+  v8 = locationCopy;
   [(_PASLock *)lock runWithLockAcquired:v9];
 }
 
@@ -979,17 +979,17 @@ uint64_t __57__ATXLocationManager__gotLocation_forLocationOfInterest___block_inv
   return [v9 write:v10];
 }
 
-- (void)gotState:(id)a3
+- (void)gotState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __31__ATXLocationManager_gotState___block_invoke;
   v7[3] = &unk_279AB85A8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = stateCopy;
+  selfCopy = self;
+  v6 = stateCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 
@@ -1019,12 +1019,12 @@ void __31__ATXLocationManager_gotState___block_invoke(uint64_t a1, void *a2)
   [*(*(a1 + 40) + 24) write:v10[4]];
 }
 
-- (void)_handleRoutineError:(id)a3 forThing:(id)a4
+- (void)_handleRoutineError:(id)error forThing:(id)thing
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 domain];
-  v9 = [v8 isEqualToString:*MEMORY[0x277D01448]];
+  errorCopy = error;
+  thingCopy = thing;
+  domain = [errorCopy domain];
+  v9 = [domain isEqualToString:*MEMORY[0x277D01448]];
 
   if (v9)
   {
@@ -1033,9 +1033,9 @@ void __31__ATXLocationManager_gotState___block_invoke(uint64_t a1, void *a2)
     v12[1] = 3221225472;
     v12[2] = __51__ATXLocationManager__handleRoutineError_forThing___block_invoke;
     v12[3] = &unk_279AB8730;
-    v13 = v6;
-    v14 = v7;
-    v15 = self;
+    v13 = errorCopy;
+    v14 = thingCopy;
+    selfCopy = self;
     [(_PASLock *)lock runWithLockAcquired:v12];
 
     v11 = v13;
@@ -1046,7 +1046,7 @@ void __31__ATXLocationManager_gotState___block_invoke(uint64_t a1, void *a2)
     v11 = __atxlog_handle_default();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [(ATXLocationManager *)v7 _handleRoutineError:v6 forThing:v11];
+      [(ATXLocationManager *)thingCopy _handleRoutineError:errorCopy forThing:v11];
     }
   }
 }
@@ -1125,10 +1125,10 @@ void __66__ATXLocationManager_updateCurrentLocationOfInterestIfTimeElapsed__bloc
   *(*(*(a1 + 40) + 8) + 24) = -v4;
 }
 
-- (void)_updateCurrentLocationOfInterestIfTimeElapsedWithCompletionHandler:(id)a3
+- (void)_updateCurrentLocationOfInterestIfTimeElapsedWithCompletionHandler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1144,7 +1144,7 @@ void __66__ATXLocationManager_updateCurrentLocationOfInterestIfTimeElapsed__bloc
   v6 = v12[3];
   if (v6 <= [(ATXLocationParameters *)self->_modeGlobals locationOfInterestUpdateInterval])
   {
-    v4[2](v4, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
@@ -1158,7 +1158,7 @@ void __66__ATXLocationManager_updateCurrentLocationOfInterestIfTimeElapsed__bloc
       _os_log_impl(&dword_260C9F000, v7, OS_LOG_TYPE_DEFAULT, "Attempting to update location of interest since update age is %lf", buf, 0xCu);
     }
 
-    [(ATXLocationManager *)self updateCurrentLocationOfInterestWithCompletionHandler:v4];
+    [(ATXLocationManager *)self updateCurrentLocationOfInterestWithCompletionHandler:handlerCopy];
   }
 
   _Block_object_dispose(&v11, 8);
@@ -1212,16 +1212,16 @@ uint64_t __63__ATXLocationManager_cachedLocationOfInterestAtCurrentLocation__blo
   return [(ATXLocationManager *)self cachedLocationOfInterestAtCurrentLocation];
 }
 
-- (void)locationOfInterestAtCurrentLocationWithCompletionHandler:(id)a3
+- (void)locationOfInterestAtCurrentLocationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __79__ATXLocationManager_locationOfInterestAtCurrentLocationWithCompletionHandler___block_invoke;
   v6[3] = &unk_279AB87A8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(ATXLocationManager *)self _updateCurrentLocationOfInterestIfTimeElapsedWithCompletionHandler:v6];
 }
 
@@ -1264,10 +1264,10 @@ uint64_t __79__ATXLocationManager_locationOfInterestAtCurrentLocationWithComplet
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)getPredictedLocationsOfInterestFromLOIName:(id)a3 startDate:(id)a4
+- (id)getPredictedLocationsOfInterestFromLOIName:(id)name startDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  dateCopy = date;
   [(ATXLocationManager *)self updateCurrentLocationOfInterestIfTimeElapsed];
   v37 = 0;
   v38 = &v37;
@@ -1287,7 +1287,7 @@ uint64_t __79__ATXLocationManager_locationOfInterestAtCurrentLocationWithComplet
   v28[2] = __75__ATXLocationManager_getPredictedLocationsOfInterestFromLOIName_startDate___block_invoke;
   v28[3] = &unk_279AB8690;
   v30 = &v37;
-  v9 = v6;
+  v9 = nameCopy;
   v29 = v9;
   [(_PASLock *)lock runWithLockAcquired:v28];
   v10 = dispatch_group_create();
@@ -1296,8 +1296,8 @@ uint64_t __79__ATXLocationManager_locationOfInterestAtCurrentLocationWithComplet
   [v38[5] coordinate];
   v13 = v12;
   v15 = v14;
-  v16 = [MEMORY[0x277CBEAA8] date];
-  v17 = [v11 initWithCoordinate:v16 altitude:v13 horizontalAccuracy:v15 verticalAccuracy:0.0 timestamp:{5.0, 0.0}];
+  date = [MEMORY[0x277CBEAA8] date];
+  v17 = [v11 initWithCoordinate:date altitude:v13 horizontalAccuracy:v15 verticalAccuracy:0.0 timestamp:{5.0, 0.0}];
   v18 = v38[5];
   v38[5] = v17;
 
@@ -1311,7 +1311,7 @@ uint64_t __79__ATXLocationManager_locationOfInterestAtCurrentLocationWithComplet
   v27 = &v31;
   v21 = v10;
   v26 = v21;
-  [(ATXLocationManagerRoutine *)routine fetchNextPredictedLOIFromLocation:v20 startDate:v7 timeInterval:1 requireHighConfidence:v25 reply:7200.0];
+  [(ATXLocationManagerRoutine *)routine fetchNextPredictedLOIFromLocation:v20 startDate:dateCopy timeInterval:1 requireHighConfidence:v25 reply:7200.0];
   if ([MEMORY[0x277D425A0] waitForGroup:v21 timeoutSeconds:self->_predictedNextLOITimeout] == 1)
   {
     v22 = __atxlog_handle_dailyroutines();
@@ -1370,10 +1370,10 @@ void __75__ATXLocationManager_getPredictedLocationsOfInterestFromLOIName_startDa
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getPredictedExitTimesFromLOIName:(id)a3 startDate:(id)a4
+- (id)getPredictedExitTimesFromLOIName:(id)name startDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  dateCopy = date;
   [(ATXLocationManager *)self updateCurrentLocationOfInterestIfTimeElapsed];
   v37 = 0;
   v38 = &v37;
@@ -1393,7 +1393,7 @@ void __75__ATXLocationManager_getPredictedLocationsOfInterestFromLOIName_startDa
   v28[2] = __65__ATXLocationManager_getPredictedExitTimesFromLOIName_startDate___block_invoke;
   v28[3] = &unk_279AB8690;
   v30 = &v37;
-  v9 = v6;
+  v9 = nameCopy;
   v29 = v9;
   [(_PASLock *)lock runWithLockAcquired:v28];
   v10 = dispatch_group_create();
@@ -1402,8 +1402,8 @@ void __75__ATXLocationManager_getPredictedLocationsOfInterestFromLOIName_startDa
   [v38[5] coordinate];
   v13 = v12;
   v15 = v14;
-  v16 = [MEMORY[0x277CBEAA8] date];
-  v17 = [v11 initWithCoordinate:v16 altitude:v13 horizontalAccuracy:v15 verticalAccuracy:0.0 timestamp:{5.0, 0.0}];
+  date = [MEMORY[0x277CBEAA8] date];
+  v17 = [v11 initWithCoordinate:date altitude:v13 horizontalAccuracy:v15 verticalAccuracy:0.0 timestamp:{5.0, 0.0}];
   v18 = v38[5];
   v38[5] = v17;
 
@@ -1417,7 +1417,7 @@ void __75__ATXLocationManager_getPredictedLocationsOfInterestFromLOIName_startDa
   v27 = &v31;
   v21 = v10;
   v26 = v21;
-  [(ATXLocationManagerRoutine *)routine fetchPredictedExitDatesFromLocation:v20 onDate:v7 requireHighConfidence:0 reply:v25];
+  [(ATXLocationManagerRoutine *)routine fetchPredictedExitDatesFromLocation:v20 onDate:dateCopy requireHighConfidence:0 reply:v25];
   if ([MEMORY[0x277D425A0] waitForGroup:v21 timeoutSeconds:self->_predictedExitDateTimeout] == 1)
   {
     v22 = __atxlog_handle_dailyroutines();
@@ -1637,8 +1637,8 @@ void __60__ATXLocationManager__updatePredictedExitTimesIfTimeElapsed__block_invo
 
 - (void)updatePredictedLocationsOfInterest
 {
-  v3 = [(ATXLocationManager *)self getCurrentLocation];
-  if (v3)
+  getCurrentLocation = [(ATXLocationManager *)self getCurrentLocation];
+  if (getCurrentLocation)
   {
     v4 = dispatch_group_create();
     dispatch_group_enter(v4);
@@ -1658,7 +1658,7 @@ void __60__ATXLocationManager__updatePredictedExitTimesIfTimeElapsed__block_invo
     v15 = &v16;
     v7 = v4;
     v14 = v7;
-    [(ATXLocationManagerRoutine *)routine fetchNextPredictedLOIFromLocation:v3 startDate:v6 timeInterval:1 requireHighConfidence:v13 reply:7200.0];
+    [(ATXLocationManagerRoutine *)routine fetchNextPredictedLOIFromLocation:getCurrentLocation startDate:v6 timeInterval:1 requireHighConfidence:v13 reply:7200.0];
 
     if ([MEMORY[0x277D425A0] waitForGroup:v7 timeoutSeconds:self->_predictedNextLOITimeout] == 1)
     {
@@ -1748,11 +1748,11 @@ void __56__ATXLocationManager_updatePredictedLocationsOfInterest__block_invoke_8
 
 - (void)updatePredictedExitTimes
 {
-  v3 = [(ATXLocationManager *)self getCurrentLocation];
-  v4 = v3;
-  if (v3)
+  getCurrentLocation = [(ATXLocationManager *)self getCurrentLocation];
+  v4 = getCurrentLocation;
+  if (getCurrentLocation)
   {
-    [v3 horizontalAccuracy];
+    [getCurrentLocation horizontalAccuracy];
     if (v5 <= 200.0)
     {
       v7 = dispatch_group_create();
@@ -1863,9 +1863,9 @@ void __46__ATXLocationManager_updatePredictedExitTimes__block_invoke_85(uint64_t
   v3[8] = v4;
 }
 
-- (double)_distanceOfCurrentLocationFrom:(id)a3
+- (double)_distanceOfCurrentLocationFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   [(ATXLocationManager *)self updateCurrentLocationOfInterestIfTimeElapsed];
   v22 = 0;
   v23 = &v22;
@@ -1886,7 +1886,7 @@ void __46__ATXLocationManager_updatePredictedExitTimes__block_invoke_85(uint64_t
   v12[3] = &unk_279AB8820;
   v14 = &v22;
   v15 = &v16;
-  v6 = v4;
+  v6 = fromCopy;
   v13 = v6;
   [(_PASLock *)lock runWithLockAcquired:v12];
   v7 = v23[5];
@@ -1919,20 +1919,20 @@ void __53__ATXLocationManager__distanceOfCurrentLocationFrom___block_invoke(void
   *(v6 + 40) = v5;
 }
 
-+ (id)debugDescriptionForCLLocation:(id)a3
++ (id)debugDescriptionForCLLocation:(id)location
 {
-  if (a3)
+  if (location)
   {
     v3 = MEMORY[0x277CCACA8];
-    v4 = a3;
+    locationCopy = location;
     v5 = [v3 alloc];
-    [v4 coordinate];
+    [locationCopy coordinate];
     v7 = v6;
-    [v4 coordinate];
+    [locationCopy coordinate];
     v9 = v8;
-    v10 = [v4 timestamp];
+    timestamp = [locationCopy timestamp];
 
-    [v10 timeIntervalSinceReferenceDate];
+    [timestamp timeIntervalSinceReferenceDate];
     v12 = [v5 initWithFormat:@"<CLLocation: lat: %f, long: %f, timestamp: %f>", v7, v9, v11];
   }
 
@@ -1944,25 +1944,25 @@ void __53__ATXLocationManager__distanceOfCurrentLocationFrom___block_invoke(void
   return v12;
 }
 
-+ (id)stringForLOIType:(int64_t)a3
++ (id)stringForLOIType:(int64_t)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
     v4 = &stru_287331708;
   }
 
   else
   {
-    v4 = *off_279AB8890[a3];
+    v4 = *off_279AB8890[type];
   }
 
   return v4;
 }
 
-- (BOOL)isAvailableLocationOfInterestType:(int64_t)a3
+- (BOOL)isAvailableLocationOfInterestType:(int64_t)type
 {
   [(ATXLocationManager *)self updateCurrentLocationOfInterestIfTimeElapsed];
-  v5 = [ATXLocationManager stringForLOIType:a3];
+  v5 = [ATXLocationManager stringForLOIType:type];
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -1990,10 +1990,10 @@ void __56__ATXLocationManager_isAvailableLocationOfInterestType___block_invoke(u
   *(*(*(a1 + 40) + 8) + 24) = v4 != 0;
 }
 
-- (void)fetchAllLocationsOfInterest:(id)a3
+- (void)fetchAllLocationsOfInterest:(id)interest
 {
   v4 = MEMORY[0x277CCA970];
-  v5 = a3;
+  interestCopy = interest;
   v6 = [v4 alloc];
   v7 = MEMORY[0x277CBEAA8];
   v8 = [(ATXLocationManager *)self now];
@@ -2001,16 +2001,16 @@ void __56__ATXLocationManager_isAvailableLocationOfInterestType___block_invoke(u
   v10 = [(ATXLocationManager *)self now];
   v11 = [v6 initWithStartDate:v9 endDate:v10];
 
-  [(ATXLocationManagerRoutine *)self->_routine fetchLOIVisitedDuring:v11 reply:v5];
+  [(ATXLocationManagerRoutine *)self->_routine fetchLOIVisitedDuring:v11 reply:interestCopy];
 }
 
 - (BOOL)isNearKnownTypeLocationOfInterest
 {
-  v2 = [(ATXLocationManager *)self locationOfInterestAtCurrentLocation];
-  v3 = v2;
-  if (v2)
+  locationOfInterestAtCurrentLocation = [(ATXLocationManager *)self locationOfInterestAtCurrentLocation];
+  v3 = locationOfInterestAtCurrentLocation;
+  if (locationOfInterestAtCurrentLocation)
   {
-    v4 = [v2 type] != -1;
+    v4 = [locationOfInterestAtCurrentLocation type] != -1;
   }
 
   else
@@ -2021,10 +2021,10 @@ void __56__ATXLocationManager_isAvailableLocationOfInterestType___block_invoke(u
   return v4;
 }
 
-- (BOOL)isLocationNearKnownTypeLocationOfInterest:(id)a3
+- (BOOL)isLocationNearKnownTypeLocationOfInterest:(id)interest
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  interestCopy = interest;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -2058,7 +2058,7 @@ void __56__ATXLocationManager_isAvailableLocationOfInterestType___block_invoke(u
 
         if (*(*(&v14 + 1) + 8 * i))
         {
-          [v4 distanceFromLocation:v14];
+          [interestCopy distanceFromLocation:v14];
           if (v10 <= [(ATXLocationParameters *)self->_modeGlobals locationOfInterestSearchRadius])
           {
             v11 = 1;
@@ -2128,12 +2128,12 @@ void __64__ATXLocationManager_isLocationNearKnownTypeLocationOfInterest___block_
 - (BOOL)isNearFrequentLocationOfInterest
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(ATXLocationManager *)self locationOfInterestAtCurrentLocation];
-  v4 = v3;
-  if (v3)
+  locationOfInterestAtCurrentLocation = [(ATXLocationManager *)self locationOfInterestAtCurrentLocation];
+  v4 = locationOfInterestAtCurrentLocation;
+  if (locationOfInterestAtCurrentLocation)
   {
-    v5 = [v3 visits];
-    v6 = [v5 count];
+    visits = [locationOfInterestAtCurrentLocation visits];
+    v6 = [visits count];
     v7 = v6 >= [(ATXLocationParameters *)self->_modeGlobals frequentLOIMinimumVisits];
   }
 
@@ -2155,13 +2155,13 @@ void __64__ATXLocationManager_isLocationNearKnownTypeLocationOfInterest___block_
       v9 = @"NO";
     }
 
-    v10 = [v4 visits];
+    visits2 = [v4 visits];
     v13 = 136315650;
     v14 = "[ATXLocationManager isNearFrequentLocationOfInterest]";
     v15 = 2112;
     v16 = v9;
     v17 = 2048;
-    v18 = [v10 count];
+    v18 = [visits2 count];
     _os_log_impl(&dword_260C9F000, v8, OS_LOG_TYPE_DEFAULT, "%s Location of interest is a frequently visited location: %@. Number of visits: %lu", &v13, 0x20u);
   }
 
@@ -2198,9 +2198,9 @@ uint64_t __45__ATXLocationManager_clearLocationOfInterest__block_invoke(uint64_t
   return [v3 clear];
 }
 
-- (unint64_t)getCurrentRoutineModeWithCurrentDate:(id)a3
+- (unint64_t)getCurrentRoutineModeWithCurrentDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -2219,17 +2219,17 @@ uint64_t __45__ATXLocationManager_clearLocationOfInterest__block_invoke(uint64_t
   v14[4] = &v19;
   v14[5] = &v15;
   [(_PASLock *)lock runWithLockAcquired:v14];
-  if (v20[5] && ([v4 timeIntervalSinceDate:?], v6 < 3600.0))
+  if (v20[5] && ([dateCopy timeIntervalSinceDate:?], v6 < 3600.0))
   {
     v7 = v16[3];
   }
 
   else
   {
-    v8 = [(ATXLocationManager *)self getCurrentLocation];
-    if (v8)
+    getCurrentLocation = [(ATXLocationManager *)self getCurrentLocation];
+    if (getCurrentLocation)
     {
-      v7 = [(ATXLocationManagerRoutine *)self->_routine fetchRoutineModeFromLocation:v8];
+      v7 = [(ATXLocationManagerRoutine *)self->_routine fetchRoutineModeFromLocation:getCurrentLocation];
     }
 
     else
@@ -2242,7 +2242,7 @@ uint64_t __45__ATXLocationManager_clearLocationOfInterest__block_invoke(uint64_t
     v11[1] = 3221225472;
     v11[2] = __59__ATXLocationManager_getCurrentRoutineModeWithCurrentDate___block_invoke_2;
     v11[3] = &unk_279AB8870;
-    v12 = v4;
+    v12 = dateCopy;
     v13 = v7;
     [(_PASLock *)v9 runWithLockAcquired:v11];
   }
@@ -2275,9 +2275,9 @@ void __59__ATXLocationManager_getCurrentRoutineModeWithCurrentDate___block_invok
   return self;
 }
 
-- (void)didChangeLocationEnabled:(BOOL)a3
+- (void)didChangeLocationEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     [(ATXLocationManager *)self updateCurrentLocationOfInterestIfTimeElapsed];
   }
@@ -2288,37 +2288,37 @@ void __59__ATXLocationManager_getCurrentRoutineModeWithCurrentDate___block_invok
   }
 }
 
-- (void)locationManagerGPS:(id)a3 didEnterRegionWithIdentifier:(id)a4
+- (void)locationManagerGPS:(id)s didEnterRegionWithIdentifier:(id)identifier
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  identifierCopy = identifier;
   [(ATXLocationManager *)self updatePredictedLocationsOfInterest];
   v6 = objc_alloc(MEMORY[0x277CCAB88]);
   v11 = @"ATXLocationManagerRegionIdentifierUserInfoKey";
-  v12[0] = v5;
+  v12[0] = identifierCopy;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
   v8 = [v6 initWithName:@"ATXLocationManagerDidEnterRegionNotification" object:self userInfo:v7];
 
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-  [v9 postNotification:v8];
+  [defaultCenter postNotification:v8];
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)locationManagerGPS:(id)a3 didExitRegionWithIdentifier:(id)a4
+- (void)locationManagerGPS:(id)s didExitRegionWithIdentifier:(id)identifier
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  identifierCopy = identifier;
   [(ATXLocationManager *)self updatePredictedLocationsOfInterest];
   v6 = objc_alloc(MEMORY[0x277CCAB88]);
   v11 = @"ATXLocationManagerRegionIdentifierUserInfoKey";
-  v12[0] = v5;
+  v12[0] = identifierCopy;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
   v8 = [v6 initWithName:@"ATXLocationManagerDidExitRegionNotification" object:self userInfo:v7];
 
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-  [v9 postNotification:v8];
+  [defaultCenter postNotification:v8];
   v10 = *MEMORY[0x277D85DE8];
 }
 

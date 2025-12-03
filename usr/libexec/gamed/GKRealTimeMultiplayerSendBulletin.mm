@@ -1,15 +1,15 @@
 @interface GKRealTimeMultiplayerSendBulletin
-+ (void)loadBulletinsForPushNotification:(id)a3 withHandler:(id)a4;
-- (GKRealTimeMultiplayerSendBulletin)initWithCoder:(id)a3;
-- (GKRealTimeMultiplayerSendBulletin)initWithPushNotification:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (void)loadBulletinsForPushNotification:(id)notification withHandler:(id)handler;
+- (GKRealTimeMultiplayerSendBulletin)initWithCoder:(id)coder;
+- (GKRealTimeMultiplayerSendBulletin)initWithPushNotification:(id)notification;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GKRealTimeMultiplayerSendBulletin
 
-- (GKRealTimeMultiplayerSendBulletin)initWithPushNotification:(id)a3
+- (GKRealTimeMultiplayerSendBulletin)initWithPushNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -24,16 +24,16 @@
 
   v15.receiver = self;
   v15.super_class = GKRealTimeMultiplayerSendBulletin;
-  v7 = [(GKRealTimeMultiplayerBulletin *)&v15 initWithPushNotification:v4];
+  v7 = [(GKRealTimeMultiplayerBulletin *)&v15 initWithPushNotification:notificationCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = [(GKRealTimeMultiplayerBulletin *)v7 clientDictionary];
-    v10 = [v9 objectForKeyedSubscript:@"bundle-id"];
+    clientDictionary = [(GKRealTimeMultiplayerBulletin *)v7 clientDictionary];
+    v10 = [clientDictionary objectForKeyedSubscript:@"bundle-id"];
     bundleIdentifier = v8->_bundleIdentifier;
     v8->_bundleIdentifier = v10;
 
-    v12 = [v4 objectForKeyedSubscript:@"y"];
+    v12 = [notificationCopy objectForKeyedSubscript:@"y"];
     sendReason = v8->_sendReason;
     v8->_sendReason = v12;
   }
@@ -41,9 +41,9 @@
   return v8;
 }
 
-- (GKRealTimeMultiplayerSendBulletin)initWithCoder:(id)a3
+- (GKRealTimeMultiplayerSendBulletin)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -58,14 +58,14 @@
 
   v13.receiver = self;
   v13.super_class = GKRealTimeMultiplayerSendBulletin;
-  v7 = [(GKRealTimeMultiplayerBulletin *)&v13 initWithCoder:v4];
+  v7 = [(GKRealTimeMultiplayerBulletin *)&v13 initWithCoder:coderCopy];
   if (v7)
   {
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
     bundleIdentifier = v7->_bundleIdentifier;
     v7->_bundleIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sendReason"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sendReason"];
     sendReason = v7->_sendReason;
     v7->_sendReason = v10;
   }
@@ -73,9 +73,9 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -90,27 +90,27 @@
 
   v9.receiver = self;
   v9.super_class = GKRealTimeMultiplayerSendBulletin;
-  [(GKRealTimeMultiplayerBulletin *)&v9 encodeWithCoder:v4];
-  v7 = [(GKRealTimeMultiplayerSendBulletin *)self bundleIdentifier];
-  [v4 encodeObject:v7 forKey:@"bundleIdentifier"];
+  [(GKRealTimeMultiplayerBulletin *)&v9 encodeWithCoder:coderCopy];
+  bundleIdentifier = [(GKRealTimeMultiplayerSendBulletin *)self bundleIdentifier];
+  [coderCopy encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
 
-  v8 = [(GKRealTimeMultiplayerSendBulletin *)self sendReason];
-  [v4 encodeObject:v8 forKey:@"sendReason"];
+  sendReason = [(GKRealTimeMultiplayerSendBulletin *)self sendReason];
+  [coderCopy encodeObject:sendReason forKey:@"sendReason"];
 }
 
-+ (void)loadBulletinsForPushNotification:(id)a3 withHandler:(id)a4
++ (void)loadBulletinsForPushNotification:(id)notification withHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  notificationCopy = notification;
+  handlerCopy = handler;
   v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%s:%d %s", "GKRealTimeMultiplayerBulletin.m", 1179, "+[GKRealTimeMultiplayerSendBulletin loadBulletinsForPushNotification:withHandler:]");
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100195960;
   v10[3] = &unk_100361270;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = notificationCopy;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = notificationCopy;
   [GKActivity named:v7 execute:v10];
 }
 

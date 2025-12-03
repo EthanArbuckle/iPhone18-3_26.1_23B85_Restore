@@ -1,42 +1,42 @@
 @interface PKTextInputCanvasController
-+ (id)defaultInkWithColor:(uint64_t)a1;
-+ (void)prewarmFutureCanvasesIfNecessarySecureRendering:(uint64_t)a1;
++ (id)defaultInkWithColor:(uint64_t)color;
++ (void)prewarmFutureCanvasesIfNecessarySecureRendering:(uint64_t)rendering;
 - (PKTextInputCanvasController)init;
-- (double)convertRect:(double)a3 toCanvasFromCoordinateSpace:(double)a4;
+- (double)convertRect:(double)rect toCanvasFromCoordinateSpace:(double)space;
 - (double)renderedStrokesBounds;
 - (id).cxx_construct;
 - (id)_containerView;
 - (id)canvasCoordinateSpace;
-- (id)canvasView:(id)a3 inkForStroke:(id)a4;
-- (id)canvasViewTouchView:(id)a3;
+- (id)canvasView:(id)view inkForStroke:(id)stroke;
+- (id)canvasViewTouchView:(id)view;
 - (id)defaultStrokeColor;
 - (id)inProgressStroke;
 - (uint64_t)canvasHasVisibleStrokes;
-- (void)_clearRecordedColorForStroke:(uint64_t)a1;
-- (void)_recordColorForStroke:(uint64_t)a1;
-- (void)_trackRecentlyRemovedStrokes:(uint64_t)a1;
+- (void)_clearRecordedColorForStroke:(uint64_t)stroke;
+- (void)_recordColorForStroke:(uint64_t)stroke;
+- (void)_trackRecentlyRemovedStrokes:(uint64_t)strokes;
 - (void)_updateCanvasView;
-- (void)_updateCanvasViewInkAnimated:(uint64_t)a1;
-- (void)_updateCanvasViewOffsetFromTouch:(uint64_t)a1;
+- (void)_updateCanvasViewInkAnimated:(uint64_t)animated;
+- (void)_updateCanvasViewOffsetFromTouch:(uint64_t)touch;
 - (void)_updateFloatingBackground;
-- (void)animateAndRemoveStrokes:(uint64_t)a3 destinationFrame:(CGFloat)a4 animationDuration:(CGFloat)a5 useImpreciseAnimation:(CGFloat)a6;
-- (void)canvasView:(id)a3 beganStroke:(id)a4;
-- (void)canvasView:(id)a3 cancelledStroke:(id)a4;
-- (void)canvasView:(id)a3 didPresentWithCanvasOffset:(CGPoint)a4;
-- (void)canvasView:(id)a3 drawingDidChange:(id)a4;
-- (void)canvasView:(id)a3 endedStroke:(id)a4;
-- (void)canvasViewDidBeginDrawing:(id)a3;
-- (void)canvasViewDidEndDrawing:(id)a3;
-- (void)canvasViewDidFinishAnimatingStrokes:(id)a3;
-- (void)canvasViewDrawingMoved:(id)a3 withTouch:(id)a4;
-- (void)canvasViewHasVisibleStrokesChanged:(id)a3;
-- (void)canvasViewWillBeginNewStroke:(id)a3 withTouch:(id)a4 location:(CGPoint)a5;
+- (void)animateAndRemoveStrokes:(uint64_t)strokes destinationFrame:(CGFloat)frame animationDuration:(CGFloat)duration useImpreciseAnimation:(CGFloat)animation;
+- (void)canvasView:(id)view beganStroke:(id)stroke;
+- (void)canvasView:(id)view cancelledStroke:(id)stroke;
+- (void)canvasView:(id)view didPresentWithCanvasOffset:(CGPoint)offset;
+- (void)canvasView:(id)view drawingDidChange:(id)change;
+- (void)canvasView:(id)view endedStroke:(id)stroke;
+- (void)canvasViewDidBeginDrawing:(id)drawing;
+- (void)canvasViewDidEndDrawing:(id)drawing;
+- (void)canvasViewDidFinishAnimatingStrokes:(id)strokes;
+- (void)canvasViewDrawingMoved:(id)moved withTouch:(id)touch;
+- (void)canvasViewHasVisibleStrokesChanged:(id)changed;
+- (void)canvasViewWillBeginNewStroke:(id)stroke withTouch:(id)touch location:(CGPoint)location;
 - (void)dealloc;
 - (void)reloadPreferredStrokeColor;
-- (void)removeStrokes:(double)a3 animationDuration:;
-- (void)reportDebugStateDescription:(id)a3;
-- (void)setDelegate:(uint64_t)a1;
-- (void)setFloatingBackgroundRect:(double)a3;
+- (void)removeStrokes:(double)strokes animationDuration:;
+- (void)reportDebugStateDescription:(id)description;
+- (void)setDelegate:(uint64_t)delegate;
+- (void)setFloatingBackgroundRect:(double)rect;
 @end
 
 @implementation PKTextInputCanvasController
@@ -65,29 +65,29 @@
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->__canvasView;
   }
 
-  v3 = [(PKTextInputCanvasController *)self drawingGestureRecognizer];
-  [v3 setDrawingTarget:0];
+  drawingGestureRecognizer = [(PKTextInputCanvasController *)self drawingGestureRecognizer];
+  [drawingGestureRecognizer setDrawingTarget:0];
 
-  v4.receiver = v2;
+  v4.receiver = selfCopy;
   v4.super_class = PKTextInputCanvasController;
   [(PKTextInputCanvasController *)&v4 dealloc];
 }
 
-+ (void)prewarmFutureCanvasesIfNecessarySecureRendering:(uint64_t)a1
++ (void)prewarmFutureCanvasesIfNecessarySecureRendering:(uint64_t)rendering
 {
   v3 = objc_opt_self();
   [PKTiledCanvasView prewarmFutureCanvasesIfNecessarySecureRendering:a2 prewarmSharedResourceHandler:0];
-  v5 = [MEMORY[0x1E69DC888] blackColor];
-  v4 = [(PKTextInputCanvasController *)v3 defaultInkWithColor:v5];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  v4 = [(PKTextInputCanvasController *)v3 defaultInkWithColor:blackColor];
 }
 
-+ (id)defaultInkWithColor:(uint64_t)a1
++ (id)defaultInkWithColor:(uint64_t)color
 {
   v2 = a2;
   objc_opt_self();
@@ -110,71 +110,71 @@
   return v6;
 }
 
-- (void)_updateCanvasViewInkAnimated:(uint64_t)a1
+- (void)_updateCanvasViewInkAnimated:(uint64_t)animated
 {
-  if (*(a1 + 96))
+  if (*(animated + 96))
   {
-    v4 = *(a1 + 88);
-    if (!v4)
+    whiteColor = *(animated + 88);
+    if (!whiteColor)
     {
-      v4 = [MEMORY[0x1E69DC888] whiteColor];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
     }
 
-    v8 = v4;
-    v5 = [PKTextInputCanvasController defaultInkWithColor:v4];
-    [*(a1 + 96) setInk:v5];
+    v8 = whiteColor;
+    v5 = [PKTextInputCanvasController defaultInkWithColor:whiteColor];
+    [*(animated + 96) setInk:v5];
 
-    v6 = *(a1 + 88);
-    v7 = *(a1 + 56);
+    v6 = *(animated + 88);
+    v7 = *(animated + 56);
     if (v7)
     {
-      [(PKTextInputCanvasController *)a1 _recordColorForStroke:v7];
+      [(PKTextInputCanvasController *)animated _recordColorForStroke:v7];
     }
 
-    [*(a1 + 96) setLiveRenderingOverrideColor:v6 animated:a2];
+    [*(animated + 96) setLiveRenderingOverrideColor:v6 animated:a2];
   }
 }
 
 - (id)defaultStrokeColor
 {
-  if (a1)
+  if (self)
   {
-    a1 = [MEMORY[0x1E69DC888] whiteColor];
+    self = [MEMORY[0x1E69DC888] whiteColor];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)_containerView
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained(a1 + 9);
-    v1 = [WeakRetained canvasControllerContainerView:v1];
+    WeakRetained = objc_loadWeakRetained(self + 9);
+    selfCopy = [WeakRetained canvasControllerContainerView:selfCopy];
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (void)_updateCanvasView
 {
   v59[4] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 64) & 1) != 0 || (*(a1 + 65))
+    if (*(self + 64) & 1) != 0 || (*(self + 65))
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 72));
+      WeakRetained = objc_loadWeakRetained((self + 72));
       v3 = WeakRetained != 0;
 
-      v5 = (a1 + 96);
-      v4 = *(a1 + 96);
+      v5 = (self + 96);
+      v4 = *(self + 96);
       v6 = v4 == 0;
       if (WeakRetained && !v4)
       {
         v7 = +[PKTextInputSettings sharedSettings];
-        *(a1 + 16) = [v7 useSlidingCanvas];
+        *(self + 16) = [v7 useSlidingCanvas];
 
         v8 = +[PKTextInputSettings sharedSettings];
         [v8 slidingCanvasWidth];
@@ -185,10 +185,10 @@
         v13 = v12;
 
         v14 = +[PKTextInputSettings sharedSettings];
-        v15 = [v14 useSingleComponentCanvas];
+        useSingleComponentCanvas = [v14 useSingleComponentCanvas];
 
         v16 = [PKTiledCanvasView alloc];
-        v17 = [(PKTiledCanvasView *)v16 initWithFrame:1 usePrivateResourceHandler:v15 singleComponent:0 sixChannelBlending:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+        v17 = [(PKTiledCanvasView *)v16 initWithFrame:1 usePrivateResourceHandler:useSingleComponentCanvas singleComponent:0 sixChannelBlending:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
         [(PKTiledCanvasView *)v17 setResourceCacheSize:0x800000];
         [(PKTiledCanvasView *)v17 setDisableAXDrawingAnnouncements:1];
         [(PKTiledCanvasView *)v17 setOverrideUserInterfaceStyle:1];
@@ -203,11 +203,11 @@
         if ((PK_UIApplicationIsSystemShell___result & 1) == 0)
         {
           v20 = MEMORY[0x1CCA6F790]();
-          if (*(a1 + 16) == 1)
+          if (*(self + 16) == 1)
           {
             +[PKMetalUtility layerContentsScale];
             v22 = 18;
-            if (v15)
+            if (useSingleComponentCanvas)
             {
               v22 = 12;
             }
@@ -226,32 +226,32 @@
           }
         }
 
-        [(PKTiledCanvasView *)v17 setDelegate:a1];
+        [(PKTiledCanvasView *)v17 setDelegate:self];
         [(PKTiledCanvasView *)v17 setOpaque:0];
         [(PKTiledCanvasView *)v17 setLiveStrokeMode:1];
         [(PKTiledCanvasView *)v17 setUseLuminanceColorFilter:1];
-        objc_storeStrong((a1 + 96), v17);
-        [(PKTextInputCanvasController *)a1 _updateCanvasViewInkAnimated:?];
-        v29 = objc_loadWeakRetained((a1 + 72));
-        v30 = [v29 canvasControllerContainerView:a1];
+        objc_storeStrong((self + 96), v17);
+        [(PKTextInputCanvasController *)self _updateCanvasViewInkAnimated:?];
+        v29 = objc_loadWeakRetained((self + 72));
+        v30 = [v29 canvasControllerContainerView:self];
 
         v58 = v30;
         [v30 addSubview:v17];
         [(PKTiledCanvasView *)v17 setTranslatesAutoresizingMaskIntoConstraints:0];
-        if (*(a1 + 16) == 1)
+        if (*(self + 16) == 1)
         {
           v31 = +[PKTextInputSettings sharedSettings];
-          v32 = [v31 slidingCanvasDebugBorder];
+          slidingCanvasDebugBorder = [v31 slidingCanvasDebugBorder];
 
-          if (v32)
+          if (slidingCanvasDebugBorder)
           {
-            v33 = [MEMORY[0x1E69DC888] labelColor];
-            v34 = [v33 CGColor];
-            v35 = [(PKTiledCanvasView *)v17 layer];
-            [v35 setBorderColor:v34];
+            labelColor = [MEMORY[0x1E69DC888] labelColor];
+            cGColor = [labelColor CGColor];
+            layer = [(PKTiledCanvasView *)v17 layer];
+            [layer setBorderColor:cGColor];
 
-            v36 = [(PKTiledCanvasView *)v17 layer];
-            [v36 setBorderWidth:1.0];
+            layer2 = [(PKTiledCanvasView *)v17 layer];
+            [layer2 setBorderWidth:1.0];
           }
 
           v37 = +[PKTextInputSettings sharedSettings];
@@ -268,37 +268,37 @@
 
         else
         {
-          v56 = [(PKTiledCanvasView *)v17 leadingAnchor];
-          v55 = [v30 leadingAnchor];
-          v54 = [v56 constraintEqualToAnchor:v55];
+          leadingAnchor = [(PKTiledCanvasView *)v17 leadingAnchor];
+          leadingAnchor2 = [v30 leadingAnchor];
+          v54 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
           v59[0] = v54;
-          v57 = [(PKTiledCanvasView *)v17 trailingAnchor];
-          v53 = [v30 trailingAnchor];
-          v43 = [v57 constraintEqualToAnchor:?];
+          trailingAnchor = [(PKTiledCanvasView *)v17 trailingAnchor];
+          trailingAnchor2 = [v30 trailingAnchor];
+          v43 = [trailingAnchor constraintEqualToAnchor:?];
           v59[1] = v43;
-          v44 = [(PKTiledCanvasView *)v17 topAnchor];
-          v45 = [v30 topAnchor];
-          v46 = [v44 constraintEqualToAnchor:v45];
+          topAnchor = [(PKTiledCanvasView *)v17 topAnchor];
+          topAnchor2 = [v30 topAnchor];
+          v46 = [topAnchor constraintEqualToAnchor:topAnchor2];
           v59[2] = v46;
-          v47 = [(PKTiledCanvasView *)v17 bottomAnchor];
-          v48 = [v58 bottomAnchor];
-          v49 = [v47 constraintEqualToAnchor:v48];
+          bottomAnchor = [(PKTiledCanvasView *)v17 bottomAnchor];
+          bottomAnchor2 = [v58 bottomAnchor];
+          v49 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
           v59[3] = v49;
           v50 = [MEMORY[0x1E695DEC8] arrayWithObjects:v59 count:4];
 
           [MEMORY[0x1E696ACD8] activateConstraints:v50];
         }
 
-        v51 = objc_loadWeakRetained((a1 + 72));
-        v52 = [v51 canvasControllerDrawingGestureRecognizer:a1];
+        v51 = objc_loadWeakRetained((self + 72));
+        v52 = [v51 canvasControllerDrawingGestureRecognizer:self];
 
         [(PKTiledCanvasView *)v17 setDrawingGestureRecognizer:v52];
         [v52 setDrawingTarget:v17];
         +[PKTextInputDebugStateIntrospector debugStateDidChange];
 
 LABEL_28:
-        [*(a1 + 96) setHidden:(*(a1 + 64) & 1) == 0];
-        [(PKTextInputCanvasController *)a1 _updateFloatingBackground];
+        [*(self + 96) setHidden:(*(self + 64) & 1) == 0];
+        [(PKTextInputCanvasController *)self _updateFloatingBackground];
         return;
       }
     }
@@ -306,22 +306,22 @@ LABEL_28:
     else
     {
       v3 = 0;
-      v5 = (a1 + 96);
-      v4 = *(a1 + 96);
+      v5 = (self + 96);
+      v4 = *(self + 96);
       v6 = v4 == 0;
     }
 
     if (!v3 && !v6)
     {
       v24 = v4;
-      v25 = [v24 drawingGestureRecognizer];
-      v26 = [v25 drawingTarget];
+      drawingGestureRecognizer = [v24 drawingGestureRecognizer];
+      drawingTarget = [drawingGestureRecognizer drawingTarget];
       v27 = *v5;
 
-      if (v26 == v27)
+      if (drawingTarget == v27)
       {
-        v28 = [*v5 drawingGestureRecognizer];
-        [v28 setDrawingTarget:0];
+        drawingGestureRecognizer2 = [*v5 drawingGestureRecognizer];
+        [drawingGestureRecognizer2 setDrawingTarget:0];
       }
 
       [*v5 removeFromSuperview];
@@ -357,15 +357,15 @@ LABEL_28:
 
 - (double)renderedStrokesBounds
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v2 = *(a1 + 96);
+  v2 = *(self + 96);
   if (v2)
   {
-    [*(a1 + 96) renderedStrokesBounds];
+    [*(self + 96) renderedStrokesBounds];
     v4 = v3;
   }
 
@@ -379,51 +379,51 @@ LABEL_28:
 
 - (id)inProgressStroke
 {
-  if (a1)
+  if (self)
   {
-    v1 = [*(a1 + 96) currentStrokeWithStrokeDataCopy];
-    [v1 _setIsInProgressScribbleStroke:1];
+    currentStrokeWithStrokeDataCopy = [*(self + 96) currentStrokeWithStrokeDataCopy];
+    [currentStrokeWithStrokeDataCopy _setIsInProgressScribbleStroke:1];
   }
 
   else
   {
-    v1 = 0;
+    currentStrokeWithStrokeDataCopy = 0;
   }
 
-  return v1;
+  return currentStrokeWithStrokeDataCopy;
 }
 
-- (void)setDelegate:(uint64_t)a1
+- (void)setDelegate:(uint64_t)delegate
 {
   obj = a2;
-  if (a1)
+  if (delegate)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 72));
+    WeakRetained = objc_loadWeakRetained((delegate + 72));
 
     if (WeakRetained != obj)
     {
-      objc_storeWeak((a1 + 72), obj);
-      [(PKTextInputCanvasController *)a1 _updateCanvasView];
+      objc_storeWeak((delegate + 72), obj);
+      [(PKTextInputCanvasController *)delegate _updateCanvasView];
     }
   }
 }
 
 - (void)reloadPreferredStrokeColor
 {
-  if (a1)
+  if (self)
   {
     v11 = 0;
-    WeakRetained = objc_loadWeakRetained((a1 + 72));
-    v3 = [WeakRetained canvasControllerPreferredStrokeColor:a1 animated:&v11];
+    WeakRetained = objc_loadWeakRetained((self + 72));
+    whiteColor = [WeakRetained canvasControllerPreferredStrokeColor:self animated:&v11];
 
-    if (!v3)
+    if (!whiteColor)
     {
-      v3 = [MEMORY[0x1E69DC888] whiteColor];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
     }
 
     v4 = v11;
-    v5 = v3;
-    v6 = *(a1 + 88);
+    v5 = whiteColor;
+    v6 = *(self + 88);
     if (v6 == v5)
     {
       goto LABEL_12;
@@ -451,22 +451,22 @@ LABEL_28:
     {
     }
 
-    objc_storeStrong((a1 + 88), v3);
-    [(PKTextInputCanvasController *)a1 _updateCanvasViewInkAnimated:v4];
+    objc_storeStrong((self + 88), whiteColor);
+    [(PKTextInputCanvasController *)self _updateCanvasViewInkAnimated:v4];
 LABEL_12:
   }
 }
 
-- (double)convertRect:(double)a3 toCanvasFromCoordinateSpace:(double)a4
+- (double)convertRect:(double)rect toCanvasFromCoordinateSpace:(double)space
 {
   v17 = *MEMORY[0x1E69E9840];
   v11 = a2;
-  if (a1)
+  if (self)
   {
-    v12 = [(PKTextInputCanvasController *)a1 _containerView];
-    if (v12)
+    _containerView = [(PKTextInputCanvasController *)self _containerView];
+    if (_containerView)
     {
-      a3 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(v11, v12, a3, a4, a5, a6);
+      rect = PK_convertRectFromCoordinateSpaceToCoordinateSpace(v11, _containerView, rect, space, a5, a6);
     }
 
     else
@@ -475,7 +475,7 @@ LABEL_12:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         v15 = 138412290;
-        v16 = a1;
+        selfCopy = self;
         _os_log_error_impl(&dword_1C7CCA000, v13, OS_LOG_TYPE_ERROR, "Trying to convert a rect from a canvas view that has no container view. Canvas controller: %@", &v15, 0xCu);
       }
     }
@@ -483,28 +483,28 @@ LABEL_12:
 
   else
   {
-    a3 = 0.0;
+    rect = 0.0;
   }
 
-  return a3;
+  return rect;
 }
 
 - (id)canvasCoordinateSpace
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(PKTextInputCanvasController *)a1 _containerView];
+    self = [(PKTextInputCanvasController *)self _containerView];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)removeStrokes:(double)a3 animationDuration:
+- (void)removeStrokes:(double)strokes animationDuration:
 {
   v10 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  if (a1)
+  if (self)
   {
     v6 = os_log_create("com.apple.pencilkit", "PencilTextInput");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -515,12 +515,12 @@ LABEL_12:
       _os_log_impl(&dword_1C7CCA000, v6, OS_LOG_TYPE_INFO, "Fade out strokes from canvas: %@", &v8, 0xCu);
     }
 
-    [*(a1 + 96) fadeOutAndHideStrokes:v5 duration:a3];
-    [(PKTextInputCanvasController *)a1 _trackRecentlyRemovedStrokes:v5];
+    [*(self + 96) fadeOutAndHideStrokes:v5 duration:strokes];
+    [(PKTextInputCanvasController *)self _trackRecentlyRemovedStrokes:v5];
   }
 }
 
-- (void)_trackRecentlyRemovedStrokes:(uint64_t)a1
+- (void)_trackRecentlyRemovedStrokes:(uint64_t)strokes
 {
   v13 = *MEMORY[0x1E69E9840];
   v8 = 0u;
@@ -542,10 +542,10 @@ LABEL_12:
           objc_enumerationMutation(v3);
         }
 
-        v7 = [*(*(&v8 + 1) + 8 * v6) _strokeUUID];
-        if (v7)
+        _strokeUUID = [*(*(&v8 + 1) + 8 * v6) _strokeUUID];
+        if (_strokeUUID)
         {
-          [*(a1 + 8) addObject:v7];
+          [*(strokes + 8) addObject:_strokeUUID];
         }
 
         ++v6;
@@ -559,18 +559,18 @@ LABEL_12:
   }
 }
 
-- (void)animateAndRemoveStrokes:(uint64_t)a3 destinationFrame:(CGFloat)a4 animationDuration:(CGFloat)a5 useImpreciseAnimation:(CGFloat)a6
+- (void)animateAndRemoveStrokes:(uint64_t)strokes destinationFrame:(CGFloat)frame animationDuration:(CGFloat)duration useImpreciseAnimation:(CGFloat)animation
 {
   v23 = *MEMORY[0x1E69E9840];
   v15 = a2;
-  if (a1)
+  if (self)
   {
     v16 = os_log_create("com.apple.pencilkit", "PencilTextInput");
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
-      v24.origin.x = a4;
-      v24.origin.y = a5;
-      v24.size.width = a6;
+      v24.origin.x = frame;
+      v24.origin.y = duration;
+      v24.size.width = animation;
       v24.size.height = a7;
       v17 = NSStringFromCGRect(v24);
       v18 = [PKDrawing _uuidDescriptionForStrokes:v15];
@@ -581,47 +581,47 @@ LABEL_12:
       _os_log_impl(&dword_1C7CCA000, v16, OS_LOG_TYPE_INFO, "Animate out strokes from canvas. Frame: %@, strokes: %@", &v19, 0x16u);
     }
 
-    [*(a1 + 96) animateStrokes:v15 destinationFrame:a3 duration:a4 particles:{a5, a6, a7, a8}];
-    [(PKTextInputCanvasController *)a1 _trackRecentlyRemovedStrokes:v15];
+    [*(self + 96) animateStrokes:v15 destinationFrame:strokes duration:frame particles:{duration, animation, a7, a8}];
+    [(PKTextInputCanvasController *)self _trackRecentlyRemovedStrokes:v15];
   }
 }
 
-- (void)setFloatingBackgroundRect:(double)a3
+- (void)setFloatingBackgroundRect:(double)rect
 {
-  if (a1 && !CGRectEqualToRect(*&a2, *(a1 + 112)))
+  if (self && !CGRectEqualToRect(*&a2, *(self + 112)))
   {
-    *(a1 + 112) = a2;
-    *(a1 + 120) = a3;
-    *(a1 + 128) = a4;
-    *(a1 + 136) = a5;
+    *(self + 112) = a2;
+    *(self + 120) = rect;
+    *(self + 128) = a4;
+    *(self + 136) = a5;
 
-    [(PKTextInputCanvasController *)a1 _updateFloatingBackground];
+    [(PKTextInputCanvasController *)self _updateFloatingBackground];
   }
 }
 
 - (void)_updateFloatingBackground
 {
   v42 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v2 = *(a1 + 96);
-  v3 = [v2 superview];
-  v4 = v3 && !CGRectIsEmpty(*(a1 + 112)) && !CGRectIsNull(*(a1 + 112));
+  v2 = *(self + 96);
+  superview = [v2 superview];
+  v4 = superview && !CGRectIsEmpty(*(self + 112)) && !CGRectIsNull(*(self + 112));
 
-  v5 = *(a1 + 104);
+  v5 = *(self + 104);
   if (v4 && !v5)
   {
     v6 = [PKTextInputFloatingBackgroundView alloc];
     v7 = [(PKTextInputFloatingBackgroundView *)v6 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-    v8 = *(a1 + 104);
-    *(a1 + 104) = v7;
+    v8 = *(self + 104);
+    *(self + 104) = v7;
 
-    v9 = *(a1 + 96);
-    v10 = [v9 superview];
-    [v10 insertSubview:v7 belowSubview:*(a1 + 96)];
+    v9 = *(self + 96);
+    superview2 = [v9 superview];
+    [superview2 insertSubview:v7 belowSubview:*(self + 96)];
 
     [(PKTextInputFloatingBackgroundView *)v7 setAlpha:0.0];
     v11 = MEMORY[0x1E69DD250];
@@ -651,8 +651,8 @@ LABEL_14:
   if ((v14 & 1) == 0)
   {
     v15 = v5;
-    v16 = *(a1 + 104);
-    *(a1 + 104) = 0;
+    v16 = *(self + 104);
+    *(self + 104) = 0;
 
     v17 = +[PKTextInputSettings sharedSettings];
     [v17 textInputStrokeFadeOutDuration];
@@ -679,17 +679,17 @@ LABEL_14:
 LABEL_15:
   if (v4)
   {
-    v22 = *(a1 + 112);
-    v21 = *(a1 + 120);
-    v24 = *(a1 + 128);
-    v23 = *(a1 + 136);
-    v25 = *(a1 + 104);
-    v26 = [v25 superview];
-    v27 = [(PKTextInputCanvasController *)a1 _containerView];
-    v28 = v27;
-    if (v27)
+    v22 = *(self + 112);
+    v21 = *(self + 120);
+    v24 = *(self + 128);
+    v23 = *(self + 136);
+    v25 = *(self + 104);
+    superview3 = [v25 superview];
+    _containerView = [(PKTextInputCanvasController *)self _containerView];
+    v28 = _containerView;
+    if (_containerView)
     {
-      v22 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(v27, v26, v22, v21, v24, v23);
+      v22 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(_containerView, superview3, v22, v21, v24, v23);
       v21 = v29;
       v24 = v30;
       v23 = v31;
@@ -701,7 +701,7 @@ LABEL_15:
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v41 = a1;
+        selfCopy = self;
         _os_log_error_impl(&dword_1C7CCA000, v32, OS_LOG_TYPE_ERROR, "Trying to convert a rect to a canvas view that has no container view. Canvas controller: %@", buf, 0xCu);
       }
     }
@@ -716,7 +716,7 @@ LABEL_15:
       v33 = 0.0;
     }
 
-    v34[4] = a1;
+    v34[4] = self;
     *&v34[5] = v22;
     *&v34[6] = v21;
     *&v34[7] = v24;
@@ -745,34 +745,34 @@ uint64_t __56__PKTextInputCanvasController__updateFloatingBackground__block_invo
   return [v6 setFrame:{v1, v2, v3, v4}];
 }
 
-- (void)_recordColorForStroke:(uint64_t)a1
+- (void)_recordColorForStroke:(uint64_t)stroke
 {
   v7 = a2;
-  if (a1)
+  if (stroke)
   {
-    v3 = *(a1 + 48);
+    v3 = *(stroke + 48);
     objc_sync_enter(v3);
-    v4 = *(a1 + 88);
-    v5 = *(a1 + 48);
-    v6 = [v7 _strokeUUID];
+    v4 = *(stroke + 88);
+    v5 = *(stroke + 48);
+    _strokeUUID = [v7 _strokeUUID];
     if (v4)
     {
-      [v5 setObject:v4 forKeyedSubscript:v6];
+      [v5 setObject:v4 forKeyedSubscript:_strokeUUID];
     }
 
     else
     {
-      [v5 removeObjectForKey:v6];
+      [v5 removeObjectForKey:_strokeUUID];
     }
 
     objc_sync_exit(v3);
   }
 }
 
-- (void)_updateCanvasViewOffsetFromTouch:(uint64_t)a1
+- (void)_updateCanvasViewOffsetFromTouch:(uint64_t)touch
 {
   v3 = a2;
-  if (a1 && *(a1 + 16) == 1)
+  if (touch && *(touch + 16) == 1)
   {
     v27 = 0;
     v28 = &v27;
@@ -782,26 +782,26 @@ uint64_t __56__PKTextInputCanvasController__updateFloatingBackground__block_invo
     v32 = "";
     v33 = 0u;
     v34 = 0u;
-    [*(a1 + 96) frame];
+    [*(touch + 96) frame];
     *&v33 = v4;
     *(&v33 + 1) = v5;
     *&v34 = v6;
     *(&v34 + 1) = v7;
-    [*(a1 + 96) visibleStrokesBounds];
+    [*(touch + 96) visibleStrokesBounds];
     v8 = v28;
     v8[6] = DKDUpdateFixedSizeRectToIncludeRectIfPossible(v28[6], v28[7], v28[8], v28[9], v9, v10, v11, v12, 16.0, 16.0);
     *(v8 + 7) = v13;
     *(v8 + 8) = v14;
     *(v8 + 9) = v15;
-    v16 = *(a1 + 96);
+    v16 = *(touch + 96);
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __64__PKTextInputCanvasController__updateCanvasViewOffsetFromTouch___block_invoke;
     v26[3] = &unk_1E82D98B0;
     v26[4] = &v27;
     [v16 enumerateRenderedStrokesBounds:v26];
-    v17 = *(a1 + 24);
-    v18 = *(a1 + 32);
+    v17 = *(touch + 24);
+    v18 = *(touch + 32);
     v19 = v28;
     if (v17 == v18)
     {
@@ -830,7 +830,7 @@ uint64_t __56__PKTextInputCanvasController__updateFloatingBackground__block_invo
       while (v17 != v18);
     }
 
-    [*(a1 + 96) setCanvasOffset:{v20, v21}];
+    [*(touch + 96) setCanvasOffset:{v20, v21}];
     _Block_object_dispose(&v27, 8);
   }
 }
@@ -844,27 +844,27 @@ void __64__PKTextInputCanvasController__updateCanvasViewOffsetFromTouch___block_
   *(v5 + 9) = v8;
 }
 
-- (void)_clearRecordedColorForStroke:(uint64_t)a1
+- (void)_clearRecordedColorForStroke:(uint64_t)stroke
 {
   v3 = a2;
-  if (a1)
+  if (stroke)
   {
     v7 = v3;
-    v4 = *(a1 + 48);
+    v4 = *(stroke + 48);
     objc_sync_enter(v4);
-    v5 = *(a1 + 48);
-    v6 = [v7 _strokeUUID];
-    [v5 removeObjectForKey:v6];
+    v5 = *(stroke + 48);
+    _strokeUUID = [v7 _strokeUUID];
+    [v5 removeObjectForKey:_strokeUUID];
 
     objc_sync_exit(v4);
     v3 = v7;
   }
 }
 
-- (void)canvasView:(id)a3 didPresentWithCanvasOffset:(CGPoint)a4
+- (void)canvasView:(id)view didPresentWithCanvasOffset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   if (self)
   {
     [(PKTiledCanvasView *)self->__canvasView frame];
@@ -880,22 +880,22 @@ void __64__PKTextInputCanvasController__updateCanvasViewOffsetFromTouch___block_
   [(PKTiledCanvasView *)canvasView setFrame:x, y];
 }
 
-- (id)canvasView:(id)a3 inkForStroke:(id)a4
+- (id)canvasView:(id)view inkForStroke:(id)stroke
 {
-  v5 = a4;
+  strokeCopy = stroke;
   v6 = self->_strokeColorForStrokeUUID;
   objc_sync_enter(v6);
   strokeColorForStrokeUUID = self->_strokeColorForStrokeUUID;
-  v8 = [v5 _strokeUUID];
-  v9 = [(NSMutableDictionary *)strokeColorForStrokeUUID objectForKeyedSubscript:v8];
+  _strokeUUID = [strokeCopy _strokeUUID];
+  v9 = [(NSMutableDictionary *)strokeColorForStrokeUUID objectForKeyedSubscript:_strokeUUID];
 
   objc_sync_exit(v6);
-  v10 = [v5 ink];
+  v10 = [strokeCopy ink];
   v11 = v10;
   if (v9)
   {
-    v12 = [v10 color];
-    v13 = [v9 isEqual:v12];
+    color = [v10 color];
+    v13 = [v9 isEqual:color];
 
     if ((v13 & 1) == 0)
     {
@@ -908,9 +908,9 @@ void __64__PKTextInputCanvasController__updateCanvasViewOffsetFromTouch___block_
   return v11;
 }
 
-- (void)canvasViewDidBeginDrawing:(id)a3
+- (void)canvasViewDidBeginDrawing:(id)drawing
 {
-  v5 = a3;
+  drawingCopy = drawing;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_changeObserver);
@@ -926,32 +926,32 @@ void __64__PKTextInputCanvasController__updateCanvasViewOffsetFromTouch___block_
   +[PKTextInputDebugStateIntrospector debugStateDidChange];
 }
 
-- (void)canvasView:(id)a3 beganStroke:(id)a4
+- (void)canvasView:(id)view beganStroke:(id)stroke
 {
   v11 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  objc_storeStrong(&self->_currentStroke, a4);
-  [(PKTextInputCanvasController *)self _recordColorForStroke:v6];
+  strokeCopy = stroke;
+  objc_storeStrong(&self->_currentStroke, stroke);
+  [(PKTextInputCanvasController *)self _recordColorForStroke:strokeCopy];
   v7 = os_log_create("com.apple.pencilkit", "PencilTextInput");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [v6 _strokeUUID];
+    _strokeUUID = [strokeCopy _strokeUUID];
     v9 = 138412290;
-    v10 = v8;
+    v10 = _strokeUUID;
     _os_log_impl(&dword_1C7CCA000, v7, OS_LOG_TYPE_INFO, "canvasViewBeganStroke: %@", &v9, 0xCu);
   }
 }
 
-- (void)canvasView:(id)a3 endedStroke:(id)a4
+- (void)canvasView:(id)view endedStroke:(id)stroke
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  strokeCopy = stroke;
   v6 = os_log_create("com.apple.pencilkit", "PencilTextInput");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [v5 _strokeUUID];
+    _strokeUUID = [strokeCopy _strokeUUID];
     v10 = 138412290;
-    v11 = v7;
+    v11 = _strokeUUID;
     _os_log_impl(&dword_1C7CCA000, v6, OS_LOG_TYPE_INFO, "canvasViewEndedStroke: %@", &v10, 0xCu);
   }
 
@@ -968,16 +968,16 @@ void __64__PKTextInputCanvasController__updateCanvasViewOffsetFromTouch___block_
   [WeakRetained canvasControllerEndedStroke:self];
 
   +[PKTextInputDebugStateIntrospector debugStateDidChange];
-  [(PKTextInputCanvasController *)self _clearRecordedColorForStroke:v5];
+  [(PKTextInputCanvasController *)self _clearRecordedColorForStroke:strokeCopy];
   currentStroke = self->_currentStroke;
   self->_currentStroke = 0;
 }
 
-- (void)canvasView:(id)a3 cancelledStroke:(id)a4
+- (void)canvasView:(id)view cancelledStroke:(id)stroke
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  strokeCopy = stroke;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -993,9 +993,9 @@ void __64__PKTextInputCanvasController__updateCanvasViewOffsetFromTouch___block_
   v10 = os_log_create("com.apple.pencilkit", "PencilTextInput");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v7 _strokeUUID];
+    _strokeUUID = [strokeCopy _strokeUUID];
     v14 = 138412546;
-    v15 = v11;
+    v15 = _strokeUUID;
     v16 = 2112;
     v17 = v9;
     _os_log_impl(&dword_1C7CCA000, v10, OS_LOG_TYPE_DEFAULT, "canvasViewCancelledStroke: %@, gesture: %@", &v14, 0x16u);
@@ -1014,33 +1014,33 @@ void __64__PKTextInputCanvasController__updateCanvasViewOffsetFromTouch___block_
   [v12 canvasControllerDidCancelStroke:self strokeAcceptanceState:{objc_msgSend(v9, "strokeAcceptanceState")}];
 
   +[PKTextInputDebugStateIntrospector debugStateDidChange];
-  [(PKTextInputCanvasController *)self _clearRecordedColorForStroke:v7];
+  [(PKTextInputCanvasController *)self _clearRecordedColorForStroke:strokeCopy];
   currentStroke = self->_currentStroke;
   self->_currentStroke = 0;
 }
 
-- (void)canvasViewWillBeginNewStroke:(id)a3 withTouch:(id)a4 location:(CGPoint)a5
+- (void)canvasViewWillBeginNewStroke:(id)stroke withTouch:(id)touch location:(CGPoint)location
 {
-  v7 = a4;
+  touchCopy = touch;
   currentStroke = self->_currentStroke;
   self->_currentStroke = 0;
 
   std::vector<CGPoint>::resize(&self->_currentStrokePoints.__begin_, 0);
   std::vector<CGPoint>::reserve(&self->_currentStrokePoints.__begin_, 0x400uLL);
-  [(PKTextInputCanvasController *)self _updateCanvasViewOffsetFromTouch:v7];
+  [(PKTextInputCanvasController *)self _updateCanvasViewOffsetFromTouch:touchCopy];
 }
 
-- (void)canvasViewDrawingMoved:(id)a3 withTouch:(id)a4
+- (void)canvasViewDrawingMoved:(id)moved withTouch:(id)touch
 {
-  v39 = a3;
-  v6 = a4;
-  v7 = v6;
+  movedCopy = moved;
+  touchCopy = touch;
+  v7 = touchCopy;
   if (self)
   {
-    if (v6)
+    if (touchCopy)
     {
-      v8 = [(PKTextInputCanvasController *)&self->super.isa _containerView];
-      [v7 PK_locationInView:v8];
+      _containerView = [(PKTextInputCanvasController *)&self->super.isa _containerView];
+      [v7 PK_locationInView:_containerView];
       v10 = v9;
       v12 = v11;
     }
@@ -1142,9 +1142,9 @@ void __64__PKTextInputCanvasController__updateCanvasViewOffsetFromTouch___block_
   }
 }
 
-- (void)canvasViewDidEndDrawing:(id)a3
+- (void)canvasViewDidEndDrawing:(id)drawing
 {
-  v5 = a3;
+  drawingCopy = drawing;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_changeObserver);
@@ -1160,19 +1160,19 @@ void __64__PKTextInputCanvasController__updateCanvasViewOffsetFromTouch___block_
   +[PKTextInputDebugStateIntrospector debugStateDidChange];
 }
 
-- (void)canvasViewHasVisibleStrokesChanged:(id)a3
+- (void)canvasViewHasVisibleStrokesChanged:(id)changed
 {
-  v3 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_loadWeakRetained(&self->_delegate);
   }
 
-  v4 = self;
-  [(PKTextInputCanvasController *)self canvasControllerHasVisibleStrokesChanged:v3];
+  selfCopy2 = self;
+  [(PKTextInputCanvasController *)self canvasControllerHasVisibleStrokesChanged:selfCopy];
 }
 
-- (void)canvasViewDidFinishAnimatingStrokes:(id)a3
+- (void)canvasViewDidFinishAnimatingStrokes:(id)strokes
 {
   v4 = os_log_create("com.apple.pencilkit", "PencilTextInput");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -1194,15 +1194,15 @@ void __64__PKTextInputCanvasController__updateCanvasViewOffsetFromTouch___block_
   [WeakRetained canvasControllerCanvasDidFinishAnimatingStrokes:self];
 }
 
-- (void)canvasView:(id)a3 drawingDidChange:(id)a4
+- (void)canvasView:(id)view drawingDidChange:(id)change
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  changeCopy = change;
   v6 = os_log_create("com.apple.pencilkit", "PencilTextInput");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [v5 strokes];
-    v8 = [PKDrawing _uuidDescriptionForStrokes:v7];
+    strokes = [changeCopy strokes];
+    v8 = [PKDrawing _uuidDescriptionForStrokes:strokes];
     v12 = 138412290;
     v13 = v8;
     _os_log_impl(&dword_1C7CCA000, v6, OS_LOG_TYPE_INFO, "canvasViewDrawingDidChange. Visible strokes: %@", &v12, 0xCu);
@@ -1218,10 +1218,10 @@ void __64__PKTextInputCanvasController__updateCanvasViewOffsetFromTouch___block_
     WeakRetained = 0;
   }
 
-  [WeakRetained canvasController:self drawingDidChange:v5];
+  [WeakRetained canvasController:self drawingDidChange:changeCopy];
 
-  v10 = [v5 strokes];
-  v11 = [v10 count] == 0;
+  strokes2 = [changeCopy strokes];
+  v11 = [strokes2 count] == 0;
 
   if (v11)
   {
@@ -1231,16 +1231,16 @@ void __64__PKTextInputCanvasController__updateCanvasViewOffsetFromTouch___block_
   +[PKTextInputDebugStateIntrospector debugStateDidChange];
 }
 
-- (id)canvasViewTouchView:(id)a3
+- (id)canvasViewTouchView:(id)view
 {
-  v3 = [(PKTextInputCanvasController *)&self->super.isa _containerView];
+  _containerView = [(PKTextInputCanvasController *)&self->super.isa _containerView];
 
-  return v3;
+  return _containerView;
 }
 
-- (void)reportDebugStateDescription:(id)a3
+- (void)reportDebugStateDescription:(id)description
 {
-  v11 = a3;
+  descriptionCopy = description;
   v5 = self != 0;
   if (self)
   {
@@ -1263,7 +1263,7 @@ void __64__PKTextInputCanvasController__updateCanvasViewOffsetFromTouch___block_
 
   v7 = 0;
 LABEL_6:
-  v11[2](v11, @"Canvas view", v7);
+  descriptionCopy[2](descriptionCopy, @"Canvas view", v7);
   if (v5)
   {
   }
@@ -1274,7 +1274,7 @@ LABEL_6:
     v8 = @"Yes";
   }
 
-  v11[2](v11, @"wantsCanvasVisible", v8);
+  descriptionCopy[2](descriptionCopy, @"wantsCanvasVisible", v8);
   if (self)
   {
     if ([(PKTiledCanvasView *)self->__canvasView isDrawing])
@@ -1293,7 +1293,7 @@ LABEL_6:
     v9 = @"No";
   }
 
-  v11[2](v11, @"isDrawing", v9);
+  descriptionCopy[2](descriptionCopy, @"isDrawing", v9);
   if ([(PKTextInputCanvasController *)self canvasHasVisibleStrokes])
   {
     v10 = @"Yes";
@@ -1304,7 +1304,7 @@ LABEL_6:
     v10 = @"No";
   }
 
-  v11[2](v11, @"hasVisibleStrokes", v10);
+  descriptionCopy[2](descriptionCopy, @"hasVisibleStrokes", v10);
 }
 
 - (id).cxx_construct

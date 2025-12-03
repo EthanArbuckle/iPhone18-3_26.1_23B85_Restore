@@ -1,16 +1,16 @@
 @interface CRLCanvasResizeKnobTrackerAccessibility
-+ (id)crlaxCastFrom:(id)a3;
++ (id)crlaxCastFrom:(id)from;
 - (id)crlaxHUDDisplayString;
 - (void)p_updateHUD;
 @end
 
 @implementation CRLCanvasResizeKnobTrackerAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
@@ -18,9 +18,9 @@
 - (id)crlaxHUDDisplayString
 {
   v8 = 0;
-  v2 = [(CRLCanvasResizeKnobTrackerAccessibility *)self crlaxTarget];
+  crlaxTarget = [(CRLCanvasResizeKnobTrackerAccessibility *)self crlaxTarget];
   v3 = objc_opt_class();
-  v4 = __CRLAccessibilityCastAsClass(v3, v2, 1, &v8);
+  v4 = __CRLAccessibilityCastAsClass(v3, crlaxTarget, 1, &v8);
   if (v8 == 1)
   {
     abort();
@@ -28,9 +28,9 @@
 
   v5 = v4;
 
-  v6 = [v5 crlaxHudLabelText];
+  crlaxHudLabelText = [v5 crlaxHudLabelText];
 
-  return v6;
+  return crlaxHudLabelText;
 }
 
 - (void)p_updateHUD

@@ -1,55 +1,55 @@
 @interface HDCreateWorkoutOperation
-- (BOOL)performWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (HDCreateWorkoutOperation)initWithCoder:(id)a3;
-- (HDCreateWorkoutOperation)initWithWorkoutConfiguration:(id)a3 identifier:(id)a4 dateInterval:(id)a5 metadata:(id)a6 device:(id)a7 source:(id)a8 sourceVersion:(id)a9 events:(id)a10 activities:(id)a11 zones:(id)a12 statisticsCalculators:(id)a13 associatedSeries:(id)a14 goalType:(unint64_t)a15 goal:(id)a16 quantityTypesIncludedWhilePaused:(id)a17;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)performWithProfile:(id)profile transaction:(id)transaction error:(id *)error;
+- (HDCreateWorkoutOperation)initWithCoder:(id)coder;
+- (HDCreateWorkoutOperation)initWithWorkoutConfiguration:(id)configuration identifier:(id)identifier dateInterval:(id)interval metadata:(id)metadata device:(id)device source:(id)source sourceVersion:(id)version events:(id)self0 activities:(id)self1 zones:(id)self2 statisticsCalculators:(id)self3 associatedSeries:(id)self4 goalType:(unint64_t)self5 goal:(id)self6 quantityTypesIncludedWhilePaused:(id)self7;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDCreateWorkoutOperation
 
-- (HDCreateWorkoutOperation)initWithWorkoutConfiguration:(id)a3 identifier:(id)a4 dateInterval:(id)a5 metadata:(id)a6 device:(id)a7 source:(id)a8 sourceVersion:(id)a9 events:(id)a10 activities:(id)a11 zones:(id)a12 statisticsCalculators:(id)a13 associatedSeries:(id)a14 goalType:(unint64_t)a15 goal:(id)a16 quantityTypesIncludedWhilePaused:(id)a17
+- (HDCreateWorkoutOperation)initWithWorkoutConfiguration:(id)configuration identifier:(id)identifier dateInterval:(id)interval metadata:(id)metadata device:(id)device source:(id)source sourceVersion:(id)version events:(id)self0 activities:(id)self1 zones:(id)self2 statisticsCalculators:(id)self3 associatedSeries:(id)self4 goalType:(unint64_t)self5 goal:(id)self6 quantityTypesIncludedWhilePaused:(id)self7
 {
-  v59 = a3;
-  v22 = a4;
-  v58 = a5;
-  v61 = a6;
-  v60 = a7;
-  v23 = a8;
-  v24 = a9;
-  v25 = a10;
-  v26 = a11;
-  v27 = a12;
-  v28 = a13;
-  v29 = a14;
-  v30 = v24;
-  v57 = a16;
-  v31 = a17;
+  configurationCopy = configuration;
+  identifierCopy = identifier;
+  intervalCopy = interval;
+  metadataCopy = metadata;
+  deviceCopy = device;
+  sourceCopy = source;
+  versionCopy = version;
+  eventsCopy = events;
+  activitiesCopy = activities;
+  zonesCopy = zones;
+  calculatorsCopy = calculators;
+  seriesCopy = series;
+  v30 = versionCopy;
+  goalCopy = goal;
+  pausedCopy = paused;
   v62.receiver = self;
   v62.super_class = HDCreateWorkoutOperation;
   v32 = [(HDCreateWorkoutOperation *)&v62 init];
   if (v32)
   {
-    v33 = [v59 copy];
+    v33 = [configurationCopy copy];
     workoutConfiguration = v32->_workoutConfiguration;
     v32->_workoutConfiguration = v33;
 
-    v35 = [v22 copy];
+    v35 = [identifierCopy copy];
     identifier = v32->_identifier;
     v32->_identifier = v35;
 
-    v37 = [v58 copy];
+    v37 = [intervalCopy copy];
     dateInterval = v32->_dateInterval;
     v32->_dateInterval = v37;
 
-    v39 = [v61 copy];
+    v39 = [metadataCopy copy];
     metadata = v32->_metadata;
     v32->_metadata = v39;
 
-    v41 = [v60 copy];
+    v41 = [deviceCopy copy];
     device = v32->_device;
     v32->_device = v41;
 
-    v43 = [v23 copy];
+    v43 = [sourceCopy copy];
     source = v32->_source;
     v32->_source = v43;
 
@@ -57,43 +57,43 @@
     sourceVersion = v32->_sourceVersion;
     v32->_sourceVersion = v45;
 
-    v47 = [v25 copy];
+    v47 = [eventsCopy copy];
     events = v32->_events;
     v32->_events = v47;
 
-    v49 = [v26 copy];
+    v49 = [activitiesCopy copy];
     activities = v32->_activities;
     v32->_activities = v49;
 
-    v51 = [v27 copy];
+    v51 = [zonesCopy copy];
     zones = v32->_zones;
     v32->_zones = v51;
 
-    objc_storeStrong(&v32->_statisticsCalculators, a13);
-    v53 = [v29 copy];
+    objc_storeStrong(&v32->_statisticsCalculators, calculators);
+    v53 = [seriesCopy copy];
     associatedSeries = v32->_associatedSeries;
     v32->_associatedSeries = v53;
 
-    v32->_goalType = a15;
-    objc_storeStrong(&v32->_goal, a16);
-    objc_storeStrong(&v32->_quantityTypesIncludedWhilePaused, a17);
+    v32->_goalType = type;
+    objc_storeStrong(&v32->_goal, goal);
+    objc_storeStrong(&v32->_quantityTypesIncludedWhilePaused, paused);
   }
 
   return v32;
 }
 
-- (BOOL)performWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5
+- (BOOL)performWithProfile:(id)profile transaction:(id)transaction error:(id *)error
 {
   v258 = *MEMORY[0x277D85DE8];
-  v188 = a3;
-  v186 = a4;
-  v7 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v8 = [v7 isAppleWatch];
+  profileCopy = profile;
+  transactionCopy = transaction;
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  isAppleWatch = [mEMORY[0x277CCDD30] isAppleWatch];
 
-  if (!v8)
+  if (!isAppleWatch)
   {
 LABEL_7:
-    v11 = [(HDDataEntity *)HDWorkoutEntity objectWithUUID:self->_identifier encodingOptions:0 profile:v188 error:a5];
+    v11 = [(HDDataEntity *)HDWorkoutEntity objectWithUUID:self->_identifier encodingOptions:0 profile:profileCopy error:error];
     if (v11)
     {
       LOBYTE(v14) = 1;
@@ -102,7 +102,7 @@ LABEL_7:
 
     identifier = self->_identifier;
     v211 = 0;
-    v185 = [HDWorkoutBuilderEntity workoutBuilderEntityWithIdentifier:identifier profile:v188 error:&v211];
+    v185 = [HDWorkoutBuilderEntity workoutBuilderEntityWithIdentifier:identifier profile:profileCopy error:&v211];
     v16 = v211;
     if (!v185)
     {
@@ -127,12 +127,12 @@ LABEL_133:
       }
 
       v45 = v43;
-      if (a5)
+      if (error)
       {
         v46 = v43;
         LOBYTE(v14) = 0;
         v47 = v45;
-        *a5 = v45;
+        *error = v45;
       }
 
       else
@@ -166,7 +166,7 @@ LABEL_132:
     v207[3] = &unk_27861D600;
     v182 = v17;
     v208 = v182;
-    if (![v185 pruneAssociatedSamplesToDateInterval:dateInterval transaction:v186 error:a5 zonesHandler:v209 sampleHandler:v207])
+    if (![v185 pruneAssociatedSamplesToDateInterval:dateInterval transaction:transactionCopy error:error zonesHandler:v209 sampleHandler:v207])
     {
       LOBYTE(v14) = 0;
 LABEL_131:
@@ -185,16 +185,16 @@ LABEL_131:
     v179 = [(NSArray *)activities hk_mapToDictionary:v206];
     if ([(HDJournalableOperation *)self didJournal])
     {
-      v21 = [(HDWorkoutBuilderStatisticsCalculators *)self->_statisticsCalculators allQuantityTypes];
+      allQuantityTypes = [(HDWorkoutBuilderStatisticsCalculators *)self->_statisticsCalculators allQuantityTypes];
       v193 = v185;
-      v191 = v186;
-      v22 = v188;
+      v191 = transactionCopy;
+      v22 = profileCopy;
       v247 = 0u;
       v248 = 0u;
       v249 = 0u;
       v250 = 0u;
-      obj = v21;
-      v23 = [v21 countByEnumeratingWithState:&v247 objects:buf count:16];
+      obj = allQuantityTypes;
+      v23 = [allQuantityTypes countByEnumeratingWithState:&v247 objects:buf count:16];
       if (v23)
       {
         v24 = *v248;
@@ -208,8 +208,8 @@ LABEL_131:
             }
 
             v26 = *(*(&v247 + 1) + 8 * i);
-            v27 = [(NSDateInterval *)self->_dateInterval startDate];
-            v28 = [(NSDateInterval *)self->_dateInterval endDate];
+            startDate = [(NSDateInterval *)self->_dateInterval startDate];
+            endDate = [(NSDateInterval *)self->_dateInterval endDate];
             *&v229 = 0;
             v243[0] = MEMORY[0x277D85DD0];
             v243[1] = 3221225472;
@@ -218,7 +218,7 @@ LABEL_131:
             v244 = v193;
             v245 = v191;
             v246 = v26;
-            v29 = [HDWorkoutUtilities enumerateQuantitiesOfType:v26 from:v27 to:v28 transaction:v245 profile:v22 error:&v229 handler:v243];
+            v29 = [HDWorkoutUtilities enumerateQuantitiesOfType:v26 from:startDate to:endDate transaction:v245 profile:v22 error:&v229 handler:v243];
             v30 = v229;
 
             if (!v29)
@@ -228,7 +228,7 @@ LABEL_131:
               if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_ERROR))
               {
                 *v236 = 138543874;
-                v237 = self;
+                selfCopy = self;
                 v238 = 2114;
                 v239 = v26;
                 v240 = 2114;
@@ -250,11 +250,11 @@ LABEL_131:
     v200[1] = 3221225472;
     v200[2] = __65__HDCreateWorkoutOperation_performWithProfile_transaction_error___block_invoke_2_313;
     v200[3] = &unk_27861D650;
-    v33 = v188;
+    v33 = profileCopy;
     v201 = v33;
     v160 = v185;
     v202 = v160;
-    v203 = self;
+    selfCopy2 = self;
     v180 = v179;
     v204 = v180;
     v175 = v177;
@@ -267,19 +267,19 @@ LABEL_131:
     v199[3] = &unk_27861D678;
     v199[4] = self;
     v178 = [(NSArray *)events hk_filter:v199];
-    v35 = [v180 allValues];
-    v176 = [v35 sortedArrayUsingComparator:&__block_literal_global_74];
+    allValues = [v180 allValues];
+    v176 = [allValues sortedArrayUsingComparator:&__block_literal_global_74];
 
     v36 = MEMORY[0x277CCDBE8];
-    v37 = [(HKWorkoutConfiguration *)self->_workoutConfiguration activityType];
-    v38 = [(NSDateInterval *)self->_dateInterval startDate];
-    v39 = [(NSDateInterval *)self->_dateInterval endDate];
+    activityType = [(HKWorkoutConfiguration *)self->_workoutConfiguration activityType];
+    startDate2 = [(NSDateInterval *)self->_dateInterval startDate];
+    endDate2 = [(NSDateInterval *)self->_dateInterval endDate];
     device = self->_device;
-    v194 = [v36 _workoutWithActivityType:v37 startDate:v38 endDate:v39 workoutEvents:v178 workoutActivities:v176 duration:v175 statistics:0.0 goalType:self->_goalType goal:self->_goal device:device metadata:self->_metadata];
+    v194 = [v36 _workoutWithActivityType:activityType startDate:startDate2 endDate:endDate2 workoutEvents:v178 workoutActivities:v176 duration:v175 statistics:0.0 goalType:self->_goalType goal:self->_goal device:device metadata:self->_metadata];
 
     [v194 _setUUID:self->_identifier];
-    v41 = [v33 sourceManager];
-    v192 = [v41 sourceEntityForClientSource:self->_source createOrUpdateIfNecessary:0 error:a5];
+    sourceManager = [v33 sourceManager];
+    v192 = [sourceManager sourceEntityForClientSource:self->_source createOrUpdateIfNecessary:0 error:error];
 
     if (!v192)
     {
@@ -288,8 +288,8 @@ LABEL_131:
 
     if (self->_device)
     {
-      v42 = [v33 deviceManager];
-      v170 = [v42 deviceEntityForDevice:self->_device error:a5];
+      deviceManager = [v33 deviceManager];
+      v170 = [deviceManager deviceEntityForDevice:self->_device error:error];
 
       if (!v170)
       {
@@ -306,13 +306,13 @@ LABEL_130:
       v170 = 0;
     }
 
-    v48 = [v33 dataProvenanceManager];
-    v165 = [v48 localDataProvenanceForSourceEntity:v192 version:self->_sourceVersion deviceEntity:v170];
+    dataProvenanceManager = [v33 dataProvenanceManager];
+    v165 = [dataProvenanceManager localDataProvenanceForSourceEntity:v192 version:self->_sourceVersion deviceEntity:v170];
 
-    v49 = [v33 dataManager];
+    dataManager = [v33 dataManager];
     v233 = v194;
     v50 = [MEMORY[0x277CBEA60] arrayWithObjects:&v233 count:1];
-    v14 = [v49 insertDataObjects:v50 withProvenance:v165 creationDate:0 skipInsertionFilter:1 updateSourceOrder:1 resolveAssociations:a5 error:CFAbsoluteTimeGetCurrent()];
+    v14 = [dataManager insertDataObjects:v50 withProvenance:v165 creationDate:0 skipInsertionFilter:1 updateSourceOrder:1 resolveAssociations:error error:CFAbsoluteTimeGetCurrent()];
 
     if (!v14)
     {
@@ -325,7 +325,7 @@ LABEL_129:
     v158 = v194;
     v154 = v182;
     v195 = v33;
-    v166 = v186;
+    v166 = transactionCopy;
     v225 = 0u;
     v226 = 0u;
     v227 = 0u;
@@ -405,11 +405,11 @@ LABEL_129:
 
             v152 = v63;
             v65 = *(*(&v220 + 1) + 8 * v63);
-            v66 = [v65 unsignedIntegerValue];
-            if (v66 == 1)
+            unsignedIntegerValue = [v65 unsignedIntegerValue];
+            if (unsignedIntegerValue == 1)
             {
-              v71 = [(NSArray *)v158 metadata];
-              v162 = [v71 objectForKeyedSubscript:v164];
+              metadata = [(NSArray *)v158 metadata];
+              v162 = [metadata objectForKeyedSubscript:v164];
 
               v157 = [HDMetadataValueStatement metadataValueStatementWithTransaction:v166];
               v72 = MEMORY[0x277D10B20];
@@ -463,8 +463,8 @@ LABEL_129:
                     v85 = HDDataEntityPredicateForRowID(v168, 1);
                     v235[0] = v85;
                     v235[1] = v161;
-                    v86 = [v173 metadataManager];
-                    v87 = [v86 predicateWithMetadataKey:v164 value:v162 operatorType:4];
+                    metadataManager = [v173 metadataManager];
+                    v87 = [metadataManager predicateWithMetadataKey:v164 value:v162 operatorType:4];
                     v235[2] = v87;
                     v88 = [MEMORY[0x277CBEA60] arrayWithObjects:v235 count:3];
                     v184 = [v84 predicateMatchingAllPredicates:v88];
@@ -476,10 +476,10 @@ LABEL_129:
 
                     if (v174)
                     {
-                      v90 = [v173 metadataManager];
-                      v91 = [v168 unsignedIntValue];
+                      metadataManager2 = [v173 metadataManager];
+                      unsignedIntValue = [v168 unsignedIntValue];
                       v213 = 0;
-                      v169 = [v90 metadataForObjectID:v91 baseMetadata:0 keyFilter:0 statement:v157 error:&v213];
+                      v169 = [metadataManager2 metadataForObjectID:unsignedIntValue baseMetadata:0 keyFilter:0 statement:v157 error:&v213];
                       v92 = v213;
 
                       if (v92)
@@ -515,8 +515,8 @@ LABEL_129:
                         v230 = 0u;
                         v231 = 0u;
                         v232 = 0u;
-                        v96 = [(NSArray *)v95 _subActivities];
-                        v97 = [v96 countByEnumeratingWithState:&v229 objects:buf count:16];
+                        _subActivities = [(NSArray *)v95 _subActivities];
+                        v97 = [_subActivities countByEnumeratingWithState:&v229 objects:buf count:16];
                         if (v97)
                         {
                           v98 = *v230;
@@ -526,23 +526,23 @@ LABEL_129:
                             {
                               if (*v230 != v98)
                               {
-                                objc_enumerationMutation(v96);
+                                objc_enumerationMutation(_subActivities);
                               }
 
                               v100 = *(*(&v229 + 1) + 8 * k);
-                              v101 = [v100 UUID];
-                              v102 = [v101 UUIDString];
-                              v103 = [v102 isEqual:v94];
+                              uUID = [v100 UUID];
+                              uUIDString = [uUID UUIDString];
+                              v103 = [uUIDString isEqual:v94];
 
                               if (v103)
                               {
-                                v107 = [v100 UUID];
+                                uUID2 = [v100 UUID];
 
                                 goto LABEL_81;
                               }
                             }
 
-                            v97 = [v96 countByEnumeratingWithState:&v229 objects:buf count:16];
+                            v97 = [_subActivities countByEnumeratingWithState:&v229 objects:buf count:16];
                             if (v97)
                             {
                               continue;
@@ -552,33 +552,33 @@ LABEL_129:
                           }
                         }
 
-                        v104 = [(NSArray *)v95 metadata];
-                        v105 = [v104 objectForKeyedSubscript:v164];
+                        metadata2 = [(NSArray *)v95 metadata];
+                        v105 = [metadata2 objectForKeyedSubscript:v164];
                         v106 = [v94 isEqual:v105];
 
                         if (v106)
                         {
-                          v107 = [(NSArray *)v95 UUID];
+                          uUID2 = [(NSArray *)v95 UUID];
                         }
 
                         else
                         {
-                          v107 = 0;
+                          uUID2 = 0;
                         }
 
 LABEL_81:
 
-                        if (v107)
+                        if (uUID2)
                         {
-                          v112 = [(NSArray *)v95 UUID];
-                          if ([v107 isEqual:v112])
+                          uUID3 = [(NSArray *)v95 UUID];
+                          if ([uUID2 isEqual:uUID3])
                           {
                             v113 = 0;
                           }
 
                           else
                           {
-                            v113 = v107;
+                            v113 = uUID2;
                           }
 
                           v114 = v113;
@@ -587,9 +587,9 @@ LABEL_81:
                           v116 = self->_identifier;
                           v234 = v168;
                           v117 = [MEMORY[0x277CBEA60] arrayWithObjects:&v234 count:1];
-                          v118 = [v173 currentSyncIdentityPersistentID];
+                          currentSyncIdentityPersistentID = [v173 currentSyncIdentityPersistentID];
                           v212 = 0;
-                          v119 = [HDAssociationEntity bulkInsertAssociationsWithParentUUID:v116 childIDs:v117 type:1 behavior:0 destinationSubObjectReference:v115 syncIdentity:v118 profile:v173 error:&v212];
+                          v119 = [HDAssociationEntity bulkInsertAssociationsWithParentUUID:v116 childIDs:v117 type:1 behavior:0 destinationSubObjectReference:v115 syncIdentity:currentSyncIdentityPersistentID profile:v173 error:&v212];
                           v120 = v212;
 
                           if (!v119)
@@ -652,11 +652,11 @@ LABEL_111:
                       if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_ERROR))
                       {
                         v109 = v108;
-                        v110 = [v168 longValue];
+                        longValue = [v168 longValue];
                         *buf = 138543618;
                         *&buf[4] = self;
                         v252 = 2048;
-                        v253 = v110;
+                        v253 = longValue;
                         _os_log_error_impl(&dword_228986000, v109, OS_LOG_TYPE_ERROR, "%{public}@: Unable to find sample at row %lu", buf, 0x16u);
                       }
                     }
@@ -676,7 +676,7 @@ LABEL_111:
               }
             }
 
-            else if (v66)
+            else if (unsignedIntegerValue)
             {
               _HKInitializeLogging();
               v122 = *MEMORY[0x277CCC330];
@@ -692,9 +692,9 @@ LABEL_111:
             {
               v67 = self->_identifier;
               v68 = [(NSArray *)v153 objectForKeyedSubscript:v65];
-              v69 = [v173 currentSyncIdentityPersistentID];
+              currentSyncIdentityPersistentID2 = [v173 currentSyncIdentityPersistentID];
               v219 = 0;
-              LOBYTE(v67) = [HDAssociationEntity bulkInsertAssociationsWithParentUUID:v67 childIDs:v68 type:0 behavior:0 destinationSubObjectReference:0 syncIdentity:v69 profile:v173 error:&v219];
+              LOBYTE(v67) = [HDAssociationEntity bulkInsertAssociationsWithParentUUID:v67 childIDs:v68 type:0 behavior:0 destinationSubObjectReference:0 syncIdentity:currentSyncIdentityPersistentID2 profile:v173 error:&v219];
               v70 = v219;
 
               if ((v67 & 1) == 0)
@@ -772,7 +772,7 @@ LABEL_115:
     if (v123)
     {
       [v166 onCommit:&__block_literal_global_330 orRollback:0];
-      v136 = [(HDDataEntity *)HDWorkoutEntity objectWithUUID:self->_identifier encodingOptions:0 profile:v195 error:a5];
+      v136 = [(HDDataEntity *)HDWorkoutEntity objectWithUUID:self->_identifier encodingOptions:0 profile:v195 error:error];
       createdWorkout = self->_createdWorkout;
       self->_createdWorkout = v136;
 
@@ -799,7 +799,7 @@ LABEL_128:
         }
       }
 
-      LOBYTE(v14) = [HDWorkoutBuilderEntity discardBuilderWithIdentifier:self->_identifier profile:v195 error:a5];
+      LOBYTE(v14) = [HDWorkoutBuilderEntity discardBuilderWithIdentifier:self->_identifier profile:v195 error:error];
     }
 
     else
@@ -808,11 +808,11 @@ LABEL_128:
       v139 = v141;
       if (v141)
       {
-        if (a5)
+        if (error)
         {
           v142 = v141;
           LOBYTE(v14) = 0;
-          *a5 = v139;
+          *error = v139;
         }
 
         else
@@ -831,14 +831,14 @@ LABEL_128:
     goto LABEL_128;
   }
 
-  v9 = [MEMORY[0x277CBEA80] currentCalendar];
-  v10 = [MEMORY[0x277CBEAA8] date];
-  v11 = [v9 hk_startOfDateBySubtractingDays:*MEMORY[0x277CCCEE8] fromDate:v10];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  date = [MEMORY[0x277CBEAA8] date];
+  v11 = [currentCalendar hk_startOfDateBySubtractingDays:*MEMORY[0x277CCCEE8] fromDate:date];
 
-  v12 = [(NSDateInterval *)self->_dateInterval endDate];
-  LODWORD(v10) = [v12 hk_isBeforeDate:v11];
+  endDate3 = [(NSDateInterval *)self->_dateInterval endDate];
+  LODWORD(date) = [endDate3 hk_isBeforeDate:v11];
 
-  if (!v10)
+  if (!date)
   {
 
     goto LABEL_7;
@@ -852,7 +852,7 @@ LABEL_128:
     _os_log_impl(&dword_228986000, v13, OS_LOG_TYPE_DEFAULT, "Attempting to save a workout which is older than the standard data availability on Watch. Discarding builder", buf, 2u);
   }
 
-  LOBYTE(v14) = [HDWorkoutBuilderEntity discardBuilderWithIdentifier:self->_identifier profile:v188 error:a5];
+  LOBYTE(v14) = [HDWorkoutBuilderEntity discardBuilderWithIdentifier:self->_identifier profile:profileCopy error:error];
 LABEL_134:
 
   v143 = *MEMORY[0x277D85DE8];
@@ -1071,42 +1071,42 @@ void __96__HDCreateWorkoutOperation__associateSamplesForQuantityTypes_builderEnt
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (HDCreateWorkoutOperation)initWithCoder:(id)a3
+- (HDCreateWorkoutOperation)initWithCoder:(id)coder
 {
   v46[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v43.receiver = self;
   v43.super_class = HDCreateWorkoutOperation;
-  v5 = [(HDJournalableOperation *)&v43 initWithCoder:v4];
+  v5 = [(HDJournalableOperation *)&v43 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"workout_configuration"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"workout_configuration"];
     workoutConfiguration = v5->_workoutConfiguration;
     v5->_workoutConfiguration = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date_interval"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date_interval"];
     dateInterval = v5->_dateInterval;
     v5->_dateInterval = v10;
 
-    v12 = [MEMORY[0x277CBEAC0] hk_secureCodingClasses];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"metadata"];
-    v14 = [v13 hk_replaceKeysFromSharedStringCache];
+    hk_secureCodingClasses = [MEMORY[0x277CBEAC0] hk_secureCodingClasses];
+    v13 = [coderCopy decodeObjectOfClasses:hk_secureCodingClasses forKey:@"metadata"];
+    hk_replaceKeysFromSharedStringCache = [v13 hk_replaceKeysFromSharedStringCache];
     metadata = v5->_metadata;
-    v5->_metadata = v14;
+    v5->_metadata = hk_replaceKeysFromSharedStringCache;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"device"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"device"];
     device = v5->_device;
     v5->_device = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"source"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"source"];
     source = v5->_source;
     v5->_source = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"source_version"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"source_version"];
     sourceVersion = v5->_sourceVersion;
     v5->_sourceVersion = v20;
 
@@ -1115,16 +1115,16 @@ void __96__HDCreateWorkoutOperation__associateSamplesForQuantityTypes_builderEnt
     v46[1] = objc_opt_class();
     v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v46 count:2];
     v24 = [v22 setWithArray:v23];
-    v25 = [v4 decodeObjectOfClasses:v24 forKey:@"events"];
+    v25 = [coderCopy decodeObjectOfClasses:v24 forKey:@"events"];
     events = v5->_events;
     v5->_events = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"calculators"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"calculators"];
     statisticsCalculators = v5->_statisticsCalculators;
     v5->_statisticsCalculators = v27;
 
-    v5->_goalType = [v4 decodeIntegerForKey:@"goal_type"];
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"goal"];
+    v5->_goalType = [coderCopy decodeIntegerForKey:@"goal_type"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"goal"];
     goal = v5->_goal;
     v5->_goal = v29;
 
@@ -1134,7 +1134,7 @@ void __96__HDCreateWorkoutOperation__associateSamplesForQuantityTypes_builderEnt
     v32 = [MEMORY[0x277CBEA60] arrayWithObjects:v45 count:2];
     v33 = [v31 setWithArray:v32];
 
-    v34 = [v4 decodeObjectOfClasses:v33 forKey:@"activities"];
+    v34 = [coderCopy decodeObjectOfClasses:v33 forKey:@"activities"];
     activities = v5->_activities;
     v5->_activities = v34;
 
@@ -1144,7 +1144,7 @@ void __96__HDCreateWorkoutOperation__associateSamplesForQuantityTypes_builderEnt
     v37 = [MEMORY[0x277CBEA60] arrayWithObjects:v44 count:2];
     v38 = [v36 setWithArray:v37];
 
-    v39 = [v4 decodeObjectOfClasses:v38 forKey:@"zones"];
+    v39 = [coderCopy decodeObjectOfClasses:v38 forKey:@"zones"];
     zones = v5->_zones;
     v5->_zones = v39;
   }
@@ -1153,25 +1153,25 @@ void __96__HDCreateWorkoutOperation__associateSamplesForQuantityTypes_builderEnt
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HDCreateWorkoutOperation;
-  v4 = a3;
-  [(HDJournalableOperation *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_workoutConfiguration forKey:{@"workout_configuration", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_identifier forKey:@"identifier"];
-  [v4 encodeObject:self->_dateInterval forKey:@"date_interval"];
-  [v4 encodeObject:self->_metadata forKey:@"metadata"];
-  [v4 encodeObject:self->_device forKey:@"device"];
-  [v4 encodeObject:self->_source forKey:@"source"];
-  [v4 encodeObject:self->_sourceVersion forKey:@"source_version"];
-  [v4 encodeObject:self->_events forKey:@"events"];
-  [v4 encodeObject:self->_statisticsCalculators forKey:@"calculators"];
-  [v4 encodeInteger:self->_goalType forKey:@"goal_type"];
-  [v4 encodeObject:self->_goal forKey:@"goal"];
-  [v4 encodeObject:self->_activities forKey:@"activities"];
-  [v4 encodeObject:self->_zones forKey:@"zones"];
+  coderCopy = coder;
+  [(HDJournalableOperation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_workoutConfiguration forKey:{@"workout_configuration", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_dateInterval forKey:@"date_interval"];
+  [coderCopy encodeObject:self->_metadata forKey:@"metadata"];
+  [coderCopy encodeObject:self->_device forKey:@"device"];
+  [coderCopy encodeObject:self->_source forKey:@"source"];
+  [coderCopy encodeObject:self->_sourceVersion forKey:@"source_version"];
+  [coderCopy encodeObject:self->_events forKey:@"events"];
+  [coderCopy encodeObject:self->_statisticsCalculators forKey:@"calculators"];
+  [coderCopy encodeInteger:self->_goalType forKey:@"goal_type"];
+  [coderCopy encodeObject:self->_goal forKey:@"goal"];
+  [coderCopy encodeObject:self->_activities forKey:@"activities"];
+  [coderCopy encodeObject:self->_zones forKey:@"zones"];
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface BIHistogram
-- (BIHistogram)initWithBinLabelGenerator:(id)a3 allLabels:(id)a4 histogramValues:(id)a5;
-- (BOOL)insertValue:(id)a3 thisManyTimes:(id)a4 error:(id *)a5;
+- (BIHistogram)initWithBinLabelGenerator:(id)generator allLabels:(id)labels histogramValues:(id)values;
+- (BOOL)insertValue:(id)value thisManyTimes:(id)times error:(id *)error;
 - (id)copyHistogramWithNormalizedCounts;
 - (void)printHistogram;
-- (void)removeValue:(id)a3;
+- (void)removeValue:(id)value;
 - (void)reset;
 @end
 
 @implementation BIHistogram
 
-- (BIHistogram)initWithBinLabelGenerator:(id)a3 allLabels:(id)a4 histogramValues:(id)a5
+- (BIHistogram)initWithBinLabelGenerator:(id)generator allLabels:(id)labels histogramValues:(id)values
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  generatorCopy = generator;
+  labelsCopy = labels;
+  valuesCopy = values;
   v54.receiver = self;
   v54.super_class = BIHistogram;
   v11 = [(BIHistogram *)&v54 init];
@@ -32,7 +32,7 @@
   v13 = *(v11 + 4);
   *(v11 + 4) = v12;
 
-  if (!v8)
+  if (!generatorCopy)
   {
     if (os_log_type_enabled(*(v11 + 4), OS_LOG_TYPE_ERROR))
     {
@@ -43,10 +43,10 @@
   }
 
   v11[6] = 0;
-  if (v10)
+  if (valuesCopy)
   {
-    v45 = v9;
-    v14 = [v10 mutableCopy];
+    v45 = labelsCopy;
+    v14 = [valuesCopy mutableCopy];
     v15 = *(v11 + 1);
     *(v11 + 1) = v14;
 
@@ -71,9 +71,9 @@
 
           v21 = *(*(&v50 + 1) + 8 * i);
           v22 = [*(v11 + 1) objectForKeyedSubscript:v21];
-          v23 = [v22 unsignedIntValue];
+          unsignedIntValue = [v22 unsignedIntValue];
 
-          if ((v11[6] + v23) >> 32)
+          if ((v11[6] + unsignedIntValue) >> 32)
           {
             if (os_log_type_enabled(*(v11 + 4), OS_LOG_TYPE_ERROR))
             {
@@ -81,7 +81,7 @@
             }
 
             v33 = 0;
-            v9 = v45;
+            labelsCopy = v45;
             goto LABEL_30;
           }
 
@@ -99,7 +99,7 @@
       }
     }
 
-    v9 = v45;
+    labelsCopy = v45;
     goto LABEL_22;
   }
 
@@ -125,7 +125,7 @@ LABEL_22:
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v37 = v9;
+  v37 = labelsCopy;
   v38 = [v37 countByEnumeratingWithState:&v46 objects:v55 count:16];
   if (v38)
   {
@@ -150,7 +150,7 @@ LABEL_22:
   }
 
   objc_autoreleasePoolPop(v36);
-  v42 = [v8 copy];
+  v42 = [generatorCopy copy];
   v43 = *(v11 + 2);
   *(v11 + 2) = v42;
 
@@ -160,18 +160,18 @@ LABEL_30:
   return v33;
 }
 
-- (BOOL)insertValue:(id)a3 thisManyTimes:(id)a4 error:(id *)a5
+- (BOOL)insertValue:(id)value thisManyTimes:(id)times error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 unsignedIntValue];
-  if (!v10)
+  valueCopy = value;
+  timesCopy = times;
+  unsignedIntValue = [timesCopy unsignedIntValue];
+  if (!unsignedIntValue)
   {
     goto LABEL_9;
   }
 
-  v11 = v10;
-  if (!__CFADD__(self->_totalCount, v10))
+  v11 = unsignedIntValue;
+  if (!__CFADD__(self->_totalCount, unsignedIntValue))
   {
     v14 = objc_autoreleasePoolPush();
     v15 = (*(self->_labelGen + 2))();
@@ -187,12 +187,12 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (a5)
+  if (error)
   {
     v19 = NSLocalizedDescriptionKey;
     v20 = @"Histogram count reached max capacity.                                             Normalized histogram will be unreliable";
     v12 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
-    *a5 = [NSError errorWithDomain:NSPOSIXErrorDomain code:34 userInfo:v12];
+    *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:34 userInfo:v12];
   }
 
   if (os_log_type_enabled(self->_logger, OS_LOG_TYPE_ERROR))
@@ -206,9 +206,9 @@ LABEL_10:
   return v13;
 }
 
-- (void)removeValue:(id)a3
+- (void)removeValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = objc_autoreleasePoolPush();
   v6 = (*(self->_labelGen + 2))();
   v7 = [(NSMutableDictionary *)self->_histogram objectForKeyedSubscript:v6];
@@ -220,9 +220,9 @@ LABEL_10:
     {
       v10 = v9;
       v11 = [(NSMutableDictionary *)self->_histogram objectForKeyedSubscript:v6];
-      v12 = [v11 unsignedIntValue];
+      unsignedIntValue = [v11 unsignedIntValue];
 
-      if (!v12)
+      if (!unsignedIntValue)
       {
         goto LABEL_4;
       }
@@ -231,10 +231,10 @@ LABEL_10:
     else
     {
 
-      v12 = 0;
+      unsignedIntValue = 0;
     }
 
-    v15 = [NSNumber numberWithUnsignedInt:v12 - 1];
+    v15 = [NSNumber numberWithUnsignedInt:unsignedIntValue - 1];
     [(NSMutableDictionary *)self->_histogram setObject:v15 forKeyedSubscript:v6];
     --self->_totalCount;
 
@@ -247,7 +247,7 @@ LABEL_4:
   {
     totalCount = self->_totalCount;
     v16 = 138413058;
-    v17 = v4;
+    v17 = valueCopy;
     v18 = 2112;
     v19 = v6;
     v20 = 1024;
@@ -272,8 +272,8 @@ LABEL_8:
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v4 = [v3 allKeys];
-    v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    allKeys = [v3 allKeys];
+    v5 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v5)
     {
       v6 = v5;
@@ -284,7 +284,7 @@ LABEL_8:
         {
           if (*v17 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allKeys);
           }
 
           v9 = *(*(&v16 + 1) + 8 * i);
@@ -295,7 +295,7 @@ LABEL_8:
           [v3 setObject:v13 forKeyedSubscript:v9];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v6 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v6);
@@ -340,11 +340,11 @@ LABEL_8:
           histogram = self->_histogram;
           v11 = logger;
           v12 = [(NSMutableDictionary *)histogram objectForKeyedSubscript:v9];
-          v13 = [v12 unsignedIntValue];
+          unsignedIntValue = [v12 unsignedIntValue];
           *buf = 138412546;
           v19 = v9;
           v20 = 1024;
-          v21 = v13;
+          v21 = unsignedIntValue;
           _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "Bin %@ Value %u", buf, 0x12u);
         }
       }
@@ -362,8 +362,8 @@ LABEL_8:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(NSMutableDictionary *)self->_histogram allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allKeys = [(NSMutableDictionary *)self->_histogram allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -375,7 +375,7 @@ LABEL_8:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         [(NSMutableDictionary *)self->_histogram setObject:&off_10004D258 forKeyedSubscript:*(*(&v8 + 1) + 8 * v7)];
@@ -383,7 +383,7 @@ LABEL_8:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);

@@ -1,14 +1,14 @@
 @interface CHTranscriptionQuery
-- (id)contextualTextResultsForContextStrokes:(id)a3 completion:(id)a4 shouldCancel:(id)a5;
+- (id)contextualTextResultsForContextStrokes:(id)strokes completion:(id)completion shouldCancel:(id)cancel;
 @end
 
 @implementation CHTranscriptionQuery
 
-- (id)contextualTextResultsForContextStrokes:(id)a3 completion:(id)a4 shouldCancel:(id)a5
+- (id)contextualTextResultsForContextStrokes:(id)strokes completion:(id)completion shouldCancel:(id)cancel
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  completionCopy = completion;
+  cancelCopy = cancel;
+  strokesCopy = strokes;
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -58,17 +58,17 @@ LABEL_7:
 
   v20 = objc_msgSend_recognitionSession(self, v15, v16, v17, v18, v19);
   v26 = objc_msgSend_latestStrokeProvider(v20, v21, v22, v23, v24, v25);
-  v30 = objc_msgSend_encodedStrokeIdentifiers_withStrokeProvider_(CHStrokeUtilities, v27, v10, v26, v28, v29);
+  v30 = objc_msgSend_encodedStrokeIdentifiers_withStrokeProvider_(CHStrokeUtilities, v27, strokesCopy, v26, v28, v29);
 
   v36 = objc_msgSend_recognitionSession(self, v31, v32, v33, v34, v35);
   v42[0] = MEMORY[0x1E69E9820];
   v42[1] = 3221225472;
   v42[2] = sub_1838BD760;
   v42[3] = &unk_1E6DDF780;
-  v43 = v8;
+  v43 = completionCopy;
   v44 = v12;
-  v37 = v8;
-  v40 = objc_msgSend_contextualTextResultsForContextStrokes_completion_shouldCancel_(v36, v38, v30, v42, v9, v39);
+  v37 = completionCopy;
+  v40 = objc_msgSend_contextualTextResultsForContextStrokes_completion_shouldCancel_(v36, v38, v30, v42, cancelCopy, v39);
 
   return v40;
 }

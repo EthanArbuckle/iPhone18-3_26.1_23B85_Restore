@@ -1,114 +1,114 @@
 @interface CKBrowserSwitcherCell
-- (CKBrowserSwitcherCell)initWithFrame:(CGRect)a3;
-- (void)_handleBrowserSnapshotDidChange:(id)a3;
+- (CKBrowserSwitcherCell)initWithFrame:(CGRect)frame;
+- (void)_handleBrowserSnapshotDidChange:(id)change;
 - (void)_updateSnapshotView;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setBrowserSnapshotView:(id)a3;
-- (void)setPlugin:(id)a3 withSnapshotCacheKey:(id)a4;
-- (void)setSnapshotCacheKey:(id)a3;
-- (void)showExtensionInterruptedViewWithDisplayName:(id)a3;
+- (void)setBrowserSnapshotView:(id)view;
+- (void)setPlugin:(id)plugin withSnapshotCacheKey:(id)key;
+- (void)setSnapshotCacheKey:(id)key;
+- (void)showExtensionInterruptedViewWithDisplayName:(id)name;
 @end
 
 @implementation CKBrowserSwitcherCell
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CKBrowserSwitcherCell;
   [(CKBrowserSwitcherCell *)&v4 dealloc];
 }
 
-- (CKBrowserSwitcherCell)initWithFrame:(CGRect)a3
+- (CKBrowserSwitcherCell)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = CKBrowserSwitcherCell;
-  v3 = [(CKBrowserSwitcherCell *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKBrowserSwitcherCell *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v3 selector:sel__handleBrowserSnapshotDidChange_ name:@"CKBalloonPluginManagerSnapshotsDidChange" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__handleBrowserSnapshotDidChange_ name:@"CKBalloonPluginManagerSnapshotsDidChange" object:0];
 
     v5 = +[CKUIBehavior sharedBehaviors];
-    v6 = [v5 theme];
-    v7 = [v6 browserBackgroundColor];
-    [(CKBrowserSwitcherCell *)v3 setBackgroundColor:v7];
+    theme = [v5 theme];
+    browserBackgroundColor = [theme browserBackgroundColor];
+    [(CKBrowserSwitcherCell *)v3 setBackgroundColor:browserBackgroundColor];
   }
 
   return v3;
 }
 
-- (void)setPlugin:(id)a3 withSnapshotCacheKey:(id)a4
+- (void)setPlugin:(id)plugin withSnapshotCacheKey:(id)key
 {
-  v6 = a4;
-  [(CKBrowserSwitcherCell *)self setPlugin:a3];
-  [(CKBrowserSwitcherCell *)self setSnapshotCacheKey:v6];
+  keyCopy = key;
+  [(CKBrowserSwitcherCell *)self setPlugin:plugin];
+  [(CKBrowserSwitcherCell *)self setSnapshotCacheKey:keyCopy];
 }
 
-- (void)setSnapshotCacheKey:(id)a3
+- (void)setSnapshotCacheKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   snapshotCacheKey = self->_snapshotCacheKey;
-  if (snapshotCacheKey != v5)
+  if (snapshotCacheKey != keyCopy)
   {
-    v8 = v5;
-    v7 = [(CKSnapshotCacheKey *)snapshotCacheKey isEqual:v5];
-    v5 = v8;
+    v8 = keyCopy;
+    v7 = [(CKSnapshotCacheKey *)snapshotCacheKey isEqual:keyCopy];
+    keyCopy = v8;
     if (!v7)
     {
-      objc_storeStrong(&self->_snapshotCacheKey, a3);
-      v5 = v8;
+      objc_storeStrong(&self->_snapshotCacheKey, key);
+      keyCopy = v8;
       if (self->_snapshotCacheKey)
       {
         [(CKBrowserSwitcherCell *)self _updateSnapshotView];
-        v5 = v8;
+        keyCopy = v8;
       }
     }
   }
 }
 
-- (void)setBrowserSnapshotView:(id)a3
+- (void)setBrowserSnapshotView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   browserSnapshotView = self->_browserSnapshotView;
-  if (browserSnapshotView != v5)
+  if (browserSnapshotView != viewCopy)
   {
-    v8 = v5;
-    v7 = [(UIView *)browserSnapshotView superview];
+    v8 = viewCopy;
+    superview = [(UIView *)browserSnapshotView superview];
 
-    if (v7 == self)
+    if (superview == self)
     {
       [(UIView *)self->_browserSnapshotView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_browserSnapshotView, a3);
+    objc_storeStrong(&self->_browserSnapshotView, view);
     [(CKBrowserSwitcherCell *)self addSubview:self->_browserSnapshotView];
     [(CKBrowserSwitcherCell *)self setNeedsLayout];
     [(CKBrowserSwitcherCell *)self layoutIfNeeded];
-    v5 = v8;
+    viewCopy = v8;
   }
 }
 
-- (void)showExtensionInterruptedViewWithDisplayName:(id)a3
+- (void)showExtensionInterruptedViewWithDisplayName:(id)name
 {
-  v4 = a3;
-  v5 = [(CKBrowserSwitcherCell *)self extensionInterruptedView];
+  nameCopy = name;
+  extensionInterruptedView = [(CKBrowserSwitcherCell *)self extensionInterruptedView];
 
-  if (v5)
+  if (extensionInterruptedView)
   {
-    v6 = [(CKBrowserSwitcherCell *)self extensionInterruptedView];
-    [v6 removeFromSuperview];
+    extensionInterruptedView2 = [(CKBrowserSwitcherCell *)self extensionInterruptedView];
+    [extensionInterruptedView2 removeFromSuperview];
   }
 
-  v7 = [(CKBrowserSwitcherCell *)self browserSnapshotView];
+  browserSnapshotView = [(CKBrowserSwitcherCell *)self browserSnapshotView];
 
-  if (v7)
+  if (browserSnapshotView)
   {
-    v8 = [(CKBrowserSwitcherCell *)self browserSnapshotView];
-    [v8 removeFromSuperview];
+    browserSnapshotView2 = [(CKBrowserSwitcherCell *)self browserSnapshotView];
+    [browserSnapshotView2 removeFromSuperview];
 
     [(CKBrowserSwitcherCell *)self setBrowserSnapshotView:0];
   }
@@ -125,12 +125,12 @@
   v15 = MEMORY[0x1E696AEC0];
   v16 = CKFrameworkBundle();
   v17 = [v16 localizedStringForKey:@"MESSAGES_EXTENSION_CRASHED_SWITCHER" value:&stru_1F04268F8 table:@"ChatKit"];
-  v18 = [v15 stringWithFormat:v17, v4];
+  nameCopy = [v15 stringWithFormat:v17, nameCopy];
 
-  v19 = [MEMORY[0x1E69DC668] sharedApplication];
-  v20 = [v19 userInterfaceLayoutDirection];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-  if (v20 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v21 = @"\u200F";
   }
@@ -140,7 +140,7 @@
     v21 = @"\u200E";
   }
 
-  v22 = [(__CFString *)v21 stringByAppendingString:v18];
+  v22 = [(__CFString *)v21 stringByAppendingString:nameCopy];
 
   [v25 setText:v22];
   [v25 setTextAlignment:1];
@@ -159,24 +159,24 @@
   v4.receiver = self;
   v4.super_class = CKBrowserSwitcherCell;
   [(CKBrowserSwitcherCell *)&v4 layoutSubviews];
-  v3 = [(CKBrowserSwitcherCell *)self browserSnapshotView];
+  browserSnapshotView = [(CKBrowserSwitcherCell *)self browserSnapshotView];
   [(CKBrowserSwitcherCell *)self bounds];
-  [v3 setFrame:?];
+  [browserSnapshotView setFrame:?];
 }
 
 - (void)_updateSnapshotView
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = [(CKBrowserSwitcherCell *)self balloonPluginManager];
-  v4 = [(CKBrowserSwitcherCell *)self snapshotCacheKey];
-  v5 = [v3 browserSnapshotForKey:v4];
+  balloonPluginManager = [(CKBrowserSwitcherCell *)self balloonPluginManager];
+  snapshotCacheKey = [(CKBrowserSwitcherCell *)self snapshotCacheKey];
+  v5 = [balloonPluginManager browserSnapshotForKey:snapshotCacheKey];
 
   [(CKBrowserSwitcherCell *)self setUsingFallbackSnapshot:v5 == 0];
   if ([(CKBrowserSwitcherCell *)self isUsingFallbackSnapshot])
   {
-    v6 = [(CKBrowserSwitcherCell *)self plugin];
-    v7 = [(CKBrowserSwitcherCell *)self traitCollection];
-    v8 = [v6 __ck_browserImageForInterfaceStyle:{objc_msgSend(v7, "userInterfaceStyle")}];
+    plugin = [(CKBrowserSwitcherCell *)self plugin];
+    traitCollection = [(CKBrowserSwitcherCell *)self traitCollection];
+    v8 = [plugin __ck_browserImageForInterfaceStyle:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
 
     v9 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v8];
     v10 = objc_alloc(MEMORY[0x1E69DD250]);
@@ -216,11 +216,11 @@
     v29 = IMLogHandleForCategory();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
     {
-      v30 = [(CKBrowserSwitcherCell *)self plugin];
+      plugin2 = [(CKBrowserSwitcherCell *)self plugin];
       v31 = 138412546;
       v32 = v13;
       v33 = 2112;
-      v34 = v30;
+      v34 = plugin2;
       _os_log_impl(&dword_19020E000, v29, OS_LOG_TYPE_INFO, "Using fallback snapshot %@ for current plugin: %@", &v31, 0x16u);
     }
   }
@@ -233,7 +233,7 @@
   [(CKBrowserSwitcherCell *)self setBrowserSnapshotView:v13];
 }
 
-- (void)_handleBrowserSnapshotDidChange:(id)a3
+- (void)_handleBrowserSnapshotDidChange:(id)change
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;

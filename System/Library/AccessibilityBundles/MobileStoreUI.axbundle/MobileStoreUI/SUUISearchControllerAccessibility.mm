@@ -1,27 +1,27 @@
 @interface SUUISearchControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)_setSuffix:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)_setSuffix:(id)suffix;
 @end
 
 @implementation SUUISearchControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SUUISearchController" hasInstanceMethod:@"_setSuffix:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SUUISearchController" hasInstanceMethod:@"setActive:" withFullSignature:{"v", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SUUISearchController" hasInstanceMethod:@"_setSuffix:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SUUISearchController" hasInstanceMethod:@"setActive:" withFullSignature:{"v", "B", 0}];
 }
 
-- (void)_setSuffix:(id)a3
+- (void)_setSuffix:(id)suffix
 {
   v13.receiver = self;
   v13.super_class = SUUISearchControllerAccessibility;
-  v4 = a3;
-  [(SUUISearchControllerAccessibility *)&v13 _setSuffix:v4];
+  suffixCopy = suffix;
+  [(SUUISearchControllerAccessibility *)&v13 _setSuffix:suffixCopy];
   v5 = [(SUUISearchControllerAccessibility *)self safeValueForKey:@"searchBar", v13.receiver, v13.super_class];
   v6 = [v5 safeValueForKey:@"searchField"];
 
-  v7 = [v4 length];
+  v7 = [suffixCopy length];
   if (v7)
   {
     v8 = [v6 safeValueForKey:@"_clearButton"];

@@ -39,11 +39,11 @@
   v10 = MEMORY[0x277CCACA8];
   v11 = [v8 stringFromNumber:v7];
 
-  v12 = [v6 minimum];
-  v13 = [v8 stringFromNumber:v12];
-  v14 = [v6 maximum];
+  minimum = [v6 minimum];
+  v13 = [v8 stringFromNumber:minimum];
+  maximum = [v6 maximum];
 
-  v15 = [v8 stringFromNumber:v14];
+  v15 = [v8 stringFromNumber:maximum];
   v16 = [v10 stringWithFormat:@"%@ is out of range.  min=%@ max=%@", v11, v13, v15];
   v22[0] = v16;
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:&v21 count:1];

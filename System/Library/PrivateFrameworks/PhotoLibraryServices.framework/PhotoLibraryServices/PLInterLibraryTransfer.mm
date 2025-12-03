@@ -1,46 +1,46 @@
 @interface PLInterLibraryTransfer
-- (BOOL)_copyContextualVideoThumbnailsFrom:(id)a3 toDestinationAsset:(id)a4 filesCopied:(id)a5 error:(id *)a6;
-- (BOOL)_copyFileFrom:(id)a3 to:(id)a4 error:(id *)a5;
-- (BOOL)_copyFilesFromSourceAsset:(id)a3 toDestinationAsset:(id)a4 objectMap:(id)a5 filesCopied:(id)a6 error:(id *)a7;
-- (BOOL)_copyMasterThumbnailFrom:(id)a3 toDestinationAsset:(id)a4 filesCopied:(id)a5 error:(id *)a6;
-- (BOOL)_deleteAsset:(id)a3;
-- (BOOL)_loadLibrariesWithError:(id *)a3;
-- (BOOL)_shouldSkipRelationship:(id)a3;
-- (BOOL)_shouldSkipTransferWithSourceAsset:(id)a3 destinationAsset:(id)a4;
-- (BOOL)transferAssetWithUuid:(id)a3 error:(id *)a4;
-- (BOOL)transferFaceCropWithUuid:(id)a3 error:(id *)a4;
-- (BOOL)transferPersonWithUuid:(id)a3 error:(id *)a4;
-- (PLInterLibraryTransfer)initWithSourceBundle:(id)a3 destinationBundle:(id)a4 options:(id)a5;
-- (PLInterLibraryTransfer)initWithSourceLibrary:(id)a3 destinationLibrary:(id)a4 options:(id)a5;
-- (id)_copyObject:(id)a3 toDestinationObject:(id)a4 toLibrary:(id)a5 objectMap:(id)a6;
-- (id)_createNewObjectWithEntity:(id)a3 attributes:(id)a4 inLibrary:(id)a5;
-- (id)_dedupedDestinationAssetWithSourceAsset:(id)a3 destinationLibrary:(id)a4;
-- (id)_loadAssetWithUuid:(id)a3 fromLibrary:(id)a4 error:(id *)a5;
-- (id)_loadDestinationLibraryWithError:(id *)a3;
-- (id)_loadFaceCropWithUuid:(id)a3 fromLibrary:(id)a4 error:(id *)a5;
-- (id)_loadObjectWithEntityName:(id)a3 withValues:(id)a4 forKeyPaths:(id)a5 fromLibrary:(id)a6 error:(id *)a7;
-- (id)_loadPersonWithUuid:(id)a3 fromLibrary:(id)a4 error:(id *)a5;
-- (id)_loadSourceLibraryWithError:(id *)a3;
-- (id)_sourceAttributesFromObject:(id)a3;
-- (void)_copyRelationship:(id)a3 fromObject:(id)a4 toObject:(id)a5 inLibrary:(id)a6 objectMap:(id)a7;
+- (BOOL)_copyContextualVideoThumbnailsFrom:(id)from toDestinationAsset:(id)asset filesCopied:(id)copied error:(id *)error;
+- (BOOL)_copyFileFrom:(id)from to:(id)to error:(id *)error;
+- (BOOL)_copyFilesFromSourceAsset:(id)asset toDestinationAsset:(id)destinationAsset objectMap:(id)map filesCopied:(id)copied error:(id *)error;
+- (BOOL)_copyMasterThumbnailFrom:(id)from toDestinationAsset:(id)asset filesCopied:(id)copied error:(id *)error;
+- (BOOL)_deleteAsset:(id)asset;
+- (BOOL)_loadLibrariesWithError:(id *)error;
+- (BOOL)_shouldSkipRelationship:(id)relationship;
+- (BOOL)_shouldSkipTransferWithSourceAsset:(id)asset destinationAsset:(id)destinationAsset;
+- (BOOL)transferAssetWithUuid:(id)uuid error:(id *)error;
+- (BOOL)transferFaceCropWithUuid:(id)uuid error:(id *)error;
+- (BOOL)transferPersonWithUuid:(id)uuid error:(id *)error;
+- (PLInterLibraryTransfer)initWithSourceBundle:(id)bundle destinationBundle:(id)destinationBundle options:(id)options;
+- (PLInterLibraryTransfer)initWithSourceLibrary:(id)library destinationLibrary:(id)destinationLibrary options:(id)options;
+- (id)_copyObject:(id)object toDestinationObject:(id)destinationObject toLibrary:(id)library objectMap:(id)map;
+- (id)_createNewObjectWithEntity:(id)entity attributes:(id)attributes inLibrary:(id)library;
+- (id)_dedupedDestinationAssetWithSourceAsset:(id)asset destinationLibrary:(id)library;
+- (id)_loadAssetWithUuid:(id)uuid fromLibrary:(id)library error:(id *)error;
+- (id)_loadDestinationLibraryWithError:(id *)error;
+- (id)_loadFaceCropWithUuid:(id)uuid fromLibrary:(id)library error:(id *)error;
+- (id)_loadObjectWithEntityName:(id)name withValues:(id)values forKeyPaths:(id)paths fromLibrary:(id)library error:(id *)error;
+- (id)_loadPersonWithUuid:(id)uuid fromLibrary:(id)library error:(id *)error;
+- (id)_loadSourceLibraryWithError:(id *)error;
+- (id)_sourceAttributesFromObject:(id)object;
+- (void)_copyRelationship:(id)relationship fromObject:(id)object toObject:(id)toObject inLibrary:(id)library objectMap:(id)map;
 - (void)_initFileManager;
-- (void)_setAttributes:(id)a3 onObject:(id)a4;
-- (void)_setRelationship:(id)a3 origin:(id)a4 target:(id)a5;
-- (void)_transferThumbnailsForSourceAsset:(id)a3 toDestinationAsset:(id)a4 filesCopied:(id)a5;
-- (void)_validateSourceAsset:(id)a3 destinationAsset:(id)a4;
-- (void)_validateSourceFaceCrop:(id)a3 destinationFaceCrop:(id)a4;
-- (void)_validateSourcePerson:(id)a3 destinationPerson:(id)a4;
+- (void)_setAttributes:(id)attributes onObject:(id)object;
+- (void)_setRelationship:(id)relationship origin:(id)origin target:(id)target;
+- (void)_transferThumbnailsForSourceAsset:(id)asset toDestinationAsset:(id)destinationAsset filesCopied:(id)copied;
+- (void)_validateSourceAsset:(id)asset destinationAsset:(id)destinationAsset;
+- (void)_validateSourceFaceCrop:(id)crop destinationFaceCrop:(id)faceCrop;
+- (void)_validateSourcePerson:(id)person destinationPerson:(id)destinationPerson;
 @end
 
 @implementation PLInterLibraryTransfer
 
-- (void)_validateSourceFaceCrop:(id)a3 destinationFaceCrop:(id)a4
+- (void)_validateSourceFaceCrop:(id)crop destinationFaceCrop:(id)faceCrop
 {
-  v10 = a3;
-  v7 = a4;
-  if (v10)
+  cropCopy = crop;
+  faceCropCopy = faceCrop;
+  if (cropCopy)
   {
-    if (v7)
+    if (faceCropCopy)
     {
       goto LABEL_3;
     }
@@ -48,28 +48,28 @@
 
   else
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PLInterLibraryTransfer.m" lineNumber:960 description:{@"Invalid parameter not satisfying: %@", @"sourceFaceCrop"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLInterLibraryTransfer.m" lineNumber:960 description:{@"Invalid parameter not satisfying: %@", @"sourceFaceCrop"}];
 
-    if (v7)
+    if (faceCropCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"PLInterLibraryTransfer.m" lineNumber:961 description:{@"Invalid parameter not satisfying: %@", @"destinationFaceCrop"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLInterLibraryTransfer.m" lineNumber:961 description:{@"Invalid parameter not satisfying: %@", @"destinationFaceCrop"}];
 
 LABEL_3:
 }
 
-- (void)_validateSourcePerson:(id)a3 destinationPerson:(id)a4
+- (void)_validateSourcePerson:(id)person destinationPerson:(id)destinationPerson
 {
-  v10 = a3;
-  v7 = a4;
-  if (v10)
+  personCopy = person;
+  destinationPersonCopy = destinationPerson;
+  if (personCopy)
   {
-    if (v7)
+    if (destinationPersonCopy)
     {
       goto LABEL_3;
     }
@@ -77,30 +77,30 @@ LABEL_3:
 
   else
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PLInterLibraryTransfer.m" lineNumber:954 description:{@"Invalid parameter not satisfying: %@", @"sourcePerson"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLInterLibraryTransfer.m" lineNumber:954 description:{@"Invalid parameter not satisfying: %@", @"sourcePerson"}];
 
-    if (v7)
+    if (destinationPersonCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"PLInterLibraryTransfer.m" lineNumber:955 description:{@"Invalid parameter not satisfying: %@", @"destinationPerson"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLInterLibraryTransfer.m" lineNumber:955 description:{@"Invalid parameter not satisfying: %@", @"destinationPerson"}];
 
 LABEL_3:
 }
 
-- (void)_validateSourceAsset:(id)a3 destinationAsset:(id)a4
+- (void)_validateSourceAsset:(id)asset destinationAsset:(id)destinationAsset
 {
   v39 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  assetCopy = asset;
+  destinationAssetCopy = destinationAsset;
+  v9 = destinationAssetCopy;
+  if (assetCopy)
   {
-    if (v8)
+    if (destinationAssetCopy)
     {
       goto LABEL_3;
     }
@@ -108,8 +108,8 @@ LABEL_3:
 
   else
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PLInterLibraryTransfer.m" lineNumber:930 description:{@"Invalid parameter not satisfying: %@", @"sourceAsset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLInterLibraryTransfer.m" lineNumber:930 description:{@"Invalid parameter not satisfying: %@", @"sourceAsset"}];
 
     if (v9)
     {
@@ -117,13 +117,13 @@ LABEL_3:
     }
   }
 
-  v22 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v22 handleFailureInMethod:a2 object:self file:@"PLInterLibraryTransfer.m" lineNumber:931 description:{@"Invalid parameter not satisfying: %@", @"destinationAsset"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLInterLibraryTransfer.m" lineNumber:931 description:{@"Invalid parameter not satisfying: %@", @"destinationAsset"}];
 
 LABEL_3:
-  v10 = [v9 mainFileURL];
+  mainFileURL = [v9 mainFileURL];
 
-  if (!v10)
+  if (!mainFileURL)
   {
     v29 = 0;
     v30 = &v29;
@@ -131,21 +131,21 @@ LABEL_3:
     v32 = __Block_byref_object_copy__80721;
     v33 = __Block_byref_object_dispose__80722;
     v34 = 0;
-    v11 = [v7 photoLibrary];
+    photoLibrary = [assetCopy photoLibrary];
     v23 = MEMORY[0x1E69E9820];
     v24 = 3221225472;
     v25 = __64__PLInterLibraryTransfer__validateSourceAsset_destinationAsset___block_invoke;
     v26 = &unk_1E7578910;
     v28 = &v29;
-    v27 = v7;
-    [v11 performBlockAndWait:&v23];
+    v27 = assetCopy;
+    [photoLibrary performBlockAndWait:&v23];
 
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [v9 objectID];
-    v14 = [v9 uuid];
-    v15 = [v9 directory];
-    v16 = [v9 filename];
-    v17 = [v12 stringWithFormat:@"Destination objectID: %@, UUID: %@, directory: %@, filename: %@", v13, v14, v15, v16, v23, v24, v25, v26];
+    objectID = [v9 objectID];
+    uuid = [v9 uuid];
+    directory = [v9 directory];
+    filename = [v9 filename];
+    v17 = [v12 stringWithFormat:@"Destination objectID: %@, UUID: %@, directory: %@, filename: %@", objectID, uuid, directory, filename, v23, v24, v25, v26];
 
     v18 = PLInterLibraryTransferGetLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
@@ -185,37 +185,37 @@ void __64__PLInterLibraryTransfer__validateSourceAsset_destinationAsset___block_
   *(v9 + 40) = v8;
 }
 
-- (void)_transferThumbnailsForSourceAsset:(id)a3 toDestinationAsset:(id)a4 filesCopied:(id)a5
+- (void)_transferThumbnailsForSourceAsset:(id)asset toDestinationAsset:(id)destinationAsset filesCopied:(id)copied
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a5;
-  v8 = [v6 hasMasterThumb];
-  v9 = [v6 hasTableThumbs];
-  v10 = [v7 count];
+  destinationAssetCopy = destinationAsset;
+  copiedCopy = copied;
+  hasMasterThumb = [destinationAssetCopy hasMasterThumb];
+  hasTableThumbs = [destinationAssetCopy hasTableThumbs];
+  v10 = [copiedCopy count];
 
-  v11 = [v6 uuid];
+  uuid = [destinationAssetCopy uuid];
   v12 = PLInterLibraryTransferGetLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v25 = 138544386;
-    v26 = v11;
+    v26 = uuid;
     v27 = 1024;
-    v28 = v8;
+    v28 = hasMasterThumb;
     v29 = 1024;
-    v30 = v9;
+    v30 = hasTableThumbs;
     v31 = 2048;
-    v32 = [v6 effectiveThumbnailIndex];
+    effectiveThumbnailIndex = [destinationAssetCopy effectiveThumbnailIndex];
     v33 = 1024;
     v34 = v10 == 1;
     _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_INFO, "Asset %{public}@ hasMasterThumb:%d, hasTableThumbs:%d effectiveThumbnailIndex:%tu hasSourceMasterThumbOnly:%d", &v25, 0x28u);
   }
 
-  if ((v9 | v8))
+  if ((hasTableThumbs | hasMasterThumb))
   {
-    if (v9)
+    if (hasTableThumbs)
     {
-      [v6 setEffectiveThumbnailIndex:0x7FFFFFFFFFFFFFFFLL];
+      [destinationAssetCopy setEffectiveThumbnailIndex:0x7FFFFFFFFFFFFFFFLL];
     }
 
     if (v10 == 1)
@@ -224,79 +224,79 @@ void __64__PLInterLibraryTransfer__validateSourceAsset_destinationAsset___block_
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
         v25 = 138543362;
-        v26 = v11;
+        v26 = uuid;
         _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_INFO, "Building table thumbs for asset %{public}@", &v25, 0xCu);
       }
 
       v14 = objc_alloc_init(PLTableThumbnailMigrator);
       v15 = MEMORY[0x1E69BF310];
-      v16 = [v6 photoLibrary];
-      v17 = [v16 pathManager];
-      v18 = [v15 tableThumbnailFormatsForConfigPhase:1 withPathManager:v17];
+      photoLibrary = [destinationAssetCopy photoLibrary];
+      pathManager = [photoLibrary pathManager];
+      v18 = [v15 tableThumbnailFormatsForConfigPhase:1 withPathManager:pathManager];
 
-      v19 = [v6 photoLibrary];
-      [(PLTableThumbnailMigrator *)v14 rebuildTableThumbForAsset:v6 inLibrary:v19 toTableFormats:v18];
+      photoLibrary2 = [destinationAssetCopy photoLibrary];
+      [(PLTableThumbnailMigrator *)v14 rebuildTableThumbForAsset:destinationAssetCopy inLibrary:photoLibrary2 toTableFormats:v18];
     }
 
     else
     {
-      [v6 generateAndUpdateThumbnailsWithPreviewImage:0 thumbnailImage:0 fromImageSource:0 imageData:0 forceSRGBConversion:0];
+      [destinationAssetCopy generateAndUpdateThumbnailsWithPreviewImage:0 thumbnailImage:0 fromImageSource:0 imageData:0 forceSRGBConversion:0];
     }
 
     v20 = PLInterLibraryTransferGetLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
-      v21 = [v6 hasMasterThumb];
-      v22 = [v6 hasTableThumbs];
-      v23 = [v6 effectiveThumbnailIndex];
-      if (v23 == 0x7FFFFFFFFFFFFFFFLL)
+      hasMasterThumb2 = [destinationAssetCopy hasMasterThumb];
+      hasTableThumbs2 = [destinationAssetCopy hasTableThumbs];
+      effectiveThumbnailIndex2 = [destinationAssetCopy effectiveThumbnailIndex];
+      if (effectiveThumbnailIndex2 == 0x7FFFFFFFFFFFFFFFLL)
       {
         v24 = @"NSNotFound";
       }
 
       else
       {
-        v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v6, "effectiveThumbnailIndex")}];
+        v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(destinationAssetCopy, "effectiveThumbnailIndex")}];
       }
 
       v25 = 138544130;
-      v26 = v11;
+      v26 = uuid;
       v27 = 1024;
-      v28 = v21;
+      v28 = hasMasterThumb2;
       v29 = 1024;
-      v30 = v22;
+      v30 = hasTableThumbs2;
       v31 = 2114;
-      v32 = v24;
+      effectiveThumbnailIndex = v24;
       _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_INFO, "DONE  rebuilding thumbnails for asset %{public}@: hasMasterThumb:%d hasTableThumbs:%d effectiveThumbnailIndex:%{public}@", &v25, 0x22u);
-      if (v23 != 0x7FFFFFFFFFFFFFFFLL)
+      if (effectiveThumbnailIndex2 != 0x7FFFFFFFFFFFFFFFLL)
       {
       }
     }
   }
 }
 
-- (BOOL)_copyFileFrom:(id)a3 to:(id)a4 error:(id *)a5
+- (BOOL)_copyFileFrom:(id)from to:(id)to error:(id *)error
 {
   v60[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  fromCopy = from;
+  toCopy = to;
   v10 = PLInterLibraryTransferGetLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v11 = [v8 path];
-    v12 = [v9 path];
+    path = [fromCopy path];
+    path2 = [toCopy path];
     *buf = 138412546;
-    v54 = v11;
+    v54 = path;
     v55 = 2112;
-    v56 = v12;
+    v56 = path2;
     _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_DEBUG, "BEGIN copying file from %@ to %@", buf, 0x16u);
   }
 
   fileManager = self->_fileManager;
-  v14 = [v9 path];
-  v15 = [v14 stringByDeletingLastPathComponent];
+  path3 = [toCopy path];
+  stringByDeletingLastPathComponent = [path3 stringByDeletingLastPathComponent];
   v52 = 0;
-  v16 = [(NSFileManager *)fileManager createDirectoryAtPath:v15 withIntermediateDirectories:1 attributes:0 error:&v52];
+  v16 = [(NSFileManager *)fileManager createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v52];
   v17 = v52;
 
   if (!v16)
@@ -309,12 +309,12 @@ void __64__PLInterLibraryTransfer__validateSourceAsset_destinationAsset___block_
       _os_log_impl(&dword_19BF1F000, v25, OS_LOG_TYPE_ERROR, "ERROR creating intermediate directories: %@", buf, 0xCu);
     }
 
-    if (a5)
+    if (error)
     {
       v26 = v17;
       v20 = 0;
       v24 = 0;
-      *a5 = v17;
+      *error = v17;
       goto LABEL_31;
     }
 
@@ -324,7 +324,7 @@ void __64__PLInterLibraryTransfer__validateSourceAsset_destinationAsset___block_
 
   v18 = self->_fileManager;
   v51 = 0;
-  v19 = [(NSFileManager *)v18 copyItemAtURL:v8 toURL:v9 error:&v51];
+  v19 = [(NSFileManager *)v18 copyItemAtURL:fromCopy toURL:toCopy error:&v51];
   v20 = v51;
   if (!v19)
   {
@@ -333,12 +333,12 @@ void __64__PLInterLibraryTransfer__validateSourceAsset_destinationAsset___block_
       v60[0] = *MEMORY[0x1E695DB50];
       v27 = v60[0];
       v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v60 count:1];
-      v29 = [v9 resourceValuesForKeys:v28 error:0];
+      v29 = [toCopy resourceValuesForKeys:v28 error:0];
       v30 = [v29 objectForKey:v27];
 
       v59 = v27;
       v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v59 count:1];
-      v32 = [v8 resourceValuesForKeys:v31 error:0];
+      v32 = [fromCopy resourceValuesForKeys:v31 error:0];
       v33 = [v32 objectForKey:v27];
 
       LODWORD(v32) = [v30 isEqualToNumber:v33];
@@ -348,9 +348,9 @@ void __64__PLInterLibraryTransfer__validateSourceAsset_destinationAsset___block_
       {
         if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
         {
-          v36 = [v9 path];
+          path4 = [toCopy path];
           *buf = 138412290;
-          v54 = v36;
+          v54 = path4;
           _os_log_impl(&dword_19BF1F000, v35, OS_LOG_TYPE_DEBUG, "File already exists at destination path %@", buf, 0xCu);
         }
 
@@ -368,14 +368,14 @@ void __64__PLInterLibraryTransfer__validateSourceAsset_destinationAsset___block_
 
       v37 = self->_fileManager;
       v50 = 0;
-      v38 = [(NSFileManager *)v37 removeItemAtURL:v9 error:&v50];
+      v38 = [(NSFileManager *)v37 removeItemAtURL:toCopy error:&v50];
       v39 = v50;
       if (v38)
       {
 
         v40 = self->_fileManager;
         v49 = 0;
-        v41 = [(NSFileManager *)v40 copyItemAtURL:v8 toURL:v9 error:&v49];
+        v41 = [(NSFileManager *)v40 copyItemAtURL:fromCopy toURL:toCopy error:&v49];
         v20 = v49;
 
         if (v41)
@@ -389,9 +389,9 @@ void __64__PLInterLibraryTransfer__validateSourceAsset_destinationAsset___block_
         v42 = PLInterLibraryTransferGetLog();
         if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
         {
-          v43 = [v9 path];
+          path5 = [toCopy path];
           *buf = 138412546;
-          v54 = v43;
+          v54 = path5;
           v55 = 2112;
           v56 = v39;
           _os_log_impl(&dword_19BF1F000, v42, OS_LOG_TYPE_ERROR, "Unable to remove file for overwrite at path %@ error %@", buf, 0x16u);
@@ -402,22 +402,22 @@ void __64__PLInterLibraryTransfer__validateSourceAsset_destinationAsset___block_
     v44 = PLInterLibraryTransferGetLog();
     if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
     {
-      v45 = [v8 path];
-      v46 = [v9 path];
+      path6 = [fromCopy path];
+      path7 = [toCopy path];
       *buf = 138412802;
-      v54 = v45;
+      v54 = path6;
       v55 = 2112;
-      v56 = v46;
+      v56 = path7;
       v57 = 2112;
       v58 = v20;
       _os_log_impl(&dword_19BF1F000, v44, OS_LOG_TYPE_ERROR, "ERROR copying file from %@ to %@: %@", buf, 0x20u);
     }
 
-    if (a5)
+    if (error)
     {
       v47 = v20;
       v24 = 0;
-      *a5 = v20;
+      *error = v20;
       goto LABEL_31;
     }
 
@@ -430,12 +430,12 @@ LABEL_5:
   v21 = PLInterLibraryTransferGetLog();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
   {
-    v22 = [v8 path];
-    v23 = [v9 path];
+    path8 = [fromCopy path];
+    path9 = [toCopy path];
     *buf = 138412546;
-    v54 = v22;
+    v54 = path8;
     v55 = 2112;
-    v56 = v23;
+    v56 = path9;
     _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_DEBUG, "DONE  copying file from %@ to %@", buf, 0x16u);
   }
 
@@ -445,26 +445,26 @@ LABEL_31:
   return v24;
 }
 
-- (BOOL)_copyContextualVideoThumbnailsFrom:(id)a3 toDestinationAsset:(id)a4 filesCopied:(id)a5 error:(id *)a6
+- (BOOL)_copyContextualVideoThumbnailsFrom:(id)from toDestinationAsset:(id)asset filesCopied:(id)copied error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  fromCopy = from;
+  assetCopy = asset;
+  copiedCopy = copied;
   v45 = 0;
   v46 = &v45;
   v47 = 0x3032000000;
   v48 = __Block_byref_object_copy__80721;
   v49 = __Block_byref_object_dispose__80722;
   v50 = 0;
-  v13 = [v10 photoLibrary];
+  photoLibrary = [fromCopy photoLibrary];
   v42[0] = MEMORY[0x1E69E9820];
   v42[1] = 3221225472;
   v42[2] = __98__PLInterLibraryTransfer__copyContextualVideoThumbnailsFrom_toDestinationAsset_filesCopied_error___block_invoke;
   v42[3] = &unk_1E7578910;
   v44 = &v45;
-  v14 = v10;
+  v14 = fromCopy;
   v43 = v14;
-  [v13 performBlockAndWait:v42];
+  [photoLibrary performBlockAndWait:v42];
 
   v38 = 0;
   v39 = &v38;
@@ -476,22 +476,22 @@ LABEL_31:
   v35 = __Block_byref_object_copy__80721;
   v36 = __Block_byref_object_dispose__80722;
   v37 = 0;
-  v15 = [v11 photoLibrary];
+  photoLibrary2 = [assetCopy photoLibrary];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __98__PLInterLibraryTransfer__copyContextualVideoThumbnailsFrom_toDestinationAsset_filesCopied_error___block_invoke_2;
   v28[3] = &unk_1E7578870;
   v30 = &v38;
-  v16 = v11;
+  v16 = assetCopy;
   v29 = v16;
   v31 = &v32;
-  [v15 performBlockAndWait:v28];
+  [photoLibrary2 performBlockAndWait:v28];
 
   if (v39[3])
   {
     if ([v46[5] count])
     {
-      v17 = [v16 photoLibrary];
+      photoLibrary3 = [v16 photoLibrary];
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __98__PLInterLibraryTransfer__copyContextualVideoThumbnailsFrom_toDestinationAsset_filesCopied_error___block_invoke_3;
@@ -499,39 +499,39 @@ LABEL_31:
       v25 = &v45;
       v26 = &v38;
       v22 = v16;
-      v23 = self;
-      v24 = v12;
+      selfCopy = self;
+      v24 = copiedCopy;
       v27 = &v32;
-      [v17 performBlockAndWait:v21];
+      [photoLibrary3 performBlockAndWait:v21];
 
       v18 = *(v39 + 24);
       v19 = v33[5];
-      if ((v18 & 1) == 0 && a6)
+      if ((v18 & 1) == 0 && error)
       {
         v19 = v19;
-        *a6 = v19;
+        *error = v19;
       }
 
-      LOBYTE(a6) = *(v39 + 24);
+      LOBYTE(error) = *(v39 + 24);
     }
 
     else
     {
-      LOBYTE(a6) = 1;
+      LOBYTE(error) = 1;
     }
   }
 
-  else if (a6)
+  else if (error)
   {
-    *a6 = v33[5];
-    LOBYTE(a6) = *(v39 + 24);
+    *error = v33[5];
+    LOBYTE(error) = *(v39 + 24);
   }
 
   _Block_object_dispose(&v32, 8);
   _Block_object_dispose(&v38, 8);
 
   _Block_object_dispose(&v45, 8);
-  return a6 & 1;
+  return error & 1;
 }
 
 void __98__PLInterLibraryTransfer__copyContextualVideoThumbnailsFrom_toDestinationAsset_filesCopied_error___block_invoke(uint64_t a1)
@@ -643,12 +643,12 @@ void __98__PLInterLibraryTransfer__copyContextualVideoThumbnailsFrom_toDestinati
 LABEL_19:
 }
 
-- (BOOL)_copyMasterThumbnailFrom:(id)a3 toDestinationAsset:(id)a4 filesCopied:(id)a5 error:(id *)a6
+- (BOOL)_copyMasterThumbnailFrom:(id)from toDestinationAsset:(id)asset filesCopied:(id)copied error:(id *)error
 {
   v53 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  fromCopy = from;
+  assetCopy = asset;
+  copiedCopy = copied;
   v39 = 0;
   v40 = &v39;
   v41 = 0x3032000000;
@@ -661,27 +661,27 @@ LABEL_19:
   v36 = __Block_byref_object_copy__80721;
   v37 = __Block_byref_object_dispose__80722;
   v38 = 0;
-  v13 = [v10 photoLibrary];
+  photoLibrary = [fromCopy photoLibrary];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __88__PLInterLibraryTransfer__copyMasterThumbnailFrom_toDestinationAsset_filesCopied_error___block_invoke;
   v29[3] = &unk_1E7578870;
   v31 = &v33;
-  v14 = v10;
+  v14 = fromCopy;
   v30 = v14;
   v32 = &v39;
-  [v13 performBlockAndWait:v29];
+  [photoLibrary performBlockAndWait:v29];
 
   if (v40[5])
   {
-    v15 = [v11 masterThumbnailFileURLIfLocal];
+    masterThumbnailFileURLIfLocal = [assetCopy masterThumbnailFileURLIfLocal];
     v16 = v40[5];
     v28 = 0;
-    v17 = [(PLInterLibraryTransfer *)self _copyFileFrom:v16 to:v15 error:&v28];
+    v17 = [(PLInterLibraryTransfer *)self _copyFileFrom:v16 to:masterThumbnailFileURLIfLocal error:&v28];
     v18 = v28;
     if (v17)
     {
-      [v12 addObject:v15];
+      [copiedCopy addObject:masterThumbnailFileURLIfLocal];
       v19 = 1;
       goto LABEL_10;
     }
@@ -693,7 +693,7 @@ LABEL_19:
       *buf = 138412802;
       v48 = v25;
       v49 = 2112;
-      v50 = v15;
+      v50 = masterThumbnailFileURLIfLocal;
       v51 = 2112;
       v52 = v18;
       _os_log_impl(&dword_19BF1F000, v24, OS_LOG_TYPE_ERROR, "ERROR copy master thumbnail file from %@ to %@ failed: %@", buf, 0x20u);
@@ -709,23 +709,23 @@ LABEL_19:
     v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
     v18 = [v20 errorWithDomain:*MEMORY[0x1E69BFF48] code:70002 userInfo:v22];
 
-    v15 = PLInterLibraryTransferGetLog();
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    masterThumbnailFileURLIfLocal = PLInterLibraryTransferGetLog();
+    if (os_log_type_enabled(masterThumbnailFileURLIfLocal, OS_LOG_TYPE_ERROR))
     {
       v23 = v34[5];
       *buf = 138543362;
       v48 = v23;
-      _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, "ERROR missing master thumbnail URL from source asset %{public}@", buf, 0xCu);
+      _os_log_impl(&dword_19BF1F000, masterThumbnailFileURLIfLocal, OS_LOG_TYPE_ERROR, "ERROR missing master thumbnail URL from source asset %{public}@", buf, 0xCu);
     }
   }
 
   v19 = 0;
 LABEL_10:
 
-  if (a6)
+  if (error)
   {
     v26 = v18;
-    *a6 = v18;
+    *error = v18;
   }
 
   _Block_object_dispose(&v33, 8);
@@ -747,35 +747,35 @@ void __88__PLInterLibraryTransfer__copyMasterThumbnailFrom_toDestinationAsset_fi
   *(v6 + 40) = v5;
 }
 
-- (BOOL)_copyFilesFromSourceAsset:(id)a3 toDestinationAsset:(id)a4 objectMap:(id)a5 filesCopied:(id)a6 error:(id *)a7
+- (BOOL)_copyFilesFromSourceAsset:(id)asset toDestinationAsset:(id)destinationAsset objectMap:(id)map filesCopied:(id)copied error:(id *)error
 {
   v96 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v65 = a4;
-  v12 = a5;
-  v66 = a6;
+  assetCopy = asset;
+  destinationAssetCopy = destinationAsset;
+  mapCopy = map;
+  copiedCopy = copied;
   v81 = 0;
   v82 = &v81;
   v83 = 0x3032000000;
   v84 = __Block_byref_object_copy__80721;
   v85 = __Block_byref_object_dispose__80722;
   v86 = 0;
-  v13 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
-  v14 = [v11 photoLibrary];
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  photoLibrary = [assetCopy photoLibrary];
   v76[0] = MEMORY[0x1E69E9820];
   v76[1] = 3221225472;
   v76[2] = __99__PLInterLibraryTransfer__copyFilesFromSourceAsset_toDestinationAsset_objectMap_filesCopied_error___block_invoke;
   v76[3] = &unk_1E75778C0;
   v80 = &v81;
-  v63 = v11;
+  v63 = assetCopy;
   v77 = v63;
-  v62 = v12;
+  v62 = mapCopy;
   v78 = v62;
-  v68 = v13;
+  v68 = strongToStrongObjectsMapTable;
   v79 = v68;
-  [v14 performBlockAndWait:v76];
+  [photoLibrary performBlockAndWait:v76];
 
-  [v65 modernResources];
+  [destinationAssetCopy modernResources];
   v74 = 0u;
   v75 = 0u;
   v72 = 0u;
@@ -798,11 +798,11 @@ void __88__PLInterLibraryTransfer__copyMasterThumbnailFrom_toDestinationAsset_fi
 
       v18 = *(*(&v72 + 1) + 8 * i);
       v19 = [v68 objectForKey:v18];
-      v20 = [v18 fileURL];
-      v21 = v20;
+      fileURL = [v18 fileURL];
+      v21 = fileURL;
       if (v19)
       {
-        v22 = v20 == 0;
+        v22 = fileURL == 0;
       }
 
       else
@@ -812,7 +812,7 @@ void __88__PLInterLibraryTransfer__copyMasterThumbnailFrom_toDestinationAsset_fi
 
       if (v22)
       {
-        if (!(v19 | v20))
+        if (!(v19 | fileURL))
         {
           v25 = PLInterLibraryTransferGetLog();
           if (!os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -829,7 +829,7 @@ void __88__PLInterLibraryTransfer__copyMasterThumbnailFrom_toDestinationAsset_fi
           goto LABEL_22;
         }
 
-        if (!v20 || (-[PLInterLibraryTransfer options](self, "options"), v23 = objc_claimAutoreleasedReturnValue(), v24 = [v23 ignoreMissingSourceFileURLs], v23, !v24))
+        if (!fileURL || (-[PLInterLibraryTransfer options](self, "options"), v23 = objc_claimAutoreleasedReturnValue(), v24 = [v23 ignoreMissingSourceFileURLs], v23, !v24))
         {
           v47 = PLInterLibraryTransferGetLog();
           if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
@@ -856,10 +856,10 @@ void __88__PLInterLibraryTransfer__copyMasterThumbnailFrom_toDestinationAsset_fi
           v88 = v25;
           v51 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v88 forKeys:&v87 count:1];
           v52 = [v50 errorWithDomain:*MEMORY[0x1E69BFF48] code:70002 userInfo:v51];
-          if (a7)
+          if (error)
           {
             v52 = v52;
-            *a7 = v52;
+            *error = v52;
           }
 
           goto LABEL_50;
@@ -885,12 +885,12 @@ LABEL_22:
       else
       {
         v71 = 0;
-        v31 = [(PLInterLibraryTransfer *)self _copyFileFrom:v19 to:v20 error:&v71];
+        v31 = [(PLInterLibraryTransfer *)self _copyFileFrom:v19 to:fileURL error:&v71];
         v32 = v71;
         v25 = v32;
         if (v31)
         {
-          [v66 addObject:v21];
+          [copiedCopy addObject:v21];
           if ([v18 copyPurgeabilityFromFileURL:v19])
           {
             goto LABEL_29;
@@ -899,18 +899,18 @@ LABEL_22:
           v33 = PLInterLibraryTransferGetLog();
           if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
           {
-            v34 = [v18 fileURL];
-            v35 = [v34 path];
+            fileURL2 = [v18 fileURL];
+            path = [fileURL2 path];
             *buf = 138412290;
-            v90 = v35;
+            v90 = path;
             _os_log_impl(&dword_19BF1F000, v33, OS_LOG_TYPE_ERROR, "Failed to update purgeability of resource at %@", buf, 0xCu);
           }
         }
 
         else
         {
-          v36 = [(PLInterLibraryTransfer *)self options];
-          if (![v36 ignoreMissingSourceFiles])
+          options = [(PLInterLibraryTransfer *)self options];
+          if (![options ignoreMissingSourceFiles])
           {
 
 LABEL_46:
@@ -926,10 +926,10 @@ LABEL_46:
               _os_log_impl(&dword_19BF1F000, v54, OS_LOG_TYPE_ERROR, "copy file from %@ to %@ failed: %@", buf, 0x20u);
             }
 
-            if (a7)
+            if (error)
             {
               v55 = v25;
-              *a7 = v25;
+              *error = v25;
             }
 
 LABEL_50:
@@ -976,20 +976,20 @@ LABEL_29:
 LABEL_31:
 
   v70 = 0;
-  v40 = [(PLInterLibraryTransfer *)self _copyMasterThumbnailFrom:v63 toDestinationAsset:v65 filesCopied:v66 error:&v70];
+  v40 = [(PLInterLibraryTransfer *)self _copyMasterThumbnailFrom:v63 toDestinationAsset:destinationAssetCopy filesCopied:copiedCopy error:&v70];
   v41 = v70;
   v19 = v41;
   if (v40)
   {
 
     v69 = 0;
-    v42 = [(PLInterLibraryTransfer *)self _copyContextualVideoThumbnailsFrom:v63 toDestinationAsset:v65 filesCopied:v66 error:&v69];
+    v42 = [(PLInterLibraryTransfer *)self _copyContextualVideoThumbnailsFrom:v63 toDestinationAsset:destinationAssetCopy filesCopied:copiedCopy error:&v69];
     v43 = v69;
     v19 = v43;
     if (v42)
     {
 
-      [v65 persistMetadataToFilesystem];
+      [destinationAssetCopy persistMetadataToFilesystem];
       v44 = PLInterLibraryTransferGetLog();
       if (os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG))
       {
@@ -1003,15 +1003,15 @@ LABEL_31:
       goto LABEL_60;
     }
 
-    if (a7)
+    if (error)
     {
       v57 = v43;
 LABEL_53:
-      *a7 = v19;
+      *error = v19;
     }
   }
 
-  else if (a7)
+  else if (error)
   {
     v53 = v41;
     goto LABEL_53;
@@ -1022,19 +1022,19 @@ LABEL_55:
 
   v44 = PLInterLibraryTransferGetLog();
   v58 = os_log_type_enabled(v44, OS_LOG_TYPE_ERROR);
-  v59 = a7;
+  errorCopy = error;
   if (v58)
   {
     v60 = v82[5];
-    if (a7)
+    if (error)
     {
-      v59 = *a7;
+      errorCopy = *error;
     }
 
     *buf = 138543618;
     v90 = v60;
     v91 = 2112;
-    v92 = v59;
+    v92 = errorCopy;
     _os_log_impl(&dword_19BF1F000, v44, OS_LOG_TYPE_ERROR, "ERROR copying files from source asset %{public}@ %@", buf, 0x16u);
   }
 
@@ -1097,16 +1097,16 @@ void __99__PLInterLibraryTransfer__copyFilesFromSourceAsset_toDestinationAsset_o
   }
 }
 
-- (void)_setAttributes:(id)a3 onObject:(id)a4
+- (void)_setAttributes:(id)attributes onObject:(id)object
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  attributesCopy = attributes;
+  objectCopy = object;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [attributesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1117,65 +1117,65 @@ void __99__PLInterLibraryTransfer__copyFilesFromSourceAsset_toDestinationAsset_o
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(attributesCopy);
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
-        v12 = [v5 objectForKey:v11];
+        v12 = [attributesCopy objectForKey:v11];
         if (v12)
         {
-          [v6 setValue:v12 forKey:v11];
+          [objectCopy setValue:v12 forKey:v11];
         }
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [attributesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)_setRelationship:(id)a3 origin:(id)a4 target:(id)a5
+- (void)_setRelationship:(id)relationship origin:(id)origin target:(id)target
 {
-  v13 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v13 isToMany];
-  v10 = [v13 name];
-  if (v9)
+  relationshipCopy = relationship;
+  originCopy = origin;
+  targetCopy = target;
+  isToMany = [relationshipCopy isToMany];
+  name = [relationshipCopy name];
+  if (isToMany)
   {
-    v11 = [v7 valueForKey:v10];
+    v11 = [originCopy valueForKey:name];
 
     if (v11)
     {
-      [v11 addObject:v8];
-      v10 = v11;
+      [v11 addObject:targetCopy];
+      name = v11;
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFA8] setWithObject:v8];
-      v12 = [v13 name];
-      [v7 setValue:v10 forKey:v12];
+      name = [MEMORY[0x1E695DFA8] setWithObject:targetCopy];
+      name2 = [relationshipCopy name];
+      [originCopy setValue:name forKey:name2];
     }
   }
 
   else
   {
-    [v7 setValue:v8 forKey:v10];
+    [originCopy setValue:targetCopy forKey:name];
   }
 }
 
-- (void)_copyRelationship:(id)a3 fromObject:(id)a4 toObject:(id)a5 inLibrary:(id)a6 objectMap:(id)a7
+- (void)_copyRelationship:(id)relationship fromObject:(id)object toObject:(id)toObject inLibrary:(id)library objectMap:(id)map
 {
   v77 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v42 = a4;
-  v50 = a5;
-  v44 = a6;
-  v49 = a7;
-  v43 = v12;
-  v13 = [(PLInterLibraryTransfer *)self _shouldSkipRelationship:v12];
+  relationshipCopy = relationship;
+  objectCopy = object;
+  toObjectCopy = toObject;
+  libraryCopy = library;
+  mapCopy = map;
+  v43 = relationshipCopy;
+  v13 = [(PLInterLibraryTransfer *)self _shouldSkipRelationship:relationshipCopy];
   v14 = PLInterLibraryTransferGetLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
@@ -1189,9 +1189,9 @@ void __99__PLInterLibraryTransfer__copyFilesFromSourceAsset_toDestinationAsset_o
       v15 = @"BEGIN";
     }
 
-    obj = [v12 name];
-    v47 = [v12 inverseRelationship];
-    if ([v47 isToMany])
+    obj = [relationshipCopy name];
+    inverseRelationship = [relationshipCopy inverseRelationship];
+    if ([inverseRelationship isToMany])
     {
       v16 = @"many";
     }
@@ -1201,7 +1201,7 @@ void __99__PLInterLibraryTransfer__copyFilesFromSourceAsset_toDestinationAsset_o
       v16 = @"1";
     }
 
-    if ([v12 isToMany])
+    if ([relationshipCopy isToMany])
     {
       v17 = @"many";
     }
@@ -1211,10 +1211,10 @@ void __99__PLInterLibraryTransfer__copyFilesFromSourceAsset_toDestinationAsset_o
       v17 = @"1";
     }
 
-    v18 = [v43 destinationEntity];
-    v19 = [v18 name];
-    v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@:%p>", objc_opt_class(), v42];
-    v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@:%p>", objc_opt_class(), v50];
+    destinationEntity = [v43 destinationEntity];
+    name = [destinationEntity name];
+    objectCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@:%p>", objc_opt_class(), objectCopy];
+    toObjectCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@:%p>", objc_opt_class(), toObjectCopy];
     *buf = 138544898;
     *&buf[4] = v15;
     *&buf[12] = 2114;
@@ -1224,11 +1224,11 @@ void __99__PLInterLibraryTransfer__copyFilesFromSourceAsset_toDestinationAsset_o
     *v72 = 2114;
     *&v72[2] = v17;
     *&v72[10] = 2114;
-    *&v72[12] = v19;
+    *&v72[12] = name;
     v73 = 2112;
-    v74 = v20;
+    v74 = objectCopy;
     v75 = 2112;
-    v76 = v21;
+    v76 = toObjectCopy;
     _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEBUG, "%{public}@ copying relationship %{public}@ (%{public}@:%{public}@ %{public}@) from source %@ to dest %@", buf, 0x48u);
   }
 
@@ -1240,17 +1240,17 @@ void __99__PLInterLibraryTransfer__copyFilesFromSourceAsset_toDestinationAsset_o
     v66 = __Block_byref_object_copy__80721;
     v67 = __Block_byref_object_dispose__80722;
     v68 = 0;
-    v22 = [v42 managedObjectContext];
+    managedObjectContext = [objectCopy managedObjectContext];
     v59[0] = MEMORY[0x1E69E9820];
     v59[1] = 3221225472;
     v59[2] = __84__PLInterLibraryTransfer__copyRelationship_fromObject_toObject_inLibrary_objectMap___block_invoke;
     v59[3] = &unk_1E7578820;
-    v23 = v42;
+    v23 = objectCopy;
     v60 = v23;
     v24 = v43;
     v61 = v24;
     v62 = &v63;
-    [v22 performBlockAndWait:v59];
+    [managedObjectContext performBlockAndWait:v59];
 
     v57 = 0u;
     v58 = 0u;
@@ -1277,7 +1277,7 @@ void __99__PLInterLibraryTransfer__copyFilesFromSourceAsset_toDestinationAsset_o
           v71 = __Block_byref_object_copy__80721;
           *v72 = __Block_byref_object_dispose__80722;
           *&v72[8] = 0;
-          v28 = [v23 managedObjectContext];
+          managedObjectContext2 = [v23 managedObjectContext];
           v51[0] = MEMORY[0x1E69E9820];
           v51[1] = 3221225472;
           v51[2] = __84__PLInterLibraryTransfer__copyRelationship_fromObject_toObject_inLibrary_objectMap___block_invoke_138;
@@ -1285,9 +1285,9 @@ void __99__PLInterLibraryTransfer__copyFilesFromSourceAsset_toDestinationAsset_o
           v54 = buf;
           v52 = v23;
           v53 = v27;
-          [v28 performBlockAndWait:v51];
+          [managedObjectContext2 performBlockAndWait:v51];
 
-          v29 = [v49 objectForKey:*(*&buf[8] + 40)];
+          v29 = [mapCopy objectForKey:*(*&buf[8] + 40)];
           if (v29)
           {
             goto LABEL_23;
@@ -1300,18 +1300,18 @@ void __99__PLInterLibraryTransfer__copyFilesFromSourceAsset_toDestinationAsset_o
 
           else
           {
-            v31 = [v24 name];
-            v30 = [v50 valueForKey:v31];
+            name2 = [v24 name];
+            v30 = [toObjectCopy valueForKey:name2];
           }
 
-          v29 = [(PLInterLibraryTransfer *)self _copyObject:*(*&buf[8] + 40) toDestinationObject:v30 toLibrary:v44 objectMap:v49];
+          v29 = [(PLInterLibraryTransfer *)self _copyObject:*(*&buf[8] + 40) toDestinationObject:v30 toLibrary:libraryCopy objectMap:mapCopy];
 
           if (v29)
           {
 LABEL_23:
-            [(PLInterLibraryTransfer *)self _setRelationship:v24 origin:v50 target:v29];
-            v32 = [v24 inverseRelationship];
-            [(PLInterLibraryTransfer *)self _setRelationship:v32 origin:v29 target:v50];
+            [(PLInterLibraryTransfer *)self _setRelationship:v24 origin:toObjectCopy target:v29];
+            inverseRelationship2 = [v24 inverseRelationship];
+            [(PLInterLibraryTransfer *)self _setRelationship:inverseRelationship2 origin:v29 target:toObjectCopy];
           }
 
           _Block_object_dispose(buf, 8);
@@ -1326,10 +1326,10 @@ LABEL_23:
     v33 = PLInterLibraryTransferGetLog();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
     {
-      v34 = [v24 name];
-      v35 = [v24 inverseRelationship];
+      name3 = [v24 name];
+      inverseRelationship3 = [v24 inverseRelationship];
       v36 = @"many";
-      if ([v35 isToMany])
+      if ([inverseRelationship3 isToMany])
       {
         v37 = @"many";
       }
@@ -1344,22 +1344,22 @@ LABEL_23:
         v36 = @"1";
       }
 
-      v38 = [v24 destinationEntity];
-      v39 = [v38 name];
+      destinationEntity2 = [v24 destinationEntity];
+      name4 = [destinationEntity2 name];
       v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@:%p>", objc_opt_class(), v23];
-      v41 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@:%p>", objc_opt_class(), v50];
+      toObjectCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@:%p>", objc_opt_class(), toObjectCopy];
       *buf = 138544642;
-      *&buf[4] = v34;
+      *&buf[4] = name3;
       *&buf[12] = 2114;
       *&buf[14] = v37;
       *&buf[22] = 2114;
       v71 = v36;
       *v72 = 2114;
-      *&v72[2] = v39;
+      *&v72[2] = name4;
       *&v72[10] = 2112;
       *&v72[12] = v40;
       v73 = 2112;
-      v74 = v41;
+      v74 = toObjectCopy2;
       _os_log_impl(&dword_19BF1F000, v33, OS_LOG_TYPE_DEBUG, "DONE  copying relationship %{public}@ (%{public}@:%{public}@ %{public}@) from source %@ to dest %@", buf, 0x3Eu);
     }
 
@@ -1420,14 +1420,14 @@ void __84__PLInterLibraryTransfer__copyRelationship_fromObject_toObject_inLibrar
   *(v3 + 40) = v2;
 }
 
-- (BOOL)_shouldSkipRelationship:(id)a3
+- (BOOL)_shouldSkipRelationship:(id)relationship
 {
-  v5 = a3;
-  v6 = [v5 isToMany];
-  if (v6)
+  relationshipCopy = relationship;
+  isToMany = [relationshipCopy isToMany];
+  if (isToMany)
   {
-    v3 = [v5 inverseRelationship];
-    if ([v3 isToMany])
+    inverseRelationship = [relationshipCopy inverseRelationship];
+    if ([inverseRelationship isToMany])
     {
       v7 = 1;
 LABEL_5:
@@ -1436,13 +1436,13 @@ LABEL_5:
     }
   }
 
-  v8 = [(PLInterLibraryTransfer *)self options];
-  v9 = [v8 excludedEntityNames];
-  v10 = [v5 destinationEntity];
-  v11 = [v10 name];
-  v7 = [v9 containsObject:v11];
+  options = [(PLInterLibraryTransfer *)self options];
+  excludedEntityNames = [options excludedEntityNames];
+  destinationEntity = [relationshipCopy destinationEntity];
+  name = [destinationEntity name];
+  v7 = [excludedEntityNames containsObject:name];
 
-  if (v6)
+  if (isToMany)
   {
     goto LABEL_5;
   }
@@ -1452,33 +1452,33 @@ LABEL_6:
   return v7;
 }
 
-- (id)_createNewObjectWithEntity:(id)a3 attributes:(id)a4 inLibrary:(id)a5
+- (id)_createNewObjectWithEntity:(id)entity attributes:(id)attributes inLibrary:(id)library
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  entityCopy = entity;
+  libraryCopy = library;
+  attributesCopy = attributes;
   v11 = PLInterLibraryTransferGetLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [v8 name];
+    name = [entityCopy name];
     v19 = 138543362;
-    v20 = v12;
+    v20 = name;
     _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEBUG, "BEGIN creating new object with entity name %{public}@", &v19, 0xCu);
   }
 
   v13 = objc_alloc(MEMORY[0x1E695D620]);
-  v14 = [v9 managedObjectContext];
+  managedObjectContext = [libraryCopy managedObjectContext];
 
-  v15 = [v13 initWithEntity:v8 insertIntoManagedObjectContext:v14];
-  [(PLInterLibraryTransfer *)self _setAttributes:v10 onObject:v15];
+  v15 = [v13 initWithEntity:entityCopy insertIntoManagedObjectContext:managedObjectContext];
+  [(PLInterLibraryTransfer *)self _setAttributes:attributesCopy onObject:v15];
 
   v16 = PLInterLibraryTransferGetLog();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
-    v17 = [v8 name];
+    name2 = [entityCopy name];
     v19 = 138543618;
-    v20 = v17;
+    v20 = name2;
     v21 = 2048;
     v22 = v15;
     _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_DEBUG, "DONE  creating new object with entity name %{public}@: %p", &v19, 0x16u);
@@ -1487,56 +1487,56 @@ LABEL_6:
   return v15;
 }
 
-- (id)_copyObject:(id)a3 toDestinationObject:(id)a4 toLibrary:(id)a5 objectMap:(id)a6
+- (id)_copyObject:(id)object toDestinationObject:(id)destinationObject toLibrary:(id)library objectMap:(id)map
 {
   v39 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  objectCopy = object;
+  destinationObjectCopy = destinationObject;
+  libraryCopy = library;
+  mapCopy = map;
   v14 = PLInterLibraryTransferGetLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@:%p>", objc_opt_class(), v10];
-    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@:%p>", objc_opt_class(), v11];
+    objectCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@:%p>", objc_opt_class(), objectCopy];
+    destinationObjectCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@:%p>", objc_opt_class(), destinationObjectCopy];
     *buf = 138543618;
-    v36 = v15;
+    v36 = objectCopy;
     v37 = 2114;
-    v38 = v16;
+    v38 = destinationObjectCopy;
     _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEBUG, "BEGIN copying source obj %{public}@ to dest %{public}@", buf, 0x16u);
   }
 
-  v17 = [(PLInterLibraryTransfer *)self _sourceAttributesFromObject:v10];
+  v17 = [(PLInterLibraryTransfer *)self _sourceAttributesFromObject:objectCopy];
   v18 = MEMORY[0x1E695D5B8];
-  v19 = [v10 entity];
-  v20 = [v19 name];
-  v21 = [v12 managedObjectContext];
-  v22 = [v18 entityForName:v20 inManagedObjectContext:v21];
+  entity = [objectCopy entity];
+  name = [entity name];
+  managedObjectContext = [libraryCopy managedObjectContext];
+  v22 = [v18 entityForName:name inManagedObjectContext:managedObjectContext];
 
-  if (v11)
+  if (destinationObjectCopy)
   {
-    [(PLInterLibraryTransfer *)self _setAttributes:v17 onObject:v11];
+    [(PLInterLibraryTransfer *)self _setAttributes:v17 onObject:destinationObjectCopy];
 LABEL_6:
-    [v13 setObject:v11 forKey:v10];
-    v23 = [v10 entity];
-    v24 = [v23 relationshipsByName];
+    [mapCopy setObject:destinationObjectCopy forKey:objectCopy];
+    entity2 = [objectCopy entity];
+    relationshipsByName = [entity2 relationshipsByName];
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __78__PLInterLibraryTransfer__copyObject_toDestinationObject_toLibrary_objectMap___block_invoke;
     v30[3] = &unk_1E75727D8;
     v30[4] = self;
-    v31 = v10;
-    v25 = v11;
+    v31 = objectCopy;
+    v25 = destinationObjectCopy;
     v32 = v25;
-    v33 = v12;
-    v34 = v13;
-    [v24 enumerateKeysAndObjectsUsingBlock:v30];
+    v33 = libraryCopy;
+    v34 = mapCopy;
+    [relationshipsByName enumerateKeysAndObjectsUsingBlock:v30];
 
     goto LABEL_7;
   }
 
-  v11 = [(PLInterLibraryTransfer *)self _createNewObjectWithEntity:v22 attributes:v17 inLibrary:v12];
-  if (v11)
+  destinationObjectCopy = [(PLInterLibraryTransfer *)self _createNewObjectWithEntity:v22 attributes:v17 inLibrary:libraryCopy];
+  if (destinationObjectCopy)
   {
     goto LABEL_6;
   }
@@ -1546,10 +1546,10 @@ LABEL_7:
   v26 = PLInterLibraryTransferGetLog();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
   {
-    v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@:%p>", objc_opt_class(), v10];
+    objectCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@:%p>", objc_opt_class(), objectCopy];
     v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@:%p>", objc_opt_class(), v25];
     *buf = 138543618;
-    v36 = v27;
+    v36 = objectCopy2;
     v37 = 2114;
     v38 = v28;
     _os_log_impl(&dword_19BF1F000, v26, OS_LOG_TYPE_DEBUG, "DONE  copying source obj %{public}@ to dest %{public}@", buf, 0x16u);
@@ -1558,21 +1558,21 @@ LABEL_7:
   return v25;
 }
 
-- (id)_sourceAttributesFromObject:(id)a3
+- (id)_sourceAttributesFromObject:(id)object
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
-  v6 = [v4 managedObjectContext];
+  objectCopy = object;
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  managedObjectContext = [objectCopy managedObjectContext];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __54__PLInterLibraryTransfer__sourceAttributesFromObject___block_invoke;
   v12[3] = &unk_1E75761B8;
-  v13 = v4;
-  v14 = self;
-  v7 = v5;
+  v13 = objectCopy;
+  selfCopy = self;
+  v7 = strongToStrongObjectsMapTable;
   v15 = v7;
-  v8 = v4;
-  [v6 performBlockAndWait:v12];
+  v8 = objectCopy;
+  [managedObjectContext performBlockAndWait:v12];
 
   v9 = v15;
   v10 = v7;
@@ -1610,12 +1610,12 @@ void __54__PLInterLibraryTransfer__sourceAttributesFromObject___block_invoke_2(u
   }
 }
 
-- (BOOL)_shouldSkipTransferWithSourceAsset:(id)a3 destinationAsset:(id)a4
+- (BOOL)_shouldSkipTransferWithSourceAsset:(id)asset destinationAsset:(id)destinationAsset
 {
   v77 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v7 || (-[PLInterLibraryTransfer options](self, "options"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 updateExistingObjects], v8, (v9 & 1) != 0))
+  assetCopy = asset;
+  destinationAssetCopy = destinationAsset;
+  if (!destinationAssetCopy || (-[PLInterLibraryTransfer options](self, "options"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 updateExistingObjects], v8, (v9 & 1) != 0))
   {
     *v62 = 0;
     v63 = v62;
@@ -1637,17 +1637,17 @@ void __54__PLInterLibraryTransfer__sourceAttributesFromObject___block_invoke_2(u
     v49 = &v48;
     v50 = 0x2020000000;
     v51 = 0;
-    v10 = [v6 photoLibrary];
+    photoLibrary = [assetCopy photoLibrary];
     v42[0] = MEMORY[0x1E69E9820];
     v42[1] = 3221225472;
     v42[2] = __78__PLInterLibraryTransfer__shouldSkipTransferWithSourceAsset_destinationAsset___block_invoke;
     v42[3] = &unk_1E7576AF0;
     v44 = &v52;
-    v43 = v6;
+    v43 = assetCopy;
     v45 = v62;
     v46 = &v58;
     v47 = &v48;
-    [v10 performBlockAndWait:v42];
+    [photoLibrary performBlockAndWait:v42];
 
     if (*(v49 + 12) != 3)
     {
@@ -1668,7 +1668,7 @@ void __54__PLInterLibraryTransfer__sourceAttributesFromObject___block_invoke_2(u
       goto LABEL_13;
     }
 
-    if (!v7)
+    if (!destinationAssetCopy)
     {
 LABEL_19:
       v17 = 0;
@@ -1685,15 +1685,15 @@ LABEL_19:
     v39 = &v38;
     v40 = 0x2020000000;
     v41 = 0;
-    v11 = [v7 photoLibrary];
+    photoLibrary2 = [destinationAssetCopy photoLibrary];
     v31 = MEMORY[0x1E69E9820];
     v32 = 3221225472;
     v33 = __78__PLInterLibraryTransfer__shouldSkipTransferWithSourceAsset_destinationAsset___block_invoke_115;
     v34 = &unk_1E7578870;
     v36 = buf;
-    v35 = v7;
+    v35 = destinationAssetCopy;
     v37 = &v38;
-    [v11 performBlockAndWait:&v31];
+    [photoLibrary2 performBlockAndWait:&v31];
 
     v12 = *(v63 + 5);
     if (v12 && *(*&buf[8] + 40) && [v12 compare:{v31, v32, v33, v34}] != 1)
@@ -1820,21 +1820,21 @@ uint64_t __78__PLInterLibraryTransfer__shouldSkipTransferWithSourceAsset_destina
   return result;
 }
 
-- (id)_dedupedDestinationAssetWithSourceAsset:(id)a3 destinationLibrary:(id)a4
+- (id)_dedupedDestinationAssetWithSourceAsset:(id)asset destinationLibrary:(id)library
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v25 = a4;
+  assetCopy = asset;
+  libraryCopy = library;
   v27 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v26 = self;
-  v7 = [(PLInterLibraryTransfer *)self options];
-  v8 = [v7 keysForDeDupe];
+  selfCopy = self;
+  options = [(PLInterLibraryTransfer *)self options];
+  keysForDeDupe = [options keysForDeDupe];
 
-  v9 = [v8 countByEnumeratingWithState:&v32 objects:v40 count:16];
+  v9 = [keysForDeDupe countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1845,28 +1845,28 @@ uint64_t __78__PLInterLibraryTransfer__shouldSkipTransferWithSourceAsset_destina
       {
         if (*v33 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(keysForDeDupe);
         }
 
         v13 = *(*(&v32 + 1) + 8 * i);
-        v14 = [v6 photoLibrary];
+        photoLibrary = [assetCopy photoLibrary];
         v28[0] = MEMORY[0x1E69E9820];
         v28[1] = 3221225472;
         v28[2] = __85__PLInterLibraryTransfer__dedupedDestinationAssetWithSourceAsset_destinationLibrary___block_invoke;
         v28[3] = &unk_1E75761B8;
-        v29 = v6;
+        v29 = assetCopy;
         v30 = v13;
         v31 = v27;
-        [v14 performBlockAndWait:v28];
+        [photoLibrary performBlockAndWait:v28];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v32 objects:v40 count:16];
+      v10 = [keysForDeDupe countByEnumeratingWithState:&v32 objects:v40 count:16];
     }
 
     while (v10);
   }
 
-  v15 = v25;
+  v15 = libraryCopy;
   if ([v27 count])
   {
     v16 = 0;
@@ -1874,9 +1874,9 @@ uint64_t __78__PLInterLibraryTransfer__shouldSkipTransferWithSourceAsset_destina
     {
       v17 = v16;
       v18 = +[PLManagedAsset entityName];
-      v19 = [(PLInterLibraryTransfer *)v26 options];
-      v20 = [v19 keysForDeDupe];
-      v16 = [(PLInterLibraryTransfer *)v26 _loadObjectWithEntityName:v18 withValues:v27 forKeyPaths:v20 fromLibrary:v15 error:0];
+      options2 = [(PLInterLibraryTransfer *)selfCopy options];
+      keysForDeDupe2 = [options2 keysForDeDupe];
+      v16 = [(PLInterLibraryTransfer *)selfCopy _loadObjectWithEntityName:v18 withValues:v27 forKeyPaths:keysForDeDupe2 fromLibrary:v15 error:0];
 
       if (!v16)
       {
@@ -1886,16 +1886,16 @@ uint64_t __78__PLInterLibraryTransfer__shouldSkipTransferWithSourceAsset_destina
       v21 = PLInterLibraryTransferGetLog();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
-        v22 = [(PLInterLibraryTransfer *)v26 options];
-        v23 = [v22 keysForDeDupe];
+        options3 = [(PLInterLibraryTransfer *)selfCopy options];
+        keysForDeDupe3 = [options3 keysForDeDupe];
         *buf = 138543618;
-        v37 = v23;
+        v37 = keysForDeDupe3;
         v38 = 2114;
         v39 = v27;
         _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_INFO, "Found existing asset with %{public}@ %{public}@ but different uuid", buf, 0x16u);
       }
 
-      if (![(PLInterLibraryTransfer *)v26 _deleteAsset:v16])
+      if (![(PLInterLibraryTransfer *)selfCopy _deleteAsset:v16])
       {
 
         break;
@@ -1923,31 +1923,31 @@ void __85__PLInterLibraryTransfer__dedupedDestinationAssetWithSourceAsset_destin
   }
 }
 
-- (BOOL)_deleteAsset:(id)a3
+- (BOOL)_deleteAsset:(id)asset
 {
-  v5 = a3;
-  v6 = [v5 photoLibrary];
+  assetCopy = asset;
+  photoLibrary = [assetCopy photoLibrary];
 
-  if (!v6)
+  if (!photoLibrary)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PLInterLibraryTransfer.m" lineNumber:451 description:{@"Invalid parameter not satisfying: %@", @"asset.photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLInterLibraryTransfer.m" lineNumber:451 description:{@"Invalid parameter not satisfying: %@", @"asset.photoLibrary"}];
   }
 
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  v7 = [v5 photoLibrary];
+  photoLibrary2 = [assetCopy photoLibrary];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __39__PLInterLibraryTransfer__deleteAsset___block_invoke;
   v12[3] = &unk_1E7578820;
   v12[4] = self;
-  v8 = v5;
+  v8 = assetCopy;
   v13 = v8;
   v14 = &v15;
-  [v7 performTransactionAndWait:v12];
+  [photoLibrary2 performTransactionAndWait:v12];
 
   v9 = *(v16 + 24);
   _Block_object_dispose(&v15, 8);
@@ -1985,13 +1985,13 @@ void __39__PLInterLibraryTransfer__deleteAsset___block_invoke(uint64_t a1)
   }
 }
 
-- (id)_loadObjectWithEntityName:(id)a3 withValues:(id)a4 forKeyPaths:(id)a5 fromLibrary:(id)a6 error:(id *)a7
+- (id)_loadObjectWithEntityName:(id)name withValues:(id)values forKeyPaths:(id)paths fromLibrary:(id)library error:(id *)error
 {
   v46[1] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  nameCopy = name;
+  valuesCopy = values;
+  pathsCopy = paths;
+  libraryCopy = library;
   v37 = 0;
   v38 = &v37;
   v39 = 0x3032000000;
@@ -2002,18 +2002,18 @@ void __39__PLInterLibraryTransfer__deleteAsset___block_invoke(uint64_t a1)
   v29 = 3221225472;
   v30 = __93__PLInterLibraryTransfer__loadObjectWithEntityName_withValues_forKeyPaths_fromLibrary_error___block_invoke;
   v31 = &unk_1E75780D8;
-  v15 = v12;
+  v15 = valuesCopy;
   v32 = v15;
-  v16 = v11;
+  v16 = nameCopy;
   v33 = v16;
-  v17 = v13;
+  v17 = pathsCopy;
   v34 = v17;
-  v18 = v14;
+  v18 = libraryCopy;
   v35 = v18;
   v36 = &v37;
   [v18 performBlockAndWait:&v28];
   v19 = v38[5];
-  if (a7 && !v19)
+  if (error && !v19)
   {
     v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to load %@ with %@ %@", v16, v17, v15, v28, v29, v30, v31, v32, v33, v34];
     v21 = MEMORY[0x1E696ABC0];
@@ -2023,7 +2023,7 @@ void __39__PLInterLibraryTransfer__deleteAsset___block_invoke(uint64_t a1)
     v23 = [v21 errorWithDomain:*MEMORY[0x1E69BFF48] code:41004 userInfo:v22];
 
     v24 = v23;
-    *a7 = v23;
+    *error = v23;
     v25 = PLInterLibraryTransferGetLog();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
@@ -2088,55 +2088,55 @@ void __93__PLInterLibraryTransfer__loadObjectWithEntityName_withValues_forKeyPat
   [*(a1 + 40) addObject:v7];
 }
 
-- (id)_loadAssetWithUuid:(id)a3 fromLibrary:(id)a4 error:(id *)a5
+- (id)_loadAssetWithUuid:(id)uuid fromLibrary:(id)library error:(id *)error
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a3;
+  libraryCopy = library;
+  uuidCopy = uuid;
   v10 = +[PLManagedAsset entityName];
-  v16[0] = v9;
+  v16[0] = uuidCopy;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
   v15 = @"uuid";
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v15 count:1];
 
-  v13 = [(PLInterLibraryTransfer *)self _loadObjectWithEntityName:v10 withValues:v11 forKeyPaths:v12 fromLibrary:v8 error:a5];
+  v13 = [(PLInterLibraryTransfer *)self _loadObjectWithEntityName:v10 withValues:v11 forKeyPaths:v12 fromLibrary:libraryCopy error:error];
 
   return v13;
 }
 
-- (id)_loadPersonWithUuid:(id)a3 fromLibrary:(id)a4 error:(id *)a5
+- (id)_loadPersonWithUuid:(id)uuid fromLibrary:(id)library error:(id *)error
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a3;
+  libraryCopy = library;
+  uuidCopy = uuid;
   v10 = +[PLPerson entityName];
-  v16[0] = v9;
+  v16[0] = uuidCopy;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
   v15 = @"personUUID";
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v15 count:1];
 
-  v13 = [(PLInterLibraryTransfer *)self _loadObjectWithEntityName:v10 withValues:v11 forKeyPaths:v12 fromLibrary:v8 error:a5];
+  v13 = [(PLInterLibraryTransfer *)self _loadObjectWithEntityName:v10 withValues:v11 forKeyPaths:v12 fromLibrary:libraryCopy error:error];
 
   return v13;
 }
 
-- (id)_loadFaceCropWithUuid:(id)a3 fromLibrary:(id)a4 error:(id *)a5
+- (id)_loadFaceCropWithUuid:(id)uuid fromLibrary:(id)library error:(id *)error
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a3;
+  libraryCopy = library;
+  uuidCopy = uuid;
   v10 = +[PLFaceCrop entityName];
-  v16[0] = v9;
+  v16[0] = uuidCopy;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
   v15 = @"uuid";
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v15 count:1];
 
-  v13 = [(PLInterLibraryTransfer *)self _loadObjectWithEntityName:v10 withValues:v11 forKeyPaths:v12 fromLibrary:v8 error:a5];
+  v13 = [(PLInterLibraryTransfer *)self _loadObjectWithEntityName:v10 withValues:v11 forKeyPaths:v12 fromLibrary:libraryCopy error:error];
 
   return v13;
 }
 
-- (id)_loadDestinationLibraryWithError:(id *)a3
+- (id)_loadDestinationLibraryWithError:(id *)error
 {
   v17 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(PLPhotoLibraryOptions);
@@ -2146,15 +2146,15 @@ void __93__PLInterLibraryTransfer__loadObjectWithEntityName_withValues_forKeyPat
   v6 = PLInterLibraryTransferGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [(PLInterLibraryTransfer *)self destinationBundle];
+    destinationBundle = [(PLInterLibraryTransfer *)self destinationBundle];
     *buf = 138412290;
-    v16 = v7;
+    v16 = destinationBundle;
     _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_INFO, "Loading destination library from bundle %@", buf, 0xCu);
   }
 
-  v8 = [(PLInterLibraryTransfer *)self destinationBundle];
+  destinationBundle2 = [(PLInterLibraryTransfer *)self destinationBundle];
   v14 = 0;
-  v9 = [PLPhotoLibrary newPhotoLibraryWithName:"[PLInterLibraryTransfer _loadDestinationLibraryWithError:]" loadedFromBundle:v8 options:v5 error:&v14];
+  v9 = [PLPhotoLibrary newPhotoLibraryWithName:"[PLInterLibraryTransfer _loadDestinationLibraryWithError:]" loadedFromBundle:destinationBundle2 options:v5 error:&v14];
   v10 = v14;
 
   if (!v9)
@@ -2167,17 +2167,17 @@ void __93__PLInterLibraryTransfer__loadObjectWithEntityName_withValues_forKeyPat
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_ERROR, "Inter-library transfer failed. Unable to load destination library: %@", buf, 0xCu);
     }
 
-    if (a3)
+    if (error)
     {
       v12 = v10;
-      *a3 = v10;
+      *error = v10;
     }
   }
 
   return v9;
 }
 
-- (id)_loadSourceLibraryWithError:(id *)a3
+- (id)_loadSourceLibraryWithError:(id *)error
 {
   v17 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(PLPhotoLibraryOptions);
@@ -2187,15 +2187,15 @@ void __93__PLInterLibraryTransfer__loadObjectWithEntityName_withValues_forKeyPat
   v6 = PLInterLibraryTransferGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [(PLInterLibraryTransfer *)self sourceBundle];
+    sourceBundle = [(PLInterLibraryTransfer *)self sourceBundle];
     *buf = 138412290;
-    v16 = v7;
+    v16 = sourceBundle;
     _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_INFO, "Loading source library from bundle %@", buf, 0xCu);
   }
 
-  v8 = [(PLInterLibraryTransfer *)self sourceBundle];
+  sourceBundle2 = [(PLInterLibraryTransfer *)self sourceBundle];
   v14 = 0;
-  v9 = [PLPhotoLibrary newPhotoLibraryWithName:"[PLInterLibraryTransfer _loadSourceLibraryWithError:]" loadedFromBundle:v8 options:v5 error:&v14];
+  v9 = [PLPhotoLibrary newPhotoLibraryWithName:"[PLInterLibraryTransfer _loadSourceLibraryWithError:]" loadedFromBundle:sourceBundle2 options:v5 error:&v14];
   v10 = v14;
 
   if (!v9)
@@ -2208,20 +2208,20 @@ void __93__PLInterLibraryTransfer__loadObjectWithEntityName_withValues_forKeyPat
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_ERROR, "Inter-library transfer failed. Unable to load source library: %@", buf, 0xCu);
     }
 
-    if (a3)
+    if (error)
     {
       v12 = v10;
-      *a3 = v10;
+      *error = v10;
     }
   }
 
   return v9;
 }
 
-- (BOOL)transferFaceCropWithUuid:(id)a3 error:(id *)a4
+- (BOOL)transferFaceCropWithUuid:(id)uuid error:(id *)error
 {
   v57 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  uuidCopy = uuid;
   v51 = 0;
   v52 = &v51;
   v53 = 0x2020000000;
@@ -2240,7 +2240,7 @@ void __93__PLInterLibraryTransfer__loadObjectWithEntityName_withValues_forKeyPat
     sourceLibrary = self->_sourceLibrary;
     v9 = (v46 + 5);
     v43 = v46[5];
-    v10 = [(PLInterLibraryTransfer *)self _loadFaceCropWithUuid:v6 fromLibrary:sourceLibrary error:&v43];
+    v10 = [(PLInterLibraryTransfer *)self _loadFaceCropWithUuid:uuidCopy fromLibrary:sourceLibrary error:&v43];
     objc_storeStrong(v9, v43);
     if (!v10)
     {
@@ -2251,9 +2251,9 @@ void __93__PLInterLibraryTransfer__loadObjectWithEntityName_withValues_forKeyPat
         _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_ERROR, "Load source face crop failed", v37, 2u);
       }
 
-      if (a4)
+      if (error)
       {
-        *a4 = v46[5];
+        *error = v46[5];
       }
 
       v12 = *(v52 + 24);
@@ -2265,7 +2265,7 @@ void __93__PLInterLibraryTransfer__loadObjectWithEntityName_withValues_forKeyPat
     v39 = 0x3032000000;
     v40 = __Block_byref_object_copy__80721;
     v41 = __Block_byref_object_dispose__80722;
-    v42 = [(PLInterLibraryTransfer *)self _loadFaceCropWithUuid:v6 fromLibrary:self->_destinationLibrary error:0];
+    v42 = [(PLInterLibraryTransfer *)self _loadFaceCropWithUuid:uuidCopy fromLibrary:self->_destinationLibrary error:0];
     if (*(v38 + 5))
     {
       v11 = PLInterLibraryTransferGetLog();
@@ -2273,7 +2273,7 @@ void __93__PLInterLibraryTransfer__loadObjectWithEntityName_withValues_forKeyPat
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
         *buf = 138543362;
-        v56 = v6;
+        v56 = uuidCopy;
         _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_INFO, "Skipping transfer of face crop %{public}@ because destination already exists", buf, 0xCu);
       }
 
@@ -2284,30 +2284,30 @@ void __93__PLInterLibraryTransfer__loadObjectWithEntityName_withValues_forKeyPat
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v56 = v6;
+      v56 = uuidCopy;
       _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_INFO, "transferFaceCropWithUuid:%{public}@ begin", buf, 0xCu);
     }
 
-    v15 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __57__PLInterLibraryTransfer_transferFaceCropWithUuid_error___block_invoke;
     aBlock[3] = &unk_1E7572760;
-    v16 = v6;
+    v16 = uuidCopy;
     v30 = v16;
-    v31 = self;
+    selfCopy = self;
     v34 = v37;
     v32 = v10;
-    v11 = v15;
+    v11 = strongToStrongObjectsMapTable;
     v33 = v11;
     v35 = &v51;
     v36 = &v45;
     v17 = _Block_copy(aBlock);
-    v18 = [(PLInterLibraryTransfer *)self options];
-    v19 = [v18 skipContextSave];
+    options = [(PLInterLibraryTransfer *)self options];
+    skipContextSave = [options skipContextSave];
 
     destinationLibrary = self->_destinationLibrary;
-    if (v19)
+    if (skipContextSave)
     {
       [(PLPhotoLibrary *)destinationLibrary performBlockAndWait:v17];
     }
@@ -2339,7 +2339,7 @@ void __93__PLInterLibraryTransfer__loadObjectWithEntityName_withValues_forKeyPat
 
       v23 = *(v52 + 24);
       v24 = v46[5];
-      if ((v23 & 1) != 0 || !a4)
+      if ((v23 & 1) != 0 || !error)
       {
         goto LABEL_27;
       }
@@ -2348,7 +2348,7 @@ void __93__PLInterLibraryTransfer__loadObjectWithEntityName_withValues_forKeyPat
     else
     {
       v24 = v46[5];
-      if (!a4)
+      if (!error)
       {
 LABEL_27:
 
@@ -2363,13 +2363,13 @@ LABEL_29:
     }
 
     v24 = v24;
-    *a4 = v24;
+    *error = v24;
     goto LABEL_27;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v46[5];
+    *error = v46[5];
   }
 
   v12 = *(v52 + 24);
@@ -2562,10 +2562,10 @@ void __57__PLInterLibraryTransfer_transferFaceCropWithUuid_error___block_invoke_
   *(v3 + 40) = v2;
 }
 
-- (BOOL)transferPersonWithUuid:(id)a3 error:(id *)a4
+- (BOOL)transferPersonWithUuid:(id)uuid error:(id *)error
 {
   v56 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  uuidCopy = uuid;
   v50 = 0;
   v51 = &v50;
   v52 = 0x2020000000;
@@ -2584,7 +2584,7 @@ void __57__PLInterLibraryTransfer_transferFaceCropWithUuid_error___block_invoke_
     sourceLibrary = self->_sourceLibrary;
     v9 = (v45 + 5);
     v42 = v45[5];
-    v10 = [(PLInterLibraryTransfer *)self _loadPersonWithUuid:v6 fromLibrary:sourceLibrary error:&v42];
+    v10 = [(PLInterLibraryTransfer *)self _loadPersonWithUuid:uuidCopy fromLibrary:sourceLibrary error:&v42];
     objc_storeStrong(v9, v42);
     if (v10)
     {
@@ -2593,35 +2593,35 @@ void __57__PLInterLibraryTransfer_transferFaceCropWithUuid_error___block_invoke_
       v38 = 0x3032000000;
       v39 = __Block_byref_object_copy__80721;
       v40 = __Block_byref_object_dispose__80722;
-      v41 = [(PLInterLibraryTransfer *)self _loadPersonWithUuid:v6 fromLibrary:self->_destinationLibrary error:0];
+      v41 = [(PLInterLibraryTransfer *)self _loadPersonWithUuid:uuidCopy fromLibrary:self->_destinationLibrary error:0];
       v11 = PLInterLibraryTransferGetLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
         *buf = 138543362;
-        v55 = v6;
+        v55 = uuidCopy;
         _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_INFO, "transferPersonWithUuid:%{public}@ begin", buf, 0xCu);
       }
 
-      v12 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+      strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __55__PLInterLibraryTransfer_transferPersonWithUuid_error___block_invoke;
       aBlock[3] = &unk_1E7572760;
-      v13 = v6;
+      v13 = uuidCopy;
       v29 = v13;
-      v30 = self;
+      selfCopy = self;
       v33 = v36;
       v31 = v10;
-      v14 = v12;
+      v14 = strongToStrongObjectsMapTable;
       v32 = v14;
       v34 = &v50;
       v35 = &v44;
       v15 = _Block_copy(aBlock);
-      v16 = [(PLInterLibraryTransfer *)self options];
-      v17 = [v16 skipContextSave];
+      options = [(PLInterLibraryTransfer *)self options];
+      skipContextSave = [options skipContextSave];
 
       destinationLibrary = self->_destinationLibrary;
-      if (v17)
+      if (skipContextSave)
       {
         [(PLPhotoLibrary *)destinationLibrary performBlockAndWait:v15];
       }
@@ -2659,9 +2659,9 @@ void __57__PLInterLibraryTransfer_transferFaceCropWithUuid_error___block_invoke_
 
       if (!v19)
       {
-        if (a4)
+        if (error)
         {
-          *a4 = v45[5];
+          *error = v45[5];
           v21 = v51;
         }
 
@@ -2680,9 +2680,9 @@ void __57__PLInterLibraryTransfer_transferFaceCropWithUuid_error___block_invoke_
         _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_ERROR, "Load source person failed", v36, 2u);
       }
 
-      if (a4)
+      if (error)
       {
-        *a4 = v45[5];
+        *error = v45[5];
       }
 
       LOBYTE(v19) = *(v51 + 24);
@@ -2691,9 +2691,9 @@ void __57__PLInterLibraryTransfer_transferFaceCropWithUuid_error___block_invoke_
 
   else
   {
-    if (a4)
+    if (error)
     {
-      *a4 = v45[5];
+      *error = v45[5];
     }
 
     LOBYTE(v19) = *(v51 + 24);
@@ -2875,10 +2875,10 @@ void __55__PLInterLibraryTransfer_transferPersonWithUuid_error___block_invoke_69
   *(v6 + 40) = v5;
 }
 
-- (BOOL)transferAssetWithUuid:(id)a3 error:(id *)a4
+- (BOOL)transferAssetWithUuid:(id)uuid error:(id *)error
 {
   v83 = *MEMORY[0x1E69E9840];
-  v41 = a3;
+  uuidCopy = uuid;
   v74 = 0;
   v75 = &v74;
   v76 = 0x2020000000;
@@ -2898,7 +2898,7 @@ void __55__PLInterLibraryTransfer_transferPersonWithUuid_error___block_invoke_69
     sourceLibrary = self->_sourceLibrary;
     v8 = (v69 + 5);
     v66 = v69[5];
-    v39 = [(PLInterLibraryTransfer *)self _loadAssetWithUuid:v41 fromLibrary:sourceLibrary error:&v66];
+    v39 = [(PLInterLibraryTransfer *)self _loadAssetWithUuid:uuidCopy fromLibrary:sourceLibrary error:&v66];
     objc_storeStrong(v8, v66);
     if (v39)
     {
@@ -2907,7 +2907,7 @@ void __55__PLInterLibraryTransfer_transferPersonWithUuid_error___block_invoke_69
       v62 = 0x3032000000;
       v63 = __Block_byref_object_copy__80721;
       v64 = __Block_byref_object_dispose__80722;
-      v65 = [(PLInterLibraryTransfer *)self _loadAssetWithUuid:v41 fromLibrary:self->_destinationLibrary error:0];
+      v65 = [(PLInterLibraryTransfer *)self _loadAssetWithUuid:uuidCopy fromLibrary:self->_destinationLibrary error:0];
       v9 = *(v61 + 5);
       if (!v9)
       {
@@ -2929,22 +2929,22 @@ void __55__PLInterLibraryTransfer_transferPersonWithUuid_error___block_invoke_69
         if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
         {
           *v79 = 138543362;
-          v80 = v41;
+          v80 = uuidCopy;
           _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_INFO, "transferAssetWithUuid:%{public}@ begin", v79, 0xCu);
         }
 
-        v15 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+        strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
         v16 = [MEMORY[0x1E695DFA8] set];
         aBlock[0] = MEMORY[0x1E69E9820];
         aBlock[1] = 3221225472;
         aBlock[2] = __54__PLInterLibraryTransfer_transferAssetWithUuid_error___block_invoke;
         aBlock[3] = &unk_1E7572738;
-        v17 = v41;
+        v17 = uuidCopy;
         v51 = v17;
-        v52 = self;
+        selfCopy = self;
         v56 = buf;
         v53 = v39;
-        v35 = v15;
+        v35 = strongToStrongObjectsMapTable;
         v54 = v35;
         v57 = &v74;
         v58 = &v68;
@@ -2952,11 +2952,11 @@ void __55__PLInterLibraryTransfer_transferPersonWithUuid_error___block_invoke_69
         v37 = v16;
         v55 = v37;
         v38 = _Block_copy(aBlock);
-        v18 = [(PLInterLibraryTransfer *)self options];
-        v19 = [v18 skipContextSave];
+        options = [(PLInterLibraryTransfer *)self options];
+        skipContextSave = [options skipContextSave];
 
         destinationLibrary = self->_destinationLibrary;
-        if (v19)
+        if (skipContextSave)
         {
           [(PLPhotoLibrary *)destinationLibrary performBlockAndWait:v38, v35];
         }
@@ -3044,9 +3044,9 @@ void __55__PLInterLibraryTransfer_transferPersonWithUuid_error___block_invoke_69
             while (v26);
           }
 
-          if (a4)
+          if (error)
           {
-            *a4 = v69[5];
+            *error = v69[5];
           }
 
           LOBYTE(v12) = *(v75 + 24);
@@ -3065,9 +3065,9 @@ void __55__PLInterLibraryTransfer_transferPersonWithUuid_error___block_invoke_69
         _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_ERROR, "Load source asset failed", buf, 2u);
       }
 
-      if (a4)
+      if (error)
       {
-        *a4 = v69[5];
+        *error = v69[5];
       }
 
       LOBYTE(v12) = *(v75 + 24);
@@ -3076,9 +3076,9 @@ void __55__PLInterLibraryTransfer_transferPersonWithUuid_error___block_invoke_69
 
   else
   {
-    if (a4)
+    if (error)
     {
-      *a4 = v69[5];
+      *error = v69[5];
     }
 
     LOBYTE(v12) = *(v75 + 24);
@@ -3232,7 +3232,7 @@ void __54__PLInterLibraryTransfer_transferAssetWithUuid_error___block_invoke_68(
   }
 }
 
-- (BOOL)_loadLibrariesWithError:(id *)a3
+- (BOOL)_loadLibrariesWithError:(id *)error
 {
   if (self->_sourceLibrary && self->_destinationLibrary)
   {
@@ -3267,11 +3267,11 @@ void __54__PLInterLibraryTransfer_transferAssetWithUuid_error___block_invoke_68(
     v5 = 1;
   }
 
-  else if (a3)
+  else if (error)
   {
     v12 = v7;
     v5 = 0;
-    *a3 = v7;
+    *error = v7;
   }
 
   else
@@ -3282,28 +3282,28 @@ void __54__PLInterLibraryTransfer_transferAssetWithUuid_error___block_invoke_68(
   return v5;
 }
 
-- (PLInterLibraryTransfer)initWithSourceLibrary:(id)a3 destinationLibrary:(id)a4 options:(id)a5
+- (PLInterLibraryTransfer)initWithSourceLibrary:(id)library destinationLibrary:(id)destinationLibrary options:(id)options
 {
   v21 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  libraryCopy = library;
+  destinationLibraryCopy = destinationLibrary;
+  optionsCopy = options;
   v16.receiver = self;
   v16.super_class = PLInterLibraryTransfer;
   v12 = [(PLInterLibraryTransfer *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_sourceLibrary, a3);
-    objc_storeStrong(&v13->_destinationLibrary, a4);
-    objc_storeStrong(&v13->_options, a5);
+    objc_storeStrong(&v12->_sourceLibrary, library);
+    objc_storeStrong(&v13->_destinationLibrary, destinationLibrary);
+    objc_storeStrong(&v13->_options, options);
     v14 = PLInterLibraryTransferGetLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v18 = v9;
+      v18 = libraryCopy;
       v19 = 2112;
-      v20 = v10;
+      v20 = destinationLibraryCopy;
       _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEFAULT, "Initialized inter-library transfer with sourceLibrary %@ destinationLibrary %@", buf, 0x16u);
     }
   }
@@ -3311,16 +3311,16 @@ void __54__PLInterLibraryTransfer_transferAssetWithUuid_error___block_invoke_68(
   return v13;
 }
 
-- (PLInterLibraryTransfer)initWithSourceBundle:(id)a3 destinationBundle:(id)a4 options:(id)a5
+- (PLInterLibraryTransfer)initWithSourceBundle:(id)bundle destinationBundle:(id)destinationBundle options:(id)options
 {
   v23 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v12 skipContextSave])
+  bundleCopy = bundle;
+  destinationBundleCopy = destinationBundle;
+  optionsCopy = options;
+  if ([optionsCopy skipContextSave])
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PLInterLibraryTransfer.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"options.skipContextSave == NO"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLInterLibraryTransfer.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"options.skipContextSave == NO"}];
   }
 
   v18.receiver = self;
@@ -3329,16 +3329,16 @@ void __54__PLInterLibraryTransfer_transferAssetWithUuid_error___block_invoke_68(
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_sourceBundle, a3);
-    objc_storeStrong(&v14->_destinationBundle, a4);
-    objc_storeStrong(&v14->_options, a5);
+    objc_storeStrong(&v13->_sourceBundle, bundle);
+    objc_storeStrong(&v14->_destinationBundle, destinationBundle);
+    objc_storeStrong(&v14->_options, options);
     v15 = PLInterLibraryTransferGetLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v20 = v10;
+      v20 = bundleCopy;
       v21 = 2112;
-      v22 = v11;
+      v22 = destinationBundleCopy;
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_DEFAULT, "Initialized inter-library transfer with sourceBundle %@ destinationBundle %@", buf, 0x16u);
     }
   }

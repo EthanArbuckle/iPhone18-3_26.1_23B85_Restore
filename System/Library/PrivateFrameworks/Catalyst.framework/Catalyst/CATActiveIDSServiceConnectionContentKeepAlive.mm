@@ -1,10 +1,10 @@
 @interface CATActiveIDSServiceConnectionContentKeepAlive
-+ (id)instanceWithDictionary:(id)a3;
++ (id)instanceWithDictionary:(id)dictionary;
 @end
 
 @implementation CATActiveIDSServiceConnectionContentKeepAlive
 
-+ (id)instanceWithDictionary:(id)a3
++ (id)instanceWithDictionary:(id)dictionary
 {
   v3 = objc_opt_new();
 

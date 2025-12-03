@@ -1,57 +1,57 @@
 @interface PXLocationStream
-- (PXLocationStream)initWithAccuracy:(double)a3 handler:(id)a4;
+- (PXLocationStream)initWithAccuracy:(double)accuracy handler:(id)handler;
 - (void)_cleanup;
 - (void)_closeStreamWithError;
-- (void)_emitLocation:(id)a3;
+- (void)_emitLocation:(id)location;
 - (void)_open;
 - (void)_requestAuthorization;
 - (void)_requestLocation;
 - (void)dealloc;
-- (void)locationManager:(id)a3 didChangeAuthorizationStatus:(int)a4;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)setClosed:(BOOL)a3;
+- (void)locationManager:(id)manager didChangeAuthorizationStatus:(int)status;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)setClosed:(BOOL)closed;
 @end
 
 @implementation PXLocationStream
 
-- (void)locationManager:(id)a3 didChangeAuthorizationStatus:(int)a4
+- (void)locationManager:(id)manager didChangeAuthorizationStatus:(int)status
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  managerCopy = manager;
   v7 = PLUIGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    if (a4 >= 5)
+    if (status >= 5)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *_DescriptionForAuthorizationStatus(CLAuthorizationStatus)"];
-      [v11 handleFailureInFunction:v12 file:@"PXLocationStream.m" lineNumber:27 description:@"Code which should be unreachable has been reached"];
+      [currentHandler handleFailureInFunction:v12 file:@"PXLocationStream.m" lineNumber:27 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    v8 = off_1E7748E78[a4];
+    v8 = off_1E7748E78[status];
     v13 = 138412546;
-    v14 = self;
+    selfCopy2 = self;
     v15 = 2112;
     v16 = v8;
     _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_DEBUG, "%@ CLLocationManager did change authorization status: %@", &v13, 0x16u);
   }
 
-  if ((a4 - 1) < 2)
+  if ((status - 1) < 2)
   {
     v9 = PLUIGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = "denied";
-      if (a4 == 1)
+      if (status == 1)
       {
         v10 = "restricted";
       }
 
       v13 = 138412546;
-      v14 = self;
+      selfCopy2 = self;
       v15 = 2080;
       v16 = v10;
       _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_DEFAULT, "%@ Unrecoverable failure: Authorization status %s.", &v13, 0x16u);
@@ -60,9 +60,9 @@
     [(PXLocationStream *)self _closeStreamWithError];
   }
 
-  else if ((a4 - 3) >= 2)
+  else if ((status - 3) >= 2)
   {
-    if (!a4)
+    if (!status)
     {
       [(PXLocationStream *)self _requestAuthorization];
     }
@@ -74,40 +74,40 @@
   }
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  errorCopy = error;
   v6 = PLUIGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 localizedDescription];
+    localizedDescription = [errorCopy localizedDescription];
     v8 = 138412546;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
-    v11 = v7;
+    v11 = localizedDescription;
     _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_DEFAULT, "%@ CLLocationManager did fail with error: %@", &v8, 0x16u);
   }
 
   [(PXLocationStream *)self _closeStreamWithError];
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  locationsCopy = locations;
   v6 = PLUIGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v8 = 138412546;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
-    v11 = v5;
+    v11 = locationsCopy;
     _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_DEBUG, "%@ CLLocationManager did update locations: %@", &v8, 0x16u);
   }
 
-  v7 = [v5 lastObject];
-  [(PXLocationStream *)self _emitLocation:v7];
+  lastObject = [locationsCopy lastObject];
+  [(PXLocationStream *)self _emitLocation:lastObject];
 }
 
 - (void)_cleanup
@@ -126,8 +126,8 @@
   v9 = *MEMORY[0x1E69E9840];
   if ([(PXLocationStream *)self isClosed])
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXLocationStream.m" lineNumber:168 description:{@"Invalid parameter not satisfying: %@", @"![self isClosed]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXLocationStream.m" lineNumber:168 description:{@"Invalid parameter not satisfying: %@", @"![self isClosed]"}];
   }
 
   self->_state = 2;
@@ -135,7 +135,7 @@
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A3C1C000, v4, OS_LOG_TYPE_DEBUG, "%@ Close with error.", buf, 0xCu);
   }
 
@@ -147,23 +147,23 @@
   objc_destroyWeak(buf);
 }
 
-- (void)_emitLocation:(id)a3
+- (void)_emitLocation:(id)location
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  locationCopy = location;
   if (self->_state != 1)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXLocationStream.m" lineNumber:160 description:{@"Invalid parameter not satisfying: %@", @"PXLocationStreamStateOpen == _state"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXLocationStream.m" lineNumber:160 description:{@"Invalid parameter not satisfying: %@", @"PXLocationStreamStateOpen == _state"}];
   }
 
   v6 = PLUIGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
-    v11 = v5;
+    v11 = locationCopy;
     _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_DEBUG, "%@ Emit: %@", buf, 0x16u);
   }
 
@@ -175,8 +175,8 @@
   v8 = *MEMORY[0x1E69E9840];
   if (self->_state)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PXLocationStream.m" lineNumber:146 description:{@"Invalid parameter not satisfying: %@", @"PXLocationStreamStateInitial == _state"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXLocationStream.m" lineNumber:146 description:{@"Invalid parameter not satisfying: %@", @"PXLocationStreamStateInitial == _state"}];
   }
 
   self->_state = 1;
@@ -184,7 +184,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A3C1C000, v3, OS_LOG_TYPE_DEBUG, "%@ Open.", buf, 0xCu);
   }
 
@@ -196,15 +196,15 @@
   v8 = *MEMORY[0x1E69E9840];
   if (self->_state)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PXLocationStream.m" lineNumber:134 description:{@"Invalid parameter not satisfying: %@", @"PXLocationStreamStateInitial == _state"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXLocationStream.m" lineNumber:134 description:{@"Invalid parameter not satisfying: %@", @"PXLocationStreamStateInitial == _state"}];
   }
 
   v3 = PLUIGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A3C1C000, v3, OS_LOG_TYPE_DEBUG, "%@ Requesting authorization...", buf, 0xCu);
   }
 
@@ -216,8 +216,8 @@
   v18 = *MEMORY[0x1E69E9840];
   if (self->_state)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXLocationStream.m" lineNumber:100 description:{@"Invalid parameter not satisfying: %@", @"PXLocationStreamStateInitial == _state"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXLocationStream.m" lineNumber:100 description:{@"Invalid parameter not satisfying: %@", @"PXLocationStreamStateInitial == _state"}];
   }
 
   if (([MEMORY[0x1E695FBE8] locationServicesEnabled] & 1) == 0)
@@ -226,7 +226,7 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v15 = self;
+      selfCopy3 = self;
       v7 = "%@ Unrecoverable failure: Location services are disabled.";
       v8 = v5;
       v9 = 12;
@@ -240,21 +240,21 @@ LABEL_12:
     return;
   }
 
-  v3 = [MEMORY[0x1E695FBE8] authorizationStatus];
+  authorizationStatus = [MEMORY[0x1E695FBE8] authorizationStatus];
   v4 = PLUIGetLog();
   v5 = v4;
-  if ((v3 - 1) <= 1)
+  if ((authorizationStatus - 1) <= 1)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v6 = "denied";
-      if (v3 == 1)
+      if (authorizationStatus == 1)
       {
         v6 = "restricted";
       }
 
       *buf = 138412546;
-      v15 = self;
+      selfCopy3 = self;
       v16 = 2080;
       v17 = v6;
       v7 = "%@ Unrecoverable failure: Authorization status %s.";
@@ -269,7 +269,7 @@ LABEL_12:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v15 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEBUG, "%@ Opening...", buf, 0xCu);
   }
 
@@ -282,13 +282,13 @@ LABEL_12:
   [(CLLocationManager *)self->_locationManager setDelegate:self];
 }
 
-- (void)setClosed:(BOOL)a3
+- (void)setClosed:(BOOL)closed
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!closed)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXLocationStream.m" lineNumber:88 description:{@"Invalid parameter not satisfying: %@", @"shouldClose"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXLocationStream.m" lineNumber:88 description:{@"Invalid parameter not satisfying: %@", @"shouldClose"}];
   }
 
   if (![(PXLocationStream *)self isClosed])
@@ -298,7 +298,7 @@ LABEL_12:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v8 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1A3C1C000, v4, OS_LOG_TYPE_DEBUG, "%@ Close.", buf, 0xCu);
     }
 
@@ -314,15 +314,15 @@ LABEL_12:
   [(PXLocationStream *)&v3 dealloc];
 }
 
-- (PXLocationStream)initWithAccuracy:(double)a3 handler:(id)a4
+- (PXLocationStream)initWithAccuracy:(double)accuracy handler:(id)handler
 {
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = v7;
-  if (a3 < 0.0)
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (accuracy < 0.0)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXLocationStream.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"accuracy >= 0.f"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXLocationStream.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"accuracy >= 0.f"}];
 
     if (v8)
     {
@@ -330,13 +330,13 @@ LABEL_12:
     }
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
     goto LABEL_3;
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"PXLocationStream.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXLocationStream.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
 
 LABEL_3:
   v19.receiver = self;
@@ -346,7 +346,7 @@ LABEL_3:
   if (v9)
   {
     v9->_state = 0;
-    v9->_accuracy = a3;
+    v9->_accuracy = accuracy;
     v11 = [v8 copy];
     handler = v10->_handler;
     v10->_handler = v11;

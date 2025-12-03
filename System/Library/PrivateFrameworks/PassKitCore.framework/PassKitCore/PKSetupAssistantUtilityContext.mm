@@ -1,17 +1,17 @@
 @interface PKSetupAssistantUtilityContext
-- (PKSetupAssistantUtilityContext)initWithSetupAssistant:(unint64_t)a3;
+- (PKSetupAssistantUtilityContext)initWithSetupAssistant:(unint64_t)assistant;
 @end
 
 @implementation PKSetupAssistantUtilityContext
 
-- (PKSetupAssistantUtilityContext)initWithSetupAssistant:(unint64_t)a3
+- (PKSetupAssistantUtilityContext)initWithSetupAssistant:(unint64_t)assistant
 {
   v6.receiver = self;
   v6.super_class = PKSetupAssistantUtilityContext;
   result = [(PKSetupAssistantUtilityContext *)&v6 init];
   if (result)
   {
-    if (a3 == 2)
+    if (assistant == 2)
     {
       v5 = 2;
     }

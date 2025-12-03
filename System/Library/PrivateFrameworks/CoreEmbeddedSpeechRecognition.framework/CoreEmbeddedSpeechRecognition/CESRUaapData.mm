@@ -1,32 +1,32 @@
 @interface CESRUaapData
-+ (BOOL)removeUaapOovsForLanguage:(id)a3 bundleId:(id)a4;
-+ (BOOL)writeUaapOovsForLanguage:(id)a3 bundleId:(id)a4 customProns:(id)a5 newOovs:(id)a6 error:(id *)a7;
-+ (id)readUaapOovsForLanguage:(id)a3;
++ (BOOL)removeUaapOovsForLanguage:(id)language bundleId:(id)id;
++ (BOOL)writeUaapOovsForLanguage:(id)language bundleId:(id)id customProns:(id)prons newOovs:(id)oovs error:(id *)error;
++ (id)readUaapOovsForLanguage:(id)language;
 @end
 
 @implementation CESRUaapData
 
-+ (BOOL)removeUaapOovsForLanguage:(id)a3 bundleId:(id)a4
++ (BOOL)removeUaapOovsForLanguage:(id)language bundleId:(id)id
 {
-  v5 = a4;
-  v6 = AppOovDirectory(a3);
-  v7 = [v6 stringByAppendingPathComponent:v5];
+  idCopy = id;
+  v6 = AppOovDirectory(language);
+  v7 = [v6 stringByAppendingPathComponent:idCopy];
 
   v8 = [v7 stringByAppendingPathComponent:@"Prons"];
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
-  v10 = [v9 removeItemAtPath:v8 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v10 = [defaultManager removeItemAtPath:v8 error:0];
 
   return v10;
 }
 
-+ (BOOL)writeUaapOovsForLanguage:(id)a3 bundleId:(id)a4 customProns:(id)a5 newOovs:(id)a6 error:(id *)a7
++ (BOOL)writeUaapOovsForLanguage:(id)language bundleId:(id)id customProns:(id)prons newOovs:(id)oovs error:(id *)error
 {
   v50[1] = *MEMORY[0x277D85DE8];
-  v10 = a4;
+  idCopy = id;
   v11 = MEMORY[0x277CBEB38];
-  v12 = a6;
-  v13 = a5;
-  v14 = a3;
+  oovsCopy = oovs;
+  pronsCopy = prons;
+  languageCopy = language;
   v15 = objc_alloc_init(v11);
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
@@ -34,7 +34,7 @@
   v41[3] = &unk_27857FD50;
   v16 = v15;
   v42 = v16;
-  [v12 enumerateObjectsUsingBlock:v41];
+  [oovsCopy enumerateObjectsUsingBlock:v41];
 
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
@@ -42,20 +42,20 @@
   v39[3] = &unk_27857FD78;
   v17 = v16;
   v40 = v17;
-  [v13 enumerateKeysAndObjectsUsingBlock:v39];
+  [pronsCopy enumerateKeysAndObjectsUsingBlock:v39];
 
-  v18 = AppOovDirectory(v14);
+  v18 = AppOovDirectory(languageCopy);
 
-  v19 = [v18 stringByAppendingPathComponent:v10];
+  v19 = [v18 stringByAppendingPathComponent:idCopy];
 
   v20 = [v19 stringByAppendingPathComponent:@"Prons"];
-  v21 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v22 = [MEMORY[0x277CBEBC0] fileURLWithPath:v19];
   v49 = *MEMORY[0x277CCA1B0];
   v50[0] = *MEMORY[0x277CCA1B8];
   v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v50 forKeys:&v49 count:1];
   v38 = 0;
-  v24 = [v21 createDirectoryAtURL:v22 withIntermediateDirectories:1 attributes:v23 error:&v38];
+  v24 = [defaultManager createDirectoryAtURL:v22 withIntermediateDirectories:1 attributes:v23 error:&v38];
   v25 = v38;
 
   if (v24)
@@ -79,14 +79,14 @@ LABEL_14:
       *buf = 136315650;
       v44 = "+[CESRUaapData writeUaapOovsForLanguage:bundleId:customProns:newOovs:error:]";
       v45 = 2112;
-      v46 = v10;
+      v46 = idCopy;
       v47 = 2112;
       v48 = v28;
       _os_log_error_impl(&dword_225EEB000, v32, OS_LOG_TYPE_ERROR, "%s Failed to write app-specific OOVs for %@: %@", buf, 0x20u);
     }
 
-    v31 = a7;
-    if (!a7)
+    errorCopy2 = error;
+    if (!error)
     {
       v29 = 0;
       goto LABEL_14;
@@ -102,19 +102,19 @@ LABEL_14:
     *buf = 136315650;
     v44 = "+[CESRUaapData writeUaapOovsForLanguage:bundleId:customProns:newOovs:error:]";
     v45 = 2112;
-    v46 = v10;
+    v46 = idCopy;
     v47 = 2112;
     v48 = v25;
     _os_log_error_impl(&dword_225EEB000, v30, OS_LOG_TYPE_ERROR, "%s Failed to create UaaP app directory for %@: %@", buf, 0x20u);
   }
 
-  v31 = a7;
-  if (a7)
+  errorCopy2 = error;
+  if (error)
   {
 LABEL_12:
     v33 = v25;
     v29 = 0;
-    *v31 = v25;
+    *errorCopy2 = v25;
     goto LABEL_15;
   }
 
@@ -142,13 +142,13 @@ void __76__CESRUaapData_writeUaapOovsForLanguage_bundleId_customProns_newOovs_er
   [v4 setObject:v6 forKey:v5];
 }
 
-+ (id)readUaapOovsForLanguage:(id)a3
++ (id)readUaapOovsForLanguage:(id)language
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = AppOovDirectory(a3);
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  v3 = AppOovDirectory(language);
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v16 = 0;
-  v5 = [v4 contentsOfDirectoryAtPath:v3 error:&v16];
+  v5 = [defaultManager contentsOfDirectoryAtPath:v3 error:&v16];
   v6 = v16;
   if (v6)
   {

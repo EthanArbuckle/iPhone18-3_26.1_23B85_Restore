@@ -12,8 +12,8 @@
 
 - (double)__ck_contentSize
 {
-  v1 = [a1 collectionViewLayout];
-  [v1 collectionViewContentSize];
+  collectionViewLayout = [self collectionViewLayout];
+  [collectionViewLayout collectionViewContentSize];
   v3 = v2;
 
   return v3;
@@ -21,7 +21,7 @@
 
 - (id)__ck_indexPathForLastItem
 {
-  v1 = [a1 numberOfItemsInSection:0];
+  v1 = [self numberOfItemsInSection:0];
   if (v1 < 1)
   {
     v2 = 0;
@@ -37,17 +37,17 @@
 
 - (BOOL)__ck_isScrolledToBottomHidingIndexPath:()CKUtilities
 {
-  [a1 __ck_bottomOffsetHidingIndexPath:?];
+  [self __ck_bottomOffsetHidingIndexPath:?];
   v3 = v2;
-  [a1 contentOffset];
+  [self contentOffset];
   return v4 >= v3 + -0.00000011920929;
 }
 
 - (double)__ck_bottomOffsetHidingIndexPath:()CKUtilities
 {
   v4 = a3;
-  [a1 contentInset];
-  [a1 __ck_bottomOffsetHidingIndexPath:v4 computedInsets:0 skippingLayoutUpdate:?];
+  [self contentInset];
+  [self __ck_bottomOffsetHidingIndexPath:v4 computedInsets:0 skippingLayoutUpdate:?];
   v6 = v5;
 
   return v6;
@@ -56,7 +56,7 @@
 - (double)__ck_bottomOffsetHidingIndexPath:()CKUtilities computedInsets:skippingLayoutUpdate:
 {
   v14 = a7;
-  v20.receiver = a1;
+  v20.receiver = self;
   v20.super_class = UICollectionView_0;
   objc_msgSendSuper2(&v20, sel___ck_bottomOffsetWithComputedInsets_, a2, a3, a4, a5);
   v16 = v15;
@@ -64,22 +64,22 @@
   {
     if ((a8 & 1) == 0)
     {
-      [a1 setNeedsLayout];
-      [a1 layoutIfNeeded];
+      [self setNeedsLayout];
+      [self layoutIfNeeded];
     }
 
-    v17 = [a1 collectionViewLayout];
-    v18 = [v17 layoutAttributesForItemAtIndexPath:v14];
+    collectionViewLayout = [self collectionViewLayout];
+    v18 = [collectionViewLayout layoutAttributesForItemAtIndexPath:v14];
     [v18 frame];
 
-    [a1 bounds];
+    [self bounds];
     if (CKMainScreenScale_once_17 != -1)
     {
       [UICollectionView(CKUtilities) __ck_bottomOffsetHidingIndexPath:computedInsets:skippingLayoutUpdate:];
     }
   }
 
-  [a1 __ck_scrollToTopContentOffset];
+  [self __ck_scrollToTopContentOffset];
 
   return v16;
 }
@@ -88,15 +88,15 @@
 {
   v6 = a3;
   v7 = a4;
-  [a1 contentOffset];
+  [self contentOffset];
   v9 = v8;
-  v10 = [a1 collectionViewLayout];
-  v11 = [v10 layoutAttributesForItemAtIndexPath:v6];
+  collectionViewLayout = [self collectionViewLayout];
+  v11 = [collectionViewLayout layoutAttributesForItemAtIndexPath:v6];
   v12 = v11;
   if (v11)
   {
     [v11 frame];
-    [a1 contentInset];
+    [self contentInset];
   }
 
   else
@@ -108,15 +108,15 @@
     }
   }
 
-  [a1 __ck_scrollToTopContentOffset];
+  [self __ck_scrollToTopContentOffset];
   if (v7)
   {
-    v14 = [v10 layoutAttributesForItemAtIndexPath:v7];
+    v14 = [collectionViewLayout layoutAttributesForItemAtIndexPath:v7];
     v15 = v14;
     if (v14)
     {
       [v14 frame];
-      [a1 bounds];
+      [self bounds];
       if (CKMainScreenScale_once_17 != -1)
       {
         [UICollectionView(CKUtilities) __ck_bottomOffsetHidingIndexPath:computedInsets:skippingLayoutUpdate:];
@@ -139,13 +139,13 @@
 - (void)__ck_reloadDataKeepingSelection
 {
   v13 = *MEMORY[0x1E69E9840];
-  v2 = [a1 indexPathsForSelectedItems];
-  [a1 reloadData];
+  indexPathsForSelectedItems = [self indexPathsForSelectedItems];
+  [self reloadData];
   v10 = 0u;
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v3 = v2;
+  v3 = indexPathsForSelectedItems;
   v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
@@ -161,7 +161,7 @@
           objc_enumerationMutation(v3);
         }
 
-        [a1 selectItemAtIndexPath:*(*(&v8 + 1) + 8 * v7++) animated:0 scrollPosition:{0, v8}];
+        [self selectItemAtIndexPath:*(*(&v8 + 1) + 8 * v7++) animated:0 scrollPosition:{0, v8}];
       }
 
       while (v5 != v7);

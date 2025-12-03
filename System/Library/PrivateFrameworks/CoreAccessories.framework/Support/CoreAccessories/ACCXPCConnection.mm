@@ -1,25 +1,25 @@
 @interface ACCXPCConnection
-- (ACCXPCConnection)initWithServiceName:(id)a3 queueName:(id)a4;
-- (ACCXPCConnection)initWithXPCConnection:(id)a3 queueName:(id)a4;
-- (id)_initACCXPCConnection:(id)a3;
+- (ACCXPCConnection)initWithServiceName:(id)name queueName:(id)queueName;
+- (ACCXPCConnection)initWithXPCConnection:(id)connection queueName:(id)name;
+- (id)_initACCXPCConnection:(id)connection;
 - (id)disconnectBlock;
 - (id)messageBlock;
 - (void)_reloadEventHandler;
 - (void)dealloc;
-- (void)sendMessage:(id)a3;
-- (void)sendMessage:(id)a3 withReply:(id)a4;
-- (void)sendSynchronousMessage:(id)a3 withReply:(id)a4;
-- (void)setDisconnectBlock:(id)a3;
-- (void)setMessageBlock:(id)a3;
-- (void)setReplyQueue:(id)a3;
-- (void)setTargetQueue:(id)a3;
+- (void)sendMessage:(id)message;
+- (void)sendMessage:(id)message withReply:(id)reply;
+- (void)sendSynchronousMessage:(id)message withReply:(id)reply;
+- (void)setDisconnectBlock:(id)block;
+- (void)setMessageBlock:(id)block;
+- (void)setReplyQueue:(id)queue;
+- (void)setTargetQueue:(id)queue;
 @end
 
 @implementation ACCXPCConnection
 
-- (id)_initACCXPCConnection:(id)a3
+- (id)_initACCXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v10.receiver = self;
   v10.super_class = ACCXPCConnection;
   v5 = [(ACCXPCConnection *)&v10 init];
@@ -27,7 +27,7 @@
   if (v5)
   {
     *&v5->isValid = 257;
-    v7 = dispatch_queue_create([v4 UTF8String], 0);
+    v7 = dispatch_queue_create([connectionCopy UTF8String], 0);
     dispatchQueue = v6->_dispatchQueue;
     v6->_dispatchQueue = v7;
   }
@@ -35,34 +35,34 @@
   return v6;
 }
 
-- (ACCXPCConnection)initWithServiceName:(id)a3 queueName:(id)a4
+- (ACCXPCConnection)initWithServiceName:(id)name queueName:(id)queueName
 {
-  v4 = self;
+  selfCopy = self;
   v5 = 0;
-  if (a3 && a4)
+  if (name && queueName)
   {
     *&self->isValid = 257;
-    v8 = a3;
-    v9 = a4;
-    mach_service = xpc_connection_create_mach_service([a3 UTF8String], 0, 0);
-    v11 = [(ACCXPCConnection *)v4 initWithXPCConnection:mach_service queueName:v9];
+    nameCopy = name;
+    queueNameCopy = queueName;
+    mach_service = xpc_connection_create_mach_service([name UTF8String], 0, 0);
+    v11 = [(ACCXPCConnection *)selfCopy initWithXPCConnection:mach_service queueName:queueNameCopy];
 
-    v4 = v11;
-    v5 = v4;
+    selfCopy = v11;
+    v5 = selfCopy;
   }
 
   return v5;
 }
 
-- (ACCXPCConnection)initWithXPCConnection:(id)a3 queueName:(id)a4
+- (ACCXPCConnection)initWithXPCConnection:(id)connection queueName:(id)name
 {
-  v7 = a3;
-  v8 = [(ACCXPCConnection *)self _initACCXPCConnection:a4];
+  connectionCopy = connection;
+  v8 = [(ACCXPCConnection *)self _initACCXPCConnection:name];
   v9 = v8;
   if (v8)
   {
     *&v8->isValid = 257;
-    objc_storeStrong(&v8->_connection, a3);
+    objc_storeStrong(&v8->_connection, connection);
     [(ACCXPCConnection *)v9 _reloadEventHandler];
     xpc_connection_resume(v9->_connection);
   }
@@ -141,49 +141,49 @@ uint64_t __32__ACCXPCConnection_messageBlock__block_invoke(uint64_t a1)
   return _objc_release_x1();
 }
 
-- (void)sendMessage:(id)a3
+- (void)sendMessage:(id)message
 {
   if (self->isValid)
   {
-    xpc_connection_send_message(self->_connection, a3);
+    xpc_connection_send_message(self->_connection, message);
   }
 }
 
-- (void)sendMessage:(id)a3 withReply:(id)a4
+- (void)sendMessage:(id)message withReply:(id)reply
 {
   if (self->isValid)
   {
-    xpc_connection_send_message_with_reply(self->_connection, a3, self->_replyQueue, a4);
+    xpc_connection_send_message_with_reply(self->_connection, message, self->_replyQueue, reply);
   }
 }
 
-- (void)sendSynchronousMessage:(id)a3 withReply:(id)a4
+- (void)sendSynchronousMessage:(id)message withReply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   if (self->isValid)
   {
-    v8 = v6;
-    v7 = xpc_connection_send_message_with_reply_sync(self->_connection, a3);
+    v8 = replyCopy;
+    v7 = xpc_connection_send_message_with_reply_sync(self->_connection, message);
     if (v8)
     {
       v8[2](v8, v7);
     }
 
-    v6 = v8;
+    replyCopy = v8;
   }
 }
 
-- (void)setDisconnectBlock:(id)a3
+- (void)setDisconnectBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __39__ACCXPCConnection_setDisconnectBlock___block_invoke;
   v7[3] = &unk_100227240;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_sync(dispatchQueue, v7);
 }
 
@@ -206,17 +206,17 @@ id __39__ACCXPCConnection_setDisconnectBlock___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setMessageBlock:(id)a3
+- (void)setMessageBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __36__ACCXPCConnection_setMessageBlock___block_invoke;
   v7[3] = &unk_100227240;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_sync(dispatchQueue, v7);
 }
 
@@ -239,17 +239,17 @@ id __36__ACCXPCConnection_setMessageBlock___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setReplyQueue:(id)a3
+- (void)setReplyQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __34__ACCXPCConnection_setReplyQueue___block_invoke;
   v7[3] = &unk_100225A08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = queueCopy;
+  v6 = queueCopy;
   dispatch_sync(dispatchQueue, v7);
 }
 
@@ -265,9 +265,9 @@ void __34__ACCXPCConnection_setReplyQueue___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setTargetQueue:(id)a3
+- (void)setTargetQueue:(id)queue
 {
-  queue = a3;
+  queue = queue;
   dispatch_set_target_queue(self->_dispatchQueue, queue);
   replyQueue = self->_replyQueue;
   if (replyQueue)

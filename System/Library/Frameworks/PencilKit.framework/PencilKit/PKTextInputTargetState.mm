@@ -2,9 +2,9 @@
 - (NSString)description;
 - (PKTextInputTargetState)init;
 - (__n128)clear;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)reportDebugStateDescription:(id)a3;
-- (void)setInProgressGestureStrokeUUID:(uint64_t)a1;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)reportDebugStateDescription:(id)description;
+- (void)setInProgressGestureStrokeUUID:(uint64_t)d;
 @end
 
 @implementation PKTextInputTargetState
@@ -25,36 +25,36 @@
 
 - (__n128)clear
 {
-  if (a1)
+  if (self)
   {
-    objc_setProperty_nonatomic_copy(a1, a2, 0, 48);
-    objc_setProperty_nonatomic_copy(a1, v3, 0, 56);
-    objc_setProperty_nonatomic_copy(a1, v4, 0, 16);
-    v5 = *(a1 + 24);
-    *(a1 + 24) = 0;
+    objc_setProperty_nonatomic_copy(self, a2, 0, 48);
+    objc_setProperty_nonatomic_copy(self, v3, 0, 56);
+    objc_setProperty_nonatomic_copy(self, v4, 0, 16);
+    v5 = *(self + 24);
+    *(self + 24) = 0;
 
-    v6 = *(a1 + 32);
-    *(a1 + 32) = 0;
+    v6 = *(self + 32);
+    *(self + 32) = 0;
 
-    objc_setProperty_nonatomic_copy(a1, v7, 0, 40);
-    *(a1 + 64) = 0;
-    *(a1 + 104) = xmmword_1C801E6F0;
-    v8 = *(a1 + 80);
-    *(a1 + 80) = 0;
+    objc_setProperty_nonatomic_copy(self, v7, 0, 40);
+    *(self + 64) = 0;
+    *(self + 104) = xmmword_1C801E6F0;
+    v8 = *(self + 80);
+    *(self + 80) = 0;
 
-    *(a1 + 72) = 0x7FFFFFFFFFFFFFFFLL;
+    *(self + 72) = 0x7FFFFFFFFFFFFFFFLL;
     result = xmmword_1C801E6F0;
-    *(a1 + 120) = xmmword_1C801E6F0;
-    *(a1 + 136) = xmmword_1C801E6F0;
-    *(a1 + 88) = 0;
-    *(a1 + 96) = 0;
-    *(a1 + 8) = 0;
+    *(self + 120) = xmmword_1C801E6F0;
+    *(self + 136) = xmmword_1C801E6F0;
+    *(self + 88) = 0;
+    *(self + 96) = 0;
+    *(self + 8) = 0;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PKTextInputTargetState);
   v6 = v4;
@@ -294,11 +294,11 @@ LABEL_36:
   return v6;
 }
 
-- (void)setInProgressGestureStrokeUUID:(uint64_t)a1
+- (void)setInProgressGestureStrokeUUID:(uint64_t)d
 {
-  if (a1)
+  if (d)
   {
-    objc_storeStrong((a1 + 80), a2);
+    objc_storeStrong((d + 80), a2);
   }
 }
 
@@ -313,20 +313,20 @@ LABEL_36:
   return v5;
 }
 
-- (void)reportDebugStateDescription:(id)a3
+- (void)reportDebugStateDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   uncommittedPendingText = self->_uncommittedPendingText;
-  v21 = v4;
+  v21 = descriptionCopy;
   if (uncommittedPendingText)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", uncommittedPendingText];
-    v21[2](v21, @"uncommittedPendingText", v6);
+    uncommittedPendingText = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", uncommittedPendingText];
+    v21[2](v21, @"uncommittedPendingText", uncommittedPendingText);
   }
 
   else
   {
-    v4[2](v4, @"uncommittedPendingText", &stru_1F476BD20);
+    descriptionCopy[2](descriptionCopy, @"uncommittedPendingText", &stru_1F476BD20);
   }
 
   writingSessionIdentifier = self->_writingSessionIdentifier;
@@ -355,8 +355,8 @@ LABEL_36:
   v10 = [(NSNumber *)self->_elementRecognitionIdentifier description];
   v21[2](v21, @"elementID", v10);
 
-  v11 = [(CHTextInputQueryItem *)self->_lastQueryItem itemStableIdentifier];
-  v12 = [v11 description];
+  itemStableIdentifier = [(CHTextInputQueryItem *)self->_lastQueryItem itemStableIdentifier];
+  v12 = [itemStableIdentifier description];
   v21[2](v21, @"lastQueryItemID", v12);
 
   v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", self->_sessionCommitLength];

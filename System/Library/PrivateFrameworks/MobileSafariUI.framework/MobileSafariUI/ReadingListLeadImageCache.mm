@@ -1,35 +1,35 @@
 @interface ReadingListLeadImageCache
-- (ReadingListLeadImageCache)initWithDirectoryURL:(id)a3;
-- (id)loadImageSynchronouslyForIconUUID:(id)a3;
+- (ReadingListLeadImageCache)initWithDirectoryURL:(id)l;
+- (id)loadImageSynchronouslyForIconUUID:(id)d;
 - (void)clearCache;
 @end
 
 @implementation ReadingListLeadImageCache
 
-- (ReadingListLeadImageCache)initWithDirectoryURL:(id)a3
+- (ReadingListLeadImageCache)initWithDirectoryURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v10.receiver = self;
   v10.super_class = ReadingListLeadImageCache;
   v6 = [(ReadingListLeadImageCache *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_directoryURL, a3);
+    objc_storeStrong(&v6->_directoryURL, l);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (id)loadImageSynchronouslyForIconUUID:(id)a3
+- (id)loadImageSynchronouslyForIconUUID:(id)d
 {
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [(WBSCache *)v5->_cache objectForKey:v4];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v6 = [(WBSCache *)selfCopy->_cache objectForKey:dCopy];
     if (v6)
     {
       v7 = v6;
@@ -37,30 +37,30 @@
 
     else
     {
-      v8 = [(NSURL *)v5->_directoryURL URLByAppendingPathComponent:v4 isDirectory:0];
+      v8 = [(NSURL *)selfCopy->_directoryURL URLByAppendingPathComponent:dCopy isDirectory:0];
       v9 = MEMORY[0x277D755B8];
-      v10 = [v8 path];
-      v11 = [v9 imageWithContentsOfFile:v10];
+      path = [v8 path];
+      v11 = [v9 imageWithContentsOfFile:path];
 
       if (v11)
       {
-        cache = v5->_cache;
+        cache = selfCopy->_cache;
         if (!cache)
         {
           v13 = objc_alloc_init(MEMORY[0x277D49E98]);
-          v14 = v5->_cache;
-          v5->_cache = v13;
+          v14 = selfCopy->_cache;
+          selfCopy->_cache = v13;
 
-          cache = v5->_cache;
+          cache = selfCopy->_cache;
         }
 
-        [(WBSCache *)cache setObject:v11 forKey:v4];
+        [(WBSCache *)cache setObject:v11 forKey:dCopy];
       }
 
       v7 = v11;
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else

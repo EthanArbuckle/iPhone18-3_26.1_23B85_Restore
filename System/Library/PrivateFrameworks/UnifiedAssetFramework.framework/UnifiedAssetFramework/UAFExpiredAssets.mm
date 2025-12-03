@@ -1,21 +1,21 @@
 @interface UAFExpiredAssets
-+ (BOOL)assetsExpired:(id)a3 error:(id *)a4;
-+ (BOOL)markAssetsExpired:(id)a3 error:(id *)a4;
-+ (id)expiredTokens:(id *)a3;
-+ (id)loadToken:(id)a3 error:(id *)a4;
-+ (id)tokenDir:(id *)a3;
-+ (id)tokenFilename:(id)a3;
-+ (void)removeToken:(id)a3;
++ (BOOL)assetsExpired:(id)expired error:(id *)error;
++ (BOOL)markAssetsExpired:(id)expired error:(id *)error;
++ (id)expiredTokens:(id *)tokens;
++ (id)loadToken:(id)token error:(id *)error;
++ (id)tokenDir:(id *)dir;
++ (id)tokenFilename:(id)filename;
++ (void)removeToken:(id)token;
 @end
 
 @implementation UAFExpiredAssets
 
-+ (id)tokenDir:(id *)a3
++ (id)tokenDir:(id *)dir
 {
   v4 = objc_autoreleasePoolPush();
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v12 = 0;
-  v6 = [v5 URLForDirectory:13 inDomain:1 appropriateForURL:0 create:1 error:&v12];
+  v6 = [defaultManager URLForDirectory:13 inDomain:1 appropriateForURL:0 create:1 error:&v12];
   v7 = v12;
 
   if (v6)
@@ -36,33 +36,33 @@
   }
 
   objc_autoreleasePoolPop(v4);
-  if (a3)
+  if (dir)
   {
     v10 = v7;
-    *a3 = v7;
+    *dir = v7;
   }
 
   return v6;
 }
 
-+ (id)tokenFilename:(id)a3
++ (id)tokenFilename:(id)filename
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [a3 assetSetName];
-  v5 = [v3 stringWithFormat:@"%@.%@", v4, @"uaftoken"];
+  assetSetName = [filename assetSetName];
+  v5 = [v3 stringWithFormat:@"%@.%@", assetSetName, @"uaftoken"];
 
   return v5;
 }
 
-+ (BOOL)markAssetsExpired:(id)a3 error:(id *)a4
++ (BOOL)markAssetsExpired:(id)expired error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [UAFExpiredAssets tokenDir:a4];
-  if (v6 && !*a4)
+  expiredCopy = expired;
+  v6 = [UAFExpiredAssets tokenDir:error];
+  if (v6 && !*error)
   {
-    v12 = [MEMORY[0x1E696AC08] defaultManager];
-    v13 = [v12 createDirectoryAtURL:v6 withIntermediateDirectories:1 attributes:0 error:a4];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v13 = [defaultManager createDirectoryAtURL:v6 withIntermediateDirectories:1 attributes:0 error:error];
 
     if ((v13 & 1) == 0)
     {
@@ -72,13 +72,13 @@
         goto LABEL_4;
       }
 
-      v21 = *a4;
+      v21 = *error;
       v29 = 136315906;
       v30 = "+[UAFExpiredAssets markAssetsExpired:error:]";
       v31 = 2114;
       v32 = v6;
       v33 = 2114;
-      v34 = v5;
+      v34 = expiredCopy;
       v35 = 2114;
       v36 = v21;
       v22 = "%s Failed to create expired assets token dir %{public}@ for token %{public}@: %{public}@";
@@ -89,21 +89,21 @@ LABEL_13:
       goto LABEL_4;
     }
 
-    v14 = [UAFExpiredAssets tokenFilename:v5];
+    v14 = [UAFExpiredAssets tokenFilename:expiredCopy];
     v9 = [v6 URLByAppendingPathComponent:v14 isDirectory:0];
 
-    v15 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v5 requiringSecureCoding:1 error:a4];
+    v15 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:expiredCopy requiringSecureCoding:1 error:error];
     v7 = v15;
-    if (*a4)
+    if (*error)
     {
       v16 = UAFGetLogCategory(&UAFLogContextClient);
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        v17 = *a4;
+        v17 = *error;
         v29 = 136315650;
         v30 = "+[UAFExpiredAssets markAssetsExpired:error:]";
         v31 = 2114;
-        v32 = v5;
+        v32 = expiredCopy;
         v33 = 2114;
         v34 = v17;
         v18 = "%s Failed to archive expired assets token %{public}@: %{public}@";
@@ -116,7 +116,7 @@ LABEL_20:
 
     else
     {
-      v26 = [v15 writeToURL:v9 options:0 error:a4];
+      v26 = [v15 writeToURL:v9 options:0 error:error];
       v27 = UAFGetLogCategory(&UAFLogContextClient);
       v16 = v27;
       if (v26)
@@ -128,7 +128,7 @@ LABEL_20:
           v31 = 2114;
           v32 = v9;
           v33 = 2114;
-          v34 = v5;
+          v34 = expiredCopy;
           _os_log_impl(&dword_1BCF2C000, v16, OS_LOG_TYPE_DEFAULT, "%s Wrote expired assets token %{public}@ to %{public}@", &v29, 0x20u);
         }
 
@@ -138,13 +138,13 @@ LABEL_20:
 
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
-        v28 = *a4;
+        v28 = *error;
         v29 = 136315906;
         v30 = "+[UAFExpiredAssets markAssetsExpired:error:]";
         v31 = 2114;
         v32 = v9;
         v33 = 2114;
-        v34 = v5;
+        v34 = expiredCopy;
         v35 = 2114;
         v36 = v28;
         v18 = "%s Failed to write expired assets token %{public}@ to %{public}@: %{public}@";
@@ -163,11 +163,11 @@ LABEL_22:
   v7 = UAFGetLogCategory(&UAFLogContextClient);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    v25 = *a4;
+    v25 = *error;
     v29 = 136315650;
     v30 = "+[UAFExpiredAssets markAssetsExpired:error:]";
     v31 = 2114;
-    v32 = v5;
+    v32 = expiredCopy;
     v33 = 2114;
     v34 = v25;
     v22 = "%s Failed to get expired assets token dir for %{public}@: %{public}@";
@@ -185,13 +185,13 @@ LABEL_5:
   return v8;
 }
 
-+ (void)removeToken:(id)a3
++ (void)removeToken:(id)token
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
+  tokenCopy = token;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v9 = 0;
-  v5 = [v4 removeItemAtURL:v3 error:&v9];
+  v5 = [defaultManager removeItemAtURL:tokenCopy error:&v9];
   v6 = v9;
 
   if ((v5 & 1) == 0)
@@ -202,7 +202,7 @@ LABEL_5:
       *buf = 136315650;
       v11 = "+[UAFExpiredAssets removeToken:]";
       v12 = 2114;
-      v13 = v3;
+      v13 = tokenCopy;
       v14 = 2114;
       v15 = v6;
       _os_log_error_impl(&dword_1BCF2C000, v7, OS_LOG_TYPE_ERROR, "%s Failed to remove token at %{public}@: %{public}@", buf, 0x20u);
@@ -212,13 +212,13 @@ LABEL_5:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)loadToken:(id)a3 error:(id *)a4
++ (id)loadToken:(id)token error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  tokenCopy = token;
   v6 = objc_autoreleasePoolPush();
   v20 = 0;
-  v7 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v5 options:0 error:&v20];
+  v7 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:tokenCopy options:0 error:&v20];
   v8 = v20;
   if (v7)
   {
@@ -239,7 +239,7 @@ LABEL_5:
       *buf = 136315650;
       v22 = "+[UAFExpiredAssets loadToken:error:]";
       v23 = 2114;
-      v24 = v5;
+      v24 = tokenCopy;
       v25 = 2114;
       v26 = v10;
       _os_log_error_impl(&dword_1BCF2C000, v11, OS_LOG_TYPE_ERROR, "%s Failed to read expired assets token from %{public}@: %{public}@", buf, 0x20u);
@@ -274,7 +274,7 @@ LABEL_14:
       *buf = 136315650;
       v22 = "+[UAFExpiredAssets loadToken:error:]";
       v23 = 2114;
-      v24 = v5;
+      v24 = tokenCopy;
       v25 = 2114;
       v26 = v10;
       _os_log_error_impl(&dword_1BCF2C000, v14, OS_LOG_TYPE_ERROR, "%s Failed to unarchive expired assets token from %{public}@: %{public}@", buf, 0x20u);
@@ -286,10 +286,10 @@ LABEL_14:
   v15 = 0;
 LABEL_16:
   objc_autoreleasePoolPop(v6);
-  if (a4)
+  if (error)
   {
     v16 = v15;
-    *a4 = v15;
+    *error = v15;
   }
 
   v17 = *MEMORY[0x1E69E9840];
@@ -297,19 +297,19 @@ LABEL_16:
   return v11;
 }
 
-+ (BOOL)assetsExpired:(id)a3 error:(id *)a4
++ (BOOL)assetsExpired:(id)expired error:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [UAFExpiredAssets tokenDir:a4];
-  if (v6 && !*a4)
+  expiredCopy = expired;
+  v6 = [UAFExpiredAssets tokenDir:error];
+  if (v6 && !*error)
   {
-    v12 = [UAFExpiredAssets tokenFilename:v5];
+    v12 = [UAFExpiredAssets tokenFilename:expiredCopy];
     v9 = [v6 URLByAppendingPathComponent:v12 isDirectory:0];
 
-    v13 = [MEMORY[0x1E696AC08] defaultManager];
-    v14 = [v9 path];
-    v15 = [v13 fileExistsAtPath:v14];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [v9 path];
+    v15 = [defaultManager fileExistsAtPath:path];
 
     if (!v15)
     {
@@ -317,23 +317,23 @@ LABEL_16:
       goto LABEL_7;
     }
 
-    v7 = [UAFExpiredAssets loadToken:v9 error:a4];
-    if (v7 && !*a4)
+    v7 = [UAFExpiredAssets loadToken:v9 error:error];
+    if (v7 && !*error)
     {
-      v16 = [v5 hasIdenticalAssets:v7 includeBootUUID:0];
+      v16 = [expiredCopy hasIdenticalAssets:v7 includeBootUUID:0];
       v17 = UAFGetLogCategory(&UAFLogContextClient);
       v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
       if (v16)
       {
         if (v18)
         {
-          v19 = *a4;
+          v19 = *error;
           v22 = 136315906;
           v23 = "+[UAFExpiredAssets assetsExpired:error:]";
           v24 = 2114;
           v25 = v9;
           v26 = 2114;
-          v27 = v5;
+          v27 = expiredCopy;
           v28 = 2114;
           v29 = v19;
           _os_log_impl(&dword_1BCF2C000, v17, OS_LOG_TYPE_DEFAULT, "%s Expired assets token from %{public}@ does match %{public}@: %{public}@", &v22, 0x2Au);
@@ -345,13 +345,13 @@ LABEL_16:
 
       if (v18)
       {
-        v21 = *a4;
+        v21 = *error;
         v22 = 136315906;
         v23 = "+[UAFExpiredAssets assetsExpired:error:]";
         v24 = 2114;
         v25 = v9;
         v26 = 2114;
-        v27 = v5;
+        v27 = expiredCopy;
         v28 = 2114;
         v29 = v21;
         _os_log_impl(&dword_1BCF2C000, v17, OS_LOG_TYPE_DEFAULT, "%s Expired assets token from %{public}@ does not match %{public}@: %{public}@", &v22, 0x2Au);
@@ -367,11 +367,11 @@ LABEL_16:
     v7 = UAFGetLogCategory(&UAFLogContextClient);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v20 = *a4;
+      v20 = *error;
       v22 = 136315650;
       v23 = "+[UAFExpiredAssets assetsExpired:error:]";
       v24 = 2114;
-      v25 = v5;
+      v25 = expiredCopy;
       v26 = 2114;
       v27 = v20;
       _os_log_error_impl(&dword_1BCF2C000, v7, OS_LOG_TYPE_ERROR, "%s Failed to get expired assets token dir for %{public}@: %{public}@", &v22, 0x20u);
@@ -388,17 +388,17 @@ LABEL_7:
   return v8;
 }
 
-+ (id)expiredTokens:(id *)a3
++ (id)expiredTokens:(id *)tokens
 {
   v33 = *MEMORY[0x1E69E9840];
   v4 = [UAFExpiredAssets tokenDir:?];
-  if (v4 && !*a3)
+  if (v4 && !*tokens)
   {
-    v7 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v28 = *MEMORY[0x1E695DBB8];
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v28 count:1];
     v22 = v4;
-    v9 = [v7 enumeratorAtURL:v4 includingPropertiesForKeys:v8 options:1 errorHandler:0];
+    v9 = [defaultManager enumeratorAtURL:v4 includingPropertiesForKeys:v8 options:1 errorHandler:0];
 
     v25 = 0u;
     v26 = 0u;
@@ -421,13 +421,13 @@ LABEL_7:
           }
 
           v15 = *(*(&v23 + 1) + 8 * i);
-          v16 = [v15 pathExtension];
-          v17 = [v16 isEqualToString:@"uaftoken"];
+          pathExtension = [v15 pathExtension];
+          v17 = [pathExtension isEqualToString:@"uaftoken"];
 
           if (v17)
           {
-            v18 = [UAFExpiredAssets loadToken:v15 error:a3];
-            if (v18 && !*a3)
+            v18 = [UAFExpiredAssets loadToken:v15 error:tokens];
+            if (v18 && !*tokens)
             {
               if (!v12)
               {
@@ -459,7 +459,7 @@ LABEL_7:
     v5 = UAFGetLogCategory(&UAFLogContextClient);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v21 = *a3;
+      v21 = *tokens;
       *buf = 136315394;
       v30 = "+[UAFExpiredAssets expiredTokens:]";
       v31 = 2114;

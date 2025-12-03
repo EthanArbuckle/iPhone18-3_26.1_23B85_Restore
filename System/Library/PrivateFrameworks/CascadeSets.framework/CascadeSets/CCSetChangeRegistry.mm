@@ -1,17 +1,17 @@
 @interface CCSetChangeRegistry
-+ (id)_keyForSet:(id)a3;
-- (BOOL)_clear:(id *)a3;
-- (BOOL)cleanupWithAllSets:(id)a3 error:(id *)a4;
-- (BOOL)clearAllBookmarksAndCommit:(id *)a3;
-- (BOOL)commitAllBookmarkUpdates:(id *)a3;
-- (BOOL)enumerateAllBookmarks:(id *)a3 usingBlock:(id)a4;
-- (BOOL)updateBookmark:(id)a3 forSet:(id)a4 error:(id *)a5;
++ (id)_keyForSet:(id)set;
+- (BOOL)_clear:(id *)_clear;
+- (BOOL)cleanupWithAllSets:(id)sets error:(id *)error;
+- (BOOL)clearAllBookmarksAndCommit:(id *)commit;
+- (BOOL)commitAllBookmarkUpdates:(id *)updates;
+- (BOOL)enumerateAllBookmarks:(id *)bookmarks usingBlock:(id)block;
+- (BOOL)updateBookmark:(id)bookmark forSet:(id)set error:(id *)error;
 - (CCSetChangeRegistry)init;
-- (id)_archiveBookmark:(id)a3 error:(id *)a4;
-- (id)_unarchiveBookmark:(id)a3 error:(id *)a4;
-- (id)bookmarkForSet:(id)a3;
+- (id)_archiveBookmark:(id)bookmark error:(id *)error;
+- (id)_unarchiveBookmark:(id)bookmark error:(id *)error;
+- (id)bookmarkForSet:(id)set;
 - (id)description;
-- (id)descriptionForBookmark:(id)a3;
+- (id)descriptionForBookmark:(id)bookmark;
 - (void)clearAllBookmarks;
 - (void)rollbackAllBookmarkUpdates;
 @end
@@ -34,14 +34,14 @@
   return v4;
 }
 
-+ (id)_keyForSet:(id)a3
++ (id)_keyForSet:(id)set
 {
-  v3 = a3;
+  setCopy = set;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 uniqueHash];
-    v5 = [v4 stringValue];
+    uniqueHash = [setCopy uniqueHash];
+    stringValue = [uniqueHash stringValue];
   }
 
   else
@@ -49,19 +49,19 @@
     v6 = __biome_log_for_category();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(CCSetChangeRegistry *)v3 _keyForSet:v6];
+      [(CCSetChangeRegistry *)setCopy _keyForSet:v6];
     }
 
-    v5 = 0;
+    stringValue = 0;
   }
 
-  return v5;
+  return stringValue;
 }
 
-- (id)bookmarkForSet:(id)a3
+- (id)bookmarkForSet:(id)set
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _keyForSet:v4];
+  setCopy = set;
+  v5 = [objc_opt_class() _keyForSet:setCopy];
   if (v5)
   {
     v6 = [(NSMutableDictionary *)self->_pendingUpdates objectForKey:v5];
@@ -88,7 +88,7 @@
         v12 = __biome_log_for_category();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
         {
-          [(CCSetChangeRegistry *)v4 bookmarkForSet:v8, v12];
+          [(CCSetChangeRegistry *)setCopy bookmarkForSet:v8, v12];
         }
       }
 
@@ -104,11 +104,11 @@
   return v7;
 }
 
-- (BOOL)updateBookmark:(id)a3 forSet:(id)a4 error:(id *)a5
+- (BOOL)updateBookmark:(id)bookmark forSet:(id)set error:(id *)error
 {
   v50[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  bookmarkCopy = bookmark;
+  setCopy = set;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -117,27 +117,27 @@
     v16 = MEMORY[0x1E696AEC0];
     v17 = objc_opt_class();
     v10 = NSStringFromClass(v17);
-    v11 = [v16 stringWithFormat:@"Unexpected bookmark: %@ for set: %@", v10, v9];
-    v50[0] = v11;
+    setCopy = [v16 stringWithFormat:@"Unexpected bookmark: %@ for set: %@", v10, setCopy];
+    v50[0] = setCopy;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v50 forKeys:&v49 count:1];
     v19 = [v15 errorWithDomain:@"com.apple.CascadeSets.Set" code:2 userInfo:v18];
-    CCSetError(a5, v19);
+    CCSetError(error, v19);
 
 LABEL_8:
     goto LABEL_9;
   }
 
-  v10 = [objc_opt_class() _keyForSet:v9];
-  v11 = [v8 value];
+  v10 = [objc_opt_class() _keyForSet:setCopy];
+  setCopy = [bookmarkCopy value];
   if (!v10)
   {
     v20 = MEMORY[0x1E696ABC0];
     v47 = *MEMORY[0x1E696A278];
-    v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to resolve key for set: %@ bookmark: %@", v9, v11];
+    v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to resolve key for set: %@ bookmark: %@", setCopy, setCopy];
     v48 = v18;
     v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
     v22 = [v20 errorWithDomain:@"com.apple.CascadeSets.Set" code:2 userInfo:v21];
-    CCSetError(a5, v22);
+    CCSetError(error, v22);
 
     goto LABEL_8;
   }
@@ -156,11 +156,11 @@ LABEL_8:
     v36 = MEMORY[0x1E696AEC0];
     v37 = objc_opt_class();
     v38 = NSStringFromClass(v37);
-    v39 = [v36 stringWithFormat:@"Unexpected bookmark value: %@ for set: %@", v38, v9];
-    v44 = v39;
+    setCopy2 = [v36 stringWithFormat:@"Unexpected bookmark value: %@ for set: %@", v38, setCopy];
+    v44 = setCopy2;
     v40 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v44 forKeys:&v43 count:1];
     v41 = [v35 errorWithDomain:@"com.apple.CascadeSets.Set" code:2 userInfo:v40];
-    CCSetError(a5, v41);
+    CCSetError(error, v41);
 
 LABEL_9:
     v23 = 0;
@@ -168,7 +168,7 @@ LABEL_9:
   }
 
   v12 = objc_opt_class();
-  v13 = [v11 set];
+  v13 = [setCopy set];
   v14 = [v12 _keyForSet:v13];
 
   if (([v10 isEqual:v14] & 1) == 0)
@@ -178,11 +178,11 @@ LABEL_9:
     v29 = MEMORY[0x1E696AEC0];
     v30 = objc_opt_class();
     v31 = NSStringFromClass(v30);
-    v32 = [v29 stringWithFormat:@"Unexpected set: %@ (key: %@) for bookmark: %@ (key: %@)", v31, v10, v11, v14];
+    v32 = [v29 stringWithFormat:@"Unexpected set: %@ (key: %@) for bookmark: %@ (key: %@)", v31, v10, setCopy, v14];
     v46 = v32;
     v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
     v34 = [v42 errorWithDomain:@"com.apple.CascadeSets.Set" code:2 userInfo:v33];
-    CCSetError(a5, v34);
+    CCSetError(error, v34);
 
     goto LABEL_9;
   }
@@ -198,7 +198,7 @@ LABEL_12:
     pendingUpdates = self->_pendingUpdates;
   }
 
-  [(NSMutableDictionary *)pendingUpdates setObject:v8 forKey:v10];
+  [(NSMutableDictionary *)pendingUpdates setObject:bookmarkCopy forKey:v10];
   v23 = 1;
 LABEL_10:
 
@@ -222,10 +222,10 @@ LABEL_10:
   self->_pendingClear = 0;
 }
 
-- (BOOL)commitAllBookmarkUpdates:(id *)a3
+- (BOOL)commitAllBookmarkUpdates:(id *)updates
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (self->_pendingClear && ![(CCSetChangeRegistry *)self _clear:a3])
+  if (self->_pendingClear && ![(CCSetChangeRegistry *)self _clear:updates])
   {
     [(CCSetChangeRegistry *)self rollbackAllBookmarkUpdates];
     v16 = 0;
@@ -259,7 +259,7 @@ LABEL_10:
 
             v12 = *(*(&v23 + 1) + 8 * i);
             v13 = [(NSMutableDictionary *)self->_pendingUpdates objectForKey:v12];
-            v14 = [(CCSetChangeRegistry *)self _archiveBookmark:v13 error:a3];
+            v14 = [(CCSetChangeRegistry *)self _archiveBookmark:v13 error:updates];
 
             if (!v14)
             {
@@ -293,7 +293,7 @@ LABEL_10:
           [(CCSetChangeRegistry *)&self->_pendingUpdates commitAllBookmarkUpdates:v17];
         }
 
-        CCSetError(a3, obj);
+        CCSetError(updates, obj);
       }
 
 LABEL_17:
@@ -317,7 +317,7 @@ LABEL_17:
   return v16;
 }
 
-- (BOOL)_clear:(id *)a3
+- (BOOL)_clear:(id *)_clear
 {
   log = self->_log;
   v9 = 0;
@@ -331,35 +331,35 @@ LABEL_17:
       [(CCSetChangeRegistry *)v6 _clear:v7];
     }
 
-    CCSetError(a3, v6);
+    CCSetError(_clear, v6);
   }
 
   return v5;
 }
 
-- (BOOL)cleanupWithAllSets:(id)a3 error:(id *)a4
+- (BOOL)cleanupWithAllSets:(id)sets error:(id *)error
 {
   v94 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(BMFileBackedDictionary *)self->_log allKeys];
+  setsCopy = sets;
+  allKeys = [(BMFileBackedDictionary *)self->_log allKeys];
   v8 = __biome_log_for_category();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109634;
-    *v92 = [v7 count];
+    *v92 = [allKeys count];
     *&v92[4] = 1024;
-    *&v92[6] = [v6 count];
+    *&v92[6] = [setsCopy count];
     *v93 = 2112;
-    *&v93[2] = v6;
+    *&v93[2] = setsCopy;
     _os_log_impl(&dword_1B6DB2000, v8, OS_LOG_TYPE_DEFAULT, "Starting cleanup with %u registry entries and %u available sets: %@", buf, 0x18u);
   }
 
-  v9 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v6, "count")}];
+  v9 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(setsCopy, "count")}];
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
-  v10 = v6;
+  v10 = setsCopy;
   v11 = [v10 countByEnumeratingWithState:&v77 objects:v90 count:16];
   if (v11)
   {
@@ -387,7 +387,7 @@ LABEL_17:
           v89 = v42;
           v43 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v89 forKeys:&v88 count:1];
           v44 = [v38 errorWithDomain:@"com.apple.CascadeSets.Set" code:2 userInfo:v43];
-          CCSetError(a4, v44);
+          CCSetError(error, v44);
 
           v37 = 0;
           v36 = v10;
@@ -408,7 +408,7 @@ LABEL_17:
   v76 = 0u;
   v73 = 0u;
   v74 = 0u;
-  obj = v7;
+  obj = allKeys;
   v70 = [obj countByEnumeratingWithState:&v73 objects:v87 count:16];
   if (!v70)
   {
@@ -416,8 +416,8 @@ LABEL_17:
   }
 
   v69 = *v74;
-  v66 = v7;
-  v67 = a4;
+  v66 = allKeys;
+  errorCopy = error;
   while (2)
   {
     for (j = 0; j != v70; ++j)
@@ -429,45 +429,45 @@ LABEL_17:
 
       v19 = *(*(&v73 + 1) + 8 * j);
       v20 = [(BMFileBackedDictionary *)self->_log objectForKey:v19];
-      v21 = [(CCSetChangeRegistry *)self _unarchiveBookmark:v20 error:a4];
+      v21 = [(CCSetChangeRegistry *)self _unarchiveBookmark:v20 error:error];
 
       if (!v21)
       {
         goto LABEL_44;
       }
 
-      v22 = [v21 value];
+      value = [v21 value];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
-      v24 = [v21 value];
+      value2 = [v21 value];
       if (isKindOfClass)
       {
         v25 = [v9 objectForKey:v19];
         if (v25)
         {
           v26 = +[CCSetChangeBookmark currentBookmarkVersion];
-          if ([v24 bookmarkVersion]== v26)
+          if ([value2 bookmarkVersion]== v26)
           {
 
 LABEL_29:
-            a4 = v67;
+            error = errorCopy;
             goto LABEL_30;
           }
 
           v53 = MEMORY[0x1E696ABC0];
           v83 = *MEMORY[0x1E696A278];
-          v54 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Registry contains a bookmark with invalid software version (expected %d): %@", v26, v24];
+          v54 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Registry contains a bookmark with invalid software version (expected %d): %@", v26, value2];
           v84 = v54;
           v55 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v84 forKeys:&v83 count:1];
           v56 = [v53 errorWithDomain:@"com.apple.CascadeSets.Set" code:2 userInfo:v55];
-          CCSetError(v67, v56);
+          CCSetError(errorCopy, v56);
         }
 
         else
         {
-          v30 = [CCDatabaseSetChangeEnumerator sharedItemCountFromBookmark:v24];
-          v31 = [CCDatabaseSetChangeEnumerator localItemInstanceCountFromBookmark:v24];
+          v30 = [CCDatabaseSetChangeEnumerator sharedItemCountFromBookmark:value2];
+          v31 = [CCDatabaseSetChangeEnumerator localItemInstanceCountFromBookmark:value2];
           if (!(v30 | v31))
           {
             log = self->_log;
@@ -480,14 +480,14 @@ LABEL_29:
               if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412290;
-                *v92 = v24;
+                *v92 = value2;
                 _os_log_impl(&dword_1B6DB2000, v35, OS_LOG_TYPE_DEFAULT, "Registry bookmark cleaned up: %@", buf, 0xCu);
               }
 
               goto LABEL_29;
             }
 
-            CCSetError(v67, v34);
+            CCSetError(errorCopy, v34);
 
             goto LABEL_43;
           }
@@ -498,7 +498,7 @@ LABEL_29:
           v58 = MEMORY[0x1E696AEC0];
           v59 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v30];
           v65 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v57];
-          v60 = [v58 stringWithFormat:@"Registry bookmark reflects non-removed state: {shared items: %@, local instances: %@} for a set which is no longer available: %@", v59, v65, v24];
+          v60 = [v58 stringWithFormat:@"Registry bookmark reflects non-removed state: {shared items: %@, local instances: %@} for a set which is no longer available: %@", v59, v65, value2];
           v86 = v60;
           v61 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v86 forKeys:&v85 count:1];
           v54 = [v71 errorWithDomain:@"com.apple.CascadeSets.Set" code:2 userInfo:v61];
@@ -513,7 +513,7 @@ LABEL_29:
             _os_log_impl(&dword_1B6DB2000, v62, OS_LOG_TYPE_DEFAULT, "Inconsistency detected in registry: %@ error: %@", buf, 0x16u);
           }
 
-          CCSetError(v67, v54);
+          CCSetError(errorCopy, v54);
         }
 
 LABEL_43:
@@ -528,24 +528,24 @@ LABEL_43:
         v45 = MEMORY[0x1E696ABC0];
         v81 = *MEMORY[0x1E696A278];
         v46 = MEMORY[0x1E696AEC0];
-        v47 = [v21 value];
+        value3 = [v21 value];
         v48 = objc_opt_class();
         v49 = NSStringFromClass(v48);
         v50 = [v46 stringWithFormat:@"Unexpected bookmark value: %@ of bookmark: %@ key: %@", v49, v21, v19];
         v82 = v50;
         v51 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v82 forKeys:&v81 count:1];
         v52 = [v45 errorWithDomain:@"com.apple.CascadeSets.Set" code:2 userInfo:v51];
-        CCSetError(a4, v52);
+        CCSetError(error, v52);
 
 LABEL_44:
         v37 = 0;
-        v7 = v66;
+        allKeys = v66;
         v36 = obj;
         goto LABEL_45;
       }
 
-      v24 = __biome_log_for_category();
-      if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
+      value2 = __biome_log_for_category();
+      if (os_log_type_enabled(value2, OS_LOG_TYPE_DEBUG))
       {
         v28 = objc_opt_class();
         v29 = NSStringFromClass(v28);
@@ -553,13 +553,13 @@ LABEL_44:
         *v92 = v29;
         *&v92[8] = 2112;
         *v93 = v19;
-        _os_log_debug_impl(&dword_1B6DB2000, v24, OS_LOG_TYPE_DEBUG, "Skipping cleanup for serialized set bookmark (%@) key: %@", buf, 0x16u);
+        _os_log_debug_impl(&dword_1B6DB2000, value2, OS_LOG_TYPE_DEBUG, "Skipping cleanup for serialized set bookmark (%@) key: %@", buf, 0x16u);
       }
 
 LABEL_30:
     }
 
-    v7 = v66;
+    allKeys = v66;
     v70 = [obj countByEnumeratingWithState:&v73 objects:v87 count:16];
     if (v70)
     {
@@ -585,24 +585,24 @@ LABEL_45:
   return v37;
 }
 
-- (BOOL)clearAllBookmarksAndCommit:(id *)a3
+- (BOOL)clearAllBookmarksAndCommit:(id *)commit
 {
   [(CCSetChangeRegistry *)self rollbackAllBookmarkUpdates];
   [(CCSetChangeRegistry *)self clearAllBookmarks];
 
-  return [(CCSetChangeRegistry *)self commitAllBookmarkUpdates:a3];
+  return [(CCSetChangeRegistry *)self commitAllBookmarkUpdates:commit];
 }
 
-- (BOOL)enumerateAllBookmarks:(id *)a3 usingBlock:(id)a4
+- (BOOL)enumerateAllBookmarks:(id *)bookmarks usingBlock:(id)block
 {
   v37 = *MEMORY[0x1E69E9840];
-  v28 = a4;
-  v6 = [(BMFileBackedDictionary *)self->_log allKeys];
+  blockCopy = block;
+  allKeys = [(BMFileBackedDictionary *)self->_log allKeys];
   v7 = __biome_log_for_category();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    LODWORD(v35) = [v6 count];
+    LODWORD(v35) = [allKeys count];
     _os_log_impl(&dword_1B6DB2000, v7, OS_LOG_TYPE_DEFAULT, "Enumerating %u registry entries", buf, 8u);
   }
 
@@ -610,7 +610,7 @@ LABEL_45:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v8 = v6;
+  v8 = allKeys;
   v9 = [v8 countByEnumeratingWithState:&v30 objects:v36 count:16];
   if (!v9)
   {
@@ -620,7 +620,7 @@ LABEL_45:
   }
 
   v10 = v9;
-  v27 = a3;
+  bookmarksCopy = bookmarks;
   v11 = 0;
   v12 = *v31;
   while (2)
@@ -650,34 +650,34 @@ LABEL_45:
           [CCSetChangeRegistry enumerateAllBookmarks:v11 usingBlock:v24];
         }
 
-        CCSetError(v27, v11);
+        CCSetError(bookmarksCopy, v11);
         v23 = 0;
         goto LABEL_21;
       }
 
-      v19 = [v18 value];
+      value = [v18 value];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v21 = [v18 value];
-        v22 = [v21 set];
-        v28[2](v28, v22, v18);
+        value2 = [v18 value];
+        value3 = [value2 set];
+        blockCopy[2](blockCopy, value3, v18);
       }
 
       else
       {
-        v21 = __biome_log_for_category();
-        if (!os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+        value2 = __biome_log_for_category();
+        if (!os_log_type_enabled(value2, OS_LOG_TYPE_DEFAULT))
         {
           goto LABEL_14;
         }
 
-        v22 = [v18 value];
+        value3 = [v18 value];
         *buf = 138412290;
-        v35 = v22;
-        _os_log_impl(&dword_1B6DB2000, v21, OS_LOG_TYPE_DEFAULT, "Skipping bookmark: %@", buf, 0xCu);
+        v35 = value3;
+        _os_log_impl(&dword_1B6DB2000, value2, OS_LOG_TYPE_DEFAULT, "Skipping bookmark: %@", buf, 0xCu);
       }
 
 LABEL_14:
@@ -700,23 +700,23 @@ LABEL_21:
   return v23;
 }
 
-- (id)descriptionForBookmark:(id)a3
+- (id)descriptionForBookmark:(id)bookmark
 {
-  v3 = a3;
+  bookmarkCopy = bookmark;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 value];
+    value = [bookmarkCopy value];
 
-    v3 = v4;
+    bookmarkCopy = value;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v3 description];
+    bookmarkCopy = [bookmarkCopy description];
 LABEL_7:
-    v8 = v5;
+    v8 = bookmarkCopy;
     goto LABEL_9;
   }
 
@@ -725,7 +725,7 @@ LABEL_7:
   v7 = MEMORY[0x1E696AEC0];
   if (isKindOfClass)
   {
-    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Serialized set bookmark: %@", v3];
+    bookmarkCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Serialized set bookmark: %@", bookmarkCopy];
     goto LABEL_7;
   }
 
@@ -738,13 +738,13 @@ LABEL_9:
   return v8;
 }
 
-- (id)_unarchiveBookmark:(id)a3 error:(id *)a4
+- (id)_unarchiveBookmark:(id)bookmark error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AB10] bm_allowedClassesForSecureCodingBMBookmark];
+  bookmarkCopy = bookmark;
+  bm_allowedClassesForSecureCodingBMBookmark = [MEMORY[0x1E696AB10] bm_allowedClassesForSecureCodingBMBookmark];
   v13 = 0;
-  v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v7 fromData:v6 error:&v13];
+  v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:bm_allowedClassesForSecureCodingBMBookmark fromData:bookmarkCopy error:&v13];
   v9 = v13;
   if (!v8)
   {
@@ -752,15 +752,15 @@ LABEL_9:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v15 = v6;
+      v15 = bookmarkCopy;
       v16 = 2112;
-      v17 = self;
+      selfCopy = self;
       v18 = 2112;
       v19 = v9;
       _os_log_error_impl(&dword_1B6DB2000, v10, OS_LOG_TYPE_ERROR, "Failed to unarchive bookmark (%@) from registry: %@ error: %@", buf, 0x20u);
     }
 
-    CCSetError(a4, v9);
+    CCSetError(error, v9);
   }
 
   v11 = *MEMORY[0x1E69E9840];
@@ -768,12 +768,12 @@ LABEL_9:
   return v8;
 }
 
-- (id)_archiveBookmark:(id)a3 error:(id *)a4
+- (id)_archiveBookmark:(id)bookmark error:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  bookmarkCopy = bookmark;
   v12 = 0;
-  v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v12];
+  v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:bookmarkCopy requiringSecureCoding:1 error:&v12];
   v8 = v12;
   if (!v7)
   {
@@ -781,15 +781,15 @@ LABEL_9:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v14 = v6;
+      v14 = bookmarkCopy;
       v15 = 2112;
-      v16 = self;
+      selfCopy = self;
       v17 = 2112;
       v18 = v8;
       _os_log_error_impl(&dword_1B6DB2000, v9, OS_LOG_TYPE_ERROR, "Failed to archive bookmark (%@) to registry: %@ error: %@", buf, 0x20u);
     }
 
-    CCSetError(a4, v8);
+    CCSetError(error, v8);
   }
 
   v10 = *MEMORY[0x1E69E9840];

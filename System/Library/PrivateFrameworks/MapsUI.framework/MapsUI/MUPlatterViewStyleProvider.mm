@@ -1,6 +1,6 @@
 @interface MUPlatterViewStyleProvider
 - (UIColor)fillColor;
-- (id)visualEffectForTraitCollection:(id)a3;
+- (id)visualEffectForTraitCollection:(id)collection;
 @end
 
 @implementation MUPlatterViewStyleProvider
@@ -21,9 +21,9 @@
   return v2;
 }
 
-- (id)visualEffectForTraitCollection:(id)a3
+- (id)visualEffectForTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   if ([(MUPlatterViewStyleProvider *)self backgroundStyle]== 1)
   {
     v5 = [MEMORY[0x1E69DC730] effectWithStyle:_MKBlurEffectStyleForTraitCollection()];

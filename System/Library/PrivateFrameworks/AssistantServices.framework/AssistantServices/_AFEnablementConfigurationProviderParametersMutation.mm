@@ -1,7 +1,7 @@
 @interface _AFEnablementConfigurationProviderParametersMutation
 - (BOOL)getNewUser;
 - (BOOL)getRecognitionLanguageWithMultipleOutputVoicesExists;
-- (_AFEnablementConfigurationProviderParametersMutation)initWithBase:(id)a3;
+- (_AFEnablementConfigurationProviderParametersMutation)initWithBase:(id)base;
 - (id)getDateEndedResolvingExperiment;
 - (id)getDateEndedResolvingUserStatus;
 - (id)getDateStartedResolvingExperiment;
@@ -32,120 +32,120 @@
 {
   if ((*&self->_mutationFlags & 0x400) != 0)
   {
-    v2 = self->_outputVoiceCountForRecognitionLanguage;
+    outputVoiceCountForRecognitionLanguage = self->_outputVoiceCountForRecognitionLanguage;
   }
 
   else
   {
-    v2 = [(AFEnablementConfigurationProviderParameters *)self->_base outputVoiceCountForRecognitionLanguage];
+    outputVoiceCountForRecognitionLanguage = [(AFEnablementConfigurationProviderParameters *)self->_base outputVoiceCountForRecognitionLanguage];
   }
 
-  return v2;
+  return outputVoiceCountForRecognitionLanguage;
 }
 
 - (id)getDateEndedResolvingExperiment
 {
   if ((*&self->_mutationFlags & 0x200) != 0)
   {
-    v2 = self->_dateEndedResolvingExperiment;
+    dateEndedResolvingExperiment = self->_dateEndedResolvingExperiment;
   }
 
   else
   {
-    v2 = [(AFEnablementConfigurationProviderParameters *)self->_base dateEndedResolvingExperiment];
+    dateEndedResolvingExperiment = [(AFEnablementConfigurationProviderParameters *)self->_base dateEndedResolvingExperiment];
   }
 
-  return v2;
+  return dateEndedResolvingExperiment;
 }
 
 - (id)getDateStartedResolvingExperiment
 {
   if ((*&self->_mutationFlags & 0x100) != 0)
   {
-    v2 = self->_dateStartedResolvingExperiment;
+    dateStartedResolvingExperiment = self->_dateStartedResolvingExperiment;
   }
 
   else
   {
-    v2 = [(AFEnablementConfigurationProviderParameters *)self->_base dateStartedResolvingExperiment];
+    dateStartedResolvingExperiment = [(AFEnablementConfigurationProviderParameters *)self->_base dateStartedResolvingExperiment];
   }
 
-  return v2;
+  return dateStartedResolvingExperiment;
 }
 
 - (id)getExperimentFetchError
 {
   if ((*&self->_mutationFlags & 0x80) != 0)
   {
-    v2 = self->_experimentFetchError;
+    experimentFetchError = self->_experimentFetchError;
   }
 
   else
   {
-    v2 = [(AFEnablementConfigurationProviderParameters *)self->_base experimentFetchError];
+    experimentFetchError = [(AFEnablementConfigurationProviderParameters *)self->_base experimentFetchError];
   }
 
-  return v2;
+  return experimentFetchError;
 }
 
 - (id)getExperiment
 {
   if ((*&self->_mutationFlags & 0x40) != 0)
   {
-    v2 = self->_experiment;
+    experiment = self->_experiment;
   }
 
   else
   {
-    v2 = [(AFEnablementConfigurationProviderParameters *)self->_base experiment];
+    experiment = [(AFEnablementConfigurationProviderParameters *)self->_base experiment];
   }
 
-  return v2;
+  return experiment;
 }
 
 - (id)getDateEndedResolvingUserStatus
 {
   if ((*&self->_mutationFlags & 0x20) != 0)
   {
-    v2 = self->_dateEndedResolvingUserStatus;
+    dateEndedResolvingUserStatus = self->_dateEndedResolvingUserStatus;
   }
 
   else
   {
-    v2 = [(AFEnablementConfigurationProviderParameters *)self->_base dateEndedResolvingUserStatus];
+    dateEndedResolvingUserStatus = [(AFEnablementConfigurationProviderParameters *)self->_base dateEndedResolvingUserStatus];
   }
 
-  return v2;
+  return dateEndedResolvingUserStatus;
 }
 
 - (id)getDateStartedResolvingUserStatus
 {
   if ((*&self->_mutationFlags & 0x10) != 0)
   {
-    v2 = self->_dateStartedResolvingUserStatus;
+    dateStartedResolvingUserStatus = self->_dateStartedResolvingUserStatus;
   }
 
   else
   {
-    v2 = [(AFEnablementConfigurationProviderParameters *)self->_base dateStartedResolvingUserStatus];
+    dateStartedResolvingUserStatus = [(AFEnablementConfigurationProviderParameters *)self->_base dateStartedResolvingUserStatus];
   }
 
-  return v2;
+  return dateStartedResolvingUserStatus;
 }
 
 - (id)getUserStatusFetchError
 {
   if ((*&self->_mutationFlags & 8) != 0)
   {
-    v2 = self->_userStatusFetchError;
+    userStatusFetchError = self->_userStatusFetchError;
   }
 
   else
   {
-    v2 = [(AFEnablementConfigurationProviderParameters *)self->_base userStatusFetchError];
+    userStatusFetchError = [(AFEnablementConfigurationProviderParameters *)self->_base userStatusFetchError];
   }
 
-  return v2;
+  return userStatusFetchError;
 }
 
 - (BOOL)getNewUser
@@ -174,16 +174,16 @@
   }
 }
 
-- (_AFEnablementConfigurationProviderParametersMutation)initWithBase:(id)a3
+- (_AFEnablementConfigurationProviderParametersMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFEnablementConfigurationProviderParametersMutation;
   v6 = [(_AFEnablementConfigurationProviderParametersMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

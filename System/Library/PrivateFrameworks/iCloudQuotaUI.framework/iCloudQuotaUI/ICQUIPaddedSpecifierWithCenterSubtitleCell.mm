@@ -1,19 +1,19 @@
 @interface ICQUIPaddedSpecifierWithCenterSubtitleCell
-+ (_NSRange)_rangeForLinkFromSpecifier:(id)a3;
-+ (id)_attributedStringFromSpecifier:(id)a3;
++ (_NSRange)_rangeForLinkFromSpecifier:(id)specifier;
++ (id)_attributedStringFromSpecifier:(id)specifier;
 + (id)_subTitleAttributes;
-- (ICQUIPaddedSpecifierWithCenterSubtitleCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (ICQUIPaddedSpecifierWithCenterSubtitleCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_setupViews;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation ICQUIPaddedSpecifierWithCenterSubtitleCell
 
-- (ICQUIPaddedSpecifierWithCenterSubtitleCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (ICQUIPaddedSpecifierWithCenterSubtitleCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = ICQUIPaddedSpecifierWithCenterSubtitleCell;
-  v4 = [(PSTableCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PSTableCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -30,192 +30,192 @@
   v3 = objc_alloc_init(MEMORY[0x277D755E8]);
   [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self setHeaderImageView:v3];
 
-  v4 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerImageView];
-  [v4 setContentMode:1];
+  headerImageView = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerImageView];
+  [headerImageView setContentMode:1];
 
-  v5 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerImageView];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  headerImageView2 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerImageView];
+  [headerImageView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerImageView];
+  headerImageView3 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerImageView];
   LODWORD(v7) = 1132068864;
-  [v6 setContentCompressionResistancePriority:1 forAxis:v7];
+  [headerImageView3 setContentCompressionResistancePriority:1 forAxis:v7];
 
   v8 = objc_alloc_init(MEMORY[0x277D756B8]);
   [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self setHeaderTitleLabel:v8];
 
-  v9 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerTitleLabel];
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+  headerTitleLabel = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerTitleLabel];
+  [headerTitleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v10 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerTitleLabel];
+  headerTitleLabel2 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerTitleLabel];
   v11 = [MEMORY[0x277D74300] _preferredFontForTextStyle:*MEMORY[0x277D76A20] weight:*MEMORY[0x277D743F8]];
-  [v10 setFont:v11];
+  [headerTitleLabel2 setFont:v11];
 
-  v12 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerTitleLabel];
-  v13 = [MEMORY[0x277D75348] labelColor];
-  [v12 setTextColor:v13];
+  headerTitleLabel3 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerTitleLabel];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  [headerTitleLabel3 setTextColor:labelColor];
 
-  v14 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerTitleLabel];
-  [v14 setNumberOfLines:5];
+  headerTitleLabel4 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerTitleLabel];
+  [headerTitleLabel4 setNumberOfLines:5];
 
-  v15 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerTitleLabel];
-  [v15 setTextAlignment:1];
+  headerTitleLabel5 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerTitleLabel];
+  [headerTitleLabel5 setTextAlignment:1];
 
-  v16 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerTitleLabel];
+  headerTitleLabel6 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerTitleLabel];
   LODWORD(v17) = 1148846080;
-  [v16 setContentCompressionResistancePriority:1 forAxis:v17];
+  [headerTitleLabel6 setContentCompressionResistancePriority:1 forAxis:v17];
 
   v18 = objc_alloc_init(MEMORY[0x277D75C40]);
   [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self setHeaderSubTitleTextView:v18];
 
-  v19 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerSubTitleTextView];
-  [v19 setTranslatesAutoresizingMaskIntoConstraints:0];
+  headerSubTitleTextView = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerSubTitleTextView];
+  [headerSubTitleTextView setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v20 = +[ICQUIPaddedSpecifierWithCenterSubtitleCell _subTitleFont];
-  v21 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerSubTitleTextView];
-  [v21 setFont:v20];
+  headerSubTitleTextView2 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerSubTitleTextView];
+  [headerSubTitleTextView2 setFont:v20];
 
   v22 = *MEMORY[0x277D768C8];
   v23 = *(MEMORY[0x277D768C8] + 8);
   v24 = *(MEMORY[0x277D768C8] + 16);
   v25 = *(MEMORY[0x277D768C8] + 24);
-  v26 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerSubTitleTextView];
-  [v26 setLayoutMargins:{v22, v23, v24, v25}];
+  headerSubTitleTextView3 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerSubTitleTextView];
+  [headerSubTitleTextView3 setLayoutMargins:{v22, v23, v24, v25}];
 
-  v27 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerSubTitleTextView];
-  [v27 setTextContainerInset:{v22, v23, v24, v25}];
+  headerSubTitleTextView4 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerSubTitleTextView];
+  [headerSubTitleTextView4 setTextContainerInset:{v22, v23, v24, v25}];
 
-  v28 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerSubTitleTextView];
-  [v28 setTextAlignment:1];
+  headerSubTitleTextView5 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerSubTitleTextView];
+  [headerSubTitleTextView5 setTextAlignment:1];
 
-  v29 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerSubTitleTextView];
-  [v29 setScrollEnabled:0];
+  headerSubTitleTextView6 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerSubTitleTextView];
+  [headerSubTitleTextView6 setScrollEnabled:0];
 
-  v30 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerSubTitleTextView];
-  [v30 setSelectable:1];
+  headerSubTitleTextView7 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerSubTitleTextView];
+  [headerSubTitleTextView7 setSelectable:1];
 
-  v31 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerSubTitleTextView];
-  [v31 setEditable:0];
+  headerSubTitleTextView8 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerSubTitleTextView];
+  [headerSubTitleTextView8 setEditable:0];
 
-  v32 = [MEMORY[0x277D75348] clearColor];
-  v33 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerSubTitleTextView];
-  [v33 setBackgroundColor:v32];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  headerSubTitleTextView9 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerSubTitleTextView];
+  [headerSubTitleTextView9 setBackgroundColor:clearColor];
 
-  v34 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self contentView];
-  v35 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerImageView];
-  [v34 addSubview:v35];
+  contentView = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self contentView];
+  headerImageView4 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerImageView];
+  [contentView addSubview:headerImageView4];
 
-  v36 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self contentView];
-  v37 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerTitleLabel];
-  [v36 addSubview:v37];
+  contentView2 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self contentView];
+  headerTitleLabel7 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerTitleLabel];
+  [contentView2 addSubview:headerTitleLabel7];
 
-  v38 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self contentView];
-  v39 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerSubTitleTextView];
-  [v38 addSubview:v39];
+  contentView3 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self contentView];
+  headerSubTitleTextView10 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerSubTitleTextView];
+  [contentView3 addSubview:headerSubTitleTextView10];
 
   v75 = MEMORY[0x277CCAAD0];
-  v97 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerImageView];
-  v96 = [v97 heightAnchor];
-  v95 = [v96 constraintEqualToConstant:56.0];
+  headerImageView5 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerImageView];
+  heightAnchor = [headerImageView5 heightAnchor];
+  v95 = [heightAnchor constraintEqualToConstant:56.0];
   v98[0] = v95;
-  v94 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerImageView];
-  v93 = [v94 widthAnchor];
-  v92 = [v93 constraintEqualToConstant:56.0];
+  headerImageView6 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerImageView];
+  widthAnchor = [headerImageView6 widthAnchor];
+  v92 = [widthAnchor constraintEqualToConstant:56.0];
   v98[1] = v92;
-  v91 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerImageView];
-  v89 = [v91 leadingAnchor];
-  v90 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self contentView];
-  v88 = [v90 leadingAnchor];
-  v87 = [v89 constraintEqualToAnchor:v88 constant:24.0];
+  headerImageView7 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerImageView];
+  leadingAnchor = [headerImageView7 leadingAnchor];
+  contentView4 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self contentView];
+  leadingAnchor2 = [contentView4 leadingAnchor];
+  v87 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:24.0];
   v98[2] = v87;
-  v86 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerImageView];
-  v84 = [v86 centerXAnchor];
-  v85 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self contentView];
-  v83 = [v85 centerXAnchor];
-  v82 = [v84 constraintEqualToAnchor:v83];
+  headerImageView8 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerImageView];
+  centerXAnchor = [headerImageView8 centerXAnchor];
+  contentView5 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self contentView];
+  centerXAnchor2 = [contentView5 centerXAnchor];
+  v82 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v98[3] = v82;
-  v81 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerImageView];
-  v79 = [v81 topAnchor];
-  v80 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self contentView];
-  v78 = [v80 topAnchor];
-  v77 = [v79 constraintEqualToAnchor:v78 constant:32.0];
+  headerImageView9 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerImageView];
+  topAnchor = [headerImageView9 topAnchor];
+  contentView6 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self contentView];
+  topAnchor2 = [contentView6 topAnchor];
+  v77 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:32.0];
   v98[4] = v77;
-  v76 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerImageView];
-  v73 = [v76 bottomAnchor];
-  v74 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerTitleLabel];
-  v72 = [v74 topAnchor];
-  v71 = [v73 constraintEqualToAnchor:v72 constant:-16.0];
+  headerImageView10 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerImageView];
+  bottomAnchor = [headerImageView10 bottomAnchor];
+  headerTitleLabel8 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerTitleLabel];
+  topAnchor3 = [headerTitleLabel8 topAnchor];
+  v71 = [bottomAnchor constraintEqualToAnchor:topAnchor3 constant:-16.0];
   v98[5] = v71;
-  v70 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerTitleLabel];
-  v68 = [v70 leadingAnchor];
-  v69 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self contentView];
-  v67 = [v69 leadingAnchor];
-  v66 = [v68 constraintEqualToAnchor:v67 constant:24.0];
+  headerTitleLabel9 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerTitleLabel];
+  leadingAnchor3 = [headerTitleLabel9 leadingAnchor];
+  contentView7 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self contentView];
+  leadingAnchor4 = [contentView7 leadingAnchor];
+  v66 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:24.0];
   v98[6] = v66;
-  v65 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerTitleLabel];
-  v63 = [v65 centerXAnchor];
-  v64 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self contentView];
-  v62 = [v64 centerXAnchor];
-  v61 = [v63 constraintEqualToAnchor:v62];
+  headerTitleLabel10 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerTitleLabel];
+  centerXAnchor3 = [headerTitleLabel10 centerXAnchor];
+  contentView8 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self contentView];
+  centerXAnchor4 = [contentView8 centerXAnchor];
+  v61 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v98[7] = v61;
-  v60 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerTitleLabel];
-  v58 = [v60 bottomAnchor];
-  v59 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerSubTitleTextView];
-  v57 = [v59 topAnchor];
-  v56 = [v58 constraintEqualToAnchor:v57 constant:-8.0];
+  headerTitleLabel11 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerTitleLabel];
+  bottomAnchor2 = [headerTitleLabel11 bottomAnchor];
+  headerSubTitleTextView11 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerSubTitleTextView];
+  topAnchor4 = [headerSubTitleTextView11 topAnchor];
+  v56 = [bottomAnchor2 constraintEqualToAnchor:topAnchor4 constant:-8.0];
   v98[8] = v56;
-  v55 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerSubTitleTextView];
-  v53 = [v55 leadingAnchor];
-  v54 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self contentView];
-  v52 = [v54 leadingAnchor];
-  v51 = [v53 constraintEqualToAnchor:v52 constant:24.0];
+  headerSubTitleTextView12 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerSubTitleTextView];
+  leadingAnchor5 = [headerSubTitleTextView12 leadingAnchor];
+  contentView9 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self contentView];
+  leadingAnchor6 = [contentView9 leadingAnchor];
+  v51 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:24.0];
   v98[9] = v51;
-  v50 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerSubTitleTextView];
-  v40 = [v50 centerXAnchor];
-  v41 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self contentView];
-  v42 = [v41 centerXAnchor];
-  v43 = [v40 constraintEqualToAnchor:v42];
+  headerSubTitleTextView13 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerSubTitleTextView];
+  centerXAnchor5 = [headerSubTitleTextView13 centerXAnchor];
+  contentView10 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self contentView];
+  centerXAnchor6 = [contentView10 centerXAnchor];
+  v43 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
   v98[10] = v43;
-  v44 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerSubTitleTextView];
-  v45 = [v44 bottomAnchor];
-  v46 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self contentView];
-  v47 = [v46 bottomAnchor];
-  v48 = [v45 constraintEqualToAnchor:v47 constant:-12.0];
+  headerSubTitleTextView14 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerSubTitleTextView];
+  bottomAnchor3 = [headerSubTitleTextView14 bottomAnchor];
+  contentView11 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self contentView];
+  bottomAnchor4 = [contentView11 bottomAnchor];
+  v48 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-12.0];
   v98[11] = v48;
   v49 = [MEMORY[0x277CBEA60] arrayWithObjects:v98 count:12];
   [v75 activateConstraints:v49];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v15.receiver = self;
   v15.super_class = ICQUIPaddedSpecifierWithCenterSubtitleCell;
-  [(PSTableCell *)&v15 refreshCellContentsWithSpecifier:v4];
-  v5 = [(PSTableCell *)self titleLabel];
-  [v5 setText:&stru_28844FC60];
+  [(PSTableCell *)&v15 refreshCellContentsWithSpecifier:specifierCopy];
+  titleLabel = [(PSTableCell *)self titleLabel];
+  [titleLabel setText:&stru_28844FC60];
 
-  v6 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self imageView];
-  [v6 setImage:0];
+  imageView = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self imageView];
+  [imageView setImage:0];
 
-  v7 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerImageView];
-  v8 = [v4 propertyForKey:*MEMORY[0x277D3FFC0]];
-  [v7 setImage:v8];
+  headerImageView = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerImageView];
+  v8 = [specifierCopy propertyForKey:*MEMORY[0x277D3FFC0]];
+  [headerImageView setImage:v8];
 
-  v9 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerTitleLabel];
-  v10 = [v4 propertyForKey:*MEMORY[0x277D40170]];
-  [v9 setText:v10];
+  headerTitleLabel = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerTitleLabel];
+  v10 = [specifierCopy propertyForKey:*MEMORY[0x277D40170]];
+  [headerTitleLabel setText:v10];
 
-  v11 = [ICQUIPaddedSpecifierWithCenterSubtitleCell _attributedStringFromSpecifier:v4];
-  v12 = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerSubTitleTextView];
-  v13 = v12;
+  v11 = [ICQUIPaddedSpecifierWithCenterSubtitleCell _attributedStringFromSpecifier:specifierCopy];
+  headerSubTitleTextView = [(ICQUIPaddedSpecifierWithCenterSubtitleCell *)self headerSubTitleTextView];
+  v13 = headerSubTitleTextView;
   if (v11)
   {
-    [v12 setAttributedText:v11];
+    [headerSubTitleTextView setAttributedText:v11];
   }
 
   else
   {
-    v14 = [v4 propertyForKey:*MEMORY[0x277D40160]];
+    v14 = [specifierCopy propertyForKey:*MEMORY[0x277D40160]];
     [v13 setText:v14];
   }
 
@@ -228,22 +228,22 @@
   v3 = objc_alloc_init(MEMORY[0x277D74240]);
   [v3 setAlignment:1];
   v7[0] = *MEMORY[0x277D740A8];
-  v4 = [a1 _subTitleFont];
+  _subTitleFont = [self _subTitleFont];
   v7[1] = *MEMORY[0x277D74118];
-  v8[0] = v4;
+  v8[0] = _subTitleFont;
   v8[1] = v3;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:v7 count:2];
 
   return v5;
 }
 
-+ (_NSRange)_rangeForLinkFromSpecifier:(id)a3
++ (_NSRange)_rangeForLinkFromSpecifier:(id)specifier
 {
   v3 = *MEMORY[0x277D40160];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:v3];
-  v6 = [v4 objectForKeyedSubscript:ICQUILearnMoreTextKey];
-  v7 = [v4 objectForKeyedSubscript:ICQUILearnMoreLinkKey];
+  specifierCopy = specifier;
+  v5 = [specifierCopy objectForKeyedSubscript:v3];
+  v6 = [specifierCopy objectForKeyedSubscript:ICQUILearnMoreTextKey];
+  v7 = [specifierCopy objectForKeyedSubscript:ICQUILearnMoreLinkKey];
 
   if (v5)
   {
@@ -285,14 +285,14 @@
   return result;
 }
 
-+ (id)_attributedStringFromSpecifier:(id)a3
++ (id)_attributedStringFromSpecifier:(id)specifier
 {
   v29[1] = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277D40160];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:v4];
-  v7 = [v5 objectForKeyedSubscript:ICQUILearnMoreTextKey];
-  v8 = [v5 objectForKeyedSubscript:ICQUILearnMoreLinkKey];
+  specifierCopy = specifier;
+  v6 = [specifierCopy objectForKeyedSubscript:v4];
+  v7 = [specifierCopy objectForKeyedSubscript:ICQUILearnMoreTextKey];
+  v8 = [specifierCopy objectForKeyedSubscript:ICQUILearnMoreLinkKey];
 
   if (v6)
   {
@@ -318,14 +318,14 @@
       v23 = [v12 objectAtIndexedSubscript:1];
       v28 = *MEMORY[0x277D740C0];
       v13 = v28;
-      v14 = [MEMORY[0x277D75348] labelColor];
-      v29[0] = v14;
+      labelColor = [MEMORY[0x277D75348] labelColor];
+      v29[0] = labelColor;
       v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:&v28 count:1];
 
       v15 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v25 attributes:v24];
       v26[0] = v13;
-      v16 = [MEMORY[0x277D75348] systemBlueColor];
-      v27[0] = v16;
+      systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+      v27[0] = systemBlueColor;
       v26[1] = *MEMORY[0x277D740E8];
       v17 = [MEMORY[0x277CBEBC0] URLWithString:v8];
       v27[1] = v17;
@@ -335,8 +335,8 @@
       [v15 appendAttributedString:v19];
       v20 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v23];
       [v15 appendAttributedString:v20];
-      v21 = [a1 _subTitleAttributes];
-      [v15 addAttributes:v21 range:{0, objc_msgSend(v15, "length")}];
+      _subTitleAttributes = [self _subTitleAttributes];
+      [v15 addAttributes:_subTitleAttributes range:{0, objc_msgSend(v15, "length")}];
 
       v11 = [v15 copy];
     }

@@ -8,8 +8,8 @@
 - (id)_predicateToFetchDeferredAssets
 {
   v2 = MEMORY[0x1E696AE18];
-  v3 = [(PLBackgroundJobDeferredRenderDerivativesLowPriorityWorker *)self deferredProcessingStatesHandled];
-  v4 = [v2 predicateWithFormat:@"%K in %@", @"deferredProcessingNeeded", v3];
+  deferredProcessingStatesHandled = [(PLBackgroundJobDeferredRenderDerivativesLowPriorityWorker *)self deferredProcessingStatesHandled];
+  v4 = [v2 predicateWithFormat:@"%K in %@", @"deferredProcessingNeeded", deferredProcessingStatesHandled];
 
   return v4;
 }

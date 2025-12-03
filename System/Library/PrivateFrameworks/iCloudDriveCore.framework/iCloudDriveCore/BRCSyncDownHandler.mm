@@ -1,23 +1,23 @@
 @interface BRCSyncDownHandler
-- (BRCSyncDownHandler)initWithServerZone:(id)a3 applyScheduler:(id)a4;
-- (void)saveInitialServerZoneData:(id)a3 clientChangeTokenData:(id)a4;
+- (BRCSyncDownHandler)initWithServerZone:(id)zone applyScheduler:(id)scheduler;
+- (void)saveInitialServerZoneData:(id)data clientChangeTokenData:(id)tokenData;
 - (void)zoneIsSyncingForTheFirstTime;
 @end
 
 @implementation BRCSyncDownHandler
 
-- (BRCSyncDownHandler)initWithServerZone:(id)a3 applyScheduler:(id)a4
+- (BRCSyncDownHandler)initWithServerZone:(id)zone applyScheduler:(id)scheduler
 {
-  v7 = a3;
-  v8 = a4;
+  zoneCopy = zone;
+  schedulerCopy = scheduler;
   v12.receiver = self;
   v12.super_class = BRCSyncDownHandler;
   v9 = [(BRCSyncDownHandler *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_applyScheduler, a4);
-    objc_storeStrong(&v10->_serverZone, a3);
+    objc_storeStrong(&v9->_applyScheduler, scheduler);
+    objc_storeStrong(&v10->_serverZone, zone);
   }
 
   return v10;
@@ -27,15 +27,15 @@
 {
   LOBYTE(v6) = 0;
   v3 = [(BRCServerZone *)self->_serverZone didSyncDownRequestID:0 serverChangeToken:0 editedRecords:0 deletedRecordIDs:0 deletedShareRecordIDs:0 allocRankZones:0 caughtUp:v6 pendingChanges:0];
-  v4 = [(BRCServerZone *)self->_serverZone clientZone];
-  v5 = [v4 dbFacade];
+  clientZone = [(BRCServerZone *)self->_serverZone clientZone];
+  dbFacade = [clientZone dbFacade];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__BRCSyncDownHandler_zoneIsSyncingForTheFirstTime__block_invoke;
   v7[3] = &unk_2784FF058;
   v7[4] = self;
   v7[5] = v3;
-  [v5 performWithFlags:41 action:v7];
+  [dbFacade performWithFlags:41 action:v7];
 }
 
 uint64_t __50__BRCSyncDownHandler_zoneIsSyncingForTheFirstTime__block_invoke(uint64_t a1)
@@ -47,20 +47,20 @@ uint64_t __50__BRCSyncDownHandler_zoneIsSyncingForTheFirstTime__block_invoke(uin
   return 1;
 }
 
-- (void)saveInitialServerZoneData:(id)a3 clientChangeTokenData:(id)a4
+- (void)saveInitialServerZoneData:(id)data clientChangeTokenData:(id)tokenData
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  tokenDataCopy = tokenData;
   v8 = brc_bread_crumbs();
   v9 = brc_default_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     serverZone = self->_serverZone;
     *buf = 138413058;
-    v22 = v6;
+    v22 = dataCopy;
     v23 = 2112;
-    v24 = v7;
+    v24 = tokenDataCopy;
     v25 = 2112;
     v26 = serverZone;
     v27 = 2112;
@@ -68,10 +68,10 @@ uint64_t __50__BRCSyncDownHandler_zoneIsSyncingForTheFirstTime__block_invoke(uin
     _os_log_debug_impl(&dword_223E7A000, v9, OS_LOG_TYPE_DEBUG, "[DEBUG] Fetched initial server zone tokens %@ and %@ for %@%@", buf, 0x2Au);
   }
 
-  v10 = [(BRCServerZone *)v7 bytes];
-  if (v10)
+  bytes = [(BRCServerZone *)tokenDataCopy bytes];
+  if (bytes)
   {
-    v11 = *v10;
+    v11 = *bytes;
   }
 
   else
@@ -87,25 +87,25 @@ uint64_t __50__BRCSyncDownHandler_zoneIsSyncingForTheFirstTime__block_invoke(uin
     *buf = 138413058;
     v22 = v18;
     v23 = 2112;
-    v24 = v6;
+    v24 = dataCopy;
     v25 = 2112;
-    v26 = v7;
+    v26 = tokenDataCopy;
     v27 = 2112;
     v28 = v12;
     _os_log_debug_impl(&dword_223E7A000, v13, OS_LOG_TYPE_DEBUG, "[DEBUG] Saving initial zone data of %@ with server token %@ client token %@%@", buf, 0x2Au);
   }
 
   LOBYTE(v19) = 0;
-  [(BRCServerZone *)self->_serverZone didSyncDownRequestID:v11 serverChangeToken:v6 editedRecords:0 deletedRecordIDs:0 deletedShareRecordIDs:0 allocRankZones:0 caughtUp:v19 pendingChanges:0];
-  v14 = [(BRCServerZone *)self->_serverZone clientZone];
-  v15 = [v14 dbFacade];
+  [(BRCServerZone *)self->_serverZone didSyncDownRequestID:v11 serverChangeToken:dataCopy editedRecords:0 deletedRecordIDs:0 deletedShareRecordIDs:0 allocRankZones:0 caughtUp:v19 pendingChanges:0];
+  clientZone = [(BRCServerZone *)self->_serverZone clientZone];
+  dbFacade = [clientZone dbFacade];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __70__BRCSyncDownHandler_saveInitialServerZoneData_clientChangeTokenData___block_invoke;
   v20[3] = &unk_2784FF058;
   v20[4] = self;
   v20[5] = v11;
-  [v15 performWithFlags:41 action:v20];
+  [dbFacade performWithFlags:41 action:v20];
 
   v16 = *MEMORY[0x277D85DE8];
 }

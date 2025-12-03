@@ -1,29 +1,29 @@
 @interface OADVectorArcPathElement
 - (OADAdjustPoint)endVector;
 - (OADAdjustPoint)startVector;
-- (OADVectorArcPathElement)initWithLeft:(OADAdjustCoord)a3 top:(OADAdjustCoord)a4 right:(OADAdjustCoord)a5 bottom:(OADAdjustCoord)a6 startVector:(OADAdjustPoint)a7 endVector:(OADAdjustPoint)a8 clockwise:(BOOL)a9 connectedToPrevious:(BOOL)a10;
+- (OADVectorArcPathElement)initWithLeft:(OADAdjustCoord)left top:(OADAdjustCoord)top right:(OADAdjustCoord)right bottom:(OADAdjustCoord)bottom startVector:(OADAdjustPoint)vector endVector:(OADAdjustPoint)endVector clockwise:(BOOL)clockwise connectedToPrevious:(BOOL)self0;
 @end
 
 @implementation OADVectorArcPathElement
 
-- (OADVectorArcPathElement)initWithLeft:(OADAdjustCoord)a3 top:(OADAdjustCoord)a4 right:(OADAdjustCoord)a5 bottom:(OADAdjustCoord)a6 startVector:(OADAdjustPoint)a7 endVector:(OADAdjustPoint)a8 clockwise:(BOOL)a9 connectedToPrevious:(BOOL)a10
+- (OADVectorArcPathElement)initWithLeft:(OADAdjustCoord)left top:(OADAdjustCoord)top right:(OADAdjustCoord)right bottom:(OADAdjustCoord)bottom startVector:(OADAdjustPoint)vector endVector:(OADAdjustPoint)endVector clockwise:(BOOL)clockwise connectedToPrevious:(BOOL)self0
 {
-  y = a7.y;
-  x = a7.x;
+  y = vector.y;
+  x = vector.x;
   v17.receiver = self;
   v17.super_class = OADVectorArcPathElement;
   result = [(OADVectorArcPathElement *)&v17 init];
   if (result)
   {
-    result->mLeft = a3;
-    result->mTop = a4;
-    result->mRight = a5;
-    result->mBottom = a6;
+    result->mLeft = left;
+    result->mTop = top;
+    result->mRight = right;
+    result->mBottom = bottom;
     result->mStartVector.x = x;
     result->mStartVector.y = y;
-    result->mEndVector = a8;
-    result->mClockwise = a9;
-    result->mConnectedToPrevious = a10;
+    result->mEndVector = endVector;
+    result->mClockwise = clockwise;
+    result->mConnectedToPrevious = previous;
   }
 
   return result;

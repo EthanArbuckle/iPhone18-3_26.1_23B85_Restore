@@ -1,56 +1,56 @@
 @interface PARCloudSubscriptionChannel
-- (PARCloudSubscriptionChannel)initWithChannelItem:(id)a3;
-- (PARCloudSubscriptionChannel)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PARCloudSubscriptionChannel)initWithChannelItem:(id)item;
+- (PARCloudSubscriptionChannel)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PARCloudSubscriptionChannel
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PARCloudSubscriptionChannel *)self channelItem];
-  [v4 encodeObject:v5 forKey:@"channelItem"];
+  coderCopy = coder;
+  channelItem = [(PARCloudSubscriptionChannel *)self channelItem];
+  [coderCopy encodeObject:channelItem forKey:@"channelItem"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = PARCloudSubscriptionChannel;
   v5 = [(PARSubscriptionChannel *)&v9 copyWithZone:?];
-  v6 = [(PARCloudSubscriptionChannel *)self channelItem];
-  v7 = [v6 copyWithZone:a3];
+  channelItem = [(PARCloudSubscriptionChannel *)self channelItem];
+  v7 = [channelItem copyWithZone:zone];
   [v5 setChannelItem:v7];
 
   return v5;
 }
 
-- (PARCloudSubscriptionChannel)initWithCoder:(id)a3
+- (PARCloudSubscriptionChannel)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = PARCloudSubscriptionChannel;
   v5 = [(PARCloudSubscriptionChannel *)&v8 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"channelItem"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"channelItem"];
     [(PARCloudSubscriptionChannel *)v5 setChannelItem:v6];
   }
 
   return v5;
 }
 
-- (PARCloudSubscriptionChannel)initWithChannelItem:(id)a3
+- (PARCloudSubscriptionChannel)initWithChannelItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v8.receiver = self;
   v8.super_class = PARCloudSubscriptionChannel;
   v5 = [(PARCloudSubscriptionChannel *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(PARCloudSubscriptionChannel *)v5 setChannelItem:v4];
+    [(PARCloudSubscriptionChannel *)v5 setChannelItem:itemCopy];
   }
 
   return v6;

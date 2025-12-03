@@ -1,78 +1,78 @@
 @interface CNDonationValue
-+ (id)donationValueWithEmailAddress:(id)a3 label:(id)a4 origin:(id)a5;
-+ (id)donationValueWithImageData:(id)a3 origin:(id)a4;
-+ (id)donationValueWithNameComponents:(id)a3 origin:(id)a4;
-+ (id)donationValueWithPhoneNumber:(id)a3 label:(id)a4 origin:(id)a5;
-+ (id)donationValueWithPostalAddress:(id)a3 style:(int64_t)a4 label:(id)a5 origin:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (CNDonationValue)initWithCoder:(id)a3;
-- (CNDonationValue)initWithOrigin:(id)a3;
-- (CNDonationValue)initWithPropertyListRepresentation:(id)a3;
-- (id)copyWithNewExpirationDate:(id)a3;
++ (id)donationValueWithEmailAddress:(id)address label:(id)label origin:(id)origin;
++ (id)donationValueWithImageData:(id)data origin:(id)origin;
++ (id)donationValueWithNameComponents:(id)components origin:(id)origin;
++ (id)donationValueWithPhoneNumber:(id)number label:(id)label origin:(id)origin;
++ (id)donationValueWithPostalAddress:(id)address style:(int64_t)style label:(id)label origin:(id)origin;
+- (BOOL)isEqual:(id)equal;
+- (CNDonationValue)initWithCoder:(id)coder;
+- (CNDonationValue)initWithOrigin:(id)origin;
+- (CNDonationValue)initWithPropertyListRepresentation:(id)representation;
+- (id)copyWithNewExpirationDate:(id)date;
 - (id)propertyListRepresentation;
 - (unint64_t)hash;
-- (void)acceptDonationValueVisitor:(id)a3;
+- (void)acceptDonationValueVisitor:(id)visitor;
 @end
 
 @implementation CNDonationValue
 
-+ (id)donationValueWithNameComponents:(id)a3 origin:(id)a4
++ (id)donationValueWithNameComponents:(id)components origin:(id)origin
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[_CNNameComponentsDonationValue alloc] initWithNameComponents:v6 origin:v5];
+  originCopy = origin;
+  componentsCopy = components;
+  v7 = [[_CNNameComponentsDonationValue alloc] initWithNameComponents:componentsCopy origin:originCopy];
 
   return v7;
 }
 
-+ (id)donationValueWithEmailAddress:(id)a3 label:(id)a4 origin:(id)a5
++ (id)donationValueWithEmailAddress:(id)address label:(id)label origin:(id)origin
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[_CNEmailAddressDonationValue alloc] initWithEmailAddress:v9 label:v8 origin:v7];
+  originCopy = origin;
+  labelCopy = label;
+  addressCopy = address;
+  v10 = [[_CNEmailAddressDonationValue alloc] initWithEmailAddress:addressCopy label:labelCopy origin:originCopy];
 
   return v10;
 }
 
-+ (id)donationValueWithPhoneNumber:(id)a3 label:(id)a4 origin:(id)a5
++ (id)donationValueWithPhoneNumber:(id)number label:(id)label origin:(id)origin
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[_CNPhoneNumberDonationValue alloc] initWithPhoneNumber:v9 label:v8 origin:v7];
+  originCopy = origin;
+  labelCopy = label;
+  numberCopy = number;
+  v10 = [[_CNPhoneNumberDonationValue alloc] initWithPhoneNumber:numberCopy label:labelCopy origin:originCopy];
 
   return v10;
 }
 
-+ (id)donationValueWithPostalAddress:(id)a3 style:(int64_t)a4 label:(id)a5 origin:(id)a6
++ (id)donationValueWithPostalAddress:(id)address style:(int64_t)style label:(id)label origin:(id)origin
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a3;
-  v12 = [[_CNPostalAddressDonationValue alloc] initWithPostalAddress:v11 style:a4 label:v10 origin:v9];
+  originCopy = origin;
+  labelCopy = label;
+  addressCopy = address;
+  v12 = [[_CNPostalAddressDonationValue alloc] initWithPostalAddress:addressCopy style:style label:labelCopy origin:originCopy];
 
   return v12;
 }
 
-+ (id)donationValueWithImageData:(id)a3 origin:(id)a4
++ (id)donationValueWithImageData:(id)data origin:(id)origin
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[_CNImageDataDonationValue alloc] initWithImageData:v6 origin:v5];
+  originCopy = origin;
+  dataCopy = data;
+  v7 = [[_CNImageDataDonationValue alloc] initWithImageData:dataCopy origin:originCopy];
 
   return v7;
 }
 
-- (CNDonationValue)initWithOrigin:(id)a3
+- (CNDonationValue)initWithOrigin:(id)origin
 {
-  v4 = a3;
+  originCopy = origin;
   v10.receiver = self;
   v10.super_class = CNDonationValue;
   v5 = [(CNDonationValue *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [originCopy copy];
     origin = v5->_origin;
     v5->_origin = v6;
 
@@ -82,38 +82,38 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = self;
+  equalCopy = equal;
+  selfCopy = self;
   v6 = CNAbstractMethodException();
   objc_exception_throw(v6);
 }
 
 - (unint64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNAbstractMethodException();
   objc_exception_throw(v3);
 }
 
-- (id)copyWithNewExpirationDate:(id)a3
+- (id)copyWithNewExpirationDate:(id)date
 {
-  v4 = a3;
-  v5 = self;
+  dateCopy = date;
+  selfCopy = self;
   v6 = CNAbstractMethodException();
   objc_exception_throw(v6);
 }
 
-- (CNDonationValue)initWithCoder:(id)a3
+- (CNDonationValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CNDonationValue;
   v5 = [(CNDonationValue *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_origin"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_origin"];
     v7 = [v6 copy];
     origin = v5->_origin;
     v5->_origin = v7;
@@ -124,19 +124,19 @@
   return v5;
 }
 
-- (void)acceptDonationValueVisitor:(id)a3
+- (void)acceptDonationValueVisitor:(id)visitor
 {
-  v4 = a3;
-  v5 = self;
+  visitorCopy = visitor;
+  selfCopy = self;
   v6 = CNAbstractMethodException();
   objc_exception_throw(v6);
 }
 
-- (CNDonationValue)initWithPropertyListRepresentation:(id)a3
+- (CNDonationValue)initWithPropertyListRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v5 = [CNDonationOrigin alloc];
-  v6 = [v4 objectForKeyedSubscript:@"origin"];
+  v6 = [representationCopy objectForKeyedSubscript:@"origin"];
   v7 = [(CNDonationOrigin *)v5 initWithPropertyListRepresentation:v6];
 
   if (!v7)
@@ -144,16 +144,16 @@
     goto LABEL_75;
   }
 
-  v8 = [v4 objectForKeyedSubscript:@"name-components"];
+  v8 = [representationCopy objectForKeyedSubscript:@"name-components"];
 
   if (!v8)
   {
-    v24 = [v4 objectForKeyedSubscript:@"email-address"];
+    v24 = [representationCopy objectForKeyedSubscript:@"email-address"];
 
     if (v24)
     {
       objc_opt_class();
-      v25 = [v4 objectForKeyedSubscript:@"email-address"];
+      v25 = [representationCopy objectForKeyedSubscript:@"email-address"];
       if (objc_opt_isKindOfClass())
       {
         v26 = v25;
@@ -167,7 +167,7 @@
       v9 = v26;
 
       objc_opt_class();
-      v27 = [v4 objectForKeyedSubscript:@"label"];
+      v27 = [representationCopy objectForKeyedSubscript:@"label"];
       if (objc_opt_isKindOfClass())
       {
         v28 = v27;
@@ -184,12 +184,12 @@
       goto LABEL_38;
     }
 
-    v29 = [v4 objectForKeyedSubscript:@"phone-number"];
+    v29 = [representationCopy objectForKeyedSubscript:@"phone-number"];
 
     if (v29)
     {
       objc_opt_class();
-      v30 = [v4 objectForKeyedSubscript:@"phone-number"];
+      v30 = [representationCopy objectForKeyedSubscript:@"phone-number"];
       if (objc_opt_isKindOfClass())
       {
         v31 = v30;
@@ -203,7 +203,7 @@
       v32 = v31;
 
       objc_opt_class();
-      v33 = [v4 objectForKeyedSubscript:@"label"];
+      v33 = [representationCopy objectForKeyedSubscript:@"label"];
       if (objc_opt_isKindOfClass())
       {
         v34 = v33;
@@ -223,12 +223,12 @@
       goto LABEL_38;
     }
 
-    v37 = [v4 objectForKeyedSubscript:@"postal-address"];
+    v37 = [representationCopy objectForKeyedSubscript:@"postal-address"];
 
     if (v37)
     {
       objc_opt_class();
-      v38 = [v4 objectForKeyedSubscript:@"label"];
+      v38 = [representationCopy objectForKeyedSubscript:@"label"];
       if (objc_opt_isKindOfClass())
       {
         v39 = v38;
@@ -242,7 +242,7 @@
       v9 = v39;
 
       objc_opt_class();
-      v40 = [v4 objectForKeyedSubscript:@"donation-style"];
+      v40 = [representationCopy objectForKeyedSubscript:@"donation-style"];
       if (objc_opt_isKindOfClass())
       {
         v41 = v40;
@@ -269,7 +269,7 @@
       }
 
       v63 = v43;
-      v44 = [v4 objectForKeyedSubscript:@"postal-address"];
+      v44 = [representationCopy objectForKeyedSubscript:@"postal-address"];
       v45 = objc_alloc_init(MEMORY[0x277CBDB60]);
       objc_opt_class();
       v46 = [v44 objectForKeyedSubscript:@"street"];
@@ -392,7 +392,7 @@ LABEL_75:
     goto LABEL_76;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"name-components"];
+  v9 = [representationCopy objectForKeyedSubscript:@"name-components"];
   v10 = objc_alloc_init(MEMORY[0x277CCAC00]);
   objc_opt_class();
   v11 = [v9 objectForKeyedSubscript:@"namePrefix"];
@@ -491,9 +491,9 @@ LABEL_76:
 {
   v3 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:5];
   [v3 setObject:&unk_2838DF398 forKeyedSubscript:@"version"];
-  v4 = [(CNDonationValue *)self origin];
-  v5 = [v4 propertyListRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"origin"];
+  origin = [(CNDonationValue *)self origin];
+  propertyListRepresentation = [origin propertyListRepresentation];
+  [v3 setObject:propertyListRepresentation forKeyedSubscript:@"origin"];
 
   [(CNDonationValue *)self updatePropertyListRepresentation:v3];
 

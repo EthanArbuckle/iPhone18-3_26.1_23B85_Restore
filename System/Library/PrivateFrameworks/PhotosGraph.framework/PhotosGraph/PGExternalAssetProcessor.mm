@@ -1,22 +1,22 @@
 @interface PGExternalAssetProcessor
-+ (id)clusterAssetsToProcess:(id)a3 inPhotoLibrary:(id)a4;
-- (BOOL)processExternalAssetRelevanceInferenceWithError:(id *)a3 progressReporter:(id)a4 shareBackSuggester:(id)a5;
-- (PGExternalAssetProcessor)initWithWorkingContext:(id)a3;
++ (id)clusterAssetsToProcess:(id)process inPhotoLibrary:(id)library;
+- (BOOL)processExternalAssetRelevanceInferenceWithError:(id *)error progressReporter:(id)reporter shareBackSuggester:(id)suggester;
+- (PGExternalAssetProcessor)initWithWorkingContext:(id)context;
 @end
 
 @implementation PGExternalAssetProcessor
 
-- (BOOL)processExternalAssetRelevanceInferenceWithError:(id *)a3 progressReporter:(id)a4 shareBackSuggester:(id)a5
+- (BOOL)processExternalAssetRelevanceInferenceWithError:(id *)error progressReporter:(id)reporter shareBackSuggester:(id)suggester
 {
   v75 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = v8;
+  reporterCopy = reporter;
+  suggesterCopy = suggester;
+  v10 = reporterCopy;
   if (![v10 isCancelledWithProgress:0.0])
   {
-    v12 = [(PGManagerWorkingContext *)self->_workingContext loggingConnection];
-    v13 = os_signpost_id_generate(v12);
-    v14 = v12;
+    loggingConnection = [(PGManagerWorkingContext *)self->_workingContext loggingConnection];
+    v13 = os_signpost_id_generate(loggingConnection);
+    v14 = loggingConnection;
     v15 = v14;
     v57 = v13 - 1;
     if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v14))
@@ -28,24 +28,24 @@
     info = 0;
     mach_timebase_info(&info);
     v56 = mach_absolute_time();
-    v16 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-    [v16 setIncludeGuestAssets:0];
+    librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+    [librarySpecificFetchOptions setIncludeGuestAssets:0];
     v17 = +[PGCurationManager assetPropertySetsForCuration];
-    [v16 setFetchPropertySets:v17];
+    [librarySpecificFetchOptions setFetchPropertySets:v17];
 
-    v18 = [MEMORY[0x277D3C7D0] internalPredicateToIncludeExternalAssetsNeedingProcessing];
-    [v16 setInternalPredicate:v18];
+    internalPredicateToIncludeExternalAssetsNeedingProcessing = [MEMORY[0x277D3C7D0] internalPredicateToIncludeExternalAssetsNeedingProcessing];
+    [librarySpecificFetchOptions setInternalPredicate:internalPredicateToIncludeExternalAssetsNeedingProcessing];
 
-    v19 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:v16];
+    v19 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:librarySpecificFetchOptions];
     if ([v10 isCancelledWithProgress:0.1])
     {
       if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
 LABEL_14:
-        if (a3 && !*a3)
+        if (error && !*error)
         {
           [MEMORY[0x277D22C28] errorForCode:-4];
-          *a3 = v11 = 0;
+          *error = v11 = 0;
         }
 
         else
@@ -98,7 +98,7 @@ LABEL_13:
 
     spid = v13;
     v53 = [MEMORY[0x277CBEB58] set];
-    v46 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v50 = [objc_alloc(MEMORY[0x277D22C88]) initWithProgressReporter:v10];
     v21 = [v50 childProgressReporterToCheckpoint:0.9];
     [(PGManagerWorkingContext *)self->_workingContext serviceManager];
@@ -110,12 +110,12 @@ LABEL_13:
     v63[3] = &unk_278889AF0;
     v49 = v21;
     v64 = v49;
-    v52 = v9;
-    v65 = v9;
+    v52 = suggesterCopy;
+    v65 = suggesterCopy;
     v51 = v15;
     v25 = v15;
     v66 = v25;
-    v67 = self;
+    selfCopy = self;
     v26 = v23;
     v19 = v22;
     v48 = v26;
@@ -124,7 +124,7 @@ LABEL_13:
     v69 = v27;
     v54 = v53;
     v70 = v54;
-    v28 = v46;
+    v28 = dictionary;
     v71 = v28;
     [(PGManagerWorkingContext *)workingContext performSynchronousConcurrentGraphReadUsingBlock:v63];
     v29 = v25;
@@ -157,7 +157,7 @@ LABEL_13:
     v58 = 0;
     v11 = [(PHPhotoLibrary *)photoLibrary performChangesAndWait:v59 error:&v58];
     v34 = v58;
-    v9 = v52;
+    suggesterCopy = v52;
     if ((v11 & 1) == 0)
     {
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -165,7 +165,7 @@ LABEL_13:
         *buf = 138412290;
         *v74 = v34;
         _os_log_error_impl(&dword_22F0FC000, v31, OS_LOG_TYPE_ERROR, "Error saving external asset inference to database: %@", buf, 0xCu);
-        if (!a3)
+        if (!error)
         {
           goto LABEL_26;
         }
@@ -173,21 +173,21 @@ LABEL_13:
         goto LABEL_25;
       }
 
-      if (a3)
+      if (error)
       {
 LABEL_25:
         v35 = v34;
-        *a3 = v34;
+        *error = v34;
       }
     }
 
 LABEL_26:
-    v36 = [v10 throughputReportBlock];
+    throughputReportBlock = [v10 throughputReportBlock];
 
-    if (v36)
+    if (throughputReportBlock)
     {
-      v37 = [v10 throughputReportBlock];
-      v37[2](v37, v55, 0);
+      throughputReportBlock2 = [v10 throughputReportBlock];
+      throughputReportBlock2[2](throughputReportBlock2, v55, 0);
     }
 
     v38 = mach_absolute_time();
@@ -222,10 +222,10 @@ LABEL_26:
         _os_log_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Cancelled at line %d in file %s", buf, 0x12u);
       }
 
-      if (a3 && !*a3)
+      if (error && !*error)
       {
         [MEMORY[0x277D22C28] errorForCode:-4];
-        *a3 = v11 = 0;
+        *error = v11 = 0;
       }
 
       else
@@ -246,10 +246,10 @@ LABEL_26:
     _os_log_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Cancelled at line %d in file %s", buf, 0x12u);
   }
 
-  if (a3 && !*a3)
+  if (error && !*error)
   {
     [MEMORY[0x277D22C28] errorForCode:-4];
-    *a3 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -496,38 +496,38 @@ void __112__PGExternalAssetProcessor_processExternalAssetRelevanceInferenceWithE
   }
 }
 
-- (PGExternalAssetProcessor)initWithWorkingContext:(id)a3
+- (PGExternalAssetProcessor)initWithWorkingContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = PGExternalAssetProcessor;
   v6 = [(PGExternalAssetProcessor *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_workingContext, a3);
-    v8 = [(PGManagerWorkingContext *)v7->_workingContext photoLibrary];
+    objc_storeStrong(&v6->_workingContext, context);
+    photoLibrary = [(PGManagerWorkingContext *)v7->_workingContext photoLibrary];
     photoLibrary = v7->_photoLibrary;
-    v7->_photoLibrary = v8;
+    v7->_photoLibrary = photoLibrary;
   }
 
   return v7;
 }
 
-+ (id)clusterAssetsToProcess:(id)a3 inPhotoLibrary:(id)a4
++ (id)clusterAssetsToProcess:(id)process inPhotoLibrary:(id)library
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  processCopy = process;
   v6 = MEMORY[0x277CD98F8];
-  v7 = [a4 librarySpecificFetchOptions];
-  v30 = [v6 fetchMomentUUIDByAssetUUIDForAssets:v5 options:v7];
+  librarySpecificFetchOptions = [library librarySpecificFetchOptions];
+  v30 = [v6 fetchMomentUUIDByAssetUUIDForAssets:processCopy options:librarySpecificFetchOptions];
 
   v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v5;
+  obj = processCopy;
   v9 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v9)
   {
@@ -543,8 +543,8 @@ void __112__PGExternalAssetProcessor_processExternalAssetRelevanceInferenceWithE
         }
 
         v13 = *(*(&v31 + 1) + 8 * i);
-        v14 = [v13 uuid];
-        v15 = [v30 objectForKeyedSubscript:v14];
+        uuid = [v13 uuid];
+        v15 = [v30 objectForKeyedSubscript:uuid];
         v16 = v15;
         if (v15)
         {
@@ -553,18 +553,18 @@ void __112__PGExternalAssetProcessor_processExternalAssetRelevanceInferenceWithE
 
         else
         {
-          v17 = v14;
+          v17 = uuid;
         }
 
         v18 = v17;
 
-        v19 = [v13 curationProperties];
-        v20 = [v19 importedByBundleIdentifier];
-        v21 = v20;
+        curationProperties = [v13 curationProperties];
+        importedByBundleIdentifier = [curationProperties importedByBundleIdentifier];
+        v21 = importedByBundleIdentifier;
         v22 = &stru_2843F5C58;
-        if (v20)
+        if (importedByBundleIdentifier)
         {
-          v22 = v20;
+          v22 = importedByBundleIdentifier;
         }
 
         v23 = v22;
@@ -587,11 +587,11 @@ void __112__PGExternalAssetProcessor_processExternalAssetRelevanceInferenceWithE
     while (v10);
   }
 
-  v26 = [v8 allValues];
+  allValues = [v8 allValues];
 
   v27 = *MEMORY[0x277D85DE8];
 
-  return v26;
+  return allValues;
 }
 
 @end

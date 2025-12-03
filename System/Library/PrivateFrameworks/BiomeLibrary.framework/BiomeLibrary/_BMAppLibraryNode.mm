@@ -35,7 +35,7 @@
 + (id)storeConfigurationForMediaUsage;
 + (id)storeConfigurationForRelevantShortcuts;
 + (id)storeConfigurationForWebUsage;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)sublibraries;
 + (id)syncPolicyForInFocus;
 + (id)validKeyPaths;
@@ -54,8 +54,8 @@
 + (id)configurationForInFocus
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v3 = [a1 storeConfigurationForInFocus];
-  v4 = [a1 syncPolicyForInFocus];
+  storeConfigurationForInFocus = [self storeConfigurationForInFocus];
+  syncPolicyForInFocus = [self syncPolicyForInFocus];
   v5 = objc_alloc(MEMORY[0x1E698F330]);
   v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"$uninstalled IN {bundleID argumentArray:parentBundleID, extensionHostID}", 0];
   v7 = [v5 initWithIdentifier:@"app-uninstall" predicate:v6];
@@ -70,7 +70,7 @@
   v13 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"0171748D-1B75-47EB-B34D-008EDC2F7A6A"];
   BYTE2(v17) = 1;
   LOWORD(v17) = 1;
-  v14 = [v12 _libraryStreamConfigurationWithUUID:v13 streamIdentifier:@"App.InFocus" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:&unk_1EF3E8D78 internalMetadata:0 enableSubscriptions:v17 enableSubscriptionSubstream:0 enableTombstoneSubstream:v11 allowedClients:0 pruningTriggers:v18[0] spaceAttributionOwner:?];
+  v14 = [v12 _libraryStreamConfigurationWithUUID:v13 streamIdentifier:@"App.InFocus" eventClass:objc_opt_class() storeConfig:storeConfigurationForInFocus syncPolicy:syncPolicyForInFocus legacyNames:&unk_1EF3E8D78 internalMetadata:0 enableSubscriptions:v17 enableSubscriptionSubstream:0 enableTombstoneSubstream:v11 allowedClients:0 pruningTriggers:v18[0] spaceAttributionOwner:?];
 
   v15 = *MEMORY[0x1E69E9840];
 
@@ -135,7 +135,7 @@
 + (id)InFocus
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForInFocus];
+  configurationForInFocus = [self configurationForInFocus];
   v3 = +[BMAppInFocus columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -147,7 +147,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"App.InFocus" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"App.InFocus" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"App.InFocus" schema:v9 configuration:configurationForInFocus];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -157,11 +157,11 @@
 + (id)sublibraries
 {
   v9[3] = *MEMORY[0x1E69E9840];
-  v3 = [a1 Clip];
-  v4 = [a1 Intents];
-  v9[1] = v4;
-  v5 = [a1 WebApp];
-  v9[2] = v5;
+  clip = [self Clip];
+  intents = [self Intents];
+  v9[1] = intents;
+  webApp = [self WebApp];
+  v9[2] = webApp;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:3];
 
   v7 = *MEMORY[0x1E69E9840];
@@ -172,7 +172,7 @@
 + (id)Intent
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForIntent];
+  configurationForIntent = [self configurationForIntent];
   v3 = +[BMAppIntent columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -184,7 +184,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"App.Intent" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"App.Intent" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"App.Intent" schema:v9 configuration:configurationForIntent];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -194,8 +194,8 @@
 + (id)configurationForIntent
 {
   v30[6] = *MEMORY[0x1E69E9840];
-  v29 = [a1 storeConfigurationForIntent];
-  v28 = [a1 syncPolicyForIntent];
+  storeConfigurationForIntent = [self storeConfigurationForIntent];
+  syncPolicyForIntent = [self syncPolicyForIntent];
   v3 = objc_alloc(MEMORY[0x1E698F330]);
   v27 = [MEMORY[0x1E696AE18] predicateWithFormat:@"$uninstalled == bundleID" argumentArray:0];
   v26 = [v3 initWithIdentifier:@"app-uninstall" predicate:v27];
@@ -226,7 +226,7 @@
   v20 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"E89116F4-E17C-48DA-BD91-00BFE0BF38AC"];
   BYTE2(v24) = 1;
   LOWORD(v24) = 1;
-  v21 = [v19 _libraryStreamConfigurationWithUUID:v20 streamIdentifier:@"App.Intent" eventClass:objc_opt_class() storeConfig:v29 syncPolicy:v28 legacyNames:&unk_1EF3E8D90 internalMetadata:0 enableSubscriptions:v24 enableSubscriptionSubstream:0 enableTombstoneSubstream:v18 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v21 = [v19 _libraryStreamConfigurationWithUUID:v20 streamIdentifier:@"App.Intent" eventClass:objc_opt_class() storeConfig:storeConfigurationForIntent syncPolicy:syncPolicyForIntent legacyNames:&unk_1EF3E8D90 internalMetadata:0 enableSubscriptions:v24 enableSubscriptionSubstream:0 enableTombstoneSubstream:v18 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   v22 = *MEMORY[0x1E69E9840];
 
@@ -244,7 +244,7 @@
 + (id)Activity
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForActivity];
+  configurationForActivity = [self configurationForActivity];
   v3 = +[BMAppActivity columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -256,7 +256,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"App.Activity" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"App.Activity" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"App.Activity" schema:v9 configuration:configurationForActivity];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -265,13 +265,13 @@
 
 + (id)configurationForActivity
 {
-  v3 = [a1 storeConfigurationForActivity];
-  v4 = [a1 syncPolicyForActivity];
+  storeConfigurationForActivity = [self storeConfigurationForActivity];
+  syncPolicyForActivity = [self syncPolicyForActivity];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"59D1C2D9-756A-43B6-9781-0D02E71C80E3"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"App.Activity" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"App.Activity" eventClass:objc_opt_class() storeConfig:storeConfigurationForActivity syncPolicy:syncPolicyForActivity legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -287,7 +287,7 @@
 + (id)ContextualActions
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForContextualActions];
+  configurationForContextualActions = [self configurationForContextualActions];
   v3 = +[BMAppContextualActions columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -299,7 +299,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"App.ContextualActions" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"App.ContextualActions" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"App.ContextualActions" schema:v9 configuration:configurationForContextualActions];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -308,13 +308,13 @@
 
 + (id)configurationForContextualActions
 {
-  v3 = [a1 storeConfigurationForContextualActions];
-  v4 = [a1 syncPolicyForContextualActions];
+  storeConfigurationForContextualActions = [self storeConfigurationForContextualActions];
+  syncPolicyForContextualActions = [self syncPolicyForContextualActions];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"16AF2653-AB71-4FD2-8277-52E85C71AB54"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"App.ContextualActions" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:&unk_1EF3E8D60 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"App.ContextualActions" eventClass:objc_opt_class() storeConfig:storeConfigurationForContextualActions syncPolicy:syncPolicyForContextualActions legacyNames:&unk_1EF3E8D60 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -330,7 +330,7 @@
 + (id)Install
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForInstall];
+  configurationForInstall = [self configurationForInstall];
   v3 = +[BMAppInstall columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -342,7 +342,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"App.Install" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"App.Install" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"App.Install" schema:v9 configuration:configurationForInstall];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -351,13 +351,13 @@
 
 + (id)configurationForInstall
 {
-  v3 = [a1 storeConfigurationForInstall];
-  v4 = [a1 syncPolicyForInstall];
+  storeConfigurationForInstall = [self storeConfigurationForInstall];
+  syncPolicyForInstall = [self syncPolicyForInstall];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"3DA6B559-B626-4C8F-8ED4-2B9263D08FC2"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"App.Install" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"App.Install" eventClass:objc_opt_class() storeConfig:storeConfigurationForInstall syncPolicy:syncPolicyForInstall legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -373,7 +373,7 @@
 + (id)Installation
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForInstallation];
+  configurationForInstallation = [self configurationForInstallation];
   v3 = +[BMAppInstallation columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -385,7 +385,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"App.Installation" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"App.Installation" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"App.Installation" schema:v9 configuration:configurationForInstallation];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -394,13 +394,13 @@
 
 + (id)configurationForInstallation
 {
-  v3 = [a1 storeConfigurationForInstallation];
-  v4 = [a1 syncPolicyForInstallation];
+  storeConfigurationForInstallation = [self storeConfigurationForInstallation];
+  syncPolicyForInstallation = [self syncPolicyForInstallation];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"F6F45604-8C80-4A9F-8E33-564D5FC98B58"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"App.Installation" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"App.Installation" eventClass:objc_opt_class() storeConfig:storeConfigurationForInstallation syncPolicy:syncPolicyForInstallation legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -417,7 +417,7 @@
 + (id)LanguageConsumption
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForLanguageConsumption];
+  configurationForLanguageConsumption = [self configurationForLanguageConsumption];
   v3 = +[BMAppLanguageConsumption columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -429,7 +429,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"App.LanguageConsumption" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"App.LanguageConsumption" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"App.LanguageConsumption" schema:v9 configuration:configurationForLanguageConsumption];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -438,13 +438,13 @@
 
 + (id)configurationForLanguageConsumption
 {
-  v3 = [a1 storeConfigurationForLanguageConsumption];
-  v4 = [a1 syncPolicyForLanguageConsumption];
+  storeConfigurationForLanguageConsumption = [self storeConfigurationForLanguageConsumption];
+  syncPolicyForLanguageConsumption = [self syncPolicyForLanguageConsumption];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"B4E2EC3A-D5BF-4562-95F4-0F6852380A93"];
   BYTE2(v9) = 0;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"App.LanguageConsumption" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"App.LanguageConsumption" eventClass:objc_opt_class() storeConfig:storeConfigurationForLanguageConsumption syncPolicy:syncPolicyForLanguageConsumption legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -461,7 +461,7 @@
 + (id)LocationActivity
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForLocationActivity];
+  configurationForLocationActivity = [self configurationForLocationActivity];
   v3 = +[BMAppLocationActivity columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -473,7 +473,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"App.LocationActivity" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"App.LocationActivity" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"App.LocationActivity" schema:v9 configuration:configurationForLocationActivity];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -483,8 +483,8 @@
 + (id)configurationForLocationActivity
 {
   v21[3] = *MEMORY[0x1E69E9840];
-  v3 = [a1 storeConfigurationForLocationActivity];
-  v4 = [a1 syncPolicyForLocationActivity];
+  storeConfigurationForLocationActivity = [self storeConfigurationForLocationActivity];
+  syncPolicyForLocationActivity = [self syncPolicyForLocationActivity];
   v5 = objc_alloc(MEMORY[0x1E698F330]);
   v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"$uninstalled IN {bundleID argumentArray:sourceBundleID}", 0];
   v7 = [v5 initWithIdentifier:@"app-uninstall" predicate:v6];
@@ -503,7 +503,7 @@
   v16 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"3C653F00-4857-4409-9663-FE53B5627185"];
   BYTE2(v20) = 1;
   LOWORD(v20) = 1;
-  v17 = [v15 _libraryStreamConfigurationWithUUID:v16 streamIdentifier:@"App.LocationActivity" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v20 enableSubscriptionSubstream:0 enableTombstoneSubstream:v14 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v17 = [v15 _libraryStreamConfigurationWithUUID:v16 streamIdentifier:@"App.LocationActivity" eventClass:objc_opt_class() storeConfig:storeConfigurationForLocationActivity syncPolicy:syncPolicyForLocationActivity legacyNames:0 internalMetadata:0 enableSubscriptions:v20 enableSubscriptionSubstream:0 enableTombstoneSubstream:v14 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   v18 = *MEMORY[0x1E69E9840];
 
@@ -521,7 +521,7 @@
 + (id)MediaUsage
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForMediaUsage];
+  configurationForMediaUsage = [self configurationForMediaUsage];
   v3 = +[BMAppMediaUsage columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -533,7 +533,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"App.MediaUsage" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"App.MediaUsage" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"App.MediaUsage" schema:v9 configuration:configurationForMediaUsage];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -542,13 +542,13 @@
 
 + (id)configurationForMediaUsage
 {
-  v3 = [a1 storeConfigurationForMediaUsage];
-  v4 = [a1 syncPolicyForMediaUsage];
+  storeConfigurationForMediaUsage = [self storeConfigurationForMediaUsage];
+  syncPolicyForMediaUsage = [self syncPolicyForMediaUsage];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"CE38AAA5-6FA3-41D6-9720-B2D8290001EC"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"App.MediaUsage" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"App.MediaUsage" eventClass:objc_opt_class() storeConfig:storeConfigurationForMediaUsage syncPolicy:syncPolicyForMediaUsage legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -565,7 +565,7 @@
 + (id)RelevantShortcuts
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForRelevantShortcuts];
+  configurationForRelevantShortcuts = [self configurationForRelevantShortcuts];
   v3 = +[BMAppRelevantShortcuts columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -577,7 +577,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"App.RelevantShortcuts" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"App.RelevantShortcuts" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"App.RelevantShortcuts" schema:v9 configuration:configurationForRelevantShortcuts];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -586,13 +586,13 @@
 
 + (id)configurationForRelevantShortcuts
 {
-  v3 = [a1 storeConfigurationForRelevantShortcuts];
-  v4 = [a1 syncPolicyForRelevantShortcuts];
+  storeConfigurationForRelevantShortcuts = [self storeConfigurationForRelevantShortcuts];
+  syncPolicyForRelevantShortcuts = [self syncPolicyForRelevantShortcuts];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"16D4F2CD-3916-4930-B78E-FBD52BC44897"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"App.RelevantShortcuts" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"App.RelevantShortcuts" eventClass:objc_opt_class() storeConfig:storeConfigurationForRelevantShortcuts syncPolicy:syncPolicyForRelevantShortcuts legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -608,7 +608,7 @@
 + (id)WebUsage
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForWebUsage];
+  configurationForWebUsage = [self configurationForWebUsage];
   v3 = +[BMAppWebUsage columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -620,7 +620,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"App.WebUsage" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"App.WebUsage" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"App.WebUsage" schema:v9 configuration:configurationForWebUsage];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -629,13 +629,13 @@
 
 + (id)configurationForWebUsage
 {
-  v3 = [a1 storeConfigurationForWebUsage];
-  v4 = [a1 syncPolicyForWebUsage];
+  storeConfigurationForWebUsage = [self storeConfigurationForWebUsage];
+  syncPolicyForWebUsage = [self syncPolicyForWebUsage];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"D3BDB19A-865C-4532-A5B2-EC35A4053E59"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"App.WebUsage" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:&unk_1EF3E8DA8 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"App.WebUsage" eventClass:objc_opt_class() storeConfig:storeConfigurationForWebUsage syncPolicy:syncPolicyForWebUsage legacyNames:&unk_1EF3E8DA8 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -649,80 +649,80 @@
   return v4;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"Activity"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"Activity"])
   {
-    v5 = [a1 Activity];
+    activity = [self Activity];
 LABEL_25:
-    v6 = v5;
+    v6 = activity;
     goto LABEL_26;
   }
 
-  if ([v4 isEqualToString:@"ContextualActions"])
+  if ([nameCopy isEqualToString:@"ContextualActions"])
   {
-    v5 = [a1 ContextualActions];
+    activity = [self ContextualActions];
     goto LABEL_25;
   }
 
-  if ([v4 isEqualToString:@"EventEngagement"])
+  if ([nameCopy isEqualToString:@"EventEngagement"])
   {
-    v5 = [a1 EventEngagement];
+    activity = [self EventEngagement];
     goto LABEL_25;
   }
 
-  if ([v4 isEqualToString:@"InFocus"])
+  if ([nameCopy isEqualToString:@"InFocus"])
   {
-    v5 = [a1 InFocus];
+    activity = [self InFocus];
     goto LABEL_25;
   }
 
-  if ([v4 isEqualToString:@"Install"])
+  if ([nameCopy isEqualToString:@"Install"])
   {
-    v5 = [a1 Install];
+    activity = [self Install];
     goto LABEL_25;
   }
 
-  if ([v4 isEqualToString:@"Installation"])
+  if ([nameCopy isEqualToString:@"Installation"])
   {
-    v5 = [a1 Installation];
+    activity = [self Installation];
     goto LABEL_25;
   }
 
-  if ([v4 isEqualToString:@"Intent"])
+  if ([nameCopy isEqualToString:@"Intent"])
   {
-    v5 = [a1 Intent];
+    activity = [self Intent];
     goto LABEL_25;
   }
 
-  if ([v4 isEqualToString:@"LanguageConsumption"])
+  if ([nameCopy isEqualToString:@"LanguageConsumption"])
   {
-    v5 = [a1 LanguageConsumption];
+    activity = [self LanguageConsumption];
     goto LABEL_25;
   }
 
-  if ([v4 isEqualToString:@"LocationActivity"])
+  if ([nameCopy isEqualToString:@"LocationActivity"])
   {
-    v5 = [a1 LocationActivity];
+    activity = [self LocationActivity];
     goto LABEL_25;
   }
 
-  if ([v4 isEqualToString:@"MediaUsage"])
+  if ([nameCopy isEqualToString:@"MediaUsage"])
   {
-    v5 = [a1 MediaUsage];
+    activity = [self MediaUsage];
     goto LABEL_25;
   }
 
-  if ([v4 isEqualToString:@"RelevantShortcuts"])
+  if ([nameCopy isEqualToString:@"RelevantShortcuts"])
   {
-    v5 = [a1 RelevantShortcuts];
+    activity = [self RelevantShortcuts];
     goto LABEL_25;
   }
 
-  if ([v4 isEqualToString:@"WebUsage"])
+  if ([nameCopy isEqualToString:@"WebUsage"])
   {
-    v5 = [a1 WebUsage];
+    activity = [self WebUsage];
     goto LABEL_25;
   }
 
@@ -778,13 +778,13 @@ LABEL_26:
 
 + (id)configurationForEventEngagement
 {
-  v3 = [a1 storeConfigurationForEventEngagement];
-  v4 = [a1 syncPolicyForEventEngagement];
+  storeConfigurationForEventEngagement = [self storeConfigurationForEventEngagement];
+  syncPolicyForEventEngagement = [self syncPolicyForEventEngagement];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"520CCFB6-806B-4E07-B8B9-83A2340A90FA"];
   BYTE2(v9) = 0;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"App.EventEngagement" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"App.EventEngagement" eventClass:objc_opt_class() storeConfig:storeConfigurationForEventEngagement syncPolicy:syncPolicyForEventEngagement legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -801,7 +801,7 @@ LABEL_26:
 + (id)EventEngagement
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForEventEngagement];
+  configurationForEventEngagement = [self configurationForEventEngagement];
   v3 = +[BMAppEventEngagement columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -813,7 +813,7 @@ LABEL_26:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"App.EventEngagement" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"App.EventEngagement" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"App.EventEngagement" schema:v9 configuration:configurationForEventEngagement];
 
   v11 = *MEMORY[0x1E69E9840];
 

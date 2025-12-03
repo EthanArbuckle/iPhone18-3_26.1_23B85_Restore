@@ -1,18 +1,18 @@
 @interface BKSDisplayInterstitialRenderOverlayDismissAction
-- (BKSDisplayInterstitialRenderOverlayDismissAction)initWithDescriptor:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BKSDisplayInterstitialRenderOverlayDismissAction)initWithDescriptor:(id)descriptor;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation BKSDisplayInterstitialRenderOverlayDismissAction
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BKSDisplayInterstitialRenderOverlayDismissAction *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BKSDisplayInterstitialRenderOverlayDismissAction *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -25,22 +25,22 @@
 
 - (id)succinctDescription
 {
-  v2 = [(BKSDisplayInterstitialRenderOverlayDismissAction *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BKSDisplayInterstitialRenderOverlayDismissAction *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (BKSDisplayInterstitialRenderOverlayDismissAction)initWithDescriptor:(id)a3
+- (BKSDisplayInterstitialRenderOverlayDismissAction)initWithDescriptor:(id)descriptor
 {
-  v5 = a3;
+  descriptorCopy = descriptor;
   v9.receiver = self;
   v9.super_class = BKSDisplayInterstitialRenderOverlayDismissAction;
   v6 = [(BKSDisplayInterstitialRenderOverlayDismissAction *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_overlayDescriptor, a3);
+    objc_storeStrong(&v6->_overlayDescriptor, descriptor);
   }
 
   return v7;

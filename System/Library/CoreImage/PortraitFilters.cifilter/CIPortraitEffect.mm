@@ -1,6 +1,6 @@
 @interface CIPortraitEffect
 + (id)customAttributes;
-+ (void)checkFeaturesDictionary:(id)a3;
++ (void)checkFeaturesDictionary:(id)dictionary;
 - (id)backgroundPreviewCubePath;
 - (id)previewCubePath;
 - (id)standbyCubePath;
@@ -8,16 +8,16 @@
 
 @implementation CIPortraitEffect
 
-+ (void)checkFeaturesDictionary:(id)a3
++ (void)checkFeaturesDictionary:(id)dictionary
 {
-  if ([a3 sanityCheckStatus])
+  if ([dictionary sanityCheckStatus])
   {
     return;
   }
 
-  if ([a3 objectForKeyedSubscript:@"faceBoundingBox"])
+  if ([dictionary objectForKeyedSubscript:@"faceBoundingBox"])
   {
-    v4 = [a3 objectForKeyedSubscript:@"faceBoundingBox"];
+    v4 = [dictionary objectForKeyedSubscript:@"faceBoundingBox"];
     [objc_msgSend(v4 objectForKeyedSubscript:{@"x", "doubleValue"}];
     v6 = v5;
     [objc_msgSend(v4 objectForKeyedSubscript:{@"y", "doubleValue"}];
@@ -41,12 +41,12 @@
   }
 
   memset(&v109, 0, sizeof(v109));
-  [a3 imageWidthScale];
+  [dictionary imageWidthScale];
   v17 = v16;
-  [a3 imageHeightScale];
+  [dictionary imageHeightScale];
   CGAffineTransformMakeScale(&v109, v17, v18);
-  v95 = a3;
-  v19 = [a3 objectForKeyedSubscript:@"allPoints"];
+  dictionaryCopy = dictionary;
+  v19 = [dictionary objectForKeyedSubscript:@"allPoints"];
   v20 = [v19 count];
   v94 = &v94;
   v23 = __chkstk_darwin((16 * v20), v20, v21, v22);
@@ -93,7 +93,7 @@
     while (v29);
   }
 
-  v38 = v95;
+  v38 = dictionaryCopy;
   v39 = v101;
   v40 = v106;
   if (v106 == 0.0)
@@ -421,9 +421,9 @@ LABEL_48:
   if (result)
   {
     v4 = [NSBundle bundleForClass:objc_opt_class()];
-    v5 = [(CIPortraitEffect *)self previewCubeName];
+    previewCubeName = [(CIPortraitEffect *)self previewCubeName];
 
-    return [(NSBundle *)v4 pathForResource:v5 ofType:@"scube"];
+    return [(NSBundle *)v4 pathForResource:previewCubeName ofType:@"scube"];
   }
 
   return result;
@@ -435,9 +435,9 @@ LABEL_48:
   if (result)
   {
     v4 = [NSBundle bundleForClass:objc_opt_class()];
-    v5 = [(CIPortraitEffect *)self standbyCubeName];
+    standbyCubeName = [(CIPortraitEffect *)self standbyCubeName];
 
-    return [(NSBundle *)v4 pathForResource:v5 ofType:@"scube"];
+    return [(NSBundle *)v4 pathForResource:standbyCubeName ofType:@"scube"];
   }
 
   return result;
@@ -449,9 +449,9 @@ LABEL_48:
   if (result)
   {
     v4 = [NSBundle bundleForClass:objc_opt_class()];
-    v5 = [(CIPortraitEffect *)self backgroundPreviewCubeName];
+    backgroundPreviewCubeName = [(CIPortraitEffect *)self backgroundPreviewCubeName];
 
-    return [(NSBundle *)v4 pathForResource:v5 ofType:@"scube"];
+    return [(NSBundle *)v4 pathForResource:backgroundPreviewCubeName ofType:@"scube"];
   }
 
   return result;

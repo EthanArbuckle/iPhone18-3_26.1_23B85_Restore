@@ -1,5 +1,5 @@
 @interface ICAddToWishListResponse
-- (ICAddToWishListResponse)initWithResponseDictionary:(id)a3;
+- (ICAddToWishListResponse)initWithResponseDictionary:(id)dictionary;
 - (id)description;
 @end
 
@@ -11,23 +11,23 @@
   v9.receiver = self;
   v9.super_class = ICAddToWishListResponse;
   v4 = [(ICAddToWishListResponse *)&v9 description];
-  v5 = [(ICAddToWishListResponse *)self statusCode];
-  v6 = [(ICAddToWishListResponse *)self message];
-  v7 = [v3 stringWithFormat:@"%@: [status=%d, msg='%@']", v4, v5, v6];
+  statusCode = [(ICAddToWishListResponse *)self statusCode];
+  message = [(ICAddToWishListResponse *)self message];
+  v7 = [v3 stringWithFormat:@"%@: [status=%d, msg='%@']", v4, statusCode, message];
 
   return v7;
 }
 
-- (ICAddToWishListResponse)initWithResponseDictionary:(id)a3
+- (ICAddToWishListResponse)initWithResponseDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = ICAddToWishListResponse;
   v6 = [(ICAddToWishListResponse *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_responseDictionary, a3);
+    objc_storeStrong(&v6->_responseDictionary, dictionary);
   }
 
   return v7;

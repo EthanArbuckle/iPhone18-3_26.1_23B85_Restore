@@ -1,16 +1,16 @@
 @interface ListTableView
-- (ListTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4;
+- (ListTableView)initWithFrame:(CGRect)frame style:(int64_t)style;
 - (void)layoutSubviews;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation ListTableView
 
-- (ListTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4
+- (ListTableView)initWithFrame:(CGRect)frame style:(int64_t)style
 {
   v7.receiver = self;
   v7.super_class = ListTableView;
-  v4 = [(ListTableView *)&v7 initWithFrame:a4 style:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(ListTableView *)&v7 initWithFrame:style style:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v4;
   if (v4)
   {
@@ -32,13 +32,13 @@
   return v5;
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   v5.receiver = self;
   v5.super_class = ListTableView;
-  [(ListTableView *)&v5 willMoveToWindow:v4];
-  if (v4)
+  [(ListTableView *)&v5 willMoveToWindow:windowCopy];
+  if (windowCopy)
   {
     if (self->_layoutOnJoiningViewHierarchy)
     {
@@ -48,14 +48,14 @@
       self->_layoutOnJoiningViewHierarchy = 0;
     }
 
-    objc_storeWeak(&self->_lastKnownWindow, v4);
+    objc_storeWeak(&self->_lastKnownWindow, windowCopy);
   }
 }
 
 - (void)layoutSubviews
 {
-  v3 = [(ListTableView *)self window];
-  if (v3)
+  window = [(ListTableView *)self window];
+  if (window)
   {
 
 LABEL_4:

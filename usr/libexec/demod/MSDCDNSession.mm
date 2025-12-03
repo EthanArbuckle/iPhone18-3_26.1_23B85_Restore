@@ -1,68 +1,68 @@
 @interface MSDCDNSession
-- (void)authenticate:(id)a3 forTask:(id)a4 completion:(id)a5;
-- (void)collectMetricsData:(id)a3;
-- (void)collectTimingDataForTask:(id)a3 withNetworkError:(id)a4;
+- (void)authenticate:(id)authenticate forTask:(id)task completion:(id)completion;
+- (void)collectMetricsData:(id)data;
+- (void)collectTimingDataForTask:(id)task withNetworkError:(id)error;
 @end
 
 @implementation MSDCDNSession
 
-- (void)authenticate:(id)a3 forTask:(id)a4 completion:(id)a5
+- (void)authenticate:(id)authenticate forTask:(id)task completion:(id)completion
 {
-  v12 = a3;
-  v6 = a5;
+  authenticateCopy = authenticate;
+  completionCopy = completion;
   v7 = objc_alloc_init(MSDSessionFileDownloadTrustEvaluate);
-  v8 = [v12 protectionSpace];
-  v9 = -[MSDSessionFileDownloadTrustEvaluate trustServer:isRedirect:](v7, "trustServer:isRedirect:", [v8 serverTrust], 0);
+  protectionSpace = [authenticateCopy protectionSpace];
+  v9 = -[MSDSessionFileDownloadTrustEvaluate trustServer:isRedirect:](v7, "trustServer:isRedirect:", [protectionSpace serverTrust], 0);
 
   if (v9)
   {
-    v10 = [v12 protectionSpace];
-    v11 = +[NSURLCredential credentialForTrust:](NSURLCredential, "credentialForTrust:", [v10 serverTrust]);
+    protectionSpace2 = [authenticateCopy protectionSpace];
+    v11 = +[NSURLCredential credentialForTrust:](NSURLCredential, "credentialForTrust:", [protectionSpace2 serverTrust]);
 
-    v6[2](v6, 0, v11);
+    completionCopy[2](completionCopy, 0, v11);
   }
 
   else
   {
-    v6[2](v6, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 }
 
-- (void)collectTimingDataForTask:(id)a3 withNetworkError:(id)a4
+- (void)collectTimingDataForTask:(id)task withNetworkError:(id)error
 {
-  v14 = a3;
-  v5 = a4;
-  v6 = [v14 info];
+  taskCopy = task;
+  errorCopy = error;
+  info = [taskCopy info];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [v14 task];
-    v9 = [v8 _timingData];
+    task = [taskCopy task];
+    _timingData = [task _timingData];
 
-    v10 = [v14 info];
-    v11 = [v10 serverType];
+    info2 = [taskCopy info];
+    serverType = [info2 serverType];
 
-    if (v9)
+    if (_timingData)
     {
       v12 = +[MSDSessionMetrics sharedInstance];
-      [v12 extractAndUploadTimingData:v9 forServerType:v11];
+      [v12 extractAndUploadTimingData:_timingData forServerType:serverType];
     }
 
-    if (v5)
+    if (errorCopy)
     {
       v13 = +[MSDAnalyticsEventHandler sharedInstance];
-      [v13 sendNetworkFailureEvent:v5 forServerType:v11];
+      [v13 sendNetworkFailureEvent:errorCopy forServerType:serverType];
     }
   }
 }
 
-- (void)collectMetricsData:(id)a3
+- (void)collectMetricsData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = +[MSDSessionMetrics sharedInstance];
-  [v4 saveTransactionMetric:v3];
+  [v4 saveTransactionMetric:dataCopy];
 }
 
 @end

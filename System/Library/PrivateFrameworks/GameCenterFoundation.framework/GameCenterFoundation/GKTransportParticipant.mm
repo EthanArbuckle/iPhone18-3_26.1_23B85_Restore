@@ -1,8 +1,8 @@
 @interface GKTransportParticipant
-+ (id)participantsFrom:(id)a3 withKey:(id)a4;
++ (id)participantsFrom:(id)from withKey:(id)key;
 + (id)secureCodedPropertyKeys;
-- (BOOL)isEqual:(id)a3;
-- (GKTransportParticipant)initWithPlayerID:(id)a3 pseudonym:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (GKTransportParticipant)initWithPlayerID:(id)d pseudonym:(id)pseudonym;
 - (id)description;
 - (id)serverRepresentation;
 - (unint64_t)hash;
@@ -36,18 +36,18 @@ void __49__GKTransportParticipant_secureCodedPropertyKeys__block_invoke()
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (GKTransportParticipant)initWithPlayerID:(id)a3 pseudonym:(id)a4
+- (GKTransportParticipant)initWithPlayerID:(id)d pseudonym:(id)pseudonym
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  pseudonymCopy = pseudonym;
   v11.receiver = self;
   v11.super_class = GKTransportParticipant;
   v8 = [(GKTransportParticipant *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(GKTransportParticipant *)v8 setPlayerID:v6];
-    [(GKTransportParticipant *)v9 setPseudonym:v7];
+    [(GKTransportParticipant *)v8 setPlayerID:dCopy];
+    [(GKTransportParticipant *)v9 setPseudonym:pseudonymCopy];
   }
 
   return v9;
@@ -56,26 +56,26 @@ void __49__GKTransportParticipant_secureCodedPropertyKeys__block_invoke()
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(GKTransportParticipant *)self playerID];
-  v5 = [(GKTransportParticipant *)self pseudonym];
-  v6 = [v3 stringWithFormat:@"GKTransportParticipant<%p>[%@, %@]", self, v4, v5];
+  playerID = [(GKTransportParticipant *)self playerID];
+  pseudonym = [(GKTransportParticipant *)self pseudonym];
+  v6 = [v3 stringWithFormat:@"GKTransportParticipant<%p>[%@, %@]", self, playerID, pseudonym];
 
   return v6;
 }
 
-+ (id)participantsFrom:(id)a3 withKey:(id)a4
++ (id)participantsFrom:(id)from withKey:(id)key
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  fromCopy = from;
+  keyCopy = key;
   v7 = [MEMORY[0x277CBEB58] set];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v23 = v6;
-  v24 = v5;
-  v8 = [v5 objectForKeyedSubscript:v6];
+  v23 = keyCopy;
+  v24 = fromCopy;
+  v8 = [fromCopy objectForKeyedSubscript:keyCopy];
   v9 = [v8 countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v9)
   {
@@ -143,24 +143,24 @@ void __49__GKTransportParticipant_secureCodedPropertyKeys__block_invoke()
 - (id)serverRepresentation
 {
   v16[2] = *MEMORY[0x277D85DE8];
-  v3 = [(GKTransportParticipant *)self playerID];
-  v4 = [(GKTransportParticipant *)self pseudonym];
-  v5 = v4;
-  if (!v3 || !v4)
+  playerID = [(GKTransportParticipant *)self playerID];
+  pseudonym = [(GKTransportParticipant *)self pseudonym];
+  v5 = pseudonym;
+  if (!playerID || !pseudonym)
   {
     v6 = MEMORY[0x277CCACA8];
-    v7 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v8 = [v6 stringWithFormat:@"Invalid participant info for: %@. Call Stack: %@", self, v7];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v8 = [v6 stringWithFormat:@"Invalid participant info for: %@. Call Stack: %@", self, callStackSymbols];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterFoundation/gamed/GKMultiplayerServiceInterface.m"];
-    v10 = [v9 lastPathComponent];
-    v11 = [v6 stringWithFormat:@"%@ (playerID != nil && pseudonym != nil)\n[%s (%s:%d)]", v8, "-[GKTransportParticipant serverRepresentation]", objc_msgSend(v10, "UTF8String"), 132];
+    lastPathComponent = [v9 lastPathComponent];
+    v11 = [v6 stringWithFormat:@"%@ (playerID != nil && pseudonym != nil)\n[%s (%s:%d)]", v8, "-[GKTransportParticipant serverRepresentation]", objc_msgSend(lastPathComponent, "UTF8String"), 132];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v11}];
   }
 
   v15[0] = @"pid";
   v15[1] = @"ps";
-  v16[0] = v3;
+  v16[0] = playerID;
   v16[1] = v5;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
 
@@ -169,20 +169,20 @@ void __49__GKTransportParticipant_secureCodedPropertyKeys__block_invoke()
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 playerID];
-    v7 = [(GKTransportParticipant *)self playerID];
-    if ([v6 isEqualToString:v7])
+    v5 = equalCopy;
+    playerID = [v5 playerID];
+    playerID2 = [(GKTransportParticipant *)self playerID];
+    if ([playerID isEqualToString:playerID2])
     {
-      v8 = [v5 pseudonym];
-      v9 = [(GKTransportParticipant *)self pseudonym];
-      v10 = [v8 isEqualToString:v9];
+      pseudonym = [v5 pseudonym];
+      pseudonym2 = [(GKTransportParticipant *)self pseudonym];
+      v10 = [pseudonym isEqualToString:pseudonym2];
     }
 
     else
@@ -201,10 +201,10 @@ void __49__GKTransportParticipant_secureCodedPropertyKeys__block_invoke()
 
 - (unint64_t)hash
 {
-  v3 = [(GKTransportParticipant *)self playerID];
-  v4 = [v3 hash];
-  v5 = [(GKTransportParticipant *)self pseudonym];
-  v6 = [v5 hash];
+  playerID = [(GKTransportParticipant *)self playerID];
+  v4 = [playerID hash];
+  pseudonym = [(GKTransportParticipant *)self pseudonym];
+  v6 = [pseudonym hash];
 
   return v6 ^ v4;
 }

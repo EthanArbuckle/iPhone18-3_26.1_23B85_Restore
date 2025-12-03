@@ -1,17 +1,17 @@
 @interface IDSObjCPacketLog
 - (IDSObjCPacketLog)init;
-- (IDSObjCPacketLog)initWithSessionID:(id)a3 write:(id)a4;
-- (int64_t)packetLogIDWithLinkID:(char)a3 delegatedLinkID:(char)a4 protocolStack:(id)a5 connectionID:(unint64_t)a6;
+- (IDSObjCPacketLog)initWithSessionID:(id)d write:(id)write;
+- (int64_t)packetLogIDWithLinkID:(char)d delegatedLinkID:(char)iD protocolStack:(id)stack connectionID:(unint64_t)connectionID;
 - (void)finish;
 - (void)flush;
-- (void)recordPacketsWithPacketLogID:(int64_t)a3 kind:(int64_t)a4 bytes:(int64_t)a5 packetCount:(int64_t)a6;
+- (void)recordPacketsWithPacketLogID:(int64_t)d kind:(int64_t)kind bytes:(int64_t)bytes packetCount:(int64_t)count;
 @end
 
 @implementation IDSObjCPacketLog
 
-- (IDSObjCPacketLog)initWithSessionID:(id)a3 write:(id)a4
+- (IDSObjCPacketLog)initWithSessionID:(id)d write:(id)write
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(write);
   v5 = sub_1A7E22290();
   v7 = v6;
   v8 = swift_allocObject();
@@ -31,25 +31,25 @@
 
 - (void)flush
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A7CC7038();
 }
 
-- (int64_t)packetLogIDWithLinkID:(char)a3 delegatedLinkID:(char)a4 protocolStack:(id)a5 connectionID:(unint64_t)a6
+- (int64_t)packetLogIDWithLinkID:(char)d delegatedLinkID:(char)iD protocolStack:(id)stack connectionID:(unint64_t)connectionID
 {
-  v7 = a4;
+  iDCopy = iD;
   v10 = sub_1A7E22290();
   v12 = v11;
-  v13 = self;
-  v14 = sub_1A7CC7480(a3, v7, v10, v12, a6);
+  selfCopy = self;
+  v14 = sub_1A7CC7480(d, iDCopy, v10, v12, connectionID);
 
   return v14;
 }
 
-- (void)recordPacketsWithPacketLogID:(int64_t)a3 kind:(int64_t)a4 bytes:(int64_t)a5 packetCount:(int64_t)a6
+- (void)recordPacketsWithPacketLogID:(int64_t)d kind:(int64_t)kind bytes:(int64_t)bytes packetCount:(int64_t)count
 {
-  v10 = self;
-  sub_1A7CC75BC(a3, a4, a5, a6);
+  selfCopy = self;
+  sub_1A7CC75BC(d, kind, bytes, count);
 }
 
 - (IDSObjCPacketLog)init

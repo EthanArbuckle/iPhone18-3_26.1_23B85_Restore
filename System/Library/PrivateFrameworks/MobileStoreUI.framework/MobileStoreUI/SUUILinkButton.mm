@@ -1,35 +1,35 @@
 @interface SUUILinkButton
-+ (SUUILinkButton)buttonWithArrowStyle:(int64_t)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SUUILinkButton)initWithArrowStyle:(int64_t)a3;
++ (SUUILinkButton)buttonWithArrowStyle:(int64_t)style;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SUUILinkButton)initWithArrowStyle:(int64_t)style;
 - (double)_linkImagePaddingLeft;
 - (void)_reloadIcons;
 - (void)layoutSubviews;
-- (void)setTitleColor:(id)a3 forState:(unint64_t)a4;
+- (void)setTitleColor:(id)color forState:(unint64_t)state;
 - (void)sizeToFit;
 - (void)tintColorDidChange;
 @end
 
 @implementation SUUILinkButton
 
-+ (SUUILinkButton)buttonWithArrowStyle:(int64_t)a3
++ (SUUILinkButton)buttonWithArrowStyle:(int64_t)style
 {
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___SUUILinkButton;
   v4 = objc_msgSendSuper2(&v8, sel_buttonWithType_, 1);
-  v4[93] = a3;
-  v5 = [v4 titleLabel];
-  [v5 setNumberOfLines:1];
+  v4[93] = style;
+  titleLabel = [v4 titleLabel];
+  [titleLabel setNumberOfLines:1];
 
-  v6 = [v4 titleLabel];
-  [v6 setLineBreakMode:4];
+  titleLabel2 = [v4 titleLabel];
+  [titleLabel2 setLineBreakMode:4];
 
   [v4 _reloadIcons];
 
   return v4;
 }
 
-- (SUUILinkButton)initWithArrowStyle:(int64_t)a3
+- (SUUILinkButton)initWithArrowStyle:(int64_t)style
 {
   v9.receiver = self;
   v9.super_class = SUUILinkButton;
@@ -37,12 +37,12 @@
   v5 = v4;
   if (v4)
   {
-    v4->_arrowStyle = a3;
-    v6 = [(SUUILinkButton *)v4 titleLabel];
-    [v6 setNumberOfLines:1];
+    v4->_arrowStyle = style;
+    titleLabel = [(SUUILinkButton *)v4 titleLabel];
+    [titleLabel setNumberOfLines:1];
 
-    v7 = [(SUUILinkButton *)v5 titleLabel];
-    [v7 setLineBreakMode:4];
+    titleLabel2 = [(SUUILinkButton *)v5 titleLabel];
+    [titleLabel2 setLineBreakMode:4];
 
     [(SUUILinkButton *)v5 _reloadIcons];
   }
@@ -50,11 +50,11 @@
   return v5;
 }
 
-- (void)setTitleColor:(id)a3 forState:(unint64_t)a4
+- (void)setTitleColor:(id)color forState:(unint64_t)state
 {
   v5.receiver = self;
   v5.super_class = SUUILinkButton;
-  [(SUUILinkButton *)&v5 setTitleColor:a3 forState:a4];
+  [(SUUILinkButton *)&v5 setTitleColor:color forState:state];
   [(SUUILinkButton *)self _reloadIcons];
 }
 
@@ -74,17 +74,17 @@
   [(SUUILinkButton *)self setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(SUUILinkButton *)self imageView];
+  height = fits.height;
+  width = fits.width;
+  imageView = [(SUUILinkButton *)self imageView];
   v7 = [(SUUILinkButton *)self imageForState:0];
-  [v6 setImage:v7];
+  [imageView setImage:v7];
 
-  v8 = [(SUUILinkButton *)self titleLabel];
+  titleLabel = [(SUUILinkButton *)self titleLabel];
   v9 = [(SUUILinkButton *)self titleForState:0];
-  [v8 setText:v9];
+  [titleLabel setText:v9];
 
   v10 = width == *MEMORY[0x277CBF3A8];
   v11 = height == *(MEMORY[0x277CBF3A8] + 8);
@@ -108,12 +108,12 @@
     v13 = width;
   }
 
-  [v6 sizeThatFits:{v13, v12}];
+  [imageView sizeThatFits:{v13, v12}];
   v15 = v14;
   v17 = v16;
   [(SUUILinkButton *)self _linkImagePaddingLeft];
   v19 = v13 - (v15 + v18);
-  [v8 sizeThatFits:{v19, v12}];
+  [titleLabel sizeThatFits:{v19, v12}];
   v22 = v21;
   if (v20 >= v19)
   {
@@ -160,12 +160,12 @@
   [(SUUILinkButton *)self bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [(SUUILinkButton *)self imageView];
-  v8 = [(SUUILinkButton *)self titleLabel];
-  v9 = v8;
+  imageView = [(SUUILinkButton *)self imageView];
+  titleLabel = [(SUUILinkButton *)self titleLabel];
+  v9 = titleLabel;
   v10 = *MEMORY[0x277CBF3A8];
   v11 = *(MEMORY[0x277CBF3A8] + 8);
-  if (v7 && v8)
+  if (imageView && titleLabel)
   {
     [(SUUILinkButton *)self _linkImagePaddingLeft];
     v13 = v4 - v12;
@@ -177,13 +177,13 @@
     v14 = *(MEMORY[0x277CBF3A8] + 8);
     v15 = *MEMORY[0x277CBF3A8];
     v16 = v4;
-    if (!v7)
+    if (!imageView)
     {
       goto LABEL_6;
     }
   }
 
-  [v7 sizeThatFits:{v13, v6}];
+  [imageView sizeThatFits:{v13, v6}];
   v15 = v17;
   v14 = v18;
   v16 = v13 - v17;
@@ -206,18 +206,18 @@ LABEL_6:
 
   [(SUUILinkButton *)self _linkImagePaddingLeft];
   v22 = v15 + v10 + v21;
-  v23 = [MEMORY[0x277D75128] sharedApplication];
-  v24 = [v23 userInterfaceLayoutDirection];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x277D75128] userInterfaceLayoutDirection];
 
-  if (v7)
+  if (imageView)
   {
-    [v7 frame];
+    [imageView frame];
     v25 = (v40 - v14) * 0.5;
     v26 = v11;
     v27 = roundf(v25);
     v28 = (v41 - v22) * 0.5;
     v29 = roundf(v28);
-    if (v24)
+    if (userInterfaceLayoutDirection)
     {
       v30 = v29;
     }
@@ -227,9 +227,9 @@ LABEL_6:
       v30 = v22 + v29 - v15;
     }
 
-    v31 = [(SUUILinkButton *)self titleLabel];
-    v32 = [v31 font];
-    [v32 lineHeight];
+    titleLabel2 = [(SUUILinkButton *)self titleLabel];
+    font = [titleLabel2 font];
+    [font lineHeight];
     v34 = v33;
 
     if (v34 <= 14.0)
@@ -243,7 +243,7 @@ LABEL_6:
     }
 
     v11 = v26;
-    [v7 setFrame:{v30, v35, v15, v14}];
+    [imageView setFrame:{v30, v35, v15, v14}];
   }
 
   if (v9)
@@ -253,7 +253,7 @@ LABEL_6:
     v37 = roundf(v36);
     v38 = (v41 - v22) * 0.5;
     v39 = roundf(v38);
-    if (v24)
+    if (userInterfaceLayoutDirection)
     {
       v39 = v22 + v39 - v10;
     }
@@ -292,8 +292,8 @@ LABEL_6:
   {
 LABEL_7:
     v10 = [(SUUILinkButton *)self titleLabel:4.0];
-    v11 = [v10 font];
-    [v11 lineHeight];
+    font = [v10 font];
+    [font lineHeight];
     v13 = v12;
 
     result = 3.0;
@@ -325,14 +325,14 @@ LABEL_7:
   v7 = [(SUUILinkButton *)self titleColorForState:0];
   if (v7)
   {
-    v8 = v7;
+    tintColor = v7;
 LABEL_7:
-    v9 = [v12 _flatImageWithColor:v8];
+    v9 = [v12 _flatImageWithColor:tintColor];
     goto LABEL_8;
   }
 
-  v8 = [(SUUILinkButton *)self tintColor];
-  if (v8)
+  tintColor = [(SUUILinkButton *)self tintColor];
+  if (tintColor)
   {
     goto LABEL_7;
   }

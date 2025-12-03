@@ -1,26 +1,26 @@
 @interface FLOWSchemaFLOWState
-- (BOOL)isEqual:(id)a3;
-- (FLOWSchemaFLOWState)initWithDictionary:(id)a3;
-- (FLOWSchemaFLOWState)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLOWSchemaFLOWState)initWithDictionary:(id)dictionary;
+- (FLOWSchemaFLOWState)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWSchemaFLOWState
 
-- (FLOWSchemaFLOWState)initWithDictionary:(id)a3
+- (FLOWSchemaFLOWState)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = FLOWSchemaFLOWState;
   v5 = [(FLOWSchemaFLOWState *)&v19 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"currentTaskName"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"currentTaskName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(FLOWSchemaFLOWState *)v5 setCurrentTaskName:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"currentTaskType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"currentTaskType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,14 +36,14 @@
       [(FLOWSchemaFLOWState *)v5 setCurrentTaskType:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"flowStateType"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"flowStateType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWState setFlowStateType:](v5, "setFlowStateType:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"flowStateReason"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"flowStateReason"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -51,7 +51,7 @@
       [(FLOWSchemaFLOWState *)v5 setFlowStateReason:v12];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"resolvedSlotName"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"resolvedSlotName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -59,7 +59,7 @@
       [(FLOWSchemaFLOWState *)v5 setResolvedSlotName:v14];
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"flowStateReasonDescription"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"flowStateReasonDescription"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -73,30 +73,30 @@
   return v5;
 }
 
-- (FLOWSchemaFLOWState)initWithJSON:(id)a3
+- (FLOWSchemaFLOWState)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWSchemaFLOWState *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWSchemaFLOWState *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWSchemaFLOWState *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -109,42 +109,42 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_currentTaskName)
   {
-    v4 = [(FLOWSchemaFLOWState *)self currentTaskName];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"currentTaskName"];
+    currentTaskName = [(FLOWSchemaFLOWState *)self currentTaskName];
+    v5 = [currentTaskName copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"currentTaskName"];
   }
 
   if (self->_currentTaskType)
   {
-    v6 = [(FLOWSchemaFLOWState *)self currentTaskType];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"currentTaskType"];
+    currentTaskType = [(FLOWSchemaFLOWState *)self currentTaskType];
+    v7 = [currentTaskType copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"currentTaskType"];
   }
 
   if (self->_flowStateReason)
   {
-    v8 = [(FLOWSchemaFLOWState *)self flowStateReason];
-    v9 = [v8 dictionaryRepresentation];
-    if (v9)
+    flowStateReason = [(FLOWSchemaFLOWState *)self flowStateReason];
+    dictionaryRepresentation = [flowStateReason dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"flowStateReason"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"flowStateReason"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"flowStateReason"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"flowStateReason"];
     }
   }
 
   if (self->_flowStateReasonDescription)
   {
-    v11 = [(FLOWSchemaFLOWState *)self flowStateReasonDescription];
-    v12 = [v11 copy];
-    [v3 setObject:v12 forKeyedSubscript:@"flowStateReasonDescription"];
+    flowStateReasonDescription = [(FLOWSchemaFLOWState *)self flowStateReasonDescription];
+    v12 = [flowStateReasonDescription copy];
+    [dictionary setObject:v12 forKeyedSubscript:@"flowStateReasonDescription"];
   }
 
   if (*&self->_has)
@@ -160,19 +160,19 @@
       v14 = off_1E78D6330[v13];
     }
 
-    [v3 setObject:v14 forKeyedSubscript:@"flowStateType"];
+    [dictionary setObject:v14 forKeyedSubscript:@"flowStateType"];
   }
 
   if (self->_resolvedSlotName)
   {
-    v15 = [(FLOWSchemaFLOWState *)self resolvedSlotName];
-    v16 = [v15 copy];
-    [v3 setObject:v16 forKeyedSubscript:@"resolvedSlotName"];
+    resolvedSlotName = [(FLOWSchemaFLOWState *)self resolvedSlotName];
+    v16 = [resolvedSlotName copy];
+    [dictionary setObject:v16 forKeyedSubscript:@"resolvedSlotName"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -194,28 +194,28 @@
   return v6 ^ v7 ^ [(NSString *)self->_flowStateReasonDescription hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_30;
   }
 
-  v5 = [(FLOWSchemaFLOWState *)self currentTaskName];
-  v6 = [v4 currentTaskName];
-  if ((v5 != 0) == (v6 == 0))
+  currentTaskName = [(FLOWSchemaFLOWState *)self currentTaskName];
+  currentTaskName2 = [equalCopy currentTaskName];
+  if ((currentTaskName != 0) == (currentTaskName2 == 0))
   {
     goto LABEL_29;
   }
 
-  v7 = [(FLOWSchemaFLOWState *)self currentTaskName];
-  if (v7)
+  currentTaskName3 = [(FLOWSchemaFLOWState *)self currentTaskName];
+  if (currentTaskName3)
   {
-    v8 = v7;
-    v9 = [(FLOWSchemaFLOWState *)self currentTaskName];
-    v10 = [v4 currentTaskName];
-    v11 = [v9 isEqual:v10];
+    v8 = currentTaskName3;
+    currentTaskName4 = [(FLOWSchemaFLOWState *)self currentTaskName];
+    currentTaskName5 = [equalCopy currentTaskName];
+    v11 = [currentTaskName4 isEqual:currentTaskName5];
 
     if (!v11)
     {
@@ -227,20 +227,20 @@
   {
   }
 
-  v5 = [(FLOWSchemaFLOWState *)self currentTaskType];
-  v6 = [v4 currentTaskType];
-  if ((v5 != 0) == (v6 == 0))
+  currentTaskName = [(FLOWSchemaFLOWState *)self currentTaskType];
+  currentTaskName2 = [equalCopy currentTaskType];
+  if ((currentTaskName != 0) == (currentTaskName2 == 0))
   {
     goto LABEL_29;
   }
 
-  v12 = [(FLOWSchemaFLOWState *)self currentTaskType];
-  if (v12)
+  currentTaskType = [(FLOWSchemaFLOWState *)self currentTaskType];
+  if (currentTaskType)
   {
-    v13 = v12;
-    v14 = [(FLOWSchemaFLOWState *)self currentTaskType];
-    v15 = [v4 currentTaskType];
-    v16 = [v14 isEqual:v15];
+    v13 = currentTaskType;
+    currentTaskType2 = [(FLOWSchemaFLOWState *)self currentTaskType];
+    currentTaskType3 = [equalCopy currentTaskType];
+    v16 = [currentTaskType2 isEqual:currentTaskType3];
 
     if (!v16)
     {
@@ -252,7 +252,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[56] & 1))
+  if ((*&self->_has & 1) != (equalCopy[56] & 1))
   {
     goto LABEL_30;
   }
@@ -260,26 +260,26 @@
   if (*&self->_has)
   {
     flowStateType = self->_flowStateType;
-    if (flowStateType != [v4 flowStateType])
+    if (flowStateType != [equalCopy flowStateType])
     {
       goto LABEL_30;
     }
   }
 
-  v5 = [(FLOWSchemaFLOWState *)self flowStateReason];
-  v6 = [v4 flowStateReason];
-  if ((v5 != 0) == (v6 == 0))
+  currentTaskName = [(FLOWSchemaFLOWState *)self flowStateReason];
+  currentTaskName2 = [equalCopy flowStateReason];
+  if ((currentTaskName != 0) == (currentTaskName2 == 0))
   {
     goto LABEL_29;
   }
 
-  v18 = [(FLOWSchemaFLOWState *)self flowStateReason];
-  if (v18)
+  flowStateReason = [(FLOWSchemaFLOWState *)self flowStateReason];
+  if (flowStateReason)
   {
-    v19 = v18;
-    v20 = [(FLOWSchemaFLOWState *)self flowStateReason];
-    v21 = [v4 flowStateReason];
-    v22 = [v20 isEqual:v21];
+    v19 = flowStateReason;
+    flowStateReason2 = [(FLOWSchemaFLOWState *)self flowStateReason];
+    flowStateReason3 = [equalCopy flowStateReason];
+    v22 = [flowStateReason2 isEqual:flowStateReason3];
 
     if (!v22)
     {
@@ -291,20 +291,20 @@
   {
   }
 
-  v5 = [(FLOWSchemaFLOWState *)self resolvedSlotName];
-  v6 = [v4 resolvedSlotName];
-  if ((v5 != 0) == (v6 == 0))
+  currentTaskName = [(FLOWSchemaFLOWState *)self resolvedSlotName];
+  currentTaskName2 = [equalCopy resolvedSlotName];
+  if ((currentTaskName != 0) == (currentTaskName2 == 0))
   {
     goto LABEL_29;
   }
 
-  v23 = [(FLOWSchemaFLOWState *)self resolvedSlotName];
-  if (v23)
+  resolvedSlotName = [(FLOWSchemaFLOWState *)self resolvedSlotName];
+  if (resolvedSlotName)
   {
-    v24 = v23;
-    v25 = [(FLOWSchemaFLOWState *)self resolvedSlotName];
-    v26 = [v4 resolvedSlotName];
-    v27 = [v25 isEqual:v26];
+    v24 = resolvedSlotName;
+    resolvedSlotName2 = [(FLOWSchemaFLOWState *)self resolvedSlotName];
+    resolvedSlotName3 = [equalCopy resolvedSlotName];
+    v27 = [resolvedSlotName2 isEqual:resolvedSlotName3];
 
     if (!v27)
     {
@@ -316,12 +316,12 @@
   {
   }
 
-  v5 = [(FLOWSchemaFLOWState *)self flowStateReasonDescription];
-  v6 = [v4 flowStateReasonDescription];
-  if ((v5 != 0) != (v6 == 0))
+  currentTaskName = [(FLOWSchemaFLOWState *)self flowStateReasonDescription];
+  currentTaskName2 = [equalCopy flowStateReasonDescription];
+  if ((currentTaskName != 0) != (currentTaskName2 == 0))
   {
-    v28 = [(FLOWSchemaFLOWState *)self flowStateReasonDescription];
-    if (!v28)
+    flowStateReasonDescription = [(FLOWSchemaFLOWState *)self flowStateReasonDescription];
+    if (!flowStateReasonDescription)
     {
 
 LABEL_33:
@@ -329,10 +329,10 @@ LABEL_33:
       goto LABEL_31;
     }
 
-    v29 = v28;
-    v30 = [(FLOWSchemaFLOWState *)self flowStateReasonDescription];
-    v31 = [v4 flowStateReasonDescription];
-    v32 = [v30 isEqual:v31];
+    v29 = flowStateReasonDescription;
+    flowStateReasonDescription2 = [(FLOWSchemaFLOWState *)self flowStateReasonDescription];
+    flowStateReasonDescription3 = [equalCopy flowStateReasonDescription];
+    v32 = [flowStateReasonDescription2 isEqual:flowStateReasonDescription3];
 
     if (v32)
     {
@@ -352,19 +352,19 @@ LABEL_31:
   return v33;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(FLOWSchemaFLOWState *)self currentTaskName];
+  toCopy = to;
+  currentTaskName = [(FLOWSchemaFLOWState *)self currentTaskName];
 
-  if (v4)
+  if (currentTaskName)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(FLOWSchemaFLOWState *)self currentTaskType];
+  currentTaskType = [(FLOWSchemaFLOWState *)self currentTaskType];
 
-  if (v5)
+  if (currentTaskType)
   {
     PBDataWriterWriteStringField();
   }
@@ -374,42 +374,42 @@ LABEL_31:
     PBDataWriterWriteInt32Field();
   }
 
-  v6 = [(FLOWSchemaFLOWState *)self flowStateReason];
+  flowStateReason = [(FLOWSchemaFLOWState *)self flowStateReason];
 
-  if (v6)
+  if (flowStateReason)
   {
-    v7 = [(FLOWSchemaFLOWState *)self flowStateReason];
+    flowStateReason2 = [(FLOWSchemaFLOWState *)self flowStateReason];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(FLOWSchemaFLOWState *)self resolvedSlotName];
+  resolvedSlotName = [(FLOWSchemaFLOWState *)self resolvedSlotName];
 
-  if (v8)
+  if (resolvedSlotName)
   {
     PBDataWriterWriteStringField();
   }
 
-  v9 = [(FLOWSchemaFLOWState *)self flowStateReasonDescription];
+  flowStateReasonDescription = [(FLOWSchemaFLOWState *)self flowStateReasonDescription];
 
-  v10 = v11;
-  if (v9)
+  v10 = toCopy;
+  if (flowStateReasonDescription)
   {
     PBDataWriterWriteStringField();
-    v10 = v11;
+    v10 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = FLOWSchemaFLOWState;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(FLOWSchemaFLOWState *)self flowStateReason:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(FLOWSchemaFLOWState *)self deleteFlowStateReason];
   }

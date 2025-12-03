@@ -1,27 +1,27 @@
 @interface TTMSchemaTTMOverrideRequestEnded
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (TTMSchemaTTMOverrideRequestEnded)initWithDictionary:(id)a3;
-- (TTMSchemaTTMOverrideRequestEnded)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (TTMSchemaTTMOverrideRequestEnded)initWithDictionary:(id)dictionary;
+- (TTMSchemaTTMOverrideRequestEnded)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)addResults:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addResults:(id)results;
+- (void)writeTo:(id)to;
 @end
 
 @implementation TTMSchemaTTMOverrideRequestEnded
 
-- (TTMSchemaTTMOverrideRequestEnded)initWithDictionary:(id)a3
+- (TTMSchemaTTMOverrideRequestEnded)initWithDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = TTMSchemaTTMOverrideRequestEnded;
   v5 = [(TTMSchemaTTMOverrideRequestEnded *)&v23 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"results"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"results"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,7 +65,7 @@
       }
     }
 
-    v15 = [v4 objectForKeyedSubscript:{@"asset", v19}];
+    v15 = [dictionaryCopy objectForKeyedSubscript:{@"asset", v19}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -79,30 +79,30 @@
   return v5;
 }
 
-- (TTMSchemaTTMOverrideRequestEnded)initWithJSON:(id)a3
+- (TTMSchemaTTMOverrideRequestEnded)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(TTMSchemaTTMOverrideRequestEnded *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(TTMSchemaTTMOverrideRequestEnded *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(TTMSchemaTTMOverrideRequestEnded *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -116,26 +116,26 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_asset)
   {
-    v4 = [(TTMSchemaTTMOverrideRequestEnded *)self asset];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    asset = [(TTMSchemaTTMOverrideRequestEnded *)self asset];
+    dictionaryRepresentation = [asset dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"asset"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"asset"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"asset"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"asset"];
     }
   }
 
   if ([(NSArray *)self->_results count])
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -155,16 +155,16 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          if (v13)
+          dictionaryRepresentation2 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v7 addObject:v13];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v14 = [MEMORY[0x1E695DFB0] null];
-            [v7 addObject:v14];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -174,36 +174,36 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"results"];
+    [dictionary setObject:array forKeyedSubscript:@"results"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v16];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v16];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(TTMSchemaTTMOverrideRequestEnded *)self results];
-  v6 = [v4 results];
-  if ((v5 != 0) == (v6 == 0))
+  results = [(TTMSchemaTTMOverrideRequestEnded *)self results];
+  results2 = [equalCopy results];
+  if ((results != 0) == (results2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(TTMSchemaTTMOverrideRequestEnded *)self results];
-  if (v7)
+  results3 = [(TTMSchemaTTMOverrideRequestEnded *)self results];
+  if (results3)
   {
-    v8 = v7;
-    v9 = [(TTMSchemaTTMOverrideRequestEnded *)self results];
-    v10 = [v4 results];
-    v11 = [v9 isEqual:v10];
+    v8 = results3;
+    results4 = [(TTMSchemaTTMOverrideRequestEnded *)self results];
+    results5 = [equalCopy results];
+    v11 = [results4 isEqual:results5];
 
     if (!v11)
     {
@@ -215,12 +215,12 @@
   {
   }
 
-  v5 = [(TTMSchemaTTMOverrideRequestEnded *)self asset];
-  v6 = [v4 asset];
-  if ((v5 != 0) != (v6 == 0))
+  results = [(TTMSchemaTTMOverrideRequestEnded *)self asset];
+  results2 = [equalCopy asset];
+  if ((results != 0) != (results2 == 0))
   {
-    v12 = [(TTMSchemaTTMOverrideRequestEnded *)self asset];
-    if (!v12)
+    asset = [(TTMSchemaTTMOverrideRequestEnded *)self asset];
+    if (!asset)
     {
 
 LABEL_15:
@@ -228,10 +228,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(TTMSchemaTTMOverrideRequestEnded *)self asset];
-    v15 = [v4 asset];
-    v16 = [v14 isEqual:v15];
+    v13 = asset;
+    asset2 = [(TTMSchemaTTMOverrideRequestEnded *)self asset];
+    asset3 = [equalCopy asset];
+    v16 = [asset2 isEqual:asset3];
 
     if (v16)
     {
@@ -251,10 +251,10 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -286,48 +286,48 @@ LABEL_13:
     while (v7);
   }
 
-  v10 = [(TTMSchemaTTMOverrideRequestEnded *)self asset];
+  asset = [(TTMSchemaTTMOverrideRequestEnded *)self asset];
 
-  if (v10)
+  if (asset)
   {
-    v11 = [(TTMSchemaTTMOverrideRequestEnded *)self asset];
+    asset2 = [(TTMSchemaTTMOverrideRequestEnded *)self asset];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)addResults:(id)a3
+- (void)addResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   results = self->_results;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!results)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_results;
-    self->_results = v6;
+    self->_results = array;
 
-    v4 = v8;
+    resultsCopy = v8;
     results = self->_results;
   }
 
-  [(NSArray *)results addObject:v4];
+  [(NSArray *)results addObject:resultsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v11.receiver = self;
   v11.super_class = TTMSchemaTTMOverrideRequestEnded;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(TTMSchemaTTMOverrideRequestEnded *)self results:v11.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
   [(TTMSchemaTTMOverrideRequestEnded *)self setResults:v7];
 
-  v8 = [(TTMSchemaTTMOverrideRequestEnded *)self asset];
-  v9 = [v8 applySensitiveConditionsPolicy:v4];
+  asset = [(TTMSchemaTTMOverrideRequestEnded *)self asset];
+  v9 = [asset applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v9 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v9 suppressMessage];
+  if (policyCopy)
   {
     [(TTMSchemaTTMOverrideRequestEnded *)self deleteAsset];
   }

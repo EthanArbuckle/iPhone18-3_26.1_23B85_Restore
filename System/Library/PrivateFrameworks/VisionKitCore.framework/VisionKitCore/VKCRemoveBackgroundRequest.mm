@@ -1,8 +1,8 @@
 @interface VKCRemoveBackgroundRequest
-+ (VKCRemoveBackgroundRequest)requestWithImage:(CGImage *)a3 orientation:(int64_t)a4 canResize:(BOOL)a5;
++ (VKCRemoveBackgroundRequest)requestWithImage:(CGImage *)image orientation:(int64_t)orientation canResize:(BOOL)resize;
 - (CGSize)size;
-- (VKCRemoveBackgroundRequest)initWithCGImage:(CGImage *)a3 orientation:(int64_t)a4;
-- (VKCRemoveBackgroundRequest)initWithPhotosAnalyzerRequest:(id)a3;
+- (VKCRemoveBackgroundRequest)initWithCGImage:(CGImage *)image orientation:(int64_t)orientation;
+- (VKCRemoveBackgroundRequest)initWithPhotosAnalyzerRequest:(id)request;
 - (__CVBuffer)pixelBuffer;
 - (id)_createMADMaskRequest;
 - (id)_createMADMatteRequest;
@@ -10,14 +10,14 @@
 - (id)description;
 - (int)MADRequestID;
 - (void)dealloc;
-- (void)setMADRequestID:(int)a3;
+- (void)setMADRequestID:(int)d;
 @end
 
 @implementation VKCRemoveBackgroundRequest
 
-- (VKCRemoveBackgroundRequest)initWithPhotosAnalyzerRequest:(id)a3
+- (VKCRemoveBackgroundRequest)initWithPhotosAnalyzerRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v12.receiver = self;
   v12.super_class = VKCRemoveBackgroundRequest;
   v6 = [(VKCRemoveBackgroundRequest *)&v12 init];
@@ -25,25 +25,25 @@
   if (v6)
   {
     v6->_lock._os_unfair_lock_opaque = 0;
-    v8 = [MEMORY[0x1E696AFB0] UUID];
-    v9 = [v8 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v7->_identifier;
-    v7->_identifier = v9;
+    v7->_identifier = uUIDString;
 
     v7->_requestID = -1;
-    objc_storeStrong(&v7->_photosRequest, a3);
+    objc_storeStrong(&v7->_photosRequest, request);
   }
 
   return v7;
 }
 
-+ (VKCRemoveBackgroundRequest)requestWithImage:(CGImage *)a3 orientation:(int64_t)a4 canResize:(BOOL)a5
++ (VKCRemoveBackgroundRequest)requestWithImage:(CGImage *)image orientation:(int64_t)orientation canResize:(BOOL)resize
 {
-  v5 = a5;
-  v7 = a3;
-  Width = CGImageGetWidth(a3);
-  v9 = Width * CGImageGetHeight(v7);
-  if (v9 > 12582912.0 && v5)
+  resizeCopy = resize;
+  imageCopy = image;
+  Width = CGImageGetWidth(image);
+  v9 = Width * CGImageGetHeight(imageCopy);
+  if (v9 > 12582912.0 && resizeCopy)
   {
     v11 = _VKSignpostLog();
     if (os_signpost_enabled(v11))
@@ -59,8 +59,8 @@
       _os_log_impl(&dword_1B4335000, v12, OS_LOG_TYPE_INFO, "Signpost Begin: VisionKit Remove Background Resize", v20, 2u);
     }
 
-    ScaledCGImage = vk_createScaledCGImage(v7, floor(sqrt(12582912.0 / v9) * 100.0) / 100.0);
-    v7 = ScaledCGImage;
+    ScaledCGImage = vk_createScaledCGImage(imageCopy, floor(sqrt(12582912.0 / v9) * 100.0) / 100.0);
+    imageCopy = ScaledCGImage;
     if (ScaledCGImage)
     {
       CFAutorelease(ScaledCGImage);
@@ -81,12 +81,12 @@
     }
   }
 
-  v16 = [[VKCRemoveBackgroundRequest alloc] initWithCGImage:v7 orientation:a4];
+  v16 = [[VKCRemoveBackgroundRequest alloc] initWithCGImage:imageCopy orientation:orientation];
 
   return v16;
 }
 
-- (VKCRemoveBackgroundRequest)initWithCGImage:(CGImage *)a3 orientation:(int64_t)a4
+- (VKCRemoveBackgroundRequest)initWithCGImage:(CGImage *)image orientation:(int64_t)orientation
 {
   v14.receiver = self;
   v14.super_class = VKCRemoveBackgroundRequest;
@@ -95,16 +95,16 @@
   if (v6)
   {
     v6->_lock._os_unfair_lock_opaque = 0;
-    v8 = [MEMORY[0x1E696AFB0] UUID];
-    v9 = [v8 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v7->_identifier;
-    v7->_identifier = v9;
+    v7->_identifier = uUIDString;
 
     v7->_requestID = -1;
-    v7->_CGImage = CGImageRetain(a3);
-    v7->_imageOrientation = a4;
-    Width = CGImageGetWidth(a3);
-    Height = CGImageGetHeight(a3);
+    v7->_CGImage = CGImageRetain(image);
+    v7->_imageOrientation = orientation;
+    Width = CGImageGetWidth(image);
+    Height = CGImageGetHeight(image);
     v7->_size.width = Width;
     v7->_size.height = Height;
   }
@@ -145,10 +145,10 @@
   return requestID;
 }
 
-- (void)setMADRequestID:(int)a3
+- (void)setMADRequestID:(int)d
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_requestID = a3;
+  self->_requestID = d;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -172,12 +172,12 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(VKCRemoveBackgroundRequest *)self identifier];
+  identifier = [(VKCRemoveBackgroundRequest *)self identifier];
   [(VKCRemoveBackgroundRequest *)self size];
   v7 = VKMUIStringForSize(v5, v6);
   v8 = VKMUIStringForBool([(VKCRemoveBackgroundRequest *)self cropToFit]);
   v9 = VKMUIStringForBool([(VKCRemoveBackgroundRequest *)self maskOnly]);
-  v10 = [v3 stringWithFormat:@"RemoveBGRequest id: %@\n size: %@\n cropToFit: %@\n maskOnly: %@", v4, v7, v8, v9];
+  v10 = [v3 stringWithFormat:@"RemoveBGRequest id: %@\n size: %@\n cropToFit: %@\n maskOnly: %@", identifier, v7, v8, v9];
 
   return v10;
 }
@@ -193,11 +193,11 @@
 
 - (id)_createMADMaskRequest
 {
-  if (a1)
+  if (self)
   {
     v2 = objc_alloc_init(MEMORY[0x1E69AE398]);
-    v3 = [a1 VIImageType];
-    [v2 setImageType:v3];
+    vIImageType = [self VIImageType];
+    [v2 setImageType:vIImageType];
   }
 
   else
@@ -210,16 +210,16 @@
 
 - (id)_createMADMatteRequest
 {
-  if (a1)
+  if (self)
   {
     v2 = objc_alloc_init(MEMORY[0x1E69AE3A8]);
-    v3 = [a1 VIImageType];
-    [v2 setImageType:v3];
+    vIImageType = [self VIImageType];
+    [v2 setImageType:vIImageType];
 
-    [v2 setCropResult:{objc_msgSend(a1, "cropToFit")}];
-    if ([a1 performInPlace])
+    [v2 setCropResult:{objc_msgSend(self, "cropToFit")}];
+    if ([self performInPlace])
     {
-      if (![a1 cropToFit])
+      if (![self cropToFit])
       {
         v5 = 1;
         goto LABEL_9;
@@ -236,8 +236,8 @@
     v5 = 0;
 LABEL_9:
     [v2 setInPlace:v5];
-    v6 = [a1 selectedIndexSet];
-    [v2 setInstances:v6];
+    selectedIndexSet = [self selectedIndexSet];
+    [v2 setInstances:selectedIndexSet];
 
     goto LABEL_10;
   }

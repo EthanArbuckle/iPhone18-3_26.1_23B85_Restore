@@ -1,41 +1,41 @@
 @interface SGM2MaybeInformationShown
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)key;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsExtracted:(id)a3;
+- (int)StringAsExtracted:(id)extracted;
 - (int)extracted;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasExtractionModelVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasExtractionModelVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SGM2MaybeInformationShown
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(SGM2MaybeInformationShown *)self setKey:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if (v5)
   {
-    self->_extracted = *(v4 + 2);
+    self->_extracted = *(fromCopy + 2);
     *&self->_has |= 1u;
-    v5 = *(v4 + 24);
+    v5 = *(fromCopy + 24);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_extractionModelVersion = *(v4 + 3);
+    self->_extractionModelVersion = *(fromCopy + 3);
     *&self->_has |= 2u;
   }
 }
@@ -67,16 +67,16 @@ LABEL_3:
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   key = self->_key;
-  if (key | *(v4 + 2))
+  if (key | *(equalCopy + 2))
   {
     if (![(NSString *)key isEqual:?])
     {
@@ -86,23 +86,23 @@ LABEL_3:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_extracted != *(v4 + 2))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_extracted != *(equalCopy + 2))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
 LABEL_13:
     v6 = 0;
     goto LABEL_14;
   }
 
-  v6 = (*(v4 + 24) & 2) == 0;
+  v6 = (*(equalCopy + 24) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 24) & 2) == 0 || self->_extractionModelVersion != *(v4 + 3))
+    if ((*(equalCopy + 24) & 2) == 0 || self->_extractionModelVersion != *(equalCopy + 3))
     {
       goto LABEL_13;
     }
@@ -115,10 +115,10 @@ LABEL_14:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_key copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_key copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -139,39 +139,39 @@ LABEL_14:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_key)
   {
-    v6 = v4;
-    [v4 setKey:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setKey:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 2) = self->_extracted;
-    *(v4 + 24) |= 1u;
+    *(toCopy + 2) = self->_extracted;
+    *(toCopy + 24) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 3) = self->_extractionModelVersion;
-    *(v4 + 24) |= 2u;
+    *(toCopy + 3) = self->_extractionModelVersion;
+    *(toCopy + 24) |= 2u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_key)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -179,7 +179,7 @@ LABEL_14:
   {
     extracted = self->_extracted;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -187,18 +187,18 @@ LABEL_14:
   {
     extractionModelVersion = self->_extractionModelVersion;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   key = self->_key;
   if (key)
   {
-    [v3 setObject:key forKey:@"key"];
+    [dictionary setObject:key forKey:@"key"];
   }
 
   has = self->_has;
@@ -235,15 +235,15 @@ LABEL_14:
   v8.receiver = self;
   v8.super_class = SGM2MaybeInformationShown;
   v4 = [(SGM2MaybeInformationShown *)&v8 description];
-  v5 = [(SGM2MaybeInformationShown *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SGM2MaybeInformationShown *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasExtractionModelVersion:(BOOL)a3
+- (void)setHasExtractionModelVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 2;
   }
@@ -256,25 +256,25 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsExtracted:(id)a3
+- (int)StringAsExtracted:(id)extracted
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SGMBannerExtractionTypeSig"])
+  extractedCopy = extracted;
+  if ([extractedCopy isEqualToString:@"SGMBannerExtractionTypeSig"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SGMBannerExtractionTypePhrase"])
+  else if ([extractedCopy isEqualToString:@"SGMBannerExtractionTypePhrase"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SGMBannerExtractionTypeSigPhrase"])
+  else if ([extractedCopy isEqualToString:@"SGMBannerExtractionTypeSigPhrase"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SGMBannerExtractionTypeOther"])
+  else if ([extractedCopy isEqualToString:@"SGMBannerExtractionTypeOther"])
   {
     v4 = 3;
   }

@@ -1,31 +1,31 @@
 @interface BCNativeOAuth2Response
 - (BCError)error;
-- (BCNativeOAuth2Response)initWithToken:(id)a3 error:(id)a4;
+- (BCNativeOAuth2Response)initWithToken:(id)token error:(id)error;
 - (NSDictionary)dictionaryValue;
 @end
 
 @implementation BCNativeOAuth2Response
 
-- (BCNativeOAuth2Response)initWithToken:(id)a3 error:(id)a4
+- (BCNativeOAuth2Response)initWithToken:(id)token error:(id)error
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  tokenCopy = token;
+  errorCopy = error;
   v22.receiver = self;
   v22.super_class = BCNativeOAuth2Response;
   v9 = [(BCNativeOAuth2Response *)&v22 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_token, a3);
-    if (v8)
+    objc_storeStrong(&v9->_token, token);
+    if (errorCopy)
     {
       v11 = 1;
     }
 
     else
     {
-      v11 = v7 == 0;
+      v11 = tokenCopy == 0;
     }
 
     v12 = 1;
@@ -35,13 +35,13 @@
     }
 
     v10->_status = v12;
-    if (v8)
+    if (errorCopy)
     {
       v13 = [BCError alloc];
-      v14 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v8, "code")}];
-      v15 = [v8 domain];
-      v16 = [v8 localizedDescription];
-      v17 = [(BCError *)v13 initWithCode:v14 domain:v15 message:v16];
+      v14 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
+      domain = [errorCopy domain];
+      localizedDescription = [errorCopy localizedDescription];
+      v17 = [(BCError *)v13 initWithCode:v14 domain:domain message:localizedDescription];
 
       v23[0] = v17;
       v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:1];
@@ -109,8 +109,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v18 + 1) + 8 * i) dictionaryValue];
-          [v7 addObject:v14];
+          dictionaryValue = [*(*(&v18 + 1) + 8 * i) dictionaryValue];
+          [v7 addObject:dictionaryValue];
         }
 
         v11 = [(NSArray *)v9 countByEnumeratingWithState:&v18 objects:v22 count:16];

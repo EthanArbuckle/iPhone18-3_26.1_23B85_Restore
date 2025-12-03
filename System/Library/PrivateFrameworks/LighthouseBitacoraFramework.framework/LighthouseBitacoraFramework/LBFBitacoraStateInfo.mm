@@ -1,10 +1,10 @@
 @interface LBFBitacoraStateInfo
-+ (id)getCAEventDictionaryFromBiomeEvent:(id)a3;
++ (id)getCAEventDictionaryFromBiomeEvent:(id)event;
 - (BOOL)uploadRawEventsToCoreAnalytics;
 - (BOOL)uploadToCoreAnalytics;
 - (BOOL)uploadToDedisco;
-- (LBFBitacoraStateInfo)initWithBitcoraState:(id)a3 bucketStartTime:(id)a4 bucketEndTime:(id)a5 observedTrialStatus:(id)a6 bitacoraStateTransitions:(id)a7 bitacoraEvents:(id)a8;
-- (LBFBitacoraStateInfo)initWithBitcoraStateMLHost:(id)a3 bucketStartTime:(id)a4 bucketEndTime:(id)a5 observedTrialStatus:(id)a6 bitacoraStateTransitions:(id)a7 bitacoraEvents:(id)a8;
+- (LBFBitacoraStateInfo)initWithBitcoraState:(id)state bucketStartTime:(id)time bucketEndTime:(id)endTime observedTrialStatus:(id)status bitacoraStateTransitions:(id)transitions bitacoraEvents:(id)events;
+- (LBFBitacoraStateInfo)initWithBitcoraStateMLHost:(id)host bucketStartTime:(id)time bucketEndTime:(id)endTime observedTrialStatus:(id)status bitacoraStateTransitions:(id)transitions bitacoraEvents:(id)events;
 - (id)getDictionaryRepresentation;
 - (id)getPETState;
 - (id)maxTimedelta_To_State_Activated;
@@ -38,47 +38,47 @@
 
 @implementation LBFBitacoraStateInfo
 
-- (LBFBitacoraStateInfo)initWithBitcoraState:(id)a3 bucketStartTime:(id)a4 bucketEndTime:(id)a5 observedTrialStatus:(id)a6 bitacoraStateTransitions:(id)a7 bitacoraEvents:(id)a8
+- (LBFBitacoraStateInfo)initWithBitcoraState:(id)state bucketStartTime:(id)time bucketEndTime:(id)endTime observedTrialStatus:(id)status bitacoraStateTransitions:(id)transitions bitacoraEvents:(id)events
 {
-  v15 = a3;
-  v77 = a4;
-  v76 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  stateCopy = state;
+  timeCopy = time;
+  endTimeCopy = endTime;
+  statusCopy = status;
+  transitionsCopy = transitions;
+  eventsCopy = events;
   v79.receiver = self;
   v79.super_class = LBFBitacoraStateInfo;
   v19 = [(LBFBitacoraStateInfo *)&v79 init];
   if (v19)
   {
     LBFLoggingUtilsInit();
-    objc_storeStrong(&v19->_bitacoraStateTransitions, a7);
-    objc_storeStrong(&v19->_bitacoraEvents, a8);
-    v24 = objc_msgSend_UUID(MEMORY[0x277CCAD78], v20, v21, v22, v23, v76, v77);
+    objc_storeStrong(&v19->_bitacoraStateTransitions, transitions);
+    objc_storeStrong(&v19->_bitacoraEvents, events);
+    v24 = objc_msgSend_UUID(MEMORY[0x277CCAD78], v20, v21, v22, v23, endTimeCopy, timeCopy);
     v29 = objc_msgSend_UUIDString(v24, v25, v26, v27, v28);
     stateId = v19->_stateId;
     v19->_stateId = v29;
 
-    objc_storeStrong(&v19->_trialIdentifiers, a3);
+    objc_storeStrong(&v19->_trialIdentifiers, state);
     v35 = objc_msgSend_getContextId(LBFContextId, v31, v32, v33, v34);
     contextId = v19->_contextId;
     v19->_contextId = v35;
 
-    v41 = objc_msgSend_isActivated(v16, v37, v38, v39, v40);
+    v41 = objc_msgSend_isActivated(statusCopy, v37, v38, v39, v40);
     isActivated = v19->_isActivated;
     v19->_isActivated = v41;
 
-    v47 = objc_msgSend_isAllocated(v16, v43, v44, v45, v46);
+    v47 = objc_msgSend_isAllocated(statusCopy, v43, v44, v45, v46);
     isAllocated = v19->_isAllocated;
     v19->_isAllocated = v47;
 
-    v19->_isActivated_implicit = objc_msgSend_isActivated_implicit(v16, v49, v50, v51, v52);
-    v19->_isAllocated_implicit = objc_msgSend_isAllocated_implicit(v16, v53, v54, v55, v56);
-    objc_storeStrong(&v19->_bucketStartTime, a4);
-    objc_storeStrong(&v19->_bucketEndTime, a5);
-    if (objc_msgSend_count(v17, v57, v58, v59, v60))
+    v19->_isActivated_implicit = objc_msgSend_isActivated_implicit(statusCopy, v49, v50, v51, v52);
+    v19->_isAllocated_implicit = objc_msgSend_isAllocated_implicit(statusCopy, v53, v54, v55, v56);
+    objc_storeStrong(&v19->_bucketStartTime, time);
+    objc_storeStrong(&v19->_bucketEndTime, endTime);
+    if (objc_msgSend_count(transitionsCopy, v57, v58, v59, v60))
     {
-      v65 = objc_msgSend_lastObject(v17, v61, v62, v63, v64);
+      v65 = objc_msgSend_lastObject(transitionsCopy, v61, v62, v63, v64);
       v19->_latestState = objc_msgSend_state(v65, v66, v67, v68, v69);
 
       if (v19->_latestState == 8)
@@ -97,9 +97,9 @@
       v19->_latestState = 0;
     }
 
-    if (v15)
+    if (stateCopy)
     {
-      objc_msgSend_IsEmptyTrialIdentifiers_(LBFUtils, v61, v15, v63, v64);
+      objc_msgSend_IsEmptyTrialIdentifiers_(LBFUtils, v61, stateCopy, v63, v64);
     }
 
     objc_msgSend_iterateEvents(v19, v61, v62, v63, v64);
@@ -109,9 +109,9 @@
   return v19;
 }
 
-- (LBFBitacoraStateInfo)initWithBitcoraStateMLHost:(id)a3 bucketStartTime:(id)a4 bucketEndTime:(id)a5 observedTrialStatus:(id)a6 bitacoraStateTransitions:(id)a7 bitacoraEvents:(id)a8
+- (LBFBitacoraStateInfo)initWithBitcoraStateMLHost:(id)host bucketStartTime:(id)time bucketEndTime:(id)endTime observedTrialStatus:(id)status bitacoraStateTransitions:(id)transitions bitacoraEvents:(id)events
 {
-  started = objc_msgSend_initWithBitcoraState_bucketStartTime_bucketEndTime_observedTrialStatus_bitacoraStateTransitions_bitacoraEvents_(self, a2, a3, a4, a5, a6, a7, a8);
+  started = objc_msgSend_initWithBitcoraState_bucketStartTime_bucketEndTime_observedTrialStatus_bitacoraStateTransitions_bitacoraEvents_(self, a2, host, time, endTime, status, transitions, events);
   v12 = started;
   if (started)
   {
@@ -2706,7 +2706,7 @@ LABEL_63:
   v477 = 0u;
   v474 = 0u;
   v475 = 0u;
-  v470 = self;
+  selfCopy = self;
   v48 = self->_bitacoraEvents;
   v50 = objc_msgSend_countByEnumeratingWithState_objects_count_(v48, v49, &v474, v478, 16);
   if (v50)
@@ -2938,12 +2938,12 @@ LABEL_63:
 
   if ((objc_msgSend_isActivated(v3, v249, v250, v251, v252) & 1) == 0)
   {
-    objc_msgSend_setIsActivated_(v3, v253, v470->_isActivated_implicit, v255, v256);
+    objc_msgSend_setIsActivated_(v3, v253, selfCopy->_isActivated_implicit, v255, v256);
   }
 
   if ((objc_msgSend_isAllocated(v3, v253, v254, v255, v256) & 1) == 0)
   {
-    objc_msgSend_setIsAllocated_(v3, v257, v470->_isAllocated_implicit, v259, v260);
+    objc_msgSend_setIsAllocated_(v3, v257, selfCopy->_isAllocated_implicit, v259, v260);
   }
 
   v261 = objc_msgSend_experimentIdentifiers(v52, v257, v258, v259, v260);
@@ -3024,10 +3024,10 @@ LABEL_63:
   return v3;
 }
 
-+ (id)getCAEventDictionaryFromBiomeEvent:(id)a3
++ (id)getCAEventDictionaryFromBiomeEvent:(id)event
 {
   v994[42] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  eventCopy = event;
   v8 = objc_msgSend_getContextId(LBFContextId, v4, v5, v6, v7);
   v960 = objc_msgSend_UUIDString(v8, v9, v10, v11, v12);
 
@@ -3057,7 +3057,7 @@ LABEL_63:
     goto LABEL_22;
   }
 
-  v22 = v3;
+  v22 = eventCopy;
   v27 = objc_msgSend_timestamp(v22, v23, v24, v25, v26);
   v32 = objc_msgSend_trialIdentifiers(v22, v28, v29, v30, v31);
   v37 = objc_msgSend_bmltIdentifiers(v32, v33, v34, v35, v36);
@@ -3201,10 +3201,10 @@ LABEL_13:
   v147 = &unk_286801090;
 LABEL_22:
   objc_opt_class();
-  v961 = v3;
+  v961 = eventCopy;
   if (objc_opt_isKindOfClass())
   {
-    v249 = v3;
+    v249 = eventCopy;
     v974 = objc_msgSend_timestamp(v249, v250, v251, v252, v253);
 
     v258 = objc_msgSend_trialIdentifiers(v249, v254, v255, v256, v257);
@@ -3356,7 +3356,7 @@ LABEL_25:
     v991 = v314;
     v27 = v974;
     v147 = &unk_2868010A8;
-    v3 = v961;
+    eventCopy = v961;
   }
 
   else
@@ -3375,7 +3375,7 @@ LABEL_25:
   v951 = v360;
   if (objc_opt_isKindOfClass())
   {
-    v479 = v3;
+    v479 = eventCopy;
     v975 = objc_msgSend_timestamp(v479, v480, v481, v482, v483);
 
     v488 = objc_msgSend_trialIdentifiers(v479, v484, v485, v486, v487);
@@ -3425,7 +3425,7 @@ LABEL_25:
     v268 = v972;
     v27 = v975;
     v147 = &unk_286801078;
-    v3 = v961;
+    eventCopy = v961;
     v360 = v951;
   }
 
@@ -3458,7 +3458,7 @@ LABEL_25:
     goto LABEL_90;
   }
 
-  v572 = v3;
+  v572 = eventCopy;
   v577 = objc_msgSend_timestamp(v572, v573, v574, v575, v576);
 
   v582 = objc_msgSend_trialIdentifiers(v572, v578, v579, v580, v581);

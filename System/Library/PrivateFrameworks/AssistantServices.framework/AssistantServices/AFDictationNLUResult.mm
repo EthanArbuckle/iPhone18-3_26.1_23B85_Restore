@@ -1,30 +1,30 @@
 @interface AFDictationNLUResult
 - (AFDictationNLUResult)init;
-- (AFDictationNLUResult)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (AFDictationNLUResult)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFDictationNLUResult
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  [v3 appendFormat:@"[NluResponse = %@]", self->_nluResponse];
-  [v3 appendString:@"\n<CommandGrammarParsePackage>\n"];
+  string = [MEMORY[0x1E696AD60] string];
+  [string appendFormat:@"[NluResponse = %@]", self->_nluResponse];
+  [string appendString:@"\n<CommandGrammarParsePackage>\n"];
   v4 = [(AFVoiceCommandGrammarParsePackage *)self->_commandGrammarParsePackage description];
-  [v3 appendFormat:@"%@", v4];
+  [string appendFormat:@"%@", v4];
 
-  [v3 appendString:@"\n</CommandGrammarParsePackage>\n"];
+  [string appendString:@"\n</CommandGrammarParsePackage>\n"];
 
-  return v3;
+  return string;
 }
 
-- (AFDictationNLUResult)initWithCoder:(id)a3
+- (AFDictationNLUResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = AFDictationNLUResult;
   v5 = [(AFDictationNLUResult *)&v12 init];
@@ -33,12 +33,12 @@
     SIRINLUEXTERNALCDMNluResponseClass = getSIRINLUEXTERNALCDMNluResponseClass();
     if (SIRINLUEXTERNALCDMNluResponseClass)
     {
-      v7 = [v4 decodeObjectOfClass:SIRINLUEXTERNALCDMNluResponseClass forKey:@"_nluResponse"];
+      v7 = [coderCopy decodeObjectOfClass:SIRINLUEXTERNALCDMNluResponseClass forKey:@"_nluResponse"];
       nluResponse = v5->_nluResponse;
       v5->_nluResponse = v7;
     }
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_commandGrammarParsePackage"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_commandGrammarParsePackage"];
     commandGrammarParsePackage = v5->_commandGrammarParsePackage;
     v5->_commandGrammarParsePackage = v9;
   }
@@ -46,18 +46,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   nluResponse = self->_nluResponse;
-  v5 = a3;
-  [v5 encodeObject:nluResponse forKey:@"_nluResponse"];
-  [v5 encodeObject:self->_commandGrammarParsePackage forKey:@"_commandGrammarParsePackage"];
+  coderCopy = coder;
+  [coderCopy encodeObject:nluResponse forKey:@"_nluResponse"];
+  [coderCopy encodeObject:self->_commandGrammarParsePackage forKey:@"_commandGrammarParsePackage"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -67,9 +67,9 @@
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v7 = [(AFDictationNLUResult *)v4 commandGrammarParsePackage];
+      commandGrammarParsePackage = [(AFDictationNLUResult *)equalCopy commandGrammarParsePackage];
       commandGrammarParsePackage = self->_commandGrammarParsePackage;
-      v6 = commandGrammarParsePackage == v7 || [(AFVoiceCommandGrammarParsePackage *)commandGrammarParsePackage isEqual:v7];
+      v6 = commandGrammarParsePackage == commandGrammarParsePackage || [(AFVoiceCommandGrammarParsePackage *)commandGrammarParsePackage isEqual:commandGrammarParsePackage];
     }
 
     else
@@ -81,15 +81,15 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(AFDictationNLUResult *)self nluResponse];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  nluResponse = [(AFDictationNLUResult *)self nluResponse];
+  v6 = [nluResponse copy];
   [v4 setNluResponse:v6];
 
-  v7 = [(AFDictationNLUResult *)self commandGrammarParsePackage];
-  v8 = [v7 copy];
+  commandGrammarParsePackage = [(AFDictationNLUResult *)self commandGrammarParsePackage];
+  v8 = [commandGrammarParsePackage copy];
   [v4 setCommandGrammarParsePackage:v8];
 
   return v4;

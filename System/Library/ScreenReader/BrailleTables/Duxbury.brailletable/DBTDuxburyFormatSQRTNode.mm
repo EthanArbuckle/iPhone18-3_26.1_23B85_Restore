@@ -8,8 +8,8 @@
 {
   v5.receiver = self;
   v5.super_class = DBTDuxburyFormatSQRTNode;
-  v2 = [(DBTDuxburyFormatNode *)&v5 LaTeXRepresentation];
-  v3 = [NSString stringWithFormat:@"\\sqrt{%@}", v2];
+  laTeXRepresentation = [(DBTDuxburyFormatNode *)&v5 LaTeXRepresentation];
+  v3 = [NSString stringWithFormat:@"\\sqrt{%@}", laTeXRepresentation];
 
   return v3;
 }

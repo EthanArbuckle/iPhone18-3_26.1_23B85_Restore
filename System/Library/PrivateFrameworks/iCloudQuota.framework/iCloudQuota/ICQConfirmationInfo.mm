@@ -1,28 +1,28 @@
 @interface ICQConfirmationInfo
-- (ICQConfirmationInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initFromDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ICQConfirmationInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initFromDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICQConfirmationInfo
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = ICQConfirmationInfo;
   v5 = [(ICQConfirmationInfo *)&v19 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"title"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [(ICQConfirmationInfo *)v5 setTitle:v6];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"subTitle"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"subTitle"];
     v8 = v7;
     if (v7)
     {
@@ -31,7 +31,7 @@
 
     else
     {
-      v9 = [v4 objectForKeyedSubscript:@"subtitle"];
+      v9 = [dictionaryCopy objectForKeyedSubscript:@"subtitle"];
     }
 
     v10 = v9;
@@ -42,7 +42,7 @@
       [(ICQConfirmationInfo *)v5 setSubtitle:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"iconURLs"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"iconURLs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,7 +50,7 @@
       [(ICQConfirmationInfo *)v5 setIconURL:v12];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"actions"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"actions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,7 +81,7 @@ void __42__ICQConfirmationInfo_initFromDictionary___block_invoke(uint64_t a1, vo
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(ICQConfirmationInfo);
   [(ICQConfirmationInfo *)v4 setTitle:self->_title];
@@ -91,34 +91,34 @@ void __42__ICQConfirmationInfo_initFromDictionary___block_invoke(uint64_t a1, vo
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   title = self->_title;
-  v5 = a3;
-  [v5 encodeObject:title forKey:@"title"];
-  [v5 encodeObject:self->_subtitle forKey:@"subTitle"];
-  [v5 encodeObject:self->_iconURL forKey:@"iconURL"];
-  [v5 encodeObject:self->_actions forKey:@"actions"];
+  coderCopy = coder;
+  [coderCopy encodeObject:title forKey:@"title"];
+  [coderCopy encodeObject:self->_subtitle forKey:@"subTitle"];
+  [coderCopy encodeObject:self->_iconURL forKey:@"iconURL"];
+  [coderCopy encodeObject:self->_actions forKey:@"actions"];
 }
 
-- (ICQConfirmationInfo)initWithCoder:(id)a3
+- (ICQConfirmationInfo)initWithCoder:(id)coder
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = ICQConfirmationInfo;
   v5 = [(ICQConfirmationInfo *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subTitle"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subTitle"];
     subtitle = v5->_subtitle;
     v5->_subtitle = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"iconURL"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iconURL"];
     iconURL = v5->_iconURL;
     v5->_iconURL = v10;
 
@@ -128,7 +128,7 @@ void __42__ICQConfirmationInfo_initFromDictionary___block_invoke(uint64_t a1, vo
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:2];
     v14 = [v12 setWithArray:v13];
 
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"actions"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"actions"];
     actions = v5->_actions;
     v5->_actions = v15;
   }

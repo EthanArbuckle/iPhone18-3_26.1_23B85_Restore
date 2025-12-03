@@ -1,26 +1,26 @@
 @interface CAMNebulaSecondaryState
-+ (id)secondaryStateWithContentsOfFile:(id)a3;
-- (BOOL)addStopReasons:(int64_t)a3 stopTime:(id)a4;
-- (BOOL)writeToFile:(id)a3;
-- (CAMNebulaSecondaryState)initWithCoder:(id)a3;
++ (id)secondaryStateWithContentsOfFile:(id)file;
+- (BOOL)addStopReasons:(int64_t)reasons stopTime:(id)time;
+- (BOOL)writeToFile:(id)file;
+- (CAMNebulaSecondaryState)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)notifyWillAttemptToWriteMovie;
 @end
 
 @implementation CAMNebulaSecondaryState
 
-- (CAMNebulaSecondaryState)initWithCoder:(id)a3
+- (CAMNebulaSecondaryState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = CAMNebulaSecondaryState;
   v5 = [(CAMNebulaSecondaryState *)&v12 init];
   if (v5)
   {
-    if ([v4 containsValueForKey:@"stopReasons"])
+    if ([coderCopy containsValueForKey:@"stopReasons"])
     {
-      v6 = [v4 decodeIntegerForKey:@"stopReasons"];
+      v6 = [coderCopy decodeIntegerForKey:@"stopReasons"];
     }
 
     else
@@ -29,30 +29,30 @@
     }
 
     v5->_stopReasons = v6;
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stopTime"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stopTime"];
     stopTime = v5->_stopTime;
     v5->_stopTime = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastMovieWriteAttemptTime"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastMovieWriteAttemptTime"];
     lastMovieWriteAttemptTime = v5->_lastMovieWriteAttemptTime;
     v5->_lastMovieWriteAttemptTime = v9;
 
-    v5->_movieWriteAttemptsCount = [v4 decodeIntegerForKey:@"movieWriteAttemptsCount"];
-    v5->_failedStateReadAttemptsCount = [v4 decodeIntegerForKey:@"failedStateReadAttemptsCount"];
+    v5->_movieWriteAttemptsCount = [coderCopy decodeIntegerForKey:@"movieWriteAttemptsCount"];
+    v5->_failedStateReadAttemptsCount = [coderCopy decodeIntegerForKey:@"failedStateReadAttemptsCount"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   stopReasons = self->_stopReasons;
-  v5 = a3;
-  [v5 encodeInteger:stopReasons forKey:@"stopReasons"];
-  [v5 encodeObject:self->_stopTime forKey:@"stopTime"];
-  [v5 encodeObject:self->_lastMovieWriteAttemptTime forKey:@"lastMovieWriteAttemptTime"];
-  [v5 encodeInteger:self->_movieWriteAttemptsCount forKey:@"movieWriteAttemptsCount"];
-  [v5 encodeInteger:self->_failedStateReadAttemptsCount forKey:@"failedStateReadAttemptsCount"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:stopReasons forKey:@"stopReasons"];
+  [coderCopy encodeObject:self->_stopTime forKey:@"stopTime"];
+  [coderCopy encodeObject:self->_lastMovieWriteAttemptTime forKey:@"lastMovieWriteAttemptTime"];
+  [coderCopy encodeInteger:self->_movieWriteAttemptsCount forKey:@"movieWriteAttemptsCount"];
+  [coderCopy encodeInteger:self->_failedStateReadAttemptsCount forKey:@"failedStateReadAttemptsCount"];
 }
 
 - (id)description
@@ -61,29 +61,29 @@
   v9.receiver = self;
   v9.super_class = CAMNebulaSecondaryState;
   v4 = [(CAMNebulaSecondaryState *)&v9 description];
-  v5 = [(CAMNebulaSecondaryState *)self stopReasons];
-  v6 = [(CAMNebulaSecondaryState *)self stopTime];
-  v7 = [v3 stringWithFormat:@"%@: stopReasons=%ld stopTime=%@", v4, v5, v6];
+  stopReasons = [(CAMNebulaSecondaryState *)self stopReasons];
+  stopTime = [(CAMNebulaSecondaryState *)self stopTime];
+  v7 = [v3 stringWithFormat:@"%@: stopReasons=%ld stopTime=%@", v4, stopReasons, stopTime];
 
   return v7;
 }
 
-- (BOOL)addStopReasons:(int64_t)a3 stopTime:(id)a4
+- (BOOL)addStopReasons:(int64_t)reasons stopTime:(id)time
 {
-  v6 = a4;
-  v7 = [(CAMNebulaSecondaryState *)self stopReasons];
-  v8 = (v7 | a3) == v7;
-  v9 = (v7 | a3) != v7;
+  timeCopy = time;
+  stopReasons = [(CAMNebulaSecondaryState *)self stopReasons];
+  v8 = (stopReasons | reasons) == stopReasons;
+  v9 = (stopReasons | reasons) != stopReasons;
   if (!v8)
   {
     [(CAMNebulaSecondaryState *)self setStopReasons:?];
   }
 
-  v10 = [(CAMNebulaSecondaryState *)self stopTime];
-  v11 = v10;
-  if (v6 && !v10)
+  stopTime = [(CAMNebulaSecondaryState *)self stopTime];
+  v11 = stopTime;
+  if (timeCopy && !stopTime)
   {
-    [(CAMNebulaSecondaryState *)self setStopTime:v6];
+    [(CAMNebulaSecondaryState *)self setStopTime:timeCopy];
     v9 = 1;
   }
 
@@ -93,17 +93,17 @@
 - (void)notifyWillAttemptToWriteMovie
 {
   ++self->_movieWriteAttemptsCount;
-  v3 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   lastMovieWriteAttemptTime = self->_lastMovieWriteAttemptTime;
-  self->_lastMovieWriteAttemptTime = v3;
+  self->_lastMovieWriteAttemptTime = date;
 
-  MEMORY[0x1EEE66BB8](v3, lastMovieWriteAttemptTime);
+  MEMORY[0x1EEE66BB8](date, lastMovieWriteAttemptTime);
 }
 
-- (BOOL)writeToFile:(id)a3
+- (BOOL)writeToFile:(id)file
 {
-  v4 = a3;
-  if ([v4 length])
+  fileCopy = file;
+  if ([fileCopy length])
   {
     v23 = 0;
     v5 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self requiringSecureCoding:1 error:&v23];
@@ -117,13 +117,13 @@
       }
     }
 
-    v14 = [v5 writeToFile:v4 atomically:1];
+    v14 = [v5 writeToFile:fileCopy atomically:1];
     if ((v14 & 1) == 0)
     {
       v15 = os_log_create("com.apple.camera", "Nebula");
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        [(CAMNebulaSecondaryState *)v4 writeToFile:v15, v16, v17, v18, v19, v20, v21];
+        [(CAMNebulaSecondaryState *)fileCopy writeToFile:v15, v16, v17, v18, v19, v20, v21];
       }
     }
   }
@@ -136,12 +136,12 @@
   return v14;
 }
 
-+ (id)secondaryStateWithContentsOfFile:(id)a3
++ (id)secondaryStateWithContentsOfFile:(id)file
 {
-  v3 = a3;
-  if ([v3 length])
+  fileCopy = file;
+  if ([fileCopy length])
   {
-    v4 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v3];
+    v4 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:fileCopy];
     if (v4)
     {
       v15 = 0;

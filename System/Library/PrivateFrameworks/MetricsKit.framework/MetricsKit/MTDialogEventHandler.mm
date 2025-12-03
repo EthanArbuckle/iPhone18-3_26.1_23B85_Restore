@@ -1,6 +1,6 @@
 @interface MTDialogEventHandler
 - (id)eventType;
-- (id)eventVersion:(id)a3;
+- (id)eventVersion:(id)version;
 @end
 
 @implementation MTDialogEventHandler
@@ -9,11 +9,11 @@
 {
   v7.receiver = self;
   v7.super_class = MTDialogEventHandler;
-  v2 = [(MTEventHandler *)&v7 eventType];
-  v3 = v2;
-  if (v2)
+  eventType = [(MTEventHandler *)&v7 eventType];
+  v3 = eventType;
+  if (eventType)
   {
-    v4 = v2;
+    v4 = eventType;
   }
 
   else
@@ -26,11 +26,11 @@
   return v4;
 }
 
-- (id)eventVersion:(id)a3
+- (id)eventVersion:(id)version
 {
   v8.receiver = self;
   v8.super_class = MTDialogEventHandler;
-  v3 = [(MTEventHandler *)&v8 eventVersion:a3];
+  v3 = [(MTEventHandler *)&v8 eventVersion:version];
   v4 = v3;
   if (v3)
   {

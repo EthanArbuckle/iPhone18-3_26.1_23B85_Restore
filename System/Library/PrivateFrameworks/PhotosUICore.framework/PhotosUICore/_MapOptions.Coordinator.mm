@@ -1,14 +1,14 @@
 @interface _MapOptions.Coordinator
-- (void)mapOptionsControllerDidInvalidateMapOptions:(id)a3;
+- (void)mapOptionsControllerDidInvalidateMapOptions:(id)options;
 @end
 
 @implementation _MapOptions.Coordinator
 
-- (void)mapOptionsControllerDidInvalidateMapOptions:(id)a3
+- (void)mapOptionsControllerDidInvalidateMapOptions:(id)options
 {
-  v3 = a3;
+  optionsCopy = options;
 
-  sub_1A47C276C(v3);
+  sub_1A47C276C(optionsCopy);
 }
 
 @end

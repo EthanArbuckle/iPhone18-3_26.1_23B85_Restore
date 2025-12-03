@@ -1,40 +1,40 @@
 @interface PKPaymentMethodPeerPaymentSectionController
-- (Class)supplementaryRegistrationClassForKind:(id)a3 sectionIdentifier:(id)a4;
+- (Class)supplementaryRegistrationClassForKind:(id)kind sectionIdentifier:(id)identifier;
 - (NSArray)identifiers;
-- (PKPaymentMethodPeerPaymentSectionController)initWithDelegate:(id)a3 request:(id)a4 useAppleCashBalance:(BOOL)a5;
-- (id)cellRegistrationForItem:(id)a3;
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
-- (void)configureSupplementaryRegistration:(id)a3 elementKind:(id)a4 sectionIdentifier:(id)a5;
-- (void)paymentMethodCellDidToggleItem:(id)a3;
+- (PKPaymentMethodPeerPaymentSectionController)initWithDelegate:(id)delegate request:(id)request useAppleCashBalance:(BOOL)balance;
+- (id)cellRegistrationForItem:(id)item;
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
+- (void)configureSupplementaryRegistration:(id)registration elementKind:(id)kind sectionIdentifier:(id)identifier;
+- (void)paymentMethodCellDidToggleItem:(id)item;
 @end
 
 @implementation PKPaymentMethodPeerPaymentSectionController
 
-- (PKPaymentMethodPeerPaymentSectionController)initWithDelegate:(id)a3 request:(id)a4 useAppleCashBalance:(BOOL)a5
+- (PKPaymentMethodPeerPaymentSectionController)initWithDelegate:(id)delegate request:(id)request useAppleCashBalance:(BOOL)balance
 {
-  v8 = a3;
-  v9 = a4;
+  delegateCopy = delegate;
+  requestCopy = request;
   v21.receiver = self;
   v21.super_class = PKPaymentMethodPeerPaymentSectionController;
   v10 = [(PKPaymentMethodPeerPaymentSectionController *)&v21 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_delegate, v8);
-    objc_storeStrong(&v11->_request, a4);
-    v11->_useAppleCashBalance = a5;
-    v12 = [MEMORY[0x1E69B9000] sharedInstance];
-    v13 = [v12 account];
+    objc_storeWeak(&v10->_delegate, delegateCopy);
+    objc_storeStrong(&v11->_request, request);
+    v11->_useAppleCashBalance = balance;
+    mEMORY[0x1E69B9000] = [MEMORY[0x1E69B9000] sharedInstance];
+    account = [mEMORY[0x1E69B9000] account];
     account = v11->_account;
-    v11->_account = v13;
+    v11->_account = account;
 
-    v15 = [MEMORY[0x1E69B8A58] sharedInstance];
-    v16 = [(PKPeerPaymentAccount *)v11->_account associatedPassUniqueID];
-    v17 = [v15 passWithUniqueID:v16];
-    v18 = [v17 paymentPass];
+    mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+    associatedPassUniqueID = [(PKPeerPaymentAccount *)v11->_account associatedPassUniqueID];
+    v17 = [mEMORY[0x1E69B8A58] passWithUniqueID:associatedPassUniqueID];
+    paymentPass = [v17 paymentPass];
     peerPaymentPass = v11->_peerPaymentPass;
-    v11->_peerPaymentPass = v18;
+    v11->_peerPaymentPass = paymentPass;
   }
 
   return v11;
@@ -49,20 +49,20 @@
   return v2;
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
   v5 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if ([(PKPaymentRequest *)self->_request isPeerPaymentRequest]&& [(PKPeerPaymentAccount *)self->_account supportsPreserveCurrentBalance])
   {
-    v7 = [MEMORY[0x1E69B8A58] sharedInstance];
-    v8 = [v7 peerPaymentPassUniqueID];
+    mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+    peerPaymentPassUniqueID = [mEMORY[0x1E69B8A58] peerPaymentPassUniqueID];
     if (self->_peerPaymentPass)
     {
-      v9 = [[PKPaymentMethodSelectionItem alloc] initWithIdentifier:v8];
+      v9 = [[PKPaymentMethodSelectionItem alloc] initWithIdentifier:peerPaymentPassUniqueID];
       [(PKPaymentMethodSelectionItem *)v9 setPaymentPass:self->_peerPaymentPass];
-      v10 = [(PKPeerPaymentAccount *)self->_account currentBalance];
-      [(PKPaymentMethodSelectionItem *)v9 setBalance:v10];
+      currentBalance = [(PKPeerPaymentAccount *)self->_account currentBalance];
+      [(PKPaymentMethodSelectionItem *)v9 setBalance:currentBalance];
 
       [(PKPaymentMethodSelectionItem *)v9 setSelected:self->_useAppleCashBalance];
       [v6 addObject:v9];
@@ -75,7 +75,7 @@
   return v5;
 }
 
-- (id)cellRegistrationForItem:(id)a3
+- (id)cellRegistrationForItem:(id)item
 {
   v4 = MEMORY[0x1E69DC800];
   v5 = objc_opt_class();
@@ -89,23 +89,23 @@
   return v6;
 }
 
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier
 {
   v4 = MEMORY[0x1E69DC7E0];
-  v5 = a3;
+  environmentCopy = environment;
   v6 = [[v4 alloc] initWithAppearance:2];
   [v6 setFooterMode:1];
-  v7 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v6 layoutEnvironment:v5];
+  v7 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v6 layoutEnvironment:environmentCopy];
 
   return v7;
 }
 
-- (Class)supplementaryRegistrationClassForKind:(id)a3 sectionIdentifier:(id)a4
+- (Class)supplementaryRegistrationClassForKind:(id)kind sectionIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
+  kindCopy = kind;
+  identifierCopy = identifier;
   v7 = *MEMORY[0x1E69DDC00];
-  v8 = v5;
+  v8 = kindCopy;
   v9 = v8;
   if (v7 != v8 && v8 && v7)
   {
@@ -121,13 +121,13 @@
   return v10;
 }
 
-- (void)configureSupplementaryRegistration:(id)a3 elementKind:(id)a4 sectionIdentifier:(id)a5
+- (void)configureSupplementaryRegistration:(id)registration elementKind:(id)kind sectionIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  registrationCopy = registration;
+  kindCopy = kind;
+  identifierCopy = identifier;
   v11 = *MEMORY[0x1E69DDC00];
-  v12 = v9;
+  v12 = kindCopy;
   v13 = v12;
   if (v11 == v12)
   {
@@ -163,7 +163,7 @@
   v24[4] = self;
   v20 = [(PKTextRangeHyperlink *)v19 initWithLinkText:v16 action:v24];
   [v15 addObject:v20];
-  v21 = v8;
+  v21 = registrationCopy;
   [v21 edgeInsets];
   v23 = v22;
   [v21 edgeInsets];
@@ -248,17 +248,17 @@ void __112__PKPaymentMethodPeerPaymentSectionController_configureSupplementaryRe
   }
 }
 
-- (void)paymentMethodCellDidToggleItem:(id)a3
+- (void)paymentMethodCellDidToggleItem:(id)item
 {
-  self->_useAppleCashBalance = [a3 isSelected];
+  self->_useAppleCashBalance = [item isSelected];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained toggledUseAppleCashBalance:self->_useAppleCashBalance];
 
-  v5 = [(PKPaymentPass *)self->_peerPaymentPass settings];
+  settings = [(PKPaymentPass *)self->_peerPaymentPass settings];
   useAppleCashBalance = self->_useAppleCashBalance;
-  if (((v5 >> 11) & 1) == useAppleCashBalance)
+  if (((settings >> 11) & 1) == useAppleCashBalance)
   {
-    v7 = v5 & 0xFFFFFFFFFFFFF7FFLL;
+    v7 = settings & 0xFFFFFFFFFFFFF7FFLL;
     v8 = !useAppleCashBalance;
     v9 = 2048;
     if (!v8)

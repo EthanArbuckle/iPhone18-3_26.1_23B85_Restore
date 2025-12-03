@@ -1,7 +1,7 @@
 @interface SBFaceIDCoachingConditionRecipe
 - (BOOL)_overrideCoachingConditionEnabled;
-- (void)_setOverrideCoachingConditionEnabled:(BOOL)a3;
-- (void)_setOverrideCoachingEvent:(unint64_t)a3;
+- (void)_setOverrideCoachingConditionEnabled:(BOOL)enabled;
+- (void)_setOverrideCoachingEvent:(unint64_t)event;
 - (void)handleVolumeDecrease;
 - (void)handleVolumeIncrease;
 @end
@@ -37,28 +37,28 @@
   [(SBFaceIDCoachingConditionRecipe *)self _setOverrideCoachingConditionEnabled:v3];
 }
 
-- (void)_setOverrideCoachingConditionEnabled:(BOOL)a3
+- (void)_setOverrideCoachingConditionEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277D02C20] rootSettings];
-  v4 = [v5 pearlSettings];
-  [v4 setOverrideCoachingConditionEnabled:v3];
+  enabledCopy = enabled;
+  rootSettings = [MEMORY[0x277D02C20] rootSettings];
+  pearlSettings = [rootSettings pearlSettings];
+  [pearlSettings setOverrideCoachingConditionEnabled:enabledCopy];
 }
 
 - (BOOL)_overrideCoachingConditionEnabled
 {
-  v2 = [MEMORY[0x277D02C20] rootSettings];
-  v3 = [v2 pearlSettings];
-  v4 = [v3 overrideCoachingConditionEnabled];
+  rootSettings = [MEMORY[0x277D02C20] rootSettings];
+  pearlSettings = [rootSettings pearlSettings];
+  overrideCoachingConditionEnabled = [pearlSettings overrideCoachingConditionEnabled];
 
-  return v4;
+  return overrideCoachingConditionEnabled;
 }
 
-- (void)_setOverrideCoachingEvent:(unint64_t)a3
+- (void)_setOverrideCoachingEvent:(unint64_t)event
 {
-  v5 = [MEMORY[0x277D02C20] rootSettings];
-  v4 = [v5 pearlSettings];
-  [v4 setOverrideCoachingBiometricEvent:a3];
+  rootSettings = [MEMORY[0x277D02C20] rootSettings];
+  pearlSettings = [rootSettings pearlSettings];
+  [pearlSettings setOverrideCoachingBiometricEvent:event];
 }
 
 @end

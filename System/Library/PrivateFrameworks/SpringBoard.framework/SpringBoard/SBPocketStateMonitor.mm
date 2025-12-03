@@ -1,10 +1,10 @@
 @interface SBPocketStateMonitor
 + (id)sharedInstance;
 - (SBPocketStateMonitor)init;
-- (SBPocketStateMonitor)initWithCMPocketStateManager:(id)a3 calloutQueue:(id)a4;
-- (void)addObserver:(id)a3;
+- (SBPocketStateMonitor)initWithCMPocketStateManager:(id)manager calloutQueue:(id)queue;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)pocketStateManager:(id)a3 didUpdateState:(int64_t)a4;
+- (void)pocketStateManager:(id)manager didUpdateState:(int64_t)state;
 @end
 
 @implementation SBPocketStateMonitor
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __38__SBPocketStateMonitor_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_52 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_52, block);
@@ -41,10 +41,10 @@ void __38__SBPocketStateMonitor_sharedInstance__block_invoke(uint64_t a1)
   objc_exception_throw(v2);
 }
 
-- (SBPocketStateMonitor)initWithCMPocketStateManager:(id)a3 calloutQueue:(id)a4
+- (SBPocketStateMonitor)initWithCMPocketStateManager:(id)manager calloutQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = SBPocketStateMonitor;
   v9 = [(SBPocketStateMonitor *)&v12 init];
@@ -52,10 +52,10 @@ void __38__SBPocketStateMonitor_sharedInstance__block_invoke(uint64_t a1)
   if (v9)
   {
     v9->_pocketState = 0;
-    objc_storeStrong(&v9->_calloutQueue, a4);
+    objc_storeStrong(&v9->_calloutQueue, queue);
     if ([objc_opt_class() isPocketStateAvailable])
     {
-      objc_storeStrong(&v10->_pocketStateManager, a3);
+      objc_storeStrong(&v10->_pocketStateManager, manager);
       [(CMPocketStateManager *)v10->_pocketStateManager setDelegate:v10];
     }
   }
@@ -71,25 +71,25 @@ void __38__SBPocketStateMonitor_sharedInstance__block_invoke(uint64_t a1)
   [(SBPocketStateMonitor *)&v3 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)pocketStateManager:(id)a3 didUpdateState:(int64_t)a4
+- (void)pocketStateManager:(id)manager didUpdateState:(int64_t)state
 {
   calloutQueue = self->_calloutQueue;
   v5[0] = MEMORY[0x277D85DD0];
@@ -97,7 +97,7 @@ void __38__SBPocketStateMonitor_sharedInstance__block_invoke(uint64_t a1)
   v5[2] = __58__SBPocketStateMonitor_pocketStateManager_didUpdateState___block_invoke;
   v5[3] = &unk_2783A8BC8;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = state;
   dispatch_async(calloutQueue, v5);
 }
 

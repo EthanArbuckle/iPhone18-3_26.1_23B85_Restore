@@ -1,27 +1,27 @@
 @interface CNMCProfileConnection
-- (BOOL)communicationServiceRulesExistForBundleID:(id)a3 forCommunicationServiceType:(id)a4;
-- (id)defaultAppBundleIDForCommunicationServiceType:(id)a3 forAccountWithIdentifier:(id)a4;
+- (BOOL)communicationServiceRulesExistForBundleID:(id)d forCommunicationServiceType:(id)type;
+- (id)defaultAppBundleIDForCommunicationServiceType:(id)type forAccountWithIdentifier:(id)identifier;
 - (id)observableForManagedConfigChanged;
 @end
 
 @implementation CNMCProfileConnection
 
-- (id)defaultAppBundleIDForCommunicationServiceType:(id)a3 forAccountWithIdentifier:(id)a4
+- (id)defaultAppBundleIDForCommunicationServiceType:(id)type forAccountWithIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [getMCProfileConnectionClass() sharedConnection];
-  v8 = [v7 defaultAppBundleIDForCommunicationServiceType:v6 forAccountWithIdentifier:v5];
+  identifierCopy = identifier;
+  typeCopy = type;
+  sharedConnection = [getMCProfileConnectionClass() sharedConnection];
+  v8 = [sharedConnection defaultAppBundleIDForCommunicationServiceType:typeCopy forAccountWithIdentifier:identifierCopy];
 
   return v8;
 }
 
-- (BOOL)communicationServiceRulesExistForBundleID:(id)a3 forCommunicationServiceType:(id)a4
+- (BOOL)communicationServiceRulesExistForBundleID:(id)d forCommunicationServiceType:(id)type
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [getMCProfileConnectionClass() sharedConnection];
-  v8 = [v7 communicationServiceRulesExistForBundleID:v6 forCommunicationServiceType:v5];
+  typeCopy = type;
+  dCopy = d;
+  sharedConnection = [getMCProfileConnectionClass() sharedConnection];
+  v8 = [sharedConnection communicationServiceRulesExistForBundleID:dCopy forCommunicationServiceType:typeCopy];
 
   return v8;
 }

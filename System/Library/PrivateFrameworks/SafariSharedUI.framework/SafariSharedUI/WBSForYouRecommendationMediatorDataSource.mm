@@ -1,25 +1,25 @@
 @interface WBSForYouRecommendationMediatorDataSource
 - (void)emitStartRetrievingRecommendationsPerformanceMarker;
-- (void)notifyContentsDidChangeFromSource:(unint64_t)a3;
-- (void)notifyImageWasUpdatedForRecommendation:(id)a3;
-- (void)recommendationsWithTopics:(id)a3 withCompletionHandler:(id)a4;
-- (void)retrieveRecommendationsMatchingTopic:(id)a3 withCompletionHandler:(id)a4;
+- (void)notifyContentsDidChangeFromSource:(unint64_t)source;
+- (void)notifyImageWasUpdatedForRecommendation:(id)recommendation;
+- (void)recommendationsWithTopics:(id)topics withCompletionHandler:(id)handler;
+- (void)retrieveRecommendationsMatchingTopic:(id)topic withCompletionHandler:(id)handler;
 @end
 
 @implementation WBSForYouRecommendationMediatorDataSource
 
-- (void)recommendationsWithTopics:(id)a3 withCompletionHandler:(id)a4
+- (void)recommendationsWithTopics:(id)topics withCompletionHandler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v16 = a4;
+  topicsCopy = topics;
+  handlerCopy = handler;
   v7 = dispatch_group_create();
-  v8 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v6;
+  obj = topicsCopy;
   v9 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v9)
   {
@@ -41,8 +41,8 @@
         v21[1] = 3221225472;
         v21[2] = __93__WBSForYouRecommendationMediatorDataSource_recommendationsWithTopics_withCompletionHandler___block_invoke;
         v21[3] = &unk_1E8285518;
-        v22 = v8;
-        v23 = self;
+        v22 = dictionary;
+        selfCopy = self;
         v24 = v7;
         [(WBSForYouRecommendationMediatorDataSource *)self retrieveRecommendationsMatchingTopic:v13 withCompletionHandler:v21];
 
@@ -60,10 +60,10 @@
   block[1] = 3221225472;
   block[2] = __93__WBSForYouRecommendationMediatorDataSource_recommendationsWithTopics_withCompletionHandler___block_invoke_1;
   block[3] = &unk_1E8284830;
-  v19 = v8;
-  v20 = v16;
-  v14 = v16;
-  v15 = v8;
+  v19 = dictionary;
+  v20 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = dictionary;
   dispatch_group_notify(v7, MEMORY[0x1E69E96A0], block);
 }
 
@@ -150,38 +150,38 @@ void __93__WBSForYouRecommendationMediatorDataSource_recommendationsWithTopics_w
   objc_sync_exit(obj);
 }
 
-- (void)retrieveRecommendationsMatchingTopic:(id)a3 withCompletionHandler:(id)a4
+- (void)retrieveRecommendationsMatchingTopic:(id)topic withCompletionHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    (*(a4 + 2))(a4, 0);
+    (*(handler + 2))(handler, 0);
   }
 }
 
-- (void)notifyContentsDidChangeFromSource:(unint64_t)a3
+- (void)notifyContentsDidChangeFromSource:(unint64_t)source
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v6 = *MEMORY[0x1E69C92E0];
   v9 = *MEMORY[0x1E69C92E8];
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:source];
   v10[0] = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
-  [v5 postNotificationName:v6 object:self userInfo:v8];
+  [defaultCenter postNotificationName:v6 object:self userInfo:v8];
 }
 
-- (void)notifyImageWasUpdatedForRecommendation:(id)a3
+- (void)notifyImageWasUpdatedForRecommendation:(id)recommendation
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696AD88];
-  v5 = a3;
-  v6 = [v4 defaultCenter];
+  recommendationCopy = recommendation;
+  defaultCenter = [v4 defaultCenter];
   v7 = *MEMORY[0x1E69C92F0];
   v9 = *MEMORY[0x1E69C92F8];
-  v10[0] = v5;
+  v10[0] = recommendationCopy;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
-  [v6 postNotificationName:v7 object:self userInfo:v8];
+  [defaultCenter postNotificationName:v7 object:self userInfo:v8];
 }
 
 - (void)emitStartRetrievingRecommendationsPerformanceMarker

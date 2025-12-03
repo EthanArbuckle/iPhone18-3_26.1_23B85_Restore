@@ -1,14 +1,14 @@
 @interface ICSFreeBusyTypeParameter
-+ (id)freeBusyTypeParameterFromCode:(unint64_t)a3;
-+ (id)freeBusyTypeParameterFromICSString:(id)a3;
++ (id)freeBusyTypeParameterFromCode:(unint64_t)code;
++ (id)freeBusyTypeParameterFromICSString:(id)string;
 @end
 
 @implementation ICSFreeBusyTypeParameter
 
-+ (id)freeBusyTypeParameterFromICSString:(id)a3
++ (id)freeBusyTypeParameterFromICSString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"FREE"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"FREE"])
   {
     v4 = 4;
 LABEL_9:
@@ -16,19 +16,19 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ([v3 isEqualToString:@"BUSY-UNAVAILABLE"])
+  if ([stringCopy isEqualToString:@"BUSY-UNAVAILABLE"])
   {
     v4 = 2;
     goto LABEL_9;
   }
 
-  if ([v3 isEqualToString:@"BUSY-TENTATIVE"])
+  if ([stringCopy isEqualToString:@"BUSY-TENTATIVE"])
   {
     v4 = 3;
     goto LABEL_9;
   }
 
-  if ([v3 isEqualToString:@"BUSY"])
+  if ([stringCopy isEqualToString:@"BUSY"])
   {
     v4 = 1;
     goto LABEL_9;
@@ -40,9 +40,9 @@ LABEL_10:
   return v5;
 }
 
-+ (id)freeBusyTypeParameterFromCode:(unint64_t)a3
++ (id)freeBusyTypeParameterFromCode:(unint64_t)code
 {
-  v3 = [(ICSPredefinedValue *)[ICSFreeBusyTypeParameter alloc] initWithLong:a3];
+  v3 = [(ICSPredefinedValue *)[ICSFreeBusyTypeParameter alloc] initWithLong:code];
 
   return v3;
 }

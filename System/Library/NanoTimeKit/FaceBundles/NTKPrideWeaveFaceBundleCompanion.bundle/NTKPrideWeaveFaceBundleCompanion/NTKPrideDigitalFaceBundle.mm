@@ -1,38 +1,38 @@
 @interface NTKPrideDigitalFaceBundle
 + (id)identifier;
-- (id)_analogFaceForDevice:(id)a3;
-- (id)_facesFromSortableFaces:(id)a3;
-- (id)_fall2021GalleryFacesForDevice:(id)a3;
-- (id)_gloryFDefaultFacesForDevice:(id)a3;
-- (id)_legacyDefaultFacesForDevice:(id)a3;
-- (id)_legacyGalleryFacesForDevice:(id)a3;
-- (id)_pride2020DefaultFacesForDevice:(id)a3;
-- (id)_pride2021DefaultFacesForDevice:(id)a3;
-- (id)_sortedGalleryFacesForDevice:(id)a3;
+- (id)_analogFaceForDevice:(id)device;
+- (id)_facesFromSortableFaces:(id)faces;
+- (id)_fall2021GalleryFacesForDevice:(id)device;
+- (id)_gloryFDefaultFacesForDevice:(id)device;
+- (id)_legacyDefaultFacesForDevice:(id)device;
+- (id)_legacyGalleryFacesForDevice:(id)device;
+- (id)_pride2020DefaultFacesForDevice:(id)device;
+- (id)_pride2021DefaultFacesForDevice:(id)device;
+- (id)_sortedGalleryFacesForDevice:(id)device;
 - (id)complicationTypesBySlot;
-- (id)galleryFacesForDevice:(id)a3;
-- (id)galleryRowPrioritiesForDevice:(id)a3;
-- (id)galleryTitleForDevice:(id)a3;
-- (id)heroGloryFDefaultFacesForDevice:(id)a3;
-- (id)heroPride2020DefaultFacesForDevice:(id)a3;
-- (id)prideFacesForDevice:(id)a3;
+- (id)galleryFacesForDevice:(id)device;
+- (id)galleryRowPrioritiesForDevice:(id)device;
+- (id)galleryTitleForDevice:(id)device;
+- (id)heroGloryFDefaultFacesForDevice:(id)device;
+- (id)heroPride2020DefaultFacesForDevice:(id)device;
+- (id)prideFacesForDevice:(id)device;
 @end
 
 @implementation NTKPrideDigitalFaceBundle
 
 + (id)identifier
 {
-  v3 = [NSBundle bundleForClass:a1];
-  v4 = [v3 bundleIdentifier];
-  v5 = NSStringFromClass(a1);
-  v6 = [NSString stringWithFormat:@"%@.%@", v4, v5];
+  v3 = [NSBundle bundleForClass:self];
+  bundleIdentifier = [v3 bundleIdentifier];
+  v5 = NSStringFromClass(self);
+  v6 = [NSString stringWithFormat:@"%@.%@", bundleIdentifier, v5];
 
   return v6;
 }
 
-- (id)_analogFaceForDevice:(id)a3
+- (id)_analogFaceForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   if (NTKShowBlueRidgeUI())
   {
     v4 = 233;
@@ -43,12 +43,12 @@
     v4 = 33;
   }
 
-  v5 = [NTKFace defaultFaceOfStyle:v4 forDevice:v3];
+  v5 = [NTKFace defaultFaceOfStyle:v4 forDevice:deviceCopy];
 
   return v5;
 }
 
-- (id)galleryTitleForDevice:(id)a3
+- (id)galleryTitleForDevice:(id)device
 {
   if (NTKShowGalleryLiteUI())
   {
@@ -64,7 +64,7 @@
   return v3;
 }
 
-- (id)galleryRowPrioritiesForDevice:(id)a3
+- (id)galleryRowPrioritiesForDevice:(id)device
 {
   v5 = &off_25980;
   v6 = &off_25998;
@@ -73,13 +73,13 @@
   return v3;
 }
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   if (NTKShowGalleryLiteUI())
   {
-    v5 = [(NTKPrideDigitalFaceBundle *)self defaultFaceForDevice:v4];
-    v6 = [NTKPrideStyleEditOption optionWithStyle:2 forDevice:v4];
+    v5 = [(NTKPrideDigitalFaceBundle *)self defaultFaceForDevice:deviceCopy];
+    v6 = [NTKPrideStyleEditOption optionWithStyle:2 forDevice:deviceCopy];
     [v5 selectOption:v6 forCustomEditMode:15 slot:0];
 
     v7 = [NTKFaceCurationPlacementValue placementWithWatchOS12Group:14 zOrder:4000];
@@ -95,21 +95,21 @@
 
   else
   {
-    if ([v4 supportsPDRCapability:277329136])
+    if ([deviceCopy supportsPDRCapability:277329136])
     {
-      v11 = [(NTKPrideDigitalFaceBundle *)self _sortedGalleryFacesForDevice:v4];
+      v11 = [(NTKPrideDigitalFaceBundle *)self _sortedGalleryFacesForDevice:deviceCopy];
     }
 
     else
     {
-      if ([v4 supportsPDRCapability:277329136])
+      if ([deviceCopy supportsPDRCapability:277329136])
       {
-        [(NTKPrideDigitalFaceBundle *)self _fall2021GalleryFacesForDevice:v4];
+        [(NTKPrideDigitalFaceBundle *)self _fall2021GalleryFacesForDevice:deviceCopy];
       }
 
       else
       {
-        [(NTKPrideDigitalFaceBundle *)self _legacyGalleryFacesForDevice:v4];
+        [(NTKPrideDigitalFaceBundle *)self _legacyGalleryFacesForDevice:deviceCopy];
       }
       v11 = ;
     }
@@ -120,19 +120,19 @@
   return v10;
 }
 
-- (id)_sortedGalleryFacesForDevice:(id)a3
+- (id)_sortedGalleryFacesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = objc_opt_new();
   v6 = +[NTKFaceBundleManager sharedManager];
   v11 = _NSConcreteStackBlock;
   v12 = 3221225472;
   v13 = sub_B5E0;
   v14 = &unk_24888;
-  v15 = v4;
+  v15 = deviceCopy;
   v16 = v5;
   v7 = v5;
-  v8 = v4;
+  v8 = deviceCopy;
   [v6 enumerateFaceBundlesOnDevice:v8 includingLegacy:1 withBlock:&v11];
 
   v9 = [(NTKPrideDigitalFaceBundle *)self _facesFromSortableFaces:v7, v11, v12, v13, v14];
@@ -140,9 +140,9 @@
   return v9;
 }
 
-- (id)_facesFromSortableFaces:(id)a3
+- (id)_facesFromSortableFaces:(id)faces
 {
-  v3 = [a3 sortedArrayUsingSelector:"compare:"];
+  v3 = [faces sortedArrayUsingSelector:"compare:"];
   v4 = objc_alloc_init(NSMutableArray);
   v13 = 0u;
   v14 = 0u;
@@ -163,8 +163,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) face];
-        [v4 addObject:v10];
+        face = [*(*(&v13 + 1) + 8 * i) face];
+        [v4 addObject:face];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -178,25 +178,25 @@
   return v11;
 }
 
-- (id)prideFacesForDevice:(id)a3
+- (id)prideFacesForDevice:(id)device
 {
-  v4 = a3;
-  if (([(objc_class *)[(NTKPrideDigitalFaceBundle *)self faceClass] isRestrictedForDevice:v4]& 1) != 0)
+  deviceCopy = device;
+  if (([(objc_class *)[(NTKPrideDigitalFaceBundle *)self faceClass] isRestrictedForDevice:deviceCopy]& 1) != 0)
   {
     v5 = &__NSArray0__struct;
   }
 
   else
   {
-    v6 = [NTKFace defaultFaceOfStyle:26 forDevice:v4];
-    v7 = [NTKPrideStyleEditOption optionWithStyle:2 forDevice:v4];
+    v6 = [NTKFace defaultFaceOfStyle:26 forDevice:deviceCopy];
+    v7 = [NTKPrideStyleEditOption optionWithStyle:2 forDevice:deviceCopy];
     [v6 selectOption:v7 forCustomEditMode:15 slot:0];
 
-    v8 = [(NTKPrideDigitalFaceBundle *)self _analogFaceForDevice:v4];
-    v9 = [NTKPrideStyleEditOption optionWithStyle:2 forDevice:v4];
+    v8 = [(NTKPrideDigitalFaceBundle *)self _analogFaceForDevice:deviceCopy];
+    v9 = [NTKPrideStyleEditOption optionWithStyle:2 forDevice:deviceCopy];
     [v8 selectOption:v9 forCustomEditMode:12 slot:0];
 
-    v10 = +[NTKPrideAnalogShapeEditOption optionWithStyle:forDevice:](NTKPrideAnalogShapeEditOption, "optionWithStyle:forDevice:", [v4 deviceCategory] != &dword_0 + 1, v4);
+    v10 = +[NTKPrideAnalogShapeEditOption optionWithStyle:forDevice:](NTKPrideAnalogShapeEditOption, "optionWithStyle:forDevice:", [deviceCopy deviceCategory] != &dword_0 + 1, deviceCopy);
     [v8 selectOption:v10 forCustomEditMode:15 slot:0];
 
     v11 = [[NTKFaceBundleSortableGalleryFace alloc] initWithFace:v6 priority:600];
@@ -209,24 +209,24 @@
   return v5;
 }
 
-- (id)_fall2021GalleryFacesForDevice:(id)a3
+- (id)_fall2021GalleryFacesForDevice:(id)device
 {
-  v4 = a3;
-  if ([NTKPrideDigitalFace isAvailableForDevice:v4])
+  deviceCopy = device;
+  if ([NTKPrideDigitalFace isAvailableForDevice:deviceCopy])
   {
     v5 = objc_opt_new();
-    if ([v4 isLuxo])
+    if ([deviceCopy isLuxo])
     {
       v6 = +[NTKFaceBundleManager sharedManager];
       v7 = +[NTKPrideWeaveFaceBundle identifier];
-      v8 = [v6 faceBundleForBundleIdentifier:v7 onDevice:v4];
+      v8 = [v6 faceBundleForBundleIdentifier:v7 onDevice:deviceCopy];
 
-      v9 = [v8 prideFacesForDevice:v4];
+      v9 = [v8 prideFacesForDevice:deviceCopy];
       v10 = [(NTKPrideDigitalFaceBundle *)self _facesFromSortableFaces:v9];
       [v5 addObjectsFromArray:v10];
     }
 
-    if ([v4 supportsPDRCapability:3503302961])
+    if ([deviceCopy supportsPDRCapability:3503302961])
     {
       v19[0] = _NSConcreteStackBlock;
       v19[1] = 3221225472;
@@ -234,22 +234,22 @@
       v19[3] = &unk_248B0;
       v20 = v5;
       v11 = objc_retainBlock(v19);
-      v12 = [NTKFace defaultFaceOfStyle:26 forDevice:v4];
-      v13 = [NTKPrideStyleEditOption optionWithStyle:2 forDevice:v4];
+      v12 = [NTKFace defaultFaceOfStyle:26 forDevice:deviceCopy];
+      v13 = [NTKPrideStyleEditOption optionWithStyle:2 forDevice:deviceCopy];
       [v12 selectOption:v13 forCustomEditMode:15 slot:0];
 
       (v11[2])(v11, v12);
-      v14 = [(NTKPrideDigitalFaceBundle *)self _analogFaceForDevice:v4];
-      v15 = [NTKPrideStyleEditOption optionWithStyle:2 forDevice:v4];
+      v14 = [(NTKPrideDigitalFaceBundle *)self _analogFaceForDevice:deviceCopy];
+      v15 = [NTKPrideStyleEditOption optionWithStyle:2 forDevice:deviceCopy];
       [v14 selectOption:v15 forCustomEditMode:12 slot:0];
 
-      v16 = +[NTKPrideAnalogShapeEditOption optionWithStyle:forDevice:](NTKPrideAnalogShapeEditOption, "optionWithStyle:forDevice:", [v4 deviceCategory] != &dword_0 + 1, v4);
+      v16 = +[NTKPrideAnalogShapeEditOption optionWithStyle:forDevice:](NTKPrideAnalogShapeEditOption, "optionWithStyle:forDevice:", [deviceCopy deviceCategory] != &dword_0 + 1, deviceCopy);
       [v14 selectOption:v16 forCustomEditMode:15 slot:0];
 
       (v11[2])(v11, v14);
     }
 
-    v17 = [(NTKPrideDigitalFaceBundle *)self _gloryFDefaultFacesForDevice:v4];
+    v17 = [(NTKPrideDigitalFaceBundle *)self _gloryFDefaultFacesForDevice:deviceCopy];
     [v5 addObjectsFromArray:v17];
   }
 
@@ -261,31 +261,31 @@
   return v5;
 }
 
-- (id)_legacyGalleryFacesForDevice:(id)a3
+- (id)_legacyGalleryFacesForDevice:(id)device
 {
-  v4 = a3;
-  if ([NTKPrideDigitalFace isAvailableForDevice:v4])
+  deviceCopy = device;
+  if ([NTKPrideDigitalFace isAvailableForDevice:deviceCopy])
   {
-    if ([v4 supportsPDRCapability:277329136])
+    if ([deviceCopy supportsPDRCapability:277329136])
     {
-      v5 = [(NTKPrideDigitalFaceBundle *)self _pride2021DefaultFacesForDevice:v4];
+      v5 = [(NTKPrideDigitalFaceBundle *)self _pride2021DefaultFacesForDevice:deviceCopy];
     }
 
-    else if ([v4 supportsPDRCapability:3503302961])
+    else if ([deviceCopy supportsPDRCapability:3503302961])
     {
-      v5 = [(NTKPrideDigitalFaceBundle *)self _pride2020DefaultFacesForDevice:v4];
+      v5 = [(NTKPrideDigitalFaceBundle *)self _pride2020DefaultFacesForDevice:deviceCopy];
     }
 
     else
     {
-      if ([v4 isRunningGloryFOrLater])
+      if ([deviceCopy isRunningGloryFOrLater])
       {
-        [(NTKPrideDigitalFaceBundle *)self _gloryFDefaultFacesForDevice:v4];
+        [(NTKPrideDigitalFaceBundle *)self _gloryFDefaultFacesForDevice:deviceCopy];
       }
 
       else
       {
-        [(NTKPrideDigitalFaceBundle *)self _legacyDefaultFacesForDevice:v4];
+        [(NTKPrideDigitalFaceBundle *)self _legacyDefaultFacesForDevice:deviceCopy];
       }
       v5 = ;
     }
@@ -301,11 +301,11 @@
   return v6;
 }
 
-- (id)_legacyDefaultFacesForDevice:(id)a3
+- (id)_legacyDefaultFacesForDevice:(id)device
 {
-  v4 = [NTKFace defaultFaceOfStyle:26 forDevice:a3];
-  v5 = [(NTKPrideDigitalFaceBundle *)self complicationTypesBySlot];
-  [v4 _setFaceGalleryComplicationTypesForSlots:v5];
+  v4 = [NTKFace defaultFaceOfStyle:26 forDevice:device];
+  complicationTypesBySlot = [(NTKPrideDigitalFaceBundle *)self complicationTypesBySlot];
+  [v4 _setFaceGalleryComplicationTypesForSlots:complicationTypesBySlot];
 
   if (v4)
   {
@@ -321,9 +321,9 @@
   return v6;
 }
 
-- (id)_gloryFDefaultFacesForDevice:(id)a3
+- (id)_gloryFDefaultFacesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v22 = _NSConcreteStackBlock;
   v23 = 3221225472;
   v24 = sub_C124;
@@ -331,40 +331,40 @@
   v21 = objc_opt_new();
   v26 = v21;
   v5 = objc_retainBlock(&v22);
-  v6 = [v4 supportsPDRCapability:3503302961];
-  v7 = [NTKFace defaultFaceOfStyle:26 forDevice:v4];
-  v8 = [NTKPrideStyleEditOption optionWithStyle:1 forDevice:v4];
+  v6 = [deviceCopy supportsPDRCapability:3503302961];
+  v7 = [NTKFace defaultFaceOfStyle:26 forDevice:deviceCopy];
+  v8 = [NTKPrideStyleEditOption optionWithStyle:1 forDevice:deviceCopy];
   [v7 selectOption:v8 forCustomEditMode:15 slot:0];
 
   (v5[2])(v5, v7);
-  v9 = [NTKFace defaultFaceOfStyle:26 forDevice:v4];
-  v10 = [NTKPrideStyleEditOption optionWithStyle:0 forDevice:v4];
+  v9 = [NTKFace defaultFaceOfStyle:26 forDevice:deviceCopy];
+  v10 = [NTKPrideStyleEditOption optionWithStyle:0 forDevice:deviceCopy];
   [v9 selectOption:v10 forCustomEditMode:15 slot:0];
 
-  v11 = [(NTKPrideDigitalFaceBundle *)self complicationTypesBySlot];
-  [v9 _setFaceGalleryComplicationTypesForSlots:v11];
+  complicationTypesBySlot = [(NTKPrideDigitalFaceBundle *)self complicationTypesBySlot];
+  [v9 _setFaceGalleryComplicationTypesForSlots:complicationTypesBySlot];
 
   (v5[2])(v5, v9);
-  v12 = [(NTKPrideDigitalFaceBundle *)self _analogFaceForDevice:v4];
-  v13 = [NTKPrideAnalogShapeEditOption optionWithStyle:0 forDevice:v4];
+  v12 = [(NTKPrideDigitalFaceBundle *)self _analogFaceForDevice:deviceCopy];
+  v13 = [NTKPrideAnalogShapeEditOption optionWithStyle:0 forDevice:deviceCopy];
   [v12 selectOption:v13 forCustomEditMode:15 slot:0];
 
   if (v6)
   {
-    v14 = [NTKPrideStyleEditOption optionWithStyle:1 forDevice:v4];
+    v14 = [NTKPrideStyleEditOption optionWithStyle:1 forDevice:deviceCopy];
     [v12 selectOption:v14 forCustomEditMode:12 slot:0];
   }
 
   (v5[2])(v5, v12);
-  if ([v4 deviceCategory] != &dword_0 + 1)
+  if ([deviceCopy deviceCategory] != &dword_0 + 1)
   {
-    v15 = [(NTKPrideDigitalFaceBundle *)self _analogFaceForDevice:v4];
-    v16 = [NTKPrideAnalogShapeEditOption optionWithStyle:1 forDevice:v4];
+    v15 = [(NTKPrideDigitalFaceBundle *)self _analogFaceForDevice:deviceCopy];
+    v16 = [NTKPrideAnalogShapeEditOption optionWithStyle:1 forDevice:deviceCopy];
     [v15 selectOption:v16 forCustomEditMode:15 slot:0];
 
     if (v6)
     {
-      v17 = [NTKPrideStyleEditOption optionWithStyle:1 forDevice:v4];
+      v17 = [NTKPrideStyleEditOption optionWithStyle:1 forDevice:deviceCopy];
       [v15 selectOption:v17 forCustomEditMode:12 slot:0];
     }
 
@@ -377,9 +377,9 @@
   return v19;
 }
 
-- (id)_pride2020DefaultFacesForDevice:(id)a3
+- (id)_pride2020DefaultFacesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v38[0] = _NSConcreteStackBlock;
   v38[1] = 3221225472;
   v38[2] = sub_C5A8;
@@ -387,14 +387,14 @@
   v5 = objc_opt_new();
   v39 = v5;
   v6 = objc_retainBlock(v38);
-  if ([v4 collectionType] == &dword_4 + 2)
+  if ([deviceCopy collectionType] == &dword_4 + 2)
   {
     v7 = +[NTKFaceBundleManager sharedManager];
-    v8 = [v7 faceBundleForFaceStyle:19 onDevice:v4];
+    v8 = [v7 faceBundleForFaceStyle:19 onDevice:deviceCopy];
 
     if (v8)
     {
-      v9 = [v8 prideFacesForDevice:v4];
+      v9 = [v8 prideFacesForDevice:deviceCopy];
       if ([v9 count])
       {
         v10 = [(NTKPrideDigitalFaceBundle *)self _facesFromSortableFaces:v9];
@@ -403,27 +403,27 @@
     }
   }
 
-  v11 = [NTKFace defaultFaceOfStyle:26 forDevice:v4];
-  v12 = [NTKPrideStyleEditOption optionWithStyle:2 forDevice:v4];
+  v11 = [NTKFace defaultFaceOfStyle:26 forDevice:deviceCopy];
+  v12 = [NTKPrideStyleEditOption optionWithStyle:2 forDevice:deviceCopy];
   [v11 selectOption:v12 forCustomEditMode:15 slot:0];
 
   v36 = v11;
   (v6[2])(v6, v11);
-  v13 = [(NTKPrideDigitalFaceBundle *)self _analogFaceForDevice:v4];
-  v14 = [NTKPrideStyleEditOption optionWithStyle:2 forDevice:v4];
+  v13 = [(NTKPrideDigitalFaceBundle *)self _analogFaceForDevice:deviceCopy];
+  v14 = [NTKPrideStyleEditOption optionWithStyle:2 forDevice:deviceCopy];
   [v13 selectOption:v14 forCustomEditMode:12 slot:0];
 
-  v15 = +[NTKPrideAnalogShapeEditOption optionWithStyle:forDevice:](NTKPrideAnalogShapeEditOption, "optionWithStyle:forDevice:", [v4 deviceCategory] != &dword_0 + 1, v4);
+  v15 = +[NTKPrideAnalogShapeEditOption optionWithStyle:forDevice:](NTKPrideAnalogShapeEditOption, "optionWithStyle:forDevice:", [deviceCopy deviceCategory] != &dword_0 + 1, deviceCopy);
   [v13 selectOption:v15 forCustomEditMode:15 slot:0];
 
   v35 = v13;
   (v6[2])(v6, v13);
-  if ([v4 deviceCategory] != &dword_0 + 1)
+  if ([deviceCopy deviceCategory] != &dword_0 + 1)
   {
     v16 = +[NTKFaceBundleManager sharedManager];
-    v17 = [v16 faceBundleForFaceStyle:39 onDevice:v4];
+    v17 = [v16 faceBundleForFaceStyle:39 onDevice:deviceCopy];
 
-    v18 = [v17 prideFacesForDevice:v4];
+    v18 = [v17 prideFacesForDevice:deviceCopy];
     if (v18)
     {
       v19 = [(NTKPrideDigitalFaceBundle *)self _facesFromSortableFaces:v18];
@@ -433,9 +433,9 @@
 
   v37 = v6;
   v20 = +[NTKFaceBundleManager sharedManager];
-  v21 = [v20 faceBundleForFaceStyle:37 onDevice:v4];
+  v21 = [v20 faceBundleForFaceStyle:37 onDevice:deviceCopy];
 
-  v22 = [v21 prideFacesForDevice:v4];
+  v22 = [v21 prideFacesForDevice:deviceCopy];
   if (v22)
   {
     v23 = [(NTKPrideDigitalFaceBundle *)self _facesFromSortableFaces:v22];
@@ -443,9 +443,9 @@
   }
 
   v24 = +[NTKFaceBundleManager sharedManager];
-  v25 = [v24 faceBundleForFaceStyle:38 onDevice:v4];
+  v25 = [v24 faceBundleForFaceStyle:38 onDevice:deviceCopy];
 
-  v26 = [v25 prideFacesForDevice:v4];
+  v26 = [v25 prideFacesForDevice:deviceCopy];
   if (v26)
   {
     v27 = [(NTKPrideDigitalFaceBundle *)self _facesFromSortableFaces:v26];
@@ -453,16 +453,16 @@
   }
 
   v28 = +[NTKFaceBundleManager sharedManager];
-  v29 = [v28 faceBundleForFaceStyle:41 onDevice:v4];
+  v29 = [v28 faceBundleForFaceStyle:41 onDevice:deviceCopy];
 
-  v30 = [v29 prideFacesForDevice:v4];
+  v30 = [v29 prideFacesForDevice:deviceCopy];
   if (v30)
   {
     v31 = [(NTKPrideDigitalFaceBundle *)self _facesFromSortableFaces:v30];
     [v5 addObjectsFromArray:v31];
   }
 
-  v32 = [(NTKPrideDigitalFaceBundle *)self _gloryFDefaultFacesForDevice:v4];
+  v32 = [(NTKPrideDigitalFaceBundle *)self _gloryFDefaultFacesForDevice:deviceCopy];
   [v5 addObjectsFromArray:v32];
 
   v33 = [v5 copy];
@@ -470,32 +470,32 @@
   return v33;
 }
 
-- (id)_pride2021DefaultFacesForDevice:(id)a3
+- (id)_pride2021DefaultFacesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = objc_opt_new();
-  if ([v4 deviceCategory] == &dword_0 + 3)
+  if ([deviceCopy deviceCategory] == &dword_0 + 3)
   {
     v6 = +[NTKFaceBundleManager sharedManager];
-    v7 = [v6 faceBundleForBundleIdentifier:@"com.apple.NTKProteusFaceBundle" onDevice:v4];
+    v7 = [v6 faceBundleForBundleIdentifier:@"com.apple.NTKProteusFaceBundle" onDevice:deviceCopy];
 
-    v8 = [v7 prideFacesForDevice:v4];
+    v8 = [v7 prideFacesForDevice:deviceCopy];
     v9 = [(NTKPrideDigitalFaceBundle *)self _facesFromSortableFaces:v8];
     [v5 addObjectsFromArray:v9];
   }
 
-  if ([v4 isLuxo])
+  if ([deviceCopy isLuxo])
   {
     v10 = +[NTKFaceBundleManager sharedManager];
     v11 = +[NTKPrideWeaveFaceBundle identifier];
-    v12 = [v10 faceBundleForBundleIdentifier:v11 onDevice:v4];
+    v12 = [v10 faceBundleForBundleIdentifier:v11 onDevice:deviceCopy];
 
-    v13 = [v12 prideFacesForDevice:v4];
+    v13 = [v12 prideFacesForDevice:deviceCopy];
     v14 = [(NTKPrideDigitalFaceBundle *)self _facesFromSortableFaces:v13];
     [v5 addObjectsFromArray:v14];
   }
 
-  v15 = [(NTKPrideDigitalFaceBundle *)self _pride2020DefaultFacesForDevice:v4];
+  v15 = [(NTKPrideDigitalFaceBundle *)self _pride2020DefaultFacesForDevice:deviceCopy];
   [v5 addObjectsFromArray:v15];
 
   return v5;
@@ -512,11 +512,11 @@
   return v2;
 }
 
-- (id)heroGloryFDefaultFacesForDevice:(id)a3
+- (id)heroGloryFDefaultFacesForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [NTKPrideDigitalFace defaultFaceOfStyle:26 forDevice:v3];
-  v5 = [NTKPrideStyleEditOption optionWithStyle:1 forDevice:v3];
+  deviceCopy = device;
+  v4 = [NTKPrideDigitalFace defaultFaceOfStyle:26 forDevice:deviceCopy];
+  v5 = [NTKPrideStyleEditOption optionWithStyle:1 forDevice:deviceCopy];
 
   [v4 selectOption:v5 forCustomEditMode:15 slot:0];
   if (v4)
@@ -533,11 +533,11 @@
   return v6;
 }
 
-- (id)heroPride2020DefaultFacesForDevice:(id)a3
+- (id)heroPride2020DefaultFacesForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [NTKPrideDigitalFace defaultFaceOfStyle:26 forDevice:v3];
-  v5 = [NTKPrideStyleEditOption optionWithStyle:2 forDevice:v3];
+  deviceCopy = device;
+  v4 = [NTKPrideDigitalFace defaultFaceOfStyle:26 forDevice:deviceCopy];
+  v5 = [NTKPrideStyleEditOption optionWithStyle:2 forDevice:deviceCopy];
 
   [v4 selectOption:v5 forCustomEditMode:15 slot:0];
   if (v4)

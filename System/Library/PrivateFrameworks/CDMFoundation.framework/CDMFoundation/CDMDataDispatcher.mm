@@ -1,33 +1,33 @@
 @interface CDMDataDispatcher
-+ (void)dispatchCdmPreprocessingWrapperData:(id)a3 requestId:(id)a4;
-+ (void)dispatchCdmRequestData:(id)a3 requestId:(id)a4 withCurrentServiceGraph:(id)a5 dataDispatcherContext:(id)a6;
-+ (void)dispatchCdmResponseData:(id)a3 requestId:(id)a4 dataDispatcherContext:(id)a5;
-+ (void)dispatchContextUpdateData:(id)a3 requestId:(id)a4 dataDispatcherContext:(id)a5;
-+ (void)dispatchCorrectedUtteranceTokenizationData:(id)a3 requestId:(id)a4 dataDispatcherContext:(id)a5;
-+ (void)dispatchCurrentTurnTokenizationData:(id)a3 requestId:(id)a4 dataDispatcherContext:(id)a5;
-+ (void)dispatchLVCData:(id)a3 withResponse:(id)a4 requestId:(id)a5;
-+ (void)dispatchMDData:(id)a3 withResponse:(id)a4 requestId:(id)a5;
-+ (void)dispatchMRData:(id)a3 withResponse:(id)a4 requestId:(id)a5;
-+ (void)dispatchNLv4Data:(id)a3 withResponse:(id)a4 requestId:(id)a5;
-+ (void)dispatchPSCData:(id)a3 withResponse:(id)a4 requestId:(id)a5;
-+ (void)dispatchPreviousTurnTokenizationData:(id)a3 requestId:(id)a4 dataDispatcherContext:(id)a5;
-+ (void)dispatchSELFRequestLink:(id)a3 dataDispatcherContext:(id)a4;
-+ (void)dispatchSNLCData:(id)a3 withResponse:(id)a4 requestId:(id)a5;
-+ (void)dispatchServiceSetupMetrics:(id)a3 selfMetadata:(id)a4 dataDispatcherContext:(id)a5;
-+ (void)dispatchSpanizationData:(id)a3 requestId:(id)a4 dataDispatcherContext:(id)a5;
-+ (void)dispatchUaaPData:(id)a3 withResponse:(id)a4 requestId:(id)a5;
-+ (void)insertFeatureStore:(id)a3 requester:(id)a4 debugLog:(id)a5;
++ (void)dispatchCdmPreprocessingWrapperData:(id)data requestId:(id)id;
++ (void)dispatchCdmRequestData:(id)data requestId:(id)id withCurrentServiceGraph:(id)graph dataDispatcherContext:(id)context;
++ (void)dispatchCdmResponseData:(id)data requestId:(id)id dataDispatcherContext:(id)context;
++ (void)dispatchContextUpdateData:(id)data requestId:(id)id dataDispatcherContext:(id)context;
++ (void)dispatchCorrectedUtteranceTokenizationData:(id)data requestId:(id)id dataDispatcherContext:(id)context;
++ (void)dispatchCurrentTurnTokenizationData:(id)data requestId:(id)id dataDispatcherContext:(id)context;
++ (void)dispatchLVCData:(id)data withResponse:(id)response requestId:(id)id;
++ (void)dispatchMDData:(id)data withResponse:(id)response requestId:(id)id;
++ (void)dispatchMRData:(id)data withResponse:(id)response requestId:(id)id;
++ (void)dispatchNLv4Data:(id)data withResponse:(id)response requestId:(id)id;
++ (void)dispatchPSCData:(id)data withResponse:(id)response requestId:(id)id;
++ (void)dispatchPreviousTurnTokenizationData:(id)data requestId:(id)id dataDispatcherContext:(id)context;
++ (void)dispatchSELFRequestLink:(id)link dataDispatcherContext:(id)context;
++ (void)dispatchSNLCData:(id)data withResponse:(id)response requestId:(id)id;
++ (void)dispatchServiceSetupMetrics:(id)metrics selfMetadata:(id)metadata dataDispatcherContext:(id)context;
++ (void)dispatchSpanizationData:(id)data requestId:(id)id dataDispatcherContext:(id)context;
++ (void)dispatchUaaPData:(id)data withResponse:(id)response requestId:(id)id;
++ (void)insertFeatureStore:(id)store requester:(id)requester debugLog:(id)log;
 + (void)waitForQueueCompletion;
 @end
 
 @implementation CDMDataDispatcher
 
-+ (void)dispatchUaaPData:(id)a3 withResponse:(id)a4 requestId:(id)a5
++ (void)dispatchUaaPData:(id)data withResponse:(id)response requestId:(id)id
 {
   v32 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  responseCopy = response;
+  idCopy = id;
   v10 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -41,14 +41,14 @@
   v28 = 0x3032000000;
   v29 = __Block_byref_object_copy__340;
   v30 = __Block_byref_object_dispose__341;
-  v11 = v7;
+  v11 = dataCopy;
   v31 = v11;
   v25[0] = 0;
   v25[1] = v25;
   v25[2] = 0x3032000000;
   v25[3] = __Block_byref_object_copy__340;
   v25[4] = __Block_byref_object_dispose__341;
-  v12 = v8;
+  v12 = responseCopy;
   v26 = v12;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -65,9 +65,9 @@
   v22[2] = 0x3032000000;
   v22[3] = __Block_byref_object_copy__340;
   v22[4] = __Block_byref_object_dispose__341;
-  if (v9)
+  if (idCopy)
   {
-    v15 = [v9 idA];
+    v15 = [idCopy idA];
   }
 
   else
@@ -76,16 +76,16 @@
   }
 
   v23 = v15;
-  v16 = [MEMORY[0x1E69D1420] extractRequestLinkData:v9];
+  v16 = [MEMORY[0x1E69D1420] extractRequestLinkData:idCopy];
   v17 = v16;
   if (v16)
   {
-    v18 = [v16 targetName];
+    targetName = [v16 targetName];
   }
 
   else
   {
-    v18 = 0;
+    targetName = 0;
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -96,7 +96,7 @@
   aBlock[5] = v22;
   aBlock[6] = v25;
   v19 = _Block_copy(aBlock);
-  [objc_opt_class() insertFeatureStore:v19 requester:v18 debugLog:@"CDMDataDispatcher dispatched UaaP data for FeatureStore asynchronously."];
+  [objc_opt_class() insertFeatureStore:v19 requester:targetName debugLog:@"CDMDataDispatcher dispatched UaaP data for FeatureStore asynchronously."];
 
   _Block_object_dispose(v22, 8);
   _Block_object_dispose(v25, 8);
@@ -195,12 +195,12 @@ void __61__CDMDataDispatcher_dispatchUaaPData_withResponse_requestId___block_inv
   v10 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)dispatchMRData:(id)a3 withResponse:(id)a4 requestId:(id)a5
++ (void)dispatchMRData:(id)data withResponse:(id)response requestId:(id)id
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  responseCopy = response;
+  idCopy = id;
   v10 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -214,23 +214,23 @@ void __61__CDMDataDispatcher_dispatchUaaPData_withResponse_requestId___block_inv
   v25 = 0x3032000000;
   v26 = __Block_byref_object_copy__340;
   v27 = __Block_byref_object_dispose__341;
-  v11 = v7;
+  v11 = dataCopy;
   v28 = v11;
   v22[0] = 0;
   v22[1] = v22;
   v22[2] = 0x3032000000;
   v22[3] = __Block_byref_object_copy__340;
   v22[4] = __Block_byref_object_dispose__341;
-  v12 = v8;
+  v12 = responseCopy;
   v23 = v12;
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x3032000000;
   v20[3] = __Block_byref_object_copy__340;
   v20[4] = __Block_byref_object_dispose__341;
-  if (v9)
+  if (idCopy)
   {
-    v13 = [v9 idA];
+    v13 = [idCopy idA];
   }
 
   else
@@ -239,16 +239,16 @@ void __61__CDMDataDispatcher_dispatchUaaPData_withResponse_requestId___block_inv
   }
 
   v21 = v13;
-  v14 = [MEMORY[0x1E69D1420] extractRequestLinkData:v9];
+  v14 = [MEMORY[0x1E69D1420] extractRequestLinkData:idCopy];
   v15 = v14;
   if (v14)
   {
-    v16 = [v14 targetName];
+    targetName = [v14 targetName];
   }
 
   else
   {
-    v16 = 0;
+    targetName = 0;
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -259,7 +259,7 @@ void __61__CDMDataDispatcher_dispatchUaaPData_withResponse_requestId___block_inv
   aBlock[5] = v20;
   aBlock[6] = v22;
   v17 = _Block_copy(aBlock);
-  [objc_opt_class() insertFeatureStore:v17 requester:v16 debugLog:@"CDMDataDispatcher dispatched mentionResolver data for FeatureStore asynchronously."];
+  [objc_opt_class() insertFeatureStore:v17 requester:targetName debugLog:@"CDMDataDispatcher dispatched mentionResolver data for FeatureStore asynchronously."];
 
   _Block_object_dispose(v20, 8);
   _Block_object_dispose(v22, 8);
@@ -321,12 +321,12 @@ void __59__CDMDataDispatcher_dispatchMRData_withResponse_requestId___block_invok
   v11 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)dispatchMDData:(id)a3 withResponse:(id)a4 requestId:(id)a5
++ (void)dispatchMDData:(id)data withResponse:(id)response requestId:(id)id
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  responseCopy = response;
+  idCopy = id;
   v10 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -340,23 +340,23 @@ void __59__CDMDataDispatcher_dispatchMRData_withResponse_requestId___block_invok
   v25 = 0x3032000000;
   v26 = __Block_byref_object_copy__340;
   v27 = __Block_byref_object_dispose__341;
-  v11 = v7;
+  v11 = dataCopy;
   v28 = v11;
   v22[0] = 0;
   v22[1] = v22;
   v22[2] = 0x3032000000;
   v22[3] = __Block_byref_object_copy__340;
   v22[4] = __Block_byref_object_dispose__341;
-  v12 = v8;
+  v12 = responseCopy;
   v23 = v12;
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x3032000000;
   v20[3] = __Block_byref_object_copy__340;
   v20[4] = __Block_byref_object_dispose__341;
-  if (v9)
+  if (idCopy)
   {
-    v13 = [v9 idA];
+    v13 = [idCopy idA];
   }
 
   else
@@ -365,16 +365,16 @@ void __59__CDMDataDispatcher_dispatchMRData_withResponse_requestId___block_invok
   }
 
   v21 = v13;
-  v14 = [MEMORY[0x1E69D1420] extractRequestLinkData:v9];
+  v14 = [MEMORY[0x1E69D1420] extractRequestLinkData:idCopy];
   v15 = v14;
   if (v14)
   {
-    v16 = [v14 targetName];
+    targetName = [v14 targetName];
   }
 
   else
   {
-    v16 = 0;
+    targetName = 0;
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -385,7 +385,7 @@ void __59__CDMDataDispatcher_dispatchMRData_withResponse_requestId___block_invok
   aBlock[5] = v20;
   aBlock[6] = v22;
   v17 = _Block_copy(aBlock);
-  [objc_opt_class() insertFeatureStore:v17 requester:v16 debugLog:@"CDMDataDispatcher dispatched mentionDetector data for FeatureStore asynchronously."];
+  [objc_opt_class() insertFeatureStore:v17 requester:targetName debugLog:@"CDMDataDispatcher dispatched mentionDetector data for FeatureStore asynchronously."];
 
   _Block_object_dispose(v20, 8);
   _Block_object_dispose(v22, 8);
@@ -447,12 +447,12 @@ void __59__CDMDataDispatcher_dispatchMDData_withResponse_requestId___block_invok
   v11 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)dispatchLVCData:(id)a3 withResponse:(id)a4 requestId:(id)a5
++ (void)dispatchLVCData:(id)data withResponse:(id)response requestId:(id)id
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  responseCopy = response;
+  idCopy = id;
   v10 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -466,23 +466,23 @@ void __59__CDMDataDispatcher_dispatchMDData_withResponse_requestId___block_invok
   v25 = 0x3032000000;
   v26 = __Block_byref_object_copy__340;
   v27 = __Block_byref_object_dispose__341;
-  v11 = v7;
+  v11 = dataCopy;
   v28 = v11;
   v22[0] = 0;
   v22[1] = v22;
   v22[2] = 0x3032000000;
   v22[3] = __Block_byref_object_copy__340;
   v22[4] = __Block_byref_object_dispose__341;
-  v12 = v8;
+  v12 = responseCopy;
   v23 = v12;
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x3032000000;
   v20[3] = __Block_byref_object_copy__340;
   v20[4] = __Block_byref_object_dispose__341;
-  if (v9)
+  if (idCopy)
   {
-    v13 = [v9 idA];
+    v13 = [idCopy idA];
   }
 
   else
@@ -491,16 +491,16 @@ void __59__CDMDataDispatcher_dispatchMDData_withResponse_requestId___block_invok
   }
 
   v21 = v13;
-  v14 = [MEMORY[0x1E69D1420] extractRequestLinkData:v9];
+  v14 = [MEMORY[0x1E69D1420] extractRequestLinkData:idCopy];
   v15 = v14;
   if (v14)
   {
-    v16 = [v14 targetName];
+    targetName = [v14 targetName];
   }
 
   else
   {
-    v16 = 0;
+    targetName = 0;
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -511,7 +511,7 @@ void __59__CDMDataDispatcher_dispatchMDData_withResponse_requestId___block_invok
   aBlock[5] = v20;
   aBlock[6] = v22;
   v17 = _Block_copy(aBlock);
-  [objc_opt_class() insertFeatureStore:v17 requester:v16 debugLog:@"CDMDataDispatcher dispatched LVC data for FeatureStore asynchronously."];
+  [objc_opt_class() insertFeatureStore:v17 requester:targetName debugLog:@"CDMDataDispatcher dispatched LVC data for FeatureStore asynchronously."];
 
   _Block_object_dispose(v20, 8);
   _Block_object_dispose(v22, 8);
@@ -557,12 +557,12 @@ void __60__CDMDataDispatcher_dispatchLVCData_withResponse_requestId___block_invo
   v10 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)dispatchPSCData:(id)a3 withResponse:(id)a4 requestId:(id)a5
++ (void)dispatchPSCData:(id)data withResponse:(id)response requestId:(id)id
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  responseCopy = response;
+  idCopy = id;
   v10 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -576,23 +576,23 @@ void __60__CDMDataDispatcher_dispatchLVCData_withResponse_requestId___block_invo
   v25 = 0x3032000000;
   v26 = __Block_byref_object_copy__340;
   v27 = __Block_byref_object_dispose__341;
-  v11 = v7;
+  v11 = dataCopy;
   v28 = v11;
   v22[0] = 0;
   v22[1] = v22;
   v22[2] = 0x3032000000;
   v22[3] = __Block_byref_object_copy__340;
   v22[4] = __Block_byref_object_dispose__341;
-  v12 = v8;
+  v12 = responseCopy;
   v23 = v12;
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x3032000000;
   v20[3] = __Block_byref_object_copy__340;
   v20[4] = __Block_byref_object_dispose__341;
-  if (v9)
+  if (idCopy)
   {
-    v13 = [v9 idA];
+    v13 = [idCopy idA];
   }
 
   else
@@ -601,16 +601,16 @@ void __60__CDMDataDispatcher_dispatchLVCData_withResponse_requestId___block_invo
   }
 
   v21 = v13;
-  v14 = [MEMORY[0x1E69D1420] extractRequestLinkData:v9];
+  v14 = [MEMORY[0x1E69D1420] extractRequestLinkData:idCopy];
   v15 = v14;
   if (v14)
   {
-    v16 = [v14 targetName];
+    targetName = [v14 targetName];
   }
 
   else
   {
-    v16 = 0;
+    targetName = 0;
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -621,7 +621,7 @@ void __60__CDMDataDispatcher_dispatchLVCData_withResponse_requestId___block_invo
   aBlock[5] = v20;
   aBlock[6] = v22;
   v17 = _Block_copy(aBlock);
-  [objc_opt_class() insertFeatureStore:v17 requester:v16 debugLog:@"CDMDataDispatcher dispatched PSC data for FeatureStore asynchronously."];
+  [objc_opt_class() insertFeatureStore:v17 requester:targetName debugLog:@"CDMDataDispatcher dispatched PSC data for FeatureStore asynchronously."];
 
   _Block_object_dispose(v20, 8);
   _Block_object_dispose(v22, 8);
@@ -667,12 +667,12 @@ void __60__CDMDataDispatcher_dispatchPSCData_withResponse_requestId___block_invo
   v10 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)dispatchNLv4Data:(id)a3 withResponse:(id)a4 requestId:(id)a5
++ (void)dispatchNLv4Data:(id)data withResponse:(id)response requestId:(id)id
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  responseCopy = response;
+  idCopy = id;
   v10 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -686,23 +686,23 @@ void __60__CDMDataDispatcher_dispatchPSCData_withResponse_requestId___block_invo
   v25 = 0x3032000000;
   v26 = __Block_byref_object_copy__340;
   v27 = __Block_byref_object_dispose__341;
-  v11 = v7;
+  v11 = dataCopy;
   v28 = v11;
   v22[0] = 0;
   v22[1] = v22;
   v22[2] = 0x3032000000;
   v22[3] = __Block_byref_object_copy__340;
   v22[4] = __Block_byref_object_dispose__341;
-  v12 = v8;
+  v12 = responseCopy;
   v23 = v12;
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x3032000000;
   v20[3] = __Block_byref_object_copy__340;
   v20[4] = __Block_byref_object_dispose__341;
-  if (v9)
+  if (idCopy)
   {
-    v13 = [v9 idA];
+    v13 = [idCopy idA];
   }
 
   else
@@ -711,16 +711,16 @@ void __60__CDMDataDispatcher_dispatchPSCData_withResponse_requestId___block_invo
   }
 
   v21 = v13;
-  v14 = [MEMORY[0x1E69D1420] extractRequestLinkData:v9];
+  v14 = [MEMORY[0x1E69D1420] extractRequestLinkData:idCopy];
   v15 = v14;
   if (v14)
   {
-    v16 = [v14 targetName];
+    targetName = [v14 targetName];
   }
 
   else
   {
-    v16 = 0;
+    targetName = 0;
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -731,7 +731,7 @@ void __60__CDMDataDispatcher_dispatchPSCData_withResponse_requestId___block_invo
   aBlock[5] = v20;
   aBlock[6] = v22;
   v17 = _Block_copy(aBlock);
-  [objc_opt_class() insertFeatureStore:v17 requester:v16 debugLog:@"CDMDataDispatcher dispatched NLv4 data for FeatureStore asynchronously."];
+  [objc_opt_class() insertFeatureStore:v17 requester:targetName debugLog:@"CDMDataDispatcher dispatched NLv4 data for FeatureStore asynchronously."];
 
   _Block_object_dispose(v20, 8);
   _Block_object_dispose(v22, 8);
@@ -777,12 +777,12 @@ void __61__CDMDataDispatcher_dispatchNLv4Data_withResponse_requestId___block_inv
   v10 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)dispatchSNLCData:(id)a3 withResponse:(id)a4 requestId:(id)a5
++ (void)dispatchSNLCData:(id)data withResponse:(id)response requestId:(id)id
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  responseCopy = response;
+  idCopy = id;
   v10 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -796,23 +796,23 @@ void __61__CDMDataDispatcher_dispatchNLv4Data_withResponse_requestId___block_inv
   v25 = 0x3032000000;
   v26 = __Block_byref_object_copy__340;
   v27 = __Block_byref_object_dispose__341;
-  v11 = v7;
+  v11 = dataCopy;
   v28 = v11;
   v22[0] = 0;
   v22[1] = v22;
   v22[2] = 0x3032000000;
   v22[3] = __Block_byref_object_copy__340;
   v22[4] = __Block_byref_object_dispose__341;
-  v12 = v8;
+  v12 = responseCopy;
   v23 = v12;
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x3032000000;
   v20[3] = __Block_byref_object_copy__340;
   v20[4] = __Block_byref_object_dispose__341;
-  if (v9)
+  if (idCopy)
   {
-    v13 = [v9 idA];
+    v13 = [idCopy idA];
   }
 
   else
@@ -821,16 +821,16 @@ void __61__CDMDataDispatcher_dispatchNLv4Data_withResponse_requestId___block_inv
   }
 
   v21 = v13;
-  v14 = [MEMORY[0x1E69D1420] extractRequestLinkData:v9];
+  v14 = [MEMORY[0x1E69D1420] extractRequestLinkData:idCopy];
   v15 = v14;
   if (v14)
   {
-    v16 = [v14 targetName];
+    targetName = [v14 targetName];
   }
 
   else
   {
-    v16 = 0;
+    targetName = 0;
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -841,7 +841,7 @@ void __61__CDMDataDispatcher_dispatchNLv4Data_withResponse_requestId___block_inv
   aBlock[5] = v20;
   aBlock[6] = v22;
   v17 = _Block_copy(aBlock);
-  [objc_opt_class() insertFeatureStore:v17 requester:v16 debugLog:@"CDMDataDispatcher dispatched SNLC data for FeatureStore asynchronously."];
+  [objc_opt_class() insertFeatureStore:v17 requester:targetName debugLog:@"CDMDataDispatcher dispatched SNLC data for FeatureStore asynchronously."];
 
   _Block_object_dispose(v20, 8);
   _Block_object_dispose(v22, 8);
@@ -887,12 +887,12 @@ void __61__CDMDataDispatcher_dispatchSNLCData_withResponse_requestId___block_inv
   v10 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)dispatchSpanizationData:(id)a3 requestId:(id)a4 dataDispatcherContext:(id)a5
++ (void)dispatchSpanizationData:(id)data requestId:(id)id dataDispatcherContext:(id)context
 {
   v41 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  idCopy = id;
+  contextCopy = context;
   v10 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -906,9 +906,9 @@ void __61__CDMDataDispatcher_dispatchSNLCData_withResponse_requestId___block_inv
   v37 = 0x3032000000;
   v38 = __Block_byref_object_copy__340;
   v39 = __Block_byref_object_dispose__341;
-  v11 = v7;
+  v11 = dataCopy;
   v40 = v11;
-  v12 = [MEMORY[0x1E69D1420] extractRequestLinkData:v8];
+  v12 = [MEMORY[0x1E69D1420] extractRequestLinkData:idCopy];
   v13 = v12;
   v32[0] = 0;
   v32[1] = v32;
@@ -917,12 +917,12 @@ void __61__CDMDataDispatcher_dispatchSNLCData_withResponse_requestId___block_inv
   v32[4] = __Block_byref_object_dispose__341;
   if (v12)
   {
-    v14 = [v12 nlId];
-    v15 = [v13 trpId];
-    v16 = [v13 targetUUID];
-    v17 = [v13 resultCandidateId];
-    v18 = [v13 targetName];
-    v33 = [CDMSELFLogUtil createSELFMetadataWithNlId:v14 andWithTrpId:v15 andWithRequestId:v16 andWithResultCandidateId:v17 andWithConnectionId:v18];
+    nlId = [v12 nlId];
+    trpId = [v13 trpId];
+    targetUUID = [v13 targetUUID];
+    resultCandidateId = [v13 resultCandidateId];
+    targetName = [v13 targetName];
+    v33 = [CDMSELFLogUtil createSELFMetadataWithNlId:nlId andWithTrpId:trpId andWithRequestId:targetUUID andWithResultCandidateId:resultCandidateId andWithConnectionId:targetName];
   }
 
   else
@@ -935,9 +935,9 @@ void __61__CDMDataDispatcher_dispatchSNLCData_withResponse_requestId___block_inv
   v30[2] = 0x3032000000;
   v30[3] = __Block_byref_object_copy__340;
   v30[4] = __Block_byref_object_dispose__341;
-  if (v8)
+  if (idCopy)
   {
-    v19 = [v8 idA];
+    v19 = [idCopy idA];
   }
 
   else
@@ -951,7 +951,7 @@ void __61__CDMDataDispatcher_dispatchSNLCData_withResponse_requestId___block_inv
   v28[2] = 0x3032000000;
   v28[3] = __Block_byref_object_copy__340;
   v28[4] = __Block_byref_object_dispose__341;
-  v20 = v9;
+  v20 = contextCopy;
   v29 = v20;
   v21 = +[CDMDataDispatcherCompletionQueue getDataDispatcherCompletionQueue];
   block[0] = MEMORY[0x1E69E9820];
@@ -974,12 +974,12 @@ void __61__CDMDataDispatcher_dispatchSNLCData_withResponse_requestId___block_inv
 
   if (v13)
   {
-    v23 = [v13 targetName];
+    targetName2 = [v13 targetName];
   }
 
   else
   {
-    v23 = 0;
+    targetName2 = 0;
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -989,7 +989,7 @@ void __61__CDMDataDispatcher_dispatchSNLCData_withResponse_requestId___block_inv
   aBlock[4] = &buf;
   aBlock[5] = v30;
   v24 = _Block_copy(aBlock);
-  [objc_opt_class() insertFeatureStore:v24 requester:v23 debugLog:@"CDMDataDispatcher dispatched spanization data for FeatureStore asynchronously."];
+  [objc_opt_class() insertFeatureStore:v24 requester:targetName2 debugLog:@"CDMDataDispatcher dispatched spanization data for FeatureStore asynchronously."];
 
   _Block_object_dispose(v28, 8);
   _Block_object_dispose(v30, 8);
@@ -1093,12 +1093,12 @@ void __77__CDMDataDispatcher_dispatchSpanizationData_requestId_dataDispatcherCon
   v9 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)dispatchContextUpdateData:(id)a3 requestId:(id)a4 dataDispatcherContext:(id)a5
++ (void)dispatchContextUpdateData:(id)data requestId:(id)id dataDispatcherContext:(id)context
 {
   v35 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  idCopy = id;
+  contextCopy = context;
   v10 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -1112,9 +1112,9 @@ void __77__CDMDataDispatcher_dispatchSpanizationData_requestId_dataDispatcherCon
   v31 = 0x3032000000;
   v32 = __Block_byref_object_copy__340;
   v33 = __Block_byref_object_dispose__341;
-  v11 = v7;
+  v11 = dataCopy;
   v34 = v11;
-  v12 = [MEMORY[0x1E69D1420] extractRequestLinkData:v8];
+  v12 = [MEMORY[0x1E69D1420] extractRequestLinkData:idCopy];
   v13 = v12;
   v26[0] = 0;
   v26[1] = v26;
@@ -1123,12 +1123,12 @@ void __77__CDMDataDispatcher_dispatchSpanizationData_requestId_dataDispatcherCon
   v26[4] = __Block_byref_object_dispose__341;
   if (v12)
   {
-    v14 = [v12 nlId];
-    v15 = [v13 trpId];
-    v16 = [v13 targetUUID];
-    v17 = [v13 resultCandidateId];
-    v18 = [v13 targetName];
-    v27 = [CDMSELFLogUtil createSELFMetadataWithNlId:v14 andWithTrpId:v15 andWithRequestId:v16 andWithResultCandidateId:v17 andWithConnectionId:v18];
+    nlId = [v12 nlId];
+    trpId = [v13 trpId];
+    targetUUID = [v13 targetUUID];
+    resultCandidateId = [v13 resultCandidateId];
+    targetName = [v13 targetName];
+    v27 = [CDMSELFLogUtil createSELFMetadataWithNlId:nlId andWithTrpId:trpId andWithRequestId:targetUUID andWithResultCandidateId:resultCandidateId andWithConnectionId:targetName];
   }
 
   else
@@ -1141,7 +1141,7 @@ void __77__CDMDataDispatcher_dispatchSpanizationData_requestId_dataDispatcherCon
   v24[2] = 0x3032000000;
   v24[3] = __Block_byref_object_copy__340;
   v24[4] = __Block_byref_object_dispose__341;
-  v19 = v9;
+  v19 = contextCopy;
   v25 = v19;
   v20 = +[CDMDataDispatcherCompletionQueue getDataDispatcherCompletionQueue];
   block[0] = MEMORY[0x1E69E9820];
@@ -1202,12 +1202,12 @@ void __79__CDMDataDispatcher_dispatchContextUpdateData_requestId_dataDispatcherC
   v9 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)dispatchCorrectedUtteranceTokenizationData:(id)a3 requestId:(id)a4 dataDispatcherContext:(id)a5
++ (void)dispatchCorrectedUtteranceTokenizationData:(id)data requestId:(id)id dataDispatcherContext:(id)context
 {
   v35 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  idCopy = id;
+  contextCopy = context;
   v10 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -1221,9 +1221,9 @@ void __79__CDMDataDispatcher_dispatchContextUpdateData_requestId_dataDispatcherC
   v31 = 0x3032000000;
   v32 = __Block_byref_object_copy__340;
   v33 = __Block_byref_object_dispose__341;
-  v11 = v7;
+  v11 = dataCopy;
   v34 = v11;
-  v12 = [MEMORY[0x1E69D1420] extractRequestLinkData:v8];
+  v12 = [MEMORY[0x1E69D1420] extractRequestLinkData:idCopy];
   v13 = v12;
   v26[0] = 0;
   v26[1] = v26;
@@ -1232,12 +1232,12 @@ void __79__CDMDataDispatcher_dispatchContextUpdateData_requestId_dataDispatcherC
   v26[4] = __Block_byref_object_dispose__341;
   if (v12)
   {
-    v14 = [v12 nlId];
-    v15 = [v13 trpId];
-    v16 = [v13 targetUUID];
-    v17 = [v13 resultCandidateId];
-    v18 = [v13 targetName];
-    v27 = [CDMSELFLogUtil createSELFMetadataWithNlId:v14 andWithTrpId:v15 andWithRequestId:v16 andWithResultCandidateId:v17 andWithConnectionId:v18];
+    nlId = [v12 nlId];
+    trpId = [v13 trpId];
+    targetUUID = [v13 targetUUID];
+    resultCandidateId = [v13 resultCandidateId];
+    targetName = [v13 targetName];
+    v27 = [CDMSELFLogUtil createSELFMetadataWithNlId:nlId andWithTrpId:trpId andWithRequestId:targetUUID andWithResultCandidateId:resultCandidateId andWithConnectionId:targetName];
   }
 
   else
@@ -1250,7 +1250,7 @@ void __79__CDMDataDispatcher_dispatchContextUpdateData_requestId_dataDispatcherC
   v24[2] = 0x3032000000;
   v24[3] = __Block_byref_object_copy__340;
   v24[4] = __Block_byref_object_dispose__341;
-  v19 = v9;
+  v19 = contextCopy;
   v25 = v19;
   v20 = +[CDMDataDispatcherCompletionQueue getDataDispatcherCompletionQueue];
   block[0] = MEMORY[0x1E69E9820];
@@ -1311,12 +1311,12 @@ void __96__CDMDataDispatcher_dispatchCorrectedUtteranceTokenizationData_requestI
   v9 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)dispatchPreviousTurnTokenizationData:(id)a3 requestId:(id)a4 dataDispatcherContext:(id)a5
++ (void)dispatchPreviousTurnTokenizationData:(id)data requestId:(id)id dataDispatcherContext:(id)context
 {
   v35 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  idCopy = id;
+  contextCopy = context;
   v10 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -1330,9 +1330,9 @@ void __96__CDMDataDispatcher_dispatchCorrectedUtteranceTokenizationData_requestI
   v31 = 0x3032000000;
   v32 = __Block_byref_object_copy__340;
   v33 = __Block_byref_object_dispose__341;
-  v11 = v7;
+  v11 = dataCopy;
   v34 = v11;
-  v12 = [MEMORY[0x1E69D1420] extractRequestLinkData:v8];
+  v12 = [MEMORY[0x1E69D1420] extractRequestLinkData:idCopy];
   v13 = v12;
   v26[0] = 0;
   v26[1] = v26;
@@ -1341,12 +1341,12 @@ void __96__CDMDataDispatcher_dispatchCorrectedUtteranceTokenizationData_requestI
   v26[4] = __Block_byref_object_dispose__341;
   if (v12)
   {
-    v14 = [v12 nlId];
-    v15 = [v13 trpId];
-    v16 = [v13 targetUUID];
-    v17 = [v13 resultCandidateId];
-    v18 = [v13 targetName];
-    v27 = [CDMSELFLogUtil createSELFMetadataWithNlId:v14 andWithTrpId:v15 andWithRequestId:v16 andWithResultCandidateId:v17 andWithConnectionId:v18];
+    nlId = [v12 nlId];
+    trpId = [v13 trpId];
+    targetUUID = [v13 targetUUID];
+    resultCandidateId = [v13 resultCandidateId];
+    targetName = [v13 targetName];
+    v27 = [CDMSELFLogUtil createSELFMetadataWithNlId:nlId andWithTrpId:trpId andWithRequestId:targetUUID andWithResultCandidateId:resultCandidateId andWithConnectionId:targetName];
   }
 
   else
@@ -1359,7 +1359,7 @@ void __96__CDMDataDispatcher_dispatchCorrectedUtteranceTokenizationData_requestI
   v24[2] = 0x3032000000;
   v24[3] = __Block_byref_object_copy__340;
   v24[4] = __Block_byref_object_dispose__341;
-  v19 = v9;
+  v19 = contextCopy;
   v25 = v19;
   v20 = +[CDMDataDispatcherCompletionQueue getDataDispatcherCompletionQueue];
   block[0] = MEMORY[0x1E69E9820];
@@ -1458,12 +1458,12 @@ void __90__CDMDataDispatcher_dispatchPreviousTurnTokenizationData_requestId_data
   v18 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)dispatchCurrentTurnTokenizationData:(id)a3 requestId:(id)a4 dataDispatcherContext:(id)a5
++ (void)dispatchCurrentTurnTokenizationData:(id)data requestId:(id)id dataDispatcherContext:(id)context
 {
   v42 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  idCopy = id;
+  contextCopy = context;
   v10 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -1477,9 +1477,9 @@ void __90__CDMDataDispatcher_dispatchPreviousTurnTokenizationData_requestId_data
   v38 = 0x3032000000;
   v39 = __Block_byref_object_copy__340;
   v40 = __Block_byref_object_dispose__341;
-  v11 = v7;
+  v11 = dataCopy;
   v41 = v11;
-  v12 = [MEMORY[0x1E69D1420] extractRequestLinkData:v8];
+  v12 = [MEMORY[0x1E69D1420] extractRequestLinkData:idCopy];
   v13 = v12;
   v30[0] = 0;
   v30[1] = v30;
@@ -1488,12 +1488,12 @@ void __90__CDMDataDispatcher_dispatchPreviousTurnTokenizationData_requestId_data
   v30[4] = __Block_byref_object_dispose__341;
   if (v12)
   {
-    v14 = [v12 nlId];
-    v15 = [v13 trpId];
-    v16 = [v13 targetUUID];
-    v17 = [v13 resultCandidateId];
-    v18 = [v13 targetName];
-    v31 = [CDMSELFLogUtil createSELFMetadataWithNlId:v14 andWithTrpId:v15 andWithRequestId:v16 andWithResultCandidateId:v17 andWithConnectionId:v18];
+    nlId = [v12 nlId];
+    trpId = [v13 trpId];
+    targetUUID = [v13 targetUUID];
+    resultCandidateId = [v13 resultCandidateId];
+    targetName = [v13 targetName];
+    v31 = [CDMSELFLogUtil createSELFMetadataWithNlId:nlId andWithTrpId:trpId andWithRequestId:targetUUID andWithResultCandidateId:resultCandidateId andWithConnectionId:targetName];
   }
 
   else
@@ -1506,7 +1506,7 @@ void __90__CDMDataDispatcher_dispatchPreviousTurnTokenizationData_requestId_data
   v28[2] = 0x3032000000;
   v28[3] = __Block_byref_object_copy__340;
   v28[4] = __Block_byref_object_dispose__341;
-  v19 = v9;
+  v19 = contextCopy;
   v29 = v19;
   v20 = +[CDMDataDispatcherCompletionQueue getDataDispatcherCompletionQueue];
   block[0] = MEMORY[0x1E69E9820];
@@ -1531,9 +1531,9 @@ void __90__CDMDataDispatcher_dispatchPreviousTurnTokenizationData_requestId_data
   v33 = 0x3032000000;
   v34 = __Block_byref_object_copy__340;
   v35 = __Block_byref_object_dispose__341;
-  if (v8)
+  if (idCopy)
   {
-    v22 = [v8 idA];
+    v22 = [idCopy idA];
   }
 
   else
@@ -1544,12 +1544,12 @@ void __90__CDMDataDispatcher_dispatchPreviousTurnTokenizationData_requestId_data
   v36 = v22;
   if (v13)
   {
-    v23 = [v13 targetName];
+    targetName2 = [v13 targetName];
   }
 
   else
   {
-    v23 = 0;
+    targetName2 = 0;
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -1559,7 +1559,7 @@ void __90__CDMDataDispatcher_dispatchPreviousTurnTokenizationData_requestId_data
   aBlock[4] = &buf;
   aBlock[5] = &v32;
   v24 = _Block_copy(aBlock);
-  [objc_opt_class() insertFeatureStore:v24 requester:v23 debugLog:@"CDMDataDispatcher dispatched currentTurnTokenization data for FeatureStore asynchronously."];
+  [objc_opt_class() insertFeatureStore:v24 requester:targetName2 debugLog:@"CDMDataDispatcher dispatched currentTurnTokenization data for FeatureStore asynchronously."];
 
   _Block_object_dispose(&v32, 8);
   _Block_object_dispose(v28, 8);
@@ -1638,11 +1638,11 @@ void __89__CDMDataDispatcher_dispatchCurrentTurnTokenizationData_requestId_dataD
   v9 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)dispatchCdmPreprocessingWrapperData:(id)a3 requestId:(id)a4
++ (void)dispatchCdmPreprocessingWrapperData:(id)data requestId:(id)id
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  idCopy = id;
   v7 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -1656,17 +1656,17 @@ void __89__CDMDataDispatcher_dispatchCurrentTurnTokenizationData_requestId_dataD
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__340;
   v20 = __Block_byref_object_dispose__341;
-  v8 = v5;
+  v8 = dataCopy;
   v21 = v8;
-  v9 = [MEMORY[0x1E69D1420] extractRequestLinkData:v6];
+  v9 = [MEMORY[0x1E69D1420] extractRequestLinkData:idCopy];
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x3032000000;
   v15[3] = __Block_byref_object_copy__340;
   v15[4] = __Block_byref_object_dispose__341;
-  if (v6)
+  if (idCopy)
   {
-    v10 = [v6 idA];
+    v10 = [idCopy idA];
   }
 
   else
@@ -1677,12 +1677,12 @@ void __89__CDMDataDispatcher_dispatchCurrentTurnTokenizationData_requestId_dataD
   v16 = v10;
   if (v9)
   {
-    v11 = [v9 targetName];
+    targetName = [v9 targetName];
   }
 
   else
   {
-    v11 = 0;
+    targetName = 0;
   }
 
   v14[0] = MEMORY[0x1E69E9820];
@@ -1692,7 +1692,7 @@ void __89__CDMDataDispatcher_dispatchCurrentTurnTokenizationData_requestId_dataD
   v14[4] = &buf;
   v14[5] = v15;
   v12 = _Block_copy(v14);
-  [objc_opt_class() insertFeatureStore:v12 requester:v11 debugLog:@"CDMDataDispatcher dispatched CDM PreprocessingWrapper data for FeatureStore asynchronously."];
+  [objc_opt_class() insertFeatureStore:v12 requester:targetName debugLog:@"CDMDataDispatcher dispatched CDM PreprocessingWrapper data for FeatureStore asynchronously."];
 
   _Block_object_dispose(v15, 8);
   _Block_object_dispose(&buf, 8);
@@ -1721,12 +1721,12 @@ void __67__CDMDataDispatcher_dispatchCdmPreprocessingWrapperData_requestId___blo
   }
 }
 
-+ (void)dispatchCdmResponseData:(id)a3 requestId:(id)a4 dataDispatcherContext:(id)a5
++ (void)dispatchCdmResponseData:(id)data requestId:(id)id dataDispatcherContext:(id)context
 {
   v38 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  idCopy = id;
+  contextCopy = context;
   v10 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -1740,8 +1740,8 @@ void __67__CDMDataDispatcher_dispatchCdmPreprocessingWrapperData_requestId___blo
   v34 = 0x3032000000;
   v35 = __Block_byref_object_copy__340;
   v36 = __Block_byref_object_dispose__341;
-  v37 = [v7 copy];
-  v11 = [MEMORY[0x1E69D1420] extractRequestLinkData:v8];
+  v37 = [dataCopy copy];
+  v11 = [MEMORY[0x1E69D1420] extractRequestLinkData:idCopy];
   v12 = v11;
   v29[0] = 0;
   v29[1] = v29;
@@ -1750,12 +1750,12 @@ void __67__CDMDataDispatcher_dispatchCdmPreprocessingWrapperData_requestId___blo
   v29[4] = __Block_byref_object_dispose__341;
   if (v11)
   {
-    v13 = [v11 nlId];
-    v14 = [v12 trpId];
-    v15 = [v12 targetUUID];
-    v16 = [v12 resultCandidateId];
-    v17 = [v12 targetName];
-    v30 = [CDMSELFLogUtil createSELFMetadataWithNlId:v13 andWithTrpId:v14 andWithRequestId:v15 andWithResultCandidateId:v16 andWithConnectionId:v17];
+    nlId = [v11 nlId];
+    trpId = [v12 trpId];
+    targetUUID = [v12 targetUUID];
+    resultCandidateId = [v12 resultCandidateId];
+    targetName = [v12 targetName];
+    v30 = [CDMSELFLogUtil createSELFMetadataWithNlId:nlId andWithTrpId:trpId andWithRequestId:targetUUID andWithResultCandidateId:resultCandidateId andWithConnectionId:targetName];
   }
 
   else
@@ -1768,7 +1768,7 @@ void __67__CDMDataDispatcher_dispatchCdmPreprocessingWrapperData_requestId___blo
   v27[2] = 0x3032000000;
   v27[3] = __Block_byref_object_copy__340;
   v27[4] = __Block_byref_object_dispose__341;
-  v18 = v9;
+  v18 = contextCopy;
   v28 = v18;
   v19 = mach_absolute_time();
   v20 = +[CDMDataDispatcherCompletionQueue getDataDispatcherCompletionQueue];
@@ -1792,12 +1792,12 @@ void __67__CDMDataDispatcher_dispatchCdmPreprocessingWrapperData_requestId___blo
 
   if (v12)
   {
-    v22 = [v12 targetName];
+    targetName2 = [v12 targetName];
   }
 
   else
   {
-    v22 = 0;
+    targetName2 = 0;
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -1806,7 +1806,7 @@ void __67__CDMDataDispatcher_dispatchCdmPreprocessingWrapperData_requestId___blo
   aBlock[3] = &unk_1E862E818;
   aBlock[4] = &buf;
   v23 = _Block_copy(aBlock);
-  [objc_opt_class() insertFeatureStore:v23 requester:v22 debugLog:@"CDMDataDispatcher dispatched CDM Response data for FeatureStore asynchronously."];
+  [objc_opt_class() insertFeatureStore:v23 requester:targetName2 debugLog:@"CDMDataDispatcher dispatched CDM Response data for FeatureStore asynchronously."];
 
   _Block_object_dispose(v27, 8);
   _Block_object_dispose(v29, 8);
@@ -1857,13 +1857,13 @@ void __77__CDMDataDispatcher_dispatchCdmResponseData_requestId_dataDispatcherCon
   }
 }
 
-+ (void)dispatchCdmRequestData:(id)a3 requestId:(id)a4 withCurrentServiceGraph:(id)a5 dataDispatcherContext:(id)a6
++ (void)dispatchCdmRequestData:(id)data requestId:(id)id withCurrentServiceGraph:(id)graph dataDispatcherContext:(id)context
 {
   v68 = *MEMORY[0x1E69E9840];
-  v42 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  dataCopy = data;
+  idCopy = id;
+  graphCopy = graph;
+  contextCopy = context;
   v12 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
@@ -1877,8 +1877,8 @@ void __77__CDMDataDispatcher_dispatchCdmResponseData_requestId_dataDispatcherCon
   v54[2] = 0x3032000000;
   v54[3] = __Block_byref_object_copy__340;
   v54[4] = __Block_byref_object_dispose__341;
-  v55 = [v42 copy];
-  v13 = [MEMORY[0x1E69D1420] extractRequestLinkData:v9];
+  v55 = [dataCopy copy];
+  v13 = [MEMORY[0x1E69D1420] extractRequestLinkData:idCopy];
   v14 = v13;
   v52[0] = 0;
   v52[1] = v52;
@@ -1887,17 +1887,17 @@ void __77__CDMDataDispatcher_dispatchCdmResponseData_requestId_dataDispatcherCon
   v52[4] = __Block_byref_object_dispose__341;
   if (v13)
   {
-    v15 = v9;
-    v16 = v10;
-    v17 = [v13 nlId];
-    v18 = [v14 trpId];
-    v19 = [v14 targetUUID];
-    v20 = [v14 resultCandidateId];
-    v21 = [v14 targetName];
-    v53 = [CDMSELFLogUtil createSELFMetadataWithNlId:v17 andWithTrpId:v18 andWithRequestId:v19 andWithResultCandidateId:v20 andWithConnectionId:v21];
+    v15 = idCopy;
+    v16 = graphCopy;
+    nlId = [v13 nlId];
+    trpId = [v14 trpId];
+    targetUUID = [v14 targetUUID];
+    resultCandidateId = [v14 resultCandidateId];
+    targetName = [v14 targetName];
+    v53 = [CDMSELFLogUtil createSELFMetadataWithNlId:nlId andWithTrpId:trpId andWithRequestId:targetUUID andWithResultCandidateId:resultCandidateId andWithConnectionId:targetName];
 
-    v10 = v16;
-    v9 = v15;
+    graphCopy = v16;
+    idCopy = v15;
   }
 
   else
@@ -1910,34 +1910,34 @@ void __77__CDMDataDispatcher_dispatchCdmResponseData_requestId_dataDispatcherCon
   v50[2] = 0x3032000000;
   v50[3] = __Block_byref_object_copy__340;
   v50[4] = __Block_byref_object_dispose__341;
-  v22 = v11;
+  v22 = contextCopy;
   v51 = v22;
   v23 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
   {
     v31 = MEMORY[0x1E69D1420];
-    v40 = [v14 nlId];
-    v39 = [v31 convertUUID:v40];
-    v41 = [v39 toSafeNSUUID];
-    v32 = [v14 resultCandidateId];
+    nlId2 = [v14 nlId];
+    v39 = [v31 convertUUID:nlId2];
+    toSafeNSUUID = [v39 toSafeNSUUID];
+    resultCandidateId2 = [v14 resultCandidateId];
     v33 = MEMORY[0x1E69D1420];
-    v38 = [v14 trpId];
-    v34 = [v33 convertUUID:v38];
-    v35 = [v34 toSafeNSUUID];
-    v36 = [v14 targetName];
-    v37 = [v14 targetUUID];
+    trpId2 = [v14 trpId];
+    v34 = [v33 convertUUID:trpId2];
+    toSafeNSUUID2 = [v34 toSafeNSUUID];
+    targetName2 = [v14 targetName];
+    targetUUID2 = [v14 targetUUID];
     *buf = 136316418;
     v57 = "+[CDMDataDispatcher dispatchCdmRequestData:requestId:withCurrentServiceGraph:dataDispatcherContext:]";
     v58 = 2112;
-    v59 = v41;
+    v59 = toSafeNSUUID;
     v60 = 2112;
-    v61 = v32;
+    v61 = resultCandidateId2;
     v62 = 2112;
-    v63 = v35;
+    v63 = toSafeNSUUID2;
     v64 = 2112;
-    v65 = v36;
+    v65 = targetName2;
     v66 = 2112;
-    v67 = v37;
+    v67 = targetUUID2;
     _os_log_debug_impl(&dword_1DC287000, v23, OS_LOG_TYPE_DEBUG, "%s SELF RequestLinkData for dispatchCdmRequestData: \n RequestLinkData.nlId: %@ \n RequestLinkData.resultCandidateId: %@ \n RequestLinkData.trpId: %@ \n RequestLinkData.tragetName: %@ \n RequestLinkData.targetUUID: %@", buf, 0x3Eu);
   }
 
@@ -1947,7 +1947,7 @@ void __77__CDMDataDispatcher_dispatchCdmResponseData_requestId_dataDispatcherCon
   block[1] = 3221225472;
   block[2] = __100__CDMDataDispatcher_dispatchCdmRequestData_requestId_withCurrentServiceGraph_dataDispatcherContext___block_invoke;
   block[3] = &unk_1E862E7F0;
-  v26 = v10;
+  v26 = graphCopy;
   v45 = v26;
   v46 = v54;
   v47 = v52;
@@ -1965,12 +1965,12 @@ void __77__CDMDataDispatcher_dispatchCdmResponseData_requestId_dataDispatcherCon
 
   if (v14)
   {
-    v28 = [v14 targetName];
+    targetName3 = [v14 targetName];
   }
 
   else
   {
-    v28 = 0;
+    targetName3 = 0;
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -1979,7 +1979,7 @@ void __77__CDMDataDispatcher_dispatchCdmResponseData_requestId_dataDispatcherCon
   aBlock[3] = &unk_1E862E818;
   aBlock[4] = v54;
   v29 = _Block_copy(aBlock);
-  [objc_opt_class() insertFeatureStore:v29 requester:v28 debugLog:@"CDMDataDispatcher dispatched CDM Request data for FeatureStore asynchronously."];
+  [objc_opt_class() insertFeatureStore:v29 requester:targetName3 debugLog:@"CDMDataDispatcher dispatched CDM Request data for FeatureStore asynchronously."];
 
   _Block_object_dispose(v50, 8);
   _Block_object_dispose(v52, 8);
@@ -2030,12 +2030,12 @@ void __100__CDMDataDispatcher_dispatchCdmRequestData_requestId_withCurrentServic
   }
 }
 
-+ (void)dispatchServiceSetupMetrics:(id)a3 selfMetadata:(id)a4 dataDispatcherContext:(id)a5
++ (void)dispatchServiceSetupMetrics:(id)metrics selfMetadata:(id)metadata dataDispatcherContext:(id)context
 {
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  metricsCopy = metrics;
+  metadataCopy = metadata;
+  contextCopy = context;
   v10 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -2049,20 +2049,20 @@ void __100__CDMDataDispatcher_dispatchCdmRequestData_requestId_withCurrentServic
   v24 = 0x3032000000;
   v25 = __Block_byref_object_copy__340;
   v26 = __Block_byref_object_dispose__341;
-  v27 = [v7 allValues];
+  allValues = [metricsCopy allValues];
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x3032000000;
   v19[3] = __Block_byref_object_copy__340;
   v19[4] = __Block_byref_object_dispose__341;
-  v11 = v8;
+  v11 = metadataCopy;
   v20 = v11;
   v17[0] = 0;
   v17[1] = v17;
   v17[2] = 0x3032000000;
   v17[3] = __Block_byref_object_copy__340;
   v17[4] = __Block_byref_object_dispose__341;
-  v12 = v9;
+  v12 = contextCopy;
   v18 = v12;
   v13 = +[CDMDataDispatcherCompletionQueue getDataDispatcherCompletionQueue];
   block[0] = MEMORY[0x1E69E9820];
@@ -2147,11 +2147,11 @@ void __84__CDMDataDispatcher_dispatchServiceSetupMetrics_selfMetadata_dataDispat
   v15 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)dispatchSELFRequestLink:(id)a3 dataDispatcherContext:(id)a4
++ (void)dispatchSELFRequestLink:(id)link dataDispatcherContext:(id)context
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  linkCopy = link;
+  contextCopy = context;
   v7 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -2165,7 +2165,7 @@ void __84__CDMDataDispatcher_dispatchServiceSetupMetrics_selfMetadata_dataDispat
   v26 = 0x3032000000;
   v27 = __Block_byref_object_copy__340;
   v28 = __Block_byref_object_dispose__341;
-  v29 = [MEMORY[0x1E69D1420] extractRequestLinkData:v5];
+  v29 = [MEMORY[0x1E69D1420] extractRequestLinkData:linkCopy];
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x3032000000;
@@ -2174,12 +2174,12 @@ void __84__CDMDataDispatcher_dispatchServiceSetupMetrics_selfMetadata_dataDispat
   v8 = *(*(&buf + 1) + 40);
   if (v8)
   {
-    v9 = [v8 nlId];
-    v10 = [*(*(&buf + 1) + 40) trpId];
-    v11 = [*(*(&buf + 1) + 40) targetUUID];
-    v12 = [*(*(&buf + 1) + 40) resultCandidateId];
-    v13 = [*(*(&buf + 1) + 40) targetName];
-    v22 = [CDMSELFLogUtil createSELFMetadataWithNlId:v9 andWithTrpId:v10 andWithRequestId:v11 andWithResultCandidateId:v12 andWithConnectionId:v13];
+    nlId = [v8 nlId];
+    trpId = [*(*(&buf + 1) + 40) trpId];
+    targetUUID = [*(*(&buf + 1) + 40) targetUUID];
+    resultCandidateId = [*(*(&buf + 1) + 40) resultCandidateId];
+    targetName = [*(*(&buf + 1) + 40) targetName];
+    v22 = [CDMSELFLogUtil createSELFMetadataWithNlId:nlId andWithTrpId:trpId andWithRequestId:targetUUID andWithResultCandidateId:resultCandidateId andWithConnectionId:targetName];
   }
 
   else
@@ -2192,7 +2192,7 @@ void __84__CDMDataDispatcher_dispatchServiceSetupMetrics_selfMetadata_dataDispat
   v19[2] = 0x3032000000;
   v19[3] = __Block_byref_object_copy__340;
   v19[4] = __Block_byref_object_dispose__341;
-  v14 = v6;
+  v14 = contextCopy;
   v20 = v14;
   v15 = +[CDMDataDispatcherCompletionQueue getDataDispatcherCompletionQueue];
   block[0] = MEMORY[0x1E69E9820];
@@ -2246,19 +2246,19 @@ void __67__CDMDataDispatcher_dispatchSELFRequestLink_dataDispatcherContext___blo
   dispatch_barrier_async_and_wait(v2, &__block_literal_global_449);
 }
 
-+ (void)insertFeatureStore:(id)a3 requester:(id)a4 debugLog:(id)a5
++ (void)insertFeatureStore:(id)store requester:(id)requester debugLog:(id)log
 {
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  storeCopy = store;
+  requesterCopy = requester;
+  logCopy = log;
   v10 = dispatch_group_create();
   dispatch_group_enter(v10);
   v18 = MEMORY[0x1E69E9820];
   v19 = 3221225472;
   v20 = __59__CDMDataDispatcher_insertFeatureStore_requester_debugLog___block_invoke;
   v21 = &unk_1E862F240;
-  v11 = v7;
+  v11 = storeCopy;
   v23 = v11;
   v12 = v10;
   v22 = v12;
@@ -2272,11 +2272,11 @@ void __67__CDMDataDispatcher_dispatchSELFRequestLink_dataDispatcherContext___blo
     *buf = 136315394;
     v25 = "+[CDMDataDispatcher insertFeatureStore:requester:debugLog:]";
     v26 = 2112;
-    v27 = v9;
+    v27 = logCopy;
     _os_log_debug_impl(&dword_1DC287000, v15, OS_LOG_TYPE_DEBUG, "%s %@", buf, 0x16u);
   }
 
-  if (([v8 isEqualToString:@"CURARE"] & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"LIGHTHOUSE"))
+  if (([requesterCopy isEqualToString:@"CURARE"] & 1) != 0 || objc_msgSend(requesterCopy, "isEqualToString:", @"LIGHTHOUSE"))
   {
     v16 = dispatch_time(0, 3000000000);
     dispatch_group_wait(v12, v16);

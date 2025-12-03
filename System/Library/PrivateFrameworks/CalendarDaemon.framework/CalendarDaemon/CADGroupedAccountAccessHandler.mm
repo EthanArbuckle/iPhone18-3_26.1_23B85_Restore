@@ -1,25 +1,25 @@
 @interface CADGroupedAccountAccessHandler
-- (BOOL)isActionAllowed:(unint64_t)a3 forStore:(void *)a4 inDatabase:(CalDatabase *)a5;
-- (CADGroupedAccountAccessHandler)initWithDatabaseDataProvider:(id)a3;
-- (id)restrictedCalendarRowIDsForAction:(unint64_t)a3 inDatabase:(CalDatabase *)a4;
-- (id)restrictedStoreRowIDsForAction:(unint64_t)a3 inDatabase:(CalDatabase *)a4;
-- (void)addAccountAccessHandler:(id)a3;
-- (void)gatherRestrictedCalendarRowIDs:(id)a3 forAction:(unint64_t)a4 inDatabase:(CalDatabase *)a5;
+- (BOOL)isActionAllowed:(unint64_t)allowed forStore:(void *)store inDatabase:(CalDatabase *)database;
+- (CADGroupedAccountAccessHandler)initWithDatabaseDataProvider:(id)provider;
+- (id)restrictedCalendarRowIDsForAction:(unint64_t)action inDatabase:(CalDatabase *)database;
+- (id)restrictedStoreRowIDsForAction:(unint64_t)action inDatabase:(CalDatabase *)database;
+- (void)addAccountAccessHandler:(id)handler;
+- (void)gatherRestrictedCalendarRowIDs:(id)ds forAction:(unint64_t)action inDatabase:(CalDatabase *)database;
 - (void)reset;
 @end
 
 @implementation CADGroupedAccountAccessHandler
 
-- (CADGroupedAccountAccessHandler)initWithDatabaseDataProvider:(id)a3
+- (CADGroupedAccountAccessHandler)initWithDatabaseDataProvider:(id)provider
 {
   v7.receiver = self;
   v7.super_class = CADGroupedAccountAccessHandler;
-  v3 = [(CADAccountAccessHandler *)&v7 initWithDatabaseDataProvider:a3];
+  v3 = [(CADAccountAccessHandler *)&v7 initWithDatabaseDataProvider:provider];
   if (v3)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     accessHandlers = v3->_accessHandlers;
-    v3->_accessHandlers = v4;
+    v3->_accessHandlers = array;
 
     v3->_lock._os_unfair_lock_opaque = 0;
   }
@@ -27,22 +27,22 @@
   return v3;
 }
 
-- (void)addAccountAccessHandler:(id)a3
+- (void)addAccountAccessHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CADGroupedAccountAccessHandler *)self accessHandlers];
-  [v5 addObject:v4];
+  handlerCopy = handler;
+  accessHandlers = [(CADGroupedAccountAccessHandler *)self accessHandlers];
+  [accessHandlers addObject:handlerCopy];
 }
 
-- (BOOL)isActionAllowed:(unint64_t)a3 forStore:(void *)a4 inDatabase:(CalDatabase *)a5
+- (BOOL)isActionAllowed:(unint64_t)allowed forStore:(void *)store inDatabase:(CalDatabase *)database
 {
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [(CADGroupedAccountAccessHandler *)self accessHandlers];
-  v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  accessHandlers = [(CADGroupedAccountAccessHandler *)self accessHandlers];
+  v9 = [accessHandlers countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
     v10 = v9;
@@ -53,17 +53,17 @@
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(accessHandlers);
         }
 
-        if (![*(*(&v16 + 1) + 8 * i) isActionAllowed:a3 forStore:a4 inDatabase:a5])
+        if (![*(*(&v16 + 1) + 8 * i) isActionAllowed:allowed forStore:store inDatabase:database])
         {
           v13 = 0;
           goto LABEL_11;
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v10 = [accessHandlers countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v10)
       {
         continue;
@@ -80,14 +80,14 @@ LABEL_11:
   return v13;
 }
 
-- (id)restrictedStoreRowIDsForAction:(unint64_t)a3 inDatabase:(CalDatabase *)a4
+- (id)restrictedStoreRowIDsForAction:(unint64_t)action inDatabase:(CalDatabase *)database
 {
-  v7 = [(CADAccountAccessHandler *)self dataProvider];
-  v8 = [v7 databaseID:a4];
+  dataProvider = [(CADAccountAccessHandler *)self dataProvider];
+  v8 = [dataProvider databaseID:database];
 
   v9 = [MEMORY[0x277CCABB0] numberWithInt:v8];
   os_unfair_lock_lock(&self->_lock);
-  v10 = [(NSMutableArray *)self->_restrictedStoreReadCache objectAtIndexedSubscript:a3];
+  v10 = [(NSMutableArray *)self->_restrictedStoreReadCache objectAtIndexedSubscript:action];
   v11 = [v10 objectForKeyedSubscript:v9];
   if (v11)
   {
@@ -97,7 +97,7 @@ LABEL_11:
   else
   {
     v13 = objc_alloc_init(MEMORY[0x277CBEB58]);
-    [(CADAccountAccessHandler *)self gatherRestrictedStoreRowIDs:v13 forAction:a3 inDatabase:a4];
+    [(CADAccountAccessHandler *)self gatherRestrictedStoreRowIDs:v13 forAction:action inDatabase:database];
     v12 = v13;
     if (!self->_restrictedStoreReadCache)
     {
@@ -113,7 +113,7 @@ LABEL_11:
       v19 = objc_alloc_init(MEMORY[0x277CBEB38]);
       [(NSMutableArray *)v18 addObject:v19];
 
-      v20 = [(NSMutableArray *)self->_restrictedStoreReadCache objectAtIndexedSubscript:a3];
+      v20 = [(NSMutableArray *)self->_restrictedStoreReadCache objectAtIndexedSubscript:action];
 
       v10 = v20;
     }
@@ -126,14 +126,14 @@ LABEL_11:
   return v12;
 }
 
-- (id)restrictedCalendarRowIDsForAction:(unint64_t)a3 inDatabase:(CalDatabase *)a4
+- (id)restrictedCalendarRowIDsForAction:(unint64_t)action inDatabase:(CalDatabase *)database
 {
-  v7 = [(CADAccountAccessHandler *)self dataProvider];
-  v8 = [v7 databaseID:a4];
+  dataProvider = [(CADAccountAccessHandler *)self dataProvider];
+  v8 = [dataProvider databaseID:database];
 
   v9 = [MEMORY[0x277CCABB0] numberWithInt:v8];
   os_unfair_lock_lock(&self->_lock);
-  v10 = [(NSMutableArray *)self->_restrictedCalendarReadCache objectAtIndexedSubscript:a3];
+  v10 = [(NSMutableArray *)self->_restrictedCalendarReadCache objectAtIndexedSubscript:action];
   v11 = [v10 objectForKeyedSubscript:v9];
   if (v11)
   {
@@ -143,7 +143,7 @@ LABEL_11:
   else
   {
     v13 = objc_alloc_init(MEMORY[0x277CBEB58]);
-    [(CADGroupedAccountAccessHandler *)self gatherRestrictedCalendarRowIDs:v13 forAction:a3 inDatabase:a4];
+    [(CADGroupedAccountAccessHandler *)self gatherRestrictedCalendarRowIDs:v13 forAction:action inDatabase:database];
     v12 = v13;
     if (!self->_restrictedCalendarReadCache)
     {
@@ -159,7 +159,7 @@ LABEL_11:
       v19 = objc_alloc_init(MEMORY[0x277CBEB38]);
       [(NSMutableArray *)v18 addObject:v19];
 
-      v20 = [(NSMutableArray *)self->_restrictedCalendarReadCache objectAtIndexedSubscript:a3];
+      v20 = [(NSMutableArray *)self->_restrictedCalendarReadCache objectAtIndexedSubscript:action];
 
       v10 = v20;
     }
@@ -179,8 +179,8 @@ LABEL_11:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(CADGroupedAccountAccessHandler *)self accessHandlers];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  accessHandlers = [(CADGroupedAccountAccessHandler *)self accessHandlers];
+  v4 = [accessHandlers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -192,14 +192,14 @@ LABEL_11:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(accessHandlers);
         }
 
         [*(*(&v10 + 1) + 8 * v7++) reset];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [accessHandlers countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -213,10 +213,10 @@ LABEL_11:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)gatherRestrictedCalendarRowIDs:(id)a3 forAction:(unint64_t)a4 inDatabase:(CalDatabase *)a5
+- (void)gatherRestrictedCalendarRowIDs:(id)ds forAction:(unint64_t)action inDatabase:(CalDatabase *)database
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  dsCopy = ds;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -237,7 +237,7 @@ LABEL_11:
           objc_enumerationMutation(v9);
         }
 
-        [*(*(&v15 + 1) + 8 * v13++) gatherRestrictedCalendarRowIDs:v8 forAction:a4 inDatabase:{a5, v15}];
+        [*(*(&v15 + 1) + 8 * v13++) gatherRestrictedCalendarRowIDs:dsCopy forAction:action inDatabase:{database, v15}];
       }
 
       while (v11 != v13);

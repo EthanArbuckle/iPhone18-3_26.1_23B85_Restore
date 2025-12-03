@@ -4,25 +4,25 @@
 - (FigExternalSyncDeviceDiscoverySessionManager)init;
 - (id)_currentDevices;
 - (id)currentDevices;
-- (void)_addDevice:(id)a3;
+- (void)_addDevice:(id)device;
 - (void)_forceNotifyDelegatesDevicesChanged;
-- (void)_handleDeviceEvent:(unsigned int)a3;
-- (void)_removeDevice:(id)a3;
+- (void)_handleDeviceEvent:(unsigned int)event;
+- (void)_removeDevice:(id)device;
 - (void)_setupDeviceDeviceManagmentMonitoring;
 - (void)_setupDeviceObservationNotifications;
 - (void)_teardownDeviceDeviceManagmentMonitoring;
 - (void)_teardownDeviceObservationNotifications;
 - (void)dealloc;
-- (void)deviceDisconnectedEvent:(id)a3;
-- (void)registerClient:(id *)a3 delegate:(id)a4;
-- (void)unregisterAndCleanupClient:(id *)a3;
+- (void)deviceDisconnectedEvent:(id)event;
+- (void)registerClient:(id *)client delegate:(id)delegate;
+- (void)unregisterAndCleanupClient:(id *)client;
 @end
 
 @implementation FigExternalSyncDeviceDiscoverySessionManager
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -55,8 +55,8 @@ FigExternalSyncDeviceDiscoverySessionManager *__98__FigExternalSyncDeviceDiscove
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v3 = [(NSMutableDictionary *)self->_activeClients allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v25 objects:v24 count:16];
+  allKeys = [(NSMutableDictionary *)self->_activeClients allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v25 objects:v24 count:16];
   if (v4)
   {
     v5 = v4;
@@ -67,7 +67,7 @@ FigExternalSyncDeviceDiscoverySessionManager *__98__FigExternalSyncDeviceDiscove
       {
         if (*v26 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v8 = *(*(&v25 + 1) + 8 * i);
@@ -96,7 +96,7 @@ FigExternalSyncDeviceDiscoverySessionManager *__98__FigExternalSyncDeviceDiscove
               v16 = 136315650;
               v17 = "[FigExternalSyncDeviceDiscoverySessionManager _forceNotifyDelegatesDevicesChanged]";
               v18 = 2114;
-              v19 = self;
+              selfCopy = self;
               v20 = 2114;
               v21 = v10;
               LODWORD(v15) = 32;
@@ -116,14 +116,14 @@ FigExternalSyncDeviceDiscoverySessionManager *__98__FigExternalSyncDeviceDiscove
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v25 objects:v24 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v25 objects:v24 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)deviceDisconnectedEvent:(id)a3
+- (void)deviceDisconnectedEvent:(id)event
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -131,7 +131,7 @@ FigExternalSyncDeviceDiscoverySessionManager *__98__FigExternalSyncDeviceDiscove
   v4[2] = __72__FigExternalSyncDeviceDiscoverySessionManager_deviceDisconnectedEvent___block_invoke;
   v4[3] = &unk_1E798F898;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = event;
   dispatch_async(queue, v4);
 }
 
@@ -165,18 +165,18 @@ uint64_t __72__FigExternalSyncDeviceDiscoverySessionManager_deviceDisconnectedEv
   [(FigExternalSyncDeviceDiscoverySessionManager *)&v3 dealloc];
 }
 
-- (void)registerClient:(id *)a3 delegate:(id)a4
+- (void)registerClient:(id *)client delegate:(id)delegate
 {
   queue = self->_queue;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __72__FigExternalSyncDeviceDiscoverySessionManager_registerClient_delegate___block_invoke;
   v6[3] = &unk_1E79914B8;
-  v5 = *&a3->var0[4];
-  v7 = *a3->var0;
+  v5 = *&client->var0[4];
+  v7 = *client->var0;
   v8 = v5;
   v6[4] = self;
-  v6[5] = a4;
+  v6[5] = delegate;
   dispatch_async(queue, v6);
 }
 
@@ -229,13 +229,13 @@ uint64_t __72__FigExternalSyncDeviceDiscoverySessionManager_registerClient_deleg
   return result;
 }
 
-- (void)unregisterAndCleanupClient:(id *)a3
+- (void)unregisterAndCleanupClient:(id *)client
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
-  v4 = *&a3->var0[4];
-  v6 = *a3->var0;
+  v4 = *&client->var0[4];
+  v6 = *client->var0;
   v7 = v4;
   block[2] = __75__FigExternalSyncDeviceDiscoverySessionManager_unregisterAndCleanupClient___block_invoke;
   block[3] = &unk_1E79914E0;
@@ -321,8 +321,8 @@ uint64_t __75__FigExternalSyncDeviceDiscoverySessionManager_unregisterAndCleanup
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [(NSMutableDictionary *)self->_managedExternalSyncDevices allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v8 count:16];
+  allKeys = [(NSMutableDictionary *)self->_managedExternalSyncDevices allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v9 objects:v8 count:16];
   if (v4)
   {
     v5 = v4;
@@ -334,14 +334,14 @@ uint64_t __75__FigExternalSyncDeviceDiscoverySessionManager_unregisterAndCleanup
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         [(FigExternalSyncDeviceDiscoverySessionManager *)self _removeDevice:*(*(&v9 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v8 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v9 objects:v8 count:16];
     }
 
     while (v5);
@@ -352,7 +352,7 @@ uint64_t __75__FigExternalSyncDeviceDiscoverySessionManager_unregisterAndCleanup
   [(NSMutableDictionary *)self->_activeClients removeAllObjects];
 }
 
-- (void)_addDevice:(id)a3
+- (void)_addDevice:(id)device
 {
   dispatch_assert_queue_V2(self->_queue);
   if (dword_1EB58E5E0)
@@ -364,13 +364,13 @@ uint64_t __75__FigExternalSyncDeviceDiscoverySessionManager_unregisterAndCleanup
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  -[NSMutableDictionary setObject:forKeyedSubscript:](self->_managedExternalSyncDevices, "setObject:forKeyedSubscript:", a3, [a3 externalSyncDeviceDeviceIdentifer]);
+  -[NSMutableDictionary setObject:forKeyedSubscript:](self->_managedExternalSyncDevices, "setObject:forKeyedSubscript:", device, [device externalSyncDeviceDeviceIdentifer]);
 }
 
-- (void)_removeDevice:(id)a3
+- (void)_removeDevice:(id)device
 {
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(NSMutableDictionary *)self->_managedExternalSyncDevices objectForKey:a3];
+  v5 = [(NSMutableDictionary *)self->_managedExternalSyncDevices objectForKey:device];
   if (v5)
   {
     v6 = v5;
@@ -384,7 +384,7 @@ uint64_t __75__FigExternalSyncDeviceDiscoverySessionManager_unregisterAndCleanup
     }
 
     [v6 forceCleanup];
-    [(NSMutableDictionary *)self->_managedExternalSyncDevices removeObjectForKey:a3];
+    [(NSMutableDictionary *)self->_managedExternalSyncDevices removeObjectForKey:device];
   }
 }
 
@@ -419,13 +419,13 @@ uint64_t __62__FigExternalSyncDeviceDiscoverySessionManager_currentDevices__bloc
 - (id)_currentDevices
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(NSMutableDictionary *)self->_managedExternalSyncDevices allValues];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v11 count:16];
+  allValues = [(NSMutableDictionary *)self->_managedExternalSyncDevices allValues];
+  v5 = [allValues countByEnumeratingWithState:&v12 objects:v11 count:16];
   if (v5)
   {
     v6 = v5;
@@ -436,23 +436,23 @@ uint64_t __62__FigExternalSyncDeviceDiscoverySessionManager_currentDevices__bloc
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
         if ([v9 isSSAMEnabled])
         {
-          [v3 addObject:v9];
+          [array addObject:v9];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v11 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v12 objects:v11 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 - (void)_setupDeviceObservationNotifications
@@ -527,9 +527,9 @@ uint64_t __62__FigExternalSyncDeviceDiscoverySessionManager_currentDevices__bloc
   }
 }
 
-- (void)_handleDeviceEvent:(unsigned int)a3
+- (void)_handleDeviceEvent:(unsigned int)event
 {
-  v3 = *&a3;
+  v3 = *&event;
   dispatch_assert_queue_V2(self->_queue);
   if (dword_1EB58E5E0)
   {

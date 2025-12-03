@@ -1,28 +1,28 @@
 @interface RTTUIUtilities
-+ (BOOL)contactIsTTYContact:(id)a3;
-+ (BOOL)ttyShouldBeRealtimeForCall:(id)a3;
-+ (id)ASCIINumericStringFromString:(__CFString *)a3;
-+ (id)phoneNumberStringFromString:(id)a3;
-+ (id)rttDisplayName:(int64_t)a3 forSubscriptionContextUUID:(id)a4;
++ (BOOL)contactIsTTYContact:(id)contact;
++ (BOOL)ttyShouldBeRealtimeForCall:(id)call;
++ (id)ASCIINumericStringFromString:(__CFString *)string;
++ (id)phoneNumberStringFromString:(id)string;
++ (id)rttDisplayName:(int64_t)name forSubscriptionContextUUID:(id)d;
 + (id)sharedUtilityProvider;
 + (void)cancelCallPromptDisplay;
-+ (void)contactIsTTYContact:(id)a3 resultBlock:(id)a4;
-+ (void)displayCallPromptForContact:(id)a3 withCompletion:(id)a4;
-- (BOOL)contactIsTTYContact:(id)a3;
-- (BOOL)deleteConversationWithCallUID:(id)a3;
++ (void)contactIsTTYContact:(id)contact resultBlock:(id)block;
++ (void)displayCallPromptForContact:(id)contact withCompletion:(id)completion;
+- (BOOL)contactIsTTYContact:(id)contact;
+- (BOOL)deleteConversationWithCallUID:(id)d;
 - (RTTUIUtilities)init;
-- (UIEdgeInsets)bubbleInsetForMe:(BOOL)a3;
-- (UIEdgeInsets)textInsetForMe:(BOOL)a3;
-- (id)bubbleColorForMe:(BOOL)a3;
-- (id)bubbleFillForMe:(BOOL)a3;
-- (id)conversationForCallUID:(id)a3;
-- (id)largeTTYIconWithTint:(id)a3;
+- (UIEdgeInsets)bubbleInsetForMe:(BOOL)me;
+- (UIEdgeInsets)textInsetForMe:(BOOL)me;
+- (id)bubbleColorForMe:(BOOL)me;
+- (id)bubbleFillForMe:(BOOL)me;
+- (id)conversationForCallUID:(id)d;
+- (id)largeTTYIconWithTint:(id)tint;
 - (id)myPhoneNumber;
 - (id)tintedTTYIcon;
-- (id)transcriptStringForConversation:(id)a3;
-- (id)ttyIconWithTint:(id)a3;
+- (id)transcriptStringForConversation:(id)conversation;
+- (id)ttyIconWithTint:(id)tint;
 - (id)ttyMeContact;
-- (int64_t)textAlignmentForMe:(BOOL)a3;
+- (int64_t)textAlignmentForMe:(BOOL)me;
 - (unint64_t)currentPreferredTransportMethod;
 @end
 
@@ -47,22 +47,22 @@ uint64_t __39__RTTUIUtilities_sharedUtilityProvider__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)rttDisplayName:(int64_t)a3 forSubscriptionContextUUID:(id)a4
++ (id)rttDisplayName:(int64_t)name forSubscriptionContextUUID:(id)d
 {
-  v4 = a4;
-  v5 = [MEMORY[0x277D440E0] sharedUtilityProvider];
-  v6 = [v5 subscriptionContexts];
+  dCopy = d;
+  mEMORY[0x277D440E0] = [MEMORY[0x277D440E0] sharedUtilityProvider];
+  subscriptionContexts = [mEMORY[0x277D440E0] subscriptionContexts];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __60__RTTUIUtilities_rttDisplayName_forSubscriptionContextUUID___block_invoke;
   v14[3] = &unk_279AE52F0;
-  v7 = v4;
+  v7 = dCopy;
   v15 = v7;
-  v8 = [v6 ax_filteredArrayUsingBlock:v14];
+  v8 = [subscriptionContexts ax_filteredArrayUsingBlock:v14];
 
-  v9 = [MEMORY[0x277D440E0] sharedUtilityProvider];
-  v10 = [v8 firstObject];
-  v11 = [v9 getCarrierValueForKey:@"showRTTForEmergency" andContext:v10];
+  mEMORY[0x277D440E0]2 = [MEMORY[0x277D440E0] sharedUtilityProvider];
+  firstObject = [v8 firstObject];
+  v11 = [mEMORY[0x277D440E0]2 getCarrierValueForKey:@"showRTTForEmergency" andContext:firstObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -83,20 +83,20 @@ uint64_t __60__RTTUIUtilities_rttDisplayName_forSubscriptionContextUUID___block_
   return v4;
 }
 
-+ (BOOL)contactIsTTYContact:(id)a3
++ (BOOL)contactIsTTYContact:(id)contact
 {
   v3 = MEMORY[0x277D440E0];
-  v4 = a3;
-  v5 = [v3 sharedUtilityProvider];
-  v6 = [v5 contactIsTTYContact:v4];
+  contactCopy = contact;
+  sharedUtilityProvider = [v3 sharedUtilityProvider];
+  v6 = [sharedUtilityProvider contactIsTTYContact:contactCopy];
 
   return v6;
 }
 
-+ (void)contactIsTTYContact:(id)a3 resultBlock:(id)a4
++ (void)contactIsTTYContact:(id)contact resultBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  contactCopy = contact;
+  blockCopy = block;
   if (contactIsTTYContact_resultBlock__onceToken != -1)
   {
     +[RTTUIUtilities contactIsTTYContact:resultBlock:];
@@ -107,11 +107,11 @@ uint64_t __60__RTTUIUtilities_rttDisplayName_forSubscriptionContextUUID___block_
   block[1] = 3221225472;
   block[2] = __50__RTTUIUtilities_contactIsTTYContact_resultBlock___block_invoke_2;
   block[3] = &unk_279AE5340;
-  v13 = v7;
-  v14 = a1;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  v13 = blockCopy;
+  selfCopy = self;
+  v12 = contactCopy;
+  v9 = blockCopy;
+  v10 = contactCopy;
   dispatch_async(v8, block);
 }
 
@@ -134,11 +134,11 @@ void __50__RTTUIUtilities_contactIsTTYContact_resultBlock___block_invoke_2(uint6
   dispatch_async(MEMORY[0x277D85CD0], v3);
 }
 
-+ (id)ASCIINumericStringFromString:(__CFString *)a3
++ (id)ASCIINumericStringFromString:(__CFString *)string
 {
-  if (a3)
+  if (string)
   {
-    Length = CFStringGetLength(a3);
+    Length = CFStringGetLength(string);
     Mutable = CFStringCreateMutable(*MEMORY[0x277CBECE8], 0);
     if (Length >= 1)
     {
@@ -146,7 +146,7 @@ void __50__RTTUIUtilities_contactIsTTYContact_resultBlock___block_invoke_2(uint6
       chars = 0;
       do
       {
-        CharacterAtIndex = CFStringGetCharacterAtIndex(a3, v6);
+        CharacterAtIndex = CFStringGetCharacterAtIndex(string, v6);
         chars = CharacterAtIndex;
         NumericValue = u_getNumericValue(CharacterAtIndex);
         if (NumericValue <= 9.0)
@@ -174,13 +174,13 @@ void __50__RTTUIUtilities_contactIsTTYContact_resultBlock___block_invoke_2(uint6
   return Mutable;
 }
 
-+ (id)phoneNumberStringFromString:(id)a3
++ (id)phoneNumberStringFromString:(id)string
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAB68] string];
-  if ([v3 length])
+  stringCopy = string;
+  string = [MEMORY[0x277CCAB68] string];
+  if ([stringCopy length])
   {
-    v5 = [RTTUIUtilities ASCIINumericStringFromString:v3];
+    v5 = [RTTUIUtilities ASCIINumericStringFromString:stringCopy];
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
@@ -344,7 +344,7 @@ LABEL_35:
         }
 
 LABEL_40:
-        [v4 appendFormat:@"%c", v15];
+        [string appendFormat:@"%c", v15];
 LABEL_41:
         ++v10;
         --v9;
@@ -364,32 +364,32 @@ LABEL_12:
 LABEL_56:
   }
 
-  return v4;
+  return string;
 }
 
-+ (BOOL)ttyShouldBeRealtimeForCall:(id)a3
++ (BOOL)ttyShouldBeRealtimeForCall:(id)call
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D440D8] sharedInstance];
-  if ([v4 ttyShouldBeRealtime])
+  callCopy = call;
+  mEMORY[0x277D440D8] = [MEMORY[0x277D440D8] sharedInstance];
+  if ([mEMORY[0x277D440D8] ttyShouldBeRealtime])
   {
-    v5 = 1;
+    isEmergency = 1;
   }
 
   else
   {
-    v5 = [v3 isEmergency];
+    isEmergency = [callCopy isEmergency];
   }
 
-  return v5;
+  return isEmergency;
 }
 
 - (unint64_t)currentPreferredTransportMethod
 {
-  v2 = [MEMORY[0x277D440E0] sharedUtilityProvider];
-  v3 = [v2 currentPreferredTransportMethod];
+  mEMORY[0x277D440E0] = [MEMORY[0x277D440E0] sharedUtilityProvider];
+  currentPreferredTransportMethod = [mEMORY[0x277D440E0] currentPreferredTransportMethod];
 
-  return v3;
+  return currentPreferredTransportMethod;
 }
 
 - (RTTUIUtilities)init
@@ -408,17 +408,17 @@ LABEL_56:
 
 - (id)myPhoneNumber
 {
-  v2 = [MEMORY[0x277D440E0] sharedUtilityProvider];
-  v3 = [v2 myPhoneNumber];
+  mEMORY[0x277D440E0] = [MEMORY[0x277D440E0] sharedUtilityProvider];
+  myPhoneNumber = [mEMORY[0x277D440E0] myPhoneNumber];
 
-  if (![v3 length])
+  if (![myPhoneNumber length])
   {
     v4 = ttyLocString();
 
-    v3 = v4;
+    myPhoneNumber = v4;
   }
 
-  return v3;
+  return myPhoneNumber;
 }
 
 - (id)ttyMeContact
@@ -443,10 +443,10 @@ LABEL_56:
     v11[2] = *MEMORY[0x277CBD098];
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:3];
 
-    v6 = [MEMORY[0x277D440E0] sharedUtilityProvider];
-    v7 = [v6 contactStore];
+    mEMORY[0x277D440E0] = [MEMORY[0x277D440E0] sharedUtilityProvider];
+    contactStore = [mEMORY[0x277D440E0] contactStore];
     v10 = 0;
-    v8 = [v7 _ios_meContactWithKeysToFetch:v5 error:&v10];
+    v8 = [contactStore _ios_meContactWithKeysToFetch:v5 error:&v10];
 
     v2 = v8;
   }
@@ -461,10 +461,10 @@ uint64_t __30__RTTUIUtilities_ttyMeContact__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (int64_t)textAlignmentForMe:(BOOL)a3
+- (int64_t)textAlignmentForMe:(BOOL)me
 {
-  v3 = a3;
-  if (a3)
+  meCopy = me;
+  if (me)
   {
     v5 = 2;
   }
@@ -474,19 +474,19 @@ uint64_t __30__RTTUIUtilities_ttyMeContact__block_invoke()
     v5 = 0;
   }
 
-  v6 = [(RTTUIUtilities *)self overrideLTR];
+  overrideLTR = [(RTTUIUtilities *)self overrideLTR];
 
-  if (v6)
+  if (overrideLTR)
   {
-    v7 = [(RTTUIUtilities *)self overrideLTR];
-    v8 = [v7 BOOLValue];
+    overrideLTR2 = [(RTTUIUtilities *)self overrideLTR];
+    bOOLValue = [overrideLTR2 BOOLValue];
     v9 = 2;
-    if (v3)
+    if (meCopy)
     {
       v9 = 0;
     }
 
-    if (v8)
+    if (bOOLValue)
     {
       v10 = v9;
     }
@@ -500,12 +500,12 @@ uint64_t __30__RTTUIUtilities_ttyMeContact__block_invoke()
   else
   {
     v11 = MEMORY[0x277CBEAF8];
-    v12 = [MEMORY[0x277CBEAF8] currentLocale];
-    v13 = [v12 objectForKey:*MEMORY[0x277CBE6C8]];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    v13 = [currentLocale objectForKey:*MEMORY[0x277CBE6C8]];
     v14 = [v11 characterDirectionForLanguage:v13];
 
     v15 = 2;
-    if (v3)
+    if (meCopy)
     {
       v15 = 0;
     }
@@ -524,9 +524,9 @@ uint64_t __30__RTTUIUtilities_ttyMeContact__block_invoke()
   return v10;
 }
 
-- (UIEdgeInsets)textInsetForMe:(BOOL)a3
+- (UIEdgeInsets)textInsetForMe:(BOOL)me
 {
-  v3 = [(RTTUIUtilities *)self textAlignmentForMe:a3];
+  v3 = [(RTTUIUtilities *)self textAlignmentForMe:me];
   if (v3 == 2)
   {
     v4 = 75.0;
@@ -556,9 +556,9 @@ uint64_t __30__RTTUIUtilities_ttyMeContact__block_invoke()
   return result;
 }
 
-- (UIEdgeInsets)bubbleInsetForMe:(BOOL)a3
+- (UIEdgeInsets)bubbleInsetForMe:(BOOL)me
 {
-  v3 = [(RTTUIUtilities *)self textAlignmentForMe:a3];
+  v3 = [(RTTUIUtilities *)self textAlignmentForMe:me];
   v4 = -5.0;
   if (v3 == 2)
   {
@@ -588,29 +588,29 @@ uint64_t __30__RTTUIUtilities_ttyMeContact__block_invoke()
   return result;
 }
 
-- (id)bubbleColorForMe:(BOOL)a3
+- (id)bubbleColorForMe:(BOOL)me
 {
   v4 = [MEMORY[0x277D75348] colorWithRed:0.0 green:0.4784 blue:1.0 alpha:1.0];
-  if (!a3)
+  if (!me)
   {
-    v5 = [MEMORY[0x277D75348] lightGrayColor];
+    lightGrayColor = [MEMORY[0x277D75348] lightGrayColor];
 
-    v4 = v5;
+    v4 = lightGrayColor;
   }
 
   return v4;
 }
 
-- (id)largeTTYIconWithTint:(id)a3
+- (id)largeTTYIconWithTint:(id)tint
 {
-  v3 = a3;
+  tintCopy = tint;
   v4 = ttyImageNamed(@"tty_icon");
   v5 = v4;
-  if (v3)
+  if (tintCopy)
   {
     v6 = MEMORY[0x277D755B8];
     [v4 size];
-    v7 = [v6 _tintedImageForSize:v3 withTint:0 effectsImage:v5 maskImage:0 style:?];
+    v7 = [v6 _tintedImageForSize:tintCopy withTint:0 effectsImage:v5 maskImage:0 style:?];
 
     v5 = v7;
   }
@@ -618,14 +618,14 @@ uint64_t __30__RTTUIUtilities_ttyMeContact__block_invoke()
   return v5;
 }
 
-- (id)ttyIconWithTint:(id)a3
+- (id)ttyIconWithTint:(id)tint
 {
-  v3 = a3;
+  tintCopy = tint;
   v4 = [MEMORY[0x277D440E0] currentSupportedTextingType] - 1;
   if (v4 > 2)
   {
     v5 = 0;
-    if (!v3)
+    if (!tintCopy)
     {
       goto LABEL_6;
     }
@@ -634,12 +634,12 @@ uint64_t __30__RTTUIUtilities_ttyMeContact__block_invoke()
   }
 
   v5 = ttyImageNamed(off_279AE53B0[v4]);
-  if (v3)
+  if (tintCopy)
   {
 LABEL_5:
     v6 = MEMORY[0x277D755B8];
     [v5 size];
-    v7 = [v6 _tintedImageForSize:v3 withTint:0 effectsImage:v5 maskImage:0 style:?];
+    v7 = [v6 _tintedImageForSize:tintCopy withTint:0 effectsImage:v5 maskImage:0 style:?];
 
     v5 = v7;
   }
@@ -657,14 +657,14 @@ LABEL_6:
   return v4;
 }
 
-- (id)bubbleFillForMe:(BOOL)a3
+- (id)bubbleFillForMe:(BOOL)me
 {
-  v3 = a3;
+  meCopy = me;
   v129 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CCACC8] currentThread];
-  v6 = [v5 isMainThread];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  isMainThread = [currentThread isMainThread];
 
-  if (v6)
+  if (isMainThread)
   {
     if (_AXSInUnitTestMode())
     {
@@ -676,7 +676,7 @@ LABEL_6:
     }
 
     v9 = bubbleFillForMe__RightBubbleImage;
-    if ([(RTTUIUtilities *)self textAlignmentForMe:v3])
+    if ([(RTTUIUtilities *)self textAlignmentForMe:meCopy])
     {
       if (v9)
       {
@@ -697,8 +697,8 @@ LABEL_6:
 
     v12 = ttyImageNamed(@"bubble");
     v13 = ttyImageNamed(@"bubble-stroked");
-    v14 = [MEMORY[0x277D759A0] mainScreen];
-    [v14 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     scale = v15;
 
     v16 = AXLogRTT();
@@ -709,7 +709,7 @@ LABEL_6:
       _os_log_impl(&dword_261725000, v16, OS_LOG_TYPE_INFO, "Drawing new bubble images for screen scale: %f", buf, 0xCu);
     }
 
-    v17 = 4 * ([(RTTUIUtilities *)self textAlignmentForMe:v3]!= 2);
+    v17 = 4 * ([(RTTUIUtilities *)self textAlignmentForMe:meCopy]!= 2);
     if ([v12 imageOrientation] != v17)
     {
       v18 = AXLogRTT();
@@ -729,50 +729,50 @@ LABEL_6:
 
       v22 = objc_alloc(MEMORY[0x277D755B8]);
       v23 = v12;
-      v24 = [v12 CGImage];
+      cGImage = [v12 CGImage];
       [v12 scale];
-      v25 = [v22 initWithCGImage:v24 scale:v17 orientation:?];
+      v25 = [v22 initWithCGImage:cGImage scale:v17 orientation:?];
 
       v26 = objc_alloc(MEMORY[0x277D755B8]);
       v27 = v13;
-      v28 = [v13 CGImage];
+      cGImage2 = [v13 CGImage];
       [v13 scale];
-      v29 = [v26 initWithCGImage:v28 scale:v17 orientation:?];
+      v29 = [v26 initWithCGImage:cGImage2 scale:v17 orientation:?];
 
       v13 = v29;
       v12 = v25;
     }
 
-    v30 = [MEMORY[0x277D759A0] mainScreen];
-    [v30 scale];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen2 scale];
     v32 = v31;
 
-    v33 = [MEMORY[0x277D759A0] mainScreen];
-    [v33 scale];
+    mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen3 scale];
     v35 = v34;
 
-    v36 = [MEMORY[0x277D759A0] mainScreen];
-    [v36 scale];
+    mainScreen4 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen4 scale];
     v38 = v37;
 
-    v39 = [MEMORY[0x277D759A0] mainScreen];
-    [v39 scale];
+    mainScreen5 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen5 scale];
     v41 = v40;
 
-    v42 = [MEMORY[0x277D759A0] mainScreen];
-    [v42 scale];
+    mainScreen6 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen6 scale];
     v44 = v43;
 
-    v45 = [MEMORY[0x277D759A0] mainScreen];
-    [v45 scale];
+    mainScreen7 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen7 scale];
     v47 = v46;
 
-    v48 = [MEMORY[0x277D759A0] mainScreen];
-    [v48 scale];
+    mainScreen8 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen8 scale];
     v50 = v49;
 
-    v51 = [MEMORY[0x277D759A0] mainScreen];
-    [v51 scale];
+    mainScreen9 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen9 scale];
     v53 = v52;
 
     v54 = AXLogRTT();
@@ -840,7 +840,7 @@ LABEL_6:
     [v67 size];
     [v67 drawInRect:{0.0, 0.0, v73, v74}];
     v75 = +[RTTUIUtilities sharedUtilityProvider];
-    v76 = [v75 bubbleColorForMe:v3];
+    v76 = [v75 bubbleColorForMe:meCopy];
     [v76 set];
 
     v77 = MEMORY[0x277D75208];
@@ -879,7 +879,7 @@ LABEL_6:
     [v69 size];
     [v69 drawInRect:{0.0, 0.0, v92, v93}];
     v94 = +[RTTUIUtilities sharedUtilityProvider];
-    v95 = [v94 bubbleColorForMe:v3];
+    v95 = [v94 bubbleColorForMe:meCopy];
     [v95 set];
 
     v96 = MEMORY[0x277D75208];
@@ -942,7 +942,7 @@ LABEL_6:
 
     UIGraphicsEndImageContext();
     v9 = v115;
-    v118 = [(RTTUIUtilities *)self textAlignmentForMe:v3];
+    v118 = [(RTTUIUtilities *)self textAlignmentForMe:meCopy];
     v119 = &bubbleFillForMe__RightBubbleImage;
     if (!v118)
     {
@@ -969,7 +969,7 @@ LABEL_6:
     v127 = __Block_byref_object_dispose__1;
     v128 = 0;
     objc_copyWeak(&v123, &location);
-    v124 = v3;
+    v124 = meCopy;
     AXPerformBlockSynchronouslyOnMainThread();
     v9 = *(*&buf[8] + 40);
     objc_destroyWeak(&v123);
@@ -992,27 +992,27 @@ void __34__RTTUIUtilities_bubbleFillForMe___block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-+ (void)displayCallPromptForContact:(id)a3 withCompletion:(id)a4
++ (void)displayCallPromptForContact:(id)contact withCompletion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
     v5 = MEMORY[0x277D440C8];
-    v6 = a4;
-    v7 = a3;
-    v8 = [v5 sharedInstance];
-    [v8 displayCallPromptForContact:v7 withCompletion:v6];
+    completionCopy = completion;
+    contactCopy = contact;
+    sharedInstance = [v5 sharedInstance];
+    [sharedInstance displayCallPromptForContact:contactCopy withCompletion:completionCopy];
   }
 }
 
 + (void)cancelCallPromptDisplay
 {
-  v2 = [MEMORY[0x277D440C8] sharedInstance];
-  [v2 cancelCallPromptDisplay];
+  mEMORY[0x277D440C8] = [MEMORY[0x277D440C8] sharedInstance];
+  [mEMORY[0x277D440C8] cancelCallPromptDisplay];
 }
 
-- (id)conversationForCallUID:(id)a3
+- (id)conversationForCallUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -1020,7 +1020,7 @@ void __34__RTTUIUtilities_bubbleFillForMe___block_invoke(uint64_t a1)
   v17 = __Block_byref_object_dispose__1;
   v18 = 0;
   v4 = dispatch_semaphore_create(0);
-  v5 = [MEMORY[0x277D440C8] sharedInstance];
+  mEMORY[0x277D440C8] = [MEMORY[0x277D440C8] sharedInstance];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __41__RTTUIUtilities_conversationForCallUID___block_invoke;
@@ -1028,7 +1028,7 @@ void __34__RTTUIUtilities_bubbleFillForMe___block_invoke(uint64_t a1)
   v12 = &v13;
   v6 = v4;
   v11 = v6;
-  [v5 findConversationForCallUID:v3 andResult:v10];
+  [mEMORY[0x277D440C8] findConversationForCallUID:dCopy andResult:v10];
 
   v7 = dispatch_time(0, 1000000000);
   dispatch_semaphore_wait(v6, v7);
@@ -1046,37 +1046,37 @@ void __41__RTTUIUtilities_conversationForCallUID___block_invoke(uint64_t a1, voi
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)deleteConversationWithCallUID:(id)a3
+- (BOOL)deleteConversationWithCallUID:(id)d
 {
   v3 = MEMORY[0x277D440C8];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
-  v6 = [v5 deleteConversationWithCallUID:v4];
+  dCopy = d;
+  sharedInstance = [v3 sharedInstance];
+  v6 = [sharedInstance deleteConversationWithCallUID:dCopy];
 
   return v6;
 }
 
-- (BOOL)contactIsTTYContact:(id)a3
+- (BOOL)contactIsTTYContact:(id)contact
 {
   v3 = MEMORY[0x277D440C8];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
-  v6 = [v5 contactIsTTYContact:v4];
+  contactCopy = contact;
+  sharedInstance = [v3 sharedInstance];
+  v6 = [sharedInstance contactIsTTYContact:contactCopy];
 
   return v6;
 }
 
-- (id)transcriptStringForConversation:(id)a3
+- (id)transcriptStringForConversation:(id)conversation
 {
   v46 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  conversationCopy = conversation;
   v36 = objc_alloc_init(MEMORY[0x277CCAB48]);
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v31 = v3;
-  obj = [v3 utterances];
+  v31 = conversationCopy;
+  obj = [conversationCopy utterances];
   v4 = [obj countByEnumeratingWithState:&v37 objects:v45 count:16];
   if (v4)
   {
@@ -1098,8 +1098,8 @@ void __41__RTTUIUtilities_conversationForCallUID___block_invoke(uint64_t a1, voi
         v9 = *(*(&v37 + 1) + 8 * i);
         v10 = MEMORY[0x277CBDA78];
         v11 = MEMORY[0x277CBDA58];
-        v12 = [v9 contactPath];
-        v13 = [v11 contactForPhoneNumber:v12];
+        contactPath = [v9 contactPath];
+        v13 = [v11 contactForPhoneNumber:contactPath];
         v14 = [v10 stringFromContact:v13 style:0];
 
         if (![v14 length])
@@ -1136,8 +1136,8 @@ void __41__RTTUIUtilities_conversationForCallUID___block_invoke(uint64_t a1, voi
         [v20 pointSize];
         v22 = [v21 fontWithDescriptor:v20 size:?];
         v23 = MEMORY[0x277CCACA8];
-        v24 = [v9 text];
-        v25 = [v23 stringWithFormat:@"%@: %@\n", v14, v24];
+        text = [v9 text];
+        v25 = [v23 stringWithFormat:@"%@: %@\n", v14, text];
 
         v26 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v25];
         v41 = v7;

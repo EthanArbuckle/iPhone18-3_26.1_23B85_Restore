@@ -1,14 +1,14 @@
 @interface RTMapItemProviderBaseParameters
-- (RTMapItemProviderBaseParameters)initWithDefaultsManager:(id)a3;
-- (RTMapItemProviderBaseParameters)initWithLocationUncertaintyMax:(double)a3 locationUncertaintyMin:(double)a4 mapItemUncertaintyMax:(double)a5 mapItemUncertaintyMin:(double)a6;
+- (RTMapItemProviderBaseParameters)initWithDefaultsManager:(id)manager;
+- (RTMapItemProviderBaseParameters)initWithLocationUncertaintyMax:(double)max locationUncertaintyMin:(double)min mapItemUncertaintyMax:(double)uncertaintyMax mapItemUncertaintyMin:(double)uncertaintyMin;
 @end
 
 @implementation RTMapItemProviderBaseParameters
 
-- (RTMapItemProviderBaseParameters)initWithLocationUncertaintyMax:(double)a3 locationUncertaintyMin:(double)a4 mapItemUncertaintyMax:(double)a5 mapItemUncertaintyMin:(double)a6
+- (RTMapItemProviderBaseParameters)initWithLocationUncertaintyMax:(double)max locationUncertaintyMin:(double)min mapItemUncertaintyMax:(double)uncertaintyMax mapItemUncertaintyMin:(double)uncertaintyMin
 {
-  v6 = self;
-  if (a4 <= 0.0)
+  selfCopy = self;
+  if (min <= 0.0)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -21,7 +21,7 @@
     goto LABEL_6;
   }
 
-  if (a3 < a4)
+  if (max < min)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -36,7 +36,7 @@ LABEL_18:
     goto LABEL_6;
   }
 
-  if (a6 <= 0.0)
+  if (uncertaintyMin <= 0.0)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -49,7 +49,7 @@ LABEL_18:
     goto LABEL_6;
   }
 
-  if (a5 < a6)
+  if (uncertaintyMax < uncertaintyMin)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -70,26 +70,26 @@ LABEL_6:
   v15 = [(RTMapItemProviderBaseParameters *)&v16 init];
   if (v15)
   {
-    v15->_locationUncertaintyMax = a3;
-    v15->_locationUncertaintyMin = a4;
-    v15->_mapItemUncertaintyMax = a5;
-    v15->_mapItemUncertaintyMin = a6;
+    v15->_locationUncertaintyMax = max;
+    v15->_locationUncertaintyMin = min;
+    v15->_mapItemUncertaintyMax = uncertaintyMax;
+    v15->_mapItemUncertaintyMin = uncertaintyMin;
   }
 
-  v6 = v15;
-  v11 = v6;
+  selfCopy = v15;
+  v11 = selfCopy;
 LABEL_7:
 
   return v11;
 }
 
-- (RTMapItemProviderBaseParameters)initWithDefaultsManager:(id)a3
+- (RTMapItemProviderBaseParameters)initWithDefaultsManager:(id)manager
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  managerCopy = manager;
+  v5 = managerCopy;
+  if (managerCopy)
   {
-    v6 = [v4 objectForKey:@"RTDefaultsMapItemProviderBaseLocationUncertaintyMax"];
+    v6 = [managerCopy objectForKey:@"RTDefaultsMapItemProviderBaseLocationUncertaintyMax"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -136,7 +136,7 @@ LABEL_7:
 
     self = [(RTMapItemProviderBaseParameters *)self initWithLocationUncertaintyMax:v8 locationUncertaintyMin:v12 mapItemUncertaintyMax:v16 mapItemUncertaintyMin:v19];
 
-    v10 = self;
+    selfCopy = self;
   }
 
   else
@@ -148,10 +148,10 @@ LABEL_7:
       _os_log_error_impl(&dword_2304B3000, v9, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: defaultsManager", v22, 2u);
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 @end

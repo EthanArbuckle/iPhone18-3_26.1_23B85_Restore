@@ -1,7 +1,7 @@
 @interface FAChildAccountCutOffAgeRequest.Request
 + (Class)responseClass;
 - (_TtCC12FamilyCircle30FAChildAccountCutOffAgeRequest7Request)init;
-- (_TtCC12FamilyCircle30FAChildAccountCutOffAgeRequest7Request)initWithURLString:(id)a3;
+- (_TtCC12FamilyCircle30FAChildAccountCutOffAgeRequest7Request)initWithURLString:(id)string;
 - (id)urlString;
 @end
 
@@ -16,7 +16,7 @@
 
 - (id)urlString
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B715DAB0();
 
   v3 = sub_1B715E070();
@@ -24,7 +24,7 @@
   return v3;
 }
 
-- (_TtCC12FamilyCircle30FAChildAccountCutOffAgeRequest7Request)initWithURLString:(id)a3
+- (_TtCC12FamilyCircle30FAChildAccountCutOffAgeRequest7Request)initWithURLString:(id)string
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,72 +1,72 @@
 @interface DataScannerViewController.Impl
 - (_TtCC9VisionKit25DataScannerViewController4Impl)init;
-- (void)avCaptureFrameProvider:(id)a3 cameraAccessGranted:(BOOL)a4;
-- (void)avCaptureFrameProvider:(id)a3 didCapturePhoto:(id)a4 error:(id)a5;
-- (void)avCaptureFrameProvider:(id)a3 didChangeIsRunning:(BOOL)a4;
-- (void)avCaptureFrameProviderDidFinishPreparation:(id)a3;
-- (void)avCaptureFrameProviderDidZoom:(id)a3;
-- (void)cameraRestrictedDidChange:(id)a3;
-- (void)frameProvider:(id)a3 didChangeSceneLuminosity:(double)a4;
-- (void)frameProvider:(id)a3 didChangeSceneStabilityState:(unint64_t)a4;
+- (void)avCaptureFrameProvider:(id)provider cameraAccessGranted:(BOOL)granted;
+- (void)avCaptureFrameProvider:(id)provider didCapturePhoto:(id)photo error:(id)error;
+- (void)avCaptureFrameProvider:(id)provider didChangeIsRunning:(BOOL)running;
+- (void)avCaptureFrameProviderDidFinishPreparation:(id)preparation;
+- (void)avCaptureFrameProviderDidZoom:(id)zoom;
+- (void)cameraRestrictedDidChange:(id)change;
+- (void)frameProvider:(id)provider didChangeSceneLuminosity:(double)luminosity;
+- (void)frameProvider:(id)provider didChangeSceneStabilityState:(unint64_t)state;
 @end
 
 @implementation DataScannerViewController.Impl
 
-- (void)frameProvider:(id)a3 didChangeSceneStabilityState:(unint64_t)a4
+- (void)frameProvider:(id)provider didChangeSceneStabilityState:(unint64_t)state
 {
-  v6 = a3;
-  v7 = self;
-  sub_23B2DAC34(v6, a4);
+  providerCopy = provider;
+  selfCopy = self;
+  sub_23B2DAC34(providerCopy, state);
 }
 
-- (void)frameProvider:(id)a3 didChangeSceneLuminosity:(double)a4
+- (void)frameProvider:(id)provider didChangeSceneLuminosity:(double)luminosity
 {
-  v6 = a3;
-  v7 = self;
-  sub_23B2DB058(v6, a4);
+  providerCopy = provider;
+  selfCopy = self;
+  sub_23B2DB058(providerCopy, luminosity);
 }
 
-- (void)avCaptureFrameProvider:(id)a3 didChangeIsRunning:(BOOL)a4
+- (void)avCaptureFrameProvider:(id)provider didChangeIsRunning:(BOOL)running
 {
-  v6 = a3;
-  v7 = self;
-  sub_23B2DB4F0(v6, a4);
+  providerCopy = provider;
+  selfCopy = self;
+  sub_23B2DB4F0(providerCopy, running);
 }
 
-- (void)avCaptureFrameProvider:(id)a3 didCapturePhoto:(id)a4 error:(id)a5
+- (void)avCaptureFrameProvider:(id)provider didCapturePhoto:(id)photo error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  sub_23B2DB64C(v8, v9, a5);
+  providerCopy = provider;
+  photoCopy = photo;
+  selfCopy = self;
+  errorCopy = error;
+  sub_23B2DB64C(providerCopy, photoCopy, error);
 }
 
-- (void)avCaptureFrameProviderDidZoom:(id)a3
+- (void)avCaptureFrameProviderDidZoom:(id)zoom
 {
-  v4 = a3;
-  v5 = self;
-  sub_23B2DBCBC(v4);
+  zoomCopy = zoom;
+  selfCopy = self;
+  sub_23B2DBCBC(zoomCopy);
 }
 
-- (void)avCaptureFrameProviderDidFinishPreparation:(id)a3
+- (void)avCaptureFrameProviderDidFinishPreparation:(id)preparation
 {
-  v4 = a3;
-  v5 = self;
-  sub_23B2DBE20(v4);
+  preparationCopy = preparation;
+  selfCopy = self;
+  sub_23B2DBE20(preparationCopy);
 }
 
-- (void)avCaptureFrameProvider:(id)a3 cameraAccessGranted:(BOOL)a4
+- (void)avCaptureFrameProvider:(id)provider cameraAccessGranted:(BOOL)granted
 {
-  v6 = a3;
-  v7 = self;
-  sub_23B2DC2A4(v6, a4);
+  providerCopy = provider;
+  selfCopy = self;
+  sub_23B2DC2A4(providerCopy, granted);
 }
 
-- (void)cameraRestrictedDidChange:(id)a3
+- (void)cameraRestrictedDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
+  changeCopy = change;
+  selfCopy = self;
   sub_23B2E8A4C();
 }
 

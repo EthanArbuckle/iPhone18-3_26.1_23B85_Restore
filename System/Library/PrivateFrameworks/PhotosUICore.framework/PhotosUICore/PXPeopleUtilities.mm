@@ -1,106 +1,106 @@
 @interface PXPeopleUtilities
-+ (BOOL)_hasRecentlyHandledBootstrapOrSuggestionForPerson:(id)a3;
++ (BOOL)_hasRecentlyHandledBootstrapOrSuggestionForPerson:(id)person;
 + (BOOL)_isPhotosProcess;
-+ (BOOL)canSetPersonAsMagicItem:(id)a3;
++ (BOOL)canSetPersonAsMagicItem:(id)item;
 + (BOOL)isGreenTeaAndContactsAccessDenied;
-+ (BOOL)isPersonHiddenFromPeopleHome:(id)a3;
-+ (BOOL)mergePersons:(id)a3 withPerson:(id)a4;
-+ (BOOL)shouldShowBootstrapForPerson:(id)a3 context:(id)a4;
-+ (BOOL)showBootstrapIfNeededWithContext:(id)a3 fromParentVC:(id)a4 force:(BOOL)a5 flowDelegate:(id)a6 presentationDelegate:(id)a7;
-+ (CGRect)faceRectForPeopleFaceTile:(id)a3;
++ (BOOL)isPersonHiddenFromPeopleHome:(id)home;
++ (BOOL)mergePersons:(id)persons withPerson:(id)person;
++ (BOOL)shouldShowBootstrapForPerson:(id)person context:(id)context;
++ (BOOL)showBootstrapIfNeededWithContext:(id)context fromParentVC:(id)c force:(BOOL)force flowDelegate:(id)delegate presentationDelegate:(id)presentationDelegate;
++ (CGRect)faceRectForPeopleFaceTile:(id)tile;
 + (NSArray)reverseSortDescriptorsForManualSort;
 + (NSArray)sortDescriptorsForManualSort;
 + (id)_daysDictionary;
-+ (id)_peopleHomeFetchOptionsForPhotoLibrary:(id)a3;
-+ (id)_peopleHomeFetchResultForPersonType:(int64_t)a3 photoLibrary:(id)a4;
-+ (id)_titleStringForPeople:(id)a3 singlePersonFallback:(id)a4 groupFallback:(id)a5;
++ (id)_peopleHomeFetchOptionsForPhotoLibrary:(id)library;
++ (id)_peopleHomeFetchResultForPersonType:(int64_t)type photoLibrary:(id)library;
++ (id)_titleStringForPeople:(id)people singlePersonFallback:(id)fallback groupFallback:(id)groupFallback;
 + (id)_untaggingLog;
-+ (id)alertControllerForRevertingSuggestLess:(id)a3 undoManager:(id)a4 completion:(id)a5;
-+ (id)alertControllerForUntaggingPerson:(id)a3 asset:(id)a4 completion:(id)a5;
-+ (id)assetCollectionListFetchResultForPeople:(id)a3 assetCollectionFetchResults:(id *)a4;
-+ (id)assetCollectionListFetchResultForPerson:(id)a3;
-+ (id)bootstrapViewControllerForContext:(id)a3 delegate:(id)a4;
-+ (id)comparatorByPeopleHomeSortingType:(unint64_t)a3;
-+ (id)contactViewControllerForContact:(id)a3 target:(id)a4 selector:(SEL)a5;
-+ (id)facesForPerson:(id)a3 inAssets:(id)a4;
-+ (id)favoritingStringForPerson:(id)a3;
++ (id)alertControllerForRevertingSuggestLess:(id)less undoManager:(id)manager completion:(id)completion;
++ (id)alertControllerForUntaggingPerson:(id)person asset:(id)asset completion:(id)completion;
++ (id)assetCollectionListFetchResultForPeople:(id)people assetCollectionFetchResults:(id *)results;
++ (id)assetCollectionListFetchResultForPerson:(id)person;
++ (id)bootstrapViewControllerForContext:(id)context delegate:(id)delegate;
++ (id)comparatorByPeopleHomeSortingType:(unint64_t)type;
++ (id)contactViewControllerForContact:(id)contact target:(id)target selector:(SEL)selector;
++ (id)facesForPerson:(id)person inAssets:(id)assets;
++ (id)favoritingStringForPerson:(id)person;
 + (id)fetchMeContact;
-+ (id)fetchPeopleAndPetsInSocialGroup:(id)a3;
-+ (id)fetchPeopleForPeopleHomeWithPhotoLibrary:(id)a3 fetchLimit:(int64_t)a4;
-+ (id)fetchPeopleWithUUIDs:(id)a3 photoLibrary:(id)a4;
-+ (id)generateNewFaceTileFromFaceTile:(id)a3;
-+ (id)identifiersForPeople:(id)a3;
-+ (id)keyAssetForPerson:(id)a3 face:(id)a4;
-+ (id)keyFaceForPerson:(id)a3;
-+ (id)lastManuallySortedPersonInSectionOfType:(int64_t)a3 photoLibrary:(id)a4;
-+ (id)locKeyForHasHumans:(BOOL)a3 hasPets:(BOOL)a4 key:(id)a5;
-+ (id)locKeyForPeople:(id)a3 key:(id)a4;
-+ (id)locKeyForPersonOrPet:(id)a3 key:(id)a4;
-+ (id)locKeyForPersonOrPet:(id)a3 withVisibility:(unint64_t)a4 key:(id)a5;
-+ (id)memoryTitleStringFromPeople:(id)a3;
-+ (id)peopleArrayFromFastEnumeration:(id)a3;
-+ (id)peopleFetchResultFromFastEnumeration:(id)a3 photoLibrary:(id)a4;
-+ (id)personFaceTileByPersonIdForPersons:(id)a3;
-+ (id)personWithLocalIdentifier:(id)a3 propertySets:(id)a4 photoLibrary:(id)a5;
-+ (id)personWithPersonUri:(id)a3;
-+ (id)personWithPersonUri:(id)a3 photoLibrary:(id)a4;
++ (id)fetchPeopleAndPetsInSocialGroup:(id)group;
++ (id)fetchPeopleForPeopleHomeWithPhotoLibrary:(id)library fetchLimit:(int64_t)limit;
++ (id)fetchPeopleWithUUIDs:(id)ds photoLibrary:(id)library;
++ (id)generateNewFaceTileFromFaceTile:(id)tile;
++ (id)identifiersForPeople:(id)people;
++ (id)keyAssetForPerson:(id)person face:(id)face;
++ (id)keyFaceForPerson:(id)person;
++ (id)lastManuallySortedPersonInSectionOfType:(int64_t)type photoLibrary:(id)library;
++ (id)locKeyForHasHumans:(BOOL)humans hasPets:(BOOL)pets key:(id)key;
++ (id)locKeyForPeople:(id)people key:(id)key;
++ (id)locKeyForPersonOrPet:(id)pet key:(id)key;
++ (id)locKeyForPersonOrPet:(id)pet withVisibility:(unint64_t)visibility key:(id)key;
++ (id)memoryTitleStringFromPeople:(id)people;
++ (id)peopleArrayFromFastEnumeration:(id)enumeration;
++ (id)peopleFetchResultFromFastEnumeration:(id)enumeration photoLibrary:(id)library;
++ (id)personFaceTileByPersonIdForPersons:(id)persons;
++ (id)personWithLocalIdentifier:(id)identifier propertySets:(id)sets photoLibrary:(id)library;
++ (id)personWithPersonUri:(id)uri;
++ (id)personWithPersonUri:(id)uri photoLibrary:(id)library;
 + (id)sharedContactStore;
-+ (id)socialGroupFetchResultFromFastEnumeration:(id)a3 photoLibrary:(id)a4;
-+ (id)sortDescriptorsWithPersonAssetSortOrder:(int64_t)a3;
-+ (id)sortedPersons:(id)a3 byPersonMemoryFeatures:(id)a4;
-+ (id)stringForAddingPerson:(id)a3;
-+ (id)stringForHidingPerson:(id)a3;
-+ (id)suggestLessOptionSelectionViewController:(id)a3 delegate:(id)a4 completionHandler:(id)a5;
-+ (id)summaryTitleForLibrary:(id)a3 count:(int64_t)a4;
-+ (id)titleStringForPeople:(id)a3;
-+ (id)titleStringForPerson:(id)a3;
-+ (int64_t)changeTypeForPeople:(id)a3;
-+ (int64_t)countOfPeopleHomePeopleForPhotoLibrary:(id)a3;
-+ (int64_t)manualOrderForInsertingAtEndOfSectionWithType:(int64_t)a3 photoLibrary:(id)a4;
-+ (unint64_t)currentSortOrderFor:(id)a3;
-+ (void)_alertStringsForPerson:(id)a3 alertTitle:(id *)a4 alertMessage:(id *)a5 alternativeLevelActionTitle:(id *)a6 resetActionTitle:(id *)a7;
-+ (void)_peopleFaceTilesForFaces:(id)a3 asset:(id)a4 options:(id)a5 completion:(id)a6;
-+ (void)_setDaysDictionary:(id)a3;
-+ (void)_unlinkContactfromPerson:(id)a3 completion:(id)a4;
-+ (void)handleUnlinkContact:(id)a3 person:(id)a4 presentationEnvironment:(id)a5 sourceItem:(id)a6 handleUnlinkageInternally:(BOOL)a7 completion:(id)a8;
-+ (void)people:(id)a3 hasHumans:(BOOL *)a4 hasPets:(BOOL *)a5;
-+ (void)peopleFaceTilesForAsset:(id)a3 options:(id)a4 completion:(id)a5;
-+ (void)peopleFaceTilesForFaces:(id)a3 asset:(id)a4 options:(id)a5 completion:(id)a6;
-+ (void)performSetSocialGroupKeyPhotoWithAsset:(id)a3 socialGroup:(id)a4 undoManager:(id)a5 completionHandler:(id)a6;
++ (id)socialGroupFetchResultFromFastEnumeration:(id)enumeration photoLibrary:(id)library;
++ (id)sortDescriptorsWithPersonAssetSortOrder:(int64_t)order;
++ (id)sortedPersons:(id)persons byPersonMemoryFeatures:(id)features;
++ (id)stringForAddingPerson:(id)person;
++ (id)stringForHidingPerson:(id)person;
++ (id)suggestLessOptionSelectionViewController:(id)controller delegate:(id)delegate completionHandler:(id)handler;
++ (id)summaryTitleForLibrary:(id)library count:(int64_t)count;
++ (id)titleStringForPeople:(id)people;
++ (id)titleStringForPerson:(id)person;
++ (int64_t)changeTypeForPeople:(id)people;
++ (int64_t)countOfPeopleHomePeopleForPhotoLibrary:(id)library;
++ (int64_t)manualOrderForInsertingAtEndOfSectionWithType:(int64_t)type photoLibrary:(id)library;
++ (unint64_t)currentSortOrderFor:(id)for;
++ (void)_alertStringsForPerson:(id)person alertTitle:(id *)title alertMessage:(id *)message alternativeLevelActionTitle:(id *)actionTitle resetActionTitle:(id *)resetActionTitle;
++ (void)_peopleFaceTilesForFaces:(id)faces asset:(id)asset options:(id)options completion:(id)completion;
++ (void)_setDaysDictionary:(id)dictionary;
++ (void)_unlinkContactfromPerson:(id)person completion:(id)completion;
++ (void)handleUnlinkContact:(id)contact person:(id)person presentationEnvironment:(id)environment sourceItem:(id)item handleUnlinkageInternally:(BOOL)internally completion:(id)completion;
++ (void)people:(id)people hasHumans:(BOOL *)humans hasPets:(BOOL *)pets;
++ (void)peopleFaceTilesForAsset:(id)asset options:(id)options completion:(id)completion;
++ (void)peopleFaceTilesForFaces:(id)faces asset:(id)asset options:(id)options completion:(id)completion;
++ (void)performSetSocialGroupKeyPhotoWithAsset:(id)asset socialGroup:(id)group undoManager:(id)manager completionHandler:(id)handler;
 + (void)resetTemporarilySuppressedBootstrapOrSuggestions;
-+ (void)setSortOrder:(unint64_t)a3 toPhotoLibrary:(id)a4;
-+ (void)temporarilySuppressBootstrapOrSuggestionForPerson:(id)a3;
-+ (void)unblockPersonsInLibrary:(id)a3 completion:(id)a4;
-+ (void)unlinkContactInfoForPerson:(id)a3 completion:(id)a4;
++ (void)setSortOrder:(unint64_t)order toPhotoLibrary:(id)library;
++ (void)temporarilySuppressBootstrapOrSuggestionForPerson:(id)person;
++ (void)unblockPersonsInLibrary:(id)library completion:(id)completion;
++ (void)unlinkContactInfoForPerson:(id)person completion:(id)completion;
 @end
 
 @implementation PXPeopleUtilities
 
-+ (id)contactViewControllerForContact:(id)a3 target:(id)a4 selector:(SEL)a5
++ (id)contactViewControllerForContact:(id)contact target:(id)target selector:(SEL)selector
 {
   v7 = MEMORY[0x1E695D148];
-  v8 = a4;
-  v9 = [v7 viewControllerForContact:a3];
-  v10 = [v9 contentViewController];
-  v11 = [v10 cardFooterGroup];
+  targetCopy = target;
+  v9 = [v7 viewControllerForContact:contact];
+  contentViewController = [v9 contentViewController];
+  cardFooterGroup = [contentViewController cardFooterGroup];
   v12 = PXLocalizedStringFromTable(@"PXPeopleInfoUnlinkContactButton", @"PhotosUICore");
-  [v10 addActionWithTitle:v12 target:v8 selector:a5 inGroup:v11 destructive:1];
+  [contentViewController addActionWithTitle:v12 target:targetCopy selector:selector inGroup:cardFooterGroup destructive:1];
 
   return v9;
 }
 
-+ (void)_unlinkContactfromPerson:(id)a3 completion:(id)a4
++ (void)_unlinkContactfromPerson:(id)person completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  personCopy = person;
+  completionCopy = completion;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __61__PXPeopleUtilities_UI___unlinkContactfromPerson_completion___block_invoke;
   v9[3] = &unk_1E774BD88;
-  v10 = v5;
-  v11 = v6;
-  v7 = v6;
-  v8 = v5;
+  v10 = personCopy;
+  v11 = completionCopy;
+  v7 = completionCopy;
+  v8 = personCopy;
   [PXPeopleUtilities unlinkContactInfoForPerson:v8 completion:v9];
 }
 
@@ -159,16 +159,16 @@ uint64_t __61__PXPeopleUtilities_UI___unlinkContactfromPerson_completion___block
   return result;
 }
 
-+ (void)handleUnlinkContact:(id)a3 person:(id)a4 presentationEnvironment:(id)a5 sourceItem:(id)a6 handleUnlinkageInternally:(BOOL)a7 completion:(id)a8
++ (void)handleUnlinkContact:(id)contact person:(id)person presentationEnvironment:(id)environment sourceItem:(id)item handleUnlinkageInternally:(BOOL)internally completion:(id)completion
 {
-  v12 = a4;
-  v13 = a8;
-  v14 = a6;
-  a5;
-  v15 = a3;
+  personCopy = person;
+  completionCopy = completion;
+  itemCopy = item;
+  environment;
+  contactCopy = contact;
   PXLocalizedStringFromTable(@"PXPeopleInfoUnlinkContactAlertTitle", @"PhotosUICore");
   objc_claimAutoreleasedReturnValue();
-  [MEMORY[0x1E6978980] fullNameFromContact:v15];
+  [MEMORY[0x1E6978980] fullNameFromContact:contactCopy];
   objc_claimAutoreleasedReturnValue();
 
   PXLocalizedStringFromTable(@"PXPeopleInfoUnlinkContactAlertMessage", @"PhotosUICore");
@@ -201,117 +201,117 @@ void __124__PXPeopleUtilities_UI__handleUnlinkContact_person_presentationEnviron
 LABEL_6:
 }
 
-+ (id)suggestLessOptionSelectionViewController:(id)a3 delegate:(id)a4 completionHandler:(id)a5
++ (id)suggestLessOptionSelectionViewController:(id)controller delegate:(id)delegate completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[_TtC12PhotosUICore46SuggestLessPeopleOptionSelectionViewController alloc] initWithPeople:v9 delegate:v8 completionHandler:v7];
+  handlerCopy = handler;
+  delegateCopy = delegate;
+  controllerCopy = controller;
+  v10 = [[_TtC12PhotosUICore46SuggestLessPeopleOptionSelectionViewController alloc] initWithPeople:controllerCopy delegate:delegateCopy completionHandler:handlerCopy];
 
   return v10;
 }
 
-+ (void)_alertStringsForPerson:(id)a3 alertTitle:(id *)a4 alertMessage:(id *)a5 alternativeLevelActionTitle:(id *)a6 resetActionTitle:(id *)a7
++ (void)_alertStringsForPerson:(id)person alertTitle:(id *)title alertMessage:(id *)message alternativeLevelActionTitle:(id *)actionTitle resetActionTitle:(id *)resetActionTitle
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = [v10 px_localizedName];
-  v12 = [v10 userFeedbackProperties];
-  v13 = [v12 userFeedback];
-  v14 = [v13 type];
+  personCopy = person;
+  px_localizedName = [personCopy px_localizedName];
+  userFeedbackProperties = [personCopy userFeedbackProperties];
+  userFeedback = [userFeedbackProperties userFeedback];
+  type = [userFeedback type];
 
   v31[0] = *MEMORY[0x1E695C1C0];
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:1];
-  v16 = [v10 linkedContactWithKeysToFetch:v15];
-  v17 = [v16 termsOfAddress];
+  v16 = [personCopy linkedContactWithKeysToFetch:v15];
+  termsOfAddress = [v16 termsOfAddress];
 
-  v30 = v11;
-  if (v14 == 3)
+  v30 = px_localizedName;
+  if (type == 3)
   {
-    if ([v11 length])
+    if ([px_localizedName length])
     {
-      PXLocalizedStringForPersonOrPetAndVisibility(v10, 0, @"PXPeopleBlockPersonRevertAlertTitleNamed_FromNeverFeature");
+      PXLocalizedStringForPersonOrPetAndVisibility(personCopy, 0, @"PXPeopleBlockPersonRevertAlertTitleNamed_FromNeverFeature");
       objc_claimAutoreleasedReturnValue();
       PXStringWithValidatedFormat();
     }
 
-    v21 = PXLocalizedStringForPersonOrPetAndVisibility(v10, 0, @"PXPeopleBlockPersonRevertAlertTitleNoName_FromNeverFeature");
+    v21 = PXLocalizedStringForPersonOrPetAndVisibility(personCopy, 0, @"PXPeopleBlockPersonRevertAlertTitleNoName_FromNeverFeature");
     v22 = @"PXPeopleBlockPersonRevertAlertInformativeText_FromNeverFeature";
     v23 = @"PXPeopleBlockPersonRevertAlertChangeLevelActionTitle_FromNeverFeature";
   }
 
   else
   {
-    if (v14 != 2)
+    if (type != 2)
     {
-      v18 = v17;
+      v18 = termsOfAddress;
       v19 = 0;
       v20 = 0;
       v21 = 0;
       goto LABEL_11;
     }
 
-    if ([v11 length])
+    if ([px_localizedName length])
     {
-      PXLocalizedStringForPersonOrPetAndVisibility(v10, 0, @"PXPeopleBlockPersonRevertAlertTitleNamed_FromFeatureLess");
+      PXLocalizedStringForPersonOrPetAndVisibility(personCopy, 0, @"PXPeopleBlockPersonRevertAlertTitleNamed_FromFeatureLess");
       objc_claimAutoreleasedReturnValue();
       PXStringWithValidatedFormat();
     }
 
-    v21 = PXLocalizedStringForPersonOrPetAndVisibility(v10, 0, @"PXPeopleBlockPersonRevertAlertTitleNoName_FromFeatureLess");
+    v21 = PXLocalizedStringForPersonOrPetAndVisibility(personCopy, 0, @"PXPeopleBlockPersonRevertAlertTitleNoName_FromFeatureLess");
     v22 = @"PXPeopleBlockPersonRevertAlertInformativeText_FromFeatureLess";
     v23 = @"PXPeopleBlockPersonRevertAlertChangeLevelActionTitle_FromFeatureLess";
   }
 
-  v20 = PXLocalizedStringForPersonOrPetAndVisibility(v10, 0, v23);
-  v18 = v17;
-  v19 = PXLocalizedAttributedStringForPersonOrPet(v10, 0, v17, v22);
+  v20 = PXLocalizedStringForPersonOrPetAndVisibility(personCopy, 0, v23);
+  v18 = termsOfAddress;
+  v19 = PXLocalizedAttributedStringForPersonOrPet(personCopy, 0, termsOfAddress, v22);
 LABEL_11:
   if ([v30 length])
   {
-    PXLocalizedStringForPersonOrPetAndVisibility(v10, 0, @"PXPeopleBlockPersonRevertResetActionTitleNamed");
+    PXLocalizedStringForPersonOrPetAndVisibility(personCopy, 0, @"PXPeopleBlockPersonRevertResetActionTitleNamed");
     objc_claimAutoreleasedReturnValue();
     PXStringWithValidatedFormat();
   }
 
-  v24 = PXLocalizedStringForPersonOrPetAndVisibility(v10, 0, @"PXPeopleBlockPersonRevertResetActionTitleNoName");
-  if (a4)
+  v24 = PXLocalizedStringForPersonOrPetAndVisibility(personCopy, 0, @"PXPeopleBlockPersonRevertResetActionTitleNoName");
+  if (title)
   {
     v25 = v21;
-    *a4 = v21;
+    *title = v21;
   }
 
-  if (a5)
+  if (message)
   {
     v26 = v19;
-    *a5 = v19;
+    *message = v19;
   }
 
-  if (a6)
+  if (actionTitle)
   {
     v27 = v20;
-    *a6 = v20;
+    *actionTitle = v20;
   }
 
-  if (a7)
+  if (resetActionTitle)
   {
     v28 = v24;
-    *a7 = v24;
+    *resetActionTitle = v24;
   }
 }
 
-+ (id)alertControllerForRevertingSuggestLess:(id)a3 undoManager:(id)a4 completion:(id)a5
++ (id)alertControllerForRevertingSuggestLess:(id)less undoManager:(id)manager completion:(id)completion
 {
   v51[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v29 = a5;
+  lessCopy = less;
+  managerCopy = manager;
+  completionCopy = completion;
   v31 = PXLocalizedStringFromTable(@"PXBlockConfirmationDialogButtonTitle_Cancel", @"PhotosUICore");
   v48 = 0;
   v49 = 0;
   v46 = 0;
   v47 = 0;
-  [a1 _alertStringsForPerson:v8 alertTitle:&v49 alertMessage:&v48 alternativeLevelActionTitle:&v47 resetActionTitle:&v46];
+  [self _alertStringsForPerson:lessCopy alertTitle:&v49 alertMessage:&v48 alternativeLevelActionTitle:&v47 resetActionTitle:&v46];
   v33 = v49;
   v32 = v48;
   v10 = v47;
@@ -330,12 +330,12 @@ LABEL_11:
   v41[1] = 3221225472;
   v41[2] = __87__PXPeopleUtilities_UI__alertControllerForRevertingSuggestLess_undoManager_completion___block_invoke;
   v41[3] = &unk_1E772D298;
-  v16 = v8;
+  v16 = lessCopy;
   v42 = v16;
-  v17 = v9;
+  v17 = managerCopy;
   v43 = v17;
-  v45 = a1;
-  v18 = v29;
+  selfCopy = self;
+  v18 = completionCopy;
   v44 = v18;
   v19 = [v15 actionWithTitle:v10 style:2 handler:v41];
   [v11 addAction:v19];
@@ -347,7 +347,7 @@ LABEL_11:
   v36[3] = &unk_1E772D298;
   v37 = v16;
   v38 = v17;
-  v40 = a1;
+  selfCopy2 = self;
   v21 = v18;
   v39 = v21;
   v22 = v17;
@@ -510,19 +510,19 @@ void __38__PXPeopleUtilities_UI___untaggingLog__block_invoke()
   _untaggingLog_untaggingLog = v0;
 }
 
-+ (id)alertControllerForUntaggingPerson:(id)a3 asset:(id)a4 completion:(id)a5
++ (id)alertControllerForUntaggingPerson:(id)person asset:(id)asset completion:(id)completion
 {
   v85[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 px_localizedName];
-  v11 = [v10 length];
-  v12 = [v8 mediaType];
-  v65 = v10;
+  personCopy = person;
+  assetCopy = asset;
+  completionCopy = completion;
+  px_localizedName = [personCopy px_localizedName];
+  v11 = [px_localizedName length];
+  mediaType = [assetCopy mediaType];
+  v65 = px_localizedName;
   if (v11)
   {
-    if (v12 == 2)
+    if (mediaType == 2)
     {
       v13 = @"PXPeopleUntagPersonDescriptionNamedVideo";
     }
@@ -532,12 +532,12 @@ void __38__PXPeopleUtilities_UI___untaggingLog__block_invoke()
       v13 = @"PXPeopleUntagPersonDescriptionNamedPhoto";
     }
 
-    PXLocalizedStringForPersonOrPetAndVisibility(v7, 0, v13);
+    PXLocalizedStringForPersonOrPetAndVisibility(personCopy, 0, v13);
     objc_claimAutoreleasedReturnValue();
     PXStringWithValidatedFormat();
   }
 
-  if (v12 == 2)
+  if (mediaType == 2)
   {
     v14 = @"PXPeopleUntagPersonDescriptionNoNameVideo";
   }
@@ -547,29 +547,29 @@ void __38__PXPeopleUtilities_UI___untaggingLog__block_invoke()
     v14 = @"PXPeopleUntagPersonDescriptionNoNamePhoto";
   }
 
-  v15 = PXLocalizedStringForPersonOrPetAndVisibility(v7, 0, v14);
+  v15 = PXLocalizedStringForPersonOrPetAndVisibility(personCopy, 0, v14);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __76__PXPeopleUtilities_UI__alertControllerForUntaggingPerson_asset_completion___block_invoke;
   aBlock[3] = &unk_1E772D1F8;
-  v16 = v7;
+  v16 = personCopy;
   v81 = v16;
-  v17 = v8;
+  v17 = assetCopy;
   v82 = v17;
   v18 = _Block_copy(aBlock);
   v64 = v15;
   v67 = [MEMORY[0x1E69DC650] alertControllerWithTitle:0 message:v15 preferredStyle:0];
   v19 = MEMORY[0x1E6978830];
-  v20 = [v17 photoLibrary];
-  v21 = [v19 fetchOptionsWithPhotoLibrary:v20 orObject:0];
+  photoLibrary = [v17 photoLibrary];
+  v21 = [v19 fetchOptionsWithPhotoLibrary:photoLibrary orObject:0];
 
   [v21 setIncludeTorsoAndFaceDetectionData:1];
-  v22 = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
-  [v21 setIncludedDetectionTypes:v22];
+  px_defaultDetectionTypes = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
+  [v21 setIncludedDetectionTypes:px_defaultDetectionTypes];
 
   v23 = MEMORY[0x1E696AE18];
-  v24 = [v16 uuid];
-  v25 = [v23 predicateWithFormat:@"%K = %@", @"personForFace.personUUID", v24];
+  uuid = [v16 uuid];
+  v25 = [v23 predicateWithFormat:@"%K = %@", @"personForFace.personUUID", uuid];
   [v21 setInternalPredicate:v25];
 
   v26 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"uuid" ascending:1];
@@ -582,23 +582,23 @@ void __38__PXPeopleUtilities_UI___untaggingLog__block_invoke()
   v66 = v16;
   if ([v28 count] == 1)
   {
-    v29 = [v28 firstObject];
+    firstObject = [v28 firstObject];
     v30 = v67;
-    if (v29)
+    if (firstObject)
     {
 LABEL_11:
-      v31 = [PXPeopleSwiftUtilities untaggingViewControllerForFace:v29];
+      v31 = [PXPeopleSwiftUtilities untaggingViewControllerForFace:firstObject];
       [v30 setContentViewController:v31];
 
 LABEL_28:
       PXLocalizedStringForPersonOrPetAndVisibility(v66, 0, @"PXPeopleTagWithNewName");
-      v48 = v47 = v9;
+      v48 = v47 = completionCopy;
       v49 = MEMORY[0x1E69DC648];
       v74[0] = MEMORY[0x1E69E9820];
       v74[1] = 3221225472;
       v74[2] = __76__PXPeopleUtilities_UI__alertControllerForUntaggingPerson_asset_completion___block_invoke_401;
       v74[3] = &unk_1E772D248;
-      v50 = v29;
+      v50 = firstObject;
       v75 = v50;
       v78 = v18;
       v76 = v28;
@@ -608,7 +608,7 @@ LABEL_28:
       v46 = v50;
       [v30 addAction:v51];
 
-      v9 = v47;
+      completionCopy = v47;
       goto LABEL_29;
     }
 
@@ -622,18 +622,18 @@ LABEL_28:
     goto LABEL_25;
   }
 
-  v32 = [v28 firstObject];
-  [v32 centerX];
+  firstObject2 = [v28 firstObject];
+  [firstObject2 centerX];
   if (v33 == 0.0)
   {
-    v34 = [v28 lastObject];
-    [v34 centerX];
+    lastObject = [v28 lastObject];
+    [lastObject centerX];
     v36 = v35;
 
     v30 = v67;
     if (v36 != 0.0)
     {
-      v37 = [v28 lastObject];
+      lastObject2 = [v28 lastObject];
       goto LABEL_21;
     }
   }
@@ -644,24 +644,24 @@ LABEL_28:
     v30 = v67;
   }
 
-  v39 = [v28 firstObject];
-  [v39 centerX];
+  firstObject3 = [v28 firstObject];
+  [firstObject3 centerX];
   if (v40 == 0.0)
   {
   }
 
   else
   {
-    v41 = [v28 lastObject];
-    [v41 centerX];
+    lastObject3 = [v28 lastObject];
+    [lastObject3 centerX];
     v43 = v42;
 
     if (v43 == 0.0)
     {
-      v37 = [v28 firstObject];
+      lastObject2 = [v28 firstObject];
 LABEL_21:
-      v29 = v37;
-      if (v37)
+      firstObject = lastObject2;
+      if (lastObject2)
       {
         goto LABEL_11;
       }
@@ -677,13 +677,13 @@ LABEL_25:
   v44 = PLUIGetLog();
   if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
   {
-    v45 = [v16 localIdentifier];
+    localIdentifier = [v16 localIdentifier];
     *buf = 138412290;
-    v84 = v45;
+    v84 = localIdentifier;
     _os_log_impl(&dword_1A3C1C000, v44, OS_LOG_TYPE_ERROR, "Failed to get a face to show for person: %@", buf, 0xCu);
   }
 
-  v29 = 0;
+  firstObject = 0;
   v46 = 0;
   if (v38)
   {
@@ -699,7 +699,7 @@ LABEL_29:
   v70[3] = &unk_1E772D270;
   v71 = v28;
   v72 = v18;
-  v54 = v9;
+  v54 = completionCopy;
   v73 = v54;
   v55 = v28;
   v56 = v18;
@@ -1081,41 +1081,41 @@ void __76__PXPeopleUtilities_UI__alertControllerForUntaggingPerson_asset_complet
   [v2 setKeyFace:*(a1 + 40) forCluster:0];
 }
 
-+ (BOOL)showBootstrapIfNeededWithContext:(id)a3 fromParentVC:(id)a4 force:(BOOL)a5 flowDelegate:(id)a6 presentationDelegate:(id)a7
++ (BOOL)showBootstrapIfNeededWithContext:(id)context fromParentVC:(id)c force:(BOOL)force flowDelegate:(id)delegate presentationDelegate:(id)presentationDelegate
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v31 = a4;
-  v13 = a6;
-  v30 = a7;
-  v14 = [v12 sourcePerson];
-  v15 = [v14 localIdentifier];
+  contextCopy = context;
+  cCopy = c;
+  delegateCopy = delegate;
+  presentationDelegateCopy = presentationDelegate;
+  sourcePerson = [contextCopy sourcePerson];
+  localIdentifier = [sourcePerson localIdentifier];
   v33[0] = *MEMORY[0x1E6978F38];
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:1];
-  v17 = [v14 photoLibrary];
-  v18 = [PXPeopleUtilities personWithLocalIdentifier:v15 propertySets:v16 photoLibrary:v17];
+  photoLibrary = [sourcePerson photoLibrary];
+  v18 = [PXPeopleUtilities personWithLocalIdentifier:localIdentifier propertySets:v16 photoLibrary:photoLibrary];
 
-  v19 = v13;
-  if ((a5 || +[PXPeopleUtilities shouldShowBootstrapForPerson:](PXPeopleUtilities, "shouldShowBootstrapForPerson:", v18)) && ([v12 setSourcePerson:v18], objc_msgSend(a1, "bootstrapViewControllerForContext:delegate:", v12, v13), (v20 = objc_claimAutoreleasedReturnValue()) != 0))
+  v19 = delegateCopy;
+  if ((force || +[PXPeopleUtilities shouldShowBootstrapForPerson:](PXPeopleUtilities, "shouldShowBootstrapForPerson:", v18)) && ([contextCopy setSourcePerson:v18], objc_msgSend(self, "bootstrapViewControllerForContext:delegate:", contextCopy, delegateCopy), (v20 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v21 = v20;
     [(PXChangePeopleTypeAction *)v20 setModalPresentationStyle:2];
-    v22 = [(PXChangePeopleTypeAction *)v21 presentationController];
-    v23 = v30;
-    [v22 setDelegate:v30];
+    presentationController = [(PXChangePeopleTypeAction *)v21 presentationController];
+    v23 = presentationDelegateCopy;
+    [presentationController setDelegate:presentationDelegateCopy];
 
     v24 = 1;
-    v25 = v31;
-    [v31 presentViewController:v21 animated:1 completion:0];
+    v25 = cCopy;
+    [cCopy presentViewController:v21 animated:1 completion:0];
   }
 
   else
   {
-    if (([v12 didCommitPreBootstrapAction] & 1) != 0 || objc_msgSend(v12, "bootstrapType"))
+    if (([contextCopy didCommitPreBootstrapAction] & 1) != 0 || objc_msgSend(contextCopy, "bootstrapType"))
     {
-      v21 = [(PXPeopleBootstrapFlowController *)[PXUIPeopleBootstrapFlowController alloc] initEmptyFlowWithContext:v12];
-      v25 = v31;
-      [(PXChangePeopleTypeAction *)v21 done:v31];
+      v21 = [(PXPeopleBootstrapFlowController *)[PXUIPeopleBootstrapFlowController alloc] initEmptyFlowWithContext:contextCopy];
+      v25 = cCopy;
+      [(PXChangePeopleTypeAction *)v21 done:cCopy];
     }
 
     else
@@ -1125,25 +1125,25 @@ void __76__PXPeopleUtilities_UI__alertControllerForUntaggingPerson_asset_complet
       v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v32 count:1];
       v21 = [(PXChangePeopleTypeAction *)v27 initWithPeople:v28 type:1];
 
-      v25 = v31;
-      v29 = [v31 undoManager];
-      [(PXAction *)v21 executeWithUndoManager:v29 completionHandler:&__block_literal_global_1957];
+      v25 = cCopy;
+      undoManager = [cCopy undoManager];
+      [(PXAction *)v21 executeWithUndoManager:undoManager completionHandler:&__block_literal_global_1957];
     }
 
     v24 = 0;
-    v23 = v30;
+    v23 = presentationDelegateCopy;
   }
 
   return v24;
 }
 
-+ (id)bootstrapViewControllerForContext:(id)a3 delegate:(id)a4
++ (id)bootstrapViewControllerForContext:(id)context delegate:(id)delegate
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [(PXPeopleBootstrapFlowController *)[PXUIPeopleBootstrapFlowController alloc] initWithContext:v6];
+  delegateCopy = delegate;
+  contextCopy = context;
+  v7 = [(PXPeopleBootstrapFlowController *)[PXUIPeopleBootstrapFlowController alloc] initWithContext:contextCopy];
 
-  [(PXPeopleBootstrapFlowController *)v7 setBootstrapDelegate:v5];
+  [(PXPeopleBootstrapFlowController *)v7 setBootstrapDelegate:delegateCopy];
   if (-[PXPeopleBootstrapFlowController hasNextViewController](v7, "hasNextViewController") || (+[PXPeopleUISettings sharedInstance](PXPeopleUISettings, "sharedInstance"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 alwaysShowBootstrap], v8, v9))
   {
     v10 = [[PXPeopleFlowNavigationController alloc] initWithFlowController:v7];
@@ -1158,38 +1158,38 @@ void __76__PXPeopleUtilities_UI__alertControllerForUntaggingPerson_asset_complet
   return v10;
 }
 
-+ (BOOL)canSetPersonAsMagicItem:(id)a3
++ (BOOL)canSetPersonAsMagicItem:(id)item
 {
   v11 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  itemCopy = item;
   v3 = MEMORY[0x1E695DEC8];
-  v4 = a3;
-  v5 = [v3 arrayWithObjects:&v10 count:1];
-  v6 = [v4 photoLibrary];
-  v7 = [PXPeopleUtilities peopleFetchResultFromFastEnumeration:v5 photoLibrary:v6];
+  itemCopy2 = item;
+  v5 = [v3 arrayWithObjects:&itemCopy count:1];
+  photoLibrary = [itemCopy2 photoLibrary];
+  v7 = [PXPeopleUtilities peopleFetchResultFromFastEnumeration:v5 photoLibrary:photoLibrary];
 
   v8 = [PXPeoplePromoteAsMagicInternalActionPerformer canPerformOn:v7];
   return v8;
 }
 
-+ (void)performSetSocialGroupKeyPhotoWithAsset:(id)a3 socialGroup:(id)a4 undoManager:(id)a5 completionHandler:(id)a6
++ (void)performSetSocialGroupKeyPhotoWithAsset:(id)asset socialGroup:(id)group undoManager:(id)manager completionHandler:(id)handler
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[PXSocialGroupMakeKeyPhotoAction alloc] initWithSocialGroup:v11 newKeyAsset:v12];
+  handlerCopy = handler;
+  managerCopy = manager;
+  groupCopy = group;
+  assetCopy = asset;
+  v13 = [[PXSocialGroupMakeKeyPhotoAction alloc] initWithSocialGroup:groupCopy newKeyAsset:assetCopy];
 
-  [(PXAction *)v13 executeWithUndoManager:v10 completionHandler:v9];
+  [(PXAction *)v13 executeWithUndoManager:managerCopy completionHandler:handlerCopy];
 }
 
-+ (int64_t)changeTypeForPeople:(id)a3
++ (int64_t)changeTypeForPeople:(id)people
 {
-  v5 = a3;
-  v6 = [v5 firstObject];
+  peopleCopy = people;
+  firstObject = [peopleCopy firstObject];
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v7 = v6;
+    v7 = firstObject;
   }
 
   else
@@ -1197,32 +1197,32 @@ void __76__PXPeopleUtilities_UI__alertControllerForUntaggingPerson_asset_complet
     v7 = 0;
   }
 
-  v8 = [v7 photoLibrary];
+  photoLibrary = [v7 photoLibrary];
 
-  if (!v8)
+  if (!photoLibrary)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"PXPeopleUtilities.m" lineNumber:1013 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleUtilities.m" lineNumber:1013 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
   }
 
-  v9 = [PXPeopleUtilities peopleFetchResultFromFastEnumeration:v5 photoLibrary:v8];
+  v9 = [PXPeopleUtilities peopleFetchResultFromFastEnumeration:peopleCopy photoLibrary:photoLibrary];
   v10 = [PXPeopleChangeTypeActionPerformer changeTypeFor:v9];
 
   return v10;
 }
 
-+ (id)locKeyForPersonOrPet:(id)a3 withVisibility:(unint64_t)a4 key:(id)a5
++ (id)locKeyForPersonOrPet:(id)pet withVisibility:(unint64_t)visibility key:(id)key
 {
-  v6 = [PXPeopleUtilities locKeyForPersonOrPet:a3 key:a5];
+  v6 = [PXPeopleUtilities locKeyForPersonOrPet:pet key:key];
   v7 = v6;
-  if (a4 == 1)
+  if (visibility == 1)
   {
     v8 = @"__People";
   }
 
   else
   {
-    if (a4 != 2)
+    if (visibility != 2)
     {
       goto LABEL_6;
     }
@@ -1238,18 +1238,18 @@ LABEL_6:
   return v7;
 }
 
-+ (id)locKeyForPersonOrPet:(id)a3 key:(id)a4
++ (id)locKeyForPersonOrPet:(id)pet key:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5 && ![v5 px_isHuman])
+  petCopy = pet;
+  keyCopy = key;
+  if (petCopy && ![petCopy px_isHuman])
   {
-    v7 = [v6 stringByAppendingString:@"_Pet"];
+    v7 = [keyCopy stringByAppendingString:@"_Pet"];
   }
 
   else
   {
-    v7 = v6;
+    v7 = keyCopy;
   }
 
   v8 = v7;
@@ -1257,67 +1257,67 @@ LABEL_6:
   return v8;
 }
 
-+ (id)locKeyForPeople:(id)a3 key:(id)a4
++ (id)locKeyForPeople:(id)people key:(id)key
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  peopleCopy = people;
+  keyCopy = key;
+  if (!keyCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"PXPeopleUtilities.m" lineNumber:973 description:{@"Invalid parameter not satisfying: %@", @"key != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleUtilities.m" lineNumber:973 description:{@"Invalid parameter not satisfying: %@", @"key != nil"}];
   }
 
   v12 = 0;
-  [PXPeopleUtilities people:v7 hasHumans:&v12 + 1 hasPets:&v12];
-  v9 = [PXPeopleUtilities locKeyForHasHumans:HIBYTE(v12) hasPets:v12 key:v8];
+  [PXPeopleUtilities people:peopleCopy hasHumans:&v12 + 1 hasPets:&v12];
+  v9 = [PXPeopleUtilities locKeyForHasHumans:HIBYTE(v12) hasPets:v12 key:keyCopy];
 
   return v9;
 }
 
-+ (id)locKeyForHasHumans:(BOOL)a3 hasPets:(BOOL)a4 key:(id)a5
++ (id)locKeyForHasHumans:(BOOL)humans hasPets:(BOOL)pets key:(id)key
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = a5;
-  v8 = v7;
-  if (v6 && v5)
+  petsCopy = pets;
+  humansCopy = humans;
+  keyCopy = key;
+  v8 = keyCopy;
+  if (humansCopy && petsCopy)
   {
     v9 = @"_PeoplePet";
 LABEL_6:
-    v10 = [v7 stringByAppendingString:v9];
+    v10 = [keyCopy stringByAppendingString:v9];
     goto LABEL_8;
   }
 
-  if (v5)
+  if (petsCopy)
   {
     v9 = @"_Pet";
     goto LABEL_6;
   }
 
-  v10 = v7;
+  v10 = keyCopy;
 LABEL_8:
   v11 = v10;
 
   return v11;
 }
 
-+ (void)people:(id)a3 hasHumans:(BOOL *)a4 hasPets:(BOOL *)a5
++ (void)people:(id)people hasHumans:(BOOL *)humans hasPets:(BOOL *)pets
 {
   v29 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  if (!a4 || !a5)
+  peopleCopy = people;
+  if (!humans || !pets)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:a1 file:@"PXPeopleUtilities.m" lineNumber:932 description:{@"Invalid parameter not satisfying: %@", @"outHasHumans != nil && outHasPets != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleUtilities.m" lineNumber:932 description:{@"Invalid parameter not satisfying: %@", @"outHasHumans != nil && outHasPets != nil"}];
   }
 
-  *a4 = 0;
-  *a5 = 0;
+  *humans = 0;
+  *pets = 0;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v10 = v9;
+  v10 = peopleCopy;
   v11 = [v10 countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v11)
   {
@@ -1351,9 +1351,9 @@ LABEL_19:
           goto LABEL_20;
         }
 
-        if (!*a4)
+        if (!*humans)
         {
-          *a4 = [v15 px_isHuman];
+          *humans = [v15 px_isHuman];
         }
 
         if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -1372,18 +1372,18 @@ LABEL_18:
           goto LABEL_19;
         }
 
-        if (*a5)
+        if (*pets)
         {
-          v16 = 1;
+          px_isPet = 1;
         }
 
         else
         {
-          v16 = [v15 px_isPet];
-          *a5 = v16;
+          px_isPet = [v15 px_isPet];
+          *pets = px_isPet;
         }
 
-        if (*a4 && (v16 & 1) != 0)
+        if (*humans && (px_isPet & 1) != 0)
         {
           goto LABEL_27;
         }
@@ -1403,86 +1403,86 @@ LABEL_20:
 LABEL_27:
 }
 
-+ (id)keyAssetForPerson:(id)a3 face:(id)a4
++ (id)keyAssetForPerson:(id)person face:(id)face
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  personCopy = person;
+  faceCopy = face;
+  if (faceCopy)
   {
-    v9 = [MEMORY[0x1E6978830] fetchOptionsWithPhotoLibrary:0 orObject:v8];
+    v9 = [MEMORY[0x1E6978830] fetchOptionsWithPhotoLibrary:0 orObject:faceCopy];
     [v9 setIncludeHiddenAssets:0];
     [v9 setFetchLimit:1];
     v10 = MEMORY[0x1E6978630];
-    v17[0] = v8;
+    v17[0] = faceCopy;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
     v12 = [v10 fetchAssetsForFaces:v11 options:v9];
   }
 
   else
   {
-    if (!v7)
+    if (!personCopy)
     {
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v16 handleFailureInMethod:a2 object:a1 file:@"PXPeopleUtilities.m" lineNumber:918 description:{@"Invalid parameter not satisfying: %@", @"person"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleUtilities.m" lineNumber:918 description:{@"Invalid parameter not satisfying: %@", @"person"}];
     }
 
-    v13 = [v7 photoLibrary];
-    v14 = [v13 librarySpecificFetchOptions];
+    photoLibrary = [personCopy photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-    v9 = v14;
+    v9 = librarySpecificFetchOptions;
     [v9 setIncludeHiddenAssets:0];
     [v9 setFetchLimit:1];
 
-    v12 = [MEMORY[0x1E6978630] fetchKeyAssetForPerson:v7 options:v9];
+    v12 = [MEMORY[0x1E6978630] fetchKeyAssetForPerson:personCopy options:v9];
   }
 
   return v12;
 }
 
-+ (id)keyFaceForPerson:(id)a3
++ (id)keyFaceForPerson:(id)person
 {
-  v5 = a3;
-  if (!v5)
+  personCopy = person;
+  if (!personCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"PXPeopleUtilities.m" lineNumber:903 description:{@"Invalid parameter not satisfying: %@", @"person"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleUtilities.m" lineNumber:903 description:{@"Invalid parameter not satisfying: %@", @"person"}];
   }
 
-  v6 = [v5 photoLibrary];
-  v7 = [v6 librarySpecificFetchOptions];
+  photoLibrary = [personCopy photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  [v7 setFetchLimit:1];
-  v8 = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
-  [v7 setIncludedDetectionTypes:v8];
+  [librarySpecificFetchOptions setFetchLimit:1];
+  px_defaultDetectionTypes = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
+  [librarySpecificFetchOptions setIncludedDetectionTypes:px_defaultDetectionTypes];
 
-  [v7 setIncludeTorsoAndFaceDetectionData:1];
-  v9 = [MEMORY[0x1E69787C8] px_fetchKeyFaceForPerson:v5 options:v7];
-  v10 = [v9 firstObject];
+  [librarySpecificFetchOptions setIncludeTorsoAndFaceDetectionData:1];
+  v9 = [MEMORY[0x1E69787C8] px_fetchKeyFaceForPerson:personCopy options:librarySpecificFetchOptions];
+  firstObject = [v9 firstObject];
 
-  return v10;
+  return firstObject;
 }
 
-+ (id)fetchPeopleAndPetsInSocialGroup:(id)a3
++ (id)fetchPeopleAndPetsInSocialGroup:(id)group
 {
-  v3 = a3;
-  v4 = [v3 photoLibrary];
-  v5 = [v4 librarySpecificFetchOptions];
+  groupCopy = group;
+  photoLibrary = [groupCopy photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  v6 = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
-  [v5 setIncludedDetectionTypes:v6];
+  px_defaultDetectionTypes = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
+  [librarySpecificFetchOptions setIncludedDetectionTypes:px_defaultDetectionTypes];
 
-  v7 = [MEMORY[0x1E6978980] fetchPersonsInSocialGroup:v3 option:v5];
+  v7 = [MEMORY[0x1E6978980] fetchPersonsInSocialGroup:groupCopy option:librarySpecificFetchOptions];
 
   return v7;
 }
 
-+ (id)socialGroupFetchResultFromFastEnumeration:(id)a3 photoLibrary:(id)a4
++ (id)socialGroupFetchResultFromFastEnumeration:(id)enumeration photoLibrary:(id)library
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
+  enumerationCopy = enumeration;
+  libraryCopy = library;
+  v7 = enumerationCopy;
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v8 = v7;
@@ -1543,20 +1543,20 @@ LABEL_11:
 
 LABEL_19:
   v16 = objc_alloc(MEMORY[0x1E69788E0]);
-  v17 = [MEMORY[0x1E6978AD8] fetchType];
-  v8 = [v16 initWithObjects:v10 photoLibrary:v6 fetchType:v17 fetchPropertySets:0 identifier:0 registerIfNeeded:0];
+  fetchType = [MEMORY[0x1E6978AD8] fetchType];
+  v8 = [v16 initWithObjects:v10 photoLibrary:libraryCopy fetchType:fetchType fetchPropertySets:0 identifier:0 registerIfNeeded:0];
 
 LABEL_20:
 
   return v8;
 }
 
-+ (id)peopleFetchResultFromFastEnumeration:(id)a3 photoLibrary:(id)a4
++ (id)peopleFetchResultFromFastEnumeration:(id)enumeration photoLibrary:(id)library
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
+  enumerationCopy = enumeration;
+  libraryCopy = library;
+  v7 = enumerationCopy;
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v8 = v7;
@@ -1617,23 +1617,23 @@ LABEL_11:
 
 LABEL_19:
   v16 = objc_alloc(MEMORY[0x1E69788E0]);
-  v17 = [MEMORY[0x1E6978980] fetchType];
-  v8 = [v16 initWithObjects:v10 photoLibrary:v6 fetchType:v17 fetchPropertySets:0 identifier:0 registerIfNeeded:0];
+  fetchType = [MEMORY[0x1E6978980] fetchType];
+  v8 = [v16 initWithObjects:v10 photoLibrary:libraryCopy fetchType:fetchType fetchPropertySets:0 identifier:0 registerIfNeeded:0];
 
 LABEL_20:
 
   return v8;
 }
 
-+ (id)peopleArrayFromFastEnumeration:(id)a3
++ (id)peopleArrayFromFastEnumeration:(id)enumeration
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  enumerationCopy = enumeration;
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v4 = v3;
+    fetchedObjects = enumerationCopy;
 
-    if (v4)
+    if (fetchedObjects)
     {
       goto LABEL_20;
     }
@@ -1643,7 +1643,7 @@ LABEL_20:
   {
   }
 
-  v5 = v3;
+  v5 = enumerationCopy;
   if (!objc_opt_class() || (objc_opt_isKindOfClass() & 1) == 0)
   {
 
@@ -1684,30 +1684,30 @@ LABEL_11:
       while (v10);
     }
 
-    v4 = [v7 copy];
+    fetchedObjects = [v7 copy];
     v6 = 0;
     goto LABEL_19;
   }
 
-  v4 = [v6 fetchedObjects];
+  fetchedObjects = [v6 fetchedObjects];
 LABEL_19:
 
 LABEL_20:
 
-  return v4;
+  return fetchedObjects;
 }
 
-+ (id)sortedPersons:(id)a3 byPersonMemoryFeatures:(id)a4
++ (id)sortedPersons:(id)persons byPersonMemoryFeatures:(id)features
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  personsCopy = persons;
+  featuresCopy = features;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = v6;
+  v8 = featuresCopy;
   v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
@@ -1725,8 +1725,8 @@ LABEL_20:
         v13 = *(*(&v20 + 1) + 8 * i);
         if ([v13 type] == 1)
         {
-          v14 = [v13 personLocalIdentifier];
-          [v7 addObject:v14];
+          personLocalIdentifier = [v13 personLocalIdentifier];
+          [v7 addObject:personLocalIdentifier];
         }
       }
 
@@ -1742,7 +1742,7 @@ LABEL_20:
   v18[3] = &unk_1E773A638;
   v19 = v7;
   v15 = v7;
-  v16 = [v5 sortedArrayUsingComparator:v18];
+  v16 = [personsCopy sortedArrayUsingComparator:v18];
 
   return v16;
 }
@@ -1764,15 +1764,15 @@ uint64_t __58__PXPeopleUtilities_sortedPersons_byPersonMemoryFeatures___block_in
   return v14;
 }
 
-+ (void)unblockPersonsInLibrary:(id)a3 completion:(id)a4
++ (void)unblockPersonsInLibrary:(id)library completion:(id)completion
 {
   v5 = MEMORY[0x1E69788F0];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 memoriesWithBlockedPersonFeatureInPhotoLibrary:v7];
+  completionCopy = completion;
+  libraryCopy = library;
+  v8 = [v5 memoriesWithBlockedPersonFeatureInPhotoLibrary:libraryCopy];
   v9 = MEMORY[0x1E6978980];
-  v10 = [v7 librarySpecificFetchOptions];
-  v11 = [v9 fetchPersonsWithUserFeedbackWithOptions:v10];
+  librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+  v11 = [v9 fetchPersonsWithUserFeedbackWithOptions:librarySpecificFetchOptions];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -1782,7 +1782,7 @@ uint64_t __58__PXPeopleUtilities_sortedPersons_byPersonMemoryFeatures___block_in
   v16 = v11;
   v12 = v11;
   v13 = v8;
-  [v7 performChanges:v14 completionHandler:v6];
+  [libraryCopy performChanges:v14 completionHandler:completionCopy];
 }
 
 void __56__PXPeopleUtilities_unblockPersonsInLibrary_completion___block_invoke(uint64_t a1)
@@ -1823,36 +1823,36 @@ void __56__PXPeopleUtilities_unblockPersonsInLibrary_completion___block_invoke(u
   }
 }
 
-+ (id)summaryTitleForLibrary:(id)a3 count:(int64_t)a4
++ (id)summaryTitleForLibrary:(id)library count:(int64_t)count
 {
-  v4 = [a1 locKeyForPersonOrPet:0 withVisibility:objc_msgSend(a3 key:{"px_peoplePetsHomeVisibility"), @"PXPeopleHomeSummaryQuantitySubtitle"}];
+  v4 = [self locKeyForPersonOrPet:0 withVisibility:objc_msgSend(library key:{"px_peoplePetsHomeVisibility"), @"PXPeopleHomeSummaryQuantitySubtitle"}];
   PXLocalizedStringWithCount(v4);
 }
 
-+ (id)memoryTitleStringFromPeople:(id)a3
++ (id)memoryTitleStringFromPeople:(id)people
 {
-  v4 = a3;
+  peopleCopy = people;
   v5 = PXLocalizedStringFromTable(@"PXRelatedPeoplePortraitOf", @"PhotosUICore");
   v6 = PXLocalizedStringFromTable(@"PXRelatedPeopleTogether", @"PhotosUICore");
-  v7 = [a1 _titleStringForPeople:v4 singlePersonFallback:v5 groupFallback:v6];
+  v7 = [self _titleStringForPeople:peopleCopy singlePersonFallback:v5 groupFallback:v6];
 
   return v7;
 }
 
-+ (id)_titleStringForPeople:(id)a3 singlePersonFallback:(id)a4 groupFallback:(id)a5
++ (id)_titleStringForPeople:(id)people singlePersonFallback:(id)fallback groupFallback:(id)groupFallback
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 count];
-  v12 = [a1 titleStringForPeople:v8];
+  peopleCopy = people;
+  fallbackCopy = fallback;
+  groupFallbackCopy = groupFallback;
+  v11 = [peopleCopy count];
+  v12 = [self titleStringForPeople:peopleCopy];
   v25 = 0u;
   v26 = 0u;
   v13 = [v12 length] > 0x16;
   v27 = 0u;
   v28 = 0u;
-  v14 = v8;
+  v14 = peopleCopy;
   v15 = [v14 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v15)
   {
@@ -1867,9 +1867,9 @@ void __56__PXPeopleUtilities_unblockPersonsInLibrary_completion___block_invoke(u
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v25 + 1) + 8 * i) px_localizedName];
-        v20 = v19;
-        if (!v19 || ![v19 length])
+        px_localizedName = [*(*(&v25 + 1) + 8 * i) px_localizedName];
+        v20 = px_localizedName;
+        if (!px_localizedName || ![px_localizedName length])
         {
 
           v13 = 1;
@@ -1889,7 +1889,7 @@ void __56__PXPeopleUtilities_unblockPersonsInLibrary_completion___block_invoke(u
 
 LABEL_12:
 
-  if (v11 == 1 && (v21 = v9, v13) || (v11 > 3 ? (v22 = 1) : (v22 = v13), v21 = v10, v22 == 1))
+  if (v11 == 1 && (v21 = fallbackCopy, v13) || (v11 > 3 ? (v22 = 1) : (v22 = v13), v21 = groupFallbackCopy, v22 == 1))
   {
     v23 = v21;
 
@@ -1899,23 +1899,23 @@ LABEL_12:
   return v12;
 }
 
-+ (id)titleStringForPeople:(id)a3
++ (id)titleStringForPeople:(id)people
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 count];
+  peopleCopy = people;
+  v4 = [peopleCopy count];
   v5 = &stru_1F1741150;
   if (v4)
   {
     v6 = v4;
     if (v4 == 1)
     {
-      v7 = [v3 firstObject];
-      v8 = [v7 px_localizedName];
-      v9 = v8;
-      if (v8)
+      firstObject = [peopleCopy firstObject];
+      px_localizedName = [firstObject px_localizedName];
+      v9 = px_localizedName;
+      if (px_localizedName)
       {
-        v10 = v8;
+        v10 = px_localizedName;
       }
 
       else
@@ -1928,12 +1928,12 @@ LABEL_12:
 
     else
     {
-      v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
+      firstObject = objc_alloc_init(MEMORY[0x1E695DF70]);
       v20 = 0u;
       v21 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v11 = v3;
+      v11 = peopleCopy;
       v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v12)
       {
@@ -1948,11 +1948,11 @@ LABEL_12:
               objc_enumerationMutation(v11);
             }
 
-            v16 = [*(*(&v20 + 1) + 8 * i) px_localizedName];
-            v17 = v16;
-            if (v16 && [v16 length])
+            px_localizedName2 = [*(*(&v20 + 1) + 8 * i) px_localizedName];
+            v17 = px_localizedName2;
+            if (px_localizedName2 && [px_localizedName2 length])
             {
-              [v7 addObject:v17];
+              [firstObject addObject:v17];
             }
           }
 
@@ -1962,7 +1962,7 @@ LABEL_12:
         while (v13);
       }
 
-      v18 = [v7 count];
+      v18 = [firstObject count];
       if (v18)
       {
         if (v6 != v18)
@@ -1972,7 +1972,7 @@ LABEL_12:
           PXLocalizedStringWithValidatedFormat();
         }
 
-        v5 = [MEMORY[0x1E696AD08] localizedStringByJoiningStrings:v7];
+        v5 = [MEMORY[0x1E696AD08] localizedStringByJoiningStrings:firstObject];
       }
 
       else
@@ -1985,48 +1985,48 @@ LABEL_12:
   return v5;
 }
 
-+ (id)titleStringForPerson:(id)a3
++ (id)titleStringForPerson:(id)person
 {
   v9 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  personCopy = person;
   v3 = MEMORY[0x1E695DEC8];
-  v4 = a3;
-  v5 = [v3 arrayWithObjects:&v8 count:1];
-  v6 = [PXPeopleUtilities titleStringForPeople:v5, v8, v9];
+  personCopy2 = person;
+  v5 = [v3 arrayWithObjects:&personCopy count:1];
+  v6 = [PXPeopleUtilities titleStringForPeople:v5, personCopy, v9];
 
   return v6;
 }
 
 + (BOOL)_isPhotosProcess
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if ([v3 isEqualToString:@"com.apple.Photos"])
+  if ([bundleIdentifier isEqualToString:@"com.apple.Photos"])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"com.apple.mobileslideshow"];
+    v4 = [bundleIdentifier isEqualToString:@"com.apple.mobileslideshow"];
   }
 
   return v4;
 }
 
-+ (void)_setDaysDictionary:(id)a3
++ (void)_setDaysDictionary:(id)dictionary
 {
   v3 = MEMORY[0x1E695E000];
-  v4 = a3;
-  v5 = [v3 standardUserDefaults];
-  [v5 setObject:v4 forKey:@"PXPeopleCandidateWidgetKey"];
+  dictionaryCopy = dictionary;
+  standardUserDefaults = [v3 standardUserDefaults];
+  [standardUserDefaults setObject:dictionaryCopy forKey:@"PXPeopleCandidateWidgetKey"];
 }
 
 + (id)_daysDictionary
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"PXPeopleCandidateWidgetKey"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"PXPeopleCandidateWidgetKey"];
 
   if (v3)
   {
@@ -2041,19 +2041,19 @@ LABEL_12:
   return v4;
 }
 
-+ (BOOL)_hasRecentlyHandledBootstrapOrSuggestionForPerson:(id)a3
++ (BOOL)_hasRecentlyHandledBootstrapOrSuggestionForPerson:(id)person
 {
-  v4 = a3;
+  personCopy = person;
   if (+[PXPeopleUtilities _isPhotosProcess])
   {
-    v5 = [a1 _daysDictionary];
-    v6 = [PXPeopleCandidateWidgetUtilities removeAllPreviousNotNowPersonsIfNeededForDaysDictionary:v5];
-    if (([v5 isEqualToDictionary:v6] & 1) == 0)
+    _daysDictionary = [self _daysDictionary];
+    v6 = [PXPeopleCandidateWidgetUtilities removeAllPreviousNotNowPersonsIfNeededForDaysDictionary:_daysDictionary];
+    if (([_daysDictionary isEqualToDictionary:v6] & 1) == 0)
     {
       [PXPeopleUtilities _setDaysDictionary:v6];
     }
 
-    v7 = ![PXPeopleCandidateWidgetUtilities shouldFetchCandidatesForPerson:v4 forDaysDictionary:v6];
+    v7 = ![PXPeopleCandidateWidgetUtilities shouldFetchCandidatesForPerson:personCopy forDaysDictionary:v6];
   }
 
   else
@@ -2074,22 +2074,22 @@ LABEL_12:
   }
 }
 
-+ (void)temporarilySuppressBootstrapOrSuggestionForPerson:(id)a3
++ (void)temporarilySuppressBootstrapOrSuggestionForPerson:(id)person
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  personCopy = person;
   if (+[PXPeopleUtilities _isPhotosProcess])
   {
     v5 = PLUIGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = personCopy;
       _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_INFO, "People UI: temporarilySuppressBootstrapOrSuggestionForPerson: %@", &v9, 0xCu);
     }
 
-    v6 = [a1 _daysDictionary];
-    v7 = [PXPeopleCandidateWidgetUtilities insertPerson:v4 forDaysDictionary:v6];
+    _daysDictionary = [self _daysDictionary];
+    v7 = [PXPeopleCandidateWidgetUtilities insertPerson:personCopy forDaysDictionary:_daysDictionary];
 
     v8 = [PXPeopleCandidateWidgetUtilities removeAllPreviousNotNowPersonsIfNeededForDaysDictionary:v7];
 
@@ -2097,18 +2097,18 @@ LABEL_12:
   }
 }
 
-+ (BOOL)shouldShowBootstrapForPerson:(id)a3 context:(id)a4
++ (BOOL)shouldShowBootstrapForPerson:(id)person context:(id)context
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [PXPeopleUtilities _hasRecentlyHandledBootstrapOrSuggestionForPerson:v5];
+  personCopy = person;
+  contextCopy = context;
+  v7 = [PXPeopleUtilities _hasRecentlyHandledBootstrapOrSuggestionForPerson:personCopy];
   v8 = +[PXPeopleUISettings sharedInstance];
-  v9 = [v8 alwaysShowBootstrap];
+  alwaysShowBootstrap = [v8 alwaysShowBootstrap];
 
-  if (v5)
+  if (personCopy)
   {
-    v10 = !v7 | v9;
+    v10 = !v7 | alwaysShowBootstrap;
   }
 
   else
@@ -2122,16 +2122,16 @@ LABEL_12:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v16 = 138412546;
-      v17 = v5;
+      v17 = personCopy;
       v18 = 2112;
-      v19 = v6;
+      v19 = contextCopy;
       _os_log_impl(&dword_1A3C1C000, v11, OS_LOG_TYPE_INFO, "People UI: Should not show bootstrap; bootstrap has been handled recently for person: %@ context: %@", &v16, 0x16u);
     }
 
-    if (v5)
+    if (personCopy)
     {
 LABEL_6:
-      if (!v9)
+      if (!alwaysShowBootstrap)
       {
         goto LABEL_7;
       }
@@ -2140,7 +2140,7 @@ LABEL_6:
     }
   }
 
-  else if (v5)
+  else if (personCopy)
   {
     goto LABEL_6;
   }
@@ -2149,11 +2149,11 @@ LABEL_6:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v16 = 138412290;
-    v17 = v6;
+    v17 = contextCopy;
     _os_log_impl(&dword_1A3C1C000, v12, OS_LOG_TYPE_INFO, "People UI: Should not show bootstrap; person is nil for context: %@", &v16, 0xCu);
   }
 
-  if (!v9)
+  if (!alwaysShowBootstrap)
   {
 LABEL_7:
     if (v10)
@@ -2169,9 +2169,9 @@ LABEL_15:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v16 = 138412546;
-    v17 = v5;
+    v17 = personCopy;
     v18 = 2112;
-    v19 = v6;
+    v19 = contextCopy;
     _os_log_impl(&dword_1A3C1C000, v13, OS_LOG_TYPE_INFO, "People UI: Always show bootstrap flag is enabled for person: %@ context: %@", &v16, 0x16u);
   }
 
@@ -2182,9 +2182,9 @@ LABEL_18:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       v16 = 138412546;
-      v17 = v5;
+      v17 = personCopy;
       v18 = 2112;
-      v19 = v6;
+      v19 = contextCopy;
       _os_log_impl(&dword_1A3C1C000, v14, OS_LOG_TYPE_INFO, "People UI: Should not show bootstrap; the resolved BOOL is NO for person: %@ context: %@", &v16, 0x16u);
     }
   }
@@ -2194,22 +2194,22 @@ LABEL_21:
   return v10 & 1;
 }
 
-+ (void)_peopleFaceTilesForFaces:(id)a3 asset:(id)a4 options:(id)a5 completion:(id)a6
++ (void)_peopleFaceTilesForFaces:(id)faces asset:(id)asset options:(id)options completion:(id)completion
 {
   v56 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v44 = a5;
-  v11 = a6;
-  v12 = v10;
-  v42 = v11;
+  facesCopy = faces;
+  assetCopy = asset;
+  optionsCopy = options;
+  completionCopy = completion;
+  v12 = assetCopy;
+  v42 = completionCopy;
   v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v15 = v9;
+  v15 = facesCopy;
   v16 = [v15 countByEnumeratingWithState:&v50 objects:v55 count:16];
   if (v16)
   {
@@ -2226,14 +2226,14 @@ LABEL_21:
 
         v20 = *(*(&v50 + 1) + 8 * i);
         v21 = [[PXPeopleFaceTile alloc] initWithFace:v20 asset:v12 person:0];
-        v22 = [v20 personLocalIdentifier];
-        if (v22)
+        personLocalIdentifier = [v20 personLocalIdentifier];
+        if (personLocalIdentifier)
         {
-          [v13 setObject:v21 forKey:v22];
+          [v13 setObject:v21 forKey:personLocalIdentifier];
         }
 
-        v23 = [v20 localIdentifier];
-        [v14 setObject:v21 forKey:v23];
+        localIdentifier = [v20 localIdentifier];
+        [v14 setObject:v21 forKey:localIdentifier];
       }
 
       v17 = [v15 countByEnumeratingWithState:&v50 objects:v55 count:16];
@@ -2246,8 +2246,8 @@ LABEL_21:
   v41 = v15;
 
   v24 = MEMORY[0x1E6978980];
-  v25 = [v13 allKeys];
-  v26 = [v24 fetchPersonsWithLocalIdentifiers:v25 options:v44];
+  allKeys = [v13 allKeys];
+  v26 = [v24 fetchPersonsWithLocalIdentifiers:allKeys options:optionsCopy];
 
   v48 = 0u;
   v49 = 0u;
@@ -2269,17 +2269,17 @@ LABEL_21:
         }
 
         v31 = *(*(&v46 + 1) + 8 * j);
-        v32 = [v31 localIdentifier];
-        v33 = [v13 objectForKeyedSubscript:v32];
+        localIdentifier2 = [v31 localIdentifier];
+        v33 = [v13 objectForKeyedSubscript:localIdentifier2];
 
         v34 = [PXPeopleFaceTile alloc];
-        v35 = [v33 face];
-        v36 = [v33 asset];
-        v37 = [(PXPeopleFaceTile *)v34 initWithFace:v35 asset:v36 person:v31];
+        face = [v33 face];
+        asset = [v33 asset];
+        v37 = [(PXPeopleFaceTile *)v34 initWithFace:face asset:asset person:v31];
 
-        v38 = [(PXPeopleFaceTile *)v37 face];
-        v39 = [v38 localIdentifier];
-        [v14 setObject:v37 forKey:v39];
+        face2 = [(PXPeopleFaceTile *)v37 face];
+        localIdentifier3 = [face2 localIdentifier];
+        [v14 setObject:v37 forKey:localIdentifier3];
       }
 
       v28 = [obj countByEnumeratingWithState:&v46 objects:v54 count:16];
@@ -2288,34 +2288,34 @@ LABEL_21:
     while (v28);
   }
 
-  v40 = [v14 allValues];
-  v42[2](v42, v40, obj);
+  allValues = [v14 allValues];
+  v42[2](v42, allValues, obj);
 }
 
-+ (CGRect)faceRectForPeopleFaceTile:(id)a3
++ (CGRect)faceRectForPeopleFaceTile:(id)tile
 {
-  v3 = a3;
-  v4 = [v3 asset];
-  v5 = [v3 face];
+  tileCopy = tile;
+  asset = [tileCopy asset];
+  face = [tileCopy face];
 
-  [v5 px_cropRectWithCropFactor:1.5];
-  [v4 pixelWidth];
-  [v4 pixelHeight];
+  [face px_cropRectWithCropFactor:1.5];
+  [asset pixelWidth];
+  [asset pixelHeight];
   PXRectDenormalize();
 }
 
-+ (id)personFaceTileByPersonIdForPersons:(id)a3
++ (id)personFaceTileByPersonIdForPersons:(id)persons
 {
-  v3 = a3;
-  if ([v3 count])
+  personsCopy = persons;
+  if ([personsCopy count])
   {
-    v4 = [v3 _pl_indexBy:&__block_literal_global_491];
-    v5 = [MEMORY[0x1E69787C8] fetchKeyFaceByPersonLocalIdentifierForPersons:v3 options:0];
+    v4 = [personsCopy _pl_indexBy:&__block_literal_global_491];
+    v5 = [MEMORY[0x1E69787C8] fetchKeyFaceByPersonLocalIdentifierForPersons:personsCopy options:0];
     v6 = MEMORY[0x1E6978630];
-    v7 = [v5 allValues];
-    v8 = [v6 fetchAssetsGroupedByFaceUUIDForFaces:v7];
+    allValues = [v5 allValues];
+    v8 = [v6 fetchAssetsGroupedByFaceUUIDForFaces:allValues];
 
-    v9 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v3, "count")}];
+    v9 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(personsCopy, "count")}];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __56__PXPeopleUtilities_personFaceTileByPersonIdForPersons___block_invoke_2;
@@ -2354,108 +2354,108 @@ void __56__PXPeopleUtilities_personFaceTileByPersonIdForPersons___block_invoke_2
   }
 }
 
-+ (id)generateNewFaceTileFromFaceTile:(id)a3
++ (id)generateNewFaceTileFromFaceTile:(id)tile
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 face];
-  v5 = [MEMORY[0x1E6978830] fetchOptionsWithPhotoLibrary:0 orObject:v4];
-  v6 = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
-  [v5 setIncludedDetectionTypes:v6];
+  tileCopy = tile;
+  face = [tileCopy face];
+  v5 = [MEMORY[0x1E6978830] fetchOptionsWithPhotoLibrary:0 orObject:face];
+  px_defaultDetectionTypes = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
+  [v5 setIncludedDetectionTypes:px_defaultDetectionTypes];
 
   v7 = MEMORY[0x1E69787C8];
-  v8 = [v4 localIdentifier];
-  v23[0] = v8;
+  localIdentifier = [face localIdentifier];
+  v23[0] = localIdentifier;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
   v10 = [v7 fetchFacesWithLocalIdentifiers:v9 options:v5];
-  v11 = [v10 firstObject];
+  firstObject = [v10 firstObject];
 
-  v12 = [v11 personLocalIdentifier];
-  v13 = v12;
-  if (v12)
+  personLocalIdentifier = [firstObject personLocalIdentifier];
+  v13 = personLocalIdentifier;
+  if (personLocalIdentifier)
   {
     v14 = MEMORY[0x1E6978980];
-    v22 = v12;
+    v22 = personLocalIdentifier;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v22 count:1];
     v16 = [v14 fetchPersonsWithLocalIdentifiers:v15 options:v5];
-    v17 = [v16 firstObject];
+    firstObject2 = [v16 firstObject];
   }
 
   else
   {
-    v17 = 0;
+    firstObject2 = 0;
   }
 
   v18 = [PXPeopleFaceTile alloc];
-  v19 = [v3 asset];
+  asset = [tileCopy asset];
 
-  v20 = [(PXPeopleFaceTile *)v18 initWithFace:v11 asset:v19 person:v17];
+  v20 = [(PXPeopleFaceTile *)v18 initWithFace:firstObject asset:asset person:firstObject2];
 
   return v20;
 }
 
-+ (void)peopleFaceTilesForFaces:(id)a3 asset:(id)a4 options:(id)a5 completion:(id)a6
++ (void)peopleFaceTilesForFaces:(id)faces asset:(id)asset options:(id)options completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 count];
-  if (v11 && v14)
+  facesCopy = faces;
+  assetCopy = asset;
+  optionsCopy = options;
+  completionCopy = completion;
+  v14 = [facesCopy count];
+  if (assetCopy && v14)
   {
-    if (!v12)
+    if (!optionsCopy)
     {
-      v12 = [MEMORY[0x1E6978830] fetchOptionsWithPhotoLibrary:0 orObject:v11];
+      optionsCopy = [MEMORY[0x1E6978830] fetchOptionsWithPhotoLibrary:0 orObject:assetCopy];
     }
 
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __70__PXPeopleUtilities_peopleFaceTilesForFaces_asset_options_completion___block_invoke;
     v15[3] = &unk_1E773A5E8;
-    v16 = v13;
-    [a1 _peopleFaceTilesForFaces:v10 asset:v11 options:v12 completion:v15];
+    v16 = completionCopy;
+    [self _peopleFaceTilesForFaces:facesCopy asset:assetCopy options:optionsCopy completion:v15];
   }
 
   else
   {
-    (*(v13 + 2))(v13, MEMORY[0x1E695E0F0]);
+    (*(completionCopy + 2))(completionCopy, MEMORY[0x1E695E0F0]);
   }
 }
 
-+ (void)peopleFaceTilesForAsset:(id)a3 options:(id)a4 completion:(id)a5
++ (void)peopleFaceTilesForAsset:(id)asset options:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  assetCopy = asset;
+  optionsCopy = options;
+  completionCopy = completion;
+  if (!optionsCopy)
   {
-    v9 = [MEMORY[0x1E6978830] fetchOptionsWithPhotoLibrary:0 orObject:v8];
-    v11 = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
-    [v9 setIncludedDetectionTypes:v11];
+    optionsCopy = [MEMORY[0x1E6978830] fetchOptionsWithPhotoLibrary:0 orObject:assetCopy];
+    px_defaultDetectionTypes = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
+    [optionsCopy setIncludedDetectionTypes:px_defaultDetectionTypes];
 
-    [v9 setIncludeTorsoAndFaceDetectionData:1];
+    [optionsCopy setIncludeTorsoAndFaceDetectionData:1];
   }
 
-  v12 = [MEMORY[0x1E69787C8] fetchFacesInAsset:v8 options:v9];
+  v12 = [MEMORY[0x1E69787C8] fetchFacesInAsset:assetCopy options:optionsCopy];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __64__PXPeopleUtilities_peopleFaceTilesForAsset_options_completion___block_invoke;
   v15[3] = &unk_1E773A5C0;
   v16 = v12;
-  v17 = v10;
+  v17 = completionCopy;
   v13 = v12;
-  v14 = v10;
-  [a1 _peopleFaceTilesForFaces:v13 asset:v8 options:v9 completion:v15];
+  v14 = completionCopy;
+  [self _peopleFaceTilesForFaces:v13 asset:assetCopy options:optionsCopy completion:v15];
 }
 
-+ (id)lastManuallySortedPersonInSectionOfType:(int64_t)a3 photoLibrary:(id)a4
++ (id)lastManuallySortedPersonInSectionOfType:(int64_t)type photoLibrary:(id)library
 {
-  v7 = a4;
-  v8 = v7;
-  if (a3 < 0)
+  libraryCopy = library;
+  v8 = libraryCopy;
+  if (type < 0)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"PXPeopleUtilities.m" lineNumber:495 description:{@"Invalid parameter not satisfying: %@", @"type >= PHPersonTypeOrdinary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleUtilities.m" lineNumber:495 description:{@"Invalid parameter not satisfying: %@", @"type >= PHPersonTypeOrdinary"}];
 
     if (v8)
     {
@@ -2463,34 +2463,34 @@ void __56__PXPeopleUtilities_personFaceTileByPersonIdForPersons___block_invoke_2
     }
   }
 
-  else if (v7)
+  else if (libraryCopy)
   {
     goto LABEL_3;
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:a1 file:@"PXPeopleUtilities.m" lineNumber:496 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPeopleUtilities.m" lineNumber:496 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
 
 LABEL_3:
-  v9 = [a1 _peopleHomeFetchResultForPersonType:a3 photoLibrary:v8];
-  v10 = [v9 fetchedObjects];
-  v11 = [a1 comparatorByPeopleHomeSortingType:0];
-  v12 = [v10 sortedArrayUsingComparator:v11];
+  v9 = [self _peopleHomeFetchResultForPersonType:type photoLibrary:v8];
+  fetchedObjects = [v9 fetchedObjects];
+  v11 = [self comparatorByPeopleHomeSortingType:0];
+  v12 = [fetchedObjects sortedArrayUsingComparator:v11];
 
-  v13 = [v12 lastObject];
+  lastObject = [v12 lastObject];
 
-  return v13;
+  return lastObject;
 }
 
-+ (int64_t)manualOrderForInsertingAtEndOfSectionWithType:(int64_t)a3 photoLibrary:(id)a4
++ (int64_t)manualOrderForInsertingAtEndOfSectionWithType:(int64_t)type photoLibrary:(id)library
 {
-  v7 = a4;
-  if (!v7)
+  libraryCopy = library;
+  if (!libraryCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"PXPeopleUtilities.m" lineNumber:484 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleUtilities.m" lineNumber:484 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
 
-    if ((a3 & 0x8000000000000000) == 0)
+    if ((type & 0x8000000000000000) == 0)
     {
       goto LABEL_3;
     }
@@ -2500,28 +2500,28 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (a3 < 0)
+  if (type < 0)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v8 = [PXPeopleUtilities lastManuallySortedPersonInSectionOfType:a3 photoLibrary:v7];
+  v8 = [PXPeopleUtilities lastManuallySortedPersonInSectionOfType:type photoLibrary:libraryCopy];
   v9 = [v8 manualOrder] + 1;
 
 LABEL_6:
   return v9;
 }
 
-+ (void)setSortOrder:(unint64_t)a3 toPhotoLibrary:(id)a4
++ (void)setSortOrder:(unint64_t)order toPhotoLibrary:(id)library
 {
-  v5 = a4;
-  [PXPeopleSwiftUtilities setWithSortOrder:[PXPeopleSwiftUtilities sortOrderFor:a3] to:v5];
+  libraryCopy = library;
+  [PXPeopleSwiftUtilities setWithSortOrder:[PXPeopleSwiftUtilities sortOrderFor:order] to:libraryCopy];
 }
 
-+ (unint64_t)currentSortOrderFor:(id)a3
++ (unint64_t)currentSortOrderFor:(id)for
 {
-  v3 = [PXPeopleSwiftUtilities currentSortOrderFor:a3];
+  v3 = [PXPeopleSwiftUtilities currentSortOrderFor:for];
 
   return [PXPeopleSwiftUtilities rawValueFor:v3];
 }
@@ -2550,14 +2550,14 @@ LABEL_6:
   return v4;
 }
 
-+ (id)comparatorByPeopleHomeSortingType:(unint64_t)a3
++ (id)comparatorByPeopleHomeSortingType:(unint64_t)type
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __55__PXPeopleUtilities_comparatorByPeopleHomeSortingType___block_invoke;
   aBlock[3] = &__block_descriptor_48_e18___PHPerson_16__0_8l;
   aBlock[4] = a2;
-  aBlock[5] = a1;
+  aBlock[5] = self;
   v4 = _Block_copy(aBlock);
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
@@ -2579,7 +2579,7 @@ LABEL_6:
   v20[3] = &unk_1E773A570;
   v21 = v6;
   v22 = &__block_literal_global_481_117482;
-  v24 = a3;
+  typeCopy = type;
   v9 = v8;
   v23 = v9;
   v10 = v6;
@@ -2589,7 +2589,7 @@ LABEL_6:
   v16[2] = __55__PXPeopleUtilities_comparatorByPeopleHomeSortingType___block_invoke_6;
   v16[3] = &unk_1E773A598;
   v18 = v9;
-  v19 = a3;
+  typeCopy2 = type;
   v17 = v11;
   v12 = v9;
   v13 = v11;
@@ -2741,18 +2741,18 @@ uint64_t __55__PXPeopleUtilities_comparatorByPeopleHomeSortingType___block_invok
   return v3;
 }
 
-+ (void)unlinkContactInfoForPerson:(id)a3 completion:(id)a4
++ (void)unlinkContactInfoForPerson:(id)person completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 photoLibrary];
+  personCopy = person;
+  completionCopy = completion;
+  photoLibrary = [personCopy photoLibrary];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __59__PXPeopleUtilities_unlinkContactInfoForPerson_completion___block_invoke;
   v9[3] = &unk_1E774C648;
-  v10 = v5;
-  v8 = v5;
-  [v7 performChanges:v9 completionHandler:v6];
+  v10 = personCopy;
+  v8 = personCopy;
+  [photoLibrary performChanges:v9 completionHandler:completionCopy];
 }
 
 void __59__PXPeopleUtilities_unlinkContactInfoForPerson_completion___block_invoke(uint64_t a1)
@@ -2833,36 +2833,36 @@ void __39__PXPeopleUtilities_sharedContactStore__block_invoke()
   sharedContactStore_contactStore = v0;
 }
 
-+ (id)stringForAddingPerson:(id)a3
++ (id)stringForAddingPerson:(id)person
 {
-  v3 = a3;
-  v4 = [v3 px_localizedName];
-  v5 = [v3 photoLibrary];
-  v6 = [v5 px_peoplePetsHomeVisibility];
+  personCopy = person;
+  px_localizedName = [personCopy px_localizedName];
+  photoLibrary = [personCopy photoLibrary];
+  px_peoplePetsHomeVisibility = [photoLibrary px_peoplePetsHomeVisibility];
 
-  if ([v3 px_isHuman])
+  if ([personCopy px_isHuman])
   {
-    v7 = v6 | 1;
+    v7 = px_peoplePetsHomeVisibility | 1;
   }
 
-  else if ([v3 px_isPet])
+  else if ([personCopy px_isPet])
   {
-    v7 = v6 | 2;
-  }
-
-  else
-  {
-    v7 = v6;
-  }
-
-  if ([v4 length])
-  {
-    PXLocalizedStringForPersonOrPetAndVisibility(v3, 0, @"PXPeopleAddToHomeTitleNamed");
+    v7 = px_peoplePetsHomeVisibility | 2;
   }
 
   else
   {
-    PXLocalizedStringForPersonOrPetAndVisibility(v3, 0, @"PXPeopleAddToHomeTitleNoName");
+    v7 = px_peoplePetsHomeVisibility;
+  }
+
+  if ([px_localizedName length])
+  {
+    PXLocalizedStringForPersonOrPetAndVisibility(personCopy, 0, @"PXPeopleAddToHomeTitleNamed");
+  }
+
+  else
+  {
+    PXLocalizedStringForPersonOrPetAndVisibility(personCopy, 0, @"PXPeopleAddToHomeTitleNoName");
   }
 
   objc_claimAutoreleasedReturnValue();
@@ -2871,14 +2871,14 @@ void __39__PXPeopleUtilities_sharedContactStore__block_invoke()
   PXStringWithValidatedFormat();
 }
 
-+ (id)stringForHidingPerson:(id)a3
++ (id)stringForHidingPerson:(id)person
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 px_localizedName];
-  if ([v4 length])
+  personCopy = person;
+  px_localizedName = [personCopy px_localizedName];
+  if ([px_localizedName length])
   {
-    v10[0] = v3;
+    v10[0] = personCopy;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
 
     PXLocalizedStringForPeople(v5, @"PXPeopleRemoveFromHomeTitleNamed");
@@ -2886,7 +2886,7 @@ void __39__PXPeopleUtilities_sharedContactStore__block_invoke()
     PXStringWithValidatedFormat();
   }
 
-  v9 = v3;
+  v9 = personCopy;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v9 count:1];
 
   v7 = PXLocalizedStringForPeople(v6, @"PXPeopleRemoveFromHomeTitleNoName");
@@ -2894,10 +2894,10 @@ void __39__PXPeopleUtilities_sharedContactStore__block_invoke()
   return v7;
 }
 
-+ (id)favoritingStringForPerson:(id)a3
++ (id)favoritingStringForPerson:(id)person
 {
-  v3 = a3;
-  if ([v3 type] == 1)
+  personCopy = person;
+  if ([personCopy type] == 1)
   {
     v4 = @"PXPeopleUnfavoriteThisPerson";
   }
@@ -2907,30 +2907,30 @@ void __39__PXPeopleUtilities_sharedContactStore__block_invoke()
     v4 = @"PXPeopleFavoriteThisPerson";
   }
 
-  v5 = PXLocalizedStringForPersonOrPetAndVisibility(v3, 0, v4);
+  v5 = PXLocalizedStringForPersonOrPetAndVisibility(personCopy, 0, v4);
 
   return v5;
 }
 
-+ (id)facesForPerson:(id)a3 inAssets:(id)a4
++ (id)facesForPerson:(id)person inAssets:(id)assets
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  personCopy = person;
+  assetsCopy = assets;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 fetchedObjectIDs];
+    fetchedObjectIDs = [assetsCopy fetchedObjectIDs];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    fetchedObjectIDs = [MEMORY[0x1E695DF70] array];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v8 = v6;
+    v8 = assetsCopy;
     v9 = [v8 countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v9)
     {
@@ -2945,10 +2945,10 @@ void __39__PXPeopleUtilities_sharedContactStore__block_invoke()
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v26 + 1) + 8 * i) objectID];
-          if (v13)
+          objectID = [*(*(&v26 + 1) + 8 * i) objectID];
+          if (objectID)
           {
-            [v7 addObject:v13];
+            [fetchedObjectIDs addObject:objectID];
           }
         }
 
@@ -2959,10 +2959,10 @@ void __39__PXPeopleUtilities_sharedContactStore__block_invoke()
     }
   }
 
-  v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K in (%@)", @"assetForFace", v7, v26];
+  v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K in (%@)", @"assetForFace", fetchedObjectIDs, v26];
   v15 = MEMORY[0x1E696AE18];
-  v16 = [v5 objectID];
-  v17 = [v15 predicateWithFormat:@"noindex:(%K) = %@", @"personForFace", v16];
+  objectID2 = [personCopy objectID];
+  v17 = [v15 predicateWithFormat:@"noindex:(%K) = %@", @"personForFace", objectID2];
 
   v18 = MEMORY[0x1E696AB28];
   v30[0] = v14;
@@ -2970,31 +2970,31 @@ void __39__PXPeopleUtilities_sharedContactStore__block_invoke()
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:2];
   v20 = [v18 andPredicateWithSubpredicates:v19];
 
-  v21 = [v5 photoLibrary];
-  v22 = [v21 librarySpecificFetchOptions];
+  photoLibrary = [personCopy photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  [v22 setInternalPredicate:v20];
-  [v22 setIncludeTorsoAndFaceDetectionData:1];
-  v23 = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
-  [v22 setIncludedDetectionTypes:v23];
+  [librarySpecificFetchOptions setInternalPredicate:v20];
+  [librarySpecificFetchOptions setIncludeTorsoAndFaceDetectionData:1];
+  px_defaultDetectionTypes = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
+  [librarySpecificFetchOptions setIncludedDetectionTypes:px_defaultDetectionTypes];
 
-  v24 = [MEMORY[0x1E69787C8] fetchFacesWithOptions:v22];
+  v24 = [MEMORY[0x1E69787C8] fetchFacesWithOptions:librarySpecificFetchOptions];
 
   return v24;
 }
 
-+ (BOOL)isPersonHiddenFromPeopleHome:(id)a3
++ (BOOL)isPersonHiddenFromPeopleHome:(id)home
 {
-  v3 = a3;
-  v4 = [v3 type] == -1 || objc_msgSend(v3, "verifiedType") == 0;
+  homeCopy = home;
+  v4 = [homeCopy type] == -1 || objc_msgSend(homeCopy, "verifiedType") == 0;
 
   return v4;
 }
 
-+ (id)sortDescriptorsWithPersonAssetSortOrder:(int64_t)a3
++ (id)sortDescriptorsWithPersonAssetSortOrder:(int64_t)order
 {
   v7[2] = *MEMORY[0x1E69E9840];
-  v3 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:@"dateCreated" ascending:a3 == 1];
+  v3 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:@"dateCreated" ascending:order == 1];
   v7[0] = v3;
   v4 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:@"uuid" ascending:1];
   v7[1] = v4;
@@ -3003,40 +3003,40 @@ void __39__PXPeopleUtilities_sharedContactStore__block_invoke()
   return v5;
 }
 
-+ (id)assetCollectionListFetchResultForPeople:(id)a3 assetCollectionFetchResults:(id *)a4
++ (id)assetCollectionListFetchResultForPeople:(id)people assetCollectionFetchResults:(id *)results
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 firstObject];
-  v6 = [v5 photoLibrary];
-  v7 = [v6 librarySpecificFetchOptions];
+  peopleCopy = people;
+  firstObject = [peopleCopy firstObject];
+  photoLibrary = [firstObject photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
   v40[0] = *MEMORY[0x1E6978C08];
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:1];
-  [v7 setFetchPropertySets:v8];
+  [librarySpecificFetchOptions setFetchPropertySets:v8];
 
-  [v7 setIncludeTorsoAndFaceDetectionData:1];
-  v32 = v7;
-  v33 = v6;
-  v31 = v5;
-  if ([v4 count] == 1)
+  [librarySpecificFetchOptions setIncludeTorsoAndFaceDetectionData:1];
+  v32 = librarySpecificFetchOptions;
+  v33 = photoLibrary;
+  v31 = firstObject;
+  if ([peopleCopy count] == 1)
   {
-    v9 = [v5 px_isHuman];
+    px_isHuman = [firstObject px_isHuman];
     v10 = @"PXPetVirtualCollection";
-    if (v9)
+    if (px_isHuman)
     {
       v10 = @"PXPersonVirtualCollection";
     }
 
     v11 = v10;
-    v12 = [v5 localIdentifier];
-    v13 = [MEMORY[0x1E6978630] fetchAssetsForPersons:v4 options:v7];
+    localIdentifier = [firstObject localIdentifier];
+    v13 = [MEMORY[0x1E6978630] fetchAssetsForPersons:peopleCopy options:librarySpecificFetchOptions];
   }
 
   else
   {
-    v14 = [PXPeopleUtilities identifiersForPeople:v4];
+    v14 = [PXPeopleUtilities identifiersForPeople:peopleCopy];
     v34 = 0;
-    v15 = [v6 assetIdentifiersForPersonIdentifiers:v14 error:&v34];
+    v15 = [photoLibrary assetIdentifiersForPersonIdentifiers:v14 error:&v34];
     v16 = v34;
     if ([v15 count])
     {
@@ -3050,9 +3050,9 @@ void __39__PXPeopleUtilities_sharedContactStore__block_invoke()
         v17 = PLUIGetLog();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
-          v18 = [v16 localizedDescription];
+          localizedDescription = [v16 localizedDescription];
           *buf = 138412290;
-          v39 = v18;
+          v39 = localizedDescription;
           _os_log_impl(&dword_1A3C1C000, v17, OS_LOG_TYPE_ERROR, "Error while getting assets for social group: %@", buf, 0xCu);
         }
       }
@@ -3062,29 +3062,29 @@ void __39__PXPeopleUtilities_sharedContactStore__block_invoke()
 
     v11 = @"PXSocialGroupVirtualCollection";
     v19 = @"PXSocialGroupVirtualCollection";
-    v20 = [MEMORY[0x1E696AFB0] UUID];
-    v12 = [v20 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    localIdentifier = [uUID UUIDString];
 
-    v6 = v33;
+    photoLibrary = v33;
   }
 
-  v21 = [(__CFString *)v11 stringByAppendingFormat:@"-%@", v12];
+  v21 = [(__CFString *)v11 stringByAppendingFormat:@"-%@", localIdentifier];
   if ([v13 count])
   {
-    v22 = [PXPeopleUtilities titleStringForPeople:v4];
+    v22 = [PXPeopleUtilities titleStringForPeople:peopleCopy];
     v23 = [MEMORY[0x1E6978650] transientAssetCollectionWithAssetFetchResult:v13 title:v22 identifier:v21];
     v24 = MEMORY[0x1E6978760];
     v37 = v23;
     v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v37 count:1];
     v26 = [v24 transientCollectionListWithCollections:v25 title:v22];
 
-    v27 = [MEMORY[0x1E6978830] fetchOptionsWithPhotoLibrary:v6 orObject:0];
+    v27 = [MEMORY[0x1E6978830] fetchOptionsWithPhotoLibrary:photoLibrary orObject:0];
     v28 = [MEMORY[0x1E6978758] fetchCollectionsInCollectionList:v26 options:v27];
-    if (a4)
+    if (results)
     {
       v35 = v23;
       v36 = v13;
-      *a4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
+      *results = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
     }
   }
 
@@ -3096,13 +3096,13 @@ void __39__PXPeopleUtilities_sharedContactStore__block_invoke()
   return v28;
 }
 
-+ (id)assetCollectionListFetchResultForPerson:(id)a3
++ (id)assetCollectionListFetchResultForPerson:(id)person
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E6978630];
-  v15[0] = a3;
+  v15[0] = person;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
+  personCopy = person;
   v6 = [v4 arrayWithObjects:v15 count:1];
   v7 = [v3 fetchAssetsForPersons:v6 options:0];
 
@@ -3117,16 +3117,16 @@ void __39__PXPeopleUtilities_sharedContactStore__block_invoke()
   return v12;
 }
 
-+ (id)identifiersForPeople:(id)a3
++ (id)identifiersForPeople:(id)people
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  peopleCopy = people;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = peopleCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -3141,8 +3141,8 @@ void __39__PXPeopleUtilities_sharedContactStore__block_invoke()
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) localIdentifier];
-        [v4 addObject:v10];
+        localIdentifier = [*(*(&v12 + 1) + 8 * i) localIdentifier];
+        [v4 addObject:localIdentifier];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -3154,12 +3154,12 @@ void __39__PXPeopleUtilities_sharedContactStore__block_invoke()
   return v4;
 }
 
-+ (BOOL)mergePersons:(id)a3 withPerson:(id)a4
++ (BOOL)mergePersons:(id)persons withPerson:(id)person
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [MEMORY[0x1E695DFA8] setWithArray:a3];
-  [v6 addObject:v5];
+  personCopy = person;
+  v6 = [MEMORY[0x1E695DFA8] setWithArray:persons];
+  [v6 addObject:personCopy];
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
@@ -3182,12 +3182,12 @@ void __39__PXPeopleUtilities_sharedContactStore__block_invoke()
 
         v13 = *(*(&v29 + 1) + 8 * i);
         [v13 fetchPropertySetsIfNeeded];
-        v14 = [v13 userFeedbackProperties];
-        v15 = [v14 userFeedback];
+        userFeedbackProperties = [v13 userFeedbackProperties];
+        userFeedback = [userFeedbackProperties userFeedback];
 
         if (v13)
         {
-          v16 = v15 == 0;
+          v16 = userFeedback == 0;
         }
 
         else
@@ -3197,7 +3197,7 @@ void __39__PXPeopleUtilities_sharedContactStore__block_invoke()
 
         if (!v16)
         {
-          v10 = [MEMORY[0x1E6978B00] mergeFeedbackType:objc_msgSend(v15 withOtherFeedbackType:{"type"), v10}];
+          v10 = [MEMORY[0x1E6978B00] mergeFeedbackType:objc_msgSend(userFeedback withOtherFeedbackType:{"type"), v10}];
         }
       }
 
@@ -3212,18 +3212,18 @@ void __39__PXPeopleUtilities_sharedContactStore__block_invoke()
     v10 = 0;
   }
 
-  v17 = [v5 photoLibrary];
+  photoLibrary = [personCopy photoLibrary];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __45__PXPeopleUtilities_mergePersons_withPerson___block_invoke;
   v25[3] = &unk_1E7749FF8;
   v18 = v7;
   v26 = v18;
-  v19 = v5;
+  v19 = personCopy;
   v27 = v19;
   v28 = v10;
   v24 = 0;
-  v20 = [v17 performChangesAndWait:v25 error:&v24];
+  v20 = [photoLibrary performChangesAndWait:v25 error:&v24];
   v21 = v24;
 
   if ((v20 & 1) == 0)
@@ -3259,9 +3259,9 @@ void __45__PXPeopleUtilities_mergePersons_withPerson___block_invoke(uint64_t a1)
   }
 }
 
-+ (int64_t)countOfPeopleHomePeopleForPhotoLibrary:(id)a3
++ (int64_t)countOfPeopleHomePeopleForPhotoLibrary:(id)library
 {
-  v3 = [PXPeopleUtilities _peopleHomeFetchOptionsForPhotoLibrary:a3];
+  v3 = [PXPeopleUtilities _peopleHomeFetchOptionsForPhotoLibrary:library];
   [v3 setShouldPrefetchCount:1];
   v4 = [MEMORY[0x1E6978980] fetchPersonsWithOptions:v3];
   v5 = [v4 count];
@@ -3269,86 +3269,86 @@ void __45__PXPeopleUtilities_mergePersons_withPerson___block_invoke(uint64_t a1)
   return v5;
 }
 
-+ (id)fetchPeopleForPeopleHomeWithPhotoLibrary:(id)a3 fetchLimit:(int64_t)a4
++ (id)fetchPeopleForPeopleHomeWithPhotoLibrary:(id)library fetchLimit:(int64_t)limit
 {
-  v5 = [PXPeopleUtilities _peopleHomeFetchOptionsForPhotoLibrary:a3];
-  [v5 setFetchLimit:a4];
+  v5 = [PXPeopleUtilities _peopleHomeFetchOptionsForPhotoLibrary:library];
+  [v5 setFetchLimit:limit];
   v6 = [MEMORY[0x1E6978980] fetchPersonsWithOptions:v5];
 
   return v6;
 }
 
-+ (id)_peopleHomeFetchResultForPersonType:(int64_t)a3 photoLibrary:(id)a4
++ (id)_peopleHomeFetchResultForPersonType:(int64_t)type photoLibrary:(id)library
 {
-  v5 = [PXPeopleUtilities _peopleHomeFetchOptionsForPhotoLibrary:a4];
-  v6 = [MEMORY[0x1E6978980] fetchPersonsWithType:a3 options:v5];
+  v5 = [PXPeopleUtilities _peopleHomeFetchOptionsForPhotoLibrary:library];
+  v6 = [MEMORY[0x1E6978980] fetchPersonsWithType:type options:v5];
 
   return v6;
 }
 
-+ (id)_peopleHomeFetchOptionsForPhotoLibrary:(id)a3
++ (id)_peopleHomeFetchOptionsForPhotoLibrary:(id)library
 {
-  v3 = [a3 librarySpecificFetchOptions];
-  [v3 setPersonContext:1];
-  v4 = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
-  [v3 setIncludedDetectionTypes:v4];
+  librarySpecificFetchOptions = [library librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setPersonContext:1];
+  px_defaultDetectionTypes = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
+  [librarySpecificFetchOptions setIncludedDetectionTypes:px_defaultDetectionTypes];
 
   v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != -1", @"manualOrder"];
-  [v3 setPredicate:v5];
+  [librarySpecificFetchOptions setPredicate:v5];
 
-  return v3;
+  return librarySpecificFetchOptions;
 }
 
-+ (id)personWithLocalIdentifier:(id)a3 propertySets:(id)a4 photoLibrary:(id)a5
++ (id)personWithLocalIdentifier:(id)identifier propertySets:(id)sets photoLibrary:(id)library
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v11)
+  identifierCopy = identifier;
+  setsCopy = sets;
+  libraryCopy = library;
+  if (!libraryCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"PXPeopleUtilities.m" lineNumber:106 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleUtilities.m" lineNumber:106 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
   }
 
-  v12 = [v11 librarySpecificFetchOptions];
-  [v12 setFetchLimit:1];
-  v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"localIdentifier = %@", v9];
-  [v12 setPredicate:v13];
+  librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setFetchLimit:1];
+  identifierCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"localIdentifier = %@", identifierCopy];
+  [librarySpecificFetchOptions setPredicate:identifierCopy];
 
-  [v12 setMinimumUnverifiedFaceCount:1];
-  v14 = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
-  [v12 setIncludedDetectionTypes:v14];
+  [librarySpecificFetchOptions setMinimumUnverifiedFaceCount:1];
+  px_defaultDetectionTypes = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
+  [librarySpecificFetchOptions setIncludedDetectionTypes:px_defaultDetectionTypes];
 
-  if (v10 && [v10 count])
+  if (setsCopy && [setsCopy count])
   {
-    [v12 setFetchPropertySets:v10];
+    [librarySpecificFetchOptions setFetchPropertySets:setsCopy];
   }
 
-  v15 = [MEMORY[0x1E6978980] fetchPersonsWithOptions:v12];
-  v16 = [v15 firstObject];
+  v15 = [MEMORY[0x1E6978980] fetchPersonsWithOptions:librarySpecificFetchOptions];
+  firstObject = [v15 firstObject];
 
-  return v16;
+  return firstObject;
 }
 
-+ (id)fetchPeopleWithUUIDs:(id)a3 photoLibrary:(id)a4
++ (id)fetchPeopleWithUUIDs:(id)ds photoLibrary:(id)library
 {
-  v5 = a3;
-  v6 = [a4 librarySpecificFetchOptions];
-  [v6 setPersonContext:1];
-  v7 = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
-  [v6 setIncludedDetectionTypes:v7];
+  dsCopy = ds;
+  librarySpecificFetchOptions = [library librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setPersonContext:1];
+  px_defaultDetectionTypes = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
+  [librarySpecificFetchOptions setIncludedDetectionTypes:px_defaultDetectionTypes];
 
   PXMap();
 }
 
-+ (id)personWithPersonUri:(id)a3 photoLibrary:(id)a4
++ (id)personWithPersonUri:(id)uri photoLibrary:(id)library
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  uriCopy = uri;
+  libraryCopy = library;
+  v9 = libraryCopy;
+  if (uriCopy)
   {
-    if (v8)
+    if (libraryCopy)
     {
       goto LABEL_3;
     }
@@ -3356,8 +3356,8 @@ void __45__PXPeopleUtilities_mergePersons_withPerson___block_invoke(uint64_t a1)
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"PXPeopleUtilities.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"personUri"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleUtilities.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"personUri"}];
 
     if (v9)
     {
@@ -3365,28 +3365,28 @@ void __45__PXPeopleUtilities_mergePersons_withPerson___block_invoke(uint64_t a1)
     }
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:a1 file:@"PXPeopleUtilities.m" lineNumber:82 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPeopleUtilities.m" lineNumber:82 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
 
 LABEL_3:
-  v10 = [v9 librarySpecificFetchOptions];
-  [v10 setPersonContext:1];
-  [v10 setFetchLimit:1];
-  v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"personUri = %@", v7];
-  [v10 setPredicate:v11];
+  librarySpecificFetchOptions = [v9 librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setPersonContext:1];
+  [librarySpecificFetchOptions setFetchLimit:1];
+  uriCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"personUri = %@", uriCopy];
+  [librarySpecificFetchOptions setPredicate:uriCopy];
 
-  v12 = [MEMORY[0x1E6978980] fetchPersonsWithOptions:v10];
-  v13 = [v12 firstObject];
+  v12 = [MEMORY[0x1E6978980] fetchPersonsWithOptions:librarySpecificFetchOptions];
+  firstObject = [v12 firstObject];
 
-  return v13;
+  return firstObject;
 }
 
-+ (id)personWithPersonUri:(id)a3
++ (id)personWithPersonUri:(id)uri
 {
   v4 = MEMORY[0x1E69789A8];
-  v5 = a3;
-  v6 = [v4 px_deprecated_appPhotoLibrary];
-  v7 = [a1 personWithPersonUri:v5 photoLibrary:v6];
+  uriCopy = uri;
+  px_deprecated_appPhotoLibrary = [v4 px_deprecated_appPhotoLibrary];
+  v7 = [self personWithPersonUri:uriCopy photoLibrary:px_deprecated_appPhotoLibrary];
 
   return v7;
 }

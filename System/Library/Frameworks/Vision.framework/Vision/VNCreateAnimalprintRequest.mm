@@ -1,11 +1,11 @@
 @interface VNCreateAnimalprintRequest
 + (const)dependentRequestMappingTable;
-+ (id)createVNEntityIdentificationModelEntryPrintForRevision:(unint64_t)a3 fromDescriptorData:(const void *)a4 length:(unint64_t)a5 elementCount:(unint64_t)a6 error:(id *)a7;
-+ (id)descriptionForPrivateRevision:(unint64_t)a3;
++ (id)createVNEntityIdentificationModelEntryPrintForRevision:(unint64_t)revision fromDescriptorData:(const void *)data length:(unint64_t)length elementCount:(unint64_t)count error:(id *)error;
++ (id)descriptionForPrivateRevision:(unint64_t)revision;
 + (id)privateRevisionsSet;
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4;
-- (void)_determineAnimalsToProcessFrom:(id)a3 outputAnimalsThatNeedNoProcessing:(id)a4 outputAnimalsThatNeedAnimalprints:(id)a5;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error;
+- (void)_determineAnimalsToProcessFrom:(id)from outputAnimalsThatNeedNoProcessing:(id)processing outputAnimalsThatNeedAnimalprints:(id)animalprints;
 @end
 
 @implementation VNCreateAnimalprintRequest
@@ -26,18 +26,18 @@
   return &+[VNCreateAnimalprintRequest dependentRequestMappingTable]::ourDependentRequestMappingTable;
 }
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
   v81 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  contextCopy = context;
   v76 = 0;
-  v56 = v8;
-  v9 = [(VNImageBasedRequest *)self getOptionalValidatedInputDetectedObjectObservations:&v76 forObservationClass:objc_opt_class() relationWithRegionOfInterest:1 error:a5];
+  v56 = contextCopy;
+  v9 = [(VNImageBasedRequest *)self getOptionalValidatedInputDetectedObjectObservations:&v76 forObservationClass:objc_opt_class() relationWithRegionOfInterest:1 error:error];
   v57 = v76;
   if (v9)
   {
-    v53 = a3;
-    v58 = a5;
+    revisionCopy = revision;
+    errorCopy = error;
     v55 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
     if (v57)
@@ -47,8 +47,8 @@
 
     else
     {
-      v54 = [v8 requestPerformerAndReturnError:a5];
-      if (!v54)
+      session = [contextCopy requestPerformerAndReturnError:error];
+      if (!session)
       {
         v29 = 0;
         goto LABEL_42;
@@ -57,14 +57,14 @@
       v62 = objc_alloc_init(VNRecognizeAnimalsRequest);
       [(VNImageBasedRequest *)v62 applyConfigurationOfRequest:self];
       v59 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v62, 0}];
-      if ([objc_opt_class() _isAnimalFaceprintingSupportedForRequestRevision:v53])
+      if ([objc_opt_class() _isAnimalFaceprintingSupportedForRequestRevision:revisionCopy])
       {
         v30 = objc_alloc_init(VNRecognizeAnimalFacesRequest);
         [(VNImageBasedRequest *)v30 applyConfigurationOfRequest:self];
         [v59 addObject:v30];
       }
 
-      if (([v54 performDependentRequests:v59 onBehalfOfRequest:self inContext:v8 error:a5] & 1) == 0)
+      if (([session performDependentRequests:v59 onBehalfOfRequest:self inContext:contextCopy error:error] & 1) == 0)
       {
         goto LABEL_37;
       }
@@ -92,8 +92,8 @@
             v69 = 0u;
             v70 = 0u;
             v71 = 0u;
-            v35 = [v34 results];
-            v36 = [v35 countByEnumeratingWithState:&v68 objects:v79 count:16];
+            results = [v34 results];
+            v36 = [results countByEnumeratingWithState:&v68 objects:v79 count:16];
             if (v36)
             {
               v37 = *v69;
@@ -103,7 +103,7 @@
                 {
                   if (*v69 != v37)
                   {
-                    objc_enumerationMutation(v35);
+                    objc_enumerationMutation(results);
                   }
 
                   v39 = *(*(&v68 + 1) + 8 * j);
@@ -127,7 +127,7 @@
                   }
                 }
 
-                v36 = [v35 countByEnumeratingWithState:&v68 objects:v79 count:16];
+                v36 = [results countByEnumeratingWithState:&v68 objects:v79 count:16];
               }
 
               while (v36);
@@ -140,19 +140,19 @@
         while (v31);
       }
 
-      v8 = v56;
+      contextCopy = v56;
     }
 
-    v54 = [v8 session];
-    v11 = [(VNRequest *)self newDefaultDetectorOptionsForRequestRevision:v53 session:v54];
+    session = [contextCopy session];
+    v11 = [(VNRequest *)self newDefaultDetectorOptionsForRequestRevision:revisionCopy session:session];
     v67 = v11;
-    v59 = [(VNRequest *)self applicableDetectorAndOptions:&v67 forRevision:v53 loadedInSession:v54 error:v58];
+    v59 = [(VNRequest *)self applicableDetectorAndOptions:&v67 forRevision:revisionCopy loadedInSession:session error:errorCopy];
     v62 = v67;
 
     if (v59)
     {
       v12 = [MEMORY[0x1E695DF70] arrayWithArray:v55];
-      v13 = [v56 imageBufferAndReturnError:v58];
+      v13 = [v56 imageBufferAndReturnError:errorCopy];
       obj = v13;
       if (v13)
       {
@@ -165,7 +165,7 @@
         v18 = v17;
         v20 = v19;
         v22 = v21;
-        v23 = [v56 qosClass];
+        qosClass = [v56 qosClass];
         v65 = 0u;
         v66 = 0u;
         v63 = 0u;
@@ -185,7 +185,7 @@
               }
 
               [(VNRecognizeAnimalsRequest *)v62 setObject:*(*(&v63 + 1) + 8 * k) forKeyedSubscript:@"VNAnimalprintDetectorProcessOption_InputAnimalObservation"];
-              v28 = [v59 processUsingQualityOfServiceClass:v23 options:v62 regionOfInterest:self warningRecorder:v58 error:0 progressHandler:{v16, v18, v20, v22}];
+              v28 = [v59 processUsingQualityOfServiceClass:qosClass options:v62 regionOfInterest:self warningRecorder:errorCopy error:0 progressHandler:{v16, v18, v20, v22}];
               if (!v28)
               {
 
@@ -232,17 +232,17 @@ LABEL_43:
   return v29;
 }
 
-- (void)_determineAnimalsToProcessFrom:(id)a3 outputAnimalsThatNeedNoProcessing:(id)a4 outputAnimalsThatNeedAnimalprints:(id)a5
+- (void)_determineAnimalsToProcessFrom:(id)from outputAnimalsThatNeedNoProcessing:(id)processing outputAnimalsThatNeedAnimalprints:(id)animalprints
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  fromCopy = from;
+  processingCopy = processing;
+  animalprintsCopy = animalprints;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = v7;
+  v10 = fromCopy;
   v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {
@@ -260,20 +260,20 @@ LABEL_43:
         v14 = *(*(&v19 + 1) + 8 * v13);
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
-        v16 = v9;
+        v16 = animalprintsCopy;
         if (isKindOfClass)
         {
-          v17 = [v14 animalprint];
-          v18 = v17 == 0;
+          animalprint = [v14 animalprint];
+          v18 = animalprint == 0;
 
           if (v18)
           {
-            v16 = v9;
+            v16 = animalprintsCopy;
           }
 
           else
           {
-            v16 = v8;
+            v16 = processingCopy;
           }
         }
 
@@ -289,18 +289,18 @@ LABEL_43:
   }
 }
 
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error
 {
-  if (a3 == 3737841667 || a3 == 1)
+  if (revision == 3737841667 || revision == 1)
   {
     v5 = @"VNAnimalprintDetectorDetectorType";
     v6 = @"VNAnimalprintDetectorDetectorType";
   }
 
-  else if (a4)
+  else if (error)
   {
     [VNError errorForUnsupportedRevision:"errorForUnsupportedRevision:ofRequest:" ofRequest:?];
-    *a4 = v5 = 0;
+    *error = v5 = 0;
   }
 
   else
@@ -311,20 +311,20 @@ LABEL_43:
   return v5;
 }
 
-+ (id)descriptionForPrivateRevision:(unint64_t)a3
++ (id)descriptionForPrivateRevision:(unint64_t)revision
 {
-  if (a3 - 3737841665u >= 3)
+  if (revision - 3737841665u >= 3)
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___VNCreateAnimalprintRequest;
     v5 = objc_msgSendSuper2(&v7, sel_descriptionForPrivateRevision_);
   }
 
   else
   {
-    v5 = *(&off_1E77B40D8 + a3 - 3737841665u);
+    v5 = *(&off_1E77B40D8 + revision - 3737841665u);
   }
 
   return v5;
@@ -349,11 +349,11 @@ uint64_t __62__VNCreateAnimalprintRequest_Revisioning__privateRevisionsSet__bloc
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)createVNEntityIdentificationModelEntryPrintForRevision:(unint64_t)a3 fromDescriptorData:(const void *)a4 length:(unint64_t)a5 elementCount:(unint64_t)a6 error:(id *)a7
++ (id)createVNEntityIdentificationModelEntryPrintForRevision:(unint64_t)revision fromDescriptorData:(const void *)data length:(unint64_t)length elementCount:(unint64_t)count error:(id *)error
 {
   v11 = [VNAnimalprint alloc];
   LODWORD(v12) = 1.0;
-  v13 = [(VNAnimalprint *)v11 initWithData:a4 elementCount:a6 elementType:1 lengthInBytes:a5 confidence:a3 requestRevision:v12];
+  v13 = [(VNAnimalprint *)v11 initWithData:data elementCount:count elementType:1 lengthInBytes:length confidence:revision requestRevision:v12];
 
   return v13;
 }

@@ -1,24 +1,24 @@
 @interface SBSUserNotificationCAPackageDefinition
-+ (id)definitionWithCAPackagePath:(id)a3;
-- (id)_initWithCAPackagePath:(id)a3;
-- (id)_initWithDictionary:(id)a3;
++ (id)definitionWithCAPackagePath:(id)path;
+- (id)_initWithCAPackagePath:(id)path;
+- (id)_initWithDictionary:(id)dictionary;
 - (id)build;
 @end
 
 @implementation SBSUserNotificationCAPackageDefinition
 
-+ (id)definitionWithCAPackagePath:(id)a3
++ (id)definitionWithCAPackagePath:(id)path
 {
-  v3 = a3;
-  v4 = [[SBSUserNotificationCAPackageDefinition alloc] _initWithCAPackagePath:v3];
+  pathCopy = path;
+  v4 = [[SBSUserNotificationCAPackageDefinition alloc] _initWithCAPackagePath:pathCopy];
 
   return v4;
 }
 
-- (id)_initWithCAPackagePath:(id)a3
+- (id)_initWithCAPackagePath:(id)path
 {
-  v6 = a3;
-  if (!v6)
+  pathCopy = path;
+  if (!pathCopy)
   {
     [(SBSUserNotificationCAPackageDefinition *)a2 _initWithCAPackagePath:?];
   }
@@ -29,21 +29,21 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_caPackagePath, a3);
+    objc_storeStrong(&v7->_caPackagePath, path);
   }
 
   return v8;
 }
 
-- (id)_initWithDictionary:(id)a3
+- (id)_initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = SBSUserNotificationCAPackageDefinition;
-  v5 = [(SBSUserNotificationAssetDefinition *)&v9 _initWithDictionary:v4];
+  v5 = [(SBSUserNotificationAssetDefinition *)&v9 _initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 bs_safeStringForKey:@"SBSCFCAPackagePath"];
+    v6 = [dictionaryCopy bs_safeStringForKey:@"SBSCFCAPackagePath"];
     v7 = v5[1];
     v5[1] = v6;
   }
@@ -55,8 +55,8 @@
 {
   v8.receiver = self;
   v8.super_class = SBSUserNotificationCAPackageDefinition;
-  v3 = [(SBSUserNotificationAssetDefinition *)&v8 build];
-  v4 = [v3 mutableCopy];
+  build = [(SBSUserNotificationAssetDefinition *)&v8 build];
+  v4 = [build mutableCopy];
 
   caPackagePath = self->_caPackagePath;
   if (caPackagePath)

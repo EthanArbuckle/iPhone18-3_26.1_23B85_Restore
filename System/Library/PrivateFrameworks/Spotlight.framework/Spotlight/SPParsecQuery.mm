@@ -1,42 +1,42 @@
 @interface SPParsecQuery
 + (void)activate;
 + (void)deactivate;
-+ (void)getFTEStringsWithReply:(id)a3;
++ (void)getFTEStringsWithReply:(id)reply;
 + (void)initialize;
 - (BOOL)available;
 - (BOOL)shouldReturnEarly;
 - (NSSet)appBlocklist;
 - (SPFederatedQueryTask)resultPipe;
-- (SPParsecQuery)initWithUserQuery:(id)a3 queryGroupId:(unint64_t)a4 options:(unint64_t)a5 queryContext:(id)a6;
+- (SPParsecQuery)initWithUserQuery:(id)query queryGroupId:(unint64_t)id options:(unint64_t)options queryContext:(id)context;
 - (SSPlistDataReader)cannedCEPValues;
 - (SSPlistDataReader)cepDictionary;
-- (double)computeTimeout:(double)a3;
+- (double)computeTimeout:(double)timeout;
 - (double)searchTimeOut;
 - (double)suggestionTimeOut;
-- (double)timeOut:(BOOL)a3;
+- (double)timeOut:(BOOL)out;
 - (id)createResultObject;
-- (id)findLocalCopies:(id)a3 alternativeResults:(id)a4 withQueryString:(id)a5;
-- (id)findLocalCopies:(id)a3 appIdentifiers:(id)a4 adamIDs:(id)a5 alternativeResults:(id)a6 withQueryString:(id)a7;
-- (id)rerankMapsResultsWithLocalSignals:(id)a3 forQueryId:(int64_t)a4;
+- (id)findLocalCopies:(id)copies alternativeResults:(id)results withQueryString:(id)string;
+- (id)findLocalCopies:(id)copies appIdentifiers:(id)identifiers adamIDs:(id)ds alternativeResults:(id)results withQueryString:(id)string;
+- (id)rerankMapsResultsWithLocalSignals:(id)signals forQueryId:(int64_t)id;
 - (void)activate;
 - (void)cancel;
 - (void)checkParsecState;
 - (void)dealloc;
 - (void)finished;
-- (void)geoUserSessionEntityString:(id)a3;
+- (void)geoUserSessionEntityString:(id)string;
 - (void)preheat;
-- (void)query:(id)a3 didFinishWithResults:(id)a4 withSuggestions:(id)a5 withCorrections:(id)a6 withAlternativeResults:(id)a7 suggestionsAreBlended:(BOOL)a8;
-- (void)queryDidFinishLoading:(id)a3;
-- (void)resumeWithTimeout:(double)a3;
+- (void)query:(id)query didFinishWithResults:(id)results withSuggestions:(id)suggestions withCorrections:(id)corrections withAlternativeResults:(id)alternativeResults suggestionsAreBlended:(BOOL)blended;
+- (void)queryDidFinishLoading:(id)loading;
+- (void)resumeWithTimeout:(double)timeout;
 - (void)start;
-- (void)updateParsecBeyondTimeoutCount:(BOOL)a3;
+- (void)updateParsecBeyondTimeoutCount:(BOOL)count;
 @end
 
 @implementation SPParsecQuery
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     SPLogInit();
     interface = [MEMORY[0x277D4BE98] getSharedInstance];
@@ -49,11 +49,11 @@
 {
   if (+[SPParsecQuery isParsecEnabled])
   {
-    v3 = a1;
-    objc_sync_enter(v3);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     ++sCounter;
     [interface activate:CFAbsoluteTimeGetCurrent()];
-    objc_sync_exit(v3);
+    objc_sync_exit(selfCopy);
 
     v4 = MEMORY[0x277D4BEC8];
 
@@ -63,7 +63,7 @@
 
 + (void)deactivate
 {
-  obj = a1;
+  obj = self;
   objc_sync_enter(obj);
   if (sCounter)
   {
@@ -71,18 +71,18 @@
     [interface deactivate];
   }
 
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 postNotificationName:@"PRSStartedPlaying" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"PRSStartedPlaying" object:0];
 
   objc_sync_exit(obj);
 }
 
-+ (void)getFTEStringsWithReply:(id)a3
++ (void)getFTEStringsWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [interface searchSession];
+  replyCopy = reply;
+  searchSession = [interface searchSession];
 
-  if (!v5)
+  if (!searchSession)
   {
     v6 = SPLogForSPLogCategoryDefault();
     v7 = v6;
@@ -105,18 +105,18 @@
     [objc_opt_class() activate];
   }
 
-  v9 = [interface searchSession];
+  searchSession2 = [interface searchSession];
 
-  if (v9)
+  if (searchSession2)
   {
-    v10 = [interface searchSession];
+    searchSession3 = [interface searchSession];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __40__SPParsecQuery_getFTEStringsWithReply___block_invoke;
     v12[3] = &unk_279CFE868;
-    v14 = a1;
-    v13 = v4;
-    [v10 getFTEStringsWithReply:v12];
+    selfCopy = self;
+    v13 = replyCopy;
+    [searchSession3 getFTEStringsWithReply:v12];
   }
 
   else
@@ -127,7 +127,7 @@
       [SPParsecQuery getFTEStringsWithReply:v11];
     }
 
-    (*(v4 + 2))(v4, 0, 0, 0, 0);
+    (*(replyCopy + 2))(replyCopy, 0, 0, 0, 0);
   }
 }
 
@@ -189,7 +189,7 @@ void __40__SPParsecQuery_getFTEStringsWithReply___block_invoke(uint64_t a1, void
     _os_log_impl(&dword_26B71B000, v3, ((v4 & 1) == 0), "#query parsec finished", buf, 2u);
   }
 
-  v68 = self;
+  selfCopy = self;
   Current = CFAbsoluteTimeGetCurrent();
   self->_queryEndTime = Current;
   v6 = Current - self->_queryStartTime;
@@ -202,33 +202,33 @@ void __40__SPParsecQuery_getFTEStringsWithReply___block_invoke(uint64_t a1, void
   WeakRetained = objc_loadWeakRetained(&self->_resultPipe);
   self->_done = 1;
   pthread_mutex_lock(&self->_parsecQueryTaskMutex);
-  v8 = [(PRSQueryTask *)self->_parsecQueryTask category_stats];
-  [(PRSRankingConfiguration *)self->_rankingInfo setSqfData:v8];
+  category_stats = [(PRSQueryTask *)self->_parsecQueryTask category_stats];
+  [(PRSRankingConfiguration *)self->_rankingInfo setSqfData:category_stats];
 
-  v9 = [(PRSQueryTask *)self->_parsecQueryTask server_features];
-  [(PRSRankingConfiguration *)self->_rankingInfo setServerFeatures:v9];
+  server_features = [(PRSQueryTask *)self->_parsecQueryTask server_features];
+  [(PRSRankingConfiguration *)self->_rankingInfo setServerFeatures:server_features];
 
-  v10 = [(PRSQueryTask *)self->_parsecQueryTask serverRelevanceScores];
-  [(PRSRankingConfiguration *)self->_rankingInfo setServerRelevanceScores:v10];
+  serverRelevanceScores = [(PRSQueryTask *)self->_parsecQueryTask serverRelevanceScores];
+  [(PRSRankingConfiguration *)self->_rankingInfo setServerRelevanceScores:serverRelevanceScores];
 
   [(PRSQueryTask *)self->_parsecQueryTask serverRelevanceScoreThreshold];
   [(PRSRankingConfiguration *)self->_rankingInfo setServerRelevanceScoreThreshold:?];
   v11 = objc_opt_new();
-  v12 = [(PRSQueryTask *)self->_parsecQueryTask engagementSignal];
-  v13 = [v11 initWithSFEngagementSignal:v12];
+  engagementSignal = [(PRSQueryTask *)self->_parsecQueryTask engagementSignal];
+  v13 = [v11 initWithSFEngagementSignal:engagementSignal];
   [(PRSRankingConfiguration *)self->_rankingInfo setIFunScores:v13];
 
   pthread_mutex_unlock(&self->_parsecQueryTaskMutex);
   [(PRSRankingConfiguration *)self->_rankingInfo setParsecCategoryOrder:self->_parsecResultsCategoryOrder];
-  v14 = [(SPParsecQuery *)self cepDictionary];
-  v15 = v14;
-  if (!v14)
+  cepDictionary = [(SPParsecQuery *)self cepDictionary];
+  cannedCEPValues = cepDictionary;
+  if (!cepDictionary)
   {
-    v15 = [(SPParsecQuery *)self cannedCEPValues];
+    cannedCEPValues = [(SPParsecQuery *)self cannedCEPValues];
   }
 
-  [(PRSRankingConfiguration *)self->_rankingInfo setQueryIndependentCategoryProbabilities:v15];
-  if (!v14)
+  [(PRSRankingConfiguration *)self->_rankingInfo setQueryIndependentCategoryProbabilities:cannedCEPValues];
+  if (!cepDictionary)
   {
   }
 
@@ -258,16 +258,16 @@ void __40__SPParsecQuery_getFTEStringsWithReply___block_invoke(uint64_t a1, void
       }
 
       v18 = *(*(&v76 + 1) + 8 * i);
-      v19 = [v18 bundleIdentifier];
+      bundleIdentifier = [v18 bundleIdentifier];
       v66 = v18;
-      if ([v19 isEqualToString:@"com.apple.parsec.itunes.iosSoftware"])
+      if ([bundleIdentifier isEqualToString:@"com.apple.parsec.itunes.iosSoftware"])
       {
       }
 
       else
       {
-        v20 = [v18 bundleIdentifier];
-        v21 = [v20 hasPrefix:@"com.apple.parsec.app_distr"];
+        bundleIdentifier2 = [v18 bundleIdentifier];
+        v21 = [bundleIdentifier2 hasPrefix:@"com.apple.parsec.app_distr"];
 
         if (!v21)
         {
@@ -277,8 +277,8 @@ void __40__SPParsecQuery_getFTEStringsWithReply___block_invoke(uint64_t a1, void
 
       v67 = objc_opt_new();
       v22 = objc_opt_new();
-      v23 = [v18 results];
-      v24 = [v23 count] == 0;
+      results = [v18 results];
+      v24 = [results count] == 0;
 
       if (!v24)
       {
@@ -289,8 +289,8 @@ void __40__SPParsecQuery_getFTEStringsWithReply___block_invoke(uint64_t a1, void
       v75 = 0u;
       v72 = 0u;
       v73 = 0u;
-      v25 = [v66 results];
-      v26 = [v25 countByEnumeratingWithState:&v72 objects:v84 count:16];
+      results2 = [v66 results];
+      v26 = [results2 countByEnumeratingWithState:&v72 objects:v84 count:16];
       if (v26)
       {
         v27 = *v73;
@@ -300,12 +300,12 @@ void __40__SPParsecQuery_getFTEStringsWithReply___block_invoke(uint64_t a1, void
           {
             if (*v73 != v27)
             {
-              objc_enumerationMutation(v25);
+              objc_enumerationMutation(results2);
             }
 
             v29 = *(*(&v72 + 1) + 8 * j);
-            v30 = [v29 applicationBundleIdentifier];
-            if ([(NSSet *)self->_disabledAppSet containsObject:v30])
+            applicationBundleIdentifier = [v29 applicationBundleIdentifier];
+            if ([(NSSet *)self->_disabledAppSet containsObject:applicationBundleIdentifier])
             {
               v31 = SPLogForSPLogCategoryDefault();
               v32 = v31;
@@ -322,15 +322,15 @@ void __40__SPParsecQuery_getFTEStringsWithReply___block_invoke(uint64_t a1, void
               if (os_log_type_enabled(v31, v33))
               {
                 *buf = 138412290;
-                v81 = v30;
+                v81 = applicationBundleIdentifier;
                 _os_log_impl(&dword_26B71B000, v32, v33, "Skip de-duping of disabled app %@", buf, 0xCu);
               }
 
-              self = v68;
+              self = selfCopy;
               [v22 addObject:v29];
             }
 
-            else if ([(NSSet *)self->_setOfVisibleApps containsObject:v30])
+            else if ([(NSSet *)self->_setOfVisibleApps containsObject:applicationBundleIdentifier])
             {
               v34 = SPLogForSPLogCategoryDefault();
               v35 = v34;
@@ -347,17 +347,17 @@ void __40__SPParsecQuery_getFTEStringsWithReply___block_invoke(uint64_t a1, void
               if (os_log_type_enabled(v34, v36))
               {
                 *buf = 138412290;
-                v81 = v30;
+                v81 = applicationBundleIdentifier;
                 _os_log_impl(&dword_26B71B000, v35, v36, "De-dupped app with bundle id: %@", buf, 0xCu);
               }
 
-              self = v68;
+              self = selfCopy;
               [v67 addObject:v29];
               v17 = v17 + 1.0;
             }
           }
 
-          v26 = [v25 countByEnumeratingWithState:&v72 objects:v84 count:16];
+          v26 = [results2 countByEnumeratingWithState:&v72 objects:v84 count:16];
         }
 
         while (v26);
@@ -466,17 +466,17 @@ LABEL_47:
 
   if (os_log_type_enabled(v50, v52))
   {
-    v53 = [WeakRetained query];
-    v54 = [v53 queryContext];
-    v55 = [v54 searchString];
-    v56 = [*(&v68->super.super.isa + v60) valueForKey:@"title"];
+    query = [WeakRetained query];
+    queryContext = [query queryContext];
+    searchString = [queryContext searchString];
+    v56 = [*(&selfCopy->super.super.isa + v60) valueForKey:@"title"];
     *buf = 138412546;
-    v81 = v55;
+    v81 = searchString;
     v82 = 2112;
     v83 = v56;
     _os_log_impl(&dword_26B71B000, v51, v52, "Parsec query: %@ returned results: %@", buf, 0x16u);
 
-    self = v68;
+    self = selfCopy;
   }
 
   pthread_mutex_lock(&self->_parsecQueryTaskMutex);
@@ -543,9 +543,9 @@ void __25__SPParsecQuery_finished__block_invoke(uint64_t a1)
   }
 }
 
-- (void)queryDidFinishLoading:(id)a3
+- (void)queryDidFinishLoading:(id)loading
 {
-  v4 = a3;
+  loadingCopy = loading;
   v5 = (*MEMORY[0x277D286C8])();
   v6 = *(v5 + 16);
   v25 = *v5;
@@ -568,9 +568,9 @@ void __25__SPParsecQuery_finished__block_invoke(uint64_t a1)
   v20[2] = __39__SPParsecQuery_queryDidFinishLoading___block_invoke;
   v20[3] = &unk_279CFE818;
   objc_copyWeak(&v23, &location);
-  v21 = v4;
-  v22 = self;
-  v12 = v4;
+  v21 = loadingCopy;
+  selfCopy = self;
+  v12 = loadingCopy;
   dispatch_async(queue, v20);
 
   objc_destroyWeak(&v23);
@@ -636,23 +636,23 @@ void __39__SPParsecQuery_queryDidFinishLoading___block_invoke_101(uint64_t a1)
   [v2 storeWillComplete:*(a1 + 40)];
 }
 
-- (void)geoUserSessionEntityString:(id)a3
+- (void)geoUserSessionEntityString:(id)string
 {
-  v4 = a3;
-  v5 = [(SPParsecQuery *)self resultPipe];
-  [v5 setGeoUserSessionEntityString:v4];
+  stringCopy = string;
+  resultPipe = [(SPParsecQuery *)self resultPipe];
+  [resultPipe setGeoUserSessionEntityString:stringCopy];
 }
 
-- (id)findLocalCopies:(id)a3 alternativeResults:(id)a4 withQueryString:(id)a5
+- (id)findLocalCopies:(id)copies alternativeResults:(id)results withQueryString:(id)string
 {
   v72 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 count])
+  copiesCopy = copies;
+  resultsCopy = results;
+  stringCopy = string;
+  if ([copiesCopy count])
   {
-    v46 = v9;
-    v48 = v8;
+    v46 = stringCopy;
+    v48 = resultsCopy;
     v53 = objc_opt_new();
     v55 = objc_opt_new();
     v54 = objc_opt_new();
@@ -660,8 +660,8 @@ void __39__SPParsecQuery_queryDidFinishLoading___block_invoke_101(uint64_t a1)
     v66 = 0u;
     v67 = 0u;
     v68 = 0u;
-    v47 = v7;
-    obj = v7;
+    v47 = copiesCopy;
+    obj = copiesCopy;
     v51 = [obj countByEnumeratingWithState:&v65 objects:v71 count:16];
     if (!v51)
     {
@@ -686,8 +686,8 @@ void __39__SPParsecQuery_queryDidFinishLoading___block_invoke_101(uint64_t a1)
         v62 = 0u;
         v63 = 0u;
         v64 = 0u;
-        v13 = [v12 results];
-        v14 = [v13 countByEnumeratingWithState:&v61 objects:v70 count:16];
+        results = [v12 results];
+        v14 = [results countByEnumeratingWithState:&v61 objects:v70 count:16];
         if (v14)
         {
           v15 = v14;
@@ -698,27 +698,27 @@ void __39__SPParsecQuery_queryDidFinishLoading___block_invoke_101(uint64_t a1)
             {
               if (*v62 != v16)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(results);
               }
 
               v18 = *(*(&v61 + 1) + 8 * i);
-              v19 = [v18 sectionBundleIdentifier];
-              if ([v19 isEqualToString:v10])
+              sectionBundleIdentifier = [v18 sectionBundleIdentifier];
+              if ([sectionBundleIdentifier isEqualToString:v10])
               {
                 disabledAppSet = self->_disabledAppSet;
-                v21 = [v18 applicationBundleIdentifier];
-                LOBYTE(disabledAppSet) = [(NSSet *)disabledAppSet containsObject:v21];
+                applicationBundleIdentifier = [v18 applicationBundleIdentifier];
+                LOBYTE(disabledAppSet) = [(NSSet *)disabledAppSet containsObject:applicationBundleIdentifier];
 
                 if ((disabledAppSet & 1) == 0)
                 {
-                  v22 = [v18 title];
-                  v23 = [v22 text];
-                  [v55 addObject:v23];
+                  title = [v18 title];
+                  text = [title text];
+                  [v55 addObject:text];
 
-                  v24 = [v18 applicationBundleIdentifier];
+                  applicationBundleIdentifier2 = [v18 applicationBundleIdentifier];
                   v25 = v54;
 LABEL_19:
-                  [v25 addObject:v24];
+                  [v25 addObject:applicationBundleIdentifier2];
 
                   continue;
                 }
@@ -730,18 +730,18 @@ LABEL_19:
 
               if (objc_opt_respondsToSelector())
               {
-                v26 = [v18 storeIdentifier];
+                storeIdentifier = [v18 storeIdentifier];
 
-                if (v26)
+                if (storeIdentifier)
                 {
-                  v24 = [v18 storeIdentifier];
+                  applicationBundleIdentifier2 = [v18 storeIdentifier];
                   v25 = v53;
                   goto LABEL_19;
                 }
               }
             }
 
-            v15 = [v13 countByEnumeratingWithState:&v61 objects:v70 count:16];
+            v15 = [results countByEnumeratingWithState:&v61 objects:v70 count:16];
           }
 
           while (v15);
@@ -778,23 +778,23 @@ LABEL_24:
           }
 
           v33 = *(*(&v57 + 1) + 8 * j);
-          v34 = [v33 sectionBundleIdentifier];
-          if ([v34 isEqualToString:v31])
+          sectionBundleIdentifier2 = [v33 sectionBundleIdentifier];
+          if ([sectionBundleIdentifier2 isEqualToString:v31])
           {
             v35 = self->_disabledAppSet;
-            v36 = [v33 applicationBundleIdentifier];
-            LOBYTE(v35) = [(NSSet *)v35 containsObject:v36];
+            applicationBundleIdentifier3 = [v33 applicationBundleIdentifier];
+            LOBYTE(v35) = [(NSSet *)v35 containsObject:applicationBundleIdentifier3];
 
             if ((v35 & 1) == 0)
             {
-              v37 = [v33 title];
-              v38 = [v37 text];
-              [v55 addObject:v38];
+              title2 = [v33 title];
+              text2 = [title2 text];
+              [v55 addObject:text2];
 
-              v39 = [v33 applicationBundleIdentifier];
+              applicationBundleIdentifier4 = [v33 applicationBundleIdentifier];
               v40 = v54;
 LABEL_36:
-              [v40 addObject:v39];
+              [v40 addObject:applicationBundleIdentifier4];
 
               continue;
             }
@@ -806,11 +806,11 @@ LABEL_36:
 
           if (objc_opt_respondsToSelector())
           {
-            v41 = [v33 storeIdentifier];
+            storeIdentifier2 = [v33 storeIdentifier];
 
-            if (v41)
+            if (storeIdentifier2)
             {
-              v39 = [v33 storeIdentifier];
+              applicationBundleIdentifier4 = [v33 storeIdentifier];
               v40 = v53;
               goto LABEL_36;
             }
@@ -826,20 +826,20 @@ LABEL_36:
     if ([v53 count] || objc_msgSend(v55, "count"))
     {
       v42 = v54;
-      v9 = v46;
+      stringCopy = v46;
       v43 = [(SPParsecQuery *)self findLocalCopies:v55 appIdentifiers:v54 adamIDs:v53 alternativeResults:v27 withQueryString:v46];
-      v7 = v47;
+      copiesCopy = v47;
     }
 
     else
     {
       v43 = 0;
-      v9 = v46;
-      v7 = v47;
+      stringCopy = v46;
+      copiesCopy = v47;
       v42 = v54;
     }
 
-    v8 = v48;
+    resultsCopy = v48;
   }
 
   else
@@ -852,46 +852,46 @@ LABEL_36:
   return v43;
 }
 
-- (id)findLocalCopies:(id)a3 appIdentifiers:(id)a4 adamIDs:(id)a5 alternativeResults:(id)a6 withQueryString:(id)a7
+- (id)findLocalCopies:(id)copies appIdentifiers:(id)identifiers adamIDs:(id)ds alternativeResults:(id)results withQueryString:(id)string
 {
   v173[1] = *MEMORY[0x277D85DE8];
-  v111 = a3;
-  v126 = a4;
-  v11 = a5;
-  v99 = a6;
-  v124 = a7;
+  copiesCopy = copies;
+  identifiersCopy = identifiers;
+  dsCopy = ds;
+  resultsCopy = results;
+  stringCopy = string;
   v12 = objc_opt_new();
-  v98 = v11;
-  v109 = _makeQueryStringForField(@"kMDItemAdamID", v11);
-  v108 = _makeQueryStringForField(@"kMDItemDisplayName", v111);
-  v107 = _makeQueryStringForField(@"kMDItemAlternateNames", v111);
+  v98 = dsCopy;
+  v109 = _makeQueryStringForField(@"kMDItemAdamID", dsCopy);
+  v108 = _makeQueryStringForField(@"kMDItemDisplayName", copiesCopy);
+  v107 = _makeQueryStringForField(@"kMDItemAlternateNames", copiesCopy);
   if (v108 && v107)
   {
-    v13 = [&stru_287C35638 stringByAppendingFormat:@"(%@) || (%@)", v108, v107];
-    v14 = v13;
+    v107 = [&stru_287C35638 stringByAppendingFormat:@"(%@) || (%@)", v108, v107];
+    v14 = v107;
     if (!v109)
     {
-      v15 = v13;
+      v109 = v107;
       goto LABEL_8;
     }
 
-    v15 = [(__CFString *)v13 stringByAppendingString:@" || "];
+    v109 = [(__CFString *)v107 stringByAppendingString:@" || "];
 
     goto LABEL_6;
   }
 
-  v15 = &stru_287C35638;
+  v109 = &stru_287C35638;
   if (v109)
   {
 LABEL_6:
-    v16 = v15;
-    v15 = [(__CFString *)v15 stringByAppendingFormat:@"(%@)", v109];
+    v16 = v109;
+    v109 = [(__CFString *)v109 stringByAppendingFormat:@"(%@)", v109];
   }
 
 LABEL_8:
-  if ([(__CFString *)v15 length])
+  if ([(__CFString *)v109 length])
   {
-    v110 = v15;
+    v110 = v109;
   }
 
   else
@@ -900,27 +900,27 @@ LABEL_8:
     v110 = @"false";
   }
 
-  v112 = [(SPParsecQuery *)self resultPipe];
-  v17 = [v112 query];
-  v18 = [v17 hash];
+  resultPipe = [(SPParsecQuery *)self resultPipe];
+  query = [resultPipe query];
+  v18 = [query hash];
 
   v19 = objc_alloc(MEMORY[0x277D65838]);
-  v20 = [v112 query];
-  v21 = [v20 queryContext];
-  v22 = [v21 keyboardLanguage];
-  v23 = [v112 query];
-  v24 = [v23 queryContext];
+  query2 = [resultPipe query];
+  queryContext = [query2 queryContext];
+  keyboardLanguage = [queryContext keyboardLanguage];
+  query3 = [resultPipe query];
+  queryContext2 = [query3 queryContext];
   v25 = -v18;
-  [v24 currentTime];
-  v106 = [v19 initWithSearchString:v124 queryID:v25 language:v22 currentTime:?];
+  [queryContext2 currentTime];
+  v106 = [v19 initWithSearchString:stringCopy queryID:v25 language:keyboardLanguage currentTime:?];
 
-  v26 = [v112 query];
-  v27 = [v26 queryContext];
-  v28 = [v27 queryKind];
-  v29 = [v112 query];
-  v30 = [v29 queryContext];
-  v31 = [v30 keyboardLanguage];
-  v115 = [v106 rankingConfigurationWithMeContact:0 emailAddresses:0 phoneFavorites:0 vipList:0 clientBundle:*MEMORY[0x277D65B88] spotlightQuery:v110 userQuery:v124 tokenString:0 queryKind:v28 flags:0 keyboardLanguage:v31];
+  query4 = [resultPipe query];
+  queryContext3 = [query4 queryContext];
+  queryKind = [queryContext3 queryKind];
+  query5 = [resultPipe query];
+  queryContext4 = [query5 queryContext];
+  keyboardLanguage2 = [queryContext4 keyboardLanguage];
+  v115 = [v106 rankingConfigurationWithMeContact:0 emailAddresses:0 phoneFavorites:0 vipList:0 clientBundle:*MEMORY[0x277D65B88] spotlightQuery:v110 userQuery:stringCopy tokenString:0 queryKind:queryKind flags:0 keyboardLanguage:keyboardLanguage2];
 
   v113 = objc_alloc_init(MEMORY[0x277CC34A0]);
   [v113 setQueryID:v25];
@@ -932,8 +932,8 @@ LABEL_8:
   v33 = rankingPrefetchedAttributesArray();
   [v113 setFetchAttributes:v33];
 
-  v34 = [v115 rankingQueries];
-  [v113 setRankingQueries:v34];
+  rankingQueries = [v115 rankingQueries];
+  [v113 setRankingQueries:rankingQueries];
 
   v125 = *MEMORY[0x277D4BEF0];
   v172 = *MEMORY[0x277D4BEF0];
@@ -941,9 +941,9 @@ LABEL_8:
   [v113 setBundleIDs:v35];
 
   [v113 setPriorityIndexQuery:1];
-  v36 = [v112 query];
-  v37 = [v36 queryContext];
-  [v37 currentTime];
+  query6 = [resultPipe query];
+  queryContext5 = [query6 queryContext];
+  [queryContext5 currentTime];
   v39 = v38;
 
   if (findLocalCopies_appIdentifiers_adamIDs_alternativeResults_withQueryString__onceToken != -1)
@@ -952,11 +952,11 @@ LABEL_8:
   }
 
   v40 = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:66307 valueOptions:0 capacity:256];
-  v114 = [v113 fetchAttributes];
-  v41 = [v114 count];
-  v105 = [v112 query];
-  v42 = [v105 queryContext];
-  [v42 currentTime];
+  fetchAttributes = [v113 fetchAttributes];
+  v41 = [fetchAttributes count];
+  query7 = [resultPipe query];
+  queryContext6 = [query7 queryContext];
+  [queryContext6 currentTime];
   v44 = v43;
 
   v166[0] = 0;
@@ -988,9 +988,9 @@ LABEL_8:
   {
     for (i = 0; i != v41; ++i)
     {
-      v52 = [v115 requiredAttributes];
-      v53 = [v114 objectAtIndexedSubscript:i];
-      v54 = [v52 containsObject:v53];
+      requiredAttributes = [v115 requiredAttributes];
+      v53 = [fetchAttributes objectAtIndexedSubscript:i];
+      v54 = [requiredAttributes containsObject:v53];
 
       if (v54)
       {
@@ -999,7 +999,7 @@ LABEL_8:
     }
   }
 
-  v55 = [v113 fetchAttributes];
+  fetchAttributes2 = [v113 fetchAttributes];
   v157[0] = 0;
   v157[1] = v157;
   v157[2] = 0x2020000000;
@@ -1010,11 +1010,11 @@ LABEL_8:
   v147[3] = &unk_279CFE8E0;
   v95 = v46;
   v148 = v95;
-  v97 = v55;
+  v97 = fetchAttributes2;
   v149 = v97;
   v96 = v48;
   v150 = v96;
-  v93 = v126;
+  v93 = identifiersCopy;
   v151 = v93;
   v94 = v12;
   v152 = v94;
@@ -1081,14 +1081,14 @@ LABEL_8:
 
   v60 = dispatch_time(0, 500000000);
   dispatch_group_wait(v59, v60);
-  v117 = [v104 allValues];
+  allValues = [v104 allValues];
   v119 = 0;
 LABEL_22:
-  if ([v117 count] > v119)
+  if ([allValues count] > v119)
   {
-    v118 = [v117 objectAtIndexedSubscript:?];
-    v61 = [v118 results];
-    v62 = [v61 copy];
+    v118 = [allValues objectAtIndexedSubscript:?];
+    results = [v118 results];
+    v62 = [results copy];
 
     v120 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v62, "count")}];
     v130 = 0u;
@@ -1113,11 +1113,11 @@ LABEL_22:
         }
 
         v65 = *(*(&v128 + 1) + 8 * j);
-        v66 = [v65 bundleID];
-        if ([v66 isEqualToString:v125])
+        bundleID = [v65 bundleID];
+        if ([bundleID isEqualToString:v125])
         {
-          v67 = [v65 identifier];
-          v68 = [v121 containsObject:v67];
+          identifier = [v65 identifier];
+          v68 = [v121 containsObject:identifier];
 
           if (v68)
           {
@@ -1135,11 +1135,11 @@ LABEL_22:
 
             if (os_log_type_enabled(v69, v71))
             {
-              v72 = [v65 identifier];
-              v73 = v72;
-              v74 = [v72 UTF8String];
+              identifier2 = [v65 identifier];
+              v73 = identifier2;
+              uTF8String = [identifier2 UTF8String];
               LODWORD(location[0]) = 136315138;
-              *(location + 4) = v74;
+              *(location + 4) = uTF8String;
               _os_log_impl(&dword_26B71B000, v70, v71, "[ProtectedApps] skipping local copy for disabled app %s", location, 0xCu);
             }
 
@@ -1152,18 +1152,18 @@ LABEL_22:
         }
 
         WeakRetained = objc_loadWeakRetained(&self->_resultPipe);
-        v76 = [WeakRetained query];
-        v77 = [v76 queryContext];
-        v70 = [v65 resultWithTime:v124 searchString:0 isCorrectedQuery:v77 withQueryContext:v39];
+        query8 = [WeakRetained query];
+        queryContext7 = [query8 queryContext];
+        v70 = [v65 resultWithTime:stringCopy searchString:0 isCorrectedQuery:queryContext7 withQueryContext:v39];
 
         if (v70)
         {
           [v70 setType:26];
-          v78 = [v65 rankingItem];
-          v79 = [v78 L2FeatureVector];
+          rankingItem = [v65 rankingItem];
+          l2FeatureVector = [rankingItem L2FeatureVector];
           if (v65)
           {
-            v80 = v79 == 0;
+            v80 = l2FeatureVector == 0;
           }
 
           else
@@ -1177,18 +1177,18 @@ LABEL_22:
           {
             v168[0] = @"score";
             v82 = MEMORY[0x277CCABB0];
-            [v78 score];
+            [rankingItem score];
             v83 = [v82 numberWithFloat:?];
             v169[0] = v83;
             v168[1] = @"raw score";
             v84 = MEMORY[0x277CCABB0];
-            [v78 rawScore];
+            [rankingItem rawScore];
             v85 = [v84 numberWithFloat:?];
             v169[1] = v85;
             v168[2] = @"original score";
             v86 = MEMORY[0x277CCABB0];
-            v87 = [v78 L2FeatureVector];
-            [v87 originalL2Score];
+            l2FeatureVector2 = [rankingItem L2FeatureVector];
+            [l2FeatureVector2 originalL2Score];
             v88 = [v86 numberWithFloat:?];
             v169[2] = v88;
             v89 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v169 forKeys:v168 count:3];
@@ -1196,8 +1196,8 @@ LABEL_22:
           }
 
           [v120 addObject:v70];
-          v90 = [v65 rankingItem];
-          [v90 score];
+          rankingItem2 = [v65 rankingItem];
+          [rankingItem2 score];
           [v70 setL2score:?];
         }
 
@@ -1224,7 +1224,7 @@ LABEL_49:
 
   v91 = *MEMORY[0x277D85DE8];
 
-  return v117;
+  return allValues;
 }
 
 void __91__SPParsecQuery_findLocalCopies_appIdentifiers_adamIDs_alternativeResults_withQueryString___block_invoke()
@@ -1677,15 +1677,15 @@ void __91__SPParsecQuery_findLocalCopies_appIdentifiers_adamIDs_alternativeResul
   }
 }
 
-- (void)query:(id)a3 didFinishWithResults:(id)a4 withSuggestions:(id)a5 withCorrections:(id)a6 withAlternativeResults:(id)a7 suggestionsAreBlended:(BOOL)a8
+- (void)query:(id)query didFinishWithResults:(id)results withSuggestions:(id)suggestions withCorrections:(id)corrections withAlternativeResults:(id)alternativeResults suggestionsAreBlended:(BOOL)blended
 {
   v230 = *MEMORY[0x277D85DE8];
-  v178 = a3;
-  v12 = a4;
-  v133 = a5;
-  v132 = a6;
-  v138 = a7;
-  v134 = [v12 count];
+  queryCopy = query;
+  resultsCopy = results;
+  suggestionsCopy = suggestions;
+  correctionsCopy = corrections;
+  alternativeResultsCopy = alternativeResults;
+  v134 = [resultsCopy count];
   v163 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:v134];
   v177 = objc_opt_new();
   v173 = objc_opt_new();
@@ -1694,7 +1694,7 @@ void __91__SPParsecQuery_findLocalCopies_appIdentifiers_adamIDs_alternativeResul
   v217 = 0u;
   v218 = 0u;
   v219 = 0u;
-  obj = v12;
+  obj = resultsCopy;
   v157 = [obj countByEnumeratingWithState:&v216 objects:v229 count:16];
   if (v157)
   {
@@ -1719,21 +1719,21 @@ void __91__SPParsecQuery_findLocalCopies_appIdentifiers_adamIDs_alternativeResul
         }
 
         v168 = *(*(&v216 + 1) + 8 * i);
-        v174 = [v168 bundleIdentifier];
-        if (([v174 isEqualToString:v151] & 1) != 0 || (objc_msgSend(v174, "isEqualToString:", v147) & 1) != 0 || (objc_msgSend(v174, "isEqualToString:", v145) & 1) != 0 || (objc_msgSend(v174, "isEqualToString:", v143) & 1) != 0 || (objc_msgSend(v174, "isEqualToString:", v141) & 1) != 0 || (objc_msgSend(v174, "isEqualToString:", v139) & 1) != 0 || (objc_msgSend(v174, "hasPrefix:", @"com.apple.parsec.itunes.") & 1) != 0 || (objc_msgSend(v174, "isEqualToString:", v136) & 1) != 0 || (objc_msgSend(v174, "isEqualToString:", v130) & 1) != 0 || (objc_msgSend(v174, "isEqualToString:", v127) & 1) != 0 || objc_msgSend(v174, "isEqualToString:", v160))
+        bundleIdentifier = [v168 bundleIdentifier];
+        if (([bundleIdentifier isEqualToString:v151] & 1) != 0 || (objc_msgSend(bundleIdentifier, "isEqualToString:", v147) & 1) != 0 || (objc_msgSend(bundleIdentifier, "isEqualToString:", v145) & 1) != 0 || (objc_msgSend(bundleIdentifier, "isEqualToString:", v143) & 1) != 0 || (objc_msgSend(bundleIdentifier, "isEqualToString:", v141) & 1) != 0 || (objc_msgSend(bundleIdentifier, "isEqualToString:", v139) & 1) != 0 || (objc_msgSend(bundleIdentifier, "hasPrefix:", @"com.apple.parsec.itunes.") & 1) != 0 || (objc_msgSend(bundleIdentifier, "isEqualToString:", v136) & 1) != 0 || (objc_msgSend(bundleIdentifier, "isEqualToString:", v130) & 1) != 0 || (objc_msgSend(bundleIdentifier, "isEqualToString:", v127) & 1) != 0 || objc_msgSend(bundleIdentifier, "isEqualToString:", v160))
         {
-          [v163 setObject:v168 forKey:v174];
+          [v163 setObject:v168 forKey:bundleIdentifier];
         }
 
-        if ([v174 isEqualToString:v160])
+        if ([bundleIdentifier isEqualToString:v160])
         {
-          v13 = [MEMORY[0x277CCAB58] indexSet];
+          indexSet = [MEMORY[0x277CCAB58] indexSet];
           v214 = 0u;
           v215 = 0u;
           v212 = 0u;
           v213 = 0u;
-          v14 = [v168 results];
-          v15 = [v14 countByEnumeratingWithState:&v212 objects:v228 count:16];
+          results = [v168 results];
+          v15 = [results countByEnumeratingWithState:&v212 objects:v228 count:16];
           if (v15)
           {
             v16 = *v213;
@@ -1743,36 +1743,36 @@ void __91__SPParsecQuery_findLocalCopies_appIdentifiers_adamIDs_alternativeResul
               {
                 if (*v213 != v16)
                 {
-                  objc_enumerationMutation(v14);
+                  objc_enumerationMutation(results);
                 }
 
                 v18 = *(*(&v212 + 1) + 8 * j);
                 disabledAppSet = self->_disabledAppSet;
-                v20 = [v18 applicationBundleIdentifier];
-                LODWORD(disabledAppSet) = [(NSSet *)disabledAppSet containsObject:v20];
+                applicationBundleIdentifier = [v18 applicationBundleIdentifier];
+                LODWORD(disabledAppSet) = [(NSSet *)disabledAppSet containsObject:applicationBundleIdentifier];
 
                 if (disabledAppSet)
                 {
-                  [v13 addIndex:0];
+                  [indexSet addIndex:0];
                 }
 
                 else
                 {
-                  v21 = [v18 title];
-                  v22 = [v21 text];
-                  if (v22)
+                  title = [v18 title];
+                  text = [title text];
+                  if (text)
                   {
-                    v23 = [v18 applicationBundleIdentifier];
-                    v24 = v23 == 0;
+                    applicationBundleIdentifier2 = [v18 applicationBundleIdentifier];
+                    v24 = applicationBundleIdentifier2 == 0;
 
                     if (!v24)
                     {
-                      v25 = [v18 title];
-                      v26 = [v25 text];
-                      [v173 addObject:v26];
+                      title2 = [v18 title];
+                      text2 = [title2 text];
+                      [v173 addObject:text2];
 
-                      v27 = [v18 applicationBundleIdentifier];
-                      [v172 addObject:v27];
+                      applicationBundleIdentifier3 = [v18 applicationBundleIdentifier];
+                      [v172 addObject:applicationBundleIdentifier3];
                     }
                   }
 
@@ -1782,25 +1782,25 @@ void __91__SPParsecQuery_findLocalCopies_appIdentifiers_adamIDs_alternativeResul
                 }
               }
 
-              v15 = [v14 countByEnumeratingWithState:&v212 objects:v228 count:16];
+              v15 = [results countByEnumeratingWithState:&v212 objects:v228 count:16];
             }
 
             while (v15);
           }
 
-          if ([v13 count])
+          if ([indexSet count])
           {
-            v28 = [MEMORY[0x277CBEB18] array];
-            v29 = [v168 results];
+            array = [MEMORY[0x277CBEB18] array];
+            results2 = [v168 results];
             v209[0] = MEMORY[0x277D85DD0];
             v209[1] = 3221225472;
             v209[2] = __121__SPParsecQuery_query_didFinishWithResults_withSuggestions_withCorrections_withAlternativeResults_suggestionsAreBlended___block_invoke;
             v209[3] = &unk_279CFE9F8;
-            v13 = v13;
-            v210 = v13;
-            v30 = v28;
+            indexSet = indexSet;
+            v210 = indexSet;
+            v30 = array;
             v211 = v30;
-            [v29 enumerateObjectsUsingBlock:v209];
+            [results2 enumerateObjectsUsingBlock:v209];
 
             if ([v30 count])
             {
@@ -1824,8 +1824,8 @@ void __91__SPParsecQuery_findLocalCopies_appIdentifiers_adamIDs_alternativeResul
           v208 = 0u;
           v205 = 0u;
           v206 = 0u;
-          v13 = [v168 results];
-          v33 = [v13 countByEnumeratingWithState:&v205 objects:v227 count:16];
+          indexSet = [v168 results];
+          v33 = [indexSet countByEnumeratingWithState:&v205 objects:v227 count:16];
           if (v33)
           {
             v34 = *v206;
@@ -1835,24 +1835,24 @@ void __91__SPParsecQuery_findLocalCopies_appIdentifiers_adamIDs_alternativeResul
               {
                 if (*v206 != v34)
                 {
-                  objc_enumerationMutation(v13);
+                  objc_enumerationMutation(indexSet);
                 }
 
                 v36 = *(*(&v205 + 1) + 8 * k);
                 if (objc_opt_respondsToSelector())
                 {
-                  v37 = [v36 storeIdentifier];
-                  v38 = v37 == 0;
+                  storeIdentifier = [v36 storeIdentifier];
+                  v38 = storeIdentifier == 0;
 
                   if (!v38)
                   {
-                    v39 = [v36 storeIdentifier];
-                    [v177 addObject:v39];
+                    storeIdentifier2 = [v36 storeIdentifier];
+                    [v177 addObject:storeIdentifier2];
                   }
                 }
               }
 
-              v33 = [v13 countByEnumeratingWithState:&v205 objects:v227 count:16];
+              v33 = [indexSet countByEnumeratingWithState:&v205 objects:v227 count:16];
             }
 
             while (v33);
@@ -1895,14 +1895,14 @@ void __91__SPParsecQuery_findLocalCopies_appIdentifiers_adamIDs_alternativeResul
     [v163 setObject:v44 forKey:v41];
   }
 
-  v45 = [v163 allKeys];
+  allKeys = [v163 allKeys];
   v146 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:v134];
   v169 = SSEnableSpotlightTopHitPersonalizedRanking();
   v203 = 0u;
   v204 = 0u;
   v201 = 0u;
   v202 = 0u;
-  v140 = v45;
+  v140 = allKeys;
   v165 = [v140 countByEnumeratingWithState:&v201 objects:v226 count:16];
   if (!v165)
   {
@@ -1924,10 +1924,10 @@ void __91__SPParsecQuery_findLocalCopies_appIdentifiers_adamIDs_alternativeResul
 
       v48 = *(*(&v201 + 1) + 8 * m);
       WeakRetained = objc_loadWeakRetained(&self->_resultPipe);
-      v50 = [WeakRetained query];
-      v51 = [v50 cancelled];
+      query = [WeakRetained query];
+      cancelled = [query cancelled];
 
-      if (v51)
+      if (cancelled)
       {
         v68 = v140;
         goto LABEL_160;
@@ -1937,28 +1937,28 @@ void __91__SPParsecQuery_findLocalCopies_appIdentifiers_adamIDs_alternativeResul
       if (v169)
       {
         v52 = MEMORY[0x277D65978];
-        v53 = [v178 queryContext];
-        [v53 currentTime];
+        queryContext = [queryCopy queryContext];
+        [queryContext currentTime];
         [v52 prepareServerSectionRankingItemsForTopHitNomination:v175 currentTime:?];
       }
 
       if ([v48 isEqualToString:v41])
       {
-        v54 = [v178 queryString];
-        v55 = [(SPParsecQuery *)self findLocalCopies:v173 appIdentifiers:v172 adamIDs:v177 alternativeResults:v138 withQueryString:v54];
+        queryString = [queryCopy queryString];
+        v55 = [(SPParsecQuery *)self findLocalCopies:v173 appIdentifiers:v172 adamIDs:v177 alternativeResults:alternativeResultsCopy withQueryString:queryString];
 
         v144 = v55;
       }
 
       else
       {
-        v54 = [objc_alloc(MEMORY[0x277D65848]) initWithResultSection:v175];
+        queryString = [objc_alloc(MEMORY[0x277D65848]) initWithResultSection:v175];
         if (_os_feature_enabled_impl())
         {
           if ([v48 isEqualToString:v152])
           {
-            v56 = [(SPParsecQuery *)self mapsParsecRanker];
-            v57 = v56 == 0;
+            mapsParsecRanker = [(SPParsecQuery *)self mapsParsecRanker];
+            v57 = mapsParsecRanker == 0;
 
             if (!v57)
             {
@@ -1969,9 +1969,9 @@ void __91__SPParsecQuery_findLocalCopies_appIdentifiers_adamIDs_alternativeResul
                 _os_log_impl(&dword_26B71B000, v58, OS_LOG_TYPE_DEFAULT, "Geo personalization enabled, reranking geo results with local signals", buf, 2u);
               }
 
-              v59 = [v175 results];
-              v60 = -[SPParsecQuery rerankMapsResultsWithLocalSignals:forQueryId:](self, "rerankMapsResultsWithLocalSignals:forQueryId:", v59, [v178 queryIdent]);
-              [v54 setResults:v60];
+              results3 = [v175 results];
+              v60 = -[SPParsecQuery rerankMapsResultsWithLocalSignals:forQueryId:](self, "rerankMapsResultsWithLocalSignals:forQueryId:", results3, [queryCopy queryIdent]);
+              [queryString setResults:v60];
             }
           }
         }
@@ -1981,25 +1981,25 @@ void __91__SPParsecQuery_findLocalCopies_appIdentifiers_adamIDs_alternativeResul
           v61 = SPLogForSPLogCategoryDefault();
           if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
           {
-            v62 = [v54 bundleIdentifier];
+            bundleIdentifier2 = [queryString bundleIdentifier];
             *buf = 138412290;
-            v225 = v62;
+            v225 = bundleIdentifier2;
             _os_log_impl(&dword_26B71B000, v61, OS_LOG_TYPE_DEFAULT, "TopHit nomination for server results based on local engagement and personalization signals. Server section: %@", buf, 0xCu);
           }
 
           v63 = MEMORY[0x277D65978];
-          v155 = [v178 queryString];
-          v161 = [(SPParsecQuery *)self resultPipe];
-          v158 = [v161 query];
-          v64 = [v158 queryContext];
-          v65 = [v64 keyboardLanguage];
-          v66 = [v178 queryContext];
-          [v66 currentTime];
-          v67 = [v63 nominateServerTopHitForSection:v54 queryString:v155 language:v65 currentTime:?];
-          [v54 setResults:v67];
+          queryString2 = [queryCopy queryString];
+          resultPipe = [(SPParsecQuery *)self resultPipe];
+          query2 = [resultPipe query];
+          queryContext2 = [query2 queryContext];
+          keyboardLanguage = [queryContext2 keyboardLanguage];
+          queryContext3 = [queryCopy queryContext];
+          [queryContext3 currentTime];
+          v67 = [v63 nominateServerTopHitForSection:queryString queryString:queryString2 language:keyboardLanguage currentTime:?];
+          [queryString setResults:v67];
         }
 
-        [v146 setObject:v54 forKey:v48];
+        [v146 setObject:queryString forKey:v48];
       }
     }
 
@@ -2043,15 +2043,15 @@ LABEL_84:
 
         v166 = v70;
         v72 = *(*(&v197 + 1) + 8 * v70);
-        v170 = [v72 bundleIdentifier];
-        if ([v170 isEqualToString:v156])
+        bundleIdentifier3 = [v72 bundleIdentifier];
+        if ([bundleIdentifier3 isEqualToString:v156])
         {
           v195 = 0u;
           v196 = 0u;
           v193 = 0u;
           v194 = 0u;
-          v73 = [v72 results];
-          v74 = [v73 countByEnumeratingWithState:&v193 objects:v222 count:16];
+          results4 = [v72 results];
+          v74 = [results4 countByEnumeratingWithState:&v193 objects:v222 count:16];
           if (v74)
           {
             v75 = *v194;
@@ -2061,25 +2061,25 @@ LABEL_84:
               {
                 if (*v194 != v75)
                 {
-                  objc_enumerationMutation(v73);
+                  objc_enumerationMutation(results4);
                 }
 
                 v77 = *(*(&v193 + 1) + 8 * n);
                 v78 = MEMORY[0x277D659B8];
-                v79 = [v178 queryContext];
-                v80 = [v78 buildResultWithResult:v77 queryContext:v79];
+                queryContext4 = [queryCopy queryContext];
+                v80 = [v78 buildResultWithResult:v77 queryContext:queryContext4];
 
                 [v176 addObject:v80];
               }
 
-              v74 = [v73 countByEnumeratingWithState:&v193 objects:v222 count:16];
+              v74 = [results4 countByEnumeratingWithState:&v193 objects:v222 count:16];
             }
 
             while (v74);
           }
         }
 
-        else if ([v170 isEqualToString:v69])
+        else if ([bundleIdentifier3 isEqualToString:v69])
         {
           v153 = [objc_alloc(MEMORY[0x277D65848]) initWithResultSection:v72];
           v81 = objc_opt_new();
@@ -2087,8 +2087,8 @@ LABEL_84:
           v192 = 0u;
           v189 = 0u;
           v190 = 0u;
-          v82 = [v72 results];
-          v83 = [v82 countByEnumeratingWithState:&v189 objects:v221 count:16];
+          results5 = [v72 results];
+          v83 = [results5 countByEnumeratingWithState:&v189 objects:v221 count:16];
           if (v83)
           {
             v84 = *v190;
@@ -2098,19 +2098,19 @@ LABEL_84:
               {
                 if (*v190 != v84)
                 {
-                  objc_enumerationMutation(v82);
+                  objc_enumerationMutation(results5);
                 }
 
                 v86 = *(*(&v189 + 1) + 8 * ii);
                 v87 = MEMORY[0x277D659B8];
-                v88 = [v178 queryContext];
-                v89 = [v87 buildResultWithResult:v86 queryContext:v88];
+                queryContext5 = [queryCopy queryContext];
+                v89 = [v87 buildResultWithResult:v86 queryContext:queryContext5];
 
                 [v89 setSectionBundleIdentifier:v69];
                 [v81 addObject:v89];
               }
 
-              v83 = [v82 countByEnumeratingWithState:&v189 objects:v221 count:16];
+              v83 = [results5 countByEnumeratingWithState:&v189 objects:v221 count:16];
             }
 
             while (v83);
@@ -2120,9 +2120,9 @@ LABEL_84:
           [v148 addObject:v153];
         }
 
-        else if (([v170 isEqualToString:v142] & 1) != 0 || (objc_msgSend(v170, "isEqualToString:", v137) & 1) != 0 || (objc_msgSend(v170, "isEqualToString:", v135) & 1) != 0 || (objc_msgSend(v170, "isEqualToString:", v131) & 1) != 0 || (objc_msgSend(v170, "isEqualToString:", v128) & 1) != 0 || (objc_msgSend(v170, "isEqualToString:", v126) & 1) != 0 || (objc_msgSend(v170, "hasPrefix:", @"com.apple.parsec.itunes.") & 1) != 0 || objc_msgSend(v170, "isEqualToString:", v125))
+        else if (([bundleIdentifier3 isEqualToString:v142] & 1) != 0 || (objc_msgSend(bundleIdentifier3, "isEqualToString:", v137) & 1) != 0 || (objc_msgSend(bundleIdentifier3, "isEqualToString:", v135) & 1) != 0 || (objc_msgSend(bundleIdentifier3, "isEqualToString:", v131) & 1) != 0 || (objc_msgSend(bundleIdentifier3, "isEqualToString:", v128) & 1) != 0 || (objc_msgSend(bundleIdentifier3, "isEqualToString:", v126) & 1) != 0 || (objc_msgSend(bundleIdentifier3, "hasPrefix:", @"com.apple.parsec.itunes.") & 1) != 0 || objc_msgSend(bundleIdentifier3, "isEqualToString:", v125))
         {
-          v90 = [v146 objectForKey:v170];
+          v90 = [v146 objectForKey:bundleIdentifier3];
           if (v90)
           {
             [v148 addObject:v90];
@@ -2162,7 +2162,7 @@ LABEL_84:
 
   v93 = v92;
 
-  v171 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v167 = objc_opt_new();
   v187 = 0u;
   v188 = 0u;
@@ -2185,39 +2185,39 @@ LABEL_84:
         v97 = *(*(&v185 + 1) + 8 * jj);
         v98 = [objc_alloc(MEMORY[0x277D65848]) initWithResultSection:v97];
         [v98 setSource:2];
-        [v171 addObject:v98];
-        v99 = [v97 bundleIdentifier];
+        [array2 addObject:v98];
+        bundleIdentifier4 = [v97 bundleIdentifier];
 
-        if (v99)
+        if (bundleIdentifier4)
         {
-          v100 = [v97 bundleIdentifier];
+          bundleIdentifier5 = [v97 bundleIdentifier];
         }
 
         else
         {
-          v101 = [v97 results];
-          if (!v101)
+          results6 = [v97 results];
+          if (!results6)
           {
             goto LABEL_138;
           }
 
-          v102 = [v97 results];
-          v103 = [v102 count] == 0;
+          results7 = [v97 results];
+          v103 = [results7 count] == 0;
 
           if (v103)
           {
             goto LABEL_138;
           }
 
-          v104 = [v97 results];
-          v105 = [v104 objectAtIndex:0];
-          v100 = [v105 sectionBundleIdentifier];
+          results8 = [v97 results];
+          v105 = [results8 objectAtIndex:0];
+          bundleIdentifier5 = [v105 sectionBundleIdentifier];
         }
 
-        if (v100)
+        if (bundleIdentifier5)
         {
-          [v97 setBundleIdentifier:v100];
-          [v167 addObject:v100];
+          [v97 setBundleIdentifier:bundleIdentifier5];
+          [v167 addObject:bundleIdentifier5];
         }
 
 LABEL_138:
@@ -2229,13 +2229,13 @@ LABEL_138:
     while (v94);
   }
 
-  if (![v171 count] && !objc_msgSend(v133, "count"))
+  if (![array2 count] && !objc_msgSend(suggestionsCopy, "count"))
   {
     v106 = objc_loadWeakRetained(&self->_resultPipe);
     query_analytics_log_timing(v106, "finish_zero", "parsec", self->_startTime);
   }
 
-  if (v133)
+  if (suggestionsCopy)
   {
     v107 = SPLogForSPLogCategoryDefault();
     v108 = v107;
@@ -2252,20 +2252,20 @@ LABEL_138:
     if (os_log_type_enabled(v107, v109))
     {
       *buf = 138412290;
-      v225 = v133;
+      v225 = suggestionsCopy;
       _os_log_impl(&dword_26B71B000, v108, v109, "Received suggestions: %@", buf, 0xCu);
     }
   }
 
-  v110 = [(SPParsecQuery *)self resultPipe];
-  v111 = [v110 query];
-  v112 = [v111 disabledBundles];
-  if ([v112 count])
+  resultPipe2 = [(SPParsecQuery *)self resultPipe];
+  query3 = [resultPipe2 query];
+  disabledBundles = [query3 disabledBundles];
+  if ([disabledBundles count])
   {
     v113 = MEMORY[0x277CBEB98];
-    v114 = [v110 query];
-    v115 = [v114 disabledBundles];
-    v116 = [v113 setWithArray:v115];
+    query4 = [resultPipe2 query];
+    disabledBundles2 = [query4 disabledBundles];
+    v116 = [v113 setWithArray:disabledBundles2];
   }
 
   else
@@ -2278,14 +2278,14 @@ LABEL_138:
     v117 = PRSLogCategoryDefault();
     if (os_log_type_enabled(v117, OS_LOG_TYPE_DEBUG))
     {
-      [SPParsecQuery query:v178 didFinishWithResults:? withSuggestions:? withCorrections:? withAlternativeResults:? suggestionsAreBlended:?];
+      [SPParsecQuery query:queryCopy didFinishWithResults:? withSuggestions:? withCorrections:? withAlternativeResults:? suggestionsAreBlended:?];
     }
 
-    v118 = [v178 category_stats];
-    [(SPParsecQuery *)self setCategory_stats:v118];
+    category_stats = [queryCopy category_stats];
+    [(SPParsecQuery *)self setCategory_stats:category_stats];
 
-    v119 = [v178 server_features];
-    [(SPParsecQuery *)self setServer_features:v119];
+    server_features = [queryCopy server_features];
+    [(SPParsecQuery *)self setServer_features:server_features];
   }
 
   if ([v167 count])
@@ -2295,7 +2295,7 @@ LABEL_138:
   }
 
   [(SPParsecQuery *)self setQuerySuggestionResults:v176];
-  self->_suggestionsAreBlended = a8;
+  self->_suggestionsAreBlended = blended;
   objc_initWeak(buf, self);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -2303,13 +2303,13 @@ LABEL_138:
   block[2] = __121__SPParsecQuery_query_didFinishWithResults_withSuggestions_withCorrections_withAlternativeResults_suggestionsAreBlended___block_invoke_189;
   block[3] = &unk_279CFEA20;
   objc_copyWeak(&v184, buf);
-  v122 = v171;
+  v122 = array2;
   v181 = v122;
   v123 = v116;
   v182 = v123;
-  v183 = v178;
+  v183 = queryCopy;
   dispatch_async(queue, block);
-  [v110 addQueryCorrections:v132];
+  [resultPipe2 addQueryCorrections:correctionsCopy];
 
   objc_destroyWeak(&v184);
   objc_destroyWeak(buf);
@@ -2420,9 +2420,9 @@ void __121__SPParsecQuery_query_didFinishWithResults_withSuggestions_withCorrect
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)rerankMapsResultsWithLocalSignals:(id)a3 forQueryId:(int64_t)a4
+- (id)rerankMapsResultsWithLocalSignals:(id)signals forQueryId:(int64_t)id
 {
-  v6 = a3;
+  signalsCopy = signals;
   v7 = logForCSLogCategoryPersonalization();
   v8 = os_signpost_id_generate(v7);
   v9 = v7;
@@ -2433,8 +2433,8 @@ void __121__SPParsecQuery_query_didFinishWithResults_withSuggestions_withCorrect
     _os_signpost_emit_with_name_impl(&dword_26B71B000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "rerankMapsResultsWithLocalSignals", " enableTelemetry=YES ", buf, 2u);
   }
 
-  v11 = [(SPParsecQuery *)self mapsParsecRanker];
-  v12 = [v11 rerankMapsResultsWithLocalSignals:v6 forQueryId:a4];
+  mapsParsecRanker = [(SPParsecQuery *)self mapsParsecRanker];
+  v12 = [mapsParsecRanker rerankMapsResultsWithLocalSignals:signalsCopy forQueryId:id];
 
   v13 = v10;
   v14 = v13;
@@ -2447,11 +2447,11 @@ void __121__SPParsecQuery_query_didFinishWithResults_withSuggestions_withCorrect
   return v12;
 }
 
-- (SPParsecQuery)initWithUserQuery:(id)a3 queryGroupId:(unint64_t)a4 options:(unint64_t)a5 queryContext:(id)a6
+- (SPParsecQuery)initWithUserQuery:(id)query queryGroupId:(unint64_t)id options:(unint64_t)options queryContext:(id)context
 {
   v16.receiver = self;
   v16.super_class = SPParsecQuery;
-  v6 = [(SPKQuery *)&v16 initWithUserQuery:a3 queryGroupId:a4 options:0 queryContext:a6];
+  v6 = [(SPKQuery *)&v16 initWithUserQuery:query queryGroupId:id options:0 queryContext:context];
   if (v6)
   {
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -2461,9 +2461,9 @@ void __121__SPParsecQuery_query_didFinishWithResults_withSuggestions_withCorrect
     queue = v6->_queue;
     v6->_queue = v9;
 
-    v11 = [MEMORY[0x277D4BE88] sharedInstance];
+    mEMORY[0x277D4BE88] = [MEMORY[0x277D4BE88] sharedInstance];
     networkConditions = v6->_networkConditions;
-    v6->_networkConditions = v11;
+    v6->_networkConditions = mEMORY[0x277D4BE88];
 
     v13 = objc_opt_new();
     mapsParsecRanker = v6->_mapsParsecRanker;
@@ -2603,8 +2603,8 @@ void __23__SPParsecQuery_cancel__block_invoke_2(uint64_t a1)
     return 0;
   }
 
-  v2 = [interface searchSession];
-  v3 = v2 != 0;
+  searchSession = [interface searchSession];
+  v3 = searchSession != 0;
 
   return v3;
 }
@@ -2613,10 +2613,10 @@ void __23__SPParsecQuery_cancel__block_invoke_2(uint64_t a1)
 {
   v4 = SPGetDisabledDomainSet();
   sParsecEnabled = [v4 containsObject:@"DOMAIN_PARSEC"] ^ 1;
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isSpotlightInternetResultsAllowed];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isSpotlightInternetResultsAllowed = [mEMORY[0x277D262A0] isSpotlightInternetResultsAllowed];
 
-  if ((v3 & 1) == 0)
+  if ((isSpotlightInternetResultsAllowed & 1) == 0)
   {
     sParsecEnabled = 0;
   }
@@ -2630,7 +2630,7 @@ void __23__SPParsecQuery_cancel__block_invoke_2(uint64_t a1)
   [(SPKQuery *)&v69 start];
   if (![(SPKQuery *)self sendEmptyResponseIfNecessaryForSourceKind:3])
   {
-    v3 = [(SPKQuery *)self delegate];
+    delegate = [(SPKQuery *)self delegate];
     v4 = (*MEMORY[0x277D286C8])();
     v63 = *v4;
     v65 = *(v4 + 16);
@@ -2645,9 +2645,9 @@ void __23__SPParsecQuery_cancel__block_invoke_2(uint64_t a1)
     *(v4 + 28) = 102;
     *(v4 + 32) = "[SPParsecQuery start]";
     si_tracing_log_span_begin();
-    if (([v3 isPeopleSearch] & 1) != 0 || objc_msgSend(v3, "isScopedAppSearch"))
+    if (([delegate isPeopleSearch] & 1) != 0 || objc_msgSend(delegate, "isScopedAppSearch"))
     {
-      if ([v3 isPeopleSearch])
+      if ([delegate isPeopleSearch])
       {
         v9 = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW);
         v10 = "people";
@@ -2659,22 +2659,22 @@ void __23__SPParsecQuery_cancel__block_invoke_2(uint64_t a1)
         v10 = "appscoped";
       }
 
-      query_analytics_log_timing(v3, v10, "parsec", v9);
+      query_analytics_log_timing(delegate, v10, "parsec", v9);
       v11 = objc_alloc(MEMORY[0x277D65860]);
-      v12 = [(SPKQuery *)self queryGroupId];
-      v13 = [v11 initWithQueryID:v12 sourceKind:3 sections:MEMORY[0x277CBEBF8]];
-      v14 = [(SPKQuery *)self responseHandler];
-      (v14)[2](v14, v13);
+      queryGroupId = [(SPKQuery *)self queryGroupId];
+      v13 = [v11 initWithQueryID:queryGroupId sourceKind:3 sections:MEMORY[0x277CBEBF8]];
+      responseHandler = [(SPKQuery *)self responseHandler];
+      (responseHandler)[2](responseHandler, v13);
     }
 
-    [v3 externalID];
+    [delegate externalID];
     kdebug_trace();
     v15 = SPLogForSPLogCategoryTelemetry();
-    v16 = [v3 externalID];
-    if (v16 && os_signpost_enabled(v15))
+    externalID = [delegate externalID];
+    if (externalID && os_signpost_enabled(v15))
     {
       *buf = 0;
-      _os_signpost_emit_with_name_impl(&dword_26B71B000, v15, OS_SIGNPOST_INTERVAL_BEGIN, v16, "parsecLatency", " enableTelemetry=YES ", buf, 2u);
+      _os_signpost_emit_with_name_impl(&dword_26B71B000, v15, OS_SIGNPOST_INTERVAL_BEGIN, externalID, "parsecLatency", " enableTelemetry=YES ", buf, 2u);
     }
 
     v17 = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW);
@@ -2701,23 +2701,23 @@ void __23__SPParsecQuery_cancel__block_invoke_2(uint64_t a1)
       [(SPParsecQuery *)self preheat];
     }
 
-    v21 = [v3 query];
-    v22 = [v21 queryContext];
+    query = [delegate query];
+    queryContext = [query queryContext];
 
     v23 = PRSLogCategoryDefault();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
       v24 = objc_opt_class();
-      v25 = [v22 searchString];
+      searchString = [queryContext searchString];
       *buf = 138412546;
       v71 = v24;
       v72 = 2112;
-      v73 = v25;
+      v73 = searchString;
       _os_log_impl(&dword_26B71B000, v23, OS_LOG_TYPE_INFO, "%@ Perform query %@", buf, 0x16u);
     }
 
-    v26 = [v22 disabledDomains];
-    v27 = [v26 containsObject:&unk_287C3B818];
+    disabledDomains = [queryContext disabledDomains];
+    v27 = [disabledDomains containsObject:&unk_287C3B818];
 
     if ((v27 & 1) == 0)
     {
@@ -2754,46 +2754,46 @@ void __23__SPParsecQuery_cancel__block_invoke_2(uint64_t a1)
       self->_setOfHiddenApps = v34;
 
       v36 = MEMORY[0x277CBEB98];
-      v37 = [v22 disabledApps];
-      v38 = [v36 setWithArray:v37];
+      disabledApps = [queryContext disabledApps];
+      v38 = [v36 setWithArray:disabledApps];
       disabledAppSet = self->_disabledAppSet;
       self->_disabledAppSet = v38;
 
       pthread_mutex_lock(&self->_parsecQueryTaskMutex);
       if (sParsecEnabled == 1)
       {
-        v40 = [interface searchSession];
-        v41 = v40 == 0;
+        searchSession = [interface searchSession];
+        v41 = searchSession == 0;
 
         if (v41)
         {
           [objc_opt_class() activate];
-          v42 = [interface searchSession];
-          v43 = v42 == 0;
+          searchSession2 = [interface searchSession];
+          v43 = searchSession2 == 0;
 
           if (v43)
           {
-            query_analytics_log_timing(v3, "failed", "parsec", v17);
+            query_analytics_log_timing(delegate, "failed", "parsec", v17);
           }
         }
 
-        v44 = [v22 searchEntities];
-        if ([v44 count])
+        searchEntities = [queryContext searchEntities];
+        if ([searchEntities count])
         {
-          v45 = [v22 searchEntities];
-          v46 = [v45 lastObject];
-          v47 = [v46 currentSearchString];
+          searchEntities2 = [queryContext searchEntities];
+          lastObject = [searchEntities2 lastObject];
+          currentSearchString = [lastObject currentSearchString];
         }
 
         else
         {
-          v47 = [v22 searchString];
+          currentSearchString = [queryContext searchString];
         }
 
-        v48 = [interface searchSession];
-        v49 = [v3 externalID];
-        v50 = [v3 query];
-        v51 = [v48 queryTaskWithString:v47 externalId:v49 handler:self queryContext:v22 queryIdent:{objc_msgSend(v50, "queryIdent")}];
+        searchSession3 = [interface searchSession];
+        externalID2 = [delegate externalID];
+        query2 = [delegate query];
+        v51 = [searchSession3 queryTaskWithString:currentSearchString externalId:externalID2 handler:self queryContext:queryContext queryIdent:{objc_msgSend(query2, "queryIdent")}];
 
         if (v51)
         {
@@ -2816,7 +2816,7 @@ void __23__SPParsecQuery_cancel__block_invoke_2(uint64_t a1)
           }
 
           [v51 setParsecState:{objc_msgSend(objc_opt_class(), "isParsecEnabled")}];
-          [v51 setRepresentedObject:v3];
+          [v51 setRepresentedObject:delegate];
           objc_storeStrong(&self->_parsecQueryTask, v51);
         }
       }
@@ -2824,8 +2824,8 @@ void __23__SPParsecQuery_cancel__block_invoke_2(uint64_t a1)
       pthread_mutex_unlock(&self->_parsecQueryTaskMutex);
     }
 
-    v55 = [interface searchSession];
-    [v55 searchRenderTimeout];
+    searchSession4 = [interface searchSession];
+    [searchSession4 searchRenderTimeout];
     [(SPParsecQuery *)self resumeWithTimeout:?];
 
     v56 = *v4;
@@ -2855,9 +2855,9 @@ void __23__SPParsecQuery_cancel__block_invoke_2(uint64_t a1)
 {
   if ([objc_opt_class() isParsecEnabled])
   {
-    v2 = [interface searchSession];
+    searchSession = [interface searchSession];
 
-    if (!v2)
+    if (!searchSession)
     {
       v3 = objc_opt_class();
 
@@ -2866,7 +2866,7 @@ void __23__SPParsecQuery_cancel__block_invoke_2(uint64_t a1)
   }
 }
 
-- (double)computeTimeout:(double)a3
+- (double)computeTimeout:(double)timeout
 {
   quality = self->_quality;
   if ((quality & 0xFFFFFFFFFFFFFFFELL) != 2 || self->_parsecBeyondTimeoutRequestCount < 4 || self->_lastKnownQuality != quality)
@@ -2890,7 +2890,7 @@ void __23__SPParsecQuery_cancel__block_invoke_2(uint64_t a1)
   v9 = os_log_type_enabled(v6, v8);
   if (withinThreshold)
   {
-    a3 = a3 + 0.05;
+    timeout = timeout + 0.05;
     if (v9)
     {
       v14 = 0;
@@ -2903,7 +2903,7 @@ LABEL_12:
 
   else
   {
-    a3 = a3 * 0.5;
+    timeout = timeout * 0.5;
     if (v9)
     {
       v13 = 0;
@@ -2915,17 +2915,17 @@ LABEL_12:
 
 LABEL_14:
   result = 0.2;
-  if (a3 > 0.0)
+  if (timeout > 0.0)
   {
-    return a3;
+    return timeout;
   }
 
   return result;
 }
 
-- (void)resumeWithTimeout:(double)a3
+- (void)resumeWithTimeout:(double)timeout
 {
-  self->_timeOut = a3;
+  self->_timeOut = timeout;
   self->_queryStartTime = CFAbsoluteTimeGetCurrent();
   pthread_mutex_lock(&self->_parsecQueryTaskMutex);
   [(PRSQueryTask *)self->_parsecQueryTask resume];
@@ -2941,10 +2941,10 @@ LABEL_14:
   [(SPParsecQuery *)&v3 dealloc];
 }
 
-- (void)updateParsecBeyondTimeoutCount:(BOOL)a3
+- (void)updateParsecBeyondTimeoutCount:(BOOL)count
 {
   ++self->_parsecBeyondTimeoutRequestCount;
-  if (a3)
+  if (count)
   {
     self->_withinThreshold = 1;
   }
@@ -2952,11 +2952,11 @@ LABEL_14:
 
 - (double)searchTimeOut
 {
-  v3 = [interface searchSession];
-  if (v3)
+  searchSession = [interface searchSession];
+  if (searchSession)
   {
-    v4 = [interface searchSession];
-    [v4 searchRenderTimeout];
+    searchSession2 = [interface searchSession];
+    [searchSession2 searchRenderTimeout];
     v6 = v5;
   }
 
@@ -2971,17 +2971,17 @@ LABEL_14:
 
 - (double)suggestionTimeOut
 {
-  v3 = [interface searchSession];
-  [v3 suggestionsRenderTimeout];
+  searchSession = [interface searchSession];
+  [searchSession suggestionsRenderTimeout];
   v5 = v4;
 
   [(SPParsecQuery *)self computeTimeout:v5];
   return result;
 }
 
-- (double)timeOut:(BOOL)a3
+- (double)timeOut:(BOOL)out
 {
-  if (a3)
+  if (out)
   {
     [(SPParsecQuery *)self suggestionTimeOut];
   }
@@ -2996,26 +2996,26 @@ LABEL_14:
 
 - (SSPlistDataReader)cannedCEPValues
 {
-  v2 = [interface searchSession];
-  v3 = [v2 cannedCEPValues];
+  searchSession = [interface searchSession];
+  cannedCEPValues = [searchSession cannedCEPValues];
 
-  return v3;
+  return cannedCEPValues;
 }
 
 - (SSPlistDataReader)cepDictionary
 {
-  v2 = [interface searchSession];
-  v3 = [v2 cepDictionary];
+  searchSession = [interface searchSession];
+  cepDictionary = [searchSession cepDictionary];
 
-  return v3;
+  return cepDictionary;
 }
 
 - (NSSet)appBlocklist
 {
-  v2 = [interface searchSession];
-  v3 = [v2 appBlocklist];
+  searchSession = [interface searchSession];
+  appBlocklist = [searchSession appBlocklist];
 
-  return v3;
+  return appBlocklist;
 }
 
 - (SPFederatedQueryTask)resultPipe

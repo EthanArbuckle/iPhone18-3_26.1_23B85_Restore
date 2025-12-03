@@ -11,12 +11,12 @@
   if (v8 && [v8 count])
   {
     v7 = [objc_alloc(MEMORY[0x1E69D4600]) initWithDictionary:v8];
-    [a1 assertPresenceWithPresencePayload:v7 completion:v6];
+    [self assertPresenceWithPresencePayload:v7 completion:v6];
   }
 
   else
   {
-    [a1 assertPresenceWithCompletion:v6];
+    [self assertPresenceWithCompletion:v6];
   }
 }
 

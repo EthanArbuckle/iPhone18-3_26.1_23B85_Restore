@@ -7,7 +7,7 @@
 + (void)initialize
 {
   v7[7] = *MEMORY[0x277D85DE8];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v7[0] = @"person_pid";
     v7[1] = @"cloud_id";
@@ -21,7 +21,7 @@
     ML3PersonAllProperties = v3;
 
     v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    [a1 predisambiguateProperties:ML3PersonAllProperties toDictionary:v5];
+    [self predisambiguateProperties:ML3PersonAllProperties toDictionary:v5];
     v6 = ML3PersonPredisambiguatedPropertyForProperties;
     ML3PersonPredisambiguatedPropertyForProperties = v5;
   }

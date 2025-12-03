@@ -1,7 +1,7 @@
 @interface CarouselBackgroundCollectionController
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (_TtC17PromotedContentUI38CarouselBackgroundCollectionController)init;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 @end
 
 @implementation CarouselBackgroundCollectionController
@@ -13,23 +13,23 @@
   return result;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v6 = sub_1C1A6D6EC();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1C1A6D6CC();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_1C19B0BAC(v10);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_1C19B0BAC(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
   v6 = sub_1C1A6D6EC();
   v7 = *(v6 - 8);
@@ -37,15 +37,15 @@
   v9 = &v17 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1C1A6D6CC();
   v10 = *(v7 + 8);
-  v11 = self;
+  selfCopy = self;
   v10(v9, v6);
-  v12 = *(&v11->super.isa + OBJC_IVAR____TtC17PromotedContentUI38CarouselBackgroundCollectionController_contentSize);
+  v12 = *(&selfCopy->super.isa + OBJC_IVAR____TtC17PromotedContentUI38CarouselBackgroundCollectionController_contentSize);
   v13 = 0.0;
   v14 = 0.0;
   if (v12 != 0.0)
   {
-    v13 = v12 / (*(&v11->super.isa + OBJC_IVAR____TtC17PromotedContentUI38CarouselBackgroundCollectionController_elements))[2];
-    v14 = *&v11->elements[OBJC_IVAR____TtC17PromotedContentUI38CarouselBackgroundCollectionController_contentSize];
+    v13 = v12 / (*(&selfCopy->super.isa + OBJC_IVAR____TtC17PromotedContentUI38CarouselBackgroundCollectionController_elements))[2];
+    v14 = *&selfCopy->elements[OBJC_IVAR____TtC17PromotedContentUI38CarouselBackgroundCollectionController_contentSize];
   }
 
   v15 = v13;

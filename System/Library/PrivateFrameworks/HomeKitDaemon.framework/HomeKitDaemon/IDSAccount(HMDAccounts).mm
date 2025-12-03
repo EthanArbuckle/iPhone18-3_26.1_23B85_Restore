@@ -8,13 +8,13 @@
 - (id)hmd_handles
 {
   v20 = *MEMORY[0x277D85DE8];
-  v1 = [a1 handles];
-  v2 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v1, "count")}];
+  handles = [self handles];
+  v2 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(handles, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = v1;
+  v3 = handles;
   v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {

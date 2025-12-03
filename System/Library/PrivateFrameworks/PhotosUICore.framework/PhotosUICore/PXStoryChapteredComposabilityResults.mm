@@ -1,16 +1,16 @@
 @interface PXStoryChapteredComposabilityResults
-- ($94F468A8D4C62B317260615823C2B210)composabilityScoresAtIndex:(unint64_t)a3;
+- ($94F468A8D4C62B317260615823C2B210)composabilityScoresAtIndex:(unint64_t)index;
 - (PXStoryChapteredComposabilityResults)init;
-- (PXStoryChapteredComposabilityResults)initWithDisplayAssets:(id)a3 originalResults:(id)a4 chapterCollection:(id)a5;
+- (PXStoryChapteredComposabilityResults)initWithDisplayAssets:(id)assets originalResults:(id)results chapterCollection:(id)collection;
 - (unint64_t)count;
 @end
 
 @implementation PXStoryChapteredComposabilityResults
 
-- ($94F468A8D4C62B317260615823C2B210)composabilityScoresAtIndex:(unint64_t)a3
+- ($94F468A8D4C62B317260615823C2B210)composabilityScoresAtIndex:(unint64_t)index
 {
-  v5 = [(PXStoryChapteredComposabilityResults *)self originalResults];
-  [v5 composabilityScoresAtIndex:a3];
+  originalResults = [(PXStoryChapteredComposabilityResults *)self originalResults];
+  [originalResults composabilityScoresAtIndex:index];
   v7 = v6;
   v9 = v8;
 
@@ -20,13 +20,13 @@
   aBlock[3] = &unk_1E7743BB8;
   aBlock[4] = self;
   v10 = _Block_copy(aBlock);
-  if ((v10[2](v10, a3 - 1) & 1) != 0 || v10[2](v10, a3))
+  if ((v10[2](v10, index - 1) & 1) != 0 || v10[2](v10, index))
   {
     v9 = 0.0;
     v7 = 0.0;
   }
 
-  if (v10[2](v10, a3 + 1))
+  if (v10[2](v10, index + 1))
   {
     v9 = 0.0;
   }
@@ -64,26 +64,26 @@ uint64_t __67__PXStoryChapteredComposabilityResults_composabilityScoresAtIndex__
 
 - (unint64_t)count
 {
-  v2 = [(PXStoryChapteredComposabilityResults *)self originalResults];
-  v3 = [v2 count];
+  originalResults = [(PXStoryChapteredComposabilityResults *)self originalResults];
+  v3 = [originalResults count];
 
   return v3;
 }
 
-- (PXStoryChapteredComposabilityResults)initWithDisplayAssets:(id)a3 originalResults:(id)a4 chapterCollection:(id)a5
+- (PXStoryChapteredComposabilityResults)initWithDisplayAssets:(id)assets originalResults:(id)results chapterCollection:(id)collection
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  assetsCopy = assets;
+  resultsCopy = results;
+  collectionCopy = collection;
   v15.receiver = self;
   v15.super_class = PXStoryChapteredComposabilityResults;
   v12 = [(PXStoryChapteredComposabilityResults *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_displayAssets, a3);
-    objc_storeStrong(&v13->_originalResults, a4);
-    objc_storeStrong(&v13->_chapterCollection, a5);
+    objc_storeStrong(&v12->_displayAssets, assets);
+    objc_storeStrong(&v13->_originalResults, results);
+    objc_storeStrong(&v13->_chapterCollection, collection);
   }
 
   return v13;
@@ -91,8 +91,8 @@ uint64_t __67__PXStoryChapteredComposabilityResults_composabilityScoresAtIndex__
 
 - (PXStoryChapteredComposabilityResults)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryChapteredComposabilityResults.m" lineNumber:26 description:{@"%s is not available as initializer", "-[PXStoryChapteredComposabilityResults init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryChapteredComposabilityResults.m" lineNumber:26 description:{@"%s is not available as initializer", "-[PXStoryChapteredComposabilityResults init]"}];
 
   abort();
 }

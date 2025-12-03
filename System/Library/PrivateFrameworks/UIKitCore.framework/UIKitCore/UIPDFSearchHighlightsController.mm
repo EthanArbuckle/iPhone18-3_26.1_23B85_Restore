@@ -1,31 +1,31 @@
 @interface UIPDFSearchHighlightsController
 - (BOOL)hasSearchHighlights;
-- (CGRect)unionFrom:(unint64_t)a3 to:(unint64_t)a4;
-- (UIPDFSearchHighlightsController)initWithPageView:(id)a3;
-- (id)hitTest:(CGPoint)a3;
-- (unint64_t)indexOfColumnBreakStartingAt:(unint64_t)a3;
-- (void)_addAnimation2:(id)a3;
-- (void)_addAnimation:(id)a3;
-- (void)addLayer:(CGRect)a3 path:(CGPath *)a4 shadowPath:(CGPath *)a5 animated:(BOOL)a6;
-- (void)addSearchHighlightForRotatedSelection:(id)a3 animated:(BOOL)a4;
-- (void)addSearchHighlightForSelection:(id)a3 animated:(BOOL)a4;
+- (CGRect)unionFrom:(unint64_t)from to:(unint64_t)to;
+- (UIPDFSearchHighlightsController)initWithPageView:(id)view;
+- (id)hitTest:(CGPoint)test;
+- (unint64_t)indexOfColumnBreakStartingAt:(unint64_t)at;
+- (void)_addAnimation2:(id)animation2;
+- (void)_addAnimation:(id)animation;
+- (void)addLayer:(CGRect)layer path:(CGPath *)path shadowPath:(CGPath *)shadowPath animated:(BOOL)animated;
+- (void)addSearchHighlightForRotatedSelection:(id)selection animated:(BOOL)animated;
+- (void)addSearchHighlightForSelection:(id)selection animated:(BOOL)animated;
 - (void)clearSearchHighlights;
 - (void)dealloc;
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4;
-- (void)layoutSublayersOfLayer:(id)a3;
-- (void)makeType1Path:(CGPath *)a3 shadowPath:(CGPath *)a4;
-- (void)makeType1Shadow:(CGPath *)a3 rect:(CGRect)a4 inset:(CGPoint)a5;
-- (void)makeType2Path:(CGPath *)a3 to:(unint64_t)a4 shadowPath:(CGPath *)a5;
-- (void)makeType2Shadow:(CGPath *)a3 rect:(CGRect)a4;
-- (void)makeType3Path:(CGPath *)a3 from:(unint64_t)a4 to:(unint64_t)a5 shadowPath:(CGPath *)a6;
-- (void)makeType4Path:(CGPath *)a3 from:(unint64_t)a4 to:(unint64_t)a5 shadowPath:(CGPath *)a6;
-- (void)pageDidRender:(id)a3;
+- (void)drawLayer:(id)layer inContext:(CGContext *)context;
+- (void)layoutSublayersOfLayer:(id)layer;
+- (void)makeType1Path:(CGPath *)path shadowPath:(CGPath *)shadowPath;
+- (void)makeType1Shadow:(CGPath *)shadow rect:(CGRect)rect inset:(CGPoint)inset;
+- (void)makeType2Path:(CGPath *)path to:(unint64_t)to shadowPath:(CGPath *)shadowPath;
+- (void)makeType2Shadow:(CGPath *)shadow rect:(CGRect)rect;
+- (void)makeType3Path:(CGPath *)path from:(unint64_t)from to:(unint64_t)to shadowPath:(CGPath *)shadowPath;
+- (void)makeType4Path:(CGPath *)path from:(unint64_t)from to:(unint64_t)to shadowPath:(CGPath *)shadowPath;
+- (void)pageDidRender:(id)render;
 - (void)setNeedsDisplay;
 @end
 
 @implementation UIPDFSearchHighlightsController
 
-- (UIPDFSearchHighlightsController)initWithPageView:(id)a3
+- (UIPDFSearchHighlightsController)initWithPageView:(id)view
 {
   v15 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -34,7 +34,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_pageView = a3;
+    v4->_pageView = view;
     v4->_searchHighlightLayers = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:0];
     DeviceRGB = CGColorSpaceCreateDeviceRGB();
     *components = xmmword_18A6817A0;
@@ -67,12 +67,12 @@
   [(UIPDFSearchHighlightsController *)&v3 dealloc];
 }
 
-- (void)pageDidRender:(id)a3
+- (void)pageDidRender:(id)render
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = [a3 object];
+  object = [render object];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && v4 == self->_pageView)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && object == self->_pageView)
   {
     self->_pageRendered = 1;
     v10 = 0u;
@@ -157,36 +157,36 @@
   return searchHighlightLayers;
 }
 
-- (id)hitTest:(CGPoint)a3
+- (id)hitTest:(CGPoint)test
 {
-  v3 = [(CALayer *)[(UIView *)self->_pageView layer] hitTest:a3.x, a3.y];
+  v3 = [(CALayer *)[(UIView *)self->_pageView layer] hitTest:test.x, test.y];
 
   return [(CALayer *)v3 valueForKey:@"selection"];
 }
 
-- (void)_addAnimation:(id)a3
+- (void)_addAnimation:(id)animation
 {
   v4 = [MEMORY[0x1E6979318] animationWithKeyPath:@"bounds"];
   v5 = MEMORY[0x1E696B098];
-  [a3 bounds];
+  [animation bounds];
   v9 = CGRectInset(v8, -10.0, -10.0);
   [v4 setFromValue:{objc_msgSend(v5, "valueWithCGRect:", v9.origin.x, v9.origin.y, v9.size.width, v9.size.height)}];
   v6 = MEMORY[0x1E696B098];
-  [a3 bounds];
+  [animation bounds];
   [v4 setToValue:{objc_msgSend(v6, "valueWithCGRect:")}];
   [v4 setDuration:0.5];
 
-  [a3 addAnimation:v4 forKey:0];
+  [animation addAnimation:v4 forKey:0];
 }
 
-- (void)_addAnimation2:(id)a3
+- (void)_addAnimation2:(id)animation2
 {
   v4 = [MEMORY[0x1E6979318] animationWithKeyPath:@"transform"];
   v5 = 0uLL;
   memset(&v8, 0, sizeof(v8));
-  if (a3)
+  if (animation2)
   {
-    [a3 transform];
+    [animation2 transform];
     v5 = 0uLL;
   }
 
@@ -205,31 +205,31 @@
   v6 = v8;
   [v4 setToValue:{objc_msgSend(MEMORY[0x1E696B098], "valueWithCATransform3D:", &v6)}];
   [v4 setDuration:0.4];
-  [a3 addAnimation:v4 forKey:0];
+  [animation2 addAnimation:v4 forKey:0];
 }
 
-- (void)addSearchHighlightForRotatedSelection:(id)a3 animated:(BOOL)a4
+- (void)addSearchHighlightForRotatedSelection:(id)selection animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = [a3 numberOfRectangles];
-  if (v7)
+  animatedCopy = animated;
+  numberOfRectangles = [selection numberOfRectangles];
+  if (numberOfRectangles)
   {
-    v8 = v7;
+    v8 = numberOfRectangles;
     v9 = 0;
     v10 = 0.5;
     do
     {
       memset(&v33, 0, sizeof(v33));
       memset(&v32, 0, sizeof(v32));
-      [a3 getBounds:&v32 transform:&v33 index:v9];
+      [selection getBounds:&v32 transform:&v33 index:v9];
       [(UIPDFPageView *)self->_pageView convertRectFromPDFPageSpace:*&v32.origin, *&v32.size];
       v35 = CGRectInset(v34, -2.0, -2.0);
       x = v35.origin.x;
       y = v35.origin.y;
       width = v35.size.width;
       height = v35.size.height;
-      v15 = [MEMORY[0x1E6979398] layer];
-      [v15 setBounds:{x, y, width, height}];
+      layer = [MEMORY[0x1E6979398] layer];
+      [layer setBounds:{x, y, width, height}];
       v36.origin.x = x;
       v36.origin.y = y;
       v36.size.width = width;
@@ -269,25 +269,25 @@
         *&v25.c = *&v31.m13;
         *&v25.tx = *&v31.m21;
         v26 = *&v31.m23;
-        [v15 setTransform:&v25];
+        [layer setTransform:&v25];
       }
 
-      [v15 setPosition:{MidX, MidY + v10}];
-      [v15 setBackgroundColor:self->_highlightColor];
+      [layer setPosition:{MidX, MidY + v10}];
+      [layer setBackgroundColor:self->_highlightColor];
       LODWORD(v24) = 1.0;
-      [v15 setOpacity:v24];
-      [v15 setCornerRadius:3.0];
-      [v15 setBorderWidth:0.0];
-      [v15 setHidden:!self->_pageRendered];
-      [v15 setValue:a3 forKey:@"selection"];
-      [v15 setDelegate:self];
-      [v15 setNeedsLayout];
-      [v15 setNeedsDisplay];
-      [(NSMutableArray *)self->_searchHighlightLayers addObject:v15];
-      [(CALayer *)[(UIView *)self->_pageView layer] addSublayer:v15];
-      if (v4)
+      [layer setOpacity:v24];
+      [layer setCornerRadius:3.0];
+      [layer setBorderWidth:0.0];
+      [layer setHidden:!self->_pageRendered];
+      [layer setValue:selection forKey:@"selection"];
+      [layer setDelegate:self];
+      [layer setNeedsLayout];
+      [layer setNeedsDisplay];
+      [(NSMutableArray *)self->_searchHighlightLayers addObject:layer];
+      [(CALayer *)[(UIView *)self->_pageView layer] addSublayer:layer];
+      if (animatedCopy)
       {
-        [(UIPDFSearchHighlightsController *)self _addAnimation:v15];
+        [(UIPDFSearchHighlightsController *)self _addAnimation:layer];
       }
 
       ++v9;
@@ -297,15 +297,15 @@
   }
 }
 
-- (void)addLayer:(CGRect)a3 path:(CGPath *)a4 shadowPath:(CGPath *)a5 animated:(BOOL)a6
+- (void)addLayer:(CGRect)layer path:(CGPath *)path shadowPath:(CGPath *)shadowPath animated:(BOOL)animated
 {
-  v6 = a6;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v14 = [MEMORY[0x1E69794A0] layer];
-  [v14 setBounds:{x, y, width, height}];
+  animatedCopy = animated;
+  height = layer.size.height;
+  width = layer.size.width;
+  y = layer.origin.y;
+  x = layer.origin.x;
+  layer = [MEMORY[0x1E69794A0] layer];
+  [layer setBounds:{x, y, width, height}];
   v20.origin.x = x;
   v20.origin.y = y;
   v20.size.width = width;
@@ -315,44 +315,44 @@
   v21.origin.y = y;
   v21.size.width = width;
   v21.size.height = height;
-  [v14 setPosition:{MidX, CGRectGetMidY(v21)}];
-  [v14 setFillColor:self->_highlightColor];
+  [layer setPosition:{MidX, CGRectGetMidY(v21)}];
+  [layer setFillColor:self->_highlightColor];
   LODWORD(v16) = 0.25;
-  [v14 setOpacity:v16];
-  [v14 setStrokeColor:self->_borderColor];
-  [v14 setValue:self->_selection forKey:@"selection"];
-  [v14 setPath:a4];
-  [v14 setHidden:!self->_pageRendered];
-  if (a5)
+  [layer setOpacity:v16];
+  [layer setStrokeColor:self->_borderColor];
+  [layer setValue:self->_selection forKey:@"selection"];
+  [layer setPath:path];
+  [layer setHidden:!self->_pageRendered];
+  if (shadowPath)
   {
-    [v14 setShadowPath:a5];
-    [v14 setShadowOffset:{5.0, 5.0}];
+    [layer setShadowPath:shadowPath];
+    [layer setShadowOffset:{5.0, 5.0}];
     LODWORD(v17) = 1.0;
-    [v14 setShadowOpacity:v17];
-    [v14 setShadowColor:{-[UIColor CGColor](+[UIColor blackColor](UIColor, "blackColor"), "CGColor")}];
+    [layer setShadowOpacity:v17];
+    [layer setShadowColor:{-[UIColor CGColor](+[UIColor blackColor](UIColor, "blackColor"), "CGColor")}];
   }
 
-  if (v6)
+  if (animatedCopy)
   {
-    [(UIPDFSearchHighlightsController *)self _addAnimation2:v14];
+    [(UIPDFSearchHighlightsController *)self _addAnimation2:layer];
   }
 
-  [(CALayer *)[(UIView *)self->_pageView layer] addSublayer:v14];
+  [(CALayer *)[(UIView *)self->_pageView layer] addSublayer:layer];
   searchHighlightLayers = self->_searchHighlightLayers;
 
-  [(NSMutableArray *)searchHighlightLayers addObject:v14];
+  [(NSMutableArray *)searchHighlightLayers addObject:layer];
 }
 
-- (unint64_t)indexOfColumnBreakStartingAt:(unint64_t)a3
+- (unint64_t)indexOfColumnBreakStartingAt:(unint64_t)at
 {
   v5 = [(NSMutableArray *)self->_rectangles count];
   v6 = v5;
-  if (v5 - 1 > a3)
+  if (v5 - 1 > at)
   {
     v7 = v5;
-    [-[NSMutableArray objectAtIndex:](self->_rectangles objectAtIndex:{a3), "CGRectValue"}];
+    [-[NSMutableArray objectAtIndex:](self->_rectangles objectAtIndex:{at), "CGRectValue"}];
     MinY = CGRectGetMinY(v13);
-    v9 = a3 + 1;
+    v9 = at + 1;
     do
     {
       v6 = v9;
@@ -374,19 +374,19 @@
   return v6;
 }
 
-- (CGRect)unionFrom:(unint64_t)a3 to:(unint64_t)a4
+- (CGRect)unionFrom:(unint64_t)from to:(unint64_t)to
 {
   v7 = [(NSMutableArray *)self->_rectangles count];
-  if (v7 > a3 && v7 > a4 && a3 <= a4)
+  if (v7 > from && v7 > to && from <= to)
   {
-    [-[NSMutableArray objectAtIndex:](self->_rectangles objectAtIndex:{a3), "CGRectValue"}];
+    [-[NSMutableArray objectAtIndex:](self->_rectangles objectAtIndex:{from), "CGRectValue"}];
     x = v16;
     y = v17;
     width = v18;
     height = v19;
-    if (a3 < a4)
+    if (from < to)
     {
-      v20 = a3 + 1;
+      v20 = from + 1;
       do
       {
         [-[NSMutableArray objectAtIndex:](self->_rectangles objectAtIndex:{v20), "CGRectValue"}];
@@ -406,7 +406,7 @@
         ++v20;
       }
 
-      while (v20 <= a4);
+      while (v20 <= to);
     }
   }
 
@@ -429,14 +429,14 @@
   return result;
 }
 
-- (void)makeType1Shadow:(CGPath *)a3 rect:(CGRect)a4 inset:(CGPoint)a5
+- (void)makeType1Shadow:(CGPath *)shadow rect:(CGRect)rect inset:(CGPoint)inset
 {
-  x = a5.x;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  v9 = a4.origin.x;
-  MinX = CGRectGetMinX(a4);
+  x = inset.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  v9 = rect.origin.x;
+  MinX = CGRectGetMinX(rect);
   v17.origin.x = v9;
   v17.origin.y = y;
   v17.size.width = width;
@@ -452,27 +452,27 @@
   v19.size.width = width;
   v19.size.height = height;
   MinY = CGRectGetMinY(v19);
-  CGPathMoveToPoint(a3, 0, MinX, MaxY);
-  CGPathAddLineToPoint(a3, 0, MinX, MaxY + -5.0);
-  CGPathAddLineToPoint(a3, 0, x + -5.0, MaxY + -5.0);
-  CGPathAddLineToPoint(a3, 0, x + -5.0, a5.y + -5.0);
-  CGPathAddLineToPoint(a3, 0, MaxX + -5.0, a5.y + -5.0);
-  CGPathAddLineToPoint(a3, 0, MaxX + -5.0, MinY);
-  CGPathAddLineToPoint(a3, 0, MaxX, MinY);
-  CGPathAddLineToPoint(a3, 0, MaxX, a5.y);
-  CGPathAddLineToPoint(a3, 0, a5.x, a5.y);
-  CGPathAddLineToPoint(a3, 0, a5.x, MaxY);
+  CGPathMoveToPoint(shadow, 0, MinX, MaxY);
+  CGPathAddLineToPoint(shadow, 0, MinX, MaxY + -5.0);
+  CGPathAddLineToPoint(shadow, 0, x + -5.0, MaxY + -5.0);
+  CGPathAddLineToPoint(shadow, 0, x + -5.0, inset.y + -5.0);
+  CGPathAddLineToPoint(shadow, 0, MaxX + -5.0, inset.y + -5.0);
+  CGPathAddLineToPoint(shadow, 0, MaxX + -5.0, MinY);
+  CGPathAddLineToPoint(shadow, 0, MaxX, MinY);
+  CGPathAddLineToPoint(shadow, 0, MaxX, inset.y);
+  CGPathAddLineToPoint(shadow, 0, inset.x, inset.y);
+  CGPathAddLineToPoint(shadow, 0, inset.x, MaxY);
 
-  CGPathCloseSubpath(a3);
+  CGPathCloseSubpath(shadow);
 }
 
-- (void)makeType2Shadow:(CGPath *)a3 rect:(CGRect)a4
+- (void)makeType2Shadow:(CGPath *)shadow rect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  MinX = CGRectGetMinX(a4);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  MinX = CGRectGetMinX(rect);
   v14.origin.x = x;
   v14.origin.y = y;
   v14.size.width = width;
@@ -488,17 +488,17 @@
   v16.size.width = width;
   v16.size.height = height;
   MinY = CGRectGetMinY(v16);
-  CGPathMoveToPoint(a3, 0, MinX, MaxY);
-  CGPathAddLineToPoint(a3, 0, MinX, MaxY + -5.0);
-  CGPathAddLineToPoint(a3, 0, MaxX + -5.0, MaxY + -5.0);
-  CGPathAddLineToPoint(a3, 0, MaxX + -5.0, MinY);
-  CGPathAddLineToPoint(a3, 0, MaxX, MinY);
-  CGPathAddLineToPoint(a3, 0, MaxX, MaxY);
+  CGPathMoveToPoint(shadow, 0, MinX, MaxY);
+  CGPathAddLineToPoint(shadow, 0, MinX, MaxY + -5.0);
+  CGPathAddLineToPoint(shadow, 0, MaxX + -5.0, MaxY + -5.0);
+  CGPathAddLineToPoint(shadow, 0, MaxX + -5.0, MinY);
+  CGPathAddLineToPoint(shadow, 0, MaxX, MinY);
+  CGPathAddLineToPoint(shadow, 0, MaxX, MaxY);
 
-  CGPathCloseSubpath(a3);
+  CGPathCloseSubpath(shadow);
 }
 
-- (void)makeType1Path:(CGPath *)a3 shadowPath:(CGPath *)a4
+- (void)makeType1Path:(CGPath *)path shadowPath:(CGPath *)shadowPath
 {
   v7 = [(NSMutableArray *)self->_rectangles count];
   [-[NSMutableArray objectAtIndex:](self->_rectangles objectAtIndex:{0), "CGRectValue"}];
@@ -574,39 +574,39 @@
   v60.size.width = width;
   v60.size.height = height;
   v43 = CGRectGetMaxY(v60);
-  [(UIPDFSearchHighlightsController *)self makeType1Shadow:a4 rect:x inset:y, width, height, MaxX, MaxY];
+  [(UIPDFSearchHighlightsController *)self makeType1Shadow:shadowPath rect:x inset:y, width, height, MaxX, MaxY];
   v41 = vabdd_f64(v34, MaxX);
   v45 = vabdd_f64(MinX, v36);
   if (v45 <= 4.0)
   {
-    CGPathMoveToPoint(a3, 0, MinX, MinY);
+    CGPathMoveToPoint(path, 0, MinX, MinY);
   }
 
   else
   {
-    CGPathMoveToPoint(a3, 0, MinX + 4.0, MinY);
-    CGPathAddArc(a3, 0, v36 + -4.0, MinY + -4.0, 4.0, 1.57079633, 0.0, 1);
+    CGPathMoveToPoint(path, 0, MinX + 4.0, MinY);
+    CGPathAddArc(path, 0, v36 + -4.0, MinY + -4.0, 4.0, 1.57079633, 0.0, 1);
   }
 
-  CGPathAddArc(a3, 0, v36 + 4.0, rect + 4.0, 4.0, 3.14159265, -1.57079633, 0);
-  CGPathAddArc(a3, 0, v34 + -4.0, rect + 4.0, 4.0, -1.57079633, 0.0, 0);
+  CGPathAddArc(path, 0, v36 + 4.0, rect + 4.0, 4.0, 3.14159265, -1.57079633, 0);
+  CGPathAddArc(path, 0, v34 + -4.0, rect + 4.0, 4.0, -1.57079633, 0.0, 0);
   if (v41 > 4.0)
   {
-    CGPathAddArc(a3, 0, v34 + -4.0, MaxY + -4.0, 4.0, 0.0, 1.57079633, 0);
-    CGPathAddArc(a3, 0, MaxX + 4.0, MaxY + 4.0, 4.0, -1.57079633, 3.14159265, 1);
+    CGPathAddArc(path, 0, v34 + -4.0, MaxY + -4.0, 4.0, 0.0, 1.57079633, 0);
+    CGPathAddArc(path, 0, MaxX + 4.0, MaxY + 4.0, 4.0, -1.57079633, 3.14159265, 1);
   }
 
-  CGPathAddArc(a3, 0, MaxX + -4.0, v43 + -4.0, 4.0, 0.0, 1.57079633, 0);
-  CGPathAddArc(a3, 0, MinX + 4.0, v43 + -4.0, 4.0, 1.57079633, -3.14159265, 0);
+  CGPathAddArc(path, 0, MaxX + -4.0, v43 + -4.0, 4.0, 0.0, 1.57079633, 0);
+  CGPathAddArc(path, 0, MinX + 4.0, v43 + -4.0, 4.0, 1.57079633, -3.14159265, 0);
   if (v45 > 4.0)
   {
-    CGPathAddArc(a3, 0, MinX + 4.0, MinY + 4.0, 4.0, 3.14159265, -1.57079633, 0);
+    CGPathAddArc(path, 0, MinX + 4.0, MinY + 4.0, 4.0, 3.14159265, -1.57079633, 0);
   }
 
-  CGPathCloseSubpath(a3);
+  CGPathCloseSubpath(path);
 }
 
-- (void)makeType2Path:(CGPath *)a3 to:(unint64_t)a4 shadowPath:(CGPath *)a5
+- (void)makeType2Path:(CGPath *)path to:(unint64_t)to shadowPath:(CGPath *)shadowPath
 {
   [-[NSMutableArray objectAtIndex:](self->_rectangles objectAtIndex:{0), "CGRectValue"}];
   v10 = v9;
@@ -614,7 +614,7 @@
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  [(UIPDFSearchHighlightsController *)self unionFrom:1 to:a4];
+  [(UIPDFSearchHighlightsController *)self unionFrom:1 to:to];
   v47.origin.x = v17;
   recta = v17;
   v47.origin.y = v18;
@@ -632,7 +632,7 @@
   y = v40.origin.y;
   width = v40.size.width;
   height = v40.size.height;
-  [(UIPDFSearchHighlightsController *)self makeType2Shadow:a5 rect:?];
+  [(UIPDFSearchHighlightsController *)self makeType2Shadow:shadowPath rect:?];
   v41.origin.x = x;
   v41.origin.y = y;
   v41.size.width = width;
@@ -666,37 +666,37 @@
   v28 = vabdd_f64(MinX, v26);
   if (v28 <= 4.0)
   {
-    CGPathMoveToPoint(a3, 0, MinX, v27);
+    CGPathMoveToPoint(path, 0, MinX, v27);
     v29 = MinX + 4.0;
   }
 
   else
   {
     v29 = MinX + 4.0;
-    CGPathMoveToPoint(a3, 0, v29, v27);
-    CGPathAddArc(a3, 0, v26 + -4.0, v27 + -4.0, 4.0, 1.57079633, 0.0, 1);
+    CGPathMoveToPoint(path, 0, v29, v27);
+    CGPathAddArc(path, 0, v26 + -4.0, v27 + -4.0, 4.0, 1.57079633, 0.0, 1);
   }
 
-  CGPathAddArc(a3, 0, v26 + 4.0, MinY + 4.0, 4.0, 3.14159265, -1.57079633, 0);
-  CGPathAddArc(a3, 0, rect_8 + -4.0, MinY + 4.0, 4.0, -1.57079633, 0.0, 0);
-  CGPathAddArc(a3, 0, rect_8 + -4.0, rect + -4.0, 4.0, 0.0, 1.57079633, 0);
-  CGPathAddArc(a3, 0, v29, rect + -4.0, 4.0, 1.57079633, -3.14159265, 0);
+  CGPathAddArc(path, 0, v26 + 4.0, MinY + 4.0, 4.0, 3.14159265, -1.57079633, 0);
+  CGPathAddArc(path, 0, rect_8 + -4.0, MinY + 4.0, 4.0, -1.57079633, 0.0, 0);
+  CGPathAddArc(path, 0, rect_8 + -4.0, rect + -4.0, 4.0, 0.0, 1.57079633, 0);
+  CGPathAddArc(path, 0, v29, rect + -4.0, 4.0, 1.57079633, -3.14159265, 0);
   if (v28 > 4.0)
   {
-    CGPathAddArc(a3, 0, v29, v27 + 4.0, 4.0, 3.14159265, -1.57079633, 0);
+    CGPathAddArc(path, 0, v29, v27 + 4.0, 4.0, 3.14159265, -1.57079633, 0);
   }
 
-  CGPathCloseSubpath(a3);
+  CGPathCloseSubpath(path);
 }
 
-- (void)makeType3Path:(CGPath *)a3 from:(unint64_t)a4 to:(unint64_t)a5 shadowPath:(CGPath *)a6
+- (void)makeType3Path:(CGPath *)path from:(unint64_t)from to:(unint64_t)to shadowPath:(CGPath *)shadowPath
 {
-  [(UIPDFSearchHighlightsController *)self unionFrom:a4 to:a5];
+  [(UIPDFSearchHighlightsController *)self unionFrom:from to:to];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  [(UIPDFSearchHighlightsController *)self makeType2Shadow:a6 rect:?];
+  [(UIPDFSearchHighlightsController *)self makeType2Shadow:shadowPath rect:?];
   v26.origin.x = v10;
   v26.origin.y = v12;
   v26.size.width = v14;
@@ -737,23 +737,23 @@
   v33.size.width = v14;
   v33.size.height = v16;
   v20 = CGRectGetMaxY(v33);
-  CGPathMoveToPoint(a3, 0, MinX + 4.0, MinY);
-  CGPathAddArc(a3, 0, MaxX + -4.0, v18 + 4.0, 4.0, -1.57079633, 0.0, 0);
-  CGPathAddArc(a3, 0, v21 + -4.0, MaxY + -4.0, 4.0, 0.0, 1.57079633, 0);
-  CGPathAddArc(a3, 0, v23 + 4.0, v20 + -4.0, 4.0, 1.57079633, -3.14159265, 0);
-  CGPathAddArc(a3, 0, MinX + 4.0, MinY + 4.0, 4.0, 3.14159265, -1.57079633, 0);
+  CGPathMoveToPoint(path, 0, MinX + 4.0, MinY);
+  CGPathAddArc(path, 0, MaxX + -4.0, v18 + 4.0, 4.0, -1.57079633, 0.0, 0);
+  CGPathAddArc(path, 0, v21 + -4.0, MaxY + -4.0, 4.0, 0.0, 1.57079633, 0);
+  CGPathAddArc(path, 0, v23 + 4.0, v20 + -4.0, 4.0, 1.57079633, -3.14159265, 0);
+  CGPathAddArc(path, 0, MinX + 4.0, MinY + 4.0, 4.0, 3.14159265, -1.57079633, 0);
 
-  CGPathCloseSubpath(a3);
+  CGPathCloseSubpath(path);
 }
 
-- (void)makeType4Path:(CGPath *)a3 from:(unint64_t)a4 to:(unint64_t)a5 shadowPath:(CGPath *)a6
+- (void)makeType4Path:(CGPath *)path from:(unint64_t)from to:(unint64_t)to shadowPath:(CGPath *)shadowPath
 {
-  [-[NSMutableArray objectAtIndex:](self->_rectangles objectAtIndex:{a5), "CGRectValue"}];
+  [-[NSMutableArray objectAtIndex:](self->_rectangles objectAtIndex:{to), "CGRectValue"}];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  [(UIPDFSearchHighlightsController *)self unionFrom:a4 to:a5 - 1];
+  [(UIPDFSearchHighlightsController *)self unionFrom:from to:to - 1];
   v38 = v20;
   y = v19;
   v36 = v22;
@@ -821,31 +821,31 @@
       v50.size.width = width;
       v50.size.height = height;
       v39 = CGRectGetMaxY(v50);
-      [(UIPDFSearchHighlightsController *)self makeType1Shadow:a6 rect:x inset:v28, width, height, MaxX, MaxY];
-      CGPathMoveToPoint(a3, 0, MinX + 4.0, MinY);
-      CGPathAddArc(a3, 0, v34 + -4.0, MinY + 4.0, 4.0, -1.57079633, 0.0, 0);
-      CGPathAddArc(a3, 0, v34 + -4.0, MaxY + -4.0, 4.0, 0.0, 1.57079633, 0);
-      CGPathAddArc(a3, 0, MaxX + 4.0, MaxY + 4.0, 4.0, -1.57079633, 3.14159265, 1);
-      CGPathAddArc(a3, 0, MaxX + -4.0, v39 + -4.0, 4.0, 0.0, 1.57079633, 0);
-      CGPathAddArc(a3, 0, MinX + 4.0, v39 + -4.0, 4.0, 1.57079633, -3.14159265, 0);
-      CGPathAddArc(a3, 0, MinX + 4.0, MinY + 4.0, 4.0, 3.14159265, -1.57079633, 0);
+      [(UIPDFSearchHighlightsController *)self makeType1Shadow:shadowPath rect:x inset:v28, width, height, MaxX, MaxY];
+      CGPathMoveToPoint(path, 0, MinX + 4.0, MinY);
+      CGPathAddArc(path, 0, v34 + -4.0, MinY + 4.0, 4.0, -1.57079633, 0.0, 0);
+      CGPathAddArc(path, 0, v34 + -4.0, MaxY + -4.0, 4.0, 0.0, 1.57079633, 0);
+      CGPathAddArc(path, 0, MaxX + 4.0, MaxY + 4.0, 4.0, -1.57079633, 3.14159265, 1);
+      CGPathAddArc(path, 0, MaxX + -4.0, v39 + -4.0, 4.0, 0.0, 1.57079633, 0);
+      CGPathAddArc(path, 0, MinX + 4.0, v39 + -4.0, 4.0, 1.57079633, -3.14159265, 0);
+      CGPathAddArc(path, 0, MinX + 4.0, MinY + 4.0, 4.0, 3.14159265, -1.57079633, 0);
 
-      CGPathCloseSubpath(a3);
+      CGPathCloseSubpath(path);
     }
   }
 }
 
-- (void)addSearchHighlightForSelection:(id)a3 animated:(BOOL)a4
+- (void)addSearchHighlightForSelection:(id)selection animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = [a3 numberOfRectangles];
-  if (v7)
+  animatedCopy = animated;
+  numberOfRectangles = [selection numberOfRectangles];
+  if (numberOfRectangles)
   {
-    v8 = v7;
+    v8 = numberOfRectangles;
     v34 = 0u;
     v35 = 0u;
     memset(&v33, 0, sizeof(v33));
-    [a3 getBounds:&v34 transform:&v33 index:0];
+    [selection getBounds:&v34 transform:&v33 index:0];
     if (v8 >= 3 && (v32 = v33, CGAffineTransformIsIdentity(&v32)))
     {
       self->_rectangles = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v8];
@@ -855,10 +855,10 @@
       *&v35 = v11;
       *(&v35 + 1) = v12;
       -[NSMutableArray addObject:](self->_rectangles, "addObject:", [MEMORY[0x1E696B098] valueWithCGRect:?]);
-      self->_selection = a3;
+      self->_selection = selection;
       for (i = 1; i != v8; ++i)
       {
-        [a3 getBounds:&v34 transform:&v33 index:i];
+        [selection getBounds:&v34 transform:&v33 index:i];
         [(UIPDFPageView *)self->_pageView convertRectFromPDFPageSpace:v34, v35];
         *&v34 = v36.origin.x;
         *(&v34 + 1) = *&v36.origin.y;
@@ -872,7 +872,7 @@
         -[NSMutableArray addObject:](self->_rectangles, "addObject:", [MEMORY[0x1E696B098] valueWithCGRect:?]);
       }
 
-      [a3 bounds];
+      [selection bounds];
       [(UIPDFPageView *)self->_pageView convertRectFromPDFPageSpace:?];
       v15 = v14;
       v17 = v16;
@@ -884,7 +884,7 @@
       if (v22 == v8)
       {
         [(UIPDFSearchHighlightsController *)self makeType1Path:Mutable shadowPath:v24];
-        [(UIPDFSearchHighlightsController *)self addLayer:Mutable path:v24 shadowPath:v4 animated:v15, v17, v19, v21];
+        [(UIPDFSearchHighlightsController *)self addLayer:Mutable path:v24 shadowPath:animatedCopy animated:v15, v17, v19, v21];
         CGPathRelease(Mutable);
         v25 = v24;
       }
@@ -892,7 +892,7 @@
       else
       {
         [(UIPDFSearchHighlightsController *)self makeType2Path:Mutable to:v22 - 1 shadowPath:v24];
-        [(UIPDFSearchHighlightsController *)self addLayer:Mutable path:v24 shadowPath:v4 animated:v15, v17, v19, v21];
+        [(UIPDFSearchHighlightsController *)self addLayer:Mutable path:v24 shadowPath:animatedCopy animated:v15, v17, v19, v21];
         CGPathRelease(Mutable);
         CGPathRelease(v24);
         v26 = [(UIPDFSearchHighlightsController *)self indexOfColumnBreakStartingAt:v22];
@@ -909,7 +909,7 @@
             v28 = CGPathCreateMutable();
             v29 = CGPathCreateMutable();
             [(UIPDFSearchHighlightsController *)self makeType3Path:v28 from:v22 to:v27 - 1 shadowPath:v29];
-            [(UIPDFSearchHighlightsController *)self addLayer:v28 path:v29 shadowPath:v4 animated:v15, v17, v19, v21];
+            [(UIPDFSearchHighlightsController *)self addLayer:v28 path:v29 shadowPath:animatedCopy animated:v15, v17, v19, v21];
             CGPathRelease(v28);
             CGPathRelease(v29);
             v26 = [(UIPDFSearchHighlightsController *)self indexOfColumnBreakStartingAt:v27];
@@ -922,7 +922,7 @@
         v30 = CGPathCreateMutable();
         v31 = CGPathCreateMutable();
         [(UIPDFSearchHighlightsController *)self makeType4Path:v30 from:v27 to:v8 - 1 shadowPath:v31];
-        [(UIPDFSearchHighlightsController *)self addLayer:v30 path:v31 shadowPath:v4 animated:v15, v17, v19, v21];
+        [(UIPDFSearchHighlightsController *)self addLayer:v30 path:v31 shadowPath:animatedCopy animated:v15, v17, v19, v21];
         CGPathRelease(v30);
         v25 = v31;
       }
@@ -933,7 +933,7 @@
 
     else
     {
-      [(UIPDFSearchHighlightsController *)self addSearchHighlightForRotatedSelection:a3 animated:v4];
+      [(UIPDFSearchHighlightsController *)self addSearchHighlightForRotatedSelection:selection animated:animatedCopy];
     }
   }
 }
@@ -972,28 +972,28 @@
   }
 }
 
-- (void)layoutSublayersOfLayer:(id)a3
+- (void)layoutSublayersOfLayer:(id)layer
 {
-  v4 = [(UIView *)self->_pageView superview];
-  if (v4)
+  superview = [(UIView *)self->_pageView superview];
+  if (superview)
   {
-    v5 = [(UIView *)v4 layer];
-    if (v5)
+    layer = [(UIView *)superview layer];
+    if (layer)
     {
-      [(CALayer *)v5 transform];
+      [(CALayer *)layer transform];
       [objc_msgSend(objc_opt_self() "mainScreen")];
-      [a3 setContentsScale:v7 * v6];
+      [layer setContentsScale:v7 * v6];
     }
   }
 }
 
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4
+- (void)drawLayer:(id)layer inContext:(CGContext *)context
 {
-  v6 = [a3 valueForKey:@"selection"];
+  v6 = [layer valueForKey:@"selection"];
   if (v6)
   {
     v7 = v6;
-    CGContextSetFillColorWithColor(a4, self->_borderColor);
+    CGContextSetFillColorWithColor(context, self->_borderColor);
     if ([v7 CGSelection])
     {
       Length = CGPDFSelectionGetLength();
@@ -1007,8 +1007,8 @@
           CGFontAtIndex = CGPDFSelectionGetCGFontAtIndex();
           if (CGFontAtIndex)
           {
-            CGContextSetFont(a4, CGFontAtIndex);
-            CGContextSetFontSize(a4, 1.0);
+            CGContextSetFont(context, CGFontAtIndex);
+            CGContextSetFontSize(context, 1.0);
             glyphs[0] = CGPDFSelectionGetGlyphAtIndex();
             [(UIPDFPageView *)self->_pageView convertRectFromPDFPageSpace:*&glyphs[17] + *&glyphs[1] * 0.0 + *&glyphs[9] * 0.0, *&glyphs[21] + *&glyphs[5] * 0.0 + *&glyphs[13] * 0.0, 1.0, 1.0];
             v13 = v12;
@@ -1016,10 +1016,10 @@
             v18 = *&glyphs[1];
             CGAffineTransformScale(&v19, &v18, v17, -v16);
             *&glyphs[1] = v19;
-            CGContextSetTextMatrix(a4, &v19);
+            CGContextSetTextMatrix(context, &v19);
             if (glyphs[0])
             {
-              CGContextShowGlyphsAtPoint(a4, v13, v15, glyphs, 1uLL);
+              CGContextShowGlyphsAtPoint(context, v13, v15, glyphs, 1uLL);
             }
           }
         }

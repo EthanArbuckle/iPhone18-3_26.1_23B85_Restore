@@ -1,34 +1,34 @@
 @interface _TUIMenuItemContainer
 - (TUIModelContaining)parentModel;
-- (_TUIMenuItemContainer)initWithModel:(id)a3;
-- (void)appendObjectsWithProtocol:(id)a3 toArray:(id)a4;
+- (_TUIMenuItemContainer)initWithModel:(id)model;
+- (void)appendObjectsWithProtocol:(id)protocol toArray:(id)array;
 @end
 
 @implementation _TUIMenuItemContainer
 
-- (_TUIMenuItemContainer)initWithModel:(id)a3
+- (_TUIMenuItemContainer)initWithModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = _TUIMenuItemContainer;
   v6 = [(_TUIMenuItemContainer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_model, a3);
+    objc_storeStrong(&v6->_model, model);
   }
 
   return v7;
 }
 
-- (void)appendObjectsWithProtocol:(id)a3 toArray:(id)a4
+- (void)appendObjectsWithProtocol:(id)protocol toArray:(id)array
 {
-  v12 = a3;
-  v6 = a4;
+  protocolCopy = protocol;
+  arrayCopy = array;
   model = self->_model;
   if (model)
   {
-    v8 = &OBJC_PROTOCOL___TUIMenuItemModel == v12;
+    v8 = &OBJC_PROTOCOL___TUIMenuItemModel == protocolCopy;
   }
 
   else
@@ -38,15 +38,15 @@
 
   if (v8)
   {
-    [v6 addObject:?];
+    [arrayCopy addObject:?];
     model = self->_model;
   }
 
-  v9 = [(TUIMenuItemModel *)model imageModel];
+  imageModel = [(TUIMenuItemModel *)model imageModel];
 
-  if (v9)
+  if (imageModel)
   {
-    v10 = &OBJC_PROTOCOL___TUIImageModel == v12;
+    v10 = &OBJC_PROTOCOL___TUIImageModel == protocolCopy;
   }
 
   else
@@ -56,8 +56,8 @@
 
   if (v10)
   {
-    v11 = [(TUIMenuItemModel *)self->_model imageModel];
-    [v6 addObject:v11];
+    imageModel2 = [(TUIMenuItemModel *)self->_model imageModel];
+    [arrayCopy addObject:imageModel2];
   }
 }
 

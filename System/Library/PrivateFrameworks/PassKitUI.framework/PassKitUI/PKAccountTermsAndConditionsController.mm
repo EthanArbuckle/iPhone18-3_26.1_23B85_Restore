@@ -1,39 +1,39 @@
 @interface PKAccountTermsAndConditionsController
-- (PKAccountTermsAndConditionsController)initWithAccount:(id)a3 webService:(id)a4 context:(int64_t)a5 termsIdentifier:(id)a6;
+- (PKAccountTermsAndConditionsController)initWithAccount:(id)account webService:(id)service context:(int64_t)context termsIdentifier:(id)identifier;
 - (id)_loadViewController;
-- (void)_fetchTermsDataWithCompletion:(id)a3;
-- (void)previewControllerWillDismiss:(id)a3;
-- (void)termsViewControllerWithCompletion:(id)a3;
+- (void)_fetchTermsDataWithCompletion:(id)completion;
+- (void)previewControllerWillDismiss:(id)dismiss;
+- (void)termsViewControllerWithCompletion:(id)completion;
 @end
 
 @implementation PKAccountTermsAndConditionsController
 
-- (PKAccountTermsAndConditionsController)initWithAccount:(id)a3 webService:(id)a4 context:(int64_t)a5 termsIdentifier:(id)a6
+- (PKAccountTermsAndConditionsController)initWithAccount:(id)account webService:(id)service context:(int64_t)context termsIdentifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  accountCopy = account;
+  serviceCopy = service;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = PKAccountTermsAndConditionsController;
   v13 = [(PKAccountTermsAndConditionsController *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_account, a3);
-    objc_storeStrong(&v14->_webService, a4);
-    objc_storeStrong(&v14->_termsIdentifier, a6);
+    objc_storeStrong(&v13->_account, account);
+    objc_storeStrong(&v14->_webService, service);
+    objc_storeStrong(&v14->_termsIdentifier, identifier);
   }
 
   return v14;
 }
 
-- (void)termsViewControllerWithCompletion:(id)a3
+- (void)termsViewControllerWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(completionCopy);
     completionBlock = self->_completionBlock;
     self->_completionBlock = v6;
 
@@ -63,37 +63,37 @@ void __75__PKAccountTermsAndConditionsController_termsViewControllerWithCompleti
   }
 }
 
-- (void)_fetchTermsDataWithCompletion:(id)a3
+- (void)_fetchTermsDataWithCompletion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(PKAccount *)self->_account accountIdentifier];
+    accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
     *buf = 138412290;
-    v17 = v6;
+    v17 = accountIdentifier;
     _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_DEFAULT, "Fetching terms for account %@", buf, 0xCu);
   }
 
   v7 = objc_alloc_init(MEMORY[0x1E69B84D8]);
-  v8 = [(PKAccount *)self->_account accountBaseURL];
-  [v7 setBaseURL:v8];
+  accountBaseURL = [(PKAccount *)self->_account accountBaseURL];
+  [v7 setBaseURL:accountBaseURL];
 
   [v7 setTermsIdentifier:self->_termsIdentifier];
-  v9 = [(PKAccount *)self->_account accountIdentifier];
-  [v7 setAccountIdentifier:v9];
+  accountIdentifier2 = [(PKAccount *)self->_account accountIdentifier];
+  [v7 setAccountIdentifier:accountIdentifier2];
 
   objc_initWeak(buf, self);
-  v10 = [(PKAccount *)self->_account feature];
+  feature = [(PKAccount *)self->_account feature];
   webService = self->_webService;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __71__PKAccountTermsAndConditionsController__fetchTermsDataWithCompletion___block_invoke;
   v13[3] = &unk_1E801A0D0;
   objc_copyWeak(v15, buf);
-  v15[1] = v10;
-  v12 = v4;
+  v15[1] = feature;
+  v12 = completionCopy;
   v14 = v12;
   [(PKPaymentWebService *)webService accountTermsDataWithRequest:v7 completion:v13];
 
@@ -166,15 +166,15 @@ void __71__PKAccountTermsAndConditionsController__fetchTermsDataWithCompletion__
       _os_log_impl(&dword_1BD026000, v3, OS_LOG_TYPE_DEFAULT, "Loading terms for file name %@", buf, 0xCu);
     }
 
-    v5 = [(NSData *)self->_termsData hasPDFMIMEType];
+    hasPDFMIMEType = [(NSData *)self->_termsData hasPDFMIMEType];
     v6 = MEMORY[0x1E6982F10];
-    if (!v5)
+    if (!hasPDFMIMEType)
     {
       v6 = MEMORY[0x1E6982E18];
     }
 
-    v7 = [*v6 identifier];
-    v8 = [objc_alloc(_MergedGlobals_619()) initWithDataProvider:self contentType:v7 previewTitle:self->_termsFileName];
+    identifier = [*v6 identifier];
+    v8 = [objc_alloc(_MergedGlobals_619()) initWithDataProvider:self contentType:identifier previewTitle:self->_termsFileName];
     pdfItem = self->_pdfItem;
     self->_pdfItem = v8;
 
@@ -210,7 +210,7 @@ void __71__PKAccountTermsAndConditionsController__fetchTermsDataWithCompletion__
   return v16;
 }
 
-- (void)previewControllerWillDismiss:(id)a3
+- (void)previewControllerWillDismiss:(id)dismiss
 {
   [(QLPreviewController *)self->_previewController dismissViewControllerAnimated:1 completion:0];
   previewController = self->_previewController;

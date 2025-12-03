@@ -1,36 +1,36 @@
 @interface SWInteractionProvider
-- (SWInteractionProvider)initWithMessageHandlerManager:(id)a3 documentStateProvider:(id)a4 interactionFactory:(id)a5 logger:(id)a6;
-- (void)didReceiveMessage:(id)a3 securityOrigin:(id)a4;
-- (void)onChange:(id)a3;
+- (SWInteractionProvider)initWithMessageHandlerManager:(id)manager documentStateProvider:(id)provider interactionFactory:(id)factory logger:(id)logger;
+- (void)didReceiveMessage:(id)message securityOrigin:(id)origin;
+- (void)onChange:(id)change;
 @end
 
 @implementation SWInteractionProvider
 
-- (SWInteractionProvider)initWithMessageHandlerManager:(id)a3 documentStateProvider:(id)a4 interactionFactory:(id)a5 logger:(id)a6
+- (SWInteractionProvider)initWithMessageHandlerManager:(id)manager documentStateProvider:(id)provider interactionFactory:(id)factory logger:(id)logger
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  managerCopy = manager;
+  providerCopy = provider;
+  factoryCopy = factory;
+  loggerCopy = logger;
   v24.receiver = self;
   v24.super_class = SWInteractionProvider;
   v14 = [(SWInteractionProvider *)&v24 init];
   if (v14)
   {
-    v15 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     blocks = v14->_blocks;
-    v14->_blocks = v15;
+    v14->_blocks = array;
 
-    objc_storeStrong(&v14->_interactionFactory, a5);
-    objc_storeStrong(&v14->_logger, a6);
+    objc_storeStrong(&v14->_interactionFactory, factory);
+    objc_storeStrong(&v14->_logger, logger);
     v17 = [SWWeakMessageHandler handlerWithMessageHandler:v14];
-    [v10 addMessageHandler:v17 name:@"presentable"];
+    [managerCopy addMessageHandler:v17 name:@"presentable"];
 
     v18 = [SWWeakMessageHandler handlerWithMessageHandler:v14];
-    [v10 addMessageHandler:v18 name:@"update"];
+    [managerCopy addMessageHandler:v18 name:@"update"];
 
     v19 = [SWWeakMessageHandler handlerWithMessageHandler:v14];
-    [v10 addMessageHandler:v19 name:@"interaction"];
+    [managerCopy addMessageHandler:v19 name:@"interaction"];
 
     objc_initWeak(&location, v14);
     v21[0] = MEMORY[0x1E69E9820];
@@ -38,7 +38,7 @@
     v21[2] = __103__SWInteractionProvider_initWithMessageHandlerManager_documentStateProvider_interactionFactory_logger___block_invoke;
     v21[3] = &unk_1E84DB2B8;
     objc_copyWeak(&v22, &location);
-    [v11 onLoad:v21];
+    [providerCopy onLoad:v21];
     objc_destroyWeak(&v22);
     objc_destroyWeak(&location);
   }
@@ -53,76 +53,76 @@ void __103__SWInteractionProvider_initWithMessageHandlerManager_documentStatePro
   WeakRetained[1] = 0;
 }
 
-- (void)onChange:(id)a3
+- (void)onChange:(id)change
 {
-  if (a3)
+  if (change)
   {
-    v4 = a3;
-    v6 = [(SWInteractionProvider *)self blocks];
-    v5 = [v4 copy];
+    changeCopy = change;
+    blocks = [(SWInteractionProvider *)self blocks];
+    v5 = [changeCopy copy];
 
-    [v6 addObject:v5];
+    [blocks addObject:v5];
   }
 }
 
-- (void)didReceiveMessage:(id)a3 securityOrigin:(id)a4
+- (void)didReceiveMessage:(id)message securityOrigin:(id)origin
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 name];
-  v7 = [v6 isEqualToString:@"interaction"];
+  messageCopy = message;
+  name = [messageCopy name];
+  v7 = [name isEqualToString:@"interaction"];
 
   if (v7)
   {
-    v8 = [(SWInteractionProvider *)self logger];
+    logger = [(SWInteractionProvider *)self logger];
     v9 = MEMORY[0x1E696AEC0];
-    v10 = [(SWInteractionProvider *)self interactionBlock];
-    v11 = [v5 body];
-    v12 = [v9 stringWithFormat:@"Interaction: Invoking interaction, hasBlock=%d, Message: %@", v10 != 0, v11];
-    [v8 log:v12];
+    interactionBlock = [(SWInteractionProvider *)self interactionBlock];
+    body = [messageCopy body];
+    v12 = [v9 stringWithFormat:@"Interaction: Invoking interaction, hasBlock=%d, Message: %@", interactionBlock != 0, body];
+    [logger log:v12];
 
-    v13 = [(SWInteractionProvider *)self interactionBlock];
+    interactionBlock2 = [(SWInteractionProvider *)self interactionBlock];
 
-    if (v13)
+    if (interactionBlock2)
     {
-      v14 = [(SWInteractionProvider *)self interactionBlock];
-      v14[2]();
+      interactionBlock3 = [(SWInteractionProvider *)self interactionBlock];
+      interactionBlock3[2]();
     }
   }
 
   else
   {
-    v15 = [v5 body];
-    v16 = [v15 objectForKey:@"interaction"];
+    body2 = [messageCopy body];
+    v16 = [body2 objectForKey:@"interaction"];
 
     if (v16)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v17 = [(SWInteractionProvider *)self interactionFactory];
-        v18 = [v17 interactionForDictionary:v16];
+        interactionFactory = [(SWInteractionProvider *)self interactionFactory];
+        v18 = [interactionFactory interactionForDictionary:v16];
 
-        v19 = [(SWInteractionProvider *)self interaction];
-        v20 = [v18 isEqual:v19];
+        interaction = [(SWInteractionProvider *)self interaction];
+        v20 = [v18 isEqual:interaction];
 
         if ((v20 & 1) == 0 && v18)
         {
-          v21 = [(SWInteractionProvider *)self logger];
+          logger2 = [(SWInteractionProvider *)self logger];
           v22 = MEMORY[0x1E696AEC0];
-          v23 = [(SWInteraction *)self->_interaction type];
-          v24 = [v18 type];
-          v25 = [v5 body];
-          v26 = [v22 stringWithFormat:@"Interaction: Changing interaction type from %lu to %lu. Message: %@", v23, v24, v25];
-          [v21 log:v26];
+          type = [(SWInteraction *)self->_interaction type];
+          type2 = [v18 type];
+          body3 = [messageCopy body];
+          v26 = [v22 stringWithFormat:@"Interaction: Changing interaction type from %lu to %lu. Message: %@", type, type2, body3];
+          [logger2 log:v26];
 
           objc_storeStrong(&self->_interaction, v18);
           v36 = 0u;
           v37 = 0u;
           v34 = 0u;
           v35 = 0u;
-          v27 = [(SWInteractionProvider *)self blocks];
-          v28 = [v27 copy];
+          blocks = [(SWInteractionProvider *)self blocks];
+          v28 = [blocks copy];
 
           v29 = [v28 countByEnumeratingWithState:&v34 objects:v38 count:16];
           if (v29)

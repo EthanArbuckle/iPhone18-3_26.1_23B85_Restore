@@ -4,7 +4,7 @@
 - (id)pushSection;
 - (void)appendNode:()...;
 - (void)appendSubnode:()...;
-- (void)popSection:(id)a3;
+- (void)popSection:(id)section;
 @end
 
 @implementation BKEventGraphDescriptionAccumulator
@@ -41,10 +41,10 @@
   return v5;
 }
 
-- (void)popSection:(id)a3
+- (void)popSection:(id)section
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_223CEAD90();
   swift_unknownObjectRelease();
   sub_223CC3858(&v9, &v8);
@@ -52,8 +52,8 @@
   swift_dynamicCast();
   v5 = *&v7[OBJC_IVAR____TtC27BackBoardHIDEventFoundation22_BKGraphSectionWrapper_node];
 
-  v6 = *(&v4->super.isa + OBJC_IVAR___BKEventGraphDescriptionAccumulator_current);
-  *(&v4->super.isa + OBJC_IVAR___BKEventGraphDescriptionAccumulator_current) = v5;
+  v6 = *(&selfCopy->super.isa + OBJC_IVAR___BKEventGraphDescriptionAccumulator_current);
+  *(&selfCopy->super.isa + OBJC_IVAR___BKEventGraphDescriptionAccumulator_current) = v5;
 }
 
 - (id)build
@@ -64,7 +64,7 @@
   v7[3] = 0;
   v8 = 0;
   v2 = *(&self->super.isa + OBJC_IVAR___BKEventGraphDescriptionAccumulator_topLevel);
-  v3 = self;
+  selfCopy = self;
 
   sub_223CC34CC(v4, v7, 0);
 
@@ -76,10 +76,10 @@
 - (void)appendNode:()...
 {
   va_start(va, format);
-  if (a1)
+  if (self)
   {
     v3 = CFStringCreateWithFormatAndArguments(0, 0, format, va);
-    [a1 addSibling:v3];
+    [self addSibling:v3];
     CFRelease(v3);
   }
 }
@@ -87,10 +87,10 @@
 - (void)appendSubnode:()...
 {
   va_start(va, format);
-  if (a1)
+  if (self)
   {
     v3 = CFStringCreateWithFormatAndArguments(0, 0, format, va);
-    [a1 addSubnode:v3];
+    [self addSubnode:v3];
     CFRelease(v3);
   }
 }

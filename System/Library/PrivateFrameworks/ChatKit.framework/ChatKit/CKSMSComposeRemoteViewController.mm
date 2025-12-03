@@ -1,14 +1,14 @@
 @interface CKSMSComposeRemoteViewController
-+ (id)requestViewControllerWithConnectionHandler:(id)a3;
++ (id)requestViewControllerWithConnectionHandler:(id)handler;
 - (CKSMSComposeRemoteViewControllerDelegate)delegate;
 - (void)dealloc;
 - (void)smsComposeControllerAppeared;
 - (void)smsComposeControllerCancelled;
 - (void)smsComposeControllerDataInserted;
 - (void)smsComposeControllerEntryViewContentInserted;
-- (void)smsComposeControllerSendStartedWithText:(id)a3 messageGUID:(id)a4;
-- (void)smsComposeControllerShouldSendMessageWithText:(id)a3 toRecipients:(id)a4 completion:(id)a5;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)smsComposeControllerSendStartedWithText:(id)text messageGUID:(id)d;
+- (void)smsComposeControllerShouldSendMessageWithText:(id)text toRecipients:(id)recipients completion:(id)completion;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation CKSMSComposeRemoteViewController
@@ -21,65 +21,65 @@
   [(CKSMSComposeRemoteViewController *)&v3 dealloc];
 }
 
-+ (id)requestViewControllerWithConnectionHandler:(id)a3
++ (id)requestViewControllerWithConnectionHandler:(id)handler
 {
-  v3 = a3;
-  v4 = [objc_opt_class() requestViewController:@"CKSMSComposeViewServiceController" fromServiceWithBundleIdentifier:@"com.apple.mobilesms.compose" connectionHandler:v3];
+  handlerCopy = handler;
+  v4 = [objc_opt_class() requestViewController:@"CKSMSComposeViewServiceController" fromServiceWithBundleIdentifier:@"com.apple.mobilesms.compose" connectionHandler:handlerCopy];
 
   return v4;
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
-  v6 = a3;
-  v4 = [(CKSMSComposeRemoteViewController *)self delegate];
+  errorCopy = error;
+  delegate = [(CKSMSComposeRemoteViewController *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
-    v5 = [(CKSMSComposeRemoteViewController *)self delegate];
-    [v5 viewServiceDidTerminateWithError:v6];
+    delegate2 = [(CKSMSComposeRemoteViewController *)self delegate];
+    [delegate2 viewServiceDidTerminateWithError:errorCopy];
   }
 }
 
 - (void)smsComposeControllerDataInserted
 {
-  v2 = [(CKSMSComposeRemoteViewController *)self delegate];
-  [v2 smsComposeControllerDataInserted];
+  delegate = [(CKSMSComposeRemoteViewController *)self delegate];
+  [delegate smsComposeControllerDataInserted];
 }
 
 - (void)smsComposeControllerAppeared
 {
-  v2 = [(CKSMSComposeRemoteViewController *)self delegate];
-  [v2 smsComposeControllerAppeared];
+  delegate = [(CKSMSComposeRemoteViewController *)self delegate];
+  [delegate smsComposeControllerAppeared];
 }
 
-- (void)smsComposeControllerShouldSendMessageWithText:(id)a3 toRecipients:(id)a4 completion:(id)a5
+- (void)smsComposeControllerShouldSendMessageWithText:(id)text toRecipients:(id)recipients completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CKSMSComposeRemoteViewController *)self delegate];
-  [v11 smsComposeControllerShouldSendMessageWithText:v10 toRecipients:v9 completion:v8];
+  completionCopy = completion;
+  recipientsCopy = recipients;
+  textCopy = text;
+  delegate = [(CKSMSComposeRemoteViewController *)self delegate];
+  [delegate smsComposeControllerShouldSendMessageWithText:textCopy toRecipients:recipientsCopy completion:completionCopy];
 }
 
-- (void)smsComposeControllerSendStartedWithText:(id)a3 messageGUID:(id)a4
+- (void)smsComposeControllerSendStartedWithText:(id)text messageGUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CKSMSComposeRemoteViewController *)self delegate];
-  [v8 smsComposeControllerSendStartedWithText:v7 messageGUID:v6];
+  dCopy = d;
+  textCopy = text;
+  delegate = [(CKSMSComposeRemoteViewController *)self delegate];
+  [delegate smsComposeControllerSendStartedWithText:textCopy messageGUID:dCopy];
 }
 
 - (void)smsComposeControllerCancelled
 {
-  v2 = [(CKSMSComposeRemoteViewController *)self delegate];
-  [v2 smsComposeControllerCancelled];
+  delegate = [(CKSMSComposeRemoteViewController *)self delegate];
+  [delegate smsComposeControllerCancelled];
 }
 
 - (void)smsComposeControllerEntryViewContentInserted
 {
-  v2 = [(CKSMSComposeRemoteViewController *)self delegate];
-  [v2 smsComposeControllerEntryViewContentInserted];
+  delegate = [(CKSMSComposeRemoteViewController *)self delegate];
+  [delegate smsComposeControllerEntryViewContentInserted];
 }
 
 - (CKSMSComposeRemoteViewControllerDelegate)delegate

@@ -1,7 +1,7 @@
 @interface PSIToken
 - ($0AC6E346AE4835514AAA8AC86D8F4844)range;
-- (BOOL)isEqual:(id)a3;
-- (PSIToken)initWithString:(__CFString *)a3 range:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (PSIToken)initWithString:(__CFString *)string range:(id)range;
 - (void)dealloc;
 @end
 
@@ -24,14 +24,14 @@
   [(PSIToken *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   location = self->_range.location;
-  if (location == [v4 range])
+  if (location == [equalCopy range])
   {
     length = self->_range.length;
-    [v4 range];
+    [equalCopy range];
     v8 = length == v7;
   }
 
@@ -43,16 +43,16 @@
   return v8;
 }
 
-- (PSIToken)initWithString:(__CFString *)a3 range:(id)a4
+- (PSIToken)initWithString:(__CFString *)string range:(id)range
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v9.receiver = self;
   v9.super_class = PSIToken;
   v7 = [(PSIToken *)&v9 init];
   if (v7)
   {
-    v7->_string = CFRetain(a3);
+    v7->_string = CFRetain(string);
     v7->_range.location = var0;
     v7->_range.length = var1;
   }

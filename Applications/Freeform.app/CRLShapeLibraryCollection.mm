@@ -1,26 +1,26 @@
 @interface CRLShapeLibraryCollection
-- (CRLShapeLibraryCollection)initWithShapeLibrary:(id)a3 categoryIndex:(unint64_t)a4;
+- (CRLShapeLibraryCollection)initWithShapeLibrary:(id)library categoryIndex:(unint64_t)index;
 - (NSString)name;
 - (id)p_category;
-- (id)shapeAtIndex:(unint64_t)a3;
-- (id)shapeWithIdentifier:(id)a3;
+- (id)shapeAtIndex:(unint64_t)index;
+- (id)shapeWithIdentifier:(id)identifier;
 - (unint64_t)numberOfShapes;
 @end
 
 @implementation CRLShapeLibraryCollection
 
-- (CRLShapeLibraryCollection)initWithShapeLibrary:(id)a3 categoryIndex:(unint64_t)a4
+- (CRLShapeLibraryCollection)initWithShapeLibrary:(id)library categoryIndex:(unint64_t)index
 {
-  v7 = a3;
+  libraryCopy = library;
   v21.receiver = self;
   v21.super_class = CRLShapeLibraryCollection;
   v8 = [(CRLShapeLibraryCollection *)&v21 init];
   if (v8)
   {
-    v9 = [v7 categories];
-    v10 = [v9 count];
+    categories = [libraryCopy categories];
+    v10 = [categories count];
 
-    if (v10 <= a4)
+    if (v10 <= index)
     {
       v11 = +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -32,8 +32,8 @@
       if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
       {
         v18 = v12;
-        v19 = [v7 categories];
-        v20 = [v19 count];
+        categories2 = [libraryCopy categories];
+        v20 = [categories2 count];
         *buf = 67110402;
         v23 = v11;
         v24 = 2082;
@@ -43,7 +43,7 @@
         v28 = 1024;
         v29 = 33;
         v30 = 2048;
-        v31 = a4;
+        indexCopy = index;
         v32 = 2048;
         v33 = v20;
         _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "#Assert *** Assertion failure #%u: %{public}s %{public}s:%d Tried to initialize CRLShapeLibraryCollection with a category index (%lu) beyond the bounds of the shape library's categories (%lu).", buf, 0x36u);
@@ -62,12 +62,12 @@
 
       v14 = [NSString stringWithUTF8String:"[CRLShapeLibraryCollection initWithShapeLibrary:categoryIndex:]"];
       v15 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLShapeLibraryCollection.m"];
-      v16 = [v7 categories];
-      +[CRLAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](CRLAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v14, v15, 33, 0, "Tried to initialize CRLShapeLibraryCollection with a category index (%lu) beyond the bounds of the shape library's categories (%lu).", a4, [v16 count]);
+      categories3 = [libraryCopy categories];
+      +[CRLAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](CRLAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v14, v15, 33, 0, "Tried to initialize CRLShapeLibraryCollection with a category index (%lu) beyond the bounds of the shape library's categories (%lu).", index, [categories3 count]);
     }
 
-    v8->_categoryIndex = a4;
-    objc_storeStrong(&v8->_shapeLibrary, a3);
+    v8->_categoryIndex = index;
+    objc_storeStrong(&v8->_shapeLibrary, library);
   }
 
   return v8;
@@ -75,24 +75,24 @@
 
 - (NSString)name
 {
-  v2 = [(CRLShapeLibraryCollection *)self p_category];
-  v3 = [v2 name];
+  p_category = [(CRLShapeLibraryCollection *)self p_category];
+  name = [p_category name];
 
-  return v3;
+  return name;
 }
 
 - (unint64_t)numberOfShapes
 {
-  v2 = [(CRLShapeLibraryCollection *)self p_category];
-  v3 = [v2 shapeIDs];
-  v4 = [v3 count];
+  p_category = [(CRLShapeLibraryCollection *)self p_category];
+  shapeIDs = [p_category shapeIDs];
+  v4 = [shapeIDs count];
 
   return v4;
 }
 
-- (id)shapeAtIndex:(unint64_t)a3
+- (id)shapeAtIndex:(unint64_t)index
 {
-  if ([(CRLShapeLibraryCollection *)self numberOfShapes]<= a3)
+  if ([(CRLShapeLibraryCollection *)self numberOfShapes]<= index)
   {
     if ([(CRLShapeLibraryCollection *)self numberOfShapes])
     {
@@ -115,9 +115,9 @@
         v23 = 1024;
         v24 = 56;
         v25 = 2048;
-        v26 = a3;
+        indexCopy = index;
         v27 = 2048;
-        v28 = [(CRLShapeLibraryCollection *)self p_categoryIndex];
+        p_categoryIndex = [(CRLShapeLibraryCollection *)self p_categoryIndex];
         _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "#Assert *** Assertion failure #%u: %{public}s %{public}s:%d Tried to retrieve a shape at an index (%lu) beyond the size of the number of shapes in this category: %lu", buf, 0x36u);
       }
 
@@ -134,7 +134,7 @@
 
       v13 = [NSString stringWithUTF8String:"[CRLShapeLibraryCollection shapeAtIndex:]"];
       v14 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLShapeLibraryCollection.m"];
-      [CRLAssertionHandler handleFailureInFunction:v13 file:v14 lineNumber:56 isFatal:0 description:"Tried to retrieve a shape at an index (%lu) beyond the size of the number of shapes in this category: %lu", a3, [(CRLShapeLibraryCollection *)self p_categoryIndex]];
+      [CRLAssertionHandler handleFailureInFunction:v13 file:v14 lineNumber:56 isFatal:0 description:"Tried to retrieve a shape at an index (%lu) beyond the size of the number of shapes in this category: %lu", index, [(CRLShapeLibraryCollection *)self p_categoryIndex]];
     }
 
     v9 = 0;
@@ -142,18 +142,18 @@
 
   else
   {
-    v5 = [(CRLShapeLibraryCollection *)self p_category];
-    v6 = [v5 shapeIDs];
-    v7 = [v6 objectAtIndexedSubscript:a3];
+    p_category = [(CRLShapeLibraryCollection *)self p_category];
+    shapeIDs = [p_category shapeIDs];
+    v7 = [shapeIDs objectAtIndexedSubscript:index];
 
-    v8 = [(CRLShapeLibraryCollection *)self p_shapeLibrary];
-    v9 = [v8 shapeWithID:v7];
+    p_shapeLibrary = [(CRLShapeLibraryCollection *)self p_shapeLibrary];
+    v9 = [p_shapeLibrary shapeWithID:v7];
   }
 
   return v9;
 }
 
-- (id)shapeWithIdentifier:(id)a3
+- (id)shapeWithIdentifier:(id)identifier
 {
   v3 = +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
@@ -187,9 +187,9 @@
 
 - (id)p_category
 {
-  v3 = [(CRLShapeLibraryCollection *)self p_shapeLibrary];
-  v4 = [v3 categories];
-  v5 = [v4 objectAtIndexedSubscript:{-[CRLShapeLibraryCollection p_categoryIndex](self, "p_categoryIndex")}];
+  p_shapeLibrary = [(CRLShapeLibraryCollection *)self p_shapeLibrary];
+  categories = [p_shapeLibrary categories];
+  v5 = [categories objectAtIndexedSubscript:{-[CRLShapeLibraryCollection p_categoryIndex](self, "p_categoryIndex")}];
 
   return v5;
 }

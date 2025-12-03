@@ -3,13 +3,13 @@
 - (EPRoutingSlipEntry)parentRoutingSlipEntry;
 - (EPServiceRegistry)serviceRegistry;
 - (EPTransactionDelegate)delegate;
-- (void)beginRollbackWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
-- (void)cancelWithError:(id)a3;
+- (void)beginRollbackWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
+- (void)cancelWithError:(id)error;
 - (void)invalidate;
-- (void)routingSlipDidComplete:(id)a3 serviceRegistry:(id)a4;
-- (void)routingSlipRequestsArchiving:(id)a3;
-- (void)setChildRoutingSlip:(id)a3;
+- (void)routingSlipDidComplete:(id)complete serviceRegistry:(id)registry;
+- (void)routingSlipRequestsArchiving:(id)archiving;
+- (void)setChildRoutingSlip:(id)slip;
 @end
 
 @implementation EPSagaTransactionRoutingSlip
@@ -22,23 +22,23 @@
   return v3;
 }
 
-- (void)setChildRoutingSlip:(id)a3
+- (void)setChildRoutingSlip:(id)slip
 {
-  v4 = a3;
-  v7 = [[EPSagaOperandRoutingSlip alloc] initWithChildRoutingSlip:v4];
+  slipCopy = slip;
+  v7 = [[EPSagaOperandRoutingSlip alloc] initWithChildRoutingSlip:slipCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->_parentRoutingSlipEntry);
-  v6 = [WeakRetained operands];
-  [v6 setObject:v7 forKeyedSubscript:@"routingSlip"];
+  operands = [WeakRetained operands];
+  [operands setObject:v7 forKeyedSubscript:@"routingSlip"];
 }
 
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v6 = a3;
-  v7 = a4;
-  objc_storeWeak(&self->_parentRoutingSlipEntry, v6);
-  objc_storeWeak(&self->_serviceRegistry, v7);
-  v8 = [v6 objectForKeyedSubscript:@"routingSlip"];
+  entryCopy = entry;
+  registryCopy = registry;
+  objc_storeWeak(&self->_parentRoutingSlipEntry, entryCopy);
+  objc_storeWeak(&self->_serviceRegistry, registryCopy);
+  v8 = [entryCopy objectForKeyedSubscript:@"routingSlip"];
   v9 = nr_daemon_log();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
 
@@ -50,20 +50,20 @@
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         WeakRetained = objc_loadWeakRetained(&self->_parentRoutingSlipEntry);
-        v13 = [WeakRetained shortDescription];
-        v14 = [(EPSagaTransactionRoutingSlip *)self childRoutingSlip];
-        v15 = [v14 identifier];
+        shortDescription = [WeakRetained shortDescription];
+        childRoutingSlip = [(EPSagaTransactionRoutingSlip *)self childRoutingSlip];
+        identifier = [childRoutingSlip identifier];
         *buf = 138543618;
-        v22 = v13;
+        v22 = shortDescription;
         v23 = 2114;
-        v24 = v15;
+        v24 = identifier;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "EPSagaTransactionRoutingSlip: Resuming slip entry %{public}@ -> EPRoutingSlip[%{public}@]", buf, 0x16u);
       }
     }
 
     [v8 setRoutingSlipDelegate:self];
     [(EPSagaTransactionRoutingSlip *)self setChildRoutingSlip:v8];
-    [v8 resumeWithServiceRegistry:v7 rollback:0];
+    [v8 resumeWithServiceRegistry:registryCopy rollback:0];
   }
 
   else
@@ -74,9 +74,9 @@
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v17 = objc_loadWeakRetained(&self->_parentRoutingSlipEntry);
-        v18 = [v17 shortDescription];
+        shortDescription2 = [v17 shortDescription];
         *buf = 138543362;
-        v22 = v18;
+        v22 = shortDescription2;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "EPSagaTransactionRoutingSlip: Building routing slip entry for %{public}@", buf, 0xCu);
       }
     }
@@ -86,18 +86,18 @@
     v19[2] = sub_1000D0610;
     v19[3] = &unk_1001795D0;
     v19[4] = self;
-    v20 = v7;
-    [(EPSagaTransactionRoutingSlip *)self buildRoutingSlipEntries:v6 serviceRegistry:v20 completion:v19];
+    v20 = registryCopy;
+    [(EPSagaTransactionRoutingSlip *)self buildRoutingSlipEntries:entryCopy serviceRegistry:v20 completion:v19];
   }
 }
 
-- (void)beginRollbackWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginRollbackWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v6 = a4;
-  v7 = a3;
-  objc_storeWeak(&self->_parentRoutingSlipEntry, v7);
-  objc_storeWeak(&self->_serviceRegistry, v6);
-  v8 = [v7 objectForKeyedSubscript:@"routingSlip"];
+  registryCopy = registry;
+  entryCopy = entry;
+  objc_storeWeak(&self->_parentRoutingSlipEntry, entryCopy);
+  objc_storeWeak(&self->_serviceRegistry, registryCopy);
+  v8 = [entryCopy objectForKeyedSubscript:@"routingSlip"];
 
   if (v8)
   {
@@ -110,9 +110,9 @@
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         WeakRetained = objc_loadWeakRetained(&self->_parentRoutingSlipEntry);
-        v13 = [WeakRetained identifier];
+        identifier = [WeakRetained identifier];
         v15 = 138543362;
-        v16 = v13;
+        v16 = identifier;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "EPSagaTransactionRoutingSlip: Rolling back routing slip entry %{public}@", &v15, 0xCu);
       }
     }
@@ -120,51 +120,51 @@
     [v8 printDescription];
     [v8 setRoutingSlipDelegate:self];
     [(EPSagaTransactionRoutingSlip *)self setChildRoutingSlip:v8];
-    [v8 resumeWithServiceRegistry:v6 rollback:1];
+    [v8 resumeWithServiceRegistry:registryCopy rollback:1];
   }
 
   else
   {
-    v14 = [(EPSagaTransactionRoutingSlip *)self delegate];
-    [v14 transactionDidComplete:self];
+    delegate = [(EPSagaTransactionRoutingSlip *)self delegate];
+    [delegate transactionDidComplete:self];
   }
 }
 
 - (void)invalidate
 {
-  v2 = [(EPSagaTransactionRoutingSlip *)self childRoutingSlip];
-  [v2 invalidate];
+  childRoutingSlip = [(EPSagaTransactionRoutingSlip *)self childRoutingSlip];
+  [childRoutingSlip invalidate];
 }
 
-- (void)routingSlipDidComplete:(id)a3 serviceRegistry:(id)a4
+- (void)routingSlipDidComplete:(id)complete serviceRegistry:(id)registry
 {
-  v8 = [a3 getLastFirstError];
-  if (v8)
+  getLastFirstError = [complete getLastFirstError];
+  if (getLastFirstError)
   {
     WeakRetained = objc_loadWeakRetained(&self->_parentRoutingSlipEntry);
-    v6 = [WeakRetained errors];
-    [v6 addObject:v8];
+    errors = [WeakRetained errors];
+    [errors addObject:getLastFirstError];
   }
 
-  v7 = [(EPSagaTransactionRoutingSlip *)self delegate];
-  [v7 transactionDidComplete:self];
+  delegate = [(EPSagaTransactionRoutingSlip *)self delegate];
+  [delegate transactionDidComplete:self];
 }
 
-- (void)routingSlipRequestsArchiving:(id)a3
+- (void)routingSlipRequestsArchiving:(id)archiving
 {
-  v8 = a3;
+  archivingCopy = archiving;
   WeakRetained = objc_loadWeakRetained(&self->_parentRoutingSlipEntry);
   [WeakRetained persist];
 
-  v5 = [(EPSagaTransactionRoutingSlip *)self childRoutingSlip];
-  if (v5 == v8)
+  childRoutingSlip = [(EPSagaTransactionRoutingSlip *)self childRoutingSlip];
+  if (childRoutingSlip == archivingCopy)
   {
-    v6 = [v8 state];
+    state = [archivingCopy state];
 
-    if (v6 == 2)
+    if (state == 2)
     {
       v7 = objc_loadWeakRetained(&self->_serviceRegistry);
-      [(EPSagaTransactionRoutingSlip *)self routingSlipDidComplete:v8 serviceRegistry:v7];
+      [(EPSagaTransactionRoutingSlip *)self routingSlipDidComplete:archivingCopy serviceRegistry:v7];
       goto LABEL_6;
     }
   }
@@ -178,10 +178,10 @@
 LABEL_6:
 }
 
-- (void)cancelWithError:(id)a3
+- (void)cancelWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(EPSagaTransactionRoutingSlip *)self childRoutingSlip];
+  errorCopy = error;
+  childRoutingSlip = [(EPSagaTransactionRoutingSlip *)self childRoutingSlip];
   v6 = nr_daemon_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
@@ -190,24 +190,24 @@ LABEL_6:
     v8 = nr_daemon_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(EPSagaTransactionRoutingSlip *)self delegate];
+      delegate = [(EPSagaTransactionRoutingSlip *)self delegate];
       v11[0] = 67109376;
-      v11[1] = v5 != 0;
+      v11[1] = childRoutingSlip != 0;
       v12 = 1024;
-      v13 = v9 != 0;
+      v13 = delegate != 0;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "EPSagaTransactionRoutingSlip: cancelWithError; childRoutingSlip: %{BOOL}d, delegate: %{BOOL}d", v11, 0xEu);
     }
   }
 
-  if (v5)
+  if (childRoutingSlip)
   {
-    [v5 cancelWithError:v4];
+    [childRoutingSlip cancelWithError:errorCopy];
   }
 
   else
   {
-    v10 = [(EPSagaTransactionRoutingSlip *)self delegate];
-    [v10 transactionDidComplete:self];
+    delegate2 = [(EPSagaTransactionRoutingSlip *)self delegate];
+    [delegate2 transactionDidComplete:self];
   }
 }
 

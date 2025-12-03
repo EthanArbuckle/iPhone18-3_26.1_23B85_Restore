@@ -1,22 +1,22 @@
 @interface NTKHomeDetailPickerDataSource
-+ (id)_titleForHeaderSectionType:(int64_t)a3;
-- (BOOL)_itemIsSelectedAtIndexPath:(id)a3;
-- (NTKHomeDetailPickerDataSource)initWithTableView:(id)a3 detailConfiguration:(id)a4 homeListItem:(id)a5;
-- (id)_accessoryComplicationAtIndexPath:(id)a3;
-- (id)_pickableAccessoriesAtRoomInSection:(int64_t)a3;
-- (id)_roomAccessoriesIndexPathForTableIndexPath:(id)a3;
-- (id)_roomNameForSection:(int64_t)a3;
-- (id)_titleForHeaderInSection:(int64_t)a3;
-- (id)pickerItemForIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
++ (id)_titleForHeaderSectionType:(int64_t)type;
+- (BOOL)_itemIsSelectedAtIndexPath:(id)path;
+- (NTKHomeDetailPickerDataSource)initWithTableView:(id)view detailConfiguration:(id)configuration homeListItem:(id)item;
+- (id)_accessoryComplicationAtIndexPath:(id)path;
+- (id)_pickableAccessoriesAtRoomInSection:(int64_t)section;
+- (id)_roomAccessoriesIndexPathForTableIndexPath:(id)path;
+- (id)_roomNameForSection:(int64_t)section;
+- (id)_titleForHeaderInSection:(int64_t)section;
+- (id)pickerItemForIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (int64_t)_energySectionIndex;
 - (int64_t)_firstRoomSectionIndex;
-- (int64_t)_numberOfItemsInSection:(int64_t)a3;
+- (int64_t)_numberOfItemsInSection:(int64_t)section;
 - (int64_t)_scenesSectionIndex;
-- (int64_t)_sectionTypeForSectionIndex:(int64_t)a3;
+- (int64_t)_sectionTypeForSectionIndex:(int64_t)index;
 - (int64_t)_totalSectionCount;
-- (unint64_t)_numberOfAccessoriesAtRoomInSection:(unint64_t)a3;
-- (void)_generatePickableEnergyItemsForFamily:(int64_t)a3;
+- (unint64_t)_numberOfAccessoriesAtRoomInSection:(unint64_t)section;
+- (void)_generatePickableEnergyItemsForFamily:(int64_t)family;
 - (void)_refreshHomeDetail;
 - (void)_updateEnergyItems;
 - (void)dealloc;
@@ -24,26 +24,26 @@
 
 @implementation NTKHomeDetailPickerDataSource
 
-- (NTKHomeDetailPickerDataSource)initWithTableView:(id)a3 detailConfiguration:(id)a4 homeListItem:(id)a5
+- (NTKHomeDetailPickerDataSource)initWithTableView:(id)view detailConfiguration:(id)configuration homeListItem:(id)item
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  viewCopy = view;
+  configurationCopy = configuration;
+  itemCopy = item;
   v19.receiver = self;
   v19.super_class = NTKHomeDetailPickerDataSource;
   v12 = [(NTKHomeDetailPickerDataSource *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_tableView, a3);
-    objc_storeStrong(&v13->_configuration, a4);
-    objc_storeStrong(&v13->_homeListItem, a5);
+    objc_storeStrong(&v12->_tableView, view);
+    objc_storeStrong(&v13->_configuration, configuration);
+    objc_storeStrong(&v13->_homeListItem, item);
     [(NTKHomeDetailPickerDataSource *)v13 _refreshHomeDetail];
-    v14 = [MEMORY[0x277D146E8] sharedDispatcher];
-    [v14 addHomeManagerObserver:v13];
+    mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+    [mEMORY[0x277D146E8] addHomeManagerObserver:v13];
 
-    v15 = [v10 listProvider];
-    v16 = [[NTKCFaceDetailComplicationCellProvider alloc] initWithTableView:v9 listProvider:v15];
+    listProvider = [configurationCopy listProvider];
+    v16 = [[NTKCFaceDetailComplicationCellProvider alloc] initWithTableView:viewCopy listProvider:listProvider];
     pickerCellProvider = v13->_pickerCellProvider;
     v13->_pickerCellProvider = v16;
   }
@@ -53,21 +53,21 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277D146E8] sharedDispatcher];
-  [v3 removeHomeManagerObserver:self];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  [mEMORY[0x277D146E8] removeHomeManagerObserver:self];
 
   v4.receiver = self;
   v4.super_class = NTKHomeDetailPickerDataSource;
   [(NTKHomeDetailPickerDataSource *)&v4 dealloc];
 }
 
-- (id)pickerItemForIndexPath:(id)a3
+- (id)pickerItemForIndexPath:(id)path
 {
-  v5 = a3;
-  v6 = -[NTKHomeDetailPickerDataSource _sectionTypeForSectionIndex:](self, "_sectionTypeForSectionIndex:", [v5 section]);
+  pathCopy = path;
+  v6 = -[NTKHomeDetailPickerDataSource _sectionTypeForSectionIndex:](self, "_sectionTypeForSectionIndex:", [pathCopy section]);
   if (v6 == 2)
   {
-    v8 = [(NTKHomeDetailPickerDataSource *)self _accessoryComplicationAtIndexPath:v5];
+    v8 = [(NTKHomeDetailPickerDataSource *)self _accessoryComplicationAtIndexPath:pathCopy];
   }
 
   else
@@ -87,7 +87,7 @@
       scenesItems = self->_energyItems;
     }
 
-    v8 = -[NSArray objectAtIndexedSubscript:](scenesItems, "objectAtIndexedSubscript:", [v5 row]);
+    v8 = -[NSArray objectAtIndexedSubscript:](scenesItems, "objectAtIndexedSubscript:", [pathCopy row]);
   }
 
   v3 = v8;
@@ -96,13 +96,13 @@ LABEL_9:
   return v3;
 }
 
-- (int64_t)_numberOfItemsInSection:(int64_t)a3
+- (int64_t)_numberOfItemsInSection:(int64_t)section
 {
   result = [(NTKHomeDetailPickerDataSource *)self _sectionTypeForSectionIndex:?];
   if (result == 2)
   {
 
-    return [(NTKHomeDetailPickerDataSource *)self _numberOfAccessoriesAtRoomInSection:a3];
+    return [(NTKHomeDetailPickerDataSource *)self _numberOfAccessoriesAtRoomInSection:section];
   }
 
   else
@@ -129,14 +129,14 @@ LABEL_9:
 - (int64_t)_totalSectionCount
 {
   LODWORD(v3) = [(NTKHomeDetailPickerDataSource *)self _energySectionIsDisplayable];
-  v4 = [(NTKHomeDetailPickerDataSource *)self _scenesSectionIsDisplayable];
+  _scenesSectionIsDisplayable = [(NTKHomeDetailPickerDataSource *)self _scenesSectionIsDisplayable];
   v5 = 1;
   if (v3)
   {
     v5 = 2;
   }
 
-  if (v4)
+  if (_scenesSectionIsDisplayable)
   {
     v3 = v5;
   }
@@ -149,16 +149,16 @@ LABEL_9:
   return [(NSArray *)self->_accessoryItemsByRoom count]+ v3;
 }
 
-+ (id)_titleForHeaderSectionType:(int64_t)a3
++ (id)_titleForHeaderSectionType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = @"COMPLICATION_PICKER_NANOHOME_SCENES_SECTION_NAME";
     v4 = @"Scenes";
     goto LABEL_5;
   }
 
-  if (!a3)
+  if (!type)
   {
     v3 = @"COMPLICATION_PICKER_NANOHOME_ENERGY_SECTION_NAME";
     v4 = @"Energy";
@@ -173,46 +173,46 @@ LABEL_7:
   return v5;
 }
 
-- (id)_titleForHeaderInSection:(int64_t)a3
+- (id)_titleForHeaderInSection:(int64_t)section
 {
   v5 = [(NTKHomeDetailPickerDataSource *)self _sectionTypeForSectionIndex:?];
   if (v5 >= 2)
   {
     if (v5 == 2)
     {
-      v5 = [(NTKHomeDetailPickerDataSource *)self _roomNameForSection:a3];
+      v5 = [(NTKHomeDetailPickerDataSource *)self _roomNameForSection:section];
     }
   }
 
   else
   {
-    v5 = [NTKHomeDetailPickerDataSource _titleForHeaderSectionType:[(NTKHomeDetailPickerDataSource *)self _sectionTypeForSectionIndex:a3]];
+    v5 = [NTKHomeDetailPickerDataSource _titleForHeaderSectionType:[(NTKHomeDetailPickerDataSource *)self _sectionTypeForSectionIndex:section]];
   }
 
   return v5;
 }
 
-- (BOOL)_itemIsSelectedAtIndexPath:(id)a3
+- (BOOL)_itemIsSelectedAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(NTKHomeDetailPickerDataSource *)self configuration];
-  v6 = [v5 listProvider];
-  v7 = [v6 pickerSelectedItem];
+  pathCopy = path;
+  configuration = [(NTKHomeDetailPickerDataSource *)self configuration];
+  listProvider = [configuration listProvider];
+  pickerSelectedItem = [listProvider pickerSelectedItem];
 
-  v8 = [(NTKHomeDetailPickerDataSource *)self pickerItemForIndexPath:v4];
+  v8 = [(NTKHomeDetailPickerDataSource *)self pickerItemForIndexPath:pathCopy];
 
-  LOBYTE(v4) = [v7 isEqual:v8];
-  return v4;
+  LOBYTE(pathCopy) = [pickerSelectedItem isEqual:v8];
+  return pathCopy;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(NTKHomeDetailPickerDataSource *)self pickerItemForIndexPath:v5];
-  v7 = [(NTKHomeDetailPickerDataSource *)self pickerCellProvider];
-  v8 = [v7 cellForItem:v6 atIndexPath:v5];
+  pathCopy = path;
+  v6 = [(NTKHomeDetailPickerDataSource *)self pickerItemForIndexPath:pathCopy];
+  pickerCellProvider = [(NTKHomeDetailPickerDataSource *)self pickerCellProvider];
+  v8 = [pickerCellProvider cellForItem:v6 atIndexPath:pathCopy];
 
-  v9 = [(NTKHomeDetailPickerDataSource *)self _itemIsSelectedAtIndexPath:v5];
+  v9 = [(NTKHomeDetailPickerDataSource *)self _itemIsSelectedAtIndexPath:pathCopy];
   [v8 ntk_setPickerSelected:v9];
 
   return v8;
@@ -221,26 +221,26 @@ LABEL_7:
 - (void)_refreshHomeDetail
 {
   v50 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D146E8] sharedDispatcher];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
   v4 = MEMORY[0x277CBEB18];
-  v5 = [v3 homeManager];
-  v6 = [v5 hf_orderedHomes];
-  v7 = [v4 arrayWithArray:v6];
+  homeManager = [mEMORY[0x277D146E8] homeManager];
+  hf_orderedHomes = [homeManager hf_orderedHomes];
+  v7 = [v4 arrayWithArray:hf_orderedHomes];
 
-  v8 = [v3 home];
+  home = [mEMORY[0x277D146E8] home];
 
-  if (v8 && (v48[0] = MEMORY[0x277D85DD0], v48[1] = 3221225472, v48[2] = __51__NTKHomeDetailPickerDataSource__refreshHomeDetail__block_invoke, v48[3] = &unk_278784C70, v48[4] = self, v9 = [v7 indexOfObjectPassingTest:v48], v9 != 0x7FFFFFFFFFFFFFFFLL))
+  if (home && (v48[0] = MEMORY[0x277D85DD0], v48[1] = 3221225472, v48[2] = __51__NTKHomeDetailPickerDataSource__refreshHomeDetail__block_invoke, v48[3] = &unk_278784C70, v48[4] = self, v9 = [v7 indexOfObjectPassingTest:v48], v9 != 0x7FFFFFFFFFFFFFFFLL))
   {
-    v40 = v3;
+    v40 = mEMORY[0x277D146E8];
     v18 = [v7 objectAtIndex:v9];
     detailedHome = self->_detailedHome;
     self->_detailedHome = v18;
 
-    v20 = [(NTKHomeDetailPickerDataSource *)self configuration];
-    v21 = [v20 listProvider];
-    v22 = [v21 pickerComplicationFamily];
+    configuration = [(NTKHomeDetailPickerDataSource *)self configuration];
+    listProvider = [configuration listProvider];
+    pickerComplicationFamily = [listProvider pickerComplicationFamily];
 
-    [(NTKHomeDetailPickerDataSource *)self _generatePickableEnergyItemsForFamily:v22];
+    [(NTKHomeDetailPickerDataSource *)self _generatePickableEnergyItemsForFamily:pickerComplicationFamily];
     v23 = [NHOIntentsUtilities pickableActionSetIntentsWithHome:self->_detailedHome];
     v24 = [NTKHomeDetailPickerDataSource _titleForHeaderSectionType:1];
     v25 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v23, "count")}];
@@ -263,7 +263,7 @@ LABEL_7:
             objc_enumerationMutation(v17);
           }
 
-          v30 = [_TtC11NanoTimeKit28NTKNanoHomeWidgetItemFactory sceneWidgetItemWithSceneIntent:*(*(&v44 + 1) + 8 * i) complicationFamily:v22 sectionIdentifier:v24];
+          v30 = [_TtC11NanoTimeKit28NTKNanoHomeWidgetItemFactory sceneWidgetItemWithSceneIntent:*(*(&v44 + 1) + 8 * i) complicationFamily:pickerComplicationFamily sectionIdentifier:v24];
           if (v30)
           {
             [(NSArray *)v25 addObject:v30];
@@ -285,22 +285,22 @@ LABEL_7:
     roomNames = self->_roomNames;
     self->_roomNames = v34;
 
-    v36 = [(HMHome *)self->_detailedHome rooms];
+    rooms = [(HMHome *)self->_detailedHome rooms];
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
     v41[2] = __51__NTKHomeDetailPickerDataSource__refreshHomeDetail__block_invoke_2;
     v41[3] = &unk_278789670;
     v41[4] = self;
-    v43 = v22;
+    v43 = pickerComplicationFamily;
     v37 = v33;
     v42 = v37;
-    [v36 enumerateObjectsUsingBlock:v41];
+    [rooms enumerateObjectsUsingBlock:v41];
 
     accessoryItemsByRoom = self->_accessoryItemsByRoom;
     self->_accessoryItemsByRoom = v37;
     v39 = v37;
 
-    v3 = v40;
+    mEMORY[0x277D146E8] = v40;
   }
 
   else
@@ -399,7 +399,7 @@ void __51__NTKHomeDetailPickerDataSource__refreshHomeDetail__block_invoke_2(uint
   }
 }
 
-- (void)_generatePickableEnergyItemsForFamily:(int64_t)a3
+- (void)_generatePickableEnergyItemsForFamily:(int64_t)family
 {
   energyItems = self->_energyItems;
   self->_energyItems = 0;
@@ -423,7 +423,7 @@ void __51__NTKHomeDetailPickerDataSource__refreshHomeDetail__block_invoke_2(uint
     v22[2] = __71__NTKHomeDetailPickerDataSource__generatePickableEnergyItemsForFamily___block_invoke;
     v22[3] = &unk_278789698;
     objc_copyWeak(v24, &location);
-    v24[1] = a3;
+    v24[1] = family;
     v11 = v9;
     v23 = v11;
     [NHOIntentsUtilities pickableEnergyForecastIntentsWithHome:detailedHome completionHandler:v22];
@@ -433,7 +433,7 @@ void __51__NTKHomeDetailPickerDataSource__refreshHomeDetail__block_invoke_2(uint
     v19[2] = __71__NTKHomeDetailPickerDataSource__generatePickableEnergyItemsForFamily___block_invoke_2;
     v19[3] = &unk_278789698;
     objc_copyWeak(v21, &location);
-    v21[1] = a3;
+    v21[1] = family;
     v13 = v11;
     v20 = v13;
     [NHOIntentsUtilities pickableElectricityUsageIntentsWithHome:v12 completionHandler:v19];
@@ -443,7 +443,7 @@ void __51__NTKHomeDetailPickerDataSource__refreshHomeDetail__block_invoke_2(uint
     v16[2] = __71__NTKHomeDetailPickerDataSource__generatePickableEnergyItemsForFamily___block_invoke_3;
     v16[3] = &unk_278789698;
     objc_copyWeak(v18, &location);
-    v18[1] = a3;
+    v18[1] = family;
     v15 = v13;
     v17 = v15;
     [NHOIntentsUtilities pickableElectricityRatesIntentsWithHome:v14 completionHandler:v16];
@@ -612,8 +612,8 @@ void __71__NTKHomeDetailPickerDataSource__generatePickableEnergyItemsForFamily__
   energyItems = self->_energyItems;
   self->_energyItems = v3;
 
-  v5 = [(NTKHomeDetailPickerDataSource *)self tableView];
-  [v5 reloadData];
+  tableView = [(NTKHomeDetailPickerDataSource *)self tableView];
+  [tableView reloadData];
 }
 
 - (int64_t)_energySectionIndex
@@ -634,20 +634,20 @@ void __71__NTKHomeDetailPickerDataSource__generatePickableEnergyItemsForFamily__
   v3 = 0x7FFFFFFFFFFFFFFFLL;
   if ([(NTKHomeDetailPickerDataSource *)self _scenesSectionIsDisplayable])
   {
-    v4 = [(NTKHomeDetailPickerDataSource *)self _energySectionIndex];
-    if (v4 == 0x7FFFFFFFFFFFFFFFLL)
+    _energySectionIndex = [(NTKHomeDetailPickerDataSource *)self _energySectionIndex];
+    if (_energySectionIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v4 = [(NTKHomeDetailPickerDataSource *)self _energySectionIndex];
+      _energySectionIndex = [(NTKHomeDetailPickerDataSource *)self _energySectionIndex];
     }
 
-    if (v4 == 0x7FFFFFFFFFFFFFFFLL)
+    if (_energySectionIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
       return 0;
     }
 
     else
     {
-      return v4 + 1;
+      return _energySectionIndex + 1;
     }
   }
 
@@ -656,41 +656,41 @@ void __71__NTKHomeDetailPickerDataSource__generatePickableEnergyItemsForFamily__
 
 - (int64_t)_firstRoomSectionIndex
 {
-  v3 = [(NTKHomeDetailPickerDataSource *)self _scenesSectionIndex];
-  if (v3 == 0x7FFFFFFFFFFFFFFFLL)
+  _scenesSectionIndex = [(NTKHomeDetailPickerDataSource *)self _scenesSectionIndex];
+  if (_scenesSectionIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v3 = [(NTKHomeDetailPickerDataSource *)self _energySectionIndex];
+    _scenesSectionIndex = [(NTKHomeDetailPickerDataSource *)self _energySectionIndex];
   }
 
-  if (v3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (_scenesSectionIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
   else
   {
-    return v3 + 1;
+    return _scenesSectionIndex + 1;
   }
 }
 
-- (id)_roomAccessoriesIndexPathForTableIndexPath:(id)a3
+- (id)_roomAccessoriesIndexPathForTableIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = -[NTKHomeDetailPickerDataSource _roomIndexForSection:](self, "_roomIndexForSection:", [v4 section]);
+  pathCopy = path;
+  v5 = -[NTKHomeDetailPickerDataSource _roomIndexForSection:](self, "_roomIndexForSection:", [pathCopy section]);
   v6 = MEMORY[0x277CCAA70];
-  v7 = [v4 row];
+  v7 = [pathCopy row];
 
   return [v6 indexPathForRow:v7 inSection:v5];
 }
 
-- (int64_t)_sectionTypeForSectionIndex:(int64_t)a3
+- (int64_t)_sectionTypeForSectionIndex:(int64_t)index
 {
-  if ([(NTKHomeDetailPickerDataSource *)self _energySectionIndex]== a3)
+  if ([(NTKHomeDetailPickerDataSource *)self _energySectionIndex]== index)
   {
     return 0;
   }
 
-  if ([(NTKHomeDetailPickerDataSource *)self _scenesSectionIndex]== a3)
+  if ([(NTKHomeDetailPickerDataSource *)self _scenesSectionIndex]== index)
   {
     return 1;
   }
@@ -698,33 +698,33 @@ void __71__NTKHomeDetailPickerDataSource__generatePickableEnergyItemsForFamily__
   return 2;
 }
 
-- (id)_roomNameForSection:(int64_t)a3
+- (id)_roomNameForSection:(int64_t)section
 {
-  v4 = [(NTKHomeDetailPickerDataSource *)self _roomIndexForSection:a3];
+  v4 = [(NTKHomeDetailPickerDataSource *)self _roomIndexForSection:section];
   roomNames = self->_roomNames;
 
   return [(NSMutableArray *)roomNames objectAtIndexedSubscript:v4];
 }
 
-- (id)_pickableAccessoriesAtRoomInSection:(int64_t)a3
+- (id)_pickableAccessoriesAtRoomInSection:(int64_t)section
 {
-  v4 = [(NTKHomeDetailPickerDataSource *)self _roomIndexForSection:a3];
+  v4 = [(NTKHomeDetailPickerDataSource *)self _roomIndexForSection:section];
   accessoryItemsByRoom = self->_accessoryItemsByRoom;
 
   return [(NSArray *)accessoryItemsByRoom objectAtIndexedSubscript:v4];
 }
 
-- (unint64_t)_numberOfAccessoriesAtRoomInSection:(unint64_t)a3
+- (unint64_t)_numberOfAccessoriesAtRoomInSection:(unint64_t)section
 {
-  v3 = [(NTKHomeDetailPickerDataSource *)self _pickableAccessoriesAtRoomInSection:a3];
+  v3 = [(NTKHomeDetailPickerDataSource *)self _pickableAccessoriesAtRoomInSection:section];
   v4 = [v3 count];
 
   return v4;
 }
 
-- (id)_accessoryComplicationAtIndexPath:(id)a3
+- (id)_accessoryComplicationAtIndexPath:(id)path
 {
-  v4 = [(NTKHomeDetailPickerDataSource *)self _roomAccessoriesIndexPathForTableIndexPath:a3];
+  v4 = [(NTKHomeDetailPickerDataSource *)self _roomAccessoriesIndexPathForTableIndexPath:path];
   v5 = -[NSArray objectAtIndexedSubscript:](self->_accessoryItemsByRoom, "objectAtIndexedSubscript:", [v4 section]);
   v6 = [v5 objectAtIndexedSubscript:{objc_msgSend(v4, "row")}];
 

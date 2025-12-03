@@ -1,34 +1,34 @@
 @interface BKSHIDEventKeyCommand
-+ (BOOL)_isModifierKeyWithPage:(int64_t)a3 usage:(int64_t)a4;
-+ (BOOL)_shouldMatchKeyCommandsForEvent:(__IOHIDEvent *)a3 gsKeyboard:(__GSKeyboard *)a4;
-+ (id)_descriptionForKeyCommandCollection:(id)a3;
-+ (id)keyCommandForEvent:(__IOHIDEvent *)a3 gsKeyboard:(__GSKeyboard *)a4 activeModifiers:(int64_t *)a5;
-+ (id)keyCommandWithInput:(id)a3 modifierFlags:(int64_t)a4;
-+ (id)keyCommandWithKeyCode:(int64_t)a3 modifierFlags:(int64_t)a4;
-+ (void)_appendDescriptionOfKeyCommandCollection:(id)a3 toStream:(id)a4;
++ (BOOL)_isModifierKeyWithPage:(int64_t)page usage:(int64_t)usage;
++ (BOOL)_shouldMatchKeyCommandsForEvent:(__IOHIDEvent *)event gsKeyboard:(__GSKeyboard *)keyboard;
++ (id)_descriptionForKeyCommandCollection:(id)collection;
++ (id)keyCommandForEvent:(__IOHIDEvent *)event gsKeyboard:(__GSKeyboard *)keyboard activeModifiers:(int64_t *)modifiers;
++ (id)keyCommandWithInput:(id)input modifierFlags:(int64_t)flags;
++ (id)keyCommandWithKeyCode:(int64_t)code modifierFlags:(int64_t)flags;
++ (void)_appendDescriptionOfKeyCommandCollection:(id)collection toStream:(id)stream;
 - (BKSHIDEventKeyCommand)init;
-- (BKSHIDEventKeyCommand)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BKSHIDEventKeyCommand)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isModifierOnlyCommand;
 - (NSString)description;
-- (id)_initWithInput:(id)a3 keyCode:(int64_t)a4 modifierFlags:(int64_t)a5;
+- (id)_initWithInput:(id)input keyCode:(int64_t)code modifierFlags:(int64_t)flags;
 - (id)_sanitizedInputForDescription;
-- (int64_t)describes:(id)a3;
+- (int64_t)describes:(id)describes;
 - (unint64_t)hash;
-- (void)_appendKeyWithoutModifiersToDescriptionTarget:(id)a3 keyCodeString:(id)a4;
-- (void)_appendPropertiesCommon:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_appendKeyWithoutModifiersToDescriptionTarget:(id)target keyCodeString:(id)string;
+- (void)_appendPropertiesCommon:(id)common;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BKSHIDEventKeyCommand
 
-- (int64_t)describes:(id)a3
+- (int64_t)describes:(id)describes
 {
-  v4 = a3;
+  describesCopy = describes;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = describesCopy;
   }
 
   else
@@ -46,71 +46,71 @@
 
   if ([v6 isModifierOnlyCommand])
   {
-    v8 = [(BKSHIDEventKeyCommand *)self modifierFlags];
-    v9 = ([v7 modifierFlags] & v8) != 0;
+    modifierFlags = [(BKSHIDEventKeyCommand *)self modifierFlags];
+    v9 = ([v7 modifierFlags] & modifierFlags) != 0;
     goto LABEL_34;
   }
 
   if ([(BKSHIDEventKeyCommand *)self keyCode]!= -1)
   {
-    v10 = [v7 keyCode];
-    if (v10 == [(BKSHIDEventKeyCommand *)self keyCode])
+    keyCode = [v7 keyCode];
+    if (keyCode == [(BKSHIDEventKeyCommand *)self keyCode])
     {
-      v11 = [(BKSHIDEventKeyCommand *)self modifierFlags];
-      if (v11 == [v7 modifierFlags])
+      modifierFlags2 = [(BKSHIDEventKeyCommand *)self modifierFlags];
+      if (modifierFlags2 == [v7 modifierFlags])
       {
         goto LABEL_33;
       }
     }
   }
 
-  v12 = [v7 unmodifiedInput];
-  if (!v12)
+  unmodifiedInput = [v7 unmodifiedInput];
+  if (!unmodifiedInput)
   {
     goto LABEL_16;
   }
 
-  v13 = v12;
-  v14 = [v7 commandModifiedInput];
-  if (v14)
+  v13 = unmodifiedInput;
+  commandModifiedInput = [v7 commandModifiedInput];
+  if (commandModifiedInput)
   {
     goto LABEL_15;
   }
 
-  v14 = [v7 unmodifiedInput];
-  v15 = [(BKSHIDEventKeyCommand *)self input];
-  if ([v14 caseInsensitiveCompare:v15])
+  commandModifiedInput = [v7 unmodifiedInput];
+  input = [(BKSHIDEventKeyCommand *)self input];
+  if ([commandModifiedInput caseInsensitiveCompare:input])
   {
 
 LABEL_15:
     goto LABEL_16;
   }
 
-  v32 = [(BKSHIDEventKeyCommand *)self modifierFlags];
-  v33 = [v7 modifierFlags];
+  modifierFlags3 = [(BKSHIDEventKeyCommand *)self modifierFlags];
+  modifierFlags4 = [v7 modifierFlags];
 
-  if (v32 == v33)
+  if (modifierFlags3 == modifierFlags4)
   {
     goto LABEL_33;
   }
 
 LABEL_16:
-  v16 = [v7 commandModifiedInput];
-  if (v16)
+  commandModifiedInput2 = [v7 commandModifiedInput];
+  if (commandModifiedInput2)
   {
-    v17 = v16;
-    v18 = [v7 commandModifiedInput];
-    v19 = [(BKSHIDEventKeyCommand *)self input];
-    if ([v18 caseInsensitiveCompare:v19])
+    v17 = commandModifiedInput2;
+    commandModifiedInput3 = [v7 commandModifiedInput];
+    input2 = [(BKSHIDEventKeyCommand *)self input];
+    if ([commandModifiedInput3 caseInsensitiveCompare:input2])
     {
 
       goto LABEL_20;
     }
 
-    v20 = [(BKSHIDEventKeyCommand *)self modifierFlags];
-    v21 = [v7 modifierFlags];
+    modifierFlags5 = [(BKSHIDEventKeyCommand *)self modifierFlags];
+    modifierFlags6 = [v7 modifierFlags];
 
-    if (v20 != v21)
+    if (modifierFlags5 != modifierFlags6)
     {
       goto LABEL_20;
     }
@@ -121,22 +121,22 @@ LABEL_33:
   }
 
 LABEL_20:
-  v22 = [(BKSHIDEventKeyCommand *)self input];
-  v23 = [v22 uppercaseString];
-  v24 = [(BKSHIDEventKeyCommand *)self input];
-  v25 = [v24 lowercaseString];
-  if ([v23 isEqualToString:v25])
+  input3 = [(BKSHIDEventKeyCommand *)self input];
+  uppercaseString = [input3 uppercaseString];
+  input4 = [(BKSHIDEventKeyCommand *)self input];
+  lowercaseString = [input4 lowercaseString];
+  if ([uppercaseString isEqualToString:lowercaseString])
   {
-    v26 = [v7 shiftModifiedInput];
-    v27 = [(BKSHIDEventKeyCommand *)self input];
-    if ([v26 isEqualToString:v27])
+    shiftModifiedInput = [v7 shiftModifiedInput];
+    input5 = [(BKSHIDEventKeyCommand *)self input];
+    if ([shiftModifiedInput isEqualToString:input5])
     {
-      v28 = [v7 shiftModifiedInput];
-      v29 = [v7 unmodifiedInput];
-      v36 = v28;
-      v30 = v28;
-      v31 = v29;
-      if ([v30 isEqualToString:v29])
+      shiftModifiedInput2 = [v7 shiftModifiedInput];
+      unmodifiedInput2 = [v7 unmodifiedInput];
+      v36 = shiftModifiedInput2;
+      v30 = shiftModifiedInput2;
+      v31 = unmodifiedInput2;
+      if ([v30 isEqualToString:unmodifiedInput2])
       {
         v9 = 0;
       }
@@ -173,52 +173,52 @@ LABEL_34:
 
 - (BOOL)isModifierOnlyCommand
 {
-  v3 = [(BKSHIDEventKeyCommand *)self modifierFlags];
-  if (v3)
+  modifierFlags = [(BKSHIDEventKeyCommand *)self modifierFlags];
+  if (modifierFlags)
   {
-    v4 = [(BKSHIDEventKeyCommand *)self input];
+    input = [(BKSHIDEventKeyCommand *)self input];
 
-    if (v4)
+    if (input)
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(modifierFlags) = 0;
     }
 
     else if ([(BKSHIDEventKeyCommand *)self keyCode]== -1)
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(modifierFlags) = 1;
     }
 
     else
     {
       v5 = objc_opt_class();
-      v6 = [(BKSHIDEventKeyCommand *)self usagePage];
-      v7 = [(BKSHIDEventKeyCommand *)self keyCode];
+      usagePage = [(BKSHIDEventKeyCommand *)self usagePage];
+      keyCode = [(BKSHIDEventKeyCommand *)self keyCode];
 
-      LOBYTE(v3) = [v5 _isModifierKeyWithPage:v6 usage:v7];
+      LOBYTE(modifierFlags) = [v5 _isModifierKeyWithPage:usagePage usage:keyCode];
     }
   }
 
-  return v3;
+  return modifierFlags;
 }
 
 - (id)_sanitizedInputForDescription
 {
-  v2 = [(BKSHIDEventKeyCommand *)self input];
-  v3 = [v2 _stringRepresentation];
+  input = [(BKSHIDEventKeyCommand *)self input];
+  _stringRepresentation = [input _stringRepresentation];
 
-  return v3;
+  return _stringRepresentation;
 }
 
-- (void)_appendPropertiesCommon:(id)a3
+- (void)_appendPropertiesCommon:(id)common
 {
-  v4 = a3;
+  commonCopy = common;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __49__BKSHIDEventKeyCommand__appendPropertiesCommon___block_invoke;
   v6[3] = &unk_1E6F47000;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = commonCopy;
+  v5 = commonCopy;
   [v5 appendCustomFormatWithName:0 block:v6];
 }
 
@@ -394,28 +394,28 @@ LABEL_40:
   [*(a1 + 32) _appendKeyWithoutModifiersToDescriptionTarget:v3 keyCodeString:v13];
 }
 
-- (void)_appendKeyWithoutModifiersToDescriptionTarget:(id)a3 keyCodeString:(id)a4
+- (void)_appendKeyWithoutModifiersToDescriptionTarget:(id)target keyCodeString:(id)string
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(BKSHIDEventKeyCommand *)self _sanitizedInputForDescription];
-  if (v7)
+  targetCopy = target;
+  stringCopy = string;
+  _sanitizedInputForDescription = [(BKSHIDEventKeyCommand *)self _sanitizedInputForDescription];
+  if (_sanitizedInputForDescription)
   {
-    [v8 appendString:v7];
-    if (!v6)
+    [targetCopy appendString:_sanitizedInputForDescription];
+    if (!stringCopy)
     {
       goto LABEL_6;
     }
 
-    [v8 appendString:@" "];
+    [targetCopy appendString:@" "];
   }
 
-  else if (!v6)
+  else if (!stringCopy)
   {
     goto LABEL_6;
   }
 
-  [v8 appendString:v6];
+  [targetCopy appendString:stringCopy];
 LABEL_6:
 }
 
@@ -426,7 +426,7 @@ LABEL_6:
   v8 = 3221225472;
   v9 = __36__BKSHIDEventKeyCommand_description__block_invoke;
   v10 = &unk_1E6F47C78;
-  v11 = self;
+  selfCopy = self;
   v12 = v3;
   v4 = v3;
   [v4 appendProem:self block:&v7];
@@ -435,25 +435,25 @@ LABEL_6:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 input];
-    v7 = [(BKSHIDEventKeyCommand *)self input];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    input = [v5 input];
+    input2 = [(BKSHIDEventKeyCommand *)self input];
+    v8 = input2;
+    if (input == input2)
     {
     }
 
     else
     {
-      v9 = [v5 input];
-      v10 = [(BKSHIDEventKeyCommand *)self input];
-      v11 = [v9 isEqualToString:v10];
+      input3 = [v5 input];
+      input4 = [(BKSHIDEventKeyCommand *)self input];
+      v11 = [input3 isEqualToString:input4];
 
       if (!v11)
       {
@@ -461,11 +461,11 @@ LABEL_6:
       }
     }
 
-    v13 = [v5 keyCode];
-    if (v13 == [(BKSHIDEventKeyCommand *)self keyCode])
+    keyCode = [v5 keyCode];
+    if (keyCode == [(BKSHIDEventKeyCommand *)self keyCode])
     {
-      v14 = [v5 modifierFlags];
-      v12 = v14 == [(BKSHIDEventKeyCommand *)self modifierFlags];
+      modifierFlags = [v5 modifierFlags];
+      v12 = modifierFlags == [(BKSHIDEventKeyCommand *)self modifierFlags];
 LABEL_10:
 
       goto LABEL_11;
@@ -496,41 +496,41 @@ LABEL_11:
   }
 }
 
-- (BKSHIDEventKeyCommand)initWithCoder:(id)a3
+- (BKSHIDEventKeyCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"input"];
-  v6 = [v4 decodeIntegerForKey:@"keyCode"];
-  v7 = [v4 decodeIntegerForKey:@"modifierFlags"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"input"];
+  v6 = [coderCopy decodeIntegerForKey:@"keyCode"];
+  v7 = [coderCopy decodeIntegerForKey:@"modifierFlags"];
 
   v8 = [(BKSHIDEventKeyCommand *)self _initWithInput:v5 keyCode:v6 modifierFlags:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   input = self->_input;
-  v5 = a3;
-  [v5 encodeObject:input forKey:@"input"];
-  [v5 encodeInteger:self->_keyCode forKey:@"keyCode"];
-  [v5 encodeInteger:self->_modifierFlags forKey:@"modifierFlags"];
+  coderCopy = coder;
+  [coderCopy encodeObject:input forKey:@"input"];
+  [coderCopy encodeInteger:self->_keyCode forKey:@"keyCode"];
+  [coderCopy encodeInteger:self->_modifierFlags forKey:@"modifierFlags"];
 }
 
-- (id)_initWithInput:(id)a3 keyCode:(int64_t)a4 modifierFlags:(int64_t)a5
+- (id)_initWithInput:(id)input keyCode:(int64_t)code modifierFlags:(int64_t)flags
 {
-  v8 = a3;
+  inputCopy = input;
   v13.receiver = self;
   v13.super_class = BKSHIDEventKeyCommand;
   v9 = [(BKSHIDEventKeyCommand *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [inputCopy copy];
     input = v9->_input;
     v9->_input = v10;
 
     objc_storeStrong(&v9->_unmodifiedInput, v9->_input);
-    v9->_keyCode = a4;
-    v9->_modifierFlags = a5;
+    v9->_keyCode = code;
+    v9->_modifierFlags = flags;
     v9->_usagePage = 7;
   }
 
@@ -550,7 +550,7 @@ LABEL_11:
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BKSHIDEventKeyCommand.m";
     v17 = 1024;
@@ -566,28 +566,28 @@ LABEL_11:
   return result;
 }
 
-+ (BOOL)_shouldMatchKeyCommandsForEvent:(__IOHIDEvent *)a3 gsKeyboard:(__GSKeyboard *)a4
++ (BOOL)_shouldMatchKeyCommandsForEvent:(__IOHIDEvent *)event gsKeyboard:(__GSKeyboard *)keyboard
 {
-  if (!a4)
+  if (!keyboard)
   {
     return 0;
   }
 
   IntegerValue = IOHIDEventGetIntegerValue();
-  return ([a1 _isModifierKeyWithPage:IntegerValue usage:IOHIDEventGetIntegerValue()] & 1) != 0 || (GSKeyboardGetModifierState() & 0x5910000) != 0;
+  return ([self _isModifierKeyWithPage:IntegerValue usage:IOHIDEventGetIntegerValue()] & 1) != 0 || (GSKeyboardGetModifierState() & 0x5910000) != 0;
 }
 
-+ (BOOL)_isModifierKeyWithPage:(int64_t)a3 usage:(int64_t)a4
++ (BOOL)_isModifierKeyWithPage:(int64_t)page usage:(int64_t)usage
 {
-  if (a3 != 7)
+  if (page != 7)
   {
     return GSKeyboardIsGlobeKeyUsagePair() != 0;
   }
 
-  return (a4 - 224) < 8 || a4 == 83 || a4 == 57;
+  return (usage - 224) < 8 || usage == 83 || usage == 57;
 }
 
-+ (id)keyCommandForEvent:(__IOHIDEvent *)a3 gsKeyboard:(__GSKeyboard *)a4 activeModifiers:(int64_t *)a5
++ (id)keyCommandForEvent:(__IOHIDEvent *)event gsKeyboard:(__GSKeyboard *)keyboard activeModifiers:(int64_t *)modifiers
 {
   v43 = *MEMORY[0x1E69E9840];
   IntegerValue = IOHIDEventGetIntegerValue();
@@ -604,11 +604,11 @@ LABEL_11:
     v12 = 0;
   }
 
-  if (!MEMORY[0x1EEE89690] || !a4)
+  if (!MEMORY[0x1EEE89690] || !keyboard)
   {
-    if (a5)
+    if (modifiers)
     {
-      *a5 = v12;
+      *modifiers = v12;
     }
 
     v42[0] = 0;
@@ -713,7 +713,7 @@ LABEL_55:
 
   v35 = v16;
   v17 = (LiveModifierState >> 3) & 0x800000 | (LiveModifierState >> 2) & 0x10000;
-  if (a5)
+  if (modifiers)
   {
     v18 = GSKeyboardGetLiveModifierState();
     if ((v18 & 0x480000) != 0)
@@ -736,7 +736,7 @@ LABEL_55:
       v19 |= 0x20000uLL;
     }
 
-    *a5 = v19 | (v18 >> 3) & 0x800000 | (v18 >> 2) & 0x10000;
+    *modifiers = v19 | (v18 >> 3) & 0x800000 | (v18 >> 2) & 0x10000;
   }
 
   if (HIWORD(v38))
@@ -777,23 +777,23 @@ LABEL_58:
   return v21;
 }
 
-+ (id)_descriptionForKeyCommandCollection:(id)a3
++ (id)_descriptionForKeyCommandCollection:(id)collection
 {
   v4 = MEMORY[0x1E698E688];
-  v5 = a3;
+  collectionCopy = collection;
   v6 = objc_alloc_init(v4);
-  [a1 _appendDescriptionOfKeyCommandCollection:v5 toStream:v6];
+  [self _appendDescriptionOfKeyCommandCollection:collectionCopy toStream:v6];
 
   v7 = [v6 description];
 
   return v7;
 }
 
-+ (void)_appendDescriptionOfKeyCommandCollection:(id)a3 toStream:(id)a4
++ (void)_appendDescriptionOfKeyCommandCollection:(id)collection toStream:(id)stream
 {
   v33 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  collectionCopy = collection;
+  streamCopy = stream;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"collection must be an NSSet, NSArray, or NSOrderedSet"];
@@ -807,7 +807,7 @@ LABEL_58:
       v23 = 2114;
       v24 = v17;
       v25 = 2048;
-      v26 = a1;
+      selfCopy = self;
       v27 = 2114;
       v28 = @"BKSHIDEventKeyCommand.m";
       v29 = 1024;
@@ -823,16 +823,16 @@ LABEL_58:
     JUMPOUT(0x186359038);
   }
 
-  v9 = [v7 bs_dictionaryByPartitioning:&__block_literal_global_357];
+  v9 = [collectionCopy bs_dictionaryByPartitioning:&__block_literal_global_357];
   v10 = [MEMORY[0x1E698E690] build:&__block_literal_global_62];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __75__BKSHIDEventKeyCommand__appendDescriptionOfKeyCommandCollection_toStream___block_invoke_3;
   v18[3] = &unk_1E6F466A0;
-  v19 = v8;
+  v19 = streamCopy;
   v20 = v10;
   v11 = v10;
-  v12 = v8;
+  v12 = streamCopy;
   [v12 appendDictionary:v9 withName:0 itemBlock:v18];
 
   v13 = *MEMORY[0x1E69E9840];
@@ -908,26 +908,26 @@ uint64_t __75__BKSHIDEventKeyCommand__appendDescriptionOfKeyCommandCollection_to
   return [v2 numberWithInteger:v3];
 }
 
-+ (id)keyCommandWithKeyCode:(int64_t)a3 modifierFlags:(int64_t)a4
++ (id)keyCommandWithKeyCode:(int64_t)code modifierFlags:(int64_t)flags
 {
-  v4 = [[BKSHIDEventKeyCommand alloc] _initWithInput:0 keyCode:a3 modifierFlags:a4];
+  v4 = [[BKSHIDEventKeyCommand alloc] _initWithInput:0 keyCode:code modifierFlags:flags];
 
   return v4;
 }
 
-+ (id)keyCommandWithInput:(id)a3 modifierFlags:(int64_t)a4
++ (id)keyCommandWithInput:(id)input modifierFlags:(int64_t)flags
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E695DFB0] null];
-  v7 = [v5 isEqual:v6];
+  inputCopy = input;
+  null = [MEMORY[0x1E695DFB0] null];
+  v7 = [inputCopy isEqual:null];
 
   if (v7)
   {
 
-    v5 = 0;
+    inputCopy = 0;
   }
 
-  v8 = [[BKSHIDEventKeyCommand alloc] _initWithInput:v5 keyCode:-1 modifierFlags:a4];
+  v8 = [[BKSHIDEventKeyCommand alloc] _initWithInput:inputCopy keyCode:-1 modifierFlags:flags];
 
   return v8;
 }

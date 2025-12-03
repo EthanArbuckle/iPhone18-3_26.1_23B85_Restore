@@ -18,7 +18,7 @@
 - (void)recreateDocumentsFolderIfNeededInDB
 {
   v6 = *MEMORY[0x277D85DE8];
-  v1 = *(a1 + 48);
+  v1 = *(self + 48);
   v4 = 138412546;
   v5 = v1;
   OUTLINED_FUNCTION_0_0();

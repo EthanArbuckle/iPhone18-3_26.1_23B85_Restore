@@ -1,7 +1,7 @@
 @interface NWStatsPollHandler
 - (NWStatsPollHandler)init;
 - (id)description;
-- (void)handleSnapshot:(id)a3;
+- (void)handleSnapshot:(id)snapshot;
 @end
 
 @implementation NWStatsPollHandler
@@ -27,15 +27,15 @@
   return v2;
 }
 
-- (void)handleSnapshot:(id)a3
+- (void)handleSnapshot:(id)snapshot
 {
-  v6 = a3;
-  v4 = [(NWStatsPollHandler *)self deliveryBlock];
+  snapshotCopy = snapshot;
+  deliveryBlock = [(NWStatsPollHandler *)self deliveryBlock];
 
-  if (v4)
+  if (deliveryBlock)
   {
-    v5 = [(NWStatsPollHandler *)self deliveryBlock];
-    (v5)[2](v5, v6);
+    deliveryBlock2 = [(NWStatsPollHandler *)self deliveryBlock];
+    (deliveryBlock2)[2](deliveryBlock2, snapshotCopy);
   }
 }
 

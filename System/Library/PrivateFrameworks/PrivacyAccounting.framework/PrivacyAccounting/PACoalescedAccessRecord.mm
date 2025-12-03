@@ -1,36 +1,36 @@
 @interface PACoalescedAccessRecord
-- (BOOL)isEqualToAccessRecord:(id)a3;
-- (PACoalescedAccessRecord)initWithAccess:(id)a3 startTime:(double)a4 endTime:(double)a5 count:(int64_t)a6;
-- (PACoalescedAccessRecord)initWithCoder:(id)a3;
+- (BOOL)isEqualToAccessRecord:(id)record;
+- (PACoalescedAccessRecord)initWithAccess:(id)access startTime:(double)time endTime:(double)endTime count:(int64_t)count;
+- (PACoalescedAccessRecord)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PACoalescedAccessRecord
 
-- (PACoalescedAccessRecord)initWithAccess:(id)a3 startTime:(double)a4 endTime:(double)a5 count:(int64_t)a6
+- (PACoalescedAccessRecord)initWithAccess:(id)access startTime:(double)time endTime:(double)endTime count:(int64_t)count
 {
   v8.receiver = self;
   v8.super_class = PACoalescedAccessRecord;
-  result = [(PACompleteAccessRecord *)&v8 initWithAccess:a3 startTime:a4 endTime:a5];
+  result = [(PACompleteAccessRecord *)&v8 initWithAccess:access startTime:time endTime:endTime];
   if (result)
   {
-    result->_count = a6;
+    result->_count = count;
   }
 
   return result;
 }
 
-- (PACoalescedAccessRecord)initWithCoder:(id)a3
+- (PACoalescedAccessRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = PACoalescedAccessRecord;
-  v5 = [(PACompleteAccessRecord *)&v7 initWithCoder:v4];
+  v5 = [(PACompleteAccessRecord *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_count = [v4 decodeIntegerForKey:@"count"];
+    v5->_count = [coderCopy decodeIntegerForKey:@"count"];
   }
 
   return v5;
@@ -56,15 +56,15 @@
   return self->_count - v3 + 32 * v3;
 }
 
-- (BOOL)isEqualToAccessRecord:(id)a3
+- (BOOL)isEqualToAccessRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v8.receiver = self;
   v8.super_class = PACoalescedAccessRecord;
-  if ([(PACompleteAccessRecord *)&v8 isEqualToAccessRecord:v4])
+  if ([(PACompleteAccessRecord *)&v8 isEqualToAccessRecord:recordCopy])
   {
     count = self->_count;
-    v6 = count == [v4 count];
+    v6 = count == [recordCopy count];
   }
 
   else
@@ -75,13 +75,13 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PACoalescedAccessRecord;
-  v4 = a3;
-  [(PACompleteAccessRecord *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_count forKey:{@"count", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(PACompleteAccessRecord *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_count forKey:{@"count", v5.receiver, v5.super_class}];
 }
 
 @end

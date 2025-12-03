@@ -5,17 +5,17 @@
 - (CBUserSettings)init;
 - (void)_attemptConnectingToWifi;
 - (void)_disableContinousPath;
-- (void)_setAutoDiagsFromNVRamWithNavController:(id)a3;
+- (void)_setAutoDiagsFromNVRamWithNavController:(id)controller;
 - (void)_setDesiredUserDefaults;
 - (void)_setLanguageFromNVRam;
 - (void)_setOverrideRemoteSetupPin;
 - (void)_setSkipDiagsTermsAndConditionsFromNVRam;
 - (void)_setWiFiFromNVRam;
 - (void)_updateASTDefaultsFromNVRam;
-- (void)applyPostUISettingsFromNvramWithNavigationController:(id)a3;
+- (void)applyPostUISettingsFromNvramWithNavigationController:(id)controller;
 - (void)applyPreUISettingsFromNvram;
-- (void)assignProxyServer:(id)a3;
-- (void)checkInWiFiSettings:(BOOL)a3;
+- (void)assignProxyServer:(id)server;
+- (void)checkInWiFiSettings:(BOOL)settings;
 - (void)dealloc;
 @end
 
@@ -74,12 +74,12 @@
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 removeObserver:self];
 
-  v4 = [(CBUserSettings *)self wifiReconnectTimer];
+  wifiReconnectTimer = [(CBUserSettings *)self wifiReconnectTimer];
 
-  if (v4)
+  if (wifiReconnectTimer)
   {
-    v5 = [(CBUserSettings *)self wifiReconnectTimer];
-    [v5 invalidate];
+    wifiReconnectTimer2 = [(CBUserSettings *)self wifiReconnectTimer];
+    [wifiReconnectTimer2 invalidate];
 
     [(CBUserSettings *)self setWifiReconnectTimer:0];
   }
@@ -89,9 +89,9 @@
   [(CBUserSettings *)&v6 dealloc];
 }
 
-- (void)checkInWiFiSettings:(BOOL)a3
+- (void)checkInWiFiSettings:(BOOL)settings
 {
-  v3 = a3;
+  settingsCopy = settings;
   v5 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -100,20 +100,20 @@
   }
 
   [(CBUserSettings *)self setCheckedInWiFiSettings:1];
-  [(CBUserSettings *)self setWifiPowerStateOn:v3];
+  [(CBUserSettings *)self setWifiPowerStateOn:settingsCopy];
   v6 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(CBUserSettings *)self wifiPowerStateOn];
+    wifiPowerStateOn = [(CBUserSettings *)self wifiPowerStateOn];
     v8[0] = 67109120;
-    v8[1] = v7;
+    v8[1] = wifiPowerStateOn;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "User's Setting [Wi-Fi]: %d", v8, 8u);
   }
 }
 
-- (void)assignProxyServer:(id)a3
+- (void)assignProxyServer:(id)server
 {
-  v4 = a3;
+  serverCopy = server;
   v5 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -121,7 +121,7 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Setting proxy server..", v6, 2u);
   }
 
-  [(CBUserSettings *)self setProxyServer:v4];
+  [(CBUserSettings *)self setProxyServer:serverCopy];
 }
 
 - (void)applyPreUISettingsFromNvram
@@ -144,9 +144,9 @@
   }
 }
 
-- (void)applyPostUISettingsFromNvramWithNavigationController:(id)a3
+- (void)applyPostUISettingsFromNvramWithNavigationController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if (+[CBUtilities isInternalInstall])
   {
     v5 = dispatch_semaphore_create(0);
@@ -155,7 +155,7 @@
     [(CBUserSettings *)self _setLanguageFromNVRam];
     [(CBUserSettings *)self _setWiFiFromNVRam];
     [(CBUserSettings *)self _setSkipDiagsTermsAndConditionsFromNVRam];
-    [(CBUserSettings *)self _setAutoDiagsFromNVRamWithNavController:v4];
+    [(CBUserSettings *)self _setAutoDiagsFromNVRamWithNavController:controllerCopy];
   }
 
   else
@@ -172,8 +172,8 @@
 - (void)_setDesiredUserDefaults
 {
   v3 = +[NSBundle mainBundle];
-  v4 = [v3 bundleIdentifier];
-  [v4 cStringUsingEncoding:4];
+  bundleIdentifier = [v3 bundleIdentifier];
+  [bundleIdentifier cStringUsingEncoding:4];
   v5 = os_variant_uses_ephemeral_storage();
 
   if (!v5)
@@ -245,16 +245,16 @@ LABEL_11:
 
   if (v8 || ![v6 length])
   {
-    v10 = 0;
+    bOOLValue = 0;
   }
 
   else
   {
     v9 = [[NSString alloc] initWithData:v7 encoding:4];
-    v10 = [v9 BOOLValue];
+    bOOLValue = [v9 BOOLValue];
   }
 
-  v11 = v3 | (v4 | v10) ^ 1;
+  v11 = v3 | (v4 | bOOLValue) ^ 1;
   v12 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -265,7 +265,7 @@ LABEL_11:
     v19 = 1024;
     v20 = v4;
     v21 = 1024;
-    v22 = v10;
+    v22 = bOOLValue;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Permitted to update AST Defaults: (%d). Entitled: (%d)  Fusing: (%d) Fusing Ignored: (%d)", buf, 0x1Au);
   }
 
@@ -475,8 +475,8 @@ LABEL_16:
   }
 
 LABEL_14:
-  v13 = [(CBUserSettings *)self diagsLaunchDependenciesSemaphore];
-  dispatch_semaphore_signal(v13);
+  diagsLaunchDependenciesSemaphore = [(CBUserSettings *)self diagsLaunchDependenciesSemaphore];
+  dispatch_semaphore_signal(diagsLaunchDependenciesSemaphore);
 
 LABEL_17:
 }
@@ -500,7 +500,7 @@ LABEL_17:
   if (!v5 && [v3 length])
   {
     v6 = [[NSString alloc] initWithData:v4 encoding:4];
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
 
     v8 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -510,7 +510,7 @@ LABEL_17:
     }
 
     v9 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.Diagnostics"];
-    [v9 setBool:v7 forKey:@"SkipTermsAndConditions"];
+    [v9 setBool:bOOLValue forKey:@"SkipTermsAndConditions"];
     v10 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
@@ -520,17 +520,17 @@ LABEL_17:
   }
 }
 
-- (void)_setAutoDiagsFromNVRamWithNavController:(id)a3
+- (void)_setAutoDiagsFromNVRamWithNavController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = dispatch_get_global_queue(21, 0);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000056EC;
   v7[3] = &unk_10007D640;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = controllerCopy;
+  v6 = controllerCopy;
   dispatch_async(v5, v7);
 }
 
@@ -569,8 +569,8 @@ LABEL_17:
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Setting Remote Setup override pin of %@", buf, 0xCu);
       }
 
-      v10 = [(CBUserSettings *)self remoteSetupManager];
-      [v10 setOverrideAuthPin:v8];
+      remoteSetupManager = [(CBUserSettings *)self remoteSetupManager];
+      [remoteSetupManager setOverrideAuthPin:v8];
     }
   }
 }

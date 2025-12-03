@@ -1,29 +1,29 @@
 @interface PKTextRangeHyperlink
-+ (id)hyperlinkSourcesFromApplyFooter:(id)a3 linkTapped:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (PKTextRangeHyperlink)initWithLinkRange:(_NSRange)a3 action:(id)a4;
-- (PKTextRangeHyperlink)initWithLinkText:(id)a3 action:(id)a4;
-- (PKTextRangeHyperlink)initWithLinkText:(id)a3 linkRange:(_NSRange)a4 action:(id)a5;
++ (id)hyperlinkSourcesFromApplyFooter:(id)footer linkTapped:(id)tapped;
+- (BOOL)isEqual:(id)equal;
+- (PKTextRangeHyperlink)initWithLinkRange:(_NSRange)range action:(id)action;
+- (PKTextRangeHyperlink)initWithLinkText:(id)text action:(id)action;
+- (PKTextRangeHyperlink)initWithLinkText:(id)text linkRange:(_NSRange)range action:(id)action;
 - (_NSRange)linkRange;
 - (unint64_t)hash;
 @end
 
 @implementation PKTextRangeHyperlink
 
-+ (id)hyperlinkSourcesFromApplyFooter:(id)a3 linkTapped:(id)a4
++ (id)hyperlinkSourcesFromApplyFooter:(id)footer linkTapped:(id)tapped
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v24 = a4;
-  if (v5)
+  footerCopy = footer;
+  tappedCopy = tapped;
+  if (footerCopy)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v23 = v5;
-    obj = [v5 links];
+    v23 = footerCopy;
+    obj = [footerCopy links];
     v7 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v7)
     {
@@ -39,22 +39,22 @@
           }
 
           v11 = *(*(&v28 + 1) + 8 * i);
-          v12 = [v11 linkText];
+          linkText = [v11 linkText];
           [v11 linkRange];
-          if ([v12 length] | v13)
+          if ([linkText length] | v13)
           {
             v14 = [PKTextRangeHyperlink alloc];
-            v15 = [v11 linkText];
-            v16 = [v11 linkRange];
+            linkText2 = [v11 linkText];
+            linkRange = [v11 linkRange];
             v18 = v17;
             v26[0] = MEMORY[0x1E69E9820];
             v26[1] = 3221225472;
             v26[2] = __67__PKTextRangeHyperlink_hyperlinkSourcesFromApplyFooter_linkTapped___block_invoke;
             v26[3] = &unk_1E8010E20;
-            v19 = v24;
+            v19 = tappedCopy;
             v26[4] = v11;
             v27 = v19;
-            v20 = [(PKTextRangeHyperlink *)v14 initWithLinkText:v15 linkRange:v16 action:v18, v26];
+            v20 = [(PKTextRangeHyperlink *)v14 initWithLinkText:linkText2 linkRange:linkRange action:v18, v26];
 
             [v6 safelyAddObject:v20];
           }
@@ -76,7 +76,7 @@
       v21 = 0;
     }
 
-    v5 = v23;
+    footerCopy = v23;
   }
 
   else
@@ -98,41 +98,41 @@ uint64_t __67__PKTextRangeHyperlink_hyperlinkSourcesFromApplyFooter_linkTapped__
   return result;
 }
 
-- (PKTextRangeHyperlink)initWithLinkText:(id)a3 action:(id)a4
+- (PKTextRangeHyperlink)initWithLinkText:(id)text action:(id)action
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 length])
+  textCopy = text;
+  actionCopy = action;
+  if ([textCopy length])
   {
     v14.receiver = self;
     v14.super_class = PKTextRangeHyperlink;
     v9 = [(PKTextRangeHyperlink *)&v14 init];
     if (v9)
     {
-      v10 = [v8 copy];
+      v10 = [actionCopy copy];
       action = v9->_action;
       v9->_action = v10;
 
-      objc_storeStrong(&v9->_linkText, a3);
+      objc_storeStrong(&v9->_linkText, text);
     }
 
     self = v9;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (PKTextRangeHyperlink)initWithLinkRange:(_NSRange)a3 action:(id)a4
+- (PKTextRangeHyperlink)initWithLinkRange:(_NSRange)range action:(id)action
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
+  length = range.length;
+  location = range.location;
+  actionCopy = action;
   if (length)
   {
     v12.receiver = self;
@@ -140,7 +140,7 @@ uint64_t __67__PKTextRangeHyperlink_hyperlinkSourcesFromApplyFooter_linkTapped__
     v8 = [(PKTextRangeHyperlink *)&v12 init];
     if (v8)
     {
-      v9 = [v7 copy];
+      v9 = [actionCopy copy];
       action = v8->_action;
       v8->_action = v9;
 
@@ -155,23 +155,23 @@ uint64_t __67__PKTextRangeHyperlink_hyperlinkSourcesFromApplyFooter_linkTapped__
   return length;
 }
 
-- (PKTextRangeHyperlink)initWithLinkText:(id)a3 linkRange:(_NSRange)a4 action:(id)a5
+- (PKTextRangeHyperlink)initWithLinkText:(id)text linkRange:(_NSRange)range action:(id)action
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
-  if ([v9 length])
+  length = range.length;
+  location = range.location;
+  textCopy = text;
+  actionCopy = action;
+  if ([textCopy length])
   {
-    v11 = [(PKTextRangeHyperlink *)self initWithLinkText:v9 action:v10];
+    actionCopy = [(PKTextRangeHyperlink *)self initWithLinkText:textCopy action:actionCopy];
   }
 
   else
   {
-    v11 = [(PKTextRangeHyperlink *)self initWithLinkRange:location action:length, v10];
+    actionCopy = [(PKTextRangeHyperlink *)self initWithLinkRange:location action:length, actionCopy];
   }
 
-  v12 = v11;
+  v12 = actionCopy;
 
   v13 = v12;
   return v13;
@@ -191,18 +191,18 @@ uint64_t __67__PKTextRangeHyperlink_hyperlinkSourcesFromApplyFooter_linkTapped__
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())

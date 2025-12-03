@@ -1,11 +1,11 @@
 @interface RSDComputeControllerDeviceEndpoint
-- (RSDComputeControllerDeviceEndpoint)initWithAddress:(const char *)a3;
+- (RSDComputeControllerDeviceEndpoint)initWithAddress:(const char *)address;
 - (void)dealloc;
 @end
 
 @implementation RSDComputeControllerDeviceEndpoint
 
-- (RSDComputeControllerDeviceEndpoint)initWithAddress:(const char *)a3
+- (RSDComputeControllerDeviceEndpoint)initWithAddress:(const char *)address
 {
   v9.receiver = self;
   v9.super_class = RSDComputeControllerDeviceEndpoint;
@@ -16,7 +16,7 @@
     {
       while (1)
       {
-        v5 = strdup(a3);
+        v5 = strdup(address);
         if (v5)
         {
           break;
@@ -28,10 +28,10 @@
 
     else
     {
-      v5 = strdup(a3);
+      v5 = strdup(address);
       if (!v5)
       {
-        sub_10003DA8C(a3, &v10, v11);
+        sub_10003DA8C(address, &v10, v11);
       }
     }
 

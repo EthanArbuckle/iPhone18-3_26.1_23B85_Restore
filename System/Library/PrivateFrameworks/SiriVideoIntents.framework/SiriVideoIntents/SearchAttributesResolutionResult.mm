@@ -1,22 +1,22 @@
 @interface SearchAttributesResolutionResult
-+ (id)confirmationRequiredWithSearchAttributesToConfirm:(id)a3;
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3;
-+ (id)disambiguationWithSearchAttributessToDisambiguate:(id)a3;
-+ (id)successWithResolvedSearchAttributes:(id)a3;
++ (id)confirmationRequiredWithSearchAttributesToConfirm:(id)confirm;
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate;
++ (id)disambiguationWithSearchAttributessToDisambiguate:(id)disambiguate;
++ (id)successWithResolvedSearchAttributes:(id)attributes;
 @end
 
 @implementation SearchAttributesResolutionResult
 
-+ (id)successWithResolvedSearchAttributes:(id)a3
++ (id)successWithResolvedSearchAttributes:(id)attributes
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = static SearchAttributesResolutionResult.success(with:)(v4);
+  attributesCopy = attributes;
+  v5 = static SearchAttributesResolutionResult.success(with:)(attributesCopy);
 
   return v5;
 }
 
-+ (id)disambiguationWithSearchAttributessToDisambiguate:(id)a3
++ (id)disambiguationWithSearchAttributessToDisambiguate:(id)disambiguate
 {
   type metadata accessor for SearchAttributes();
   v3 = sub_269854CB4();
@@ -26,16 +26,16 @@
   return v4;
 }
 
-+ (id)confirmationRequiredWithSearchAttributesToConfirm:(id)a3
++ (id)confirmationRequiredWithSearchAttributesToConfirm:(id)confirm
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = static SearchAttributesResolutionResult.confirmationRequired(with:)(a3);
+  confirmCopy = confirm;
+  v5 = static SearchAttributesResolutionResult.confirmationRequired(with:)(confirm);
 
   return v5;
 }
 
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate
 {
   sub_26984C7F8();
   sub_269854CB4();

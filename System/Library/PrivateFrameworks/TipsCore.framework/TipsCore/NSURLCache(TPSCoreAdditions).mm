@@ -9,7 +9,7 @@
 {
   if (a3)
   {
-    v8 = [a1 _tps_cacheDirectoryURLForIdentifier:?];
+    v8 = [self _tps_cacheDirectoryURLForIdentifier:?];
   }
 
   else
@@ -17,7 +17,7 @@
     v8 = 0;
   }
 
-  v9 = [[a1 alloc] initWithMemoryCapacity:a4 diskCapacity:a5 directoryURL:v8];
+  v9 = [[self alloc] initWithMemoryCapacity:a4 diskCapacity:a5 directoryURL:v8];
 
   return v9;
 }
@@ -25,17 +25,17 @@
 + (id)_tps_cacheDirectoryURLForIdentifier:()TPSCoreAdditions
 {
   v3 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v5 = +[TPSCommonDefines appGroupIdentifier];
-  v6 = [v4 containerURLForSecurityApplicationGroupIdentifier:v5];
+  v6 = [defaultManager containerURLForSecurityApplicationGroupIdentifier:v5];
 
   if (v6)
   {
-    v7 = [v6 URLByAppendingPathComponent:@"Library/Caches/SharedURLCache"];
-    if (v7)
+    firstObject = [v6 URLByAppendingPathComponent:@"Library/Caches/SharedURLCache"];
+    if (firstObject)
     {
 LABEL_3:
-      v8 = [v7 URLByAppendingPathComponent:v3];
+      v8 = [firstObject URLByAppendingPathComponent:v3];
 
       goto LABEL_6;
     }
@@ -43,10 +43,10 @@ LABEL_3:
 
   else
   {
-    v9 = [v4 URLsForDirectory:13 inDomains:1];
-    v7 = [v9 firstObject];
+    v9 = [defaultManager URLsForDirectory:13 inDomains:1];
+    firstObject = [v9 firstObject];
 
-    if (v7)
+    if (firstObject)
     {
       goto LABEL_3;
     }

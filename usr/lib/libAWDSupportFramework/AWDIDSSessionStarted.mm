@@ -1,15 +1,15 @@
 @interface AWDIDSSessionStarted
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasClientType:(BOOL)a3;
-- (void)setHasSessionProtocolVersionNumber:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasClientType:(BOOL)type;
+- (void)setHasSessionProtocolVersionNumber:(BOOL)number;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDIDSSessionStarted
@@ -23,9 +23,9 @@
   [(AWDIDSSessionStarted *)&v3 dealloc];
 }
 
-- (void)setHasSessionProtocolVersionNumber:(BOOL)a3
+- (void)setHasSessionProtocolVersionNumber:(BOOL)number
 {
-  if (a3)
+  if (number)
   {
     v3 = 4;
   }
@@ -38,9 +38,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasClientType:(BOOL)a3
+- (void)setHasClientType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -62,38 +62,38 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   guid = self->_guid;
   if (guid)
   {
-    [v3 setObject:guid forKey:@"guid"];
+    [dictionary setObject:guid forKey:@"guid"];
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_sessionProtocolVersionNumber), @"sessionProtocolVersionNumber"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_sessionProtocolVersionNumber), @"sessionProtocolVersionNumber"}];
   }
 
   serviceName = self->_serviceName;
   if (serviceName)
   {
-    [v3 setObject:serviceName forKey:@"serviceName"];
+    [dictionary setObject:serviceName forKey:@"serviceName"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_clientType), @"clientType"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_clientType), @"clientType"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -125,40 +125,40 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 44) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 44) |= 1u;
   }
 
   if (self->_guid)
   {
-    [a3 setGuid:?];
+    [to setGuid:?];
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    *(a3 + 10) = self->_sessionProtocolVersionNumber;
-    *(a3 + 44) |= 4u;
+    *(to + 10) = self->_sessionProtocolVersionNumber;
+    *(to + 44) |= 4u;
   }
 
   if (self->_serviceName)
   {
-    [a3 setServiceName:?];
+    [to setServiceName:?];
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(a3 + 4) = self->_clientType;
-    *(a3 + 44) |= 2u;
+    *(to + 4) = self->_clientType;
+    *(to + 44) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -166,14 +166,14 @@
     *(v5 + 44) |= 1u;
   }
 
-  *(v6 + 24) = [(NSString *)self->_guid copyWithZone:a3];
+  *(v6 + 24) = [(NSString *)self->_guid copyWithZone:zone];
   if ((*&self->_has & 4) != 0)
   {
     *(v6 + 40) = self->_sessionProtocolVersionNumber;
     *(v6 + 44) |= 4u;
   }
 
-  *(v6 + 32) = [(NSString *)self->_serviceName copyWithZone:a3];
+  *(v6 + 32) = [(NSString *)self->_serviceName copyWithZone:zone];
   if ((*&self->_has & 2) != 0)
   {
     *(v6 + 16) = self->_clientType;
@@ -183,22 +183,22 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 44);
+    v7 = *(equal + 44);
     if (has)
     {
-      if ((*(a3 + 44) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 44) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_22;
       }
     }
 
-    else if (*(a3 + 44))
+    else if (*(equal + 44))
     {
 LABEL_22:
       LOBYTE(v5) = 0;
@@ -206,7 +206,7 @@ LABEL_22:
     }
 
     guid = self->_guid;
-    if (guid | *(a3 + 3))
+    if (guid | *(equal + 3))
     {
       v5 = [(NSString *)guid isEqual:?];
       if (!v5)
@@ -217,22 +217,22 @@ LABEL_22:
       has = self->_has;
     }
 
-    v9 = *(a3 + 44);
+    v9 = *(equal + 44);
     if ((has & 4) != 0)
     {
-      if ((*(a3 + 44) & 4) == 0 || self->_sessionProtocolVersionNumber != *(a3 + 10))
+      if ((*(equal + 44) & 4) == 0 || self->_sessionProtocolVersionNumber != *(equal + 10))
       {
         goto LABEL_22;
       }
     }
 
-    else if ((*(a3 + 44) & 4) != 0)
+    else if ((*(equal + 44) & 4) != 0)
     {
       goto LABEL_22;
     }
 
     serviceName = self->_serviceName;
-    if (serviceName | *(a3 + 4))
+    if (serviceName | *(equal + 4))
     {
       v5 = [(NSString *)serviceName isEqual:?];
       if (!v5)
@@ -243,10 +243,10 @@ LABEL_22:
       has = self->_has;
     }
 
-    LOBYTE(v5) = (*(a3 + 44) & 2) == 0;
+    LOBYTE(v5) = (*(equal + 44) & 2) == 0;
     if ((has & 2) != 0)
     {
-      if ((*(a3 + 44) & 2) == 0 || self->_clientType != *(a3 + 4))
+      if ((*(equal + 44) & 2) == 0 || self->_clientType != *(equal + 4))
       {
         goto LABEL_22;
       }
@@ -295,33 +295,33 @@ LABEL_22:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 44))
+  if (*(from + 44))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
     [(AWDIDSSessionStarted *)self setGuid:?];
   }
 
-  if ((*(a3 + 44) & 4) != 0)
+  if ((*(from + 44) & 4) != 0)
   {
-    self->_sessionProtocolVersionNumber = *(a3 + 10);
+    self->_sessionProtocolVersionNumber = *(from + 10);
     *&self->_has |= 4u;
   }
 
-  if (*(a3 + 4))
+  if (*(from + 4))
   {
     [(AWDIDSSessionStarted *)self setServiceName:?];
   }
 
-  if ((*(a3 + 44) & 2) != 0)
+  if ((*(from + 44) & 2) != 0)
   {
-    self->_clientType = *(a3 + 4);
+    self->_clientType = *(from + 4);
     *&self->_has |= 2u;
   }
 }

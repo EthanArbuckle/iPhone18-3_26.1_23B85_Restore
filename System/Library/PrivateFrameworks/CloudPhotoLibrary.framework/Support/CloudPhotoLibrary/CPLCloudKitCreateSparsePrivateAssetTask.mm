@@ -1,33 +1,33 @@
 @interface CPLCloudKitCreateSparsePrivateAssetTask
-- (CPLCloudKitCreateSparsePrivateAssetTask)initWithController:(id)a3 scope:(id)a4 sharedScope:(id)a5 transportScopeMapping:(id)a6 privateScopedIdentifier:(id)a7 sharedScopedIdentifier:(id)a8 completionHandler:(id)a9;
+- (CPLCloudKitCreateSparsePrivateAssetTask)initWithController:(id)controller scope:(id)scope sharedScope:(id)sharedScope transportScopeMapping:(id)mapping privateScopedIdentifier:(id)identifier sharedScopedIdentifier:(id)scopedIdentifier completionHandler:(id)handler;
 - (void)runOperations;
 @end
 
 @implementation CPLCloudKitCreateSparsePrivateAssetTask
 
-- (CPLCloudKitCreateSparsePrivateAssetTask)initWithController:(id)a3 scope:(id)a4 sharedScope:(id)a5 transportScopeMapping:(id)a6 privateScopedIdentifier:(id)a7 sharedScopedIdentifier:(id)a8 completionHandler:(id)a9
+- (CPLCloudKitCreateSparsePrivateAssetTask)initWithController:(id)controller scope:(id)scope sharedScope:(id)sharedScope transportScopeMapping:(id)mapping privateScopedIdentifier:(id)identifier sharedScopedIdentifier:(id)scopedIdentifier completionHandler:(id)handler
 {
-  v26 = a4;
-  v25 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
+  scopeCopy = scope;
+  sharedScopeCopy = sharedScope;
+  mappingCopy = mapping;
+  identifierCopy = identifier;
+  scopedIdentifierCopy = scopedIdentifier;
+  handlerCopy = handler;
   v27.receiver = self;
   v27.super_class = CPLCloudKitCreateSparsePrivateAssetTask;
-  v20 = [(CPLCloudKitTransportTask *)&v27 initWithController:a3];
+  v20 = [(CPLCloudKitTransportTask *)&v27 initWithController:controller];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_scope, a4);
-    objc_storeStrong(&v21->_sharedScope, a5);
-    objc_storeStrong(&v21->_privateScopedIdentifier, a7);
-    objc_storeStrong(&v21->_sharedScopedIdentifier, a8);
-    v22 = [v19 copy];
+    objc_storeStrong(&v20->_scope, scope);
+    objc_storeStrong(&v21->_sharedScope, sharedScope);
+    objc_storeStrong(&v21->_privateScopedIdentifier, identifier);
+    objc_storeStrong(&v21->_sharedScopedIdentifier, scopedIdentifier);
+    v22 = [handlerCopy copy];
     completionHandler = v21->_completionHandler;
     v21->_completionHandler = v22;
 
-    [(CPLCloudKitTransportTask *)v21 setTransportScopeMapping:v16];
+    [(CPLCloudKitTransportTask *)v21 setTransportScopeMapping:mappingCopy];
   }
 
   return v21;
@@ -35,12 +35,12 @@
 
 - (void)runOperations
 {
-  v3 = [(CPLEngineScope *)self->_scope scopeIdentifier];
-  v4 = [(CPLCloudKitTransportTask *)self cloudKitScopeForScopeIdentifier:v3];
+  scopeIdentifier = [(CPLEngineScope *)self->_scope scopeIdentifier];
+  v4 = [(CPLCloudKitTransportTask *)self cloudKitScopeForScopeIdentifier:scopeIdentifier];
 
-  v5 = [v4 zoneID];
+  zoneID = [v4 zoneID];
 
-  if (!v5)
+  if (!zoneID)
   {
     completionHandler = self->_completionHandler;
     v15 = @"Missing required zone";
@@ -58,20 +58,20 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v7 = [(CPLEngineScope *)sharedScope scopeIdentifier];
-  v8 = [(CPLCloudKitTransportTask *)self cloudKitScopeForScopeIdentifier:v7];
+  scopeIdentifier2 = [(CPLEngineScope *)sharedScope scopeIdentifier];
+  v8 = [(CPLCloudKitTransportTask *)self cloudKitScopeForScopeIdentifier:scopeIdentifier2];
 
-  v9 = [v8 zoneID];
+  zoneID2 = [v8 zoneID];
 
-  if (v9)
+  if (zoneID2)
   {
-    v10 = [(CPLCloudKitTransportTask *)self controller];
-    v11 = [v10 zoneIdentificationForCloudKitScope:v4 engineScope:self->_scope];
+    controller = [(CPLCloudKitTransportTask *)self controller];
+    v11 = [controller zoneIdentificationForCloudKitScope:v4 engineScope:self->_scope];
 
     if (v8 && self->_sharedScope)
     {
-      v12 = [(CPLCloudKitTransportTask *)self controller];
-      v13 = [v12 zoneIdentificationForCloudKitScope:v8 engineScope:self->_sharedScope];
+      controller2 = [(CPLCloudKitTransportTask *)self controller];
+      v13 = [controller2 zoneIdentificationForCloudKitScope:v8 engineScope:self->_sharedScope];
     }
 
     else

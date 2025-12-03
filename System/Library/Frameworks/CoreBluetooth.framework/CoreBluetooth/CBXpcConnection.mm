@@ -1,22 +1,22 @@
 @interface CBXpcConnection
-- (CBXpcConnection)initWithDelegate:(id)a3 queue:(id)a4 options:(id)a5 sessionType:(int)a6;
+- (CBXpcConnection)initWithDelegate:(id)delegate queue:(id)queue options:(id)options sessionType:(int)type;
 - (CBXpcConnectionDelegate)delegate;
-- (id)_allocXpcMsg:(unsigned __int16)a3 args:(id)a4;
+- (id)_allocXpcMsg:(unsigned __int16)msg args:(id)args;
 - (void)_checkIn;
-- (void)_handleConnectionEvent:(id)a3;
+- (void)_handleConnectionEvent:(id)event;
 - (void)_handleFinalized;
 - (void)_handleInvalid;
-- (void)_handleMsg:(id)a3;
+- (void)_handleMsg:(id)msg;
 - (void)_handleReset;
 - (void)_sendBarrier;
 - (void)connect;
-- (void)didReceiveForwardedDelegateCallbackMessage:(id)a3;
-- (void)didReceiveForwardedMessage:(id)a3;
+- (void)didReceiveForwardedDelegateCallbackMessage:(id)message;
+- (void)didReceiveForwardedMessage:(id)message;
 - (void)disconnect;
-- (void)removeWhbRemoteId:(id)a3;
-- (void)setTargetQueue:(id)a3;
-- (void)setWhbLocalId:(id)a3 forRemoteId:(id)a4;
-- (void)setWhbReplyHandler:(id)a3;
+- (void)removeWhbRemoteId:(id)id;
+- (void)setTargetQueue:(id)queue;
+- (void)setWhbLocalId:(id)id forRemoteId:(id)remoteId;
+- (void)setWhbReplyHandler:(id)handler;
 @end
 
 @implementation CBXpcConnection
@@ -35,8 +35,8 @@
   whbReplyHandler = self->_whbReplyHandler;
   self->_whbReplyHandler = 0;
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 }
 
 - (void)_handleFinalized
@@ -82,12 +82,12 @@ void __33__CBXpcConnection__handleInvalid__block_invoke(uint64_t a1)
 - (void)_checkIn
 {
   v13[4] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  v4 = [v3 bundleIdentifier];
-  v5 = v4;
-  if (v4)
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v5 = bundleIdentifier;
+  if (bundleIdentifier)
   {
-    v6 = v4;
+    v6 = bundleIdentifier;
   }
 
   else
@@ -113,20 +113,20 @@ void __33__CBXpcConnection__handleInvalid__block_invoke(uint64_t a1)
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (CBXpcConnection)initWithDelegate:(id)a3 queue:(id)a4 options:(id)a5 sessionType:(int)a6
+- (CBXpcConnection)initWithDelegate:(id)delegate queue:(id)queue options:(id)options sessionType:(int)type
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  delegateCopy = delegate;
+  queueCopy = queue;
+  optionsCopy = options;
   v46.receiver = self;
   v46.super_class = CBXpcConnection;
   v13 = [(CBXpcConnection *)&v46 init];
   if (v13)
   {
     v14 = v13;
-    if (v11)
+    if (queueCopy)
     {
-      v15 = v11;
+      v15 = queueCopy;
     }
 
     else
@@ -135,16 +135,16 @@ void __33__CBXpcConnection__handleInvalid__block_invoke(uint64_t a1)
       v17 = MEMORY[0x1E69E96A0];
     }
 
-    objc_storeWeak(&v14->_delegate, v10);
+    objc_storeWeak(&v14->_delegate, delegateCopy);
     if (MGGetBoolAnswer())
     {
       v18 = "com.apple.server.bluetooth.le.att.xpc";
-      if (a6 == 3)
+      if (type == 3)
       {
         v18 = "com.apple.server.bluetooth.classic.xpc";
       }
 
-      if (a6 == 2)
+      if (type == 2)
       {
         v19 = "com.apple.server.bluetooth.le.pipe.xpc";
       }
@@ -160,9 +160,9 @@ void __33__CBXpcConnection__handleInvalid__block_invoke(uint64_t a1)
       eventQueue = v14->_eventQueue;
       v14->_eventQueue = v22;
 
-      if (v12)
+      if (optionsCopy)
       {
-        v24 = [v12 mutableCopy];
+        v24 = [optionsCopy mutableCopy];
       }
 
       else
@@ -173,7 +173,7 @@ void __33__CBXpcConnection__handleInvalid__block_invoke(uint64_t a1)
       options = v14->_options;
       v14->_options = v24;
 
-      v14->_sessionType = a6;
+      v14->_sessionType = type;
       relative_priority_ptr = 0;
       qos_class = dispatch_queue_get_qos_class(v15, &relative_priority_ptr);
       v27 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -203,11 +203,11 @@ void __33__CBXpcConnection__handleInvalid__block_invoke(uint64_t a1)
       v14->_uiAppIsBackgrounded = 0;
       if (NSClassFromString(&cfstr_Uiapplication.isa))
       {
-        v37 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v37 addObserver:v14 selector:sel__applicationDidEnterBackgroundNotification name:@"UIApplicationDidEnterBackgroundNotification" object:0];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter addObserver:v14 selector:sel__applicationDidEnterBackgroundNotification name:@"UIApplicationDidEnterBackgroundNotification" object:0];
 
-        v38 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v38 addObserver:v14 selector:sel__applicationWillEnterForegroundNotification name:@"UIApplicationWillEnterForegroundNotification" object:0];
+        defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter2 addObserver:v14 selector:sel__applicationWillEnterForegroundNotification name:@"UIApplicationWillEnterForegroundNotification" object:0];
       }
 
       v39 = v14->_xpcConnection;
@@ -259,11 +259,11 @@ void __52__CBXpcConnection_sendMsgWithReply_args_replyBlock___block_invoke(uint6
   (*(v4 + 16))(v4, v5, v6);
 }
 
-- (void)didReceiveForwardedMessage:(id)a3
+- (void)didReceiveForwardedMessage:(id)message
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  int64 = xpc_dictionary_get_int64(v4, "kCBMsgId");
+  messageCopy = message;
+  int64 = xpc_dictionary_get_int64(messageCopy, "kCBMsgId");
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -286,7 +286,7 @@ void __52__CBXpcConnection_sendMsgWithReply_args_replyBlock___block_invoke(uint6
   _Block_object_dispose(&v21, 8);
   if (v7)
   {
-    v8 = xpc_dictionary_get_value(v4, "kCBMsgArgs");
+    v8 = xpc_dictionary_get_value(messageCopy, "kCBMsgArgs");
     v9 = v8;
     if (v8)
     {
@@ -356,12 +356,12 @@ void __52__CBXpcConnection_sendMsgWithReply_args_replyBlock___block_invoke(uint6
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didReceiveForwardedDelegateCallbackMessage:(id)a3
+- (void)didReceiveForwardedDelegateCallbackMessage:(id)message
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messageCopy = message;
   v5 = xpc_dictionary_create(0, 0, 0);
-  int64 = xpc_dictionary_get_int64(v4, "kCBMsgId");
+  int64 = xpc_dictionary_get_int64(messageCopy, "kCBMsgId");
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -385,7 +385,7 @@ void __52__CBXpcConnection_sendMsgWithReply_args_replyBlock___block_invoke(uint6
   if (v8)
   {
     xpc_dictionary_set_int64(v5, "kCBMsgId", v8);
-    v9 = xpc_dictionary_get_value(v4, "kCBMsgArgs");
+    v9 = xpc_dictionary_get_value(messageCopy, "kCBMsgArgs");
     v10 = v9;
     if (v9)
     {
@@ -434,17 +434,17 @@ void __52__CBXpcConnection_sendMsgWithReply_args_replyBlock___block_invoke(uint6
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setWhbReplyHandler:(id)a3
+- (void)setWhbReplyHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __38__CBXpcConnection_setWhbReplyHandler___block_invoke;
   v8[3] = &unk_1E8120710;
   objc_copyWeak(&v10, &location);
-  v9 = v4;
-  v5 = v4;
+  v9 = handlerCopy;
+  v5 = handlerCopy;
   v6 = MEMORY[0x1C68DF720](v8);
   whbReplyHandler = self->_whbReplyHandler;
   self->_whbReplyHandler = v6;
@@ -545,11 +545,11 @@ void __38__CBXpcConnection_setWhbReplyHandler___block_invoke(uint64_t a1, void *
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setWhbLocalId:(id)a3 forRemoteId:(id)a4
+- (void)setWhbLocalId:(id)id forRemoteId:(id)remoteId
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  remoteIdCopy = remoteId;
   if (!self->_whbRemoteToLocalUuidMap)
   {
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -566,21 +566,21 @@ void __38__CBXpcConnection_setWhbReplyHandler___block_invoke(uint64_t a1, void *
   if (os_log_type_enabled(CBLogComponent, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412546;
-    v13 = v6;
+    v13 = idCopy;
     v14 = 2112;
-    v15 = v7;
+    v15 = remoteIdCopy;
     _os_log_impl(&dword_1C0AC1000, v10, OS_LOG_TYPE_DEFAULT, "Started tracking Whb localId %@ with remoteId %@", &v12, 0x16u);
   }
 
-  [(NSMutableDictionary *)self->_whbRemoteToLocalUuidMap setValue:v6 forKey:v7];
+  [(NSMutableDictionary *)self->_whbRemoteToLocalUuidMap setValue:idCopy forKey:remoteIdCopy];
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeWhbRemoteId:(id)a3
+- (void)removeWhbRemoteId:(id)id
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  idCopy = id;
   if (CBLogInitOnce != -1)
   {
     [CBClassicPeer dealloc];
@@ -590,25 +590,25 @@ void __38__CBXpcConnection_setWhbReplyHandler___block_invoke(uint64_t a1, void *
   if (os_log_type_enabled(CBLogComponent, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = idCopy;
     _os_log_impl(&dword_1C0AC1000, v5, OS_LOG_TYPE_DEFAULT, "Removing tracking of remoteId %@", &v7, 0xCu);
   }
 
-  [(NSMutableDictionary *)self->_whbRemoteToLocalUuidMap removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_whbRemoteToLocalUuidMap removeObjectForKey:idCopy];
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setTargetQueue:(id)a3
+- (void)setTargetQueue:(id)queue
 {
-  xpcQueue = a3;
-  if (!a3)
+  xpcQueue = queue;
+  if (!queue)
   {
     xpcQueue = self->_xpcQueue;
   }
 
   xpcConnection = self->_xpcConnection;
-  v5 = a3;
+  queueCopy = queue;
   xpc_connection_set_target_queue(xpcConnection, xpcQueue);
 }
 
@@ -636,17 +636,17 @@ void __38__CBXpcConnection_setWhbReplyHandler___block_invoke(uint64_t a1, void *
   dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
 }
 
-- (id)_allocXpcMsg:(unsigned __int16)a3 args:(id)a4
+- (id)_allocXpcMsg:(unsigned __int16)msg args:(id)args
 {
-  v4 = a3;
+  msgCopy = msg;
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  argsCopy = args;
   *keys = xmmword_1E8120730;
   v11 = 0;
-  v10 = xpc_int64_create(v4);
-  if (v5)
+  v10 = xpc_int64_create(msgCopy);
+  if (argsCopy)
   {
-    v11 = CBXpcCreateXPCDictionaryWithNSDictionary(v5);
+    v11 = CBXpcCreateXPCDictionaryWithNSDictionary(argsCopy);
     v6 = 2;
   }
 
@@ -661,12 +661,12 @@ void __38__CBXpcConnection_setWhbReplyHandler___block_invoke(uint64_t a1, void *
   return v7;
 }
 
-- (void)_handleMsg:(id)a3
+- (void)_handleMsg:(id)msg
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  int64 = xpc_dictionary_get_int64(v4, "kCBMsgId");
-  v6 = xpc_dictionary_get_value(v4, "kCBMsgArgs");
+  msgCopy = msg;
+  int64 = xpc_dictionary_get_int64(msgCopy, "kCBMsgId");
+  v6 = xpc_dictionary_get_value(msgCopy, "kCBMsgArgs");
   v7 = v6;
   if (v6)
   {
@@ -716,7 +716,7 @@ LABEL_11:
     v14[4] = self;
     v17 = int64;
     v15 = v8;
-    v16 = v4;
+    v16 = msgCopy;
     dispatch_async(eventQueue, v14);
 
     goto LABEL_12;
@@ -766,18 +766,18 @@ void __31__CBXpcConnection__handleReset__block_invoke(uint64_t a1)
   [v2 xpcConnectionDidReset];
 }
 
-- (void)_handleConnectionEvent:(id)a3
+- (void)_handleConnectionEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = MEMORY[0x1C68DFDD0]();
   if (v5 == MEMORY[0x1E69E9E80])
   {
-    [(CBXpcConnection *)self _handleMsg:v4];
+    [(CBXpcConnection *)self _handleMsg:eventCopy];
   }
 
   else if (v5 == MEMORY[0x1E69E9E98])
   {
-    if (v4 == MEMORY[0x1E69E9E18])
+    if (eventCopy == MEMORY[0x1E69E9E18])
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
@@ -796,7 +796,7 @@ LABEL_6:
       return;
     }
 
-    if (v4 == MEMORY[0x1E69E9E20])
+    if (eventCopy == MEMORY[0x1E69E9E20])
     {
       [(CBXpcConnection *)self _handleInvalid];
     }

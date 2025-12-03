@@ -2,50 +2,50 @@
 - (NSArray)supplementaryIdentifiers;
 - (SFCapsulePageContainer)container;
 - (SFCapsulePageLayout)baseLayout;
-- (SFCapsulePageLayoutTopSquished)initWithContainer:(id)a3;
-- (SFCapsulePageLayoutTopSquished)initWithContainer:(id)a3 baseLayout:(id)a4;
-- (double)lockdownStatusBarContentOverlapOnPage:(id)a3;
-- (double)lockdownStatusBarHeightDecreaseOnPage:(id)a3;
+- (SFCapsulePageLayoutTopSquished)initWithContainer:(id)container;
+- (SFCapsulePageLayoutTopSquished)initWithContainer:(id)container baseLayout:(id)layout;
+- (double)lockdownStatusBarContentOverlapOnPage:(id)page;
+- (double)lockdownStatusBarHeightDecreaseOnPage:(id)page;
 - (double)pageWidth;
-- (double)spacingAboveLockdownStatusBarOnPage:(id)a3;
-- (double)spacingBelowLockdownStatusBarOnPage:(id)a3;
-- (id)bottomBackdropInfoForPage:(id)a3;
-- (id)capsuleInfoForPage:(id)a3;
-- (id)infoForSupplementaryIdentifier:(id)a3 page:(id)a4;
-- (id)lockdownStatusBarFrameOnPage:(id)a3;
-- (id)topBackdropInfoForPage:(id)a3;
+- (double)spacingAboveLockdownStatusBarOnPage:(id)page;
+- (double)spacingBelowLockdownStatusBarOnPage:(id)page;
+- (id)bottomBackdropInfoForPage:(id)page;
+- (id)capsuleInfoForPage:(id)page;
+- (id)infoForSupplementaryIdentifier:(id)identifier page:(id)page;
+- (id)lockdownStatusBarFrameOnPage:(id)page;
+- (id)topBackdropInfoForPage:(id)page;
 @end
 
 @implementation SFCapsulePageLayoutTopSquished
 
-- (SFCapsulePageLayoutTopSquished)initWithContainer:(id)a3
+- (SFCapsulePageLayoutTopSquished)initWithContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v9.receiver = self;
   v9.super_class = SFCapsulePageLayoutTopSquished;
   v5 = [(SFCapsulePageLayoutTopSquished *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_container, v4);
+    objc_storeWeak(&v5->_container, containerCopy);
     v7 = v6;
   }
 
   return v6;
 }
 
-- (SFCapsulePageLayoutTopSquished)initWithContainer:(id)a3 baseLayout:(id)a4
+- (SFCapsulePageLayoutTopSquished)initWithContainer:(id)container baseLayout:(id)layout
 {
-  v6 = a3;
-  v7 = a4;
+  containerCopy = container;
+  layoutCopy = layout;
   v12.receiver = self;
   v12.super_class = SFCapsulePageLayoutTopSquished;
   v8 = [(SFCapsulePageLayoutTopSquished *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_baseLayout, v7);
-    objc_storeWeak(&v9->_container, v6);
+    objc_storeWeak(&v8->_baseLayout, layoutCopy);
+    objc_storeWeak(&v9->_container, containerCopy);
     v10 = v9;
   }
 
@@ -61,17 +61,17 @@
   return v4;
 }
 
-- (id)capsuleInfoForPage:(id)a3
+- (id)capsuleInfoForPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   WeakRetained = objc_loadWeakRetained(&self->_container);
   v6 = objc_loadWeakRetained(&self->_baseLayout);
-  v7 = [v6 capsuleInfoForPage:v4];
+  v7 = [v6 capsuleInfoForPage:pageCopy];
 
   [v7 frame];
   v9 = v8;
   v11 = v10;
-  [v4 capsuleHeightForWidth:1 defaultHeight:v10 state:44.0];
+  [pageCopy capsuleHeightForWidth:1 defaultHeight:v10 state:44.0];
   v13 = v12;
 
   [WeakRetained safeAreaInsets];
@@ -88,11 +88,11 @@
   return v7;
 }
 
-- (id)bottomBackdropInfoForPage:(id)a3
+- (id)bottomBackdropInfoForPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   WeakRetained = objc_loadWeakRetained(&self->_baseLayout);
-  v6 = [WeakRetained bottomBackdropInfoForPage:v4];
+  v6 = [WeakRetained bottomBackdropInfoForPage:pageCopy];
 
   [v6 frame];
   v8 = v7;
@@ -107,32 +107,32 @@
   return v6;
 }
 
-- (id)topBackdropInfoForPage:(id)a3
+- (id)topBackdropInfoForPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   WeakRetained = objc_loadWeakRetained(&self->_container);
-  v6 = [(SFCapsulePageLayoutTopSquished *)self capsuleInfoForPage:v4];
+  v6 = [(SFCapsulePageLayoutTopSquished *)self capsuleInfoForPage:pageCopy];
   [v6 frame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  v15 = [v4 lockdownStatusBar];
+  lockdownStatusBar = [pageCopy lockdownStatusBar];
 
-  if (v15)
+  if (lockdownStatusBar)
   {
-    [(SFCapsulePageLayoutTopSquished *)self spacingAboveLockdownStatusBarOnPage:v4];
+    [(SFCapsulePageLayoutTopSquished *)self spacingAboveLockdownStatusBarOnPage:pageCopy];
     v17 = v16 + 0.0;
-    [(SFCapsulePageLayoutTopSquished *)self spacingBelowLockdownStatusBarOnPage:v4];
+    [(SFCapsulePageLayoutTopSquished *)self spacingBelowLockdownStatusBarOnPage:pageCopy];
     v19 = v17 + v18;
-    v20 = [v4 lockdownStatusBar];
-    [v20 preferredSize];
+    lockdownStatusBar2 = [pageCopy lockdownStatusBar];
+    [lockdownStatusBar2 preferredSize];
     v22 = v19 + v21;
 
-    [(SFCapsulePageLayoutTopSquished *)self lockdownStatusBarContentOverlapOnPage:v4];
+    [(SFCapsulePageLayoutTopSquished *)self lockdownStatusBarContentOverlapOnPage:pageCopy];
     v24 = v22 - v23;
-    [(SFCapsulePageLayoutTopSquished *)self lockdownStatusBarHeightDecreaseOnPage:v4];
+    [(SFCapsulePageLayoutTopSquished *)self lockdownStatusBarHeightDecreaseOnPage:pageCopy];
     v26 = v24 + v25 * -0.5;
   }
 
@@ -156,30 +156,30 @@
 - (NSArray)supplementaryIdentifiers
 {
   WeakRetained = objc_loadWeakRetained(&self->_baseLayout);
-  v3 = [WeakRetained supplementaryIdentifiers];
+  supplementaryIdentifiers = [WeakRetained supplementaryIdentifiers];
 
-  return v3;
+  return supplementaryIdentifiers;
 }
 
-- (id)infoForSupplementaryIdentifier:(id)a3 page:(id)a4
+- (id)infoForSupplementaryIdentifier:(id)identifier page:(id)page
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqual:@"SFCapsuleSupplementaryViewLockdownStatusBar"])
+  identifierCopy = identifier;
+  pageCopy = page;
+  if ([identifierCopy isEqual:@"SFCapsuleSupplementaryViewLockdownStatusBar"])
   {
-    v8 = [(SFCapsulePageLayoutTopSquished *)self lockdownStatusBarFrameOnPage:v7];
+    v8 = [(SFCapsulePageLayoutTopSquished *)self lockdownStatusBarFrameOnPage:pageCopy];
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_baseLayout);
-    v8 = [WeakRetained infoForSupplementaryIdentifier:v6 page:v7];
+    v8 = [WeakRetained infoForSupplementaryIdentifier:identifierCopy page:pageCopy];
     [v8 frame];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    v18 = [WeakRetained bottomBackdropInfoForPage:v7];
+    v18 = [WeakRetained bottomBackdropInfoForPage:pageCopy];
     [v18 frame];
     v19 = v13 + CGRectGetHeight(v22);
 
@@ -189,17 +189,17 @@
   return v8;
 }
 
-- (id)lockdownStatusBarFrameOnPage:(id)a3
+- (id)lockdownStatusBarFrameOnPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   WeakRetained = objc_loadWeakRetained(&self->_container);
   [WeakRetained bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [v4 lockdownStatusBar];
-  v15 = [(SFCapsulePageLayoutTopSquished *)self capsuleInfoForPage:v4];
+  lockdownStatusBar = [pageCopy lockdownStatusBar];
+  v15 = [(SFCapsulePageLayoutTopSquished *)self capsuleInfoForPage:pageCopy];
   [v15 frame];
   v17 = v16;
   v19 = v18;
@@ -212,9 +212,9 @@
   v34.size.width = v21;
   v34.size.height = v23;
   MaxY = CGRectGetMaxY(v34);
-  [(SFCapsulePageLayoutTopSquished *)self spacingAboveLockdownStatusBarOnPage:v4];
+  [(SFCapsulePageLayoutTopSquished *)self spacingAboveLockdownStatusBarOnPage:pageCopy];
   v27 = MaxY + v26;
-  [(SFCapsulePageLayoutTopSquished *)self lockdownStatusBarContentOverlapOnPage:v4];
+  [(SFCapsulePageLayoutTopSquished *)self lockdownStatusBarContentOverlapOnPage:pageCopy];
   v29 = v28;
 
   v35.origin.x = v7;
@@ -222,16 +222,16 @@
   v35.size.width = v11;
   v35.size.height = v13;
   Width = CGRectGetWidth(v35);
-  [v14 preferredSize];
+  [lockdownStatusBar preferredSize];
   [(SFCapsulePageLayoutInfo *)v24 setFrame:0.0, v27 - v29, Width, v31];
 
   return v24;
 }
 
-- (double)spacingAboveLockdownStatusBarOnPage:(id)a3
+- (double)spacingAboveLockdownStatusBarOnPage:(id)page
 {
-  v4 = [a3 lockdownStatusBar];
-  [v4 titleCapHeightInsetFromTop];
+  lockdownStatusBar = [page lockdownStatusBar];
+  [lockdownStatusBar titleCapHeightInsetFromTop];
   v6 = v5;
   WeakRetained = objc_loadWeakRetained(&self->_container);
   [WeakRetained minimizedContentScale];
@@ -240,10 +240,10 @@
   return v9;
 }
 
-- (double)spacingBelowLockdownStatusBarOnPage:(id)a3
+- (double)spacingBelowLockdownStatusBarOnPage:(id)page
 {
-  v4 = [a3 lockdownStatusBar];
-  [v4 titleBaselineInsetFromBottom];
+  lockdownStatusBar = [page lockdownStatusBar];
+  [lockdownStatusBar titleBaselineInsetFromBottom];
   v6 = v5;
   WeakRetained = objc_loadWeakRetained(&self->_container);
   [WeakRetained minimizedContentScale];
@@ -252,32 +252,32 @@
   return v9;
 }
 
-- (double)lockdownStatusBarContentOverlapOnPage:(id)a3
+- (double)lockdownStatusBarContentOverlapOnPage:(id)page
 {
-  v4 = a3;
-  v5 = [v4 contentView];
+  pageCopy = page;
+  contentView = [pageCopy contentView];
   if (objc_opt_respondsToSelector())
   {
-    [v5 keyContentRect];
+    [contentView keyContentRect];
   }
 
   else
   {
-    [v5 bounds];
+    [contentView bounds];
   }
 
   v10 = v6;
   v11 = v7;
   v12 = v8;
   v13 = v9;
-  v14 = [(SFCapsulePageLayoutTopSquished *)self capsuleInfoForPage:v4];
+  v14 = [(SFCapsulePageLayoutTopSquished *)self capsuleInfoForPage:pageCopy];
   [v14 frame];
   Height = CGRectGetHeight(v22);
 
   v16 = 0.0;
   if (objc_opt_respondsToSelector())
   {
-    [v5 keyContentBaselineBottomInset];
+    [contentView keyContentBaselineBottomInset];
     v16 = v17;
   }
 
@@ -286,16 +286,16 @@
   v23.size.width = v12;
   v23.size.height = v13;
   v18 = v16 + (Height - CGRectGetHeight(v23)) * 0.5;
-  [(SFCapsulePageLayoutTopSquished *)self lockdownStatusBarHeightDecreaseOnPage:v4];
+  [(SFCapsulePageLayoutTopSquished *)self lockdownStatusBarHeightDecreaseOnPage:pageCopy];
   v20 = v19 * 0.5 + v18;
 
   return v20;
 }
 
-- (double)lockdownStatusBarHeightDecreaseOnPage:(id)a3
+- (double)lockdownStatusBarHeightDecreaseOnPage:(id)page
 {
-  v4 = [a3 lockdownStatusBar];
-  [v4 preferredSize];
+  lockdownStatusBar = [page lockdownStatusBar];
+  [lockdownStatusBar preferredSize];
   v6 = v5;
   WeakRetained = objc_loadWeakRetained(&self->_container);
   [WeakRetained minimizedContentScale];

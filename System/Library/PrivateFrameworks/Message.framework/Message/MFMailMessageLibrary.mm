@@ -5,239 +5,239 @@
 + (OS_os_log)log;
 + (OS_os_log)signpostLog;
 + (id)propertyMapper;
-+ (void)_renameLibraryAtPath:(id)a3;
++ (void)_renameLibraryAtPath:(id)path;
 + (void)removeLibraryOnNextLaunch;
-+ (void)test_setDefaultInstance:(id)a3;
-- (BOOL)_addAddressesFromRecipientsForMessages:(id)a3 toSet:(id)a4 connection:(id)a5;
-- (BOOL)_addRecipients:(id)a3 toMessageWithDatabaseID:(int64_t)a4 cache:(id)a5 connection:(id)a6;
-- (BOOL)_canSelectMessagesWithOptions:(unsigned int)a3 connection:(id)a4;
-- (BOOL)_deleteMessages:(id)a3 andCleanUpAddresses:(id)a4 subjects:(id)a5 summaries:(id)a6 brandIndicators:(id)a7 connection:(id)a8;
-- (BOOL)_deleteMessages:(id)a3 connection:(id)a4;
-- (BOOL)_deleteRows:(id)a3 fromTable:(id)a4 connection:(id)a5;
-- (BOOL)_fileType:(int64_t)a3 orHigherExistsAtDirectory:(id)a4;
-- (BOOL)_insertThreadReferences:(id)a3 toMessageWithLibraryID:(int64_t)a4 usingDatabaseConnection:(id)a5;
-- (BOOL)_isSubjectIDUsedByOtherMessages:(int64_t)a3 besidesMessageWithDatabaseID:(int64_t)a4 connection:(id)a5;
-- (BOOL)_setMessageData:(id)a3 libraryID:(int64_t)a4 part:(id)a5 partial:(BOOL)a6 complete:(BOOL)a7 connection:(id)a8;
-- (BOOL)_setSummary:(id)a3 forMessageWithRowID:(int64_t)a4 connection:(id)a5;
++ (void)test_setDefaultInstance:(id)instance;
+- (BOOL)_addAddressesFromRecipientsForMessages:(id)messages toSet:(id)set connection:(id)connection;
+- (BOOL)_addRecipients:(id)recipients toMessageWithDatabaseID:(int64_t)d cache:(id)cache connection:(id)connection;
+- (BOOL)_canSelectMessagesWithOptions:(unsigned int)options connection:(id)connection;
+- (BOOL)_deleteMessages:(id)messages andCleanUpAddresses:(id)addresses subjects:(id)subjects summaries:(id)summaries brandIndicators:(id)indicators connection:(id)connection;
+- (BOOL)_deleteMessages:(id)messages connection:(id)connection;
+- (BOOL)_deleteRows:(id)rows fromTable:(id)table connection:(id)connection;
+- (BOOL)_fileType:(int64_t)type orHigherExistsAtDirectory:(id)directory;
+- (BOOL)_insertThreadReferences:(id)references toMessageWithLibraryID:(int64_t)d usingDatabaseConnection:(id)connection;
+- (BOOL)_isSubjectIDUsedByOtherMessages:(int64_t)messages besidesMessageWithDatabaseID:(int64_t)d connection:(id)connection;
+- (BOOL)_setMessageData:(id)data libraryID:(int64_t)d part:(id)part partial:(BOOL)partial complete:(BOOL)complete connection:(id)connection;
+- (BOOL)_setSummary:(id)summary forMessageWithRowID:(int64_t)d connection:(id)connection;
 - (BOOL)_shouldLogDatabaseStats;
-- (BOOL)_shouldPerformDataDetectionForMessage:(id)a3;
-- (BOOL)_shouldStoreRemoteContentForMessage:(id)a3;
-- (BOOL)_storeRemoteContentLinksCachedOnMessage:(id)a3 linksToVerify:(id *)a4;
-- (BOOL)_updateSubjectForMessageWithLibraryID:(int64_t)a3 to:(id)a4 connection:(id)a5;
-- (BOOL)_updateSubjectWithRowID:(int64_t)a3 to:(id)a4 connection:(id)a5 outSubjectAlreadyExists:(BOOL *)a6;
-- (BOOL)_writeEmlxData:(id)a3 toFile:(id)a4 protectionClass:(int64_t)a5 purgeable:(BOOL)a6;
-- (BOOL)_writeEmlxFileOfType:(int64_t)a3 forAccount:(id)a4 toDirectory:(id)a5 withData:(id)a6 protectionClass:(int64_t)a7;
-- (BOOL)areMessageContentsLocallyAvailable:(id)a3 fullContentsAvailble:(BOOL *)a4;
+- (BOOL)_shouldPerformDataDetectionForMessage:(id)message;
+- (BOOL)_shouldStoreRemoteContentForMessage:(id)message;
+- (BOOL)_storeRemoteContentLinksCachedOnMessage:(id)message linksToVerify:(id *)verify;
+- (BOOL)_updateSubjectForMessageWithLibraryID:(int64_t)d to:(id)to connection:(id)connection;
+- (BOOL)_updateSubjectWithRowID:(int64_t)d to:(id)to connection:(id)connection outSubjectAlreadyExists:(BOOL *)exists;
+- (BOOL)_writeEmlxData:(id)data toFile:(id)file protectionClass:(int64_t)class purgeable:(BOOL)purgeable;
+- (BOOL)_writeEmlxFileOfType:(int64_t)type forAccount:(id)account toDirectory:(id)directory withData:(id)data protectionClass:(int64_t)class;
+- (BOOL)areMessageContentsLocallyAvailable:(id)available fullContentsAvailble:(BOOL *)availble;
 - (BOOL)cleanupProtectedTables;
-- (BOOL)hasCompleteDataForMimePart:(id)a3;
-- (BOOL)isProtectedDataAvailable:(id)a3;
-- (BOOL)messageDataExistsInDatabaseForMessageLibraryID:(int64_t)a3 part:(id)a4 length:(unint64_t *)a5;
+- (BOOL)hasCompleteDataForMimePart:(id)part;
+- (BOOL)isProtectedDataAvailable:(id)available;
+- (BOOL)messageDataExistsInDatabaseForMessageLibraryID:(int64_t)d part:(id)part length:(unint64_t *)length;
 - (BOOL)migrate;
-- (BOOL)renameMailboxes:(id)a3 to:(id)a4;
+- (BOOL)renameMailboxes:(id)mailboxes to:(id)to;
 - (EDPersistenceHookRegistry)hookRegistry;
 - (EDSearchableIndex)searchableIndex;
 - (EDWebContentParser)remoteContentParser;
 - (EFObservable)unreconciledMessageCountObservable;
-- (MFMailMessageLibrary)initWithPath:(id)a3;
-- (MFMailMessageLibrary)initWithPath:(id)a3 inMemoryIdentifier:(id)a4 userAgent:(id)a5;
+- (MFMailMessageLibrary)initWithPath:(id)path;
+- (MFMailMessageLibrary)initWithPath:(id)path inMemoryIdentifier:(id)identifier userAgent:(id)agent;
 - (MFMailboxFrecencyController)mailboxFrecencyController;
 - (MFMessageChangeManager_iOS)messageChangeManager;
-- (id)UIDsToDeleteInMailbox:(id)a3;
-- (id)_addThreadingInfoWithContext:(id)a3 usingDatabaseConnection:(id)a4;
-- (id)_copyReferenceHashesWithoutMessagesForMessageWithConversation:(id)a3;
-- (id)_equalToMailboxIDsFromCriterion:(id)a3;
-- (id)_existingValuesForColumn:(id)a3 table:(id)a4 fromValues:(id)a5 connection:(id)a6;
-- (id)_firstDateForQuery:(id)a3 inMailbox:(id)a4;
-- (id)_getReferencesForHashesWithOwners:(id)a3;
-- (id)_getStringFromPlainTextData:(id)a3 mimePart:(id)a4;
-- (id)_keyForOptions:(unsigned int)a3 protectedDataAvailable:(BOOL)a4 mailboxAvailable:(BOOL)a5 mailboxCached:(BOOL)a6;
-- (id)_libraryMessageWithLibraryID:(int64_t)a3 wasCached:(BOOL *)a4;
-- (id)_mailboxesClauseForAccounts:(id)a3;
-- (id)_messageForRow:(id)a3 options:(unsigned int)a4 timestamp:(unint64_t)a5 connection:(id)a6 isProtectedDataAvailable:(BOOL)a7 recipientsCache:(id)a8;
+- (id)UIDsToDeleteInMailbox:(id)mailbox;
+- (id)_addThreadingInfoWithContext:(id)context usingDatabaseConnection:(id)connection;
+- (id)_copyReferenceHashesWithoutMessagesForMessageWithConversation:(id)conversation;
+- (id)_equalToMailboxIDsFromCriterion:(id)criterion;
+- (id)_existingValuesForColumn:(id)column table:(id)table fromValues:(id)values connection:(id)connection;
+- (id)_firstDateForQuery:(id)query inMailbox:(id)mailbox;
+- (id)_getReferencesForHashesWithOwners:(id)owners;
+- (id)_getStringFromPlainTextData:(id)data mimePart:(id)part;
+- (id)_keyForOptions:(unsigned int)options protectedDataAvailable:(BOOL)available mailboxAvailable:(BOOL)mailboxAvailable mailboxCached:(BOOL)cached;
+- (id)_libraryMessageWithLibraryID:(int64_t)d wasCached:(BOOL *)cached;
+- (id)_mailboxesClauseForAccounts:(id)accounts;
+- (id)_messageForRow:(id)row options:(unsigned int)options timestamp:(unint64_t)timestamp connection:(id)connection isProtectedDataAvailable:(BOOL)available recipientsCache:(id)cache;
 - (id)_nonLocalAccountsClause;
-- (id)_queryForMailboxesIDsFromMailboxes:(id)a3;
-- (id)_recipientsForMessageWithDatabaseID:(int64_t)a3 connection:(id)a4 recipientsCache:(id)a5;
-- (id)_recipientsForMessagesWithDatabaseIDs:(id)a3 includeTo:(BOOL)a4 includeCC:(BOOL)a5 includeBCC:(BOOL)a6;
-- (id)_remoteIDsStringForRemoteIDs:(id)a3 inMailbox:(id)a4;
-- (id)_selectClauseForOptions:(unsigned int)a3 protectedDataAvailable:(BOOL)a4;
-- (id)_sqlSortByStringFromOptions:(unsigned int)a3;
-- (id)_stringsForIndexSet:(id)a3;
-- (id)accountForMessage:(id)a3;
+- (id)_queryForMailboxesIDsFromMailboxes:(id)mailboxes;
+- (id)_recipientsForMessageWithDatabaseID:(int64_t)d connection:(id)connection recipientsCache:(id)cache;
+- (id)_recipientsForMessagesWithDatabaseIDs:(id)ds includeTo:(BOOL)to includeCC:(BOOL)c includeBCC:(BOOL)cC;
+- (id)_remoteIDsStringForRemoteIDs:(id)ds inMailbox:(id)mailbox;
+- (id)_selectClauseForOptions:(unsigned int)options protectedDataAvailable:(BOOL)available;
+- (id)_sqlSortByStringFromOptions:(unsigned int)options;
+- (id)_stringsForIndexSet:(id)set;
+- (id)accountForMessage:(id)message;
 - (id)activeMailboxesClause;
-- (id)addMessages:(id)a3 withMailbox:(id)a4 newMessagesByOldMessage:(id)a5 remoteIDs:(id)a6 setFlags:(unint64_t)a7 addPOPUIDs:(BOOL)a8 dataSectionsByMessage:(id)a9 generationWindow:(id)a10;
-- (id)allUIDsInMailbox:(id)a3;
-- (id)bodyDataAtPath:(id)a3 headerData:(id *)a4;
-- (id)bodyDataForMessage:(id)a3 andHeaderDataIfReadilyAvailable:(id *)a4;
-- (id)bodyDataForMessage:(id)a3 andHeaderDataIfReadilyAvailable:(id *)a4 isComplete:(BOOL *)a5;
-- (id)bodyDataForMessage:(id)a3 andHeaderDataIfReadilyAvailable:(id *)a4 isComplete:(BOOL *)a5 isPartial:(BOOL *)a6;
-- (id)conversationIDsOfMessagesInSameThreadAsMessageWithLibraryID:(int64_t)a3 messageIDHash:(int64_t)a4;
-- (id)copyMessagesWithRemoteIDs:(id)a3 options:(unsigned int)a4 inRemoteMailbox:(id)a5;
-- (id)dataConsumerForMessage:(id)a3 part:(id)a4;
-- (id)dataDirectoryURLForMessage:(id)a3;
-- (id)dataFileURLForMessage:(id)a3 type:(int64_t)a4;
-- (id)dataForMimePart:(id)a3 isComplete:(BOOL *)a4;
-- (id)dataPathForMessage:(id)a3;
-- (id)dataPathForMessage:(id)a3 part:(id)a4;
-- (id)dataPathForMessage:(id)a3 type:(int64_t)a4;
+- (id)addMessages:(id)messages withMailbox:(id)mailbox newMessagesByOldMessage:(id)message remoteIDs:(id)ds setFlags:(unint64_t)flags addPOPUIDs:(BOOL)iDs dataSectionsByMessage:(id)byMessage generationWindow:(id)self0;
+- (id)allUIDsInMailbox:(id)mailbox;
+- (id)bodyDataAtPath:(id)path headerData:(id *)data;
+- (id)bodyDataForMessage:(id)message andHeaderDataIfReadilyAvailable:(id *)available;
+- (id)bodyDataForMessage:(id)message andHeaderDataIfReadilyAvailable:(id *)available isComplete:(BOOL *)complete;
+- (id)bodyDataForMessage:(id)message andHeaderDataIfReadilyAvailable:(id *)available isComplete:(BOOL *)complete isPartial:(BOOL *)partial;
+- (id)conversationIDsOfMessagesInSameThreadAsMessageWithLibraryID:(int64_t)d messageIDHash:(int64_t)hash;
+- (id)copyMessagesWithRemoteIDs:(id)ds options:(unsigned int)options inRemoteMailbox:(id)mailbox;
+- (id)dataConsumerForMessage:(id)message part:(id)part;
+- (id)dataDirectoryURLForMessage:(id)message;
+- (id)dataFileURLForMessage:(id)message type:(int64_t)type;
+- (id)dataForMimePart:(id)part isComplete:(BOOL *)complete;
+- (id)dataPathForMessage:(id)message;
+- (id)dataPathForMessage:(id)message part:(id)part;
+- (id)dataPathForMessage:(id)message type:(int64_t)type;
 - (id)dataProvider;
-- (id)dateOfOldestNonIndexedNonSearchResultMessageInMailbox:(id)a3;
-- (id)dateOfOldestNonSearchResultMessageInMailbox:(id)a3;
-- (id)downloadedMessageDataForMessage:(id)a3;
-- (id)duplicateMessages:(id)a3 newRemoteIDs:(id)a4 forMailbox:(id)a5 setFlags:(unint64_t)a6 createNewCacheFiles:(BOOL)a7;
+- (id)dateOfOldestNonIndexedNonSearchResultMessageInMailbox:(id)mailbox;
+- (id)dateOfOldestNonSearchResultMessageInMailbox:(id)mailbox;
+- (id)downloadedMessageDataForMessage:(id)message;
+- (id)duplicateMessages:(id)messages newRemoteIDs:(id)ds forMailbox:(id)mailbox setFlags:(unint64_t)flags createNewCacheFiles:(BOOL)files;
 - (id)enabledAccountMailboxesExpression;
-- (id)existingMIMEPartsForMessage:(id)a3;
-- (id)fileAttributesForMessage:(id)a3;
-- (id)filterContiguousMessages:(id)a3 forCriterion:(id)a4 options:(unsigned int)a5;
-- (id)flagsForRemoteIDs:(id)a3 inRemoteMailbox:(id)a4;
-- (id)fullBodyDataForMessage:(id)a3 andHeaderDataIfReadilyAvailable:(id *)a4;
-- (id)groupedMessagesCountForCriterion:(id)a3 groupBy:(unint64_t)a4;
-- (id)headerDataAtPath:(id)a3;
-- (id)headerDataForMessage:(id)a3;
-- (id)hiddenPOPUIDsInMailbox:(id)a3;
-- (id)indexableMessagesWhere:(id)a3 sortedBy:(id)a4 limit:(int64_t)a5 options:(unsigned int)a6;
-- (id)loadData:(id)a3 forMessage:(id)a4 usingBlock:(id)a5;
-- (id)loadMeetingDataForMessage:(id)a3;
-- (id)loadMeetingExternalIDForMessage:(id)a3;
-- (id)loadMeetingMetadataForMessage:(id)a3;
-- (id)mailboxURLForMessage:(id)a3;
-- (id)mailboxURLsForIDs:(id)a3;
-- (id)mailboxUidForMessage:(id)a3;
-- (id)messageBasePathForAccount:(id)a3;
-- (id)messageWithLibraryID:(int64_t)a3 options:(unsigned int)a4 inMailbox:(id)a5 temporarilyUnavailable:(BOOL *)a6;
-- (id)messageWithMessageID:(id)a3 options:(unsigned int)a4 inMailbox:(id)a5;
-- (id)messageWithRemoteID:(id)a3 inRemoteMailbox:(id)a4;
-- (id)messagesForMailbox:(id)a3 limit:(unint64_t)a4;
-- (id)messagesWithMessageIDHeader:(id)a3;
-- (id)messagesWithSummariesForMailbox:(id)a3 range:(_NSRange)a4;
-- (id)newestUIDsForMailbox:(id)a3 limit:(int64_t)a4;
-- (id)newestUIDsMissingBodyDataForMailbox:(id)a3 excluding:(id)a4 inLatest:(int64_t)a5 limit:(int64_t)a6 maximumMessagesToScan:(int64_t)a7;
-- (id)newestUIDsMissingPartsForMailbox:(id)a3 excluding:(id)a4 inLatest:(int64_t)a5 limit:(int64_t)a6 maximumMessagesToScan:(int64_t)a7;
-- (id)orderedBatchOfMessagesEndingAtRowId:(int64_t)a3 limit:(unsigned int)a4 success:(BOOL *)a5;
-- (id)rangesOfIndexedUIDsInRange:(_NSRange)a3 requiresBody:(BOOL)a4 forMailbox:(id)a5 limit:(int64_t)a6;
-- (id)referencesFromHeaders:(id)a3;
-- (id)remoteStoreForMessage:(id)a3;
-- (id)searchResultsWithRemoteIDs:(id)a3 requiresBody:(BOOL)a4 inRemoteMailbox:(id)a5;
-- (id)senderForMessageWithLibraryID:(int64_t)a3 error:(id *)a4;
-- (id)sequenceIdentifierForMailbox:(id)a3;
-- (id)sequenceIdentifierForMessagesWithRemoteIDs:(id)a3 inMailbox:(id)a4;
-- (id)serverSearchResultMessagesForMailbox:(id)a3;
-- (id)setFlagsFromDictionary:(id)a3 forMessages:(id)a4;
-- (id)storedIntegerPropertyWithName:(id)a3;
+- (id)existingMIMEPartsForMessage:(id)message;
+- (id)fileAttributesForMessage:(id)message;
+- (id)filterContiguousMessages:(id)messages forCriterion:(id)criterion options:(unsigned int)options;
+- (id)flagsForRemoteIDs:(id)ds inRemoteMailbox:(id)mailbox;
+- (id)fullBodyDataForMessage:(id)message andHeaderDataIfReadilyAvailable:(id *)available;
+- (id)groupedMessagesCountForCriterion:(id)criterion groupBy:(unint64_t)by;
+- (id)headerDataAtPath:(id)path;
+- (id)headerDataForMessage:(id)message;
+- (id)hiddenPOPUIDsInMailbox:(id)mailbox;
+- (id)indexableMessagesWhere:(id)where sortedBy:(id)by limit:(int64_t)limit options:(unsigned int)options;
+- (id)loadData:(id)data forMessage:(id)message usingBlock:(id)block;
+- (id)loadMeetingDataForMessage:(id)message;
+- (id)loadMeetingExternalIDForMessage:(id)message;
+- (id)loadMeetingMetadataForMessage:(id)message;
+- (id)mailboxURLForMessage:(id)message;
+- (id)mailboxURLsForIDs:(id)ds;
+- (id)mailboxUidForMessage:(id)message;
+- (id)messageBasePathForAccount:(id)account;
+- (id)messageWithLibraryID:(int64_t)d options:(unsigned int)options inMailbox:(id)mailbox temporarilyUnavailable:(BOOL *)unavailable;
+- (id)messageWithMessageID:(id)d options:(unsigned int)options inMailbox:(id)mailbox;
+- (id)messageWithRemoteID:(id)d inRemoteMailbox:(id)mailbox;
+- (id)messagesForMailbox:(id)mailbox limit:(unint64_t)limit;
+- (id)messagesWithMessageIDHeader:(id)header;
+- (id)messagesWithSummariesForMailbox:(id)mailbox range:(_NSRange)range;
+- (id)newestUIDsForMailbox:(id)mailbox limit:(int64_t)limit;
+- (id)newestUIDsMissingBodyDataForMailbox:(id)mailbox excluding:(id)excluding inLatest:(int64_t)latest limit:(int64_t)limit maximumMessagesToScan:(int64_t)scan;
+- (id)newestUIDsMissingPartsForMailbox:(id)mailbox excluding:(id)excluding inLatest:(int64_t)latest limit:(int64_t)limit maximumMessagesToScan:(int64_t)scan;
+- (id)orderedBatchOfMessagesEndingAtRowId:(int64_t)id limit:(unsigned int)limit success:(BOOL *)success;
+- (id)rangesOfIndexedUIDsInRange:(_NSRange)range requiresBody:(BOOL)body forMailbox:(id)mailbox limit:(int64_t)limit;
+- (id)referencesFromHeaders:(id)headers;
+- (id)remoteStoreForMessage:(id)message;
+- (id)searchResultsWithRemoteIDs:(id)ds requiresBody:(BOOL)body inRemoteMailbox:(id)mailbox;
+- (id)senderForMessageWithLibraryID:(int64_t)d error:(id *)error;
+- (id)sequenceIdentifierForMailbox:(id)mailbox;
+- (id)sequenceIdentifierForMessagesWithRemoteIDs:(id)ds inMailbox:(id)mailbox;
+- (id)serverSearchResultMessagesForMailbox:(id)mailbox;
+- (id)setFlagsFromDictionary:(id)dictionary forMessages:(id)messages;
+- (id)storedIntegerPropertyWithName:(id)name;
 - (id)stringFromAllMailboxUnreadCount;
-- (id)updateFlagsForMessages:(id)a3 changes:(id)a4 transformer:(id)a5;
-- (id)urlForMailboxID:(int64_t)a3;
-- (int)_integerForQuery:(id)a3 withTextArgument:(id)a4;
-- (int64_t)_conversationIdForMessageIds:(id)a3;
-- (int64_t)_findOrCreateDatabaseIDForAddress:(id)a3 cache:(id)a4 connection:(id)a5;
-- (int64_t)_findOrCreateDatabaseIDForGlobalData:(int64_t)a3 cache:(id)a4 connection:(id)a5;
-- (int64_t)_findOrCreateDatabaseIDForValue:(id)a3 inTable:(id)a4 column:(id)a5 cache:(id)a6 connection:(id)a7 created:(BOOL *)a8;
-- (int64_t)_int64ForQuery:(id)a3 connection:(id)a4 textArgument:(id)a5;
-- (int64_t)_maxRowIDInSet:(id)a3;
-- (int64_t)_subjectIDForMessageWithLibraryID:(int64_t)a3 connection:(id)a4;
-- (int64_t)addReferenceForContext:(id)a3 usingDatabaseConnection:(id)a4 generationWindow:(id)a5 mergeHandler:(id)a6;
-- (int64_t)deleteAttachmentsForMessage:(id)a3 inMailboxFileURL:(id)a4;
-- (int64_t)loadMoreMessagesForThreadContainingMessage:(id)a3 hasNoMoreMessages:(BOOL *)a4;
-- (int64_t)mailboxIDForURLString:(id)a3;
-- (int64_t)mailboxIDForURLString:(id)a3 createIfNecessary:(BOOL)a4;
-- (unint64_t)_parserRemoteContentOptionsForMessage:(id)a3 shouldStoreRemoteContent:(BOOL)a4;
-- (unint64_t)countMessagesMatchingCriterion:(id)a3;
-- (unint64_t)flagsForConversationId:(int64_t)a3;
+- (id)updateFlagsForMessages:(id)messages changes:(id)changes transformer:(id)transformer;
+- (id)urlForMailboxID:(int64_t)d;
+- (int)_integerForQuery:(id)query withTextArgument:(id)argument;
+- (int64_t)_conversationIdForMessageIds:(id)ids;
+- (int64_t)_findOrCreateDatabaseIDForAddress:(id)address cache:(id)cache connection:(id)connection;
+- (int64_t)_findOrCreateDatabaseIDForGlobalData:(int64_t)data cache:(id)cache connection:(id)connection;
+- (int64_t)_findOrCreateDatabaseIDForValue:(id)value inTable:(id)table column:(id)column cache:(id)cache connection:(id)connection created:(BOOL *)created;
+- (int64_t)_int64ForQuery:(id)query connection:(id)connection textArgument:(id)argument;
+- (int64_t)_maxRowIDInSet:(id)set;
+- (int64_t)_subjectIDForMessageWithLibraryID:(int64_t)d connection:(id)connection;
+- (int64_t)addReferenceForContext:(id)context usingDatabaseConnection:(id)connection generationWindow:(id)window mergeHandler:(id)handler;
+- (int64_t)deleteAttachmentsForMessage:(id)message inMailboxFileURL:(id)l;
+- (int64_t)loadMoreMessagesForThreadContainingMessage:(id)message hasNoMoreMessages:(BOOL *)messages;
+- (int64_t)mailboxIDForURLString:(id)string;
+- (int64_t)mailboxIDForURLString:(id)string createIfNecessary:(BOOL)necessary;
+- (unint64_t)_parserRemoteContentOptionsForMessage:(id)message shouldStoreRemoteContent:(BOOL)content;
+- (unint64_t)countMessagesMatchingCriterion:(id)criterion;
+- (unint64_t)flagsForConversationId:(int64_t)id;
 - (unint64_t)signpostID;
 - (unint64_t)unreconciledMessageCount;
-- (unsigned)allNonDeleteCountForMailbox:(id)a3 includeServerSearchResults:(BOOL)a4 includeThreadSearchResults:(BOOL)a5;
-- (unsigned)attachmentCountForMailboxes:(id)a3;
-- (unsigned)nonDeletedCountForMailbox:(id)a3 includeServerSearchResults:(BOOL)a4 includeThreadSearchResults:(BOOL)a5;
-- (unsigned)totalCountForMailbox:(id)a3;
-- (void)_addMessageToThreadAtUnlock:(int64_t)a3;
+- (unsigned)allNonDeleteCountForMailbox:(id)mailbox includeServerSearchResults:(BOOL)results includeThreadSearchResults:(BOOL)searchResults;
+- (unsigned)attachmentCountForMailboxes:(id)mailboxes;
+- (unsigned)nonDeletedCountForMailbox:(id)mailbox includeServerSearchResults:(BOOL)results includeThreadSearchResults:(BOOL)searchResults;
+- (unsigned)totalCountForMailbox:(id)mailbox;
+- (void)_addMessageToThreadAtUnlock:(int64_t)unlock;
 - (void)_cancelPendingJournalReconciliation;
-- (void)_captureAnalyticsForMailDatabase:(int64_t)a3 schema:(id)a4;
-- (void)_didAddUnreconciledMessages:(unint64_t)a3;
-- (void)_enumerateMessageRemoteIDAndGlobalForMailbox:(id)a3 excluding:(id)a4 inLatest:(int64_t)a5 dateReceivedMax:(int64_t)a6 limit:(unint64_t)a7 kind:(unint64_t)a8 block:(id)a9;
-- (void)_enumerateMessageRemoteIDAndGlobalUsingBatchesForMailbox:(id)a3 excluding:(id)a4 inLatest:(int64_t)a5 kind:(unint64_t)a6 block:(id)a7;
-- (void)_findHTMLPartsFromHeaderData:(id)a3 bodyData:(id)a4 forMessage:(id)a5 linksToVerify:(id)a6 parsingOptions:(unint64_t)a7;
-- (void)_iterateMessagesWithResultHandler:(id)a3 options:(unsigned int)a4 monitor:(id)a5 sqlQueryGenerator:(id)a6;
-- (void)_iterateStatement:(id)a3 connection:(id)a4 withProgressMonitor:(id)a5 andRowHandler:(void *)a6 context:(id *)a7;
+- (void)_captureAnalyticsForMailDatabase:(int64_t)database schema:(id)schema;
+- (void)_didAddUnreconciledMessages:(unint64_t)messages;
+- (void)_enumerateMessageRemoteIDAndGlobalForMailbox:(id)mailbox excluding:(id)excluding inLatest:(int64_t)latest dateReceivedMax:(int64_t)max limit:(unint64_t)limit kind:(unint64_t)kind block:(id)block;
+- (void)_enumerateMessageRemoteIDAndGlobalUsingBatchesForMailbox:(id)mailbox excluding:(id)excluding inLatest:(int64_t)latest kind:(unint64_t)kind block:(id)block;
+- (void)_findHTMLPartsFromHeaderData:(id)data bodyData:(id)bodyData forMessage:(id)message linksToVerify:(id)verify parsingOptions:(unint64_t)options;
+- (void)_iterateMessagesWithResultHandler:(id)handler options:(unsigned int)options monitor:(id)monitor sqlQueryGenerator:(id)generator;
+- (void)_iterateStatement:(id)statement connection:(id)connection withProgressMonitor:(id)monitor andRowHandler:(void *)handler context:(id *)context;
 - (void)_logStatistics;
-- (void)_notifyDidCompact:(BOOL)a3 messages:(id)a4 mailboxes:(id)a5;
-- (void)_processRemoteContentFromData:(id)a3 forMimePart:(id)a4 linksToVerify:(id)a5 forMessage:(id)a6 parsingOptions:(unint64_t)a7;
-- (void)_removeDataFilesForGlobalID:(int64_t)a3;
-- (void)_removeEmlxFilesOfTypeLessThanType:(int64_t)a3 inDirectory:(id)a4;
-- (void)_removeGlobalDataForMessagesIfNecessary:(id)a3 connection:(id)a4;
-- (void)_removeSearchableItemsWithLibraryIDs:(id)a3;
+- (void)_notifyDidCompact:(BOOL)compact messages:(id)messages mailboxes:(id)mailboxes;
+- (void)_processRemoteContentFromData:(id)data forMimePart:(id)part linksToVerify:(id)verify forMessage:(id)message parsingOptions:(unint64_t)options;
+- (void)_removeDataFilesForGlobalID:(int64_t)d;
+- (void)_removeEmlxFilesOfTypeLessThanType:(int64_t)type inDirectory:(id)directory;
+- (void)_removeGlobalDataForMessagesIfNecessary:(id)necessary connection:(id)connection;
+- (void)_removeSearchableItemsWithLibraryIDs:(id)ds;
 - (void)_scheduleIncrementalVacuum;
 - (void)_scheduleJournalReconciliation;
 - (void)_schedulePeriodicStatisticsLogging;
-- (void)_sendMessagesForStatement:(id)a3 connection:(id)a4 to:(id)a5 options:(unsigned int)a6 timestamp:(unint64_t)a7;
-- (void)_setProtectedDataAvailabilityState:(unint64_t)a3;
-- (void)_storeLinksToVerifyIfExistent:(void *)a1;
+- (void)_sendMessagesForStatement:(id)statement connection:(id)connection to:(id)to options:(unsigned int)options timestamp:(unint64_t)timestamp;
+- (void)_setProtectedDataAvailabilityState:(unint64_t)state;
+- (void)_storeLinksToVerifyIfExistent:(void *)existent;
 - (void)_updateUnreconciledMessageCount;
 - (void)_waitForActiveAccountsRebuild;
-- (void)addPostMigrationStep:(Class)a3;
+- (void)addPostMigrationStep:(Class)step;
 - (void)attachmentMigrationFinished;
 - (void)bodyMigrationFinished;
-- (void)clearServerSearchFlagsForMessagesWithLibraryIDs:(id)a3;
+- (void)clearServerSearchFlagsForMessagesWithLibraryIDs:(id)ds;
 - (void)closeDatabaseConnections;
-- (void)compactMailbox:(id)a3;
-- (void)compactMessages:(id)a3 permanently:(BOOL)a4 notifyPersistence:(BOOL)a5;
-- (void)contentProtectionStateChanged:(int64_t)a3 previousState:(int64_t)a4;
+- (void)compactMailbox:(id)mailbox;
+- (void)compactMessages:(id)messages permanently:(BOOL)permanently notifyPersistence:(BOOL)persistence;
+- (void)contentProtectionStateChanged:(int64_t)changed previousState:(int64_t)state;
 - (void)dealloc;
-- (void)deleteAccount:(id)a3;
-- (void)deleteMailboxes:(id)a3 account:(id)a4;
-- (void)deletePOPUID:(id)a3 inMailbox:(id)a4;
-- (void)detectDataFromPlainTextMessage:(id)a3 forMessage:(id)a4 mimePart:(id)a5;
-- (void)didFinishPersistenceDidAddMessages:(id)a3;
-- (void)fileURLForAttachmentPersistentID:(id)a3 messageID:(id)a4 result:(id)a5;
+- (void)deleteAccount:(id)account;
+- (void)deleteMailboxes:(id)mailboxes account:(id)account;
+- (void)deletePOPUID:(id)d inMailbox:(id)mailbox;
+- (void)detectDataFromPlainTextMessage:(id)message forMessage:(id)forMessage mimePart:(id)part;
+- (void)didFinishPersistenceDidAddMessages:(id)messages;
+- (void)fileURLForAttachmentPersistentID:(id)d messageID:(id)iD result:(id)result;
 - (void)handleFailedMigration;
-- (void)increaseProtectionOnFileForMessage:(id)a3;
+- (void)increaseProtectionOnFileForMessage:(id)message;
 - (void)invalidateAndWait;
-- (void)iterateStatement:(sqlite3_stmt *)a3 connection:(id)a4 withProgressMonitor:(id)a5 andRowHandler:(void *)a6 context:(void *)a7;
+- (void)iterateStatement:(sqlite3_stmt *)statement connection:(id)connection withProgressMonitor:(id)monitor andRowHandler:(void *)handler context:(void *)context;
 - (void)journalReconciliationFailed;
 - (void)journalWasReconciled;
-- (void)notifyNewData:(id)a3 availableForMessage:(id)a4;
-- (void)performIncrementalVacuumForSchema:(id)a3;
-- (void)persistenceDidAddMessages:(id)a3 generationWindow:(id)a4;
-- (void)persistenceIsAddingMessages:(id)a3 journaled:(BOOL)a4 generationWindow:(id)a5;
-- (void)postFlagsChangedForMessages:(id)a3 flags:(id)a4 oldFlagsByMessage:(id)a5;
-- (void)postOldFlags:(unint64_t)a3 newFlags:(unint64_t)a4 forMessage:(id)a5;
+- (void)notifyNewData:(id)data availableForMessage:(id)message;
+- (void)performIncrementalVacuumForSchema:(id)schema;
+- (void)persistenceDidAddMessages:(id)messages generationWindow:(id)window;
+- (void)persistenceIsAddingMessages:(id)messages journaled:(BOOL)journaled generationWindow:(id)window;
+- (void)postFlagsChangedForMessages:(id)messages flags:(id)flags oldFlagsByMessage:(id)message;
+- (void)postOldFlags:(unint64_t)flags newFlags:(unint64_t)newFlags forMessage:(id)message;
 - (void)prepareToRebuildActiveAccountsClausesAndExpressions;
-- (void)processRemoteContentFromData:(id)a3 forMessage:(id)a4 mimePart:(id)a5;
-- (void)processRemoteContentFromFullData:(id)a3 forMessage:(id)a4;
-- (void)processRemoteContentFromHeaderData:(id)a3 bodyData:(id)a4 forMessage:(id)a5;
-- (void)rebuildActiveAccountMailboxesExpression:(id)a3;
-- (void)rebuildActiveAccountsClausesAndExpressionsWithAccounts:(id)a3;
-- (void)rebuildActiveMailboxesClauseWithActiveAccounts:(id)a3 inactiveAccounts:(id)a4;
-- (void)reindexAllSearchableItemsWithAcknowledgementHandler:(id)a3;
-- (void)reindexSearchableItemsWithIdentifiers:(id)a3 acknowledgementHandler:(id)a4;
-- (void)reloadMailboxCacheIfNecessaryWithConnection:(id)a3;
-- (void)reloadMailboxCacheWithConnection:(id)a3;
-- (void)removeAllMessagesFromMailbox:(id)a3 removeMailbox:(BOOL)a4 andNotify:(BOOL)a5;
-- (void)removeMessagesFromCacheWithLibraryIDs:(id)a3;
-- (void)removeSearchableItemsForAccount:(id)a3 databaseID:(int64_t)a4;
-- (void)removeSearchableItemsForMailbox:(id)a3;
-- (void)removeSearchableItemsForMessages:(id)a3;
-- (void)removeURLFromMailboxCache:(id)a3;
+- (void)processRemoteContentFromData:(id)data forMessage:(id)message mimePart:(id)part;
+- (void)processRemoteContentFromFullData:(id)data forMessage:(id)message;
+- (void)processRemoteContentFromHeaderData:(id)data bodyData:(id)bodyData forMessage:(id)message;
+- (void)rebuildActiveAccountMailboxesExpression:(id)expression;
+- (void)rebuildActiveAccountsClausesAndExpressionsWithAccounts:(id)accounts;
+- (void)rebuildActiveMailboxesClauseWithActiveAccounts:(id)accounts inactiveAccounts:(id)inactiveAccounts;
+- (void)reindexAllSearchableItemsWithAcknowledgementHandler:(id)handler;
+- (void)reindexSearchableItemsWithIdentifiers:(id)identifiers acknowledgementHandler:(id)handler;
+- (void)reloadMailboxCacheIfNecessaryWithConnection:(id)connection;
+- (void)reloadMailboxCacheWithConnection:(id)connection;
+- (void)removeAllMessagesFromMailbox:(id)mailbox removeMailbox:(BOOL)removeMailbox andNotify:(BOOL)notify;
+- (void)removeMessagesFromCacheWithLibraryIDs:(id)ds;
+- (void)removeSearchableItemsForAccount:(id)account databaseID:(int64_t)d;
+- (void)removeSearchableItemsForMailbox:(id)mailbox;
+- (void)removeSearchableItemsForMessages:(id)messages;
+- (void)removeURLFromMailboxCache:(id)cache;
 - (void)renameOrRemoveDatabaseIfNeeded;
 - (void)scheduleRecurringActivity;
-- (void)sendMessagesMatchingCriterion:(id)a3 to:(id)a4 options:(unsigned int)a5 baseTable:(unsigned int)a6 range:(_NSRange)a7 success:(BOOL *)a8;
-- (void)setFlags:(unint64_t)a3 forConversationId:(int64_t)a4;
-- (void)setFlags:(unint64_t)a3 forMessage:(id)a4;
-- (void)setLastSyncAndMostRecentStatusCount:(int64_t)a3 forMailbox:(id)a4;
-- (void)setMessage:(id)a3 isPartial:(BOOL)a4;
-- (void)setMostRecentStatusCount:(unint64_t)a3 forMailbox:(id)a4;
-- (void)setNumberOfAttachments:(unsigned int)a3 isSigned:(BOOL)a4 isEncrypted:(BOOL)a5 forMessage:(id)a6;
-- (void)setSequenceIdentifier:(id)a3 forMailbox:(id)a4;
-- (void)setSequenceIdentifier:(id)a3 forMessageWithLibraryID:(int64_t)a4;
-- (void)setSequenceIdentifier:(id)a3 forMessagesWithRemoteIDs:(id)a4 inMailbox:(id)a5;
-- (void)setServerUnreadOnlyOnServerCount:(unint64_t)a3 forMailbox:(id)a4;
-- (void)setStoredIntegerPropertyWithName:(id)a3 value:(id)a4;
-- (void)setSummary:(id)a3 forMessage:(id)a4;
+- (void)sendMessagesMatchingCriterion:(id)criterion to:(id)to options:(unsigned int)options baseTable:(unsigned int)table range:(_NSRange)range success:(BOOL *)success;
+- (void)setFlags:(unint64_t)flags forConversationId:(int64_t)id;
+- (void)setFlags:(unint64_t)flags forMessage:(id)message;
+- (void)setLastSyncAndMostRecentStatusCount:(int64_t)count forMailbox:(id)mailbox;
+- (void)setMessage:(id)message isPartial:(BOOL)partial;
+- (void)setMostRecentStatusCount:(unint64_t)count forMailbox:(id)mailbox;
+- (void)setNumberOfAttachments:(unsigned int)attachments isSigned:(BOOL)signed isEncrypted:(BOOL)encrypted forMessage:(id)message;
+- (void)setSequenceIdentifier:(id)identifier forMailbox:(id)mailbox;
+- (void)setSequenceIdentifier:(id)identifier forMessageWithLibraryID:(int64_t)d;
+- (void)setSequenceIdentifier:(id)identifier forMessagesWithRemoteIDs:(id)ds inMailbox:(id)mailbox;
+- (void)setServerUnreadOnlyOnServerCount:(unint64_t)count forMailbox:(id)mailbox;
+- (void)setStoredIntegerPropertyWithName:(id)name value:(id)value;
+- (void)setSummary:(id)summary forMessage:(id)message;
 - (void)start;
 - (void)test_tearDown;
-- (void)updateAdditionalThreadingInfoForSentMessageWithHeaders:(id)a3 externalConversationID:(int64_t)a4;
-- (void)updateFlagsForMessagesInPlace:(id)a3 success:(BOOL *)a4;
-- (void)updateThreadingInfoForMessage:(id)a3 fromHeaders:(id)a4;
-- (void)updateUnprefixedSubjectTo:(id)a3 forMessage:(id)a4;
-- (void)willStartPersistenceDidAddMessages:(id)a3;
+- (void)updateAdditionalThreadingInfoForSentMessageWithHeaders:(id)headers externalConversationID:(int64_t)d;
+- (void)updateFlagsForMessagesInPlace:(id)place success:(BOOL *)success;
+- (void)updateThreadingInfoForMessage:(id)message fromHeaders:(id)headers;
+- (void)updateUnprefixedSubjectTo:(id)to forMessage:(id)message;
+- (void)willStartPersistenceDidAddMessages:(id)messages;
 @end
 
 @implementation MFMailMessageLibrary
@@ -255,31 +255,31 @@
   {
     if ([v2 isMobileMail])
     {
-      v4 = [v3 isMaild];
+      isMaild = [v3 isMaild];
     }
 
     else
     {
-      v4 = 1;
+      isMaild = 1;
     }
   }
 
   else
   {
-    v4 = 0;
+    isMaild = 0;
   }
 
-  return v4;
+  return isMaild;
 }
 
 + (MFMailMessageLibrary)defaultInstance
 {
   os_unfair_lock_lock(&sSharedInstanceLock);
-  if (!sSharedInstance_0 && [a1 canUsePersistence])
+  if (!sSharedInstance_0 && [self canUsePersistence])
   {
     v3 = [MFMailMessageLibrary alloc];
-    v4 = [a1 defaultPath];
-    v5 = [(MFMailMessageLibrary *)v3 initWithPath:v4];
+    defaultPath = [self defaultPath];
+    v5 = [(MFMailMessageLibrary *)v3 initWithPath:defaultPath];
     v6 = sSharedInstance_0;
     sSharedInstance_0 = v5;
   }
@@ -330,7 +330,7 @@
   block[1] = 3221225472;
   block[2] = __27__MFMailMessageLibrary_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_7 != -1)
   {
     dispatch_once(&log_onceToken_7, block);
@@ -355,7 +355,7 @@ void __27__MFMailMessageLibrary_log__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __35__MFMailMessageLibrary_signpostLog__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (signpostLog_onceToken != -1)
   {
     dispatch_once(&signpostLog_onceToken, block);
@@ -376,8 +376,8 @@ void __35__MFMailMessageLibrary_signpostLog__block_invoke(uint64_t a1)
 
 - (unint64_t)signpostID
 {
-  v3 = [objc_opt_class() signpostLog];
-  v4 = os_signpost_id_make_with_pointer(v3, self);
+  signpostLog = [objc_opt_class() signpostLog];
+  v4 = os_signpost_id_make_with_pointer(signpostLog, self);
 
   return v4;
 }
@@ -401,21 +401,21 @@ void __50__MFMailMessageLibrary_conversationCalculationLog__block_invoke()
   conversationCalculationLog_log = v0;
 }
 
-- (MFMailMessageLibrary)initWithPath:(id)a3 inMemoryIdentifier:(id)a4 userAgent:(id)a5
+- (MFMailMessageLibrary)initWithPath:(id)path inMemoryIdentifier:(id)identifier userAgent:(id)agent
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  pathCopy = path;
+  identifierCopy = identifier;
+  agentCopy = agent;
   v12 = MFIsMobileMail() ^ 1;
-  if (v11)
+  if (agentCopy)
   {
     LOBYTE(v12) = 1;
   }
 
   if ((v12 & 1) == 0)
   {
-    v76 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v76 handleFailureInMethod:a2 object:self file:@"MailMessageLibrary.m" lineNumber:387 description:{@"Invalid parameter not satisfying: %@", @"userAgent"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MailMessageLibrary.m" lineNumber:387 description:{@"Invalid parameter not satisfying: %@", @"userAgent"}];
   }
 
   v82.receiver = self;
@@ -423,7 +423,7 @@ void __50__MFMailMessageLibrary_conversationCalculationLog__block_invoke()
   v13 = [(MFMailMessageLibrary *)&v82 init];
   if (v13)
   {
-    v14 = [v9 copy];
+    v14 = [pathCopy copy];
     v15 = *(v13 + 1);
     *(v13 + 1) = v14;
 
@@ -433,19 +433,19 @@ void __50__MFMailMessageLibrary_conversationCalculationLog__block_invoke()
     *(v13 + 3) = v16;
 
     v18 = [MFPersistence_iOS alloc];
-    v19 = [objc_opt_class() propertyMapper];
-    v20 = [(MFPersistence_iOS *)v18 initWithPath:v9 inMemoryIdentifier:v10 library:v13 propertyMapper:v19];
+    propertyMapper = [objc_opt_class() propertyMapper];
+    v20 = [(MFPersistence_iOS *)v18 initWithPath:pathCopy inMemoryIdentifier:identifierCopy library:v13 propertyMapper:propertyMapper];
 
-    v21 = [(EDPersistence *)v20 hookRegistry];
-    [v21 registerMessageChangeHookResponder:v13];
+    hookRegistry = [(EDPersistence *)v20 hookRegistry];
+    [hookRegistry registerMessageChangeHookResponder:v13];
 
-    v22 = [(EDPersistence *)v20 hookRegistry];
-    [v22 registerProtectedDataReconciliationHookResponder:v13];
+    hookRegistry2 = [(EDPersistence *)v20 hookRegistry];
+    [hookRegistry2 registerProtectedDataReconciliationHookResponder:v13];
 
     objc_storeStrong(v13 + 31, v20);
-    v23 = [(MFPersistence_iOS *)v20 database];
+    database = [(MFPersistence_iOS *)v20 database];
     v24 = *(v13 + 32);
-    *(v13 + 32) = v23;
+    *(v13 + 32) = database;
 
     v25 = dispatch_queue_create("com.apple.message.library", 0);
     v26 = *(v13 + 6);
@@ -477,7 +477,7 @@ void __50__MFMailMessageLibrary_conversationCalculationLog__block_invoke()
     v42 = *(v13 + 16);
     *(v13 + 16) = v41;
 
-    *(v13 + 240) = [v11 isAllowedToAccessProtectedData];
+    *(v13 + 240) = [agentCopy isAllowedToAccessProtectedData];
     v43 = [objc_alloc(MEMORY[0x1E696AB38]) initWithCondition:0];
     v44 = *(v13 + 8);
     *(v13 + 8) = v43;
@@ -500,12 +500,12 @@ void __50__MFMailMessageLibrary_conversationCalculationLog__block_invoke()
     *(v13 + 36) = v51;
 
     *(v13 + 54) = 0;
-    v53 = [MEMORY[0x1E699B830] observableObserver];
+    observableObserver = [MEMORY[0x1E699B830] observableObserver];
     v54 = *(v13 + 22);
-    *(v13 + 22) = v53;
+    *(v13 + 22) = observableObserver;
 
     atomic_store(0xFFFFFFFF, v13 + 46);
-    v55 = [MEMORY[0x1E695DFF8] fileURLWithPath:v9];
+    v55 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathCopy];
     v56 = *MEMORY[0x1E695DAF8];
     EFVerifyFileProtectionType();
     v77 = a2;
@@ -562,8 +562,8 @@ void __50__MFMailMessageLibrary_conversationCalculationLog__block_invoke()
     v71 = NSClassFromString(&cfstr_Mfmailmessagel_65.isa);
     if (!v71)
     {
-      v75 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v75 handleFailureInMethod:v77 object:v13 file:@"MailMessageLibrary.m" lineNumber:475 description:@"Class not found."];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:v77 object:v13 file:@"MailMessageLibrary.m" lineNumber:475 description:@"Class not found."];
     }
 
     v72 = [[v71 alloc] initWithMailMessageLibrary:v13];
@@ -638,11 +638,11 @@ id __66__MFMailMessageLibrary_initWithPath_inMemoryIdentifier_userAgent___block_
   return v4;
 }
 
-- (MFMailMessageLibrary)initWithPath:(id)a3
+- (MFMailMessageLibrary)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = MFUserAgent();
-  v6 = [(MFMailMessageLibrary *)self initWithPath:v4 inMemoryIdentifier:0 userAgent:v5];
+  v6 = [(MFMailMessageLibrary *)self initWithPath:pathCopy inMemoryIdentifier:0 userAgent:v5];
 
   return v6;
 }
@@ -657,8 +657,8 @@ id __66__MFMailMessageLibrary_initWithPath_inMemoryIdentifier_userAgent___block_
   [(MFMailMessageLibrary *)self _cancelPendingJournalReconciliation];
   xpc_activity_unregister("com.apple.message.statisticsLogging");
   [(MFMailMessageLibrary *)self closeDatabaseConnections];
-  v3 = [(MFMailMessageLibrary *)self stateCaptureCancelable];
-  [v3 cancel];
+  stateCaptureCancelable = [(MFMailMessageLibrary *)self stateCaptureCancelable];
+  [stateCaptureCancelable cancel];
 
   EFAtomicSetOnceObjectRelease();
   v4.receiver = self;
@@ -670,38 +670,38 @@ id __66__MFMailMessageLibrary_initWithPath_inMemoryIdentifier_userAgent___block_
 {
   v67[1] = *MEMORY[0x1E69E9840];
   v2 = [objc_alloc(MEMORY[0x1E699B930]) initWithAllowedProtocolPrefixes:&unk_1F2774C98];
-  v3 = [MEMORY[0x1E699B5C0] messagesTableName];
-  [v2 registerColumnName:@"ROWID" table:v3 lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_libraryID];
+  messagesTableName = [MEMORY[0x1E699B5C0] messagesTableName];
+  [v2 registerColumnName:@"ROWID" table:messagesTableName lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_libraryID];
 
-  v4 = [MEMORY[0x1E699B5C0] messagesTableName];
-  [v2 registerColumnName:@"remote_id" table:v4 lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_remoteID];
+  messagesTableName2 = [MEMORY[0x1E699B5C0] messagesTableName];
+  [v2 registerColumnName:@"remote_id" table:messagesTableName2 lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_remoteID];
 
-  v5 = [MEMORY[0x1E699B5C0] messagesTableName];
+  messagesTableName3 = [MEMORY[0x1E699B5C0] messagesTableName];
   v66 = @"MFPropertyMapperLookupKeyCriterionType";
   v67[0] = &unk_1F2775850;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v67 forKeys:&v66 count:1];
-  [v2 registerColumnName:@"date_received" table:v5 lookupKeys:v6 forClass:objc_opt_class() property:sel_dateReceived];
+  [v2 registerColumnName:@"date_received" table:messagesTableName3 lookupKeys:v6 forClass:objc_opt_class() property:sel_dateReceived];
 
-  v7 = [MEMORY[0x1E699B5C0] messagesTableName];
+  messagesTableName4 = [MEMORY[0x1E699B5C0] messagesTableName];
   v64 = @"MFPropertyMapperLookupKeyCriterionType";
   v65 = &unk_1F2775868;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v65 forKeys:&v64 count:1];
-  [v2 registerColumnName:@"date_sent" table:v7 lookupKeys:v8 forClass:objc_opt_class() property:sel_dateSent];
+  [v2 registerColumnName:@"date_sent" table:messagesTableName4 lookupKeys:v8 forClass:objc_opt_class() property:sel_dateSent];
 
-  v9 = [MEMORY[0x1E699B5C0] messagesTableName];
+  messagesTableName5 = [MEMORY[0x1E699B5C0] messagesTableName];
   v62 = @"MFPropertyMapperLookupKeyCriterionType";
   v63 = &unk_1F2775880;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v63 forKeys:&v62 count:1];
-  [v2 registerColumnName:@"display_date" table:v9 lookupKeys:v10 forClass:objc_opt_class() property:sel_displayDate];
+  [v2 registerColumnName:@"display_date" table:messagesTableName5 lookupKeys:v10 forClass:objc_opt_class() property:sel_displayDate];
 
-  v11 = [MEMORY[0x1E699B5C0] messagesTableName];
-  [v2 registerColumnName:@"flags" table:v11 lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_messageFlags];
+  messagesTableName6 = [MEMORY[0x1E699B5C0] messagesTableName];
+  [v2 registerColumnName:@"flags" table:messagesTableName6 lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_messageFlags];
 
-  v12 = [MEMORY[0x1E699B5C0] messagesTableName];
-  [v2 registerColumnName:@"size" table:v12 lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_messageSize];
+  messagesTableName7 = [MEMORY[0x1E699B5C0] messagesTableName];
+  [v2 registerColumnName:@"size" table:messagesTableName7 lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_messageSize];
 
-  v13 = [MEMORY[0x1E699B5C0] messagesTableName];
-  [v2 registerColumnName:@"subject_prefix" table:v13 lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_prefix];
+  messagesTableName8 = [MEMORY[0x1E699B5C0] messagesTableName];
+  [v2 registerColumnName:@"subject_prefix" table:messagesTableName8 lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_prefix];
 
   [v2 registerColumnName:@"subject" table:@"subjects" lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_subjectWithoutPrefix];
   v60 = @"MFColumnAlias";
@@ -715,81 +715,81 @@ id __66__MFMailMessageLibrary_initWithPath_inMemoryIdentifier_userAgent___block_
   [v2 registerColumnName:@"address" table:@"sender" lookupKeys:v15 forClass:objc_opt_class() property:sel_address];
 
   [v2 registerColumnName:@"summary" table:@"summaries" lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_summary];
-  v16 = [MEMORY[0x1E699B5C0] messagesTableName];
-  [v2 registerColumnName:@"mailbox" table:v16 lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_mailboxID];
+  messagesTableName9 = [MEMORY[0x1E699B5C0] messagesTableName];
+  [v2 registerColumnName:@"mailbox" table:messagesTableName9 lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_mailboxID];
 
-  v17 = [MEMORY[0x1E699B5C0] messagesTableName];
-  [v2 registerColumnName:@"original_mailbox" table:v17 lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_originalMailboxID];
+  messagesTableName10 = [MEMORY[0x1E699B5C0] messagesTableName];
+  [v2 registerColumnName:@"original_mailbox" table:messagesTableName10 lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_originalMailboxID];
 
-  v18 = [MEMORY[0x1E699B5C0] messagesTableName];
-  [v2 registerColumnName:@"content_type" table:v18 lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_contentType];
+  messagesTableName11 = [MEMORY[0x1E699B5C0] messagesTableName];
+  [v2 registerColumnName:@"content_type" table:messagesTableName11 lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_contentType];
 
-  v19 = [MEMORY[0x1E699B5C0] messagesTableName];
-  [v2 registerColumnName:@"conversation_id" table:v19 lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_conversationID];
+  messagesTableName12 = [MEMORY[0x1E699B5C0] messagesTableName];
+  [v2 registerColumnName:@"conversation_id" table:messagesTableName12 lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_conversationID];
 
-  v20 = [MEMORY[0x1E699B5C0] messagesTableName];
-  [v2 registerColumnName:@"encoding" table:v20 lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_preferredEncoding];
+  messagesTableName13 = [MEMORY[0x1E699B5C0] messagesTableName];
+  [v2 registerColumnName:@"encoding" table:messagesTableName13 lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_preferredEncoding];
 
-  v21 = [MEMORY[0x1E699B5C0] messagesTableName];
-  [v2 registerColumnName:@"external_id" table:v21 lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_externalID];
+  messagesTableName14 = [MEMORY[0x1E699B5C0] messagesTableName];
+  [v2 registerColumnName:@"external_id" table:messagesTableName14 lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_externalID];
 
-  v22 = [MEMORY[0x1E699B5C0] messagesTableName];
-  [v2 registerColumnName:@"global_message_id" table:v22 lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_globalMessageID];
+  messagesTableName15 = [MEMORY[0x1E699B5C0] messagesTableName];
+  [v2 registerColumnName:@"global_message_id" table:messagesTableName15 lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_globalMessageID];
 
-  v23 = [MEMORY[0x1E699B5C0] messagesTableName];
-  [v2 registerColumnName:@"message_id" table:v23 lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_messageIDHash];
+  messagesTableName16 = [MEMORY[0x1E699B5C0] messagesTableName];
+  [v2 registerColumnName:@"message_id" table:messagesTableName16 lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_messageIDHash];
 
-  v24 = [MEMORY[0x1E699B5C0] messagesTableName];
-  [v2 registerColumnName:@"unique_id" table:v24 lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_uniqueRemoteId];
+  messagesTableName17 = [MEMORY[0x1E699B5C0] messagesTableName];
+  [v2 registerColumnName:@"unique_id" table:messagesTableName17 lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_uniqueRemoteId];
 
   v56 = @"MFColumnAlias";
   v57 = @"conversation_flags";
   v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v57 forKeys:&v56 count:1];
   [v2 registerColumnName:@"flags" table:@"conversations" lookupKeys:v25 forClass:objc_opt_class() property:sel_conversationFlags];
 
-  v26 = [MEMORY[0x1E699B5C0] messagesTableName];
-  [v2 registerColumnName:@"list_id_hash" table:v26 lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_listIDHash];
+  messagesTableName18 = [MEMORY[0x1E699B5C0] messagesTableName];
+  [v2 registerColumnName:@"list_id_hash" table:messagesTableName18 lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_listIDHash];
 
-  v27 = [MEMORY[0x1E699B5C0] messagesTableName];
-  [v2 registerColumnName:@"document_id" table:v27 lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_documentID];
+  messagesTableName19 = [MEMORY[0x1E699B5C0] messagesTableName];
+  [v2 registerColumnName:@"document_id" table:messagesTableName19 lookupKeys:MEMORY[0x1E695E0F8] forClass:objc_opt_class() property:sel_documentID];
 
-  v28 = [MEMORY[0x1E699B5C0] messageGlobalDataTableName];
+  messageGlobalDataTableName = [MEMORY[0x1E699B5C0] messageGlobalDataTableName];
   v54[0] = @"MFColumnAlias";
   v54[1] = @"MFPropertyMapperLookupKeyCriterionType";
   v55[0] = @"read_later_date";
   v55[1] = &unk_1F2775898;
   v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v55 forKeys:v54 count:2];
-  [v2 registerColumnName:@"read_later_date" table:v28 lookupKeys:v29 forClass:objc_opt_class() property:sel_date];
+  [v2 registerColumnName:@"read_later_date" table:messageGlobalDataTableName lookupKeys:v29 forClass:objc_opt_class() property:sel_date];
 
-  v30 = [MEMORY[0x1E699B5C0] messageGlobalDataTableName];
+  messageGlobalDataTableName2 = [MEMORY[0x1E699B5C0] messageGlobalDataTableName];
   v52[0] = @"MFColumnAlias";
   v52[1] = @"MFPropertyMapperLookupKeyCriterionType";
   v53[0] = @"send_later_date";
   v53[1] = &unk_1F27758B0;
   v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v53 forKeys:v52 count:2];
-  [v2 registerColumnName:@"send_later_date" table:v30 lookupKeys:v31 forClass:objc_opt_class() property:sel_sendLaterDate];
+  [v2 registerColumnName:@"send_later_date" table:messageGlobalDataTableName2 lookupKeys:v31 forClass:objc_opt_class() property:sel_sendLaterDate];
 
-  v32 = [MEMORY[0x1E699B5C0] messagesTableName];
+  messagesTableName20 = [MEMORY[0x1E699B5C0] messagesTableName];
   v50 = @"MFPropertyMapperLookupKeyCriterionType";
   v51 = &unk_1F27758C8;
   v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v51 forKeys:&v50 count:1];
-  [v2 registerColumnName:@"unsubscribe_type" table:v32 lookupKeys:v33 forClass:objc_opt_class() property:sel_unsubscribeType];
+  [v2 registerColumnName:@"unsubscribe_type" table:messagesTableName20 lookupKeys:v33 forClass:objc_opt_class() property:sel_unsubscribeType];
 
-  v34 = [MEMORY[0x1E699B5C0] messageGlobalDataTableName];
+  messageGlobalDataTableName3 = [MEMORY[0x1E699B5C0] messageGlobalDataTableName];
   v48[0] = @"MFColumnAlias";
   v48[1] = @"MFPropertyMapperLookupKeyCriterionType";
   v49[0] = @"follow_up_start_date";
   v49[1] = &unk_1F27758E0;
   v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v49 forKeys:v48 count:2];
-  [v2 registerColumnName:@"follow_up_start_date" table:v34 lookupKeys:v35 forClass:objc_opt_class() property:sel_startDate];
+  [v2 registerColumnName:@"follow_up_start_date" table:messageGlobalDataTableName3 lookupKeys:v35 forClass:objc_opt_class() property:sel_startDate];
 
-  v36 = [MEMORY[0x1E699B5C0] messageGlobalDataTableName];
+  messageGlobalDataTableName4 = [MEMORY[0x1E699B5C0] messageGlobalDataTableName];
   v46[0] = @"MFColumnAlias";
   v46[1] = @"MFPropertyMapperLookupKeyCriterionType";
   v47[0] = @"follow_up_end_date";
   v47[1] = &unk_1F27758F8;
   v37 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v47 forKeys:v46 count:2];
-  [v2 registerColumnName:@"follow_up_end_date" table:v36 lookupKeys:v37 forClass:objc_opt_class() property:sel_endDate];
+  [v2 registerColumnName:@"follow_up_end_date" table:messageGlobalDataTableName4 lookupKeys:v37 forClass:objc_opt_class() property:sel_endDate];
 
   v44[0] = @"MFColumnAlias";
   v44[1] = @"MFDefaultValue";
@@ -810,17 +810,17 @@ id __66__MFMailMessageLibrary_initWithPath_inMemoryIdentifier_userAgent___block_
   return v2;
 }
 
-+ (void)test_setDefaultInstance:(id)a3
++ (void)test_setDefaultInstance:(id)instance
 {
-  v8 = a3;
+  instanceCopy = instance;
   if ((EFIsRunningUnitTests() & 1) == 0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"MailMessageLibrary.m" lineNumber:697 description:{@"%s can only be called from unit tests", "+[MFMailMessageLibrary test_setDefaultInstance:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MailMessageLibrary.m" lineNumber:697 description:{@"%s can only be called from unit tests", "+[MFMailMessageLibrary test_setDefaultInstance:]"}];
   }
 
   os_unfair_lock_lock(&sSharedInstanceLock);
-  objc_storeStrong(&sSharedInstance_0, a3);
+  objc_storeStrong(&sSharedInstance_0, instance);
   v6 = +[MFLibraryStore sharedInstanceIfExists];
   [v6 setLibrary:sSharedInstance_0];
 
@@ -834,42 +834,42 @@ id __66__MFMailMessageLibrary_initWithPath_inMemoryIdentifier_userAgent___block_
     EFUnregisterContentProtectionObserver();
   }
 
-  v3 = [(MFMailMessageLibrary *)self hookRegistry];
-  [v3 persistenceDidInvalidate];
+  hookRegistry = [(MFMailMessageLibrary *)self hookRegistry];
+  [hookRegistry persistenceDidInvalidate];
 
-  v4 = [(MFMailMessageLibrary *)self hookRegistry];
-  [v4 unregisterAllHookResponders];
+  hookRegistry2 = [(MFMailMessageLibrary *)self hookRegistry];
+  [hookRegistry2 unregisterAllHookResponders];
 
-  v5 = [(MFMailMessageLibrary *)self fileRemovalAfterCompactionScheduler];
-  [v5 performSyncBlock:&__block_literal_global_370];
+  fileRemovalAfterCompactionScheduler = [(MFMailMessageLibrary *)self fileRemovalAfterCompactionScheduler];
+  [fileRemovalAfterCompactionScheduler performSyncBlock:&__block_literal_global_370];
 }
 
 - (void)start
 {
-  v3 = [(MFMailMessageLibrary *)self database];
-  [v3 reconcileJournalWithCompletionBlock:0];
+  database = [(MFMailMessageLibrary *)self database];
+  [database reconcileJournalWithCompletionBlock:0];
 
-  v4 = [(MFMailMessageLibrary *)self searchableIndex];
-  [v4 applicationWillResume];
+  searchableIndex = [(MFMailMessageLibrary *)self searchableIndex];
+  [searchableIndex applicationWillResume];
 
   v5 = [(MFMailMessageLibrary *)self storedIntegerPropertyWithName:@"NeedToMigrateFiles"];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     v7 = [[MFMessageBodyMigrator alloc] initWithLibrary:self];
     [(MFMailMessageLibrary *)self setBodyMigrator:v7];
 
-    v8 = [(MFMailMessageLibrary *)self bodyMigrator];
-    [v8 startMigratingBodies];
+    bodyMigrator = [(MFMailMessageLibrary *)self bodyMigrator];
+    [bodyMigrator startMigratingBodies];
   }
 
   else
   {
     v9 = [(MFMailMessageLibrary *)self storedIntegerPropertyWithName:@"NeedToMigrateAttachments"];
-    v10 = [v9 BOOLValue];
+    bOOLValue2 = [v9 BOOLValue];
 
-    if (!v10)
+    if (!bOOLValue2)
     {
       goto LABEL_6;
     }
@@ -877,15 +877,15 @@ id __66__MFMailMessageLibrary_initWithPath_inMemoryIdentifier_userAgent___block_
     v11 = [[MFMessageAttachmentMigrator alloc] initWithLibrary:self];
     [(MFMailMessageLibrary *)self setAttachmentMigrator:v11];
 
-    v8 = [(MFMailMessageLibrary *)self attachmentMigrator];
-    [v8 startMigratingAttachments];
+    bodyMigrator = [(MFMailMessageLibrary *)self attachmentMigrator];
+    [bodyMigrator startMigratingAttachments];
   }
 
 LABEL_6:
   v12 = [(MFMailMessageLibrary *)self storedIntegerPropertyWithName:@"UseLegacyMessageIDHashFormat"];
-  v13 = [v12 BOOLValue];
+  bOOLValue3 = [v12 BOOLValue];
 
-  if (v13)
+  if (bOOLValue3)
   {
     v14 = EDLibraryLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -894,14 +894,14 @@ LABEL_6:
       _os_log_impl(&dword_1B0389000, v14, OS_LOG_TYPE_DEFAULT, "Using legacy message-id hash format", buf, 2u);
     }
 
-    v15 = [MEMORY[0x1E695E000] em_userDefaults];
-    [v15 setBool:1 forKey:*MEMORY[0x1E699ABD8]];
+    em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
+    [em_userDefaults setBool:1 forKey:*MEMORY[0x1E699ABD8]];
   }
 
   else
   {
-    v15 = [MEMORY[0x1E695E000] em_userDefaults];
-    [v15 removeObjectForKey:*MEMORY[0x1E699ABD8]];
+    em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
+    [em_userDefaults removeObjectForKey:*MEMORY[0x1E699ABD8]];
   }
 
   MFSetUseLegacyMessageIDHashFormat();
@@ -926,15 +926,15 @@ id __29__MFMailMessageLibrary_start__block_invoke(uint64_t a1)
   v19 = *MEMORY[0x1E69E9840];
   if ((EFIsRunningUnitTests() & 1) == 0)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"MailMessageLibrary.m" lineNumber:748 description:{@"%s can only be called from unit tests", "-[MFMailMessageLibrary test_tearDown]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MailMessageLibrary.m" lineNumber:748 description:{@"%s can only be called from unit tests", "-[MFMailMessageLibrary test_tearDown]"}];
   }
 
-  v4 = [(MFMailMessageLibrary *)self indexingQueue];
-  dispatch_sync(v4, &__block_literal_global_383);
+  indexingQueue = [(MFMailMessageLibrary *)self indexingQueue];
+  dispatch_sync(indexingQueue, &__block_literal_global_383);
 
-  v5 = [(MFMailMessageLibrary *)self remoteContentParser];
-  [v5 test_tearDown];
+  remoteContentParser = [(MFMailMessageLibrary *)self remoteContentParser];
+  [remoteContentParser test_tearDown];
 
   v16 = 0u;
   v17 = 0u;
@@ -968,11 +968,11 @@ id __29__MFMailMessageLibrary_start__block_invoke(uint64_t a1)
   [MailAccount setMailAccounts:MEMORY[0x1E695E0F0]];
   +[MailAccount test_tearDown];
   +[MFInvocationQueue flushAllInvocationQueues];
-  v10 = [(MFMailMessageLibrary *)self mailboxFrecencyController];
-  [v10 test_tearDown];
+  mailboxFrecencyController = [(MFMailMessageLibrary *)self mailboxFrecencyController];
+  [mailboxFrecencyController test_tearDown];
 
-  v11 = [(MFMailMessageLibrary *)self persistence];
-  [v11 test_tearDown];
+  persistence = [(MFMailMessageLibrary *)self persistence];
+  [persistence test_tearDown];
 
   [(MFMailMessageLibrary *)self invalidateAndWait];
   [(MFMailMessageLibrary *)self closeDatabaseConnections];
@@ -981,22 +981,22 @@ id __29__MFMailMessageLibrary_start__block_invoke(uint64_t a1)
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)messageBasePathForAccount:(id)a3
+- (id)messageBasePathForAccount:(id)account
 {
-  v4 = a3;
-  v5 = [v4 personaIdentifier];
+  accountCopy = account;
+  personaIdentifier = [accountCopy personaIdentifier];
 
-  if (v5)
+  if (personaIdentifier)
   {
-    v6 = [v4 path];
+    path = [accountCopy path];
   }
 
   else
   {
-    v6 = self->_path;
+    path = self->_path;
   }
 
-  v7 = v6;
+  v7 = path;
 
   return v7;
 }
@@ -1008,8 +1008,8 @@ id __29__MFMailMessageLibrary_start__block_invoke(uint64_t a1)
   v3 = [[MFMessageAttachmentMigrator alloc] initWithLibrary:self];
   [(MFMailMessageLibrary *)self setAttachmentMigrator:?];
 
-  v4 = [(MFMailMessageLibrary *)self attachmentMigrator];
-  [v4 startMigratingAttachments];
+  attachmentMigrator = [(MFMailMessageLibrary *)self attachmentMigrator];
+  [attachmentMigrator startMigratingAttachments];
 }
 
 - (void)attachmentMigrationFinished
@@ -1021,29 +1021,29 @@ id __29__MFMailMessageLibrary_start__block_invoke(uint64_t a1)
 
 - (EDSearchableIndex)searchableIndex
 {
-  v2 = [(MFMailMessageLibrary *)self persistence];
-  v3 = [v2 searchableIndexManager];
-  v4 = [v3 index];
+  persistence = [(MFMailMessageLibrary *)self persistence];
+  searchableIndexManager = [persistence searchableIndexManager];
+  index = [searchableIndexManager index];
 
-  return v4;
+  return index;
 }
 
 - (MFMessageChangeManager_iOS)messageChangeManager
 {
-  v2 = [(MFMailMessageLibrary *)self persistence];
-  v3 = [v2 messageChangeManager];
+  persistence = [(MFMailMessageLibrary *)self persistence];
+  messageChangeManager = [persistence messageChangeManager];
 
-  return v3;
+  return messageChangeManager;
 }
 
-- (void)_didAddUnreconciledMessages:(unint64_t)a3
+- (void)_didAddUnreconciledMessages:(unint64_t)messages
 {
   v3 = atomic_load(&self->_unreconciledMessageChangeCount);
   v4 = v3;
   do
   {
-    atomic_compare_exchange_strong(&self->_unreconciledMessageChangeCount, &v4, v3 + a3);
-    if (v3 + a3 < 0x3E8)
+    atomic_compare_exchange_strong(&self->_unreconciledMessageChangeCount, &v4, v3 + messages);
+    if (v3 + messages < 0x3E8)
     {
       v5 = 1;
     }
@@ -1071,12 +1071,12 @@ id __29__MFMailMessageLibrary_start__block_invoke(uint64_t a1)
 - (EFObservable)unreconciledMessageCountObservable
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = [(MFMailMessageLibrary *)self unreconciledMessageCount];
-  v4 = [(EFObserver *)self->_unreconciledMessageCountObservable distinctUntilChanged];
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v3];
+  unreconciledMessageCount = [(MFMailMessageLibrary *)self unreconciledMessageCount];
+  distinctUntilChanged = [(EFObserver *)self->_unreconciledMessageCountObservable distinctUntilChanged];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:unreconciledMessageCount];
   v10[0] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-  v7 = [v4 startWith:v6];
+  v7 = [distinctUntilChanged startWith:v6];
 
   v8 = *MEMORY[0x1E69E9840];
 
@@ -1106,35 +1106,35 @@ id __29__MFMailMessageLibrary_start__block_invoke(uint64_t a1)
   [(EFObserver *)unreconciledMessageCountObservable observerDidReceiveResult:?];
 }
 
-- (void)setFlags:(unint64_t)a3 forMessage:(id)a4
+- (void)setFlags:(unint64_t)flags forMessage:(id)message
 {
-  v6 = a4;
-  v7 = [v6 messageFlags];
-  if (v7 != a3)
+  messageCopy = message;
+  messageFlags = [messageCopy messageFlags];
+  if (messageFlags != flags)
   {
-    [v6 setMessageFlagsWithoutCommitting:a3];
+    [messageCopy setMessageFlagsWithoutCommitting:flags];
   }
 
-  v8 = [(MFMailMessageLibrary *)self database];
+  database = [(MFMailMessageLibrary *)self database];
   v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary setFlags:forMessage:]"];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __44__MFMailMessageLibrary_setFlags_forMessage___block_invoke;
   v11[3] = &unk_1E7AA3500;
   v11[4] = self;
-  v10 = v6;
+  v10 = messageCopy;
   v12 = v10;
-  v13 = a3;
-  [v8 __performWriteWithCaller:v9 usingBlock:v11];
+  flagsCopy = flags;
+  [database __performWriteWithCaller:v9 usingBlock:v11];
 
-  [(MFMailMessageLibrary *)self postOldFlags:v7 newFlags:a3 forMessage:v10];
+  [(MFMailMessageLibrary *)self postOldFlags:messageFlags newFlags:flags forMessage:v10];
 }
 
-- (void)postOldFlags:(unint64_t)a3 newFlags:(unint64_t)a4 forMessage:(id)a5
+- (void)postOldFlags:(unint64_t)flags newFlags:(unint64_t)newFlags forMessage:(id)message
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  if (a3 == a4)
+  messageCopy = message;
+  if (flags == newFlags)
   {
     v9 = objc_alloc_init(MEMORY[0x1E695DF20]);
     if (!v9)
@@ -1147,9 +1147,9 @@ id __29__MFMailMessageLibrary_start__block_invoke(uint64_t a1)
   {
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v11 = v10;
-    if ((a3 & 1) != (a4 & 1))
+    if ((flags & 1) != (newFlags & 1))
     {
-      if (a4)
+      if (newFlags)
       {
         v12 = MEMORY[0x1E695E118];
       }
@@ -1162,15 +1162,15 @@ id __29__MFMailMessageLibrary_start__block_invoke(uint64_t a1)
       [v10 setObject:v12 forKey:@"MessageIsRead"];
     }
 
-    v13 = a4 ^ a3;
-    if ((a4 ^ a3) < 2)
+    v13 = newFlags ^ flags;
+    if ((newFlags ^ flags) < 2)
     {
       goto LABEL_77;
     }
 
-    if (((a3 >> 1) & 1) != ((a4 >> 1) & 1))
+    if (((flags >> 1) & 1) != ((newFlags >> 1) & 1))
     {
-      if ((a4 & 2) != 0)
+      if ((newFlags & 2) != 0)
       {
         v14 = MEMORY[0x1E695E118];
       }
@@ -1188,9 +1188,9 @@ id __29__MFMailMessageLibrary_start__block_invoke(uint64_t a1)
       goto LABEL_77;
     }
 
-    if (((a3 >> 2) & 1) != ((a4 >> 2) & 1))
+    if (((flags >> 2) & 1) != ((newFlags >> 2) & 1))
     {
-      if ((a4 & 4) != 0)
+      if ((newFlags & 4) != 0)
       {
         v15 = MEMORY[0x1E695E118];
       }
@@ -1208,9 +1208,9 @@ id __29__MFMailMessageLibrary_start__block_invoke(uint64_t a1)
       goto LABEL_77;
     }
 
-    if (((a3 >> 3) & 1) != ((a4 >> 3) & 1))
+    if (((flags >> 3) & 1) != ((newFlags >> 3) & 1))
     {
-      if ((a4 & 8) != 0)
+      if ((newFlags & 8) != 0)
       {
         v16 = MEMORY[0x1E695E118];
       }
@@ -1228,9 +1228,9 @@ id __29__MFMailMessageLibrary_start__block_invoke(uint64_t a1)
       goto LABEL_77;
     }
 
-    if (((a3 >> 23) & 1) != ((a4 >> 23) & 1))
+    if (((flags >> 23) & 1) != ((newFlags >> 23) & 1))
     {
-      if ((a4 & 0x800000) != 0)
+      if ((newFlags & 0x800000) != 0)
       {
         v17 = MEMORY[0x1E695E118];
       }
@@ -1248,9 +1248,9 @@ id __29__MFMailMessageLibrary_start__block_invoke(uint64_t a1)
       goto LABEL_77;
     }
 
-    if (((a3 >> 24) & 1) != ((a4 >> 24) & 1))
+    if (((flags >> 24) & 1) != ((newFlags >> 24) & 1))
     {
-      if ((a4 & 0x1000000) != 0)
+      if ((newFlags & 0x1000000) != 0)
       {
         v18 = MEMORY[0x1E695E118];
       }
@@ -1268,9 +1268,9 @@ id __29__MFMailMessageLibrary_start__block_invoke(uint64_t a1)
       goto LABEL_77;
     }
 
-    if (((a3 >> 8) & 1) != ((a4 >> 8) & 1))
+    if (((flags >> 8) & 1) != ((newFlags >> 8) & 1))
     {
-      if ((a4 & 0x100) != 0)
+      if ((newFlags & 0x100) != 0)
       {
         v19 = MEMORY[0x1E695E118];
       }
@@ -1288,9 +1288,9 @@ id __29__MFMailMessageLibrary_start__block_invoke(uint64_t a1)
       goto LABEL_77;
     }
 
-    if (((a3 >> 9) & 1) != ((a4 >> 9) & 1))
+    if (((flags >> 9) & 1) != ((newFlags >> 9) & 1))
     {
-      if ((a4 & 0x200) != 0)
+      if ((newFlags & 0x200) != 0)
       {
         v20 = MEMORY[0x1E695E118];
       }
@@ -1308,9 +1308,9 @@ id __29__MFMailMessageLibrary_start__block_invoke(uint64_t a1)
       goto LABEL_77;
     }
 
-    if (((a3 >> 4) & 1) != ((a4 >> 4) & 1))
+    if (((flags >> 4) & 1) != ((newFlags >> 4) & 1))
     {
-      if ((a4 & 0x10) != 0)
+      if ((newFlags & 0x10) != 0)
       {
         v21 = MEMORY[0x1E695E118];
       }
@@ -1328,9 +1328,9 @@ id __29__MFMailMessageLibrary_start__block_invoke(uint64_t a1)
       goto LABEL_77;
     }
 
-    if (((a3 >> 30) & 1) != ((a4 >> 30) & 1))
+    if (((flags >> 30) & 1) != ((newFlags >> 30) & 1))
     {
-      if ((a4 & 0x40000000) != 0)
+      if ((newFlags & 0x40000000) != 0)
       {
         v22 = MEMORY[0x1E695E118];
       }
@@ -1348,9 +1348,9 @@ id __29__MFMailMessageLibrary_start__block_invoke(uint64_t a1)
       goto LABEL_77;
     }
 
-    if (((a3 >> 47) & 1) != ((a4 >> 47) & 1))
+    if (((flags >> 47) & 1) != ((newFlags >> 47) & 1))
     {
-      if ((a4 & 0x800000000000) != 0)
+      if ((newFlags & 0x800000000000) != 0)
       {
         v23 = MEMORY[0x1E695E118];
       }
@@ -1368,19 +1368,19 @@ id __29__MFMailMessageLibrary_start__block_invoke(uint64_t a1)
       goto LABEL_77;
     }
 
-    if ((WORD1(a3) & 7) != (WORD1(a4) & 7))
+    if ((WORD1(flags) & 7) != (WORD1(newFlags) & 7))
     {
       v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:?];
       [v11 setObject:v24 forKey:@"MessagePriorityLevel"];
     }
 
-    v25 = a4 & 0xFFFF7FFFBE78FCE0;
-    if ((a3 & 0xFFFF7FFFBE78FCE0) == v25)
+    v25 = newFlags & 0xFFFF7FFFBE78FCE0;
+    if ((flags & 0xFFFF7FFFBE78FCE0) == v25)
     {
       goto LABEL_77;
     }
 
-    v26 = MFMessageFlagsFontSizeDelta(a3 & 0xFFFF7FFFBE78FCE0);
+    v26 = MFMessageFlagsFontSizeDelta(flags & 0xFFFF7FFFBE78FCE0);
     v27 = MFMessageFlagsFontSizeDelta(v25);
     if (v26 != v27)
     {
@@ -1408,9 +1408,9 @@ LABEL_77:
   if ([v9 count])
   {
 LABEL_80:
-    v35[0] = v8;
+    v35[0] = messageCopy;
     v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:1];
-    v30 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{a3, v8}];
+    v30 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{flags, messageCopy}];
     v34 = v30;
     v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
     [(MFMailMessageLibrary *)self postFlagsChangedForMessages:v29 flags:v9 oldFlagsByMessage:v31];
@@ -1419,54 +1419,54 @@ LABEL_80:
   v32 = *MEMORY[0x1E69E9840];
 }
 
-- (void)postFlagsChangedForMessages:(id)a3 flags:(id)a4 oldFlagsByMessage:(id)a5
+- (void)postFlagsChangedForMessages:(id)messages flags:(id)flags oldFlagsByMessage:(id)message
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v12 count])
+  messagesCopy = messages;
+  flagsCopy = flags;
+  messageCopy = message;
+  if ([messagesCopy count])
   {
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    [v10 setObject:v12 forKey:@"messages"];
-    if (v9)
+    [v10 setObject:messagesCopy forKey:@"messages"];
+    if (messageCopy)
     {
-      [v10 setObject:v9 forKey:@"oldFlagsByMessage"];
+      [v10 setObject:messageCopy forKey:@"oldFlagsByMessage"];
     }
 
-    if (v8)
+    if (flagsCopy)
     {
-      [v10 setObject:v8 forKey:@"flags"];
+      [v10 setObject:flagsCopy forKey:@"flags"];
     }
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 postNotificationName:@"MailMessageStoreMessageFlagsChanged" object:self userInfo:v10];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"MailMessageStoreMessageFlagsChanged" object:self userInfo:v10];
   }
 }
 
-- (void)updateFlagsForMessagesInPlace:(id)a3 success:(BOOL *)a4
+- (void)updateFlagsForMessagesInPlace:(id)place success:(BOOL *)success
 {
-  v6 = a3;
-  v7 = [v6 keyEnumerator];
+  placeCopy = place;
+  keyEnumerator = [placeCopy keyEnumerator];
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v8 = [(MFMailMessageLibrary *)self database];
+  database = [(MFMailMessageLibrary *)self database];
   v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary updateFlagsForMessagesInPlace:success:]"];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __62__MFMailMessageLibrary_updateFlagsForMessagesInPlace_success___block_invoke;
   v12[3] = &unk_1E7AA3528;
-  v10 = v7;
+  v10 = keyEnumerator;
   v13 = v10;
-  v11 = v6;
+  v11 = placeCopy;
   v14 = v11;
   v15 = &v16;
-  [v8 __performWriteWithCaller:v9 usingBlock:v12];
+  [database __performWriteWithCaller:v9 usingBlock:v12];
 
-  if (a4)
+  if (success)
   {
-    *a4 = *(v17 + 6) == 101;
+    *success = *(v17 + 6) == 101;
   }
 
   _Block_object_dispose(&v16, 8);
@@ -1510,36 +1510,36 @@ uint64_t __62__MFMailMessageLibrary_updateFlagsForMessagesInPlace_success___bloc
   return 1;
 }
 
-- (id)updateFlagsForMessages:(id)a3 changes:(id)a4 transformer:(id)a5
+- (id)updateFlagsForMessages:(id)messages changes:(id)changes transformer:(id)transformer
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messagesCopy = messages;
+  changesCopy = changes;
+  transformerCopy = transformer;
   v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v12 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v28[0] = 0;
   v28[1] = v28;
   v28[2] = 0x2020000000;
   v29 = 0;
-  v13 = [(MFMailMessageLibrary *)self database];
+  database = [(MFMailMessageLibrary *)self database];
   v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary updateFlagsForMessages:changes:transformer:]"];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __67__MFMailMessageLibrary_updateFlagsForMessages_changes_transformer___block_invoke;
   v21[3] = &unk_1E7AA3550;
-  v15 = v8;
+  v15 = messagesCopy;
   v22 = v15;
   v27 = v28;
-  v16 = v10;
+  v16 = transformerCopy;
   v26 = v16;
-  v17 = v12;
+  v17 = array;
   v23 = v17;
   v18 = v11;
   v24 = v18;
-  v25 = self;
-  [v13 __performWriteWithCaller:v14 usingBlock:v21];
+  selfCopy = self;
+  [database __performWriteWithCaller:v14 usingBlock:v21];
 
-  [(MFMailMessageLibrary *)self postFlagsChangedForMessages:v17 flags:v9 oldFlagsByMessage:v18];
+  [(MFMailMessageLibrary *)self postFlagsChangedForMessages:v17 flags:changesCopy oldFlagsByMessage:v18];
   v19 = v17;
 
   _Block_object_dispose(v28, 8);
@@ -1623,39 +1623,39 @@ uint64_t __67__MFMailMessageLibrary_updateFlagsForMessages_changes_transformer__
   return 1;
 }
 
-- (id)setFlagsFromDictionary:(id)a3 forMessages:(id)a4
+- (id)setFlagsFromDictionary:(id)dictionary forMessages:(id)messages
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"MessageIsDeleted"];
-  v9 = [v8 BOOLValue];
+  dictionaryCopy = dictionary;
+  messagesCopy = messages;
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"MessageIsDeleted"];
+  bOOLValue = [v8 BOOLValue];
 
-  if (v9)
+  if (bOOLValue)
   {
-    [(MFMailMessageLibrary *)self removeSearchableItemsForMessages:v7];
+    [(MFMailMessageLibrary *)self removeSearchableItemsForMessages:messagesCopy];
   }
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __59__MFMailMessageLibrary_setFlagsFromDictionary_forMessages___block_invoke;
   v13[3] = &unk_1E7AA3578;
-  v10 = v6;
+  v10 = dictionaryCopy;
   v14 = v10;
-  v11 = [(MFMailMessageLibrary *)self updateFlagsForMessages:v7 changes:v10 transformer:v13];
+  v11 = [(MFMailMessageLibrary *)self updateFlagsForMessages:messagesCopy changes:v10 transformer:v13];
 
   return v11;
 }
 
-- (void)setNumberOfAttachments:(unsigned int)a3 isSigned:(BOOL)a4 isEncrypted:(BOOL)a5 forMessage:(id)a6
+- (void)setNumberOfAttachments:(unsigned int)attachments isSigned:(BOOL)signed isEncrypted:(BOOL)encrypted forMessage:(id)message
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v10 = a6;
+  messageCopy = message;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
   v30 = 0;
   v11 = objc_alloc_init(MEMORY[0x1E699B608]);
-  v12 = [(MFMailMessageLibrary *)self database];
+  database = [(MFMailMessageLibrary *)self database];
   v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary setNumberOfAttachments:isSigned:isEncrypted:forMessage:]"];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
@@ -1663,21 +1663,21 @@ uint64_t __67__MFMailMessageLibrary_updateFlagsForMessages_changes_transformer__
   v19[3] = &unk_1E7AA35C8;
   v14 = v11;
   v20 = v14;
-  v21 = self;
-  v15 = v10;
-  v24 = a3;
-  v25 = a4;
-  v26 = a5;
+  selfCopy = self;
+  v15 = messageCopy;
+  attachmentsCopy = attachments;
+  signedCopy = signed;
+  encryptedCopy = encrypted;
   v22 = v15;
   v23 = &v27;
-  [v12 __performWriteWithCaller:v13 usingBlock:v19];
+  [database __performWriteWithCaller:v13 usingBlock:v19];
 
   if (*(v28 + 24) == 1 && [v15 conformsToProtocol:&unk_1F27860E8])
   {
-    v16 = [(MFMailMessageLibrary *)self hookRegistry];
+    hookRegistry = [(MFMailMessageLibrary *)self hookRegistry];
     v31[0] = *MEMORY[0x1E699B1C8];
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:1];
-    [v16 persistenceDidUpdateProperties:v17 message:v15 generationWindow:v14];
+    [hookRegistry persistenceDidUpdateProperties:v17 message:v15 generationWindow:v14];
   }
 
   _Block_object_dispose(&v27, 8);
@@ -1719,17 +1719,17 @@ unint64_t __79__MFMailMessageLibrary_setNumberOfAttachments_isSigned_isEncrypted
   return result;
 }
 
-- (void)setMessage:(id)a3 isPartial:(BOOL)a4
+- (void)setMessage:(id)message isPartial:(BOOL)partial
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v12[0] = v6;
+  messageCopy = message;
+  v12[0] = messageCopy;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __45__MFMailMessageLibrary_setMessage_isPartial___block_invoke;
   v10[3] = &__block_descriptor_33_e8_Q16__0Q8l;
-  v11 = a4;
+  partialCopy = partial;
   v8 = [(MFMailMessageLibrary *)self updateFlagsForMessages:v7 changes:0 transformer:v10];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -1746,25 +1746,25 @@ unint64_t __45__MFMailMessageLibrary_setMessage_isPartial___block_invoke(uint64_
   return v2 | a2 & 0xFFFFFFFBFFFFFFFFLL;
 }
 
-- (BOOL)_fileType:(int64_t)a3 orHigherExistsAtDirectory:(id)a4
+- (BOOL)_fileType:(int64_t)type orHigherExistsAtDirectory:(id)directory
 {
-  v5 = a4;
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
+  directoryCopy = directory;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v7 = 0;
-  if (!a3)
+  if (!type)
   {
     goto LABEL_8;
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
-    if (a3 != 2)
+    if (type != 2)
     {
       goto LABEL_11;
     }
 
-    v8 = [v5 stringByAppendingPathComponent:@"headers.emlx"];
-    if ([v6 fileExistsAtPath:v8])
+    v8 = [directoryCopy stringByAppendingPathComponent:@"headers.emlx"];
+    if ([defaultManager fileExistsAtPath:v8])
     {
       goto LABEL_9;
     }
@@ -1772,15 +1772,15 @@ unint64_t __45__MFMailMessageLibrary_setMessage_isPartial___block_invoke(uint64_
     v7 = v8;
   }
 
-  v8 = [v5 stringByAppendingPathComponent:@"partial.emlx"];
+  v8 = [directoryCopy stringByAppendingPathComponent:@"partial.emlx"];
 
-  if (([v6 fileExistsAtPath:v8] & 1) == 0)
+  if (([defaultManager fileExistsAtPath:v8] & 1) == 0)
   {
     v7 = v8;
 LABEL_8:
-    v8 = [v5 stringByAppendingPathComponent:@"full.emlx"];
+    v8 = [directoryCopy stringByAppendingPathComponent:@"full.emlx"];
 
-    if ([v6 fileExistsAtPath:v8])
+    if ([defaultManager fileExistsAtPath:v8])
     {
       goto LABEL_9;
     }
@@ -1799,23 +1799,23 @@ LABEL_12:
   return v9;
 }
 
-- (void)_removeEmlxFilesOfTypeLessThanType:(int64_t)a3 inDirectory:(id)a4
+- (void)_removeEmlxFilesOfTypeLessThanType:(int64_t)type inDirectory:(id)directory
 {
-  v7 = a4;
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  if (a3 == 1)
+  directoryCopy = directory;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if (type == 1)
   {
-    v6 = [v7 stringByAppendingPathComponent:@"headers.emlx"];
-    [v5 removeItemAtPath:v6 error:0];
+    v6 = [directoryCopy stringByAppendingPathComponent:@"headers.emlx"];
+    [defaultManager removeItemAtPath:v6 error:0];
   }
 }
 
-- (BOOL)_writeEmlxFileOfType:(int64_t)a3 forAccount:(id)a4 toDirectory:(id)a5 withData:(id)a6 protectionClass:(int64_t)a7
+- (BOOL)_writeEmlxFileOfType:(int64_t)type forAccount:(id)account toDirectory:(id)directory withData:(id)data protectionClass:(int64_t)class
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if ([(MFMailMessageLibrary *)self _fileType:a3 orHigherExistsAtDirectory:v13])
+  accountCopy = account;
+  directoryCopy = directory;
+  dataCopy = data;
+  if ([(MFMailMessageLibrary *)self _fileType:type orHigherExistsAtDirectory:directoryCopy])
   {
     LOBYTE(v15) = 1;
   }
@@ -1823,12 +1823,12 @@ LABEL_12:
   else
   {
     v16 = @"full.emlx";
-    if (a3 == 1)
+    if (type == 1)
     {
       v16 = @"partial.emlx";
     }
 
-    if (a3 == 2)
+    if (type == 2)
     {
       v17 = @"headers.emlx";
     }
@@ -1838,27 +1838,27 @@ LABEL_12:
       v17 = v16;
     }
 
-    v18 = [v13 stringByAppendingPathComponent:v17];
-    v15 = -[MFMailMessageLibrary _writeEmlxFile:withData:protectionClass:purgeable:](self, "_writeEmlxFile:withData:protectionClass:purgeable:", v18, v14, a7, [v12 supportsPurge]);
+    v18 = [directoryCopy stringByAppendingPathComponent:v17];
+    v15 = -[MFMailMessageLibrary _writeEmlxFile:withData:protectionClass:purgeable:](self, "_writeEmlxFile:withData:protectionClass:purgeable:", v18, dataCopy, class, [accountCopy supportsPurge]);
     if (v15)
     {
-      [(MFMailMessageLibrary *)self _removeEmlxFilesOfTypeLessThanType:a3 inDirectory:v13];
+      [(MFMailMessageLibrary *)self _removeEmlxFilesOfTypeLessThanType:type inDirectory:directoryCopy];
     }
   }
 
   return v15;
 }
 
-- (BOOL)_writeEmlxData:(id)a3 toFile:(id)a4 protectionClass:(int64_t)a5 purgeable:(BOOL)a6
+- (BOOL)_writeEmlxData:(id)data toFile:(id)file protectionClass:(int64_t)class purgeable:(BOOL)purgeable
 {
-  v6 = a6;
-  v7 = a5;
+  purgeableCopy = purgeable;
+  classCopy = class;
   v51 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = [MEMORY[0x1E696AC08] defaultManager];
-  v12 = [v11 temporaryDirectory];
-  v13 = [v12 URLByAppendingPathComponent:@"emlx.XXXXXXXXXXXXXXXX" isDirectory:0];
+  dataCopy = data;
+  fileCopy = file;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  temporaryDirectory = [defaultManager temporaryDirectory];
+  v13 = [temporaryDirectory URLByAppendingPathComponent:@"emlx.XXXXXXXXXXXXXXXX" isDirectory:0];
 
   memset(__b, 170, 0x401uLL);
   [v13 fileSystemRepresentation];
@@ -1867,7 +1867,7 @@ LABEL_12:
     goto LABEL_22;
   }
 
-  v14 = mkstemp_dprotected_np(__b, v7, 0);
+  v14 = mkstemp_dprotected_np(__b, classCopy, 0);
   v15 = __error();
   if ((v14 & 0x80000000) != 0)
   {
@@ -1902,7 +1902,7 @@ LABEL_23:
 
   v13 = [objc_alloc(MEMORY[0x1E696AC00]) initWithFileDescriptor:v14 closeOnDealloc:0];
   v49 = 0;
-  v17 = [v13 writeData:v9 error:&v49];
+  v17 = [v13 writeData:dataCopy error:&v49];
   v18 = v49;
   v19 = v18;
   if ((v17 & 1) == 0)
@@ -1917,7 +1917,7 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  if (v6 && EFMarkFileAsPurgeableFD())
+  if (purgeableCopy && EFMarkFileAsPurgeableFD())
   {
     v20 = *__error();
     v21 = EDLibraryLog();
@@ -1931,10 +1931,10 @@ LABEL_23:
 
   close(v14);
   v22 = v16;
-  v23 = [v16 fileSystemRepresentation];
-  v24 = v10;
-  v25 = [v10 fileSystemRepresentation];
-  rename(v23, v25, v26);
+  fileSystemRepresentation = [v16 fileSystemRepresentation];
+  v24 = fileCopy;
+  fileSystemRepresentation2 = [fileCopy fileSystemRepresentation];
+  rename(fileSystemRepresentation, fileSystemRepresentation2, v26);
   if (!v27)
   {
     goto LABEL_29;
@@ -1942,18 +1942,18 @@ LABEL_23:
 
   if (*__error() == 2)
   {
-    v28 = [v10 URLByDeletingLastPathComponent];
-    v29 = [MEMORY[0x1E696AC08] defaultManager];
-    [v29 createDirectoryAtURL:v28 withIntermediateDirectories:1 attributes:0 error:0];
+    uRLByDeletingLastPathComponent = [fileCopy URLByDeletingLastPathComponent];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager2 createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:0];
 
     v30 = v16;
-    v31 = [v16 fileSystemRepresentation];
-    v32 = v10;
-    v33 = [v10 fileSystemRepresentation];
-    rename(v31, v33, v34);
-    LODWORD(v31) = v35;
+    fileSystemRepresentation3 = [v16 fileSystemRepresentation];
+    v32 = fileCopy;
+    fileSystemRepresentation4 = [fileCopy fileSystemRepresentation];
+    rename(fileSystemRepresentation3, fileSystemRepresentation4, v34);
+    LODWORD(fileSystemRepresentation3) = v35;
 
-    if (!v31)
+    if (!fileSystemRepresentation3)
     {
 LABEL_29:
       v40 = 1;
@@ -1968,9 +1968,9 @@ LABEL_29:
     [MFMailMessageLibrary _writeEmlxData:v36 toFile:v37 protectionClass:? purgeable:?];
   }
 
-  v38 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
   v48 = 0;
-  v39 = [v38 moveItemAtURL:v16 toURL:v10 error:&v48];
+  v39 = [defaultManager3 moveItemAtURL:v16 toURL:fileCopy error:&v48];
   v13 = v48;
 
   if ((v39 & 1) == 0)
@@ -1978,8 +1978,8 @@ LABEL_29:
     v46 = EDLibraryLog();
     if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
     {
-      v47 = [v10 path];
-      [MFMailMessageLibrary _writeEmlxData:v47 toFile:v13 protectionClass:__b purgeable:?];
+      path = [fileCopy path];
+      [MFMailMessageLibrary _writeEmlxData:path toFile:v13 protectionClass:__b purgeable:?];
     }
 
     goto LABEL_23;
@@ -1993,19 +1993,19 @@ LABEL_25:
   return v40;
 }
 
-- (id)referencesFromHeaders:(id)a3
+- (id)referencesFromHeaders:(id)headers
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E699B810] indexSet];
-  v5 = [v3 references];
-  if ([v5 count])
+  headersCopy = headers;
+  indexSet = [MEMORY[0x1E699B810] indexSet];
+  references = [headersCopy references];
+  if ([references count])
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = v5;
+    v6 = references;
     v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v7)
     {
@@ -2023,7 +2023,7 @@ LABEL_25:
           v11 = MFStringHashForMessageIDHeader();
           if (v11)
           {
-            [v4 addIndex:{v11, v16}];
+            [indexSet addIndex:{v11, v16}];
           }
         }
 
@@ -2034,39 +2034,39 @@ LABEL_25:
     }
   }
 
-  v12 = [v3 firstHeaderForKey:{*MEMORY[0x1E699B108], v16}];
+  v12 = [headersCopy firstHeaderForKey:{*MEMORY[0x1E699B108], v16}];
   if (v12)
   {
     v13 = MFStringHashForMessageIDHeader();
     if (v13)
     {
-      [v4 addIndex:v13];
+      [indexSet addIndex:v13];
     }
   }
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return indexSet;
 }
 
-- (id)_addThreadingInfoWithContext:(id)a3 usingDatabaseConnection:(id)a4
+- (id)_addThreadingInfoWithContext:(id)context usingDatabaseConnection:(id)connection
 {
   v53[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v38 = a4;
-  v6 = [v5 mailboxID];
-  v7 = [v5 subject];
-  v37 = [v7 subjectWithoutPrefix];
+  contextCopy = context;
+  connectionCopy = connection;
+  mailboxID = [contextCopy mailboxID];
+  subject = [contextCopy subject];
+  subjectWithoutPrefix = [subject subjectWithoutPrefix];
 
-  v36 = [v5 messageIDsBySubject];
-  v8 = [v5 libraryID];
-  v32 = [MEMORY[0x1E699B810] indexSet];
-  v34 = [v38 preparedStatementForQueryString:{@"SELECT messages.ROWID, messages.message_id, messages.conversation_id, messages.subject_prefix, subjects.subject, addresses.comment, addresses.address, messages.date_sent FROM messages JOIN subjects ON messages.subject = subjects.ROWID JOIN addresses ON messages.sender = addresses.ROWID WHERE subjects.subject = ? AND messages.mailbox = ?"}];
+  messageIDsBySubject = [contextCopy messageIDsBySubject];
+  libraryID = [contextCopy libraryID];
+  indexSet = [MEMORY[0x1E699B810] indexSet];
+  v34 = [connectionCopy preparedStatementForQueryString:{@"SELECT messages.ROWID, messages.message_id, messages.conversation_id, messages.subject_prefix, subjects.subject, addresses.comment, addresses.address, messages.date_sent FROM messages JOIN subjects ON messages.subject = subjects.ROWID JOIN addresses ON messages.sender = addresses.ROWID WHERE subjects.subject = ? AND messages.mailbox = ?"}];
   v39 = objc_alloc_init(MEMORY[0x1E699B810]);
-  v53[0] = v37;
+  v53[0] = subjectWithoutPrefix;
   v28 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v9 = [MEMORY[0x1E696AD98] numberWithLongLong:v6];
-  v30 = v8;
+  v9 = [MEMORY[0x1E696AD98] numberWithLongLong:mailboxID];
+  v30 = libraryID;
   v53[1] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v53 count:2];
   v43[0] = MEMORY[0x1E69E9820];
@@ -2076,16 +2076,16 @@ LABEL_25:
   v11 = v28;
   v44 = v11;
   v42 = 0;
-  LOBYTE(v7) = [v34 executeWithIndexedBindings:v10 usingBlock:v43 error:&v42];
+  LOBYTE(subject) = [v34 executeWithIndexedBindings:v10 usingBlock:v43 error:&v42];
   v31 = v42;
 
-  if ((v7 & 1) == 0)
+  if ((subject & 1) == 0)
   {
-    [v38 handleError:v31 message:@"querying subject references for threads"];
+    [connectionCopy handleError:v31 message:@"querying subject references for threads"];
   }
 
-  v12 = [v11 allKeys];
-  v13 = [(MFMailMessageLibrary *)self _recipientsForMessagesWithDatabaseIDs:v12 includeTo:1 includeCC:1 includeBCC:1];
+  allKeys = [v11 allKeys];
+  v13 = [(MFMailMessageLibrary *)self _recipientsForMessagesWithDatabaseIDs:allKeys includeTo:1 includeCC:1 includeBCC:1];
 
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
@@ -2095,53 +2095,53 @@ LABEL_25:
   v41 = v29;
   [v11 enumerateKeysAndObjectsUsingBlock:v40];
   v33 = objc_alloc_init(MFThreadFuzzyMatcher);
-  v14 = [v11 allValues];
-  v15 = [(MFThreadFuzzyMatcher *)v33 matchMessageReferenceContext:v5 withCandidateMessageReferenceContexts:v14];
+  allValues = [v11 allValues];
+  v15 = [(MFThreadFuzzyMatcher *)v33 matchMessageReferenceContext:contextCopy withCandidateMessageReferenceContexts:allValues];
 
   if (v15)
   {
     v16 = +[MFMailMessageLibrary conversationCalculationLog];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v5 messageIDHash];
-      v18 = [v15 messageIDHash];
-      v19 = [v15 conversationIDHash];
-      v20 = [v15 subject];
-      v21 = [v20 ef_publicDescription];
+      messageIDHash = [contextCopy messageIDHash];
+      messageIDHash2 = [v15 messageIDHash];
+      conversationIDHash = [v15 conversationIDHash];
+      subject2 = [v15 subject];
+      ef_publicDescription = [subject2 ef_publicDescription];
       *buf = 134218754;
-      v46 = v17;
+      v46 = messageIDHash;
       v47 = 2048;
-      v48 = v18;
+      v48 = messageIDHash2;
       v49 = 2048;
-      v50 = v19;
+      v50 = conversationIDHash;
       v51 = 2114;
-      v52 = v21;
+      v52 = ef_publicDescription;
       _os_log_impl(&dword_1B0389000, v16, OS_LOG_TYPE_DEFAULT, "Threading %lld: found conversation from fuzzy matching: messageID: %lld, conversationID: %lld, subject: %{public}@", buf, 0x2Au);
     }
 
     [v39 addIndex:{objc_msgSend(v15, "messageIDHash")}];
-    [v32 addIndex:{objc_msgSend(v15, "conversationIDHash")}];
+    [indexSet addIndex:{objc_msgSend(v15, "conversationIDHash")}];
   }
 
   v22 = +[MFMailMessageLibrary conversationCalculationLog];
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = [v5 messageIDHash];
-    v24 = [v36 objectForKeyedSubscript:v37];
+    messageIDHash3 = [contextCopy messageIDHash];
+    v24 = [messageIDsBySubject objectForKeyedSubscript:subjectWithoutPrefix];
     *buf = 134218242;
-    v46 = v23;
+    v46 = messageIDHash3;
     v47 = 2114;
     v48 = v24;
     _os_log_impl(&dword_1B0389000, v22, OS_LOG_TYPE_DEFAULT, "Threading %lld: adding in previously tracked messages IDs with the same subject: %{public}@", buf, 0x16u);
   }
 
-  v25 = [v36 objectForKeyedSubscript:v37];
+  v25 = [messageIDsBySubject objectForKeyedSubscript:subjectWithoutPrefix];
   [v39 addIndexes:v25];
 
-  [(MFMailMessageLibrary *)self _insertThreadReferences:v39 toMessageWithLibraryID:v30 usingDatabaseConnection:v38];
+  [(MFMailMessageLibrary *)self _insertThreadReferences:v39 toMessageWithLibraryID:v30 usingDatabaseConnection:connectionCopy];
   v26 = *MEMORY[0x1E69E9840];
 
-  return v32;
+  return indexSet;
 }
 
 void __77__MFMailMessageLibrary__addThreadingInfoWithContext_usingDatabaseConnection___block_invoke(uint64_t a1, void *a2)
@@ -2209,12 +2209,12 @@ void __77__MFMailMessageLibrary__addThreadingInfoWithContext_usingDatabaseConnec
   [v12 setBcc:v11];
 }
 
-- (BOOL)_insertThreadReferences:(id)a3 toMessageWithLibraryID:(int64_t)a4 usingDatabaseConnection:(id)a5
+- (BOOL)_insertThreadReferences:(id)references toMessageWithLibraryID:(int64_t)d usingDatabaseConnection:(id)connection
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  if ([v7 count])
+  referencesCopy = references;
+  connectionCopy = connection;
+  if ([referencesCopy count])
   {
     v9 = [objc_alloc(MEMORY[0x1E699B910]) initWithTable:@"message_references"];
     v17[0] = MEMORY[0x1E69E9820];
@@ -2223,10 +2223,10 @@ void __77__MFMailMessageLibrary__addThreadingInfoWithContext_usingDatabaseConnec
     v17[3] = &unk_1E7AA3660;
     v10 = v9;
     v18 = v10;
-    v19 = a4;
-    [v7 enumerateIndexesUsingBlock:v17];
+    dCopy = d;
+    [referencesCopy enumerateIndexesUsingBlock:v17];
     v16 = 0;
-    v11 = [v8 executeInsertStatement:v10 error:&v16];
+    v11 = [connectionCopy executeInsertStatement:v10 error:&v16];
     v12 = v16;
     if (v11)
     {
@@ -2234,16 +2234,16 @@ void __77__MFMailMessageLibrary__addThreadingInfoWithContext_usingDatabaseConnec
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218242;
-        v21 = a4;
+        dCopy2 = d;
         v22 = 2114;
-        v23 = v7;
+        v23 = referencesCopy;
         _os_log_impl(&dword_1B0389000, v13, OS_LOG_TYPE_DEFAULT, "Threading: inserted message references for message with databaseID %lld: %{public}@", buf, 0x16u);
       }
     }
 
     else
     {
-      [v8 handleError:v12 message:@"inserting message_references"];
+      [connectionCopy handleError:v12 message:@"inserting message_references"];
     }
   }
 
@@ -2268,113 +2268,113 @@ void __95__MFMailMessageLibrary__insertThreadReferences_toMessageWithLibraryID_u
   [v6 setObject:&unk_1F2775940 forKeyedSubscript:@"is_originator"];
 }
 
-- (int64_t)addReferenceForContext:(id)a3 usingDatabaseConnection:(id)a4 generationWindow:(id)a5 mergeHandler:(id)a6
+- (int64_t)addReferenceForContext:(id)context usingDatabaseConnection:(id)connection generationWindow:(id)window mergeHandler:(id)handler
 {
   v140 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v118 = a4;
-  v103 = a5;
-  v112 = a6;
-  v109 = v10;
-  v106 = [v10 message];
-  v107 = [v10 libraryID];
-  v108 = [v10 messageIDHash];
-  v110 = [v10 references];
-  v104 = [v10 messageIDsBySubject];
-  v11 = [v10 conversationFlagsRef];
-  v12 = [(MFMailMessageLibrary *)self isProtectedDataAvailable:v118];
+  contextCopy = context;
+  connectionCopy = connection;
+  windowCopy = window;
+  handlerCopy = handler;
+  v109 = contextCopy;
+  message = [contextCopy message];
+  libraryID = [contextCopy libraryID];
+  messageIDHash = [contextCopy messageIDHash];
+  references = [contextCopy references];
+  messageIDsBySubject = [contextCopy messageIDsBySubject];
+  conversationFlagsRef = [contextCopy conversationFlagsRef];
+  v12 = [(MFMailMessageLibrary *)self isProtectedDataAvailable:connectionCopy];
   Current = CFAbsoluteTimeGetCurrent();
   v14 = +[MFMailMessageLibrary conversationCalculationLog];
-  v113 = v11;
+  v113 = conversationFlagsRef;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v10 messageIDHash];
-    v16 = [v10 mailboxID];
-    v17 = [v10 subject];
-    v18 = [v17 ef_publicDescription];
+    messageIDHash2 = [contextCopy messageIDHash];
+    mailboxID = [contextCopy mailboxID];
+    subject = [contextCopy subject];
+    ef_publicDescription = [subject ef_publicDescription];
     *buf = 134219010;
-    v131 = v15;
+    v131 = messageIDHash2;
     v132 = 2048;
-    v133 = v107;
+    v133 = libraryID;
     v134 = 2048;
-    v135 = v16;
+    v135 = mailboxID;
     v136 = 2114;
-    v137 = v18;
+    v137 = ef_publicDescription;
     v138 = 2114;
-    v139 = v110;
+    v139 = references;
     _os_log_impl(&dword_1B0389000, v14, OS_LOG_TYPE_DEFAULT, "Threading %lld: resolving for message (database ID: %lld), mailbox: %lld, subject: %{public}@, explicitReferences: %{public}@", buf, 0x34u);
   }
 
-  [(MFMailMessageLibrary *)self _insertThreadReferences:v110 toMessageWithLibraryID:v107 usingDatabaseConnection:v118];
-  v19 = [v109 subject];
-  v20 = [v19 prefixLength];
+  [(MFMailMessageLibrary *)self _insertThreadReferences:references toMessageWithLibraryID:libraryID usingDatabaseConnection:connectionCopy];
+  subject2 = [v109 subject];
+  prefixLength = [subject2 prefixLength];
 
-  v21 = [v109 subject];
-  v105 = [v21 subjectWithoutPrefix];
+  subject3 = [v109 subject];
+  subjectWithoutPrefix = [subject3 subjectWithoutPrefix];
 
   v115 = objc_alloc_init(MEMORY[0x1E699B810]);
-  if (![v110 count] && v20)
+  if (![references count] && prefixLength)
   {
     if (v12)
     {
-      v22 = [(MFMailMessageLibrary *)self _addThreadingInfoWithContext:v109 usingDatabaseConnection:v118];
+      v22 = [(MFMailMessageLibrary *)self _addThreadingInfoWithContext:v109 usingDatabaseConnection:connectionCopy];
       [v115 addIndexes:v22];
     }
 
     else
     {
-      [(MFMailMessageLibrary *)self _addMessageToThreadAtUnlock:v107];
+      [(MFMailMessageLibrary *)self _addMessageToThreadAtUnlock:libraryID];
     }
   }
 
-  if (v108 && [v105 length])
+  if (messageIDHash && [subjectWithoutPrefix length])
   {
-    v23 = [v104 objectForKeyedSubscript:v105];
+    v23 = [messageIDsBySubject objectForKeyedSubscript:subjectWithoutPrefix];
     v24 = v23 == 0;
 
     if (v24)
     {
-      v25 = [MEMORY[0x1E699B810] indexSet];
-      [v104 setObject:v25 forKeyedSubscript:v105];
+      indexSet = [MEMORY[0x1E699B810] indexSet];
+      [messageIDsBySubject setObject:indexSet forKeyedSubscript:subjectWithoutPrefix];
     }
 
-    v26 = [v104 objectForKeyedSubscript:v105];
-    [v26 addIndex:v108];
+    v26 = [messageIDsBySubject objectForKeyedSubscript:subjectWithoutPrefix];
+    [v26 addIndex:messageIDHash];
   }
 
-  v27 = [(MFMailMessageLibrary *)self conversationIDsOfMessagesInSameThreadAsMessageWithLibraryID:v107 messageIDHash:v108];
+  v27 = [(MFMailMessageLibrary *)self conversationIDsOfMessagesInSameThreadAsMessageWithLibraryID:libraryID messageIDHash:messageIDHash];
   [v115 addIndexes:v27];
 
-  v28 = [v106 externalConversationID];
-  v29 = MFStringHashForMessageID();
+  externalConversationID = [message externalConversationID];
+  firstIndex = MFStringHashForMessageID();
 
-  if (v29)
+  if (firstIndex)
   {
     v30 = +[MFMailMessageLibrary conversationCalculationLog];
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      v131 = v108;
+      v131 = messageIDHash;
       v132 = 2048;
-      v133 = v29;
+      v133 = firstIndex;
       _os_log_impl(&dword_1B0389000, v30, OS_LOG_TYPE_DEFAULT, "Threading %lld: adding external conversation ID to explicit references: %lld", buf, 0x16u);
     }
 
-    [v110 addIndex:v29];
+    [references addIndex:firstIndex];
   }
 
   if (![v115 count])
   {
-    if ([v110 count])
+    if ([references count])
     {
-      v37 = [(MFMailMessageLibrary *)self _conversationIdForMessageIds:v110];
+      v37 = [(MFMailMessageLibrary *)self _conversationIdForMessageIds:references];
       if (v37)
       {
         v38 = +[MFMailMessageLibrary conversationCalculationLog];
         if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218240;
-          v131 = v108;
+          v131 = messageIDHash;
           v132 = 2048;
           v133 = v37;
           _os_log_impl(&dword_1B0389000, v38, OS_LOG_TYPE_DEFAULT, "Threading %lld: found conversation ID from explicit references: %lld", buf, 0x16u);
@@ -2386,10 +2386,10 @@ void __95__MFMailMessageLibrary__insertThreadReferences_toMessageWithLibraryID_u
   }
 
   v114 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v31 = [v106 conversationID];
-  [v115 removeIndex:v31];
+  conversationID = [message conversationID];
+  [v115 removeIndex:conversationID];
   v32 = [v115 count];
-  if (v31)
+  if (conversationID)
   {
     if (!v32)
     {
@@ -2397,17 +2397,17 @@ void __95__MFMailMessageLibrary__insertThreadReferences_toMessageWithLibraryID_u
       if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218240;
-        v131 = v108;
+        v131 = messageIDHash;
         v132 = 2048;
-        v133 = v31;
+        v133 = conversationID;
         _os_log_impl(&dword_1B0389000, v43, OS_LOG_TYPE_DEFAULT, "Threading %lld: Using current conversation %lld", buf, 0x16u);
       }
 
       goto LABEL_44;
     }
 
-    v29 = [v115 firstIndex];
-    [v115 addIndex:v31];
+    firstIndex = [v115 firstIndex];
+    [v115 addIndex:conversationID];
     v33 = +[MFMailMessageLibrary conversationCalculationLog];
     if (!os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
@@ -2415,18 +2415,18 @@ void __95__MFMailMessageLibrary__insertThreadReferences_toMessageWithLibraryID_u
     }
 
     *buf = 134218496;
-    v131 = v108;
+    v131 = messageIDHash;
     v132 = 2048;
-    v133 = v31;
+    v133 = conversationID;
     v134 = 2048;
-    v135 = v29;
+    v135 = firstIndex;
     v34 = "Threading %lld: Merging current conversation %lld with another conversation %lld";
     v35 = v33;
     v36 = 32;
     goto LABEL_39;
   }
 
-  if (v29 && !v32)
+  if (firstIndex && !v32)
   {
     v39 = +[MFMailMessageLibrary conversationCalculationLog];
     if (!os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
@@ -2437,9 +2437,9 @@ LABEL_32:
     }
 
     *buf = 134218240;
-    v131 = v108;
+    v131 = messageIDHash;
     v132 = 2048;
-    v133 = v29;
+    v133 = firstIndex;
     v40 = "Threading %lld: Using external conversation ID %lld";
     v41 = v39;
     v42 = 22;
@@ -2450,7 +2450,7 @@ LABEL_31:
 
   if (v32)
   {
-    v29 = [v115 firstIndex];
+    firstIndex = [v115 firstIndex];
     v33 = +[MFMailMessageLibrary conversationCalculationLog];
     if (!os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
@@ -2458,39 +2458,39 @@ LABEL_31:
     }
 
     *buf = 134218240;
-    v131 = v108;
+    v131 = messageIDHash;
     v132 = 2048;
-    v133 = v29;
+    v133 = firstIndex;
     v34 = "Threading %lld: Merging with existing conversation %lld";
     goto LABEL_38;
   }
 
-  if (v108)
+  if (messageIDHash)
   {
     v39 = +[MFMailMessageLibrary conversationCalculationLog];
     if (!os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
     {
-      v29 = v108;
+      firstIndex = messageIDHash;
       goto LABEL_32;
     }
 
     *buf = 134217984;
-    v29 = v108;
-    v131 = v108;
+    firstIndex = messageIDHash;
+    v131 = messageIDHash;
     v40 = "Threading %lld: Setting conversation ID to message ID";
     v41 = v39;
     v42 = 12;
     goto LABEL_31;
   }
 
-  v29 = MFUniqueMessageIDHash();
+  firstIndex = MFUniqueMessageIDHash();
   v33 = +[MFMailMessageLibrary conversationCalculationLog];
   if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
     v131 = 0;
     v132 = 2048;
-    v133 = v29;
+    v133 = firstIndex;
     v34 = "Threading %lld: Using newly created conversation ID %lld";
 LABEL_38:
     v35 = v33;
@@ -2501,9 +2501,9 @@ LABEL_39:
 
 LABEL_40:
 
-  if (!v29)
+  if (!firstIndex)
   {
-    v31 = 0;
+    conversationID = 0;
 LABEL_62:
     v65 = 0;
     v49 = v113;
@@ -2511,75 +2511,75 @@ LABEL_62:
   }
 
 LABEL_41:
-  if (v29 == v31)
+  if (firstIndex == conversationID)
   {
     goto LABEL_47;
   }
 
-  if ([v106 isLibraryMessage])
+  if ([message isLibraryMessage])
   {
-    v43 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v106, 0}];
-    v44 = [(MFMailMessageLibrary *)self hookRegistry];
-    [v44 persistenceWillChangeConversationID:v31 messages:v43];
+    v43 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{message, 0}];
+    hookRegistry = [(MFMailMessageLibrary *)self hookRegistry];
+    [hookRegistry persistenceWillChangeConversationID:conversationID messages:v43];
 
-    v45 = [MEMORY[0x1E696AD98] numberWithLongLong:v31];
+    v45 = [MEMORY[0x1E696AD98] numberWithLongLong:conversationID];
     [v114 setObject:v43 forKeyedSubscript:v45];
 
-    v31 = v29;
+    conversationID = firstIndex;
 LABEL_44:
 
     goto LABEL_47;
   }
 
-  v31 = v29;
+  conversationID = firstIndex;
 LABEL_47:
-  v46 = [v118 preparedStatementForQueryString:{@"UPDATE messages SET conversation_id = ?, content_index_transaction_id = NULL WHERE rowid = ?"}];
+  v46 = [connectionCopy preparedStatementForQueryString:{@"UPDATE messages SET conversation_id = ?, content_index_transaction_id = NULL WHERE rowid = ?"}];
   v47 = v46;
-  v48 = [v46 compiled];
+  compiled = [v46 compiled];
 
   v49 = v113;
-  if (v48)
+  if (compiled)
   {
-    sqlite3_bind_int64(v48, 1, v31);
-    sqlite3_bind_int64(v48, 2, v107);
-    v50 = sqlite3_step(v48);
-    sqlite3_reset(v48);
-    [v118 checkForConnectionErrorWithMessage:@"inserting conversation id into message row"];
+    sqlite3_bind_int64(compiled, 1, conversationID);
+    sqlite3_bind_int64(compiled, 2, libraryID);
+    v50 = sqlite3_step(compiled);
+    sqlite3_reset(compiled);
+    [connectionCopy checkForConnectionErrorWithMessage:@"inserting conversation id into message row"];
     if (v50 != 101)
     {
       goto LABEL_63;
     }
   }
 
-  v51 = [v118 preparedStatementForQueryString:@"INSERT OR IGNORE INTO conversations (conversation_id) VALUES (?)"];
+  v51 = [connectionCopy preparedStatementForQueryString:@"INSERT OR IGNORE INTO conversations (conversation_id) VALUES (?)"];
   v52 = v51;
-  v53 = [v51 compiled];
+  compiled2 = [v51 compiled];
 
   v49 = v113;
-  if (v53)
+  if (compiled2)
   {
-    sqlite3_bind_int64(v53, 1, v31);
-    v54 = sqlite3_step(v53);
-    sqlite3_reset(v53);
-    [v118 checkForConnectionErrorWithMessage:@"inserting row into conversations table"];
+    sqlite3_bind_int64(compiled2, 1, conversationID);
+    v54 = sqlite3_step(compiled2);
+    sqlite3_reset(compiled2);
+    [connectionCopy checkForConnectionErrorWithMessage:@"inserting row into conversations table"];
     if (v54 != 101)
     {
       goto LABEL_63;
     }
   }
 
-  v55 = [v118 preparedStatementForQueryString:{@"INSERT OR IGNORE INTO conversation_id_message_id (conversation_id, message_id) SELECT ?, reference FROM message_references WHERE message = ?"}];
+  v55 = [connectionCopy preparedStatementForQueryString:{@"INSERT OR IGNORE INTO conversation_id_message_id (conversation_id, message_id) SELECT ?, reference FROM message_references WHERE message = ?"}];
   v56 = v55;
-  v57 = [v55 compiled];
+  compiled3 = [v55 compiled];
 
-  if (v57)
+  if (compiled3)
   {
-    sqlite3_bind_int64(v57, 1, v31);
+    sqlite3_bind_int64(compiled3, 1, conversationID);
     v49 = v113;
-    sqlite3_bind_int64(v57, 2, v107);
-    v58 = sqlite3_step(v57);
-    sqlite3_reset(v57);
-    [v118 checkForConnectionErrorWithMessage:@"inserting row into conversation_id_message_id table (1)"];
+    sqlite3_bind_int64(compiled3, 2, libraryID);
+    v58 = sqlite3_step(compiled3);
+    sqlite3_reset(compiled3);
+    [connectionCopy checkForConnectionErrorWithMessage:@"inserting row into conversation_id_message_id table (1)"];
   }
 
   else
@@ -2588,7 +2588,7 @@ LABEL_47:
     v49 = v113;
   }
 
-  if (!v108 || v58 != 101)
+  if (!messageIDHash || v58 != 101)
   {
 LABEL_58:
     if (v58 == 101)
@@ -2601,21 +2601,21 @@ LABEL_63:
     goto LABEL_64;
   }
 
-  [v106 dateSentAsTimeIntervalSince1970];
+  [message dateSentAsTimeIntervalSince1970];
   v60 = v59;
-  v61 = [v118 preparedStatementForQueryString:{@"INSERT OR REPLACE INTO conversation_id_message_id (conversation_id, message_id, date_sent) VALUES (?, ?, ?)"}];
+  v61 = [connectionCopy preparedStatementForQueryString:{@"INSERT OR REPLACE INTO conversation_id_message_id (conversation_id, message_id, date_sent) VALUES (?, ?, ?)"}];
   v62 = v61;
-  v63 = [v61 compiled];
+  compiled4 = [v61 compiled];
 
   v49 = v113;
-  if (v63)
+  if (compiled4)
   {
-    sqlite3_bind_int64(v63, 1, v31);
-    sqlite3_bind_int64(v63, 2, v108);
-    sqlite3_bind_int64(v63, 3, v60);
-    v58 = sqlite3_step(v63);
-    sqlite3_reset(v63);
-    [v118 checkForConnectionErrorWithMessage:@"inserting row into conversation_id_message_id table (2)"];
+    sqlite3_bind_int64(compiled4, 1, conversationID);
+    sqlite3_bind_int64(compiled4, 2, messageIDHash);
+    sqlite3_bind_int64(compiled4, 3, v60);
+    v58 = sqlite3_step(compiled4);
+    sqlite3_reset(compiled4);
+    [connectionCopy checkForConnectionErrorWithMessage:@"inserting row into conversation_id_message_id table (2)"];
     goto LABEL_58;
   }
 
@@ -2624,18 +2624,18 @@ LABEL_59:
   if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v131 = v108;
+    v131 = messageIDHash;
     v132 = 2048;
-    v133 = v31;
+    v133 = conversationID;
     _os_log_impl(&dword_1B0389000, v64, OS_LOG_TYPE_DEFAULT, "Threading %lld: Resolved message's conversation ID to %lld", buf, 0x16u);
   }
 
-  if (v112)
+  if (handlerCopy)
   {
     goto LABEL_62;
   }
 
-  [v106 setConversationID:v31];
+  [message setConversationID:conversationID];
   v49 = v113;
   v65 = 0;
 LABEL_64:
@@ -2648,10 +2648,10 @@ LABEL_64:
 
   else
   {
-    [v115 removeIndex:v31];
-    v66 = [(MFMailMessageLibrary *)self flagsForConversationId:v31];
-    v68 = [v115 firstIndex];
-    if (v68 == 0x7FFFFFFFFFFFFFFFLL)
+    [v115 removeIndex:conversationID];
+    v66 = [(MFMailMessageLibrary *)self flagsForConversationId:conversationID];
+    firstIndex2 = [v115 firstIndex];
+    if (firstIndex2 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v67 = 0;
     }
@@ -2660,13 +2660,13 @@ LABEL_64:
     {
       do
       {
-        v117 = [MFMessageCriterion criterionForNotDeletedConversationID:v68];
+        v117 = [MFMessageCriterion criterionForNotDeletedConversationID:firstIndex2];
         v69 = [(MFMailMessageLibrary *)self messagesMatchingCriterion:v117 options:6297663];
-        v70 = [(MFMailMessageLibrary *)self hookRegistry];
+        hookRegistry2 = [(MFMailMessageLibrary *)self hookRegistry];
         v116 = v66;
-        [v70 persistenceWillChangeConversationID:v68 messages:v69];
+        [hookRegistry2 persistenceWillChangeConversationID:firstIndex2 messages:v69];
 
-        v71 = [MEMORY[0x1E696AD98] numberWithLongLong:v68];
+        v71 = [MEMORY[0x1E696AD98] numberWithLongLong:firstIndex2];
         v72 = [v114 objectForKeyedSubscript:v71];
 
         if (v72)
@@ -2677,42 +2677,42 @@ LABEL_64:
         else
         {
           v73 = [v69 mutableCopy];
-          v74 = [MEMORY[0x1E696AD98] numberWithLongLong:v68];
+          v74 = [MEMORY[0x1E696AD98] numberWithLongLong:firstIndex2];
           [v114 setObject:v73 forKeyedSubscript:v74];
         }
 
-        v75 = [(MFMailMessageLibrary *)self flagsForConversationId:v68];
-        v76 = [v118 preparedStatementForQueryString:{@"UPDATE messages SET conversation_id = ?, content_index_transaction_id = NULL WHERE conversation_id = ?"}];
+        v75 = [(MFMailMessageLibrary *)self flagsForConversationId:firstIndex2];
+        v76 = [connectionCopy preparedStatementForQueryString:{@"UPDATE messages SET conversation_id = ?, content_index_transaction_id = NULL WHERE conversation_id = ?"}];
         v77 = v76;
-        v78 = [v76 compiled];
+        compiled5 = [v76 compiled];
 
-        if (v78)
+        if (compiled5)
         {
-          sqlite3_bind_int64(v78, 1, v31);
-          sqlite3_bind_int64(v78, 2, v68);
-          v79 = sqlite3_step(v78);
-          sqlite3_reset(v78);
-          [v118 checkForConnectionErrorWithMessage:@"udpating other conversations to point to this one"];
+          sqlite3_bind_int64(compiled5, 1, conversationID);
+          sqlite3_bind_int64(compiled5, 2, firstIndex2);
+          v79 = sqlite3_step(compiled5);
+          sqlite3_reset(compiled5);
+          [connectionCopy checkForConnectionErrorWithMessage:@"udpating other conversations to point to this one"];
           if (v79 != 101)
           {
             goto LABEL_85;
           }
         }
 
-        v80 = [v118 preparedStatementForQueryString:@"UPDATE OR IGNORE conversation_id_message_id SET conversation_id = ? WHERE conversation_id = ?"];
+        v80 = [connectionCopy preparedStatementForQueryString:@"UPDATE OR IGNORE conversation_id_message_id SET conversation_id = ? WHERE conversation_id = ?"];
         v81 = v80;
-        v82 = [v80 compiled];
+        compiled6 = [v80 compiled];
 
-        if (!v82)
+        if (!compiled6)
         {
           goto LABEL_75;
         }
 
-        sqlite3_bind_int64(v82, 1, v31);
-        sqlite3_bind_int64(v82, 2, v68);
-        v83 = sqlite3_step(v82);
-        sqlite3_reset(v82);
-        [v118 checkForConnectionErrorWithMessage:@"udpating other conversations to point to this one"];
+        sqlite3_bind_int64(compiled6, 1, conversationID);
+        sqlite3_bind_int64(compiled6, 2, firstIndex2);
+        v83 = sqlite3_step(compiled6);
+        sqlite3_reset(compiled6);
+        [connectionCopy checkForConnectionErrorWithMessage:@"udpating other conversations to point to this one"];
         if (v83 != 101)
         {
 LABEL_85:
@@ -2722,15 +2722,15 @@ LABEL_85:
         else
         {
 LABEL_75:
-          v84 = [MEMORY[0x1E696AD98] numberWithLongLong:v68];
+          v84 = [MEMORY[0x1E696AD98] numberWithLongLong:firstIndex2];
           [v111 addObject:v84];
 
-          if (v112)
+          if (handlerCopy)
           {
-            v112[2](v112, v68, v31);
+            handlerCopy[2](handlerCopy, firstIndex2, conversationID);
           }
 
-          v85 = self;
+          selfCopy = self;
           v127 = 0u;
           v128 = 0u;
           v125 = 0u;
@@ -2749,7 +2749,7 @@ LABEL_75:
                   objc_enumerationMutation(v86);
                 }
 
-                [*(*(&v125 + 1) + 8 * i) setConversationID:v31];
+                [*(*(&v125 + 1) + 8 * i) setConversationID:conversationID];
               }
 
               v87 = [v86 countByEnumeratingWithState:&v125 objects:v129 count:16];
@@ -2758,14 +2758,14 @@ LABEL_75:
             while (v87);
           }
 
-          self = v85;
+          self = selfCopy;
           v67 = 0;
         }
 
-        v68 = [v115 indexGreaterThanIndex:v68];
+        firstIndex2 = [v115 indexGreaterThanIndex:firstIndex2];
 
         v66 = v75 | v116;
-        if (v68 == 0x7FFFFFFFFFFFFFFFLL)
+        if (firstIndex2 == 0x7FFFFFFFFFFFFFFFLL)
         {
           v90 = 1;
         }
@@ -2783,7 +2783,7 @@ LABEL_75:
 
     if (v66 && (v67 & 1) == 0)
     {
-      [(MFMailMessageLibrary *)self setFlags:v66 forConversationId:v31];
+      [(MFMailMessageLibrary *)self setFlags:v66 forConversationId:conversationID];
     }
 
     if (v49)
@@ -2805,11 +2805,11 @@ LABEL_75:
   v120[1] = 3221225472;
   v120[2] = __101__MFMailMessageLibrary_addReferenceForContext_usingDatabaseConnection_generationWindow_mergeHandler___block_invoke;
   v120[3] = &unk_1E7AA3688;
-  v92 = v106;
+  v92 = message;
   v124 = v66;
   v121 = v92;
-  v122 = self;
-  v93 = v103;
+  selfCopy2 = self;
+  v93 = windowCopy;
   v123 = v93;
   [v114 enumerateKeysAndObjectsUsingBlock:v120];
   if ([v111 count])
@@ -2819,7 +2819,7 @@ LABEL_75:
 
     v96 = [objc_alloc(MEMORY[0x1E699B8E8]) initWithTable:@"conversations" where:v95];
     v119 = 0;
-    v97 = [v118 executeDeleteStatement:v96 error:&v119];
+    v97 = [connectionCopy executeDeleteStatement:v96 error:&v119];
     v98 = v119;
     if (v97)
     {
@@ -2827,7 +2827,7 @@ LABEL_75:
       if (os_log_type_enabled(v99, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218242;
-        v131 = v108;
+        v131 = messageIDHash;
         v132 = 2114;
         v133 = v111;
         _os_log_impl(&dword_1B0389000, v99, OS_LOG_TYPE_DEFAULT, "Threading %lld: deleting merged conversations from table: %{public}@", buf, 0x16u);
@@ -2836,7 +2836,7 @@ LABEL_75:
 
     else
     {
-      [v118 handleError:v98 message:@"deleting row from conversations table"];
+      [connectionCopy handleError:v98 message:@"deleting row from conversations table"];
     }
 
     v67 = v97 ^ 1;
@@ -2849,7 +2849,7 @@ LABEL_75:
 
   else
   {
-    v100 = v31;
+    v100 = conversationID;
   }
 
   v101 = *MEMORY[0x1E69E9840];
@@ -2883,45 +2883,45 @@ MFMailboxFrecencyController *__49__MFMailMessageLibrary_mailboxFrecencyControlle
 
 - (EDPersistenceHookRegistry)hookRegistry
 {
-  v2 = [(MFMailMessageLibrary *)self persistence];
-  v3 = [v2 hookRegistry];
+  persistence = [(MFMailMessageLibrary *)self persistence];
+  hookRegistry = [persistence hookRegistry];
 
-  return v3;
+  return hookRegistry;
 }
 
-- (id)duplicateMessages:(id)a3 newRemoteIDs:(id)a4 forMailbox:(id)a5 setFlags:(unint64_t)a6 createNewCacheFiles:(BOOL)a7
+- (id)duplicateMessages:(id)messages newRemoteIDs:(id)ds forMailbox:(id)mailbox setFlags:(unint64_t)flags createNewCacheFiles:(BOOL)files
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = [MEMORY[0x1E695DF90] dictionary];
-  v15 = [(MFMailMessageLibrary *)self addMessages:v11 withMailbox:v13 newMessagesByOldMessage:v14 remoteIDs:v12 setFlags:a6 addPOPUIDs:0 dataSectionsByMessage:0 generationWindow:0];
+  messagesCopy = messages;
+  dsCopy = ds;
+  mailboxCopy = mailbox;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v15 = [(MFMailMessageLibrary *)self addMessages:messagesCopy withMailbox:mailboxCopy newMessagesByOldMessage:dictionary remoteIDs:dsCopy setFlags:flags addPOPUIDs:0 dataSectionsByMessage:0 generationWindow:0];
 
-  return v14;
+  return dictionary;
 }
 
-- (id)addMessages:(id)a3 withMailbox:(id)a4 newMessagesByOldMessage:(id)a5 remoteIDs:(id)a6 setFlags:(unint64_t)a7 addPOPUIDs:(BOOL)a8 dataSectionsByMessage:(id)a9 generationWindow:(id)a10
+- (id)addMessages:(id)messages withMailbox:(id)mailbox newMessagesByOldMessage:(id)message remoteIDs:(id)ds setFlags:(unint64_t)flags addPOPUIDs:(BOOL)iDs dataSectionsByMessage:(id)byMessage generationWindow:(id)self0
 {
-  v38 = a3;
-  v14 = a4;
-  v37 = a5;
-  v36 = a6;
-  v35 = a9;
-  v34 = a10;
+  messagesCopy = messages;
+  mailboxCopy = mailbox;
+  messageCopy = message;
+  dsCopy = ds;
+  byMessageCopy = byMessage;
+  windowCopy = window;
   v40 = +[MFActivityMonitor currentMonitor];
-  v15 = v14;
-  if (v14)
+  v15 = mailboxCopy;
+  if (mailboxCopy)
   {
     v71 = 0;
     v72 = &v71;
     v73 = 0x2020000000;
     v74 = 0;
-    v16 = [MEMORY[0x1E695DF70] array];
-    v39 = v16;
-    v33 = [v14 account];
-    v27 = [v33 supportsRemoteAppend];
-    v32 = [(MFMailMessageLibrary *)self messageBasePathForAccount:v33];
-    v26 = [v33 supportsPurge];
+    array = [MEMORY[0x1E695DF70] array];
+    v39 = array;
+    account = [mailboxCopy account];
+    supportsRemoteAppend = [account supportsRemoteAppend];
+    v32 = [(MFMailMessageLibrary *)self messageBasePathForAccount:account];
+    supportsPurge = [account supportsPurge];
     v70[0] = 0;
     v70[1] = v70;
     v70[2] = 0x2020000000;
@@ -2936,7 +2936,7 @@ MFMailboxFrecencyController *__49__MFMailMessageLibrary_mailboxFrecencyControlle
     v65 = &v64;
     v66 = 0x2020000000;
     v67 = 0;
-    for (i = [v38 count]; v65[3] < i; v16 = v39)
+    for (i = [messagesCopy count]; v65[3] < i; array = v39)
     {
       if (v72[3] & 1) != 0 || ([v40 shouldCancel])
       {
@@ -2944,28 +2944,28 @@ MFMailboxFrecencyController *__49__MFMailMessageLibrary_mailboxFrecencyControlle
       }
 
       v18 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v19 = [(MFMailMessageLibrary *)self database];
+      database = [(MFMailMessageLibrary *)self database];
       v20 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary addMessages:withMailbox:newMessagesByOldMessage:remoteIDs:setFlags:addPOPUIDs:dataSectionsByMessage:generationWindow:]"];
       v41[0] = MEMORY[0x1E69E9820];
       v41[1] = 3221225472;
       v41[2] = __141__MFMailMessageLibrary_addMessages_withMailbox_newMessagesByOldMessage_remoteIDs_setFlags_addPOPUIDs_dataSectionsByMessage_generationWindow___block_invoke;
       v41[3] = &unk_1E7AA3750;
       v41[4] = self;
-      v42 = v34;
+      v42 = windowCopy;
       v55 = &v64;
       v59 = i;
       v56 = &v71;
       v21 = v40;
       v43 = v21;
-      v44 = v38;
+      v44 = messagesCopy;
       v22 = v15;
       v45 = v15;
       v46 = v31;
-      v61 = v27;
-      v47 = v36;
+      v61 = supportsRemoteAppend;
+      v47 = dsCopy;
       v57 = v70;
-      v62 = a8;
-      v60 = a7;
+      iDsCopy = iDs;
+      flagsCopy = flags;
       v58 = v68;
       v48 = v30;
       v23 = v18;
@@ -2973,11 +2973,11 @@ MFMailboxFrecencyController *__49__MFMailMessageLibrary_mailboxFrecencyControlle
       v24 = v39;
       v50 = v24;
       v51 = v32;
-      v63 = v26;
-      v52 = v35;
-      v53 = v33;
-      v54 = v37;
-      [v19 __performWriteWithCaller:v20 usingBlock:v41];
+      v63 = supportsPurge;
+      v52 = byMessageCopy;
+      v53 = account;
+      v54 = messageCopy;
+      [database __performWriteWithCaller:v20 usingBlock:v41];
 
       if ((v72[3] & 1) == 0)
       {
@@ -3002,10 +3002,10 @@ MFMailboxFrecencyController *__49__MFMailMessageLibrary_mailboxFrecencyControlle
 
   else
   {
-    v16 = 0;
+    array = 0;
   }
 
-  return v16;
+  return array;
 }
 
 uint64_t __141__MFMailMessageLibrary_addMessages_withMailbox_newMessagesByOldMessage_remoteIDs_setFlags_addPOPUIDs_dataSectionsByMessage_generationWindow___block_invoke(uint64_t a1, void *a2)
@@ -4756,50 +4756,50 @@ void __141__MFMailMessageLibrary_addMessages_withMailbox_newMessagesByOldMessage
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)willStartPersistenceDidAddMessages:(id)a3
+- (void)willStartPersistenceDidAddMessages:(id)messages
 {
-  v4 = a3;
+  messagesCopy = messages;
   os_unfair_lock_lock(&self->_addedMessagesMapLock);
-  [(NSMutableDictionary *)self->_currentAddedMessagesMap addEntriesFromDictionary:v4];
+  [(NSMutableDictionary *)self->_currentAddedMessagesMap addEntriesFromDictionary:messagesCopy];
 
   os_unfair_lock_unlock(&self->_addedMessagesMapLock);
 }
 
-- (void)didFinishPersistenceDidAddMessages:(id)a3
+- (void)didFinishPersistenceDidAddMessages:(id)messages
 {
-  v6 = a3;
+  messagesCopy = messages;
   os_unfair_lock_lock(&self->_addedMessagesMapLock);
   currentAddedMessagesMap = self->_currentAddedMessagesMap;
-  v5 = [v6 allKeys];
-  [(NSMutableDictionary *)currentAddedMessagesMap removeObjectsForKeys:v5];
+  allKeys = [messagesCopy allKeys];
+  [(NSMutableDictionary *)currentAddedMessagesMap removeObjectsForKeys:allKeys];
 
   os_unfair_lock_unlock(&self->_addedMessagesMapLock);
 }
 
-- (void)persistenceIsAddingMessages:(id)a3 journaled:(BOOL)a4 generationWindow:(id)a5
+- (void)persistenceIsAddingMessages:(id)messages journaled:(BOOL)journaled generationWindow:(id)window
 {
-  v5 = a4;
-  v7 = a3;
-  if ([v7 count] && v5)
+  journaledCopy = journaled;
+  messagesCopy = messages;
+  if ([messagesCopy count] && journaledCopy)
   {
-    -[MFMailMessageLibrary _didAddUnreconciledMessages:](self, "_didAddUnreconciledMessages:", [v7 count]);
+    -[MFMailMessageLibrary _didAddUnreconciledMessages:](self, "_didAddUnreconciledMessages:", [messagesCopy count]);
   }
 }
 
-- (void)persistenceDidAddMessages:(id)a3 generationWindow:(id)a4
+- (void)persistenceDidAddMessages:(id)messages generationWindow:(id)window
 {
-  v5 = a3;
-  if ([v5 count])
+  messagesCopy = messages;
+  if ([messagesCopy count])
   {
-    v6 = [v5 ef_groupBy:&__block_literal_global_868];
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
+    v6 = [messagesCopy ef_groupBy:&__block_literal_global_868];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __67__MFMailMessageLibrary_persistenceDidAddMessages_generationWindow___block_invoke_2;
     v9[3] = &unk_1E7AA3798;
-    v10 = v7;
-    v11 = self;
-    v8 = v7;
+    v10 = defaultCenter;
+    selfCopy = self;
+    v8 = defaultCenter;
     [v6 enumerateKeysAndObjectsUsingBlock:v9];
   }
 }
@@ -4840,29 +4840,29 @@ void __67__MFMailMessageLibrary_persistenceDidAddMessages_generationWindow___blo
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_addRecipients:(id)a3 toMessageWithDatabaseID:(int64_t)a4 cache:(id)a5 connection:(id)a6
+- (BOOL)_addRecipients:(id)recipients toMessageWithDatabaseID:(int64_t)d cache:(id)cache connection:(id)connection
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  recipientsCopy = recipients;
+  cacheCopy = cache;
+  connectionCopy = connection;
   v22 = MEMORY[0x1E69E9820];
   v23 = 3221225472;
   v24 = __80__MFMailMessageLibrary__addRecipients_toMessageWithDatabaseID_cache_connection___block_invoke;
   v25 = &unk_1E7AA37E8;
-  v26 = self;
-  v13 = v11;
+  selfCopy = self;
+  v13 = cacheCopy;
   v27 = v13;
-  v14 = v12;
+  v14 = connectionCopy;
   v28 = v14;
-  v29 = a4;
+  dCopy = d;
   v15 = _Block_copy(&v22);
-  v16 = [v10 toRecipients];
-  LOBYTE(v12) = v15[2](v15, v16, 1);
+  toRecipients = [recipientsCopy toRecipients];
+  LOBYTE(connectionCopy) = v15[2](v15, toRecipients, 1);
 
-  if (v12 & 1) != 0 && ([v10 ccRecipients], v17 = objc_claimAutoreleasedReturnValue(), v18 = v15[2](v15, v17, 2), v17, (v18))
+  if (connectionCopy & 1) != 0 && ([recipientsCopy ccRecipients], v17 = objc_claimAutoreleasedReturnValue(), v18 = v15[2](v15, v17, 2), v17, (v18))
   {
-    v19 = [v10 bccRecipients];
-    v20 = v15[2](v15, v19, 3);
+    bccRecipients = [recipientsCopy bccRecipients];
+    v20 = v15[2](v15, bccRecipients, 3);
   }
 
   else
@@ -4993,45 +4993,45 @@ void __80__MFMailMessageLibrary__addRecipients_toMessageWithDatabaseID_cache_con
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (int64_t)_findOrCreateDatabaseIDForAddress:(id)a3 cache:(id)a4 connection:(id)a5
+- (int64_t)_findOrCreateDatabaseIDForAddress:(id)address cache:(id)cache connection:(id)connection
 {
   v39[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7)
+  addressCopy = address;
+  cacheCopy = cache;
+  connectionCopy = connection;
+  if (addressCopy)
   {
-    v10 = [v7 address];
+    address = [addressCopy address];
 
-    if (v10)
+    if (address)
     {
       v35 = 0;
       v36 = &v35;
       v37 = 0x2020000000;
       v11 = *MEMORY[0x1E699A728];
       v38 = *MEMORY[0x1E699A728];
-      v12 = [v7 fullAddress];
-      v13 = [v8 objectForKeyedSubscript:v12];
+      fullAddress = [addressCopy fullAddress];
+      v13 = [cacheCopy objectForKeyedSubscript:fullAddress];
       v14 = v13;
       if (v13)
       {
-        v15 = [v13 longLongValue];
-        v36[3] = v15;
+        longLongValue = [v13 longLongValue];
+        v36[3] = longLongValue;
 LABEL_19:
 
         _Block_object_dispose(&v35, 8);
         goto LABEL_20;
       }
 
-      v16 = [v9 preparedStatementForQueryString:@"SELECT ROWID FROM addresses WHERE address = ? AND comment = ?"];
-      v17 = [v7 address];
-      v39[0] = v17;
-      v18 = [v7 displayName];
-      v19 = v18;
+      v16 = [connectionCopy preparedStatementForQueryString:@"SELECT ROWID FROM addresses WHERE address = ? AND comment = ?"];
+      address2 = [addressCopy address];
+      v39[0] = address2;
+      displayName = [addressCopy displayName];
+      v19 = displayName;
       v20 = &stru_1F273A5E0;
-      if (v18)
+      if (displayName)
       {
-        v20 = v18;
+        v20 = displayName;
       }
 
       v39[1] = v20;
@@ -5056,25 +5056,25 @@ LABEL_19:
 
       else
       {
-        [v9 handleError:v23 message:@"Looking up address ROWID"];
+        [connectionCopy handleError:v23 message:@"Looking up address ROWID"];
         v36[3] = v11;
       }
 
       v31 = v16;
-      v25 = [v9 preparedStatementForQueryString:{@"INSERT INTO addresses (address, comment) VALUES (?, ?)"}];
+      v25 = [connectionCopy preparedStatementForQueryString:{@"INSERT INTO addresses (address, comment) VALUES (?, ?)"}];
 
       v32 = 0;
       v26 = [v25 executeWithIndexedBindings:v21 usingBlock:0 error:&v32];
       v23 = v32;
       if (v26)
       {
-        v27 = [v9 lastInsertedDatabaseID];
-        v36[3] = v27;
+        lastInsertedDatabaseID = [connectionCopy lastInsertedDatabaseID];
+        v36[3] = lastInsertedDatabaseID;
       }
 
       else
       {
-        [v9 handleError:v23 message:@"Inserting address"];
+        [connectionCopy handleError:v23 message:@"Inserting address"];
       }
 
       v16 = v31;
@@ -5083,19 +5083,19 @@ LABEL_16:
       if (v24 != v11)
       {
         v28 = [MEMORY[0x1E696AD98] numberWithLongLong:?];
-        [v8 setObject:v28 forKeyedSubscript:v12];
+        [cacheCopy setObject:v28 forKeyedSubscript:fullAddress];
       }
 
-      v15 = v36[3];
+      longLongValue = v36[3];
       goto LABEL_19;
     }
   }
 
-  v15 = *MEMORY[0x1E699A728];
+  longLongValue = *MEMORY[0x1E699A728];
 LABEL_20:
 
   v29 = *MEMORY[0x1E69E9840];
-  return v15;
+  return longLongValue;
 }
 
 void __75__MFMailMessageLibrary__findOrCreateDatabaseIDForAddress_cache_connection___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -5108,15 +5108,15 @@ void __75__MFMailMessageLibrary__findOrCreateDatabaseIDForAddress_cache_connecti
   *a4 = 1;
 }
 
-- (int64_t)_findOrCreateDatabaseIDForGlobalData:(int64_t)a3 cache:(id)a4 connection:(id)a5
+- (int64_t)_findOrCreateDatabaseIDForGlobalData:(int64_t)data cache:(id)cache connection:(id)connection
 {
-  v8 = a4;
-  v9 = a5;
+  cacheCopy = cache;
+  connectionCopy = connection;
   v15 = 0;
-  v10 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
-  v11 = [v10 stringValue];
-  v12 = [MEMORY[0x1E699B5C0] messageGlobalDataTableName];
-  v13 = [(MFMailMessageLibrary *)self _findOrCreateDatabaseIDForValue:v11 inTable:v12 column:@"message_id" cache:v8 connection:v9 created:&v15];
+  v10 = [MEMORY[0x1E696AD98] numberWithLongLong:data];
+  stringValue = [v10 stringValue];
+  messageGlobalDataTableName = [MEMORY[0x1E699B5C0] messageGlobalDataTableName];
+  v13 = [(MFMailMessageLibrary *)self _findOrCreateDatabaseIDForValue:stringValue inTable:messageGlobalDataTableName column:@"message_id" cache:cacheCopy connection:connectionCopy created:&v15];
 
   if (v15 == 1)
   {
@@ -5126,17 +5126,17 @@ void __75__MFMailMessageLibrary__findOrCreateDatabaseIDForAddress_cache_connecti
   return v13;
 }
 
-- (int64_t)_findOrCreateDatabaseIDForValue:(id)a3 inTable:(id)a4 column:(id)a5 cache:(id)a6 connection:(id)a7 created:(BOOL *)a8
+- (int64_t)_findOrCreateDatabaseIDForValue:(id)value inTable:(id)table column:(id)column cache:(id)cache connection:(id)connection created:(BOOL *)created
 {
   v54 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (v13)
+  valueCopy = value;
+  tableCopy = table;
+  columnCopy = column;
+  cacheCopy = cache;
+  connectionCopy = connection;
+  if (valueCopy)
   {
-    v18 = [v16 objectForKeyedSubscript:v13];
+    v18 = [cacheCopy objectForKeyedSubscript:valueCopy];
     if (v18)
     {
       v19 = EDLibraryLog();
@@ -5145,13 +5145,13 @@ void __75__MFMailMessageLibrary__findOrCreateDatabaseIDForAddress_cache_connecti
         *v52 = 134218498;
         *&v52[4] = [v18 longLongValue];
         *&v52[12] = 2114;
-        *&v52[14] = v14;
+        *&v52[14] = tableCopy;
         *&v52[22] = 2114;
-        v53 = v15;
+        v53 = columnCopy;
         _os_log_debug_impl(&dword_1B0389000, v19, OS_LOG_TYPE_DEBUG, "Found database ID %lld in cache for table: %{public}@, column: %{public}@", v52, 0x20u);
       }
 
-      v20 = [v18 longLongValue];
+      longLongValue = [v18 longLongValue];
     }
 
     else
@@ -5161,9 +5161,9 @@ void __75__MFMailMessageLibrary__findOrCreateDatabaseIDForAddress_cache_connecti
       *&v52[16] = 0x2020000000;
       v40 = *MEMORY[0x1E699A728];
       v53 = *MEMORY[0x1E699A728];
-      v36 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"SELECT ROWID FROM %@ WHERE %@ = ?", v14, v15];
-      v39 = [v17 preparedStatementForQueryString:?];
-      v51 = v13;
+      columnCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"SELECT ROWID FROM %@ WHERE %@ = ?", tableCopy, columnCopy];
+      v39 = [connectionCopy preparedStatementForQueryString:?];
+      v51 = valueCopy;
       v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v51 count:1];
       v42 = 0;
       v43[0] = MEMORY[0x1E69E9820];
@@ -5176,16 +5176,16 @@ void __75__MFMailMessageLibrary__findOrCreateDatabaseIDForAddress_cache_connecti
 
       if ((v22 & 1) == 0)
       {
-        v24 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Looking up %@ ROWID", v15];
-        [v17 handleError:v23 message:v24];
+        columnCopy2 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Looking up %@ ROWID", columnCopy];
+        [connectionCopy handleError:v23 message:columnCopy2];
         *(*&v52[8] + 24) = v40;
       }
 
       if (*(*&v52[8] + 24) == v40)
       {
-        log = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"INSERT INTO %@ (%@) VALUES (?)", v14, v15];
-        v35 = [v17 preparedStatementForQueryString:?];
-        v50 = v13;
+        log = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"INSERT INTO %@ (%@) VALUES (?)", tableCopy, columnCopy];
+        v35 = [connectionCopy preparedStatementForQueryString:?];
+        v50 = valueCopy;
         v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v50 count:1];
         v41 = v23;
         v38 = [v35 executeWithIndexedBindings:v25 usingBlock:0 error:&v41];
@@ -5193,14 +5193,14 @@ void __75__MFMailMessageLibrary__findOrCreateDatabaseIDForAddress_cache_connecti
 
         if (v38)
         {
-          v27 = [v17 lastInsertedDatabaseID];
-          *(*&v52[8] + 24) = v27;
+          lastInsertedDatabaseID = [connectionCopy lastInsertedDatabaseID];
+          *(*&v52[8] + 24) = lastInsertedDatabaseID;
         }
 
         else
         {
-          v28 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Inserting %@", v15];
-          [v17 handleError:v26 message:v28];
+          columnCopy3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Inserting %@", columnCopy];
+          [connectionCopy handleError:v26 message:columnCopy3];
           *(*&v52[8] + 24) = v40;
         }
 
@@ -5211,9 +5211,9 @@ void __75__MFMailMessageLibrary__findOrCreateDatabaseIDForAddress_cache_connecti
           *buf = 134218498;
           v45 = v30;
           v46 = 2114;
-          v47 = v14;
+          v47 = tableCopy;
           v48 = 2114;
-          v49 = v15;
+          v49 = columnCopy;
           _os_log_impl(&dword_1B0389000, v29, OS_LOG_TYPE_DEFAULT, "Inserted new database ID %lld in database for table: %{public}@, column: %{public}@", buf, 0x20u);
         }
       }
@@ -5227,9 +5227,9 @@ void __75__MFMailMessageLibrary__findOrCreateDatabaseIDForAddress_cache_connecti
           *buf = 134218498;
           v45 = v34;
           v46 = 2114;
-          v47 = v14;
+          v47 = tableCopy;
           v48 = 2114;
-          v49 = v15;
+          v49 = columnCopy;
           _os_log_debug_impl(&dword_1B0389000, log, OS_LOG_TYPE_DEBUG, "Found database ID %lld in database for table: %{public}@, column: %{public}@", buf, 0x20u);
         }
 
@@ -5240,15 +5240,15 @@ void __75__MFMailMessageLibrary__findOrCreateDatabaseIDForAddress_cache_connecti
       if (*(*&v52[8] + 24) != v40)
       {
         v31 = [MEMORY[0x1E696AD98] numberWithLongLong:?];
-        [v16 setObject:v31 forKeyedSubscript:v13];
+        [cacheCopy setObject:v31 forKeyedSubscript:valueCopy];
       }
 
-      if (a8)
+      if (created)
       {
-        *a8 = v38;
+        *created = v38;
       }
 
-      v20 = *(*&v52[8] + 24);
+      longLongValue = *(*&v52[8] + 24);
 
       _Block_object_dispose(v52, 8);
     }
@@ -5256,11 +5256,11 @@ void __75__MFMailMessageLibrary__findOrCreateDatabaseIDForAddress_cache_connecti
 
   else
   {
-    v20 = *MEMORY[0x1E699A728];
+    longLongValue = *MEMORY[0x1E699A728];
   }
 
   v32 = *MEMORY[0x1E69E9840];
-  return v20;
+  return longLongValue;
 }
 
 void __96__MFMailMessageLibrary__findOrCreateDatabaseIDForValue_inTable_column_cache_connection_created___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -5273,17 +5273,17 @@ void __96__MFMailMessageLibrary__findOrCreateDatabaseIDForValue_inTable_column_c
   *a4 = 1;
 }
 
-- (void)_removeDataFilesForGlobalID:(int64_t)a3
+- (void)_removeDataFilesForGlobalID:(int64_t)d
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E699B5B0] messageDataDirectoryURLForGlobalMessageID:a3 basePath:self->_path purgeable:1];
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  [v6 removeItemAtURL:v5 error:0];
+  v5 = [MEMORY[0x1E699B5B0] messageDataDirectoryURLForGlobalMessageID:d basePath:self->_path purgeable:1];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  [defaultManager removeItemAtURL:v5 error:0];
 
-  v7 = [MEMORY[0x1E699B5B0] messageDataDirectoryURLForGlobalMessageID:a3 basePath:self->_path purgeable:0];
+  v7 = [MEMORY[0x1E699B5B0] messageDataDirectoryURLForGlobalMessageID:d basePath:self->_path purgeable:0];
 
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
-  [v8 removeItemAtURL:v7 error:0];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+  [defaultManager2 removeItemAtURL:v7 error:0];
 
   +[MailAccount mailAccounts];
   v21 = 0u;
@@ -5304,15 +5304,15 @@ void __96__MFMailMessageLibrary__findOrCreateDatabaseIDForValue_inTable_column_c
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
-        v14 = [v13 personaIdentifier];
+        personaIdentifier = [v13 personaIdentifier];
 
-        if (v14)
+        if (personaIdentifier)
         {
           v15 = [(MFMailMessageLibrary *)self messageBasePathForAccount:v13];
-          v16 = [MEMORY[0x1E699B5B0] messageDataDirectoryURLForGlobalMessageID:a3 basePath:v15 purgeable:{objc_msgSend(v13, "supportsPurge")}];
+          v16 = [MEMORY[0x1E699B5B0] messageDataDirectoryURLForGlobalMessageID:d basePath:v15 purgeable:{objc_msgSend(v13, "supportsPurge")}];
 
-          v17 = [MEMORY[0x1E696AC08] defaultManager];
-          [v17 removeItemAtURL:v16 error:0];
+          defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+          [defaultManager3 removeItemAtURL:v16 error:0];
 
           v7 = v16;
         }
@@ -5327,19 +5327,19 @@ void __96__MFMailMessageLibrary__findOrCreateDatabaseIDForValue_inTable_column_c
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateAdditionalThreadingInfoForSentMessageWithHeaders:(id)a3 externalConversationID:(int64_t)a4
+- (void)updateAdditionalThreadingInfoForSentMessageWithHeaders:(id)headers externalConversationID:(int64_t)d
 {
-  v6 = a3;
-  v7 = [(MFMailMessageLibrary *)self database];
+  headersCopy = headers;
+  database = [(MFMailMessageLibrary *)self database];
   v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary updateAdditionalThreadingInfoForSentMessageWithHeaders:externalConversationID:]"];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __102__MFMailMessageLibrary_updateAdditionalThreadingInfoForSentMessageWithHeaders_externalConversationID___block_invoke;
   v10[3] = &unk_1E7AA3838;
-  v9 = v6;
+  v9 = headersCopy;
   v11 = v9;
-  v12 = a4;
-  [v7 __performWriteWithCaller:v8 usingBlock:v10];
+  dCopy = d;
+  [database __performWriteWithCaller:v8 usingBlock:v10];
 }
 
 uint64_t __102__MFMailMessageLibrary_updateAdditionalThreadingInfoForSentMessageWithHeaders_externalConversationID___block_invoke(uint64_t a1, void *a2)
@@ -5362,42 +5362,42 @@ uint64_t __102__MFMailMessageLibrary_updateAdditionalThreadingInfoForSentMessage
   return 1;
 }
 
-- (void)updateThreadingInfoForMessage:(id)a3 fromHeaders:(id)a4
+- (void)updateThreadingInfoForMessage:(id)message fromHeaders:(id)headers
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  messageCopy = message;
+  headersCopy = headers;
+  if (headersCopy)
   {
-    v18 = [(MFMailMessageLibrary *)self referencesFromHeaders:v8];
+    v18 = [(MFMailMessageLibrary *)self referencesFromHeaders:headersCopy];
     v17 = objc_alloc_init(MEMORY[0x1E699B608]);
-    v9 = [v7 conversationID];
+    conversationID = [messageCopy conversationID];
     v27 = 0;
     v28 = &v27;
     v29 = 0x2020000000;
     v30 = *MEMORY[0x1E699A728];
     v10 = v30;
-    v11 = [(MFMailMessageLibrary *)self database];
+    database = [(MFMailMessageLibrary *)self database];
     v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary updateThreadingInfoForMessage:fromHeaders:]"];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __66__MFMailMessageLibrary_updateThreadingInfoForMessage_fromHeaders___block_invoke;
     v19[3] = &unk_1E7AA3888;
-    v20 = v8;
+    v20 = headersCopy;
     v13 = v17;
     v21 = v13;
-    v14 = v7;
+    v14 = messageCopy;
     v22 = v14;
-    v23 = self;
+    selfCopy = self;
     v25 = &v27;
     v26 = a2;
     v15 = v18;
     v24 = v15;
-    [v11 __performWriteWithCaller:v12 usingBlock:v19];
+    [database __performWriteWithCaller:v12 usingBlock:v19];
 
-    if (v28[3] != v10 || v9 != [v14 conversationID])
+    if (v28[3] != v10 || conversationID != [v14 conversationID])
     {
-      v16 = [(MFMailMessageLibrary *)self hookRegistry];
-      [v16 persistenceDidChangeGlobalMessageID:v28[3] orConversationID:v9 message:v14 generationWindow:v13];
+      hookRegistry = [(MFMailMessageLibrary *)self hookRegistry];
+      [hookRegistry persistenceDidChangeGlobalMessageID:v28[3] orConversationID:conversationID message:v14 generationWindow:v13];
     }
 
     _Block_object_dispose(&v27, 8);
@@ -5634,37 +5634,37 @@ uint64_t __66__MFMailMessageLibrary_updateThreadingInfoForMessage_fromHeaders___
   return result;
 }
 
-- (id)_selectClauseForOptions:(unsigned int)a3 protectedDataAvailable:(BOOL)a4
+- (id)_selectClauseForOptions:(unsigned int)options protectedDataAvailable:(BOOL)available
 {
-  if ((a3 & 0x4000) != 0)
+  if ((options & 0x4000) != 0)
   {
     return @"SELECT messages.conversation_id ";
   }
 
-  if ((a3 & 0x2000) != 0)
+  if ((options & 0x2000) != 0)
   {
     return @"SELECT COUNT(DISTINCT(messages.message_id)) ";
   }
 
-  if ((a3 & 0x10000) != 0)
+  if ((options & 0x10000) != 0)
   {
     return &stru_1F273A5E0;
   }
 
-  [(MFMailMessageLibrary *)self _selectExpressionForMessageWithAvailableTables:tablesForOptionsAndCriterion(a3, 0, a4) | 0x20];
+  [(MFMailMessageLibrary *)self _selectExpressionForMessageWithAvailableTables:tablesForOptionsAndCriterion(options, 0, available) | 0x20];
   return objc_claimAutoreleasedReturnValue();
 }
 
-- (void)_iterateStatement:(id)a3 connection:(id)a4 withProgressMonitor:(id)a5 andRowHandler:(void *)a6 context:(id *)a7
+- (void)_iterateStatement:(id)statement connection:(id)connection withProgressMonitor:(id)monitor andRowHandler:(void *)handler context:(id *)context
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = [v12 sqlDB];
-  v36 = v14;
-  v15 = v13;
+  statementCopy = statement;
+  connectionCopy = connection;
+  monitorCopy = monitor;
+  sqlDB = [connectionCopy sqlDB];
+  v36 = sqlDB;
+  v15 = monitorCopy;
   v37 = v15;
-  sqlite3_progress_handler(v14, 200, progressHandler, &v36);
+  sqlite3_progress_handler(sqlDB, 200, progressHandler, &v36);
   v16 = +[MFActivityMonitor currentMonitor];
   v32 = 0;
   v33 = &v32;
@@ -5680,17 +5680,17 @@ uint64_t __66__MFMailMessageLibrary_updateThreadingInfoForMessage_fromHeaders___
   v19 = v15;
   v26 = v19;
   v29 = &v32;
-  v30 = a6;
-  v31 = a7;
-  v20 = v12;
+  handlerCopy = handler;
+  contextCopy = context;
+  v20 = connectionCopy;
   v27 = v20;
   v21 = v17;
   v28 = v21;
   v23 = 0;
-  LOBYTE(v13) = [v11 executeUsingBlock:v24 error:&v23];
+  LOBYTE(monitorCopy) = [statementCopy executeUsingBlock:v24 error:&v23];
   v22 = v23;
-  sqlite3_progress_handler(v14, 0, 0, 0);
-  if ((v13 & 1) == 0 && (v33[3] & 1) == 0)
+  sqlite3_progress_handler(sqlDB, 0, 0, 0);
+  if ((monitorCopy & 1) == 0 && (v33[3] & 1) == 0)
   {
     [v20 handleError:v22 message:@"loading messages"];
   }
@@ -5715,65 +5715,65 @@ void __95__MFMailMessageLibrary__iterateStatement_connection_withProgressMonitor
   }
 }
 
-- (void)iterateStatement:(sqlite3_stmt *)a3 connection:(id)a4 withProgressMonitor:(id)a5 andRowHandler:(void *)a6 context:(void *)a7
+- (void)iterateStatement:(sqlite3_stmt *)statement connection:(id)connection withProgressMonitor:(id)monitor andRowHandler:(void *)handler context:(void *)context
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = [v11 sqlDB];
-  v18 = v13;
-  v14 = v12;
+  connectionCopy = connection;
+  monitorCopy = monitor;
+  sqlDB = [connectionCopy sqlDB];
+  v18 = sqlDB;
+  v14 = monitorCopy;
   v19 = v14;
-  sqlite3_progress_handler(v13, 200, progressHandler, &v18);
+  sqlite3_progress_handler(sqlDB, 200, progressHandler, &v18);
   v15 = +[MFActivityMonitor currentMonitor];
   do
   {
-    if (sqlite3_step(a3) != 100)
+    if (sqlite3_step(statement) != 100)
     {
       break;
     }
 
     v16 = objc_autoreleasePoolPush();
-    v17 = [v15 shouldCancel];
-    if ((v17 & 1) == 0)
+    shouldCancel = [v15 shouldCancel];
+    if ((shouldCancel & 1) == 0)
     {
-      (a6)(a3, a7);
+      (handler)(statement, context);
     }
 
     objc_autoreleasePoolPop(v16);
   }
 
-  while (!v17);
-  sqlite3_progress_handler(v13, 0, 0, 0);
-  sqlite3_reset(a3);
+  while (!shouldCancel);
+  sqlite3_progress_handler(sqlDB, 0, 0, 0);
+  sqlite3_reset(statement);
   if (([v14 shouldCancel] & 1) == 0)
   {
-    [v11 checkForConnectionErrorWithMessage:@"loading messages"];
+    [connectionCopy checkForConnectionErrorWithMessage:@"loading messages"];
   }
 }
 
-- (void)_sendMessagesForStatement:(id)a3 connection:(id)a4 to:(id)a5 options:(unsigned int)a6 timestamp:(unint64_t)a7
+- (void)_sendMessagesForStatement:(id)statement connection:(id)connection to:(id)to options:(unsigned int)options timestamp:(unint64_t)timestamp
 {
   v45 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = [v13 sqlDB];
+  statementCopy = statement;
+  connectionCopy = connection;
+  toCopy = to;
+  sqlDB = [connectionCopy sqlDB];
   Current = CFAbsoluteTimeGetCurrent();
-  v36 = a7;
-  v32 = self;
+  timestampCopy = timestamp;
+  selfCopy = self;
   v33 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v17 = v14;
+  v17 = toCopy;
   v34 = v17;
   v35 = 0x3F000000000003E8;
   v37 = Current;
   v38 = 0;
-  v39 = a6;
-  v40 = v15;
-  v41 = [(MFMailMessageLibrary *)v32 isProtectedDataAvailable:v13];
+  optionsCopy = options;
+  v40 = sqlDB;
+  v41 = [(MFMailMessageLibrary *)selfCopy isProtectedDataAvailable:connectionCopy];
   v42 = 0;
 
   v18 = objc_autoreleasePoolPush();
-  [(MFMailMessageLibrary *)v32 _iterateStatement:v12 connection:v13 withProgressMonitor:v17 andRowHandler:handleMessageRow context:&v32];
+  [(MFMailMessageLibrary *)selfCopy _iterateStatement:statementCopy connection:connectionCopy withProgressMonitor:v17 andRowHandler:handleMessageRow context:&selfCopy];
   if ([v33 count])
   {
     v19 = v33;
@@ -5823,26 +5823,26 @@ void __95__MFMailMessageLibrary__iterateStatement_connection_withProgressMonitor
     _os_log_impl(&dword_1B0389000, v28, OS_LOG_TYPE_INFO, "#SQLite #Performance loaded %d messages in %.3f seconds", buf, 0x12u);
   }
 
-  __destructor_8_s0_s8_s16_s72(&v32);
+  __destructor_8_s0_s8_s16_s72(&selfCopy);
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (id)messagesForMailbox:(id)a3 limit:(unint64_t)a4
+- (id)messagesForMailbox:(id)mailbox limit:(unint64_t)limit
 {
-  v4 = [(MFMailMessageLibrary *)self _messagesForMailbox:a3 olderThanNumberOfDays:0 limit:a4];
+  v4 = [(MFMailMessageLibrary *)self _messagesForMailbox:mailbox olderThanNumberOfDays:0 limit:limit];
 
   return v4;
 }
 
-- (id)rangesOfIndexedUIDsInRange:(_NSRange)a3 requiresBody:(BOOL)a4 forMailbox:(id)a5 limit:(int64_t)a6
+- (id)rangesOfIndexedUIDsInRange:(_NSRange)range requiresBody:(BOOL)body forMailbox:(id)mailbox limit:(int64_t)limit
 {
-  v7 = a4;
-  length = a3.length;
-  location = a3.location;
-  v11 = a5;
+  bodyCopy = body;
+  length = range.length;
+  location = range.location;
+  mailboxCopy = mailbox;
   v12 = &stru_1F273A5E0;
   v13 = @" OR NOT searchable_messages.message_body_indexed";
-  if (v7)
+  if (bodyCopy)
   {
     v12 = @"LEFT OUTER JOIN searchable_messages ON messages.searchable_message = searchable_messages.ROWID";
   }
@@ -5853,7 +5853,7 @@ void __95__MFMailMessageLibrary__iterateStatement_connection_withProgressMonitor
   }
 
   v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@" WITH index_status AS(  SELECT server_messages.remote_id, (NOT(      messages.searchable_message IS NULL%@    )) as done_indexing   FROM messages        INNER JOIN server_messages ON messages.ROWID = server_messages.message        %@   WHERE messages.mailbox == :mailbox     AND server_messages.remote_id >= :min_uid     AND server_messages.remote_id <= :max_uid), marked AS(  SELECT *, (done_indexing AND           (done_indexing != LAG(done_indexing) OVER (ORDER BY remote_id DESC) OR            LAG(done_indexing) OVER (ORDER BY remote_id DESC) IS NULL)) as is_start, (done_indexing AND           (done_indexing != LEAD(done_indexing) OVER (ORDER BY remote_id DESC) OR            LEAD(done_indexing) OVER (ORDER BY remote_id DESC) IS NULL)) as is_end   FROM index_status), ranges AS(  SELECT *, SUM(is_start) OVER (ORDER BY remote_id DESC) as group_id   FROM marked) SELECT MIN(remote_id), MAX(remote_id), count(), done_indexing   FROM ranges   GROUP BY group_id   ORDER BY MIN(remote_id) DESC   LIMIT :limit", v13, v12];;
-  v15 = [(MFMailMessageLibrary *)self mailboxIDForURLString:v11];
+  v15 = [(MFMailMessageLibrary *)self mailboxIDForURLString:mailboxCopy];
   if (v15 == *MEMORY[0x1E699A728])
   {
     v16 = 0;
@@ -5861,12 +5861,12 @@ void __95__MFMailMessageLibrary__iterateStatement_connection_withProgressMonitor
 
   else
   {
-    v17 = [MEMORY[0x1E695DF70] arrayWithCapacity:a6];
+    v17 = [MEMORY[0x1E695DF70] arrayWithCapacity:limit];
     v29 = 0;
     v30 = &v29;
     v31 = 0x2020000000;
     v32 = 0;
-    v18 = [(MFMailMessageLibrary *)self database];
+    database = [(MFMailMessageLibrary *)self database];
     v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary rangesOfIndexedUIDsInRange:requiresBody:forMailbox:limit:]"];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
@@ -5874,13 +5874,13 @@ void __95__MFMailMessageLibrary__iterateStatement_connection_withProgressMonitor
     v22[3] = &unk_1E7AA38D8;
     v22[4] = v14;
     v25 = v15;
-    v26 = a6;
+    limitCopy = limit;
     v27 = location;
     v28 = length;
     v20 = v17;
     v23 = v20;
     v24 = &v29;
-    [v18 __performReadWithCaller:v19 usingBlock:v22];
+    [database __performReadWithCaller:v19 usingBlock:v22];
 
     v16 = [[MFMailMessageLibraryIndexedUIDRangesAndMessageCount alloc] initWithRanges:v20 messageCount:v30[3]];
     _Block_object_dispose(&v29, 8);
@@ -6013,19 +6013,19 @@ void __81__MFMailMessageLibrary_rangesOfIndexedUIDsInRange_requiresBody_forMailb
   *(*(*(a1 + 32) + 8) + 24) = [v3 int64Value];
 }
 
-- (id)newestUIDsForMailbox:(id)a3 limit:(int64_t)a4
+- (id)newestUIDsForMailbox:(id)mailbox limit:(int64_t)limit
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E695DF70] array];
-  v8 = [MEMORY[0x1E696AC90] indexSet];
+  mailboxCopy = mailbox;
+  array = [MEMORY[0x1E695DF70] array];
+  indexSet = [MEMORY[0x1E696AC90] indexSet];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __51__MFMailMessageLibrary_newestUIDsForMailbox_limit___block_invoke;
   v10[3] = &unk_1E7AA3900;
-  v10[4] = v7;
-  [(MFMailMessageLibrary *)self _enumerateMessageRemoteIDAndGlobalForMailbox:v6 excluding:v8 inLatest:a4 block:v10];
+  v10[4] = array;
+  [(MFMailMessageLibrary *)self _enumerateMessageRemoteIDAndGlobalForMailbox:mailboxCopy excluding:indexSet inLatest:limit block:v10];
 
-  return v7;
+  return array;
 }
 
 uint64_t __51__MFMailMessageLibrary_newestUIDsForMailbox_limit___block_invoke(uint64_t a1, void *a2)
@@ -6041,18 +6041,18 @@ uint64_t __51__MFMailMessageLibrary_newestUIDsForMailbox_limit___block_invoke(ui
   return 1;
 }
 
-- (id)newestUIDsMissingBodyDataForMailbox:(id)a3 excluding:(id)a4 inLatest:(int64_t)a5 limit:(int64_t)a6 maximumMessagesToScan:(int64_t)a7
+- (id)newestUIDsMissingBodyDataForMailbox:(id)mailbox excluding:(id)excluding inLatest:(int64_t)latest limit:(int64_t)limit maximumMessagesToScan:(int64_t)scan
 {
-  v12 = a3;
-  v23 = a4;
-  v25 = [MEMORY[0x1E695DF70] array];
-  v13 = [MEMORY[0x1E696AD50] indexSet];
-  v24 = [MEMORY[0x1E696AD50] indexSet];
-  v14 = [MailAccount accountWithURLString:v12];
+  mailboxCopy = mailbox;
+  excludingCopy = excluding;
+  array = [MEMORY[0x1E695DF70] array];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
+  indexSet2 = [MEMORY[0x1E696AD50] indexSet];
+  v14 = [MailAccount accountWithURLString:mailboxCopy];
   v22 = [(MFMailMessageLibrary *)self messageBasePathForAccount:v14];
-  v15 = [v14 supportsPurge];
-  v16 = [MEMORY[0x1E699B5B0] rootMessageDataDirectoryForBasePath:v22 purgeable:v15];
-  v17 = [v16 URLByResolvingSymlinksInPath];
+  supportsPurge = [v14 supportsPurge];
+  v16 = [MEMORY[0x1E699B5B0] rootMessageDataDirectoryForBasePath:v22 purgeable:supportsPurge];
+  uRLByResolvingSymlinksInPath = [v16 URLByResolvingSymlinksInPath];
 
   v35 = 0;
   v36 = &v35;
@@ -6061,22 +6061,22 @@ uint64_t __51__MFMailMessageLibrary_newestUIDsForMailbox_limit___block_invoke(ui
   v34[0] = 0;
   v34[1] = v34;
   v34[2] = 0x2020000000;
-  v34[3] = a7;
+  v34[3] = scan;
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __107__MFMailMessageLibrary_newestUIDsMissingBodyDataForMailbox_excluding_inLatest_limit_maximumMessagesToScan___block_invoke;
   v26[3] = &unk_1E7AA3928;
-  v18 = v17;
+  v18 = uRLByResolvingSymlinksInPath;
   v27 = v18;
-  v28 = v13;
-  v29 = v24;
-  v30 = v25;
+  v28 = indexSet;
+  v29 = indexSet2;
+  v30 = array;
   v31 = &v35;
   v32 = v34;
-  v33 = a6;
-  [(MFMailMessageLibrary *)self _enumerateMessageRemoteIDAndGlobalUsingBatchesForMailbox:v12 excluding:v23 inLatest:a5 kind:1 block:v26];
+  limitCopy = limit;
+  [(MFMailMessageLibrary *)self _enumerateMessageRemoteIDAndGlobalUsingBatchesForMailbox:mailboxCopy excluding:excludingCopy inLatest:latest kind:1 block:v26];
   v19 = [MFMessagesMissingBodyData alloc];
-  v20 = [(MFMessagesMissingBodyData *)v19 initWithMessagesMissingBodyData:v25 messagesNotMissingBodyData:v13 fragmentedMessages:v24 messagesScannedInFilesystemCount:v36[3]];
+  v20 = [(MFMessagesMissingBodyData *)v19 initWithMessagesMissingBodyData:array messagesNotMissingBodyData:indexSet fragmentedMessages:indexSet2 messagesScannedInFilesystemCount:v36[3]];
 
   _Block_object_dispose(v34, 8);
   _Block_object_dispose(&v35, 8);
@@ -6123,18 +6123,18 @@ BOOL __107__MFMailMessageLibrary_newestUIDsMissingBodyDataForMailbox_excluding_i
   return v12;
 }
 
-- (id)newestUIDsMissingPartsForMailbox:(id)a3 excluding:(id)a4 inLatest:(int64_t)a5 limit:(int64_t)a6 maximumMessagesToScan:(int64_t)a7
+- (id)newestUIDsMissingPartsForMailbox:(id)mailbox excluding:(id)excluding inLatest:(int64_t)latest limit:(int64_t)limit maximumMessagesToScan:(int64_t)scan
 {
-  v12 = a3;
-  v23 = a4;
-  v24 = v12;
-  v25 = [MEMORY[0x1E695DF70] array];
-  v13 = [MEMORY[0x1E696AD50] indexSet];
-  v14 = [MailAccount accountWithURLString:v12];
+  mailboxCopy = mailbox;
+  excludingCopy = excluding;
+  v24 = mailboxCopy;
+  array = [MEMORY[0x1E695DF70] array];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
+  v14 = [MailAccount accountWithURLString:mailboxCopy];
   v22 = [(MFMailMessageLibrary *)self messageBasePathForAccount:v14];
-  v15 = [v14 supportsPurge];
-  v16 = [MEMORY[0x1E699B5B0] rootMessageDataDirectoryForBasePath:v22 purgeable:v15];
-  v17 = [v16 URLByResolvingSymlinksInPath];
+  supportsPurge = [v14 supportsPurge];
+  v16 = [MEMORY[0x1E699B5B0] rootMessageDataDirectoryForBasePath:v22 purgeable:supportsPurge];
+  uRLByResolvingSymlinksInPath = [v16 URLByResolvingSymlinksInPath];
 
   v34 = 0;
   v35 = &v34;
@@ -6143,21 +6143,21 @@ BOOL __107__MFMailMessageLibrary_newestUIDsMissingBodyDataForMailbox_excluding_i
   v33[0] = 0;
   v33[1] = v33;
   v33[2] = 0x2020000000;
-  v33[3] = a7;
+  v33[3] = scan;
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __104__MFMailMessageLibrary_newestUIDsMissingPartsForMailbox_excluding_inLatest_limit_maximumMessagesToScan___block_invoke;
   v26[3] = &unk_1E7AA3978;
-  v18 = v17;
+  v18 = uRLByResolvingSymlinksInPath;
   v27 = v18;
-  v28 = v13;
-  v29 = v25;
+  v28 = indexSet;
+  v29 = array;
   v30 = &v34;
   v31 = v33;
-  v32 = a6;
-  [(MFMailMessageLibrary *)self _enumerateMessageRemoteIDAndGlobalUsingBatchesForMailbox:v24 excluding:v23 inLatest:a5 kind:2 block:v26];
+  limitCopy = limit;
+  [(MFMailMessageLibrary *)self _enumerateMessageRemoteIDAndGlobalUsingBatchesForMailbox:v24 excluding:excludingCopy inLatest:latest kind:2 block:v26];
   v19 = [MFMessagesMissingParts alloc];
-  v20 = [(MFMessagesMissingParts *)&v19->super.isa initWithFragmentedMessages:v25 nonFragmentedMessages:v13 messagesScannedInFilesystemCount:v35[3]];
+  v20 = [(MFMessagesMissingParts *)&v19->super.isa initWithFragmentedMessages:array nonFragmentedMessages:indexSet messagesScannedInFilesystemCount:v35[3]];
 
   _Block_object_dispose(v33, 8);
   _Block_object_dispose(&v34, 8);
@@ -6342,42 +6342,42 @@ void __104__MFMailMessageLibrary_newestUIDsMissingPartsForMailbox_excluding_inLa
   }
 }
 
-- (void)_enumerateMessageRemoteIDAndGlobalUsingBatchesForMailbox:(id)a3 excluding:(id)a4 inLatest:(int64_t)a5 kind:(unint64_t)a6 block:(id)a7
+- (void)_enumerateMessageRemoteIDAndGlobalUsingBatchesForMailbox:(id)mailbox excluding:(id)excluding inLatest:(int64_t)latest kind:(unint64_t)kind block:(id)block
 {
   v51 = *MEMORY[0x1E69E9840];
-  v41 = a3;
-  v42 = a4;
-  v10 = a7;
-  v37 = [MEMORY[0x1E695DF00] date];
-  if (a5 > 1023)
+  mailboxCopy = mailbox;
+  excludingCopy = excluding;
+  blockCopy = block;
+  date = [MEMORY[0x1E695DF00] date];
+  if (latest > 1023)
   {
     v36 = [MEMORY[0x1E695DF88] dataWithLength:24576];
-    v44 = [v36 mutableBytes];
-    v38 = a5;
+    mutableBytes = [v36 mutableBytes];
+    latestCopy = latest;
     v46 = 0;
     v47 = &v46;
     v48 = 0x2020000000;
     v49 = 0;
-    v43 = [MEMORY[0x1E696AD50] indexSet];
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
     v11 = 0;
     v12 = 0x7FFFFFFFFFFFFFFFLL;
     do
     {
       v13 = objc_autoreleasePoolPush();
       v47[3] = 0;
-      v14 = [v42 mutableCopy];
-      [v14 addIndexes:v43];
+      v14 = [excludingCopy mutableCopy];
+      [v14 addIndexes:indexSet];
       v45[0] = MEMORY[0x1E69E9820];
       v45[1] = 3221225472;
       v45[2] = __111__MFMailMessageLibrary__enumerateMessageRemoteIDAndGlobalUsingBatchesForMailbox_excluding_inLatest_kind_block___block_invoke;
       v45[3] = &unk_1E7AA39A0;
       v45[4] = &v46;
-      v45[5] = v44;
-      [(MFMailMessageLibrary *)self _enumerateMessageRemoteIDAndGlobalForMailbox:v41 excluding:v14 inLatest:v38 dateReceivedMax:v12 limit:1024 kind:a6 block:v45];
+      v45[5] = mutableBytes;
+      [(MFMailMessageLibrary *)self _enumerateMessageRemoteIDAndGlobalForMailbox:mailboxCopy excluding:v14 inLatest:latestCopy dateReceivedMax:v12 limit:1024 kind:kind block:v45];
       if (v47[3])
       {
         v15 = 0;
-        v16 = v44;
+        v16 = mutableBytes;
         while (1)
         {
           v17 = v47;
@@ -6388,11 +6388,11 @@ void __104__MFMailMessageLibrary_newestUIDsMissingPartsForMailbox_excluding_inLa
           }
 
           v19 = objc_autoreleasePoolPush();
-          v20 = v10[2];
+          v20 = blockCopy[2];
           v21 = *v16;
           *&buf[16] = *(v16 + 16);
           *buf = v21;
-          v22 = v20(v10, buf);
+          v22 = v20(blockCopy, buf);
           objc_autoreleasePoolPop(v19);
           ++v15;
           v16 += 24;
@@ -6403,10 +6403,10 @@ void __104__MFMailMessageLibrary_newestUIDsMissingPartsForMailbox_excluding_inLa
           }
         }
 
-        v24 = *(v44 - 8 + 24 * v18);
+        v24 = *(mutableBytes - 8 + 24 * v18);
         if (v24 != v12)
         {
-          [v43 removeAllIndexes];
+          [indexSet removeAllIndexes];
           v17 = v47;
           v18 = v47[3];
         }
@@ -6414,15 +6414,15 @@ void __104__MFMailMessageLibrary_newestUIDsMissingPartsForMailbox_excluding_inLa
         if (v18)
         {
           v25 = 0;
-          v26 = (v44 + 16);
-          v27 = (v44 + 16);
+          v26 = (mutableBytes + 16);
+          v27 = (mutableBytes + 16);
           do
           {
             v28 = *v27;
             v27 += 3;
             if (v28 == v24)
             {
-              [v43 addIndex:*(v26 - 4)];
+              [indexSet addIndex:*(v26 - 4)];
               v17 = v47;
             }
 
@@ -6447,8 +6447,8 @@ LABEL_8:
     }
 
     while ((v23 & 1) != 0);
-    v29 = [MEMORY[0x1E695DF00] date];
-    [v29 timeIntervalSinceDate:v37];
+    date2 = [MEMORY[0x1E695DF00] date];
+    [date2 timeIntervalSinceDate:date];
     v31 = v30;
 
     if (v31 > 20.0)
@@ -6499,7 +6499,7 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  [(MFMailMessageLibrary *)self _enumerateMessageRemoteIDAndGlobalForMailbox:v41 excluding:v42 inLatest:a5 dateReceivedMax:0x7FFFFFFFFFFFFFFFLL limit:-1 kind:a6 block:v10];
+  [(MFMailMessageLibrary *)self _enumerateMessageRemoteIDAndGlobalForMailbox:mailboxCopy excluding:excludingCopy inLatest:latest dateReceivedMax:0x7FFFFFFFFFFFFFFFLL limit:-1 kind:kind block:blockCopy];
 LABEL_28:
 
   v35 = *MEMORY[0x1E69E9840];
@@ -6514,28 +6514,28 @@ BOOL __111__MFMailMessageLibrary__enumerateMessageRemoteIDAndGlobalUsingBatchesF
   return ++*(*(*(a1 + 32) + 8) + 24) < 0x400uLL;
 }
 
-- (void)_enumerateMessageRemoteIDAndGlobalForMailbox:(id)a3 excluding:(id)a4 inLatest:(int64_t)a5 dateReceivedMax:(int64_t)a6 limit:(unint64_t)a7 kind:(unint64_t)a8 block:(id)a9
+- (void)_enumerateMessageRemoteIDAndGlobalForMailbox:(id)mailbox excluding:(id)excluding inLatest:(int64_t)latest dateReceivedMax:(int64_t)max limit:(unint64_t)limit kind:(unint64_t)kind block:(id)block
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a9;
-  v18 = [(MFMailMessageLibrary *)self mailboxIDForURLString:v15];
+  mailboxCopy = mailbox;
+  excludingCopy = excluding;
+  blockCopy = block;
+  v18 = [(MFMailMessageLibrary *)self mailboxIDForURLString:mailboxCopy];
   if (v18 != *MEMORY[0x1E699A728])
   {
-    v19 = [(MFMailMessageLibrary *)self database];
+    database = [(MFMailMessageLibrary *)self database];
     v20 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary _enumerateMessageRemoteIDAndGlobalForMailbox:excluding:inLatest:dateReceivedMax:limit:kind:block:]"];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __121__MFMailMessageLibrary__enumerateMessageRemoteIDAndGlobalForMailbox_excluding_inLatest_dateReceivedMax_limit_kind_block___block_invoke;
     v21[3] = &unk_1E7AA3A40;
-    v22 = v16;
-    v24 = a6;
-    v25 = a8;
-    v26 = a5;
+    v22 = excludingCopy;
+    maxCopy = max;
+    kindCopy = kind;
+    latestCopy = latest;
     v27 = v18;
-    v28 = a7;
-    v23 = v17;
-    [v19 __performReadWithCaller:v20 usingBlock:v21];
+    limitCopy = limit;
+    v23 = blockCopy;
+    [database __performReadWithCaller:v20 usingBlock:v21];
   }
 }
 
@@ -6673,11 +6673,11 @@ void __121__MFMailMessageLibrary__enumerateMessageRemoteIDAndGlobalForMailbox_ex
   }
 }
 
-- (id)serverSearchResultMessagesForMailbox:(id)a3
+- (id)serverSearchResultMessagesForMailbox:(id)mailbox
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MFMessageCriterion criterionForMailboxURL:v4];
+  mailboxCopy = mailbox;
+  v5 = [MFMessageCriterion criterionForMailboxURL:mailboxCopy];
   v6 = [[MFMessageCriterion alloc] initWithType:27 qualifier:3 expression:@"MessageIsServerSearchResult"];
   v13[0] = v5;
   v13[1] = v6;
@@ -6686,38 +6686,38 @@ void __121__MFMailMessageLibrary__enumerateMessageRemoteIDAndGlobalForMailbox_ex
 
   v9 = objc_alloc_init(_MFMessageCollector);
   [(MFMailMessageLibrary *)self sendMessagesMatchingCriterion:v8 to:v9 options:0 baseTable:16];
-  v10 = [(_MFMessageCollector *)v9 messages];
+  messages = [(_MFMessageCollector *)v9 messages];
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v10;
+  return messages;
 }
 
-- (id)_firstDateForQuery:(id)a3 inMailbox:(id)a4
+- (id)_firstDateForQuery:(id)query inMailbox:(id)mailbox
 {
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  mailboxCopy = mailbox;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  v8 = [(MFMailMessageLibrary *)self database];
+  database = [(MFMailMessageLibrary *)self database];
   v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary _firstDateForQuery:inMailbox:]"];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __53__MFMailMessageLibrary__firstDateForQuery_inMailbox___block_invoke;
   v16[3] = &unk_1E7AA3A68;
-  v10 = v6;
+  v10 = queryCopy;
   v17 = v10;
   v19 = &v20;
-  v11 = v7;
+  v11 = mailboxCopy;
   v18 = v11;
-  [v8 __performReadWithCaller:v9 usingBlock:v16];
+  [database __performReadWithCaller:v9 usingBlock:v16];
 
   v12 = *(v21 + 6);
   if (v12 == -1)
   {
-    v14 = [MEMORY[0x1E695DF00] distantFuture];
+    distantFuture = [MEMORY[0x1E695DF00] distantFuture];
   }
 
   else
@@ -6728,10 +6728,10 @@ void __121__MFMailMessageLibrary__enumerateMessageRemoteIDAndGlobalForMailbox_ex
       goto LABEL_7;
     }
 
-    v14 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:v12];
+    distantFuture = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:v12];
   }
 
-  v13 = v14;
+  v13 = distantFuture;
 LABEL_7:
 
   _Block_object_dispose(&v20, 8);
@@ -6763,58 +6763,58 @@ uint64_t __53__MFMailMessageLibrary__firstDateForQuery_inMailbox___block_invoke(
   return 1;
 }
 
-- (id)dateOfOldestNonSearchResultMessageInMailbox:(id)a3
+- (id)dateOfOldestNonSearchResultMessageInMailbox:(id)mailbox
 {
-  v3 = [(MFMailMessageLibrary *)self _firstDateForQuery:@"SELECT date_received FROM messages WHERE mailbox = (SELECT ROWID FROM mailboxes WHERE url = ?) AND flags & 128 = 0 ORDER BY date_received ASC LIMIT 1" inMailbox:a3];;
+  v3 = [(MFMailMessageLibrary *)self _firstDateForQuery:@"SELECT date_received FROM messages WHERE mailbox = (SELECT ROWID FROM mailboxes WHERE url = ?) AND flags & 128 = 0 ORDER BY date_received ASC LIMIT 1" inMailbox:mailbox];;
 
   return v3;
 }
 
-- (id)dateOfOldestNonIndexedNonSearchResultMessageInMailbox:(id)a3
+- (id)dateOfOldestNonIndexedNonSearchResultMessageInMailbox:(id)mailbox
 {
-  v3 = [(MFMailMessageLibrary *)self _firstDateForQuery:@"SELECT date_received FROM messages JOIN searchable_messages ON messages.ROWID = searchable_messages.message_id WHERE mailbox = (SELECT ROWID FROM mailboxes WHERE url = ?) AND flags & 128 = 0 AND searchable_messages.transaction_id != 0 ORDER BY date_received ASC LIMIT 1" inMailbox:a3];
+  v3 = [(MFMailMessageLibrary *)self _firstDateForQuery:@"SELECT date_received FROM messages JOIN searchable_messages ON messages.ROWID = searchable_messages.message_id WHERE mailbox = (SELECT ROWID FROM mailboxes WHERE url = ?) AND flags & 128 = 0 AND searchable_messages.transaction_id != 0 ORDER BY date_received ASC LIMIT 1" inMailbox:mailbox];
 
   return v3;
 }
 
-- (unint64_t)countMessagesMatchingCriterion:(id)a3
+- (unint64_t)countMessagesMatchingCriterion:(id)criterion
 {
-  v3 = [(MFMailMessageLibrary *)self groupedMessagesCountForCriterion:a3 groupBy:0];
+  v3 = [(MFMailMessageLibrary *)self groupedMessagesCountForCriterion:criterion groupBy:0];
   if ([v3 count] == 1)
   {
     v4 = [v3 objectForKeyedSubscript:&stru_1F273A5E0];
-    v5 = [v4 unsignedIntegerValue];
+    unsignedIntegerValue = [v4 unsignedIntegerValue];
   }
 
   else
   {
-    v5 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
-- (id)groupedMessagesCountForCriterion:(id)a3 groupBy:(unint64_t)a4
+- (id)groupedMessagesCountForCriterion:(id)criterion groupBy:(unint64_t)by
 {
-  v6 = a3;
+  criterionCopy = criterion;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__6;
   v21 = __Block_byref_object_dispose__6;
   v22 = 0;
-  v7 = [(MFMailMessageLibrary *)self database];
+  database = [(MFMailMessageLibrary *)self database];
   v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary groupedMessagesCountForCriterion:groupBy:]"];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __65__MFMailMessageLibrary_groupedMessagesCountForCriterion_groupBy___block_invoke;
   v12[3] = &unk_1E7AA3AB8;
-  v9 = v6;
+  v9 = criterionCopy;
   v13 = v9;
-  v14 = self;
+  selfCopy = self;
   v15 = &v17;
-  v16 = a4;
-  [v7 __performReadWithCaller:v8 usingBlock:v12];
+  byCopy = by;
+  [database __performReadWithCaller:v8 usingBlock:v12];
 
   v10 = v18[5];
   _Block_object_dispose(&v17, 8);
@@ -6941,30 +6941,30 @@ void __65__MFMailMessageLibrary_groupedMessagesCountForCriterion_groupBy___block
   }
 }
 
-- (id)messagesWithSummariesForMailbox:(id)a3 range:(_NSRange)a4
+- (id)messagesWithSummariesForMailbox:(id)mailbox range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
+  length = range.length;
+  location = range.location;
+  mailboxCopy = mailbox;
   v8 = objc_alloc_init(_MFMessageCollector);
-  v9 = [(MFMailMessageLibrary *)self database];
+  database = [(MFMailMessageLibrary *)self database];
   v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary messagesWithSummariesForMailbox:range:]"];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __62__MFMailMessageLibrary_messagesWithSummariesForMailbox_range___block_invoke;
   v15[3] = &unk_1E7AA3AE0;
-  v11 = v7;
+  v11 = mailboxCopy;
   v19 = location;
   v20 = length;
   v16 = v11;
-  v17 = self;
+  selfCopy = self;
   v12 = v8;
   v18 = v12;
-  [v9 __performWriteWithCaller:v10 usingBlock:v15];
+  [database __performWriteWithCaller:v10 usingBlock:v15];
 
-  v13 = [(_MFMessageCollector *)v12 messages];
+  messages = [(_MFMessageCollector *)v12 messages];
 
-  return v13;
+  return messages;
 }
 
 uint64_t __62__MFMailMessageLibrary_messagesWithSummariesForMailbox_range___block_invoke(uint64_t a1, void *a2)
@@ -6998,26 +6998,26 @@ uint64_t __62__MFMailMessageLibrary_messagesWithSummariesForMailbox_range___bloc
   return v12;
 }
 
-- (id)orderedBatchOfMessagesEndingAtRowId:(int64_t)a3 limit:(unsigned int)a4 success:(BOOL *)a5
+- (id)orderedBatchOfMessagesEndingAtRowId:(int64_t)id limit:(unsigned int)limit success:(BOOL *)success
 {
   v9 = objc_alloc_init(_MFMessageCollector);
-  v10 = [(MFMailMessageLibrary *)self database];
+  database = [(MFMailMessageLibrary *)self database];
   v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary orderedBatchOfMessagesEndingAtRowId:limit:success:]"];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __74__MFMailMessageLibrary_orderedBatchOfMessagesEndingAtRowId_limit_success___block_invoke;
   v15[3] = &unk_1E7AA3B08;
-  v19 = a4;
-  v17 = a3;
+  limitCopy = limit;
+  idCopy = id;
   v15[4] = self;
   v12 = v9;
   v16 = v12;
-  v18 = a5;
-  [v10 __performWriteWithCaller:v11 usingBlock:v15];
+  successCopy = success;
+  [database __performWriteWithCaller:v11 usingBlock:v15];
 
-  v13 = [(_MFMessageCollector *)v12 messages];
+  messages = [(_MFMessageCollector *)v12 messages];
 
-  return v13;
+  return messages;
 }
 
 uint64_t __74__MFMailMessageLibrary_orderedBatchOfMessagesEndingAtRowId_limit_success___block_invoke(uint64_t a1, void *a2)
@@ -7056,20 +7056,20 @@ uint64_t __74__MFMailMessageLibrary_orderedBatchOfMessagesEndingAtRowId_limit_su
   return v14;
 }
 
-- (int64_t)_int64ForQuery:(id)a3 connection:(id)a4 textArgument:(id)a5
+- (int64_t)_int64ForQuery:(id)query connection:(id)connection textArgument:(id)argument
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  queryCopy = query;
+  connectionCopy = connection;
+  argumentCopy = argument;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 0;
-  v10 = [v8 preparedStatementForQueryString:v7];
-  if (v9)
+  v10 = [connectionCopy preparedStatementForQueryString:queryCopy];
+  if (argumentCopy)
   {
-    v23[0] = v9;
+    v23[0] = argumentCopy;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
   }
 
@@ -7086,8 +7086,8 @@ uint64_t __74__MFMailMessageLibrary_orderedBatchOfMessagesEndingAtRowId_limit_su
   v18[4] = &v19;
   [v10 executeWithIndexedBindings:v11 usingBlock:v18 error:&v17];
   v12 = v17;
-  v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"error performing query: %@: %@", v7, v12];
-  [v8 checkForConnectionErrorWithMessage:v13];
+  v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"error performing query: %@: %@", queryCopy, v12];
+  [connectionCopy checkForConnectionErrorWithMessage:v13];
 
   v14 = v20[3];
   _Block_object_dispose(&v19, 8);
@@ -7096,15 +7096,15 @@ uint64_t __74__MFMailMessageLibrary_orderedBatchOfMessagesEndingAtRowId_limit_su
   return v14;
 }
 
-- (int)_integerForQuery:(id)a3 withTextArgument:(id)a4
+- (int)_integerForQuery:(id)query withTextArgument:(id)argument
 {
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  argumentCopy = argument;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  v8 = [(MFMailMessageLibrary *)self database];
+  database = [(MFMailMessageLibrary *)self database];
   v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary _integerForQuery:withTextArgument:]"];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -7112,16 +7112,16 @@ uint64_t __74__MFMailMessageLibrary_orderedBatchOfMessagesEndingAtRowId_limit_su
   v13[3] = &unk_1E7AA3B30;
   v16 = &v17;
   v13[4] = self;
-  v10 = v6;
+  v10 = queryCopy;
   v14 = v10;
-  v11 = v7;
+  v11 = argumentCopy;
   v15 = v11;
-  [v8 __performReadWithCaller:v9 usingBlock:v13];
+  [database __performReadWithCaller:v9 usingBlock:v13];
 
-  LODWORD(v6) = *(v18 + 6);
+  LODWORD(queryCopy) = *(v18 + 6);
   _Block_object_dispose(&v17, 8);
 
-  return v6;
+  return queryCopy;
 }
 
 uint64_t __58__MFMailMessageLibrary__integerForQuery_withTextArgument___block_invoke(uint64_t a1, void *a2)
@@ -7132,11 +7132,11 @@ uint64_t __58__MFMailMessageLibrary__integerForQuery_withTextArgument___block_in
   return 1;
 }
 
-- (id)_queryForMailboxesIDsFromMailboxes:(id)a3
+- (id)_queryForMailboxesIDsFromMailboxes:(id)mailboxes
 {
-  v3 = [a3 ef_compactMap:&__block_literal_global_1067];
-  v4 = [v3 allObjects];
-  v5 = [v4 componentsJoinedByString:@" OR "];
+  v3 = [mailboxes ef_compactMap:&__block_literal_global_1067];
+  allObjects = [v3 allObjects];
+  v5 = [allObjects componentsJoinedByString:@" OR "];
 
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT ROWID FROM mailboxes WHERE %@", v5];
 
@@ -7153,35 +7153,35 @@ id __59__MFMailMessageLibrary__queryForMailboxesIDsFromMailboxes___block_invoke(
   return v4;
 }
 
-- (unsigned)attachmentCountForMailboxes:(id)a3
+- (unsigned)attachmentCountForMailboxes:(id)mailboxes
 {
-  v4 = [(MFMailMessageLibrary *)self _queryForMailboxesIDsFromMailboxes:a3];
+  v4 = [(MFMailMessageLibrary *)self _queryForMailboxesIDsFromMailboxes:mailboxes];
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT COUNT(DISTINCT(message_id)) FROM messages WHERE (((flags&(63<<10))>>10) BETWEEN 1 AND 62) AND mailbox IN (%@)", v4];
 
   LODWORD(v4) = [(MFMailMessageLibrary *)self _integerForQuery:v5 withTextArgument:0];
   return v4;
 }
 
-- (unsigned)allNonDeleteCountForMailbox:(id)a3 includeServerSearchResults:(BOOL)a4 includeThreadSearchResults:(BOOL)a5
+- (unsigned)allNonDeleteCountForMailbox:(id)mailbox includeServerSearchResults:(BOOL)results includeThreadSearchResults:(BOOL)searchResults
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  if (!v6 || v5)
+  searchResultsCopy = searchResults;
+  resultsCopy = results;
+  mailboxCopy = mailbox;
+  if (!resultsCopy || searchResultsCopy)
   {
     v9 = 128;
-    if (v6 || !v5)
+    if (resultsCopy || !searchResultsCopy)
     {
       v9 = 0;
     }
 
     v10 = 1048704;
-    if (v5)
+    if (searchResultsCopy)
     {
       v10 = 0;
     }
 
-    if (!v6 && !v5)
+    if (!resultsCopy && !searchResultsCopy)
     {
       v9 = v10;
     }
@@ -7193,31 +7193,31 @@ id __59__MFMailMessageLibrary__queryForMailboxesIDsFromMailboxes___block_invoke(
   }
 
   v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT count(messages.rowid) FROM messages JOIN mailboxes ON messages.mailbox = mailboxes.rowid WHERE url = ? AND (flags & %llu = 0) AND deleted = '0'", v9];
-  v12 = [(MFMailMessageLibrary *)self _integerForQuery:v11 withTextArgument:v8];
+  v12 = [(MFMailMessageLibrary *)self _integerForQuery:v11 withTextArgument:mailboxCopy];
 
   return v12;
 }
 
-- (unsigned)nonDeletedCountForMailbox:(id)a3 includeServerSearchResults:(BOOL)a4 includeThreadSearchResults:(BOOL)a5
+- (unsigned)nonDeletedCountForMailbox:(id)mailbox includeServerSearchResults:(BOOL)results includeThreadSearchResults:(BOOL)searchResults
 {
-  v5 = a5;
-  v6 = a4;
+  searchResultsCopy = searchResults;
+  resultsCopy = results;
   v23[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  mailboxCopy = mailbox;
   v9 = [MFMessageCriterion messageIsDeletedCriterion:0];
   v23[0] = v9;
-  v10 = [MFMessageCriterion criterionForMailboxURL:v8];
+  v10 = [MFMessageCriterion criterionForMailboxURL:mailboxCopy];
   v23[1] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:2];
   v12 = [MFMessageCriterion andCompoundCriterionWithCriteria:v11];
   v13 = [(MFMailMessageLibrary *)self countMessagesMatchingCriterion:v12];
 
-  v14 = !v6;
-  if (!v6 || !v5)
+  v14 = !resultsCopy;
+  if (!resultsCopy || !searchResultsCopy)
   {
-    if ((v14 | v5) == 1)
+    if ((v14 | searchResultsCopy) == 1)
     {
-      v15 = (v14 & v5) == 0;
+      v15 = (v14 & searchResultsCopy) == 0;
       v16 = 128;
       if (v15)
       {
@@ -7225,12 +7225,12 @@ id __59__MFMailMessageLibrary__queryForMailboxesIDsFromMailboxes___block_invoke(
       }
 
       v17 = 1048704;
-      if (v5)
+      if (searchResultsCopy)
       {
         v17 = 0;
       }
 
-      if (!v6 && !v5)
+      if (!resultsCopy && !searchResultsCopy)
       {
         v16 = v17;
       }
@@ -7242,7 +7242,7 @@ id __59__MFMailMessageLibrary__queryForMailboxesIDsFromMailboxes___block_invoke(
     }
 
     v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT COUNT(messages.rowid) FROM messages JOIN mailboxes ON messages.mailbox = mailboxes.rowid WHERE url = ? AND flags & %llu AND deleted = '0'", v16];
-    v19 = [(MFMailMessageLibrary *)self _integerForQuery:v18 withTextArgument:v8];
+    v19 = [(MFMailMessageLibrary *)self _integerForQuery:v18 withTextArgument:mailboxCopy];
     if (v13 <= v19)
     {
       v20 = 0;
@@ -7260,23 +7260,23 @@ id __59__MFMailMessageLibrary__queryForMailboxesIDsFromMailboxes___block_invoke(
   return v13;
 }
 
-- (unsigned)totalCountForMailbox:(id)a3
+- (unsigned)totalCountForMailbox:(id)mailbox
 {
-  v4 = [MFMessageCriterion criterionForMailboxURL:a3];
+  v4 = [MFMessageCriterion criterionForMailboxURL:mailbox];
   LODWORD(self) = [(MFMailMessageLibrary *)self countMessagesMatchingCriterion:v4];
 
   return self;
 }
 
-- (void)setServerUnreadOnlyOnServerCount:(unint64_t)a3 forMailbox:(id)a4
+- (void)setServerUnreadOnlyOnServerCount:(unint64_t)count forMailbox:(id)mailbox
 {
-  v6 = a4;
+  mailboxCopy = mailbox;
   v7 = objc_alloc_init(MEMORY[0x1E699B608]);
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 0;
-  v8 = [(MFMailMessageLibrary *)self database];
+  database = [(MFMailMessageLibrary *)self database];
   v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary setServerUnreadOnlyOnServerCount:forMailbox:]"];
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
@@ -7284,19 +7284,19 @@ id __59__MFMailMessageLibrary__queryForMailboxesIDsFromMailboxes___block_invoke(
   v19 = &unk_1E7AA3AB8;
   v10 = v7;
   v20 = v10;
-  v23 = a3;
-  v11 = v6;
+  countCopy = count;
+  v11 = mailboxCopy;
   v21 = v11;
   v22 = &v24;
-  [v8 __performWriteWithCaller:v9 usingBlock:&v16];
+  [database __performWriteWithCaller:v9 usingBlock:&v16];
 
   if (*(v25 + 24) == 1)
   {
     v12 = objc_alloc(MEMORY[0x1E695DFF8]);
     v13 = [v12 initWithString:{v11, v16, v17, v18, v19, v20}];
     v14 = [objc_alloc(MEMORY[0x1E699AD20]) initWithURL:v13];
-    v15 = [(MFMailMessageLibrary *)self hookRegistry];
-    [v15 persistenceDidUpdateServerCount:a3 forMailboxWithObjectID:v14 generationWindow:v10];
+    hookRegistry = [(MFMailMessageLibrary *)self hookRegistry];
+    [hookRegistry persistenceDidUpdateServerCount:count forMailboxWithObjectID:v14 generationWindow:v10];
   }
 
   _Block_object_dispose(&v24, 8);
@@ -7349,11 +7349,11 @@ uint64_t __68__MFMailMessageLibrary_setServerUnreadOnlyOnServerCount_forMailbox_
   return v7;
 }
 
-- (void)setLastSyncAndMostRecentStatusCount:(int64_t)a3 forMailbox:(id)a4
+- (void)setLastSyncAndMostRecentStatusCount:(int64_t)count forMailbox:(id)mailbox
 {
-  v6 = a4;
+  mailboxCopy = mailbox;
   v7 = objc_alloc_init(MEMORY[0x1E699B608]);
-  v8 = [(MFMailMessageLibrary *)self database];
+  database = [(MFMailMessageLibrary *)self database];
   v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary setLastSyncAndMostRecentStatusCount:forMailbox:]"];
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
@@ -7361,17 +7361,17 @@ uint64_t __68__MFMailMessageLibrary_setServerUnreadOnlyOnServerCount_forMailbox_
   v19 = &unk_1E7AA3B58;
   v10 = v7;
   v20 = v10;
-  v21 = self;
-  v11 = v6;
+  selfCopy = self;
+  v11 = mailboxCopy;
   v22 = v11;
-  v23 = a3;
-  [v8 __performWriteWithCaller:v9 usingBlock:&v16];
+  countCopy = count;
+  [database __performWriteWithCaller:v9 usingBlock:&v16];
 
   v12 = objc_alloc(MEMORY[0x1E695DFF8]);
   v13 = [v12 initWithString:{v11, v16, v17, v18, v19}];
   v14 = [objc_alloc(MEMORY[0x1E699AD20]) initWithURL:v13];
-  v15 = [(MFMailMessageLibrary *)self hookRegistry];
-  [v15 persistenceDidUpdateLastSyncAndMostRecentStatusCount:a3 forMailboxWithObjectID:v14 generationWindow:v10];
+  hookRegistry = [(MFMailMessageLibrary *)self hookRegistry];
+  [hookRegistry persistenceDidUpdateLastSyncAndMostRecentStatusCount:count forMailboxWithObjectID:v14 generationWindow:v10];
 }
 
 uint64_t __71__MFMailMessageLibrary_setLastSyncAndMostRecentStatusCount_forMailbox___block_invoke(uint64_t a1, void *a2)
@@ -7395,20 +7395,20 @@ uint64_t __71__MFMailMessageLibrary_setLastSyncAndMostRecentStatusCount_forMailb
   return v11;
 }
 
-- (void)increaseProtectionOnFileForMessage:(id)a3
+- (void)increaseProtectionOnFileForMessage:(id)message
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  messageCopy = message;
   if (_os_feature_enabled_impl())
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"MailMessageLibrary.m" lineNumber:4158 description:@"No content protection increase expected when all data is class C."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MailMessageLibrary.m" lineNumber:4158 description:@"No content protection increase expected when all data is class C."];
   }
 
-  v6 = [(MFMailMessageLibrary *)self dataPathForMessage:v5 type:0];
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
+  v6 = [(MFMailMessageLibrary *)self dataPathForMessage:messageCopy type:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v13 = 0;
-  v8 = [v7 mf_protectFileAtPath:v6 withClass:2 error:&v13];
+  v8 = [defaultManager mf_protectFileAtPath:v6 withClass:2 error:&v13];
   v9 = v13;
 
   if ((v8 & 1) == 0)
@@ -7427,11 +7427,11 @@ uint64_t __71__MFMailMessageLibrary_setLastSyncAndMostRecentStatusCount_forMailb
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setMostRecentStatusCount:(unint64_t)a3 forMailbox:(id)a4
+- (void)setMostRecentStatusCount:(unint64_t)count forMailbox:(id)mailbox
 {
-  v6 = a4;
+  mailboxCopy = mailbox;
   v7 = objc_alloc_init(MEMORY[0x1E699B608]);
-  v8 = [(MFMailMessageLibrary *)self database];
+  database = [(MFMailMessageLibrary *)self database];
   v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary setMostRecentStatusCount:forMailbox:]"];
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
@@ -7439,17 +7439,17 @@ uint64_t __71__MFMailMessageLibrary_setLastSyncAndMostRecentStatusCount_forMailb
   v19 = &unk_1E7AA3B58;
   v10 = v7;
   v20 = v10;
-  v21 = self;
-  v11 = v6;
+  selfCopy = self;
+  v11 = mailboxCopy;
   v22 = v11;
-  v23 = a3;
-  [v8 __performWriteWithCaller:v9 usingBlock:&v16];
+  countCopy = count;
+  [database __performWriteWithCaller:v9 usingBlock:&v16];
 
   v12 = objc_alloc(MEMORY[0x1E695DFF8]);
   v13 = [v12 initWithString:{v11, v16, v17, v18, v19}];
   v14 = [objc_alloc(MEMORY[0x1E699AD20]) initWithURL:v13];
-  v15 = [(MFMailMessageLibrary *)self hookRegistry];
-  [v15 persistenceDidUpdateMostRecentStatusCount:a3 forMailboxWithObjectID:v14 generationWindow:v10];
+  hookRegistry = [(MFMailMessageLibrary *)self hookRegistry];
+  [hookRegistry persistenceDidUpdateMostRecentStatusCount:count forMailboxWithObjectID:v14 generationWindow:v10];
 }
 
 BOOL __60__MFMailMessageLibrary_setMostRecentStatusCount_forMailbox___block_invoke(uint64_t a1, void *a2)
@@ -7478,29 +7478,29 @@ BOOL __60__MFMailMessageLibrary_setMostRecentStatusCount_forMailbox___block_invo
   return v8;
 }
 
-- (id)messageWithRemoteID:(id)a3 inRemoteMailbox:(id)a4
+- (id)messageWithRemoteID:(id)d inRemoteMailbox:(id)mailbox
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  mailboxCopy = mailbox;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__6;
   v22 = __Block_byref_object_dispose__6;
   v23 = 0;
-  v8 = [(MFMailMessageLibrary *)self database];
+  database = [(MFMailMessageLibrary *)self database];
   v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary messageWithRemoteID:inRemoteMailbox:]"];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __60__MFMailMessageLibrary_messageWithRemoteID_inRemoteMailbox___block_invoke;
   v14[3] = &unk_1E7AA3BA8;
   v14[4] = self;
-  v10 = v7;
+  v10 = mailboxCopy;
   v15 = v10;
-  v11 = v6;
+  v11 = dCopy;
   v16 = v11;
   v17 = &v18;
-  [v8 __performReadWithCaller:v9 usingBlock:v14];
+  [database __performReadWithCaller:v9 usingBlock:v14];
 
   v12 = v19[5];
   _Block_object_dispose(&v18, 8);
@@ -7584,17 +7584,17 @@ void __60__MFMailMessageLibrary_messageWithRemoteID_inRemoteMailbox___block_invo
   *(v4 + 40) = v3;
 }
 
-- (id)searchResultsWithRemoteIDs:(id)a3 requiresBody:(BOOL)a4 inRemoteMailbox:(id)a5
+- (id)searchResultsWithRemoteIDs:(id)ds requiresBody:(BOOL)body inRemoteMailbox:(id)mailbox
 {
-  v8 = a3;
-  v9 = a5;
+  dsCopy = ds;
+  mailboxCopy = mailbox;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
   v25 = __Block_byref_object_copy__6;
   v26 = __Block_byref_object_dispose__6;
   v27 = MEMORY[0x1E695E0F0];
-  v10 = [(MFMailMessageLibrary *)self database];
+  database = [(MFMailMessageLibrary *)self database];
   v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary searchResultsWithRemoteIDs:requiresBody:inRemoteMailbox:]"];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
@@ -7602,13 +7602,13 @@ void __60__MFMailMessageLibrary_messageWithRemoteID_inRemoteMailbox___block_invo
   v16[3] = &unk_1E7AA3BD0;
   v16[4] = self;
   v20 = 6293567;
-  v12 = v8;
+  v12 = dsCopy;
   v17 = v12;
-  v13 = v9;
-  v21 = a4;
+  v13 = mailboxCopy;
+  bodyCopy = body;
   v18 = v13;
   v19 = &v22;
-  [v10 __performReadWithCaller:v11 usingBlock:v16];
+  [database __performReadWithCaller:v11 usingBlock:v16];
 
   v14 = v23[5];
   _Block_object_dispose(&v22, 8);
@@ -7667,30 +7667,30 @@ uint64_t __80__MFMailMessageLibrary_searchResultsWithRemoteIDs_requiresBody_inRe
   return 1;
 }
 
-- (id)copyMessagesWithRemoteIDs:(id)a3 options:(unsigned int)a4 inRemoteMailbox:(id)a5
+- (id)copyMessagesWithRemoteIDs:(id)ds options:(unsigned int)options inRemoteMailbox:(id)mailbox
 {
-  v8 = a3;
-  v9 = a5;
+  dsCopy = ds;
+  mailboxCopy = mailbox;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__6;
   v25 = __Block_byref_object_dispose__6;
   v26 = 0;
-  v10 = [(MFMailMessageLibrary *)self database];
+  database = [(MFMailMessageLibrary *)self database];
   v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary copyMessagesWithRemoteIDs:options:inRemoteMailbox:]"];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __74__MFMailMessageLibrary_copyMessagesWithRemoteIDs_options_inRemoteMailbox___block_invoke;
   v16[3] = &unk_1E7AA3BF8;
   v16[4] = self;
-  v20 = a4;
-  v12 = v8;
+  optionsCopy = options;
+  v12 = dsCopy;
   v17 = v12;
-  v13 = v9;
+  v13 = mailboxCopy;
   v18 = v13;
   v19 = &v21;
-  [v10 __performReadWithCaller:v11 usingBlock:v16];
+  [database __performReadWithCaller:v11 usingBlock:v16];
 
   v14 = v22[5];
   _Block_object_dispose(&v21, 8);
@@ -7729,25 +7729,25 @@ uint64_t __74__MFMailMessageLibrary_copyMessagesWithRemoteIDs_options_inRemoteMa
   return 1;
 }
 
-- (id)flagsForRemoteIDs:(id)a3 inRemoteMailbox:(id)a4
+- (id)flagsForRemoteIDs:(id)ds inRemoteMailbox:(id)mailbox
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v6, "count")}];
-  v9 = [(MFMailMessageLibrary *)self database];
+  dsCopy = ds;
+  mailboxCopy = mailbox;
+  v8 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(dsCopy, "count")}];
+  database = [(MFMailMessageLibrary *)self database];
   v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary flagsForRemoteIDs:inRemoteMailbox:]"];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __58__MFMailMessageLibrary_flagsForRemoteIDs_inRemoteMailbox___block_invoke;
   v17[3] = &unk_1E7AA3C20;
   v17[4] = self;
-  v11 = v6;
+  v11 = dsCopy;
   v18 = v11;
-  v12 = v7;
+  v12 = mailboxCopy;
   v19 = v12;
   v13 = v8;
   v20 = v13;
-  [v9 __performReadWithCaller:v10 usingBlock:v17];
+  [database __performReadWithCaller:v10 usingBlock:v17];
 
   v14 = v20;
   v15 = v13;
@@ -7791,39 +7791,39 @@ void __58__MFMailMessageLibrary_flagsForRemoteIDs_inRemoteMailbox___block_invoke
   [*(a1 + 32) setObject:v8 forKeyedSubscript:v4];
 }
 
-- (id)_remoteIDsStringForRemoteIDs:(id)a3 inMailbox:(id)a4
+- (id)_remoteIDsStringForRemoteIDs:(id)ds inMailbox:(id)mailbox
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DFF8] URLWithString:v6];
-  v8 = [v7 scheme];
-  v9 = [v8 isEqualToString:*MEMORY[0x1E699A698]];
+  dsCopy = ds;
+  mailboxCopy = mailbox;
+  v7 = [MEMORY[0x1E695DFF8] URLWithString:mailboxCopy];
+  scheme = [v7 scheme];
+  v9 = [scheme isEqualToString:*MEMORY[0x1E699A698]];
 
   if (v9)
   {
-    v10 = [v5 componentsJoinedByString:{@", "}];
+    ef_quotedSQLEscapedString = [dsCopy componentsJoinedByString:{@", "}];
   }
 
   else
   {
-    v11 = [v5 count];
+    v11 = [dsCopy count];
     if (v11)
     {
       if (v11 == 1)
       {
-        v12 = [v5 firstObject];
-        v10 = [v12 ef_quotedSQLEscapedString];
+        firstObject = [dsCopy firstObject];
+        ef_quotedSQLEscapedString = [firstObject ef_quotedSQLEscapedString];
       }
 
       else
       {
-        v10 = [MEMORY[0x1E696AD60] string];
+        ef_quotedSQLEscapedString = [MEMORY[0x1E696AD60] string];
         v23 = 0u;
         v24 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v13 = v5;
+        v13 = dsCopy;
         v14 = [v13 countByEnumeratingWithState:&v21 objects:v25 count:16];
         if (v14)
         {
@@ -7841,12 +7841,12 @@ void __58__MFMailMessageLibrary_flagsForRemoteIDs_inRemoteMailbox___block_invoke
               [*(*(&v21 + 1) + 8 * i) ef_quotedSQLEscapedString];
               if (v16)
                 v18 = {;
-                [(__CFString *)v10 appendString:v18];
+                [(__CFString *)ef_quotedSQLEscapedString appendString:v18];
               }
 
               else
                 v18 = {;
-                [(__CFString *)v10 appendFormat:@", %@", v18];
+                [(__CFString *)ef_quotedSQLEscapedString appendFormat:@", %@", v18];
               }
 
               v16 = 0;
@@ -7863,35 +7863,35 @@ void __58__MFMailMessageLibrary_flagsForRemoteIDs_inRemoteMailbox___block_invoke
 
     else
     {
-      v10 = &stru_1F273A5E0;
+      ef_quotedSQLEscapedString = &stru_1F273A5E0;
     }
   }
 
   v19 = *MEMORY[0x1E69E9840];
 
-  return v10;
+  return ef_quotedSQLEscapedString;
 }
 
-- (id)sequenceIdentifierForMailbox:(id)a3
+- (id)sequenceIdentifierForMailbox:(id)mailbox
 {
-  v4 = a3;
+  mailboxCopy = mailbox;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__6;
   v17 = __Block_byref_object_dispose__6;
   v18 = 0;
-  if (v4)
+  if (mailboxCopy)
   {
-    v5 = [(MFMailMessageLibrary *)self database];
+    database = [(MFMailMessageLibrary *)self database];
     v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary sequenceIdentifierForMailbox:]"];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __53__MFMailMessageLibrary_sequenceIdentifierForMailbox___block_invoke;
     v10[3] = &unk_1E7AA3C48;
-    v11 = v4;
+    v11 = mailboxCopy;
     v12 = &v13;
-    [v5 __performReadWithCaller:v6 usingBlock:v10];
+    [database __performReadWithCaller:v6 usingBlock:v10];
 
     v7 = v14[5];
   }
@@ -7935,14 +7935,14 @@ uint64_t __53__MFMailMessageLibrary_sequenceIdentifierForMailbox___block_invoke(
   return 1;
 }
 
-- (void)setSequenceIdentifier:(id)a3 forMailbox:(id)a4
+- (void)setSequenceIdentifier:(id)identifier forMailbox:(id)mailbox
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  identifierCopy = identifier;
+  mailboxCopy = mailbox;
+  if (mailboxCopy)
   {
     v8 = objc_alloc_init(MEMORY[0x1E699B608]);
-    v9 = [(MFMailMessageLibrary *)self database];
+    database = [(MFMailMessageLibrary *)self database];
     v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary setSequenceIdentifier:forMailbox:]"];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
@@ -7950,10 +7950,10 @@ uint64_t __53__MFMailMessageLibrary_sequenceIdentifierForMailbox___block_invoke(
     v12[3] = &unk_1E7AA3C20;
     v11 = v8;
     v13 = v11;
-    v14 = self;
-    v15 = v7;
-    v16 = v6;
-    [v9 __performWriteWithCaller:v10 usingBlock:v12];
+    selfCopy = self;
+    v15 = mailboxCopy;
+    v16 = identifierCopy;
+    [database __performWriteWithCaller:v10 usingBlock:v12];
   }
 }
 
@@ -8000,28 +8000,28 @@ uint64_t __57__MFMailMessageLibrary_setSequenceIdentifier_forMailbox___block_inv
   return v9;
 }
 
-- (id)sequenceIdentifierForMessagesWithRemoteIDs:(id)a3 inMailbox:(id)a4
+- (id)sequenceIdentifierForMessagesWithRemoteIDs:(id)ds inMailbox:(id)mailbox
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  mailboxCopy = mailbox;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__6;
   v20 = __Block_byref_object_dispose__6;
   v21 = 0;
-  if (v7 && [v6 count])
+  if (mailboxCopy && [dsCopy count])
   {
-    v8 = [(MFMailMessageLibrary *)self database];
+    database = [(MFMailMessageLibrary *)self database];
     v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary sequenceIdentifierForMessagesWithRemoteIDs:inMailbox:]"];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __77__MFMailMessageLibrary_sequenceIdentifierForMessagesWithRemoteIDs_inMailbox___block_invoke;
     v12[3] = &unk_1E7AA3528;
-    v13 = v6;
-    v14 = v7;
+    v13 = dsCopy;
+    v14 = mailboxCopy;
     v15 = &v16;
-    [v8 __performReadWithCaller:v9 usingBlock:v12];
+    [database __performReadWithCaller:v9 usingBlock:v12];
   }
 
   v10 = v17[5];
@@ -8101,20 +8101,20 @@ uint64_t __77__MFMailMessageLibrary_sequenceIdentifierForMessagesWithRemoteIDs_i
   return 1;
 }
 
-- (void)setSequenceIdentifier:(id)a3 forMessageWithLibraryID:(int64_t)a4
+- (void)setSequenceIdentifier:(id)identifier forMessageWithLibraryID:(int64_t)d
 {
-  v6 = a3;
-  if ([v6 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    v7 = [(MFMailMessageLibrary *)self database];
+    database = [(MFMailMessageLibrary *)self database];
     v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary setSequenceIdentifier:forMessageWithLibraryID:]"];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __70__MFMailMessageLibrary_setSequenceIdentifier_forMessageWithLibraryID___block_invoke;
     v9[3] = &unk_1E7AA3838;
-    v10 = v6;
-    v11 = a4;
-    [v7 __performWriteWithCaller:v8 usingBlock:v9];
+    v10 = identifierCopy;
+    dCopy = d;
+    [database __performWriteWithCaller:v8 usingBlock:v9];
   }
 }
 
@@ -8137,23 +8137,23 @@ uint64_t __70__MFMailMessageLibrary_setSequenceIdentifier_forMessageWithLibraryI
   return v6;
 }
 
-- (void)setSequenceIdentifier:(id)a3 forMessagesWithRemoteIDs:(id)a4 inMailbox:(id)a5
+- (void)setSequenceIdentifier:(id)identifier forMessagesWithRemoteIDs:(id)ds inMailbox:(id)mailbox
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 length] && objc_msgSend(v9, "count"))
+  identifierCopy = identifier;
+  dsCopy = ds;
+  mailboxCopy = mailbox;
+  if ([identifierCopy length] && objc_msgSend(dsCopy, "count"))
   {
-    v11 = [(MFMailMessageLibrary *)self database];
+    database = [(MFMailMessageLibrary *)self database];
     v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary setSequenceIdentifier:forMessagesWithRemoteIDs:inMailbox:]"];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __81__MFMailMessageLibrary_setSequenceIdentifier_forMessagesWithRemoteIDs_inMailbox___block_invoke;
     v13[3] = &unk_1E7AA3C70;
-    v14 = v9;
-    v15 = v8;
-    v16 = v10;
-    [v11 __performWriteWithCaller:v12 usingBlock:v13];
+    v14 = dsCopy;
+    v15 = identifierCopy;
+    v16 = mailboxCopy;
+    [database __performWriteWithCaller:v12 usingBlock:v13];
   }
 }
 
@@ -8223,12 +8223,12 @@ uint64_t __81__MFMailMessageLibrary_setSequenceIdentifier_forMessagesWithRemoteI
   return v14;
 }
 
-- (id)messageWithMessageID:(id)a3 options:(unsigned int)a4 inMailbox:(id)a5
+- (id)messageWithMessageID:(id)d options:(unsigned int)options inMailbox:(id)mailbox
 {
-  v7 = a3;
-  v8 = a5;
+  dCopy = d;
+  mailboxCopy = mailbox;
   v11 = -1;
-  if (!v7 || (sscanf([v7 UTF8String], "%d", &v11), v11 < 0))
+  if (!dCopy || (sscanf([dCopy UTF8String], "%d", &v11), v11 < 0))
   {
     v9 = 0;
   }
@@ -8241,11 +8241,11 @@ uint64_t __81__MFMailMessageLibrary_setSequenceIdentifier_forMessagesWithRemoteI
   return v9;
 }
 
-- (id)messagesWithMessageIDHeader:(id)a3
+- (id)messagesWithMessageIDHeader:(id)header
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [[MFMessageCriterion alloc] initWithType:1 qualifier:3 expression:v4];
+  headerCopy = header;
+  v5 = [[MFMessageCriterion alloc] initWithType:1 qualifier:3 expression:headerCopy];
   [(MFMessageCriterion *)v5 setCriterionIdentifier:*MEMORY[0x1E699B130]];
   [(MFMailMessageLibrary *)self messagesMatchingCriterion:v5 options:0];
   v17 = 0u;
@@ -8266,9 +8266,9 @@ uint64_t __81__MFMailMessageLibrary_setSequenceIdentifier_forMessagesWithRemoteI
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 mailbox];
-        v12 = [v11 store];
-        [v10 setMessageStore:v12];
+        mailbox = [v10 mailbox];
+        store = [mailbox store];
+        [v10 setMessageStore:store];
       }
 
       v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -8282,39 +8282,39 @@ uint64_t __81__MFMailMessageLibrary_setSequenceIdentifier_forMessagesWithRemoteI
   return v6;
 }
 
-- (id)_keyForOptions:(unsigned int)a3 protectedDataAvailable:(BOOL)a4 mailboxAvailable:(BOOL)a5 mailboxCached:(BOOL)a6
+- (id)_keyForOptions:(unsigned int)options protectedDataAvailable:(BOOL)available mailboxAvailable:(BOOL)mailboxAvailable mailboxCached:(BOOL)cached
 {
-  v6 = a3 | 0x20000;
-  if (!a4)
+  optionsCopy = options | 0x20000;
+  if (!available)
   {
-    v6 = a3;
+    optionsCopy = options;
   }
 
-  if (a5)
+  if (mailboxAvailable)
   {
-    v6 |= 0x40000u;
+    optionsCopy |= 0x40000u;
   }
 
-  if (a6)
+  if (cached)
   {
-    v7 = v6 | 0x20000000;
+    v7 = optionsCopy | 0x20000000;
   }
 
   else
   {
-    v7 = v6;
+    v7 = optionsCopy;
   }
 
   return [MEMORY[0x1E696AD98] numberWithUnsignedInt:v7];
 }
 
-- (id)messageWithLibraryID:(int64_t)a3 options:(unsigned int)a4 inMailbox:(id)a5 temporarilyUnavailable:(BOOL *)a6
+- (id)messageWithLibraryID:(int64_t)d options:(unsigned int)options inMailbox:(id)mailbox temporarilyUnavailable:(BOOL *)unavailable
 {
-  v11 = a5;
-  if ((a4 & 0xFC8F6040) != 0)
+  mailboxCopy = mailbox;
+  if ((options & 0xFC8F6040) != 0)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"MailMessageLibrary.m" lineNumber:4530 description:@"Unsupported option for fetching message"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MailMessageLibrary.m" lineNumber:4530 description:@"Unsupported option for fetching message"];
   }
 
   v46 = 0;
@@ -8337,33 +8337,33 @@ uint64_t __81__MFMailMessageLibrary_setSequenceIdentifier_forMessagesWithRemoteI
   v33 = __Block_byref_object_copy__6;
   v34 = __Block_byref_object_dispose__6;
   v35 = 0;
-  v12 = [(MFMailMessageLibrary *)self database];
+  database = [(MFMailMessageLibrary *)self database];
   v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary messageWithLibraryID:options:inMailbox:temporarilyUnavailable:]"];
   v18 = MEMORY[0x1E69E9820];
   v19 = 3221225472;
   v20 = __86__MFMailMessageLibrary_messageWithLibraryID_options_inMailbox_temporarilyUnavailable___block_invoke;
   v21 = &unk_1E7AA3CC0;
-  v29 = a4;
-  v22 = self;
+  optionsCopy = options;
+  selfCopy = self;
   v24 = &v46;
-  v28 = a3;
+  dCopy = d;
   v25 = &v40;
-  v14 = v11;
+  v14 = mailboxCopy;
   v23 = v14;
   v26 = &v36;
   v27 = &v30;
-  [v12 __performReadWithCaller:v13 usingBlock:&v18];
+  [database __performReadWithCaller:v13 usingBlock:&v18];
 
   if (*(v37 + 24) == 1 && v41[5])
   {
     os_unfair_lock_lock(&self->_mailboxLock);
-    [(NSCache *)self->_mailboxURLsToMailboxIDs setObject:v41[5] forKey:v14, v18, v19, v20, v21, v22];
+    [(NSCache *)self->_mailboxURLsToMailboxIDs setObject:v41[5] forKey:v14, v18, v19, v20, v21, selfCopy];
     os_unfair_lock_unlock(&self->_mailboxLock);
   }
 
-  if (a6)
+  if (unavailable)
   {
-    *a6 = *(v47 + 24);
+    *unavailable = *(v47 + 24);
   }
 
   v15 = v31[5];
@@ -8536,27 +8536,27 @@ void __86__MFMailMessageLibrary_messageWithLibraryID_options_inMailbox_temporari
   }
 }
 
-- (id)conversationIDsOfMessagesInSameThreadAsMessageWithLibraryID:(int64_t)a3 messageIDHash:(int64_t)a4
+- (id)conversationIDsOfMessagesInSameThreadAsMessageWithLibraryID:(int64_t)d messageIDHash:(int64_t)hash
 {
   v22 = *MEMORY[0x1E69E9840];
-  v7 = [MEMORY[0x1E699B810] indexSet];
-  v8 = [(MFMailMessageLibrary *)self database];
+  indexSet = [MEMORY[0x1E699B810] indexSet];
+  database = [(MFMailMessageLibrary *)self database];
   v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary conversationIDsOfMessagesInSameThreadAsMessageWithLibraryID:messageIDHash:]"];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __98__MFMailMessageLibrary_conversationIDsOfMessagesInSameThreadAsMessageWithLibraryID_messageIDHash___block_invoke;
   v14[3] = &unk_1E7AA3CE8;
-  v16 = a3;
-  v10 = v7;
+  dCopy = d;
+  v10 = indexSet;
   v15 = v10;
-  v17 = a4;
-  [v8 __performReadWithCaller:v9 usingBlock:v14];
+  hashCopy = hash;
+  [database __performReadWithCaller:v9 usingBlock:v14];
 
   v11 = +[MFMailMessageLibrary conversationCalculationLog];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v19 = a4;
+    hashCopy2 = hash;
     v20 = 2114;
     v21 = v10;
     _os_log_impl(&dword_1B0389000, v11, OS_LOG_TYPE_DEFAULT, "Threading %lld: conversation IDs of messages in the same thread: %{public}@", buf, 0x16u);
@@ -8653,21 +8653,21 @@ uint64_t __98__MFMailMessageLibrary_conversationIDsOfMessagesInSameThreadAsMessa
   return 1;
 }
 
-- (id)_copyReferenceHashesWithoutMessagesForMessageWithConversation:(id)a3
+- (id)_copyReferenceHashesWithoutMessagesForMessageWithConversation:(id)conversation
 {
-  v4 = a3;
+  conversationCopy = conversation;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v6 = [(MFMailMessageLibrary *)self database];
+  database = [(MFMailMessageLibrary *)self database];
   v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary _copyReferenceHashesWithoutMessagesForMessageWithConversation:]"];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __86__MFMailMessageLibrary__copyReferenceHashesWithoutMessagesForMessageWithConversation___block_invoke;
   v13[3] = &unk_1E7AA3D10;
-  v8 = v4;
+  v8 = conversationCopy;
   v14 = v8;
   v9 = v5;
   v15 = v9;
-  [v6 __performReadWithCaller:v7 usingBlock:v13];
+  [database __performReadWithCaller:v7 usingBlock:v13];
 
   v10 = v15;
   v11 = v9;
@@ -8708,9 +8708,9 @@ uint64_t __86__MFMailMessageLibrary__copyReferenceHashesWithoutMessagesForMessag
   return 1;
 }
 
-- (id)_getReferencesForHashesWithOwners:(id)a3
+- (id)_getReferencesForHashesWithOwners:(id)owners
 {
-  v4 = a3;
+  ownersCopy = owners;
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -8719,7 +8719,7 @@ uint64_t __86__MFMailMessageLibrary__copyReferenceHashesWithoutMessagesForMessag
   v10[4] = self;
   v6 = v5;
   v11 = v6;
-  [v4 enumerateKeysAndObjectsUsingBlock:v10];
+  [ownersCopy enumerateKeysAndObjectsUsingBlock:v10];
   v7 = v11;
   v8 = v6;
 
@@ -8780,10 +8780,10 @@ void __58__MFMailMessageLibrary__getReferencesForHashesWithOwners___block_invoke
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (int64_t)loadMoreMessagesForThreadContainingMessage:(id)a3 hasNoMoreMessages:(BOOL *)a4
+- (int64_t)loadMoreMessagesForThreadContainingMessage:(id)message hasNoMoreMessages:(BOOL *)messages
 {
-  v6 = a3;
-  v7 = [(MFMailMessageLibrary *)self remoteStoreForMessage:v6];
+  messageCopy = message;
+  v7 = [(MFMailMessageLibrary *)self remoteStoreForMessage:messageCopy];
   if ([v7 canFetchMessageIDs])
   {
     v8 = -1;
@@ -8796,7 +8796,7 @@ void __58__MFMailMessageLibrary__getReferencesForHashesWithOwners___block_invoke
         goto LABEL_19;
       }
 
-      v10 = [(MFMailMessageLibrary *)self _copyReferenceHashesWithoutMessagesForMessageWithConversation:v6];
+      v10 = [(MFMailMessageLibrary *)self _copyReferenceHashesWithoutMessagesForMessageWithConversation:messageCopy];
       v11 = [v10 count];
       v12 = v8;
       if (v11)
@@ -8814,7 +8814,7 @@ void __58__MFMailMessageLibrary__getReferencesForHashesWithOwners___block_invoke
         }
       }
 
-      if (v8 == v12 && a4)
+      if (v8 == v12 && messages)
       {
         break;
       }
@@ -8835,7 +8835,7 @@ void __58__MFMailMessageLibrary__getReferencesForHashesWithOwners___block_invoke
       goto LABEL_19;
     }
 
-    *a4 = 1;
+    *messages = 1;
   }
 
   else
@@ -8848,23 +8848,23 @@ LABEL_19:
   return v12;
 }
 
-- (void)reloadMailboxCacheIfNecessaryWithConnection:(id)a3
+- (void)reloadMailboxCacheIfNecessaryWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   if (!self->_mailboxURLToIDCache)
   {
-    [(MFMailMessageLibrary *)self reloadMailboxCacheWithConnection:v4];
+    [(MFMailMessageLibrary *)self reloadMailboxCacheWithConnection:connectionCopy];
   }
 }
 
-- (void)reloadMailboxCacheWithConnection:(id)a3
+- (void)reloadMailboxCacheWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
   pazResult = 0xAAAAAAAAAAAAAAAALL;
-  table = sqlite3_get_table([v4 sqlDB], "SELECT ROWID, url FROM mailboxes", &pazResult, &v13 + 1, &v13, 0);
-  [v4 checkForConnectionErrorWithMessage:@"selecting mailbox URLs"];
+  table = sqlite3_get_table([connectionCopy sqlDB], "SELECT ROWID, url FROM mailboxes", &pazResult, &v13 + 1, &v13, 0);
+  [connectionCopy checkForConnectionErrorWithMessage:@"selecting mailbox URLs"];
   if (!table)
   {
     for (i = HIDWORD(v13); HIDWORD(v13); --HIDWORD(v13))
@@ -8888,9 +8888,9 @@ LABEL_19:
   sqlite3_free_table(pazResult);
 }
 
-- (void)removeURLFromMailboxCache:(id)a3
+- (void)removeURLFromMailboxCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   if (self->_mailboxIDToURLCache)
   {
     _MFLockGlobalLock();
@@ -8905,7 +8905,7 @@ LABEL_19:
     v8 = 3221225472;
     v9 = __50__MFMailMessageLibrary_removeURLFromMailboxCache___block_invoke;
     v10 = &unk_1E7AA3D60;
-    v6 = v4;
+    v6 = cacheCopy;
     v11 = v6;
     v12 = &v13;
     [(NSMutableDictionary *)mailboxIDToURLCache enumerateKeysAndObjectsUsingBlock:&v7];
@@ -8931,7 +8931,7 @@ void __50__MFMailMessageLibrary_removeURLFromMailboxCache___block_invoke(uint64_
   }
 }
 
-- (id)urlForMailboxID:(int64_t)a3
+- (id)urlForMailboxID:(int64_t)d
 {
   v16 = 0;
   v17 = &v16;
@@ -8939,7 +8939,7 @@ void __50__MFMailMessageLibrary_removeURLFromMailboxCache___block_invoke(uint64_
   v19 = __Block_byref_object_copy__6;
   v20 = __Block_byref_object_dispose__6;
   v21 = 0;
-  if (*MEMORY[0x1E699A728] == a3)
+  if (*MEMORY[0x1E699A728] == d)
   {
     goto LABEL_2;
   }
@@ -8951,7 +8951,7 @@ void __50__MFMailMessageLibrary_removeURLFromMailboxCache___block_invoke(uint64_
 
   _MFLockGlobalLock();
   mailboxIDToURLCache = self->_mailboxIDToURLCache;
-  v8 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
   v9 = [(NSMutableDictionary *)mailboxIDToURLCache objectForKeyedSubscript:v8];
   v10 = v17[5];
   v17[5] = v9;
@@ -8961,16 +8961,16 @@ void __50__MFMailMessageLibrary_removeURLFromMailboxCache___block_invoke(uint64_
   if (!v5)
   {
 LABEL_13:
-    v11 = [(MFMailMessageLibrary *)self database];
+    database = [(MFMailMessageLibrary *)self database];
     v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary urlForMailboxID:]"];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __40__MFMailMessageLibrary_urlForMailboxID___block_invoke;
     v15[3] = &unk_1E7AA3D88;
     v15[5] = &v16;
-    v15[6] = a3;
+    v15[6] = d;
     v15[4] = self;
-    [v11 __performReadWithCaller:v12 usingBlock:v15];
+    [database __performReadWithCaller:v12 usingBlock:v15];
 
     v5 = v17[5];
     if (!v5)
@@ -9028,18 +9028,18 @@ uint64_t __40__MFMailMessageLibrary_urlForMailboxID___block_invoke(void *a1, voi
   return 1;
 }
 
-- (id)mailboxURLsForIDs:(id)a3
+- (id)mailboxURLsForIDs:(id)ds
 {
   v64 = *MEMORY[0x1E69E9840];
-  v43 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = self;
-  v45 = v43;
-  v46 = v4;
-  v6 = [MEMORY[0x1E695DF90] dictionary];
+  dsCopy = ds;
+  array = [MEMORY[0x1E695DF70] array];
+  selfCopy = self;
+  v45 = dsCopy;
+  v46 = array;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([v45 count])
   {
-    if (v5->_mailboxIDToURLCache)
+    if (selfCopy->_mailboxIDToURLCache)
     {
       _MFLockGlobalLock();
       v57 = 0u;
@@ -9061,11 +9061,11 @@ uint64_t __40__MFMailMessageLibrary_urlForMailboxID___block_invoke(void *a1, voi
             }
 
             v11 = *(*(&v55 + 1) + 8 * i);
-            v12 = [(NSMutableDictionary *)v5->_mailboxIDToURLCache objectForKeyedSubscript:v11];
+            v12 = [(NSMutableDictionary *)selfCopy->_mailboxIDToURLCache objectForKeyedSubscript:v11];
             if (v12)
             {
               v13 = [MEMORY[0x1E695DFF8] URLWithString:v12];
-              [v6 setObject:v13 forKeyedSubscript:v11];
+              [dictionary setObject:v13 forKeyedSubscript:v11];
             }
 
             else
@@ -9091,15 +9091,15 @@ uint64_t __40__MFMailMessageLibrary_urlForMailboxID___block_invoke(void *a1, voi
 
   if ([v46 count])
   {
-    v14 = v5;
+    v14 = selfCopy;
     v44 = v46;
     v15 = [v44 ef_map:&__block_literal_global_2679];
     v16 = MEMORY[0x1E696AEC0];
     v17 = [v15 componentsJoinedByString:{@", "}];
     v18 = [v16 stringWithFormat:@"SELECT ROWID, url FROM mailboxes WHERE ROWID IN (%@)", v17];;
 
-    v19 = [MEMORY[0x1E695DF90] dictionary];
-    v20 = [v14 database];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+    database = [v14 database];
     v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"readMailboxURLStringsFromDatabase"];
     v61[0] = MEMORY[0x1E69E9820];
     v61[1] = 3221225472;
@@ -9107,9 +9107,9 @@ uint64_t __40__MFMailMessageLibrary_urlForMailboxID___block_invoke(void *a1, voi
     v61[3] = &unk_1E7AA3D10;
     v22 = v18;
     v62 = v22;
-    v23 = v19;
+    v23 = dictionary2;
     v63 = v23;
-    [v20 __performReadWithCaller:v21 usingBlock:v61];
+    [database __performReadWithCaller:v21 usingBlock:v61];
 
     v24 = v63;
     v25 = v23;
@@ -9174,7 +9174,7 @@ uint64_t __40__MFMailMessageLibrary_urlForMailboxID___block_invoke(void *a1, voi
             v37 = MEMORY[0x1E695DFF8];
             v38 = [v32 objectForKeyedSubscript:v36];
             v39 = [v37 URLWithString:v38];
-            [v6 setObject:v39 forKeyedSubscript:v36];
+            [dictionary setObject:v39 forKeyedSubscript:v36];
           }
 
           v33 = [v32 countByEnumeratingWithState:&v47 objects:v59 count:16];
@@ -9187,7 +9187,7 @@ uint64_t __40__MFMailMessageLibrary_urlForMailboxID___block_invoke(void *a1, voi
 
   else
   {
-    v40 = [v6 count];
+    v40 = [dictionary count];
     if (v40 != [v45 count])
     {
       __assert_rtn("[MFMailMessageLibrary mailboxURLsForIDs:]", "MailMessageLibrary.m", 4942, "urlsByID.count == mailboxIDs.count");
@@ -9196,22 +9196,22 @@ uint64_t __40__MFMailMessageLibrary_urlForMailboxID___block_invoke(void *a1, voi
 
   v41 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return dictionary;
 }
 
-- (int64_t)mailboxIDForURLString:(id)a3 createIfNecessary:(BOOL)a4
+- (int64_t)mailboxIDForURLString:(id)string createIfNecessary:(BOOL)necessary
 {
-  v4 = a4;
-  v6 = a3;
+  necessaryCopy = necessary;
+  stringCopy = string;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
-  v22 = [(MFMailMessageLibrary *)self mailboxIDForURLString:v6];
+  v22 = [(MFMailMessageLibrary *)self mailboxIDForURLString:stringCopy];
   v7 = v20[3];
-  if (v7 == *MEMORY[0x1E699A728] && v4)
+  if (v7 == *MEMORY[0x1E699A728] && necessaryCopy)
   {
     v9 = objc_alloc_init(MEMORY[0x1E699B608]);
-    v10 = [(MFMailMessageLibrary *)self database];
+    database = [(MFMailMessageLibrary *)self database];
     v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary mailboxIDForURLString:createIfNecessary:]"];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
@@ -9220,9 +9220,9 @@ uint64_t __40__MFMailMessageLibrary_urlForMailboxID___block_invoke(void *a1, voi
     v12 = v9;
     v18 = &v19;
     v15 = v12;
-    v16 = self;
-    v17 = v6;
-    [v10 __performWriteWithCaller:v11 usingBlock:v14];
+    selfCopy = self;
+    v17 = stringCopy;
+    [database __performWriteWithCaller:v11 usingBlock:v14];
 
     v7 = v20[3];
   }
@@ -9241,40 +9241,40 @@ uint64_t __64__MFMailMessageLibrary_mailboxIDForURLString_createIfNecessary___bl
   return 1;
 }
 
-- (int64_t)mailboxIDForURLString:(id)a3
+- (int64_t)mailboxIDForURLString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v5 = *MEMORY[0x1E699A728];
   v19 = *MEMORY[0x1E699A728];
-  if ([v4 length])
+  if ([stringCopy length])
   {
     if (self->_mailboxURLToIDCache)
     {
       _MFLockGlobalLock();
-      v6 = [(NSMutableDictionary *)self->_mailboxURLToIDCache objectForKeyedSubscript:v4];
+      v6 = [(NSMutableDictionary *)self->_mailboxURLToIDCache objectForKeyedSubscript:stringCopy];
       _MFUnlockGlobalLock();
       if (v6)
       {
-        v7 = [v6 longLongValue];
-        v17[3] = v7;
+        longLongValue = [v6 longLongValue];
+        v17[3] = longLongValue;
       }
     }
 
     if (v17[3] == v5)
     {
-      v8 = [(MFMailMessageLibrary *)self database];
+      database = [(MFMailMessageLibrary *)self database];
       v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary mailboxIDForURLString:]"];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __46__MFMailMessageLibrary_mailboxIDForURLString___block_invoke;
       v12[3] = &unk_1E7AA3A68;
-      v14 = self;
+      selfCopy = self;
       v15 = &v16;
-      v13 = v4;
-      [v8 __performReadWithCaller:v9 usingBlock:v12];
+      v13 = stringCopy;
+      [database __performReadWithCaller:v9 usingBlock:v12];
     }
   }
 
@@ -9312,62 +9312,62 @@ uint64_t __46__MFMailMessageLibrary_mailboxIDForURLString___block_invoke(uint64_
   return 1;
 }
 
-- (id)mailboxURLForMessage:(id)a3
+- (id)mailboxURLForMessage:(id)message
 {
   v9[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 mailboxID] == -1)
+  messageCopy = message;
+  if ([messageCopy mailboxID] == -1)
   {
     v5 = EDLibraryLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      -[MFMailMessageLibrary mailboxURLForMessage:].cold.1(v9, [v4 libraryID]);
+      -[MFMailMessageLibrary mailboxURLForMessage:].cold.1(v9, [messageCopy libraryID]);
     }
   }
 
-  v6 = -[MFMailMessageLibrary urlForMailboxID:](self, "urlForMailboxID:", [v4 mailboxID]);
+  v6 = -[MFMailMessageLibrary urlForMailboxID:](self, "urlForMailboxID:", [messageCopy mailboxID]);
 
   v7 = *MEMORY[0x1E69E9840];
 
   return v6;
 }
 
-- (id)mailboxUidForMessage:(id)a3
+- (id)mailboxUidForMessage:(id)message
 {
-  v3 = [(MFMailMessageLibrary *)self mailboxURLForMessage:a3];
+  v3 = [(MFMailMessageLibrary *)self mailboxURLForMessage:message];
   v4 = [MailAccount mailboxUidFromActiveAccountsForURL:v3];
 
   return v4;
 }
 
-- (id)remoteStoreForMessage:(id)a3
+- (id)remoteStoreForMessage:(id)message
 {
-  v3 = [(MFMailMessageLibrary *)self mailboxUidForMessage:a3];
-  v4 = [v3 account];
-  v5 = [v4 storeForMailboxUid:v3];
+  v3 = [(MFMailMessageLibrary *)self mailboxUidForMessage:message];
+  account = [v3 account];
+  v5 = [account storeForMailboxUid:v3];
 
   return v5;
 }
 
-- (id)accountForMessage:(id)a3
+- (id)accountForMessage:(id)message
 {
-  v4 = a3;
-  v5 = -[MFMailMessageLibrary urlForMailboxID:](self, "urlForMailboxID:", [v4 mailboxID]);
+  messageCopy = message;
+  v5 = -[MFMailMessageLibrary urlForMailboxID:](self, "urlForMailboxID:", [messageCopy mailboxID]);
   v6 = [MailAccount accountWithURLString:v5];
 
   return v6;
 }
 
-- (BOOL)_canSelectMessagesWithOptions:(unsigned int)a3 connection:(id)a4
+- (BOOL)_canSelectMessagesWithOptions:(unsigned int)options connection:(id)connection
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(MFMailMessageLibrary *)self persistence];
-  v8 = [v7 messagePersistence];
+  optionsCopy = options;
+  connectionCopy = connection;
+  persistence = [(MFMailMessageLibrary *)self persistence];
+  messagePersistence = [persistence messagePersistence];
 
-  if (v8)
+  if (messagePersistence)
   {
-    v9 = (v4 & 0x8000) == 0 || [(MFMailMessageLibrary *)self isProtectedDataAvailable:v6];
+    v9 = (optionsCopy & 0x8000) == 0 || [(MFMailMessageLibrary *)self isProtectedDataAvailable:connectionCopy];
   }
 
   else
@@ -9384,23 +9384,23 @@ uint64_t __46__MFMailMessageLibrary_mailboxIDForURLString___block_invoke(uint64_
   return v9;
 }
 
-- (void)clearServerSearchFlagsForMessagesWithLibraryIDs:(id)a3
+- (void)clearServerSearchFlagsForMessagesWithLibraryIDs:(id)ds
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   v5 = objc_opt_new();
-  v6 = [(MFMailMessageLibrary *)self database];
+  database = [(MFMailMessageLibrary *)self database];
   v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary clearServerSearchFlagsForMessagesWithLibraryIDs:]"];
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __72__MFMailMessageLibrary_clearServerSearchFlagsForMessagesWithLibraryIDs___block_invoke;
   v16 = &unk_1E7AA3C70;
-  v8 = v4;
+  v8 = dsCopy;
   v17 = v8;
   v9 = v5;
   v18 = v9;
-  v19 = self;
-  [v6 __performReadWithCaller:v7 usingBlock:&v13];
+  selfCopy = self;
+  [database __performReadWithCaller:v7 usingBlock:&v13];
 
   if ([v9 count])
   {
@@ -9450,27 +9450,27 @@ void __72__MFMailMessageLibrary_clearServerSearchFlagsForMessagesWithLibraryIDs_
   [(MFMailMessageLibrary *)self _scheduleIncrementalVacuum];
 }
 
-- (void)addPostMigrationStep:(Class)a3
+- (void)addPostMigrationStep:(Class)step
 {
-  v4 = [(MFMailMessageLibrary *)self database];
-  [v4 addPostMigrationStep:a3];
+  database = [(MFMailMessageLibrary *)self database];
+  [database addPostMigrationStep:step];
 }
 
-- (unint64_t)flagsForConversationId:(int64_t)a3
+- (unint64_t)flagsForConversationId:(int64_t)id
 {
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v4 = [(MFMailMessageLibrary *)self database];
+  database = [(MFMailMessageLibrary *)self database];
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary flagsForConversationId:]"];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __47__MFMailMessageLibrary_flagsForConversationId___block_invoke;
   v8[3] = &unk_1E7AA3E00;
   v8[4] = &v9;
-  v8[5] = a3;
-  [v4 __performReadWithCaller:v5 usingBlock:v8];
+  v8[5] = id;
+  [database __performReadWithCaller:v5 usingBlock:v8];
 
   v6 = v10[3];
   _Block_object_dispose(&v9, 8);
@@ -9498,17 +9498,17 @@ uint64_t __47__MFMailMessageLibrary_flagsForConversationId___block_invoke(uint64
   return 1;
 }
 
-- (void)setFlags:(unint64_t)a3 forConversationId:(int64_t)a4
+- (void)setFlags:(unint64_t)flags forConversationId:(int64_t)id
 {
-  v6 = [(MFMailMessageLibrary *)self database];
+  database = [(MFMailMessageLibrary *)self database];
   v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary setFlags:forConversationId:]"];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __51__MFMailMessageLibrary_setFlags_forConversationId___block_invoke;
   v8[3] = &__block_descriptor_48_e41_B16__0__EDPersistenceDatabaseConnection_8l;
-  v8[4] = a3;
-  v8[5] = a4;
-  [v6 __performWriteWithCaller:v7 usingBlock:v8];
+  v8[4] = flags;
+  v8[5] = id;
+  [database __performWriteWithCaller:v7 usingBlock:v8];
 }
 
 uint64_t __51__MFMailMessageLibrary_setFlags_forConversationId___block_invoke(uint64_t a1, void *a2)
@@ -9530,23 +9530,23 @@ uint64_t __51__MFMailMessageLibrary_setFlags_forConversationId___block_invoke(ui
   return v6;
 }
 
-- (int64_t)_conversationIdForMessageIds:(id)a3
+- (int64_t)_conversationIdForMessageIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
   v5 = &stru_1F273A5E0;
-  v6 = [v4 firstIndex];
-  if (v6 != 0x7FFFFFFFFFFFFFFFLL)
+  firstIndex = [idsCopy firstIndex];
+  if (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
     for (i = &stru_1F273A5E0; ; i = v13)
     {
-      v5 = [(__CFString *)i stringByAppendingFormat:@"%lld", v6];
+      v5 = [(__CFString *)i stringByAppendingFormat:@"%lld", firstIndex];
 
-      v6 = [v4 indexGreaterThanIndex:v6];
-      if (v6 == 0x7FFFFFFFFFFFFFFFLL)
+      firstIndex = [idsCopy indexGreaterThanIndex:firstIndex];
+      if (firstIndex == 0x7FFFFFFFFFFFFFFFLL)
       {
         break;
       }
@@ -9555,7 +9555,7 @@ uint64_t __51__MFMailMessageLibrary_setFlags_forConversationId___block_invoke(ui
     }
   }
 
-  v7 = [(MFMailMessageLibrary *)self database];
+  database = [(MFMailMessageLibrary *)self database];
   v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary _conversationIdForMessageIds:]"];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -9564,7 +9564,7 @@ uint64_t __51__MFMailMessageLibrary_setFlags_forConversationId___block_invoke(ui
   v9 = v5;
   v15 = v9;
   v16 = &v17;
-  [v7 __performReadWithCaller:v8 usingBlock:v14];
+  [database __performReadWithCaller:v8 usingBlock:v14];
 
   v10 = v18[3];
   _Block_object_dispose(&v17, 8);
@@ -9593,30 +9593,30 @@ uint64_t __53__MFMailMessageLibrary__conversationIdForMessageIds___block_invoke(
   return 1;
 }
 
-- (id)storedIntegerPropertyWithName:(id)a3
+- (id)storedIntegerPropertyWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(MFMailMessageLibrary *)self _integerForQuery:@"SELECT value FROM properties WHERE key = ?" withTextArgument:v4];
+  nameCopy = name;
+  v5 = [(MFMailMessageLibrary *)self _integerForQuery:@"SELECT value FROM properties WHERE key = ?" withTextArgument:nameCopy];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v5];
 
   return v6;
 }
 
-- (void)setStoredIntegerPropertyWithName:(id)a3 value:(id)a4
+- (void)setStoredIntegerPropertyWithName:(id)name value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MFMailMessageLibrary *)self database];
+  nameCopy = name;
+  valueCopy = value;
+  database = [(MFMailMessageLibrary *)self database];
   v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary setStoredIntegerPropertyWithName:value:]"];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __63__MFMailMessageLibrary_setStoredIntegerPropertyWithName_value___block_invoke;
   v12[3] = &unk_1E7AA3D10;
-  v10 = v7;
+  v10 = valueCopy;
   v13 = v10;
-  v11 = v6;
+  v11 = nameCopy;
   v14 = v11;
-  [v8 __performWriteWithCaller:v9 usingBlock:v12];
+  [database __performWriteWithCaller:v9 usingBlock:v12];
 }
 
 uint64_t __63__MFMailMessageLibrary_setStoredIntegerPropertyWithName_value___block_invoke(uint64_t a1, void *a2)
@@ -9654,38 +9654,38 @@ uint64_t __63__MFMailMessageLibrary_setStoredIntegerPropertyWithName_value___blo
   return v10;
 }
 
-- (void)_notifyDidCompact:(BOOL)a3 messages:(id)a4 mailboxes:(id)a5
+- (void)_notifyDidCompact:(BOOL)compact messages:(id)messages mailboxes:(id)mailboxes
 {
-  v6 = a3;
-  v13 = a4;
-  v8 = a5;
+  compactCopy = compact;
+  messagesCopy = messages;
+  mailboxesCopy = mailboxes;
   v9 = &MailMessageStoreMessagesCompacted;
-  if (!v6)
+  if (!compactCopy)
   {
     v9 = MailMessageStoreMessagesWillBeCompacted;
   }
 
   v10 = *v9;
   v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if (v13)
+  if (messagesCopy)
   {
-    [v11 setObject:v13 forKeyedSubscript:@"messages"];
+    [v11 setObject:messagesCopy forKeyedSubscript:@"messages"];
   }
 
-  if (v8)
+  if (mailboxesCopy)
   {
-    [v11 setObject:v8 forKeyedSubscript:@"mailboxes"];
+    [v11 setObject:mailboxesCopy forKeyedSubscript:@"mailboxes"];
   }
 
-  v12 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v12 postNotificationName:v10 object:self userInfo:v11];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:v10 object:self userInfo:v11];
 }
 
-- (void)compactMessages:(id)a3 permanently:(BOOL)a4 notifyPersistence:(BOOL)a5
+- (void)compactMessages:(id)messages permanently:(BOOL)permanently notifyPersistence:(BOOL)persistence
 {
-  v5 = a5;
+  persistenceCopy = persistence;
   v64 = *MEMORY[0x1E69E9840];
-  v26 = a3;
+  messagesCopy = messages;
   v7 = +[MFActivityMonitor currentMonitor];
   [v7 addReason:@"MonitoredActivityReasonCompacting"];
 
@@ -9695,9 +9695,9 @@ uint64_t __63__MFMailMessageLibrary_setStoredIntegerPropertyWithName_value___blo
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v9 = v26;
+  v9 = messagesCopy;
   v10 = [v9 countByEnumeratingWithState:&v55 objects:v63 count:16];
-  v25 = v5;
+  v25 = persistenceCopy;
   v11 = 0;
   if (v10)
   {
@@ -9755,13 +9755,13 @@ uint64_t __63__MFMailMessageLibrary_setStoredIntegerPropertyWithName_value___blo
   v45 = 1;
   while (v52[3] < v48[3])
   {
-    v17 = [(MFMailMessageLibrary *)self database];
+    database = [(MFMailMessageLibrary *)self database];
     v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary compactMessages:permanently:notifyPersistence:]"];
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __70__MFMailMessageLibrary_compactMessages_permanently_notifyPersistence___block_invoke;
     v31[3] = &unk_1E7AA3E48;
-    v41 = a4;
+    permanentlyCopy = permanently;
     v32 = v29;
     v37 = v46;
     v38 = &v42;
@@ -9771,8 +9771,8 @@ uint64_t __63__MFMailMessageLibrary_setStoredIntegerPropertyWithName_value___blo
     v19 = v28;
     v34 = v19;
     v35 = v30;
-    v36 = self;
-    [v17 __performWriteWithCaller:v18 usingBlock:v31];
+    selfCopy = self;
+    [database __performWriteWithCaller:v18 usingBlock:v31];
 
     [v19 removeAllObjects];
     if ((v43[3] & 1) == 0)
@@ -9783,8 +9783,8 @@ uint64_t __63__MFMailMessageLibrary_setStoredIntegerPropertyWithName_value___blo
 
   if (v25)
   {
-    v20 = [(MFMailMessageLibrary *)self hookRegistry];
-    [v20 persistenceDidDeleteMessages:v9 generationWindow:v29];
+    hookRegistry = [(MFMailMessageLibrary *)self hookRegistry];
+    [hookRegistry persistenceDidDeleteMessages:v9 generationWindow:v29];
   }
 
   [(MFMailMessageLibrary *)self _removeSearchableItemsWithLibraryIDs:v30];
@@ -9948,27 +9948,27 @@ LABEL_20:
   return v28 & 1;
 }
 
-- (BOOL)_deleteMessages:(id)a3 connection:(id)a4
+- (BOOL)_deleteMessages:(id)messages connection:(id)connection
 {
-  v7 = a3;
-  v30 = v7;
-  v31 = a4;
-  v8 = [v7 count];
+  messagesCopy = messages;
+  v30 = messagesCopy;
+  connectionCopy = connection;
+  v8 = [messagesCopy count];
   if (v8 > *MEMORY[0x1E699B3A0])
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"MailMessageLibrary.m" lineNumber:5292 description:{@"Invalid parameter not satisfying: %@", @"messages.count <= EDMessageBatchSize"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MailMessageLibrary.m" lineNumber:5292 description:{@"Invalid parameter not satisfying: %@", @"messages.count <= EDMessageBatchSize"}];
   }
 
-  v29 = [v7 ef_map:&__block_literal_global_1315];
+  v29 = [messagesCopy ef_map:&__block_literal_global_1315];
   v9 = [v29 componentsJoinedByString:{@", "}];
   v27 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v26 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v25 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v28 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"SELECT sender, subject, summary, brand_indicator FROM messages WHERE ROWID IN (%@)", v9];
-  v11 = self;
-  v12 = [v31 preparedStatementForQueryString:v10];
+  selfCopy = self;
+  v12 = [connectionCopy preparedStatementForQueryString:v10];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __51__MFMailMessageLibrary__deleteMessages_connection___block_invoke_2;
@@ -9986,22 +9986,22 @@ LABEL_20:
   v18 = v32;
   if ((v17 & 1) == 0)
   {
-    v21 = v31;
-    [v31 handleError:v18 message:@"Fetching messages to delete"];
+    v21 = connectionCopy;
+    [connectionCopy handleError:v18 message:@"Fetching messages to delete"];
 LABEL_8:
     v22 = 0;
     goto LABEL_9;
   }
 
-  v19 = v11;
-  v20 = v11;
-  v21 = v31;
-  if (![(MFMailMessageLibrary *)v20 _addAddressesFromRecipientsForMessages:v9 toSet:v13 connection:v31]|| ![(MFMailMessageLibrary *)v19 _deleteMessages:v9 andCleanUpAddresses:v13 subjects:v14 summaries:v15 brandIndicators:v16 connection:v31])
+  v19 = selfCopy;
+  v20 = selfCopy;
+  v21 = connectionCopy;
+  if (![(MFMailMessageLibrary *)v20 _addAddressesFromRecipientsForMessages:v9 toSet:v13 connection:connectionCopy]|| ![(MFMailMessageLibrary *)v19 _deleteMessages:v9 andCleanUpAddresses:v13 subjects:v14 summaries:v15 brandIndicators:v16 connection:connectionCopy])
   {
     goto LABEL_8;
   }
 
-  [(MFMailMessageLibrary *)v19 _removeGlobalDataForMessagesIfNecessary:v30 connection:v31];
+  [(MFMailMessageLibrary *)v19 _removeGlobalDataForMessagesIfNecessary:v30 connection:connectionCopy];
   v22 = 1;
 LABEL_9:
 
@@ -10053,26 +10053,26 @@ void __51__MFMailMessageLibrary__deleteMessages_connection___block_invoke_2(id *
   }
 }
 
-- (BOOL)_addAddressesFromRecipientsForMessages:(id)a3 toSet:(id)a4 connection:(id)a5
+- (BOOL)_addAddressesFromRecipientsForMessages:(id)messages toSet:(id)set connection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v8 count])
+  messagesCopy = messages;
+  setCopy = set;
+  connectionCopy = connection;
+  if ([setCopy count])
   {
-    v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"SELECT DISTINCT address FROM recipients WHERE message IN (%@)", v7];
-    v11 = [v9 preparedStatementForQueryString:v10];
+    messagesCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"SELECT DISTINCT address FROM recipients WHERE message IN (%@)", messagesCopy];
+    v11 = [connectionCopy preparedStatementForQueryString:messagesCopy];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __80__MFMailMessageLibrary__addAddressesFromRecipientsForMessages_toSet_connection___block_invoke;
     v16[3] = &unk_1E7AA3610;
-    v17 = v8;
+    v17 = setCopy;
     v15 = 0;
     v12 = [v11 executeUsingBlock:v16 error:&v15];
     v13 = v15;
     if ((v12 & 1) == 0)
     {
-      [v9 handleError:v13 message:@"Fetching recipient addresses for messages"];
+      [connectionCopy handleError:v13 message:@"Fetching recipient addresses for messages"];
     }
   }
 
@@ -10092,45 +10092,45 @@ void __80__MFMailMessageLibrary__addAddressesFromRecipientsForMessages_toSet_con
   [v2 addObject:v3];
 }
 
-- (BOOL)_deleteMessages:(id)a3 andCleanUpAddresses:(id)a4 subjects:(id)a5 summaries:(id)a6 brandIndicators:(id)a7 connection:(id)a8
+- (BOOL)_deleteMessages:(id)messages andCleanUpAddresses:(id)addresses subjects:(id)subjects summaries:(id)summaries brandIndicators:(id)indicators connection:(id)connection
 {
   v39 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v36 = a6;
-  v17 = a7;
-  v18 = a8;
-  v34 = v14;
-  v35 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"DELETE FROM messages WHERE ROWID IN (%@)", v14];
-  if ([v18 executeStatementString:? errorMessage:?])
+  messagesCopy = messages;
+  addressesCopy = addresses;
+  subjectsCopy = subjects;
+  summariesCopy = summaries;
+  indicatorsCopy = indicators;
+  connectionCopy = connection;
+  v34 = messagesCopy;
+  messagesCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"DELETE FROM messages WHERE ROWID IN (%@)", messagesCopy];
+  if ([connectionCopy executeStatementString:? errorMessage:?])
   {
-    v32 = [(MFMailMessageLibrary *)self _existingValuesForColumn:@"sender" table:@"messages" fromValues:v15 connection:v18];
-    [v15 minusSet:?];
-    v33 = [(MFMailMessageLibrary *)self _existingValuesForColumn:@"address" table:@"recipients" fromValues:v15 connection:v18];
-    [v15 minusSet:?];
-    v31 = [(MFMailMessageLibrary *)self _deleteRows:v15 fromTable:@"addresses" connection:v18];
-    v19 = [(MFMailMessageLibrary *)self persistence];
-    v20 = [v19 businessPersistence];
-    [v20 addressIDsWereDeleted:v15 connection:v18];
+    v32 = [(MFMailMessageLibrary *)self _existingValuesForColumn:@"sender" table:@"messages" fromValues:addressesCopy connection:connectionCopy];
+    [addressesCopy minusSet:?];
+    v33 = [(MFMailMessageLibrary *)self _existingValuesForColumn:@"address" table:@"recipients" fromValues:addressesCopy connection:connectionCopy];
+    [addressesCopy minusSet:?];
+    v31 = [(MFMailMessageLibrary *)self _deleteRows:addressesCopy fromTable:@"addresses" connection:connectionCopy];
+    persistence = [(MFMailMessageLibrary *)self persistence];
+    businessPersistence = [persistence businessPersistence];
+    [businessPersistence addressIDsWereDeleted:addressesCopy connection:connectionCopy];
 
-    v21 = [(MFMailMessageLibrary *)self _existingValuesForColumn:@"subject" table:@"messages" fromValues:v16 connection:v18];
-    [v16 minusSet:v21];
+    v21 = [(MFMailMessageLibrary *)self _existingValuesForColumn:@"subject" table:@"messages" fromValues:subjectsCopy connection:connectionCopy];
+    [subjectsCopy minusSet:v21];
     v22 = MFLogGeneral();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v38 = v16;
+      v38 = subjectsCopy;
       _os_log_impl(&dword_1B0389000, v22, OS_LOG_TYPE_DEFAULT, "Deleting subjectID set: %{public}@", buf, 0xCu);
     }
 
-    v23 = [(MFMailMessageLibrary *)self _deleteRows:v16 fromTable:@"subjects" connection:v18];
-    v24 = [(MFMailMessageLibrary *)self _existingValuesForColumn:@"summary" table:@"messages" fromValues:v36 connection:v18];
-    [v36 minusSet:v24];
-    v25 = [(MFMailMessageLibrary *)self _deleteRows:v36 fromTable:@"summaries" connection:v18];
-    v26 = [(MFMailMessageLibrary *)self _existingValuesForColumn:@"brand_indicator" table:@"messages" fromValues:v17 connection:v18];
-    [v17 minusSet:v26];
-    v27 = [(MFMailMessageLibrary *)self _deleteRows:v17 fromTable:@"brand_indicators" connection:v18];
+    v23 = [(MFMailMessageLibrary *)self _deleteRows:subjectsCopy fromTable:@"subjects" connection:connectionCopy];
+    v24 = [(MFMailMessageLibrary *)self _existingValuesForColumn:@"summary" table:@"messages" fromValues:summariesCopy connection:connectionCopy];
+    [summariesCopy minusSet:v24];
+    v25 = [(MFMailMessageLibrary *)self _deleteRows:summariesCopy fromTable:@"summaries" connection:connectionCopy];
+    v26 = [(MFMailMessageLibrary *)self _existingValuesForColumn:@"brand_indicator" table:@"messages" fromValues:indicatorsCopy connection:connectionCopy];
+    [indicatorsCopy minusSet:v26];
+    v27 = [(MFMailMessageLibrary *)self _deleteRows:indicatorsCopy fromTable:@"brand_indicators" connection:connectionCopy];
 
     v28 = v27 && v25 && v23 && v31;
   }
@@ -10144,12 +10144,12 @@ void __80__MFMailMessageLibrary__addAddressesFromRecipientsForMessages_toSet_con
   return v28;
 }
 
-- (void)_removeGlobalDataForMessagesIfNecessary:(id)a3 connection:(id)a4
+- (void)_removeGlobalDataForMessagesIfNecessary:(id)necessary connection:(id)connection
 {
   v67 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v40 = a4;
-  v41 = [MEMORY[0x1E699B860] transactionWithDescription:{@"Transaction for removing files after compaction", v5}];
+  necessaryCopy = necessary;
+  connectionCopy = connection;
+  v41 = [MEMORY[0x1E699B860] transactionWithDescription:{@"Transaction for removing files after compaction", necessaryCopy}];
   v6 = objc_opt_new();
   v44 = objc_opt_new();
   v45 = objc_opt_new();
@@ -10158,7 +10158,7 @@ void __80__MFMailMessageLibrary__addAddressesFromRecipientsForMessages_toSet_con
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  obj = v5;
+  obj = necessaryCopy;
   v8 = [obj countByEnumeratingWithState:&v62 objects:v66 count:16];
   if (v8)
   {
@@ -10173,35 +10173,35 @@ void __80__MFMailMessageLibrary__addAddressesFromRecipientsForMessages_toSet_con
         }
 
         v11 = *(*(&v62 + 1) + 8 * i);
-        v12 = [v11 account];
-        v13 = [v11 globalMessageID];
-        v14 = [MEMORY[0x1E696AD98] numberWithLongLong:v13];
+        account = [v11 account];
+        globalMessageID = [v11 globalMessageID];
+        v14 = [MEMORY[0x1E696AD98] numberWithLongLong:globalMessageID];
         [v6 addObject:v14];
 
-        v15 = [v12 personaIdentifier];
+        personaIdentifier = [account personaIdentifier];
 
-        if (v15)
+        if (personaIdentifier)
         {
-          v16 = [v7 objectForKeyedSubscript:v12];
+          v16 = [v7 objectForKeyedSubscript:account];
           if (!v16)
           {
             v16 = objc_opt_new();
-            [v7 setObject:v16 forKeyedSubscript:v12];
+            [v7 setObject:v16 forKeyedSubscript:account];
           }
 
-          v17 = [MEMORY[0x1E696AD98] numberWithLongLong:v13];
+          v17 = [MEMORY[0x1E696AD98] numberWithLongLong:globalMessageID];
           [v16 addObject:v17];
         }
 
-        else if ([v12 supportsPurge])
+        else if ([account supportsPurge])
         {
-          v16 = [MEMORY[0x1E696AD98] numberWithLongLong:v13];
+          v16 = [MEMORY[0x1E696AD98] numberWithLongLong:globalMessageID];
           [v44 addObject:v16];
         }
 
         else
         {
-          v16 = [MEMORY[0x1E696AD98] numberWithLongLong:v13];
+          v16 = [MEMORY[0x1E696AD98] numberWithLongLong:globalMessageID];
           [v45 addObject:v16];
         }
       }
@@ -10217,9 +10217,9 @@ void __80__MFMailMessageLibrary__addAddressesFromRecipientsForMessages_toSet_con
   v55[1] = 3221225472;
   v55[2] = __75__MFMailMessageLibrary__removeGlobalDataForMessagesIfNecessary_connection___block_invoke;
   v55[3] = &unk_1E7AA3F08;
-  v19 = v40;
+  v19 = connectionCopy;
   v56 = v19;
-  v57 = self;
+  selfCopy = self;
   v20 = v7;
   v58 = v20;
   v21 = v44;
@@ -10235,8 +10235,8 @@ void __80__MFMailMessageLibrary__addAddressesFromRecipientsForMessages_toSet_con
     v38 = objc_opt_new();
     v42 = [objc_alloc(MEMORY[0x1E699B948]) initWithResultColumn:@"generated_summary" table:@"message_global_data"];
     v24 = [MEMORY[0x1E699B8C8] column:*MEMORY[0x1E699B768]];
-    v25 = [v23 allObjects];
-    v26 = [v24 in:v25];
+    allObjects = [v23 allObjects];
+    v26 = [v24 in:allObjects];
     [v42 setWhere:v26];
 
     v53[0] = MEMORY[0x1E69E9820];
@@ -10246,11 +10246,11 @@ void __80__MFMailMessageLibrary__addAddressesFromRecipientsForMessages_toSet_con
     v27 = v38;
     v54 = v27;
     [v19 executeSelectStatement:v42 withBlock:v53 error:0];
-    v28 = [MEMORY[0x1E699B5C0] generatedSummariesTableName];
-    [(MFMailMessageLibrary *)self _deleteRows:v27 fromTable:v28 connection:v19];
+    generatedSummariesTableName = [MEMORY[0x1E699B5C0] generatedSummariesTableName];
+    [(MFMailMessageLibrary *)self _deleteRows:v27 fromTable:generatedSummariesTableName connection:v19];
 
-    v29 = [MEMORY[0x1E699B5C0] messageGlobalDataTableName];
-    [(MFMailMessageLibrary *)self _deleteRows:v23 fromTable:v29 connection:v19];
+    messageGlobalDataTableName = [MEMORY[0x1E699B5C0] messageGlobalDataTableName];
+    [(MFMailMessageLibrary *)self _deleteRows:v23 fromTable:messageGlobalDataTableName connection:v19];
   }
 
   v30 = self->_path;
@@ -10440,21 +10440,21 @@ void __75__MFMailMessageLibrary__removeGlobalDataForMessagesIfNecessary_connecti
   [v8 removeItemAtURL:v7 error:0];
 }
 
-- (id)_existingValuesForColumn:(id)a3 table:(id)a4 fromValues:(id)a5 connection:(id)a6
+- (id)_existingValuesForColumn:(id)column table:(id)table fromValues:(id)values connection:(id)connection
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  columnCopy = column;
+  tableCopy = table;
+  valuesCopy = values;
+  connectionCopy = connection;
   v13 = [MEMORY[0x1E695DFA8] set];
-  if ([v11 count])
+  if ([valuesCopy count])
   {
     v14 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v15 = [v11 allObjects];
-    v16 = [v15 componentsJoinedByString:{@", "}];
-    v17 = [v14 initWithFormat:@"SELECT DISTINCT %@ FROM %@ WHERE %@ IN (%@)", v9, v10, v9, v16];
+    allObjects = [valuesCopy allObjects];
+    v16 = [allObjects componentsJoinedByString:{@", "}];
+    v17 = [v14 initWithFormat:@"SELECT DISTINCT %@ FROM %@ WHERE %@ IN (%@)", columnCopy, tableCopy, columnCopy, v16];
 
-    v18 = [v12 preparedStatementForQueryString:v17];
+    v18 = [connectionCopy preparedStatementForQueryString:v17];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __77__MFMailMessageLibrary__existingValuesForColumn_table_fromValues_connection___block_invoke;
@@ -10466,7 +10466,7 @@ void __75__MFMailMessageLibrary__removeGlobalDataForMessagesIfNecessary_connecti
     v21 = v25;
     if ((v20 & 1) == 0)
     {
-      [v12 handleError:v21 message:@"Fetching value"];
+      [connectionCopy handleError:v21 message:@"Fetching value"];
     }
 
     v22 = v27;
@@ -10484,15 +10484,15 @@ void __77__MFMailMessageLibrary__existingValuesForColumn_table_fromValues_connec
   [v2 addObject:v3];
 }
 
-- (int64_t)_maxRowIDInSet:(id)a3
+- (int64_t)_maxRowIDInSet:(id)set
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  setCopy = set;
+  v4 = [setCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = *v12;
@@ -10503,17 +10503,17 @@ void __77__MFMailMessageLibrary__existingValuesForColumn_table_fromValues_connec
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(setCopy);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * i) longLongValue];
-        if (v8 > v6)
+        longLongValue = [*(*(&v11 + 1) + 8 * i) longLongValue];
+        if (longLongValue > v6)
         {
-          v6 = v8;
+          v6 = longLongValue;
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [setCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);
@@ -10528,32 +10528,32 @@ void __77__MFMailMessageLibrary__existingValuesForColumn_table_fromValues_connec
   return v6;
 }
 
-- (BOOL)_deleteRows:(id)a3 fromTable:(id)a4 connection:(id)a5
+- (BOOL)_deleteRows:(id)rows fromTable:(id)table connection:(id)connection
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  rowsCopy = rows;
+  tableCopy = table;
+  connectionCopy = connection;
+  if ([rowsCopy count])
   {
     v11 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v12 = [v8 allObjects];
-    v13 = [v12 componentsJoinedByString:{@", "}];
-    v14 = [v11 initWithFormat:@"DELETE FROM %@ WHERE ROWID IN (%@)", v9, v13];
+    allObjects = [rowsCopy allObjects];
+    v13 = [allObjects componentsJoinedByString:{@", "}];
+    v14 = [v11 initWithFormat:@"DELETE FROM %@ WHERE ROWID IN (%@)", tableCopy, v13];
 
-    [v10 executeStatementString:v14 errorMessage:@"Deleting rows"];
-    v15 = [(MFMailMessageLibrary *)self _maxRowIDInSet:v8];
+    [connectionCopy executeStatementString:v14 errorMessage:@"Deleting rows"];
+    v15 = [(MFMailMessageLibrary *)self _maxRowIDInSet:rowsCopy];
     v16 = MFLogGeneral();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       *buf = 138543618;
-      v21 = v9;
+      v21 = tableCopy;
       v22 = 2048;
       v23 = v15;
       _os_log_impl(&dword_1B0389000, v16, OS_LOG_TYPE_INFO, "Update largest_deleted_rowid for %{public}@ to %lld", buf, 0x16u);
     }
 
-    v17 = [MEMORY[0x1E699B6E8] updateLargestDeletedRowID:v15 forTableName:v9 withConnection:v10];
+    v17 = [MEMORY[0x1E699B6E8] updateLargestDeletedRowID:v15 forTableName:tableCopy withConnection:connectionCopy];
   }
 
   else
@@ -10565,22 +10565,22 @@ void __77__MFMailMessageLibrary__existingValuesForColumn_table_fromValues_connec
   return v17;
 }
 
-- (void)compactMailbox:(id)a3
+- (void)compactMailbox:(id)mailbox
 {
   v26[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  mailboxCopy = mailbox;
   v5 = +[MFActivityMonitor currentMonitor];
   [v5 addReason:@"MonitoredActivityReasonCompacting"];
 
   v6 = [MFMessageCriterion messageIsDeletedCriterion:1];
-  v7 = [MFMessageCriterion criterionForMailboxURL:v4];
+  v7 = [MFMessageCriterion criterionForMailboxURL:mailboxCopy];
   v26[0] = v7;
   v26[1] = v6;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:2];
   v9 = [MFMessageCriterion andCompoundCriterionWithCriteria:v8];
 
   v10 = [(MFMailMessageLibrary *)self messagesMatchingCriterion:v9 options:0];
-  v11 = [MailAccount mailboxUidFromActiveAccountsForURL:v4];
+  v11 = [MailAccount mailboxUidFromActiveAccountsForURL:mailboxCopy];
   v12 = v11;
   if (v11)
   {
@@ -10660,20 +10660,20 @@ uint64_t __39__MFMailMessageLibrary_compactMailbox___block_invoke_2(uint64_t a1,
   return v4;
 }
 
-- (BOOL)renameMailboxes:(id)a3 to:(id)a4
+- (BOOL)renameMailboxes:(id)mailboxes to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
+  mailboxesCopy = mailboxes;
+  toCopy = to;
   v8 = objc_alloc_init(MEMORY[0x1E699B608]);
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
   v31 = 0;
-  v9 = [v6 count];
-  if (v9 == [v7 count])
+  v9 = [mailboxesCopy count];
+  if (v9 == [toCopy count])
   {
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v11 = [(MFMailMessageLibrary *)self database];
+    database = [(MFMailMessageLibrary *)self database];
     v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary renameMailboxes:to:]"];
     v18 = MEMORY[0x1E69E9820];
     v19 = 3221225472;
@@ -10681,18 +10681,18 @@ uint64_t __39__MFMailMessageLibrary_compactMailbox___block_invoke_2(uint64_t a1,
     v21 = &unk_1E7AA4018;
     v13 = v8;
     v22 = v13;
-    v23 = v6;
+    v23 = mailboxesCopy;
     v27 = &v28;
-    v24 = v7;
-    v25 = self;
+    v24 = toCopy;
+    selfCopy = self;
     v14 = v10;
     v26 = v14;
-    [v11 __performWriteWithCaller:v12 usingBlock:&v18];
+    [database __performWriteWithCaller:v12 usingBlock:&v18];
 
     if ([v14 count])
     {
-      v15 = [(MFMailMessageLibrary *)self hookRegistry];
-      [v15 persistenceDidDeleteAllMessagesInMailboxesWithURLs:v14 generationWindow:v13];
+      hookRegistry = [(MFMailMessageLibrary *)self hookRegistry];
+      [hookRegistry persistenceDidDeleteAllMessagesInMailboxesWithURLs:v14 generationWindow:v13];
     }
 
     v16 = *(v29 + 6) == 0;
@@ -10761,15 +10761,15 @@ BOOL __43__MFMailMessageLibrary_renameMailboxes_to___block_invoke(uint64_t a1, v
   return v11;
 }
 
-- (void)deleteMailboxes:(id)a3 account:(id)a4
+- (void)deleteMailboxes:(id)mailboxes account:(id)account
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = a3;
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  mailboxesCopy = mailboxes;
+  v6 = [mailboxesCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -10780,14 +10780,14 @@ BOOL __43__MFMailMessageLibrary_renameMailboxes_to___block_invoke(uint64_t a1, v
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(mailboxesCopy);
         }
 
         [(MFMailMessageLibrary *)self removeAllMessagesFromMailbox:*(*(&v10 + 1) + 8 * v8++) removeMailbox:1 andNotify:0, v10];
       }
 
       while (v6 != v8);
-      v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [mailboxesCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -10796,19 +10796,19 @@ BOOL __43__MFMailMessageLibrary_renameMailboxes_to___block_invoke(uint64_t a1, v
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeAllMessagesFromMailbox:(id)a3 removeMailbox:(BOOL)a4 andNotify:(BOOL)a5
+- (void)removeAllMessagesFromMailbox:(id)mailbox removeMailbox:(BOOL)removeMailbox andNotify:(BOOL)notify
 {
-  v5 = a5;
-  v6 = a4;
+  notifyCopy = notify;
+  removeMailboxCopy = removeMailbox;
   v45[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  mailboxCopy = mailbox;
   v9 = +[MFActivityMonitor currentMonitor];
   [v9 addReason:@"MonitoredActivityReasonCompacting"];
 
-  v10 = [MFMessageCriterion criterionForMailboxURL:v8];
+  v10 = [MFMessageCriterion criterionForMailboxURL:mailboxCopy];
   v11 = [(MFMailMessageLibrary *)self messagesMatchingCriterion:v10 options:0];
-  v28 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v8];
-  v12 = [MailAccount mailboxUidFromActiveAccountsForURL:v8];
+  v28 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:mailboxCopy];
+  v12 = [MailAccount mailboxUidFromActiveAccountsForURL:mailboxCopy];
   if (v12)
   {
     [(MFMailMessageLibrary *)self removeSearchableItemsForMailbox:v12];
@@ -10820,7 +10820,7 @@ BOOL __43__MFMailMessageLibrary_renameMailboxes_to___block_invoke(uint64_t a1, v
     {
       v45[0] = v12;
       v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v45 count:1];
-      if (v5)
+      if (notifyCopy)
       {
         [(MFMailMessageLibrary *)self _notifyDidCompact:0 messages:v11 mailboxes:?];
       }
@@ -10831,7 +10831,7 @@ BOOL __43__MFMailMessageLibrary_renameMailboxes_to___block_invoke(uint64_t a1, v
       v27 = 0;
     }
 
-    v25 = [(MFMailMessageLibrary *)self hookRegistry];
+    hookRegistry = [(MFMailMessageLibrary *)self hookRegistry];
     v26 = objc_alloc_init(MEMORY[0x1E699B810]);
     v40 = 0;
     v41 = &v40;
@@ -10855,7 +10855,7 @@ BOOL __43__MFMailMessageLibrary_renameMailboxes_to___block_invoke(uint64_t a1, v
     v36 = &v40;
     v37 = v39;
     v38 = v13;
-    v17 = v25;
+    v17 = hookRegistry;
     v34 = v17;
     v18 = v28;
     v35 = v18;
@@ -10873,7 +10873,7 @@ BOOL __43__MFMailMessageLibrary_renameMailboxes_to___block_invoke(uint64_t a1, v
       LOBYTE(v19) = *(v41 + 24);
     }
 
-    if (v12 && (v19 & 1) != 0 && v5)
+    if (v12 && (v19 & 1) != 0 && notifyCopy)
     {
       [(MFMailMessageLibrary *)self _notifyDidCompact:1 messages:v11 mailboxes:v27];
     }
@@ -10882,17 +10882,17 @@ BOOL __43__MFMailMessageLibrary_renameMailboxes_to___block_invoke(uint64_t a1, v
     _Block_object_dispose(&v40, 8);
   }
 
-  if (v6)
+  if (removeMailboxCopy)
   {
-    v21 = [(MFMailMessageLibrary *)self database];
+    database = [(MFMailMessageLibrary *)self database];
     v22 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary removeAllMessagesFromMailbox:removeMailbox:andNotify:]"];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __77__MFMailMessageLibrary_removeAllMessagesFromMailbox_removeMailbox_andNotify___block_invoke_3;
     v29[3] = &unk_1E7AA3D10;
-    v30 = v8;
-    v31 = self;
-    [v21 __performWriteWithCaller:v22 usingBlock:v29];
+    v30 = mailboxCopy;
+    selfCopy = self;
+    [database __performWriteWithCaller:v22 usingBlock:v29];
   }
 
   v23 = *MEMORY[0x1E69E9840];
@@ -10971,68 +10971,68 @@ uint64_t __77__MFMailMessageLibrary_removeAllMessagesFromMailbox_removeMailbox_a
   return v4;
 }
 
-- (id)dataPathForMessage:(id)a3 type:(int64_t)a4
+- (id)dataPathForMessage:(id)message type:(int64_t)type
 {
-  v4 = [(MFMailMessageLibrary *)self dataFileURLForMessage:a3 type:a4];
-  v5 = [v4 path];
+  v4 = [(MFMailMessageLibrary *)self dataFileURLForMessage:message type:type];
+  path = [v4 path];
 
-  return v5;
+  return path;
 }
 
-- (id)dataFileURLForMessage:(id)a3 type:(int64_t)a4
+- (id)dataFileURLForMessage:(id)message type:(int64_t)type
 {
   v6 = @"full.emlx";
-  if (a4 == 1)
+  if (type == 1)
   {
     v6 = @"partial.emlx";
   }
 
-  if (a4 == 2)
+  if (type == 2)
   {
     v6 = @"headers.emlx";
   }
 
   v7 = v6;
-  v8 = [(MFMailMessageLibrary *)self dataDirectoryURLForMessage:a3];
+  v8 = [(MFMailMessageLibrary *)self dataDirectoryURLForMessage:message];
   v9 = [v8 URLByAppendingPathComponent:v7 isDirectory:0];
 
   return v9;
 }
 
-- (id)dataDirectoryURLForMessage:(id)a3
+- (id)dataDirectoryURLForMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(MFMailMessageLibrary *)self bodyMigrator];
-  [v5 migrateBodyForMessageIfNecessary:v4];
+  messageCopy = message;
+  bodyMigrator = [(MFMailMessageLibrary *)self bodyMigrator];
+  [bodyMigrator migrateBodyForMessageIfNecessary:messageCopy];
 
-  v6 = [v4 globalMessageID];
-  v7 = [v4 account];
-  v8 = [(MFMailMessageLibrary *)self messageBasePathForAccount:v7];
-  v9 = [MEMORY[0x1E699B5B0] messageDataDirectoryURLForGlobalMessageID:v6 basePath:v8 purgeable:{objc_msgSend(v7, "supportsPurge")}];
+  globalMessageID = [messageCopy globalMessageID];
+  account = [messageCopy account];
+  v8 = [(MFMailMessageLibrary *)self messageBasePathForAccount:account];
+  v9 = [MEMORY[0x1E699B5B0] messageDataDirectoryURLForGlobalMessageID:globalMessageID basePath:v8 purgeable:{objc_msgSend(account, "supportsPurge")}];
 
   return v9;
 }
 
-- (id)dataPathForMessage:(id)a3
+- (id)dataPathForMessage:(id)message
 {
-  v3 = [(MFMailMessageLibrary *)self dataPathForMessage:a3 type:0];
+  v3 = [(MFMailMessageLibrary *)self dataPathForMessage:message type:0];
 
   return v3;
 }
 
-- (id)dataPathForMessage:(id)a3 part:(id)a4
+- (id)dataPathForMessage:(id)message part:(id)part
 {
-  v4 = _dataPathForMessageAndPart(self, a3, a4);
+  v4 = _dataPathForMessageAndPart(self, message, part);
 
   return v4;
 }
 
-- (int64_t)deleteAttachmentsForMessage:(id)a3 inMailboxFileURL:(id)a4
+- (int64_t)deleteAttachmentsForMessage:(id)message inMailboxFileURL:(id)l
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messageCopy = message;
   v18 = +[MFAttachmentManager defaultManager];
-  [v18 attachmentsForMessage:v4 withSchemes:0];
+  [v18 attachmentsForMessage:messageCopy withSchemes:0];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
@@ -11052,17 +11052,17 @@ uint64_t __77__MFMailMessageLibrary_removeAllMessagesFromMailbox_removeMailbox_a
           objc_enumerationMutation(obj);
         }
 
-        v9 = [v4 storageLocationForAttachment:*(*(&v20 + 1) + 8 * v8)];
-        v10 = [MEMORY[0x1E696AC08] defaultManager];
-        v11 = [v10 attributesOfItemAtPath:v9 error:0];
+        v9 = [messageCopy storageLocationForAttachment:*(*(&v20 + 1) + 8 * v8)];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+        v11 = [defaultManager attributesOfItemAtPath:v9 error:0];
 
         if (v11)
         {
-          v12 = [v11 fileSize];
-          v13 = [MEMORY[0x1E696AC08] defaultManager];
-          [v13 removeItemAtPath:v9 error:0];
+          fileSize = [v11 fileSize];
+          defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+          [defaultManager2 removeItemAtPath:v9 error:0];
 
-          v5 += v12;
+          v5 += fileSize;
         }
 
         ++v8;
@@ -11078,11 +11078,11 @@ uint64_t __77__MFMailMessageLibrary_removeAllMessagesFromMailbox_removeMailbox_a
   v14 = EDLibraryLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v4 ef_publicDescription];
+    ef_publicDescription = [messageCopy ef_publicDescription];
     *buf = 134218242;
     v25 = v5;
     v26 = 2114;
-    v27 = v15;
+    v27 = ef_publicDescription;
     _os_log_impl(&dword_1B0389000, v14, OS_LOG_TYPE_DEFAULT, "Deleted %lld bytes of attachments for message %{public}@", buf, 0x16u);
   }
 
@@ -11090,12 +11090,12 @@ uint64_t __77__MFMailMessageLibrary_removeAllMessagesFromMailbox_removeMailbox_a
   return v5;
 }
 
-- (id)fileAttributesForMessage:(id)a3
+- (id)fileAttributesForMessage:(id)message
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [(MFMailMessageLibrary *)self dataPathForMessage:v4 type:0];
-  v7 = [v5 attributesOfItemAtPath:v6 error:0];
+  messageCopy = message;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v6 = [(MFMailMessageLibrary *)self dataPathForMessage:messageCopy type:0];
+  v7 = [defaultManager attributesOfItemAtPath:v6 error:0];
   if (v7)
   {
     v8 = v6;
@@ -11103,9 +11103,9 @@ uint64_t __77__MFMailMessageLibrary_removeAllMessagesFromMailbox_removeMailbox_a
 
   else
   {
-    v8 = [(MFMailMessageLibrary *)self dataPathForMessage:v4 type:1];
+    v8 = [(MFMailMessageLibrary *)self dataPathForMessage:messageCopy type:1];
 
-    v7 = [v5 attributesOfItemAtPath:v8 error:0];
+    v7 = [defaultManager attributesOfItemAtPath:v8 error:0];
   }
 
   v9 = v7;
@@ -11113,32 +11113,32 @@ uint64_t __77__MFMailMessageLibrary_removeAllMessagesFromMailbox_removeMailbox_a
   return v9;
 }
 
-- (void)fileURLForAttachmentPersistentID:(id)a3 messageID:(id)a4 result:(id)a5
+- (void)fileURLForAttachmentPersistentID:(id)d messageID:(id)iD result:(id)result
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = -[MFMailMessageLibrary messageWithLibraryID:options:inMailbox:](self, "messageWithLibraryID:options:inMailbox:", [v9 intValue], 0, 0);
+  dCopy = d;
+  iDCopy = iD;
+  resultCopy = result;
+  v11 = -[MFMailMessageLibrary messageWithLibraryID:options:inMailbox:](self, "messageWithLibraryID:options:inMailbox:", [iDCopy intValue], 0, 0);
   v12 = MEMORY[0x1E695DFF8];
-  v13 = [v11 account];
-  v14 = [(MFMailMessageLibrary *)self messageBasePathForAccount:v13];
+  account = [v11 account];
+  v14 = [(MFMailMessageLibrary *)self messageBasePathForAccount:account];
   v15 = [v12 fileURLWithPath:v14 isDirectory:1];
 
   v16 = +[MFAttachmentManager defaultManager];
-  v17 = [v16 persistenceManager];
-  v18 = [v17 attachmentURLForMessageAttachmentID:v8 basePath:v15];
+  persistenceManager = [v16 persistenceManager];
+  v18 = [persistenceManager attachmentURLForMessageAttachmentID:dCopy basePath:v15];
 
   if (!v18 || !v11)
   {
 LABEL_8:
-    (*(v10 + 2))(v10, 0, 0);
+    (*(resultCopy + 2))(resultCopy, 0, 0);
     goto LABEL_9;
   }
 
-  v19 = [MEMORY[0x1E696AC08] defaultManager];
-  v20 = [v18 path];
-  v21 = [v19 isReadableFileAtPath:v20];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v18 path];
+  v21 = [defaultManager isReadableFileAtPath:path];
 
   if (!v21)
   {
@@ -11153,25 +11153,25 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  (*(v10 + 2))(v10, v18, v11);
+  (*(resultCopy + 2))(resultCopy, v18, v11);
 LABEL_9:
 
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (id)dataConsumerForMessage:(id)a3 part:(id)a4
+- (id)dataConsumerForMessage:(id)message part:(id)part
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[_MFDataCollector alloc] initWithLibrary:self message:v6 part:v7 partial:0 incomplete:0 relaxDataProtection:0 data:0];
+  messageCopy = message;
+  partCopy = part;
+  v8 = [[_MFDataCollector alloc] initWithLibrary:self message:messageCopy part:partCopy partial:0 incomplete:0 relaxDataProtection:0 data:0];
 
   return v8;
 }
 
-- (id)existingMIMEPartsForMessage:(id)a3
+- (id)existingMIMEPartsForMessage:(id)message
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v20 = [(MFMailMessageLibrary *)self dataDirectoryURLForMessage:a3];
+  v20 = [(MFMailMessageLibrary *)self dataDirectoryURLForMessage:message];
   v3 = objc_alloc_init(MEMORY[0x1E696AC08]);
   v4 = *MEMORY[0x1E695DC30];
   v27[0] = *MEMORY[0x1E695DC30];
@@ -11180,7 +11180,7 @@ LABEL_9:
 
   if (v6)
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
@@ -11219,7 +11219,7 @@ LABEL_9:
             v17 = mimePartFromFilename(v14);
             if (v17)
             {
-              [v7 addObject:v17];
+              [array addObject:v17];
             }
           }
         }
@@ -11233,18 +11233,18 @@ LABEL_9:
 
   else
   {
-    v7 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
   }
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return array;
 }
 
-- (id)downloadedMessageDataForMessage:(id)a3
+- (id)downloadedMessageDataForMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(MFMailMessageLibrary *)self dataFileURLForMessage:v4 type:0];
+  messageCopy = message;
+  v5 = [(MFMailMessageLibrary *)self dataFileURLForMessage:messageCopy type:0];
   v6 = [v5 checkResourceIsReachableAndReturnError:0];
 
   if (v6)
@@ -11254,8 +11254,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v9 = [(MFMailMessageLibrary *)self existingMIMEPartsForMessage:v4];
-  v10 = [(MFMailMessageLibrary *)self dataFileURLForMessage:v4 type:1];
+  v9 = [(MFMailMessageLibrary *)self existingMIMEPartsForMessage:messageCopy];
+  v10 = [(MFMailMessageLibrary *)self dataFileURLForMessage:messageCopy type:1];
   v11 = mappedDispatchDataFromFileURL(v10);
   if (v11)
   {
@@ -11266,7 +11266,7 @@ LABEL_9:
   {
     if (![v10 checkResourceIsReachableAndReturnError:0])
     {
-      v14 = [(MFMailMessageLibrary *)self dataFileURLForMessage:v4 type:2];
+      v14 = [(MFMailMessageLibrary *)self dataFileURLForMessage:messageCopy type:2];
       v15 = mappedDispatchDataFromFileURL(v14);
 
       if (v15)
@@ -11295,27 +11295,27 @@ LABEL_9:
   return v8;
 }
 
-- (BOOL)_setMessageData:(id)a3 libraryID:(int64_t)a4 part:(id)a5 partial:(BOOL)a6 complete:(BOOL)a7 connection:(id)a8
+- (BOOL)_setMessageData:(id)data libraryID:(int64_t)d part:(id)part partial:(BOOL)partial complete:(BOOL)complete connection:(id)connection
 {
-  v9 = a7;
-  v10 = a6;
-  v15 = a3;
-  v16 = a5;
-  v17 = a8;
-  if ([v16 isEqualToString:@"summary"])
+  completeCopy = complete;
+  partialCopy = partial;
+  dataCopy = data;
+  partCopy = part;
+  connectionCopy = connection;
+  if ([partCopy isEqualToString:@"summary"])
   {
-    v42 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v42 handleFailureInMethod:a2 object:self file:@"MailMessageLibrary.m" lineNumber:5934 description:@"Attempting to store summary in protected message data table"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MailMessageLibrary.m" lineNumber:5934 description:@"Attempting to store summary in protected message data table"];
   }
 
-  v18 = [v17 preparedStatementForQueryString:@"SELECT rowid FROM message_data WHERE message_id = ? AND part = ?"];
-  v19 = [v18 compiled];
+  v18 = [connectionCopy preparedStatementForQueryString:@"SELECT rowid FROM message_data WHERE message_id = ? AND part = ?"];
+  compiled = [v18 compiled];
 
-  sqlite3_bind_int64(v19, 1, a4);
-  sqlite3_bind_text(v19, 2, [v16 UTF8String], -1, 0);
-  if (sqlite3_step(v19) == 100)
+  sqlite3_bind_int64(compiled, 1, d);
+  sqlite3_bind_text(compiled, 2, [partCopy UTF8String], -1, 0);
+  if (sqlite3_step(compiled) == 100)
   {
-    v20 = sqlite3_column_int64(v19, 0);
+    v20 = sqlite3_column_int64(compiled, 0);
   }
 
   else
@@ -11323,8 +11323,8 @@ LABEL_9:
     v20 = 0;
   }
 
-  sqlite3_reset(v19);
-  v21 = [v17 checkForConnectionErrorWithMessage:@"searching for existing message_data entry"] ^ 1;
+  sqlite3_reset(compiled);
+  v21 = [connectionCopy checkForConnectionErrorWithMessage:@"searching for existing message_data entry"] ^ 1;
   if (v21)
   {
     goto LABEL_33;
@@ -11340,67 +11340,67 @@ LABEL_9:
     v22 = @"INSERT INTO message_data (message_id, part, partial, complete, length) VALUES (:message_id, :part, :partial, :complete, :length)";
   }
 
-  v23 = [v17 preparedStatementForQueryString:v22];
-  v24 = [v23 compiled];
+  v23 = [connectionCopy preparedStatementForQueryString:v22];
+  compiled2 = [v23 compiled];
 
-  if (v24)
+  if (compiled2)
   {
-    v25 = sqlite3_bind_parameter_index(v24, ":message_id");
-    sqlite3_bind_int64(v24, v25, a4);
-    v26 = [v16 UTF8String];
-    v27 = sqlite3_bind_parameter_index(v24, ":part");
-    if (v26)
+    v25 = sqlite3_bind_parameter_index(compiled2, ":message_id");
+    sqlite3_bind_int64(compiled2, v25, d);
+    uTF8String = [partCopy UTF8String];
+    v27 = sqlite3_bind_parameter_index(compiled2, ":part");
+    if (uTF8String)
     {
-      sqlite3_bind_text(v24, v27, v26, -1, 0);
+      sqlite3_bind_text(compiled2, v27, uTF8String, -1, 0);
     }
 
     else
     {
-      sqlite3_bind_null(v24, v27);
+      sqlite3_bind_null(compiled2, v27);
     }
 
-    v28 = sqlite3_bind_parameter_index(v24, ":partial");
-    if (v10)
+    v28 = sqlite3_bind_parameter_index(compiled2, ":partial");
+    if (partialCopy)
     {
-      sqlite3_bind_int(v24, v28, 1);
-    }
-
-    else
-    {
-      sqlite3_bind_null(v24, v28);
-    }
-
-    v29 = sqlite3_bind_parameter_index(v24, ":complete");
-    if (v9)
-    {
-      sqlite3_bind_int(v24, v29, 1);
+      sqlite3_bind_int(compiled2, v28, 1);
     }
 
     else
     {
-      sqlite3_bind_null(v24, v29);
+      sqlite3_bind_null(compiled2, v28);
+    }
+
+    v29 = sqlite3_bind_parameter_index(compiled2, ":complete");
+    if (completeCopy)
+    {
+      sqlite3_bind_int(compiled2, v29, 1);
+    }
+
+    else
+    {
+      sqlite3_bind_null(compiled2, v29);
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v30 = sqlite3_bind_parameter_index(v24, ":length");
-      sqlite3_bind_int(v24, v30, [v15 length]);
+      v30 = sqlite3_bind_parameter_index(compiled2, ":length");
+      sqlite3_bind_int(compiled2, v30, [dataCopy length]);
     }
 
     else
     {
-      v31 = sqlite3_bind_parameter_index(v24, ":length");
-      sqlite3_bind_null(v24, v31);
+      v31 = sqlite3_bind_parameter_index(compiled2, ":length");
+      sqlite3_bind_null(compiled2, v31);
     }
 
     if (v20)
     {
-      v32 = sqlite3_bind_parameter_index(v24, ":rowid");
-      sqlite3_bind_int64(v24, v32, v20);
+      v32 = sqlite3_bind_parameter_index(compiled2, ":rowid");
+      sqlite3_bind_int64(compiled2, v32, v20);
     }
 
-    v33 = sqlite3_step(v24);
+    v33 = sqlite3_step(compiled2);
     if (v33 == 101)
     {
       insert_rowid = v20;
@@ -11414,24 +11414,24 @@ LABEL_9:
     v35 = (v33 != 101) | v21;
     if (!v20 && v33 == 101)
     {
-      insert_rowid = sqlite3_last_insert_rowid([v17 sqlDB]);
+      insert_rowid = sqlite3_last_insert_rowid([connectionCopy sqlDB]);
       v35 = 0;
     }
 
-    sqlite3_reset(v24);
-    [v17 checkForConnectionErrorWithMessage:@"inserting message data (unprotected)"];
+    sqlite3_reset(compiled2);
+    [connectionCopy checkForConnectionErrorWithMessage:@"inserting message data (unprotected)"];
     if (v35)
     {
       goto LABEL_33;
     }
 
-    if (v15)
+    if (dataCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v38 = [v15 ef_hexString];
-        v39 = sqlite3_mprintf("INSERT OR REPLACE INTO protected_message_data (ROWID, data) VALUES (%lld, X'%s');", insert_rowid, [v38 cStringUsingEncoding:1]);
+        ef_hexString = [dataCopy ef_hexString];
+        v39 = sqlite3_mprintf("INSERT OR REPLACE INTO protected_message_data (ROWID, data) VALUES (%lld, X'%s');", insert_rowid, [ef_hexString cStringUsingEncoding:1]);
 
         if (!v39)
         {
@@ -11449,7 +11449,7 @@ LABEL_44:
         goto LABEL_34;
       }
 
-      v40 = sqlite3_mprintf("INSERT OR REPLACE INTO protected_message_data (ROWID, data) VALUES (%lld, %Q);", insert_rowid, [v15 UTF8String]);
+      v40 = sqlite3_mprintf("INSERT OR REPLACE INTO protected_message_data (ROWID, data) VALUES (%lld, %Q);", insert_rowid, [dataCopy UTF8String]);
     }
 
     else
@@ -11462,7 +11462,7 @@ LABEL_44:
     {
 LABEL_43:
       v41 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v39];
-      [v17 executeStatementString:v41 errorMessage:@"Inserting into protected_message_data"];
+      [connectionCopy executeStatementString:v41 errorMessage:@"Inserting into protected_message_data"];
 
       sqlite3_free(v39);
       goto LABEL_44;
@@ -11471,7 +11471,7 @@ LABEL_43:
     goto LABEL_44;
   }
 
-  [v17 checkForConnectionErrorWithMessage:@"preparing insert statement"];
+  [connectionCopy checkForConnectionErrorWithMessage:@"preparing insert statement"];
 LABEL_33:
   v36 = 0;
 LABEL_34:
@@ -11479,40 +11479,40 @@ LABEL_34:
   return v36;
 }
 
-- (void)setSummary:(id)a3 forMessage:(id)a4
+- (void)setSummary:(id)summary forMessage:(id)message
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 mailbox];
-  if (v8)
+  summaryCopy = summary;
+  messageCopy = message;
+  mailbox = [messageCopy mailbox];
+  if (mailbox)
   {
     v9 = objc_alloc_init(MEMORY[0x1E699B608]);
-    v10 = [(MFMailMessageLibrary *)self database];
+    database = [(MFMailMessageLibrary *)self database];
     v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary setSummary:forMessage:]"];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __46__MFMailMessageLibrary_setSummary_forMessage___block_invoke;
     v21[3] = &unk_1E7AA3C70;
     v21[4] = self;
-    v22 = v6;
-    v12 = v7;
+    v22 = summaryCopy;
+    v12 = messageCopy;
     v23 = v12;
-    [v10 __performWriteWithCaller:v11 usingBlock:v21];
+    [database __performWriteWithCaller:v11 usingBlock:v21];
 
     v13 = MFLogGeneral();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v12 libraryID];
+      libraryID = [v12 libraryID];
       *buf = 134217984;
-      v25 = v14;
+      v25 = libraryID;
       _os_log_impl(&dword_1B0389000, v13, OS_LOG_TYPE_DEFAULT, "Summary updated for %lld", buf, 0xCu);
     }
 
-    v15 = [(MFMailMessageLibrary *)self hookRegistry];
+    hookRegistry = [(MFMailMessageLibrary *)self hookRegistry];
     v26[0] = *MEMORY[0x1E699B1D8];
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
-    [v15 persistenceDidUpdateProperties:v16 message:v12 generationWindow:v9];
+    [hookRegistry persistenceDidUpdateProperties:v16 message:v12 generationWindow:v9];
   }
 
   else
@@ -11520,15 +11520,15 @@ LABEL_34:
     v18 = EDLibraryLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      [v7 ef_publicDescription];
+      [messageCopy ef_publicDescription];
       objc_claimAutoreleasedReturnValue();
-      [v7 messageStore];
+      [messageCopy messageStore];
       objc_claimAutoreleasedReturnValue();
       [MFMailMessageLibrary setSummary:forMessage:];
     }
 
-    v19 = [MEMORY[0x1E699B7B0] currentDevice];
-    if ([v19 isInternal])
+    currentDevice = [MEMORY[0x1E699B7B0] currentDevice];
+    if ([currentDevice isInternal])
     {
     }
 
@@ -11545,7 +11545,7 @@ LABEL_34:
     v9 = EDLibraryLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
-      [v7 messageStore];
+      [messageCopy messageStore];
       objc_claimAutoreleasedReturnValue();
       [MFMailMessageLibrary setSummary:forMessage:];
     }
@@ -11563,14 +11563,14 @@ uint64_t __46__MFMailMessageLibrary_setSummary_forMessage___block_invoke(uint64_
   return v4;
 }
 
-- (BOOL)_setSummary:(id)a3 forMessageWithRowID:(int64_t)a4 connection:(id)a5
+- (BOOL)_setSummary:(id)summary forMessageWithRowID:(int64_t)d connection:(id)connection
 {
   v41 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  summaryCopy = summary;
+  connectionCopy = connection;
   v10 = [objc_alloc(MEMORY[0x1E699B948]) initWithResult:&unk_1F2775958 table:@"messages"];
   v11 = [MEMORY[0x1E699B8C8] column:*MEMORY[0x1E699B768]];
-  v12 = [MEMORY[0x1E696AD98] numberWithLongLong:a4];
+  v12 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
   v13 = [v11 equalTo:v12];
   [v10 setWhere:v13];
 
@@ -11585,7 +11585,7 @@ uint64_t __46__MFMailMessageLibrary_setSummary_forMessage___block_invoke(uint64_
   v31[2] = __67__MFMailMessageLibrary__setSummary_forMessageWithRowID_connection___block_invoke;
   v31[3] = &unk_1E7AA3810;
   v31[4] = &v32;
-  LOBYTE(v12) = [v9 executeSelectStatement:v10 withBlock:v31 error:&v30];
+  LOBYTE(v12) = [connectionCopy executeSelectStatement:v10 withBlock:v31 error:&v30];
   v14 = v30;
   if (v12)
   {
@@ -11594,28 +11594,28 @@ uint64_t __46__MFMailMessageLibrary_setSummary_forMessage___block_invoke(uint64_
       v15 = EDLibraryLog();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [MEMORY[0x1E699B7B0] currentDevice];
-        if ([v16 isInternal])
+        currentDevice = [MEMORY[0x1E699B7B0] currentDevice];
+        if ([currentDevice isInternal])
         {
-          [MEMORY[0x1E699B858] ec_partiallyRedactedStringForSubjectOrSummary:v8];
+          [MEMORY[0x1E699B858] ec_partiallyRedactedStringForSubjectOrSummary:summaryCopy];
         }
 
         else
         {
-          [MEMORY[0x1E699B858] fullyRedactedStringForString:v8];
+          [MEMORY[0x1E699B858] fullyRedactedStringForString:summaryCopy];
         }
         v20 = ;
         *buf = 134218242;
-        v38 = a4;
+        dCopy2 = d;
         v39 = 2112;
         v40 = v20;
         _os_log_impl(&dword_1B0389000, v15, OS_LOG_TYPE_DEFAULT, "Updating summary for message with row ID: %lld; summary: %@", buf, 0x16u);
       }
 
-      v28 = [v8 ef_UTF8ConvertibleString];
+      ef_UTF8ConvertibleString = [summaryCopy ef_UTF8ConvertibleString];
 
-      v21 = [(MFMailMessageLibrary *)self _findOrCreateDatabaseIDForSummary:v28 cache:0 connection:v9];
-      v18 = [v9 preparedStatementForQueryString:@"UPDATE messages SET summary = ? WHERE ROWID = ?"];
+      v21 = [(MFMailMessageLibrary *)self _findOrCreateDatabaseIDForSummary:ef_UTF8ConvertibleString cache:0 connection:connectionCopy];
+      v18 = [connectionCopy preparedStatementForQueryString:@"UPDATE messages SET summary = ? WHERE ROWID = ?"];
 
       if (v21 == *MEMORY[0x1E699A728])
       {
@@ -11628,7 +11628,7 @@ uint64_t __46__MFMailMessageLibrary_setSummary_forMessage___block_invoke(uint64_
       }
       v22 = ;
       v36[0] = v22;
-      v23 = [MEMORY[0x1E696AD98] numberWithLongLong:a4];
+      v23 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
       v36[1] = v23;
       v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:2];
       v29 = 0;
@@ -11637,10 +11637,10 @@ uint64_t __46__MFMailMessageLibrary_setSummary_forMessage___block_invoke(uint64_
 
       if ((v17 & 1) == 0)
       {
-        [v9 handleError:v14 message:@"Setting summary"];
+        [connectionCopy handleError:v14 message:@"Setting summary"];
       }
 
-      v8 = v28;
+      summaryCopy = ef_UTF8ConvertibleString;
     }
 
     else
@@ -11649,19 +11649,19 @@ uint64_t __46__MFMailMessageLibrary_setSummary_forMessage___block_invoke(uint64_
       v17 = 1;
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
-        v19 = [MEMORY[0x1E699B7B0] currentDevice];
-        if ([v19 isInternal])
+        currentDevice2 = [MEMORY[0x1E699B7B0] currentDevice];
+        if ([currentDevice2 isInternal])
         {
-          [MEMORY[0x1E699B858] ec_partiallyRedactedStringForSubjectOrSummary:v8];
+          [MEMORY[0x1E699B858] ec_partiallyRedactedStringForSubjectOrSummary:summaryCopy];
         }
 
         else
         {
-          [MEMORY[0x1E699B858] fullyRedactedStringForString:v8];
+          [MEMORY[0x1E699B858] fullyRedactedStringForString:summaryCopy];
         }
         v25 = ;
         *buf = 134218242;
-        v38 = a4;
+        dCopy2 = d;
         v39 = 2112;
         v40 = v25;
         _os_log_impl(&dword_1B0389000, v18, OS_LOG_TYPE_INFO, "Skipping summary update for non-existent message with row ID: %lld; summary: %@", buf, 0x16u);
@@ -11673,7 +11673,7 @@ uint64_t __46__MFMailMessageLibrary_setSummary_forMessage___block_invoke(uint64_
 
   else
   {
-    [v9 handleError:v14 message:@"Checking for message existence when setting summary"];
+    [connectionCopy handleError:v14 message:@"Checking for message existence when setting summary"];
     v17 = 0;
   }
 
@@ -11683,25 +11683,25 @@ uint64_t __46__MFMailMessageLibrary_setSummary_forMessage___block_invoke(uint64_
   return v17;
 }
 
-- (id)loadData:(id)a3 forMessage:(id)a4 usingBlock:(id)a5
+- (id)loadData:(id)data forMessage:(id)message usingBlock:(id)block
 {
   v31 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ([v9 isEqualToString:@"summary"])
+  dataCopy = data;
+  messageCopy = message;
+  blockCopy = block;
+  if ([dataCopy isEqualToString:@"summary"])
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"MailMessageLibrary.m" lineNumber:6068 description:@"Attempting to load summary from protected message data table"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MailMessageLibrary.m" lineNumber:6068 description:@"Attempting to load summary from protected message data table"];
   }
 
   v12 = EDLibraryLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    *&buf[4] = v9;
+    *&buf[4] = dataCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v10;
+    *&buf[14] = messageCopy;
     _os_log_impl(&dword_1B0389000, v12, OS_LOG_TYPE_INFO, "Fetching partName: %@ for message: %@", buf, 0x16u);
   }
 
@@ -11711,21 +11711,21 @@ uint64_t __46__MFMailMessageLibrary_setSummary_forMessage___block_invoke(uint64_
   v28 = __Block_byref_object_copy__6;
   v29 = __Block_byref_object_dispose__6;
   v30 = 0;
-  v13 = [(MFMailMessageLibrary *)self database];
+  database = [(MFMailMessageLibrary *)self database];
   v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary loadData:forMessage:usingBlock:]"];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __55__MFMailMessageLibrary_loadData_forMessage_usingBlock___block_invoke;
   v22[3] = &unk_1E7AA40B8;
   v22[4] = self;
-  v15 = v10;
+  v15 = messageCopy;
   v23 = v15;
-  v16 = v9;
+  v16 = dataCopy;
   v24 = v16;
   v26 = buf;
-  v17 = v11;
+  v17 = blockCopy;
   v25 = v17;
-  [v13 __performReadWithCaller:v14 usingBlock:v22];
+  [database __performReadWithCaller:v14 usingBlock:v22];
 
   v18 = *(*&buf[8] + 40);
   _Block_object_dispose(buf, 8);
@@ -11819,15 +11819,15 @@ void __55__MFMailMessageLibrary_loadData_forMessage_usingBlock___block_invoke_2(
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)loadMeetingDataForMessage:(id)a3
+- (id)loadMeetingDataForMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __50__MFMailMessageLibrary_loadMeetingDataForMessage___block_invoke;
   v8[3] = &unk_1E7AA40E0;
-  v9 = v4;
-  v5 = v4;
+  v9 = messageCopy;
+  v5 = messageCopy;
   v6 = [(MFMailMessageLibrary *)self loadData:@"meeting data" forMessage:v5 usingBlock:v8];
 
   return v6;
@@ -11853,15 +11853,15 @@ id __50__MFMailMessageLibrary_loadMeetingDataForMessage___block_invoke(uint64_t 
   return v3;
 }
 
-- (id)loadMeetingExternalIDForMessage:(id)a3
+- (id)loadMeetingExternalIDForMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __56__MFMailMessageLibrary_loadMeetingExternalIDForMessage___block_invoke;
   v8[3] = &unk_1E7AA40E0;
-  v9 = v4;
-  v5 = v4;
+  v9 = messageCopy;
+  v5 = messageCopy;
   v6 = [(MFMailMessageLibrary *)self loadData:@"meeting" forMessage:v5 usingBlock:v8];
 
   return v6;
@@ -11888,15 +11888,15 @@ id __56__MFMailMessageLibrary_loadMeetingExternalIDForMessage___block_invoke(uin
   return v4;
 }
 
-- (id)loadMeetingMetadataForMessage:(id)a3
+- (id)loadMeetingMetadataForMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __54__MFMailMessageLibrary_loadMeetingMetadataForMessage___block_invoke;
   v8[3] = &unk_1E7AA40E0;
-  v9 = v4;
-  v5 = v4;
+  v9 = messageCopy;
+  v5 = messageCopy;
   v6 = [(MFMailMessageLibrary *)self loadData:@"meeting metadata" forMessage:v5 usingBlock:v8];
 
   return v6;
@@ -11939,24 +11939,24 @@ id __54__MFMailMessageLibrary_loadMeetingMetadataForMessage___block_invoke(uint6
   return v8;
 }
 
-- (id)bodyDataAtPath:(id)a3 headerData:(id *)a4
+- (id)bodyDataAtPath:(id)path headerData:(id *)data
 {
   v15[4] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (![v5 length])
+  pathCopy = path;
+  if (![pathCopy length])
   {
     v9 = 0;
     goto LABEL_15;
   }
 
   v15[0] = 0;
-  v6 = [objc_alloc(MEMORY[0x1E69AD6B0]) initWithContentsOfFile:v5 options:3 error:v15];
+  v6 = [objc_alloc(MEMORY[0x1E69AD6B0]) initWithContentsOfFile:pathCopy options:3 error:v15];
   v7 = v15[0];
   v8 = v7;
   if (!v6)
   {
-    v10 = [v7 domain];
-    if ([v10 isEqual:*MEMORY[0x1E696A250]])
+    domain = [v7 domain];
+    if ([domain isEqual:*MEMORY[0x1E696A250]])
     {
       v11 = [v8 code] == 260;
 
@@ -11973,7 +11973,7 @@ id __54__MFMailMessageLibrary_loadMeetingMetadataForMessage___block_invoke(uint6
     v12 = EDLibraryLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [MEMORY[0x1E699B858] fullyOrPartiallyRedactedStringForString:v5];
+      [MEMORY[0x1E699B858] fullyOrPartiallyRedactedStringForString:pathCopy];
       objc_claimAutoreleasedReturnValue();
       [v8 ef_publicDescription];
       objc_claimAutoreleasedReturnValue();
@@ -11990,7 +11990,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v9 = _bodyDataFromData(v6, a4);
+  v9 = _bodyDataFromData(v6, data);
 LABEL_14:
 
 LABEL_15:
@@ -11999,19 +11999,19 @@ LABEL_15:
   return v9;
 }
 
-- (void)updateUnprefixedSubjectTo:(id)a3 forMessage:(id)a4
+- (void)updateUnprefixedSubjectTo:(id)to forMessage:(id)message
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  toCopy = to;
+  messageCopy = message;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"MailMessageLibrary.m" lineNumber:6164 description:@"Updating the subject but FF is not enabled"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MailMessageLibrary.m" lineNumber:6164 description:@"Updating the subject but FF is not enabled"];
   }
 
   v9 = objc_alloc_init(MEMORY[0x1E699B608]);
-  v10 = [(MFMailMessageLibrary *)self database];
+  database = [(MFMailMessageLibrary *)self database];
   v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary updateUnprefixedSubjectTo:forMessage:]"];
   v19 = MEMORY[0x1E69E9820];
   v20 = 3221225472;
@@ -12019,12 +12019,12 @@ LABEL_15:
   v22 = &unk_1E7AA3C20;
   v12 = v9;
   v23 = v12;
-  v13 = v8;
+  v13 = messageCopy;
   v24 = v13;
-  v25 = self;
-  v14 = v7;
+  selfCopy = self;
+  v14 = toCopy;
   v26 = v14;
-  [v10 __performWriteWithCaller:v11 usingBlock:&v19];
+  [database __performWriteWithCaller:v11 usingBlock:&v19];
 
   v15 = [(MFMailMessageLibrary *)self hookRegistry:v19];
   v27[0] = *MEMORY[0x1E699B1D0];
@@ -12048,16 +12048,16 @@ uint64_t __61__MFMailMessageLibrary_updateUnprefixedSubjectTo_forMessage___block
   return v6;
 }
 
-- (int64_t)_subjectIDForMessageWithLibraryID:(int64_t)a3 connection:(id)a4
+- (int64_t)_subjectIDForMessageWithLibraryID:(int64_t)d connection:(id)connection
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  connectionCopy = connection;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = *MEMORY[0x1E699A728];
-  v6 = [v5 preparedStatementForQueryString:{@"SELECT messages.subject, subjects.subject FROM messages LEFT OUTER JOIN subjects ON messages.subject = subjects.ROWID WHERE messages.ROWID = ?"}];
-  v7 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v6 = [connectionCopy preparedStatementForQueryString:{@"SELECT messages.subject, subjects.subject FROM messages LEFT OUTER JOIN subjects ON messages.subject = subjects.ROWID WHERE messages.ROWID = ?"}];
+  v7 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
   v20[0] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
   v14 = 0;
@@ -12071,7 +12071,7 @@ uint64_t __61__MFMailMessageLibrary_updateUnprefixedSubjectTo_forMessage___block
 
   if ((v9 & 1) == 0)
   {
-    [v5 handleError:v10 message:@"finding subject for message"];
+    [connectionCopy handleError:v10 message:@"finding subject for message"];
   }
 
   v11 = v17[3];
@@ -12090,18 +12090,18 @@ void __69__MFMailMessageLibrary__subjectIDForMessageWithLibraryID_connection___b
   *a4 = 1;
 }
 
-- (BOOL)_isSubjectIDUsedByOtherMessages:(int64_t)a3 besidesMessageWithDatabaseID:(int64_t)a4 connection:(id)a5
+- (BOOL)_isSubjectIDUsedByOtherMessages:(int64_t)messages besidesMessageWithDatabaseID:(int64_t)d connection:(id)connection
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v7 = a5;
+  connectionCopy = connection;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 0;
-  v8 = [v7 preparedStatementForQueryString:@"SELECT ROWID FROM messages WHERE messages.subject = ? AND ROWID != ? LIMIT 1"];
-  v9 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v8 = [connectionCopy preparedStatementForQueryString:@"SELECT ROWID FROM messages WHERE messages.subject = ? AND ROWID != ? LIMIT 1"];
+  v9 = [MEMORY[0x1E696AD98] numberWithLongLong:messages];
   v23[0] = v9;
-  v10 = [MEMORY[0x1E696AD98] numberWithLongLong:a4];
+  v10 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
   v23[1] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:2];
   v17 = 0;
@@ -12115,7 +12115,7 @@ void __69__MFMailMessageLibrary__subjectIDForMessageWithLibraryID_connection___b
 
   if ((v12 & 1) == 0)
   {
-    [v7 handleError:v13 message:@"finding message using same subject"];
+    [connectionCopy handleError:v13 message:@"finding message using same subject"];
   }
 
   v14 = *(v20 + 24);
@@ -12132,19 +12132,19 @@ uint64_t __96__MFMailMessageLibrary__isSubjectIDUsedByOtherMessages_besidesMessa
   return result;
 }
 
-- (BOOL)_updateSubjectWithRowID:(int64_t)a3 to:(id)a4 connection:(id)a5 outSubjectAlreadyExists:(BOOL *)a6
+- (BOOL)_updateSubjectWithRowID:(int64_t)d to:(id)to connection:(id)connection outSubjectAlreadyExists:(BOOL *)exists
 {
-  v9 = a4;
-  v10 = a5;
+  toCopy = to;
+  connectionCopy = connection;
   v11 = [objc_alloc(MEMORY[0x1E699B960]) initWithTable:@"subjects"];
-  [v11 setObject:v9 forKeyedSubscript:@"subject"];
+  [v11 setObject:toCopy forKeyedSubscript:@"subject"];
   v12 = [MEMORY[0x1E699B8C8] column:*MEMORY[0x1E699B768]];
-  v13 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v13 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
   v14 = [v12 equalTo:v13];
   [v11 setWhereClause:v14];
 
   v21 = 0;
-  v15 = [v10 executeUpdateStatement:v11 error:&v21];
+  v15 = [connectionCopy executeUpdateStatement:v11 error:&v21];
   v16 = v21;
   v17 = v16;
   if (v15)
@@ -12154,8 +12154,8 @@ uint64_t __96__MFMailMessageLibrary__isSubjectIDUsedByOtherMessages_besidesMessa
 
   else
   {
-    v19 = [v16 domain];
-    if ([v19 isEqualToString:*MEMORY[0x1E699B770]])
+    domain = [v16 domain];
+    if ([domain isEqualToString:*MEMORY[0x1E699B770]])
     {
       v18 = [v17 code] == 19;
     }
@@ -12165,21 +12165,21 @@ uint64_t __96__MFMailMessageLibrary__isSubjectIDUsedByOtherMessages_besidesMessa
       v18 = 0;
     }
 
-    [v10 handleError:v17 message:@"Updating subject"];
+    [connectionCopy handleError:v17 message:@"Updating subject"];
   }
 
-  if (a6)
+  if (exists)
   {
-    *a6 = v18;
+    *exists = v18;
   }
 
   return v15;
 }
 
-- (BOOL)_updateSubjectForMessageWithLibraryID:(int64_t)a3 to:(id)a4 connection:(id)a5
+- (BOOL)_updateSubjectForMessageWithLibraryID:(int64_t)d to:(id)to connection:(id)connection
 {
-  v8 = a5;
-  v9 = [(MFMailMessageLibrary *)self _findOrCreateDatabaseIDForSubject:a4 cache:0 connection:v8];
+  connectionCopy = connection;
+  v9 = [(MFMailMessageLibrary *)self _findOrCreateDatabaseIDForSubject:to cache:0 connection:connectionCopy];
   if (v9 == *MEMORY[0x1E699A728])
   {
     v10 = 0;
@@ -12192,28 +12192,28 @@ uint64_t __96__MFMailMessageLibrary__isSubjectIDUsedByOtherMessages_besidesMessa
     [v11 setObject:v12 forKeyedSubscript:@"subject"];
 
     v13 = [MEMORY[0x1E699B8C8] column:*MEMORY[0x1E699B768]];
-    v14 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+    v14 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
     v15 = [v13 equalTo:v14];
     [v11 setWhereClause:v15];
 
     v18 = 0;
-    v10 = [v8 executeUpdateStatement:v11 error:&v18];
+    v10 = [connectionCopy executeUpdateStatement:v11 error:&v18];
     v16 = v18;
     if ((v10 & 1) == 0)
     {
-      [v8 handleError:v16 message:@"Setting subject ID"];
+      [connectionCopy handleError:v16 message:@"Setting subject ID"];
     }
   }
 
   return v10;
 }
 
-- (id)headerDataAtPath:(id)a3
+- (id)headerDataAtPath:(id)path
 {
-  v3 = a3;
-  if (v3)
+  pathCopy = path;
+  if (pathCopy)
   {
-    v4 = [objc_alloc(MEMORY[0x1E69AD6B0]) initWithContentsOfFile:v3 options:3 error:0];
+    v4 = [objc_alloc(MEMORY[0x1E69AD6B0]) initWithContentsOfFile:pathCopy options:3 error:0];
   }
 
   else
@@ -12234,54 +12234,54 @@ uint64_t __96__MFMailMessageLibrary__isSubjectIDUsedByOtherMessages_besidesMessa
   return v7;
 }
 
-- (id)bodyDataForMessage:(id)a3 andHeaderDataIfReadilyAvailable:(id *)a4
+- (id)bodyDataForMessage:(id)message andHeaderDataIfReadilyAvailable:(id *)available
 {
-  v4 = [(MFMailMessageLibrary *)self bodyDataForMessage:a3 andHeaderDataIfReadilyAvailable:a4 isComplete:0];
+  v4 = [(MFMailMessageLibrary *)self bodyDataForMessage:message andHeaderDataIfReadilyAvailable:available isComplete:0];
 
   return v4;
 }
 
-- (id)bodyDataForMessage:(id)a3 andHeaderDataIfReadilyAvailable:(id *)a4 isComplete:(BOOL *)a5
+- (id)bodyDataForMessage:(id)message andHeaderDataIfReadilyAvailable:(id *)available isComplete:(BOOL *)complete
 {
-  v5 = [(MFMailMessageLibrary *)self bodyDataForMessage:a3 andHeaderDataIfReadilyAvailable:a4 isComplete:a5 isPartial:0];
+  v5 = [(MFMailMessageLibrary *)self bodyDataForMessage:message andHeaderDataIfReadilyAvailable:available isComplete:complete isPartial:0];
 
   return v5;
 }
 
-- (id)bodyDataForMessage:(id)a3 andHeaderDataIfReadilyAvailable:(id *)a4 isComplete:(BOOL *)a5 isPartial:(BOOL *)a6
+- (id)bodyDataForMessage:(id)message andHeaderDataIfReadilyAvailable:(id *)available isComplete:(BOOL *)complete isPartial:(BOOL *)partial
 {
   v36 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = [(MFMailMessageLibrary *)self dataPathForMessage:v10 type:0];
+  messageCopy = message;
+  v11 = [(MFMailMessageLibrary *)self dataPathForMessage:messageCopy type:0];
   if (v11)
   {
-    v12 = [(MFMailMessageLibrary *)self bodyDataAtPath:v11 headerData:a4];
+    v12 = [(MFMailMessageLibrary *)self bodyDataAtPath:v11 headerData:available];
     v13 = v12;
     if (v12)
     {
       v14 = v12;
       v15 = v11;
 LABEL_4:
-      if (a5)
+      if (complete)
       {
-        *a5 = 1;
+        *complete = 1;
       }
 
-      if (a6)
+      if (partial)
       {
-        *a6 = v13 == 0;
+        *partial = v13 == 0;
       }
 
-      if (a4)
+      if (available)
       {
         v16 = MFPersistenceLog();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
           v17 = [v14 length];
-          v18 = [*a4 length];
+          v18 = [*available length];
           v19 = [v14 length];
-          v20 = [*a4 length];
-          v21 = [v10 ef_publicDescription];
+          v20 = [*available length];
+          ef_publicDescription = [messageCopy ef_publicDescription];
           v28 = 134218754;
           v29 = v18 + v17;
           v30 = 2048;
@@ -12289,7 +12289,7 @@ LABEL_4:
           v32 = 2048;
           v33 = v20;
           v34 = 2114;
-          v35 = v21;
+          v35 = ef_publicDescription;
           _os_log_impl(&dword_1B0389000, v16, OS_LOG_TYPE_DEFAULT, "Read data from file of length %lu (body = %lu, header = %lu) for message %{public}@", &v28, 0x2Au);
         }
       }
@@ -12300,11 +12300,11 @@ LABEL_4:
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
           v24 = [v14 length];
-          v25 = [v10 ef_publicDescription];
+          ef_publicDescription2 = [messageCopy ef_publicDescription];
           v28 = 134218242;
           v29 = v24;
           v30 = 2114;
-          v31 = v25;
+          v31 = ef_publicDescription2;
           _os_log_impl(&dword_1B0389000, v16, OS_LOG_TYPE_DEFAULT, "Read body data from file of length %lu for message %{public}@", &v28, 0x16u);
         }
       }
@@ -12312,11 +12312,11 @@ LABEL_4:
       goto LABEL_23;
     }
 
-    v15 = [(MFMailMessageLibrary *)self dataPathForMessage:v10 type:1];
+    v15 = [(MFMailMessageLibrary *)self dataPathForMessage:messageCopy type:1];
 
     if (v15)
     {
-      v14 = [(MFMailMessageLibrary *)self bodyDataAtPath:v15 headerData:a4];
+      v14 = [(MFMailMessageLibrary *)self bodyDataAtPath:v15 headerData:available];
       if (v14)
       {
         goto LABEL_4;
@@ -12329,15 +12329,15 @@ LABEL_4:
     v15 = 0;
   }
 
-  v22 = _dataForMessageAndPart(self, v10, 0, 1, a5);
+  v22 = _dataForMessageAndPart(self, messageCopy, 0, 1, complete);
   v23 = v22;
   if (v22)
   {
-    v14 = _bodyDataFromData(v22, a4);
+    v14 = _bodyDataFromData(v22, available);
 
-    if (a6)
+    if (partial)
     {
-      *a6 = 0;
+      *partial = 0;
     }
   }
 
@@ -12353,20 +12353,20 @@ LABEL_23:
   return v14;
 }
 
-- (id)headerDataForMessage:(id)a3
+- (id)headerDataForMessage:(id)message
 {
-  v4 = a3;
-  v5 = _dataForMessageAndPart(self, v4, 0, 1, 0);
+  messageCopy = message;
+  v5 = _dataForMessageAndPart(self, messageCopy, 0, 1, 0);
   v6 = v5;
   if (!v5 || (v13 = 0, v7 = _bodyDataFromData(v5, &v13), (v8 = v13) == 0))
   {
-    v9 = [(MFMailMessageLibrary *)self dataPathForMessage:v4 type:0];
+    v9 = [(MFMailMessageLibrary *)self dataPathForMessage:messageCopy type:0];
     if (!v9 || ([(MFMailMessageLibrary *)self headerDataAtPath:v9], v8 = objc_claimAutoreleasedReturnValue(), v9, !v8))
     {
-      v10 = [(MFMailMessageLibrary *)self dataPathForMessage:v4 type:1];
+      v10 = [(MFMailMessageLibrary *)self dataPathForMessage:messageCopy type:1];
       if (!v10 || ([(MFMailMessageLibrary *)self headerDataAtPath:v10], v8 = objc_claimAutoreleasedReturnValue(), v10, !v8))
       {
-        v11 = [(MFMailMessageLibrary *)self dataPathForMessage:v4 type:2];
+        v11 = [(MFMailMessageLibrary *)self dataPathForMessage:messageCopy type:2];
         if (v11)
         {
           v8 = [(MFMailMessageLibrary *)self headerDataAtPath:v11];
@@ -12383,17 +12383,17 @@ LABEL_23:
   return v8;
 }
 
-- (id)fullBodyDataForMessage:(id)a3 andHeaderDataIfReadilyAvailable:(id *)a4
+- (id)fullBodyDataForMessage:(id)message andHeaderDataIfReadilyAvailable:(id *)available
 {
-  v6 = a3;
-  v7 = _dataForMessageAndPart(self, v6, 0, 0, 0);
+  messageCopy = message;
+  v7 = _dataForMessageAndPart(self, messageCopy, 0, 0, 0);
   v8 = v7;
-  if (!v7 || (_bodyDataFromData(v7, a4), v9 = objc_claimAutoreleasedReturnValue(), v8, (v10 = v9) == 0))
+  if (!v7 || (_bodyDataFromData(v7, available), v9 = objc_claimAutoreleasedReturnValue(), v8, (v10 = v9) == 0))
   {
-    v11 = [(MFMailMessageLibrary *)self dataPathForMessage:v6];
+    v11 = [(MFMailMessageLibrary *)self dataPathForMessage:messageCopy];
     if (v11)
     {
-      v10 = [(MFMailMessageLibrary *)self bodyDataAtPath:v11 headerData:a4];
+      v10 = [(MFMailMessageLibrary *)self bodyDataAtPath:v11 headerData:available];
     }
 
     else
@@ -12408,23 +12408,23 @@ LABEL_23:
   return v10;
 }
 
-- (id)dataForMimePart:(id)a3 isComplete:(BOOL *)a4
+- (id)dataForMimePart:(id)part isComplete:(BOOL *)complete
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 mimeBody];
-  v8 = [v7 message];
+  partCopy = part;
+  mimeBody = [partCopy mimeBody];
+  message = [mimeBody message];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v6 partNumber];
-    v10 = _dataForMessageAndPart(self, v8, v9, 1, a4);
+    partNumber = [partCopy partNumber];
+    v10 = _dataForMessageAndPart(self, message, partNumber, 1, complete);
 
     if (!v10)
     {
-      v11 = [v6 partNumber];
-      v12 = _dataPathForMessageAndPart(self, v8, v11);
+      partNumber2 = [partCopy partNumber];
+      v12 = _dataPathForMessageAndPart(self, message, partNumber2);
 
       if (v12)
       {
@@ -12433,23 +12433,23 @@ LABEL_23:
         v13 = v20;
         if (v10)
         {
-          if (a4)
+          if (complete)
           {
-            *a4 = 1;
+            *complete = 1;
           }
 
           v14 = MFLogGeneral();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
           {
             v15 = [v10 length];
-            v16 = [v8 ef_publicDescription];
-            v17 = [v6 partNumber];
+            ef_publicDescription = [message ef_publicDescription];
+            partNumber3 = [partCopy partNumber];
             *buf = 134218498;
             v22 = v15;
             v23 = 2114;
-            v24 = v16;
+            v24 = ef_publicDescription;
             v25 = 2114;
-            v26 = v17;
+            v26 = partNumber3;
             _os_log_impl(&dword_1B0389000, v14, OS_LOG_TYPE_INFO, "#CacheLoads data from file of length %lu for message %{public}@ part %{public}@", buf, 0x20u);
           }
         }
@@ -12483,9 +12483,9 @@ LABEL_23:
   return v10;
 }
 
-- (BOOL)hasCompleteDataForMimePart:(id)a3
+- (BOOL)hasCompleteDataForMimePart:(id)part
 {
-  v4 = a3;
+  partCopy = part;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -12494,32 +12494,32 @@ LABEL_23:
   v26 = &v25;
   v27 = 0x2020000000;
   v28 = 0;
-  v5 = [v4 mimeBody];
-  v6 = [v5 message];
+  mimeBody = [partCopy mimeBody];
+  message = [mimeBody message];
 
-  v7 = [(MFMailMessageLibrary *)self database];
+  database = [(MFMailMessageLibrary *)self database];
   v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary hasCompleteDataForMimePart:]"];
   v17 = MEMORY[0x1E69E9820];
   v18 = 3221225472;
   v19 = __51__MFMailMessageLibrary_hasCompleteDataForMimePart___block_invoke;
   v20 = &unk_1E7AA4108;
-  v9 = v6;
+  v9 = message;
   v21 = v9;
-  v10 = v4;
+  v10 = partCopy;
   v22 = v10;
   v23 = &v25;
   v24 = &v29;
-  [v7 __performReadWithCaller:v8 usingBlock:&v17];
+  [database __performReadWithCaller:v8 usingBlock:&v17];
 
   if ((v26[3] & 1) == 0)
   {
-    v11 = [v10 partNumber];
-    v12 = _dataPathForMessageAndPart(self, v9, v11);
+    partNumber = [v10 partNumber];
+    v12 = _dataPathForMessageAndPart(self, v9, partNumber);
 
     if (v12)
     {
-      v13 = [MEMORY[0x1E696AC08] defaultManager];
-      v14 = [v13 fileExistsAtPath:v12];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      v14 = [defaultManager fileExistsAtPath:v12];
       *(v30 + 24) = v14;
     }
   }
@@ -12556,40 +12556,40 @@ uint64_t __51__MFMailMessageLibrary_hasCompleteDataForMimePart___block_invoke(ui
   return 1;
 }
 
-- (BOOL)areMessageContentsLocallyAvailable:(id)a3 fullContentsAvailble:(BOOL *)a4
+- (BOOL)areMessageContentsLocallyAvailable:(id)available fullContentsAvailble:(BOOL *)availble
 {
-  v6 = a3;
+  availableCopy = available;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
   v29 = 0;
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [(MFMailMessageLibrary *)self dataPathForMessage:v6];
-  v9 = [v7 fileExistsAtPath:v8];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v8 = [(MFMailMessageLibrary *)self dataPathForMessage:availableCopy];
+  v9 = [defaultManager fileExistsAtPath:v8];
 
   if (v9)
   {
     v10 = v27;
     *(v27 + 24) = 1;
-    if (a4)
+    if (availble)
     {
-      *a4 = 1;
+      *availble = 1;
     }
   }
 
   else
   {
-    v11 = [MEMORY[0x1E696AC08] defaultManager];
-    v12 = [(MFMailMessageLibrary *)self dataPathForMessage:v6 type:1];
-    v13 = [v11 fileExistsAtPath:v12];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    v12 = [(MFMailMessageLibrary *)self dataPathForMessage:availableCopy type:1];
+    v13 = [defaultManager2 fileExistsAtPath:v12];
 
     if (v13)
     {
       v10 = v27;
       *(v27 + 24) = 1;
-      if (a4)
+      if (availble)
       {
-        *a4 = 0;
+        *availble = 0;
       }
     }
 
@@ -12599,20 +12599,20 @@ uint64_t __51__MFMailMessageLibrary_hasCompleteDataForMimePart___block_invoke(ui
       v23 = &v22;
       v24 = 0x2020000000;
       v25 = 0;
-      v14 = [(MFMailMessageLibrary *)self database];
+      database = [(MFMailMessageLibrary *)self database];
       v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary areMessageContentsLocallyAvailable:fullContentsAvailble:]"];
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __80__MFMailMessageLibrary_areMessageContentsLocallyAvailable_fullContentsAvailble___block_invoke;
       v18[3] = &unk_1E7AA4158;
-      v19 = v6;
+      v19 = availableCopy;
       v20 = &v26;
       v21 = &v22;
-      [v14 __performReadWithCaller:v15 usingBlock:v18];
+      [database __performReadWithCaller:v15 usingBlock:v18];
 
-      if (a4)
+      if (availble)
       {
-        *a4 = *(v23 + 24);
+        *availble = *(v23 + 24);
       }
 
       _Block_object_dispose(&v22, 8);
@@ -12676,7 +12676,7 @@ void __80__MFMailMessageLibrary_areMessageContentsLocallyAvailable_fullContentsA
   *a4 = 1;
 }
 
-- (id)_equalToMailboxIDsFromCriterion:(id)a3
+- (id)_equalToMailboxIDsFromCriterion:(id)criterion
 {
   v12 = 0;
   v13 = &v12;
@@ -12695,7 +12695,7 @@ void __80__MFMailMessageLibrary_areMessageContentsLocallyAvailable_fullContentsA
   v7[4] = self;
   v7[5] = &v8;
   v7[6] = &v12;
-  v3 = [a3 criterionByApplyingTransform:v7];
+  v3 = [criterion criterionByApplyingTransform:v7];
   if (*(v9 + 24) == 1)
   {
     v4 = v13[5];
@@ -12745,21 +12745,21 @@ id __56__MFMailMessageLibrary__equalToMailboxIDsFromCriterion___block_invoke(uin
   return v4;
 }
 
-- (id)_sqlSortByStringFromOptions:(unsigned int)a3
+- (id)_sqlSortByStringFromOptions:(unsigned int)options
 {
   v3 = @"read_later_date";
   v4 = @"send_later_date";
-  if ((a3 & 0x2000000) == 0)
+  if ((options & 0x2000000) == 0)
   {
     v4 = @"date_received";
   }
 
-  if ((a3 & 0x1000000) == 0)
+  if ((options & 0x1000000) == 0)
   {
     v3 = v4;
   }
 
-  if ((a3 & 0x100) != 0)
+  if ((options & 0x100) != 0)
   {
     return @"display_date";
   }
@@ -12770,29 +12770,29 @@ id __56__MFMailMessageLibrary__equalToMailboxIDsFromCriterion___block_invoke(uin
   }
 }
 
-- (void)sendMessagesMatchingCriterion:(id)a3 to:(id)a4 options:(unsigned int)a5 baseTable:(unsigned int)a6 range:(_NSRange)a7 success:(BOOL *)a8
+- (void)sendMessagesMatchingCriterion:(id)criterion to:(id)to options:(unsigned int)options baseTable:(unsigned int)table range:(_NSRange)range success:(BOOL *)success
 {
-  length = a7.length;
-  location = a7.location;
-  v14 = a3;
-  v15 = a4;
-  v16 = [(MFMailMessageLibrary *)self database];
+  length = range.length;
+  location = range.location;
+  criterionCopy = criterion;
+  toCopy = to;
+  database = [(MFMailMessageLibrary *)self database];
   v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary sendMessagesMatchingCriterion:to:options:baseTable:range:success:]"];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __89__MFMailMessageLibrary_sendMessagesMatchingCriterion_to_options_baseTable_range_success___block_invoke;
   v20[3] = &unk_1E7AA41A8;
   v20[4] = self;
-  v26 = a5;
-  v18 = v14;
-  v27 = a6;
+  optionsCopy = options;
+  v18 = criterionCopy;
+  tableCopy = table;
   v21 = v18;
   v23 = location;
   v24 = length;
-  v19 = v15;
+  v19 = toCopy;
   v22 = v19;
-  v25 = a8;
-  [v16 __performReadWithCaller:v17 usingBlock:v20];
+  successCopy = success;
+  [database __performReadWithCaller:v17 usingBlock:v20];
 }
 
 uint64_t __89__MFMailMessageLibrary_sendMessagesMatchingCriterion_to_options_baseTable_range_success___block_invoke(uint64_t a1, void *a2)
@@ -12816,27 +12816,27 @@ uint64_t __89__MFMailMessageLibrary_sendMessagesMatchingCriterion_to_options_bas
   return 1;
 }
 
-- (void)_iterateMessagesWithResultHandler:(id)a3 options:(unsigned int)a4 monitor:(id)a5 sqlQueryGenerator:(id)a6
+- (void)_iterateMessagesWithResultHandler:(id)handler options:(unsigned int)options monitor:(id)monitor sqlQueryGenerator:(id)generator
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(MFMailMessageLibrary *)self database];
+  handlerCopy = handler;
+  monitorCopy = monitor;
+  generatorCopy = generator;
+  database = [(MFMailMessageLibrary *)self database];
   v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary _iterateMessagesWithResultHandler:options:monitor:sqlQueryGenerator:]"];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __92__MFMailMessageLibrary__iterateMessagesWithResultHandler_options_monitor_sqlQueryGenerator___block_invoke;
   v19[3] = &unk_1E7AA41D0;
-  v16 = v13;
+  v16 = generatorCopy;
   v22 = v16;
   v19[4] = self;
-  v24 = a4;
-  v17 = v11;
+  optionsCopy = options;
+  v17 = handlerCopy;
   v20 = v17;
-  v18 = v12;
+  v18 = monitorCopy;
   v21 = v18;
   v23 = a2;
-  [v14 __performReadWithCaller:v15 usingBlock:v19];
+  [database __performReadWithCaller:v15 usingBlock:v19];
 }
 
 uint64_t __92__MFMailMessageLibrary__iterateMessagesWithResultHandler_options_monitor_sqlQueryGenerator___block_invoke(uint64_t a1, void *a2)
@@ -12893,34 +12893,34 @@ id __95__MFMailMessageLibrary_iterateMessagesMatchingCriterion_withResultHandler
   return v2;
 }
 
-- (id)filterContiguousMessages:(id)a3 forCriterion:(id)a4 options:(unsigned int)a5
+- (id)filterContiguousMessages:(id)messages forCriterion:(id)criterion options:(unsigned int)options
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 count])
+  messagesCopy = messages;
+  criterionCopy = criterion;
+  if ([messagesCopy count])
   {
-    v9 = [v7 firstObject];
-    v10 = [v9 libraryID];
+    firstObject = [messagesCopy firstObject];
+    libraryID = [firstObject libraryID];
 
-    v11 = [v7 lastObject];
-    v12 = [v11 libraryID];
+    lastObject = [messagesCopy lastObject];
+    libraryID2 = [lastObject libraryID];
 
     v13 = objc_alloc_init(MFMessageCriterion);
     [(MFMessageCriterion *)v13 setCriterionType:25];
     [(MFMessageCriterion *)v13 setAllCriteriaMustBeSatisfied:1];
-    v14 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v8, 0}];
+    v14 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{criterionCopy, 0}];
     v15 = [MFMessageCriterion alloc];
-    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lld", v10 - 1];
+    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lld", libraryID - 1];
     v17 = [(MFMessageCriterion *)v15 initWithType:24 qualifier:6 expression:v16];
 
     [v14 addObject:v17];
     v18 = [MFMessageCriterion alloc];
-    v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lld", v12 + 1];
+    v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lld", libraryID2 + 1];
     v20 = [(MFMessageCriterion *)v18 initWithType:24 qualifier:5 expression:v19];
 
     [v14 addObject:v20];
     [(MFMessageCriterion *)v13 setCriteria:v14];
-    v21 = [(MFMailMessageLibrary *)self messagesMatchingCriterion:v13 options:a5];
+    v21 = [(MFMailMessageLibrary *)self messagesMatchingCriterion:v13 options:options];
   }
 
   else
@@ -12931,20 +12931,20 @@ id __95__MFMailMessageLibrary_iterateMessagesMatchingCriterion_withResultHandler
   return v21;
 }
 
-- (void)deleteAccount:(id)a3
+- (void)deleteAccount:(id)account
 {
-  v4 = a3;
-  [(MFMailMessageLibrary *)self invalidateAccount:v4];
-  v5 = [(MFMailMessageLibrary *)self database];
+  accountCopy = account;
+  [(MFMailMessageLibrary *)self invalidateAccount:accountCopy];
+  database = [(MFMailMessageLibrary *)self database];
   v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary deleteAccount:]"];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __38__MFMailMessageLibrary_deleteAccount___block_invoke;
   v8[3] = &unk_1E7AA3D10;
   v9 = @"DELETE FROM accounts WHERE text_id = ?";
-  v7 = v4;
+  v7 = accountCopy;
   v10 = v7;
-  [v5 __performWriteWithCaller:v6 usingBlock:v8];
+  [database __performWriteWithCaller:v6 usingBlock:v8];
 }
 
 uint64_t __38__MFMailMessageLibrary_deleteAccount___block_invoke(uint64_t a1, void *a2)
@@ -12969,14 +12969,14 @@ uint64_t __38__MFMailMessageLibrary_deleteAccount___block_invoke(uint64_t a1, vo
   return v9;
 }
 
-- (id)_mailboxesClauseForAccounts:(id)a3
+- (id)_mailboxesClauseForAccounts:(id)accounts
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  accountsCopy = accounts;
+  if ([accountsCopy count])
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    [v3 arrayByApplyingSelector:sel_URLString];
+    [accountsCopy arrayByApplyingSelector:sel_URLString];
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
@@ -13008,9 +13008,9 @@ uint64_t __38__MFMailMessageLibrary_deleteAccount___block_invoke(uint64_t a1, vo
     }
 
     v12 = [objc_alloc(MEMORY[0x1E699B928]) initWithExpressions:v4];
-    v13 = [v12 ef_SQLExpression];
+    ef_SQLExpression = [v12 ef_SQLExpression];
 
-    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@" AND +messages.mailbox IN (SELECT ROWID FROM mailboxes WHERE %@) ", v13];
+    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@" AND +messages.mailbox IN (SELECT ROWID FROM mailboxes WHERE %@) ", ef_SQLExpression];
   }
 
   else
@@ -13031,17 +13031,17 @@ uint64_t __38__MFMailMessageLibrary_deleteAccount___block_invoke(uint64_t a1, vo
   [(NSConditionLock *)activeAccountsCondition unlockWithCondition:1];
 }
 
-- (void)rebuildActiveAccountsClausesAndExpressionsWithAccounts:(id)a3
+- (void)rebuildActiveAccountsClausesAndExpressionsWithAccounts:(id)accounts
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [MEMORY[0x1E695DF70] array];
+  accountsCopy = accounts;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = v4;
+  v7 = accountsCopy;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -13058,12 +13058,12 @@ uint64_t __38__MFMailMessageLibrary_deleteAccount___block_invoke(uint64_t a1, vo
         v11 = *(*(&v14 + 1) + 8 * i);
         if ([v11 isActive])
         {
-          v12 = v5;
+          v12 = array;
         }
 
         else
         {
-          v12 = v6;
+          v12 = array2;
         }
 
         [v12 addObject:v11];
@@ -13075,28 +13075,28 @@ uint64_t __38__MFMailMessageLibrary_deleteAccount___block_invoke(uint64_t a1, vo
     while (v8);
   }
 
-  [(MFMailMessageLibrary *)self rebuildActiveAccountMailboxesExpression:v5];
-  [(MFMailMessageLibrary *)self rebuildActiveMailboxesClauseWithActiveAccounts:v5 inactiveAccounts:v6];
+  [(MFMailMessageLibrary *)self rebuildActiveAccountMailboxesExpression:array];
+  [(MFMailMessageLibrary *)self rebuildActiveMailboxesClauseWithActiveAccounts:array inactiveAccounts:array2];
   [(NSConditionLock *)self->_activeAccountsCondition lock];
   [(NSConditionLock *)self->_activeAccountsCondition unlockWithCondition:0];
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)rebuildActiveAccountMailboxesExpression:(id)a3
+- (void)rebuildActiveAccountMailboxesExpression:(id)expression
 {
-  v11 = a3;
-  if ([v11 count])
+  expressionCopy = expression;
+  if ([expressionCopy count])
   {
-    v4 = [v11 ef_compactMap:&__block_literal_global_1519];
+    v4 = [expressionCopy ef_compactMap:&__block_literal_global_1519];
     v5 = objc_alloc(MEMORY[0x1E699B948]);
     v6 = [v5 initWithResultColumn:*MEMORY[0x1E699B768] table:@"mailboxes"];
     v7 = [objc_alloc(MEMORY[0x1E699B928]) initWithExpressions:v4];
     [v6 setWhere:v7];
 
     v8 = [objc_alloc(MEMORY[0x1E699B8C8]) initWithName:@"mailbox"];
-    v9 = [v8 disqualified];
-    v10 = [v9 in:v6];
+    disqualified = [v8 disqualified];
+    v10 = [disqualified in:v6];
   }
 
   else
@@ -13130,10 +13130,10 @@ id __64__MFMailMessageLibrary_rebuildActiveAccountMailboxesExpression___block_in
   return v4;
 }
 
-- (void)rebuildActiveMailboxesClauseWithActiveAccounts:(id)a3 inactiveAccounts:(id)a4
+- (void)rebuildActiveMailboxesClauseWithActiveAccounts:(id)accounts inactiveAccounts:(id)inactiveAccounts
 {
-  v6 = a3;
-  v7 = a4;
+  accountsCopy = accounts;
+  inactiveAccountsCopy = inactiveAccounts;
   v8 = +[LocalAccount localAccount];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
@@ -13141,11 +13141,11 @@ id __64__MFMailMessageLibrary_rebuildActiveAccountMailboxesExpression___block_in
   v20[3] = &unk_1E7AA30E0;
   v9 = v8;
   v21 = v9;
-  v10 = [v6 ef_filter:v20];
-  v11 = [(MFMailMessageLibrary *)self _mailboxesClauseForAccounts:v6];
+  v10 = [accountsCopy ef_filter:v20];
+  v11 = [(MFMailMessageLibrary *)self _mailboxesClauseForAccounts:accountsCopy];
   v12 = [(MFMailMessageLibrary *)self _mailboxesClauseForAccounts:v10];
   [(MFMailMessageLibrary *)self mf_lock];
-  v13 = [v7 count] != 0;
+  v13 = [inactiveAccountsCopy count] != 0;
   activeMailboxesClause = self->_activeMailboxesClause;
   if (activeMailboxesClause != v11 || ([(NSString *)activeMailboxesClause isEqual:v11]& 1) == 0)
   {
@@ -13161,16 +13161,16 @@ id __64__MFMailMessageLibrary_rebuildActiveAccountMailboxesExpression___block_in
   [(MFMailMessageLibrary *)self mf_unlock];
   if (v13)
   {
-    v15 = [(MFMailMessageLibrary *)self searchableIndex];
-    [v15 suspend];
+    searchableIndex = [(MFMailMessageLibrary *)self searchableIndex];
+    [searchableIndex suspend];
 
     v16 = dispatch_get_global_queue(25, 0);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __88__MFMailMessageLibrary_rebuildActiveMailboxesClauseWithActiveAccounts_inactiveAccounts___block_invoke_2;
     block[3] = &unk_1E7AA26E0;
-    v18 = v7;
-    v19 = self;
+    v18 = inactiveAccountsCopy;
+    selfCopy = self;
     dispatch_async(v16, block);
   }
 }
@@ -13226,21 +13226,21 @@ void __88__MFMailMessageLibrary_rebuildActiveMailboxesClauseWithActiveAccounts_i
   return v3;
 }
 
-- (void)deletePOPUID:(id)a3 inMailbox:(id)a4
+- (void)deletePOPUID:(id)d inMailbox:(id)mailbox
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MFMailMessageLibrary *)self database];
+  dCopy = d;
+  mailboxCopy = mailbox;
+  database = [(MFMailMessageLibrary *)self database];
   v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary deletePOPUID:inMailbox:]"];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __47__MFMailMessageLibrary_deletePOPUID_inMailbox___block_invoke;
   v12[3] = &unk_1E7AA3D10;
-  v10 = v7;
+  v10 = mailboxCopy;
   v13 = v10;
-  v11 = v6;
+  v11 = dCopy;
   v14 = v11;
-  [v8 __performWriteWithCaller:v9 usingBlock:v12];
+  [database __performWriteWithCaller:v9 usingBlock:v12];
 }
 
 uint64_t __47__MFMailMessageLibrary_deletePOPUID_inMailbox___block_invoke(uint64_t a1, void *a2)
@@ -13261,46 +13261,46 @@ uint64_t __47__MFMailMessageLibrary_deletePOPUID_inMailbox___block_invoke(uint64
   return v6;
 }
 
-- (id)UIDsToDeleteInMailbox:(id)a3
+- (id)UIDsToDeleteInMailbox:(id)mailbox
 {
-  v3 = POPUIDsForQuery(self, @"SELECT uid FROM pop_uids WHERE mailbox = (SELECT ROWID FROM mailboxes WHERE url = ?) AND del NOT NULL", a3);;
+  v3 = POPUIDsForQuery(self, @"SELECT uid FROM pop_uids WHERE mailbox = (SELECT ROWID FROM mailboxes WHERE url = ?) AND del NOT NULL", mailbox);;
 
   return v3;
 }
 
-- (id)allUIDsInMailbox:(id)a3
+- (id)allUIDsInMailbox:(id)mailbox
 {
-  v3 = POPUIDsForQuery(self, @"SELECT uid FROM pop_uids WHERE mailbox = (SELECT ROWID FROM mailboxes WHERE url = ?)", a3);;
+  v3 = POPUIDsForQuery(self, @"SELECT uid FROM pop_uids WHERE mailbox = (SELECT ROWID FROM mailboxes WHERE url = ?)", mailbox);;
 
   return v3;
 }
 
-- (id)hiddenPOPUIDsInMailbox:(id)a3
+- (id)hiddenPOPUIDsInMailbox:(id)mailbox
 {
-  v3 = POPUIDsForQuery(self, @"SELECT uid FROM pop_uids AS uid LEFT OUTER JOIN messages AS message ON uid.mailbox = message.remote_mailbox AND uid.uid = message.remote_id WHERE uid.mailbox = (SELECT ROWID FROM mailboxes WHERE url = ?) AND message.rowid IS NULL OR (message.flags & 2) > 0", a3);;
+  v3 = POPUIDsForQuery(self, @"SELECT uid FROM pop_uids AS uid LEFT OUTER JOIN messages AS message ON uid.mailbox = message.remote_mailbox AND uid.uid = message.remote_id WHERE uid.mailbox = (SELECT ROWID FROM mailboxes WHERE url = ?) AND message.rowid IS NULL OR (message.flags & 2) > 0", mailbox);;
 
   return v3;
 }
 
-- (void)_setProtectedDataAvailabilityState:(unint64_t)a3
+- (void)_setProtectedDataAvailabilityState:(unint64_t)state
 {
   protectedDataAvailability = self->_protectedDataAvailability;
-  if (protectedDataAvailability != a3)
+  if (protectedDataAvailability != state)
   {
     v6 = self->_protectedDataAvailability;
-    atomic_compare_exchange_strong_explicit(&self->_protectedDataAvailability, &v6, a3, memory_order_relaxed, memory_order_relaxed);
+    atomic_compare_exchange_strong_explicit(&self->_protectedDataAvailability, &v6, state, memory_order_relaxed, memory_order_relaxed);
     if (v6 == protectedDataAvailability)
     {
-      if (a3 == 2)
+      if (state == 2)
       {
-        v7 = [(MFMailMessageLibrary *)self searchableIndex];
-        [v7 setPersistenceAvailable:0];
+        searchableIndex = [(MFMailMessageLibrary *)self searchableIndex];
+        [searchableIndex setPersistenceAvailable:0];
         v9 = @"MailMessageLibraryWillBecomeUnavailable";
       }
 
       else
       {
-        if (a3 == 1)
+        if (state == 1)
         {
           v9 = @"MailMessageLibraryDidBecomeAvailable";
 LABEL_10:
@@ -13308,22 +13308,22 @@ LABEL_10:
           block[1] = 3221225472;
           block[2] = __59__MFMailMessageLibrary__setProtectedDataAvailabilityState___block_invoke;
           block[3] = &unk_1E7AA4240;
-          v12 = self;
-          v13 = a3;
+          selfCopy = self;
+          stateCopy = state;
           v11 = v9;
           dispatch_async(MEMORY[0x1E69E96A0], block);
 
           return;
         }
 
-        if (a3)
+        if (state)
         {
           return;
         }
 
-        v7 = [(MFMailMessageLibrary *)self persistence];
-        v8 = [v7 searchableIndexManager];
-        [v8 enableIndexingAndBeginScheduling:1];
+        searchableIndex = [(MFMailMessageLibrary *)self persistence];
+        searchableIndexManager = [searchableIndex searchableIndexManager];
+        [searchableIndexManager enableIndexingAndBeginScheduling:1];
 
         v9 = @"MailMessageLibraryDidFinishReconciliation";
       }
@@ -13361,7 +13361,7 @@ void __59__MFMailMessageLibrary__setProtectedDataAvailabilityState___block_invok
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 1;
-  v3 = [(MFMailMessageLibrary *)self database];
+  database = [(MFMailMessageLibrary *)self database];
   v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary cleanupProtectedTables]"];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -13369,11 +13369,11 @@ void __59__MFMailMessageLibrary__setProtectedDataAvailabilityState___block_invok
   v6[3] = &unk_1E7AA3C48;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 __performWriteWithCaller:v4 usingBlock:v6];
+  [database __performWriteWithCaller:v4 usingBlock:v6];
 
-  LOBYTE(v3) = *(v8 + 24);
+  LOBYTE(database) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
-  return v3;
+  return database;
 }
 
 uint64_t __46__MFMailMessageLibrary_cleanupProtectedTables__block_invoke(uint64_t a1, void *a2)
@@ -13433,8 +13433,8 @@ void __46__MFMailMessageLibrary_cleanupProtectedTables__block_invoke_2(uint64_t 
 
 - (BOOL)_shouldLogDatabaseStats
 {
-  v2 = [MEMORY[0x1E695E000] em_userDefaults];
-  v3 = [v2 BOOLForKey:@"LogDatabaseStats"];
+  em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
+  v3 = [em_userDefaults BOOLForKey:@"LogDatabaseStats"];
 
   return v3;
 }
@@ -13548,25 +13548,25 @@ void __58__MFMailMessageLibrary__schedulePeriodicStatisticsLogging__block_invoke
   [WeakRetained _logStatistics];
 }
 
-- (BOOL)isProtectedDataAvailable:(id)a3
+- (BOOL)isProtectedDataAvailable:(id)available
 {
-  v5 = a3;
+  availableCopy = available;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"MailMessageLibrary.m" lineNumber:7135 description:@"Wrong kind of database connection"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MailMessageLibrary.m" lineNumber:7135 description:@"Wrong kind of database connection"];
   }
 
-  v6 = [v5 protectedDatabaseAttached];
+  protectedDatabaseAttached = [availableCopy protectedDatabaseAttached];
 
-  return v6;
+  return protectedDatabaseAttached;
 }
 
-- (void)contentProtectionStateChanged:(int64_t)a3 previousState:(int64_t)a4
+- (void)contentProtectionStateChanged:(int64_t)changed previousState:(int64_t)state
 {
   dispatch_assert_queue_V2(self->_keyBagQueue);
-  if (a3 == 2)
+  if (changed == 2)
   {
     v7 = EDLibraryLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -13579,7 +13579,7 @@ void __58__MFMailMessageLibrary__schedulePeriodicStatisticsLogging__block_invoke
     [(MFMailMessageLibrary *)self _cancelPendingJournalReconciliation];
   }
 
-  else if (!a3 && a4 != 3)
+  else if (!changed && state != 3)
   {
     v8 = EDLibraryLog();
     v9 = 1;
@@ -13593,8 +13593,8 @@ void __58__MFMailMessageLibrary__schedulePeriodicStatisticsLogging__block_invoke
     atomic_compare_exchange_strong(&self->_suspendedUnderLock, &v9, 0);
     if (v9 == 1)
     {
-      v10 = [(MFMailMessageLibrary *)self database];
-      [v10 reconcileJournalWithCompletionBlock:0];
+      database = [(MFMailMessageLibrary *)self database];
+      [database reconcileJournalWithCompletionBlock:0];
     }
 
     else
@@ -13826,7 +13826,7 @@ LABEL_4:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_addMessageToThreadAtUnlock:(int64_t)a3
+- (void)_addMessageToThreadAtUnlock:(int64_t)unlock
 {
   conversationCalculationQueue = self->_conversationCalculationQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -13834,7 +13834,7 @@ LABEL_4:
   v4[2] = __52__MFMailMessageLibrary__addMessageToThreadAtUnlock___block_invoke;
   v4[3] = &unk_1E7AA33B0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = unlock;
   dispatch_async(conversationCalculationQueue, v4);
 }
 
@@ -13868,8 +13868,8 @@ void __52__MFMailMessageLibrary__addMessageToThreadAtUnlock___block_invoke(uint6
 - (BOOL)migrate
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(MFMailMessageLibrary *)self database];
-  v5 = [v4 openConnectionIsWriter:0];
+  database = [(MFMailMessageLibrary *)self database];
+  v5 = [database openConnectionIsWriter:0];
 
   if (v5)
   {
@@ -13880,35 +13880,35 @@ void __52__MFMailMessageLibrary__addMessageToThreadAtUnlock___block_invoke(uint6
   return v5 != 0;
 }
 
-- (void)_captureAnalyticsForMailDatabase:(int64_t)a3 schema:(id)a4
+- (void)_captureAnalyticsForMailDatabase:(int64_t)database schema:(id)schema
 {
-  v21 = a4;
-  if (a3 >= 1)
+  schemaCopy = schema;
+  if (database >= 1)
   {
     v6 = objc_alloc(MEMORY[0x1E695DF90]);
-    v7 = [MEMORY[0x1E695E000] em_userDefaults];
-    v8 = [v7 objectForKey:@"EMUserDefaultMailDatabaseSize"];
+    em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
+    v8 = [em_userDefaults objectForKey:@"EMUserDefaultMailDatabaseSize"];
     v9 = [v6 initWithDictionary:v8];
 
-    if (![v9 count] || (objc_msgSend(v9, "objectForKey:", v21), v10 = objc_claimAutoreleasedReturnValue(), v10, !v10) || (objc_msgSend(v9, "objectForKey:", v21), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "ef_isMoreThanTimeIntervalAgo:", 2592000.0), v11, v12))
+    if (![v9 count] || (objc_msgSend(v9, "objectForKey:", schemaCopy), v10 = objc_claimAutoreleasedReturnValue(), v10, !v10) || (objc_msgSend(v9, "objectForKey:", schemaCopy), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "ef_isMoreThanTimeIntervalAgo:", 2592000.0), v11, v12))
     {
       v13 = [MEMORY[0x1E695DF00] now];
-      [v9 setObject:v13 forKeyedSubscript:v21];
+      [v9 setObject:v13 forKeyedSubscript:schemaCopy];
 
-      v14 = [MEMORY[0x1E695E000] em_userDefaults];
+      em_userDefaults2 = [MEMORY[0x1E695E000] em_userDefaults];
       v15 = [v9 copy];
-      [v14 setValue:v15 forKey:@"EMUserDefaultMailDatabaseSize"];
+      [em_userDefaults2 setValue:v15 forKey:@"EMUserDefaultMailDatabaseSize"];
 
       v16 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      if ([v21 isEqualToString:@"main"])
+      if ([schemaCopy isEqualToString:@"main"])
       {
-        v17 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(MEMORY[0x1E699B858], "roundedInteger:", a3)}];
+        v17 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(MEMORY[0x1E699B858], "roundedInteger:", database)}];
         [v16 setObject:v17 forKeyedSubscript:@"MailDbEnvelopeSize"];
       }
 
       else
       {
-        v17 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(MEMORY[0x1E699B858], "roundedInteger:", a3)}];
+        v17 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(MEMORY[0x1E699B858], "roundedInteger:", database)}];
         [v16 setObject:v17 forKeyedSubscript:@"MailDbFileSize"];
       }
 
@@ -13922,24 +13922,24 @@ void __52__MFMailMessageLibrary__addMessageToThreadAtUnlock___block_invoke(uint6
   }
 }
 
-- (void)performIncrementalVacuumForSchema:(id)a3
+- (void)performIncrementalVacuumForSchema:(id)schema
 {
-  v4 = a3;
+  schemaCopy = schema;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v5 = [(MFMailMessageLibrary *)self database];
+  database = [(MFMailMessageLibrary *)self database];
   v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary performIncrementalVacuumForSchema:]"];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __58__MFMailMessageLibrary_performIncrementalVacuumForSchema___block_invoke;
   v8[3] = &unk_1E7AA3528;
-  v7 = v4;
+  v7 = schemaCopy;
   v9 = v7;
-  v10 = self;
+  selfCopy = self;
   v11 = &v12;
-  [v5 __performWriteWithCaller:v6 usingBlock:v8];
+  [database __performWriteWithCaller:v6 usingBlock:v8];
 
   [(MFMailMessageLibrary *)self _captureAnalyticsForMailDatabase:v13[3] schema:v7];
   _Block_object_dispose(&v12, 8);
@@ -14077,17 +14077,17 @@ void __50__MFMailMessageLibrary__scheduleIncrementalVacuum__block_invoke_2(uint6
 
 - (void)closeDatabaseConnections
 {
-  v2 = [(MFMailMessageLibrary *)self database];
-  [v2 closeAllConnections];
+  database = [(MFMailMessageLibrary *)self database];
+  [database closeAllConnections];
 }
 
 - (void)journalReconciliationFailed
 {
   +[MFMailMessageLibrary removeLibraryOnNextLaunch];
   v3 = MFUserAgent();
-  v4 = [v3 isMobileMail];
+  isMobileMail = [v3 isMobileMail];
 
-  if (v4)
+  if (isMobileMail)
   {
     [(MFMailMessageLibrary *)self closeDatabaseConnections];
     v5 = MFLogGeneral();
@@ -14113,17 +14113,17 @@ void __50__MFMailMessageLibrary__scheduleIncrementalVacuum__block_invoke_2(uint6
 - (void)renameOrRemoveDatabaseIfNeeded
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v4 = [(NSString *)self->_path stringByAppendingPathComponent:@".reset-database"];
-  if ([v3 fileExistsAtPath:v4])
+  if ([defaultManager fileExistsAtPath:v4])
   {
     v5 = MFLogGeneral();
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v17 = __54__MFMailMessageLibrary_renameOrRemoveDatabaseIfNeeded__block_invoke;
     v18 = &unk_1E7AA42D8;
-    v19 = self;
-    v20 = v3;
+    selfCopy = self;
+    v20 = defaultManager;
     v21 = v4;
     v6 = v5;
     v7 = v16;
@@ -14150,9 +14150,9 @@ void __50__MFMailMessageLibrary__scheduleIncrementalVacuum__block_invoke_2(uint6
   v13[1] = 3221225472;
   v13[2] = __54__MFMailMessageLibrary_renameOrRemoveDatabaseIfNeeded__block_invoke_2;
   v13[3] = &unk_1E7AA26E0;
-  v11 = v3;
+  v11 = defaultManager;
   v14 = v11;
-  v15 = self;
+  selfCopy2 = self;
   [v10 performBlock:v13];
 
   v12 = *MEMORY[0x1E69E9840];
@@ -14253,10 +14253,10 @@ void __54__MFMailMessageLibrary_renameOrRemoveDatabaseIfNeeded__block_invoke_3(u
     _os_log_impl(&dword_1B0389000, v2, OS_LOG_TYPE_DEFAULT, "Mail db will be reset on next launch", &v9, 2u);
   }
 
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v4 = MFMailDirectory();
   v5 = [v4 stringByAppendingPathComponent:@".reset-database"];
-  v6 = [v3 createFileAtPath:v5 contents:0 attributes:0];
+  v6 = [defaultManager createFileAtPath:v5 contents:0 attributes:0];
 
   if ((v6 & 1) == 0)
   {
@@ -14272,17 +14272,17 @@ void __54__MFMailMessageLibrary_renameOrRemoveDatabaseIfNeeded__block_invoke_3(u
   v8 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_renameLibraryAtPath:(id)a3
++ (void)_renameLibraryAtPath:(id)path
 {
   v34 = *MEMORY[0x1E69E9840];
-  v26 = a3;
-  v27 = [MEMORY[0x1E696AC08] defaultManager];
-  v22 = [v26 stringByAppendingPathComponent:@"Envelope Index"];
-  v23 = [v26 stringByAppendingPathComponent:@"Protected Index"];
-  v21 = [v27 contentsOfDirectoryAtPath:v26 error:0];
+  pathCopy = path;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v22 = [pathCopy stringByAppendingPathComponent:@"Envelope Index"];
+  v23 = [pathCopy stringByAppendingPathComponent:@"Protected Index"];
+  v21 = [defaultManager contentsOfDirectoryAtPath:pathCopy error:0];
   v20 = [@"SavedFolders" mf_uniqueFilenameWithRespectToFilenames:?];
-  v24 = [v26 stringByAppendingPathComponent:?];
-  [v27 mf_makeCompletePath:v24 mode:448];
+  v24 = [pathCopy stringByAppendingPathComponent:?];
+  [defaultManager mf_makeCompletePath:v24 mode:448];
   _MFMoveDatabase(v22, v24);
   _MFMoveDatabase(v23, v24);
   v31 = 0u;
@@ -14308,9 +14308,9 @@ void __54__MFMailMessageLibrary_renameOrRemoveDatabaseIfNeeded__block_invoke_3(u
         v7 = *(*(&v29 + 1) + 8 * i);
         if (([v7 hasPrefix:@"SavedFolders"] & 1) == 0)
         {
-          v8 = [v26 stringByAppendingPathComponent:v7];
-          v9 = [v26 stringByAppendingPathComponent:v7];
-          v10 = [v27 attributesOfItemAtPath:v9 error:0];
+          v8 = [pathCopy stringByAppendingPathComponent:v7];
+          v9 = [pathCopy stringByAppendingPathComponent:v7];
+          v10 = [defaultManager attributesOfItemAtPath:v9 error:0];
 
           v11 = [v10 objectForKey:v25];
           v12 = [v11 isEqualToString:v5];
@@ -14318,11 +14318,11 @@ void __54__MFMailMessageLibrary_renameOrRemoveDatabaseIfNeeded__block_invoke_3(u
           if (v12)
           {
             v13 = v8;
-            v14 = [v8 fileSystemRepresentation];
+            fileSystemRepresentation = [v8 fileSystemRepresentation];
             v15 = [v24 stringByAppendingPathComponent:v7];
             v16 = v15;
-            v17 = [v15 fileSystemRepresentation];
-            rename(v14, v17, v18);
+            fileSystemRepresentation2 = [v15 fileSystemRepresentation];
+            rename(fileSystemRepresentation, fileSystemRepresentation2, v18);
           }
         }
       }
@@ -14336,17 +14336,17 @@ void __54__MFMailMessageLibrary_renameOrRemoveDatabaseIfNeeded__block_invoke_3(u
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_stringsForIndexSet:(id)a3
+- (id)_stringsForIndexSet:(id)set
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  setCopy = set;
+  array = [MEMORY[0x1E695DF70] array];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__MFMailMessageLibrary__stringsForIndexSet___block_invoke;
   v7[3] = &unk_1E7AA4300;
-  v5 = v4;
+  v5 = array;
   v8 = v5;
-  [v3 enumerateIndexesUsingBlock:v7];
+  [setCopy enumerateIndexesUsingBlock:v7];
 
   return v5;
 }
@@ -14358,12 +14358,12 @@ void __44__MFMailMessageLibrary__stringsForIndexSet___block_invoke(uint64_t a1)
   [v1 addObject:?];
 }
 
-- (id)indexableMessagesWhere:(id)a3 sortedBy:(id)a4 limit:(int64_t)a5 options:(unsigned int)a6
+- (id)indexableMessagesWhere:(id)where sortedBy:(id)by limit:(int64_t)limit options:(unsigned int)options
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [(MFMailMessageLibrary *)self _nonLocalAccountsClause];
-  if (v12)
+  whereCopy = where;
+  byCopy = by;
+  _nonLocalAccountsClause = [(MFMailMessageLibrary *)self _nonLocalAccountsClause];
+  if (_nonLocalAccountsClause)
   {
     *buf = 0;
     v26 = buf;
@@ -14371,20 +14371,20 @@ void __44__MFMailMessageLibrary__stringsForIndexSet___block_invoke(uint64_t a1)
     v28 = __Block_byref_object_copy__6;
     v29 = __Block_byref_object_dispose__6;
     v30 = MEMORY[0x1E695E0F0];
-    v13 = [(MFMailMessageLibrary *)self database];
+    database = [(MFMailMessageLibrary *)self database];
     v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary indexableMessagesWhere:sortedBy:limit:options:]"];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __70__MFMailMessageLibrary_indexableMessagesWhere_sortedBy_limit_options___block_invoke;
     v18[3] = &unk_1E7AA4328;
-    v24 = a6;
+    optionsCopy = options;
     v18[4] = self;
-    v23 = a5;
-    v19 = v10;
-    v20 = v11;
-    v21 = v12;
+    limitCopy = limit;
+    v19 = whereCopy;
+    v20 = byCopy;
+    v21 = _nonLocalAccountsClause;
     v22 = buf;
-    [v13 __performReadWithCaller:v14 usingBlock:v18];
+    [database __performReadWithCaller:v14 usingBlock:v18];
 
     v15 = *(v26 + 5);
     _Block_object_dispose(buf, 8);
@@ -14474,24 +14474,24 @@ uint64_t __70__MFMailMessageLibrary_indexableMessagesWhere_sortedBy_limit_option
   return 1;
 }
 
-- (void)removeSearchableItemsForMailbox:(id)a3
+- (void)removeSearchableItemsForMailbox:(id)mailbox
 {
-  v5 = a3;
-  v4 = [v5 account];
-  -[MFMailMessageLibrary removeSearchableItemsForAccount:databaseID:](self, "removeSearchableItemsForAccount:databaseID:", v4, [v5 databaseID]);
+  mailboxCopy = mailbox;
+  account = [mailboxCopy account];
+  -[MFMailMessageLibrary removeSearchableItemsForAccount:databaseID:](self, "removeSearchableItemsForAccount:databaseID:", account, [mailboxCopy databaseID]);
 }
 
-- (void)removeSearchableItemsForMessages:(id)a3
+- (void)removeSearchableItemsForMessages:(id)messages
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E699B810] indexSet];
+  messagesCopy = messages;
+  indexSet = [MEMORY[0x1E699B810] indexSet];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__MFMailMessageLibrary_removeSearchableItemsForMessages___block_invoke;
   v7[3] = &unk_1E7AA4350;
-  v6 = v5;
+  v6 = indexSet;
   v8 = v6;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [messagesCopy enumerateObjectsUsingBlock:v7];
   [(MFMailMessageLibrary *)self _removeSearchableItemsWithLibraryIDs:v6];
 }
 
@@ -14501,75 +14501,75 @@ void __57__MFMailMessageLibrary_removeSearchableItemsForMessages___block_invoke(
   [*(a1 + 32) addIndex:{objc_msgSend(v3, "libraryID")}];
 }
 
-- (void)removeSearchableItemsForAccount:(id)a3 databaseID:(int64_t)a4
+- (void)removeSearchableItemsForAccount:(id)account databaseID:(int64_t)d
 {
-  v12 = a3;
-  if (v12)
+  accountCopy = account;
+  if (accountCopy)
   {
     v6 = MFUserAgent();
-    v7 = [v6 isMobileMail];
+    isMobileMail = [v6 isMobileMail];
 
-    if (v7)
+    if (isMobileMail)
     {
-      if (*MEMORY[0x1E699A728] == a4)
+      if (*MEMORY[0x1E699A728] == d)
       {
-        v8 = [v12 uniqueID];
+        uniqueID = [accountCopy uniqueID];
       }
 
       else
       {
         v9 = MEMORY[0x1E696AEC0];
-        v10 = [v12 uniqueID];
-        v8 = [v9 stringWithFormat:@"%@.%lld", v10, a4];
+        uniqueID2 = [accountCopy uniqueID];
+        uniqueID = [v9 stringWithFormat:@"%@.%lld", uniqueID2, d];
       }
 
-      v11 = [(MFMailMessageLibrary *)self searchableIndex];
-      [v11 removeItemsForDomainIdentifier:v8];
+      searchableIndex = [(MFMailMessageLibrary *)self searchableIndex];
+      [searchableIndex removeItemsForDomainIdentifier:uniqueID];
     }
   }
 }
 
-- (void)_removeSearchableItemsWithLibraryIDs:(id)a3
+- (void)_removeSearchableItemsWithLibraryIDs:(id)ds
 {
-  v8 = a3;
-  if ([v8 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
     v4 = MFUserAgent();
-    v5 = [v4 isMobileMail];
+    isMobileMail = [v4 isMobileMail];
 
-    if (v5)
+    if (isMobileMail)
     {
-      v6 = [(MFMailMessageLibrary *)self _stringsForIndexSet:v8];
-      v7 = [(MFMailMessageLibrary *)self searchableIndex];
-      [v7 removeItemsWithIdentifiers:v6];
+      v6 = [(MFMailMessageLibrary *)self _stringsForIndexSet:dsCopy];
+      searchableIndex = [(MFMailMessageLibrary *)self searchableIndex];
+      [searchableIndex removeItemsWithIdentifiers:v6];
     }
   }
 }
 
-- (void)reindexSearchableItemsWithIdentifiers:(id)a3 acknowledgementHandler:(id)a4
+- (void)reindexSearchableItemsWithIdentifiers:(id)identifiers acknowledgementHandler:(id)handler
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(MFMailMessageLibrary *)self searchableIndex];
-  [v7 reindexSearchableItemsWithIdentifiers:v8 acknowledgementHandler:v6];
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
+  searchableIndex = [(MFMailMessageLibrary *)self searchableIndex];
+  [searchableIndex reindexSearchableItemsWithIdentifiers:identifiersCopy acknowledgementHandler:handlerCopy];
 }
 
-- (void)reindexAllSearchableItemsWithAcknowledgementHandler:(id)a3
+- (void)reindexAllSearchableItemsWithAcknowledgementHandler:(id)handler
 {
-  v5 = a3;
-  v4 = [(MFMailMessageLibrary *)self searchableIndex];
-  [v4 reindexAllSearchableItemsWithAcknowledgementHandler:v5];
+  handlerCopy = handler;
+  searchableIndex = [(MFMailMessageLibrary *)self searchableIndex];
+  [searchableIndex reindexAllSearchableItemsWithAcknowledgementHandler:handlerCopy];
 }
 
-- (void)removeMessagesFromCacheWithLibraryIDs:(id)a3
+- (void)removeMessagesFromCacheWithLibraryIDs:(id)ds
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  dsCopy = ds;
+  v5 = [dsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = *v10;
@@ -14580,14 +14580,14 @@ void __57__MFMailMessageLibrary_removeSearchableItemsForMessages___block_invoke(
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dsCopy);
         }
 
         [(MFWeakObjectCache *)self->_libraryMessageCache removeObjectForKey:*(*(&v9 + 1) + 8 * v7++), v9];
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [dsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -14596,54 +14596,54 @@ void __57__MFMailMessageLibrary_removeSearchableItemsForMessages___block_invoke(
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_libraryMessageWithLibraryID:(int64_t)a3 wasCached:(BOOL *)a4
+- (id)_libraryMessageWithLibraryID:(int64_t)d wasCached:(BOOL *)cached
 {
   libraryMessageCache = self->_libraryMessageCache;
-  v6 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
-  v7 = [(MFWeakObjectCache *)libraryMessageCache objectForKey:v6 wasCached:a4];
+  v6 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
+  v7 = [(MFWeakObjectCache *)libraryMessageCache objectForKey:v6 wasCached:cached];
 
   return v7;
 }
 
-- (id)_messageForRow:(id)a3 options:(unsigned int)a4 timestamp:(unint64_t)a5 connection:(id)a6 isProtectedDataAvailable:(BOOL)a7 recipientsCache:(id)a8
+- (id)_messageForRow:(id)row options:(unsigned int)options timestamp:(unint64_t)timestamp connection:(id)connection isProtectedDataAvailable:(BOOL)available recipientsCache:(id)cache
 {
-  v147 = a7;
+  availableCopy = available;
   v169 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v140 = a6;
-  v136 = a8;
-  v11 = [v10 objectForKeyedSubscript:@"ROWID"];
-  v154 = [v11 databaseIDValue];
+  rowCopy = row;
+  connectionCopy = connection;
+  cacheCopy = cache;
+  v11 = [rowCopy objectForKeyedSubscript:@"ROWID"];
+  databaseIDValue = [v11 databaseIDValue];
 
-  v12 = [v10 objectForKeyedSubscript:@"remote_id"];
-  v129 = [v12 stringValue];
+  v12 = [rowCopy objectForKeyedSubscript:@"remote_id"];
+  stringValue = [v12 stringValue];
 
-  v13 = [v10 objectForKeyedSubscript:@"date_received"];
-  v14 = [v13 numberValue];
-  v123 = [v14 longLongValue];
+  v13 = [rowCopy objectForKeyedSubscript:@"date_received"];
+  numberValue = [v13 numberValue];
+  longLongValue = [numberValue longLongValue];
 
-  v15 = [v10 objectForKeyedSubscript:@"date_sent"];
-  v16 = [v15 numberValue];
-  v122 = [v16 longLongValue];
+  v15 = [rowCopy objectForKeyedSubscript:@"date_sent"];
+  numberValue2 = [v15 numberValue];
+  longLongValue2 = [numberValue2 longLongValue];
 
-  v17 = [v10 objectForKeyedSubscript:@"display_date"];
-  v153 = [v17 dateValue];
+  v17 = [rowCopy objectForKeyedSubscript:@"display_date"];
+  dateValue = [v17 dateValue];
 
-  v18 = [v10 objectForKeyedSubscript:@"flags"];
-  v19 = [v18 numberValue];
-  v120 = [v19 longLongValue];
+  v18 = [rowCopy objectForKeyedSubscript:@"flags"];
+  numberValue3 = [v18 numberValue];
+  longLongValue3 = [numberValue3 longLongValue];
 
-  v20 = [v10 objectForKeyedSubscript:@"size"];
-  v21 = [v20 numberValue];
-  v119 = [v21 unsignedIntegerValue];
+  v20 = [rowCopy objectForKeyedSubscript:@"size"];
+  numberValue4 = [v20 numberValue];
+  unsignedIntegerValue = [numberValue4 unsignedIntegerValue];
 
-  v22 = [v10 objectForKeyedSubscript:@"mailbox"];
-  v23 = [v22 numberValue];
+  v22 = [rowCopy objectForKeyedSubscript:@"mailbox"];
+  numberValue5 = [v22 numberValue];
 
-  v128 = v23;
-  if (v23)
+  v128 = numberValue5;
+  if (numberValue5)
   {
-    if ([v23 longLongValue] != -1)
+    if ([numberValue5 longLongValue] != -1)
     {
       goto LABEL_8;
     }
@@ -14665,17 +14665,17 @@ void __57__MFMailMessageLibrary_removeSearchableItemsForMessages___block_invoke(
   }
 
 LABEL_8:
-  v25 = [v10 objectForKeyedSubscript:@"original_mailbox"];
-  v26 = [v25 numberValue];
-  v118 = [v26 longLongValue];
+  v25 = [rowCopy objectForKeyedSubscript:@"original_mailbox"];
+  numberValue6 = [v25 numberValue];
+  longLongValue4 = [numberValue6 longLongValue];
 
-  v27 = [v10 objectForKeyedSubscript:@"content_type"];
-  v145 = [v27 objectValue];
+  v27 = [rowCopy objectForKeyedSubscript:@"content_type"];
+  objectValue = [v27 objectValue];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v28 = [v145 intValue] - 1;
+    v28 = [objectValue intValue] - 1;
     if (v28 <= 5)
     {
       v127 = off_1E7AA4518[v28];
@@ -14688,19 +14688,19 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v127 = v145;
+      v127 = objectValue;
       goto LABEL_14;
     }
   }
 
   v127 = 0;
 LABEL_14:
-  if ([v10 columnExistsWithName:@"conversation_id"])
+  if ([rowCopy columnExistsWithName:@"conversation_id"])
   {
-    v29 = [v10 objectForKeyedSubscript:@"conversation_id"];
-    v125 = [v29 int64Value];
+    v29 = [rowCopy objectForKeyedSubscript:@"conversation_id"];
+    int64Value = [v29 int64Value];
 
-    if (v125)
+    if (int64Value)
     {
       goto LABEL_21;
     }
@@ -14718,37 +14718,37 @@ LABEL_14:
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      *&buf[4] = v154;
+      *&buf[4] = databaseIDValue;
       _os_log_impl(&dword_1B0389000, v30, OS_LOG_TYPE_DEFAULT, "ConversationID not loaded for message (LibraryID = %lld)?", buf, 0xCu);
     }
   }
 
-  v125 = 0;
+  int64Value = 0;
 LABEL_21:
-  if ([v10 columnExistsWithName:@"encoding"])
+  if ([rowCopy columnExistsWithName:@"encoding"])
   {
-    v31 = [v10 objectForKeyedSubscript:@"encoding"];
-    v138 = [v31 numberValue];
+    v31 = [rowCopy objectForKeyedSubscript:@"encoding"];
+    numberValue7 = [v31 numberValue];
   }
 
   else
   {
-    v138 = 0;
+    numberValue7 = 0;
   }
 
-  if (![v10 columnExistsWithName:@"external_id"])
+  if (![rowCopy columnExistsWithName:@"external_id"])
   {
 LABEL_32:
-    v146 = 0;
+    stringValue2 = 0;
     goto LABEL_33;
   }
 
-  v32 = [v10 objectForKeyedSubscript:@"external_id"];
-  v146 = [v32 stringValue];
+  v32 = [rowCopy objectForKeyedSubscript:@"external_id"];
+  stringValue2 = [v32 stringValue];
 
-  if ([v146 length])
+  if ([stringValue2 length])
   {
-    v33 = v146;
+    v33 = stringValue2;
   }
 
   else
@@ -14770,59 +14770,59 @@ LABEL_32:
   }
 
 LABEL_33:
-  if ([v10 columnExistsWithName:@"message_id"])
+  if ([rowCopy columnExistsWithName:@"message_id"])
   {
-    v36 = [v10 objectForKeyedSubscript:@"message_id"];
-    v37 = [v36 numberValue];
-    v117 = [v37 longLongValue];
+    v36 = [rowCopy objectForKeyedSubscript:@"message_id"];
+    numberValue8 = [v36 numberValue];
+    longLongValue5 = [numberValue8 longLongValue];
   }
 
   else
   {
-    v117 = 0;
+    longLongValue5 = 0;
   }
 
-  if ([v10 columnExistsWithName:@"global_message_id"])
+  if ([rowCopy columnExistsWithName:@"global_message_id"])
   {
-    v38 = [v10 objectForKeyedSubscript:@"global_message_id"];
-    v39 = [v38 numberValue];
-    v141 = [v39 longLongValue];
-  }
-
-  else
-  {
-    v141 = 0;
-  }
-
-  if ([v10 columnExistsWithName:@"unique_id"])
-  {
-    v40 = [v10 objectForKeyedSubscript:@"unique_id"];
-    v41 = [v40 numberValue];
-    v116 = [v41 longLongValue];
+    v38 = [rowCopy objectForKeyedSubscript:@"global_message_id"];
+    numberValue9 = [v38 numberValue];
+    longLongValue6 = [numberValue9 longLongValue];
   }
 
   else
   {
-    v116 = 0;
+    longLongValue6 = 0;
   }
 
-  if ([v10 columnExistsWithName:@"conversation_flags"])
+  if ([rowCopy columnExistsWithName:@"unique_id"])
   {
-    v42 = [v10 objectForKeyedSubscript:@"conversation_flags"];
-    v152 = [v42 numberValue];
+    v40 = [rowCopy objectForKeyedSubscript:@"unique_id"];
+    numberValue10 = [v40 numberValue];
+    longLongValue7 = [numberValue10 longLongValue];
   }
 
   else
   {
-    v152 = 0;
+    longLongValue7 = 0;
   }
 
-  if ([v10 columnExistsWithName:@"list_id_hash"])
+  if ([rowCopy columnExistsWithName:@"conversation_flags"])
   {
-    v43 = [v10 objectForKeyedSubscript:@"list_id_hash"];
-    v44 = [v43 int64Value];
+    v42 = [rowCopy objectForKeyedSubscript:@"conversation_flags"];
+    numberValue11 = [v42 numberValue];
+  }
 
-    v151 = [objc_alloc(MEMORY[0x1E699B200]) initWithHash:v44];
+  else
+  {
+    numberValue11 = 0;
+  }
+
+  if ([rowCopy columnExistsWithName:@"list_id_hash"])
+  {
+    v43 = [rowCopy objectForKeyedSubscript:@"list_id_hash"];
+    int64Value2 = [v43 int64Value];
+
+    v151 = [objc_alloc(MEMORY[0x1E699B200]) initWithHash:int64Value2];
   }
 
   else
@@ -14830,14 +14830,14 @@ LABEL_33:
     v151 = 0;
   }
 
-  if ([v10 columnExistsWithName:@"document_id"])
+  if ([rowCopy columnExistsWithName:@"document_id"])
   {
-    v45 = [v10 objectForKeyedSubscript:@"document_id"];
-    v46 = [v45 stringValue];
+    v45 = [rowCopy objectForKeyedSubscript:@"document_id"];
+    stringValue3 = [v45 stringValue];
 
-    if ([v46 length])
+    if ([stringValue3 length])
     {
-      v150 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v46];
+      v150 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:stringValue3];
     }
 
     else
@@ -14851,72 +14851,72 @@ LABEL_33:
     v150 = 0;
   }
 
-  if ([v10 columnExistsWithName:@"read_later_date"])
+  if ([rowCopy columnExistsWithName:@"read_later_date"])
   {
-    v47 = [v10 objectForKeyedSubscript:@"read_later_date"];
-    v149 = [v47 dateValue];
+    v47 = [rowCopy objectForKeyedSubscript:@"read_later_date"];
+    dateValue2 = [v47 dateValue];
   }
 
   else
   {
-    v149 = 0;
+    dateValue2 = 0;
   }
 
-  if ([v10 columnExistsWithName:@"follow_up_start_date"])
+  if ([rowCopy columnExistsWithName:@"follow_up_start_date"])
   {
-    v48 = [v10 objectForKeyedSubscript:@"follow_up_start_date"];
-    v157 = [v48 dateValue];
+    v48 = [rowCopy objectForKeyedSubscript:@"follow_up_start_date"];
+    dateValue3 = [v48 dateValue];
   }
 
   else
   {
-    v157 = 0;
+    dateValue3 = 0;
   }
 
-  if ([v10 columnExistsWithName:@"follow_up_end_date"])
+  if ([rowCopy columnExistsWithName:@"follow_up_end_date"])
   {
-    v49 = [v10 objectForKeyedSubscript:@"follow_up_end_date"];
-    v159 = [v49 dateValue];
+    v49 = [rowCopy objectForKeyedSubscript:@"follow_up_end_date"];
+    dateValue4 = [v49 dateValue];
   }
 
   else
   {
-    v159 = 0;
+    dateValue4 = 0;
   }
 
-  if ([v10 columnExistsWithName:@"follow_up_jsonstringformodelevaluationforsuggestions"])
+  if ([rowCopy columnExistsWithName:@"follow_up_jsonstringformodelevaluationforsuggestions"])
   {
-    v50 = [v10 objectForKeyedSubscript:@"follow_up_jsonstringformodelevaluationforsuggestions"];
-    v135 = [v50 stringValue];
+    v50 = [rowCopy objectForKeyedSubscript:@"follow_up_jsonstringformodelevaluationforsuggestions"];
+    stringValue4 = [v50 stringValue];
   }
 
   else
   {
-    v135 = 0;
+    stringValue4 = 0;
   }
 
-  if ([v10 columnExistsWithName:@"send_later_date"])
+  if ([rowCopy columnExistsWithName:@"send_later_date"])
   {
-    v51 = [v10 objectForKeyedSubscript:@"send_later_date"];
-    v148 = [v51 dateValue];
+    v51 = [rowCopy objectForKeyedSubscript:@"send_later_date"];
+    dateValue5 = [v51 dateValue];
   }
 
   else
   {
-    v148 = 0;
+    dateValue5 = 0;
   }
 
-  v139 = [MEMORY[0x1E699B520] categoryForResultRow:v10];
-  v52 = [MEMORY[0x1E699B510] businessAddressesBusinessColumnName];
-  v53 = [v10 columnExistsWithName:v52];
+  v139 = [MEMORY[0x1E699B520] categoryForResultRow:rowCopy];
+  businessAddressesBusinessColumnName = [MEMORY[0x1E699B510] businessAddressesBusinessColumnName];
+  v53 = [rowCopy columnExistsWithName:businessAddressesBusinessColumnName];
 
   if (v53)
   {
-    v54 = [MEMORY[0x1E699B510] businessAddressesBusinessColumnName];
-    v55 = [v10 objectForKeyedSubscript:v54];
-    v126 = [v55 databaseIDValue];
+    businessAddressesBusinessColumnName2 = [MEMORY[0x1E699B510] businessAddressesBusinessColumnName];
+    v55 = [rowCopy objectForKeyedSubscript:businessAddressesBusinessColumnName2];
+    databaseIDValue2 = [v55 databaseIDValue];
 
-    if (!v126)
+    if (!databaseIDValue2)
     {
       v56 = +[MFMailMessageLibrary log];
       if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
@@ -14930,7 +14930,7 @@ LABEL_33:
       *&v163[8] = 1;
       *v164 = getpid();
       v161 = 648;
-      v126 = 0;
+      databaseIDValue2 = 0;
       if (!sysctl(v163, 4u, buf, &v161, 0, 0) && (*&buf[32] & 0x800) != 0)
       {
         __debugbreak();
@@ -14941,24 +14941,24 @@ LABEL_33:
 
   else
   {
-    v126 = *MEMORY[0x1E699A728];
+    databaseIDValue2 = *MEMORY[0x1E699A728];
   }
 
-  v134 = [MEMORY[0x1E699B510] brandIDForResultRow:v10];
-  if ([v10 columnExistsWithName:@"subject"])
+  v134 = [MEMORY[0x1E699B510] brandIDForResultRow:rowCopy];
+  if ([rowCopy columnExistsWithName:@"subject"])
   {
-    v57 = [v10 objectForKeyedSubscript:@"subject"];
-    v143 = [v57 stringValue];
+    v57 = [rowCopy objectForKeyedSubscript:@"subject"];
+    stringValue5 = [v57 stringValue];
 
-    if ((a4 & 1) == 0)
+    if ((options & 1) == 0)
     {
       v58 = 0;
       goto LABEL_97;
     }
 
-    if (v143)
+    if (stringValue5)
     {
-      v59 = v143;
+      v59 = stringValue5;
     }
 
     else
@@ -14966,7 +14966,7 @@ LABEL_33:
       v59 = &stru_1F273A5E0;
     }
 
-    if (v143 || !v147)
+    if (stringValue5 || !availableCopy)
     {
       goto LABEL_93;
     }
@@ -14974,14 +14974,14 @@ LABEL_33:
 
   else
   {
-    if ((a4 & 1) == 0)
+    if ((options & 1) == 0)
     {
       v58 = 0;
-      v143 = 0;
+      stringValue5 = 0;
       goto LABEL_97;
     }
 
-    if (!v147)
+    if (!availableCopy)
     {
       goto LABEL_92;
     }
@@ -14991,8 +14991,8 @@ LABEL_33:
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   *&buf[24] = -1;
-  v60 = [v140 preparedStatementForQueryString:@"SELECT subject FROM messages WHERE ROWID = ?"];
-  v61 = [MEMORY[0x1E696AD98] numberWithLongLong:v154];
+  v60 = [connectionCopy preparedStatementForQueryString:@"SELECT subject FROM messages WHERE ROWID = ?"];
+  v61 = [MEMORY[0x1E696AD98] numberWithLongLong:databaseIDValue];
   v167 = v61;
   v62 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v167 count:1];
   v160[0] = MEMORY[0x1E69E9820];
@@ -15007,9 +15007,9 @@ LABEL_33:
   {
     v114 = *(*&buf[8] + 24);
     *v163 = 134218496;
-    *&v163[4] = v154;
+    *&v163[4] = databaseIDValue;
     *v164 = 2048;
-    *&v164[2] = v141;
+    *&v164[2] = longLongValue6;
     v165 = 2048;
     v166 = v114;
     _os_log_error_impl(&dword_1B0389000, v63, OS_LOG_TYPE_ERROR, "Message has no subject.  LibraryID = %lld, globalID = %lld, subjectID = %lld", v163, 0x20u);
@@ -15019,72 +15019,72 @@ LABEL_33:
 LABEL_92:
   v59 = &stru_1F273A5E0;
 LABEL_93:
-  v64 = [v10 objectForKeyedSubscript:@"subject_prefix"];
-  v65 = [v64 stringValue];
+  v64 = [rowCopy objectForKeyedSubscript:@"subject_prefix"];
+  stringValue6 = [v64 stringValue];
 
-  if ([v65 length])
+  if ([stringValue6 length])
   {
-    v143 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v65, v59];
+    stringValue5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", stringValue6, v59];
   }
 
   else
   {
-    v143 = v59;
+    stringValue5 = v59;
   }
 
   v58 = 1;
 LABEL_97:
-  if ([v10 columnExistsWithName:@"sender_comment"])
+  if ([rowCopy columnExistsWithName:@"sender_comment"])
   {
-    v66 = [v10 objectForKeyedSubscript:@"sender_comment"];
-    v144 = [v66 stringValue];
+    v66 = [rowCopy objectForKeyedSubscript:@"sender_comment"];
+    stringValue7 = [v66 stringValue];
   }
 
   else
   {
-    v144 = 0;
+    stringValue7 = 0;
   }
 
-  if ([v10 columnExistsWithName:@"sender_address"])
+  if ([rowCopy columnExistsWithName:@"sender_address"])
   {
-    v67 = [v10 objectForKeyedSubscript:@"sender_address"];
-    v156 = [v67 stringValue];
-  }
-
-  else
-  {
-    v156 = 0;
-  }
-
-  if ([v10 columnExistsWithName:@"journaled"])
-  {
-    v68 = [v10 objectForKeyedSubscript:@"journaled"];
-    v121 = [v68 BOOLValue];
+    v67 = [rowCopy objectForKeyedSubscript:@"sender_address"];
+    stringValue8 = [v67 stringValue];
   }
 
   else
   {
-    v121 = 0;
+    stringValue8 = 0;
+  }
+
+  if ([rowCopy columnExistsWithName:@"journaled"])
+  {
+    v68 = [rowCopy objectForKeyedSubscript:@"journaled"];
+    bOOLValue = [v68 BOOLValue];
+  }
+
+  else
+  {
+    bOOLValue = 0;
   }
 
   v69 = MEMORY[0x1E699B248];
-  v70 = [v156 emailAddressValue];
-  v142 = [v69 componentsWithEmailAddress:v70];
+  emailAddressValue = [stringValue8 emailAddressValue];
+  v142 = [v69 componentsWithEmailAddress:emailAddressValue];
 
-  [v142 setDisplayName:v144];
-  v71 = [v142 stringValue];
-  v72 = v71;
-  v73 = v156;
-  if (v71)
+  [v142 setDisplayName:stringValue7];
+  stringValue9 = [v142 stringValue];
+  v72 = stringValue9;
+  v73 = stringValue8;
+  if (stringValue9)
   {
-    v73 = v71;
+    v73 = stringValue9;
   }
 
   v155 = v73;
 
-  if ((a4 & 2) != 0)
+  if ((options & 2) != 0)
   {
-    if (!v156 && v147)
+    if (!stringValue8 && availableCopy)
     {
       v74 = EDLibraryLog();
       if (os_log_type_enabled(v74, OS_LOG_TYPE_ERROR))
@@ -15102,14 +15102,14 @@ LABEL_97:
     v155 = 0;
   }
 
-  v75 = 0;
-  if ((a4 & 4) != 0 && v147)
+  toRecipientStrings = 0;
+  if ((options & 4) != 0 && availableCopy)
   {
-    v76 = [(MFMailMessageLibrary *)self _recipientsForMessageWithDatabaseID:v154 connection:v140 recipientsCache:v136];
-    v75 = [v76 toRecipientStrings];
-    v77 = [v76 ccRecipientStrings];
-    v133 = [v76 bccRecipientStrings];
-    v130 = v77;
+    v76 = [(MFMailMessageLibrary *)self _recipientsForMessageWithDatabaseID:databaseIDValue connection:connectionCopy recipientsCache:cacheCopy];
+    toRecipientStrings = [v76 toRecipientStrings];
+    ccRecipientStrings = [v76 ccRecipientStrings];
+    bccRecipientStrings = [v76 bccRecipientStrings];
+    v130 = ccRecipientStrings;
 
     v58 |= 2u;
   }
@@ -15117,47 +15117,47 @@ LABEL_97:
   else
   {
     v130 = 0;
-    v133 = 0;
+    bccRecipientStrings = 0;
   }
 
-  if ([v10 columnExistsWithName:@"summary"])
+  if ([rowCopy columnExistsWithName:@"summary"])
   {
-    v78 = [v10 objectForKeyedSubscript:@"summary"];
-    v132 = [v78 stringValue];
+    v78 = [rowCopy objectForKeyedSubscript:@"summary"];
+    stringValue10 = [v78 stringValue];
 
-    v58 |= a4 & 8;
+    v58 |= options & 8;
   }
 
   else
   {
-    v132 = 0;
+    stringValue10 = 0;
   }
 
-  if (_os_feature_enabled_impl() && EMIsGreymatterSupported() && [v10 columnExistsWithName:@"generated_summary"])
+  if (_os_feature_enabled_impl() && EMIsGreymatterSupported() && [rowCopy columnExistsWithName:@"generated_summary"])
   {
-    v79 = [v10 objectForKeyedSubscript:@"generated_summary"];
-    v80 = [v79 dataValue];
+    v79 = [rowCopy objectForKeyedSubscript:@"generated_summary"];
+    dataValue = [v79 dataValue];
 
-    v81 = [objc_alloc(MEMORY[0x1E699AD48]) initWithGlobalMessageID:v141];
-    if ([v80 length])
+    v81 = [objc_alloc(MEMORY[0x1E699AD48]) initWithGlobalMessageID:longLongValue6];
+    if ([dataValue length])
     {
-      v82 = [v10 objectForKeyedSubscript:@"urgent"];
-      v83 = [v82 BOOLValue];
+      v82 = [rowCopy objectForKeyedSubscript:@"urgent"];
+      bOOLValue2 = [v82 BOOLValue];
 
-      v84 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v80 error:0];
-      v85 = [v84 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x1E699A8D0]];
-      v86 = [v84 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x1E699A8C8]];
-      v131 = [objc_alloc(MEMORY[0x1E699ACB8]) initWithTopLine:v85 synopsis:v86 urgent:v83 messageItemID:v81];
+      numberValue12 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:dataValue error:0];
+      v85 = [numberValue12 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x1E699A8D0]];
+      v86 = [numberValue12 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x1E699A8C8]];
+      v131 = [objc_alloc(MEMORY[0x1E699ACB8]) initWithTopLine:v85 synopsis:v86 urgent:bOOLValue2 messageItemID:v81];
     }
 
     else
     {
-      v113 = [v10 objectForKeyedSubscript:@"urgent"];
-      v84 = [v113 numberValue];
+      v113 = [rowCopy objectForKeyedSubscript:@"urgent"];
+      numberValue12 = [v113 numberValue];
 
-      if (v84)
+      if (numberValue12)
       {
-        v131 = [objc_alloc(MEMORY[0x1E699ACB8]) initWithTopLine:0 synopsis:0 urgent:objc_msgSend(v84 messageItemID:{"BOOLValue"), v81}];
+        v131 = [objc_alloc(MEMORY[0x1E699ACB8]) initWithTopLine:0 synopsis:0 urgent:objc_msgSend(numberValue12 messageItemID:{"BOOLValue"), v81}];
       }
 
       else
@@ -15172,48 +15172,48 @@ LABEL_97:
     v131 = 0;
   }
 
-  if ([v10 columnExistsWithName:@"is_urgent"])
+  if ([rowCopy columnExistsWithName:@"is_urgent"])
   {
-    v87 = [v10 objectForKeyedSubscript:@"is_urgent"];
-    v88 = [v87 BOOLValue];
+    v87 = [rowCopy objectForKeyedSubscript:@"is_urgent"];
+    bOOLValue3 = [v87 BOOLValue];
   }
 
   else
   {
-    v88 = 0;
+    bOOLValue3 = 0;
   }
 
-  if ([v10 columnExistsWithName:@"unsubscribe_type"])
+  if ([rowCopy columnExistsWithName:@"unsubscribe_type"])
   {
-    v89 = [v10 objectForKeyedSubscript:@"unsubscribe_type"];
-    v90 = [v89 numberValue];
-  }
-
-  else
-  {
-    v90 = 0;
-  }
-
-  if ([v10 columnExistsWithName:@"sender_bucket"])
-  {
-    v91 = [v10 objectForKeyedSubscript:@"sender_bucket"];
-    v92 = [v91 numberValue];
-    v93 = [v92 integerValue];
+    v89 = [rowCopy objectForKeyedSubscript:@"unsubscribe_type"];
+    numberValue13 = [v89 numberValue];
   }
 
   else
   {
-    v93 = 0;
+    numberValue13 = 0;
   }
 
-  if ([v10 columnExistsWithName:@"brand_indicator_location"])
+  if ([rowCopy columnExistsWithName:@"sender_bucket"])
   {
-    v94 = [v10 objectForKeyedSubscript:@"brand_indicator_location"];
-    v95 = [v94 stringValue];
+    v91 = [rowCopy objectForKeyedSubscript:@"sender_bucket"];
+    numberValue14 = [v91 numberValue];
+    integerValue = [numberValue14 integerValue];
+  }
 
-    if (v95)
+  else
+  {
+    integerValue = 0;
+  }
+
+  if ([rowCopy columnExistsWithName:@"brand_indicator_location"])
+  {
+    v94 = [rowCopy objectForKeyedSubscript:@"brand_indicator_location"];
+    stringValue11 = [v94 stringValue];
+
+    if (stringValue11)
     {
-      v96 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v95];
+      v96 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:stringValue11];
     }
 
     else
@@ -15227,21 +15227,21 @@ LABEL_97:
     v96 = 0;
   }
 
-  if ([v10 columnExistsWithName:@"message_id_header"])
+  if ([rowCopy columnExistsWithName:@"message_id_header"])
   {
-    v97 = [v10 objectForKeyedSubscript:@"message_id_header"];
-    v98 = [v97 stringValue];
+    v97 = [rowCopy objectForKeyedSubscript:@"message_id_header"];
+    stringValue12 = [v97 stringValue];
   }
 
   else
   {
-    v98 = 0;
+    stringValue12 = 0;
   }
 
   buf[0] = 0;
-  v99 = [(MFMailMessageLibrary *)self _libraryMessageWithLibraryID:v154 wasCached:buf];
-  [v99 setGenerationNumber:a5];
-  if (v147)
+  v99 = [(MFMailMessageLibrary *)self _libraryMessageWithLibraryID:databaseIDValue wasCached:buf];
+  [v99 setGenerationNumber:timestamp];
+  if (availableCopy)
   {
     if (v155)
     {
@@ -15255,14 +15255,14 @@ LABEL_97:
     }
 
     LODWORD(v115) = v58;
-    [v99 setSubject:v143 to:v75 cc:v130 bcc:v133 sender:v100 dateReceived:v132 dateSent:v123 summary:v122 withOptions:v115];
+    [v99 setSubject:stringValue5 to:toRecipientStrings cc:v130 bcc:bccRecipientStrings sender:v100 dateReceived:stringValue10 dateSent:longLongValue summary:longLongValue2 withOptions:v115];
     if (v155)
     {
     }
 
-    if ((a4 & 0x200000) != 0)
+    if ((options & 0x200000) != 0)
     {
-      [v99 setSenderBucket:v93];
+      [v99 setSenderBucket:integerValue];
     }
 
     [v99 setGeneratedSummary:v131];
@@ -15270,15 +15270,15 @@ LABEL_97:
 
   else
   {
-    [v99 setDateReceivedAsTimeIntervalSince1970:v123];
-    [v99 setDateSentAsTimeIntervalSince1970:v122];
+    [v99 setDateReceivedAsTimeIntervalSince1970:longLongValue];
+    [v99 setDateSentAsTimeIntervalSince1970:longLongValue2];
   }
 
-  [v99 setIsUrgent:v88];
-  if (v153)
+  [v99 setIsUrgent:bOOLValue3];
+  if (dateValue)
   {
-    v101 = [v153 ec_integerDate];
-    [v99 setDisplayDate:v101];
+    ec_integerDate = [dateValue ec_integerDate];
+    [v99 setDisplayDate:ec_integerDate];
   }
 
   if (v151)
@@ -15291,42 +15291,42 @@ LABEL_97:
     [v99 setDocumentID:v150];
   }
 
-  if (v141)
+  if (longLongValue6)
   {
-    [v99 setGlobalMessageID:v141];
+    [v99 setGlobalMessageID:longLongValue6];
   }
 
-  if (v152)
+  if (numberValue11)
   {
-    [v99 setConversationFlags:{objc_msgSend(v152, "longLongValue")}];
+    [v99 setConversationFlags:{objc_msgSend(numberValue11, "longLongValue")}];
   }
 
-  if (v90)
+  if (numberValue13)
   {
-    [v99 setUnsubscribeType:{objc_msgSend(v90, "longLongValue")}];
+    [v99 setUnsubscribeType:{objc_msgSend(numberValue13, "longLongValue")}];
   }
 
-  if (v149)
+  if (dateValue2)
   {
-    v102 = [objc_alloc(MEMORY[0x1E699AE30]) initWithDate:v149];
+    v102 = [objc_alloc(MEMORY[0x1E699AE30]) initWithDate:dateValue2];
     [v99 setReadLater:v102];
   }
 
-  if (v148)
+  if (dateValue5)
   {
-    [v99 setSendLaterDate:v148];
+    [v99 setSendLaterDate:dateValue5];
   }
 
   [v99 setBrandIndicatorLocation:v96 andData:0];
-  if (v98)
+  if (stringValue12)
   {
-    [v99 setMessageIDHeader:v98];
+    [v99 setMessageIDHeader:stringValue12];
   }
 
-  [v99 setIsJournaled:v121];
-  if (v157 && v159)
+  [v99 setIsJournaled:bOOLValue];
+  if (dateValue3 && dateValue4)
   {
-    v103 = [objc_alloc(MEMORY[0x1E699ACA8]) initWithStartDate:v157 endDate:v159 jsonStringForModelEvaluationForSuggestions:v135];
+    v103 = [objc_alloc(MEMORY[0x1E699ACA8]) initWithStartDate:dateValue3 endDate:dateValue4 jsonStringForModelEvaluationForSuggestions:stringValue4];
     [v99 setFollowUp:v103];
   }
 
@@ -15337,16 +15337,16 @@ LABEL_97:
 
   if (_os_feature_enabled_impl())
   {
-    [v99 setBusinessID:v126];
-    v104 = [MEMORY[0x1E699B5C0] messageGlobalDataValidationState];
-    v105 = [v10 columnExistsWithName:v104];
+    [v99 setBusinessID:databaseIDValue2];
+    messageGlobalDataValidationState = [MEMORY[0x1E699B5C0] messageGlobalDataValidationState];
+    v105 = [rowCopy columnExistsWithName:messageGlobalDataValidationState];
 
     if (v105)
     {
-      v106 = [MEMORY[0x1E699B5C0] messageGlobalDataValidationState];
-      v107 = [v10 objectForKeyedSubscript:v106];
-      v108 = [v107 numberValue];
-      [v99 setAuthenticationState:{objc_msgSend(v108, "integerValue")}];
+      messageGlobalDataValidationState2 = [MEMORY[0x1E699B5C0] messageGlobalDataValidationState];
+      v107 = [rowCopy objectForKeyedSubscript:messageGlobalDataValidationState2];
+      numberValue15 = [v107 numberValue];
+      [v99 setAuthenticationState:{objc_msgSend(numberValue15, "integerValue")}];
     }
 
     [v99 setBusinessLogoID:v134];
@@ -15356,20 +15356,20 @@ LABEL_97:
   if ([v99 mailboxID] == -1)
   {
     [v99 setContentType:v127];
-    [v99 setRemoteID:v129 flags:v120 size:v119 mailboxID:objc_msgSend(v128 originalMailboxID:{"longLongValue"), v118}];
-    if (v146)
+    [v99 setRemoteID:stringValue flags:longLongValue3 size:unsignedIntegerValue mailboxID:objc_msgSend(v128 originalMailboxID:{"longLongValue"), longLongValue4}];
+    if (stringValue2)
     {
-      [v99 setExternalID:v146];
+      [v99 setExternalID:stringValue2];
     }
 
-    if (v138)
+    if (numberValue7)
     {
-      [v99 setPreferredEncoding:{objc_msgSend(v138, "unsignedIntValue")}];
+      [v99 setPreferredEncoding:{objc_msgSend(numberValue7, "unsignedIntValue")}];
     }
 
-    [v99 setUniqueRemoteId:v116];
-    [v99 setConversationID:v125];
-    [v99 setMessageIDHash:v117];
+    [v99 setUniqueRemoteId:longLongValue7];
+    [v99 setConversationID:int64Value];
+    [v99 setMessageIDHash:longLongValue5];
   }
 
   [v99 mf_unlock];
@@ -15396,21 +15396,21 @@ void __109__MFMailMessageLibrary__messageForRow_options_timestamp_connection_isP
   *(*(*(a1 + 32) + 8) + 24) = [v3 databaseIDValue];
 }
 
-- (id)_recipientsForMessageWithDatabaseID:(int64_t)a3 connection:(id)a4 recipientsCache:(id)a5
+- (id)_recipientsForMessageWithDatabaseID:(int64_t)d connection:(id)connection recipientsCache:(id)cache
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  connectionCopy = connection;
+  cacheCopy = cache;
   v9 = objc_alloc_init(_MFRecipientCollection);
-  v10 = [v7 preparedStatementForQueryString:{@"SELECT addresses.ROWID, addresses.address, addresses.comment, recipients.type FROM recipients JOIN addresses ON recipients.address = addresses.ROWID WHERE recipients.message = ? ORDER BY recipients.position"}];
-  v11 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v10 = [connectionCopy preparedStatementForQueryString:{@"SELECT addresses.ROWID, addresses.address, addresses.comment, recipients.type FROM recipients JOIN addresses ON recipients.address = addresses.ROWID WHERE recipients.message = ? ORDER BY recipients.position"}];
+  v11 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
   v25[0] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:1];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __87__MFMailMessageLibrary__recipientsForMessageWithDatabaseID_connection_recipientsCache___block_invoke;
   v22[3] = &unk_1E7AA3DD8;
-  v13 = v8;
+  v13 = cacheCopy;
   v23 = v13;
   v14 = v9;
   v24 = v14;
@@ -15420,7 +15420,7 @@ void __109__MFMailMessageLibrary__messageForRow_options_timestamp_connection_isP
 
   if ((v15 & 1) == 0)
   {
-    [v7 handleError:v16 message:@"Fetching recipients"];
+    [connectionCopy handleError:v16 message:@"Fetching recipients"];
   }
 
   v17 = v24;
@@ -15471,7 +15471,7 @@ void __87__MFMailMessageLibrary__recipientsForMessageWithDatabaseID_connection_r
   }
 }
 
-- (id)senderForMessageWithLibraryID:(int64_t)a3 error:(id *)a4
+- (id)senderForMessageWithLibraryID:(int64_t)d error:(id *)error
 {
   v39 = 0;
   v40 = &v39;
@@ -15488,19 +15488,19 @@ void __87__MFMailMessageLibrary__recipientsForMessageWithDatabaseID_connection_r
   v32 = 0;
   v7 = [MEMORY[0x1E699B5C0] selectAddressesStatementWithResultColumns:&v32];
   v8 = v32;
-  v9 = [MEMORY[0x1E699B5C0] messagesTableName];
+  messagesTableName = [MEMORY[0x1E699B5C0] messagesTableName];
   v10 = *MEMORY[0x1E699B768];
-  v11 = [v7 join:v9 sourceColumn:*MEMORY[0x1E699B768] targetColumn:@"sender"];
+  v11 = [v7 join:messagesTableName sourceColumn:*MEMORY[0x1E699B768] targetColumn:@"sender"];
 
   v12 = MEMORY[0x1E699B8C8];
-  v13 = [MEMORY[0x1E699B5C0] messagesTableName];
-  v14 = [v12 table:v13 column:v10];
+  messagesTableName2 = [MEMORY[0x1E699B5C0] messagesTableName];
+  v14 = [v12 table:messagesTableName2 column:v10];
 
-  v15 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v15 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
   v16 = [v14 equalTo:v15];
   [v7 setWhere:v16];
 
-  v17 = [(MFMailMessageLibrary *)self database];
+  database = [(MFMailMessageLibrary *)self database];
   v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary senderForMessageWithLibraryID:error:]"];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
@@ -15512,9 +15512,9 @@ void __87__MFMailMessageLibrary__recipientsForMessageWithDatabaseID_connection_r
   v29 = v20;
   v30 = &v39;
   v31 = &v33;
-  v21 = [v17 __performReadWithCaller:v18 usingBlock:v27];
+  v21 = [database __performReadWithCaller:v18 usingBlock:v27];
 
-  if (a4)
+  if (error)
   {
     v22 = v34;
     if ((v21 & 1) == 0 && !v34[5])
@@ -15526,7 +15526,7 @@ void __87__MFMailMessageLibrary__recipientsForMessageWithDatabaseID_connection_r
       v22 = v34;
     }
 
-    *a4 = v22[5];
+    *error = v22[5];
   }
 
   v25 = v40[5];
@@ -15585,45 +15585,45 @@ void __60__MFMailMessageLibrary_senderForMessageWithLibraryID_error___block_invo
   objc_storeStrong((*(*(a1 + 40) + 8) + 40), v12);
 }
 
-- (id)_recipientsForMessagesWithDatabaseIDs:(id)a3 includeTo:(BOOL)a4 includeCC:(BOOL)a5 includeBCC:(BOOL)a6
+- (id)_recipientsForMessagesWithDatabaseIDs:(id)ds includeTo:(BOOL)to includeCC:(BOOL)c includeBCC:(BOOL)cC
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
-  v11 = a3;
-  if (!v7 && !v6 && !v8)
+  cCCopy = cC;
+  cCopy = c;
+  toCopy = to;
+  dsCopy = ds;
+  if (!cCopy && !cCCopy && !toCopy)
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"MailMessageLibrary.m" lineNumber:7990 description:@"Must include at least one recipient type"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MailMessageLibrary.m" lineNumber:7990 description:@"Must include at least one recipient type"];
   }
 
   v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v8)
+  if (toCopy)
   {
     v13 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%lu", 1];
     [v12 addObject:v13];
   }
 
-  if (v7)
+  if (cCopy)
   {
     v14 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%lu", 2];
     [v12 addObject:v14];
   }
 
-  if (v6)
+  if (cCCopy)
   {
     v15 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%lu", 3];
     [v12 addObject:v15];
   }
 
   v16 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v17 = [v11 valueForKey:@"stringValue"];
+  v17 = [dsCopy valueForKey:@"stringValue"];
   v18 = [v17 componentsJoinedByString:{@", "}];
   v19 = [v12 componentsJoinedByString:{@", "}];
   v20 = [v16 initWithFormat:@"SELECT addresses.address, addresses.comment, recipients.type, recipients.message FROM recipients JOIN addresses ON recipients.address = addresses.ROWID WHERE recipients.message IN (%@) AND type IN (%@) ORDER BY recipients.position", v18, v19];
 
   v21 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v22 = [(MFMailMessageLibrary *)self database];
+  database = [(MFMailMessageLibrary *)self database];
   v23 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary _recipientsForMessagesWithDatabaseIDs:includeTo:includeCC:includeBCC:]"];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
@@ -15632,10 +15632,10 @@ void __60__MFMailMessageLibrary_senderForMessageWithLibraryID_error___block_invo
   v24 = v20;
   v30 = v24;
   v25 = v21;
-  v32 = self;
+  selfCopy = self;
   v33 = a2;
   v31 = v25;
-  [v22 __performReadWithCaller:v23 usingBlock:v29];
+  [database __performReadWithCaller:v23 usingBlock:v29];
 
   v26 = v25;
   return v25;
@@ -15706,7 +15706,7 @@ void __93__MFMailMessageLibrary__recipientsForMessagesWithDatabaseIDs_includeTo_
 - (id)stringFromAllMailboxUnreadCount
 {
   v3 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v4 = [(MFMailMessageLibrary *)self database];
+  database = [(MFMailMessageLibrary *)self database];
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary stringFromAllMailboxUnreadCount]"];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -15714,7 +15714,7 @@ void __93__MFMailMessageLibrary__recipientsForMessagesWithDatabaseIDs_includeTo_
   v8[3] = &unk_1E7AA43C8;
   v6 = v3;
   v9 = v6;
-  [v4 __performReadWithCaller:v5 usingBlock:v8];
+  [database __performReadWithCaller:v5 usingBlock:v8];
 
   return v6;
 }
@@ -15784,11 +15784,11 @@ void __55__MFMailMessageLibrary_stringFromAllMailboxUnreadCount__block_invoke_2(
   [v25 appendFormat:@"  most Recent Status Count: %@\n", v27];
 }
 
-- (BOOL)messageDataExistsInDatabaseForMessageLibraryID:(int64_t)a3 part:(id)a4 length:(unint64_t *)a5
+- (BOOL)messageDataExistsInDatabaseForMessageLibraryID:(int64_t)d part:(id)part length:(unint64_t *)length
 {
-  v8 = a4;
+  partCopy = part;
   v9 = @"SELECT length FROM message_data WHERE message_id = ? AND part = ?";
-  if (!v8)
+  if (!partCopy)
   {
     v9 = @"SELECT length FROM message_data WHERE message_id = ? AND part IS NULL";
   }
@@ -15802,7 +15802,7 @@ void __55__MFMailMessageLibrary_stringFromAllMailboxUnreadCount__block_invoke_2(
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 0;
-  v11 = [(MFMailMessageLibrary *)self database];
+  database = [(MFMailMessageLibrary *)self database];
   v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailMessageLibrary messageDataExistsInDatabaseForMessageLibraryID:part:length:]"];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -15810,16 +15810,16 @@ void __55__MFMailMessageLibrary_stringFromAllMailboxUnreadCount__block_invoke_2(
   v17[3] = &unk_1E7AA43F0;
   v13 = v10;
   v18 = v13;
-  v22 = a3;
-  v14 = v8;
+  dCopy = d;
+  v14 = partCopy;
   v19 = v14;
   v20 = &v27;
   v21 = &v23;
-  [v11 __performReadWithCaller:v12 usingBlock:v17];
+  [database __performReadWithCaller:v12 usingBlock:v17];
 
-  if (a5)
+  if (length)
   {
-    *a5 = v28[3];
+    *length = v28[3];
   }
 
   v15 = *(v24 + 24);
@@ -15900,12 +15900,12 @@ void __83__MFMailMessageLibrary_messageDataExistsInDatabaseForMessageLibraryID_p
   return v10;
 }
 
-- (BOOL)_shouldStoreRemoteContentForMessage:(id)a3
+- (BOOL)_shouldStoreRemoteContentForMessage:(id)message
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695E000] em_userDefaults];
-  v6 = [v5 integerForKey:*MEMORY[0x1E699AB98]];
+  messageCopy = message;
+  em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
+  v6 = [em_userDefaults integerForKey:*MEMORY[0x1E699AB98]];
 
   if ((v6 & 1) == 0)
   {
@@ -15913,7 +15913,7 @@ void __83__MFMailMessageLibrary_messageDataExistsInDatabaseForMessageLibraryID_p
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v25 = v4;
+      v25 = messageCopy;
       v8 = "Skipping remote content parsing (not yet enabled by user): %{public}@";
       v9 = v7;
       v10 = 12;
@@ -15933,7 +15933,7 @@ LABEL_10:
       *buf = 134218242;
       v25 = v6;
       v26 = 2114;
-      v27 = v4;
+      v27 = messageCopy;
       v8 = "Skipping remote content parsing (%lx): %{public}@";
       v9 = v7;
       v10 = 22;
@@ -15945,10 +15945,10 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v11 = [(MFMailMessageLibrary *)self persistence];
-  v12 = [v11 remoteContentManager];
+  persistence = [(MFMailMessageLibrary *)self persistence];
+  remoteContentManager = [persistence remoteContentManager];
   v23 = 0;
-  v13 = [v12 shouldAddRemoteContentLinksForMessage:v4 logMessage:&v23];
+  v13 = [remoteContentManager shouldAddRemoteContentLinksForMessage:messageCopy logMessage:&v23];
   v7 = v23;
 
   if ((v13 & 1) == 0)
@@ -15959,7 +15959,7 @@ LABEL_17:
       *buf = 138543618;
       v25 = v7;
       v26 = 2114;
-      v27 = v4;
+      v27 = messageCopy;
       v18 = "Skipping remote content parsing (%{public}@): %{public}@";
       v19 = v17;
       v20 = 22;
@@ -15972,16 +15972,16 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v14 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v15 = [v14 isMailPrivacyProtectionAllowed];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  isMailPrivacyProtectionAllowed = [mEMORY[0x1E69ADFB8] isMailPrivacyProtectionAllowed];
 
-  if ((v15 & 1) == 0)
+  if ((isMailPrivacyProtectionAllowed & 1) == 0)
   {
     v17 = EDLibraryLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v25 = v4;
+      v25 = messageCopy;
       v18 = "Skipping remote content parsing (prohibited by MDM): %{public}@";
       v19 = v17;
       v20 = 12;
@@ -15998,27 +15998,27 @@ LABEL_18:
   return v16;
 }
 
-- (BOOL)_storeRemoteContentLinksCachedOnMessage:(id)a3 linksToVerify:(id *)a4
+- (BOOL)_storeRemoteContentLinksCachedOnMessage:(id)message linksToVerify:(id *)verify
 {
-  v6 = a3;
-  v7 = [v6 remoteContentLinks];
-  if (v7)
+  messageCopy = message;
+  remoteContentLinks = [messageCopy remoteContentLinks];
+  if (remoteContentLinks)
   {
-    v8 = [(MFMailMessageLibrary *)self persistence];
-    v9 = [v8 remoteContentManager];
+    persistence = [(MFMailMessageLibrary *)self persistence];
+    remoteContentManager = [persistence remoteContentManager];
 
     v10 = +[MFPowerController sharedInstance];
     if ([v10 isPluggedIn])
     {
-      v11 = [v9 shouldVerifyRemoteLinks];
+      shouldVerifyRemoteLinks = [remoteContentManager shouldVerifyRemoteLinks];
 
-      if (v11)
+      if (shouldVerifyRemoteLinks)
       {
-        v12 = v7;
+        v12 = remoteContentLinks;
         v13 = 0;
-        v14 = v7;
+        v14 = remoteContentLinks;
 LABEL_8:
-        *a4 = v14;
+        *verify = v14;
 
         goto LABEL_9;
       }
@@ -16028,38 +16028,38 @@ LABEL_8:
     {
     }
 
-    [v9 addRemoteContentLinks:v7];
+    [remoteContentManager addRemoteContentLinks:remoteContentLinks];
     v14 = 0;
     v13 = 1;
     goto LABEL_8;
   }
 
   v13 = 0;
-  *a4 = 0;
+  *verify = 0;
 LABEL_9:
 
   return v13;
 }
 
-- (void)processRemoteContentFromFullData:(id)a3 forMessage:(id)a4
+- (void)processRemoteContentFromFullData:(id)data forMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(MFMailMessageLibrary *)self _shouldStoreRemoteContentForMessage:v7])
+  dataCopy = data;
+  messageCopy = message;
+  if ([(MFMailMessageLibrary *)self _shouldStoreRemoteContentForMessage:messageCopy])
   {
     v19 = 0;
-    v8 = [(MFMailMessageLibrary *)self _storeRemoteContentLinksCachedOnMessage:v7 linksToVerify:&v19];
-    v9 = [(MFMailMessageLibrary *)self _parserRemoteContentOptionsForMessage:v7 shouldStoreRemoteContent:!v8, v19];
+    v8 = [(MFMailMessageLibrary *)self _storeRemoteContentLinksCachedOnMessage:messageCopy linksToVerify:&v19];
+    v9 = [(MFMailMessageLibrary *)self _parserRemoteContentOptionsForMessage:messageCopy shouldStoreRemoteContent:!v8, v19];
   }
 
   else
   {
-    v9 = [(MFMailMessageLibrary *)self _parserRemoteContentOptionsForMessage:v7 shouldStoreRemoteContent:0, 0];
+    v9 = [(MFMailMessageLibrary *)self _parserRemoteContentOptionsForMessage:messageCopy shouldStoreRemoteContent:0, 0];
   }
 
   v10 = v9;
-  v11 = [v6 length];
-  v12 = [v6 mf_rangeOfRFC822HeaderData];
+  v11 = [dataCopy length];
+  mf_rangeOfRFC822HeaderData = [dataCopy mf_rangeOfRFC822HeaderData];
   v14 = v13;
   if (v13 == v11)
   {
@@ -16074,36 +16074,36 @@ LABEL_9:
 
   else
   {
-    v17 = v12;
-    v16 = [v6 mf_subdataWithRange:{v12, v13}];
-    v15 = [v6 mf_subdataWithRange:{v17 + v14, v11 - (v17 + v14)}];
-    [(MFMailMessageLibrary *)self _findHTMLPartsFromHeaderData:v16 bodyData:v15 forMessage:v7 linksToVerify:v18 parsingOptions:v10];
+    v17 = mf_rangeOfRFC822HeaderData;
+    v16 = [dataCopy mf_subdataWithRange:{mf_rangeOfRFC822HeaderData, v13}];
+    v15 = [dataCopy mf_subdataWithRange:{v17 + v14, v11 - (v17 + v14)}];
+    [(MFMailMessageLibrary *)self _findHTMLPartsFromHeaderData:v16 bodyData:v15 forMessage:messageCopy linksToVerify:v18 parsingOptions:v10];
   }
 }
 
-- (void)_storeLinksToVerifyIfExistent:(void *)a1
+- (void)_storeLinksToVerifyIfExistent:(void *)existent
 {
   v3 = a2;
-  if (a1 && v3)
+  if (existent && v3)
   {
     v6 = v3;
-    v4 = [a1 persistence];
-    v5 = [v4 remoteContentManager];
-    [v5 addRemoteContentLinks:v6];
+    persistence = [existent persistence];
+    remoteContentManager = [persistence remoteContentManager];
+    [remoteContentManager addRemoteContentLinks:v6];
 
     v3 = v6;
   }
 }
 
-- (void)processRemoteContentFromHeaderData:(id)a3 bodyData:(id)a4 forMessage:(id)a5
+- (void)processRemoteContentFromHeaderData:(id)data bodyData:(id)bodyData forMessage:(id)message
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(MFMailMessageLibrary *)self _shouldStoreRemoteContentForMessage:v10])
+  dataCopy = data;
+  bodyDataCopy = bodyData;
+  messageCopy = message;
+  if ([(MFMailMessageLibrary *)self _shouldStoreRemoteContentForMessage:messageCopy])
   {
     v14 = 0;
-    v11 = [(MFMailMessageLibrary *)self _storeRemoteContentLinksCachedOnMessage:v10 linksToVerify:&v14];
+    v11 = [(MFMailMessageLibrary *)self _storeRemoteContentLinksCachedOnMessage:messageCopy linksToVerify:&v14];
     v12 = v14;
     v13 = !v11;
   }
@@ -16114,63 +16114,63 @@ LABEL_9:
     v13 = 0;
   }
 
-  [(MFMailMessageLibrary *)self _findHTMLPartsFromHeaderData:v8 bodyData:v9 forMessage:v10 linksToVerify:v12 parsingOptions:[(MFMailMessageLibrary *)self _parserRemoteContentOptionsForMessage:v10 shouldStoreRemoteContent:v13]];
+  [(MFMailMessageLibrary *)self _findHTMLPartsFromHeaderData:dataCopy bodyData:bodyDataCopy forMessage:messageCopy linksToVerify:v12 parsingOptions:[(MFMailMessageLibrary *)self _parserRemoteContentOptionsForMessage:messageCopy shouldStoreRemoteContent:v13]];
 }
 
-- (void)_findHTMLPartsFromHeaderData:(id)a3 bodyData:(id)a4 forMessage:(id)a5 linksToVerify:(id)a6 parsingOptions:(unint64_t)a7
+- (void)_findHTMLPartsFromHeaderData:(id)data bodyData:(id)bodyData forMessage:(id)message linksToVerify:(id)verify parsingOptions:(unint64_t)options
 {
   v50 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v41 = a4;
-  v40 = a5;
-  v13 = a6;
-  v39 = v12;
-  if (![v12 length] || !objc_msgSend(v41, "length"))
+  dataCopy = data;
+  bodyDataCopy = bodyData;
+  messageCopy = message;
+  verifyCopy = verify;
+  v39 = dataCopy;
+  if (![dataCopy length] || !objc_msgSend(bodyDataCopy, "length"))
   {
     v19 = EDLibraryLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v49 = v40;
+      v49 = messageCopy;
       _os_log_impl(&dword_1B0389000, v19, OS_LOG_TYPE_DEFAULT, "Skipping remote content parsing and data detection (no header or body data): %{public}@", buf, 0xCu);
     }
 
-    [(MFMailMessageLibrary *)self _storeLinksToVerifyIfExistent:v13];
+    [(MFMailMessageLibrary *)self _storeLinksToVerifyIfExistent:verifyCopy];
     goto LABEL_22;
   }
 
-  v34 = v13;
-  v14 = [MEMORY[0x1E696AF00] currentThread];
-  v15 = [v14 threadDictionary];
+  v34 = verifyCopy;
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
   v16 = *MEMORY[0x1E69AD650];
-  v35 = v15;
-  v36 = [v15 objectForKeyedSubscript:*MEMORY[0x1E69AD650]];
-  [v15 setObject:MEMORY[0x1E695E110] forKeyedSubscript:v16];
+  v35 = threadDictionary;
+  v36 = [threadDictionary objectForKeyedSubscript:*MEMORY[0x1E69AD650]];
+  [threadDictionary setObject:MEMORY[0x1E695E110] forKeyedSubscript:v16];
   v37 = objc_alloc_init(MEMORY[0x1E69AD710]);
   v38 = objc_alloc_init(MEMORY[0x1E69AD720]);
   v33 = v16;
-  [v37 setMessage:v40];
+  [v37 setMessage:messageCopy];
   [v37 setTopLevelPart:v38];
   [v38 setMimeBody:v37];
-  [v38 parseMimeBodyFromHeaderData:v39 bodyData:v41 isPartial:0];
+  [v38 parseMimeBodyFromHeaderData:v39 bodyData:bodyDataCopy isPartial:0];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __102__MFMailMessageLibrary__findHTMLPartsFromHeaderData_bodyData_forMessage_linksToVerify_parsingOptions___block_invoke;
   aBlock[3] = &unk_1E7AA4418;
-  v31 = v41;
-  v32 = self;
+  v31 = bodyDataCopy;
+  selfCopy = self;
   v43 = v31;
-  v44 = self;
-  v45 = v13;
-  v30 = v40;
+  selfCopy2 = self;
+  v45 = verifyCopy;
+  v30 = messageCopy;
   v46 = v30;
-  v47 = a7;
+  optionsCopy = options;
   v17 = _Block_copy(aBlock);
-  v18 = [v37 textHtmlPart];
-  if (v18)
+  textHtmlPart = [v37 textHtmlPart];
+  if (textHtmlPart)
   {
-    if ((v17[2](v17, v18) & 1) == 0)
+    if ((v17[2](v17, textHtmlPart) & 1) == 0)
     {
       goto LABEL_20;
     }
@@ -16179,26 +16179,26 @@ LABEL_9:
   }
 
   v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v21 = [v37 topLevelPart];
+  topLevelPart = [v37 topLevelPart];
   v22 = 0;
-  v18 = 0;
+  textHtmlPart = 0;
   do
   {
-    if (![v21 isHTML])
+    if (![topLevelPart isHTML])
     {
       goto LABEL_18;
     }
 
-    v23 = [v21 type];
-    if ([v23 isEqualToString:@"multipart"])
+    type = [topLevelPart type];
+    if ([type isEqualToString:@"multipart"])
     {
-      v24 = [v21 subtype];
-      v25 = [v24 isEqualToString:@"alternative"];
+      subtype = [topLevelPart subtype];
+      v25 = [subtype isEqualToString:@"alternative"];
 
       if ((v25 & 1) == 0)
       {
-        v26 = [v21 subparts];
-        [v20 addObjectsFromArray:v26];
+        subparts = [topLevelPart subparts];
+        [v20 addObjectsFromArray:subparts];
 
         v22 = 1;
         goto LABEL_18;
@@ -16209,38 +16209,38 @@ LABEL_9:
     {
     }
 
-    v27 = [v21 textHtmlPart];
+    textHtmlPart2 = [topLevelPart textHtmlPart];
 
-    if (v27)
+    if (textHtmlPart2)
     {
-      v22 |= v17[2](v17, v27);
-      v18 = v27;
+      v22 |= v17[2](v17, textHtmlPart2);
+      textHtmlPart = textHtmlPart2;
     }
 
     else
     {
-      v18 = 0;
+      textHtmlPart = 0;
     }
 
 LABEL_18:
-    v28 = [v20 lastObject];
+    lastObject = [v20 lastObject];
 
     [v20 removeLastObject];
-    v21 = v28;
+    topLevelPart = lastObject;
   }
 
-  while (v28);
+  while (lastObject);
 
   if ((v22 & 1) == 0)
   {
 LABEL_20:
-    [(MFMailMessageLibrary *)v32 detectDataFromPlainTextMessage:v31 forMessage:v30 mimePart:v38];
+    [(MFMailMessageLibrary *)selfCopy detectDataFromPlainTextMessage:v31 forMessage:v30 mimePart:v38];
   }
 
 LABEL_21:
   [v35 setObject:v36 forKeyedSubscript:v33];
 
-  v13 = v34;
+  verifyCopy = v34;
 LABEL_22:
 
   v29 = *MEMORY[0x1E69E9840];
@@ -16281,15 +16281,15 @@ uint64_t __102__MFMailMessageLibrary__findHTMLPartsFromHeaderData_bodyData_forMe
   return v7;
 }
 
-- (void)processRemoteContentFromData:(id)a3 forMessage:(id)a4 mimePart:(id)a5
+- (void)processRemoteContentFromData:(id)data forMessage:(id)message mimePart:(id)part
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(MFMailMessageLibrary *)self _shouldStoreRemoteContentForMessage:v9])
+  dataCopy = data;
+  messageCopy = message;
+  partCopy = part;
+  if ([(MFMailMessageLibrary *)self _shouldStoreRemoteContentForMessage:messageCopy])
   {
     v14 = 0;
-    v11 = [(MFMailMessageLibrary *)self _storeRemoteContentLinksCachedOnMessage:v9 linksToVerify:&v14];
+    v11 = [(MFMailMessageLibrary *)self _storeRemoteContentLinksCachedOnMessage:messageCopy linksToVerify:&v14];
     v12 = v14;
     v13 = !v11;
   }
@@ -16300,53 +16300,53 @@ uint64_t __102__MFMailMessageLibrary__findHTMLPartsFromHeaderData_bodyData_forMe
     v13 = 0;
   }
 
-  [(MFMailMessageLibrary *)self _processRemoteContentFromData:v8 forMimePart:v10 linksToVerify:v12 forMessage:v9 parsingOptions:[(MFMailMessageLibrary *)self _parserRemoteContentOptionsForMessage:v9 shouldStoreRemoteContent:v13]];
+  [(MFMailMessageLibrary *)self _processRemoteContentFromData:dataCopy forMimePart:partCopy linksToVerify:v12 forMessage:messageCopy parsingOptions:[(MFMailMessageLibrary *)self _parserRemoteContentOptionsForMessage:messageCopy shouldStoreRemoteContent:v13]];
 }
 
-- (void)_processRemoteContentFromData:(id)a3 forMimePart:(id)a4 linksToVerify:(id)a5 forMessage:(id)a6 parsingOptions:(unint64_t)a7
+- (void)_processRemoteContentFromData:(id)data forMimePart:(id)part linksToVerify:(id)verify forMessage:(id)message parsingOptions:(unint64_t)options
 {
   v36 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if ([v13 isHTML])
+  dataCopy = data;
+  partCopy = part;
+  verifyCopy = verify;
+  messageCopy = message;
+  if ([partCopy isHTML])
   {
-    v16 = [v13 mimeBody];
-    v17 = [v16 hasEncryptedDescendantPart];
+    mimeBody = [partCopy mimeBody];
+    hasEncryptedDescendantPart = [mimeBody hasEncryptedDescendantPart];
 
-    if (v17)
+    if (hasEncryptedDescendantPart)
     {
       v18 = EDLibraryLog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v35 = v15;
+        v35 = messageCopy;
         _os_log_impl(&dword_1B0389000, v18, OS_LOG_TYPE_DEFAULT, "Skipping remote content parsing (non-top-level encrypted part): %{public}@", buf, 0xCu);
       }
     }
 
     else
     {
-      v18 = [v13 decodedDataForData:v12];
-      v20 = [MEMORY[0x1E69AD718] preferredMimeCharset];
-      v26 = [v20 charsetName];
+      v18 = [partCopy decodedDataForData:dataCopy];
+      preferredMimeCharset = [MEMORY[0x1E69AD718] preferredMimeCharset];
+      charsetName = [preferredMimeCharset charsetName];
 
-      v27 = [(MFMailMessageLibrary *)self remoteContentParser];
-      v21 = [v15 persistentID];
-      v22 = [v15 subject];
-      v23 = [v22 subjectString];
+      remoteContentParser = [(MFMailMessageLibrary *)self remoteContentParser];
+      persistentID = [messageCopy persistentID];
+      subject = [messageCopy subject];
+      subjectString = [subject subjectString];
       v28[0] = MEMORY[0x1E69E9820];
       v28[1] = 3221225472;
       v28[2] = __106__MFMailMessageLibrary__processRemoteContentFromData_forMimePart_linksToVerify_forMessage_parsingOptions___block_invoke;
       v28[3] = &unk_1E7AA4468;
-      v29 = v14;
-      v30 = self;
-      v24 = v26;
+      v29 = verifyCopy;
+      selfCopy = self;
+      v24 = charsetName;
       v31 = v24;
-      v33 = a7;
-      v32 = v15;
-      [v27 parseHTMLData:v18 characterEncodingName:v24 withOptions:a7 forMessage:v21 withSubject:v23 completionHandler:v28];
+      optionsCopy = options;
+      v32 = messageCopy;
+      [remoteContentParser parseHTMLData:v18 characterEncodingName:v24 withOptions:options forMessage:persistentID withSubject:subjectString completionHandler:v28];
     }
   }
 
@@ -16356,11 +16356,11 @@ uint64_t __102__MFMailMessageLibrary__findHTMLPartsFromHeaderData_bodyData_forMe
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v35 = v15;
+      v35 = messageCopy;
       _os_log_impl(&dword_1B0389000, v19, OS_LOG_TYPE_DEFAULT, "Skipping remote content parsing (non-HTML part): %{public}@", buf, 0xCu);
     }
 
-    [(MFMailMessageLibrary *)self _storeLinksToVerifyIfExistent:v14];
+    [(MFMailMessageLibrary *)self _storeLinksToVerifyIfExistent:verifyCopy];
   }
 
   v25 = *MEMORY[0x1E69E9840];
@@ -16465,14 +16465,14 @@ void __106__MFMailMessageLibrary__processRemoteContentFromData_forMimePart_links
   [v6 postNotificationName:*MEMORY[0x1E699B3E0] object:*(a1 + 40)];
 }
 
-- (unint64_t)_parserRemoteContentOptionsForMessage:(id)a3 shouldStoreRemoteContent:(BOOL)a4
+- (unint64_t)_parserRemoteContentOptionsForMessage:(id)message shouldStoreRemoteContent:(BOOL)content
 {
-  v4 = a4;
+  contentCopy = content;
   v15[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(MFMailMessageLibrary *)self _shouldPerformDataDetectionForMessage:v6];
+  messageCopy = message;
+  v7 = [(MFMailMessageLibrary *)self _shouldPerformDataDetectionForMessage:messageCopy];
   v8 = 4;
-  if (v4)
+  if (contentCopy)
   {
     v8 = 5;
   }
@@ -16487,15 +16487,15 @@ void __106__MFMailMessageLibrary__processRemoteContentFromData_forMimePart_links
     v9 = v8;
   }
 
-  v10 = [v6 dateReceived];
-  v11 = [v10 ef_isMoreThanTimeIntervalAgo:180.0];
+  dateReceived = [messageCopy dateReceived];
+  v11 = [dateReceived ef_isMoreThanTimeIntervalAgo:180.0];
 
   if (v11)
   {
     v12 = EDLibraryLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      -[MFMailMessageLibrary _parserRemoteContentOptionsForMessage:shouldStoreRemoteContent:].cold.1(v15, [v6 globalMessageID]);
+      -[MFMailMessageLibrary _parserRemoteContentOptionsForMessage:shouldStoreRemoteContent:].cold.1(v15, [messageCopy globalMessageID]);
     }
   }
 
@@ -16523,16 +16523,16 @@ void __106__MFMailMessageLibrary__processRemoteContentFromData_forMimePart_links
   return attachmentDataProvider;
 }
 
-- (BOOL)_shouldPerformDataDetectionForMessage:(id)a3
+- (BOOL)_shouldPerformDataDetectionForMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = @"feature not enabled";
   if (_os_feature_enabled_impl())
   {
-    v6 = [(MFMailMessageLibrary *)self persistence];
-    v7 = [v6 remoteContentManager];
+    persistence = [(MFMailMessageLibrary *)self persistence];
+    remoteContentManager = [persistence remoteContentManager];
     v10 = @"feature not enabled";
-    v8 = [v7 shouldAddRemoteContentLinksForMessage:v4 logMessage:&v10];
+    v8 = [remoteContentManager shouldAddRemoteContentLinksForMessage:messageCopy logMessage:&v10];
     v5 = v10;
   }
 
@@ -16544,43 +16544,43 @@ void __106__MFMailMessageLibrary__processRemoteContentFromData_forMimePart_links
   return v8;
 }
 
-- (void)detectDataFromPlainTextMessage:(id)a3 forMessage:(id)a4 mimePart:(id)a5
+- (void)detectDataFromPlainTextMessage:(id)message forMessage:(id)forMessage mimePart:(id)part
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 headersIfAvailable];
-  if ([v11 hasHeaderForKey:*MEMORY[0x1E699B110]])
+  messageCopy = message;
+  forMessageCopy = forMessage;
+  partCopy = part;
+  headersIfAvailable = [forMessageCopy headersIfAvailable];
+  if ([headersIfAvailable hasHeaderForKey:*MEMORY[0x1E699B110]])
   {
     v12 = EDLibraryLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      -[MFMailMessageLibrary detectDataFromPlainTextMessage:forMessage:mimePart:].cold.2(buf, [v9 globalMessageID]);
+      -[MFMailMessageLibrary detectDataFromPlainTextMessage:forMessage:mimePart:].cold.2(buf, [forMessageCopy globalMessageID]);
     }
   }
 
   else
   {
-    v13 = [v9 dateReceived];
-    v14 = [v13 ef_isMoreThanTimeIntervalAgo:180.0];
+    dateReceived = [forMessageCopy dateReceived];
+    v14 = [dateReceived ef_isMoreThanTimeIntervalAgo:180.0];
 
     if (v14)
     {
       v12 = EDLibraryLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
-        -[MFMailMessageLibrary _parserRemoteContentOptionsForMessage:shouldStoreRemoteContent:].cold.1(buf, [v9 globalMessageID]);
+        -[MFMailMessageLibrary _parserRemoteContentOptionsForMessage:shouldStoreRemoteContent:].cold.1(buf, [forMessageCopy globalMessageID]);
       }
     }
 
     else
     {
-      v15 = [v9 globalMessageID];
-      v16 = [v10 decodedDataForData:v8];
-      v12 = [(MFMailMessageLibrary *)self _getStringFromPlainTextData:v16 mimePart:v10];
+      globalMessageID = [forMessageCopy globalMessageID];
+      v16 = [partCopy decodedDataForData:messageCopy];
+      v12 = [(MFMailMessageLibrary *)self _getStringFromPlainTextData:v16 mimePart:partCopy];
 
-      v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lld", v15];
+      v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lld", globalMessageID];
       v17 = EDLibraryLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
@@ -16589,17 +16589,17 @@ void __106__MFMailMessageLibrary__processRemoteContentFromData_forMimePart_links
         _os_log_impl(&dword_1B0389000, v17, OS_LOG_TYPE_DEFAULT, "Downloading plain text message %@, will perform one time code check", buf, 0xCu);
       }
 
-      v18 = [(MFMailMessageLibrary *)self remoteContentParser];
-      v19 = [v9 subject];
-      v20 = [v19 subjectString];
+      remoteContentParser = [(MFMailMessageLibrary *)self remoteContentParser];
+      subject = [forMessageCopy subject];
+      subjectString = [subject subjectString];
       v23[0] = MEMORY[0x1E69E9820];
       v23[1] = 3221225472;
       v23[2] = __75__MFMailMessageLibrary_detectDataFromPlainTextMessage_forMessage_mimePart___block_invoke;
       v23[3] = &unk_1E7AA4490;
       v23[4] = self;
-      v24 = v9;
-      v25 = v15;
-      [v18 parseHTMLString:v12 withOptions:8 forMessage:v22 withSubject:v20 completionHandler:v23];
+      v24 = forMessageCopy;
+      v25 = globalMessageID;
+      [remoteContentParser parseHTMLString:v12 withOptions:8 forMessage:v22 withSubject:subjectString completionHandler:v23];
     }
   }
 
@@ -16635,29 +16635,29 @@ void __75__MFMailMessageLibrary_detectDataFromPlainTextMessage_forMessage_mimePa
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_getStringFromPlainTextData:(id)a3 mimePart:(id)a4
+- (id)_getStringFromPlainTextData:(id)data mimePart:(id)part
 {
-  v5 = a3;
-  v6 = a4;
-  [v6 textEncoding];
+  dataCopy = data;
+  partCopy = part;
+  [partCopy textEncoding];
   v7 = MFCreateStringWithData();
 
   return v7;
 }
 
-- (void)notifyNewData:(id)a3 availableForMessage:(id)a4
+- (void)notifyNewData:(id)data availableForMessage:(id)message
 {
   swift_getObjectType();
-  MEMORY[0x1E69E5928](a3);
-  MEMORY[0x1E69E5928](a4);
+  MEMORY[0x1E69E5928](data);
+  MEMORY[0x1E69E5928](message);
   MEMORY[0x1E69E5928](self);
   v6 = sub_1B0E42F38();
   v7 = v5;
-  sub_1B08A6BE0(v6, v5, a4);
+  sub_1B08A6BE0(v6, v5, message);
   sub_1B0391D50(v6, v7);
-  MEMORY[0x1E69E5920](a3);
+  MEMORY[0x1E69E5920](data);
   MEMORY[0x1E69E5920](self);
-  MEMORY[0x1E69E5920](a4);
+  MEMORY[0x1E69E5920](message);
 }
 
 - (void)_writeEmlxData:toFile:protectionClass:purgeable:.cold.1()

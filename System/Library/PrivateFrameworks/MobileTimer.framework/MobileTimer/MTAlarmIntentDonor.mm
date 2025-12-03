@@ -1,28 +1,28 @@
 @interface MTAlarmIntentDonor
-- (MTAlarmIntentDonor)initWithStorage:(id)a3;
+- (MTAlarmIntentDonor)initWithStorage:(id)storage;
 - (void)prepareAlarms;
-- (void)source:(id)a3 didAddAlarms:(id)a4;
-- (void)source:(id)a3 didRemoveAlarms:(id)a4;
-- (void)source:(id)a3 didUpdateAlarms:(id)a4;
+- (void)source:(id)source didAddAlarms:(id)alarms;
+- (void)source:(id)source didRemoveAlarms:(id)alarms;
+- (void)source:(id)source didUpdateAlarms:(id)alarms;
 @end
 
 @implementation MTAlarmIntentDonor
 
-- (MTAlarmIntentDonor)initWithStorage:(id)a3
+- (MTAlarmIntentDonor)initWithStorage:(id)storage
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  storageCopy = storage;
   if (self)
   {
     v6 = MTLogForCategory(3);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138543362;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B1F9F000, v6, OS_LOG_TYPE_DEFAULT, "Initializing %{public}@", &v11, 0xCu);
     }
 
-    objc_storeStrong(&self->_storage, a3);
+    objc_storeStrong(&self->_storage, storage);
     [(MTAlarmStorage *)self->_storage registerObserver:self];
     v7 = +[MTScheduler serialSchedulerWithName:priority:](MTScheduler, "serialSchedulerWithName:priority:", @"com.apple.MTAlarmIntentDonor.access-queue", +[MTScheduler defaultPriority]);
     serializer = self->_serializer;
@@ -87,21 +87,21 @@ void __35__MTAlarmIntentDonor_prepareAlarms__block_invoke(uint64_t a1)
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)source:(id)a3 didAddAlarms:(id)a4
+- (void)source:(id)source didAddAlarms:(id)alarms
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  alarmsCopy = alarms;
   serializer = self->_serializer;
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __42__MTAlarmIntentDonor_source_didAddAlarms___block_invoke;
   v27[3] = &unk_1E7B0C928;
-  v9 = v7;
+  v9 = alarmsCopy;
   v28 = v9;
-  v29 = self;
+  selfCopy = self;
   [(NAScheduler *)serializer performBlock:v27];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v6 donatesIntent])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [sourceCopy donatesIntent])
   {
     v25 = 0u;
     v26 = 0u;
@@ -128,14 +128,14 @@ void __35__MTAlarmIntentDonor_prepareAlarms__block_invoke(uint64_t a1)
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543618;
-            v31 = self;
+            selfCopy2 = self;
             v32 = 2114;
             v33 = v14;
             _os_log_impl(&dword_1B1F9F000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ Alarm added - Donating intent: %{public}@", buf, 0x16u);
           }
 
           v16 = [objc_alloc(MEMORY[0x1E696E8B8]) initWithIntent:v14 response:0];
-          [v16 mtSetIntentDonorFromSource:v6];
+          [v16 mtSetIntentDonorFromSource:sourceCopy];
           v21[0] = MEMORY[0x1E69E9820];
           v21[1] = 3221225472;
           v21[2] = __42__MTAlarmIntentDonor_source_didAddAlarms___block_invoke_5;
@@ -220,20 +220,20 @@ void __42__MTAlarmIntentDonor_source_didAddAlarms___block_invoke_5(uint64_t a1, 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)source:(id)a3 didUpdateAlarms:(id)a4
+- (void)source:(id)source didUpdateAlarms:(id)alarms
 {
-  v6 = a3;
-  v7 = a4;
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v6 donatesIntent])
+  sourceCopy = source;
+  alarmsCopy = alarms;
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [sourceCopy donatesIntent])
   {
     serializer = self->_serializer;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __45__MTAlarmIntentDonor_source_didUpdateAlarms___block_invoke;
     v9[3] = &unk_1E7B0C9A0;
-    v10 = v7;
-    v11 = self;
-    v12 = v6;
+    v10 = alarmsCopy;
+    selfCopy = self;
+    v12 = sourceCopy;
     [(NAScheduler *)serializer performBlock:v9];
   }
 }
@@ -524,17 +524,17 @@ void __45__MTAlarmIntentDonor_source_didUpdateAlarms___block_invoke_10(uint64_t 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)source:(id)a3 didRemoveAlarms:(id)a4
+- (void)source:(id)source didRemoveAlarms:(id)alarms
 {
-  v5 = a4;
+  alarmsCopy = alarms;
   serializer = self->_serializer;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __45__MTAlarmIntentDonor_source_didRemoveAlarms___block_invoke;
   v8[3] = &unk_1E7B0C928;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = alarmsCopy;
+  selfCopy = self;
+  v7 = alarmsCopy;
   [(NAScheduler *)serializer performBlock:v8];
 }
 

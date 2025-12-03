@@ -19,13 +19,13 @@
 
 - (void)triggerTip
 {
-  v2 = self;
+  selfCopy = self;
   sub_18B9AD550();
 }
 
 - (void)cancel
 {
-  v2 = self;
+  selfCopy = self;
   sub_18B9AE9E4();
 }
 

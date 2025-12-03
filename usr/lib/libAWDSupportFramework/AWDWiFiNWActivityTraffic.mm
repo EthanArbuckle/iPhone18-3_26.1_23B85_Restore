@@ -1,15 +1,15 @@
 @interface AWDWiFiNWActivityTraffic
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsTraffic:(id)a3;
+- (int)StringAsTraffic:(id)traffic;
 - (int)traffic;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasTraffic:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasTraffic:(BOOL)traffic;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiNWActivityTraffic
@@ -27,9 +27,9 @@
   }
 }
 
-- (void)setHasTraffic:(BOOL)a3
+- (void)setHasTraffic:(BOOL)traffic
 {
-  if (a3)
+  if (traffic)
   {
     v3 = 2;
   }
@@ -42,34 +42,34 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsTraffic:(id)a3
+- (int)StringAsTraffic:(id)traffic
 {
-  if ([a3 isEqualToString:@"Rx"])
+  if ([traffic isEqualToString:@"Rx"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"Tx"])
+  if ([traffic isEqualToString:@"Tx"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"TxBK"])
+  if ([traffic isEqualToString:@"TxBK"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"TxBE"])
+  if ([traffic isEqualToString:@"TxBE"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"TxVO"])
+  if ([traffic isEqualToString:@"TxVO"])
   {
     return 4;
   }
 
-  if ([a3 isEqualToString:@"TxVI"])
+  if ([traffic isEqualToString:@"TxVI"])
   {
     return 5;
   }
@@ -86,11 +86,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_value), @"value"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_value), @"value"}];
     has = self->_has;
   }
 
@@ -107,13 +107,13 @@
       v6 = off_29EE33310[traffic];
     }
 
-    [v3 setObject:v6 forKey:@"traffic"];
+    [dictionary setObject:v6 forKey:@"traffic"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (has)
@@ -131,7 +131,7 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if ((*&self->_has & 1) == 0)
   {
@@ -141,22 +141,22 @@
     }
 
 LABEL_5:
-    *(a3 + 4) = self->_traffic;
-    *(a3 + 20) |= 2u;
+    *(to + 4) = self->_traffic;
+    *(to + 20) |= 2u;
     return;
   }
 
-  *(a3 + 1) = self->_value;
-  *(a3 + 20) |= 1u;
+  *(to + 1) = self->_value;
+  *(to + 20) |= 1u;
   if ((*&self->_has & 2) != 0)
   {
     goto LABEL_5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -174,30 +174,30 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if (*&self->_has)
     {
-      if ((*(a3 + 20) & 1) == 0 || self->_value != *(a3 + 1))
+      if ((*(equal + 20) & 1) == 0 || self->_value != *(equal + 1))
       {
         goto LABEL_11;
       }
     }
 
-    else if (*(a3 + 20))
+    else if (*(equal + 20))
     {
 LABEL_11:
       LOBYTE(v5) = 0;
       return v5;
     }
 
-    LOBYTE(v5) = (*(a3 + 20) & 2) == 0;
+    LOBYTE(v5) = (*(equal + 20) & 2) == 0;
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 20) & 2) == 0 || self->_traffic != *(a3 + 4))
+      if ((*(equal + 20) & 2) == 0 || self->_traffic != *(equal + 4))
       {
         goto LABEL_11;
       }
@@ -235,24 +235,24 @@ LABEL_3:
   return v3 ^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if ((*(a3 + 20) & 1) == 0)
+  if ((*(from + 20) & 1) == 0)
   {
-    if ((*(a3 + 20) & 2) == 0)
+    if ((*(from + 20) & 2) == 0)
     {
       return;
     }
 
 LABEL_5:
-    self->_traffic = *(a3 + 4);
+    self->_traffic = *(from + 4);
     *&self->_has |= 2u;
     return;
   }
 
-  self->_value = *(a3 + 1);
+  self->_value = *(from + 1);
   *&self->_has |= 1u;
-  if ((*(a3 + 20) & 2) != 0)
+  if ((*(from + 20) & 2) != 0)
   {
     goto LABEL_5;
   }

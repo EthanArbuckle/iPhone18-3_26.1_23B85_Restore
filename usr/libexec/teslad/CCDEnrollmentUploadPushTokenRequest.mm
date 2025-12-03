@@ -16,15 +16,15 @@
 - (id)requestPayload
 {
   v3 = objc_opt_new();
-  v4 = [(CCDEnrollmentUploadPushTokenRequest *)self pushToken];
-  [v3 setPushToken:v4];
+  pushToken = [(CCDEnrollmentUploadPushTokenRequest *)self pushToken];
+  [v3 setPushToken:pushToken];
 
-  v5 = [(CCDEnrollmentUploadPushTokenRequest *)self pushTopic];
-  [v3 setPushTopic:v5];
+  pushTopic = [(CCDEnrollmentUploadPushTokenRequest *)self pushTopic];
+  [v3 setPushTopic:pushTopic];
 
   [v3 setEligibleForMigration:{-[CCDEnrollmentUploadPushTokenRequest eligibleForMigration](self, "eligibleForMigration")}];
-  v6 = [(CCDEnrollmentUploadPushTokenRequest *)self eligibilityDescription];
-  [v3 setEligibilityDescription:v6];
+  eligibilityDescription = [(CCDEnrollmentUploadPushTokenRequest *)self eligibilityDescription];
+  [v3 setEligibilityDescription:eligibilityDescription];
 
   return v3;
 }

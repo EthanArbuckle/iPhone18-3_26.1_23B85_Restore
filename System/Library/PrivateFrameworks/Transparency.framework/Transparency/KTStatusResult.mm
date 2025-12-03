@@ -1,70 +1,70 @@
 @interface KTStatusResult
-- (BOOL)isEqual:(id)a3;
-- (KTStatusResult)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (KTStatusResult)initWithCoder:(id)coder;
 - (NSDictionary)diagnosticsJsonDictionary;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation KTStatusResult
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v15 = a3;
+  coderCopy = coder;
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[KTStatusResult optIn](self, "optIn")}];
-  [v15 encodeObject:v4 forKey:@"optInState"];
+  [coderCopy encodeObject:v4 forKey:@"optInState"];
 
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[KTStatusResult serverOptIn](self, "serverOptIn")}];
-  [v15 encodeObject:v5 forKey:@"serverOptInState"];
+  [coderCopy encodeObject:v5 forKey:@"serverOptInState"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[KTStatusResult accountStatus](self, "accountStatus")}];
-  [v15 encodeObject:v6 forKey:@"accountStatus"];
+  [coderCopy encodeObject:v6 forKey:@"accountStatus"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[KTStatusResult systemStatus](self, "systemStatus")}];
-  [v15 encodeObject:v7 forKey:@"systemStatus"];
+  [coderCopy encodeObject:v7 forKey:@"systemStatus"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[KTStatusResult selfStatus](self, "selfStatus")}];
-  [v15 encodeObject:v8 forKey:@"selfStatus"];
+  [coderCopy encodeObject:v8 forKey:@"selfStatus"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[KTStatusResult idsAccountStatus](self, "idsAccountStatus")}];
-  [v15 encodeObject:v9 forKey:@"idsAccountStatus"];
+  [coderCopy encodeObject:v9 forKey:@"idsAccountStatus"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[KTStatusResult pendingStatusChanges](self, "pendingStatusChanges")}];
-  [v15 encodeObject:v10 forKey:@"pendingChanges"];
+  [coderCopy encodeObject:v10 forKey:@"pendingChanges"];
 
-  v11 = [(KTStatusResult *)self recentFailedEventIds];
+  recentFailedEventIds = [(KTStatusResult *)self recentFailedEventIds];
 
-  if (v11)
+  if (recentFailedEventIds)
   {
-    v12 = [(KTStatusResult *)self recentFailedEventIds];
-    [v15 encodeObject:v12 forKey:@"failureEventIds"];
+    recentFailedEventIds2 = [(KTStatusResult *)self recentFailedEventIds];
+    [coderCopy encodeObject:recentFailedEventIds2 forKey:@"failureEventIds"];
   }
 
-  v13 = [(KTStatusResult *)self expectedSelfResolutionDate];
+  expectedSelfResolutionDate = [(KTStatusResult *)self expectedSelfResolutionDate];
 
-  if (v13)
+  if (expectedSelfResolutionDate)
   {
-    v14 = [(KTStatusResult *)self expectedSelfResolutionDate];
-    [v15 encodeObject:v14 forKey:@"selfResolutionDate"];
+    expectedSelfResolutionDate2 = [(KTStatusResult *)self expectedSelfResolutionDate];
+    [coderCopy encodeObject:expectedSelfResolutionDate2 forKey:@"selfResolutionDate"];
   }
 }
 
-- (KTStatusResult)initWithCoder:(id)a3
+- (KTStatusResult)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"optInState"];
-  v18 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"serverOptInState"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"accountStatus"];
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"systemStatus"];
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"selfStatus"];
-  v8 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"idsAccountStatus"];
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"pendingChanges"];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"optInState"];
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serverOptInState"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountStatus"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"systemStatus"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"selfStatus"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"idsAccountStatus"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pendingChanges"];
   v10 = MEMORY[0x1E695DFD8];
   v11 = objc_opt_class();
   v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-  v13 = [v3 decodeObjectOfClasses:v12 forKey:@"failureEventIds"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"failureEventIds"];
 
-  v14 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"selfResolutionDate"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"selfResolutionDate"];
 
   v15 = objc_alloc_init(KTStatusResult);
   [(KTStatusResult *)v15 setRecentFailedEventIds:v13];
@@ -82,10 +82,10 @@
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v12) = 1;
   }
@@ -95,12 +95,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(KTStatusResult *)self optIn];
-      if (v6 == [(KTStatusResult *)v5 optIn]&& (v7 = [(KTStatusResult *)self accountStatus], v7 == [(KTStatusResult *)v5 accountStatus]) && (v8 = [(KTStatusResult *)self systemStatus], v8 == [(KTStatusResult *)v5 systemStatus]) && (v9 = [(KTStatusResult *)self selfStatus], v9 == [(KTStatusResult *)v5 selfStatus]) && (v10 = [(KTStatusResult *)self idsAccountStatus], v10 == [(KTStatusResult *)v5 idsAccountStatus]))
+      v5 = equalCopy;
+      optIn = [(KTStatusResult *)self optIn];
+      if (optIn == [(KTStatusResult *)v5 optIn]&& (v7 = [(KTStatusResult *)self accountStatus], v7 == [(KTStatusResult *)v5 accountStatus]) && (v8 = [(KTStatusResult *)self systemStatus], v8 == [(KTStatusResult *)v5 systemStatus]) && (v9 = [(KTStatusResult *)self selfStatus], v9 == [(KTStatusResult *)v5 selfStatus]) && (v10 = [(KTStatusResult *)self idsAccountStatus], v10 == [(KTStatusResult *)v5 idsAccountStatus]))
       {
-        v11 = [(KTStatusResult *)self pendingStatusChanges];
-        v12 = v11 ^ [(KTStatusResult *)v5 pendingStatusChanges]^ 1;
+        pendingStatusChanges = [(KTStatusResult *)self pendingStatusChanges];
+        v12 = pendingStatusChanges ^ [(KTStatusResult *)v5 pendingStatusChanges]^ 1;
       }
 
       else
@@ -157,29 +157,29 @@
     v12 = off_1E8701820[v11];
   }
 
-  v13 = [(KTStatusResult *)self pendingStatusChanges];
+  pendingStatusChanges = [(KTStatusResult *)self pendingStatusChanges];
   v14 = @"NO";
-  if (v13)
+  if (pendingStatusChanges)
   {
     v14 = @"YES";
   }
 
   v15 = [v3 stringWithFormat:@"KTStatus: optIn = %@, serverOptIn = %@, accountStatus = %@, systemStatus = %@, selfStatus = %@, idsAccountStatus = %@, pendingChanges: %@\n", v4, v5, v6, v8, v10, v12, v14];
 
-  v16 = [(KTStatusResult *)self expectedSelfResolutionDate];
+  expectedSelfResolutionDate = [(KTStatusResult *)self expectedSelfResolutionDate];
 
-  if (v16)
+  if (expectedSelfResolutionDate)
   {
-    v17 = [(KTStatusResult *)self expectedSelfResolutionDate];
-    [v15 appendFormat:@" expectedSelfResolutionDate: %@\n", v17];
+    expectedSelfResolutionDate2 = [(KTStatusResult *)self expectedSelfResolutionDate];
+    [v15 appendFormat:@" expectedSelfResolutionDate: %@\n", expectedSelfResolutionDate2];
   }
 
-  v18 = [(KTStatusResult *)self recentFailedEventIds];
+  recentFailedEventIds = [(KTStatusResult *)self recentFailedEventIds];
 
-  if (v18)
+  if (recentFailedEventIds)
   {
-    v19 = [(KTStatusResult *)self recentFailedEventIds];
-    [v15 appendFormat:@" failureEventIds: %@", v19];
+    recentFailedEventIds2 = [(KTStatusResult *)self recentFailedEventIds];
+    [v15 appendFormat:@" failureEventIds: %@", recentFailedEventIds2];
   }
 
   return v15;
@@ -187,16 +187,16 @@
 
 - (NSDictionary)diagnosticsJsonDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:@"2" forKeyedSubscript:@"copy_status_version"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:@"2" forKeyedSubscript:@"copy_status_version"];
   v4 = KTOptInGetString([(KTStatusResult *)self optIn]);
-  [v3 setObject:v4 forKeyedSubscript:@"optedIn"];
+  [dictionary setObject:v4 forKeyedSubscript:@"optedIn"];
 
   v5 = KTOptInGetString([(KTStatusResult *)self serverOptIn]);
-  [v3 setObject:v5 forKeyedSubscript:@"serverOptedIn"];
+  [dictionary setObject:v5 forKeyedSubscript:@"serverOptedIn"];
 
   v6 = KTAccountStatusGetString([(KTStatusResult *)self accountStatus]);
-  [v3 setObject:v6 forKeyedSubscript:@"accountStatus"];
+  [dictionary setObject:v6 forKeyedSubscript:@"accountStatus"];
 
   v7 = [(KTStatusResult *)self systemStatus]- 1;
   if (v7 > 4)
@@ -209,7 +209,7 @@
     v8 = off_1E87017D8[v7];
   }
 
-  [v3 setObject:v8 forKeyedSubscript:@"systemStatus"];
+  [dictionary setObject:v8 forKeyedSubscript:@"systemStatus"];
   v9 = [(KTStatusResult *)self selfStatus]- 1;
   if (v9 > 3)
   {
@@ -221,7 +221,7 @@
     v10 = off_1E8701800[v9];
   }
 
-  [v3 setObject:v10 forKeyedSubscript:@"selfStatus"];
+  [dictionary setObject:v10 forKeyedSubscript:@"selfStatus"];
   v11 = [(KTStatusResult *)self idsAccountStatus]- 1;
   if (v11 > 2)
   {
@@ -233,7 +233,7 @@
     v12 = off_1E8701820[v11];
   }
 
-  [v3 setObject:v12 forKeyedSubscript:@"idsAccountStatus"];
+  [dictionary setObject:v12 forKeyedSubscript:@"idsAccountStatus"];
   if ([(KTStatusResult *)self pendingStatusChanges])
   {
     v13 = @"YES";
@@ -244,9 +244,9 @@
     v13 = @"NO";
   }
 
-  [v3 setObject:v13 forKeyedSubscript:@"pendingChanges"];
+  [dictionary setObject:v13 forKeyedSubscript:@"pendingChanges"];
 
-  return v3;
+  return dictionary;
 }
 
 @end

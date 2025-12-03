@@ -6,8 +6,8 @@
 
 - (id)_fp_escapedStringForSearchQuery
 {
-  v1 = [a1 decomposedStringWithCanonicalMapping];
-  v2 = [v1 mutableCopy];
+  decomposedStringWithCanonicalMapping = [self decomposedStringWithCanonicalMapping];
+  v2 = [decomposedStringWithCanonicalMapping mutableCopy];
 
   [v2 replaceOccurrencesOfString:@"\ withString:@"\\\ options:0 range:{0, objc_msgSend(v2, "length")}];
   [v2 replaceOccurrencesOfString:@" withString:@"\ options:0 range:{0, objc_msgSend(v2, "length")}];

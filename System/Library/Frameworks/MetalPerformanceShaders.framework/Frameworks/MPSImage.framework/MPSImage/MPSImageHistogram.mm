@@ -1,23 +1,23 @@
 @interface MPSImageHistogram
 - (MPSImageHistogram)initWithCoder:(NSCoder *)aDecoder device:(id)device;
-- (MPSImageHistogram)initWithDevice:(id)a3;
+- (MPSImageHistogram)initWithDevice:(id)device;
 - (MPSImageHistogram)initWithDevice:(id)device histogramInfo:(const MPSImageHistogramInfo *)histogramInfo;
 - (MPSImageHistogramInfo)histogramInfo;
 - (MTLRegion)clipRectSource;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
 - (size_t)histogramSizeForSourceFormat:(MTLPixelFormat)sourceFormat;
-- (void)encodeInternalToCommandEncoder:(id)a3 commandBuffer:(id)a4 sourceTextures:(id)a5 histogram:(id)a6 histogramOffset:(unint64_t)a7 kernelDAGObject:(id)a8 inputExtent:(id *)a9 srcStyle:(int)a10;
+- (void)encodeInternalToCommandEncoder:(id)encoder commandBuffer:(id)buffer sourceTextures:(id)textures histogram:(id)histogram histogramOffset:(unint64_t)offset kernelDAGObject:(id)object inputExtent:(id *)extent srcStyle:(int)self0;
 - (void)encodeToCommandBuffer:(id)commandBuffer sourceTexture:(id)source histogram:(id)histogram histogramOffset:(NSUInteger)histogramOffset;
-- (void)encodeToCommandEncoder:(id)a3 commandBuffer:(id)a4 sourceTexture:(id)a5 histogram:(id)a6 histogramOffset:(unint64_t)a7;
-- (void)encodeToCommandEncoder:(id)a3 commandBuffer:(id)a4 sources:(id)a5 histogram:(id)a6 histogramOffset:(unint64_t)a7 kernelDAGObject:(id)a8;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeToCommandEncoder:(id)encoder commandBuffer:(id)buffer sourceTexture:(id)texture histogram:(id)histogram histogramOffset:(unint64_t)offset;
+- (void)encodeToCommandEncoder:(id)encoder commandBuffer:(id)buffer sources:(id)sources histogram:(id)histogram histogramOffset:(unint64_t)offset kernelDAGObject:(id)object;
+- (void)encodeWithCoder:(id)coder;
 - (void)setClipRectSource:(MTLRegion *)clipRectSource;
 @end
 
 @implementation MPSImageHistogram
 
-- (MPSImageHistogram)initWithDevice:(id)a3
+- (MPSImageHistogram)initWithDevice:(id)device
 {
   v11[1] = 1;
   v12 = 0u;
@@ -25,7 +25,7 @@
   __asm { FMOV            V0.4S, #1.0 }
 
   v13 = _Q0;
-  return objc_msgSend_initWithDevice_histogramInfo_(self, a2, a3, v11, v3, v4);
+  return objc_msgSend_initWithDevice_histogramInfo_(self, a2, device, v11, v3, v4);
 }
 
 - (MPSImageHistogramInfo)histogramInfo
@@ -164,54 +164,54 @@ LABEL_14:
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = self;
+  selfCopy = self;
   *(&self->super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v92.receiver = self;
   v92.super_class = MPSImageHistogram;
   [(MPSKernel *)&v92 encodeWithCoder:?];
-  objc_msgSend_encodeInt64_forKey_(a3, v5, v4->histogramEntries, @"MPSImageHistogram.histogramEntries", v6, v7);
-  objc_msgSend_encodeBool_forKey_(a3, v8, v4->histogramAlpha, @"MPSImageHistogram.histogramAlpha", v9, v10);
-  LODWORD(v11) = *v4->minPixelValue;
-  objc_msgSend_encodeFloat_forKey_(a3, v12, @"MPSImageHistogram.minPixelValueX", v13, v14, v15, v11);
-  LODWORD(v16) = *&v4->minPixelValue[4];
-  objc_msgSend_encodeFloat_forKey_(a3, v17, @"MPSImageHistogram.minPixelValueY", v18, v19, v20, v16);
-  LODWORD(v21) = *&v4->minPixelValue[8];
-  objc_msgSend_encodeFloat_forKey_(a3, v22, @"MPSImageHistogram.minPixelValueZ", v23, v24, v25, v21);
-  LODWORD(v26) = *&v4->minPixelValue[12];
-  objc_msgSend_encodeFloat_forKey_(a3, v27, @"MPSImageHistogram.minPixelValueW", v28, v29, v30, v26);
-  LODWORD(v31) = *v4->maxPixelValue;
-  objc_msgSend_encodeFloat_forKey_(a3, v32, @"MPSImageHistogram.maxPixelValueX", v33, v34, v35, v31);
-  LODWORD(v36) = *&v4->maxPixelValue[4];
-  objc_msgSend_encodeFloat_forKey_(a3, v37, @"MPSImageHistogram.maxPixelValueY", v38, v39, v40, v36);
-  LODWORD(v41) = *&v4->maxPixelValue[8];
-  objc_msgSend_encodeFloat_forKey_(a3, v42, @"MPSImageHistogram.maxPixelValueZ", v43, v44, v45, v41);
-  LODWORD(v46) = *&v4->maxPixelValue[12];
-  objc_msgSend_encodeFloat_forKey_(a3, v47, @"MPSImageHistogram.maxPixelValueW", v48, v49, v50, v46);
-  objc_msgSend_encodeInt64_forKey_(a3, v51, v4->_clipRectSource.origin.x, @"MPSImageHistogram.clipRectSource.origin.x", v52, v53);
-  objc_msgSend_encodeInt64_forKey_(a3, v54, v4->_clipRectSource.origin.y, @"MPSImageHistogram.clipRectSource.origin.y", v55, v56);
-  objc_msgSend_encodeInt64_forKey_(a3, v57, v4->_clipRectSource.origin.z, @"MPSImageHistogram.clipRectSource.origin.z", v58, v59);
-  objc_msgSend_encodeInt64_forKey_(a3, v60, v4->_clipRectSource.size.width, @"MPSImageHistogram.clipRectSource.size.width", v61, v62);
-  objc_msgSend_encodeInt64_forKey_(a3, v63, v4->_clipRectSource.size.height, @"MPSImageHistogram.clipRectSource.size.height", v64, v65);
-  objc_msgSend_encodeInt64_forKey_(a3, v66, v4->_clipRectSource.size.depth, @"MPSImageHistogram.clipRectSource.size.depth", v67, v68);
-  objc_msgSend_encodeBool_forKey_(a3, v69, v4->_zeroHistogram, @"MPSImageHistogram.zeroHistogram", v70, v71);
-  v4 = (v4 + 208);
-  LODWORD(v72) = v4->super.super.isa;
-  objc_msgSend_encodeFloat_forKey_(a3, v73, @"MPSImageHistogram.minPixelThresholdValueX", v74, v75, v76, v72);
-  LODWORD(v77) = HIDWORD(v4->super.super.isa);
-  objc_msgSend_encodeFloat_forKey_(a3, v78, @"MPSImageHistogram.minPixelThresholdValueY", v79, v80, v81, v77);
-  LODWORD(v82) = v4->super._options;
-  objc_msgSend_encodeFloat_forKey_(a3, v83, @"MPSImageHistogram.minPixelThresholdValueZ", v84, v85, v86, v82);
-  LODWORD(v87) = HIDWORD(v4->super._options);
-  objc_msgSend_encodeFloat_forKey_(a3, v88, @"MPSImageHistogram.minPixelThresholdValueW", v89, v90, v91, v87);
+  objc_msgSend_encodeInt64_forKey_(coder, v5, selfCopy->histogramEntries, @"MPSImageHistogram.histogramEntries", v6, v7);
+  objc_msgSend_encodeBool_forKey_(coder, v8, selfCopy->histogramAlpha, @"MPSImageHistogram.histogramAlpha", v9, v10);
+  LODWORD(v11) = *selfCopy->minPixelValue;
+  objc_msgSend_encodeFloat_forKey_(coder, v12, @"MPSImageHistogram.minPixelValueX", v13, v14, v15, v11);
+  LODWORD(v16) = *&selfCopy->minPixelValue[4];
+  objc_msgSend_encodeFloat_forKey_(coder, v17, @"MPSImageHistogram.minPixelValueY", v18, v19, v20, v16);
+  LODWORD(v21) = *&selfCopy->minPixelValue[8];
+  objc_msgSend_encodeFloat_forKey_(coder, v22, @"MPSImageHistogram.minPixelValueZ", v23, v24, v25, v21);
+  LODWORD(v26) = *&selfCopy->minPixelValue[12];
+  objc_msgSend_encodeFloat_forKey_(coder, v27, @"MPSImageHistogram.minPixelValueW", v28, v29, v30, v26);
+  LODWORD(v31) = *selfCopy->maxPixelValue;
+  objc_msgSend_encodeFloat_forKey_(coder, v32, @"MPSImageHistogram.maxPixelValueX", v33, v34, v35, v31);
+  LODWORD(v36) = *&selfCopy->maxPixelValue[4];
+  objc_msgSend_encodeFloat_forKey_(coder, v37, @"MPSImageHistogram.maxPixelValueY", v38, v39, v40, v36);
+  LODWORD(v41) = *&selfCopy->maxPixelValue[8];
+  objc_msgSend_encodeFloat_forKey_(coder, v42, @"MPSImageHistogram.maxPixelValueZ", v43, v44, v45, v41);
+  LODWORD(v46) = *&selfCopy->maxPixelValue[12];
+  objc_msgSend_encodeFloat_forKey_(coder, v47, @"MPSImageHistogram.maxPixelValueW", v48, v49, v50, v46);
+  objc_msgSend_encodeInt64_forKey_(coder, v51, selfCopy->_clipRectSource.origin.x, @"MPSImageHistogram.clipRectSource.origin.x", v52, v53);
+  objc_msgSend_encodeInt64_forKey_(coder, v54, selfCopy->_clipRectSource.origin.y, @"MPSImageHistogram.clipRectSource.origin.y", v55, v56);
+  objc_msgSend_encodeInt64_forKey_(coder, v57, selfCopy->_clipRectSource.origin.z, @"MPSImageHistogram.clipRectSource.origin.z", v58, v59);
+  objc_msgSend_encodeInt64_forKey_(coder, v60, selfCopy->_clipRectSource.size.width, @"MPSImageHistogram.clipRectSource.size.width", v61, v62);
+  objc_msgSend_encodeInt64_forKey_(coder, v63, selfCopy->_clipRectSource.size.height, @"MPSImageHistogram.clipRectSource.size.height", v64, v65);
+  objc_msgSend_encodeInt64_forKey_(coder, v66, selfCopy->_clipRectSource.size.depth, @"MPSImageHistogram.clipRectSource.size.depth", v67, v68);
+  objc_msgSend_encodeBool_forKey_(coder, v69, selfCopy->_zeroHistogram, @"MPSImageHistogram.zeroHistogram", v70, v71);
+  selfCopy = (selfCopy + 208);
+  LODWORD(v72) = selfCopy->super.super.isa;
+  objc_msgSend_encodeFloat_forKey_(coder, v73, @"MPSImageHistogram.minPixelThresholdValueX", v74, v75, v76, v72);
+  LODWORD(v77) = HIDWORD(selfCopy->super.super.isa);
+  objc_msgSend_encodeFloat_forKey_(coder, v78, @"MPSImageHistogram.minPixelThresholdValueY", v79, v80, v81, v77);
+  LODWORD(v82) = selfCopy->super._options;
+  objc_msgSend_encodeFloat_forKey_(coder, v83, @"MPSImageHistogram.minPixelThresholdValueZ", v84, v85, v86, v82);
+  LODWORD(v87) = HIDWORD(selfCopy->super._options);
+  objc_msgSend_encodeFloat_forKey_(coder, v88, @"MPSImageHistogram.minPixelThresholdValueW", v89, v90, v91, v87);
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v8.receiver = self;
   v8.super_class = MPSImageHistogram;
-  result = [(MPSKernel *)&v8 copyWithZone:a3 device:a4];
+  result = [(MPSKernel *)&v8 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 11) = self->histogramEntries;
@@ -275,12 +275,12 @@ LABEL_14:
   return self->histogramEntries * 4 * v5;
 }
 
-- (void)encodeInternalToCommandEncoder:(id)a3 commandBuffer:(id)a4 sourceTextures:(id)a5 histogram:(id)a6 histogramOffset:(unint64_t)a7 kernelDAGObject:(id)a8 inputExtent:(id *)a9 srcStyle:(int)a10
+- (void)encodeInternalToCommandEncoder:(id)encoder commandBuffer:(id)buffer sourceTextures:(id)textures histogram:(id)histogram histogramOffset:(unint64_t)offset kernelDAGObject:(id)object inputExtent:(id *)extent srcStyle:(int)self0
 {
   v13 = MEMORY[0x277CD7370];
   if (self->_zeroHistogram)
   {
-    v14 = self->histogramEntries * dword_239988CF0[a10];
+    v14 = self->histogramEntries * dword_239988CF0[style];
     v15 = *MEMORY[0x277CD7370];
     v16 = *(&self->super.super.isa + v15);
     ComputeState = MPSLibrary::GetComputeState();
@@ -291,7 +291,7 @@ LABEL_14:
 
     v23 = ComputeState;
     v24 = objc_msgSend_threadExecutionWidth(ComputeState, v18, v19, v20, v21, v22);
-    objc_msgSend_setComputePipelineState_(a3, v25, v23, v26, v27, v28);
+    objc_msgSend_setComputePipelineState_(encoder, v25, v23, v26, v27, v28);
     v29 = *(&self->super.super.isa + v15);
     MPSLibrary::ReleaseComputeState();
     v32 = v14 >> 10;
@@ -334,15 +334,15 @@ LABEL_14:
       }
 
       *v106 = v14;
-      objc_msgSend_setBytes_length_atIndex_(a3, v30, v106, 4, 1, v31);
+      objc_msgSend_setBytes_length_atIndex_(encoder, v30, v106, 4, 1, v31);
     }
 
-    objc_msgSend_setBuffer_offset_atIndex_(a3, v30, a6, a7, 0, v31);
+    objc_msgSend_setBuffer_offset_atIndex_(encoder, v30, histogram, offset, 0, v31);
     *v106 = v33;
     *&v106[8] = vdupq_n_s64(1uLL);
     v111 = v34;
     v112 = *&v106[8];
-    objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(a3, v36, v106, &v111, v37, v38);
+    objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(encoder, v36, v106, &v111, v37, v38);
   }
 
   v39 = 0;
@@ -427,17 +427,17 @@ LABEL_14:
   v108 = v49;
   *v106 = v49;
   *&v106[16] = 0xFFFFFFFFFFFFFFFFLL;
-  if (a8)
+  if (object)
   {
-    v109 = *(objc_msgSend_graph(a8, a2, a3, a4, a5, a6) + 72);
-    v55 = *(objc_msgSend_graph(a8, v50, v51, v52, v53, v54) + 76);
+    v109 = *(objc_msgSend_graph(object, a2, encoder, buffer, textures, histogram) + 72);
+    v55 = *(objc_msgSend_graph(object, v50, v51, v52, v53, v54) + 76);
     v56 = 128;
-    if (a10 == 4)
+    if (style == 4)
     {
       v56 = 384;
     }
 
-    v57 = (v43 + a10);
+    v57 = (v43 + style);
     v110 = v56 & 0xFFFFFFFFFFFFFF81 | (2 * (v55 & 0x3F)) | 1;
     if (v42)
     {
@@ -448,7 +448,7 @@ LABEL_14:
   else
   {
     v109 = 1;
-    v57 = (v43 + a10);
+    v57 = (v43 + style);
     v110 = 256;
     if (v42)
     {
@@ -458,7 +458,7 @@ LABEL_43:
   }
 
   v59 = *v13;
-  objc_msgSend_copy(**((*(&self->super.super.isa + v59))[35] + 16 * v57), a2, a3, a4, a5, a6);
+  objc_msgSend_copy(**((*(&self->super.super.isa + v59))[35] + 16 * v57), a2, encoder, buffer, textures, histogram);
   MPSLibrary::CreateUberShaderKey();
   v60 = *(&self->super.super.isa + v59);
   PipelineStateForMPSKey = MPSLibrary::GetPipelineStateForMPSKey();
@@ -467,12 +467,12 @@ LABEL_43:
     return;
   }
 
-  objc_msgSend_setComputePipelineState_(a3, v62, PipelineStateForMPSKey, v63, v64, v65, a8, 0, 0, 0, 0);
+  objc_msgSend_setComputePipelineState_(encoder, v62, PipelineStateForMPSKey, v63, v64, v65, object, 0, 0, 0, 0);
   v66 = *(&self->super.super.isa + v59);
   MPSLibrary::ReleaseComputeState();
   if (v57 >= 0x20 && MTLReportFailureTypeEnabled())
   {
-    v99 = a10;
+    styleCopy = style;
     v100 = 32;
     v98 = v43;
     MTLReportFailure();
@@ -501,21 +501,21 @@ LABEL_43:
   *v106 = v77;
   *&v106[16] = v79;
   v107 = *&self->_minPixelThresholdValue[7];
-  *v79.f32 = vmovn_s64(*&a9->var0.var0);
+  *v79.f32 = vmovn_s64(*&extent->var0.var0);
   WORD1(v108) = v79.i16[2];
   LOWORD(v108) = v79.i16[0];
-  var1 = a9->var1.var1;
-  *v77.f32 = vmovn_s64(*&a9->var1.var0);
-  var0 = a9->var1.var0;
+  var1 = extent->var1.var1;
+  *v77.f32 = vmovn_s64(*&extent->var1.var0);
+  var0 = extent->var1.var0;
   WORD3(v108) = v77.i16[2];
   WORD2(v108) = v77.i16[0];
   *(&v108 + 2) = (histogramEntries - 1);
   WORD6(v108) = histogramEntries;
-  if (a10 > 2)
+  if (style > 2)
   {
-    if (a10 != 3)
+    if (style != 3)
     {
-      if (a10 == 4)
+      if (style == 4)
       {
         v76 = 16 * histogramEntries;
       }
@@ -523,7 +523,7 @@ LABEL_43:
 LABEL_58:
       v82 = var0 + v74;
       v83 = var1 + v74;
-      if (!a8)
+      if (!object)
       {
         goto LABEL_65;
       }
@@ -536,7 +536,7 @@ LABEL_64:
     v76 = 4 * histogramEntries;
     v82 = var0 + v74;
     v83 = var1 + v74;
-    if (!a8)
+    if (!object)
     {
       goto LABEL_65;
     }
@@ -544,12 +544,12 @@ LABEL_64:
     goto LABEL_59;
   }
 
-  if (a10 == 1)
+  if (style == 1)
   {
     goto LABEL_64;
   }
 
-  if (a10 != 2)
+  if (style != 2)
   {
     goto LABEL_58;
   }
@@ -557,11 +557,11 @@ LABEL_64:
   v76 = 8 * histogramEntries;
   v82 = var0 + v74;
   v83 = var1 + v74;
-  if (!a8)
+  if (!object)
   {
 LABEL_65:
-    v94 = objc_msgSend_objectAtIndexedSubscript_(a5, v67, 0, v68, v69, v70, v98, v99, v100);
-    objc_msgSend_setTexture_atIndex_(a3, v95, v94, 1, v96, v97);
+    v94 = objc_msgSend_objectAtIndexedSubscript_(textures, v67, 0, v68, v69, v70, v98, styleCopy, v100);
+    objc_msgSend_setTexture_atIndex_(encoder, v95, v94, 1, v96, v97);
     v87 = v82 >> v75;
     v88 = v83 >> v75;
     if ((v72 - 3) > 2)
@@ -579,38 +579,38 @@ LABEL_59:
   if ((v72 - 3) <= 2)
   {
 LABEL_60:
-    objc_msgSend_setThreadgroupMemoryLength_atIndex_(a3, v84, v76, 0, v85, v86, v98, v99, v100);
+    objc_msgSend_setThreadgroupMemoryLength_atIndex_(encoder, v84, v76, 0, v85, v86, v98, styleCopy, v100);
   }
 
 LABEL_61:
-  objc_msgSend_setBuffer_offset_atIndex_(a3, v84, a6, a7, 29, v86, v98, v99, v100);
-  objc_msgSend_setBytes_length_atIndex_(a3, v89, v106, 64, 28, v90);
+  objc_msgSend_setBuffer_offset_atIndex_(encoder, v84, histogram, offset, 29, v86, v98, styleCopy, v100);
+  objc_msgSend_setBytes_length_atIndex_(encoder, v89, v106, 64, 28, v90);
   v111 = v87;
   *&v112 = v88;
   *(&v112 + 1) = 1;
   v104 = vdupq_n_s64(0x10uLL);
   v105 = 1;
-  objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(a3, v91, &v111, &v104, v92, v93);
+  objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(encoder, v91, &v111, &v104, v92, v93);
 }
 
-- (void)encodeToCommandEncoder:(id)a3 commandBuffer:(id)a4 sources:(id)a5 histogram:(id)a6 histogramOffset:(unint64_t)a7 kernelDAGObject:(id)a8
+- (void)encodeToCommandEncoder:(id)encoder commandBuffer:(id)buffer sources:(id)sources histogram:(id)histogram histogramOffset:(unint64_t)offset kernelDAGObject:(id)object
 {
   v12 = MEMORY[0x277CD7378];
-  if (a8)
+  if (object)
   {
     v13 = 0;
     v14 = *MEMORY[0x277CD7378];
 LABEL_3:
-    if (!a6 && (*(&self->super.super.isa + v14) & 1) == 0 && MTLReportFailureTypeEnabled())
+    if (!histogram && (*(&self->super.super.isa + v14) & 1) == 0 && MTLReportFailureTypeEnabled())
     {
       v82 = objc_opt_class();
       v85 = NSStringFromClass(v82);
       MTLReportFailure();
     }
 
-    if (a8)
+    if (object)
     {
-      v15 = objc_msgSend_graph(a8, a2, a3, a4, a5, a6);
+      v15 = objc_msgSend_graph(object, a2, encoder, buffer, sources, histogram);
       v16 = **(***(v15 + 56) + 8);
       if (*(*(***(v15 + 56) + 8) + 8) != v16)
       {
@@ -625,7 +625,7 @@ LABEL_3:
       sub_239955C4C();
     }
 
-    v42 = objc_msgSend_width(v13, a2, a3, a4, a5, a6);
+    v42 = objc_msgSend_width(v13, a2, encoder, buffer, sources, histogram);
     v48 = objc_msgSend_height(v13, v43, v44, v45, v46, v47);
     v49 = *(&self->super.super.isa + *MEMORY[0x277CD7350]);
     v55 = objc_msgSend_pixelFormat(v13, v50, v51, v52, v53, v54);
@@ -682,18 +682,18 @@ LABEL_3:
         }
       }
 
-      v60 = a4;
-      if (a3)
+      bufferCopy = buffer;
+      if (encoder)
       {
         v90 = v92;
         LODWORD(v86) = v56;
-        objc_msgSend_encodeInternalToCommandEncoder_commandBuffer_sourceTextures_histogram_histogramOffset_kernelDAGObject_inputExtent_srcStyle_(self, v58, a3, a4, a5, a6, a7, 0, &v90, v86);
+        objc_msgSend_encodeInternalToCommandEncoder_commandBuffer_sourceTextures_histogram_histogramOffset_kernelDAGObject_inputExtent_srcStyle_(self, v58, encoder, buffer, sources, histogram, offset, 0, &v90, v86);
       }
 
       else
       {
         v61 = objc_alloc(MEMORY[0x277CD7210]);
-        v69 = objc_msgSend_initWithCommandBuffer_withDispatchType_(v61, v62, a4, 0, v63, v64);
+        v69 = objc_msgSend_initWithCommandBuffer_withDispatchType_(v61, v62, buffer, 0, v63, v64);
         v91.width = v69;
         v91.height = self;
         if ((*(&self->super.super.isa + v14) & 0x18) != 0)
@@ -707,7 +707,7 @@ LABEL_3:
 
         v90 = v92;
         LODWORD(v86) = v56;
-        objc_msgSend_encodeInternalToCommandEncoder_commandBuffer_sourceTextures_histogram_histogramOffset_kernelDAGObject_inputExtent_srcStyle_(self, v65, v69, v60, a5, a6, a7, 0, &v90, v86);
+        objc_msgSend_encodeInternalToCommandEncoder_commandBuffer_sourceTextures_histogram_histogramOffset_kernelDAGObject_inputExtent_srcStyle_(self, v65, v69, bufferCopy, sources, histogram, offset, 0, &v90, v86);
         objc_msgSend_endEncoding(v69, v77, v78, v79, v80, v81);
       }
     }
@@ -715,7 +715,7 @@ LABEL_3:
     return;
   }
 
-  v13 = objc_msgSend_objectAtIndexedSubscript_(a5, a2, 0, a4, a5, a6);
+  v13 = objc_msgSend_objectAtIndexedSubscript_(sources, a2, 0, buffer, sources, histogram);
   v14 = *v12;
   v22 = *(&self->super.super.isa + v14);
   if ((v22 & 1) == 0)
@@ -761,12 +761,12 @@ LABEL_3:
   }
 }
 
-- (void)encodeToCommandEncoder:(id)a3 commandBuffer:(id)a4 sourceTexture:(id)a5 histogram:(id)a6 histogramOffset:(unint64_t)a7
+- (void)encodeToCommandEncoder:(id)encoder commandBuffer:(id)buffer sourceTexture:(id)texture histogram:(id)histogram histogramOffset:(unint64_t)offset
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v15[0] = a5;
-  v12 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], a2, v15, 1, a5, a6);
-  objc_msgSend_encodeToCommandEncoder_commandBuffer_sources_histogram_histogramOffset_kernelDAGObject_(self, v13, a3, a4, v12, a6, a7, 0);
+  v15[0] = texture;
+  v12 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], a2, v15, 1, texture, histogram);
+  objc_msgSend_encodeToCommandEncoder_commandBuffer_sources_histogram_histogramOffset_kernelDAGObject_(self, v13, encoder, buffer, v12, histogram, offset, 0);
   v14 = *MEMORY[0x277D85DE8];
 }
 

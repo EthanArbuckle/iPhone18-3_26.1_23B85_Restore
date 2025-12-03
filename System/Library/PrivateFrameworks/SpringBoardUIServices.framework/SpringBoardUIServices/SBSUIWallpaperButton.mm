@@ -1,8 +1,8 @@
 @interface SBSUIWallpaperButton
 - (SBSUIWallpaperButton)init;
-- (SBSUIWallpaperButton)initWithFrame:(CGRect)a3;
+- (SBSUIWallpaperButton)initWithFrame:(CGRect)frame;
 - (void)_commonInit;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation SBSUIWallpaperButton
@@ -21,11 +21,11 @@
   return v3;
 }
 
-- (SBSUIWallpaperButton)initWithFrame:(CGRect)a3
+- (SBSUIWallpaperButton)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SBSUIWallpaperButton;
-  v3 = [(SBSUIWallpaperButton *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBSUIWallpaperButton *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -37,47 +37,47 @@
 
 - (void)_commonInit
 {
-  v2 = self;
-  [(SBSUIWallpaperButton *)v2 setClipsToBounds:1];
+  selfCopy = self;
+  [(SBSUIWallpaperButton *)selfCopy setClipsToBounds:1];
   v20 = [MEMORY[0x1E69DC730] effectWithStyle:4];
   v3 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:v20];
   [(UIVisualEffectView *)v3 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIVisualEffectView *)v3 setUserInteractionEnabled:0];
-  effectView = v2->_effectView;
-  v2->_effectView = v3;
+  effectView = selfCopy->_effectView;
+  selfCopy->_effectView = v3;
   v5 = v3;
 
-  v6 = [(SBSUIWallpaperButton *)v2 imageView];
-  [(SBSUIWallpaperButton *)v2 insertSubview:v5 belowSubview:v6];
+  imageView = [(SBSUIWallpaperButton *)selfCopy imageView];
+  [(SBSUIWallpaperButton *)selfCopy insertSubview:v5 belowSubview:imageView];
 
-  v7 = [MEMORY[0x1E695DF70] array];
-  v8 = [(UIVisualEffectView *)v5 leadingAnchor];
-  v9 = [(SBSUIWallpaperButton *)v2 leadingAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
-  [v7 addObject:v10];
+  array = [MEMORY[0x1E695DF70] array];
+  leadingAnchor = [(UIVisualEffectView *)v5 leadingAnchor];
+  leadingAnchor2 = [(SBSUIWallpaperButton *)selfCopy leadingAnchor];
+  v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+  [array addObject:v10];
 
-  v11 = [(UIVisualEffectView *)v5 trailingAnchor];
-  v12 = [(SBSUIWallpaperButton *)v2 trailingAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
-  [v7 addObject:v13];
+  trailingAnchor = [(UIVisualEffectView *)v5 trailingAnchor];
+  trailingAnchor2 = [(SBSUIWallpaperButton *)selfCopy trailingAnchor];
+  v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+  [array addObject:v13];
 
-  v14 = [(UIVisualEffectView *)v5 topAnchor];
-  v15 = [(SBSUIWallpaperButton *)v2 topAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
-  [v7 addObject:v16];
+  topAnchor = [(UIVisualEffectView *)v5 topAnchor];
+  topAnchor2 = [(SBSUIWallpaperButton *)selfCopy topAnchor];
+  v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
+  [array addObject:v16];
 
-  v17 = [(UIVisualEffectView *)v5 bottomAnchor];
-  v18 = [(SBSUIWallpaperButton *)v2 bottomAnchor];
+  bottomAnchor = [(UIVisualEffectView *)v5 bottomAnchor];
+  bottomAnchor2 = [(SBSUIWallpaperButton *)selfCopy bottomAnchor];
 
-  v19 = [v17 constraintEqualToAnchor:v18];
-  [v7 addObject:v19];
+  v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+  [array addObject:v19];
 
-  [MEMORY[0x1E696ACD8] activateConstraints:v7];
+  [MEMORY[0x1E696ACD8] activateConstraints:array];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (a3)
+  if (highlighted)
   {
     v5 = 0.1585;
   }
@@ -87,15 +87,15 @@
     v5 = 0.317;
   }
 
-  v6 = [(SBSUIWallpaperButton *)self traitCollection];
-  v7 = [v6 userInterfaceStyle] == 2;
+  traitCollection = [(SBSUIWallpaperButton *)self traitCollection];
+  v7 = [traitCollection userInterfaceStyle] == 2;
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __39__SBSUIWallpaperButton_setHighlighted___block_invoke;
   v8[3] = &unk_1E789E1D0;
   v8[4] = self;
-  v9 = a3;
+  highlightedCopy = highlighted;
   v10 = v7;
   [MEMORY[0x1E69DD250] animateWithDuration:v8 animations:v5];
 }

@@ -5,7 +5,7 @@
 - (NSAttributedString)accessibilityAttributedLabel;
 - (NSString)accessibilityHint;
 - (_TtC15RemindersUICore49TTRIRemindersListReminderCellAccessibilityElement)init;
-- (_TtC15RemindersUICore49TTRIRemindersListReminderCellAccessibilityElement)initWithAccessibilityContainer:(id)a3;
+- (_TtC15RemindersUICore49TTRIRemindersListReminderCellAccessibilityElement)initWithAccessibilityContainer:(id)container;
 - (id)_accessibilityInternalTextLinks;
 - (unint64_t)accessibilityTraits;
 @end
@@ -14,9 +14,9 @@
 
 - (CGRect)accessibilityFrame
 {
-  v2 = self;
-  v3 = [(TTRIRemindersListReminderCellAccessibilityElement *)v2 accessibilityContainer];
-  if (!v3)
+  selfCopy = self;
+  accessibilityContainer = [(TTRIRemindersListReminderCellAccessibilityElement *)selfCopy accessibilityContainer];
+  if (!accessibilityContainer)
   {
 
 LABEL_6:
@@ -27,7 +27,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v4 = v3;
+  v4 = accessibilityContainer;
   swift_getObjectType();
   if (!swift_conformsToProtocol2())
   {
@@ -57,9 +57,9 @@ LABEL_7:
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v2 = self;
-  v3 = [(TTRIRemindersListReminderCellAccessibilityElement *)v2 accessibilityContainer];
-  if (!v3)
+  selfCopy = self;
+  accessibilityContainer = [(TTRIRemindersListReminderCellAccessibilityElement *)selfCopy accessibilityContainer];
+  if (!accessibilityContainer)
   {
 
 LABEL_6:
@@ -68,7 +68,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v4 = v3;
+  v4 = accessibilityContainer;
   swift_getObjectType();
   if (!swift_conformsToProtocol2())
   {
@@ -92,7 +92,7 @@ LABEL_7:
 
 - (NSAttributedString)accessibilityAttributedLabel
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TTRIRemindersListReminderCellAccessibilityElement.accessibilityAttributedLabel.getter();
 
   return v3;
@@ -100,7 +100,7 @@ LABEL_7:
 
 - (NSArray)accessibilityUserInputLabels
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TTRIRemindersListReminderCellAccessibilityElement.accessibilityUserInputLabels.getter();
 
   if (v3)
@@ -118,7 +118,7 @@ LABEL_7:
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TTRIRemindersListReminderCellAccessibilityElement.accessibilityTraits.getter();
 
   return v3;
@@ -126,7 +126,7 @@ LABEL_7:
 
 - (NSString)accessibilityHint
 {
-  v2 = self;
+  selfCopy = self;
   TTRIRemindersListReminderCellAccessibilityElement.accessibilityHint.getter();
   v4 = v3;
 
@@ -145,22 +145,22 @@ LABEL_7:
 
 - (id)_accessibilityInternalTextLinks
 {
-  v2 = self;
-  v3 = [(TTRIRemindersListReminderCellAccessibilityElement *)v2 accessibilityContainer];
-  if (v3)
+  selfCopy = self;
+  accessibilityContainer = [(TTRIRemindersListReminderCellAccessibilityElement *)selfCopy accessibilityContainer];
+  if (accessibilityContainer)
   {
-    v4 = v3;
+    v4 = accessibilityContainer;
     swift_getObjectType();
     if (swift_conformsToProtocol2())
     {
-      v5 = [v4 _accessibilityInternalTextLinks];
+      _accessibilityInternalTextLinks = [v4 _accessibilityInternalTextLinks];
       swift_unknownObjectRelease();
-      if (v5)
+      if (_accessibilityInternalTextLinks)
       {
         sub_21D0D8CF0(0, &unk_27CE5F130);
         sub_21DBFA5EC();
 
-        v2 = v5;
+        selfCopy = _accessibilityInternalTextLinks;
       }
     }
 
@@ -176,7 +176,7 @@ LABEL_7:
   return v6;
 }
 
-- (_TtC15RemindersUICore49TTRIRemindersListReminderCellAccessibilityElement)initWithAccessibilityContainer:(id)a3
+- (_TtC15RemindersUICore49TTRIRemindersListReminderCellAccessibilityElement)initWithAccessibilityContainer:(id)container
 {
   ObjectType = swift_getObjectType();
   swift_unknownObjectRetain();
@@ -190,9 +190,9 @@ LABEL_7:
 
   v6 = objc_allocWithZone(MEMORY[0x277CCA898]);
   v7 = sub_21DBFA12C();
-  v8 = [v6 initWithString_];
+  initWithString_ = [v6 initWithString_];
 
-  *(&self->super.super.super.isa + v5) = v8;
+  *(&self->super.super.super.isa + v5) = initWithString_;
   __swift_project_boxed_opaque_existential_1(v13, v13[3]);
   v9 = sub_21DBFC62C();
   v12.receiver = self;
@@ -214,9 +214,9 @@ LABEL_7:
 
   v5 = objc_allocWithZone(MEMORY[0x277CCA898]);
   v6 = sub_21DBFA12C();
-  v7 = [v5 initWithString_];
+  initWithString_ = [v5 initWithString_];
 
-  *(&self->super.super.super.isa + v4) = v7;
+  *(&self->super.super.super.isa + v4) = initWithString_;
   v9.receiver = self;
   v9.super_class = ObjectType;
   return [(TTRIRemindersListReminderCellAccessibilityElement *)&v9 init];

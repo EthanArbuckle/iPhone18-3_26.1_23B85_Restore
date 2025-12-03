@@ -1,26 +1,26 @@
 @interface WBSURLCompletionDatabase
-+ (BOOL)_isMatchURLString:(id)a3 equivalentToBaseURLString:(id)a4;
-+ (BOOL)_matchIsNotURLMatchAndTitleLooksLikeURLForBookmarkAndHistoryCompletionMatch:(const void *)a3;
-+ (BOOL)_matchMistookErrorTitleForPageTitleForBookmarkAndHistoryCompletionMatch:(const void *)a3;
-+ (BOOL)_redirectionChainsOfCompletionMatchData:(id)a3 containURLString:(id)a4;
-+ (BOOL)_shouldPreloadTopHit:(void *)a3 forTypedString:(id)a4 withSearchParameters:(id)a5;
-+ (BOOL)_topHitFromMatches:()RefPtr<SafariShared:()WTF:(WTF:(void *)a4 :(id)a5 DefaultRefDerefTraits<SafariShared::BookmarkAndHistoryCompletionMatch>>)a3 :RawPtrTraits<SafariShared::BookmarkAndHistoryCompletionMatch> :BookmarkAndHistoryCompletionMatch isOneOfManyUnremarkableMatchesInLocalHistoryMatches:inDomain:;
-+ (BOOL)doesStringLookLikeURLHost:(id)a3;
-+ (RefPtr<SafariShared::BookmarkAndHistoryCompletionMatch,)_synthesizeURLMatchWithURLString:(id)a3 title:(id)a4 topHitFromMatches:()RefPtr<SafariShared:()WTF:(WTF:(void *)a6 :(void *)a7 DefaultRefDerefTraits<SafariShared:(id)a8 :(double)a9 BookmarkAndHistoryCompletionMatch>>)a5 :(id)a10 RawPtrTraits<SafariShared::BookmarkAndHistoryCompletionMatch> :BookmarkAndHistoryCompletionMatch historyMatches:bookmarkMatches:typedString:timeNow:completionDataSource:;
-+ (RefPtr<SafariShared::BookmarkAndHistoryCompletionMatch,)_topHitFromBaseURLMatchForTopHitFromMatches:()RefPtr<SafariShared:()WTF:(WTF:(BOOL *)a4 :(void *)a5 DefaultRefDerefTraits<SafariShared:(void *)a6 :(id)a7 BookmarkAndHistoryCompletionMatch>>)a3 :(id)a8 RawPtrTraits<SafariShared:(double)a9 :(id)a10 BookmarkAndHistoryCompletionMatch> :BookmarkAndHistoryCompletionMatch shouldReplaceTopHitFromMatches:historyMatches:bookmarkMatches:typedString:searchParameters:timeNow:completionDataSource:;
++ (BOOL)_isMatchURLString:(id)string equivalentToBaseURLString:(id)lString;
++ (BOOL)_matchIsNotURLMatchAndTitleLooksLikeURLForBookmarkAndHistoryCompletionMatch:(const void *)match;
++ (BOOL)_matchMistookErrorTitleForPageTitleForBookmarkAndHistoryCompletionMatch:(const void *)match;
++ (BOOL)_redirectionChainsOfCompletionMatchData:(id)data containURLString:(id)string;
++ (BOOL)_shouldPreloadTopHit:(void *)hit forTypedString:(id)string withSearchParameters:(id)parameters;
++ (BOOL)_topHitFromMatches:()RefPtr<SafariShared:()WTF:(WTF:(void *)f :(id)a5 DefaultRefDerefTraits<SafariShared::BookmarkAndHistoryCompletionMatch>>)a3 :RawPtrTraits<SafariShared::BookmarkAndHistoryCompletionMatch> :BookmarkAndHistoryCompletionMatch isOneOfManyUnremarkableMatchesInLocalHistoryMatches:inDomain:;
++ (BOOL)doesStringLookLikeURLHost:(id)host;
++ (RefPtr<SafariShared::BookmarkAndHistoryCompletionMatch,)_synthesizeURLMatchWithURLString:(id)string title:(id)title topHitFromMatches:()RefPtr<SafariShared:()WTF:(WTF:(void *)f :(void *)a7 DefaultRefDerefTraits<SafariShared:(id)shared :(double)a9 BookmarkAndHistoryCompletionMatch>>)a5 :(id)self0 RawPtrTraits<SafariShared::BookmarkAndHistoryCompletionMatch> :BookmarkAndHistoryCompletionMatch historyMatches:bookmarkMatches:typedString:timeNow:completionDataSource:;
++ (RefPtr<SafariShared::BookmarkAndHistoryCompletionMatch,)_topHitFromBaseURLMatchForTopHitFromMatches:()RefPtr<SafariShared:()WTF:(WTF:(BOOL *)f :(void *)a5 DefaultRefDerefTraits<SafariShared:(void *)shared :(id)a7 BookmarkAndHistoryCompletionMatch>>)a3 :(id)a8 RawPtrTraits<SafariShared:(double)safariShared :(id)self0 BookmarkAndHistoryCompletionMatch> :BookmarkAndHistoryCompletionMatch shouldReplaceTopHitFromMatches:historyMatches:bookmarkMatches:typedString:searchParameters:timeNow:completionDataSource:;
 + (void)initializeURLCompletionOnMainThread;
 - (WBSURLCompletionDataSource)dataSource;
 - (WBSURLCompletionDatabase)init;
 - (id).cxx_construct;
-- (void)_getSortedMatchesForTypedString:(id)a3 filterResultsUsingProfileIdentifier:(id)a4 topHits:(void *)a5 historyMatches:(void *)a6 historyLimit:(unint64_t)a7 bookmarkMatches:(void *)a8 bookmarkLimit:(unint64_t)a9 searchParameters:(id)a10 prefixMatchesOnly:(BOOL)a11;
-- (void)_getUnsortedFullTextMatchesForTypedString:(id)a3 filterResultsUsingProfileIdentifier:(id)a4 historyMatches:(void *)a5 bookmarkMatches:(void *)a6 dataTypes:(unsigned int)a7;
-- (void)_getUnsortedPrefixMatchesForTypedString:(id)a3 filterResultsUsingProfileIdentifier:(id)a4 historyMatches:(void *)a5 bookmarkMatches:(void *)a6;
-- (void)_removeMatchesThatMistookErrorTitleForPageTitleFromMatches:(void *)a3;
-- (void)_removeMatchesWithTitlesThatLookLikeURLsRemovedFromMatches:(void *)a3;
-- (void)clearBookmarkMatchesCachesKeepingEmptyValues:(BOOL)a3;
+- (void)_getSortedMatchesForTypedString:(id)string filterResultsUsingProfileIdentifier:(id)identifier topHits:(void *)hits historyMatches:(void *)matches historyLimit:(unint64_t)limit bookmarkMatches:(void *)bookmarkMatches bookmarkLimit:(unint64_t)bookmarkLimit searchParameters:(id)self0 prefixMatchesOnly:(BOOL)self1;
+- (void)_getUnsortedFullTextMatchesForTypedString:(id)string filterResultsUsingProfileIdentifier:(id)identifier historyMatches:(void *)matches bookmarkMatches:(void *)bookmarkMatches dataTypes:(unsigned int)types;
+- (void)_getUnsortedPrefixMatchesForTypedString:(id)string filterResultsUsingProfileIdentifier:(id)identifier historyMatches:(void *)matches bookmarkMatches:(void *)bookmarkMatches;
+- (void)_removeMatchesThatMistookErrorTitleForPageTitleFromMatches:(void *)matches;
+- (void)_removeMatchesWithTitlesThatLookLikeURLsRemovedFromMatches:(void *)matches;
+- (void)clearBookmarkMatchesCachesKeepingEmptyValues:(BOOL)values;
 - (void)clearHistoryMatchesCache;
 - (void)clearMatchesCaches;
-- (void)getBestMatchesForTypedString:(id)a3 filterResultsUsingProfileIdentifier:(id)a4 topHits:(id *)a5 matches:(id *)a6 limit:(unint64_t)a7 forQueryID:(int64_t)a8 withSearchParameters:(id)a9;
+- (void)getBestMatchesForTypedString:(id)string filterResultsUsingProfileIdentifier:(id)identifier topHits:(id *)hits matches:(id *)matches limit:(unint64_t)limit forQueryID:(int64_t)d withSearchParameters:(id)parameters;
 @end
 
 @implementation WBSURLCompletionDatabase
@@ -47,20 +47,20 @@
   }
 }
 
-- (void)getBestMatchesForTypedString:(id)a3 filterResultsUsingProfileIdentifier:(id)a4 topHits:(id *)a5 matches:(id *)a6 limit:(unint64_t)a7 forQueryID:(int64_t)a8 withSearchParameters:(id)a9
+- (void)getBestMatchesForTypedString:(id)string filterResultsUsingProfileIdentifier:(id)identifier topHits:(id *)hits matches:(id *)matches limit:(unint64_t)limit forQueryID:(int64_t)d withSearchParameters:(id)parameters
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a9;
+  stringCopy = string;
+  identifierCopy = identifier;
+  parametersCopy = parameters;
   v45 = 0;
   v46 = 0;
   v43 = 0;
   v44 = 0;
-  v39 = v16;
-  v18 = [[WBSURLCompletionUserTypedString alloc] initWithString:v15];
+  v39 = identifierCopy;
+  v18 = [[WBSURLCompletionUserTypedString alloc] initWithString:stringCopy];
   v41 = 0;
   v42 = 0;
-  if (a5)
+  if (hits)
   {
     v19 = &v45;
   }
@@ -71,17 +71,17 @@
   }
 
   v40 = v18;
-  [(WBSURLCompletionDatabase *)self _getSortedPrefixMatchesForTypedString:v18 filterResultsUsingProfileIdentifier:v16 topHits:v19 historyMatches:&v43 historyLimit:a7 bookmarkMatches:&v41 bookmarkLimit:a7 searchParameters:v17];
+  [(WBSURLCompletionDatabase *)self _getSortedPrefixMatchesForTypedString:v18 filterResultsUsingProfileIdentifier:identifierCopy topHits:v19 historyMatches:&v43 historyLimit:limit bookmarkMatches:&v41 bookmarkLimit:limit searchParameters:parametersCopy];
   v20 = HIDWORD(v42);
-  if (HIDWORD(v42) + HIDWORD(v44) < a7)
+  if (HIDWORD(v42) + HIDWORD(v44) < limit)
   {
     WTF::Vector<WTF::RefPtr<SafariShared::BookmarkAndHistoryCompletionMatch,WTF::RawPtrTraits<SafariShared::BookmarkAndHistoryCompletionMatch>,WTF::DefaultRefDerefTraits<SafariShared::BookmarkAndHistoryCompletionMatch>>,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::shrinkCapacity(&v43, 0);
-    if (HIDWORD(v42) < a7)
+    if (HIDWORD(v42) < limit)
     {
       WTF::Vector<WTF::RefPtr<SafariShared::BookmarkAndHistoryCompletionMatch,WTF::RawPtrTraits<SafariShared::BookmarkAndHistoryCompletionMatch>,WTF::DefaultRefDerefTraits<SafariShared::BookmarkAndHistoryCompletionMatch>>,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::shrinkCapacity(&v41, 0);
     }
 
-    [(WBSURLCompletionDatabase *)self _getSortedFullTextMatchesForTypedString:v40 filterResultsUsingProfileIdentifier:v16 topHits:v19 historyMatches:&v43 historyLimit:a7 bookmarkMatches:&v41 bookmarkLimit:a7 searchParameters:v17];
+    [(WBSURLCompletionDatabase *)self _getSortedFullTextMatchesForTypedString:v40 filterResultsUsingProfileIdentifier:identifierCopy topHits:v19 historyMatches:&v43 historyLimit:limit bookmarkMatches:&v41 bookmarkLimit:limit searchParameters:parametersCopy];
     v20 = HIDWORD(v42);
   }
 
@@ -92,9 +92,9 @@
     v21 = 126 - 2 * __clz(HIDWORD(v44));
     v22 = HIDWORD(v44) ? v21 : 0;
     std::__introsort<std::_ClassicAlgPolicy,BOOL (*&)(WTF::RefPtr<SafariShared::BookmarkAndHistoryCompletionMatch,WTF::RawPtrTraits<SafariShared::BookmarkAndHistoryCompletionMatch>,WTF::DefaultRefDerefTraits<SafariShared::BookmarkAndHistoryCompletionMatch>> const&,WTF::RefPtr<SafariShared::BookmarkAndHistoryCompletionMatch,WTF::RawPtrTraits<SafariShared::BookmarkAndHistoryCompletionMatch>,WTF::DefaultRefDerefTraits<SafariShared::BookmarkAndHistoryCompletionMatch>> const&),WTF::RefPtr<SafariShared::BookmarkAndHistoryCompletionMatch,WTF::RawPtrTraits<SafariShared::BookmarkAndHistoryCompletionMatch>,WTF::DefaultRefDerefTraits<SafariShared::BookmarkAndHistoryCompletionMatch>>*,false>(v43, &v43[HIDWORD(v44)], &v47, v22, 1);
-    if (HIDWORD(v44) > a7)
+    if (HIDWORD(v44) > limit)
     {
-      WTF::Vector<WTF::RefPtr<SafariShared::BookmarkAndHistoryCompletionMatch,WTF::RawPtrTraits<SafariShared::BookmarkAndHistoryCompletionMatch>,WTF::DefaultRefDerefTraits<SafariShared::BookmarkAndHistoryCompletionMatch>>,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::shrink(&v43, a7);
+      WTF::Vector<WTF::RefPtr<SafariShared::BookmarkAndHistoryCompletionMatch,WTF::RawPtrTraits<SafariShared::BookmarkAndHistoryCompletionMatch>,WTF::DefaultRefDerefTraits<SafariShared::BookmarkAndHistoryCompletionMatch>>,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::shrink(&v43, limit);
     }
   }
 
@@ -122,21 +122,21 @@
     }
   }
 
-  if (a5)
+  if (hits)
   {
     v26 = [MEMORY[0x1E695DF70] arrayWithCapacity:HIDWORD(v46)];
-    *a5 = v26;
+    *hits = v26;
     if (HIDWORD(v46))
     {
       v27 = v45;
       v28 = 8 * HIDWORD(v46);
       do
       {
-        v29 = [WBSURLCompletionDatabase _shouldPreloadTopHit:*v27 forTypedString:v15 withSearchParameters:v17];
+        v29 = [WBSURLCompletionDatabase _shouldPreloadTopHit:*v27 forTypedString:stringCopy withSearchParameters:parametersCopy];
         v30 = [WBSTopHitCompletionMatch alloc];
         v47 = *v27;
         *v27 = 0;
-        v31 = [(WBSTopHitCompletionMatch *)v30 initWithBookmarkAndHistoryCompletionMatch:&v47 userInput:v15 forQueryID:a8 shouldPreload:v29];
+        v31 = [(WBSTopHitCompletionMatch *)v30 initWithBookmarkAndHistoryCompletionMatch:&v47 userInput:stringCopy forQueryID:d shouldPreload:v29];
         [v26 addObject:v31];
 
         v32 = v47;
@@ -155,7 +155,7 @@
   }
 
   v33 = [MEMORY[0x1E695DF70] arrayWithCapacity:HIDWORD(v44)];
-  *a6 = v33;
+  *matches = v33;
   if (HIDWORD(v44))
   {
     v34 = v43;
@@ -165,7 +165,7 @@
       v36 = [WBSBookmarkAndHistoryCompletionMatch alloc];
       v47 = *v34;
       *v34 = 0;
-      v37 = [(WBSBookmarkAndHistoryCompletionMatch *)v36 initWithBookmarkAndHistoryCompletionMatch:&v47 userInput:v15 forQueryID:a8];
+      v37 = [(WBSBookmarkAndHistoryCompletionMatch *)v36 initWithBookmarkAndHistoryCompletionMatch:&v47 userInput:stringCopy forQueryID:d];
       [v33 addObject:v37];
 
       v38 = v47;
@@ -187,62 +187,62 @@
   WTF::Vector<WTF::RefPtr<SafariShared::BookmarkAndHistoryCompletionMatch,WTF::RawPtrTraits<SafariShared::BookmarkAndHistoryCompletionMatch>,WTF::DefaultRefDerefTraits<SafariShared::BookmarkAndHistoryCompletionMatch>>,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::~Vector(&v45);
 }
 
-+ (BOOL)doesStringLookLikeURLHost:(id)a3
++ (BOOL)doesStringLookLikeURLHost:(id)host
 {
-  v3 = a3;
-  if (([v3 safari_containsInteriorWhitespace] & 1) != 0 || (v4 = objc_msgSend(v3, "safari_firstLocationOfPeriodOrHomoglyphForPeriod"), v4 == 0x7FFFFFFFFFFFFFFFLL))
+  hostCopy = host;
+  if (([hostCopy safari_containsInteriorWhitespace] & 1) != 0 || (v4 = objc_msgSend(hostCopy, "safari_firstLocationOfPeriodOrHomoglyphForPeriod"), v4 == 0x7FFFFFFFFFFFFFFFLL))
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [v3 substringFromIndex:v4];
+    v6 = [hostCopy substringFromIndex:v4];
     v5 = ![v6 length] || (objc_msgSend(v6, "containsString:", @"/") & 1) == 0;
   }
 
   return v5;
 }
 
-+ (BOOL)_shouldPreloadTopHit:(void *)a3 forTypedString:(id)a4 withSearchParameters:(id)a5
++ (BOOL)_shouldPreloadTopHit:(void *)hit forTypedString:(id)string withSearchParameters:(id)parameters
 {
-  v7 = a4;
-  v8 = a5;
-  if (a3)
+  stringCopy = string;
+  parametersCopy = parameters;
+  if (hit)
   {
-    v9 = SafariShared::BookmarkAndHistoryCompletionMatch::data(a3);
-    v10 = [v9 shouldPreload];
+    v9 = SafariShared::BookmarkAndHistoryCompletionMatch::data(hit);
+    shouldPreload = [v9 shouldPreload];
 
-    if (v10)
+    if (shouldPreload)
     {
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __85__WBSURLCompletionDatabase__shouldPreloadTopHit_forTypedString_withSearchParameters___block_invoke;
       v19[3] = &unk_1E7FCB1E0;
-      v22 = a3;
-      v11 = v7;
+      hitCopy = hit;
+      v11 = stringCopy;
       v20 = v11;
-      v21 = v8;
+      v21 = parametersCopy;
       v12 = MEMORY[0x1BFB13CE0](v19);
-      v13 = *(a3 + 1);
-      if (v13 <= 8 && ((1 << v13) & 0x1D8) != 0 || (SafariShared::BookmarkAndHistoryCompletionMatch::originalURLString(a3), v15 = objc_claimAutoreleasedReturnValue(), v16 = [[WBSURLCompletionUserTypedString alloc] initWithString:v11], v18 = SafariShared::computeURLMatchLocation(v15, &v16->super.isa, v17), v16, v15, v13 != v18))
+      v13 = *(hit + 1);
+      if (v13 <= 8 && ((1 << v13) & 0x1D8) != 0 || (SafariShared::BookmarkAndHistoryCompletionMatch::originalURLString(hit), v15 = objc_claimAutoreleasedReturnValue(), v16 = [[WBSURLCompletionUserTypedString alloc] initWithString:v11], v18 = SafariShared::computeURLMatchLocation(v15, &v16->super.isa, v17), v16, v15, v13 != v18))
       {
-        LOBYTE(a3) = v12[2](v12);
+        LOBYTE(hit) = v12[2](v12);
       }
 
       else
       {
-        LOBYTE(a3) = 1;
+        LOBYTE(hit) = 1;
       }
     }
 
     else
     {
-      LOBYTE(a3) = 0;
+      LOBYTE(hit) = 0;
     }
   }
 
-  return a3;
+  return hit;
 }
 
 BOOL __85__WBSURLCompletionDatabase__shouldPreloadTopHit_forTypedString_withSearchParameters___block_invoke(uint64_t a1)
@@ -261,13 +261,13 @@ BOOL __85__WBSURLCompletionDatabase__shouldPreloadTopHit_forTypedString_withSear
   return v3;
 }
 
-- (void)clearBookmarkMatchesCachesKeepingEmptyValues:(BOOL)a3
+- (void)clearBookmarkMatchesCachesKeepingEmptyValues:(BOOL)values
 {
-  v3 = a3;
+  valuesCopy = values;
   v5 = WBS_LOG_CHANNEL_PREFIXURLAutocomplete();
   if (!os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    if (v3)
+    if (valuesCopy)
     {
       goto LABEL_3;
     }
@@ -285,7 +285,7 @@ LABEL_9:
   }
 
   [WBSURLCompletionDatabase clearBookmarkMatchesCachesKeepingEmptyValues:];
-  if (!v3)
+  if (!valuesCopy)
   {
     goto LABEL_8;
   }
@@ -337,9 +337,9 @@ LABEL_10:
   [(WBSURLCompletionDatabase *)self clearHistoryMatchesCache];
 }
 
-+ (BOOL)_matchIsNotURLMatchAndTitleLooksLikeURLForBookmarkAndHistoryCompletionMatch:(const void *)a3
++ (BOOL)_matchIsNotURLMatchAndTitleLooksLikeURLForBookmarkAndHistoryCompletionMatch:(const void *)match
 {
-  v3 = *(a3 + 1);
+  v3 = *(match + 1);
   v4 = v3 > 8;
   v5 = (1 << v3) & 0x1C8;
   if (v4 || v5 == 0)
@@ -347,18 +347,18 @@ LABEL_10:
     return 0;
   }
 
-  v8 = SafariShared::BookmarkAndHistoryCompletionMatch::title(a3);
-  v9 = [WBSURLCompletionDatabase doesStringLookLikeURLHost:v8]&& *(a3 + 2) == 0;
+  v8 = SafariShared::BookmarkAndHistoryCompletionMatch::title(match);
+  v9 = [WBSURLCompletionDatabase doesStringLookLikeURLHost:v8]&& *(match + 2) == 0;
 
   return v9;
 }
 
-+ (BOOL)_matchMistookErrorTitleForPageTitleForBookmarkAndHistoryCompletionMatch:(const void *)a3
++ (BOOL)_matchMistookErrorTitleForPageTitleForBookmarkAndHistoryCompletionMatch:(const void *)match
 {
-  v3 = *(a3 + 1);
+  v3 = *(match + 1);
   if (v3 != 4)
   {
-    v5 = SafariShared::BookmarkAndHistoryCompletionMatch::data(a3);
+    v5 = SafariShared::BookmarkAndHistoryCompletionMatch::data(match);
     if ([v5 lastVisitWasFailure])
     {
       if (v3 <= 0xA)
@@ -373,10 +373,10 @@ LABEL_11:
 
     else
     {
-      v6 = [v5 visitWasClientError];
+      visitWasClientError = [v5 visitWasClientError];
       if (v3 < 0xB)
       {
-        v7 = v6;
+        v7 = visitWasClientError;
       }
 
       else
@@ -398,15 +398,15 @@ LABEL_11:
   return v4 & 1;
 }
 
-+ (BOOL)_redirectionChainsOfCompletionMatchData:(id)a3 containURLString:(id)a4
++ (BOOL)_redirectionChainsOfCompletionMatchData:(id)data containURLString:(id)string
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  stringCopy = string;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v6 entries];
-    v9 = [v8 count];
+    entries = [dataCopy entries];
+    v9 = [entries count];
     do
     {
       v10 = --v9 > 0;
@@ -415,9 +415,9 @@ LABEL_11:
         break;
       }
 
-      v11 = [v8 objectAtIndexedSubscript:v9 & 0x7FFFFFFF];
-      v12 = [v11 url];
-      v13 = [a1 _isMatchURLString:v12 equivalentToBaseURLString:v7];
+      0x7FFFFFFF = [entries objectAtIndexedSubscript:v9 & 0x7FFFFFFF];
+      v12 = [0x7FFFFFFF url];
+      v13 = [self _isMatchURLString:v12 equivalentToBaseURLString:stringCopy];
     }
 
     while ((v13 & 1) == 0);
@@ -431,28 +431,28 @@ LABEL_11:
   return v10;
 }
 
-+ (RefPtr<SafariShared::BookmarkAndHistoryCompletionMatch,)_topHitFromBaseURLMatchForTopHitFromMatches:()RefPtr<SafariShared:()WTF:(WTF:(BOOL *)a4 :(void *)a5 DefaultRefDerefTraits<SafariShared:(void *)a6 :(id)a7 BookmarkAndHistoryCompletionMatch>>)a3 :(id)a8 RawPtrTraits<SafariShared:(double)a9 :(id)a10 BookmarkAndHistoryCompletionMatch> :BookmarkAndHistoryCompletionMatch shouldReplaceTopHitFromMatches:historyMatches:bookmarkMatches:typedString:searchParameters:timeNow:completionDataSource:
++ (RefPtr<SafariShared::BookmarkAndHistoryCompletionMatch,)_topHitFromBaseURLMatchForTopHitFromMatches:()RefPtr<SafariShared:()WTF:(WTF:(BOOL *)f :(void *)a5 DefaultRefDerefTraits<SafariShared:(void *)shared :(id)a7 BookmarkAndHistoryCompletionMatch>>)a3 :(id)a8 RawPtrTraits<SafariShared:(double)safariShared :(id)self0 BookmarkAndHistoryCompletionMatch> :BookmarkAndHistoryCompletionMatch shouldReplaceTopHitFromMatches:historyMatches:bookmarkMatches:typedString:searchParameters:timeNow:completionDataSource:
 {
   v16 = v10;
   v109 = *MEMORY[0x1E69E9840];
   v17 = a7;
   v18 = a8;
   v19 = a10;
-  if (!*a3.m_ptr || !(*(a5 + 3) | *(a6 + 3)))
+  if (!*a3.m_ptr || !(*(a5 + 3) | *(shared + 3)))
   {
     *v16 = 0;
     goto LABEL_14;
   }
 
-  v101 = [v17[1] safari_bestURLForUserTypedString];
-  if (!v101 || ([v101 safari_userVisibleString], v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "localizedCaseInsensitiveContainsString:", v17[1]), v20, (v21 & 1) == 0))
+  safari_bestURLForUserTypedString = [v17[1] safari_bestURLForUserTypedString];
+  if (!safari_bestURLForUserTypedString || ([safari_bestURLForUserTypedString safari_userVisibleString], v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "localizedCaseInsensitiveContainsString:", v17[1]), v20, (v21 & 1) == 0))
   {
     *v16 = 0;
     goto LABEL_13;
   }
 
-  v100 = [v101 path];
-  if ([v100 length] && !objc_msgSend(v100, "isEqualToString:", @"/") || (objc_msgSend(v101, "safari_hasCharactersBeyondPath") & 1) != 0 || objc_msgSend(v17[1], "hasSuffix:", @"?"))
+  path = [safari_bestURLForUserTypedString path];
+  if ([path length] && !objc_msgSend(path, "isEqualToString:", @"/") || (objc_msgSend(safari_bestURLForUserTypedString, "safari_hasCharactersBeyondPath") & 1) != 0 || objc_msgSend(v17[1], "hasSuffix:", @"?"))
   {
     *v16 = 0;
     goto LABEL_11;
@@ -476,22 +476,22 @@ LABEL_11:
     goto LABEL_43;
   }
 
-  v98 = [v25 path];
-  if (*(*a3.m_ptr + 8) != 9 || ![v98 length] || objc_msgSend(v98, "isEqualToString:", @"/") && !objc_msgSend(v25, "safari_hasCharactersBeyondPath"))
+  path2 = [v25 path];
+  if (*(*a3.m_ptr + 8) != 9 || ![path2 length] || objc_msgSend(path2, "isEqualToString:", @"/") && !objc_msgSend(v25, "safari_hasCharactersBeyondPath"))
   {
     goto LABEL_41;
   }
 
-  v26 = [v25 host];
-  if (![v26 length])
+  host = [v25 host];
+  if (![host length])
   {
 
     goto LABEL_41;
   }
 
-  v27 = [v99 isFileURL];
+  isFileURL = [v99 isFileURL];
 
-  if (v27)
+  if (isFileURL)
   {
 LABEL_41:
     *v16 = 0;
@@ -499,12 +499,12 @@ LABEL_41:
   }
 
   v28 = [MEMORY[0x1E695DFF8] safari_URLWithDataAsString:@"/" relativeToURL:v99];
-  v29 = [v28 safari_originalDataAsString];
+  safari_originalDataAsString = [v28 safari_originalDataAsString];
 
-  v97 = v29;
-  if ([v29 safari_hasCaseInsensitivePrefix:@"feed:"] && (objc_msgSend(v17[1], "safari_hasCaseInsensitivePrefix:", @"feed:") & 1) == 0)
+  v97 = safari_originalDataAsString;
+  if ([safari_originalDataAsString safari_hasCaseInsensitivePrefix:@"feed:"] && (objc_msgSend(v17[1], "safari_hasCaseInsensitivePrefix:", @"feed:") & 1) == 0)
   {
-    v30 = [v29 stringByReplacingCharactersInRange:0 withString:{5, @"https:"}];
+    v30 = [safari_originalDataAsString stringByReplacingCharactersInRange:0 withString:{5, @"https:"}];
 
     v97 = v30;
   }
@@ -516,10 +516,10 @@ LABEL_41:
   if (v33)
   {
     v34 = SafariShared::BookmarkAndHistoryCompletionMatch::title(*a3.m_ptr);
-    v35 = v34;
+    safari_userVisibleHost = v34;
     if (!v34)
     {
-      v35 = [v99 safari_userVisibleHost];
+      safari_userVisibleHost = [v99 safari_userVisibleHost];
     }
 
     v36 = *a3.m_ptr;
@@ -529,7 +529,7 @@ LABEL_41:
     }
 
     v107 = v36;
-    [a1 _synthesizeURLMatchWithURLString:v97 title:v35 topHitFromMatches:&v107 historyMatches:a5 bookmarkMatches:a6 typedString:v17 timeNow:a9 completionDataSource:v19];
+    [self _synthesizeURLMatchWithURLString:v97 title:safari_userVisibleHost topHitFromMatches:&v107 historyMatches:a5 bookmarkMatches:shared typedString:v17 timeNow:safariShared completionDataSource:v19];
     v37 = v107;
     v107 = 0;
     if (v37)
@@ -552,7 +552,7 @@ LABEL_41:
   if (!v40)
   {
 LABEL_57:
-    if (!*(a6 + 3))
+    if (!*(shared + 3))
     {
 LABEL_66:
       if (v40)
@@ -590,8 +590,8 @@ LABEL_66:
               v60 = v59;
               if (!v59)
               {
-                v93 = [v99 safari_userVisibleHost];
-                v60 = v93;
+                safari_userVisibleHost2 = [v99 safari_userVisibleHost];
+                v60 = safari_userVisibleHost2;
               }
 
               v61 = *a3.m_ptr;
@@ -601,7 +601,7 @@ LABEL_66:
               }
 
               v106 = v61;
-              [a1 _synthesizeURLMatchWithURLString:v97 title:v60 topHitFromMatches:&v106 historyMatches:a5 bookmarkMatches:a6 typedString:v17 timeNow:a9 completionDataSource:v19];
+              [self _synthesizeURLMatchWithURLString:v97 title:v60 topHitFromMatches:&v106 historyMatches:a5 bookmarkMatches:shared typedString:v17 timeNow:safariShared completionDataSource:v19];
               v62 = v106;
               v106 = 0;
               if (v62)
@@ -644,8 +644,8 @@ LABEL_66:
       }
 
       v105 = v65;
-      v66 = [v99 host];
-      v67 = [v64 _topHitFromMatches:&v105 isOneOfManyUnremarkableMatchesInLocalHistoryMatches:a5 inDomain:v66];
+      host2 = [v99 host];
+      v67 = [v64 _topHitFromMatches:&v105 isOneOfManyUnremarkableMatchesInLocalHistoryMatches:a5 inDomain:host2];
 
       v68 = v105;
       v105 = 0;
@@ -659,7 +659,7 @@ LABEL_66:
         goto LABEL_102;
       }
 
-      v69 = [v99 safari_userVisibleHost];
+      safari_userVisibleHost3 = [v99 safari_userVisibleHost];
       v70 = *a3.m_ptr;
       if (*a3.m_ptr)
       {
@@ -667,7 +667,7 @@ LABEL_66:
       }
 
       v104 = v70;
-      [a1 _synthesizeURLMatchWithURLString:v97 title:v69 topHitFromMatches:&v104 historyMatches:a5 bookmarkMatches:a6 typedString:v17 timeNow:a9 completionDataSource:v19];
+      [self _synthesizeURLMatchWithURLString:v97 title:safari_userVisibleHost3 topHitFromMatches:&v104 historyMatches:a5 bookmarkMatches:shared typedString:v17 timeNow:safariShared completionDataSource:v19];
       v71 = v104;
       v104 = 0;
       if (v71)
@@ -689,7 +689,7 @@ LABEL_102:
       }
 
 LABEL_36:
-      *a4 = 1;
+      *f = 1;
       goto LABEL_123;
     }
 
@@ -697,8 +697,8 @@ LABEL_36:
     v49 = -8;
     while (1)
     {
-      v93 = v49;
-      v50 = *(*a6 + 8 * v48);
+      safari_userVisibleHost2 = v49;
+      v50 = *(*shared + 8 * v48);
       if (v50)
       {
         ++*v50;
@@ -706,8 +706,8 @@ LABEL_36:
 
       *v16 = v50;
       v51 = SafariShared::BookmarkAndHistoryCompletionMatch::data(v50);
-      v52 = [v51 originalURLString];
-      v95 = [a1 _isMatchURLString:v52 equivalentToBaseURLString:v97];
+      originalURLString = [v51 originalURLString];
+      v95 = [self _isMatchURLString:originalURLString equivalentToBaseURLString:v97];
 
       if (v95)
       {
@@ -722,8 +722,8 @@ LABEL_36:
       }
 
       ++v48;
-      v49 = v93 - 8;
-      if (v48 >= *(a6 + 3))
+      v49 = safari_userVisibleHost2 - 8;
+      if (v48 >= *(shared + 3))
       {
         LODWORD(v40) = *(a5 + 3);
         goto LABEL_66;
@@ -735,32 +735,32 @@ LABEL_36:
       goto LABEL_123;
     }
 
-    v73 = *(a6 + 3);
+    v73 = *(shared + 3);
     if (v48 < v73)
     {
-      v74 = *a6;
-      v75 = (*a6 + 8 * v48);
+      v74 = *shared;
+      v75 = (*shared + 8 * v48);
       v76 = *v75;
       *v75 = 0;
       if (v76)
       {
         WTF::RefCounted<SafariShared::BookmarkAndHistoryCompletionMatch>::deref(v76);
-        v73 = *(a6 + 3);
+        v73 = *(shared + 3);
       }
 
-      memmove(v75, v75 + 1, v93 + *a6 + 8 * v73 - v74);
-      v77 = *(a6 + 2);
-      v78 = (*(a6 + 3) - 1);
-      *(a6 + 3) = v78;
+      memmove(v75, v75 + 1, safari_userVisibleHost2 + *shared + 8 * v73 - v74);
+      v77 = *(shared + 2);
+      v78 = (*(shared + 3) - 1);
+      *(shared + 3) = v78;
       if (v78 == v77)
       {
-        v79 = WTF::Vector<OpaqueJSValue *,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::expandCapacity<(WTF::FailureAction)0>(a6, v78 + 1, v16);
-        LODWORD(v78) = *(a6 + 3);
+        v79 = WTF::Vector<OpaqueJSValue *,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::expandCapacity<(WTF::FailureAction)0>(shared, v78 + 1, v16);
+        LODWORD(v78) = *(shared + 3);
         v16 = v79;
       }
 
-      v80 = *a6;
-      memmove((*a6 + 8), *a6, 8 * v78);
+      v80 = *shared;
+      memmove((*shared + 8), *shared, 8 * v78);
       v81 = *v16;
       if (*v16)
       {
@@ -768,7 +768,7 @@ LABEL_36:
       }
 
       *v80 = v81;
-      ++*(a6 + 3);
+      ++*(shared + 3);
       goto LABEL_123;
     }
 
@@ -787,10 +787,10 @@ LABEL_36:
     }
 
     *buf = v43;
-    v93 = v43;
+    safari_userVisibleHost2 = v43;
     v44 = SafariShared::BookmarkAndHistoryCompletionMatch::data(v43);
-    v45 = [v44 originalURLString];
-    v94 = [a1 _isMatchURLString:v45 equivalentToBaseURLString:v97];
+    originalURLString2 = [v44 originalURLString];
+    v94 = [self _isMatchURLString:originalURLString2 equivalentToBaseURLString:v97];
 
     if (v94)
     {
@@ -798,9 +798,9 @@ LABEL_36:
     }
 
 LABEL_53:
-    if (v93)
+    if (safari_userVisibleHost2)
     {
-      WTF::RefCounted<SafariShared::BookmarkAndHistoryCompletionMatch>::deref(v93);
+      WTF::RefCounted<SafariShared::BookmarkAndHistoryCompletionMatch>::deref(safari_userVisibleHost2);
     }
 
     if (v94)
@@ -817,7 +817,7 @@ LABEL_53:
     }
   }
 
-  v91 = SafariShared::BookmarkAndHistoryCompletionMatch::data(v93);
+  v91 = SafariShared::BookmarkAndHistoryCompletionMatch::data(safari_userVisibleHost2);
   if ([v91 lastVisitWasFailure])
   {
 
@@ -826,10 +826,10 @@ LABEL_52:
     goto LABEL_53;
   }
 
-  v46 = SafariShared::BookmarkAndHistoryCompletionMatch::data(v93);
-  v47 = [v46 visitWasClientError];
+  v46 = SafariShared::BookmarkAndHistoryCompletionMatch::data(safari_userVisibleHost2);
+  visitWasClientError = [v46 visitWasClientError];
 
-  if (v47)
+  if (visitWasClientError)
   {
     goto LABEL_52;
   }
@@ -882,9 +882,9 @@ LABEL_124:
 
   *v89 = v90;
   ++*(a5 + 3);
-  v93 = *buf;
+  safari_userVisibleHost2 = *buf;
 LABEL_122:
-  *v16 = v93;
+  *v16 = safari_userVisibleHost2;
 LABEL_123:
 
 LABEL_42:
@@ -897,19 +897,19 @@ LABEL_14:
   return v22;
 }
 
-+ (BOOL)_isMatchURLString:(id)a3 equivalentToBaseURLString:(id)a4
++ (BOOL)_isMatchURLString:(id)string equivalentToBaseURLString:(id)lString
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 length];
-  if (v7 == [v6 length] - 1)
+  stringCopy = string;
+  lStringCopy = lString;
+  v7 = [stringCopy length];
+  if (v7 == [lStringCopy length] - 1)
   {
-    v8 = [v6 hasPrefix:v5];
+    v8 = [lStringCopy hasPrefix:stringCopy];
   }
 
   else
   {
-    v8 = [v6 isEqualToString:v5];
+    v8 = [lStringCopy isEqualToString:stringCopy];
   }
 
   v9 = v8;
@@ -917,19 +917,19 @@ LABEL_14:
   return v9;
 }
 
-+ (BOOL)_topHitFromMatches:()RefPtr<SafariShared:()WTF:(WTF:(void *)a4 :(id)a5 DefaultRefDerefTraits<SafariShared::BookmarkAndHistoryCompletionMatch>>)a3 :RawPtrTraits<SafariShared::BookmarkAndHistoryCompletionMatch> :BookmarkAndHistoryCompletionMatch isOneOfManyUnremarkableMatchesInLocalHistoryMatches:inDomain:
++ (BOOL)_topHitFromMatches:()RefPtr<SafariShared:()WTF:(WTF:(void *)f :(id)a5 DefaultRefDerefTraits<SafariShared::BookmarkAndHistoryCompletionMatch>>)a3 :RawPtrTraits<SafariShared::BookmarkAndHistoryCompletionMatch> :BookmarkAndHistoryCompletionMatch isOneOfManyUnremarkableMatchesInLocalHistoryMatches:inDomain:
 {
   v7 = a5;
   v8 = SafariShared::BookmarkAndHistoryCompletionMatch::data(*a3.m_ptr);
-  v9 = [v8 containsBookmark];
+  containsBookmark = [v8 containsBookmark];
 
-  if ((v9 & 1) == 0 && *(a4 + 3))
+  if ((containsBookmark & 1) == 0 && *(f + 3))
   {
     v10 = 0;
     v11 = *(*a3.m_ptr + 48);
     while (1)
     {
-      v12 = *(*a4 + 8 * v10);
+      v12 = *(*f + 8 * v10);
       if (!v12)
       {
         break;
@@ -944,7 +944,7 @@ LABEL_14:
 LABEL_9:
       WTF::RefCounted<SafariShared::BookmarkAndHistoryCompletionMatch>::deref(v12);
 LABEL_10:
-      if (++v10 >= *(a4 + 3))
+      if (++v10 >= *(f + 3))
       {
         goto LABEL_14;
       }
@@ -977,17 +977,17 @@ LABEL_15:
   return v14;
 }
 
-+ (RefPtr<SafariShared::BookmarkAndHistoryCompletionMatch,)_synthesizeURLMatchWithURLString:(id)a3 title:(id)a4 topHitFromMatches:()RefPtr<SafariShared:()WTF:(WTF:(void *)a6 :(void *)a7 DefaultRefDerefTraits<SafariShared:(id)a8 :(double)a9 BookmarkAndHistoryCompletionMatch>>)a5 :(id)a10 RawPtrTraits<SafariShared::BookmarkAndHistoryCompletionMatch> :BookmarkAndHistoryCompletionMatch historyMatches:bookmarkMatches:typedString:timeNow:completionDataSource:
++ (RefPtr<SafariShared::BookmarkAndHistoryCompletionMatch,)_synthesizeURLMatchWithURLString:(id)string title:(id)title topHitFromMatches:()RefPtr<SafariShared:()WTF:(WTF:(void *)f :(void *)a7 DefaultRefDerefTraits<SafariShared:(id)shared :(double)a9 BookmarkAndHistoryCompletionMatch>>)a5 :(id)self0 RawPtrTraits<SafariShared::BookmarkAndHistoryCompletionMatch> :BookmarkAndHistoryCompletionMatch historyMatches:bookmarkMatches:typedString:timeNow:completionDataSource:
 {
   v17 = v10;
-  v18 = a3;
-  v19 = a4;
-  v20 = a8;
+  stringCopy = string;
+  titleCopy = title;
+  sharedCopy = shared;
   v21 = a10;
   v22 = SafariShared::BookmarkAndHistoryCompletionMatch::data(*a5.m_ptr);
-  v23 = [v21 fakeBookmarkMatchDataWithURLString:v18 title:v19 shouldPreload:{objc_msgSend(v22, "shouldPreload")}];
+  v23 = [v21 fakeBookmarkMatchDataWithURLString:stringCopy title:titleCopy shouldPreload:{objc_msgSend(v22, "shouldPreload")}];
 
-  if (v23 && (v33 = 0, v34 = 0, (matched = SafariShared::BookmarkAndHistoryCompletionMatch::computeMatchLocation(v23, v20, &v34, &v33)) != 0))
+  if (v23 && (v33 = 0, v34 = 0, (matched = SafariShared::BookmarkAndHistoryCompletionMatch::computeMatchLocation(v23, sharedCopy, &v34, &v33)) != 0))
   {
     SafariShared::BookmarkAndHistoryCompletionMatch::create(v23, 0, matched, v33, v34, &v32, a9);
     v25 = v32;
@@ -995,7 +995,7 @@ LABEL_15:
     v26 = SafariShared::BookmarkAndHistoryCompletionMatch::data(v25);
     if (![v26 containsBookmark])
     {
-      a7 = a6;
+      a7 = f;
     }
 
     v27 = *(a7 + 3);
@@ -1026,13 +1026,13 @@ LABEL_15:
   return v31;
 }
 
-- (void)_removeMatchesWithTitlesThatLookLikeURLsRemovedFromMatches:(void *)a3
+- (void)_removeMatchesWithTitlesThatLookLikeURLsRemovedFromMatches:(void *)matches
 {
   *&v18[5] = *MEMORY[0x1E69E9840];
   v15 = 0;
   v16 = 0;
-  v4 = *a3;
-  v5 = *(a3 + 3);
+  v4 = *matches;
+  v5 = *(matches + 3);
   if (v5)
   {
     v6 = 8 * v5;
@@ -1075,9 +1075,9 @@ LABEL_15:
     }
 
     while (v6);
-    v4 = *a3;
+    v4 = *matches;
     v12 = v15;
-    LODWORD(v5) = *(a3 + 3);
+    LODWORD(v5) = *(matches + 3);
     v13 = v16;
   }
 
@@ -1087,20 +1087,20 @@ LABEL_15:
     v13 = 0;
   }
 
-  *a3 = v12;
+  *matches = v12;
   v15 = v4;
-  v14 = *(a3 + 2);
-  *(a3 + 1) = v13;
+  v14 = *(matches + 2);
+  *(matches + 1) = v13;
   v16 = __PAIR64__(v5, v14);
   WTF::Vector<WTF::RefPtr<SafariShared::BookmarkAndHistoryCompletionMatch,WTF::RawPtrTraits<SafariShared::BookmarkAndHistoryCompletionMatch>,WTF::DefaultRefDerefTraits<SafariShared::BookmarkAndHistoryCompletionMatch>>,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::~Vector(&v15);
 }
 
-- (void)_removeMatchesThatMistookErrorTitleForPageTitleFromMatches:(void *)a3
+- (void)_removeMatchesThatMistookErrorTitleForPageTitleFromMatches:(void *)matches
 {
   v13 = 0;
   v14 = 0;
-  v4 = *a3;
-  v5 = *(a3 + 3);
+  v4 = *matches;
+  v5 = *(matches + 3);
   if (v5)
   {
     v6 = 8 * v5;
@@ -1133,9 +1133,9 @@ LABEL_15:
     }
 
     while (v6);
-    v4 = *a3;
+    v4 = *matches;
     v10 = v13;
-    LODWORD(v5) = *(a3 + 3);
+    LODWORD(v5) = *(matches + 3);
     v11 = v14;
   }
 
@@ -1145,36 +1145,36 @@ LABEL_15:
     v11 = 0;
   }
 
-  *a3 = v10;
+  *matches = v10;
   v13 = v4;
-  v12 = *(a3 + 2);
-  *(a3 + 1) = v11;
+  v12 = *(matches + 2);
+  *(matches + 1) = v11;
   v14 = __PAIR64__(v5, v12);
   WTF::Vector<WTF::RefPtr<SafariShared::BookmarkAndHistoryCompletionMatch,WTF::RawPtrTraits<SafariShared::BookmarkAndHistoryCompletionMatch>,WTF::DefaultRefDerefTraits<SafariShared::BookmarkAndHistoryCompletionMatch>>,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::~Vector(&v13);
 }
 
-- (void)_getSortedMatchesForTypedString:(id)a3 filterResultsUsingProfileIdentifier:(id)a4 topHits:(void *)a5 historyMatches:(void *)a6 historyLimit:(unint64_t)a7 bookmarkMatches:(void *)a8 bookmarkLimit:(unint64_t)a9 searchParameters:(id)a10 prefixMatchesOnly:(BOOL)a11
+- (void)_getSortedMatchesForTypedString:(id)string filterResultsUsingProfileIdentifier:(id)identifier topHits:(void *)hits historyMatches:(void *)matches historyLimit:(unint64_t)limit bookmarkMatches:(void *)bookmarkMatches bookmarkLimit:(unint64_t)bookmarkLimit searchParameters:(id)self0 prefixMatchesOnly:(BOOL)self1
 {
   v118 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v103 = a4;
-  v100 = v16;
-  v101 = a10;
+  stringCopy = string;
+  identifierCopy = identifier;
+  v100 = stringCopy;
+  parametersCopy = parameters;
   Current = CFAbsoluteTimeGetCurrent();
   v110 = 0;
   v111 = 0;
   v108 = 0;
   v109 = 0;
-  if (a11)
+  if (only)
   {
-    [(WBSURLCompletionDatabase *)self _getUnsortedPrefixMatchesForTypedString:v16 filterResultsUsingProfileIdentifier:v103 historyMatches:&v110 bookmarkMatches:&v108];
+    [(WBSURLCompletionDatabase *)self _getUnsortedPrefixMatchesForTypedString:stringCopy filterResultsUsingProfileIdentifier:identifierCopy historyMatches:&v110 bookmarkMatches:&v108];
     v18 = WBS_LOG_CHANNEL_PREFIXURLAutocomplete();
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
       goto LABEL_33;
     }
 
-    v19 = v16[1];
+    v19 = stringCopy[1];
     v20 = CFAbsoluteTimeGetCurrent();
     *buf = 138740739;
     *&buf[4] = v19;
@@ -1188,25 +1188,25 @@ LABEL_15:
     goto LABEL_122;
   }
 
-  v22 = *(a6 + 3);
+  v22 = *(matches + 3);
   if (v22)
   {
-    v110 = *a6;
-    LODWORD(v111) = *(a6 + 2);
+    v110 = *matches;
+    LODWORD(v111) = *(matches + 2);
     HIDWORD(v111) = v22;
-    *a6 = 0;
-    *(a6 + 1) = 0;
-    if (a5 && *(a5 + 3))
+    *matches = 0;
+    *(matches + 1) = 0;
+    if (hits && *(hits + 3))
     {
       v23 = 0;
       v24 = 0;
       do
       {
-        v25 = SafariShared::BookmarkAndHistoryCompletionMatch::data(*(*a5 + 8 * v24));
-        v26 = [v25 containsBookmark];
+        v25 = SafariShared::BookmarkAndHistoryCompletionMatch::data(*(*hits + 8 * v24));
+        containsBookmark = [v25 containsBookmark];
 
-        v27 = *(a5 + 3);
-        if ((v26 & 1) == 0)
+        v27 = *(hits + 3);
+        if ((containsBookmark & 1) == 0)
         {
           if (v24 >= v27)
           {
@@ -1214,12 +1214,12 @@ LABEL_15:
             JUMPOUT(0x1BB870994);
           }
 
-          v28 = *a5;
+          v28 = *hits;
           v29 = HIDWORD(v111);
           if (HIDWORD(v111) == v111)
           {
             WTF::Vector<WTF::RefPtr<SafariShared::BookmarkAndHistoryCompletionMatch,WTF::RawPtrTraits<SafariShared::BookmarkAndHistoryCompletionMatch>,WTF::DefaultRefDerefTraits<SafariShared::BookmarkAndHistoryCompletionMatch>>,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::appendSlowCase<(WTF::FailureAction)0,WTF::RefPtr<SafariShared::BookmarkAndHistoryCompletionMatch,WTF::RawPtrTraits<SafariShared::BookmarkAndHistoryCompletionMatch>,WTF::DefaultRefDerefTraits<SafariShared::BookmarkAndHistoryCompletionMatch>> const&>(&v110, v28 + v23);
-            v27 = *(a5 + 3);
+            v27 = *(hits + 3);
           }
 
           else
@@ -1251,26 +1251,26 @@ LABEL_15:
     v32 = 1;
   }
 
-  v33 = *(a8 + 3);
+  v33 = *(bookmarkMatches + 3);
   if (v33)
   {
     v34 = v108;
-    v108 = *a8;
-    *a8 = v34;
+    v108 = *bookmarkMatches;
+    *bookmarkMatches = v34;
     v35 = v109;
-    LODWORD(v109) = *(a8 + 2);
+    LODWORD(v109) = *(bookmarkMatches + 2);
     HIDWORD(v109) = v33;
-    *(a8 + 1) = v35;
-    if (a5 && *(a5 + 3))
+    *(bookmarkMatches + 1) = v35;
+    if (hits && *(hits + 3))
     {
       v36 = 0;
       for (i = 0; i < v40; ++i)
       {
-        v38 = SafariShared::BookmarkAndHistoryCompletionMatch::data(*(*a5 + 8 * i));
-        v39 = [v38 containsBookmark];
+        v38 = SafariShared::BookmarkAndHistoryCompletionMatch::data(*(*hits + 8 * i));
+        containsBookmark2 = [v38 containsBookmark];
 
-        v40 = *(a5 + 3);
-        if (v39)
+        v40 = *(hits + 3);
+        if (containsBookmark2)
         {
           if (i >= v40)
           {
@@ -1278,12 +1278,12 @@ LABEL_15:
             goto LABEL_126;
           }
 
-          v41 = *a5;
+          v41 = *hits;
           v42 = HIDWORD(v109);
           if (HIDWORD(v109) == v109)
           {
             WTF::Vector<WTF::RefPtr<SafariShared::BookmarkAndHistoryCompletionMatch,WTF::RawPtrTraits<SafariShared::BookmarkAndHistoryCompletionMatch>,WTF::DefaultRefDerefTraits<SafariShared::BookmarkAndHistoryCompletionMatch>>,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::appendSlowCase<(WTF::FailureAction)0,WTF::RefPtr<SafariShared::BookmarkAndHistoryCompletionMatch,WTF::RawPtrTraits<SafariShared::BookmarkAndHistoryCompletionMatch>,WTF::DefaultRefDerefTraits<SafariShared::BookmarkAndHistoryCompletionMatch>> const&>(&v108, v41 + v36);
-            v40 = *(a5 + 3);
+            v40 = *(hits + 3);
           }
 
           else
@@ -1310,11 +1310,11 @@ LABEL_15:
     v32 = v32 | 2;
   }
 
-  [(WBSURLCompletionDatabase *)self _getUnsortedFullTextMatchesForTypedString:v16 filterResultsUsingProfileIdentifier:v103 historyMatches:&v110 bookmarkMatches:&v108 dataTypes:v32];
+  [(WBSURLCompletionDatabase *)self _getUnsortedFullTextMatchesForTypedString:stringCopy filterResultsUsingProfileIdentifier:identifierCopy historyMatches:&v110 bookmarkMatches:&v108 dataTypes:v32];
   v18 = WBS_LOG_CHANNEL_PREFIXURLAutocomplete();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
-    v98 = v16[1];
+    v98 = stringCopy[1];
     v99 = CFAbsoluteTimeGetCurrent();
     *buf = 138740739;
     *&buf[4] = v98;
@@ -1334,9 +1334,9 @@ LABEL_33:
   [(WBSURLCompletionDatabase *)self _removeMatchesWithTitlesThatLookLikeURLsRemovedFromMatches:&v110];
   [(WBSURLCompletionDatabase *)self _removeMatchesWithTitlesThatLookLikeURLsRemovedFromMatches:&v108];
   [(WBSURLCompletionDatabase *)self _removeMatchesThatMistookErrorTitleForPageTitleFromMatches:&v110];
-  if (a7 + 1 < HIDWORD(v111))
+  if (limit + 1 < HIDWORD(v111))
   {
-    v45 = a7 + 1;
+    v45 = limit + 1;
   }
 
   else
@@ -1350,10 +1350,10 @@ LABEL_33:
     std::__partial_sort_impl[abi:sn200100]<std::_ClassicAlgPolicy,BOOL (*&)(WTF::RefPtr<SafariShared::BookmarkAndHistoryCompletionMatch,WTF::RawPtrTraits<SafariShared::BookmarkAndHistoryCompletionMatch>,WTF::DefaultRefDerefTraits<SafariShared::BookmarkAndHistoryCompletionMatch>> const&,WTF::RefPtr<SafariShared::BookmarkAndHistoryCompletionMatch,WTF::RawPtrTraits<SafariShared::BookmarkAndHistoryCompletionMatch>,WTF::DefaultRefDerefTraits<SafariShared::BookmarkAndHistoryCompletionMatch>> const&),WTF::RefPtr<SafariShared::BookmarkAndHistoryCompletionMatch,WTF::RawPtrTraits<SafariShared::BookmarkAndHistoryCompletionMatch>,WTF::DefaultRefDerefTraits<SafariShared::BookmarkAndHistoryCompletionMatch>>*,WTF::RefPtr<SafariShared::BookmarkAndHistoryCompletionMatch,WTF::RawPtrTraits<SafariShared::BookmarkAndHistoryCompletionMatch>,WTF::DefaultRefDerefTraits<SafariShared::BookmarkAndHistoryCompletionMatch>>*>(v110, &v110[v45], &v110[HIDWORD(v111)], buf);
   }
 
-  v46 = a9;
-  if (a9 + 1 < HIDWORD(v109))
+  bookmarkLimitCopy = bookmarkLimit;
+  if (bookmarkLimit + 1 < HIDWORD(v109))
   {
-    v47 = a9 + 1;
+    v47 = bookmarkLimit + 1;
   }
 
   else
@@ -1393,10 +1393,10 @@ LABEL_33:
     }
   }
 
-  if (a5)
+  if (hits)
   {
-    v51 = v16;
-    v52 = v101;
+    v51 = stringCopy;
+    v52 = parametersCopy;
     if (v51[8])
     {
       firstTopHitCandidate(&v110, v51, v52);
@@ -1487,58 +1487,58 @@ LABEL_33:
       v104 = 0;
     }
 
-    WTF::Vector<WTF::RefPtr<SafariShared::BookmarkAndHistoryCompletionMatch,WTF::RawPtrTraits<SafariShared::BookmarkAndHistoryCompletionMatch>,WTF::DefaultRefDerefTraits<SafariShared::BookmarkAndHistoryCompletionMatch>>,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::shrinkCapacity(a5, 0);
+    WTF::Vector<WTF::RefPtr<SafariShared::BookmarkAndHistoryCompletionMatch,WTF::RawPtrTraits<SafariShared::BookmarkAndHistoryCompletionMatch>,WTF::DefaultRefDerefTraits<SafariShared::BookmarkAndHistoryCompletionMatch>>,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::shrinkCapacity(hits, 0);
     v64 = v104;
     if (v104)
     {
-      v65 = *(a5 + 3);
-      if (v65 == *(a5 + 2))
+      v65 = *(hits + 3);
+      if (v65 == *(hits + 2))
       {
-        WTF::Vector<WTF::RefPtr<SafariShared::BookmarkAndHistoryCompletionMatch,WTF::RawPtrTraits<SafariShared::BookmarkAndHistoryCompletionMatch>,WTF::DefaultRefDerefTraits<SafariShared::BookmarkAndHistoryCompletionMatch>>,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::appendSlowCase<(WTF::FailureAction)0,SafariShared::BookmarkAndHistoryCompletionMatch*&>(a5, &v104);
+        WTF::Vector<WTF::RefPtr<SafariShared::BookmarkAndHistoryCompletionMatch,WTF::RawPtrTraits<SafariShared::BookmarkAndHistoryCompletionMatch>,WTF::DefaultRefDerefTraits<SafariShared::BookmarkAndHistoryCompletionMatch>>,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::appendSlowCase<(WTF::FailureAction)0,SafariShared::BookmarkAndHistoryCompletionMatch*&>(hits, &v104);
       }
 
       else
       {
-        v66 = *a5;
+        v66 = *hits;
         ++*v104;
         *(v66 + 8 * v65) = v64;
-        *(a5 + 3) = v65 + 1;
+        *(hits + 3) = v65 + 1;
       }
     }
 
     v67 = *buf;
     if (*buf)
     {
-      v68 = *(a5 + 3);
-      if (v68 == *(a5 + 2))
+      v68 = *(hits + 3);
+      if (v68 == *(hits + 2))
       {
-        WTF::Vector<WTF::RefPtr<SafariShared::BookmarkAndHistoryCompletionMatch,WTF::RawPtrTraits<SafariShared::BookmarkAndHistoryCompletionMatch>,WTF::DefaultRefDerefTraits<SafariShared::BookmarkAndHistoryCompletionMatch>>,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::appendSlowCase<(WTF::FailureAction)0,SafariShared::BookmarkAndHistoryCompletionMatch*&>(a5, buf);
+        WTF::Vector<WTF::RefPtr<SafariShared::BookmarkAndHistoryCompletionMatch,WTF::RawPtrTraits<SafariShared::BookmarkAndHistoryCompletionMatch>,WTF::DefaultRefDerefTraits<SafariShared::BookmarkAndHistoryCompletionMatch>>,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::appendSlowCase<(WTF::FailureAction)0,SafariShared::BookmarkAndHistoryCompletionMatch*&>(hits, buf);
       }
 
       else
       {
-        v69 = *a5;
+        v69 = *hits;
         ++**buf;
         *(v69 + 8 * v68) = v67;
-        *(a5 + 3) = v68 + 1;
+        *(hits + 3) = v68 + 1;
       }
     }
 
-    if (*(a5 + 3))
+    if (*(hits + 3))
     {
       v70 = 0;
       while (1)
       {
-        v71 = SafariShared::BookmarkAndHistoryCompletionMatch::data(*(*a5 + 8 * v70));
-        v72 = [v71 containsBookmark];
+        v71 = SafariShared::BookmarkAndHistoryCompletionMatch::data(*(*hits + 8 * v70));
+        containsBookmark3 = [v71 containsBookmark];
 
-        v73 = *(a5 + 3);
+        v73 = *(hits + 3);
         if (v70 >= v73)
         {
           break;
         }
 
-        if (v72)
+        if (containsBookmark3)
         {
           v74 = &v108;
         }
@@ -1552,7 +1552,7 @@ LABEL_33:
         if (v75)
         {
           v76 = *v74;
-          v77 = *(*a5 + 8 * v70);
+          v77 = *(*hits + 8 * v70);
           v78 = **v74;
           if (v78 == v77)
           {
@@ -1568,7 +1568,7 @@ LABEL_96:
 
             memmove(v80, v80 + 1, &(*v74)[v75] - (v80 + 1));
             --*(v74 + 3);
-            v73 = *(a5 + 3);
+            v73 = *(hits + 3);
           }
 
           else
@@ -1605,20 +1605,20 @@ LABEL_100:
     }
   }
 
-  if (HIDWORD(v111) >= a7)
+  if (HIDWORD(v111) >= limit)
   {
-    v82 = a7;
+    limitCopy = limit;
   }
 
   else
   {
-    v82 = HIDWORD(v111);
+    limitCopy = HIDWORD(v111);
   }
 
-  if (HIDWORD(v111) > a7)
+  if (HIDWORD(v111) > limit)
   {
-    v83 = &v110[v82];
-    v84 = 8 * HIDWORD(v111) - 8 * v82;
+    v83 = &v110[limitCopy];
+    v84 = 8 * HIDWORD(v111) - 8 * limitCopy;
     do
     {
       v85 = *v83;
@@ -1635,17 +1635,17 @@ LABEL_100:
     while (v84);
   }
 
-  HIDWORD(v111) = v82;
+  HIDWORD(v111) = limitCopy;
   v86 = v108;
-  if (HIDWORD(v109) < a9)
+  if (HIDWORD(v109) < bookmarkLimit)
   {
-    v46 = HIDWORD(v109);
+    bookmarkLimitCopy = HIDWORD(v109);
   }
 
-  if (HIDWORD(v109) > a9)
+  if (HIDWORD(v109) > bookmarkLimit)
   {
-    v87 = &v108[v46];
-    v88 = 8 * HIDWORD(v109) - 8 * v46;
+    v87 = &v108[bookmarkLimitCopy];
+    v88 = 8 * HIDWORD(v109) - 8 * bookmarkLimitCopy;
     do
     {
       v89 = *v87;
@@ -1660,30 +1660,30 @@ LABEL_100:
     }
 
     while (v88);
-    LODWORD(v82) = HIDWORD(v111);
+    LODWORD(limitCopy) = HIDWORD(v111);
     v86 = v108;
   }
 
-  v90 = *a6;
-  *a6 = v110;
+  v90 = *matches;
+  *matches = v110;
   v110 = v90;
-  v91 = *(a6 + 1);
-  *(a6 + 2) = v111;
-  *(a6 + 3) = v82;
+  v91 = *(matches + 1);
+  *(matches + 2) = v111;
+  *(matches + 3) = limitCopy;
   v111 = v91;
-  v92 = *a8;
-  *a8 = v86;
+  v92 = *bookmarkMatches;
+  *bookmarkMatches = v86;
   v108 = v92;
-  v93 = *(a8 + 1);
-  *(a8 + 2) = v109;
-  *(a8 + 3) = v46;
+  v93 = *(bookmarkMatches + 1);
+  *(bookmarkMatches + 2) = v109;
+  *(bookmarkMatches + 3) = bookmarkLimitCopy;
   v109 = v93;
   v94 = WBS_LOG_CHANNEL_PREFIXURLAutocomplete();
   if (os_log_type_enabled(v94, OS_LOG_TYPE_DEBUG))
   {
     v95 = CFAbsoluteTimeGetCurrent();
-    v96 = *(a6 + 3);
-    v97 = *(a8 + 3);
+    v96 = *(matches + 3);
+    v97 = *(bookmarkMatches + 3);
     *buf = 134218496;
     *&buf[4] = (v95 - Current) * 1000.0;
     v113 = 1024;
@@ -1697,22 +1697,22 @@ LABEL_100:
   WTF::Vector<WTF::RefPtr<SafariShared::BookmarkAndHistoryCompletionMatch,WTF::RawPtrTraits<SafariShared::BookmarkAndHistoryCompletionMatch>,WTF::DefaultRefDerefTraits<SafariShared::BookmarkAndHistoryCompletionMatch>>,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::~Vector(&v110);
 }
 
-- (void)_getUnsortedFullTextMatchesForTypedString:(id)a3 filterResultsUsingProfileIdentifier:(id)a4 historyMatches:(void *)a5 bookmarkMatches:(void *)a6 dataTypes:(unsigned int)a7
+- (void)_getUnsortedFullTextMatchesForTypedString:(id)string filterResultsUsingProfileIdentifier:(id)identifier historyMatches:(void *)matches bookmarkMatches:(void *)bookmarkMatches dataTypes:(unsigned int)types
 {
-  v12 = a3;
-  v37 = a4;
-  if ((a7 & 3) != 0)
+  stringCopy = string;
+  identifierCopy = identifier;
+  if ((types & 3) != 0)
   {
     v36 = self->_fullTextHistoryMatchesCacheString;
     m_buffer = 0;
     v51 = 0;
-    if (a7)
+    if (types)
     {
       m_buffer = self->_fullTextHistoryMatchesCache.m_buffer;
       v51 = *&self->_fullTextHistoryMatchesCache.var0;
       self->_fullTextHistoryMatchesCache.m_buffer = 0;
       *&self->_fullTextHistoryMatchesCache.var0 = 0;
-      v13 = [v12[1] copy];
+      v13 = [stringCopy[1] copy];
       fullTextHistoryMatchesCacheString = self->_fullTextHistoryMatchesCacheString;
       self->_fullTextHistoryMatchesCacheString = v13;
     }
@@ -1721,22 +1721,22 @@ LABEL_100:
     v48 = 0;
     v49 = 0;
     v35 = v15;
-    if ((a7 & 2) != 0)
+    if ((types & 2) != 0)
     {
       v48 = self->_fullTextBookmarkMatchesCache.m_buffer;
       v49 = *&self->_fullTextBookmarkMatchesCache.var0;
       self->_fullTextBookmarkMatchesCache.m_buffer = 0;
       *&self->_fullTextBookmarkMatchesCache.var0 = 0;
-      v16 = [v12[1] copy];
+      v16 = [stringCopy[1] copy];
       fullTextBookmarkMatchesCacheString = self->_fullTextBookmarkMatchesCacheString;
       self->_fullTextBookmarkMatchesCacheString = v16;
     }
 
     Current = CFAbsoluteTimeGetCurrent();
-    v19 = [v12[1] safari_hasPrefix:v15];
-    if ([(NSString *)self->_fullTextHistoryMatchesCacheStringProfileIdentifier isEqualToString:v37])
+    v19 = [stringCopy[1] safari_hasPrefix:v15];
+    if ([(NSString *)self->_fullTextHistoryMatchesCacheStringProfileIdentifier isEqualToString:identifierCopy])
     {
-      v21 = [v12[1] safari_hasPrefix:v36];
+      v21 = [stringCopy[1] safari_hasPrefix:v36];
     }
 
     else
@@ -1744,7 +1744,7 @@ LABEL_100:
       v21 = 0;
     }
 
-    if ((v19 & ((a7 & 2) >> 1)) == 1)
+    if ((v19 & ((types & 2) >> 1)) == 1)
     {
       v22 = WBS_LOG_CHANNEL_PREFIXURLAutocomplete();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -1757,14 +1757,14 @@ LABEL_100:
         v23 = 0;
         do
         {
-          recordItemIfFullTextMatch(v48[v23++], v12, a6, &self->_fullTextBookmarkMatchesCache, Current);
+          recordItemIfFullTextMatch(v48[v23++], stringCopy, bookmarkMatches, &self->_fullTextBookmarkMatchesCache, Current);
         }
 
         while (v23 < HIDWORD(v49));
       }
     }
 
-    if (a7 & v21)
+    if (types & v21)
     {
       v24 = WBS_LOG_CHANNEL_PREFIXURLAutocomplete();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -1777,15 +1777,15 @@ LABEL_100:
         v25 = 0;
         do
         {
-          recordItemIfFullTextMatch(m_buffer[v25++], v12, a5, &self->_fullTextHistoryMatchesCache, Current);
+          recordItemIfFullTextMatch(m_buffer[v25++], stringCopy, matches, &self->_fullTextHistoryMatchesCache, Current);
         }
 
         while (v25 < HIDWORD(v51));
       }
     }
 
-    v26 = (v19 ^ 1) & ((a7 & 2) >> 1);
-    v27 = a7 & (v21 ^ 1);
+    v26 = (v19 ^ 1) & ((types & 2) >> 1);
+    v27 = types & (v21 ^ 1);
     if (v26 & 1) != 0 || (v27)
     {
       if (v26)
@@ -1807,27 +1807,27 @@ LABEL_100:
         }
       }
 
-      objc_storeStrong(&self->_fullTextHistoryMatchesCacheStringProfileIdentifier, a4);
-      v31 = [MEMORY[0x1E695DF90] dictionary];
+      objc_storeStrong(&self->_fullTextHistoryMatchesCacheStringProfileIdentifier, identifier);
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       WeakRetained = objc_loadWeakRetained(&self->_dataSource);
       v46[0] = MEMORY[0x1E69E9820];
       v46[1] = 3221225472;
       v46[2] = __147__WBSURLCompletionDatabase__getUnsortedFullTextMatchesForTypedString_filterResultsUsingProfileIdentifier_historyMatches_bookmarkMatches_dataTypes___block_invoke;
       v46[3] = &unk_1E7FCB208;
-      v33 = v31;
+      v33 = dictionary;
       v47 = v33;
-      [WeakRetained enumerateMatchDataForTypedStringHint:v12 filterResultsUsingProfileIdentifier:v37 options:2 withBlock:v46];
+      [WeakRetained enumerateMatchDataForTypedStringHint:stringCopy filterResultsUsingProfileIdentifier:identifierCopy options:2 withBlock:v46];
       v38[0] = MEMORY[0x1E69E9820];
       v38[1] = 3221225472;
       v38[2] = __147__WBSURLCompletionDatabase__getUnsortedFullTextMatchesForTypedString_filterResultsUsingProfileIdentifier_historyMatches_bookmarkMatches_dataTypes___block_invoke_2;
       v38[3] = &unk_1E7FCB230;
       v44 = v29;
-      v40 = self;
-      v41 = a5;
-      v39 = v12;
+      selfCopy = self;
+      matchesCopy = matches;
+      v39 = stringCopy;
       v42 = Current;
       v45 = v26;
-      v43 = a6;
+      bookmarkMatchesCopy = bookmarkMatches;
       [v33 enumerateKeysAndObjectsUsingBlock:v38];
     }
 
@@ -1866,15 +1866,15 @@ void __147__WBSURLCompletionDatabase__getUnsortedFullTextMatchesForTypedString_f
 LABEL_7:
 }
 
-- (void)_getUnsortedPrefixMatchesForTypedString:(id)a3 filterResultsUsingProfileIdentifier:(id)a4 historyMatches:(void *)a5 bookmarkMatches:(void *)a6
+- (void)_getUnsortedPrefixMatchesForTypedString:(id)string filterResultsUsingProfileIdentifier:(id)identifier historyMatches:(void *)matches bookmarkMatches:(void *)bookmarkMatches
 {
-  v10 = a3;
-  v35 = a4;
+  stringCopy = string;
+  identifierCopy = identifier;
   v34 = self->_prefixHistoryMatchesCacheString;
   prefixHistoryMatchesCache = self->_prefixHistoryMatchesCache;
   self->_prefixHistoryMatchesCache.m_buffer = 0;
   *&self->_prefixHistoryMatchesCache.var0 = 0;
-  v11 = [v10[1] copy];
+  v11 = [stringCopy[1] copy];
   prefixHistoryMatchesCacheString = self->_prefixHistoryMatchesCacheString;
   self->_prefixHistoryMatchesCacheString = v11;
 
@@ -1883,15 +1883,15 @@ LABEL_7:
   self->_prefixBookmarkMatchesCache.m_buffer = 0;
   *&self->_prefixBookmarkMatchesCache.var0 = 0;
   v33 = v13;
-  v14 = [v10[1] copy];
+  v14 = [stringCopy[1] copy];
   prefixBookmarkMatchesCacheString = self->_prefixBookmarkMatchesCacheString;
   self->_prefixBookmarkMatchesCacheString = v14;
 
   Current = CFAbsoluteTimeGetCurrent();
-  v17 = [v10[1] safari_hasPrefix:v13];
-  if ([(NSString *)self->_prefixHistoryMatchesCacheProfileIdentifier isEqualToString:v35])
+  v17 = [stringCopy[1] safari_hasPrefix:v13];
+  if ([(NSString *)self->_prefixHistoryMatchesCacheProfileIdentifier isEqualToString:identifierCopy])
   {
-    v18 = [v10[1] safari_hasPrefix:v34];
+    v18 = [stringCopy[1] safari_hasPrefix:v34];
     v19 = v18;
     if ((v17 & 1) == 0)
     {
@@ -1927,7 +1927,7 @@ LABEL_14:
     v21 = 0;
     do
     {
-      recordItemIfPrefixMatch(prefixBookmarkMatchesCache.m_buffer[v21++], v10, a6, &self->_prefixBookmarkMatchesCache, Current);
+      recordItemIfPrefixMatch(prefixBookmarkMatchesCache.m_buffer[v21++], stringCopy, bookmarkMatches, &self->_prefixBookmarkMatchesCache, Current);
     }
 
     while (v21 < prefixBookmarkMatchesCache.m_size);
@@ -1964,7 +1964,7 @@ LABEL_16:
     v26 = 0;
     do
     {
-      recordItemIfPrefixMatch(prefixHistoryMatchesCache.m_buffer[v26++], v10, a5, &self->_prefixHistoryMatchesCache, Current);
+      recordItemIfPrefixMatch(prefixHistoryMatchesCache.m_buffer[v26++], stringCopy, matches, &self->_prefixHistoryMatchesCache, Current);
     }
 
     while (v26 < prefixHistoryMatchesCache.m_size);
@@ -1989,27 +1989,27 @@ LABEL_23:
     else if (v19)
     {
 LABEL_29:
-      objc_storeStrong(&self->_prefixHistoryMatchesCacheProfileIdentifier, a4);
-      v29 = [MEMORY[0x1E695DF90] dictionary];
+      objc_storeStrong(&self->_prefixHistoryMatchesCacheProfileIdentifier, identifier);
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       WeakRetained = objc_loadWeakRetained(&self->_dataSource);
       v44[0] = MEMORY[0x1E69E9820];
       v44[1] = 3221225472;
       v44[2] = __135__WBSURLCompletionDatabase__getUnsortedPrefixMatchesForTypedString_filterResultsUsingProfileIdentifier_historyMatches_bookmarkMatches___block_invoke;
       v44[3] = &unk_1E7FCB208;
-      v31 = v29;
+      v31 = dictionary;
       v45 = v31;
-      [WeakRetained enumerateMatchDataForTypedStringHint:v10 filterResultsUsingProfileIdentifier:v35 options:1 withBlock:v44];
+      [WeakRetained enumerateMatchDataForTypedStringHint:stringCopy filterResultsUsingProfileIdentifier:identifierCopy options:1 withBlock:v44];
       v36[0] = MEMORY[0x1E69E9820];
       v36[1] = 3221225472;
       v36[2] = __135__WBSURLCompletionDatabase__getUnsortedPrefixMatchesForTypedString_filterResultsUsingProfileIdentifier_historyMatches_bookmarkMatches___block_invoke_2;
       v36[3] = &unk_1E7FCB230;
       v42 = v23;
-      v38 = self;
-      v39 = a5;
-      v37 = v10;
+      selfCopy = self;
+      matchesCopy = matches;
+      v37 = stringCopy;
       v40 = Current;
       v43 = v22;
-      v41 = a6;
+      bookmarkMatchesCopy = bookmarkMatches;
       [v31 enumerateKeysAndObjectsUsingBlock:v36];
 
       goto LABEL_30;

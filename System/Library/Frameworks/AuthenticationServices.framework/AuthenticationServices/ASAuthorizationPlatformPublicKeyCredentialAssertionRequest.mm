@@ -10,45 +10,45 @@
 - (NSData)challenge;
 - (NSString)relyingPartyIdentifier;
 - (NSString)userVerificationPreference;
-- (id)_initWithProvider:(id)a3 relyingPartyIdentifier:(id)a4 challenge:(id)a5 clientData:(id)a6;
-- (void)__setLargeBlobSwift:(id)a3;
-- (void)__setPRFSwift:(id)a3;
+- (id)_initWithProvider:(id)provider relyingPartyIdentifier:(id)identifier challenge:(id)challenge clientData:(id)data;
+- (void)__setLargeBlobSwift:(id)swift;
+- (void)__setPRFSwift:(id)swift;
 - (void)setAllowedCredentials:(NSArray *)allowedCredentials;
-- (void)setAuthenticatedContext:(id)a3;
-- (void)setChallenge:(id)a3;
-- (void)setClientData:(id)a3;
-- (void)setRelyingPartyIdentifier:(id)a3;
-- (void)setShouldShowHybridTransport:(BOOL)a3;
-- (void)setUserVerificationPreference:(id)a3;
+- (void)setAuthenticatedContext:(id)context;
+- (void)setChallenge:(id)challenge;
+- (void)setClientData:(id)data;
+- (void)setRelyingPartyIdentifier:(id)identifier;
+- (void)setShouldShowHybridTransport:(BOOL)transport;
+- (void)setUserVerificationPreference:(id)preference;
 @end
 
 @implementation ASAuthorizationPlatformPublicKeyCredentialAssertionRequest
 
-- (id)_initWithProvider:(id)a3 relyingPartyIdentifier:(id)a4 challenge:(id)a5 clientData:(id)a6
+- (id)_initWithProvider:(id)provider relyingPartyIdentifier:(id)identifier challenge:(id)challenge clientData:(id)data
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  challengeCopy = challenge;
+  dataCopy = data;
   v22.receiver = self;
   v22.super_class = ASAuthorizationPlatformPublicKeyCredentialAssertionRequest;
-  v13 = [(ASAuthorizationRequest *)&v22 initWithProvider:a3];
+  v13 = [(ASAuthorizationRequest *)&v22 initWithProvider:provider];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [identifierCopy copy];
     relyingPartyIdentifier = v13->_relyingPartyIdentifier;
     v13->_relyingPartyIdentifier = v14;
 
-    v16 = [v11 copy];
+    v16 = [challengeCopy copy];
     challenge = v13->_challenge;
     v13->_challenge = v16;
 
     objc_storeStrong(&v13->_userVerificationPreference, @"preferred");
     v13->_internalLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v13->_clientData, a6);
+    objc_storeStrong(&v13->_clientData, data);
     v13->_shouldShowHybridTransport = 1;
-    v18 = [objc_opt_class() emptyExtensions];
+    emptyExtensions = [objc_opt_class() emptyExtensions];
     extensions = v13->_extensions;
-    v13->_extensions = v18;
+    v13->_extensions = emptyExtensions;
 
     v20 = v13;
   }
@@ -58,28 +58,28 @@
 
 - (ASCPublicKeyCredentialAssertionOptions)coreCredentialAssertionOptions
 {
-  v3 = [(ASAuthorizationPlatformPublicKeyCredentialAssertionRequest *)self allowedCredentials];
-  v4 = [v3 safari_mapObjectsUsingBlock:&__block_literal_global_16];
+  allowedCredentials = [(ASAuthorizationPlatformPublicKeyCredentialAssertionRequest *)self allowedCredentials];
+  v4 = [allowedCredentials safari_mapObjectsUsingBlock:&__block_literal_global_16];
 
   if (self->_challenge)
   {
     v5 = objc_alloc(MEMORY[0x1E698DFF0]);
-    v6 = [(ASAuthorizationPlatformPublicKeyCredentialAssertionRequest *)self relyingPartyIdentifier];
-    v7 = [(ASAuthorizationPlatformPublicKeyCredentialAssertionRequest *)self challenge];
-    v8 = [(ASAuthorizationPlatformPublicKeyCredentialAssertionRequest *)self userVerificationPreference];
-    v9 = [v5 initWithKind:1 relyingPartyIdentifier:v6 challenge:v7 userVerificationPreference:v8 allowedCredentials:v4];
+    relyingPartyIdentifier = [(ASAuthorizationPlatformPublicKeyCredentialAssertionRequest *)self relyingPartyIdentifier];
+    challenge = [(ASAuthorizationPlatformPublicKeyCredentialAssertionRequest *)self challenge];
+    userVerificationPreference = [(ASAuthorizationPlatformPublicKeyCredentialAssertionRequest *)self userVerificationPreference];
+    v9 = [v5 initWithKind:1 relyingPartyIdentifier:relyingPartyIdentifier challenge:challenge userVerificationPreference:userVerificationPreference allowedCredentials:v4];
   }
 
   else
   {
-    v10 = [(ASAuthorizationPlatformPublicKeyCredentialAssertionRequest *)self clientData];
-    v6 = [v10 jsonForOperationType:1];
+    clientData = [(ASAuthorizationPlatformPublicKeyCredentialAssertionRequest *)self clientData];
+    relyingPartyIdentifier = [clientData jsonForOperationType:1];
 
     v11 = objc_alloc(MEMORY[0x1E698DFF0]);
-    v7 = [(ASAuthorizationPlatformPublicKeyCredentialAssertionRequest *)self relyingPartyIdentifier];
-    v8 = [(ASAuthorizationPlatformPublicKeyCredentialAssertionRequest *)self userVerificationPreference];
-    v12 = [(ASPublicKeyCredentialClientData *)self->_clientData origin];
-    v9 = [v11 initWithKind:1 relyingPartyIdentifier:v7 clientDataJSON:v6 userVerificationPreference:v8 allowedCredentials:v4 origin:v12];
+    challenge = [(ASAuthorizationPlatformPublicKeyCredentialAssertionRequest *)self relyingPartyIdentifier];
+    userVerificationPreference = [(ASAuthorizationPlatformPublicKeyCredentialAssertionRequest *)self userVerificationPreference];
+    origin = [(ASPublicKeyCredentialClientData *)self->_clientData origin];
+    v9 = [v11 initWithKind:1 relyingPartyIdentifier:challenge clientDataJSON:relyingPartyIdentifier userVerificationPreference:userVerificationPreference allowedCredentials:v4 origin:origin];
   }
 
   [v9 setShouldHideHybrid:!self->_shouldShowHybridTransport];
@@ -97,12 +97,12 @@
   return v3;
 }
 
-- (void)setChallenge:(id)a3
+- (void)setChallenge:(id)challenge
 {
-  v4 = a3;
+  challengeCopy = challenge;
   os_unfair_lock_lock(&self->_internalLock);
   challenge = self->_challenge;
-  self->_challenge = v4;
+  self->_challenge = challengeCopy;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }
@@ -116,12 +116,12 @@
   return v3;
 }
 
-- (void)setRelyingPartyIdentifier:(id)a3
+- (void)setRelyingPartyIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_internalLock);
   relyingPartyIdentifier = self->_relyingPartyIdentifier;
-  self->_relyingPartyIdentifier = v4;
+  self->_relyingPartyIdentifier = identifierCopy;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }
@@ -154,12 +154,12 @@
   return v3;
 }
 
-- (void)setUserVerificationPreference:(id)a3
+- (void)setUserVerificationPreference:(id)preference
 {
-  v4 = a3;
+  preferenceCopy = preference;
   os_unfair_lock_lock(&self->_internalLock);
   userVerificationPreference = self->_userVerificationPreference;
-  self->_userVerificationPreference = v4;
+  self->_userVerificationPreference = preferenceCopy;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }
@@ -173,12 +173,12 @@
   return v3;
 }
 
-- (void)setAuthenticatedContext:(id)a3
+- (void)setAuthenticatedContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   os_unfair_lock_lock(&self->_internalLock);
   authenticatedContext = self->_authenticatedContext;
-  self->_authenticatedContext = v4;
+  self->_authenticatedContext = contextCopy;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }
@@ -192,12 +192,12 @@
   return v3;
 }
 
-- (void)setClientData:(id)a3
+- (void)setClientData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   os_unfair_lock_lock(&self->_internalLock);
   clientData = self->_clientData;
-  self->_clientData = v4;
+  self->_clientData = dataCopy;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }
@@ -210,34 +210,34 @@
   return shouldShowHybridTransport;
 }
 
-- (void)setShouldShowHybridTransport:(BOOL)a3
+- (void)setShouldShowHybridTransport:(BOOL)transport
 {
   os_unfair_lock_lock(&self->_internalLock);
-  self->_shouldShowHybridTransport = a3;
+  self->_shouldShowHybridTransport = transport;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }
 
 - (ASAuthorizationPublicKeyCredentialLargeBlobAssertionInput)__largeBlobSwift
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ASAuthorizationPlatformPublicKeyCredentialAssertionRequest.__largeBlobSwift.getter();
 
   return v3;
 }
 
-- (void)__setLargeBlobSwift:(id)a3
+- (void)__setLargeBlobSwift:(id)swift
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB774CD0, &qword_1B1D857C0);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v15 - v7;
-  v9 = self;
-  v10 = a3;
-  v11 = [(ASAuthorizationPlatformPublicKeyCredentialAssertionRequest *)v9 extensions];
-  if (v10)
+  selfCopy = self;
+  swiftCopy = swift;
+  extensions = [(ASAuthorizationPlatformPublicKeyCredentialAssertionRequest *)selfCopy extensions];
+  if (swiftCopy)
   {
-    v12 = v10;
+    v12 = swiftCopy;
     sub_1B1D07B8C();
 
     v13 = sub_1B1D7BABC();
@@ -255,24 +255,24 @@
 
 - (ASAuthorizationPublicKeyCredentialPRFAssertionInput)__prfSwift
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ASAuthorizationPlatformPublicKeyCredentialAssertionRequest.__prfSwift.getter();
 
   return v3;
 }
 
-- (void)__setPRFSwift:(id)a3
+- (void)__setPRFSwift:(id)swift
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB774CD8, &qword_1B1D857C8);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v15 - v7;
-  v9 = self;
-  v10 = a3;
-  v11 = [(ASAuthorizationPlatformPublicKeyCredentialAssertionRequest *)v9 extensions];
-  if (v10)
+  selfCopy = self;
+  swiftCopy = swift;
+  extensions = [(ASAuthorizationPlatformPublicKeyCredentialAssertionRequest *)selfCopy extensions];
+  if (swiftCopy)
   {
-    v12 = v10;
+    v12 = swiftCopy;
     sub_1B1D10BFC(v8);
 
     v13 = sub_1B1D7BA5C();

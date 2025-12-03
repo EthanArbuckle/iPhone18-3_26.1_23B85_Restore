@@ -7,7 +7,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     JreStrongAssign(&qword_1005551A0, 0);
     atomic_store(1u, JavaNioChannelsSpiSelectorProvider__initialized);

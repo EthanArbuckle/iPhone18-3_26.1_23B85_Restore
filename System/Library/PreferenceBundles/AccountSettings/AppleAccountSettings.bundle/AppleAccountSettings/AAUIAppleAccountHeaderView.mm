@@ -1,132 +1,132 @@
 @interface AAUIAppleAccountHeaderView
-- (AAUIAppleAccountHeaderView)initWithLabelInsets:(UIEdgeInsets)a3;
+- (AAUIAppleAccountHeaderView)initWithLabelInsets:(UIEdgeInsets)insets;
 - (AAUIAppleAccountHeaderViewDelegate)delegate;
-- (double)_scaleValue:(double)a3;
+- (double)_scaleValue:(double)value;
 - (void)_updateLabelFonts;
-- (void)imageControlTouched:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)imageControlTouched:(id)touched;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation AAUIAppleAccountHeaderView
 
-- (AAUIAppleAccountHeaderView)initWithLabelInsets:(UIEdgeInsets)a3
+- (AAUIAppleAccountHeaderView)initWithLabelInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v60.receiver = self;
   v60.super_class = AAUIAppleAccountHeaderView;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v10 = [(AAUIAppleAccountHeaderView *)&v60 initWithFrame:CGRectZero.origin.x, y, width, height];
-  if (v10)
+  height = [(AAUIAppleAccountHeaderView *)&v60 initWithFrame:CGRectZero.origin.x, y, width, height];
+  if (height)
   {
-    v11 = [[AAUIImageControl alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
-    imageControl = v10->_imageControl;
-    v10->_imageControl = v11;
+    height2 = [[AAUIImageControl alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    imageControl = height->_imageControl;
+    height->_imageControl = height2;
 
-    [(AAUIImageControl *)v10->_imageControl setClipsToBounds:1];
-    [(AAUIImageControl *)v10->_imageControl _setCornerRadius:40.0];
-    [(AAUIImageControl *)v10->_imageControl setTranslatesAutoresizingMaskIntoConstraints:0];
-    v13 = [(AAUIImageControl *)v10->_imageControl label];
-    [v13 setAdjustsFontSizeToFitWidth:1];
+    [(AAUIImageControl *)height->_imageControl setClipsToBounds:1];
+    [(AAUIImageControl *)height->_imageControl _setCornerRadius:40.0];
+    [(AAUIImageControl *)height->_imageControl setTranslatesAutoresizingMaskIntoConstraints:0];
+    label = [(AAUIImageControl *)height->_imageControl label];
+    [label setAdjustsFontSizeToFitWidth:1];
 
-    v14 = [(AAUIImageControl *)v10->_imageControl label];
-    [v14 setNumberOfLines:1];
+    label2 = [(AAUIImageControl *)height->_imageControl label];
+    [label2 setNumberOfLines:1];
 
-    v15 = [(AAUIImageControl *)v10->_imageControl label];
+    label3 = [(AAUIImageControl *)height->_imageControl label];
     v16 = [NSBundle bundleForClass:objc_opt_class()];
     v17 = [v16 localizedStringForKey:@"APPLEID_EDIT_PHOTO" value:&stru_5A5F0 table:@"Localizable"];
-    [v15 setText:v17];
+    [label3 setText:v17];
 
-    v18 = [(AAUIImageControl *)v10->_imageControl label];
-    [v18 setEdgeInsets:{top, left, bottom, right}];
+    label4 = [(AAUIImageControl *)height->_imageControl label];
+    [label4 setEdgeInsets:{top, left, bottom, right}];
 
-    [(AAUIImageControl *)v10->_imageControl addTarget:v10 action:"imageControlTouched:" forControlEvents:64];
+    [(AAUIImageControl *)height->_imageControl addTarget:height action:"imageControlTouched:" forControlEvents:64];
     v19 = objc_alloc_init(AAUILabel);
-    accountHeaderLabel = v10->_accountHeaderLabel;
-    v10->_accountHeaderLabel = &v19->super;
+    accountHeaderLabel = height->_accountHeaderLabel;
+    height->_accountHeaderLabel = &v19->super;
 
-    [(UILabel *)v10->_accountHeaderLabel setLineBreakMode:4];
-    [(UILabel *)v10->_accountHeaderLabel setTextAlignment:1];
-    v21 = v10->_accountHeaderLabel;
+    [(UILabel *)height->_accountHeaderLabel setLineBreakMode:4];
+    [(UILabel *)height->_accountHeaderLabel setTextAlignment:1];
+    v21 = height->_accountHeaderLabel;
     v22 = +[UIColor labelColor];
     [(UILabel *)v21 setColor:v22];
 
-    [(UILabel *)v10->_accountHeaderLabel setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(UILabel *)height->_accountHeaderLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     v23 = objc_alloc_init(AAUILabel);
-    accountHeaderSublabel = v10->_accountHeaderSublabel;
-    v10->_accountHeaderSublabel = &v23->super;
+    accountHeaderSublabel = height->_accountHeaderSublabel;
+    height->_accountHeaderSublabel = &v23->super;
 
-    v25 = v10->_accountHeaderSublabel;
+    v25 = height->_accountHeaderSublabel;
     v26 = +[UIColor secondaryLabelColor];
     [(UILabel *)v25 setColor:v26];
 
-    [(UILabel *)v10->_accountHeaderSublabel setTextAlignment:1];
-    [(UILabel *)v10->_accountHeaderSublabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(UILabel *)v10->_accountHeaderSublabel setNumberOfLines:0];
-    [(AAUIAppleAccountHeaderView *)v10 addSubview:v10->_imageControl];
-    [(AAUIAppleAccountHeaderView *)v10 addSubview:v10->_accountHeaderLabel];
-    [(AAUIAppleAccountHeaderView *)v10 addSubview:v10->_accountHeaderSublabel];
-    v59 = [(AAUIImageControl *)v10->_imageControl topAnchor];
-    v58 = [(AAUIAppleAccountHeaderView *)v10 topAnchor];
-    v57 = [v59 constraintEqualToAnchor:v58 constant:20.0];
+    [(UILabel *)height->_accountHeaderSublabel setTextAlignment:1];
+    [(UILabel *)height->_accountHeaderSublabel setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(UILabel *)height->_accountHeaderSublabel setNumberOfLines:0];
+    [(AAUIAppleAccountHeaderView *)height addSubview:height->_imageControl];
+    [(AAUIAppleAccountHeaderView *)height addSubview:height->_accountHeaderLabel];
+    [(AAUIAppleAccountHeaderView *)height addSubview:height->_accountHeaderSublabel];
+    topAnchor = [(AAUIImageControl *)height->_imageControl topAnchor];
+    topAnchor2 = [(AAUIAppleAccountHeaderView *)height topAnchor];
+    v57 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:20.0];
     v61[0] = v57;
-    v56 = [(AAUIImageControl *)v10->_imageControl widthAnchor];
-    v55 = [v56 constraintEqualToConstant:80.0];
+    widthAnchor = [(AAUIImageControl *)height->_imageControl widthAnchor];
+    v55 = [widthAnchor constraintEqualToConstant:80.0];
     v61[1] = v55;
-    v54 = [(AAUIImageControl *)v10->_imageControl heightAnchor];
-    v53 = [v54 constraintEqualToConstant:80.0];
+    heightAnchor = [(AAUIImageControl *)height->_imageControl heightAnchor];
+    v53 = [heightAnchor constraintEqualToConstant:80.0];
     v61[2] = v53;
-    v52 = [(AAUIImageControl *)v10->_imageControl centerXAnchor];
-    v51 = [(AAUIAppleAccountHeaderView *)v10 centerXAnchor];
-    v50 = [v52 constraintEqualToAnchor:v51];
+    centerXAnchor = [(AAUIImageControl *)height->_imageControl centerXAnchor];
+    centerXAnchor2 = [(AAUIAppleAccountHeaderView *)height centerXAnchor];
+    v50 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v61[3] = v50;
-    v49 = [(UILabel *)v10->_accountHeaderLabel topAnchor];
-    v48 = [(AAUIImageControl *)v10->_imageControl bottomAnchor];
-    v47 = [v49 constraintEqualToAnchor:v48 constant:10.0];
+    topAnchor3 = [(UILabel *)height->_accountHeaderLabel topAnchor];
+    bottomAnchor = [(AAUIImageControl *)height->_imageControl bottomAnchor];
+    v47 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:10.0];
     v61[4] = v47;
-    v46 = [(UILabel *)v10->_accountHeaderLabel leadingAnchor];
-    v45 = [(AAUIAppleAccountHeaderView *)v10 leadingAnchor];
-    v44 = [v46 constraintEqualToAnchor:v45 constant:8.0];
+    leadingAnchor = [(UILabel *)height->_accountHeaderLabel leadingAnchor];
+    leadingAnchor2 = [(AAUIAppleAccountHeaderView *)height leadingAnchor];
+    v44 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:8.0];
     v61[5] = v44;
-    v43 = [(UILabel *)v10->_accountHeaderLabel trailingAnchor];
-    v42 = [(AAUIAppleAccountHeaderView *)v10 trailingAnchor];
-    v41 = [v43 constraintEqualToAnchor:v42 constant:-8.0];
+    trailingAnchor = [(UILabel *)height->_accountHeaderLabel trailingAnchor];
+    trailingAnchor2 = [(AAUIAppleAccountHeaderView *)height trailingAnchor];
+    v41 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-8.0];
     v61[6] = v41;
-    v40 = [(UILabel *)v10->_accountHeaderSublabel topAnchor];
-    v39 = [(UILabel *)v10->_accountHeaderLabel bottomAnchor];
-    v38 = [v40 constraintEqualToAnchor:v39 constant:2.0];
+    topAnchor4 = [(UILabel *)height->_accountHeaderSublabel topAnchor];
+    bottomAnchor2 = [(UILabel *)height->_accountHeaderLabel bottomAnchor];
+    v38 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2 constant:2.0];
     v61[7] = v38;
-    v37 = [(UILabel *)v10->_accountHeaderSublabel leadingAnchor];
-    v27 = [(AAUIAppleAccountHeaderView *)v10 leadingAnchor];
-    v28 = [v37 constraintEqualToAnchor:v27 constant:8.0];
+    leadingAnchor3 = [(UILabel *)height->_accountHeaderSublabel leadingAnchor];
+    leadingAnchor4 = [(AAUIAppleAccountHeaderView *)height leadingAnchor];
+    v28 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:8.0];
     v61[8] = v28;
-    v29 = [(UILabel *)v10->_accountHeaderSublabel trailingAnchor];
-    v30 = [(AAUIAppleAccountHeaderView *)v10 trailingAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30 constant:-8.0];
+    trailingAnchor3 = [(UILabel *)height->_accountHeaderSublabel trailingAnchor];
+    trailingAnchor4 = [(AAUIAppleAccountHeaderView *)height trailingAnchor];
+    v31 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-8.0];
     v61[9] = v31;
-    v32 = [(UILabel *)v10->_accountHeaderSublabel bottomAnchor];
-    v33 = [(AAUIAppleAccountHeaderView *)v10 bottomAnchor];
-    v34 = [v32 constraintEqualToAnchor:v33 constant:-20.0];
+    bottomAnchor3 = [(UILabel *)height->_accountHeaderSublabel bottomAnchor];
+    bottomAnchor4 = [(AAUIAppleAccountHeaderView *)height bottomAnchor];
+    v34 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-20.0];
     v61[10] = v34;
     v35 = [NSArray arrayWithObjects:v61 count:11];
     [NSLayoutConstraint activateConstraints:v35];
 
-    [(AAUIAppleAccountHeaderView *)v10 _updateLabelFonts];
+    [(AAUIAppleAccountHeaderView *)height _updateLabelFonts];
   }
 
-  return v10;
+  return height;
 }
 
 - (void)_updateLabelFonts
 {
-  v3 = [(AAUIImageControl *)self->_imageControl label];
+  label = [(AAUIImageControl *)self->_imageControl label];
   [(AAUIAppleAccountHeaderView *)self _scaleValue:10.0];
   v4 = [UIFont systemFontOfSize:"systemFontOfSize:weight:" weight:?];
-  [v3 setFont:v4];
+  [label setFont:v4];
 
   accountHeaderLabel = self->_accountHeaderLabel;
   v6 = [UIFont systemFontOfSize:26.0 weight:UIFontWeightMedium];
@@ -137,10 +137,10 @@
   [(UILabel *)accountHeaderSublabel setFont:v8];
 }
 
-- (double)_scaleValue:(double)a3
+- (double)_scaleValue:(double)value
 {
   v4 = [UIFontMetrics metricsForTextStyle:UIFontTextStyleBody];
-  [v4 scaledValueForValue:a3];
+  [v4 scaledValueForValue:value];
   v5 = +[UIScreen mainScreen];
   UIRoundToScreenScale();
   v7 = v6;
@@ -148,30 +148,30 @@
   return v7;
 }
 
-- (void)imageControlTouched:(id)a3
+- (void)imageControlTouched:(id)touched
 {
-  v4 = [(AAUIAppleAccountHeaderView *)self delegate];
+  delegate = [(AAUIAppleAccountHeaderView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(AAUIAppleAccountHeaderView *)self delegate];
-    [v6 headerViewDidTapImageControl:self];
+    delegate2 = [(AAUIAppleAccountHeaderView *)self delegate];
+    [delegate2 headerViewDidTapImageControl:self];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = AAUIAppleAccountHeaderView;
-  [(AAUIAppleAccountHeaderView *)&v9 traitCollectionDidChange:v4];
-  if (v4)
+  [(AAUIAppleAccountHeaderView *)&v9 traitCollectionDidChange:changeCopy];
+  if (changeCopy)
   {
-    v5 = [(AAUIAppleAccountHeaderView *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
-    v7 = [v4 preferredContentSizeCategory];
-    v8 = [v6 isEqualToString:v7];
+    traitCollection = [(AAUIAppleAccountHeaderView *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+    v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
     if ((v8 & 1) == 0)
     {

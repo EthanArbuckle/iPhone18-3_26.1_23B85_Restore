@@ -1,51 +1,51 @@
 @interface PDTransitStateManager
-- (PDTransitStateManager)initWithDatabaseManager:(id)a3 expressPassManager:(id)a4 secureElement:(id)a5 transactionProcessor:(id)a6 paymentWebServiceCoordinator:(id)a7 delegate:(id)a8;
+- (PDTransitStateManager)initWithDatabaseManager:(id)manager expressPassManager:(id)passManager secureElement:(id)element transactionProcessor:(id)processor paymentWebServiceCoordinator:(id)coordinator delegate:(id)delegate;
 - (PDTransitStateManagerDelegate)delegate;
-- (void)_handleTransitRequestsWithSession:(id)a3;
-- (void)_ingestAppletStateHistory:(id)a3 withTransactionDate:(id)a4 forceTransactionGeneration:(BOOL)a5 recoverMissingTransactions:(BOOL)a6 forPaymentApplication:(id)a7 withPassUniqueIdentifier:(id)a8 skipQueuedRequestSanitization:(BOOL)a9 expressTransactionState:(id)a10;
-- (void)_notifyIssuerAppletStateDirtyWithPassID:(id)a3 forPaymentApplication:(id)a4;
+- (void)_handleTransitRequestsWithSession:(id)session;
+- (void)_ingestAppletStateHistory:(id)history withTransactionDate:(id)date forceTransactionGeneration:(BOOL)generation recoverMissingTransactions:(BOOL)transactions forPaymentApplication:(id)application withPassUniqueIdentifier:(id)identifier skipQueuedRequestSanitization:(BOOL)sanitization expressTransactionState:(id)self0;
+- (void)_notifyIssuerAppletStateDirtyWithPassID:(id)d forPaymentApplication:(id)application;
 - (void)_performWebRequestToNotifyIssuerAppletDirty;
 - (void)_performWebRequestToNotifyIssuerAppletDirtyIfNecessary;
-- (void)_queueTransitStateFetchRequest:(id)a3;
-- (void)_resolveStationCodesForAppletState:(id)a3 paymentApplication:(id)a4 passUniqueIdentifier:(id)a5;
+- (void)_queueTransitStateFetchRequest:(id)request;
+- (void)_resolveStationCodesForAppletState:(id)state paymentApplication:(id)application passUniqueIdentifier:(id)identifier;
 - (void)_scheduleOneOffActivityRequest;
 - (void)_scheduleRepeatingActivityRequest;
 - (void)_unscheduleOneOffActivityRequest;
 - (void)_unschedulePeriodicActivityRequest;
 - (void)dealloc;
-- (void)expressPassManager:(id)a3 didFinishExpressTransactionWithState:(id)a4;
-- (void)expressPassManager:(id)a3 willProcessPaymentApplicationsUpdateFromPriorPaymentApplications:(id)a4 toPaymentApplications:(id)a5 forPassUniqueIdentifier:(id)a6;
-- (void)fetchAndCacheTransitStateForPassUniqueIdentifier:(id)a3 secureElementIdentifier:(id)a4 paymentApplicationIdentifier:(id)a5;
-- (void)performScheduledActivityWithIdentifier:(id)a3 activityCriteria:(id)a4;
-- (void)processTransactionEventWithHistory:(id)a3 transactionDate:(id)a4 forPaymentApplication:(id)a5 withPassUniqueIdentifier:(id)a6 expressTransactionState:(id)a7;
-- (void)secureElementDidUpdateAppletStateForApplicationIdentifier:(id)a3 keyIdentifier:(id)a4;
-- (void)transitAppletStateWithPassUniqueIdentifier:(id)a3 paymentApplication:(id)a4 completion:(id)a5;
+- (void)expressPassManager:(id)manager didFinishExpressTransactionWithState:(id)state;
+- (void)expressPassManager:(id)manager willProcessPaymentApplicationsUpdateFromPriorPaymentApplications:(id)applications toPaymentApplications:(id)paymentApplications forPassUniqueIdentifier:(id)identifier;
+- (void)fetchAndCacheTransitStateForPassUniqueIdentifier:(id)identifier secureElementIdentifier:(id)elementIdentifier paymentApplicationIdentifier:(id)applicationIdentifier;
+- (void)performScheduledActivityWithIdentifier:(id)identifier activityCriteria:(id)criteria;
+- (void)processTransactionEventWithHistory:(id)history transactionDate:(id)date forPaymentApplication:(id)application withPassUniqueIdentifier:(id)identifier expressTransactionState:(id)state;
+- (void)secureElementDidUpdateAppletStateForApplicationIdentifier:(id)identifier keyIdentifier:(id)keyIdentifier;
+- (void)transitAppletStateWithPassUniqueIdentifier:(id)identifier paymentApplication:(id)application completion:(id)completion;
 - (void)updateAllExpressTransitAppletStates;
-- (void)updateTransitAppletStateWithHistory:(id)a3 transactionDate:(id)a4 forPaymentApplication:(id)a5 withPassUniqueIdentifier:(id)a6;
+- (void)updateTransitAppletStateWithHistory:(id)history transactionDate:(id)date forPaymentApplication:(id)application withPassUniqueIdentifier:(id)identifier;
 @end
 
 @implementation PDTransitStateManager
 
-- (PDTransitStateManager)initWithDatabaseManager:(id)a3 expressPassManager:(id)a4 secureElement:(id)a5 transactionProcessor:(id)a6 paymentWebServiceCoordinator:(id)a7 delegate:(id)a8
+- (PDTransitStateManager)initWithDatabaseManager:(id)manager expressPassManager:(id)passManager secureElement:(id)element transactionProcessor:(id)processor paymentWebServiceCoordinator:(id)coordinator delegate:(id)delegate
 {
-  v30 = a3;
-  v29 = a4;
-  v28 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  managerCopy = manager;
+  passManagerCopy = passManager;
+  elementCopy = element;
+  processorCopy = processor;
+  coordinatorCopy = coordinator;
+  delegateCopy = delegate;
   v31.receiver = self;
   v31.super_class = PDTransitStateManager;
   v18 = [(PDTransitStateManager *)&v31 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_databaseManager, a3);
-    objc_storeStrong(&v19->_expressPassManager, a4);
-    objc_storeStrong(&v19->_secureElement, a5);
-    objc_storeStrong(&v19->_transactionProcessor, a6);
-    objc_storeStrong(&v19->_paymentWebServiceCoordinator, a7);
-    objc_storeWeak(&v19->_delegate, v17);
+    objc_storeStrong(&v18->_databaseManager, manager);
+    objc_storeStrong(&v19->_expressPassManager, passManager);
+    objc_storeStrong(&v19->_secureElement, element);
+    objc_storeStrong(&v19->_transactionProcessor, processor);
+    objc_storeStrong(&v19->_paymentWebServiceCoordinator, coordinator);
+    objc_storeWeak(&v19->_delegate, delegateCopy);
     v20 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v21 = dispatch_queue_create("com.apple.passd.felicaStateManager", v20);
     accessQueue = v19->_accessQueue;
@@ -78,11 +78,11 @@
   [(PDTransitStateManager *)&v3 dealloc];
 }
 
-- (void)fetchAndCacheTransitStateForPassUniqueIdentifier:(id)a3 secureElementIdentifier:(id)a4 paymentApplicationIdentifier:(id)a5
+- (void)fetchAndCacheTransitStateForPassUniqueIdentifier:(id)identifier secureElementIdentifier:(id)elementIdentifier paymentApplicationIdentifier:(id)applicationIdentifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  elementIdentifierCopy = elementIdentifier;
+  applicationIdentifierCopy = applicationIdentifier;
   v11 = PDOSTransactionCreate("PDTransitStateManager");
   accessQueue = self->_accessQueue;
   block[0] = _NSConcreteStackBlock;
@@ -90,37 +90,37 @@
   block[2] = sub_1000DE0C0;
   block[3] = &unk_10083DE38;
   v18 = v11;
-  v19 = v8;
-  v20 = v9;
-  v21 = v10;
-  v22 = self;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
+  v19 = identifierCopy;
+  v20 = elementIdentifierCopy;
+  v21 = applicationIdentifierCopy;
+  selfCopy = self;
+  v13 = applicationIdentifierCopy;
+  v14 = elementIdentifierCopy;
+  v15 = identifierCopy;
   v16 = v11;
   dispatch_async(accessQueue, block);
 }
 
-- (void)_queueTransitStateFetchRequest:(id)a3
+- (void)_queueTransitStateFetchRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   dispatch_assert_queue_V2(self->_accessQueue);
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 passUniqueIdentifier];
-    v7 = [v4 secureElementIdentifier];
-    v8 = [v4 paymentApplicationIdentifier];
+    passUniqueIdentifier = [requestCopy passUniqueIdentifier];
+    secureElementIdentifier = [requestCopy secureElementIdentifier];
+    paymentApplicationIdentifier = [requestCopy paymentApplicationIdentifier];
     *buf = 138412802;
-    v16 = v6;
+    v16 = passUniqueIdentifier;
     v17 = 2112;
-    v18 = v7;
+    v18 = secureElementIdentifier;
     v19 = 2112;
-    v20 = v8;
+    v20 = paymentApplicationIdentifier;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Adding Transit State Fetch Request\npassId: %@, seid: %@, aid: %@", buf, 0x20u);
   }
 
-  [(NSMutableArray *)self->_transitRequests addObject:v4];
+  [(NSMutableArray *)self->_transitRequests addObject:requestCopy];
   if (!self->_processingTransitRequests)
   {
     self->_processingTransitRequests = 1;
@@ -141,9 +141,9 @@
   }
 }
 
-- (void)_handleTransitRequestsWithSession:(id)a3
+- (void)_handleTransitRequestsWithSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   dispatch_assert_queue_V2(self->_accessQueue);
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -166,8 +166,8 @@
   {
     v8 = v7;
     v9 = *v36;
-    v28 = self;
-    v29 = v4;
+    selfCopy = self;
+    v29 = sessionCopy;
     oslog = v5;
     v31 = *v36;
     do
@@ -186,41 +186,41 @@
         {
           if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
           {
-            v12 = [v11 passUniqueIdentifier];
-            v13 = [v11 paymentApplicationIdentifier];
+            passUniqueIdentifier = [v11 passUniqueIdentifier];
+            paymentApplicationIdentifier = [v11 paymentApplicationIdentifier];
             *buf = 138412546;
-            v41 = v12;
+            v41 = passUniqueIdentifier;
             v42 = 2112;
-            v43 = v13;
+            v43 = paymentApplicationIdentifier;
             _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "\t%@: %@", buf, 0x16u);
           }
 
-          v14 = [v11 passUniqueIdentifier];
-          v15 = [v11 paymentApplicationIdentifier];
+          passUniqueIdentifier2 = [v11 passUniqueIdentifier];
+          paymentApplicationIdentifier2 = [v11 paymentApplicationIdentifier];
           databaseManager = self->_databaseManager;
-          v17 = [v11 secureElementIdentifier];
-          v18 = [(PDDatabaseManager *)databaseManager paymentApplicationWithPassUniqueIdentifier:v14 secureElementIdentifier:v17 paymentApplicationIdentifier:v15];
+          secureElementIdentifier = [v11 secureElementIdentifier];
+          v18 = [(PDDatabaseManager *)databaseManager paymentApplicationWithPassUniqueIdentifier:passUniqueIdentifier2 secureElementIdentifier:secureElementIdentifier paymentApplicationIdentifier:paymentApplicationIdentifier2];
 
           if (v18)
           {
-            v19 = [v4 appletWithIdentifier:v15];
+            v19 = [sessionCopy appletWithIdentifier:paymentApplicationIdentifier2];
             if (v19)
             {
-              v20 = [PKContactlessInterfaceSession transitAppletStateFromPaymentSession:v4 forPaymentApplication:v18];
+              v20 = [PKContactlessInterfaceSession transitAppletStateFromPaymentSession:sessionCopy forPaymentApplication:v18];
               [v34 addObject:v11];
               if (v20)
               {
-                v21 = [v11 transactionDate];
-                v30 = [v11 forceTransactionGeneration];
-                v22 = [v11 recoverMissingTransactions];
-                v23 = [v11 expressState];
+                transactionDate = [v11 transactionDate];
+                forceTransactionGeneration = [v11 forceTransactionGeneration];
+                recoverMissingTransactions = [v11 recoverMissingTransactions];
+                expressState = [v11 expressState];
                 LOBYTE(v25) = 1;
-                [(PDTransitStateManager *)self _ingestAppletStateHistory:v20 withTransactionDate:v21 forceTransactionGeneration:v30 recoverMissingTransactions:v22 forPaymentApplication:v18 withPassUniqueIdentifier:v14 skipQueuedRequestSanitization:v25 expressTransactionState:v23];
+                [(PDTransitStateManager *)self _ingestAppletStateHistory:v20 withTransactionDate:transactionDate forceTransactionGeneration:forceTransactionGeneration recoverMissingTransactions:recoverMissingTransactions forPaymentApplication:v18 withPassUniqueIdentifier:passUniqueIdentifier2 skipQueuedRequestSanitization:v25 expressTransactionState:expressState];
 
                 if ([v20 isBlacklisted])
                 {
                   v5 = oslog;
-                  v4 = v29;
+                  sessionCopy = v29;
                   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
                   {
                     *buf = 0;
@@ -231,13 +231,13 @@
                   v24 = [NSArray arrayWithObjects:&v39 count:1];
                   [v29 deleteApplets:v24 queueServerConnection:1];
 
-                  self = v28;
+                  self = selfCopy;
                 }
 
                 else
                 {
-                  self = v28;
-                  v4 = v29;
+                  self = selfCopy;
+                  sessionCopy = v29;
                   v5 = oslog;
                 }
               }
@@ -281,17 +281,17 @@
   }
 }
 
-- (void)processTransactionEventWithHistory:(id)a3 transactionDate:(id)a4 forPaymentApplication:(id)a5 withPassUniqueIdentifier:(id)a6 expressTransactionState:(id)a7
+- (void)processTransactionEventWithHistory:(id)history transactionDate:(id)date forPaymentApplication:(id)application withPassUniqueIdentifier:(id)identifier expressTransactionState:(id)state
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  historyCopy = history;
+  dateCopy = date;
+  applicationCopy = application;
+  identifierCopy = identifier;
+  stateCopy = state;
   v17 = PDOSTransactionCreate("PDTransitStateManager");
-  if (!v13)
+  if (!dateCopy)
   {
-    v13 = +[NSDate date];
+    dateCopy = +[NSDate date];
   }
 
   accessQueue = self->_accessQueue;
@@ -300,27 +300,27 @@
   block[2] = sub_1000DEC34;
   block[3] = &unk_10083DE88;
   v26 = v17;
-  v27 = v12;
-  v28 = self;
-  v29 = v13;
-  v30 = v14;
-  v31 = v15;
-  v32 = v16;
-  v19 = v16;
-  v20 = v15;
-  v21 = v14;
-  v22 = v13;
-  v23 = v12;
+  v27 = historyCopy;
+  selfCopy = self;
+  v29 = dateCopy;
+  v30 = applicationCopy;
+  v31 = identifierCopy;
+  v32 = stateCopy;
+  v19 = stateCopy;
+  v20 = identifierCopy;
+  v21 = applicationCopy;
+  v22 = dateCopy;
+  v23 = historyCopy;
   v24 = v17;
   dispatch_async(accessQueue, block);
 }
 
-- (void)updateTransitAppletStateWithHistory:(id)a3 transactionDate:(id)a4 forPaymentApplication:(id)a5 withPassUniqueIdentifier:(id)a6
+- (void)updateTransitAppletStateWithHistory:(id)history transactionDate:(id)date forPaymentApplication:(id)application withPassUniqueIdentifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  historyCopy = history;
+  dateCopy = date;
+  applicationCopy = application;
+  identifierCopy = identifier;
   v14 = PDOSTransactionCreate("PDTransitStateManager");
   accessQueue = self->_accessQueue;
   v21[0] = _NSConcreteStackBlock;
@@ -328,42 +328,42 @@
   v21[2] = sub_1000DEE88;
   v21[3] = &unk_1008442B8;
   v22 = v14;
-  v23 = self;
-  v24 = v10;
-  v25 = v11;
-  v26 = v12;
-  v27 = v13;
-  v16 = v13;
-  v17 = v12;
-  v18 = v11;
-  v19 = v10;
+  selfCopy = self;
+  v24 = historyCopy;
+  v25 = dateCopy;
+  v26 = applicationCopy;
+  v27 = identifierCopy;
+  v16 = identifierCopy;
+  v17 = applicationCopy;
+  v18 = dateCopy;
+  v19 = historyCopy;
   v20 = v14;
   dispatch_async(accessQueue, v21);
 }
 
-- (void)_ingestAppletStateHistory:(id)a3 withTransactionDate:(id)a4 forceTransactionGeneration:(BOOL)a5 recoverMissingTransactions:(BOOL)a6 forPaymentApplication:(id)a7 withPassUniqueIdentifier:(id)a8 skipQueuedRequestSanitization:(BOOL)a9 expressTransactionState:(id)a10
+- (void)_ingestAppletStateHistory:(id)history withTransactionDate:(id)date forceTransactionGeneration:(BOOL)generation recoverMissingTransactions:(BOOL)transactions forPaymentApplication:(id)application withPassUniqueIdentifier:(id)identifier skipQueuedRequestSanitization:(BOOL)sanitization expressTransactionState:(id)self0
 {
-  v37 = a6;
-  v12 = a5;
-  v40 = a3;
-  v39 = a4;
-  v15 = a7;
-  v16 = a8;
-  v17 = a10;
+  transactionsCopy = transactions;
+  generationCopy = generation;
+  historyCopy = history;
+  dateCopy = date;
+  applicationCopy = application;
+  identifierCopy = identifier;
+  stateCopy = state;
   dispatch_assert_queue_V2(self->_accessQueue);
-  if (v12)
+  if (generationCopy)
   {
-    v18 = [v15 isParsedTransitApplication];
-    v19 = 1;
-    if (v17 && v18)
+    isParsedTransitApplication = [applicationCopy isParsedTransitApplication];
+    transacted = 1;
+    if (stateCopy && isParsedTransitApplication)
     {
-      v19 = [v17 transacted];
+      transacted = [stateCopy transacted];
     }
   }
 
   else
   {
-    v19 = 0;
+    transacted = 0;
   }
 
   v46[0] = _NSConcreteStackBlock;
@@ -371,22 +371,22 @@
   v46[2] = sub_1000DF35C;
   v46[3] = &unk_1008442E0;
   v46[4] = self;
-  v20 = v16;
+  v20 = identifierCopy;
   v47 = v20;
-  v21 = v15;
+  v21 = applicationCopy;
   v48 = v21;
   [(PDTransitStateManager *)self transitAppletStateWithPassUniqueIdentifier:v20 paymentApplication:v21 completion:v46];
   v22 = [(PDDatabaseManager *)self->_databaseManager passWithUniqueIdentifier:v20];
-  v23 = [v22 paymentPass];
+  paymentPass = [v22 paymentPass];
 
-  v38 = v17;
-  if (v23)
+  v38 = stateCopy;
+  if (paymentPass)
   {
-    if ([v23 isStoredValuePass])
+    if ([paymentPass isStoredValuePass])
     {
-      v24 = PKPaymentPassBalanceLabelDictionary(v23);
-      v25 = PKPaymentPassUnitDictionary(v23);
-      v26 = PKPaymentPassPlanLabelDictionary(v23);
+      v24 = PKPaymentPassBalanceLabelDictionary(paymentPass);
+      v25 = PKPaymentPassUnitDictionary(paymentPass);
+      v26 = PKPaymentPassPlanLabelDictionary(paymentPass);
       goto LABEL_13;
     }
   }
@@ -416,16 +416,16 @@ LABEL_13:
   v44 = v29;
   v30 = v20;
   v45 = v30;
-  [(PDDatabaseManager *)databaseManager updateTransitAppletStateWithHistory:v40 transactionDate:v39 forPaymentApplication:v29 withPassUniqueIdentifier:v30 forceTransactionGeneration:v19 recoverMissingTransactions:v37 balanceLabelDictionary:v24 unitDictionary:v25 planLabelDictionary:v26 completion:v43];
-  if (!a9)
+  [(PDDatabaseManager *)databaseManager updateTransitAppletStateWithHistory:historyCopy transactionDate:dateCopy forPaymentApplication:v29 withPassUniqueIdentifier:v30 forceTransactionGeneration:transacted recoverMissingTransactions:transactionsCopy balanceLabelDictionary:v24 unitDictionary:v25 planLabelDictionary:v26 completion:v43];
+  if (!sanitization)
   {
     v31 = objc_alloc_init(PDTransitStateFetchRequest);
     [(PDTransitStateFetchRequest *)v31 setPassUniqueIdentifier:v30];
-    v32 = [v29 secureElementIdentifier];
-    [(PDTransitStateFetchRequest *)v31 setSecureElementIdentifier:v32];
+    secureElementIdentifier = [v29 secureElementIdentifier];
+    [(PDTransitStateFetchRequest *)v31 setSecureElementIdentifier:secureElementIdentifier];
 
-    v33 = [v29 applicationIdentifier];
-    [(PDTransitStateFetchRequest *)v31 setPaymentApplicationIdentifier:v33];
+    applicationIdentifier = [v29 applicationIdentifier];
+    [(PDTransitStateFetchRequest *)v31 setPaymentApplicationIdentifier:applicationIdentifier];
 
     transitRequests = self->_transitRequests;
     v41[0] = _NSConcreteStackBlock;
@@ -442,12 +442,12 @@ LABEL_13:
   }
 }
 
-- (void)transitAppletStateWithPassUniqueIdentifier:(id)a3 paymentApplication:(id)a4 completion:(id)a5
+- (void)transitAppletStateWithPassUniqueIdentifier:(id)identifier paymentApplication:(id)application completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  identifierCopy = identifier;
+  applicationCopy = application;
+  completionCopy = completion;
+  if (completionCopy)
   {
     accessQueue = self->_accessQueue;
     v12[0] = _NSConcreteStackBlock;
@@ -455,18 +455,18 @@ LABEL_13:
     v12[2] = sub_1000DF6B8;
     v12[3] = &unk_10083E468;
     v12[4] = self;
-    v13 = v8;
-    v14 = v9;
-    v15 = v10;
+    v13 = identifierCopy;
+    v14 = applicationCopy;
+    v15 = completionCopy;
     dispatch_async(accessQueue, v12);
   }
 }
 
-- (void)_resolveStationCodesForAppletState:(id)a3 paymentApplication:(id)a4 passUniqueIdentifier:(id)a5
+- (void)_resolveStationCodesForAppletState:(id)state paymentApplication:(id)application passUniqueIdentifier:(id)identifier
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  applicationCopy = application;
+  identifierCopy = identifier;
+  stateCopy = state;
   v11 = objc_alloc_init(NSMutableSet);
   [@"0000" pk_decodeHexadecimal];
   v38[0] = _NSConcreteStackBlock;
@@ -477,48 +477,48 @@ LABEL_13:
   v13 = v11;
   v40 = v13;
   v14 = objc_retainBlock(v38);
-  v15 = [v10 felicaState];
+  felicaState = [stateCopy felicaState];
 
-  if (v15)
+  if (felicaState)
   {
-    v16 = [v15 greenCarOriginStationCode];
-    (v14[2])(v14, v16);
+    greenCarOriginStationCode = [felicaState greenCarOriginStationCode];
+    (v14[2])(v14, greenCarOriginStationCode);
 
-    v17 = [v15 greenCarDestinationStationCode];
-    (v14[2])(v14, v17);
+    greenCarDestinationStationCode = [felicaState greenCarDestinationStationCode];
+    (v14[2])(v14, greenCarDestinationStationCode);
 
-    v18 = [v15 shinkansenOriginStationCode];
-    (v14[2])(v14, v18);
+    shinkansenOriginStationCode = [felicaState shinkansenOriginStationCode];
+    (v14[2])(v14, shinkansenOriginStationCode);
 
-    v19 = [v15 shinkansenDestinationStationCode];
-    (v14[2])(v14, v19);
+    shinkansenDestinationStationCode = [felicaState shinkansenDestinationStationCode];
+    (v14[2])(v14, shinkansenDestinationStationCode);
 
-    v20 = [v15 shinkansenSecondaryOriginStationCode];
-    (v14[2])(v14, v20);
+    shinkansenSecondaryOriginStationCode = [felicaState shinkansenSecondaryOriginStationCode];
+    (v14[2])(v14, shinkansenSecondaryOriginStationCode);
 
-    v21 = [v15 shinkansenSecondaryDestinationStationCode];
-    (v14[2])(v14, v21);
+    shinkansenSecondaryDestinationStationCode = [felicaState shinkansenSecondaryDestinationStationCode];
+    (v14[2])(v14, shinkansenSecondaryDestinationStationCode);
 
     v22 = [v13 count];
     if (v22)
     {
       v23 = v22;
-      v31 = self;
+      selfCopy = self;
       v24 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
-        v25 = [v8 applicationIdentifier];
+        applicationIdentifier = [applicationCopy applicationIdentifier];
         *buf = 138412290;
-        v42 = v25;
+        v42 = applicationIdentifier;
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Processing Felica Applet State For Stations: %@", buf, 0xCu);
       }
 
       v26 = objc_alloc_init(off_10091E728());
-      v27 = [v13 allObjects];
-      [v26 setStationCodes:v27];
+      allObjects = [v13 allObjects];
+      [v26 setStationCodes:allObjects];
 
-      v28 = [v8 stationCodeProvider];
-      [v26 setSourceIdentifier:v28];
+      stationCodeProvider = [applicationCopy stationCodeProvider];
+      [v26 setSourceIdentifier:stationCodeProvider];
 
       v29 = objc_alloc_init(off_10091E730());
       [v29 _setExternalTransitLookupParameters:v26];
@@ -528,34 +528,34 @@ LABEL_13:
       v32[2] = sub_1000DFB7C;
       v32[3] = &unk_100844380;
       v37 = v23;
-      v33 = v8;
-      v34 = v31;
-      v35 = v9;
+      v33 = applicationCopy;
+      v34 = selfCopy;
+      v35 = identifierCopy;
       v36 = v13;
       [v30 startWithCompletionHandler:v32];
     }
 
     else
     {
-      [(PDDatabaseManager *)self->_databaseManager updateTransitAppletStateWithStationNames:0 forPaymentApplication:v8 withPassUniqueIdentifier:v9];
+      [(PDDatabaseManager *)self->_databaseManager updateTransitAppletStateWithStationNames:0 forPaymentApplication:applicationCopy withPassUniqueIdentifier:identifierCopy];
     }
   }
 }
 
-- (void)secureElementDidUpdateAppletStateForApplicationIdentifier:(id)a3 keyIdentifier:(id)a4
+- (void)secureElementDidUpdateAppletStateForApplicationIdentifier:(id)identifier keyIdentifier:(id)keyIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  keyIdentifierCopy = keyIdentifier;
   v8 = PKLogFacilityTypeGetObject();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  if (keyIdentifierCopy)
   {
     if (v9)
     {
       *buf = 138412546;
-      v22 = v6;
+      v22 = identifierCopy;
       v23 = 2112;
-      v24 = v7;
+      v24 = keyIdentifierCopy;
       v10 = "Handle SE Event From TSM for application identifier: %@ key identifier: %@.";
       v11 = v8;
       v12 = 22;
@@ -567,7 +567,7 @@ LABEL_6:
   else if (v9)
   {
     *buf = 138412290;
-    v22 = v6;
+    v22 = identifierCopy;
     v10 = "Handle SE Event From TSM for application identifier: %@.";
     v11 = v8;
     v12 = 12;
@@ -581,9 +581,9 @@ LABEL_6:
   block[2] = sub_1000DFF84;
   block[3] = &unk_10083C4C0;
   v18 = v13;
-  v19 = self;
-  v20 = v6;
-  v15 = v6;
+  selfCopy = self;
+  v20 = identifierCopy;
+  v15 = identifierCopy;
   v16 = v13;
   dispatch_async(v14, block);
 }
@@ -597,16 +597,16 @@ LABEL_6:
   v6[2] = sub_1000E0264;
   v6[3] = &unk_10083DB30;
   v7 = v3;
-  v8 = self;
+  selfCopy = self;
   v5 = v3;
   sub_10017F518(expressPassManager, v6);
 }
 
-- (void)expressPassManager:(id)a3 willProcessPaymentApplicationsUpdateFromPriorPaymentApplications:(id)a4 toPaymentApplications:(id)a5 forPassUniqueIdentifier:(id)a6
+- (void)expressPassManager:(id)manager willProcessPaymentApplicationsUpdateFromPriorPaymentApplications:(id)applications toPaymentApplications:(id)paymentApplications forPassUniqueIdentifier:(id)identifier
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  applicationsCopy = applications;
+  paymentApplicationsCopy = paymentApplications;
+  identifierCopy = identifier;
   v12 = PDOSTransactionCreate("PDTransitStateManager");
   accessQueue = self->_accessQueue;
   block[0] = _NSConcreteStackBlock;
@@ -614,26 +614,26 @@ LABEL_6:
   block[2] = sub_1000E07AC;
   block[3] = &unk_10083DE38;
   v19 = v12;
-  v20 = v9;
-  v21 = v10;
-  v22 = v11;
-  v23 = self;
-  v14 = v11;
-  v15 = v10;
-  v16 = v9;
+  v20 = applicationsCopy;
+  v21 = paymentApplicationsCopy;
+  v22 = identifierCopy;
+  selfCopy = self;
+  v14 = identifierCopy;
+  v15 = paymentApplicationsCopy;
+  v16 = applicationsCopy;
   v17 = v12;
   dispatch_async(accessQueue, block);
 }
 
-- (void)expressPassManager:(id)a3 didFinishExpressTransactionWithState:(id)a4
+- (void)expressPassManager:(id)manager didFinishExpressTransactionWithState:(id)state
 {
-  v5 = a4;
-  v6 = v5;
-  if (v5)
+  stateCopy = state;
+  v6 = stateCopy;
+  if (stateCopy)
   {
-    v7 = [v5 passUniqueIdentifier];
-    v8 = [v6 applicationIdentifier];
-    if ([v6 status] != 2 && !objc_msgSend(v6, "isIgnorable") && v7 && v8)
+    passUniqueIdentifier = [stateCopy passUniqueIdentifier];
+    applicationIdentifier = [v6 applicationIdentifier];
+    if ([v6 status] != 2 && !objc_msgSend(v6, "isIgnorable") && passUniqueIdentifier && applicationIdentifier)
     {
       v9 = PDOSTransactionCreate("PDTransitStateManager");
       accessQueue = self->_accessQueue;
@@ -642,9 +642,9 @@ LABEL_6:
       block[2] = sub_1000E0C8C;
       block[3] = &unk_10083DE38;
       v13 = v9;
-      v14 = self;
-      v15 = v7;
-      v16 = v8;
+      selfCopy = self;
+      v15 = passUniqueIdentifier;
+      v16 = applicationIdentifier;
       v17 = v6;
       v11 = v9;
       dispatch_async(accessQueue, block);
@@ -652,12 +652,12 @@ LABEL_6:
   }
 }
 
-- (void)_notifyIssuerAppletStateDirtyWithPassID:(id)a3 forPaymentApplication:(id)a4
+- (void)_notifyIssuerAppletStateDirtyWithPassID:(id)d forPaymentApplication:(id)application
 {
-  v6 = a4;
-  v7 = a3;
+  applicationCopy = application;
+  dCopy = d;
   os_unfair_lock_lock(&self->_appletStateDirtyLock);
-  v8 = [[PKTransitAppletStateDirty alloc] initWithPassUniqueIdentifier:v7 paymentApplication:v6];
+  v8 = [[PKTransitAppletStateDirty alloc] initWithPassUniqueIdentifier:dCopy paymentApplication:applicationCopy];
 
   v9 = [(PDDatabaseManager *)self->_databaseManager insertOrUpdateAppletStateDirtyForTransitAppletStateDirty:v8];
 
@@ -667,13 +667,13 @@ LABEL_6:
   [(PDTransitStateManager *)self _performWebRequestToNotifyIssuerAppletDirtyIfNecessary];
 }
 
-- (void)performScheduledActivityWithIdentifier:(id)a3 activityCriteria:(id)a4
+- (void)performScheduledActivityWithIdentifier:(id)identifier activityCriteria:(id)criteria
 {
   os_unfair_lock_lock(&self->_appletStateDirtyLock);
-  v7 = [(PDDatabaseManager *)self->_databaseManager retrieveDirtyAppletStates];
+  retrieveDirtyAppletStates = [(PDDatabaseManager *)self->_databaseManager retrieveDirtyAppletStates];
   appletStateDirtyRequests = self->_appletStateDirtyRequests;
-  v6 = [v7 allObjects];
-  [(NSMutableSet *)appletStateDirtyRequests addObjectsFromArray:v6];
+  allObjects = [retrieveDirtyAppletStates allObjects];
+  [(NSMutableSet *)appletStateDirtyRequests addObjectsFromArray:allObjects];
 
   os_unfair_lock_unlock(&self->_appletStateDirtyLock);
   [(PDTransitStateManager *)self _performWebRequestToNotifyIssuerAppletDirtyIfNecessary];
@@ -768,17 +768,17 @@ LABEL_6:
 - (void)_performWebRequestToNotifyIssuerAppletDirty
 {
   os_unfair_lock_lock(&self->_appletStateDirtyLock);
-  v3 = [(NSMutableSet *)self->_appletStateDirtyRequests anyObject];
-  if (v3)
+  anyObject = [(NSMutableSet *)self->_appletStateDirtyRequests anyObject];
+  if (anyObject)
   {
     self->_performingAppletDirtyRequests = 1;
-    [(NSMutableSet *)self->_appletStateDirtyRequests removeObject:v3];
+    [(NSMutableSet *)self->_appletStateDirtyRequests removeObject:anyObject];
     os_unfair_lock_unlock(&self->_appletStateDirtyLock);
-    v4 = [v3 passUniqueIdentifier];
-    v5 = [v3 dpanIdentifier];
-    v6 = [(PDDatabaseManager *)self->_databaseManager passWithUniqueIdentifier:v4];
-    v7 = [v6 serialNumber];
-    v8 = [[PKPaymentNotifyIssuerAppletDirtyRequest alloc] initWithPassSerialNumber:v7 deviceAccountIdentifier:v5];
+    passUniqueIdentifier = [anyObject passUniqueIdentifier];
+    dpanIdentifier = [anyObject dpanIdentifier];
+    v6 = [(PDDatabaseManager *)self->_databaseManager passWithUniqueIdentifier:passUniqueIdentifier];
+    serialNumber = [v6 serialNumber];
+    v8 = [[PKPaymentNotifyIssuerAppletDirtyRequest alloc] initWithPassSerialNumber:serialNumber deviceAccountIdentifier:dpanIdentifier];
     objc_initWeak(&location, self);
     paymentWebServiceCoordinator = self->_paymentWebServiceCoordinator;
     v11[0] = _NSConcreteStackBlock;
@@ -788,7 +788,7 @@ LABEL_6:
     v10 = v8;
     v12 = v10;
     objc_copyWeak(&v14, &location);
-    v13 = v3;
+    v13 = anyObject;
     [(PDPaymentWebServiceCoordinator *)paymentWebServiceCoordinator performHandlerOnSharedWebServiceQueue:v11];
 
     objc_destroyWeak(&v14);

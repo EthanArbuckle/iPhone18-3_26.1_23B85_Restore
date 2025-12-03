@@ -1,6 +1,6 @@
 @interface WiFiCloudAssetsClient
 + (id)sharedInstance;
-- (void)initializeWithManager:(__WiFiManager *)a3 queue:(id)a4;
+- (void)initializeWithManager:(__WiFiManager *)manager queue:(id)queue;
 - (void)runAssetQuery;
 @end
 
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = sub_100039398;
   block[3] = &unk_10025EAD8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100298468 != -1)
   {
     dispatch_once(&qword_100298468, block);
@@ -33,11 +33,11 @@
   [WCAFetchWiFiBehaviorParameters fetchWiFiBehaviorWithCompletion:v2];
 }
 
-- (void)initializeWithManager:(__WiFiManager *)a3 queue:(id)a4
+- (void)initializeWithManager:(__WiFiManager *)manager queue:(id)queue
 {
-  v6 = a4;
-  [(WiFiCloudAssetsClient *)self setWifiManager:a3];
-  [(WiFiCloudAssetsClient *)self setQueue:v6];
+  queueCopy = queue;
+  [(WiFiCloudAssetsClient *)self setWifiManager:manager];
+  [(WiFiCloudAssetsClient *)self setQueue:queueCopy];
 }
 
 @end

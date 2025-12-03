@@ -1,6 +1,6 @@
 @interface _CDContextMonitorManager
-+ (id)cleanKBEventNameKey:(id)a3;
-+ (void)activateMonitorForKeyPath:(id)a3;
++ (id)cleanKBEventNameKey:(id)key;
++ (void)activateMonitorForKeyPath:(id)path;
 + (void)initializeKeyPathEventStreamMapping;
 @end
 
@@ -14,23 +14,23 @@
   }
 }
 
-+ (id)cleanKBEventNameKey:(id)a3
++ (id)cleanKBEventNameKey:(id)key
 {
-  v3 = [a3 stringByReplacingOccurrencesOfString:@"/device" withString:@"/system"];
+  v3 = [key stringByReplacingOccurrencesOfString:@"/device" withString:@"/system"];
   v4 = [v3 stringByReplacingOccurrencesOfString:@"/user" withString:&stru_1F1D12BE0];
 
   return v4;
 }
 
-+ (void)activateMonitorForKeyPath:(id)a3
++ (void)activateMonitorForKeyPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   +[_CDContextMonitorManager initializeKeyPathEventStreamMapping];
   v4 = MEMORY[0x1E6997888];
-  v5 = [MEMORY[0x1E69978C0] sharedInstance];
-  v7 = [v4 monitorManagerForEventStreams:v5 domain:1];
+  mEMORY[0x1E69978C0] = [MEMORY[0x1E69978C0] sharedInstance];
+  v7 = [v4 monitorManagerForEventStreams:mEMORY[0x1E69978C0] domain:1];
 
-  v6 = [keyPathToEventStream objectForKeyedSubscript:v3];
+  v6 = [keyPathToEventStream objectForKeyedSubscript:pathCopy];
 
   [v7 populateCurrentValueForStreamName:v6];
 }

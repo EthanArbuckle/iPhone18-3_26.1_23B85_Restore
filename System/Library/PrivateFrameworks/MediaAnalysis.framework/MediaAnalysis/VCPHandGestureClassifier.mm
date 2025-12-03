@@ -1,17 +1,17 @@
 @interface VCPHandGestureClassifier
-- (VCPHandGestureClassifier)initWithMinHandSize:(float)a3 options:(id)a4;
-- (int)processLeftHand:(id)a3 rightHand:(id)a4 results:(id)a5 resultsFlip:(id)a6 faceRects:(id)a7 faceYaws:(id)a8;
-- (int)processPerson:(int)a3 withObservations:(id)a4 andFaceRects:(id)a5 faceYaws:(id)a6;
-- (void)setHandGestureForHand:(id)a3 withResult:(id)a4 andMapping:(id)a5;
-- (void)setRotationInDegrees:(int)a3;
+- (VCPHandGestureClassifier)initWithMinHandSize:(float)size options:(id)options;
+- (int)processLeftHand:(id)hand rightHand:(id)rightHand results:(id)results resultsFlip:(id)flip faceRects:(id)rects faceYaws:(id)yaws;
+- (int)processPerson:(int)person withObservations:(id)observations andFaceRects:(id)rects faceYaws:(id)yaws;
+- (void)setHandGestureForHand:(id)hand withResult:(id)result andMapping:(id)mapping;
+- (void)setRotationInDegrees:(int)degrees;
 @end
 
 @implementation VCPHandGestureClassifier
 
-- (VCPHandGestureClassifier)initWithMinHandSize:(float)a3 options:(id)a4
+- (VCPHandGestureClassifier)initWithMinHandSize:(float)size options:(id)options
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  optionsCopy = options;
   v31.receiver = self;
   v31.super_class = VCPHandGestureClassifier;
   v7 = [(VCPHandGestureClassifier *)&v31 init];
@@ -36,15 +36,15 @@
 
   if (v7->_gestureCoreMLRequest && v7->_featureProvider && (v16 = v7->_mitigator) != 0)
   {
-    *&v15 = a3;
+    *&v15 = size;
     [(VCPHandGestureMitigator *)v16 setMinHandSize:v15];
-    v17 = [v6 objectForKeyedSubscript:@"MLAneQoS"];
+    v17 = [optionsCopy objectForKeyedSubscript:@"MLAneQoS"];
     v18 = v17 == 0;
 
     v19 = v7;
     if (!v18)
     {
-      v20 = [v6 objectForKeyedSubscript:@"MLAneQoS"];
+      v20 = [optionsCopy objectForKeyedSubscript:@"MLAneQoS"];
       v21 = v20;
       if (v20 == *MEMORY[0x1E695FD98])
       {
@@ -52,7 +52,7 @@
 
       else
       {
-        v22 = [v6 objectForKeyedSubscript:@"MLAneQoS"];
+        v22 = [optionsCopy objectForKeyedSubscript:@"MLAneQoS"];
         v23 = v22 == *MEMORY[0x1E695FDA0];
 
         if (!v23)
@@ -69,7 +69,7 @@
             goto LABEL_12;
           }
 
-          v24 = [v6 objectForKeyedSubscript:@"MLAneQoS"];
+          v24 = [optionsCopy objectForKeyedSubscript:@"MLAneQoS"];
           *buf = 138412290;
           v33 = v24;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Gesture classifier - invalid input CoreML aneExecutionPriority %@", buf, 0xCu);
@@ -78,11 +78,11 @@
         }
       }
 
-      v27 = [MEMORY[0x1E695FF08] defaultOptions];
+      defaultOptions = [MEMORY[0x1E695FF08] defaultOptions];
       MLOptions = v7->_MLOptions;
-      v7->_MLOptions = v27;
+      v7->_MLOptions = defaultOptions;
 
-      v29 = [v6 objectForKeyedSubscript:@"MLAneQoS"];
+      v29 = [optionsCopy objectForKeyedSubscript:@"MLAneQoS"];
       [(MLPredictionOptions *)v7->_MLOptions setAneExecutionPriority:v29];
 
       v19 = v7;
@@ -97,7 +97,7 @@
         goto LABEL_12;
       }
 
-      v30 = [v6 objectForKeyedSubscript:@"MLAneQoS"];
+      v30 = [optionsCopy objectForKeyedSubscript:@"MLAneQoS"];
       *buf = 138412290;
       v33 = v30;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "Gesture classifier - CoreML aneExecutionPriority is set to %@", buf, 0xCu);
@@ -120,30 +120,30 @@ LABEL_14:
   return v25;
 }
 
-- (void)setRotationInDegrees:(int)a3
+- (void)setRotationInDegrees:(int)degrees
 {
-  v3 = *&a3;
+  v3 = *&degrees;
   [(VCPCoreMLFeatureProviderGestureVideo *)self->_featureProvider setRotationInDegrees:?];
   mitigator = self->_mitigator;
 
   [(VCPHandGestureMitigator *)mitigator setRotationInDegrees:v3];
 }
 
-- (void)setHandGestureForHand:(id)a3 withResult:(id)a4 andMapping:(id)a5
+- (void)setHandGestureForHand:(id)hand withResult:(id)result andMapping:(id)mapping
 {
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v7 && v8)
+  handCopy = hand;
+  resultCopy = result;
+  mappingCopy = mapping;
+  v10 = mappingCopy;
+  if (handCopy && resultCopy)
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v11 = v9;
-    v12 = 0;
+    v11 = mappingCopy;
+    intValue = 0;
     v13 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v13)
     {
@@ -159,14 +159,14 @@ LABEL_14:
           }
 
           v17 = *(*(&v23 + 1) + 8 * i);
-          v18 = [v8 objectForKeyedSubscript:{v17, v23}];
+          v18 = [resultCopy objectForKeyedSubscript:{v17, v23}];
           [v18 floatValue];
           v20 = v19;
 
           if (v20 > v15)
           {
             v21 = [v11 objectForKeyedSubscript:v17];
-            v12 = [v21 intValue];
+            intValue = [v21 intValue];
 
             v15 = v20;
           }
@@ -183,14 +183,14 @@ LABEL_14:
       v15 = 0.0;
     }
 
-    if ([v7 gestureType])
+    if ([handCopy gestureType])
     {
-      if ([v7 gestureType] != v12)
+      if ([handCopy gestureType] != intValue)
       {
         goto LABEL_22;
       }
 
-      [v7 gestureConfidence];
+      [handCopy gestureConfidence];
       if (v15 <= *&v22)
       {
         goto LABEL_22;
@@ -200,60 +200,60 @@ LABEL_14:
     else if (v15 <= 0.5)
     {
       v15 = 1.0;
-      [v7 setGestureType:0];
+      [handCopy setGestureType:0];
     }
 
     else
     {
-      [v7 setGestureType:v12];
+      [handCopy setGestureType:intValue];
     }
 
     *&v22 = v15;
-    [v7 setGestureConfidence:{v22, v23}];
+    [handCopy setGestureConfidence:{v22, v23}];
   }
 
 LABEL_22:
 }
 
-- (int)processLeftHand:(id)a3 rightHand:(id)a4 results:(id)a5 resultsFlip:(id)a6 faceRects:(id)a7 faceYaws:(id)a8
+- (int)processLeftHand:(id)hand rightHand:(id)rightHand results:(id)results resultsFlip:(id)flip faceRects:(id)rects faceYaws:(id)yaws
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (v14 | v15)
+  handCopy = hand;
+  rightHandCopy = rightHand;
+  resultsCopy = results;
+  flipCopy = flip;
+  rectsCopy = rects;
+  yawsCopy = yaws;
+  if (handCopy | rightHandCopy)
   {
-    if (v16 | v17)
+    if (resultsCopy | flipCopy)
     {
-      if (v14)
+      if (handCopy)
       {
-        if (v16)
+        if (resultsCopy)
         {
-          [(VCPHandGestureClassifier *)self setHandGestureForHand:v14 withResult:v16 andMapping:&unk_1F49BF298];
+          [(VCPHandGestureClassifier *)self setHandGestureForHand:handCopy withResult:resultsCopy andMapping:&unk_1F49BF298];
         }
 
-        if (v17)
+        if (flipCopy)
         {
-          [(VCPHandGestureClassifier *)self setHandGestureForHand:v14 withResult:v17 andMapping:&unk_1F49BF2C0];
+          [(VCPHandGestureClassifier *)self setHandGestureForHand:handCopy withResult:flipCopy andMapping:&unk_1F49BF2C0];
         }
       }
 
-      if (v15)
+      if (rightHandCopy)
       {
-        if (v16)
+        if (resultsCopy)
         {
-          [(VCPHandGestureClassifier *)self setHandGestureForHand:v15 withResult:v16 andMapping:&unk_1F49BF2C0];
+          [(VCPHandGestureClassifier *)self setHandGestureForHand:rightHandCopy withResult:resultsCopy andMapping:&unk_1F49BF2C0];
         }
 
-        if (v17)
+        if (flipCopy)
         {
-          [(VCPHandGestureClassifier *)self setHandGestureForHand:v15 withResult:v17 andMapping:&unk_1F49BF298];
+          [(VCPHandGestureClassifier *)self setHandGestureForHand:rightHandCopy withResult:flipCopy andMapping:&unk_1F49BF298];
         }
       }
 
-      v20 = [(VCPHandGestureMitigator *)self->_mitigator mitigate:v14 rightHand:v15 featureProvider:self->_featureProvider faceRects:v18 faceYaws:v19];
+      v20 = [(VCPHandGestureMitigator *)self->_mitigator mitigate:handCopy rightHand:rightHandCopy featureProvider:self->_featureProvider faceRects:rectsCopy faceYaws:yawsCopy];
     }
 
     else
@@ -276,19 +276,19 @@ LABEL_22:
   return v20;
 }
 
-- (int)processPerson:(int)a3 withObservations:(id)a4 andFaceRects:(id)a5 faceYaws:(id)a6
+- (int)processPerson:(int)person withObservations:(id)observations andFaceRects:(id)rects faceYaws:(id)yaws
 {
-  v8 = *&a3;
+  v8 = *&person;
   v76 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v63 = a5;
-  v64 = a6;
+  observationsCopy = observations;
+  rectsCopy = rects;
+  yawsCopy = yaws;
   [(VCPCoreMLFeatureProviderGestureVideo *)self->_featureProvider setCurrentGroupID:v8];
   v71 = 0u;
   v72 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v11 = v10;
+  v11 = observationsCopy;
   v12 = 0;
   v13 = 0;
   v14 = [v11 countByEnumeratingWithState:&v69 objects:v75 count:16];
@@ -361,46 +361,46 @@ LABEL_22:
       [objc_opt_class() enableFlip];
       if (v32 != 0.0)
       {
-        v33 = 0;
+        dictionaryValue2 = 0;
         v34 = 0;
 LABEL_34:
         [objc_opt_class() enableFlip];
-        v40 = 0;
+        dictionaryValue = 0;
         if (v13 && v39 != 0.0)
         {
           [(VCPCoreMLFeatureProviderGestureVideo *)self->_featureProvider setLrFlip:1];
           gestureCoreMLRequest = self->_gestureCoreMLRequest;
-          v60 = v33;
+          v60 = dictionaryValue2;
           if (self->_MLOptions)
           {
-            v42 = [(VCPCoreMLRequest *)gestureCoreMLRequest model];
+            model = [(VCPCoreMLRequest *)gestureCoreMLRequest model];
             featureProvider = self->_featureProvider;
             MLOptions = self->_MLOptions;
             v45 = &v66;
             v66 = v34;
-            v46 = [v42 predictionFromFeatures:featureProvider options:MLOptions error:&v66];
+            v46 = [model predictionFromFeatures:featureProvider options:MLOptions error:&v66];
           }
 
           else
           {
-            v42 = [(VCPCoreMLRequest *)gestureCoreMLRequest model];
+            model = [(VCPCoreMLRequest *)gestureCoreMLRequest model];
             v50 = self->_featureProvider;
             v65 = v34;
             v45 = &v65;
-            v46 = [v42 predictionFromFeatures:v50 error:&v65];
+            v46 = [model predictionFromFeatures:v50 error:&v65];
           }
 
           v51 = v46;
           v61 = *v45;
 
-          v33 = v60;
+          dictionaryValue2 = v60;
           if (v51)
           {
             v52 = [v51 featureValueForName:@"classLabel_probs"];
             v53 = v52;
             if (v52)
             {
-              v40 = [v52 dictionaryValue];
+              dictionaryValue = [v52 dictionaryValue];
 
 LABEL_51:
               v54 = VCPSignPostLog();
@@ -411,7 +411,7 @@ LABEL_51:
                 _os_signpost_emit_with_name_impl(&dword_1C9B70000, v55, OS_SIGNPOST_INTERVAL_END, spid, "VCPHandGestureVideoRequest_classifier", "", buf, 2u);
               }
 
-              v31 = [(VCPHandGestureClassifier *)self processLeftHand:v13 rightHand:v12 results:v33 resultsFlip:v40 faceRects:v63 faceYaws:v64];
+              v31 = [(VCPHandGestureClassifier *)self processLeftHand:v13 rightHand:v12 results:dictionaryValue2 resultsFlip:dictionaryValue faceRects:rectsCopy faceYaws:yawsCopy];
               goto LABEL_63;
             }
 
@@ -426,13 +426,13 @@ LABEL_51:
           {
             v56 = [v61 description];
             v57 = v56;
-            v58 = [v56 UTF8String];
+            uTF8String = [v56 UTF8String];
             *buf = 136315138;
-            v74 = v58;
+            v74 = uTF8String;
             _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to get output feature %s", buf, 0xCu);
           }
 
-          v40 = 0;
+          dictionaryValue = 0;
           v31 = -18;
 LABEL_63:
 
@@ -449,21 +449,21 @@ LABEL_63:
     v25 = self->_gestureCoreMLRequest;
     if (self->_MLOptions)
     {
-      v26 = [(VCPCoreMLRequest *)v25 model];
+      model2 = [(VCPCoreMLRequest *)v25 model];
       v27 = self->_featureProvider;
       v28 = self->_MLOptions;
       v29 = &v68;
       v68 = 0;
-      v30 = [v26 predictionFromFeatures:v27 options:v28 error:&v68];
+      v30 = [model2 predictionFromFeatures:v27 options:v28 error:&v68];
     }
 
     else
     {
-      v26 = [(VCPCoreMLRequest *)v25 model];
+      model2 = [(VCPCoreMLRequest *)v25 model];
       v35 = self->_featureProvider;
       v67 = 0;
       v29 = &v67;
-      v30 = [v26 predictionFromFeatures:v35 error:&v67];
+      v30 = [model2 predictionFromFeatures:v35 error:&v67];
     }
 
     v36 = v30;
@@ -475,7 +475,7 @@ LABEL_63:
       v38 = v37;
       if (v37)
       {
-        v33 = [v37 dictionaryValue];
+        dictionaryValue2 = [v37 dictionaryValue];
 
         goto LABEL_34;
       }
@@ -491,9 +491,9 @@ LABEL_63:
     {
       v47 = [v34 description];
       v48 = v47;
-      v49 = [v47 UTF8String];
+      uTF8String2 = [v47 UTF8String];
       *buf = 136315138;
-      v74 = v49;
+      v74 = uTF8String2;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to get output feature %s", buf, 0xCu);
     }
 

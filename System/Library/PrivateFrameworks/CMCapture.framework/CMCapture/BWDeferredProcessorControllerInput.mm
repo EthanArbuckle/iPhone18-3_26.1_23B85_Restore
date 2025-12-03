@@ -1,14 +1,14 @@
 @interface BWDeferredProcessorControllerInput
 - (void)dealloc;
-- (void)setContainer:(id)a3 photoIdentifier:(id)a4;
+- (void)setContainer:(id)container photoIdentifier:(id)identifier;
 @end
 
 @implementation BWDeferredProcessorControllerInput
 
-- (void)setContainer:(id)a3 photoIdentifier:(id)a4
+- (void)setContainer:(id)container photoIdentifier:(id)identifier
 {
-  self->_container = a3;
-  self->_photoIdentifier = [a4 copy];
+  self->_container = container;
+  self->_photoIdentifier = [identifier copy];
   processorController = self->_processorController;
 
   [(BWStillImageProcessorController *)processorController currentRequestChanged];

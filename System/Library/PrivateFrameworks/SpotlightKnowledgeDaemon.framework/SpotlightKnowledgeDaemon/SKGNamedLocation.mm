@@ -1,21 +1,21 @@
 @interface SKGNamedLocation
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation SKGNamedLocation
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(SKGNamedLocation *)self location];
-    v7 = [v5 location];
-    if ([v6 isEqualToString:v7])
+    v5 = equalCopy;
+    location = [(SKGNamedLocation *)self location];
+    location2 = [v5 location];
+    if ([location isEqualToString:location2])
     {
       v10.receiver = self;
       v10.super_class = SKGNamedLocation;
@@ -38,9 +38,9 @@
 
 - (unint64_t)hash
 {
-  v2 = [(SKGNamedLocation *)self location];
-  v3 = [v2 lowercaseString];
-  v4 = [v3 hash];
+  location = [(SKGNamedLocation *)self location];
+  lowercaseString = [location lowercaseString];
+  v4 = [lowercaseString hash];
 
   return v4;
 }
@@ -49,9 +49,9 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(SKGNamedLocation *)self location];
+  location = [(SKGNamedLocation *)self location];
   [(SKGEntity *)self score];
-  v7 = [v3 stringWithFormat:@"<%@: %@ %f>", v4, v5, v6];
+  v7 = [v3 stringWithFormat:@"<%@: %@ %f>", v4, location, v6];
 
   return v7;
 }

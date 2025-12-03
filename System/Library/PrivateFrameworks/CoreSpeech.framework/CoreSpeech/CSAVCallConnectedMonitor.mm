@@ -1,12 +1,12 @@
 @interface CSAVCallConnectedMonitor
 + (id)sharedInstance;
 - (CSAVCallConnectedMonitor)init;
-- (void)_handleCallActiveDidChangeNotification:(id)a3;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_handleCallActiveDidChangeNotification:(id)notification;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_startObservingAVCallActiveChange;
 - (void)_startObservingSystemControllerLifecycle;
 - (void)_stopMonitoring;
-- (void)_systemControllerDied:(id)a3;
+- (void)_systemControllerDied:(id)died;
 @end
 
 @implementation CSAVCallConnectedMonitor
@@ -38,16 +38,16 @@
   [v5 addObserver:self selector:"_systemControllerDied:" name:v6 object:v7];
 }
 
-- (void)_systemControllerDied:(id)a3
+- (void)_systemControllerDied:(id)died
 {
-  v4 = a3;
+  diedCopy = died;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136315394;
     v7 = "[CSAVCallConnectedMonitor _systemControllerDied:]";
     v8 = 2114;
-    v9 = v4;
+    v9 = diedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s notification = %{public}@", &v6, 0x16u);
   }
 
@@ -76,14 +76,14 @@
   [v3 removeObserver:self];
 }
 
-- (void)_handleCallActiveDidChangeNotification:(id)a3
+- (void)_handleCallActiveDidChangeNotification:(id)notification
 {
   v5 = +[AVSystemController sharedAVSystemController];
   v4 = [v5 attributeForKey:AVSystemController_CallIsActive];
   self->_hasConnectedAVCall = [v4 BOOLValue];
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   [(CSAVCallConnectedMonitor *)self _startObservingSystemControllerLifecycle];
   [(CSAVCallConnectedMonitor *)self _startObservingAVCallActiveChange];

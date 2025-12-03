@@ -1,17 +1,17 @@
 @interface PTSpillCorrection
-- (PTSpillCorrection)initWithMetalContext:(id)a3 refinementWidth:(unint64_t)a4 refinementHeight:(unint64_t)a5 refinementSteps:(unint64_t)a6 minFilterKernelWidth:(unint64_t)a7 minFilterKernelHeight:(unint64_t)a8 maxFilterKernelWidth:(unint64_t)a9 maxFilterKernelHeight:(unint64_t)a10 gaussianBlurSigma:(float)a11;
-- (int)encodeToCommandBuffer:(id)a3 lumaTexture:(id)a4 chromaTexture:(id)a5 normChromaOffset:(id)a6 segmentationTexture:;
-- (int)encodeToCommandBuffer:(id)a3 rgbTexture:(id)a4 segmentationTexture:(id)a5;
-- (int)encodeToCommandBuffer:(id)a3 segmentationTexture:(id)a4;
-- (void)diffusion:(id)a3;
-- (void)initConstraints:(id)a3;
+- (PTSpillCorrection)initWithMetalContext:(id)context refinementWidth:(unint64_t)width refinementHeight:(unint64_t)height refinementSteps:(unint64_t)steps minFilterKernelWidth:(unint64_t)kernelWidth minFilterKernelHeight:(unint64_t)kernelHeight maxFilterKernelWidth:(unint64_t)filterKernelWidth maxFilterKernelHeight:(unint64_t)self0 gaussianBlurSigma:(float)self1;
+- (int)encodeToCommandBuffer:(id)buffer lumaTexture:(id)texture chromaTexture:(id)chromaTexture normChromaOffset:(id)offset segmentationTexture:;
+- (int)encodeToCommandBuffer:(id)buffer rgbTexture:(id)texture segmentationTexture:(id)segmentationTexture;
+- (int)encodeToCommandBuffer:(id)buffer segmentationTexture:(id)texture;
+- (void)diffusion:(id)diffusion;
+- (void)initConstraints:(id)constraints;
 @end
 
 @implementation PTSpillCorrection
 
-- (PTSpillCorrection)initWithMetalContext:(id)a3 refinementWidth:(unint64_t)a4 refinementHeight:(unint64_t)a5 refinementSteps:(unint64_t)a6 minFilterKernelWidth:(unint64_t)a7 minFilterKernelHeight:(unint64_t)a8 maxFilterKernelWidth:(unint64_t)a9 maxFilterKernelHeight:(unint64_t)a10 gaussianBlurSigma:(float)a11
+- (PTSpillCorrection)initWithMetalContext:(id)context refinementWidth:(unint64_t)width refinementHeight:(unint64_t)height refinementSteps:(unint64_t)steps minFilterKernelWidth:(unint64_t)kernelWidth minFilterKernelHeight:(unint64_t)kernelHeight maxFilterKernelWidth:(unint64_t)filterKernelWidth maxFilterKernelHeight:(unint64_t)self0 gaussianBlurSigma:(float)self1
 {
-  v19 = a3;
+  contextCopy = context;
   v221.receiver = self;
   v221.super_class = PTSpillCorrection;
   v20 = [(PTSpillCorrection *)&v221 init];
@@ -21,9 +21,9 @@
     goto LABEL_63;
   }
 
-  objc_storeStrong(&v20->_metalContext, a3);
-  v21->_refinementSteps = a6;
-  v22 = [v19 computePipelineStateFor:@"PTSpillCorrection_initConstraintsPart1" withConstants:0];
+  objc_storeStrong(&v20->_metalContext, context);
+  v21->_refinementSteps = steps;
+  v22 = [contextCopy computePipelineStateFor:@"PTSpillCorrection_initConstraintsPart1" withConstants:0];
   initConstraintsPart1 = v21->_initConstraintsPart1;
   v21->_initConstraintsPart1 = v22;
 
@@ -38,7 +38,7 @@
     goto LABEL_62;
   }
 
-  v24 = [v19 computePipelineStateFor:@"PTSpillCorrection_initConstraintsPart2" withConstants:0];
+  v24 = [contextCopy computePipelineStateFor:@"PTSpillCorrection_initConstraintsPart2" withConstants:0];
   initConstraintsPart2 = v21->_initConstraintsPart2;
   v21->_initConstraintsPart2 = v24;
 
@@ -53,7 +53,7 @@
     goto LABEL_62;
   }
 
-  v26 = [v19 computePipelineStateFor:@"PTSpillCorrection_initDiffusion" withConstants:0];
+  v26 = [contextCopy computePipelineStateFor:@"PTSpillCorrection_initDiffusion" withConstants:0];
   initDiffusion = v21->_initDiffusion;
   v21->_initDiffusion = v26;
 
@@ -68,7 +68,7 @@
     goto LABEL_62;
   }
 
-  v28 = [v19 computePipelineStateFor:@"PTSpillCorrection_constrainDiffusion" withConstants:0];
+  v28 = [contextCopy computePipelineStateFor:@"PTSpillCorrection_constrainDiffusion" withConstants:0];
   constrainDiffusion = v21->_constrainDiffusion;
   v21->_constrainDiffusion = v28;
 
@@ -83,7 +83,7 @@
     goto LABEL_62;
   }
 
-  v30 = [v19 computePipelineStateFor:@"PTSpillCorrection_computeUpsamplingCoefficients" withConstants:0];
+  v30 = [contextCopy computePipelineStateFor:@"PTSpillCorrection_computeUpsamplingCoefficients" withConstants:0];
   computeUpsamplingCoefficients = v21->_computeUpsamplingCoefficients;
   v21->_computeUpsamplingCoefficients = v30;
 
@@ -98,7 +98,7 @@
     goto LABEL_62;
   }
 
-  v32 = [v19 computePipelineStateFor:@"PTSpillCorrection_averageUpsamplingCoefficients" withConstants:0];
+  v32 = [contextCopy computePipelineStateFor:@"PTSpillCorrection_averageUpsamplingCoefficients" withConstants:0];
   averageUpsamplingCoefficients = v21->_averageUpsamplingCoefficients;
   v21->_averageUpsamplingCoefficients = v32;
 
@@ -113,7 +113,7 @@
     goto LABEL_62;
   }
 
-  v34 = [v19 computePipelineStateFor:@"PTSpillCorrection_applyUpsamplingCoefficients" withConstants:0];
+  v34 = [contextCopy computePipelineStateFor:@"PTSpillCorrection_applyUpsamplingCoefficients" withConstants:0];
   applyUpsamplingCoefficients = v21->_applyUpsamplingCoefficients;
   v21->_applyUpsamplingCoefficients = v34;
 
@@ -128,8 +128,8 @@
     goto LABEL_62;
   }
 
-  v36 = [v19 textureUtil];
-  v37 = [v36 createWithWidth:a4 height:a5 pixelFormat:115];
+  textureUtil = [contextCopy textureUtil];
+  v37 = [textureUtil createWithWidth:width height:height pixelFormat:115];
   guideTexture = v21->_guideTexture;
   v21->_guideTexture = v37;
 
@@ -144,8 +144,8 @@
     goto LABEL_62;
   }
 
-  v39 = [v19 textureUtil];
-  v40 = [v39 createWithWidth:a4 height:a5 pixelFormat:115];
+  textureUtil2 = [contextCopy textureUtil];
+  v40 = [textureUtil2 createWithWidth:width height:height pixelFormat:115];
   diffusionTexture = v21->_diffusionTexture;
   v21->_diffusionTexture = v40;
 
@@ -160,8 +160,8 @@
     goto LABEL_62;
   }
 
-  v42 = [v19 textureUtil];
-  v43 = [v42 createWithWidth:a4 height:a5 pixelFormat:115];
+  textureUtil3 = [contextCopy textureUtil];
+  v43 = [textureUtil3 createWithWidth:width height:height pixelFormat:115];
   constraintsTexture = v21->_constraintsTexture;
   v21->_constraintsTexture = v43;
 
@@ -176,8 +176,8 @@
     goto LABEL_62;
   }
 
-  v45 = [v19 textureUtil];
-  v46 = [v45 createWithWidth:a4 height:a5 pixelFormat:115];
+  textureUtil4 = [contextCopy textureUtil];
+  v46 = [textureUtil4 createWithWidth:width height:height pixelFormat:115];
   coeffXTexture = v21->_coeffXTexture;
   v21->_coeffXTexture = v46;
 
@@ -192,8 +192,8 @@
     goto LABEL_62;
   }
 
-  v48 = [v19 textureUtil];
-  v49 = [v48 createWithWidth:a4 height:a5 pixelFormat:115];
+  textureUtil5 = [contextCopy textureUtil];
+  v49 = [textureUtil5 createWithWidth:width height:height pixelFormat:115];
   coeffYTexture = v21->_coeffYTexture;
   v21->_coeffYTexture = v49;
 
@@ -208,8 +208,8 @@
     goto LABEL_62;
   }
 
-  v51 = [v19 textureUtil];
-  v52 = [v51 createWithWidth:a4 height:a5 pixelFormat:115];
+  textureUtil6 = [contextCopy textureUtil];
+  v52 = [textureUtil6 createWithWidth:width height:height pixelFormat:115];
   coeffZTexture = v21->_coeffZTexture;
   v21->_coeffZTexture = v52;
 
@@ -224,8 +224,8 @@
     goto LABEL_62;
   }
 
-  v54 = [v19 textureUtil];
-  v55 = [v54 createWithWidth:a4 height:a5 pixelFormat:115];
+  textureUtil7 = [contextCopy textureUtil];
+  v55 = [textureUtil7 createWithWidth:width height:height pixelFormat:115];
   coeffXFilteredTexture = v21->_coeffXFilteredTexture;
   v21->_coeffXFilteredTexture = v55;
 
@@ -240,8 +240,8 @@
     goto LABEL_62;
   }
 
-  v57 = [v19 textureUtil];
-  v58 = [v57 createWithWidth:a4 height:a5 pixelFormat:115];
+  textureUtil8 = [contextCopy textureUtil];
+  v58 = [textureUtil8 createWithWidth:width height:height pixelFormat:115];
   coeffYFilteredTexture = v21->_coeffYFilteredTexture;
   v21->_coeffYFilteredTexture = v58;
 
@@ -256,8 +256,8 @@
     goto LABEL_62;
   }
 
-  v60 = [v19 textureUtil];
-  v61 = [v60 createWithWidth:a4 height:a5 pixelFormat:115];
+  textureUtil9 = [contextCopy textureUtil];
+  v61 = [textureUtil9 createWithWidth:width height:height pixelFormat:115];
   coeffZFilteredTexture = v21->_coeffZFilteredTexture;
   v21->_coeffZFilteredTexture = v61;
 
@@ -272,8 +272,8 @@
     goto LABEL_62;
   }
 
-  v63 = [v19 textureUtil];
-  v64 = [v63 createWithWidth:a4 height:a5 pixelFormat:25];
+  textureUtil10 = [contextCopy textureUtil];
+  v64 = [textureUtil10 createWithWidth:width height:height pixelFormat:25];
   segmentationTexture = v21->_segmentationTexture;
   v21->_segmentationTexture = v64;
 
@@ -288,8 +288,8 @@
     goto LABEL_62;
   }
 
-  v66 = [v19 textureUtil];
-  v67 = [v66 createWithWidth:a4 height:a5 pixelFormat:25];
+  textureUtil11 = [contextCopy textureUtil];
+  v67 = [textureUtil11 createWithWidth:width height:height pixelFormat:25];
   segmentationMinTexture = v21->_segmentationMinTexture;
   v21->_segmentationMinTexture = v67;
 
@@ -304,8 +304,8 @@
     goto LABEL_62;
   }
 
-  v69 = [v19 textureUtil];
-  v70 = [v69 createWithWidth:a4 height:a5 pixelFormat:25];
+  textureUtil12 = [contextCopy textureUtil];
+  v70 = [textureUtil12 createWithWidth:width height:height pixelFormat:25];
   segmentationMaxTexture = v21->_segmentationMaxTexture;
   v21->_segmentationMaxTexture = v70;
 
@@ -327,21 +327,21 @@ LABEL_63:
   if ((PTDefaultsPublicGetBool(@"harvesting.enabled", 0) & 1) == 0)
   {
     v72 = objc_alloc(MEMORY[0x277CD74D0]);
-    v73 = [v19 device];
-    v74 = [v72 initWithDevice:v73 kernelWidth:a7 kernelHeight:a8];
+    device = [contextCopy device];
+    v74 = [v72 initWithDevice:device kernelWidth:kernelWidth kernelHeight:kernelHeight];
     minFilter = v21->_minFilter;
     v21->_minFilter = v74;
 
     v76 = objc_alloc(MEMORY[0x277CD74C8]);
-    v77 = [v19 device];
-    v78 = [v76 initWithDevice:v77 kernelWidth:a9 kernelHeight:a10];
+    device2 = [contextCopy device];
+    v78 = [v76 initWithDevice:device2 kernelWidth:filterKernelWidth kernelHeight:filterKernelHeight];
     maxFilter = v21->_maxFilter;
     v21->_maxFilter = v78;
 
     v80 = objc_alloc(MEMORY[0x277CD7520]);
-    v81 = [v19 device];
-    *&v82 = a11;
-    v83 = [v80 initWithDevice:v81 sigma:v82];
+    device3 = [contextCopy device];
+    *&v82 = sigma;
+    v83 = [v80 initWithDevice:device3 sigma:v82];
     gaussianBlur = v21->_gaussianBlur;
     v21->_gaussianBlur = v83;
   }
@@ -352,180 +352,180 @@ LABEL_64:
   return v85;
 }
 
-- (int)encodeToCommandBuffer:(id)a3 rgbTexture:(id)a4 segmentationTexture:(id)a5
+- (int)encodeToCommandBuffer:(id)buffer rgbTexture:(id)texture segmentationTexture:(id)segmentationTexture
 {
   metalContext = self->_metalContext;
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [(PTMetalContext *)metalContext textureUtil];
-  [v12 copy:v11 inTex:v10 outTex:self->_guideTexture];
+  segmentationTextureCopy = segmentationTexture;
+  textureCopy = texture;
+  bufferCopy = buffer;
+  textureUtil = [(PTMetalContext *)metalContext textureUtil];
+  [textureUtil copy:bufferCopy inTex:textureCopy outTex:self->_guideTexture];
 
-  LODWORD(v10) = [(PTSpillCorrection *)self encodeToCommandBuffer:v11 segmentationTexture:v9];
-  return v10;
+  LODWORD(textureCopy) = [(PTSpillCorrection *)self encodeToCommandBuffer:bufferCopy segmentationTexture:segmentationTextureCopy];
+  return textureCopy;
 }
 
-- (int)encodeToCommandBuffer:(id)a3 lumaTexture:(id)a4 chromaTexture:(id)a5 normChromaOffset:(id)a6 segmentationTexture:
+- (int)encodeToCommandBuffer:(id)buffer lumaTexture:(id)texture chromaTexture:(id)chromaTexture normChromaOffset:(id)offset segmentationTexture:
 {
   metalContext = self->_metalContext;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [(PTMetalContext *)metalContext textureUtil];
-  [v15 resample420To444:v14 inLuma:v13 inChroma:v12 outYUV:self->_guideTexture];
+  offsetCopy = offset;
+  chromaTextureCopy = chromaTexture;
+  textureCopy = texture;
+  bufferCopy = buffer;
+  textureUtil = [(PTMetalContext *)metalContext textureUtil];
+  [textureUtil resample420To444:bufferCopy inLuma:textureCopy inChroma:chromaTextureCopy outYUV:self->_guideTexture];
 
-  LODWORD(v12) = [(PTSpillCorrection *)self encodeToCommandBuffer:v14 segmentationTexture:v11];
-  return v12;
+  LODWORD(chromaTextureCopy) = [(PTSpillCorrection *)self encodeToCommandBuffer:bufferCopy segmentationTexture:offsetCopy];
+  return chromaTextureCopy;
 }
 
-- (int)encodeToCommandBuffer:(id)a3 segmentationTexture:(id)a4
+- (int)encodeToCommandBuffer:(id)buffer segmentationTexture:(id)texture
 {
   metalContext = self->_metalContext;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(PTMetalContext *)metalContext textureUtil];
-  [v9 copy:v8 inTex:v7 outTex:self->_segmentationTexture];
+  textureCopy = texture;
+  bufferCopy = buffer;
+  textureUtil = [(PTMetalContext *)metalContext textureUtil];
+  [textureUtil copy:bufferCopy inTex:textureCopy outTex:self->_segmentationTexture];
 
   [(PTSpillCorrection *)self updateFromDefaults];
-  [(PTSpillCorrection *)self initConstraints:v8];
-  [(PTSpillCorrection *)self diffusion:v8];
+  [(PTSpillCorrection *)self initConstraints:bufferCopy];
+  [(PTSpillCorrection *)self diffusion:bufferCopy];
 
   return 0;
 }
 
-- (void)initConstraints:(id)a3
+- (void)initConstraints:(id)constraints
 {
   minFilter = self->_minFilter;
   segmentationTexture = self->_segmentationTexture;
   segmentationMinTexture = self->_segmentationMinTexture;
-  v7 = a3;
-  [(MPSImageAreaMin *)minFilter encodeToCommandBuffer:v7 sourceTexture:segmentationTexture destinationTexture:segmentationMinTexture];
-  [(MPSImageAreaMax *)self->_maxFilter encodeToCommandBuffer:v7 sourceTexture:self->_segmentationTexture destinationTexture:self->_segmentationMaxTexture];
-  v8 = [v7 computeCommandEncoder];
-  [v8 setComputePipelineState:self->_initConstraintsPart1];
-  [v8 setTexture:self->_guideTexture atIndex:0];
-  [v8 setTexture:self->_segmentationMinTexture atIndex:1];
+  constraintsCopy = constraints;
+  [(MPSImageAreaMin *)minFilter encodeToCommandBuffer:constraintsCopy sourceTexture:segmentationTexture destinationTexture:segmentationMinTexture];
+  [(MPSImageAreaMax *)self->_maxFilter encodeToCommandBuffer:constraintsCopy sourceTexture:self->_segmentationTexture destinationTexture:self->_segmentationMaxTexture];
+  computeCommandEncoder = [constraintsCopy computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_initConstraintsPart1];
+  [computeCommandEncoder setTexture:self->_guideTexture atIndex:0];
+  [computeCommandEncoder setTexture:self->_segmentationMinTexture atIndex:1];
   p_constraintsTexture = &self->_constraintsTexture;
-  [v8 setTexture:self->_constraintsTexture atIndex:2];
-  v10 = [(MTLTexture *)self->_constraintsTexture width];
-  v11 = [(MTLTexture *)self->_constraintsTexture height];
-  v17 = v10;
-  v18 = v11;
+  [computeCommandEncoder setTexture:self->_constraintsTexture atIndex:2];
+  width = [(MTLTexture *)self->_constraintsTexture width];
+  height = [(MTLTexture *)self->_constraintsTexture height];
+  v17 = width;
+  v18 = height;
   v19 = 1;
   v15 = xmmword_2244A5230;
   v16 = 1;
-  [v8 dispatchThreads:&v17 threadsPerThreadgroup:&v15];
-  [v8 endEncoding];
+  [computeCommandEncoder dispatchThreads:&v17 threadsPerThreadgroup:&v15];
+  [computeCommandEncoder endEncoding];
 
-  [(MPSImageGaussianBlur *)self->_gaussianBlur encodeToCommandBuffer:v7 inPlaceTexture:&self->_constraintsTexture fallbackCopyAllocator:0];
-  v12 = [v7 computeCommandEncoder];
+  [(MPSImageGaussianBlur *)self->_gaussianBlur encodeToCommandBuffer:constraintsCopy inPlaceTexture:&self->_constraintsTexture fallbackCopyAllocator:0];
+  computeCommandEncoder2 = [constraintsCopy computeCommandEncoder];
 
-  [v12 setComputePipelineState:self->_initConstraintsPart2];
-  [v12 setTexture:self->_guideTexture atIndex:0];
-  [v12 setTexture:self->_segmentationMinTexture atIndex:1];
-  [v12 setTexture:self->_segmentationMaxTexture atIndex:2];
-  [v12 setTexture:self->_constraintsTexture atIndex:3];
-  v13 = [(MTLTexture *)self->_constraintsTexture width];
-  v14 = [(MTLTexture *)*p_constraintsTexture height];
-  v17 = v13;
-  v18 = v14;
+  [computeCommandEncoder2 setComputePipelineState:self->_initConstraintsPart2];
+  [computeCommandEncoder2 setTexture:self->_guideTexture atIndex:0];
+  [computeCommandEncoder2 setTexture:self->_segmentationMinTexture atIndex:1];
+  [computeCommandEncoder2 setTexture:self->_segmentationMaxTexture atIndex:2];
+  [computeCommandEncoder2 setTexture:self->_constraintsTexture atIndex:3];
+  width2 = [(MTLTexture *)self->_constraintsTexture width];
+  height2 = [(MTLTexture *)*p_constraintsTexture height];
+  v17 = width2;
+  v18 = height2;
   v19 = 1;
   v15 = xmmword_2244A5230;
   v16 = 1;
-  [v12 dispatchThreads:&v17 threadsPerThreadgroup:&v15];
-  [v12 endEncoding];
+  [computeCommandEncoder2 dispatchThreads:&v17 threadsPerThreadgroup:&v15];
+  [computeCommandEncoder2 endEncoding];
 }
 
-- (void)diffusion:(id)a3
+- (void)diffusion:(id)diffusion
 {
-  v4 = a3;
-  v5 = [v4 computeCommandEncoder];
-  [v5 setComputePipelineState:self->_initDiffusion];
-  [v5 setTexture:self->_guideTexture atIndex:0];
-  [v5 setTexture:self->_segmentationTexture atIndex:1];
-  [v5 setTexture:self->_constraintsTexture atIndex:2];
-  [v5 setTexture:self->_diffusionTexture atIndex:3];
-  v6 = [(MTLTexture *)self->_diffusionTexture width];
-  v7 = [(MTLTexture *)self->_diffusionTexture height];
-  v23 = v6;
-  v24 = v7;
+  diffusionCopy = diffusion;
+  computeCommandEncoder = [diffusionCopy computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_initDiffusion];
+  [computeCommandEncoder setTexture:self->_guideTexture atIndex:0];
+  [computeCommandEncoder setTexture:self->_segmentationTexture atIndex:1];
+  [computeCommandEncoder setTexture:self->_constraintsTexture atIndex:2];
+  [computeCommandEncoder setTexture:self->_diffusionTexture atIndex:3];
+  width = [(MTLTexture *)self->_diffusionTexture width];
+  height = [(MTLTexture *)self->_diffusionTexture height];
+  v23 = width;
+  v24 = height;
   v25 = 1;
   v21 = xmmword_2244A5230;
   v22 = 1;
-  [v5 dispatchThreads:&v23 threadsPerThreadgroup:&v21];
-  [v5 endEncoding];
+  [computeCommandEncoder dispatchThreads:&v23 threadsPerThreadgroup:&v21];
+  [computeCommandEncoder endEncoding];
 
   if (self->_refinementSteps)
   {
     v8 = 0;
     do
     {
-      v9 = [v4 computeCommandEncoder];
-      [v9 setComputePipelineState:self->_computeUpsamplingCoefficients];
-      [v9 setTexture:self->_guideTexture atIndex:0];
-      [v9 setTexture:self->_diffusionTexture atIndex:1];
-      [v9 setTexture:self->_coeffXTexture atIndex:2];
-      [v9 setTexture:self->_coeffYTexture atIndex:3];
-      [v9 setTexture:self->_coeffZTexture atIndex:4];
-      v10 = [(MTLTexture *)self->_coeffXTexture width];
-      v11 = [(MTLTexture *)self->_coeffXTexture height];
-      v23 = v10;
-      v24 = v11;
+      computeCommandEncoder2 = [diffusionCopy computeCommandEncoder];
+      [computeCommandEncoder2 setComputePipelineState:self->_computeUpsamplingCoefficients];
+      [computeCommandEncoder2 setTexture:self->_guideTexture atIndex:0];
+      [computeCommandEncoder2 setTexture:self->_diffusionTexture atIndex:1];
+      [computeCommandEncoder2 setTexture:self->_coeffXTexture atIndex:2];
+      [computeCommandEncoder2 setTexture:self->_coeffYTexture atIndex:3];
+      [computeCommandEncoder2 setTexture:self->_coeffZTexture atIndex:4];
+      width2 = [(MTLTexture *)self->_coeffXTexture width];
+      height2 = [(MTLTexture *)self->_coeffXTexture height];
+      v23 = width2;
+      v24 = height2;
       v25 = 1;
       v21 = xmmword_2244A5230;
       v22 = 1;
-      [v9 dispatchThreads:&v23 threadsPerThreadgroup:&v21];
-      [v9 endEncoding];
+      [computeCommandEncoder2 dispatchThreads:&v23 threadsPerThreadgroup:&v21];
+      [computeCommandEncoder2 endEncoding];
 
-      v12 = [v4 computeCommandEncoder];
-      [v12 setComputePipelineState:self->_averageUpsamplingCoefficients];
-      [v12 setTexture:self->_coeffXTexture atIndex:0];
-      [v12 setTexture:self->_coeffYTexture atIndex:1];
-      [v12 setTexture:self->_coeffZTexture atIndex:2];
-      [v12 setTexture:self->_coeffXFilteredTexture atIndex:3];
-      [v12 setTexture:self->_coeffYFilteredTexture atIndex:4];
-      [v12 setTexture:self->_coeffZFilteredTexture atIndex:5];
-      v13 = [(MTLTexture *)self->_coeffXTexture width];
-      v14 = [(MTLTexture *)self->_coeffXTexture height];
-      v23 = v13;
-      v24 = v14;
+      computeCommandEncoder3 = [diffusionCopy computeCommandEncoder];
+      [computeCommandEncoder3 setComputePipelineState:self->_averageUpsamplingCoefficients];
+      [computeCommandEncoder3 setTexture:self->_coeffXTexture atIndex:0];
+      [computeCommandEncoder3 setTexture:self->_coeffYTexture atIndex:1];
+      [computeCommandEncoder3 setTexture:self->_coeffZTexture atIndex:2];
+      [computeCommandEncoder3 setTexture:self->_coeffXFilteredTexture atIndex:3];
+      [computeCommandEncoder3 setTexture:self->_coeffYFilteredTexture atIndex:4];
+      [computeCommandEncoder3 setTexture:self->_coeffZFilteredTexture atIndex:5];
+      width3 = [(MTLTexture *)self->_coeffXTexture width];
+      height3 = [(MTLTexture *)self->_coeffXTexture height];
+      v23 = width3;
+      v24 = height3;
       v25 = 1;
       v21 = xmmword_2244A5230;
       v22 = 1;
-      [v12 dispatchThreads:&v23 threadsPerThreadgroup:&v21];
-      [v12 endEncoding];
+      [computeCommandEncoder3 dispatchThreads:&v23 threadsPerThreadgroup:&v21];
+      [computeCommandEncoder3 endEncoding];
 
-      v15 = [v4 computeCommandEncoder];
-      [v15 setComputePipelineState:self->_applyUpsamplingCoefficients];
-      [v15 setTexture:self->_guideTexture atIndex:0];
-      [v15 setTexture:self->_coeffXFilteredTexture atIndex:1];
-      [v15 setTexture:self->_coeffYFilteredTexture atIndex:2];
-      [v15 setTexture:self->_coeffZFilteredTexture atIndex:3];
-      [v15 setTexture:self->_diffusionTexture atIndex:4];
-      v16 = [(MTLTexture *)self->_diffusionTexture width];
-      v17 = [(MTLTexture *)self->_diffusionTexture height];
-      v23 = v16;
-      v24 = v17;
+      computeCommandEncoder4 = [diffusionCopy computeCommandEncoder];
+      [computeCommandEncoder4 setComputePipelineState:self->_applyUpsamplingCoefficients];
+      [computeCommandEncoder4 setTexture:self->_guideTexture atIndex:0];
+      [computeCommandEncoder4 setTexture:self->_coeffXFilteredTexture atIndex:1];
+      [computeCommandEncoder4 setTexture:self->_coeffYFilteredTexture atIndex:2];
+      [computeCommandEncoder4 setTexture:self->_coeffZFilteredTexture atIndex:3];
+      [computeCommandEncoder4 setTexture:self->_diffusionTexture atIndex:4];
+      width4 = [(MTLTexture *)self->_diffusionTexture width];
+      height4 = [(MTLTexture *)self->_diffusionTexture height];
+      v23 = width4;
+      v24 = height4;
       v25 = 1;
       v21 = xmmword_2244A5230;
       v22 = 1;
-      [v15 dispatchThreads:&v23 threadsPerThreadgroup:&v21];
-      [v15 endEncoding];
+      [computeCommandEncoder4 dispatchThreads:&v23 threadsPerThreadgroup:&v21];
+      [computeCommandEncoder4 endEncoding];
 
-      v18 = [v4 computeCommandEncoder];
-      [v18 setComputePipelineState:self->_constrainDiffusion];
-      [v18 setTexture:self->_constraintsTexture atIndex:0];
-      [v18 setTexture:self->_diffusionTexture atIndex:1];
-      v19 = [(MTLTexture *)self->_diffusionTexture width];
-      v20 = [(MTLTexture *)self->_diffusionTexture height];
-      v23 = v19;
-      v24 = v20;
+      computeCommandEncoder5 = [diffusionCopy computeCommandEncoder];
+      [computeCommandEncoder5 setComputePipelineState:self->_constrainDiffusion];
+      [computeCommandEncoder5 setTexture:self->_constraintsTexture atIndex:0];
+      [computeCommandEncoder5 setTexture:self->_diffusionTexture atIndex:1];
+      width5 = [(MTLTexture *)self->_diffusionTexture width];
+      height5 = [(MTLTexture *)self->_diffusionTexture height];
+      v23 = width5;
+      v24 = height5;
       v25 = 1;
       v21 = xmmword_2244A5230;
       v22 = 1;
-      [v18 dispatchThreads:&v23 threadsPerThreadgroup:&v21];
-      [v18 endEncoding];
+      [computeCommandEncoder5 dispatchThreads:&v23 threadsPerThreadgroup:&v21];
+      [computeCommandEncoder5 endEncoding];
 
       ++v8;
     }

@@ -1,7 +1,7 @@
 @interface HKPopulationNormsClassificationCollectionView
 - (CGSize)intrinsicContentSize;
 - (void)intrinsicContentSize;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation HKPopulationNormsClassificationCollectionView
@@ -41,23 +41,23 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v10.receiver = self;
   v10.super_class = HKPopulationNormsClassificationCollectionView;
-  [(HKPopulationNormsClassificationCollectionView *)&v10 traitCollectionDidChange:v4];
-  if (v4)
+  [(HKPopulationNormsClassificationCollectionView *)&v10 traitCollectionDidChange:changeCopy];
+  if (changeCopy)
   {
-    v5 = [(HKPopulationNormsClassificationCollectionView *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
-    v7 = [v4 preferredContentSizeCategory];
-    v8 = [v6 isEqualToString:v7];
+    traitCollection = [(HKPopulationNormsClassificationCollectionView *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+    v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
     if ((v8 & 1) == 0)
     {
-      v9 = [(HKPopulationNormsClassificationCollectionView *)self collectionViewLayout];
-      [v9 invalidateLayout];
+      collectionViewLayout = [(HKPopulationNormsClassificationCollectionView *)self collectionViewLayout];
+      [collectionViewLayout invalidateLayout];
 
       [(HKPopulationNormsClassificationCollectionView *)self invalidateIntrinsicContentSize];
     }
@@ -68,7 +68,7 @@
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138543362;
-  v3 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1C3942000, a2, OS_LOG_TYPE_DEBUG, "%{public}@: first cell unavailable; creating sizing cell for intrinsicContentSize measurement", &v2, 0xCu);
 }
 

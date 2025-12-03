@@ -25,7 +25,7 @@
   MEMORY[0x28223BE20](v8);
   v12 = &v14 - v11;
   (*(v4 + 104))(v7, *MEMORY[0x277D78CA8], v3);
-  v13 = self;
+  selfCopy = self;
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D793B30, &unk_226354F10);
   sub_22635067C();
 

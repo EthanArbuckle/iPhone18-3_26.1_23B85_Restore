@@ -2,23 +2,23 @@
 - (AudioStreamBasicDescription)asbd;
 - (AudioTimeStamp)audioTimeStamp;
 - (BOOL)initialize;
-- (VSVoiceBooster)initWithStreamDescription:(AudioStreamBasicDescription *)a3 pcmBufferSize:(unint64_t)a4;
-- (id)processData:(id)a3;
+- (VSVoiceBooster)initWithStreamDescription:(AudioStreamBasicDescription *)description pcmBufferSize:(unint64_t)size;
+- (id)processData:(id)data;
 - (void)dealloc;
-- (void)setAsbd:(AudioStreamBasicDescription *)a3;
-- (void)setAudioTimeStamp:(AudioTimeStamp *)a3;
-- (void)setVoiceBoostGainDecibels:(float)a3;
+- (void)setAsbd:(AudioStreamBasicDescription *)asbd;
+- (void)setAudioTimeStamp:(AudioTimeStamp *)stamp;
+- (void)setVoiceBoostGainDecibels:(float)decibels;
 - (void)uninitialize;
 @end
 
 @implementation VSVoiceBooster
 
-- (void)setAudioTimeStamp:(AudioTimeStamp *)a3
+- (void)setAudioTimeStamp:(AudioTimeStamp *)stamp
 {
-  v3 = *&a3->mSampleTime;
-  v4 = *&a3->mRateScalar;
-  v5 = *&a3->mSMPTETime.mSubframes;
-  *&self->_audioTimeStamp.mSMPTETime.mHours = *&a3->mSMPTETime.mHours;
+  v3 = *&stamp->mSampleTime;
+  v4 = *&stamp->mRateScalar;
+  v5 = *&stamp->mSMPTETime.mSubframes;
+  *&self->_audioTimeStamp.mSMPTETime.mHours = *&stamp->mSMPTETime.mHours;
   *&self->_audioTimeStamp.mSMPTETime.mSubframes = v5;
   *&self->_audioTimeStamp.mRateScalar = v4;
   *&self->_audioTimeStamp.mSampleTime = v3;
@@ -35,11 +35,11 @@
   return self;
 }
 
-- (void)setAsbd:(AudioStreamBasicDescription *)a3
+- (void)setAsbd:(AudioStreamBasicDescription *)asbd
 {
-  v3 = *&a3->mSampleRate;
-  v4 = *&a3->mBytesPerPacket;
-  *&self->_asbd.mBitsPerChannel = *&a3->mBitsPerChannel;
+  v3 = *&asbd->mSampleRate;
+  v4 = *&asbd->mBytesPerPacket;
+  *&self->_asbd.mBitsPerChannel = *&asbd->mBitsPerChannel;
   *&self->_asbd.mSampleRate = v3;
   *&self->_asbd.mBytesPerPacket = v4;
 }
@@ -53,11 +53,11 @@
   return self;
 }
 
-- (id)processData:(id)a3
+- (id)processData:(id)data
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (self->_voiceBoostUnit && (-[VSVoiceBooster voiceBoostGainDecibels](self, "voiceBoostGainDecibels"), v5 != 0.0) && [v4 length] && (ioActionFlags = 512, v9 = objc_msgSend(v4, "length"), mBytesPerFrame = self->_asbd.mBytesPerFrame, v11 = -[VSVoiceBooster pcmBufferSize](self, "pcmBufferSize"), -[VSVoiceBooster asbd](self, "asbd"), mBytesPerFrame <= v9))
+  dataCopy = data;
+  if (self->_voiceBoostUnit && (-[VSVoiceBooster voiceBoostGainDecibels](self, "voiceBoostGainDecibels"), v5 != 0.0) && [dataCopy length] && (ioActionFlags = 512, v9 = objc_msgSend(dataCopy, "length"), mBytesPerFrame = self->_asbd.mBytesPerFrame, v11 = -[VSVoiceBooster pcmBufferSize](self, "pcmBufferSize"), -[VSVoiceBooster asbd](self, "asbd"), mBytesPerFrame <= v9))
   {
     v12 = 0;
     v13 = v9 / mBytesPerFrame;
@@ -83,7 +83,7 @@
       inInputData.mNumberBuffers = 1;
       inInputData.mBuffers[0].mNumberChannels = 1;
       inInputData.mBuffers[0].mDataByteSize = v16;
-      inInputData.mBuffers[0].mData = ([v4 mutableBytes] + v17);
+      inInputData.mBuffers[0].mData = ([dataCopy mutableBytes] + v17);
       v18 = [MEMORY[0x277CBEB28] dataWithLength:{2 * v16, 1, 1, 0}];
       v26.mBuffers[0].mDataByteSize = [v18 length];
       v26.mBuffers[0].mData = [v18 mutableBytes];
@@ -165,10 +165,10 @@ LABEL_3:
   return v6;
 }
 
-- (void)setVoiceBoostGainDecibels:(float)a3
+- (void)setVoiceBoostGainDecibels:(float)decibels
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (self->_voiceBoostGainDecibels == a3)
+  if (self->_voiceBoostGainDecibels == decibels)
   {
 LABEL_10:
     v9 = *MEMORY[0x277D85DE8];
@@ -179,7 +179,7 @@ LABEL_10:
   if (voiceBoostUnit)
   {
 LABEL_5:
-    v6 = AudioUnitSetParameter(voiceBoostUnit, 2u, 0, 0, a3, 0);
+    v6 = AudioUnitSetParameter(voiceBoostUnit, 2u, 0, 0, decibels, 0);
     if (v6)
     {
       v7 = v6;
@@ -195,7 +195,7 @@ LABEL_5:
 
     else
     {
-      self->_voiceBoostGainDecibels = a3;
+      self->_voiceBoostGainDecibels = decibels;
     }
 
     goto LABEL_10;
@@ -402,19 +402,19 @@ LABEL_24:
   [(VSVoiceBooster *)&v3 dealloc];
 }
 
-- (VSVoiceBooster)initWithStreamDescription:(AudioStreamBasicDescription *)a3 pcmBufferSize:(unint64_t)a4
+- (VSVoiceBooster)initWithStreamDescription:(AudioStreamBasicDescription *)description pcmBufferSize:(unint64_t)size
 {
   v9.receiver = self;
   v9.super_class = VSVoiceBooster;
   result = [(VSVoiceBooster *)&v9 init];
   if (result)
   {
-    v7 = *&a3->mSampleRate;
-    v8 = *&a3->mBytesPerPacket;
-    *&result->_asbd.mBitsPerChannel = *&a3->mBitsPerChannel;
+    v7 = *&description->mSampleRate;
+    v8 = *&description->mBytesPerPacket;
+    *&result->_asbd.mBitsPerChannel = *&description->mBitsPerChannel;
     *&result->_asbd.mSampleRate = v7;
     *&result->_asbd.mBytesPerPacket = v8;
-    result->_pcmBufferSize = a4;
+    result->_pcmBufferSize = size;
     result->_audioTimeStamp.mFlags = 2;
   }
 

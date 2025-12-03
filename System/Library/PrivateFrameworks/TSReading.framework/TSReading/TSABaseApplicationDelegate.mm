@@ -1,9 +1,9 @@
 @interface TSABaseApplicationDelegate
 + (id)sharedDelegate;
-+ (void)presentAlertController:(id)a3 animated:(BOOL)a4;
-- (BOOL)URLIsValidForImportedHyperlink:(id)a3;
-- (BOOL)isReadableDocumentType:(id)a3;
-- (BOOL)openURL:(id)a3 sourceDocumentRoot:(id)a4;
++ (void)presentAlertController:(id)controller animated:(BOOL)animated;
+- (BOOL)URLIsValidForImportedHyperlink:(id)hyperlink;
+- (BOOL)isReadableDocumentType:(id)type;
+- (BOOL)openURL:(id)l sourceDocumentRoot:(id)root;
 - (Class)documentRootClass;
 - (NSArray)applicationTemplateVariants;
 - (NSArray)importableDocumentTypes;
@@ -16,17 +16,17 @@
 - (NSString)templateDocumentType;
 - (NSString)templateSFFDocumentType;
 - (TSABaseApplicationDelegate)init;
-- (id)applicationTemplateVariantsForLocale:(__CFLocale *)a3;
-- (id)existingNestedDocumentPathForPath:(id)a3;
+- (id)applicationTemplateVariantsForLocale:(__CFLocale *)locale;
+- (id)existingNestedDocumentPathForPath:(id)path;
 - (void)dealloc;
-- (void)persistenceError:(id)a3;
+- (void)persistenceError:(id)error;
 @end
 
 @implementation TSABaseApplicationDelegate
 
 + (id)sharedDelegate
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___TSABaseApplicationDelegate;
   return objc_msgSendSuper2(&v3, sel_sharedDelegate);
 }
@@ -55,70 +55,70 @@
 
 - (Class)documentRootClass
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSABaseApplicationDelegate documentRootClass]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/application/common/TSABaseApplicationDelegate.mm"), 61, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/application/common/TSABaseApplicationDelegate.mm"), 61, @"Abstract method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "-[TSABaseApplicationDelegate documentRootClass]"), 0}]);
 }
 
-- (void)persistenceError:(id)a3
+- (void)persistenceError:(id)error
 {
-  v4 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSABaseApplicationDelegate persistenceError:]"];
-  [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/application/common/TSABaseApplicationDelegate.mm"), 69, @"Got persistence error: %@", a3}];
+  [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/application/common/TSABaseApplicationDelegate.mm"), 69, @"Got persistence error: %@", error}];
 }
 
 - (NSString)nativeDocumentType
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSABaseApplicationDelegate nativeDocumentType]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/application/common/TSABaseApplicationDelegate.mm"), 76, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/application/common/TSABaseApplicationDelegate.mm"), 76, @"Abstract method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "-[TSABaseApplicationDelegate nativeDocumentType]"), 0}]);
 }
 
 - (NSString)nativeDocumentExtension
 {
-  v2 = [(TSABaseApplicationDelegate *)self nativeDocumentType];
+  nativeDocumentType = [(TSABaseApplicationDelegate *)self nativeDocumentType];
 
-  return [(NSString *)v2 tsu_UTIFilenameExtension];
+  return [(NSString *)nativeDocumentType tsu_UTIFilenameExtension];
 }
 
 - (NSString)templateDocumentType
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSABaseApplicationDelegate templateDocumentType]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/application/common/TSABaseApplicationDelegate.mm"), 86, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/application/common/TSABaseApplicationDelegate.mm"), 86, @"Abstract method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "-[TSABaseApplicationDelegate templateDocumentType]"), 0}]);
 }
 
 - (NSString)templateSFFDocumentType
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSABaseApplicationDelegate templateSFFDocumentType]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/application/common/TSABaseApplicationDelegate.mm"), 91, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/application/common/TSABaseApplicationDelegate.mm"), 91, @"Abstract method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "-[TSABaseApplicationDelegate templateSFFDocumentType]"), 0}]);
 }
 
 - (NSString)templateDocumentExtension
 {
-  v2 = [(TSABaseApplicationDelegate *)self templateDocumentType];
+  templateDocumentType = [(TSABaseApplicationDelegate *)self templateDocumentType];
 
-  return [(NSString *)v2 tsu_UTIFilenameExtension];
+  return [(NSString *)templateDocumentType tsu_UTIFilenameExtension];
 }
 
 - (NSString)tangierEditingFormatDocumentType
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSABaseApplicationDelegate tangierEditingFormatDocumentType]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/application/common/TSABaseApplicationDelegate.mm"), 101, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/application/common/TSABaseApplicationDelegate.mm"), 101, @"Abstract method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "-[TSABaseApplicationDelegate tangierEditingFormatDocumentType]"), 0}]);
 }
 
 - (NSString)nativeSFFDocumentType
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSABaseApplicationDelegate nativeSFFDocumentType]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/application/common/TSABaseApplicationDelegate.mm"), 106, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/application/common/TSABaseApplicationDelegate.mm"), 106, @"Abstract method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "-[TSABaseApplicationDelegate nativeSFFDocumentType]"), 0}]);
 }
 
@@ -134,21 +134,21 @@
 
 - (NSArray)importableDocumentTypes
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSABaseApplicationDelegate importableDocumentTypes]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/application/common/TSABaseApplicationDelegate.mm"), 123, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/application/common/TSABaseApplicationDelegate.mm"), 123, @"Abstract method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "-[TSABaseApplicationDelegate importableDocumentTypes]"), 0}]);
 }
 
-- (BOOL)isReadableDocumentType:(id)a3
+- (BOOL)isReadableDocumentType:(id)type
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = [(TSABaseApplicationDelegate *)self readableDocumentTypes];
+  readableDocumentTypes = [(TSABaseApplicationDelegate *)self readableDocumentTypes];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [(NSArray *)readableDocumentTypes countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -160,10 +160,10 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(readableDocumentTypes);
         }
 
-        if ([a3 tsu_conformsToUTI:*(*(&v10 + 1) + 8 * v8)])
+        if ([type tsu_conformsToUTI:*(*(&v10 + 1) + 8 * v8)])
         {
           LOBYTE(v5) = 1;
           return v5;
@@ -173,7 +173,7 @@
       }
 
       while (v6 != v8);
-      v5 = [(NSArray *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [(NSArray *)readableDocumentTypes countByEnumeratingWithState:&v10 objects:v14 count:16];
       v6 = v5;
       if (v5)
       {
@@ -195,23 +195,23 @@
   return v4;
 }
 
-- (id)applicationTemplateVariantsForLocale:(__CFLocale *)a3
+- (id)applicationTemplateVariantsForLocale:(__CFLocale *)locale
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSABaseApplicationDelegate applicationTemplateVariantsForLocale:]"];
-  [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/application/common/TSABaseApplicationDelegate.mm"), 152, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/application/common/TSABaseApplicationDelegate.mm"), 152, @"Abstract method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "-[TSABaseApplicationDelegate applicationTemplateVariantsForLocale:]"), 0}]);
 }
 
-- (BOOL)openURL:(id)a3 sourceDocumentRoot:(id)a4
+- (BOOL)openURL:(id)l sourceDocumentRoot:(id)root
 {
-  v4 = a3;
-  v5 = [objc_msgSend(a3 "scheme")];
-  if (!v5)
+  lCopy = l;
+  scheme = [objc_msgSend(l "scheme")];
+  if (!scheme)
   {
-    v4 = [MEMORY[0x277CBEBC0] URLWithString:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"http://%@", objc_msgSend(v4, "absoluteString"))}];
-    v5 = [v4 scheme];
-    if (!v5)
+    lCopy = [MEMORY[0x277CBEBC0] URLWithString:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"http://%@", objc_msgSend(lCopy, "absoluteString"))}];
+    scheme = [lCopy scheme];
+    if (!scheme)
     {
       return 0;
     }
@@ -222,38 +222,38 @@
     return 0;
   }
 
-  v7 = [MEMORY[0x277D75128] sharedApplication];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
 
-  return [v7 openURL:v4];
+  return [mEMORY[0x277D75128] openURL:lCopy];
 }
 
-+ (void)presentAlertController:(id)a3 animated:(BOOL)a4
++ (void)presentAlertController:(id)controller animated:(BOOL)animated
 {
-  v4 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSABaseApplicationDelegate presentAlertController:animated:]"];
-  [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/application/common/TSABaseApplicationDelegate.mm"), 240, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/application/common/TSABaseApplicationDelegate.mm"), 240, @"Abstract method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "+[TSABaseApplicationDelegate presentAlertController:animated:]"), 0}]);
 }
 
-- (BOOL)URLIsValidForImportedHyperlink:(id)a3
+- (BOOL)URLIsValidForImportedHyperlink:(id)hyperlink
 {
-  v4 = [a3 scheme];
-  if (v4)
+  scheme = [hyperlink scheme];
+  if (scheme)
   {
-    LOBYTE(v4) = [-[TSABaseApplicationDelegate invalidURLSchemes](self "invalidURLSchemes")] == 0;
+    LOBYTE(scheme) = [-[TSABaseApplicationDelegate invalidURLSchemes](self "invalidURLSchemes")] == 0;
   }
 
-  return v4;
+  return scheme;
 }
 
-- (id)existingNestedDocumentPathForPath:(id)a3
+- (id)existingNestedDocumentPathForPath:(id)path
 {
-  if (![a3 tsu_pathConformsToUTI:{-[TSABaseApplicationDelegate tangierEditingFormatDocumentType](self, "tangierEditingFormatDocumentType")}])
+  if (![path tsu_pathConformsToUTI:{-[TSABaseApplicationDelegate tangierEditingFormatDocumentType](self, "tangierEditingFormatDocumentType")}])
   {
     return 0;
   }
 
-  v5 = [a3 stringByAppendingPathComponent:{-[TSKCompatibilityDelegate nestedDocumentFilename](-[TSKApplicationDelegate compatibilityDelegate](self, "compatibilityDelegate"), "nestedDocumentFilename")}];
+  v5 = [path stringByAppendingPathComponent:{-[TSKCompatibilityDelegate nestedDocumentFilename](-[TSKApplicationDelegate compatibilityDelegate](self, "compatibilityDelegate"), "nestedDocumentFilename")}];
   if (([objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")] & 1) == 0)
   {
     return 0;

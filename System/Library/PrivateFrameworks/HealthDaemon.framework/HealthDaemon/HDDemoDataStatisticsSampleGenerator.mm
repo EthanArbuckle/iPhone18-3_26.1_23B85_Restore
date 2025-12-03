@@ -1,12 +1,12 @@
 @interface HDDemoDataStatisticsSampleGenerator
 - (HDDemoDataStatisticsSampleGenerator)init;
-- (HDDemoDataStatisticsSampleGenerator)initWithCoder:(id)a3;
-- (double)computeNoiseFromTime:(double)a3 stdDev:(double)a4;
-- (double)pseudoRandomDoubleFromTime:(double)a3;
-- (double)randomSampleFromNormalDistributionWithMean:(double)a3 stdDev:(double)a4;
+- (HDDemoDataStatisticsSampleGenerator)initWithCoder:(id)coder;
+- (double)computeNoiseFromTime:(double)time stdDev:(double)dev;
+- (double)pseudoRandomDoubleFromTime:(double)time;
+- (double)randomSampleFromNormalDistributionWithMean:(double)mean stdDev:(double)dev;
 - (id).cxx_construct;
-- (void)encodeWithCoder:(id)a3;
-- (void)setupWithDemoDataGenerator:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setupWithDemoDataGenerator:(id)generator;
 @end
 
 @implementation HDDemoDataStatisticsSampleGenerator
@@ -28,13 +28,13 @@
   return v3;
 }
 
-- (HDDemoDataStatisticsSampleGenerator)initWithCoder:(id)a3
+- (HDDemoDataStatisticsSampleGenerator)initWithCoder:(id)coder
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = HDDemoDataStatisticsSampleGenerator;
-  v5 = [(HDDemoDataBaseSampleGenerator *)&v14 initWithCoder:v4];
+  v5 = [(HDDemoDataBaseSampleGenerator *)&v14 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
@@ -45,7 +45,7 @@
     v15[1] = objc_opt_class();
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:2];
     v9 = [v7 setWithArray:v8];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"HDDemoDataStatisticsSampleGeneratorPseudoRandomDoublesKey"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"HDDemoDataStatisticsSampleGeneratorPseudoRandomDoublesKey"];
     pseudoRandomDoubles = v6->_pseudoRandomDoubles;
     v6->_pseudoRandomDoubles = v10;
   }
@@ -54,21 +54,21 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = HDDemoDataStatisticsSampleGenerator;
-  [(HDDemoDataBaseSampleGenerator *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_pseudoRandomDoubles forKey:@"HDDemoDataStatisticsSampleGeneratorPseudoRandomDoublesKey"];
+  [(HDDemoDataBaseSampleGenerator *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_pseudoRandomDoubles forKey:@"HDDemoDataStatisticsSampleGeneratorPseudoRandomDoublesKey"];
 }
 
-- (void)setupWithDemoDataGenerator:(id)a3
+- (void)setupWithDemoDataGenerator:(id)generator
 {
-  v4 = a3;
+  generatorCopy = generator;
   v11.receiver = self;
   v11.super_class = HDDemoDataStatisticsSampleGenerator;
-  [(HDDemoDataBaseSampleGenerator *)&v11 setupWithDemoDataGenerator:v4];
+  [(HDDemoDataBaseSampleGenerator *)&v11 setupWithDemoDataGenerator:generatorCopy];
   if (![(HDDemoDataBaseSampleGenerator *)self createdFromNSKeyedUnarchiver])
   {
     if (self)
@@ -102,34 +102,34 @@
   }
 }
 
-- (double)pseudoRandomDoubleFromTime:(double)a3
+- (double)pseudoRandomDoubleFromTime:(double)time
 {
-  v3 = [(NSArray *)self->_pseudoRandomDoubles objectAtIndexedSubscript:(a3 * 15485863.0) % [(NSArray *)self->_pseudoRandomDoubles count]];
+  v3 = [(NSArray *)self->_pseudoRandomDoubles objectAtIndexedSubscript:(time * 15485863.0) % [(NSArray *)self->_pseudoRandomDoubles count]];
   [v3 doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (double)computeNoiseFromTime:(double)a3 stdDev:(double)a4
+- (double)computeNoiseFromTime:(double)time stdDev:(double)dev
 {
   result = 0.0;
   if (self)
   {
-    if (a4 != 0.0)
+    if (dev != 0.0)
     {
-      [(HDDemoDataStatisticsSampleGenerator *)self pseudoRandomDoubleFromTime:a3];
-      return 0.0 - (a4 - (a4 + a4) * v7);
+      [(HDDemoDataStatisticsSampleGenerator *)self pseudoRandomDoubleFromTime:time];
+      return 0.0 - (dev - (dev + dev) * v7);
     }
   }
 
   return result;
 }
 
-- (double)randomSampleFromNormalDistributionWithMean:(double)a3 stdDev:(double)a4
+- (double)randomSampleFromNormalDistributionWithMean:(double)mean stdDev:(double)dev
 {
-  v5[0] = a3;
-  v5[1] = a4;
+  v5[0] = mean;
+  v5[1] = dev;
   v6 = 0;
   return std::normal_distribution<double>::operator()<std::linear_congruential_engine<unsigned int,48271u,0u,2147483647u>>(v5, &self->_generator.__x_, v5);
 }

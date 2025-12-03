@@ -1,19 +1,19 @@
 @interface RTHistoryEntryPlaceDisplay
-- (RTHistoryEntryPlaceDisplay)initWithIdentifier:(id)a3 usageDate:(id)a4 location:(id)a5 mapItem:(id)a6;
+- (RTHistoryEntryPlaceDisplay)initWithIdentifier:(id)identifier usageDate:(id)date location:(id)location mapItem:(id)item;
 - (id)description;
 @end
 
 @implementation RTHistoryEntryPlaceDisplay
 
-- (RTHistoryEntryPlaceDisplay)initWithIdentifier:(id)a3 usageDate:(id)a4 location:(id)a5 mapItem:(id)a6
+- (RTHistoryEntryPlaceDisplay)initWithIdentifier:(id)identifier usageDate:(id)date location:(id)location mapItem:(id)item
 {
   v29 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (!v12)
+  identifierCopy = identifier;
+  dateCopy = date;
+  locationCopy = location;
+  itemCopy = item;
+  v14 = itemCopy;
+  if (!locationCopy)
   {
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -33,7 +33,7 @@
     goto LABEL_9;
   }
 
-  if (!v13)
+  if (!itemCopy)
   {
 LABEL_9:
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -47,7 +47,7 @@ LABEL_9:
     }
 
 LABEL_12:
-    v20 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
@@ -56,31 +56,31 @@ LABEL_12:
   v15 = [(RTHistoryEntryPlaceDisplay *)&v24 init];
   if (v15)
   {
-    v16 = [v10 copy];
+    v16 = [identifierCopy copy];
     identifier = v15->_identifier;
     v15->_identifier = v16;
 
-    v18 = [v11 copy];
+    v18 = [dateCopy copy];
     usageDate = v15->_usageDate;
     v15->_usageDate = v18;
 
-    objc_storeStrong(&v15->_location, a5);
-    objc_storeStrong(&v15->_mapItem, a6);
+    objc_storeStrong(&v15->_location, location);
+    objc_storeStrong(&v15->_mapItem, item);
   }
 
   self = v15;
-  v20 = self;
+  selfCopy = self;
 LABEL_13:
 
-  return v20;
+  return selfCopy;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
   identifier = self->_identifier;
-  v5 = [(NSDate *)self->_usageDate stringFromDate];
-  v6 = [v3 stringWithFormat:@"identifier, %@, usageDate, %@, location, %@, mapItem, %@", identifier, v5, self->_location, self->_mapItem];
+  stringFromDate = [(NSDate *)self->_usageDate stringFromDate];
+  v6 = [v3 stringWithFormat:@"identifier, %@, usageDate, %@, location, %@, mapItem, %@", identifier, stringFromDate, self->_location, self->_mapItem];
 
   return v6;
 }

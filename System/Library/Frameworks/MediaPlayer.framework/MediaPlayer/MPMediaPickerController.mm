@@ -1,8 +1,8 @@
 @interface MPMediaPickerController
 - (BOOL)_hasAddedRemoteView;
-- (MPMediaPickerController)initWithConfiguration:(id)a3;
+- (MPMediaPickerController)initWithConfiguration:(id)configuration;
 - (MPMediaPickerController)initWithMediaTypes:(MPMediaType)mediaTypes;
-- (MPMediaPickerController)initWithSupportedTypeIdentifiers:(id)a3 selectionMode:(int64_t)a4;
+- (MPMediaPickerController)initWithSupportedTypeIdentifiers:(id)identifiers selectionMode:(int64_t)mode;
 - (id)delegate;
 - (int64_t)modalPresentationStyle;
 - (int64_t)preferredInterfaceOrientationForPresentation;
@@ -11,25 +11,25 @@
 - (void)_checkLibraryAuthorization;
 - (void)_forceDismissal;
 - (void)_pickerDidCancel;
-- (void)_pickerDidPickItems:(id)a3;
-- (void)_pickerDidPickPlaybackArchive:(id)a3;
+- (void)_pickerDidPickItems:(id)items;
+- (void)_pickerDidPickPlaybackArchive:(id)archive;
 - (void)_sharedInit;
 - (void)_synchronizeSettings;
 - (void)setAllowsPickingMultipleItems:(BOOL)allowsPickingMultipleItems;
-- (void)setPickingForExternalPlayer:(BOOL)a3;
-- (void)setPicksSingleCollectionEntity:(BOOL)a3;
-- (void)setPlaybackArchiveConfiguration:(id)a3;
+- (void)setPickingForExternalPlayer:(BOOL)player;
+- (void)setPicksSingleCollectionEntity:(BOOL)entity;
+- (void)setPlaybackArchiveConfiguration:(id)configuration;
 - (void)setPrompt:(NSString *)prompt;
-- (void)setShowsCatalogContent:(BOOL)a3;
+- (void)setShowsCatalogContent:(BOOL)content;
 - (void)setShowsCloudItems:(BOOL)showsCloudItems;
 - (void)setShowsItemsWithProtectedAssets:(BOOL)showsItemsWithProtectedAssets;
-- (void)setShowsLibraryContent:(BOOL)a3;
-- (void)setSupportsUnavailableContent:(BOOL)a3;
-- (void)setWatchCompatibilityVersion:(unsigned int)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setShowsLibraryContent:(BOOL)content;
+- (void)setSupportsUnavailableContent:(BOOL)content;
+- (void)setWatchCompatibilityVersion:(unsigned int)version;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation MPMediaPickerController
@@ -112,41 +112,41 @@ void __53__MPMediaPickerController__checkLibraryAuthorization__block_invoke(uint
 
 - (void)_addRemoteView
 {
-  v3 = [(MPMediaPickerRemoteViewLoader *)self->_loader remoteViewController];
-  if (v3)
+  remoteViewController = [(MPMediaPickerRemoteViewLoader *)self->_loader remoteViewController];
+  if (remoteViewController)
   {
-    v4 = v3;
-    v5 = [(MPMediaPickerController *)self isViewLoaded];
+    v4 = remoteViewController;
+    isViewLoaded = [(MPMediaPickerController *)self isViewLoaded];
 
-    if (v5)
+    if (isViewLoaded)
     {
-      v6 = [(MPMediaPickerRemoteViewLoader *)self->_loader remoteViewController];
-      v10 = [v6 view];
+      remoteViewController2 = [(MPMediaPickerRemoteViewLoader *)self->_loader remoteViewController];
+      view = [remoteViewController2 view];
 
-      v7 = [MEMORY[0x1E69DC888] whiteColor];
-      [v10 setBackgroundColor:v7];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      [view setBackgroundColor:whiteColor];
 
       [(MPMediaPickerRemoteViewLoader *)self->_loader synchronizeSettings];
-      v8 = [(MPMediaPickerController *)self view];
-      [v8 addSubview:v10];
+      view2 = [(MPMediaPickerController *)self view];
+      [view2 addSubview:view];
 
-      v9 = [(MPMediaPickerController *)self view];
-      [v9 bounds];
-      [v10 setFrame:?];
+      view3 = [(MPMediaPickerController *)self view];
+      [view3 bounds];
+      [view setFrame:?];
 
-      [v10 setAutoresizingMask:18];
+      [view setAutoresizingMask:18];
     }
   }
 }
 
 - (BOOL)_hasAddedRemoteView
 {
-  v3 = [(MPMediaPickerRemoteViewLoader *)self->_loader remoteViewController];
-  if (v3 && -[MPMediaPickerController isViewLoaded](self, "isViewLoaded") && [v3 isViewLoaded])
+  remoteViewController = [(MPMediaPickerRemoteViewLoader *)self->_loader remoteViewController];
+  if (remoteViewController && -[MPMediaPickerController isViewLoaded](self, "isViewLoaded") && [remoteViewController isViewLoaded])
   {
-    v4 = [v3 view];
-    v5 = [v4 superview];
-    v6 = v5 != 0;
+    view = [remoteViewController view];
+    superview = [view superview];
+    v6 = superview != 0;
   }
 
   else
@@ -157,13 +157,13 @@ void __53__MPMediaPickerController__checkLibraryAuthorization__block_invoke(uint
   return v6;
 }
 
-- (void)_pickerDidPickPlaybackArchive:(id)a3
+- (void)_pickerDidPickPlaybackArchive:(id)archive
 {
-  v5 = a3;
+  archiveCopy = archive;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if ([WeakRetained conformsToProtocol:&unk_1F15AA2F0] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [WeakRetained mediaPicker:self didPickPlaybackArchive:v5];
+    [WeakRetained mediaPicker:self didPickPlaybackArchive:archiveCopy];
   }
 
   else
@@ -172,13 +172,13 @@ void __53__MPMediaPickerController__checkLibraryAuthorization__block_invoke(uint
   }
 }
 
-- (void)_pickerDidPickItems:(id)a3
+- (void)_pickerDidPickItems:(id)items
 {
-  v5 = a3;
+  itemsCopy = items;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained mediaPicker:self didPickMediaItems:v5];
+    [WeakRetained mediaPicker:self didPickMediaItems:itemsCopy];
   }
 
   else
@@ -203,72 +203,72 @@ void __53__MPMediaPickerController__checkLibraryAuthorization__block_invoke(uint
 
 - (void)_forceDismissal
 {
-  v2 = [(MPMediaPickerController *)self presentingViewController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(MPMediaPickerController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)setPlaybackArchiveConfiguration:(id)a3
+- (void)setPlaybackArchiveConfiguration:(id)configuration
 {
-  v6 = a3;
-  v4 = [(MPMediaPickerConfiguration *)self->_configuration playbackArchiveConfiguration];
+  configurationCopy = configuration;
+  playbackArchiveConfiguration = [(MPMediaPickerConfiguration *)self->_configuration playbackArchiveConfiguration];
 
-  v5 = v6;
-  if (v4 != v6)
+  v5 = configurationCopy;
+  if (playbackArchiveConfiguration != configurationCopy)
   {
-    [(MPMediaPickerConfiguration *)self->_configuration setPlaybackArchiveConfiguration:v6];
+    [(MPMediaPickerConfiguration *)self->_configuration setPlaybackArchiveConfiguration:configurationCopy];
     [(MPMediaPickerController *)self _synchronizeSettings];
-    v5 = v6;
+    v5 = configurationCopy;
   }
 }
 
-- (void)setPickingForExternalPlayer:(BOOL)a3
+- (void)setPickingForExternalPlayer:(BOOL)player
 {
-  v3 = a3;
-  if ([(MPMediaPickerConfiguration *)self->_configuration pickingForExternalPlayer]!= a3)
+  playerCopy = player;
+  if ([(MPMediaPickerConfiguration *)self->_configuration pickingForExternalPlayer]!= player)
   {
-    [(MPMediaPickerConfiguration *)self->_configuration setPickingForExternalPlayer:v3];
-
-    [(MPMediaPickerController *)self _synchronizeSettings];
-  }
-}
-
-- (void)setSupportsUnavailableContent:(BOOL)a3
-{
-  v3 = a3;
-  if ([(MPMediaPickerConfiguration *)self->_configuration supportsUnavailableContent]!= a3)
-  {
-    [(MPMediaPickerConfiguration *)self->_configuration setSupportsUnavailableContent:v3];
+    [(MPMediaPickerConfiguration *)self->_configuration setPickingForExternalPlayer:playerCopy];
 
     [(MPMediaPickerController *)self _synchronizeSettings];
   }
 }
 
-- (void)setShowsLibraryContent:(BOOL)a3
+- (void)setSupportsUnavailableContent:(BOOL)content
 {
-  v3 = a3;
-  if ([(MPMediaPickerConfiguration *)self->_configuration showsLibraryContent]!= a3)
+  contentCopy = content;
+  if ([(MPMediaPickerConfiguration *)self->_configuration supportsUnavailableContent]!= content)
   {
-    [(MPMediaPickerConfiguration *)self->_configuration setShowsLibraryContent:v3];
+    [(MPMediaPickerConfiguration *)self->_configuration setSupportsUnavailableContent:contentCopy];
 
     [(MPMediaPickerController *)self _synchronizeSettings];
   }
 }
 
-- (void)setShowsCatalogContent:(BOOL)a3
+- (void)setShowsLibraryContent:(BOOL)content
 {
-  v3 = a3;
-  if ([(MPMediaPickerConfiguration *)self->_configuration showsCatalogContent]!= a3)
+  contentCopy = content;
+  if ([(MPMediaPickerConfiguration *)self->_configuration showsLibraryContent]!= content)
   {
-    [(MPMediaPickerConfiguration *)self->_configuration setShowsCatalogContent:v3];
+    [(MPMediaPickerConfiguration *)self->_configuration setShowsLibraryContent:contentCopy];
 
     [(MPMediaPickerController *)self _synchronizeSettings];
   }
 }
 
-- (void)setWatchCompatibilityVersion:(unsigned int)a3
+- (void)setShowsCatalogContent:(BOOL)content
 {
-  v3 = *&a3;
-  if ([(MPMediaPickerConfiguration *)self->_configuration watchCompatibilityVersion]!= a3)
+  contentCopy = content;
+  if ([(MPMediaPickerConfiguration *)self->_configuration showsCatalogContent]!= content)
+  {
+    [(MPMediaPickerConfiguration *)self->_configuration setShowsCatalogContent:contentCopy];
+
+    [(MPMediaPickerController *)self _synchronizeSettings];
+  }
+}
+
+- (void)setWatchCompatibilityVersion:(unsigned int)version
+{
+  v3 = *&version;
+  if ([(MPMediaPickerConfiguration *)self->_configuration watchCompatibilityVersion]!= version)
   {
     [(MPMediaPickerConfiguration *)self->_configuration setWatchCompatibilityVersion:v3];
 
@@ -276,14 +276,14 @@ void __53__MPMediaPickerController__checkLibraryAuthorization__block_invoke(uint
   }
 }
 
-- (void)setPicksSingleCollectionEntity:(BOOL)a3
+- (void)setPicksSingleCollectionEntity:(BOOL)entity
 {
-  v3 = a3;
-  if ([(MPMediaPickerConfiguration *)self->_configuration picksSingleCollectionEntity]!= a3)
+  entityCopy = entity;
+  if ([(MPMediaPickerConfiguration *)self->_configuration picksSingleCollectionEntity]!= entity)
   {
     if ([(MPMediaPickerConfiguration *)self->_configuration allowsPickingMultipleItems])
     {
-      v5 = !v3;
+      v5 = !entityCopy;
     }
 
     else
@@ -293,7 +293,7 @@ void __53__MPMediaPickerController__checkLibraryAuthorization__block_invoke(uint
 
     if (v5)
     {
-      [(MPMediaPickerConfiguration *)self->_configuration setPicksSingleCollectionEntity:v3];
+      [(MPMediaPickerConfiguration *)self->_configuration setPicksSingleCollectionEntity:entityCopy];
 
       [(MPMediaPickerController *)self _synchronizeSettings];
     }
@@ -359,8 +359,8 @@ void __53__MPMediaPickerController__checkLibraryAuthorization__block_invoke(uint
 - (void)setPrompt:(NSString *)prompt
 {
   v6 = prompt;
-  v4 = [(MPMediaPickerConfiguration *)self->_configuration prompt];
-  v5 = [v4 isEqualToString:v6];
+  prompt = [(MPMediaPickerConfiguration *)self->_configuration prompt];
+  v5 = [prompt isEqualToString:v6];
 
   if ((v5 & 1) == 0)
   {
@@ -371,10 +371,10 @@ void __53__MPMediaPickerController__checkLibraryAuthorization__block_invoke(uint
 
 - (int64_t)preferredInterfaceOrientationForPresentation
 {
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     return 1;
   }
@@ -386,10 +386,10 @@ void __53__MPMediaPickerController__checkLibraryAuthorization__block_invoke(uint
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     return 2;
   }
@@ -401,10 +401,10 @@ void __53__MPMediaPickerController__checkLibraryAuthorization__block_invoke(uint
 
 - (int64_t)modalPresentationStyle
 {
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     return 0;
   }
@@ -414,21 +414,21 @@ void __53__MPMediaPickerController__checkLibraryAuthorization__block_invoke(uint
   return [(MPMediaPickerController *)&v6 modalPresentationStyle];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = MPMediaPickerController;
-  [(MPMediaPickerController *)&v4 viewDidAppear:a3];
+  [(MPMediaPickerController *)&v4 viewDidAppear:appear];
   [(MPMediaPickerController *)self _checkLibraryAuthorization];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(MPMediaPickerRemoteViewLoader *)self->_loader synchronizeSettings];
   v5.receiver = self;
   v5.super_class = MPMediaPickerController;
-  [(MPMediaPickerController *)&v5 viewWillAppear:v3];
+  [(MPMediaPickerController *)&v5 viewWillAppear:appearCopy];
 }
 
 - (void)viewDidLoad
@@ -438,13 +438,13 @@ void __53__MPMediaPickerController__checkLibraryAuthorization__block_invoke(uint
   [(MPMediaPickerController *)&v26 viewDidLoad];
   if (![(MPMediaPickerController *)self showsLibraryContent]&& ![(MPMediaPickerController *)self showsCatalogContent])
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"MPMediaPickerController.m" lineNumber:148 description:@"showsLibraryContent and showsCatalogContent can't both be NO."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaPickerController.m" lineNumber:148 description:@"showsLibraryContent and showsCatalogContent can't both be NO."];
   }
 
-  v4 = [(MPMediaPickerController *)self view];
-  v5 = [MEMORY[0x1E69DC888] whiteColor];
-  [v4 setBackgroundColor:v5];
+  view = [(MPMediaPickerController *)self view];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [view setBackgroundColor:whiteColor];
 
   [(MPMediaPickerController *)self _addRemoteView];
   if (!self->_loader)
@@ -455,41 +455,41 @@ void __53__MPMediaPickerController__checkLibraryAuthorization__block_invoke(uint
     [v6 setTitle:v8];
 
     v25 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v6];
-    v9 = [v6 navigationItem];
+    navigationItem = [v6 navigationItem];
     v10 = objc_alloc(MEMORY[0x1E69DC708]);
     v11 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.MediaPlayer"];
     v12 = [v11 localizedStringForKey:@"CANCEL" value:&stru_1F149ECA8 table:@"MediaPlayer"];
     v13 = [v10 initWithTitle:v12 style:0 target:self action:sel__pickerDidCancel];
 
-    [v9 setLeftBarButtonItem:v13];
+    [navigationItem setLeftBarButtonItem:v13];
     v14 = objc_alloc(MEMORY[0x1E69DC708]);
     v15 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.MediaPlayer"];
     v16 = [v15 localizedStringForKey:@"DONE" value:&stru_1F149ECA8 table:@"MediaPlayer"];
     v17 = [v14 initWithTitle:v16 style:0 target:0 action:0];
 
     [v17 setEnabled:0];
-    [v9 setRightBarButtonItem:v17];
+    [navigationItem setRightBarButtonItem:v17];
     v18 = v25;
     [(MPMediaPickerController *)self addChildViewController:v18];
-    v19 = [(MPMediaPickerController *)self view];
-    v20 = [v18 view];
-    [v19 addSubview:v20];
+    view2 = [(MPMediaPickerController *)self view];
+    view3 = [v18 view];
+    [view2 addSubview:view3];
 
     [v18 didMoveToParentViewController:self];
-    v21 = [v18 view];
-    v22 = [(MPMediaPickerController *)self view];
-    [v22 bounds];
-    [v21 setFrame:?];
+    view4 = [v18 view];
+    view5 = [(MPMediaPickerController *)self view];
+    [view5 bounds];
+    [view4 setFrame:?];
 
-    v23 = [v18 view];
+    view6 = [v18 view];
 
-    [v23 setAutoresizingMask:18];
+    [view6 setAutoresizingMask:18];
   }
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -503,32 +503,32 @@ void __53__MPMediaPickerController__checkLibraryAuthorization__block_invoke(uint
 
   v6.receiver = self;
   v6.super_class = MPMediaPickerController;
-  [(MPMediaPickerController *)&v6 willMoveToParentViewController:v4];
+  [(MPMediaPickerController *)&v6 willMoveToParentViewController:controllerCopy];
 }
 
-- (MPMediaPickerController)initWithConfiguration:(id)a3
+- (MPMediaPickerController)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = MPMediaPickerController;
   v6 = [(MPMediaPickerController *)&v9 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
     [(MPMediaPickerController *)v7 _sharedInit];
   }
 
   return v7;
 }
 
-- (MPMediaPickerController)initWithSupportedTypeIdentifiers:(id)a3 selectionMode:(int64_t)a4
+- (MPMediaPickerController)initWithSupportedTypeIdentifiers:(id)identifiers selectionMode:(int64_t)mode
 {
-  v6 = a3;
+  identifiersCopy = identifiers;
   v7 = objc_alloc_init(MPMediaPickerConfiguration);
-  [(MPMediaPickerConfiguration *)v7 setTypeIdentifiers:v6];
+  [(MPMediaPickerConfiguration *)v7 setTypeIdentifiers:identifiersCopy];
 
-  [(MPMediaPickerConfiguration *)v7 setSelectionMode:a4];
+  [(MPMediaPickerConfiguration *)v7 setSelectionMode:mode];
   v8 = [(MPMediaPickerController *)self initWithConfiguration:v7];
 
   return v8;

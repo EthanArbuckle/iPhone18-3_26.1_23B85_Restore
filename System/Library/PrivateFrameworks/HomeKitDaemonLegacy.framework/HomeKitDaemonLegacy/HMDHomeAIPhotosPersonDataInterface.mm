@@ -1,33 +1,33 @@
 @interface HMDHomeAIPhotosPersonDataInterface
 + (id)logCategory;
-- (HMDHomeAIPhotosPersonDataInterface)initWithPersonManagerUUID:(id)a3 homeUUID:(id)a4 workQueue:(id)a5;
-- (HMDHomeAIPhotosPersonDataInterface)initWithPhotosPersonManager:(id)a3 workQueue:(id)a4;
+- (HMDHomeAIPhotosPersonDataInterface)initWithPersonManagerUUID:(id)d homeUUID:(id)iD workQueue:(id)queue;
+- (HMDHomeAIPhotosPersonDataInterface)initWithPhotosPersonManager:(id)manager workQueue:(id)queue;
 - (id)logIdentifier;
-- (void)fetchSettingsWithCompletion:(id)a3;
-- (void)handleUpdatedSettings:(id)a3 mirrorOutputFuture:(id)a4;
+- (void)fetchSettingsWithCompletion:(id)completion;
+- (void)handleUpdatedSettings:(id)settings mirrorOutputFuture:(id)future;
 @end
 
 @implementation HMDHomeAIPhotosPersonDataInterface
 
-- (void)handleUpdatedSettings:(id)a3 mirrorOutputFuture:(id)a4
+- (void)handleUpdatedSettings:(id)settings mirrorOutputFuture:(id)future
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDHomeAIPersonDataInterface *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  settingsCopy = settings;
+  futureCopy = future;
+  workQueue = [(HMDHomeAIPersonDataInterface *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v9 = [v6 createHMIExternalPersonManagerSettings];
-  if (v9)
+  createHMIExternalPersonManagerSettings = [settingsCopy createHMIExternalPersonManagerSettings];
+  if (createHMIExternalPersonManagerSettings)
   {
-    v10 = [(HMDHomeAIPhotosPersonDataInterface *)self photosPersonManager];
-    [v10 handleUpdatedSettings:v9];
+    photosPersonManager = [(HMDHomeAIPhotosPersonDataInterface *)self photosPersonManager];
+    [photosPersonManager handleUpdatedSettings:createHMIExternalPersonManagerSettings];
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -35,7 +35,7 @@
       v16 = 138543618;
       v17 = v14;
       v18 = 2112;
-      v19 = v6;
+      v19 = settingsCopy;
       _os_log_impl(&dword_2531F8000, v13, OS_LOG_TYPE_ERROR, "%{public}@Updated settings could not be converted into HMIExternalPersonManagerSettings: %@", &v16, 0x16u);
     }
 
@@ -45,18 +45,18 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchSettingsWithCompletion:(id)a3
+- (void)fetchSettingsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HMDHomeAIPersonDataInterface *)self workQueue];
+  completionCopy = completion;
+  workQueue = [(HMDHomeAIPersonDataInterface *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __66__HMDHomeAIPhotosPersonDataInterface_fetchSettingsWithCompletion___block_invoke;
   v7[3] = &unk_279735738;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __66__HMDHomeAIPhotosPersonDataInterface_fetchSettingsWithCompletion___block_invoke(uint64_t a1)
@@ -109,37 +109,37 @@ void __66__HMDHomeAIPhotosPersonDataInterface_fetchSettingsWithCompletion___bloc
 
 - (id)logIdentifier
 {
-  v2 = [(HMDHomeAIPhotosPersonDataInterface *)self photosPersonManager];
-  v3 = [v2 UUID];
-  v4 = [v3 UUIDString];
+  photosPersonManager = [(HMDHomeAIPhotosPersonDataInterface *)self photosPersonManager];
+  uUID = [photosPersonManager UUID];
+  uUIDString = [uUID UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
-- (HMDHomeAIPhotosPersonDataInterface)initWithPhotosPersonManager:(id)a3 workQueue:(id)a4
+- (HMDHomeAIPhotosPersonDataInterface)initWithPhotosPersonManager:(id)manager workQueue:(id)queue
 {
-  v7 = a3;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = HMDHomeAIPhotosPersonDataInterface;
-  v8 = [(HMDHomeAIPersonDataInterface *)&v11 initWithPersonManager:v7 workQueue:a4];
+  v8 = [(HMDHomeAIPersonDataInterface *)&v11 initWithPersonManager:managerCopy workQueue:queue];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_photosPersonManager, a3);
+    objc_storeStrong(&v8->_photosPersonManager, manager);
   }
 
   return v9;
 }
 
-- (HMDHomeAIPhotosPersonDataInterface)initWithPersonManagerUUID:(id)a3 homeUUID:(id)a4 workQueue:(id)a5
+- (HMDHomeAIPhotosPersonDataInterface)initWithPersonManagerUUID:(id)d homeUUID:(id)iD workQueue:(id)queue
 {
   v8 = MEMORY[0x277D14D78];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[v8 alloc] initWithUUID:v11 homeUUID:v10];
+  queueCopy = queue;
+  iDCopy = iD;
+  dCopy = d;
+  v12 = [[v8 alloc] initWithUUID:dCopy homeUUID:iDCopy];
 
-  v13 = [(HMDHomeAIPhotosPersonDataInterface *)self initWithPhotosPersonManager:v12 workQueue:v9];
+  v13 = [(HMDHomeAIPhotosPersonDataInterface *)self initWithPhotosPersonManager:v12 workQueue:queueCopy];
   return v13;
 }
 

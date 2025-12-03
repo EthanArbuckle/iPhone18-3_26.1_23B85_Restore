@@ -1,14 +1,14 @@
 @interface WFImg
-+ (id)imgWithNode:(_xmlNode *)a3;
++ (id)imgWithNode:(_xmlNode *)node;
 - (int64_t)area;
 - (void)dealloc;
 @end
 
 @implementation WFImg
 
-+ (id)imgWithNode:(_xmlNode *)a3
++ (id)imgWithNode:(_xmlNode *)node
 {
-  v3 = [[a1 alloc] initWithNode:a3];
+  v3 = [[self alloc] initWithNode:node];
 
   return v3;
 }
@@ -22,16 +22,16 @@
 
 - (int64_t)area
 {
-  v3 = [(WFImg *)self width];
-  v4 = [(WFImg *)self height];
-  if (v4 == kWFImgDimensionUnknown || v3 == kWFImgDimensionUnknown)
+  width = [(WFImg *)self width];
+  height = [(WFImg *)self height];
+  if (height == kWFImgDimensionUnknown || width == kWFImgDimensionUnknown)
   {
     return kWFImgDimensionUnknown;
   }
 
   else
   {
-    return v4 * v3;
+    return height * width;
   }
 }
 

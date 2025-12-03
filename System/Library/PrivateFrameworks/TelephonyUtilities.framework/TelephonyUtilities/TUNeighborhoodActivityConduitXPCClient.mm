@@ -6,29 +6,29 @@
 - (TUNeighborhoodActivityConduitXPCClient)init;
 - (TUNeighborhoodActivityConduitXPCClientDelegate)delegate;
 - (id)server;
-- (id)serverWithErrorHandler:(id)a3;
-- (void)activeSplitSessionTVDeviceWithCompletion:(id)a3;
-- (void)approveSplitSessionForConversation:(id)a3 requestedFromDevice:(id)a4 pullContext:(int64_t)a5 completion:(id)a6;
+- (id)serverWithErrorHandler:(id)handler;
+- (void)activeSplitSessionTVDeviceWithCompletion:(id)completion;
+- (void)approveSplitSessionForConversation:(id)conversation requestedFromDevice:(id)device pullContext:(int64_t)context completion:(id)completion;
 - (void)cancelSplitSessionApproval;
 - (void)dealloc;
-- (void)disconnectTVDevice:(id)a3 completion:(id)a4;
-- (void)ensureConduitInitialized:(id)a3;
+- (void)disconnectTVDevice:(id)device completion:(id)completion;
+- (void)ensureConduitInitialized:(id)initialized;
 - (void)ensureConnection;
-- (void)handoffConversation:(id)a3 toTVDevice:(id)a4 completion:(id)a5;
-- (void)inviteTVDevice:(id)a3 toConversationWithUUID:(id)a4 completion:(id)a5;
-- (void)isRingingFaceTimeCallsOnConnectedTVDeviceChanged:(BOOL)a3;
-- (void)isRingingFaceTimeCallsOnConnectedTVDeviceWithCompletion:(id)a3;
-- (void)nearbyTVDevicesWithCompletion:(id)a3;
-- (void)pullConversation:(id)a3 fromTVDevice:(id)a4 completion:(id)a5;
-- (void)registerApprovalClientEnabled:(BOOL)a3;
-- (void)respondToSuggestionWithResult:(id)a3 completion:(id)a4;
-- (void)setSuggestedTVDeviceName:(id)a3 completion:(id)a4;
+- (void)handoffConversation:(id)conversation toTVDevice:(id)device completion:(id)completion;
+- (void)inviteTVDevice:(id)device toConversationWithUUID:(id)d completion:(id)completion;
+- (void)isRingingFaceTimeCallsOnConnectedTVDeviceChanged:(BOOL)changed;
+- (void)isRingingFaceTimeCallsOnConnectedTVDeviceWithCompletion:(id)completion;
+- (void)nearbyTVDevicesWithCompletion:(id)completion;
+- (void)pullConversation:(id)conversation fromTVDevice:(id)device completion:(id)completion;
+- (void)registerApprovalClientEnabled:(BOOL)enabled;
+- (void)respondToSuggestionWithResult:(id)result completion:(id)completion;
+- (void)setSuggestedTVDeviceName:(id)name completion:(id)completion;
 - (void)splitSessionUpdated;
-- (void)startConversationWith:(id)a3 on:(id)a4 completion:(id)a5;
-- (void)suggestionUpdated:(id)a3;
-- (void)suggestionWithCompletion:(id)a3;
-- (void)tvDeviceAppeared:(id)a3;
-- (void)tvDeviceDisappeared:(id)a3;
+- (void)startConversationWith:(id)with on:(id)on completion:(id)completion;
+- (void)suggestionUpdated:(id)updated;
+- (void)suggestionWithCompletion:(id)completion;
+- (void)tvDeviceAppeared:(id)appeared;
+- (void)tvDeviceDisappeared:(id)disappeared;
 @end
 
 @implementation TUNeighborhoodActivityConduitXPCClient
@@ -44,11 +44,11 @@
       v5 = self->_xpcConnection;
       self->_xpcConnection = v4;
 
-      v6 = [objc_opt_class() neighborhoodActivityServerXPCInterface];
-      [(NSXPCConnection *)self->_xpcConnection setRemoteObjectInterface:v6];
+      neighborhoodActivityServerXPCInterface = [objc_opt_class() neighborhoodActivityServerXPCInterface];
+      [(NSXPCConnection *)self->_xpcConnection setRemoteObjectInterface:neighborhoodActivityServerXPCInterface];
 
-      v7 = [objc_opt_class() neighborhoodActivityClientXPCInterface];
-      [(NSXPCConnection *)self->_xpcConnection setExportedInterface:v7];
+      neighborhoodActivityClientXPCInterface = [objc_opt_class() neighborhoodActivityClientXPCInterface];
+      [(NSXPCConnection *)self->_xpcConnection setExportedInterface:neighborhoodActivityClientXPCInterface];
 
       [(NSXPCConnection *)self->_xpcConnection setExportedObject:self];
       objc_initWeak(&location, self);
@@ -65,8 +65,8 @@
       objc_copyWeak(&v13, &location);
       [(NSXPCConnection *)self->_xpcConnection setInterruptionHandler:v12];
       [(NSXPCConnection *)self->_xpcConnection resume];
-      v8 = [(TUNeighborhoodActivityConduitXPCClient *)self delegate];
-      [v8 connectionEstablishedForClient:self];
+      delegate = [(TUNeighborhoodActivityConduitXPCClient *)self delegate];
+      [delegate connectionEstablishedForClient:self];
 
       objc_destroyWeak(&v13);
       objc_destroyWeak(&v15);
@@ -93,13 +93,13 @@
 
 - (void)ensureConnection
 {
-  v3 = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
+  queue = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58__TUNeighborhoodActivityConduitXPCClient_ensureConnection__block_invoke;
   block[3] = &unk_1E7424950;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __58__TUNeighborhoodActivityConduitXPCClient_ensureConnection__block_invoke(uint64_t a1)
@@ -190,18 +190,18 @@ void __46__TUNeighborhoodActivityConduitXPCClient_init__block_invoke(uint64_t a1
   [(TUNeighborhoodActivityConduitXPCClient *)&v4 dealloc];
 }
 
-- (void)nearbyTVDevicesWithCompletion:(id)a3
+- (void)nearbyTVDevicesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
+  completionCopy = completion;
+  queue = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __72__TUNeighborhoodActivityConduitXPCClient_nearbyTVDevicesWithCompletion___block_invoke;
   v7[3] = &unk_1E7424E20;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(queue, v7);
 }
 
 void __72__TUNeighborhoodActivityConduitXPCClient_nearbyTVDevicesWithCompletion___block_invoke(uint64_t a1)
@@ -228,18 +228,18 @@ void __72__TUNeighborhoodActivityConduitXPCClient_nearbyTVDevicesWithCompletion_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)isRingingFaceTimeCallsOnConnectedTVDeviceWithCompletion:(id)a3
+- (void)isRingingFaceTimeCallsOnConnectedTVDeviceWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
+  completionCopy = completion;
+  queue = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __98__TUNeighborhoodActivityConduitXPCClient_isRingingFaceTimeCallsOnConnectedTVDeviceWithCompletion___block_invoke;
   v7[3] = &unk_1E7424E20;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(queue, v7);
 }
 
 void __98__TUNeighborhoodActivityConduitXPCClient_isRingingFaceTimeCallsOnConnectedTVDeviceWithCompletion___block_invoke(uint64_t a1)
@@ -266,18 +266,18 @@ void __98__TUNeighborhoodActivityConduitXPCClient_isRingingFaceTimeCallsOnConnec
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)activeSplitSessionTVDeviceWithCompletion:(id)a3
+- (void)activeSplitSessionTVDeviceWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
+  completionCopy = completion;
+  queue = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __83__TUNeighborhoodActivityConduitXPCClient_activeSplitSessionTVDeviceWithCompletion___block_invoke;
   v7[3] = &unk_1E7424E20;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(queue, v7);
 }
 
 void __83__TUNeighborhoodActivityConduitXPCClient_activeSplitSessionTVDeviceWithCompletion___block_invoke(uint64_t a1)
@@ -304,21 +304,21 @@ void __83__TUNeighborhoodActivityConduitXPCClient_activeSplitSessionTVDeviceWith
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)setSuggestedTVDeviceName:(id)a3 completion:(id)a4
+- (void)setSuggestedTVDeviceName:(id)name completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
+  nameCopy = name;
+  completionCopy = completion;
+  queue = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __78__TUNeighborhoodActivityConduitXPCClient_setSuggestedTVDeviceName_completion___block_invoke;
   block[3] = &unk_1E7425F68;
-  v12 = v6;
-  v13 = v7;
+  v12 = nameCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v9 = nameCopy;
+  v10 = completionCopy;
+  dispatch_async(queue, block);
 }
 
 void __78__TUNeighborhoodActivityConduitXPCClient_setSuggestedTVDeviceName_completion___block_invoke(uint64_t a1)
@@ -345,18 +345,18 @@ void __78__TUNeighborhoodActivityConduitXPCClient_setSuggestedTVDeviceName_compl
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)suggestionWithCompletion:(id)a3
+- (void)suggestionWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
+  completionCopy = completion;
+  queue = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__TUNeighborhoodActivityConduitXPCClient_suggestionWithCompletion___block_invoke;
   v7[3] = &unk_1E7424E20;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(queue, v7);
 }
 
 void __67__TUNeighborhoodActivityConduitXPCClient_suggestionWithCompletion___block_invoke(uint64_t a1)
@@ -383,24 +383,24 @@ void __67__TUNeighborhoodActivityConduitXPCClient_suggestionWithCompletion___blo
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)inviteTVDevice:(id)a3 toConversationWithUUID:(id)a4 completion:(id)a5
+- (void)inviteTVDevice:(id)device toConversationWithUUID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
+  deviceCopy = device;
+  dCopy = d;
+  completionCopy = completion;
+  queue = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __91__TUNeighborhoodActivityConduitXPCClient_inviteTVDevice_toConversationWithUUID_completion___block_invoke;
   v15[3] = &unk_1E74264F8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = deviceCopy;
+  v17 = dCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = dCopy;
+  v14 = deviceCopy;
+  dispatch_async(queue, v15);
 }
 
 void __91__TUNeighborhoodActivityConduitXPCClient_inviteTVDevice_toConversationWithUUID_completion___block_invoke(uint64_t a1)
@@ -429,21 +429,21 @@ void __91__TUNeighborhoodActivityConduitXPCClient_inviteTVDevice_toConversationW
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)disconnectTVDevice:(id)a3 completion:(id)a4
+- (void)disconnectTVDevice:(id)device completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
+  deviceCopy = device;
+  completionCopy = completion;
+  queue = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __72__TUNeighborhoodActivityConduitXPCClient_disconnectTVDevice_completion___block_invoke;
   block[3] = &unk_1E7426458;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = deviceCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = deviceCopy;
+  dispatch_async(queue, block);
 }
 
 void __72__TUNeighborhoodActivityConduitXPCClient_disconnectTVDevice_completion___block_invoke(uint64_t a1)
@@ -471,21 +471,21 @@ void __72__TUNeighborhoodActivityConduitXPCClient_disconnectTVDevice_completion_
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)respondToSuggestionWithResult:(id)a3 completion:(id)a4
+- (void)respondToSuggestionWithResult:(id)result completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
+  resultCopy = result;
+  completionCopy = completion;
+  queue = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __83__TUNeighborhoodActivityConduitXPCClient_respondToSuggestionWithResult_completion___block_invoke;
   block[3] = &unk_1E7426458;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = resultCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = resultCopy;
+  dispatch_async(queue, block);
 }
 
 void __83__TUNeighborhoodActivityConduitXPCClient_respondToSuggestionWithResult_completion___block_invoke(uint64_t a1)
@@ -513,15 +513,15 @@ void __83__TUNeighborhoodActivityConduitXPCClient_respondToSuggestionWithResult_
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)registerApprovalClientEnabled:(BOOL)a3
+- (void)registerApprovalClientEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v13 = *MEMORY[0x1E69E9840];
   v5 = TUConduitLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = "NO";
-    if (v3)
+    if (enabledCopy)
     {
       v6 = "YES";
     }
@@ -531,14 +531,14 @@ void __83__TUNeighborhoodActivityConduitXPCClient_respondToSuggestionWithResult_
     _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "Sending approval registration: %s", buf, 0xCu);
   }
 
-  v7 = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
+  queue = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __72__TUNeighborhoodActivityConduitXPCClient_registerApprovalClientEnabled___block_invoke;
   v9[3] = &unk_1E7425000;
   v9[4] = self;
-  v10 = v3;
-  dispatch_async(v7, v9);
+  v10 = enabledCopy;
+  dispatch_async(queue, v9);
 
   v8 = *MEMORY[0x1E69E9840];
 }
@@ -559,18 +559,18 @@ void __72__TUNeighborhoodActivityConduitXPCClient_registerApprovalClientEnabled_
   }
 }
 
-- (void)ensureConduitInitialized:(id)a3
+- (void)ensureConduitInitialized:(id)initialized
 {
-  v4 = a3;
-  v5 = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
+  initializedCopy = initialized;
+  queue = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__TUNeighborhoodActivityConduitXPCClient_ensureConduitInitialized___block_invoke;
   v7[3] = &unk_1E7424E20;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = initializedCopy;
+  v6 = initializedCopy;
+  dispatch_async(queue, v7);
 }
 
 void __67__TUNeighborhoodActivityConduitXPCClient_ensureConduitInitialized___block_invoke(uint64_t a1)
@@ -597,24 +597,24 @@ void __67__TUNeighborhoodActivityConduitXPCClient_ensureConduitInitialized___blo
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)handoffConversation:(id)a3 toTVDevice:(id)a4 completion:(id)a5
+- (void)handoffConversation:(id)conversation toTVDevice:(id)device completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
+  conversationCopy = conversation;
+  deviceCopy = device;
+  completionCopy = completion;
+  queue = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __84__TUNeighborhoodActivityConduitXPCClient_handoffConversation_toTVDevice_completion___block_invoke;
   v15[3] = &unk_1E74264F8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = conversationCopy;
+  v17 = deviceCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = deviceCopy;
+  v14 = conversationCopy;
+  dispatch_async(queue, v15);
 }
 
 void __84__TUNeighborhoodActivityConduitXPCClient_handoffConversation_toTVDevice_completion___block_invoke(uint64_t a1)
@@ -643,24 +643,24 @@ void __84__TUNeighborhoodActivityConduitXPCClient_handoffConversation_toTVDevice
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)pullConversation:(id)a3 fromTVDevice:(id)a4 completion:(id)a5
+- (void)pullConversation:(id)conversation fromTVDevice:(id)device completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
+  conversationCopy = conversation;
+  deviceCopy = device;
+  completionCopy = completion;
+  queue = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __83__TUNeighborhoodActivityConduitXPCClient_pullConversation_fromTVDevice_completion___block_invoke;
   v15[3] = &unk_1E74264F8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = conversationCopy;
+  v17 = deviceCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = deviceCopy;
+  v14 = conversationCopy;
+  dispatch_async(queue, v15);
 }
 
 void __83__TUNeighborhoodActivityConduitXPCClient_pullConversation_fromTVDevice_completion___block_invoke(uint64_t a1)
@@ -689,24 +689,24 @@ void __83__TUNeighborhoodActivityConduitXPCClient_pullConversation_fromTVDevice_
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)startConversationWith:(id)a3 on:(id)a4 completion:(id)a5
+- (void)startConversationWith:(id)with on:(id)on completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
+  withCopy = with;
+  onCopy = on;
+  completionCopy = completion;
+  queue = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __78__TUNeighborhoodActivityConduitXPCClient_startConversationWith_on_completion___block_invoke;
   v15[3] = &unk_1E7425680;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
-  dispatch_async(v11, v15);
+  v16 = onCopy;
+  v17 = withCopy;
+  v18 = completionCopy;
+  v12 = withCopy;
+  v13 = completionCopy;
+  v14 = onCopy;
+  dispatch_async(queue, v15);
 }
 
 void __78__TUNeighborhoodActivityConduitXPCClient_startConversationWith_on_completion___block_invoke(uint64_t a1)
@@ -736,13 +736,13 @@ void __78__TUNeighborhoodActivityConduitXPCClient_startConversationWith_on_compl
 
 - (void)splitSessionUpdated
 {
-  v3 = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
+  queue = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __61__TUNeighborhoodActivityConduitXPCClient_splitSessionUpdated__block_invoke;
   block[3] = &unk_1E7424950;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __61__TUNeighborhoodActivityConduitXPCClient_splitSessionUpdated__block_invoke(uint64_t a1)
@@ -751,18 +751,18 @@ void __61__TUNeighborhoodActivityConduitXPCClient_splitSessionUpdated__block_inv
   [v1 splitSessionUpdated];
 }
 
-- (void)tvDeviceAppeared:(id)a3
+- (void)tvDeviceAppeared:(id)appeared
 {
-  v4 = a3;
-  v5 = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
+  appearedCopy = appeared;
+  queue = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__TUNeighborhoodActivityConduitXPCClient_tvDeviceAppeared___block_invoke;
   v7[3] = &unk_1E7424898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = appearedCopy;
+  v6 = appearedCopy;
+  dispatch_async(queue, v7);
 }
 
 void __59__TUNeighborhoodActivityConduitXPCClient_tvDeviceAppeared___block_invoke(uint64_t a1)
@@ -771,18 +771,18 @@ void __59__TUNeighborhoodActivityConduitXPCClient_tvDeviceAppeared___block_invok
   [v2 tvDeviceAppeared:*(a1 + 40)];
 }
 
-- (void)tvDeviceDisappeared:(id)a3
+- (void)tvDeviceDisappeared:(id)disappeared
 {
-  v4 = a3;
-  v5 = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
+  disappearedCopy = disappeared;
+  queue = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__TUNeighborhoodActivityConduitXPCClient_tvDeviceDisappeared___block_invoke;
   v7[3] = &unk_1E7424898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = disappearedCopy;
+  v6 = disappearedCopy;
+  dispatch_async(queue, v7);
 }
 
 void __62__TUNeighborhoodActivityConduitXPCClient_tvDeviceDisappeared___block_invoke(uint64_t a1)
@@ -791,18 +791,18 @@ void __62__TUNeighborhoodActivityConduitXPCClient_tvDeviceDisappeared___block_in
   [v2 tvDeviceDisappeared:*(a1 + 40)];
 }
 
-- (void)suggestionUpdated:(id)a3
+- (void)suggestionUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
+  updatedCopy = updated;
+  queue = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__TUNeighborhoodActivityConduitXPCClient_suggestionUpdated___block_invoke;
   v7[3] = &unk_1E7424898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = updatedCopy;
+  v6 = updatedCopy;
+  dispatch_async(queue, v7);
 }
 
 void __60__TUNeighborhoodActivityConduitXPCClient_suggestionUpdated___block_invoke(uint64_t a1)
@@ -811,16 +811,16 @@ void __60__TUNeighborhoodActivityConduitXPCClient_suggestionUpdated___block_invo
   [v2 suggestionUpdated:*(a1 + 40)];
 }
 
-- (void)isRingingFaceTimeCallsOnConnectedTVDeviceChanged:(BOOL)a3
+- (void)isRingingFaceTimeCallsOnConnectedTVDeviceChanged:(BOOL)changed
 {
-  v5 = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
+  queue = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __91__TUNeighborhoodActivityConduitXPCClient_isRingingFaceTimeCallsOnConnectedTVDeviceChanged___block_invoke;
   v6[3] = &unk_1E7425000;
   v6[4] = self;
-  v7 = a3;
-  dispatch_async(v5, v6);
+  changedCopy = changed;
+  dispatch_async(queue, v6);
 }
 
 void __91__TUNeighborhoodActivityConduitXPCClient_isRingingFaceTimeCallsOnConnectedTVDeviceChanged___block_invoke(uint64_t a1)
@@ -829,25 +829,25 @@ void __91__TUNeighborhoodActivityConduitXPCClient_isRingingFaceTimeCallsOnConnec
   [v2 isRingingFaceTimeCallsOnConnectedTVDeviceChanged:*(a1 + 40)];
 }
 
-- (void)approveSplitSessionForConversation:(id)a3 requestedFromDevice:(id)a4 pullContext:(int64_t)a5 completion:(id)a6
+- (void)approveSplitSessionForConversation:(id)conversation requestedFromDevice:(id)device pullContext:(int64_t)context completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
+  conversationCopy = conversation;
+  deviceCopy = device;
+  completionCopy = completion;
+  queue = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __120__TUNeighborhoodActivityConduitXPCClient_approveSplitSessionForConversation_requestedFromDevice_pullContext_completion___block_invoke;
   block[3] = &unk_1E74267E0;
   block[4] = self;
-  v18 = v10;
-  v20 = v12;
-  v21 = a5;
-  v19 = v11;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_async(v13, block);
+  v18 = conversationCopy;
+  v20 = completionCopy;
+  contextCopy = context;
+  v19 = deviceCopy;
+  v14 = completionCopy;
+  v15 = deviceCopy;
+  v16 = conversationCopy;
+  dispatch_async(queue, block);
 }
 
 void __120__TUNeighborhoodActivityConduitXPCClient_approveSplitSessionForConversation_requestedFromDevice_pullContext_completion___block_invoke(uint64_t a1)
@@ -858,13 +858,13 @@ void __120__TUNeighborhoodActivityConduitXPCClient_approveSplitSessionForConvers
 
 - (void)cancelSplitSessionApproval
 {
-  v3 = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
+  queue = [(TUNeighborhoodActivityConduitXPCClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __68__TUNeighborhoodActivityConduitXPCClient_cancelSplitSessionApproval__block_invoke;
   block[3] = &unk_1E7424950;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __68__TUNeighborhoodActivityConduitXPCClient_cancelSplitSessionApproval__block_invoke(uint64_t a1)
@@ -950,26 +950,26 @@ void __55__TUNeighborhoodActivityConduitXPCClient_xpcConnection__block_invoke_2_
 
 - (id)server
 {
-  v2 = [(TUNeighborhoodActivityConduitXPCClient *)self xpcConnection];
-  v3 = [v2 remoteObjectProxy];
+  xpcConnection = [(TUNeighborhoodActivityConduitXPCClient *)self xpcConnection];
+  remoteObjectProxy = [xpcConnection remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
-- (id)serverWithErrorHandler:(id)a3
+- (id)serverWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(TUNeighborhoodActivityConduitXPCClient *)self xpcConnection];
-  v6 = v5;
-  if (v5)
+  handlerCopy = handler;
+  xpcConnection = [(TUNeighborhoodActivityConduitXPCClient *)self xpcConnection];
+  v6 = xpcConnection;
+  if (xpcConnection)
   {
-    v7 = [v5 remoteObjectProxyWithErrorHandler:v4];
+    v7 = [xpcConnection remoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   else
   {
     v8 = TUMakeNeighborhoodConduitError(4, 0);
-    v4[2](v4, v8);
+    handlerCopy[2](handlerCopy, v8);
 
     v7 = 0;
   }

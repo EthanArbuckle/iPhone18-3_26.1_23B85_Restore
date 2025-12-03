@@ -1,18 +1,18 @@
 @interface PKPassPersonalization
-+ (PKPassPersonalization)passPersonalizationWithPassBundle:(id)a3;
-- (PKPassPersonalization)initWithCoder:(id)a3;
-- (PKPassPersonalization)initWithDictionary:(id)a3 bundle:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (PKPassPersonalization)passPersonalizationWithPassBundle:(id)bundle;
+- (PKPassPersonalization)initWithCoder:(id)coder;
+- (PKPassPersonalization)initWithDictionary:(id)dictionary bundle:(id)bundle;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassPersonalization
 
-+ (PKPassPersonalization)passPersonalizationWithPassBundle:(id)a3
++ (PKPassPersonalization)passPersonalizationWithPassBundle:(id)bundle
 {
-  v4 = a3;
-  v5 = [v4 URLForResource:@"personalization" withExtension:@"json"];
+  bundleCopy = bundle;
+  v5 = [bundleCopy URLForResource:@"personalization" withExtension:@"json"];
   if (v5)
   {
     v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v5 options:0 error:0];
@@ -29,7 +29,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [[a1 alloc] initWithDictionary:v7 bundle:v4];
+      v8 = [[self alloc] initWithDictionary:v7 bundle:bundleCopy];
     }
 
     else
@@ -46,26 +46,26 @@
   return v8;
 }
 
-- (PKPassPersonalization)initWithDictionary:(id)a3 bundle:(id)a4
+- (PKPassPersonalization)initWithDictionary:(id)dictionary bundle:(id)bundle
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  bundleCopy = bundle;
   v29.receiver = self;
   v29.super_class = PKPassPersonalization;
   v8 = [(PKPassPersonalization *)&v29 init];
   if (v8)
   {
-    v9 = [v6 PKStringForKey:@"termsAndConditions"];
+    v9 = [dictionaryCopy PKStringForKey:@"termsAndConditions"];
     v10 = [v9 copy];
     termsAndConditions = v8->_termsAndConditions;
     v8->_termsAndConditions = v10;
 
-    v12 = [v6 PKStringForKey:@"description"];
-    v13 = [v6 PKArrayForKey:@"requiredPersonalizationFields"];
+    v12 = [dictionaryCopy PKStringForKey:@"description"];
+    v13 = [dictionaryCopy PKArrayForKey:@"requiredPersonalizationFields"];
     if (v12)
     {
-      v14 = PKLocalizedPersonalizationStringForPassBundle(v12, v7);
+      v14 = PKLocalizedPersonalizationStringForPassBundle(v12, bundleCopy);
       v15 = [v14 copy];
       localizedDescription = v8->_localizedDescription;
       v8->_localizedDescription = v15;
@@ -74,8 +74,8 @@
     if (v13)
     {
       v26 = v12;
-      v27 = v7;
-      v28 = v6;
+      v27 = bundleCopy;
+      v28 = dictionaryCopy;
       v25 = v13;
       v17 = v13;
       v30 = 0u;
@@ -143,9 +143,9 @@
         v20 = 0;
       }
 
-      v7 = v27;
+      bundleCopy = v27;
       v8->_requiredPersonalizationFields = v20;
-      v6 = v28;
+      dictionaryCopy = v28;
       v13 = v25;
       v12 = v26;
     }
@@ -154,21 +154,21 @@
   return v8;
 }
 
-- (PKPassPersonalization)initWithCoder:(id)a3
+- (PKPassPersonalization)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKPassPersonalization;
   v5 = [(PKPassPersonalization *)&v13 init];
   if (v5)
   {
-    v5->_requiredPersonalizationFields = [v4 decodeIntegerForKey:@"requiredPersonalizationFields"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"description"];
+    v5->_requiredPersonalizationFields = [coderCopy decodeIntegerForKey:@"requiredPersonalizationFields"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"description"];
     v7 = [v6 copy];
     localizedDescription = v5->_localizedDescription;
     v5->_localizedDescription = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"termsAndConditions"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"termsAndConditions"];
     v10 = [v9 copy];
     termsAndConditions = v5->_termsAndConditions;
     v5->_termsAndConditions = v10;
@@ -177,16 +177,16 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   requiredPersonalizationFields = self->_requiredPersonalizationFields;
-  v5 = a3;
-  [v5 encodeInteger:requiredPersonalizationFields forKey:@"requiredPersonalizationFields"];
-  [v5 encodeObject:self->_localizedDescription forKey:@"description"];
-  [v5 encodeObject:self->_termsAndConditions forKey:@"termsAndConditions"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:requiredPersonalizationFields forKey:@"requiredPersonalizationFields"];
+  [coderCopy encodeObject:self->_localizedDescription forKey:@"description"];
+  [coderCopy encodeObject:self->_termsAndConditions forKey:@"termsAndConditions"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PKPassPersonalization);
   v4->_requiredPersonalizationFields = self->_requiredPersonalizationFields;
@@ -204,11 +204,11 @@
 - (id)description
 {
   requiredPersonalizationFields = self->_requiredPersonalizationFields;
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = v4;
+  array = [MEMORY[0x1E695DF70] array];
+  v5 = array;
   if (requiredPersonalizationFields)
   {
-    [v4 addObject:@"PKPassPersonalizationFieldName"];
+    [array addObject:@"PKPassPersonalizationFieldName"];
     if ((requiredPersonalizationFields & 2) == 0)
     {
 LABEL_3:

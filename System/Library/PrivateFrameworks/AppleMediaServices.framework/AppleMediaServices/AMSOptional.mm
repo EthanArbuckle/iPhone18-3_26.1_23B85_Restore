@@ -1,36 +1,36 @@
 @interface AMSOptional
 + (id)optionalWithNil;
-+ (id)optionalWithValue:(id)a3;
-- (AMSOptional)initWithValue:(id)a3;
++ (id)optionalWithValue:(id)value;
+- (AMSOptional)initWithValue:(id)value;
 @end
 
 @implementation AMSOptional
 
 + (id)optionalWithNil
 {
-  v2 = [[a1 alloc] initWithValue:0];
+  v2 = [[self alloc] initWithValue:0];
 
   return v2;
 }
 
-+ (id)optionalWithValue:(id)a3
++ (id)optionalWithValue:(id)value
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithValue:v4];
+  valueCopy = value;
+  v5 = [[self alloc] initWithValue:valueCopy];
 
   return v5;
 }
 
-- (AMSOptional)initWithValue:(id)a3
+- (AMSOptional)initWithValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   v9.receiver = self;
   v9.super_class = AMSOptional;
   v6 = [(AMSOptional *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_value, a3);
+    objc_storeStrong(&v6->_value, value);
   }
 
   return v7;

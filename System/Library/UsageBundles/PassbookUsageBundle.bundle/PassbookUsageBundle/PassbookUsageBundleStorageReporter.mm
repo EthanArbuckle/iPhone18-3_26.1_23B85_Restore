@@ -1,5 +1,5 @@
 @interface PassbookUsageBundleStorageReporter
-- (float)sizeForCategory:(id)a3;
+- (float)sizeForCategory:(id)category;
 - (id)usageBundleApps;
 - (void)_populateUsageBundleApps;
 - (void)dealloc;
@@ -26,9 +26,9 @@
   return usageBundleApps;
 }
 
-- (float)sizeForCategory:(id)a3
+- (float)sizeForCategory:(id)category
 {
-  v4 = a3;
+  categoryCopy = category;
   categorySizes = self->_categorySizes;
   if (!categorySizes)
   {
@@ -36,8 +36,8 @@
     categorySizes = self->_categorySizes;
   }
 
-  v6 = [v4 identifier];
-  v7 = [(NSDictionary *)categorySizes objectForKey:v6];
+  identifier = [categoryCopy identifier];
+  v7 = [(NSDictionary *)categorySizes objectForKey:identifier];
   [v7 floatValue];
   v9 = v8;
 

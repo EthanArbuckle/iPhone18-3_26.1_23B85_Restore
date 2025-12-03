@@ -1,24 +1,24 @@
 @interface UIKeyboardEmojiGraphicsTraits
-+ (UIKeyboardEmojiGraphicsTraits)emojiGraphicsTraitsWithScreenTraits:(id)a3;
++ (UIKeyboardEmojiGraphicsTraits)emojiGraphicsTraitsWithScreenTraits:(id)traits;
 + (id)emojiGraphicsTraitsForCurrentScreenTraits;
 - (CGSize)fakeEmojiKeySize;
-- (UIKeyboardEmojiGraphicsTraits)initWithScreenTrait:(id)a3;
+- (UIKeyboardEmojiGraphicsTraits)initWithScreenTrait:(id)trait;
 @end
 
 @implementation UIKeyboardEmojiGraphicsTraits
 
-- (UIKeyboardEmojiGraphicsTraits)initWithScreenTrait:(id)a3
+- (UIKeyboardEmojiGraphicsTraits)initWithScreenTrait:(id)trait
 {
-  v4 = a3;
+  traitCopy = trait;
   v37.receiver = self;
   v37.super_class = UIKeyboardEmojiGraphicsTraits;
   v5 = [(UIKeyboardEmojiGraphicsTraits *)&v37 init];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (traitCopy)
     {
-      v7 = *(v4 + 35);
+      v7 = *(traitCopy + 35);
     }
 
     else
@@ -38,7 +38,7 @@
     }
 
     v5->_isFirstPartyStickers = v7 & 1;
-    [v4 screenToNativeScaleRatio];
+    [traitCopy screenToNativeScaleRatio];
     v6->_screenToNativeScaleRatio = v8;
     IsStickerPickerService = _UIApplicationIsStickerPickerService();
     if (+[UIKeyboardImpl isSplit])
@@ -96,14 +96,14 @@ LABEL_51:
       v16 = v13;
     }
 
-    [v4 keyboardWidth];
+    [traitCopy keyboardWidth];
     v18 = v17;
-    if (v4 && *(v4 + 38) == 1)
+    if (traitCopy && *(traitCopy + 38) == 1)
     {
-      v18 = *(v4 + 12);
+      v18 = *(traitCopy + 12);
     }
 
-    if ([v4 isKeyboardMinorEdgeWidth])
+    if ([traitCopy isKeyboardMinorEdgeWidth])
     {
       if (v18 < 1024.0)
       {
@@ -161,7 +161,7 @@ LABEL_70:
                 *&v6->_inputViewLeftMostPadding = v21;
                 v6->_alertTextWidth = 280.0;
                 *&v6->_rightBiasPercentage = xmmword_18A67FC70;
-                if (![v4 isEmojiScrollingDirectionVertical])
+                if (![traitCopy isEmojiScrollingDirectionVertical])
                 {
                   goto LABEL_52;
                 }
@@ -233,13 +233,13 @@ LABEL_52:
             *&v6->_inputViewLeftMostPadding = xmmword_18A67FDF0;
             v6->_alertTextWidth = 280.0;
             *&v6->_rightBiasPercentage = xmmword_18A67FC70;
-            if ([v4 isInPopover])
+            if ([traitCopy isInPopover])
             {
               v6->_bottomPadding = 2.0;
             }
           }
 
-          if (![v4 isEmojiScrollingDirectionVertical])
+          if (![traitCopy isEmojiScrollingDirectionVertical])
           {
             goto LABEL_52;
           }
@@ -421,10 +421,10 @@ LABEL_53:
   return v6;
 }
 
-+ (UIKeyboardEmojiGraphicsTraits)emojiGraphicsTraitsWithScreenTraits:(id)a3
++ (UIKeyboardEmojiGraphicsTraits)emojiGraphicsTraitsWithScreenTraits:(id)traits
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithScreenTrait:v4];
+  traitsCopy = traits;
+  v5 = [[self alloc] initWithScreenTrait:traitsCopy];
 
   return v5;
 }
@@ -453,7 +453,7 @@ LABEL_53:
   }
 
   v10 = [UIKBScreenTraits traitsWithScreen:v3 orientation:v9 ignoreRemoteKeyboard:1];
-  v11 = [[a1 alloc] initWithScreenTrait:v10];
+  v11 = [[self alloc] initWithScreenTrait:v10];
 
   return v11;
 }

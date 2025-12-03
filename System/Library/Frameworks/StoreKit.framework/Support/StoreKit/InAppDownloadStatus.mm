@@ -1,19 +1,19 @@
 @interface InAppDownloadStatus
-- (InAppDownloadStatus)initWithDownloadID:(id)a3;
+- (InAppDownloadStatus)initWithDownloadID:(id)d;
 @end
 
 @implementation InAppDownloadStatus
 
-- (InAppDownloadStatus)initWithDownloadID:(id)a3
+- (InAppDownloadStatus)initWithDownloadID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = InAppDownloadStatus;
   v6 = [(InAppDownloadStatus *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_downloadID, a3);
+    objc_storeStrong(&v6->_downloadID, d);
     error = v7->_error;
     v7->_error = 0;
 

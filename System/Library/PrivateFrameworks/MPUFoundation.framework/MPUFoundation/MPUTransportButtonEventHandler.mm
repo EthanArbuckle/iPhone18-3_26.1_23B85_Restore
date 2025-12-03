@@ -1,13 +1,13 @@
 @interface MPUTransportButtonEventHandler
 - (MPUTransportButtonEventHandler)init;
 - (UIControl)button;
-- (id)performHitTestingBlock:(id)a3;
+- (id)performHitTestingBlock:(id)block;
 - (void)_clearLongPressTimer;
 - (void)_longPressTimerAction;
-- (void)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (void)cancelTrackingWithEvent:(id)a3;
+- (void)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (void)cancelTrackingWithEvent:(id)event;
 - (void)dealloc;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 @end
 
 @implementation MPUTransportButtonEventHandler
@@ -33,7 +33,7 @@
   [(MPUTransportButtonEventHandler *)&v3 dealloc];
 }
 
-- (void)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
   WeakRetained = objc_loadWeakRetained(&self->_button);
   v6 = WeakRetained;
@@ -71,7 +71,7 @@ void __67__MPUTransportButtonEventHandler_beginTrackingWithTouch_withEvent___blo
   }
 }
 
-- (void)cancelTrackingWithEvent:(id)a3
+- (void)cancelTrackingWithEvent:(id)event
 {
   if (self->_longPress)
   {
@@ -84,9 +84,9 @@ void __67__MPUTransportButtonEventHandler_beginTrackingWithTouch_withEvent___blo
   [(MPUTransportButtonEventHandler *)self _clearLongPressTimer];
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  [(MPUTransportButtonEventHandler *)self _clearLongPressTimer:a3];
+  [(MPUTransportButtonEventHandler *)self _clearLongPressTimer:touch];
   longPress = self->_longPress;
   WeakRetained = objc_loadWeakRetained(&self->_button);
   v7 = WeakRetained;
@@ -99,9 +99,9 @@ void __67__MPUTransportButtonEventHandler_beginTrackingWithTouch_withEvent___blo
 
   else
   {
-    v8 = [WeakRetained isTouchInside];
+    isTouchInside = [WeakRetained isTouchInside];
 
-    if (v8)
+    if (isTouchInside)
     {
       v9 = objc_loadWeakRetained(&self->_button);
       [v9 sendActionsForControlEvents:0x800000];
@@ -109,7 +109,7 @@ void __67__MPUTransportButtonEventHandler_beginTrackingWithTouch_withEvent___blo
   }
 }
 
-- (id)performHitTestingBlock:(id)a3
+- (id)performHitTestingBlock:(id)block
 {
   if (self->_shouldFakeEnabled || !self->_supportsTapWhenDisabled)
   {
@@ -122,7 +122,7 @@ void __67__MPUTransportButtonEventHandler_beginTrackingWithTouch_withEvent___blo
     self->_shouldFakeEnabled = 1;
   }
 
-  result = (*(a3 + 2))(a3, a2);
+  result = (*(block + 2))(block, a2);
   if (v4)
   {
     self->_shouldFakeEnabled = 0;

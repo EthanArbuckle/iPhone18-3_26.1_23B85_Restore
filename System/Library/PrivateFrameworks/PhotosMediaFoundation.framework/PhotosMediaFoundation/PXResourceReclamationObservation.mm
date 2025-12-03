@@ -2,8 +2,8 @@
 + (id)new;
 - (PXAVResourceReclamationController)controller;
 - (PXResourceReclamationObservation)init;
-- (PXResourceReclamationObservation)initWithController:(id)a3 weakTarget:(id)a4 selector:(SEL)a5;
-- (void)resourceReclamationEventDidOccur:(id)a3;
+- (PXResourceReclamationObservation)initWithController:(id)controller weakTarget:(id)target selector:(SEL)selector;
+- (void)resourceReclamationEventDidOccur:(id)occur;
 @end
 
 @implementation PXResourceReclamationObservation
@@ -15,9 +15,9 @@
   return WeakRetained;
 }
 
-- (void)resourceReclamationEventDidOccur:(id)a3
+- (void)resourceReclamationEventDidOccur:(id)occur
 {
-  v4 = a3;
+  occurCopy = occur;
   WeakRetained = objc_loadWeakRetained(&self->_target);
   if (self->_selector)
   {
@@ -30,41 +30,41 @@
   }
 
   v7 = WeakRetained;
-  [WeakRetained performSelector:selector withObject:v4];
+  [WeakRetained performSelector:selector withObject:occurCopy];
 }
 
 - (PXResourceReclamationObservation)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXResourceReclamationObservation.m" lineNumber:35 description:{@"%s is not available as initializer", "-[PXResourceReclamationObservation init]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXResourceReclamationObservation.m" lineNumber:35 description:{@"%s is not available as initializer", "-[PXResourceReclamationObservation init]"}];
 
   abort();
 }
 
-- (PXResourceReclamationObservation)initWithController:(id)a3 weakTarget:(id)a4 selector:(SEL)a5
+- (PXResourceReclamationObservation)initWithController:(id)controller weakTarget:(id)target selector:(SEL)selector
 {
-  v8 = a3;
-  v9 = a4;
+  controllerCopy = controller;
+  targetCopy = target;
   v14.receiver = self;
   v14.super_class = PXResourceReclamationObservation;
   v10 = [(PXResourceReclamationObservation *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_controller, v8);
-    objc_storeWeak(&v11->_target, v9);
-    if (a5)
+    objc_storeWeak(&v10->_controller, controllerCopy);
+    objc_storeWeak(&v11->_target, targetCopy);
+    if (selector)
     {
-      v12 = a5;
+      selectorCopy = selector;
     }
 
     else
     {
-      v12 = 0;
+      selectorCopy = 0;
     }
 
-    v11->_selector = v12;
-    [v8 registerObserver:v11];
+    v11->_selector = selectorCopy;
+    [controllerCopy registerObserver:v11];
   }
 
   return v11;
@@ -72,8 +72,8 @@
 
 + (id)new
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"PXResourceReclamationObservation.m" lineNumber:39 description:{@"%s is not available as initializer", "+[PXResourceReclamationObservation new]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXResourceReclamationObservation.m" lineNumber:39 description:{@"%s is not available as initializer", "+[PXResourceReclamationObservation new]"}];
 
   abort();
 }

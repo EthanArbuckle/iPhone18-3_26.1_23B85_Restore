@@ -1,10 +1,10 @@
 @interface _LSErrorEnumerator
-- (_LSErrorEnumerator)initWithPreparationError:(id)a3;
+- (_LSErrorEnumerator)initWithPreparationError:(id)error;
 @end
 
 @implementation _LSErrorEnumerator
 
-- (_LSErrorEnumerator)initWithPreparationError:(id)a3
+- (_LSErrorEnumerator)initWithPreparationError:(id)error
 {
   v7.receiver = self;
   v7.super_class = _LSErrorEnumerator;
@@ -12,7 +12,7 @@
   v5 = v4;
   if (v4)
   {
-    objc_storeStrong(v4 + 4, a3);
+    objc_storeStrong(v4 + 4, error);
   }
 
   return v5;

@@ -1,22 +1,22 @@
 @interface TIWordSearchHandwriting
-- (__MecabraContext)createMecabraContextFromCandidateContext:(id)a3 stringContext:(id)a4;
-- (id)generatePredictionsWithCandidateContext:(id)a3 stringContext:(id)a4 option:(unint64_t)a5;
+- (__MecabraContext)createMecabraContextFromCandidateContext:(id)context stringContext:(id)stringContext;
+- (id)generatePredictionsWithCandidateContext:(id)context stringContext:(id)stringContext option:(unint64_t)option;
 - (id)mecabraCreationOptionsDictionary;
-- (void)acceptCandidate:(void *)a3;
+- (void)acceptCandidate:(void *)candidate;
 - (void)updateMecabraState;
 @end
 
 @implementation TIWordSearchHandwriting
 
-- (__MecabraContext)createMecabraContextFromCandidateContext:(id)a3 stringContext:(id)a4
+- (__MecabraContext)createMecabraContextFromCandidateContext:(id)context stringContext:(id)stringContext
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  stringContextCopy = stringContext;
   [(TIWordSearch *)self mecabra];
   [(TIWordSearch *)self mecabraLanguage];
   Mutable = MecabraContextCreateMutable();
-  if ([v7 length])
+  if ([stringContextCopy length])
   {
     CandidateFromContextString = MecabraCreateCandidateFromContextString();
     MecabraContextAddCandidate();
@@ -26,7 +26,7 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = v6;
+  v10 = contextCopy;
   v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
@@ -58,31 +58,31 @@
   return Mutable;
 }
 
-- (id)generatePredictionsWithCandidateContext:(id)a3 stringContext:(id)a4 option:(unint64_t)a5
+- (id)generatePredictionsWithCandidateContext:(id)context stringContext:(id)stringContext option:(unint64_t)option
 {
-  v8 = a3;
-  v9 = a4;
+  contextCopy = context;
+  stringContextCopy = stringContext;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
   v28 = __Block_byref_object_copy_;
   v29 = __Block_byref_object_dispose_;
-  v30 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __88__TIWordSearchHandwriting_generatePredictionsWithCandidateContext_stringContext_option___block_invoke;
   v20[3] = &unk_279D9D418;
   v20[4] = self;
-  v10 = v8;
+  v10 = contextCopy;
   v21 = v10;
-  v11 = v9;
+  v11 = stringContextCopy;
   v23 = &v25;
-  v24 = a5;
+  optionCopy = option;
   v22 = v11;
   v12 = MEMORY[0x26D6BFFC0](v20);
-  v13 = [MEMORY[0x277CCABD8] currentQueue];
-  v14 = [MEMORY[0x277D6FEF8] sharedOperationQueue];
-  v15 = [v13 isEqual:v14];
+  currentQueue = [MEMORY[0x277CCABD8] currentQueue];
+  mEMORY[0x277D6FEF8] = [MEMORY[0x277D6FEF8] sharedOperationQueue];
+  v15 = [currentQueue isEqual:mEMORY[0x277D6FEF8]];
 
   if (v15)
   {
@@ -94,8 +94,8 @@
     v16 = [MEMORY[0x277CCA8C8] blockOperationWithBlock:v12];
     [(TIWordSearch *)self performOperationAsync:v16];
 
-    v17 = [MEMORY[0x277D6FEF8] sharedOperationQueue];
-    [v17 waitUntilAllOperationsAreFinished];
+    mEMORY[0x277D6FEF8]2 = [MEMORY[0x277D6FEF8] sharedOperationQueue];
+    [mEMORY[0x277D6FEF8]2 waitUntilAllOperationsAreFinished];
   }
 
   v18 = v26[5];
@@ -134,20 +134,20 @@ uint64_t __88__TIWordSearchHandwriting_generatePredictionsWithCandidateContext_s
   return result;
 }
 
-- (void)acceptCandidate:(void *)a3
+- (void)acceptCandidate:(void *)candidate
 {
-  if (a3)
+  if (candidate)
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __43__TIWordSearchHandwriting_acceptCandidate___block_invoke;
     v10[3] = &unk_279D9D3F0;
     v10[4] = self;
-    v10[5] = a3;
+    v10[5] = candidate;
     v4 = MEMORY[0x26D6BFFC0](v10, a2);
-    v5 = [MEMORY[0x277CCABD8] currentQueue];
-    v6 = [MEMORY[0x277D6FEF8] sharedOperationQueue];
-    v7 = [v5 isEqual:v6];
+    currentQueue = [MEMORY[0x277CCABD8] currentQueue];
+    mEMORY[0x277D6FEF8] = [MEMORY[0x277D6FEF8] sharedOperationQueue];
+    v7 = [currentQueue isEqual:mEMORY[0x277D6FEF8]];
 
     if (v7)
     {
@@ -159,8 +159,8 @@ uint64_t __88__TIWordSearchHandwriting_generatePredictionsWithCandidateContext_s
       v8 = [MEMORY[0x277CCA8C8] blockOperationWithBlock:v4];
       [(TIWordSearch *)self performOperationAsync:v8];
 
-      v9 = [MEMORY[0x277D6FEF8] sharedOperationQueue];
-      [v9 waitUntilAllOperationsAreFinished];
+      mEMORY[0x277D6FEF8]2 = [MEMORY[0x277D6FEF8] sharedOperationQueue];
+      [mEMORY[0x277D6FEF8]2 waitUntilAllOperationsAreFinished];
     }
   }
 }
@@ -205,8 +205,8 @@ uint64_t __43__TIWordSearchHandwriting_acceptCandidate___block_invoke(uint64_t a
 {
   v5.receiver = self;
   v5.super_class = TIWordSearchHandwriting;
-  v2 = [(TIWordSearch *)&v5 mecabraCreationOptionsDictionary];
-  v3 = [v2 mutableCopy];
+  mecabraCreationOptionsDictionary = [(TIWordSearch *)&v5 mecabraCreationOptionsDictionary];
+  v3 = [mecabraCreationOptionsDictionary mutableCopy];
 
   [v3 removeObjectForKey:*MEMORY[0x277D82A58]];
 

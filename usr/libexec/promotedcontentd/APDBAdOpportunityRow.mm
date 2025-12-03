@@ -1,22 +1,22 @@
 @interface APDBAdOpportunityRow
-- (APDBAdOpportunityRow)initWithIdentifier:(id)a3 placement:(int64_t)a4 table:(id)a5;
+- (APDBAdOpportunityRow)initWithIdentifier:(id)identifier placement:(int64_t)placement table:(id)table;
 - (int64_t)placement;
-- (void)setPlacement:(int64_t)a3;
+- (void)setPlacement:(int64_t)placement;
 @end
 
 @implementation APDBAdOpportunityRow
 
-- (APDBAdOpportunityRow)initWithIdentifier:(id)a3 placement:(int64_t)a4 table:(id)a5
+- (APDBAdOpportunityRow)initWithIdentifier:(id)identifier placement:(int64_t)placement table:(id)table
 {
-  v8 = a3;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = APDBAdOpportunityRow;
-  v9 = [(APDBAdOpportunityRow *)&v14 initAsNewObjectWithTable:a5];
+  v9 = [(APDBAdOpportunityRow *)&v14 initAsNewObjectWithTable:table];
   v10 = v9;
   if (v9)
   {
-    [(APDBAdOpportunityRow *)v9 setValue:v8 forColumnName:@"identifier"];
-    v11 = [NSNumber numberWithInteger:a4];
+    [(APDBAdOpportunityRow *)v9 setValue:identifierCopy forColumnName:@"identifier"];
+    v11 = [NSNumber numberWithInteger:placement];
     [(APDBAdOpportunityRow *)v10 setValue:v11 forColumnName:@"placement"];
 
     v12 = +[NSDate now];
@@ -29,14 +29,14 @@
 - (int64_t)placement
 {
   v2 = [(APDBAdOpportunityRow *)self valueForColumnName:@"placement"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)setPlacement:(int64_t)a3
+- (void)setPlacement:(int64_t)placement
 {
-  v4 = [NSNumber numberWithInteger:a3];
+  v4 = [NSNumber numberWithInteger:placement];
   [(APDBAdOpportunityRow *)self setValue:v4 forColumnName:@"placement"];
 }
 

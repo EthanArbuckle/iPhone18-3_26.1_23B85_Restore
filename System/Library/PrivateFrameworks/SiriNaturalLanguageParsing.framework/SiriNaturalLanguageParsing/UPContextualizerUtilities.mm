@@ -1,39 +1,39 @@
 @interface UPContextualizerUtilities
-+ (BOOL)hasTopCandidate:(id)a3 excedingProbability:(double)a4 matchingOneOfIntents:(id)a5;
-+ (id)buildPayloadResultFromQuery:(id)a3 modelIdentifier:(id)a4 intent:(id)a5 entityName:(id)a6 serializer:(id)a7;
-+ (id)createConfirmOrRejectedDialogActsFor:(id)a3 reference:(id)a4;
-+ (id)entityLabelsFromCandidate:(id)a3;
-+ (id)filterResult:(id)a3 byEntityName:(id)a4 serializer:(id)a5;
-+ (id)filterResult:(id)a3 serializer:(id)a4 predicate:(id)a5;
-+ (id)resultFromResult:(id)a3 withNewIntent:(id)a4;
++ (BOOL)hasTopCandidate:(id)candidate excedingProbability:(double)probability matchingOneOfIntents:(id)intents;
++ (id)buildPayloadResultFromQuery:(id)query modelIdentifier:(id)identifier intent:(id)intent entityName:(id)name serializer:(id)serializer;
++ (id)createConfirmOrRejectedDialogActsFor:(id)for reference:(id)reference;
++ (id)entityLabelsFromCandidate:(id)candidate;
++ (id)filterResult:(id)result byEntityName:(id)name serializer:(id)serializer;
++ (id)filterResult:(id)result serializer:(id)serializer predicate:(id)predicate;
++ (id)resultFromResult:(id)result withNewIntent:(id)intent;
 @end
 
 @implementation UPContextualizerUtilities
 
-+ (id)createConfirmOrRejectedDialogActsFor:(id)a3 reference:(id)a4
++ (id)createConfirmOrRejectedDialogActsFor:(id)for reference:(id)reference
 {
-  v5 = a3;
-  v29 = a4;
-  v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "candidateCount")}];
-  if ([v5 candidateCount] >= 1)
+  forCopy = for;
+  referenceCopy = reference;
+  v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(forCopy, "candidateCount")}];
+  if ([forCopy candidateCount] >= 1)
   {
     v7 = 0;
     v8 = @"yes";
-    v31 = v5;
+    v31 = forCopy;
     v30 = v6;
     while (1)
     {
-      v9 = [v5 candidateAtRank:v7];
-      v10 = [v9 intent];
-      v11 = [v10 isEqualToString:v8];
+      v9 = [forCopy candidateAtRank:v7];
+      intent = [v9 intent];
+      v11 = [intent isEqualToString:v8];
 
       if (v11)
       {
         break;
       }
 
-      v23 = [v9 intent];
-      v24 = [v23 isEqualToString:@"no"];
+      intent2 = [v9 intent];
+      v24 = [intent2 isEqualToString:@"no"];
 
       if (!v24)
       {
@@ -57,22 +57,22 @@ LABEL_6:
       v13 = [UPResultCandidate alloc];
       [v9 uncalibratedProbability];
       v15 = v14;
-      v16 = [v9 calibratedProbability];
-      v17 = [v9 utterance];
-      v18 = [v9 intent];
-      v19 = [v9 entities];
+      calibratedProbability = [v9 calibratedProbability];
+      utterance = [v9 utterance];
+      intent3 = [v9 intent];
+      entities = [v9 entities];
       [v9 modelIdentifier];
       v21 = v20 = v8;
-      v22 = [(UPResultCandidate *)v13 initWithUncalibratedProbability:v16 calibratedProbability:v17 utterance:v18 intent:v19 entities:v21 modelIdentifier:v12 task:v15];
+      v22 = [(UPResultCandidate *)v13 initWithUncalibratedProbability:calibratedProbability calibratedProbability:utterance utterance:intent3 intent:entities entities:v21 modelIdentifier:v12 task:v15];
 
       v8 = v20;
       v6 = v30;
-      v5 = v31;
+      forCopy = v31;
 
       [v30 addObject:v22];
 LABEL_12:
 
-      if ([v5 candidateCount] <= ++v7)
+      if ([forCopy candidateCount] <= ++v7)
       {
         goto LABEL_13;
       }
@@ -85,55 +85,55 @@ LABEL_12:
     }
 
 LABEL_5:
-    [v12 setReference:v29];
+    [v12 setReference:referenceCopy];
     goto LABEL_6;
   }
 
 LABEL_13:
   v25 = [UPResult alloc];
-  v26 = [v5 queryUUID];
-  v27 = [(UPResult *)v25 initWithCandidates:v6 queryUUID:v26];
+  queryUUID = [forCopy queryUUID];
+  v27 = [(UPResult *)v25 initWithCandidates:v6 queryUUID:queryUUID];
 
   return v27;
 }
 
-+ (id)filterResult:(id)a3 serializer:(id)a4 predicate:(id)a5
++ (id)filterResult:(id)result serializer:(id)serializer predicate:(id)predicate
 {
-  v6 = a3;
-  v7 = a5;
-  v8 = [MEMORY[0x277CBEB18] array];
-  v9 = [v6 candidateCount];
-  if (v9 >= 1)
+  resultCopy = result;
+  predicateCopy = predicate;
+  array = [MEMORY[0x277CBEB18] array];
+  candidateCount = [resultCopy candidateCount];
+  if (candidateCount >= 1)
   {
-    v10 = v9;
+    v10 = candidateCount;
     for (i = 0; i != v10; ++i)
     {
-      v12 = [v6 candidateAtRank:i];
-      if (v7[2](v7, v12))
+      v12 = [resultCopy candidateAtRank:i];
+      if (predicateCopy[2](predicateCopy, v12))
       {
-        [v8 addObject:v12];
+        [array addObject:v12];
       }
     }
   }
 
   v13 = [UPResult alloc];
-  v14 = [v6 queryUUID];
-  v15 = [(UPResult *)v13 initWithCandidates:v8 queryUUID:v14];
+  queryUUID = [resultCopy queryUUID];
+  v15 = [(UPResult *)v13 initWithCandidates:array queryUUID:queryUUID];
 
   return v15;
 }
 
-+ (id)entityLabelsFromCandidate:(id)a3
++ (id)entityLabelsFromCandidate:(id)candidate
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  candidateCopy = candidate;
+  array = [MEMORY[0x277CBEB18] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v3 entities];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  entities = [candidateCopy entities];
+  v6 = [entities countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -144,14 +144,14 @@ LABEL_13:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(entities);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) label];
-        [v4 addObject:v10];
+        label = [*(*(&v13 + 1) + 8 * i) label];
+        [array addObject:label];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [entities countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -159,83 +159,83 @@ LABEL_13:
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return array;
 }
 
-+ (id)buildPayloadResultFromQuery:(id)a3 modelIdentifier:(id)a4 intent:(id)a5 entityName:(id)a6 serializer:(id)a7
++ (id)buildPayloadResultFromQuery:(id)query modelIdentifier:(id)identifier intent:(id)intent entityName:(id)name serializer:(id)serializer
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [v11 utterance];
-  if (!v16)
+  queryCopy = query;
+  identifierCopy = identifier;
+  intentCopy = intent;
+  nameCopy = name;
+  serializerCopy = serializer;
+  utterance = [queryCopy utterance];
+  if (!utterance)
   {
     __assert_rtn("+[UPContextualizerUtilities buildPayloadResultFromQuery:modelIdentifier:intent:entityName:serializer:]", "UPContextualizerUtilities.m", 96, "utterance != nil");
   }
 
-  v17 = v16;
-  v18 = -[UPResultCandidateEntity initWithRange:label:text:groupId:semanticValue:sharedEntityGraph:]([UPResultCandidateEntity alloc], "initWithRange:label:text:groupId:semanticValue:sharedEntityGraph:", 0, [v16 length], v14, v16, 0, 0, 0);
+  v17 = utterance;
+  v18 = -[UPResultCandidateEntity initWithRange:label:text:groupId:semanticValue:sharedEntityGraph:]([UPResultCandidateEntity alloc], "initWithRange:label:text:groupId:semanticValue:sharedEntityGraph:", 0, [utterance length], nameCopy, utterance, 0, 0, 0);
   v40[0] = v18;
-  v37 = v14;
+  v37 = nameCopy;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:1];
-  v20 = [v12 appBundleId];
-  v36 = [v15 serializeFromIntent:v13 andEntities:v19 forBundleId:v20];
+  appBundleId = [identifierCopy appBundleId];
+  v36 = [serializerCopy serializeFromIntent:intentCopy andEntities:v19 forBundleId:appBundleId];
 
   v21 = [objc_alloc(MEMORY[0x277D5F5E0]) initWithTask:v36];
   v22 = [UPResultCandidate alloc];
   [MEMORY[0x277CCABB0] numberWithDouble:1.0];
-  v23 = v35 = v15;
+  v23 = v35 = serializerCopy;
   v39 = v18;
   v24 = [MEMORY[0x277CBEA60] arrayWithObjects:&v39 count:1];
-  v25 = [(UPResultCandidate *)v22 initWithUncalibratedProbability:v23 calibratedProbability:v17 utterance:v13 intent:v24 entities:v12 modelIdentifier:v21 task:1.0];
-  v34 = v13;
-  v26 = v11;
+  v25 = [(UPResultCandidate *)v22 initWithUncalibratedProbability:v23 calibratedProbability:v17 utterance:intentCopy intent:v24 entities:identifierCopy modelIdentifier:v21 task:1.0];
+  v34 = intentCopy;
+  v26 = queryCopy;
   v27 = v25;
 
   v28 = [UPResult alloc];
   v38 = v27;
   v29 = [MEMORY[0x277CBEA60] arrayWithObjects:&v38 count:1];
-  v30 = [v26 uuid];
-  v31 = [(UPResult *)v28 initWithCandidates:v29 queryUUID:v30];
+  uuid = [v26 uuid];
+  v31 = [(UPResult *)v28 initWithCandidates:v29 queryUUID:uuid];
 
   v32 = *MEMORY[0x277D85DE8];
 
   return v31;
 }
 
-+ (id)resultFromResult:(id)a3 withNewIntent:(id)a4
++ (id)resultFromResult:(id)result withNewIntent:(id)intent
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 candidateCount])
+  resultCopy = result;
+  intentCopy = intent;
+  if ([resultCopy candidateCount])
   {
-    v7 = [MEMORY[0x277CBEB18] array];
-    v8 = [v5 candidateCount];
-    v27 = v6;
-    if (v8 >= 1)
+    array = [MEMORY[0x277CBEB18] array];
+    candidateCount = [resultCopy candidateCount];
+    v27 = intentCopy;
+    if (candidateCount >= 1)
     {
       v9 = 0;
-      v26 = v8;
+      v26 = candidateCount;
       do
       {
-        v10 = [v5 candidateAtRank:{v9, v26}];
+        v10 = [resultCopy candidateAtRank:{v9, v26}];
         v11 = [UPResultCandidate alloc];
         [v10 uncalibratedProbability];
         v13 = v12;
-        v14 = [v10 calibratedProbability];
-        v15 = [v10 utterance];
-        v16 = [v10 entities];
-        v17 = [v10 modelIdentifier];
+        calibratedProbability = [v10 calibratedProbability];
+        utterance = [v10 utterance];
+        entities = [v10 entities];
+        modelIdentifier = [v10 modelIdentifier];
         [v10 task];
-        v18 = v7;
-        v20 = v19 = v5;
-        v21 = [(UPResultCandidate *)v11 initWithUncalibratedProbability:v14 calibratedProbability:v15 utterance:v27 intent:v16 entities:v17 modelIdentifier:v20 task:v13];
+        v18 = array;
+        v20 = v19 = resultCopy;
+        v21 = [(UPResultCandidate *)v11 initWithUncalibratedProbability:calibratedProbability calibratedProbability:utterance utterance:v27 intent:entities entities:modelIdentifier modelIdentifier:v20 task:v13];
 
-        v5 = v19;
-        v7 = v18;
+        resultCopy = v19;
+        array = v18;
 
         [v18 addObject:v21];
         ++v9;
@@ -245,31 +245,31 @@ LABEL_13:
     }
 
     v22 = [UPResult alloc];
-    v23 = [v5 queryUUID];
-    v24 = [(UPResult *)v22 initWithCandidates:v7 queryUUID:v23];
+    queryUUID = [resultCopy queryUUID];
+    v24 = [(UPResult *)v22 initWithCandidates:array queryUUID:queryUUID];
 
-    v6 = v27;
+    intentCopy = v27;
   }
 
   else
   {
-    v24 = v5;
+    v24 = resultCopy;
   }
 
   return v24;
 }
 
-+ (id)filterResult:(id)a3 byEntityName:(id)a4 serializer:(id)a5
++ (id)filterResult:(id)result byEntityName:(id)name serializer:(id)serializer
 {
-  v8 = a4;
+  nameCopy = name;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __66__UPContextualizerUtilities_filterResult_byEntityName_serializer___block_invoke;
   v12[3] = &unk_2784B6BF0;
-  v13 = v8;
-  v14 = a1;
-  v9 = v8;
-  v10 = [a1 filterResult:a3 serializer:a5 predicate:v12];
+  v13 = nameCopy;
+  selfCopy = self;
+  v9 = nameCopy;
+  v10 = [self filterResult:result serializer:serializer predicate:v12];
 
   return v10;
 }
@@ -282,18 +282,18 @@ uint64_t __66__UPContextualizerUtilities_filterResult_byEntityName_serializer___
   return v4;
 }
 
-+ (BOOL)hasTopCandidate:(id)a3 excedingProbability:(double)a4 matchingOneOfIntents:(id)a5
++ (BOOL)hasTopCandidate:(id)candidate excedingProbability:(double)probability matchingOneOfIntents:(id)intents
 {
-  v7 = a3;
-  v8 = a5;
-  if ([v7 candidateCount])
+  candidateCopy = candidate;
+  intentsCopy = intents;
+  if ([candidateCopy candidateCount])
   {
-    v9 = [v7 candidateAtRank:0];
-    v10 = [v9 intent];
+    v9 = [candidateCopy candidateAtRank:0];
+    intent = [v9 intent];
     [v9 uncalibratedProbability];
     v12 = v11;
-    v13 = [v8 containsObject:v10];
-    if (v12 > a4)
+    v13 = [intentsCopy containsObject:intent];
+    if (v12 > probability)
     {
       v14 = v13;
     }

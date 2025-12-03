@@ -1,24 +1,24 @@
 @interface PKPaymentMethodActionSectionController
-- (BOOL)shouldHighlightItem:(id)a3;
-- (PKPaymentMethodActionSectionController)initWithDelegate:(id)a3;
-- (id)cellRegistrationForItem:(id)a3;
+- (BOOL)shouldHighlightItem:(id)item;
+- (PKPaymentMethodActionSectionController)initWithDelegate:(id)delegate;
+- (id)cellRegistrationForItem:(id)item;
 - (id)identifiers;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
-- (void)didSelectItem:(id)a3;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
+- (void)didSelectItem:(id)item;
 @end
 
 @implementation PKPaymentMethodActionSectionController
 
-- (PKPaymentMethodActionSectionController)initWithDelegate:(id)a3
+- (PKPaymentMethodActionSectionController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = PKPaymentMethodActionSectionController;
   v5 = [(PKPaymentMethodActionSectionController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
@@ -33,21 +33,21 @@
   return v2;
 }
 
-- (BOOL)shouldHighlightItem:(id)a3
+- (BOOL)shouldHighlightItem:(id)item
 {
-  v4 = [a3 identifier];
-  v5 = v4;
-  v7 = v4 != @"addPaymentMethod" && (!v4 || (v6 = [(__CFString *)v4 isEqualToString:@"addPaymentMethod"], v5, !v6)) || !self->_addInProgress;
+  identifier = [item identifier];
+  v5 = identifier;
+  v7 = identifier != @"addPaymentMethod" && (!identifier || (v6 = [(__CFString *)identifier isEqualToString:@"addPaymentMethod"], v5, !v6)) || !self->_addInProgress;
 
   return v7;
 }
 
-- (void)didSelectItem:(id)a3
+- (void)didSelectItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = v5;
-  if (v5 == @"addPaymentMethod" || v5 && (v7 = [(__CFString *)v5 isEqualToString:@"addPaymentMethod"], v6, v7))
+  itemCopy = item;
+  identifier = [itemCopy identifier];
+  v6 = identifier;
+  if (identifier == @"addPaymentMethod" || identifier && (v7 = [(__CFString *)identifier isEqualToString:@"addPaymentMethod"], v6, v7))
   {
     self->_addInProgress = 1;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -95,7 +95,7 @@ void __56__PKPaymentMethodActionSectionController_didSelectItem___block_invoke_2
   }
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
   v4 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -108,9 +108,9 @@ void __56__PKPaymentMethodActionSectionController_didSelectItem___block_invoke_2
   return v4;
 }
 
-- (id)cellRegistrationForItem:(id)a3
+- (id)cellRegistrationForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_initWeak(&location, self);
   v5 = objc_opt_class();
   v6 = MEMORY[0x1E69DC800];

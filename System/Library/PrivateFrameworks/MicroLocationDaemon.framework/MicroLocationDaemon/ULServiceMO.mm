@@ -1,34 +1,34 @@
 @interface ULServiceMO
-+ (id)createFromDO:(const void *)a3 inManagedObjectContext:(id)a4;
++ (id)createFromDO:(const void *)o inManagedObjectContext:(id)context;
 - (optional<ULServiceDO>)convertToDO;
 @end
 
 @implementation ULServiceMO
 
-+ (id)createFromDO:(const void *)a3 inManagedObjectContext:(id)a4
++ (id)createFromDO:(const void *)o inManagedObjectContext:(id)context
 {
-  v5 = a4;
-  v6 = [[ULServiceMO alloc] initWithContext:v5];
-  [(ULServiceMO *)v6 setServiceType:*a3];
-  v7 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:a3 + 8];
-  v8 = [v7 UUIDString];
-  [(ULServiceMO *)v6 setServiceUUID:v8];
+  contextCopy = context;
+  v6 = [[ULServiceMO alloc] initWithContext:contextCopy];
+  [(ULServiceMO *)v6 setServiceType:*o];
+  v7 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:o + 8];
+  uUIDString = [v7 UUIDString];
+  [(ULServiceMO *)v6 setServiceUUID:uUIDString];
 
-  [(ULServiceMO *)v6 setLastActiveTimestamp:*(a3 + 3)];
-  if (*(a3 + 55) >= 0)
+  [(ULServiceMO *)v6 setLastActiveTimestamp:*(o + 3)];
+  if (*(o + 55) >= 0)
   {
-    v9 = a3 + 32;
+    v9 = o + 32;
   }
 
   else
   {
-    v9 = *(a3 + 4);
+    v9 = *(o + 4);
   }
 
   v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:v9];
   [(ULServiceMO *)v6 setClientId:v10];
 
-  [(ULServiceMO *)v6 setLocationTypes:*(a3 + 7)];
+  [(ULServiceMO *)v6 setLocationTypes:*(o + 7)];
 
   return v6;
 }
@@ -38,11 +38,11 @@
   v32 = *MEMORY[0x277D85DE8];
   [(ULServiceMO *)self lastActiveTimestamp];
   v6 = v5;
-  v7 = [(ULServiceMO *)self serviceUUID];
-  v8 = v7;
-  if (v7)
+  serviceUUID = [(ULServiceMO *)self serviceUUID];
+  v8 = serviceUUID;
+  if (serviceUUID)
   {
-    [v7 boostUUID];
+    [serviceUUID boostUUID];
   }
 
   else
@@ -54,11 +54,11 @@
 
   if (v31)
   {
-    v9 = [(ULServiceMO *)self clientId];
-    v10 = v9;
-    if (v9)
+    clientId = [(ULServiceMO *)self clientId];
+    v10 = clientId;
+    if (clientId)
     {
-      [v9 stdString];
+      [clientId stdString];
     }
 
     else

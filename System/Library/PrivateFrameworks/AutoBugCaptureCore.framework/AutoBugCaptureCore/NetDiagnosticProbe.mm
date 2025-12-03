@@ -1,36 +1,36 @@
 @interface NetDiagnosticProbe
-- (BOOL)netDiagnosticsTaskInProgress:(id)a3;
-- (BOOL)startNetDiagnosticsTask:(id)a3;
-- (BOOL)stopNetDiagnosticsTask:(id)a3;
+- (BOOL)netDiagnosticsTaskInProgress:(id)progress;
+- (BOOL)startNetDiagnosticsTask:(id)task;
+- (BOOL)stopNetDiagnosticsTask:(id)task;
 - (NetDiagnosticsShim)netDiags;
 - (id)setUpDefaultTaskDictionary;
-- (void)cancelTest:(id)a3;
+- (void)cancelTest:(id)test;
 - (void)dealloc;
-- (void)setNetDiags:(id)a3;
+- (void)setNetDiags:(id)diags;
 @end
 
 @implementation NetDiagnosticProbe
 
-- (void)setNetDiags:(id)a3
+- (void)setNetDiags:(id)diags
 {
-  v5 = a3;
+  diagsCopy = diags;
   netDiags = self->_netDiags;
-  if (netDiags != v5)
+  if (netDiags != diagsCopy)
   {
-    v7 = v5;
+    v7 = diagsCopy;
     if (netDiags)
     {
       [(NetDiagnosticsShim *)netDiags setDelegate:0];
       [(NetDiagnosticsShim *)self->_netDiags invalidateConnections];
-      v5 = v7;
+      diagsCopy = v7;
     }
 
-    if (v5)
+    if (diagsCopy)
     {
       [(NetDiagnosticsShim *)v7 setDelegate:self];
     }
 
-    objc_storeStrong(&self->_netDiags, a3);
+    objc_storeStrong(&self->_netDiags, diags);
   }
 
   MEMORY[0x2821F96F8]();
@@ -43,8 +43,8 @@
   {
     v4 = [NetDiagnosticsShim alloc];
     taskName = self->_taskName;
-    v6 = [(TestProbe *)self queue];
-    v7 = [(NetDiagnosticsShim *)v4 initWithTaskName:taskName queue:v6];
+    queue = [(TestProbe *)self queue];
+    v7 = [(NetDiagnosticsShim *)v4 initWithTaskName:taskName queue:queue];
     [(NetDiagnosticProbe *)self setNetDiags:v7];
 
     netDiags = self->_netDiags;
@@ -63,9 +63,9 @@
 
 - (id)setUpDefaultTaskDictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(NetDiagnosticProbe *)self taskName];
-  [v3 setObject:v4 forKeyedSubscript:@"taskName"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  taskName = [(NetDiagnosticProbe *)self taskName];
+  [dictionary setObject:taskName forKeyedSubscript:@"taskName"];
 
   v12 = 0;
   v13 = 0;
@@ -78,34 +78,34 @@
   if (v5 && v6 && v7)
   {
     v9 = [v5 stringByAppendingString:@"/"];
-    [v3 setObject:v9 forKeyedSubscript:@"filename"];
+    [dictionary setObject:v9 forKeyedSubscript:@"filename"];
 
-    [v3 setObject:v6 forKeyedSubscript:@"taskFileUserID"];
-    [v3 setObject:v8 forKeyedSubscript:@"taskFileGroupID"];
+    [dictionary setObject:v6 forKeyedSubscript:@"taskFileUserID"];
+    [dictionary setObject:v8 forKeyedSubscript:@"taskFileGroupID"];
   }
 
-  [v3 setObject:&unk_28537A038 forKeyedSubscript:@"taskFileMode"];
-  [(NetDiagnosticProbe *)self setNetDiagsTaskDict:v3];
+  [dictionary setObject:&unk_28537A038 forKeyedSubscript:@"taskFileMode"];
+  [(NetDiagnosticProbe *)self setNetDiagsTaskDict:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)startNetDiagnosticsTask:(id)a3
+- (BOOL)startNetDiagnosticsTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   [(TestProbe *)self setStatus:1];
-  v5 = [(NetDiagnosticProbe *)self netDiags];
-  v6 = [(NetDiagnosticProbe *)self netDiagsTaskDict];
+  netDiags = [(NetDiagnosticProbe *)self netDiags];
+  netDiagsTaskDict = [(NetDiagnosticProbe *)self netDiagsTaskDict];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __46__NetDiagnosticProbe_startNetDiagnosticsTask___block_invoke;
   v9[3] = &unk_278CF0548;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
-  LOBYTE(v4) = [v5 startNetDiagnosticTaskWithOptions:v6 reply:v9];
+  v10 = taskCopy;
+  v7 = taskCopy;
+  LOBYTE(taskCopy) = [netDiags startNetDiagnosticTaskWithOptions:netDiagsTaskDict reply:v9];
 
-  return v4;
+  return taskCopy;
 }
 
 void __46__NetDiagnosticProbe_startNetDiagnosticsTask___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -203,9 +203,9 @@ uint64_t __46__NetDiagnosticProbe_startNetDiagnosticsTask___block_invoke_2(uint6
   return [v2 disconnectFromNetDiagnostics];
 }
 
-- (void)cancelTest:(id)a3
+- (void)cancelTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   if ([(TestProbe *)self isRunning])
   {
     v5[0] = MEMORY[0x277D85DD0];
@@ -213,16 +213,16 @@ uint64_t __46__NetDiagnosticProbe_startNetDiagnosticsTask___block_invoke_2(uint6
     v5[2] = __33__NetDiagnosticProbe_cancelTest___block_invoke;
     v5[3] = &unk_278CF0570;
     v5[4] = self;
-    v6 = v4;
+    v6 = testCopy;
     [(NetDiagnosticProbe *)self stopNetDiagnosticsTask:v5];
   }
 
   else
   {
     [(TestProbe *)self setStatus:5];
-    if (v4)
+    if (testCopy)
     {
-      (*(v4 + 2))(v4, [(TestProbe *)self status]);
+      (*(testCopy + 2))(testCopy, [(TestProbe *)self status]);
     }
   }
 }
@@ -244,21 +244,21 @@ uint64_t __33__NetDiagnosticProbe_cancelTest___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)stopNetDiagnosticsTask:(id)a3
+- (BOOL)stopNetDiagnosticsTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   [(TestProbe *)self setRunning:0];
-  v5 = [(NetDiagnosticProbe *)self netDiags];
+  netDiags = [(NetDiagnosticProbe *)self netDiags];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __45__NetDiagnosticProbe_stopNetDiagnosticsTask___block_invoke;
   v8[3] = &unk_278CF0548;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
-  LOBYTE(v4) = [v5 stopNetDiagnosticTaskWithReply:v8];
+  v9 = taskCopy;
+  v6 = taskCopy;
+  LOBYTE(taskCopy) = [netDiags stopNetDiagnosticTaskWithReply:v8];
 
-  return v4;
+  return taskCopy;
 }
 
 void __45__NetDiagnosticProbe_stopNetDiagnosticsTask___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -327,20 +327,20 @@ LABEL_14:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)netDiagnosticsTaskInProgress:(id)a3
+- (BOOL)netDiagnosticsTaskInProgress:(id)progress
 {
-  v4 = a3;
-  v5 = [(NetDiagnosticProbe *)self netDiags];
+  progressCopy = progress;
+  netDiags = [(NetDiagnosticProbe *)self netDiags];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __51__NetDiagnosticProbe_netDiagnosticsTaskInProgress___block_invoke;
   v8[3] = &unk_278CF0548;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
-  LOBYTE(v4) = [v5 netDiagnosticTaskStatusWithReply:v8];
+  v9 = progressCopy;
+  v6 = progressCopy;
+  LOBYTE(progressCopy) = [netDiags netDiagnosticTaskStatusWithReply:v8];
 
-  return v4;
+  return progressCopy;
 }
 
 void __51__NetDiagnosticProbe_netDiagnosticsTaskInProgress___block_invoke(uint64_t a1, void *a2, void *a3)

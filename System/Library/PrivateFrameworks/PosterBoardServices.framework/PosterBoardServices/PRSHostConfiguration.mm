@@ -1,42 +1,42 @@
 @interface PRSHostConfiguration
-+ (id)hostConfigurationWithConfigurationEntries:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)hostConfigurationWithConfigurationEntries:(id)entries;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (PRSHostConfiguration)initWithBSXPCCoder:(id)a3;
-- (PRSHostConfiguration)initWithCoder:(id)a3;
-- (PRSHostConfiguration)initWithConfigurationEntries:(id)a3;
+- (PRSHostConfiguration)initWithBSXPCCoder:(id)coder;
+- (PRSHostConfiguration)initWithCoder:(id)coder;
+- (PRSHostConfiguration)initWithConfigurationEntries:(id)entries;
 - (unint64_t)hash;
 @end
 
 @implementation PRSHostConfiguration
 
-+ (id)hostConfigurationWithConfigurationEntries:(id)a3
++ (id)hostConfigurationWithConfigurationEntries:(id)entries
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithConfigurationEntries:v3];
+  entriesCopy = entries;
+  v4 = [objc_alloc(objc_opt_class()) initWithConfigurationEntries:entriesCopy];
 
   return v4;
 }
 
-- (PRSHostConfiguration)initWithConfigurationEntries:(id)a3
+- (PRSHostConfiguration)initWithConfigurationEntries:(id)entries
 {
-  v4 = a3;
+  entriesCopy = entries;
   v8.receiver = self;
   v8.super_class = PRSHostConfiguration;
   v5 = [(PRSHostConfiguration *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(PRSHostConfiguration *)v5 setEntries:v4];
+    [(PRSHostConfiguration *)v5 setEntries:entriesCopy];
   }
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -44,7 +44,7 @@
   else
   {
     v5 = objc_opt_class();
-    v6 = v4;
+    v6 = equalCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -68,7 +68,7 @@
     if (v9)
     {
       entries = self->_entries;
-      v11 = [(PRSHostConfiguration *)v9 entries];
+      entries = [(PRSHostConfiguration *)v9 entries];
       v8 = BSEqualArrays();
     }
 
@@ -84,7 +84,7 @@
 - (unint64_t)hash
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E698E6B8] builder];
+  builder = [MEMORY[0x1E698E6B8] builder];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -105,7 +105,7 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [v3 appendObject:{*(*(&v13 + 1) + 8 * v8++), v13}];
+        v9 = [builder appendObject:{*(*(&v13 + 1) + 8 * v8++), v13}];
       }
 
       while (v6 != v8);
@@ -115,20 +115,20 @@
     while (v6);
   }
 
-  v10 = [v3 hash];
+  v10 = [builder hash];
   v11 = *MEMORY[0x1E69E9840];
   return v10;
 }
 
-- (PRSHostConfiguration)initWithCoder:(id)a3
+- (PRSHostConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = PRSHostConfiguration;
   v5 = [(PRSHostConfiguration *)&v8 init];
   if (v5)
   {
-    v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"_entries"];
+    v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"_entries"];
     if (v6)
     {
       [(PRSHostConfiguration *)v5 setEntries:v6];
@@ -142,21 +142,21 @@
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
   [v3 appendArraySection:self->_entries withName:@"entries" skipIfEmpty:0];
-  v4 = [v3 build];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (PRSHostConfiguration)initWithBSXPCCoder:(id)a3
+- (PRSHostConfiguration)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PRSHostConfiguration;
   v5 = [(PRSHostConfiguration *)&v9 init];
   if (v5)
   {
     v6 = objc_opt_class();
-    v7 = [v4 decodeCollectionOfClass:v6 containingClass:objc_opt_class() forKey:@"_entries"];
+    v7 = [coderCopy decodeCollectionOfClass:v6 containingClass:objc_opt_class() forKey:@"_entries"];
     if (v7)
     {
       [(PRSHostConfiguration *)v5 setEntries:v7];

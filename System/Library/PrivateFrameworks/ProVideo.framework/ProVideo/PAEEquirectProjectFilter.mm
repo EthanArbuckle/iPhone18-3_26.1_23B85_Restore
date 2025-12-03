@@ -1,28 +1,28 @@
 @interface PAEEquirectProjectFilter
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 hardware:(BOOL *)a4 software:(BOOL *)a5;
-- (BOOL)getIsFrontFacing:(id)a3;
-- (BOOL)getOutputWidth:(unint64_t *)a3 height:(unint64_t *)a4 withInput:(id *)a5 withInfo:(id *)a6;
-- (HGEquirectProjectParams)getParams:(SEL)a3 withOutputImage:(id *)a4 inputImage:(id)a5 width:(id)a6 height:(unint64_t)a7 outputWidth:(unint64_t)a8 outputHeight:(unint64_t)a9 xRotation:(unint64_t)a10 yRotation:(double)a11 zRotation:(double)a12 cameraBehavior:(double)a13 paramAPI:(int)a14;
-- (PAEEquirectProjectFilter)initWithAPIManager:(id)a3;
-- (PCMatrix44Tmpl<double>)composeViewMatrix:(SEL)a3 withCameraBehavior:(id)a4 heroAngle:(int)a5;
-- (PCMatrix44Tmpl<double>)getViewMatrix:(SEL)a3;
-- (double)convertToFOVXFromFOVY:(double)a3 width:(double)a4 height:(double)a5;
-- (double)convertToFOVYFromFOVX:(double)a3 width:(double)a4 height:(double)a5;
-- (double)getInitialYaw:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup hardware:(BOOL *)hardware software:(BOOL *)software;
+- (BOOL)getIsFrontFacing:(id)facing;
+- (BOOL)getOutputWidth:(unint64_t *)width height:(unint64_t *)height withInput:(id *)input withInfo:(id *)info;
+- (HGEquirectProjectParams)getParams:(SEL)params withOutputImage:(id *)image inputImage:(id)inputImage width:(id)width height:(unint64_t)height outputWidth:(unint64_t)outputWidth outputHeight:(unint64_t)outputHeight xRotation:(unint64_t)self0 yRotation:(double)self1 zRotation:(double)self2 cameraBehavior:(double)self3 paramAPI:(int)self4;
+- (PAEEquirectProjectFilter)initWithAPIManager:(id)manager;
+- (PCMatrix44Tmpl<double>)composeViewMatrix:(SEL)matrix withCameraBehavior:(id)behavior heroAngle:(int)angle;
+- (PCMatrix44Tmpl<double>)getViewMatrix:(SEL)matrix;
+- (double)convertToFOVXFromFOVY:(double)y width:(double)width height:(double)height;
+- (double)convertToFOVYFromFOVX:(double)x width:(double)width height:(double)height;
+- (double)getInitialYaw:(id)yaw;
 - (id)properties;
-- (void)getProjectionFOVYDegrees:(float *)a3 FOVXDegrees:(float *)a4 withFrameAspect:(double)a5 atTime:(id)a6;
-- (void)getQuaternion:(id)a3 :(double *)a4 :(double *)a5 :(double *)a6 :(double *)a7;
+- (void)getProjectionFOVYDegrees:(float *)degrees FOVXDegrees:(float *)xDegrees withFrameAspect:(double)aspect atTime:(id)time;
+- (void)getQuaternion:(id)quaternion :(double *)a4 :(double *)a5 :(double *)a6 :(double *)a7;
 @end
 
 @implementation PAEEquirectProjectFilter
 
-- (PAEEquirectProjectFilter)initWithAPIManager:(id)a3
+- (PAEEquirectProjectFilter)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEEquirectProjectFilter;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (BOOL)addParameters
@@ -57,14 +57,14 @@
   return [v2 dictionaryWithObjectsAndKeys:{v3, @"PixelTransformSupport", v4, @"TransformsFromLocalToScreenSpace", v5, @"UsesRationalTime", v6, @"SupportsHeliumRendering", v7, @"SDRWorkingSpace", v8, @"HDRWorkingSpace", objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", 3), @"AutoColorProcessingSupport", 0}];
 }
 
-- (BOOL)frameSetup:(id *)a3 hardware:(BOOL *)a4 software:(BOOL *)a5
+- (BOOL)frameSetup:(id *)setup hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a4 = 0;
-  *a5 = 0;
+  *hardware = 0;
+  *software = 0;
   return 1;
 }
 
-- (PCMatrix44Tmpl<double>)getViewMatrix:(SEL)a3
+- (PCMatrix44Tmpl<double>)getViewMatrix:(SEL)matrix
 {
   v15 = *MEMORY[0x277D85DE8];
   retstr->var0[3][3] = 1.0;
@@ -109,23 +109,23 @@
   return result;
 }
 
-- (void)getQuaternion:(id)a3 :(double *)a4 :(double *)a5 :(double *)a6 :(double *)a7
+- (void)getQuaternion:(id)quaternion :(double *)a4 :(double *)a5 :(double *)a6 :(double *)a7
 {
   v12 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
-  [v12 getFloatValue:a4 fromParm:6 atFxTime:a3.var1];
-  [v12 getFloatValue:a5 fromParm:7 atFxTime:a3.var1];
-  [v12 getFloatValue:a6 fromParm:8 atFxTime:a3.var1];
+  [v12 getFloatValue:a4 fromParm:6 atFxTime:quaternion.var1];
+  [v12 getFloatValue:a5 fromParm:7 atFxTime:quaternion.var1];
+  [v12 getFloatValue:a6 fromParm:8 atFxTime:quaternion.var1];
 
-  [v12 getFloatValue:a7 fromParm:9 atFxTime:a3.var1];
+  [v12 getFloatValue:a7 fromParm:9 atFxTime:quaternion.var1];
 }
 
-- (PCMatrix44Tmpl<double>)composeViewMatrix:(SEL)a3 withCameraBehavior:(id)a4 heroAngle:(int)a5
+- (PCMatrix44Tmpl<double>)composeViewMatrix:(SEL)matrix withCameraBehavior:(id)behavior heroAngle:(int)angle
 {
   *&v99 = 0.0;
   *&v100 = 0.0;
   v97 = 0.0;
   v98 = 0.0;
-  [(PAEEquirectProjectFilter *)self getQuaternion:a4.var1];
+  [(PAEEquirectProjectFilter *)self getQuaternion:behavior.var1];
   v11.i64[0] = v99;
   v10.i64[0] = v100;
   v110 = v97;
@@ -346,7 +346,7 @@
     v69 = v68 + 6.28318531;
   }
 
-  [(PAEEquirectProjectFilter *)self getInitialYaw:a4.var1];
+  [(PAEEquirectProjectFilter *)self getInitialYaw:behavior.var1];
   v71 = v67 - v70;
   v72 = fmod(v67 - v70, 6.28318531);
   if (v71 < 0.0)
@@ -366,9 +366,9 @@
     v75 = v74 + 6.28318531;
   }
 
-  if ([(PAEEquirectProjectFilter *)self getIsFrontFacing:a4.var1])
+  if ([(PAEEquirectProjectFilter *)self getIsFrontFacing:behavior.var1])
   {
-    if (a5 != 1)
+    if (angle != 1)
     {
       v76 = fmod(-v63, 6.28318531);
       if (v63 <= 0.0)
@@ -439,42 +439,42 @@
   return result;
 }
 
-- (double)convertToFOVYFromFOVX:(double)a3 width:(double)a4 height:(double)a5
+- (double)convertToFOVYFromFOVX:(double)x width:(double)width height:(double)height
 {
-  v7 = tan(a3 * 0.0174532925 * 0.5);
-  v8 = atan2(a5, a4 / v7);
+  v7 = tan(x * 0.0174532925 * 0.5);
+  v8 = atan2(height, width / v7);
   return (v8 + v8) / 0.0174532925;
 }
 
-- (double)convertToFOVXFromFOVY:(double)a3 width:(double)a4 height:(double)a5
+- (double)convertToFOVXFromFOVY:(double)y width:(double)width height:(double)height
 {
-  v7 = tan(a3 * 0.0174532925 * 0.5);
-  v8 = atan2(v7 * a4, a5);
+  v7 = tan(y * 0.0174532925 * 0.5);
+  v8 = atan2(v7 * width, height);
   return (v8 + v8) / 0.0174532925;
 }
 
-- (void)getProjectionFOVYDegrees:(float *)a3 FOVXDegrees:(float *)a4 withFrameAspect:(double)a5 atTime:(id)a6
+- (void)getProjectionFOVYDegrees:(float *)degrees FOVXDegrees:(float *)xDegrees withFrameAspect:(double)aspect atTime:(id)time
 {
-  [-[PROAPIAccessing apiForProtocol:](self->super.super._apiManager apiForProtocol:{&unk_28735F4F0), "focalLengthAtFxTime:", a6.var1}];
+  [-[PROAPIAccessing apiForProtocol:](self->super.super._apiManager apiForProtocol:{&unk_28735F4F0), "focalLengthAtFxTime:", time.var1}];
   if (fabs(v9) != INFINITY)
   {
     v10 = 1.0 / v9;
     v11 = atan(1.0 / v9 * 36.0 * 0.5);
     *&v11 = (v11 + v11) * 57.2957795;
-    *a4 = *&v11;
-    v12 = atan(a5 * 36.0 * v10 * 0.5);
+    *xDegrees = *&v11;
+    v12 = atan(aspect * 36.0 * v10 * 0.5);
     *&v12 = (v12 + v12) * 57.2957795;
-    *a3 = *&v12;
+    *degrees = *&v12;
   }
 }
 
-- (BOOL)getIsFrontFacing:(id)a3
+- (BOOL)getIsFrontFacing:(id)facing
 {
   v4 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   if (v4)
   {
     v7 = 0;
-    [v4 getBoolValue:&v7 fromParm:4 atFxTime:a3.var1];
+    [v4 getBoolValue:&v7 fromParm:4 atFxTime:facing.var1];
     v5 = v7;
   }
 
@@ -486,7 +486,7 @@
   return v5 & 1;
 }
 
-- (double)getInitialYaw:(id)a3
+- (double)getInitialYaw:(id)yaw
 {
   v4 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   if (!v4)
@@ -495,14 +495,14 @@
   }
 
   v6 = 0.0;
-  [v4 getFloatValue:&v6 fromParm:5 atFxTime:a3.var1];
+  [v4 getFloatValue:&v6 fromParm:5 atFxTime:yaw.var1];
   return v6;
 }
 
-- (HGEquirectProjectParams)getParams:(SEL)a3 withOutputImage:(id *)a4 inputImage:(id)a5 width:(id)a6 height:(unint64_t)a7 outputWidth:(unint64_t)a8 outputHeight:(unint64_t)a9 xRotation:(unint64_t)a10 yRotation:(double)a11 zRotation:(double)a12 cameraBehavior:(double)a13 paramAPI:(int)a14
+- (HGEquirectProjectParams)getParams:(SEL)params withOutputImage:(id *)image inputImage:(id)inputImage width:(id)width height:(unint64_t)height outputWidth:(unint64_t)outputWidth outputHeight:(unint64_t)outputHeight xRotation:(unint64_t)self0 yRotation:(double)self1 zRotation:(double)self2 cameraBehavior:(double)self3 paramAPI:(int)self4
 {
-  v15 = a8;
-  v16 = a7;
+  outputWidthCopy = outputWidth;
+  heightCopy = height;
   *retstr->var0 = xmmword_2603429B0;
   *&retstr->var1[1] = xmmword_2603429B0;
   *&retstr->var2[2] = 0x423400003F800000;
@@ -515,10 +515,10 @@
   *retstr->var19 = xmmword_260343890;
   *retstr->var20 = xmmword_2603431B0;
   *retstr->var21 = xmmword_260343890;
-  result = [(PAEEquirectProjectFilter *)self getProjectionFOVYDegrees:&retstr->var3 FOVXDegrees:&retstr->var4 withFrameAspect:a4->var0.var1 atTime:a10 / a9];
+  result = [(PAEEquirectProjectFilter *)self getProjectionFOVYDegrees:&retstr->var3 FOVXDegrees:&retstr->var4 withFrameAspect:image->var0.var1 atTime:rotation / outputHeight];
   if (self)
   {
-    result = [(PAEEquirectProjectFilter *)self composeViewMatrix:a4->var0.var1 withCameraBehavior:a14 heroAngle:a12];
+    result = [(PAEEquirectProjectFilter *)self composeViewMatrix:image->var0.var1 withCameraBehavior:i heroAngle:zRotation];
     v24 = v37;
     v25 = v40;
     v26 = v43;
@@ -552,16 +552,16 @@
   retstr->var2[0] = v30;
   retstr->var2[1] = v31;
   retstr->var2[2] = v32;
-  retstr->var12 = v16;
-  retstr->var13 = v15;
-  if (a6)
+  retstr->var12 = heightCopy;
+  retstr->var13 = outputWidthCopy;
+  if (width)
   {
-    retstr->var12 = [a6 width];
-    result = [a6 height];
+    retstr->var12 = [width width];
+    result = [width height];
     retstr->var13 = result;
     if (self)
     {
-      result = [(PAESharedDefaultBase *)self getPixelTransformForImage:a6];
+      result = [(PAESharedDefaultBase *)self getPixelTransformForImage:width];
     }
 
     else
@@ -576,14 +576,14 @@
     *retstr->var21 = vcvt_hight_f32_f64(vcvt_f32_f64(v35), v36);
   }
 
-  if (a5)
+  if (inputImage)
   {
-    retstr->var14 = [a5 width];
-    result = [a5 height];
+    retstr->var14 = [inputImage width];
+    result = [inputImage height];
     retstr->var15 = result;
     if (self)
     {
-      result = [(PAESharedDefaultBase *)self getInversePixelTransformForImage:a5];
+      result = [(PAESharedDefaultBase *)self getInversePixelTransformForImage:inputImage];
     }
 
     else
@@ -602,46 +602,46 @@
   return result;
 }
 
-- (BOOL)getOutputWidth:(unint64_t *)a3 height:(unint64_t *)a4 withInput:(id *)a5 withInfo:(id *)a6
+- (BOOL)getOutputWidth:(unint64_t *)width height:(unint64_t *)height withInput:(id *)input withInfo:(id *)info
 {
-  if (a3)
+  if (width)
   {
-    *a3 = a5->var0;
+    *width = input->var0;
   }
 
-  if (a4)
+  if (height)
   {
-    *a4 = a5->var1;
+    *height = input->var1;
   }
 
   return 1;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v9 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   if (v9)
   {
     v10 = v9;
-    if ([a3 imageType] == 3)
+    if ([output imageType] == 3)
     {
       v65 = 0.0;
       v66[0] = 0.0;
       v64 = 0.0;
-      [v10 getFloatValue:v66 fromParm:1 atFxTime:a5->var0.var1];
-      [v10 getFloatValue:&v65 fromParm:2 atFxTime:a5->var0.var1];
-      [v10 getFloatValue:&v64 fromParm:3 atFxTime:a5->var0.var1];
+      [v10 getFloatValue:v66 fromParm:1 atFxTime:info->var0.var1];
+      [v10 getFloatValue:&v65 fromParm:2 atFxTime:info->var0.var1];
+      [v10 getFloatValue:&v64 fromParm:3 atFxTime:info->var0.var1];
       v63 = 0;
       v61 = 0u;
       v62 = 0u;
       v59 = 0u;
       v60 = 0u;
-      if (a4)
+      if (input)
       {
-        [a4 imageInfo];
+        [input imageInfo];
         v11 = *(&v59 + 1);
         v12 = v59;
-        [a4 heliumRef];
+        [input heliumRef];
         v13 = v52;
       }
 
@@ -661,7 +661,7 @@
 
       else
       {
-        if ([(PAEEquirectProjectFilter *)self getIsFrontFacing:a5->var0.var1])
+        if ([(PAEEquirectProjectFilter *)self getIsFrontFacing:info->var0.var1])
         {
           v65 = -v65;
         }
@@ -670,14 +670,14 @@
         v16 = 1;
       }
 
-      v17 = *&a5->var2;
-      v37[0] = *&a5->var0.var0;
+      v17 = *&info->var2;
+      v37[0] = *&info->var0.var0;
       v37[1] = v17;
-      v37[2] = *&a5->var4;
-      v18 = [a3 width];
-      v19 = [a3 height];
+      v37[2] = *&info->var4;
+      width = [output width];
+      height = [output height];
       LODWORD(v35) = v36;
-      [(PAEEquirectProjectFilter *)self getParams:v37 withOutputImage:a3 inputImage:a4 width:v12 height:v11 outputWidth:v18 outputHeight:v66[0] xRotation:v65 yRotation:v64 zRotation:v19 cameraBehavior:v35 paramAPI:v10];
+      [(PAEEquirectProjectFilter *)self getParams:v37 withOutputImage:output inputImage:input width:v12 height:v11 outputWidth:width outputHeight:v66[0] xRotation:v65 yRotation:v64 zRotation:height cameraBehavior:v35 paramAPI:v10];
       v46 = v57;
       v51 = 0x3FF0000000000000;
       v39 = vcvtq_f64_f32(v52);
@@ -691,23 +691,23 @@
       v47 = 0;
       v50 = 0;
       v49 = 0;
-      [(PAESharedDefaultBase *)self getPixelTransformForImage:a3];
-      [(PAESharedDefaultBase *)self getInversePixelTransformForImage:a3];
+      [(PAESharedDefaultBase *)self getPixelTransformForImage:output];
+      [(PAESharedDefaultBase *)self getInversePixelTransformForImage:output];
       v20 = v38;
-      v21 = [a3 width];
-      v22 = [a3 height];
-      *&v23 = v21;
-      if (v21 >= v22)
+      width2 = [output width];
+      height2 = [output height];
+      *&v23 = width2;
+      if (width2 >= height2)
       {
-        v24 = [a3 height];
+        height3 = [output height];
       }
 
       else
       {
-        v24 = [a3 width];
+        height3 = [output width];
       }
 
-      computeDistanceToEquirectImagePlane(v24, v58, v24);
+      computeDistanceToEquirectImagePlane(height3, v58, height3);
       v25 = HGObject::operator new(0x1A0uLL);
       HGCrop::HGCrop(v25);
       v27 = HGRectMake4f(v26, 1.0, 1.0, v12 + -2.0, v11 + -2.0);
@@ -729,7 +729,7 @@
       }
 
       v32 = fabs(v20) * (v12 - 2);
-      if ((v16 & [(PAEEquirectProjectFilter *)self getIsFrontFacing:a5->var0.var1]) == 1)
+      if ((v16 & [(PAEEquirectProjectFilter *)self getIsFrontFacing:info->var0.var1]) == 1)
       {
         v33 = HGObject::operator new(0x210uLL);
         HGXForm::HGXForm(v33);
@@ -754,8 +754,8 @@
         (*(*v33 + 24))(v33);
       }
 
-      [a3 width];
-      [a3 height];
+      [output width];
+      [output height];
       NewEquirectProjectNode();
     }
 

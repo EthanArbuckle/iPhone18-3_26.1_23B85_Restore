@@ -1,30 +1,30 @@
 @interface HREDerivedActionUtilities
-+ (id)_derivedActionForActionableObject:(id)a3 actionType:(id)a4 actions:(id)a5;
-+ (id)_derivedActionForCharacteristic:(id)a3 withExistingValues:(id)a4;
-+ (id)_derivedActionForMediaProfiles:(id)a3 withExistingValues:(id)a4;
-+ (id)_filterActions:(id)a3 withAccessoriesPassingTest:(id)a4;
-+ (id)_filterActions:(id)a3 withUnmatchedCharacteristicTypes:(id)a4;
++ (id)_derivedActionForActionableObject:(id)object actionType:(id)type actions:(id)actions;
++ (id)_derivedActionForCharacteristic:(id)characteristic withExistingValues:(id)values;
++ (id)_derivedActionForMediaProfiles:(id)profiles withExistingValues:(id)values;
++ (id)_filterActions:(id)actions withAccessoriesPassingTest:(id)test;
++ (id)_filterActions:(id)actions withUnmatchedCharacteristicTypes:(id)types;
 + (id)_serviceTypesExtrapolatingFromWholeHome;
 + (id)_serviceTypesExtrapolatingFromZones;
-+ (id)actionType:(id)a3;
++ (id)actionType:(id)type;
 + (id)actionTypeAlias;
-+ (id)actionTypeForActionClass:(Class)a3;
-+ (id)actionTypeForCharacteristic:(id)a3;
-+ (id)actionTypeForServiceType:(id)a3 characteristicType:(id)a4;
-+ (id)actionTypesForProfile:(id)a3;
++ (id)actionTypeForActionClass:(Class)class;
++ (id)actionTypeForCharacteristic:(id)characteristic;
++ (id)actionTypeForServiceType:(id)type characteristicType:(id)characteristicType;
++ (id)actionTypesForProfile:(id)profile;
 + (id)characteristicTypeAlias;
-+ (id)characteristicTypeForActionType:(id)a3 serviceType:(id)a4;
-+ (id)derivedActionsForActionableObjects:(id)a3 fromActions:(id)a4;
++ (id)characteristicTypeForActionType:(id)type serviceType:(id)serviceType;
++ (id)derivedActionsForActionableObjects:(id)objects fromActions:(id)actions;
 + (id)serviceTypeAlias;
 @end
 
 @implementation HREDerivedActionUtilities
 
-+ (id)actionType:(id)a3
++ (id)actionType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   objc_opt_class();
-  v5 = v4;
+  v5 = typeCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -39,23 +39,23 @@
 
   if (v7)
   {
-    v8 = [v7 characteristic];
-    v9 = [a1 actionTypeForCharacteristic:v8];
+    characteristic = [v7 characteristic];
+    v9 = [self actionTypeForCharacteristic:characteristic];
   }
 
   else
   {
-    v9 = [a1 actionTypeForActionClass:objc_opt_class()];
+    v9 = [self actionTypeForActionClass:objc_opt_class()];
   }
 
   return v9;
 }
 
-+ (id)actionTypeForActionClass:(Class)a3
++ (id)actionTypeForActionClass:(Class)class
 {
-  v4 = NSStringFromClass(a3);
-  v5 = [a1 actionTypeAlias];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  v4 = NSStringFromClass(class);
+  actionTypeAlias = [self actionTypeAlias];
+  v6 = [actionTypeAlias objectForKeyedSubscript:v4];
   v7 = v6;
   if (v6)
   {
@@ -72,35 +72,35 @@
   return v8;
 }
 
-+ (id)actionTypeForCharacteristic:(id)a3
++ (id)actionTypeForCharacteristic:(id)characteristic
 {
-  v4 = a3;
-  v5 = [v4 service];
-  v6 = [v5 associatedServiceType];
-  v7 = v6;
-  if (v6)
+  characteristicCopy = characteristic;
+  service = [characteristicCopy service];
+  associatedServiceType = [service associatedServiceType];
+  v7 = associatedServiceType;
+  if (associatedServiceType)
   {
-    v8 = v6;
+    serviceType = associatedServiceType;
   }
 
   else
   {
-    v9 = [v4 service];
-    v8 = [v9 serviceType];
+    service2 = [characteristicCopy service];
+    serviceType = [service2 serviceType];
   }
 
-  v10 = [v4 characteristicType];
-  v11 = [a1 actionTypeForServiceType:v8 characteristicType:v10];
+  characteristicType = [characteristicCopy characteristicType];
+  v11 = [self actionTypeForServiceType:serviceType characteristicType:characteristicType];
 
   return v11;
 }
 
-+ (id)actionTypeForServiceType:(id)a3 characteristicType:(id)a4
++ (id)actionTypeForServiceType:(id)type characteristicType:(id)characteristicType
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 serviceTypeAlias];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  characteristicTypeCopy = characteristicType;
+  typeCopy = type;
+  serviceTypeAlias = [self serviceTypeAlias];
+  v9 = [serviceTypeAlias objectForKeyedSubscript:typeCopy];
   v10 = v9;
   if (v9)
   {
@@ -109,13 +109,13 @@
 
   else
   {
-    v11 = v7;
+    v11 = typeCopy;
   }
 
   v12 = v11;
 
-  v13 = [a1 characteristicTypeAlias];
-  v14 = [v13 objectForKeyedSubscript:v6];
+  characteristicTypeAlias = [self characteristicTypeAlias];
+  v14 = [characteristicTypeAlias objectForKeyedSubscript:characteristicTypeCopy];
   v15 = v14;
   if (v14)
   {
@@ -124,7 +124,7 @@
 
   else
   {
-    v16 = v6;
+    v16 = characteristicTypeCopy;
   }
 
   v17 = v16;
@@ -132,8 +132,8 @@
   if (v12 && v17)
   {
     v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@", v12, v17];
-    v19 = [a1 actionTypeAlias];
-    v20 = [v19 objectForKeyedSubscript:v18];
+    actionTypeAlias = [self actionTypeAlias];
+    v20 = [actionTypeAlias objectForKeyedSubscript:v18];
     v21 = v20;
     if (v20)
     {
@@ -167,12 +167,12 @@ void __73__HREDerivedActionUtilities_actionTypeForServiceType_characteristicType
   qword_27F5F98C0 = &stru_286657A08;
 }
 
-+ (id)characteristicTypeForActionType:(id)a3 serviceType:(id)a4
++ (id)characteristicTypeForActionType:(id)type serviceType:(id)serviceType
 {
-  v5 = a3;
-  if ([v5 containsString:a4])
+  typeCopy = type;
+  if ([typeCopy containsString:serviceType])
   {
-    v6 = [v5 componentsSeparatedByString:@":"];
+    v6 = [typeCopy componentsSeparatedByString:@":"];
     if ([v6 count] == 2)
     {
       v7 = [v6 objectAtIndexedSubscript:1];
@@ -201,11 +201,11 @@ void __73__HREDerivedActionUtilities_actionTypeForServiceType_characteristicType
   return v8;
 }
 
-+ (id)actionTypesForProfile:(id)a3
++ (id)actionTypesForProfile:(id)profile
 {
   v17[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  profileCopy = profile;
   v6 = [v4 set];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
@@ -226,7 +226,7 @@ void __73__HREDerivedActionUtilities_actionTypeForServiceType_characteristicType
   v16[1] = 3221225472;
   v16[2] = __51__HREDerivedActionUtilities_actionTypesForProfile___block_invoke;
   v16[3] = &__block_descriptor_40_e18__16__0__NSString_8l;
-  v16[4] = a1;
+  v16[4] = self;
   v13 = [v6 na_map:v16];
 
   v14 = *MEMORY[0x277D85DE8];
@@ -256,26 +256,26 @@ void *__51__HREDerivedActionUtilities_actionTypesForProfile___block_invoke(uint6
   return v7;
 }
 
-+ (id)derivedActionsForActionableObjects:(id)a3 fromActions:(id)a4
++ (id)derivedActionsForActionableObjects:(id)objects fromActions:(id)actions
 {
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __76__HREDerivedActionUtilities_derivedActionsForActionableObjects_fromActions___block_invoke;
   v20[3] = &__block_descriptor_40_e38____NSCopying__16__0__HFActionBuilder_8l;
-  v20[4] = a1;
-  v6 = a3;
-  v7 = [a4 na_dictionaryByBucketingObjectsUsingKeyGenerator:v20];
+  v20[4] = self;
+  objectsCopy = objects;
+  v7 = [actions na_dictionaryByBucketingObjectsUsingKeyGenerator:v20];
   v8 = [MEMORY[0x277CBEB58] set];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __76__HREDerivedActionUtilities_derivedActionsForActionableObjects_fromActions___block_invoke_2;
   v16 = &unk_2797774E0;
   v18 = v8;
-  v19 = a1;
+  selfCopy = self;
   v17 = v7;
   v9 = v8;
   v10 = v7;
-  [v6 na_each:&v13];
+  [objectsCopy na_each:&v13];
 
   v11 = [v9 copy];
 
@@ -340,34 +340,34 @@ void __76__HREDerivedActionUtilities_derivedActionsForActionableObjects_fromActi
   }
 }
 
-+ (id)_derivedActionForActionableObject:(id)a3 actionType:(id)a4 actions:(id)a5
++ (id)_derivedActionForActionableObject:(id)object actionType:(id)type actions:(id)actions
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objectCopy = object;
+  typeCopy = type;
+  actionsCopy = actions;
   v11 = MEMORY[0x277CBEB98];
-  v12 = [v8 hre_parentRoom];
-  v13 = [v12 hf_allZones];
-  v14 = [v11 setWithArray:v13];
+  hre_parentRoom = [objectCopy hre_parentRoom];
+  hf_allZones = [hre_parentRoom hf_allZones];
+  v14 = [v11 setWithArray:hf_allZones];
 
   v43[0] = MEMORY[0x277D85DD0];
   v43[1] = 3221225472;
   v43[2] = __82__HREDerivedActionUtilities__derivedActionForActionableObject_actionType_actions___block_invoke;
   v43[3] = &unk_279777508;
-  v15 = v8;
+  v15 = objectCopy;
   v44 = v15;
-  v16 = [a1 _filterActions:v10 withAccessoriesPassingTest:v43];
+  v16 = [self _filterActions:actionsCopy withAccessoriesPassingTest:v43];
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
   v41[2] = __82__HREDerivedActionUtilities__derivedActionForActionableObject_actionType_actions___block_invoke_2;
   v41[3] = &unk_279777508;
   v17 = v14;
   v42 = v17;
-  v18 = [a1 _filterActions:v10 withAccessoriesPassingTest:v41];
+  v18 = [self _filterActions:actionsCopy withAccessoriesPassingTest:v41];
   v19 = v16;
-  v20 = [a1 _serviceTypesExtrapolatingFromZones];
-  v21 = [v15 hre_matchingTypes];
-  if ([v20 intersectsSet:v21])
+  _serviceTypesExtrapolatingFromZones = [self _serviceTypesExtrapolatingFromZones];
+  hre_matchingTypes = [v15 hre_matchingTypes];
+  if ([_serviceTypesExtrapolatingFromZones intersectsSet:hre_matchingTypes])
   {
     v22 = [v19 count];
 
@@ -378,7 +378,7 @@ void __76__HREDerivedActionUtilities_derivedActionsForActionableObjects_fromActi
     }
 
     v23 = v18;
-    v20 = v19;
+    _serviceTypesExtrapolatingFromZones = v19;
   }
 
   else
@@ -388,9 +388,9 @@ void __76__HREDerivedActionUtilities_derivedActionsForActionableObjects_fromActi
   }
 
 LABEL_6:
-  v24 = [a1 _serviceTypesExtrapolatingFromWholeHome];
-  v25 = [v15 hre_matchingTypes];
-  if ([v24 intersectsSet:v25])
+  _serviceTypesExtrapolatingFromWholeHome = [self _serviceTypesExtrapolatingFromWholeHome];
+  hre_matchingTypes2 = [v15 hre_matchingTypes];
+  if ([_serviceTypesExtrapolatingFromWholeHome intersectsSet:hre_matchingTypes2])
   {
     v26 = [v23 count];
 
@@ -399,8 +399,8 @@ LABEL_6:
       goto LABEL_11;
     }
 
-    v24 = v23;
-    v23 = v10;
+    _serviceTypesExtrapolatingFromWholeHome = v23;
+    v23 = actionsCopy;
   }
 
   else
@@ -409,30 +409,30 @@ LABEL_6:
 
 LABEL_11:
   v27 = [v23 na_map:&__block_literal_global_25_0];
-  v28 = [a1 actionTypeForActionClass:objc_opt_class()];
-  v29 = [v9 isEqualToString:v28];
+  v28 = [self actionTypeForActionClass:objc_opt_class()];
+  v29 = [typeCopy isEqualToString:v28];
 
   if (v29)
   {
-    v30 = [v15 hf_containedProfiles];
-    v31 = [v30 na_map:&__block_literal_global_28];
+    hf_containedProfiles = [v15 hf_containedProfiles];
+    v31 = [hf_containedProfiles na_map:&__block_literal_global_28];
 
-    v32 = [a1 _derivedActionForMediaProfiles:v31 withExistingValues:v27];
+    v32 = [self _derivedActionForMediaProfiles:v31 withExistingValues:v27];
   }
 
   else
   {
-    v33 = [v15 hre_characteristics];
+    hre_characteristics = [v15 hre_characteristics];
     v38[0] = MEMORY[0x277D85DD0];
     v38[1] = 3221225472;
     v38[2] = __82__HREDerivedActionUtilities__derivedActionForActionableObject_actionType_actions___block_invoke_5;
     v38[3] = &unk_279777530;
-    v39 = v9;
-    v40 = a1;
-    v34 = [v33 na_filter:v38];
+    v39 = typeCopy;
+    selfCopy = self;
+    v34 = [hre_characteristics na_filter:v38];
 
-    v35 = [v34 anyObject];
-    v32 = [a1 _derivedActionForCharacteristic:v35 withExistingValues:v27];
+    anyObject = [v34 anyObject];
+    v32 = [self _derivedActionForCharacteristic:anyObject withExistingValues:v27];
 
     v31 = v39;
   }
@@ -540,24 +540,24 @@ uint64_t __82__HREDerivedActionUtilities__derivedActionForActionableObject_actio
   return v4;
 }
 
-+ (id)_derivedActionForMediaProfiles:(id)a3 withExistingValues:(id)a4
++ (id)_derivedActionForMediaProfiles:(id)profiles withExistingValues:(id)values
 {
-  v5 = a3;
-  v6 = [a4 na_firstObjectPassingTest:&__block_literal_global_282];
+  profilesCopy = profiles;
+  v6 = [values na_firstObjectPassingTest:&__block_literal_global_282];
   if (v6)
   {
     v7 = objc_alloc(MEMORY[0x277D14818]);
-    v8 = [v5 anyObject];
-    v9 = [v8 hf_home];
-    v10 = [v7 initWithHome:v9];
+    anyObject = [profilesCopy anyObject];
+    hf_home = [anyObject hf_home];
+    v10 = [v7 initWithHome:hf_home];
 
-    [v10 setMediaProfiles:v5];
+    [v10 setMediaProfiles:profilesCopy];
     [v10 setTargetPlayState:{objc_msgSend(v6, "targetPlayState")}];
-    v11 = [v6 targetVolume];
-    [v10 setTargetVolume:v11];
+    targetVolume = [v6 targetVolume];
+    [v10 setTargetVolume:targetVolume];
 
-    v12 = [v6 playbackArchive];
-    [v10 setPlaybackArchive:v12];
+    playbackArchive = [v6 playbackArchive];
+    [v10 setPlaybackArchive:playbackArchive];
   }
 
   else
@@ -588,13 +588,13 @@ BOOL __79__HREDerivedActionUtilities__derivedActionForMediaProfiles_withExisting
   return v5 != 0;
 }
 
-+ (id)_derivedActionForCharacteristic:(id)a3 withExistingValues:(id)a4
++ (id)_derivedActionForCharacteristic:(id)characteristic withExistingValues:(id)values
 {
   v44 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5 || ![v6 count])
+  characteristicCopy = characteristic;
+  valuesCopy = values;
+  v7 = valuesCopy;
+  if (!characteristicCopy || ![valuesCopy count])
   {
     v11 = 0;
     goto LABEL_25;
@@ -602,14 +602,14 @@ BOOL __79__HREDerivedActionUtilities__derivedActionForMediaProfiles_withExisting
 
   if ([v7 count] == 1)
   {
-    v8 = [v7 anyObject];
+    anyObject = [v7 anyObject];
     goto LABEL_5;
   }
 
   if ([v7 count] < 2)
   {
 LABEL_22:
-    v8 = 0;
+    anyObject = 0;
     goto LABEL_23;
   }
 
@@ -621,30 +621,30 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  v14 = [v5 metadata];
-  v15 = [v14 minimumValue];
-  v16 = [v14 maximumValue];
-  v17 = v16;
+  metadata = [characteristicCopy metadata];
+  minimumValue = [metadata minimumValue];
+  maximumValue = [metadata maximumValue];
+  v17 = maximumValue;
   v18 = 0;
-  v8 = 0;
-  if (v15 && v16)
+  anyObject = 0;
+  if (minimumValue && maximumValue)
   {
-    v19 = [v14 format];
+    format = [metadata format];
     v20 = *MEMORY[0x277CCF6B0];
 
-    if (v19 == v20)
+    if (format == v20)
     {
-      v8 = 0;
+      anyObject = 0;
       v18 = 0;
     }
 
     else
     {
-      [v15 doubleValue];
+      [minimumValue doubleValue];
       v22 = v21;
       [v17 doubleValue];
       v24 = v23;
-      [v15 doubleValue];
+      [minimumValue doubleValue];
       v42[0] = MEMORY[0x277D85DD0];
       v42[1] = 3221225472;
       v42[2] = __80__HREDerivedActionUtilities__derivedActionForCharacteristic_withExistingValues___block_invoke_2;
@@ -695,12 +695,12 @@ LABEL_22:
       *&v37[4] = v30;
       if ([v26 na_all:v37])
       {
-        v8 = [MEMORY[0x277CCABB0] numberWithInt:(v36 + v30 * v35)];
+        anyObject = [MEMORY[0x277CCABB0] numberWithInt:(v36 + v30 * v35)];
       }
 
       else
       {
-        v8 = 0;
+        anyObject = 0;
       }
 
       v18 = 1;
@@ -713,7 +713,7 @@ LABEL_22:
   }
 
 LABEL_5:
-  if (!v8)
+  if (!anyObject)
   {
 LABEL_23:
     v11 = 0;
@@ -721,11 +721,11 @@ LABEL_23:
   }
 
   v9 = objc_alloc(MEMORY[0x277D14568]);
-  v10 = [v5 hf_home];
-  v11 = [v9 initWithHome:v10];
+  hf_home = [characteristicCopy hf_home];
+  v11 = [v9 initWithHome:hf_home];
 
-  [v11 setCharacteristic:v5];
-  [v11 setTargetValue:v8];
+  [v11 setCharacteristic:characteristicCopy];
+  [v11 setTargetValue:anyObject];
 LABEL_24:
 
 LABEL_25:
@@ -792,11 +792,11 @@ BOOL __80__HREDerivedActionUtilities__derivedActionForCharacteristic_withExistin
   return v5;
 }
 
-+ (id)_filterActions:(id)a3 withUnmatchedCharacteristicTypes:(id)a4
++ (id)_filterActions:(id)actions withUnmatchedCharacteristicTypes:(id)types
 {
   v23[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  actionsCopy = actions;
+  typesCopy = types;
   v7 = MEMORY[0x277CBEB98];
   v8 = *MEMORY[0x277CCF748];
   v23[0] = *MEMORY[0x277CCF9F0];
@@ -804,7 +804,7 @@ BOOL __80__HREDerivedActionUtilities__derivedActionForCharacteristic_withExistin
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:2];
   v10 = [v7 setWithArray:v9];
 
-  if ([v6 intersectsSet:v10])
+  if ([typesCopy intersectsSet:v10])
   {
     v11 = [MEMORY[0x277CBEB98] setWithArray:MEMORY[0x277CBEBF8]];
   }
@@ -819,7 +819,7 @@ BOOL __80__HREDerivedActionUtilities__derivedActionForCharacteristic_withExistin
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:2];
     v16 = [v13 setWithArray:v15];
 
-    if ([v6 intersectsSet:v16])
+    if ([typesCopy intersectsSet:v16])
     {
       [v12 unionSet:v16];
     }
@@ -830,7 +830,7 @@ BOOL __80__HREDerivedActionUtilities__derivedActionForCharacteristic_withExistin
     v20[3] = &unk_2797767E8;
     v21 = v12;
     v17 = v12;
-    v11 = [v5 na_filter:v20];
+    v11 = [actionsCopy na_filter:v20];
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -871,16 +871,16 @@ uint64_t __77__HREDerivedActionUtilities__filterActions_withUnmatchedCharacteris
   return v10;
 }
 
-+ (id)_filterActions:(id)a3 withAccessoriesPassingTest:(id)a4
++ (id)_filterActions:(id)actions withAccessoriesPassingTest:(id)test
 {
-  v5 = a4;
+  testCopy = test;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __71__HREDerivedActionUtilities__filterActions_withAccessoriesPassingTest___block_invoke;
   v9[3] = &unk_279777628;
-  v10 = v5;
-  v6 = v5;
-  v7 = [a3 na_map:v9];
+  v10 = testCopy;
+  v6 = testCopy;
+  v7 = [actions na_map:v9];
 
   return v7;
 }
@@ -1098,7 +1098,7 @@ void __68__HREDerivedActionUtilities__serviceTypesExtrapolatingFromWholeHome__bl
   block[1] = 3221225472;
   block[2] = __64__HREDerivedActionUtilities__serviceTypesExtrapolatingFromZones__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_27F5F9910 != -1)
   {
     dispatch_once(&qword_27F5F9910, block);

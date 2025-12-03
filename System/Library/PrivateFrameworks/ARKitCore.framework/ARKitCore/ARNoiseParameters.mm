@@ -1,10 +1,10 @@
 @interface ARNoiseParameters
-+ (int)modelIdentifierForDevicePosition:(int64_t)a3 longEdgeImageResolution:(unsigned int)a4;
++ (int)modelIdentifierForDevicePosition:(int64_t)position longEdgeImageResolution:(unsigned int)resolution;
 @end
 
 @implementation ARNoiseParameters
 
-+ (int)modelIdentifierForDevicePosition:(int64_t)a3 longEdgeImageResolution:(unsigned int)a4
++ (int)modelIdentifierForDevicePosition:(int64_t)position longEdgeImageResolution:(unsigned int)resolution
 {
   v6 = MGGetProductType();
   if (v6 <= 2309863437)
@@ -86,22 +86,22 @@ LABEL_169:
             {
               if (v6 == 1234705395)
               {
-                if (a3 == 1 && a4 == 1280)
+                if (position == 1 && resolution == 1280)
                 {
                   return 25;
                 }
 
-                if (a3 == 1 && a4 == 1920)
+                if (position == 1 && resolution == 1920)
                 {
                   return 26;
                 }
 
-                if (a3 == 2 && a4 == 1280)
+                if (position == 2 && resolution == 1280)
                 {
                   return 27;
                 }
 
-                if (a3 == 2 && a4 == 1440)
+                if (position == 2 && resolution == 1440)
                 {
                   return 28;
                 }
@@ -203,27 +203,27 @@ LABEL_169:
           }
 
 LABEL_141:
-          if (a3 == 1 && a4 == 1280)
+          if (position == 1 && resolution == 1280)
           {
             return 64;
           }
 
-          if (a3 == 1 && a4 == 1920)
+          if (position == 1 && resolution == 1920)
           {
             return 65;
           }
 
-          if (a3 == 1 && a4 == 3840)
+          if (position == 1 && resolution == 3840)
           {
             return 66;
           }
 
-          if (a3 == 2 && a4 == 1280)
+          if (position == 2 && resolution == 1280)
           {
             return 67;
           }
 
-          if (a3 == 2 && a4 == 1440)
+          if (position == 2 && resolution == 1440)
           {
             return 68;
           }
@@ -258,7 +258,7 @@ LABEL_141:
 
         if (v6 == 1380747801)
         {
-          if (a3 == 1 && a4 == 1280)
+          if (position == 1 && resolution == 1280)
           {
             return 29;
           }
@@ -270,27 +270,27 @@ LABEL_141:
 LABEL_104:
         if (v6 == v12)
         {
-          if (a3 == 1 && a4 == 1280)
+          if (position == 1 && resolution == 1280)
           {
             return 54;
           }
 
-          if (a3 == 1 && a4 == 1920)
+          if (position == 1 && resolution == 1920)
           {
             return 55;
           }
 
-          if (a3 == 1 && a4 == 3840)
+          if (position == 1 && resolution == 3840)
           {
             return 56;
           }
 
-          if (a3 == 2 && a4 == 1280)
+          if (position == 2 && resolution == 1280)
           {
             return 57;
           }
 
-          if (a3 == 2 && a4 == 1440)
+          if (position == 2 && resolution == 1440)
           {
             return 58;
           }
@@ -331,22 +331,22 @@ LABEL_104:
 LABEL_111:
         if (v6 == v10)
         {
-          if (a3 == 1 && a4 == 1280)
+          if (position == 1 && resolution == 1280)
           {
             return 50;
           }
 
-          if (a3 == 1 && a4 == 1920)
+          if (position == 1 && resolution == 1920)
           {
             return 51;
           }
 
-          if (a3 == 2 && a4 == 1280)
+          if (position == 2 && resolution == 1280)
           {
             return 52;
           }
 
-          if (a3 == 2 && a4 == 1440)
+          if (position == 2 && resolution == 1440)
           {
             return 53;
           }
@@ -380,12 +380,12 @@ LABEL_111:
         }
 
 LABEL_205:
-        if (a3 == 1 && a4 == 1280)
+        if (position == 1 && resolution == 1280)
         {
           return 0;
         }
 
-        if (a3 == 1 && a4 == 1920)
+        if (position == 1 && resolution == 1920)
         {
           return 1;
         }
@@ -426,27 +426,27 @@ LABEL_205:
             }
 
 LABEL_158:
-            if (a3 == 1 && a4 == 1280)
+            if (position == 1 && resolution == 1280)
             {
               return 40;
             }
 
-            if (a3 == 1 && a4 == 1920)
+            if (position == 1 && resolution == 1920)
             {
               return 41;
             }
 
-            if (a3 == 1 && a4 == 3840)
+            if (position == 1 && resolution == 3840)
             {
               return 42;
             }
 
-            if (a3 == 2 && a4 == 1280)
+            if (position == 2 && resolution == 1280)
             {
               return 43;
             }
 
-            if (a3 == 2 && a4 == 1440)
+            if (position == 2 && resolution == 1440)
             {
               return 44;
             }
@@ -467,22 +467,22 @@ LABEL_178:
           }
 
 LABEL_180:
-          if (a3 == 1 && a4 == 1280)
+          if (position == 1 && resolution == 1280)
           {
             return 8;
           }
 
-          if (a3 == 1 && a4 == 1920)
+          if (position == 1 && resolution == 1920)
           {
             return 9;
           }
 
-          if (a3 == 2 && a4 == 1280)
+          if (position == 2 && resolution == 1280)
           {
             return 10;
           }
 
-          if (a3 == 2 && a4 == 1440)
+          if (position == 2 && resolution == 1440)
           {
             return 11;
           }
@@ -499,12 +499,12 @@ LABEL_180:
           }
 
 LABEL_237:
-          if (a3 == 1 && a4 == 1280)
+          if (position == 1 && resolution == 1280)
           {
             return 15;
           }
 
-          if (a3 == 1 && a4 == 1920)
+          if (position == 1 && resolution == 1920)
           {
             return 16;
           }
@@ -513,23 +513,23 @@ LABEL_237:
         }
 
 LABEL_231:
-        if (a3 == 1 && a4 == 1280)
+        if (position == 1 && resolution == 1280)
         {
           return 19;
         }
 
-        if (a3 == 1 && a4 == 1440)
+        if (position == 1 && resolution == 1440)
         {
           return 20;
         }
 
 LABEL_277:
-        if (a3 == 2 && a4 == 1280)
+        if (position == 2 && resolution == 1280)
         {
           return 17;
         }
 
-        if (a3 == 2 && a4 == 1440)
+        if (position == 2 && resolution == 1440)
         {
           return 18;
         }
@@ -561,23 +561,23 @@ LABEL_277:
         }
 
 LABEL_208:
-        if (a3 == 1 && a4 == 1280)
+        if (position == 1 && resolution == 1280)
         {
           return 4;
         }
 
-        if (a3 == 1 && a4 == 1920)
+        if (position == 1 && resolution == 1920)
         {
           return 5;
         }
 
 LABEL_241:
-        if (a3 == 2 && a4 == 1280)
+        if (position == 2 && resolution == 1280)
         {
           return 6;
         }
 
-        if (a3 == 2 && a4 == 1440)
+        if (position == 2 && resolution == 1440)
         {
           return 7;
         }
@@ -586,12 +586,12 @@ LABEL_241:
       }
 
 LABEL_216:
-      if (a3 == 1 && a4 == 1280)
+      if (position == 1 && resolution == 1280)
       {
         return 12;
       }
 
-      if (a3 == 1 && a4 == 1440)
+      if (position == 1 && resolution == 1440)
       {
         return 13;
       }
@@ -673,22 +673,22 @@ LABEL_153:
     }
 
 LABEL_164:
-    if (a3 == 1 && a4 == 1280)
+    if (position == 1 && resolution == 1280)
     {
       return 21;
     }
 
-    if (a3 == 1 && a4 == 1920)
+    if (position == 1 && resolution == 1920)
     {
       return 22;
     }
 
-    if (a3 == 2 && a4 == 1280)
+    if (position == 2 && resolution == 1280)
     {
       return 23;
     }
 
-    if (a3 == 2 && a4 == 1440)
+    if (position == 2 && resolution == 1440)
     {
       return 24;
     }
@@ -738,27 +738,27 @@ LABEL_164:
       }
 
 LABEL_187:
-      if (a3 == 1 && a4 == 1280)
+      if (position == 1 && resolution == 1280)
       {
         return 35;
       }
 
-      if (a3 == 1 && a4 == 1920)
+      if (position == 1 && resolution == 1920)
       {
         return 36;
       }
 
-      if (a3 == 1 && a4 == 3840)
+      if (position == 1 && resolution == 3840)
       {
         return 37;
       }
 
-      if (a3 == 2 && a4 == 1280)
+      if (position == 2 && resolution == 1280)
       {
         return 38;
       }
 
-      if (a3 == 2 && a4 == 1440)
+      if (position == 2 && resolution == 1440)
       {
         return 39;
       }
@@ -799,27 +799,27 @@ LABEL_140:
       }
 
 LABEL_161:
-      if (a3 == 1 && a4 == 1280)
+      if (position == 1 && resolution == 1280)
       {
         return 30;
       }
 
-      if (a3 == 1 && a4 == 1920)
+      if (position == 1 && resolution == 1920)
       {
         return 31;
       }
 
-      if (a3 == 1 && a4 == 3840)
+      if (position == 1 && resolution == 3840)
       {
         return 32;
       }
 
-      if (a3 == 2 && a4 == 1280)
+      if (position == 2 && resolution == 1280)
       {
         return 33;
       }
 
-      if (a3 == 2 && a4 == 1440)
+      if (position == 2 && resolution == 1440)
       {
         return 34;
       }
@@ -827,27 +827,27 @@ LABEL_161:
       return 69;
     }
 
-    if (a3 == 1 && a4 == 1280)
+    if (position == 1 && resolution == 1280)
     {
       return 59;
     }
 
-    if (a3 == 1 && a4 == 1920)
+    if (position == 1 && resolution == 1920)
     {
       return 60;
     }
 
-    if (a3 == 1 && a4 == 3840)
+    if (position == 1 && resolution == 3840)
     {
       return 61;
     }
 
-    if (a3 == 2 && a4 == 1280)
+    if (position == 2 && resolution == 1280)
     {
       return 62;
     }
 
-    if (a3 == 2 && a4 == 1440)
+    if (position == 2 && resolution == 1440)
     {
       return 63;
     }
@@ -867,12 +867,12 @@ LABEL_161:
       if (v6 == 2516717268)
       {
 LABEL_170:
-        if (a3 == 1 && a4 == 1280)
+        if (position == 1 && resolution == 1280)
         {
           return 2;
         }
 
-        if (a3 == 1 && a4 == 1440)
+        if (position == 1 && resolution == 1440)
         {
           return 3;
         }
@@ -896,27 +896,27 @@ LABEL_170:
     }
 
 LABEL_234:
-    if (a3 == 1 && a4 == 1280)
+    if (position == 1 && resolution == 1280)
     {
       return 45;
     }
 
-    if (a3 == 1 && a4 == 1920)
+    if (position == 1 && resolution == 1920)
     {
       return 46;
     }
 
-    if (a3 == 1 && a4 == 3840)
+    if (position == 1 && resolution == 3840)
     {
       return 47;
     }
 
-    if (a3 == 2 && a4 == 1280)
+    if (position == 2 && resolution == 1280)
     {
       return 48;
     }
 
-    if (a3 == 2 && a4 == 1440)
+    if (position == 2 && resolution == 1440)
     {
       return 49;
     }
@@ -935,17 +935,17 @@ LABEL_234:
       }
 
 LABEL_193:
-      if (a3 == 1 && a4 == 1280)
+      if (position == 1 && resolution == 1280)
       {
         return 15;
       }
 
-      if (a3 == 1 && a4 == 1920)
+      if (position == 1 && resolution == 1920)
       {
         return 16;
       }
 
-      if (a3 == 1 && a4 == 3840)
+      if (position == 1 && resolution == 3840)
       {
         return 14;
       }

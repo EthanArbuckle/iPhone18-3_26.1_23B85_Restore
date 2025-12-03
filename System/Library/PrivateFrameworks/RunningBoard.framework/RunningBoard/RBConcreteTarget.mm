@@ -1,7 +1,7 @@
 @interface RBConcreteTarget
 + (id)systemTarget;
-+ (id)targetWithIdentity:(id)a3 environment:(id)a4;
-+ (id)targetWithProcess:(id)a3 environment:(id)a4;
++ (id)targetWithIdentity:(id)identity environment:(id)environment;
++ (id)targetWithProcess:(id)process environment:(id)environment;
 @end
 
 @implementation RBConcreteTarget
@@ -25,37 +25,37 @@ uint64_t __32__RBConcreteTarget_systemTarget__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)targetWithProcess:(id)a3 environment:(id)a4
++ (id)targetWithProcess:(id)process environment:(id)environment
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  processCopy = process;
+  v6 = processCopy;
+  if (environment)
   {
-    [(RBConcreteTarget *)a4 targetWithProcess:v5 environment:&v9];
+    [(RBConcreteTarget *)environment targetWithProcess:processCopy environment:&v9];
     v7 = v9;
   }
 
   else
   {
-    v7 = v5;
+    v7 = processCopy;
   }
 
   return v7;
 }
 
-+ (id)targetWithIdentity:(id)a3 environment:(id)a4
++ (id)targetWithIdentity:(id)identity environment:(id)environment
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  identityCopy = identity;
+  v6 = identityCopy;
+  if (environment)
   {
-    v9 = a4;
-    v7 = [[RBComplexConcreteTarget alloc] _initWithProcess:v6 identity:v9 environment:?];
+    environmentCopy = environment;
+    v7 = [[RBComplexConcreteTarget alloc] _initWithProcess:v6 identity:environmentCopy environment:?];
   }
 
   else
   {
-    v7 = v5;
+    v7 = identityCopy;
   }
 
   return v7;

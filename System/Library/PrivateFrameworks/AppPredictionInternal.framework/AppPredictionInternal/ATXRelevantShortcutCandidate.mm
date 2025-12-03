@@ -1,6 +1,6 @@
 @interface ATXRelevantShortcutCandidate
 - (ATXRelevantShortcutCandidate)init;
-- (ATXRelevantShortcutCandidate)initWithWidgetDescriptor:(id)a3 donationBundleIdentifier:(id)a4 intent:(id)a5 relevantContexts:(id)a6;
+- (ATXRelevantShortcutCandidate)initWithWidgetDescriptor:(id)descriptor donationBundleIdentifier:(id)identifier intent:(id)intent relevantContexts:(id)contexts;
 - (NSArray)relevantContexts;
 - (NSString)description;
 - (NSString)donationBundleIdentifier;
@@ -28,28 +28,28 @@
   return v3;
 }
 
-- (ATXRelevantShortcutCandidate)initWithWidgetDescriptor:(id)a3 donationBundleIdentifier:(id)a4 intent:(id)a5 relevantContexts:(id)a6
+- (ATXRelevantShortcutCandidate)initWithWidgetDescriptor:(id)descriptor donationBundleIdentifier:(id)identifier intent:(id)intent relevantContexts:(id)contexts
 {
   v9 = sub_226836408();
   v11 = v10;
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27D7A1E40, qword_226873F88);
   v12 = sub_226836568();
-  *(self + OBJC_IVAR___ATXRelevantShortcutCandidate_widgetDescriptor) = a3;
+  *(self + OBJC_IVAR___ATXRelevantShortcutCandidate_widgetDescriptor) = descriptor;
   v13 = (self + OBJC_IVAR___ATXRelevantShortcutCandidate_donationBundleIdentifier);
   *v13 = v9;
   v13[1] = v11;
-  *(self + OBJC_IVAR___ATXRelevantShortcutCandidate_intent) = a5;
+  *(self + OBJC_IVAR___ATXRelevantShortcutCandidate_intent) = intent;
   *(self + OBJC_IVAR___ATXRelevantShortcutCandidate_relevantContexts) = v12;
   v17.receiver = self;
   v17.super_class = type metadata accessor for RelevantShortcutCandidate();
-  v14 = a3;
-  v15 = a5;
+  descriptorCopy = descriptor;
+  intentCopy = intent;
   return [(ATXRelevantShortcutCandidate *)&v17 init];
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_2267B8B8C();
 
   v3 = sub_2268363F8();

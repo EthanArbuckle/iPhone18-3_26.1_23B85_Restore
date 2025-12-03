@@ -1,23 +1,23 @@
 @interface SSAppPurchaseHistoryDatabase
-+ (BOOL)_setupDatabase:(id)a3;
++ (BOOL)_setupDatabase:(id)database;
 + (id)newDefaultInstance;
 + (void)_createDatabaseDirectory;
-- (BOOL)removeValueForDatabaseProperty:(id)a3;
-- (BOOL)resetCacheForNewAccountID:(id)a3;
-- (BOOL)setCurrentAccountUniqueIdentifier:(id)a3;
-- (BOOL)setLocalRevision:(int64_t)a3 forAccountUniqueIdentifier:(id)a4;
-- (BOOL)setValue:(id)a3 forDatabaseProperty:(id)a4;
+- (BOOL)removeValueForDatabaseProperty:(id)property;
+- (BOOL)resetCacheForNewAccountID:(id)d;
+- (BOOL)setCurrentAccountUniqueIdentifier:(id)identifier;
+- (BOOL)setLocalRevision:(int64_t)revision forAccountUniqueIdentifier:(id)identifier;
+- (BOOL)setValue:(id)value forDatabaseProperty:(id)property;
 - (SSAppPurchaseHistoryDatabase)init;
-- (SSAppPurchaseHistoryDatabase)initWithDatabaseURL:(id)a3 readOnly:(BOOL)a4;
-- (id)allProperties:(id)a3 accountID:(id)a4 includingHidden:(BOOL)a5;
+- (SSAppPurchaseHistoryDatabase)initWithDatabaseURL:(id)l readOnly:(BOOL)only;
+- (id)allProperties:(id)properties accountID:(id)d includingHidden:(BOOL)hidden;
 - (id)currentAccountUniqueIdentifier;
 - (id)database;
-- (id)valueForDatabaseProperty:(id)a3;
-- (int64_t)localRevisionForAccountUniqueIdentifier:(id)a3;
+- (id)valueForDatabaseProperty:(id)property;
+- (int64_t)localRevisionForAccountUniqueIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)modifyUsingAppPurchaseHistoryTransactionBlock:(id)a3;
-- (void)readAsyncUsingTransactionBlock:(id)a3;
-- (void)readUsingTransactionBlock:(id)a3;
+- (void)modifyUsingAppPurchaseHistoryTransactionBlock:(id)block;
+- (void)readAsyncUsingTransactionBlock:(id)block;
+- (void)readUsingTransactionBlock:(id)block;
 @end
 
 @implementation SSAppPurchaseHistoryDatabase
@@ -29,9 +29,9 @@
   return [(SSAppPurchaseHistoryDatabase *)self initWithDatabaseURL:v3 readOnly:1];
 }
 
-- (SSAppPurchaseHistoryDatabase)initWithDatabaseURL:(id)a3 readOnly:(BOOL)a4
+- (SSAppPurchaseHistoryDatabase)initWithDatabaseURL:(id)l readOnly:(BOOL)only
 {
-  v4 = a4;
+  onlyCopy = only;
   v10.receiver = self;
   v10.super_class = SSAppPurchaseHistoryDatabase;
   v6 = [(SSAppPurchaseHistoryDatabase *)&v10 init];
@@ -39,9 +39,9 @@
   {
     +[SSAppPurchaseHistoryDatabase _createDatabaseDirectory];
     v7 = [SSSQLiteDatabase alloc];
-    v8 = [(SSSQLiteDatabase *)v7 initWithDatabaseURL:a3 readOnly:v4 protectionType:*MEMORY[0x1E696A388]];
+    v8 = [(SSSQLiteDatabase *)v7 initWithDatabaseURL:l readOnly:onlyCopy protectionType:*MEMORY[0x1E696A388]];
     v6->_database = v8;
-    if (!v4)
+    if (!onlyCopy)
     {
       [(SSSQLiteDatabase *)v8 setSetupBlock:&__block_literal_global_34];
     }
@@ -65,7 +65,7 @@
   return [(SSAppPurchaseHistoryDatabase *)v3 initWithDatabaseURL:v2 readOnly:0];
 }
 
-- (void)modifyUsingAppPurchaseHistoryTransactionBlock:(id)a3
+- (void)modifyUsingAppPurchaseHistoryTransactionBlock:(id)block
 {
   database = self->_database;
   v4[0] = MEMORY[0x1E69E9820];
@@ -73,7 +73,7 @@
   v4[2] = __78__SSAppPurchaseHistoryDatabase_modifyUsingAppPurchaseHistoryTransactionBlock___block_invoke;
   v4[3] = &unk_1E84B1D88;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = block;
   [(SSSQLiteDatabase *)database performTransactionWithBlock:v4];
 }
 
@@ -87,7 +87,7 @@ uint64_t __78__SSAppPurchaseHistoryDatabase_modifyUsingAppPurchaseHistoryTransac
   return v4;
 }
 
-- (void)readAsyncUsingTransactionBlock:(id)a3
+- (void)readAsyncUsingTransactionBlock:(id)block
 {
   database = self->_database;
   v4[0] = MEMORY[0x1E69E9820];
@@ -95,11 +95,11 @@ uint64_t __78__SSAppPurchaseHistoryDatabase_modifyUsingAppPurchaseHistoryTransac
   v4[2] = __63__SSAppPurchaseHistoryDatabase_readAsyncUsingTransactionBlock___block_invoke;
   v4[3] = &unk_1E84AF318;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = block;
   [(SSSQLiteDatabase *)database dispatchBlockAsync:v4];
 }
 
-- (void)readUsingTransactionBlock:(id)a3
+- (void)readUsingTransactionBlock:(id)block
 {
   database = self->_database;
   v4[0] = MEMORY[0x1E69E9820];
@@ -107,7 +107,7 @@ uint64_t __78__SSAppPurchaseHistoryDatabase_modifyUsingAppPurchaseHistoryTransac
   v4[2] = __58__SSAppPurchaseHistoryDatabase_readUsingTransactionBlock___block_invoke;
   v4[3] = &unk_1E84B1D88;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = block;
   [(SSSQLiteDatabase *)database performTransactionWithBlock:v4];
 }
 
@@ -127,19 +127,19 @@ uint64_t __58__SSAppPurchaseHistoryDatabase_readUsingTransactionBlock___block_in
   if (result)
   {
     v3 = MEMORY[0x1E696AD98];
-    v4 = [result longLongValue];
+    longLongValue = [result longLongValue];
 
-    return [v3 numberWithLongLong:v4];
+    return [v3 numberWithLongLong:longLongValue];
   }
 
   return result;
 }
 
-- (BOOL)setCurrentAccountUniqueIdentifier:(id)a3
+- (BOOL)setCurrentAccountUniqueIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    -[SSAppPurchaseHistoryDatabase setValue:forDatabaseProperty:](self, "setValue:forDatabaseProperty:", [a3 stringValue], +[SSAppPurchaseHistoryDatabase accountUniqueIdentifierKey](SSAppPurchaseHistoryDatabase, "accountUniqueIdentifierKey"));
+    -[SSAppPurchaseHistoryDatabase setValue:forDatabaseProperty:](self, "setValue:forDatabaseProperty:", [identifier stringValue], +[SSAppPurchaseHistoryDatabase accountUniqueIdentifierKey](SSAppPurchaseHistoryDatabase, "accountUniqueIdentifierKey"));
   }
 
   else
@@ -150,7 +150,7 @@ uint64_t __58__SSAppPurchaseHistoryDatabase_readUsingTransactionBlock___block_in
   return 1;
 }
 
-- (int64_t)localRevisionForAccountUniqueIdentifier:(id)a3
+- (int64_t)localRevisionForAccountUniqueIdentifier:(id)identifier
 {
   v6 = 0;
   v7 = &v6;
@@ -160,7 +160,7 @@ uint64_t __58__SSAppPurchaseHistoryDatabase_readUsingTransactionBlock___block_in
   v5[1] = 3221225472;
   v5[2] = __72__SSAppPurchaseHistoryDatabase_localRevisionForAccountUniqueIdentifier___block_invoke;
   v5[3] = &unk_1E84B2E60;
-  v5[4] = a3;
+  v5[4] = identifier;
   v5[5] = &v6;
   [(SSAppPurchaseHistoryDatabase *)self readUsingTransactionBlock:v5];
   v3 = v7[3];
@@ -195,7 +195,7 @@ void *__72__SSAppPurchaseHistoryDatabase_localRevisionForAccountUniqueIdentifier
   return result;
 }
 
-- (BOOL)setLocalRevision:(int64_t)a3 forAccountUniqueIdentifier:(id)a4
+- (BOOL)setLocalRevision:(int64_t)revision forAccountUniqueIdentifier:(id)identifier
 {
   v7 = 0;
   v8 = &v7;
@@ -206,8 +206,8 @@ void *__72__SSAppPurchaseHistoryDatabase_localRevisionForAccountUniqueIdentifier
   v6[2] = __76__SSAppPurchaseHistoryDatabase_setLocalRevision_forAccountUniqueIdentifier___block_invoke;
   v6[3] = &unk_1E84B2E88;
   v6[6] = &v7;
-  v6[7] = a3;
-  v6[4] = a4;
+  v6[7] = revision;
+  v6[4] = identifier;
   v6[5] = self;
   [(SSAppPurchaseHistoryDatabase *)self modifyUsingAppPurchaseHistoryTransactionBlock:v6];
   v4 = *(v8 + 24);
@@ -278,7 +278,7 @@ uint64_t __76__SSAppPurchaseHistoryDatabase_setLocalRevision_forAccountUniqueIde
   return v19 & 1;
 }
 
-- (BOOL)resetCacheForNewAccountID:(id)a3
+- (BOOL)resetCacheForNewAccountID:(id)d
 {
   v28 = *MEMORY[0x1E69E9840];
   v22 = 0;
@@ -291,7 +291,7 @@ uint64_t __76__SSAppPurchaseHistoryDatabase_setLocalRevision_forAccountUniqueIde
   v21[3] = &unk_1E84B2EB0;
   v21[5] = self;
   v21[6] = &v22;
-  v21[4] = a3;
+  v21[4] = d;
   [(SSAppPurchaseHistoryDatabase *)self modifyUsingAppPurchaseHistoryTransactionBlock:v21];
   if (*(v23 + 24) == 1)
   {
@@ -301,20 +301,20 @@ uint64_t __76__SSAppPurchaseHistoryDatabase_setLocalRevision_forAccountUniqueIde
       v3 = +[SSLogConfig sharedConfig];
     }
 
-    v4 = [v3 shouldLog];
-    v5 = [v3 shouldLogToDisk];
-    v6 = [v3 OSLogObject];
-    if (v5)
+    shouldLog = [v3 shouldLog];
+    shouldLogToDisk = [v3 shouldLogToDisk];
+    oSLogObject = [v3 OSLogObject];
+    if (shouldLogToDisk)
     {
-      v4 |= 2u;
+      shouldLog |= 2u;
     }
 
-    if (!os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
-      v4 &= 2u;
+      shouldLog &= 2u;
     }
 
-    if (v4)
+    if (shouldLog)
     {
       v7 = objc_opt_class();
       v26 = 138412290;
@@ -372,7 +372,7 @@ uint64_t __58__SSAppPurchaseHistoryDatabase_resetCacheForNewAccountID___block_in
   return v5 & 1;
 }
 
-- (id)valueForDatabaseProperty:(id)a3
+- (id)valueForDatabaseProperty:(id)property
 {
   v6 = 0;
   v7 = &v6;
@@ -384,7 +384,7 @@ uint64_t __58__SSAppPurchaseHistoryDatabase_resetCacheForNewAccountID___block_in
   v5[1] = 3221225472;
   v5[2] = __57__SSAppPurchaseHistoryDatabase_valueForDatabaseProperty___block_invoke;
   v5[3] = &unk_1E84B2F00;
-  v5[4] = a3;
+  v5[4] = property;
   v5[5] = self;
   v5[6] = &v6;
   v5[7] = a2;
@@ -455,7 +455,7 @@ uint64_t __57__SSAppPurchaseHistoryDatabase_valueForDatabaseProperty___block_inv
   return result;
 }
 
-- (BOOL)setValue:(id)a3 forDatabaseProperty:(id)a4
+- (BOOL)setValue:(id)value forDatabaseProperty:(id)property
 {
   v7 = 0;
   v8 = &v7;
@@ -467,9 +467,9 @@ uint64_t __57__SSAppPurchaseHistoryDatabase_valueForDatabaseProperty___block_inv
   v6[3] = &unk_1E84B2F28;
   v6[7] = &v7;
   v6[8] = a2;
-  v6[4] = a3;
+  v6[4] = value;
   v6[5] = self;
-  v6[6] = a4;
+  v6[6] = property;
   [(SSAppPurchaseHistoryDatabase *)self modifyUsingAppPurchaseHistoryTransactionBlock:v6];
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
@@ -566,7 +566,7 @@ uint64_t __61__SSAppPurchaseHistoryDatabase_setValue_forDatabaseProperty___block
   return result;
 }
 
-- (BOOL)removeValueForDatabaseProperty:(id)a3
+- (BOOL)removeValueForDatabaseProperty:(id)property
 {
   v6 = 0;
   v7 = &v6;
@@ -576,7 +576,7 @@ uint64_t __61__SSAppPurchaseHistoryDatabase_setValue_forDatabaseProperty___block
   v5[1] = 3221225472;
   v5[2] = __63__SSAppPurchaseHistoryDatabase_removeValueForDatabaseProperty___block_invoke;
   v5[3] = &unk_1E84B2F00;
-  v5[4] = a3;
+  v5[4] = property;
   v5[5] = self;
   v5[6] = &v6;
   v5[7] = a2;
@@ -641,24 +641,24 @@ uint64_t __63__SSAppPurchaseHistoryDatabase_removeValueForDatabaseProperty___blo
   return result;
 }
 
-- (id)allProperties:(id)a3 accountID:(id)a4 includingHidden:(BOOL)a5
+- (id)allProperties:(id)properties accountID:(id)d includingHidden:(BOOL)hidden
 {
-  if (!a4 || ![a3 count])
+  if (!d || ![properties count])
   {
     return 0;
   }
 
-  v9 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __72__SSAppPurchaseHistoryDatabase_allProperties_accountID_includingHidden___block_invoke;
   v11[3] = &unk_1E84B2FA0;
-  v12 = a5;
-  v11[4] = a4;
-  v11[5] = a3;
-  v11[6] = v9;
+  hiddenCopy = hidden;
+  v11[4] = d;
+  v11[5] = properties;
+  v11[6] = array;
   [(SSAppPurchaseHistoryDatabase *)self readUsingTransactionBlock:v11];
-  return v9;
+  return array;
 }
 
 uint64_t __72__SSAppPurchaseHistoryDatabase_allProperties_accountID_includingHidden___block_invoke(uint64_t a1, void *a2)
@@ -768,7 +768,7 @@ void __56__SSAppPurchaseHistoryDatabase__createDatabaseDirectory__block_invoke(u
   objc_autoreleasePoolPop(v2);
 }
 
-+ (BOOL)_setupDatabase:(id)a3
++ (BOOL)_setupDatabase:(id)database
 {
   v6 = 0;
   v7 = &v6;
@@ -778,9 +778,9 @@ void __56__SSAppPurchaseHistoryDatabase__createDatabaseDirectory__block_invoke(u
   v5[1] = 3221225472;
   v5[2] = __47__SSAppPurchaseHistoryDatabase__setupDatabase___block_invoke;
   v5[3] = &unk_1E84B1F38;
-  v5[4] = a3;
+  v5[4] = database;
   v5[5] = &v6;
-  [a3 performTransactionWithBlock:v5];
+  [database performTransactionWithBlock:v5];
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return v3;

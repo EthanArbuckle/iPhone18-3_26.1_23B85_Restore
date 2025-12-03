@@ -1,20 +1,20 @@
 @interface PLPhotosHighlightClusterGenerator
-- (BOOL)_isRecent:(id)a3;
+- (BOOL)_isRecent:(id)recent;
 - (NSArray)allMomentsSorted;
 - (PLMomentGenerationDataManagement)dataManager;
-- (PLPhotosHighlightClusterGenerator)initWithDataManager:(id)a3 frequentLocationManager:(id)a4 recentHighlightDateInterval:(id)a5 localCreationDateCreator:(id)a6;
-- (id)_aggregationHighlightClustersForMoments:(id)a3;
-- (id)_aggregationsInSortedMoments:(id)a3 unavailableMoments:(id)a4 intersectingMoments:(id)a5;
-- (id)_ongoingTripsInRecentMoments:(id)a3;
-- (id)_recentHighlightClusterWithRecentMoments:(id)a3;
-- (id)_recentHighlightClusterWithRecentMoments:(id)a3 intersectingMoments:(id)a4;
+- (PLPhotosHighlightClusterGenerator)initWithDataManager:(id)manager frequentLocationManager:(id)locationManager recentHighlightDateInterval:(id)interval localCreationDateCreator:(id)creator;
+- (id)_aggregationHighlightClustersForMoments:(id)moments;
+- (id)_aggregationsInSortedMoments:(id)moments unavailableMoments:(id)unavailableMoments intersectingMoments:(id)intersectingMoments;
+- (id)_ongoingTripsInRecentMoments:(id)moments;
+- (id)_recentHighlightClusterWithRecentMoments:(id)moments;
+- (id)_recentHighlightClusterWithRecentMoments:(id)moments intersectingMoments:(id)intersectingMoments;
 - (id)_recentMoments;
-- (id)_remainingHighlightClustersWithClusters:(id)a3 intersectingMoments:(id)a4 allowExternalSplits:(BOOL)a5;
-- (id)_remainingMomentsFromMoments:(id)a3 includeAllTripHighlightClusters:(BOOL)a4;
-- (id)_tripHighlightClustersForMoments:(id)a3 tripType:(unint64_t)a4;
-- (id)_tripsInMoments:(id)a3;
-- (id)highlightClustersIntersectingMoments:(id)a3 includeAllTripHighlightClusters:(BOOL)a4;
-- (id)recentMomentsInMomentClusters:(id)a3;
+- (id)_remainingHighlightClustersWithClusters:(id)clusters intersectingMoments:(id)moments allowExternalSplits:(BOOL)splits;
+- (id)_remainingMomentsFromMoments:(id)moments includeAllTripHighlightClusters:(BOOL)clusters;
+- (id)_tripHighlightClustersForMoments:(id)moments tripType:(unint64_t)type;
+- (id)_tripsInMoments:(id)moments;
+- (id)highlightClustersIntersectingMoments:(id)moments includeAllTripHighlightClusters:(BOOL)clusters;
+- (id)recentMomentsInMomentClusters:(id)clusters;
 @end
 
 @implementation PLPhotosHighlightClusterGenerator
@@ -26,25 +26,25 @@
   return WeakRetained;
 }
 
-- (id)_remainingHighlightClustersWithClusters:(id)a3 intersectingMoments:(id)a4 allowExternalSplits:(BOOL)a5
+- (id)_remainingHighlightClustersWithClusters:(id)clusters intersectingMoments:(id)moments allowExternalSplits:(BOOL)splits
 {
-  v5 = a5;
+  splitsCopy = splits;
   v41 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E695DF70] array];
+  clustersCopy = clusters;
+  momentsCopy = moments;
+  array = [MEMORY[0x1E695DF70] array];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v10 = v7;
+  v10 = clustersCopy;
   v11 = [v10 countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v11)
   {
     v12 = v11;
     v13 = *v36;
-    v29 = v8;
-    v30 = v9;
+    v29 = momentsCopy;
+    v30 = array;
     v27 = *v36;
     v28 = v10;
     do
@@ -56,22 +56,22 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v35 + 1) + 8 * i) moments];
-        v16 = [MEMORY[0x1E695DFD8] setWithArray:v15];
-        v17 = [v8 intersectsSet:v16];
+        moments = [*(*(&v35 + 1) + 8 * i) moments];
+        v16 = [MEMORY[0x1E695DFD8] setWithArray:moments];
+        v17 = [momentsCopy intersectsSet:v16];
 
         if (v17)
         {
-          v18 = [MEMORY[0x1E695DFD8] setWithArray:v15];
+          v18 = [MEMORY[0x1E695DFD8] setWithArray:moments];
           v19 = [[PLPhotosHighlightCluster alloc] initWithMoments:v18];
-          if (v5)
+          if (splitsCopy)
           {
-            v20 = v5;
+            v20 = splitsCopy;
             v33 = 0u;
             v34 = 0u;
             v31 = 0u;
             v32 = 0u;
-            v21 = v15;
+            v21 = moments;
             v22 = [v21 countByEnumeratingWithState:&v31 objects:v39 count:16];
             if (v22)
             {
@@ -105,14 +105,14 @@
 
 LABEL_18:
 
-            v5 = v20;
-            v8 = v29;
-            v9 = v30;
+            splitsCopy = v20;
+            momentsCopy = v29;
+            array = v30;
             v13 = v27;
             v10 = v28;
           }
 
-          [v9 addObject:v19];
+          [array addObject:v19];
         }
       }
 
@@ -122,15 +122,15 @@ LABEL_18:
     while (v12);
   }
 
-  return v9;
+  return array;
 }
 
-- (id)_aggregationHighlightClustersForMoments:(id)a3
+- (id)_aggregationHighlightClustersForMoments:(id)moments
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [(PLLibraryClusterer *)self->_clusterer momentClustersForMomentsSortedByDate:v4 allowLocationSplits:0 allowExternalSplits:0];
+  momentsCopy = moments;
+  array = [MEMORY[0x1E695DF70] array];
+  v6 = [(PLLibraryClusterer *)self->_clusterer momentClustersForMomentsSortedByDate:momentsCopy allowLocationSplits:0 allowExternalSplits:0];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -151,12 +151,12 @@ LABEL_18:
 
         v11 = *(*(&v20 + 1) + 8 * i);
         v12 = objc_alloc(MEMORY[0x1E695DFA8]);
-        v13 = [v11 moments];
-        v14 = [v12 initWithArray:v13];
+        moments = [v11 moments];
+        v14 = [v12 initWithArray:moments];
 
         v15 = [[PLPhotosHighlightCluster alloc] initWithMoments:v14];
         [(PLPhotosHighlightCluster *)v15 setType:6];
-        [v5 addObject:v15];
+        [array addObject:v15];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -166,22 +166,22 @@ LABEL_18:
   }
 
   v16 = [PLPhotosHighlightCluster alloc];
-  v17 = [MEMORY[0x1E695DFD8] setWithArray:v4];
+  v17 = [MEMORY[0x1E695DFD8] setWithArray:momentsCopy];
   v18 = [(PLPhotosHighlightCluster *)v16 initWithMoments:v17];
 
   [(PLPhotosHighlightCluster *)v18 setType:3];
   [(PLPhotosHighlightCluster *)v18 setKind:3];
-  [v5 addObject:v18];
+  [array addObject:v18];
 
-  return v5;
+  return array;
 }
 
-- (id)_tripHighlightClustersForMoments:(id)a3 tripType:(unint64_t)a4
+- (id)_tripHighlightClustersForMoments:(id)moments tripType:(unint64_t)type
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E695DF70] array];
-  v7 = [(PLLibraryClusterer *)self->_clusterer momentClustersForMomentsSortedByDate:v5 allowLocationSplits:_os_feature_enabled_impl() ^ 1 allowExternalSplits:1];
+  momentsCopy = moments;
+  array = [MEMORY[0x1E695DF70] array];
+  v7 = [(PLLibraryClusterer *)self->_clusterer momentClustersForMomentsSortedByDate:momentsCopy allowLocationSplits:_os_feature_enabled_impl() ^ 1 allowExternalSplits:1];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -202,12 +202,12 @@ LABEL_18:
 
         v12 = *(*(&v23 + 1) + 8 * i);
         v13 = objc_alloc(MEMORY[0x1E695DFA8]);
-        v14 = [v12 moments];
-        v15 = [v13 initWithArray:v14];
+        moments = [v12 moments];
+        v15 = [v13 initWithArray:moments];
 
         v16 = [[PLPhotosHighlightCluster alloc] initWithMoments:v15];
         [(PLPhotosHighlightCluster *)v16 setType:5];
-        [v6 addObject:v16];
+        [array addObject:v16];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -217,29 +217,29 @@ LABEL_18:
   }
 
   v17 = [PLPhotosHighlightCluster alloc];
-  v18 = [MEMORY[0x1E695DFD8] setWithArray:v5];
+  v18 = [MEMORY[0x1E695DFD8] setWithArray:momentsCopy];
   v19 = [(PLPhotosHighlightCluster *)v17 initWithMoments:v18];
 
-  v20 = 0x400010002uLL >> (16 * a4);
-  if (a4 >= 3)
+  v20 = 0x400010002uLL >> (16 * type);
+  if (type >= 3)
   {
     LOBYTE(v20) = 0;
   }
 
   [(PLPhotosHighlightCluster *)v19 setType:v20 & 7];
   [(PLPhotosHighlightCluster *)v19 setKind:3];
-  [v6 addObject:v19];
+  [array addObject:v19];
 
-  return v6;
+  return array;
 }
 
-- (id)_aggregationsInSortedMoments:(id)a3 unavailableMoments:(id)a4 intersectingMoments:(id)a5
+- (id)_aggregationsInSortedMoments:(id)moments unavailableMoments:(id)unavailableMoments intersectingMoments:(id)intersectingMoments
 {
   v31 = *MEMORY[0x1E69E9840];
-  v24 = a4;
-  v8 = a5;
-  v9 = [(PLLibraryClusterer *)self->_clusterer momentClustersForMomentsSortedByDate:a3 allowLocationSplits:0 allowExternalSplits:0];
-  v25 = [MEMORY[0x1E695DF70] array];
+  unavailableMomentsCopy = unavailableMoments;
+  intersectingMomentsCopy = intersectingMoments;
+  v9 = [(PLLibraryClusterer *)self->_clusterer momentClustersForMomentsSortedByDate:moments allowLocationSplits:0 allowExternalSplits:0];
+  array = [MEMORY[0x1E695DF70] array];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -261,13 +261,13 @@ LABEL_18:
 
         v15 = *(*(&v26 + 1) + 8 * i);
         v16 = MEMORY[0x1E695DFD8];
-        v17 = [v15 moments];
-        v18 = [v16 setWithArray:v17];
-        v19 = [v8 intersectsSet:v18];
+        moments = [v15 moments];
+        v18 = [v16 setWithArray:moments];
+        v19 = [intersectingMomentsCopy intersectsSet:v18];
 
         if (v19)
         {
-          [v25 addObject:v15];
+          [array addObject:v15];
         }
       }
 
@@ -278,24 +278,24 @@ LABEL_18:
   }
 
   v20 = objc_alloc_init(PLAggregationProcessor);
-  v21 = [(PLAggregationProcessor *)v20 sortedNeighborMomentClustersOfMomentClusters:v25 forAllMomentClusters:v10];
-  v22 = [(PLAggregationProcessor *)v20 processAggregationsWithSortedMomentClusters:v21 momentsContainedInOtherHighlights:v24 progressBlock:0];
+  v21 = [(PLAggregationProcessor *)v20 sortedNeighborMomentClustersOfMomentClusters:array forAllMomentClusters:v10];
+  v22 = [(PLAggregationProcessor *)v20 processAggregationsWithSortedMomentClusters:v21 momentsContainedInOtherHighlights:unavailableMomentsCopy progressBlock:0];
 
   return v22;
 }
 
-- (id)_tripsInMoments:(id)a3
+- (id)_tripsInMoments:(id)moments
 {
   frequentLocationManager = self->_frequentLocationManager;
-  v5 = a3;
-  v6 = [(PLFrequentLocationManager *)frequentLocationManager momentGenerationDataManager];
-  v7 = [v6 lastLocationOfInterestVisit];
+  momentsCopy = moments;
+  momentGenerationDataManager = [(PLFrequentLocationManager *)frequentLocationManager momentGenerationDataManager];
+  lastLocationOfInterestVisit = [momentGenerationDataManager lastLocationOfInterestVisit];
 
-  v8 = [v7 visitInterval];
-  v9 = [v8 endDate];
+  visitInterval = [lastLocationOfInterestVisit visitInterval];
+  endDate = [visitInterval endDate];
 
-  v10 = [(PLFrequentLocationManager *)self->_frequentLocationManager currentFrequentLocations];
-  v11 = [PLTripProcessor processTripsWithItems:v5 frequentLocations:v10 lastHomeVisitDate:v9 progressBlock:0];
+  currentFrequentLocations = [(PLFrequentLocationManager *)self->_frequentLocationManager currentFrequentLocations];
+  v11 = [PLTripProcessor processTripsWithItems:momentsCopy frequentLocations:currentFrequentLocations lastHomeVisitDate:endDate progressBlock:0];
 
   v12 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_67294];
   v13 = [v11 filteredArrayUsingPredicate:v12];
@@ -303,26 +303,26 @@ LABEL_18:
   return v13;
 }
 
-- (id)_ongoingTripsInRecentMoments:(id)a3
+- (id)_ongoingTripsInRecentMoments:(id)moments
 {
-  v4 = a3;
-  v5 = [(PLFrequentLocationManager *)self->_frequentLocationManager currentFrequentLocations];
-  v6 = [PLTripProcessor tripsEligibleForMoments:v4 frequentLocations:v5];
+  momentsCopy = moments;
+  currentFrequentLocations = [(PLFrequentLocationManager *)self->_frequentLocationManager currentFrequentLocations];
+  v6 = [PLTripProcessor tripsEligibleForMoments:momentsCopy frequentLocations:currentFrequentLocations];
 
   if (v6)
   {
     v7 = objc_alloc(MEMORY[0x1E696AB80]);
-    v8 = [(NSDateInterval *)self->_recentHighlightsDateInterval startDate];
-    v9 = [v8 dateByAddingTimeInterval:-5184000.0];
-    v10 = [(NSDateInterval *)self->_recentHighlightsDateInterval endDate];
-    v11 = [v7 initWithStartDate:v9 endDate:v10];
+    startDate = [(NSDateInterval *)self->_recentHighlightsDateInterval startDate];
+    v9 = [startDate dateByAddingTimeInterval:-5184000.0];
+    endDate = [(NSDateInterval *)self->_recentHighlightsDateInterval endDate];
+    v11 = [v7 initWithStartDate:v9 endDate:endDate];
 
     WeakRetained = objc_loadWeakRetained(&self->_dataManager);
-    v13 = [v11 startDate];
-    v14 = [v11 endDate];
-    v15 = [WeakRetained momentsBetweenDate:v13 andDate:v14 sorted:0 excludeExternal:1];
+    startDate2 = [v11 startDate];
+    endDate2 = [v11 endDate];
+    v15 = [WeakRetained momentsBetweenDate:startDate2 andDate:endDate2 sorted:0 excludeExternal:1];
 
-    v16 = [v4 setByAddingObjectsFromArray:v15];
+    v16 = [momentsCopy setByAddingObjectsFromArray:v15];
     v17 = [(PLPhotosHighlightClusterGenerator *)self _tripsInMoments:v16];
   }
 
@@ -334,12 +334,12 @@ LABEL_18:
   return v17;
 }
 
-- (id)_recentHighlightClusterWithRecentMoments:(id)a3 intersectingMoments:(id)a4
+- (id)_recentHighlightClusterWithRecentMoments:(id)moments intersectingMoments:(id)intersectingMoments
 {
-  v6 = a3;
-  if ([v6 intersectsSet:a4])
+  momentsCopy = moments;
+  if ([momentsCopy intersectsSet:intersectingMoments])
   {
-    v7 = [(PLPhotosHighlightClusterGenerator *)self _recentHighlightClusterWithRecentMoments:v6];
+    v7 = [(PLPhotosHighlightClusterGenerator *)self _recentHighlightClusterWithRecentMoments:momentsCopy];
   }
 
   else
@@ -350,12 +350,12 @@ LABEL_18:
   return v7;
 }
 
-- (id)_recentHighlightClusterWithRecentMoments:(id)a3
+- (id)_recentHighlightClusterWithRecentMoments:(id)moments
 {
-  v3 = a3;
-  if ([v3 count])
+  momentsCopy = moments;
+  if ([momentsCopy count])
   {
-    v4 = [[PLPhotosHighlightCluster alloc] initWithMoments:v3];
+    v4 = [[PLPhotosHighlightCluster alloc] initWithMoments:momentsCopy];
     [(PLPhotosHighlightCluster *)v4 setCategory:1];
   }
 
@@ -370,14 +370,14 @@ LABEL_18:
 - (id)_recentMoments
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(NSDateInterval *)self->_recentHighlightsDateInterval startDate];
-  v4 = [v3 dateByAddingTimeInterval:-86400.0];
+  startDate = [(NSDateInterval *)self->_recentHighlightsDateInterval startDate];
+  v4 = [startDate dateByAddingTimeInterval:-86400.0];
 
-  v5 = [(NSDateInterval *)self->_recentHighlightsDateInterval endDate];
-  v6 = [v5 dateByAddingTimeInterval:86400.0];
+  endDate = [(NSDateInterval *)self->_recentHighlightsDateInterval endDate];
+  v6 = [endDate dateByAddingTimeInterval:86400.0];
 
-  v7 = [(PLPhotosHighlightClusterGenerator *)self dataManager];
-  v8 = [v7 momentsBetweenDate:v4 andDate:v6 sorted:1 excludeExternal:1];
+  dataManager = [(PLPhotosHighlightClusterGenerator *)self dataManager];
+  v8 = [dataManager momentsBetweenDate:v4 andDate:v6 sorted:1 excludeExternal:1];
 
   if ([v8 count])
   {
@@ -403,16 +403,16 @@ LABEL_18:
   return v10;
 }
 
-- (id)recentMomentsInMomentClusters:(id)a3
+- (id)recentMomentsInMomentClusters:(id)clusters
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  clustersCopy = clusters;
   v5 = [MEMORY[0x1E695DFA8] set];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = clustersCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -430,8 +430,8 @@ LABEL_18:
         v11 = *(*(&v14 + 1) + 8 * i);
         if ([(PLPhotosHighlightClusterGenerator *)self _isRecent:v11, v14])
         {
-          v12 = [v11 moments];
-          [v5 addObjectsFromArray:v12];
+          moments = [v11 moments];
+          [v5 addObjectsFromArray:moments];
         }
       }
 
@@ -444,18 +444,18 @@ LABEL_18:
   return v5;
 }
 
-- (BOOL)_isRecent:(id)a3
+- (BOOL)_isRecent:(id)recent
 {
-  v4 = a3;
-  v5 = [v4 startDate];
-  v6 = [v4 endDate];
+  recentCopy = recent;
+  startDate = [recentCopy startDate];
+  endDate = [recentCopy endDate];
 
   v7 = 0;
-  if (v5 && v6)
+  if (startDate && endDate)
   {
-    if ([(NSDateInterval *)self->_recentHighlightsDateInterval containsDate:v5])
+    if ([(NSDateInterval *)self->_recentHighlightsDateInterval containsDate:startDate])
     {
-      v7 = [(NSDateInterval *)self->_recentHighlightsDateInterval containsDate:v6];
+      v7 = [(NSDateInterval *)self->_recentHighlightsDateInterval containsDate:endDate];
     }
 
     else
@@ -467,12 +467,12 @@ LABEL_18:
   return v7;
 }
 
-- (id)_remainingMomentsFromMoments:(id)a3 includeAllTripHighlightClusters:(BOOL)a4
+- (id)_remainingMomentsFromMoments:(id)moments includeAllTripHighlightClusters:(BOOL)clusters
 {
-  v4 = a4;
+  clustersCopy = clusters;
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (![v6 count])
+  momentsCopy = moments;
+  if (![momentsCopy count])
   {
     v23 = PLMomentsGetLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -485,21 +485,21 @@ LABEL_18:
     goto LABEL_14;
   }
 
-  if (v4)
+  if (clustersCopy)
   {
 LABEL_14:
-    v22 = [(PLPhotosHighlightClusterGenerator *)self allMomentsSorted];
+    allMomentsSorted = [(PLPhotosHighlightClusterGenerator *)self allMomentsSorted];
     goto LABEL_15;
   }
 
-  v25 = self;
-  v7 = [MEMORY[0x1E695DF00] distantFuture];
-  v8 = [MEMORY[0x1E695DF00] distantPast];
+  selfCopy = self;
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v9 = v6;
+  v9 = momentsCopy;
   v10 = [v9 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v10)
   {
@@ -508,8 +508,8 @@ LABEL_14:
     do
     {
       v13 = 0;
-      v14 = v7;
-      v15 = v8;
+      v14 = distantFuture;
+      v15 = distantPast;
       do
       {
         if (*v27 != v12)
@@ -518,15 +518,15 @@ LABEL_14:
         }
 
         v16 = *(*(&v26 + 1) + 8 * v13);
-        v17 = [v16 startDate];
-        v7 = [v14 earlierDate:v17];
+        startDate = [v16 startDate];
+        distantFuture = [v14 earlierDate:startDate];
 
-        v18 = [v16 endDate];
-        v8 = [v15 laterDate:v18];
+        endDate = [v16 endDate];
+        distantPast = [v15 laterDate:endDate];
 
         ++v13;
-        v14 = v7;
-        v15 = v8;
+        v14 = distantFuture;
+        v15 = distantPast;
       }
 
       while (v11 != v13);
@@ -536,30 +536,30 @@ LABEL_14:
     while (v11);
   }
 
-  v19 = [v7 dateByAddingTimeInterval:-2592000.0];
+  v19 = [distantFuture dateByAddingTimeInterval:-2592000.0];
 
-  v20 = [v8 dateByAddingTimeInterval:5184000.0];
+  v20 = [distantPast dateByAddingTimeInterval:5184000.0];
 
-  v21 = [(PLPhotosHighlightClusterGenerator *)v25 dataManager];
-  v22 = [v21 momentsBetweenDate:v19 andDate:v20 sorted:1 excludeExternal:0];
+  dataManager = [(PLPhotosHighlightClusterGenerator *)selfCopy dataManager];
+  allMomentsSorted = [dataManager momentsBetweenDate:v19 andDate:v20 sorted:1 excludeExternal:0];
 
 LABEL_15:
 
-  return v22;
+  return allMomentsSorted;
 }
 
-- (id)highlightClustersIntersectingMoments:(id)a3 includeAllTripHighlightClusters:(BOOL)a4
+- (id)highlightClustersIntersectingMoments:(id)moments includeAllTripHighlightClusters:(BOOL)clusters
 {
-  v131 = a4;
+  clustersCopy = clusters;
   v165 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  momentsCopy = moments;
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v128 = v5;
-  v7 = [v5 mutableCopy];
+  v128 = momentsCopy;
+  v7 = [momentsCopy mutableCopy];
   v139 = [MEMORY[0x1E695DFA8] set];
   v8 = PLMomentGenerationGetLog();
-  v9 = [(PLPhotosHighlightClusterGenerator *)self _recentMoments];
-  v137 = [v9 mutableCopy];
+  _recentMoments = [(PLPhotosHighlightClusterGenerator *)self _recentMoments];
+  v137 = [_recentMoments mutableCopy];
 
   v10 = v8;
   v11 = os_signpost_id_generate(v10);
@@ -607,11 +607,11 @@ LABEL_15:
         }
 
         v20 = *(*(&v151 + 1) + 8 * i);
-        v21 = [v20 items];
-        v22 = [MEMORY[0x1E695DFD8] setWithArray:v21];
+        items = [v20 items];
+        v22 = [MEMORY[0x1E695DFD8] setWithArray:items];
         if ([v7 intersectsSet:v22])
         {
-          v23 = -[PLPhotosHighlightClusterGenerator _tripHighlightClustersForMoments:tripType:](self, "_tripHighlightClustersForMoments:tripType:", v21, [v20 type]);
+          v23 = -[PLPhotosHighlightClusterGenerator _tripHighlightClustersForMoments:tripType:](self, "_tripHighlightClustersForMoments:tripType:", items, [v20 type]);
           [v6 addObjectsFromArray:v23];
 
           [v137 minusSet:v22];
@@ -702,11 +702,11 @@ LABEL_15:
     _os_log_impl(&dword_19BF1F000, v41, OS_LOG_TYPE_INFO, "[Performance] %s - %@: %f ms", buf, 0x20u);
   }
 
-  if ([v7 count] || v131)
+  if ([v7 count] || clustersCopy)
   {
     spida = v29;
     v46 = MEMORY[0x1E695DFA0];
-    v47 = [(PLPhotosHighlightClusterGenerator *)self _remainingMomentsFromMoments:v128 includeAllTripHighlightClusters:v131];
+    v47 = [(PLPhotosHighlightClusterGenerator *)self _remainingMomentsFromMoments:v128 includeAllTripHighlightClusters:clustersCopy];
     v48 = [v46 orderedSetWithArray:v47];
 
     v136 = v48;
@@ -752,11 +752,11 @@ LABEL_15:
           }
 
           v59 = *(*(&v145 + 1) + 8 * j);
-          v60 = [v59 items];
-          v61 = [MEMORY[0x1E695DFD8] setWithArray:v60];
-          if (v131 || [v7 intersectsSet:v61])
+          items2 = [v59 items];
+          v61 = [MEMORY[0x1E695DFD8] setWithArray:items2];
+          if (clustersCopy || [v7 intersectsSet:v61])
           {
-            v62 = -[PLPhotosHighlightClusterGenerator _tripHighlightClustersForMoments:tripType:](self, "_tripHighlightClustersForMoments:tripType:", v60, [v59 type]);
+            v62 = -[PLPhotosHighlightClusterGenerator _tripHighlightClustersForMoments:tripType:](self, "_tripHighlightClustersForMoments:tripType:", items2, [v59 type]);
             [v6 addObjectsFromArray:v62];
           }
 
@@ -825,8 +825,8 @@ LABEL_15:
       v118 = v74;
 
       v116 = mach_absolute_time();
-      v75 = [(PLPhotosHighlightClusterGenerator *)self allMomentsSorted];
-      v76 = [(PLPhotosHighlightClusterGenerator *)self _aggregationsInSortedMoments:v75 unavailableMoments:v139 intersectingMoments:v7];
+      allMomentsSorted = [(PLPhotosHighlightClusterGenerator *)self allMomentsSorted];
+      v76 = [(PLPhotosHighlightClusterGenerator *)self _aggregationsInSortedMoments:allMomentsSorted unavailableMoments:v139 intersectingMoments:v7];
 
       v142 = 0u;
       v143 = 0u;
@@ -847,11 +847,11 @@ LABEL_15:
               objc_enumerationMutation(v77);
             }
 
-            v82 = [*(*(&v140 + 1) + 8 * k) moments];
-            v83 = [(PLPhotosHighlightClusterGenerator *)self _aggregationHighlightClustersForMoments:v82];
+            moments = [*(*(&v140 + 1) + 8 * k) moments];
+            v83 = [(PLPhotosHighlightClusterGenerator *)self _aggregationHighlightClustersForMoments:moments];
             [v6 addObjectsFromArray:v83];
 
-            v84 = [MEMORY[0x1E695DFD8] setWithArray:v82];
+            v84 = [MEMORY[0x1E695DFD8] setWithArray:moments];
             [v136 minusSet:v84];
             [v7 minusSet:v84];
           }
@@ -917,11 +917,11 @@ LABEL_83:
     v119 = v93;
 
     v122 = mach_absolute_time();
-    v97 = [v136 array];
+    array = [v136 array];
     v98 = _os_feature_enabled_impl();
     v99 = _os_feature_enabled_impl();
-    v133 = v97;
-    v100 = [(PLLibraryClusterer *)self->_clusterer momentClustersForMomentsSortedByDate:v97 allowLocationSplits:v98 ^ 1u allowExternalSplits:v99 ^ 1u];
+    v133 = array;
+    v100 = [(PLLibraryClusterer *)self->_clusterer momentClustersForMomentsSortedByDate:array allowLocationSplits:v98 ^ 1u allowExternalSplits:v99 ^ 1u];
     v101 = [(PLPhotosHighlightClusterGenerator *)self _remainingHighlightClustersWithClusters:v100 intersectingMoments:v7 allowExternalSplits:v99 ^ 1u];
     [v6 addObjectsFromArray:v101];
     v102 = mach_absolute_time();
@@ -968,8 +968,8 @@ LABEL_85:
   allMomentsSorted = self->_allMomentsSorted;
   if (!allMomentsSorted)
   {
-    v4 = [(PLPhotosHighlightClusterGenerator *)self dataManager];
-    v5 = [v4 allMomentsWithError:0];
+    dataManager = [(PLPhotosHighlightClusterGenerator *)self dataManager];
+    v5 = [dataManager allMomentsWithError:0];
     v6 = self->_allMomentsSorted;
     self->_allMomentsSorted = v5;
 
@@ -979,22 +979,22 @@ LABEL_85:
   return allMomentsSorted;
 }
 
-- (PLPhotosHighlightClusterGenerator)initWithDataManager:(id)a3 frequentLocationManager:(id)a4 recentHighlightDateInterval:(id)a5 localCreationDateCreator:(id)a6
+- (PLPhotosHighlightClusterGenerator)initWithDataManager:(id)manager frequentLocationManager:(id)locationManager recentHighlightDateInterval:(id)interval localCreationDateCreator:(id)creator
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  managerCopy = manager;
+  locationManagerCopy = locationManager;
+  intervalCopy = interval;
+  creatorCopy = creator;
   v19.receiver = self;
   v19.super_class = PLPhotosHighlightClusterGenerator;
   v14 = [(PLPhotosHighlightClusterGenerator *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_dataManager, v10);
-    objc_storeStrong(&v15->_frequentLocationManager, a4);
-    objc_storeStrong(&v15->_recentHighlightsDateInterval, a5);
-    v16 = [[PLLibraryClusterer alloc] initWithLocalCreationDateCreator:v13 frequentLocationManager:v15->_frequentLocationManager];
+    objc_storeWeak(&v14->_dataManager, managerCopy);
+    objc_storeStrong(&v15->_frequentLocationManager, locationManager);
+    objc_storeStrong(&v15->_recentHighlightsDateInterval, interval);
+    v16 = [[PLLibraryClusterer alloc] initWithLocalCreationDateCreator:creatorCopy frequentLocationManager:v15->_frequentLocationManager];
     clusterer = v15->_clusterer;
     v15->_clusterer = v16;
   }

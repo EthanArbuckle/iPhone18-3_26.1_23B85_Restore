@@ -1,14 +1,14 @@
 @interface CARTemplateUIDashboardButton
-- (void)focusableItemPressed:(BOOL)a3;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
+- (void)focusableItemPressed:(BOOL)pressed;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
 @end
 
 @implementation CARTemplateUIDashboardButton
 
-- (void)focusableItemPressed:(BOOL)a3
+- (void)focusableItemPressed:(BOOL)pressed
 {
   v3 = 0.8;
-  if (!a3)
+  if (!pressed)
   {
     v3 = 1.0;
   }
@@ -16,11 +16,11 @@
   [(CARTemplateUIDashboardButton *)self setAlpha:v3];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v4.receiver = self;
   v4.super_class = CARTemplateUIDashboardButton;
-  [(CARTemplateUIDashboardButton *)&v4 touchesCancelled:a3 withEvent:a4];
+  [(CARTemplateUIDashboardButton *)&v4 touchesCancelled:cancelled withEvent:event];
 }
 
 @end

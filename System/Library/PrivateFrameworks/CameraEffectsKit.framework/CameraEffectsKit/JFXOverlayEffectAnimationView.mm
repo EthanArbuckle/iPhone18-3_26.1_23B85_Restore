@@ -1,19 +1,19 @@
 @interface JFXOverlayEffectAnimationView
-- (JFXOverlayEffectAnimationView)initWithEffectFrame:(id)a3 toEffectFrame:(id)a4;
+- (JFXOverlayEffectAnimationView)initWithEffectFrame:(id)frame toEffectFrame:(id)effectFrame;
 - (JFXOverlayEffectTransforms)currentEffectTransforms;
 - (double)fractionComplete;
-- (void)animate:(id)a3 completion:(id)a4;
+- (void)animate:(id)animate completion:(id)completion;
 @end
 
 @implementation JFXOverlayEffectAnimationView
 
-- (JFXOverlayEffectAnimationView)initWithEffectFrame:(id)a3 toEffectFrame:(id)a4
+- (JFXOverlayEffectAnimationView)initWithEffectFrame:(id)frame toEffectFrame:(id)effectFrame
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 effectSize];
+  frameCopy = frame;
+  effectFrameCopy = effectFrame;
+  [frameCopy effectSize];
   v9 = v8;
-  [v6 effectSize];
+  [frameCopy effectSize];
   v92.receiver = self;
   v92.super_class = JFXOverlayEffectAnimationView;
   v11 = [(JFXOverlayEffectAnimationView *)&v92 initWithFrame:0.0, 0.0, v9, v10];
@@ -21,34 +21,34 @@
   {
     [MEMORY[0x277CD9FF0] begin];
     [MEMORY[0x277CD9FF0] setDisableActions:1];
-    [(JFXOverlayEffectAnimationView *)v11 setFromEffectFrame:v6];
-    [(JFXOverlayEffectAnimationView *)v11 setToEffectFrame:v7];
-    v12 = [(JFXOverlayEffectAnimationView *)v11 fromEffectFrame];
-    v13 = [v12 transforms];
+    [(JFXOverlayEffectAnimationView *)v11 setFromEffectFrame:frameCopy];
+    [(JFXOverlayEffectAnimationView *)v11 setToEffectFrame:effectFrameCopy];
+    fromEffectFrame = [(JFXOverlayEffectAnimationView *)v11 fromEffectFrame];
+    transforms = [fromEffectFrame transforms];
 
-    v14 = [(JFXOverlayEffectAnimationView *)v11 toEffectFrame];
-    v15 = [v14 transforms];
+    toEffectFrame = [(JFXOverlayEffectAnimationView *)v11 toEffectFrame];
+    transforms2 = [toEffectFrame transforms];
 
     v16 = objc_opt_new();
     [(JFXOverlayEffectAnimationView *)v11 setAnimationDelegate:v16];
 
-    v17 = [(JFXOverlayEffectAnimationView *)v11 layer];
-    [v17 setOpacity:0.0];
+    layer = [(JFXOverlayEffectAnimationView *)v11 layer];
+    [layer setOpacity:0.0];
 
-    v18 = [v13 transform];
-    if (v18)
+    transform = [transforms transform];
+    if (transform)
     {
-      v19 = v18;
-      v20 = [v15 transform];
+      v19 = transform;
+      transform2 = [transforms2 transform];
 
-      if (v20)
+      if (transform2)
       {
-        v21 = [(JFXOverlayEffectAnimationView *)v11 layer];
-        v22 = [v13 transform];
-        v23 = v22;
-        if (v22)
+        layer2 = [(JFXOverlayEffectAnimationView *)v11 layer];
+        transform3 = [transforms transform];
+        v23 = transform3;
+        if (transform3)
         {
-          [v22 SIMDDouble4x4];
+          [transform3 SIMDDouble4x4];
           v64 = v106;
           v65 = v107;
           v66 = v108;
@@ -72,10 +72,10 @@
         }
 
         v24 = MEMORY[0x277CD9ED0];
-        v25 = v21;
-        v26 = [v24 layer];
+        v25 = layer2;
+        layer3 = [v24 layer];
         [v25 bounds];
-        [v26 setFrame:?];
+        [layer3 setFrame:?];
         v106 = v64;
         v107 = v65;
         v108 = v66;
@@ -84,25 +84,25 @@
         *&STACK[0x520] = vars0;
         *&STACK[0x530] = v77;
         *&STACK[0x540] = v74;
-        [v26 setTransform:&v106];
-        [v25 addSublayer:v26];
+        [layer3 setTransform:&v106];
+        [v25 addSublayer:layer3];
 
-        [(JFXOverlayEffectAnimationView *)v11 setTransformLayer:v26];
+        [(JFXOverlayEffectAnimationView *)v11 setTransformLayer:layer3];
       }
     }
 
-    v27 = [v13 transformAnimation];
-    if (v27)
+    transformAnimation = [transforms transformAnimation];
+    if (transformAnimation)
     {
-      v28 = v27;
-      v29 = [v15 transformAnimation];
+      v28 = transformAnimation;
+      transformAnimation2 = [transforms2 transformAnimation];
 
-      if (v29)
+      if (transformAnimation2)
       {
-        v30 = [v13 transformAnimation];
-        if (v6)
+        transformAnimation3 = [transforms transformAnimation];
+        if (frameCopy)
         {
-          [v6 time];
+          [frameCopy time];
         }
 
         else
@@ -115,11 +115,11 @@
         *v102 = 0u;
         *&v102[16] = 0u;
         v101 = 0u;
-        if (v30)
+        if (transformAnimation3)
         {
           v106 = v80;
           v107.f64[0] = v81;
-          [v30 transformInfoAtTime:&v106];
+          [transformAnimation3 transformInfoAtTime:&v106];
           v31 = *&v102[24];
         }
 
@@ -166,10 +166,10 @@
         v86 = v95;
         v87 = v96;
 
-        v39 = [(JFXOverlayEffectAnimationView *)v11 layer];
-        v40 = [MEMORY[0x277CD9ED0] layer];
-        [v39 bounds];
-        [v40 setFrame:?];
+        layer4 = [(JFXOverlayEffectAnimationView *)v11 layer];
+        layer5 = [MEMORY[0x277CD9ED0] layer];
+        [layer4 bounds];
+        [layer5 setFrame:?];
         v106 = v83;
         v107 = v84;
         v108 = v86;
@@ -178,33 +178,33 @@
         *&STACK[0x520] = v89;
         *&STACK[0x530] = v90;
         *&STACK[0x540] = v91;
-        [v40 setTransform:&v106];
-        [v39 addSublayer:v40];
-        [(JFXOverlayEffectAnimationView *)v11 setAdditionalTransformLayer:v40];
+        [layer5 setTransform:&v106];
+        [layer4 addSublayer:layer5];
+        [(JFXOverlayEffectAnimationView *)v11 setAdditionalTransformLayer:layer5];
       }
     }
 
-    v41 = [v13 faceTrackingTransform];
-    if (v41)
+    faceTrackingTransform = [transforms faceTrackingTransform];
+    if (faceTrackingTransform)
     {
-      v42 = v41;
-      v43 = [v15 faceTrackingTransform];
+      v42 = faceTrackingTransform;
+      faceTrackingTransform2 = [transforms2 faceTrackingTransform];
 
-      if (v43)
+      if (faceTrackingTransform2)
       {
-        v44 = [(JFXOverlayEffectAnimationView *)v11 layer];
-        v45 = [v13 faceTrackingTransform];
-        v46 = [(JFXOverlayEffectAnimationView *)v11 fromEffectFrame];
-        [v45 transformForTrackingType:{objc_msgSend(v46, "trackingType")}];
+        layer6 = [(JFXOverlayEffectAnimationView *)v11 layer];
+        faceTrackingTransform3 = [transforms faceTrackingTransform];
+        fromEffectFrame2 = [(JFXOverlayEffectAnimationView *)v11 fromEffectFrame];
+        [faceTrackingTransform3 transformForTrackingType:{objc_msgSend(fromEffectFrame2, "trackingType")}];
         v69 = v47;
         vars0a = v48;
         v75 = v49;
         v78 = v50;
         v51 = MEMORY[0x277CD9ED0];
-        v52 = v44;
-        v53 = [v51 layer];
+        v52 = layer6;
+        layer7 = [v51 layer];
         [v52 bounds];
-        [v53 setFrame:?];
+        [layer7 setFrame:?];
         v106 = vcvtq_f64_f32(*v69.f32);
         v107 = vcvt_hight_f64_f32(v69);
         v108 = vcvtq_f64_f32(*vars0a.f32);
@@ -213,22 +213,22 @@
         *&STACK[0x520] = vcvt_hight_f64_f32(v75);
         *&STACK[0x530] = vcvtq_f64_f32(*v78.f32);
         *&STACK[0x540] = vcvt_hight_f64_f32(v78);
-        [v53 setTransform:&v106];
-        [v52 addSublayer:v53];
+        [layer7 setTransform:&v106];
+        [v52 addSublayer:layer7];
 
-        [(JFXOverlayEffectAnimationView *)v11 setTrackingTransformLayer:v53];
-        v54 = [(JFXOverlayEffectAnimationView *)v11 layer];
-        v55 = [v13 faceTrackingTransform];
-        [v55 cameraTransform];
+        [(JFXOverlayEffectAnimationView *)v11 setTrackingTransformLayer:layer7];
+        layer8 = [(JFXOverlayEffectAnimationView *)v11 layer];
+        faceTrackingTransform4 = [transforms faceTrackingTransform];
+        [faceTrackingTransform4 cameraTransform];
         v70 = v56;
         vars0b = v57;
         v76 = v58;
         v79 = v59;
         v60 = MEMORY[0x277CD9ED0];
-        v61 = v54;
-        v62 = [v60 layer];
+        v61 = layer8;
+        layer9 = [v60 layer];
         [v61 bounds];
-        [v62 setFrame:?];
+        [layer9 setFrame:?];
         v106 = vcvtq_f64_f32(*v70.f32);
         v107 = vcvt_hight_f64_f32(v70);
         v108 = vcvtq_f64_f32(*vars0b.f32);
@@ -237,10 +237,10 @@
         *&STACK[0x520] = vcvt_hight_f64_f32(v76);
         *&STACK[0x530] = vcvtq_f64_f32(*v79.f32);
         *&STACK[0x540] = vcvt_hight_f64_f32(v79);
-        [v62 setTransform:&v106];
-        [v61 addSublayer:v62];
+        [layer9 setTransform:&v106];
+        [v61 addSublayer:layer9];
 
-        [(JFXOverlayEffectAnimationView *)v11 setCameraTransformLayer:v62];
+        [(JFXOverlayEffectAnimationView *)v11 setCameraTransformLayer:layer9];
       }
     }
 
@@ -250,26 +250,26 @@
   return v11;
 }
 
-- (void)animate:(id)a3 completion:(id)a4
+- (void)animate:(id)animate completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(JFXOverlayEffectAnimationView *)self fromEffectFrame];
-  v9 = [v8 transforms];
+  animateCopy = animate;
+  completionCopy = completion;
+  fromEffectFrame = [(JFXOverlayEffectAnimationView *)self fromEffectFrame];
+  transforms = [fromEffectFrame transforms];
 
-  v10 = [(JFXOverlayEffectAnimationView *)self toEffectFrame];
-  v11 = [v10 transforms];
+  toEffectFrame = [(JFXOverlayEffectAnimationView *)self toEffectFrame];
+  transforms2 = [toEffectFrame transforms];
 
-  v12 = [(JFXOverlayEffectAnimationView *)self animationDelegate];
-  [v12 animateWithCompletion:v7];
+  animationDelegate = [(JFXOverlayEffectAnimationView *)self animationDelegate];
+  [animationDelegate animateWithCompletion:completionCopy];
 
-  v13 = [(JFXOverlayEffectAnimationView *)self layer];
-  v14 = [v6 copy];
-  v15 = [(JFXOverlayEffectAnimationView *)self animationDelegate];
-  v16 = v13;
+  layer = [(JFXOverlayEffectAnimationView *)self layer];
+  v14 = [animateCopy copy];
+  animationDelegate2 = [(JFXOverlayEffectAnimationView *)self animationDelegate];
+  v16 = layer;
   v17 = v14;
   [v17 setKeyPath:@"opacity"];
-  [v17 setDelegate:v15];
+  [v17 setDelegate:animationDelegate2];
   v135 = *MEMORY[0x277CDA230];
   [v17 setFillMode:?];
   [v17 setRemovedOnCompletion:0];
@@ -277,21 +277,21 @@
   [v17 setToValue:&unk_28556D428];
   [v16 addAnimation:v17 forKey:@"opacityAnimation"];
 
-  v18 = [v9 transform];
-  if (v18)
+  transform = [transforms transform];
+  if (transform)
   {
-    v19 = v18;
-    v20 = [v11 transform];
+    v19 = transform;
+    transform2 = [transforms2 transform];
 
-    if (v20)
+    if (transform2)
     {
-      v21 = [(JFXOverlayEffectAnimationView *)self transformLayer];
-      v22 = [v6 copy];
-      v23 = [v9 transform];
-      v24 = v23;
-      if (v23)
+      transformLayer = [(JFXOverlayEffectAnimationView *)self transformLayer];
+      v22 = [animateCopy copy];
+      transform3 = [transforms transform];
+      v24 = transform3;
+      if (transform3)
       {
-        [v23 SIMDDouble4x4];
+        [transform3 SIMDDouble4x4];
         v112 = *&STACK[0x6C0];
         v115 = *&STACK[0x6D0];
         v118 = *&STACK[0x6E0];
@@ -314,11 +314,11 @@
         v115 = 0u;
       }
 
-      v25 = [v11 transform];
-      v26 = v25;
-      if (v25)
+      transform4 = [transforms2 transform];
+      v26 = transform4;
+      if (transform4)
       {
-        [v25 SIMDDouble4x4];
+        [transform4 SIMDDouble4x4];
         v101 = *&STACK[0x6C0];
         v102 = *&STACK[0x6D0];
         v103 = *&STACK[0x6E0];
@@ -342,7 +342,7 @@
       }
 
       v100 = v27;
-      v28 = v21;
+      v28 = transformLayer;
       v29 = v22;
       [v29 setKeyPath:@"transform"];
       [v29 setFillMode:v135];
@@ -375,20 +375,20 @@
     }
   }
 
-  v34 = [v9 transformAnimation];
-  if (v34)
+  transformAnimation = [transforms transformAnimation];
+  if (transformAnimation)
   {
-    v35 = v34;
-    v36 = [v11 transformAnimation];
+    v35 = transformAnimation;
+    transformAnimation2 = [transforms2 transformAnimation];
 
-    if (v36)
+    if (transformAnimation2)
     {
-      v37 = [v9 transformAnimation];
-      v38 = [(JFXOverlayEffectAnimationView *)self fromEffectFrame];
-      v39 = v38;
-      if (v38)
+      transformAnimation3 = [transforms transformAnimation];
+      fromEffectFrame2 = [(JFXOverlayEffectAnimationView *)self fromEffectFrame];
+      v39 = fromEffectFrame2;
+      if (fromEffectFrame2)
       {
-        [v38 time];
+        [fromEffectFrame2 time];
       }
 
       else
@@ -400,11 +400,11 @@
 
       *v139 = 0u;
       *&v139[16] = 0;
-      if (v37)
+      if (transformAnimation3)
       {
         *&STACK[0x6C0] = *&STACK[0x6A0];
         STACK[0x6D0] = STACK[0x6B0];
-        [v37 transformInfoAtTime:&STACK[0x6C0]];
+        [transformAnimation3 transformInfoAtTime:&STACK[0x6C0]];
       }
 
       *&STACK[0x700] = 0u;
@@ -438,12 +438,12 @@
       v147 = *&STACK[0x600];
       v148 = *&STACK[0x610];
 
-      v45 = [v11 transformAnimation];
-      v46 = [(JFXOverlayEffectAnimationView *)self fromEffectFrame];
-      v47 = v46;
-      if (v46)
+      transformAnimation4 = [transforms2 transformAnimation];
+      fromEffectFrame3 = [(JFXOverlayEffectAnimationView *)self fromEffectFrame];
+      v47 = fromEffectFrame3;
+      if (fromEffectFrame3)
       {
-        [v46 time];
+        [fromEffectFrame3 time];
       }
 
       else
@@ -456,11 +456,11 @@
       *&STACK[0x670] = 0u;
       *&STACK[0x680] = 0u;
       *&STACK[0x660] = 0u;
-      if (v45)
+      if (transformAnimation4)
       {
         *&STACK[0x6C0] = v136;
         STACK[0x6D0] = v137;
-        [v45 transformInfoAtTime:&STACK[0x6C0]];
+        [transformAnimation4 transformInfoAtTime:&STACK[0x6C0]];
         v48 = STACK[0x688];
       }
 
@@ -501,9 +501,9 @@
       v141 = *&STACK[0x600];
       v142 = *&STACK[0x610];
 
-      v51 = [(JFXOverlayEffectAnimationView *)self additionalTransformLayer];
-      v52 = [v6 copy];
-      v53 = v51;
+      additionalTransformLayer = [(JFXOverlayEffectAnimationView *)self additionalTransformLayer];
+      v52 = [animateCopy copy];
+      v53 = additionalTransformLayer;
       v54 = v52;
       [v54 setKeyPath:@"transform"];
       [v54 setFillMode:v135];
@@ -536,33 +536,33 @@
     }
   }
 
-  v59 = [v9 faceTrackingTransform];
-  if (v59)
+  faceTrackingTransform = [transforms faceTrackingTransform];
+  if (faceTrackingTransform)
   {
-    v60 = v59;
-    v61 = [v11 faceTrackingTransform];
+    v60 = faceTrackingTransform;
+    faceTrackingTransform2 = [transforms2 faceTrackingTransform];
 
-    if (v61)
+    if (faceTrackingTransform2)
     {
-      v62 = [(JFXOverlayEffectAnimationView *)self trackingTransformLayer];
-      v63 = [v6 copy];
-      v64 = [v9 faceTrackingTransform];
+      trackingTransformLayer = [(JFXOverlayEffectAnimationView *)self trackingTransformLayer];
+      v63 = [animateCopy copy];
+      faceTrackingTransform3 = [transforms faceTrackingTransform];
       [(JFXOverlayEffectAnimationView *)self fromEffectFrame];
-      v65 = v134 = v9;
-      [v64 transformForTrackingType:{objc_msgSend(v65, "trackingType")}];
+      v65 = v134 = transforms;
+      [faceTrackingTransform3 transformForTrackingType:{objc_msgSend(v65, "trackingType")}];
       v107 = v66;
       v110 = v67;
       v113 = v68;
       v116 = v69;
-      [v11 faceTrackingTransform];
-      v70 = v132 = v6;
-      v71 = [(JFXOverlayEffectAnimationView *)self toEffectFrame];
-      [v70 transformForTrackingType:{objc_msgSend(v71, "trackingType")}];
+      [transforms2 faceTrackingTransform];
+      v70 = v132 = animateCopy;
+      toEffectFrame2 = [(JFXOverlayEffectAnimationView *)self toEffectFrame];
+      [v70 transformForTrackingType:{objc_msgSend(toEffectFrame2, "trackingType")}];
       v119 = v72;
       v122 = v73;
       v125 = v74;
       v128 = v75;
-      v76 = v62;
+      v76 = trackingTransformLayer;
       v77 = v63;
       [v77 setKeyPath:@"transform"];
       [v77 setFillMode:v135];
@@ -592,24 +592,24 @@
       [v77 setToValue:v81];
 
       [v76 addAnimation:v77 forKey:@"transformAnimation"];
-      v6 = v132;
+      animateCopy = v132;
 
-      v9 = v134;
-      v82 = [(JFXOverlayEffectAnimationView *)self cameraTransformLayer];
+      transforms = v134;
+      cameraTransformLayer = [(JFXOverlayEffectAnimationView *)self cameraTransformLayer];
       v83 = [v132 copy];
-      v84 = [v134 faceTrackingTransform];
-      [v84 cameraTransform];
+      faceTrackingTransform4 = [v134 faceTrackingTransform];
+      [faceTrackingTransform4 cameraTransform];
       v108 = v85;
       v111 = v86;
       v114 = v87;
       v117 = v88;
-      v89 = [v11 faceTrackingTransform];
-      [v89 cameraTransform];
+      faceTrackingTransform5 = [transforms2 faceTrackingTransform];
+      [faceTrackingTransform5 cameraTransform];
       v120 = v90;
       v123 = v91;
       v126 = v92;
       v129 = v93;
-      v94 = v82;
+      v94 = cameraTransformLayer;
       v95 = v83;
       [v95 setKeyPath:@"transform"];
       [v95 setFillMode:v135];
@@ -645,55 +645,55 @@
 
 - (JFXOverlayEffectTransforms)currentEffectTransforms
 {
-  v3 = [(JFXOverlayEffectAnimationView *)self fromEffectFrame];
-  v4 = [v3 transforms];
+  fromEffectFrame = [(JFXOverlayEffectAnimationView *)self fromEffectFrame];
+  transforms = [fromEffectFrame transforms];
 
-  v5 = [(JFXOverlayEffectAnimationView *)self toEffectFrame];
-  v6 = [v5 transforms];
+  toEffectFrame = [(JFXOverlayEffectAnimationView *)self toEffectFrame];
+  transforms2 = [toEffectFrame transforms];
 
-  v7 = [(JFXOverlayEffectAnimationView *)self animationDelegate];
-  v8 = [v7 animationDidBegin];
+  animationDelegate = [(JFXOverlayEffectAnimationView *)self animationDelegate];
+  animationDidBegin = [animationDelegate animationDidBegin];
 
-  if ((v8 & 1) == 0)
+  if ((animationDidBegin & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  v9 = [(JFXOverlayEffectAnimationView *)self animationDelegate];
-  v10 = [v9 animationDidEnd];
+  animationDelegate2 = [(JFXOverlayEffectAnimationView *)self animationDelegate];
+  animationDidEnd = [animationDelegate2 animationDidEnd];
 
-  if (v10)
+  if (animationDidEnd)
   {
-    v11 = v6;
+    v11 = transforms2;
 LABEL_10:
     v28 = v11;
     goto LABEL_11;
   }
 
-  v12 = [(JFXOverlayEffectAnimationView *)self layer];
-  v13 = [v12 presentationLayer];
+  layer = [(JFXOverlayEffectAnimationView *)self layer];
+  presentationLayer = [layer presentationLayer];
 
-  if (!v13)
+  if (!presentationLayer)
   {
 LABEL_9:
-    v11 = v4;
+    v11 = transforms;
     goto LABEL_10;
   }
 
-  v14 = [v4 transform];
-  if (v14)
+  transform = [transforms transform];
+  if (transform)
   {
-    v15 = [v6 transform];
+    transform2 = [transforms2 transform];
 
-    if (v15)
+    if (transform2)
     {
       v16 = MEMORY[0x277D41690];
-      v17 = [(JFXOverlayEffectAnimationView *)self transformLayer];
-      v18 = [v17 presentationLayer];
-      v19 = v18;
-      if (v18)
+      transformLayer = [(JFXOverlayEffectAnimationView *)self transformLayer];
+      presentationLayer2 = [transformLayer presentationLayer];
+      v19 = presentationLayer2;
+      if (presentationLayer2)
       {
-        [v18 transform];
+        [presentationLayer2 transform];
         v21 = v93;
         v20 = v94;
         v23 = v91;
@@ -724,28 +724,28 @@ LABEL_9:
       v100 = v22;
       v101 = v21;
       v102 = v20;
-      v14 = [v16 matrixWithSIMDDouble4x4:&v95];
+      transform = [v16 matrixWithSIMDDouble4x4:&v95];
     }
 
     else
     {
-      v14 = 0;
+      transform = 0;
     }
   }
 
-  v30 = [v4 transformAnimation];
-  if (v30)
+  transformAnimation = [transforms transformAnimation];
+  if (transformAnimation)
   {
-    v31 = [v6 transformAnimation];
+    transformAnimation2 = [transforms2 transformAnimation];
 
-    if (v31)
+    if (transformAnimation2)
     {
-      v32 = [(JFXOverlayEffectAnimationView *)self additionalTransformLayer];
-      v33 = [v32 presentationLayer];
-      v34 = v33;
-      if (v33)
+      additionalTransformLayer = [(JFXOverlayEffectAnimationView *)self additionalTransformLayer];
+      presentationLayer3 = [additionalTransformLayer presentationLayer];
+      v34 = presentationLayer3;
+      if (presentationLayer3)
       {
-        [v33 transform];
+        [presentationLayer3 transform];
       }
 
       v35 = *(MEMORY[0x277D41B90] + 80);
@@ -773,38 +773,38 @@ LABEL_9:
       v96 = *v88;
       v97 = *&v88[16];
       v98.f64[0] = *&v88[32];
-      v30 = [v39 initWithAnimationInfo:&v95];
-      v40 = [v6 transformAnimation];
-      [v40 aspectRatio];
-      [v30 setAspectRatio:?];
+      transformAnimation = [v39 initWithAnimationInfo:&v95];
+      transformAnimation3 = [transforms2 transformAnimation];
+      [transformAnimation3 aspectRatio];
+      [transformAnimation setAspectRatio:?];
     }
 
     else
     {
-      v30 = 0;
+      transformAnimation = 0;
     }
   }
 
-  v41 = [v4 faceTrackingTransform];
-  if (v41)
+  faceTrackingTransform = [transforms faceTrackingTransform];
+  if (faceTrackingTransform)
   {
-    v42 = [v6 faceTrackingTransform];
+    faceTrackingTransform2 = [transforms2 faceTrackingTransform];
 
-    if (v42)
+    if (faceTrackingTransform2)
     {
-      v43 = [v4 faceTrackingTransform];
-      [v43 cameraProjection];
+      faceTrackingTransform3 = [transforms faceTrackingTransform];
+      [faceTrackingTransform3 cameraProjection];
       v79 = v45;
       v80 = v44;
       v77 = v47;
       v78 = v46;
 
-      v48 = [(JFXOverlayEffectAnimationView *)self cameraTransformLayer];
-      v49 = [v48 presentationLayer];
-      v50 = v49;
-      if (v49)
+      cameraTransformLayer = [(JFXOverlayEffectAnimationView *)self cameraTransformLayer];
+      presentationLayer4 = [cameraTransformLayer presentationLayer];
+      v50 = presentationLayer4;
+      if (presentationLayer4)
       {
-        [v49 transform];
+        [presentationLayer4 transform];
         *&v75 = vcvt_hight_f32_f64(vcvt_f32_f64(v99), v100).u64[0];
         *&v76 = vcvt_hight_f32_f64(vcvt_f32_f64(v101), v102).u64[0];
         *&v73 = vcvt_hight_f32_f64(vcvt_f32_f64(v95), v96).u64[0];
@@ -819,12 +819,12 @@ LABEL_9:
         v76 = 0.0;
       }
 
-      v51 = [(JFXOverlayEffectAnimationView *)self trackingTransformLayer];
-      v52 = [v51 presentationLayer];
-      v53 = v52;
-      if (v52)
+      trackingTransformLayer = [(JFXOverlayEffectAnimationView *)self trackingTransformLayer];
+      presentationLayer5 = [trackingTransformLayer presentationLayer];
+      v53 = presentationLayer5;
+      if (presentationLayer5)
       {
-        [v52 transform];
+        [presentationLayer5 transform];
         v82 = vcvt_hight_f32_f64(vcvt_f32_f64(v99), v100);
         v83 = vcvt_hight_f32_f64(vcvt_f32_f64(v101), v102);
         v81 = vcvt_hight_f32_f64(vcvt_f32_f64(v97), v98);
@@ -839,10 +839,10 @@ LABEL_9:
         v84 = 0u;
       }
 
-      v54 = [(JFXOverlayEffectAnimationView *)self toEffectFrame];
-      v55 = [v54 trackingType];
+      toEffectFrame2 = [(JFXOverlayEffectAnimationView *)self toEffectFrame];
+      trackingType = [toEffectFrame2 trackingType];
 
-      if (v55 == 1)
+      if (trackingType == 1)
       {
         v58 = 2;
       }
@@ -853,10 +853,10 @@ LABEL_9:
       }
 
       v56.i64[0] = 1;
-      v57.i64[0] = v55;
+      v57.i64[0] = trackingType;
       v68 = vdupq_lane_s64(vceqq_s64(v57, v56).i64[0], 0);
-      v59 = [v6 faceTrackingTransform];
-      [v59 transformForTrackingType:v58];
+      faceTrackingTransform4 = [transforms2 faceTrackingTransform];
+      [faceTrackingTransform4 transformForTrackingType:v58];
       v64 = v61;
       v65 = v60;
       v72 = vbslq_s8(v68, v83, v61);
@@ -866,7 +866,7 @@ LABEL_9:
       v70 = vbslq_s8(v68, v81, v63);
       v69 = vbslq_s8(v68, v84, v62);
 
-      if (v55 != 2)
+      if (trackingType != 2)
       {
         v82 = v65;
         v83 = v64;
@@ -874,16 +874,16 @@ LABEL_9:
         v84 = v67;
       }
 
-      v41 = [[JFXFaceTrackedEffectTransform alloc] initWithCameraProjection:v80 cameraTransform:v79 onFaceTransform:v78 billboardTransform:v77, v73, v74, v75, v76, *&v69, *&v70, *&v71, *&v72, *&v84, *&v81, *&v82, *&v83];
+      faceTrackingTransform = [[JFXFaceTrackedEffectTransform alloc] initWithCameraProjection:v80 cameraTransform:v79 onFaceTransform:v78 billboardTransform:v77, v73, v74, v75, v76, *&v69, *&v70, *&v71, *&v72, *&v84, *&v81, *&v82, *&v83];
     }
 
     else
     {
-      v41 = 0;
+      faceTrackingTransform = 0;
     }
   }
 
-  v28 = [JFXOverlayEffectTransforms transformsWithTransform:v14 transformAnimation:v30 faceTrackingTransform:v41];
+  v28 = [JFXOverlayEffectTransforms transformsWithTransform:transform transformAnimation:transformAnimation faceTrackingTransform:faceTrackingTransform];
 
 LABEL_11:
 
@@ -892,27 +892,27 @@ LABEL_11:
 
 - (double)fractionComplete
 {
-  v3 = [(JFXOverlayEffectAnimationView *)self animationDelegate];
-  v4 = [v3 animationDidBegin];
+  animationDelegate = [(JFXOverlayEffectAnimationView *)self animationDelegate];
+  animationDidBegin = [animationDelegate animationDidBegin];
 
   v5 = 0.0;
-  if (v4)
+  if (animationDidBegin)
   {
-    v6 = [(JFXOverlayEffectAnimationView *)self animationDelegate];
-    v7 = [v6 animationDidEnd];
+    animationDelegate2 = [(JFXOverlayEffectAnimationView *)self animationDelegate];
+    animationDidEnd = [animationDelegate2 animationDidEnd];
 
     v5 = 1.0;
-    if ((v7 & 1) == 0)
+    if ((animationDidEnd & 1) == 0)
     {
-      v8 = [(JFXOverlayEffectAnimationView *)self layer];
-      v9 = [v8 presentationLayer];
+      layer = [(JFXOverlayEffectAnimationView *)self layer];
+      presentationLayer = [layer presentationLayer];
 
       v5 = 0.0;
-      if (v9)
+      if (presentationLayer)
       {
-        v10 = [(JFXOverlayEffectAnimationView *)self layer];
-        v11 = [v10 presentationLayer];
-        [v11 opacity];
+        layer2 = [(JFXOverlayEffectAnimationView *)self layer];
+        presentationLayer2 = [layer2 presentationLayer];
+        [presentationLayer2 opacity];
         v5 = v12;
       }
     }

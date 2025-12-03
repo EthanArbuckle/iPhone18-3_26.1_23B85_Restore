@@ -1,7 +1,7 @@
 @interface DMCEnrollmentFlowControllerBase
 - (DMCEnrollmentFlowControllerBase)init;
-- (void)_appendSteps:(id)a3;
-- (void)_jumpToStep:(unint64_t)a3;
+- (void)_appendSteps:(id)steps;
+- (void)_jumpToStep:(unint64_t)step;
 - (void)_pollNextStep;
 - (void)_resetToInitialSteps;
 @end
@@ -34,18 +34,18 @@
   return v2;
 }
 
-- (void)_appendSteps:(id)a3
+- (void)_appendSteps:(id)steps
 {
-  v4 = a3;
-  v5 = [(DMCEnrollmentFlowControllerBase *)self workerQueue];
+  stepsCopy = steps;
+  workerQueue = [(DMCEnrollmentFlowControllerBase *)self workerQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__DMCEnrollmentFlowControllerBase__appendSteps___block_invoke;
   v7[3] = &unk_278EE3528;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 queueBlock:v7];
+  v8 = stepsCopy;
+  v6 = stepsCopy;
+  [workerQueue queueBlock:v7];
 }
 
 void __48__DMCEnrollmentFlowControllerBase__appendSteps___block_invoke(uint64_t a1)
@@ -56,13 +56,13 @@ void __48__DMCEnrollmentFlowControllerBase__appendSteps___block_invoke(uint64_t 
 
 - (void)_pollNextStep
 {
-  v3 = [(DMCEnrollmentFlowControllerBase *)self workerQueue];
+  workerQueue = [(DMCEnrollmentFlowControllerBase *)self workerQueue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __48__DMCEnrollmentFlowControllerBase__pollNextStep__block_invoke;
   v4[3] = &unk_278EE3120;
   v4[4] = self;
-  [v3 queueBlock:v4];
+  [workerQueue queueBlock:v4];
 }
 
 uint64_t __48__DMCEnrollmentFlowControllerBase__pollNextStep__block_invoke(uint64_t a1)
@@ -93,13 +93,13 @@ uint64_t __48__DMCEnrollmentFlowControllerBase__pollNextStep__block_invoke(uint6
 
 - (void)_resetToInitialSteps
 {
-  v3 = [(DMCEnrollmentFlowControllerBase *)self workerQueue];
+  workerQueue = [(DMCEnrollmentFlowControllerBase *)self workerQueue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __55__DMCEnrollmentFlowControllerBase__resetToInitialSteps__block_invoke;
   v4[3] = &unk_278EE3120;
   v4[4] = self;
-  [v3 queueBlock:v4];
+  [workerQueue queueBlock:v4];
 }
 
 uint64_t __55__DMCEnrollmentFlowControllerBase__resetToInitialSteps__block_invoke(uint64_t a1)
@@ -112,16 +112,16 @@ uint64_t __55__DMCEnrollmentFlowControllerBase__resetToInitialSteps__block_invok
   return [v3 setNextStepIndex:0];
 }
 
-- (void)_jumpToStep:(unint64_t)a3
+- (void)_jumpToStep:(unint64_t)step
 {
-  v5 = [(DMCEnrollmentFlowControllerBase *)self workerQueue];
+  workerQueue = [(DMCEnrollmentFlowControllerBase *)self workerQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __47__DMCEnrollmentFlowControllerBase__jumpToStep___block_invoke;
   v6[3] = &unk_278EE3EC0;
   v6[4] = self;
-  v6[5] = a3;
-  [v5 queueBlock:v6];
+  v6[5] = step;
+  [workerQueue queueBlock:v6];
 }
 
 uint64_t __47__DMCEnrollmentFlowControllerBase__jumpToStep___block_invoke(uint64_t a1)

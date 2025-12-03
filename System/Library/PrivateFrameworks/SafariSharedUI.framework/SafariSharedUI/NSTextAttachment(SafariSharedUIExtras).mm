@@ -12,13 +12,13 @@
     goto LABEL_14;
   }
 
-  v5 = [a1 contents];
-  if (v5 || ([a1 fileType], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  contents = [self contents];
+  if (contents || ([self fileType], (contents = objc_claimAutoreleasedReturnValue()) != 0))
   {
 
 LABEL_5:
-    v6 = [v4 contents];
-    v7 = [a1 contents];
+    contents2 = [v4 contents];
+    contents3 = [self contents];
     v8 = WBSIsEqual();
 
     if (!v8)
@@ -26,8 +26,8 @@ LABEL_5:
       goto LABEL_14;
     }
 
-    v9 = [v4 fileType];
-    v10 = [a1 fileType];
+    fileType = [v4 fileType];
+    fileType2 = [self fileType];
     v11 = WBSIsEqual();
 
     if (!v11)
@@ -35,8 +35,8 @@ LABEL_5:
       goto LABEL_14;
     }
 
-    v12 = [v4 image];
-    v13 = [a1 image];
+    image = [v4 image];
+    image2 = [self image];
     v14 = WBSIsEqual();
 
     if (!v14)
@@ -47,15 +47,15 @@ LABEL_5:
     goto LABEL_8;
   }
 
-  v33 = [a1 image];
+  image3 = [self image];
 
-  if (v33)
+  if (image3)
   {
     goto LABEL_5;
   }
 
-  v34 = [v4 fileWrapper];
-  v35 = [a1 fileWrapper];
+  fileWrapper = [v4 fileWrapper];
+  fileWrapper2 = [self fileWrapper];
   v36 = WBSIsEqual();
 
   if ((v36 & 1) == 0)
@@ -71,7 +71,7 @@ LABEL_8:
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  [a1 bounds];
+  [self bounds];
   v39.origin.x = v23;
   v39.origin.y = v24;
   v39.size.width = v25;
@@ -87,20 +87,20 @@ LABEL_8:
 
   [v4 lineLayoutPadding];
   v28 = v27;
-  [a1 lineLayoutPadding];
+  [self lineLayoutPadding];
   if (v28 != v29)
   {
     goto LABEL_14;
   }
 
-  v30 = [v4 allowsTextAttachmentView];
-  if (v30 != [a1 allowsTextAttachmentView])
+  allowsTextAttachmentView = [v4 allowsTextAttachmentView];
+  if (allowsTextAttachmentView != [self allowsTextAttachmentView])
   {
     goto LABEL_14;
   }
 
-  v31 = [v4 usesTextAttachmentView];
-  v32 = v31 ^ [a1 usesTextAttachmentView] ^ 1;
+  usesTextAttachmentView = [v4 usesTextAttachmentView];
+  v32 = usesTextAttachmentView ^ [self usesTextAttachmentView] ^ 1;
 LABEL_15:
 
   return v32;

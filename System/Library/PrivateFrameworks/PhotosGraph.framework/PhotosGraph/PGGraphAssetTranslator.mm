@@ -1,5 +1,5 @@
 @interface PGGraphAssetTranslator
-- (id)graphChangesForChangedPropertyNamesByLocalIdentifier:(id)a3 change:(id)a4 progressBlock:(id)a5;
+- (id)graphChangesForChangedPropertyNamesByLocalIdentifier:(id)identifier change:(id)change progressBlock:(id)block;
 - (id)highlightUpdateTypeByAssetProperty;
 - (id)momentUpdateTypeByAssetProperty;
 @end
@@ -36,13 +36,13 @@
   return v2;
 }
 
-- (id)graphChangesForChangedPropertyNamesByLocalIdentifier:(id)a3 change:(id)a4 progressBlock:(id)a5
+- (id)graphChangesForChangedPropertyNamesByLocalIdentifier:(id)identifier change:(id)change progressBlock:(id)block
 {
   v72 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v42 = a4;
-  v9 = a5;
-  v10 = _Block_copy(v9);
+  identifierCopy = identifier;
+  changeCopy = change;
+  blockCopy = block;
+  v10 = _Block_copy(blockCopy);
   v64 = 0;
   v65 = &v64;
   v66 = 0x2020000000;
@@ -53,30 +53,30 @@
   v63 = 0;
   if (!v10 || (v11 = CFAbsoluteTimeGetCurrent(), v11 - v61[3] < 0.01) || (v61[3] = v11, v59 = 0, (*(v10 + 2))(v10, &v59, 0.0), v12 = *(v65 + 24) | v59, *(v65 + 24) = v12, (v12 & 1) == 0))
   {
-    v43 = [MEMORY[0x277CBEB18] array];
-    v14 = [(PGGraphAssetTranslator *)self momentUpdateTypeByAssetProperty];
-    v15 = [MEMORY[0x277CBEB38] dictionary];
-    v16 = [(PGGraphAssetTranslator *)self highlightUpdateTypeByAssetProperty];
-    v17 = [MEMORY[0x277CBEB38] dictionary];
+    array = [MEMORY[0x277CBEB18] array];
+    momentUpdateTypeByAssetProperty = [(PGGraphAssetTranslator *)self momentUpdateTypeByAssetProperty];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    highlightUpdateTypeByAssetProperty = [(PGGraphAssetTranslator *)self highlightUpdateTypeByAssetProperty];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     v50[0] = MEMORY[0x277D85DD0];
     v50[1] = 3221225472;
     v50[2] = __100__PGGraphAssetTranslator_graphChangesForChangedPropertyNamesByLocalIdentifier_change_progressBlock___block_invoke;
     v50[3] = &unk_278887B50;
     v50[4] = self;
-    v18 = v14;
+    v18 = momentUpdateTypeByAssetProperty;
     v51 = v18;
-    v19 = v15;
+    v19 = dictionary;
     v52 = v19;
-    v20 = v16;
+    v20 = highlightUpdateTypeByAssetProperty;
     v53 = v20;
-    v21 = v17;
+    v21 = dictionary2;
     v54 = v21;
     v22 = v10;
     v55 = v22;
     v56 = &v60;
     v57 = &v64;
     v58 = 0x3F847AE147AE147BLL;
-    [v8 enumerateKeysAndObjectsUsingBlock:v50];
+    [identifierCopy enumerateKeysAndObjectsUsingBlock:v50];
     if (*(v65 + 24) == 1)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -92,13 +92,13 @@
       goto LABEL_41;
     }
 
-    v23 = [(PGGraphEntityTranslator *)self photoLibrary];
-    v41 = [v23 librarySpecificFetchOptions];
+    photoLibrary = [(PGGraphEntityTranslator *)self photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
     if ([v19 count])
     {
-      v24 = [v19 allKeys];
-      v25 = [MEMORY[0x277CD98F8] fetchMomentUUIDByAssetUUIDForAssetUUIDs:v24 options:v41];
+      allKeys = [v19 allKeys];
+      v25 = [MEMORY[0x277CD98F8] fetchMomentUUIDByAssetUUIDForAssetUUIDs:allKeys options:librarySpecificFetchOptions];
       if (v10)
       {
         Current = CFAbsoluteTimeGetCurrent();
@@ -131,7 +131,7 @@
       v47[3] = &unk_278887B78;
       v28 = v25;
       v48 = v28;
-      v49 = v43;
+      v49 = array;
       [v19 enumerateKeysAndObjectsUsingBlock:v47];
     }
 
@@ -153,8 +153,8 @@ LABEL_37:
     {
       if ([v21 count])
       {
-        v32 = [v21 allKeys];
-        v33 = [MEMORY[0x277CD9958] fetchPhotosHighlightUUIDByAssetUUIDForAssetUUIDs:v32 options:v41];
+        allKeys2 = [v21 allKeys];
+        v33 = [MEMORY[0x277CD9958] fetchPhotosHighlightUUIDByAssetUUIDForAssetUUIDs:allKeys2 options:librarySpecificFetchOptions];
         if (v10)
         {
           v34 = CFAbsoluteTimeGetCurrent();
@@ -187,13 +187,13 @@ LABEL_37:
         v44[3] = &unk_278887B78;
         v36 = v33;
         v45 = v36;
-        v46 = v43;
+        v46 = array;
         [v21 enumerateKeysAndObjectsUsingBlock:v44];
       }
 
       if (!v10 || (v37 = CFAbsoluteTimeGetCurrent(), v37 - v61[3] < 0.01) || (v61[3] = v37, v59 = 0, (*(v22 + 2))(v22, &v59, 1.0), v38 = *(v65 + 24) | v59, *(v65 + 24) = v38, (v38 & 1) == 0))
       {
-        v13 = v43;
+        v13 = array;
         goto LABEL_40;
       }
 

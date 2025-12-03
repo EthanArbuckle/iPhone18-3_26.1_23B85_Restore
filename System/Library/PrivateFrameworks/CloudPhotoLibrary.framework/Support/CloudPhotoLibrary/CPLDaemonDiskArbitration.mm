@@ -1,27 +1,27 @@
 @interface CPLDaemonDiskArbitration
-- (CPLDaemonDiskArbitration)initWithVolumeURL:(id)a3 queue:(id)a4;
+- (CPLDaemonDiskArbitration)initWithVolumeURL:(id)l queue:(id)queue;
 - (id)description;
 - (id)redactedDescription;
-- (void)addVolumeUnmountObserver:(id)a3;
-- (void)removeVolumeUnmountObserver:(id)a3;
+- (void)addVolumeUnmountObserver:(id)observer;
+- (void)removeVolumeUnmountObserver:(id)observer;
 @end
 
 @implementation CPLDaemonDiskArbitration
 
-- (void)addVolumeUnmountObserver:(id)a3
+- (void)addVolumeUnmountObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_observers addObject:v4];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeVolumeUnmountObserver:(id)a3
+- (void)removeVolumeUnmountObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_observers removeObject:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -30,8 +30,8 @@
 {
   v3 = [NSString alloc];
   v4 = objc_opt_class();
-  v5 = [(NSURL *)self->_volumeURL path];
-  v6 = [v3 initWithFormat:@"<%@ %@>", v4, v5];
+  path = [(NSURL *)self->_volumeURL path];
+  v6 = [v3 initWithFormat:@"<%@ %@>", v4, path];
 
   return v6;
 }
@@ -55,10 +55,10 @@
   return v6;
 }
 
-- (CPLDaemonDiskArbitration)initWithVolumeURL:(id)a3 queue:(id)a4
+- (CPLDaemonDiskArbitration)initWithVolumeURL:(id)l queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  queueCopy = queue;
   v17.receiver = self;
   v17.super_class = CPLDaemonDiskArbitration;
   v8 = [(CPLDaemonDiskArbitration *)&v17 init];
@@ -70,14 +70,14 @@
     observers = v9->_observers;
     v9->_observers = v10;
 
-    v12 = [v6 copy];
+    v12 = [lCopy copy];
     volumeURL = v9->_volumeURL;
     v9->_volumeURL = v12;
 
-    v14 = [(NSURL *)v9->_volumeURL path];
-    v9->_isRootVolume = [v14 isEqualToString:@"/"];
+    path = [(NSURL *)v9->_volumeURL path];
+    v9->_isRootVolume = [path isEqualToString:@"/"];
 
-    objc_storeStrong(&v9->_queue, a4);
+    objc_storeStrong(&v9->_queue, queue);
     if ((_CPLSilentLogging & 1) == 0)
     {
       if (qword_1002C4FC0 != -1)

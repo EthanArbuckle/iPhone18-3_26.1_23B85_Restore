@@ -1,22 +1,22 @@
 @interface SMCAirplaneModeObserver
-- (SMCAirplaneModeObserver)initWithQueue:(id)a3;
+- (SMCAirplaneModeObserver)initWithQueue:(id)queue;
 - (SMCAirplaneModeObserverDelegate)delegate;
 - (void)airplaneModeChanged;
 @end
 
 @implementation SMCAirplaneModeObserver
 
-- (SMCAirplaneModeObserver)initWithQueue:(id)a3
+- (SMCAirplaneModeObserver)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = SMCAirplaneModeObserver;
   v6 = [(SMCAirplaneModeObserver *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
-    v8 = [objc_alloc(MEMORY[0x1E698B6B0]) initWithQueue:v5];
+    objc_storeStrong(&v6->_queue, queue);
+    v8 = [objc_alloc(MEMORY[0x1E698B6B0]) initWithQueue:queueCopy];
     radiosPreferences = v7->_radiosPreferences;
     v7->_radiosPreferences = v8;
 

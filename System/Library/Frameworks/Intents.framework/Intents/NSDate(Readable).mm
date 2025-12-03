@@ -9,9 +9,9 @@
   v8 = a3;
   v9 = a4;
   v10 = a5;
-  v11 = [v8 locale];
+  locale = [v8 locale];
   v12 = objc_alloc_init(MEMORY[0x1E696AB78]);
-  [v12 setLocale:v11];
+  [v12 setLocale:locale];
   if (v10)
   {
     [v12 setTimeZone:v10];
@@ -40,40 +40,40 @@
   }
 
   [v12 setDoesRelativeDateFormatting:1];
-  v16 = [v13 type];
-  if (v16 == 2)
+  type = [v13 type];
+  if (type == 2)
   {
     v18 = v12;
-    v17 = 0;
+    dateStyle = 0;
 LABEL_15:
-    [v18 setDateStyle:v17];
-    v20 = [v13 timeStyle];
+    [v18 setDateStyle:dateStyle];
+    timeStyle = [v13 timeStyle];
     v19 = v12;
     goto LABEL_16;
   }
 
-  if (v16 != 1)
+  if (type != 1)
   {
     v14 = v13;
-    if (v16)
+    if (type)
     {
       goto LABEL_18;
     }
 
-    v17 = [v13 dateStyle];
+    dateStyle = [v13 dateStyle];
     v18 = v12;
     goto LABEL_15;
   }
 
   [v12 setDateStyle:{objc_msgSend(v13, "dateStyle")}];
   v19 = v12;
-  v20 = 0;
+  timeStyle = 0;
 LABEL_16:
-  [v19 setTimeStyle:v20];
+  [v19 setTimeStyle:timeStyle];
 LABEL_17:
   v14 = v13;
 LABEL_18:
-  v21 = [v12 stringFromDate:a1];
+  v21 = [v12 stringFromDate:self];
 
   return v21;
 }

@@ -1,5 +1,5 @@
 @interface HKCoreTelephonyUtilities
-- (BOOL)isEmergencyServicePhoneNumber:(id)a3;
+- (BOOL)isEmergencyServicePhoneNumber:(id)number;
 - (HKCoreTelephonyUtilities)init;
 - (__CTServerConnection)ctServerConnection;
 - (void)ctServerConnection;
@@ -36,11 +36,11 @@
   [(HKCoreTelephonyUtilities *)&v4 dealloc];
 }
 
-- (BOOL)isEmergencyServicePhoneNumber:(id)a3
+- (BOOL)isEmergencyServicePhoneNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   v12 = 0;
-  v5 = [(HKCoreTelephonyUtilities *)self ctServerConnection];
+  ctServerConnection = [(HKCoreTelephonyUtilities *)self ctServerConnection];
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -65,7 +65,7 @@
     [HKCoreTelephonyUtilities isEmergencyServicePhoneNumber:];
   }
 
-  v8 = v6(v5, v4, &v12);
+  v8 = v6(ctServerConnection, numberCopy, &v12);
   if (v8)
   {
     _HKInitializeLogging();
@@ -178,9 +178,9 @@ void __46__HKCoreTelephonyUtilities_ctServerConnection__block_invoke(uint64_t a1
 
 - (void)ctServerConnection
 {
-  v0 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v1 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"void HKCTServerConnectionAddIdentifierException(CFStringRef)"];
-  [v0 handleFailureInFunction:v1 file:@"HKCoreTelephonyUtilities.m" lineNumber:19 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"HKCoreTelephonyUtilities.m" lineNumber:19 description:{@"%s", dlerror()}];
 
   __break(1u);
 }

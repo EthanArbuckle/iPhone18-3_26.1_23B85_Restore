@@ -1,9 +1,9 @@
 @interface WRM_TestController
 - (WRM_TestController)init;
-- (id)getControllerForProcessId:(int64_t)a3;
+- (id)getControllerForProcessId:(int64_t)id;
 - (void)dealloc;
-- (void)handleMessage:(id)a3;
-- (void)handleProcessRegistration:(id)a3;
+- (void)handleMessage:(id)message;
+- (void)handleProcessRegistration:(id)registration;
 @end
 
 @implementation WRM_TestController
@@ -25,7 +25,7 @@
   [(WCM_Controller *)&v2 dealloc];
 }
 
-- (id)getControllerForProcessId:(int64_t)a3
+- (id)getControllerForProcessId:(int64_t)id
 {
   v21 = 0u;
   v22 = 0u;
@@ -47,7 +47,7 @@ LABEL_3:
       }
 
       v10 = *(*(&v21 + 1) + 8 * v9);
-      if ([v10 getProcessId] == a3)
+      if ([v10 getProcessId] == id)
       {
         break;
       }
@@ -94,7 +94,7 @@ LABEL_13:
     }
 
     v10 = *(*(&v17 + 1) + 8 * v15);
-    if ([v10 getProcessId] == a3)
+    if ([v10 getProcessId] == id)
     {
       return v10;
     }
@@ -113,18 +113,18 @@ LABEL_13:
   }
 }
 
-- (void)handleProcessRegistration:(id)a3
+- (void)handleProcessRegistration:(id)registration
 {
-  uint64 = xpc_dictionary_get_uint64(a3, "kMessageArgs");
+  uint64 = xpc_dictionary_get_uint64(registration, "kMessageArgs");
   [WCM_Logging logLevel:2 message:@"Registering Process %d", uint64];
   v5 = [+[WCM_Server singleton](WCM_Server "singleton")];
   if (v5)
   {
-    v6 = [v5 getController];
-    if (v6)
+    getController = [v5 getController];
+    if (getController)
     {
-      v7 = v6;
-      [WCM_Logging logLevel:3 message:@"Adding Controller %@ to existingList", v6];
+      v7 = getController;
+      [WCM_Logging logLevel:3 message:@"Adding Controller %@ to existingList", getController];
 
       [(WRM_TestController *)self addConrollerToExisitngList:v7];
       return;
@@ -206,10 +206,10 @@ LABEL_18:
   }
 }
 
-- (void)handleMessage:(id)a3
+- (void)handleMessage:(id)message
 {
-  [WCM_Logging logLevel:2 message:@"WRM_TestController: Rx messages: %@", a3];
-  uint64 = xpc_dictionary_get_uint64(a3, "kMessageId");
+  [WCM_Logging logLevel:2 message:@"WRM_TestController: Rx messages: %@", message];
+  uint64 = xpc_dictionary_get_uint64(message, "kMessageId");
   [WCM_Logging logLevel:3 message:@"Received test messageId: %llu", uint64];
   if (uint64 - 400 >= 2)
   {
@@ -222,7 +222,7 @@ LABEL_18:
     else
     {
 
-      [(WRM_TestController *)self handleProcessRegistration:a3];
+      [(WRM_TestController *)self handleProcessRegistration:message];
     }
   }
 
@@ -230,7 +230,7 @@ LABEL_18:
   {
     v6 = qword_1002B7C18;
 
-    [v6 handleMessage:a3];
+    [v6 handleMessage:message];
   }
 }
 

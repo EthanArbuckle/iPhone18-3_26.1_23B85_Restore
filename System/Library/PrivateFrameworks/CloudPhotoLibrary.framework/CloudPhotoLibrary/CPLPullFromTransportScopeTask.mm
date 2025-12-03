@@ -1,41 +1,41 @@
 @interface CPLPullFromTransportScopeTask
-- (BOOL)_dequeueFromPendingRecordChecksIfNecessary:(id)a3 error:(id *)a4;
-- (BOOL)_fetchRewindSyncAnchorsInScopes:(id)a3 startSyncAnchor:(id)a4 error:(id *)a5;
-- (BOOL)_storeRewindSyncAnchors:(id)a3 inScopes:(id)a4 error:(id *)a5;
-- (BOOL)checkScopeIsValidInTransaction:(id)a3;
-- (CPLPullFromTransportScopeTask)initWithEngineLibrary:(id)a3 session:(id)a4 clientCacheIdentifier:(id)a5 scope:(id)a6 transportScope:(id)a7;
-- (id)_cloudCacheInStore:(id)a3;
-- (id)_transientPullRepositoryInStore:(id)a3;
+- (BOOL)_dequeueFromPendingRecordChecksIfNecessary:(id)necessary error:(id *)error;
+- (BOOL)_fetchRewindSyncAnchorsInScopes:(id)scopes startSyncAnchor:(id)anchor error:(id *)error;
+- (BOOL)_storeRewindSyncAnchors:(id)anchors inScopes:(id)scopes error:(id *)error;
+- (BOOL)checkScopeIsValidInTransaction:(id)transaction;
+- (CPLPullFromTransportScopeTask)initWithEngineLibrary:(id)library session:(id)session clientCacheIdentifier:(id)identifier scope:(id)scope transportScope:(id)transportScope;
+- (id)_cloudCacheInStore:(id)store;
+- (id)_transientPullRepositoryInStore:(id)store;
 - (id)scopesForTask;
 - (id)transportScope;
 - (unint64_t)_totalAssetCountForScope;
-- (void)_addPartnerScope:(id)a3 scopes:(id)a4;
+- (void)_addPartnerScope:(id)scope scopes:(id)scopes;
 - (void)_cancelAllTasks;
 - (void)_checkExtraRecords;
-- (void)_checkExtraRecordsWithScopedIdentifiers:(id)a3;
-- (void)_checkServerFeatureVersionWithCompletionHandler:(id)a3;
-- (void)_extractAndMingleAssetsIfPossibleFromBatch:(id)a3 inTransaction:(id)a4;
-- (void)_extractAndMinglePersonsIfPossibleFromBatch:(id)a3 inTransaction:(id)a4;
+- (void)_checkExtraRecordsWithScopedIdentifiers:(id)identifiers;
+- (void)_checkServerFeatureVersionWithCompletionHandler:(id)handler;
+- (void)_extractAndMingleAssetsIfPossibleFromBatch:(id)batch inTransaction:(id)transaction;
+- (void)_extractAndMinglePersonsIfPossibleFromBatch:(id)batch inTransaction:(id)transaction;
 - (void)_fetchInitialSyncAnchor;
-- (void)_handleNewBatchFromChanges:(id)a3 newSyncAnchor:(id)a4 inTransaction:(id)a5;
-- (void)_handleNewBatchFromChanges:(id)a3 updatedFlags:(id)a4 newSyncAnchor:(id)a5 partnerScopesNeedingToPullChanges:(id)a6;
-- (void)_handleNewBatchFromQuery:(id)a3 newCursor:(id)a4 inTransaction:(id)a5;
-- (void)_handleNewBatchFromQuery:(id)a3 queryClass:(Class)a4 newCursor:(id)a5;
+- (void)_handleNewBatchFromChanges:(id)changes newSyncAnchor:(id)anchor inTransaction:(id)transaction;
+- (void)_handleNewBatchFromChanges:(id)changes updatedFlags:(id)flags newSyncAnchor:(id)anchor partnerScopesNeedingToPullChanges:(id)pullChanges;
+- (void)_handleNewBatchFromQuery:(id)query newCursor:(id)cursor inTransaction:(id)transaction;
+- (void)_handleNewBatchFromQuery:(id)query queryClass:(Class)class newCursor:(id)cursor;
 - (void)_launch;
-- (void)_launchFetchChangesFromSyncAnchor:(id)a3;
+- (void)_launchFetchChangesFromSyncAnchor:(id)anchor;
 - (void)_launchNextQueryTask;
-- (void)_launchPullTasksAndDisableQueries:(BOOL)a3;
-- (void)_launchQueryForClass:(Class)a3 cursor:(id)a4;
-- (void)_notePartnerScopesNeedingToPullChanges:(id)a3 scopes:(id)a4 inTransaction:(id)a5;
+- (void)_launchPullTasksAndDisableQueries:(BOOL)queries;
+- (void)_launchQueryForClass:(Class)class cursor:(id)cursor;
+- (void)_notePartnerScopesNeedingToPullChanges:(id)changes scopes:(id)scopes inTransaction:(id)transaction;
 - (void)_notifySchedulerPullQueueIsFull;
 - (void)_notifySchedulerPullQueueIsFullNowIfNecessary;
 - (void)_reallyNotifySchedulerPullQueueIsFull;
 - (void)_relaunchFetchChangesFromOtherRewindSyncAnchors;
-- (void)_storeInitialSyncAnchorIfNecessaryInTransaction:(id)a3;
-- (void)_updateLastFeatureVersionAndRelaunchFetchChangesFromSyncAnchor:(id)a3;
+- (void)_storeInitialSyncAnchorIfNecessaryInTransaction:(id)transaction;
+- (void)_updateLastFeatureVersionAndRelaunchFetchChangesFromSyncAnchor:(id)anchor;
 - (void)cancel;
 - (void)launch;
-- (void)taskDidFinishWithError:(id)a3;
+- (void)taskDidFinishWithError:(id)error;
 @end
 
 @implementation CPLPullFromTransportScopeTask
@@ -48,10 +48,10 @@
   [(CPLPullFromTransportScopeTask *)self _cancelAllTasks];
 }
 
-- (void)taskDidFinishWithError:(id)a3
+- (void)taskDidFinishWithError:(id)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   [(CPLPullFromTransportScopeTask *)self hash];
   kdebug_trace();
   [(CPLPullFromTransportScopeTask *)self _notifySchedulerPullQueueIsFullNowIfNecessary];
@@ -60,23 +60,23 @@
   {
     v6 = endTaskError;
 
-    v4 = v6;
+    errorCopy = v6;
   }
 
-  else if (!v4)
+  else if (!errorCopy)
   {
     goto LABEL_6;
   }
 
-  if (![(NSError *)v4 isCPLErrorWithCode:33])
+  if (![(NSError *)errorCopy isCPLErrorWithCode:33])
   {
-    if ([(NSError *)v4 isCPLErrorWithCode:23])
+    if ([(NSError *)errorCopy isCPLErrorWithCode:23])
     {
-      v12 = [(CPLEngineSyncTask *)self engineLibrary];
-      v13 = [(CPLEngineScopedTask *)self scope];
-      v14 = [v13 scopeIdentifier];
-      v15 = [v12 mainScopeIdentifier];
-      v16 = [v14 isEqualToString:v15];
+      engineLibrary = [(CPLEngineSyncTask *)self engineLibrary];
+      scope = [(CPLEngineScopedTask *)self scope];
+      scopeIdentifier = [scope scopeIdentifier];
+      mainScopeIdentifier = [engineLibrary mainScopeIdentifier];
+      v16 = [scopeIdentifier isEqualToString:mainScopeIdentifier];
 
       if (v16)
       {
@@ -85,54 +85,54 @@
           v17 = __CPLTaskOSLogDomain_23138();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
-            v18 = [v12 mainScopeIdentifier];
-            v19 = [v12 libraryIdentifier];
+            mainScopeIdentifier2 = [engineLibrary mainScopeIdentifier];
+            libraryIdentifier = [engineLibrary libraryIdentifier];
             *buf = 138543618;
-            v28 = v18;
+            v28 = mainScopeIdentifier2;
             v29 = 2114;
-            v30 = v19;
+            v30 = libraryIdentifier;
             _os_log_impl(&dword_1DC05A000, v17, OS_LOG_TYPE_DEFAULT, "Main scope (%{public}@) for %{public}@ seems to have been wiped - notifying engine status immediately", buf, 0x16u);
           }
         }
 
-        v20 = [(CPLEngineSyncTask *)self engineLibrary];
-        [v20 setICloudLibraryHasBeenWiped:1];
+        engineLibrary2 = [(CPLEngineSyncTask *)self engineLibrary];
+        [engineLibrary2 setICloudLibraryHasBeenWiped:1];
       }
     }
 
     goto LABEL_18;
   }
 
-  v7 = [(CPLEngineSyncTask *)self session];
-  v8 = [(CPLEngineScopedTask *)self scope];
-  v9 = [v8 scopeIdentifier];
-  [v7 excludeScopeIdentifierFromMingling:v9];
+  session = [(CPLEngineSyncTask *)self session];
+  scope2 = [(CPLEngineScopedTask *)self scope];
+  scopeIdentifier2 = [scope2 scopeIdentifier];
+  [session excludeScopeIdentifierFromMingling:scopeIdentifier2];
 
 LABEL_6:
   if ([(CPLEngineSyncTask *)self isCancelled]|| self->_taskItem == -1)
   {
-    v4 = 0;
+    errorCopy = 0;
 LABEL_18:
     v22.receiver = self;
     v22.super_class = CPLPullFromTransportScopeTask;
-    [(CPLEngineSyncTask *)&v22 taskDidFinishWithError:v4];
+    [(CPLEngineSyncTask *)&v22 taskDidFinishWithError:errorCopy];
     goto LABEL_19;
   }
 
-  v10 = [(CPLEngineScopedTask *)self store];
+  store = [(CPLEngineScopedTask *)self store];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __56__CPLPullFromTransportScopeTask_taskDidFinishWithError___block_invoke;
   v24[3] = &unk_1E86205B8;
-  v25 = v10;
-  v26 = self;
+  v25 = store;
+  selfCopy = self;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __56__CPLPullFromTransportScopeTask_taskDidFinishWithError___block_invoke_144;
   v23[3] = &unk_1E86205E0;
   v23[4] = self;
-  v4 = v10;
-  v11 = [(NSError *)v4 performWriteTransactionWithBlock:v24 completionHandler:v23];
+  errorCopy = store;
+  v11 = [(NSError *)errorCopy performWriteTransactionWithBlock:v24 completionHandler:v23];
 
 LABEL_19:
   v21 = *MEMORY[0x1E69E9840];
@@ -288,9 +288,9 @@ uint64_t __56__CPLPullFromTransportScopeTask_taskDidFinishWithError___block_invo
 
 - (void)_launch
 {
-  v3 = [(CPLEngineSyncTask *)self engineLibrary];
-  v4 = [v3 syncManager];
-  self->_useCourtesyMingling = [v4 shouldTryToMingleImmediately];
+  engineLibrary = [(CPLEngineSyncTask *)self engineLibrary];
+  syncManager = [engineLibrary syncManager];
+  self->_useCourtesyMingling = [syncManager shouldTryToMingleImmediately];
 
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
@@ -363,25 +363,25 @@ void __40__CPLPullFromTransportScopeTask__launch__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_checkServerFeatureVersionWithCompletionHandler:(id)a3
+- (void)_checkServerFeatureVersionWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(CPLEngineSyncTask *)self setPhaseDescription:@"checking feature version"];
-  v5 = [(CPLEngineScopedTask *)self store];
+  store = [(CPLEngineScopedTask *)self store];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __81__CPLPullFromTransportScopeTask__checkServerFeatureVersionWithCompletionHandler___block_invoke;
   v11[3] = &unk_1E86205B8;
-  v12 = v5;
-  v13 = self;
+  v12 = store;
+  selfCopy = self;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __81__CPLPullFromTransportScopeTask__checkServerFeatureVersionWithCompletionHandler___block_invoke_138;
   v9[3] = &unk_1E8620308;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
-  v7 = v5;
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = store;
   v8 = [v7 performWriteTransactionWithBlock:v11 completionHandler:v9];
 }
 
@@ -878,26 +878,26 @@ void __81__CPLPullFromTransportScopeTask__checkServerFeatureVersionWithCompletio
   (*(v4 + 16))(v4, v5);
 }
 
-- (void)_addPartnerScope:(id)a3 scopes:(id)a4
+- (void)_addPartnerScope:(id)scope scopes:(id)scopes
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 mostCurrentChangesSyncAnchorForScope:v6];
+  scopeCopy = scope;
+  scopesCopy = scopes;
+  v8 = [scopesCopy mostCurrentChangesSyncAnchorForScope:scopeCopy];
   if (v8)
   {
-    if ([v7 doesScopeNeedToPullChangesFromTransport:v6])
+    if ([scopesCopy doesScopeNeedToPullChangesFromTransport:scopeCopy])
     {
       if ((_CPLSilentLogging & 1) == 0)
       {
         v9 = __CPLTaskOSLogDomain_23138();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
-          v10 = [(CPLEngineScopedTask *)self scope];
+          scope = [(CPLEngineScopedTask *)self scope];
           v21 = 138412546;
-          v22 = v6;
+          v22 = scopeCopy;
           v23 = 2112;
-          v24 = v10;
+          v24 = scope;
           v11 = "%@ (partner with %@) is already scheduled to pull changes. Not using sync obligations";
 LABEL_9:
           _os_log_impl(&dword_1DC05A000, v9, OS_LOG_TYPE_DEFAULT, v11, &v21, 0x16u);
@@ -916,14 +916,14 @@ LABEL_9:
         v12 = __CPLTaskOSLogDomain_23138();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
-          v13 = [(CPLEngineScopedTask *)self scope];
-          v14 = [v8 cplSyncAnchorDescription];
+          scope2 = [(CPLEngineScopedTask *)self scope];
+          cplSyncAnchorDescription = [v8 cplSyncAnchorDescription];
           v21 = 138412802;
-          v22 = v6;
+          v22 = scopeCopy;
           v23 = 2112;
-          v24 = v13;
+          v24 = scope2;
           v25 = 2112;
-          v26 = v14;
+          v26 = cplSyncAnchorDescription;
           _os_log_impl(&dword_1DC05A000, v12, OS_LOG_TYPE_DEFAULT, "%@ (partner with %@) might need to pull changes from %@. Using sync obligations to determine that", &v21, 0x20u);
         }
       }
@@ -942,8 +942,8 @@ LABEL_9:
         partnerScopes = self->_partnerScopes;
       }
 
-      [(NSMutableArray *)partnerScopes addObject:v6];
-      [(NSMutableDictionary *)self->_syncAnchorsOfPartnerScopesThatMightNeedToPullChanges setObject:v8 forKeyedSubscript:v6];
+      [(NSMutableArray *)partnerScopes addObject:scopeCopy];
+      [(NSMutableDictionary *)self->_syncAnchorsOfPartnerScopesThatMightNeedToPullChanges setObject:v8 forKeyedSubscript:scopeCopy];
     }
   }
 
@@ -952,11 +952,11 @@ LABEL_9:
     v9 = __CPLTaskOSLogDomain_23138();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(CPLEngineScopedTask *)self scope];
+      scope = [(CPLEngineScopedTask *)self scope];
       v21 = 138412546;
-      v22 = v6;
+      v22 = scopeCopy;
       v23 = 2112;
-      v24 = v10;
+      v24 = scope;
       v11 = "%@ (partner with %@) has not pulled changes yet. Not using sync obligations";
       goto LABEL_9;
     }
@@ -971,18 +971,18 @@ LABEL_10:
 {
   v22 = *MEMORY[0x1E69E9840];
   [(CPLEngineSyncTask *)self setPhaseDescription:@"fetching initial sync anchor"];
-  v3 = [(CPLEngineSyncTask *)self engineLibrary];
-  v4 = [v3 transport];
+  engineLibrary = [(CPLEngineSyncTask *)self engineLibrary];
+  transport = [engineLibrary transport];
 
-  v5 = [(CPLPullFromTransportScopeTask *)self transportScope];
-  v6 = [(CPLEngineScopedTask *)self scope];
+  transportScope = [(CPLPullFromTransportScopeTask *)self transportScope];
+  scope = [(CPLEngineScopedTask *)self scope];
   currentScopeChange = self->_currentScopeChange;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __56__CPLPullFromTransportScopeTask__fetchInitialSyncAnchor__block_invoke;
   v17[3] = &unk_1E86202D8;
   v17[4] = self;
-  v8 = [v4 getCurrentSyncAnchorWithTransportScope:v5 scope:v6 previousScopeChange:currentScopeChange completionHandler:v17];
+  v8 = [transport getCurrentSyncAnchorWithTransportScope:transportScope scope:scope previousScopeChange:currentScopeChange completionHandler:v17];
   fetchInitialSyncAnchorTask = self->_fetchInitialSyncAnchorTask;
   self->_fetchInitialSyncAnchorTask = v8;
 
@@ -992,9 +992,9 @@ LABEL_10:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       v11 = self->_fetchInitialSyncAnchorTask;
-      v12 = [(CPLEngineTransportGetCurrentSyncAnchorTask *)v11 foreground];
+      foreground = [(CPLEngineTransportGetCurrentSyncAnchorTask *)v11 foreground];
       v13 = " with background priority";
-      if (v12)
+      if (foreground)
       {
         v13 = " with foreground priority";
       }
@@ -1008,8 +1008,8 @@ LABEL_10:
   }
 
   v14 = self->_fetchInitialSyncAnchorTask;
-  v15 = [v4 createGroupForLibraryStateCheck];
-  [(CPLEngineSyncTask *)self launchTransportTask:v14 withTransportGroup:v15];
+  createGroupForLibraryStateCheck = [transport createGroupForLibraryStateCheck];
+  [(CPLEngineSyncTask *)self launchTransportTask:v14 withTransportGroup:createGroupForLibraryStateCheck];
 
   v16 = *MEMORY[0x1E69E9840];
 }
@@ -1238,7 +1238,7 @@ uint64_t __56__CPLPullFromTransportScopeTask__fetchInitialSyncAnchor__block_invo
   return v6;
 }
 
-- (void)_launchPullTasksAndDisableQueries:(BOOL)a3
+- (void)_launchPullTasksAndDisableQueries:(BOOL)queries
 {
   v25 = *MEMORY[0x1E69E9840];
   if (_launchPullTasksAndDisableQueries__onceToken != -1)
@@ -1246,7 +1246,7 @@ uint64_t __56__CPLPullFromTransportScopeTask__fetchInitialSyncAnchor__block_invo
     dispatch_once(&_launchPullTasksAndDisableQueries__onceToken, &__block_literal_global_23207);
   }
 
-  v5 = _launchPullTasksAndDisableQueries__alwaysDisableQueries | a3;
+  v5 = _launchPullTasksAndDisableQueries__alwaysDisableQueries | queries;
   if ((_CPLSilentLogging & 1) == 0)
   {
     v6 = __CPLTaskOSLogDomain_23138();
@@ -1264,8 +1264,8 @@ uint64_t __56__CPLPullFromTransportScopeTask__fetchInitialSyncAnchor__block_invo
     }
   }
 
-  v8 = [(CPLEngineScopedTask *)self store];
-  v9 = [v8 scopes];
+  store = [(CPLEngineScopedTask *)self store];
+  scopes = [store scopes];
   *&buf = 0;
   *(&buf + 1) = &buf;
   v21 = 0x3032000000;
@@ -1281,7 +1281,7 @@ uint64_t __56__CPLPullFromTransportScopeTask__fetchInitialSyncAnchor__block_invo
   v14[2] = __67__CPLPullFromTransportScopeTask__launchPullTasksAndDisableQueries___block_invoke_109;
   v14[3] = &unk_1E86202B0;
   v14[4] = self;
-  v10 = v9;
+  v10 = scopes;
   v15 = v10;
   p_buf = &buf;
   v18 = v5 & 1;
@@ -1293,7 +1293,7 @@ uint64_t __56__CPLPullFromTransportScopeTask__fetchInitialSyncAnchor__block_invo
   v13[4] = self;
   v13[5] = v19;
   v13[6] = &buf;
-  v11 = [v8 performWriteTransactionWithBlock:v14 completionHandler:v13];
+  v11 = [store performWriteTransactionWithBlock:v14 completionHandler:v13];
 
   _Block_object_dispose(v19, 8);
   _Block_object_dispose(&buf, 8);
@@ -1590,7 +1590,7 @@ void __67__CPLPullFromTransportScopeTask__launchPullTasksAndDisableQueries___blo
     }
   }
 
-  v4 = [(CPLEngineScopedTask *)self store];
+  store = [(CPLEngineScopedTask *)self store];
   *buf = 0;
   v14 = buf;
   v15 = 0x3032000000;
@@ -1606,7 +1606,7 @@ void __67__CPLPullFromTransportScopeTask__launchPullTasksAndDisableQueries___blo
   v8[2] = __53__CPLPullFromTransportScopeTask__launchNextQueryTask__block_invoke;
   v8[3] = &unk_1E8620260;
   v8[4] = self;
-  v5 = v4;
+  v5 = store;
   v9 = v5;
   v10 = v12;
   v11 = buf;
@@ -1796,11 +1796,11 @@ uint64_t __53__CPLPullFromTransportScopeTask__launchNextQueryTask__block_invoke_
   return v8;
 }
 
-- (void)_launchQueryForClass:(Class)a3 cursor:(id)a4
+- (void)_launchQueryForClass:(Class)class cursor:(id)cursor
 {
   v39 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"running query for %@", a3];
+  cursorCopy = cursor;
+  v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"running query for %@", class];
   [(CPLEngineSyncTask *)self setPhaseDescription:v8];
 
   if ((_CPLSilentLogging & 1) == 0)
@@ -1819,7 +1819,7 @@ uint64_t __53__CPLPullFromTransportScopeTask__launchNextQueryTask__block_invoke_
   Current = CFAbsoluteTimeGetCurrent();
   self->_didNotifySchedulerPullQueueIsFullOnce = 0;
   transport = self->_transport;
-  v11 = [(CPLEngineScopedTask *)self scope];
+  scope = [(CPLEngineScopedTask *)self scope];
   transportScopeMapping = self->_transportScopeMapping;
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
@@ -1827,16 +1827,16 @@ uint64_t __53__CPLPullFromTransportScopeTask__launchNextQueryTask__block_invoke_
   v27[3] = &unk_1E86201E8;
   v27[4] = self;
   v29 = buf;
-  v13 = v7;
+  v13 = cursorCopy;
   v28 = v13;
-  v30 = a3;
+  classCopy = class;
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __61__CPLPullFromTransportScopeTask__launchQueryForClass_cursor___block_invoke_89;
   v26[3] = &unk_1E8620238;
   v26[4] = self;
-  v26[5] = a3;
-  v14 = [(CPLEngineTransport *)transport queryTaskForCursor:v13 class:a3 scope:v11 transportScopeMapping:transportScopeMapping progressHandler:v27 completionHandler:v26];
+  v26[5] = class;
+  v14 = [(CPLEngineTransport *)transport queryTaskForCursor:v13 class:class scope:scope transportScopeMapping:transportScopeMapping progressHandler:v27 completionHandler:v26];
   queryTask = self->_queryTask;
   self->_queryTask = v14;
 
@@ -1852,24 +1852,24 @@ uint64_t __53__CPLPullFromTransportScopeTask__launchNextQueryTask__block_invoke_
       }
     }
 
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v25 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLPullFromTransportTask.m"];
-    [v24 handleFailureInMethod:a2 object:self file:v25 lineNumber:1110 description:@"We should have a query task at this point"];
+    [currentHandler handleFailureInMethod:a2 object:self file:v25 lineNumber:1110 description:@"We should have a query task at this point"];
 
     abort();
   }
 
-  self->_currentQueryClass = a3;
+  self->_currentQueryClass = class;
   if ((_CPLSilentLogging & 1) == 0)
   {
     v16 = __CPLTaskOSLogDomain_23138();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(CPLEngineScopedTask *)self scope];
+      scope2 = [(CPLEngineScopedTask *)self scope];
       *v35 = 138412546;
-      v36 = a3;
+      classCopy2 = class;
       v37 = 2112;
-      v38 = v17;
+      v38 = scope2;
       _os_log_impl(&dword_1DC05A000, v16, OS_LOG_TYPE_DEFAULT, "Launching query for %@ in %@", v35, 0x16u);
     }
 
@@ -1879,15 +1879,15 @@ uint64_t __53__CPLPullFromTransportScopeTask__launchNextQueryTask__block_invoke_
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
         v19 = self->_queryTask;
-        v20 = [(CPLEngineTransportQueryTask *)v19 foreground];
+        foreground = [(CPLEngineTransportQueryTask *)v19 foreground];
         v21 = " with background priority";
-        if (v20)
+        if (foreground)
         {
           v21 = " with foreground priority";
         }
 
         *v35 = 138412546;
-        v36 = v19;
+        classCopy2 = v19;
         v37 = 2080;
         v38 = v21;
         _os_log_impl(&dword_1DC05A000, v18, OS_LOG_TYPE_DEBUG, "Launching %@%s", v35, 0x16u);
@@ -2146,28 +2146,28 @@ LABEL_29:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleNewBatchFromQuery:(id)a3 queryClass:(Class)a4 newCursor:(id)a5
+- (void)_handleNewBatchFromQuery:(id)query queryClass:(Class)class newCursor:(id)cursor
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(CPLEngineScopedTask *)self store];
+  queryCopy = query;
+  cursorCopy = cursor;
+  store = [(CPLEngineScopedTask *)self store];
   dispatch_suspend(self->_queue);
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __79__CPLPullFromTransportScopeTask__handleNewBatchFromQuery_queryClass_newCursor___block_invoke;
   v16[3] = &unk_1E86200D0;
   v16[4] = self;
-  v17 = v7;
-  v18 = v8;
+  v17 = queryCopy;
+  v18 = cursorCopy;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __79__CPLPullFromTransportScopeTask__handleNewBatchFromQuery_queryClass_newCursor___block_invoke_2;
   v13[3] = &unk_1E86205B8;
   v14 = v17;
-  v15 = self;
+  selfCopy = self;
   v10 = v17;
-  v11 = v8;
-  v12 = [v9 performWriteTransactionWithBlock:v16 completionHandler:v13];
+  v11 = cursorCopy;
+  v12 = [store performWriteTransactionWithBlock:v16 completionHandler:v13];
 }
 
 void __79__CPLPullFromTransportScopeTask__handleNewBatchFromQuery_queryClass_newCursor___block_invoke(uint64_t a1, void *a2)
@@ -2230,14 +2230,14 @@ LABEL_7:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_storeInitialSyncAnchorIfNecessaryInTransaction:(id)a3
+- (void)_storeInitialSyncAnchorIfNecessaryInTransaction:(id)transaction
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __81__CPLPullFromTransportScopeTask__storeInitialSyncAnchorIfNecessaryInTransaction___block_invoke;
   v3[3] = &unk_1E8620478;
   v3[4] = self;
-  [a3 do:v3];
+  [transaction do:v3];
 }
 
 uint64_t __81__CPLPullFromTransportScopeTask__storeInitialSyncAnchorIfNecessaryInTransaction___block_invoke(uint64_t a1, uint64_t a2)
@@ -2354,20 +2354,20 @@ LABEL_27:
   return v7;
 }
 
-- (void)_handleNewBatchFromQuery:(id)a3 newCursor:(id)a4 inTransaction:(id)a5
+- (void)_handleNewBatchFromQuery:(id)query newCursor:(id)cursor inTransaction:(id)transaction
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  queryCopy = query;
+  cursorCopy = cursor;
+  transactionCopy = transaction;
+  if ([queryCopy count])
   {
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __82__CPLPullFromTransportScopeTask__handleNewBatchFromQuery_newCursor_inTransaction___block_invoke;
     v31[3] = &unk_1E86204A0;
     v31[4] = self;
-    v32 = v8;
-    [v10 addCleanupBlock:v31];
+    v32 = queryCopy;
+    [transactionCopy addCleanupBlock:v31];
   }
 
   v29[0] = MEMORY[0x1E69E9820];
@@ -2375,19 +2375,19 @@ LABEL_27:
   v29[2] = __82__CPLPullFromTransportScopeTask__handleNewBatchFromQuery_newCursor_inTransaction___block_invoke_3;
   v29[3] = &unk_1E8620940;
   v29[4] = self;
-  v11 = v8;
+  v11 = queryCopy;
   v30 = v11;
-  [v10 do:v29];
-  v12 = [v10 error];
+  [transactionCopy do:v29];
+  error = [transactionCopy error];
 
-  if (!v12)
+  if (!error)
   {
-    v13 = [(CPLEngineScopedTask *)self store];
-    v14 = [(CPLPullFromTransportScopeTask *)self _transientPullRepositoryInStore:v13];
+    store = [(CPLEngineScopedTask *)self store];
+    v14 = [(CPLPullFromTransportScopeTask *)self _transientPullRepositoryInStore:store];
     currentQueryClass = self->_currentQueryClass;
     if (currentQueryClass == objc_opt_class())
     {
-      [(CPLPullFromTransportScopeTask *)self _extractAndMinglePersonsIfPossibleFromBatch:v11 inTransaction:v10];
+      [(CPLPullFromTransportScopeTask *)self _extractAndMinglePersonsIfPossibleFromBatch:v11 inTransaction:transactionCopy];
     }
 
     else
@@ -2395,7 +2395,7 @@ LABEL_27:
       v16 = self->_currentQueryClass;
       if (v16 == objc_opt_class())
       {
-        [(CPLPullFromTransportScopeTask *)self _extractAndMingleAssetsIfPossibleFromBatch:v11 inTransaction:v10];
+        [(CPLPullFromTransportScopeTask *)self _extractAndMingleAssetsIfPossibleFromBatch:v11 inTransaction:transactionCopy];
       }
     }
 
@@ -2406,19 +2406,19 @@ LABEL_27:
     v17 = v11;
     v26 = v17;
     v27 = v14;
-    v28 = self;
+    selfCopy = self;
     v18 = v14;
-    [v10 do:v25];
+    [transactionCopy do:v25];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __82__CPLPullFromTransportScopeTask__handleNewBatchFromQuery_newCursor_inTransaction___block_invoke_82;
     v20[3] = &unk_1E8620968;
-    v21 = v9;
-    v22 = v13;
-    v23 = self;
+    v21 = cursorCopy;
+    v22 = store;
+    selfCopy2 = self;
     v24 = v17;
-    v19 = v13;
-    [v10 do:v20];
+    v19 = store;
+    [transactionCopy do:v20];
   }
 }
 
@@ -2505,19 +2505,19 @@ void __82__CPLPullFromTransportScopeTask__handleNewBatchFromQuery_newCursor_inTr
   [v3 addCompletedWorkItemCount:objc_msgSend(v2 kindOfWork:{"count"), @"changes"}];
 }
 
-- (void)_launchFetchChangesFromSyncAnchor:(id)a3
+- (void)_launchFetchChangesFromSyncAnchor:(id)anchor
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  anchorCopy = anchor;
   [(CPLEngineSyncTask *)self setPhaseDescription:@"fetching changes"];
   if (!self->_rewindSyncAnchor)
   {
     goto LABEL_4;
   }
 
-  if (v5)
+  if (anchorCopy)
   {
-    if ([(CPLFeatureVersionHistory *)self->_versionHistory featureVersionForSyncAnchor:v5]> self->_rewindFeatureVersion)
+    if ([(CPLFeatureVersionHistory *)self->_versionHistory featureVersionForSyncAnchor:anchorCopy]> self->_rewindFeatureVersion)
     {
 LABEL_4:
       if ((_CPLSilentLogging & 1) == 0)
@@ -2535,7 +2535,7 @@ LABEL_4:
       v36 = 0x2020000000;
       Current = CFAbsoluteTimeGetCurrent();
       transport = self->_transport;
-      v8 = [(CPLEngineScopedTask *)self scope];
+      scope = [(CPLEngineScopedTask *)self scope];
       transportScopeMapping = self->_transportScopeMapping;
       currentScopeChange = self->_currentScopeChange;
       v28[0] = MEMORY[0x1E69E9820];
@@ -2544,13 +2544,13 @@ LABEL_4:
       v28[3] = &unk_1E8620120;
       v28[4] = self;
       p_buf = &buf;
-      v29 = v5;
+      v29 = anchorCopy;
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = __67__CPLPullFromTransportScopeTask__launchFetchChangesFromSyncAnchor___block_invoke_72;
       v27[3] = &unk_1E8620170;
       v27[4] = self;
-      v11 = [(CPLEngineTransport *)transport downloadBatchTaskForSyncAnchor:v29 scope:v8 transportScopeMapping:transportScopeMapping currentScopeChange:currentScopeChange progressHandler:v28 completionHandler:v27];
+      v11 = [(CPLEngineTransport *)transport downloadBatchTaskForSyncAnchor:v29 scope:scope transportScopeMapping:transportScopeMapping currentScopeChange:currentScopeChange progressHandler:v28 completionHandler:v27];
       downloadTask = self->_downloadTask;
       self->_downloadTask = v11;
 
@@ -2566,9 +2566,9 @@ LABEL_4:
           }
         }
 
-        v24 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v25 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLPullFromTransportTask.m"];
-        [v24 handleFailureInMethod:a2 object:self file:v25 lineNumber:896 description:@"We should have a download task at this point"];
+        [currentHandler handleFailureInMethod:a2 object:self file:v25 lineNumber:896 description:@"We should have a download task at this point"];
 
         abort();
       }
@@ -2586,9 +2586,9 @@ LABEL_4:
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
         {
           v15 = self->_downloadTask;
-          v16 = [(CPLEngineTransportDownloadBatchTask *)v15 foreground];
+          foreground = [(CPLEngineTransportDownloadBatchTask *)v15 foreground];
           v17 = " with background priority";
-          if (v16)
+          if (foreground)
           {
             v17 = " with foreground priority";
           }
@@ -2612,14 +2612,14 @@ LABEL_4:
       v20 = __CPLTaskOSLogDomain_23138();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [(CPLEngineScopedTask *)self scope];
+        scope2 = [(CPLEngineScopedTask *)self scope];
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v21;
+        *(&buf + 4) = scope2;
         _os_log_impl(&dword_1DC05A000, v20, OS_LOG_TYPE_DEFAULT, "No need to rewind in %@ as we just caught up with the sync anchor we need", &buf, 0xCu);
       }
     }
 
-    [(CPLPullFromTransportScopeTask *)self _updateLastFeatureVersionAndRelaunchFetchChangesFromSyncAnchor:v5];
+    [(CPLPullFromTransportScopeTask *)self _updateLastFeatureVersionAndRelaunchFetchChangesFromSyncAnchor:anchorCopy];
   }
 
   else
@@ -2629,9 +2629,9 @@ LABEL_4:
       v18 = __CPLTaskOSLogDomain_23138();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [(CPLEngineScopedTask *)self scope];
+        scope3 = [(CPLEngineScopedTask *)self scope];
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v19;
+        *(&buf + 4) = scope3;
         _os_log_impl(&dword_1DC05A000, v18, OS_LOG_TYPE_DEFAULT, "No need to rewind in %@ as we are fetching everything from the beginning", &buf, 0xCu);
       }
     }
@@ -2963,24 +2963,24 @@ LABEL_30:
       }
     }
 
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLPullFromTransportTask.m"];
-    [v11 handleFailureInMethod:a2 object:self file:v12 lineNumber:781 description:@"We should have rewind sync anchors here"];
+    [currentHandler handleFailureInMethod:a2 object:self file:v12 lineNumber:781 description:@"We should have rewind sync anchors here"];
 
     abort();
   }
 
-  v4 = [(CPLEngineScopedTask *)self store];
-  v5 = [v4 scopes];
-  v6 = [(NSMutableSet *)self->_otherRewindSyncAnchors anyObject];
-  [(NSMutableSet *)self->_otherRewindSyncAnchors removeObject:v6];
+  store = [(CPLEngineScopedTask *)self store];
+  scopes = [store scopes];
+  anyObject = [(NSMutableSet *)self->_otherRewindSyncAnchors anyObject];
+  [(NSMutableSet *)self->_otherRewindSyncAnchors removeObject:anyObject];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __80__CPLPullFromTransportScopeTask__relaunchFetchChangesFromOtherRewindSyncAnchors__block_invoke;
   v15[3] = &unk_1E86200D0;
   v15[4] = self;
-  v16 = v5;
-  v17 = v6;
+  v16 = scopes;
+  v17 = anyObject;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __80__CPLPullFromTransportScopeTask__relaunchFetchChangesFromOtherRewindSyncAnchors__block_invoke_67;
@@ -2988,8 +2988,8 @@ LABEL_30:
   v13[4] = self;
   v14 = v17;
   v7 = v17;
-  v8 = v5;
-  v9 = [v4 performWriteTransactionWithBlock:v15 completionHandler:v13];
+  v8 = scopes;
+  v9 = [store performWriteTransactionWithBlock:v15 completionHandler:v13];
 }
 
 void __80__CPLPullFromTransportScopeTask__relaunchFetchChangesFromOtherRewindSyncAnchors__block_invoke(uint64_t a1, void *a2)
@@ -3063,17 +3063,17 @@ uint64_t __80__CPLPullFromTransportScopeTask__relaunchFetchChangesFromOtherRewin
   return v7;
 }
 
-- (void)_updateLastFeatureVersionAndRelaunchFetchChangesFromSyncAnchor:(id)a3
+- (void)_updateLastFeatureVersionAndRelaunchFetchChangesFromSyncAnchor:(id)anchor
 {
-  v4 = a3;
-  v5 = [(CPLEngineScopedTask *)self store];
+  anchorCopy = anchor;
+  store = [(CPLEngineScopedTask *)self store];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __96__CPLPullFromTransportScopeTask__updateLastFeatureVersionAndRelaunchFetchChangesFromSyncAnchor___block_invoke;
   v11[3] = &unk_1E86200D0;
-  v12 = v5;
-  v13 = self;
-  v14 = v4;
+  v12 = store;
+  selfCopy = self;
+  v14 = anchorCopy;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __96__CPLPullFromTransportScopeTask__updateLastFeatureVersionAndRelaunchFetchChangesFromSyncAnchor___block_invoke_60;
@@ -3081,7 +3081,7 @@ uint64_t __80__CPLPullFromTransportScopeTask__relaunchFetchChangesFromOtherRewin
   v9[4] = self;
   v10 = v14;
   v6 = v14;
-  v7 = v5;
+  v7 = store;
   v8 = [v7 performWriteTransactionWithBlock:v11 completionHandler:v9];
 }
 
@@ -3182,25 +3182,25 @@ uint64_t __96__CPLPullFromTransportScopeTask__updateLastFeatureVersionAndRelaunc
   }
 }
 
-- (void)_handleNewBatchFromChanges:(id)a3 updatedFlags:(id)a4 newSyncAnchor:(id)a5 partnerScopesNeedingToPullChanges:(id)a6
+- (void)_handleNewBatchFromChanges:(id)changes updatedFlags:(id)flags newSyncAnchor:(id)anchor partnerScopesNeedingToPullChanges:(id)pullChanges
 {
   v43 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(CPLEngineScopedTask *)self store];
+  changesCopy = changes;
+  flagsCopy = flags;
+  anchorCopy = anchor;
+  pullChangesCopy = pullChanges;
+  store = [(CPLEngineScopedTask *)self store];
   dispatch_suspend(self->_queue);
-  if (self->_rewindSyncAnchor && [(CPLFeatureVersionHistory *)self->_versionHistory featureVersionForSyncAnchor:v12]<= self->_rewindFeatureVersion)
+  if (self->_rewindSyncAnchor && [(CPLFeatureVersionHistory *)self->_versionHistory featureVersionForSyncAnchor:anchorCopy]<= self->_rewindFeatureVersion)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
       v16 = __CPLTaskOSLogDomain_23138();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [(CPLEngineScopedTask *)self scope];
+        scope = [(CPLEngineScopedTask *)self scope];
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v17;
+        *(&buf + 4) = scope;
         _os_log_impl(&dword_1DC05A000, v16, OS_LOG_TYPE_DEFAULT, "No need to rewind in %@ as we just caught up with the sync anchor we need to match current feature version", &buf, 0xCu);
       }
     }
@@ -3213,7 +3213,7 @@ uint64_t __96__CPLPullFromTransportScopeTask__updateLastFeatureVersionAndRelaunc
     v15 = 0;
   }
 
-  v18 = [v10 filterScopeChangeFromBatch];
+  filterScopeChangeFromBatch = [changesCopy filterScopeChangeFromBatch];
   *&buf = 0;
   *(&buf + 1) = &buf;
   v41 = 0x2020000000;
@@ -3223,18 +3223,18 @@ uint64_t __96__CPLPullFromTransportScopeTask__updateLastFeatureVersionAndRelaunc
   v31[2] = __121__CPLPullFromTransportScopeTask__handleNewBatchFromChanges_updatedFlags_newSyncAnchor_partnerScopesNeedingToPullChanges___block_invoke;
   v31[3] = &unk_1E8620080;
   v31[4] = self;
-  v19 = v12;
+  v19 = anchorCopy;
   v32 = v19;
-  v20 = v18;
+  v20 = filterScopeChangeFromBatch;
   v33 = v20;
   p_buf = &buf;
-  v21 = v11;
+  v21 = flagsCopy;
   v34 = v21;
-  v35 = v10;
+  v35 = changesCopy;
   v39 = v15;
-  v22 = v14;
+  v22 = store;
   v36 = v22;
-  v23 = v13;
+  v23 = pullChangesCopy;
   v37 = v23;
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
@@ -3242,7 +3242,7 @@ uint64_t __96__CPLPullFromTransportScopeTask__updateLastFeatureVersionAndRelaunc
   v27[3] = &unk_1E86200A8;
   v24 = v35;
   v28 = v24;
-  v29 = self;
+  selfCopy = self;
   v30 = &buf;
   v25 = [v22 performWriteTransactionWithBlock:v31 completionHandler:v27];
 
@@ -3701,21 +3701,21 @@ LABEL_15:
   return v22;
 }
 
-- (void)_notePartnerScopesNeedingToPullChanges:(id)a3 scopes:(id)a4 inTransaction:(id)a5
+- (void)_notePartnerScopesNeedingToPullChanges:(id)changes scopes:(id)scopes inTransaction:(id)transaction
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count] && -[NSMutableDictionary count](self->_syncAnchorsOfPartnerScopesThatMightNeedToPullChanges, "count"))
+  changesCopy = changes;
+  scopesCopy = scopes;
+  transactionCopy = transaction;
+  if ([changesCopy count] && -[NSMutableDictionary count](self->_syncAnchorsOfPartnerScopesThatMightNeedToPullChanges, "count"))
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __93__CPLPullFromTransportScopeTask__notePartnerScopesNeedingToPullChanges_scopes_inTransaction___block_invoke;
     v11[3] = &unk_1E861FF88;
-    v12 = v8;
-    v13 = self;
-    v14 = v9;
-    [v10 do:v11];
+    v12 = changesCopy;
+    selfCopy = self;
+    v14 = scopesCopy;
+    [transactionCopy do:v11];
   }
 }
 
@@ -3844,7 +3844,7 @@ LABEL_23:
     }
   }
 
-  v4 = [(CPLEngineScopedTask *)self store];
+  store = [(CPLEngineScopedTask *)self store];
   *buf = 0;
   v11 = buf;
   v12 = 0x3032000000;
@@ -3857,7 +3857,7 @@ LABEL_23:
   v7[3] = &unk_1E86200A8;
   v7[4] = self;
   v9 = buf;
-  v5 = v4;
+  v5 = store;
   v8 = v5;
   v6 = [v5 performReadTransactionWithBlock:v7];
 
@@ -3910,17 +3910,17 @@ void __51__CPLPullFromTransportScopeTask__checkExtraRecords__block_invoke(uint64
   }
 }
 
-- (void)_checkExtraRecordsWithScopedIdentifiers:(id)a3
+- (void)_checkExtraRecordsWithScopedIdentifiers:(id)identifiers
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   if ((_CPLSilentLogging & 1) == 0)
   {
     v5 = __CPLTaskOSLogDomain_23138();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v4;
+      *(&buf + 4) = identifiersCopy;
       _os_log_impl(&dword_1DC05A000, v5, OS_LOG_TYPE_DEFAULT, "Will check records directly on Server: %@", &buf, 0xCu);
     }
   }
@@ -3931,7 +3931,7 @@ void __51__CPLPullFromTransportScopeTask__checkExtraRecords__block_invoke(uint64
   v12[2] = __73__CPLPullFromTransportScopeTask__checkExtraRecordsWithScopedIdentifiers___block_invoke;
   v12[3] = &unk_1E861B290;
   v12[4] = self;
-  v13 = v4;
+  v13 = identifiersCopy;
   v7 = v12;
   *&buf = MEMORY[0x1E69E9820];
   *(&buf + 1) = 3221225472;
@@ -3939,7 +3939,7 @@ void __51__CPLPullFromTransportScopeTask__checkExtraRecords__block_invoke(uint64
   v16 = &unk_1E861B4E0;
   v17 = v7;
   v8 = queue;
-  v9 = v4;
+  v9 = identifiersCopy;
   v10 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &buf);
   dispatch_async(v8, v10);
 
@@ -4324,12 +4324,12 @@ uint64_t __73__CPLPullFromTransportScopeTask__checkExtraRecordsWithScopedIdentif
   return result;
 }
 
-- (BOOL)_dequeueFromPendingRecordChecksIfNecessary:(id)a3 error:(id *)a4
+- (BOOL)_dequeueFromPendingRecordChecksIfNecessary:(id)necessary error:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (self->_hasExtraRecordsToCheck && [v6 count])
+  necessaryCopy = necessary;
+  v7 = necessaryCopy;
+  if (self->_hasExtraRecordsToCheck && [necessaryCopy count])
   {
     v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v7, "count")}];
     v21 = 0u;
@@ -4355,8 +4355,8 @@ uint64_t __73__CPLPullFromTransportScopeTask__checkExtraRecordsWithScopedIdentif
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            v15 = [v14 scopedIdentifier];
-            [v8 addObject:v15];
+            scopedIdentifier = [v14 scopedIdentifier];
+            [v8 addObject:scopedIdentifier];
           }
         }
 
@@ -4368,9 +4368,9 @@ uint64_t __73__CPLPullFromTransportScopeTask__checkExtraRecordsWithScopedIdentif
 
     if ([v8 count])
     {
-      v16 = [(CPLEngineScopedTask *)self store];
-      v17 = [v16 pendingRecordChecks];
-      v18 = [v17 dequeueCloudScopedIdentifiersToCheck:v8 error:a4];
+      store = [(CPLEngineScopedTask *)self store];
+      pendingRecordChecks = [store pendingRecordChecks];
+      v18 = [pendingRecordChecks dequeueCloudScopedIdentifiersToCheck:v8 error:error];
     }
 
     else
@@ -4388,17 +4388,17 @@ uint64_t __73__CPLPullFromTransportScopeTask__checkExtraRecordsWithScopedIdentif
   return v18;
 }
 
-- (BOOL)_fetchRewindSyncAnchorsInScopes:(id)a3 startSyncAnchor:(id)a4 error:(id *)a5
+- (BOOL)_fetchRewindSyncAnchorsInScopes:(id)scopes startSyncAnchor:(id)anchor error:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [(CPLEngineScopedTask *)self scope];
-  v10 = [v8 rewindSyncAnchorsForScope:v9];
+  scopesCopy = scopes;
+  scope = [(CPLEngineScopedTask *)self scope];
+  v10 = [scopesCopy rewindSyncAnchorsForScope:scope];
 
   if ([v10 count])
   {
-    v11 = [(CPLEngineScopedTask *)self scope];
-    if (a4)
+    scope2 = [(CPLEngineScopedTask *)self scope];
+    if (anchor)
     {
       v12 = [v10 mutableCopy];
       otherRewindSyncAnchors = self->_otherRewindSyncAnchors;
@@ -4411,7 +4411,7 @@ uint64_t __73__CPLPullFromTransportScopeTask__checkExtraRecordsWithScopedIdentif
         {
           v15 = [(NSMutableSet *)self->_otherRewindSyncAnchors count];
           v20 = 138412546;
-          v21 = v11;
+          v21 = scope2;
           v22 = 2048;
           v23 = v15;
           _os_log_impl(&dword_1DC05A000, v14, OS_LOG_TYPE_DEFAULT, "%@ might need to rewind fetching changes up to %lu times to catch up with missed features", &v20, 0x16u);
@@ -4429,12 +4429,12 @@ uint64_t __73__CPLPullFromTransportScopeTask__checkExtraRecordsWithScopedIdentif
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
           v20 = 138412290;
-          v21 = v11;
+          v21 = scope2;
           _os_log_impl(&dword_1DC05A000, v17, OS_LOG_TYPE_DEFAULT, "%@ does not need to rewind to catch up with missed features as it will fetch all records since the beginning", &v20, 0xCu);
         }
       }
 
-      v16 = [(CPLPullFromTransportScopeTask *)self _storeRewindSyncAnchors:0 inScopes:v8 error:a5];
+      v16 = [(CPLPullFromTransportScopeTask *)self _storeRewindSyncAnchors:0 inScopes:scopesCopy error:error];
     }
   }
 
@@ -4447,46 +4447,46 @@ uint64_t __73__CPLPullFromTransportScopeTask__checkExtraRecordsWithScopedIdentif
   return v16;
 }
 
-- (BOOL)_storeRewindSyncAnchors:(id)a3 inScopes:(id)a4 error:(id *)a5
+- (BOOL)_storeRewindSyncAnchors:(id)anchors inScopes:(id)scopes error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (![v8 count])
+  anchorsCopy = anchors;
+  scopesCopy = scopes;
+  if (![anchorsCopy count])
   {
 
-    v8 = 0;
+    anchorsCopy = 0;
   }
 
-  v10 = [(CPLEngineScopedTask *)self scope];
-  v11 = [v9 storeRewindSyncAnchors:v8 forScope:v10 error:a5];
+  scope = [(CPLEngineScopedTask *)self scope];
+  v11 = [scopesCopy storeRewindSyncAnchors:anchorsCopy forScope:scope error:error];
 
   return v11;
 }
 
-- (BOOL)checkScopeIsValidInTransaction:(id)a3
+- (BOOL)checkScopeIsValidInTransaction:(id)transaction
 {
   v53 = *MEMORY[0x1E69E9840];
   v50.receiver = self;
   v50.super_class = CPLPullFromTransportScopeTask;
-  v4 = [(CPLEngineScopedTask *)&v50 checkScopeIsValidInTransaction:a3];
+  v4 = [(CPLEngineScopedTask *)&v50 checkScopeIsValidInTransaction:transaction];
   if (v4)
   {
-    v5 = [(CPLEngineScopedTask *)self store];
-    v6 = [v5 pushRepository];
-    v7 = [(CPLEngineScopedTask *)self scope];
-    v8 = [v7 scopeIdentifier];
-    v9 = [v6 minimumPriorityForChangesInScopeWithIdentifier:v8];
+    store = [(CPLEngineScopedTask *)self store];
+    pushRepository = [store pushRepository];
+    scope = [(CPLEngineScopedTask *)self scope];
+    scopeIdentifier = [scope scopeIdentifier];
+    v9 = [pushRepository minimumPriorityForChangesInScopeWithIdentifier:scopeIdentifier];
     if (v9 < +[CPLRecordPushContext minimumPriorityForLocalConflictResolution])
     {
-      v10 = [(CPLEngineSyncTask *)self session];
-      v11 = [v10 allowsLocalConflictResolution];
+      session = [(CPLEngineSyncTask *)self session];
+      allowsLocalConflictResolution = [session allowsLocalConflictResolution];
 
-      if ((v11 & 1) == 0)
+      if ((allowsLocalConflictResolution & 1) == 0)
       {
-        v34 = [(CPLEngineSyncTask *)self session];
-        v35 = [v34 allowsLocalConflictResolutionWhenOverQuota];
+        session2 = [(CPLEngineSyncTask *)self session];
+        allowsLocalConflictResolutionWhenOverQuota = [session2 allowsLocalConflictResolutionWhenOverQuota];
 
-        if (!v35 || ([v5 scopes], v36 = objc_claimAutoreleasedReturnValue(), v37 = objc_msgSend(v36, "valueForFlag:forScope:", 2, v7), v36, (v37 & 1) == 0))
+        if (!allowsLocalConflictResolutionWhenOverQuota || ([store scopes], v36 = objc_claimAutoreleasedReturnValue(), v37 = objc_msgSend(v36, "valueForFlag:forScope:", 2, scope), v36, (v37 & 1) == 0))
         {
           if ((_CPLSilentLogging & 1) == 0)
           {
@@ -4494,7 +4494,7 @@ uint64_t __73__CPLPullFromTransportScopeTask__checkExtraRecordsWithScopedIdentif
             if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v52 = v8;
+              v52 = scopeIdentifier;
               _os_log_impl(&dword_1DC05A000, v38, OS_LOG_TYPE_DEFAULT, "Push repository contains changes for %@, stopping pull from transport now", buf, 0xCu);
             }
           }
@@ -4508,19 +4508,19 @@ LABEL_23:
       }
     }
 
-    v12 = [v5 cloudCache];
-    v13 = [v5 transientPullRepository];
-    v14 = v13;
+    cloudCache = [store cloudCache];
+    transientPullRepository = [store transientPullRepository];
+    v14 = transientPullRepository;
     if (v9 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v47[0] = MEMORY[0x1E69E9820];
       v47[1] = 3221225472;
       v47[2] = __64__CPLPullFromTransportScopeTask_checkScopeIsValidInTransaction___block_invoke;
       v47[3] = &unk_1E861FFB8;
-      v48 = v12;
-      v49 = v13;
-      v15 = v13;
-      v16 = v12;
+      v48 = cloudCache;
+      v49 = transientPullRepository;
+      v15 = transientPullRepository;
+      v16 = cloudCache;
       v17 = MEMORY[0x1E128EBA0](v47);
       allowsMinglingChangeWithScopedIdentifier = self->_allowsMinglingChangeWithScopedIdentifier;
       self->_allowsMinglingChangeWithScopedIdentifier = v17;
@@ -4530,31 +4530,31 @@ LABEL_23:
 
     else
     {
-      v20 = [v5 idMapping];
-      v21 = [(CPLEngineScopedTask *)self scope];
+      idMapping = [store idMapping];
+      scope2 = [(CPLEngineScopedTask *)self scope];
       v41[0] = MEMORY[0x1E69E9820];
       v41[1] = 3221225472;
       v41[2] = __64__CPLPullFromTransportScopeTask_checkScopeIsValidInTransaction___block_invoke_2;
       v41[3] = &unk_1E861FFE0;
-      v42 = v12;
+      v42 = cloudCache;
       v43 = v14;
-      v44 = v20;
-      v45 = v21;
-      v46 = v6;
-      v22 = v21;
-      v19 = v20;
+      v44 = idMapping;
+      v45 = scope2;
+      v46 = pushRepository;
+      v22 = scope2;
+      v19 = idMapping;
       v23 = v14;
-      v24 = v12;
+      v24 = cloudCache;
       v25 = MEMORY[0x1E128EBA0](v41);
       v26 = self->_allowsMinglingChangeWithScopedIdentifier;
       self->_allowsMinglingChangeWithScopedIdentifier = v25;
     }
 
-    v27 = [(CPLEngineScopedTask *)self store];
-    v28 = [v27 cleanupTasks];
-    v29 = [v28 hasCleanupTasks];
+    store2 = [(CPLEngineScopedTask *)self store];
+    cleanupTasks = [store2 cleanupTasks];
+    hasCleanupTasks = [cleanupTasks hasCleanupTasks];
 
-    if (v29)
+    if (hasCleanupTasks)
     {
       if ((_CPLSilentLogging & 1) == 0)
       {
@@ -4572,10 +4572,10 @@ LABEL_23:
 
     if (self->_taskItem == -1)
     {
-      v31 = [(CPLEngineScopedTask *)self store];
-      v32 = [v31 scopes];
-      v33 = [(CPLEngineScopedTask *)self scope];
-      self->_taskItem = [v32 pullFromTransportTaskForScope:v33];
+      store3 = [(CPLEngineScopedTask *)self store];
+      scopes = [store3 scopes];
+      scope3 = [(CPLEngineScopedTask *)self scope];
+      self->_taskItem = [scopes pullFromTransportTaskForScope:scope3];
     }
 
     LOBYTE(v4) = 1;
@@ -4640,64 +4640,64 @@ uint64_t __64__CPLPullFromTransportScopeTask_checkScopeIsValidInTransaction___bl
   {
     v7.receiver = self;
     v7.super_class = CPLPullFromTransportScopeTask;
-    v3 = [(CPLEngineScopedTask *)&v7 scopesForTask];
-    v4 = [v3 arrayByAddingObjectsFromArray:self->_partnerScopes];
+    scopesForTask = [(CPLEngineScopedTask *)&v7 scopesForTask];
+    scopesForTask2 = [scopesForTask arrayByAddingObjectsFromArray:self->_partnerScopes];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = CPLPullFromTransportScopeTask;
-    v4 = [(CPLEngineScopedTask *)&v6 scopesForTask];
+    scopesForTask2 = [(CPLEngineScopedTask *)&v6 scopesForTask];
   }
 
-  return v4;
+  return scopesForTask2;
 }
 
-- (void)_handleNewBatchFromChanges:(id)a3 newSyncAnchor:(id)a4 inTransaction:(id)a5
+- (void)_handleNewBatchFromChanges:(id)changes newSyncAnchor:(id)anchor inTransaction:(id)transaction
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  changesCopy = changes;
+  anchorCopy = anchor;
+  transactionCopy = transaction;
+  if ([changesCopy count])
   {
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __88__CPLPullFromTransportScopeTask__handleNewBatchFromChanges_newSyncAnchor_inTransaction___block_invoke;
     v27[3] = &unk_1E86204A0;
     v27[4] = self;
-    v28 = v8;
-    [v10 addCleanupBlock:v27];
+    v28 = changesCopy;
+    [transactionCopy addCleanupBlock:v27];
   }
 
-  v11 = [v10 error];
+  error = [transactionCopy error];
 
-  if (!v11)
+  if (!error)
   {
-    v12 = [(CPLEngineSyncTask *)self engineLibrary];
-    v13 = [v12 store];
+    engineLibrary = [(CPLEngineSyncTask *)self engineLibrary];
+    store = [engineLibrary store];
 
-    v14 = [(CPLPullFromTransportScopeTask *)self _transientPullRepositoryInStore:v13];
+    v14 = [(CPLPullFromTransportScopeTask *)self _transientPullRepositoryInStore:store];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __88__CPLPullFromTransportScopeTask__handleNewBatchFromChanges_newSyncAnchor_inTransaction___block_invoke_3;
     v23[3] = &unk_1E861FF88;
-    v15 = v8;
+    v15 = changesCopy;
     v24 = v15;
     v25 = v14;
-    v26 = self;
+    selfCopy = self;
     v16 = v14;
-    [v10 do:v23];
+    [transactionCopy do:v23];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __88__CPLPullFromTransportScopeTask__handleNewBatchFromChanges_newSyncAnchor_inTransaction___block_invoke_27;
     v18[3] = &unk_1E8620968;
-    v19 = v9;
-    v20 = self;
-    v21 = v13;
+    v19 = anchorCopy;
+    selfCopy2 = self;
+    v21 = store;
     v22 = v15;
-    v17 = v13;
-    [v10 do:v18];
+    v17 = store;
+    [transactionCopy do:v18];
   }
 }
 
@@ -4793,21 +4793,21 @@ void __88__CPLPullFromTransportScopeTask__handleNewBatchFromChanges_newSyncAncho
 {
   if (!self->_hasCachedTotalAssetCountForScope)
   {
-    v3 = [(CPLEngineSyncTask *)self engineLibrary];
-    v4 = [v3 store];
-    v5 = [v4 scopes];
-    v6 = [(CPLEngineScopedTask *)self scope];
-    v7 = [v5 scopeChangeForScope:v6];
-    v8 = [v7 libraryInfo];
+    engineLibrary = [(CPLEngineSyncTask *)self engineLibrary];
+    store = [engineLibrary store];
+    scopes = [store scopes];
+    scope = [(CPLEngineScopedTask *)self scope];
+    v7 = [scopes scopeChangeForScope:scope];
+    libraryInfo = [v7 libraryInfo];
 
-    v9 = [v8 assetCounts];
+    assetCounts = [libraryInfo assetCounts];
     self->_totalAssetCountForScope = 0;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __57__CPLPullFromTransportScopeTask__totalAssetCountForScope__block_invoke;
     v11[3] = &unk_1E861FF60;
     v11[4] = self;
-    [v9 enumerateKeysAndObjectsUsingBlock:v11];
+    [assetCounts enumerateKeysAndObjectsUsingBlock:v11];
     self->_hasCachedTotalAssetCountForScope = 1;
   }
 
@@ -4821,18 +4821,18 @@ uint64_t __57__CPLPullFromTransportScopeTask__totalAssetCountForScope__block_inv
   return result;
 }
 
-- (void)_extractAndMingleAssetsIfPossibleFromBatch:(id)a3 inTransaction:(id)a4
+- (void)_extractAndMingleAssetsIfPossibleFromBatch:(id)batch inTransaction:(id)transaction
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  transactionCopy = transaction;
   if (self->_useCourtesyMingling)
   {
-    v7 = a3;
-    v8 = [(CPLEngineSyncTask *)self engineLibrary];
-    v9 = [v8 store];
+    batchCopy = batch;
+    engineLibrary = [(CPLEngineSyncTask *)self engineLibrary];
+    store = [engineLibrary store];
 
-    v10 = [(CPLPullFromTransportScopeTask *)self _transientPullRepositoryInStore:v9];
-    v11 = [(CPLPullFromTransportScopeTask *)self _cloudCacheInStore:v9];
+    v10 = [(CPLPullFromTransportScopeTask *)self _transientPullRepositoryInStore:store];
+    v11 = [(CPLPullFromTransportScopeTask *)self _cloudCacheInStore:store];
     v23 = 0;
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
@@ -4841,7 +4841,7 @@ uint64_t __57__CPLPullFromTransportScopeTask__totalAssetCountForScope__block_inv
     v21[4] = self;
     v12 = v11;
     v22 = v12;
-    [v7 extractInitialDownloadBatch:&v23 shouldConsiderRecordFilter:v21];
+    [batchCopy extractInitialDownloadBatch:&v23 shouldConsiderRecordFilter:v21];
 
     v13 = v23;
     if ([v13 count])
@@ -4862,10 +4862,10 @@ uint64_t __57__CPLPullFromTransportScopeTask__totalAssetCountForScope__block_inv
       v16[2] = __90__CPLPullFromTransportScopeTask__extractAndMingleAssetsIfPossibleFromBatch_inTransaction___block_invoke_20;
       v16[3] = &unk_1E8620968;
       v17 = v13;
-      v18 = self;
-      v19 = v9;
+      selfCopy = self;
+      v19 = store;
       v20 = v10;
-      [v6 do:v16];
+      [transactionCopy do:v16];
     }
   }
 
@@ -5009,25 +5009,25 @@ uint64_t __90__CPLPullFromTransportScopeTask__extractAndMingleAssetsIfPossibleFr
   return 1;
 }
 
-- (void)_extractAndMinglePersonsIfPossibleFromBatch:(id)a3 inTransaction:(id)a4
+- (void)_extractAndMinglePersonsIfPossibleFromBatch:(id)batch inTransaction:(id)transaction
 {
   v53 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  batchCopy = batch;
+  transactionCopy = transaction;
+  v8 = transactionCopy;
   if (!self->_useCourtesyMingling)
   {
     goto LABEL_33;
   }
 
-  v33 = v7;
-  v9 = [v6 count];
-  v10 = [(CPLEngineSyncTask *)self engineLibrary];
-  v11 = [v10 store];
+  v33 = transactionCopy;
+  v9 = [batchCopy count];
+  engineLibrary = [(CPLEngineSyncTask *)self engineLibrary];
+  store = [engineLibrary store];
 
-  v31 = [(CPLPullFromTransportScopeTask *)self _transientPullRepositoryInStore:v11];
-  v32 = v11;
-  v12 = [(CPLPullFromTransportScopeTask *)self _cloudCacheInStore:v11];
+  v31 = [(CPLPullFromTransportScopeTask *)self _transientPullRepositoryInStore:store];
+  v32 = store;
+  v12 = [(CPLPullFromTransportScopeTask *)self _cloudCacheInStore:store];
   v37 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:v9];
   v36 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v9];
   v30 = v9;
@@ -5036,8 +5036,8 @@ uint64_t __90__CPLPullFromTransportScopeTask__extractAndMingleAssetsIfPossibleFr
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v34 = v6;
-  obj = v6;
+  v34 = batchCopy;
+  obj = batchCopy;
   v14 = [obj countByEnumeratingWithState:&v44 objects:v52 count:16];
   v35 = v12;
   if (!v14)
@@ -5058,14 +5058,14 @@ uint64_t __90__CPLPullFromTransportScopeTask__extractAndMingleAssetsIfPossibleFr
       }
 
       v18 = *(*(&v44 + 1) + 8 * v17);
-      v19 = [(CPLChangeBatch *)v18 scopedIdentifier];
+      scopedIdentifier = [(CPLChangeBatch *)v18 scopedIdentifier];
       v20 = (*(self->_allowsMinglingChangeWithScopedIdentifier + 2))();
       v21 = v13;
       if (v20)
       {
-        v22 = [(CPLChangeBatch *)v18 realIdentifier];
+        realIdentifier = [(CPLChangeBatch *)v18 realIdentifier];
 
-        if (v22)
+        if (realIdentifier)
         {
           v21 = v13;
           if (_CPLSilentLogging)
@@ -5073,19 +5073,19 @@ uint64_t __90__CPLPullFromTransportScopeTask__extractAndMingleAssetsIfPossibleFr
             goto LABEL_17;
           }
 
-          v23 = __CPLTaskOSLogDomain_23138();
-          if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+          relatedScopedIdentifier = __CPLTaskOSLogDomain_23138();
+          if (os_log_type_enabled(relatedScopedIdentifier, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
             v49 = v18;
-            _os_log_impl(&dword_1DC05A000, v23, OS_LOG_TYPE_DEFAULT, "Can't mingle %@ prematurely because it is a remap", buf, 0xCu);
+            _os_log_impl(&dword_1DC05A000, relatedScopedIdentifier, OS_LOG_TYPE_DEFAULT, "Can't mingle %@ prematurely because it is a remap", buf, 0xCu);
           }
 
           goto LABEL_12;
         }
 
-        v23 = [(CPLChangeBatch *)v18 relatedScopedIdentifier];
-        if (v23 && ([v37 containsObject:v23] & 1) == 0 && (objc_msgSend(v12, "hasRecordWithScopedIdentifier:", v23) & 1) == 0)
+        relatedScopedIdentifier = [(CPLChangeBatch *)v18 relatedScopedIdentifier];
+        if (relatedScopedIdentifier && ([v37 containsObject:relatedScopedIdentifier] & 1) == 0 && (objc_msgSend(v12, "hasRecordWithScopedIdentifier:", relatedScopedIdentifier) & 1) == 0)
         {
           if ((_CPLSilentLogging & 1) == 0)
           {
@@ -5095,7 +5095,7 @@ uint64_t __90__CPLPullFromTransportScopeTask__extractAndMingleAssetsIfPossibleFr
               *buf = 138412546;
               v49 = v18;
               v50 = 2112;
-              v51 = v23;
+              v51 = relatedScopedIdentifier;
               _os_log_impl(&dword_1DC05A000, v24, OS_LOG_TYPE_DEFAULT, "Can't mingle %@ prematurely because it targets an unknown person %@", buf, 0x16u);
             }
 
@@ -5108,7 +5108,7 @@ LABEL_12:
           goto LABEL_17;
         }
 
-        [v37 addObject:v19];
+        [v37 addObject:scopedIdentifier];
         v21 = v36;
       }
 
@@ -5146,7 +5146,7 @@ LABEL_24:
     v39[2] = __91__CPLPullFromTransportScopeTask__extractAndMinglePersonsIfPossibleFromBatch_inTransaction___block_invoke;
     v39[3] = &unk_1E8620968;
     v40 = v26;
-    v41 = self;
+    selfCopy = self;
     v42 = v32;
     v43 = v31;
     v28 = v26;
@@ -5158,7 +5158,7 @@ LABEL_24:
     [obj _setRecords:v13];
   }
 
-  v6 = v34;
+  batchCopy = v34;
 LABEL_33:
 
   v29 = *MEMORY[0x1E69E9840];
@@ -5201,14 +5201,14 @@ uint64_t __91__CPLPullFromTransportScopeTask__extractAndMinglePersonsIfPossibleF
   return 1;
 }
 
-- (id)_cloudCacheInStore:(id)a3
+- (id)_cloudCacheInStore:(id)store
 {
   cloudCache = self->_cloudCache;
   if (!cloudCache)
   {
-    v5 = [a3 cloudCache];
+    cloudCache = [store cloudCache];
     v6 = self->_cloudCache;
-    self->_cloudCache = v5;
+    self->_cloudCache = cloudCache;
 
     cloudCache = self->_cloudCache;
   }
@@ -5216,14 +5216,14 @@ uint64_t __91__CPLPullFromTransportScopeTask__extractAndMinglePersonsIfPossibleF
   return cloudCache;
 }
 
-- (id)_transientPullRepositoryInStore:(id)a3
+- (id)_transientPullRepositoryInStore:(id)store
 {
   transientPullRepository = self->_transientPullRepository;
   if (!transientPullRepository)
   {
-    v5 = [a3 transientPullRepository];
+    transientPullRepository = [store transientPullRepository];
     v6 = self->_transientPullRepository;
-    self->_transientPullRepository = v5;
+    self->_transientPullRepository = transientPullRepository;
 
     transientPullRepository = self->_transientPullRepository;
   }
@@ -5361,9 +5361,9 @@ void __64__CPLPullFromTransportScopeTask__notifySchedulerPullQueueIsFull__block_
     }
   }
 
-  v4 = [(CPLEngineSyncTask *)self engineLibrary];
-  v5 = [v4 scheduler];
-  [v5 noteClientNeedsToPull];
+  engineLibrary = [(CPLEngineSyncTask *)self engineLibrary];
+  scheduler = [engineLibrary scheduler];
+  [scheduler noteClientNeedsToPull];
 }
 
 - (id)transportScope
@@ -5371,25 +5371,25 @@ void __64__CPLPullFromTransportScopeTask__notifySchedulerPullQueueIsFull__block_
   updateTransportScope = self->_updateTransportScope;
   if (updateTransportScope || (updateTransportScope = self->_stagingTransportScope) != 0)
   {
-    v3 = updateTransportScope;
+    transportScope = updateTransportScope;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = CPLPullFromTransportScopeTask;
-    v3 = [(CPLEngineScopedTask *)&v5 transportScope];
+    transportScope = [(CPLEngineScopedTask *)&v5 transportScope];
   }
 
-  return v3;
+  return transportScope;
 }
 
-- (CPLPullFromTransportScopeTask)initWithEngineLibrary:(id)a3 session:(id)a4 clientCacheIdentifier:(id)a5 scope:(id)a6 transportScope:(id)a7
+- (CPLPullFromTransportScopeTask)initWithEngineLibrary:(id)library session:(id)session clientCacheIdentifier:(id)identifier scope:(id)scope transportScope:(id)transportScope
 {
-  v12 = a3;
+  libraryCopy = library;
   v22.receiver = self;
   v22.super_class = CPLPullFromTransportScopeTask;
-  v13 = [(CPLEngineScopedTask *)&v22 initWithEngineLibrary:v12 session:a4 clientCacheIdentifier:a5 scope:a6 transportScope:a7];
+  v13 = [(CPLEngineScopedTask *)&v22 initWithEngineLibrary:libraryCopy session:session clientCacheIdentifier:identifier scope:scope transportScope:transportScope];
   if (v13)
   {
     v14 = CPLCopyDefaultSerialQueueAttributes();
@@ -5397,9 +5397,9 @@ void __64__CPLPullFromTransportScopeTask__notifySchedulerPullQueueIsFull__block_
     queue = v13->_queue;
     v13->_queue = v15;
 
-    v17 = [v12 transport];
+    transport = [libraryCopy transport];
     transport = v13->_transport;
-    v13->_transport = v17;
+    v13->_transport = transport;
 
     v13->_taskItem = -1;
     v19 = dispatch_queue_create("com.apple.cpl.pullfromtransport.notify", 0);

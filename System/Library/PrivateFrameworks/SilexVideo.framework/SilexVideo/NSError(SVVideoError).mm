@@ -9,8 +9,8 @@
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [v4 domain];
-  v6 = [a1 errorCodeForUnderlyingErrorDomain:v5];
+  domain = [v4 domain];
+  v6 = [self errorCodeForUnderlyingErrorDomain:domain];
 
   if (v4)
   {

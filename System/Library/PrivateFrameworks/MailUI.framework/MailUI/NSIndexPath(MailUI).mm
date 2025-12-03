@@ -8,15 +8,15 @@
 - (unint64_t)mui_distanceTo:()MailUI
 {
   v4 = a3;
-  v5 = a1;
-  v6 = [v5 section];
-  v7 = [v4 section];
-  if (v6 >= v7)
+  selfCopy = self;
+  section = [selfCopy section];
+  section2 = [v4 section];
+  if (section >= section2)
   {
-    if (v6 <= v7)
+    if (section <= section2)
     {
-      v9 = [v4 item];
-      v8 = v9 - [v5 item];
+      item = [v4 item];
+      v8 = item - [selfCopy item];
     }
 
     else
@@ -36,10 +36,10 @@
 - (uint64_t)mui_nextIndexPath
 {
   v2 = MEMORY[0x277CCAA70];
-  v3 = [a1 item];
-  v4 = [a1 section];
+  item = [self item];
+  section = [self section];
 
-  return [v2 indexPathForItem:v3 + 1 inSection:v4];
+  return [v2 indexPathForItem:item + 1 inSection:section];
 }
 
 @end

@@ -2,38 +2,38 @@
 - (BOOL)isSavingCollaborativeDocument;
 - (BOOL)isSavingDocumentAs;
 - (BOOL)shouldSaveAlternates;
-- (BOOL)updateMessageInfo:(void *)a3 withArchiver:(id)a4;
-- (TSPArchiver)initWithObject:(id)a3 flags:(char)a4;
-- (id)alternateForVersion:(unint64_t)a3;
+- (BOOL)updateMessageInfo:(void *)info withArchiver:(id)archiver;
+- (TSPArchiver)initWithObject:(id)object flags:(char)flags;
+- (id)alternateForVersion:(unint64_t)version;
 - (id)calculateOrderedArchivableContent;
-- (void)aggregateReferencesFromArchiver:(id)a3;
+- (void)aggregateReferencesFromArchiver:(id)archiver;
 - (void)archive;
 - (void)cleanup;
 - (void)serialize;
-- (void)validateOrderedArchivableContent:(id)a3;
+- (void)validateOrderedArchivableContent:(id)content;
 @end
 
 @implementation TSPArchiver
 
-- (TSPArchiver)initWithObject:(id)a3 flags:(char)a4
+- (TSPArchiver)initWithObject:(id)object flags:(char)flags
 {
-  v6 = a3;
+  objectCopy = object;
   v31.receiver = self;
   v31.super_class = TSPArchiver;
-  v9 = [(TSPArchiverBase *)&v31 initWithObject:v6];
+  v9 = [(TSPArchiverBase *)&v31 initWithObject:objectCopy];
   if (v9)
   {
-    v10 = objc_msgSend_objectUUID(v6, v7, v8);
+    v10 = objc_msgSend_objectUUID(objectCopy, v7, v8);
     objectUUID = v9->_objectUUID;
     v9->_objectUUID = v10;
 
-    v14 = objc_msgSend_componentRootObject(v6, v12, v13);
+    v14 = objc_msgSend_componentRootObject(objectCopy, v12, v13);
     explicitComponentRootObject = v9->_explicitComponentRootObject;
     v9->_explicitComponentRootObject = v14;
 
     if ((objc_msgSend_targetType(v9, v16, v17) & 0xFFFFFFFFFFFFFFFBLL) == 0)
     {
-      v20 = objc_msgSend_tsp_unknownContent(v6, v18, v19);
+      v20 = objc_msgSend_tsp_unknownContent(objectCopy, v18, v19);
       v23 = objc_msgSend_newUnknownContentSnapshot(v20, v21, v22);
       unknownContentSnapshot = v9->_unknownContentSnapshot;
       v9->_unknownContentSnapshot = v23;
@@ -47,7 +47,7 @@
     serializeGroup = v9->_serializeGroup;
     v9->_serializeGroup = v27;
 
-    atomic_store(a4, &v9->_flags);
+    atomic_store(flags, &v9->_flags);
     v29 = v9;
   }
 
@@ -56,7 +56,7 @@
 
 - (BOOL)shouldSaveAlternates
 {
-  v3 = self;
+  selfCopy = self;
   v4 = objc_msgSend_targetType(self, a2, v2);
   v7 = v4;
   if (v4 != 5 && v4)
@@ -66,8 +66,8 @@
 
   else
   {
-    v3 = objc_msgSend_object(v3, v5, v6);
-    v10 = objc_msgSend_isCommandObject(v3, v8, v9) ^ 1;
+    selfCopy = objc_msgSend_object(selfCopy, v5, v6);
+    v10 = objc_msgSend_isCommandObject(selfCopy, v8, v9) ^ 1;
   }
 
   if (v7 == 5 || !v7)
@@ -77,17 +77,17 @@
   return v10;
 }
 
-- (id)alternateForVersion:(unint64_t)a3
+- (id)alternateForVersion:(unint64_t)version
 {
-  v5 = objc_msgSend_minimumSupportedVersion(self, a2, a3);
-  if (v5 <= a3)
+  v5 = objc_msgSend_minimumSupportedVersion(self, a2, version);
+  if (v5 <= version)
   {
     v46 = v5;
-    v8 = NSStringFromTSPVersion(a3, v6);
-    v9 = self;
+    v8 = NSStringFromTSPVersion(version, v6);
+    selfCopy = self;
     v10 = v8;
-    v11 = v9;
-    v14 = objc_msgSend_object(v9, v12, v13);
+    v11 = selfCopy;
+    v14 = objc_msgSend_object(selfCopy, v12, v13);
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
     v19 = objc_msgSend_object(v11, v17, v18);
@@ -98,7 +98,7 @@
     v24 = MEMORY[0x277D81150];
     v26 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v25, "[TSPArchiver alternateForVersion:]", "[TSPArchiver alternateForVersion:]", "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPArchiver.mm", 164, v10, v16, v22, v45);
     v28 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v27, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPArchiver.mm");
-    v30 = NSStringFromTSPVersion(a3, v29);
+    v30 = NSStringFromTSPVersion(version, v29);
     v33 = objc_msgSend_object(v11, v31, v32);
     v34 = objc_opt_class();
     v35 = NSStringFromClass(v34);
@@ -111,7 +111,7 @@
     abort();
   }
 
-  return objc_msgSend_addAlternateArchiverForVersion_fieldPath_isDiffArchiver_diffReadVersion_message_(self, v6, a3, 0, 0, 0, 0);
+  return objc_msgSend_addAlternateArchiverForVersion_fieldPath_isDiffArchiver_diffReadVersion_message_(self, v6, version, 0, 0, 0, 0);
 }
 
 - (void)archive
@@ -126,7 +126,7 @@
   v171[3] = &unk_27A6E2898;
   v137 = v134;
   v172 = v137;
-  v173 = self;
+  selfCopy = self;
   objc_msgSend_tsp_performSynchronousArchiverOperationUsingBlock_(v7, v8, v171);
   objc_opt_class();
   if (!(objc_opt_isKindOfClass() & 1 | (v6 == 4)))
@@ -241,7 +241,7 @@
     aBlock[2] = sub_2769BC77C;
     aBlock[3] = &unk_27A6E3110;
     v158 = v137;
-    v159 = self;
+    selfCopy2 = self;
     v160 = &v161;
     v56 = _Block_copy(aBlock);
     v155[0] = MEMORY[0x277D85DD0];
@@ -433,12 +433,12 @@
   v132 = *MEMORY[0x277D85DE8];
 }
 
-- (void)aggregateReferencesFromArchiver:(id)a3
+- (void)aggregateReferencesFromArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   aggregatedStrongReferences = self->_aggregatedStrongReferences;
-  v32 = v4;
-  v8 = objc_msgSend_strongReferences(v4, v6, v7);
+  v32 = archiverCopy;
+  v8 = objc_msgSend_strongReferences(archiverCopy, v6, v7);
   objc_msgSend_unionSet_(aggregatedStrongReferences, v9, v8);
 
   aggregatedWeakReferences = self->_aggregatedWeakReferences;
@@ -462,10 +462,10 @@
   }
 }
 
-- (BOOL)updateMessageInfo:(void *)a3 withArchiver:(id)a4
+- (BOOL)updateMessageInfo:(void *)info withArchiver:(id)archiver
 {
   v190 = *MEMORY[0x277D85DE8];
-  v7 = objc_msgSend_message(a4, a2, a3);
+  v7 = objc_msgSend_message(archiver, a2, info);
   v173 = objc_msgSend_object(self, v8, v9);
   objc_opt_class();
   v174 = TSUDynamicCast();
@@ -477,12 +477,12 @@
 
   else
   {
-    v15 = objc_msgSend_messageType(a4, v12, v13);
+    v15 = objc_msgSend_messageType(archiver, v12, v13);
   }
 
-  *(a3 + 4) |= 2u;
-  *(a3 + 50) = v15;
-  v16 = objc_msgSend_minimumSupportedVersion(a4, v12, v13);
+  *(info + 4) |= 2u;
+  *(info + 50) = v15;
+  v16 = objc_msgSend_minimumSupportedVersion(archiver, v12, v13);
   v19 = v16;
   if (isDiff)
   {
@@ -496,7 +496,7 @@
 
   if (v20)
   {
-    UnsafePointer(v20, a3 + 24);
+    UnsafePointer(v20, info + 24);
   }
 
   if (v19)
@@ -511,7 +511,7 @@
 
   if (v21 == 1)
   {
-    UnsafePointer(v19, a3 + 120);
+    UnsafePointer(v19, info + 120);
   }
 
   if (isDiff)
@@ -519,25 +519,25 @@
     Version = objc_msgSend_diffReadVersion(v174, v17, v18);
     if (Version)
     {
-      UnsafePointer(Version, a3 + 168);
+      UnsafePointer(Version, info + 168);
     }
   }
 
   v24 = objc_msgSend_fieldPath(v174, v17, v18);
   if (v24)
   {
-    *(a3 + 4) |= 1u;
-    v25 = *(a3 + 24);
+    *(info + 4) |= 1u;
+    v25 = *(info + 24);
     if (!v25)
     {
-      v26 = *(a3 + 1);
+      v26 = *(info + 1);
       if (v26)
       {
         v26 = *(v26 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v25 = sub_2769F4FE8(v26);
-      *(a3 + 24) = v25;
+      *(info + 24) = v25;
     }
 
     sub_2769E26BC(v25, v24);
@@ -568,8 +568,8 @@
     LODWORD(v27) = 0;
   }
 
-  *(a3 + 4) |= 4u;
-  *(a3 + 51) = v27;
+  *(info + 4) |= 4u;
+  *(info + 51) = v27;
   v185 = 0;
   v186 = &v185;
   v187 = 0x2020000000;
@@ -583,9 +583,9 @@
   v180[2] = sub_2769BDB2C;
   v180[3] = &unk_27A6E3160;
   v180[5] = &v181;
-  v180[6] = a3;
+  v180[6] = info;
   v180[4] = &v185;
-  objc_msgSend_enumerateFieldRulesUsingBlock_(a4, v23, v180);
+  objc_msgSend_enumerateFieldRulesUsingBlock_(archiver, v23, v180);
   v45 = v186[3];
   if (v45)
   {
@@ -675,17 +675,17 @@
   aBlock[1] = 3221225472;
   aBlock[2] = sub_2769BDE7C;
   aBlock[3] = &unk_27A6E31A0;
-  aBlock[4] = a3;
+  aBlock[4] = info;
   v172 = _Block_copy(aBlock);
-  v115 = objc_msgSend_strongReferences(a4, v113, v114);
+  v115 = objc_msgSend_strongReferences(archiver, v113, v114);
   v172[2](v172, v115);
 
-  v118 = objc_msgSend_countedDataReferences(a4, v116, v117);
+  v118 = objc_msgSend_countedDataReferences(archiver, v116, v117);
   v177 = 0u;
   v178 = 0u;
   v175 = 0u;
   v176 = 0u;
-  v121 = objc_msgSend_dataReferences(a4, v119, v120);
+  v121 = objc_msgSend_dataReferences(archiver, v119, v120);
   v125 = objc_msgSend_countByEnumeratingWithState_objects_count_(v121, v122, &v175, v189, 16);
   if (v125)
   {
@@ -754,17 +754,17 @@
           abort();
         }
 
-        v133 = *(a3 + 24);
+        v133 = *(info + 24);
         v134 = v131 + 1;
         do
         {
-          if (v133 == *(a3 + 25))
+          if (v133 == *(info + 25))
           {
             google::protobuf::RepeatedField<unsigned long long>::Reserve();
           }
 
-          *(*(a3 + 13) + 8 * v133++) = v129;
-          *(a3 + 24) = v133;
+          *(*(info + 13) + 8 * v133++) = v129;
+          *(info + 24) = v133;
           --v134;
         }
 
@@ -1352,17 +1352,17 @@ LABEL_75:
   return v22;
 }
 
-- (void)validateOrderedArchivableContent:(id)a3
+- (void)validateOrderedArchivableContent:(id)content
 {
   v336 = *MEMORY[0x277D85DE8];
-  v315 = a3;
-  if (objc_msgSend_count(v315, v3, v4) >= 2)
+  contentCopy = content;
+  if (objc_msgSend_count(contentCopy, v3, v4) >= 2)
   {
     v329 = 0u;
     v330 = 0u;
     v327 = 0u;
     v328 = 0u;
-    obj = v315;
+    obj = contentCopy;
     v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v5, &v327, v335, 16);
     if (v6)
     {

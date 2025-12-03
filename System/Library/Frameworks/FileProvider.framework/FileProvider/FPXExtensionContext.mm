@@ -1,108 +1,108 @@
 @interface FPXExtensionContext
 + (Class)principalClass;
-- (BOOL)_inlineSymlinkTarget:(id)a3 url:(id *)a4 error:(id *)a5;
+- (BOOL)_inlineSymlinkTarget:(id)target url:(id *)url error:(id *)error;
 - (FPXExtensionContext)init;
 - (NSString)description;
-- (id)_createItemBasedOnTemplate:(id)a3 fields:(unint64_t)a4 contents:(id)a5 options:(unint64_t)a6 request:(id)a7 bounce:(BOOL)a8 bounceNumber:(id)a9 completionHandler:(id)a10;
-- (id)_proxyWithCancellationHandler:(id)a3 forClientOperation:(id)a4;
-- (id)additionalServiceSourcesForItemID:(id)a3 domain:(id)a4 extension:(id)a5;
-- (id)alternateContentsURLWrapperForItemID:(id)a3;
-- (id)createFPTempDirectoryAppropriateForURL:(id)a3 error:(id *)a4;
-- (id)createFPTempDirectoryWithError:(id *)a3;
-- (id)createItemBasedOnTemplate:(id)a3 fields:(unint64_t)a4 contents:(id)a5 options:(unint64_t)a6 request:(id)a7 bounce:(BOOL)a8 completionHandler:(id)a9;
-- (id)createTempThumbnailURLForVersion:(id)a3 appropriateForURL:(id)a4 itemIdentifier:(id)a5 isFromData:(BOOL)a6 error:(id *)a7;
-- (id)createUserInteractionSuppressingWithDomainIdentifier:(id)a3 withPurpose:(id)a4;
-- (id)deleteItemWithID:(id)a3 baseVersion:(id)a4 options:(unint64_t)a5 request:(id)a6 completionHandler:(id)a7;
-- (id)disconnectDomainID:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
+- (id)_createItemBasedOnTemplate:(id)template fields:(unint64_t)fields contents:(id)contents options:(unint64_t)options request:(id)request bounce:(BOOL)bounce bounceNumber:(id)number completionHandler:(id)self0;
+- (id)_proxyWithCancellationHandler:(id)handler forClientOperation:(id)operation;
+- (id)additionalServiceSourcesForItemID:(id)d domain:(id)domain extension:(id)extension;
+- (id)alternateContentsURLWrapperForItemID:(id)d;
+- (id)createFPTempDirectoryAppropriateForURL:(id)l error:(id *)error;
+- (id)createFPTempDirectoryWithError:(id *)error;
+- (id)createItemBasedOnTemplate:(id)template fields:(unint64_t)fields contents:(id)contents options:(unint64_t)options request:(id)request bounce:(BOOL)bounce completionHandler:(id)handler;
+- (id)createTempThumbnailURLForVersion:(id)version appropriateForURL:(id)l itemIdentifier:(id)identifier isFromData:(BOOL)data error:(id *)error;
+- (id)createUserInteractionSuppressingWithDomainIdentifier:(id)identifier withPurpose:(id)purpose;
+- (id)deleteItemWithID:(id)d baseVersion:(id)version options:(unint64_t)options request:(id)request completionHandler:(id)handler;
+- (id)disconnectDomainID:(id)d options:(unint64_t)options completionHandler:(id)handler;
 - (id)domainContext;
-- (id)domainContextForIdentifier:(id)a3;
-- (id)domainContextForItemID:(id)a3;
-- (id)domainContextForItemIDs:(id)a3;
-- (id)fetchContentsForItemWithID:(id)a3 version:(id)a4 request:(id)a5 estimatedItemSize:(int64_t)a6 isSymlink:(BOOL)a7 extent:(id)a8 alignment:(unint64_t)a9 options:(unint64_t)a10 completionHandler:(id)a11;
-- (id)fetchContentsForItemWithID:(id)a3 version:(id)a4 usingExistingContentsAtURL:(id)a5 existingVersion:(id)a6 request:(id)a7 estimatedItemSize:(int64_t)a8 isSymlink:(BOOL)a9 completionHandler:(id)a10;
-- (id)fetchPublishingURLForItemID:(id)a3 completionHandler:(id)a4;
-- (id)instanceForItemID:(id)a3;
-- (id)instanceWithPrivateSelector:(SEL)a3;
-- (id)modifyItem:(id)a3 baseVersion:(id)a4 changedFields:(unint64_t)a5 contents:(id)a6 options:(unint64_t)a7 request:(id)a8 completionHandler:(id)a9;
-- (id)performActionWithIdentifier:(id)a3 onItemsWithIdentifiers:(id)a4 domainIdentifier:(id)a5 completionHandler:(id)a6;
+- (id)domainContextForIdentifier:(id)identifier;
+- (id)domainContextForItemID:(id)d;
+- (id)domainContextForItemIDs:(id)ds;
+- (id)fetchContentsForItemWithID:(id)d version:(id)version request:(id)request estimatedItemSize:(int64_t)size isSymlink:(BOOL)symlink extent:(id)extent alignment:(unint64_t)alignment options:(unint64_t)self0 completionHandler:(id)self1;
+- (id)fetchContentsForItemWithID:(id)d version:(id)version usingExistingContentsAtURL:(id)l existingVersion:(id)existingVersion request:(id)request estimatedItemSize:(int64_t)size isSymlink:(BOOL)symlink completionHandler:(id)self0;
+- (id)fetchPublishingURLForItemID:(id)d completionHandler:(id)handler;
+- (id)instanceForItemID:(id)d;
+- (id)instanceWithPrivateSelector:(SEL)selector;
+- (id)modifyItem:(id)item baseVersion:(id)version changedFields:(unint64_t)fields contents:(id)contents options:(unint64_t)options request:(id)request completionHandler:(id)handler;
+- (id)performActionWithIdentifier:(id)identifier onItemsWithIdentifiers:(id)identifiers domainIdentifier:(id)domainIdentifier completionHandler:(id)handler;
 - (id)v2Instance;
-- (void)URLForItemID:(id)a3 creatingPlaceholderIfMissing:(BOOL)a4 ignoreAlternateContentsURL:(BOOL)a5 completionHandler:(id)a6;
-- (void)_deleteIndexInDomainContexts:(id)a3 completionHandler:(id)a4;
-- (void)_fetchHierarchyForItemID:(id)a3 into:(id)a4 maxDepth:(unint64_t)a5 completionHandler:(id)a6;
-- (void)_freeSlotHeldByItem:(id)a3 request:(id)a4 bounceIndex:(unint64_t)a5 completionHandler:(id)a6;
-- (void)_indexOutOfBandUpdatedItems:(id)a3 deletedItems:(id)a4 indexReason:(int64_t)a5 completionHandler:(id)a6;
-- (void)_persistedDocumentURLForURL:(id)a3 itemID:(id)a4 extension:(id)a5 creatingPlaceholderIfMissing:(BOOL)a6 completionHandler:(id)a7;
-- (void)_setupItemForTrashing:(id)a3 usesFPFS:(BOOL)a4 completionHandler:(id)a5;
-- (void)_singleItemChange:(id)a3 changedFields:(unint64_t)a4 bounce:(BOOL)a5 bounceIndex:(unint64_t)a6 request:(id)a7 completionHandler:(id)a8;
-- (void)_test_callFileProviderManagerAPIs:(id)a3;
-- (void)_waitForExtensionStabilizationWithCompletionHandler:(id)a3;
-- (void)addListenerDelegate:(id)a3;
-- (void)applyFieldChangesToItem:(id)a3 baseVersion:(id)a4 changedFields:(unint64_t)a5 contents:(id)a6 lastKnownVendorItem:(id)a7 extensionInstance:(id)a8 completionHandler:(id)a9;
-- (void)applyItemChange:(id)a3 baseVersion:(id)a4 contents:(id)a5 completionHandler:(id)a6;
-- (void)attemptRecoveryFromError:(id)a3 optionIndex:(unint64_t)a4 completionHandler:(id)a5;
-- (void)beginRequestWithDomain:(id)a3 alternateContentsDictionary:(id)a4 domainServicer:(id)a5 providerDomain:(id)a6 domainVersion:(id)a7 completionHandler:(id)a8;
-- (void)bulkEvictItemsWithItemIDs:(id)a3 completionHandler:(id)a4;
-- (void)bulkItemChanges:(id)a3 changedFields:(unint64_t)a4 completionHandler:(id)a5;
+- (void)URLForItemID:(id)d creatingPlaceholderIfMissing:(BOOL)missing ignoreAlternateContentsURL:(BOOL)l completionHandler:(id)handler;
+- (void)_deleteIndexInDomainContexts:(id)contexts completionHandler:(id)handler;
+- (void)_fetchHierarchyForItemID:(id)d into:(id)into maxDepth:(unint64_t)depth completionHandler:(id)handler;
+- (void)_freeSlotHeldByItem:(id)item request:(id)request bounceIndex:(unint64_t)index completionHandler:(id)handler;
+- (void)_indexOutOfBandUpdatedItems:(id)items deletedItems:(id)deletedItems indexReason:(int64_t)reason completionHandler:(id)handler;
+- (void)_persistedDocumentURLForURL:(id)l itemID:(id)d extension:(id)extension creatingPlaceholderIfMissing:(BOOL)missing completionHandler:(id)handler;
+- (void)_setupItemForTrashing:(id)trashing usesFPFS:(BOOL)s completionHandler:(id)handler;
+- (void)_singleItemChange:(id)change changedFields:(unint64_t)fields bounce:(BOOL)bounce bounceIndex:(unint64_t)index request:(id)request completionHandler:(id)handler;
+- (void)_test_callFileProviderManagerAPIs:(id)is;
+- (void)_waitForExtensionStabilizationWithCompletionHandler:(id)handler;
+- (void)addListenerDelegate:(id)delegate;
+- (void)applyFieldChangesToItem:(id)item baseVersion:(id)version changedFields:(unint64_t)fields contents:(id)contents lastKnownVendorItem:(id)vendorItem extensionInstance:(id)instance completionHandler:(id)handler;
+- (void)applyItemChange:(id)change baseVersion:(id)version contents:(id)contents completionHandler:(id)handler;
+- (void)attemptRecoveryFromError:(id)error optionIndex:(unint64_t)index completionHandler:(id)handler;
+- (void)beginRequestWithDomain:(id)domain alternateContentsDictionary:(id)dictionary domainServicer:(id)servicer providerDomain:(id)providerDomain domainVersion:(id)version completionHandler:(id)handler;
+- (void)bulkEvictItemsWithItemIDs:(id)ds completionHandler:(id)handler;
+- (void)bulkItemChanges:(id)changes changedFields:(unint64_t)fields completionHandler:(id)handler;
 - (void)dealloc;
-- (void)deleteItemsWithIDs:(id)a3 baseVersions:(id)a4 options:(unint64_t)a5 reply:(id)a6;
-- (void)deleteSearchableItemsWithSpotlightDomainIdentifiers:(id)a3 domainIdentifier:(id)a4 indexReason:(int64_t)a5 completionHandler:(id)a6;
-- (void)didChangeItemID:(id)a3 completionHandler:(id)a4;
-- (void)didUpdateAlternateContentsDocumentForDocumentWithURL:(id)a3 completionHandler:(id)a4;
+- (void)deleteItemsWithIDs:(id)ds baseVersions:(id)versions options:(unint64_t)options reply:(id)reply;
+- (void)deleteSearchableItemsWithSpotlightDomainIdentifiers:(id)identifiers domainIdentifier:(id)identifier indexReason:(int64_t)reason completionHandler:(id)handler;
+- (void)didChangeItemID:(id)d completionHandler:(id)handler;
+- (void)didUpdateAlternateContentsDocumentForDocumentWithURL:(id)l completionHandler:(id)handler;
 - (void)domainContext;
-- (void)dropDomainWithCompletionHandler:(id)a3;
-- (void)dropIndexForDomain:(id)a3 dropReason:(unint64_t)a4 completionHandler:(id)a5;
-- (void)dumpIndexStateForDomain:(id)a3 toFileHandler:(id)a4 completionHandler:(id)a5;
-- (void)dumpInternalStateToTermDumper:(id)a3 domainIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)enumerateSearchResultForRequest:(id)a3 completionHandler:(id)a4;
-- (void)enumeratorWasInvalidated:(id)a3;
-- (void)evictItemAtURL:(id)a3 completionHandler:(id)a4;
-- (void)fetchAlternateContentsURLWrapperForURL:(id)a3 completionHandler:(id)a4;
-- (void)fetchAndStartEnumeratingWithSettings:(id)a3 observer:(id)a4 request:(id)a5 completionHandler:(id)a6;
-- (void)fetchCustomPushTopicsWithCompletionHandler:(id)a3;
-- (void)fetchDefaultContainerForBundleIdentifier:(id)a3 defaultName:(id)a4 inDomainIdentifier:(id)a5 lookupOnly:(BOOL)a6 reply:(id)a7;
-- (void)fetchHierarchyForItemID:(id)a3 recursively:(BOOL)a4 ignoreAlternateContentURL:(BOOL)a5 reply:(id)a6;
-- (void)fetchItemID:(id)a3 reply:(id)a4;
-- (void)fetchOperationServiceEndpoint:(id)a3;
-- (void)fetchServicesForItemID:(id)a3 allowRestrictedSources:(BOOL)a4 completionHandler:(id)a5;
-- (void)fetchTrashIdentifiersWithCompletionHandler:(id)a3;
-- (void)fetchVendorEndpoint:(id)a3;
-- (void)forceUpdateBlockedProcessNamesFromDomain:(id)a3 completionHandler:(id)a4;
-- (void)getKnownFolderLocations:(unint64_t)a3 completionHandler:(id)a4;
-- (void)identifierForItemAtURL:(id)a3 completionHandler:(id)a4;
-- (void)importDidFinishWithCompletionHandler:(id)a3;
-- (void)importDocumentAtURL:(id)a3 intoFolderWithIdentifier:(id)a4 originalName:(id)a5 extensionInstance:(id)a6 reply:(id)a7;
-- (void)indexOneBatchInDomain:(id)a3 completionHandler:(id)a4;
+- (void)dropDomainWithCompletionHandler:(id)handler;
+- (void)dropIndexForDomain:(id)domain dropReason:(unint64_t)reason completionHandler:(id)handler;
+- (void)dumpIndexStateForDomain:(id)domain toFileHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)dumpInternalStateToTermDumper:(id)dumper domainIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)enumerateSearchResultForRequest:(id)request completionHandler:(id)handler;
+- (void)enumeratorWasInvalidated:(id)invalidated;
+- (void)evictItemAtURL:(id)l completionHandler:(id)handler;
+- (void)fetchAlternateContentsURLWrapperForURL:(id)l completionHandler:(id)handler;
+- (void)fetchAndStartEnumeratingWithSettings:(id)settings observer:(id)observer request:(id)request completionHandler:(id)handler;
+- (void)fetchCustomPushTopicsWithCompletionHandler:(id)handler;
+- (void)fetchDefaultContainerForBundleIdentifier:(id)identifier defaultName:(id)name inDomainIdentifier:(id)domainIdentifier lookupOnly:(BOOL)only reply:(id)reply;
+- (void)fetchHierarchyForItemID:(id)d recursively:(BOOL)recursively ignoreAlternateContentURL:(BOOL)l reply:(id)reply;
+- (void)fetchItemID:(id)d reply:(id)reply;
+- (void)fetchOperationServiceEndpoint:(id)endpoint;
+- (void)fetchServicesForItemID:(id)d allowRestrictedSources:(BOOL)sources completionHandler:(id)handler;
+- (void)fetchTrashIdentifiersWithCompletionHandler:(id)handler;
+- (void)fetchVendorEndpoint:(id)endpoint;
+- (void)forceUpdateBlockedProcessNamesFromDomain:(id)domain completionHandler:(id)handler;
+- (void)getKnownFolderLocations:(unint64_t)locations completionHandler:(id)handler;
+- (void)identifierForItemAtURL:(id)l completionHandler:(id)handler;
+- (void)importDidFinishWithCompletionHandler:(id)handler;
+- (void)importDocumentAtURL:(id)l intoFolderWithIdentifier:(id)identifier originalName:(id)name extensionInstance:(id)instance reply:(id)reply;
+- (void)indexOneBatchInDomain:(id)domain completionHandler:(id)handler;
 - (void)invalidate;
-- (void)itemChangedAtURL:(id)a3 completionHandler:(id)a4;
-- (void)itemForItemID:(id)a3 request:(id)a4 completionHandler:(id)a5;
-- (void)itemForURL:(id)a3 completionHandler:(id)a4;
-- (void)listRemoteVersionsWithSettings:(id)a3 observer:(id)a4 request:(id)a5 completionHandler:(id)a6;
-- (void)movingItemAtURL:(id)a3 requiresProvidingWithDestinationURL:(id)a4 completionHandler:(id)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)preflightReparentItemIDs:(id)a3 underParentID:(id)a4 reply:(id)a5;
-- (void)preflightTrashItemIDs:(id)a3 completionHandler:(id)a4;
-- (void)providePlaceholderAtURL:(id)a3 completionHandler:(id)a4;
-- (void)removeListenerDelegate:(id)a3;
-- (void)removeTrashedItemsOlderThanDate:(id)a3 domainIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)searchEnumeratorWasInvalidated:(id)a3;
-- (void)sendBlockedProcessNamesUpdateWithCompletionHandler:(id)a3;
-- (void)setAlternateContentsURL:(id)a3 forDocumentWithURL:(id)a4 completionHandler:(id)a5;
-- (void)shouldConnectExternalDomainWithCompletionHandler:(id)a3;
-- (void)signalEnumeratorForMaterializedItemsWithCompletionHandler:(id)a3;
-- (void)signalEnumeratorForPendingItemsWithCompletionHandler:(id)a3;
-- (void)signalNeedsReindexItemsWithIdentifiers:(id)a3 domainIdentifier:(id)a4 indexReason:(int64_t)a5 completionHandler:(id)a6;
-- (void)spotlightIndexerDidReindexAllSearchableItems:(id)a3;
-- (void)startOperation:(id)a3 toFetchThumbnailsForItemIdentifiers:(id)a4 size:(CGSize)a5 completionHandler:(id)a6;
-- (void)startOperation:(id)a3 toFetchThumbnailsWithDictionary:(id)a4 size:(CGSize)a5 completionHandler:(id)a6;
-- (void)startProvidingItemAtURL:(id)a3 readingOptions:(unint64_t)a4 completionHandler:(id)a5;
-- (void)trashItemAtURL:(id)a3 completionHandler:(id)a4;
-- (void)updateIgnoreStateOfItemWithIdentifiers:(id)a3 ignoreState:(BOOL)a4 completionHandler:(id)a5;
-- (void)userCheckedSuppressionCheckboxForUserInteractionIdentifier:(id)a3 domainIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)userInteractionErrorsForPerformingAction:(id)a3 sourceItems:(id)a4 destinationItem:(id)a5 fpProviderDomainId:(id)a6 sourceItemKeysAllowList:(id)a7 destinationItemKeysAllowList:(id)a8 completionHandler:(id)a9;
-- (void)valuesForAttributes:(id)a3 forItemID:(id)a4 completionHandler:(id)a5;
-- (void)waitForStabilizationWithCompletionHandler:(id)a3;
-- (void)wakeForPushWithCompletionHandler:(id)a3;
-- (void)wakeForSessionIdentifier:(id)a3 completionHandler:(id)a4;
+- (void)itemChangedAtURL:(id)l completionHandler:(id)handler;
+- (void)itemForItemID:(id)d request:(id)request completionHandler:(id)handler;
+- (void)itemForURL:(id)l completionHandler:(id)handler;
+- (void)listRemoteVersionsWithSettings:(id)settings observer:(id)observer request:(id)request completionHandler:(id)handler;
+- (void)movingItemAtURL:(id)l requiresProvidingWithDestinationURL:(id)rL completionHandler:(id)handler;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)preflightReparentItemIDs:(id)ds underParentID:(id)d reply:(id)reply;
+- (void)preflightTrashItemIDs:(id)ds completionHandler:(id)handler;
+- (void)providePlaceholderAtURL:(id)l completionHandler:(id)handler;
+- (void)removeListenerDelegate:(id)delegate;
+- (void)removeTrashedItemsOlderThanDate:(id)date domainIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)searchEnumeratorWasInvalidated:(id)invalidated;
+- (void)sendBlockedProcessNamesUpdateWithCompletionHandler:(id)handler;
+- (void)setAlternateContentsURL:(id)l forDocumentWithURL:(id)rL completionHandler:(id)handler;
+- (void)shouldConnectExternalDomainWithCompletionHandler:(id)handler;
+- (void)signalEnumeratorForMaterializedItemsWithCompletionHandler:(id)handler;
+- (void)signalEnumeratorForPendingItemsWithCompletionHandler:(id)handler;
+- (void)signalNeedsReindexItemsWithIdentifiers:(id)identifiers domainIdentifier:(id)identifier indexReason:(int64_t)reason completionHandler:(id)handler;
+- (void)spotlightIndexerDidReindexAllSearchableItems:(id)items;
+- (void)startOperation:(id)operation toFetchThumbnailsForItemIdentifiers:(id)identifiers size:(CGSize)size completionHandler:(id)handler;
+- (void)startOperation:(id)operation toFetchThumbnailsWithDictionary:(id)dictionary size:(CGSize)size completionHandler:(id)handler;
+- (void)startProvidingItemAtURL:(id)l readingOptions:(unint64_t)options completionHandler:(id)handler;
+- (void)trashItemAtURL:(id)l completionHandler:(id)handler;
+- (void)updateIgnoreStateOfItemWithIdentifiers:(id)identifiers ignoreState:(BOOL)state completionHandler:(id)handler;
+- (void)userCheckedSuppressionCheckboxForUserInteractionIdentifier:(id)identifier domainIdentifier:(id)domainIdentifier completionHandler:(id)handler;
+- (void)userInteractionErrorsForPerformingAction:(id)action sourceItems:(id)items destinationItem:(id)item fpProviderDomainId:(id)id sourceItemKeysAllowList:(id)list destinationItemKeysAllowList:(id)allowList completionHandler:(id)handler;
+- (void)valuesForAttributes:(id)attributes forItemID:(id)d completionHandler:(id)handler;
+- (void)waitForStabilizationWithCompletionHandler:(id)handler;
+- (void)wakeForPushWithCompletionHandler:(id)handler;
+- (void)wakeForSessionIdentifier:(id)identifier completionHandler:(id)handler;
 @end
 
 @implementation FPXExtensionContext
@@ -140,18 +140,18 @@
     queue = v2->_queue;
     v2->_queue = v9;
 
-    v11 = [MEMORY[0x1E696AAE8] mainBundle];
-    v12 = [v11 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
     providerIdentifier = v2->_providerIdentifier;
-    v2->_providerIdentifier = v12;
+    v2->_providerIdentifier = bundleIdentifier;
 
-    v14 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     runningEnumerators = v2->_runningEnumerators;
-    v2->_runningEnumerators = v14;
+    v2->_runningEnumerators = weakObjectsHashTable;
 
-    v16 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable2 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     runningSearchEnumerators = v2->_runningSearchEnumerators;
-    v2->_runningSearchEnumerators = v16;
+    v2->_runningSearchEnumerators = weakObjectsHashTable2;
   }
 
   return v2;
@@ -159,9 +159,9 @@
 
 - (id)domainContext
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  domainContext = v2->_domainContext;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  domainContext = selfCopy->_domainContext;
   if (!domainContext)
   {
     v6 = fp_current_or_default_log();
@@ -174,7 +174,7 @@
   }
 
   v4 = domainContext;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -184,9 +184,9 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(FPProviderDomain *)self->_providerDomain identifier];
-  v7 = [v6 fp_obfuscatedProviderDomainID];
-  v8 = [v3 stringWithFormat:@"<%@:%p domain:%@>", v5, self, v7];
+  identifier = [(FPProviderDomain *)self->_providerDomain identifier];
+  fp_obfuscatedProviderDomainID = [identifier fp_obfuscatedProviderDomainID];
+  v8 = [v3 stringWithFormat:@"<%@:%p domain:%@>", v5, self, fp_obfuscatedProviderDomainID];
 
   return v8;
 }
@@ -226,96 +226,96 @@ void __37__FPXExtensionContext_principalClass__block_invoke()
   }
 }
 
-- (void)beginRequestWithDomain:(id)a3 alternateContentsDictionary:(id)a4 domainServicer:(id)a5 providerDomain:(id)a6 domainVersion:(id)a7 completionHandler:(id)a8
+- (void)beginRequestWithDomain:(id)domain alternateContentsDictionary:(id)dictionary domainServicer:(id)servicer providerDomain:(id)providerDomain domainVersion:(id)version completionHandler:(id)handler
 {
   v97 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v81 = a4;
-  v82 = a5;
-  v15 = a6;
-  v83 = a7;
-  v84 = a8;
-  v16 = self;
-  objc_sync_enter(v16);
+  domainCopy = domain;
+  dictionaryCopy = dictionary;
+  servicerCopy = servicer;
+  providerDomainCopy = providerDomain;
+  versionCopy = version;
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v17 = MEMORY[0x1E696AEC0];
-  providerIdentifier = v16->_providerIdentifier;
-  v19 = [v14 identifier];
-  v20 = [v17 fp_providerDomainIDFromProviderID:providerIdentifier domainIdentifier:v19];
-  v21 = [v20 fp_obfuscatedProviderDomainID];
-  v22 = fpfs_create_log_for_provider([v21 UTF8String]);
-  log = v16->_log;
-  v16->_log = v22;
+  providerIdentifier = selfCopy->_providerIdentifier;
+  identifier = [domainCopy identifier];
+  v20 = [v17 fp_providerDomainIDFromProviderID:providerIdentifier domainIdentifier:identifier];
+  fp_obfuscatedProviderDomainID = [v20 fp_obfuscatedProviderDomainID];
+  v22 = fpfs_create_log_for_provider([fp_obfuscatedProviderDomainID UTF8String]);
+  log = selfCopy->_log;
+  selfCopy->_log = v22;
 
-  v87 = fpfs_adopt_log(v16->_log);
+  v87 = fpfs_adopt_log(selfCopy->_log);
   v24 = fp_current_or_default_log();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413058;
-    v90 = v16;
+    v90 = selfCopy;
     v91 = 2080;
     v92 = "[FPXExtensionContext beginRequestWithDomain:alternateContentsDictionary:domainServicer:providerDomain:domainVersion:completionHandler:]";
     v93 = 2112;
-    v94 = v15;
+    v94 = providerDomainCopy;
     v95 = 2048;
-    v96 = v83;
+    v96 = versionCopy;
     _os_log_debug_impl(&dword_1AAAE1000, v24, OS_LOG_TYPE_DEBUG, "[DEBUG] ipc: %@ %s %@, %ld", buf, 0x2Au);
   }
 
-  v25 = [MEMORY[0x1E696B0B8] currentConnection];
-  objc_storeWeak(&v16->_xpcConnection, v25);
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  objc_storeWeak(&selfCopy->_xpcConnection, currentConnection);
 
-  v26 = v16->_log;
-  WeakRetained = objc_loadWeakRetained(&v16->_xpcConnection);
+  v26 = selfCopy->_log;
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_xpcConnection);
   [FPXPCLogDelegate setupWithLog:v26 forConnection:WeakRetained];
 
   v28 = fp_current_or_default_log();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
   {
-    v29 = [MEMORY[0x1E696B0B8] currentConnection];
+    currentConnection2 = [MEMORY[0x1E696B0B8] currentConnection];
     *buf = 138412290;
-    v90 = v29;
+    v90 = currentConnection2;
     _os_log_impl(&dword_1AAAE1000, v28, OS_LOG_TYPE_INFO, "[INFO] [helena] call to beginRequest from connection %@", buf, 0xCu);
   }
 
-  v30 = [MEMORY[0x1E69DF068] sharedManager];
-  v31 = [v30 currentPersona];
-  v85 = [v31 userPersonaUniqueString];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
 
-  v32 = [v14 personaIdentifier];
-  if ([v32 isEqualToString:v85])
+  personaIdentifier = [domainCopy personaIdentifier];
+  if ([personaIdentifier isEqualToString:userPersonaUniqueString])
   {
   }
 
   else
   {
-    v33 = [v14 personaIdentifier];
-    v34 = v85 == v33;
+    personaIdentifier2 = [domainCopy personaIdentifier];
+    v34 = userPersonaUniqueString == personaIdentifier2;
 
     if (!v34)
     {
       v68 = fp_current_or_default_log();
       if (os_log_type_enabled(v68, OS_LOG_TYPE_ERROR))
       {
-        v69 = [v14 personaIdentifier];
+        personaIdentifier3 = [domainCopy personaIdentifier];
         *buf = 138412802;
-        v90 = v16;
+        v90 = selfCopy;
         v91 = 2112;
-        v92 = v85;
+        v92 = userPersonaUniqueString;
         v93 = 2112;
-        v94 = v69;
+        v94 = personaIdentifier3;
         _os_log_error_impl(&dword_1AAAE1000, v68, OS_LOG_TYPE_ERROR, "[ERROR] Non matching personas for the extension %@ (%@, expect %@)", buf, 0x20u);
       }
 
       v70 = [MEMORY[0x1E696ABC0] errorWithDomain:@"NSFileProviderInternalErrorDomain" code:18 userInfo:MEMORY[0x1E695E0F8]];
-      v88[0] = fpfs_adopt_log(v16->_log);
+      v88[0] = fpfs_adopt_log(selfCopy->_log);
       v71 = fp_current_or_default_log();
       if (os_log_type_enabled(v71, OS_LOG_TYPE_DEBUG))
       {
-        v72 = FPPopLogSectionForBlock(v84);
+        v72 = FPPopLogSectionForBlock(handlerCopy);
         *buf = 134218754;
         v90 = v72;
         v91 = 2112;
-        v92 = v16;
+        v92 = selfCopy;
         v93 = 2080;
         v94 = "[FPXExtensionContext beginRequestWithDomain:alternateContentsDictionary:domainServicer:providerDomain:domainVersion:completionHandler:]";
         v95 = 2112;
@@ -323,7 +323,7 @@ void __37__FPXExtensionContext_principalClass__block_invoke()
         _os_log_debug_impl(&dword_1AAAE1000, v71, OS_LOG_TYPE_DEBUG, "[DEBUG] ┳%llx ipc: %@, reply of %s %@", buf, 0x2Au);
       }
 
-      (*(v84 + 2))(v84, v70);
+      (*(handlerCopy + 2))(handlerCopy, v70);
       __fp_pop_log(v88);
 
       exit(1);
@@ -332,43 +332,43 @@ void __37__FPXExtensionContext_principalClass__block_invoke()
 
   v35 = [FPXPCAutomaticErrorProxy alloc];
   v36 = MEMORY[0x1E696AEC0];
-  v37 = [v14 identifier];
-  v38 = [v36 stringWithFormat:@"domain servicer for %@ (handshake)", v37];
-  v39 = [(FPXPCAutomaticErrorProxy *)v35 initWithConnection:v82 protocol:&unk_1F1FF3948 orError:0 name:v38 requestPid:0];
-  domainServicer = v16->_domainServicer;
-  v16->_domainServicer = v39;
+  identifier2 = [domainCopy identifier];
+  v38 = [v36 stringWithFormat:@"domain servicer for %@ (handshake)", identifier2];
+  v39 = [(FPXPCAutomaticErrorProxy *)v35 initWithConnection:servicerCopy protocol:&unk_1F1FF3948 orError:0 name:v38 requestPid:0];
+  domainServicer = selfCopy->_domainServicer;
+  selfCopy->_domainServicer = v39;
 
-  [NSFileProviderManager registerDomainServicer:v16->_domainServicer forDomain:v14];
-  v41 = [v15 storageURLs];
-  v42 = [v41 firstObject];
+  [NSFileProviderManager registerDomainServicer:selfCopy->_domainServicer forDomain:domainCopy];
+  storageURLs = [providerDomainCopy storageURLs];
+  firstObject = [storageURLs firstObject];
 
-  if (v42)
+  if (firstObject)
   {
-    v43 = [v15 storageURLs];
-    v44 = [v43 firstObject];
-    [NSFileProviderManager registerRootURL:v44 forDomain:v14];
+    storageURLs2 = [providerDomainCopy storageURLs];
+    firstObject2 = [storageURLs2 firstObject];
+    [NSFileProviderManager registerRootURL:firstObject2 forDomain:domainCopy];
   }
 
   v45 = +[FPXExtensionContext principalClass];
-  if ([v15 isUsingFPFS])
+  if ([providerDomainCopy isUsingFPFS])
   {
-    v46 = [v15 providerID];
-    if ([v46 isEqualToString:@"com.apple.FileProvider.LocalStorage"])
+    providerID = [providerDomainCopy providerID];
+    if ([providerID isEqualToString:@"com.apple.FileProvider.LocalStorage"])
     {
     }
 
     else
     {
-      v47 = [v15 providerID];
-      v48 = [v47 isEqualToString:@"com.apple.FileProvider.TestingHarness.TestFileProvider"];
+      providerID2 = [providerDomainCopy providerID];
+      v48 = [providerID2 isEqualToString:@"com.apple.FileProvider.TestingHarness.TestFileProvider"];
 
       if ((v48 & 1) == 0)
       {
         if (([(objc_class *)v45 conformsToProtocol:&unk_1F1FD7C00]& 1) == 0)
         {
-          v78 = [v14 identifier];
-          v79 = [v15 providerDisplayName];
-          __FILEPROVIDER_BAD_EXTENSION__(v78, v79, v45);
+          identifier3 = [domainCopy identifier];
+          providerDisplayName = [providerDomainCopy providerDisplayName];
+          __FILEPROVIDER_BAD_EXTENSION__(identifier3, providerDisplayName, v45);
         }
 
         goto LABEL_29;
@@ -376,11 +376,11 @@ void __37__FPXExtensionContext_principalClass__block_invoke()
     }
   }
 
-  if (([v15 isUsingFPFS] & 1) == 0)
+  if (([providerDomainCopy isUsingFPFS] & 1) == 0)
   {
-    v49 = [v15 identifier];
-    v50 = [v49 fp_toDomainIdentifier];
-    if (![v50 isEqual:@"NSFileProviderDomainDefaultIdentifier"] || !-[objc_class conformsToProtocol:](v45, "conformsToProtocol:", &unk_1F1FD7C00))
+    identifier4 = [providerDomainCopy identifier];
+    fp_toDomainIdentifier = [identifier4 fp_toDomainIdentifier];
+    if (![fp_toDomainIdentifier isEqual:@"NSFileProviderDomainDefaultIdentifier"] || !-[objc_class conformsToProtocol:](v45, "conformsToProtocol:", &unk_1F1FD7C00))
     {
 LABEL_25:
 
@@ -418,77 +418,77 @@ LABEL_22:
 
     v45 = FPXFakeDefaultDomainExtension;
 LABEL_29:
-    v55 = [[v45 alloc] initWithDomain:v14];
-    v56 = 0;
+    v55 = [[v45 alloc] initWithDomain:domainCopy];
+    extension = 0;
     goto LABEL_30;
   }
 
 LABEL_26:
   if (([(objc_class *)v45 isSubclassOfClass:objc_opt_class()]& 1) == 0)
   {
-    v76 = [v14 identifier];
-    v77 = [v15 domainDisplayName];
-    __FILEPROVIDER_V2_EXTENSION_WITHOUT_IMPL(v76, v77, v45);
+    identifier5 = [domainCopy identifier];
+    domainDisplayName = [providerDomainCopy domainDisplayName];
+    __FILEPROVIDER_V2_EXTENSION_WITHOUT_IMPL(identifier5, domainDisplayName, v45);
   }
 
   v53 = [FPXV2ExtensionWrapper alloc];
   [(FPXV2ExtensionWrapper *)v53 setExtensionClass:v45];
   v54 = v53;
-  v55 = [(FPXV2ExtensionWrapper *)v54 initWithDomain:v14];
-  v56 = [(FPXV2ExtensionWrapper *)v54 extension];
+  v55 = [(FPXV2ExtensionWrapper *)v54 initWithDomain:domainCopy];
+  extension = [(FPXV2ExtensionWrapper *)v54 extension];
 
 LABEL_30:
   if (![(FPXV2ExtensionWrapper *)v55 conformsToProtocol:&unk_1F1FD7C00]&& ![(FPXV2ExtensionWrapper *)v55 conformsToProtocol:&unk_1F1FD7C00])
   {
-    v73 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v74 = objc_opt_class();
     v75 = NSStringFromClass(v74);
-    [v73 handleFailureInMethod:a2 object:v16 file:@"FPXExtensionContext.m" lineNumber:246 description:{@"The principal class of the extension is not of type NSFileProviderReplicatedExtension: %@", v75}];
+    [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"FPXExtensionContext.m" lineNumber:246 description:{@"The principal class of the extension is not of type NSFileProviderReplicatedExtension: %@", v75}];
   }
 
-  v16->_usesFPFS = [v15 isUsingFPFS];
-  v57 = [[FPDocumentAlternateContents alloc] initWithAlternateContentsDictionary:v81];
-  alternateContents = v16->_alternateContents;
-  v16->_alternateContents = v57;
+  selfCopy->_usesFPFS = [providerDomainCopy isUsingFPFS];
+  v57 = [[FPDocumentAlternateContents alloc] initWithAlternateContentsDictionary:dictionaryCopy];
+  alternateContents = selfCopy->_alternateContents;
+  selfCopy->_alternateContents = v57;
 
-  v59 = [[FPXDomainContext alloc] initWithVendorInstance:v55 domain:v14 extensionContext:v16 providerDomain:v15 domainVersion:v83];
-  domainContext = v16->_domainContext;
-  v16->_domainContext = v59;
+  v59 = [[FPXDomainContext alloc] initWithVendorInstance:v55 domain:domainCopy extensionContext:selfCopy providerDomain:providerDomainCopy domainVersion:versionCopy];
+  domainContext = selfCopy->_domainContext;
+  selfCopy->_domainContext = v59;
 
-  objc_storeStrong(&v16->_providerDomain, a6);
-  [v56 setExtensionContext:v16];
+  objc_storeStrong(&selfCopy->_providerDomain, providerDomain);
+  [extension setExtensionContext:selfCopy];
   v61 = fp_current_or_default_log();
   if (os_log_type_enabled(v61, OS_LOG_TYPE_DEBUG))
   {
-    v62 = [(NSString *)v16->_providerIdentifier fp_fpIdentifier];
-    [FPXExtensionContext beginRequestWithDomain:v62 alternateContentsDictionary:v88 domainServicer:v61 providerDomain:? domainVersion:? completionHandler:?];
+    fp_fpIdentifier = [(NSString *)selfCopy->_providerIdentifier fp_fpIdentifier];
+    [FPXExtensionContext beginRequestWithDomain:fp_fpIdentifier alternateContentsDictionary:v88 domainServicer:v61 providerDomain:? domainVersion:? completionHandler:?];
   }
 
-  if (v16->_usesFPFS && !v16->_userDefaults)
+  if (selfCopy->_usesFPFS && !selfCopy->_userDefaults)
   {
-    v63 = v16;
+    v63 = selfCopy;
     objc_sync_enter(v63);
-    v64 = [MEMORY[0x1E695E000] standardUserDefaults];
-    userDefaults = v16->_userDefaults;
-    v16->_userDefaults = v64;
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    userDefaults = selfCopy->_userDefaults;
+    selfCopy->_userDefaults = standardUserDefaults;
 
-    [(NSUserDefaults *)v16->_userDefaults addObserver:v63 forKeyPath:@"NSFileProviderExtensionNonMaterializingProcessNames" options:4 context:0];
+    [(NSUserDefaults *)selfCopy->_userDefaults addObserver:v63 forKeyPath:@"NSFileProviderExtensionNonMaterializingProcessNames" options:4 context:0];
     objc_sync_exit(v63);
   }
 
-  v86 = fpfs_adopt_log(v16->_log);
+  v86 = fpfs_adopt_log(selfCopy->_log);
   v66 = fp_current_or_default_log();
   if (os_log_type_enabled(v66, OS_LOG_TYPE_DEBUG))
   {
-    FPPopLogSectionForBlock(v84);
+    FPPopLogSectionForBlock(handlerCopy);
     [FPXExtensionContext beginRequestWithDomain:alternateContentsDictionary:domainServicer:providerDomain:domainVersion:completionHandler:];
   }
 
-  (*(v84 + 2))(v84, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0);
   __fp_pop_log(&v86);
 
   __fp_pop_log(&v87);
-  objc_sync_exit(v16);
+  objc_sync_exit(selfCopy);
 
   v67 = *MEMORY[0x1E69E9840];
 }
@@ -505,43 +505,43 @@ LABEL_30:
 - (void)invalidate
 {
   v51 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_domainContext;
-  domainContext = v2->_domainContext;
-  v2->_domainContext = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_domainContext;
+  domainContext = selfCopy->_domainContext;
+  selfCopy->_domainContext = 0;
 
-  WeakRetained = objc_loadWeakRetained(&v2->_xpcConnection);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_xpcConnection);
   [WeakRetained invalidate];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   if (v3)
   {
     v37 = v3;
-    v38 = [(FPXDomainContext *)v3 domain];
-    v6 = [v38 personaIdentifier];
-    v7 = [MEMORY[0x1E69DF068] sharedManager];
-    v8 = [v7 currentPersona];
-    v9 = [v8 userPersonaUniqueString];
-    if ([v6 isEqualToString:v9])
+    domain = [(FPXDomainContext *)v3 domain];
+    personaIdentifier = [domain personaIdentifier];
+    mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+    currentPersona = [mEMORY[0x1E69DF068] currentPersona];
+    userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+    if ([personaIdentifier isEqualToString:userPersonaUniqueString])
     {
     }
 
     else
     {
-      v10 = [MEMORY[0x1E69DF068] sharedManager];
-      v11 = [v10 currentPersona];
-      v12 = [v11 userPersonaUniqueString];
-      v13 = [(FPXDomainContext *)v3 domain];
-      v14 = [v13 personaIdentifier];
+      mEMORY[0x1E69DF068]2 = [MEMORY[0x1E69DF068] sharedManager];
+      currentPersona2 = [mEMORY[0x1E69DF068]2 currentPersona];
+      userPersonaUniqueString2 = [currentPersona2 userPersonaUniqueString];
+      domain2 = [(FPXDomainContext *)v3 domain];
+      personaIdentifier2 = [domain2 personaIdentifier];
 
       v3 = v37;
-      if (v12 != v14)
+      if (userPersonaUniqueString2 != personaIdentifier2)
       {
         v36 = fp_current_or_default_log();
         if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
         {
-          [(FPXExtensionContext *)v2 invalidate];
+          [(FPXExtensionContext *)selfCopy invalidate];
         }
 
         exit(1);
@@ -550,13 +550,13 @@ LABEL_30:
   }
 
   v15 = v3;
-  v16 = [(FPXDomainContext *)v3 spotlightIndexer];
-  [v16 invalidateAsync];
+  spotlightIndexer = [(FPXDomainContext *)v3 spotlightIndexer];
+  [spotlightIndexer invalidateAsync];
 
-  domainServicer = v2->_domainServicer;
-  v2->_domainServicer = 0;
+  domainServicer = selfCopy->_domainServicer;
+  selfCopy->_domainServicer = 0;
 
-  v18 = v2;
+  v18 = selfCopy;
   objc_sync_enter(v18);
   [(NSUserDefaults *)v18->_userDefaults removeObserver:v18 forKeyPath:@"NSFileProviderExtensionNonMaterializingProcessNames"];
   userDefaults = v18->_userDefaults;
@@ -565,13 +565,13 @@ LABEL_30:
   objc_sync_exit(v18);
   if (v18->_isBeingDeallocated)
   {
-    v20 = [(NSHashTable *)v18->_runningEnumerators allObjects];
+    allObjects = [(NSHashTable *)v18->_runningEnumerators allObjects];
     runningEnumerators = v18->_runningEnumerators;
     v18->_runningEnumerators = 0;
 
     runningSearchEnumerators = v18->_runningSearchEnumerators;
     p_runningSearchEnumerators = &v18->_runningSearchEnumerators;
-    v24 = [(NSHashTable *)runningSearchEnumerators allObjects];
+    allObjects2 = [(NSHashTable *)runningSearchEnumerators allObjects];
     v25 = *p_runningSearchEnumerators;
     *p_runningSearchEnumerators = 0;
 
@@ -579,7 +579,7 @@ LABEL_30:
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v26 = v20;
+    v26 = allObjects;
     v27 = [v26 countByEnumeratingWithState:&v45 objects:v50 count:16];
     if (v27)
     {
@@ -606,7 +606,7 @@ LABEL_30:
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v30 = v24;
+    v30 = allObjects2;
     v31 = [v30 countByEnumeratingWithState:&v41 objects:v49 count:16];
     if (v31)
     {
@@ -740,17 +740,17 @@ uint64_t __33__FPXExtensionContext_invalidate__block_invoke_2(id *a1)
   return result;
 }
 
-- (void)sendBlockedProcessNamesUpdateWithCompletionHandler:(id)a3
+- (void)sendBlockedProcessNamesUpdateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   notificationQueue = self->_notificationQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __74__FPXExtensionContext_sendBlockedProcessNamesUpdateWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7939128;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(notificationQueue, v7);
 }
 
@@ -792,25 +792,25 @@ uint64_t __74__FPXExtensionContext_sendBlockedProcessNamesUpdateWithCompletionHa
   return isKindOfClass & 1;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if ([a3 isEqualToString:{@"NSFileProviderExtensionNonMaterializingProcessNames", a4, a5, a6}])
+  if ([path isEqualToString:{@"NSFileProviderExtensionNonMaterializingProcessNames", object, change, context}])
   {
 
     [(FPXExtensionContext *)self sendBlockedProcessNamesUpdateWithCompletionHandler:&__block_literal_global_187];
   }
 }
 
-- (void)forceUpdateBlockedProcessNamesFromDomain:(id)a3 completionHandler:(id)a4
+- (void)forceUpdateBlockedProcessNamesFromDomain:(id)domain completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __82__FPXExtensionContext_forceUpdateBlockedProcessNamesFromDomain_completionHandler___block_invoke;
   v7[3] = &unk_1E7939170;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(FPXExtensionContext *)self sendBlockedProcessNamesUpdateWithCompletionHandler:v7];
 }
 
@@ -841,80 +841,80 @@ void __82__FPXExtensionContext_forceUpdateBlockedProcessNamesFromDomain_completi
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (id)domainContextForIdentifier:(id)a3
+- (id)domainContextForIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = [(FPXExtensionContext *)self domainContext];
-  v7 = [v6 domain];
-  v8 = [v7 identifier];
-  v9 = [v5 isEqualToString:v8];
+  identifierCopy = identifier;
+  domainContext = [(FPXExtensionContext *)self domainContext];
+  domain = [domainContext domain];
+  identifier = [domain identifier];
+  v9 = [identifierCopy isEqualToString:identifier];
 
   if ((v9 & 1) == 0)
   {
     [(FPXExtensionContext *)a2 domainContextForIdentifier:?];
   }
 
-  return v6;
+  return domainContext;
 }
 
 - (id)v2Instance
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(FPXDomainContext *)v2->_domainContext v2Instance];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v2Instance = [(FPXDomainContext *)selfCopy->_domainContext v2Instance];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return v2Instance;
 }
 
-- (id)instanceWithPrivateSelector:(SEL)a3
+- (id)instanceWithPrivateSelector:(SEL)selector
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(FPXDomainContext *)v4->_domainContext instanceWithPrivateSelector:a3];
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [(FPXDomainContext *)selfCopy->_domainContext instanceWithPrivateSelector:selector];
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
-- (id)instanceForItemID:(id)a3
+- (id)instanceForItemID:(id)d
 {
-  v3 = [(FPXExtensionContext *)self domainContextForItemID:a3];
-  v4 = [v3 vendorInstance];
+  v3 = [(FPXExtensionContext *)self domainContextForItemID:d];
+  vendorInstance = [v3 vendorInstance];
 
-  return v4;
+  return vendorInstance;
 }
 
-- (id)domainContextForItemID:(id)a3
+- (id)domainContextForItemID:(id)d
 {
-  v5 = a3;
-  v6 = [v5 domainIdentifier];
-  v7 = [(FPXExtensionContext *)self domainContext];
-  v8 = [v7 domain];
-  v9 = [v8 identifier];
-  v10 = [v6 isEqualToString:v9];
+  dCopy = d;
+  domainIdentifier = [dCopy domainIdentifier];
+  domainContext = [(FPXExtensionContext *)self domainContext];
+  domain = [domainContext domain];
+  identifier = [domain identifier];
+  v10 = [domainIdentifier isEqualToString:identifier];
 
   if ((v10 & 1) == 0)
   {
-    [(FPXExtensionContext *)v7 domainContextForItemID:a2, self, v5];
+    [(FPXExtensionContext *)domainContext domainContextForItemID:a2, self, dCopy];
   }
 
-  return v7;
+  return domainContext;
 }
 
-- (id)domainContextForItemIDs:(id)a3
+- (id)domainContextForItemIDs:(id)ds
 {
-  v4 = [a3 firstObject];
-  v5 = [(FPXExtensionContext *)self domainContextForItemID:v4];
+  firstObject = [ds firstObject];
+  v5 = [(FPXExtensionContext *)self domainContextForItemID:firstObject];
 
   return v5;
 }
 
-- (void)_deleteIndexInDomainContexts:(id)a3 completionHandler:(id)a4
+- (void)_deleteIndexInDomainContexts:(id)contexts completionHandler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v15 = a4;
+  contextsCopy = contexts;
+  handlerCopy = handler;
   v7 = dispatch_group_create();
   v27[0] = 0;
   v27[1] = v27;
@@ -926,7 +926,7 @@ void __82__FPXExtensionContext_forceUpdateBlockedProcessNamesFromDomain_completi
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v6;
+  obj = contextsCopy;
   v8 = [obj countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v8)
   {
@@ -967,9 +967,9 @@ void __82__FPXExtensionContext_forceUpdateBlockedProcessNamesFromDomain_completi
   block[1] = 3221225472;
   block[2] = __70__FPXExtensionContext__deleteIndexInDomainContexts_completionHandler___block_invoke_3;
   block[3] = &unk_1E79391E8;
-  v18 = v15;
+  v18 = handlerCopy;
   v19 = v27;
-  v13 = v15;
+  v13 = handlerCopy;
   dispatch_group_notify(v7, queue, block);
 
   _Block_object_dispose(v27, 8);
@@ -1005,10 +1005,10 @@ void __70__FPXExtensionContext__deleteIndexInDomainContexts_completionHandler___
   dispatch_group_leave(v3);
 }
 
-- (void)dropDomainWithCompletionHandler:(id)a3
+- (void)dropDomainWithCompletionHandler:(id)handler
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v10[0] = self->_domainContext;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
   v8[0] = MEMORY[0x1E69E9820];
@@ -1016,8 +1016,8 @@ void __70__FPXExtensionContext__deleteIndexInDomainContexts_completionHandler___
   v8[2] = __55__FPXExtensionContext_dropDomainWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E7939170;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = handlerCopy;
+  v6 = handlerCopy;
   [(FPXExtensionContext *)self _deleteIndexInDomainContexts:v5 completionHandler:v8];
 
   v7 = *MEMORY[0x1E69E9840];
@@ -1050,10 +1050,10 @@ void __55__FPXExtensionContext_dropDomainWithCompletionHandler___block_invoke(ui
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didChangeItemID:(id)a3 completionHandler:(id)a4
+- (void)didChangeItemID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v16 = fpfs_adopt_log(self->_log);
   v8 = fp_current_or_default_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -1066,10 +1066,10 @@ void __55__FPXExtensionContext_dropDomainWithCompletionHandler___block_invoke(ui
   v12[1] = 3221225472;
   v12[2] = __57__FPXExtensionContext_didChangeItemID_completionHandler___block_invoke;
   v12[3] = &unk_1E7939210;
-  v10 = v6;
+  v10 = dCopy;
   v13 = v10;
-  v14 = self;
-  v11 = v7;
+  selfCopy = self;
+  v11 = handlerCopy;
   v15 = v11;
   fp_dispatch_async_with_logs(notificationQueue, v12);
 
@@ -1178,24 +1178,24 @@ LABEL_19:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startProvidingItemAtURL:(id)a3 readingOptions:(unint64_t)a4 completionHandler:(id)a5
+- (void)startProvidingItemAtURL:(id)l readingOptions:(unint64_t)options completionHandler:(id)handler
 {
   v31 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
+  lCopy = l;
+  handlerCopy = handler;
   v22 = fpfs_adopt_log(self->_log);
   v11 = fp_current_or_default_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v16 = [v9 fp_shortDescription];
+    fp_shortDescription = [lCopy fp_shortDescription];
     *buf = 138413058;
-    v24 = self;
+    selfCopy = self;
     v25 = 2080;
     v26 = "[FPXExtensionContext startProvidingItemAtURL:readingOptions:completionHandler:]";
     v27 = 2112;
-    v28 = v16;
+    v28 = fp_shortDescription;
     v29 = 2048;
-    v30 = a4;
+    optionsCopy = options;
     _os_log_debug_impl(&dword_1AAAE1000, v11, OS_LOG_TYPE_DEBUG, "[DEBUG] ipc: %@ %s %@, 0x%lx", buf, 0x2Au);
   }
 
@@ -1205,12 +1205,12 @@ LABEL_19:
   v17[2] = __80__FPXExtensionContext_startProvidingItemAtURL_readingOptions_completionHandler___block_invoke;
   v17[3] = &unk_1E7939260;
   v17[4] = self;
-  v13 = v10;
+  v13 = handlerCopy;
   v19 = v13;
-  v14 = v9;
+  v14 = lCopy;
   v18 = v14;
   v20 = a2;
-  v21 = a4;
+  optionsCopy2 = options;
   fp_dispatch_async_with_logs(instanceQueue, v17);
 
   __fp_pop_log(&v22);
@@ -1356,16 +1356,16 @@ void __80__FPXExtensionContext_startProvidingItemAtURL_readingOptions_completion
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)evictItemAtURL:(id)a3 completionHandler:(id)a4
+- (void)evictItemAtURL:(id)l completionHandler:(id)handler
 {
   v16[6] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v16[0] = fpfs_adopt_log(self->_log);
   v8 = fp_current_or_default_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [v6 fp_shortDescription];
+    [lCopy fp_shortDescription];
     objc_claimAutoreleasedReturnValue();
     [FPXExtensionContext evictItemAtURL:completionHandler:];
   }
@@ -1376,9 +1376,9 @@ void __80__FPXExtensionContext_startProvidingItemAtURL_readingOptions_completion
   v13[2] = __56__FPXExtensionContext_evictItemAtURL_completionHandler___block_invoke;
   v13[3] = &unk_1E7939210;
   v13[4] = self;
-  v10 = v6;
+  v10 = lCopy;
   v14 = v10;
-  v11 = v7;
+  v11 = handlerCopy;
   v15 = v11;
   fp_dispatch_async_with_logs(instanceQueue, v13);
 
@@ -1478,62 +1478,62 @@ void __56__FPXExtensionContext_evictItemAtURL_completionHandler___block_invoke_2
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)userCheckedSuppressionCheckboxForUserInteractionIdentifier:(id)a3 domainIdentifier:(id)a4 completionHandler:(id)a5
+- (void)userCheckedSuppressionCheckboxForUserInteractionIdentifier:(id)identifier domainIdentifier:(id)domainIdentifier completionHandler:(id)handler
 {
   v16[8] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  domainIdentifierCopy = domainIdentifier;
+  handlerCopy = handler;
   v11 = fp_current_or_default_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     [FPXExtensionContext userCheckedSuppressionCheckboxForUserInteractionIdentifier:domainIdentifier:completionHandler:];
   }
 
-  v12 = [v9 fp_toDomainIdentifier];
-  v13 = [(FPXExtensionContext *)self createUserInteractionSuppressingWithDomainIdentifier:v12 withPurpose:@"UserCheckedSuppressionCheckbox"];
-  [v13 setInteractionSuppressed:1 forIdentifier:v8];
+  fp_toDomainIdentifier = [domainIdentifierCopy fp_toDomainIdentifier];
+  v13 = [(FPXExtensionContext *)self createUserInteractionSuppressingWithDomainIdentifier:fp_toDomainIdentifier withPurpose:@"UserCheckedSuppressionCheckbox"];
+  [v13 setInteractionSuppressed:1 forIdentifier:identifierCopy];
   v16[0] = fpfs_adopt_log(self->_log);
   v14 = fp_current_or_default_log();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    FPPopLogSectionForBlock(v10);
+    FPPopLogSectionForBlock(handlerCopy);
     [FPXExtensionContext userCheckedSuppressionCheckboxForUserInteractionIdentifier:domainIdentifier:completionHandler:];
   }
 
-  (*(v10 + 2))(v10, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0);
   __fp_pop_log(v16);
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)createUserInteractionSuppressingWithDomainIdentifier:(id)a3 withPurpose:(id)a4
+- (id)createUserInteractionSuppressingWithDomainIdentifier:(id)identifier withPurpose:(id)purpose
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  identifierCopy = identifier;
+  purposeCopy = purpose;
+  if (identifierCopy)
   {
-    v8 = [(FPXExtensionContext *)self domainContextForIdentifier:v6];
-    v9 = [v8 vendorInstance];
+    v8 = [(FPXExtensionContext *)self domainContextForIdentifier:identifierCopy];
+    vendorInstance = [v8 vendorInstance];
 
-    if (v9)
+    if (vendorInstance)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v10 = [v9 target];
+        target = [vendorInstance target];
 
-        v9 = v10;
+        vendorInstance = target;
       }
 
-      if ([v9 conformsToProtocol:&unk_1F1FD8058])
+      if ([vendorInstance conformsToProtocol:&unk_1F1FD8058])
       {
-        v9 = v9;
-        v11 = v9;
+        vendorInstance = vendorInstance;
+        v11 = vendorInstance;
         goto LABEL_18;
       }
 
-      v12 = [v7 isEqualToString:@"UserCheckedSuppressionCheckbox"];
+      v12 = [purposeCopy isEqualToString:@"UserCheckedSuppressionCheckbox"];
       v13 = fp_current_or_default_log();
       v14 = v13;
       if (v12)
@@ -1552,8 +1552,8 @@ void __56__FPXExtensionContext_evictItemAtURL_completionHandler___block_invoke_2
 
     else
     {
-      v9 = fp_current_or_default_log();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      vendorInstance = fp_current_or_default_log();
+      if (os_log_type_enabled(vendorInstance, OS_LOG_TYPE_ERROR))
       {
         [FPXExtensionContext createUserInteractionSuppressingWithDomainIdentifier:withPurpose:];
       }
@@ -1562,8 +1562,8 @@ void __56__FPXExtensionContext_evictItemAtURL_completionHandler___block_invoke_2
 
   else
   {
-    v9 = fp_current_or_default_log();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    vendorInstance = fp_current_or_default_log();
+    if (os_log_type_enabled(vendorInstance, OS_LOG_TYPE_ERROR))
     {
       [FPXExtensionContext createUserInteractionSuppressingWithDomainIdentifier:withPurpose:];
     }
@@ -1575,55 +1575,55 @@ LABEL_18:
   return v11;
 }
 
-- (void)deleteSearchableItemsWithSpotlightDomainIdentifiers:(id)a3 domainIdentifier:(id)a4 indexReason:(int64_t)a5 completionHandler:(id)a6
+- (void)deleteSearchableItemsWithSpotlightDomainIdentifiers:(id)identifiers domainIdentifier:(id)identifier indexReason:(int64_t)reason completionHandler:(id)handler
 {
   v52 = *MEMORY[0x1E69E9840];
-  v36 = a3;
-  v35 = a4;
-  v33 = a6;
-  v37 = self;
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  selfCopy = self;
   v42 = fpfs_adopt_log(self->_log);
   v9 = fp_current_or_default_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    -[FPXExtensionContext deleteSearchableItemsWithSpotlightDomainIdentifiers:domainIdentifier:indexReason:completionHandler:].cold.1(self, [v36 count], v51);
+    -[FPXExtensionContext deleteSearchableItemsWithSpotlightDomainIdentifiers:domainIdentifier:indexReason:completionHandler:].cold.1(self, [identifiersCopy count], v51);
   }
 
-  v10 = [(FPXExtensionContext *)self domainContextForIdentifier:v35];
-  v11 = [v10 domain];
-  v12 = [v11 personaIdentifier];
-  v13 = [MEMORY[0x1E69DF068] sharedManager];
-  v14 = [v13 currentPersona];
-  v15 = [v14 userPersonaUniqueString];
-  if ([v12 isEqualToString:v15])
+  v10 = [(FPXExtensionContext *)self domainContextForIdentifier:identifierCopy];
+  domain = [v10 domain];
+  personaIdentifier = [domain personaIdentifier];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+  if ([personaIdentifier isEqualToString:userPersonaUniqueString])
   {
   }
 
   else
   {
-    v16 = [MEMORY[0x1E69DF068] sharedManager];
-    v17 = [v16 currentPersona];
-    v18 = [v17 userPersonaUniqueString];
-    v19 = [v10 domain];
-    v20 = [v19 personaIdentifier];
-    v32 = v18 == v20;
+    mEMORY[0x1E69DF068]2 = [MEMORY[0x1E69DF068] sharedManager];
+    currentPersona2 = [mEMORY[0x1E69DF068]2 currentPersona];
+    userPersonaUniqueString2 = [currentPersona2 userPersonaUniqueString];
+    domain2 = [v10 domain];
+    personaIdentifier2 = [domain2 personaIdentifier];
+    v32 = userPersonaUniqueString2 == personaIdentifier2;
 
     if (!v32)
     {
       v26 = fp_current_or_default_log();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
-        v27 = [MEMORY[0x1E69DF068] sharedManager];
-        v28 = [v27 currentPersona];
-        v29 = [v28 userPersonaUniqueString];
-        v30 = [v10 domain];
-        v31 = [v30 personaIdentifier];
+        mEMORY[0x1E69DF068]3 = [MEMORY[0x1E69DF068] sharedManager];
+        currentPersona3 = [mEMORY[0x1E69DF068]3 currentPersona];
+        userPersonaUniqueString3 = [currentPersona3 userPersonaUniqueString];
+        domain3 = [v10 domain];
+        personaIdentifier3 = [domain3 personaIdentifier];
         *buf = 138413058;
-        v44 = v37;
+        v44 = selfCopy;
         v45 = 2112;
-        v46 = v29;
+        v46 = userPersonaUniqueString3;
         v47 = 2112;
-        v48 = v31;
+        v48 = personaIdentifier3;
         v49 = 2080;
         v50 = "[FPXExtensionContext deleteSearchableItemsWithSpotlightDomainIdentifiers:domainIdentifier:indexReason:completionHandler:]";
         _os_log_error_impl(&dword_1AAAE1000, v26, OS_LOG_TYPE_ERROR, "[ERROR] Non matching personas for the extension %@ (%@, expect %@) on %s", buf, 0x2Au);
@@ -1637,19 +1637,19 @@ LABEL_18:
   v40[1] = 3221225472;
   v40[2] = __122__FPXExtensionContext_deleteSearchableItemsWithSpotlightDomainIdentifiers_domainIdentifier_indexReason_completionHandler___block_invoke;
   v40[3] = &unk_1E79392B0;
-  v21 = v35;
+  v21 = identifierCopy;
   v41 = v21;
-  v22 = [v36 fp_map:v40];
+  v22 = [identifiersCopy fp_map:v40];
 
-  v23 = [v10 spotlightIndexer];
+  spotlightIndexer = [v10 spotlightIndexer];
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __122__FPXExtensionContext_deleteSearchableItemsWithSpotlightDomainIdentifiers_domainIdentifier_indexReason_completionHandler___block_invoke_2;
   v38[3] = &unk_1E7939170;
-  v38[4] = v37;
-  v24 = v33;
+  v38[4] = selfCopy;
+  v24 = handlerCopy;
   v39 = v24;
-  [v23 deleteSearchableItemsWithSpotlightDomainIdentifiers:v22 indexReason:a5 completionHandler:v38];
+  [spotlightIndexer deleteSearchableItemsWithSpotlightDomainIdentifiers:v22 indexReason:reason completionHandler:v38];
 
   __fp_pop_log(&v42);
   v25 = *MEMORY[0x1E69E9840];
@@ -1682,11 +1682,11 @@ void __122__FPXExtensionContext_deleteSearchableItemsWithSpotlightDomainIdentifi
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeTrashedItemsOlderThanDate:(id)a3 domainIdentifier:(id)a4 completionHandler:(id)a5
+- (void)removeTrashedItemsOlderThanDate:(id)date domainIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v20 = fpfs_adopt_log(self->_log);
   v11 = fp_current_or_default_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -1700,11 +1700,11 @@ void __122__FPXExtensionContext_deleteSearchableItemsWithSpotlightDomainIdentifi
   v16[2] = __90__FPXExtensionContext_removeTrashedItemsOlderThanDate_domainIdentifier_completionHandler___block_invoke;
   v16[3] = &unk_1E79392D8;
   v16[4] = self;
-  v13 = v9;
+  v13 = identifierCopy;
   v17 = v13;
-  v14 = v8;
+  v14 = dateCopy;
   v18 = v14;
-  v15 = v10;
+  v15 = handlerCopy;
   v19 = v15;
   fp_dispatch_async_with_logs(instanceQueue, v16);
 
@@ -1793,17 +1793,17 @@ void __90__FPXExtensionContext_removeTrashedItemsOlderThanDate_domainIdentifier_
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)dumpInternalStateToTermDumper:(id)a3 domainIdentifier:(id)a4 completionHandler:(id)a5
+- (void)dumpInternalStateToTermDumper:(id)dumper domainIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  dumperCopy = dumper;
+  handlerCopy = handler;
   notificationQueue = self->_notificationQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __88__FPXExtensionContext_dumpInternalStateToTermDumper_domainIdentifier_completionHandler___block_invoke;
   block[3] = &unk_1E79390B8;
   block[4] = self;
-  v10 = v7;
+  v10 = dumperCopy;
   v18 = v10;
   dispatch_sync(notificationQueue, block);
   [(FPDocumentAlternateContents *)self->_alternateContents dumpToDumper:v10];
@@ -1814,8 +1814,8 @@ void __90__FPXExtensionContext_removeTrashedItemsOlderThanDate_domainIdentifier_
   v14[3] = &unk_1E7939210;
   v14[4] = self;
   v15 = v10;
-  v16 = v8;
-  v12 = v8;
+  v16 = handlerCopy;
+  v12 = handlerCopy;
   v13 = v10;
   fp_dispatch_async_with_logs(instanceQueue, v14);
 }
@@ -1926,16 +1926,16 @@ void __88__FPXExtensionContext_dumpInternalStateToTermDumper_domainIdentifier_co
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)itemChangedAtURL:(id)a3 completionHandler:(id)a4
+- (void)itemChangedAtURL:(id)l completionHandler:(id)handler
 {
   v16[6] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v16[0] = fpfs_adopt_log(self->_log);
   v8 = fp_current_or_default_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [v6 fp_shortDescription];
+    [lCopy fp_shortDescription];
     objc_claimAutoreleasedReturnValue();
     [FPXExtensionContext itemChangedAtURL:completionHandler:];
   }
@@ -1946,9 +1946,9 @@ void __88__FPXExtensionContext_dumpInternalStateToTermDumper_domainIdentifier_co
   v13[2] = __58__FPXExtensionContext_itemChangedAtURL_completionHandler___block_invoke;
   v13[3] = &unk_1E7939300;
   v13[4] = self;
-  v10 = v7;
+  v10 = handlerCopy;
   v15 = v10;
-  v11 = v6;
+  v11 = lCopy;
   v14 = v11;
   fp_dispatch_async_with_logs(queue, v13);
 
@@ -2007,26 +2007,26 @@ void __58__FPXExtensionContext_itemChangedAtURL_completionHandler___block_invoke
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)movingItemAtURL:(id)a3 requiresProvidingWithDestinationURL:(id)a4 completionHandler:(id)a5
+- (void)movingItemAtURL:(id)l requiresProvidingWithDestinationURL:(id)rL completionHandler:(id)handler
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  rLCopy = rL;
+  handlerCopy = handler;
   v23 = fpfs_adopt_log(self->_log);
   v11 = fp_current_or_default_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v17 = [v8 fp_shortDescription];
-    v18 = [v9 fp_shortDescription];
+    fp_shortDescription = [lCopy fp_shortDescription];
+    fp_shortDescription2 = [rLCopy fp_shortDescription];
     *buf = 138413058;
-    v25 = self;
+    selfCopy = self;
     v26 = 2080;
     v27 = "[FPXExtensionContext movingItemAtURL:requiresProvidingWithDestinationURL:completionHandler:]";
     v28 = 2112;
-    v29 = v17;
+    v29 = fp_shortDescription;
     v30 = 2112;
-    v31 = v18;
+    v31 = fp_shortDescription2;
     _os_log_debug_impl(&dword_1AAAE1000, v11, OS_LOG_TYPE_DEBUG, "[DEBUG] ipc: %@ %s %@, %@", buf, 0x2Au);
   }
 
@@ -2036,11 +2036,11 @@ void __58__FPXExtensionContext_itemChangedAtURL_completionHandler___block_invoke
   v19[2] = __93__FPXExtensionContext_movingItemAtURL_requiresProvidingWithDestinationURL_completionHandler___block_invoke;
   v19[3] = &unk_1E79392D8;
   v19[4] = self;
-  v13 = v8;
+  v13 = lCopy;
   v20 = v13;
-  v14 = v9;
+  v14 = rLCopy;
   v21 = v14;
-  v15 = v10;
+  v15 = handlerCopy;
   v22 = v15;
   fp_dispatch_async_with_logs(instanceQueue, v19);
 
@@ -2126,29 +2126,29 @@ void __93__FPXExtensionContext_movingItemAtURL_requiresProvidingWithDestinationU
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)fetchContentsForItemWithID:(id)a3 version:(id)a4 request:(id)a5 estimatedItemSize:(int64_t)a6 isSymlink:(BOOL)a7 extent:(id)a8 alignment:(unint64_t)a9 options:(unint64_t)a10 completionHandler:(id)a11
+- (id)fetchContentsForItemWithID:(id)d version:(id)version request:(id)request estimatedItemSize:(int64_t)size isSymlink:(BOOL)symlink extent:(id)extent alignment:(unint64_t)alignment options:(unint64_t)self0 completionHandler:(id)self1
 {
-  v12 = a7;
+  symlinkCopy = symlink;
   v64 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v38 = a4;
-  v19 = a5;
-  v20 = a8;
-  v21 = a11;
-  if (v20)
+  dCopy = d;
+  versionCopy = version;
+  requestCopy = request;
+  extentCopy = extent;
+  handlerCopy = handler;
+  if (extentCopy)
   {
-    [v20 rangeValue];
-    a6 = v22;
+    [extentCopy rangeValue];
+    size = v22;
   }
 
-  if (a6 <= 1)
+  if (size <= 1)
   {
-    v23 = 1;
+    sizeCopy = 1;
   }
 
   else
   {
-    v23 = a6;
+    sizeCopy = size;
   }
 
   v51 = fpfs_adopt_log(self->_log);
@@ -2156,44 +2156,44 @@ void __93__FPXExtensionContext_movingItemAtURL_requiresProvidingWithDestinationU
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413570;
-    v53 = self;
+    selfCopy = self;
     v54 = 2080;
     v55 = "[FPXExtensionContext fetchContentsForItemWithID:version:request:estimatedItemSize:isSymlink:extent:alignment:options:completionHandler:]";
     v56 = 2112;
-    v57 = v18;
+    v57 = dCopy;
     v58 = 2048;
-    v59 = v23;
+    v59 = sizeCopy;
     v60 = 1024;
-    v61 = v12;
+    v61 = symlinkCopy;
     v62 = 2112;
-    v63 = v19;
+    v63 = requestCopy;
     _os_log_debug_impl(&dword_1AAAE1000, v24, OS_LOG_TYPE_DEBUG, "[DEBUG] ipc: %@ %s %@, estimated size=%lld, symlink=%{BOOL}d, %@", buf, 0x3Au);
   }
 
-  v25 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:v23];
+  v25 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:sizeCopy];
   instanceQueue = self->_instanceQueue;
   v39[0] = MEMORY[0x1E69E9820];
   v39[1] = 3221225472;
   v39[2] = __137__FPXExtensionContext_fetchContentsForItemWithID_version_request_estimatedItemSize_isSymlink_extent_alignment_options_completionHandler___block_invoke;
   v39[3] = &unk_1E79393F0;
   v39[4] = self;
-  v27 = v18;
+  v27 = dCopy;
   v40 = v27;
-  v28 = v19;
+  v28 = requestCopy;
   v41 = v28;
-  v29 = v21;
+  v29 = handlerCopy;
   v45 = v29;
   v46 = a2;
-  v50 = v12;
+  v50 = symlinkCopy;
   v30 = v25;
   v42 = v30;
-  v47 = v23;
-  v31 = v20;
+  v47 = sizeCopy;
+  v31 = extentCopy;
   v43 = v31;
-  v32 = v38;
+  v32 = versionCopy;
   v44 = v32;
-  v48 = a9;
-  v49 = a10;
+  alignmentCopy = alignment;
+  optionsCopy = options;
   fp_dispatch_async_with_logs(instanceQueue, v39);
   v33 = fp_current_or_default_log();
   if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
@@ -2634,51 +2634,51 @@ LABEL_8:
   }
 }
 
-- (id)fetchContentsForItemWithID:(id)a3 version:(id)a4 usingExistingContentsAtURL:(id)a5 existingVersion:(id)a6 request:(id)a7 estimatedItemSize:(int64_t)a8 isSymlink:(BOOL)a9 completionHandler:(id)a10
+- (id)fetchContentsForItemWithID:(id)d version:(id)version usingExistingContentsAtURL:(id)l existingVersion:(id)existingVersion request:(id)request estimatedItemSize:(int64_t)size isSymlink:(BOOL)symlink completionHandler:(id)self0
 {
   v74 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v43 = a4;
-  v40 = a5;
-  v41 = a6;
-  v46 = a7;
-  v44 = a10;
-  v45 = v15;
-  v42 = self;
-  v47 = [(FPXExtensionContext *)self domainContextForItemID:v15];
-  v16 = [v47 domain];
-  v17 = [v16 personaIdentifier];
-  v18 = [MEMORY[0x1E69DF068] sharedManager];
-  v19 = [v18 currentPersona];
-  v20 = [v19 userPersonaUniqueString];
-  if ([v17 isEqualToString:v20])
+  dCopy = d;
+  versionCopy = version;
+  lCopy = l;
+  existingVersionCopy = existingVersion;
+  requestCopy = request;
+  handlerCopy = handler;
+  v45 = dCopy;
+  selfCopy = self;
+  v47 = [(FPXExtensionContext *)self domainContextForItemID:dCopy];
+  domain = [v47 domain];
+  personaIdentifier = [domain personaIdentifier];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+  if ([personaIdentifier isEqualToString:userPersonaUniqueString])
   {
   }
 
   else
   {
-    v21 = [MEMORY[0x1E69DF068] sharedManager];
-    v22 = [v21 currentPersona];
-    v23 = [v22 userPersonaUniqueString];
-    v24 = [v47 domain];
-    v25 = [v24 personaIdentifier];
+    mEMORY[0x1E69DF068]2 = [MEMORY[0x1E69DF068] sharedManager];
+    currentPersona2 = [mEMORY[0x1E69DF068]2 currentPersona];
+    userPersonaUniqueString2 = [currentPersona2 userPersonaUniqueString];
+    domain2 = [v47 domain];
+    personaIdentifier2 = [domain2 personaIdentifier];
 
-    if (v23 != v25)
+    if (userPersonaUniqueString2 != personaIdentifier2)
     {
       v37 = fp_current_or_default_log();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
       {
-        [FPXExtensionContext fetchContentsForItemWithID:v42 version:v47 usingExistingContentsAtURL:v37 existingVersion:? request:? estimatedItemSize:? isSymlink:? completionHandler:?];
+        [FPXExtensionContext fetchContentsForItemWithID:selfCopy version:v47 usingExistingContentsAtURL:v37 existingVersion:? request:? estimatedItemSize:? isSymlink:? completionHandler:?];
       }
 
       exit(1);
     }
   }
 
-  v26 = [v47 vendorInstance];
-  if ([v26 conformsToProtocol:&unk_1F1FD7D70])
+  vendorInstance = [v47 vendorInstance];
+  if ([vendorInstance conformsToProtocol:&unk_1F1FD7D70])
   {
-    v27 = v26;
+    v27 = vendorInstance;
   }
 
   else
@@ -2688,52 +2688,52 @@ LABEL_8:
 
   if (v27)
   {
-    if (a8 <= 1)
+    if (size <= 1)
     {
-      v28 = 1;
+      sizeCopy = 1;
     }
 
     else
     {
-      v28 = a8;
+      sizeCopy = size;
     }
 
-    v61 = fpfs_adopt_log(v42->_log);
+    v61 = fpfs_adopt_log(selfCopy->_log);
     v29 = fp_current_or_default_log();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138413314;
-      v65 = v42;
+      v65 = selfCopy;
       v66 = 2080;
       v67 = "[FPXExtensionContext fetchContentsForItemWithID:version:usingExistingContentsAtURL:existingVersion:request:estimatedItemSize:isSymlink:completionHandler:]";
       v68 = 2112;
       v69 = v45;
       v70 = 2048;
-      v71 = v28;
+      v71 = sizeCopy;
       v72 = 2112;
-      v73 = v46;
+      v73 = requestCopy;
       _os_log_debug_impl(&dword_1AAAE1000, v29, OS_LOG_TYPE_DEBUG, "[DEBUG] ipc: %@ %s %@, estimated size=%lld, %@", buf, 0x34u);
     }
 
-    v30 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:v28];
-    instanceQueue = v42->_instanceQueue;
+    v30 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:sizeCopy];
+    instanceQueue = selfCopy->_instanceQueue;
     v48[0] = MEMORY[0x1E69E9820];
     v48[1] = 3221225472;
     v48[2] = __155__FPXExtensionContext_fetchContentsForItemWithID_version_usingExistingContentsAtURL_existingVersion_request_estimatedItemSize_isSymlink_completionHandler___block_invoke_278;
     v48[3] = &unk_1E7939468;
-    v49 = v40;
+    v49 = lCopy;
     v50 = v47;
-    v51 = v46;
-    v52 = v42;
-    v58 = v44;
+    v51 = requestCopy;
+    v52 = selfCopy;
+    v58 = handlerCopy;
     v59 = a2;
     v53 = v27;
     v54 = v45;
-    v55 = v43;
-    v56 = v41;
+    v55 = versionCopy;
+    v56 = existingVersionCopy;
     v32 = v30;
     v57 = v32;
-    v60 = v28;
+    v60 = sizeCopy;
     fp_dispatch_async_with_logs(instanceQueue, v48);
     v33 = v57;
     v34 = v32;
@@ -2747,8 +2747,8 @@ LABEL_8:
     v62[1] = 3221225472;
     v62[2] = __155__FPXExtensionContext_fetchContentsForItemWithID_version_usingExistingContentsAtURL_existingVersion_request_estimatedItemSize_isSymlink_completionHandler___block_invoke;
     v62[3] = &unk_1E7939418;
-    v63 = v44;
-    v34 = [(FPXExtensionContext *)v42 fetchContentsForItemWithID:v45 version:v43 request:v46 estimatedItemSize:a8 isSymlink:a9 extent:0 alignment:0 options:0 completionHandler:v62];
+    v63 = handlerCopy;
+    v34 = [(FPXExtensionContext *)selfCopy fetchContentsForItemWithID:v45 version:versionCopy request:requestCopy estimatedItemSize:size isSymlink:symlink extent:0 alignment:0 options:0 completionHandler:v62];
   }
 
   v35 = *MEMORY[0x1E69E9840];
@@ -3015,75 +3015,75 @@ void __155__FPXExtensionContext_fetchContentsForItemWithID_version_usingExisting
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (id)modifyItem:(id)a3 baseVersion:(id)a4 changedFields:(unint64_t)a5 contents:(id)a6 options:(unint64_t)a7 request:(id)a8 completionHandler:(id)a9
+- (id)modifyItem:(id)item baseVersion:(id)version changedFields:(unint64_t)fields contents:(id)contents options:(unint64_t)options request:(id)request completionHandler:(id)handler
 {
   v63 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a8;
-  v19 = a9;
+  itemCopy = item;
+  versionCopy = version;
+  contentsCopy = contents;
+  requestCopy = request;
+  handlerCopy = handler;
   v48 = fpfs_adopt_log(self->_log);
   v20 = fp_current_or_default_log();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413826;
-    v50 = self;
+    selfCopy = self;
     v51 = 2080;
     v52 = "[FPXExtensionContext modifyItem:baseVersion:changedFields:contents:options:request:completionHandler:]";
     v53 = 2112;
-    v54 = v15;
+    v54 = itemCopy;
     v55 = 1024;
-    v56 = a5;
+    fieldsCopy = fields;
     v57 = 1024;
-    v58 = a7;
+    optionsCopy = options;
     v59 = 2112;
-    v60 = v17;
+    v60 = contentsCopy;
     v61 = 2112;
-    v62 = v18;
+    v62 = requestCopy;
     _os_log_debug_impl(&dword_1AAAE1000, v20, OS_LOG_TYPE_DEBUG, "[DEBUG] ipc: %@ %s %@ fields=%x options=%x contentURL=%@ %@", buf, 0x40u);
   }
 
-  v36 = a5;
-  if (v17)
+  fieldsCopy2 = fields;
+  if (contentsCopy)
   {
-    v21 = [v15 documentSize];
-    v22 = [v21 longLongValue];
+    documentSize = [itemCopy documentSize];
+    longLongValue = [documentSize longLongValue];
 
-    if (v22 <= 1)
+    if (longLongValue <= 1)
     {
-      v22 = 1;
+      longLongValue = 1;
     }
   }
 
   else
   {
-    v22 = 100;
+    longLongValue = 100;
   }
 
-  v23 = a7;
-  v24 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:{v22, v36}];
+  optionsCopy2 = options;
+  v24 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:{longLongValue, fieldsCopy2}];
   instanceQueue = self->_instanceQueue;
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __103__FPXExtensionContext_modifyItem_baseVersion_changedFields_contents_options_request_completionHandler___block_invoke;
   v38[3] = &unk_1E79394B8;
   v38[4] = self;
-  v26 = v15;
+  v26 = itemCopy;
   v39 = v26;
-  v27 = v17;
+  v27 = contentsCopy;
   v40 = v27;
-  v28 = v18;
+  v28 = requestCopy;
   v41 = v28;
-  v29 = v19;
+  v29 = handlerCopy;
   v44 = v29;
-  v30 = v16;
+  v30 = versionCopy;
   v42 = v30;
   v45 = v37;
-  v46 = v23;
+  v46 = optionsCopy2;
   v31 = v24;
   v43 = v31;
-  v47 = v22;
+  v47 = longLongValue;
   fp_dispatch_async_with_logs(instanceQueue, v38);
   v32 = v43;
   v33 = v31;
@@ -3328,26 +3328,26 @@ void __79__FPXExtensionContext_singleItemChange_changedFields_bounce_completionH
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_singleItemChange:(id)a3 changedFields:(unint64_t)a4 bounce:(BOOL)a5 bounceIndex:(unint64_t)a6 request:(id)a7 completionHandler:(id)a8
+- (void)_singleItemChange:(id)change changedFields:(unint64_t)fields bounce:(BOOL)bounce bounceIndex:(unint64_t)index request:(id)request completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a7;
-  v16 = a8;
+  changeCopy = change;
+  requestCopy = request;
+  handlerCopy = handler;
   instanceQueue = self->_instanceQueue;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __100__FPXExtensionContext__singleItemChange_changedFields_bounce_bounceIndex_request_completionHandler___block_invoke;
   v21[3] = &unk_1E7939580;
   v21[4] = self;
-  v22 = v14;
-  v25 = a4;
-  v26 = a6;
-  v27 = a5;
-  v23 = v15;
-  v24 = v16;
-  v18 = v16;
-  v19 = v15;
-  v20 = v14;
+  v22 = changeCopy;
+  fieldsCopy = fields;
+  indexCopy = index;
+  bounceCopy = bounce;
+  v23 = requestCopy;
+  v24 = handlerCopy;
+  v18 = handlerCopy;
+  v19 = requestCopy;
+  v20 = changeCopy;
   fp_dispatch_async_with_logs(instanceQueue, v21);
 }
 
@@ -3470,14 +3470,14 @@ void __100__FPXExtensionContext__singleItemChange_changedFields_bounce_bounceInd
   }
 }
 
-- (void)bulkItemChanges:(id)a3 changedFields:(unint64_t)a4 completionHandler:(id)a5
+- (void)bulkItemChanges:(id)changes changedFields:(unint64_t)fields completionHandler:(id)handler
 {
   v20[8] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 firstObject];
-  v11 = v10;
-  if (v10)
+  changesCopy = changes;
+  handlerCopy = handler;
+  firstObject = [changesCopy firstObject];
+  v11 = firstObject;
+  if (firstObject)
   {
     instanceQueue = self->_instanceQueue;
     v15[0] = MEMORY[0x1E69E9820];
@@ -3485,10 +3485,10 @@ void __100__FPXExtensionContext__singleItemChange_changedFields_bounce_bounceInd
     v15[2] = __71__FPXExtensionContext_bulkItemChanges_changedFields_completionHandler___block_invoke;
     v15[3] = &unk_1E7939620;
     v15[4] = self;
-    v16 = v10;
-    v17 = v8;
-    v19 = a4;
-    v18 = v9;
+    v16 = firstObject;
+    v17 = changesCopy;
+    fieldsCopy = fields;
+    v18 = handlerCopy;
     fp_dispatch_async_with_logs(instanceQueue, v15);
   }
 
@@ -3498,11 +3498,11 @@ void __100__FPXExtensionContext__singleItemChange_changedFields_bounce_bounceInd
     v13 = fp_current_or_default_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      FPPopLogSectionForBlock(v9);
+      FPPopLogSectionForBlock(handlerCopy);
       [FPXExtensionContext bulkItemChanges:changedFields:completionHandler:];
     }
 
-    (*(v9 + 2))(v9, 0, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0);
     __fp_pop_log(v20);
   }
 
@@ -3727,16 +3727,16 @@ void __71__FPXExtensionContext_bulkItemChanges_changedFields_completionHandler__
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)indexOneBatchInDomain:(id)a3 completionHandler:(id)a4
+- (void)indexOneBatchInDomain:(id)domain completionHandler:(id)handler
 {
   v39 = *MEMORY[0x1E69E9840];
-  v33 = a3;
-  v31 = a4;
+  domainCopy = domain;
+  handlerCopy = handler;
   v5 = fp_current_or_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v38 = v33;
+    v38 = domainCopy;
     _os_log_impl(&dword_1AAAE1000, v5, OS_LOG_TYPE_DEFAULT, "[NOTICE] [spotlight] fileproviderd ask us to index one batch for %@", buf, 0xCu);
   }
 
@@ -3746,24 +3746,24 @@ void __71__FPXExtensionContext_bulkItemChanges_changedFields_completionHandler__
     [FPXExtensionContext indexOneBatchInDomain:completionHandler:];
   }
 
-  v7 = [(FPXExtensionContext *)self domainContextForIdentifier:v33];
-  v8 = [v7 domain];
-  v9 = [v8 personaIdentifier];
-  v10 = [MEMORY[0x1E69DF068] sharedManager];
-  v11 = [v10 currentPersona];
-  v12 = [v11 userPersonaUniqueString];
-  if ([v9 isEqualToString:v12])
+  v7 = [(FPXExtensionContext *)self domainContextForIdentifier:domainCopy];
+  domain = [v7 domain];
+  personaIdentifier = [domain personaIdentifier];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+  if ([personaIdentifier isEqualToString:userPersonaUniqueString])
   {
   }
 
   else
   {
-    v13 = [MEMORY[0x1E69DF068] sharedManager];
-    v14 = [v13 currentPersona];
-    v15 = [v14 userPersonaUniqueString];
-    v16 = [v7 domain];
-    v17 = [v16 personaIdentifier];
-    v30 = v15 == v17;
+    mEMORY[0x1E69DF068]2 = [MEMORY[0x1E69DF068] sharedManager];
+    currentPersona2 = [mEMORY[0x1E69DF068]2 currentPersona];
+    userPersonaUniqueString2 = [currentPersona2 userPersonaUniqueString];
+    domain2 = [v7 domain];
+    personaIdentifier2 = [domain2 personaIdentifier];
+    v30 = userPersonaUniqueString2 == personaIdentifier2;
 
     if (!v30)
     {
@@ -3795,16 +3795,16 @@ void __71__FPXExtensionContext_bulkItemChanges_changedFields_completionHandler__
       __assert_rtn("-[FPXExtensionContext indexOneBatchInDomain:completionHandler:]", "/Library/Caches/com.apple.xbs/Sources/FileProvider/extension/FPXExtensionContext.m", 1267, [v26 UTF8String]);
     }
 
-    v20 = [v7 spotlightIndexer];
-    if (v20)
+    spotlightIndexer = [v7 spotlightIndexer];
+    if (spotlightIndexer)
     {
       v34[0] = MEMORY[0x1E69E9820];
       v34[1] = 3221225472;
       v34[2] = __63__FPXExtensionContext_indexOneBatchInDomain_completionHandler___block_invoke;
       v34[3] = &unk_1E7939328;
       v34[4] = self;
-      v35 = v31;
-      [v20 indexOneBatchWithCompletionHandler:v34];
+      v35 = handlerCopy;
+      [spotlightIndexer indexOneBatchWithCompletionHandler:v34];
     }
 
     else
@@ -3819,11 +3819,11 @@ void __71__FPXExtensionContext_bulkItemChanges_changedFields_completionHandler__
       v24 = fp_current_or_default_log();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
       {
-        FPPopLogSectionForBlock(v31);
+        FPPopLogSectionForBlock(handlerCopy);
         [FPXExtensionContext indexOneBatchInDomain:completionHandler:];
       }
 
-      (*(v31 + 2))(v31, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
       __fp_pop_log(&v36);
     }
   }
@@ -3840,11 +3840,11 @@ void __71__FPXExtensionContext_bulkItemChanges_changedFields_completionHandler__
     v22 = fp_current_or_default_log();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
     {
-      FPPopLogSectionForBlock(v31);
+      FPPopLogSectionForBlock(handlerCopy);
       [FPXExtensionContext indexOneBatchInDomain:completionHandler:];
     }
 
-    (*(v31 + 2))(v31, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
     __fp_pop_log(&v36);
   }
 
@@ -3887,37 +3887,37 @@ void __63__FPXExtensionContext_indexOneBatchInDomain_completionHandler___block_i
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)dropIndexForDomain:(id)a3 dropReason:(unint64_t)a4 completionHandler:(id)a5
+- (void)dropIndexForDomain:(id)domain dropReason:(unint64_t)reason completionHandler:(id)handler
 {
   v37 = *MEMORY[0x1E69E9840];
-  v30 = a3;
-  v28 = a5;
+  domainCopy = domain;
+  handlerCopy = handler;
   v6 = fp_current_or_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v36 = v30;
+    v36 = domainCopy;
     _os_log_impl(&dword_1AAAE1000, v6, OS_LOG_TYPE_DEFAULT, "[NOTICE] [spotlight] fileproviderd ask us to drop index for %@", buf, 0xCu);
   }
 
-  v31 = [(FPXExtensionContext *)self domainContextForIdentifier:v30];
-  v7 = [v31 domain];
-  v8 = [v7 personaIdentifier];
-  v9 = [MEMORY[0x1E69DF068] sharedManager];
-  v10 = [v9 currentPersona];
-  v11 = [v10 userPersonaUniqueString];
-  if ([v8 isEqualToString:v11])
+  v31 = [(FPXExtensionContext *)self domainContextForIdentifier:domainCopy];
+  domain = [v31 domain];
+  personaIdentifier = [domain personaIdentifier];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+  if ([personaIdentifier isEqualToString:userPersonaUniqueString])
   {
   }
 
   else
   {
-    v12 = [MEMORY[0x1E69DF068] sharedManager];
-    v13 = [v12 currentPersona];
-    v14 = [v13 userPersonaUniqueString];
-    v15 = [v31 domain];
-    v16 = [v15 personaIdentifier];
-    v17 = v14 == v16;
+    mEMORY[0x1E69DF068]2 = [MEMORY[0x1E69DF068] sharedManager];
+    currentPersona2 = [mEMORY[0x1E69DF068]2 currentPersona];
+    userPersonaUniqueString2 = [currentPersona2 userPersonaUniqueString];
+    domain2 = [v31 domain];
+    personaIdentifier2 = [domain2 personaIdentifier];
+    v17 = userPersonaUniqueString2 == personaIdentifier2;
 
     if (!v17)
     {
@@ -3936,8 +3936,8 @@ void __63__FPXExtensionContext_indexOneBatchInDomain_completionHandler___block_i
     v18 = [v31 log];
     v19 = fpfs_adopt_log(v18);
 
-    v20 = [v31 spotlightIndexer];
-    if (!v20)
+    spotlightIndexer = [v31 spotlightIndexer];
+    if (!spotlightIndexer)
     {
       v21 = fp_current_or_default_log();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -3949,11 +3949,11 @@ void __63__FPXExtensionContext_indexOneBatchInDomain_completionHandler___block_i
       v22 = fp_current_or_default_log();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
       {
-        FPPopLogSectionForBlock(v28);
+        FPPopLogSectionForBlock(handlerCopy);
         [FPXExtensionContext dropIndexForDomain:dropReason:completionHandler:];
       }
 
-      (*(v28 + 2))(v28, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
       __fp_pop_log(&v34);
     }
 
@@ -3962,8 +3962,8 @@ void __63__FPXExtensionContext_indexOneBatchInDomain_completionHandler___block_i
     v32[2] = __71__FPXExtensionContext_dropIndexForDomain_dropReason_completionHandler___block_invoke;
     v32[3] = &unk_1E7939170;
     v32[4] = self;
-    v33 = v28;
-    [v20 dropIndexWithDropReason:a4 completionHandler:v32];
+    v33 = handlerCopy;
+    [spotlightIndexer dropIndexWithDropReason:reason completionHandler:v32];
   }
 
   else
@@ -3978,11 +3978,11 @@ void __63__FPXExtensionContext_indexOneBatchInDomain_completionHandler___block_i
     v24 = fp_current_or_default_log();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
-      FPPopLogSectionForBlock(v28);
+      FPPopLogSectionForBlock(handlerCopy);
       [FPXExtensionContext dropIndexForDomain:dropReason:completionHandler:];
     }
 
-    (*(v28 + 2))(v28, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
     __fp_pop_log(&v34);
   }
 
@@ -4016,24 +4016,24 @@ void __71__FPXExtensionContext_dropIndexForDomain_dropReason_completionHandler__
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)signalNeedsReindexItemsWithIdentifiers:(id)a3 domainIdentifier:(id)a4 indexReason:(int64_t)a5 completionHandler:(id)a6
+- (void)signalNeedsReindexItemsWithIdentifiers:(id)identifiers domainIdentifier:(id)identifier indexReason:(int64_t)reason completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   instanceQueue = self->_instanceQueue;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __109__FPXExtensionContext_signalNeedsReindexItemsWithIdentifiers_domainIdentifier_indexReason_completionHandler___block_invoke;
   v17[3] = &unk_1E7939670;
   v17[4] = self;
-  v18 = v11;
-  v19 = v10;
-  v20 = v12;
-  v21 = a5;
-  v14 = v10;
-  v15 = v11;
-  v16 = v12;
+  v18 = identifierCopy;
+  v19 = identifiersCopy;
+  v20 = handlerCopy;
+  reasonCopy = reason;
+  v14 = identifiersCopy;
+  v15 = identifierCopy;
+  v16 = handlerCopy;
   fp_dispatch_async_with_logs(instanceQueue, v17);
 }
 
@@ -4172,76 +4172,76 @@ LABEL_13:
   return v14;
 }
 
-- (void)dumpIndexStateForDomain:(id)a3 toFileHandler:(id)a4 completionHandler:(id)a5
+- (void)dumpIndexStateForDomain:(id)domain toFileHandler:(id)handler completionHandler:(id)completionHandler
 {
   v29[8] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v26 = a4;
-  v27 = a5;
-  v24 = v8;
-  v25 = self;
-  v28 = [(FPXExtensionContext *)self domainContextForIdentifier:v8];
-  v9 = [v28 domain];
-  v10 = [v9 personaIdentifier];
-  v11 = [MEMORY[0x1E69DF068] sharedManager];
-  v12 = [v11 currentPersona];
-  v13 = [v12 userPersonaUniqueString];
-  if ([v10 isEqualToString:v13])
+  domainCopy = domain;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  v24 = domainCopy;
+  selfCopy = self;
+  v28 = [(FPXExtensionContext *)self domainContextForIdentifier:domainCopy];
+  domain = [v28 domain];
+  personaIdentifier = [domain personaIdentifier];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+  if ([personaIdentifier isEqualToString:userPersonaUniqueString])
   {
   }
 
   else
   {
-    v14 = [MEMORY[0x1E69DF068] sharedManager];
-    v15 = [v14 currentPersona];
-    v16 = [v15 userPersonaUniqueString];
-    v17 = [v28 domain];
-    v18 = [v17 personaIdentifier];
+    mEMORY[0x1E69DF068]2 = [MEMORY[0x1E69DF068] sharedManager];
+    currentPersona2 = [mEMORY[0x1E69DF068]2 currentPersona];
+    userPersonaUniqueString2 = [currentPersona2 userPersonaUniqueString];
+    domain2 = [v28 domain];
+    personaIdentifier2 = [domain2 personaIdentifier];
 
-    if (v16 != v18)
+    if (userPersonaUniqueString2 != personaIdentifier2)
     {
       v23 = fp_current_or_default_log();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
-        [FPXExtensionContext dumpIndexStateForDomain:v25 toFileHandler:v28 completionHandler:v23];
+        [FPXExtensionContext dumpIndexStateForDomain:selfCopy toFileHandler:v28 completionHandler:v23];
       }
 
       exit(1);
     }
   }
 
-  v19 = [v28 spotlightIndexer];
-  v20 = -[FPCTLTermDumper initWithFd:forceColor:]([FPCTLTermDumper alloc], "initWithFd:forceColor:", [v26 fileDescriptor], 1);
-  [v19 dumpStateTo:v20];
+  spotlightIndexer = [v28 spotlightIndexer];
+  v20 = -[FPCTLTermDumper initWithFd:forceColor:]([FPCTLTermDumper alloc], "initWithFd:forceColor:", [handlerCopy fileDescriptor], 1);
+  [spotlightIndexer dumpStateTo:v20];
 
-  v29[0] = fpfs_adopt_log(v25->_log);
+  v29[0] = fpfs_adopt_log(selfCopy->_log);
   v21 = fp_current_or_default_log();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
   {
-    FPPopLogSectionForBlock(v27);
+    FPPopLogSectionForBlock(completionHandlerCopy);
     [FPXExtensionContext dumpIndexStateForDomain:toFileHandler:completionHandler:];
   }
 
-  (*(v27 + 2))(v27, 0);
+  (*(completionHandlerCopy + 2))(completionHandlerCopy, 0);
   __fp_pop_log(v29);
 
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)preflightTrashItemIDs:(id)a3 completionHandler:(id)a4
+- (void)preflightTrashItemIDs:(id)ds completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   instanceQueue = self->_instanceQueue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __63__FPXExtensionContext_preflightTrashItemIDs_completionHandler___block_invoke;
   v11[3] = &unk_1E7939210;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dsCopy;
   fp_dispatch_async_with_logs(instanceQueue, v11);
 }
 
@@ -4406,20 +4406,20 @@ void __63__FPXExtensionContext_preflightTrashItemIDs_completionHandler___block_i
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)providePlaceholderAtURL:(id)a3 completionHandler:(id)a4
+- (void)providePlaceholderAtURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   instanceQueue = self->_instanceQueue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __65__FPXExtensionContext_providePlaceholderAtURL_completionHandler___block_invoke;
   v11[3] = &unk_1E7939300;
-  v12 = v6;
-  v13 = v7;
+  v12 = lCopy;
+  v13 = handlerCopy;
   v11[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = lCopy;
+  v10 = handlerCopy;
   fp_dispatch_async_with_logs(instanceQueue, v11);
 }
 
@@ -4509,17 +4509,17 @@ void __65__FPXExtensionContext_providePlaceholderAtURL_completionHandler___block
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)alternateContentsURLWrapperForItemID:(id)a3
+- (id)alternateContentsURLWrapperForItemID:(id)d
 {
-  v4 = a3;
-  v5 = [(FPDocumentAlternateContents *)self->_alternateContents getAlternateContentsURLWrapperForItemID:v4];
+  dCopy = d;
+  v5 = [(FPDocumentAlternateContents *)self->_alternateContents getAlternateContentsURLWrapperForItemID:dCopy];
   v6 = v5;
   if (v5)
   {
     v7 = [v5 url];
-    v8 = [v7 startAccessingSecurityScopedResource];
+    startAccessingSecurityScopedResource = [v7 startAccessingSecurityScopedResource];
     v9 = [v7 checkResourceIsReachableAndReturnError:0];
-    if (v8)
+    if (startAccessingSecurityScopedResource)
     {
       [v7 stopAccessingSecurityScopedResource];
     }
@@ -4539,7 +4539,7 @@ void __65__FPXExtensionContext_providePlaceholderAtURL_completionHandler___block
       [FPXExtensionContext alternateContentsURLWrapperForItemID:v7];
     }
 
-    [(FPDocumentAlternateContents *)self->_alternateContents removeAlternateContentsURLForDocumentWithItemID:v4];
+    [(FPDocumentAlternateContents *)self->_alternateContents removeAlternateContentsURLForDocumentWithItemID:dCopy];
   }
 
   v10 = 0;
@@ -4548,19 +4548,19 @@ LABEL_10:
   return v10;
 }
 
-- (void)fetchAlternateContentsURLWrapperForURL:(id)a3 completionHandler:(id)a4
+- (void)fetchAlternateContentsURLWrapperForURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __80__FPXExtensionContext_fetchAlternateContentsURLWrapperForURL_completionHandler___block_invoke;
   v10[3] = &unk_1E7939710;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = lCopy;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = lCopy;
   [(FPXExtensionContext *)self identifierForItemAtURL:v9 completionHandler:v10];
 }
 
@@ -4613,20 +4613,20 @@ void __80__FPXExtensionContext_fetchAlternateContentsURLWrapperForURL_completion
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setAlternateContentsURL:(id)a3 forDocumentWithURL:(id)a4 completionHandler:(id)a5
+- (void)setAlternateContentsURL:(id)l forDocumentWithURL:(id)rL completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  lCopy = l;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __84__FPXExtensionContext_setAlternateContentsURL_forDocumentWithURL_completionHandler___block_invoke;
   v12[3] = &unk_1E7939710;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
-  [(FPXExtensionContext *)self identifierForItemAtURL:a4 completionHandler:v12];
+  v13 = lCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = lCopy;
+  [(FPXExtensionContext *)self identifierForItemAtURL:rL completionHandler:v12];
 }
 
 void __84__FPXExtensionContext_setAlternateContentsURL_forDocumentWithURL_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -4683,17 +4683,17 @@ void __84__FPXExtensionContext_setAlternateContentsURL_forDocumentWithURL_comple
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didUpdateAlternateContentsDocumentForDocumentWithURL:(id)a3 completionHandler:(id)a4
+- (void)didUpdateAlternateContentsDocumentForDocumentWithURL:(id)l completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __94__FPXExtensionContext_didUpdateAlternateContentsDocumentForDocumentWithURL_completionHandler___block_invoke;
   v8[3] = &unk_1E7939508;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [(FPXExtensionContext *)self itemForURL:a3 completionHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [(FPXExtensionContext *)self itemForURL:l completionHandler:v8];
 }
 
 void __94__FPXExtensionContext_didUpdateAlternateContentsDocumentForDocumentWithURL_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -4915,16 +4915,16 @@ void __94__FPXExtensionContext_didUpdateAlternateContentsDocumentForDocumentWith
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)identifierForItemAtURL:(id)a3 completionHandler:(id)a4
+- (void)identifierForItemAtURL:(id)l completionHandler:(id)handler
 {
   v16[6] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v16[0] = fpfs_adopt_log(self->_log);
   v8 = fp_current_or_default_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [v6 fp_shortDescription];
+    [lCopy fp_shortDescription];
     objc_claimAutoreleasedReturnValue();
     [FPXExtensionContext identifierForItemAtURL:completionHandler:];
   }
@@ -4935,9 +4935,9 @@ void __94__FPXExtensionContext_didUpdateAlternateContentsDocumentForDocumentWith
   v13[2] = __64__FPXExtensionContext_identifierForItemAtURL_completionHandler___block_invoke;
   v13[3] = &unk_1E7939210;
   v13[4] = self;
-  v10 = v6;
+  v10 = lCopy;
   v14 = v10;
-  v11 = v7;
+  v11 = handlerCopy;
   v15 = v11;
   fp_dispatch_async_with_logs(instanceQueue, v13);
 
@@ -5043,24 +5043,24 @@ void __64__FPXExtensionContext_identifierForItemAtURL_completionHandler___block_
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)itemForItemID:(id)a3 request:(id)a4 completionHandler:(id)a5
+- (void)itemForItemID:(id)d request:(id)request completionHandler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  requestCopy = request;
+  handlerCopy = handler;
   v21 = fpfs_adopt_log(self->_log);
   v11 = fp_current_or_default_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413058;
-    v23 = self;
+    selfCopy = self;
     v24 = 2080;
     v25 = "[FPXExtensionContext itemForItemID:request:completionHandler:]";
     v26 = 2112;
-    v27 = v8;
+    v27 = dCopy;
     v28 = 2112;
-    v29 = v9;
+    v29 = requestCopy;
     _os_log_debug_impl(&dword_1AAAE1000, v11, OS_LOG_TYPE_DEBUG, "[DEBUG] ipc: %@ %s %@, %@", buf, 0x2Au);
   }
 
@@ -5070,11 +5070,11 @@ void __64__FPXExtensionContext_identifierForItemAtURL_completionHandler___block_
   v17[2] = __63__FPXExtensionContext_itemForItemID_request_completionHandler___block_invoke;
   v17[3] = &unk_1E79392D8;
   v17[4] = self;
-  v13 = v8;
+  v13 = dCopy;
   v18 = v13;
-  v14 = v9;
+  v14 = requestCopy;
   v19 = v14;
-  v15 = v10;
+  v15 = handlerCopy;
   v20 = v15;
   fp_dispatch_async_with_logs(instanceQueue, v17);
 
@@ -5231,55 +5231,55 @@ void __63__FPXExtensionContext_itemForItemID_request_completionHandler___block_i
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)itemForURL:(id)a3 completionHandler:(id)a4
+- (void)itemForURL:(id)l completionHandler:(id)handler
 {
   v42 = *MEMORY[0x1E69E9840];
-  v29 = a3;
-  v27 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v33 = fpfs_adopt_log(self->_log);
   v6 = fp_current_or_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [v29 fp_shortDescription];
+    [lCopy fp_shortDescription];
     objc_claimAutoreleasedReturnValue();
     [FPXExtensionContext itemForURL:completionHandler:];
   }
 
-  v28 = [(FPXExtensionContext *)self domainContextForURL:v29];
-  v7 = [v28 domain];
-  v8 = [v7 personaIdentifier];
-  v9 = [MEMORY[0x1E69DF068] sharedManager];
-  v10 = [v9 currentPersona];
-  v11 = [v10 userPersonaUniqueString];
-  if ([v8 isEqualToString:v11])
+  v28 = [(FPXExtensionContext *)self domainContextForURL:lCopy];
+  domain = [v28 domain];
+  personaIdentifier = [domain personaIdentifier];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+  if ([personaIdentifier isEqualToString:userPersonaUniqueString])
   {
   }
 
   else
   {
-    v12 = [MEMORY[0x1E69DF068] sharedManager];
-    v13 = [v12 currentPersona];
-    v14 = [v13 userPersonaUniqueString];
-    v15 = [v28 domain];
-    v16 = [v15 personaIdentifier];
-    v26 = v14 == v16;
+    mEMORY[0x1E69DF068]2 = [MEMORY[0x1E69DF068] sharedManager];
+    currentPersona2 = [mEMORY[0x1E69DF068]2 currentPersona];
+    userPersonaUniqueString2 = [currentPersona2 userPersonaUniqueString];
+    domain2 = [v28 domain];
+    personaIdentifier2 = [domain2 personaIdentifier];
+    v26 = userPersonaUniqueString2 == personaIdentifier2;
 
     if (!v26)
     {
       v20 = fp_current_or_default_log();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        v21 = [MEMORY[0x1E69DF068] sharedManager];
-        v22 = [v21 currentPersona];
-        v23 = [v22 userPersonaUniqueString];
-        v24 = [v28 domain];
-        v25 = [v24 personaIdentifier];
+        mEMORY[0x1E69DF068]3 = [MEMORY[0x1E69DF068] sharedManager];
+        currentPersona3 = [mEMORY[0x1E69DF068]3 currentPersona];
+        userPersonaUniqueString3 = [currentPersona3 userPersonaUniqueString];
+        domain3 = [v28 domain];
+        personaIdentifier3 = [domain3 personaIdentifier];
         *buf = 138413058;
-        v35 = self;
+        selfCopy = self;
         v36 = 2112;
-        v37 = v23;
+        v37 = userPersonaUniqueString3;
         v38 = 2112;
-        v39 = v25;
+        v39 = personaIdentifier3;
         v40 = 2080;
         v41 = "[FPXExtensionContext itemForURL:completionHandler:]";
         _os_log_error_impl(&dword_1AAAE1000, v20, OS_LOG_TYPE_ERROR, "[ERROR] Non matching personas for the extension %@ (%@, expect %@) on %s", buf, 0x2Au);
@@ -5294,11 +5294,11 @@ void __63__FPXExtensionContext_itemForItemID_request_completionHandler___block_i
   v30[2] = __52__FPXExtensionContext_itemForURL_completionHandler___block_invoke;
   v30[3] = &unk_1E79397D8;
   v30[4] = self;
-  v17 = v27;
+  v17 = handlerCopy;
   v32 = v17;
   v18 = v28;
   v31 = v18;
-  [(FPXExtensionContext *)self identifierForItemAtURL:v29 completionHandler:v30];
+  [(FPXExtensionContext *)self identifierForItemAtURL:lCopy completionHandler:v30];
 
   __fp_pop_log(&v33);
   v19 = *MEMORY[0x1E69E9840];
@@ -5425,51 +5425,51 @@ void __52__FPXExtensionContext_itemForURL_completionHandler___block_invoke_332(u
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_persistedDocumentURLForURL:(id)a3 itemID:(id)a4 extension:(id)a5 creatingPlaceholderIfMissing:(BOOL)a6 completionHandler:(id)a7
+- (void)_persistedDocumentURLForURL:(id)l itemID:(id)d extension:(id)extension creatingPlaceholderIfMissing:(BOOL)missing completionHandler:(id)handler
 {
-  v8 = a6;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
+  missingCopy = missing;
+  lCopy = l;
+  dCopy = d;
+  extensionCopy = extension;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_instanceQueue);
-  if (!v13)
+  if (!lCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"FPXExtensionContext.m" lineNumber:1621 description:@"url should not be nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"FPXExtensionContext.m" lineNumber:1621 description:@"url should not be nil"];
   }
 
-  if ([v13 checkResourceIsReachableAndReturnError:0])
+  if ([lCopy checkResourceIsReachableAndReturnError:0])
   {
     _CFURLPromiseSetPhysicalURL();
-    v16[2](v16, v13, 0);
+    handlerCopy[2](handlerCopy, lCopy, 0);
   }
 
   else
   {
-    v18 = [NSFileProviderManager placeholderURLForURL:v13];
+    v18 = [NSFileProviderManager placeholderURLForURL:lCopy];
     _CFURLPromiseSetPhysicalURL();
     if (v18 && [v18 checkResourceIsReachableAndReturnError:0])
     {
-      v16[2](v16, v13, 0);
+      handlerCopy[2](handlerCopy, lCopy, 0);
     }
 
-    else if (v8)
+    else if (missingCopy)
     {
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __115__FPXExtensionContext__persistedDocumentURLForURL_itemID_extension_creatingPlaceholderIfMissing_completionHandler___block_invoke;
       v21[3] = &unk_1E7939800;
-      v23 = v16;
-      v22 = v13;
-      [v15 providePlaceholderAtURL:v22 completionHandler:v21];
+      v23 = handlerCopy;
+      v22 = lCopy;
+      [extensionCopy providePlaceholderAtURL:v22 completionHandler:v21];
     }
 
     else
     {
-      v19 = [v14 identifier];
-      v20 = FPItemNotFoundError(v19);
-      (v16)[2](v16, 0, v20);
+      identifier = [dCopy identifier];
+      v20 = FPItemNotFoundError(identifier);
+      (handlerCopy)[2](handlerCopy, 0, v20);
     }
   }
 }
@@ -5491,27 +5491,27 @@ void __115__FPXExtensionContext__persistedDocumentURLForURL_itemID_extension_cre
   (*(v2 + 16))(v2, v3, v4);
 }
 
-- (void)URLForItemID:(id)a3 creatingPlaceholderIfMissing:(BOOL)a4 ignoreAlternateContentsURL:(BOOL)a5 completionHandler:(id)a6
+- (void)URLForItemID:(id)d creatingPlaceholderIfMissing:(BOOL)missing ignoreAlternateContentsURL:(BOOL)l completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
+  lCopy = l;
+  missingCopy = missing;
   v33 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
+  dCopy = d;
+  handlerCopy = handler;
   v22 = fpfs_adopt_log(self->_log);
   v12 = fp_current_or_default_log();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413314;
-    v24 = self;
+    selfCopy = self;
     v25 = 2080;
     v26 = "[FPXExtensionContext URLForItemID:creatingPlaceholderIfMissing:ignoreAlternateContentsURL:completionHandler:]";
     v27 = 2112;
-    v28 = v10;
+    v28 = dCopy;
     v29 = 1024;
-    v30 = v8;
+    v30 = missingCopy;
     v31 = 1024;
-    v32 = v7;
+    v32 = lCopy;
     _os_log_debug_impl(&dword_1AAAE1000, v12, OS_LOG_TYPE_DEBUG, "[DEBUG] ipc: %@ %s %@, %{BOOL}d, %{BOOL}d", buf, 0x2Cu);
   }
 
@@ -5521,12 +5521,12 @@ void __115__FPXExtensionContext__persistedDocumentURLForURL_itemID_extension_cre
   v17[2] = __110__FPXExtensionContext_URLForItemID_creatingPlaceholderIfMissing_ignoreAlternateContentsURL_completionHandler___block_invoke;
   v17[3] = &unk_1E7939850;
   v17[4] = self;
-  v14 = v10;
+  v14 = dCopy;
   v18 = v14;
-  v15 = v11;
+  v15 = handlerCopy;
   v19 = v15;
-  v20 = v7;
-  v21 = v8;
+  v20 = lCopy;
+  v21 = missingCopy;
   fp_dispatch_async_with_logs(instanceQueue, v17);
 
   __fp_pop_log(&v22);
@@ -5816,15 +5816,15 @@ void __110__FPXExtensionContext_URLForItemID_creatingPlaceholderIfMissing_ignore
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setupItemForTrashing:(id)a3 usesFPFS:(BOOL)a4 completionHandler:(id)a5
+- (void)_setupItemForTrashing:(id)trashing usesFPFS:(BOOL)s completionHandler:(id)handler
 {
-  v5 = a4;
-  v9 = a5;
-  v7 = [a3 strippedCopy];
-  [v7 setTrashed:1];
-  if (v5)
+  sCopy = s;
+  handlerCopy = handler;
+  strippedCopy = [trashing strippedCopy];
+  [strippedCopy setTrashed:1];
+  if (sCopy)
   {
-    [v7 setParentItemIdentifier:@"NSFileProviderTrashContainerItemIdentifier"];
+    [strippedCopy setParentItemIdentifier:@"NSFileProviderTrashContainerItemIdentifier"];
     v8 = 1073741828;
   }
 
@@ -5833,24 +5833,24 @@ void __110__FPXExtensionContext_URLForItemID_creatingPlaceholderIfMissing_ignore
     v8 = 0x40000000;
   }
 
-  v9[2](v9, v7, v8);
+  handlerCopy[2](handlerCopy, strippedCopy, v8);
 }
 
-- (void)trashItemAtURL:(id)a3 completionHandler:(id)a4
+- (void)trashItemAtURL:(id)l completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   instanceQueue = self->_instanceQueue;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __56__FPXExtensionContext_trashItemAtURL_completionHandler___block_invoke;
   v12[3] = &unk_1E7939968;
   v12[4] = self;
-  v13 = v7;
-  v14 = v8;
+  v13 = lCopy;
+  v14 = handlerCopy;
   v15 = a2;
-  v10 = v8;
-  v11 = v7;
+  v10 = handlerCopy;
+  v11 = lCopy;
   fp_dispatch_async_with_logs(instanceQueue, v12);
 }
 
@@ -6238,28 +6238,28 @@ void __56__FPXExtensionContext_trashItemAtURL_completionHandler___block_invoke_3
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startOperation:(id)a3 toFetchThumbnailsForItemIdentifiers:(id)a4 size:(CGSize)a5 completionHandler:(id)a6
+- (void)startOperation:(id)operation toFetchThumbnailsForItemIdentifiers:(id)identifiers size:(CGSize)size completionHandler:(id)handler
 {
-  height = a5.height;
-  width = a5.width;
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  height = size.height;
+  width = size.width;
+  operationCopy = operation;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   instanceQueue = self->_instanceQueue;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __97__FPXExtensionContext_startOperation_toFetchThumbnailsForItemIdentifiers_size_completionHandler___block_invoke;
   v19[3] = &unk_1E7939A50;
-  v20 = v13;
-  v21 = self;
-  v22 = v12;
-  v23 = v14;
+  v20 = identifiersCopy;
+  selfCopy = self;
+  v22 = operationCopy;
+  v23 = handlerCopy;
   v24 = a2;
   v25 = width;
   v26 = height;
-  v16 = v12;
-  v17 = v14;
-  v18 = v13;
+  v16 = operationCopy;
+  v17 = handlerCopy;
+  v18 = identifiersCopy;
   fp_dispatch_async_with_logs(instanceQueue, v19);
 }
 
@@ -6504,10 +6504,10 @@ void __97__FPXExtensionContext_startOperation_toFetchThumbnailsForItemIdentifier
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (id)createFPTempDirectoryWithError:(id *)a3
+- (id)createFPTempDirectoryWithError:(id *)error
 {
-  v4 = [(FPXDomainContext *)self->_domainContext domain];
-  v5 = [NSFileProviderManager managerForDomain:v4];
+  domain = [(FPXDomainContext *)self->_domainContext domain];
+  v5 = [NSFileProviderManager managerForDomain:domain];
 
   v12 = 0;
   v6 = [v5 temporaryDirectoryURLWithError:&v12];
@@ -6525,22 +6525,22 @@ void __97__FPXExtensionContext_startOperation_toFetchThumbnailsForItemIdentifier
       [FPXExtensionContext createFPTempDirectoryWithError:v7];
     }
 
-    if (a3)
+    if (error)
     {
       v10 = v7;
-      *a3 = v7;
+      *error = v7;
     }
   }
 
   return v6;
 }
 
-- (id)createFPTempDirectoryAppropriateForURL:(id)a3 error:(id *)a4
+- (id)createFPTempDirectoryAppropriateForURL:(id)l error:(id *)error
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
+  lCopy = l;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v13 = 0;
-  v7 = [v6 URLForDirectory:99 inDomain:1 appropriateForURL:v5 create:1 error:&v13];
+  v7 = [defaultManager URLForDirectory:99 inDomain:1 appropriateForURL:lCopy create:1 error:&v13];
   v8 = v13;
   if (v7)
   {
@@ -6552,55 +6552,55 @@ void __97__FPXExtensionContext_startOperation_toFetchThumbnailsForItemIdentifier
     v10 = fp_current_or_default_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [FPXExtensionContext createFPTempDirectoryAppropriateForURL:v5 error:v8];
+      [FPXExtensionContext createFPTempDirectoryAppropriateForURL:lCopy error:v8];
     }
 
-    if (a4)
+    if (error)
     {
       v11 = v8;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
   return v7;
 }
 
-- (id)createTempThumbnailURLForVersion:(id)a3 appropriateForURL:(id)a4 itemIdentifier:(id)a5 isFromData:(BOOL)a6 error:(id *)a7
+- (id)createTempThumbnailURLForVersion:(id)version appropriateForURL:(id)l itemIdentifier:(id)identifier isFromData:(BOOL)data error:(id *)error
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if (v12)
+  dataCopy = data;
+  versionCopy = version;
+  lCopy = l;
+  identifierCopy = identifier;
+  if (versionCopy)
   {
-    [v12 etagHash];
+    [versionCopy etagHash];
   }
 
   else
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_current", v14];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_current", identifierCopy];
   }
   v15 = ;
   v16 = MEMORY[0x1E696AEC0];
-  v17 = [MEMORY[0x1E696AFB0] UUID];
-  v18 = [v17 UUIDString];
-  v19 = v18;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v19 = uUIDString;
   v20 = &stru_1F1F94B20;
-  if (v8)
+  if (dataCopy)
   {
     v20 = @"_from_data";
   }
 
-  v21 = [v16 stringWithFormat:@"%@_%@%@", v18, v15, v20];
+  v21 = [v16 stringWithFormat:@"%@_%@%@", uUIDString, v15, v20];
 
-  if (v13)
+  if (lCopy)
   {
-    [(FPXExtensionContext *)self createFPTempDirectoryAppropriateForURL:v13 error:a7];
+    [(FPXExtensionContext *)self createFPTempDirectoryAppropriateForURL:lCopy error:error];
   }
 
   else
   {
-    [(FPXExtensionContext *)self createFPTempDirectoryWithError:a7];
+    [(FPXExtensionContext *)self createFPTempDirectoryWithError:error];
   }
   v22 = ;
   v23 = v22;
@@ -6617,28 +6617,28 @@ void __97__FPXExtensionContext_startOperation_toFetchThumbnailsForItemIdentifier
   return v24;
 }
 
-- (void)startOperation:(id)a3 toFetchThumbnailsWithDictionary:(id)a4 size:(CGSize)a5 completionHandler:(id)a6
+- (void)startOperation:(id)operation toFetchThumbnailsWithDictionary:(id)dictionary size:(CGSize)size completionHandler:(id)handler
 {
-  height = a5.height;
-  width = a5.width;
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  height = size.height;
+  width = size.width;
+  operationCopy = operation;
+  dictionaryCopy = dictionary;
+  handlerCopy = handler;
   instanceQueue = self->_instanceQueue;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __93__FPXExtensionContext_startOperation_toFetchThumbnailsWithDictionary_size_completionHandler___block_invoke;
   v19[3] = &unk_1E7939A50;
-  v20 = v13;
-  v21 = self;
-  v22 = v12;
-  v23 = v14;
+  v20 = dictionaryCopy;
+  selfCopy = self;
+  v22 = operationCopy;
+  v23 = handlerCopy;
   v24 = width;
   v25 = height;
   v26 = a2;
-  v16 = v12;
-  v17 = v14;
-  v18 = v13;
+  v16 = operationCopy;
+  v17 = handlerCopy;
+  v18 = dictionaryCopy;
   fp_dispatch_async_with_logs(instanceQueue, v19);
 }
 
@@ -7085,23 +7085,23 @@ void __93__FPXExtensionContext_startOperation_toFetchThumbnailsWithDictionary_si
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)valuesForAttributes:(id)a3 forItemID:(id)a4 completionHandler:(id)a5
+- (void)valuesForAttributes:(id)attributes forItemID:(id)d completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  attributesCopy = attributes;
+  dCopy = d;
+  handlerCopy = handler;
   instanceQueue = self->_instanceQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __71__FPXExtensionContext_valuesForAttributes_forItemID_completionHandler___block_invoke;
   v15[3] = &unk_1E7939B18;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
+  v16 = dCopy;
+  v17 = attributesCopy;
+  v18 = handlerCopy;
+  v12 = attributesCopy;
+  v13 = handlerCopy;
+  v14 = dCopy;
   fp_dispatch_async_with_logs(instanceQueue, v15);
 }
 
@@ -7258,25 +7258,25 @@ void __71__FPXExtensionContext_valuesForAttributes_forItemID_completionHandler__
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchAndStartEnumeratingWithSettings:(id)a3 observer:(id)a4 request:(id)a5 completionHandler:(id)a6
+- (void)fetchAndStartEnumeratingWithSettings:(id)settings observer:(id)observer request:(id)request completionHandler:(id)handler
 {
   v38 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  settingsCopy = settings;
+  observerCopy = observer;
+  requestCopy = request;
+  handlerCopy = handler;
   v29 = fpfs_adopt_log(self->_log);
   v15 = fp_current_or_default_log();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413058;
-    v31 = self;
+    selfCopy = self;
     v32 = 2080;
     v33 = "[FPXExtensionContext fetchAndStartEnumeratingWithSettings:observer:request:completionHandler:]";
     v34 = 2112;
-    v35 = v11;
+    v35 = settingsCopy;
     v36 = 2112;
-    v37 = v13;
+    v37 = requestCopy;
     _os_log_debug_impl(&dword_1AAAE1000, v15, OS_LOG_TYPE_DEBUG, "[DEBUG] ipc: %@ %s %@, %@", buf, 0x2Au);
   }
 
@@ -7285,15 +7285,15 @@ void __71__FPXExtensionContext_valuesForAttributes_forItemID_completionHandler__
   v22[1] = 3221225472;
   v22[2] = __95__FPXExtensionContext_fetchAndStartEnumeratingWithSettings_observer_request_completionHandler___block_invoke;
   v22[3] = &unk_1E7939B68;
-  v17 = v11;
+  v17 = settingsCopy;
   v28 = a2;
   v23 = v17;
-  v24 = self;
-  v18 = v13;
+  selfCopy2 = self;
+  v18 = requestCopy;
   v25 = v18;
-  v19 = v14;
+  v19 = handlerCopy;
   v27 = v19;
-  v20 = v12;
+  v20 = observerCopy;
   v26 = v20;
   fp_dispatch_async_with_logs(instanceQueue, v22);
 
@@ -7553,68 +7553,68 @@ void __95__FPXExtensionContext_fetchAndStartEnumeratingWithSettings_observer_req
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enumeratorWasInvalidated:(id)a3
+- (void)enumeratorWasInvalidated:(id)invalidated
 {
-  v4 = a3;
+  invalidatedCopy = invalidated;
   notificationQueue = self->_notificationQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__FPXExtensionContext_enumeratorWasInvalidated___block_invoke;
   v7[3] = &unk_1E79390B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = invalidatedCopy;
+  v6 = invalidatedCopy;
   dispatch_async(notificationQueue, v7);
 }
 
-- (void)searchEnumeratorWasInvalidated:(id)a3
+- (void)searchEnumeratorWasInvalidated:(id)invalidated
 {
-  v4 = a3;
+  invalidatedCopy = invalidated;
   notificationQueue = self->_notificationQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54__FPXExtensionContext_searchEnumeratorWasInvalidated___block_invoke;
   v7[3] = &unk_1E79390B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = invalidatedCopy;
+  v6 = invalidatedCopy;
   dispatch_async(notificationQueue, v7);
 }
 
-- (void)addListenerDelegate:(id)a3
+- (void)addListenerDelegate:(id)delegate
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  listenerDelegates = v4->_listenerDelegates;
+  delegateCopy = delegate;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  listenerDelegates = selfCopy->_listenerDelegates;
   if (!listenerDelegates)
   {
     v6 = objc_opt_new();
-    v7 = v4->_listenerDelegates;
-    v4->_listenerDelegates = v6;
+    v7 = selfCopy->_listenerDelegates;
+    selfCopy->_listenerDelegates = v6;
 
-    listenerDelegates = v4->_listenerDelegates;
+    listenerDelegates = selfCopy->_listenerDelegates;
   }
 
-  [(NSMutableSet *)listenerDelegates addObject:v8];
-  objc_sync_exit(v4);
+  [(NSMutableSet *)listenerDelegates addObject:delegateCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeListenerDelegate:(id)a3
+- (void)removeListenerDelegate:(id)delegate
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableSet *)v4->_listenerDelegates removeObject:v5];
-  objc_sync_exit(v4);
+  delegateCopy = delegate;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableSet *)selfCopy->_listenerDelegates removeObject:delegateCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (id)additionalServiceSourcesForItemID:(id)a3 domain:(id)a4 extension:(id)a5
+- (id)additionalServiceSourcesForItemID:(id)d domain:(id)domain extension:(id)extension
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  domainCopy = domain;
+  extensionCopy = extension;
   if (additionalServiceSourcesForItemID_domain_extension__onceToken != -1)
   {
     [FPXExtensionContext additionalServiceSourcesForItemID:domain:extension:];
@@ -7641,8 +7641,8 @@ void __95__FPXExtensionContext_fetchAndStartEnumeratingWithSettings_observer_req
         }
 
         v16 = objc_alloc(*(*(&v21 + 1) + 8 * i));
-        v17 = [v7 identifier];
-        v18 = [v16 initWithItemIdentifier:v17 domain:v8 extension:v9];
+        identifier = [dCopy identifier];
+        v18 = [v16 initWithItemIdentifier:identifier domain:domainCopy extension:extensionCopy];
 
         if (v18)
         {
@@ -7699,10 +7699,10 @@ void __74__FPXExtensionContext_additionalServiceSourcesForItemID_domain_extensio
   additionalServiceSourcesForItemID_domain_extension__sourceClasses = v6;
 }
 
-- (void)fetchServicesForItemID:(id)a3 allowRestrictedSources:(BOOL)a4 completionHandler:(id)a5
+- (void)fetchServicesForItemID:(id)d allowRestrictedSources:(BOOL)sources completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  handlerCopy = handler;
   v18 = fpfs_adopt_log(self->_log);
   v10 = fp_current_or_default_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -7716,11 +7716,11 @@ void __74__FPXExtensionContext_additionalServiceSourcesForItemID_domain_extensio
   v14[2] = __87__FPXExtensionContext_fetchServicesForItemID_allowRestrictedSources_completionHandler___block_invoke;
   v14[3] = &unk_1E7939BD8;
   v14[4] = self;
-  v12 = v8;
+  v12 = dCopy;
   v15 = v12;
-  v13 = v9;
+  v13 = handlerCopy;
   v16 = v13;
-  v17 = a4;
+  sourcesCopy = sources;
   fp_dispatch_async_with_logs(instanceQueue, v14);
 
   __fp_pop_log(&v18);
@@ -7962,96 +7962,96 @@ id __87__FPXExtensionContext_fetchServicesForItemID_allowRestrictedSources_compl
   return v3;
 }
 
-- (void)fetchOperationServiceEndpoint:(id)a3
+- (void)fetchOperationServiceEndpoint:(id)endpoint
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  endpointCopy = endpoint;
   v5 = objc_opt_new();
   v6 = FPXOperationServiceXPCInterface();
   [v5 setInterface:v6];
 
   [v5 setExportedObject:self];
   [v5 setContext:self];
-  v7 = [MEMORY[0x1E696B0D8] anonymousListener];
-  v8 = [v7 endpoint];
+  anonymousListener = [MEMORY[0x1E696B0D8] anonymousListener];
+  endpoint = [anonymousListener endpoint];
   [(FPXExtensionContext *)self addListenerDelegate:v5];
-  [v7 setDelegate:v5];
-  [v7 resume];
+  [anonymousListener setDelegate:v5];
+  [anonymousListener resume];
   v11 = fpfs_adopt_log(self->_log);
   v9 = fp_current_or_default_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134219010;
-    v13 = FPPopLogSectionForBlock(v4);
+    v13 = FPPopLogSectionForBlock(endpointCopy);
     v14 = 2112;
-    v15 = self;
+    selfCopy = self;
     v16 = 2080;
     v17 = "[FPXExtensionContext fetchOperationServiceEndpoint:]";
     v18 = 2112;
-    v19 = v8;
+    v19 = endpoint;
     v20 = 2112;
     v21 = 0;
     _os_log_debug_impl(&dword_1AAAE1000, v9, OS_LOG_TYPE_DEBUG, "[DEBUG] ┳%llx ipc: %@, reply of %s %@, %@", buf, 0x34u);
   }
 
-  (*(v4 + 2))(v4, v8, 0);
+  (*(endpointCopy + 2))(endpointCopy, endpoint, 0);
   __fp_pop_log(&v11);
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchVendorEndpoint:(id)a3
+- (void)fetchVendorEndpoint:(id)endpoint
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  endpointCopy = endpoint;
   v5 = objc_opt_new();
   v6 = FPXVendorXPCInterface();
   [v5 setInterface:v6];
 
   [v5 setExportedObject:self];
   [v5 setContext:self];
-  v7 = [MEMORY[0x1E696B0D8] anonymousListener];
-  v8 = [v7 endpoint];
+  anonymousListener = [MEMORY[0x1E696B0D8] anonymousListener];
+  endpoint = [anonymousListener endpoint];
   [(FPXExtensionContext *)self addListenerDelegate:v5];
-  [v7 setDelegate:v5];
-  [v7 resume];
+  [anonymousListener setDelegate:v5];
+  [anonymousListener resume];
   v11 = fpfs_adopt_log(self->_log);
   v9 = fp_current_or_default_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134219010;
-    v13 = FPPopLogSectionForBlock(v4);
+    v13 = FPPopLogSectionForBlock(endpointCopy);
     v14 = 2112;
-    v15 = self;
+    selfCopy = self;
     v16 = 2080;
     v17 = "[FPXExtensionContext fetchVendorEndpoint:]";
     v18 = 2112;
-    v19 = v8;
+    v19 = endpoint;
     v20 = 2112;
     v21 = 0;
     _os_log_debug_impl(&dword_1AAAE1000, v9, OS_LOG_TYPE_DEBUG, "[DEBUG] ┳%llx ipc: %@, reply of %s %@, %@", buf, 0x34u);
   }
 
-  (*(v4 + 2))(v4, v8, 0);
+  (*(endpointCopy + 2))(endpointCopy, endpoint, 0);
   __fp_pop_log(&v11);
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_proxyWithCancellationHandler:(id)a3 forClientOperation:(id)a4
+- (id)_proxyWithCancellationHandler:(id)handler forClientOperation:(id)operation
 {
-  v5 = a3;
-  v6 = a4;
+  handlerCopy = handler;
+  operationCopy = operation;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __72__FPXExtensionContext__proxyWithCancellationHandler_forClientOperation___block_invoke;
   v10[3] = &unk_1E7939C00;
-  v11 = v5;
-  v7 = v5;
-  v8 = [v6 remoteObjectProxyWithErrorHandler:v10];
+  v11 = handlerCopy;
+  v7 = handlerCopy;
+  v8 = [operationCopy remoteObjectProxyWithErrorHandler:v10];
   [v8 setCancellationHandler:v7];
 
-  return v6;
+  return operationCopy;
 }
 
 void __72__FPXExtensionContext__proxyWithCancellationHandler_forClientOperation___block_invoke(uint64_t a1, void *a2)
@@ -8066,29 +8066,29 @@ void __72__FPXExtensionContext__proxyWithCancellationHandler_forClientOperation_
   [*(a1 + 32) cancel];
 }
 
-- (void)preflightReparentItemIDs:(id)a3 underParentID:(id)a4 reply:(id)a5
+- (void)preflightReparentItemIDs:(id)ds underParentID:(id)d reply:(id)reply
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  dCopy = d;
+  replyCopy = reply;
   v21 = fpfs_adopt_log(self->_log);
   v11 = fp_current_or_default_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v15 = logStringForObjects(v8);
+    v15 = logStringForObjects(dsCopy);
     *buf = 138413058;
-    v23 = self;
+    selfCopy = self;
     v24 = 2080;
     v25 = "[FPXExtensionContext preflightReparentItemIDs:underParentID:reply:]";
     v26 = 2112;
     v27 = v15;
     v28 = 2112;
-    v29 = v9;
+    v29 = dCopy;
     _os_log_debug_impl(&dword_1AAAE1000, v11, OS_LOG_TYPE_DEBUG, "[DEBUG] ipc: %@ %s %@, %@", buf, 0x2Au);
   }
 
-  if ([v8 count])
+  if ([dsCopy count])
   {
     instanceQueue = self->_instanceQueue;
     v16[0] = MEMORY[0x1E69E9820];
@@ -8096,9 +8096,9 @@ void __72__FPXExtensionContext__proxyWithCancellationHandler_forClientOperation_
     v16[2] = __68__FPXExtensionContext_preflightReparentItemIDs_underParentID_reply___block_invoke;
     v16[3] = &unk_1E7939B18;
     v16[4] = self;
-    v17 = v8;
-    v19 = v10;
-    v18 = v9;
+    v17 = dsCopy;
+    v19 = replyCopy;
+    v18 = dCopy;
     fp_dispatch_async_with_logs(instanceQueue, v16);
   }
 
@@ -8108,11 +8108,11 @@ void __72__FPXExtensionContext__proxyWithCancellationHandler_forClientOperation_
     v13 = fp_current_or_default_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      FPPopLogSectionForBlock(v10);
+      FPPopLogSectionForBlock(replyCopy);
       [FPXExtensionContext preflightReparentItemIDs:underParentID:reply:];
     }
 
-    (*(v10 + 2))(v10, 0);
+    (*(replyCopy + 2))(replyCopy, 0);
     __fp_pop_log(&v20);
   }
 
@@ -8295,80 +8295,80 @@ void __68__FPXExtensionContext_preflightReparentItemIDs_underParentID_reply___bl
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_indexOutOfBandUpdatedItems:(id)a3 deletedItems:(id)a4 indexReason:(int64_t)a5 completionHandler:(id)a6
+- (void)_indexOutOfBandUpdatedItems:(id)items deletedItems:(id)deletedItems indexReason:(int64_t)reason completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v34 = a6;
-  v35 = self;
+  itemsCopy = items;
+  deletedItemsCopy = deletedItems;
+  handlerCopy = handler;
+  selfCopy = self;
   v11 = self->_domainContext;
-  v12 = [(FPXDomainContext *)v11 domain];
-  v13 = [v12 personaIdentifier];
-  v14 = [MEMORY[0x1E69DF068] sharedManager];
-  v15 = [v14 currentPersona];
-  v16 = [v15 userPersonaUniqueString];
-  if ([v13 isEqualToString:v16])
+  domain = [(FPXDomainContext *)v11 domain];
+  personaIdentifier = [domain personaIdentifier];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+  if ([personaIdentifier isEqualToString:userPersonaUniqueString])
   {
   }
 
   else
   {
-    v17 = [MEMORY[0x1E69DF068] sharedManager];
-    v18 = [v17 currentPersona];
-    [v18 userPersonaUniqueString];
-    v19 = v31 = v9;
+    mEMORY[0x1E69DF068]2 = [MEMORY[0x1E69DF068] sharedManager];
+    currentPersona2 = [mEMORY[0x1E69DF068]2 currentPersona];
+    [currentPersona2 userPersonaUniqueString];
+    v19 = v31 = itemsCopy;
     [(FPXDomainContext *)v11 domain];
     v20 = v32 = v11;
     [v20 personaIdentifier];
-    v21 = v30 = v10;
+    v21 = v30 = deletedItemsCopy;
 
     v11 = v32;
     v22 = v19 == v21;
-    v10 = v30;
-    v9 = v31;
+    deletedItemsCopy = v30;
+    itemsCopy = v31;
     if (!v22)
     {
       v28 = fp_current_or_default_log();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
-        [FPXExtensionContext _indexOutOfBandUpdatedItems:v35 deletedItems:v32 indexReason:v28 completionHandler:?];
+        [FPXExtensionContext _indexOutOfBandUpdatedItems:selfCopy deletedItems:v32 indexReason:v28 completionHandler:?];
       }
 
       exit(1);
     }
   }
 
-  v23 = [(FPXDomainContext *)v11 spotlightIndexer];
-  v24 = [(FPXExtensionContext *)v35 providerIdentifier];
-  if ([v24 isEqual:@"com.apple.filesystems.UserFS.FileProvider"])
+  spotlightIndexer = [(FPXDomainContext *)v11 spotlightIndexer];
+  providerIdentifier = [(FPXExtensionContext *)selfCopy providerIdentifier];
+  if ([providerIdentifier isEqual:@"com.apple.filesystems.UserFS.FileProvider"])
   {
     v25 = 0;
   }
 
   else
   {
-    v26 = [(FPXExtensionContext *)v35 providerIdentifier];
-    v25 = [v26 isEqual:@"com.apple.SMBClientProvider.FileProvider"] ^ 1;
+    providerIdentifier2 = [(FPXExtensionContext *)selfCopy providerIdentifier];
+    v25 = [providerIdentifier2 isEqual:@"com.apple.SMBClientProvider.FileProvider"] ^ 1;
   }
 
-  if (!v35->_usesFPFS && v25 && v23 && ([v9 count] || objc_msgSend(v10, "count")))
+  if (!selfCopy->_usesFPFS && v25 && spotlightIndexer && ([itemsCopy count] || objc_msgSend(deletedItemsCopy, "count")))
   {
     v36[0] = MEMORY[0x1E69E9820];
     v36[1] = 3221225472;
     v36[2] = __94__FPXExtensionContext__indexOutOfBandUpdatedItems_deletedItems_indexReason_completionHandler___block_invoke;
     v36[3] = &unk_1E7939C78;
-    v37 = v9;
-    v38 = v10;
-    v39 = v35;
-    v27 = v34;
-    v40 = v34;
-    [v23 indexOutOfBandUpdatedItems:v37 deletedItems:v38 indexReason:a5 completionHandler:v36];
+    v37 = itemsCopy;
+    v38 = deletedItemsCopy;
+    v39 = selfCopy;
+    v27 = handlerCopy;
+    v40 = handlerCopy;
+    [spotlightIndexer indexOutOfBandUpdatedItems:v37 deletedItems:v38 indexReason:reason completionHandler:v36];
   }
 
   else
   {
-    v27 = v34;
-    v34[2](v34);
+    v27 = handlerCopy;
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -8399,17 +8399,17 @@ void __94__FPXExtensionContext__indexOutOfBandUpdatedItems_deletedItems_indexRea
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deleteItemsWithIDs:(id)a3 baseVersions:(id)a4 options:(unint64_t)a5 reply:(id)a6
+- (void)deleteItemsWithIDs:(id)ds baseVersions:(id)versions options:(unint64_t)options reply:(id)reply
 {
   v27[6] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  dsCopy = ds;
+  versionsCopy = versions;
+  replyCopy = reply;
   v27[0] = fpfs_adopt_log(self->_log);
   v14 = fp_current_or_default_log();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    logStringForObjects(v11);
+    logStringForObjects(dsCopy);
     objc_claimAutoreleasedReturnValue();
     [FPXExtensionContext deleteItemsWithIDs:baseVersions:options:reply:];
   }
@@ -8419,15 +8419,15 @@ void __94__FPXExtensionContext__indexOutOfBandUpdatedItems_deletedItems_indexRea
   v20[1] = 3221225472;
   v20[2] = __69__FPXExtensionContext_deleteItemsWithIDs_baseVersions_options_reply___block_invoke;
   v20[3] = &unk_1E7939D18;
-  v16 = v11;
+  v16 = dsCopy;
   v21 = v16;
-  v17 = v12;
+  v17 = versionsCopy;
   v25 = a2;
   v22 = v17;
-  v23 = self;
-  v18 = v13;
+  selfCopy = self;
+  v18 = replyCopy;
   v24 = v18;
-  v26 = a5;
+  optionsCopy = options;
   fp_dispatch_async_with_logs(instanceQueue, v20);
 
   __fp_pop_log(v27);
@@ -8787,25 +8787,25 @@ void __69__FPXExtensionContext_deleteItemsWithIDs_baseVersions_options_reply___b
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (id)deleteItemWithID:(id)a3 baseVersion:(id)a4 options:(unint64_t)a5 request:(id)a6 completionHandler:(id)a7
+- (id)deleteItemWithID:(id)d baseVersion:(id)version options:(unint64_t)options request:(id)request completionHandler:(id)handler
 {
   v44 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  dCopy = d;
+  versionCopy = version;
+  requestCopy = request;
+  handlerCopy = handler;
   v35 = fpfs_adopt_log(self->_log);
   v16 = fp_current_or_default_log();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413058;
-    v37 = self;
+    selfCopy = self;
     v38 = 2080;
     v39 = "[FPXExtensionContext deleteItemWithID:baseVersion:options:request:completionHandler:]";
     v40 = 2112;
-    v41 = v12;
+    v41 = dCopy;
     v42 = 2112;
-    v43 = v14;
+    v43 = requestCopy;
     _os_log_debug_impl(&dword_1AAAE1000, v16, OS_LOG_TYPE_DEBUG, "[DEBUG] ipc: %@ %s %@, %@", buf, 0x2Au);
   }
 
@@ -8816,14 +8816,14 @@ void __69__FPXExtensionContext_deleteItemsWithIDs_baseVersions_options_reply___b
   v28[2] = __86__FPXExtensionContext_deleteItemWithID_baseVersion_options_request_completionHandler___block_invoke;
   v28[3] = &unk_1E7939D40;
   v28[4] = self;
-  v19 = v12;
+  v19 = dCopy;
   v29 = v19;
-  v34 = a5;
-  v20 = v13;
+  optionsCopy = options;
+  v20 = versionCopy;
   v30 = v20;
-  v21 = v14;
+  v21 = requestCopy;
   v31 = v21;
-  v22 = v15;
+  v22 = handlerCopy;
   v33 = v22;
   v23 = v17;
   v32 = v23;
@@ -8942,26 +8942,26 @@ void __86__FPXExtensionContext_deleteItemWithID_baseVersion_options_request_comp
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_inlineSymlinkTarget:(id)a3 url:(id *)a4 error:(id *)a5
+- (BOOL)_inlineSymlinkTarget:(id)target url:(id *)url error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = *a4;
+  targetCopy = target;
+  v8 = *url;
   if (!v8)
   {
     goto LABEL_9;
   }
 
-  v9 = [v7 contentType];
-  if (([v9 conformsToType:*MEMORY[0x1E6982FF8]] & 1) == 0)
+  contentType = [targetCopy contentType];
+  if (([contentType conformsToType:*MEMORY[0x1E6982FF8]] & 1) == 0)
   {
 
     goto LABEL_9;
   }
 
-  v10 = [v7 symlinkTargetPath];
+  symlinkTargetPath = [targetCopy symlinkTargetPath];
 
-  if (v10)
+  if (symlinkTargetPath)
   {
 LABEL_9:
     v11 = 1;
@@ -8981,9 +8981,9 @@ LABEL_9:
     if (v14 < 0)
     {
 LABEL_5:
-      if (a5)
+      if (error)
       {
-        *a5 = [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:*__error()];
+        *error = [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:*__error()];
       }
 
       goto LABEL_7;
@@ -8991,21 +8991,21 @@ LABEL_5:
 
     v20[v14] = 0;
     v15 = [MEMORY[0x1E696AEC0] fp_pathWithFileSystemRepresentation:v20];
-    [v7 setSymlinkTargetPath:v15];
+    [targetCopy setSymlinkTargetPath:v15];
 
     goto LABEL_15;
   }
 
-  v16 = [MEMORY[0x1E696AEC0] stringWithContentsOfURL:v8 encoding:4 error:a5];
-  [v7 setSymlinkTargetPath:v16];
+  v16 = [MEMORY[0x1E696AEC0] stringWithContentsOfURL:v8 encoding:4 error:error];
+  [targetCopy setSymlinkTargetPath:v16];
 
-  v17 = [v7 symlinkTargetPath];
+  symlinkTargetPath2 = [targetCopy symlinkTargetPath];
 
-  if (v17)
+  if (symlinkTargetPath2)
   {
 LABEL_15:
     [v8 stopAccessingSecurityScopedResource];
-    *a4 = 0;
+    *url = 0;
     v18 = fp_current_or_default_log();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
@@ -9023,73 +9023,73 @@ LABEL_10:
   return v11;
 }
 
-- (id)createItemBasedOnTemplate:(id)a3 fields:(unint64_t)a4 contents:(id)a5 options:(unint64_t)a6 request:(id)a7 bounce:(BOOL)a8 completionHandler:(id)a9
+- (id)createItemBasedOnTemplate:(id)template fields:(unint64_t)fields contents:(id)contents options:(unint64_t)options request:(id)request bounce:(BOOL)bounce completionHandler:(id)handler
 {
-  v41 = a8;
+  bounceCopy = bounce;
   v71 = *MEMORY[0x1E69E9840];
-  v48 = a3;
-  v47 = a5;
-  v45 = a7;
-  v46 = a9;
-  v44 = self;
+  templateCopy = template;
+  contentsCopy = contents;
+  requestCopy = request;
+  handlerCopy = handler;
+  selfCopy = self;
   v57 = fpfs_adopt_log(self->_log);
   v12 = fp_current_or_default_log();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413570;
-    v59 = self;
+    selfCopy2 = self;
     v60 = 2080;
     v61 = "[FPXExtensionContext createItemBasedOnTemplate:fields:contents:options:request:bounce:completionHandler:]";
     v62 = 2112;
-    v63 = v48;
+    v63 = templateCopy;
     v64 = 1024;
-    *v65 = a4;
+    *v65 = fields;
     *&v65[4] = 1024;
-    *&v65[6] = a6;
+    *&v65[6] = options;
     *v66 = 2112;
-    *&v66[2] = v47;
+    *&v66[2] = contentsCopy;
     _os_log_debug_impl(&dword_1AAAE1000, v12, OS_LOG_TYPE_DEBUG, "[DEBUG] ipc: %@ %s %@ fields=%x options=%x contentURL=%@", buf, 0x36u);
   }
 
-  v13 = self;
-  objc_sync_enter(v13);
-  v49 = v13->_domainContext;
-  objc_sync_exit(v13);
+  selfCopy3 = self;
+  objc_sync_enter(selfCopy3);
+  v49 = selfCopy3->_domainContext;
+  objc_sync_exit(selfCopy3);
 
-  v14 = [(FPXDomainContext *)v49 domain];
-  v15 = [v14 personaIdentifier];
-  v16 = [MEMORY[0x1E69DF068] sharedManager];
-  v17 = [v16 currentPersona];
-  v18 = [v17 userPersonaUniqueString];
-  if ([v15 isEqualToString:v18])
+  domain = [(FPXDomainContext *)v49 domain];
+  personaIdentifier = [domain personaIdentifier];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+  if ([personaIdentifier isEqualToString:userPersonaUniqueString])
   {
   }
 
   else
   {
-    v19 = [MEMORY[0x1E69DF068] sharedManager];
-    v20 = [v19 currentPersona];
-    v21 = [v20 userPersonaUniqueString];
-    v22 = [(FPXDomainContext *)v49 domain];
-    v23 = [v22 personaIdentifier];
-    v40 = v21 == v23;
+    mEMORY[0x1E69DF068]2 = [MEMORY[0x1E69DF068] sharedManager];
+    currentPersona2 = [mEMORY[0x1E69DF068]2 currentPersona];
+    userPersonaUniqueString2 = [currentPersona2 userPersonaUniqueString];
+    domain2 = [(FPXDomainContext *)v49 domain];
+    personaIdentifier2 = [domain2 personaIdentifier];
+    v40 = userPersonaUniqueString2 == personaIdentifier2;
 
     if (!v40)
     {
       v33 = fp_current_or_default_log();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
-        v34 = [MEMORY[0x1E69DF068] sharedManager];
-        v35 = [v34 currentPersona];
-        v36 = [v35 userPersonaUniqueString];
-        v37 = [(FPXDomainContext *)v49 domain];
-        v38 = [v37 personaIdentifier];
+        mEMORY[0x1E69DF068]3 = [MEMORY[0x1E69DF068] sharedManager];
+        currentPersona3 = [mEMORY[0x1E69DF068]3 currentPersona];
+        userPersonaUniqueString3 = [currentPersona3 userPersonaUniqueString];
+        domain3 = [(FPXDomainContext *)v49 domain];
+        personaIdentifier3 = [domain3 personaIdentifier];
         *buf = 138413058;
-        v59 = v13;
+        selfCopy2 = selfCopy3;
         v60 = 2112;
-        v61 = v36;
+        v61 = userPersonaUniqueString3;
         v62 = 2112;
-        v63 = v38;
+        v63 = personaIdentifier3;
         v64 = 2080;
         *v65 = "[FPXExtensionContext createItemBasedOnTemplate:fields:contents:options:request:bounce:completionHandler:]";
         _os_log_error_impl(&dword_1AAAE1000, v33, OS_LOG_TYPE_ERROR, "[ERROR] Non matching personas for the extension %@ (%@, expect %@) on %s", buf, 0x2Au);
@@ -9099,11 +9099,11 @@ LABEL_10:
     }
   }
 
-  v24 = [v47 url];
+  v24 = [contentsCopy url];
   [v24 startAccessingSecurityScopedResource];
   v55 = 0;
   v56 = v24;
-  v25 = [(FPXExtensionContext *)v13 _inlineSymlinkTarget:v48 url:&v56 error:&v55];
+  v25 = [(FPXExtensionContext *)selfCopy3 _inlineSymlinkTarget:templateCopy url:&v56 error:&v55];
   v26 = v56;
 
   v27 = v55;
@@ -9114,25 +9114,25 @@ LABEL_10:
     v50[2] = __106__FPXExtensionContext_createItemBasedOnTemplate_fields_contents_options_request_bounce_completionHandler___block_invoke;
     v50[3] = &unk_1E7939D68;
     v51 = v26;
-    v52 = v13;
-    v53 = v46;
-    v28 = [(FPXExtensionContext *)v13 _createItemBasedOnTemplate:v48 fields:a4 contents:v51 options:a6 request:v45 bounce:v41 bounceNumber:0 completionHandler:v50];
+    v52 = selfCopy3;
+    v53 = handlerCopy;
+    v28 = [(FPXExtensionContext *)selfCopy3 _createItemBasedOnTemplate:templateCopy fields:fields contents:v51 options:options request:requestCopy bounce:bounceCopy bounceNumber:0 completionHandler:v50];
 
     v29 = v51;
   }
 
   else
   {
-    v29 = [(FPXDomainContext *)v49 currentResponseWithRequest:v45];
-    v54 = fpfs_adopt_log(v44->_log);
+    v29 = [(FPXDomainContext *)v49 currentResponseWithRequest:requestCopy];
+    v54 = fpfs_adopt_log(selfCopy->_log);
     v30 = fp_current_or_default_log();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
     {
-      v39 = FPPopLogSectionForBlock(v46);
+      v39 = FPPopLogSectionForBlock(handlerCopy);
       *buf = 134219778;
-      v59 = v39;
+      selfCopy2 = v39;
       v60 = 2112;
-      v61 = v13;
+      v61 = selfCopy3;
       v62 = 2080;
       v63 = "[FPXExtensionContext createItemBasedOnTemplate:fields:contents:options:request:bounce:completionHandler:]";
       v64 = 2112;
@@ -9148,7 +9148,7 @@ LABEL_10:
       _os_log_debug_impl(&dword_1AAAE1000, v30, OS_LOG_TYPE_DEBUG, "[DEBUG] ┳%llx ipc: %@, reply of %s %@, 0x%x, %{BOOL}d, %@, %@", buf, 0x4Au);
     }
 
-    (*(v46 + 2))(v46, 0, 0, 0, v29, v27);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, v29, v27);
     __fp_pop_log(&v54);
 
     v28 = 0;
@@ -9218,33 +9218,33 @@ void __106__FPXExtensionContext_createItemBasedOnTemplate_fields_contents_option
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_freeSlotHeldByItem:(id)a3 request:(id)a4 bounceIndex:(unint64_t)a5 completionHandler:(id)a6
+- (void)_freeSlotHeldByItem:(id)item request:(id)request bounceIndex:(unint64_t)index completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [v9 filename];
+  itemCopy = item;
+  requestCopy = request;
+  handlerCopy = handler;
+  filename = [itemCopy filename];
   v32 = 0;
   v31 = 0;
-  v13 = [v12 fp_stringByDeletingPathBounceNo:&v32 andPathExtension:&v31 isFolder:{objc_msgSend(v9, "isFolder")}];
+  v13 = [filename fp_stringByDeletingPathBounceNo:&v32 andPathExtension:&v31 isFolder:{objc_msgSend(itemCopy, "isFolder")}];
   v14 = v32;
   v15 = v31;
 
-  if ([v14 unsignedIntegerValue] == a5)
+  if ([v14 unsignedIntegerValue] == index)
   {
-    v16 = [v14 unsignedIntegerValue];
-    if ((v16 + 1) > 2)
+    unsignedIntegerValue = [v14 unsignedIntegerValue];
+    if ((unsignedIntegerValue + 1) > 2)
     {
-      a5 = v16 + 1;
+      index = unsignedIntegerValue + 1;
     }
 
     else
     {
-      a5 = 2;
+      index = 2;
     }
   }
 
-  v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
+  v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
   v18 = [v13 fp_representableHFSFileNameWithNumber:v17 addedExtension:v15 makeDotFile:0];
 
   v19 = fp_current_or_default_log();
@@ -9253,21 +9253,21 @@ void __106__FPXExtensionContext_createItemBasedOnTemplate_fields_contents_option
     [FPXExtensionContext _freeSlotHeldByItem:request:bounceIndex:completionHandler:];
   }
 
-  [v9 setFilename:v18];
-  v20 = [v9 itemVersion];
+  [itemCopy setFilename:v18];
+  itemVersion = [itemCopy itemVersion];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __81__FPXExtensionContext__freeSlotHeldByItem_request_bounceIndex_completionHandler___block_invoke;
   v26[3] = &unk_1E7939D90;
   v26[4] = self;
-  v27 = v9;
-  v29 = v11;
-  v30 = a5;
-  v28 = v10;
-  v21 = v11;
-  v22 = v10;
-  v23 = v9;
-  v24 = [(FPXExtensionContext *)self modifyItem:v23 baseVersion:v20 changedFields:2 contents:0 options:0 request:v22 completionHandler:v26];
+  v27 = itemCopy;
+  v29 = handlerCopy;
+  indexCopy = index;
+  v28 = requestCopy;
+  v21 = handlerCopy;
+  v22 = requestCopy;
+  v23 = itemCopy;
+  v24 = [(FPXExtensionContext *)self modifyItem:v23 baseVersion:itemVersion changedFields:2 contents:0 options:0 request:v22 completionHandler:v26];
 }
 
 void __81__FPXExtensionContext__freeSlotHeldByItem_request_bounceIndex_completionHandler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5, void *a6)
@@ -9286,26 +9286,26 @@ void __81__FPXExtensionContext__freeSlotHeldByItem_request_bounceIndex_completio
   }
 }
 
-- (id)_createItemBasedOnTemplate:(id)a3 fields:(unint64_t)a4 contents:(id)a5 options:(unint64_t)a6 request:(id)a7 bounce:(BOOL)a8 bounceNumber:(id)a9 completionHandler:(id)a10
+- (id)_createItemBasedOnTemplate:(id)template fields:(unint64_t)fields contents:(id)contents options:(unint64_t)options request:(id)request bounce:(BOOL)bounce bounceNumber:(id)number completionHandler:(id)self0
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a7;
-  v18 = a9;
-  v19 = a10;
-  if (v16)
+  templateCopy = template;
+  contentsCopy = contents;
+  requestCopy = request;
+  numberCopy = number;
+  handlerCopy = handler;
+  if (contentsCopy)
   {
-    v20 = [v15 documentSize];
-    v21 = [v20 longLongValue];
+    documentSize = [templateCopy documentSize];
+    longLongValue = [documentSize longLongValue];
 
-    if (v21 <= 1)
+    if (longLongValue <= 1)
     {
       v22 = 1;
     }
 
     else
     {
-      v22 = v21;
+      v22 = longLongValue;
     }
   }
 
@@ -9321,22 +9321,22 @@ void __81__FPXExtensionContext__freeSlotHeldByItem_request_bounceIndex_completio
   v35[2] = __120__FPXExtensionContext__createItemBasedOnTemplate_fields_contents_options_request_bounce_bounceNumber_completionHandler___block_invoke;
   v35[3] = &unk_1E7939E08;
   v35[4] = self;
-  v36 = v15;
-  v42 = a6;
-  v43 = a4;
-  v37 = v18;
-  v38 = v17;
-  v45 = a8;
-  v39 = v16;
-  v41 = v19;
+  v36 = templateCopy;
+  optionsCopy = options;
+  fieldsCopy = fields;
+  v37 = numberCopy;
+  v38 = requestCopy;
+  bounceCopy = bounce;
+  v39 = contentsCopy;
+  v41 = handlerCopy;
   v25 = v23;
   v40 = v25;
   v44 = v22;
-  v26 = v19;
-  v27 = v16;
-  v28 = v17;
-  v29 = v18;
-  v30 = v15;
+  v26 = handlerCopy;
+  v27 = contentsCopy;
+  v28 = requestCopy;
+  v29 = numberCopy;
+  v30 = templateCopy;
   fp_dispatch_async_with_logs(instanceQueue, v35);
   v31 = v40;
   v32 = v25;
@@ -9667,24 +9667,24 @@ void __120__FPXExtensionContext__createItemBasedOnTemplate_fields_contents_optio
   }
 }
 
-- (void)_fetchHierarchyForItemID:(id)a3 into:(id)a4 maxDepth:(unint64_t)a5 completionHandler:(id)a6
+- (void)_fetchHierarchyForItemID:(id)d into:(id)into maxDepth:(unint64_t)depth completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dCopy = d;
+  intoCopy = into;
+  handlerCopy = handler;
   v13 = +[NSFileProviderRequest requestFromTheSystem];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __80__FPXExtensionContext__fetchHierarchyForItemID_into_maxDepth_completionHandler___block_invoke;
   v17[3] = &unk_1E7939E30;
   v17[4] = self;
-  v18 = v10;
-  v19 = v11;
-  v20 = v12;
-  v21 = a5;
-  v14 = v11;
-  v15 = v12;
-  v16 = v10;
+  v18 = dCopy;
+  v19 = intoCopy;
+  v20 = handlerCopy;
+  depthCopy = depth;
+  v14 = intoCopy;
+  v15 = handlerCopy;
+  v16 = dCopy;
   [(FPXExtensionContext *)self itemForItemID:v16 request:v13 completionHandler:v17];
 }
 
@@ -9808,29 +9808,29 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)fetchHierarchyForItemID:(id)a3 recursively:(BOOL)a4 ignoreAlternateContentURL:(BOOL)a5 reply:(id)a6
+- (void)fetchHierarchyForItemID:(id)d recursively:(BOOL)recursively ignoreAlternateContentURL:(BOOL)l reply:(id)reply
 {
-  v7 = a4;
+  recursivelyCopy = recursively;
   v27 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a6;
+  dCopy = d;
+  replyCopy = reply;
   v18 = fpfs_adopt_log(self->_log);
   v11 = fp_current_or_default_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413058;
-    v20 = self;
+    selfCopy = self;
     v21 = 2080;
     v22 = "[FPXExtensionContext fetchHierarchyForItemID:recursively:ignoreAlternateContentURL:reply:]";
     v23 = 2112;
-    v24 = v9;
+    v24 = dCopy;
     v25 = 1024;
-    v26 = v7;
+    v26 = recursivelyCopy;
     _os_log_debug_impl(&dword_1AAAE1000, v11, OS_LOG_TYPE_DEBUG, "[DEBUG] ipc: %@ %s %@, %{BOOL}d", buf, 0x26u);
   }
 
-  v12 = [MEMORY[0x1E695DF70] array];
-  if (v7)
+  array = [MEMORY[0x1E695DF70] array];
+  if (recursivelyCopy)
   {
     v13 = 200;
   }
@@ -9845,9 +9845,9 @@ LABEL_18:
   v16[2] = __91__FPXExtensionContext_fetchHierarchyForItemID_recursively_ignoreAlternateContentURL_reply___block_invoke;
   v16[3] = &unk_1E7939E58;
   v16[4] = self;
-  v14 = v10;
+  v14 = replyCopy;
   v17 = v14;
-  [(FPXExtensionContext *)self _fetchHierarchyForItemID:v9 into:v12 maxDepth:v13 completionHandler:v16];
+  [(FPXExtensionContext *)self _fetchHierarchyForItemID:dCopy into:array maxDepth:v13 completionHandler:v16];
 
   __fp_pop_log(&v18);
   v15 = *MEMORY[0x1E69E9840];
@@ -9883,10 +9883,10 @@ void __91__FPXExtensionContext_fetchHierarchyForItemID_recursively_ignoreAlterna
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchItemID:(id)a3 reply:(id)a4
+- (void)fetchItemID:(id)d reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  replyCopy = reply;
   v13 = fpfs_adopt_log(self->_log);
   v8 = fp_current_or_default_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -9900,9 +9900,9 @@ void __91__FPXExtensionContext_fetchHierarchyForItemID_recursively_ignoreAlterna
   v11[2] = __41__FPXExtensionContext_fetchItemID_reply___block_invoke;
   v11[3] = &unk_1E79397B0;
   v11[4] = self;
-  v10 = v7;
+  v10 = replyCopy;
   v12 = v10;
-  [(FPXExtensionContext *)self itemForItemID:v6 request:v9 completionHandler:v11];
+  [(FPXExtensionContext *)self itemForItemID:dCopy request:v9 completionHandler:v11];
 
   __fp_pop_log(&v13);
 }
@@ -9938,27 +9938,27 @@ void __41__FPXExtensionContext_fetchItemID_reply___block_invoke(uint64_t a1, voi
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchDefaultContainerForBundleIdentifier:(id)a3 defaultName:(id)a4 inDomainIdentifier:(id)a5 lookupOnly:(BOOL)a6 reply:(id)a7
+- (void)fetchDefaultContainerForBundleIdentifier:(id)identifier defaultName:(id)name inDomainIdentifier:(id)domainIdentifier lookupOnly:(BOOL)only reply:(id)reply
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  identifierCopy = identifier;
+  nameCopy = name;
+  domainIdentifierCopy = domainIdentifier;
+  replyCopy = reply;
   instanceQueue = self->_instanceQueue;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __112__FPXExtensionContext_fetchDefaultContainerForBundleIdentifier_defaultName_inDomainIdentifier_lookupOnly_reply___block_invoke;
   v21[3] = &unk_1E7939F20;
   v21[4] = self;
-  v22 = v14;
-  v24 = v12;
-  v25 = v15;
-  v26 = a6;
-  v23 = v13;
-  v17 = v12;
-  v18 = v13;
-  v19 = v15;
-  v20 = v14;
+  v22 = domainIdentifierCopy;
+  v24 = identifierCopy;
+  v25 = replyCopy;
+  onlyCopy = only;
+  v23 = nameCopy;
+  v17 = identifierCopy;
+  v18 = nameCopy;
+  v19 = replyCopy;
+  v20 = domainIdentifierCopy;
   fp_dispatch_async_with_logs(instanceQueue, v21);
 }
 
@@ -10288,10 +10288,10 @@ LABEL_34:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (id)fetchPublishingURLForItemID:(id)a3 completionHandler:(id)a4
+- (id)fetchPublishingURLForItemID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v21 = fpfs_adopt_log(self->_log);
   v8 = fp_current_or_default_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -10306,9 +10306,9 @@ LABEL_34:
   v17[2] = __69__FPXExtensionContext_fetchPublishingURLForItemID_completionHandler___block_invoke;
   v17[3] = &unk_1E7939B18;
   v17[4] = self;
-  v11 = v6;
+  v11 = dCopy;
   v18 = v11;
-  v12 = v7;
+  v12 = handlerCopy;
   v20 = v12;
   v13 = v9;
   v19 = v13;
@@ -10438,10 +10438,10 @@ void __69__FPXExtensionContext_fetchPublishingURLForItemID_completionHandler___b
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)disconnectDomainID:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (id)disconnectDomainID:(id)d options:(unint64_t)options completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  handlerCopy = handler;
   v24 = fpfs_adopt_log(self->_log);
   v10 = fp_current_or_default_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -10456,10 +10456,10 @@ void __69__FPXExtensionContext_fetchPublishingURLForItemID_completionHandler___b
   v19[2] = __68__FPXExtensionContext_disconnectDomainID_options_completionHandler___block_invoke;
   v19[3] = &unk_1E7939F70;
   v19[4] = self;
-  v13 = v8;
+  v13 = dCopy;
   v20 = v13;
-  v23 = a4;
-  v14 = v9;
+  optionsCopy = options;
+  v14 = handlerCopy;
   v22 = v14;
   v15 = v11;
   v21 = v15;
@@ -10623,25 +10623,25 @@ void __68__FPXExtensionContext_disconnectDomainID_options_completionHandler___bl
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (id)performActionWithIdentifier:(id)a3 onItemsWithIdentifiers:(id)a4 domainIdentifier:(id)a5 completionHandler:(id)a6
+- (id)performActionWithIdentifier:(id)identifier onItemsWithIdentifiers:(id)identifiers domainIdentifier:(id)domainIdentifier completionHandler:(id)handler
 {
   v42 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
+  domainIdentifierCopy = domainIdentifier;
+  handlerCopy = handler;
   v33 = fpfs_adopt_log(self->_log);
   v14 = fp_current_or_default_log();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413058;
-    v35 = self;
+    selfCopy = self;
     v36 = 2080;
     v37 = "[FPXExtensionContext performActionWithIdentifier:onItemsWithIdentifiers:domainIdentifier:completionHandler:]";
     v38 = 2112;
-    v39 = v10;
+    v39 = identifierCopy;
     v40 = 2112;
-    v41 = v11;
+    v41 = identifiersCopy;
     _os_log_debug_impl(&dword_1AAAE1000, v14, OS_LOG_TYPE_DEBUG, "[DEBUG] ipc: %@ %s %@, %@", buf, 0x2Au);
   }
 
@@ -10651,14 +10651,14 @@ void __68__FPXExtensionContext_disconnectDomainID_options_completionHandler___bl
   v26[1] = 3221225472;
   v26[2] = __109__FPXExtensionContext_performActionWithIdentifier_onItemsWithIdentifiers_domainIdentifier_completionHandler___block_invoke;
   v26[3] = &unk_1E7939FC0;
-  v17 = v10;
+  v17 = identifierCopy;
   v27 = v17;
-  v28 = self;
-  v18 = v12;
+  selfCopy2 = self;
+  v18 = domainIdentifierCopy;
   v29 = v18;
-  v19 = v11;
+  v19 = identifiersCopy;
   v30 = v19;
-  v20 = v13;
+  v20 = handlerCopy;
   v32 = v20;
   v21 = v15;
   v31 = v21;
@@ -10801,10 +10801,10 @@ void __109__FPXExtensionContext_performActionWithIdentifier_onItemsWithIdentifie
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)wakeForSessionIdentifier:(id)a3 completionHandler:(id)a4
+- (void)wakeForSessionIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v15 = fpfs_adopt_log(self->_log);
   v8 = fp_current_or_default_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -10818,9 +10818,9 @@ void __109__FPXExtensionContext_performActionWithIdentifier_onItemsWithIdentifie
   v12[2] = __66__FPXExtensionContext_wakeForSessionIdentifier_completionHandler___block_invoke;
   v12[3] = &unk_1E7939300;
   v12[4] = self;
-  v10 = v7;
+  v10 = handlerCopy;
   v14 = v10;
-  v11 = v6;
+  v11 = identifierCopy;
   v13 = v11;
   fp_dispatch_async_with_logs(instanceQueue, v12);
 
@@ -10892,16 +10892,16 @@ void __66__FPXExtensionContext_wakeForSessionIdentifier_completionHandler___bloc
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)bulkEvictItemsWithItemIDs:(id)a3 completionHandler:(id)a4
+- (void)bulkEvictItemsWithItemIDs:(id)ds completionHandler:(id)handler
 {
   v16[6] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   v16[0] = fpfs_adopt_log(self->_log);
   v8 = fp_current_or_default_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    logStringForObjects(v6);
+    logStringForObjects(dsCopy);
     objc_claimAutoreleasedReturnValue();
     [FPXExtensionContext bulkEvictItemsWithItemIDs:completionHandler:];
   }
@@ -10912,9 +10912,9 @@ void __66__FPXExtensionContext_wakeForSessionIdentifier_completionHandler___bloc
   v13[2] = __67__FPXExtensionContext_bulkEvictItemsWithItemIDs_completionHandler___block_invoke;
   v13[3] = &unk_1E7939300;
   v13[4] = self;
-  v10 = v7;
+  v10 = handlerCopy;
   v15 = v10;
-  v11 = v6;
+  v11 = dsCopy;
   v14 = v11;
   fp_dispatch_async_with_logs(instanceQueue, v13);
 
@@ -11051,23 +11051,23 @@ void __67__FPXExtensionContext_bulkEvictItemsWithItemIDs_completionHandler___blo
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)attemptRecoveryFromError:(id)a3 optionIndex:(unint64_t)a4 completionHandler:(id)a5
+- (void)attemptRecoveryFromError:(id)error optionIndex:(unint64_t)index completionHandler:(id)handler
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  errorCopy = error;
+  handlerCopy = handler;
   v19 = fpfs_adopt_log(self->_log);
   v10 = fp_current_or_default_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413058;
-    v21 = self;
+    selfCopy = self;
     v22 = 2080;
     v23 = "[FPXExtensionContext attemptRecoveryFromError:optionIndex:completionHandler:]";
     v24 = 2112;
-    v25 = v8;
+    v25 = errorCopy;
     v26 = 2048;
-    v27 = a4;
+    indexCopy = index;
     _os_log_debug_impl(&dword_1AAAE1000, v10, OS_LOG_TYPE_DEBUG, "[DEBUG] ipc: %@ %s %@, %lu", buf, 0x2Au);
   }
 
@@ -11077,11 +11077,11 @@ void __67__FPXExtensionContext_bulkEvictItemsWithItemIDs_completionHandler___blo
   v15[2] = __78__FPXExtensionContext_attemptRecoveryFromError_optionIndex_completionHandler___block_invoke;
   v15[3] = &unk_1E793A010;
   v15[4] = self;
-  v12 = v9;
+  v12 = handlerCopy;
   v17 = v12;
-  v13 = v8;
+  v13 = errorCopy;
   v16 = v13;
-  v18 = a4;
+  indexCopy2 = index;
   fp_dispatch_async_with_logs(instanceQueue, v15);
 
   __fp_pop_log(&v19);
@@ -11162,56 +11162,56 @@ void __78__FPXExtensionContext_attemptRecoveryFromError_optionIndex_completionHa
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)userInteractionErrorsForPerformingAction:(id)a3 sourceItems:(id)a4 destinationItem:(id)a5 fpProviderDomainId:(id)a6 sourceItemKeysAllowList:(id)a7 destinationItemKeysAllowList:(id)a8 completionHandler:(id)a9
+- (void)userInteractionErrorsForPerformingAction:(id)action sourceItems:(id)items destinationItem:(id)item fpProviderDomainId:(id)id sourceItemKeysAllowList:(id)list destinationItemKeysAllowList:(id)allowList completionHandler:(id)handler
 {
   v50 = *MEMORY[0x1E69E9840];
-  v35 = a3;
-  v37 = a4;
-  v36 = a5;
-  v33 = a6;
-  v31 = a7;
-  v32 = a8;
-  v34 = a9;
+  actionCopy = action;
+  itemsCopy = items;
+  itemCopy = item;
+  idCopy = id;
+  listCopy = list;
+  allowListCopy = allowList;
+  handlerCopy = handler;
   v39 = fpfs_adopt_log(self->_log);
   v15 = fp_current_or_default_log();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    v29 = logStringForObjects(v37);
+    v29 = logStringForObjects(itemsCopy);
     *buf = 138413314;
-    v41 = self;
+    selfCopy = self;
     v42 = 2080;
-    v43 = "[FPXExtensionContext userInteractionErrorsForPerformingAction:sourceItems:destinationItem:fpProviderDomainId:sourceItemKeysAllowList:destinationItemKeysAllowList:completionHandler:]";
+    selfCopy2 = "[FPXExtensionContext userInteractionErrorsForPerformingAction:sourceItems:destinationItem:fpProviderDomainId:sourceItemKeysAllowList:destinationItemKeysAllowList:completionHandler:]";
     v44 = 2112;
-    v45 = v35;
+    v45 = actionCopy;
     v46 = 2112;
     v47 = v29;
     v48 = 2112;
-    v49 = v36;
+    v49 = itemCopy;
     _os_log_debug_impl(&dword_1AAAE1000, v15, OS_LOG_TYPE_DEBUG, "[DEBUG] ipc: %@ %s %@, %@, %@", buf, 0x34u);
   }
 
-  v16 = [v33 fp_toDomainIdentifier];
-  v17 = [(FPXExtensionContext *)self createUserInteractionSuppressingWithDomainIdentifier:v16 withPurpose:@"userInteractionErrorsForPerformingAction"];
-  v18 = [MEMORY[0x1E696AAE8] mainBundle];
-  v19 = [(FPXDomainContext *)self->_domainContext providerDomain];
-  v20 = [v19 providerID];
-  v21 = [(FPXDomainContext *)self->_domainContext providerDomain];
-  v22 = [v21 identifier];
-  v23 = [FPPreflightUserInteraction interactionsForBundle:v18 providerIdentifier:v20 domainIdentifier:v22];
+  fp_toDomainIdentifier = [idCopy fp_toDomainIdentifier];
+  v17 = [(FPXExtensionContext *)self createUserInteractionSuppressingWithDomainIdentifier:fp_toDomainIdentifier withPurpose:@"userInteractionErrorsForPerformingAction"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  providerDomain = [(FPXDomainContext *)self->_domainContext providerDomain];
+  providerID = [providerDomain providerID];
+  providerDomain2 = [(FPXDomainContext *)self->_domainContext providerDomain];
+  identifier = [providerDomain2 identifier];
+  v23 = [FPPreflightUserInteraction interactionsForBundle:mainBundle providerIdentifier:providerID domainIdentifier:identifier];
 
-  v24 = [(FPXDomainContext *)self->_domainContext userInfo];
-  v25 = [FPPreflightUserInteraction evaluationObjectsForAction:v35 sourceItems:v37 destinationItem:v36 domainUserInfo:v24 sourceItemKeysAllowList:v31 destinationItemKeysAllowList:v32];
+  userInfo = [(FPXDomainContext *)self->_domainContext userInfo];
+  v25 = [FPPreflightUserInteraction evaluationObjectsForAction:actionCopy sourceItems:itemsCopy destinationItem:itemCopy domainUserInfo:userInfo sourceItemKeysAllowList:listCopy destinationItemKeysAllowList:allowListCopy];
 
   v26 = [FPPreflightUserInteraction gatherErrorsForInteractions:v23 evaluationObjects:v25 suppressionDelegate:v17];
   v38 = fpfs_adopt_log(self->_log);
   v27 = fp_current_or_default_log();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
   {
-    v30 = FPPopLogSectionForBlock(v34);
+    v30 = FPPopLogSectionForBlock(handlerCopy);
     *buf = 134218754;
-    v41 = v30;
+    selfCopy = v30;
     v42 = 2112;
-    v43 = self;
+    selfCopy2 = self;
     v44 = 2080;
     v45 = "[FPXExtensionContext userInteractionErrorsForPerformingAction:sourceItems:destinationItem:fpProviderDomainId:sourceItemKeysAllowList:destinationItemKeysAllowList:completionHandler:]";
     v46 = 2112;
@@ -11219,24 +11219,24 @@ void __78__FPXExtensionContext_attemptRecoveryFromError_optionIndex_completionHa
     _os_log_debug_impl(&dword_1AAAE1000, v27, OS_LOG_TYPE_DEBUG, "[DEBUG] ┳%llx ipc: %@, reply of %s %@", buf, 0x2Au);
   }
 
-  (*(v34 + 2))(v34, v26);
+  (*(handlerCopy + 2))(handlerCopy, v26);
   __fp_pop_log(&v38);
 
   __fp_pop_log(&v39);
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchTrashIdentifiersWithCompletionHandler:(id)a3
+- (void)fetchTrashIdentifiersWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   instanceQueue = self->_instanceQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__FPXExtensionContext_fetchTrashIdentifiersWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7939128;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   fp_dispatch_async_with_logs(instanceQueue, v7);
 }
 
@@ -11324,21 +11324,21 @@ void __66__FPXExtensionContext_fetchTrashIdentifiersWithCompletionHandler___bloc
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateIgnoreStateOfItemWithIdentifiers:(id)a3 ignoreState:(BOOL)a4 completionHandler:(id)a5
+- (void)updateIgnoreStateOfItemWithIdentifiers:(id)identifiers ignoreState:(BOOL)state completionHandler:(id)handler
 {
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   v14 = fpfs_adopt_log(self->_log);
   v9 = fp_current_or_default_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    v12 = FPPopLogSectionForBlock(v8);
+    v12 = FPPopLogSectionForBlock(handlerCopy);
     v13 = FPNotSupportedError();
     *buf = 134219266;
     v16 = v12;
     v17 = 2112;
-    v18 = self;
+    selfCopy = self;
     v19 = 2080;
     v20 = "[FPXExtensionContext updateIgnoreStateOfItemWithIdentifiers:ignoreState:completionHandler:]";
     v21 = 2112;
@@ -11351,23 +11351,23 @@ void __66__FPXExtensionContext_fetchTrashIdentifiersWithCompletionHandler___bloc
   }
 
   v10 = FPNotSupportedError();
-  (*(v8 + 2))(v8, 0, 0, v10);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, v10);
 
   __fp_pop_log(&v14);
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchCustomPushTopicsWithCompletionHandler:(id)a3
+- (void)fetchCustomPushTopicsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   instanceQueue = self->_instanceQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__FPXExtensionContext_fetchCustomPushTopicsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7939128;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   fp_dispatch_async_with_logs(instanceQueue, v7);
 }
 
@@ -11433,35 +11433,35 @@ void __66__FPXExtensionContext_fetchCustomPushTopicsWithCompletionHandler___bloc
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)wakeForPushWithCompletionHandler:(id)a3
+- (void)wakeForPushWithCompletionHandler:(id)handler
 {
   v7[8] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = fpfs_adopt_log(self->_log);
   v5 = fp_current_or_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    FPPopLogSectionForBlock(v4);
+    FPPopLogSectionForBlock(handlerCopy);
     [FPXExtensionContext wakeForPushWithCompletionHandler:];
   }
 
-  (*(v4 + 2))(v4, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0);
   __fp_pop_log(v7);
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)signalEnumeratorForMaterializedItemsWithCompletionHandler:(id)a3
+- (void)signalEnumeratorForMaterializedItemsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   instanceQueue = self->_instanceQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __81__FPXExtensionContext_signalEnumeratorForMaterializedItemsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7939128;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   fp_dispatch_async_with_logs(instanceQueue, v7);
 }
 
@@ -11521,17 +11521,17 @@ void __81__FPXExtensionContext_signalEnumeratorForMaterializedItemsWithCompletio
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)signalEnumeratorForPendingItemsWithCompletionHandler:(id)a3
+- (void)signalEnumeratorForPendingItemsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   instanceQueue = self->_instanceQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __76__FPXExtensionContext_signalEnumeratorForPendingItemsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7939128;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   fp_dispatch_async_with_logs(instanceQueue, v7);
 }
 
@@ -11591,17 +11591,17 @@ void __76__FPXExtensionContext_signalEnumeratorForPendingItemsWithCompletionHand
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)importDidFinishWithCompletionHandler:(id)a3
+- (void)importDidFinishWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   instanceQueue = self->_instanceQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__FPXExtensionContext_importDidFinishWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7939128;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   fp_dispatch_async_with_logs(instanceQueue, v7);
 }
 
@@ -11661,26 +11661,26 @@ void __60__FPXExtensionContext_importDidFinishWithCompletionHandler___block_invo
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)listRemoteVersionsWithSettings:(id)a3 observer:(id)a4 request:(id)a5 completionHandler:(id)a6
+- (void)listRemoteVersionsWithSettings:(id)settings observer:(id)observer request:(id)request completionHandler:(id)handler
 {
   v36 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  settingsCopy = settings;
+  observerCopy = observer;
+  requestCopy = request;
+  handlerCopy = handler;
   v27 = fpfs_adopt_log(self->_log);
   v14 = fp_current_or_default_log();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    v21 = [v10 enumeratedItemID];
+    enumeratedItemID = [settingsCopy enumeratedItemID];
     *buf = 138413058;
-    v29 = self;
+    selfCopy = self;
     v30 = 2080;
     v31 = "[FPXExtensionContext listRemoteVersionsWithSettings:observer:request:completionHandler:]";
     v32 = 2112;
-    v33 = v21;
+    v33 = enumeratedItemID;
     v34 = 2112;
-    v35 = v12;
+    v35 = requestCopy;
     _os_log_debug_impl(&dword_1AAAE1000, v14, OS_LOG_TYPE_DEBUG, "[DEBUG] ipc: %@ %s %@, %@", buf, 0x2Au);
   }
 
@@ -11690,13 +11690,13 @@ void __60__FPXExtensionContext_importDidFinishWithCompletionHandler___block_invo
   v22[2] = __89__FPXExtensionContext_listRemoteVersionsWithSettings_observer_request_completionHandler___block_invoke;
   v22[3] = &unk_1E793A038;
   v22[4] = self;
-  v16 = v10;
+  v16 = settingsCopy;
   v23 = v16;
-  v17 = v12;
+  v17 = requestCopy;
   v24 = v17;
-  v18 = v13;
+  v18 = handlerCopy;
   v26 = v18;
-  v19 = v11;
+  v19 = observerCopy;
   v25 = v19;
   fp_dispatch_async_with_logs(instanceQueue, v22);
 
@@ -11899,10 +11899,10 @@ LABEL_32:
   v39 = *MEMORY[0x1E69E9840];
 }
 
-- (void)spotlightIndexerDidReindexAllSearchableItems:(id)a3
+- (void)spotlightIndexerDidReindexAllSearchableItems:(id)items
 {
-  v3 = [(FPXDomainContext *)self->_domainContext domain];
-  v4 = [NSFileProviderManager managerForDomain:v3];
+  domain = [(FPXDomainContext *)self->_domainContext domain];
+  v4 = [NSFileProviderManager managerForDomain:domain];
 
   [v4 signalEnumeratorForContainerItemIdentifier:@"NSFileProviderWorkingSetContainerItemIdentifier" completionHandler:&__block_literal_global_619];
 }
@@ -11920,9 +11920,9 @@ void __68__FPXExtensionContext_spotlightIndexerDidReindexAllSearchableItems___bl
   }
 }
 
-- (void)getKnownFolderLocations:(unint64_t)a3 completionHandler:(id)a4
+- (void)getKnownFolderLocations:(unint64_t)locations completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v14 = fpfs_adopt_log(self->_log);
   v7 = fp_current_or_default_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -11937,9 +11937,9 @@ void __68__FPXExtensionContext_spotlightIndexerDidReindexAllSearchableItems___bl
   v11[2] = __65__FPXExtensionContext_getKnownFolderLocations_completionHandler___block_invoke;
   v11[3] = &unk_1E793A088;
   v11[4] = self;
-  v10 = v6;
+  v10 = handlerCopy;
   v12 = v10;
-  v13 = a3;
+  locationsCopy = locations;
   fp_dispatch_async_with_logs(instanceQueue, v11);
 
   __fp_pop_log(&v14);
@@ -12075,17 +12075,17 @@ void __65__FPXExtensionContext_getKnownFolderLocations_completionHandler___block
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_waitForExtensionStabilizationWithCompletionHandler:(id)a3
+- (void)_waitForExtensionStabilizationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   instanceQueue = self->_instanceQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __75__FPXExtensionContext__waitForExtensionStabilizationWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7939128;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   fp_dispatch_async_with_logs(instanceQueue, v7);
 }
 
@@ -12105,16 +12105,16 @@ void __75__FPXExtensionContext__waitForExtensionStabilizationWithCompletionHandl
   }
 }
 
-- (void)waitForStabilizationWithCompletionHandler:(id)a3
+- (void)waitForStabilizationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __65__FPXExtensionContext_waitForStabilizationWithCompletionHandler___block_invoke;
   v6[3] = &unk_1E7939170;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(FPXExtensionContext *)self _waitForExtensionStabilizationWithCompletionHandler:v6];
 }
 
@@ -12189,17 +12189,17 @@ void __65__FPXExtensionContext_waitForStabilizationWithCompletionHandler___block
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_test_callFileProviderManagerAPIs:(id)a3
+- (void)_test_callFileProviderManagerAPIs:(id)is
 {
-  v4 = a3;
+  isCopy = is;
   v5 = +[NSFileProviderManager legacyDefaultManager];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__FPXExtensionContext__test_callFileProviderManagerAPIs___block_invoke;
   v7[3] = &unk_1E7939170;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = isCopy;
+  v6 = isCopy;
   [v5 signalEnumeratorForContainerItemIdentifier:@"NSFileProviderRootContainerItemIdentifier" completionHandler:v7];
 }
 
@@ -12230,17 +12230,17 @@ void __57__FPXExtensionContext__test_callFileProviderManagerAPIs___block_invoke(
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)shouldConnectExternalDomainWithCompletionHandler:(id)a3
+- (void)shouldConnectExternalDomainWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   instanceQueue = self->_instanceQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __72__FPXExtensionContext_shouldConnectExternalDomainWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7939128;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   fp_dispatch_async_with_logs(instanceQueue, v7);
 }
 
@@ -12349,10 +12349,10 @@ void __72__FPXExtensionContext_shouldConnectExternalDomainWithCompletionHandler_
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enumerateSearchResultForRequest:(id)a3 completionHandler:(id)a4
+- (void)enumerateSearchResultForRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v13 = fpfs_adopt_log(self->_log);
   v8 = fp_current_or_default_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -12366,7 +12366,7 @@ void __72__FPXExtensionContext_shouldConnectExternalDomainWithCompletionHandler_
   v11[2] = __73__FPXExtensionContext_enumerateSearchResultForRequest_completionHandler___block_invoke;
   v11[3] = &unk_1E7939128;
   v11[4] = self;
-  v10 = v7;
+  v10 = handlerCopy;
   v12 = v10;
   fp_dispatch_async_with_logs(instanceQueue, v11);
 
@@ -12447,38 +12447,38 @@ void __73__FPXExtensionContext_enumerateSearchResultForRequest_completionHandler
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)applyFieldChangesToItem:(id)a3 baseVersion:(id)a4 changedFields:(unint64_t)a5 contents:(id)a6 lastKnownVendorItem:(id)a7 extensionInstance:(id)a8 completionHandler:(id)a9
+- (void)applyFieldChangesToItem:(id)item baseVersion:(id)version changedFields:(unint64_t)fields contents:(id)contents lastKnownVendorItem:(id)vendorItem extensionInstance:(id)instance completionHandler:(id)handler
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v47 = a9;
+  itemCopy = item;
+  versionCopy = version;
+  contentsCopy = contents;
+  vendorItemCopy = vendorItem;
+  instanceCopy = instance;
+  handlerCopy = handler;
   objc_initWeak(location, self);
-  objc_initWeak(&from, v19);
-  v45 = v17;
-  v46 = v16;
-  v43 = v15;
-  v44 = v18;
-  if ((a5 & 0x40000004) == 4)
+  objc_initWeak(&from, instanceCopy);
+  v45 = contentsCopy;
+  v46 = versionCopy;
+  v43 = itemCopy;
+  v44 = vendorItemCopy;
+  if ((fields & 0x40000004) == 4)
   {
-    v20 = [v15 itemIdentifier];
-    v21 = [v15 parentItemIdentifier];
-    v22 = [v15 filename];
+    itemIdentifier = [itemCopy itemIdentifier];
+    parentItemIdentifier = [itemCopy parentItemIdentifier];
+    filename = [itemCopy filename];
     v93[0] = MEMORY[0x1E69E9820];
     v93[1] = 3221225472;
     v93[2] = __153__FPXExtensionContext_LegacySupport__applyFieldChangesToItem_baseVersion_changedFields_contents_lastKnownVendorItem_extensionInstance_completionHandler___block_invoke;
     v93[3] = &unk_1E793B780;
-    v97 = v47;
+    v97 = handlerCopy;
     objc_copyWeak(&v98, location);
-    v94 = v15;
-    v95 = v16;
-    v99[1] = a5;
-    v96 = v17;
+    v94 = itemCopy;
+    v95 = versionCopy;
+    v99[1] = fields;
+    v96 = contentsCopy;
     objc_copyWeak(v99, &from);
-    v23 = v19;
-    [v19 reparentItemWithIdentifier:v20 toParentItemWithIdentifier:v21 newName:v22 completionHandler:v93];
+    v23 = instanceCopy;
+    [instanceCopy reparentItemWithIdentifier:itemIdentifier toParentItemWithIdentifier:parentItemIdentifier newName:filename completionHandler:v93];
     v24 = &v97;
     v25 = &v94;
     v26 = &v95;
@@ -12489,33 +12489,33 @@ void __73__FPXExtensionContext_enumerateSearchResultForRequest_completionHandler
 LABEL_17:
 
     objc_destroyWeak(v28);
-    v17 = v45;
-    v16 = v46;
-    v19 = v23;
-    v15 = v43;
-    v18 = v44;
+    contentsCopy = v45;
+    versionCopy = v46;
+    instanceCopy = v23;
+    itemCopy = v43;
+    vendorItemCopy = v44;
     goto LABEL_18;
   }
 
-  if ((a5 & 2) != 0)
+  if ((fields & 2) != 0)
   {
-    v29 = [v15 itemIdentifier];
-    v30 = [v15 filename];
+    itemIdentifier2 = [itemCopy itemIdentifier];
+    filename2 = [itemCopy filename];
     v31 = v86;
     v86[0] = MEMORY[0x1E69E9820];
     v86[1] = 3221225472;
     v86[2] = __153__FPXExtensionContext_LegacySupport__applyFieldChangesToItem_baseVersion_changedFields_contents_lastKnownVendorItem_extensionInstance_completionHandler___block_invoke_2;
     v86[3] = &unk_1E793B780;
-    v90 = v47;
+    v90 = handlerCopy;
     v28 = &v91;
     objc_copyWeak(&v91, location);
-    v87 = v15;
-    v88 = v16;
-    v92[1] = a5;
-    v89 = v17;
+    v87 = itemCopy;
+    v88 = versionCopy;
+    v92[1] = fields;
+    v89 = contentsCopy;
     objc_copyWeak(v92, &from);
-    v23 = v19;
-    [v19 renameItemWithIdentifier:v29 toName:v30 completionHandler:v86];
+    v23 = instanceCopy;
+    [instanceCopy renameItemWithIdentifier:itemIdentifier2 toName:filename2 completionHandler:v86];
     v24 = &v90;
     v25 = &v87;
     v26 = &v88;
@@ -12526,25 +12526,25 @@ LABEL_11:
     goto LABEL_17;
   }
 
-  if ((a5 & 8) != 0)
+  if ((fields & 8) != 0)
   {
-    v32 = [v15 lastUsedDate];
-    v33 = [v15 itemIdentifier];
+    lastUsedDate = [itemCopy lastUsedDate];
+    itemIdentifier3 = [itemCopy itemIdentifier];
     v78[0] = MEMORY[0x1E69E9820];
     v78[1] = 3221225472;
     v78[2] = __153__FPXExtensionContext_LegacySupport__applyFieldChangesToItem_baseVersion_changedFields_contents_lastKnownVendorItem_extensionInstance_completionHandler___block_invoke_3;
     v78[3] = &unk_1E793B7A8;
-    v83 = v47;
+    v83 = handlerCopy;
     v34 = &v84;
     objc_copyWeak(&v84, location);
-    v79 = v15;
-    v80 = v16;
-    v85[1] = a5;
-    v81 = v17;
-    v82 = v18;
+    v79 = itemCopy;
+    v80 = versionCopy;
+    v85[1] = fields;
+    v81 = contentsCopy;
+    v82 = vendorItemCopy;
     objc_copyWeak(v85, &from);
-    v23 = v19;
-    [v19 setLastUsedDate:v32 forItemIdentifier:v33 completionHandler:v78];
+    v23 = instanceCopy;
+    [instanceCopy setLastUsedDate:lastUsedDate forItemIdentifier:itemIdentifier3 completionHandler:v78];
     v24 = &v83;
     v25 = &v79;
     v26 = &v80;
@@ -12557,25 +12557,25 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if ((a5 & 0x10) != 0)
+  if ((fields & 0x10) != 0)
   {
-    v36 = [v15 tagData];
-    v37 = [v15 itemIdentifier];
+    tagData = [itemCopy tagData];
+    itemIdentifier4 = [itemCopy itemIdentifier];
     v70[0] = MEMORY[0x1E69E9820];
     v70[1] = 3221225472;
     v70[2] = __153__FPXExtensionContext_LegacySupport__applyFieldChangesToItem_baseVersion_changedFields_contents_lastKnownVendorItem_extensionInstance_completionHandler___block_invoke_4;
     v70[3] = &unk_1E793B7A8;
-    v75 = v47;
+    v75 = handlerCopy;
     v34 = &v76;
     objc_copyWeak(&v76, location);
-    v71 = v15;
-    v72 = v16;
-    v77[1] = a5;
-    v73 = v17;
-    v74 = v18;
+    v71 = itemCopy;
+    v72 = versionCopy;
+    v77[1] = fields;
+    v73 = contentsCopy;
+    v74 = vendorItemCopy;
     objc_copyWeak(v77, &from);
-    v23 = v19;
-    [v19 setTagData:v36 forItemIdentifier:v37 completionHandler:v70];
+    v23 = instanceCopy;
+    [instanceCopy setTagData:tagData forItemIdentifier:itemIdentifier4 completionHandler:v70];
     v24 = &v75;
     v25 = &v71;
     v26 = &v72;
@@ -12586,25 +12586,25 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  if ((a5 & 0x20) != 0)
+  if ((fields & 0x20) != 0)
   {
-    v38 = [v15 favoriteRank];
-    v39 = [v15 itemIdentifier];
+    favoriteRank = [itemCopy favoriteRank];
+    itemIdentifier5 = [itemCopy itemIdentifier];
     v62[0] = MEMORY[0x1E69E9820];
     v62[1] = 3221225472;
     v62[2] = __153__FPXExtensionContext_LegacySupport__applyFieldChangesToItem_baseVersion_changedFields_contents_lastKnownVendorItem_extensionInstance_completionHandler___block_invoke_5;
     v62[3] = &unk_1E793B7A8;
-    v67 = v47;
+    v67 = handlerCopy;
     v34 = &v68;
     objc_copyWeak(&v68, location);
-    v63 = v15;
-    v64 = v16;
-    v69[1] = a5;
-    v65 = v17;
-    v66 = v18;
+    v63 = itemCopy;
+    v64 = versionCopy;
+    v69[1] = fields;
+    v65 = contentsCopy;
+    v66 = vendorItemCopy;
     objc_copyWeak(v69, &from);
-    v23 = v19;
-    [v19 setFavoriteRank:v38 forItemIdentifier:v39 completionHandler:v62];
+    v23 = instanceCopy;
+    [instanceCopy setFavoriteRank:favoriteRank forItemIdentifier:itemIdentifier5 completionHandler:v62];
     v24 = &v67;
     v25 = &v63;
     v26 = &v64;
@@ -12615,26 +12615,26 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  if ((a5 & 0x40000000) != 0)
+  if ((fields & 0x40000000) != 0)
   {
-    if ([v15 isTrashed])
+    if ([itemCopy isTrashed])
     {
-      v40 = [v15 itemIdentifier];
+      itemIdentifier6 = [itemCopy itemIdentifier];
       v31 = v55;
       v55[0] = MEMORY[0x1E69E9820];
       v55[1] = 3221225472;
       v55[2] = __153__FPXExtensionContext_LegacySupport__applyFieldChangesToItem_baseVersion_changedFields_contents_lastKnownVendorItem_extensionInstance_completionHandler___block_invoke_6;
       v55[3] = &unk_1E793B780;
-      v59 = v47;
+      v59 = handlerCopy;
       v28 = &v60;
       objc_copyWeak(&v60, location);
-      v56 = v15;
-      v57 = v16;
-      v61[1] = a5;
-      v58 = v17;
+      v56 = itemCopy;
+      v57 = versionCopy;
+      v61[1] = fields;
+      v58 = contentsCopy;
       objc_copyWeak(v61, &from);
-      v23 = v19;
-      [v19 trashItemWithIdentifier:v40 completionHandler:v55];
+      v23 = instanceCopy;
+      [instanceCopy trashItemWithIdentifier:itemIdentifier6 completionHandler:v55];
       v24 = &v59;
       v25 = &v56;
       v26 = &v57;
@@ -12643,36 +12643,36 @@ LABEL_15:
       goto LABEL_11;
     }
 
-    v41 = [v15 itemIdentifier];
-    if ((a5 & 4) != 0)
+    itemIdentifier7 = [itemCopy itemIdentifier];
+    if ((fields & 4) != 0)
     {
-      v42 = [v15 parentItemIdentifier];
+      parentItemIdentifier2 = [itemCopy parentItemIdentifier];
     }
 
     else
     {
-      v42 = 0;
+      parentItemIdentifier2 = 0;
     }
 
     v48[0] = MEMORY[0x1E69E9820];
     v48[1] = 3221225472;
     v48[2] = __153__FPXExtensionContext_LegacySupport__applyFieldChangesToItem_baseVersion_changedFields_contents_lastKnownVendorItem_extensionInstance_completionHandler___block_invoke_7;
     v48[3] = &unk_1E793B780;
-    v52 = v47;
+    v52 = handlerCopy;
     v34 = &v53;
     objc_copyWeak(&v53, location);
-    v49 = v15;
-    v50 = v16;
-    v54[1] = a5;
-    v51 = v17;
+    v49 = itemCopy;
+    v50 = versionCopy;
+    v54[1] = fields;
+    v51 = contentsCopy;
     objc_copyWeak(v54, &from);
-    v23 = v19;
-    [v19 untrashItemWithIdentifier:v41 toParentItemIdentifier:v42 completionHandler:v48];
+    v23 = instanceCopy;
+    [instanceCopy untrashItemWithIdentifier:itemIdentifier7 toParentItemIdentifier:parentItemIdentifier2 completionHandler:v48];
     v24 = &v52;
     v25 = &v49;
     v26 = &v50;
     v27 = &v51;
-    if ((a5 & 4) != 0)
+    if ((fields & 4) != 0)
     {
     }
 
@@ -12682,19 +12682,19 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (a5)
+  if (fields)
   {
-    if (!v17)
+    if (!contentsCopy)
     {
       __assert_rtn("[FPXExtensionContext(LegacySupport) applyFieldChangesToItem:baseVersion:changedFields:contents:lastKnownVendorItem:extensionInstance:completionHandler:]", "FPXExtensionContext_Legacy.m", 166, "newContent");
     }
 
-    [(FPXExtensionContext *)self applyItemChange:v15 baseVersion:v16 contents:v17 completionHandler:v47];
+    [(FPXExtensionContext *)self applyItemChange:itemCopy baseVersion:versionCopy contents:contentsCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    (*(v47 + 2))(v47, v18, 0);
+    (*(handlerCopy + 2))(handlerCopy, vendorItemCopy, 0);
   }
 
 LABEL_18:
@@ -12866,19 +12866,19 @@ void __153__FPXExtensionContext_LegacySupport__applyFieldChangesToItem_baseVersi
   }
 }
 
-- (void)applyItemChange:(id)a3 baseVersion:(id)a4 contents:(id)a5 completionHandler:(id)a6
+- (void)applyItemChange:(id)change baseVersion:(id)version contents:(id)contents completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 itemID];
-  v15 = [(FPXExtensionContext *)self instanceForItemID:v14];
+  changeCopy = change;
+  versionCopy = version;
+  contentsCopy = contents;
+  handlerCopy = handler;
+  itemID = [changeCopy itemID];
+  v15 = [(FPXExtensionContext *)self instanceForItemID:itemID];
 
-  v16 = [v10 itemID];
-  v17 = [v16 identifier];
+  itemID2 = [changeCopy itemID];
+  identifier = [itemID2 identifier];
 
-  v18 = [v15 URLForItemWithPersistentIdentifier:v17];
+  v18 = [v15 URLForItemWithPersistentIdentifier:identifier];
   v36 = 0;
   v37 = &v36;
   v38 = 0x3032000000;
@@ -12891,7 +12891,7 @@ void __153__FPXExtensionContext_LegacySupport__applyFieldChangesToItem_baseVersi
   v35 = 0;
   if (v18)
   {
-    v25 = v11;
+    v25 = versionCopy;
     v19 = objc_opt_new();
     v20 = objc_opt_new();
     v31 = 0;
@@ -12903,17 +12903,17 @@ void __153__FPXExtensionContext_LegacySupport__applyFieldChangesToItem_baseVersi
     v21 = v20;
     v28 = v21;
     v30 = &v36;
-    [v19 coordinateReadingItemAtURL:v12 options:0 writingItemAtURL:v18 options:0 error:&v31 byAccessor:v27];
+    [v19 coordinateReadingItemAtURL:contentsCopy options:0 writingItemAtURL:v18 options:0 error:&v31 byAccessor:v27];
     v22 = v31;
     if (v22)
     {
       v23 = v22;
-      v13[2](v13, 0, v22);
+      handlerCopy[2](handlerCopy, 0, v22);
     }
 
     else if (*(v33 + 24) == 1)
     {
-      v13[2](v13, 0, v37[5]);
+      handlerCopy[2](handlerCopy, 0, v37[5]);
       v23 = 0;
     }
 
@@ -12921,18 +12921,18 @@ void __153__FPXExtensionContext_LegacySupport__applyFieldChangesToItem_baseVersi
     {
       [v15 itemChangedAtURL:v18];
       v26 = 0;
-      v24 = [v15 itemForIdentifier:v17 error:&v26];
+      v24 = [v15 itemForIdentifier:identifier error:&v26];
       v23 = v26;
-      (v13)[2](v13, v24, v23);
+      (handlerCopy)[2](handlerCopy, v24, v23);
     }
 
-    v11 = v25;
+    versionCopy = v25;
   }
 
   else
   {
-    v19 = [MEMORY[0x1E696ABC0] fileProviderErrorForNonExistentItemWithIdentifier:v17];
-    v13[2](v13, 0, v19);
+    v19 = [MEMORY[0x1E696ABC0] fileProviderErrorForNonExistentItemWithIdentifier:identifier];
+    handlerCopy[2](handlerCopy, 0, v19);
     v23 = 0;
   }
 
@@ -13007,16 +13007,16 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)importDocumentAtURL:(id)a3 intoFolderWithIdentifier:(id)a4 originalName:(id)a5 extensionInstance:(id)a6 reply:(id)a7
+- (void)importDocumentAtURL:(id)l intoFolderWithIdentifier:(id)identifier originalName:(id)name extensionInstance:(id)instance reply:(id)reply
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = v11;
-  v17 = [v16 lastPathComponent];
-  v18 = [v17 isEqualToString:v13];
+  lCopy = l;
+  identifierCopy = identifier;
+  nameCopy = name;
+  instanceCopy = instance;
+  replyCopy = reply;
+  v16 = lCopy;
+  lastPathComponent = [v16 lastPathComponent];
+  v18 = [lastPathComponent isEqualToString:nameCopy];
 
   v19 = v16;
   if (v18)
@@ -13026,7 +13026,7 @@ LABEL_7:
     v24 = fp_current_or_default_log();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
-      [FPXExtensionContext(LegacySupport) importDocumentAtURL:v19 intoFolderWithIdentifier:v12 originalName:v24 extensionInstance:? reply:?];
+      [FPXExtensionContext(LegacySupport) importDocumentAtURL:v19 intoFolderWithIdentifier:identifierCopy originalName:v24 extensionInstance:? reply:?];
     }
 
     v25[0] = MEMORY[0x1E69E9820];
@@ -13037,15 +13037,15 @@ LABEL_7:
     v19 = v19;
     v26 = v19;
     v27 = v16;
-    v28 = v15;
-    [v14 importDocumentAtURL:v19 toParentItemIdentifier:v12 completionHandler:v25];
+    v28 = replyCopy;
+    [instanceCopy importDocumentAtURL:v19 toParentItemIdentifier:identifierCopy completionHandler:v25];
 
     v20 = v26;
     goto LABEL_13;
   }
 
   v30 = 0;
-  v19 = [v16 fp_moveToTempFolderWithFilename:v13 error:&v30];
+  v19 = [v16 fp_moveToTempFolderWithFilename:nameCopy error:&v30];
   v20 = v30;
 
   v21 = fp_current_or_default_log();
@@ -13062,10 +13062,10 @@ LABEL_7:
 
   if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
   {
-    [FPXExtensionContext(LegacySupport) importDocumentAtURL:v13 intoFolderWithIdentifier:v20 originalName:v22 extensionInstance:? reply:?];
+    [FPXExtensionContext(LegacySupport) importDocumentAtURL:nameCopy intoFolderWithIdentifier:v20 originalName:v22 extensionInstance:? reply:?];
   }
 
-  (*(v15 + 2))(v15, 0, 0, v20);
+  (*(replyCopy + 2))(replyCopy, 0, 0, v20);
 LABEL_13:
 }
 

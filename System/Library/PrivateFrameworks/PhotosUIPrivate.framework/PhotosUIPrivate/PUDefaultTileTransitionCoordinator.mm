@@ -1,22 +1,22 @@
 @interface PUDefaultTileTransitionCoordinator
-- (CGAffineTransform)_adjustDefaultDisappearanceTransform:(SEL)a3;
-- (id)_layoutInfoWithDefaultDisappearance:(id)a3;
-- (id)optionsForAnimatingTileController:(id)a3 toLayoutInfo:(id)a4 withAnimationType:(int64_t)a5;
-- (void)configureOptions:(id)a3 forSpringAnimationsZoomingIn:(BOOL)a4;
+- (CGAffineTransform)_adjustDefaultDisappearanceTransform:(SEL)transform;
+- (id)_layoutInfoWithDefaultDisappearance:(id)disappearance;
+- (id)optionsForAnimatingTileController:(id)controller toLayoutInfo:(id)info withAnimationType:(int64_t)type;
+- (void)configureOptions:(id)options forSpringAnimationsZoomingIn:(BOOL)in;
 @end
 
 @implementation PUDefaultTileTransitionCoordinator
 
-- (CGAffineTransform)_adjustDefaultDisappearanceTransform:(SEL)a3
+- (CGAffineTransform)_adjustDefaultDisappearanceTransform:(SEL)transform
 {
   v5 = *&a4->c;
   *&retstr->a = *&a4->a;
   *&retstr->c = v5;
   *&retstr->tx = *&a4->tx;
   v6 = +[PUTilingViewSettings sharedInstance];
-  v7 = [v6 rotateDisappearingTiles];
+  rotateDisappearingTiles = [v6 rotateDisappearingTiles];
 
-  if (v7)
+  if (rotateDisappearingTiles)
   {
     v9 = *&retstr->c;
     *&v13.a = *&retstr->a;
@@ -37,16 +37,16 @@
   return result;
 }
 
-- (id)_layoutInfoWithDefaultDisappearance:(id)a3
+- (id)_layoutInfoWithDefaultDisappearance:(id)disappearance
 {
-  v4 = a3;
-  v5 = v4;
+  disappearanceCopy = disappearance;
+  v5 = disappearanceCopy;
   v24 = 0u;
   v25 = 0u;
   v23 = 0u;
-  if (v4)
+  if (disappearanceCopy)
   {
-    [v4 transform];
+    [disappearanceCopy transform];
   }
 
   v19[0] = v23;
@@ -64,68 +64,68 @@
   v13 = v12;
   [v5 zPosition];
   v15 = v14;
-  v16 = [v5 coordinateSystem];
+  coordinateSystem = [v5 coordinateSystem];
   v20 = v23;
   v21 = v24;
   v22 = v25;
-  v17 = [v5 layoutInfoWithCenter:&v20 size:v16 alpha:v7 transform:v9 zPosition:v11 coordinateSystem:{v13, 0.0, v15}];
+  v17 = [v5 layoutInfoWithCenter:&v20 size:coordinateSystem alpha:v7 transform:v9 zPosition:v11 coordinateSystem:{v13, 0.0, v15}];
 
   return v17;
 }
 
-- (void)configureOptions:(id)a3 forSpringAnimationsZoomingIn:(BOOL)a4
+- (void)configureOptions:(id)options forSpringAnimationsZoomingIn:(BOOL)in
 {
-  v4 = a4;
-  v21 = a3;
+  inCopy = in;
+  optionsCopy = options;
   v6 = +[PUTilingViewSettings sharedInstance];
   if ([v6 useSpringAnimations])
   {
     if ([MEMORY[0x1E69C3640] isOneUpRefreshEnabled])
     {
-      v7 = [v6 lemonadeUseOvershootingSpringAnimations];
-      v8 = [v6 lemonadeUseSystemSpringAnimations];
+      lemonadeUseOvershootingSpringAnimations = [v6 lemonadeUseOvershootingSpringAnimations];
+      lemonadeUseSystemSpringAnimations = [v6 lemonadeUseSystemSpringAnimations];
     }
 
     else
     {
-      v7 = [v6 useOvershootingSpringAnimations];
-      v8 = [v6 useSystemSpringAnimations];
+      lemonadeUseOvershootingSpringAnimations = [v6 useOvershootingSpringAnimations];
+      lemonadeUseSystemSpringAnimations = [v6 useSystemSpringAnimations];
     }
 
-    if (v4 && v7)
+    if (inCopy && lemonadeUseOvershootingSpringAnimations)
     {
-      [v21 setKind:1002];
+      [optionsCopy setKind:1002];
       [v6 animationDragCoefficient];
       v10 = v9;
       [v6 animationDragCoefficient];
-      [v21 setSpringMass:v10 * v11];
-      [v21 setSpringStiffness:350.0];
-      [v21 setSpringDampingRatio:0.670000017];
-      [v21 setSpringNumberOfOscillations:1];
+      [optionsCopy setSpringMass:v10 * v11];
+      [optionsCopy setSpringStiffness:350.0];
+      [optionsCopy setSpringDampingRatio:0.670000017];
+      [optionsCopy setSpringNumberOfOscillations:1];
       goto LABEL_17;
     }
 
-    if (v8)
+    if (lemonadeUseSystemSpringAnimations)
     {
       [v6 animationDragCoefficient];
       if (v12 == 1.0)
       {
-        [v21 setKind:1001];
+        [optionsCopy setKind:1001];
         goto LABEL_17;
       }
 
-      [v21 setKind:1000];
+      [optionsCopy setKind:1000];
       [v6 animationDragCoefficient];
       v18 = v17 * 0.5058;
     }
 
     else
     {
-      v13 = [(PUDefaultTileTransitionCoordinator *)self animationDuration];
-      if (v13)
+      animationDuration = [(PUDefaultTileTransitionCoordinator *)self animationDuration];
+      if (animationDuration)
       {
-        v14 = [(PUDefaultTileTransitionCoordinator *)self animationDuration];
-        [v14 doubleValue];
+        animationDuration2 = [(PUDefaultTileTransitionCoordinator *)self animationDuration];
+        [animationDuration2 doubleValue];
         v16 = v15;
       }
 
@@ -135,39 +135,39 @@
         v16 = v19;
       }
 
-      [v21 setKind:1000];
+      [optionsCopy setKind:1000];
       [v6 animationDragCoefficient];
       v18 = v16 * v20;
     }
 
-    [v21 setDuration:v18];
-    [v21 setSpringDampingRatio:1.0];
+    [optionsCopy setDuration:v18];
+    [optionsCopy setSpringDampingRatio:1.0];
   }
 
 LABEL_17:
 }
 
-- (id)optionsForAnimatingTileController:(id)a3 toLayoutInfo:(id)a4 withAnimationType:(int64_t)a5
+- (id)optionsForAnimatingTileController:(id)controller toLayoutInfo:(id)info withAnimationType:(int64_t)type
 {
-  v6 = a4;
-  v7 = [(PUDefaultTileTransitionCoordinator *)self animationDuration];
-  if (v7)
+  infoCopy = info;
+  animationDuration = [(PUDefaultTileTransitionCoordinator *)self animationDuration];
+  if (animationDuration)
   {
-    v8 = [(PUDefaultTileTransitionCoordinator *)self animationDuration];
-    [v8 doubleValue];
+    animationDuration2 = [(PUDefaultTileTransitionCoordinator *)self animationDuration];
+    [animationDuration2 doubleValue];
   }
 
   else
   {
-    v8 = +[PUTilingViewSettings sharedInstance];
-    [v8 defaultAnimationDuration];
+    animationDuration2 = +[PUTilingViewSettings sharedInstance];
+    [animationDuration2 defaultAnimationDuration];
   }
 
   v10 = v9;
 
-  v11 = [v6 tileKind];
+  tileKind = [infoCopy tileKind];
 
-  v12 = [v11 isEqualToString:PUTileKindBackground];
+  v12 = [tileKind isEqualToString:PUTileKindBackground];
   if (v12)
   {
     v13 = +[PUTilingViewSettings sharedInstance];
@@ -179,12 +179,12 @@ LABEL_17:
   [v15 animationDragCoefficient];
   v17 = v10 * v16;
 
-  v18 = [(PUTileTransitionCoordinator *)self newTileAnimationOptions];
-  [v18 setKind:0];
-  [v18 setDuration:v17];
-  [v18 setSynchronizedWithTransition:v12];
+  newTileAnimationOptions = [(PUTileTransitionCoordinator *)self newTileAnimationOptions];
+  [newTileAnimationOptions setKind:0];
+  [newTileAnimationOptions setDuration:v17];
+  [newTileAnimationOptions setSynchronizedWithTransition:v12];
 
-  return v18;
+  return newTileAnimationOptions;
 }
 
 @end

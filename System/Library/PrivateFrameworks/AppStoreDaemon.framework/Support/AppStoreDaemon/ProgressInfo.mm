@@ -15,9 +15,9 @@
     progressPercentage = self->_progressPercentage;
     [(ASDProgress *)self->_asdProgress throughput];
     v7 = v6;
-    v8 = [(ASDProgress *)self->_asdProgress secondsRemaining];
+    secondsRemaining = [(ASDProgress *)self->_asdProgress secondsRemaining];
     v9 = sub_100404660(self, [(ASDProgress *)self->_asdProgress phase]);
-    [NSString stringWithFormat:@"%@: {bundleID = %@; fractionCompleted = %.3f; throughput = %.0f; remaining = %ld phase = %@}", v3, bundleID, *&progressPercentage, v7, v8, v9];
+    [NSString stringWithFormat:@"%@: {bundleID = %@; fractionCompleted = %.3f; throughput = %.0f; remaining = %ld phase = %@}", v3, bundleID, *&progressPercentage, v7, secondsRemaining, v9];
   }
 
   else

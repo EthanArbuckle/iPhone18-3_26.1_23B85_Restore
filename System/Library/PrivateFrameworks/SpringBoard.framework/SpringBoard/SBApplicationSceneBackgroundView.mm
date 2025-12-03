@@ -1,19 +1,19 @@
 @interface SBApplicationSceneBackgroundView
 - (BOOL)_isTranslucent;
 - (NSString)description;
-- (SBApplicationSceneBackgroundView)initWithFrame:(CGRect)a3;
+- (SBApplicationSceneBackgroundView)initWithFrame:(CGRect)frame;
 - (_BYTE)_opaqueBackgroundColor;
 - (_BYTE)_opaqueBackgroundColorOrClearColor;
 - (void)_backgroundWallpaperEffectView;
 - (void)_setupBackground;
-- (void)_setupBackgroundWithAnimationSettings:(uint64_t)a1;
+- (void)_setupBackgroundWithAnimationSettings:(uint64_t)settings;
 - (void)_teardownBackgroundWallpaperEffectView;
-- (void)setFullscreen:(BOOL)a3;
-- (void)setNeedsClassicModeBackground:(BOOL)a3;
-- (void)setShouldUseBrightMaterial:(BOOL)a3;
-- (void)setTransformOptions:(unint64_t)a3;
-- (void)setWallpaperStyle:(int64_t)a3;
-- (void)setWallpaperStyle:(int64_t)a3 withAnimationSettings:(id)a4;
+- (void)setFullscreen:(BOOL)fullscreen;
+- (void)setNeedsClassicModeBackground:(BOOL)background;
+- (void)setShouldUseBrightMaterial:(BOOL)material;
+- (void)setTransformOptions:(unint64_t)options;
+- (void)setWallpaperStyle:(int64_t)style;
+- (void)setWallpaperStyle:(int64_t)style withAnimationSettings:(id)settings;
 @end
 
 @implementation SBApplicationSceneBackgroundView
@@ -22,86 +22,86 @@
 {
   if (self && self->_wallpaperStyle != 1)
   {
-    v5 = [(SBApplicationSceneBackgroundView *)self _backgroundWallpaperEffectView];
-    [v5 setWallpaperStyle:self->_wallpaperStyle];
-    [v5 setForcesOpaque:1];
+    _backgroundWallpaperEffectView = [(SBApplicationSceneBackgroundView *)self _backgroundWallpaperEffectView];
+    [_backgroundWallpaperEffectView setWallpaperStyle:self->_wallpaperStyle];
+    [_backgroundWallpaperEffectView setForcesOpaque:1];
     [(SBApplicationSceneBackgroundView *)self bounds];
-    [v5 setFrame:?];
-    [v5 setFullscreen:self->_fullscreen];
-    [(SBApplicationSceneBackgroundView *)self addSubview:v5];
-    v4 = self;
-    v3 = 0;
+    [_backgroundWallpaperEffectView setFrame:?];
+    [_backgroundWallpaperEffectView setFullscreen:self->_fullscreen];
+    [(SBApplicationSceneBackgroundView *)self addSubview:_backgroundWallpaperEffectView];
+    selfCopy2 = self;
+    _opaqueBackgroundColorOrClearColor = 0;
   }
 
   else
   {
     [(SBApplicationSceneBackgroundView *)self _teardownBackgroundWallpaperEffectView];
-    v3 = [(SBApplicationSceneBackgroundView *)self _opaqueBackgroundColorOrClearColor];
-    v4 = self;
-    v5 = v3;
+    _opaqueBackgroundColorOrClearColor = [(SBApplicationSceneBackgroundView *)self _opaqueBackgroundColorOrClearColor];
+    selfCopy2 = self;
+    _backgroundWallpaperEffectView = _opaqueBackgroundColorOrClearColor;
   }
 
-  [(SBApplicationSceneBackgroundView *)v4 setBackgroundColor:v3];
+  [(SBApplicationSceneBackgroundView *)selfCopy2 setBackgroundColor:_opaqueBackgroundColorOrClearColor];
 }
 
 - (void)_teardownBackgroundWallpaperEffectView
 {
-  if (a1)
+  if (self)
   {
-    [*(a1 + 416) removeFromSuperview];
-    v2 = *(a1 + 416);
-    *(a1 + 416) = 0;
+    [*(self + 416) removeFromSuperview];
+    v2 = *(self + 416);
+    *(self + 416) = 0;
   }
 }
 
 - (_BYTE)_opaqueBackgroundColorOrClearColor
 {
-  if (a1)
+  if (self)
   {
-    if (a1[424])
+    if (self[424])
     {
-      [(SBApplicationSceneBackgroundView *)a1 _opaqueBackgroundColor];
+      [(SBApplicationSceneBackgroundView *)self _opaqueBackgroundColor];
     }
 
     else
     {
       [MEMORY[0x277D75348] clearColor];
     }
-    a1 = ;
+    self = ;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)_backgroundWallpaperEffectView
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[52];
+    selfCopy = self;
+    v3 = self[52];
     if (!v3)
     {
-      v4 = [[SBWallpaperEffectView alloc] initWithWallpaperVariant:1 transformOptions:a1[54]];
-      v5 = v2[52];
-      v2[52] = v4;
+      v4 = [[SBWallpaperEffectView alloc] initWithWallpaperVariant:1 transformOptions:self[54]];
+      v5 = selfCopy[52];
+      selfCopy[52] = v4;
 
-      [v2[52] setAutoresizingMask:18];
-      v3 = v2[52];
+      [selfCopy[52] setAutoresizingMask:18];
+      v3 = selfCopy[52];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (SBApplicationSceneBackgroundView)initWithFrame:(CGRect)a3
+- (SBApplicationSceneBackgroundView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = SBApplicationSceneBackgroundView;
-  result = [(SBApplicationSceneBackgroundView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(SBApplicationSceneBackgroundView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_wallpaperStyle = -1;
@@ -118,53 +118,53 @@
   v5 = [v3 appendObject:v4 withName:@"wallpaperStyle"];
 
   v6 = [v3 appendBool:self->_wallpaperStyle != 1 withName:@"_isTranslucent"];
-  v7 = [v3 appendSuper];
-  v8 = [v3 build];
+  appendSuper = [v3 appendSuper];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
-- (void)setWallpaperStyle:(int64_t)a3
+- (void)setWallpaperStyle:(int64_t)style
 {
-  if (self->_wallpaperStyle != a3)
+  if (self->_wallpaperStyle != style)
   {
-    self->_wallpaperStyle = a3;
+    self->_wallpaperStyle = style;
     [(SBApplicationSceneBackgroundView *)self _setupBackground];
   }
 }
 
-- (void)setWallpaperStyle:(int64_t)a3 withAnimationSettings:(id)a4
+- (void)setWallpaperStyle:(int64_t)style withAnimationSettings:(id)settings
 {
-  if (self->_wallpaperStyle != a3)
+  if (self->_wallpaperStyle != style)
   {
-    self->_wallpaperStyle = a3;
-    [(SBApplicationSceneBackgroundView *)self _setupBackgroundWithAnimationSettings:a4];
+    self->_wallpaperStyle = style;
+    [(SBApplicationSceneBackgroundView *)self _setupBackgroundWithAnimationSettings:settings];
   }
 }
 
-- (void)setNeedsClassicModeBackground:(BOOL)a3
+- (void)setNeedsClassicModeBackground:(BOOL)background
 {
-  if (self->_needsClassicModeBackground != a3)
+  if (self->_needsClassicModeBackground != background)
   {
-    self->_needsClassicModeBackground = a3;
+    self->_needsClassicModeBackground = background;
     [(SBApplicationSceneBackgroundView *)self _setupBackground];
   }
 }
 
-- (void)setFullscreen:(BOOL)a3
+- (void)setFullscreen:(BOOL)fullscreen
 {
-  if (self->_fullscreen != a3)
+  if (self->_fullscreen != fullscreen)
   {
-    self->_fullscreen = a3;
+    self->_fullscreen = fullscreen;
     [(SBApplicationSceneBackgroundView *)self _setupBackground];
   }
 }
 
-- (void)setTransformOptions:(unint64_t)a3
+- (void)setTransformOptions:(unint64_t)options
 {
-  if (self->_transformOptions != a3)
+  if (self->_transformOptions != options)
   {
-    self->_transformOptions = a3 | 0x20;
+    self->_transformOptions = options | 0x20;
     [(PBUIWallpaperEffectViewBase *)self->_backgroundWallpaperEffectView setTransformOptions:?];
   }
 }
@@ -217,11 +217,11 @@ uint64_t __74__SBApplicationSceneBackgroundView__setupBackgroundWithAnimationSet
   return [v2 removeFromSuperview];
 }
 
-- (void)setShouldUseBrightMaterial:(BOOL)a3
+- (void)setShouldUseBrightMaterial:(BOOL)material
 {
-  if (self->_shouldUseBrightMaterial != a3)
+  if (self->_shouldUseBrightMaterial != material)
   {
-    self->_shouldUseBrightMaterial = a3;
+    self->_shouldUseBrightMaterial = material;
     [(SBApplicationSceneBackgroundView *)self _setupBackground];
   }
 }
@@ -236,19 +236,19 @@ uint64_t __74__SBApplicationSceneBackgroundView__setupBackgroundWithAnimationSet
   return result;
 }
 
-- (void)_setupBackgroundWithAnimationSettings:(uint64_t)a1
+- (void)_setupBackgroundWithAnimationSettings:(uint64_t)settings
 {
   v3 = a2;
-  if (a1)
+  if (settings)
   {
-    [a1 bounds];
+    [settings bounds];
     v5 = v4;
     v7 = v6;
     v9 = v8;
     v11 = v10;
-    v12 = *(a1 + 416);
-    v13 = *(a1 + 416);
-    *(a1 + 416) = 0;
+    v12 = *(settings + 416);
+    v13 = *(settings + 416);
+    *(settings + 416) = 0;
 
     v14 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v5, v7, v9, v11}];
     v15 = MEMORY[0x277D75D18];
@@ -258,9 +258,9 @@ uint64_t __74__SBApplicationSceneBackgroundView__setupBackgroundWithAnimationSet
     v44[3] = &unk_2783A92D8;
     v16 = v14;
     v45 = v16;
-    v46 = a1;
+    settingsCopy = settings;
     [v15 performWithoutAnimation:v44];
-    if (*(a1 + 408) == 1)
+    if (*(settings + 408) == 1)
     {
       v17 = MEMORY[0x277CF0D38];
       v28[0] = MEMORY[0x277D85DD0];
@@ -268,7 +268,7 @@ uint64_t __74__SBApplicationSceneBackgroundView__setupBackgroundWithAnimationSet
       v28[2] = __74__SBApplicationSceneBackgroundView__setupBackgroundWithAnimationSettings___block_invoke_5;
       v28[3] = &unk_2783A92D8;
       v29 = v12;
-      v30 = a1;
+      settingsCopy2 = settings;
       v25[0] = MEMORY[0x277D85DD0];
       v25[1] = 3221225472;
       v25[2] = __74__SBApplicationSceneBackgroundView__setupBackgroundWithAnimationSettings___block_invoke_6;
@@ -283,15 +283,15 @@ uint64_t __74__SBApplicationSceneBackgroundView__setupBackgroundWithAnimationSet
 
     else
     {
-      v20 = [(SBApplicationSceneBackgroundView *)a1 _backgroundWallpaperEffectView];
+      _backgroundWallpaperEffectView = [(SBApplicationSceneBackgroundView *)settings _backgroundWallpaperEffectView];
       v21 = MEMORY[0x277D75D18];
       v37[0] = MEMORY[0x277D85DD0];
       v37[1] = 3221225472;
       v37[2] = __74__SBApplicationSceneBackgroundView__setupBackgroundWithAnimationSettings___block_invoke_2;
       v37[3] = &unk_2783AAFD0;
-      v22 = v20;
+      v22 = _backgroundWallpaperEffectView;
       v38 = v22;
-      v39 = a1;
+      settingsCopy3 = settings;
       v40 = v5;
       v41 = v7;
       v42 = v9;
@@ -303,7 +303,7 @@ uint64_t __74__SBApplicationSceneBackgroundView__setupBackgroundWithAnimationSet
       v34[2] = __74__SBApplicationSceneBackgroundView__setupBackgroundWithAnimationSettings___block_invoke_3;
       v34[3] = &unk_2783A92D8;
       v35 = v22;
-      v36 = a1;
+      settingsCopy4 = settings;
       v31[0] = MEMORY[0x277D85DD0];
       v31[1] = 3221225472;
       v31[2] = __74__SBApplicationSceneBackgroundView__setupBackgroundWithAnimationSettings___block_invoke_4;
@@ -319,9 +319,9 @@ uint64_t __74__SBApplicationSceneBackgroundView__setupBackgroundWithAnimationSet
 
 - (_BYTE)_opaqueBackgroundColor
 {
-  if (a1)
+  if (self)
   {
-    if (a1[426])
+    if (self[426])
     {
       [MEMORY[0x277D75348] systemMidGrayColor];
     }
@@ -330,11 +330,11 @@ uint64_t __74__SBApplicationSceneBackgroundView__setupBackgroundWithAnimationSet
     {
       [MEMORY[0x277D75348] blackColor];
     }
-    a1 = ;
+    self = ;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 void __74__SBApplicationSceneBackgroundView__setupBackgroundWithAnimationSettings___block_invoke_5(uint64_t a1)

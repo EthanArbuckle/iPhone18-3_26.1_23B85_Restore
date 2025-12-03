@@ -1,50 +1,50 @@
 @interface CuratedCollectionItemLibraryCoordinator
 - (_TtC4Maps39CuratedCollectionItemLibraryCoordinator)init;
-- (_TtC4Maps39CuratedCollectionItemLibraryCoordinator)initWithInitialMapItem:(id)a3 dataOperationsProvider:(id)a4;
-- (void)addPlaceToLibraryWithRefinedMapItem:(id)a3;
-- (void)deletePlaceFromLibraryWithViewControllerForPresentingAlert:(id)a3;
-- (void)determineSavedStateWithCompletion:(id)a3;
+- (_TtC4Maps39CuratedCollectionItemLibraryCoordinator)initWithInitialMapItem:(id)item dataOperationsProvider:(id)provider;
+- (void)addPlaceToLibraryWithRefinedMapItem:(id)item;
+- (void)deletePlaceFromLibraryWithViewControllerForPresentingAlert:(id)alert;
+- (void)determineSavedStateWithCompletion:(id)completion;
 @end
 
 @implementation CuratedCollectionItemLibraryCoordinator
 
-- (_TtC4Maps39CuratedCollectionItemLibraryCoordinator)initWithInitialMapItem:(id)a3 dataOperationsProvider:(id)a4
+- (_TtC4Maps39CuratedCollectionItemLibraryCoordinator)initWithInitialMapItem:(id)item dataOperationsProvider:(id)provider
 {
   *(&self->super.isa + OBJC_IVAR____TtC4Maps39CuratedCollectionItemLibraryCoordinator_placeItemInLibrary) = 0;
   *(&self->super.isa + OBJC_IVAR____TtC4Maps39CuratedCollectionItemLibraryCoordinator_isAddingToLibrary) = 0;
-  *(&self->super.isa + OBJC_IVAR____TtC4Maps39CuratedCollectionItemLibraryCoordinator_initialMapItem) = a3;
-  *(&self->super.isa + OBJC_IVAR____TtC4Maps39CuratedCollectionItemLibraryCoordinator_dataOperationsProvider) = a4;
+  *(&self->super.isa + OBJC_IVAR____TtC4Maps39CuratedCollectionItemLibraryCoordinator_initialMapItem) = item;
+  *(&self->super.isa + OBJC_IVAR____TtC4Maps39CuratedCollectionItemLibraryCoordinator_dataOperationsProvider) = provider;
   v9.receiver = self;
   v9.super_class = type metadata accessor for CuratedCollectionItemLibraryCoordinator();
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  providerCopy = provider;
   return [(CuratedCollectionItemLibraryCoordinator *)&v9 init];
 }
 
-- (void)determineSavedStateWithCompletion:(id)a3
+- (void)determineSavedStateWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = *(&self->super.isa + OBJC_IVAR____TtC4Maps39CuratedCollectionItemLibraryCoordinator_initialMapItem);
   v7 = swift_allocObject();
   swift_unknownObjectWeakInit();
-  v8 = self;
+  selfCopy = self;
   sub_100492FBC(v6, v7, sub_1000FA694, v5);
 }
 
-- (void)addPlaceToLibraryWithRefinedMapItem:(id)a3
+- (void)addPlaceToLibraryWithRefinedMapItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
-  CuratedCollectionItemLibraryCoordinator.addPlaceToLibrary(refinedMapItem:)(v4);
+  itemCopy = item;
+  selfCopy = self;
+  CuratedCollectionItemLibraryCoordinator.addPlaceToLibrary(refinedMapItem:)(itemCopy);
 }
 
-- (void)deletePlaceFromLibraryWithViewControllerForPresentingAlert:(id)a3
+- (void)deletePlaceFromLibraryWithViewControllerForPresentingAlert:(id)alert
 {
-  v4 = a3;
-  v5 = self;
-  CuratedCollectionItemLibraryCoordinator.deletePlaceFromLibrary(viewControllerForPresentingAlert:)(v4);
+  alertCopy = alert;
+  selfCopy = self;
+  CuratedCollectionItemLibraryCoordinator.deletePlaceFromLibrary(viewControllerForPresentingAlert:)(alertCopy);
 }
 
 - (_TtC4Maps39CuratedCollectionItemLibraryCoordinator)init

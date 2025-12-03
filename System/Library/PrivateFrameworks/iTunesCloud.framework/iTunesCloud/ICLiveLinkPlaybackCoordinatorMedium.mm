@@ -1,15 +1,15 @@
 @interface ICLiveLinkPlaybackCoordinatorMedium
 - (ICLiveLink)liveLink;
-- (ICLiveLinkPlaybackCoordinatorMedium)initWithLiveLink:(id)a3;
-- (void)_broadcastLocalParticipantStateDictionary:(id)a3;
-- (void)_broadcastTransportControlStateDictionary:(id)a3 forItemWithIdentifier:(id)a4;
-- (void)_reloadTransportControlStateForItemWithIdentifier:(id)a3 completionHandler:(id)a4;
+- (ICLiveLinkPlaybackCoordinatorMedium)initWithLiveLink:(id)link;
+- (void)_broadcastLocalParticipantStateDictionary:(id)dictionary;
+- (void)_broadcastTransportControlStateDictionary:(id)dictionary forItemWithIdentifier:(id)identifier;
+- (void)_reloadTransportControlStateForItemWithIdentifier:(id)identifier completionHandler:(id)handler;
 - (void)clearCoordinationMediumDelegate;
-- (void)handleNewParticipantStateDictionary:(id)a3;
-- (void)handleNewTransportControlStateDictionary:(id)a3;
-- (void)handlePlaybackSyncPayload:(id)a3;
-- (void)removeParticipant:(id)a3;
-- (void)synchronizePlaybackStateForReason:(id)a3;
+- (void)handleNewParticipantStateDictionary:(id)dictionary;
+- (void)handleNewTransportControlStateDictionary:(id)dictionary;
+- (void)handlePlaybackSyncPayload:(id)payload;
+- (void)removeParticipant:(id)participant;
+- (void)synchronizePlaybackStateForReason:(id)reason;
 @end
 
 @implementation ICLiveLinkPlaybackCoordinatorMedium
@@ -21,17 +21,17 @@
   return WeakRetained;
 }
 
-- (void)_reloadTransportControlStateForItemWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)_reloadTransportControlStateForItemWithIdentifier:(id)identifier completionHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICLiveLinkPlaybackCoordinatorMedium *)self liveLink];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  liveLink = [(ICLiveLinkPlaybackCoordinatorMedium *)self liveLink];
   os_unfair_lock_lock(&self->_fetchServerStateLock);
-  if (self->_fetchServerStateInProgressCount && ([v8 isExpectingToJoinWithStartItem] & 1) == 0)
+  if (self->_fetchServerStateInProgressCount && ([liveLink isExpectingToJoinWithStartItem] & 1) == 0)
   {
     fetchServerStateCompletions = self->_fetchServerStateCompletions;
-    v11 = MEMORY[0x1B8C781E0](v7);
+    v11 = MEMORY[0x1B8C781E0](handlerCopy);
     [(NSMutableArray *)fetchServerStateCompletions addObject:v11];
 
     os_unfair_lock_unlock(&self->_fetchServerStateLock);
@@ -39,7 +39,7 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v17 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B4491000, v12, OS_LOG_TYPE_DEFAULT, "MLLM %p: reloadTransportControlStateForItemWithIdentifier enqueuing completion handler [fetch server state in progress]", buf, 0xCu);
     }
   }
@@ -51,9 +51,9 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v17 = self;
+      selfCopy2 = self;
       v18 = 2114;
-      v19 = v6;
+      v19 = identifierCopy;
       _os_log_impl(&dword_1B4491000, v9, OS_LOG_TYPE_DEFAULT, "MLLM %p: reloadTransportControlStateForItemWithIdentifier calling fetching item state [coordinator requested] itemID=%{public}@", buf, 0x16u);
     }
 
@@ -62,9 +62,9 @@
     v13[2] = __107__ICLiveLinkPlaybackCoordinatorMedium__reloadTransportControlStateForItemWithIdentifier_completionHandler___block_invoke;
     v13[3] = &unk_1E7BF4BC0;
     v13[4] = self;
-    v14 = v6;
-    v15 = v7;
-    [v8 fetchPlaybackSyncStateForMediumWithCompletion:v13];
+    v14 = identifierCopy;
+    v15 = handlerCopy;
+    [liveLink fetchPlaybackSyncStateForMediumWithCompletion:v13];
   }
 }
 
@@ -180,40 +180,40 @@ void __107__ICLiveLinkPlaybackCoordinatorMedium__reloadTransportControlStateForI
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_broadcastTransportControlStateDictionary:(id)a3 forItemWithIdentifier:(id)a4
+- (void)_broadcastTransportControlStateDictionary:(id)dictionary forItemWithIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  identifierCopy = identifier;
   v8 = os_log_create("com.apple.amp.iTunesCloud", "LiveLinkMedium");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
-    v16 = v7;
+    v16 = identifierCopy;
     v17 = 2114;
-    v18 = v6;
+    v18 = dictionaryCopy;
     _os_log_impl(&dword_1B4491000, v8, OS_LOG_TYPE_DEFAULT, "MLLM %p: broadcastTransportControlStateDictionary [AVPlaybackCoordination] itemID=%{public}@ tcs=%{public}@", buf, 0x20u);
   }
 
-  v9 = [(ICLiveLinkPlaybackCoordinatorMedium *)self liveLink];
+  liveLink = [(ICLiveLinkPlaybackCoordinatorMedium *)self liveLink];
   v11 = @"ICLiveLinkTransportControlStateKey";
-  v12 = v6;
+  v12 = dictionaryCopy;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-  [v9 sendPlaybackSyncPayload:v10];
+  [liveLink sendPlaybackSyncPayload:v10];
 }
 
-- (void)_broadcastLocalParticipantStateDictionary:(id)a3
+- (void)_broadcastLocalParticipantStateDictionary:(id)dictionary
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ICLiveLinkPlaybackCoordinatorMedium *)self liveLink];
+  dictionaryCopy = dictionary;
+  liveLink = [(ICLiveLinkPlaybackCoordinatorMedium *)self liveLink];
   v7 = @"ICLiveLinkPlaybackSyncParticipantStateKey";
-  v8[0] = v4;
+  v8[0] = dictionaryCopy;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
-  [v5 sendPlaybackSyncPayload:v6];
+  [liveLink sendPlaybackSyncPayload:v6];
 }
 
 - (void)clearCoordinationMediumDelegate
@@ -221,29 +221,29 @@ void __107__ICLiveLinkPlaybackCoordinatorMedium__reloadTransportControlStateForI
   v4 = [ICLiveLinkPlaybackCoordinatorMedium instanceMethodForSelector:a2];
   if (v4 == [objc_opt_class() instanceMethodForSelector:a2])
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
     v7 = NSStringFromSelector(a2);
-    [v8 handleFailureInMethod:a2 object:self file:@"ICLiveLinkPlaybackCoordinatorMedium.m" lineNumber:176 description:{@"Subclass %@ must implement -%@ defined in %@.", v6, v7, @"ICLiveLinkPlaybackCoordinatorMedium"}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICLiveLinkPlaybackCoordinatorMedium.m" lineNumber:176 description:{@"Subclass %@ must implement -%@ defined in %@.", v6, v7, @"ICLiveLinkPlaybackCoordinatorMedium"}];
   }
 }
 
-- (void)synchronizePlaybackStateForReason:(id)a3
+- (void)synchronizePlaybackStateForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   os_unfair_lock_lock(&self->_fetchServerStateLock);
   ++self->_fetchServerStateInProgressCount;
   os_unfair_lock_unlock(&self->_fetchServerStateLock);
-  v5 = [(ICLiveLinkPlaybackCoordinatorMedium *)self liveLink];
+  liveLink = [(ICLiveLinkPlaybackCoordinatorMedium *)self liveLink];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __73__ICLiveLinkPlaybackCoordinatorMedium_synchronizePlaybackStateForReason___block_invoke;
   v7[3] = &unk_1E7BF4B98;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 fetchPlaybackSyncStateWithCompletion:v7];
+  v8 = reasonCopy;
+  v6 = reasonCopy;
+  [liveLink fetchPlaybackSyncStateWithCompletion:v7];
 }
 
 void __73__ICLiveLinkPlaybackCoordinatorMedium_synchronizePlaybackStateForReason___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -597,51 +597,51 @@ void __73__ICLiveLinkPlaybackCoordinatorMedium_synchronizePlaybackStateForReason
   }
 }
 
-- (void)handleNewTransportControlStateDictionary:(id)a3
+- (void)handleNewTransportControlStateDictionary:(id)dictionary
 {
   v5 = [ICLiveLinkPlaybackCoordinatorMedium instanceMethodForSelector:a2];
   if (v5 == [objc_opt_class() instanceMethodForSelector:a2])
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     v8 = NSStringFromSelector(a2);
-    [v9 handleFailureInMethod:a2 object:self file:@"ICLiveLinkPlaybackCoordinatorMedium.m" lineNumber:94 description:{@"Subclass %@ must implement -%@ defined in %@.", v7, v8, @"ICLiveLinkPlaybackCoordinatorMedium"}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICLiveLinkPlaybackCoordinatorMedium.m" lineNumber:94 description:{@"Subclass %@ must implement -%@ defined in %@.", v7, v8, @"ICLiveLinkPlaybackCoordinatorMedium"}];
   }
 }
 
-- (void)handleNewParticipantStateDictionary:(id)a3
+- (void)handleNewParticipantStateDictionary:(id)dictionary
 {
   v5 = [ICLiveLinkPlaybackCoordinatorMedium instanceMethodForSelector:a2];
   if (v5 == [objc_opt_class() instanceMethodForSelector:a2])
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     v8 = NSStringFromSelector(a2);
-    [v9 handleFailureInMethod:a2 object:self file:@"ICLiveLinkPlaybackCoordinatorMedium.m" lineNumber:90 description:{@"Subclass %@ must implement -%@ defined in %@.", v7, v8, @"ICLiveLinkPlaybackCoordinatorMedium"}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICLiveLinkPlaybackCoordinatorMedium.m" lineNumber:90 description:{@"Subclass %@ must implement -%@ defined in %@.", v7, v8, @"ICLiveLinkPlaybackCoordinatorMedium"}];
   }
 }
 
-- (void)removeParticipant:(id)a3
+- (void)removeParticipant:(id)participant
 {
   v5 = [ICLiveLinkPlaybackCoordinatorMedium instanceMethodForSelector:a2];
   if (v5 == [objc_opt_class() instanceMethodForSelector:a2])
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     v8 = NSStringFromSelector(a2);
-    [v9 handleFailureInMethod:a2 object:self file:@"ICLiveLinkPlaybackCoordinatorMedium.m" lineNumber:86 description:{@"Subclass %@ must implement -%@ defined in %@.", v7, v8, @"ICLiveLinkPlaybackCoordinatorMedium"}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICLiveLinkPlaybackCoordinatorMedium.m" lineNumber:86 description:{@"Subclass %@ must implement -%@ defined in %@.", v7, v8, @"ICLiveLinkPlaybackCoordinatorMedium"}];
   }
 }
 
-- (void)handlePlaybackSyncPayload:(id)a3
+- (void)handlePlaybackSyncPayload:(id)payload
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"ICLiveLinkPlaybackSyncParticipantStateKey"];
-  v6 = [v4 objectForKeyedSubscript:@"ICLiveLinkTransportControlStateKey"];
+  payloadCopy = payload;
+  v5 = [payloadCopy objectForKeyedSubscript:@"ICLiveLinkPlaybackSyncParticipantStateKey"];
+  v6 = [payloadCopy objectForKeyedSubscript:@"ICLiveLinkTransportControlStateKey"];
   v7 = v6;
   if (!v5)
   {
@@ -657,7 +657,7 @@ void __73__ICLiveLinkPlaybackCoordinatorMedium_synchronizePlaybackStateForReason
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
         v10 = 134218243;
-        v11 = self;
+        selfCopy3 = self;
         v12 = 2113;
         v13 = v7;
         v9 = "MLLM %p: ignoring transport control state of unknown form %{private}@";
@@ -671,9 +671,9 @@ void __73__ICLiveLinkPlaybackCoordinatorMedium_synchronizePlaybackStateForReason
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
         v10 = 134218243;
-        v11 = self;
+        selfCopy3 = self;
         v12 = 2113;
-        v13 = v4;
+        v13 = payloadCopy;
         v9 = "MLLM %p: no state found in sync payload %{private}@";
         goto LABEL_13;
       }
@@ -690,7 +690,7 @@ LABEL_14:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v10 = 134218243;
-      v11 = self;
+      selfCopy3 = self;
       v12 = 2113;
       v13 = v5;
       v9 = "MLLM %p: ignoring participant state of unknown form %{private}@";
@@ -706,27 +706,27 @@ LABEL_13:
 LABEL_15:
 }
 
-- (ICLiveLinkPlaybackCoordinatorMedium)initWithLiveLink:(id)a3
+- (ICLiveLinkPlaybackCoordinatorMedium)initWithLiveLink:(id)link
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  linkCopy = link;
   v17.receiver = self;
   v17.super_class = ICLiveLinkPlaybackCoordinatorMedium;
   v5 = [(ICLiveLinkPlaybackCoordinatorMedium *)&v17 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_liveLink, v4);
-    v7 = [v4 identity];
-    v8 = [v7 identifier];
+    objc_storeWeak(&v5->_liveLink, linkCopy);
+    identity = [linkCopy identity];
+    identifier = [identity identifier];
     localParticipantUUID = v6->_localParticipantUUID;
-    v6->_localParticipantUUID = v8;
+    v6->_localParticipantUUID = identifier;
 
     if (!v6->_localParticipantUUID)
     {
-      v10 = [MEMORY[0x1E696AFB0] UUID];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
       v11 = v6->_localParticipantUUID;
-      v6->_localParticipantUUID = v10;
+      v6->_localParticipantUUID = uUID;
 
       v12 = os_log_create("com.apple.amp.iTunesCloud", "LiveLinkMedium");
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))

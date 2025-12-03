@@ -1,34 +1,34 @@
 @interface DTXMessageParser
-- (DTXMessageParser)initWithMessageHandler:(id)a3 andParseExceptionHandler:(id)a4;
+- (DTXMessageParser)initWithMessageHandler:(id)handler andParseExceptionHandler:(id)exceptionHandler;
 - (id)parsingComplete;
-- (void)_messageParsedWithHeader:(DTXMessageHeader *)a3 bytes:(const void *)a4 length:(unint64_t)a5 destructor:(id)a6;
+- (void)_messageParsedWithHeader:(DTXMessageHeader *)header bytes:(const void *)bytes length:(unint64_t)length destructor:(id)destructor;
 - (void)dealloc;
-- (void)parseIncomingBytes:(const char *)a3 length:(unint64_t)a4;
+- (void)parseIncomingBytes:(const char *)bytes length:(unint64_t)length;
 @end
 
 @implementation DTXMessageParser
 
-- (DTXMessageParser)initWithMessageHandler:(id)a3 andParseExceptionHandler:(id)a4
+- (DTXMessageParser)initWithMessageHandler:(id)handler andParseExceptionHandler:(id)exceptionHandler
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  exceptionHandlerCopy = exceptionHandler;
   v23.receiver = self;
   v23.super_class = DTXMessageParser;
   v8 = [(DTXMessageParser *)&v23 init];
   v11 = v8;
   if (v8)
   {
-    if (v6)
+    if (handlerCopy)
     {
       BlockCompressor = objc_msgSend_createBlockCompressor(DTXBlockCompressorFactory, v9, v10);
       compressor = v11->_compressor;
       v11->_compressor = BlockCompressor;
 
-      v14 = MEMORY[0x24C1C0D80](v7);
+      v14 = MEMORY[0x24C1C0D80](exceptionHandlerCopy);
       exceptionHandler = v11->_exceptionHandler;
       v11->_exceptionHandler = v14;
 
-      v16 = MEMORY[0x24C1C0D80](v6);
+      v16 = MEMORY[0x24C1C0D80](handlerCopy);
       parsedMessageHandler = v11->_parsedMessageHandler;
       v11->_parsedMessageHandler = v16;
 
@@ -65,28 +65,28 @@
   [(DTXMessageParser *)&v4 dealloc];
 }
 
-- (void)_messageParsedWithHeader:(DTXMessageHeader *)a3 bytes:(const void *)a4 length:(unint64_t)a5 destructor:(id)a6
+- (void)_messageParsedWithHeader:(DTXMessageHeader *)header bytes:(const void *)bytes length:(unint64_t)length destructor:(id)destructor
 {
-  v19 = a6;
+  destructorCopy = destructor;
   v10 = objc_autoreleasePoolPush();
   v11 = [DTXMessage alloc];
-  v13 = objc_msgSend_initWithSerializedForm_length_destructor_compressor_(v11, v12, a4, a5, v19, self->_compressor);
+  v13 = objc_msgSend_initWithSerializedForm_length_destructor_compressor_(v11, v12, bytes, length, destructorCopy, self->_compressor);
   v15 = v13;
   if (v13)
   {
-    objc_msgSend_setExpectsReply_(v13, v14, *(&a3->var5 + 3) & 1);
-    objc_msgSend_setIdentifier_(v15, v16, a3->var5.var0);
-    objc_msgSend_setChannelCode_(v15, v17, a3->var5.var2);
-    objc_msgSend_setConversationIndex_(v15, v18, a3->var5.var1);
+    objc_msgSend_setExpectsReply_(v13, v14, *(&header->var5 + 3) & 1);
+    objc_msgSend_setIdentifier_(v15, v16, header->var5.var0);
+    objc_msgSend_setChannelCode_(v15, v17, header->var5.var2);
+    objc_msgSend_setConversationIndex_(v15, v18, header->var5.var1);
     (*(self->_parsedMessageHandler + 2))();
   }
 
   objc_autoreleasePoolPop(v10);
 }
 
-- (void)parseIncomingBytes:(const char *)a3 length:(unint64_t)a4
+- (void)parseIncomingBytes:(const char *)bytes length:(unint64_t)length
 {
-  if (a3 && a4)
+  if (bytes && length)
   {
     parsingQueue = self->_parsingQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -94,14 +94,14 @@
     block[2] = sub_247F5007C;
     block[3] = &unk_278EEE840;
     block[4] = self;
-    block[5] = a4;
-    block[6] = a3;
+    block[5] = length;
+    block[6] = bytes;
     dispatch_sync(parsingQueue, block);
   }
 
   else
   {
-    v5 = objc_msgSend_parsingComplete(self, a2, a3, a4);
+    v5 = objc_msgSend_parsingComplete(self, a2, bytes, length);
   }
 }
 

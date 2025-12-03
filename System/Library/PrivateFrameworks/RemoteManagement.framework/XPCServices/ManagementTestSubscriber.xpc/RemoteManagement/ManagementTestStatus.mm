@@ -1,6 +1,6 @@
 @interface ManagementTestStatus
 + (id)supportedStatusKeys;
-- (void)queryForStatusWithKeyPaths:(id)a3 store:(id)a4 completionHandler:(id)a5;
+- (void)queryForStatusWithKeyPaths:(id)paths store:(id)store completionHandler:(id)handler;
 @end
 
 @implementation ManagementTestStatus
@@ -20,22 +20,22 @@
   return v3;
 }
 
-- (void)queryForStatusWithKeyPaths:(id)a3 store:(id)a4 completionHandler:(id)a5
+- (void)queryForStatusWithKeyPaths:(id)paths store:(id)store completionHandler:(id)handler
 {
-  v6 = a3;
-  v41 = a5;
+  pathsCopy = paths;
+  handlerCopy = handler;
   v7 = +[RMLog managementTestStatus];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    sub_100002C80(v6, v7);
+    sub_100002C80(pathsCopy, v7);
   }
 
-  v8 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v6 count]);
+  v8 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [pathsCopy count]);
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v9 = v6;
+  v9 = pathsCopy;
   v10 = [v9 countByEnumeratingWithState:&v49 objects:v53 count:16];
   if (v10)
   {
@@ -191,7 +191,7 @@ LABEL_30:
   }
 
   v40 = [v8 copy];
-  v41[2](v41, v40, 0);
+  handlerCopy[2](handlerCopy, v40, 0);
 }
 
 @end

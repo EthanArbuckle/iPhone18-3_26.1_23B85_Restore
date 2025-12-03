@@ -1,249 +1,249 @@
 @interface SBSystemApertureViewController
 - (BOOL)_collapseExpandedElementIfPossible;
-- (BOOL)_doesElementHaveValidRequiredPriorityAssertion:(id)a3;
-- (BOOL)_doesElementHaveValidUrgencyAssertion:(id)a3;
-- (BOOL)_handleButtonEventWithTest:(id)a3 handler:(id)a4;
-- (BOOL)_handleCalloutBlockAction:(id)a3;
-- (BOOL)_handleContainerPressAction:(id)a3;
-- (BOOL)_handleContainerResizeAction:(id)a3;
-- (BOOL)_handleContainerTapAction:(id)a3;
-- (BOOL)_handleImpactFeedbackAction:(id)a3;
-- (BOOL)_handlePreferencesDidChangeAction:(id)a3;
+- (BOOL)_doesElementHaveValidRequiredPriorityAssertion:(id)assertion;
+- (BOOL)_doesElementHaveValidUrgencyAssertion:(id)assertion;
+- (BOOL)_handleButtonEventWithTest:(id)test handler:(id)handler;
+- (BOOL)_handleCalloutBlockAction:(id)action;
+- (BOOL)_handleContainerPressAction:(id)action;
+- (BOOL)_handleContainerResizeAction:(id)action;
+- (BOOL)_handleContainerTapAction:(id)action;
+- (BOOL)_handleImpactFeedbackAction:(id)action;
+- (BOOL)_handlePreferencesDidChangeAction:(id)action;
 - (BOOL)_isAnimatedTransitionInProgress;
 - (BOOL)_isAnyGestureRecognizerActive;
 - (BOOL)_isBlobEnabled;
-- (BOOL)_isInteractiveHidingSupportedByElement:(id)a3;
-- (BOOL)_isProperty:(id)a3 ofObject:(id)a4 equalToDescription:(id)a5;
-- (BOOL)_isSystemGesture:(id)a3;
+- (BOOL)_isInteractiveHidingSupportedByElement:(id)element;
+- (BOOL)_isProperty:(id)property ofObject:(id)object equalToDescription:(id)description;
+- (BOOL)_isSystemGesture:(id)gesture;
 - (BOOL)_longPressGestureInhibitedByElement;
 - (BOOL)_panGestureInhibitedByElement;
 - (BOOL)_reachabilityActiveOrAnimating;
-- (BOOL)_shouldPerformTransitionOfProperty:(id)a3 ofObject:(id)a4 withDescription:(id)a5 fromPreferences:(id)a6 context:(id)a7;
-- (BOOL)_shouldSuppressElement:(id)a3 allowsSuppressionForSystemChromeSuppression:(BOOL)a4 reason:(int64_t *)a5;
+- (BOOL)_shouldPerformTransitionOfProperty:(id)property ofObject:(id)object withDescription:(id)description fromPreferences:(id)preferences context:(id)context;
+- (BOOL)_shouldSuppressElement:(id)element allowsSuppressionForSystemChromeSuppression:(BOOL)suppression reason:(int64_t *)reason;
 - (BOOL)_systemApertureManagedIndicatorEnabled;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveEvent:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)handleHeadsetButtonPress:(BOOL)a3;
-- (BOOL)isRequestingMenuPresentationForTargetWithOverrider:(id)a3 isDefaultValue:(BOOL *)a4;
-- (BOOL)isTransitionTargetForSceneIdentifier:(id)a3 bundleIdentifier:(id)a4;
-- (BOOL)systemApertureApertureElementAuthority:(id)a3 isActivityElementAlerting:(id)a4;
-- (BOOL)systemApertureApertureElementAuthority:(id)a3 isElementExpandedDueToUserInteraction:(id)a4;
-- (BOOL)systemApertureApertureElementAuthority:(id)a3 isElementRequiredPriority:(id)a4;
-- (BOOL)systemApertureApertureElementAuthority:(id)a3 isElementUrgentlyVisible:(id)a4;
-- (BOOL)systemApertureManagerShouldUseOrderedElementViewControllers:(id)a3;
-- (BOOL)systemApertureProximityBacklightPolicy:(id)a3 isSystemApertureElementVisibleAtPoint:(CGPoint)a4;
-- (BOOL)systemApertureProximityBacklightPolicyShouldConsiderSystemApertureInert:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveEvent:(id)event;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)handleHeadsetButtonPress:(BOOL)press;
+- (BOOL)isRequestingMenuPresentationForTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value;
+- (BOOL)isTransitionTargetForSceneIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier;
+- (BOOL)systemApertureApertureElementAuthority:(id)authority isActivityElementAlerting:(id)alerting;
+- (BOOL)systemApertureApertureElementAuthority:(id)authority isElementExpandedDueToUserInteraction:(id)interaction;
+- (BOOL)systemApertureApertureElementAuthority:(id)authority isElementRequiredPriority:(id)priority;
+- (BOOL)systemApertureApertureElementAuthority:(id)authority isElementUrgentlyVisible:(id)visible;
+- (BOOL)systemApertureManagerShouldUseOrderedElementViewControllers:(id)controllers;
+- (BOOL)systemApertureProximityBacklightPolicy:(id)policy isSystemApertureElementVisibleAtPoint:(CGPoint)point;
+- (BOOL)systemApertureProximityBacklightPolicyShouldConsiderSystemApertureInert:(id)inert;
 - (CGPoint)containerParentCenter;
-- (CGRect)_boundsForAdjunctContainerViewWithPreferredEdgeOutsets:(NSDirectionalEdgeInsets)a3 layoutDirection:(int64_t)a4;
-- (CGRect)_frameForSensorRegionInBounds:(CGRect)a3;
+- (CGRect)_boundsForAdjunctContainerViewWithPreferredEdgeOutsets:(NSDirectionalEdgeInsets)outsets layoutDirection:(int64_t)direction;
+- (CGRect)_frameForSensorRegionInBounds:(CGRect)bounds;
 - (CGRect)_interSensorRegionMatchMovePositionSourceViewFrame;
-- (CGRect)_portraitFrameForPrimaryContainerViewInBounds:(CGRect)a3 withPreferredEdgeOutsets:(NSDirectionalEdgeInsets)a4 layoutDirection:(int64_t)a5;
-- (CGRect)frameForIndicatorPortalViewWithSourceView:(id)a3;
+- (CGRect)_portraitFrameForPrimaryContainerViewInBounds:(CGRect)bounds withPreferredEdgeOutsets:(NSDirectionalEdgeInsets)outsets layoutDirection:(int64_t)direction;
+- (CGRect)frameForIndicatorPortalViewWithSourceView:(id)view;
 - (CGRect)frameForSystemAperturePortalView;
-- (CGRect)interSensorRegionInContentView:(id)a3;
+- (CGRect)interSensorRegionInContentView:(id)view;
 - (CGRect)minimumSensorRegionFrame;
-- (CGRect)sensorRegionInContentView:(id)a3 fromViewProvider:(id)a4;
-- (CGRect)sensorRegionObstructingViewProvider:(id)a3 inContentView:(id)a4;
-- (CGRect)systemApertureContainerView:(id)a3 hitRectForBounds:(CGRect)a4 debugColor:(id *)a5;
+- (CGRect)sensorRegionInContentView:(id)view fromViewProvider:(id)provider;
+- (CGRect)sensorRegionObstructingViewProvider:(id)provider inContentView:(id)view;
+- (CGRect)systemApertureContainerView:(id)view hitRectForBounds:(CGRect)bounds debugColor:(id *)color;
 - (CGSize)_adjunctContainerMinimalViewSize;
-- (CGSize)_preferredMinSizeForCustomLayout:(int64_t)a3 elementInterfaceOrientation:(int64_t)a4;
-- (CGSize)maximumAvailableSizeForProvidedLeadingView:(id)a3 fromViewProvider:(id)a4;
-- (CGSize)maximumAvailableSizeForProvidedMinimalView:(id)a3 fromViewProvider:(id)a4;
-- (CGSize)maximumAvailableSizeForProvidedTrailingView:(id)a3 fromViewProvider:(id)a4;
+- (CGSize)_preferredMinSizeForCustomLayout:(int64_t)layout elementInterfaceOrientation:(int64_t)orientation;
+- (CGSize)maximumAvailableSizeForProvidedLeadingView:(id)view fromViewProvider:(id)provider;
+- (CGSize)maximumAvailableSizeForProvidedMinimalView:(id)view fromViewProvider:(id)provider;
+- (CGSize)maximumAvailableSizeForProvidedTrailingView:(id)view fromViewProvider:(id)provider;
 - (NSArray)stateDump;
-- (NSDirectionalEdgeInsets)_applySymmetryToPreferredLayoutOutsets:(NSDirectionalEdgeInsets)a3;
-- (NSDirectionalEdgeInsets)_hostSuggestedOutsetsForElement:(id)a3;
-- (NSDirectionalEdgeInsets)_maximumContainerViewOutsetsInBounds:(CGRect)a3 inLayoutMode:(int64_t)a4;
-- (NSDirectionalEdgeInsets)_validatedEdgeOutsetsForPreferredOutsets:(NSDirectionalEdgeInsets)a3 maximumOutsets:(NSDirectionalEdgeInsets)a4;
-- (NSDirectionalEdgeInsets)edgeOutsetsForSize:(CGSize)a3;
-- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)a3 suggestedOutsets:(NSDirectionalEdgeInsets)a4 maximumOutsets:(NSDirectionalEdgeInsets)a5 forTargetWithOverrider:(id)a6 isDefaultValue:(BOOL *)a7;
+- (NSDirectionalEdgeInsets)_applySymmetryToPreferredLayoutOutsets:(NSDirectionalEdgeInsets)outsets;
+- (NSDirectionalEdgeInsets)_hostSuggestedOutsetsForElement:(id)element;
+- (NSDirectionalEdgeInsets)_maximumContainerViewOutsetsInBounds:(CGRect)bounds inLayoutMode:(int64_t)mode;
+- (NSDirectionalEdgeInsets)_validatedEdgeOutsetsForPreferredOutsets:(NSDirectionalEdgeInsets)outsets maximumOutsets:(NSDirectionalEdgeInsets)maximumOutsets;
+- (NSDirectionalEdgeInsets)edgeOutsetsForSize:(CGSize)size;
+- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)mode suggestedOutsets:(NSDirectionalEdgeInsets)outsets maximumOutsets:(NSDirectionalEdgeInsets)maximumOutsets forTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value;
 - (SBSystemApertureBacklightSessionAggregator)backlightSessionAggregator;
-- (SBSystemApertureViewController)initWithActiveWindowScene:(id)a3;
+- (SBSystemApertureViewController)initWithActiveWindowScene:(id)scene;
 - (SBSystemApertureViewControllerVisibilityDelegate)visibilityDelegate;
 - (SBSystemApertureWindowScene)activeWindowScene;
-- (double)_yOffsetForCustomLayout:(int64_t)a3;
-- (double)alertingDurationForHost:(id)a3;
-- (double)concentricPaddingForProvidedView:(id)a3 fromViewProvider:(id)a4;
-- (id)_activeSnapshotAssertionForElementIdentity:(id)a3;
-- (id)_animatablePropertyWithProgressMilestones:(id)a3 block:(id)a4;
+- (double)_yOffsetForCustomLayout:(int64_t)layout;
+- (double)alertingDurationForHost:(id)host;
+- (double)concentricPaddingForProvidedView:(id)view fromViewProvider:(id)provider;
+- (id)_activeSnapshotAssertionForElementIdentity:(id)identity;
+- (id)_animatablePropertyWithProgressMilestones:(id)milestones block:(id)block;
 - (id)_associatedWindowScene;
-- (id)_childElementViewControllerWithIdentity:(id)a3;
-- (id)_containerViewForGesture:(id)a3 initialLocationInContainerView:(CGPoint *)a4;
-- (id)_containerViewForLayoutSpecifier:(id)a3;
-- (id)_containerViewForScrollEvent:(id)a3 ofGestureRecognizer:(id)a4 initialLocation:(CGPoint *)a5;
-- (id)_containerViewForTouch:(id)a3 ofGestureRecognizer:(id)a4 initialLocation:(CGPoint *)a5;
-- (id)_containerViewForViewController:(id)a3 includingOutgoing:(BOOL)a4;
-- (id)_containerViewWithInterfaceElementIdentifier:(id)a3 creatingIfNecessary:(BOOL)a4;
-- (id)_containerViewWithRank:(unint64_t)a3 creatingIfNecessary:(BOOL)a4;
-- (id)_contextWithOrderedElementViewControllers:(id)a3;
+- (id)_childElementViewControllerWithIdentity:(id)identity;
+- (id)_containerViewForGesture:(id)gesture initialLocationInContainerView:(CGPoint *)view;
+- (id)_containerViewForLayoutSpecifier:(id)specifier;
+- (id)_containerViewForScrollEvent:(id)event ofGestureRecognizer:(id)recognizer initialLocation:(CGPoint *)location;
+- (id)_containerViewForTouch:(id)touch ofGestureRecognizer:(id)recognizer initialLocation:(CGPoint *)location;
+- (id)_containerViewForViewController:(id)controller includingOutgoing:(BOOL)outgoing;
+- (id)_containerViewWithInterfaceElementIdentifier:(id)identifier creatingIfNecessary:(BOOL)necessary;
+- (id)_containerViewWithRank:(unint64_t)rank creatingIfNecessary:(BOOL)necessary;
+- (id)_contextWithOrderedElementViewControllers:(id)controllers;
 - (id)_currentFirstElement;
 - (id)_defaultsContextForDefaults;
-- (id)_elementContextsForOrderedElementViewControllers:(id)a3;
-- (id)_elementForContainerView:(id)a3;
-- (id)_elementViewControllerForLayoutSpecifyingOverrider:(id)a3;
-- (id)_elementViewControllerForSizeTransitionWithDescription:(id)a3 fromPreferences:(id)a4;
-- (id)_feedbackGeneratorForStyle:(int64_t)a3;
-- (id)_floatAnimatablePropertyForTransitionIdentifier:(id)a3;
+- (id)_elementContextsForOrderedElementViewControllers:(id)controllers;
+- (id)_elementForContainerView:(id)view;
+- (id)_elementViewControllerForLayoutSpecifyingOverrider:(id)overrider;
+- (id)_elementViewControllerForSizeTransitionWithDescription:(id)description fromPreferences:(id)preferences;
+- (id)_feedbackGeneratorForStyle:(int64_t)style;
+- (id)_floatAnimatablePropertyForTransitionIdentifier:(id)identifier;
 - (id)_flushActiveRequests;
 - (id)_flushElapsedTimerDescriptions;
 - (id)_flushMaintainedPreferences;
 - (id)_flushPendingInteractionResults;
 - (id)_flushPendingTransitionResults;
 - (id)_flushSignificantUpdateTransitionAssertions;
-- (id)_gestureRecognizerForDescription:(id)a3;
+- (id)_gestureRecognizerForDescription:(id)description;
 - (id)_indicatorElementContext;
-- (id)_keyPathForProperty:(id)a3;
-- (id)_layoutAssertionWithMaximumPermittedLayoutMode:(int64_t)a3 reason:(id)a4 creatingIfNecessary:(BOOL)a5;
-- (id)_layoutSpecifyingOverriderForContainerView:(id)a3;
-- (id)_newContainerViewWithInterfaceElementIdentifier:(id)a3;
-- (id)_persistentAssertionForElement:(id)a3 withType:(int64_t)a4;
+- (id)_keyPathForProperty:(id)property;
+- (id)_layoutAssertionWithMaximumPermittedLayoutMode:(int64_t)mode reason:(id)reason creatingIfNecessary:(BOOL)necessary;
+- (id)_layoutSpecifyingOverriderForContainerView:(id)view;
+- (id)_newContainerViewWithInterfaceElementIdentifier:(id)identifier;
+- (id)_persistentAssertionForElement:(id)element withType:(int64_t)type;
 - (id)_platformMetricsContext;
 - (id)_popActiveGestureDescriptions;
-- (id)_propertyUpdateBlockArrayForPropertyIdentity:(id)a3 ofObject:(id)a4 withDescription:(id)a5 withTransitionDescription:(id)a6 forceSingle:(BOOL)a7 behaviorSettingsArray:(id *)a8 updateDescriptionsArray:(id *)a9;
-- (id)_secureElementContextsForOrderedElementViewControllers:(id)a3;
-- (id)_systemApertureRepresentationSuppressionAssertionForReason:(unint64_t)a3;
-- (id)_valueForProperty:(id)a3 ofDescription:(id)a4;
-- (id)element:(id)a3 requestsPersistentAnimationOfType:(int64_t)a4;
-- (id)layoutModePreferenceForTargetWithOverrider:(id)a3 isDefaultValue:(BOOL *)a4;
-- (id)overrideContainerRenderingStyleAssertion:(int64_t)a3;
-- (id)registerElement:(id)a3;
-- (id)requireCaptureBoundsDefiningViewWithBounds:(CGRect)a3 reason:(id)a4;
-- (id)requireClearBackgroundRenderingForCapture:(id)a3;
+- (id)_propertyUpdateBlockArrayForPropertyIdentity:(id)identity ofObject:(id)object withDescription:(id)description withTransitionDescription:(id)transitionDescription forceSingle:(BOOL)single behaviorSettingsArray:(id *)array updateDescriptionsArray:(id *)descriptionsArray;
+- (id)_secureElementContextsForOrderedElementViewControllers:(id)controllers;
+- (id)_systemApertureRepresentationSuppressionAssertionForReason:(unint64_t)reason;
+- (id)_valueForProperty:(id)property ofDescription:(id)description;
+- (id)element:(id)element requestsPersistentAnimationOfType:(int64_t)type;
+- (id)layoutModePreferenceForTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value;
+- (id)overrideContainerRenderingStyleAssertion:(int64_t)assertion;
+- (id)registerElement:(id)element;
+- (id)requireCaptureBoundsDefiningViewWithBounds:(CGRect)bounds reason:(id)reason;
+- (id)requireClearBackgroundRenderingForCapture:(id)capture;
 - (id)requireHeavyShadowAssertionForTransition;
 - (id)requireKeyLineAssertionForTransition;
-- (id)requireUserInterfaceLayoutDirection:(int64_t)a3 reason:(id)a4;
-- (id)restrictSystemApertureToDefaultLayoutWithReason:(id)a3;
+- (id)requireUserInterfaceLayoutDirection:(int64_t)direction reason:(id)reason;
+- (id)restrictSystemApertureToDefaultLayoutWithReason:(id)reason;
 - (id)scenesForBacklightSession;
 - (int64_t)_activeElementInterfaceOrientation;
 - (int64_t)_effectiveOverrideRenderingStyle;
 - (int64_t)_mostRestrictiveLayoutModeFromActiveLayoutAssertions;
-- (int64_t)systemApertureApertureElementAuthority:(id)a3 preferredLayoutModeForElement:(id)a4;
+- (int64_t)systemApertureApertureElementAuthority:(id)authority preferredLayoutModeForElement:(id)element;
 - (unint64_t)_maximumNumberOfSimultaneouslyVisibleElements;
-- (unint64_t)_systemGestureTypeForGesture:(id)a3 systemGestureManager:(id)a4;
+- (unint64_t)_systemGestureTypeForGesture:(id)gesture systemGestureManager:(id)manager;
 - (void)_RTLOverrideChanged;
-- (void)_addActiveRequest:(id)a3;
-- (void)_addActiveSnapshotAssertion:(id)a3;
-- (void)_addFloatAnimatablePropertyForTransitionDescriptionIfNecessary:(id)a3 propertyIdentity:(id)a4 milestones:(id)a5;
+- (void)_addActiveRequest:(id)request;
+- (void)_addActiveSnapshotAssertion:(id)assertion;
+- (void)_addFloatAnimatablePropertyForTransitionDescriptionIfNecessary:(id)necessary propertyIdentity:(id)identity milestones:(id)milestones;
 - (void)_addMitosisBlobEffects;
-- (void)_addPendingTransitionResult:(id)a3;
+- (void)_addPendingTransitionResult:(id)result;
 - (void)_addRunLoopObserverIfNecessary;
-- (void)_addTimerIfNecessaryForDescription:(id)a3;
+- (void)_addTimerIfNecessaryForDescription:(id)description;
 - (void)_addZoomAnimationAssertion;
-- (void)_animatedTransitionDidReachMilestone:(double)a3 description:(id)a4 propertyIdentity:(id)a5 finished:(BOOL)a6 retargeted:(BOOL)a7;
-- (void)_axLayoutSpecifierRequestsDiminishment:(id)a3;
+- (void)_animatedTransitionDidReachMilestone:(double)milestone description:(id)description propertyIdentity:(id)identity finished:(BOOL)finished retargeted:(BOOL)retargeted;
+- (void)_axLayoutSpecifierRequestsDiminishment:(id)diminishment;
 - (void)_axRegisterForZoomUpdatesIfNecessary;
 - (void)_axRevealHiddenElementIfPossible;
 - (void)_axZoomLevelOrStandbyModeChanged;
-- (void)_beginRequiringBacklightAssertionForReason:(id)a3;
-- (void)_cancelExternalGesturesForReason:(id)a3;
-- (void)_cleanupViewController:(id)a3;
+- (void)_beginRequiringBacklightAssertionForReason:(id)reason;
+- (void)_cancelExternalGesturesForReason:(id)reason;
+- (void)_cleanupViewController:(id)controller;
 - (void)_configureGesturesIfNecessary;
 - (void)_configureInteractionLongPressIfNecessary;
 - (void)_configureLongPressGestureIfNecessary;
 - (void)_configurePreferencesStackIfNecessary;
 - (void)_configureResizeGestureIfNecessary;
 - (void)_configureVariableBlur;
-- (void)_didRegisterNewIndicatorViewController:(id)a3 needsMatchMove:(BOOL)a4;
-- (void)_elementKeyColorWasInvalidated:(id)a3;
-- (void)_endRequiringBacklightAssertionForReason:(id)a3;
+- (void)_didRegisterNewIndicatorViewController:(id)controller needsMatchMove:(BOOL)move;
+- (void)_elementKeyColorWasInvalidated:(id)invalidated;
+- (void)_endRequiringBacklightAssertionForReason:(id)reason;
 - (void)_flushDidSettleHandlersIfNecessary;
 - (void)_flushIndicatorDidSettleHandlersIfNecessary;
-- (void)_handleActionsFromPreferences:(id)a3;
-- (void)_handleAnyContentsDidChangePreferences:(id)a3 context:(id)a4;
-- (void)_handleBackgroundUpdatesFromPreferences:(id)a3 context:(id)a4;
-- (void)_handleContainerAndElementUpdatesFromPreferences:(id)a3 orderedElementViewControllers:(id)a4 context:(id)a5;
-- (void)_handleContainerDefaultPressGesture:(id)a3;
-- (void)_handleContainerParentUpdatesFromPreferences:(id)a3 context:(id)a4;
-- (void)_handleContainerResizeGesture:(id)a3;
-- (void)_handleCurtainIndicatorPortalsNeedIndicatorMatchMoveAnimationChanged:(BOOL)a3;
-- (void)_handleCurtainUpdatesFromPreferences:(id)a3;
-- (void)_handleDebuggingUtilityWithPreferences:(id)a3 context:(id)a4 withStackDepiction:(id)a5 andQueryIteration:(unint64_t)a6;
-- (void)_handleGestureUpdatesFromPreferences:(id)a3;
-- (void)_handleHitTestingUpdatesWithContext:(id)a3;
-- (void)_handleInteractionLongPress:(id)a3;
-- (void)_handleMitosisBlobUpdatesFromPreferences:(id)a3;
-- (void)_handleResizePan:(id)a3;
-- (void)_handleResizeResult:(int64_t)a3 withContainerView:(id)a4;
-- (void)_handleSecureElementUpdatesFromPreferences:(id)a3;
-- (void)_handleSystemApertureCurtainPortalToSuperHighLevelScene:(BOOL)a3;
-- (void)_handleTimerUpdatesFromPreferences:(id)a3;
-- (void)_invalidateAndRemoveFloatAnimatableProperty:(id)a3 forTransitionIdentifier:(id)a4;
-- (void)_kickCurtainIndicatorViewFrameForContainerView:(id)a3;
-- (void)_moveSystemGestureRecognizerIfNecessary:(id)a3 withSystemGestureType:(unint64_t)a4 fromSystemGestureManager:(id)a5 toSystemGestureManager:(id)a6;
+- (void)_handleActionsFromPreferences:(id)preferences;
+- (void)_handleAnyContentsDidChangePreferences:(id)preferences context:(id)context;
+- (void)_handleBackgroundUpdatesFromPreferences:(id)preferences context:(id)context;
+- (void)_handleContainerAndElementUpdatesFromPreferences:(id)preferences orderedElementViewControllers:(id)controllers context:(id)context;
+- (void)_handleContainerDefaultPressGesture:(id)gesture;
+- (void)_handleContainerParentUpdatesFromPreferences:(id)preferences context:(id)context;
+- (void)_handleContainerResizeGesture:(id)gesture;
+- (void)_handleCurtainIndicatorPortalsNeedIndicatorMatchMoveAnimationChanged:(BOOL)changed;
+- (void)_handleCurtainUpdatesFromPreferences:(id)preferences;
+- (void)_handleDebuggingUtilityWithPreferences:(id)preferences context:(id)context withStackDepiction:(id)depiction andQueryIteration:(unint64_t)iteration;
+- (void)_handleGestureUpdatesFromPreferences:(id)preferences;
+- (void)_handleHitTestingUpdatesWithContext:(id)context;
+- (void)_handleInteractionLongPress:(id)press;
+- (void)_handleMitosisBlobUpdatesFromPreferences:(id)preferences;
+- (void)_handleResizePan:(id)pan;
+- (void)_handleResizeResult:(int64_t)result withContainerView:(id)view;
+- (void)_handleSecureElementUpdatesFromPreferences:(id)preferences;
+- (void)_handleSystemApertureCurtainPortalToSuperHighLevelScene:(BOOL)scene;
+- (void)_handleTimerUpdatesFromPreferences:(id)preferences;
+- (void)_invalidateAndRemoveFloatAnimatableProperty:(id)property forTransitionIdentifier:(id)identifier;
+- (void)_kickCurtainIndicatorViewFrameForContainerView:(id)view;
+- (void)_moveSystemGestureRecognizerIfNecessary:(id)necessary withSystemGestureType:(unint64_t)type fromSystemGestureManager:(id)manager toSystemGestureManager:(id)gestureManager;
 - (void)_popActiveGestureDescriptions;
 - (void)_postLayoutDidChangeNotificationIfNecessary;
-- (void)_promote:(BOOL)a3 gestureRecognizer:(id)a4 toSystemGestureWithManager:(id)a5 type:(unint64_t)a6;
-- (void)_pushGestureDescription:(id)a3;
-- (void)_pushPendingInteractionResultForElementIdentity:(id)a3 interactionSource:(unint64_t)a4 viewInteractionResult:(int64_t)a5;
+- (void)_promote:(BOOL)_promote gestureRecognizer:(id)recognizer toSystemGestureWithManager:(id)manager type:(unint64_t)type;
+- (void)_pushGestureDescription:(id)description;
+- (void)_pushPendingInteractionResultForElementIdentity:(id)identity interactionSource:(unint64_t)source viewInteractionResult:(int64_t)result;
 - (void)_reevaluateElementSuppression;
-- (void)_removeActiveSnapshotAssertion:(id)a3;
-- (void)_removeContainerViewsExceptingThoseWithDescriptions:(id)a3;
-- (void)_removeElementViewControllersExceptingThoseWithDescriptions:(id)a3;
-- (void)_removeLayoutAssertionAndReevaluate:(id)a3;
+- (void)_removeActiveSnapshotAssertion:(id)assertion;
+- (void)_removeContainerViewsExceptingThoseWithDescriptions:(id)descriptions;
+- (void)_removeElementViewControllersExceptingThoseWithDescriptions:(id)descriptions;
+- (void)_removeLayoutAssertionAndReevaluate:(id)reevaluate;
 - (void)_removeMitosisBlobEffects;
-- (void)_setBlobEnabled:(BOOL)a3;
-- (void)_setBlobRadius:(double)a3;
+- (void)_setBlobEnabled:(BOOL)enabled;
+- (void)_setBlobRadius:(double)radius;
 - (void)_startTrackingShakeAnimationIfRequired;
 - (void)_stopTrackingShakeAnimation;
-- (void)_updateElementOrientationTo:(int64_t)a3 withTransitionCoordinator:(id)a4;
-- (void)_updateObject:(id)a3 withDescription:(id)a4 fromPreferences:(id)a5 conditionalAnimations:(id)a6 conditionalCompletion:(id)a7 context:(id)a8;
-- (void)_updatePreferencesForReasonAccessibility:(unsigned int)a3 updates:(id)a4;
-- (void)_updatePreferencesForReasonActiveDisplayChanged:(unsigned int)a3 updates:(id)a4;
-- (void)_updatePreferencesForReasonAnimatedPropertyUpdateBegin:(unsigned int)a3 updates:(id)a4;
-- (void)_updatePreferencesForReasonAnimatedPropertyUpdateEnd:(unsigned int)a3 updates:(id)a4;
-- (void)_updatePreferencesForReasonCloningOrRenderingStyle:(unsigned int)a3 updates:(id)a4;
-- (void)_updatePreferencesForReasonDynamicsAnimation:(unsigned int)a3 updates:(id)a4;
-- (void)_updatePreferencesForReasonElementRequested:(unsigned int)a3 updates:(id)a4;
-- (void)_updatePreferencesForReasonGestures:(unsigned int)a3 updates:(id)a4;
-- (void)_updatePreferencesForReasonInitOrDefaults:(unsigned int)a3 updates:(id)a4;
-- (void)_updatePreferencesForReasonLumaSampling:(unsigned int)a3 updates:(id)a4;
-- (void)_updatePreferencesForReasonLuminanceLevelChanged:(unsigned int)a3 updates:(id)a4;
-- (void)_updatePreferencesForReasonMilestoneReached:(unsigned int)a3 updates:(id)a4;
-- (void)_updatePreferencesForReasonOrientation:(unsigned int)a3 updates:(id)a4;
-- (void)_updatePreferencesForReasonReachabilityChanged:(unsigned int)a3 updates:(id)a4;
-- (void)_updatePreferencesForReasonSecureElementCoordinator:(unsigned int)a3 updates:(id)a4;
-- (void)_updatePreferencesForReasonStackInitiated:(unsigned int)a3 updates:(id)a4;
-- (void)_updatePreferencesForReasonSystemApertureManager:(unsigned int)a3 updates:(id)a4;
-- (void)_updatePreferencesForReasonTimerExpired:(unsigned int)a3 updates:(id)a4;
-- (void)_updatePreferencesForReasonTransitionEffectAssertion:(unsigned int)a3 updates:(id)a4;
+- (void)_updateElementOrientationTo:(int64_t)to withTransitionCoordinator:(id)coordinator;
+- (void)_updateObject:(id)object withDescription:(id)description fromPreferences:(id)preferences conditionalAnimations:(id)animations conditionalCompletion:(id)completion context:(id)context;
+- (void)_updatePreferencesForReasonAccessibility:(unsigned int)accessibility updates:(id)updates;
+- (void)_updatePreferencesForReasonActiveDisplayChanged:(unsigned int)changed updates:(id)updates;
+- (void)_updatePreferencesForReasonAnimatedPropertyUpdateBegin:(unsigned int)begin updates:(id)updates;
+- (void)_updatePreferencesForReasonAnimatedPropertyUpdateEnd:(unsigned int)end updates:(id)updates;
+- (void)_updatePreferencesForReasonCloningOrRenderingStyle:(unsigned int)style updates:(id)updates;
+- (void)_updatePreferencesForReasonDynamicsAnimation:(unsigned int)animation updates:(id)updates;
+- (void)_updatePreferencesForReasonElementRequested:(unsigned int)requested updates:(id)updates;
+- (void)_updatePreferencesForReasonGestures:(unsigned int)gestures updates:(id)updates;
+- (void)_updatePreferencesForReasonInitOrDefaults:(unsigned int)defaults updates:(id)updates;
+- (void)_updatePreferencesForReasonLumaSampling:(unsigned int)sampling updates:(id)updates;
+- (void)_updatePreferencesForReasonLuminanceLevelChanged:(unsigned int)changed updates:(id)updates;
+- (void)_updatePreferencesForReasonMilestoneReached:(unsigned int)reached updates:(id)updates;
+- (void)_updatePreferencesForReasonOrientation:(unsigned int)orientation updates:(id)updates;
+- (void)_updatePreferencesForReasonReachabilityChanged:(unsigned int)changed updates:(id)updates;
+- (void)_updatePreferencesForReasonSecureElementCoordinator:(unsigned int)coordinator updates:(id)updates;
+- (void)_updatePreferencesForReasonStackInitiated:(unsigned int)initiated updates:(id)updates;
+- (void)_updatePreferencesForReasonSystemApertureManager:(unsigned int)manager updates:(id)updates;
+- (void)_updatePreferencesForReasonTimerExpired:(unsigned int)expired updates:(id)updates;
+- (void)_updatePreferencesForReasonTransitionEffectAssertion:(unsigned int)assertion updates:(id)updates;
 - (void)_updatePreferencesIfNecessary;
-- (void)_updatePreferredContentSizeCategoryForAllElements:(id)a3;
-- (void)_updatePreferredContentSizeCategoryForElementViewController:(id)a3;
-- (void)_updateProperty:(id)a3 ofObject:(id)a4 withDescription:(id)a5 fromPreferences:(id)a6 conditionalAnimations:(id)a7 conditionalCompletion:(id)a8 context:(id)a9;
-- (void)_updateStatusBarAvoidanceFrameWithAnimationSettings:(id)a3;
-- (void)_updateWithPreferencesFromStackForValidationReason:(unsigned int)a3;
-- (void)animateTransitionAcceptanceBounceWithVelocityVector:(CGPoint)a3 triggeredBlock:(id)a4;
-- (void)animateTransitionEjectionStretchWithVelocityVector:(CGPoint)a3;
+- (void)_updatePreferredContentSizeCategoryForAllElements:(id)elements;
+- (void)_updatePreferredContentSizeCategoryForElementViewController:(id)controller;
+- (void)_updateProperty:(id)property ofObject:(id)object withDescription:(id)description fromPreferences:(id)preferences conditionalAnimations:(id)animations conditionalCompletion:(id)completion context:(id)context;
+- (void)_updateStatusBarAvoidanceFrameWithAnimationSettings:(id)settings;
+- (void)_updateWithPreferencesFromStackForValidationReason:(unsigned int)reason;
+- (void)animateTransitionAcceptanceBounceWithVelocityVector:(CGPoint)vector triggeredBlock:(id)block;
+- (void)animateTransitionEjectionStretchWithVelocityVector:(CGPoint)vector;
 - (void)dealloc;
-- (void)element:(id)a3 requestsDiscreteAnimationOfType:(int64_t)a4;
-- (void)elementRequestsCancellingResizeGesture:(id)a3;
-- (void)elementRequestsSignificantUpdateTransition:(id)a3;
-- (void)elementViewControllingDidAppear:(id)a3;
-- (void)elementViewControllingDidDisappear:(id)a3;
-- (void)elementViewControllingWillAppear:(id)a3;
-- (void)elementViewControllingWillDisappear:(id)a3;
-- (void)hostOrientationDidChangeTo:(int64_t)a3 withPreviousOrientation:(int64_t)a4 context:(id)a5;
+- (void)element:(id)element requestsDiscreteAnimationOfType:(int64_t)type;
+- (void)elementRequestsCancellingResizeGesture:(id)gesture;
+- (void)elementRequestsSignificantUpdateTransition:(id)transition;
+- (void)elementViewControllingDidAppear:(id)appear;
+- (void)elementViewControllingDidDisappear:(id)disappear;
+- (void)elementViewControllingWillAppear:(id)appear;
+- (void)elementViewControllingWillDisappear:(id)disappear;
+- (void)hostOrientationDidChangeTo:(int64_t)to withPreviousOrientation:(int64_t)orientation context:(id)context;
 - (void)invalidateElementUrgencyPreferences;
-- (void)performAction:(id)a3 withCompletionUponAnimationSettling:(id)a4;
-- (void)performAction:(id)a3 withCompletionUponIndicatorSettling:(id)a4;
-- (void)preferredEdgeOutsetsDidInvalidateForLayoutSpecifier:(id)a3;
-- (void)preferredLayoutModeDidInvalidateForLayoutSpecifier:(id)a3;
-- (void)setActiveWindowScene:(id)a3;
-- (void)setCloningStyle:(int64_t)a3;
-- (void)setContainerParentCenter:(CGPoint)a3;
-- (void)setCurtainViewHoster:(id)a3;
-- (void)setLayoutMode:(int64_t)a3 reason:(int64_t)a4 forTargetWithOverrider:(id)a5;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
-- (void)systemApertureDebuggingUtility:(id)a3 shouldCreateDebuggingLabel:(BOOL)a4;
-- (void)systemApertureDebuggingUtility:(id)a3 updateUIForConnectionState:(int)a4;
-- (void)systemApertureProximityBacklightPolicy:(id)a3 embedProximityTouchTrackingView:(id)a4 touchBlockingView:(id)a5;
-- (void)systemApertureProximityBacklightPolicy:(id)a3 removeProximityTouchTrackingView:(id)a4 touchBlockingView:(id)a5;
+- (void)performAction:(id)action withCompletionUponAnimationSettling:(id)settling;
+- (void)performAction:(id)action withCompletionUponIndicatorSettling:(id)settling;
+- (void)preferredEdgeOutsetsDidInvalidateForLayoutSpecifier:(id)specifier;
+- (void)preferredLayoutModeDidInvalidateForLayoutSpecifier:(id)specifier;
+- (void)setActiveWindowScene:(id)scene;
+- (void)setCloningStyle:(int64_t)style;
+- (void)setContainerParentCenter:(CGPoint)center;
+- (void)setCurtainViewHoster:(id)hoster;
+- (void)setLayoutMode:(int64_t)mode reason:(int64_t)reason forTargetWithOverrider:(id)overrider;
+- (void)settings:(id)settings changedValueForKey:(id)key;
+- (void)systemApertureDebuggingUtility:(id)utility shouldCreateDebuggingLabel:(BOOL)label;
+- (void)systemApertureDebuggingUtility:(id)utility updateUIForConnectionState:(int)state;
+- (void)systemApertureProximityBacklightPolicy:(id)policy embedProximityTouchTrackingView:(id)view touchBlockingView:(id)blockingView;
+- (void)systemApertureProximityBacklightPolicy:(id)policy removeProximityTouchTrackingView:(id)view touchBlockingView:(id)blockingView;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 - (void)viewWillLayoutSubviews;
-- (void)zStackParticipantDidChange:(id)a3;
+- (void)zStackParticipantDidChange:(id)change;
 @end
 
 @implementation SBSystemApertureViewController
@@ -298,15 +298,15 @@
     LOBYTE(v9) = 0;
   }
 
-  v13 = [(SBFZStackParticipant *)self->_zStackParticipant associatedSceneIdentifiersToSuppressInSystemAperture];
-  v14 = [v13 count];
+  associatedSceneIdentifiersToSuppressInSystemAperture = [(SBFZStackParticipant *)self->_zStackParticipant associatedSceneIdentifiersToSuppressInSystemAperture];
+  v14 = [associatedSceneIdentifiersToSuppressInSystemAperture count];
 
   if (v14)
   {
     v15 = [MEMORY[0x277CBEB58] set];
-    v16 = [(SBFZStackParticipant *)self->_zStackParticipant associatedSceneIdentifiersToSuppressInSystemAperture];
+    associatedSceneIdentifiersToSuppressInSystemAperture2 = [(SBFZStackParticipant *)self->_zStackParticipant associatedSceneIdentifiersToSuppressInSystemAperture];
     v35 = v15;
-    [v15 unionSet:v16];
+    [v15 unionSet:associatedSceneIdentifiersToSuppressInSystemAperture2];
   }
 
   else
@@ -314,15 +314,15 @@
     v35 = 0;
   }
 
-  v17 = [(SBFZStackParticipant *)self->_zStackParticipant associatedBundleIdentifiersToSuppressInSystemAperture];
-  v18 = [v17 count];
+  associatedBundleIdentifiersToSuppressInSystemAperture = [(SBFZStackParticipant *)self->_zStackParticipant associatedBundleIdentifiersToSuppressInSystemAperture];
+  v18 = [associatedBundleIdentifiersToSuppressInSystemAperture count];
 
   if (v18)
   {
     v19 = [MEMORY[0x277CBEB58] set];
-    v20 = [(SBFZStackParticipant *)self->_zStackParticipant associatedBundleIdentifiersToSuppressInSystemAperture];
+    associatedBundleIdentifiersToSuppressInSystemAperture2 = [(SBFZStackParticipant *)self->_zStackParticipant associatedBundleIdentifiersToSuppressInSystemAperture];
     v34 = v19;
-    [v19 unionSet:v20];
+    [v19 unionSet:associatedBundleIdentifiersToSuppressInSystemAperture2];
   }
 
   else
@@ -384,7 +384,7 @@ void __64__SBSystemApertureViewController__addRunLoopObserverIfNecessary__block_
 - (void)_updatePreferencesIfNecessary
 {
   *a2 = 138412290;
-  *(a2 + 4) = a1;
+  *(a2 + 4) = self;
   OUTLINED_FUNCTION_10_2(&dword_21ED4E000, a3, a3, "Updating preferences for reason(s): %@", a2);
 }
 
@@ -428,22 +428,22 @@ uint64_t __63__SBSystemApertureViewController__updatePreferencesIfNecessary__blo
 
 - (CGRect)minimumSensorRegionFrame
 {
-  v3 = [(SBSystemApertureViewController *)self _layoutMetrics];
-  [v3 sensorRegionSize];
+  _layoutMetrics = [(SBSystemApertureViewController *)self _layoutMetrics];
+  [_layoutMetrics sensorRegionSize];
 
   SBRectWithSize();
-  v4 = [(SBSystemApertureViewController *)self view];
-  [v4 bounds];
-  v5 = [(SBSystemApertureViewController *)self traitCollection];
-  [v5 displayScale];
+  view = [(SBSystemApertureViewController *)self view];
+  [view bounds];
+  traitCollection = [(SBSystemApertureViewController *)self traitCollection];
+  [traitCollection displayScale];
   v20 = v6;
   UIRectCenteredXInRectScale();
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  v13 = [(SBSystemApertureViewController *)self _layoutMetrics];
-  [v13 minimumScreenEdgeInsets];
+  _layoutMetrics2 = [(SBSystemApertureViewController *)self _layoutMetrics];
+  [_layoutMetrics2 minimumScreenEdgeInsets];
   v15 = v14;
 
   v16 = v8;
@@ -529,29 +529,29 @@ void __57__SBSystemApertureViewController__platformMetricsContext__block_invoke(
 
 - (int64_t)_effectiveOverrideRenderingStyle
 {
-  v2 = [(NSCountedSet *)self->_overrideRenderingStyleRequests allObjects];
-  v3 = [v2 sortedArrayUsingSelector:sel_compare_];
+  allObjects = [(NSCountedSet *)self->_overrideRenderingStyleRequests allObjects];
+  v3 = [allObjects sortedArrayUsingSelector:sel_compare_];
 
-  v4 = [v3 firstObject];
-  if (v4)
+  firstObject = [v3 firstObject];
+  if (firstObject)
   {
-    v5 = [v3 firstObject];
-    v6 = [v5 integerValue];
+    firstObject2 = [v3 firstObject];
+    integerValue = [firstObject2 integerValue];
   }
 
   else
   {
-    v6 = -1;
+    integerValue = -1;
   }
 
-  return v6;
+  return integerValue;
 }
 
 - (id)_indicatorElementContext
 {
-  v4 = [(SAUISystemApertureManager *)self->_systemApertureManager indicatorElementViewController];
-  v5 = v4;
-  if (v4)
+  indicatorElementViewController = [(SAUISystemApertureManager *)self->_systemApertureManager indicatorElementViewController];
+  v5 = indicatorElementViewController;
+  if (indicatorElementViewController)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
@@ -559,7 +559,7 @@ void __57__SBSystemApertureViewController__platformMetricsContext__block_invoke(
     v8[3] = &unk_2783AD750;
     v10 = a2;
     v8[4] = self;
-    v9 = v4;
+    v9 = indicatorElementViewController;
     v6 = [SBSAIndicatorElementContext instanceWithBlock:v8];
   }
 
@@ -573,8 +573,8 @@ void __57__SBSystemApertureViewController__platformMetricsContext__block_invoke(
 
 - (BOOL)_isAnimatedTransitionInProgress
 {
-  v2 = [(NSCountedSet *)self->_backlightAssertionRequiringReasons anyObject];
-  v3 = v2 != 0;
+  anyObject = [(NSCountedSet *)self->_backlightAssertionRequiringReasons anyObject];
+  v3 = anyObject != 0;
 
   return v3;
 }
@@ -597,10 +597,10 @@ void __57__SBSystemApertureViewController__platformMetricsContext__block_invoke(
 
 - (id)_flushPendingInteractionResults
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableArray *)v2->_pendingInteractionResults copy];
-  [(NSMutableArray *)v2->_pendingInteractionResults removeAllObjects];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableArray *)selfCopy->_pendingInteractionResults copy];
+  [(NSMutableArray *)selfCopy->_pendingInteractionResults removeAllObjects];
   v4 = MEMORY[0x277CBEBF8];
   if (v3)
   {
@@ -609,20 +609,20 @@ void __57__SBSystemApertureViewController__platformMetricsContext__block_invoke(
 
   v5 = v4;
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
 - (id)_flushPendingTransitionResults
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_pendingTransitionResults;
-  pendingTransitionResults = v2->_pendingTransitionResults;
-  v2->_pendingTransitionResults = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_pendingTransitionResults;
+  pendingTransitionResults = selfCopy->_pendingTransitionResults;
+  selfCopy->_pendingTransitionResults = 0;
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -630,13 +630,13 @@ void __57__SBSystemApertureViewController__platformMetricsContext__block_invoke(
 - (id)_flushElapsedTimerDescriptions
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(NSMutableDictionary *)v2->_timerIdentifiersToDescriptionRecords copy];
+  v3 = [(NSMutableDictionary *)selfCopy->_timerIdentifiersToDescriptionRecords copy];
   v4 = 0;
   v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
@@ -652,7 +652,7 @@ void __57__SBSystemApertureViewController__platformMetricsContext__block_invoke(
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
-        v9 = [(NSMutableDictionary *)v2->_timerIdentifiersToDescriptionRecords objectForKey:v8];
+        v9 = [(NSMutableDictionary *)selfCopy->_timerIdentifiersToDescriptionRecords objectForKey:v8];
         if ([v9 isTimerDescriptionElapsed])
         {
           if (!v4)
@@ -660,10 +660,10 @@ void __57__SBSystemApertureViewController__platformMetricsContext__block_invoke(
             v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
           }
 
-          v10 = [v9 timerDescription];
-          [v4 addObject:v10];
+          timerDescription = [v9 timerDescription];
+          [v4 addObject:timerDescription];
 
-          [(NSMutableDictionary *)v2->_timerIdentifiersToDescriptionRecords removeObjectForKey:v8];
+          [(NSMutableDictionary *)selfCopy->_timerIdentifiersToDescriptionRecords removeObjectForKey:v8];
         }
       }
 
@@ -673,7 +673,7 @@ void __57__SBSystemApertureViewController__platformMetricsContext__block_invoke(
     while (v5);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -683,7 +683,7 @@ void __57__SBSystemApertureViewController__platformMetricsContext__block_invoke(
   v21 = *MEMORY[0x277D85DE8];
   if ([(NSMutableArray *)self->_longPressGestureUpdateQueue count]|| [(NSMutableArray *)self->_resizeGestureUpdateQueue count])
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -707,10 +707,10 @@ void __57__SBSystemApertureViewController__platformMetricsContext__block_invoke(
           }
 
           v10 = *(*(&v15 + 1) + 8 * i);
-          v11 = [v10 firstObject];
-          if (v11)
+          firstObject = [v10 firstObject];
+          if (firstObject)
           {
-            [v3 addObject:v11];
+            [array addObject:firstObject];
             [v10 removeObjectAtIndex:0];
           }
 
@@ -726,7 +726,7 @@ void __57__SBSystemApertureViewController__platformMetricsContext__block_invoke(
       while (v7);
     }
 
-    v12 = v3;
+    v12 = array;
     v13 = SBLogSystemAperturePreferencesStackGestures();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
@@ -746,10 +746,10 @@ void __57__SBSystemApertureViewController__platformMetricsContext__block_invoke(
 {
   v29 = *MEMORY[0x277D85DE8];
   [(NSPointerArray *)self->_significantUpdateTransitionAssertions sa_compact];
-  v3 = [(SBSystemApertureViewController *)self _primaryContainerView];
-  v4 = [v3 elementViewController];
-  v5 = [v4 elementViewProvider];
-  v6 = [v5 element];
+  _primaryContainerView = [(SBSystemApertureViewController *)self _primaryContainerView];
+  elementViewController = [_primaryContainerView elementViewController];
+  elementViewProvider = [elementViewController elementViewProvider];
+  element = [elementViewProvider element];
 
   v7 = SAUILayoutSpecifyingOverriderForElement();
   v24 = 0u;
@@ -757,7 +757,7 @@ void __57__SBSystemApertureViewController__platformMetricsContext__block_invoke(
   v26 = 0u;
   v27 = 0u;
   v22 = 1256;
-  v23 = self;
+  selfCopy = self;
   v8 = self->_significantUpdateTransitionAssertions;
   v9 = [(NSPointerArray *)v8 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v9)
@@ -777,9 +777,9 @@ void __57__SBSystemApertureViewController__platformMetricsContext__block_invoke(
         v14 = *(*(&v24 + 1) + 8 * i);
         if ([v14 isValid])
         {
-          v15 = [v14 element];
+          element2 = [v14 element];
 
-          if (v15 == v6)
+          if (element2 == element)
           {
             if ([v7 layoutMode] == 3)
             {
@@ -814,8 +814,8 @@ void __57__SBSystemApertureViewController__platformMetricsContext__block_invoke(
   v11 = 0;
 LABEL_17:
 
-  v19 = *(&v23->super.super.super.super.isa + v22);
-  *(&v23->super.super.super.super.isa + v22) = 0;
+  v19 = *(&selfCopy->super.super.super.super.isa + v22);
+  *(&selfCopy->super.super.super.super.isa + v22) = 0;
 
   v20 = v11;
   return v11;
@@ -823,44 +823,44 @@ LABEL_17:
 
 - (id)_flushActiveRequests
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_activeRequests;
-  activeRequests = v2->_activeRequests;
-  v2->_activeRequests = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_activeRequests;
+  activeRequests = selfCopy->_activeRequests;
+  selfCopy->_activeRequests = 0;
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (id)_flushMaintainedPreferences
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_lastMaintainedPreferences;
-  lastMaintainedPreferences = v2->_lastMaintainedPreferences;
-  v2->_lastMaintainedPreferences = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_lastMaintainedPreferences;
+  lastMaintainedPreferences = selfCopy->_lastMaintainedPreferences;
+  selfCopy->_lastMaintainedPreferences = 0;
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (BOOL)_isBlobEnabled
 {
-  v2 = [(UIView *)self->_containerBackgroundParent layer];
-  v3 = [v2 filters];
-  v4 = [v3 count] != 0;
+  layer = [(UIView *)self->_containerBackgroundParent layer];
+  filters = [layer filters];
+  v4 = [filters count] != 0;
 
   return v4;
 }
 
 - (void)_flushDidSettleHandlersIfNecessary
 {
-  *a1 = 134217984;
-  *(a1 + 4) = a2;
-  OUTLINED_FUNCTION_10_2(&dword_21ED4E000, a3, a3, "Flushing %lu didSettle handlers", a1);
+  *self = 134217984;
+  *(self + 4) = a2;
+  OUTLINED_FUNCTION_10_2(&dword_21ED4E000, a3, a3, "Flushing %lu didSettle handlers", self);
 }
 
 - (void)_postLayoutDidChangeNotificationIfNecessary
@@ -872,12 +872,12 @@ LABEL_17:
   v8 = v7;
   v10 = v9;
   memset(&v55, 0, sizeof(v55));
-  v11 = [(SBSystemApertureViewController *)self view];
-  v12 = [v11 window];
-  v13 = v12;
-  if (v12)
+  view = [(SBSystemApertureViewController *)self view];
+  window = [view window];
+  v13 = window;
+  if (window)
   {
-    [v12 transform];
+    [window transform];
   }
 
   else
@@ -885,7 +885,7 @@ LABEL_17:
     memset(&v55, 0, sizeof(v55));
   }
 
-  v14 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
@@ -906,9 +906,9 @@ LABEL_17:
         }
 
         v20 = *(*(&v51 + 1) + 8 * i);
-        v21 = [v20 window];
+        window2 = [v20 window];
         [v20 bounds];
-        [v21 convertRect:v20 fromView:?];
+        [window2 convertRect:v20 fromView:?];
         x = v22;
         y = v24;
         width = v26;
@@ -940,7 +940,7 @@ LABEL_17:
           *&v49[2] = width;
           *&v49[3] = height;
           v30 = [MEMORY[0x277CCAE60] valueWithBytes:v49 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
-          [v14 addObject:v30];
+          [array addObject:v30];
 
           v63.origin.x = v4;
           v63.origin.y = v6;
@@ -964,14 +964,14 @@ LABEL_17:
     while (v17);
   }
 
-  if (![v14 count])
+  if (![array count])
   {
     *v48 = v4;
     *&v48[1] = v6;
     *&v48[2] = v8;
     *&v48[3] = v10;
     v31 = [MEMORY[0x277CCAE60] valueWithBytes:v48 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
-    [v14 addObject:v31];
+    [array addObject:v31];
   }
 
   v65.origin.x = v4;
@@ -988,12 +988,12 @@ LABEL_17:
     MaxY = CGRectGetMaxY(v66);
   }
 
-  v33 = [(SAUISystemApertureManager *)self->_systemApertureManager orderedElementViewControllers];
-  v34 = [v33 bs_map:&__block_literal_global_697];
+  orderedElementViewControllers = [(SAUISystemApertureManager *)self->_systemApertureManager orderedElementViewControllers];
+  v34 = [orderedElementViewControllers bs_map:&__block_literal_global_697];
 
   WeakRetained = objc_loadWeakRetained(&self->_activeWindowScene);
-  v36 = [WeakRetained associatedWindowScene];
-  if ([v36 isMainDisplayWindowScene])
+  associatedWindowScene = [WeakRetained associatedWindowScene];
+  if ([associatedWindowScene isMainDisplayWindowScene])
   {
     v37 = 1;
   }
@@ -1008,7 +1008,7 @@ LABEL_17:
   v39 = [MEMORY[0x277CCAE60] valueWithUIEdgeInsets:{MaxY, 0.0, 0.0, 0.0}];
   v57[0] = v39;
   v56[1] = @"SBSystemApertureFrames";
-  v40 = [MEMORY[0x277CBEA60] arrayWithArray:v14];
+  v40 = [MEMORY[0x277CBEA60] arrayWithArray:array];
   v57[1] = v40;
   v57[2] = v34;
   v56[2] = @"SBSystemApertureVisibleElementIdentifiers";
@@ -1018,20 +1018,20 @@ LABEL_17:
   v42 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v57 forKeys:v56 count:4];
   v43 = [v38 dictionaryWithDictionary:v42];
 
-  v44 = [WeakRetained associatedWindowScene];
-  v45 = [v44 _sbDisplayConfiguration];
-  v46 = [v45 identity];
+  associatedWindowScene2 = [WeakRetained associatedWindowScene];
+  _sbDisplayConfiguration = [associatedWindowScene2 _sbDisplayConfiguration];
+  identity = [_sbDisplayConfiguration identity];
 
-  if (v46)
+  if (identity)
   {
-    [v43 setObject:v46 forKey:@"SBSystemApertureOriginatingDisplayIdentity"];
+    [v43 setObject:identity forKey:@"SBSystemApertureOriginatingDisplayIdentity"];
   }
 
   if ((BSEqualObjects() & 1) == 0)
   {
     objc_storeStrong(&self->_cachedLayoutDidChangeUserInfo, v43);
-    v47 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v47 postNotificationName:@"SBSystemApertureLayoutDidChangeNotification" object:self userInfo:self->_cachedLayoutDidChangeUserInfo];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SBSystemApertureLayoutDidChangeNotification" object:self userInfo:self->_cachedLayoutDidChangeUserInfo];
   }
 }
 
@@ -1204,8 +1204,8 @@ void __58__SBSystemApertureViewController__indicatorElementContext__block_invoke
 
 - (CGRect)frameForSystemAperturePortalView
 {
-  v2 = [(SBSystemApertureViewController *)self view];
-  [v2 bounds];
+  view = [(SBSystemApertureViewController *)self view];
+  [view bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -1224,16 +1224,16 @@ void __58__SBSystemApertureViewController__indicatorElementContext__block_invoke
 
 - (BOOL)_collapseExpandedElementIfPossible
 {
-  v2 = [(SAUISystemApertureManager *)self->_systemApertureManager orderedElementViewControllers];
-  v3 = [v2 firstObject];
+  orderedElementViewControllers = [(SAUISystemApertureManager *)self->_systemApertureManager orderedElementViewControllers];
+  firstObject = [orderedElementViewControllers firstObject];
   v4 = SAUILayoutSpecifyingOverriderForElementViewController();
 
   if (v4 && ([v4 isRequestingMenuPresentation] & 1) == 0)
   {
-    v6 = [v4 preferredLayoutModeAssertion];
-    if ([v6 preferredLayoutMode] == 3 && objc_msgSend(v6, "layoutModePreferenceMayBeImplicitlyInvalidated"))
+    preferredLayoutModeAssertion = [v4 preferredLayoutModeAssertion];
+    if ([preferredLayoutModeAssertion preferredLayoutMode] == 3 && objc_msgSend(preferredLayoutModeAssertion, "layoutModePreferenceMayBeImplicitlyInvalidated"))
     {
-      [v6 invalidateWithReason:@"dimming view user interaction"];
+      [preferredLayoutModeAssertion invalidateWithReason:@"dimming view user interaction"];
       v5 = 1;
     }
 
@@ -1254,13 +1254,13 @@ void __58__SBSystemApertureViewController__indicatorElementContext__block_invoke
 - (int64_t)_mostRestrictiveLayoutModeFromActiveLayoutAssertions
 {
   v16 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = v2->_reasonsToLayoutAssertions;
+  v3 = selfCopy->_reasonsToLayoutAssertions;
   v4 = [(NSMapTable *)v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
@@ -1275,12 +1275,12 @@ void __58__SBSystemApertureViewController__indicatorElementContext__block_invoke
           objc_enumerationMutation(v3);
         }
 
-        v8 = [(NSMapTable *)v2->_reasonsToLayoutAssertions objectForKey:*(*(&v11 + 1) + 8 * i), v11];
-        v9 = [v8 maximumPermittedLayoutMode];
+        v8 = [(NSMapTable *)selfCopy->_reasonsToLayoutAssertions objectForKey:*(*(&v11 + 1) + 8 * i), v11];
+        maximumPermittedLayoutMode = [v8 maximumPermittedLayoutMode];
 
-        if (v9 < v6)
+        if (maximumPermittedLayoutMode < v6)
         {
-          v6 = v9;
+          v6 = maximumPermittedLayoutMode;
         }
       }
 
@@ -1295,7 +1295,7 @@ void __58__SBSystemApertureViewController__indicatorElementContext__block_invoke
     v6 = 3;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v6;
 }
 
@@ -1310,12 +1310,12 @@ id __77__SBSystemApertureViewController__postLayoutDidChangeNotificationIfNecess
 
 - (id)_associatedWindowScene
 {
-  v2 = [(SBSystemApertureViewController *)self view];
-  v3 = [v2 window];
-  v4 = [v3 windowScene];
+  view = [(SBSystemApertureViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
 
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = windowScene;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -1336,9 +1336,9 @@ id __77__SBSystemApertureViewController__postLayoutDidChangeNotificationIfNecess
 
   v8 = v7;
 
-  v9 = [v8 associatedWindowScene];
+  associatedWindowScene = [v8 associatedWindowScene];
 
-  return v9;
+  return associatedWindowScene;
 }
 
 - (BOOL)_isAnyGestureRecognizerActive
@@ -1401,13 +1401,13 @@ void __45__SBSystemApertureViewController_viewDidLoad__block_invoke(uint64_t a1,
   v24 = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CBEB58] set];
   WeakRetained = objc_loadWeakRetained(&self->_activeWindowScene);
-  v5 = [WeakRetained associatedWindowScene];
-  if ([v5 isMainDisplayWindowScene])
+  associatedWindowScene = [WeakRetained associatedWindowScene];
+  if ([associatedWindowScene isMainDisplayWindowScene])
   {
-    v6 = [(SBSystemApertureViewController *)self traitCollection];
-    v7 = [v6 _backlightLuminance];
+    traitCollection = [(SBSystemApertureViewController *)self traitCollection];
+    _backlightLuminance = [traitCollection _backlightLuminance];
 
-    if (v7 == 1)
+    if (_backlightLuminance == 1)
     {
       v21 = 0u;
       v22 = 0u;
@@ -1435,10 +1435,10 @@ void __45__SBSystemApertureViewController_viewDidLoad__block_invoke(uint64_t a1,
               v15 = [(SBSystemApertureViewController *)self _elementForContainerView:v13];
               if (objc_opt_respondsToSelector())
               {
-                v16 = [v15 scene];
-                if (v16)
+                scene = [v15 scene];
+                if (scene)
                 {
-                  [v3 addObject:v16];
+                  [v3 addObject:scene];
                 }
               }
             }
@@ -1468,8 +1468,8 @@ void __45__SBSystemApertureViewController_viewDidLoad__block_invoke(uint64_t a1,
   v46.receiver = self;
   v46.super_class = SBSystemApertureViewController;
   [(SBSystemApertureViewController *)&v46 viewWillLayoutSubviews];
-  v3 = [(SBSystemApertureViewController *)self view];
-  [v3 bounds];
+  view = [(SBSystemApertureViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1507,11 +1507,11 @@ void __45__SBSystemApertureViewController_viewDidLoad__block_invoke(uint64_t a1,
     while (v15);
   }
 
-  v18 = [(SBSystemApertureSecureElementRenderingOverlayViewController *)self->_secureElementOverlayViewController view];
-  [v18 setFrame:{v5, v7, v9, v11}];
+  view2 = [(SBSystemApertureSecureElementRenderingOverlayViewController *)self->_secureElementOverlayViewController view];
+  [view2 setFrame:{v5, v7, v9, v11}];
 
-  v19 = [(SBSystemApertureViewController *)self traitCollection];
-  [v19 displayScale];
+  traitCollection = [(SBSystemApertureViewController *)self traitCollection];
+  [traitCollection displayScale];
   v21 = v20;
 
   [(SAUISystemApertureManager *)self->_systemApertureManager hostWillPerformLayout];
@@ -1529,9 +1529,9 @@ void __45__SBSystemApertureViewController_viewDidLoad__block_invoke(uint64_t a1,
   [(SBSystemApertureViewController *)self minimumSensorRegionFrame];
   UIRectCenteredIntegralRectScale();
   [(SBSystemApertureGainMapBackedRendering *)magiciansCurtainView setFrame:v21];
-  v31 = [(SBSystemApertureGainMapBackedRendering *)self->_highLevelMagiciansCurtainView superview];
-  v32 = [(SBSystemApertureViewController *)self view];
-  [v31 convertRect:v32 fromView:{v41, v25, v27, v29}];
+  superview = [(SBSystemApertureGainMapBackedRendering *)self->_highLevelMagiciansCurtainView superview];
+  view3 = [(SBSystemApertureViewController *)self view];
+  [superview convertRect:view3 fromView:{v41, v25, v27, v29}];
   v34 = v33;
   v36 = v35;
   v38 = v37;
@@ -1542,8 +1542,8 @@ void __45__SBSystemApertureViewController_viewDidLoad__block_invoke(uint64_t a1,
 
 - (CGRect)_interSensorRegionMatchMovePositionSourceViewFrame
 {
-  v3 = [(SBSystemApertureViewController *)self view];
-  [(SBSystemApertureViewController *)self interSensorRegionInContentView:v3];
+  view = [(SBSystemApertureViewController *)self view];
+  [(SBSystemApertureViewController *)self interSensorRegionInContentView:view];
   x = v21.origin.x;
   y = v21.origin.y;
   width = v21.size.width;
@@ -1556,8 +1556,8 @@ void __45__SBSystemApertureViewController_viewDidLoad__block_invoke(uint64_t a1,
   CGRectGetHeight(v22);
   UIRectGetCenter();
   BSRectWithSize();
-  v8 = [v3 traitCollection];
-  [v8 displayScale];
+  traitCollection = [view traitCollection];
+  [traitCollection displayScale];
   UIRectCenteredAboutPointScale();
   v10 = v9;
   v12 = v11;
@@ -1589,67 +1589,67 @@ void __45__SBSystemApertureViewController_viewDidLoad__block_invoke(uint64_t a1,
     [(UILongPressGestureRecognizer *)self->_interactionLongPressGesture setDelaysTouchesBegan:0];
     [(UILongPressGestureRecognizer *)self->_interactionLongPressGesture setDelaysTouchesEnded:0];
     [(UILongPressGestureRecognizer *)self->_interactionLongPressGesture setDelegate:self];
-    v5 = [(SBSystemApertureViewController *)self view];
-    [v5 addGestureRecognizer:self->_interactionLongPressGesture];
+    view = [(SBSystemApertureViewController *)self view];
+    [view addGestureRecognizer:self->_interactionLongPressGesture];
   }
 }
 
-- (void)_promote:(BOOL)a3 gestureRecognizer:(id)a4 toSystemGestureWithManager:(id)a5 type:(unint64_t)a6
+- (void)_promote:(BOOL)_promote gestureRecognizer:(id)recognizer toSystemGestureWithManager:(id)manager type:(unint64_t)type
 {
-  v8 = a3;
+  _promoteCopy = _promote;
   v20 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v10)
+  recognizerCopy = recognizer;
+  managerCopy = manager;
+  v12 = managerCopy;
+  if (recognizerCopy)
   {
-    v13 = [v11 isSystemGestureRecognizer:v10];
-    if (v12 && a6 && v8 && (v13 & 1) == 0)
+    v13 = [managerCopy isSystemGestureRecognizer:recognizerCopy];
+    if (v12 && type && _promoteCopy && (v13 & 1) == 0)
     {
       v14 = SBLogSystemApertureController();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         v18 = 138543362;
-        v19 = v10;
+        v19 = recognizerCopy;
         _os_log_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_DEFAULT, "Updating gesture recognizer priority to system: gestureRecognizer: %{public}@", &v18, 0xCu);
       }
 
-      v15 = [v10 view];
-      [v15 removeGestureRecognizer:v10];
+      view = [recognizerCopy view];
+      [view removeGestureRecognizer:recognizerCopy];
 
-      [v12 addGestureRecognizer:v10 withType:a6];
+      [v12 addGestureRecognizer:recognizerCopy withType:type];
     }
 
-    else if (!v8 && ((v13 ^ 1) & 1) == 0)
+    else if (!_promoteCopy && ((v13 ^ 1) & 1) == 0)
     {
       v16 = SBLogSystemApertureController();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v18 = 138543362;
-        v19 = v10;
+        v19 = recognizerCopy;
         _os_log_impl(&dword_21ED4E000, v16, OS_LOG_TYPE_DEFAULT, "Updating gesture recognizer priority to default: gestureRecognizer: %{public}@", &v18, 0xCu);
       }
 
-      [v12 removeGestureRecognizer:v10];
-      v17 = [(SBSystemApertureViewController *)self view];
-      [v17 addGestureRecognizer:v10];
+      [v12 removeGestureRecognizer:recognizerCopy];
+      view2 = [(SBSystemApertureViewController *)self view];
+      [view2 addGestureRecognizer:recognizerCopy];
     }
   }
 }
 
-- (SBSystemApertureViewController)initWithActiveWindowScene:(id)a3
+- (SBSystemApertureViewController)initWithActiveWindowScene:(id)scene
 {
   v64[6] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sceneCopy = scene;
   v62.receiver = self;
   v62.super_class = SBSystemApertureViewController;
   v5 = [(SBSystemApertureViewController *)&v62 initWithNibName:0 bundle:0];
   if (v5)
   {
     v6 = +[SBDefaults localDefaults];
-    v7 = [v6 systemApertureDefaults];
+    systemApertureDefaults = [v6 systemApertureDefaults];
     systemApertureDefaults = v5->_systemApertureDefaults;
-    v5->_systemApertureDefaults = v7;
+    v5->_systemApertureDefaults = systemApertureDefaults;
 
     objc_initWeak(&location, v5);
     v9 = v5->_systemApertureDefaults;
@@ -1702,24 +1702,24 @@ void __45__SBSystemApertureViewController_viewDidLoad__block_invoke(uint64_t a1,
     [(UIPanGestureRecognizer *)v5->_resizePanGesture setCancelsTouchesInView:0];
     [(UIPanGestureRecognizer *)v5->_resizePanGesture setAllowedScrollTypesMask:3];
     [(UIPanGestureRecognizer *)v5->_resizePanGesture setDelegate:v5];
-    v31 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     longPressGestureUpdateQueue = v5->_longPressGestureUpdateQueue;
-    v5->_longPressGestureUpdateQueue = v31;
+    v5->_longPressGestureUpdateQueue = array;
 
-    v33 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     resizeGestureUpdateQueue = v5->_resizeGestureUpdateQueue;
-    v5->_resizeGestureUpdateQueue = v33;
+    v5->_resizeGestureUpdateQueue = array2;
 
-    v35 = [v4 associatedWindowScene];
-    v36 = [v35 systemGestureManager];
-    [v36 addGestureRecognizer:v5->_resizePanGesture withType:135];
-    v37 = [v35 zStackResolver];
-    v38 = [v37 acquireParticipantWithIdentifier:26 delegate:v5];
+    associatedWindowScene = [sceneCopy associatedWindowScene];
+    systemGestureManager = [associatedWindowScene systemGestureManager];
+    [systemGestureManager addGestureRecognizer:v5->_resizePanGesture withType:135];
+    zStackResolver = [associatedWindowScene zStackResolver];
+    v38 = [zStackResolver acquireParticipantWithIdentifier:26 delegate:v5];
     zStackParticipant = v5->_zStackParticipant;
     v5->_zStackParticipant = v38;
 
-    v40 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v40 addObserver:v5 selector:sel__elementKeyColorWasInvalidated_ name:@"SBSystemApertureElementKeyColorDidInvalidateNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__elementKeyColorWasInvalidated_ name:@"SBSystemApertureElementKeyColorDidInvalidateNotification" object:0];
 
     v5->_zoomServicesReportedAXisZooming = 0;
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -1729,11 +1729,11 @@ void __45__SBSystemApertureViewController_viewDidLoad__block_invoke(uint64_t a1,
     v5->_zoomAnimationAssertions = v42;
 
     [(SBSystemApertureViewController *)v5 _axRegisterForZoomUpdatesIfNecessary];
-    v44 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v44 addObserver:v5 selector:sel__reduceTransparencyDidChange_ name:*MEMORY[0x277D764C8] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v5 selector:sel__reduceTransparencyDidChange_ name:*MEMORY[0x277D764C8] object:0];
 
-    v45 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v45 addObserver:v5 selector:sel__invertColorsChanged_ name:*MEMORY[0x277D76480] object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v5 selector:sel__invertColorsChanged_ name:*MEMORY[0x277D76480] object:0];
 
     v46 = objc_alloc_init(SBSystemApertureKeyLineColorValidator);
     colorValidator = v5->_colorValidator;
@@ -1753,7 +1753,7 @@ void __45__SBSystemApertureViewController_viewDidLoad__block_invoke(uint64_t a1,
     v54 = +[SBReachabilityManager sharedInstance];
     [v54 addObserver:v5];
 
-    [(SBSystemApertureViewController *)v5 setActiveWindowScene:v4];
+    [(SBSystemApertureViewController *)v5 setActiveWindowScene:sceneCopy];
     objc_destroyWeak(&v60);
     objc_destroyWeak(&location);
   }
@@ -1772,8 +1772,8 @@ void __60__SBSystemApertureViewController_initWithActiveWindowScene___block_invo
   [(SBSystemApertureViewController *)self unregisterForTraitChanges:self->_contentSizeCategoryTraitChangeRegistration];
   if (self->_zoomRegistrationIdentifier)
   {
-    v3 = [MEMORY[0x277D7EA38] sharedInstance];
-    [v3 removeZoomAttributesChangedHandler:self->_zoomRegistrationIdentifier];
+    mEMORY[0x277D7EA38] = [MEMORY[0x277D7EA38] sharedInstance];
+    [mEMORY[0x277D7EA38] removeZoomAttributesChangedHandler:self->_zoomRegistrationIdentifier];
   }
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -1787,11 +1787,11 @@ void __60__SBSystemApertureViewController_initWithActiveWindowScene___block_invo
   [(SBSystemApertureViewController *)&v6 dealloc];
 }
 
-- (void)setCurtainViewHoster:(id)a3
+- (void)setCurtainViewHoster:(id)hoster
 {
-  v6 = a3;
+  hosterCopy = hoster;
   [(SBSystemApertureCurtainViewHoster *)self->_curtainViewHoster setCurtainView:0];
-  objc_storeStrong(&self->_curtainViewHoster, a3);
+  objc_storeStrong(&self->_curtainViewHoster, hoster);
   curtainViewHoster = self->_curtainViewHoster;
   if (curtainViewHoster)
   {
@@ -1810,17 +1810,17 @@ void __60__SBSystemApertureViewController_initWithActiveWindowScene___block_invo
   return WeakRetained;
 }
 
-- (BOOL)isTransitionTargetForSceneIdentifier:(id)a3 bundleIdentifier:(id)a4
+- (BOOL)isTransitionTargetForSceneIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [(SAUISystemApertureManager *)self->_systemApertureManager registeredElements];
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  registeredElements = [(SAUISystemApertureManager *)self->_systemApertureManager registeredElements];
+  v9 = [registeredElements countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = *v16;
@@ -1830,12 +1830,12 @@ void __60__SBSystemApertureViewController_initWithActiveWindowScene___block_invo
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(registeredElements);
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
         v13 = SAUILayoutSpecifyingOverriderForElement();
-        if ([v13 preferredLayoutMode] >= 1 && (objc_opt_respondsToSelector() & 1) != 0 && objc_msgSend(v12, "acceptsFullScreenTransitionFromSceneWithIdentifier:ofBundleId:", v6, v7))
+        if ([v13 preferredLayoutMode] >= 1 && (objc_opt_respondsToSelector() & 1) != 0 && objc_msgSend(v12, "acceptsFullScreenTransitionFromSceneWithIdentifier:ofBundleId:", identifierCopy, bundleIdentifierCopy))
         {
 
           LOBYTE(v9) = 1;
@@ -1843,7 +1843,7 @@ void __60__SBSystemApertureViewController_initWithActiveWindowScene___block_invo
         }
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [registeredElements countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v9)
       {
         continue;
@@ -1858,11 +1858,11 @@ LABEL_13:
   return v9;
 }
 
-- (void)animateTransitionAcceptanceBounceWithVelocityVector:(CGPoint)a3 triggeredBlock:(id)a4
+- (void)animateTransitionAcceptanceBounceWithVelocityVector:(CGPoint)vector triggeredBlock:(id)block
 {
-  x = a3.x;
+  x = vector.x;
   settings = self->_settings;
-  v7 = a4;
+  blockCopy = block;
   [(SBSystemApertureSettings *)settings acceptanceSideBounceXVelocityThreshold];
   if (x >= -v8)
   {
@@ -1882,37 +1882,37 @@ LABEL_13:
     v9 = 1;
   }
 
-  v10 = [[SBSABounceRequest alloc] initWithStyle:v9 triggeredBlock:v7];
+  v10 = [[SBSABounceRequest alloc] initWithStyle:v9 triggeredBlock:blockCopy];
 
   [(SBSystemApertureViewController *)self _addActiveRequest:v10];
 
   [(SBSystemApertureViewController *)self _invalidatePreferencesForReason:256];
 }
 
-- (void)animateTransitionEjectionStretchWithVelocityVector:(CGPoint)a3
+- (void)animateTransitionEjectionStretchWithVelocityVector:(CGPoint)vector
 {
-  v4 = [(SBSystemApertureViewController *)self _currentFirstElement:a3.x];
+  v4 = [(SBSystemApertureViewController *)self _currentFirstElement:vector.x];
   [(SBSystemApertureViewController *)self animateDiscreteAnimationStyle:4 toElement:v4];
 }
 
-- (void)setCloningStyle:(int64_t)a3
+- (void)setCloningStyle:(int64_t)style
 {
-  if (self->_cloningStyle != a3)
+  if (self->_cloningStyle != style)
   {
-    self->_cloningStyle = a3;
+    self->_cloningStyle = style;
     [(SBSystemApertureViewController *)self _invalidatePreferencesForReason:16];
   }
 }
 
-- (id)overrideContainerRenderingStyleAssertion:(int64_t)a3
+- (id)overrideContainerRenderingStyleAssertion:(int64_t)assertion
 {
-  if (a3 < 0)
+  if (assertion < 0)
   {
     [SBSystemApertureViewController overrideContainerRenderingStyleAssertion:];
   }
 
   overrideRenderingStyleRequests = self->_overrideRenderingStyleRequests;
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:assertion];
   [(NSCountedSet *)overrideRenderingStyleRequests addObject:v7];
 
   v8 = objc_alloc_init(MEMORY[0x277D6B898]);
@@ -1922,7 +1922,7 @@ LABEL_13:
   v10[2] = __75__SBSystemApertureViewController_overrideContainerRenderingStyleAssertion___block_invoke;
   v10[3] = &unk_2783B8528;
   objc_copyWeak(v11, &location);
-  v11[1] = a3;
+  v11[1] = assertion;
   v11[2] = a2;
   v10[4] = self;
   [v8 addInvalidationBlock:v10];
@@ -1949,7 +1949,7 @@ void __75__SBSystemApertureViewController_overrideContainerRenderingStyleAsserti
   [WeakRetained _invalidatePreferencesForReason:16];
 }
 
-- (id)_systemApertureRepresentationSuppressionAssertionForReason:(unint64_t)a3
+- (id)_systemApertureRepresentationSuppressionAssertionForReason:(unint64_t)reason
 {
   v5 = [_SBSystemApertureRepresentationSuppressionAssertion alloc];
   v8[0] = MEMORY[0x277D85DD0];
@@ -1957,7 +1957,7 @@ void __75__SBSystemApertureViewController_overrideContainerRenderingStyleAsserti
   v8[2] = __93__SBSystemApertureViewController__systemApertureRepresentationSuppressionAssertionForReason___block_invoke;
   v8[3] = &unk_2783B8550;
   v8[4] = self;
-  v6 = [(_SBSystemApertureRepresentationSuppressionAssertion *)v5 initWithReason:a3 invalidationBlock:v8];
+  v6 = [(_SBSystemApertureRepresentationSuppressionAssertion *)v5 initWithReason:reason invalidationBlock:v8];
   [(NSMutableSet *)self->_systemApertureSuppressionAssertions addObject:v6];
   [(SBSystemApertureViewController *)self _reevaluateElementSuppression];
 
@@ -1972,38 +1972,38 @@ uint64_t __93__SBSystemApertureViewController__systemApertureRepresentationSuppr
   return [v3 _reevaluateElementSuppression];
 }
 
-- (id)restrictSystemApertureToDefaultLayoutWithReason:(id)a3
+- (id)restrictSystemApertureToDefaultLayoutWithReason:(id)reason
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = [(SBSystemApertureViewController *)self _primaryContainerView];
-  v5 = [v4 elementViewController];
-  v6 = [v5 elementViewProvider];
+  _primaryContainerView = [(SBSystemApertureViewController *)self _primaryContainerView];
+  elementViewController = [_primaryContainerView elementViewController];
+  elementViewProvider = [elementViewController elementViewProvider];
 
-  v7 = [v6 element];
-  v8 = [(SBSystemApertureViewController *)self _layoutSpecifyingOverriderForContainerView:v4];
+  element = [elementViewProvider element];
+  v8 = [(SBSystemApertureViewController *)self _layoutSpecifyingOverriderForContainerView:_primaryContainerView];
   if (v8)
   {
-    if ([(SBSystemApertureViewController *)self _doesElementHaveValidRequiredPriorityAssertion:v7])
+    if ([(SBSystemApertureViewController *)self _doesElementHaveValidRequiredPriorityAssertion:element])
     {
-      v9 = SBLogSystemApertureController();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      preferredLayoutModeAssertion = SBLogSystemApertureController();
+      if (os_log_type_enabled(preferredLayoutModeAssertion, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [v7 clientIdentifier];
-        v11 = [v7 elementIdentifier];
+        clientIdentifier = [element clientIdentifier];
+        elementIdentifier = [element elementIdentifier];
         v15 = 138543618;
-        v16 = v10;
+        v16 = clientIdentifier;
         v17 = 2114;
-        v18 = v11;
-        _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "Ignoring request to collapse SystemAperture to default layout due to element required secure visibility: (%{public}@-%{public}@)", &v15, 0x16u);
+        v18 = elementIdentifier;
+        _os_log_impl(&dword_21ED4E000, preferredLayoutModeAssertion, OS_LOG_TYPE_DEFAULT, "Ignoring request to collapse SystemAperture to default layout due to element required secure visibility: (%{public}@-%{public}@)", &v15, 0x16u);
       }
     }
 
     else
     {
-      v9 = [v8 preferredLayoutModeAssertion];
-      if ([v9 preferredLayoutMode]== 3 && [v9 layoutModeChangeReason]!= 2)
+      preferredLayoutModeAssertion = [v8 preferredLayoutModeAssertion];
+      if ([preferredLayoutModeAssertion preferredLayoutMode]== 3 && [preferredLayoutModeAssertion layoutModeChangeReason]!= 2)
       {
-        [v9 invalidateWithReason:@"collapse to compact layout"];
+        [preferredLayoutModeAssertion invalidateWithReason:@"collapse to compact layout"];
       }
     }
   }
@@ -2116,49 +2116,49 @@ void __70__SBSystemApertureViewController_requireKeyLineAssertionForTransition__
   self->_settings = v5;
 
   [(PTSettings *)self->_settings addKeyObserver:self];
-  v7 = [(SBSystemApertureViewController *)self view];
-  [v7 bounds];
+  view = [(SBSystemApertureViewController *)self view];
+  [view bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
   v16 = objc_alloc(MEMORY[0x277D75D18]);
-  v17 = [(SBSystemApertureViewController *)self view];
-  [(SBSystemApertureViewController *)self interSensorRegionInContentView:v17];
+  view2 = [(SBSystemApertureViewController *)self view];
+  [(SBSystemApertureViewController *)self interSensorRegionInContentView:view2];
   v18 = [v16 initWithFrame:?];
   interSensorRegionMatchMovePositionSourceView = self->_interSensorRegionMatchMovePositionSourceView;
   self->_interSensorRegionMatchMovePositionSourceView = v18;
 
   [(UIView *)self->_interSensorRegionMatchMovePositionSourceView setUserInteractionEnabled:0];
-  v20 = [(SBSystemApertureViewController *)self view];
-  [v20 addSubview:self->_interSensorRegionMatchMovePositionSourceView];
+  view3 = [(SBSystemApertureViewController *)self view];
+  [view3 addSubview:self->_interSensorRegionMatchMovePositionSourceView];
 
   v21 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v9, v11, v13, v15}];
   containerSubBackgroundParent = self->_containerSubBackgroundParent;
   self->_containerSubBackgroundParent = v21;
 
   [(UIView *)self->_containerSubBackgroundParent setUserInteractionEnabled:0];
-  v23 = [(UIView *)self->_containerSubBackgroundParent layer];
-  [v23 setDisableUpdateMask:32];
+  layer = [(UIView *)self->_containerSubBackgroundParent layer];
+  [layer setDisableUpdateMask:32];
 
-  v24 = [(SBSystemApertureViewController *)self view];
-  [v24 addSubview:self->_containerSubBackgroundParent];
+  view4 = [(SBSystemApertureViewController *)self view];
+  [view4 addSubview:self->_containerSubBackgroundParent];
 
   v25 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v9, v11, v13, v15}];
   containerBackgroundParent = self->_containerBackgroundParent;
   self->_containerBackgroundParent = v25;
 
   [(UIView *)self->_containerBackgroundParent setUserInteractionEnabled:0];
-  v27 = [(SBSystemApertureViewController *)self view];
-  [v27 addSubview:self->_containerBackgroundParent];
+  view5 = [(SBSystemApertureViewController *)self view];
+  [view5 addSubview:self->_containerBackgroundParent];
 
   v28 = [objc_alloc(MEMORY[0x277D65F80]) initWithFrame:{v9, v11, v13, v15}];
   containerParent = self->_containerParent;
   self->_containerParent = v28;
 
-  v30 = [(SBSystemApertureViewController *)self view];
-  [v30 addSubview:self->_containerParent];
+  view6 = [(SBSystemApertureViewController *)self view];
+  [view6 addSubview:self->_containerParent];
 
   v31 = SBCreateSystemApertureMagiciansView();
   magiciansCurtainView = self->_magiciansCurtainView;
@@ -2217,13 +2217,13 @@ void __45__SBSystemApertureViewController_viewDidLoad__block_invoke_2(uint64_t a
   [v1 hostedScenesDidChange];
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v15.receiver = self;
   v15.super_class = SBSystemApertureViewController;
-  [(SBSystemApertureViewController *)&v15 viewIsAppearing:a3];
-  v4 = [(SBSystemApertureViewController *)self view];
-  [v4 bounds];
+  [(SBSystemApertureViewController *)&v15 viewIsAppearing:appearing];
+  view = [(SBSystemApertureViewController *)self view];
+  [view bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -2232,8 +2232,8 @@ void __45__SBSystemApertureViewController_viewDidLoad__block_invoke_2(uint64_t a
   [(UIView *)self->_containerSubBackgroundParent setFrame:v6, v8, v10, v12];
   [(UIView *)self->_containerBackgroundParent setFrame:v6, v8, v10, v12];
   [(SBFTouchPassThroughView *)self->_containerParent setFrame:v6, v8, v10, v12];
-  v13 = [(SBSystemApertureViewController *)self view];
-  [v13 setNeedsLayout];
+  view2 = [(SBSystemApertureViewController *)self view];
+  [view2 setNeedsLayout];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -2249,25 +2249,25 @@ void __50__SBSystemApertureViewController_viewIsAppearing___block_invoke(uint64_
   [v1 layoutIfNeeded];
 }
 
-- (void)setActiveWindowScene:(id)a3
+- (void)setActiveWindowScene:(id)scene
 {
-  obj = a3;
+  obj = scene;
   WeakRetained = objc_loadWeakRetained(&self->_activeWindowScene);
   if (WeakRetained != obj)
   {
-    v5 = [WeakRetained associatedWindowScene];
-    v6 = [v5 systemGestureManager];
+    associatedWindowScene = [WeakRetained associatedWindowScene];
+    systemGestureManager = [associatedWindowScene systemGestureManager];
 
     [(SBFZStackParticipant *)self->_zStackParticipant invalidate];
     objc_storeWeak(&self->_activeWindowScene, obj);
-    v7 = [obj associatedWindowScene];
-    v8 = [v7 systemGestureManager];
+    associatedWindowScene2 = [obj associatedWindowScene];
+    systemGestureManager2 = [associatedWindowScene2 systemGestureManager];
 
-    [(SBSystemApertureViewController *)self _moveSystemGestureRecognizerIfNecessary:self->_interactionLongPressGesture withSystemGestureType:136 fromSystemGestureManager:v6 toSystemGestureManager:v8];
-    [(SBSystemApertureViewController *)self _moveSystemGestureRecognizerIfNecessary:self->_resizePanGesture withSystemGestureType:135 fromSystemGestureManager:v6 toSystemGestureManager:v8];
-    v9 = [obj associatedWindowScene];
-    v10 = [v9 zStackResolver];
-    v11 = [v10 acquireParticipantWithIdentifier:26 delegate:self];
+    [(SBSystemApertureViewController *)self _moveSystemGestureRecognizerIfNecessary:self->_interactionLongPressGesture withSystemGestureType:136 fromSystemGestureManager:systemGestureManager toSystemGestureManager:systemGestureManager2];
+    [(SBSystemApertureViewController *)self _moveSystemGestureRecognizerIfNecessary:self->_resizePanGesture withSystemGestureType:135 fromSystemGestureManager:systemGestureManager toSystemGestureManager:systemGestureManager2];
+    associatedWindowScene3 = [obj associatedWindowScene];
+    zStackResolver = [associatedWindowScene3 zStackResolver];
+    v11 = [zStackResolver acquireParticipantWithIdentifier:26 delegate:self];
     zStackParticipant = self->_zStackParticipant;
     self->_zStackParticipant = v11;
 
@@ -2277,15 +2277,15 @@ void __50__SBSystemApertureViewController_viewIsAppearing___block_invoke(uint64_
   }
 }
 
-- (void)_moveSystemGestureRecognizerIfNecessary:(id)a3 withSystemGestureType:(unint64_t)a4 fromSystemGestureManager:(id)a5 toSystemGestureManager:(id)a6
+- (void)_moveSystemGestureRecognizerIfNecessary:(id)necessary withSystemGestureType:(unint64_t)type fromSystemGestureManager:(id)manager toSystemGestureManager:(id)gestureManager
 {
-  v11 = a3;
-  v9 = a5;
-  v10 = a6;
-  if ([v9 isSystemGestureRecognizer:v11])
+  necessaryCopy = necessary;
+  managerCopy = manager;
+  gestureManagerCopy = gestureManager;
+  if ([managerCopy isSystemGestureRecognizer:necessaryCopy])
   {
-    [v9 removeGestureRecognizer:v11];
-    [v10 addGestureRecognizer:v11 withType:a4];
+    [managerCopy removeGestureRecognizer:necessaryCopy];
+    [gestureManagerCopy addGestureRecognizer:necessaryCopy withType:type];
   }
 }
 
@@ -2322,54 +2322,54 @@ void __50__SBSystemApertureViewController_viewIsAppearing___block_invoke(uint64_
   }
 }
 
-- (void)_addPendingTransitionResult:(id)a3
+- (void)_addPendingTransitionResult:(id)result
 {
-  v4 = a3;
-  if (v4)
+  resultCopy = result;
+  if (resultCopy)
   {
-    v9 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    pendingTransitionResults = v5->_pendingTransitionResults;
+    v9 = resultCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    pendingTransitionResults = selfCopy->_pendingTransitionResults;
     if (!pendingTransitionResults)
     {
       v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v8 = v5->_pendingTransitionResults;
-      v5->_pendingTransitionResults = v7;
+      v8 = selfCopy->_pendingTransitionResults;
+      selfCopy->_pendingTransitionResults = v7;
 
-      pendingTransitionResults = v5->_pendingTransitionResults;
+      pendingTransitionResults = selfCopy->_pendingTransitionResults;
     }
 
     [(NSMutableArray *)pendingTransitionResults addObject:v9];
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
 
-    v4 = v9;
+    resultCopy = v9;
   }
 }
 
-- (void)_addTimerIfNecessaryForDescription:(id)a3
+- (void)_addTimerIfNecessaryForDescription:(id)description
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  timerIdentifiersToDescriptionRecords = v5->_timerIdentifiersToDescriptionRecords;
-  v7 = [v4 timerDescriptionIdentifier];
-  v8 = [(NSMutableDictionary *)timerIdentifiersToDescriptionRecords objectForKey:v7];
+  descriptionCopy = description;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  timerIdentifiersToDescriptionRecords = selfCopy->_timerIdentifiersToDescriptionRecords;
+  timerDescriptionIdentifier = [descriptionCopy timerDescriptionIdentifier];
+  v8 = [(NSMutableDictionary *)timerIdentifiersToDescriptionRecords objectForKey:timerDescriptionIdentifier];
 
   if (!v8)
   {
-    objc_initWeak(&location, v5);
-    if (!v5->_timerIdentifiersToDescriptionRecords)
+    objc_initWeak(&location, selfCopy);
+    if (!selfCopy->_timerIdentifiersToDescriptionRecords)
     {
       v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      v10 = v5->_timerIdentifiersToDescriptionRecords;
-      v5->_timerIdentifiersToDescriptionRecords = v9;
+      v10 = selfCopy->_timerIdentifiersToDescriptionRecords;
+      selfCopy->_timerIdentifiersToDescriptionRecords = v9;
     }
 
-    v11 = [[_SBSATimerAndDescriptionRecord alloc] initWithTimerDescription:v4];
-    v12 = v5->_timerIdentifiersToDescriptionRecords;
-    v13 = [v4 timerDescriptionIdentifier];
-    [(NSMutableDictionary *)v12 setObject:v11 forKey:v13];
+    v11 = [[_SBSATimerAndDescriptionRecord alloc] initWithTimerDescription:descriptionCopy];
+    v12 = selfCopy->_timerIdentifiersToDescriptionRecords;
+    timerDescriptionIdentifier2 = [descriptionCopy timerDescriptionIdentifier];
+    [(NSMutableDictionary *)v12 setObject:v11 forKey:timerDescriptionIdentifier2];
 
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
@@ -2382,7 +2382,7 @@ void __50__SBSystemApertureViewController_viewIsAppearing___block_invoke(uint64_
     objc_destroyWeak(&location);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 void __69__SBSystemApertureViewController__addTimerIfNecessaryForDescription___block_invoke(uint64_t a1)
@@ -2396,42 +2396,42 @@ void __69__SBSystemApertureViewController__addTimerIfNecessaryForDescription___b
   }
 }
 
-- (void)_pushPendingInteractionResultForElementIdentity:(id)a3 interactionSource:(unint64_t)a4 viewInteractionResult:(int64_t)a5
+- (void)_pushPendingInteractionResultForElementIdentity:(id)identity interactionSource:(unint64_t)source viewInteractionResult:(int64_t)result
 {
-  v13 = a3;
-  v8 = self;
-  objc_sync_enter(v8);
-  pendingInteractionResults = v8->_pendingInteractionResults;
+  identityCopy = identity;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  pendingInteractionResults = selfCopy->_pendingInteractionResults;
   if (!pendingInteractionResults)
   {
-    v10 = [MEMORY[0x277CBEB18] array];
-    v11 = v8->_pendingInteractionResults;
-    v8->_pendingInteractionResults = v10;
+    array = [MEMORY[0x277CBEB18] array];
+    v11 = selfCopy->_pendingInteractionResults;
+    selfCopy->_pendingInteractionResults = array;
 
-    pendingInteractionResults = v8->_pendingInteractionResults;
+    pendingInteractionResults = selfCopy->_pendingInteractionResults;
   }
 
-  v12 = [[SBSAElementViewInteractionResult alloc] initWithIdentity:v13 interactionSource:a4 viewInteractionResult:a5];
+  v12 = [[SBSAElementViewInteractionResult alloc] initWithIdentity:identityCopy interactionSource:source viewInteractionResult:result];
   [(NSMutableArray *)pendingInteractionResults addObject:v12];
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_flushIndicatorDidSettleHandlersIfNecessary
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(SBSAMaintainedPreferences *)v2->_lastMaintainedPreferences indicatorAppearanceStateContext];
-  v4 = [v3 isSettled];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  indicatorAppearanceStateContext = [(SBSAMaintainedPreferences *)selfCopy->_lastMaintainedPreferences indicatorAppearanceStateContext];
+  isSettled = [indicatorAppearanceStateContext isSettled];
 
-  if ((([(NSMutableArray *)v2->_systemApertureIndicatorDidSettleCompletionBlocks count]!= 0) & v4) == 1 && !v2->_preferencesInvalidationReasons)
+  if ((([(NSMutableArray *)selfCopy->_systemApertureIndicatorDidSettleCompletionBlocks count]!= 0) & isSettled) == 1 && !selfCopy->_preferencesInvalidationReasons)
   {
-    v5 = v2->_systemApertureIndicatorDidSettleCompletionBlocks;
-    systemApertureIndicatorDidSettleCompletionBlocks = v2->_systemApertureIndicatorDidSettleCompletionBlocks;
+    v5 = selfCopy->_systemApertureIndicatorDidSettleCompletionBlocks;
+    systemApertureIndicatorDidSettleCompletionBlocks = selfCopy->_systemApertureIndicatorDidSettleCompletionBlocks;
     if (systemApertureIndicatorDidSettleCompletionBlocks)
     {
-      v2->_systemApertureIndicatorDidSettleCompletionBlocks = 0;
+      selfCopy->_systemApertureIndicatorDidSettleCompletionBlocks = 0;
 
       v7 = SBLogSystemApertureController();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -2471,18 +2471,18 @@ void __69__SBSystemApertureViewController__addTimerIfNecessaryForDescription___b
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)_floatAnimatablePropertyForTransitionIdentifier:(id)a3
+- (id)_floatAnimatablePropertyForTransitionIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [(NSMutableDictionary *)v5->_transitionIdentifiersToFloatAnimatableProperties objectForKey:v4];
-    objc_sync_exit(v5);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v6 = [(NSMutableDictionary *)selfCopy->_transitionIdentifiersToFloatAnimatableProperties objectForKey:identifierCopy];
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -2493,36 +2493,36 @@ void __69__SBSystemApertureViewController__addTimerIfNecessaryForDescription___b
   return v6;
 }
 
-- (void)_invalidateAndRemoveFloatAnimatableProperty:(id)a3 forTransitionIdentifier:(id)a4
+- (void)_invalidateAndRemoveFloatAnimatableProperty:(id)property forTransitionIdentifier:(id)identifier
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!(v6 | v7))
+  propertyCopy = property;
+  identifierCopy = identifier;
+  if (!(propertyCopy | identifierCopy))
   {
     v8 = 0;
-    v6 = 0;
+    propertyCopy = 0;
     goto LABEL_10;
   }
 
-  v8 = v7;
-  if (v6 || ([(SBSystemApertureViewController *)self _floatAnimatablePropertyForTransitionIdentifier:v7], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  v8 = identifierCopy;
+  if (propertyCopy || ([(SBSystemApertureViewController *)self _floatAnimatablePropertyForTransitionIdentifier:identifierCopy], (propertyCopy = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    if (([v6 isInvalidated] & 1) == 0)
+    if (([propertyCopy isInvalidated] & 1) == 0)
     {
-      [v6 invalidate];
+      [propertyCopy invalidate];
     }
 
-    v9 = self;
-    objc_sync_enter(v9);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     if (!v8)
     {
       v19 = 0u;
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v10 = [(NSMutableDictionary *)v9->_transitionIdentifiersToFloatAnimatableProperties allKeys];
-      v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      allKeys = [(NSMutableDictionary *)selfCopy->_transitionIdentifiersToFloatAnimatableProperties allKeys];
+      v11 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (!v11)
       {
 
@@ -2538,12 +2538,12 @@ void __69__SBSystemApertureViewController__addTimerIfNecessaryForDescription___b
         {
           if (*v18 != v12)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(allKeys);
           }
 
           v14 = *(*(&v17 + 1) + 8 * i);
-          v15 = [(NSMutableDictionary *)v9->_transitionIdentifiersToFloatAnimatableProperties objectForKey:v14];
-          if (v15 == v6)
+          v15 = [(NSMutableDictionary *)selfCopy->_transitionIdentifiersToFloatAnimatableProperties objectForKey:v14];
+          if (v15 == propertyCopy)
           {
             v16 = v14;
 
@@ -2551,7 +2551,7 @@ void __69__SBSystemApertureViewController__addTimerIfNecessaryForDescription___b
           }
         }
 
-        v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v11 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v11);
@@ -2562,29 +2562,29 @@ void __69__SBSystemApertureViewController__addTimerIfNecessaryForDescription___b
       }
     }
 
-    [(NSMutableDictionary *)v9->_transitionIdentifiersToFloatAnimatableProperties removeObjectForKey:v8];
+    [(NSMutableDictionary *)selfCopy->_transitionIdentifiersToFloatAnimatableProperties removeObjectForKey:v8];
 LABEL_8:
-    objc_sync_exit(v9);
+    objc_sync_exit(selfCopy);
   }
 
 LABEL_10:
 }
 
-- (void)_animatedTransitionDidReachMilestone:(double)a3 description:(id)a4 propertyIdentity:(id)a5 finished:(BOOL)a6 retargeted:(BOOL)a7
+- (void)_animatedTransitionDidReachMilestone:(double)milestone description:(id)description propertyIdentity:(id)identity finished:(BOOL)finished retargeted:(BOOL)retargeted
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = self;
-  objc_sync_enter(v15);
-  v16 = [v13 animatedTransitionIdentifier];
-  if (a3 != 1.79769313e308)
+  descriptionCopy = description;
+  identityCopy = identity;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  animatedTransitionIdentifier = [descriptionCopy animatedTransitionIdentifier];
+  if (milestone != 1.79769313e308)
   {
-    v17 = [(NSMutableDictionary *)v15->_transitionIdentifiersToFloatAnimatableProperties objectForKey:v16];
+    v17 = [(NSMutableDictionary *)selfCopy->_transitionIdentifiersToFloatAnimatableProperties objectForKey:animatedTransitionIdentifier];
 
     if (!v17)
     {
-      v18 = [MEMORY[0x277CCA890] currentHandler];
-      [v18 handleFailureInMethod:a2 object:v15 file:@"SBSystemApertureViewController.m" lineNumber:1018 description:{@"Unknown transition: %@", v13}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"SBSystemApertureViewController.m" lineNumber:1018 description:{@"Unknown transition: %@", descriptionCopy}];
     }
   }
 
@@ -2593,19 +2593,19 @@ LABEL_10:
   v22[2] = __120__SBSystemApertureViewController__animatedTransitionDidReachMilestone_description_propertyIdentity_finished_retargeted___block_invoke;
   v22[3] = &unk_2783B8610;
   v25 = a2;
-  v22[4] = v15;
-  v19 = v16;
+  v22[4] = selfCopy;
+  v19 = animatedTransitionIdentifier;
   v23 = v19;
-  v20 = v14;
+  v20 = identityCopy;
   v24 = v20;
-  v26 = a3;
-  v27 = a6;
-  v28 = a7;
+  milestoneCopy = milestone;
+  finishedCopy = finished;
+  retargetedCopy = retargeted;
   v21 = [SBSAAnimatedTransitionResultDescription instanceWithBlock:v22];
-  [(SBSystemApertureViewController *)v15 _addPendingTransitionResult:v21];
+  [(SBSystemApertureViewController *)selfCopy _addPendingTransitionResult:v21];
 
-  [(SBSystemApertureViewController *)v15 _invalidatePreferencesForReason:64];
-  objc_sync_exit(v15);
+  [(SBSystemApertureViewController *)selfCopy _invalidatePreferencesForReason:64];
+  objc_sync_exit(selfCopy);
 }
 
 void __120__SBSystemApertureViewController__animatedTransitionDidReachMilestone_description_propertyIdentity_finished_retargeted___block_invoke(uint64_t a1, void *a2)
@@ -2654,48 +2654,48 @@ void __120__SBSystemApertureViewController__animatedTransitionDidReachMilestone_
   [v6 setRetargeted:*(a1 + 73)];
 }
 
-- (void)_addFloatAnimatablePropertyForTransitionDescriptionIfNecessary:(id)a3 propertyIdentity:(id)a4 milestones:(id)a5
+- (void)_addFloatAnimatablePropertyForTransitionDescriptionIfNecessary:(id)necessary propertyIdentity:(id)identity milestones:(id)milestones
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8 && v9 && [v10 count])
+  necessaryCopy = necessary;
+  identityCopy = identity;
+  milestonesCopy = milestones;
+  v11 = milestonesCopy;
+  if (necessaryCopy && identityCopy && [milestonesCopy count])
   {
-    v12 = self;
-    objc_sync_enter(v12);
-    v13 = [v8 animatedTransitionIdentifier];
-    v14 = [(NSMutableDictionary *)v12->_transitionIdentifiersToFloatAnimatableProperties objectForKey:v13];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    animatedTransitionIdentifier = [necessaryCopy animatedTransitionIdentifier];
+    v14 = [(NSMutableDictionary *)selfCopy->_transitionIdentifiersToFloatAnimatableProperties objectForKey:animatedTransitionIdentifier];
 
     if (!v14)
     {
-      objc_initWeak(&location, v12);
+      objc_initWeak(&location, selfCopy);
       v15 = MEMORY[0x277D75D38];
       v20 = MEMORY[0x277D85DD0];
       v21 = 3221225472;
       v22 = __125__SBSystemApertureViewController__addFloatAnimatablePropertyForTransitionDescriptionIfNecessary_propertyIdentity_milestones___block_invoke;
       v23 = &unk_2783B8638;
       objc_copyWeak(&v26, &location);
-      v24 = v8;
-      v25 = v9;
+      v24 = necessaryCopy;
+      v25 = identityCopy;
       v16 = [v15 sbf_animatablePropertyWithProgressMilestones:v11 block:&v20];
-      transitionIdentifiersToFloatAnimatableProperties = v12->_transitionIdentifiersToFloatAnimatableProperties;
+      transitionIdentifiersToFloatAnimatableProperties = selfCopy->_transitionIdentifiersToFloatAnimatableProperties;
       if (!transitionIdentifiersToFloatAnimatableProperties)
       {
         v18 = objc_alloc_init(MEMORY[0x277CBEB38]);
-        v19 = v12->_transitionIdentifiersToFloatAnimatableProperties;
-        v12->_transitionIdentifiersToFloatAnimatableProperties = v18;
+        v19 = selfCopy->_transitionIdentifiersToFloatAnimatableProperties;
+        selfCopy->_transitionIdentifiersToFloatAnimatableProperties = v18;
 
-        transitionIdentifiersToFloatAnimatableProperties = v12->_transitionIdentifiersToFloatAnimatableProperties;
+        transitionIdentifiersToFloatAnimatableProperties = selfCopy->_transitionIdentifiersToFloatAnimatableProperties;
       }
 
-      [(NSMutableDictionary *)transitionIdentifiersToFloatAnimatableProperties setObject:v16 forKey:v13, v20, v21, v22, v23];
+      [(NSMutableDictionary *)transitionIdentifiersToFloatAnimatableProperties setObject:v16 forKey:animatedTransitionIdentifier, v20, v21, v22, v23];
 
       objc_destroyWeak(&v26);
       objc_destroyWeak(&location);
     }
 
-    objc_sync_exit(v12);
+    objc_sync_exit(selfCopy);
   }
 }
 
@@ -2705,55 +2705,55 @@ void __125__SBSystemApertureViewController__addFloatAnimatablePropertyForTransit
   [WeakRetained _animatedTransitionDidReachMilestone:*(a1 + 32) description:*(a1 + 40) propertyIdentity:1 finished:0 retargeted:a2];
 }
 
-- (id)_keyPathForProperty:(id)a3
+- (id)_keyPathForProperty:(id)property
 {
-  v3 = a3;
-  v4 = [v3 interfaceElementProperty];
+  propertyCopy = property;
+  interfaceElementProperty = [propertyCopy interfaceElementProperty];
   if (BSEqualStrings())
   {
-    v5 = v4;
-    v4 = @"IDCornerRadius";
+    associatedInterfaceElementIdentifier = interfaceElementProperty;
+    interfaceElementProperty = @"IDCornerRadius";
   }
 
   else if (BSEqualStrings())
   {
-    v5 = v4;
-    v4 = @"transform";
+    associatedInterfaceElementIdentifier = interfaceElementProperty;
+    interfaceElementProperty = @"transform";
   }
 
   else if (BSEqualStrings())
   {
-    v5 = v4;
-    v4 = @"scalingContentView.transform";
+    associatedInterfaceElementIdentifier = interfaceElementProperty;
+    interfaceElementProperty = @"scalingContentView.transform";
   }
 
   else if (BSEqualStrings())
   {
-    v5 = v4;
-    v4 = @"scalingContentView.center";
+    associatedInterfaceElementIdentifier = interfaceElementProperty;
+    interfaceElementProperty = @"scalingContentView.center";
   }
 
   else if (BSEqualStrings())
   {
-    v5 = v4;
-    v4 = @"scalingContentView.bounds";
+    associatedInterfaceElementIdentifier = interfaceElementProperty;
+    interfaceElementProperty = @"scalingContentView.bounds";
   }
 
   else if (BSEqualStrings())
   {
-    v5 = v4;
-    v4 = @"variableBlurView.hidden";
+    associatedInterfaceElementIdentifier = interfaceElementProperty;
+    interfaceElementProperty = @"variableBlurView.hidden";
   }
 
   else if (BSEqualStrings())
   {
-    v5 = v4;
-    v4 = @"variableBlurView.frame";
+    associatedInterfaceElementIdentifier = interfaceElementProperty;
+    interfaceElementProperty = @"variableBlurView.frame";
   }
 
   else
   {
-    v5 = [v3 associatedInterfaceElementIdentifier];
+    associatedInterfaceElementIdentifier = [propertyCopy associatedInterfaceElementIdentifier];
     if (BSEqualObjects())
     {
       v6 = BSEqualStrings();
@@ -2763,24 +2763,24 @@ void __125__SBSystemApertureViewController__addFloatAnimatablePropertyForTransit
         goto LABEL_19;
       }
 
-      v5 = v4;
-      v4 = @"containerParentCenter";
+      associatedInterfaceElementIdentifier = interfaceElementProperty;
+      interfaceElementProperty = @"containerParentCenter";
     }
   }
 
 LABEL_19:
 
-  return v4;
+  return interfaceElementProperty;
 }
 
-- (id)_valueForProperty:(id)a3 ofDescription:(id)a4
+- (id)_valueForProperty:(id)property ofDescription:(id)description
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 interfaceElementProperty];
-  v8 = [v5 valueForKey:v7];
+  descriptionCopy = description;
+  propertyCopy = property;
+  interfaceElementProperty = [propertyCopy interfaceElementProperty];
+  v8 = [descriptionCopy valueForKey:interfaceElementProperty];
 
-  v9 = [v6 interfaceElementProperty];
+  interfaceElementProperty2 = [propertyCopy interfaceElementProperty];
 
   if ((BSEqualStrings() & 1) != 0 || BSEqualStrings())
   {
@@ -2800,18 +2800,18 @@ LABEL_19:
   return v8;
 }
 
-- (BOOL)_isProperty:(id)a3 ofObject:(id)a4 equalToDescription:(id)a5
+- (BOOL)_isProperty:(id)property ofObject:(id)object equalToDescription:(id)description
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [v10 interfaceElementProperty];
-  v12 = [(SBSystemApertureViewController *)self _keyPathForProperty:v10];
-  v13 = [(SBSystemApertureViewController *)self _valueForProperty:v10 ofDescription:v9];
+  objectCopy = object;
+  descriptionCopy = description;
+  propertyCopy = property;
+  interfaceElementProperty = [propertyCopy interfaceElementProperty];
+  v12 = [(SBSystemApertureViewController *)self _keyPathForProperty:propertyCopy];
+  v13 = [(SBSystemApertureViewController *)self _valueForProperty:propertyCopy ofDescription:descriptionCopy];
 
   if ((BSEqualStrings() & 1) != 0 || (BSEqualStrings() & 1) != 0 || BSEqualStrings())
   {
-    v14 = [v8 valueForKeyPath:v12];
+    v14 = [objectCopy valueForKeyPath:v12];
     [v14 CGRectValue];
     [v13 CGRectValue];
     v15 = SBSARectApproximatelyEqualToRect();
@@ -2819,7 +2819,7 @@ LABEL_19:
 
   else if ((BSEqualStrings() & 1) != 0 || BSEqualStrings())
   {
-    v14 = [v8 valueForKeyPath:v12];
+    v14 = [objectCopy valueForKeyPath:v12];
     [v14 CGPointValue];
     [v13 CGPointValue];
     v15 = SBSAPointApproximatelyEqualToPoint();
@@ -2827,7 +2827,7 @@ LABEL_19:
 
   else
   {
-    v14 = [v8 valueForKeyPath:v12];
+    v14 = [objectCopy valueForKeyPath:v12];
     v15 = BSEqualObjects();
   }
 
@@ -2836,35 +2836,35 @@ LABEL_19:
   return v16;
 }
 
-- (id)_elementViewControllerForSizeTransitionWithDescription:(id)a3 fromPreferences:(id)a4
+- (id)_elementViewControllerForSizeTransitionWithDescription:(id)description fromPreferences:(id)preferences
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isCollisionImminent] && (objc_msgSend(v7, "elementLayoutTransition"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "initialElementContexts"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "count"), v9, v8, v10 > 1) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  descriptionCopy = description;
+  preferencesCopy = preferences;
+  if ([preferencesCopy isCollisionImminent] && (objc_msgSend(preferencesCopy, "elementLayoutTransition"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "initialElementContexts"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "count"), v9, v8, v10 > 1) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v13 = 0;
+    elementViewController = 0;
   }
 
   else
   {
-    v11 = [v6 interfaceElementIdentifier];
-    v12 = [(SBSystemApertureViewController *)self _containerViewWithInterfaceElementIdentifier:v11 creatingIfNecessary:0];
-    v13 = [v12 elementViewController];
+    interfaceElementIdentifier = [descriptionCopy interfaceElementIdentifier];
+    v12 = [(SBSystemApertureViewController *)self _containerViewWithInterfaceElementIdentifier:interfaceElementIdentifier creatingIfNecessary:0];
+    elementViewController = [v12 elementViewController];
   }
 
-  return v13;
+  return elementViewController;
 }
 
-- (BOOL)_shouldPerformTransitionOfProperty:(id)a3 ofObject:(id)a4 withDescription:(id)a5 fromPreferences:(id)a6 context:(id)a7
+- (BOOL)_shouldPerformTransitionOfProperty:(id)property ofObject:(id)object withDescription:(id)description fromPreferences:(id)preferences context:(id)context
 {
   v71 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  propertyCopy = property;
+  objectCopy = object;
+  descriptionCopy = description;
+  preferencesCopy = preferences;
+  contextCopy = context;
   v17 = objc_opt_class();
-  v18 = v12;
+  v18 = propertyCopy;
   if (v17)
   {
     if (objc_opt_isKindOfClass())
@@ -2885,18 +2885,18 @@ LABEL_19:
 
   v20 = v19;
 
-  v21 = [v20 isContentBoundsProperty];
-  if (!v21)
+  isContentBoundsProperty = [v20 isContentBoundsProperty];
+  if (!isContentBoundsProperty)
   {
 LABEL_22:
-    if (![(SBSystemApertureViewController *)self _isProperty:v18 ofObject:v13 equalToDescription:v14])
+    if (![(SBSystemApertureViewController *)self _isProperty:v18 ofObject:objectCopy equalToDescription:descriptionCopy])
     {
       v41 = 1;
       goto LABEL_46;
     }
 
     v42 = objc_opt_class();
-    v43 = v13;
+    v43 = objectCopy;
     if (v42)
     {
       if (objc_opt_isKindOfClass())
@@ -2925,25 +2925,25 @@ LABEL_45:
       goto LABEL_46;
     }
 
-    v58 = v15;
-    v60 = v16;
-    v46 = [v15 effectiveMilestoneProvidingAnimatedTransitionDescriptionForProperty:v18];
+    v58 = preferencesCopy;
+    v60 = contextCopy;
+    v46 = [preferencesCopy effectiveMilestoneProvidingAnimatedTransitionDescriptionForProperty:v18];
     v57 = [(NSMutableDictionary *)self->_lastAppliedPropertyIdentitiesToTransitionDescriptions objectForKey:v18];
-    v47 = [v57 behaviorSettings];
-    v48 = [v46 behaviorSettings];
+    behaviorSettings = [v57 behaviorSettings];
+    behaviorSettings2 = [v46 behaviorSettings];
     v49 = BSEqualObjects();
 
     if ((v49 & 1) == 0)
     {
       v50 = [(SBSystemApertureViewController *)self _keyPathForProperty:v18];
-      v16 = v60;
-      if (v21)
+      contextCopy = v60;
+      if (isContentBoundsProperty)
       {
         v51 = SBLogSystemAperturePreferencesStack();
         if (os_log_type_enabled(v51, OS_LOG_TYPE_DEBUG))
         {
           *buf = 134349570;
-          v66 = [v60 queryIteration];
+          queryIteration = [v60 queryIteration];
           v67 = 2112;
           v68 = v50;
           v69 = 2112;
@@ -2965,25 +2965,25 @@ LABEL_45:
         v53 = v50;
         [v52 performWithoutAnimation:v61];
 
-        v15 = v58;
+        preferencesCopy = v58;
         goto LABEL_42;
       }
     }
 
-    v54 = [v46 milestones];
-    v55 = [v54 count];
+    milestones = [v46 milestones];
+    v55 = [milestones count];
 
     if (!v55)
     {
       v41 = 0;
-      v15 = v58;
-      v16 = v60;
+      preferencesCopy = v58;
+      contextCopy = v60;
       goto LABEL_44;
     }
 
     v53 = SBLogSystemAperturePreferencesStack();
-    v15 = v58;
-    v16 = v60;
+    preferencesCopy = v58;
+    contextCopy = v60;
     if (os_log_type_enabled(v53, OS_LOG_TYPE_DEBUG))
     {
       [SBSystemApertureViewController _shouldPerformTransitionOfProperty:ofObject:withDescription:fromPreferences:context:];
@@ -2998,7 +2998,7 @@ LABEL_44:
   }
 
   v22 = objc_opt_class();
-  v23 = v13;
+  v23 = objectCopy;
   if (v22)
   {
     if (objc_opt_isKindOfClass())
@@ -3019,53 +3019,53 @@ LABEL_44:
 
   v25 = v24;
 
-  v26 = [v25 elementViewController];
-  v27 = v26;
-  if (v26)
+  elementViewController = [v25 elementViewController];
+  v27 = elementViewController;
+  if (elementViewController)
   {
-    v28 = [v26 elementViewProvider];
+    elementViewProvider = [elementViewController elementViewProvider];
   }
 
   else
   {
     [v25 outgoingElementViewController];
     v59 = v18;
-    v29 = v21;
-    v30 = v15;
-    v31 = self;
-    v32 = v13;
-    v33 = v14;
-    v35 = v34 = v16;
-    v28 = [v35 elementViewProvider];
+    v29 = isContentBoundsProperty;
+    v30 = preferencesCopy;
+    selfCopy = self;
+    v32 = objectCopy;
+    v33 = descriptionCopy;
+    v35 = v34 = contextCopy;
+    elementViewProvider = [v35 elementViewProvider];
 
-    v16 = v34;
-    v14 = v33;
-    v13 = v32;
-    self = v31;
-    v15 = v30;
-    v21 = v29;
+    contextCopy = v34;
+    descriptionCopy = v33;
+    objectCopy = v32;
+    self = selfCopy;
+    preferencesCopy = v30;
+    isContentBoundsProperty = v29;
     v18 = v59;
   }
 
-  if (!v28 || (objc_opt_respondsToSelector() & 1) == 0 || ![v28 isRequestingLayoutUpdateForHostedClient])
+  if (!elementViewProvider || (objc_opt_respondsToSelector() & 1) == 0 || ![elementViewProvider isRequestingLayoutUpdateForHostedClient])
   {
 
     goto LABEL_22;
   }
 
-  v36 = v16;
-  v37 = [v28 element];
+  v36 = contextCopy;
+  element = [elementViewProvider element];
   v38 = SAUILayoutSpecifyingOverriderForElement();
-  v39 = [v38 behaviorOverridingTarget];
+  behaviorOverridingTarget = [v38 behaviorOverridingTarget];
 
   if (objc_opt_respondsToSelector())
   {
-    v40 = [v39 layoutHost];
-    [v40 preferredComponentViewSizeDidInvalidateForLayoutSpecifier:v39];
+    layoutHost = [behaviorOverridingTarget layoutHost];
+    [layoutHost preferredComponentViewSizeDidInvalidateForLayoutSpecifier:behaviorOverridingTarget];
   }
 
   v41 = 1;
-  v16 = v36;
+  contextCopy = v36;
 LABEL_46:
 
   return v41;
@@ -3097,32 +3097,32 @@ void __118__SBSystemApertureViewController__shouldPerformTransitionOfProperty_of
   [*(a1 + 32) layoutIfNeeded];
 }
 
-- (id)_propertyUpdateBlockArrayForPropertyIdentity:(id)a3 ofObject:(id)a4 withDescription:(id)a5 withTransitionDescription:(id)a6 forceSingle:(BOOL)a7 behaviorSettingsArray:(id *)a8 updateDescriptionsArray:(id *)a9
+- (id)_propertyUpdateBlockArrayForPropertyIdentity:(id)identity ofObject:(id)object withDescription:(id)description withTransitionDescription:(id)transitionDescription forceSingle:(BOOL)single behaviorSettingsArray:(id *)array updateDescriptionsArray:(id *)descriptionsArray
 {
-  v65 = a7;
-  v13 = a9;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = [MEMORY[0x277CBEB18] array];
-  v68 = [MEMORY[0x277CBEB18] array];
-  v61 = [MEMORY[0x277CBEB18] array];
-  v67 = self;
-  v59 = [(SBSystemApertureViewController *)self _keyPathForProperty:v14];
-  v19 = [v15 _independentlyAnimatableMemberKeyPathsForPropertyKeyPath:?];
+  singleCopy = single;
+  descriptionsArrayCopy2 = descriptionsArray;
+  identityCopy = identity;
+  objectCopy = object;
+  descriptionCopy = description;
+  transitionDescriptionCopy = transitionDescription;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
+  selfCopy = self;
+  v59 = [(SBSystemApertureViewController *)self _keyPathForProperty:identityCopy];
+  v19 = [objectCopy _independentlyAnimatableMemberKeyPathsForPropertyKeyPath:?];
   v20 = MEMORY[0x277CBEB98];
-  v21 = [v17 keyPathsWithAuxillaryBehaviorSettings];
-  v22 = [v20 setWithArray:v21];
+  keyPathsWithAuxillaryBehaviorSettings = [transitionDescriptionCopy keyPathsWithAuxillaryBehaviorSettings];
+  v22 = [v20 setWithArray:keyPathsWithAuxillaryBehaviorSettings];
 
   v60 = v22;
   v57 = v19;
-  if ([v22 count] && ((objc_opt_self(), v23 = objc_claimAutoreleasedReturnValue(), v24 = v15, !v23) ? (v25 = 0) : (objc_opt_isKindOfClass() & 1) == 0 ? (v25 = 0) : (v25 = v24), (v24, v23, v25) && objc_msgSend(v19, "intersectsSet:", v60) && !v65))
+  if ([v22 count] && ((objc_opt_self(), v23 = objc_claimAutoreleasedReturnValue(), v24 = objectCopy, !v23) ? (v25 = 0) : (objc_opt_isKindOfClass() & 1) == 0 ? (v25 = 0) : (v25 = v24), (v24, v23, v25) && objc_msgSend(v19, "intersectsSet:", v60) && !singleCopy))
   {
-    v55 = v15;
-    v26 = [v17 keyPathsWithAuxillaryBehaviorSettings];
+    v55 = objectCopy;
+    keyPathsWithAuxillaryBehaviorSettings2 = [transitionDescriptionCopy keyPathsWithAuxillaryBehaviorSettings];
     v27 = v19;
-    v28 = v26;
+    v28 = keyPathsWithAuxillaryBehaviorSettings2;
     v85[0] = MEMORY[0x277D85DD0];
     v85[1] = 3221225472;
     v85[2] = __188__SBSystemApertureViewController__propertyUpdateBlockArrayForPropertyIdentity_ofObject_withDescription_withTransitionDescription_forceSingle_behaviorSettingsArray_updateDescriptionsArray___block_invoke_2;
@@ -3136,7 +3136,7 @@ void __118__SBSystemApertureViewController__shouldPerformTransitionOfProperty_of
     v83[1] = 3221225472;
     v83[2] = __188__SBSystemApertureViewController__propertyUpdateBlockArrayForPropertyIdentity_ofObject_withDescription_withTransitionDescription_forceSingle_behaviorSettingsArray_updateDescriptionsArray___block_invoke_3;
     v83[3] = &unk_2783A8B78;
-    v32 = v18;
+    v32 = array;
     v33 = v31;
     v84 = v33;
     v34 = [v29 bs_filter:v83];
@@ -3144,12 +3144,12 @@ void __118__SBSystemApertureViewController__shouldPerformTransitionOfProperty_of
     v77[1] = 3221225472;
     v77[2] = __188__SBSystemApertureViewController__propertyUpdateBlockArrayForPropertyIdentity_ofObject_withDescription_withTransitionDescription_forceSingle_behaviorSettingsArray_updateDescriptionsArray___block_invoke_4;
     v77[3] = &unk_2783B5058;
-    v77[4] = v67;
-    v56 = v14;
-    v35 = v14;
+    v77[4] = selfCopy;
+    v56 = identityCopy;
+    v35 = identityCopy;
     v78 = v35;
-    v54 = v16;
-    v63 = v16;
+    v54 = descriptionCopy;
+    v63 = descriptionCopy;
     v79 = v63;
     v62 = v24;
     v80 = v62;
@@ -3161,16 +3161,16 @@ void __118__SBSystemApertureViewController__shouldPerformTransitionOfProperty_of
     v66 = v32;
     [v32 addObject:v37];
 
-    v38 = [v17 behaviorSettings];
-    [v68 addObject:v38];
+    behaviorSettings = [transitionDescriptionCopy behaviorSettings];
+    [array2 addObject:behaviorSettings];
 
-    [v61 addObject:@"Base"];
-    v64 = v17;
+    [array3 addObject:@"Base"];
+    v64 = transitionDescriptionCopy;
     if ([v33 count])
     {
       do
       {
-        v39 = [v33 lastObject];
+        lastObject = [v33 lastObject];
         [v33 removeLastObject];
         v75[0] = MEMORY[0x277D85DD0];
         v75[1] = 3221225472;
@@ -3183,7 +3183,7 @@ void __118__SBSystemApertureViewController__shouldPerformTransitionOfProperty_of
         v69[1] = 3221225472;
         v69[2] = __188__SBSystemApertureViewController__propertyUpdateBlockArrayForPropertyIdentity_ofObject_withDescription_withTransitionDescription_forceSingle_behaviorSettingsArray_updateDescriptionsArray___block_invoke_6;
         v69[3] = &unk_2783B5058;
-        v69[4] = v67;
+        v69[4] = selfCopy;
         v70 = v35;
         v71 = v63;
         v72 = v62;
@@ -3194,24 +3194,24 @@ void __118__SBSystemApertureViewController__shouldPerformTransitionOfProperty_of
         v44 = MEMORY[0x223D6F7F0](v69);
         [v66 addObject:v44];
 
-        v45 = [v64 auxillaryBehaviorSettingsForKeyPath:v39];
-        [v68 addObject:v45];
+        v45 = [v64 auxillaryBehaviorSettingsForKeyPath:lastObject];
+        [array2 addObject:v45];
 
         v35 = v43;
-        [v61 addObject:v39];
+        [array3 addObject:lastObject];
       }
 
       while ([v40 count]);
     }
 
-    v15 = v55;
-    v14 = v56;
-    v13 = a9;
-    v16 = v54;
-    v17 = v64;
-    v18 = v66;
-    v46 = a8;
-    v47 = v68;
+    objectCopy = v55;
+    identityCopy = v56;
+    descriptionsArrayCopy2 = descriptionsArray;
+    descriptionCopy = v54;
+    transitionDescriptionCopy = v64;
+    array = v66;
+    arrayCopy2 = array;
+    v47 = array2;
   }
 
   else
@@ -3220,42 +3220,42 @@ void __118__SBSystemApertureViewController__shouldPerformTransitionOfProperty_of
     v87[1] = 3221225472;
     v87[2] = __188__SBSystemApertureViewController__propertyUpdateBlockArrayForPropertyIdentity_ofObject_withDescription_withTransitionDescription_forceSingle_behaviorSettingsArray_updateDescriptionsArray___block_invoke;
     v87[3] = &unk_2783A9BD8;
-    v87[4] = v67;
-    v88 = v14;
-    v89 = v16;
-    v90 = v15;
+    v87[4] = selfCopy;
+    v88 = identityCopy;
+    v89 = descriptionCopy;
+    v90 = objectCopy;
     v48 = MEMORY[0x223D6F7F0](v87);
-    [v18 addObject:v48];
+    [array addObject:v48];
 
-    v47 = v68;
-    if (v17)
+    v47 = array2;
+    if (transitionDescriptionCopy)
     {
-      v49 = [v17 behaviorSettings];
-      [v68 addObject:v49];
+      behaviorSettings2 = [transitionDescriptionCopy behaviorSettings];
+      [array2 addObject:behaviorSettings2];
     }
 
-    [v61 addObject:@"Only update block"];
+    [array3 addObject:@"Only update block"];
 
-    v46 = a8;
+    arrayCopy2 = array;
   }
 
-  if (v46)
+  if (arrayCopy2)
   {
     v50 = [v47 count];
-    if (v50 != [v18 count] && objc_msgSend(v18, "count") >= 2)
+    if (v50 != [array count] && objc_msgSend(array, "count") >= 2)
     {
       [SBSystemApertureViewController _propertyUpdateBlockArrayForPropertyIdentity:ofObject:withDescription:withTransitionDescription:forceSingle:behaviorSettingsArray:updateDescriptionsArray:];
     }
 
-    *v46 = [MEMORY[0x277CBEA60] arrayWithArray:{v47, v53}];
+    *arrayCopy2 = [MEMORY[0x277CBEA60] arrayWithArray:{v47, v53}];
   }
 
-  if (v13)
+  if (descriptionsArrayCopy2)
   {
-    *v13 = [MEMORY[0x277CBEA60] arrayWithArray:v61];
+    *descriptionsArrayCopy2 = [MEMORY[0x277CBEA60] arrayWithArray:array3];
   }
 
-  v51 = [MEMORY[0x277CBEA60] arrayWithArray:{v18, v53}];
+  v51 = [MEMORY[0x277CBEA60] arrayWithArray:{array, v53}];
 
   return v51;
 }
@@ -3351,23 +3351,23 @@ void __188__SBSystemApertureViewController__propertyUpdateBlockArrayForPropertyI
   [v6 layoutIfNeeded];
 }
 
-- (void)_updateProperty:(id)a3 ofObject:(id)a4 withDescription:(id)a5 fromPreferences:(id)a6 conditionalAnimations:(id)a7 conditionalCompletion:(id)a8 context:(id)a9
+- (void)_updateProperty:(id)property ofObject:(id)object withDescription:(id)description fromPreferences:(id)preferences conditionalAnimations:(id)animations conditionalCompletion:(id)completion context:(id)context
 {
   v137 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v86 = a4;
-  v85 = a5;
-  v84 = a6;
-  v91 = a7;
-  v81 = a8;
-  v82 = a9;
-  v92 = v14;
-  if (v14 && v86 && v85 && v84 && [(SBSystemApertureViewController *)self _shouldPerformTransitionOfProperty:v14 ofObject:v86 withDescription:v85 fromPreferences:v84 context:v82])
+  propertyCopy = property;
+  objectCopy = object;
+  descriptionCopy = description;
+  preferencesCopy = preferences;
+  animationsCopy = animations;
+  completionCopy = completion;
+  contextCopy = context;
+  v92 = propertyCopy;
+  if (propertyCopy && objectCopy && descriptionCopy && preferencesCopy && [(SBSystemApertureViewController *)self _shouldPerformTransitionOfProperty:propertyCopy ofObject:objectCopy withDescription:descriptionCopy fromPreferences:preferencesCopy context:contextCopy])
   {
-    v80 = [v84 effectiveMilestoneProvidingAnimatedTransitionDescriptionForProperty:v14];
-    if (v80 && ((v15 = objc_opt_class(), v16 = v14, !v15) ? (v17 = 0) : (objc_opt_isKindOfClass() & 1) == 0 ? (v17 = 0) : (v17 = v16), v18 = v17, v16, v19 = [v18 isContentBoundsProperty], v18, v19))
+    v80 = [preferencesCopy effectiveMilestoneProvidingAnimatedTransitionDescriptionForProperty:propertyCopy];
+    if (v80 && ((v15 = objc_opt_class(), v16 = propertyCopy, !v15) ? (v17 = 0) : (objc_opt_isKindOfClass() & 1) == 0 ? (v17 = 0) : (v17 = v16), v18 = v17, v16, v19 = [v18 isContentBoundsProperty], v18, v19))
     {
-      v20 = [(SBSystemApertureViewController *)self _elementViewControllerForSizeTransitionWithDescription:v85 fromPreferences:v84];
+      v20 = [(SBSystemApertureViewController *)self _elementViewControllerForSizeTransitionWithDescription:descriptionCopy fromPreferences:preferencesCopy];
     }
 
     else
@@ -3378,15 +3378,15 @@ void __188__SBSystemApertureViewController__propertyUpdateBlockArrayForPropertyI
     v78 = v20;
     v134 = 0;
     v135 = 0;
-    v79 = [SBSystemApertureViewController _propertyUpdateBlockArrayForPropertyIdentity:"_propertyUpdateBlockArrayForPropertyIdentity:ofObject:withDescription:withTransitionDescription:forceSingle:behaviorSettingsArray:updateDescriptionsArray:" ofObject:v14 withDescription:v86 withTransitionDescription:v85 forceSingle:&v134 behaviorSettingsArray:? updateDescriptionsArray:?];
+    v79 = [SBSystemApertureViewController _propertyUpdateBlockArrayForPropertyIdentity:"_propertyUpdateBlockArrayForPropertyIdentity:ofObject:withDescription:withTransitionDescription:forceSingle:behaviorSettingsArray:updateDescriptionsArray:" ofObject:propertyCopy withDescription:objectCopy withTransitionDescription:descriptionCopy forceSingle:&v134 behaviorSettingsArray:? updateDescriptionsArray:?];
     v77 = v135;
     v76 = v134;
     if (v80)
     {
-      v21 = [v80 behaviorSettings];
-      v22 = [v21 isUnanimated];
+      behaviorSettings = [v80 behaviorSettings];
+      isUnanimated = [behaviorSettings isUnanimated];
 
-      if ((v22 & 1) == 0)
+      if ((isUnanimated & 1) == 0)
       {
         lastAppliedPropertyIdentitiesToTransitionDescriptions = self->_lastAppliedPropertyIdentitiesToTransitionDescriptions;
         if (!lastAppliedPropertyIdentitiesToTransitionDescriptions)
@@ -3398,9 +3398,9 @@ void __188__SBSystemApertureViewController__propertyUpdateBlockArrayForPropertyI
           lastAppliedPropertyIdentitiesToTransitionDescriptions = self->_lastAppliedPropertyIdentitiesToTransitionDescriptions;
         }
 
-        [(NSMutableDictionary *)lastAppliedPropertyIdentitiesToTransitionDescriptions setObject:v80 forKey:v14];
-        v36 = [v80 milestones];
-        if ([v36 containsObject:0x28336F620])
+        [(NSMutableDictionary *)lastAppliedPropertyIdentitiesToTransitionDescriptions setObject:v80 forKey:propertyCopy];
+        milestones = [v80 milestones];
+        if ([milestones containsObject:0x28336F620])
         {
           objc_initWeak(&location, self);
           v129[0] = MEMORY[0x277D85DD0];
@@ -3409,9 +3409,9 @@ void __188__SBSystemApertureViewController__propertyUpdateBlockArrayForPropertyI
           v129[3] = &unk_2783AEB60;
           objc_copyWeak(&v132, &location);
           v130 = v80;
-          v131 = v14;
+          v131 = propertyCopy;
           v75 = MEMORY[0x223D6F7F0](v129);
-          v37 = [v36 mutableCopy];
+          v37 = [milestones mutableCopy];
           [v37 removeObject:0x28336F620];
 
           objc_destroyWeak(&v132);
@@ -3422,19 +3422,19 @@ void __188__SBSystemApertureViewController__propertyUpdateBlockArrayForPropertyI
         else
         {
           v75 = 0;
-          v38 = v36;
+          v38 = milestones;
         }
 
         v74 = v38;
         [(SBSystemApertureViewController *)self _addFloatAnimatablePropertyForTransitionDescriptionIfNecessary:v80 propertyIdentity:v92 milestones:?];
-        v39 = [v80 animatedTransitionIdentifier];
-        v89 = [(SBSystemApertureViewController *)self _floatAnimatablePropertyForTransitionIdentifier:v39];
+        animatedTransitionIdentifier = [v80 animatedTransitionIdentifier];
+        v89 = [(SBSystemApertureViewController *)self _floatAnimatablePropertyForTransitionIdentifier:animatedTransitionIdentifier];
 
         v40 = [(SBSystemApertureViewController *)self _keyPathForProperty:v92];
-        v41 = [v86 _independentlyAnimatableMemberKeyPathsForPropertyKeyPath:v40];
+        v41 = [objectCopy _independentlyAnimatableMemberKeyPathsForPropertyKeyPath:v40];
         v87 = [v41 count] > 1;
 
-        v42 = [MEMORY[0x277CBEB18] array];
+        array = [MEMORY[0x277CBEB18] array];
         v127 = 0u;
         v128 = 0u;
         v125 = 0u;
@@ -3454,7 +3454,7 @@ void __188__SBSystemApertureViewController__propertyUpdateBlockArrayForPropertyI
               }
 
               v47 = *(*(&v125 + 1) + 8 * i);
-              if ([v42 count])
+              if ([array count])
               {
                 v118[0] = MEMORY[0x277D85DD0];
                 v118[1] = 3221225472;
@@ -3462,7 +3462,7 @@ void __188__SBSystemApertureViewController__propertyUpdateBlockArrayForPropertyI
                 v118[3] = &unk_2783A9348;
                 v118[4] = v47;
                 v48 = MEMORY[0x223D6F7F0](v118);
-                [v42 addObject:v48];
+                [array addObject:v48];
               }
 
               else
@@ -3474,10 +3474,10 @@ void __188__SBSystemApertureViewController__propertyUpdateBlockArrayForPropertyI
                 v124 = v87;
                 v120 = v89;
                 v122 = v47;
-                v123 = v91;
+                v123 = animationsCopy;
                 v121 = v92;
                 v49 = MEMORY[0x223D6F7F0](v119);
-                [v42 addObject:v49];
+                [array addObject:v49];
               }
             }
 
@@ -3507,10 +3507,10 @@ void __188__SBSystemApertureViewController__propertyUpdateBlockArrayForPropertyI
         v113 = v52;
         v53 = MEMORY[0x223D6F7F0](v111);
         v54 = MEMORY[0x277CCACA8];
-        v55 = [v51 associatedInterfaceElementIdentifier];
-        v56 = [v55 UUIDString];
-        v57 = [v51 interfaceElementProperty];
-        v58 = [v54 stringWithFormat:@"animated property update: %@ - %@", v56, v57];
+        associatedInterfaceElementIdentifier = [v51 associatedInterfaceElementIdentifier];
+        uUIDString = [associatedInterfaceElementIdentifier UUIDString];
+        interfaceElementProperty = [v51 interfaceElementProperty];
+        v58 = [v54 stringWithFormat:@"animated property update: %@ - %@", uUIDString, interfaceElementProperty];
 
         [(SBSystemApertureViewController *)self _beginRequiringBacklightAssertionForReason:v58];
         v103[0] = MEMORY[0x277D85DD0];
@@ -3523,7 +3523,7 @@ void __188__SBSystemApertureViewController__propertyUpdateBlockArrayForPropertyI
         v107 = v73;
         v28 = v75;
         v108 = v28;
-        v109 = v81;
+        v109 = completionCopy;
         v59 = v51;
         v104 = v59;
         objc_copyWeak(&v110, &location);
@@ -3533,42 +3533,42 @@ void __188__SBSystemApertureViewController__propertyUpdateBlockArrayForPropertyI
         if (v78)
         {
           v61 = [SBSystemApertureFluidAnimator alloc];
-          v62 = [v52 behaviorSettings];
-          v63 = [(SBSystemApertureFluidAnimator *)v61 initWithSettings:v62];
+          behaviorSettings2 = [v52 behaviorSettings];
+          v63 = [(SBSystemApertureFluidAnimator *)v61 initWithSettings:behaviorSettings2];
 
           v64 = objc_alloc_init(MEMORY[0x277D763A0]);
           [v64 _setIsAnimated:1];
           [v64 _setContainerView:self->_containerParent];
           [v64 _setAnimator:v63];
-          v65 = [v64 _transitionCoordinator];
-          if ([v84 isCollisionImminent] && (objc_opt_respondsToSelector() & 1) != 0)
+          _transitionCoordinator = [v64 _transitionCoordinator];
+          if ([preferencesCopy isCollisionImminent] && (objc_opt_respondsToSelector() & 1) != 0)
           {
-            [v65 setPerformingSystemApertureInertTransition:1];
+            [_transitionCoordinator setPerformingSystemApertureInertTransition:1];
           }
 
           v101[0] = MEMORY[0x277D85DD0];
           v101[1] = 3221225472;
           v101[2] = __143__SBSystemApertureViewController__updateProperty_ofObject_withDescription_fromPreferences_conditionalAnimations_conditionalCompletion_context___block_invoke_10;
           v101[3] = &unk_2783A9488;
-          v102 = v42;
+          v102 = array;
           v99[0] = MEMORY[0x277D85DD0];
           v99[1] = 3221225472;
           v99[2] = __143__SBSystemApertureViewController__updateProperty_ofObject_withDescription_fromPreferences_conditionalAnimations_conditionalCompletion_context___block_invoke_11;
           v99[3] = &unk_2783B86B0;
           v100 = v90;
-          [v65 animateAlongsideTransition:v101 completion:v99];
-          v66 = [(SBSystemApertureViewController *)self _valueForProperty:v59 ofDescription:v85];
+          [_transitionCoordinator animateAlongsideTransition:v101 completion:v99];
+          v66 = [(SBSystemApertureViewController *)self _valueForProperty:v59 ofDescription:descriptionCopy];
           [v66 CGRectValue];
-          [v78 viewWillTransitionToSize:v65 withTransitionCoordinator:{v67, v68}];
+          [v78 viewWillTransitionToSize:_transitionCoordinator withTransitionCoordinator:{v67, v68}];
 
           [(SBSystemApertureAnimator *)v63 animateTransition:v64];
         }
 
-        else if ([v42 count] < 2)
+        else if ([array count] < 2)
         {
           v70 = MEMORY[0x277D75D18];
           v63 = [v77 objectAtIndexedSubscript:0];
-          v71 = [v42 objectAtIndexedSubscript:0];
+          v71 = [array objectAtIndexedSubscript:0];
           [v70 sb_animateWithSettings:v63 mode:3 animations:v71 completion:v90];
         }
 
@@ -3579,7 +3579,7 @@ void __188__SBSystemApertureViewController__propertyUpdateBlockArrayForPropertyI
           v95[1] = 3221225472;
           v95[2] = __143__SBSystemApertureViewController__updateProperty_ofObject_withDescription_fromPreferences_conditionalAnimations_conditionalCompletion_context___block_invoke_12;
           v95[3] = &unk_2783AE908;
-          v96 = v42;
+          v96 = array;
           v97 = v77;
           v98 = v76;
           [v69 perform:v95 finalCompletion:v90];
@@ -3597,31 +3597,31 @@ void __188__SBSystemApertureViewController__propertyUpdateBlockArrayForPropertyI
         goto LABEL_47;
       }
 
-      v23 = [v80 behaviorSettings];
-      v24 = [v23 isUnanimated];
+      behaviorSettings3 = [v80 behaviorSettings];
+      isUnanimated2 = [behaviorSettings3 isUnanimated];
 
-      if (v24)
+      if (isUnanimated2)
       {
-        v25 = [v80 milestones];
-        v26 = [v25 count];
+        milestones2 = [v80 milestones];
+        v26 = [milestones2 count];
 
         if (v26)
         {
-          [(SBSystemApertureViewController *)self _animatedTransitionDidReachMilestone:v80 description:v14 propertyIdentity:1 finished:0 retargeted:1.79769313e308];
+          [(SBSystemApertureViewController *)self _animatedTransitionDidReachMilestone:v80 description:propertyCopy propertyIdentity:1 finished:0 retargeted:1.79769313e308];
         }
       }
     }
 
-    v27 = [(NSMutableDictionary *)self->_lastAppliedPropertyIdentitiesToTransitionDescriptions objectForKey:v14];
+    v27 = [(NSMutableDictionary *)self->_lastAppliedPropertyIdentitiesToTransitionDescriptions objectForKey:propertyCopy];
     v28 = v27;
     if (v27)
     {
-      v29 = [v27 animatedTransitionIdentifier];
-      v30 = [(SBSystemApertureViewController *)self _floatAnimatablePropertyForTransitionIdentifier:v29];
+      animatedTransitionIdentifier2 = [v27 animatedTransitionIdentifier];
+      v30 = [(SBSystemApertureViewController *)self _floatAnimatablePropertyForTransitionIdentifier:animatedTransitionIdentifier2];
 
-      [(SBSystemApertureViewController *)self _animatedTransitionDidReachMilestone:v28 description:v14 propertyIdentity:1 finished:1 retargeted:1.79769313e308];
+      [(SBSystemApertureViewController *)self _animatedTransitionDidReachMilestone:v28 description:propertyCopy propertyIdentity:1 finished:1 retargeted:1.79769313e308];
       [(SBSystemApertureViewController *)self _invalidateAndRemoveFloatAnimatableProperty:v30 forTransitionIdentifier:0];
-      [(NSMutableDictionary *)self->_lastAppliedPropertyIdentitiesToTransitionDescriptions removeObjectForKey:v14];
+      [(NSMutableDictionary *)self->_lastAppliedPropertyIdentitiesToTransitionDescriptions removeObjectForKey:propertyCopy];
     }
 
     v31 = MEMORY[0x277D75D18];
@@ -3791,18 +3791,18 @@ void __143__SBSystemApertureViewController__updateProperty_ofObject_withDescript
   v1[2]();
 }
 
-- (void)_updateObject:(id)a3 withDescription:(id)a4 fromPreferences:(id)a5 conditionalAnimations:(id)a6 conditionalCompletion:(id)a7 context:(id)a8
+- (void)_updateObject:(id)object withDescription:(id)description fromPreferences:(id)preferences conditionalAnimations:(id)animations conditionalCompletion:(id)completion context:(id)context
 {
   v37 = *MEMORY[0x277D85DE8];
-  v31 = a3;
-  v13 = a4;
-  v14 = a5;
-  v29 = a6;
-  v28 = a7;
-  v15 = a8;
-  v30 = v14;
-  v16 = [v14 propertiesWithAnimatedTransitionDescriptions];
-  v17 = [v16 sortedArrayUsingComparator:&__block_literal_global_545];
+  objectCopy = object;
+  descriptionCopy = description;
+  preferencesCopy = preferences;
+  animationsCopy = animations;
+  completionCopy = completion;
+  contextCopy = context;
+  v30 = preferencesCopy;
+  propertiesWithAnimatedTransitionDescriptions = [preferencesCopy propertiesWithAnimatedTransitionDescriptions];
+  v17 = [propertiesWithAnimatedTransitionDescriptions sortedArrayUsingComparator:&__block_literal_global_545];
 
   v34 = 0u;
   v35 = 0u;
@@ -3824,13 +3824,13 @@ void __143__SBSystemApertureViewController__updateProperty_ofObject_withDescript
         }
 
         v23 = *(*(&v32 + 1) + 8 * i);
-        v24 = [v23 associatedInterfaceElementIdentifier];
-        v25 = [v13 interfaceElementIdentifier];
+        associatedInterfaceElementIdentifier = [v23 associatedInterfaceElementIdentifier];
+        interfaceElementIdentifier = [descriptionCopy interfaceElementIdentifier];
         v26 = BSEqualObjects();
 
         if (v26)
         {
-          [(SBSystemApertureViewController *)self _updateProperty:v23 ofObject:v31 withDescription:v13 fromPreferences:v30 conditionalAnimations:v29 conditionalCompletion:v28 context:v15];
+          [(SBSystemApertureViewController *)self _updateProperty:v23 ofObject:objectCopy withDescription:descriptionCopy fromPreferences:v30 conditionalAnimations:animationsCopy conditionalCompletion:completionCopy context:contextCopy];
         }
       }
 
@@ -3935,20 +3935,20 @@ uint64_t __132__SBSystemApertureViewController__updateObject_withDescription_fro
   return v21;
 }
 
-- (id)_containerViewWithInterfaceElementIdentifier:(id)a3 creatingIfNecessary:(BOOL)a4
+- (id)_containerViewWithInterfaceElementIdentifier:(id)identifier creatingIfNecessary:(BOOL)necessary
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  necessaryCopy = necessary;
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    orderedContainerViews = v7->_orderedContainerViews;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    orderedContainerViews = selfCopy->_orderedContainerViews;
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __99__SBSystemApertureViewController__containerViewWithInterfaceElementIdentifier_creatingIfNecessary___block_invoke;
     v16[3] = &unk_2783B86F8;
-    v9 = v6;
+    v9 = identifierCopy;
     v17 = v9;
     v10 = [(NSMutableArray *)orderedContainerViews bs_firstObjectPassingTest:v16];
     if (v10)
@@ -3958,27 +3958,27 @@ uint64_t __132__SBSystemApertureViewController__updateObject_withDescription_fro
 
     else
     {
-      v11 = !v4;
+      v11 = !necessaryCopy;
     }
 
     if (!v11)
     {
-      v10 = [(SBSystemApertureViewController *)v7 _newContainerViewWithInterfaceElementIdentifier:v9];
-      v12 = v7->_orderedContainerViews;
+      v10 = [(SBSystemApertureViewController *)selfCopy _newContainerViewWithInterfaceElementIdentifier:v9];
+      v12 = selfCopy->_orderedContainerViews;
       if (!v12)
       {
         v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
-        v14 = v7->_orderedContainerViews;
-        v7->_orderedContainerViews = v13;
+        v14 = selfCopy->_orderedContainerViews;
+        selfCopy->_orderedContainerViews = v13;
 
-        v12 = v7->_orderedContainerViews;
+        v12 = selfCopy->_orderedContainerViews;
       }
 
       [(NSMutableArray *)v12 addObject:v10];
-      [(SBFTouchPassThroughView *)v7->_containerParent insertSubview:v10 belowSubview:v7->_magiciansCurtainView];
+      [(SBFTouchPassThroughView *)selfCopy->_containerParent insertSubview:v10 belowSubview:selfCopy->_magiciansCurtainView];
     }
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -4007,16 +4007,16 @@ BOOL __99__SBSystemApertureViewController__containerViewWithInterfaceElementIden
   return v4;
 }
 
-- (id)_childElementViewControllerWithIdentity:(id)a3
+- (id)_childElementViewControllerWithIdentity:(id)identity
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identityCopy = identity;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(SBSystemApertureViewController *)self childViewControllers];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  childViewControllers = [(SBSystemApertureViewController *)self childViewControllers];
+  v6 = [childViewControllers countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -4027,15 +4027,15 @@ BOOL __99__SBSystemApertureViewController__containerViewWithInterfaceElementIden
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(childViewControllers);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
           v11 = v10;
-          v12 = [v11 elementViewProvider];
-          v13 = [v12 element];
+          elementViewProvider = [v11 elementViewProvider];
+          element = [elementViewProvider element];
           v14 = SAElementIdentityEqualToIdentity();
 
           if (v14)
@@ -4045,7 +4045,7 @@ BOOL __99__SBSystemApertureViewController__containerViewWithInterfaceElementIden
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [childViewControllers countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
@@ -4057,16 +4057,16 @@ LABEL_12:
   return v11;
 }
 
-- (void)_removeElementViewControllersExceptingThoseWithDescriptions:(id)a3
+- (void)_removeElementViewControllersExceptingThoseWithDescriptions:(id)descriptions
 {
   v22 = *MEMORY[0x277D85DE8];
-  v14 = a3;
+  descriptionsCopy = descriptions;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [(SBSystemApertureViewController *)self childViewControllers];
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  childViewControllers = [(SBSystemApertureViewController *)self childViewControllers];
+  v5 = [childViewControllers countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -4078,24 +4078,24 @@ LABEL_12:
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(childViewControllers);
         }
 
         v9 = *(*(&v17 + 1) + 8 * v8);
         if (objc_opt_respondsToSelector())
         {
           v10 = v9;
-          v11 = [v10 elementViewProvider];
-          v12 = [v11 element];
+          elementViewProvider = [v10 elementViewProvider];
+          element = [elementViewProvider element];
 
-          if (v12)
+          if (element)
           {
             v15[0] = MEMORY[0x277D85DD0];
             v15[1] = 3221225472;
             v15[2] = __94__SBSystemApertureViewController__removeElementViewControllersExceptingThoseWithDescriptions___block_invoke;
             v15[3] = &unk_2783B8720;
-            v16 = v12;
-            if (([v14 bs_containsObjectPassingTest:v15] & 1) == 0)
+            v16 = element;
+            if (([descriptionsCopy bs_containsObjectPassingTest:v15] & 1) == 0)
             {
               [(SBSystemApertureViewController *)self _cleanupViewController:v10];
               v13 = [(SBSystemApertureViewController *)self _containerViewForViewController:v10];
@@ -4108,7 +4108,7 @@ LABEL_12:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [childViewControllers countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v6);
@@ -4123,18 +4123,18 @@ uint64_t __94__SBSystemApertureViewController__removeElementViewControllersExcep
   return v3;
 }
 
-- (void)_removeContainerViewsExceptingThoseWithDescriptions:(id)a3
+- (void)_removeContainerViewsExceptingThoseWithDescriptions:(id)descriptions
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  descriptionsCopy = descriptions;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  obj = &v5->super.super.super.super.isa;
-  v6 = [(NSMutableArray *)v5->_orderedContainerViews copy];
+  obj = &selfCopy->super.super.super.super.isa;
+  v6 = [(NSMutableArray *)selfCopy->_orderedContainerViews copy];
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -4155,7 +4155,7 @@ uint64_t __94__SBSystemApertureViewController__removeElementViewControllersExcep
         v12[2] = __86__SBSystemApertureViewController__removeContainerViewsExceptingThoseWithDescriptions___block_invoke;
         v12[3] = &unk_2783B0210;
         v12[4] = v10;
-        if (([v4 bs_containsObjectPassingTest:v12] & 1) == 0)
+        if (([descriptionsCopy bs_containsObjectPassingTest:v12] & 1) == 0)
         {
           [v10 removeFromSuperview];
           [obj[134] removeObject:v10];
@@ -4183,59 +4183,59 @@ uint64_t __86__SBSystemApertureViewController__removeContainerViewsExceptingThos
   return v5;
 }
 
-- (void)_addActiveSnapshotAssertion:(id)a3
+- (void)_addActiveSnapshotAssertion:(id)assertion
 {
-  v4 = a3;
-  if (v4)
+  assertionCopy = assertion;
+  if (assertionCopy)
   {
-    v9 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    snapshotAssertions = v5->_snapshotAssertions;
+    v9 = assertionCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    snapshotAssertions = selfCopy->_snapshotAssertions;
     if (!snapshotAssertions)
     {
-      v7 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
-      v8 = v5->_snapshotAssertions;
-      v5->_snapshotAssertions = v7;
+      weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+      v8 = selfCopy->_snapshotAssertions;
+      selfCopy->_snapshotAssertions = weakObjectsHashTable;
 
-      snapshotAssertions = v5->_snapshotAssertions;
+      snapshotAssertions = selfCopy->_snapshotAssertions;
     }
 
     [(NSHashTable *)snapshotAssertions addObject:v9];
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
 
-    v4 = v9;
+    assertionCopy = v9;
   }
 }
 
-- (void)_removeActiveSnapshotAssertion:(id)a3
+- (void)_removeActiveSnapshotAssertion:(id)assertion
 {
-  v4 = a3;
-  if (v4)
+  assertionCopy = assertion;
+  if (assertionCopy)
   {
-    v6 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    [(NSHashTable *)v5->_snapshotAssertions removeObject:v6];
-    objc_sync_exit(v5);
+    v6 = assertionCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(NSHashTable *)selfCopy->_snapshotAssertions removeObject:v6];
+    objc_sync_exit(selfCopy);
 
-    v4 = v6;
+    assertionCopy = v6;
   }
 }
 
-- (id)_activeSnapshotAssertionForElementIdentity:(id)a3
+- (id)_activeSnapshotAssertionForElementIdentity:(id)identity
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  identityCopy = identity;
+  if (identityCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = v5->_snapshotAssertions;
+    v6 = selfCopy->_snapshotAssertions;
     v7 = [(NSHashTable *)v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
@@ -4269,7 +4269,7 @@ uint64_t __86__SBSystemApertureViewController__removeContainerViewsExceptingThos
 
 LABEL_12:
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -4280,32 +4280,32 @@ LABEL_12:
   return v7;
 }
 
-- (id)_elementContextsForOrderedElementViewControllers:(id)a3
+- (id)_elementContextsForOrderedElementViewControllers:(id)controllers
 {
-  v5 = a3;
-  if ([v5 count])
+  controllersCopy = controllers;
+  if ([controllersCopy count])
   {
-    v6 = [(SBSystemApertureViewController *)self viewIfLoaded];
-    [v6 bounds];
+    viewIfLoaded = [(SBSystemApertureViewController *)self viewIfLoaded];
+    [viewIfLoaded bounds];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
 
-    v15 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v5, "count")}];
+    v15 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(controllersCopy, "count")}];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __83__SBSystemApertureViewController__elementContextsForOrderedElementViewControllers___block_invoke;
     v19[3] = &unk_2783B8770;
     v16 = v15;
-    v21 = self;
+    selfCopy = self;
     v22 = a2;
     v20 = v16;
     v23 = v8;
     v24 = v10;
     v25 = v12;
     v26 = v14;
-    [v5 enumerateObjectsUsingBlock:v19];
+    [controllersCopy enumerateObjectsUsingBlock:v19];
     v17 = v16;
   }
 
@@ -4638,16 +4638,16 @@ LABEL_45:
   [v8 setViewControllerAppearState:{objc_msgSend(*(v98 + 40), "_appearState")}];
 }
 
-- (id)_secureElementContextsForOrderedElementViewControllers:(id)a3
+- (id)_secureElementContextsForOrderedElementViewControllers:(id)controllers
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v15 = [MEMORY[0x277CBEB18] array];
+  controllersCopy = controllers;
+  array = [MEMORY[0x277CBEB18] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = v3;
+  v4 = controllersCopy;
   v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
@@ -4662,12 +4662,12 @@ LABEL_45:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v18 + 1) + 8 * i) elementViewProvider];
-        v10 = [v9 element];
+        elementViewProvider = [*(*(&v18 + 1) + 8 * i) elementViewProvider];
+        element = [elementViewProvider element];
 
         if (objc_opt_respondsToSelector())
         {
-          v11 = v10;
+          v11 = element;
           if ([v11 isSecureFlipBookElement] && ((objc_opt_respondsToSelector() & 1) != 0 && !objc_msgSend(v11, "isRegisteredForCapture") || (objc_opt_respondsToSelector() & 1) == 0) && (objc_opt_respondsToSelector() & 1) != 0)
           {
             v12 = v11;
@@ -4677,7 +4677,7 @@ LABEL_45:
             v16[3] = &unk_2783B8798;
             v17 = v12;
             v13 = [(SBSAAbstractDictionaryBackedContext *)SBSASecureFlipBookElementContext instanceWithBlock:v16];
-            [v15 addObject:v13];
+            [array addObject:v13];
           }
         }
       }
@@ -4688,7 +4688,7 @@ LABEL_45:
     while (v6);
   }
 
-  return v15;
+  return array;
 }
 
 void __89__SBSystemApertureViewController__secureElementContextsForOrderedElementViewControllers___block_invoke(uint64_t a1, void *a2)
@@ -4715,93 +4715,93 @@ uint64_t __72__SBSystemApertureViewController__systemApertureManagedIndicatorEna
   return result;
 }
 
-- (void)_setBlobEnabled:(BOOL)a3
+- (void)_setBlobEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(SBSystemApertureViewController *)self _isBlobEnabled];
-  if (v3)
+  enabledCopy = enabled;
+  _isBlobEnabled = [(SBSystemApertureViewController *)self _isBlobEnabled];
+  if (enabledCopy)
   {
-    if (!v5)
+    if (!_isBlobEnabled)
     {
 
       [(SBSystemApertureViewController *)self _addMitosisBlobEffects];
     }
   }
 
-  else if (v5)
+  else if (_isBlobEnabled)
   {
 
     [(SBSystemApertureViewController *)self _removeMitosisBlobEffects];
   }
 }
 
-- (void)_setBlobRadius:(double)a3
+- (void)_setBlobRadius:(double)radius
 {
-  if (self->_blobRadius != a3)
+  if (self->_blobRadius != radius)
   {
-    self->_blobRadius = a3;
+    self->_blobRadius = radius;
     if ([(SBSystemApertureViewController *)self _isBlobEnabled])
     {
-      v6 = [(UIView *)self->_containerBackgroundParent layer];
-      v5 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-      [v6 setValue:v5 forKeyPath:@"filters.gaussianBlur.inputRadius"];
+      layer = [(UIView *)self->_containerBackgroundParent layer];
+      v5 = [MEMORY[0x277CCABB0] numberWithDouble:radius];
+      [layer setValue:v5 forKeyPath:@"filters.gaussianBlur.inputRadius"];
     }
   }
 }
 
-- (BOOL)_handlePreferencesDidChangeAction:(id)a3
+- (BOOL)_handlePreferencesDidChangeAction:(id)action
 {
-  if (a3)
+  if (action)
   {
     [(SBSystemApertureViewController *)self _invalidatePreferencesForReason:1];
   }
 
-  return a3 != 0;
+  return action != 0;
 }
 
-- (BOOL)_handleContainerTapAction:(id)a3
+- (BOOL)_handleContainerTapAction:(id)action
 {
-  if (a3)
+  if (action)
   {
-    v5 = [a3 associatedInterfaceElementIdentifier];
-    v6 = [(SBSystemApertureViewController *)self _containerViewWithInterfaceElementIdentifier:v5 creatingIfNecessary:0];
-    v7 = [v6 elementViewController];
+    associatedInterfaceElementIdentifier = [action associatedInterfaceElementIdentifier];
+    v6 = [(SBSystemApertureViewController *)self _containerViewWithInterfaceElementIdentifier:associatedInterfaceElementIdentifier creatingIfNecessary:0];
+    elementViewController = [v6 elementViewController];
 
-    v8 = [v7 elementViewProvider];
-    v9 = [v8 element];
+    elementViewProvider = [elementViewController elementViewProvider];
+    element = [elementViewProvider element];
 
-    v10 = [v7 handleElementTap:self->_interactionLongPressGesture];
-    [(SBSystemApertureViewController *)self _pushPendingInteractionResultForElementIdentity:v9 interactionSource:1 viewInteractionResult:v10];
-    v11 = [v9 clientIdentifier];
-    v12 = [v9 elementIdentifier];
-    [SBSystemApertureTelemetryEmitter logTelemetryForInteractionTap:v10 != 0 clientIdentifier:v11 elementIdentifier:v12];
+    v10 = [elementViewController handleElementTap:self->_interactionLongPressGesture];
+    [(SBSystemApertureViewController *)self _pushPendingInteractionResultForElementIdentity:element interactionSource:1 viewInteractionResult:v10];
+    clientIdentifier = [element clientIdentifier];
+    elementIdentifier = [element elementIdentifier];
+    [SBSystemApertureTelemetryEmitter logTelemetryForInteractionTap:v10 != 0 clientIdentifier:clientIdentifier elementIdentifier:elementIdentifier];
   }
 
-  return a3 != 0;
+  return action != 0;
 }
 
-- (BOOL)_handleContainerPressAction:(id)a3
+- (BOOL)_handleContainerPressAction:(id)action
 {
-  if (a3)
+  if (action)
   {
-    v5 = [a3 associatedInterfaceElementIdentifier];
-    v6 = [(SBSystemApertureViewController *)self _containerViewWithInterfaceElementIdentifier:v5 creatingIfNecessary:0];
-    v7 = [v6 elementViewController];
+    associatedInterfaceElementIdentifier = [action associatedInterfaceElementIdentifier];
+    v6 = [(SBSystemApertureViewController *)self _containerViewWithInterfaceElementIdentifier:associatedInterfaceElementIdentifier creatingIfNecessary:0];
+    elementViewController = [v6 elementViewController];
 
-    v8 = [v7 elementViewProvider];
-    v9 = [v8 element];
+    elementViewProvider = [elementViewController elementViewProvider];
+    element = [elementViewProvider element];
 
-    v10 = [v7 handleElementLongPress:self->_interactionLongPressGesture];
-    [(SBSystemApertureViewController *)self _pushPendingInteractionResultForElementIdentity:v9 interactionSource:2 viewInteractionResult:v10];
-    v11 = [v9 clientIdentifier];
-    v12 = [v9 elementIdentifier];
-    [SBSystemApertureTelemetryEmitter logTelemetryForInteractionLongPress:v10 != 0 clientIdentifier:v11 elementIdentifier:v12];
+    v10 = [elementViewController handleElementLongPress:self->_interactionLongPressGesture];
+    [(SBSystemApertureViewController *)self _pushPendingInteractionResultForElementIdentity:element interactionSource:2 viewInteractionResult:v10];
+    clientIdentifier = [element clientIdentifier];
+    elementIdentifier = [element elementIdentifier];
+    [SBSystemApertureTelemetryEmitter logTelemetryForInteractionLongPress:v10 != 0 clientIdentifier:clientIdentifier elementIdentifier:elementIdentifier];
   }
 
-  return a3 != 0;
+  return action != 0;
 }
 
-- (id)_feedbackGeneratorForStyle:(int64_t)a3
+- (id)_feedbackGeneratorForStyle:(int64_t)style
 {
   impactFeedbackStylesToGenerators = self->_impactFeedbackStylesToGenerators;
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:?];
@@ -4809,7 +4809,7 @@ uint64_t __72__SBSystemApertureViewController__systemApertureManagedIndicatorEna
 
   if (!v7)
   {
-    if (a3 == 2)
+    if (style == 2)
     {
       v7 = [objc_alloc(MEMORY[0x277D755F0]) initWithStyle:2];
       v8 = self->_impactFeedbackStylesToGenerators;
@@ -4835,13 +4835,13 @@ uint64_t __72__SBSystemApertureViewController__systemApertureManagedIndicatorEna
   return v7;
 }
 
-- (BOOL)_handleImpactFeedbackAction:(id)a3
+- (BOOL)_handleImpactFeedbackAction:(id)action
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  actionCopy = action;
+  v5 = actionCopy;
+  if (actionCopy)
   {
-    v6 = -[SBSystemApertureViewController _feedbackGeneratorForStyle:](self, "_feedbackGeneratorForStyle:", [v4 impactFeedbackStyle]);
+    v6 = -[SBSystemApertureViewController _feedbackGeneratorForStyle:](self, "_feedbackGeneratorForStyle:", [actionCopy impactFeedbackStyle]);
     if (v6)
     {
       if ([v5 prepareOnly])
@@ -4859,40 +4859,40 @@ uint64_t __72__SBSystemApertureViewController__systemApertureManagedIndicatorEna
   return v5 != 0;
 }
 
-- (BOOL)_handleContainerResizeAction:(id)a3
+- (BOOL)_handleContainerResizeAction:(id)action
 {
-  if (a3)
+  if (action)
   {
-    v5 = a3;
-    v6 = [v5 resizeActionResult];
-    v7 = [v5 associatedInterfaceElementIdentifier];
+    actionCopy = action;
+    resizeActionResult = [actionCopy resizeActionResult];
+    associatedInterfaceElementIdentifier = [actionCopy associatedInterfaceElementIdentifier];
 
-    v8 = [(SBSystemApertureViewController *)self _containerViewWithInterfaceElementIdentifier:v7 creatingIfNecessary:0];
-    [(SBSystemApertureViewController *)self _handleResizeResult:v6 withContainerView:v8];
+    v8 = [(SBSystemApertureViewController *)self _containerViewWithInterfaceElementIdentifier:associatedInterfaceElementIdentifier creatingIfNecessary:0];
+    [(SBSystemApertureViewController *)self _handleResizeResult:resizeActionResult withContainerView:v8];
   }
 
-  return a3 != 0;
+  return action != 0;
 }
 
-- (BOOL)_handleCalloutBlockAction:(id)a3
+- (BOOL)_handleCalloutBlockAction:(id)action
 {
-  if (a3)
+  if (action)
   {
-    v4 = [a3 calloutBlock];
-    v5 = v4;
-    if (v4)
+    calloutBlock = [action calloutBlock];
+    v5 = calloutBlock;
+    if (calloutBlock)
     {
-      (*(v4 + 16))(v4);
+      (*(calloutBlock + 16))(calloutBlock);
     }
   }
 
-  return a3 != 0;
+  return action != 0;
 }
 
-- (void)_handleContainerDefaultPressGesture:(id)a3
+- (void)_handleContainerDefaultPressGesture:(id)gesture
 {
-  v5 = a3;
-  v6 = v5;
+  gestureCopy = gesture;
+  v6 = gestureCopy;
   activeContainerDefaultPressGestureDescription = self->_activeContainerDefaultPressGestureDescription;
   if (activeContainerDefaultPressGestureDescription)
   {
@@ -4902,7 +4902,7 @@ uint64_t __72__SBSystemApertureViewController__systemApertureManagedIndicatorEna
     v10[3] = &unk_2783AD750;
     v12 = a2;
     v10[4] = self;
-    v11 = v5;
+    v11 = gestureCopy;
     v8 = [(SBSAGestureDescription *)activeContainerDefaultPressGestureDescription copyWithBlock:v10];
     v9 = self->_activeContainerDefaultPressGestureDescription;
     self->_activeContainerDefaultPressGestureDescription = v8;
@@ -4953,10 +4953,10 @@ void __70__SBSystemApertureViewController__handleContainerDefaultPressGesture___
   [v6 setGestureRecognizerState:{objc_msgSend(*(a1 + 40), "state")}];
 }
 
-- (void)_handleContainerResizeGesture:(id)a3
+- (void)_handleContainerResizeGesture:(id)gesture
 {
-  v5 = a3;
-  v6 = v5;
+  gestureCopy = gesture;
+  v6 = gestureCopy;
   activeContainerResizeGestureDescription = self->_activeContainerResizeGestureDescription;
   if (activeContainerResizeGestureDescription)
   {
@@ -4966,7 +4966,7 @@ void __70__SBSystemApertureViewController__handleContainerDefaultPressGesture___
     v10[3] = &unk_2783AD750;
     v12 = a2;
     v10[4] = self;
-    v11 = v5;
+    v11 = gestureCopy;
     v8 = [(SBSAGestureDescription *)activeContainerResizeGestureDescription copyWithBlock:v10];
     v9 = self->_activeContainerResizeGestureDescription;
     self->_activeContainerResizeGestureDescription = v8;
@@ -5020,9 +5020,9 @@ void __64__SBSystemApertureViewController__handleContainerResizeGesture___block_
   [v6 setTranslation:?];
 }
 
-- (void)_pushGestureDescription:(id)a3
+- (void)_pushGestureDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v5 = SBLogSystemAperturePreferencesStackGestures();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -5047,12 +5047,12 @@ LABEL_7:
 
   v7 = 0;
 LABEL_9:
-  v8 = [v7 lastObject];
+  lastObject = [v7 lastObject];
   v9 = BSEqualObjects();
 
   if ((v9 & 1) == 0)
   {
-    [v7 addObject:v4];
+    [v7 addObject:descriptionCopy];
   }
 }
 
@@ -5180,18 +5180,18 @@ void __68__SBSystemApertureViewController__configureResizeGestureIfNecessary__bl
   [(SBSystemApertureViewController *)self _configureResizeGestureIfNecessary];
 }
 
-- (id)_contextWithOrderedElementViewControllers:(id)a3
+- (id)_contextWithOrderedElementViewControllers:(id)controllers
 {
-  v5 = a3;
+  controllersCopy = controllers;
   queryIteration = self->_queryIteration;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __76__SBSystemApertureViewController__contextWithOrderedElementViewControllers___block_invoke;
   v10[3] = &unk_2783AD750;
-  v11 = v5;
+  v11 = controllersCopy;
   v12 = a2;
   v10[4] = self;
-  v7 = v5;
+  v7 = controllersCopy;
   v8 = [SBSAContext instanceWithQueryIteration:queryIteration block:v10];
 
   return v8;
@@ -5446,35 +5446,35 @@ id __76__SBSystemApertureViewController__contextWithOrderedElementViewController
   return v7;
 }
 
-- (void)_addActiveRequest:(id)a3
+- (void)_addActiveRequest:(id)request
 {
-  v4 = a3;
-  if (v4)
+  requestCopy = request;
+  if (requestCopy)
   {
-    v9 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    activeRequests = v5->_activeRequests;
+    v9 = requestCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    activeRequests = selfCopy->_activeRequests;
     if (!activeRequests)
     {
       v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v8 = v5->_activeRequests;
-      v5->_activeRequests = v7;
+      v8 = selfCopy->_activeRequests;
+      selfCopy->_activeRequests = v7;
 
-      activeRequests = v5->_activeRequests;
+      activeRequests = selfCopy->_activeRequests;
     }
 
     [(NSMutableArray *)activeRequests addObject:v9];
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
 
-    v4 = v9;
+    requestCopy = v9;
   }
 }
 
-- (void)setContainerParentCenter:(CGPoint)a3
+- (void)setContainerParentCenter:(CGPoint)center
 {
-  y = a3.y;
-  x = a3.x;
+  y = center.y;
+  x = center.x;
   [(UIView *)self->_containerSubBackgroundParent setCenter:?];
   [(UIView *)self->_containerBackgroundParent setCenter:x, y];
   containerParent = self->_containerParent;
@@ -5482,61 +5482,61 @@ id __76__SBSystemApertureViewController__contextWithOrderedElementViewController
   [(SBFTouchPassThroughView *)containerParent setCenter:x, y];
 }
 
-- (void)_handleContainerParentUpdatesFromPreferences:(id)a3 context:(id)a4
+- (void)_handleContainerParentUpdatesFromPreferences:(id)preferences context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 containerParentViewDescription];
-  [(SBSystemApertureViewController *)self _updateObject:self withDescription:v8 fromPreferences:v7 conditionalAnimations:0 conditionalCompletion:0 context:v6];
+  contextCopy = context;
+  preferencesCopy = preferences;
+  containerParentViewDescription = [preferencesCopy containerParentViewDescription];
+  [(SBSystemApertureViewController *)self _updateObject:self withDescription:containerParentViewDescription fromPreferences:preferencesCopy conditionalAnimations:0 conditionalCompletion:0 context:contextCopy];
 }
 
-- (void)_handleContainerAndElementUpdatesFromPreferences:(id)a3 orderedElementViewControllers:(id)a4 context:(id)a5
+- (void)_handleContainerAndElementUpdatesFromPreferences:(id)preferences orderedElementViewControllers:(id)controllers context:(id)context
 {
   v113[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v75 = a4;
-  v79 = a5;
-  v8 = [v7 elementDescriptions];
-  v71 = [v7 indicatorElementDescription];
-  if (v71)
+  preferencesCopy = preferences;
+  controllersCopy = controllers;
+  contextCopy = context;
+  elementDescriptions = [preferencesCopy elementDescriptions];
+  indicatorElementDescription = [preferencesCopy indicatorElementDescription];
+  if (indicatorElementDescription)
   {
-    if (v8)
+    if (elementDescriptions)
     {
-      v9 = [v8 arrayByAddingObject:v71];
+      v9 = [elementDescriptions arrayByAddingObject:indicatorElementDescription];
 
-      v8 = v9;
+      elementDescriptions = v9;
     }
 
     else
     {
-      v113[0] = v71;
-      v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v113 count:1];
+      v113[0] = indicatorElementDescription;
+      elementDescriptions = [MEMORY[0x277CBEA60] arrayWithObjects:v113 count:1];
     }
   }
 
-  [(SBSystemApertureViewController *)self _removeElementViewControllersExceptingThoseWithDescriptions:v8];
-  v72 = v8;
-  v69 = [v8 mutableCopy];
-  v10 = [v7 indicatorContainerViewDescription];
-  v11 = [v7 containerViewDescriptions];
-  v78 = v7;
-  if (v10)
+  [(SBSystemApertureViewController *)self _removeElementViewControllersExceptingThoseWithDescriptions:elementDescriptions];
+  v72 = elementDescriptions;
+  v69 = [elementDescriptions mutableCopy];
+  indicatorContainerViewDescription = [preferencesCopy indicatorContainerViewDescription];
+  containerViewDescriptions = [preferencesCopy containerViewDescriptions];
+  v78 = preferencesCopy;
+  if (indicatorContainerViewDescription)
   {
-    v12 = [v7 indicatorContainerViewDescription];
-    v13 = [v11 arrayByAddingObject:v12];
+    indicatorContainerViewDescription2 = [preferencesCopy indicatorContainerViewDescription];
+    v13 = [containerViewDescriptions arrayByAddingObject:indicatorContainerViewDescription2];
 
-    v11 = v13;
-    v7 = v78;
+    containerViewDescriptions = v13;
+    preferencesCopy = v78;
   }
 
-  v14 = self;
-  [(SBSystemApertureViewController *)self _removeContainerViewsExceptingThoseWithDescriptions:v11];
+  selfCopy2 = self;
+  [(SBSystemApertureViewController *)self _removeContainerViewsExceptingThoseWithDescriptions:containerViewDescriptions];
   [(SBSystemApertureViewController *)self _updateContainerViewRanks];
   v101 = 0u;
   v102 = 0u;
   v99 = 0u;
   v100 = 0u;
-  obj = v11;
+  obj = containerViewDescriptions;
   v74 = [obj countByEnumeratingWithState:&v99 objects:v112 count:16];
   if (v74)
   {
@@ -5552,12 +5552,12 @@ id __76__SBSystemApertureViewController__contextWithOrderedElementViewController
         }
 
         v16 = *(*(&v99 + 1) + 8 * v15);
-        v17 = [v16 interfaceElementIdentifier];
-        v18 = [(SBSystemApertureViewController *)v14 _containerViewWithInterfaceElementIdentifier:v17 creatingIfNecessary:1];
+        interfaceElementIdentifier = [v16 interfaceElementIdentifier];
+        v18 = [(SBSystemApertureViewController *)selfCopy2 _containerViewWithInterfaceElementIdentifier:interfaceElementIdentifier creatingIfNecessary:1];
 
-        v19 = [v16 associatedSystemApertureElementIdentity];
-        v20 = v19;
-        if (v19 && (v97[0] = MEMORY[0x277D85DD0], v97[1] = 3221225472, v97[2] = __121__SBSystemApertureViewController__handleContainerAndElementUpdatesFromPreferences_orderedElementViewControllers_context___block_invoke, v97[3] = &unk_2783B8820, v98 = v19, [v75 bs_firstObjectPassingTest:v97], (v21 = objc_claimAutoreleasedReturnValue()) != 0))
+        associatedSystemApertureElementIdentity = [v16 associatedSystemApertureElementIdentity];
+        v20 = associatedSystemApertureElementIdentity;
+        if (associatedSystemApertureElementIdentity && (v97[0] = MEMORY[0x277D85DD0], v97[1] = 3221225472, v97[2] = __121__SBSystemApertureViewController__handleContainerAndElementUpdatesFromPreferences_orderedElementViewControllers_context___block_invoke, v97[3] = &unk_2783B8820, v98 = associatedSystemApertureElementIdentity, [controllersCopy bs_firstObjectPassingTest:v97], (v21 = objc_claimAutoreleasedReturnValue()) != 0))
         {
           v22 = v21;
           [v18 setElementViewController:v21];
@@ -5567,14 +5567,14 @@ id __76__SBSystemApertureViewController__contextWithOrderedElementViewController
 
         else
         {
-          v24 = [v18 elementViewController];
-          v25 = [v24 elementViewProvider];
-          v26 = [v25 element];
+          elementViewController = [v18 elementViewController];
+          elementViewProvider = [elementViewController elementViewProvider];
+          element = [elementViewProvider element];
           v27 = SAElementIdentityEqualToIdentity();
 
           if (v27)
           {
-            v22 = v24;
+            v22 = elementViewController;
           }
 
           else
@@ -5608,13 +5608,13 @@ id __76__SBSystemApertureViewController__contextWithOrderedElementViewController
           if (objc_opt_respondsToSelector())
           {
             v29 = v29;
-            v32 = [v29 snapshotReason];
-            if (v32 && (objc_opt_respondsToSelector() & 1) != 0 && ([v22 beginRequiringSnapshotForReason:v32], (v33 = objc_claimAutoreleasedReturnValue()) != 0))
+            snapshotReason = [v29 snapshotReason];
+            if (snapshotReason && (objc_opt_respondsToSelector() & 1) != 0 && ([v22 beginRequiringSnapshotForReason:snapshotReason], (v33 = objc_claimAutoreleasedReturnValue()) != 0))
             {
               v34 = v33;
               v81 = v22;
-              v35 = [v29 associatedSystemApertureElementIdentity];
-              v36 = [(SBSystemApertureViewController *)self _activeSnapshotAssertionForElementIdentity:v35];
+              associatedSystemApertureElementIdentity2 = [v29 associatedSystemApertureElementIdentity];
+              v36 = [(SBSystemApertureViewController *)self _activeSnapshotAssertionForElementIdentity:associatedSystemApertureElementIdentity2];
 
               v30 = v34;
               if (v34 == v36)
@@ -5649,16 +5649,16 @@ id __76__SBSystemApertureViewController__contextWithOrderedElementViewController
 LABEL_31:
         v80 = v30;
         v82 = v22;
-        v37 = [v23 elementViewProvider];
-        v38 = [v37 element];
+        elementViewProvider2 = [v23 elementViewProvider];
+        element2 = [elementViewProvider2 element];
         v39 = SAHasIndicatorBehavior();
 
         if (log && v28)
         {
           [v69 removeObject:v29];
-          v40 = [v23 parentViewController];
+          parentViewController = [v23 parentViewController];
 
-          if (v40 != self)
+          if (parentViewController != self)
           {
             [(SBSystemApertureViewController *)self addChildViewController:v23];
             if (objc_opt_respondsToSelector())
@@ -5668,33 +5668,33 @@ LABEL_31:
 
             if (v39)
             {
-              -[SBSystemApertureViewController _didRegisterNewIndicatorViewController:needsMatchMove:](self, "_didRegisterNewIndicatorViewController:needsMatchMove:", v23, [v71 needsMatchMoveAnimationBetweenCurtainAndJindoViews]);
+              -[SBSystemApertureViewController _didRegisterNewIndicatorViewController:needsMatchMove:](self, "_didRegisterNewIndicatorViewController:needsMatchMove:", v23, [indicatorElementDescription needsMatchMoveAnimationBetweenCurtainAndJindoViews]);
             }
 
             [v23 didMoveToParentViewController:self];
           }
 
-          v41 = [v23 view];
-          v42 = [v41 superview];
-          v43 = [v42 isDescendantOfView:v18];
+          view = [v23 view];
+          superview = [view superview];
+          v43 = [superview isDescendantOfView:v18];
 
           if ((v43 & 1) == 0)
           {
-            v44 = [v23 view];
-            [v18 addContentSubview:v44];
+            view2 = [v23 view];
+            [v18 addContentSubview:view2];
           }
 
-          v45 = [v23 _appearState];
-          v46 = [v29 appearState];
-          if (v45 != v46)
+          _appearState = [v23 _appearState];
+          appearState = [v29 appearState];
+          if (_appearState != appearState)
           {
-            v47 = v46;
-            if (v46 > 1)
+            v47 = appearState;
+            if (appearState > 1)
             {
-              if (v46 == 3)
+              if (appearState == 3)
               {
                 [v23 bs_beginAppearanceTransition:0 animated:1];
-                if (v45)
+                if (_appearState)
                 {
                   goto LABEL_55;
                 }
@@ -5702,28 +5702,28 @@ LABEL_31:
 
               else
               {
-                if (v46 != 2)
+                if (appearState != 2)
                 {
                   goto LABEL_55;
                 }
 
                 [v23 bs_endAppearanceTransition];
-                if (v45 == 1)
+                if (_appearState == 1)
                 {
                   goto LABEL_55;
                 }
               }
             }
 
-            else if (v46)
+            else if (appearState)
             {
-              if (v46 != 1)
+              if (appearState != 1)
               {
                 goto LABEL_55;
               }
 
               [v23 bs_beginAppearanceTransition:1 animated:1];
-              if (v45 != 2)
+              if (_appearState != 2)
               {
                 goto LABEL_55;
               }
@@ -5732,11 +5732,11 @@ LABEL_31:
             v48 = SBLogSystemApertureController();
             if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
             {
-              SBSAStringFromUIViewControllerAppearState(v45);
+              SBSAStringFromUIViewControllerAppearState(_appearState);
               v52 = loga = v48;
               v53 = SBSAStringFromUIViewControllerAppearState(v47);
               v54 = [v20 description];
-              v55 = [v79 queryIteration];
+              queryIteration = [contextCopy queryIteration];
               *buf = 138544130;
               v105 = v52;
               v106 = 2114;
@@ -5744,7 +5744,7 @@ LABEL_31:
               v108 = 2114;
               v109 = v54;
               v110 = 2048;
-              v111 = v55;
+              v111 = queryIteration;
               _os_log_error_impl(&dword_21ED4E000, loga, OS_LOG_TYPE_ERROR, "Unexpected view controller appearance state transition (%{public}@) -> (%{public}@) for %{public}@ during query iteration: %lu", buf, 0x2Au);
 
               v48 = loga;
@@ -5755,22 +5755,22 @@ LABEL_31:
 LABEL_55:
         [v18 setContentClippingEnabled:{objc_msgSend(v16, "isContentClippingEnabled")}];
         [v18 setUserInteractionEnabled:{objc_msgSend(v16, "isUserInteractionEnabled")}];
-        v7 = v78;
+        preferencesCopy = v78;
         if (v39)
         {
           [v18 addContainerViewGeometryObserver:self];
-          v49 = [v23 elementViewProvider];
-          if (!v49)
+          elementViewProvider3 = [v23 elementViewProvider];
+          if (!elementViewProvider3)
           {
             [SBSystemApertureViewController _handleContainerAndElementUpdatesFromPreferences:orderedElementViewControllers:context:];
           }
 
           if (objc_opt_respondsToSelector())
           {
-            [v18 addContainerViewGeometryObserver:v49];
+            [v18 addContainerViewGeometryObserver:elementViewProvider3];
           }
 
-          -[SBSystemApertureViewController _handleCurtainIndicatorPortalsNeedIndicatorMatchMoveAnimationChanged:](self, "_handleCurtainIndicatorPortalsNeedIndicatorMatchMoveAnimationChanged:", [v71 needsMatchMoveAnimationBetweenCurtainAndJindoViews]);
+          -[SBSystemApertureViewController _handleCurtainIndicatorPortalsNeedIndicatorMatchMoveAnimationChanged:](self, "_handleCurtainIndicatorPortalsNeedIndicatorMatchMoveAnimationChanged:", [indicatorElementDescription needsMatchMoveAnimationBetweenCurtainAndJindoViews]);
         }
 
         v92[0] = MEMORY[0x277D85DD0];
@@ -5781,14 +5781,14 @@ LABEL_55:
         v92[4] = self;
         v50 = v78;
         v93 = v50;
-        [(SBSystemApertureViewController *)self _updateObject:v18 withDescription:v16 fromPreferences:v50 conditionalAnimations:v92 conditionalCompletion:0 context:v79];
+        [(SBSystemApertureViewController *)self _updateObject:v18 withDescription:v16 fromPreferences:v50 conditionalAnimations:v92 conditionalCompletion:0 context:contextCopy];
         v90[0] = MEMORY[0x277D85DD0];
         v90[1] = 3221225472;
         v90[2] = __121__SBSystemApertureViewController__handleContainerAndElementUpdatesFromPreferences_orderedElementViewControllers_context___block_invoke_2_661;
         v90[3] = &unk_2783B8870;
         v91 = v80;
         v51 = v80;
-        [(SBSystemApertureViewController *)self _updateObject:v82 withDescription:v29 fromPreferences:v50 conditionalAnimations:0 conditionalCompletion:v90 context:v79];
+        [(SBSystemApertureViewController *)self _updateObject:v82 withDescription:v29 fromPreferences:v50 conditionalAnimations:0 conditionalCompletion:v90 context:contextCopy];
 
         if (v20)
         {
@@ -5801,7 +5801,7 @@ LABEL_55:
         }
 
         ++v15;
-        v14 = self;
+        selfCopy2 = self;
       }
 
       while (v74 != v15);
@@ -5832,14 +5832,14 @@ LABEL_55:
         }
 
         v62 = *(*(&v86 + 1) + 8 * i);
-        v63 = [v62 associatedSystemApertureElementIdentity];
+        associatedSystemApertureElementIdentity3 = [v62 associatedSystemApertureElementIdentity];
         v84[0] = MEMORY[0x277D85DD0];
         v84[1] = 3221225472;
         v84[2] = __121__SBSystemApertureViewController__handleContainerAndElementUpdatesFromPreferences_orderedElementViewControllers_context___block_invoke_3;
         v84[3] = &unk_2783B8820;
-        v64 = v63;
+        v64 = associatedSystemApertureElementIdentity3;
         v85 = v64;
-        v65 = [v75 bs_firstObjectPassingTest:v84];
+        v65 = [controllersCopy bs_firstObjectPassingTest:v84];
         v66 = v65;
         if (v65)
         {
@@ -5858,8 +5858,8 @@ LABEL_55:
           [v68 bs_beginAppearanceTransition:0 animated:1];
         }
 
-        v7 = v78;
-        [(SBSystemApertureViewController *)self _updateObject:v68 withDescription:v62 fromPreferences:v78 conditionalAnimations:0 conditionalCompletion:0 context:v79];
+        preferencesCopy = v78;
+        [(SBSystemApertureViewController *)self _updateObject:v68 withDescription:v62 fromPreferences:v78 conditionalAnimations:0 conditionalCompletion:0 context:contextCopy];
       }
 
       v59 = [v57 countByEnumeratingWithState:&v86 objects:v103 count:16];
@@ -5921,36 +5921,36 @@ uint64_t __121__SBSystemApertureViewController__handleContainerAndElementUpdates
   return v4;
 }
 
-- (void)_handleSecureElementUpdatesFromPreferences:(id)a3
+- (void)_handleSecureElementUpdatesFromPreferences:(id)preferences
 {
   secureElementOverlayViewController = self->_secureElementOverlayViewController;
-  v4 = [a3 secureFlipBookElementPreferences];
-  [(SBSystemApertureSecureElementRenderingOverlayViewController *)secureElementOverlayViewController handleUpdatesForSecureElementPreferences:v4];
+  secureFlipBookElementPreferences = [preferences secureFlipBookElementPreferences];
+  [(SBSystemApertureSecureElementRenderingOverlayViewController *)secureElementOverlayViewController handleUpdatesForSecureElementPreferences:secureFlipBookElementPreferences];
 }
 
-- (void)_didRegisterNewIndicatorViewController:(id)a3 needsMatchMove:(BOOL)a4
+- (void)_didRegisterNewIndicatorViewController:(id)controller needsMatchMove:(BOOL)move
 {
-  v6 = a3;
-  v7 = [v6 elementViewProvider];
-  v8 = [v7 fixedIndicatorView];
-  v9 = [v7 indicatorView];
-  v10 = v9;
-  if (v8)
+  controllerCopy = controller;
+  elementViewProvider = [controllerCopy elementViewProvider];
+  fixedIndicatorView = [elementViewProvider fixedIndicatorView];
+  indicatorView = [elementViewProvider indicatorView];
+  v10 = indicatorView;
+  if (fixedIndicatorView)
   {
-    v11 = v8;
+    v11 = fixedIndicatorView;
   }
 
   else
   {
-    v11 = v9;
+    v11 = indicatorView;
   }
 
   v12 = v11;
   objc_initWeak(&location, self);
   if (v12)
   {
-    v13 = [v12 layer];
-    v14 = [v13 animationForKey:@"com.apple.SpringBoard.SBSystemApertureViewController.fixedIndicatorMatchMoveAnimation"];
+    layer = [v12 layer];
+    v14 = [layer animationForKey:@"com.apple.SpringBoard.SBSystemApertureViewController.fixedIndicatorMatchMoveAnimation"];
 
     if (!v14)
     {
@@ -5975,10 +5975,10 @@ uint64_t __121__SBSystemApertureViewController__handleContainerAndElementUpdates
   objc_copyWeak(&v23, &location);
   v17 = v10;
   v20 = v17;
-  v18 = v8;
+  v18 = fixedIndicatorView;
   v21 = v18;
-  v22 = self;
-  v24 = a4;
+  selfCopy = self;
+  moveCopy = move;
   [v16 sb_performBlockAfterCATransactionSynchronizedCommit:v19];
 
   objc_destroyWeak(&v23);
@@ -6015,67 +6015,67 @@ void __88__SBSystemApertureViewController__didRegisterNewIndicatorViewController
   }
 }
 
-- (void)_handleCurtainIndicatorPortalsNeedIndicatorMatchMoveAnimationChanged:(BOOL)a3
+- (void)_handleCurtainIndicatorPortalsNeedIndicatorMatchMoveAnimationChanged:(BOOL)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   v22 = [(NSMutableArray *)self->_orderedContainerViews bs_firstObjectPassingTest:&__block_literal_global_664];
-  v5 = [v22 outgoingElementViewController];
-  v6 = v5;
-  if (v5)
+  outgoingElementViewController = [v22 outgoingElementViewController];
+  v6 = outgoingElementViewController;
+  if (outgoingElementViewController)
   {
-    v7 = v5;
+    elementViewController = outgoingElementViewController;
   }
 
   else
   {
-    v7 = [v22 elementViewController];
+    elementViewController = [v22 elementViewController];
   }
 
-  v8 = v7;
+  v8 = elementViewController;
 
-  v9 = [v8 elementViewProvider];
-  v10 = v9;
-  if (v9)
+  elementViewProvider = [v8 elementViewProvider];
+  v10 = elementViewProvider;
+  if (elementViewProvider)
   {
-    v11 = [v9 fixedIndicatorView];
-    v12 = [(SBSystemApertureCurtainViewHoster *)self->_curtainViewHoster portalViewForIndicatorSourceView:v11];
-    v13 = [v10 indicatorView];
-    v14 = [(SBSystemApertureCurtainViewHoster *)self->_curtainViewHoster portalViewForIndicatorSourceView:v13];
-    if (v3)
+    fixedIndicatorView = [elementViewProvider fixedIndicatorView];
+    v12 = [(SBSystemApertureCurtainViewHoster *)self->_curtainViewHoster portalViewForIndicatorSourceView:fixedIndicatorView];
+    indicatorView = [v10 indicatorView];
+    v14 = [(SBSystemApertureCurtainViewHoster *)self->_curtainViewHoster portalViewForIndicatorSourceView:indicatorView];
+    if (changedCopy)
     {
-      v15 = [v13 layer];
-      v16 = [v15 animationForKey:@"com.apple.SpringBoard.SBSystemApertureViewController.curtainIndicatorMatchMoveAnimation"];
+      layer = [indicatorView layer];
+      v16 = [layer animationForKey:@"com.apple.SpringBoard.SBSystemApertureViewController.curtainIndicatorMatchMoveAnimation"];
 
       if (!v16)
       {
-        v17 = _SBSystemApertureViewControllerPinViewToOtherView(v13, v14, @"com.apple.SpringBoard.SBSystemApertureViewController.curtainIndicatorMatchMoveAnimation");
+        v17 = _SBSystemApertureViewControllerPinViewToOtherView(indicatorView, v14, @"com.apple.SpringBoard.SBSystemApertureViewController.curtainIndicatorMatchMoveAnimation");
         [v17 setAppliesY:0];
       }
 
-      if (!v11)
+      if (!fixedIndicatorView)
       {
         goto LABEL_13;
       }
 
-      v18 = [v11 layer];
-      v19 = [v18 animationForKey:@"com.apple.SpringBoard.SBSystemApertureViewController.curtainIndicatorMatchMoveAnimation"];
+      layer2 = [fixedIndicatorView layer];
+      v19 = [layer2 animationForKey:@"com.apple.SpringBoard.SBSystemApertureViewController.curtainIndicatorMatchMoveAnimation"];
 
       if (v19)
       {
         goto LABEL_13;
       }
 
-      v20 = _SBSystemApertureViewControllerPinViewToOtherView(v11, v12, @"com.apple.SpringBoard.SBSystemApertureViewController.curtainIndicatorMatchMoveAnimation");
-      [v20 setAppliesY:0];
+      layer4 = _SBSystemApertureViewControllerPinViewToOtherView(fixedIndicatorView, v12, @"com.apple.SpringBoard.SBSystemApertureViewController.curtainIndicatorMatchMoveAnimation");
+      [layer4 setAppliesY:0];
     }
 
     else
     {
-      v21 = [v12 layer];
-      [v21 removeAnimationForKey:@"com.apple.SpringBoard.SBSystemApertureViewController.curtainIndicatorMatchMoveAnimation"];
+      layer3 = [v12 layer];
+      [layer3 removeAnimationForKey:@"com.apple.SpringBoard.SBSystemApertureViewController.curtainIndicatorMatchMoveAnimation"];
 
-      v20 = [v14 layer];
-      [v20 removeAnimationForKey:@"com.apple.SpringBoard.SBSystemApertureViewController.curtainIndicatorMatchMoveAnimation"];
+      layer4 = [v14 layer];
+      [layer4 removeAnimationForKey:@"com.apple.SpringBoard.SBSystemApertureViewController.curtainIndicatorMatchMoveAnimation"];
     }
 
 LABEL_13:
@@ -6103,25 +6103,25 @@ uint64_t __103__SBSystemApertureViewController__handleCurtainIndicatorPortalsNee
   return v7;
 }
 
-- (void)_handleBackgroundUpdatesFromPreferences:(id)a3 context:(id)a4
+- (void)_handleBackgroundUpdatesFromPreferences:(id)preferences context:(id)context
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [v8 backgroundBlurDescription];
-  if (v7)
+  preferencesCopy = preferences;
+  contextCopy = context;
+  backgroundBlurDescription = [preferencesCopy backgroundBlurDescription];
+  if (backgroundBlurDescription)
   {
-    [(SBSystemApertureViewController *)self _updateObject:self withDescription:v7 fromPreferences:v8 conditionalAnimations:0 conditionalCompletion:0 context:v6];
+    [(SBSystemApertureViewController *)self _updateObject:self withDescription:backgroundBlurDescription fromPreferences:preferencesCopy conditionalAnimations:0 conditionalCompletion:0 context:contextCopy];
   }
 }
 
-- (void)_handleCurtainUpdatesFromPreferences:(id)a3
+- (void)_handleCurtainUpdatesFromPreferences:(id)preferences
 {
-  v4 = a3;
-  v5 = v4;
+  preferencesCopy = preferences;
+  v5 = preferencesCopy;
   magiciansCurtainView = self->_magiciansCurtainView;
-  if (v4)
+  if (preferencesCopy)
   {
-    [v4 curtainRenderingConfiguration];
+    [preferencesCopy curtainRenderingConfiguration];
     [(SBSystemApertureGainMapBackedRendering *)magiciansCurtainView setRenderingConfiguration:&v8];
     highLevelMagiciansCurtainView = self->_highLevelMagiciansCurtainView;
     [v5 highLevelCurtainRenderingConfiguration];
@@ -6142,9 +6142,9 @@ uint64_t __103__SBSystemApertureViewController__handleCurtainIndicatorPortalsNee
   [(SBSystemApertureGainMapBackedRendering *)highLevelMagiciansCurtainView setRenderingConfiguration:&v8];
 }
 
-- (void)_handleAnyContentsDidChangePreferences:(id)a3 context:(id)a4
+- (void)_handleAnyContentsDidChangePreferences:(id)preferences context:(id)context
 {
-  v5 = SBSAContextAndPreferencesRepresentAnyContentVisible(a4, a3);
+  v5 = SBSAContextAndPreferencesRepresentAnyContentVisible(context, preferences);
   WeakRetained = objc_loadWeakRetained(&self->_visibilityDelegate);
   if (self->_systemApertureContainsAnyContent != v5)
   {
@@ -6155,15 +6155,15 @@ uint64_t __103__SBSystemApertureViewController__handleCurtainIndicatorPortalsNee
   }
 }
 
-- (void)_handleTimerUpdatesFromPreferences:(id)a3
+- (void)_handleTimerUpdatesFromPreferences:(id)preferences
 {
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [a3 timerDescriptions];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  timerDescriptions = [preferences timerDescriptions];
+  v5 = [timerDescriptions countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -6175,23 +6175,23 @@ uint64_t __103__SBSystemApertureViewController__handleCurtainIndicatorPortalsNee
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(timerDescriptions);
         }
 
         [(SBSystemApertureViewController *)self _addTimerIfNecessaryForDescription:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [timerDescriptions countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (id)_gestureRecognizerForDescription:(id)a3
+- (id)_gestureRecognizerForDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -6214,15 +6214,15 @@ LABEL_7:
   return v6;
 }
 
-- (void)_handleGestureUpdatesFromPreferences:(id)a3
+- (void)_handleGestureUpdatesFromPreferences:(id)preferences
 {
   v21 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [a3 gestureDescriptions];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v20 count:16];
+  gestureDescriptions = [preferences gestureDescriptions];
+  v5 = [gestureDescriptions countByEnumeratingWithState:&v14 objects:v20 count:16];
   if (v5)
   {
     v7 = v5;
@@ -6235,7 +6235,7 @@ LABEL_7:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(gestureDescriptions);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
@@ -6257,19 +6257,19 @@ LABEL_7:
         }
       }
 
-      v7 = [v4 countByEnumeratingWithState:&v14 objects:v20 count:16];
+      v7 = [gestureDescriptions countByEnumeratingWithState:&v14 objects:v20 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_handleHitTestingUpdatesWithContext:(id)a3
+- (void)_handleHitTestingUpdatesWithContext:(id)context
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = [a3 elementContexts];
-  v5 = [v4 firstObject];
-  v6 = [v5 layoutMode];
+  elementContexts = [context elementContexts];
+  firstObject = [elementContexts firstObject];
+  layoutMode = [firstObject layoutMode];
 
   v19 = 0u;
   v20 = 0u;
@@ -6291,8 +6291,8 @@ LABEL_7:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v17 + 1) + 8 * v11) layer];
-        [v12 setAllowsHitTesting:v6 > 0];
+        layer = [*(*(&v17 + 1) + 8 * v11) layer];
+        [layer setAllowsHitTesting:layoutMode > 0];
 
         ++v11;
       }
@@ -6306,30 +6306,30 @@ LABEL_7:
 
   interactionLongPressGesture = self->_interactionLongPressGesture;
   WeakRetained = objc_loadWeakRetained(&self->_activeWindowScene);
-  v15 = [WeakRetained associatedWindowScene];
-  v16 = [v15 systemGestureManager];
-  [(SBSystemApertureViewController *)self _promote:v6 < 1 gestureRecognizer:interactionLongPressGesture toSystemGestureWithManager:v16 type:136];
+  associatedWindowScene = [WeakRetained associatedWindowScene];
+  systemGestureManager = [associatedWindowScene systemGestureManager];
+  [(SBSystemApertureViewController *)self _promote:layoutMode < 1 gestureRecognizer:interactionLongPressGesture toSystemGestureWithManager:systemGestureManager type:136];
 }
 
-- (void)_handleMitosisBlobUpdatesFromPreferences:(id)a3
+- (void)_handleMitosisBlobUpdatesFromPreferences:(id)preferences
 {
-  v4 = a3;
-  -[SBSystemApertureViewController _setBlobEnabled:](self, "_setBlobEnabled:", [v4 isBlobEnabled]);
-  [v4 blobRadius];
+  preferencesCopy = preferences;
+  -[SBSystemApertureViewController _setBlobEnabled:](self, "_setBlobEnabled:", [preferencesCopy isBlobEnabled]);
+  [preferencesCopy blobRadius];
   v6 = v5;
 
   [(SBSystemApertureViewController *)self _setBlobRadius:v6];
 }
 
-- (void)_handleActionsFromPreferences:(id)a3
+- (void)_handleActionsFromPreferences:(id)preferences
 {
   v44 = *MEMORY[0x277D85DE8];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v4 = [a3 actions];
-  v5 = [v4 countByEnumeratingWithState:&v39 objects:v43 count:16];
+  actions = [preferences actions];
+  v5 = [actions countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (v5)
   {
     v6 = v5;
@@ -6341,7 +6341,7 @@ LABEL_7:
       {
         if (*v40 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(actions);
         }
 
         v9 = *(*(&v39 + 1) + 8 * v8);
@@ -6471,18 +6471,18 @@ LABEL_7:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v39 objects:v43 count:16];
+      v6 = [actions countByEnumeratingWithState:&v39 objects:v43 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_handleDebuggingUtilityWithPreferences:(id)a3 context:(id)a4 withStackDepiction:(id)a5 andQueryIteration:(unint64_t)a6
+- (void)_handleDebuggingUtilityWithPreferences:(id)preferences context:(id)context withStackDepiction:(id)depiction andQueryIteration:(unint64_t)iteration
 {
-  [(SBSystemApertureDebuggingUtility *)self->_debuggingUtility updatedPreferences:a3 context:a4 withStackDepiction:a5 andQueryIteration:self->_queryIteration];
-  v8 = [(SAUISystemApertureManager *)self->_systemApertureManager registeredElements];
-  v9 = [v8 count];
+  [(SBSystemApertureDebuggingUtility *)self->_debuggingUtility updatedPreferences:preferences context:context withStackDepiction:depiction andQueryIteration:self->_queryIteration];
+  registeredElements = [(SAUISystemApertureManager *)self->_systemApertureManager registeredElements];
+  v9 = [registeredElements count];
 
   if (!v9)
   {
@@ -6492,12 +6492,12 @@ LABEL_7:
   queryIterationLabel = self->_queryIterationLabel;
   if (queryIterationLabel)
   {
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"System Aperture Query Iteration: %li", a6];
-    [(UILabel *)queryIterationLabel setText:v11];
+    iteration = [MEMORY[0x277CCACA8] stringWithFormat:@"System Aperture Query Iteration: %li", iteration];
+    [(UILabel *)queryIterationLabel setText:iteration];
   }
 }
 
-- (void)_updateWithPreferencesFromStackForValidationReason:(unsigned int)a3
+- (void)_updateWithPreferencesFromStackForValidationReason:(unsigned int)reason
 {
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
@@ -6507,9 +6507,9 @@ LABEL_7:
   if (self->_rootPreferencesProvider)
   {
     [(SAUISystemApertureManager *)self->_systemApertureManager hostWillPerformLayout];
-    v5 = [(SAUISystemApertureManager *)self->_systemApertureManager orderedElementViewControllers];
+    orderedElementViewControllers = [(SAUISystemApertureManager *)self->_systemApertureManager orderedElementViewControllers];
     ++self->_queryIteration;
-    v6 = [(SBSystemApertureViewController *)self _contextWithOrderedElementViewControllers:v5];
+    v6 = [(SBSystemApertureViewController *)self _contextWithOrderedElementViewControllers:orderedElementViewControllers];
     v7 = SBLogSystemAperturePreferencesStack();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
@@ -6557,7 +6557,7 @@ LABEL_7:
     v16 = SBLogSystemAperturePreferencesStack();
     SBSALogDictionaryDescribableDebug(v16, v6, v14);
 
-    v17 = [(SBSABasePreferencesProvider *)self->_rootPreferencesProvider stackDepiction];
+    stackDepiction = [(SBSABasePreferencesProvider *)self->_rootPreferencesProvider stackDepiction];
     v18 = SBLogSystemAperturePreferencesStack();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
@@ -6571,17 +6571,17 @@ LABEL_7:
     }
 
     [(SBSystemApertureViewController *)self _handleContainerParentUpdatesFromPreferences:v14 context:v6];
-    v20 = [(SAUISystemApertureManager *)self->_systemApertureManager indicatorElementViewController];
-    if (v20)
+    indicatorElementViewController = [(SAUISystemApertureManager *)self->_systemApertureManager indicatorElementViewController];
+    if (indicatorElementViewController)
     {
-      v21 = [(SAUISystemApertureManager *)self->_systemApertureManager indicatorElementViewController];
-      v22 = [v5 arrayByAddingObject:v21];
+      indicatorElementViewController2 = [(SAUISystemApertureManager *)self->_systemApertureManager indicatorElementViewController];
+      v22 = [orderedElementViewControllers arrayByAddingObject:indicatorElementViewController2];
       [(SBSystemApertureViewController *)self _handleContainerAndElementUpdatesFromPreferences:v14 orderedElementViewControllers:v22 context:v6];
     }
 
     else
     {
-      [(SBSystemApertureViewController *)self _handleContainerAndElementUpdatesFromPreferences:v14 orderedElementViewControllers:v5 context:v6];
+      [(SBSystemApertureViewController *)self _handleContainerAndElementUpdatesFromPreferences:v14 orderedElementViewControllers:orderedElementViewControllers context:v6];
     }
 
     if (_os_feature_enabled_impl())
@@ -6599,29 +6599,29 @@ LABEL_7:
     [(SBSystemApertureViewController *)self _handleMitosisBlobUpdatesFromPreferences:v14];
     [(SBSystemApertureViewController *)self _handleActionsFromPreferences:v14];
     [(SBSystemApertureViewController *)self _handleTelemetryLoggingFromContext:v6];
-    v23 = SBSAStringFromPreferencesInvalidationReason(a3);
-    v24 = [v23 stringByAppendingFormat:@"\n\n%@", v17];
+    v23 = SBSAStringFromPreferencesInvalidationReason(reason);
+    v24 = [v23 stringByAppendingFormat:@"\n\n%@", stackDepiction];
     [(SBSystemApertureViewController *)self _handleDebuggingUtilityWithPreferences:v14 context:v6 withStackDepiction:v24 andQueryIteration:self->_queryIteration];
 
-    v25 = [v14 maintainedPreferences];
+    maintainedPreferences = [v14 maintainedPreferences];
     lastMaintainedPreferences = self->_lastMaintainedPreferences;
-    self->_lastMaintainedPreferences = v25;
+    self->_lastMaintainedPreferences = maintainedPreferences;
 
     [(SBSystemApertureViewController *)self _flushDidSettleHandlersIfNecessary];
     [(SBSystemApertureViewController *)self _flushIndicatorDidSettleHandlersIfNecessary];
   }
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  v6 = a4;
-  if ([v6 isEqualToString:@"statusBarAvoidanceFrameDebuggingEnabled"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"statusBarAvoidanceFrameDebuggingEnabled"])
   {
-    v5 = [MEMORY[0x277D65E60] unanimatedBehaviorSettings];
-    [(SBSystemApertureViewController *)self _updateStatusBarAvoidanceFrameWithAnimationSettings:v5];
+    unanimatedBehaviorSettings = [MEMORY[0x277D65E60] unanimatedBehaviorSettings];
+    [(SBSystemApertureViewController *)self _updateStatusBarAvoidanceFrameWithAnimationSettings:unanimatedBehaviorSettings];
   }
 
-  else if ([v6 isEqualToString:@"forceRTLLayout"])
+  else if ([keyCopy isEqualToString:@"forceRTLLayout"])
   {
     [(SBSystemApertureViewController *)self _RTLOverrideChanged];
   }
@@ -6634,38 +6634,38 @@ LABEL_7:
 
 - (void)_RTLOverrideChanged
 {
-  v3 = [(SBSystemApertureSettings *)self->_settings forceRTLLayout];
-  v4 = [(NSMutableArray *)self->_rtlOverrideAssertions lastObject];
-  v13 = v4;
-  if (v4)
+  forceRTLLayout = [(SBSystemApertureSettings *)self->_settings forceRTLLayout];
+  lastObject = [(NSMutableArray *)self->_rtlOverrideAssertions lastObject];
+  v13 = lastObject;
+  if (lastObject)
   {
-    v5 = [v4 identifier];
+    identifier = [lastObject identifier];
     v6 = SBSAStringFromUIUserInterfaceLayoutDirection(1);
-    v7 = [v5 isEqualToString:v6];
+    v7 = [identifier isEqualToString:v6];
 
 LABEL_5:
-    v8 = [(SBSystemApertureViewController *)self traitOverrides];
-    [v8 setLayoutDirection:v7];
+    traitOverrides = [(SBSystemApertureViewController *)self traitOverrides];
+    [traitOverrides setLayoutDirection:v7];
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  if (v3)
+  if (forceRTLLayout)
   {
     v7 = 1;
     goto LABEL_5;
   }
 
-  v9 = [(SBSystemApertureViewController *)self traitOverrides];
+  traitOverrides2 = [(SBSystemApertureViewController *)self traitOverrides];
   v10 = objc_opt_self();
-  v11 = [v9 containsTrait:v10];
+  v11 = [traitOverrides2 containsTrait:v10];
 
   if (v11)
   {
-    v8 = [(SBSystemApertureViewController *)self traitOverrides];
+    traitOverrides = [(SBSystemApertureViewController *)self traitOverrides];
     v12 = objc_opt_self();
-    [v8 removeTrait:v12];
+    [traitOverrides removeTrait:v12];
 
     goto LABEL_6;
   }
@@ -6704,10 +6704,10 @@ uint64_t __51__SBSystemApertureViewController__hasSecureElement__block_invoke(ui
   return v7;
 }
 
-- (void)_handleSystemApertureCurtainPortalToSuperHighLevelScene:(BOOL)a3
+- (void)_handleSystemApertureCurtainPortalToSuperHighLevelScene:(BOOL)scene
 {
   curtainViewHoster = self->_curtainViewHoster;
-  if (a3)
+  if (scene)
   {
     [(SBSystemApertureCurtainViewHoster *)curtainViewHoster addPortalForSystemApertureViewController:self];
   }
@@ -6718,11 +6718,11 @@ uint64_t __51__SBSystemApertureViewController__hasSecureElement__block_invoke(ui
   }
 }
 
-- (void)_elementKeyColorWasInvalidated:(id)a3
+- (void)_elementKeyColorWasInvalidated:(id)invalidated
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"SBSystemApertureNotificationUserInfoElementKey"];
+  userInfo = [invalidated userInfo];
+  v5 = [userInfo objectForKey:@"SBSystemApertureNotificationUserInfoElementKey"];
 
   if (v5)
   {
@@ -6777,16 +6777,16 @@ LABEL_12:
   }
 }
 
-- (id)_elementForContainerView:(id)a3
+- (id)_elementForContainerView:(id)view
 {
-  v3 = [a3 elementViewController];
-  v4 = [v3 elementViewProvider];
-  v5 = [v4 element];
+  elementViewController = [view elementViewController];
+  elementViewProvider = [elementViewController elementViewProvider];
+  element = [elementViewProvider element];
 
-  return v5;
+  return element;
 }
 
-- (id)_elementViewControllerForLayoutSpecifyingOverrider:(id)a3
+- (id)_elementViewControllerForLayoutSpecifyingOverrider:(id)overrider
 {
   systemApertureManager = self->_systemApertureManager;
   v4 = SATargetElementFromBehaviorOverrider();
@@ -6795,27 +6795,27 @@ LABEL_12:
   return v5;
 }
 
-- (id)_layoutSpecifyingOverriderForContainerView:(id)a3
+- (id)_layoutSpecifyingOverriderForContainerView:(id)view
 {
-  v3 = [a3 elementViewController];
+  elementViewController = [view elementViewController];
   v4 = SAUILayoutSpecifyingOverriderForElementViewController();
 
   return v4;
 }
 
-- (id)_containerViewForViewController:(id)a3 includingOutgoing:(BOOL)a4
+- (id)_containerViewForViewController:(id)controller includingOutgoing:(BOOL)outgoing
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  controllerCopy = controller;
+  v7 = controllerCopy;
+  if (controllerCopy)
   {
     orderedContainerViews = self->_orderedContainerViews;
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __84__SBSystemApertureViewController__containerViewForViewController_includingOutgoing___block_invoke;
     v11[3] = &unk_2783B88E0;
-    v12 = v6;
-    v13 = a4;
+    v12 = controllerCopy;
+    outgoingCopy = outgoing;
     v9 = [(NSMutableArray *)orderedContainerViews bs_firstObjectPassingTest:v11];
   }
 
@@ -6850,55 +6850,55 @@ BOOL __84__SBSystemApertureViewController__containerViewForViewController_includ
   return v6;
 }
 
-- (void)_cleanupViewController:(id)a3
+- (void)_cleanupViewController:(id)controller
 {
-  v15 = a3;
-  v4 = [v15 elementViewProvider];
-  v5 = [v4 element];
+  controllerCopy = controller;
+  elementViewProvider = [controllerCopy elementViewProvider];
+  element = [elementViewProvider element];
   v6 = SAHasIndicatorBehavior();
 
   if (v6)
   {
-    v7 = [v15 elementViewProvider];
-    v8 = [v7 indicatorView];
-    v9 = [(SBSystemApertureCurtainViewHoster *)self->_curtainViewHoster portalViewForIndicatorSourceView:v8];
-    v10 = [v9 layer];
-    [v10 removeAnimationForKey:@"com.apple.SpringBoard.SBSystemApertureViewController.curtainIndicatorMatchMoveAnimation"];
+    elementViewProvider2 = [controllerCopy elementViewProvider];
+    indicatorView = [elementViewProvider2 indicatorView];
+    v9 = [(SBSystemApertureCurtainViewHoster *)self->_curtainViewHoster portalViewForIndicatorSourceView:indicatorView];
+    layer = [v9 layer];
+    [layer removeAnimationForKey:@"com.apple.SpringBoard.SBSystemApertureViewController.curtainIndicatorMatchMoveAnimation"];
 
-    [(SBSystemApertureCurtainViewHoster *)self->_curtainViewHoster removePortalForIndicatorSourceView:v8];
-    v11 = [v7 fixedIndicatorView];
-    if (v11)
+    [(SBSystemApertureCurtainViewHoster *)self->_curtainViewHoster removePortalForIndicatorSourceView:indicatorView];
+    fixedIndicatorView = [elementViewProvider2 fixedIndicatorView];
+    if (fixedIndicatorView)
     {
-      v12 = [(SBSystemApertureCurtainViewHoster *)self->_curtainViewHoster portalViewForIndicatorSourceView:v11];
-      v13 = [v12 layer];
-      [v13 removeAnimationForKey:@"com.apple.SpringBoard.SBSystemApertureViewController.curtainIndicatorMatchMoveAnimation"];
+      v12 = [(SBSystemApertureCurtainViewHoster *)self->_curtainViewHoster portalViewForIndicatorSourceView:fixedIndicatorView];
+      layer2 = [v12 layer];
+      [layer2 removeAnimationForKey:@"com.apple.SpringBoard.SBSystemApertureViewController.curtainIndicatorMatchMoveAnimation"];
 
-      [(SBSystemApertureCurtainViewHoster *)self->_curtainViewHoster removePortalForIndicatorSourceView:v11];
+      [(SBSystemApertureCurtainViewHoster *)self->_curtainViewHoster removePortalForIndicatorSourceView:fixedIndicatorView];
     }
   }
 
-  [v15 bs_endAppearanceTransition:0];
-  [v15 willMoveToParentViewController:0];
-  v14 = [v15 view];
-  [v14 removeFromSuperview];
+  [controllerCopy bs_endAppearanceTransition:0];
+  [controllerCopy willMoveToParentViewController:0];
+  view = [controllerCopy view];
+  [view removeFromSuperview];
 
-  [v15 removeFromParentViewController];
+  [controllerCopy removeFromParentViewController];
   if (objc_opt_respondsToSelector())
   {
-    [v15 removeElementViewControllingObserver:self];
+    [controllerCopy removeElementViewControllingObserver:self];
   }
 }
 
-- (id)_animatablePropertyWithProgressMilestones:(id)a3 block:(id)a4
+- (id)_animatablePropertyWithProgressMilestones:(id)milestones block:(id)block
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 count];
+  milestonesCopy = milestones;
+  blockCopy = block;
+  v7 = [milestonesCopy count];
   v8 = 0;
-  if (v6 && v7)
+  if (blockCopy && v7)
   {
-    v9 = [v5 mutableCopy];
+    v9 = [milestonesCopy mutableCopy];
     v8 = objc_alloc_init(MEMORY[0x277D75D38]);
     [v8 setValue:0.0];
     objc_initWeak(&location, v8);
@@ -6912,7 +6912,7 @@ BOOL __84__SBSystemApertureViewController__containerViewForViewController_includ
     objc_copyWeak(&v21, &location);
     v12 = v9;
     v19 = v12;
-    v13 = v6;
+    v13 = blockCopy;
     v20 = v13;
     [v10 _createTransformerWithInputAnimatableProperties:v11 presentationValueChangedCallback:&v15];
 
@@ -7014,19 +7014,19 @@ void __82__SBSystemApertureViewController__animatablePropertyWithProgressMilesto
   }
 }
 
-- (NSDirectionalEdgeInsets)_maximumContainerViewOutsetsInBounds:(CGRect)a3 inLayoutMode:(int64_t)a4
+- (NSDirectionalEdgeInsets)_maximumContainerViewOutsetsInBounds:(CGRect)bounds inLayoutMode:(int64_t)mode
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(SBSystemApertureViewController *)self _layoutMetrics];
-  [v10 sensorRegionSize];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  _layoutMetrics = [(SBSystemApertureViewController *)self _layoutMetrics];
+  [_layoutMetrics sensorRegionSize];
   v12 = v11;
   v26 = v13;
 
-  v14 = [(SBSystemApertureViewController *)self _layoutMetrics];
-  [v14 minimumScreenEdgeInsets];
+  _layoutMetrics2 = [(SBSystemApertureViewController *)self _layoutMetrics];
+  [_layoutMetrics2 minimumScreenEdgeInsets];
   v16 = v15;
   v18 = v17;
   v20 = v19;
@@ -7036,7 +7036,7 @@ void __82__SBSystemApertureViewController__animatablePropertyWithProgressMilesto
   v27.size.width = width;
   v27.size.height = height;
   v21 = v18 + (v12 - CGRectGetWidth(v27)) * 0.5;
-  if (a4 < 2)
+  if (mode < 2)
   {
     v23 = *MEMORY[0x277D75060];
     v22 = *(MEMORY[0x277D75060] + 16);
@@ -7062,32 +7062,32 @@ void __82__SBSystemApertureViewController__animatablePropertyWithProgressMilesto
   return result;
 }
 
-- (NSDirectionalEdgeInsets)_validatedEdgeOutsetsForPreferredOutsets:(NSDirectionalEdgeInsets)a3 maximumOutsets:(NSDirectionalEdgeInsets)a4
+- (NSDirectionalEdgeInsets)_validatedEdgeOutsetsForPreferredOutsets:(NSDirectionalEdgeInsets)outsets maximumOutsets:(NSDirectionalEdgeInsets)maximumOutsets
 {
-  if (a4.top >= a3.top)
+  if (maximumOutsets.top >= outsets.top)
   {
-    a3.top = a4.top;
+    outsets.top = maximumOutsets.top;
   }
 
-  v4 = fmin(a3.top, 0.0);
-  if (a4.leading >= a3.leading)
+  v4 = fmin(outsets.top, 0.0);
+  if (maximumOutsets.leading >= outsets.leading)
   {
-    a3.leading = a4.leading;
+    outsets.leading = maximumOutsets.leading;
   }
 
-  v5 = fmin(a3.leading, 0.0);
-  if (a4.bottom >= a3.bottom)
+  v5 = fmin(outsets.leading, 0.0);
+  if (maximumOutsets.bottom >= outsets.bottom)
   {
-    a3.bottom = a4.bottom;
+    outsets.bottom = maximumOutsets.bottom;
   }
 
-  v6 = fmin(a3.bottom, 0.0);
-  if (a4.trailing >= a3.trailing)
+  v6 = fmin(outsets.bottom, 0.0);
+  if (maximumOutsets.trailing >= outsets.trailing)
   {
-    a3.trailing = a4.trailing;
+    outsets.trailing = maximumOutsets.trailing;
   }
 
-  v7 = fmin(a3.trailing, 0.0);
+  v7 = fmin(outsets.trailing, 0.0);
   result.trailing = v7;
   result.bottom = v6;
   result.leading = v5;
@@ -7097,8 +7097,8 @@ void __82__SBSystemApertureViewController__animatablePropertyWithProgressMilesto
 
 - (CGSize)_adjunctContainerMinimalViewSize
 {
-  v2 = [(SBSystemApertureViewController *)self _layoutMetrics];
-  [v2 sensorRegionSize];
+  _layoutMetrics = [(SBSystemApertureViewController *)self _layoutMetrics];
+  [_layoutMetrics sensorRegionSize];
   v4 = v3;
 
   v5 = v4;
@@ -7108,17 +7108,17 @@ void __82__SBSystemApertureViewController__animatablePropertyWithProgressMilesto
   return result;
 }
 
-- (CGRect)_frameForSensorRegionInBounds:(CGRect)a3
+- (CGRect)_frameForSensorRegionInBounds:(CGRect)bounds
 {
-  v4 = [(SBSystemApertureViewController *)self _layoutMetrics];
-  [v4 sensorRegionSize];
+  _layoutMetrics = [(SBSystemApertureViewController *)self _layoutMetrics];
+  [_layoutMetrics sensorRegionSize];
   BSRectWithSize();
 
-  v5 = [(SBSystemApertureViewController *)self _layoutMetrics];
-  [v5 minimumScreenEdgeInsets];
+  _layoutMetrics2 = [(SBSystemApertureViewController *)self _layoutMetrics];
+  [_layoutMetrics2 minimumScreenEdgeInsets];
 
-  v6 = [(SBSystemApertureViewController *)self traitCollection];
-  [v6 displayScale];
+  traitCollection = [(SBSystemApertureViewController *)self traitCollection];
+  [traitCollection displayScale];
   UIRectCenteredXInRectScale();
   v8 = v7;
   v10 = v9;
@@ -7136,11 +7136,11 @@ void __82__SBSystemApertureViewController__animatablePropertyWithProgressMilesto
   return result;
 }
 
-- (CGRect)_portraitFrameForPrimaryContainerViewInBounds:(CGRect)a3 withPreferredEdgeOutsets:(NSDirectionalEdgeInsets)a4 layoutDirection:(int64_t)a5
+- (CGRect)_portraitFrameForPrimaryContainerViewInBounds:(CGRect)bounds withPreferredEdgeOutsets:(NSDirectionalEdgeInsets)outsets layoutDirection:(int64_t)direction
 {
-  [(SBSystemApertureViewController *)self _frameForSensorRegionInBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v6 = [(SBSystemApertureViewController *)self traitCollection];
-  [v6 displayScale];
+  [(SBSystemApertureViewController *)self _frameForSensorRegionInBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
+  traitCollection = [(SBSystemApertureViewController *)self traitCollection];
+  [traitCollection displayScale];
   UIRectRoundToScale();
   v8 = v7;
   v10 = v9;
@@ -7158,12 +7158,12 @@ void __82__SBSystemApertureViewController__animatablePropertyWithProgressMilesto
   return result;
 }
 
-- (CGRect)_boundsForAdjunctContainerViewWithPreferredEdgeOutsets:(NSDirectionalEdgeInsets)a3 layoutDirection:(int64_t)a4
+- (CGRect)_boundsForAdjunctContainerViewWithPreferredEdgeOutsets:(NSDirectionalEdgeInsets)outsets layoutDirection:(int64_t)direction
 {
   [(SBSystemApertureViewController *)self _adjunctContainerMinimalViewSize];
   BSRectWithSize();
-  v5 = [(SBSystemApertureViewController *)self traitCollection];
-  [v5 displayScale];
+  traitCollection = [(SBSystemApertureViewController *)self traitCollection];
+  [traitCollection displayScale];
   UIRectRoundToScale();
   v7 = v6;
   v9 = v8;
@@ -7187,19 +7187,19 @@ void __82__SBSystemApertureViewController__animatablePropertyWithProgressMilesto
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v8 = [v3 materialViewWithRecipeNamed:@"systemApertureBackgroundVariableBlur-D73" inBundle:v4 options:0 initialWeighting:0 scaleAdjustment:1.0];
 
-  v5 = [(SBSystemApertureViewController *)self view];
-  [v5 bounds];
+  view = [(SBSystemApertureViewController *)self view];
+  [view bounds];
   [v8 setFrame:{0.0, -360.0, CGRectGetWidth(v10), 360.0}];
 
   [v8 bs_setHitTestingDisabled:1];
   [v8 setAutoresizingMask:2];
   [v8 setHidden:1];
-  v6 = [v8 layer];
-  [v6 setDisableUpdateMask:32];
+  layer = [v8 layer];
+  [layer setDisableUpdateMask:32];
 
   [(SBSystemApertureViewController *)self setVariableBlurView:v8];
-  v7 = [(SBSystemApertureViewController *)self view];
-  [v7 insertSubview:v8 belowSubview:self->_containerSubBackgroundParent];
+  view2 = [(SBSystemApertureViewController *)self view];
+  [view2 insertSubview:v8 belowSubview:self->_containerSubBackgroundParent];
 }
 
 - (void)_addMitosisBlobEffects
@@ -7210,34 +7210,34 @@ void __82__SBSystemApertureViewController__animatablePropertyWithProgressMilesto
   [v3 setValue:v4 forKey:@"inputRadius"];
 
   v5 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA260]];
-  v6 = [MEMORY[0x277D75348] blackColor];
-  [v5 setValue:objc_msgSend(v6 forKey:{"CGColor"), @"inputColor"}];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [v5 setValue:objc_msgSend(blackColor forKey:{"CGColor"), @"inputColor"}];
 
   [v5 setValue:0 forKey:@"inputAmount"];
   v7 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA2B8]];
   [v7 setValue:MEMORY[0x277CBEC38] forKey:@"inputReversed"];
-  v8 = [(UIView *)self->_containerBackgroundParent layer];
+  layer = [(UIView *)self->_containerBackgroundParent layer];
   v10[0] = v3;
   v10[1] = v5;
   v10[2] = v7;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:3];
-  [v8 setFilters:v9];
+  [layer setFilters:v9];
 }
 
 - (void)_removeMitosisBlobEffects
 {
-  v2 = [(UIView *)self->_containerBackgroundParent layer];
-  [v2 setFilters:MEMORY[0x277CBEBF8]];
+  layer = [(UIView *)self->_containerBackgroundParent layer];
+  [layer setFilters:MEMORY[0x277CBEBF8]];
 }
 
-- (void)_updatePreferredContentSizeCategoryForAllElements:(id)a3
+- (void)_updatePreferredContentSizeCategoryForAllElements:(id)elements
 {
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(SAUISystemApertureManager *)self->_systemApertureManager orderedElementViewControllers:a3];
+  v4 = [(SAUISystemApertureManager *)self->_systemApertureManager orderedElementViewControllers:elements];
   v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
@@ -7264,46 +7264,46 @@ void __82__SBSystemApertureViewController__animatablePropertyWithProgressMilesto
   }
 }
 
-- (void)_updatePreferredContentSizeCategoryForElementViewController:(id)a3
+- (void)_updatePreferredContentSizeCategoryForElementViewController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   v8 = SAUILayoutSpecifyingOverriderForElementViewController();
-  v4 = [v8 layoutMode];
+  layoutMode = [v8 layoutMode];
   v5 = SBSACustomLayoutForBehaviorOverrider();
-  v6 = SBSABehavesLikeCustom(v4, v5);
-  v7 = [v3 viewIfLoaded];
+  v6 = SBSABehavesLikeCustom(layoutMode, v5);
+  viewIfLoaded = [controllerCopy viewIfLoaded];
 
-  [v7 sbui_systemApertureApplyMinimumAndMaximumContentSizeCategoryForCustomLayoutMode:v6];
+  [viewIfLoaded sbui_systemApertureApplyMinimumAndMaximumContentSizeCategoryForCustomLayoutMode:v6];
 }
 
-- (void)_beginRequiringBacklightAssertionForReason:(id)a3
+- (void)_beginRequiringBacklightAssertionForReason:(id)reason
 {
   v16[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
     [SBSystemApertureViewController _beginRequiringBacklightAssertionForReason:];
   }
 
-  [(NSCountedSet *)self->_backlightAssertionRequiringReasons addObject:v4];
+  [(NSCountedSet *)self->_backlightAssertionRequiringReasons addObject:reasonCopy];
   if (!self->_liveUpdatingAssertion)
   {
-    v5 = [(SBSystemApertureViewController *)self view];
-    v6 = [v5 window];
-    v7 = [v6 windowScene];
+    view = [(SBSystemApertureViewController *)self view];
+    window = [view window];
+    windowScene = [window windowScene];
 
-    if (v7)
+    if (windowScene)
     {
-      v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"System Aperture inactive content update: <%@>", v4];
+      reasonCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"System Aperture inactive content update: <%@>", reasonCopy];
       v9 = MEMORY[0x277CF0868];
-      v10 = [MEMORY[0x277CF09A8] requestLiveUpdatingForScene:v7];
+      v10 = [MEMORY[0x277CF09A8] requestLiveUpdatingForScene:windowScene];
       v16[0] = v10;
-      v11 = [MEMORY[0x277CF09B0] requestUnrestrictedFramerateForScene:v7];
+      v11 = [MEMORY[0x277CF09B0] requestUnrestrictedFramerateForScene:windowScene];
       v16[1] = v11;
-      v12 = [MEMORY[0x277CF09E8] ignoreWhenBacklightInactivates];
-      v16[2] = v12;
+      ignoreWhenBacklightInactivates = [MEMORY[0x277CF09E8] ignoreWhenBacklightInactivates];
+      v16[2] = ignoreWhenBacklightInactivates;
       v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:3];
-      v14 = [v9 acquireWithExplanation:v8 observer:0 attributes:v13];
+      v14 = [v9 acquireWithExplanation:reasonCopy observer:0 attributes:v13];
       liveUpdatingAssertion = self->_liveUpdatingAssertion;
       self->_liveUpdatingAssertion = v14;
 
@@ -7312,21 +7312,21 @@ void __82__SBSystemApertureViewController__animatablePropertyWithProgressMilesto
   }
 }
 
-- (void)_endRequiringBacklightAssertionForReason:(id)a3
+- (void)_endRequiringBacklightAssertionForReason:(id)reason
 {
-  v4 = a3;
-  v9 = v4;
-  if (!v4)
+  reasonCopy = reason;
+  v9 = reasonCopy;
+  if (!reasonCopy)
   {
     [SBSystemApertureViewController _endRequiringBacklightAssertionForReason:];
-    v4 = 0;
+    reasonCopy = 0;
   }
 
-  [(NSCountedSet *)self->_backlightAssertionRequiringReasons removeObject:v4];
-  v5 = [(NSCountedSet *)self->_backlightAssertionRequiringReasons anyObject];
+  [(NSCountedSet *)self->_backlightAssertionRequiringReasons removeObject:reasonCopy];
+  anyObject = [(NSCountedSet *)self->_backlightAssertionRequiringReasons anyObject];
 
   v6 = v9;
-  if (!v5)
+  if (!anyObject)
   {
     if (self->_liveUpdatingAssertion)
     {
@@ -7347,23 +7347,23 @@ void __82__SBSystemApertureViewController__animatablePropertyWithProgressMilesto
   }
 }
 
-- (BOOL)_shouldSuppressElement:(id)a3 allowsSuppressionForSystemChromeSuppression:(BOOL)a4 reason:(int64_t *)a5
+- (BOOL)_shouldSuppressElement:(id)element allowsSuppressionForSystemChromeSuppression:(BOOL)suppression reason:(int64_t *)reason
 {
-  v6 = a4;
+  suppressionCopy = suppression;
   v77 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  elementCopy = element;
   secureElementCoordinator = self->_secureElementCoordinator;
-  if (!secureElementCoordinator || ![(SBSystemApertureSecureElementCoordinator *)secureElementCoordinator doesElementNeedSuppressionForActiveSecureCaptureSession:v8])
+  if (!secureElementCoordinator || ![(SBSystemApertureSecureElementCoordinator *)secureElementCoordinator doesElementNeedSuppressionForActiveSecureCaptureSession:elementCopy])
   {
     if (objc_opt_respondsToSelector())
     {
-      v11 = v6;
-      v12 = a5;
+      v11 = suppressionCopy;
+      reasonCopy2 = reason;
       v71 = 0u;
       v72 = 0u;
       v69 = 0u;
       v70 = 0u;
-      v13 = self;
+      selfCopy2 = self;
       v14 = self->_sceneIDsPreferringSuppression;
       v15 = [(NSSet *)v14 countByEnumeratingWithState:&v69 objects:v76 count:16];
       if (v15)
@@ -7380,7 +7380,7 @@ LABEL_7:
             objc_enumerationMutation(v14);
           }
 
-          if ([v8 shouldSuppressElementWhilePresentingSceneWithIdentifier:*(*(&v69 + 1) + 8 * v18)])
+          if ([elementCopy shouldSuppressElementWhilePresentingSceneWithIdentifier:*(*(&v69 + 1) + 8 * v18)])
           {
             goto LABEL_29;
           }
@@ -7398,20 +7398,20 @@ LABEL_7:
         }
       }
 
-      a5 = v12;
-      self = v13;
-      v6 = v11;
+      reason = reasonCopy2;
+      self = selfCopy2;
+      suppressionCopy = v11;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v19 = v6;
-      v12 = a5;
+      v19 = suppressionCopy;
+      reasonCopy2 = reason;
       v67 = 0u;
       v68 = 0u;
       v65 = 0u;
       v66 = 0u;
-      v13 = self;
+      selfCopy2 = self;
       v14 = self->_bundleIDsPreferringSuppression;
       v20 = [(NSSet *)v14 countByEnumeratingWithState:&v65 objects:v75 count:16];
       if (v20)
@@ -7428,7 +7428,7 @@ LABEL_17:
             objc_enumerationMutation(v14);
           }
 
-          if ([v8 shouldSuppressElementWhilePresentingAppWithBundleId:*(*(&v65 + 1) + 8 * v23)])
+          if ([elementCopy shouldSuppressElementWhilePresentingAppWithBundleId:*(*(&v65 + 1) + 8 * v23)])
           {
             break;
           }
@@ -7447,39 +7447,39 @@ LABEL_17:
 
 LABEL_29:
 
-        a5 = v12;
-        self = v13;
+        reason = reasonCopy2;
+        self = selfCopy2;
         goto LABEL_30;
       }
 
 LABEL_23:
 
-      a5 = v12;
-      self = v13;
-      v6 = v19;
+      reason = reasonCopy2;
+      self = selfCopy2;
+      suppressionCopy = v19;
     }
 
-    if (!-[NSSet count](self->_sceneIDsPreferringSuppression, "count") && !-[NSSet count](self->_bundleIDsPreferringSuppression, "count") && (objc_opt_respondsToSelector() & 1) != 0 && ([v8 shouldSuppressElementWhilePresentingNoAppsOrScenes] & 1) != 0)
+    if (!-[NSSet count](self->_sceneIDsPreferringSuppression, "count") && !-[NSSet count](self->_bundleIDsPreferringSuppression, "count") && (objc_opt_respondsToSelector() & 1) != 0 && ([elementCopy shouldSuppressElementWhilePresentingNoAppsOrScenes] & 1) != 0)
     {
       v10 = 3;
       goto LABEL_30;
     }
 
-    if ((objc_opt_respondsToSelector() & 1) != 0 && [v8 shouldSuppressElementWhileOtherElementsPresent])
+    if ((objc_opt_respondsToSelector() & 1) != 0 && [elementCopy shouldSuppressElementWhileOtherElementsPresent])
     {
       v63 = 0u;
       v64 = 0u;
       v61 = 0u;
       v62 = 0u;
-      v55 = self;
-      v26 = [(SAUISystemApertureManager *)self->_systemApertureManager orderedElementViewControllers];
-      v27 = [v26 countByEnumeratingWithState:&v61 objects:v74 count:16];
+      selfCopy3 = self;
+      orderedElementViewControllers = [(SAUISystemApertureManager *)self->_systemApertureManager orderedElementViewControllers];
+      v27 = [orderedElementViewControllers countByEnumeratingWithState:&v61 objects:v74 count:16];
       if (v27)
       {
         v28 = v27;
-        obj = v26;
-        v53 = v6;
-        v54 = a5;
+        obj = orderedElementViewControllers;
+        v53 = suppressionCopy;
+        reasonCopy3 = reason;
         v29 = 0;
         v30 = *v62;
         do
@@ -7492,22 +7492,22 @@ LABEL_23:
             }
 
             v32 = *(*(&v61 + 1) + 8 * i);
-            v33 = [v32 elementViewProvider];
-            v34 = [v33 element];
-            v35 = v34;
-            if (v34 == v8)
+            elementViewProvider = [v32 elementViewProvider];
+            element = [elementViewProvider element];
+            v35 = element;
+            if (element == elementCopy)
             {
             }
 
             else
             {
-              v36 = [v32 elementViewProvider];
-              [v36 systemApertureLayoutSpecifyingOverrider];
-              v38 = v37 = v8;
-              v39 = [v38 layoutMode];
+              elementViewProvider2 = [v32 elementViewProvider];
+              [elementViewProvider2 systemApertureLayoutSpecifyingOverrider];
+              v38 = v37 = elementCopy;
+              layoutMode = [v38 layoutMode];
 
-              v8 = v37;
-              if (v39 > 0)
+              elementCopy = v37;
+              if (layoutMode > 0)
               {
                 ++v29;
               }
@@ -7519,9 +7519,9 @@ LABEL_23:
 
         while (v28);
 
-        a5 = v54;
-        self = v55;
-        v6 = v53;
+        reason = reasonCopy3;
+        self = selfCopy3;
+        suppressionCopy = v53;
         if (v29)
         {
           v10 = 4;
@@ -7534,25 +7534,25 @@ LABEL_23:
       }
     }
 
-    if ((objc_opt_respondsToSelector() & 1) != 0 && [v8 shouldSuppressElementWhileOnCoversheet] && self->_prefersSuppressionOfElementsDueToCoversheetVisibility)
+    if ((objc_opt_respondsToSelector() & 1) != 0 && [elementCopy shouldSuppressElementWhileOnCoversheet] && self->_prefersSuppressionOfElementsDueToCoversheetVisibility)
     {
       v10 = 5;
       goto LABEL_30;
     }
 
-    if ((objc_opt_respondsToSelector() & 1) != 0 && [v8 shouldSuppressElementWhileOverLiquidDetectionCriticalUI] && self->_prefersSuppressionOfElementsDueToLiquidDetectionVisibility)
+    if ((objc_opt_respondsToSelector() & 1) != 0 && [elementCopy shouldSuppressElementWhileOverLiquidDetectionCriticalUI] && self->_prefersSuppressionOfElementsDueToLiquidDetectionVisibility)
     {
       v10 = 6;
       goto LABEL_30;
     }
 
-    if ((objc_opt_respondsToSelector() & 1) != 0 && [v8 shouldSuppressElementWhileProximityReaderPresent] && self->_prefersSuppressionOfElementsDueToProximityReaderVisibility)
+    if ((objc_opt_respondsToSelector() & 1) != 0 && [elementCopy shouldSuppressElementWhileProximityReaderPresent] && self->_prefersSuppressionOfElementsDueToProximityReaderVisibility)
     {
       v10 = 7;
       goto LABEL_30;
     }
 
-    if (((objc_opt_respondsToSelector() & 1) == 0 || ([v8 shouldIgnoreSystemChromeSuppression] & 1) == 0) && ((objc_opt_respondsToSelector() & 1) == 0 || (objc_msgSend(v8, "shouldIgnoreSystemChromeSuppression") & 1) == 0))
+    if (((objc_opt_respondsToSelector() & 1) == 0 || ([elementCopy shouldIgnoreSystemChromeSuppression] & 1) == 0) && ((objc_opt_respondsToSelector() & 1) == 0 || (objc_msgSend(elementCopy, "shouldIgnoreSystemChromeSuppression") & 1) == 0))
     {
       if (objc_opt_respondsToSelector())
       {
@@ -7560,14 +7560,14 @@ LABEL_23:
         v60 = 0u;
         v57 = 0u;
         v58 = 0u;
-        v40 = self;
+        selfCopy4 = self;
         v41 = self->_bundleIDsPreferringSuppression;
         v42 = [(NSSet *)v41 countByEnumeratingWithState:&v57 objects:v73 count:16];
         if (v42)
         {
           v43 = v42;
-          v44 = v6;
-          v45 = a5;
+          v44 = suppressionCopy;
+          reasonCopy4 = reason;
           v46 = *v58;
           while (2)
           {
@@ -7578,7 +7578,7 @@ LABEL_23:
                 objc_enumerationMutation(v41);
               }
 
-              if ([v8 shouldIgnoreSystemChromeSuppressionWhilePresentingAppWithBundleId:*(*(&v57 + 1) + 8 * j)])
+              if ([elementCopy shouldIgnoreSystemChromeSuppressionWhilePresentingAppWithBundleId:*(*(&v57 + 1) + 8 * j)])
               {
                 v48 = 0;
                 goto LABEL_77;
@@ -7596,8 +7596,8 @@ LABEL_23:
 
           v48 = 1;
 LABEL_77:
-          a5 = v45;
-          v6 = v44;
+          reason = reasonCopy4;
+          suppressionCopy = v44;
         }
 
         else
@@ -7605,7 +7605,7 @@ LABEL_77:
           v48 = 1;
         }
 
-        self = v40;
+        self = selfCopy4;
       }
 
       else
@@ -7613,27 +7613,27 @@ LABEL_77:
         v48 = 1;
       }
 
-      if (v48 && v6 && self->_suppressForSystemChromeSuppressionAssertion)
+      if (v48 && suppressionCopy && self->_suppressForSystemChromeSuppressionAssertion)
       {
         v10 = 8;
         goto LABEL_30;
       }
     }
 
-    v49 = self;
+    selfCopy5 = self;
     if (objc_opt_respondsToSelector())
     {
       WeakRetained = objc_loadWeakRetained(&self->_activeWindowScene);
-      v51 = [WeakRetained associatedWindowScene];
-      if ([v51 isContinuityDisplayWindowScene])
+      associatedWindowScene = [WeakRetained associatedWindowScene];
+      if ([associatedWindowScene isContinuityDisplayWindowScene])
       {
-        v52 = [v8 shouldSuppressElementWhileOnContinuityDisplay];
+        shouldSuppressElementWhileOnContinuityDisplay = [elementCopy shouldSuppressElementWhileOnContinuityDisplay];
 
-        if (v52)
+        if (shouldSuppressElementWhileOnContinuityDisplay)
         {
           v10 = 10;
 LABEL_92:
-          self = v49;
+          self = selfCopy5;
           goto LABEL_30;
         }
       }
@@ -7643,7 +7643,7 @@ LABEL_92:
       }
     }
 
-    if ((objc_opt_respondsToSelector() & 1) == 0 || ([v8 requiresSuppressionFromSystemAperture] & 1) == 0)
+    if ((objc_opt_respondsToSelector() & 1) == 0 || ([elementCopy requiresSuppressionFromSystemAperture] & 1) == 0)
     {
       v10 = 0;
       LOBYTE(v24) = 0;
@@ -7656,38 +7656,38 @@ LABEL_92:
 
   v10 = 11;
 LABEL_30:
-  v24 = ![(SBSystemApertureViewController *)self _doesElementHaveValidRequiredPriorityAssertion:v8];
+  v24 = ![(SBSystemApertureViewController *)self _doesElementHaveValidRequiredPriorityAssertion:elementCopy];
 LABEL_31:
-  *a5 = v10;
+  *reason = v10;
 
   return v24;
 }
 
-- (id)registerElement:(id)a3
+- (id)registerElement:(id)element
 {
-  v4 = a3;
-  v5 = [v4 viewProvider];
-  v6 = [v5 systemApertureLayoutSpecifyingOverrider];
-  [v6 addBehaviorOverridingParticipant:self];
+  elementCopy = element;
+  viewProvider = [elementCopy viewProvider];
+  systemApertureLayoutSpecifyingOverrider = [viewProvider systemApertureLayoutSpecifyingOverrider];
+  [systemApertureLayoutSpecifyingOverrider addBehaviorOverridingParticipant:self];
 
-  v7 = [(SAUISystemApertureManager *)self->_systemApertureManager registerElement:v4];
+  v7 = [(SAUISystemApertureManager *)self->_systemApertureManager registerElement:elementCopy];
   if (v7)
   {
     if (objc_opt_respondsToSelector())
     {
-      [v4 setGestureHandler:self];
+      [elementCopy setGestureHandler:self];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v8 = [[SBSystemAperturePlatformElementHost alloc] initWithElement:v4 delegate:self];
-      [v4 setPlatformElementHost:v8];
-      objc_setAssociatedObject(v4, "com.apple.SpringBoard.SystemApertureViewController.platformElementHost", v8, 1);
+      v8 = [[SBSystemAperturePlatformElementHost alloc] initWithElement:elementCopy delegate:self];
+      [elementCopy setPlatformElementHost:v8];
+      objc_setAssociatedObject(elementCopy, "com.apple.SpringBoard.SystemApertureViewController.platformElementHost", v8, 1);
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __50__SBSystemApertureViewController_registerElement___block_invoke;
       v15[3] = &unk_2783AFCF8;
-      v16 = v4;
+      v16 = elementCopy;
       [v7 addInvalidationBlock:v15];
     }
 
@@ -7695,10 +7695,10 @@ LABEL_31:
     {
       if (objc_opt_respondsToSelector())
       {
-        [v4 setSecureElementHost:self->_secureElementCoordinator];
+        [elementCopy setSecureElementHost:self->_secureElementCoordinator];
       }
 
-      [(SBSystemApertureSecureElementCoordinator *)self->_secureElementCoordinator element:v4 registeredWithAssertion:v7];
+      [(SBSystemApertureSecureElementCoordinator *)self->_secureElementCoordinator element:elementCopy registeredWithAssertion:v7];
       objc_initWeak(&location, self);
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
@@ -7712,8 +7712,8 @@ LABEL_31:
 
     if (objc_opt_respondsToSelector())
     {
-      [v4 systemApertureElementAssertionAcquired];
-      objc_initWeak(&location, v4);
+      [elementCopy systemApertureElementAssertionAcquired];
+      objc_initWeak(&location, elementCopy);
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __50__SBSystemApertureViewController_registerElement___block_invoke_3;
@@ -7745,18 +7745,18 @@ void __50__SBSystemApertureViewController_registerElement___block_invoke_3(uint6
   [WeakRetained systemApertureElementAssertionInvalidated];
 }
 
-- (void)setLayoutMode:(int64_t)a3 reason:(int64_t)a4 forTargetWithOverrider:(id)a5
+- (void)setLayoutMode:(int64_t)mode reason:(int64_t)reason forTargetWithOverrider:(id)overrider
 {
-  v23 = a5;
-  v8 = [v23 layoutMode];
-  v9 = [v23 layoutSpecifyingOverridingParticipantSubordinateToParticipant:self thatRespondsToSelector:sel_setLayoutMode_reason_forTargetWithOverrider_];
-  [v9 setLayoutMode:a3 reason:a4 forTargetWithOverrider:v23];
+  overriderCopy = overrider;
+  layoutMode = [overriderCopy layoutMode];
+  v9 = [overriderCopy layoutSpecifyingOverridingParticipantSubordinateToParticipant:self thatRespondsToSelector:sel_setLayoutMode_reason_forTargetWithOverrider_];
+  [v9 setLayoutMode:mode reason:reason forTargetWithOverrider:overriderCopy];
 
-  v10 = [v23 layoutMode];
-  if (v8 != v10)
+  layoutMode2 = [overriderCopy layoutMode];
+  if (layoutMode != layoutMode2)
   {
-    v11 = v10;
-    v12 = [(SBSystemApertureViewController *)self _elementViewControllerForLayoutSpecifyingOverrider:v23];
+    v11 = layoutMode2;
+    v12 = [(SBSystemApertureViewController *)self _elementViewControllerForLayoutSpecifyingOverrider:overriderCopy];
     if (v12)
     {
       [(SBSystemApertureViewController *)self _updatePreferredContentSizeCategoryForElementViewController:v12];
@@ -7765,7 +7765,7 @@ void __50__SBSystemApertureViewController_registerElement___block_invoke_3(uint6
     v13 = SATargetElementFromBehaviorOverrider();
     if (SAHasAlertBehavior() && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v14 = [v12 alertAssertion];
+      alertAssertion = [v12 alertAssertion];
     }
 
     else
@@ -7790,18 +7790,18 @@ LABEL_25:
             goto LABEL_26;
           }
 
-          v16 = [v23 layoutSpecifyingOverridingParticipantSubordinateToParticipant:v12 thatRespondsToSelector:sel_layoutModePreferenceForTargetWithOverrider_isDefaultValue_];
-          v17 = [v16 layoutModePreferenceForTargetWithOverrider:v23 isDefaultValue:0];
+          v16 = [overriderCopy layoutSpecifyingOverridingParticipantSubordinateToParticipant:v12 thatRespondsToSelector:sel_layoutModePreferenceForTargetWithOverrider_isDefaultValue_];
+          preferredLayoutModeAssertion2 = [v16 layoutModePreferenceForTargetWithOverrider:overriderCopy isDefaultValue:0];
 
-          if (v11 <= [v17 preferredLayoutMode])
+          if (v11 <= [preferredLayoutModeAssertion2 preferredLayoutMode])
           {
             v11 = 1;
           }
 
           else
           {
-            v18 = [v23 preferredLayoutModeAssertion];
-            v11 = [v18 layoutModeChangeReason] != 3;
+            preferredLayoutModeAssertion = [overriderCopy preferredLayoutModeAssertion];
+            v11 = [preferredLayoutModeAssertion layoutModeChangeReason] != 3;
           }
         }
 
@@ -7829,18 +7829,18 @@ LABEL_25:
 
           v22 = v21;
 
-          v17 = [v22 preferredLayoutModeAssertion];
+          preferredLayoutModeAssertion2 = [v22 preferredLayoutModeAssertion];
 
-          v11 = v11 == [v17 preferredLayoutMode];
+          v11 = v11 == [preferredLayoutModeAssertion2 preferredLayoutMode];
         }
 
         goto LABEL_25;
       }
 
-      v14 = [v12 alertingActivityAssertion];
+      alertAssertion = [v12 alertingActivityAssertion];
     }
 
-    v15 = v14;
+    v15 = alertAssertion;
     goto LABEL_12;
   }
 
@@ -7849,17 +7849,17 @@ LABEL_27:
   MEMORY[0x2821F9730]();
 }
 
-- (id)layoutModePreferenceForTargetWithOverrider:(id)a3 isDefaultValue:(BOOL *)a4
+- (id)layoutModePreferenceForTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value
 {
-  v5 = a3;
+  overriderCopy = overrider;
   v6 = SATargetElementFromBehaviorOverrider();
   v7 = SAHasAlertBehavior();
   v8 = [(SAUISystemApertureManager *)self->_systemApertureManager elementViewControllerForElement:v6];
   v29 = v8;
   if (SAHasActivityBehavior() && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v9 = [v8 temporallyOrderedAlertingActivityAssertions];
-    v10 = [v9 bs_containsObjectPassingTest:&__block_literal_global_785] ^ 1;
+    temporallyOrderedAlertingActivityAssertions = [v8 temporallyOrderedAlertingActivityAssertions];
+    v10 = [temporallyOrderedAlertingActivityAssertions bs_containsObjectPassingTest:&__block_literal_global_785] ^ 1;
   }
 
   else
@@ -7867,15 +7867,15 @@ LABEL_27:
     LOBYTE(v10) = 1;
   }
 
-  v11 = [v5 layoutSpecifyingOverridingParticipantSubordinateToParticipant:self thatRespondsToSelector:{sel_layoutModePreferenceForTargetWithOverrider_isDefaultValue_, v29}];
-  v12 = [v11 layoutModePreferenceForTargetWithOverrider:v5 isDefaultValue:0];
-  v13 = [v12 preferredLayoutMode];
+  v11 = [overriderCopy layoutSpecifyingOverridingParticipantSubordinateToParticipant:self thatRespondsToSelector:{sel_layoutModePreferenceForTargetWithOverrider_isDefaultValue_, v29}];
+  v12 = [v11 layoutModePreferenceForTargetWithOverrider:overriderCopy isDefaultValue:0];
+  preferredLayoutMode = [v12 preferredLayoutMode];
   v14 = SBSACustomLayoutForBehaviorOverrider();
-  v15 = SBSABehavesLikeCustom(v13, v14);
+  v15 = SBSABehavesLikeCustom(preferredLayoutMode, v14);
   v16 = [(SBSystemApertureViewController *)self _doesElementHaveValidUrgencyAssertion:v6];
   v17 = [(SBSystemApertureViewController *)self _doesElementHaveValidRequiredPriorityAssertion:v6];
-  v18 = v16 && v13 > 0;
-  v19 = v13 > 0 && v17;
+  v18 = v16 && preferredLayoutMode > 0;
+  v19 = preferredLayoutMode > 0 && v17;
   v31 = 0;
   if ([(SBSystemApertureViewController *)self _shouldSuppressElement:v6 allowsSuppressionForSystemChromeSuppression:v10 & ~((v15 || v19 || v18) | v7) & 1 reason:&v31])
   {
@@ -7896,47 +7896,47 @@ LABEL_27:
 
   else
   {
-    v21 = [v12 layoutModeChangeReason];
+    layoutModeChangeReason = [v12 layoutModeChangeReason];
     if (v19)
     {
-      v22 = v13;
+      v22 = preferredLayoutMode;
     }
 
     else
     {
-      v24 = v13;
-      if (v13 <= 2)
+      v24 = preferredLayoutMode;
+      if (preferredLayoutMode <= 2)
       {
         if (([(SBSystemApertureViewController *)self _activeElementInterfaceOrientation]- 3) > 1)
         {
-          v25 = 3;
+          isMinimalPresentationPossible = 3;
         }
 
         else if (objc_opt_respondsToSelector())
         {
-          v25 = [v5 isMinimalPresentationPossible];
+          isMinimalPresentationPossible = [overriderCopy isMinimalPresentationPossible];
         }
 
         else
         {
-          v25 = 0;
+          isMinimalPresentationPossible = 0;
         }
 
-        if (v13 >= v25)
+        if (preferredLayoutMode >= isMinimalPresentationPossible)
         {
-          v24 = v25;
+          v24 = isMinimalPresentationPossible;
         }
 
         else
         {
-          v24 = v13;
+          v24 = preferredLayoutMode;
         }
       }
 
-      v26 = [(SBSystemApertureViewController *)self _mostRestrictiveLayoutModeFromActiveLayoutAssertions];
-      if (v24 >= v26)
+      _mostRestrictiveLayoutModeFromActiveLayoutAssertions = [(SBSystemApertureViewController *)self _mostRestrictiveLayoutModeFromActiveLayoutAssertions];
+      if (v24 >= _mostRestrictiveLayoutModeFromActiveLayoutAssertions)
       {
-        v22 = v26;
+        v22 = _mostRestrictiveLayoutModeFromActiveLayoutAssertions;
       }
 
       else
@@ -7946,9 +7946,9 @@ LABEL_27:
     }
 
     v20 = v30;
-    if (v22 == v13)
+    if (v22 == preferredLayoutMode)
     {
-      v23 = v21;
+      v23 = layoutModeChangeReason;
     }
 
     else
@@ -7967,43 +7967,43 @@ LABEL_27:
   return v27;
 }
 
-- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)a3 suggestedOutsets:(NSDirectionalEdgeInsets)a4 maximumOutsets:(NSDirectionalEdgeInsets)a5 forTargetWithOverrider:(id)a6 isDefaultValue:(BOOL *)a7
+- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)mode suggestedOutsets:(NSDirectionalEdgeInsets)outsets maximumOutsets:(NSDirectionalEdgeInsets)maximumOutsets forTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value
 {
-  trailing = a5.trailing;
-  bottom = a5.bottom;
-  leading = a5.leading;
-  top = a5.top;
-  v12 = a4.trailing;
-  v13 = a4.bottom;
-  v14 = a4.leading;
-  v15 = a4.top;
-  v18 = a6;
-  v19 = [v18 layoutSpecifyingOverridingParticipantSubordinateToParticipant:self thatRespondsToSelector:sel_preferredEdgeOutsetsForLayoutMode_suggestedOutsets_maximumOutsets_forTargetWithOverrider_isDefaultValue_];
-  [v19 preferredEdgeOutsetsForLayoutMode:a3 suggestedOutsets:v18 maximumOutsets:a7 forTargetWithOverrider:v15 isDefaultValue:{v14, v13, v12, top, leading, bottom, trailing}];
+  trailing = maximumOutsets.trailing;
+  bottom = maximumOutsets.bottom;
+  leading = maximumOutsets.leading;
+  top = maximumOutsets.top;
+  v12 = outsets.trailing;
+  v13 = outsets.bottom;
+  v14 = outsets.leading;
+  v15 = outsets.top;
+  overriderCopy = overrider;
+  v19 = [overriderCopy layoutSpecifyingOverridingParticipantSubordinateToParticipant:self thatRespondsToSelector:sel_preferredEdgeOutsetsForLayoutMode_suggestedOutsets_maximumOutsets_forTargetWithOverrider_isDefaultValue_];
+  [v19 preferredEdgeOutsetsForLayoutMode:mode suggestedOutsets:overriderCopy maximumOutsets:value forTargetWithOverrider:v15 isDefaultValue:{v14, v13, v12, top, leading, bottom, trailing}];
   v21 = v20;
   v23 = v22;
   v25 = v24;
   v27 = v26;
 
-  v28 = [(SBSystemApertureViewController *)self view];
-  [v28 bounds];
+  view = [(SBSystemApertureViewController *)self view];
+  [view bounds];
   v30 = v29;
   v32 = v31;
   v34 = v33;
   v36 = v35;
 
-  [(SBSystemApertureViewController *)self _maximumContainerViewOutsetsInBounds:a3 inLayoutMode:v30, v32, v34, v36];
+  [(SBSystemApertureViewController *)self _maximumContainerViewOutsetsInBounds:mode inLayoutMode:v30, v32, v34, v36];
   [(SBSystemApertureViewController *)self _validatedEdgeOutsetsForPreferredOutsets:v21 maximumOutsets:v23, v25, v27, v37, v38, v39, v40];
   v42 = v41;
   v44 = v43;
   v46 = v45;
   v48 = v47;
   v49 = SBSACustomLayoutForBehaviorOverrider();
-  if (!SBSABehavesLikeCustom(a3, v49))
+  if (!SBSABehavesLikeCustom(mode, v49))
   {
-    if (SBSABehavesLikeMinimal(a3, v49))
+    if (SBSABehavesLikeMinimal(mode, v49))
     {
-      if (([(SBSystemApertureViewController *)self _activeElementInterfaceOrientation]- 3) < 2 || ([(SBSystemApertureViewController *)self _elementViewControllerForLayoutSpecifyingOverrider:v18], v60 = objc_claimAutoreleasedReturnValue(), [(SBSystemApertureViewController *)self _containerViewForViewController:v60], v61 = objc_claimAutoreleasedReturnValue(), [(SBSystemApertureViewController *)self _primaryContainerView], v62 = objc_claimAutoreleasedReturnValue(), v62, v61, v60, v61 != v62))
+      if (([(SBSystemApertureViewController *)self _activeElementInterfaceOrientation]- 3) < 2 || ([(SBSystemApertureViewController *)self _elementViewControllerForLayoutSpecifyingOverrider:overriderCopy], v60 = objc_claimAutoreleasedReturnValue(), [(SBSystemApertureViewController *)self _containerViewForViewController:v60], v61 = objc_claimAutoreleasedReturnValue(), [(SBSystemApertureViewController *)self _primaryContainerView], v62 = objc_claimAutoreleasedReturnValue(), v62, v61, v60, v61 != v62))
       {
         [(SBSystemApertureViewController *)self _adjunctContainerMinimalViewSize];
         if (v44 > -v63)
@@ -8015,7 +8015,7 @@ LABEL_27:
       }
     }
 
-    else if (!SBSABehavesLikeCompact(a3, v49))
+    else if (!SBSABehavesLikeCompact(mode, v49))
     {
       goto LABEL_24;
     }
@@ -8046,10 +8046,10 @@ LABEL_27:
   [(SBSystemApertureViewController *)self edgeOutsetsForSize:v52, v54];
   if (v46 <= v58)
   {
-    v68 = [(SBSystemApertureViewController *)self traitCollection];
+    traitCollection = [(SBSystemApertureViewController *)self traitCollection];
     v42 = v83;
     v48 = v84;
-    -[SBSystemApertureViewController _portraitFrameForPrimaryContainerViewInBounds:withPreferredEdgeOutsets:layoutDirection:](self, "_portraitFrameForPrimaryContainerViewInBounds:withPreferredEdgeOutsets:layoutDirection:", [v68 layoutDirection], v30, v32, v34, v36, v83, v44, v46, v84);
+    -[SBSystemApertureViewController _portraitFrameForPrimaryContainerViewInBounds:withPreferredEdgeOutsets:layoutDirection:](self, "_portraitFrameForPrimaryContainerViewInBounds:withPreferredEdgeOutsets:layoutDirection:", [traitCollection layoutDirection], v30, v32, v34, v36, v83, v44, v46, v84);
     v70 = v69;
 
     if (v50 == 4)
@@ -8113,16 +8113,16 @@ LABEL_24:
   return result;
 }
 
-- (BOOL)isRequestingMenuPresentationForTargetWithOverrider:(id)a3 isDefaultValue:(BOOL *)a4
+- (BOOL)isRequestingMenuPresentationForTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 layoutSpecifyingOverridingParticipantSubordinateToParticipant:self thatRespondsToSelector:sel_isRequestingMenuPresentationForTargetWithOverrider_isDefaultValue_];
-  LODWORD(a4) = [v7 isRequestingMenuPresentationForTargetWithOverrider:v6 isDefaultValue:a4];
+  overriderCopy = overrider;
+  v7 = [overriderCopy layoutSpecifyingOverridingParticipantSubordinateToParticipant:self thatRespondsToSelector:sel_isRequestingMenuPresentationForTargetWithOverrider_isDefaultValue_];
+  LODWORD(value) = [v7 isRequestingMenuPresentationForTargetWithOverrider:overriderCopy isDefaultValue:value];
 
-  if (a4)
+  if (value)
   {
-    if ([v6 layoutMode] == 3)
+    if ([overriderCopy layoutMode] == 3)
     {
       v8 = SATargetElementFromBehaviorOverrider();
       v20 = 0u;
@@ -8210,7 +8210,7 @@ LABEL_18:
   return v16;
 }
 
-- (NSDirectionalEdgeInsets)_hostSuggestedOutsetsForElement:(id)a3
+- (NSDirectionalEdgeInsets)_hostSuggestedOutsetsForElement:(id)element
 {
   v3 = *MEMORY[0x277D75060];
   v4 = *(MEMORY[0x277D75060] + 8);
@@ -8223,7 +8223,7 @@ LABEL_18:
   return result;
 }
 
-- (void)preferredLayoutModeDidInvalidateForLayoutSpecifier:(id)a3
+- (void)preferredLayoutModeDidInvalidateForLayoutSpecifier:(id)specifier
 {
   v14 = *MEMORY[0x277D85DE8];
   [(SBSystemApertureViewController *)self _invalidatePreferencesForReason:0x2000];
@@ -8258,7 +8258,7 @@ LABEL_18:
   }
 }
 
-- (void)preferredEdgeOutsetsDidInvalidateForLayoutSpecifier:(id)a3
+- (void)preferredEdgeOutsetsDidInvalidateForLayoutSpecifier:(id)specifier
 {
   v14 = *MEMORY[0x277D85DE8];
   [(SBSystemApertureViewController *)self _invalidatePreferencesForReason:0x2000];
@@ -8293,12 +8293,12 @@ LABEL_18:
   }
 }
 
-- (NSDirectionalEdgeInsets)edgeOutsetsForSize:(CGSize)a3
+- (NSDirectionalEdgeInsets)edgeOutsetsForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = *MEMORY[0x277D75060];
-  if (a3.width == 0.0 && a3.height == 0.0)
+  if (size.width == 0.0 && size.height == 0.0)
   {
     v7 = *(MEMORY[0x277D75060] + 8);
     v8 = *(MEMORY[0x277D75060] + 16);
@@ -8307,15 +8307,15 @@ LABEL_18:
 
   else
   {
-    v10 = [(SBSystemApertureViewController *)self view];
-    [v10 bounds];
+    view = [(SBSystemApertureViewController *)self view];
+    [view bounds];
     v29 = v11;
     v13 = v12;
     v15 = v14;
     v17 = v16;
 
-    v18 = [(SBSystemApertureViewController *)self _layoutMetrics];
-    [v18 sensorRegionSize];
+    _layoutMetrics = [(SBSystemApertureViewController *)self _layoutMetrics];
+    [_layoutMetrics sensorRegionSize];
     v20 = v19;
     v22 = v21;
 
@@ -8332,12 +8332,12 @@ LABEL_18:
   return result;
 }
 
-- (CGRect)interSensorRegionInContentView:(id)a3
+- (CGRect)interSensorRegionInContentView:(id)view
 {
-  v4 = a3;
-  v5 = [(SBSystemApertureViewController *)self _layoutMetrics];
-  [v5 interSensorRegionInWindowSpace];
-  [v4 convertRect:0 fromView:?];
+  viewCopy = view;
+  _layoutMetrics = [(SBSystemApertureViewController *)self _layoutMetrics];
+  [_layoutMetrics interSensorRegionInWindowSpace];
+  [viewCopy convertRect:0 fromView:?];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -8354,11 +8354,11 @@ LABEL_18:
   return result;
 }
 
-- (double)concentricPaddingForProvidedView:(id)a3 fromViewProvider:(id)a4
+- (double)concentricPaddingForProvidedView:(id)view fromViewProvider:(id)provider
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  providerCopy = provider;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
@@ -8379,10 +8379,10 @@ LABEL_3:
       }
 
       v13 = *(*(&v42 + 1) + 8 * v12);
-      v14 = [v13 elementViewController];
-      v15 = [v14 elementViewProvider];
+      elementViewController = [v13 elementViewController];
+      elementViewProvider = [elementViewController elementViewProvider];
 
-      if (v15 == v7)
+      if (elementViewProvider == providerCopy)
       {
         break;
       }
@@ -8406,27 +8406,27 @@ LABEL_3:
       goto LABEL_28;
     }
 
-    v17 = [v7 systemApertureLayoutSpecifyingOverrider];
-    v18 = [v17 layoutMode];
-    v19 = [v17 behaviorOverridingTarget];
-    if ((objc_opt_respondsToSelector() & 1) != 0 && [v19 overridesConcentricPaddingForView:v6 inLayoutMode:v18])
+    systemApertureLayoutSpecifyingOverrider = [providerCopy systemApertureLayoutSpecifyingOverrider];
+    layoutMode = [systemApertureLayoutSpecifyingOverrider layoutMode];
+    behaviorOverridingTarget = [systemApertureLayoutSpecifyingOverrider behaviorOverridingTarget];
+    if ((objc_opt_respondsToSelector() & 1) != 0 && [behaviorOverridingTarget overridesConcentricPaddingForView:viewCopy inLayoutMode:layoutMode])
     {
-      [v19 concentricPaddingOverrideForView:v6 inLayoutMode:v18];
+      [behaviorOverridingTarget concentricPaddingOverrideForView:viewCopy inLayoutMode:layoutMode];
     }
 
     else
     {
-      v20 = [(SBSystemApertureViewController *)self _primaryContainerView];
+      _primaryContainerView = [(SBSystemApertureViewController *)self _primaryContainerView];
 
-      if (v16 == v20 || v18 == 3)
+      if (v16 == _primaryContainerView || layoutMode == 3)
       {
-        if (v18 != 3)
+        if (layoutMode != 3)
         {
-          v27 = [(SBSystemApertureViewController *)self traitCollection];
-          [v27 displayScale];
+          traitCollection = [(SBSystemApertureViewController *)self traitCollection];
+          [traitCollection displayScale];
         }
 
-        [v6 bounds];
+        [viewCopy bounds];
         x = v48.origin.x;
         y = v48.origin.y;
         width = v48.size.width;
@@ -8434,7 +8434,7 @@ LABEL_3:
         if (CGRectIsEmpty(v48))
         {
           [(NSMutableArray *)v16 bounds];
-          [v6 sizeThatFits:{v32, v33}];
+          [viewCopy sizeThatFits:{v32, v33}];
           BSRectWithSize();
           x = v34;
           y = v35;
@@ -8454,10 +8454,10 @@ LABEL_3:
         [(SBSystemApertureViewController *)self _adjunctContainerMinimalViewSize];
         v22 = v21;
         v24 = v23;
-        [v17 sizeThatFitsSize:v6 forProvidedView:v18 inLayoutMode:?];
+        [systemApertureLayoutSpecifyingOverrider sizeThatFitsSize:viewCopy forProvidedView:layoutMode inLayoutMode:?];
         if (v26 == 0.0 && v25 == 0.0)
         {
-          [v6 sizeThatFits:{v22, v24}];
+          [viewCopy sizeThatFits:{v22, v24}];
         }
       }
     }
@@ -8470,36 +8470,36 @@ LABEL_9:
   }
 
 LABEL_28:
-  v38 = [(SBSystemApertureViewController *)self traitCollection];
-  [v38 displayScale];
+  traitCollection2 = [(SBSystemApertureViewController *)self traitCollection];
+  [traitCollection2 displayScale];
   UIRoundToScale();
   v40 = v39;
 
   return v40;
 }
 
-- (CGRect)sensorRegionObstructingViewProvider:(id)a3 inContentView:(id)a4
+- (CGRect)sensorRegionObstructingViewProvider:(id)provider inContentView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  viewCopy = view;
   v8 = *MEMORY[0x277CBF3A0];
   v9 = *(MEMORY[0x277CBF3A0] + 8);
   v10 = *(MEMORY[0x277CBF3A0] + 16);
   v11 = *(MEMORY[0x277CBF3A0] + 24);
   if (([(SBSystemApertureViewController *)self _activeElementInterfaceOrientation]- 1) <= 1)
   {
-    v12 = [(SAUISystemApertureManager *)self->_systemApertureManager orderedElementViewControllers];
-    v13 = [v12 firstObject];
-    v14 = [v13 elementViewProvider];
-    v15 = v14;
-    if (v14 == v6)
+    orderedElementViewControllers = [(SAUISystemApertureManager *)self->_systemApertureManager orderedElementViewControllers];
+    firstObject = [orderedElementViewControllers firstObject];
+    elementViewProvider = [firstObject elementViewProvider];
+    v15 = elementViewProvider;
+    if (elementViewProvider == providerCopy)
     {
     }
 
     else
     {
-      v16 = [(NSMutableArray *)self->_orderedContainerViews firstObject];
-      v17 = [v7 isDescendantOfView:v16];
+      firstObject2 = [(NSMutableArray *)self->_orderedContainerViews firstObject];
+      v17 = [viewCopy isDescendantOfView:firstObject2];
 
       if (!v17)
       {
@@ -8507,7 +8507,7 @@ LABEL_28:
       }
     }
 
-    [(SBSystemApertureViewController *)self sensorRegionInContentView:v7 fromViewProvider:v6];
+    [(SBSystemApertureViewController *)self sensorRegionInContentView:viewCopy fromViewProvider:providerCopy];
     v8 = v18;
     v9 = v19;
     v10 = v20;
@@ -8527,13 +8527,13 @@ LABEL_7:
   return result;
 }
 
-- (CGRect)sensorRegionInContentView:(id)a3 fromViewProvider:(id)a4
+- (CGRect)sensorRegionInContentView:(id)view fromViewProvider:(id)provider
 {
   v6 = self->_containerParent;
-  v7 = a3;
+  viewCopy = view;
   [(SBFTouchPassThroughView *)v6 bounds];
   [(SBSystemApertureViewController *)self _frameForSensorRegionInBounds:?];
-  [v7 convertRect:v6 fromView:?];
+  [viewCopy convertRect:v6 fromView:?];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -8550,9 +8550,9 @@ LABEL_7:
   return result;
 }
 
-- (CGSize)maximumAvailableSizeForProvidedMinimalView:(id)a3 fromViewProvider:(id)a4
+- (CGSize)maximumAvailableSizeForProvidedMinimalView:(id)view fromViewProvider:(id)provider
 {
-  v4 = [(SBSystemApertureViewController *)self _layoutMetrics:a3];
+  v4 = [(SBSystemApertureViewController *)self _layoutMetrics:view];
   [v4 maximumHorizontalMinimalViewSize];
   v6 = v5;
   v8 = v7;
@@ -8564,9 +8564,9 @@ LABEL_7:
   return result;
 }
 
-- (CGSize)maximumAvailableSizeForProvidedLeadingView:(id)a3 fromViewProvider:(id)a4
+- (CGSize)maximumAvailableSizeForProvidedLeadingView:(id)view fromViewProvider:(id)provider
 {
-  v4 = [(SBSystemApertureViewController *)self _layoutMetrics:a3];
+  v4 = [(SBSystemApertureViewController *)self _layoutMetrics:view];
   [v4 maximumLeadingTrailingViewSize];
   v6 = v5;
   v8 = v7;
@@ -8578,9 +8578,9 @@ LABEL_7:
   return result;
 }
 
-- (CGSize)maximumAvailableSizeForProvidedTrailingView:(id)a3 fromViewProvider:(id)a4
+- (CGSize)maximumAvailableSizeForProvidedTrailingView:(id)view fromViewProvider:(id)provider
 {
-  v4 = [(SBSystemApertureViewController *)self _layoutMetrics:a3];
+  v4 = [(SBSystemApertureViewController *)self _layoutMetrics:view];
   [v4 maximumLeadingTrailingViewSize];
   v6 = v5;
   v8 = v7;
@@ -8592,17 +8592,17 @@ LABEL_7:
   return result;
 }
 
-- (NSDirectionalEdgeInsets)_applySymmetryToPreferredLayoutOutsets:(NSDirectionalEdgeInsets)a3
+- (NSDirectionalEdgeInsets)_applySymmetryToPreferredLayoutOutsets:(NSDirectionalEdgeInsets)outsets
 {
-  trailing = a3.trailing;
-  bottom = a3.bottom;
-  leading = a3.leading;
-  top = a3.top;
-  v7 = [MEMORY[0x277D67E28] sharedInstanceForEmbeddedDisplay];
-  [v7 sensorRegionSize];
+  trailing = outsets.trailing;
+  bottom = outsets.bottom;
+  leading = outsets.leading;
+  top = outsets.top;
+  mEMORY[0x277D67E28] = [MEMORY[0x277D67E28] sharedInstanceForEmbeddedDisplay];
+  [mEMORY[0x277D67E28] sensorRegionSize];
   BSRectWithSize();
-  v8 = [(SBSystemApertureViewController *)self view];
-  [v8 bounds];
+  view = [(SBSystemApertureViewController *)self view];
+  [view bounds];
   UIRectCenteredXInRectScale();
   v10 = v9;
   v12 = v11;
@@ -8658,12 +8658,12 @@ LABEL_7:
   return result;
 }
 
-- (double)alertingDurationForHost:(id)a3
+- (double)alertingDurationForHost:(id)host
 {
-  v3 = a3;
+  hostCopy = host;
   if (objc_opt_respondsToSelector())
   {
-    v4 = v3;
+    v4 = hostCopy;
   }
 
   else
@@ -8671,10 +8671,10 @@ LABEL_7:
     v4 = 0;
   }
 
-  v5 = [v4 elementViewProvider];
-  v6 = [v5 element];
-  v7 = [v6 elementIdentifier];
-  if ([v7 isEqualToString:*MEMORY[0x277D68030]])
+  elementViewProvider = [v4 elementViewProvider];
+  element = [elementViewProvider element];
+  elementIdentifier = [element elementIdentifier];
+  if ([elementIdentifier isEqualToString:*MEMORY[0x277D68030]])
   {
     v8 = 7.0;
   }
@@ -8686,17 +8686,17 @@ LABEL_7:
 
   if (objc_opt_respondsToSelector())
   {
-    [v5 preferredAlertingDuration:v8];
+    [elementViewProvider preferredAlertingDuration:v8];
     v8 = v9;
   }
 
   return v8;
 }
 
-- (void)elementRequestsSignificantUpdateTransition:(id)a3
+- (void)elementRequestsSignificantUpdateTransition:(id)transition
 {
-  v4 = a3;
-  v8 = [[_SBSystemApertureSignificantUpdateTransitionAssertion alloc] initWithElement:v4];
+  transitionCopy = transition;
+  v8 = [[_SBSystemApertureSignificantUpdateTransitionAssertion alloc] initWithElement:transitionCopy];
 
   significantUpdateTransitionAssertions = self->_significantUpdateTransitionAssertions;
   if (!significantUpdateTransitionAssertions)
@@ -8712,7 +8712,7 @@ LABEL_7:
   [(SBSystemApertureViewController *)self _invalidatePreferencesForReason:0x2000];
 }
 
-- (void)elementRequestsCancellingResizeGesture:(id)a3
+- (void)elementRequestsCancellingResizeGesture:(id)gesture
 {
   [(UIPanGestureRecognizer *)self->_resizePanGesture sb_cancel];
   interactionLongPressGesture = self->_interactionLongPressGesture;
@@ -8722,43 +8722,43 @@ LABEL_7:
 
 - (BOOL)_panGestureInhibitedByElement
 {
-  v2 = [(SBSystemApertureViewController *)self _currentFirstElement];
+  _currentFirstElement = [(SBSystemApertureViewController *)self _currentFirstElement];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 inhibitSystemPanGesture];
+    inhibitSystemPanGesture = [_currentFirstElement inhibitSystemPanGesture];
   }
 
   else
   {
-    v3 = 0;
+    inhibitSystemPanGesture = 0;
   }
 
-  return v3;
+  return inhibitSystemPanGesture;
 }
 
 - (BOOL)_longPressGestureInhibitedByElement
 {
-  v2 = [(SBSystemApertureViewController *)self _currentFirstElement];
+  _currentFirstElement = [(SBSystemApertureViewController *)self _currentFirstElement];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 inhibitSystemLongPressGesture];
+    inhibitSystemLongPressGesture = [_currentFirstElement inhibitSystemLongPressGesture];
   }
 
   else
   {
-    v3 = 0;
+    inhibitSystemLongPressGesture = 0;
   }
 
-  return v3;
+  return inhibitSystemLongPressGesture;
 }
 
-- (void)element:(id)a3 requestsDiscreteAnimationOfType:(int64_t)a4
+- (void)element:(id)element requestsDiscreteAnimationOfType:(int64_t)type
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4 > 2)
+  elementCopy = element;
+  v7 = elementCopy;
+  if (type > 2)
   {
-    if (a4 == 3)
+    if (type == 3)
     {
       if ([(SBSystemApertureSettings *)self->_settings pulseIndicatorEnabled])
       {
@@ -8773,7 +8773,7 @@ LABEL_7:
       }
     }
 
-    else if (a4 == 4)
+    else if (type == 4)
     {
       v11 = objc_alloc_init(SBSAEjectRequest);
       [(SBSystemApertureViewController *)self _addActiveRequest:v11];
@@ -8782,9 +8782,9 @@ LABEL_7:
     }
   }
 
-  else if (a4 == 1)
+  else if (type == 1)
   {
-    if (!v6)
+    if (!elementCopy)
     {
       [SBSystemApertureViewController element:requestsDiscreteAnimationOfType:];
     }
@@ -8806,7 +8806,7 @@ LABEL_7:
     objc_destroyWeak(&location);
   }
 
-  else if (a4 == 2)
+  else if (type == 2)
   {
     v8 = [SBSAPulseRequest alloc];
     v9 = [[SBSAElementIdentification alloc] initWithElementIdentification:v7];
@@ -8824,15 +8824,15 @@ void __74__SBSystemApertureViewController_element_requestsDiscreteAnimationOfTyp
   [WeakRetained _stopTrackingShakeAnimation];
 }
 
-- (id)element:(id)a3 requestsPersistentAnimationOfType:(int64_t)a4
+- (id)element:(id)element requestsPersistentAnimationOfType:(int64_t)type
 {
-  v7 = a3;
-  if ((a4 - 1) >= 2)
+  elementCopy = element;
+  if ((type - 1) >= 2)
   {
-    if (!a4)
+    if (!type)
     {
-      v9 = [MEMORY[0x277CCA890] currentHandler];
-      [v9 handleFailureInMethod:a2 object:self file:@"SBSystemApertureViewController.m" lineNumber:3357 description:@"Can't request No-OP animation"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SBSystemApertureViewController.m" lineNumber:3357 description:@"Can't request No-OP animation"];
     }
 
     v8 = 0;
@@ -8840,7 +8840,7 @@ void __74__SBSystemApertureViewController_element_requestsDiscreteAnimationOfTyp
 
   else
   {
-    v8 = [(SBSystemApertureViewController *)self _persistentAssertionForElement:v7 withType:a4];
+    v8 = [(SBSystemApertureViewController *)self _persistentAssertionForElement:elementCopy withType:type];
     [(NSMutableSet *)self->_dynamicPersistentAnimationAssertions addObject:v8];
   }
 
@@ -8849,15 +8849,15 @@ void __74__SBSystemApertureViewController_element_requestsDiscreteAnimationOfTyp
   return v8;
 }
 
-- (id)_persistentAssertionForElement:(id)a3 withType:(int64_t)a4
+- (id)_persistentAssertionForElement:(id)element withType:(int64_t)type
 {
-  v6 = a3;
+  elementCopy = element;
   v7 = [SBSAElementIdentification alloc];
-  v8 = [v6 clientIdentifier];
-  v9 = [v6 elementIdentifier];
-  v10 = [(SBSAElementIdentification *)v7 initWithClientIdentifier:v8 elementIdentifier:v9];
+  clientIdentifier = [elementCopy clientIdentifier];
+  elementIdentifier = [elementCopy elementIdentifier];
+  v10 = [(SBSAElementIdentification *)v7 initWithClientIdentifier:clientIdentifier elementIdentifier:elementIdentifier];
 
-  v11 = [[_SBSADynamicPersistentAnimationAssertion alloc] initWithElementIdentity:v10 animation:a4];
+  v11 = [[_SBSADynamicPersistentAnimationAssertion alloc] initWithElementIdentity:v10 animation:type];
   objc_initWeak(&location, self);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -8890,8 +8890,8 @@ void __74__SBSystemApertureViewController__persistentAssertionForElement_withTyp
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(SAUISystemApertureManager *)self->_systemApertureManager registeredElements];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  registeredElements = [(SAUISystemApertureManager *)self->_systemApertureManager registeredElements];
+  v4 = [registeredElements countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -8903,13 +8903,13 @@ void __74__SBSystemApertureViewController__persistentAssertionForElement_withTyp
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(registeredElements);
         }
 
         v6 = v6 || [(SBSystemApertureViewController *)self _doesElementHaveValidRequiredPriorityAssertion:*(*(&v10 + 1) + 8 * i)];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [registeredElements countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -8930,81 +8930,81 @@ void __74__SBSystemApertureViewController__persistentAssertionForElement_withTyp
   [(SAUISystemApertureManager *)self->_systemApertureManager invalidatePromotedElements];
 }
 
-- (void)performAction:(id)a3 withCompletionUponAnimationSettling:(id)a4
+- (void)performAction:(id)action withCompletionUponAnimationSettling:(id)settling
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  if (v13)
+  actionCopy = action;
+  settlingCopy = settling;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (actionCopy)
   {
-    v13[2]();
+    actionCopy[2]();
   }
 
-  if (v6)
+  if (settlingCopy)
   {
-    systemApertureDidSettleCompletionBlocks = v7->_systemApertureDidSettleCompletionBlocks;
+    systemApertureDidSettleCompletionBlocks = selfCopy->_systemApertureDidSettleCompletionBlocks;
     if (systemApertureDidSettleCompletionBlocks)
     {
-      v9 = MEMORY[0x223D6F7F0](v6);
+      v9 = MEMORY[0x223D6F7F0](settlingCopy);
       [(NSMutableArray *)systemApertureDidSettleCompletionBlocks addObject:v9];
     }
 
     else
     {
       v10 = MEMORY[0x277CBEB18];
-      v9 = MEMORY[0x223D6F7F0](v6);
+      v9 = MEMORY[0x223D6F7F0](settlingCopy);
       v11 = [v10 arrayWithObject:v9];
-      v12 = v7->_systemApertureDidSettleCompletionBlocks;
-      v7->_systemApertureDidSettleCompletionBlocks = v11;
+      v12 = selfCopy->_systemApertureDidSettleCompletionBlocks;
+      selfCopy->_systemApertureDidSettleCompletionBlocks = v11;
     }
   }
 
-  [(SBSystemApertureViewController *)v7 _flushDidSettleHandlersIfNecessary];
-  objc_sync_exit(v7);
+  [(SBSystemApertureViewController *)selfCopy _flushDidSettleHandlersIfNecessary];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)performAction:(id)a3 withCompletionUponIndicatorSettling:(id)a4
+- (void)performAction:(id)action withCompletionUponIndicatorSettling:(id)settling
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  if (v13)
+  actionCopy = action;
+  settlingCopy = settling;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (actionCopy)
   {
-    v13[2]();
+    actionCopy[2]();
   }
 
-  if (v6)
+  if (settlingCopy)
   {
-    systemApertureIndicatorDidSettleCompletionBlocks = v7->_systemApertureIndicatorDidSettleCompletionBlocks;
+    systemApertureIndicatorDidSettleCompletionBlocks = selfCopy->_systemApertureIndicatorDidSettleCompletionBlocks;
     if (systemApertureIndicatorDidSettleCompletionBlocks)
     {
-      v9 = MEMORY[0x223D6F7F0](v6);
+      v9 = MEMORY[0x223D6F7F0](settlingCopy);
       [(NSMutableArray *)systemApertureIndicatorDidSettleCompletionBlocks addObject:v9];
     }
 
     else
     {
       v10 = MEMORY[0x277CBEB18];
-      v9 = MEMORY[0x223D6F7F0](v6);
+      v9 = MEMORY[0x223D6F7F0](settlingCopy);
       v11 = [v10 arrayWithObject:v9];
-      v12 = v7->_systemApertureIndicatorDidSettleCompletionBlocks;
-      v7->_systemApertureIndicatorDidSettleCompletionBlocks = v11;
+      v12 = selfCopy->_systemApertureIndicatorDidSettleCompletionBlocks;
+      selfCopy->_systemApertureIndicatorDidSettleCompletionBlocks = v11;
     }
   }
 
-  [(SBSystemApertureViewController *)v7 _flushIndicatorDidSettleHandlersIfNecessary];
-  objc_sync_exit(v7);
+  [(SBSystemApertureViewController *)selfCopy _flushIndicatorDidSettleHandlersIfNecessary];
+  objc_sync_exit(selfCopy);
 }
 
-- (id)_containerViewWithRank:(unint64_t)a3 creatingIfNecessary:(BOOL)a4
+- (id)_containerViewWithRank:(unint64_t)rank creatingIfNecessary:(BOOL)necessary
 {
-  v4 = a4;
+  necessaryCopy = necessary;
   v7 = [(NSMutableArray *)self->_orderedContainerViews count];
-  if (v7 <= a3)
+  if (v7 <= rank)
   {
-    if (v4)
+    if (necessaryCopy)
     {
       v9 = v7;
       if (!self->_orderedContainerViews)
@@ -9017,11 +9017,11 @@ void __74__SBSystemApertureViewController__persistentAssertionForElement_withTyp
       v8 = 0;
       do
       {
-        v12 = [MEMORY[0x277CCAD78] UUID];
-        v13 = [(SBSystemApertureViewController *)self _newContainerViewWithInterfaceElementIdentifier:v12];
+        uUID = [MEMORY[0x277CCAD78] UUID];
+        v13 = [(SBSystemApertureViewController *)self _newContainerViewWithInterfaceElementIdentifier:uUID];
 
         [(NSMutableArray *)self->_orderedContainerViews setObject:v13 atIndexedSubscript:v9];
-        if (a3 == v9)
+        if (rank == v9)
         {
           v14 = v13;
 
@@ -9031,7 +9031,7 @@ void __74__SBSystemApertureViewController__persistentAssertionForElement_withTyp
         ++v9;
       }
 
-      while (v9 <= a3);
+      while (v9 <= rank);
       [(SBSystemApertureViewController *)self _updateContainerViewRanks];
     }
 
@@ -9043,13 +9043,13 @@ void __74__SBSystemApertureViewController__persistentAssertionForElement_withTyp
 
   else
   {
-    v8 = [(NSMutableArray *)self->_orderedContainerViews objectAtIndexedSubscript:a3];
+    v8 = [(NSMutableArray *)self->_orderedContainerViews objectAtIndexedSubscript:rank];
   }
 
   return v8;
 }
 
-- (BOOL)systemApertureManagerShouldUseOrderedElementViewControllers:(id)a3
+- (BOOL)systemApertureManagerShouldUseOrderedElementViewControllers:(id)controllers
 {
   if (systemApertureManagerShouldUseOrderedElementViewControllers__onceToken != -1)
   {
@@ -9069,30 +9069,30 @@ void __94__SBSystemApertureViewController_systemApertureManagerShouldUseOrderedE
   }
 }
 
-- (id)requireCaptureBoundsDefiningViewWithBounds:(CGRect)a3 reason:(id)a4
+- (id)requireCaptureBoundsDefiningViewWithBounds:(CGRect)bounds reason:(id)reason
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  reasonCopy = reason;
   if (self->_secureFlipBookCaptureBoundsDefiningView)
   {
     [SBSystemApertureViewController requireCaptureBoundsDefiningViewWithBounds:reason:];
   }
 
-  v10 = [[SBSystemApertureSecureElementCaptureBoundsView alloc] initWithFrame:x, y, width, height];
+  height = [[SBSystemApertureSecureElementCaptureBoundsView alloc] initWithFrame:x, y, width, height];
   secureFlipBookCaptureBoundsDefiningView = self->_secureFlipBookCaptureBoundsDefiningView;
-  self->_secureFlipBookCaptureBoundsDefiningView = v10;
+  self->_secureFlipBookCaptureBoundsDefiningView = height;
 
   v12 = self->_secureFlipBookCaptureBoundsDefiningView;
-  v13 = [MEMORY[0x277D75348] redColor];
-  [(SBSystemApertureSecureElementCaptureBoundsView *)v12 setDebugOutlineColor:v13];
+  redColor = [MEMORY[0x277D75348] redColor];
+  [(SBSystemApertureSecureElementCaptureBoundsView *)v12 setDebugOutlineColor:redColor];
 
   objc_initWeak(&location, self);
   v14 = [_SBSystemApertureCaptureBoundsDefiningViewAssertion alloc];
-  v15 = [MEMORY[0x277CCAD78] UUID];
-  v16 = [v15 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
   v17 = self->_secureFlipBookCaptureBoundsDefiningView;
   v18 = MEMORY[0x277D85CD0];
   v19 = MEMORY[0x277D85CD0];
@@ -9101,7 +9101,7 @@ void __94__SBSystemApertureViewController_systemApertureManagerShouldUseOrderedE
   v25 = __84__SBSystemApertureViewController_requireCaptureBoundsDefiningViewWithBounds_reason___block_invoke;
   v26 = &unk_2783B8970;
   objc_copyWeak(&v27, &location);
-  v20 = [(_SBSystemApertureCaptureBoundsDefiningViewAssertion *)v14 initWithReason:v9 identifier:v16 boundsDefiningView:v17 requiredInvalidationQueue:v18 deallocPolicy:0 invalidatedWithContextBlock:&v23];
+  v20 = [(_SBSystemApertureCaptureBoundsDefiningViewAssertion *)v14 initWithReason:reasonCopy identifier:uUIDString boundsDefiningView:v17 requiredInvalidationQueue:v18 deallocPolicy:0 invalidatedWithContextBlock:&v23];
 
   v21 = [(SBSystemApertureViewController *)self view:v23];
   [v21 addSubview:self->_secureFlipBookCaptureBoundsDefiningView];
@@ -9126,17 +9126,17 @@ void __84__SBSystemApertureViewController_requireCaptureBoundsDefiningViewWithBo
   }
 }
 
-- (id)requireUserInterfaceLayoutDirection:(int64_t)a3 reason:(id)a4
+- (id)requireUserInterfaceLayoutDirection:(int64_t)direction reason:(id)reason
 {
-  v6 = a4;
+  reasonCopy = reason;
   if (!self->_rtlOverrideAssertions)
   {
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     rtlOverrideAssertions = self->_rtlOverrideAssertions;
-    self->_rtlOverrideAssertions = v7;
+    self->_rtlOverrideAssertions = array;
   }
 
-  v9 = SBSAStringFromUIUserInterfaceLayoutDirection(a3);
+  v9 = SBSAStringFromUIUserInterfaceLayoutDirection(direction);
   objc_initWeak(&location, self);
   v10 = objc_alloc(MEMORY[0x277CF0CE8]);
   v11 = MEMORY[0x277D85CD0];
@@ -9146,7 +9146,7 @@ void __84__SBSystemApertureViewController_requireCaptureBoundsDefiningViewWithBo
   v17 = __77__SBSystemApertureViewController_requireUserInterfaceLayoutDirection_reason___block_invoke;
   v18 = &unk_2783B8970;
   objc_copyWeak(&v19, &location);
-  v13 = [v10 initWithReason:v6 identifier:v9 requiredInvalidationQueue:v11 deallocPolicy:0 invalidatedWithContextBlock:&v15];
+  v13 = [v10 initWithReason:reasonCopy identifier:v9 requiredInvalidationQueue:v11 deallocPolicy:0 invalidatedWithContextBlock:&v15];
 
   [(NSMutableArray *)self->_rtlOverrideAssertions addObject:v13, v15, v16, v17, v18];
   [(SBSystemApertureViewController *)self _RTLOverrideChanged];
@@ -9167,20 +9167,20 @@ void __77__SBSystemApertureViewController_requireUserInterfaceLayoutDirection_re
   [WeakRetained _RTLOverrideChanged];
 }
 
-- (id)requireClearBackgroundRenderingForCapture:(id)a3
+- (id)requireClearBackgroundRenderingForCapture:(id)capture
 {
-  v4 = a3;
+  captureCopy = capture;
   if (!self->_clearBackgroundAssertions)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     clearBackgroundAssertions = self->_clearBackgroundAssertions;
-    self->_clearBackgroundAssertions = v5;
+    self->_clearBackgroundAssertions = array;
   }
 
   objc_initWeak(&location, self);
   v7 = objc_alloc(MEMORY[0x277CF0CE8]);
-  v8 = [MEMORY[0x277CCAD78] UUID];
-  v9 = [v8 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
   v10 = MEMORY[0x277D85CD0];
   v11 = MEMORY[0x277D85CD0];
   v14 = MEMORY[0x277D85DD0];
@@ -9188,7 +9188,7 @@ void __77__SBSystemApertureViewController_requireUserInterfaceLayoutDirection_re
   v16 = __76__SBSystemApertureViewController_requireClearBackgroundRenderingForCapture___block_invoke;
   v17 = &unk_2783B8970;
   objc_copyWeak(&v18, &location);
-  v12 = [v7 initWithReason:v4 identifier:v9 requiredInvalidationQueue:v10 deallocPolicy:0 invalidatedWithContextBlock:&v14];
+  v12 = [v7 initWithReason:captureCopy identifier:uUIDString requiredInvalidationQueue:v10 deallocPolicy:0 invalidatedWithContextBlock:&v14];
 
   [(NSMutableArray *)self->_clearBackgroundAssertions addObject:v12, v14, v15, v16, v17];
   [(SBSystemApertureViewController *)self _invalidatePreferencesForReason:0x40000];
@@ -9215,22 +9215,22 @@ void __76__SBSystemApertureViewController_requireClearBackgroundRenderingForCapt
   secureFlipBookCaptureBoundsDefiningView = self->_secureFlipBookCaptureBoundsDefiningView;
   if (secureFlipBookCaptureBoundsDefiningView)
   {
-    v4 = [(SBSystemApertureSecureElementCaptureBoundsView *)secureFlipBookCaptureBoundsDefiningView layer];
-    v5 = [(NSMutableArray *)self->_orderedContainerViews firstObject];
-    v6 = [v5 layer];
+    layer = [(SBSystemApertureSecureElementCaptureBoundsView *)secureFlipBookCaptureBoundsDefiningView layer];
+    firstObject = [(NSMutableArray *)self->_orderedContainerViews firstObject];
+    layer2 = [firstObject layer];
 
     v7 = objc_alloc_init(MEMORY[0x277CD9EE8]);
-    [v7 setSourceLayer:v6];
+    [v7 setSourceLayer:layer2];
     [v7 setDuration:INFINITY];
     [v7 setFillMode:*MEMORY[0x277CDA230]];
     [v7 setRemovedOnCompletion:0];
-    [v4 position];
+    [layer position];
     v9 = v8;
     v11 = v10;
-    [v6 position];
+    [layer2 position];
     v13 = v12;
     v15 = v14;
-    [v6 bounds];
+    [layer2 bounds];
     v18 = [MEMORY[0x277CCAE60] bs_valueWithCGPoint:{v16 * 0.5 - (v13 - v9), v17 * 0.5 - (v15 - v11)}];
     v22[0] = v18;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
@@ -9239,61 +9239,61 @@ void __76__SBSystemApertureViewController_requireClearBackgroundRenderingForCapt
     [v7 setUsesNormalizedCoordinates:0];
     [v7 setAppliesScale:0];
     [v7 setAppliesRotation:0];
-    [v4 addAnimation:v7 forKey:@"com.apple.SpringBoard.SBSystemApertureViewController.captureShakeMatchMoveAnimation"];
+    [layer addAnimation:v7 forKey:@"com.apple.SpringBoard.SBSystemApertureViewController.captureShakeMatchMoveAnimation"];
     v20 = self->_secureFlipBookCaptureBoundsDefiningView;
-    v21 = [MEMORY[0x277D75348] yellowColor];
-    [(SBSystemApertureSecureElementCaptureBoundsView *)v20 setDebugOutlineColor:v21];
+    yellowColor = [MEMORY[0x277D75348] yellowColor];
+    [(SBSystemApertureSecureElementCaptureBoundsView *)v20 setDebugOutlineColor:yellowColor];
   }
 }
 
 - (void)_stopTrackingShakeAnimation
 {
-  v5 = [(SBSystemApertureSecureElementCaptureBoundsView *)self->_secureFlipBookCaptureBoundsDefiningView layer];
-  [v5 removeAnimationForKey:@"com.apple.SpringBoard.SBSystemApertureViewController.captureShakeMatchMoveAnimation"];
+  layer = [(SBSystemApertureSecureElementCaptureBoundsView *)self->_secureFlipBookCaptureBoundsDefiningView layer];
+  [layer removeAnimationForKey:@"com.apple.SpringBoard.SBSystemApertureViewController.captureShakeMatchMoveAnimation"];
   secureFlipBookCaptureBoundsDefiningView = self->_secureFlipBookCaptureBoundsDefiningView;
-  v4 = [MEMORY[0x277D75348] redColor];
-  [(SBSystemApertureSecureElementCaptureBoundsView *)secureFlipBookCaptureBoundsDefiningView setDebugOutlineColor:v4];
+  redColor = [MEMORY[0x277D75348] redColor];
+  [(SBSystemApertureSecureElementCaptureBoundsView *)secureFlipBookCaptureBoundsDefiningView setDebugOutlineColor:redColor];
 }
 
-- (void)systemApertureDebuggingUtility:(id)a3 updateUIForConnectionState:(int)a4
+- (void)systemApertureDebuggingUtility:(id)utility updateUIForConnectionState:(int)state
 {
-  v5 = [(SBSystemApertureViewController *)self view];
-  v9 = [v5 layer];
+  view = [(SBSystemApertureViewController *)self view];
+  layer = [view layer];
 
-  if (a4 <= 1)
+  if (state <= 1)
   {
-    if (!a4)
+    if (!state)
     {
       goto LABEL_9;
     }
 
-    if (a4 != 1)
+    if (state != 1)
     {
       goto LABEL_13;
     }
 
 LABEL_8:
-    v6 = [MEMORY[0x277D75348] clearColor];
+    clearColor = [MEMORY[0x277D75348] clearColor];
     v7 = 0.0;
 LABEL_12:
-    [v9 setBorderColor:{objc_msgSend(v6, "CGColor")}];
+    [layer setBorderColor:{objc_msgSend(clearColor, "CGColor")}];
 
-    [v9 setBorderWidth:v7];
+    [layer setBorderWidth:v7];
     goto LABEL_13;
   }
 
-  switch(a4)
+  switch(state)
   {
     case 2:
-      v8 = [MEMORY[0x277D75348] systemGreenColor];
+      systemGreenColor = [MEMORY[0x277D75348] systemGreenColor];
       goto LABEL_11;
     case 5:
       goto LABEL_8;
     case 4:
 LABEL_9:
-      v8 = [MEMORY[0x277D75348] systemYellowColor];
+      systemGreenColor = [MEMORY[0x277D75348] systemYellowColor];
 LABEL_11:
-      v6 = v8;
+      clearColor = systemGreenColor;
       v7 = 5.0;
       goto LABEL_12;
   }
@@ -9301,13 +9301,13 @@ LABEL_11:
 LABEL_13:
 }
 
-- (void)systemApertureDebuggingUtility:(id)a3 shouldCreateDebuggingLabel:(BOOL)a4
+- (void)systemApertureDebuggingUtility:(id)utility shouldCreateDebuggingLabel:(BOOL)label
 {
-  v4 = a4;
+  labelCopy = label;
   v30[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  utilityCopy = utility;
   queryIterationLabel = self->_queryIterationLabel;
-  if (v4)
+  if (labelCopy)
   {
     if (!queryIterationLabel)
     {
@@ -9316,8 +9316,8 @@ LABEL_13:
       self->_queryIterationLabel = v8;
 
       [(UILabel *)self->_queryIterationLabel setText:@"System Aperture Query Iteration: "];
-      v10 = [(UILabel *)self->_queryIterationLabel layer];
-      [v10 setAllowsHitTesting:0];
+      layer = [(UILabel *)self->_queryIterationLabel layer];
+      [layer setAllowsHitTesting:0];
 
       [(UILabel *)self->_queryIterationLabel setNumberOfLines:1];
       [(UILabel *)self->_queryIterationLabel setTextAlignment:1];
@@ -9329,26 +9329,26 @@ LABEL_13:
       [(UILabel *)v11 setFont:v13];
 
       v14 = self->_queryIterationLabel;
-      v15 = [MEMORY[0x277D75348] systemWhiteColor];
-      [(UILabel *)v14 setTextColor:v15];
+      systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+      [(UILabel *)v14 setTextColor:systemWhiteColor];
 
       v16 = self->_queryIterationLabel;
-      v17 = [MEMORY[0x277D75348] systemBlackColor];
-      [(UILabel *)v16 setBackgroundColor:v17];
+      systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
+      [(UILabel *)v16 setBackgroundColor:systemBlackColor];
 
-      v18 = [(SBSystemApertureViewController *)self view];
-      [v18 addSubview:self->_queryIterationLabel];
+      view = [(SBSystemApertureViewController *)self view];
+      [view addSubview:self->_queryIterationLabel];
 
       [(UILabel *)self->_queryIterationLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-      v19 = [(UILabel *)self->_queryIterationLabel centerXAnchor];
-      v20 = [(SBSystemApertureViewController *)self view];
-      v21 = [v20 centerXAnchor];
-      v22 = [v19 constraintEqualToAnchor:v21];
+      centerXAnchor = [(UILabel *)self->_queryIterationLabel centerXAnchor];
+      view2 = [(SBSystemApertureViewController *)self view];
+      centerXAnchor2 = [view2 centerXAnchor];
+      v22 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
-      v23 = [(UILabel *)self->_queryIterationLabel centerYAnchor];
-      v24 = [(SBSystemApertureViewController *)self view];
-      v25 = [v24 centerYAnchor];
-      v26 = [v23 constraintEqualToAnchor:v25];
+      centerYAnchor = [(UILabel *)self->_queryIterationLabel centerYAnchor];
+      view3 = [(SBSystemApertureViewController *)self view];
+      centerYAnchor2 = [view3 centerYAnchor];
+      v26 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
 
       v27 = MEMORY[0x277CCAAD0];
       v30[0] = v22;
@@ -9366,67 +9366,67 @@ LABEL_13:
   }
 }
 
-- (void)elementViewControllingWillAppear:(id)a3
+- (void)elementViewControllingWillAppear:(id)appear
 {
-  v3 = [a3 elementViewProvider];
-  v4 = [v3 element];
+  elementViewProvider = [appear elementViewProvider];
+  element = [elementViewProvider element];
 
   if (objc_opt_respondsToSelector())
   {
-    [v4 element:v4 visibilityWillChange:1];
+    [element element:element visibilityWillChange:1];
   }
 }
 
-- (void)elementViewControllingDidAppear:(id)a3
+- (void)elementViewControllingDidAppear:(id)appear
 {
-  v3 = [a3 elementViewProvider];
-  v4 = [v3 element];
+  elementViewProvider = [appear elementViewProvider];
+  element = [elementViewProvider element];
 
   if (objc_opt_respondsToSelector())
   {
-    [v4 element:v4 visibilityDidChange:1];
+    [element element:element visibilityDidChange:1];
   }
 }
 
-- (void)elementViewControllingWillDisappear:(id)a3
+- (void)elementViewControllingWillDisappear:(id)disappear
 {
-  v3 = [a3 elementViewProvider];
-  v4 = [v3 element];
+  elementViewProvider = [disappear elementViewProvider];
+  element = [elementViewProvider element];
 
   if (objc_opt_respondsToSelector())
   {
-    [v4 element:v4 visibilityWillChange:0];
+    [element element:element visibilityWillChange:0];
   }
 }
 
-- (void)elementViewControllingDidDisappear:(id)a3
+- (void)elementViewControllingDidDisappear:(id)disappear
 {
-  v3 = [a3 elementViewProvider];
-  v4 = [v3 element];
+  elementViewProvider = [disappear elementViewProvider];
+  element = [elementViewProvider element];
 
   if (objc_opt_respondsToSelector())
   {
-    [v4 element:v4 visibilityDidChange:0];
+    [element element:element visibilityDidChange:0];
   }
 }
 
-- (CGRect)systemApertureContainerView:(id)a3 hitRectForBounds:(CGRect)a4 debugColor:(id *)a5
+- (CGRect)systemApertureContainerView:(id)view hitRectForBounds:(CGRect)bounds debugColor:(id *)color
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
-  v12 = [MEMORY[0x277D75348] systemYellowColor];
-  v13 = [v12 colorWithAlphaComponent:0.5];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  viewCopy = view;
+  systemYellowColor = [MEMORY[0x277D75348] systemYellowColor];
+  v13 = [systemYellowColor colorWithAlphaComponent:0.5];
 
-  v14 = [(SBSystemApertureViewController *)self view];
-  [v14 bounds];
+  view = [(SBSystemApertureViewController *)self view];
+  [view bounds];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  [v14 safeAreaInsets];
+  [view safeAreaInsets];
   v91 = v20;
   v92 = v18;
   v90 = v22;
@@ -9435,7 +9435,7 @@ LABEL_13:
   v88 = v25;
   v27 = v26;
   rect = v28;
-  [v11 convertRect:v14 toView:{x, y, width, height}];
+  [viewCopy convertRect:view toView:{x, y, width, height}];
   v30 = v29;
   v32 = v31;
   v34 = v33;
@@ -9553,8 +9553,8 @@ LABEL_13:
 
     else
     {
-      v64 = [MEMORY[0x277D75348] systemGreenColor];
-      v53 = [v64 colorWithAlphaComponent:0.5];
+      systemGreenColor = [MEMORY[0x277D75348] systemGreenColor];
+      v53 = [systemGreenColor colorWithAlphaComponent:0.5];
 
       v104.origin.x = v57;
       v104.origin.y = v59;
@@ -9587,17 +9587,17 @@ LABEL_13:
     }
   }
 
-  v68 = [(SBSystemApertureSettings *)self->_settings isContainerHitRectVisible];
-  if (a5 && v68)
+  isContainerHitRectVisible = [(SBSystemApertureSettings *)self->_settings isContainerHitRectVisible];
+  if (color && isContainerHitRectVisible)
   {
     v69 = v53;
-    *a5 = v53;
+    *color = v53;
   }
 
-  v70 = [(SBSystemApertureViewController *)self traitCollection];
-  [v70 displayScale];
+  traitCollection = [(SBSystemApertureViewController *)self traitCollection];
+  [traitCollection displayScale];
   UIRectRoundToScale();
-  [v14 convertRect:v11 toView:?];
+  [view convertRect:viewCopy toView:?];
   v72 = v71;
   v74 = v73;
   v76 = v75;
@@ -9614,83 +9614,83 @@ LABEL_13:
   return result;
 }
 
-- (void)_kickCurtainIndicatorViewFrameForContainerView:(id)a3
+- (void)_kickCurtainIndicatorViewFrameForContainerView:(id)view
 {
-  v9 = a3;
-  v4 = [v9 elementViewController];
-  v5 = v4;
-  if (v4)
+  viewCopy = view;
+  elementViewController = [viewCopy elementViewController];
+  v5 = elementViewController;
+  if (elementViewController)
   {
-    v6 = [v4 elementViewProvider];
+    elementViewProvider = [elementViewController elementViewProvider];
   }
 
   else
   {
-    v7 = [v9 outgoingElementViewController];
-    v6 = [v7 elementViewProvider];
+    outgoingElementViewController = [viewCopy outgoingElementViewController];
+    elementViewProvider = [outgoingElementViewController elementViewProvider];
   }
 
-  v8 = [v6 indicatorView];
+  indicatorView = [elementViewProvider indicatorView];
   if (objc_opt_respondsToSelector())
   {
-    [(SBSystemApertureCurtainViewHoster *)self->_curtainViewHoster setIndicatorPortalViewFrameChangedForIndicatorSourceView:v8];
+    [(SBSystemApertureCurtainViewHoster *)self->_curtainViewHoster setIndicatorPortalViewFrameChangedForIndicatorSourceView:indicatorView];
   }
 }
 
-- (BOOL)_doesElementHaveValidUrgencyAssertion:(id)a3
+- (BOOL)_doesElementHaveValidUrgencyAssertion:(id)assertion
 {
-  v3 = a3;
+  assertionCopy = assertion;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 platformElementHost];
-    v5 = [v4 urgentAndImportantAssertion];
-    v6 = [v5 isValid];
+    platformElementHost = [assertionCopy platformElementHost];
+    urgentAndImportantAssertion = [platformElementHost urgentAndImportantAssertion];
+    isValid = [urgentAndImportantAssertion isValid];
   }
 
   else
   {
-    v6 = 0;
+    isValid = 0;
   }
 
-  return v6;
+  return isValid;
 }
 
-- (BOOL)_doesElementHaveValidRequiredPriorityAssertion:(id)a3
+- (BOOL)_doesElementHaveValidRequiredPriorityAssertion:(id)assertion
 {
-  v3 = a3;
+  assertionCopy = assertion;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 platformElementHost];
-    v5 = [v4 requiredPriorityAssertion];
-    v6 = [v5 isValid];
+    platformElementHost = [assertionCopy platformElementHost];
+    requiredPriorityAssertion = [platformElementHost requiredPriorityAssertion];
+    isValid = [requiredPriorityAssertion isValid];
   }
 
   else
   {
-    v6 = 0;
+    isValid = 0;
   }
 
-  return v6;
+  return isValid;
 }
 
-- (int64_t)systemApertureApertureElementAuthority:(id)a3 preferredLayoutModeForElement:(id)a4
+- (int64_t)systemApertureApertureElementAuthority:(id)authority preferredLayoutModeForElement:(id)element
 {
   v4 = SAUILayoutSpecifyingOverriderForElement();
-  v5 = [v4 preferredLayoutMode];
+  preferredLayoutMode = [v4 preferredLayoutMode];
 
-  return v5;
+  return preferredLayoutMode;
 }
 
-- (BOOL)systemApertureApertureElementAuthority:(id)a3 isActivityElementAlerting:(id)a4
+- (BOOL)systemApertureApertureElementAuthority:(id)authority isActivityElementAlerting:(id)alerting
 {
-  v5 = a4;
+  alertingCopy = alerting;
   if (SAHasActivityBehavior())
   {
-    v6 = [(SAUISystemApertureManager *)self->_systemApertureManager elementViewControllerForElement:v5];
+    v6 = [(SAUISystemApertureManager *)self->_systemApertureManager elementViewControllerForElement:alertingCopy];
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v6 temporallyOrderedAlertingActivityAssertions];
-      v8 = [v7 bs_containsObjectPassingTest:&__block_literal_global_846];
+      temporallyOrderedAlertingActivityAssertions = [v6 temporallyOrderedAlertingActivityAssertions];
+      v8 = [temporallyOrderedAlertingActivityAssertions bs_containsObjectPassingTest:&__block_literal_global_846];
     }
 
     else
@@ -9707,19 +9707,19 @@ LABEL_13:
   return v8;
 }
 
-- (BOOL)systemApertureApertureElementAuthority:(id)a3 isElementExpandedDueToUserInteraction:(id)a4
+- (BOOL)systemApertureApertureElementAuthority:(id)authority isElementExpandedDueToUserInteraction:(id)interaction
 {
   v4 = SAUILayoutSpecifyingOverriderForElement();
-  v5 = [v4 preferredLayoutModeAssertion];
-  v6 = [v5 layoutModeChangeReason] == 3;
+  preferredLayoutModeAssertion = [v4 preferredLayoutModeAssertion];
+  v6 = [preferredLayoutModeAssertion layoutModeChangeReason] == 3;
 
   return v6;
 }
 
-- (BOOL)systemApertureApertureElementAuthority:(id)a3 isElementUrgentlyVisible:(id)a4
+- (BOOL)systemApertureApertureElementAuthority:(id)authority isElementUrgentlyVisible:(id)visible
 {
-  v5 = a4;
-  if ([(SBSystemApertureViewController *)self _doesElementHaveValidUrgencyAssertion:v5])
+  visibleCopy = visible;
+  if ([(SBSystemApertureViewController *)self _doesElementHaveValidUrgencyAssertion:visibleCopy])
   {
     v6 = SAUILayoutSpecifyingOverriderForElement();
     v7 = [v6 preferredLayoutMode] > 0;
@@ -9733,10 +9733,10 @@ LABEL_13:
   return v7;
 }
 
-- (BOOL)systemApertureApertureElementAuthority:(id)a3 isElementRequiredPriority:(id)a4
+- (BOOL)systemApertureApertureElementAuthority:(id)authority isElementRequiredPriority:(id)priority
 {
-  v5 = a4;
-  if ([(SBSystemApertureViewController *)self _doesElementHaveValidRequiredPriorityAssertion:v5])
+  priorityCopy = priority;
+  if ([(SBSystemApertureViewController *)self _doesElementHaveValidRequiredPriorityAssertion:priorityCopy])
   {
     v6 = SAUILayoutSpecifyingOverriderForElement();
     v7 = [v6 preferredLayoutMode] > 0;
@@ -9750,20 +9750,20 @@ LABEL_13:
   return v7;
 }
 
-- (void)zStackParticipantDidChange:(id)a3
+- (void)zStackParticipantDidChange:(id)change
 {
-  v4 = [a3 systemApertureSuppressedForSystemChromeSuppression];
+  systemApertureSuppressedForSystemChromeSuppression = [change systemApertureSuppressedForSystemChromeSuppression];
   suppressForSystemChromeSuppressionAssertion = self->_suppressForSystemChromeSuppressionAssertion;
-  if (v4)
+  if (systemApertureSuppressedForSystemChromeSuppression)
   {
     if (suppressForSystemChromeSuppressionAssertion)
     {
       goto LABEL_6;
     }
 
-    v6 = [(SBSystemApertureViewController *)self systemApertureRepresentationSuppressionAssertionForSystemChromeSuppression];
+    systemApertureRepresentationSuppressionAssertionForSystemChromeSuppression = [(SBSystemApertureViewController *)self systemApertureRepresentationSuppressionAssertionForSystemChromeSuppression];
     v7 = self->_suppressForSystemChromeSuppressionAssertion;
-    self->_suppressForSystemChromeSuppressionAssertion = v6;
+    self->_suppressForSystemChromeSuppressionAssertion = systemApertureRepresentationSuppressionAssertionForSystemChromeSuppression;
   }
 
   else
@@ -9779,10 +9779,10 @@ LABEL_6:
   [(SBSystemApertureViewController *)self _reevaluateElementSuppression];
 }
 
-- (id)_containerViewForGesture:(id)a3 initialLocationInContainerView:(CGPoint *)a4
+- (id)_containerViewForGesture:(id)gesture initialLocationInContainerView:(CGPoint *)view
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  gestureCopy = gesture;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -9808,10 +9808,10 @@ LABEL_6:
         if ([v11 pointInside:0 withEvent:v17])
         {
           v8 = v11;
-          if (a4)
+          if (view)
           {
-            a4->x = v13;
-            a4->y = v15;
+            view->x = v13;
+            view->y = v15;
           }
 
           goto LABEL_12;
@@ -9833,21 +9833,21 @@ LABEL_12:
   return v8;
 }
 
-- (BOOL)_isSystemGesture:(id)a3
+- (BOOL)_isSystemGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_resizePanGesture == v4)
+  gestureCopy = gesture;
+  v5 = gestureCopy;
+  if (self->_resizePanGesture == gestureCopy)
   {
     v6 = 1;
   }
 
-  else if (self->_interactionLongPressGesture == v4)
+  else if (self->_interactionLongPressGesture == gestureCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_activeWindowScene);
-    v8 = [WeakRetained associatedWindowScene];
-    v9 = [v8 systemGestureManager];
-    v6 = [v9 isSystemGestureRecognizer:self->_interactionLongPressGesture];
+    associatedWindowScene = [WeakRetained associatedWindowScene];
+    systemGestureManager = [associatedWindowScene systemGestureManager];
+    v6 = [systemGestureManager isSystemGestureRecognizer:self->_interactionLongPressGesture];
   }
 
   else
@@ -9858,11 +9858,11 @@ LABEL_12:
   return v6;
 }
 
-- (id)_containerViewForTouch:(id)a3 ofGestureRecognizer:(id)a4 initialLocation:(CGPoint *)a5
+- (id)_containerViewForTouch:(id)touch ofGestureRecognizer:(id)recognizer initialLocation:(CGPoint *)location
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  touchCopy = touch;
+  recognizerCopy = recognizer;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
@@ -9872,7 +9872,7 @@ LABEL_12:
   if (v11)
   {
     v12 = v11;
-    v29 = a5;
+    locationCopy = location;
     v13 = *v31;
     while (2)
     {
@@ -9884,7 +9884,7 @@ LABEL_12:
         }
 
         v15 = *(*(&v30 + 1) + 8 * i);
-        if ([(SBSystemApertureViewController *)self _isSystemGesture:v9])
+        if ([(SBSystemApertureViewController *)self _isSystemGesture:recognizerCopy])
         {
           _UISystemGestureLocationForTouchInView();
           v17 = v16;
@@ -9896,7 +9896,7 @@ LABEL_12:
 
         else
         {
-          [v8 locationInView:v15];
+          [touchCopy locationInView:v15];
           v17 = v23;
           v22 = v24;
         }
@@ -9904,10 +9904,10 @@ LABEL_12:
         if ([v15 pointInside:0 withEvent:{v17, v22}])
         {
           v25 = v15;
-          if (v29)
+          if (locationCopy)
           {
-            v29->x = v17;
-            v29->y = v22;
+            locationCopy->x = v17;
+            locationCopy->y = v22;
           }
 
           goto LABEL_15;
@@ -9942,11 +9942,11 @@ LABEL_15:
   return v26;
 }
 
-- (id)_containerViewForScrollEvent:(id)a3 ofGestureRecognizer:(id)a4 initialLocation:(CGPoint *)a5
+- (id)_containerViewForScrollEvent:(id)event ofGestureRecognizer:(id)recognizer initialLocation:(CGPoint *)location
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  eventCopy = event;
+  recognizerCopy = recognizer;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
@@ -9956,7 +9956,7 @@ LABEL_15:
   if (v11)
   {
     v12 = v11;
-    v29 = a5;
+    locationCopy = location;
     v13 = *v31;
     while (2)
     {
@@ -9968,7 +9968,7 @@ LABEL_15:
         }
 
         v15 = *(*(&v30 + 1) + 8 * i);
-        if ([(SBSystemApertureViewController *)self _isSystemGesture:v9])
+        if ([(SBSystemApertureViewController *)self _isSystemGesture:recognizerCopy])
         {
           _UISystemGestureLocationForScrollEventInView();
           v17 = v16;
@@ -9980,7 +9980,7 @@ LABEL_15:
 
         else
         {
-          [v8 locationInView:v15];
+          [eventCopy locationInView:v15];
           v17 = v23;
           v22 = v24;
         }
@@ -9988,10 +9988,10 @@ LABEL_15:
         if ([v15 pointInside:0 withEvent:{v17, v22}])
         {
           v25 = v15;
-          if (v29)
+          if (locationCopy)
           {
-            v29->x = v17;
-            v29->y = v22;
+            locationCopy->x = v17;
+            locationCopy->y = v22;
           }
 
           goto LABEL_15;
@@ -10026,30 +10026,30 @@ LABEL_15:
   return v26;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveEvent:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveEvent:(id)event
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (self->_resizePanGesture != v7 && self->_interactionLongPressGesture != v7)
+  recognizerCopy = recognizer;
+  eventCopy = event;
+  v9 = eventCopy;
+  if (self->_resizePanGesture != recognizerCopy && self->_interactionLongPressGesture != recognizerCopy)
   {
     goto LABEL_12;
   }
 
-  v10 = [v8 type];
-  if (v10)
+  type = [eventCopy type];
+  if (type)
   {
-    if (v10 == 10)
+    if (type == 10)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v22 = *MEMORY[0x277CBF348];
-        v11 = [(SBSystemApertureViewController *)self _containerViewForScrollEvent:v9 ofGestureRecognizer:v7 initialLocation:&v22];
+        v11 = [(SBSystemApertureViewController *)self _containerViewForScrollEvent:v9 ofGestureRecognizer:recognizerCopy initialLocation:&v22];
         if (v11)
         {
           v12 = v11;
-          if (self->_resizePanGesture == v7)
+          if (self->_resizePanGesture == recognizerCopy)
           {
             activeContainerResizeGestureDescription = self->_activeContainerResizeGestureDescription;
             v18[0] = MEMORY[0x277D85DD0];
@@ -10128,18 +10128,18 @@ void __71__SBSystemApertureViewController_gestureRecognizer_shouldReceiveEvent__
   [v6 setInitialLocation:{*(a1 + 56), *(a1 + 64)}];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v7 = a3;
-  v8 = a4;
-  if (self->_resizePanGesture == v7 || self->_interactionLongPressGesture == v7)
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  if (self->_resizePanGesture == recognizerCopy || self->_interactionLongPressGesture == recognizerCopy)
   {
     v28 = *MEMORY[0x277CBF348];
-    v9 = [(SBSystemApertureViewController *)self _containerViewForTouch:v8 ofGestureRecognizer:v7 initialLocation:&v28];
+    v9 = [(SBSystemApertureViewController *)self _containerViewForTouch:touchCopy ofGestureRecognizer:recognizerCopy initialLocation:&v28];
     if (v9)
     {
       v10 = v9;
-      if (self->_interactionLongPressGesture == v7)
+      if (self->_interactionLongPressGesture == recognizerCopy)
       {
         v11 = 1376;
         activeContainerDefaultPressGestureDescription = self->_activeContainerDefaultPressGestureDescription;
@@ -10156,7 +10156,7 @@ void __71__SBSystemApertureViewController_gestureRecognizer_shouldReceiveEvent__
 
       else
       {
-        if (self->_resizePanGesture != v7)
+        if (self->_resizePanGesture != recognizerCopy)
         {
 LABEL_10:
 
@@ -10171,14 +10171,14 @@ LABEL_10:
         v21 = __71__SBSystemApertureViewController_gestureRecognizer_shouldReceiveTouch___block_invoke_2;
         v22 = &unk_2783B8998;
         v24[1] = a2;
-        v23 = self;
+        selfCopy = self;
         v13 = v24;
         v24[0] = v9;
         v25 = v28;
         v14 = &v19;
       }
 
-      v16 = [activeContainerDefaultPressGestureDescription copyWithBlock:{v14, v19, v20, v21, v22, v23, v24[0]}];
+      v16 = [activeContainerDefaultPressGestureDescription copyWithBlock:{v14, v19, v20, v21, v22, selfCopy, v24[0]}];
       v17 = *(&self->super.super.super.super.isa + v11);
       *(&self->super.super.super.super.isa + v11) = v16;
 
@@ -10279,15 +10279,15 @@ void __71__SBSystemApertureViewController_gestureRecognizer_shouldReceiveTouch__
   [v6 setInitialLocation:{*(a1 + 56), *(a1 + 64)}];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_interactionLongPressGesture == v4 && self->_activeContainerDefaultPressGestureDescription)
+  beginCopy = begin;
+  v5 = beginCopy;
+  if (self->_interactionLongPressGesture == beginCopy && self->_activeContainerDefaultPressGestureDescription)
   {
-    v7 = [(UIPanGestureRecognizer *)v4 view];
-    [(UIPanGestureRecognizer *)v5 locationInView:v7];
-    v8 = [v7 hitTest:0 withEvent:?];
+    view = [(UIPanGestureRecognizer *)beginCopy view];
+    [(UIPanGestureRecognizer *)v5 locationInView:view];
+    v8 = [view hitTest:0 withEvent:?];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -10302,7 +10302,7 @@ void __71__SBSystemApertureViewController_gestureRecognizer_shouldReceiveTouch__
     }
   }
 
-  else if (self->_resizePanGesture == v4 && self->_activeContainerResizeGestureDescription)
+  else if (self->_resizePanGesture == beginCopy && self->_activeContainerResizeGestureDescription)
   {
     v6 = ![(SBSystemApertureViewController *)self _panGestureInhibitedByElement];
   }
@@ -10315,40 +10315,40 @@ void __71__SBSystemApertureViewController_gestureRecognizer_shouldReceiveTouch__
   return v6;
 }
 
-- (unint64_t)_systemGestureTypeForGesture:(id)a3 systemGestureManager:(id)a4
+- (unint64_t)_systemGestureTypeForGesture:(id)gesture systemGestureManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (self->_resizePanGesture == v6)
+  gestureCopy = gesture;
+  managerCopy = manager;
+  v8 = managerCopy;
+  if (self->_resizePanGesture == gestureCopy)
   {
     v9 = 135;
   }
 
-  else if (self->_interactionLongPressGesture == v6)
+  else if (self->_interactionLongPressGesture == gestureCopy)
   {
     v9 = 136;
   }
 
   else
   {
-    v9 = [v7 typeOfSystemGesture:v6];
+    v9 = [managerCopy typeOfSystemGesture:gestureCopy];
   }
 
   return v9;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  gestureRecognizerCopy = gestureRecognizer;
+  recognizerCopy = recognizer;
   WeakRetained = objc_loadWeakRetained(&self->_activeWindowScene);
-  v9 = [WeakRetained associatedWindowScene];
-  v10 = [v9 systemGestureManager];
+  associatedWindowScene = [WeakRetained associatedWindowScene];
+  systemGestureManager = [associatedWindowScene systemGestureManager];
 
-  v11 = [(SBSystemApertureViewController *)self _systemGestureTypeForGesture:v7 systemGestureManager:v10];
-  v12 = [(SBSystemApertureViewController *)self _systemGestureTypeForGesture:v6 systemGestureManager:v10];
+  v11 = [(SBSystemApertureViewController *)self _systemGestureTypeForGesture:recognizerCopy systemGestureManager:systemGestureManager];
+  v12 = [(SBSystemApertureViewController *)self _systemGestureTypeForGesture:gestureRecognizerCopy systemGestureManager:systemGestureManager];
 
   if ((v11 - 135) >= 2 && v11 != 39 || (v13 = 1, (v12 - 135) >= 2) && v12 != 39)
   {
@@ -10370,58 +10370,58 @@ void __71__SBSystemApertureViewController_gestureRecognizer_shouldReceiveTouch__
   return v13;
 }
 
-- (void)_cancelExternalGesturesForReason:(id)a3
+- (void)_cancelExternalGesturesForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   WeakRetained = objc_loadWeakRetained(&self->_activeWindowScene);
-  v6 = [WeakRetained associatedWindowScene];
-  v7 = [v6 systemGestureManager];
+  associatedWindowScene = [WeakRetained associatedWindowScene];
+  systemGestureManager = [associatedWindowScene systemGestureManager];
 
-  [v7 cancelGestureRecognizerOfType:1 reason:v4];
-  [v7 cancelGestureRecognizerOfType:57 reason:v4];
-  [v7 cancelGestureRecognizerOfType:39 reason:v4];
+  [systemGestureManager cancelGestureRecognizerOfType:1 reason:reasonCopy];
+  [systemGestureManager cancelGestureRecognizerOfType:57 reason:reasonCopy];
+  [systemGestureManager cancelGestureRecognizerOfType:39 reason:reasonCopy];
 }
 
-- (void)_handleResizePan:(id)a3
+- (void)_handleResizePan:(id)pan
 {
-  v4 = a3;
-  if ([v4 state] == 1)
+  panCopy = pan;
+  if ([panCopy state] == 1)
   {
     [(SBSystemApertureViewController *)self _cancelExternalGesturesForReason:@"SAResizePan"];
   }
 
-  [(SBSystemApertureViewController *)self _handleContainerResizeGesture:v4];
+  [(SBSystemApertureViewController *)self _handleContainerResizeGesture:panCopy];
 }
 
-- (void)_handleResizeResult:(int64_t)a3 withContainerView:(id)a4
+- (void)_handleResizeResult:(int64_t)result withContainerView:(id)view
 {
-  v6 = a4;
-  v7 = [(SBSystemApertureViewController *)self _layoutSpecifyingOverriderForContainerView:v6];
-  v8 = [v6 elementViewController];
+  viewCopy = view;
+  v7 = [(SBSystemApertureViewController *)self _layoutSpecifyingOverriderForContainerView:viewCopy];
+  elementViewController = [viewCopy elementViewController];
 
-  v9 = [v7 layoutMode];
-  v10 = v9;
-  if (a3 != 1)
+  layoutMode = [v7 layoutMode];
+  v10 = layoutMode;
+  if (result != 1)
   {
-    if (a3 != -1)
+    if (result != -1)
     {
       goto LABEL_42;
     }
 
-    v11 = [v7 minimumSupportedLayoutMode];
-    v12 = [v8 elementViewProvider];
-    v13 = [v12 element];
-    v14 = [(SBSystemApertureViewController *)self _isInteractiveHidingSupportedByElement:v13];
+    minimumSupportedLayoutMode = [v7 minimumSupportedLayoutMode];
+    elementViewProvider = [elementViewController elementViewProvider];
+    element = [elementViewProvider element];
+    v14 = [(SBSystemApertureViewController *)self _isInteractiveHidingSupportedByElement:element];
 
     v15 = 2;
-    if (v11 > 2)
+    if (minimumSupportedLayoutMode > 2)
     {
-      v15 = v11;
+      v15 = minimumSupportedLayoutMode;
     }
 
     if (!v14)
     {
-      v15 = v11;
+      v15 = minimumSupportedLayoutMode;
     }
 
     if (v10 - 1 <= v15)
@@ -10450,26 +10450,26 @@ void __71__SBSystemApertureViewController_gestureRecognizer_shouldReceiveTouch__
     goto LABEL_29;
   }
 
-  if (v9 <= 2)
+  if (layoutMode <= 2)
   {
     v16 = 2;
   }
 
   else
   {
-    v16 = v9;
+    v16 = layoutMode;
   }
 
-  v17 = v9 + 1;
-  v18 = [v7 maximumSupportedLayoutMode];
-  if (v17 < v18)
+  v17 = layoutMode + 1;
+  maximumSupportedLayoutMode = [v7 maximumSupportedLayoutMode];
+  if (v17 < maximumSupportedLayoutMode)
   {
     v19 = v10 + 1;
   }
 
   else
   {
-    v19 = v18;
+    v19 = maximumSupportedLayoutMode;
   }
 
   if (v19 < v16)
@@ -10482,12 +10482,12 @@ void __71__SBSystemApertureViewController_gestureRecognizer_shouldReceiveTouch__
 LABEL_29:
     if (v10 != v16)
     {
-      v28 = [v8 elementViewProvider];
-      v29 = [v28 element];
+      elementViewProvider2 = [elementViewController elementViewProvider];
+      element2 = [elementViewProvider2 element];
 
       if (v16 == -1)
       {
-        v30 = [(SAUISystemApertureManager *)self->_systemApertureManager elementAssertionForElement:v29];
+        v30 = [(SAUISystemApertureManager *)self->_systemApertureManager elementAssertionForElement:element2];
         v31 = v30;
         if (v30 && [v30 isValid])
         {
@@ -10514,35 +10514,35 @@ LABEL_29:
         [v7 setPreferredLayoutMode:v16 reason:3];
       }
 
-      v33 = [v29 clientIdentifier];
-      v34 = [v29 elementIdentifier];
-      [SBSystemApertureTelemetryEmitter logTelemetryForInteractionPanGesture:v16 handled:1 clientIdentifier:v33 elementIdentifier:v34];
+      clientIdentifier = [element2 clientIdentifier];
+      elementIdentifier = [element2 elementIdentifier];
+      [SBSystemApertureTelemetryEmitter logTelemetryForInteractionPanGesture:v16 handled:1 clientIdentifier:clientIdentifier elementIdentifier:elementIdentifier];
 
-      v35 = [(SBSystemApertureViewController *)self view];
-      [v35 setNeedsLayout];
+      view = [(SBSystemApertureViewController *)self view];
+      [view setNeedsLayout];
     }
 
     goto LABEL_42;
   }
 
-  v20 = [(SAUISystemApertureManager *)self->_systemApertureManager registeredElements];
-  v21 = [v20 bs_compactMap:&__block_literal_global_856];
+  registeredElements = [(SAUISystemApertureManager *)self->_systemApertureManager registeredElements];
+  v21 = [registeredElements bs_compactMap:&__block_literal_global_856];
 
   if ([v21 count])
   {
-    v22 = [v21 firstObject];
-    v23 = [v21 bs_reduce:v22 block:&__block_literal_global_859];
+    firstObject = [v21 firstObject];
+    v23 = [v21 bs_reduce:firstObject block:&__block_literal_global_859];
 
     if (v23)
     {
       [v23 invalidateWithReason:@"User Unhide"];
-      v24 = [v23 representedElement];
-      v25 = [v24 clientIdentifier];
-      v26 = [v24 elementIdentifier];
-      [SBSystemApertureTelemetryEmitter logTelemetryForInteractionPanGesture:2 handled:1 clientIdentifier:v25 elementIdentifier:v26];
+      representedElement = [v23 representedElement];
+      clientIdentifier2 = [representedElement clientIdentifier];
+      elementIdentifier2 = [representedElement elementIdentifier];
+      [SBSystemApertureTelemetryEmitter logTelemetryForInteractionPanGesture:2 handled:1 clientIdentifier:clientIdentifier2 elementIdentifier:elementIdentifier2];
 
-      v27 = [(SBSystemApertureViewController *)self view];
-      [v27 setNeedsLayout];
+      view2 = [(SBSystemApertureViewController *)self view];
+      [view2 setNeedsLayout];
     }
   }
 
@@ -10597,17 +10597,17 @@ void *__72__SBSystemApertureViewController__handleResizeResult_withContainerView
   return v8;
 }
 
-- (BOOL)_isInteractiveHidingSupportedByElement:(id)a3
+- (BOOL)_isInteractiveHidingSupportedByElement:(id)element
 {
-  v3 = a3;
-  if (!SAHasActivityBehavior() || (objc_opt_respondsToSelector() & 1) != 0 && ([MEMORY[0x277D75A98] getStyleOverrides], STUIBackgroundActivityIdentifiersForStyleOverrides(), v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "representedBackgroundActivityIdentifiers"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v4, "intersectsSet:", v5), v5, v4, (v6 & 1) != 0))
+  elementCopy = element;
+  if (!SAHasActivityBehavior() || (objc_opt_respondsToSelector() & 1) != 0 && ([MEMORY[0x277D75A98] getStyleOverrides], STUIBackgroundActivityIdentifiersForStyleOverrides(), v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(elementCopy, "representedBackgroundActivityIdentifiers"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v4, "intersectsSet:", v5), v5, v4, (v6 & 1) != 0))
   {
     LOBYTE(v7) = 0;
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    v7 = [v3 preventsSwipeToHide] ^ 1;
+    v7 = [elementCopy preventsSwipeToHide] ^ 1;
   }
 
   else
@@ -10618,26 +10618,26 @@ void *__72__SBSystemApertureViewController__handleResizeResult_withContainerView
   return v7;
 }
 
-- (void)_handleInteractionLongPress:(id)a3
+- (void)_handleInteractionLongPress:(id)press
 {
-  v4 = a3;
-  if ([v4 state] == 1)
+  pressCopy = press;
+  if ([pressCopy state] == 1)
   {
     [(SBSystemApertureViewController *)self _cancelExternalGesturesForReason:@"SAInteractionLongPress"];
   }
 
-  [(SBSystemApertureViewController *)self _handleContainerDefaultPressGesture:v4];
+  [(SBSystemApertureViewController *)self _handleContainerDefaultPressGesture:pressCopy];
 }
 
-- (BOOL)_handleButtonEventWithTest:(id)a3 handler:(id)a4
+- (BOOL)_handleButtonEventWithTest:(id)test handler:(id)handler
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  testCopy = test;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (testCopy)
   {
-    if (v7)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -10658,8 +10658,8 @@ LABEL_3:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = [(SAUISystemApertureManager *)self->_systemApertureManager registeredElements];
-  v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  registeredElements = [(SAUISystemApertureManager *)self->_systemApertureManager registeredElements];
+  v10 = [registeredElements countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
     v11 = *v16;
@@ -10669,18 +10669,18 @@ LABEL_3:
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(registeredElements);
         }
 
         v13 = *(*(&v15 + 1) + 8 * i);
-        if (v6[2](v6, v13) && (v8[2](v8, v13) & 1) != 0)
+        if (testCopy[2](testCopy, v13) && (v8[2](v8, v13) & 1) != 0)
         {
           LOBYTE(v10) = 1;
           goto LABEL_14;
         }
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [registeredElements countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v10)
       {
         continue;
@@ -10695,13 +10695,13 @@ LABEL_14:
   return v10;
 }
 
-- (BOOL)handleHeadsetButtonPress:(BOOL)a3
+- (BOOL)handleHeadsetButtonPress:(BOOL)press
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __59__SBSystemApertureViewController_handleHeadsetButtonPress___block_invoke_2;
   v4[3] = &__block_descriptor_33_e21_B16__0___SAElement__8l;
-  v5 = a3;
+  pressCopy = press;
   return [(SBSystemApertureViewController *)self _handleButtonEventWithTest:&__block_literal_global_887 handler:v4];
 }
 
@@ -10716,11 +10716,11 @@ LABEL_14:
 
   else
   {
-    v3 = [MEMORY[0x277D7EA38] sharedInstance];
-    [v3 registerInterestInZoomAttributes];
+    mEMORY[0x277D7EA38] = [MEMORY[0x277D7EA38] sharedInstance];
+    [mEMORY[0x277D7EA38] registerInterestInZoomAttributes];
 
     objc_initWeak(&location, self);
-    v4 = [MEMORY[0x277D7EA38] sharedInstance];
+    mEMORY[0x277D7EA38]2 = [MEMORY[0x277D7EA38] sharedInstance];
     v5 = *MEMORY[0x277D7EA48];
     v12[0] = *MEMORY[0x277D7EA58];
     v12[1] = v5;
@@ -10732,7 +10732,7 @@ LABEL_14:
     v9[3] = &unk_2783B8A40;
     objc_copyWeak(&v10, &location);
     v9[4] = self;
-    v7 = [v4 registerForZoomAttributes:v6 onDisplay:0 updatesImmediatelyWithChangedHandler:v9];
+    v7 = [mEMORY[0x277D7EA38]2 registerForZoomAttributes:v6 onDisplay:0 updatesImmediatelyWithChangedHandler:v9];
     zoomRegistrationIdentifier = self->_zoomRegistrationIdentifier;
     self->_zoomRegistrationIdentifier = v7;
 
@@ -10834,14 +10834,14 @@ void __70__SBSystemApertureViewController__axRegisterForZoomUpdatesIfNecessary__
   BSDispatchQueueAssertMain();
   objc_initWeak(&location, self);
   v3 = objc_alloc(MEMORY[0x277CF0CE8]);
-  v4 = [MEMORY[0x277CCAD78] UUID];
-  v5 = [v4 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __60__SBSystemApertureViewController__addZoomAnimationAssertion__block_invoke;
   v14[3] = &unk_2783A9070;
   objc_copyWeak(&v15, &location);
-  v6 = [v3 initWithIdentifier:v5 forReason:@"Zoom Animating" invalidationBlock:v14];
+  v6 = [v3 initWithIdentifier:uUIDString forReason:@"Zoom Animating" invalidationBlock:v14];
 
   if (![(NSMutableArray *)self->_zoomAnimationAssertions count])
   {
@@ -10860,7 +10860,7 @@ void __70__SBSystemApertureViewController__axRegisterForZoomUpdatesIfNecessary__
   v10[2] = __60__SBSystemApertureViewController__addZoomAnimationAssertion__block_invoke_938;
   v10[3] = &unk_2783A92D8;
   v11 = v6;
-  v12 = self;
+  selfCopy = self;
   v9 = v6;
   dispatch_after(v8, MEMORY[0x277D85CD0], v10);
 
@@ -10904,12 +10904,12 @@ uint64_t __60__SBSystemApertureViewController__addZoomAnimationAssertion__block_
   v3 = SBLogSystemApertureAccessibility();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(SBSystemApertureViewController *)self _axZoomActiveAndEnabled];
+    _axZoomActiveAndEnabled = [(SBSystemApertureViewController *)self _axZoomActiveAndEnabled];
     v5 = _AXSZoomTouchEnabled();
     v6 = [(NSMutableArray *)self->_zoomAnimationAssertions count];
     zoomServicesReportedAXisZooming = self->_zoomServicesReportedAXisZooming;
     v8[0] = 67109888;
-    v8[1] = v4;
+    v8[1] = _axZoomActiveAndEnabled;
     v9 = 1024;
     v10 = v5;
     v11 = 1024;
@@ -10927,32 +10927,32 @@ uint64_t __60__SBSystemApertureViewController__addZoomAnimationAssertion__block_
 
 - (void)_axRevealHiddenElementIfPossible
 {
-  v3 = [(SBSystemApertureViewController *)self _primaryContainerView];
-  [(SBSystemApertureViewController *)self _handleResizeResult:1 withContainerView:v3];
+  _primaryContainerView = [(SBSystemApertureViewController *)self _primaryContainerView];
+  [(SBSystemApertureViewController *)self _handleResizeResult:1 withContainerView:_primaryContainerView];
 }
 
-- (void)_axLayoutSpecifierRequestsDiminishment:(id)a3
+- (void)_axLayoutSpecifierRequestsDiminishment:(id)diminishment
 {
-  v4 = [(SBSystemApertureViewController *)self _containerViewForLayoutSpecifier:a3];
+  v4 = [(SBSystemApertureViewController *)self _containerViewForLayoutSpecifier:diminishment];
   [(SBSystemApertureViewController *)self _handleResizeResult:-1 withContainerView:v4];
 }
 
-- (CGRect)frameForIndicatorPortalViewWithSourceView:(id)a3
+- (CGRect)frameForIndicatorPortalViewWithSourceView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = MEMORY[0x277CBF3A0];
   v6 = [(NSMutableArray *)self->_orderedContainerViews bs_firstObjectPassingTest:&__block_literal_global_940];
-  v7 = [v6 elementViewController];
-  v8 = v7;
-  if (v7)
+  elementViewController = [v6 elementViewController];
+  v8 = elementViewController;
+  if (elementViewController)
   {
-    v9 = [v7 elementViewProvider];
+    elementViewProvider = [elementViewController elementViewProvider];
   }
 
   else
   {
-    v10 = [v6 outgoingElementViewController];
-    v9 = [v10 elementViewProvider];
+    outgoingElementViewController = [v6 outgoingElementViewController];
+    elementViewProvider = [outgoingElementViewController elementViewProvider];
   }
 
   v11 = *v5;
@@ -10960,16 +10960,16 @@ uint64_t __60__SBSystemApertureViewController__addZoomAnimationAssertion__block_
   v13 = v5[2];
   v14 = v5[3];
 
-  if (v4)
+  if (viewCopy)
   {
-    if (v9)
+    if (elementViewProvider)
     {
-      v15 = [v9 indicatorView];
-      v16 = [v9 fixedIndicatorView];
-      v17 = v16;
-      if (v15 == v4)
+      indicatorView = [elementViewProvider indicatorView];
+      fixedIndicatorView = [elementViewProvider fixedIndicatorView];
+      v17 = fixedIndicatorView;
+      if (indicatorView == viewCopy)
       {
-        if (v16)
+        if (fixedIndicatorView)
         {
           [v6 bounds];
           [v6 center];
@@ -10985,7 +10985,7 @@ LABEL_19:
         }
       }
 
-      else if (v16 != v4)
+      else if (fixedIndicatorView != viewCopy)
       {
         v18 = SBLogSystemAperturePreferencesStackIndicator();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -11000,8 +11000,8 @@ LABEL_19:
       goto LABEL_18;
     }
 
-    v15 = SBLogSystemAperturePreferencesStackIndicator();
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    indicatorView = SBLogSystemAperturePreferencesStackIndicator();
+    if (os_log_type_enabled(indicatorView, OS_LOG_TYPE_ERROR))
     {
       [SBSystemApertureViewController frameForIndicatorPortalViewWithSourceView:];
     }
@@ -11009,8 +11009,8 @@ LABEL_19:
 
   else
   {
-    v15 = SBLogSystemAperturePreferencesStackIndicator();
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    indicatorView = SBLogSystemAperturePreferencesStackIndicator();
+    if (os_log_type_enabled(indicatorView, OS_LOG_TYPE_ERROR))
     {
       [SBSystemApertureViewController frameForIndicatorPortalViewWithSourceView:];
     }
@@ -11050,20 +11050,20 @@ uint64_t __76__SBSystemApertureViewController_frameForIndicatorPortalViewWithSou
   return v7;
 }
 
-- (id)_newContainerViewWithInterfaceElementIdentifier:(id)a3
+- (id)_newContainerViewWithInterfaceElementIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[SBSystemApertureContainerView alloc] initWithInterfaceElementIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[SBSystemApertureContainerView alloc] initWithInterfaceElementIdentifier:identifierCopy];
 
   [(SBSystemApertureContainerView *)v5 setDelegate:self];
   [(SBSystemApertureContainerView *)v5 setElementOrientationAuthority:self];
   return v5;
 }
 
-- (id)_containerViewForLayoutSpecifier:(id)a3
+- (id)_containerViewForLayoutSpecifier:(id)specifier
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  specifierCopy = specifier;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -11086,7 +11086,7 @@ uint64_t __76__SBSystemApertureViewController_frameForIndicatorPortalViewWithSou
         v10 = *(*(&v19 + 1) + 8 * i);
         v11 = [(SBSystemApertureViewController *)self _layoutSpecifyingOverriderForContainerView:v10, v19];
         v12 = v11;
-        if (v11 == v4)
+        if (v11 == specifierCopy)
         {
           v17 = v10;
 LABEL_17:
@@ -11098,7 +11098,7 @@ LABEL_17:
         if (v13)
         {
           v14 = v13;
-          while (v14 != v4)
+          while (v14 != specifierCopy)
           {
             v15 = [v12 behaviorOverridingParticipantSubordinateToParticipant:v14];
 
@@ -11136,12 +11136,12 @@ LABEL_18:
   return v10;
 }
 
-- (void)_updateStatusBarAvoidanceFrameWithAnimationSettings:(id)a3
+- (void)_updateStatusBarAvoidanceFrameWithAnimationSettings:(id)settings
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = [a3 BSAnimationSettings];
-  v5 = [(SBSystemApertureViewController *)self _associatedWindowScene];
-  v6 = [v5 statusBarManager];
+  bSAnimationSettings = [settings BSAnimationSettings];
+  _associatedWindowScene = [(SBSystemApertureViewController *)self _associatedWindowScene];
+  statusBarManager = [_associatedWindowScene statusBarManager];
 
   [(SBSystemApertureViewController *)self minimumSensorRegionFrame];
   x = v7;
@@ -11150,8 +11150,8 @@ LABEL_18:
   height = v13;
   if (([(SBSystemApertureViewController *)self _activeElementInterfaceOrientation]- 1) <= 1)
   {
-    v35 = v6;
-    v36 = v4;
+    v35 = statusBarManager;
+    v36 = bSAnimationSettings;
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
@@ -11175,9 +11175,9 @@ LABEL_18:
           v20 = [(SBSystemApertureViewController *)self _layoutSpecifyingOverriderForContainerView:v19];
           if ([v20 layoutMode] > 0 || (objc_msgSend(v19, "elementViewController"), v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v21, "elementViewProvider"), v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v22, "element"), v23 = objc_claimAutoreleasedReturnValue(), v24 = SAHasIndicatorBehavior(), v23, v22, v21, (v24 & 1) != 0) || !-[UILongPressGestureRecognizer state](self->_interactionLongPressGesture, "state") || -[UIPanGestureRecognizer state](self->_resizePanGesture, "state") >= 1)
           {
-            v25 = [v19 window];
+            window = [v19 window];
             [v19 bounds];
-            [v25 convertRect:v19 fromView:?];
+            [window convertRect:v19 fromView:?];
             v27 = v26;
             v29 = v28;
             v31 = v30;
@@ -11212,8 +11212,8 @@ LABEL_18:
       while (v16);
     }
 
-    v6 = v35;
-    v4 = v36;
+    statusBarManager = v35;
+    bSAnimationSettings = v36;
   }
 
   if ([(SBSystemApertureViewController *)self _isAnyGestureRecognizerActive])
@@ -11226,39 +11226,39 @@ LABEL_18:
     v34 = 2;
   }
 
-  [v6 setAvoidanceFrame:@"SBSystemApertureViewController" reason:0 statusBar:v4 animationSettings:v34 options:{x, y, width, height}];
+  [statusBarManager setAvoidanceFrame:@"SBSystemApertureViewController" reason:0 statusBar:bSAnimationSettings animationSettings:v34 options:{x, y, width, height}];
 }
 
-- (void)_removeLayoutAssertionAndReevaluate:(id)a3
+- (void)_removeLayoutAssertionAndReevaluate:(id)reevaluate
 {
-  v4 = a3;
-  if (v4)
+  reevaluateCopy = reevaluate;
+  if (reevaluateCopy)
   {
-    v9 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [v9 reason];
-    v7 = [(NSMapTable *)v5->_reasonsToLayoutAssertions objectForKey:v6];
+    v9 = reevaluateCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    reason = [v9 reason];
+    v7 = [(NSMapTable *)selfCopy->_reasonsToLayoutAssertions objectForKey:reason];
 
-    if (!v7 || (v8 = [(SBSystemApertureViewController *)v5 _mostRestrictiveLayoutModeFromActiveLayoutAssertions], [(NSMapTable *)v5->_reasonsToLayoutAssertions removeObjectForKey:v6], [(SBSystemApertureViewController *)v5 _mostRestrictiveLayoutModeFromActiveLayoutAssertions]!= v8))
+    if (!v7 || (v8 = [(SBSystemApertureViewController *)selfCopy _mostRestrictiveLayoutModeFromActiveLayoutAssertions], [(NSMapTable *)selfCopy->_reasonsToLayoutAssertions removeObjectForKey:reason], [(SBSystemApertureViewController *)selfCopy _mostRestrictiveLayoutModeFromActiveLayoutAssertions]!= v8))
     {
-      [(SAUISystemApertureManager *)v5->_systemApertureManager invalidatePromotedElements];
+      [(SAUISystemApertureManager *)selfCopy->_systemApertureManager invalidatePromotedElements];
     }
 
-    objc_sync_exit(v5);
-    v4 = v9;
+    objc_sync_exit(selfCopy);
+    reevaluateCopy = v9;
   }
 }
 
-- (id)_layoutAssertionWithMaximumPermittedLayoutMode:(int64_t)a3 reason:(id)a4 creatingIfNecessary:(BOOL)a5
+- (id)_layoutAssertionWithMaximumPermittedLayoutMode:(int64_t)mode reason:(id)reason creatingIfNecessary:(BOOL)necessary
 {
-  v5 = a5;
-  v8 = a4;
-  if ([v8 length])
+  necessaryCopy = necessary;
+  reasonCopy = reason;
+  if ([reasonCopy length])
   {
-    v9 = self;
-    objc_sync_enter(v9);
-    v10 = [(NSMapTable *)v9->_reasonsToLayoutAssertions objectForKey:v8];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v10 = [(NSMapTable *)selfCopy->_reasonsToLayoutAssertions objectForKey:reasonCopy];
     if (v10)
     {
       v11 = 1;
@@ -11266,48 +11266,48 @@ LABEL_18:
 
     else
     {
-      v11 = !v5;
+      v11 = !necessaryCopy;
     }
 
     if (!v11)
     {
-      objc_initWeak(&location, v9);
+      objc_initWeak(&location, selfCopy);
       v12 = [SBSystemApertureLayoutAssertion alloc];
       v21 = MEMORY[0x277D85DD0];
       v22 = 3221225472;
       v23 = __108__SBSystemApertureViewController__layoutAssertionWithMaximumPermittedLayoutMode_reason_creatingIfNecessary___block_invoke;
       v24 = &unk_2783B8A68;
       objc_copyWeak(&v25, &location);
-      v10 = [(SBSystemApertureLayoutAssertion *)v12 initWithMaximumPermittedLayoutMode:a3 reason:v8 invalidationHandler:&v21];
-      if (!v9->_reasonsToLayoutAssertions)
+      v10 = [(SBSystemApertureLayoutAssertion *)v12 initWithMaximumPermittedLayoutMode:mode reason:reasonCopy invalidationHandler:&v21];
+      if (!selfCopy->_reasonsToLayoutAssertions)
       {
-        v13 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
-        reasonsToLayoutAssertions = v9->_reasonsToLayoutAssertions;
-        v9->_reasonsToLayoutAssertions = v13;
+        strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+        reasonsToLayoutAssertions = selfCopy->_reasonsToLayoutAssertions;
+        selfCopy->_reasonsToLayoutAssertions = strongToWeakObjectsMapTable;
       }
 
-      v15 = [(SBSystemApertureViewController *)v9 _mostRestrictiveLayoutModeFromActiveLayoutAssertions:v21];
-      [(NSMapTable *)v9->_reasonsToLayoutAssertions setObject:v10 forKey:v8];
-      v16 = [(SBSystemApertureViewController *)v9 _mostRestrictiveLayoutModeFromActiveLayoutAssertions];
-      if (v16 != v15)
+      v15 = [(SBSystemApertureViewController *)selfCopy _mostRestrictiveLayoutModeFromActiveLayoutAssertions:v21];
+      [(NSMapTable *)selfCopy->_reasonsToLayoutAssertions setObject:v10 forKey:reasonCopy];
+      _mostRestrictiveLayoutModeFromActiveLayoutAssertions = [(SBSystemApertureViewController *)selfCopy _mostRestrictiveLayoutModeFromActiveLayoutAssertions];
+      if (_mostRestrictiveLayoutModeFromActiveLayoutAssertions != v15)
       {
-        v17 = [(SBSystemApertureViewController *)v9 _primaryContainerView];
-        v18 = [(SBSystemApertureViewController *)v9 _layoutSpecifyingOverriderForContainerView:v17];
+        _primaryContainerView = [(SBSystemApertureViewController *)selfCopy _primaryContainerView];
+        v18 = [(SBSystemApertureViewController *)selfCopy _layoutSpecifyingOverriderForContainerView:_primaryContainerView];
 
-        v19 = [v18 preferredLayoutModeAssertion];
-        if ([v19 preferredLayoutMode] > v16 && objc_msgSend(v19, "layoutModeChangeReason") == 3)
+        preferredLayoutModeAssertion = [v18 preferredLayoutModeAssertion];
+        if ([preferredLayoutModeAssertion preferredLayoutMode] > _mostRestrictiveLayoutModeFromActiveLayoutAssertions && objc_msgSend(preferredLayoutModeAssertion, "layoutModeChangeReason") == 3)
         {
-          [v19 invalidateWithReason:@"more restrictive layout assertion"];
+          [preferredLayoutModeAssertion invalidateWithReason:@"more restrictive layout assertion"];
         }
 
-        [(SAUISystemApertureManager *)v9->_systemApertureManager invalidatePromotedElements];
+        [(SAUISystemApertureManager *)selfCopy->_systemApertureManager invalidatePromotedElements];
       }
 
       objc_destroyWeak(&v25);
       objc_destroyWeak(&location);
     }
 
-    objc_sync_exit(v9);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -11325,23 +11325,23 @@ void __108__SBSystemApertureViewController__layoutAssertionWithMaximumPermittedL
   [WeakRetained _removeLayoutAssertionAndReevaluate:v3];
 }
 
-- (CGSize)_preferredMinSizeForCustomLayout:(int64_t)a3 elementInterfaceOrientation:(int64_t)a4
+- (CGSize)_preferredMinSizeForCustomLayout:(int64_t)layout elementInterfaceOrientation:(int64_t)orientation
 {
   v7 = *MEMORY[0x277CBF3A8];
   v6 = *(MEMORY[0x277CBF3A8] + 8);
-  if (a3 <= 2)
+  if (layout <= 2)
   {
-    if (a3 != 1)
+    if (layout != 1)
     {
-      if (a3 == 2)
+      if (layout == 2)
       {
-        v8 = [(SBSystemApertureViewController *)self _layoutMetrics];
-        [v8 minimumScreenEdgeInsets];
+        _layoutMetrics = [(SBSystemApertureViewController *)self _layoutMetrics];
+        [_layoutMetrics minimumScreenEdgeInsets];
         v10 = v9;
         v12 = v11;
 
-        v13 = [(SBSystemApertureViewController *)self view];
-        [v13 bounds];
+        view = [(SBSystemApertureViewController *)self view];
+        [view bounds];
         v15 = v14;
 
         v7 = v15 - v10 - v12;
@@ -11374,23 +11374,23 @@ void __108__SBSystemApertureViewController__layoutAssertionWithMaximumPermittedL
       goto LABEL_17;
     }
 
-    v17 = (a4 - 3) >= 2;
+    v17 = (orientation - 3) >= 2;
     v16 = 143.666667;
     v6 = 144.666667;
     goto LABEL_10;
   }
 
-  if (a3 == 3)
+  if (layout == 3)
   {
     v7 = 250.0;
     v6 = 180.0;
     goto LABEL_17;
   }
 
-  if (a3 == 4)
+  if (layout == 4)
   {
     [(SBSystemApertureSettings *)self->_settings tallRectWidth];
-    v17 = (a4 - 3) >= 2;
+    v17 = (orientation - 3) >= 2;
     v6 = 220.0;
 LABEL_10:
     if (v17)
@@ -11416,12 +11416,12 @@ LABEL_17:
   return result;
 }
 
-- (double)_yOffsetForCustomLayout:(int64_t)a3
+- (double)_yOffsetForCustomLayout:(int64_t)layout
 {
   v3 = 0.0;
-  if (a3 <= 2)
+  if (layout <= 2)
   {
-    if (a3 == 2)
+    if (layout == 2)
     {
       v6 = 4.0;
     }
@@ -11431,7 +11431,7 @@ LABEL_17:
       v6 = 0.0;
     }
 
-    if (a3 == 1)
+    if (layout == 1)
     {
       return 4.0;
     }
@@ -11444,15 +11444,15 @@ LABEL_17:
 
   else
   {
-    switch(a3)
+    switch(layout)
     {
       case 3:
         return 4.0;
       case 4:
         return 6.0;
       case 5:
-        v4 = [(SBSystemApertureViewController *)self _layoutMetrics];
-        [v4 minimumScreenEdgeInsets];
+        _layoutMetrics = [(SBSystemApertureViewController *)self _layoutMetrics];
+        [_layoutMetrics minimumScreenEdgeInsets];
         v3 = v5;
 
         break;
@@ -11498,15 +11498,15 @@ LABEL_17:
         v8 = *(*(&v23 + 1) + 8 * i);
         v9 = SAUILayoutSpecifyingOverriderForElementViewController();
         v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
-        v11 = [v8 elementViewProvider];
-        v12 = [v11 element];
-        v13 = [v12 clientIdentifier];
-        [v10 setValue:v13 forKey:v21];
+        elementViewProvider = [v8 elementViewProvider];
+        element = [elementViewProvider element];
+        clientIdentifier = [element clientIdentifier];
+        [v10 setValue:clientIdentifier forKey:v21];
 
-        v14 = [v8 elementViewProvider];
-        v15 = [v14 element];
-        v16 = [v15 elementIdentifier];
-        [v10 setValue:v16 forKey:v20];
+        elementViewProvider2 = [v8 elementViewProvider];
+        element2 = [elementViewProvider2 element];
+        elementIdentifier = [element2 elementIdentifier];
+        [v10 setValue:elementIdentifier forKey:v20];
 
         [v9 layoutMode];
         v17 = SAUIStringFromElementViewLayoutMode();
@@ -11524,10 +11524,10 @@ LABEL_17:
   return v22;
 }
 
-- (void)hostOrientationDidChangeTo:(int64_t)a3 withPreviousOrientation:(int64_t)a4 context:(id)a5
+- (void)hostOrientationDidChangeTo:(int64_t)to withPreviousOrientation:(int64_t)orientation context:(id)context
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  contextCopy = context;
   activeElementInterfaceOrientation = self->_activeElementInterfaceOrientation;
   v10 = SBLogSystemApertureOrientation();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -11540,7 +11540,7 @@ LABEL_17:
 
   if (activeElementInterfaceOrientation)
   {
-    v12 = activeElementInterfaceOrientation == a4;
+    v12 = activeElementInterfaceOrientation == orientation;
   }
 
   else
@@ -11550,13 +11550,13 @@ LABEL_17:
 
   if (v12)
   {
-    if (!a3)
+    if (!to)
     {
       goto LABEL_17;
     }
 
 LABEL_9:
-    if (!v8)
+    if (!contextCopy)
     {
       goto LABEL_20;
     }
@@ -11570,7 +11570,7 @@ LABEL_9:
     [SBSystemApertureViewController(Private) hostOrientationDidChangeTo:withPreviousOrientation:context:];
   }
 
-  if (a3)
+  if (to)
   {
     goto LABEL_9;
   }
@@ -11582,13 +11582,13 @@ LABEL_17:
     [SBSystemApertureViewController(Private) hostOrientationDidChangeTo:withPreviousOrientation:context:];
   }
 
-  if (!v8)
+  if (!contextCopy)
   {
 LABEL_20:
-    v19 = [MEMORY[0x277D65E60] unanimatedBehaviorSettings];
-    v13 = [v19 BSAnimationSettings];
+    unanimatedBehaviorSettings = [MEMORY[0x277D65E60] unanimatedBehaviorSettings];
+    bSAnimationSettings = [unanimatedBehaviorSettings BSAnimationSettings];
 
-    if (v13)
+    if (bSAnimationSettings)
     {
       goto LABEL_11;
     }
@@ -11597,8 +11597,8 @@ LABEL_20:
   }
 
 LABEL_10:
-  v13 = [SBAnimationUtilities animationSettingsForRotationFromOrientation:activeElementInterfaceOrientation toOrientation:a3 withContext:v8];
-  if (v13)
+  bSAnimationSettings = [SBAnimationUtilities animationSettingsForRotationFromOrientation:activeElementInterfaceOrientation toOrientation:to withContext:contextCopy];
+  if (bSAnimationSettings)
   {
     goto LABEL_11;
   }
@@ -11606,7 +11606,7 @@ LABEL_10:
 LABEL_21:
   [SBSystemApertureViewController(Private) hostOrientationDidChangeTo:withPreviousOrientation:context:];
 LABEL_11:
-  if (activeElementInterfaceOrientation == a3)
+  if (activeElementInterfaceOrientation == to)
   {
     v14 = SBLogSystemApertureOrientation();
     if (os_log_type_enabled(&v14->super, OS_LOG_TYPE_DEFAULT))
@@ -11620,39 +11620,39 @@ LABEL_11:
 
   else
   {
-    v14 = [[SBSystemApertureAnimator alloc] initWithSettings:v13];
-    v20 = [[SBSystemApertureViewControllerRotationTransitionContext alloc] initWithTargetOrientation:a3];
+    v14 = [[SBSystemApertureAnimator alloc] initWithSettings:bSAnimationSettings];
+    v20 = [[SBSystemApertureViewControllerRotationTransitionContext alloc] initWithTargetOrientation:to];
     [(_UIViewControllerTransitionContext *)v20 _setIsAnimated:1];
     [(_UIViewControllerTransitionContext *)v20 _setAnimator:v14];
-    v21 = [(_UIViewControllerTransitionContext *)v20 _transitionCoordinator];
-    [(SBSystemApertureViewController *)self _updateElementOrientationTo:a3 withTransitionCoordinator:v21];
+    _transitionCoordinator = [(_UIViewControllerTransitionContext *)v20 _transitionCoordinator];
+    [(SBSystemApertureViewController *)self _updateElementOrientationTo:to withTransitionCoordinator:_transitionCoordinator];
 
-    v22 = [(SBSystemApertureViewController *)self view];
-    v23 = [v22 window];
-    v24 = [v23 windowScene];
-    [v24 _synchronizeDrawing];
+    view = [(SBSystemApertureViewController *)self view];
+    window = [view window];
+    windowScene = [window windowScene];
+    [windowScene _synchronizeDrawing];
 
     [(SBSystemApertureAnimator *)v14 animateTransition:v20];
   }
 }
 
-- (void)_updateElementOrientationTo:(int64_t)a3 withTransitionCoordinator:(id)a4
+- (void)_updateElementOrientationTo:(int64_t)to withTransitionCoordinator:(id)coordinator
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  coordinatorCopy = coordinator;
   v7 = MEMORY[0x277CCACA8];
-  v8 = [MEMORY[0x277CCAD78] UUID];
-  v9 = [v8 UUIDString];
-  v10 = SBSAStringFromUIInterfaceOrientation(a3);
-  v11 = [v7 stringWithFormat:@"[%@] begin rotation to %@", v9, v10];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v10 = SBSAStringFromUIInterfaceOrientation(to);
+  v11 = [v7 stringWithFormat:@"[%@] begin rotation to %@", uUIDString, v10];
   v12 = [(SBSystemApertureViewController *)self _layoutAssertionWithMaximumPermittedLayoutMode:1 reason:v11 creatingIfNecessary:1];
 
-  v13 = [(SBSystemApertureViewController *)self view];
-  [v13 layoutIfNeeded];
+  view = [(SBSystemApertureViewController *)self view];
+  [view layoutIfNeeded];
 
-  if (self->_activeElementInterfaceOrientation != a3)
+  if (self->_activeElementInterfaceOrientation != to)
   {
-    self->_activeElementInterfaceOrientation = a3;
+    self->_activeElementInterfaceOrientation = to;
     [(SBSystemApertureViewController *)self _invalidatePreferencesForReason:0x4000];
   }
 
@@ -11674,7 +11674,7 @@ LABEL_11:
           objc_enumerationMutation(v14);
         }
 
-        [*(*(&v24 + 1) + 8 * i) elementOrientationDidChangeWithTransitionCoordinator:v6];
+        [*(*(&v24 + 1) + 8 * i) elementOrientationDidChangeWithTransitionCoordinator:coordinatorCopy];
       }
 
       v15 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -11695,9 +11695,9 @@ LABEL_11:
   v19[3] = &unk_2783B8A90;
   v18 = v12;
   v20 = v18;
-  v21[1] = a3;
+  v21[1] = to;
   objc_copyWeak(v21, &location);
-  [v6 animateAlongsideTransition:v22 completion:v19];
+  [coordinatorCopy animateAlongsideTransition:v22 completion:v19];
   objc_destroyWeak(v21);
 
   objc_destroyWeak(&location);
@@ -11752,13 +11752,13 @@ void __97__SBSystemApertureViewController_Private___updateElementOrientationTo_w
 
 - (id)_currentFirstElement
 {
-  v3 = [(NSMutableArray *)self->_orderedContainerViews firstObject];
-  v4 = [(SBSystemApertureViewController *)self _elementForContainerView:v3];
+  firstObject = [(NSMutableArray *)self->_orderedContainerViews firstObject];
+  v4 = [(SBSystemApertureViewController *)self _elementForContainerView:firstObject];
 
   return v4;
 }
 
-- (BOOL)systemApertureProximityBacklightPolicyShouldConsiderSystemApertureInert:(id)a3
+- (BOOL)systemApertureProximityBacklightPolicyShouldConsiderSystemApertureInert:(id)inert
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
@@ -11781,9 +11781,9 @@ void __97__SBSystemApertureViewController_Private___updateElementOrientationTo_w
         }
 
         v9 = [(SBSystemApertureViewController *)self _layoutSpecifyingOverriderForContainerView:*(*(&v13 + 1) + 8 * i), v13];
-        v10 = [v9 layoutMode];
+        layoutMode = [v9 layoutMode];
 
-        if (v10 > 0)
+        if (layoutMode > 0)
         {
           v11 = 0;
           goto LABEL_11;
@@ -11806,10 +11806,10 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)systemApertureProximityBacklightPolicy:(id)a3 isSystemApertureElementVisibleAtPoint:(CGPoint)a4
+- (BOOL)systemApertureProximityBacklightPolicy:(id)policy isSystemApertureElementVisibleAtPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   v26 = *MEMORY[0x277D85DE8];
   v21 = 0u;
   v22 = 0u;
@@ -11834,8 +11834,8 @@ LABEL_11:
         v13 = [(SBSystemApertureViewController *)self _layoutSpecifyingOverriderForContainerView:v12, v21];
         if ([v13 layoutMode] >= 1)
         {
-          v14 = [(SBSystemApertureViewController *)self view];
-          [v14 convertPoint:v12 toView:{x, y}];
+          view = [(SBSystemApertureViewController *)self view];
+          [view convertPoint:v12 toView:{x, y}];
           v16 = v15;
           v18 = v17;
 
@@ -11864,135 +11864,135 @@ LABEL_12:
   return v19;
 }
 
-- (void)systemApertureProximityBacklightPolicy:(id)a3 embedProximityTouchTrackingView:(id)a4 touchBlockingView:(id)a5
+- (void)systemApertureProximityBacklightPolicy:(id)policy embedProximityTouchTrackingView:(id)view touchBlockingView:(id)blockingView
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(SBSystemApertureViewController *)self view];
-  [v9 bounds];
-  [v8 setFrame:?];
-  [v9 bounds];
-  [v7 setFrame:?];
-  [v8 setAutoresizingMask:18];
-  [v7 setAutoresizingMask:18];
-  [v9 insertSubview:v7 atIndex:0];
+  blockingViewCopy = blockingView;
+  viewCopy = view;
+  view = [(SBSystemApertureViewController *)self view];
+  [view bounds];
+  [viewCopy setFrame:?];
+  [view bounds];
+  [blockingViewCopy setFrame:?];
+  [viewCopy setAutoresizingMask:18];
+  [blockingViewCopy setAutoresizingMask:18];
+  [view insertSubview:blockingViewCopy atIndex:0];
 
-  [v9 addSubview:v8];
+  [view addSubview:viewCopy];
   [(UILongPressGestureRecognizer *)self->_interactionLongPressGesture sb_cancel];
   [(UIPanGestureRecognizer *)self->_resizePanGesture sb_cancel];
 }
 
-- (void)systemApertureProximityBacklightPolicy:(id)a3 removeProximityTouchTrackingView:(id)a4 touchBlockingView:(id)a5
+- (void)systemApertureProximityBacklightPolicy:(id)policy removeProximityTouchTrackingView:(id)view touchBlockingView:(id)blockingView
 {
-  v6 = a5;
-  [a4 removeFromSuperview];
-  [v6 removeFromSuperview];
+  blockingViewCopy = blockingView;
+  [view removeFromSuperview];
+  [blockingViewCopy removeFromSuperview];
 }
 
-- (void)_updatePreferencesForReasonStackInitiated:(unsigned int)a3 updates:(id)a4
+- (void)_updatePreferencesForReasonStackInitiated:(unsigned int)initiated updates:(id)updates
 {
-  v6 = a4;
-  v7 = a3 & 0xFFFFFFFE;
-  v8 = self;
-  v9 = v6;
+  updatesCopy = updates;
+  v7 = initiated & 0xFFFFFFFE;
+  selfCopy = self;
+  v9 = updatesCopy;
   v12 = v9;
   if (v7)
   {
     if ((v7 & 2) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonInitOrDefaults:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonInitOrDefaults:v7 updates:v9];
     }
 
     else if ((v7 & 4) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonLumaSampling:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonLumaSampling:v7 updates:v9];
     }
 
     else if ((v7 & 8) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonSystemApertureManager:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonSystemApertureManager:v7 updates:v9];
     }
 
     else if ((v7 & 0x10) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonCloningOrRenderingStyle:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonCloningOrRenderingStyle:v7 updates:v9];
     }
 
     else if ((v7 & 0x20) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonTimerExpired:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonTimerExpired:v7 updates:v9];
     }
 
     else if ((v7 & 0x40) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonMilestoneReached:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonMilestoneReached:v7 updates:v9];
     }
 
     else if ((v7 & 0x80) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAccessibility:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAccessibility:v7 updates:v9];
     }
 
     else if ((v7 & 0x100) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonDynamicsAnimation:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonDynamicsAnimation:v7 updates:v9];
     }
 
     else if ((v7 & 0x200) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonTransitionEffectAssertion:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonTransitionEffectAssertion:v7 updates:v9];
     }
 
     else if ((v7 & 0x400) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonGestures:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonGestures:v7 updates:v9];
     }
 
     else if ((v7 & 0x800) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAnimatedPropertyUpdateBegin:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAnimatedPropertyUpdateBegin:v7 updates:v9];
     }
 
     else if ((v7 & 0x1000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAnimatedPropertyUpdateEnd:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAnimatedPropertyUpdateEnd:v7 updates:v9];
     }
 
     else if ((v7 & 0x2000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonElementRequested:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonElementRequested:v7 updates:v9];
     }
 
     else if ((v7 & 0x4000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonOrientation:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonOrientation:v7 updates:v9];
     }
 
     else if ((v7 & 0x8000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonActiveDisplayChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonActiveDisplayChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x10000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonReachabilityChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonReachabilityChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x20000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonLuminanceLevelChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonLuminanceLevelChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x40000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonSecureElementCoordinator:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonSecureElementCoordinator:v7 updates:v9];
     }
 
     else
     {
-      v10 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"void _SBSAUpdatePreferencesForReason(SBSystemApertureViewController * _Nonnull __strong, SBSAPreferencesInvalidationReason, BSBlock  _Nonnull __strong)"}];
-      [v10 handleFailureInFunction:v11 file:@"SBSystemApertureViewController+PreferencesValidationTracing.h" lineNumber:113 description:@"Unhandled SBSAPreferencesInvalidationReason; update PreferencesValidationTracing code."];
+      [currentHandler handleFailureInFunction:v11 file:@"SBSystemApertureViewController+PreferencesValidationTracing.h" lineNumber:113 description:@"Unhandled SBSAPreferencesInvalidationReason; update PreferencesValidationTracing code."];
     }
   }
 
@@ -12002,110 +12002,110 @@ LABEL_12:
   }
 }
 
-- (void)_updatePreferencesForReasonInitOrDefaults:(unsigned int)a3 updates:(id)a4
+- (void)_updatePreferencesForReasonInitOrDefaults:(unsigned int)defaults updates:(id)updates
 {
-  v6 = a4;
-  v7 = a3 & 0xFFFFFFFD;
-  v8 = self;
-  v9 = v6;
+  updatesCopy = updates;
+  v7 = defaults & 0xFFFFFFFD;
+  selfCopy = self;
+  v9 = updatesCopy;
   v12 = v9;
   if (v7)
   {
     if (v7)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonStackInitiated:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonStackInitiated:v7 updates:v9];
     }
 
     else if ((v7 & 4) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonLumaSampling:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonLumaSampling:v7 updates:v9];
     }
 
     else if ((v7 & 8) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonSystemApertureManager:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonSystemApertureManager:v7 updates:v9];
     }
 
     else if ((v7 & 0x10) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonCloningOrRenderingStyle:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonCloningOrRenderingStyle:v7 updates:v9];
     }
 
     else if ((v7 & 0x20) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonTimerExpired:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonTimerExpired:v7 updates:v9];
     }
 
     else if ((v7 & 0x40) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonMilestoneReached:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonMilestoneReached:v7 updates:v9];
     }
 
     else if ((v7 & 0x80) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAccessibility:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAccessibility:v7 updates:v9];
     }
 
     else if ((v7 & 0x100) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonDynamicsAnimation:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonDynamicsAnimation:v7 updates:v9];
     }
 
     else if ((v7 & 0x200) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonTransitionEffectAssertion:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonTransitionEffectAssertion:v7 updates:v9];
     }
 
     else if ((v7 & 0x400) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonGestures:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonGestures:v7 updates:v9];
     }
 
     else if ((v7 & 0x800) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAnimatedPropertyUpdateBegin:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAnimatedPropertyUpdateBegin:v7 updates:v9];
     }
 
     else if ((v7 & 0x1000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAnimatedPropertyUpdateEnd:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAnimatedPropertyUpdateEnd:v7 updates:v9];
     }
 
     else if ((v7 & 0x2000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonElementRequested:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonElementRequested:v7 updates:v9];
     }
 
     else if ((v7 & 0x4000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonOrientation:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonOrientation:v7 updates:v9];
     }
 
     else if ((v7 & 0x8000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonActiveDisplayChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonActiveDisplayChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x10000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonReachabilityChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonReachabilityChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x20000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonLuminanceLevelChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonLuminanceLevelChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x40000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonSecureElementCoordinator:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonSecureElementCoordinator:v7 updates:v9];
     }
 
     else
     {
-      v10 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"void _SBSAUpdatePreferencesForReason(SBSystemApertureViewController * _Nonnull __strong, SBSAPreferencesInvalidationReason, BSBlock  _Nonnull __strong)"}];
-      [v10 handleFailureInFunction:v11 file:@"SBSystemApertureViewController+PreferencesValidationTracing.h" lineNumber:113 description:@"Unhandled SBSAPreferencesInvalidationReason; update PreferencesValidationTracing code."];
+      [currentHandler handleFailureInFunction:v11 file:@"SBSystemApertureViewController+PreferencesValidationTracing.h" lineNumber:113 description:@"Unhandled SBSAPreferencesInvalidationReason; update PreferencesValidationTracing code."];
     }
   }
 
@@ -12115,110 +12115,110 @@ LABEL_12:
   }
 }
 
-- (void)_updatePreferencesForReasonLumaSampling:(unsigned int)a3 updates:(id)a4
+- (void)_updatePreferencesForReasonLumaSampling:(unsigned int)sampling updates:(id)updates
 {
-  v6 = a4;
-  v7 = a3 & 0xFFFFFFFB;
-  v8 = self;
-  v9 = v6;
+  updatesCopy = updates;
+  v7 = sampling & 0xFFFFFFFB;
+  selfCopy = self;
+  v9 = updatesCopy;
   v12 = v9;
   if (v7)
   {
     if (v7)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonStackInitiated:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonStackInitiated:v7 updates:v9];
     }
 
     else if ((v7 & 2) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonInitOrDefaults:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonInitOrDefaults:v7 updates:v9];
     }
 
     else if ((v7 & 8) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonSystemApertureManager:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonSystemApertureManager:v7 updates:v9];
     }
 
     else if ((v7 & 0x10) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonCloningOrRenderingStyle:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonCloningOrRenderingStyle:v7 updates:v9];
     }
 
     else if ((v7 & 0x20) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonTimerExpired:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonTimerExpired:v7 updates:v9];
     }
 
     else if ((v7 & 0x40) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonMilestoneReached:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonMilestoneReached:v7 updates:v9];
     }
 
     else if ((v7 & 0x80) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAccessibility:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAccessibility:v7 updates:v9];
     }
 
     else if ((v7 & 0x100) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonDynamicsAnimation:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonDynamicsAnimation:v7 updates:v9];
     }
 
     else if ((v7 & 0x200) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonTransitionEffectAssertion:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonTransitionEffectAssertion:v7 updates:v9];
     }
 
     else if ((v7 & 0x400) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonGestures:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonGestures:v7 updates:v9];
     }
 
     else if ((v7 & 0x800) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAnimatedPropertyUpdateBegin:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAnimatedPropertyUpdateBegin:v7 updates:v9];
     }
 
     else if ((v7 & 0x1000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAnimatedPropertyUpdateEnd:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAnimatedPropertyUpdateEnd:v7 updates:v9];
     }
 
     else if ((v7 & 0x2000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonElementRequested:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonElementRequested:v7 updates:v9];
     }
 
     else if ((v7 & 0x4000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonOrientation:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonOrientation:v7 updates:v9];
     }
 
     else if ((v7 & 0x8000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonActiveDisplayChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonActiveDisplayChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x10000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonReachabilityChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonReachabilityChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x20000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonLuminanceLevelChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonLuminanceLevelChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x40000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonSecureElementCoordinator:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonSecureElementCoordinator:v7 updates:v9];
     }
 
     else
     {
-      v10 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"void _SBSAUpdatePreferencesForReason(SBSystemApertureViewController * _Nonnull __strong, SBSAPreferencesInvalidationReason, BSBlock  _Nonnull __strong)"}];
-      [v10 handleFailureInFunction:v11 file:@"SBSystemApertureViewController+PreferencesValidationTracing.h" lineNumber:113 description:@"Unhandled SBSAPreferencesInvalidationReason; update PreferencesValidationTracing code."];
+      [currentHandler handleFailureInFunction:v11 file:@"SBSystemApertureViewController+PreferencesValidationTracing.h" lineNumber:113 description:@"Unhandled SBSAPreferencesInvalidationReason; update PreferencesValidationTracing code."];
     }
   }
 
@@ -12228,110 +12228,110 @@ LABEL_12:
   }
 }
 
-- (void)_updatePreferencesForReasonSystemApertureManager:(unsigned int)a3 updates:(id)a4
+- (void)_updatePreferencesForReasonSystemApertureManager:(unsigned int)manager updates:(id)updates
 {
-  v6 = a4;
-  v7 = a3 & 0xFFFFFFF7;
-  v8 = self;
-  v9 = v6;
+  updatesCopy = updates;
+  v7 = manager & 0xFFFFFFF7;
+  selfCopy = self;
+  v9 = updatesCopy;
   v12 = v9;
   if (v7)
   {
     if (v7)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonStackInitiated:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonStackInitiated:v7 updates:v9];
     }
 
     else if ((v7 & 2) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonInitOrDefaults:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonInitOrDefaults:v7 updates:v9];
     }
 
     else if ((v7 & 4) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonLumaSampling:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonLumaSampling:v7 updates:v9];
     }
 
     else if ((v7 & 0x10) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonCloningOrRenderingStyle:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonCloningOrRenderingStyle:v7 updates:v9];
     }
 
     else if ((v7 & 0x20) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonTimerExpired:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonTimerExpired:v7 updates:v9];
     }
 
     else if ((v7 & 0x40) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonMilestoneReached:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonMilestoneReached:v7 updates:v9];
     }
 
     else if ((v7 & 0x80) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAccessibility:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAccessibility:v7 updates:v9];
     }
 
     else if ((v7 & 0x100) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonDynamicsAnimation:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonDynamicsAnimation:v7 updates:v9];
     }
 
     else if ((v7 & 0x200) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonTransitionEffectAssertion:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonTransitionEffectAssertion:v7 updates:v9];
     }
 
     else if ((v7 & 0x400) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonGestures:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonGestures:v7 updates:v9];
     }
 
     else if ((v7 & 0x800) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAnimatedPropertyUpdateBegin:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAnimatedPropertyUpdateBegin:v7 updates:v9];
     }
 
     else if ((v7 & 0x1000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAnimatedPropertyUpdateEnd:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAnimatedPropertyUpdateEnd:v7 updates:v9];
     }
 
     else if ((v7 & 0x2000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonElementRequested:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonElementRequested:v7 updates:v9];
     }
 
     else if ((v7 & 0x4000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonOrientation:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonOrientation:v7 updates:v9];
     }
 
     else if ((v7 & 0x8000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonActiveDisplayChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonActiveDisplayChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x10000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonReachabilityChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonReachabilityChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x20000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonLuminanceLevelChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonLuminanceLevelChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x40000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonSecureElementCoordinator:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonSecureElementCoordinator:v7 updates:v9];
     }
 
     else
     {
-      v10 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"void _SBSAUpdatePreferencesForReason(SBSystemApertureViewController * _Nonnull __strong, SBSAPreferencesInvalidationReason, BSBlock  _Nonnull __strong)"}];
-      [v10 handleFailureInFunction:v11 file:@"SBSystemApertureViewController+PreferencesValidationTracing.h" lineNumber:113 description:@"Unhandled SBSAPreferencesInvalidationReason; update PreferencesValidationTracing code."];
+      [currentHandler handleFailureInFunction:v11 file:@"SBSystemApertureViewController+PreferencesValidationTracing.h" lineNumber:113 description:@"Unhandled SBSAPreferencesInvalidationReason; update PreferencesValidationTracing code."];
     }
   }
 
@@ -12341,110 +12341,110 @@ LABEL_12:
   }
 }
 
-- (void)_updatePreferencesForReasonCloningOrRenderingStyle:(unsigned int)a3 updates:(id)a4
+- (void)_updatePreferencesForReasonCloningOrRenderingStyle:(unsigned int)style updates:(id)updates
 {
-  v6 = a4;
-  v7 = a3 & 0xFFFFFFEF;
-  v8 = self;
-  v9 = v6;
+  updatesCopy = updates;
+  v7 = style & 0xFFFFFFEF;
+  selfCopy = self;
+  v9 = updatesCopy;
   v12 = v9;
   if (v7)
   {
     if (v7)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonStackInitiated:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonStackInitiated:v7 updates:v9];
     }
 
     else if ((v7 & 2) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonInitOrDefaults:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonInitOrDefaults:v7 updates:v9];
     }
 
     else if ((v7 & 4) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonLumaSampling:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonLumaSampling:v7 updates:v9];
     }
 
     else if ((v7 & 8) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonSystemApertureManager:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonSystemApertureManager:v7 updates:v9];
     }
 
     else if ((v7 & 0x20) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonTimerExpired:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonTimerExpired:v7 updates:v9];
     }
 
     else if ((v7 & 0x40) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonMilestoneReached:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonMilestoneReached:v7 updates:v9];
     }
 
     else if ((v7 & 0x80) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAccessibility:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAccessibility:v7 updates:v9];
     }
 
     else if ((v7 & 0x100) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonDynamicsAnimation:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonDynamicsAnimation:v7 updates:v9];
     }
 
     else if ((v7 & 0x200) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonTransitionEffectAssertion:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonTransitionEffectAssertion:v7 updates:v9];
     }
 
     else if ((v7 & 0x400) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonGestures:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonGestures:v7 updates:v9];
     }
 
     else if ((v7 & 0x800) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAnimatedPropertyUpdateBegin:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAnimatedPropertyUpdateBegin:v7 updates:v9];
     }
 
     else if ((v7 & 0x1000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAnimatedPropertyUpdateEnd:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAnimatedPropertyUpdateEnd:v7 updates:v9];
     }
 
     else if ((v7 & 0x2000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonElementRequested:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonElementRequested:v7 updates:v9];
     }
 
     else if ((v7 & 0x4000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonOrientation:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonOrientation:v7 updates:v9];
     }
 
     else if ((v7 & 0x8000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonActiveDisplayChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonActiveDisplayChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x10000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonReachabilityChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonReachabilityChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x20000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonLuminanceLevelChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonLuminanceLevelChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x40000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonSecureElementCoordinator:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonSecureElementCoordinator:v7 updates:v9];
     }
 
     else
     {
-      v10 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"void _SBSAUpdatePreferencesForReason(SBSystemApertureViewController * _Nonnull __strong, SBSAPreferencesInvalidationReason, BSBlock  _Nonnull __strong)"}];
-      [v10 handleFailureInFunction:v11 file:@"SBSystemApertureViewController+PreferencesValidationTracing.h" lineNumber:113 description:@"Unhandled SBSAPreferencesInvalidationReason; update PreferencesValidationTracing code."];
+      [currentHandler handleFailureInFunction:v11 file:@"SBSystemApertureViewController+PreferencesValidationTracing.h" lineNumber:113 description:@"Unhandled SBSAPreferencesInvalidationReason; update PreferencesValidationTracing code."];
     }
   }
 
@@ -12454,110 +12454,110 @@ LABEL_12:
   }
 }
 
-- (void)_updatePreferencesForReasonTimerExpired:(unsigned int)a3 updates:(id)a4
+- (void)_updatePreferencesForReasonTimerExpired:(unsigned int)expired updates:(id)updates
 {
-  v6 = a4;
-  v7 = a3 & 0xFFFFFFDF;
-  v8 = self;
-  v9 = v6;
+  updatesCopy = updates;
+  v7 = expired & 0xFFFFFFDF;
+  selfCopy = self;
+  v9 = updatesCopy;
   v12 = v9;
   if (v7)
   {
     if (v7)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonStackInitiated:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonStackInitiated:v7 updates:v9];
     }
 
     else if ((v7 & 2) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonInitOrDefaults:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonInitOrDefaults:v7 updates:v9];
     }
 
     else if ((v7 & 4) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonLumaSampling:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonLumaSampling:v7 updates:v9];
     }
 
     else if ((v7 & 8) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonSystemApertureManager:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonSystemApertureManager:v7 updates:v9];
     }
 
     else if ((v7 & 0x10) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonCloningOrRenderingStyle:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonCloningOrRenderingStyle:v7 updates:v9];
     }
 
     else if ((v7 & 0x40) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonMilestoneReached:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonMilestoneReached:v7 updates:v9];
     }
 
     else if ((v7 & 0x80) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAccessibility:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAccessibility:v7 updates:v9];
     }
 
     else if ((v7 & 0x100) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonDynamicsAnimation:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonDynamicsAnimation:v7 updates:v9];
     }
 
     else if ((v7 & 0x200) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonTransitionEffectAssertion:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonTransitionEffectAssertion:v7 updates:v9];
     }
 
     else if ((v7 & 0x400) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonGestures:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonGestures:v7 updates:v9];
     }
 
     else if ((v7 & 0x800) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAnimatedPropertyUpdateBegin:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAnimatedPropertyUpdateBegin:v7 updates:v9];
     }
 
     else if ((v7 & 0x1000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAnimatedPropertyUpdateEnd:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAnimatedPropertyUpdateEnd:v7 updates:v9];
     }
 
     else if ((v7 & 0x2000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonElementRequested:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonElementRequested:v7 updates:v9];
     }
 
     else if ((v7 & 0x4000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonOrientation:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonOrientation:v7 updates:v9];
     }
 
     else if ((v7 & 0x8000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonActiveDisplayChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonActiveDisplayChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x10000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonReachabilityChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonReachabilityChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x20000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonLuminanceLevelChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonLuminanceLevelChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x40000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonSecureElementCoordinator:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonSecureElementCoordinator:v7 updates:v9];
     }
 
     else
     {
-      v10 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"void _SBSAUpdatePreferencesForReason(SBSystemApertureViewController * _Nonnull __strong, SBSAPreferencesInvalidationReason, BSBlock  _Nonnull __strong)"}];
-      [v10 handleFailureInFunction:v11 file:@"SBSystemApertureViewController+PreferencesValidationTracing.h" lineNumber:113 description:@"Unhandled SBSAPreferencesInvalidationReason; update PreferencesValidationTracing code."];
+      [currentHandler handleFailureInFunction:v11 file:@"SBSystemApertureViewController+PreferencesValidationTracing.h" lineNumber:113 description:@"Unhandled SBSAPreferencesInvalidationReason; update PreferencesValidationTracing code."];
     }
   }
 
@@ -12567,110 +12567,110 @@ LABEL_12:
   }
 }
 
-- (void)_updatePreferencesForReasonMilestoneReached:(unsigned int)a3 updates:(id)a4
+- (void)_updatePreferencesForReasonMilestoneReached:(unsigned int)reached updates:(id)updates
 {
-  v6 = a4;
-  v7 = a3 & 0xFFFFFFBF;
-  v8 = self;
-  v9 = v6;
+  updatesCopy = updates;
+  v7 = reached & 0xFFFFFFBF;
+  selfCopy = self;
+  v9 = updatesCopy;
   v12 = v9;
   if (v7)
   {
     if (v7)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonStackInitiated:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonStackInitiated:v7 updates:v9];
     }
 
     else if ((v7 & 2) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonInitOrDefaults:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonInitOrDefaults:v7 updates:v9];
     }
 
     else if ((v7 & 4) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonLumaSampling:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonLumaSampling:v7 updates:v9];
     }
 
     else if ((v7 & 8) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonSystemApertureManager:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonSystemApertureManager:v7 updates:v9];
     }
 
     else if ((v7 & 0x10) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonCloningOrRenderingStyle:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonCloningOrRenderingStyle:v7 updates:v9];
     }
 
     else if ((v7 & 0x20) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonTimerExpired:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonTimerExpired:v7 updates:v9];
     }
 
     else if ((v7 & 0x80) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAccessibility:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAccessibility:v7 updates:v9];
     }
 
     else if ((v7 & 0x100) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonDynamicsAnimation:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonDynamicsAnimation:v7 updates:v9];
     }
 
     else if ((v7 & 0x200) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonTransitionEffectAssertion:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonTransitionEffectAssertion:v7 updates:v9];
     }
 
     else if ((v7 & 0x400) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonGestures:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonGestures:v7 updates:v9];
     }
 
     else if ((v7 & 0x800) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAnimatedPropertyUpdateBegin:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAnimatedPropertyUpdateBegin:v7 updates:v9];
     }
 
     else if ((v7 & 0x1000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAnimatedPropertyUpdateEnd:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAnimatedPropertyUpdateEnd:v7 updates:v9];
     }
 
     else if ((v7 & 0x2000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonElementRequested:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonElementRequested:v7 updates:v9];
     }
 
     else if ((v7 & 0x4000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonOrientation:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonOrientation:v7 updates:v9];
     }
 
     else if ((v7 & 0x8000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonActiveDisplayChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonActiveDisplayChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x10000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonReachabilityChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonReachabilityChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x20000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonLuminanceLevelChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonLuminanceLevelChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x40000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonSecureElementCoordinator:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonSecureElementCoordinator:v7 updates:v9];
     }
 
     else
     {
-      v10 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"void _SBSAUpdatePreferencesForReason(SBSystemApertureViewController * _Nonnull __strong, SBSAPreferencesInvalidationReason, BSBlock  _Nonnull __strong)"}];
-      [v10 handleFailureInFunction:v11 file:@"SBSystemApertureViewController+PreferencesValidationTracing.h" lineNumber:113 description:@"Unhandled SBSAPreferencesInvalidationReason; update PreferencesValidationTracing code."];
+      [currentHandler handleFailureInFunction:v11 file:@"SBSystemApertureViewController+PreferencesValidationTracing.h" lineNumber:113 description:@"Unhandled SBSAPreferencesInvalidationReason; update PreferencesValidationTracing code."];
     }
   }
 
@@ -12680,110 +12680,110 @@ LABEL_12:
   }
 }
 
-- (void)_updatePreferencesForReasonAccessibility:(unsigned int)a3 updates:(id)a4
+- (void)_updatePreferencesForReasonAccessibility:(unsigned int)accessibility updates:(id)updates
 {
-  v6 = a4;
-  v7 = a3 & 0xFFFFFF7F;
-  v8 = self;
-  v9 = v6;
+  updatesCopy = updates;
+  v7 = accessibility & 0xFFFFFF7F;
+  selfCopy = self;
+  v9 = updatesCopy;
   v12 = v9;
   if (v7)
   {
     if (v7)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonStackInitiated:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonStackInitiated:v7 updates:v9];
     }
 
     else if ((v7 & 2) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonInitOrDefaults:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonInitOrDefaults:v7 updates:v9];
     }
 
     else if ((v7 & 4) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonLumaSampling:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonLumaSampling:v7 updates:v9];
     }
 
     else if ((v7 & 8) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonSystemApertureManager:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonSystemApertureManager:v7 updates:v9];
     }
 
     else if ((v7 & 0x10) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonCloningOrRenderingStyle:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonCloningOrRenderingStyle:v7 updates:v9];
     }
 
     else if ((v7 & 0x20) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonTimerExpired:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonTimerExpired:v7 updates:v9];
     }
 
     else if ((v7 & 0x40) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonMilestoneReached:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonMilestoneReached:v7 updates:v9];
     }
 
     else if ((v7 & 0x100) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonDynamicsAnimation:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonDynamicsAnimation:v7 updates:v9];
     }
 
     else if ((v7 & 0x200) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonTransitionEffectAssertion:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonTransitionEffectAssertion:v7 updates:v9];
     }
 
     else if ((v7 & 0x400) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonGestures:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonGestures:v7 updates:v9];
     }
 
     else if ((v7 & 0x800) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAnimatedPropertyUpdateBegin:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAnimatedPropertyUpdateBegin:v7 updates:v9];
     }
 
     else if ((v7 & 0x1000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAnimatedPropertyUpdateEnd:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAnimatedPropertyUpdateEnd:v7 updates:v9];
     }
 
     else if ((v7 & 0x2000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonElementRequested:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonElementRequested:v7 updates:v9];
     }
 
     else if ((v7 & 0x4000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonOrientation:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonOrientation:v7 updates:v9];
     }
 
     else if ((v7 & 0x8000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonActiveDisplayChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonActiveDisplayChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x10000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonReachabilityChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonReachabilityChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x20000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonLuminanceLevelChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonLuminanceLevelChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x40000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonSecureElementCoordinator:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonSecureElementCoordinator:v7 updates:v9];
     }
 
     else
     {
-      v10 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"void _SBSAUpdatePreferencesForReason(SBSystemApertureViewController * _Nonnull __strong, SBSAPreferencesInvalidationReason, BSBlock  _Nonnull __strong)"}];
-      [v10 handleFailureInFunction:v11 file:@"SBSystemApertureViewController+PreferencesValidationTracing.h" lineNumber:113 description:@"Unhandled SBSAPreferencesInvalidationReason; update PreferencesValidationTracing code."];
+      [currentHandler handleFailureInFunction:v11 file:@"SBSystemApertureViewController+PreferencesValidationTracing.h" lineNumber:113 description:@"Unhandled SBSAPreferencesInvalidationReason; update PreferencesValidationTracing code."];
     }
   }
 
@@ -12793,110 +12793,110 @@ LABEL_12:
   }
 }
 
-- (void)_updatePreferencesForReasonDynamicsAnimation:(unsigned int)a3 updates:(id)a4
+- (void)_updatePreferencesForReasonDynamicsAnimation:(unsigned int)animation updates:(id)updates
 {
-  v6 = a4;
-  v7 = a3 & 0xFFFFFEFF;
-  v8 = self;
-  v9 = v6;
+  updatesCopy = updates;
+  v7 = animation & 0xFFFFFEFF;
+  selfCopy = self;
+  v9 = updatesCopy;
   v12 = v9;
   if (v7)
   {
     if (v7)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonStackInitiated:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonStackInitiated:v7 updates:v9];
     }
 
     else if ((v7 & 2) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonInitOrDefaults:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonInitOrDefaults:v7 updates:v9];
     }
 
     else if ((v7 & 4) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonLumaSampling:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonLumaSampling:v7 updates:v9];
     }
 
     else if ((v7 & 8) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonSystemApertureManager:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonSystemApertureManager:v7 updates:v9];
     }
 
     else if ((v7 & 0x10) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonCloningOrRenderingStyle:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonCloningOrRenderingStyle:v7 updates:v9];
     }
 
     else if ((v7 & 0x20) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonTimerExpired:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonTimerExpired:v7 updates:v9];
     }
 
     else if ((v7 & 0x40) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonMilestoneReached:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonMilestoneReached:v7 updates:v9];
     }
 
     else if ((v7 & 0x80) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAccessibility:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAccessibility:v7 updates:v9];
     }
 
     else if ((v7 & 0x200) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonTransitionEffectAssertion:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonTransitionEffectAssertion:v7 updates:v9];
     }
 
     else if ((v7 & 0x400) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonGestures:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonGestures:v7 updates:v9];
     }
 
     else if ((v7 & 0x800) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAnimatedPropertyUpdateBegin:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAnimatedPropertyUpdateBegin:v7 updates:v9];
     }
 
     else if ((v7 & 0x1000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAnimatedPropertyUpdateEnd:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAnimatedPropertyUpdateEnd:v7 updates:v9];
     }
 
     else if ((v7 & 0x2000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonElementRequested:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonElementRequested:v7 updates:v9];
     }
 
     else if ((v7 & 0x4000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonOrientation:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonOrientation:v7 updates:v9];
     }
 
     else if ((v7 & 0x8000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonActiveDisplayChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonActiveDisplayChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x10000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonReachabilityChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonReachabilityChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x20000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonLuminanceLevelChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonLuminanceLevelChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x40000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonSecureElementCoordinator:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonSecureElementCoordinator:v7 updates:v9];
     }
 
     else
     {
-      v10 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"void _SBSAUpdatePreferencesForReason(SBSystemApertureViewController * _Nonnull __strong, SBSAPreferencesInvalidationReason, BSBlock  _Nonnull __strong)"}];
-      [v10 handleFailureInFunction:v11 file:@"SBSystemApertureViewController+PreferencesValidationTracing.h" lineNumber:113 description:@"Unhandled SBSAPreferencesInvalidationReason; update PreferencesValidationTracing code."];
+      [currentHandler handleFailureInFunction:v11 file:@"SBSystemApertureViewController+PreferencesValidationTracing.h" lineNumber:113 description:@"Unhandled SBSAPreferencesInvalidationReason; update PreferencesValidationTracing code."];
     }
   }
 
@@ -12906,110 +12906,110 @@ LABEL_12:
   }
 }
 
-- (void)_updatePreferencesForReasonTransitionEffectAssertion:(unsigned int)a3 updates:(id)a4
+- (void)_updatePreferencesForReasonTransitionEffectAssertion:(unsigned int)assertion updates:(id)updates
 {
-  v6 = a4;
-  v7 = a3 & 0xFFFFFDFF;
-  v8 = self;
-  v9 = v6;
+  updatesCopy = updates;
+  v7 = assertion & 0xFFFFFDFF;
+  selfCopy = self;
+  v9 = updatesCopy;
   v12 = v9;
   if (v7)
   {
     if (v7)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonStackInitiated:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonStackInitiated:v7 updates:v9];
     }
 
     else if ((v7 & 2) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonInitOrDefaults:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonInitOrDefaults:v7 updates:v9];
     }
 
     else if ((v7 & 4) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonLumaSampling:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonLumaSampling:v7 updates:v9];
     }
 
     else if ((v7 & 8) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonSystemApertureManager:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonSystemApertureManager:v7 updates:v9];
     }
 
     else if ((v7 & 0x10) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonCloningOrRenderingStyle:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonCloningOrRenderingStyle:v7 updates:v9];
     }
 
     else if ((v7 & 0x20) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonTimerExpired:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonTimerExpired:v7 updates:v9];
     }
 
     else if ((v7 & 0x40) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonMilestoneReached:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonMilestoneReached:v7 updates:v9];
     }
 
     else if ((v7 & 0x80) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAccessibility:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAccessibility:v7 updates:v9];
     }
 
     else if ((v7 & 0x100) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonDynamicsAnimation:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonDynamicsAnimation:v7 updates:v9];
     }
 
     else if ((v7 & 0x400) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonGestures:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonGestures:v7 updates:v9];
     }
 
     else if ((v7 & 0x800) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAnimatedPropertyUpdateBegin:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAnimatedPropertyUpdateBegin:v7 updates:v9];
     }
 
     else if ((v7 & 0x1000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAnimatedPropertyUpdateEnd:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAnimatedPropertyUpdateEnd:v7 updates:v9];
     }
 
     else if ((v7 & 0x2000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonElementRequested:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonElementRequested:v7 updates:v9];
     }
 
     else if ((v7 & 0x4000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonOrientation:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonOrientation:v7 updates:v9];
     }
 
     else if ((v7 & 0x8000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonActiveDisplayChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonActiveDisplayChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x10000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonReachabilityChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonReachabilityChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x20000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonLuminanceLevelChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonLuminanceLevelChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x40000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonSecureElementCoordinator:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonSecureElementCoordinator:v7 updates:v9];
     }
 
     else
     {
-      v10 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"void _SBSAUpdatePreferencesForReason(SBSystemApertureViewController * _Nonnull __strong, SBSAPreferencesInvalidationReason, BSBlock  _Nonnull __strong)"}];
-      [v10 handleFailureInFunction:v11 file:@"SBSystemApertureViewController+PreferencesValidationTracing.h" lineNumber:113 description:@"Unhandled SBSAPreferencesInvalidationReason; update PreferencesValidationTracing code."];
+      [currentHandler handleFailureInFunction:v11 file:@"SBSystemApertureViewController+PreferencesValidationTracing.h" lineNumber:113 description:@"Unhandled SBSAPreferencesInvalidationReason; update PreferencesValidationTracing code."];
     }
   }
 
@@ -13019,110 +13019,110 @@ LABEL_12:
   }
 }
 
-- (void)_updatePreferencesForReasonGestures:(unsigned int)a3 updates:(id)a4
+- (void)_updatePreferencesForReasonGestures:(unsigned int)gestures updates:(id)updates
 {
-  v6 = a4;
-  v7 = a3 & 0xFFFFFBFF;
-  v8 = self;
-  v9 = v6;
+  updatesCopy = updates;
+  v7 = gestures & 0xFFFFFBFF;
+  selfCopy = self;
+  v9 = updatesCopy;
   v12 = v9;
   if (v7)
   {
     if (v7)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonStackInitiated:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonStackInitiated:v7 updates:v9];
     }
 
     else if ((v7 & 2) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonInitOrDefaults:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonInitOrDefaults:v7 updates:v9];
     }
 
     else if ((v7 & 4) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonLumaSampling:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonLumaSampling:v7 updates:v9];
     }
 
     else if ((v7 & 8) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonSystemApertureManager:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonSystemApertureManager:v7 updates:v9];
     }
 
     else if ((v7 & 0x10) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonCloningOrRenderingStyle:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonCloningOrRenderingStyle:v7 updates:v9];
     }
 
     else if ((v7 & 0x20) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonTimerExpired:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonTimerExpired:v7 updates:v9];
     }
 
     else if ((v7 & 0x40) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonMilestoneReached:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonMilestoneReached:v7 updates:v9];
     }
 
     else if ((v7 & 0x80) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAccessibility:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAccessibility:v7 updates:v9];
     }
 
     else if ((v7 & 0x100) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonDynamicsAnimation:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonDynamicsAnimation:v7 updates:v9];
     }
 
     else if ((v7 & 0x200) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonTransitionEffectAssertion:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonTransitionEffectAssertion:v7 updates:v9];
     }
 
     else if ((v7 & 0x800) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAnimatedPropertyUpdateBegin:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAnimatedPropertyUpdateBegin:v7 updates:v9];
     }
 
     else if ((v7 & 0x1000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAnimatedPropertyUpdateEnd:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAnimatedPropertyUpdateEnd:v7 updates:v9];
     }
 
     else if ((v7 & 0x2000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonElementRequested:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonElementRequested:v7 updates:v9];
     }
 
     else if ((v7 & 0x4000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonOrientation:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonOrientation:v7 updates:v9];
     }
 
     else if ((v7 & 0x8000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonActiveDisplayChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonActiveDisplayChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x10000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonReachabilityChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonReachabilityChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x20000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonLuminanceLevelChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonLuminanceLevelChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x40000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonSecureElementCoordinator:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonSecureElementCoordinator:v7 updates:v9];
     }
 
     else
     {
-      v10 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"void _SBSAUpdatePreferencesForReason(SBSystemApertureViewController * _Nonnull __strong, SBSAPreferencesInvalidationReason, BSBlock  _Nonnull __strong)"}];
-      [v10 handleFailureInFunction:v11 file:@"SBSystemApertureViewController+PreferencesValidationTracing.h" lineNumber:113 description:@"Unhandled SBSAPreferencesInvalidationReason; update PreferencesValidationTracing code."];
+      [currentHandler handleFailureInFunction:v11 file:@"SBSystemApertureViewController+PreferencesValidationTracing.h" lineNumber:113 description:@"Unhandled SBSAPreferencesInvalidationReason; update PreferencesValidationTracing code."];
     }
   }
 
@@ -13132,110 +13132,110 @@ LABEL_12:
   }
 }
 
-- (void)_updatePreferencesForReasonAnimatedPropertyUpdateBegin:(unsigned int)a3 updates:(id)a4
+- (void)_updatePreferencesForReasonAnimatedPropertyUpdateBegin:(unsigned int)begin updates:(id)updates
 {
-  v6 = a4;
-  v7 = a3 & 0xFFFFF7FF;
-  v8 = self;
-  v9 = v6;
+  updatesCopy = updates;
+  v7 = begin & 0xFFFFF7FF;
+  selfCopy = self;
+  v9 = updatesCopy;
   v12 = v9;
   if (v7)
   {
     if (v7)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonStackInitiated:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonStackInitiated:v7 updates:v9];
     }
 
     else if ((v7 & 2) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonInitOrDefaults:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonInitOrDefaults:v7 updates:v9];
     }
 
     else if ((v7 & 4) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonLumaSampling:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonLumaSampling:v7 updates:v9];
     }
 
     else if ((v7 & 8) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonSystemApertureManager:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonSystemApertureManager:v7 updates:v9];
     }
 
     else if ((v7 & 0x10) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonCloningOrRenderingStyle:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonCloningOrRenderingStyle:v7 updates:v9];
     }
 
     else if ((v7 & 0x20) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonTimerExpired:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonTimerExpired:v7 updates:v9];
     }
 
     else if ((v7 & 0x40) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonMilestoneReached:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonMilestoneReached:v7 updates:v9];
     }
 
     else if ((v7 & 0x80) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAccessibility:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAccessibility:v7 updates:v9];
     }
 
     else if ((v7 & 0x100) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonDynamicsAnimation:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonDynamicsAnimation:v7 updates:v9];
     }
 
     else if ((v7 & 0x200) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonTransitionEffectAssertion:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonTransitionEffectAssertion:v7 updates:v9];
     }
 
     else if ((v7 & 0x400) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonGestures:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonGestures:v7 updates:v9];
     }
 
     else if ((v7 & 0x1000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAnimatedPropertyUpdateEnd:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAnimatedPropertyUpdateEnd:v7 updates:v9];
     }
 
     else if ((v7 & 0x2000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonElementRequested:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonElementRequested:v7 updates:v9];
     }
 
     else if ((v7 & 0x4000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonOrientation:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonOrientation:v7 updates:v9];
     }
 
     else if ((v7 & 0x8000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonActiveDisplayChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonActiveDisplayChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x10000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonReachabilityChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonReachabilityChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x20000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonLuminanceLevelChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonLuminanceLevelChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x40000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonSecureElementCoordinator:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonSecureElementCoordinator:v7 updates:v9];
     }
 
     else
     {
-      v10 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"void _SBSAUpdatePreferencesForReason(SBSystemApertureViewController * _Nonnull __strong, SBSAPreferencesInvalidationReason, BSBlock  _Nonnull __strong)"}];
-      [v10 handleFailureInFunction:v11 file:@"SBSystemApertureViewController+PreferencesValidationTracing.h" lineNumber:113 description:@"Unhandled SBSAPreferencesInvalidationReason; update PreferencesValidationTracing code."];
+      [currentHandler handleFailureInFunction:v11 file:@"SBSystemApertureViewController+PreferencesValidationTracing.h" lineNumber:113 description:@"Unhandled SBSAPreferencesInvalidationReason; update PreferencesValidationTracing code."];
     }
   }
 
@@ -13245,110 +13245,110 @@ LABEL_12:
   }
 }
 
-- (void)_updatePreferencesForReasonAnimatedPropertyUpdateEnd:(unsigned int)a3 updates:(id)a4
+- (void)_updatePreferencesForReasonAnimatedPropertyUpdateEnd:(unsigned int)end updates:(id)updates
 {
-  v6 = a4;
-  v7 = a3 & 0xFFFFEFFF;
-  v8 = self;
-  v9 = v6;
+  updatesCopy = updates;
+  v7 = end & 0xFFFFEFFF;
+  selfCopy = self;
+  v9 = updatesCopy;
   v12 = v9;
   if (v7)
   {
     if (v7)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonStackInitiated:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonStackInitiated:v7 updates:v9];
     }
 
     else if ((v7 & 2) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonInitOrDefaults:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonInitOrDefaults:v7 updates:v9];
     }
 
     else if ((v7 & 4) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonLumaSampling:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonLumaSampling:v7 updates:v9];
     }
 
     else if ((v7 & 8) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonSystemApertureManager:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonSystemApertureManager:v7 updates:v9];
     }
 
     else if ((v7 & 0x10) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonCloningOrRenderingStyle:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonCloningOrRenderingStyle:v7 updates:v9];
     }
 
     else if ((v7 & 0x20) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonTimerExpired:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonTimerExpired:v7 updates:v9];
     }
 
     else if ((v7 & 0x40) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonMilestoneReached:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonMilestoneReached:v7 updates:v9];
     }
 
     else if ((v7 & 0x80) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAccessibility:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAccessibility:v7 updates:v9];
     }
 
     else if ((v7 & 0x100) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonDynamicsAnimation:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonDynamicsAnimation:v7 updates:v9];
     }
 
     else if ((v7 & 0x200) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonTransitionEffectAssertion:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonTransitionEffectAssertion:v7 updates:v9];
     }
 
     else if ((v7 & 0x400) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonGestures:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonGestures:v7 updates:v9];
     }
 
     else if ((v7 & 0x800) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAnimatedPropertyUpdateBegin:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAnimatedPropertyUpdateBegin:v7 updates:v9];
     }
 
     else if ((v7 & 0x2000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonElementRequested:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonElementRequested:v7 updates:v9];
     }
 
     else if ((v7 & 0x4000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonOrientation:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonOrientation:v7 updates:v9];
     }
 
     else if ((v7 & 0x8000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonActiveDisplayChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonActiveDisplayChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x10000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonReachabilityChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonReachabilityChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x20000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonLuminanceLevelChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonLuminanceLevelChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x40000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonSecureElementCoordinator:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonSecureElementCoordinator:v7 updates:v9];
     }
 
     else
     {
-      v10 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"void _SBSAUpdatePreferencesForReason(SBSystemApertureViewController * _Nonnull __strong, SBSAPreferencesInvalidationReason, BSBlock  _Nonnull __strong)"}];
-      [v10 handleFailureInFunction:v11 file:@"SBSystemApertureViewController+PreferencesValidationTracing.h" lineNumber:113 description:@"Unhandled SBSAPreferencesInvalidationReason; update PreferencesValidationTracing code."];
+      [currentHandler handleFailureInFunction:v11 file:@"SBSystemApertureViewController+PreferencesValidationTracing.h" lineNumber:113 description:@"Unhandled SBSAPreferencesInvalidationReason; update PreferencesValidationTracing code."];
     }
   }
 
@@ -13358,110 +13358,110 @@ LABEL_12:
   }
 }
 
-- (void)_updatePreferencesForReasonElementRequested:(unsigned int)a3 updates:(id)a4
+- (void)_updatePreferencesForReasonElementRequested:(unsigned int)requested updates:(id)updates
 {
-  v6 = a4;
-  v7 = a3 & 0xFFFFDFFF;
-  v8 = self;
-  v9 = v6;
+  updatesCopy = updates;
+  v7 = requested & 0xFFFFDFFF;
+  selfCopy = self;
+  v9 = updatesCopy;
   v12 = v9;
   if (v7)
   {
     if (v7)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonStackInitiated:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonStackInitiated:v7 updates:v9];
     }
 
     else if ((v7 & 2) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonInitOrDefaults:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonInitOrDefaults:v7 updates:v9];
     }
 
     else if ((v7 & 4) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonLumaSampling:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonLumaSampling:v7 updates:v9];
     }
 
     else if ((v7 & 8) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonSystemApertureManager:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonSystemApertureManager:v7 updates:v9];
     }
 
     else if ((v7 & 0x10) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonCloningOrRenderingStyle:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonCloningOrRenderingStyle:v7 updates:v9];
     }
 
     else if ((v7 & 0x20) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonTimerExpired:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonTimerExpired:v7 updates:v9];
     }
 
     else if ((v7 & 0x40) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonMilestoneReached:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonMilestoneReached:v7 updates:v9];
     }
 
     else if ((v7 & 0x80) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAccessibility:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAccessibility:v7 updates:v9];
     }
 
     else if ((v7 & 0x100) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonDynamicsAnimation:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonDynamicsAnimation:v7 updates:v9];
     }
 
     else if ((v7 & 0x200) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonTransitionEffectAssertion:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonTransitionEffectAssertion:v7 updates:v9];
     }
 
     else if ((v7 & 0x400) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonGestures:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonGestures:v7 updates:v9];
     }
 
     else if ((v7 & 0x800) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAnimatedPropertyUpdateBegin:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAnimatedPropertyUpdateBegin:v7 updates:v9];
     }
 
     else if ((v7 & 0x1000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAnimatedPropertyUpdateEnd:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAnimatedPropertyUpdateEnd:v7 updates:v9];
     }
 
     else if ((v7 & 0x4000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonOrientation:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonOrientation:v7 updates:v9];
     }
 
     else if ((v7 & 0x8000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonActiveDisplayChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonActiveDisplayChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x10000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonReachabilityChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonReachabilityChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x20000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonLuminanceLevelChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonLuminanceLevelChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x40000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonSecureElementCoordinator:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonSecureElementCoordinator:v7 updates:v9];
     }
 
     else
     {
-      v10 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"void _SBSAUpdatePreferencesForReason(SBSystemApertureViewController * _Nonnull __strong, SBSAPreferencesInvalidationReason, BSBlock  _Nonnull __strong)"}];
-      [v10 handleFailureInFunction:v11 file:@"SBSystemApertureViewController+PreferencesValidationTracing.h" lineNumber:113 description:@"Unhandled SBSAPreferencesInvalidationReason; update PreferencesValidationTracing code."];
+      [currentHandler handleFailureInFunction:v11 file:@"SBSystemApertureViewController+PreferencesValidationTracing.h" lineNumber:113 description:@"Unhandled SBSAPreferencesInvalidationReason; update PreferencesValidationTracing code."];
     }
   }
 
@@ -13471,110 +13471,110 @@ LABEL_12:
   }
 }
 
-- (void)_updatePreferencesForReasonOrientation:(unsigned int)a3 updates:(id)a4
+- (void)_updatePreferencesForReasonOrientation:(unsigned int)orientation updates:(id)updates
 {
-  v6 = a4;
-  v7 = a3 & 0xFFFFBFFF;
-  v8 = self;
-  v9 = v6;
+  updatesCopy = updates;
+  v7 = orientation & 0xFFFFBFFF;
+  selfCopy = self;
+  v9 = updatesCopy;
   v12 = v9;
   if (v7)
   {
     if (v7)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonStackInitiated:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonStackInitiated:v7 updates:v9];
     }
 
     else if ((v7 & 2) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonInitOrDefaults:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonInitOrDefaults:v7 updates:v9];
     }
 
     else if ((v7 & 4) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonLumaSampling:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonLumaSampling:v7 updates:v9];
     }
 
     else if ((v7 & 8) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonSystemApertureManager:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonSystemApertureManager:v7 updates:v9];
     }
 
     else if ((v7 & 0x10) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonCloningOrRenderingStyle:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonCloningOrRenderingStyle:v7 updates:v9];
     }
 
     else if ((v7 & 0x20) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonTimerExpired:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonTimerExpired:v7 updates:v9];
     }
 
     else if ((v7 & 0x40) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonMilestoneReached:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonMilestoneReached:v7 updates:v9];
     }
 
     else if ((v7 & 0x80) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAccessibility:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAccessibility:v7 updates:v9];
     }
 
     else if ((v7 & 0x100) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonDynamicsAnimation:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonDynamicsAnimation:v7 updates:v9];
     }
 
     else if ((v7 & 0x200) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonTransitionEffectAssertion:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonTransitionEffectAssertion:v7 updates:v9];
     }
 
     else if ((v7 & 0x400) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonGestures:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonGestures:v7 updates:v9];
     }
 
     else if ((v7 & 0x800) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAnimatedPropertyUpdateBegin:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAnimatedPropertyUpdateBegin:v7 updates:v9];
     }
 
     else if ((v7 & 0x1000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAnimatedPropertyUpdateEnd:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAnimatedPropertyUpdateEnd:v7 updates:v9];
     }
 
     else if ((v7 & 0x2000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonElementRequested:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonElementRequested:v7 updates:v9];
     }
 
     else if ((v7 & 0x8000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonActiveDisplayChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonActiveDisplayChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x10000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonReachabilityChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonReachabilityChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x20000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonLuminanceLevelChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonLuminanceLevelChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x40000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonSecureElementCoordinator:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonSecureElementCoordinator:v7 updates:v9];
     }
 
     else
     {
-      v10 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"void _SBSAUpdatePreferencesForReason(SBSystemApertureViewController * _Nonnull __strong, SBSAPreferencesInvalidationReason, BSBlock  _Nonnull __strong)"}];
-      [v10 handleFailureInFunction:v11 file:@"SBSystemApertureViewController+PreferencesValidationTracing.h" lineNumber:113 description:@"Unhandled SBSAPreferencesInvalidationReason; update PreferencesValidationTracing code."];
+      [currentHandler handleFailureInFunction:v11 file:@"SBSystemApertureViewController+PreferencesValidationTracing.h" lineNumber:113 description:@"Unhandled SBSAPreferencesInvalidationReason; update PreferencesValidationTracing code."];
     }
   }
 
@@ -13584,110 +13584,110 @@ LABEL_12:
   }
 }
 
-- (void)_updatePreferencesForReasonActiveDisplayChanged:(unsigned int)a3 updates:(id)a4
+- (void)_updatePreferencesForReasonActiveDisplayChanged:(unsigned int)changed updates:(id)updates
 {
-  v6 = a4;
-  v7 = a3 & 0xFFFF7FFF;
-  v8 = self;
-  v9 = v6;
+  updatesCopy = updates;
+  v7 = changed & 0xFFFF7FFF;
+  selfCopy = self;
+  v9 = updatesCopy;
   v12 = v9;
   if (v7)
   {
     if (v7)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonStackInitiated:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonStackInitiated:v7 updates:v9];
     }
 
     else if ((v7 & 2) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonInitOrDefaults:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonInitOrDefaults:v7 updates:v9];
     }
 
     else if ((v7 & 4) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonLumaSampling:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonLumaSampling:v7 updates:v9];
     }
 
     else if ((v7 & 8) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonSystemApertureManager:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonSystemApertureManager:v7 updates:v9];
     }
 
     else if ((v7 & 0x10) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonCloningOrRenderingStyle:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonCloningOrRenderingStyle:v7 updates:v9];
     }
 
     else if ((v7 & 0x20) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonTimerExpired:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonTimerExpired:v7 updates:v9];
     }
 
     else if ((v7 & 0x40) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonMilestoneReached:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonMilestoneReached:v7 updates:v9];
     }
 
     else if ((v7 & 0x80) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAccessibility:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAccessibility:v7 updates:v9];
     }
 
     else if ((v7 & 0x100) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonDynamicsAnimation:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonDynamicsAnimation:v7 updates:v9];
     }
 
     else if ((v7 & 0x200) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonTransitionEffectAssertion:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonTransitionEffectAssertion:v7 updates:v9];
     }
 
     else if ((v7 & 0x400) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonGestures:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonGestures:v7 updates:v9];
     }
 
     else if ((v7 & 0x800) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAnimatedPropertyUpdateBegin:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAnimatedPropertyUpdateBegin:v7 updates:v9];
     }
 
     else if ((v7 & 0x1000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAnimatedPropertyUpdateEnd:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAnimatedPropertyUpdateEnd:v7 updates:v9];
     }
 
     else if ((v7 & 0x2000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonElementRequested:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonElementRequested:v7 updates:v9];
     }
 
     else if ((v7 & 0x4000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonOrientation:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonOrientation:v7 updates:v9];
     }
 
     else if ((v7 & 0x10000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonReachabilityChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonReachabilityChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x20000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonLuminanceLevelChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonLuminanceLevelChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x40000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonSecureElementCoordinator:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonSecureElementCoordinator:v7 updates:v9];
     }
 
     else
     {
-      v10 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"void _SBSAUpdatePreferencesForReason(SBSystemApertureViewController * _Nonnull __strong, SBSAPreferencesInvalidationReason, BSBlock  _Nonnull __strong)"}];
-      [v10 handleFailureInFunction:v11 file:@"SBSystemApertureViewController+PreferencesValidationTracing.h" lineNumber:113 description:@"Unhandled SBSAPreferencesInvalidationReason; update PreferencesValidationTracing code."];
+      [currentHandler handleFailureInFunction:v11 file:@"SBSystemApertureViewController+PreferencesValidationTracing.h" lineNumber:113 description:@"Unhandled SBSAPreferencesInvalidationReason; update PreferencesValidationTracing code."];
     }
   }
 
@@ -13697,110 +13697,110 @@ LABEL_12:
   }
 }
 
-- (void)_updatePreferencesForReasonReachabilityChanged:(unsigned int)a3 updates:(id)a4
+- (void)_updatePreferencesForReasonReachabilityChanged:(unsigned int)changed updates:(id)updates
 {
-  v6 = a4;
-  v7 = a3 & 0xFFFEFFFF;
-  v8 = self;
-  v9 = v6;
+  updatesCopy = updates;
+  v7 = changed & 0xFFFEFFFF;
+  selfCopy = self;
+  v9 = updatesCopy;
   v12 = v9;
   if (v7)
   {
     if (v7)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonStackInitiated:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonStackInitiated:v7 updates:v9];
     }
 
     else if ((v7 & 2) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonInitOrDefaults:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonInitOrDefaults:v7 updates:v9];
     }
 
     else if ((v7 & 4) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonLumaSampling:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonLumaSampling:v7 updates:v9];
     }
 
     else if ((v7 & 8) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonSystemApertureManager:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonSystemApertureManager:v7 updates:v9];
     }
 
     else if ((v7 & 0x10) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonCloningOrRenderingStyle:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonCloningOrRenderingStyle:v7 updates:v9];
     }
 
     else if ((v7 & 0x20) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonTimerExpired:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonTimerExpired:v7 updates:v9];
     }
 
     else if ((v7 & 0x40) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonMilestoneReached:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonMilestoneReached:v7 updates:v9];
     }
 
     else if ((v7 & 0x80) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAccessibility:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAccessibility:v7 updates:v9];
     }
 
     else if ((v7 & 0x100) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonDynamicsAnimation:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonDynamicsAnimation:v7 updates:v9];
     }
 
     else if ((v7 & 0x200) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonTransitionEffectAssertion:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonTransitionEffectAssertion:v7 updates:v9];
     }
 
     else if ((v7 & 0x400) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonGestures:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonGestures:v7 updates:v9];
     }
 
     else if ((v7 & 0x800) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAnimatedPropertyUpdateBegin:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAnimatedPropertyUpdateBegin:v7 updates:v9];
     }
 
     else if ((v7 & 0x1000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAnimatedPropertyUpdateEnd:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAnimatedPropertyUpdateEnd:v7 updates:v9];
     }
 
     else if ((v7 & 0x2000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonElementRequested:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonElementRequested:v7 updates:v9];
     }
 
     else if ((v7 & 0x4000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonOrientation:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonOrientation:v7 updates:v9];
     }
 
     else if ((v7 & 0x8000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonActiveDisplayChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonActiveDisplayChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x20000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonLuminanceLevelChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonLuminanceLevelChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x40000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonSecureElementCoordinator:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonSecureElementCoordinator:v7 updates:v9];
     }
 
     else
     {
-      v10 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"void _SBSAUpdatePreferencesForReason(SBSystemApertureViewController * _Nonnull __strong, SBSAPreferencesInvalidationReason, BSBlock  _Nonnull __strong)"}];
-      [v10 handleFailureInFunction:v11 file:@"SBSystemApertureViewController+PreferencesValidationTracing.h" lineNumber:113 description:@"Unhandled SBSAPreferencesInvalidationReason; update PreferencesValidationTracing code."];
+      [currentHandler handleFailureInFunction:v11 file:@"SBSystemApertureViewController+PreferencesValidationTracing.h" lineNumber:113 description:@"Unhandled SBSAPreferencesInvalidationReason; update PreferencesValidationTracing code."];
     }
   }
 
@@ -13810,110 +13810,110 @@ LABEL_12:
   }
 }
 
-- (void)_updatePreferencesForReasonLuminanceLevelChanged:(unsigned int)a3 updates:(id)a4
+- (void)_updatePreferencesForReasonLuminanceLevelChanged:(unsigned int)changed updates:(id)updates
 {
-  v6 = a4;
-  v7 = a3 & 0xFFFDFFFF;
-  v8 = self;
-  v9 = v6;
+  updatesCopy = updates;
+  v7 = changed & 0xFFFDFFFF;
+  selfCopy = self;
+  v9 = updatesCopy;
   v12 = v9;
   if (v7)
   {
     if (v7)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonStackInitiated:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonStackInitiated:v7 updates:v9];
     }
 
     else if ((v7 & 2) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonInitOrDefaults:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonInitOrDefaults:v7 updates:v9];
     }
 
     else if ((v7 & 4) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonLumaSampling:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonLumaSampling:v7 updates:v9];
     }
 
     else if ((v7 & 8) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonSystemApertureManager:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonSystemApertureManager:v7 updates:v9];
     }
 
     else if ((v7 & 0x10) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonCloningOrRenderingStyle:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonCloningOrRenderingStyle:v7 updates:v9];
     }
 
     else if ((v7 & 0x20) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonTimerExpired:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonTimerExpired:v7 updates:v9];
     }
 
     else if ((v7 & 0x40) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonMilestoneReached:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonMilestoneReached:v7 updates:v9];
     }
 
     else if ((v7 & 0x80) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAccessibility:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAccessibility:v7 updates:v9];
     }
 
     else if ((v7 & 0x100) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonDynamicsAnimation:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonDynamicsAnimation:v7 updates:v9];
     }
 
     else if ((v7 & 0x200) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonTransitionEffectAssertion:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonTransitionEffectAssertion:v7 updates:v9];
     }
 
     else if ((v7 & 0x400) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonGestures:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonGestures:v7 updates:v9];
     }
 
     else if ((v7 & 0x800) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAnimatedPropertyUpdateBegin:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAnimatedPropertyUpdateBegin:v7 updates:v9];
     }
 
     else if ((v7 & 0x1000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAnimatedPropertyUpdateEnd:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAnimatedPropertyUpdateEnd:v7 updates:v9];
     }
 
     else if ((v7 & 0x2000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonElementRequested:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonElementRequested:v7 updates:v9];
     }
 
     else if ((v7 & 0x4000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonOrientation:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonOrientation:v7 updates:v9];
     }
 
     else if ((v7 & 0x8000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonActiveDisplayChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonActiveDisplayChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x10000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonReachabilityChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonReachabilityChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x40000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonSecureElementCoordinator:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonSecureElementCoordinator:v7 updates:v9];
     }
 
     else
     {
-      v10 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"void _SBSAUpdatePreferencesForReason(SBSystemApertureViewController * _Nonnull __strong, SBSAPreferencesInvalidationReason, BSBlock  _Nonnull __strong)"}];
-      [v10 handleFailureInFunction:v11 file:@"SBSystemApertureViewController+PreferencesValidationTracing.h" lineNumber:113 description:@"Unhandled SBSAPreferencesInvalidationReason; update PreferencesValidationTracing code."];
+      [currentHandler handleFailureInFunction:v11 file:@"SBSystemApertureViewController+PreferencesValidationTracing.h" lineNumber:113 description:@"Unhandled SBSAPreferencesInvalidationReason; update PreferencesValidationTracing code."];
     }
   }
 
@@ -13923,110 +13923,110 @@ LABEL_12:
   }
 }
 
-- (void)_updatePreferencesForReasonSecureElementCoordinator:(unsigned int)a3 updates:(id)a4
+- (void)_updatePreferencesForReasonSecureElementCoordinator:(unsigned int)coordinator updates:(id)updates
 {
-  v6 = a4;
-  v7 = a3 & 0xFFFBFFFF;
-  v8 = self;
-  v9 = v6;
+  updatesCopy = updates;
+  v7 = coordinator & 0xFFFBFFFF;
+  selfCopy = self;
+  v9 = updatesCopy;
   v12 = v9;
   if (v7)
   {
     if (v7)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonStackInitiated:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonStackInitiated:v7 updates:v9];
     }
 
     else if ((v7 & 2) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonInitOrDefaults:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonInitOrDefaults:v7 updates:v9];
     }
 
     else if ((v7 & 4) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonLumaSampling:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonLumaSampling:v7 updates:v9];
     }
 
     else if ((v7 & 8) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonSystemApertureManager:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonSystemApertureManager:v7 updates:v9];
     }
 
     else if ((v7 & 0x10) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonCloningOrRenderingStyle:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonCloningOrRenderingStyle:v7 updates:v9];
     }
 
     else if ((v7 & 0x20) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonTimerExpired:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonTimerExpired:v7 updates:v9];
     }
 
     else if ((v7 & 0x40) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonMilestoneReached:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonMilestoneReached:v7 updates:v9];
     }
 
     else if ((v7 & 0x80) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAccessibility:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAccessibility:v7 updates:v9];
     }
 
     else if ((v7 & 0x100) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonDynamicsAnimation:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonDynamicsAnimation:v7 updates:v9];
     }
 
     else if ((v7 & 0x200) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonTransitionEffectAssertion:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonTransitionEffectAssertion:v7 updates:v9];
     }
 
     else if ((v7 & 0x400) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonGestures:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonGestures:v7 updates:v9];
     }
 
     else if ((v7 & 0x800) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAnimatedPropertyUpdateBegin:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAnimatedPropertyUpdateBegin:v7 updates:v9];
     }
 
     else if ((v7 & 0x1000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonAnimatedPropertyUpdateEnd:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonAnimatedPropertyUpdateEnd:v7 updates:v9];
     }
 
     else if ((v7 & 0x2000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonElementRequested:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonElementRequested:v7 updates:v9];
     }
 
     else if ((v7 & 0x4000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonOrientation:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonOrientation:v7 updates:v9];
     }
 
     else if ((v7 & 0x8000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonActiveDisplayChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonActiveDisplayChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x10000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonReachabilityChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonReachabilityChanged:v7 updates:v9];
     }
 
     else if ((v7 & 0x20000) != 0)
     {
-      [(SBSystemApertureViewController *)v8 _updatePreferencesForReasonLuminanceLevelChanged:v7 updates:v9];
+      [(SBSystemApertureViewController *)selfCopy _updatePreferencesForReasonLuminanceLevelChanged:v7 updates:v9];
     }
 
     else
     {
-      v10 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"void _SBSAUpdatePreferencesForReason(SBSystemApertureViewController * _Nonnull __strong, SBSAPreferencesInvalidationReason, BSBlock  _Nonnull __strong)"}];
-      [v10 handleFailureInFunction:v11 file:@"SBSystemApertureViewController+PreferencesValidationTracing.h" lineNumber:113 description:@"Unhandled SBSAPreferencesInvalidationReason; update PreferencesValidationTracing code."];
+      [currentHandler handleFailureInFunction:v11 file:@"SBSystemApertureViewController+PreferencesValidationTracing.h" lineNumber:113 description:@"Unhandled SBSAPreferencesInvalidationReason; update PreferencesValidationTracing code."];
     }
   }
 

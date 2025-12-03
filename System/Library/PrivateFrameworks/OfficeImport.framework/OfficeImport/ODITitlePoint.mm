@@ -1,55 +1,55 @@
 @interface ODITitlePoint
-- (ODITitlePoint)initWithTitlePointPresentationName:(id)a3 state:(id)a4;
-- (void)mapBaseStyleFromPoint:(id)a3 shape:(id)a4;
-- (void)mapOnePillarStyleFromPoint:(id)a3 shape:(id)a4;
-- (void)mapRoofStyleFromPoint:(id)a3 shape:(id)a4;
+- (ODITitlePoint)initWithTitlePointPresentationName:(id)name state:(id)state;
+- (void)mapBaseStyleFromPoint:(id)point shape:(id)shape;
+- (void)mapOnePillarStyleFromPoint:(id)point shape:(id)shape;
+- (void)mapRoofStyleFromPoint:(id)point shape:(id)shape;
 @end
 
 @implementation ODITitlePoint
 
-- (ODITitlePoint)initWithTitlePointPresentationName:(id)a3 state:(id)a4
+- (ODITitlePoint)initWithTitlePointPresentationName:(id)name state:(id)state
 {
-  v7 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = ODITitlePoint;
-  v8 = [(ODIHorizonalList3 *)&v11 initWithState:a4];
+  v8 = [(ODIHorizonalList3 *)&v11 initWithState:state];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->mTitlePointPresentationName, a3);
+    objc_storeStrong(&v8->mTitlePointPresentationName, name);
   }
 
   return v9;
 }
 
-- (void)mapRoofStyleFromPoint:(id)a3 shape:(id)a4
+- (void)mapRoofStyleFromPoint:(id)point shape:(id)shape
 {
-  v7 = a3;
-  v6 = a4;
+  pointCopy = point;
+  shapeCopy = shape;
   [(ODIState *)self->super.mState setPresentationName:self->mTitlePointPresentationName forPointType:2];
-  [ODIDrawable mapStyleFromPoint:v7 shape:v6 state:self->super.mState];
+  [ODIDrawable mapStyleFromPoint:pointCopy shape:shapeCopy state:self->super.mState];
 }
 
-- (void)mapOnePillarStyleFromPoint:(id)a3 shape:(id)a4
+- (void)mapOnePillarStyleFromPoint:(id)point shape:(id)shape
 {
-  v9 = a3;
-  v6 = a4;
+  pointCopy = point;
+  shapeCopy = shape;
   [(ODIState *)self->super.mState setPresentationName:self->mTitlePointPresentationName forPointType:2];
-  v7 = [v9 children];
-  v8 = [v7 objectAtIndex:0];
+  children = [pointCopy children];
+  v8 = [children objectAtIndex:0];
 
-  [ODIDrawable mapStyleFromPoint:v8 shape:v6 state:self->super.mState];
+  [ODIDrawable mapStyleFromPoint:v8 shape:shapeCopy state:self->super.mState];
 }
 
-- (void)mapBaseStyleFromPoint:(id)a3 shape:(id)a4
+- (void)mapBaseStyleFromPoint:(id)point shape:(id)shape
 {
-  v9 = a3;
-  v6 = a4;
+  pointCopy = point;
+  shapeCopy = shape;
   [(ODIState *)self->super.mState setPresentationName:self->mTitlePointPresentationName forPointType:2];
-  v7 = [v9 children];
-  v8 = [v7 objectAtIndex:0];
+  children = [pointCopy children];
+  v8 = [children objectAtIndex:0];
 
-  [ODIDrawable mapStyleFromPoint:v8 shape:v6 state:self->super.mState];
+  [ODIDrawable mapStyleFromPoint:v8 shape:shapeCopy state:self->super.mState];
 }
 
 @end

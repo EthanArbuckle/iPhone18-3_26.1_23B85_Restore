@@ -1,11 +1,11 @@
 @interface CSLPRFStingConfigurationHistoryItem
-- (BOOL)isEqual:(id)a3;
-- (CSLPRFStingConfigurationHistoryItem)initWithBundleID:(id)a3 actionType:(unint64_t)a4 identifier:(id)a5;
-- (CSLPRFStingConfigurationHistoryItem)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (CSLPRFStingConfigurationHistoryItem)initWithBundleID:(id)d actionType:(unint64_t)type identifier:(id)identifier;
+- (CSLPRFStingConfigurationHistoryItem)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CSLPRFStingConfigurationHistoryItem
@@ -16,36 +16,36 @@
   [v3 appendString:self->_bundleID withName:@"bundleID" skipIfEmpty:1];
   [v3 appendString:self->_identifier withName:@"identifier" skipIfEmpty:1];
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(NSNumber *)self->_actionType integerValue];
-  if ((v5 - 1) > 0x29)
+  integerValue = [(NSNumber *)self->_actionType integerValue];
+  if ((integerValue - 1) > 0x29)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = off_278744510[v5 - 1];
+    v6 = off_278744510[integerValue - 1];
   }
 
   v7 = v6;
   v8 = [v4 stringWithFormat:@"%@ (%@)", v7, self->_actionType];
 
   [v3 appendString:v8 withName:@"actionType"];
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   bundleID = self->_bundleID;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __47__CSLPRFStingConfigurationHistoryItem_isEqual___block_invoke;
   v20[3] = &unk_278744E18;
-  v7 = v4;
+  v7 = equalCopy;
   v21 = v7;
   v8 = [v5 appendString:bundleID counterpart:v20];
   identifier = self->_identifier;
@@ -71,16 +71,16 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendString:self->_bundleID];
-  v5 = [v3 appendString:self->_identifier];
-  v6 = [v3 appendObject:self->_actionType];
-  v7 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendString:self->_bundleID];
+  v5 = [builder appendString:self->_identifier];
+  v6 = [builder appendObject:self->_actionType];
+  v7 = [builder hash];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CSLPRFStingConfigurationHistoryItem);
   [(CSLPRFStingConfigurationHistoryItem *)v4 setBundleID:self->_bundleID];
@@ -89,23 +89,23 @@
   return v4;
 }
 
-- (CSLPRFStingConfigurationHistoryItem)initWithCoder:(id)a3
+- (CSLPRFStingConfigurationHistoryItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CSLPRFStingConfigurationHistoryItem;
   v5 = [(CSLPRFStingConfigurationHistoryItem *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"bundleID"];
+    v6 = [coderCopy decodeObjectForKey:@"bundleID"];
     bundleID = v5->_bundleID;
     v5->_bundleID = v6;
 
-    v8 = [v4 decodeObjectForKey:@"identifier"];
+    v8 = [coderCopy decodeObjectForKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v8;
 
-    v10 = [v4 decodeObjectForKey:@"actionType"];
+    v10 = [coderCopy decodeObjectForKey:@"actionType"];
     actionType = v5->_actionType;
     v5->_actionType = v10;
   }
@@ -113,31 +113,31 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bundleID = self->_bundleID;
-  v5 = a3;
-  [v5 encodeObject:bundleID forKey:@"bundleID"];
-  [v5 encodeObject:self->_identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_actionType forKey:@"actionType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:bundleID forKey:@"bundleID"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_actionType forKey:@"actionType"];
 }
 
-- (CSLPRFStingConfigurationHistoryItem)initWithBundleID:(id)a3 actionType:(unint64_t)a4 identifier:(id)a5
+- (CSLPRFStingConfigurationHistoryItem)initWithBundleID:(id)d actionType:(unint64_t)type identifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a5;
+  dCopy = d;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = CSLPRFStingConfigurationHistoryItem;
   v11 = [(CSLPRFStingConfigurationHistoryItem *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_bundleID, a3);
-    v13 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    objc_storeStrong(&v11->_bundleID, d);
+    v13 = [MEMORY[0x277CCABB0] numberWithInteger:type];
     actionType = v12->_actionType;
     v12->_actionType = v13;
 
-    objc_storeStrong(&v12->_identifier, a5);
+    objc_storeStrong(&v12->_identifier, identifier);
   }
 
   return v12;

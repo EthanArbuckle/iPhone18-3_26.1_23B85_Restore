@@ -1,12 +1,12 @@
 @interface SKDDefaultsProvider
-- (id)versionForPipeline:(id)a3;
+- (id)versionForPipeline:(id)pipeline;
 @end
 
 @implementation SKDDefaultsProvider
 
-- (id)versionForPipeline:(id)a3
+- (id)versionForPipeline:(id)pipeline
 {
-  if ([a3 isEqualToString:@"Keyphrase"])
+  if ([pipeline isEqualToString:@"Keyphrase"])
   {
     return &unk_2846E7AA0;
   }

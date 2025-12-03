@@ -1,24 +1,24 @@
 @interface HMMTRDeviceTopology
-- (BOOL)isHAPCharacteristicDisabledAtEndpoint:(id)a3 hapServiceType:(id)a4 hapCharacteristic:(id)a5;
+- (BOOL)isHAPCharacteristicDisabledAtEndpoint:(id)endpoint hapServiceType:(id)type hapCharacteristic:(id)characteristic;
 - (HMMTRDeviceTopology)init;
-- (HMMTRDeviceTopology)initWithNodeId:(id)a3 server:(id)a4;
-- (HMMTRDeviceTopology)initWithTopologyDictionary:(id)a3;
+- (HMMTRDeviceTopology)initWithNodeId:(id)id server:(id)server;
+- (HMMTRDeviceTopology)initWithTopologyDictionary:(id)dictionary;
 - (id)_dictionaryRepresentation;
 - (id)description;
-- (id)getAttributesForClusterClassName:(id)a3 endpoint:(id)a4;
+- (id)getAttributesForClusterClassName:(id)name endpoint:(id)endpoint;
 - (id)getBridgeAggregateNodeEndpoint;
-- (id)getClustersInUseAtEndpoint:(id)a3;
+- (id)getClustersInUseAtEndpoint:(id)endpoint;
 - (id)getEnabledOTARequestorEndpoint;
 - (id)getEndpoints;
-- (id)getFeatureMapForClusterClassName:(id)a3 endpoint:(id)a4;
-- (id)getFixedLabelsAtEndpoint:(id)a3;
-- (id)getHAPCategoriesAtEndpoint:(id)a3;
-- (id)getHAPLinkedServiceTypesAtEndpoint:(id)a3;
-- (id)getHAPServiceTypesAtEndpoint:(id)a3;
-- (id)getNodeLabelAtEndpoint:(id)a3;
-- (id)getPartsListAtEndpoint:(id)a3;
-- (id)getVersionForKey:(id)a3;
-- (id)storeForNodeId:(id)a3 server:(id)a4;
+- (id)getFeatureMapForClusterClassName:(id)name endpoint:(id)endpoint;
+- (id)getFixedLabelsAtEndpoint:(id)endpoint;
+- (id)getHAPCategoriesAtEndpoint:(id)endpoint;
+- (id)getHAPLinkedServiceTypesAtEndpoint:(id)endpoint;
+- (id)getHAPServiceTypesAtEndpoint:(id)endpoint;
+- (id)getNodeLabelAtEndpoint:(id)endpoint;
+- (id)getPartsListAtEndpoint:(id)endpoint;
+- (id)getVersionForKey:(id)key;
+- (id)storeForNodeId:(id)id server:(id)server;
 @end
 
 @implementation HMMTRDeviceTopology
@@ -26,20 +26,20 @@
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMMTRDeviceTopology *)self _dictionaryRepresentation];
-  v4 = [v2 stringWithFormat:@"Device Topology:%@", v3];
+  _dictionaryRepresentation = [(HMMTRDeviceTopology *)self _dictionaryRepresentation];
+  v4 = [v2 stringWithFormat:@"Device Topology:%@", _dictionaryRepresentation];
 
   return v4;
 }
 
-- (id)storeForNodeId:(id)a3 server:(id)a4
+- (id)storeForNodeId:(id)id server:(id)server
 {
-  v5 = a4;
-  v6 = [(HMMTRDeviceTopology *)self _dictionaryRepresentation];
+  serverCopy = server;
+  _dictionaryRepresentation = [(HMMTRDeviceTopology *)self _dictionaryRepresentation];
   v10 = 0;
-  v7 = [MEMORY[0x277CCAC58] dataWithPropertyList:v6 format:100 options:0 error:&v10];
+  v7 = [MEMORY[0x277CCAC58] dataWithPropertyList:_dictionaryRepresentation format:100 options:0 error:&v10];
   v8 = [v7 copy];
-  [v5 setTopology:v8];
+  [serverCopy setTopology:v8];
 
   return 0;
 }
@@ -47,41 +47,41 @@
 - (id)_dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [(HMMTRDeviceTopology *)self hapServiceTypes];
-  [v3 setObject:v4 forKey:@"HAPServiceTypes"];
+  hapServiceTypes = [(HMMTRDeviceTopology *)self hapServiceTypes];
+  [v3 setObject:hapServiceTypes forKey:@"HAPServiceTypes"];
 
-  v5 = [(HMMTRDeviceTopology *)self hapLinkedServiceTypes];
-  [v3 setObject:v5 forKey:@"HAPLinkedServiceTypes"];
+  hapLinkedServiceTypes = [(HMMTRDeviceTopology *)self hapLinkedServiceTypes];
+  [v3 setObject:hapLinkedServiceTypes forKey:@"HAPLinkedServiceTypes"];
 
-  v6 = [(HMMTRDeviceTopology *)self clustersInUse];
-  [v3 setObject:v6 forKey:@"ClustersInUse"];
+  clustersInUse = [(HMMTRDeviceTopology *)self clustersInUse];
+  [v3 setObject:clustersInUse forKey:@"ClustersInUse"];
 
-  v7 = [(HMMTRDeviceTopology *)self hapCategories];
-  [v3 setObject:v7 forKey:@"HAPCategories"];
+  hapCategories = [(HMMTRDeviceTopology *)self hapCategories];
+  [v3 setObject:hapCategories forKey:@"HAPCategories"];
 
-  v8 = [(HMMTRDeviceTopology *)self hapDisabledCharacteristics];
-  [v3 setObject:v8 forKey:@"HAPDisabledCharacteristics"];
+  hapDisabledCharacteristics = [(HMMTRDeviceTopology *)self hapDisabledCharacteristics];
+  [v3 setObject:hapDisabledCharacteristics forKey:@"HAPDisabledCharacteristics"];
 
-  v9 = [(HMMTRDeviceTopology *)self deviceFeatureMapValues];
-  [v3 setObject:v9 forKey:@"DeviceFeatureMapValues"];
+  deviceFeatureMapValues = [(HMMTRDeviceTopology *)self deviceFeatureMapValues];
+  [v3 setObject:deviceFeatureMapValues forKey:@"DeviceFeatureMapValues"];
 
-  v10 = [(HMMTRDeviceTopology *)self deviceAttributeValues];
-  [v3 setObject:v10 forKey:@"DeviceAttributeValues"];
+  deviceAttributeValues = [(HMMTRDeviceTopology *)self deviceAttributeValues];
+  [v3 setObject:deviceAttributeValues forKey:@"DeviceAttributeValues"];
 
-  v11 = [(HMMTRDeviceTopology *)self nodeLabels];
-  [v3 setObject:v11 forKey:@"NodeLabels"];
+  nodeLabels = [(HMMTRDeviceTopology *)self nodeLabels];
+  [v3 setObject:nodeLabels forKey:@"NodeLabels"];
 
-  v12 = [(HMMTRDeviceTopology *)self partsList];
-  [v3 setObject:v12 forKey:@"PartsList"];
+  partsList = [(HMMTRDeviceTopology *)self partsList];
+  [v3 setObject:partsList forKey:@"PartsList"];
 
-  v13 = [(HMMTRDeviceTopology *)self fixedLabels];
-  [v3 setObject:v13 forKey:@"FixedLabels"];
+  fixedLabels = [(HMMTRDeviceTopology *)self fixedLabels];
+  [v3 setObject:fixedLabels forKey:@"FixedLabels"];
 
-  v14 = [(HMMTRDeviceTopology *)self versions];
-  [v3 setObject:v14 forKey:@"Versions"];
+  versions = [(HMMTRDeviceTopology *)self versions];
+  [v3 setObject:versions forKey:@"Versions"];
 
-  v15 = [(HMMTRDeviceTopology *)self otaRequestorEndpoints];
-  [v3 setObject:v15 forKey:@"OTARequestorEndpoints"];
+  otaRequestorEndpoints = [(HMMTRDeviceTopology *)self otaRequestorEndpoints];
+  [v3 setObject:otaRequestorEndpoints forKey:@"OTARequestorEndpoints"];
 
   return v3;
 }
@@ -138,57 +138,57 @@ LABEL_11:
   return v11;
 }
 
-- (id)getVersionForKey:(id)a3
+- (id)getVersionForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(HMMTRDeviceTopology *)self versions];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  versions = [(HMMTRDeviceTopology *)self versions];
+  v6 = [versions objectForKeyedSubscript:keyCopy];
 
   return v6;
 }
 
-- (id)getFixedLabelsAtEndpoint:(id)a3
+- (id)getFixedLabelsAtEndpoint:(id)endpoint
 {
   fixedLabels = self->_fixedLabels;
-  v4 = [a3 stringValue];
-  v5 = [(NSMutableDictionary *)fixedLabels objectForKeyedSubscript:v4];
+  stringValue = [endpoint stringValue];
+  v5 = [(NSMutableDictionary *)fixedLabels objectForKeyedSubscript:stringValue];
 
   return v5;
 }
 
-- (id)getPartsListAtEndpoint:(id)a3
+- (id)getPartsListAtEndpoint:(id)endpoint
 {
   partsList = self->_partsList;
-  v4 = [a3 stringValue];
-  v5 = [(NSMutableDictionary *)partsList objectForKeyedSubscript:v4];
+  stringValue = [endpoint stringValue];
+  v5 = [(NSMutableDictionary *)partsList objectForKeyedSubscript:stringValue];
 
   return v5;
 }
 
-- (id)getNodeLabelAtEndpoint:(id)a3
+- (id)getNodeLabelAtEndpoint:(id)endpoint
 {
   nodeLabels = self->_nodeLabels;
-  v4 = [a3 stringValue];
-  v5 = [(NSMutableDictionary *)nodeLabels objectForKeyedSubscript:v4];
+  stringValue = [endpoint stringValue];
+  v5 = [(NSMutableDictionary *)nodeLabels objectForKeyedSubscript:stringValue];
 
   return v5;
 }
 
-- (id)getAttributesForClusterClassName:(id)a3 endpoint:(id)a4
+- (id)getAttributesForClusterClassName:(id)name endpoint:(id)endpoint
 {
   v70 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  endpointCopy = endpoint;
   deviceAttributeValues = self->_deviceAttributeValues;
-  v52 = v7;
-  v9 = [v7 stringValue];
-  v10 = [(NSMutableDictionary *)deviceAttributeValues objectForKeyedSubscript:v9];
+  v52 = endpointCopy;
+  stringValue = [endpointCopy stringValue];
+  v10 = [(NSMutableDictionary *)deviceAttributeValues objectForKeyedSubscript:stringValue];
 
-  v47 = [v6 copy];
+  v47 = [nameCopy copy];
   v11 = @"MTRCluster";
-  if ([v6 hasPrefix:@"MTRCluster"] & 1) != 0 || (v11 = @"MTRBaseCluster", (objc_msgSend(v6, "hasPrefix:", @"MTRBaseCluster")) || (v11 = @"HMMTR", objc_msgSend(v6, "hasPrefix:", @"HMMTR")))
+  if ([nameCopy hasPrefix:@"MTRCluster"] & 1) != 0 || (v11 = @"MTRBaseCluster", (objc_msgSend(nameCopy, "hasPrefix:", @"MTRBaseCluster")) || (v11 = @"HMMTR", objc_msgSend(nameCopy, "hasPrefix:", @"HMMTR")))
   {
-    v12 = [v6 substringFromIndex:{-[__CFString length](v11, "length")}];
+    v12 = [nameCopy substringFromIndex:{-[__CFString length](v11, "length")}];
 
     v47 = v12;
   }
@@ -208,7 +208,7 @@ LABEL_11:
       v13 = *v56;
       v14 = @":";
       v48 = *v56;
-      v50 = v6;
+      v50 = nameCopy;
       do
       {
         for (i = 0; i != v53; ++i)
@@ -265,7 +265,7 @@ LABEL_11:
                 else
                 {
                   v34 = objc_autoreleasePoolPush();
-                  v35 = self;
+                  selfCopy = self;
                   v36 = HMFGetOSLogHandle();
                   if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
                   {
@@ -306,14 +306,14 @@ LABEL_29:
                 [v44 setObject:v26 forKey:v24];
               }
 
-              v6 = v50;
+              nameCopy = v50;
             }
           }
 
           else
           {
             v17 = objc_autoreleasePoolPush();
-            v18 = self;
+            selfCopy2 = self;
             v19 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
             {
@@ -326,7 +326,7 @@ LABEL_29:
               v63 = 2048;
               v64 = v21;
               v65 = 2112;
-              v66 = v6;
+              v66 = nameCopy;
               v67 = 2112;
               v68 = v52;
               _os_log_impl(&dword_22AEAE000, v19, OS_LOG_TYPE_ERROR, "%{public}@Invalid attribute string %@ and count %lu, for cluster %@ on endpoint %@", buf, 0x34u);
@@ -357,16 +357,16 @@ LABEL_29:
   return v44;
 }
 
-- (id)getFeatureMapForClusterClassName:(id)a3 endpoint:(id)a4
+- (id)getFeatureMapForClusterClassName:(id)name endpoint:(id)endpoint
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  nameCopy = name;
   deviceFeatureMapValues = self->_deviceFeatureMapValues;
-  v8 = [a4 stringValue];
-  v9 = [(NSMutableDictionary *)deviceFeatureMapValues objectForKeyedSubscript:v8];
+  stringValue = [endpoint stringValue];
+  v9 = [(NSMutableDictionary *)deviceFeatureMapValues objectForKeyedSubscript:stringValue];
 
-  v26 = v6;
-  v24 = ([v6 isEqualToString:@"MTRBaseClusterColorControl"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"HMMTRColorControl");
+  v26 = nameCopy;
+  v24 = ([nameCopy isEqualToString:@"MTRBaseClusterColorControl"] & 1) != 0 || objc_msgSend(nameCopy, "isEqualToString:", @"HMMTRColorControl");
   if ([v9 count])
   {
     v29 = 0u;
@@ -444,14 +444,14 @@ LABEL_22:
   return v20;
 }
 
-- (BOOL)isHAPCharacteristicDisabledAtEndpoint:(id)a3 hapServiceType:(id)a4 hapCharacteristic:(id)a5
+- (BOOL)isHAPCharacteristicDisabledAtEndpoint:(id)endpoint hapServiceType:(id)type hapCharacteristic:(id)characteristic
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  typeCopy = type;
+  characteristicCopy = characteristic;
   hapDisabledCharacteristics = self->_hapDisabledCharacteristics;
-  v11 = [a3 stringValue];
-  v12 = [(NSMutableDictionary *)hapDisabledCharacteristics objectForKeyedSubscript:v11];
+  stringValue = [endpoint stringValue];
+  v12 = [(NSMutableDictionary *)hapDisabledCharacteristics objectForKeyedSubscript:stringValue];
 
   if ([v12 count])
   {
@@ -489,7 +489,7 @@ LABEL_22:
             v22 = 1;
           }
 
-          if (!v22 && [v8 isEqualToString:v19] && (objc_msgSend(v9, "isEqualToString:", v21) & 1) != 0)
+          if (!v22 && [typeCopy isEqualToString:v19] && (objc_msgSend(characteristicCopy, "isEqualToString:", v21) & 1) != 0)
           {
 
             v23 = 1;
@@ -528,8 +528,8 @@ LABEL_18:
 
 - (id)getEndpoints
 {
-  v2 = [(NSMutableDictionary *)self->_clustersInUse allKeys];
-  v3 = [v2 valueForKeyPath:@"self.integerValue"];
+  allKeys = [(NSMutableDictionary *)self->_clustersInUse allKeys];
+  v3 = [allKeys valueForKeyPath:@"self.integerValue"];
 
   return v3;
 }
@@ -541,8 +541,8 @@ LABEL_18:
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v3 = [(NSMutableDictionary *)self->_hapCategories allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  allKeys = [(NSMutableDictionary *)self->_hapCategories allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v4)
   {
     v5 = v4;
@@ -555,7 +555,7 @@ LABEL_18:
       {
         if (*v25 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = [*(v7 + 2992) numberWithInt:{objc_msgSend(*(*(&v24 + 1) + 8 * i), "intValue")}];
@@ -601,7 +601,7 @@ LABEL_18:
         v7 = 0x277CCA000;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v24 objects:v29 count:16];
       v9 = 0;
     }
 
@@ -620,114 +620,114 @@ LABEL_20:
   return v9;
 }
 
-- (id)getHAPCategoriesAtEndpoint:(id)a3
+- (id)getHAPCategoriesAtEndpoint:(id)endpoint
 {
   hapCategories = self->_hapCategories;
-  v4 = [a3 stringValue];
-  v5 = [(NSMutableDictionary *)hapCategories objectForKeyedSubscript:v4];
+  stringValue = [endpoint stringValue];
+  v5 = [(NSMutableDictionary *)hapCategories objectForKeyedSubscript:stringValue];
 
   return v5;
 }
 
-- (id)getClustersInUseAtEndpoint:(id)a3
+- (id)getClustersInUseAtEndpoint:(id)endpoint
 {
   clustersInUse = self->_clustersInUse;
-  v4 = [a3 stringValue];
-  v5 = [(NSMutableDictionary *)clustersInUse objectForKeyedSubscript:v4];
+  stringValue = [endpoint stringValue];
+  v5 = [(NSMutableDictionary *)clustersInUse objectForKeyedSubscript:stringValue];
 
   return v5;
 }
 
-- (id)getHAPLinkedServiceTypesAtEndpoint:(id)a3
+- (id)getHAPLinkedServiceTypesAtEndpoint:(id)endpoint
 {
   hapLinkedServiceTypes = self->_hapLinkedServiceTypes;
-  v4 = [a3 stringValue];
-  v5 = [(NSMutableDictionary *)hapLinkedServiceTypes objectForKeyedSubscript:v4];
+  stringValue = [endpoint stringValue];
+  v5 = [(NSMutableDictionary *)hapLinkedServiceTypes objectForKeyedSubscript:stringValue];
 
   return v5;
 }
 
-- (id)getHAPServiceTypesAtEndpoint:(id)a3
+- (id)getHAPServiceTypesAtEndpoint:(id)endpoint
 {
   hapServiceTypes = self->_hapServiceTypes;
-  v4 = [a3 stringValue];
-  v5 = [(NSMutableDictionary *)hapServiceTypes objectForKeyedSubscript:v4];
+  stringValue = [endpoint stringValue];
+  v5 = [(NSMutableDictionary *)hapServiceTypes objectForKeyedSubscript:stringValue];
 
   return v5;
 }
 
-- (HMMTRDeviceTopology)initWithTopologyDictionary:(id)a3
+- (HMMTRDeviceTopology)initWithTopologyDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(HMMTRDeviceTopology *)self init];
   v6 = v5;
   if (v5)
   {
     hapServiceTypes = v5->_hapServiceTypes;
-    v8 = [v4 objectForKey:@"HAPServiceTypes"];
+    v8 = [dictionaryCopy objectForKey:@"HAPServiceTypes"];
     [(NSMutableDictionary *)hapServiceTypes addEntriesFromDictionary:v8];
 
     hapLinkedServiceTypes = v6->_hapLinkedServiceTypes;
-    v10 = [v4 objectForKey:@"HAPLinkedServiceTypes"];
+    v10 = [dictionaryCopy objectForKey:@"HAPLinkedServiceTypes"];
     [(NSMutableDictionary *)hapLinkedServiceTypes addEntriesFromDictionary:v10];
 
     clustersInUse = v6->_clustersInUse;
-    v12 = [v4 objectForKey:@"ClustersInUse"];
+    v12 = [dictionaryCopy objectForKey:@"ClustersInUse"];
     [(NSMutableDictionary *)clustersInUse addEntriesFromDictionary:v12];
 
     hapCategories = v6->_hapCategories;
-    v14 = [v4 objectForKey:@"HAPCategories"];
+    v14 = [dictionaryCopy objectForKey:@"HAPCategories"];
     [(NSMutableDictionary *)hapCategories addEntriesFromDictionary:v14];
 
     hapDisabledCharacteristics = v6->_hapDisabledCharacteristics;
-    v16 = [v4 objectForKey:@"HAPDisabledCharacteristics"];
+    v16 = [dictionaryCopy objectForKey:@"HAPDisabledCharacteristics"];
     [(NSMutableDictionary *)hapDisabledCharacteristics addEntriesFromDictionary:v16];
 
     deviceFeatureMapValues = v6->_deviceFeatureMapValues;
-    v18 = [v4 objectForKey:@"DeviceFeatureMapValues"];
+    v18 = [dictionaryCopy objectForKey:@"DeviceFeatureMapValues"];
     [(NSMutableDictionary *)deviceFeatureMapValues addEntriesFromDictionary:v18];
 
     deviceAttributeValues = v6->_deviceAttributeValues;
-    v20 = [v4 objectForKey:@"DeviceAttributeValues"];
+    v20 = [dictionaryCopy objectForKey:@"DeviceAttributeValues"];
     [(NSMutableDictionary *)deviceAttributeValues addEntriesFromDictionary:v20];
 
     nodeLabels = v6->_nodeLabels;
-    v22 = [v4 objectForKey:@"NodeLabels"];
+    v22 = [dictionaryCopy objectForKey:@"NodeLabels"];
     [(NSMutableDictionary *)nodeLabels addEntriesFromDictionary:v22];
 
     partsList = v6->_partsList;
-    v24 = [v4 objectForKey:@"PartsList"];
+    v24 = [dictionaryCopy objectForKey:@"PartsList"];
     [(NSMutableDictionary *)partsList addEntriesFromDictionary:v24];
 
     fixedLabels = v6->_fixedLabels;
-    v26 = [v4 objectForKey:@"FixedLabels"];
+    v26 = [dictionaryCopy objectForKey:@"FixedLabels"];
     [(NSMutableDictionary *)fixedLabels addEntriesFromDictionary:v26];
 
     versions = v6->_versions;
-    v28 = [v4 objectForKeyedSubscript:@"Versions"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"Versions"];
     [(NSMutableDictionary *)versions addEntriesFromDictionary:v28];
 
     otaRequestorEndpoints = v6->_otaRequestorEndpoints;
-    v30 = [v4 objectForKeyedSubscript:@"OTARequestorEndpoints"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"OTARequestorEndpoints"];
     [(NSMutableDictionary *)otaRequestorEndpoints addEntriesFromDictionary:v30];
   }
 
   return v6;
 }
 
-- (HMMTRDeviceTopology)initWithNodeId:(id)a3 server:(id)a4
+- (HMMTRDeviceTopology)initWithNodeId:(id)id server:(id)server
 {
   v54 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  serverCopy = server;
   v8 = [(HMMTRDeviceTopology *)self init];
   if (!v8)
   {
     goto LABEL_12;
   }
 
-  v9 = [v7 topology];
-  if (!v9)
+  topology = [serverCopy topology];
+  if (!topology)
   {
     v18 = objc_autoreleasePoolPush();
     v19 = v8;
@@ -738,7 +738,7 @@ LABEL_20:
       *buf = 138543618;
       v51 = v21;
       v52 = 2112;
-      v53 = v6;
+      v53 = idCopy;
       _os_log_impl(&dword_22AEAE000, v20, OS_LOG_TYPE_ERROR, "%{public}@No enumeration/topology dictionary found for NodeId:%@", buf, 0x16u);
     }
 
@@ -746,9 +746,9 @@ LABEL_20:
     goto LABEL_10;
   }
 
-  v10 = v9;
+  v10 = topology;
   v49 = 0;
-  v11 = [MEMORY[0x277CCAC58] propertyListWithData:v9 options:0 format:0 error:&v49];
+  v11 = [MEMORY[0x277CCAC58] propertyListWithData:topology options:0 format:0 error:&v49];
   v12 = v49;
   if (!v12)
   {

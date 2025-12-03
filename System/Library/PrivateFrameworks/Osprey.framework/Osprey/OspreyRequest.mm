@@ -1,14 +1,14 @@
 @interface OspreyRequest
-+ (id)requestWithMethodName:(id)a3;
-- (OspreyRequest)initWithMethodName:(id)a3;
-- (id)grpcRequestWithBaseURL:(id)a3;
++ (id)requestWithMethodName:(id)name;
+- (OspreyRequest)initWithMethodName:(id)name;
+- (id)grpcRequestWithBaseURL:(id)l;
 @end
 
 @implementation OspreyRequest
 
-- (OspreyRequest)initWithMethodName:(id)a3
+- (OspreyRequest)initWithMethodName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v10.receiver = self;
   v10.super_class = OspreyRequest;
   v6 = [(OspreyRequest *)&v10 init];
@@ -17,7 +17,7 @@
   {
     v6->_forceHTTPv2 = 1;
     *&v6->_enableDeviceAuthentication = 257;
-    objc_storeStrong(&v6->_methodName, a3);
+    objc_storeStrong(&v6->_methodName, name);
     if (OspreyCreateGlobalUserAgentString_onceToken != -1)
     {
       [OspreyRequest initWithMethodName:];
@@ -31,18 +31,18 @@
   return v7;
 }
 
-+ (id)requestWithMethodName:(id)a3
++ (id)requestWithMethodName:(id)name
 {
-  v3 = a3;
-  v4 = [[OspreyRequest alloc] initWithMethodName:v3];
+  nameCopy = name;
+  v4 = [[OspreyRequest alloc] initWithMethodName:nameCopy];
 
   return v4;
 }
 
-- (id)grpcRequestWithBaseURL:(id)a3
+- (id)grpcRequestWithBaseURL:(id)l
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = [a3 URLByAppendingPathComponent:self->_methodName];
+  v4 = [l URLByAppendingPathComponent:self->_methodName];
   v5 = [MEMORY[0x277CCAB70] requestWithURL:v4];
   [v5 setAllowsCellularAccess:self->_allowsCellularAccess];
   [v5 setHTTPMethod:@"POST"];
@@ -133,7 +133,7 @@
     data = self->_data;
     v19 = v16;
     LODWORD(data) = [(NSData *)data length];
-    v20 = [v15 allHTTPHeaderFields];
+    allHTTPHeaderFields = [v15 allHTTPHeaderFields];
     *buf = 136315906;
     v25 = "[OspreyRequest grpcRequestWithBaseURL:]";
     v26 = 2112;
@@ -141,7 +141,7 @@
     v28 = 1024;
     v29 = data;
     v30 = 2112;
-    v31 = v20;
+    v31 = allHTTPHeaderFields;
     _os_log_impl(&dword_25DDE6000, v19, OS_LOG_TYPE_INFO, "%s Request method: %@ data_length: %d headers: %@", buf, 0x26u);
   }
 

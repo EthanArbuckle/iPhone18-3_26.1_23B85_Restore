@@ -1,6 +1,6 @@
 @interface DriverKitSettingsBundleController
-- (id)specifiersWithSpecifier:(id)a3;
-- (void)approvalStateDidChange:(BOOL)a3;
+- (id)specifiersWithSpecifier:(id)specifier;
+- (void)approvalStateDidChange:(BOOL)change;
 - (void)load;
 - (void)registerObserver;
 - (void)unload;
@@ -62,12 +62,12 @@
   [(DriverKitSettingsBundleController *)&v3 unload];
 }
 
-- (id)specifiersWithSpecifier:(id)a3
+- (id)specifiersWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v5 = objc_alloc_init(NSMutableArray);
   v6 = PSAppSettingsBundleIDKey;
-  v7 = [v4 propertyForKey:PSAppSettingsBundleIDKey];
+  v7 = [specifierCopy propertyForKey:PSAppSettingsBundleIDKey];
 
   v8 = +[DriverManager sharedManager];
   [v8 thirdPartyDriverCount];
@@ -77,15 +77,15 @@
   v10 = v9;
   if (v7)
   {
-    v11 = [v9 driverCountForAppID:v7];
+    thirdPartyDriverCount = [v9 driverCountForAppID:v7];
   }
 
   else
   {
-    v11 = [v9 thirdPartyDriverCount];
+    thirdPartyDriverCount = [v9 thirdPartyDriverCount];
   }
 
-  v12 = v11;
+  v12 = thirdPartyDriverCount;
 
   if (v12 >= 1)
   {
@@ -102,13 +102,13 @@
   return v5;
 }
 
-- (void)approvalStateDidChange:(BOOL)a3
+- (void)approvalStateDidChange:(BOOL)change
 {
-  v3 = a3;
+  changeCopy = change;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v5 = "was not";
-    if (v3)
+    if (changeCopy)
     {
       v5 = "was";
     }
@@ -118,7 +118,7 @@
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Approval state changed, update %{public}s incremental", buf, 0xCu);
   }
 
-  if (!v3)
+  if (!changeCopy)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;

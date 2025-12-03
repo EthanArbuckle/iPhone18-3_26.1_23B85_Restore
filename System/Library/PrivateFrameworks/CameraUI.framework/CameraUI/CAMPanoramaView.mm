@@ -1,41 +1,41 @@
 @interface CAMPanoramaView
-- (CAMPanoramaView)initWithPanoramaPreviewView:(id)a3 layoutStyle:(int64_t)a4;
+- (CAMPanoramaView)initWithPanoramaPreviewView:(id)view layoutStyle:(int64_t)style;
 - (CAMPanoramaViewDelegate)delegate;
 - (CGPoint)_initialArrowCenter;
-- (CGRect)_frameForArrowViewWithDirection:(int64_t)a3 offset:(double)a4;
+- (CGRect)_frameForArrowViewWithDirection:(int64_t)direction offset:(double)offset;
 - (CGRect)_lastLayoutBounds;
-- (CGSize)_previewSizeForBounds:(CGRect)a3;
+- (CGSize)_previewSizeForBounds:(CGRect)bounds;
 - (CGSize)panoramaCaptureSize;
 - (_TtC8CameraUI20CAMDockKitController)dockKitController;
 - (void)_cancelDelayedMoveInstructions;
 - (void)_hideInstructionLabel;
-- (void)_resetPaintingUIAnimated:(BOOL)a3;
+- (void)_resetPaintingUIAnimated:(BOOL)animated;
 - (void)_showArrowInstructions;
 - (void)_showMoveDownInstructions;
 - (void)_showMoveDownInstructionsAfterDelay;
 - (void)_showMoveUpInstructions;
 - (void)_showMoveUpInstructionsAfterDelay;
 - (void)_showSpeedInstructions;
-- (void)_updateInstructionLabelForInstruction:(int64_t)a3;
+- (void)_updateInstructionLabelForInstruction:(int64_t)instruction;
 - (void)dealloc;
 - (void)finishedProcessingPanorama;
 - (void)layoutSubviews;
-- (void)setDevicePosition:(int64_t)a3;
-- (void)setDirection:(int64_t)a3 animated:(BOOL)a4;
-- (void)setLayoutStyle:(int64_t)a3;
-- (void)setPanoramaCaptureSize:(CGSize)a3;
-- (void)setTransform:(CGAffineTransform *)a3;
+- (void)setDevicePosition:(int64_t)position;
+- (void)setDirection:(int64_t)direction animated:(BOOL)animated;
+- (void)setLayoutStyle:(int64_t)style;
+- (void)setPanoramaCaptureSize:(CGSize)size;
+- (void)setTransform:(CGAffineTransform *)transform;
 - (void)startPainting;
 - (void)startProcessingPanorama;
-- (void)updatePaintingWithStatus:(id)a3;
+- (void)updatePaintingWithStatus:(id)status;
 @end
 
 @implementation CAMPanoramaView
 
-- (CAMPanoramaView)initWithPanoramaPreviewView:(id)a3 layoutStyle:(int64_t)a4
+- (CAMPanoramaView)initWithPanoramaPreviewView:(id)view layoutStyle:(int64_t)style
 {
   v51[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  viewCopy = view;
   v50.receiver = self;
   v50.super_class = CAMPanoramaView;
   v8 = *MEMORY[0x1E695F058];
@@ -46,7 +46,7 @@
   v13 = v12;
   if (v12)
   {
-    v12->_layoutStyle = a4;
+    v12->_layoutStyle = style;
     p_panoramaCaptureSize = &v12->_panoramaCaptureSize;
     +[CAMPanoramaUtilities bufferSize];
     v13->_direction = 1;
@@ -75,8 +75,8 @@
 
     [(UIView *)v13->__maskingView setClipsToBounds:1];
     [(UIView *)v13->__stripContainerView addSubview:v13->__maskingView];
-    objc_storeStrong(&v13->_previewView, a3);
-    [(UIView *)v13->__maskingView addSubview:v7];
+    objc_storeStrong(&v13->_previewView, view);
+    [(UIView *)v13->__maskingView addSubview:viewCopy];
     v26 = [[CAMPanoramaLevelView alloc] initWithFrame:v8, v9, v10, v11];
     levelView = v13->__levelView;
     v13->__levelView = v26;
@@ -85,15 +85,15 @@
     arrowView = v13->__arrowView;
     v13->__arrowView = v28;
 
-    v30 = [(CAMPanoramaArrowView *)v13->__arrowView layer];
-    [v30 setZPosition:100.0];
+    layer = [(CAMPanoramaArrowView *)v13->__arrowView layer];
+    [layer setZPosition:100.0];
     [(UIView *)v13->__stripBackgroundView insertSubview:v13->__levelView belowSubview:v13->__stripContainerView];
     [(UIView *)v13->__stripBackgroundView addSubview:v13->__arrowView];
     v13->__previousSpeeds = malloc_type_malloc(0x20uLL, 0x100004000313F17uLL);
-    v31 = [MEMORY[0x1E69DC938] currentDevice];
-    v32 = [v31 model];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    model = [currentDevice model];
 
-    v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PANO_INSTRUCTIONAL_TEXT_%@", v32];
+    v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PANO_INSTRUCTIONAL_TEXT_%@", model];
     v34 = CAMLocalizedFrameworkString(v33, &stru_1F1660A30);
     instructionString = v13->__instructionString;
     v13->__instructionString = v34;
@@ -145,20 +145,20 @@
   [(CAMPanoramaView *)&v4 dealloc];
 }
 
-- (void)setLayoutStyle:(int64_t)a3
+- (void)setLayoutStyle:(int64_t)style
 {
-  if (self->_layoutStyle != a3)
+  if (self->_layoutStyle != style)
   {
-    self->_layoutStyle = a3;
+    self->_layoutStyle = style;
     [(CAMPanoramaView *)self setNeedsLayout];
   }
 }
 
-- (CGSize)_previewSizeForBounds:(CGRect)a3
+- (CGSize)_previewSizeForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  [CAMPanoramaUtilities panoramaViewPreviewStripInsetsForLayoutStyle:[(CAMPanoramaView *)self layoutStyle:a3.origin.x]];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  [CAMPanoramaUtilities panoramaViewPreviewStripInsetsForLayoutStyle:[(CAMPanoramaView *)self layoutStyle:bounds.origin.x]];
   v7 = width - v5 - v6;
   v10 = height - v8 - v9;
   v11 = v7;
@@ -178,11 +178,11 @@
   v8 = v7;
   v10 = v9;
   v11 = v9 / 10.6;
-  v12 = [(CAMPanoramaView *)self _stripBackgroundView];
-  [v12 _setCornerRadius:v11];
+  _stripBackgroundView = [(CAMPanoramaView *)self _stripBackgroundView];
+  [_stripBackgroundView _setCornerRadius:v11];
 
-  v13 = [(CAMPanoramaView *)self _maskingView];
-  [v13 _setCornerRadius:v11 * 0.7];
+  _maskingView = [(CAMPanoramaView *)self _maskingView];
+  [_maskingView _setCornerRadius:v11 * 0.7];
 
   [(CAMPanoramaView *)self _previewSizeForBounds:v4, v6, v8, v10];
   v126 = v14;
@@ -194,7 +194,7 @@
   v21 = v20;
   v23 = v22;
   rect2 = v24;
-  v25 = [(CAMPanoramaView *)self _lastDevicePosition];
+  _lastDevicePosition = [(CAMPanoramaView *)self _lastDevicePosition];
   v157.origin.x = v4;
   v157.origin.y = v6;
   v157.size.width = v8;
@@ -219,9 +219,9 @@
   v165.origin.y = v21;
   v165.size.width = v23;
   v165.size.height = rect2;
-  if (!CGRectEqualToRect(v158, v165) || v25 != [(CAMPanoramaView *)self devicePosition])
+  if (!CGRectEqualToRect(v158, v165) || _lastDevicePosition != [(CAMPanoramaView *)self devicePosition])
   {
-    v30 = [(CAMPanoramaView *)self _stripBackgroundView];
+    _stripBackgroundView2 = [(CAMPanoramaView *)self _stripBackgroundView];
     UIRectGetCenter();
     v32 = v31;
     v34 = v33;
@@ -238,21 +238,21 @@
       *&v155.tx = *(MEMORY[0x1E695EFD0] + 32);
     }
 
-    [v30 setTransform:&v155];
-    [v30 setBounds:{0.0, 0.0, Width, v16 + 8.0}];
-    [v30 setCenter:{v32, v34}];
-    v36 = [(CAMPanoramaView *)self _stripContainerView];
+    [_stripBackgroundView2 setTransform:&v155];
+    [_stripBackgroundView2 setBounds:{0.0, 0.0, Width, v16 + 8.0}];
+    [_stripBackgroundView2 setCenter:{v32, v34}];
+    _stripContainerView = [(CAMPanoramaView *)self _stripContainerView];
     UIRectCenteredIntegralRectScale();
     UIRectGetCenter();
     v38 = v37;
     v40 = v39;
-    [v36 setBounds:{0.0, 0.0, v126, v132, 0}];
-    [v36 setCenter:{v38, v40}];
+    [_stripContainerView setBounds:{0.0, 0.0, v126, v132, 0}];
+    [_stripContainerView setCenter:{v38, v40}];
   }
 
-  v41 = [(CAMPanoramaView *)self direction];
-  v42 = [(CAMPanoramaView *)self _currentPaintingStatus];
-  [v42 cropRectangle];
+  direction = [(CAMPanoramaView *)self direction];
+  _currentPaintingStatus = [(CAMPanoramaView *)self _currentPaintingStatus];
+  [_currentPaintingStatus cropRectangle];
   rect2a = v43;
   v45 = v44;
   v47 = v46;
@@ -261,8 +261,8 @@
   v51 = v50;
   [(CAMPanoramaView *)self panoramaCaptureSize];
   v53 = v47 * (v51 / v52);
-  v54 = [(CAMPanoramaView *)self _stripContainerView];
-  [v54 bounds];
+  _stripContainerView2 = [(CAMPanoramaView *)self _stripContainerView];
+  [_stripContainerView2 bounds];
   x = v159.origin.x;
   y = v159.origin.y;
   v57 = v159.size.width;
@@ -295,7 +295,7 @@
   }
 
   v64 = 0.0;
-  if (v41 == 2)
+  if (direction == 2)
   {
     v65 = v63;
   }
@@ -305,27 +305,27 @@
     v65 = 0.0;
   }
 
-  v66 = [(CAMPanoramaView *)self _maskingView];
+  _maskingView2 = [(CAMPanoramaView *)self _maskingView];
   v67 = MEMORY[0x1E69DD250];
   v149[0] = MEMORY[0x1E69E9820];
   v149[1] = 3221225472;
   v149[2] = __33__CAMPanoramaView_layoutSubviews__block_invoke;
   v149[3] = &unk_1E76F7768;
-  v68 = v66;
+  v68 = _maskingView2;
   v150 = v68;
   v151 = v65;
   v152 = 0;
   v153 = v62;
   v154 = v60;
   [v67 performWithoutAnimation:v149];
-  [v54 convertRect:v68 toView:{v65, 0.0, v62, v60}];
+  [_stripContainerView2 convertRect:v68 toView:{v65, 0.0, v62, v60}];
   v70 = v69;
   v72 = v71;
   v74 = v73;
   v76 = v75;
   +[CAMPanoramaUtilities bufferSize];
   v79 = v132 * (v77 / v78);
-  if (v41 == 2)
+  if (direction == 2)
   {
     v162.origin.x = v70;
     v162.origin.y = v72;
@@ -334,31 +334,31 @@
     v64 = CGRectGetWidth(v162) - v79;
   }
 
-  v80 = [(CAMPanoramaView *)self previewView];
+  previewView = [(CAMPanoramaView *)self previewView];
   v81 = MEMORY[0x1E69DD250];
   v143[0] = MEMORY[0x1E69E9820];
   v143[1] = 3221225472;
   v143[2] = __33__CAMPanoramaView_layoutSubviews__block_invoke_2;
   v143[3] = &unk_1E76F7768;
-  v144 = v80;
+  v144 = previewView;
   v145 = v64;
   v146 = 0;
   v147 = v79;
   v148 = v132;
-  v82 = v80;
+  v82 = previewView;
   [v81 performWithoutAnimation:v143];
   [v68 bounds];
-  [(CAMPanoramaView *)self _frameForArrowViewWithDirection:v41 offset:v83];
+  [(CAMPanoramaView *)self _frameForArrowViewWithDirection:direction offset:v83];
   v85 = v84;
   v87 = v86;
   v89 = v88;
   v133 = v90;
   UIRectGetCenter();
   v130 = v91;
-  v92 = [(CAMPanoramaView *)self _levelView];
-  [v92 intrinsicContentSize];
+  _levelView = [(CAMPanoramaView *)self _levelView];
+  [_levelView intrinsicContentSize];
   v94 = v93;
-  if (v41 == 1)
+  if (direction == 1)
   {
     v95 = v85 + 20.0;
   }
@@ -368,7 +368,7 @@
     v95 = 10.0;
   }
 
-  if (v41 == 1)
+  if (direction == 1)
   {
     v96 = 10.0;
   }
@@ -383,8 +383,8 @@
   UIRectGetCenter();
   v99 = v98;
   v101 = v95 * 0.5 + v100 - v96 * 0.5;
-  [v92 setBounds:{0.0, 0.0, v97, v94, 0}];
-  [v92 setCenter:{v101, v99}];
+  [_levelView setBounds:{0.0, 0.0, v97, v94, 0}];
+  [_levelView setCenter:{v101, v99}];
   if ([(CAMPanoramaView *)self isPainting])
   {
     [(CAMPanoramaView *)self _currentAverageSpeed];
@@ -393,15 +393,15 @@
       [(CAMPanoramaView *)self _initialArrowCenter];
       v104 = v103;
       v105 = v130 - v103;
-      v106 = [(CAMPanoramaView *)self _stripBackgroundView];
-      [v106 frame];
-      [(CAMPanoramaView *)self convertRect:v106 toView:?];
+      _stripBackgroundView3 = [(CAMPanoramaView *)self _stripBackgroundView];
+      [_stripBackgroundView3 frame];
+      [(CAMPanoramaView *)self convertRect:_stripBackgroundView3 toView:?];
       v107 = CGRectGetHeight(v163);
-      v135 = [(CAMPanoramaView *)self _isCurrentlyShowingMoveInstructions];
+      _isCurrentlyShowingMoveInstructions = [(CAMPanoramaView *)self _isCurrentlyShowingMoveInstructions];
       WeakRetained = objc_loadWeakRetained(&self->_dockKitController);
-      v109 = [WeakRetained isConnectedAndTracking];
+      isConnectedAndTracking = [WeakRetained isConnectedAndTracking];
 
-      if (v109)
+      if (isConnectedAndTracking)
       {
         v110 = objc_loadWeakRetained(&self->_dockKitController);
         [v110 panoramaDriftingY:v105 / v107];
@@ -414,7 +414,7 @@
         {
           if (v124 <= v107 * 0.125)
           {
-            if (v135)
+            if (_isCurrentlyShowingMoveInstructions)
             {
               [(CAMPanoramaView *)self _cancelDelayedMoveInstructions];
               [(CAMPanoramaView *)self _hideInstructionLabel];
@@ -445,11 +445,11 @@
     }
   }
 
-  v111 = [(CAMPanoramaView *)self _arrowView];
-  CAMViewSetBoundsAndCenterForFrame(v111, v85, v87, v133, v89);
+  _arrowView = [(CAMPanoramaView *)self _arrowView];
+  CAMViewSetBoundsAndCenterForFrame(_arrowView, v85, v87, v133, v89);
 
-  v112 = [(CAMPanoramaView *)self _instructionLabel];
-  [v112 sizeThatFits:{v142, v131}];
+  _instructionLabel = [(CAMPanoramaView *)self _instructionLabel];
+  [_instructionLabel sizeThatFits:{v142, v131}];
   v114 = v113;
   v116 = v115;
   v117 = *MEMORY[0x1E695EFF8];
@@ -463,27 +463,27 @@
   v164.size.height = v136;
   v164.size.width = v137;
   v123 = CGRectGetMaxY(v164) + v120 * 0.5 + 10.0;
-  [v112 setBounds:{v117, v118, v114, v116, 0}];
-  [v112 setCenter:{v122, v123}];
+  [_instructionLabel setBounds:{v117, v118, v114, v116, 0}];
+  [_instructionLabel setCenter:{v122, v123}];
   [(CAMPanoramaView *)self set_lastDevicePosition:[(CAMPanoramaView *)self devicePosition]];
   [(CAMPanoramaView *)self _setLastLayoutBounds:v141, v140, v142, v131];
 }
 
-- (CGRect)_frameForArrowViewWithDirection:(int64_t)a3 offset:(double)a4
+- (CGRect)_frameForArrowViewWithDirection:(int64_t)direction offset:(double)offset
 {
-  v6 = [(CAMPanoramaView *)self _stripBackgroundView];
-  v7 = [(CAMPanoramaView *)self _arrowView];
-  [v7 intrinsicContentSize];
-  [v6 bounds];
+  _stripBackgroundView = [(CAMPanoramaView *)self _stripBackgroundView];
+  _arrowView = [(CAMPanoramaView *)self _arrowView];
+  [_arrowView intrinsicContentSize];
+  [_stripBackgroundView bounds];
   UIRectCenteredIntegralRectScale();
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
   UIRectGetCenter();
-  if (a3 == 1 || a3 == 2)
+  if (direction == 1 || direction == 2)
   {
-    [v6 bounds];
+    [_stripBackgroundView bounds];
     CGRectGetWidth(v28);
   }
 
@@ -514,35 +514,35 @@
   return result;
 }
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
   v22.receiver = self;
   v22.super_class = CAMPanoramaView;
-  v5 = *&a3->c;
-  v19 = *&a3->a;
+  v5 = *&transform->c;
+  v19 = *&transform->a;
   v20 = v5;
-  v21 = *&a3->tx;
+  v21 = *&transform->tx;
   [(CAMPanoramaView *)&v22 setTransform:&v19];
   v20 = 0u;
   v21 = 0u;
   v19 = 0u;
   CGAffineTransformMakeRotation(&v18, 3.14159265);
   UIIntegralTransform();
-  v6 = [(CAMPanoramaView *)self _instructionLabel];
+  _instructionLabel = [(CAMPanoramaView *)self _instructionLabel];
   v7 = MEMORY[0x1E69DD250];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
-  v8 = *&a3->c;
-  v12 = *&a3->a;
+  v8 = *&transform->c;
+  v12 = *&transform->a;
   v13 = v8;
-  v14 = *&a3->tx;
+  v14 = *&transform->tx;
   v15 = v19;
   v10[2] = __32__CAMPanoramaView_setTransform___block_invoke;
   v10[3] = &unk_1E76FCA90;
   v16 = v20;
   v17 = v21;
-  v11 = v6;
-  v9 = v6;
+  v11 = _instructionLabel;
+  v9 = _instructionLabel;
   [v7 performWithoutAnimation:v10];
 }
 
@@ -578,11 +578,11 @@ uint64_t __32__CAMPanoramaView_setTransform___block_invoke(uint64_t a1)
   return [v5 setTransform:&t1];
 }
 
-- (void)setPanoramaCaptureSize:(CGSize)a3
+- (void)setPanoramaCaptureSize:(CGSize)size
 {
-  if (self->_panoramaCaptureSize.width != a3.width || self->_panoramaCaptureSize.height != a3.height)
+  if (self->_panoramaCaptureSize.width != size.width || self->_panoramaCaptureSize.height != size.height)
   {
-    self->_panoramaCaptureSize = a3;
+    self->_panoramaCaptureSize = size;
     [(CAMPanoramaView *)self setNeedsLayout];
   }
 }
@@ -593,8 +593,8 @@ uint64_t __32__CAMPanoramaView_setTransform___block_invoke(uint64_t a1)
   [(CAMPanoramaView *)self layoutIfNeeded];
   [(CAMPanoramaView *)self _setPainting:1];
   [(CAMPanoramaView *)self _setArrowUpdateFrame:0];
-  v3 = [(CAMPanoramaView *)self _arrowView];
-  [v3 center];
+  _arrowView = [(CAMPanoramaView *)self _arrowView];
+  [_arrowView center];
   [(CAMPanoramaView *)self _setInitialArrowCenter:?];
   [(CAMPanoramaView *)self _showArrowInstructions];
   [(CAMPanoramaView *)self _hideArrowInstructionsAfterDelay];
@@ -603,10 +603,10 @@ uint64_t __32__CAMPanoramaView_setTransform___block_invoke(uint64_t a1)
   [(CAMPanoramaView *)self setNeedsLayout];
 }
 
-- (void)updatePaintingWithStatus:(id)a3
+- (void)updatePaintingWithStatus:(id)status
 {
-  v22 = a3;
-  [v22 speed];
+  statusCopy = status;
+  [statusCopy speed];
   previousSpeeds = self->__previousSpeeds;
   v6 = previousSpeeds + 1;
   v7 = 0.0;
@@ -624,9 +624,9 @@ uint64_t __32__CAMPanoramaView_setTransform___block_invoke(uint64_t a1)
   previousSpeeds[3] = v4;
   v10 = (v4 + v7) * 0.25;
   WeakRetained = objc_loadWeakRetained(&self->_dockKitController);
-  v12 = [WeakRetained isConnectedAndTracking];
+  isConnectedAndTracking = [WeakRetained isConnectedAndTracking];
 
-  if (v12)
+  if (isConnectedAndTracking)
   {
     v13 = objc_loadWeakRetained(&self->_dockKitController);
     [v13 panoramaPaintingUpdatedWithCurrentSpeed:v10 maxAllowedSpeed:1.0];
@@ -639,7 +639,7 @@ uint64_t __32__CAMPanoramaView_setTransform___block_invoke(uint64_t a1)
     v15 = 1;
   }
 
-  if ((v12 | v15))
+  if ((isConnectedAndTracking | v15))
   {
     v16 = v10 >= 1.0;
     if (v14 < 1.0)
@@ -647,7 +647,7 @@ uint64_t __32__CAMPanoramaView_setTransform___block_invoke(uint64_t a1)
       v16 = 1;
     }
 
-    if (((v12 | v16) & 1) == 0)
+    if (((isConnectedAndTracking | v16) & 1) == 0)
     {
       [(CAMPanoramaView *)self _setCurrentlyMovingTooFast:0];
       [(CAMPanoramaView *)self _hideSpeedInstructionsAfterDelay];
@@ -660,36 +660,36 @@ uint64_t __32__CAMPanoramaView_setTransform___block_invoke(uint64_t a1)
     [(CAMPanoramaView *)self _showSpeedInstructions];
   }
 
-  v17 = [(CAMPanoramaView *)self _arrowUpdateFrame];
-  if (v17 == 5)
+  _arrowUpdateFrame = [(CAMPanoramaView *)self _arrowUpdateFrame];
+  if (_arrowUpdateFrame == 5)
   {
     [(CAMPanoramaView *)self _setArrowUpdateFrame:0];
-    v18 = [(CAMPanoramaView *)self _arrowView];
-    [v18 animateWithNormalizedSpeed:v10 duration:0.166666667];
+    _arrowView = [(CAMPanoramaView *)self _arrowView];
+    [_arrowView animateWithNormalizedSpeed:v10 duration:0.166666667];
   }
 
   else
   {
-    [(CAMPanoramaView *)self _setArrowUpdateFrame:v17 + 1];
+    [(CAMPanoramaView *)self _setArrowUpdateFrame:_arrowUpdateFrame + 1];
   }
 
   [(CAMPanoramaView *)self _setCurrentAverageSpeed:v10];
-  [(CAMPanoramaView *)self _setCurrentPaintingStatus:v22];
-  [v22 normalizedBaselineOffset];
+  [(CAMPanoramaView *)self _setCurrentPaintingStatus:statusCopy];
+  [statusCopy normalizedBaselineOffset];
   v20 = v19;
   [(CAMPanoramaView *)self _filteredNormalizedBaselineOffset];
   [(CAMPanoramaView *)self _setFilteredNormalizedBaselineOffset:v21 * 0.8 + v20 * 0.2];
   [(CAMPanoramaView *)self setNeedsLayout];
 }
 
-- (void)setDirection:(int64_t)a3 animated:(BOOL)a4
+- (void)setDirection:(int64_t)direction animated:(BOOL)animated
 {
   v39[3] = *MEMORY[0x1E69E9840];
-  if (self->_direction != a3)
+  if (self->_direction != direction)
   {
-    v4 = a4;
-    self->_direction = a3;
-    if (a3 == 2)
+    animatedCopy = animated;
+    self->_direction = direction;
+    if (direction == 2)
     {
       v7 = 3.14159265;
     }
@@ -699,11 +699,11 @@ uint64_t __32__CAMPanoramaView_setTransform___block_invoke(uint64_t a1)
       v7 = 0.0;
     }
 
-    v8 = [(CAMPanoramaView *)self _arrowView];
-    v9 = [v8 layer];
-    if (v4)
+    _arrowView = [(CAMPanoramaView *)self _arrowView];
+    layer = [_arrowView layer];
+    if (animatedCopy)
     {
-      if (a3 == 2)
+      if (direction == 2)
       {
         v10 = 10.0;
       }
@@ -713,7 +713,7 @@ uint64_t __32__CAMPanoramaView_setTransform___block_invoke(uint64_t a1)
         v10 = -10.0;
       }
 
-      v11 = [(CAMPanoramaView *)self _stripContainerView];
+      _stripContainerView = [(CAMPanoramaView *)self _stripContainerView];
       v37[0] = MEMORY[0x1E69E9820];
       v37[1] = 3221225472;
       v37[2] = __41__CAMPanoramaView_setDirection_animated___block_invoke;
@@ -725,12 +725,12 @@ uint64_t __32__CAMPanoramaView_setTransform___block_invoke(uint64_t a1)
       v35[1] = 3221225472;
       v35[2] = __41__CAMPanoramaView_setDirection_animated___block_invoke_2;
       v35[3] = &unk_1E76F77B0;
-      v36 = v11;
+      v36 = _stripContainerView;
       v31[0] = MEMORY[0x1E69E9820];
       v31[1] = 3221225472;
       v31[2] = __41__CAMPanoramaView_setDirection_animated___block_invoke_3;
       v31[3] = &unk_1E76FCD30;
-      v33 = a3;
+      directionCopy = direction;
       v34 = 6;
       v31[4] = self;
       v32 = v36;
@@ -741,7 +741,7 @@ uint64_t __32__CAMPanoramaView_setTransform___block_invoke(uint64_t a1)
       v30[2] = __41__CAMPanoramaView_setDirection_animated___block_invoke_7;
       v30[3] = &unk_1E76F7A38;
       v30[4] = self;
-      v30[5] = a3;
+      v30[5] = direction;
       [MEMORY[0x1E69DD250] animateWithDuration:2 delay:v30 options:0 animations:0.4 completion:0.0];
       v13 = [MEMORY[0x1E6979390] animationWithKeyPath:@"transform.scale"];
       [v13 setKeyTimes:&unk_1F16C9B60];
@@ -756,16 +756,16 @@ uint64_t __32__CAMPanoramaView_setTransform___block_invoke(uint64_t a1)
       [v14 setValues:v16];
 
       v17 = [MEMORY[0x1E6979318] animationWithKeyPath:@"transform.rotation.y"];
-      v18 = [v9 presentationLayer];
-      v19 = v18;
-      if (v18)
+      presentationLayer = [layer presentationLayer];
+      v19 = presentationLayer;
+      if (presentationLayer)
       {
-        v20 = v18;
+        v20 = presentationLayer;
       }
 
       else
       {
-        v20 = v9;
+        v20 = layer;
       }
 
       v21 = v20;
@@ -779,18 +779,18 @@ uint64_t __32__CAMPanoramaView_setTransform___block_invoke(uint64_t a1)
       [v17 setDuration:0.4];
       v24 = *MEMORY[0x1E69797E0];
       [v17 setFillMode:*MEMORY[0x1E69797E0]];
-      v25 = [MEMORY[0x1E6979308] animation];
+      animation = [MEMORY[0x1E6979308] animation];
       v38[0] = v17;
       v38[1] = v13;
       v38[2] = v14;
       v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:3];
-      [v25 setAnimations:v26];
+      [animation setAnimations:v26];
 
-      [v25 setDuration:0.4];
-      [v9 convertTime:0 fromLayer:CACurrentMediaTime()];
-      [v25 setBeginTime:v27 + 0.2];
-      [v25 setFillMode:v24];
-      [v9 addAnimation:v25 forKey:@"panoramaDirectionChange"];
+      [animation setDuration:0.4];
+      [layer convertTime:0 fromLayer:CACurrentMediaTime()];
+      [animation setBeginTime:v27 + 0.2];
+      [animation setFillMode:v24];
+      [layer addAnimation:animation forKey:@"panoramaDirectionChange"];
     }
 
     else
@@ -799,7 +799,7 @@ uint64_t __32__CAMPanoramaView_setTransform___block_invoke(uint64_t a1)
     }
 
     v28 = [MEMORY[0x1E696AD98] numberWithDouble:v7];
-    [v9 setValue:v28 forKeyPath:@"transform.rotation.y"];
+    [layer setValue:v28 forKeyPath:@"transform.rotation.y"];
   }
 }
 
@@ -867,31 +867,31 @@ void __41__CAMPanoramaView_setDirection_animated___block_invoke_7(uint64_t a1)
   CAMViewSetBoundsAndCenterForFrame(v14, v7, v9, v11, v13);
 }
 
-- (void)setDevicePosition:(int64_t)a3
+- (void)setDevicePosition:(int64_t)position
 {
-  if (self->_devicePosition != a3)
+  if (self->_devicePosition != position)
   {
-    self->_devicePosition = a3;
+    self->_devicePosition = position;
     [(CAMPanoramaView *)self setNeedsLayout];
   }
 }
 
 - (void)startProcessingPanorama
 {
-  v3 = [(CAMPanoramaView *)self _instructionLabel];
-  v4 = [(CAMPanoramaView *)self _arrowView];
-  v5 = [(CAMPanoramaView *)self _levelView];
+  _instructionLabel = [(CAMPanoramaView *)self _instructionLabel];
+  _arrowView = [(CAMPanoramaView *)self _arrowView];
+  _levelView = [(CAMPanoramaView *)self _levelView];
   v6 = MEMORY[0x1E69DD250];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __42__CAMPanoramaView_startProcessingPanorama__block_invoke;
   v10[3] = &unk_1E76F7938;
-  v11 = v3;
-  v12 = v4;
-  v13 = v5;
-  v7 = v5;
-  v8 = v4;
-  v9 = v3;
+  v11 = _instructionLabel;
+  v12 = _arrowView;
+  v13 = _levelView;
+  v7 = _levelView;
+  v8 = _arrowView;
+  v9 = _instructionLabel;
   [v6 animateWithDuration:2 delay:v10 options:0 animations:0.1 completion:0.0];
 }
 
@@ -913,30 +913,30 @@ uint64_t __42__CAMPanoramaView_startProcessingPanorama__block_invoke(uint64_t a1
   }
 }
 
-- (void)_resetPaintingUIAnimated:(BOOL)a3
+- (void)_resetPaintingUIAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(CAMPanoramaView *)self _updateInstructionLabelForInstruction:1];
   [(CAMPanoramaView *)self _setCurrentlyShowingMoveInstructions:0];
   [(CAMPanoramaView *)self _setCurrentlyMovingTooFast:0];
   [(CAMPanoramaView *)self _setCurrentAverageSpeed:0.0];
   [(CAMPanoramaView *)self _setArrowUpdateFrame:0];
-  v5 = [(CAMPanoramaView *)self _instructionLabel];
-  v6 = [(CAMPanoramaView *)self _arrowView];
-  v7 = [(CAMPanoramaView *)self _levelView];
+  _instructionLabel = [(CAMPanoramaView *)self _instructionLabel];
+  _arrowView = [(CAMPanoramaView *)self _arrowView];
+  _levelView = [(CAMPanoramaView *)self _levelView];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __44__CAMPanoramaView__resetPaintingUIAnimated___block_invoke;
   aBlock[3] = &unk_1E76F7938;
-  v8 = v5;
+  v8 = _instructionLabel;
   v13 = v8;
-  v9 = v6;
+  v9 = _arrowView;
   v14 = v9;
-  v10 = v7;
+  v10 = _levelView;
   v15 = v10;
   v11 = _Block_copy(aBlock);
   [v9 reset];
-  if (v3)
+  if (animatedCopy)
   {
     [MEMORY[0x1E69DD250] animateWithDuration:2 delay:v11 options:0 animations:0.1 completion:0.0];
   }
@@ -964,62 +964,62 @@ uint64_t __44__CAMPanoramaView__resetPaintingUIAnimated___block_invoke(uint64_t 
 {
   if (![(CAMPanoramaView *)self _isCurrentlyMovingTooFast])
   {
-    v3 = [(CAMPanoramaView *)self _instructionLabel];
+    _instructionLabel = [(CAMPanoramaView *)self _instructionLabel];
     v4 = MEMORY[0x1E69DD250];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __40__CAMPanoramaView__hideInstructionLabel__block_invoke;
     v6[3] = &unk_1E76F77B0;
-    v7 = v3;
-    v5 = v3;
+    v7 = _instructionLabel;
+    v5 = _instructionLabel;
     [v4 animateWithDuration:2 delay:v6 options:0 animations:0.5 completion:0.0];
   }
 }
 
-- (void)_updateInstructionLabelForInstruction:(int64_t)a3
+- (void)_updateInstructionLabelForInstruction:(int64_t)instruction
 {
-  v5 = [(CAMPanoramaView *)self _instructionLabel];
+  _instructionLabel = [(CAMPanoramaView *)self _instructionLabel];
   v6 = &stru_1F1660A30;
-  if (a3 <= 2)
+  if (instruction <= 2)
   {
-    if (a3 == 1)
+    if (instruction == 1)
     {
-      v7 = [(CAMPanoramaView *)self _instructionString];
+      _instructionString = [(CAMPanoramaView *)self _instructionString];
     }
 
     else
     {
-      if (a3 != 2)
+      if (instruction != 2)
       {
         goto LABEL_13;
       }
 
-      v7 = [(CAMPanoramaView *)self _arrowString];
+      _instructionString = [(CAMPanoramaView *)self _arrowString];
     }
   }
 
   else
   {
-    switch(a3)
+    switch(instruction)
     {
       case 3:
-        v7 = [(CAMPanoramaView *)self _speedString];
+        _instructionString = [(CAMPanoramaView *)self _speedString];
         break;
       case 4:
-        v7 = [(CAMPanoramaView *)self _moveUpString];
+        _instructionString = [(CAMPanoramaView *)self _moveUpString];
         break;
       case 5:
-        v7 = [(CAMPanoramaView *)self _moveDownString];
+        _instructionString = [(CAMPanoramaView *)self _moveDownString];
         break;
       default:
         goto LABEL_13;
     }
   }
 
-  v6 = v7;
+  v6 = _instructionString;
 LABEL_13:
-  [v5 setText:v6];
-  [v5 alpha];
+  [_instructionLabel setText:v6];
+  [_instructionLabel alpha];
   if (v8 < 1.0)
   {
     v9 = MEMORY[0x1E69DD250];
@@ -1027,12 +1027,12 @@ LABEL_13:
     v11[1] = 3221225472;
     v11[2] = __57__CAMPanoramaView__updateInstructionLabelForInstruction___block_invoke;
     v11[3] = &unk_1E76F77B0;
-    v12 = v5;
+    v12 = _instructionLabel;
     [v9 animateWithDuration:2 delay:v11 options:0 animations:0.5 completion:0.0];
   }
 
-  v10 = [(CAMPanoramaView *)self delegate];
-  [v10 panoramaView:self didUpdateInstruction:a3];
+  delegate = [(CAMPanoramaView *)self delegate];
+  [delegate panoramaView:self didUpdateInstruction:instruction];
 }
 
 - (void)_showMoveDownInstructions

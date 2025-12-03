@@ -1,6 +1,6 @@
 @interface MTREcosystemInformationClusterEcosystemLocationStruct
 - (MTREcosystemInformationClusterEcosystemLocationStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -31,20 +31,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTREcosystemInformationClusterEcosystemLocationStruct);
-  v5 = [(MTREcosystemInformationClusterEcosystemLocationStruct *)self uniqueLocationID];
-  [(MTREcosystemInformationClusterEcosystemLocationStruct *)v4 setUniqueLocationID:v5];
+  uniqueLocationID = [(MTREcosystemInformationClusterEcosystemLocationStruct *)self uniqueLocationID];
+  [(MTREcosystemInformationClusterEcosystemLocationStruct *)v4 setUniqueLocationID:uniqueLocationID];
 
-  v6 = [(MTREcosystemInformationClusterEcosystemLocationStruct *)self locationDescriptor];
-  [(MTREcosystemInformationClusterEcosystemLocationStruct *)v4 setLocationDescriptor:v6];
+  locationDescriptor = [(MTREcosystemInformationClusterEcosystemLocationStruct *)self locationDescriptor];
+  [(MTREcosystemInformationClusterEcosystemLocationStruct *)v4 setLocationDescriptor:locationDescriptor];
 
-  v7 = [(MTREcosystemInformationClusterEcosystemLocationStruct *)self locationDescriptorLastEdit];
-  [(MTREcosystemInformationClusterEcosystemLocationStruct *)v4 setLocationDescriptorLastEdit:v7];
+  locationDescriptorLastEdit = [(MTREcosystemInformationClusterEcosystemLocationStruct *)self locationDescriptorLastEdit];
+  [(MTREcosystemInformationClusterEcosystemLocationStruct *)v4 setLocationDescriptorLastEdit:locationDescriptorLastEdit];
 
-  v8 = [(MTREcosystemInformationClusterEcosystemLocationStruct *)self fabricIndex];
-  [(MTREcosystemInformationClusterEcosystemLocationStruct *)v4 setFabricIndex:v8];
+  fabricIndex = [(MTREcosystemInformationClusterEcosystemLocationStruct *)self fabricIndex];
+  [(MTREcosystemInformationClusterEcosystemLocationStruct *)v4 setFabricIndex:fabricIndex];
 
   return v4;
 }

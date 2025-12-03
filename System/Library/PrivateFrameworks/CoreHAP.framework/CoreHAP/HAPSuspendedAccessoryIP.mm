@@ -1,11 +1,11 @@
 @interface HAPSuspendedAccessoryIP
 + (id)logCategory;
-- (HAPSuspendedAccessoryIP)initWithName:(id)a3 identifier:(id)a4 wakeTuples:(id)a5 queue:(id)a6;
-- (id)_wakeWithTuple:(id)a3 dnsName:(id)a4;
+- (HAPSuspendedAccessoryIP)initWithName:(id)name identifier:(id)identifier wakeTuples:(id)tuples queue:(id)queue;
+- (id)_wakeWithTuple:(id)tuple dnsName:(id)name;
 - (id)logIdentifier;
 - (void)_closeConnection;
 - (void)dealloc;
-- (void)wakeWithCompletion:(id)a3;
+- (void)wakeWithCompletion:(id)completion;
 @end
 
 @implementation HAPSuspendedAccessoryIP
@@ -13,20 +13,20 @@
 - (id)logIdentifier
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HAPSuspendedAccessory *)self identifier];
+  identifier = [(HAPSuspendedAccessory *)self identifier];
   v5 = HAPIsInternalBuild();
   if (v5)
   {
-    v6 = [(HAPSuspendedAccessory *)self name];
+    name = [(HAPSuspendedAccessory *)self name];
   }
 
   else
   {
-    v6 = @"<private>";
+    name = @"<private>";
   }
 
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HAPSuspendedAccessory type](self, "type")}];
-  v8 = [v3 stringWithFormat:@"%@/%@/%@", v4, v6, v7];
+  v8 = [v3 stringWithFormat:@"%@/%@/%@", identifier, name, v7];
 
   if (v5)
   {
@@ -44,16 +44,16 @@
   }
 }
 
-- (id)_wakeWithTuple:(id)a3 dnsName:(id)a4
+- (id)_wakeWithTuple:(id)tuple dnsName:(id)name
 {
   v47 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(HAPSuspendedAccessory *)self queue];
-  dispatch_assert_queue_V2(v9);
+  tupleCopy = tuple;
+  nameCopy = name;
+  queue = [(HAPSuspendedAccessory *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v10 = [v7 wakeAddress];
-  v11 = v8 | v10;
+  wakeAddress = [tupleCopy wakeAddress];
+  v11 = nameCopy | wakeAddress;
 
   if (v11)
   {
@@ -63,20 +63,20 @@
     v16 = [v14 stringWithFormat:@"%@, %s:%ld", v15, "/Library/Caches/com.apple.xbs/Sources/HomeKit/Sources/CoreHAP/Accessories/HAPSuspendedAccessory.m", 137];
     v17 = [v13 initWithName:v16];
 
-    v18 = v8;
-    v19 = [v7 wakeAddress];
+    v18 = nameCopy;
+    wakeAddress2 = [tupleCopy wakeAddress];
 
-    if (v19)
+    if (wakeAddress2)
     {
       v20 = MEMORY[0x277CCACA8];
-      v21 = [v7 wakeAddress];
-      v22 = [v20 stringWithFormat:@"wake://%@%s%@", v21, "\x1E", v18];
+      wakeAddress3 = [tupleCopy wakeAddress];
+      v22 = [v20 stringWithFormat:@"wake://%@%s%@", wakeAddress3, "\x1E", v18];
 
       v18 = v22;
     }
 
     [v18 UTF8String];
-    [v7 wakePort];
+    [tupleCopy wakePort];
     [(HAPSuspendedAccessoryIP *)self timeout];
     [(HAPSuspendedAccessory *)self queue];
     v36 = 0;
@@ -104,17 +104,17 @@
     [v28 submitLogEvent:v27 error:v26];
 
     v29 = objc_autoreleasePoolPush();
-    v30 = self;
+    selfCopy = self;
     v31 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
     {
       HMFGetLogIdentifier();
       v32 = v40 = v17;
-      v33 = [(HAPSuspendedAccessory *)v30 identifier];
+      identifier = [(HAPSuspendedAccessory *)selfCopy identifier];
       *buf = 138543874;
       v42 = v32;
       v43 = 2112;
-      v44 = v33;
+      v44 = identifier;
       v45 = 2112;
       v46 = v26;
       _os_log_impl(&dword_22AADC000, v31, OS_LOG_TYPE_INFO, "%{public}@The suspended accessory: '%@' sent wake command with error: %@", buf, 0x20u);
@@ -136,18 +136,18 @@
   return v12;
 }
 
-- (void)wakeWithCompletion:(id)a3
+- (void)wakeWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HAPSuspendedAccessory *)self queue];
+  completionCopy = completion;
+  queue = [(HAPSuspendedAccessory *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__HAPSuspendedAccessoryIP_wakeWithCompletion___block_invoke;
   v7[3] = &unk_2786D65D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(queue, v7);
 }
 
 void __46__HAPSuspendedAccessoryIP_wakeWithCompletion___block_invoke(uint64_t a1)
@@ -244,18 +244,18 @@ LABEL_15:
   [(HAPSuspendedAccessoryIP *)&v3 dealloc];
 }
 
-- (HAPSuspendedAccessoryIP)initWithName:(id)a3 identifier:(id)a4 wakeTuples:(id)a5 queue:(id)a6
+- (HAPSuspendedAccessoryIP)initWithName:(id)name identifier:(id)identifier wakeTuples:(id)tuples queue:(id)queue
 {
-  v10 = a5;
+  tuplesCopy = tuples;
   v16.receiver = self;
   v16.super_class = HAPSuspendedAccessoryIP;
-  v11 = [(HAPSuspendedAccessory *)&v16 initWithName:a3 identifier:a4 type:1 queue:a6];
+  v11 = [(HAPSuspendedAccessory *)&v16 initWithName:name identifier:identifier type:1 queue:queue];
   if (v11)
   {
-    v12 = [MEMORY[0x277CBEB98] setWithArray:v10];
-    v13 = [v12 allObjects];
+    v12 = [MEMORY[0x277CBEB98] setWithArray:tuplesCopy];
+    allObjects = [v12 allObjects];
     wakeTuples = v11->_wakeTuples;
-    v11->_wakeTuples = v13;
+    v11->_wakeTuples = allObjects;
 
     v11->_timeout = 10000000000;
   }

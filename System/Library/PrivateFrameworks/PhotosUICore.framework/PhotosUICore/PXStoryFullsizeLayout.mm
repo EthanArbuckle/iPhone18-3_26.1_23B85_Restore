@@ -4,10 +4,10 @@
 - ($E59C7DEBCD57E98EE3F0104B12BEB13C)strictVisibleTimeRange;
 - (BOOL)isAnimating;
 - (CGRect)strictVisibleTimelineRect;
-- (PXStoryFullsizeLayout)initWithModel:(id)a3 overrideStyleInfo:(id)a4;
-- (double)alphaForClipLayout:(id)a3;
-- (double)proposedZPositionForClipLayoutWithClipIdentifier:(int64_t)a3;
-- (id)hitTestResultForSpriteIndex:(unsigned int)a3;
+- (PXStoryFullsizeLayout)initWithModel:(id)model overrideStyleInfo:(id)info;
+- (double)alphaForClipLayout:(id)layout;
+- (double)proposedZPositionForClipLayoutWithClipIdentifier:(int64_t)identifier;
+- (id)hitTestResultForSpriteIndex:(unsigned int)index;
 - (id)presentedSnapshot;
 - (int64_t)viewMode;
 - (void)_invalidateActiveTransition;
@@ -22,26 +22,26 @@
 - (void)_updateTransitionEffectSprites;
 - (void)_updateVisibleClipsReporting;
 - (void)_updateVisibleSegmentIdentifiers;
-- (void)applyTransitionEffectAlpha:(double)a3 auxiliaryEffectAlpha:(double)a4;
-- (void)collectTapToRadarDiagnosticsIntoContainer:(id)a3;
-- (void)configureClipLayout:(id)a3;
-- (void)didBeginTransitionWithEffect:(id)a3 auxiliaryEffect:(id)a4;
-- (void)didEndTransitionWithEffect:(id)a3 auxiliaryEffect:(id)a4;
+- (void)applyTransitionEffectAlpha:(double)alpha auxiliaryEffectAlpha:(double)effectAlpha;
+- (void)collectTapToRadarDiagnosticsIntoContainer:(id)container;
+- (void)configureClipLayout:(id)layout;
+- (void)didBeginTransitionWithEffect:(id)effect auxiliaryEffect:(id)auxiliaryEffect;
+- (void)didEndTransitionWithEffect:(id)effect auxiliaryEffect:(id)auxiliaryEffect;
 - (void)didUpdateTimelineContent;
 - (void)displayedTimelineDidChange;
-- (void)entityManager:(id)a3 componentDidChange:(id)a4;
+- (void)entityManager:(id)manager componentDidChange:(id)change;
 - (void)entityManagerDidChange;
-- (void)getDetailedPresentedPlacement:(id)a3 forItemReference:(id)a4;
-- (void)handleModelChange:(unint64_t)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)getDetailedPresentedPlacement:(id)placement forItemReference:(id)reference;
+- (void)handleModelChange:(unint64_t)change;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)referenceSizeDidChange;
-- (void)setActiveTransition:(id)a3;
-- (void)setAuxiliaryTransitionEffect:(id)a3;
-- (void)setCornerRadiusOverride:(id)a3;
-- (void)setDetailedPlacementOverride:(id)a3 forItemReference:(id)a4;
-- (void)setStrictVisibleTimeRange:(id *)a3;
-- (void)setStrictVisibleTimelineRect:(CGRect)a3;
-- (void)setTransitionEffect:(id)a3;
+- (void)setActiveTransition:(id)transition;
+- (void)setAuxiliaryTransitionEffect:(id)effect;
+- (void)setCornerRadiusOverride:(id)override;
+- (void)setDetailedPlacementOverride:(id)override forItemReference:(id)reference;
+- (void)setStrictVisibleTimeRange:(id *)range;
+- (void)setStrictVisibleTimelineRect:(CGRect)rect;
+- (void)setTransitionEffect:(id)effect;
 - (void)update;
 - (void)updateDisplayedTimeRange;
 - (void)updateDisplayedTimeline;
@@ -90,12 +90,12 @@
   return result;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v8 = a3;
-  if (TransitionControllerObservationContext == a5)
+  observableCopy = observable;
+  if (TransitionControllerObservationContext == context)
   {
-    if (a4)
+    if (change)
     {
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
@@ -110,72 +110,72 @@
   {
     v9.receiver = self;
     v9.super_class = PXStoryFullsizeLayout;
-    [(PXStoryModelTimelineLayout *)&v9 observable:v8 didChange:a4 context:a5];
+    [(PXStoryModelTimelineLayout *)&v9 observable:observableCopy didChange:change context:context];
   }
 }
 
-- (void)collectTapToRadarDiagnosticsIntoContainer:(id)a3
+- (void)collectTapToRadarDiagnosticsIntoContainer:(id)container
 {
   v6.receiver = self;
   v6.super_class = PXStoryFullsizeLayout;
-  v4 = a3;
-  [(PXStoryTimelineLayout *)&v6 collectTapToRadarDiagnosticsIntoContainer:v4];
+  containerCopy = container;
+  [(PXStoryTimelineLayout *)&v6 collectTapToRadarDiagnosticsIntoContainer:containerCopy];
   v5 = [(PXStoryFullsizeLayout *)self transitionController:v6.receiver];
-  [v4 addSubprovider:v5];
+  [containerCopy addSubprovider:v5];
 }
 
-- (void)entityManager:(id)a3 componentDidChange:(id)a4
+- (void)entityManager:(id)manager componentDidChange:(id)change
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [(PXStoryFullsizeLayout *)self entityManager];
+  changeCopy = change;
+  managerCopy = manager;
+  entityManager = [(PXStoryFullsizeLayout *)self entityManager];
 
-  if (v9 == v8)
+  if (entityManager == managerCopy)
   {
-    v10 = [(PXStoryModelTimelineLayout *)self model];
-    v11 = [v10 loadingStatusReporter];
+    model = [(PXStoryModelTimelineLayout *)self model];
+    loadingStatusReporter = [model loadingStatusReporter];
 
-    if (!v11)
+    if (!loadingStatusReporter)
     {
 LABEL_6:
 
       goto LABEL_7;
     }
 
-    v12 = v7;
+    v12 = changeCopy;
     if (v12)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
 LABEL_5:
-        v13 = [v12 states];
+        states = [v12 states];
         v20[0] = MEMORY[0x1E69E9820];
         v20[1] = 3221225472;
         v20[2] = __58__PXStoryFullsizeLayout_entityManager_componentDidChange___block_invoke;
         v20[3] = &unk_1E7738FF0;
-        v23 = v13;
+        v23 = states;
         v21 = v12;
-        v22 = v11;
+        v22 = loadingStatusReporter;
         v14 = v12;
         [(PXStoryTimelineLayout *)self enumerateClipLayouts:v20];
 
         goto LABEL_6;
       }
 
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v18 = objc_opt_class();
       v17 = NSStringFromClass(v18);
-      v19 = [v12 px_descriptionForAssertionMessage];
-      [v15 handleFailureInMethod:a2 object:self file:@"PXStoryFullsizeLayout.m" lineNumber:612 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"changingComponent", v17, v19}];
+      px_descriptionForAssertionMessage = [v12 px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryFullsizeLayout.m" lineNumber:612 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"changingComponent", v17, px_descriptionForAssertionMessage}];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v16 = objc_opt_class();
       v17 = NSStringFromClass(v16);
-      [v15 handleFailureInMethod:a2 object:self file:@"PXStoryFullsizeLayout.m" lineNumber:612 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"changingComponent", v17}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryFullsizeLayout.m" lineNumber:612 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"changingComponent", v17}];
     }
 
     goto LABEL_5;
@@ -202,15 +202,15 @@ void __58__PXStoryFullsizeLayout_entityManager_componentDidChange___block_invoke
   [*(a1 + 40) notifyLoadingStatus:v6 error:v7 forClipIdentifier:a2];
 }
 
-- (void)setDetailedPlacementOverride:(id)a3 forItemReference:(id)a4
+- (void)setDetailedPlacementOverride:(id)override forItemReference:(id)reference
 {
-  v6 = a3;
+  overrideCopy = override;
   v11.receiver = self;
   v11.super_class = PXStoryFullsizeLayout;
-  [(PXStoryFullsizeLayout *)&v11 setDetailedPlacementOverride:v6 forItemReference:a4];
-  if (v6)
+  [(PXStoryFullsizeLayout *)&v11 setDetailedPlacementOverride:overrideCopy forItemReference:reference];
+  if (overrideCopy)
   {
-    [v6 cornerRadius];
+    [overrideCopy cornerRadius];
   }
 
   else
@@ -224,26 +224,26 @@ void __58__PXStoryFullsizeLayout_entityManager_componentDidChange___block_invoke
   [(PXStoryFullsizeLayout *)self setCornerRadiusOverride:v7, v8, v9, v10];
 }
 
-- (void)getDetailedPresentedPlacement:(id)a3 forItemReference:(id)a4
+- (void)getDetailedPresentedPlacement:(id)placement forItemReference:(id)reference
 {
-  v7 = a3;
+  placementCopy = placement;
   v23.receiver = self;
   v23.super_class = PXStoryFullsizeLayout;
-  [(PXStoryFullsizeLayout *)&v23 getDetailedPresentedPlacement:v7 forItemReference:a4];
+  [(PXStoryFullsizeLayout *)&v23 getDetailedPresentedPlacement:placementCopy forItemReference:reference];
   [(PXStoryTimelineLayout *)self cornerRadius];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(PXStoryModelTimelineLayout *)self model];
-  v17 = [v16 viewMode];
+  model = [(PXStoryModelTimelineLayout *)self model];
+  viewMode = [model viewMode];
 
-  if (v17 == 1)
+  if (viewMode == 1)
   {
     if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
     {
-      v22 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v22 handleFailureInMethod:a2 object:self file:@"PXStoryFullsizeLayout.m" lineNumber:592 description:{@"%s must be called on the main thread", "-[PXStoryFullsizeLayout getDetailedPresentedPlacement:forItemReference:]"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryFullsizeLayout.m" lineNumber:592 description:{@"%s must be called on the main thread", "-[PXStoryFullsizeLayout getDetailedPresentedPlacement:forItemReference:]"}];
     }
 
     v9 = 0;
@@ -256,30 +256,30 @@ void __58__PXStoryFullsizeLayout_entityManager_componentDidChange___block_invoke
   LODWORD(v19) = v11;
   LODWORD(v20) = v13;
   LODWORD(v21) = v15;
-  [v7 setCornerRadius:{v18, v19, v20, v21}];
+  [placementCopy setCornerRadius:{v18, v19, v20, v21}];
 }
 
-- (void)applyTransitionEffectAlpha:(double)a3 auxiliaryEffectAlpha:(double)a4
+- (void)applyTransitionEffectAlpha:(double)alpha auxiliaryEffectAlpha:(double)effectAlpha
 {
-  [(PXStoryFullsizeLayout *)self setTransitionEffectAlpha:a3];
+  [(PXStoryFullsizeLayout *)self setTransitionEffectAlpha:alpha];
 
-  [(PXStoryFullsizeLayout *)self setAuxiliaryTransitionEffectAlpha:a4];
+  [(PXStoryFullsizeLayout *)self setAuxiliaryTransitionEffectAlpha:effectAlpha];
 }
 
-- (void)didEndTransitionWithEffect:(id)a3 auxiliaryEffect:(id)a4
+- (void)didEndTransitionWithEffect:(id)effect auxiliaryEffect:(id)auxiliaryEffect
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PXStoryFullsizeLayout *)self transitionEffect];
+  auxiliaryEffectCopy = auxiliaryEffect;
+  effectCopy = effect;
+  transitionEffect = [(PXStoryFullsizeLayout *)self transitionEffect];
 
-  if (v8 == v7)
+  if (transitionEffect == effectCopy)
   {
     [(PXStoryFullsizeLayout *)self setTransitionEffect:0];
   }
 
-  v9 = [(PXStoryFullsizeLayout *)self auxiliaryTransitionEffect];
+  auxiliaryTransitionEffect = [(PXStoryFullsizeLayout *)self auxiliaryTransitionEffect];
 
-  if (v9 == v6)
+  if (auxiliaryTransitionEffect == auxiliaryEffectCopy)
   {
     [(PXStoryFullsizeLayout *)self setAuxiliaryTransitionEffect:0];
   }
@@ -289,13 +289,13 @@ void __58__PXStoryFullsizeLayout_entityManager_componentDidChange___block_invoke
   [(PXStoryFullsizeLayout *)self setAuxiliaryTransitionEffectAlpha:0.0];
 }
 
-- (void)didBeginTransitionWithEffect:(id)a3 auxiliaryEffect:(id)a4
+- (void)didBeginTransitionWithEffect:(id)effect auxiliaryEffect:(id)auxiliaryEffect
 {
-  v6 = a4;
-  [(PXStoryFullsizeLayout *)self setTransitionEffect:a3];
-  [(PXStoryFullsizeLayout *)self setAuxiliaryTransitionEffect:v6];
+  auxiliaryEffectCopy = auxiliaryEffect;
+  [(PXStoryFullsizeLayout *)self setTransitionEffect:effect];
+  [(PXStoryFullsizeLayout *)self setAuxiliaryTransitionEffect:auxiliaryEffectCopy];
 
-  if (a3)
+  if (effect)
   {
     v7 = 1.0;
   }
@@ -306,7 +306,7 @@ void __58__PXStoryFullsizeLayout_entityManager_componentDidChange___block_invoke
   }
 
   [(PXStoryFullsizeLayout *)self setTransitionEffectAlpha:v7];
-  if (v6)
+  if (auxiliaryEffectCopy)
   {
     v8 = 1.0;
   }
@@ -321,17 +321,17 @@ void __58__PXStoryFullsizeLayout_entityManager_componentDidChange___block_invoke
 
 - (void)_updateTransitionController
 {
-  v2 = [(PXStoryFullsizeLayout *)self transitionController];
-  [v2 performChanges:&__block_literal_global_84];
+  transitionController = [(PXStoryFullsizeLayout *)self transitionController];
+  [transitionController performChanges:&__block_literal_global_84];
 }
 
 - (void)_invalidateTransitionController
 {
   if (self->_timelineContentPostUpdateFlags.isPerformingUpdate && (self->_timelineContentPostUpdateFlags.updated & 0x800) != 0)
   {
-    v2 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v3 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryFullsizeLayout _invalidateTransitionController]"];
-    [v2 handleFailureInFunction:v3 file:@"PXStoryFullsizeLayout.m" lineNumber:542 description:{@"invalidating %lu after it already has been updated", 2048}];
+    [currentHandler handleFailureInFunction:v3 file:@"PXStoryFullsizeLayout.m" lineNumber:542 description:{@"invalidating %lu after it already has been updated", 2048}];
 
     abort();
   }
@@ -341,30 +341,30 @@ void __58__PXStoryFullsizeLayout_entityManager_componentDidChange___block_invoke
 
 - (void)_updateVisibleClipsReporting
 {
-  v3 = [(PXStoryModelTimelineLayout *)self model];
-  v4 = [v3 loadingStatusReporter];
+  model = [(PXStoryModelTimelineLayout *)self model];
+  loadingStatusReporter = [model loadingStatusReporter];
 
-  if (v4)
+  if (loadingStatusReporter)
   {
     [(PXStoryFullsizeLayout *)self contentSize];
     v6 = v5;
     v8 = v7;
-    v9 = [(PXStoryFullsizeLayout *)self previouslyReportedClipIdentifiers];
-    v10 = [v9 mutableCopy];
+    previouslyReportedClipIdentifiers = [(PXStoryFullsizeLayout *)self previouslyReportedClipIdentifiers];
+    v10 = [previouslyReportedClipIdentifiers mutableCopy];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __53__PXStoryFullsizeLayout__updateVisibleClipsReporting__block_invoke;
     v19[3] = &unk_1E7738FA8;
-    v20 = v9;
+    v20 = previouslyReportedClipIdentifiers;
     v21 = v10;
     v23 = 0;
     v24 = 0;
     v25 = v6;
     v26 = v8;
-    v11 = v4;
+    v11 = loadingStatusReporter;
     v22 = v11;
     v12 = v10;
-    v13 = v9;
+    v13 = previouslyReportedClipIdentifiers;
     [(PXStoryTimelineLayout *)self enumerateClipLayouts:v19];
     v14 = MEMORY[0x1E69E9820];
     v15 = 3221225472;
@@ -415,9 +415,9 @@ void __53__PXStoryFullsizeLayout__updateVisibleClipsReporting__block_invoke(uint
 {
   if (self->_postUpdateFlags.isPerformingUpdate && (self->_postUpdateFlags.updated & 0x100000) != 0)
   {
-    v2 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v3 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryFullsizeLayout _invalidateVisibleClipsReporting]"];
-    [v2 handleFailureInFunction:v3 file:@"PXStoryFullsizeLayout.m" lineNumber:512 description:{@"invalidating %lu after it already has been updated", 0x100000}];
+    [currentHandler handleFailureInFunction:v3 file:@"PXStoryFullsizeLayout.m" lineNumber:512 description:{@"invalidating %lu after it already has been updated", 0x100000}];
 
     abort();
   }
@@ -425,15 +425,15 @@ void __53__PXStoryFullsizeLayout__updateVisibleClipsReporting__block_invoke(uint
   self->_postUpdateFlags.needsUpdate |= 0x100000uLL;
 }
 
-- (double)proposedZPositionForClipLayoutWithClipIdentifier:(int64_t)a3
+- (double)proposedZPositionForClipLayoutWithClipIdentifier:(int64_t)identifier
 {
   v12.receiver = self;
   v12.super_class = PXStoryFullsizeLayout;
   [(PXStoryTimelineLayout *)&v12 proposedZPositionForClipLayoutWithClipIdentifier:?];
   v6 = v5;
-  v7 = [(PXStoryFullsizeLayout *)self zPositionsByClipIdentifier];
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  zPositionsByClipIdentifier = [(PXStoryFullsizeLayout *)self zPositionsByClipIdentifier];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:identifier];
+  v9 = [zPositionsByClipIdentifier objectForKeyedSubscript:v8];
 
   if (v9)
   {
@@ -681,9 +681,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_postUpdateFlags.updated & 0x200000) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryFullsizeLayout _invalidateTransitionEffectSprites]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryFullsizeLayout.m" lineNumber:454 description:{@"invalidating %lu after it already has been updated", 0x200000}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryFullsizeLayout.m" lineNumber:454 description:{@"invalidating %lu after it already has been updated", 0x200000}];
 
       abort();
     }
@@ -708,14 +708,14 @@ LABEL_5:
 - (void)_updateClipZPositions
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(PXStoryFullsizeLayout *)self transitionController];
+  transitionController = [(PXStoryFullsizeLayout *)self transitionController];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__PXStoryFullsizeLayout__updateClipZPositions__block_invoke;
   v7[3] = &unk_1E7738F38;
   v8 = v3;
   v5 = v3;
-  [v4 enumerateClipIdentifiersForPendingTransitionUsingBlock:v7];
+  [transitionController enumerateClipIdentifiersForPendingTransitionUsingBlock:v7];
   v6 = [v5 copy];
   [(PXStoryFullsizeLayout *)self setZPositionsByClipIdentifier:v6];
 }
@@ -750,9 +750,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 2) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryFullsizeLayout _invalidateClipZPositions]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryFullsizeLayout.m" lineNumber:440 description:{@"invalidating %lu after it already has been updated", 2}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryFullsizeLayout.m" lineNumber:440 description:{@"invalidating %lu after it already has been updated", 2}];
 
       abort();
     }
@@ -774,11 +774,11 @@ LABEL_5:
   }
 }
 
-- (void)setActiveTransition:(id)a3
+- (void)setActiveTransition:(id)transition
 {
-  if (self->_activeTransition.fromSegmentIdentifier != a3.var0 || self->_activeTransition.toSegmentIdentifier != a3.var1)
+  if (self->_activeTransition.fromSegmentIdentifier != transition.var0 || self->_activeTransition.toSegmentIdentifier != transition.var1)
   {
-    self->_activeTransition = a3;
+    self->_activeTransition = transition;
     [(PXStoryModelTimelineLayout *)self invalidateDisplayedTimeline];
     [(PXStoryFullsizeLayout *)self _invalidateTransitionController];
 
@@ -788,9 +788,9 @@ LABEL_5:
 
 - (void)_updateActiveTransition
 {
-  v5 = [(PXStoryFullsizeLayout *)self transitionController];
-  v3 = [v5 activeTransition];
-  [(PXStoryFullsizeLayout *)self setActiveTransition:v3, v4];
+  transitionController = [(PXStoryFullsizeLayout *)self transitionController];
+  activeTransition = [transitionController activeTransition];
+  [(PXStoryFullsizeLayout *)self setActiveTransition:activeTransition, v4];
 }
 
 - (void)_invalidateActiveTransition
@@ -809,9 +809,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryFullsizeLayout _invalidateActiveTransition]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryFullsizeLayout.m" lineNumber:421 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryFullsizeLayout.m" lineNumber:421 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -836,30 +836,30 @@ LABEL_5:
 - (void)_updateVisibleSegmentIdentifiers
 {
   v3 = objc_alloc_init(MEMORY[0x1E696AD50]);
-  v4 = [(PXStoryTimelineLayout *)self displayedTimeline];
+  displayedTimeline = [(PXStoryTimelineLayout *)self displayedTimeline];
   [(PXStoryFullsizeLayout *)self strictVisibleTimeRange];
   [(PXStoryFullsizeLayout *)self strictVisibleTimelineRect];
-  v5 = [v4 segmentIdentifiersInTimeRange:v14 rect:?];
+  v5 = [displayedTimeline segmentIdentifiersInTimeRange:v14 rect:?];
 
   [v3 addIndexes:v5];
-  v6 = [(PXStoryFullsizeLayout *)self transitionController];
-  v7 = [v6 activeTransition];
+  transitionController = [(PXStoryFullsizeLayout *)self transitionController];
+  activeTransition = [transitionController activeTransition];
   v9 = v8;
 
-  if (v7 | v9)
+  if (activeTransition | v9)
   {
-    [v3 addIndex:v7];
+    [v3 addIndex:activeTransition];
     [v3 addIndex:v9];
   }
 
-  v10 = [(PXStoryModelTimelineLayout *)self model];
+  model = [(PXStoryModelTimelineLayout *)self model];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __57__PXStoryFullsizeLayout__updateVisibleSegmentIdentifiers__block_invoke;
   v12[3] = &unk_1E77485B0;
   v13 = v3;
   v11 = v3;
-  [v10 performChanges:v12];
+  [model performChanges:v12];
 }
 
 void __57__PXStoryFullsizeLayout__updateVisibleSegmentIdentifiers__block_invoke(uint64_t a1, void *a2)
@@ -874,9 +874,9 @@ void __57__PXStoryFullsizeLayout__updateVisibleSegmentIdentifiers__block_invoke(
 {
   if (self->_timelineContentUpdateFlags.isPerformingUpdate && (self->_timelineContentUpdateFlags.updated & 0x400) != 0)
   {
-    v3 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryFullsizeLayout _invalidateVisibleSegmentIdentifiers]"];
-    [v3 handleFailureInFunction:v4 file:@"PXStoryFullsizeLayout.m" lineNumber:402 description:{@"invalidating %lu after it already has been updated", 1024}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXStoryFullsizeLayout.m" lineNumber:402 description:{@"invalidating %lu after it already has been updated", 1024}];
 
     abort();
   }
@@ -886,35 +886,35 @@ void __57__PXStoryFullsizeLayout__updateVisibleSegmentIdentifiers__block_invoke(
   [(PXStoryFullsizeLayout *)self _invalidateVisibleClipsReporting];
 }
 
-- (void)handleModelChange:(unint64_t)a3
+- (void)handleModelChange:(unint64_t)change
 {
-  if ((a3 & 0x1000012016) != 0)
+  if ((change & 0x1000012016) != 0)
   {
     [(PXStoryModelTimelineLayout *)self invalidateDisplayedTimeline];
-    if ((a3 & 4) != 0)
+    if ((change & 4) != 0)
     {
-      v5 = [(PXStoryModelTimelineLayout *)self model];
-      v6 = [v5 isScrolling];
+      model = [(PXStoryModelTimelineLayout *)self model];
+      isScrolling = [model isScrolling];
 
-      if ((v6 & 1) == 0)
+      if ((isScrolling & 1) == 0)
       {
         v7 = [(PXStoryFullsizeLayout *)self createFenceWithType:0];
       }
     }
   }
 
-  if ((a3 & 0x400000034) != 0)
+  if ((change & 0x400000034) != 0)
   {
     [(PXStoryModelTimelineLayout *)self invalidateDisplayedTimeRange];
   }
 
-  if ((a3 & 0x10000) != 0)
+  if ((change & 0x10000) != 0)
   {
     [(PXStoryModelTimelineLayout *)self invalidateDisplayedTimeRange];
     [(PXStoryModelTimelineLayout *)self invalidateClipsCornerRadius];
   }
 
-  if ((a3 & 0x400000) != 0)
+  if ((change & 0x400000) != 0)
   {
 
     [(PXStoryModelTimelineLayout *)self invalidatePresentedTimelineTransition];
@@ -933,9 +933,9 @@ void __57__PXStoryFullsizeLayout__updateVisibleSegmentIdentifiers__block_invoke(
   {
     if (self->_timelineContentPostUpdateFlags.isPerformingUpdate)
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryFullsizeLayout didUpdateTimelineContent]"];
-      [v5 handleFailureInFunction:v6 file:@"PXStoryFullsizeLayout.m" lineNumber:373 description:{@"Invalid parameter not satisfying: %@", @"!_timelineContentPostUpdateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v6 file:@"PXStoryFullsizeLayout.m" lineNumber:373 description:{@"Invalid parameter not satisfying: %@", @"!_timelineContentPostUpdateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_timelineContentPostUpdateFlags->needsUpdate;
     }
@@ -952,9 +952,9 @@ void __57__PXStoryFullsizeLayout__updateVisibleSegmentIdentifiers__block_invoke(
     self->_timelineContentPostUpdateFlags.isPerformingUpdate = 0;
     if (needsUpdate)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryFullsizeLayout didUpdateTimelineContent]"];
-      [v7 handleFailureInFunction:v8 file:@"PXStoryFullsizeLayout.m" lineNumber:377 description:{@"still needing to update %lu after update pass", p_timelineContentPostUpdateFlags->needsUpdate}];
+      [currentHandler2 handleFailureInFunction:v8 file:@"PXStoryFullsizeLayout.m" lineNumber:377 description:{@"still needing to update %lu after update pass", p_timelineContentPostUpdateFlags->needsUpdate}];
     }
   }
 }
@@ -971,9 +971,9 @@ void __57__PXStoryFullsizeLayout__updateVisibleSegmentIdentifiers__block_invoke(
   {
     if (self->_timelineContentUpdateFlags.isPerformingUpdate)
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryFullsizeLayout willUpdateTimelineContent]"];
-      [v5 handleFailureInFunction:v6 file:@"PXStoryFullsizeLayout.m" lineNumber:364 description:{@"Invalid parameter not satisfying: %@", @"!_timelineContentUpdateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v6 file:@"PXStoryFullsizeLayout.m" lineNumber:364 description:{@"Invalid parameter not satisfying: %@", @"!_timelineContentUpdateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_timelineContentUpdateFlags->needsUpdate;
     }
@@ -990,9 +990,9 @@ void __57__PXStoryFullsizeLayout__updateVisibleSegmentIdentifiers__block_invoke(
     self->_timelineContentUpdateFlags.isPerformingUpdate = 0;
     if (needsUpdate)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryFullsizeLayout willUpdateTimelineContent]"];
-      [v7 handleFailureInFunction:v8 file:@"PXStoryFullsizeLayout.m" lineNumber:368 description:{@"still needing to update %lu after update pass", p_timelineContentUpdateFlags->needsUpdate}];
+      [currentHandler2 handleFailureInFunction:v8 file:@"PXStoryFullsizeLayout.m" lineNumber:368 description:{@"still needing to update %lu after update pass", p_timelineContentUpdateFlags->needsUpdate}];
     }
   }
 }
@@ -1006,9 +1006,9 @@ void __57__PXStoryFullsizeLayout__updateVisibleSegmentIdentifiers__block_invoke(
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryFullsizeLayout update]"];
-      [v9 handleFailureInFunction:v10 file:@"PXStoryFullsizeLayout.m" lineNumber:340 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v10 file:@"PXStoryFullsizeLayout.m" lineNumber:340 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
     }
@@ -1021,9 +1021,9 @@ void __57__PXStoryFullsizeLayout__updateVisibleSegmentIdentifiers__block_invoke(
       [(PXStoryFullsizeLayout *)self _updateActiveTransition];
       if (!p_updateFlags->isPerformingUpdate)
       {
-        v11 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
         v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryFullsizeLayout update]"];
-        [v11 handleFailureInFunction:v12 file:@"PXStoryFullsizeLayout.m" lineNumber:344 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+        [currentHandler2 handleFailureInFunction:v12 file:@"PXStoryFullsizeLayout.m" lineNumber:344 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
       }
     }
 
@@ -1039,9 +1039,9 @@ void __57__PXStoryFullsizeLayout__updateVisibleSegmentIdentifiers__block_invoke(
     p_updateFlags->isPerformingUpdate = 0;
     if (v5)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryFullsizeLayout update]"];
-      [v13 handleFailureInFunction:v14 file:@"PXStoryFullsizeLayout.m" lineNumber:347 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+      [currentHandler3 handleFailureInFunction:v14 file:@"PXStoryFullsizeLayout.m" lineNumber:347 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
     }
   }
 
@@ -1055,9 +1055,9 @@ void __57__PXStoryFullsizeLayout__updateVisibleSegmentIdentifiers__block_invoke(
   {
     if (self->_postUpdateFlags.isPerformingUpdate)
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
       v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryFullsizeLayout update]"];
-      [v15 handleFailureInFunction:v16 file:@"PXStoryFullsizeLayout.m" lineNumber:351 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.isPerformingUpdate"}];
+      [currentHandler4 handleFailureInFunction:v16 file:@"PXStoryFullsizeLayout.m" lineNumber:351 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.isPerformingUpdate"}];
 
       v7 = p_postUpdateFlags->needsUpdate;
     }
@@ -1070,9 +1070,9 @@ void __57__PXStoryFullsizeLayout__updateVisibleSegmentIdentifiers__block_invoke(
       [(PXStoryFullsizeLayout *)self _updateVisibleClipsReporting];
       if (!self->_postUpdateFlags.isPerformingUpdate)
       {
-        v17 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
         v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryFullsizeLayout update]"];
-        [v17 handleFailureInFunction:v18 file:@"PXStoryFullsizeLayout.m" lineNumber:356 description:{@"Invalid parameter not satisfying: %@", @"_postUpdateFlags.isPerformingUpdate"}];
+        [currentHandler5 handleFailureInFunction:v18 file:@"PXStoryFullsizeLayout.m" lineNumber:356 description:{@"Invalid parameter not satisfying: %@", @"_postUpdateFlags.isPerformingUpdate"}];
       }
     }
 
@@ -1088,50 +1088,50 @@ void __57__PXStoryFullsizeLayout__updateVisibleSegmentIdentifiers__block_invoke(
     self->_postUpdateFlags.isPerformingUpdate = 0;
     if (v8)
     {
-      v19 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
       v20 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryFullsizeLayout update]"];
-      [v19 handleFailureInFunction:v20 file:@"PXStoryFullsizeLayout.m" lineNumber:359 description:{@"still needing to update %lu after update pass", p_postUpdateFlags->needsUpdate}];
+      [currentHandler6 handleFailureInFunction:v20 file:@"PXStoryFullsizeLayout.m" lineNumber:359 description:{@"still needing to update %lu after update pass", p_postUpdateFlags->needsUpdate}];
     }
   }
 }
 
 - (void)updatePresentedTimelineTransition
 {
-  v4 = [(PXStoryModelTimelineLayout *)self model];
-  v3 = [v4 viewModeTransition];
-  [(PXStoryTimelineLayout *)self setPresentedTimelineTransition:v3];
+  model = [(PXStoryModelTimelineLayout *)self model];
+  viewModeTransition = [model viewModeTransition];
+  [(PXStoryTimelineLayout *)self setPresentedTimelineTransition:viewModeTransition];
 }
 
-- (void)setStrictVisibleTimeRange:(id *)a3
+- (void)setStrictVisibleTimeRange:(id *)range
 {
   p_strictVisibleTimeRange = &self->_strictVisibleTimeRange;
-  v6 = *&a3->var0.var3;
-  *&range1.start.value = *&a3->var0.var0;
+  v6 = *&range->var0.var3;
+  *&range1.start.value = *&range->var0.var0;
   *&range1.start.epoch = v6;
-  *&range1.duration.timescale = *&a3->var1.var1;
+  *&range1.duration.timescale = *&range->var1.var1;
   v7 = *&self->_strictVisibleTimeRange.start.epoch;
   *&v10.start.value = *&self->_strictVisibleTimeRange.start.value;
   *&v10.start.epoch = v7;
   *&v10.duration.timescale = *&self->_strictVisibleTimeRange.duration.timescale;
   if (!CMTimeRangeEqual(&range1, &v10))
   {
-    v8 = *&a3->var0.var0;
-    v9 = *&a3->var1.var1;
-    *&p_strictVisibleTimeRange->start.epoch = *&a3->var0.var3;
+    v8 = *&range->var0.var0;
+    v9 = *&range->var1.var1;
+    *&p_strictVisibleTimeRange->start.epoch = *&range->var0.var3;
     *&p_strictVisibleTimeRange->duration.timescale = v9;
     *&p_strictVisibleTimeRange->start.value = v8;
     [(PXStoryFullsizeLayout *)self _invalidateVisibleSegmentIdentifiers];
   }
 }
 
-- (void)setStrictVisibleTimelineRect:(CGRect)a3
+- (void)setStrictVisibleTimelineRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_strictVisibleTimelineRect = &self->_strictVisibleTimelineRect;
-  if (!CGRectEqualToRect(a3, self->_strictVisibleTimelineRect))
+  if (!CGRectEqualToRect(rect, self->_strictVisibleTimelineRect))
   {
     p_strictVisibleTimelineRect->origin.x = x;
     p_strictVisibleTimelineRect->origin.y = y;
@@ -1152,8 +1152,8 @@ void __57__PXStoryFullsizeLayout__updateVisibleSegmentIdentifiers__block_invoke(
 
 - (void)updateDisplayedTimeRange
 {
-  v4 = [(PXStoryModelTimelineLayout *)self model];
-  v5 = [v4 timeline];
+  model = [(PXStoryModelTimelineLayout *)self model];
+  timeline = [model timeline];
   v34 = 0;
   v35 = &v34;
   v36 = 0x5010000000;
@@ -1165,17 +1165,17 @@ void __57__PXStoryFullsizeLayout__updateVisibleSegmentIdentifiers__block_invoke(
   aBlock[1] = 3221225472;
   aBlock[2] = __49__PXStoryFullsizeLayout_updateDisplayedTimeRange__block_invoke;
   aBlock[3] = &unk_1E7738F10;
-  v6 = v5;
+  v6 = timeline;
   v32 = v6;
   v33 = &v34;
   v7 = _Block_copy(aBlock);
-  v7[2](v7, [v4 currentSegmentIdentifier], 1.0);
+  v7[2](v7, [model currentSegmentIdentifier], 1.0);
   v28 = 0;
   v29 = 0.0;
   v30 = 0;
-  if (v4)
+  if (model)
   {
-    [v4 currentScrollPosition];
+    [model currentScrollPosition];
     v8 = v28;
   }
 
@@ -1194,25 +1194,25 @@ void __57__PXStoryFullsizeLayout__updateVisibleSegmentIdentifiers__block_invoke(
   v23 = v9;
   v24 = v27;
   [(PXStoryFullsizeLayout *)self setStrictVisibleTimeRange:&v22];
-  v10 = [v4 viewMode];
+  viewMode = [model viewMode];
   v11 = 1;
-  if (v10 <= 5)
+  if (viewMode <= 5)
   {
-    if (((1 << v10) & 0x36) != 0)
+    if (((1 << viewMode) & 0x36) != 0)
     {
       v11 = 0;
     }
 
-    else if (!v10)
+    else if (!viewMode)
     {
-      v17 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v17 handleFailureInMethod:a2 object:self file:@"PXStoryFullsizeLayout.m" lineNumber:272 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryFullsizeLayout.m" lineNumber:272 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
   }
 
-  v12 = v11 | [v4 isPerformingViewControllerTransition];
+  v12 = v11 | [model isPerformingViewControllerTransition];
   v13 = v35;
   if ((v12 & 1) == 0)
   {
@@ -1277,23 +1277,23 @@ __n128 __49__PXStoryFullsizeLayout_updateDisplayedTimeRange__block_invoke(uint64
 
 - (void)updateDisplayedTimeline
 {
-  v3 = [(PXStoryModelTimelineLayout *)self model];
-  v4 = [v3 timeline];
+  model = [(PXStoryModelTimelineLayout *)self model];
+  timeline = [model timeline];
   [(PXStoryFullsizeLayout *)self referenceSize];
   v6 = v5;
   v8 = v7;
-  v9 = [v3 layoutSpec];
-  [v9 interpageSpacing];
+  layoutSpec = [model layoutSpec];
+  [layoutSpec interpageSpacing];
   v11 = v10;
 
-  v12 = [[PXStoryPagedTimeline alloc] initWithOriginalTimeline:v4 interpageSpacing:v11];
-  v13 = [(PXStoryFullsizeLayout *)self transitionController];
-  v14 = [v13 activeTransition];
+  v12 = [[PXStoryPagedTimeline alloc] initWithOriginalTimeline:timeline interpageSpacing:v11];
+  transitionController = [(PXStoryFullsizeLayout *)self transitionController];
+  activeTransition = [transitionController activeTransition];
   v16 = v15;
 
-  if (v14 | v16)
+  if (activeTransition | v16)
   {
-    v17 = [[PXStoryTransitionTimeline alloc] initWithOriginalTimeline:v12 transitionInfo:v14, v16];
+    v17 = [[PXStoryTransitionTimeline alloc] initWithOriginalTimeline:v12 transitionInfo:activeTransition, v16];
 
     v12 = v17;
   }
@@ -1312,9 +1312,9 @@ __n128 __49__PXStoryFullsizeLayout_updateDisplayedTimeRange__block_invoke(uint64
   v19 = _Block_copy(aBlock);
   v30 = 0uLL;
   v31 = 0.0;
-  if (v3)
+  if (model)
   {
-    [v3 currentScrollPosition];
+    [model currentScrollPosition];
     v20 = v30;
   }
 
@@ -1331,22 +1331,22 @@ __n128 __49__PXStoryFullsizeLayout_updateDisplayedTimeRange__block_invoke(uint64
   v28 = v29;
   v22 = [(PXStoryTransformedTimeline *)v21 initWithOriginalTimeline:v18 transform:&v28];
 
-  v23 = -[PXStoryResizedTimeline initWithOriginalTimeline:targetSize:options:]([PXStoryResizedTimeline alloc], "initWithOriginalTimeline:targetSize:options:", v22, [v3 viewMode] == 3, v6, v8);
-  v24 = [(PXStoryModelTimelineLayout *)self model];
-  if ([v24 desiredPlayState])
+  v23 = -[PXStoryResizedTimeline initWithOriginalTimeline:targetSize:options:]([PXStoryResizedTimeline alloc], "initWithOriginalTimeline:targetSize:options:", v22, [model viewMode] == 3, v6, v8);
+  model2 = [(PXStoryModelTimelineLayout *)self model];
+  if ([model2 desiredPlayState])
   {
     goto LABEL_9;
   }
 
-  v25 = [(PXStoryModelTimelineLayout *)self model];
-  v26 = [v25 shouldAspectFitCurrentSegment];
+  model3 = [(PXStoryModelTimelineLayout *)self model];
+  shouldAspectFitCurrentSegment = [model3 shouldAspectFitCurrentSegment];
 
-  if (v26)
+  if (shouldAspectFitCurrentSegment)
   {
     v27 = [PXStoryAspectFittingTimeline alloc];
     *&v28.a = v30;
     v28.c = v31;
-    v24 = v23;
+    model2 = v23;
     v23 = [(PXStoryAspectFittingTimeline *)v27 initWithOriginalTimeline:v23 keySegmentMix:&v28];
 LABEL_9:
   }
@@ -1379,8 +1379,8 @@ BOOL __48__PXStoryFullsizeLayout_updateDisplayedTimeline__block_invoke(uint64_t 
 
 - (int64_t)viewMode
 {
-  v2 = [(PXStoryModelTimelineLayout *)self model];
-  if ([v2 viewMode] == 3)
+  model = [(PXStoryModelTimelineLayout *)self model];
+  if ([model viewMode] == 3)
   {
     v3 = 3;
   }
@@ -1396,7 +1396,7 @@ BOOL __48__PXStoryFullsizeLayout_updateDisplayedTimeline__block_invoke(uint64_t 
 - (id)presentedSnapshot
 {
   v3 = [PXStoryTimelineLayoutSnapshot alloc];
-  v4 = [(PXStoryTimelineLayout *)self displayedTimeline];
+  displayedTimeline = [(PXStoryTimelineLayout *)self displayedTimeline];
   [(PXStoryTimelineLayout *)self displayedTimelineRect];
   v6 = v5;
   v8 = v7;
@@ -1408,24 +1408,24 @@ BOOL __48__PXStoryFullsizeLayout_updateDisplayedTimeline__block_invoke(uint64_t 
   LODWORD(v16) = v15;
   LODWORD(v18) = v17;
   LODWORD(v20) = v19;
-  v21 = [(PXStoryTimelineLayoutSnapshot *)v3 initWithTimeline:v4 timelineRect:&v23 timeRange:v6 clipCornerRadius:v8, v10, v12, v14, v16, v18, v20];
+  v21 = [(PXStoryTimelineLayoutSnapshot *)v3 initWithTimeline:displayedTimeline timelineRect:&v23 timeRange:v6 clipCornerRadius:v8, v10, v12, v14, v16, v18, v20];
 
   return v21;
 }
 
-- (double)alphaForClipLayout:(id)a3
+- (double)alphaForClipLayout:(id)layout
 {
   v12.receiver = self;
   v12.super_class = PXStoryFullsizeLayout;
-  v4 = a3;
-  [(PXStoryTimelineLayout *)&v12 alphaForClipLayout:v4];
+  layoutCopy = layout;
+  [(PXStoryTimelineLayout *)&v12 alphaForClipLayout:layoutCopy];
   v6 = v5;
-  v7 = [v4 clip];
+  clip = [layoutCopy clip];
 
-  v8 = [v7 resource];
-  v9 = [v8 px_storyResourceKind];
+  resource = [clip resource];
+  px_storyResourceKind = [resource px_storyResourceKind];
 
-  if (v9 == 3)
+  if (px_storyResourceKind == 3)
   {
     [(PXStoryFullsizeLayout *)self textAlpha];
     return v6 * v10;
@@ -1434,23 +1434,23 @@ BOOL __48__PXStoryFullsizeLayout_updateDisplayedTimeline__block_invoke(uint64_t 
   return v6;
 }
 
-- (void)configureClipLayout:(id)a3
+- (void)configureClipLayout:(id)layout
 {
   v7.receiver = self;
   v7.super_class = PXStoryFullsizeLayout;
-  v4 = a3;
-  [(PXStoryModelTimelineLayout *)&v7 configureClipLayout:v4];
+  layoutCopy = layout;
+  [(PXStoryModelTimelineLayout *)&v7 configureClipLayout:layoutCopy];
   v5 = [(PXStoryModelTimelineLayout *)self model:v7.receiver];
-  [v4 setCanShowDynamicContent:{objc_msgSend(v5, "viewMode") != 3}];
+  [layoutCopy setCanShowDynamicContent:{objc_msgSend(v5, "viewMode") != 3}];
 
-  v6 = [(PXStoryFullsizeLayout *)self overrideStyleInfo];
-  [v4 setOverrideStyleInfo:v6];
+  overrideStyleInfo = [(PXStoryFullsizeLayout *)self overrideStyleInfo];
+  [layoutCopy setOverrideStyleInfo:overrideStyleInfo];
 
-  [v4 setCanShowHUD:1];
-  [v4 setCanAspectFitContent:1];
+  [layoutCopy setCanShowHUD:1];
+  [layoutCopy setCanAspectFitContent:1];
 }
 
-- (void)setCornerRadiusOverride:(id)a3
+- (void)setCornerRadiusOverride:(id)override
 {
   v7.i64[0] = __PAIR64__(LODWORD(v4), LODWORD(v3));
   v7.i64[1] = __PAIR64__(LODWORD(v6), LODWORD(v5));
@@ -1460,52 +1460,52 @@ BOOL __48__PXStoryFullsizeLayout_updateDisplayedTimeline__block_invoke(uint64_t 
     self->_cornerRadiusOverride.var0.var0.topRight = v4;
     self->_cornerRadiusOverride.var0.var0.bottomLeft = v5;
     self->_cornerRadiusOverride.var0.var0.bottomRight = v6;
-    [(PXStoryModelTimelineLayout *)self invalidateClipsCornerRadius:*&a3.var0.var0.var0];
+    [(PXStoryModelTimelineLayout *)self invalidateClipsCornerRadius:*&override.var0.var0.var0];
   }
 }
 
-- (void)setAuxiliaryTransitionEffect:(id)a3
+- (void)setAuxiliaryTransitionEffect:(id)effect
 {
-  v5 = a3;
-  if (self->_auxiliaryTransitionEffect != v5)
+  effectCopy = effect;
+  if (self->_auxiliaryTransitionEffect != effectCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_auxiliaryTransitionEffect, a3);
+    v6 = effectCopy;
+    objc_storeStrong(&self->_auxiliaryTransitionEffect, effect);
     [(PXStoryFullsizeLayout *)self _invalidateTransitionEffectSprites];
-    v5 = v6;
+    effectCopy = v6;
   }
 }
 
-- (void)setTransitionEffect:(id)a3
+- (void)setTransitionEffect:(id)effect
 {
-  v5 = a3;
-  if (self->_transitionEffect != v5)
+  effectCopy = effect;
+  if (self->_transitionEffect != effectCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_transitionEffect, a3);
+    v6 = effectCopy;
+    objc_storeStrong(&self->_transitionEffect, effect);
     [(PXStoryFullsizeLayout *)self _invalidateTransitionEffectSprites];
-    v5 = v6;
+    effectCopy = v6;
   }
 }
 
-- (id)hitTestResultForSpriteIndex:(unsigned int)a3
+- (id)hitTestResultForSpriteIndex:(unsigned int)index
 {
-  v3 = *&a3;
+  v3 = *&index;
   v16.receiver = self;
   v16.super_class = PXStoryFullsizeLayout;
   v5 = [(PXStoryFullsizeLayout *)&v16 hitTestResultForSpriteIndex:?];
-  v6 = [v5 layout];
+  layout = [v5 layout];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [v5 layout];
-    v9 = [v8 clip];
-    if (v9)
+    layout2 = [v5 layout];
+    clip = [layout2 clip];
+    if (clip)
     {
-      v10 = v9;
-      [v9 info];
+      v10 = clip;
+      [clip info];
 
       if (v15[1] != 1)
       {
@@ -1515,8 +1515,8 @@ LABEL_7:
       }
 
       v11 = [(PXFeedHitTestResult *)[PXStoryHitTestResult alloc] initWithSpriteIndex:v3 layout:self];
-      v12 = [v8 clip];
-      v13 = -[PXStoryHitTestResult clipIdentifier:](v11, "clipIdentifier:", [v12 identifier]);
+      clip2 = [layout2 clip];
+      v13 = -[PXStoryHitTestResult clipIdentifier:](v11, "clipIdentifier:", [clip2 identifier]);
 
       v5 = v13;
     }
@@ -1541,25 +1541,25 @@ LABEL_8:
   v10.receiver = self;
   v10.super_class = PXStoryFullsizeLayout;
   [(PXStoryFullsizeLayout *)&v10 entityManagerDidChange];
-  v3 = [(PXStoryFullsizeLayout *)self transitionController];
+  transitionController = [(PXStoryFullsizeLayout *)self transitionController];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __47__PXStoryFullsizeLayout_entityManagerDidChange__block_invoke;
   v9[3] = &unk_1E7738EE8;
   v9[4] = self;
-  [v3 performChanges:v9];
+  [transitionController performChanges:v9];
 
   [(PXStoryFullsizeLayout *)self _invalidateTransitionEffectSprites];
-  v4 = [(PXStoryFullsizeLayout *)self entityManager];
+  entityManager = [(PXStoryFullsizeLayout *)self entityManager];
 
-  if (v4)
+  if (entityManager)
   {
-    v5 = [(PXStoryFullsizeLayout *)self entityManager];
-    v6 = [(PXStoryFullsizeLayout *)self entityManager];
-    v7 = [v6 loadingStatus];
-    v11[0] = v7;
+    entityManager2 = [(PXStoryFullsizeLayout *)self entityManager];
+    entityManager3 = [(PXStoryFullsizeLayout *)self entityManager];
+    loadingStatus = [entityManager3 loadingStatus];
+    v11[0] = loadingStatus;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-    [v5 registerObserver:self forComponents:v8];
+    [entityManager2 registerObserver:self forComponents:v8];
   }
 }
 
@@ -1583,24 +1583,24 @@ void __47__PXStoryFullsizeLayout_entityManagerDidChange__block_invoke(uint64_t a
 
 - (BOOL)isAnimating
 {
-  v2 = [(PXStoryModelTimelineLayout *)self model];
-  v3 = [v2 isActuallyPlaying];
+  model = [(PXStoryModelTimelineLayout *)self model];
+  isActuallyPlaying = [model isActuallyPlaying];
 
-  return v3;
+  return isActuallyPlaying;
 }
 
-- (PXStoryFullsizeLayout)initWithModel:(id)a3 overrideStyleInfo:(id)a4
+- (PXStoryFullsizeLayout)initWithModel:(id)model overrideStyleInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  infoCopy = info;
   v17.receiver = self;
   v17.super_class = PXStoryFullsizeLayout;
-  v8 = [(PXStoryModelTimelineLayout *)&v17 initWithModel:v6];
+  v8 = [(PXStoryModelTimelineLayout *)&v17 initWithModel:modelCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_overrideStyleInfo, a4);
-    v10 = [[PXStoryTransitionController alloc] initWithModel:v6 transitionSource:v9];
+    objc_storeStrong(&v8->_overrideStyleInfo, info);
+    v10 = [[PXStoryTransitionController alloc] initWithModel:modelCopy transitionSource:v9];
     transitionController = v9->_transitionController;
     v9->_transitionController = v10;
 
@@ -1617,7 +1617,7 @@ void __47__PXStoryFullsizeLayout_entityManagerDidChange__block_invoke(uint64_t a
 
     v9->_textAlpha = 1.0;
     v9->_cornerRadiusOverride = *off_1E7721FE8;
-    v9->_allowsTransitionEffects = ([v6 options] & 2) == 0;
+    v9->_allowsTransitionEffects = ([modelCopy options] & 2) == 0;
   }
 
   return v9;

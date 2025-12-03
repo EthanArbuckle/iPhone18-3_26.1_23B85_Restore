@@ -1,50 +1,50 @@
 @interface AccessibilitySettingsController
-+ (void)formatSearchEntries:(id)a3 parent:(id)a4;
++ (void)formatSearchEntries:(id)entries parent:(id)parent;
 - (AccessibilitySettingsController)init;
 - (id)_airPodDevices;
-- (id)_prepareAirPodSpecifierForDevices:(id)a3;
-- (id)_roundedSettingsIcon:(id)a3;
-- (id)_tableCellImageForImage:(id)a3;
-- (id)adaptiveVoiceShortcutsEnabled:(id)a3;
-- (id)assistiveTouchHeadTrackingEnabled:(id)a3;
-- (id)commandAndControlEnabled:(id)a3;
-- (id)descriptiveVideoEnabled:(id)a3;
-- (id)guidedAccessEnabled:(id)a3;
-- (id)hapticMusicEnabled:(id)a3;
-- (id)hoverTextEnabled:(id)a3;
-- (id)liveSpeechEnabled:(id)a3;
-- (id)onDeviceEyeTrackingEnabled:(id)a3;
-- (id)rttEnabled:(id)a3;
-- (id)scatEnabled:(id)a3;
-- (id)soundDetectionIsRunning:(id)a3;
-- (id)specifierForKey:(id)a3;
-- (id)specifierTitle:(id)a3;
+- (id)_prepareAirPodSpecifierForDevices:(id)devices;
+- (id)_roundedSettingsIcon:(id)icon;
+- (id)_tableCellImageForImage:(id)image;
+- (id)adaptiveVoiceShortcutsEnabled:(id)enabled;
+- (id)assistiveTouchHeadTrackingEnabled:(id)enabled;
+- (id)commandAndControlEnabled:(id)enabled;
+- (id)descriptiveVideoEnabled:(id)enabled;
+- (id)guidedAccessEnabled:(id)enabled;
+- (id)hapticMusicEnabled:(id)enabled;
+- (id)hoverTextEnabled:(id)enabled;
+- (id)liveSpeechEnabled:(id)enabled;
+- (id)onDeviceEyeTrackingEnabled:(id)enabled;
+- (id)rttEnabled:(id)enabled;
+- (id)scatEnabled:(id)enabled;
+- (id)soundDetectionIsRunning:(id)running;
+- (id)specifierForKey:(id)key;
+- (id)specifierTitle:(id)title;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tripleClickStatus:(id)a3;
-- (id)voiceOverTouchEnabled:(id)a3;
-- (id)zoomTouchEnabled:(id)a3;
-- (void)_handleInvertColorsEnabled:(BOOL)a3 specifier:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tripleClickStatus:(id)status;
+- (id)voiceOverTouchEnabled:(id)enabled;
+- (id)zoomTouchEnabled:(id)enabled;
+- (void)_handleInvertColorsEnabled:(BOOL)enabled specifier:(id)specifier;
 - (void)_monitorForPairedAirPods;
 - (void)_monitorPencilSupport;
-- (void)_setPencilSpecifierShown:(BOOL)a3;
-- (void)_showAirPodsSpecifierWithAirPods:(id)a3;
+- (void)_setPencilSpecifierShown:(BOOL)shown;
+- (void)_showAirPodsSpecifierWithAirPods:(id)pods;
 - (void)_updateFaceIDAndAttentionPaneForOneness;
-- (void)confirmDisablingWithString:(id)a3 forKey:(id)a4 confirmedBlock:(id)a5 canceledBlock:(id)a6 inWindow:(id)a7;
+- (void)confirmDisablingWithString:(id)string forKey:(id)key confirmedBlock:(id)block canceledBlock:(id)canceledBlock inWindow:(id)window;
 - (void)dealloc;
-- (void)deferredURLStateUpdated:(id)a3;
-- (void)deviceMonitorDidDetectDeviceEvent:(id)a3;
-- (void)disableOption:(id)a3;
+- (void)deferredURLStateUpdated:(id)updated;
+- (void)deviceMonitorDidDetectDeviceEvent:(id)event;
+- (void)disableOption:(id)option;
 - (void)handleReloadSpecifiers;
-- (void)handleResourcesDictionaryDidChange:(id)a3;
+- (void)handleResourcesDictionaryDidChange:(id)change;
 - (void)handleTeachableMomentsNotification;
-- (void)setSpecifier:(id)a3;
-- (void)showPersonalVoiceController:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setSpecifier:(id)specifier;
+- (void)showPersonalVoiceController:(id)controller;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)willBecomeActive;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation AccessibilitySettingsController
@@ -159,14 +159,14 @@
 
     [*(v2 + 182) ax_applyCustomAccessibilityGraphicIconNamed:@"pencil"];
     v36 = +[AXAirPodSettingsManager sharedInstance];
-    v37 = [v36 titleAndAssetNameForSettings];
+    titleAndAssetNameForSettings = [v36 titleAndAssetNameForSettings];
 
     v38 = AXAirPodsLocalizedStringForKey();
-    if ([v37 count] == &dword_0 + 2)
+    if ([titleAndAssetNameForSettings count] == &dword_0 + 2)
     {
-      v39 = [v37 objectAtIndexedSubscript:0];
+      v39 = [titleAndAssetNameForSettings objectAtIndexedSubscript:0];
 
-      v40 = [v37 objectAtIndexedSubscript:1];
+      v40 = [titleAndAssetNameForSettings objectAtIndexedSubscript:1];
       v38 = v39;
     }
 
@@ -326,51 +326,51 @@ void __39__AccessibilitySettingsController_init__block_invoke_11(uint64_t a1)
   v4.receiver = self;
   v4.super_class = AccessibilitySettingsController;
   [(AccessibilitySettingsController *)&v4 viewDidLoad];
-  v3 = [(AccessibilitySettingsController *)self view];
-  [v3 setAccessibilityIdentifier:@"AccessibilitySettingsControllerView"];
+  view = [(AccessibilitySettingsController *)self view];
+  [view setAccessibilityIdentifier:@"AccessibilitySettingsControllerView"];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = AccessibilitySettingsController;
-  [(AccessibilitySettingsController *)&v10 viewDidAppear:a3];
+  [(AccessibilitySettingsController *)&v10 viewDidAppear:appear];
   v4 = [_NSLocalizedStringResource alloc];
   v5 = +[NSLocale currentLocale];
   v6 = [NSBundle bundleForClass:objc_opt_class()];
-  v7 = [v6 bundleURL];
-  v8 = [v4 initWithKey:@"ROOT_LEVEL_TITLE" table:@"Accessibility" locale:v5 bundleURL:v7];
+  bundleURL = [v6 bundleURL];
+  v8 = [v4 initWithKey:@"ROOT_LEVEL_TITLE" table:@"Accessibility" locale:v5 bundleURL:bundleURL];
 
   v9 = [NSURL URLWithString:@"settings-navigation://com.apple.Settings.Accessibility"];
   [(AccessibilitySettingsController *)self pe_emitNavigationEventForSystemSettingsWithGraphicIconIdentifier:@"com.apple.graphic-icon.accessibility" title:v8 localizedNavigationComponents:&__NSArray0__struct deepLink:v9];
 }
 
-- (void)handleResourcesDictionaryDidChange:(id)a3
+- (void)handleResourcesDictionaryDidChange:(id)change
 {
-  if (a3)
+  if (change)
   {
-    [(AccessibilitySettingsController *)self handleURL:a3 withCompletion:0];
+    [(AccessibilitySettingsController *)self handleURL:change withCompletion:0];
   }
 }
 
-- (void)deferredURLStateUpdated:(id)a3
+- (void)deferredURLStateUpdated:(id)updated
 {
-  v5 = [a3 object];
-  [(AccessibilitySettingsController *)self setDeferredURLState:v5];
-  v4 = [v5 resourcesDictionary];
-  [(AccessibilitySettingsController *)self handleResourcesDictionaryDidChange:v4];
+  object = [updated object];
+  [(AccessibilitySettingsController *)self setDeferredURLState:object];
+  resourcesDictionary = [object resourcesDictionary];
+  [(AccessibilitySettingsController *)self handleResourcesDictionaryDidChange:resourcesDictionary];
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v8.receiver = self;
   v8.super_class = AccessibilitySettingsController;
-  v4 = a3;
-  [(AccessibilitySettingsController *)&v8 setSpecifier:v4];
-  v5 = [v4 objectForKeyedSubscript:{@"DeferredURLState", v8.receiver, v8.super_class}];
+  specifierCopy = specifier;
+  [(AccessibilitySettingsController *)&v8 setSpecifier:specifierCopy];
+  v5 = [specifierCopy objectForKeyedSubscript:{@"DeferredURLState", v8.receiver, v8.super_class}];
 
-  v6 = [v5 resourcesDictionary];
-  [(AccessibilitySettingsController *)self handleResourcesDictionaryDidChange:v6];
+  resourcesDictionary = [v5 resourcesDictionary];
+  [(AccessibilitySettingsController *)self handleResourcesDictionaryDidChange:resourcesDictionary];
 
   v7 = +[NSNotificationCenter defaultCenter];
   [v7 addObserver:self selector:"deferredURLStateUpdated:" name:@"DeferredURLStateUpdated" object:0];
@@ -407,33 +407,33 @@ void __39__AccessibilitySettingsController_init__block_invoke_11(uint64_t a1)
 - (id)_airPodDevices
 {
   v2 = +[AXAirPodSettingsManager sharedInstance];
-  v3 = [v2 pairedAirPods];
+  pairedAirPods = [v2 pairedAirPods];
 
-  return v3;
+  return pairedAirPods;
 }
 
 - (void)_monitorForPairedAirPods
 {
-  v3 = [(AccessibilitySettingsController *)self _airPodDevices];
-  [(AccessibilitySettingsController *)self _showAirPodsSpecifierWithAirPods:v3];
+  _airPodDevices = [(AccessibilitySettingsController *)self _airPodDevices];
+  [(AccessibilitySettingsController *)self _showAirPodsSpecifierWithAirPods:_airPodDevices];
 }
 
-- (id)_prepareAirPodSpecifierForDevices:(id)a3
+- (id)_prepareAirPodSpecifierForDevices:(id)devices
 {
-  v4 = a3;
-  if ([v4 count])
+  devicesCopy = devices;
+  if ([devicesCopy count])
   {
-    [v4 count];
+    [devicesCopy count];
     [*(&self->_pencilMonitor + 6) setDetailControllerClass:objc_opt_class()];
     v5 = AXLogAirPodSettings();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v8 = 138412290;
-      v9 = v4;
+      v9 = devicesCopy;
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "Loading class for AirPods: %@", &v8, 0xCu);
     }
 
-    [*(&self->_pencilMonitor + 6) setProperty:v4 forKey:@"AirPods"];
+    [*(&self->_pencilMonitor + 6) setProperty:devicesCopy forKey:@"AirPods"];
     v6 = *(&self->_pencilMonitor + 6);
   }
 
@@ -445,13 +445,13 @@ void __39__AccessibilitySettingsController_init__block_invoke_11(uint64_t a1)
   return v6;
 }
 
-- (void)_showAirPodsSpecifierWithAirPods:(id)a3
+- (void)_showAirPodsSpecifierWithAirPods:(id)pods
 {
-  v4 = a3;
+  podsCopy = pods;
   if (AXHasCapability())
   {
-    v5 = [(AccessibilitySettingsController *)self specifiers];
-    v6 = [v5 indexOfObjectPassingTest:&__block_literal_global];
+    specifiers = [(AccessibilitySettingsController *)self specifiers];
+    v6 = [specifiers indexOfObjectPassingTest:&__block_literal_global];
 
     if (v6 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -462,7 +462,7 @@ void __39__AccessibilitySettingsController_init__block_invoke_11(uint64_t a1)
       }
     }
 
-    v8 = [(AccessibilitySettingsController *)self _prepareAirPodSpecifierForDevices:v4];
+    v8 = [(AccessibilitySettingsController *)self _prepareAirPodSpecifierForDevices:podsCopy];
     if (([*&self->super.AXUISettingsListController_opaque[OBJC_IVAR___PSListController__specifiers] containsObject:*(&self->_pencilMonitor + 6)] & 1) == 0)
     {
       [(AccessibilitySettingsController *)self insertSpecifier:*(&self->_pencilMonitor + 6) atIndex:v6 animated:1];
@@ -492,26 +492,26 @@ BOOL __68__AccessibilitySettingsController__showAirPodsSpecifierWithAirPods___bl
   [(AccessibilitySettingsController *)self deviceMonitorDidDetectDeviceEvent:*(&self->_pencilSpecifier + 6)];
 }
 
-- (void)deviceMonitorDidDetectDeviceEvent:(id)a3
+- (void)deviceMonitorDidDetectDeviceEvent:(id)event
 {
   v4 = *(&self->_pencilSpecifier + 6);
-  if (v4 == a3)
+  if (v4 == event)
   {
-    v5 = [v4 copyDevices];
-    v6 = [v5 count];
+    copyDevices = [v4 copyDevices];
+    v6 = [copyDevices count];
     v7 = AXLogCommon();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412290;
-      v12 = v5;
+      v12 = copyDevices;
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Pencil devices: %@", &v11, 0xCu);
     }
 
     if (v6)
     {
-      v8 = [v5 anyObject];
+      anyObject = [copyDevices anyObject];
 
-      v9 = IOHIDDeviceGetProperty(v8, @"ProductID");
+      v9 = IOHIDDeviceGetProperty(anyObject, @"ProductID");
       v10 = AXLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
@@ -537,8 +537,8 @@ BOOL __68__AccessibilitySettingsController__showAirPodsSpecifierWithAirPods___bl
   v5 = v3 - 1;
   if (v4)
   {
-    v6 = [(AccessibilitySettingsController *)self view];
-    [v6 setNeedsLayout];
+    view = [(AccessibilitySettingsController *)self view];
+    [view setNeedsLayout];
 
     [(AccessibilitySettingsController *)self reloadSpecifiers];
   }
@@ -549,10 +549,10 @@ BOOL __68__AccessibilitySettingsController__showAirPodsSpecifierWithAirPods___bl
   }
 }
 
-+ (void)formatSearchEntries:(id)a3 parent:(id)a4
++ (void)formatSearchEntries:(id)entries parent:(id)parent
 {
-  v5 = a4;
-  v6 = a3;
+  parentCopy = parent;
+  entriesCopy = entries;
   v7 = +[NSMutableArray array];
   +[NSMutableArray array];
   v11[0] = _NSConcreteStackBlock;
@@ -560,13 +560,13 @@ BOOL __68__AccessibilitySettingsController__showAirPodsSpecifierWithAirPods___bl
   v11[2] = __62__AccessibilitySettingsController_formatSearchEntries_parent___block_invoke;
   v11[3] = &unk_255418;
   v12 = v7;
-  v14 = v13 = v5;
+  v14 = v13 = parentCopy;
   v8 = v14;
-  v9 = v5;
+  v9 = parentCopy;
   v10 = v7;
-  [v6 enumerateObjectsUsingBlock:v11];
-  [v6 removeObjectsInArray:v8];
-  [v6 addObjectsFromArray:v10];
+  [entriesCopy enumerateObjectsUsingBlock:v11];
+  [entriesCopy removeObjectsInArray:v8];
+  [entriesCopy addObjectsFromArray:v10];
 }
 
 void __62__AccessibilitySettingsController_formatSearchEntries_parent___block_invoke(uint64_t a1, void *a2)
@@ -658,28 +658,28 @@ LABEL_11:
 LABEL_16:
 }
 
-- (id)specifierTitle:(id)a3
+- (id)specifierTitle:(id)title
 {
-  v4 = settingsLocString(a3, @"AccessibilityTitles");
-  v5 = [(AccessibilitySettingsController *)self view];
+  v4 = settingsLocString(title, @"AccessibilityTitles");
+  view = [(AccessibilitySettingsController *)self view];
   v6 = _UIAdaptLocalizedStringForView();
 
   return v6;
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v8.receiver = self;
   v8.super_class = AccessibilitySettingsController;
   [(AccessibilitySettingsController *)&v8 willMoveToParentViewController:?];
-  if (!a3)
+  if (!controller)
   {
-    v5 = [(AccessibilitySettingsController *)self parentViewController];
-    v6 = [v5 navigationItem];
-    [v6 setTitleView:0];
+    parentViewController = [(AccessibilitySettingsController *)self parentViewController];
+    navigationItem = [parentViewController navigationItem];
+    [navigationItem setTitleView:0];
 
-    v7 = [(AccessibilitySettingsController *)self navigationItem];
-    [v7 setTitleView:0];
+    navigationItem2 = [(AccessibilitySettingsController *)self navigationItem];
+    [navigationItem2 setTitleView:0];
   }
 }
 
@@ -693,10 +693,10 @@ LABEL_16:
 
   v121 = OBJC_IVAR___PSListController__specifiers;
   v4 = [objc_allocWithZone(NSMutableArray) init];
-  v5 = [(AccessibilitySettingsController *)self traitCollection];
-  v6 = [v5 pe_isSettingsFeatureDescriptionCellSupported];
+  traitCollection = [(AccessibilitySettingsController *)self traitCollection];
+  pe_isSettingsFeatureDescriptionCellSupported = [traitCollection pe_isSettingsFeatureDescriptionCellSupported];
 
-  if (v6)
+  if (pe_isSettingsFeatureDescriptionCellSupported)
   {
     v7 = [PSSpecifier groupSpecifierWithID:@"ACCESSIBILITY_PLACARD_GROUP"];
     [v4 addObject:v7];
@@ -1048,9 +1048,9 @@ LABEL_61:
         if (AXDeviceIsPhone())
         {
           v77 = +[RTTTelephonyUtilities sharedUtilityProvider];
-          v78 = [v77 activeContextCount];
+          activeContextCount = [v77 activeContextCount];
 
-          if (v78 >= 2)
+          if (activeContextCount >= 2)
           {
             [v74 setDetailControllerClass:objc_opt_class()];
           }
@@ -1169,8 +1169,8 @@ LABEL_65:
     v99 = v100;
   }
 
-  v102 = [(AccessibilitySettingsController *)self _airPodDevices];
-  v103 = [(AccessibilitySettingsController *)self _prepareAirPodSpecifierForDevices:v102];
+  _airPodDevices = [(AccessibilitySettingsController *)self _airPodDevices];
+  v103 = [(AccessibilitySettingsController *)self _prepareAirPodSpecifierForDevices:_airPodDevices];
 
   if (v103)
   {
@@ -1253,7 +1253,7 @@ void __45__AccessibilitySettingsController_specifiers__block_invoke(id a1)
   specifiers_CACSettingsControllerClass = [v1 principalClass];
 }
 
-- (id)hapticMusicEnabled:(id)a3
+- (id)hapticMusicEnabled:(id)enabled
 {
   if (_AXSHapticMusicEnabled())
   {
@@ -1268,10 +1268,10 @@ void __45__AccessibilitySettingsController_specifiers__block_invoke(id a1)
   return settingsLocString(v3, @"Accessibility");
 }
 
-- (id)rttEnabled:(id)a3
+- (id)rttEnabled:(id)enabled
 {
   v3 = @"ON";
-  if ((+[RTTTelephonyUtilities TTYHardwareEnabledForAnyActiveContext](RTTTelephonyUtilities, "TTYHardwareEnabledForAnyActiveContext", a3) & 1) == 0 && !+[RTTTelephonyUtilities TTYSoftwareEnabledForAnyActiveContext])
+  if ((+[RTTTelephonyUtilities TTYHardwareEnabledForAnyActiveContext](RTTTelephonyUtilities, "TTYHardwareEnabledForAnyActiveContext", enabled) & 1) == 0 && !+[RTTTelephonyUtilities TTYSoftwareEnabledForAnyActiveContext])
   {
     v3 = @"OFF";
   }
@@ -1279,11 +1279,11 @@ void __45__AccessibilitySettingsController_specifiers__block_invoke(id a1)
   return settingsLocString(v3, @"Accessibility");
 }
 
-- (void)_setPencilSpecifierShown:(BOOL)a3
+- (void)_setPencilSpecifierShown:(BOOL)shown
 {
-  v3 = a3;
+  shownCopy = shown;
   v5 = OBJC_IVAR___PSListController__specifiers;
-  if ([*&self->super.AXUISettingsListController_opaque[OBJC_IVAR___PSListController__specifiers] containsObject:*(&self->_easyReachCache + 6)] == a3)
+  if ([*&self->super.AXUISettingsListController_opaque[OBJC_IVAR___PSListController__specifiers] containsObject:*(&self->_easyReachCache + 6)] == shown)
   {
     v7 = AXLogCommon();
     if (!os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -1299,7 +1299,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (!v3)
+  if (!shownCopy)
   {
     [(AccessibilitySettingsController *)self removeSpecifier:*(&self->_easyReachCache + 6) animated:1];
     v7 = AXLogCommon();
@@ -1347,9 +1347,9 @@ BOOL __60__AccessibilitySettingsController__setPencilSpecifierShown___block_invo
   return v5;
 }
 
-- (id)specifierForKey:(id)a3
+- (id)specifierForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -1371,9 +1371,9 @@ BOOL __60__AccessibilitySettingsController__setPencilSpecifierShown___block_invo
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 properties];
-        v13 = [v12 objectForKey:v9];
-        v14 = [v13 isEqualToString:v4];
+        properties = [v11 properties];
+        v13 = [properties objectForKey:v9];
+        v14 = [v13 isEqualToString:keyCopy];
 
         if (v14)
         {
@@ -1398,29 +1398,29 @@ LABEL_11:
   return v15;
 }
 
-- (id)_roundedSettingsIcon:(id)a3
+- (id)_roundedSettingsIcon:(id)icon
 {
-  v3 = a3;
+  iconCopy = icon;
   v4 = AXSettingsBundle();
-  v5 = [UIImage imageNamed:v3 inBundle:v4];
+  v5 = [UIImage imageNamed:iconCopy inBundle:v4];
 
   v6 = [v5 _applicationIconImageForFormat:0 precomposed:0];
 
   return v6;
 }
 
-- (id)_tableCellImageForImage:(id)a3
+- (id)_tableCellImageForImage:(id)image
 {
-  if (a3)
+  if (image)
   {
-    v3 = a3;
+    imageCopy = image;
     v4 = +[UIScreen mainScreen];
     [v4 scale];
     v6 = v5;
 
     v10 = v6;
     [UIImage _iconVariantForUIApplicationIconFormat:0 scale:&v10];
-    [v3 CGImage];
+    [imageCopy CGImage];
 
     v7 = LICreateIconForImage();
     v8 = [UIImage imageWithCGImage:v7 scale:0 orientation:v10];
@@ -1435,17 +1435,17 @@ LABEL_11:
   return v8;
 }
 
-- (void)confirmDisablingWithString:(id)a3 forKey:(id)a4 confirmedBlock:(id)a5 canceledBlock:(id)a6 inWindow:(id)a7
+- (void)confirmDisablingWithString:(id)string forKey:(id)key confirmedBlock:(id)block canceledBlock:(id)canceledBlock inWindow:(id)window
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  stringCopy = string;
+  blockCopy = block;
+  canceledBlockCopy = canceledBlock;
+  windowCopy = window;
   BooleaniTunesPreference = _AXSAccessibilityGetBooleaniTunesPreference();
   self->_didConfirmDisabling = 1;
-  if (!BooleaniTunesPreference || (self->_didConfirmDisabling = 0, settingsLocString(@"IMPORTANT", @"Accessibility"), v16 = objc_claimAutoreleasedReturnValue(), +[UIAlertController alertControllerWithTitle:message:preferredStyle:](UIAlertController, "alertControllerWithTitle:message:preferredStyle:", v16, v11, 1), v17 = objc_claimAutoreleasedReturnValue(), v16, settingsLocString(@"CANCEL", @"Accessibility"), v18 = objc_claimAutoreleasedReturnValue(), v28[0] = _NSConcreteStackBlock, v28[1] = 3221225472, v28[2] = __107__AccessibilitySettingsController_confirmDisablingWithString_forKey_confirmedBlock_canceledBlock_inWindow___block_invoke, v28[3] = &unk_2554C0, v29 = v13, +[UIAlertAction actionWithTitle:style:handler:](UIAlertAction, "actionWithTitle:style:handler:", v18, 1, v28), v19 = objc_claimAutoreleasedReturnValue(), v18, [v17 addAction:v19], settingsLocString(@"OK", @"Accessibility"), v20 = objc_claimAutoreleasedReturnValue(), v23 = _NSConcreteStackBlock, v24 = 3221225472, v25 = __107__AccessibilitySettingsController_confirmDisablingWithString_forKey_confirmedBlock_canceledBlock_inWindow___block_invoke_2, v26 = &unk_2554C0, v27 = v12, +[UIAlertAction actionWithTitle:style:handler:](UIAlertAction, "actionWithTitle:style:handler:", v20, 0, &v23), v21 = objc_claimAutoreleasedReturnValue(), v20, objc_msgSend(v17, "addAction:", v21, v23, v24, v25, v26), objc_msgSend(v14, "rootViewController"), v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v22, "presentViewController:animated:completion:", v17, 1, 0), v22, v21, v27, v19, v29, v17, self->_didConfirmDisabling))
+  if (!BooleaniTunesPreference || (self->_didConfirmDisabling = 0, settingsLocString(@"IMPORTANT", @"Accessibility"), v16 = objc_claimAutoreleasedReturnValue(), +[UIAlertController alertControllerWithTitle:message:preferredStyle:](UIAlertController, "alertControllerWithTitle:message:preferredStyle:", v16, stringCopy, 1), v17 = objc_claimAutoreleasedReturnValue(), v16, settingsLocString(@"CANCEL", @"Accessibility"), v18 = objc_claimAutoreleasedReturnValue(), v28[0] = _NSConcreteStackBlock, v28[1] = 3221225472, v28[2] = __107__AccessibilitySettingsController_confirmDisablingWithString_forKey_confirmedBlock_canceledBlock_inWindow___block_invoke, v28[3] = &unk_2554C0, v29 = canceledBlockCopy, +[UIAlertAction actionWithTitle:style:handler:](UIAlertAction, "actionWithTitle:style:handler:", v18, 1, v28), v19 = objc_claimAutoreleasedReturnValue(), v18, [v17 addAction:v19], settingsLocString(@"OK", @"Accessibility"), v20 = objc_claimAutoreleasedReturnValue(), v23 = _NSConcreteStackBlock, v24 = 3221225472, v25 = __107__AccessibilitySettingsController_confirmDisablingWithString_forKey_confirmedBlock_canceledBlock_inWindow___block_invoke_2, v26 = &unk_2554C0, v27 = blockCopy, +[UIAlertAction actionWithTitle:style:handler:](UIAlertAction, "actionWithTitle:style:handler:", v20, 0, &v23), v21 = objc_claimAutoreleasedReturnValue(), v20, objc_msgSend(v17, "addAction:", v21, v23, v24, v25, v26), objc_msgSend(windowCopy, "rootViewController"), v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v22, "presentViewController:animated:completion:", v17, 1, 0), v22, v21, v27, v19, v29, v17, self->_didConfirmDisabling))
   {
-    v12[2](v12);
+    blockCopy[2](blockCopy);
   }
 }
 
@@ -1471,27 +1471,27 @@ uint64_t __107__AccessibilitySettingsController_confirmDisablingWithString_forKe
   return result;
 }
 
-- (void)disableOption:(id)a3
+- (void)disableOption:(id)option
 {
-  v3 = a3;
-  if ([v3 isEqualToString:kAXSZoomTouchEnabledPreference])
+  optionCopy = option;
+  if ([optionCopy isEqualToString:kAXSZoomTouchEnabledPreference])
   {
     [ZoomController setZoomEnabled:0];
   }
 
-  else if ([v3 isEqualToString:kAXSVoiceOverTouchEnabledPreference])
+  else if ([optionCopy isEqualToString:kAXSVoiceOverTouchEnabledPreference])
   {
     [VoiceOverController setVoiceOverEnabled:0];
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v18.receiver = self;
   v18.super_class = AccessibilitySettingsController;
-  v6 = a4;
-  v7 = [(AccessibilitySettingsController *)&v18 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(AccessibilitySettingsController *)self specifierForIndexPath:v6, v18.receiver, v18.super_class];
+  pathCopy = path;
+  v7 = [(AccessibilitySettingsController *)&v18 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(AccessibilitySettingsController *)self specifierForIndexPath:pathCopy, v18.receiver, v18.super_class];
 
   v9 = [v8 propertyForKey:PSIconImageKey];
   if (v9)
@@ -1502,29 +1502,29 @@ uint64_t __107__AccessibilitySettingsController_confirmDisablingWithString_forKe
     [v12 continuousCornerRadius];
     v14 = v13;
 
-    v15 = [v11 iconImageView];
-    [v15 _setContinuousCornerRadius:v14];
+    iconImageView = [v11 iconImageView];
+    [iconImageView _setContinuousCornerRadius:v14];
 
-    v16 = [v11 iconImageView];
+    iconImageView2 = [v11 iconImageView];
 
-    [v16 setClipsToBounds:1];
+    [iconImageView2 setClipsToBounds:1];
   }
 
   return v7;
 }
 
-- (void)_handleInvertColorsEnabled:(BOOL)a3 specifier:(id)a4
+- (void)_handleInvertColorsEnabled:(BOOL)enabled specifier:(id)specifier
 {
-  v6 = a4;
+  specifierCopy = specifier;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = __72__AccessibilitySettingsController__handleInvertColorsEnabled_specifier___block_invoke;
   v18[3] = &unk_2554E8;
   v18[4] = self;
-  v19 = a3;
+  enabledCopy = enabled;
   v7 = objc_retainBlock(v18);
   v8 = v7;
-  if (a3)
+  if (enabled)
   {
     (v7[2])(v7);
   }
@@ -1542,11 +1542,11 @@ uint64_t __107__AccessibilitySettingsController_confirmDisablingWithString_forKe
     v13[1] = 3221225472;
     v13[2] = __72__AccessibilitySettingsController__handleInvertColorsEnabled_specifier___block_invoke_3;
     v13[3] = &unk_255538;
-    v14 = v6;
-    v15 = self;
-    v11 = [(AccessibilitySettingsController *)self view];
-    v12 = [v11 window];
-    [(AccessibilitySettingsController *)self confirmDisablingWithString:v9 forKey:v10 confirmedBlock:v16 canceledBlock:v13 inWindow:v12];
+    v14 = specifierCopy;
+    selfCopy = self;
+    view = [(AccessibilitySettingsController *)self view];
+    window = [view window];
+    [(AccessibilitySettingsController *)self confirmDisablingWithString:v9 forKey:v10 confirmedBlock:v16 canceledBlock:v13 inWindow:window];
   }
 }
 
@@ -1567,7 +1567,7 @@ id __72__AccessibilitySettingsController__handleInvertColorsEnabled_specifier___
   return [v2 reloadSpecifier:v3];
 }
 
-- (id)zoomTouchEnabled:(id)a3
+- (id)zoomTouchEnabled:(id)enabled
 {
   if (_AXSZoomTouchEnabled())
   {
@@ -1582,7 +1582,7 @@ id __72__AccessibilitySettingsController__handleInvertColorsEnabled_specifier___
   return settingsLocString(v3, @"Accessibility");
 }
 
-- (id)hoverTextEnabled:(id)a3
+- (id)hoverTextEnabled:(id)enabled
 {
   if (_AXSHoverTextEnabled())
   {
@@ -1597,14 +1597,14 @@ id __72__AccessibilitySettingsController__handleInvertColorsEnabled_specifier___
   return settingsLocString(v3, @"Accessibility");
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = AccessibilitySettingsController;
   [(AccessibilitySettingsBaseController *)&v6 viewWillAppear:?];
   v5 = [(AccessibilitySettingsController *)self specifierForKey:@"LARGER_TEXT"];
-  [(AccessibilitySettingsController *)self reloadSpecifier:v5 animated:v3];
+  [(AccessibilitySettingsController *)self reloadSpecifier:v5 animated:appearCopy];
 
   AXPerformBlockAsynchronouslyOnMainThread();
   [(AccessibilitySettingsController *)self handleTeachableMomentsNotification];
@@ -1633,7 +1633,7 @@ void __69__AccessibilitySettingsController_handleTeachableMomentsNotification__b
   [v2 sendAsynchronousMessage:&__NSDictionary0__struct withIdentifier:15 targetAccessQueue:v3 completion:0];
 }
 
-- (id)descriptiveVideoEnabled:(id)a3
+- (id)descriptiveVideoEnabled:(id)enabled
 {
   v3 = MAAudibleMediaPrefCopyPreferDescriptiveVideo();
   if ([v3 BOOLValue])
@@ -1651,7 +1651,7 @@ void __69__AccessibilitySettingsController_handleTeachableMomentsNotification__b
   return v5;
 }
 
-- (id)guidedAccessEnabled:(id)a3
+- (id)guidedAccessEnabled:(id)enabled
 {
   if (_AXSGuidedAccessEnabled())
   {
@@ -1666,7 +1666,7 @@ void __69__AccessibilitySettingsController_handleTeachableMomentsNotification__b
   return settingsLocString(v3, @"Accessibility");
 }
 
-- (id)liveSpeechEnabled:(id)a3
+- (id)liveSpeechEnabled:(id)enabled
 {
   v3 = _AXSTripleClickCopyOptions();
   v4 = _AXSTripleClickContainsOption();
@@ -1688,12 +1688,12 @@ void __69__AccessibilitySettingsController_handleTeachableMomentsNotification__b
   return settingsLocString(v5, @"Accessibility");
 }
 
-- (id)adaptiveVoiceShortcutsEnabled:(id)a3
+- (id)adaptiveVoiceShortcutsEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 isAdaptiveVoiceShortcutsEnabled];
+  isAdaptiveVoiceShortcutsEnabled = [v3 isAdaptiveVoiceShortcutsEnabled];
 
-  if (v4)
+  if (isAdaptiveVoiceShortcutsEnabled)
   {
     v5 = @"ON";
   }
@@ -1706,7 +1706,7 @@ void __69__AccessibilitySettingsController_handleTeachableMomentsNotification__b
   return settingsLocString(v5, @"Accessibility");
 }
 
-- (id)voiceOverTouchEnabled:(id)a3
+- (id)voiceOverTouchEnabled:(id)enabled
 {
   if (_AXSVoiceOverTouchEnabled())
   {
@@ -1721,7 +1721,7 @@ void __69__AccessibilitySettingsController_handleTeachableMomentsNotification__b
   return settingsLocString(v3, @"Accessibility");
 }
 
-- (id)scatEnabled:(id)a3
+- (id)scatEnabled:(id)enabled
 {
   if (_AXSAssistiveTouchScannerEnabled())
   {
@@ -1736,7 +1736,7 @@ void __69__AccessibilitySettingsController_handleTeachableMomentsNotification__b
   return settingsLocString(v3, @"Accessibility");
 }
 
-- (id)commandAndControlEnabled:(id)a3
+- (id)commandAndControlEnabled:(id)enabled
 {
   if (_AXSCommandAndControlEnabled())
   {
@@ -1751,12 +1751,12 @@ void __69__AccessibilitySettingsController_handleTeachableMomentsNotification__b
   return settingsLocString(v3, @"Accessibility");
 }
 
-- (id)onDeviceEyeTrackingEnabled:(id)a3
+- (id)onDeviceEyeTrackingEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 assistiveTouchMouseOnDeviceEyeTrackingEnabled];
+  assistiveTouchMouseOnDeviceEyeTrackingEnabled = [v3 assistiveTouchMouseOnDeviceEyeTrackingEnabled];
 
-  if (v4)
+  if (assistiveTouchMouseOnDeviceEyeTrackingEnabled)
   {
     v5 = @"ON";
   }
@@ -1769,12 +1769,12 @@ void __69__AccessibilitySettingsController_handleTeachableMomentsNotification__b
   return settingsLocString(v5, @"Accessibility");
 }
 
-- (id)assistiveTouchHeadTrackingEnabled:(id)a3
+- (id)assistiveTouchHeadTrackingEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 assistiveTouchHeadTrackingEnabled];
+  assistiveTouchHeadTrackingEnabled = [v3 assistiveTouchHeadTrackingEnabled];
 
-  if (v4)
+  if (assistiveTouchHeadTrackingEnabled)
   {
     v5 = @"ON";
   }
@@ -1787,7 +1787,7 @@ void __69__AccessibilitySettingsController_handleTeachableMomentsNotification__b
   return settingsLocString(v5, @"Accessibility");
 }
 
-- (id)soundDetectionIsRunning:(id)a3
+- (id)soundDetectionIsRunning:(id)running
 {
   v3 = +[AXSDSettings sharedInstance];
   if ([v3 soundDetectionEnabled])
@@ -1817,7 +1817,7 @@ void __69__AccessibilitySettingsController_handleTeachableMomentsNotification__b
   return v6;
 }
 
-- (id)tripleClickStatus:(id)a3
+- (id)tripleClickStatus:(id)status
 {
   v3 = _AXSTripleClickCopyOptions();
   if ([v3 count])
@@ -1827,9 +1827,9 @@ void __69__AccessibilitySettingsController_handleTeachableMomentsNotification__b
       if (_AXSTripleClickContainsOption())
       {
         v5 = +[AXSettings sharedInstance];
-        v6 = [v5 voiceOverActivationWorkaround];
+        voiceOverActivationWorkaround = [v5 voiceOverActivationWorkaround];
 
-        if (v6 != &dword_0 + 3)
+        if (voiceOverActivationWorkaround != &dword_0 + 3)
         {
           v4 = @"TRIPLE_CLICK_VOICEOVER_SHORT";
           goto LABEL_23;
@@ -1883,9 +1883,9 @@ void __69__AccessibilitySettingsController_handleTeachableMomentsNotification__b
         if (_AXSTripleClickContainsOption())
         {
           v10 = +[AXBackBoardServer server];
-          v11 = [v10 supportsAccessibilityDisplayFilters];
+          supportsAccessibilityDisplayFilters = [v10 supportsAccessibilityDisplayFilters];
 
-          if (v11)
+          if (supportsAccessibilityDisplayFilters)
           {
             v4 = @"TRIPLE_CLICK_COLOR_FILTER_SHORT";
           }
@@ -2070,9 +2070,9 @@ LABEL_25:
   return v7;
 }
 
-- (void)showPersonalVoiceController:(id)a3
+- (void)showPersonalVoiceController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2050000000;

@@ -1,10 +1,10 @@
 @interface WFNetworkListRow
-- (WFNetworkListRow)initWithCoder:(id)a3;
-- (WFNetworkListRow)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (WFNetworkListRow)initWithCoder:(id)coder;
+- (WFNetworkListRow)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (WFNetworkRowConfig)config;
-- (void)configure:(id)a3;
+- (void)configure:(id)configure;
 - (void)prepareForReuse;
-- (void)setConfig:(id)a3;
+- (void)setConfig:(id)config;
 @end
 
 @implementation WFNetworkListRow
@@ -27,24 +27,24 @@
   return *(&self->super.super.super.super.isa + v3);
 }
 
-- (void)setConfig:(id)a3
+- (void)setConfig:(id)config
 {
   v5 = OBJC_IVAR___WFNetworkListRow_config;
   swift_beginAccess();
   v6 = *(&self->super.super.super.super.isa + v5);
-  *(&self->super.super.super.super.isa + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(&self->super.super.super.super.isa + v5) = config;
+  configCopy = config;
+  selfCopy = self;
 
-  if (v7)
+  if (configCopy)
   {
-    sub_27401F4EC(v7);
+    sub_27401F4EC(configCopy);
   }
 }
 
-- (WFNetworkListRow)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (WFNetworkListRow)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     sub_2740517D8();
     *(&self->super.super.super.super.isa + OBJC_IVAR___WFNetworkListRow_config) = 0;
@@ -64,7 +64,7 @@
   return v6;
 }
 
-- (WFNetworkListRow)initWithCoder:(id)a3
+- (WFNetworkListRow)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR___WFNetworkListRow_config) = 0;
   result = sub_274051A88();
@@ -72,17 +72,17 @@
   return result;
 }
 
-- (void)configure:(id)a3
+- (void)configure:(id)configure
 {
   v5 = OBJC_IVAR___WFNetworkListRow_config;
   swift_beginAccess();
   v6 = *(&self->super.super.super.super.isa + v5);
-  *(&self->super.super.super.super.isa + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(&self->super.super.super.super.isa + v5) = configure;
+  configureCopy = configure;
+  selfCopy = self;
 
-  sub_27401F4EC(v7);
-  sub_27401F4EC(v7);
+  sub_27401F4EC(configureCopy);
+  sub_27401F4EC(configureCopy);
 }
 
 @end

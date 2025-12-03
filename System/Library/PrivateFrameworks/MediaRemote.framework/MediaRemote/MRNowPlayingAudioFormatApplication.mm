@@ -1,31 +1,31 @@
 @interface MRNowPlayingAudioFormatApplication
-- (BOOL)isEqual:(id)a3;
-- (MRNowPlayingAudioFormatApplication)initWithBundleID:(id)a3 displayName:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (MRNowPlayingAudioFormatApplication)initWithBundleID:(id)d displayName:(id)name;
 @end
 
 @implementation MRNowPlayingAudioFormatApplication
 
-- (MRNowPlayingAudioFormatApplication)initWithBundleID:(id)a3 displayName:(id)a4
+- (MRNowPlayingAudioFormatApplication)initWithBundleID:(id)d displayName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = MRNowPlayingAudioFormatApplication;
   v9 = [(MRNowPlayingAudioFormatApplication *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_bundleID, a3);
-    objc_storeStrong(&v10->_displayName, a4);
+    objc_storeStrong(&v9->_bundleID, d);
+    objc_storeStrong(&v10->_displayName, name);
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v9) = 1;
   }
@@ -35,13 +35,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MRNowPlayingAudioFormatApplication *)v5 bundleID];
-      v7 = [v6 isEqualToString:self->_bundleID];
+      v5 = equalCopy;
+      bundleID = [(MRNowPlayingAudioFormatApplication *)v5 bundleID];
+      v7 = [bundleID isEqualToString:self->_bundleID];
 
-      v8 = [(MRNowPlayingAudioFormatApplication *)v5 displayName];
+      displayName = [(MRNowPlayingAudioFormatApplication *)v5 displayName];
 
-      v9 = v7 & [v8 isEqualToString:self->_displayName];
+      v9 = v7 & [displayName isEqualToString:self->_displayName];
     }
 
     else

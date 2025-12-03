@@ -1,17 +1,17 @@
 @interface CHReflowableTextLine
-+ (BOOL)useRightToLeftReflow:(id)a3;
-+ (id)_changePrincipalLinesToHorizontalForLine:(id)a3;
-+ (id)_changePrincipalLinesToMatchPreviousLine:(id)a3 previousLine:(id)a4 withCorrectionThreshold:(double)a5;
-+ (id)_normalizedLocaleForCRLineWrapper:(id)a3;
-+ (id)adjustLeadingForReflowableLines:(id)a3;
-+ (id)alignShortReflowableLines:(id)a3;
-+ (id)reflowableLines:(id)a3 withLineWrapper:(id)a4;
-+ (id)reflowableTextLinesFromTransformedTextLines:(id)a3 mergeUnacceptableLines:(BOOL)a4 progress:(id)a5;
-+ (id)reflowableTextLinesWithProgress:(id)a3 contextResults:(id)a4 strokeGroupingResult:(id)a5 contextStrokes:(id)a6 initialStrokes:(id)a7 strokeProvider:(id)a8 relatedNonTextStrokes:(id)a9 shouldCancel:(id)a10;
-+ (id)reflowableTextTokensFromTransformedTextLines:(id)a3;
++ (BOOL)useRightToLeftReflow:(id)reflow;
++ (id)_changePrincipalLinesToHorizontalForLine:(id)line;
++ (id)_changePrincipalLinesToMatchPreviousLine:(id)line previousLine:(id)previousLine withCorrectionThreshold:(double)threshold;
++ (id)_normalizedLocaleForCRLineWrapper:(id)wrapper;
++ (id)adjustLeadingForReflowableLines:(id)lines;
++ (id)alignShortReflowableLines:(id)lines;
++ (id)reflowableLines:(id)lines withLineWrapper:(id)wrapper;
++ (id)reflowableTextLinesFromTransformedTextLines:(id)lines mergeUnacceptableLines:(BOOL)unacceptableLines progress:(id)progress;
++ (id)reflowableTextLinesWithProgress:(id)progress contextResults:(id)results strokeGroupingResult:(id)result contextStrokes:(id)strokes initialStrokes:(id)initialStrokes strokeProvider:(id)provider relatedNonTextStrokes:(id)textStrokes shouldCancel:(id)self0;
++ (id)reflowableTextTokensFromTransformedTextLines:(id)lines;
 - ($196E0A09E4C4E138EEBEC6372622051A)principalLines;
 - (CGRect)bounds;
-- (CHReflowableTextLine)initWithTokens:(id)a3 principalLines:(id *)a4 bounds:(CGRect)a5 headIndent:(double)a6 leading:(double)a7 hasStartingLineBreak:(BOOL)a8 hasEndingLineBreak:(BOOL)a9 alignmentType:(unint64_t)a10 writingDirection:(int64_t)a11 locale:(id)a12;
+- (CHReflowableTextLine)initWithTokens:(id)tokens principalLines:(id *)lines bounds:(CGRect)bounds headIndent:(double)indent leading:(double)leading hasStartingLineBreak:(BOOL)break hasEndingLineBreak:(BOOL)lineBreak alignmentType:(unint64_t)self0 writingDirection:(int64_t)self1 locale:(id)self2;
 - (CRNormalizedQuad)boundingQuad;
 - (NSString)description;
 - (double)orientation;
@@ -22,34 +22,34 @@
 
 @implementation CHReflowableTextLine
 
-- (CHReflowableTextLine)initWithTokens:(id)a3 principalLines:(id *)a4 bounds:(CGRect)a5 headIndent:(double)a6 leading:(double)a7 hasStartingLineBreak:(BOOL)a8 hasEndingLineBreak:(BOOL)a9 alignmentType:(unint64_t)a10 writingDirection:(int64_t)a11 locale:(id)a12
+- (CHReflowableTextLine)initWithTokens:(id)tokens principalLines:(id *)lines bounds:(CGRect)bounds headIndent:(double)indent leading:(double)leading hasStartingLineBreak:(BOOL)break hasEndingLineBreak:(BOOL)lineBreak alignmentType:(unint64_t)self0 writingDirection:(int64_t)self1 locale:(id)self2
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v24 = a3;
-  v25 = a12;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  tokensCopy = tokens;
+  localeCopy = locale;
   v48.receiver = self;
   v48.super_class = CHReflowableTextLine;
   v31 = [(CHReflowableTextLine *)&v48 init];
   if (v31)
   {
-    v32 = objc_msgSend_copy(v24, v26, v27, v28, v29, v30);
+    v32 = objc_msgSend_copy(tokensCopy, v26, v27, v28, v29, v30);
     tokens = v31->_tokens;
     v31->_tokens = v32;
 
-    var0 = a4->var0.var0;
-    var1 = a4->var0.var1;
-    v36 = a4->var1.var1;
-    v31->_principalLines.base.start = a4->var1.var0;
+    var0 = lines->var0.var0;
+    var1 = lines->var0.var1;
+    v36 = lines->var1.var1;
+    v31->_principalLines.base.start = lines->var1.var0;
     v31->_principalLines.base.end = v36;
     v31->_principalLines.descender.start = var0;
     v31->_principalLines.descender.end = var1;
-    v37 = a4->var2.var0;
-    v38 = a4->var2.var1;
-    v39 = a4->var3.var1;
-    v31->_principalLines.top.start = a4->var3.var0;
+    v37 = lines->var2.var0;
+    v38 = lines->var2.var1;
+    v39 = lines->var3.var1;
+    v31->_principalLines.top.start = lines->var3.var0;
     v31->_principalLines.top.end = v39;
     v31->_principalLines.median.start = v37;
     v31->_principalLines.median.end = v38;
@@ -57,13 +57,13 @@
     v31->_bounds.origin.y = y;
     v31->_bounds.size.width = width;
     v31->_bounds.size.height = height;
-    v31->_headIndent = a6;
-    v31->_leading = a7;
-    v31->_hasStartingLineBreak = a8;
-    v31->_hasEndingLineBreak = a9;
-    v31->_alignmentType = a10;
-    v31->_writingDirection = a11;
-    v45 = objc_msgSend_copy(v25, v40, v41, v42, v43, v44);
+    v31->_headIndent = indent;
+    v31->_leading = leading;
+    v31->_hasStartingLineBreak = break;
+    v31->_hasEndingLineBreak = lineBreak;
+    v31->_alignmentType = type;
+    v31->_writingDirection = direction;
+    v45 = objc_msgSend_copy(localeCopy, v40, v41, v42, v43, v44);
     locale = v31->_locale;
     v31->_locale = v45;
   }
@@ -180,9 +180,9 @@
   return v65;
 }
 
-+ (BOOL)useRightToLeftReflow:(id)a3
++ (BOOL)useRightToLeftReflow:(id)reflow
 {
-  v6 = objc_msgSend_languageCode(a3, a2, a3, v3, v4, v5);
+  v6 = objc_msgSend_languageCode(reflow, a2, reflow, v3, v4, v5);
   v12 = objc_msgSend_lowercaseString(v6, v7, v8, v9, v10, v11);
 
   if (v12)
@@ -295,25 +295,25 @@
   }
 }
 
-+ (id)reflowableTextLinesWithProgress:(id)a3 contextResults:(id)a4 strokeGroupingResult:(id)a5 contextStrokes:(id)a6 initialStrokes:(id)a7 strokeProvider:(id)a8 relatedNonTextStrokes:(id)a9 shouldCancel:(id)a10
++ (id)reflowableTextLinesWithProgress:(id)progress contextResults:(id)results strokeGroupingResult:(id)result contextStrokes:(id)strokes initialStrokes:(id)initialStrokes strokeProvider:(id)provider relatedNonTextStrokes:(id)textStrokes shouldCancel:(id)self0
 {
   v79 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v65 = a9;
-  v60 = v17;
-  v61 = v18;
-  v62 = v19;
-  v63 = v20;
-  v64 = a10;
+  progressCopy = progress;
+  resultsCopy = results;
+  resultCopy = result;
+  strokesCopy = strokes;
+  initialStrokesCopy = initialStrokes;
+  providerCopy = provider;
+  textStrokesCopy = textStrokes;
+  v60 = resultCopy;
+  v61 = strokesCopy;
+  v62 = initialStrokesCopy;
+  v63 = providerCopy;
+  cancelCopy = cancel;
   v21 = objc_opt_class();
-  v67 = objc_msgSend_textLinesFromContext_strokeGroupingResult_contextStrokes_initialStrokes_strokeProvider_relatedNonTextStrokes_excludedStrokeTypes_skipLineOrientationEstimate_useCache_progress_shouldCancel_(v21, v22, v16, v17, v18, v19, v20, v65, 0, 256, v15, v64);
+  v67 = objc_msgSend_textLinesFromContext_strokeGroupingResult_contextStrokes_initialStrokes_strokeProvider_relatedNonTextStrokes_excludedStrokeTypes_skipLineOrientationEstimate_useCache_progress_shouldCancel_(v21, v22, resultsCopy, resultCopy, strokesCopy, initialStrokesCopy, providerCopy, textStrokesCopy, 0, 256, progressCopy, cancelCopy);
   v23 = objc_opt_class();
-  v66 = objc_msgSend_reflowableTextLinesFromTransformedTextLines_mergeUnacceptableLines_progress_(v23, v24, v67, 1, v15, v25);
+  v66 = objc_msgSend_reflowableTextLinesFromTransformedTextLines_mergeUnacceptableLines_progress_(v23, v24, v67, 1, progressCopy, v25);
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -335,12 +335,12 @@
       goto LABEL_14;
     }
 
-    if (v16)
+    if (resultsCopy)
     {
-      v18 = objc_msgSend_textResults(v16, v29, v30, v31, v32, v33);
-      v39 = objc_msgSend_count(v18, v34, v35, v36, v37, v38);
-      v40 = v65;
-      if (v65)
+      strokesCopy = objc_msgSend_textResults(resultsCopy, v29, v30, v31, v32, v33);
+      v39 = objc_msgSend_count(strokesCopy, v34, v35, v36, v37, v38);
+      v40 = textStrokesCopy;
+      if (textStrokesCopy)
       {
 LABEL_9:
         v41 = objc_msgSend_count(v40, v29, v30, v31, v32, v33);
@@ -351,8 +351,8 @@ LABEL_9:
     else
     {
       v39 = 0;
-      v40 = v65;
-      if (v65)
+      v40 = textStrokesCopy;
+      if (textStrokesCopy)
       {
         goto LABEL_9;
       }
@@ -367,7 +367,7 @@ LABEL_12:
     v77 = 2048;
     v78 = objc_msgSend_count(v66, v29, v30, v31, v32, v33);
     _os_log_impl(&dword_18366B000, v28, OS_LOG_TYPE_DEBUG, "Computed reflowable results from %ld context results, and %ld related non-text strokes: created %ld reflowable lines", buf, 0x20u);
-    if (v16)
+    if (resultsCopy)
     {
     }
 
@@ -440,16 +440,16 @@ LABEL_27:
   return v66;
 }
 
-+ (id)reflowableLines:(id)a3 withLineWrapper:(id)a4
++ (id)reflowableLines:(id)lines withLineWrapper:(id)wrapper
 {
   v581 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v521 = a4;
-  v523 = v5;
-  if (objc_msgSend_count(v5, v6, v7, v8, v9, v10) > 1)
+  linesCopy = lines;
+  wrapperCopy = wrapper;
+  v523 = linesCopy;
+  if (objc_msgSend_count(linesCopy, v6, v7, v8, v9, v10) > 1)
   {
     v520 = objc_alloc_init(CHCTLD);
-    v15 = objc_msgSend_reflowableLineRegions_(v520, v11, v5, v12, v13, v14);
+    v15 = objc_msgSend_reflowableLineRegions_(v520, v11, linesCopy, v12, v13, v14);
     x = *MEMORY[0x1E695F050];
     y = *(MEMORY[0x1E695F050] + 8);
     width = *(MEMORY[0x1E695F050] + 16);
@@ -654,7 +654,7 @@ LABEL_32:
       _os_log_impl(&dword_18366B000, v166, OS_LOG_TYPE_DEBUG, "Running line wrapper for %lu lines in %lu groups.", buf, 0x16u);
     }
 
-    v522 = objc_msgSend_lineWrappingResultForGroups_options_error_(v521, v179, v524, 0, 0, v180);
+    v522 = objc_msgSend_lineWrappingResultForGroups_options_error_(wrapperCopy, v179, v524, 0, 0, v180);
     v181 = objc_opt_new();
     v554 = 0u;
     v555 = 0u;
@@ -961,31 +961,31 @@ LABEL_97:
 
   else
   {
-    v531 = v5;
+    v531 = linesCopy;
   }
 
   return v531;
 }
 
-+ (id)alignShortReflowableLines:(id)a3
++ (id)alignShortReflowableLines:(id)lines
 {
   v260 = *MEMORY[0x1E69E9840];
-  v243 = a3;
-  if (!objc_msgSend_count(v243, v3, v4, v5, v6, v7))
+  linesCopy = lines;
+  if (!objc_msgSend_count(linesCopy, v3, v4, v5, v6, v7))
   {
-    v239 = v243;
-    v242 = v243;
+    v239 = linesCopy;
+    v242 = linesCopy;
     goto LABEL_42;
   }
 
-  v242 = objc_msgSend_mutableCopy(v243, v8, v9, v10, v11, v12);
+  v242 = objc_msgSend_mutableCopy(linesCopy, v8, v9, v10, v11, v12);
   v244 = 0;
   *&v18 = 138740483;
   v241 = v18;
   while (1)
   {
     v23 = v244;
-    if (v244 >= objc_msgSend_count(v243, v13, v14, v15, v16, v17, v241))
+    if (v244 >= objc_msgSend_count(linesCopy, v13, v14, v15, v16, v17, v241))
     {
       break;
     }
@@ -1028,7 +1028,7 @@ LABEL_97:
 
       v23 = v244;
 LABEL_11:
-      v245 = objc_msgSend_objectAtIndexedSubscript_(v243, v19, v23, v20, v21, v22);
+      v245 = objc_msgSend_objectAtIndexedSubscript_(linesCopy, v19, v23, v20, v21, v22);
       v28 = objc_msgSend_mutableCopy(&unk_1EF1EC6A0, v59, v60, v61, v62, v63);
       v251 = 0u;
       v252 = 0u;
@@ -1165,26 +1165,26 @@ LABEL_39:
     ++v244;
   }
 
-  v239 = v243;
+  v239 = linesCopy;
 LABEL_42:
 
   return v242;
 }
 
-+ (id)_changePrincipalLinesToMatchPreviousLine:(id)a3 previousLine:(id)a4 withCorrectionThreshold:(double)a5
++ (id)_changePrincipalLinesToMatchPreviousLine:(id)line previousLine:(id)previousLine withCorrectionThreshold:(double)threshold
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
-  objc_msgSend_orientation(v8, v10, v11, v12, v13, v14);
+  lineCopy = line;
+  previousLineCopy = previousLine;
+  v9 = lineCopy;
+  objc_msgSend_orientation(previousLineCopy, v10, v11, v12, v13, v14);
   v16 = v15;
   objc_msgSend_orientation(v9, v17, v18, v19, v20, v21);
   hasEndingLineBreak_alignmentType_writingDirection_locale = v9;
-  if (vabdd_f64(v16, v27) > a5)
+  if (vabdd_f64(v16, v27) > threshold)
   {
-    if (v8)
+    if (previousLineCopy)
     {
-      objc_msgSend_principalLines(v8, v22, v23, v24, v25, v26);
+      objc_msgSend_principalLines(previousLineCopy, v22, v23, v24, v25, v26);
     }
 
     else
@@ -1199,7 +1199,7 @@ LABEL_42:
       v215 = 0u;
     }
 
-    objc_msgSend_bounds(v8, v22, v23, v24, v25, v26);
+    objc_msgSend_bounds(previousLineCopy, v22, v23, v24, v25, v26);
     v37 = v36;
     v39 = v38;
     if (v34 == 0.0)
@@ -1487,13 +1487,13 @@ LABEL_49:
   return hasEndingLineBreak_alignmentType_writingDirection_locale;
 }
 
-+ (id)_changePrincipalLinesToHorizontalForLine:(id)a3
++ (id)_changePrincipalLinesToHorizontalForLine:(id)line
 {
   v465 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  lineCopy = line;
   v4 = MEMORY[0x1E695DF70];
-  v425 = v3;
-  v10 = objc_msgSend_tokens(v3, v5, v6, v7, v8, v9);
+  v425 = lineCopy;
+  v10 = objc_msgSend_tokens(lineCopy, v5, v6, v7, v8, v9);
   v16 = objc_msgSend_count(v10, v11, v12, v13, v14, v15);
   v411 = objc_msgSend_arrayWithCapacity_(v4, v17, v16, v18, v19, v20);
 
@@ -1501,7 +1501,7 @@ LABEL_49:
   v433 = 0u;
   v430 = 0u;
   v431 = 0u;
-  obj = objc_msgSend_tokens(v3, v21, v22, v23, v24, v25);
+  obj = objc_msgSend_tokens(lineCopy, v21, v22, v23, v24, v25);
   v28 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v26, &v430, v447, 16, v27);
   if (!v28)
   {
@@ -1859,15 +1859,15 @@ LABEL_41:
   return hasEndingLineBreak_alignmentType_writingDirection_locale;
 }
 
-+ (id)_normalizedLocaleForCRLineWrapper:(id)a3
++ (id)_normalizedLocaleForCRLineWrapper:(id)wrapper
 {
-  v8 = a3;
+  wrapperCopy = wrapper;
   if (qword_1EA84CB08[0] != -1)
   {
     dispatch_once(qword_1EA84CB08, &unk_1EF1BEBD0);
   }
 
-  v9 = objc_msgSend_languageCode(v8, v3, v4, v5, v6, v7);
+  v9 = objc_msgSend_languageCode(wrapperCopy, v3, v4, v5, v6, v7);
   v15 = objc_msgSend_lowercaseString(v9, v10, v11, v12, v13, v14);
 
   v20 = objc_msgSend_objectForKey_(qword_1EA84CB00, v16, v15, v17, v18, v19);
@@ -1889,23 +1889,23 @@ LABEL_41:
   return v36;
 }
 
-+ (id)adjustLeadingForReflowableLines:(id)a3
++ (id)adjustLeadingForReflowableLines:(id)lines
 {
   v501 = *MEMORY[0x1E69E9840];
-  v440 = a3;
-  if (objc_msgSend_count(v440, v3, v4, v5, v6, v7) > 1)
+  linesCopy = lines;
+  if (objc_msgSend_count(linesCopy, v3, v4, v5, v6, v7) > 1)
   {
     v14 = MEMORY[0x1E695DF70];
-    v15 = objc_msgSend_count(v440, v8, v9, v10, v11, v12);
+    v15 = objc_msgSend_count(linesCopy, v8, v9, v10, v11, v12);
     v448 = objc_msgSend_arrayWithCapacity_(v14, v16, v15, v17, v18, v19);
     v20 = MEMORY[0x1E695DF70];
-    v26 = objc_msgSend_count(v440, v21, v22, v23, v24, v25);
+    v26 = objc_msgSend_count(linesCopy, v21, v22, v23, v24, v25);
     v467 = objc_msgSend_arrayWithCapacity_(v20, v27, v26, v28, v29, v30);
     v494 = 0u;
     v495 = 0u;
     v492 = 0u;
     v493 = 0u;
-    v31 = v440;
+    v31 = linesCopy;
     v38 = objc_msgSend_countByEnumeratingWithState_objects_count_(v31, v32, &v492, v500, 16, v33);
     if (v38)
     {
@@ -2405,37 +2405,37 @@ LABEL_41:
       while (v446);
     }
 
-    v13 = v440;
+    v13 = linesCopy;
   }
 
   else
   {
-    v13 = v440;
-    v471 = v440;
+    v13 = linesCopy;
+    v471 = linesCopy;
   }
 
   return v471;
 }
 
-+ (id)reflowableTextLinesFromTransformedTextLines:(id)a3 mergeUnacceptableLines:(BOOL)a4 progress:(id)a5
++ (id)reflowableTextLinesFromTransformedTextLines:(id)lines mergeUnacceptableLines:(BOOL)unacceptableLines progress:(id)progress
 {
-  v697 = a4;
+  unacceptableLinesCopy = unacceptableLines;
   v772 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a5;
-  v700 = v6;
-  if (!objc_msgSend_count(v6, v8, v9, v10, v11, v12))
+  linesCopy = lines;
+  progressCopy = progress;
+  v700 = linesCopy;
+  if (!objc_msgSend_count(linesCopy, v8, v9, v10, v11, v12))
   {
     v695 = MEMORY[0x1E695E0F0];
     goto LABEL_5;
   }
 
-  v688 = v7;
-  if (v7)
+  v688 = progressCopy;
+  if (progressCopy)
   {
     v18 = MEMORY[0x1E696AE38];
-    v19 = objc_msgSend_count(v6, v13, v14, v15, v16, v17);
-    v689 = objc_msgSend_progressWithTotalUnitCount_parent_pendingUnitCount_(v18, v20, v19, v7, 50, v21);
+    v19 = objc_msgSend_count(linesCopy, v13, v14, v15, v16, v17);
+    v689 = objc_msgSend_progressWithTotalUnitCount_parent_pendingUnitCount_(v18, v20, v19, progressCopy, 50, v21);
   }
 
   else
@@ -2447,7 +2447,7 @@ LABEL_41:
   v756 = 0u;
   v753 = 0u;
   v754 = 0u;
-  v23 = v6;
+  v23 = linesCopy;
   v31 = objc_msgSend_countByEnumeratingWithState_objects_count_(v23, v24, &v753, v771, 16, v25);
   if (v31)
   {
@@ -2780,7 +2780,7 @@ LABEL_21:
     v282 = objc_msgSend_strokeClassification(v709, v277, v278, v279, v280, v281);
     isStrokeClassificationMath = objc_msgSend_isStrokeClassificationMath_(v276, v283, v282, v284, v285, v286);
     v292 = 0x1E695D000uLL;
-    if (v697 && (fabs(v246) > 0.2 || (isLocaleReflowable & 1) == 0) | isStrokeClassificationMath & 1)
+    if (unacceptableLinesCopy && (fabs(v246) > 0.2 || (isLocaleReflowable & 1) == 0) | isStrokeClassificationMath & 1)
     {
       v764 = v709;
       v293 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v287, &v764, 1, v290, v291);
@@ -3509,22 +3509,22 @@ LABEL_213:
     obja = v669;
   }
 
-  v7 = v688;
+  progressCopy = v688;
 LABEL_5:
 
   return v695;
 }
 
-+ (id)reflowableTextTokensFromTransformedTextLines:(id)a3
++ (id)reflowableTextTokensFromTransformedTextLines:(id)lines
 {
   v240 = *MEMORY[0x1E69E9840];
-  v174 = a3;
+  linesCopy = lines;
   v199 = objc_msgSend_array(MEMORY[0x1E695DF70], v3, v4, v5, v6, v7);
   v233 = 0u;
   v234 = 0u;
   v231 = 0u;
   v232 = 0u;
-  obj = v174;
+  obj = linesCopy;
   v175 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v8, &v231, v239, 16, v9);
   if (v175)
   {

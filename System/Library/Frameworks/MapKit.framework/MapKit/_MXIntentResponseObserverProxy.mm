@@ -1,9 +1,9 @@
 @interface _MXIntentResponseObserverProxy
 - (_MXIntentResponseObserver)observer;
-- (_MXIntentResponseObserverProxy)initWithObserver:(id)a3;
-- (void)didReceiveError:(id)a3;
-- (void)intentResponseDidUpdate:(id)a3;
-- (void)intentResponseDidUpdate:(id)a3 withSerializedCacheItems:(id)a4;
+- (_MXIntentResponseObserverProxy)initWithObserver:(id)observer;
+- (void)didReceiveError:(id)error;
+- (void)intentResponseDidUpdate:(id)update;
+- (void)intentResponseDidUpdate:(id)update withSerializedCacheItems:(id)items;
 @end
 
 @implementation _MXIntentResponseObserverProxy
@@ -15,38 +15,38 @@
   return WeakRetained;
 }
 
-- (void)didReceiveError:(id)a3
+- (void)didReceiveError:(id)error
 {
-  v4 = a3;
-  v5 = [(_MXIntentResponseObserverProxy *)self observer];
-  [v5 intentResponseDidUpdate:0 withSerializedCacheItems:0 error:v4];
+  errorCopy = error;
+  observer = [(_MXIntentResponseObserverProxy *)self observer];
+  [observer intentResponseDidUpdate:0 withSerializedCacheItems:0 error:errorCopy];
 }
 
-- (void)intentResponseDidUpdate:(id)a3 withSerializedCacheItems:(id)a4
+- (void)intentResponseDidUpdate:(id)update withSerializedCacheItems:(id)items
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_MXIntentResponseObserverProxy *)self observer];
-  [v8 intentResponseDidUpdate:v7 withSerializedCacheItems:v6 error:0];
+  itemsCopy = items;
+  updateCopy = update;
+  observer = [(_MXIntentResponseObserverProxy *)self observer];
+  [observer intentResponseDidUpdate:updateCopy withSerializedCacheItems:itemsCopy error:0];
 }
 
-- (void)intentResponseDidUpdate:(id)a3
+- (void)intentResponseDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(_MXIntentResponseObserverProxy *)self observer];
-  [v5 intentResponseDidUpdate:v4 withSerializedCacheItems:0 error:0];
+  updateCopy = update;
+  observer = [(_MXIntentResponseObserverProxy *)self observer];
+  [observer intentResponseDidUpdate:updateCopy withSerializedCacheItems:0 error:0];
 }
 
-- (_MXIntentResponseObserverProxy)initWithObserver:(id)a3
+- (_MXIntentResponseObserverProxy)initWithObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v8.receiver = self;
   v8.super_class = _MXIntentResponseObserverProxy;
   v5 = [(_MXIntentResponseObserverProxy *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_observer, v4);
+    objc_storeWeak(&v5->_observer, observerCopy);
   }
 
   return v6;

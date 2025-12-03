@@ -1,33 +1,33 @@
 @interface MPCWhiskyController
-- (BOOL)shouldAttachAudioTapToItem:(id)a3;
-- (MPCWhiskyController)initWithPlaybackEngine:(id)a3;
-- (MPCWhiskyController)initWithPlaybackEngine:(id)a3 modelProvider:(id)a4 processor:(id)a5;
+- (BOOL)shouldAttachAudioTapToItem:(id)item;
+- (MPCWhiskyController)initWithPlaybackEngine:(id)engine;
+- (MPCWhiskyController)initWithPlaybackEngine:(id)engine modelProvider:(id)provider processor:(id)processor;
 - (NSString)description;
 - (NSString)modelID;
 - (double)renderingTimeLimit;
-- (float)_processorLevelForVocalLevel:(float)a3;
-- (float)_vocalLevelForProcessorLevel:(float)a3;
+- (float)_processorLevelForVocalLevel:(float)level;
+- (float)_vocalLevelForProcessorLevel:(float)level;
 - (id)blockingPolicy;
 - (unsigned)creationFlags;
 - (void)_emitStatisticsEvent;
 - (void)_loadModel;
 - (void)_tearDownTapData;
 - (void)_updateShutdownSequence;
-- (void)_updateState:(int64_t)a3;
+- (void)_updateState:(int64_t)state;
 - (void)dealloc;
-- (void)engine:(id)a3 didChangeToState:(unint64_t)a4;
-- (void)engine:(id)a3 willChangeToItem:(id)a4 fromItem:(id)a5;
-- (void)engineDidReceiveMediaServicesPurge:(id)a3;
-- (void)engineDidResetMediaServices:(id)a3;
-- (void)finalizeTap:(opaqueMTAudioProcessingTap *)a3;
+- (void)engine:(id)engine didChangeToState:(unint64_t)state;
+- (void)engine:(id)engine willChangeToItem:(id)item fromItem:(id)fromItem;
+- (void)engineDidReceiveMediaServicesPurge:(id)purge;
+- (void)engineDidResetMediaServices:(id)services;
+- (void)finalizeTap:(opaqueMTAudioProcessingTap *)tap;
 - (void)isEnabled;
 - (void)isVocalAttenuationAvailable;
 - (void)prepareForProcessing;
-- (void)prepareTap:(opaqueMTAudioProcessingTap *)a3 maxFrames:(int64_t)a4 processingFormat:(const AudioStreamBasicDescription *)a5;
-- (void)processTap:(opaqueMTAudioProcessingTap *)a3 sampleIndex:(int64_t)a4 numberFrames:(int64_t)a5 flags:(unsigned int)a6 audioBufferList:(AudioBufferList *)a7 numberFramesOut:(int64_t *)a8 flagsOut:(unsigned int *)a9;
-- (void)setEnabled:(void *)a1;
-- (void)unprepareTap:(opaqueMTAudioProcessingTap *)a3;
-- (void)vocalAttenuationPolicyControllerDidChange:(id)a3;
+- (void)prepareTap:(opaqueMTAudioProcessingTap *)tap maxFrames:(int64_t)frames processingFormat:(const AudioStreamBasicDescription *)format;
+- (void)processTap:(opaqueMTAudioProcessingTap *)tap sampleIndex:(int64_t)index numberFrames:(int64_t)frames flags:(unsigned int)flags audioBufferList:(AudioBufferList *)list numberFramesOut:(int64_t *)out flagsOut:(unsigned int *)flagsOut;
+- (void)setEnabled:(void *)enabled;
+- (void)unprepareTap:(opaqueMTAudioProcessingTap *)tap;
+- (void)vocalAttenuationPolicyControllerDidChange:(id)change;
 @end
 
 @implementation MPCWhiskyController
@@ -39,24 +39,24 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C5C61000, v3, OS_LOG_TYPE_INFO, "[AP] - %{public}@ - Loading model", buf, 0xCu);
   }
 
   dispatch_assert_queue_V2(self->_setupQueue);
   [(MPCWhiskyController *)self _updateState:1];
-  v4 = [(MPCWhiskyController *)self modelProvider];
+  modelProvider = [(MPCWhiskyController *)self modelProvider];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __33__MPCWhiskyController__loadModel__block_invoke;
   v5[3] = &unk_1E82318F0;
   v5[4] = self;
-  [v4 prepareWithCompletion:v5];
+  [modelProvider prepareWithCompletion:v5];
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   if (!self)
   {
     v4 = MEMORY[0x1E696AEC0];
@@ -71,10 +71,10 @@
     {
       v9 = MEMORY[0x1E696AEC0];
       v10 = objc_opt_class();
-      v11 = *(v2 + 72);
+      v11 = *(selfCopy + 72);
       if (v11 >= 9)
       {
-        v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"undefined/%ld", *(v2 + 72)];
+        v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"undefined/%ld", *(selfCopy + 72)];
       }
 
       else
@@ -82,32 +82,32 @@
         v8 = off_1E8231910[v11];
       }
 
-      v12 = [v2 modelProvider];
-      v19 = [v12 state];
-      if (v19 >= 4)
+      modelProvider = [selfCopy modelProvider];
+      state = [modelProvider state];
+      if (state >= 4)
       {
-        v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"undefined/%ld", v19];
+        v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"undefined/%ld", state];
       }
 
       else
       {
-        v14 = off_1E8231958[v19];
+        v14 = off_1E8231958[state];
       }
 
-      v15 = [v2 processor];
-      v20 = [v15 state];
-      if (v20 >= 6)
+      processor = [selfCopy processor];
+      state2 = [processor state];
+      if (state2 >= 6)
       {
-        v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"undefined/%ld", v20];
+        v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"undefined/%ld", state2];
       }
 
       else
       {
-        v17 = off_1E8231978[v20];
+        v17 = off_1E8231978[state2];
       }
 
-      v18 = [*(v2 + 96) modelName];
-      [v9 stringWithFormat:@"<%p - %@> - %@ [M:%@ P:%@] - model: %@ - level: %3.2f", v2, v10, v8, v14, v17, v18, *(v2 + 40)];
+      modelName = [*(selfCopy + 96) modelName];
+      [v9 stringWithFormat:@"<%p - %@> - %@ [M:%@ P:%@] - model: %@ - level: %3.2f", selfCopy, v10, v8, v14, v17, modelName, *(selfCopy + 40)];
       goto LABEL_26;
     }
 
@@ -115,7 +115,7 @@
     {
       v4 = MEMORY[0x1E696AEC0];
       v5 = objc_opt_class();
-      v6 = *(v2 + 72);
+      v6 = *(selfCopy + 72);
       v7 = v6 >= 9;
 LABEL_6:
       if (v7)
@@ -128,33 +128,33 @@ LABEL_6:
         v8 = off_1E8231910[v6];
       }
 
-      v12 = [v2 modelProvider];
-      v13 = [v12 state];
-      if (v13 >= 4)
+      modelProvider = [selfCopy modelProvider];
+      state3 = [modelProvider state];
+      if (state3 >= 4)
       {
-        v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"undefined/%ld", v13];
+        v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"undefined/%ld", state3];
       }
 
       else
       {
-        v14 = off_1E8231958[v13];
+        v14 = off_1E8231958[state3];
       }
 
-      v15 = [v2 processor];
-      v16 = [v15 state];
-      if (v16 >= 6)
+      processor = [selfCopy processor];
+      state4 = [processor state];
+      if (state4 >= 6)
       {
-        v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"undefined/%ld", v16];
+        v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"undefined/%ld", state4];
       }
 
       else
       {
-        v17 = off_1E8231978[v16];
+        v17 = off_1E8231978[state4];
       }
 
-      v18 = [*(v2 + 96) modelName];
-      [v4 stringWithFormat:@"<%p - %@> - %@ [M:%@ P:%@] - model: %@", v2, v5, v8, v14, v17, v18, v29];
-      v2 = LABEL_26:;
+      modelName = [*(selfCopy + 96) modelName];
+      [v4 stringWithFormat:@"<%p - %@> - %@ [M:%@ P:%@] - model: %@", selfCopy, v5, v8, v14, v17, modelName, v29];
+      selfCopy = LABEL_26:;
 
 LABEL_68:
       goto LABEL_69;
@@ -162,21 +162,21 @@ LABEL_68:
 
     if (state == 8)
     {
-      v21 = [(MPCWhiskyController *)self modelProvider];
-      v22 = [v21 model];
+      modelProvider2 = [(MPCWhiskyController *)self modelProvider];
+      model = [modelProvider2 model];
 
       v4 = MEMORY[0x1E696AEC0];
       v5 = objc_opt_class();
-      v6 = *(v2 + 72);
+      v6 = *(selfCopy + 72);
       v7 = v6 >= 9;
-      if (v22)
+      if (model)
       {
         goto LABEL_6;
       }
 
       if (v6 >= 9)
       {
-        v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"undefined/%ld", *(v2 + 72)];
+        v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"undefined/%ld", *(selfCopy + 72)];
       }
 
       else
@@ -184,25 +184,25 @@ LABEL_68:
         v8 = off_1E8231910[v6];
       }
 
-      v12 = [v2 modelProvider];
-      v24 = [v12 state];
-      if (v24 >= 4)
+      modelProvider = [selfCopy modelProvider];
+      state5 = [modelProvider state];
+      if (state5 >= 4)
       {
-        v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"undefined/%ld", v24];
+        v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"undefined/%ld", state5];
       }
 
       else
       {
-        v14 = off_1E8231958[v24];
+        v14 = off_1E8231958[state5];
       }
 
-      v15 = [v2 processor];
-      v25 = [v15 state];
-      if (v25 >= 6)
+      processor = [selfCopy processor];
+      state6 = [processor state];
+      if (state6 >= 6)
       {
         v26 = MEMORY[0x1E696AEC0];
 LABEL_66:
-        v17 = [v26 stringWithFormat:@"undefined/%ld", v25];
+        v17 = [v26 stringWithFormat:@"undefined/%ld", state6];
         goto LABEL_67;
       }
 
@@ -214,7 +214,7 @@ LABEL_66:
   {
     v4 = MEMORY[0x1E696AEC0];
     v5 = objc_opt_class();
-    v23 = *(v2 + 72);
+    v23 = *(selfCopy + 72);
     if (v23 > 3)
     {
       if (v23 <= 5)
@@ -272,53 +272,53 @@ LABEL_66:
       }
 
 LABEL_51:
-      v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"undefined/%ld", *(v2 + 72)];
+      v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"undefined/%ld", *(selfCopy + 72)];
       goto LABEL_60;
     }
 
 LABEL_59:
     v8 = @"not loaded";
 LABEL_60:
-    v12 = [v2 modelProvider];
-    v27 = [v12 state];
-    if (v27 >= 4)
+    modelProvider = [selfCopy modelProvider];
+    state7 = [modelProvider state];
+    if (state7 >= 4)
     {
-      v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"undefined/%ld", v27];
+      v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"undefined/%ld", state7];
     }
 
     else
     {
-      v14 = off_1E8231958[v27];
+      v14 = off_1E8231958[state7];
     }
 
-    v15 = [v2 processor];
-    v25 = [v15 state];
-    if (v25 >= 6)
+    processor = [selfCopy processor];
+    state6 = [processor state];
+    if (state6 >= 6)
     {
       v26 = MEMORY[0x1E696AEC0];
       goto LABEL_66;
     }
 
 LABEL_64:
-    v17 = off_1E8231978[v25];
+    v17 = off_1E8231978[state6];
 LABEL_67:
-    v2 = [v4 stringWithFormat:@"<%p - %@> - %@ [M:%@ P:%@]", v2, v5, v8, v14, v17];
+    selfCopy = [v4 stringWithFormat:@"<%p - %@> - %@ [M:%@ P:%@]", selfCopy, v5, v8, v14, v17];
     goto LABEL_68;
   }
 
 LABEL_69:
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)isEnabled
 {
   if (result)
   {
-    v1 = [result processor];
-    v2 = [v1 isEnabled];
+    processor = [result processor];
+    isEnabled = [processor isEnabled];
 
-    return v2;
+    return isEnabled;
   }
 
   return result;
@@ -353,10 +353,10 @@ LABEL_6:
 {
   if (result)
   {
-    v1 = [result processor];
-    v2 = [v1 isAvailable];
+    processor = [result processor];
+    isAvailable = [processor isAvailable];
 
-    return v2;
+    return isAvailable;
   }
 
   return result;
@@ -365,139 +365,139 @@ LABEL_6:
 - (void)_emitStatisticsEvent
 {
   v25[6] = *MEMORY[0x1E69E9840];
-  v3 = [(MPCWhiskyController *)self recordingSession];
-  v4 = [v3 currentRecorder];
-  v5 = [v4 numberOfSamples];
+  recordingSession = [(MPCWhiskyController *)self recordingSession];
+  currentRecorder = [recordingSession currentRecorder];
+  numberOfSamples = [currentRecorder numberOfSamples];
 
-  if (v5)
+  if (numberOfSamples)
   {
-    v6 = [(MPCWhiskyController *)self recordingSession];
-    v7 = [v6 currentRecorder];
-    v8 = [v7 dictionaryRepresentation];
+    recordingSession2 = [(MPCWhiskyController *)self recordingSession];
+    currentRecorder2 = [recordingSession2 currentRecorder];
+    dictionaryRepresentation = [currentRecorder2 dictionaryRepresentation];
 
-    v23 = [(MPCSingleTrackAudioProcessor *)self playbackEngine];
-    v9 = [v23 eventStream];
+    playbackEngine = [(MPCSingleTrackAudioProcessor *)self playbackEngine];
+    eventStream = [playbackEngine eventStream];
     v24[0] = @"vocal-attenuation-statistics-mean";
-    v22 = [v8 objectForKeyedSubscript:@"mean"];
+    v22 = [dictionaryRepresentation objectForKeyedSubscript:@"mean"];
     v25[0] = v22;
     v24[1] = @"vocal-attenuation-statistics-max";
-    v21 = [v8 objectForKeyedSubscript:@"max"];
+    v21 = [dictionaryRepresentation objectForKeyedSubscript:@"max"];
     v25[1] = v21;
     v24[2] = @"vocal-attenuation-statistics-stdev";
-    v20 = [v8 objectForKeyedSubscript:@"sigma"];
+    v20 = [dictionaryRepresentation objectForKeyedSubscript:@"sigma"];
     v25[2] = v20;
     v24[3] = @"vocal-attenuation-statistics-glitches";
-    v10 = [v8 objectForKeyedSubscript:@"glitches"];
+    v10 = [dictionaryRepresentation objectForKeyedSubscript:@"glitches"];
     v25[3] = v10;
     v24[4] = @"vocal-attenuation-statistics-samples";
     v11 = MEMORY[0x1E696AD98];
-    v12 = [(MPCWhiskyController *)self recordingSession];
-    v13 = [v12 currentRecorder];
-    v14 = [v11 numberWithInt:{objc_msgSend(v13, "numberOfSamples")}];
+    recordingSession3 = [(MPCWhiskyController *)self recordingSession];
+    currentRecorder3 = [recordingSession3 currentRecorder];
+    v14 = [v11 numberWithInt:{objc_msgSend(currentRecorder3, "numberOfSamples")}];
     v25[4] = v14;
     v24[5] = @"vocal-attenuation-statistics-thermal";
     v15 = MEMORY[0x1E696AD98];
-    v16 = [(MPCWhiskyController *)self recordingSession];
-    v17 = [v16 currentRecorder];
-    v18 = [v15 numberWithInt:{objc_msgSend(v17, "thermalLevel")}];
+    recordingSession4 = [(MPCWhiskyController *)self recordingSession];
+    currentRecorder4 = [recordingSession4 currentRecorder];
+    v18 = [v15 numberWithInt:{objc_msgSend(currentRecorder4, "thermalLevel")}];
     v25[5] = v18;
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:6];
-    [v9 emitEventType:@"vocal-attenuation-statistics" payload:v19];
+    [eventStream emitEventType:@"vocal-attenuation-statistics" payload:v19];
   }
 }
 
-- (void)engineDidReceiveMediaServicesPurge:(id)a3
+- (void)engineDidReceiveMediaServicesPurge:(id)purge
 {
   [(MPCWhiskyController *)self _tearDownTapData];
 
   [(MPCSingleTrackAudioProcessor *)self recreateAudioTap];
 }
 
-- (void)engineDidResetMediaServices:(id)a3
+- (void)engineDidResetMediaServices:(id)services
 {
   [(MPCWhiskyController *)self _tearDownTapData];
 
   [(MPCSingleTrackAudioProcessor *)self recreateAudioTap];
 }
 
-- (void)engine:(id)a3 willChangeToItem:(id)a4 fromItem:(id)a5
+- (void)engine:(id)engine willChangeToItem:(id)item fromItem:(id)fromItem
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8 && ([v8 isPlaceholder] & 1) == 0)
+  engineCopy = engine;
+  itemCopy = item;
+  fromItemCopy = fromItem;
+  if (itemCopy && ([itemCopy isPlaceholder] & 1) == 0)
   {
-    v10 = [(MPCWhiskyController *)self processor];
-    [v10 resetAudioUnit];
+    processor = [(MPCWhiskyController *)self processor];
+    [processor resetAudioUnit];
 
-    v11 = [(MPCWhiskyController *)self recordingSession];
-    [v11 save];
+    recordingSession = [(MPCWhiskyController *)self recordingSession];
+    [recordingSession save];
 
     [(MPCWhiskyController *)self _emitStatisticsEvent];
   }
 }
 
-- (void)engine:(id)a3 didChangeToState:(unint64_t)a4
+- (void)engine:(id)engine didChangeToState:(unint64_t)state
 {
-  if (a4 - 2 <= 2)
+  if (state - 2 <= 2)
   {
-    v5 = [(MPCWhiskyController *)self recordingSession];
-    [v5 save];
+    recordingSession = [(MPCWhiskyController *)self recordingSession];
+    [recordingSession save];
   }
 
   [(MPCWhiskyController *)self _updateShutdownSequence];
 }
 
-- (void)vocalAttenuationPolicyControllerDidChange:(id)a3
+- (void)vocalAttenuationPolicyControllerDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = [MPCWhiskyControllerDisabledState alloc];
-  v6 = [v4 blockingEvaluation];
+  blockingEvaluation = [changeCopy blockingEvaluation];
 
-  v7 = [(MPCWhiskyControllerDisabledState *)v5 initWithPolicyEvaluation:v6];
+  v7 = [(MPCWhiskyControllerDisabledState *)v5 initWithPolicyEvaluation:blockingEvaluation];
   disabledState = self->_disabledState;
   self->_disabledState = v7;
 
-  v9 = [(MPCSingleTrackAudioProcessor *)self playbackEngine];
+  playbackEngine = [(MPCSingleTrackAudioProcessor *)self playbackEngine];
   v10 = self->_disabledState;
-  v13 = v9;
-  v11 = [v9 eventObserver];
-  v12 = v11;
+  v13 = playbackEngine;
+  eventObserver = [playbackEngine eventObserver];
+  v12 = eventObserver;
   if (v10)
   {
-    [v11 engineDidBlockVocalAttenuation:v13];
+    [eventObserver engineDidBlockVocalAttenuation:v13];
   }
 
   else
   {
-    [v11 engineDidUnblockVocalAttenuation:v13];
+    [eventObserver engineDidUnblockVocalAttenuation:v13];
   }
 }
 
 - (void)_updateShutdownSequence
 {
-  v3 = [(MPCWhiskyController *)self shutdownTimer];
+  shutdownTimer = [(MPCWhiskyController *)self shutdownTimer];
 
-  if (v3)
+  if (shutdownTimer)
   {
-    v4 = [(MPCWhiskyController *)self shutdownTimer];
-    [v4 invalidate];
+    shutdownTimer2 = [(MPCWhiskyController *)self shutdownTimer];
+    [shutdownTimer2 invalidate];
 
     [(MPCWhiskyController *)self setShutdownTimer:0];
   }
 
   if ([(MPCWhiskyController *)self isEnabled])
   {
-    v5 = [(MPCSingleTrackAudioProcessor *)self playbackEngine];
-    v6 = [v5 player];
-    v7 = [v6 state];
+    playbackEngine = [(MPCSingleTrackAudioProcessor *)self playbackEngine];
+    player = [playbackEngine player];
+    state = [player state];
 
-    if (v7 <= 6 && ((1 << v7) & 0x43) != 0)
+    if (state <= 6 && ((1 << state) & 0x43) != 0)
     {
       objc_initWeak(&location, self);
       v8 = MEMORY[0x1E69B14D8];
-      v9 = [MEMORY[0x1E69708A8] standardUserDefaults];
-      [v9 vocalAttenuationGracePeriodAfterPause];
+      standardUserDefaults = [MEMORY[0x1E69708A8] standardUserDefaults];
+      [standardUserDefaults vocalAttenuationGracePeriodAfterPause];
       v11 = v10;
       v12 = MEMORY[0x1E69E96A0];
       v13 = MEMORY[0x1E69E96A0];
@@ -533,20 +533,20 @@ void __46__MPCWhiskyController__updateShutdownSequence__block_invoke(uint64_t a1
   }
 }
 
-- (void)setEnabled:(void *)a1
+- (void)setEnabled:(void *)enabled
 {
-  if (a1)
+  if (enabled)
   {
-    v4 = [a1 processor];
-    v5 = [v4 isAvailable];
+    processor = [enabled processor];
+    isAvailable = [processor isAvailable];
 
-    if (v5)
+    if (isAvailable)
     {
-      v6 = [a1 processor];
-      [v6 setEnabled:a2];
+      processor2 = [enabled processor];
+      [processor2 setEnabled:a2];
 
-      v7 = [a1 processor];
-      if ([v7 isEnabled])
+      processor3 = [enabled processor];
+      if ([processor3 isEnabled])
       {
         v8 = 5;
       }
@@ -556,14 +556,14 @@ void __46__MPCWhiskyController__updateShutdownSequence__block_invoke(uint64_t a1
         v8 = 6;
       }
 
-      [a1 _updateState:v8];
+      [enabled _updateState:v8];
 
-      [a1 _updateShutdownSequence];
+      [enabled _updateShutdownSequence];
     }
   }
 }
 
-- (float)_vocalLevelForProcessorLevel:(float)a3
+- (float)_vocalLevelForProcessorLevel:(float)level
 {
   v25 = *MEMORY[0x1E69E9840];
   minVocalLevel = self->_minVocalLevel;
@@ -572,17 +572,17 @@ void __46__MPCWhiskyController__updateShutdownSequence__block_invoke(uint64_t a1
   v8 = 100.0 - v7;
   [(MPCVocalAttenuationProcessor *)self->_processor maxLevel];
   v10 = log10f((100.0 - v9) / 100.0) * 20.0;
-  v11 = log10f((100.0 - a3) / v8) * 20.0;
+  v11 = log10f((100.0 - level) / v8) * 20.0;
   v12 = minVocalLevel + (((maxVocalLevel - minVocalLevel) * (v11 - v10)) / (0.0 - v10));
   v13 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v15 = 138544386;
-    v16 = self;
+    selfCopy = self;
     v17 = 2048;
-    v18 = a3;
+    levelCopy = level;
     v19 = 2048;
-    v20 = (100.0 - a3);
+    v20 = (100.0 - level);
     v21 = 2048;
     v22 = v11;
     v23 = 2048;
@@ -593,7 +593,7 @@ void __46__MPCWhiskyController__updateShutdownSequence__block_invoke(uint64_t a1
   return v12;
 }
 
-- (float)_processorLevelForVocalLevel:(float)a3
+- (float)_processorLevelForVocalLevel:(float)level
 {
   v25 = *MEMORY[0x1E69E9840];
   minVocalLevel = self->_minVocalLevel;
@@ -602,15 +602,15 @@ void __46__MPCWhiskyController__updateShutdownSequence__block_invoke(uint64_t a1
   v8 = 100.0 - v7;
   [(MPCVocalAttenuationProcessor *)self->_processor maxLevel];
   v10 = log10f((100.0 - v9) / 100.0);
-  v11 = (v10 * 20.0) + (((0.0 - (v10 * 20.0)) / (maxVocalLevel - minVocalLevel)) * (a3 - minVocalLevel));
+  v11 = (v10 * 20.0) + (((0.0 - (v10 * 20.0)) / (maxVocalLevel - minVocalLevel)) * (level - minVocalLevel));
   v12 = v8 * __exp10f(v11 / 20.0);
   v13 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v15 = 138544386;
-    v16 = self;
+    selfCopy = self;
     v17 = 2048;
-    v18 = a3;
+    levelCopy = level;
     v19 = 2048;
     v20 = v11;
     v21 = 2048;
@@ -625,21 +625,21 @@ void __46__MPCWhiskyController__updateShutdownSequence__block_invoke(uint64_t a1
 
 - (void)_tearDownTapData
 {
-  v2 = [(MPCWhiskyController *)self processor];
-  [v2 resetAudioUnit];
+  processor = [(MPCWhiskyController *)self processor];
+  [processor resetAudioUnit];
 }
 
-- (void)_updateState:(int64_t)a3
+- (void)_updateState:(int64_t)state
 {
   v35 = *MEMORY[0x1E69E9840];
   state = self->_state;
-  if (state == a3)
+  if (state == state)
   {
     return;
   }
 
-  self->_state = a3;
-  if (a3 == 6)
+  self->_state = state;
+  if (state == 6)
   {
     if (self->_recordingSession)
     {
@@ -648,23 +648,23 @@ void __46__MPCWhiskyController__updateShutdownSequence__block_invoke(uint64_t a1
       {
         if (state >= 9)
         {
-          v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"undefined/%ld", state];
+          state = [MEMORY[0x1E696AEC0] stringWithFormat:@"undefined/%ld", state];
         }
 
         else
         {
-          v20 = off_1E8231910[state];
+          state = off_1E8231910[state];
         }
 
-        v22 = [(MPCRecordingSession *)self->_recordingSession sessionID];
+        sessionID = [(MPCRecordingSession *)self->_recordingSession sessionID];
         *buf = 138544130;
-        v28 = self;
+        selfCopy3 = self;
         v29 = 2114;
-        v30 = v20;
+        v30 = state;
         v31 = 2114;
         v32 = @"disabled";
         v33 = 2114;
-        v34 = v22;
+        v34 = sessionID;
         _os_log_impl(&dword_1C5C61000, v19, OS_LOG_TYPE_INFO, "[AP] - %{public}@ - State changed: %{public}@ -> %{public}@ - Flushing recording session: %{public}@", buf, 0x2Au);
       }
 
@@ -676,18 +676,18 @@ void __46__MPCWhiskyController__updateShutdownSequence__block_invoke(uint64_t a1
     }
   }
 
-  else if (a3 == 5)
+  else if (state == 5)
   {
     v6 = [MPCRecordingSession alloc];
-    v7 = [(MPCWhiskyController *)self modelID];
-    v8 = [(MPCWhiskyController *)self processor];
-    [v8 sampleTime];
+    modelID = [(MPCWhiskyController *)self modelID];
+    processor = [(MPCWhiskyController *)self processor];
+    [processor sampleTime];
     v10 = v9;
-    v11 = [(MPCWhiskyController *)self processor];
-    [v11 renderingLimit];
+    processor2 = [(MPCWhiskyController *)self processor];
+    [processor2 renderingLimit];
     v13 = v12;
-    v14 = [MEMORY[0x1E69708A8] standardUserDefaults];
-    v15 = -[MPCRecordingSession initWithModelID:samplingTime:renderingLimit:shouldRecordSamples:](v6, "initWithModelID:samplingTime:renderingLimit:shouldRecordSamples:", v7, [v14 shouldRecordVocalAttenuationStatistics], v10, v13);
+    standardUserDefaults = [MEMORY[0x1E69708A8] standardUserDefaults];
+    v15 = -[MPCRecordingSession initWithModelID:samplingTime:renderingLimit:shouldRecordSamples:](v6, "initWithModelID:samplingTime:renderingLimit:shouldRecordSamples:", modelID, [standardUserDefaults shouldRecordVocalAttenuationStatistics], v10, v13);
     v16 = self->_recordingSession;
     self->_recordingSession = v15;
 
@@ -696,23 +696,23 @@ void __46__MPCWhiskyController__updateShutdownSequence__block_invoke(uint64_t a1
     {
       if (state >= 9)
       {
-        v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"undefined/%ld", state];
+        state2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"undefined/%ld", state];
       }
 
       else
       {
-        v18 = off_1E8231910[state];
+        state2 = off_1E8231910[state];
       }
 
-      v21 = [(MPCRecordingSession *)self->_recordingSession sessionID];
+      sessionID2 = [(MPCRecordingSession *)self->_recordingSession sessionID];
       *buf = 138544130;
-      v28 = self;
+      selfCopy3 = self;
       v29 = 2114;
-      v30 = v18;
+      v30 = state2;
       v31 = 2114;
       v32 = @"enabled";
       v33 = 2114;
-      v34 = v21;
+      v34 = sessionID2;
       _os_log_impl(&dword_1C5C61000, &recordingSession->super, OS_LOG_TYPE_INFO, "[AP] - %{public}@ - State changed: %{public}@ -> %{public}@ - New recording session: %{public}@", buf, 0x2Au);
     }
 
@@ -724,31 +724,31 @@ LABEL_16:
   {
     if (state >= 9)
     {
-      v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"undefined/%ld", state];
+      state3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"undefined/%ld", state];
     }
 
     else
     {
-      v24 = off_1E8231910[state];
+      state3 = off_1E8231910[state];
     }
 
-    v25 = v24;
-    if (a3 >= 9)
+    v25 = state3;
+    if (state >= 9)
     {
-      v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"undefined/%ld", a3];
+      state4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"undefined/%ld", state];
     }
 
     else
     {
-      v26 = off_1E8231910[a3];
+      state4 = off_1E8231910[state];
     }
 
     *buf = 138543874;
-    v28 = self;
+    selfCopy3 = self;
     v29 = 2114;
     v30 = v25;
     v31 = 2114;
-    v32 = v26;
+    v32 = state4;
     _os_log_impl(&dword_1C5C61000, v23, OS_LOG_TYPE_INFO, "[AP] - %{public}@ - State changed: %{public}@ -> %{public}@", buf, 0x20u);
   }
 
@@ -765,8 +765,8 @@ void __36__MPCWhiskyController__updateState___block_invoke(uint64_t a1)
 
 - (double)renderingTimeLimit
 {
-  v2 = [(MPCWhiskyController *)self processor];
-  [v2 renderingLimit];
+  processor = [(MPCWhiskyController *)self processor];
+  [processor renderingLimit];
   v4 = v3;
 
   return v4;
@@ -774,52 +774,52 @@ void __36__MPCWhiskyController__updateState___block_invoke(uint64_t a1)
 
 - (id)blockingPolicy
 {
-  v2 = [(MPCWhiskyController *)self policyController];
-  v3 = [v2 blockingEvaluation];
+  policyController = [(MPCWhiskyController *)self policyController];
+  blockingEvaluation = [policyController blockingEvaluation];
 
-  return v3;
+  return blockingEvaluation;
 }
 
 - (NSString)modelID
 {
-  v2 = [(MPCWhiskyController *)self modelProvider];
-  v3 = [v2 modelName];
+  modelProvider = [(MPCWhiskyController *)self modelProvider];
+  modelName = [modelProvider modelName];
 
-  return v3;
+  return modelName;
 }
 
-- (void)finalizeTap:(opaqueMTAudioProcessingTap *)a3
+- (void)finalizeTap:(opaqueMTAudioProcessingTap *)tap
 {
   v8 = *MEMORY[0x1E69E9840];
   v5.receiver = self;
   v5.super_class = MPCWhiskyController;
-  [(MPCSingleTrackAudioProcessor *)&v5 finalizeTap:a3];
+  [(MPCSingleTrackAudioProcessor *)&v5 finalizeTap:tap];
   v4 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C5C61000, v4, OS_LOG_TYPE_DEFAULT, "[AP] - %{public}@ - Finalizing tap", buf, 0xCu);
   }
 }
 
-- (void)processTap:(opaqueMTAudioProcessingTap *)a3 sampleIndex:(int64_t)a4 numberFrames:(int64_t)a5 flags:(unsigned int)a6 audioBufferList:(AudioBufferList *)a7 numberFramesOut:(int64_t *)a8 flagsOut:(unsigned int *)a9
+- (void)processTap:(opaqueMTAudioProcessingTap *)tap sampleIndex:(int64_t)index numberFrames:(int64_t)frames flags:(unsigned int)flags audioBufferList:(AudioBufferList *)list numberFramesOut:(int64_t *)out flagsOut:(unsigned int *)flagsOut
 {
   v34 = *MEMORY[0x1E69E9840];
-  v13 = [MEMORY[0x1E69708A8] standardUserDefaults];
-  v14 = [v13 disableAudioProcessing];
+  standardUserDefaults = [MEMORY[0x1E69708A8] standardUserDefaults];
+  disableAudioProcessing = [standardUserDefaults disableAudioProcessing];
 
-  if ((v14 & 1) == 0)
+  if ((disableAudioProcessing & 1) == 0)
   {
-    v15 = [(MPCWhiskyController *)self processor];
-    v16 = [v15 isEnabled];
+    processor = [(MPCWhiskyController *)self processor];
+    isEnabled = [processor isEnabled];
 
-    if (v16)
+    if (isEnabled)
     {
       v17 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
       processor = self->_processor;
       v29 = 0;
-      v19 = [(MPCVocalAttenuationProcessor *)processor processAudioBuffer:a7 sampleIndex:a4 numberFrames:a5 error:&v29];
+      v19 = [(MPCVocalAttenuationProcessor *)processor processAudioBuffer:list sampleIndex:index numberFrames:frames error:&v29];
       v20 = v29;
       if ((v19 & 1) == 0)
       {
@@ -827,7 +827,7 @@ void __36__MPCWhiskyController__updateState___block_invoke(uint64_t a1)
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v31 = self;
+          selfCopy = self;
           v32 = 2114;
           v33 = v20;
           _os_log_impl(&dword_1C5C61000, v21, OS_LOG_TYPE_ERROR, "[AP] - %{public}@ - Rendering error: %{public}@", buf, 0x16u);
@@ -837,31 +837,31 @@ void __36__MPCWhiskyController__updateState___block_invoke(uint64_t a1)
       v22 = (clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW) - v17) / 1000000000.0 * 1000.0;
       v23 = [MPCSample alloc];
       vocalLevel = self->_vocalLevel;
-      v25 = [(MPCSingleTrackAudioProcessor *)self playbackEngine];
-      v26 = [v25 player];
-      v27 = -[MPCSample initWithLevel:time:state:](v23, "initWithLevel:time:state:", [v26 state], vocalLevel, v22);
+      playbackEngine = [(MPCSingleTrackAudioProcessor *)self playbackEngine];
+      player = [playbackEngine player];
+      v27 = -[MPCSample initWithLevel:time:state:](v23, "initWithLevel:time:state:", [player state], vocalLevel, v22);
 
-      v28 = [(MPCWhiskyController *)self recordingSession];
-      [v28 recordSample:v27];
+      recordingSession = [(MPCWhiskyController *)self recordingSession];
+      [recordingSession recordSample:v27];
     }
   }
 }
 
-- (void)unprepareTap:(opaqueMTAudioProcessingTap *)a3
+- (void)unprepareTap:(opaqueMTAudioProcessingTap *)tap
 {
   v7 = *MEMORY[0x1E69E9840];
   v4 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C5C61000, v4, OS_LOG_TYPE_DEFAULT, "[AP] - %{public}@ - Unpreparing tap", &v5, 0xCu);
   }
 
   [(MPCWhiskyController *)self _tearDownTapData];
 }
 
-- (void)prepareTap:(opaqueMTAudioProcessingTap *)a3 maxFrames:(int64_t)a4 processingFormat:(const AudioStreamBasicDescription *)a5
+- (void)prepareTap:(opaqueMTAudioProcessingTap *)tap maxFrames:(int64_t)frames processingFormat:(const AudioStreamBasicDescription *)format
 {
   v20 = *MEMORY[0x1E69E9840];
   v8 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
@@ -872,10 +872,10 @@ void __36__MPCWhiskyController__updateState___block_invoke(uint64_t a1)
     _os_log_impl(&dword_1C5C61000, v8, OS_LOG_TYPE_DEFAULT, "[AP] - %{public}@ - Preparing tap", v18, 0xCu);
   }
 
-  v9 = [MEMORY[0x1E69708A8] standardUserDefaults];
-  v10 = [v9 disableAudioProcessing];
+  standardUserDefaults = [MEMORY[0x1E69708A8] standardUserDefaults];
+  disableAudioProcessing = [standardUserDefaults disableAudioProcessing];
 
-  if (v10)
+  if (disableAudioProcessing)
   {
     v11 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -890,17 +890,17 @@ LABEL_12:
 
   else
   {
-    v13 = [(MPCWhiskyController *)self processor];
-    v14 = [v13 isAvailable];
+    processor = [(MPCWhiskyController *)self processor];
+    isAvailable = [processor isAvailable];
 
-    if (v14)
+    if (isAvailable)
     {
-      v15 = [(MPCWhiskyController *)self processor];
-      v16 = *&a5->mBytesPerPacket;
-      v18[0] = *&a5->mSampleRate;
+      processor2 = [(MPCWhiskyController *)self processor];
+      v16 = *&format->mBytesPerPacket;
+      v18[0] = *&format->mSampleRate;
       v18[1] = v16;
-      v19 = *&a5->mBitsPerChannel;
-      v17 = [v15 isCompatibleWithAudioFormat:v18 maxFrames:a4];
+      v19 = *&format->mBitsPerChannel;
+      v17 = [processor2 isCompatibleWithAudioFormat:v18 maxFrames:frames];
 
       if (v17)
       {
@@ -944,19 +944,19 @@ LABEL_12:
   }
 }
 
-- (BOOL)shouldAttachAudioTapToItem:(id)a3
+- (BOOL)shouldAttachAudioTapToItem:(id)item
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   if (([(MPCWhiskyController *)self isVocalAttenuationAvailable]& 1) == 0)
   {
     v7 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138543618;
-      v14 = self;
+      selfCopy6 = self;
       v15 = 2114;
-      v16 = v4;
+      v16 = itemCopy;
       v8 = "[AP] - %{public}@ - Not attaching tap [VA is not available] - item: %{public}@";
       goto LABEL_13;
     }
@@ -966,18 +966,18 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v5 = [(MPCWhiskyController *)self processor];
-  v6 = [v5 isAvailable];
+  processor = [(MPCWhiskyController *)self processor];
+  isAvailable = [processor isAvailable];
 
-  if ((v6 & 1) == 0)
+  if ((isAvailable & 1) == 0)
   {
     v7 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138543618;
-      v14 = self;
+      selfCopy6 = self;
       v15 = 2114;
-      v16 = v4;
+      v16 = itemCopy;
       v8 = "[AP] - %{public}@ - Not attaching tap [processor is not ready] - item: %{public}@";
       goto LABEL_13;
     }
@@ -985,15 +985,15 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (([v4 supportsVocalAttenuation] & 1) == 0)
+  if (([itemCopy supportsVocalAttenuation] & 1) == 0)
   {
     v7 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138543618;
-      v14 = self;
+      selfCopy6 = self;
       v15 = 2114;
-      v16 = v4;
+      v16 = itemCopy;
       v8 = "[AP] - %{public}@ - Not attaching tap [VA not supported] - item: %{public}@";
       goto LABEL_13;
     }
@@ -1001,15 +1001,15 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if ([v4 loadedAudioAssetType] >= 3)
+  if ([itemCopy loadedAudioAssetType] >= 3)
   {
     v7 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138543618;
-      v14 = self;
+      selfCopy6 = self;
       v15 = 2114;
-      v16 = v4;
+      v16 = itemCopy;
       v8 = "[AP] - %{public}@ - Not attaching tap [hls playback] - item: %{public}@";
 LABEL_13:
       _os_log_impl(&dword_1C5C61000, v7, OS_LOG_TYPE_DEFAULT, v8, &v13, 0x16u);
@@ -1019,10 +1019,10 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v11 = [v4 isDownloadedAsset];
+  isDownloadedAsset = [itemCopy isDownloadedAsset];
   v7 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   v12 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v11)
+  if (isDownloadedAsset)
   {
     if (!v12)
     {
@@ -1030,9 +1030,9 @@ LABEL_13:
     }
 
     v13 = 138543618;
-    v14 = self;
+    selfCopy6 = self;
     v15 = 2114;
-    v16 = v4;
+    v16 = itemCopy;
     v8 = "[AP] - %{public}@ - Not attaching tap [download playback] - item: %{public}@";
     goto LABEL_13;
   }
@@ -1040,9 +1040,9 @@ LABEL_13:
   if (v12)
   {
     v13 = 138543618;
-    v14 = self;
+    selfCopy6 = self;
     v15 = 2114;
-    v16 = v4;
+    v16 = itemCopy;
     _os_log_impl(&dword_1C5C61000, v7, OS_LOG_TYPE_DEFAULT, "[AP] - %{public}@ - Attaching tap to %{public}@", &v13, 0x16u);
   }
 
@@ -1054,36 +1054,36 @@ LABEL_15:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = MPCWhiskyController;
   [(MPCSingleTrackAudioProcessor *)&v4 dealloc];
 }
 
-- (MPCWhiskyController)initWithPlaybackEngine:(id)a3 modelProvider:(id)a4 processor:(id)a5
+- (MPCWhiskyController)initWithPlaybackEngine:(id)engine modelProvider:(id)provider processor:(id)processor
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  engineCopy = engine;
+  providerCopy = provider;
+  processorCopy = processor;
   v37.receiver = self;
   v37.super_class = MPCWhiskyController;
-  v11 = [(MPCSingleTrackAudioProcessor *)&v37 initWithPlaybackEngine:v8];
+  v11 = [(MPCSingleTrackAudioProcessor *)&v37 initWithPlaybackEngine:engineCopy];
   v12 = v11;
   if (v11)
   {
     v11->_state = 0;
-    objc_storeStrong(&v11->_modelProvider, a4);
-    objc_storeStrong(&v12->_processor, a5);
-    [v8 addEngineObserver:v12];
-    v13 = [MEMORY[0x1E69708A8] standardUserDefaults];
-    [v13 minVocalLevel];
+    objc_storeStrong(&v11->_modelProvider, provider);
+    objc_storeStrong(&v12->_processor, processor);
+    [engineCopy addEngineObserver:v12];
+    standardUserDefaults = [MEMORY[0x1E69708A8] standardUserDefaults];
+    [standardUserDefaults minVocalLevel];
     v12->_minVocalLevel = v14;
 
     v12->_maxVocalLevel = 100.0;
-    v15 = [MEMORY[0x1E69708A8] standardUserDefaults];
-    [v15 defaultVocalLevel];
+    standardUserDefaults2 = [MEMORY[0x1E69708A8] standardUserDefaults];
+    [standardUserDefaults2 defaultVocalLevel];
     v12->_vocalLevel = v16;
 
     v17 = dispatch_queue_create("com.apple.MediaPlaybackCore.VAControllerSetupQueue", 0);
@@ -1099,10 +1099,10 @@ LABEL_15:
     {
       v22 = 100.0 - v12->_minVocalLevel;
       v23 = [objc_alloc(MEMORY[0x1E6958418]) initWithCommonFormat:1 sampleRate:2 channels:0 interleaved:44100.0];
-      v24 = [v23 streamDescription];
-      v25 = *v24;
-      v26 = *(v24 + 16);
-      v39 = *(v24 + 32);
+      streamDescription = [v23 streamDescription];
+      v25 = *streamDescription;
+      v26 = *(streamDescription + 16);
+      v39 = *(streamDescription + 32);
       v38[0] = v25;
       v38[1] = v26;
       *&v25 = v22;
@@ -1113,11 +1113,11 @@ LABEL_15:
     v12->_processor = v21;
 
     v28 = objc_opt_new();
-    v29 = [MEMORY[0x1E69E4428] sharedMonitor];
-    [v28 setThermalMonitor:v29];
+    mEMORY[0x1E69E4428] = [MEMORY[0x1E69E4428] sharedMonitor];
+    [v28 setThermalMonitor:mEMORY[0x1E69E4428]];
 
-    v30 = [MEMORY[0x1E696AE30] processInfo];
-    [v28 setLowPowerModeMonitor:v30];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [v28 setLowPowerModeMonitor:processInfo];
 
     [(MPCVocalAttenuationProcessor *)v12->_processor renderingLimit];
     [v28 setRenderingTimeLimit:?];
@@ -1137,12 +1137,12 @@ LABEL_15:
   return v12;
 }
 
-- (MPCWhiskyController)initWithPlaybackEngine:(id)a3
+- (MPCWhiskyController)initWithPlaybackEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v5 = objc_opt_new();
   v6 = objc_opt_new();
-  v7 = [(MPCWhiskyController *)self initWithPlaybackEngine:v4 modelProvider:v5 processor:v6];
+  v7 = [(MPCWhiskyController *)self initWithPlaybackEngine:engineCopy modelProvider:v5 processor:v6];
 
   return v7;
 }
@@ -1150,25 +1150,25 @@ LABEL_15:
 - (void)prepareForProcessing
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v2 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v6 = a1;
+      selfCopy = self;
       _os_log_impl(&dword_1C5C61000, v2, OS_LOG_TYPE_DEFAULT, "[AP] - %{public}@ - Preparing for processing", buf, 0xCu);
     }
 
-    if (a1[9] == 2)
+    if (self[9] == 2)
     {
-      [a1 _updateState:3];
-      v3 = a1[4];
+      [self _updateState:3];
+      v3 = self[4];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __43__MPCWhiskyController_prepareForProcessing__block_invoke;
       block[3] = &unk_1E8239298;
-      block[4] = a1;
+      block[4] = self;
       dispatch_async(v3, block);
     }
   }

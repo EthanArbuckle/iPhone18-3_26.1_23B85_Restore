@@ -1,32 +1,32 @@
 @interface FCPuzzleTypeFetchOperation
 - (FCPuzzleTypeFetchOperation)init;
-- (FCPuzzleTypeFetchOperation)initWithPuzzleTypeIDs:(id)a3 puzzleTypeRecordSource:(id)a4 assetManager:(id)a5 context:(id)a6 delegate:(id)a7;
+- (FCPuzzleTypeFetchOperation)initWithPuzzleTypeIDs:(id)ds puzzleTypeRecordSource:(id)source assetManager:(id)manager context:(id)context delegate:(id)delegate;
 - (FCPuzzleTypeFetchOperationDelegate)delegate;
 - (id)completeFetchOperation;
-- (id)fetchPuzzleTypeRecordsWithCompletion:(id)a3;
-- (void)customizeChildOperation:(id)a3 forFetchStep:(SEL)a4;
+- (id)fetchPuzzleTypeRecordsWithCompletion:(id)completion;
+- (void)customizeChildOperation:(id)operation forFetchStep:(SEL)step;
 @end
 
 @implementation FCPuzzleTypeFetchOperation
 
 - (id)completeFetchOperation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(FCPuzzleTypeFetchOperation *)self heldPuzzleTypeRecords];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  heldPuzzleTypeRecords = [(FCPuzzleTypeFetchOperation *)self heldPuzzleTypeRecords];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __52__FCPuzzleTypeFetchOperation_completeFetchOperation__block_invoke;
   v13 = &unk_1E7C44928;
-  v14 = self;
-  v5 = v3;
+  selfCopy = self;
+  v5 = dictionary;
   v15 = v5;
-  [v4 enumerateRecordsAndInterestTokensWithBlock:&v10];
+  [heldPuzzleTypeRecords enumerateRecordsAndInterestTokensWithBlock:&v10];
 
   v6 = [(FCPuzzleTypeFetchOperation *)self delegate:v10];
   if (v6)
   {
-    v7 = [v5 allValues];
-    [v6 puzzleTypeFetchOperation:self didFetchPuzzleTypes:v7];
+    allValues = [v5 allValues];
+    [v6 puzzleTypeFetchOperation:self didFetchPuzzleTypes:allValues];
   }
 
   v8 = v5;
@@ -81,50 +81,50 @@ void __52__FCPuzzleTypeFetchOperation_completeFetchOperation__block_invoke(uint6
   objc_exception_throw(v6);
 }
 
-- (FCPuzzleTypeFetchOperation)initWithPuzzleTypeIDs:(id)a3 puzzleTypeRecordSource:(id)a4 assetManager:(id)a5 context:(id)a6 delegate:(id)a7
+- (FCPuzzleTypeFetchOperation)initWithPuzzleTypeIDs:(id)ds puzzleTypeRecordSource:(id)source assetManager:(id)manager context:(id)context delegate:(id)delegate
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dsCopy = ds;
+  sourceCopy = source;
+  managerCopy = manager;
+  contextCopy = context;
+  delegateCopy = delegate;
   v21.receiver = self;
   v21.super_class = FCPuzzleTypeFetchOperation;
   v17 = [(FCMultiStepFetchOperation *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_puzzleTypeIDs, a3);
-    objc_storeStrong(&v18->_puzzleTypeRecordSource, a4);
-    objc_storeStrong(&v18->_assetManager, a5);
-    objc_storeStrong(&v18->_context, a6);
-    objc_storeWeak(&v18->_delegate, v16);
+    objc_storeStrong(&v17->_puzzleTypeIDs, ds);
+    objc_storeStrong(&v18->_puzzleTypeRecordSource, source);
+    objc_storeStrong(&v18->_assetManager, manager);
+    objc_storeStrong(&v18->_context, context);
+    objc_storeWeak(&v18->_delegate, delegateCopy);
     [(FCMultiStepFetchOperation *)v18 addFetchStep:sel_fetchPuzzleTypeRecordsWithCompletion_];
   }
 
   return v18;
 }
 
-- (void)customizeChildOperation:(id)a3 forFetchStep:(SEL)a4
+- (void)customizeChildOperation:(id)operation forFetchStep:(SEL)step
 {
-  v6 = a3;
+  operationCopy = operation;
   v7.receiver = self;
   v7.super_class = FCPuzzleTypeFetchOperation;
-  [(FCMultiStepFetchOperation *)&v7 customizeChildOperation:v6 forFetchStep:a4];
-  if (sel_fetchPuzzleTypeRecordsWithCompletion_ == a4 && [(FCPuzzleTypeFetchOperation *)self overrideTargetsCachePolicy])
+  [(FCMultiStepFetchOperation *)&v7 customizeChildOperation:operationCopy forFetchStep:step];
+  if (sel_fetchPuzzleTypeRecordsWithCompletion_ == step && [(FCPuzzleTypeFetchOperation *)self overrideTargetsCachePolicy])
   {
-    [v6 setCachePolicy:{-[FCPuzzleTypeFetchOperation targetsCachePolicy](self, "targetsCachePolicy")}];
+    [operationCopy setCachePolicy:{-[FCPuzzleTypeFetchOperation targetsCachePolicy](self, "targetsCachePolicy")}];
     [(FCPuzzleTypeFetchOperation *)self targetsMaximumCachedAge];
-    [v6 setMaximumCachedAge:?];
+    [operationCopy setMaximumCachedAge:?];
   }
 }
 
-- (id)fetchPuzzleTypeRecordsWithCompletion:(id)a3
+- (id)fetchPuzzleTypeRecordsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(FCPuzzleTypeFetchOperation *)self puzzleTypeRecordSource];
-  v6 = [(FCPuzzleTypeFetchOperation *)self puzzleTypeIDs];
-  v7 = [v5 fetchOperationForRecordsWithIDs:v6];
+  completionCopy = completion;
+  puzzleTypeRecordSource = [(FCPuzzleTypeFetchOperation *)self puzzleTypeRecordSource];
+  puzzleTypeIDs = [(FCPuzzleTypeFetchOperation *)self puzzleTypeIDs];
+  v7 = [puzzleTypeRecordSource fetchOperationForRecordsWithIDs:puzzleTypeIDs];
 
   [v7 setCachePolicy:{-[FCFetchOperation cachePolicy](self, "cachePolicy")}];
   v10[0] = MEMORY[0x1E69E9820];
@@ -132,8 +132,8 @@ void __52__FCPuzzleTypeFetchOperation_completeFetchOperation__block_invoke(uint6
   v10[2] = __67__FCPuzzleTypeFetchOperation_fetchPuzzleTypeRecordsWithCompletion___block_invoke;
   v10[3] = &unk_1E7C37B98;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = completionCopy;
+  v8 = completionCopy;
   [v7 setFetchCompletionBlock:v10];
 
   return v7;

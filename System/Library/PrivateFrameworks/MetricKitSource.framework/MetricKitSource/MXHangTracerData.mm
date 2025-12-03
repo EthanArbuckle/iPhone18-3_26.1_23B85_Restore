@@ -1,24 +1,24 @@
 @interface MXHangTracerData
-- (MXHangTracerData)initWithCoder:(id)a3;
-- (id)initPayloadDataWithDiagnostics:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (MXHangTracerData)initWithCoder:(id)coder;
+- (id)initPayloadDataWithDiagnostics:(id)diagnostics;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MXHangTracerData
 
-- (id)initPayloadDataWithDiagnostics:(id)a3
+- (id)initPayloadDataWithDiagnostics:(id)diagnostics
 {
-  v4 = a3;
+  diagnosticsCopy = diagnostics;
   v11.receiver = self;
   v11.super_class = MXHangTracerData;
   v5 = [(MXSourceData *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"hangDiagnostic"];
+    v6 = [diagnosticsCopy objectForKeyedSubscript:@"hangDiagnostic"];
     hangDiagnostic = v5->_hangDiagnostic;
     v5->_hangDiagnostic = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"appLaunchDiagnostic"];
+    v8 = [diagnosticsCopy objectForKeyedSubscript:@"appLaunchDiagnostic"];
     appLaunchDiagnostic = v5->_appLaunchDiagnostic;
     v5->_appLaunchDiagnostic = v8;
   }
@@ -26,27 +26,27 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   hangDiagnostic = self->_hangDiagnostic;
-  v5 = a3;
-  [v5 encodeObject:hangDiagnostic forKey:@"hangDiagnostic"];
-  [v5 encodeObject:self->_appLaunchDiagnostic forKey:@"appLaunchDiagnostic"];
+  coderCopy = coder;
+  [coderCopy encodeObject:hangDiagnostic forKey:@"hangDiagnostic"];
+  [coderCopy encodeObject:self->_appLaunchDiagnostic forKey:@"appLaunchDiagnostic"];
 }
 
-- (MXHangTracerData)initWithCoder:(id)a3
+- (MXHangTracerData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = MXHangTracerData;
   v5 = [(MXSourceData *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hangDiagnostic"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hangDiagnostic"];
     hangDiagnostic = v5->_hangDiagnostic;
     v5->_hangDiagnostic = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appLaunchDiagnostic"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appLaunchDiagnostic"];
     appLaunchDiagnostic = v5->_appLaunchDiagnostic;
     v5->_appLaunchDiagnostic = v8;
   }

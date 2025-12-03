@@ -1,16 +1,16 @@
 @interface AlertTemplateViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
 @end
 
 @implementation AlertTemplateViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VideosUI.AlertTemplateView" hasSwiftField:@"collectionView" withSwiftType:"VUILegacyCollectionView"];
-  [v3 validateClass:@"VideosUI.AlertTemplateView" hasSwiftField:@"aboveCollectionComponents" withSwiftType:{"Array<(UIView, ViewLayout)>"}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VideosUI.AlertTemplateView" hasSwiftField:@"collectionView" withSwiftType:"VUILegacyCollectionView"];
+  [validationsCopy validateClass:@"VideosUI.AlertTemplateView" hasSwiftField:@"aboveCollectionComponents" withSwiftType:{"Array<(UIView, ViewLayout)>"}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

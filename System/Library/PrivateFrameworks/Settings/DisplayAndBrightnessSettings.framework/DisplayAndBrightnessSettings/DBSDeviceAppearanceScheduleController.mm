@@ -1,25 +1,25 @@
 @interface DBSDeviceAppearanceScheduleController
-- (DBSDeviceAppearanceScheduleController)initWithNibName:(id)a3 bundle:(id)a4;
+- (DBSDeviceAppearanceScheduleController)initWithNibName:(id)name bundle:(id)bundle;
 - (UISUserInterfaceStyleMode)_styleMode;
 - (id)_darkAppearanceTimeString;
 - (id)_lightAppearanceTimeString;
-- (id)datePickerForSpecifier:(id)a3;
+- (id)datePickerForSpecifier:(id)specifier;
 - (id)specifiers;
-- (void)datePickerChanged:(id)a3;
-- (void)setSpecifier:(id)a3;
-- (void)showScheduleSpecifiers:(BOOL)a3 animated:(BOOL)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)datePickerChanged:(id)changed;
+- (void)setSpecifier:(id)specifier;
+- (void)showScheduleSpecifiers:(BOOL)specifiers animated:(BOOL)animated;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)willResignActive;
 @end
 
 @implementation DBSDeviceAppearanceScheduleController
 
-- (DBSDeviceAppearanceScheduleController)initWithNibName:(id)a3 bundle:(id)a4
+- (DBSDeviceAppearanceScheduleController)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = DBSDeviceAppearanceScheduleController;
-  v4 = [(DBSDeviceAppearanceScheduleController *)&v8 initWithNibName:a3 bundle:a4];
+  v4 = [(DBSDeviceAppearanceScheduleController *)&v8 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277CCA968]);
@@ -33,26 +33,26 @@
   return v4;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v17[1] = *MEMORY[0x277D85DE8];
   v16.receiver = self;
   v16.super_class = DBSDeviceAppearanceScheduleController;
-  [(DBSDeviceAppearanceScheduleController *)&v16 viewDidAppear:a3];
+  [(DBSDeviceAppearanceScheduleController *)&v16 viewDidAppear:appear];
   v4 = [MEMORY[0x277CBEBC0] URLWithString:@"settings-navigation://com.apple.Settings.Display/APPEARANCE_OPTIONS"];
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x277CCAEB8]);
-    v6 = [MEMORY[0x277CBEAF8] currentLocale];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
     v7 = DBS_BundleForDisplayAndBrightnessSettingsFramework();
-    v8 = [v7 bundleURL];
-    v9 = [v5 initWithKey:@"DISPLAY_AND_BRIGHTNESS" defaultValue:0 table:@"Display" locale:v6 bundleURL:v8];
+    bundleURL = [v7 bundleURL];
+    v9 = [v5 initWithKey:@"DISPLAY_AND_BRIGHTNESS" defaultValue:0 table:@"Display" locale:currentLocale bundleURL:bundleURL];
 
     v10 = objc_alloc(MEMORY[0x277CCAEB8]);
-    v11 = [MEMORY[0x277CBEAF8] currentLocale];
+    currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
     v12 = DBS_BundleForDisplayAndBrightnessSettingsFramework();
-    v13 = [v12 bundleURL];
-    v14 = [v10 initWithKey:@"APPEARANCE_SCHEDULE" defaultValue:0 table:@"DeviceAppearanceSchedule" locale:v11 bundleURL:v13];
+    bundleURL2 = [v12 bundleURL];
+    v14 = [v10 initWithKey:@"APPEARANCE_SCHEDULE" defaultValue:0 table:@"DeviceAppearanceSchedule" locale:currentLocale2 bundleURL:bundleURL2];
 
     v17[0] = v9;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
@@ -60,21 +60,21 @@
   }
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v6.receiver = self;
   v6.super_class = DBSDeviceAppearanceScheduleController;
-  v4 = a3;
-  [(DBSDeviceAppearanceScheduleController *)&v6 setSpecifier:v4];
-  v5 = [v4 objectForKeyedSubscript:{DBSStyleModeKey[0], v6.receiver, v6.super_class}];
+  specifierCopy = specifier;
+  [(DBSDeviceAppearanceScheduleController *)&v6 setSpecifier:specifierCopy];
+  v5 = [specifierCopy objectForKeyedSubscript:{DBSStyleModeKey[0], v6.receiver, v6.super_class}];
 
   [(DBSDeviceAppearanceScheduleController *)self set_styleMode:v5];
 }
 
 - (void)willResignActive
 {
-  v2 = [(DBSDeviceAppearanceScheduleController *)self view];
-  [v2 endEditing:1];
+  view = [(DBSDeviceAppearanceScheduleController *)self view];
+  [view endEditing:1];
 }
 
 - (id)specifiers
@@ -98,12 +98,12 @@
 
     v10 = [v5 specifierForID:@"FROM_SUNSET_TO_SUNRISE"];
     v11 = [v5 specifierForID:@"SCHEDULE"];
-    v12 = [(DBSDeviceAppearanceScheduleController *)self _styleMode];
-    v13 = [v12 suggestedAutomaticModeValue];
+    _styleMode = [(DBSDeviceAppearanceScheduleController *)self _styleMode];
+    suggestedAutomaticModeValue = [_styleMode suggestedAutomaticModeValue];
 
     v46 = v11;
     v47 = v10;
-    if (v13 == 100)
+    if (suggestedAutomaticModeValue == 100)
     {
       v14 = v10;
     }
@@ -114,63 +114,63 @@
     }
 
     v15 = v14;
-    v16 = [(DBSDeviceAppearanceScheduleController *)self _radioGroup];
+    _radioGroup = [(DBSDeviceAppearanceScheduleController *)self _radioGroup];
     v45 = v15;
-    [v16 setProperty:v15 forKey:*MEMORY[0x277D40090]];
+    [_radioGroup setProperty:v15 forKey:*MEMORY[0x277D40090]];
 
-    v17 = [(DBSDeviceAppearanceScheduleController *)self _styleMode];
-    -[DBSDeviceAppearanceScheduleController set_showingScheduleSpecifiers:](self, "set_showingScheduleSpecifiers:", [v17 modeValue] == 102);
+    _styleMode2 = [(DBSDeviceAppearanceScheduleController *)self _styleMode];
+    -[DBSDeviceAppearanceScheduleController set_showingScheduleSpecifiers:](self, "set_showingScheduleSpecifiers:", [_styleMode2 modeValue] == 102);
 
     v18 = MEMORY[0x277D3FAD8];
     v19 = DBS_LocalizedStringForDeviceAppearance(@"LIGHT");
     v20 = [v18 preferenceSpecifierNamed:v19 target:self set:0 get:0 detail:0 cell:4 edit:0];
     [(DBSDeviceAppearanceScheduleController *)self set_lightAppearanceTimePickerSpecifier:v20];
 
-    v21 = [(DBSDeviceAppearanceScheduleController *)self _lightAppearanceTimePickerSpecifier];
+    _lightAppearanceTimePickerSpecifier = [(DBSDeviceAppearanceScheduleController *)self _lightAppearanceTimePickerSpecifier];
     v22 = *MEMORY[0x277D3FEE8];
-    [v21 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FEE8]];
+    [_lightAppearanceTimePickerSpecifier setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FEE8]];
 
-    v23 = [(DBSDeviceAppearanceScheduleController *)self _lightAppearanceTimePickerSpecifier];
-    [v23 setIdentifier:@"STARTS"];
+    _lightAppearanceTimePickerSpecifier2 = [(DBSDeviceAppearanceScheduleController *)self _lightAppearanceTimePickerSpecifier];
+    [_lightAppearanceTimePickerSpecifier2 setIdentifier:@"STARTS"];
 
-    v24 = [(DBSDeviceAppearanceScheduleController *)self _lightAppearanceTimePickerSpecifier];
+    _lightAppearanceTimePickerSpecifier3 = [(DBSDeviceAppearanceScheduleController *)self _lightAppearanceTimePickerSpecifier];
     v25 = MEMORY[0x277CCABB0];
     [MEMORY[0x277D3F9E0] preferredHeight];
     v26 = [v25 numberWithDouble:?];
     v27 = *MEMORY[0x277D40140];
-    [v24 setProperty:v26 forKey:*MEMORY[0x277D40140]];
+    [_lightAppearanceTimePickerSpecifier3 setProperty:v26 forKey:*MEMORY[0x277D40140]];
 
-    v28 = [(DBSDeviceAppearanceScheduleController *)self _lightAppearanceTimePickerSpecifier];
+    _lightAppearanceTimePickerSpecifier4 = [(DBSDeviceAppearanceScheduleController *)self _lightAppearanceTimePickerSpecifier];
     v29 = objc_opt_class();
     v30 = *MEMORY[0x277D3FE58];
-    [v28 setProperty:v29 forKey:*MEMORY[0x277D3FE58]];
+    [_lightAppearanceTimePickerSpecifier4 setProperty:v29 forKey:*MEMORY[0x277D3FE58]];
 
     v31 = MEMORY[0x277D3FAD8];
     v32 = DBS_LocalizedStringForDeviceAppearance(@"DARK");
     v33 = [v31 preferenceSpecifierNamed:v32 target:self set:0 get:0 detail:0 cell:4 edit:0];
     [(DBSDeviceAppearanceScheduleController *)self set_darkAppearanceTimePickerSpecifier:v33];
 
-    v34 = [(DBSDeviceAppearanceScheduleController *)self _darkAppearanceTimePickerSpecifier];
-    [v34 setProperty:MEMORY[0x277CBEC38] forKey:v22];
+    _darkAppearanceTimePickerSpecifier = [(DBSDeviceAppearanceScheduleController *)self _darkAppearanceTimePickerSpecifier];
+    [_darkAppearanceTimePickerSpecifier setProperty:MEMORY[0x277CBEC38] forKey:v22];
 
-    v35 = [(DBSDeviceAppearanceScheduleController *)self _darkAppearanceTimePickerSpecifier];
-    [v35 setIdentifier:@"ENDS"];
+    _darkAppearanceTimePickerSpecifier2 = [(DBSDeviceAppearanceScheduleController *)self _darkAppearanceTimePickerSpecifier];
+    [_darkAppearanceTimePickerSpecifier2 setIdentifier:@"ENDS"];
 
-    v36 = [(DBSDeviceAppearanceScheduleController *)self _darkAppearanceTimePickerSpecifier];
+    _darkAppearanceTimePickerSpecifier3 = [(DBSDeviceAppearanceScheduleController *)self _darkAppearanceTimePickerSpecifier];
     v37 = MEMORY[0x277CCABB0];
     [MEMORY[0x277D3F9E0] preferredHeight];
     v38 = [v37 numberWithDouble:?];
-    [v36 setProperty:v38 forKey:v27];
+    [_darkAppearanceTimePickerSpecifier3 setProperty:v38 forKey:v27];
 
-    v39 = [(DBSDeviceAppearanceScheduleController *)self _darkAppearanceTimePickerSpecifier];
-    [v39 setProperty:objc_opt_class() forKey:v30];
+    _darkAppearanceTimePickerSpecifier4 = [(DBSDeviceAppearanceScheduleController *)self _darkAppearanceTimePickerSpecifier];
+    [_darkAppearanceTimePickerSpecifier4 setProperty:objc_opt_class() forKey:v30];
 
     if ([(DBSDeviceAppearanceScheduleController *)self _showingScheduleSpecifiers])
     {
-      v40 = [(DBSDeviceAppearanceScheduleController *)self _lightAppearanceTimePickerSpecifier];
-      v49[0] = v40;
-      v41 = [(DBSDeviceAppearanceScheduleController *)self _darkAppearanceTimePickerSpecifier];
-      v49[1] = v41;
+      _lightAppearanceTimePickerSpecifier5 = [(DBSDeviceAppearanceScheduleController *)self _lightAppearanceTimePickerSpecifier];
+      v49[0] = _lightAppearanceTimePickerSpecifier5;
+      _darkAppearanceTimePickerSpecifier5 = [(DBSDeviceAppearanceScheduleController *)self _darkAppearanceTimePickerSpecifier];
+      v49[1] = _darkAppearanceTimePickerSpecifier5;
       v42 = [MEMORY[0x277CBEA60] arrayWithObjects:v49 count:2];
       [v5 addObjectsFromArray:v42];
     }
@@ -184,24 +184,24 @@
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DBSDeviceAppearanceScheduleController *)self specifierAtIndexPath:v6];
-  v9 = [v8 identifier];
-  v10 = [v9 isEqualToString:@"SCHEDULE"];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(DBSDeviceAppearanceScheduleController *)self specifierAtIndexPath:pathCopy];
+  identifier = [v8 identifier];
+  v10 = [identifier isEqualToString:@"SCHEDULE"];
 
   if (v10)
   {
-    v11 = [(DBSDeviceAppearanceScheduleController *)self _styleMode];
-    [v11 setModeValue:102];
+    _styleMode = [(DBSDeviceAppearanceScheduleController *)self _styleMode];
+    [_styleMode setModeValue:102];
 
-    v12 = [(DBSDeviceAppearanceScheduleController *)self _styleMode];
-    v13 = v12;
-    if (v12)
+    _styleMode2 = [(DBSDeviceAppearanceScheduleController *)self _styleMode];
+    v13 = _styleMode2;
+    if (_styleMode2)
     {
-      [v12 customSchedule];
+      [_styleMode2 customSchedule];
     }
 
     else
@@ -217,58 +217,58 @@
 
     if (v18)
     {
-      v16 = [(DBSDeviceAppearanceScheduleController *)self _styleMode];
+      _styleMode3 = [(DBSDeviceAppearanceScheduleController *)self _styleMode];
       v19 = *(MEMORY[0x277D77850] + 16);
       v22 = *MEMORY[0x277D77850];
       v23 = v19;
-      [v16 setCustomSchedule:&v22];
+      [_styleMode3 setCustomSchedule:&v22];
       goto LABEL_9;
     }
   }
 
   else
   {
-    v14 = [v8 identifier];
-    v15 = [v14 isEqualToString:@"FROM_SUNSET_TO_SUNRISE"];
+    identifier2 = [v8 identifier];
+    v15 = [identifier2 isEqualToString:@"FROM_SUNSET_TO_SUNRISE"];
 
     if (v15)
     {
-      v16 = [(DBSDeviceAppearanceScheduleController *)self _styleMode];
-      [v16 setModeValue:100];
+      _styleMode3 = [(DBSDeviceAppearanceScheduleController *)self _styleMode];
+      [_styleMode3 setModeValue:100];
 LABEL_9:
     }
   }
 
-  v20 = [(DBSDeviceAppearanceScheduleController *)self _styleMode];
-  -[DBSDeviceAppearanceScheduleController showScheduleSpecifiers:animated:](self, "showScheduleSpecifiers:animated:", [v20 modeValue] == 102, 1);
+  _styleMode4 = [(DBSDeviceAppearanceScheduleController *)self _styleMode];
+  -[DBSDeviceAppearanceScheduleController showScheduleSpecifiers:animated:](self, "showScheduleSpecifiers:animated:", [_styleMode4 modeValue] == 102, 1);
 
   v21[0].receiver = self;
   v21[0].super_class = DBSDeviceAppearanceScheduleController;
-  [(objc_super *)v21 tableView:v7 didSelectRowAtIndexPath:v6];
+  [(objc_super *)v21 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 }
 
-- (void)showScheduleSpecifiers:(BOOL)a3 animated:(BOOL)a4
+- (void)showScheduleSpecifiers:(BOOL)specifiers animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  specifiersCopy = specifiers;
   v10[2] = *MEMORY[0x277D85DE8];
-  if ([(DBSDeviceAppearanceScheduleController *)self _showingScheduleSpecifiers]!= a3)
+  if ([(DBSDeviceAppearanceScheduleController *)self _showingScheduleSpecifiers]!= specifiers)
   {
-    [(DBSDeviceAppearanceScheduleController *)self set_showingScheduleSpecifiers:v5];
-    v7 = [(DBSDeviceAppearanceScheduleController *)self _lightAppearanceTimePickerSpecifier];
-    v10[0] = v7;
-    v8 = [(DBSDeviceAppearanceScheduleController *)self _darkAppearanceTimePickerSpecifier];
-    v10[1] = v8;
+    [(DBSDeviceAppearanceScheduleController *)self set_showingScheduleSpecifiers:specifiersCopy];
+    _lightAppearanceTimePickerSpecifier = [(DBSDeviceAppearanceScheduleController *)self _lightAppearanceTimePickerSpecifier];
+    v10[0] = _lightAppearanceTimePickerSpecifier;
+    _darkAppearanceTimePickerSpecifier = [(DBSDeviceAppearanceScheduleController *)self _darkAppearanceTimePickerSpecifier];
+    v10[1] = _darkAppearanceTimePickerSpecifier;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:2];
 
-    if (v5)
+    if (specifiersCopy)
     {
-      [(DBSDeviceAppearanceScheduleController *)self insertContiguousSpecifiers:v9 atIndex:[(DBSDeviceAppearanceScheduleController *)self indexOfSpecifierID:@"TIME_GROUP"]+ 1 animated:v4];
+      [(DBSDeviceAppearanceScheduleController *)self insertContiguousSpecifiers:v9 atIndex:[(DBSDeviceAppearanceScheduleController *)self indexOfSpecifierID:@"TIME_GROUP"]+ 1 animated:animatedCopy];
     }
 
     else
     {
-      [(DBSDeviceAppearanceScheduleController *)self removeContiguousSpecifiers:v9 animated:v4];
+      [(DBSDeviceAppearanceScheduleController *)self removeContiguousSpecifiers:v9 animated:animatedCopy];
     }
   }
 }
@@ -276,11 +276,11 @@ LABEL_9:
 - (id)_lightAppearanceTimeString
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-  v4 = [(DBSDeviceAppearanceScheduleController *)self _styleMode];
-  v5 = v4;
-  if (v4)
+  _styleMode = [(DBSDeviceAppearanceScheduleController *)self _styleMode];
+  v5 = _styleMode;
+  if (_styleMode)
   {
-    [v4 customSchedule];
+    [_styleMode customSchedule];
     v6 = v19;
   }
 
@@ -293,11 +293,11 @@ LABEL_9:
 
   [v3 setHour:v6];
 
-  v7 = [(DBSDeviceAppearanceScheduleController *)self _styleMode];
-  v8 = v7;
-  if (v7)
+  _styleMode2 = [(DBSDeviceAppearanceScheduleController *)self _styleMode];
+  v8 = _styleMode2;
+  if (_styleMode2)
   {
-    [v7 customSchedule];
+    [_styleMode2 customSchedule];
     v9 = *(&v17 + 1);
   }
 
@@ -313,8 +313,8 @@ LABEL_9:
   v10 = objc_alloc(MEMORY[0x277CBEA80]);
   v11 = [v10 initWithCalendarIdentifier:*MEMORY[0x277CBE5C0]];
   v12 = [v11 dateFromComponents:v3];
-  v13 = [(DBSDeviceAppearanceScheduleController *)self _timeFormatter];
-  v14 = [v13 stringFromDate:v12];
+  _timeFormatter = [(DBSDeviceAppearanceScheduleController *)self _timeFormatter];
+  v14 = [_timeFormatter stringFromDate:v12];
 
   return v14;
 }
@@ -322,11 +322,11 @@ LABEL_9:
 - (id)_darkAppearanceTimeString
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-  v4 = [(DBSDeviceAppearanceScheduleController *)self _styleMode];
-  v5 = v4;
-  if (v4)
+  _styleMode = [(DBSDeviceAppearanceScheduleController *)self _styleMode];
+  v5 = _styleMode;
+  if (_styleMode)
   {
-    [v4 customSchedule];
+    [_styleMode customSchedule];
     v6 = v18;
   }
 
@@ -339,11 +339,11 @@ LABEL_9:
 
   [v3 setHour:v6];
 
-  v7 = [(DBSDeviceAppearanceScheduleController *)self _styleMode];
-  v8 = v7;
-  if (v7)
+  _styleMode2 = [(DBSDeviceAppearanceScheduleController *)self _styleMode];
+  v8 = _styleMode2;
+  if (_styleMode2)
   {
-    [v7 customSchedule];
+    [_styleMode2 customSchedule];
     v9 = *(&v16 + 1);
   }
 
@@ -359,28 +359,28 @@ LABEL_9:
   v10 = objc_alloc(MEMORY[0x277CBEA80]);
   v11 = [v10 initWithCalendarIdentifier:*MEMORY[0x277CBE5C0]];
   v12 = [v11 dateFromComponents:v3];
-  v13 = [(DBSDeviceAppearanceScheduleController *)self _timeFormatter];
-  v14 = [v13 stringFromDate:v12];
+  _timeFormatter = [(DBSDeviceAppearanceScheduleController *)self _timeFormatter];
+  v14 = [_timeFormatter stringFromDate:v12];
 
   return v14;
 }
 
-- (void)datePickerChanged:(id)a3
+- (void)datePickerChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 calendar];
-  v6 = [v4 date];
-  v7 = [v5 components:96 fromDate:v6];
+  changedCopy = changed;
+  calendar = [changedCopy calendar];
+  date = [changedCopy date];
+  v7 = [calendar components:96 fromDate:date];
 
-  v8 = [v7 hour];
-  v9 = [v7 minute];
+  hour = [v7 hour];
+  minute = [v7 minute];
   v20 = 0u;
   v21 = 0u;
-  v10 = [(DBSDeviceAppearanceScheduleController *)self _styleMode];
-  v11 = v10;
-  if (v10)
+  _styleMode = [(DBSDeviceAppearanceScheduleController *)self _styleMode];
+  v11 = _styleMode;
+  if (_styleMode)
   {
-    [v10 customSchedule];
+    [_styleMode customSchedule];
   }
 
   else
@@ -389,51 +389,51 @@ LABEL_9:
     v21 = 0u;
   }
 
-  v12 = v8;
+  v12 = hour;
 
-  v13 = [(DBSDeviceAppearanceScheduleController *)self _lightAppearanceTimePicker];
+  _lightAppearanceTimePicker = [(DBSDeviceAppearanceScheduleController *)self _lightAppearanceTimePicker];
 
-  if (v13 == v4)
+  if (_lightAppearanceTimePicker == changedCopy)
   {
     v15 = &v21 + 8;
     *&v21 = v12;
     goto LABEL_8;
   }
 
-  v14 = [(DBSDeviceAppearanceScheduleController *)self _darkAppearanceTimePicker];
+  _darkAppearanceTimePicker = [(DBSDeviceAppearanceScheduleController *)self _darkAppearanceTimePicker];
 
-  if (v14 == v4)
+  if (_darkAppearanceTimePicker == changedCopy)
   {
     v15 = &v20 + 8;
     *&v20 = v12;
 LABEL_8:
-    *v15 = v9;
+    *v15 = minute;
   }
 
   v18 = v20;
   v19 = v21;
-  v16 = [(DBSDeviceAppearanceScheduleController *)self _styleMode];
+  _styleMode2 = [(DBSDeviceAppearanceScheduleController *)self _styleMode];
   v17[0] = v18;
   v17[1] = v19;
-  [v16 setCustomSchedule:v17];
+  [_styleMode2 setCustomSchedule:v17];
 }
 
-- (id)datePickerForSpecifier:(id)a3
+- (id)datePickerForSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v5 = objc_alloc(MEMORY[0x277D753E8]);
   v6 = [v5 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [v6 setDatePickerMode:0];
   [v6 setPreferredDatePickerStyle:3];
-  v7 = [(DBSDeviceAppearanceScheduleController *)self _darkAppearanceTimePickerSpecifier];
+  _darkAppearanceTimePickerSpecifier = [(DBSDeviceAppearanceScheduleController *)self _darkAppearanceTimePickerSpecifier];
 
-  if (v7 == v4)
+  if (_darkAppearanceTimePickerSpecifier == specifierCopy)
   {
-    v13 = [(DBSDeviceAppearanceScheduleController *)self _styleMode];
-    v14 = v13;
-    if (v13)
+    _styleMode = [(DBSDeviceAppearanceScheduleController *)self _styleMode];
+    v14 = _styleMode;
+    if (_styleMode)
     {
-      [v13 customSchedule];
+      [_styleMode customSchedule];
       v11 = v22;
       v12 = v21;
     }
@@ -449,18 +449,18 @@ LABEL_8:
 
   else
   {
-    v8 = [(DBSDeviceAppearanceScheduleController *)self _lightAppearanceTimePickerSpecifier];
+    _lightAppearanceTimePickerSpecifier = [(DBSDeviceAppearanceScheduleController *)self _lightAppearanceTimePickerSpecifier];
 
-    if (v8 != v4)
+    if (_lightAppearanceTimePickerSpecifier != specifierCopy)
     {
       [DBSDeviceAppearanceScheduleController datePickerForSpecifier:];
     }
 
-    v9 = [(DBSDeviceAppearanceScheduleController *)self _styleMode];
-    v10 = v9;
-    if (v9)
+    _styleMode2 = [(DBSDeviceAppearanceScheduleController *)self _styleMode];
+    v10 = _styleMode2;
+    if (_styleMode2)
     {
-      [v9 customSchedule];
+      [_styleMode2 customSchedule];
       v11 = v20;
       v12 = v19;
     }
@@ -477,8 +477,8 @@ LABEL_8:
   v15 = objc_alloc_init(MEMORY[0x277CBEAB8]);
   [v15 setHour:v12];
   [v15 setMinute:v11];
-  v16 = [v6 calendar];
-  v17 = [v16 dateFromComponents:v15];
+  calendar = [v6 calendar];
+  v17 = [calendar dateFromComponents:v15];
   [v6 setDate:v17];
 
   return v6;

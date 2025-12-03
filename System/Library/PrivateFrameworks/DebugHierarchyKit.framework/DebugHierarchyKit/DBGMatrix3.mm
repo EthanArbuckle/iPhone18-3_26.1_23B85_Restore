@@ -1,46 +1,46 @@
 @interface DBGMatrix3
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5;
-+ (id)withMatrix3:(_OWORD *)a3;
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error;
++ (id)withMatrix3:(_OWORD *)matrix3;
 - (NSString)debugDescription;
 - (NSString)description;
-- (__n128)initWithMatrix3:(uint64_t)a3;
+- (__n128)initWithMatrix3:(uint64_t)matrix3;
 - (id)JSONCompatibleRepresentation;
 - (id)objectValue;
 @end
 
 @implementation DBGMatrix3
 
-+ (id)withMatrix3:(_OWORD *)a3
++ (id)withMatrix3:(_OWORD *)matrix3
 {
-  v4 = [a1 alloc];
-  v5 = a3[3];
-  v10[2] = a3[2];
+  v4 = [self alloc];
+  v5 = matrix3[3];
+  v10[2] = matrix3[2];
   v10[3] = v5;
-  v6 = a3[5];
-  v10[4] = a3[4];
+  v6 = matrix3[5];
+  v10[4] = matrix3[4];
   v10[5] = v6;
-  v7 = a3[1];
-  v10[0] = *a3;
+  v7 = matrix3[1];
+  v10[0] = *matrix3;
   v10[1] = v7;
   v8 = [v4 initWithMatrix3:v10];
 
   return v8;
 }
 
-- (__n128)initWithMatrix3:(uint64_t)a3
+- (__n128)initWithMatrix3:(uint64_t)matrix3
 {
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = DBGMatrix3;
   v4 = [(DBGMatrix3 *)&v9 init];
   if (v4)
   {
-    v6 = *(a3 + 16);
-    v4[1] = *a3;
+    v6 = *(matrix3 + 16);
+    v4[1] = *matrix3;
     v4[2] = v6;
-    result = *(a3 + 32);
-    v7 = *(a3 + 48);
-    v8 = *(a3 + 80);
-    v4[5] = *(a3 + 64);
+    result = *(matrix3 + 32);
+    v7 = *(matrix3 + 48);
+    v8 = *(matrix3 + 80);
+    v4[5] = *(matrix3 + 64);
     v4[6] = v8;
     v4[3] = result;
     v4[4] = v7;
@@ -85,8 +85,8 @@
 
 - (NSString)description
 {
-  v2 = [(DBGMatrix3 *)self objectValue];
-  v3 = [v2 description];
+  objectValue = [(DBGMatrix3 *)self objectValue];
+  v3 = [objectValue description];
 
   return v3;
 }
@@ -101,7 +101,7 @@
   return v6;
 }
 
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error
 {
   v7 = matrix_identity_double3x3.columns[0].f64[3];
   v8 = matrix_identity_double3x3.columns[1].f64[3];
@@ -121,7 +121,7 @@
     *&v12 = matrix_identity_double3x3.columns[2].f64[2];
     v20 = *matrix_identity_double3x3.columns[2].f64;
     v21 = vextq_s8(v20, v20, 8uLL).u64[0];
-    if (a5)
+    if (error)
     {
       v56 = v16;
       v52 = matrix_identity_double3x3.columns[1].f64[0];
@@ -141,7 +141,7 @@
       v14 = v54;
       v16 = v56;
       v15.i64[0] = *&matrix_identity_double3x3.columns[0].f64[0];
-      *a5 = v13;
+      *error = v13;
     }
   }
 
@@ -206,7 +206,7 @@
   v20.i64[1] = v21;
   v65 = v20;
   v67 = v9;
-  v41 = [a1 withMatrix3:{&v59, v43}];
+  v41 = [self withMatrix3:{&v59, v43}];
 
   return v41;
 }

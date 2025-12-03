@@ -1,9 +1,9 @@
 @interface QLTFileThumbnailRequest
-- (QLTFileThumbnailRequest)initWithCoder:(id)a3;
+- (QLTFileThumbnailRequest)initWithCoder:(id)coder;
 - (id)computeContentType;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation QLTFileThumbnailRequest
@@ -13,43 +13,43 @@
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(QLTFileThumbnailRequest *)self genericSandboxWrapper];
-  v7 = [v6 url];
-  v8 = [v7 lastPathComponent];
+  genericSandboxWrapper = [(QLTFileThumbnailRequest *)self genericSandboxWrapper];
+  v7 = [genericSandboxWrapper url];
+  lastPathComponent = [v7 lastPathComponent];
   [(QLTThumbnailRequest *)self size];
   v10 = v9;
   [(QLTThumbnailRequest *)self size];
-  v12 = [v3 initWithFormat:@"<%@:%p %@ {%g, %g}>", v5, self, v8, v10, v11];
+  v12 = [v3 initWithFormat:@"<%@:%p %@ {%g, %g}>", v5, self, lastPathComponent, v10, v11];
 
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   quicklookSandboxWrapper = self->_quicklookSandboxWrapper;
-  v5 = a3;
-  [v5 encodeObject:quicklookSandboxWrapper forKey:@"quicklookSandboxWrapper"];
-  [v5 encodeObject:self->_genericSandboxWrapper forKey:@"genericSandboxWrapper"];
+  coderCopy = coder;
+  [coderCopy encodeObject:quicklookSandboxWrapper forKey:@"quicklookSandboxWrapper"];
+  [coderCopy encodeObject:self->_genericSandboxWrapper forKey:@"genericSandboxWrapper"];
   v6.receiver = self;
   v6.super_class = QLTFileThumbnailRequest;
-  [(QLTThumbnailRequest *)&v6 encodeWithCoder:v5];
+  [(QLTThumbnailRequest *)&v6 encodeWithCoder:coderCopy];
 }
 
-- (QLTFileThumbnailRequest)initWithCoder:(id)a3
+- (QLTFileThumbnailRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = QLTFileThumbnailRequest;
-  v5 = [(QLTThumbnailRequest *)&v11 initWithCoder:v4];
+  v5 = [(QLTThumbnailRequest *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
     getFPSandboxingURLWrapperClass();
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"quicklookSandboxWrapper"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"quicklookSandboxWrapper"];
     quicklookSandboxWrapper = v5->_quicklookSandboxWrapper;
     v5->_quicklookSandboxWrapper = v6;
 
     getFPSandboxingURLWrapperClass();
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"genericSandboxWrapper"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"genericSandboxWrapper"];
     genericSandboxWrapper = v5->_genericSandboxWrapper;
     v5->_genericSandboxWrapper = v8;
   }
@@ -57,11 +57,11 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = QLTFileThumbnailRequest;
-  v4 = [(QLTThumbnailRequest *)&v6 copyWithZone:a3];
+  v4 = [(QLTThumbnailRequest *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 12, self->_quicklookSandboxWrapper);
   objc_storeStrong(v4 + 13, self->_genericSandboxWrapper);
   return v4;
@@ -69,8 +69,8 @@
 
 - (id)computeContentType
 {
-  v2 = [(QLTFileThumbnailRequest *)self genericSandboxWrapper];
-  v3 = [v2 url];
+  genericSandboxWrapper = [(QLTFileThumbnailRequest *)self genericSandboxWrapper];
+  v3 = [genericSandboxWrapper url];
   v4 = [QLUTIAnalyzer UTIForURL:v3];
 
   return v4;

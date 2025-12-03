@@ -1,32 +1,32 @@
 @interface JavaNioChannelsFileChannel
-- (int64_t)readWithJavaNioByteBufferArray:(id)a3;
-- (int64_t)writeWithJavaNioByteBufferArray:(id)a3;
+- (int64_t)readWithJavaNioByteBufferArray:(id)array;
+- (int64_t)writeWithJavaNioByteBufferArray:(id)array;
 @end
 
 @implementation JavaNioChannelsFileChannel
 
-- (int64_t)readWithJavaNioByteBufferArray:(id)a3
+- (int64_t)readWithJavaNioByteBufferArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = *(a3 + 2);
+  v4 = *(array + 2);
 
-  return [(JavaNioChannelsFileChannel *)self readWithJavaNioByteBufferArray:a3 withInt:0 withInt:v4];
+  return [(JavaNioChannelsFileChannel *)self readWithJavaNioByteBufferArray:array withInt:0 withInt:v4];
 }
 
-- (int64_t)writeWithJavaNioByteBufferArray:(id)a3
+- (int64_t)writeWithJavaNioByteBufferArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = *(a3 + 2);
+  v4 = *(array + 2);
 
-  return [(JavaNioChannelsFileChannel *)self writeWithJavaNioByteBufferArray:a3 withInt:0 withInt:v4];
+  return [(JavaNioChannelsFileChannel *)self writeWithJavaNioByteBufferArray:array withInt:0 withInt:v4];
 }
 
 @end

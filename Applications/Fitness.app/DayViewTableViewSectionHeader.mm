@@ -11,8 +11,8 @@
   [v2 _scaledValueForValue:44.0];
   v4 = v3;
 
-  v5 = [objc_opt_self() mainScreen];
-  [v5 bounds];
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -31,7 +31,7 @@
 
 - (void)updateFonts
 {
-  v2 = self;
+  selfCopy = self;
   sub_10059BE28();
 }
 

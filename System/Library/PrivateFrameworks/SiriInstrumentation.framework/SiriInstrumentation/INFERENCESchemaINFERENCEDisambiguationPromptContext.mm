@@ -1,26 +1,26 @@
 @interface INFERENCESchemaINFERENCEDisambiguationPromptContext
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCEDisambiguationPromptContext)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCEDisambiguationPromptContext)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCEDisambiguationPromptContext)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCEDisambiguationPromptContext)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)addAnonymizedEntitiesPresented:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAnonymizedEntitiesPresented:(id)presented;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCEDisambiguationPromptContext
 
-- (INFERENCESchemaINFERENCEDisambiguationPromptContext)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCEDisambiguationPromptContext)initWithDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = INFERENCESchemaINFERENCEDisambiguationPromptContext;
   v5 = [(INFERENCESchemaINFERENCEDisambiguationPromptContext *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"anonymizedEntitiesPresented"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"anonymizedEntitiesPresented"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -63,7 +63,7 @@
       }
     }
 
-    v14 = [v4 objectForKeyedSubscript:{@"anonymizedEntitySelected", v18}];
+    v14 = [dictionaryCopy objectForKeyedSubscript:{@"anonymizedEntitySelected", v18}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -77,30 +77,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCEDisambiguationPromptContext)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCEDisambiguationPromptContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCEDisambiguationPromptContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCEDisambiguationPromptContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCEDisambiguationPromptContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -113,48 +113,48 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_anonymizedEntitiesPresenteds)
   {
-    v4 = [(INFERENCESchemaINFERENCEDisambiguationPromptContext *)self anonymizedEntitiesPresenteds];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"anonymizedEntitiesPresented"];
+    anonymizedEntitiesPresenteds = [(INFERENCESchemaINFERENCEDisambiguationPromptContext *)self anonymizedEntitiesPresenteds];
+    v5 = [anonymizedEntitiesPresenteds copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"anonymizedEntitiesPresented"];
   }
 
   if (self->_anonymizedEntitySelected)
   {
-    v6 = [(INFERENCESchemaINFERENCEDisambiguationPromptContext *)self anonymizedEntitySelected];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"anonymizedEntitySelected"];
+    anonymizedEntitySelected = [(INFERENCESchemaINFERENCEDisambiguationPromptContext *)self anonymizedEntitySelected];
+    v7 = [anonymizedEntitySelected copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"anonymizedEntitySelected"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(INFERENCESchemaINFERENCEDisambiguationPromptContext *)self anonymizedEntitiesPresenteds];
-  v6 = [v4 anonymizedEntitiesPresenteds];
-  if ((v5 != 0) == (v6 == 0))
+  anonymizedEntitiesPresenteds = [(INFERENCESchemaINFERENCEDisambiguationPromptContext *)self anonymizedEntitiesPresenteds];
+  anonymizedEntitiesPresenteds2 = [equalCopy anonymizedEntitiesPresenteds];
+  if ((anonymizedEntitiesPresenteds != 0) == (anonymizedEntitiesPresenteds2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(INFERENCESchemaINFERENCEDisambiguationPromptContext *)self anonymizedEntitiesPresenteds];
-  if (v7)
+  anonymizedEntitiesPresenteds3 = [(INFERENCESchemaINFERENCEDisambiguationPromptContext *)self anonymizedEntitiesPresenteds];
+  if (anonymizedEntitiesPresenteds3)
   {
-    v8 = v7;
-    v9 = [(INFERENCESchemaINFERENCEDisambiguationPromptContext *)self anonymizedEntitiesPresenteds];
-    v10 = [v4 anonymizedEntitiesPresenteds];
-    v11 = [v9 isEqual:v10];
+    v8 = anonymizedEntitiesPresenteds3;
+    anonymizedEntitiesPresenteds4 = [(INFERENCESchemaINFERENCEDisambiguationPromptContext *)self anonymizedEntitiesPresenteds];
+    anonymizedEntitiesPresenteds5 = [equalCopy anonymizedEntitiesPresenteds];
+    v11 = [anonymizedEntitiesPresenteds4 isEqual:anonymizedEntitiesPresenteds5];
 
     if (!v11)
     {
@@ -166,12 +166,12 @@
   {
   }
 
-  v5 = [(INFERENCESchemaINFERENCEDisambiguationPromptContext *)self anonymizedEntitySelected];
-  v6 = [v4 anonymizedEntitySelected];
-  if ((v5 != 0) != (v6 == 0))
+  anonymizedEntitiesPresenteds = [(INFERENCESchemaINFERENCEDisambiguationPromptContext *)self anonymizedEntitySelected];
+  anonymizedEntitiesPresenteds2 = [equalCopy anonymizedEntitySelected];
+  if ((anonymizedEntitiesPresenteds != 0) != (anonymizedEntitiesPresenteds2 == 0))
   {
-    v12 = [(INFERENCESchemaINFERENCEDisambiguationPromptContext *)self anonymizedEntitySelected];
-    if (!v12)
+    anonymizedEntitySelected = [(INFERENCESchemaINFERENCEDisambiguationPromptContext *)self anonymizedEntitySelected];
+    if (!anonymizedEntitySelected)
     {
 
 LABEL_15:
@@ -179,10 +179,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(INFERENCESchemaINFERENCEDisambiguationPromptContext *)self anonymizedEntitySelected];
-    v15 = [v4 anonymizedEntitySelected];
-    v16 = [v14 isEqual:v15];
+    v13 = anonymizedEntitySelected;
+    anonymizedEntitySelected2 = [(INFERENCESchemaINFERENCEDisambiguationPromptContext *)self anonymizedEntitySelected];
+    anonymizedEntitySelected3 = [equalCopy anonymizedEntitySelected];
+    v16 = [anonymizedEntitySelected2 isEqual:anonymizedEntitySelected3];
 
     if (v16)
     {
@@ -202,10 +202,10 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -237,30 +237,30 @@ LABEL_13:
     while (v7);
   }
 
-  v10 = [(INFERENCESchemaINFERENCEDisambiguationPromptContext *)self anonymizedEntitySelected];
+  anonymizedEntitySelected = [(INFERENCESchemaINFERENCEDisambiguationPromptContext *)self anonymizedEntitySelected];
 
-  if (v10)
+  if (anonymizedEntitySelected)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)addAnonymizedEntitiesPresented:(id)a3
+- (void)addAnonymizedEntitiesPresented:(id)presented
 {
-  v4 = a3;
+  presentedCopy = presented;
   anonymizedEntitiesPresenteds = self->_anonymizedEntitiesPresenteds;
-  v8 = v4;
+  v8 = presentedCopy;
   if (!anonymizedEntitiesPresenteds)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_anonymizedEntitiesPresenteds;
-    self->_anonymizedEntitiesPresenteds = v6;
+    self->_anonymizedEntitiesPresenteds = array;
 
-    v4 = v8;
+    presentedCopy = v8;
     anonymizedEntitiesPresenteds = self->_anonymizedEntitiesPresenteds;
   }
 
-  [(NSArray *)anonymizedEntitiesPresenteds addObject:v4];
+  [(NSArray *)anonymizedEntitiesPresenteds addObject:presentedCopy];
 }
 
 - (id)suppressMessageUnderConditions

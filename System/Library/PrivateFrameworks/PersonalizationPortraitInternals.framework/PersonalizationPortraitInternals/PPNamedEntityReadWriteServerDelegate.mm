@@ -1,14 +1,14 @@
 @interface PPNamedEntityReadWriteServerDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (PPNamedEntityReadWriteServerDelegate)init;
 @end
 
 @implementation PPNamedEntityReadWriteServerDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a3;
-  v6 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v7 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2847A8448];
   v8 = objc_autoreleasePoolPush();
   v9 = objc_alloc(MEMORY[0x277CBEB98]);
@@ -39,7 +39,7 @@
   [v7 setClasses:v23 forSelector:sel_donateLocationNamedEntities_bundleId_groupId_completion_ argumentIndex:0 ofReply:0];
 
   v24 = objc_opt_new();
-  LOBYTE(v20) = [PPXPCServerHelper shouldAcceptConnection:v6 serviceName:@"com.apple.proactive.PersonalizationPortrait.NamedEntity.readWrite" allowedServerInterface:v7 allowedClientInterface:0 requestHandler:v24 validateConnection:&__block_literal_global_24806 setupClientProxy:0 interruptionHandler:&__block_literal_global_105_24815 invalidationHandler:&__block_literal_global_107_24816];
+  LOBYTE(v20) = [PPXPCServerHelper shouldAcceptConnection:connectionCopy serviceName:@"com.apple.proactive.PersonalizationPortrait.NamedEntity.readWrite" allowedServerInterface:v7 allowedClientInterface:0 requestHandler:v24 validateConnection:&__block_literal_global_24806 setupClientProxy:0 interruptionHandler:&__block_literal_global_105_24815 invalidationHandler:&__block_literal_global_107_24816];
 
   return v20;
 }

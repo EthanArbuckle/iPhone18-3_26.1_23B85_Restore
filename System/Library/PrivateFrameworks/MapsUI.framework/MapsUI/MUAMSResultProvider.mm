@@ -1,36 +1,36 @@
 @interface MUAMSResultProvider
-- (MUAMSResultProvider)initWithCache:(id)a3;
-- (void)_finishWithResults:(id)a3 error:(id)a4 onCallbackQueue:(id)a5 completion:(id)a6;
-- (void)fetchResultsForAdamIds:(id)a3 options:(id)a4 callbackQueue:(id)a5 completion:(id)a6;
-- (void)fetchResultsForBundleIds:(id)a3 options:(id)a4 callbackQueue:(id)a5 completion:(id)a6;
+- (MUAMSResultProvider)initWithCache:(id)cache;
+- (void)_finishWithResults:(id)results error:(id)error onCallbackQueue:(id)queue completion:(id)completion;
+- (void)fetchResultsForAdamIds:(id)ids options:(id)options callbackQueue:(id)queue completion:(id)completion;
+- (void)fetchResultsForBundleIds:(id)ids options:(id)options callbackQueue:(id)queue completion:(id)completion;
 @end
 
 @implementation MUAMSResultProvider
 
-- (void)_finishWithResults:(id)a3 error:(id)a4 onCallbackQueue:(id)a5 completion:(id)a6
+- (void)_finishWithResults:(id)results error:(id)error onCallbackQueue:(id)queue completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  resultsCopy = results;
+  errorCopy = error;
+  completionCopy = completion;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __75__MUAMSResultProvider__finishWithResults_error_onCallbackQueue_completion___block_invoke;
   block[3] = &unk_1E821B8D8;
-  v17 = v10;
-  v18 = v11;
-  v16 = v9;
-  v12 = v10;
-  v13 = v9;
-  v14 = v11;
-  dispatch_async(a5, block);
+  v17 = errorCopy;
+  v18 = completionCopy;
+  v16 = resultsCopy;
+  v12 = errorCopy;
+  v13 = resultsCopy;
+  v14 = completionCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)fetchResultsForBundleIds:(id)a3 options:(id)a4 callbackQueue:(id)a5 completion:(id)a6
+- (void)fetchResultsForBundleIds:(id)ids options:(id)options callbackQueue:(id)queue completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  idsCopy = ids;
+  optionsCopy = options;
+  queueCopy = queue;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   queue = self->_queue;
   v19[0] = MEMORY[0x1E69E9820];
@@ -38,14 +38,14 @@
   v19[2] = __81__MUAMSResultProvider_fetchResultsForBundleIds_options_callbackQueue_completion___block_invoke;
   v19[3] = &unk_1E821A7F8;
   objc_copyWeak(&v24, &location);
-  v20 = v10;
-  v21 = v12;
-  v22 = v11;
-  v23 = v13;
-  v15 = v11;
-  v16 = v13;
-  v17 = v12;
-  v18 = v10;
+  v20 = idsCopy;
+  v21 = queueCopy;
+  v22 = optionsCopy;
+  v23 = completionCopy;
+  v15 = optionsCopy;
+  v16 = completionCopy;
+  v17 = queueCopy;
+  v18 = idsCopy;
   dispatch_async(queue, v19);
 
   objc_destroyWeak(&v24);
@@ -234,12 +234,12 @@ void __81__MUAMSResultProvider_fetchResultsForBundleIds_options_callbackQueue_co
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchResultsForAdamIds:(id)a3 options:(id)a4 callbackQueue:(id)a5 completion:(id)a6
+- (void)fetchResultsForAdamIds:(id)ids options:(id)options callbackQueue:(id)queue completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  idsCopy = ids;
+  optionsCopy = options;
+  queueCopy = queue;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   queue = self->_queue;
   v19[0] = MEMORY[0x1E69E9820];
@@ -247,14 +247,14 @@ void __81__MUAMSResultProvider_fetchResultsForBundleIds_options_callbackQueue_co
   v19[2] = __79__MUAMSResultProvider_fetchResultsForAdamIds_options_callbackQueue_completion___block_invoke;
   v19[3] = &unk_1E821A7F8;
   objc_copyWeak(&v24, &location);
-  v20 = v10;
-  v21 = v12;
-  v22 = v11;
-  v23 = v13;
-  v15 = v11;
-  v16 = v13;
-  v17 = v12;
-  v18 = v10;
+  v20 = idsCopy;
+  v21 = queueCopy;
+  v22 = optionsCopy;
+  v23 = completionCopy;
+  v15 = optionsCopy;
+  v16 = completionCopy;
+  v17 = queueCopy;
+  v18 = idsCopy;
   dispatch_async(queue, v19);
 
   objc_destroyWeak(&v24);
@@ -446,16 +446,16 @@ void __79__MUAMSResultProvider_fetchResultsForAdamIds_options_callbackQueue_comp
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (MUAMSResultProvider)initWithCache:(id)a3
+- (MUAMSResultProvider)initWithCache:(id)cache
 {
-  v5 = a3;
+  cacheCopy = cache;
   v11.receiver = self;
   v11.super_class = MUAMSResultProvider;
   v6 = [(MUAMSResultProvider *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_amsResultCache, a3);
+    objc_storeStrong(&v6->_amsResultCache, cache);
     v8 = geo_dispatch_queue_create_with_qos();
     queue = v7->_queue;
     v7->_queue = v8;

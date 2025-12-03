@@ -6,7 +6,7 @@
 
 - (void)mpMediaLibraryStatusChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3B4E234();
 }
 

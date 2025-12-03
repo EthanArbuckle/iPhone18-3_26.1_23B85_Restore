@@ -1,37 +1,37 @@
 @interface VOTUIServer
-+ (id)possibleRequiredEntitlementsForProcessingMessageWithIdentifier:(unint64_t)a3;
++ (id)possibleRequiredEntitlementsForProcessingMessageWithIdentifier:(unint64_t)identifier;
 - (BOOL)shouldPreventAutorotatingAllContentViewControllers;
-- (CGRect)_handleConvertFrameMessage:(id)a3;
+- (CGRect)_handleConvertFrameMessage:(id)message;
 - (VOTUIServer)init;
-- (double)desiredWindowLevelForContentViewController:(id)a3 userInteractionEnabled:(BOOL)a4;
-- (id)_handleConvertFramesMessage:(id)a3;
-- (id)processMessage:(id)a3 withIdentifier:(unint64_t)a4 fromClientWithIdentifier:(id)a5 error:(id *)a6;
-- (void)_addBrailleViewControllerWithOrientation:(int64_t)a3 dotNumberPositions:(id)a4 typingMode:(int64_t)a5;
+- (double)desiredWindowLevelForContentViewController:(id)controller userInteractionEnabled:(BOOL)enabled;
+- (id)_handleConvertFramesMessage:(id)message;
+- (id)processMessage:(id)message withIdentifier:(unint64_t)identifier fromClientWithIdentifier:(id)withIdentifier error:(id *)error;
+- (void)_addBrailleViewControllerWithOrientation:(int64_t)orientation dotNumberPositions:(id)positions typingMode:(int64_t)mode;
 - (void)_addMapsExplorationViewController;
-- (void)_handleBeginSonificationPlayback:(id)a3;
-- (void)_handleDisplayBrailleDotNumbers:(id)a3;
-- (void)_handleDisplayUIServerBasedItemChooser:(id)a3;
-- (void)_handleFlashBrailleInsertedTextMessage:(id)a3;
-- (void)_handleHideVoiceOverWarning:(id)a3;
-- (void)_handleHighlightBrailleDotsMessage:(id)a3;
-- (void)_handleHighlightMapsExplorationSegmentMessage:(id)a3;
-- (void)_handleMoveSystemPointerToPointWithMessage:(id)a3;
-- (void)_handlePauseSonificationPlayback:(id)a3;
-- (void)_handleRegisterForSystemPointerEventsWithMessage:(id)a3 clientIdentifier:(id)a4;
-- (void)_handleScreenCurtainEnabled:(BOOL)a3;
-- (void)_handleSendFocusChangeToZoom:(id)a3;
-- (void)_handleSetCursorFrameMessage:(id)a3;
-- (void)_handleSetElementVisualizationFramesMessage:(id)a3;
-- (void)_handleSetSonificationPlayheadPosition:(id)a3;
-- (void)_handleShowBrailleUIMessage:(id)a3;
-- (void)_handleShowMapsExplorationUIMessage:(id)a3;
-- (void)_handleShowVoiceOverWarning:(id)a3;
-- (void)_handleUpdateBrailleUIMessage:(id)a3;
-- (void)_handleUpdateMapsExplorationCurrentCenter:(id)a3;
-- (void)_handleUpdateMapsExplorationUIWithCurrentLocationMessage:(id)a3;
-- (void)_handleUpdateVisualRotor:(id)a3;
-- (void)_handleVoiceOverCaptionPanelEnabled:(id)a3;
-- (void)_handleZoomFocusChangeNotification:(id)a3;
+- (void)_handleBeginSonificationPlayback:(id)playback;
+- (void)_handleDisplayBrailleDotNumbers:(id)numbers;
+- (void)_handleDisplayUIServerBasedItemChooser:(id)chooser;
+- (void)_handleFlashBrailleInsertedTextMessage:(id)message;
+- (void)_handleHideVoiceOverWarning:(id)warning;
+- (void)_handleHighlightBrailleDotsMessage:(id)message;
+- (void)_handleHighlightMapsExplorationSegmentMessage:(id)message;
+- (void)_handleMoveSystemPointerToPointWithMessage:(id)message;
+- (void)_handlePauseSonificationPlayback:(id)playback;
+- (void)_handleRegisterForSystemPointerEventsWithMessage:(id)message clientIdentifier:(id)identifier;
+- (void)_handleScreenCurtainEnabled:(BOOL)enabled;
+- (void)_handleSendFocusChangeToZoom:(id)zoom;
+- (void)_handleSetCursorFrameMessage:(id)message;
+- (void)_handleSetElementVisualizationFramesMessage:(id)message;
+- (void)_handleSetSonificationPlayheadPosition:(id)position;
+- (void)_handleShowBrailleUIMessage:(id)message;
+- (void)_handleShowMapsExplorationUIMessage:(id)message;
+- (void)_handleShowVoiceOverWarning:(id)warning;
+- (void)_handleUpdateBrailleUIMessage:(id)message;
+- (void)_handleUpdateMapsExplorationCurrentCenter:(id)center;
+- (void)_handleUpdateMapsExplorationUIWithCurrentLocationMessage:(id)message;
+- (void)_handleUpdateVisualRotor:(id)rotor;
+- (void)_handleVoiceOverCaptionPanelEnabled:(id)enabled;
+- (void)_handleZoomFocusChangeNotification:(id)notification;
 - (void)_removeBrailleViewController;
 - (void)_removeCaptionPanelViewControllers;
 - (void)_removeCursorViewControllers;
@@ -42,12 +42,12 @@
 - (void)_removeScreenCurtainControllers;
 - (void)_removeSonificationViewController;
 - (void)_toggleVoiceOverCaptionPanelViewController;
-- (void)_updateCursorWithFrame:(CGRect)a3 pathData:(id)a4 animate:(BOOL)a5 displayID:(id)a6;
-- (void)connectionWillBeInterruptedForClientWithIdentifier:(id)a3;
+- (void)_updateCursorWithFrame:(CGRect)frame pathData:(id)data animate:(BOOL)animate displayID:(id)d;
+- (void)connectionWillBeInterruptedForClientWithIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)externalDisplaySceneConnected:(id)a3 forSceneClientIdentifier:(id)a4;
-- (void)externalDisplaySceneDisconnected:(id)a3 forSceneClientIdentifier:(id)a4;
-- (void)systemPointerController:(id)a3 pointerDidMoveToGlobalPoint:(CGPoint)a4;
+- (void)externalDisplaySceneConnected:(id)connected forSceneClientIdentifier:(id)identifier;
+- (void)externalDisplaySceneDisconnected:(id)disconnected forSceneClientIdentifier:(id)identifier;
+- (void)systemPointerController:(id)controller pointerDidMoveToGlobalPoint:(CGPoint)point;
 @end
 
 @implementation VOTUIServer
@@ -115,43 +115,43 @@
   [(VOTUIServer *)&v4 dealloc];
 }
 
-- (id)processMessage:(id)a3 withIdentifier:(unint64_t)a4 fromClientWithIdentifier:(id)a5 error:(id *)a6
+- (id)processMessage:(id)message withIdentifier:(unint64_t)identifier fromClientWithIdentifier:(id)withIdentifier error:(id *)error
 {
-  v9 = a3;
-  v10 = a5;
-  switch(a4)
+  messageCopy = message;
+  withIdentifierCopy = withIdentifier;
+  switch(identifier)
   {
     case 1uLL:
-      [(VOTUIServer *)self _handleSetCursorFrameMessage:v9];
+      [(VOTUIServer *)self _handleSetCursorFrameMessage:messageCopy];
       goto LABEL_39;
     case 2uLL:
-      [(VOTUIServer *)self _handleShowBrailleUIMessage:v9];
+      [(VOTUIServer *)self _handleShowBrailleUIMessage:messageCopy];
       goto LABEL_39;
     case 3uLL:
-      [(VOTUIServer *)self _handleHideBrailleUIMessage:v9];
+      [(VOTUIServer *)self _handleHideBrailleUIMessage:messageCopy];
       goto LABEL_39;
     case 4uLL:
-      [(VOTUIServer *)self _handleHighlightBrailleDotsMessage:v9];
+      [(VOTUIServer *)self _handleHighlightBrailleDotsMessage:messageCopy];
       goto LABEL_39;
     case 5uLL:
-      [(VOTUIServer *)self _handleUpdateBrailleUIMessage:v9];
+      [(VOTUIServer *)self _handleUpdateBrailleUIMessage:messageCopy];
       goto LABEL_39;
     case 6uLL:
-      [(VOTUIServer *)self _handleFlashBrailleInsertedTextMessage:v9];
+      [(VOTUIServer *)self _handleFlashBrailleInsertedTextMessage:messageCopy];
       goto LABEL_39;
     case 7uLL:
-      v11 = [v9 objectForKeyedSubscript:@"enabled"];
+      v11 = [messageCopy objectForKeyedSubscript:@"enabled"];
       -[VOTUIServer _handleScreenCurtainEnabled:](self, "_handleScreenCurtainEnabled:", [v11 BOOLValue]);
       goto LABEL_29;
     case 8uLL:
-      [(VOTUIServer *)self _handleVoiceOverCaptionPanelEnabled:v9];
+      [(VOTUIServer *)self _handleVoiceOverCaptionPanelEnabled:messageCopy];
       goto LABEL_39;
     case 9uLL:
-      v20 = [(VOTUIServer *)self cursorViewControllers];
-      v21 = [v20 objectForKeyedSubscript:&off_400C0];
-      v22 = [v21 view];
-      v23 = [v22 window];
-      v11 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v23 _contextId]);
+      cursorViewControllers = [(VOTUIServer *)self cursorViewControllers];
+      v21 = [cursorViewControllers objectForKeyedSubscript:&off_400C0];
+      view = [v21 view];
+      window = [view window];
+      v11 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [window _contextId]);
 
       v30 = @"contextId";
       v31 = v11;
@@ -159,16 +159,16 @@
       v19 = &v30;
       goto LABEL_28;
     case 0xAuLL:
-      [(VOTUIServer *)self _handleSetElementVisualizationFramesMessage:v9];
+      [(VOTUIServer *)self _handleSetElementVisualizationFramesMessage:messageCopy];
       goto LABEL_39;
     case 0xBuLL:
-      [(VOTUIServer *)self _handleUpdateVisualRotor:v9];
+      [(VOTUIServer *)self _handleUpdateVisualRotor:messageCopy];
       goto LABEL_39;
     case 0xCuLL:
-      [(VOTUIServer *)self _handleDisplayUIServerBasedItemChooser:v9];
+      [(VOTUIServer *)self _handleDisplayUIServerBasedItemChooser:messageCopy];
       goto LABEL_39;
     case 0xDuLL:
-      [(VOTUIServer *)self _handleConvertFrameMessage:v9];
+      [(VOTUIServer *)self _handleConvertFrameMessage:messageCopy];
       x = v33.origin.x;
       y = v33.origin.y;
       width = v33.size.width;
@@ -189,7 +189,7 @@
       v19 = &v28;
       goto LABEL_28;
     case 0xEuLL:
-      v11 = [(VOTUIServer *)self _handleConvertFramesMessage:v9];
+      v11 = [(VOTUIServer *)self _handleConvertFramesMessage:messageCopy];
       if (![v11 count])
       {
         goto LABEL_29;
@@ -204,73 +204,73 @@ LABEL_28:
 
       goto LABEL_40;
     case 0xFuLL:
-      [(VOTUIServer *)self _handleShowMapsExplorationUIMessage:v9];
+      [(VOTUIServer *)self _handleShowMapsExplorationUIMessage:messageCopy];
       goto LABEL_39;
     case 0x10uLL:
-      [(VOTUIServer *)self _handleHighlightMapsExplorationSegmentMessage:v9];
+      [(VOTUIServer *)self _handleHighlightMapsExplorationSegmentMessage:messageCopy];
       goto LABEL_39;
     case 0x11uLL:
-      [(VOTUIServer *)self _handleUpdateMapsExplorationCurrentCenter:v9];
+      [(VOTUIServer *)self _handleUpdateMapsExplorationCurrentCenter:messageCopy];
       goto LABEL_39;
     case 0x12uLL:
-      [(VOTUIServer *)self _handleUpdateMapsExplorationUIWithCurrentLocationMessage:v9];
+      [(VOTUIServer *)self _handleUpdateMapsExplorationUIWithCurrentLocationMessage:messageCopy];
       goto LABEL_39;
     case 0x13uLL:
-      [(VOTUIServer *)self _handleHideMapsExplorationUIMessage:v9];
+      [(VOTUIServer *)self _handleHideMapsExplorationUIMessage:messageCopy];
       goto LABEL_39;
     case 0x14uLL:
-      [(VOTUIServer *)self _handleSendFocusChangeToZoom:v9];
+      [(VOTUIServer *)self _handleSendFocusChangeToZoom:messageCopy];
       goto LABEL_39;
     case 0x15uLL:
-      [(VOTUIServer *)self _handleSetSonificationPlayheadPosition:v9];
+      [(VOTUIServer *)self _handleSetSonificationPlayheadPosition:messageCopy];
       goto LABEL_39;
     case 0x16uLL:
-      [(VOTUIServer *)self _handleBeginSonificationPlayback:v9];
+      [(VOTUIServer *)self _handleBeginSonificationPlayback:messageCopy];
       goto LABEL_39;
     case 0x17uLL:
-      [(VOTUIServer *)self _handlePauseSonificationPlayback:v9];
+      [(VOTUIServer *)self _handlePauseSonificationPlayback:messageCopy];
       goto LABEL_39;
     case 0x18uLL:
       v11 = +[AXUIDisplayManager sharedDisplayManager];
-      v12 = [v9 objectForKeyedSubscript:@"alertText"];
+      v12 = [messageCopy objectForKeyedSubscript:@"alertText"];
       v13 = [v11 showAlertWithText:v12 subtitleText:0 iconImage:0 type:5 priority:20 duration:self forService:AXUIAlertDisplayTimeDefaultForBanners];
 
 LABEL_29:
       goto LABEL_39;
     case 0x19uLL:
-      [(VOTUIServer *)self _handleRegisterForSystemPointerEventsWithMessage:v9 clientIdentifier:v10];
+      [(VOTUIServer *)self _handleRegisterForSystemPointerEventsWithMessage:messageCopy clientIdentifier:withIdentifierCopy];
       goto LABEL_39;
     case 0x1AuLL:
-      [(VOTUIServer *)self _handleMoveSystemPointerToPointWithMessage:v9];
+      [(VOTUIServer *)self _handleMoveSystemPointerToPointWithMessage:messageCopy];
       goto LABEL_39;
     case 0x1BuLL:
     case 0x1EuLL:
     case 0x1FuLL:
       goto LABEL_43;
     case 0x1CuLL:
-      [(VOTUIServer *)self _handleToggleElementLabeler:v9];
+      [(VOTUIServer *)self _handleToggleElementLabeler:messageCopy];
       goto LABEL_39;
     case 0x1DuLL:
       [(VOTUIServer *)self _handleToggleQuickSettings];
       goto LABEL_39;
     case 0x20uLL:
-      [(VOTUIServer *)self _handleDisplayBrailleDotNumbers:v9];
+      [(VOTUIServer *)self _handleDisplayBrailleDotNumbers:messageCopy];
       goto LABEL_39;
     default:
-      if (a4 == 10000)
+      if (identifier == 10000)
       {
-        [(VOTUIServer *)self _handleShowVoiceOverWarning:v9];
+        [(VOTUIServer *)self _handleShowVoiceOverWarning:messageCopy];
       }
 
       else
       {
-        if (a4 != 10001)
+        if (identifier != 10001)
         {
 LABEL_43:
           abort();
         }
 
-        [(VOTUIServer *)self _handleHideVoiceOverWarning:v9];
+        [(VOTUIServer *)self _handleHideVoiceOverWarning:messageCopy];
       }
 
 LABEL_39:
@@ -281,9 +281,9 @@ LABEL_40:
   }
 }
 
-+ (id)possibleRequiredEntitlementsForProcessingMessageWithIdentifier:(unint64_t)a3
++ (id)possibleRequiredEntitlementsForProcessingMessageWithIdentifier:(unint64_t)identifier
 {
-  if (a3 == 1)
+  if (identifier == 1)
   {
     [NSSet setWithArray:&off_40248];
   }
@@ -297,18 +297,18 @@ LABEL_40:
   return v3;
 }
 
-- (void)systemPointerController:(id)a3 pointerDidMoveToGlobalPoint:(CGPoint)a4
+- (void)systemPointerController:(id)controller pointerDidMoveToGlobalPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(VOTUIServer *)self systemPointerRegistrants:a3];
-  v7 = [v6 objectEnumerator];
+  v6 = [(VOTUIServer *)self systemPointerRegistrants:controller];
+  objectEnumerator = [v6 objectEnumerator];
 
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v21 count:16];
+  v8 = [objectEnumerator countByEnumeratingWithState:&v15 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -320,7 +320,7 @@ LABEL_40:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v12 = *(*(&v15 + 1) + 8 * v11);
@@ -336,88 +336,88 @@ LABEL_40:
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v21 count:16];
+      v9 = [objectEnumerator countByEnumeratingWithState:&v15 objects:v21 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)_handleMoveSystemPointerToPointWithMessage:(id)a3
+- (void)_handleMoveSystemPointerToPointWithMessage:(id)message
 {
-  v11 = a3;
+  messageCopy = message;
   v4 = +[AXSettings sharedInstance];
-  v5 = [v4 laserEnabled];
+  laserEnabled = [v4 laserEnabled];
 
-  if (v5)
+  if (laserEnabled)
   {
-    v6 = [v11 objectForKeyedSubscript:@"point"];
+    v6 = [messageCopy objectForKeyedSubscript:@"point"];
     v7 = CGPointFromString(v6);
 
-    v8 = [v11 objectForKeyedSubscript:@"contextId"];
-    v9 = [v8 unsignedIntValue];
+    v8 = [messageCopy objectForKeyedSubscript:@"contextId"];
+    unsignedIntValue = [v8 unsignedIntValue];
 
-    v10 = [(VOTUIServer *)self systemPointerController];
-    [v10 movePointerToPoint:v9 contextId:{v7.x, v7.y}];
+    systemPointerController = [(VOTUIServer *)self systemPointerController];
+    [systemPointerController movePointerToPoint:unsignedIntValue contextId:{v7.x, v7.y}];
   }
 }
 
-- (void)_handleRegisterForSystemPointerEventsWithMessage:(id)a3 clientIdentifier:(id)a4
+- (void)_handleRegisterForSystemPointerEventsWithMessage:(id)message clientIdentifier:(id)identifier
 {
-  v17 = a3;
-  v6 = a4;
+  messageCopy = message;
+  identifierCopy = identifier;
   v7 = +[AXSettings sharedInstance];
-  v8 = [v7 laserEnabled];
+  laserEnabled = [v7 laserEnabled];
 
-  if (v8)
+  if (laserEnabled)
   {
-    v9 = [v17 objectForKeyedSubscript:@"register"];
-    v10 = [v9 BOOLValue];
+    v9 = [messageCopy objectForKeyedSubscript:@"register"];
+    bOOLValue = [v9 BOOLValue];
 
-    v11 = [(VOTUIServer *)self systemPointerRegistrants];
-    v12 = v11;
-    if (v10)
+    systemPointerRegistrants = [(VOTUIServer *)self systemPointerRegistrants];
+    v12 = systemPointerRegistrants;
+    if (bOOLValue)
     {
-      v13 = [v11 objectForKeyedSubscript:v6];
+      v13 = [systemPointerRegistrants objectForKeyedSubscript:identifierCopy];
 
       if (v13)
       {
         goto LABEL_9;
       }
 
-      v14 = [(VOTUIServer *)self systemPointerRegistrants];
+      systemPointerRegistrants2 = [(VOTUIServer *)self systemPointerRegistrants];
 
-      if (!v14)
+      if (!systemPointerRegistrants2)
       {
         v15 = +[NSMutableDictionary dictionary];
         [(VOTUIServer *)self setSystemPointerRegistrants:v15];
       }
 
-      v12 = [AXUIClientMessenger clientMessengerWithIdentifier:v6];
-      v16 = [(VOTUIServer *)self systemPointerRegistrants];
-      [v16 setObject:v12 forKeyedSubscript:v6];
+      v12 = [AXUIClientMessenger clientMessengerWithIdentifier:identifierCopy];
+      systemPointerRegistrants3 = [(VOTUIServer *)self systemPointerRegistrants];
+      [systemPointerRegistrants3 setObject:v12 forKeyedSubscript:identifierCopy];
     }
 
     else
     {
-      [v11 removeObjectForKey:v6];
+      [systemPointerRegistrants removeObjectForKey:identifierCopy];
     }
   }
 
 LABEL_9:
 }
 
-- (void)_handleVoiceOverCaptionPanelEnabled:(id)a3
+- (void)_handleVoiceOverCaptionPanelEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(VOTUIServer *)self captionPanelViewControllers];
-  v6 = [v5 allValues];
+  captionPanelViewControllers = [(VOTUIServer *)self captionPanelViewControllers];
+  allValues = [captionPanelViewControllers allValues];
 
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v7 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -429,20 +429,20 @@ LABEL_9:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v11 = *(*(&v12 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 parseMessage:v4];
+          [v11 parseMessage:enabledCopy];
         }
 
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -456,23 +456,23 @@ LABEL_9:
     v3 = +[AXSettings sharedInstance];
     if ([v3 enableVoiceOverCaptions])
     {
-      v4 = [(VOTUIServer *)self screenCurtainViewControllers];
+      screenCurtainViewControllers = [(VOTUIServer *)self screenCurtainViewControllers];
 
-      if (!v4)
+      if (!screenCurtainViewControllers)
       {
-        v5 = [(VOTUIServer *)self captionPanelViewControllers];
-        v6 = [v5 allKeys];
-        v7 = [v6 containsObject:&off_400C0];
+        captionPanelViewControllers = [(VOTUIServer *)self captionPanelViewControllers];
+        allKeys = [captionPanelViewControllers allKeys];
+        v7 = [allKeys containsObject:&off_400C0];
 
         if ((v7 & 1) == 0)
         {
           v8 = objc_alloc_init(VOTUICaptionPanelViewController);
-          v9 = [(VOTUIServer *)self captionPanelViewControllers];
-          [v9 setObject:v8 forKeyedSubscript:&off_400C0];
+          captionPanelViewControllers2 = [(VOTUIServer *)self captionPanelViewControllers];
+          [captionPanelViewControllers2 setObject:v8 forKeyedSubscript:&off_400C0];
 
           v10 = +[AXUIDisplayManager sharedDisplayManager];
-          v11 = [(VOTUIServer *)self captionPanelViewControllers];
-          v12 = [v11 objectForKeyedSubscript:&off_400C0];
+          captionPanelViewControllers3 = [(VOTUIServer *)self captionPanelViewControllers];
+          v12 = [captionPanelViewControllers3 objectForKeyedSubscript:&off_400C0];
           [v10 addContentViewController:v12 withUserInteractionEnabled:0 forService:self forSceneClientIdentifier:@"kAXVOTMainSceneClientIdentifier" context:0 userInterfaceStyle:0 forWindowScene:0 spatialConfiguration:0 completion:0];
         }
 
@@ -498,9 +498,9 @@ LABEL_9:
               v17 = *(*(&v26 + 1) + 8 * i);
               v18 = objc_alloc_init(VOTUICaptionPanelViewController);
               captionPanelViewControllers = self->_captionPanelViewControllers;
-              v20 = [v17 screen];
-              v21 = [v20 displayIdentity];
-              v22 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v21 displayID]);
+              screen = [v17 screen];
+              displayIdentity = [screen displayIdentity];
+              v22 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [displayIdentity displayID]);
               [(NSMutableDictionary *)captionPanelViewControllers setObject:v18 forKeyedSubscript:v22];
 
               v23 = +[AXUIDisplayManager sharedDisplayManager];
@@ -522,9 +522,9 @@ LABEL_9:
     }
   }
 
-  v24 = [(VOTUIServer *)self captionPanelViewControllers];
+  captionPanelViewControllers4 = [(VOTUIServer *)self captionPanelViewControllers];
 
-  if (v24)
+  if (captionPanelViewControllers4)
   {
 
     [(VOTUIServer *)self _removeCaptionPanelViewControllers];
@@ -537,10 +537,10 @@ LABEL_9:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(VOTUIServer *)self captionPanelViewControllers];
-  v4 = [v3 allValues];
+  captionPanelViewControllers = [(VOTUIServer *)self captionPanelViewControllers];
+  allValues = [captionPanelViewControllers allValues];
 
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -552,7 +552,7 @@ LABEL_9:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v12 + 1) + 8 * v8);
@@ -563,47 +563,47 @@ LABEL_9:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 
-  v11 = [(VOTUIServer *)self captionPanelViewControllers];
-  [v11 removeAllObjects];
+  captionPanelViewControllers2 = [(VOTUIServer *)self captionPanelViewControllers];
+  [captionPanelViewControllers2 removeAllObjects];
 }
 
-- (void)_handleSetCursorFrameMessage:(id)a3
+- (void)_handleSetCursorFrameMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"animate"];
-  v6 = [v5 BOOLValue];
+  messageCopy = message;
+  v5 = [messageCopy objectForKey:@"animate"];
+  bOOLValue = [v5 BOOLValue];
 
-  v7 = [v4 objectForKey:@"frame"];
+  v7 = [messageCopy objectForKey:@"frame"];
   v39 = CGRectFromString(v7);
   x = v39.origin.x;
   y = v39.origin.y;
   width = v39.size.width;
   height = v39.size.height;
 
-  v12 = [v4 objectForKey:@"path"];
-  v13 = [v4 objectForKey:@"display"];
+  v12 = [messageCopy objectForKey:@"path"];
+  v13 = [messageCopy objectForKey:@"display"];
 
   if (v13)
   {
-    v14 = [(VOTUIServer *)self cursorViewControllers];
-    v15 = [v14 allKeys];
-    v16 = [v15 containsObject:v13];
+    cursorViewControllers = [(VOTUIServer *)self cursorViewControllers];
+    allKeys = [cursorViewControllers allKeys];
+    v16 = [allKeys containsObject:v13];
 
     if ((v16 & 1) == 0)
     {
       v17 = [[VOTUICursorViewController alloc] initWithAXUIService:self];
-      v18 = [(VOTUIServer *)self cursorViewControllers];
-      [v18 setObject:v17 forKeyedSubscript:v13];
+      cursorViewControllers2 = [(VOTUIServer *)self cursorViewControllers];
+      [cursorViewControllers2 setObject:v17 forKeyedSubscript:v13];
 
       v19 = +[AXUIDisplayManager sharedDisplayManager];
-      v20 = [(VOTUIServer *)self cursorViewControllers];
-      v21 = [v20 objectForKeyedSubscript:v13];
+      cursorViewControllers3 = [(VOTUIServer *)self cursorViewControllers];
+      v21 = [cursorViewControllers3 objectForKeyedSubscript:v13];
       v31[0] = _NSConcreteStackBlock;
       v31[1] = 3221225472;
       v31[2] = sub_6AB0;
@@ -614,44 +614,44 @@ LABEL_9:
       v36 = width;
       v37 = height;
       v32 = v12;
-      v38 = v6;
+      v38 = bOOLValue;
       v22 = v13;
       v33 = v22;
       [v19 addContentViewController:v21 withUserInteractionEnabled:0 forService:self forSceneClientIdentifier:@"kAXVOTMainSceneClientIdentifier" context:0 userInterfaceStyle:0 forWindowScene:0 completion:v31];
 
       v23 = +[AXSettings sharedInstance];
-      LODWORD(v20) = [v23 laserEnabled];
+      LODWORD(cursorViewControllers3) = [v23 laserEnabled];
 
-      if (v20)
+      if (cursorViewControllers3)
       {
         v24 = [VOTUISystemPointerController alloc];
-        v25 = [(VOTUIServer *)self cursorViewControllers];
-        v26 = [v25 objectForKeyedSubscript:v22];
-        v27 = [v26 view];
-        v28 = [v27 window];
-        v29 = -[VOTUISystemPointerController initWithContextId:](v24, "initWithContextId:", [v28 _contextId]);
+        cursorViewControllers4 = [(VOTUIServer *)self cursorViewControllers];
+        v26 = [cursorViewControllers4 objectForKeyedSubscript:v22];
+        view = [v26 view];
+        window = [view window];
+        v29 = -[VOTUISystemPointerController initWithContextId:](v24, "initWithContextId:", [window _contextId]);
         [(VOTUIServer *)self setSystemPointerController:v29];
 
-        v30 = [(VOTUIServer *)self systemPointerController];
-        [v30 setDelegate:self];
+        systemPointerController = [(VOTUIServer *)self systemPointerController];
+        [systemPointerController setDelegate:self];
       }
     }
 
-    [(VOTUIServer *)self _updateCursorWithFrame:v12 pathData:v6 animate:v13 displayID:x, y, width, height];
+    [(VOTUIServer *)self _updateCursorWithFrame:v12 pathData:bOOLValue animate:v13 displayID:x, y, width, height];
   }
 }
 
-- (void)_updateCursorWithFrame:(CGRect)a3 pathData:(id)a4 animate:(BOOL)a5 displayID:(id)a6
+- (void)_updateCursorWithFrame:(CGRect)frame pathData:(id)data animate:(BOOL)animate displayID:(id)d
 {
-  v37 = a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a4;
-  v13 = a6;
-  v38 = v12;
-  if (v12)
+  animateCopy = animate;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  dataCopy = data;
+  dCopy = d;
+  v38 = dataCopy;
+  if (dataCopy)
   {
     v14 = AX_CGPathCreateWithDataRepresentation();
   }
@@ -665,10 +665,10 @@ LABEL_9:
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v15 = [(VOTUIServer *)self cursorViewControllers];
-  v16 = [v15 allKeys];
+  cursorViewControllers = [(VOTUIServer *)self cursorViewControllers];
+  allKeys = [cursorViewControllers allKeys];
 
-  v17 = [v16 countByEnumeratingWithState:&v39 objects:v43 count:16];
+  v17 = [allKeys countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (v17)
   {
     v18 = v17;
@@ -679,16 +679,16 @@ LABEL_9:
       {
         if (*v40 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(allKeys);
         }
 
         v21 = *(*(&v39 + 1) + 8 * i);
-        v22 = [(VOTUIServer *)self cursorViewControllers];
-        v23 = [v22 objectForKeyedSubscript:v21];
-        [v23 setCursorHidden:v21 != v13];
+        cursorViewControllers2 = [(VOTUIServer *)self cursorViewControllers];
+        v23 = [cursorViewControllers2 objectForKeyedSubscript:v21];
+        [v23 setCursorHidden:v21 != dCopy];
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v39 objects:v43 count:16];
+      v18 = [allKeys countByEnumeratingWithState:&v39 objects:v43 count:16];
     }
 
     while (v18);
@@ -703,8 +703,8 @@ LABEL_9:
   v45.size.width = width;
   v45.size.height = height;
   v24 = CGRectEqualToRect(v44, v45);
-  v25 = [(VOTUIServer *)self cursorViewControllers];
-  v26 = [v25 objectForKeyedSubscript:v13];
+  cursorViewControllers3 = [(VOTUIServer *)self cursorViewControllers];
+  v26 = [cursorViewControllers3 objectForKeyedSubscript:dCopy];
   v27 = v26;
   if (v24 && v14 == 0)
   {
@@ -715,22 +715,22 @@ LABEL_9:
 
   else
   {
-    v29 = [v26 cursorHidden];
+    cursorHidden = [v26 cursorHidden];
 
     v30 = v38;
-    if (v29)
+    if (cursorHidden)
     {
-      v31 = [(VOTUIServer *)self cursorViewControllers];
-      v32 = [v31 objectForKeyedSubscript:v13];
+      cursorViewControllers4 = [(VOTUIServer *)self cursorViewControllers];
+      v32 = [cursorViewControllers4 objectForKeyedSubscript:dCopy];
       [v32 setCursorHidden:0];
     }
 
-    v33 = [(VOTUIServer *)self cursorViewControllers];
-    v34 = [v33 objectForKeyedSubscript:v13];
-    [v34 setCursorFrame:v37 animated:{x, y, width, height}];
+    cursorViewControllers5 = [(VOTUIServer *)self cursorViewControllers];
+    v34 = [cursorViewControllers5 objectForKeyedSubscript:dCopy];
+    [v34 setCursorFrame:animateCopy animated:{x, y, width, height}];
 
-    v35 = [(VOTUIServer *)self cursorViewControllers];
-    v36 = [v35 objectForKeyedSubscript:v13];
+    cursorViewControllers6 = [(VOTUIServer *)self cursorViewControllers];
+    v36 = [cursorViewControllers6 objectForKeyedSubscript:dCopy];
     [v36 setCursorPath:v14];
 
     if (v14)
@@ -740,51 +740,51 @@ LABEL_9:
   }
 }
 
-- (void)_handleSetElementVisualizationFramesMessage:(id)a3
+- (void)_handleSetElementVisualizationFramesMessage:(id)message
 {
-  v4 = a3;
-  v13 = [v4 objectForKey:@"elementVisualizationFrames"];
-  v5 = [v4 objectForKey:@"elementVisualizationFrameLabels"];
-  v6 = [v4 objectForKey:@"elementVisualizationUIClasses"];
+  messageCopy = message;
+  v13 = [messageCopy objectForKey:@"elementVisualizationFrames"];
+  v5 = [messageCopy objectForKey:@"elementVisualizationFrameLabels"];
+  v6 = [messageCopy objectForKey:@"elementVisualizationUIClasses"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && [v13 count] && (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v7 = [(VOTUIServer *)self elementVisualizationViewController];
+    elementVisualizationViewController = [(VOTUIServer *)self elementVisualizationViewController];
 
-    if (!v7)
+    if (!elementVisualizationViewController)
     {
       v8 = objc_alloc_init(VOTUIElementVisualizationViewController);
       [(VOTUIServer *)self setElementVisualizationViewController:v8];
 
       v9 = +[AXUIDisplayManager sharedDisplayManager];
-      v10 = [(VOTUIServer *)self elementVisualizationViewController];
-      [v9 addContentViewController:v10 withUserInteractionEnabled:0 forService:self forSceneClientIdentifier:@"kAXVOTMainSceneClientIdentifier" context:0 userInterfaceStyle:0 forWindowScene:0 completion:0];
+      elementVisualizationViewController2 = [(VOTUIServer *)self elementVisualizationViewController];
+      [v9 addContentViewController:elementVisualizationViewController2 withUserInteractionEnabled:0 forService:self forSceneClientIdentifier:@"kAXVOTMainSceneClientIdentifier" context:0 userInterfaceStyle:0 forWindowScene:0 completion:0];
     }
 
-    v11 = [(VOTUIServer *)self elementVisualizationViewController];
-    [v11 setElementFrames:v13 labels:v5 uiClasses:v6];
+    elementVisualizationViewController3 = [(VOTUIServer *)self elementVisualizationViewController];
+    [elementVisualizationViewController3 setElementFrames:v13 labels:v5 uiClasses:v6];
   }
 
   else
   {
-    v12 = [(VOTUIServer *)self elementVisualizationViewController];
+    elementVisualizationViewController4 = [(VOTUIServer *)self elementVisualizationViewController];
 
-    if (v12)
+    if (elementVisualizationViewController4)
     {
       [(VOTUIServer *)self _removeElementVisualizationViewController];
     }
   }
 }
 
-- (void)_handleShowVoiceOverWarning:(id)a3
+- (void)_handleShowVoiceOverWarning:(id)warning
 {
   v9 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = AXLocStringKeyForHomeButtonAndExclusiveModel();
   v5 = [v9 localizedStringForKey:v4 value:&stru_3F518 table:@"VoiceOverUIService"];
-  v6 = [(VOTUIServer *)self voiceOverWarningIdentifier];
+  voiceOverWarningIdentifier = [(VOTUIServer *)self voiceOverWarningIdentifier];
 
-  if (!v6)
+  if (!voiceOverWarningIdentifier)
   {
     v7 = +[AXUIDisplayManager sharedDisplayManager];
     v8 = [v7 showAlertWithText:v5 subtitleText:0 iconImage:0 type:4 priority:20 duration:self forService:AXUIAlertDisplayTimeForever];
@@ -792,51 +792,51 @@ LABEL_9:
   }
 }
 
-- (void)_handleHideVoiceOverWarning:(id)a3
+- (void)_handleHideVoiceOverWarning:(id)warning
 {
-  v4 = [(VOTUIServer *)self voiceOverWarningIdentifier];
+  voiceOverWarningIdentifier = [(VOTUIServer *)self voiceOverWarningIdentifier];
 
-  if (v4)
+  if (voiceOverWarningIdentifier)
   {
     v5 = +[AXUIDisplayManager sharedDisplayManager];
-    v6 = [(VOTUIServer *)self voiceOverWarningIdentifier];
-    [v5 hideAlertWithIdentifier:v6 forService:self];
+    voiceOverWarningIdentifier2 = [(VOTUIServer *)self voiceOverWarningIdentifier];
+    [v5 hideAlertWithIdentifier:voiceOverWarningIdentifier2 forService:self];
 
     [(VOTUIServer *)self setVoiceOverWarningIdentifier:0];
   }
 }
 
-- (void)_handleUpdateVisualRotor:(id)a3
+- (void)_handleUpdateVisualRotor:(id)rotor
 {
-  v4 = a3;
-  v5 = [(VOTUIServer *)self rotorViewControllers];
-  v6 = [v5 allKeys];
-  v7 = [v6 containsObject:&off_400C0];
+  rotorCopy = rotor;
+  rotorViewControllers = [(VOTUIServer *)self rotorViewControllers];
+  allKeys = [rotorViewControllers allKeys];
+  v7 = [allKeys containsObject:&off_400C0];
 
   if ((v7 & 1) == 0)
   {
     v8 = objc_alloc_init(VOTUIRotorViewController);
-    v9 = [(VOTUIServer *)self rotorViewControllers];
-    [v9 setObject:v8 forKeyedSubscript:&off_400C0];
+    rotorViewControllers2 = [(VOTUIServer *)self rotorViewControllers];
+    [rotorViewControllers2 setObject:v8 forKeyedSubscript:&off_400C0];
 
     v10 = +[AXUIDisplayManager sharedDisplayManager];
-    v11 = [(VOTUIServer *)self rotorViewControllers];
-    v12 = [v11 objectForKeyedSubscript:&off_400C0];
+    rotorViewControllers3 = [(VOTUIServer *)self rotorViewControllers];
+    v12 = [rotorViewControllers3 objectForKeyedSubscript:&off_400C0];
     [v10 addContentViewController:v12 withUserInteractionEnabled:0 forService:self forSceneClientIdentifier:@"kAXVOTMainSceneClientIdentifier" context:0 userInterfaceStyle:0 forWindowScene:0 spatialConfiguration:0 completion:0];
   }
 
   if ([(NSMutableArray *)self->_externalWindowScenes count])
   {
-    v30 = v4;
+    v30 = rotorCopy;
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v13 = [(VOTUIServer *)self cursorViewControllers];
-    v14 = [v13 allKeys];
+    cursorViewControllers = [(VOTUIServer *)self cursorViewControllers];
+    allKeys2 = [cursorViewControllers allKeys];
 
-    obj = v14;
-    v15 = [v14 countByEnumeratingWithState:&v32 objects:v36 count:16];
+    obj = allKeys2;
+    v15 = [allKeys2 countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v15)
     {
       v16 = v15;
@@ -852,21 +852,21 @@ LABEL_9:
           }
 
           v20 = *(*(&v32 + 1) + 8 * i);
-          v21 = [(VOTUIServer *)self cursorViewControllers];
-          v22 = [v21 objectForKeyedSubscript:v20];
-          v23 = [v22 view];
-          v24 = [v23 isHidden];
+          cursorViewControllers2 = [(VOTUIServer *)self cursorViewControllers];
+          v22 = [cursorViewControllers2 objectForKeyedSubscript:v20];
+          view = [v22 view];
+          isHidden = [view isHidden];
 
-          if ((v24 & 1) == 0)
+          if ((isHidden & 1) == 0)
           {
             v25 = v20;
 
             v18 = v25;
           }
 
-          v26 = [(VOTUIServer *)self rotorViewControllers];
-          v27 = [v26 objectForKeyedSubscript:v20];
-          [v27 setRotorHidden:v24];
+          rotorViewControllers4 = [(VOTUIServer *)self rotorViewControllers];
+          v27 = [rotorViewControllers4 objectForKeyedSubscript:v20];
+          [v27 setRotorHidden:isHidden];
         }
 
         v16 = [obj countByEnumeratingWithState:&v32 objects:v36 count:16];
@@ -880,7 +880,7 @@ LABEL_9:
       v18 = &off_400C0;
     }
 
-    v4 = v30;
+    rotorCopy = v30;
   }
 
   else
@@ -888,25 +888,25 @@ LABEL_9:
     v18 = &off_400C0;
   }
 
-  v28 = [(VOTUIServer *)self rotorViewControllers];
-  v29 = [v28 objectForKeyedSubscript:v18];
-  [v29 updateVisualRotor:v4];
+  rotorViewControllers5 = [(VOTUIServer *)self rotorViewControllers];
+  v29 = [rotorViewControllers5 objectForKeyedSubscript:v18];
+  [v29 updateVisualRotor:rotorCopy];
 }
 
-- (CGRect)_handleConvertFrameMessage:(id)a3
+- (CGRect)_handleConvertFrameMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"frame"];
+  messageCopy = message;
+  v5 = [messageCopy objectForKey:@"frame"];
   v25 = CGRectFromString(v5);
   x = v25.origin.x;
   y = v25.origin.y;
   width = v25.size.width;
   height = v25.size.height;
 
-  v10 = [v4 objectForKey:@"display"];
+  v10 = [messageCopy objectForKey:@"display"];
 
-  v11 = [(VOTUIServer *)self cursorViewControllers];
-  v12 = [v11 objectForKeyedSubscript:v10];
+  cursorViewControllers = [(VOTUIServer *)self cursorViewControllers];
+  v12 = [cursorViewControllers objectForKeyedSubscript:v10];
   [v12 convertFrameToCursorSpace:{x, y, width, height}];
   v14 = v13;
   v16 = v15;
@@ -924,11 +924,11 @@ LABEL_9:
   return result;
 }
 
-- (id)_handleConvertFramesMessage:(id)a3
+- (id)_handleConvertFramesMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"frames"];
-  v6 = [v4 objectForKey:@"display"];
+  messageCopy = message;
+  v5 = [messageCopy objectForKey:@"frames"];
+  v6 = [messageCopy objectForKey:@"display"];
   v7 = objc_alloc_init(NSMutableArray);
   v29 = 0u;
   v30 = 0u;
@@ -954,8 +954,8 @@ LABEL_9:
         y = v35.origin.y;
         width = v35.size.width;
         height = v35.size.height;
-        v17 = [(VOTUIServer *)self cursorViewControllers];
-        v18 = [v17 objectForKeyedSubscript:v6];
+        cursorViewControllers = [(VOTUIServer *)self cursorViewControllers];
+        v18 = [cursorViewControllers objectForKeyedSubscript:v6];
         [v18 convertFrameToCursorSpace:{x, y, width, height}];
         v20 = v19;
         v22 = v21;
@@ -986,155 +986,155 @@ LABEL_9:
   return v7;
 }
 
-- (void)_handleShowMapsExplorationUIMessage:(id)a3
+- (void)_handleShowMapsExplorationUIMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   [(VOTUIServer *)self _addMapsExplorationViewController];
-  v13 = [v4 objectForKeyedSubscript:@"mapsExplorationCenter"];
-  v5 = [(VOTUIServer *)self mapsExplorationViewController];
-  v6 = [v13 firstObject];
-  [v6 floatValue];
+  v13 = [messageCopy objectForKeyedSubscript:@"mapsExplorationCenter"];
+  mapsExplorationViewController = [(VOTUIServer *)self mapsExplorationViewController];
+  firstObject = [v13 firstObject];
+  [firstObject floatValue];
   v8 = v7;
   v9 = [v13 objectAtIndex:1];
   [v9 floatValue];
   v11 = v10;
-  v12 = [v4 objectForKeyedSubscript:@"mapsExplorationData"];
+  v12 = [messageCopy objectForKeyedSubscript:@"mapsExplorationData"];
 
-  [v5 updateUIWithCenter:v12 andExplorationSegments:{v8, v11}];
+  [mapsExplorationViewController updateUIWithCenter:v12 andExplorationSegments:{v8, v11}];
 }
 
-- (void)_handleUpdateMapsExplorationCurrentCenter:(id)a3
+- (void)_handleUpdateMapsExplorationCurrentCenter:(id)center
 {
-  v10 = [a3 objectForKeyedSubscript:@"mapsExplorationCenter"];
-  v4 = [(VOTUIServer *)self mapsExplorationViewController];
-  v5 = [v10 firstObject];
-  [v5 floatValue];
+  v10 = [center objectForKeyedSubscript:@"mapsExplorationCenter"];
+  mapsExplorationViewController = [(VOTUIServer *)self mapsExplorationViewController];
+  firstObject = [v10 firstObject];
+  [firstObject floatValue];
   v7 = v6;
   v8 = [v10 objectAtIndex:1];
   [v8 floatValue];
-  [v4 updateUIWithCenter:{v7, v9}];
+  [mapsExplorationViewController updateUIWithCenter:{v7, v9}];
 }
 
-- (void)_handleUpdateMapsExplorationUIWithCurrentLocationMessage:(id)a3
+- (void)_handleUpdateMapsExplorationUIWithCurrentLocationMessage:(id)message
 {
-  v10 = [a3 objectForKeyedSubscript:@"mapsExplorationCurrentLocation"];
-  v4 = [(VOTUIServer *)self mapsExplorationViewController];
-  v5 = [v10 firstObject];
-  [v5 floatValue];
+  v10 = [message objectForKeyedSubscript:@"mapsExplorationCurrentLocation"];
+  mapsExplorationViewController = [(VOTUIServer *)self mapsExplorationViewController];
+  firstObject = [v10 firstObject];
+  [firstObject floatValue];
   v7 = v6;
   v8 = [v10 objectAtIndex:1];
   [v8 floatValue];
-  [v4 updateUIWithCurrentLocation:{v7, v9}];
+  [mapsExplorationViewController updateUIWithCurrentLocation:{v7, v9}];
 }
 
-- (void)_handleHighlightMapsExplorationSegmentMessage:(id)a3
+- (void)_handleHighlightMapsExplorationSegmentMessage:(id)message
 {
-  v4 = a3;
-  v6 = [(VOTUIServer *)self mapsExplorationViewController];
-  v5 = [v4 objectForKeyedSubscript:@"mapsExplorationIndex"];
+  messageCopy = message;
+  mapsExplorationViewController = [(VOTUIServer *)self mapsExplorationViewController];
+  v5 = [messageCopy objectForKeyedSubscript:@"mapsExplorationIndex"];
 
-  [v6 highlightExplorationSegmentWithIndex:{objc_msgSend(v5, "intValue")}];
+  [mapsExplorationViewController highlightExplorationSegmentWithIndex:{objc_msgSend(v5, "intValue")}];
 }
 
-- (void)_handleShowBrailleUIMessage:(id)a3
+- (void)_handleShowBrailleUIMessage:(id)message
 {
-  v4 = a3;
-  v9 = [v4 objectForKeyedSubscript:@"brailleOrientation"];
-  v5 = [v9 intValue];
-  v6 = [v4 objectForKeyedSubscript:@"brailleDotPositions"];
+  messageCopy = message;
+  v9 = [messageCopy objectForKeyedSubscript:@"brailleOrientation"];
+  intValue = [v9 intValue];
+  v6 = [messageCopy objectForKeyedSubscript:@"brailleDotPositions"];
   v7 = sub_7B00(v6);
-  v8 = [v4 objectForKeyedSubscript:@"brailleTypingMode"];
+  v8 = [messageCopy objectForKeyedSubscript:@"brailleTypingMode"];
 
-  -[VOTUIServer _addBrailleViewControllerWithOrientation:dotNumberPositions:typingMode:](self, "_addBrailleViewControllerWithOrientation:dotNumberPositions:typingMode:", v5, v7, [v8 intValue]);
+  -[VOTUIServer _addBrailleViewControllerWithOrientation:dotNumberPositions:typingMode:](self, "_addBrailleViewControllerWithOrientation:dotNumberPositions:typingMode:", intValue, v7, [v8 intValue]);
 }
 
-- (void)_handleHighlightBrailleDotsMessage:(id)a3
+- (void)_handleHighlightBrailleDotsMessage:(id)message
 {
-  v4 = a3;
-  v6 = [(VOTUIServer *)self brailleViewController];
-  v5 = [v4 objectForKeyedSubscript:@"brailleDotNumbers"];
+  messageCopy = message;
+  brailleViewController = [(VOTUIServer *)self brailleViewController];
+  v5 = [messageCopy objectForKeyedSubscript:@"brailleDotNumbers"];
 
-  [v6 highlightBrailleDots:v5];
+  [brailleViewController highlightBrailleDots:v5];
 }
 
-- (void)_handleDisplayBrailleDotNumbers:(id)a3
+- (void)_handleDisplayBrailleDotNumbers:(id)numbers
 {
-  v4 = a3;
-  v6 = [(VOTUIServer *)self brailleViewController];
-  v5 = [v4 objectForKeyedSubscript:@"brailleDotNumbersReversed"];
+  numbersCopy = numbers;
+  brailleViewController = [(VOTUIServer *)self brailleViewController];
+  v5 = [numbersCopy objectForKeyedSubscript:@"brailleDotNumbersReversed"];
 
-  [v6 displayDotNumbersWithReversed:v5];
+  [brailleViewController displayDotNumbersWithReversed:v5];
 }
 
-- (void)_handleUpdateBrailleUIMessage:(id)a3
+- (void)_handleUpdateBrailleUIMessage:(id)message
 {
-  v4 = a3;
-  v10 = [(VOTUIServer *)self brailleViewController];
-  v5 = [v4 objectForKeyedSubscript:@"brailleOrientation"];
-  v6 = [v5 intValue];
-  v7 = [v4 objectForKeyedSubscript:@"brailleDotPositions"];
+  messageCopy = message;
+  brailleViewController = [(VOTUIServer *)self brailleViewController];
+  v5 = [messageCopy objectForKeyedSubscript:@"brailleOrientation"];
+  intValue = [v5 intValue];
+  v7 = [messageCopy objectForKeyedSubscript:@"brailleDotPositions"];
   v8 = sub_7B00(v7);
-  v9 = [v4 objectForKeyedSubscript:@"brailleTypingMode"];
+  v9 = [messageCopy objectForKeyedSubscript:@"brailleTypingMode"];
 
-  [v10 setOrientation:v6 dotNumberPositions:v8 typingMode:{objc_msgSend(v9, "intValue")}];
+  [brailleViewController setOrientation:intValue dotNumberPositions:v8 typingMode:{objc_msgSend(v9, "intValue")}];
 }
 
-- (void)_handleSendFocusChangeToZoom:(id)a3
+- (void)_handleSendFocusChangeToZoom:(id)zoom
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"FocusChangeFrameKey"];
+  zoomCopy = zoom;
+  v5 = [zoomCopy objectForKeyedSubscript:@"FocusChangeFrameKey"];
   v41 = CGRectFromString(v5);
   x = v41.origin.x;
   y = v41.origin.y;
   width = v41.size.width;
   height = v41.size.height;
 
-  v10 = [v4 objectForKeyedSubscript:@"FocusChangeTypeKey"];
-  v11 = [v10 integerValue];
+  v10 = [zoomCopy objectForKeyedSubscript:@"FocusChangeTypeKey"];
+  integerValue = [v10 integerValue];
 
-  v39 = [v4 objectForKeyedSubscript:@"display"];
+  v39 = [zoomCopy objectForKeyedSubscript:@"display"];
 
-  v12 = [(VOTUIServer *)self cursorViewControllers];
-  v13 = [v12 objectForKeyedSubscript:v39];
+  cursorViewControllers = [(VOTUIServer *)self cursorViewControllers];
+  v13 = [cursorViewControllers objectForKeyedSubscript:v39];
   [v13 convertFrameToCursorSpace:{x, y, width, height}];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
 
-  v22 = [(VOTUIServer *)self cursorViewControllers];
-  v23 = [v22 objectForKeyedSubscript:v39];
-  v24 = [v23 view];
-  v25 = [(VOTUIServer *)self cursorViewControllers];
-  v26 = [v25 objectForKeyedSubscript:v39];
-  v27 = [v26 cursorView];
-  [v24 convertRect:v27 toView:{v15, v17, v19, v21}];
+  cursorViewControllers2 = [(VOTUIServer *)self cursorViewControllers];
+  v23 = [cursorViewControllers2 objectForKeyedSubscript:v39];
+  view = [v23 view];
+  cursorViewControllers3 = [(VOTUIServer *)self cursorViewControllers];
+  v26 = [cursorViewControllers3 objectForKeyedSubscript:v39];
+  cursorView = [v26 cursorView];
+  [view convertRect:cursorView toView:{v15, v17, v19, v21}];
   v29 = v28;
   v31 = v30;
   v33 = v32;
   v35 = v34;
 
-  v36 = [(VOTUIServer *)self cursorViewControllers];
-  v37 = [v36 objectForKeyedSubscript:v39];
-  v38 = [v37 cursorView];
+  cursorViewControllers4 = [(VOTUIServer *)self cursorViewControllers];
+  v37 = [cursorViewControllers4 objectForKeyedSubscript:v39];
+  cursorView2 = [v37 cursorView];
   v42.origin.x = v29;
   v42.origin.y = v31;
   v42.size.width = v33;
   v42.size.height = v35;
-  UIAccessibilityZoomFocusChanged(v11, v42, v38);
+  UIAccessibilityZoomFocusChanged(integerValue, v42, cursorView2);
 }
 
-- (void)_handleZoomFocusChangeNotification:(id)a3
+- (void)_handleZoomFocusChangeNotification:(id)notification
 {
-  v20 = a3;
-  v3 = [v20 userInfo];
-  v4 = [v3 objectForKey:@"type"];
-  v5 = [v4 integerValue];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v4 = [userInfo objectForKey:@"type"];
+  integerValue = [v4 integerValue];
 
-  if ((v5 - 1) <= 1)
+  if ((integerValue - 1) <= 1)
   {
-    v6 = [v20 userInfo];
-    v7 = [v6 objectForKey:@"window"];
+    userInfo2 = [notificationCopy userInfo];
+    v7 = [userInfo2 objectForKey:@"window"];
 
     AXUIRectForZoomFocusChangeNotification();
     v9 = v8;
@@ -1142,161 +1142,161 @@ LABEL_9:
     v13 = v12;
     v15 = v14;
     v16 = +[ZoomServices sharedInstance];
-    v17 = [v7 _contextId];
-    v18 = [v7 screen];
-    v19 = [v18 displayIdentity];
-    [v16 notifyZoomFocusDidChangeWithType:v5 rect:v17 contextId:objc_msgSend(v19 keyboardFrame:"displayID") displayId:{v9, v11, v13, v15, CGRectNull.origin.x, CGRectNull.origin.y, CGRectNull.size.width, CGRectNull.size.height}];
+    _contextId = [v7 _contextId];
+    screen = [v7 screen];
+    displayIdentity = [screen displayIdentity];
+    [v16 notifyZoomFocusDidChangeWithType:integerValue rect:_contextId contextId:objc_msgSend(displayIdentity keyboardFrame:"displayID") displayId:{v9, v11, v13, v15, CGRectNull.origin.x, CGRectNull.origin.y, CGRectNull.size.width, CGRectNull.size.height}];
   }
 }
 
-- (void)_handleSetSonificationPlayheadPosition:(id)a3
+- (void)_handleSetSonificationPlayheadPosition:(id)position
 {
-  v4 = a3;
-  v5 = [(VOTUIServer *)self sonificationViewController];
+  positionCopy = position;
+  sonificationViewController = [(VOTUIServer *)self sonificationViewController];
 
-  if (!v5)
+  if (!sonificationViewController)
   {
     v6 = objc_alloc_init(VOTUISonificationViewController);
     [(VOTUIServer *)self setSonificationViewController:v6];
 
     v7 = +[AXUIDisplayManager sharedDisplayManager];
-    v8 = [(VOTUIServer *)self sonificationViewController];
-    [v7 addContentViewController:v8 withUserInteractionEnabled:0 forService:self];
+    sonificationViewController2 = [(VOTUIServer *)self sonificationViewController];
+    [v7 addContentViewController:sonificationViewController2 withUserInteractionEnabled:0 forService:self];
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"sonificationPlaybackBounds"];
+  v9 = [positionCopy objectForKeyedSubscript:@"sonificationPlaybackBounds"];
   v30 = CGRectFromString(v9);
   x = v30.origin.x;
   y = v30.origin.y;
   width = v30.size.width;
   height = v30.size.height;
 
-  v14 = [v4 objectForKeyedSubscript:@"sonificationPlayheadProgress"];
+  v14 = [positionCopy objectForKeyedSubscript:@"sonificationPlayheadProgress"];
 
   [v14 doubleValue];
   v16 = v15;
 
-  v17 = [(VOTUIServer *)self sonificationViewController];
-  [v17 convertFrameToViewSpace:{x, y, width, height}];
+  sonificationViewController3 = [(VOTUIServer *)self sonificationViewController];
+  [sonificationViewController3 convertFrameToViewSpace:{x, y, width, height}];
   v19 = v18;
   v21 = v20;
   v23 = v22;
   v25 = v24;
 
-  v26 = [(VOTUIServer *)self sonificationViewController];
-  [v26 setPlayheadHidden:v16 < 0.0];
+  sonificationViewController4 = [(VOTUIServer *)self sonificationViewController];
+  [sonificationViewController4 setPlayheadHidden:v16 < 0.0];
 
-  v27 = [(VOTUIServer *)self sonificationViewController];
-  [v27 setPlaybackBounds:{v19, v21, v23, v25}];
+  sonificationViewController5 = [(VOTUIServer *)self sonificationViewController];
+  [sonificationViewController5 setPlaybackBounds:{v19, v21, v23, v25}];
 
-  v28 = [(VOTUIServer *)self sonificationViewController];
-  [v28 setPlayheadProgress:v16];
+  sonificationViewController6 = [(VOTUIServer *)self sonificationViewController];
+  [sonificationViewController6 setPlayheadProgress:v16];
 }
 
-- (void)_handleBeginSonificationPlayback:(id)a3
+- (void)_handleBeginSonificationPlayback:(id)playback
 {
-  v4 = a3;
-  v5 = [(VOTUIServer *)self sonificationViewController];
+  playbackCopy = playback;
+  sonificationViewController = [(VOTUIServer *)self sonificationViewController];
 
-  if (!v5)
+  if (!sonificationViewController)
   {
     v6 = objc_alloc_init(VOTUISonificationViewController);
     [(VOTUIServer *)self setSonificationViewController:v6];
 
     v7 = +[AXUIDisplayManager sharedDisplayManager];
-    v8 = [(VOTUIServer *)self sonificationViewController];
-    [v7 addContentViewController:v8 withUserInteractionEnabled:0 forService:self];
+    sonificationViewController2 = [(VOTUIServer *)self sonificationViewController];
+    [v7 addContentViewController:sonificationViewController2 withUserInteractionEnabled:0 forService:self];
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"sonificationPlaybackBounds"];
+  v9 = [playbackCopy objectForKeyedSubscript:@"sonificationPlaybackBounds"];
   v39 = CGRectFromString(v9);
   x = v39.origin.x;
   y = v39.origin.y;
   width = v39.size.width;
   height = v39.size.height;
 
-  v14 = [v4 objectForKeyedSubscript:@"sonificationPlayheadProgress"];
+  v14 = [playbackCopy objectForKeyedSubscript:@"sonificationPlayheadProgress"];
   [v14 doubleValue];
   v16 = v15;
 
-  v17 = [(VOTUIServer *)self sonificationViewController];
-  [v17 convertFrameToViewSpace:{x, y, width, height}];
+  sonificationViewController3 = [(VOTUIServer *)self sonificationViewController];
+  [sonificationViewController3 convertFrameToViewSpace:{x, y, width, height}];
   v19 = v18;
   v21 = v20;
   v23 = v22;
   v25 = v24;
 
-  v26 = [v4 objectForKeyedSubscript:@"sonificationDuration"];
+  v26 = [playbackCopy objectForKeyedSubscript:@"sonificationDuration"];
   [v26 doubleValue];
   v28 = v27;
 
-  v29 = [v4 objectForKeyedSubscript:@"sonificationPlaybackStartTime"];
+  v29 = [playbackCopy objectForKeyedSubscript:@"sonificationPlaybackStartTime"];
   [v29 doubleValue];
   v31 = v30;
 
-  v32 = [v4 objectForKeyedSubscript:@"sonificationNormalizedPlayheadPosition"];
+  v32 = [playbackCopy objectForKeyedSubscript:@"sonificationNormalizedPlayheadPosition"];
 
   [v32 doubleValue];
   v34 = v33;
 
-  v35 = [(VOTUIServer *)self sonificationViewController];
-  [v35 setPlayheadProgress:v16];
+  sonificationViewController4 = [(VOTUIServer *)self sonificationViewController];
+  [sonificationViewController4 setPlayheadProgress:v16];
 
-  v36 = [(VOTUIServer *)self sonificationViewController];
-  [v36 setPlaybackBounds:{v19, v21, v23, v25}];
+  sonificationViewController5 = [(VOTUIServer *)self sonificationViewController];
+  [sonificationViewController5 setPlaybackBounds:{v19, v21, v23, v25}];
 
-  v37 = [(VOTUIServer *)self sonificationViewController];
-  [v37 resumePlaybackFromPosition:v34 startTime:v31 totalDuration:v28];
+  sonificationViewController6 = [(VOTUIServer *)self sonificationViewController];
+  [sonificationViewController6 resumePlaybackFromPosition:v34 startTime:v31 totalDuration:v28];
 }
 
-- (void)_handlePauseSonificationPlayback:(id)a3
+- (void)_handlePauseSonificationPlayback:(id)playback
 {
-  v3 = [(VOTUIServer *)self sonificationViewController];
-  [v3 pausePlayback];
+  sonificationViewController = [(VOTUIServer *)self sonificationViewController];
+  [sonificationViewController pausePlayback];
 }
 
-- (void)_handleDisplayUIServerBasedItemChooser:(id)a3
+- (void)_handleDisplayUIServerBasedItemChooser:(id)chooser
 {
-  v9 = [a3 objectForKeyedSubscript:@"items"];
-  v4 = [(VOTUIServer *)self itemChooserController];
+  v9 = [chooser objectForKeyedSubscript:@"items"];
+  itemChooserController = [(VOTUIServer *)self itemChooserController];
   if (v9)
   {
 
-    if (!v4)
+    if (!itemChooserController)
     {
       v5 = objc_alloc_init(Legacy_VOTUIItemChooserController);
       [(VOTUIServer *)self setItemChooserController:v5];
 
-      v6 = [(VOTUIServer *)self itemChooserController];
-      [v6 setDelegate:self];
+      itemChooserController2 = [(VOTUIServer *)self itemChooserController];
+      [itemChooserController2 setDelegate:self];
 
       v7 = +[AXUIDisplayManager sharedDisplayManager];
-      v8 = [(VOTUIServer *)self itemChooserController];
-      [v7 addContentViewController:v8 withUserInteractionEnabled:1 forService:self];
+      itemChooserController3 = [(VOTUIServer *)self itemChooserController];
+      [v7 addContentViewController:itemChooserController3 withUserInteractionEnabled:1 forService:self];
     }
 
-    v4 = [(VOTUIServer *)self itemChooserController];
-    [v4 showItemChooser:v9];
+    itemChooserController = [(VOTUIServer *)self itemChooserController];
+    [itemChooserController showItemChooser:v9];
   }
 
   else
   {
-    [v4 hideItemChooser:0];
+    [itemChooserController hideItemChooser:0];
   }
 }
 
-- (void)_handleScreenCurtainEnabled:(BOOL)a3
+- (void)_handleScreenCurtainEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if (!a3)
+  enabledCopy = enabled;
+  if (!enabled)
   {
     [(VOTUIServer *)self _removeScreenCurtainControllers];
     goto LABEL_12;
   }
 
-  v5 = [(VOTUIServer *)self screenCurtainViewControllers];
+  screenCurtainViewControllers = [(VOTUIServer *)self screenCurtainViewControllers];
 
-  if (v5)
+  if (screenCurtainViewControllers)
   {
 LABEL_12:
     v22 = 0;
@@ -1308,12 +1308,12 @@ LABEL_12:
 
   _UIAccessibilityBlockPostingOfNotification();
   v7 = objc_alloc_init(VOTUIScreenCurtainViewController);
-  v8 = [(VOTUIServer *)self screenCurtainViewControllers];
-  [v8 setObject:v7 forKeyedSubscript:&off_400C0];
+  screenCurtainViewControllers2 = [(VOTUIServer *)self screenCurtainViewControllers];
+  [screenCurtainViewControllers2 setObject:v7 forKeyedSubscript:&off_400C0];
 
   v9 = +[AXUIDisplayManager sharedDisplayManager];
-  v10 = [(VOTUIServer *)self screenCurtainViewControllers];
-  v11 = [v10 objectForKeyedSubscript:&off_400C0];
+  screenCurtainViewControllers3 = [(VOTUIServer *)self screenCurtainViewControllers];
+  v11 = [screenCurtainViewControllers3 objectForKeyedSubscript:&off_400C0];
   [v9 addContentViewController:v11 withUserInteractionEnabled:0 forService:self forSceneClientIdentifier:@"kAXVOTScreenCurtainSceneClientIdentifier" context:0 userInterfaceStyle:0 forWindowScene:0 completion:0];
 
   v37 = 0u;
@@ -1339,9 +1339,9 @@ LABEL_12:
         v15 = *(*(&v35 + 1) + 8 * v14);
         v16 = objc_alloc_init(VOTUIScreenCurtainViewController);
         screenCurtainViewControllers = self->_screenCurtainViewControllers;
-        v18 = [v15 screen];
-        v19 = [v18 displayIdentity];
-        v20 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v19 displayID]);
+        screen = [v15 screen];
+        displayIdentity = [screen displayIdentity];
+        v20 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [displayIdentity displayID]);
         [(NSMutableDictionary *)screenCurtainViewControllers setObject:v16 forKeyedSubscript:v20];
 
         v21 = +[AXUIDisplayManager sharedDisplayManager];
@@ -1363,10 +1363,10 @@ LABEL_13:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v23 = [(VOTUIServer *)self screenCurtainViewControllers];
-  v24 = [v23 allValues];
+  screenCurtainViewControllers4 = [(VOTUIServer *)self screenCurtainViewControllers];
+  allValues = [screenCurtainViewControllers4 allValues];
 
-  v25 = [v24 countByEnumeratingWithState:&v31 objects:v39 count:16];
+  v25 = [allValues countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v25)
   {
     v26 = v25;
@@ -1378,15 +1378,15 @@ LABEL_13:
       {
         if (*v32 != v27)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(allValues);
         }
 
-        [*(*(&v31 + 1) + 8 * v28) setEnabled:v3 animate:1];
+        [*(*(&v31 + 1) + 8 * v28) setEnabled:enabledCopy animate:1];
         v28 = v28 + 1;
       }
 
       while (v26 != v28);
-      v26 = [v24 countByEnumeratingWithState:&v31 objects:v39 count:16];
+      v26 = [allValues countByEnumeratingWithState:&v31 objects:v39 count:16];
     }
 
     while (v26);
@@ -1398,13 +1398,13 @@ LABEL_13:
   }
 }
 
-- (void)_handleFlashBrailleInsertedTextMessage:(id)a3
+- (void)_handleFlashBrailleInsertedTextMessage:(id)message
 {
-  v4 = a3;
-  v6 = [(VOTUIServer *)self brailleViewController];
-  v5 = [v4 objectForKeyedSubscript:@"brailleInsertedText"];
+  messageCopy = message;
+  brailleViewController = [(VOTUIServer *)self brailleViewController];
+  v5 = [messageCopy objectForKeyedSubscript:@"brailleInsertedText"];
 
-  [v6 flashInsertedText:v5];
+  [brailleViewController flashInsertedText:v5];
 }
 
 - (void)_removeScreenCurtainControllers
@@ -1413,10 +1413,10 @@ LABEL_13:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(VOTUIServer *)self screenCurtainViewControllers];
-  v4 = [v3 allValues];
+  screenCurtainViewControllers = [(VOTUIServer *)self screenCurtainViewControllers];
+  allValues = [screenCurtainViewControllers allValues];
 
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1427,7 +1427,7 @@ LABEL_13:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -1436,7 +1436,7 @@ LABEL_13:
         [v10 removeContentViewController:v9 withUserInteractionEnabled:0 forService:self context:0 completion:0];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -1451,10 +1451,10 @@ LABEL_13:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(VOTUIServer *)self cursorViewControllers];
-  v4 = [v3 allValues];
+  cursorViewControllers = [(VOTUIServer *)self cursorViewControllers];
+  allValues = [cursorViewControllers allValues];
 
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1466,7 +1466,7 @@ LABEL_13:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
@@ -1478,7 +1478,7 @@ LABEL_13:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -1489,28 +1489,28 @@ LABEL_13:
 
 - (void)_removeElementVisualizationViewController
 {
-  v3 = [(VOTUIServer *)self elementVisualizationViewController];
-  [v3 setFramesHidden:1];
+  elementVisualizationViewController = [(VOTUIServer *)self elementVisualizationViewController];
+  [elementVisualizationViewController setFramesHidden:1];
 
   v4 = +[AXUIDisplayManager sharedDisplayManager];
-  v5 = [(VOTUIServer *)self elementVisualizationViewController];
-  [v4 removeContentViewController:v5 withUserInteractionEnabled:0 forService:self];
+  elementVisualizationViewController2 = [(VOTUIServer *)self elementVisualizationViewController];
+  [v4 removeContentViewController:elementVisualizationViewController2 withUserInteractionEnabled:0 forService:self];
 
   [(VOTUIServer *)self setElementVisualizationViewController:0];
 }
 
 - (void)_removeItemChooserController
 {
-  v3 = [(VOTUIServer *)self itemChooserController];
+  itemChooserController = [(VOTUIServer *)self itemChooserController];
 
-  if (v3)
+  if (itemChooserController)
   {
     v4 = +[AXUIDisplayManager sharedDisplayManager];
-    v5 = [(VOTUIServer *)self itemChooserController];
-    [v4 removeContentViewController:v5 withUserInteractionEnabled:0 forService:self];
+    itemChooserController2 = [(VOTUIServer *)self itemChooserController];
+    [v4 removeContentViewController:itemChooserController2 withUserInteractionEnabled:0 forService:self];
 
-    v6 = [(VOTUIServer *)self itemChooserController];
-    [v6 setDelegate:0];
+    itemChooserController3 = [(VOTUIServer *)self itemChooserController];
+    [itemChooserController3 setDelegate:0];
 
     [(VOTUIServer *)self setItemChooserController:0];
   }
@@ -1522,10 +1522,10 @@ LABEL_13:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(VOTUIServer *)self rotorViewControllers];
-  v4 = [v3 allValues];
+  rotorViewControllers = [(VOTUIServer *)self rotorViewControllers];
+  allValues = [rotorViewControllers allValues];
 
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1537,7 +1537,7 @@ LABEL_13:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
@@ -1548,7 +1548,7 @@ LABEL_13:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -1557,13 +1557,13 @@ LABEL_13:
 
 - (void)_removeSonificationViewController
 {
-  v3 = [(VOTUIServer *)self sonificationViewController];
+  sonificationViewController = [(VOTUIServer *)self sonificationViewController];
 
-  if (v3)
+  if (sonificationViewController)
   {
     v4 = +[AXUIDisplayManager sharedDisplayManager];
-    v5 = [(VOTUIServer *)self sonificationViewController];
-    [v4 removeContentViewController:v5 withUserInteractionEnabled:0 forService:self];
+    sonificationViewController2 = [(VOTUIServer *)self sonificationViewController];
+    [v4 removeContentViewController:sonificationViewController2 withUserInteractionEnabled:0 forService:self];
 
     [(VOTUIServer *)self setSonificationViewController:0];
   }
@@ -1571,46 +1571,46 @@ LABEL_13:
 
 - (void)_addMapsExplorationViewController
 {
-  v3 = [(VOTUIServer *)self mapsExplorationViewController];
+  mapsExplorationViewController = [(VOTUIServer *)self mapsExplorationViewController];
 
-  if (!v3)
+  if (!mapsExplorationViewController)
   {
     v4 = objc_alloc_init(VOTUIMapsExplorationViewController);
     [(VOTUIServer *)self setMapsExplorationViewController:v4];
 
     v6 = +[AXUIDisplayManager sharedDisplayManager];
-    v5 = [(VOTUIServer *)self mapsExplorationViewController];
-    [v6 addContentViewController:v5 withUserInteractionEnabled:0 forService:self];
+    mapsExplorationViewController2 = [(VOTUIServer *)self mapsExplorationViewController];
+    [v6 addContentViewController:mapsExplorationViewController2 withUserInteractionEnabled:0 forService:self];
   }
 }
 
-- (void)_addBrailleViewControllerWithOrientation:(int64_t)a3 dotNumberPositions:(id)a4 typingMode:(int64_t)a5
+- (void)_addBrailleViewControllerWithOrientation:(int64_t)orientation dotNumberPositions:(id)positions typingMode:(int64_t)mode
 {
-  v8 = a4;
-  v9 = [(VOTUIServer *)self brailleViewController];
+  positionsCopy = positions;
+  brailleViewController = [(VOTUIServer *)self brailleViewController];
 
-  if (v9)
+  if (brailleViewController)
   {
-    v11 = [(VOTUIServer *)self brailleViewController];
-    [v11 setOrientation:a3 dotNumberPositions:v8 typingMode:a5];
+    brailleViewController2 = [(VOTUIServer *)self brailleViewController];
+    [brailleViewController2 setOrientation:orientation dotNumberPositions:positionsCopy typingMode:mode];
   }
 
   else
   {
-    v10 = [[VOTUIBrailleViewController alloc] initWithOrientation:a3 dotNumberPositions:v8 typingMode:a5];
+    v10 = [[VOTUIBrailleViewController alloc] initWithOrientation:orientation dotNumberPositions:positionsCopy typingMode:mode];
 
     [(VOTUIServer *)self setBrailleViewController:v10];
-    v11 = +[AXUIDisplayManager sharedDisplayManager];
-    v8 = [(VOTUIServer *)self brailleViewController];
-    [v11 addContentViewController:v8 withUserInteractionEnabled:0 forService:self forSceneClientIdentifier:@"kAXZoomSceneClientIdentifier"];
+    brailleViewController2 = +[AXUIDisplayManager sharedDisplayManager];
+    positionsCopy = [(VOTUIServer *)self brailleViewController];
+    [brailleViewController2 addContentViewController:positionsCopy withUserInteractionEnabled:0 forService:self forSceneClientIdentifier:@"kAXZoomSceneClientIdentifier"];
   }
 }
 
 - (void)_removeBrailleViewController
 {
   v3 = +[AXUIDisplayManager sharedDisplayManager];
-  v4 = [(VOTUIServer *)self brailleViewController];
-  [v3 removeContentViewController:v4 withUserInteractionEnabled:0 forService:self];
+  brailleViewController = [(VOTUIServer *)self brailleViewController];
+  [v3 removeContentViewController:brailleViewController withUserInteractionEnabled:0 forService:self];
 
   [(VOTUIServer *)self setBrailleViewController:0];
 }
@@ -1618,13 +1618,13 @@ LABEL_13:
 - (void)_removeMapsExplorationViewController
 {
   v3 = +[AXUIDisplayManager sharedDisplayManager];
-  v4 = [(VOTUIServer *)self mapsExplorationViewController];
-  [v3 removeContentViewController:v4 withUserInteractionEnabled:0 forService:self];
+  mapsExplorationViewController = [(VOTUIServer *)self mapsExplorationViewController];
+  [v3 removeContentViewController:mapsExplorationViewController withUserInteractionEnabled:0 forService:self];
 
   [(VOTUIServer *)self setMapsExplorationViewController:0];
 }
 
-- (void)connectionWillBeInterruptedForClientWithIdentifier:(id)a3
+- (void)connectionWillBeInterruptedForClientWithIdentifier:(id)identifier
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1634,17 +1634,17 @@ LABEL_13:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (double)desiredWindowLevelForContentViewController:(id)a3 userInteractionEnabled:(BOOL)a4
+- (double)desiredWindowLevelForContentViewController:(id)controller userInteractionEnabled:(BOOL)enabled
 {
-  v5 = a3;
+  controllerCopy = controller;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v6 = [(VOTUIServer *)self cursorViewControllers];
-  v7 = [v6 allValues];
+  cursorViewControllers = [(VOTUIServer *)self cursorViewControllers];
+  allValues = [cursorViewControllers allValues];
 
-  v8 = [v7 countByEnumeratingWithState:&v36 objects:v42 count:16];
+  v8 = [allValues countByEnumeratingWithState:&v36 objects:v42 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1656,10 +1656,10 @@ LABEL_13:
       {
         if (*v37 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allValues);
         }
 
-        if (*(*(&v36 + 1) + 8 * v11) == v5)
+        if (*(*(&v36 + 1) + 8 * v11) == controllerCopy)
         {
 
           goto LABEL_29;
@@ -1669,7 +1669,7 @@ LABEL_13:
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v36 objects:v42 count:16];
+      v9 = [allValues countByEnumeratingWithState:&v36 objects:v42 count:16];
       if (v9)
       {
         continue;
@@ -1683,10 +1683,10 @@ LABEL_13:
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v12 = [(VOTUIServer *)self screenCurtainViewControllers];
-  v13 = [v12 allValues];
+  screenCurtainViewControllers = [(VOTUIServer *)self screenCurtainViewControllers];
+  allValues2 = [screenCurtainViewControllers allValues];
 
-  v14 = [v13 countByEnumeratingWithState:&v32 objects:v41 count:16];
+  v14 = [allValues2 countByEnumeratingWithState:&v32 objects:v41 count:16];
   if (v14)
   {
     v15 = v14;
@@ -1698,10 +1698,10 @@ LABEL_13:
       {
         if (*v33 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(allValues2);
         }
 
-        if (*(*(&v32 + 1) + 8 * v17) == v5)
+        if (*(*(&v32 + 1) + 8 * v17) == controllerCopy)
         {
 
           v26 = 10000021.0;
@@ -1712,7 +1712,7 @@ LABEL_13:
       }
 
       while (v15 != v17);
-      v15 = [v13 countByEnumeratingWithState:&v32 objects:v41 count:16];
+      v15 = [allValues2 countByEnumeratingWithState:&v32 objects:v41 count:16];
       if (v15)
       {
         continue;
@@ -1722,18 +1722,18 @@ LABEL_13:
     }
   }
 
-  v18 = [(VOTUIServer *)self itemChooserController];
+  itemChooserController = [(VOTUIServer *)self itemChooserController];
 
-  if (v18 == v5)
+  if (itemChooserController == controllerCopy)
   {
     v26 = UIHUDWindowLevel;
   }
 
   else
   {
-    v19 = [(VOTUIServer *)self brailleViewController];
+    brailleViewController = [(VOTUIServer *)self brailleViewController];
 
-    if (v19 == v5)
+    if (brailleViewController == controllerCopy)
     {
       v26 = 10000017.0;
     }
@@ -1744,10 +1744,10 @@ LABEL_13:
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v20 = [(VOTUIServer *)self captionPanelViewControllers];
-      v21 = [v20 allValues];
+      captionPanelViewControllers = [(VOTUIServer *)self captionPanelViewControllers];
+      allValues3 = [captionPanelViewControllers allValues];
 
-      v22 = [v21 countByEnumeratingWithState:&v28 objects:v40 count:16];
+      v22 = [allValues3 countByEnumeratingWithState:&v28 objects:v40 count:16];
       if (v22)
       {
         v23 = v22;
@@ -1759,10 +1759,10 @@ LABEL_13:
           {
             if (*v29 != v24)
             {
-              objc_enumerationMutation(v21);
+              objc_enumerationMutation(allValues3);
             }
 
-            if (*(*(&v28 + 1) + 8 * v25) == v5)
+            if (*(*(&v28 + 1) + 8 * v25) == controllerCopy)
             {
 
               v26 = 10000014.0;
@@ -1773,7 +1773,7 @@ LABEL_13:
           }
 
           while (v23 != v25);
-          v23 = [v21 countByEnumeratingWithState:&v28 objects:v40 count:16];
+          v23 = [allValues3 countByEnumeratingWithState:&v28 objects:v40 count:16];
           if (v23)
           {
             continue;
@@ -1793,76 +1793,76 @@ LABEL_31:
   return v26;
 }
 
-- (void)externalDisplaySceneConnected:(id)a3 forSceneClientIdentifier:(id)a4
+- (void)externalDisplaySceneConnected:(id)connected forSceneClientIdentifier:(id)identifier
 {
-  v29 = a3;
-  v5 = [(VOTUIServer *)self cursorViewControllers];
-  v6 = [v29 screen];
-  v7 = [v6 displayIdentity];
-  v8 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v7 displayID]);
-  v9 = [v5 objectForKeyedSubscript:v8];
+  connectedCopy = connected;
+  cursorViewControllers = [(VOTUIServer *)self cursorViewControllers];
+  screen = [connectedCopy screen];
+  displayIdentity = [screen displayIdentity];
+  v8 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [displayIdentity displayID]);
+  v9 = [cursorViewControllers objectForKeyedSubscript:v8];
 
   if (!v9)
   {
-    v10 = [(VOTUIServer *)self externalWindowScenes];
-    [v10 addObject:v29];
+    externalWindowScenes = [(VOTUIServer *)self externalWindowScenes];
+    [externalWindowScenes addObject:connectedCopy];
 
     v11 = [[VOTUICursorViewController alloc] initWithAXUIService:self];
-    v12 = [(VOTUIServer *)self cursorViewControllers];
-    v13 = [v29 screen];
-    v14 = [v13 displayIdentity];
-    v15 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v14 displayID]);
-    [v12 setObject:v11 forKeyedSubscript:v15];
+    cursorViewControllers2 = [(VOTUIServer *)self cursorViewControllers];
+    screen2 = [connectedCopy screen];
+    displayIdentity2 = [screen2 displayIdentity];
+    v15 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [displayIdentity2 displayID]);
+    [cursorViewControllers2 setObject:v11 forKeyedSubscript:v15];
 
     v16 = +[AXUIDisplayManager sharedDisplayManager];
-    [v16 addContentViewController:v11 withUserInteractionEnabled:0 forService:self forSceneClientIdentifier:@"kAXVOTMainSceneClientIdentifier" context:0 userInterfaceStyle:0 forWindowScene:v29 completion:0];
+    [v16 addContentViewController:v11 withUserInteractionEnabled:0 forService:self forSceneClientIdentifier:@"kAXVOTMainSceneClientIdentifier" context:0 userInterfaceStyle:0 forWindowScene:connectedCopy completion:0];
 
     v17 = objc_alloc_init(VOTUICaptionPanelViewController);
-    v18 = [(VOTUIServer *)self captionPanelViewControllers];
-    v19 = [v29 screen];
-    v20 = [v19 displayIdentity];
-    v21 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v20 displayID]);
-    [v18 setObject:v17 forKeyedSubscript:v21];
+    captionPanelViewControllers = [(VOTUIServer *)self captionPanelViewControllers];
+    screen3 = [connectedCopy screen];
+    displayIdentity3 = [screen3 displayIdentity];
+    v21 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [displayIdentity3 displayID]);
+    [captionPanelViewControllers setObject:v17 forKeyedSubscript:v21];
 
     v22 = +[AXUIDisplayManager sharedDisplayManager];
-    [v22 addContentViewController:v17 withUserInteractionEnabled:0 forService:self forSceneClientIdentifier:@"kAXVOTMainSceneClientIdentifier" context:0 userInterfaceStyle:0 forWindowScene:v29 completion:0];
+    [v22 addContentViewController:v17 withUserInteractionEnabled:0 forService:self forSceneClientIdentifier:@"kAXVOTMainSceneClientIdentifier" context:0 userInterfaceStyle:0 forWindowScene:connectedCopy completion:0];
 
     v23 = objc_alloc_init(VOTUIRotorViewController);
-    v24 = [(VOTUIServer *)self rotorViewControllers];
-    v25 = [v29 screen];
-    v26 = [v25 displayIdentity];
-    v27 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v26 displayID]);
-    [v24 setObject:v23 forKeyedSubscript:v27];
+    rotorViewControllers = [(VOTUIServer *)self rotorViewControllers];
+    screen4 = [connectedCopy screen];
+    displayIdentity4 = [screen4 displayIdentity];
+    v27 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [displayIdentity4 displayID]);
+    [rotorViewControllers setObject:v23 forKeyedSubscript:v27];
 
     v28 = +[AXUIDisplayManager sharedDisplayManager];
-    [v28 addContentViewController:v23 withUserInteractionEnabled:0 forService:self forSceneClientIdentifier:@"kAXVOTMainSceneClientIdentifier" context:0 userInterfaceStyle:0 forWindowScene:v29 completion:0];
+    [v28 addContentViewController:v23 withUserInteractionEnabled:0 forService:self forSceneClientIdentifier:@"kAXVOTMainSceneClientIdentifier" context:0 userInterfaceStyle:0 forWindowScene:connectedCopy completion:0];
   }
 }
 
-- (void)externalDisplaySceneDisconnected:(id)a3 forSceneClientIdentifier:(id)a4
+- (void)externalDisplaySceneDisconnected:(id)disconnected forSceneClientIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = [(VOTUIServer *)self externalWindowScenes];
-  [v6 removeObject:v5];
+  disconnectedCopy = disconnected;
+  externalWindowScenes = [(VOTUIServer *)self externalWindowScenes];
+  [externalWindowScenes removeObject:disconnectedCopy];
 
-  v7 = [(VOTUIServer *)self cursorViewControllers];
-  v8 = [v5 screen];
-  v9 = [v8 displayIdentity];
-  v10 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v9 displayID]);
-  [v7 removeObjectForKey:v10];
+  cursorViewControllers = [(VOTUIServer *)self cursorViewControllers];
+  screen = [disconnectedCopy screen];
+  displayIdentity = [screen displayIdentity];
+  v10 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [displayIdentity displayID]);
+  [cursorViewControllers removeObjectForKey:v10];
 
-  v14 = [(VOTUIServer *)self captionPanelViewControllers];
-  v11 = [v5 screen];
+  captionPanelViewControllers = [(VOTUIServer *)self captionPanelViewControllers];
+  screen2 = [disconnectedCopy screen];
 
-  v12 = [v11 displayIdentity];
-  v13 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v12 displayID]);
-  [v14 removeObjectForKey:v13];
+  displayIdentity2 = [screen2 displayIdentity];
+  v13 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [displayIdentity2 displayID]);
+  [captionPanelViewControllers removeObjectForKey:v13];
 }
 
 - (BOOL)shouldPreventAutorotatingAllContentViewControllers
 {
-  v2 = [(VOTUIServer *)self brailleViewController];
-  v3 = v2 != 0;
+  brailleViewController = [(VOTUIServer *)self brailleViewController];
+  v3 = brailleViewController != 0;
 
   return v3;
 }

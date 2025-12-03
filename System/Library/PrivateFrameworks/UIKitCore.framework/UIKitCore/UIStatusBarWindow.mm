@@ -1,26 +1,26 @@
 @interface UIStatusBarWindow
-+ (CGRect)_convertRect:(CGRect)a3 fromSceneReferenceSpaceToSceneSpaceWithOrientation:(int64_t)a4;
++ (CGRect)_convertRect:(CGRect)rect fromSceneReferenceSpaceToSceneSpaceWithOrientation:(int64_t)orientation;
 + (CGRect)_defaultStatusBarSceneReferenceBounds;
-+ (CGRect)_defaultStatusBarSceneReferenceBoundsForOrientation:(int64_t)a3;
++ (CGRect)_defaultStatusBarSceneReferenceBoundsForOrientation:(int64_t)orientation;
 + (CGRect)statusBarWindowFrame;
-- (CGRect)_defaultStatusBarSceneBoundsForOrientation:(int64_t)a3;
-- (CGRect)_statusBarFrameForOrientation:(int64_t)a3;
+- (CGRect)_defaultStatusBarSceneBoundsForOrientation:(int64_t)orientation;
+- (CGRect)_statusBarFrameForOrientation:(int64_t)orientation;
 - (CGRect)statusBarWindowFrame;
 - (UIEdgeInsets)safeAreaInsets;
-- (UIStatusBarWindow)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_didMoveFromScene:(id)a3 toScene:(id)a4;
+- (UIStatusBarWindow)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_didMoveFromScene:(id)scene toScene:(id)toScene;
 - (void)_rotate;
-- (void)setOrientation:(int64_t)a3 animationParameters:(id)a4;
-- (void)setStatusBar:(id)a3;
+- (void)setOrientation:(int64_t)orientation animationParameters:(id)parameters;
+- (void)setStatusBar:(id)bar;
 @end
 
 @implementation UIStatusBarWindow
 
 + (CGRect)_defaultStatusBarSceneReferenceBounds
 {
-  v2 = [objc_opt_self() mainScreen];
-  [v2 _referenceBounds];
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen _referenceBounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -37,9 +37,9 @@
   return result;
 }
 
-+ (CGRect)_convertRect:(CGRect)a3 fromSceneReferenceSpaceToSceneSpaceWithOrientation:(int64_t)a4
++ (CGRect)_convertRect:(CGRect)rect fromSceneReferenceSpaceToSceneSpaceWithOrientation:(int64_t)orientation
 {
-  v4 = _UIWindowConvertRectFromSceneReferenceSpaceToSceneSpace(a4, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, a3.size.width, a3.size.height);
+  v4 = _UIWindowConvertRectFromSceneReferenceSpaceToSceneSpace(orientation, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, rect.size.width, rect.size.height);
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -47,11 +47,11 @@
   return result;
 }
 
-+ (CGRect)_defaultStatusBarSceneReferenceBoundsForOrientation:(int64_t)a3
++ (CGRect)_defaultStatusBarSceneReferenceBoundsForOrientation:(int64_t)orientation
 {
-  [a1 _defaultStatusBarSceneReferenceBounds];
+  [self _defaultStatusBarSceneReferenceBounds];
 
-  [a1 _convertRect:a3 fromSceneReferenceSpaceToSceneSpaceWithOrientation:?];
+  [self _convertRect:orientation fromSceneReferenceSpaceToSceneSpaceWithOrientation:?];
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;
@@ -63,19 +63,19 @@
 {
   if (([UIApp _isSpringBoard] & 1) == 0)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"UIStatusBarWindow.m" lineNumber:58 description:@"Deprecated SPI only supported for SpringBoard"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIStatusBarWindow.m" lineNumber:58 description:@"Deprecated SPI only supported for SpringBoard"];
   }
 
-  v4 = [UIApp statusBarWindow];
-  if (!v4)
+  statusBarWindow = [UIApp statusBarWindow];
+  if (!statusBarWindow)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:a1 file:@"UIStatusBarWindow.m" lineNumber:63 description:@"+[UIApp statusBarWindow] should have created a window"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIStatusBarWindow.m" lineNumber:63 description:@"+[UIApp statusBarWindow] should have created a window"];
   }
 
-  v5 = [v4 windowScene];
-  [a1 _defaultStatusBarSceneReferenceBoundsForOrientation:{objc_msgSend(v5, "_interfaceOrientation")}];
+  windowScene = [statusBarWindow windowScene];
+  [self _defaultStatusBarSceneReferenceBoundsForOrientation:{objc_msgSend(windowScene, "_interfaceOrientation")}];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -92,12 +92,12 @@
   return result;
 }
 
-- (CGRect)_defaultStatusBarSceneBoundsForOrientation:(int64_t)a3
+- (CGRect)_defaultStatusBarSceneBoundsForOrientation:(int64_t)orientation
 {
   v5 = objc_opt_class();
   [(UIWindow *)self _sceneReferenceBounds];
 
-  [v5 _convertRect:a3 fromSceneReferenceSpaceToSceneSpaceWithOrientation:?];
+  [v5 _convertRect:orientation fromSceneReferenceSpaceToSceneSpaceWithOrientation:?];
   result.size.height = v9;
   result.size.width = v8;
   result.origin.y = v7;
@@ -115,7 +115,7 @@
   return result;
 }
 
-- (UIStatusBarWindow)initWithFrame:(CGRect)a3
+- (UIStatusBarWindow)initWithFrame:(CGRect)frame
 {
   viewOrientation = self->super._viewOrientation;
   v8.receiver = self;
@@ -143,33 +143,33 @@
   return v5;
 }
 
-- (void)setStatusBar:(id)a3
+- (void)setStatusBar:(id)bar
 {
-  v5 = a3;
+  barCopy = bar;
   statusBar = self->_statusBar;
-  if (statusBar != v5)
+  if (statusBar != barCopy)
   {
-    v7 = v5;
+    v7 = barCopy;
     [(UIView *)statusBar removeFromSuperview];
-    objc_storeStrong(&self->_statusBar, a3);
+    objc_storeStrong(&self->_statusBar, bar);
     [(UIView *)self->_statusBar frame];
     [(UIView *)self bounds];
     [(UIView *)self->_statusBar setFrame:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
     [(UIView *)self->_statusBar setAutoresizingMask:34];
     [(UIView *)self addSubview:self->_statusBar];
-    v5 = v7;
+    barCopy = v7;
   }
 }
 
-- (void)setOrientation:(int64_t)a3 animationParameters:(id)a4
+- (void)setOrientation:(int64_t)orientation animationParameters:(id)parameters
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6 && (v8 = [v6 orientationAnimation]) != 0)
+  parametersCopy = parameters;
+  v7 = parametersCopy;
+  if (parametersCopy && (v8 = [parametersCopy orientationAnimation]) != 0)
   {
-    if (self->_orientation != a3)
+    if (self->_orientation != orientation)
     {
-      self->_orientation = a3;
+      self->_orientation = orientation;
       if (v8 == 2)
       {
         v15[0] = MEMORY[0x1E69E9820];
@@ -208,7 +208,7 @@
 
   else
   {
-    self->_orientation = a3;
+    self->_orientation = orientation;
     [(UIStatusBarWindow *)self _rotate];
   }
 }
@@ -239,7 +239,7 @@ uint64_t __56__UIStatusBarWindow_setOrientation_animationParameters___block_invo
   return result;
 }
 
-- (CGRect)_statusBarFrameForOrientation:(int64_t)a3
+- (CGRect)_statusBarFrameForOrientation:(int64_t)orientation
 {
   [(UIView *)self bounds];
   v5 = v4;
@@ -324,36 +324,36 @@ uint64_t __56__UIStatusBarWindow_setOrientation_animationParameters___block_invo
   return result;
 }
 
-- (void)_didMoveFromScene:(id)a3 toScene:(id)a4
+- (void)_didMoveFromScene:(id)scene toScene:(id)toScene
 {
-  v6 = a3;
+  sceneCopy = scene;
   v12.receiver = self;
   v12.super_class = UIStatusBarWindow;
-  v7 = a4;
-  [(UIWindow *)&v12 _didMoveFromScene:v6 toScene:v7];
-  [UIApp _statusBarWindow:self didMoveFromScene:v6 toScene:{v7, v12.receiver, v12.super_class}];
+  toSceneCopy = toScene;
+  [(UIWindow *)&v12 _didMoveFromScene:sceneCopy toScene:toSceneCopy];
+  [UIApp _statusBarWindow:self didMoveFromScene:sceneCopy toScene:{toSceneCopy, v12.receiver, v12.super_class}];
   v8 = UIApp;
-  v9 = [v7 _interfaceOrientation];
+  _interfaceOrientation = [toSceneCopy _interfaceOrientation];
 
-  if (v6)
+  if (sceneCopy)
   {
-    v10 = [v6 _interfaceOrientation];
+    _interfaceOrientation2 = [sceneCopy _interfaceOrientation];
   }
 
   else
   {
-    v10 = 0;
+    _interfaceOrientation2 = 0;
   }
 
-  v11 = [(UIWindow *)self windowScene];
-  [v8 setStatusBarOrientation:v9 fromOrientation:v10 windowScene:v11 animationParameters:0 updateBlock:0];
+  windowScene = [(UIWindow *)self windowScene];
+  [v8 setStatusBarOrientation:_interfaceOrientation fromOrientation:_interfaceOrientation2 windowScene:windowScene animationParameters:0 updateBlock:0];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = UIStatusBarWindow;
-  v5 = [(UIView *)&v9 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(UIView *)&v9 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {

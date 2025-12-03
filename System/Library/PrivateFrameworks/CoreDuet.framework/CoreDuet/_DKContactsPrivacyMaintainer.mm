@@ -1,33 +1,33 @@
 @interface _DKContactsPrivacyMaintainer
-- (_DKContactsPrivacyMaintainer)initWithKnowledgeStore:(id)a3 spotlightRecorder:(id)a4;
-- (void)_deleteIntentsRelatedToContactIdentifiers:(id)a3;
+- (_DKContactsPrivacyMaintainer)initWithKnowledgeStore:(id)store spotlightRecorder:(id)recorder;
+- (void)_deleteIntentsRelatedToContactIdentifiers:(id)identifiers;
 - (void)_unregisterContactDeletionNotifications;
 - (void)cleanupPendingDeletedContacts;
 - (void)dealloc;
 - (void)handleContactDeletionNotification;
-- (void)handleRecentlyDeletedContactsWithLimit:(unint64_t)a3;
+- (void)handleRecentlyDeletedContactsWithLimit:(unint64_t)limit;
 - (void)registerContactDeletionNotifications;
 - (void)scheduleIntentsPruningXPCActivity;
 @end
 
 @implementation _DKContactsPrivacyMaintainer
 
-- (_DKContactsPrivacyMaintainer)initWithKnowledgeStore:(id)a3 spotlightRecorder:(id)a4
+- (_DKContactsPrivacyMaintainer)initWithKnowledgeStore:(id)store spotlightRecorder:(id)recorder
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  recorderCopy = recorder;
   v14.receiver = self;
   v14.super_class = _DKContactsPrivacyMaintainer;
   v9 = [(_DKContactsPrivacyMaintainer *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_knowledgeStore, a3);
-    objc_storeStrong(&v10->_spotlightRecorder, a4);
+    objc_storeStrong(&v9->_knowledgeStore, store);
+    objc_storeStrong(&v10->_spotlightRecorder, recorder);
     v10->_notifyToken = -1;
-    v11 = [MEMORY[0x1E695E000] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
     userDefaults = v10->_userDefaults;
-    v10->_userDefaults = v11;
+    v10->_userDefaults = standardUserDefaults;
   }
 
   return v10;
@@ -65,7 +65,7 @@
   objc_copyWeak(&v16, &location);
   handler[4] = self;
   notify_register_dispatch("__ABDataBaseChangedByOtherProcessNotification", &self->_notifyToken, v5, handler);
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v10 = getCNContactStoreDidChangeNotification();
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -73,7 +73,7 @@
   v13[3] = &unk_1E7368458;
   objc_copyWeak(&v14, &location);
   v13[4] = self;
-  v11 = [v9 addObserverForName:v10 object:0 queue:0 usingBlock:v13];
+  v11 = [defaultCenter addObserverForName:v10 object:0 queue:0 usingBlock:v13];
   notificationCenterToken = self->_notificationCenterToken;
   self->_notificationCenterToken = v11;
 
@@ -92,8 +92,8 @@
 
   if (self->_notificationCenterToken)
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 removeObserver:self->_notificationCenterToken];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self->_notificationCenterToken];
   }
 }
 
@@ -132,7 +132,7 @@
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleRecentlyDeletedContactsWithLimit:(unint64_t)a3
+- (void)handleRecentlyDeletedContactsWithLimit:(unint64_t)limit
 {
   v35 = *MEMORY[0x1E69E9840];
   v5 = [(NSUserDefaults *)self->_userDefaults dataForKey:@"kCDIntentDeletionContactStoreChangeHistoryToken"];
@@ -169,8 +169,8 @@
   else
   {
     v14 = [_CDContactChangeHistoryEventVisitor alloc];
-    v15 = [v11 value];
-    v16 = [(_CDContactChangeHistoryEventVisitor *)v14 initWithChangeEnumerator:v15];
+    value = [v11 value];
+    v16 = [(_CDContactChangeHistoryEventVisitor *)v14 initWithChangeEnumerator:value];
 
     *buf = 0;
     *&buf[8] = buf;
@@ -187,24 +187,24 @@
     v26[4] = self;
     v26[5] = v27;
     v26[6] = buf;
-    v26[7] = a3;
+    v26[7] = limit;
     [v16 visitEventsWithBatchSize:100 batchCallback:v26];
     userDefaults = self->_userDefaults;
     if (*(*&buf[8] + 24) == 1)
     {
-      v18 = [v11 currentHistoryToken];
-      [(NSUserDefaults *)userDefaults setValue:v18 forKey:@"kCDIntentDeletionContactStoreChangeHistoryToken"];
+      currentHistoryToken = [v11 currentHistoryToken];
+      [(NSUserDefaults *)userDefaults setValue:currentHistoryToken forKey:@"kCDIntentDeletionContactStoreChangeHistoryToken"];
 
       v19 = +[_CDLogging spotlightReceiverChannel];
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         v20 = objc_opt_class();
         v21 = NSStringFromClass(v20);
-        v22 = [v11 currentHistoryToken];
+        currentHistoryToken2 = [v11 currentHistoryToken];
         *v29 = 138412546;
         v30 = v21;
         v31 = 2112;
-        v32 = v22;
+        v32 = currentHistoryToken2;
         _os_log_impl(&dword_191750000, v19, OS_LOG_TYPE_DEFAULT, "%@ - handleContactDeletionNotification saved new currentHistoryToken: %@", v29, 0x16u);
       }
     }
@@ -230,20 +230,20 @@
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_deleteIntentsRelatedToContactIdentifiers:(id)a3
+- (void)_deleteIntentsRelatedToContactIdentifiers:(id)identifiers
 {
   v107 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifiersCopy = identifiers;
   v74 = objc_opt_new();
   BMLibraryStreamsPrunerClass = getBMLibraryStreamsPrunerClass();
-  v5 = [MEMORY[0x1E695DFD8] setWithArray:v3];
+  v5 = [MEMORY[0x1E695DFD8] setWithArray:identifiersCopy];
   [BMLibraryStreamsPrunerClass pruneWithDeletedContactIdentifiers:v5];
 
   v93 = 0u;
   v94 = 0u;
   v91 = 0u;
   v92 = 0u;
-  v6 = v3;
+  v6 = identifiersCopy;
   v71 = [v6 countByEnumeratingWithState:&v91 objects:v106 count:16];
   if (v71)
   {
@@ -347,16 +347,16 @@
 
                 v36 = *(*(&v86 + 1) + 8 * i);
                 v37 = objc_autoreleasePoolPush();
-                v38 = [v36 metadata];
+                metadata = [v36 metadata];
                 v39 = +[_DKIntentMetadataKey interactionIdentifier];
-                v40 = [v38 objectForKeyedSubscript:v39];
+                v40 = [metadata objectForKeyedSubscript:v39];
 
-                v41 = [v36 source];
-                v42 = [v41 bundleID];
+                source = [v36 source];
+                bundleID = [source bundleID];
 
                 if (v40)
                 {
-                  v43 = v42 == 0;
+                  v43 = bundleID == 0;
                 }
 
                 else
@@ -366,15 +366,15 @@
 
                 if (!v43)
                 {
-                  v44 = [v30 objectForKeyedSubscript:v42];
+                  v44 = [v30 objectForKeyedSubscript:bundleID];
 
                   if (!v44)
                   {
                     v45 = objc_opt_new();
-                    [v30 setObject:v45 forKeyedSubscript:v42];
+                    [v30 setObject:v45 forKeyedSubscript:bundleID];
                   }
 
-                  v46 = [v30 objectForKeyedSubscript:v42];
+                  v46 = [v30 objectForKeyedSubscript:bundleID];
                   [v46 addObject:v40];
                 }
 
@@ -392,8 +392,8 @@
           v85 = 0u;
           v82 = 0u;
           v83 = 0u;
-          v47 = [v30 allKeys];
-          v48 = [v47 countByEnumeratingWithState:&v82 objects:v95 count:16];
+          allKeys = [v30 allKeys];
+          v48 = [allKeys countByEnumeratingWithState:&v82 objects:v95 count:16];
           if (v48)
           {
             v49 = v48;
@@ -404,7 +404,7 @@
               {
                 if (*v83 != v50)
                 {
-                  objc_enumerationMutation(v47);
+                  objc_enumerationMutation(allKeys);
                 }
 
                 v52 = *(*(&v82 + 1) + 8 * j);
@@ -424,11 +424,11 @@
                 }
 
                 spotlightRecorder = self->_spotlightRecorder;
-                v56 = [v53 allObjects];
-                [(_CDSpotlightItemRecorder *)spotlightRecorder deleteInteractionsWithIdentifiers:v56 bundleID:v52 protectionClass:v80];
+                allObjects = [v53 allObjects];
+                [(_CDSpotlightItemRecorder *)spotlightRecorder deleteInteractionsWithIdentifiers:allObjects bundleID:v52 protectionClass:v80];
               }
 
-              v49 = [v47 countByEnumeratingWithState:&v82 objects:v95 count:16];
+              v49 = [allKeys countByEnumeratingWithState:&v82 objects:v95 count:16];
             }
 
             while (v49);

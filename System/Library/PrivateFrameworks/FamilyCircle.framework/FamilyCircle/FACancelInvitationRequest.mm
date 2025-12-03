@@ -1,35 +1,35 @@
 @interface FACancelInvitationRequest
-- (FACancelInvitationRequest)initWith:(id)a3 familyID:(id)a4;
-- (void)startRequestWithCompletionHandler:(id)a3;
+- (FACancelInvitationRequest)initWith:(id)with familyID:(id)d;
+- (void)startRequestWithCompletionHandler:(id)handler;
 @end
 
 @implementation FACancelInvitationRequest
 
-- (FACancelInvitationRequest)initWith:(id)a3 familyID:(id)a4
+- (FACancelInvitationRequest)initWith:(id)with familyID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  withCopy = with;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = FACancelInvitationRequest;
   v9 = [(FAFamilyCircleRequest *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_email, a3);
-    objc_storeStrong(&v10->_familyID, a4);
+    objc_storeStrong(&v9->_email, with);
+    objc_storeStrong(&v10->_familyID, d);
   }
 
   return v10;
 }
 
-- (void)startRequestWithCompletionHandler:(id)a3
+- (void)startRequestWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __63__FACancelInvitationRequest_startRequestWithCompletionHandler___block_invoke;
   v12[3] = &unk_1E7CA46D8;
-  v5 = v4;
+  v5 = handlerCopy;
   v13 = v5;
   v6 = [(FAFamilyCircleRequest *)self serviceRemoteObjectWithErrorHandler:v12];
   email = self->_email;

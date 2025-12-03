@@ -1,31 +1,31 @@
 @interface PSYSyncSessionObserverExportedObject
 - (PSYSyncSessionObserverInterface)delegate;
-- (void)invalidateSyncSession:(id)a3;
-- (void)syncSessionWillStart:(id)a3;
-- (void)updateSyncSession:(id)a3;
+- (void)invalidateSyncSession:(id)session;
+- (void)syncSessionWillStart:(id)start;
+- (void)updateSyncSession:(id)session;
 @end
 
 @implementation PSYSyncSessionObserverExportedObject
 
-- (void)syncSessionWillStart:(id)a3
+- (void)syncSessionWillStart:(id)start
 {
-  v4 = a3;
-  v5 = [(PSYSyncSessionObserverExportedObject *)self delegate];
-  [v5 syncSessionWillStart:v4];
+  startCopy = start;
+  delegate = [(PSYSyncSessionObserverExportedObject *)self delegate];
+  [delegate syncSessionWillStart:startCopy];
 }
 
-- (void)updateSyncSession:(id)a3
+- (void)updateSyncSession:(id)session
 {
-  v4 = a3;
-  v5 = [(PSYSyncSessionObserverExportedObject *)self delegate];
-  [v5 updateSyncSession:v4];
+  sessionCopy = session;
+  delegate = [(PSYSyncSessionObserverExportedObject *)self delegate];
+  [delegate updateSyncSession:sessionCopy];
 }
 
-- (void)invalidateSyncSession:(id)a3
+- (void)invalidateSyncSession:(id)session
 {
-  v4 = a3;
-  v5 = [(PSYSyncSessionObserverExportedObject *)self delegate];
-  [v5 invalidateSyncSession:v4];
+  sessionCopy = session;
+  delegate = [(PSYSyncSessionObserverExportedObject *)self delegate];
+  [delegate invalidateSyncSession:sessionCopy];
 }
 
 - (PSYSyncSessionObserverInterface)delegate

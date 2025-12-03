@@ -1,10 +1,10 @@
 @interface AudioPlaylistStore
-- (void)audioPlaylistDidChange:(id)a3;
+- (void)audioPlaylistDidChange:(id)change;
 @end
 
 @implementation AudioPlaylistStore
 
-- (void)audioPlaylistDidChange:(id)a3
+- (void)audioPlaylistDidChange:(id)change
 {
   sub_2186C6148(0, &qword_280E8D790);
 

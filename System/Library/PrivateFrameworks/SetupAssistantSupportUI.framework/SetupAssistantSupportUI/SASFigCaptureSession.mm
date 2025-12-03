@@ -1,14 +1,14 @@
 @interface SASFigCaptureSession
-- (BOOL)captureLayer:(id)a3 error:(id *)captureSessionQueue;
-- (BOOL)captureView:(id)a3 error:(id *)a4;
+- (BOOL)captureLayer:(id)layer error:(id *)captureSessionQueue;
+- (BOOL)captureView:(id)view error:(id *)error;
 - (SASFigCaptureSession)init;
 - (SASFigCaptureSessionObserver)captureObserver;
 - (void)_captureSessionQueue_updateCapture;
 - (void)_teardownCapture;
 - (void)dealloc;
 - (void)invalidate;
-- (void)screenCaptureController:(id)a3 didReceiveSampleBuffer:(opaqueCMSampleBuffer *)a4 transformFlags:(unint64_t)a5;
-- (void)setCaptureObserver:(id)a3;
+- (void)screenCaptureController:(id)controller didReceiveSampleBuffer:(opaqueCMSampleBuffer *)buffer transformFlags:(unint64_t)flags;
+- (void)setCaptureObserver:(id)observer;
 @end
 
 @implementation SASFigCaptureSession
@@ -41,7 +41,7 @@
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@", @"[_invalidationSignal hasBeenSignalled]"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v5 = NSStringFromSelector(a1);
+    v5 = NSStringFromSelector(self);
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     *buf = 138544642;
@@ -64,20 +64,20 @@
   __break(0);
 }
 
-- (BOOL)captureView:(id)a3 error:(id *)a4
+- (BOOL)captureView:(id)view error:(id *)error
 {
-  v6 = [a3 layer];
-  LOBYTE(a4) = [(SASFigCaptureSession *)self captureLayer:v6 error:a4];
+  layer = [view layer];
+  LOBYTE(error) = [(SASFigCaptureSession *)self captureLayer:layer error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)captureLayer:(id)a3 error:(id *)captureSessionQueue
+- (BOOL)captureLayer:(id)layer error:(id *)captureSessionQueue
 {
   v44[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  layerCopy = layer;
+  v7 = layerCopy;
+  if (!layerCopy)
   {
     v27 = MEMORY[0x277CCA9B8];
     v43 = *MEMORY[0x277CCA470];
@@ -88,10 +88,10 @@
     goto LABEL_12;
   }
 
-  v8 = [v6 context];
-  v9 = [v8 contextId];
+  context = [layerCopy context];
+  contextId = [context contextId];
 
-  if (v9)
+  if (contextId)
   {
     [v7 bounds];
     v11 = v10;
@@ -123,20 +123,20 @@
           v47.size.height = height;
           if (!CGRectIsInfinite(v47))
           {
-            v32 = self;
-            objc_sync_enter(v32);
-            v32->_sourceBounds.origin.x = x;
-            v32->_sourceBounds.origin.y = y;
-            v32->_sourceBounds.size.width = width;
-            v32->_sourceBounds.size.height = height;
-            v33 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v9];
+            selfCopy = self;
+            objc_sync_enter(selfCopy);
+            selfCopy->_sourceBounds.origin.x = x;
+            selfCopy->_sourceBounds.origin.y = y;
+            selfCopy->_sourceBounds.size.width = width;
+            selfCopy->_sourceBounds.size.height = height;
+            v33 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:contextId];
             v38 = v33;
             v34 = [MEMORY[0x277CBEA60] arrayWithObjects:&v38 count:1];
-            [(SASFigCaptureSession *)v32 setContextIdentifiers:v34];
+            [(SASFigCaptureSession *)selfCopy setContextIdentifiers:v34];
 
-            objc_sync_exit(v32);
-            objc_initWeak(&v37, v32);
-            captureSessionQueue = v32->_captureSessionQueue;
+            objc_sync_exit(selfCopy);
+            objc_initWeak(&v37, selfCopy);
+            captureSessionQueue = selfCopy->_captureSessionQueue;
             block[0] = MEMORY[0x277D85DD0];
             block[1] = 3221225472;
             block[2] = __43__SASFigCaptureSession_captureLayer_error___block_invoke;
@@ -194,31 +194,31 @@ void __43__SASFigCaptureSession_captureLayer_error___block_invoke(uint64_t a1)
 
 - (SASFigCaptureSessionObserver)captureObserver
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  WeakRetained = objc_loadWeakRetained(&v2->_captureObserver);
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_captureObserver);
+  objc_sync_exit(selfCopy);
 
   return WeakRetained;
 }
 
-- (void)setCaptureObserver:(id)a3
+- (void)setCaptureObserver:(id)observer
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  WeakRetained = objc_loadWeakRetained(&v5->_captureObserver);
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_captureObserver);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != observerCopy)
   {
-    objc_storeWeak(&v5->_captureObserver, v4);
-    objc_initWeak(&location, v5);
-    captureController = v5->_captureController;
-    if (v4)
+    objc_storeWeak(&selfCopy->_captureObserver, observerCopy);
+    objc_initWeak(&location, selfCopy);
+    captureController = selfCopy->_captureController;
+    if (observerCopy)
     {
       if (!captureController)
       {
-        captureSessionQueue = v5->_captureSessionQueue;
+        captureSessionQueue = selfCopy->_captureSessionQueue;
         v13[0] = MEMORY[0x277D85DD0];
         v13[1] = 3221225472;
         v13[2] = __43__SASFigCaptureSession_setCaptureObserver___block_invoke;
@@ -234,7 +234,7 @@ LABEL_7:
 
     else if (captureController)
     {
-      captureSessionQueue = v5->_captureSessionQueue;
+      captureSessionQueue = selfCopy->_captureSessionQueue;
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __43__SASFigCaptureSession_setCaptureObserver___block_invoke_2;
@@ -248,7 +248,7 @@ LABEL_7:
     objc_destroyWeak(&location);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 void __43__SASFigCaptureSession_setCaptureObserver___block_invoke(uint64_t a1)
@@ -313,13 +313,13 @@ void __43__SASFigCaptureSession_setCaptureObserver___block_invoke_2(uint64_t a1)
   dispatch_assert_queue_V2(self->_captureSessionQueue);
   if ([(BSAtomicSignal *)self->_invalidationSignal hasBeenSignalled])
   {
-    v3 = +[SASUILogging bookendFacility];
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    contextIdentifiers = +[SASUILogging bookendFacility];
+    if (os_log_type_enabled(contextIdentifiers, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v12.value) = 0;
       v4 = "Capture session already invalidated";
 LABEL_15:
-      _os_log_impl(&dword_265A4C000, v3, OS_LOG_TYPE_DEFAULT, v4, &v12, 2u);
+      _os_log_impl(&dword_265A4C000, contextIdentifiers, OS_LOG_TYPE_DEFAULT, v4, &v12, 2u);
     }
   }
 
@@ -340,14 +340,14 @@ LABEL_15:
     WeakRetained = objc_loadWeakRetained(&self->_captureObserver);
     if (WeakRetained)
     {
-      v3 = [(SASFigCaptureSession *)self contextIdentifiers];
-      if ([v3 count]&& !CGRectIsNull(self->_sourceBounds))
+      contextIdentifiers = [(SASFigCaptureSession *)self contextIdentifiers];
+      if ([contextIdentifiers count]&& !CGRectIsNull(self->_sourceBounds))
       {
         v7 = objc_alloc_init(MEMORY[0x277CD6130]);
         [v7 setSize:self->_sourceBounds.size.width, self->_sourceBounds.size.height];
         CMTimeMake(&v12, 1, 60);
         [v7 setMinFrameInterval:&v12];
-        [v7 setContentIDs:v3];
+        [v7 setContentIDs:contextIdentifiers];
         [v7 setPixelFormat:1999843442];
         v9 = [MEMORY[0x277CD6138] screenCaptureControllerWithCaptureConfiguration:v7];
         captureController = self->_captureController;
@@ -363,7 +363,7 @@ LABEL_15:
         v7 = +[SASUILogging bookendFacility];
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
-          v8 = [v3 count];
+          v8 = [contextIdentifiers count];
           LODWORD(v12.value) = 134217984;
           *(&v12.value + 4) = v8;
           _os_log_impl(&dword_265A4C000, v7, OS_LOG_TYPE_DEFAULT, "Failed to start capture session for contexts: %ld", &v12, 0xCu);
@@ -373,8 +373,8 @@ LABEL_15:
 
     else
     {
-      v3 = +[SASUILogging bookendFacility];
-      if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+      contextIdentifiers = +[SASUILogging bookendFacility];
+      if (os_log_type_enabled(contextIdentifiers, OS_LOG_TYPE_DEFAULT))
       {
         LOWORD(v12.value) = 0;
         v4 = "Waiting for observer";
@@ -384,9 +384,9 @@ LABEL_15:
   }
 }
 
-- (void)screenCaptureController:(id)a3 didReceiveSampleBuffer:(opaqueCMSampleBuffer *)a4 transformFlags:(unint64_t)a5
+- (void)screenCaptureController:(id)controller didReceiveSampleBuffer:(opaqueCMSampleBuffer *)buffer transformFlags:(unint64_t)flags
 {
-  v7 = a3;
+  controllerCopy = controller;
   if ([(BSAtomicSignal *)self->_invalidationSignal hasBeenSignalled])
   {
     captureSessionQueue = self->_captureSessionQueue;
@@ -394,14 +394,14 @@ LABEL_15:
     block[1] = 3221225472;
     block[2] = __86__SASFigCaptureSession_screenCaptureController_didReceiveSampleBuffer_transformFlags___block_invoke;
     block[3] = &unk_279BB2BE0;
-    v11 = v7;
+    v11 = controllerCopy;
     dispatch_async(captureSessionQueue, block);
   }
 
   else
   {
-    v9 = [(SASFigCaptureSession *)self captureObserver];
-    [v9 captureSession:self receivedSampleBuffer:a4];
+    captureObserver = [(SASFigCaptureSession *)self captureObserver];
+    [captureObserver captureSession:self receivedSampleBuffer:buffer];
   }
 }
 

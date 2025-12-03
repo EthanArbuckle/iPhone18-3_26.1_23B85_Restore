@@ -1,17 +1,17 @@
 @interface IMBrandCacheClient
-- (id)brandLogoDataWithIdentifier:(id)a3;
-- (id)brandLogoURLWithIdentifier:(id)a3;
-- (id)brandWithIdentifier:(id)a3;
+- (id)brandLogoDataWithIdentifier:(id)identifier;
+- (id)brandLogoURLWithIdentifier:(id)identifier;
+- (id)brandWithIdentifier:(id)identifier;
 @end
 
 @implementation IMBrandCacheClient
 
-- (id)brandWithIdentifier:(id)a3
+- (id)brandWithIdentifier:(id)identifier
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   v6 = objc_msgSend_sharedRegistry(IMChatRegistry, v4, v5);
-  v8 = objc_msgSend_cachedChatsWithIdentifier_(v6, v7, v3);
+  v8 = objc_msgSend_cachedChatsWithIdentifier_(v6, v7, identifierCopy);
 
   v23 = 0u;
   v24 = 0u;
@@ -58,12 +58,12 @@ LABEL_11:
   return v18;
 }
 
-- (id)brandLogoURLWithIdentifier:(id)a3
+- (id)brandLogoURLWithIdentifier:(id)identifier
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   v6 = objc_msgSend_sharedRegistry(IMChatRegistry, v4, v5);
-  v8 = objc_msgSend_cachedChatsWithIdentifier_(v6, v7, v3);
+  v8 = objc_msgSend_cachedChatsWithIdentifier_(v6, v7, identifierCopy);
 
   v23 = 0u;
   v24 = 0u;
@@ -110,11 +110,11 @@ LABEL_11:
   return v18;
 }
 
-- (id)brandLogoDataWithIdentifier:(id)a3
+- (id)brandLogoDataWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v6 = objc_msgSend_sharedRegistry(IMChatRegistry, v4, v5);
-  v8 = objc_msgSend_brandLogoDataFromChatIdentifier_(v6, v7, v3);
+  v8 = objc_msgSend_brandLogoDataFromChatIdentifier_(v6, v7, identifierCopy);
 
   return v8;
 }

@@ -1,20 +1,20 @@
 @interface PTOutlet
 - (id)_init;
-- (id)addAction:(id)a3;
+- (id)addAction:(id)action;
 - (void)_invokeActions;
 @end
 
 @implementation PTOutlet
 
-- (id)addAction:(id)a3
+- (id)addAction:(id)action
 {
   v4 = MEMORY[0x277CCABB0];
   nextToken = self->_nextToken;
-  v6 = a3;
+  actionCopy = action;
   v7 = [v4 numberWithUnsignedInteger:nextToken];
   actionsByToken = self->_actionsByToken;
   ++self->_nextToken;
-  v9 = [v6 copy];
+  v9 = [actionCopy copy];
 
   v10 = MEMORY[0x223D60750](v9);
   [(NSMutableDictionary *)actionsByToken setObject:v10 forKey:v7];
@@ -46,8 +46,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(NSMutableDictionary *)self->_actionsByToken allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allKeys = [(NSMutableDictionary *)self->_actionsByToken allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -59,7 +59,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v8 = [(NSMutableDictionary *)self->_actionsByToken objectForKey:*(*(&v9 + 1) + 8 * v7)];
@@ -69,7 +69,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);

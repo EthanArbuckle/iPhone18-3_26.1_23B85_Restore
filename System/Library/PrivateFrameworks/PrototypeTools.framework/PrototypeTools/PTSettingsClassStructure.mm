@@ -1,19 +1,19 @@
 @interface PTSettingsClassStructure
-+ (PTSettingsClassStructure)structureForSettingsClass:(uint64_t)a1;
-- (BOOL)isEqual:(id)a3;
-- (Class)_classForKey:(id)a3;
-- (PTSettingsClassStructure)initWithCoder:(id)a3;
-- (id)_decodeStringSetForKey:(id)a3 withCoder:(id)a4;
-- (id)_decodeStringStringDictionaryForKey:(id)a3 withCoder:(id)a4;
++ (PTSettingsClassStructure)structureForSettingsClass:(uint64_t)class;
+- (BOOL)isEqual:(id)equal;
+- (Class)_classForKey:(id)key;
+- (PTSettingsClassStructure)initWithCoder:(id)coder;
+- (id)_decodeStringSetForKey:(id)key withCoder:(id)coder;
+- (id)_decodeStringStringDictionaryForKey:(id)key withCoder:(id)coder;
 - (id)filteredForProxySettings;
 - (unint64_t)hash;
 - (void)_generateClassNamesIfNecessary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PTSettingsClassStructure
 
-+ (PTSettingsClassStructure)structureForSettingsClass:(uint64_t)a1
++ (PTSettingsClassStructure)structureForSettingsClass:(uint64_t)class
 {
   objc_opt_self();
   if (structureForSettingsClass__onceToken != -1)
@@ -33,8 +33,8 @@
   v46 = [MEMORY[0x277CBEB58] set];
   v45 = [MEMORY[0x277CBEB58] set];
   v44 = [MEMORY[0x277CBEB58] set];
-  v42 = [MEMORY[0x277CBEB38] dictionary];
-  v43 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   v5 = objc_opt_class();
   aClass = a2;
   if ([(objc_class *)a2 isSubclassOfClass:v5]&& v5 != a2)
@@ -45,8 +45,8 @@
       v51 = v45;
       v49 = v44;
       v48 = v46;
-      v50 = v42;
-      v6 = v43;
+      v50 = dictionary;
+      v6 = dictionary2;
       outCount = 0;
       v7 = class_copyPropertyList(a2, &outCount);
       if (v7)
@@ -173,12 +173,12 @@ LABEL_33:
   [(PTSettingsClassStructure *)v4 setChildKeys:v45];
   [(PTSettingsClassStructure *)v4 setOutletKeys:v44];
   classes = v4->_classes;
-  v4->_classes = v42;
-  v36 = v42;
+  v4->_classes = dictionary;
+  v36 = dictionary;
 
   structNames = v4->_structNames;
-  v4->_structNames = v43;
-  v38 = v43;
+  v4->_structNames = dictionary2;
+  v38 = dictionary2;
 
   [structureForSettingsClass___classStructureCache setObject:v4 forKey:aClass];
   os_unfair_lock_unlock(&structureForSettingsClass____lock);
@@ -298,17 +298,17 @@ uint64_t __54__PTSettingsClassStructure_structureForSettingsClass___block_invoke
   return v17;
 }
 
-- (Class)_classForKey:(id)a3
+- (Class)_classForKey:(id)key
 {
   classes = self->_classes;
   if (classes)
   {
-    v5 = [(NSDictionary *)classes objectForKeyedSubscript:a3];
+    v5 = [(NSDictionary *)classes objectForKeyedSubscript:key];
   }
 
   else
   {
-    v6 = [(NSDictionary *)self->_classNames objectForKeyedSubscript:a3];
+    v6 = [(NSDictionary *)self->_classNames objectForKeyedSubscript:key];
     v5 = NSClassFromString(v6);
   }
 
@@ -320,13 +320,13 @@ uint64_t __54__PTSettingsClassStructure_structureForSettingsClass___block_invoke
   v17 = *MEMORY[0x277D85DE8];
   if (!self->_classNames)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v4 = [(NSDictionary *)self->_classes allKeys];
-    v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    allKeys = [(NSDictionary *)self->_classes allKeys];
+    v5 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
       v6 = v5;
@@ -337,29 +337,29 @@ uint64_t __54__PTSettingsClassStructure_structureForSettingsClass___block_invoke
         {
           if (*v13 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allKeys);
           }
 
           v9 = *(*(&v12 + 1) + 8 * i);
           v10 = NSStringFromClass([(NSDictionary *)self->_classes objectForKeyedSubscript:v9]);
-          [(NSDictionary *)v3 setObject:v10 forKeyedSubscript:v9];
+          [(NSDictionary *)dictionary setObject:v10 forKeyedSubscript:v9];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v6 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v6);
     }
 
     classNames = self->_classNames;
-    self->_classNames = v3;
+    self->_classNames = dictionary;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -367,7 +367,7 @@ uint64_t __54__PTSettingsClassStructure_structureForSettingsClass___block_invoke
   else
   {
     [(PTSettingsClassStructure *)self _generateClassNamesIfNecessary];
-    if ([(PTSettingsClassStructure *)v4 isMemberOfClass:objc_opt_class()]&& BSEqualStrings() && self->_settingsClassVersion == v4->_settingsClassVersion && BSEqualObjects() && BSEqualObjects() && BSEqualObjects() && BSEqualObjects())
+    if ([(PTSettingsClassStructure *)equalCopy isMemberOfClass:objc_opt_class()]&& BSEqualStrings() && self->_settingsClassVersion == equalCopy->_settingsClassVersion && BSEqualObjects() && BSEqualObjects() && BSEqualObjects() && BSEqualObjects())
     {
       v5 = BSEqualObjects();
     }
@@ -384,60 +384,60 @@ uint64_t __54__PTSettingsClassStructure_structureForSettingsClass___block_invoke
 - (unint64_t)hash
 {
   [(PTSettingsClassStructure *)self _generateClassNamesIfNecessary];
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendString:self->_settingsClassName];
-  v5 = [v3 appendUnsignedInteger:self->_settingsClassVersion];
-  v6 = [v3 appendObject:self->_leafKeys];
-  v7 = [v3 appendObject:self->_childKeys];
-  v8 = [v3 appendObject:self->_outletKeys];
-  v9 = [v3 appendObject:self->_classNames];
-  v10 = [v3 appendObject:self->_structNames];
-  v11 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendString:self->_settingsClassName];
+  v5 = [builder appendUnsignedInteger:self->_settingsClassVersion];
+  v6 = [builder appendObject:self->_leafKeys];
+  v7 = [builder appendObject:self->_childKeys];
+  v8 = [builder appendObject:self->_outletKeys];
+  v9 = [builder appendObject:self->_classNames];
+  v10 = [builder appendObject:self->_structNames];
+  v11 = [builder hash];
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(PTSettingsClassStructure *)self _generateClassNamesIfNecessary];
-  [v4 encodeObject:self->_settingsClassName forKey:@"settingsClassName"];
-  [v4 encodeInteger:self->_settingsClassVersion forKey:@"settingsClassVersion"];
-  [v4 encodeObject:self->_leafKeys forKey:@"leafKeys"];
-  [v4 encodeObject:self->_childKeys forKey:@"childKeys"];
-  [v4 encodeObject:self->_outletKeys forKey:@"outletKeys"];
-  [v4 encodeObject:self->_classNames forKey:@"classNames"];
-  [v4 encodeObject:self->_structNames forKey:@"structNames"];
+  [coderCopy encodeObject:self->_settingsClassName forKey:@"settingsClassName"];
+  [coderCopy encodeInteger:self->_settingsClassVersion forKey:@"settingsClassVersion"];
+  [coderCopy encodeObject:self->_leafKeys forKey:@"leafKeys"];
+  [coderCopy encodeObject:self->_childKeys forKey:@"childKeys"];
+  [coderCopy encodeObject:self->_outletKeys forKey:@"outletKeys"];
+  [coderCopy encodeObject:self->_classNames forKey:@"classNames"];
+  [coderCopy encodeObject:self->_structNames forKey:@"structNames"];
 }
 
-- (PTSettingsClassStructure)initWithCoder:(id)a3
+- (PTSettingsClassStructure)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PTSettingsClassStructure *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"settingsClassName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"settingsClassName"];
     settingsClassName = v5->_settingsClassName;
     v5->_settingsClassName = v6;
 
-    v5->_settingsClassVersion = [v4 decodeIntegerForKey:@"settingsClassVersion"];
-    v8 = [(PTSettingsClassStructure *)v5 _decodeStringSetForKey:@"leafKeys" withCoder:v4];
+    v5->_settingsClassVersion = [coderCopy decodeIntegerForKey:@"settingsClassVersion"];
+    v8 = [(PTSettingsClassStructure *)v5 _decodeStringSetForKey:@"leafKeys" withCoder:coderCopy];
     leafKeys = v5->_leafKeys;
     v5->_leafKeys = v8;
 
-    v10 = [(PTSettingsClassStructure *)v5 _decodeStringSetForKey:@"childKeys" withCoder:v4];
+    v10 = [(PTSettingsClassStructure *)v5 _decodeStringSetForKey:@"childKeys" withCoder:coderCopy];
     childKeys = v5->_childKeys;
     v5->_childKeys = v10;
 
-    v12 = [(PTSettingsClassStructure *)v5 _decodeStringSetForKey:@"outletKeys" withCoder:v4];
+    v12 = [(PTSettingsClassStructure *)v5 _decodeStringSetForKey:@"outletKeys" withCoder:coderCopy];
     outletKeys = v5->_outletKeys;
     v5->_outletKeys = v12;
 
-    v14 = [(PTSettingsClassStructure *)v5 _decodeStringStringDictionaryForKey:@"structNames" withCoder:v4];
+    v14 = [(PTSettingsClassStructure *)v5 _decodeStringStringDictionaryForKey:@"structNames" withCoder:coderCopy];
     structNames = v5->_structNames;
     v5->_structNames = v14;
 
-    v16 = [(PTSettingsClassStructure *)v5 _decodeStringStringDictionaryForKey:@"classNames" withCoder:v4];
+    v16 = [(PTSettingsClassStructure *)v5 _decodeStringStringDictionaryForKey:@"classNames" withCoder:coderCopy];
     classNames = v5->_classNames;
     v5->_classNames = v16;
   }
@@ -445,38 +445,38 @@ uint64_t __54__PTSettingsClassStructure_structureForSettingsClass___block_invoke
   return v5;
 }
 
-- (id)_decodeStringStringDictionaryForKey:(id)a3 withCoder:(id)a4
+- (id)_decodeStringStringDictionaryForKey:(id)key withCoder:(id)coder
 {
-  v5 = a3;
+  keyCopy = key;
   v6 = MEMORY[0x277CBEB98];
-  v7 = a4;
+  coderCopy = coder;
   v8 = objc_opt_class();
   v9 = [v6 setWithObjects:{v8, objc_opt_class(), 0}];
-  v10 = [v7 decodeObjectOfClasses:v9 forKey:v5];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:keyCopy];
 
   objc_opt_class();
   objc_opt_class();
   if ((PTValidateDictionary(v10) & 1) == 0)
   {
-    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CCA2A8] format:{@"%@ expected [String:String] dictionary for '%@'; got %@", objc_opt_class(), v5, v10}];
+    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CCA2A8] format:{@"%@ expected [String:String] dictionary for '%@'; got %@", objc_opt_class(), keyCopy, v10}];
   }
 
   return v10;
 }
 
-- (id)_decodeStringSetForKey:(id)a3 withCoder:(id)a4
+- (id)_decodeStringSetForKey:(id)key withCoder:(id)coder
 {
-  v5 = a3;
+  keyCopy = key;
   v6 = MEMORY[0x277CBEB98];
-  v7 = a4;
+  coderCopy = coder;
   v8 = objc_opt_class();
   v9 = [v6 setWithObjects:{v8, objc_opt_class(), 0}];
-  v10 = [v7 decodeObjectOfClasses:v9 forKey:v5];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:keyCopy];
 
   objc_opt_class();
   if ((PTValidateSet(v10) & 1) == 0)
   {
-    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CCA2A8] format:{@"%@ expected set of Strings for '%@'; got %@", objc_opt_class(), v5, v10}];
+    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CCA2A8] format:{@"%@ expected set of Strings for '%@'; got %@", objc_opt_class(), keyCopy, v10}];
   }
 
   return v10;

@@ -1,20 +1,20 @@
 @interface DMCEnrollmentiCloudPromotionViewController
-- (DMCEnrollmentiCloudPromotionViewController)initWithType:(unint64_t)a3 delegate:(id)a4;
+- (DMCEnrollmentiCloudPromotionViewController)initWithType:(unint64_t)type delegate:(id)delegate;
 - (DMCEnrollmentiCloudPromotionViewControllerDelegate)delegate;
-- (void)_setupBottomViewForType:(unint64_t)a3;
-- (void)_setupUIForType:(unint64_t)a3;
+- (void)_setupBottomViewForType:(unint64_t)type;
+- (void)_setupUIForType:(unint64_t)type;
 - (void)dmc_viewControllerHasBeenDismissed;
-- (void)leftBarButtonTapped:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)leftBarButtonTapped:(id)tapped;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation DMCEnrollmentiCloudPromotionViewController
 
-- (DMCEnrollmentiCloudPromotionViewController)initWithType:(unint64_t)a3 delegate:(id)a4
+- (DMCEnrollmentiCloudPromotionViewController)initWithType:(unint64_t)type delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v7 = DMCLocalizedString();
-  if (a3 > 1)
+  if (type > 1)
   {
     v8 = 0;
   }
@@ -30,35 +30,35 @@
   v10 = v9;
   if (v9)
   {
-    v9->_type = a3;
-    objc_storeWeak(&v9->_delegate, v6);
+    v9->_type = type;
+    objc_storeWeak(&v9->_delegate, delegateCopy);
   }
 
   return v10;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = DMCEnrollmentiCloudPromotionViewController;
-  [(DMCEnrollmentTemplateTableViewController *)&v4 viewWillAppear:a3];
+  [(DMCEnrollmentTemplateTableViewController *)&v4 viewWillAppear:appear];
   if (([(DMCEnrollmentiCloudPromotionViewController *)self isBeingPresented]& 1) != 0 || [(DMCEnrollmentiCloudPromotionViewController *)self isMovingToParentViewController])
   {
     [(DMCEnrollmentiCloudPromotionViewController *)self _setupUIForType:[(DMCEnrollmentiCloudPromotionViewController *)self type]];
   }
 }
 
-- (void)_setupUIForType:(unint64_t)a3
+- (void)_setupUIForType:(unint64_t)type
 {
   v61[1] = *MEMORY[0x277D85DE8];
-  v5 = [(DMCEnrollmentiCloudPromotionViewController *)self navigationItem];
-  [v5 setHidesBackButton:1];
+  navigationItem = [(DMCEnrollmentiCloudPromotionViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
 
   v6 = objc_opt_new();
   v7 = 0x277CBE000uLL;
-  if (a3 == 1)
+  if (type == 1)
   {
-    v50 = [(DMCEnrollmentiCloudPromotionViewController *)self quotaString];
+    quotaString = [(DMCEnrollmentiCloudPromotionViewController *)self quotaString];
     v14 = DMCLocalizedFormat();
 
     v15 = [DMCEnrollmentTableViewPromotionCell alloc];
@@ -72,7 +72,7 @@
     v7 = 0x277CBE000uLL;
   }
 
-  else if (!a3)
+  else if (!type)
   {
     v8 = [DMCEnrollmentTableViewPromotionCell alloc];
     v9 = DMCLocalizedString();
@@ -122,16 +122,16 @@
   if ([MEMORY[0x277D03530] isPad])
   {
     v39 = [DMCEnrollmentTableViewPlatterCell alloc];
-    v40 = [(DMCEnrollmentTemplateTableViewController *)self tableView];
-    v41 = [(DMCEnrollmentTableViewPlatterCell *)v39 initWithCellData:v6 parentTableView:v40 useShadow:0];
+    tableView = [(DMCEnrollmentTemplateTableViewController *)self tableView];
+    v41 = [(DMCEnrollmentTableViewPlatterCell *)v39 initWithCellData:v6 parentTableView:tableView useShadow:0];
 
-    v42 = [(DMCEnrollmentTableViewPlatterCell *)v41 tableViewController];
-    [v42 setCustomTopMargin:&unk_285A0E478];
+    tableViewController = [(DMCEnrollmentTableViewPlatterCell *)v41 tableViewController];
+    [tableViewController setCustomTopMargin:&unk_285A0E478];
 
     [(DMCEnrollmentTableViewPlatterCell *)v41 setCustomHorizontalMargin:&unk_285A0E488];
-    v43 = [(DMCEnrollmentTableViewPlatterCell *)v41 tableViewController];
-    v44 = [v43 view];
-    [v44 setNeedsLayout];
+    tableViewController2 = [(DMCEnrollmentTableViewPlatterCell *)v41 tableViewController];
+    view = [tableViewController2 view];
+    [view setNeedsLayout];
 
     v56 = v41;
     v45 = [MEMORY[0x277CBEA60] arrayWithObjects:&v56 count:1];
@@ -169,12 +169,12 @@
     }
   }
 
-  [(DMCEnrollmentiCloudPromotionViewController *)self _setupBottomViewForType:a3];
+  [(DMCEnrollmentiCloudPromotionViewController *)self _setupBottomViewForType:type];
 }
 
-- (void)_setupBottomViewForType:(unint64_t)a3
+- (void)_setupBottomViewForType:(unint64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     objc_initWeak(&location, self);
     v8 = [DMCEnrollmentConfirmationView alloc];
@@ -190,7 +190,7 @@
 
   else
   {
-    if (a3)
+    if (type)
     {
       v9 = 0;
       goto LABEL_7;
@@ -242,16 +242,16 @@ void __70__DMCEnrollmentiCloudPromotionViewController__setupBottomViewForType___
   }
 }
 
-- (void)leftBarButtonTapped:(id)a3
+- (void)leftBarButtonTapped:(id)tapped
 {
-  v4 = [(DMCEnrollmentiCloudPromotionViewController *)self delegate];
-  [v4 iCloudPromotionViewController:self didReceiveUserAction:0];
+  delegate = [(DMCEnrollmentiCloudPromotionViewController *)self delegate];
+  [delegate iCloudPromotionViewController:self didReceiveUserAction:0];
 }
 
 - (void)dmc_viewControllerHasBeenDismissed
 {
-  v3 = [(DMCEnrollmentiCloudPromotionViewController *)self delegate];
-  [v3 iCloudPromotionViewController:self didReceiveUserAction:0];
+  delegate = [(DMCEnrollmentiCloudPromotionViewController *)self delegate];
+  [delegate iCloudPromotionViewController:self didReceiveUserAction:0];
 }
 
 - (DMCEnrollmentiCloudPromotionViewControllerDelegate)delegate

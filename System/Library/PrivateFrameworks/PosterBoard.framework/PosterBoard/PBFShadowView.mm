@@ -1,20 +1,20 @@
 @interface PBFShadowView
 - (CGAffineTransform)shadowSupplementaryTransform;
-- (CGRect)frameWithContentWithFrame:(CGRect)a3;
+- (CGRect)frameWithContentWithFrame:(CGRect)frame;
 - (void)_configureForShadowType;
 - (void)layoutSubviews;
-- (void)setCornerRadius:(double)a3;
-- (void)setShadowType:(int64_t)a3;
+- (void)setCornerRadius:(double)radius;
+- (void)setShadowType:(int64_t)type;
 @end
 
 @implementation PBFShadowView
 
-- (CGRect)frameWithContentWithFrame:(CGRect)a3
+- (CGRect)frameWithContentWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if ([(PBFShadowView *)self shadowType]== 1)
   {
     [(UIView *)self->_shadowView frameWithContentWithFrame:x, y, width, height];
@@ -56,26 +56,26 @@
   return result;
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_cornerRadius = a3;
-    v5 = [(PBFShadowView *)self layer];
-    [v5 setCornerRadius:a3];
+    self->_cornerRadius = radius;
+    layer = [(PBFShadowView *)self layer];
+    [layer setCornerRadius:radius];
 
-    v6 = [(PBFShadowView *)self layer];
-    [v6 setCornerCurve:*MEMORY[0x277CDA138]];
+    layer2 = [(PBFShadowView *)self layer];
+    [layer2 setCornerCurve:*MEMORY[0x277CDA138]];
 
     [(PBFShadowView *)self _configureForShadowType];
   }
 }
 
-- (void)setShadowType:(int64_t)a3
+- (void)setShadowType:(int64_t)type
 {
-  if (self->_shadowType != a3)
+  if (self->_shadowType != type)
   {
-    self->_shadowType = a3;
+    self->_shadowType = type;
     [(PBFShadowView *)self _configureForShadowType];
   }
 }
@@ -102,17 +102,17 @@
     v10 = objc_alloc(MEMORY[0x277D75D18]);
     [(PBFShadowView *)self bounds];
     v11 = [v10 initWithFrame:?];
-    v12 = [(UIView *)v11 layer];
-    [v12 setShadowPathIsBounds:1];
-    v13 = [MEMORY[0x277D75348] blackColor];
-    [v12 setShadowColor:{objc_msgSend(v13, "CGColor")}];
+    layer = [(UIView *)v11 layer];
+    [layer setShadowPathIsBounds:1];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [layer setShadowColor:{objc_msgSend(blackColor, "CGColor")}];
 
-    [v12 setShadowOffset:{0.0, self->_cornerRadius}];
-    [v12 setShadowRadius:self->_cornerRadius];
+    [layer setShadowOffset:{0.0, self->_cornerRadius}];
+    [layer setShadowRadius:self->_cornerRadius];
     LODWORD(v14) = 1041865114;
-    [v12 setShadowOpacity:v14];
-    [v12 setCornerRadius:self->_cornerRadius];
-    [v12 setCornerCurve:*MEMORY[0x277CDA138]];
+    [layer setShadowOpacity:v14];
+    [layer setCornerRadius:self->_cornerRadius];
+    [layer setCornerCurve:*MEMORY[0x277CDA138]];
     v15 = self->_shadowView;
     self->_shadowView = v11;
   }

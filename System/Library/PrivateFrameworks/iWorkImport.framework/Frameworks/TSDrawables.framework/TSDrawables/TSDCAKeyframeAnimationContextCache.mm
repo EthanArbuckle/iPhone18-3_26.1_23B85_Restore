@@ -1,26 +1,26 @@
 @interface TSDCAKeyframeAnimationContextCache
-- (TSDCAKeyframeAnimationContextCache)initWithAnimation:(id)a3;
-- (double)percentAtTime:(double)a3;
-- (id)valueAtTime:(double)a3 initialValue:(id)a4 groupTimingFactor:(double)a5;
+- (TSDCAKeyframeAnimationContextCache)initWithAnimation:(id)animation;
+- (double)percentAtTime:(double)time;
+- (id)valueAtTime:(double)time initialValue:(id)value groupTimingFactor:(double)factor;
 @end
 
 @implementation TSDCAKeyframeAnimationContextCache
 
-- (TSDCAKeyframeAnimationContextCache)initWithAnimation:(id)a3
+- (TSDCAKeyframeAnimationContextCache)initWithAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   v60.receiver = self;
   v60.super_class = TSDCAKeyframeAnimationContextCache;
-  v7 = [(TSDCAPropertyAnimationContextCache *)&v60 initWithAnimation:v4];
+  v7 = [(TSDCAPropertyAnimationContextCache *)&v60 initWithAnimation:animationCopy];
   if (v7)
   {
-    v8 = objc_msgSend_keyPath(v4, v5, v6);
+    v8 = objc_msgSend_keyPath(animationCopy, v5, v6);
     isEqualToString = objc_msgSend_isEqualToString_(v8, v9, @"contents");
     objc_msgSend_setIsContentsAnimation_(v7, v11, isEqualToString);
 
     if (objc_msgSend_isContentsAnimation(v7, v12, v13))
     {
-      v16 = objc_msgSend_values(v4, v14, v15);
+      v16 = objc_msgSend_values(animationCopy, v14, v15);
       v19 = objc_msgSend_mutableCopy(v16, v17, v18);
       v58[0] = 0;
       v58[1] = v58;
@@ -51,21 +51,21 @@
       v25 = v19;
       v53 = v25;
       objc_msgSend_enumerateObjectsUsingBlock_(v24, v26, &v48);
-      objc_msgSend_setValues_(v4, v27, v25, v48, v49, v50, v51);
+      objc_msgSend_setValues_(animationCopy, v27, v25, v48, v49, v50, v51);
 
       _Block_object_dispose(v56, 8);
       _Block_object_dispose(v58, 8);
     }
 
-    v28 = objc_msgSend_values(v4, v14, v15);
+    v28 = objc_msgSend_values(animationCopy, v14, v15);
     values = v7->_values;
     v7->_values = v28;
 
-    v32 = objc_msgSend_keyTimes(v4, v30, v31);
+    v32 = objc_msgSend_keyTimes(animationCopy, v30, v31);
     keyTimes = v7->_keyTimes;
     v7->_keyTimes = v32;
 
-    v36 = objc_msgSend_timingFunctions(v4, v34, v35);
+    v36 = objc_msgSend_timingFunctions(animationCopy, v34, v35);
     timingFunctions = v7->_timingFunctions;
     v7->_timingFunctions = v36;
 
@@ -83,18 +83,18 @@
   return v7;
 }
 
-- (id)valueAtTime:(double)a3 initialValue:(id)a4 groupTimingFactor:(double)a5
+- (id)valueAtTime:(double)time initialValue:(id)value groupTimingFactor:(double)factor
 {
   v84 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  if (objc_msgSend_shouldUseInitialValueAtAnimationTime_(self, v8, v9, a3))
+  valueCopy = value;
+  if (objc_msgSend_shouldUseInitialValueAtAnimationTime_(self, v8, v9, time))
   {
-    v12 = v7;
+    v12 = valueCopy;
     objc_msgSend_adjustedResultWithValue_(self, v13, v12);
     goto LABEL_25;
   }
 
-  objc_msgSend_workingPercentFromAnimationTime_(self, v10, v11, a3);
+  objc_msgSend_workingPercentFromAnimationTime_(self, v10, v11, time);
   v15 = v14;
   v79 = 0u;
   v80 = 0u;
@@ -216,10 +216,10 @@ LABEL_22:
   return v46;
 }
 
-- (double)percentAtTime:(double)a3
+- (double)percentAtTime:(double)time
 {
   v69 = *MEMORY[0x277D85DE8];
-  objc_msgSend_animationPercentFromAnimationTime_(self, a2, v3, a3);
+  objc_msgSend_animationPercentFromAnimationTime_(self, a2, v3, time);
   v8 = v7;
   if (v7 > 0.0 && v7 < 1.0)
   {

@@ -1,14 +1,14 @@
 @interface SBDeckToFullScreenSwitcherModifier
-- (BOOL)shouldAsyncRenderUntilDelay:(double *)a3;
-- (SBDeckToFullScreenSwitcherModifier)initWithTransitionID:(id)a3 direction:(int64_t)a4 fullScreenAppLayout:(id)a5 deckModifier:(id)a6;
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3;
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3;
+- (BOOL)shouldAsyncRenderUntilDelay:(double *)delay;
+- (SBDeckToFullScreenSwitcherModifier)initWithTransitionID:(id)d direction:(int64_t)direction fullScreenAppLayout:(id)layout deckModifier:(id)modifier;
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout;
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index;
 - (id)_appLayoutToScrollToDuringTransition;
 - (id)_layoutSettings;
-- (id)animationAttributesForLayoutElement:(id)a3;
+- (id)animationAttributesForLayoutElement:(id)element;
 - (id)appLayoutToScrollToBeforeTransitioning;
 - (id)appLayoutsToCacheSnapshots;
-- (id)handleTransitionEvent:(id)a3;
+- (id)handleTransitionEvent:(id)event;
 - (id)topMostLayoutElements;
 - (id)transitionWillBegin;
 - (id)visibleAppLayouts;
@@ -20,14 +20,14 @@
 {
   v11.receiver = self;
   v11.super_class = SBDeckToFullScreenSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v11 transitionWillBegin];
-  v4 = [(SBDeckToFullScreenSwitcherModifier *)self _appLayoutToScrollToDuringTransition];
-  if (v4)
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v11 transitionWillBegin];
+  _appLayoutToScrollToDuringTransition = [(SBDeckToFullScreenSwitcherModifier *)self _appLayoutToScrollToDuringTransition];
+  if (_appLayoutToScrollToDuringTransition)
   {
-    v5 = [[SBScrollToAppLayoutSwitcherEventResponse alloc] initWithAppLayout:v4 alignment:0 animated:0];
-    v6 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v5 toResponse:v3];
+    v5 = [[SBScrollToAppLayoutSwitcherEventResponse alloc] initWithAppLayout:_appLayoutToScrollToDuringTransition alignment:0 animated:0];
+    v6 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v5 toResponse:transitionWillBegin];
 
-    v3 = v6;
+    transitionWillBegin = v6;
   }
 
   if (self->_direction == 1 && [(SBAppLayout *)self->_fullScreenAppLayout type]== 2)
@@ -41,7 +41,7 @@
   }
 
   v8 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:v7 updateMode:2];
-  v9 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v8 toResponse:v3];
+  v9 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v8 toResponse:transitionWillBegin];
 
   return v9;
 }
@@ -50,9 +50,9 @@
 {
   if (self->_direction == 1)
   {
-    v3 = [(SBDeckToFullScreenSwitcherModifier *)self appLayouts];
-    v4 = [v3 indexOfObject:self->_fullScreenAppLayout];
-    v5 = [v3 count];
+    appLayouts = [(SBDeckToFullScreenSwitcherModifier *)self appLayouts];
+    v4 = [appLayouts indexOfObject:self->_fullScreenAppLayout];
+    v5 = [appLayouts count];
     if (v5 - 1 >= (v4 + 1))
     {
       v6 = v4 + 1;
@@ -63,7 +63,7 @@
       v6 = v5 - 1;
     }
 
-    v7 = [v3 objectAtIndex:v6];
+    v7 = [appLayouts objectAtIndex:v6];
   }
 
   else
@@ -153,8 +153,8 @@ void __64__SBDeckToFullScreenSwitcherModifier_appLayoutsToCacheSnapshots__block_
   v4 = v11[5];
   v8.receiver = self;
   v8.super_class = SBDeckToFullScreenSwitcherModifier;
-  v5 = [(SBDeckToFullScreenSwitcherModifier *)&v8 visibleAppLayouts];
-  v6 = [v4 setByAddingObjectsFromSet:v5];
+  visibleAppLayouts = [(SBDeckToFullScreenSwitcherModifier *)&v8 visibleAppLayouts];
+  v6 = [v4 setByAddingObjectsFromSet:visibleAppLayouts];
 
   _Block_object_dispose(&v10, 8);
 
@@ -171,17 +171,17 @@ void __55__SBDeckToFullScreenSwitcherModifier_visibleAppLayouts__block_invoke(ui
 
 - (id)_layoutSettings
 {
-  v3 = [(SBDeckToFullScreenSwitcherModifier *)self switcherSettings];
-  v4 = [v3 animationSettings];
+  switcherSettings = [(SBDeckToFullScreenSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
 
   if (self->_direction == 1)
   {
-    [v4 toggleAppSwitcherSettings];
+    [animationSettings toggleAppSwitcherSettings];
   }
 
   else
   {
-    [v4 launchAppFromSwitcherSettings];
+    [animationSettings launchAppFromSwitcherSettings];
   }
   v5 = ;
 
@@ -203,86 +203,86 @@ void __55__SBDeckToFullScreenSwitcherModifier_visibleAppLayouts__block_invoke(ui
   return v3;
 }
 
-- (SBDeckToFullScreenSwitcherModifier)initWithTransitionID:(id)a3 direction:(int64_t)a4 fullScreenAppLayout:(id)a5 deckModifier:(id)a6
+- (SBDeckToFullScreenSwitcherModifier)initWithTransitionID:(id)d direction:(int64_t)direction fullScreenAppLayout:(id)layout deckModifier:(id)modifier
 {
-  v11 = a5;
-  v12 = a6;
+  layoutCopy = layout;
+  modifierCopy = modifier;
   v16.receiver = self;
   v16.super_class = SBDeckToFullScreenSwitcherModifier;
-  v13 = [(SBTransitionSwitcherModifier *)&v16 initWithTransitionID:a3];
+  v13 = [(SBTransitionSwitcherModifier *)&v16 initWithTransitionID:d];
   v14 = v13;
   if (v13)
   {
-    v13->_direction = a4;
-    objc_storeStrong(&v13->_fullScreenAppLayout, a5);
-    objc_storeStrong(&v14->_deckModifier, a6);
+    v13->_direction = direction;
+    objc_storeStrong(&v13->_fullScreenAppLayout, layout);
+    objc_storeStrong(&v14->_deckModifier, modifier);
     v14->_wantsMinificationFilter = 0;
   }
 
   return v14;
 }
 
-- (BOOL)shouldAsyncRenderUntilDelay:(double *)a3
+- (BOOL)shouldAsyncRenderUntilDelay:(double *)delay
 {
   direction = self->_direction;
   if (!direction)
   {
-    v6 = [(SBDeckToFullScreenSwitcherModifier *)self switcherSettings];
-    v7 = [v6 animationSettings];
-    [v7 disableAsyncRenderingTransitionPercentage];
+    switcherSettings = [(SBDeckToFullScreenSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
+    [animationSettings disableAsyncRenderingTransitionPercentage];
     v9 = v8;
 
-    v10 = [(SBDeckToFullScreenSwitcherModifier *)self _layoutSettings];
-    [v10 settlingDuration];
+    _layoutSettings = [(SBDeckToFullScreenSwitcherModifier *)self _layoutSettings];
+    [_layoutSettings settlingDuration];
     v12 = v9 * v11;
     UIAnimationDragCoefficient();
-    *a3 = v12 * v13;
+    *delay = v12 * v13;
   }
 
   return direction == 0;
 }
 
-- (id)handleTransitionEvent:(id)a3
+- (id)handleTransitionEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 transitionID];
-  v6 = [(SBTransitionSwitcherModifier *)self transitionID];
-  v7 = [v5 isEqual:v6];
+  eventCopy = event;
+  transitionID = [eventCopy transitionID];
+  transitionID2 = [(SBTransitionSwitcherModifier *)self transitionID];
+  v7 = [transitionID isEqual:transitionID2];
 
   if (v7)
   {
-    v8 = [v4 fromAppLayout];
-    v9 = [v4 toAppLayout];
-    self->_wantsMinificationFilter = [v8 isEqual:v9];
+    fromAppLayout = [eventCopy fromAppLayout];
+    toAppLayout = [eventCopy toAppLayout];
+    self->_wantsMinificationFilter = [fromAppLayout isEqual:toAppLayout];
   }
 
   v12.receiver = self;
   v12.super_class = SBDeckToFullScreenSwitcherModifier;
-  v10 = [(SBTransitionSwitcherModifier *)&v12 handleTransitionEvent:v4];
+  v10 = [(SBTransitionSwitcherModifier *)&v12 handleTransitionEvent:eventCopy];
 
   return v10;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v8.receiver = self;
   v8.super_class = SBDeckToFullScreenSwitcherModifier;
-  v4 = [(SBTransitionSwitcherModifier *)&v8 animationAttributesForLayoutElement:a3];
+  v4 = [(SBTransitionSwitcherModifier *)&v8 animationAttributesForLayoutElement:element];
   v5 = [v4 mutableCopy];
 
-  v6 = [(SBDeckToFullScreenSwitcherModifier *)self _layoutSettings];
-  [v5 setLayoutSettings:v6];
+  _layoutSettings = [(SBDeckToFullScreenSwitcherModifier *)self _layoutSettings];
+  [v5 setLayoutSettings:_layoutSettings];
 
   return v5;
 }
 
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index
 {
   if (self->_direction)
   {
     v7.receiver = self;
     v7.super_class = SBDeckToFullScreenSwitcherModifier;
-    [(SBDeckToFullScreenSwitcherModifier *)&v7 cornerRadiiForIndex:a3];
+    [(SBDeckToFullScreenSwitcherModifier *)&v7 cornerRadiiForIndex:index];
   }
 
   else
@@ -299,11 +299,11 @@ void __55__SBDeckToFullScreenSwitcherModifier_visibleAppLayouts__block_invoke(ui
   return result;
 }
 
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout
 {
   v4.receiver = self;
   v4.super_class = SBDeckToFullScreenSwitcherModifier;
-  return ([(SBTransitionSwitcherModifier *)&v4 asyncRenderingAttributesForAppLayout:a3]| (self->_wantsMinificationFilter << 8));
+  return ([(SBTransitionSwitcherModifier *)&v4 asyncRenderingAttributesForAppLayout:layout]| (self->_wantsMinificationFilter << 8));
 }
 
 @end

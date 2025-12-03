@@ -1,21 +1,21 @@
 @interface MFIMAPFetchResult
-- (MFIMAPFetchResult)initWithType:(int)a3;
+- (MFIMAPFetchResult)initWithType:(int)type;
 - (id)description;
 - (id)fetchData;
 - (id)section;
 - (unint64_t)startOffset;
 - (unsigned)encoding;
 - (void)dealloc;
-- (void)setBodyStructure:(id)a3;
-- (void)setEnvelope:(id)a3;
-- (void)setFetchData:(id)a3;
-- (void)setInternalDate:(id)a3;
-- (void)setSection:(id)a3;
+- (void)setBodyStructure:(id)structure;
+- (void)setEnvelope:(id)envelope;
+- (void)setFetchData:(id)data;
+- (void)setInternalDate:(id)date;
+- (void)setSection:(id)section;
 @end
 
 @implementation MFIMAPFetchResult
 
-- (MFIMAPFetchResult)initWithType:(int)a3
+- (MFIMAPFetchResult)initWithType:(int)type
 {
   v13.receiver = self;
   v13.super_class = MFIMAPFetchResult;
@@ -23,7 +23,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_itemType = a3;
+    v4->_itemType = type;
     envelope = v4->_typeSpecific.envelope;
     v4->_typeSpecific.envelope = 0;
 
@@ -58,29 +58,29 @@
   [(MFIMAPFetchResult *)&v2 dealloc];
 }
 
-- (void)setEnvelope:(id)a3
+- (void)setEnvelope:(id)envelope
 {
-  v5 = a3;
+  envelopeCopy = envelope;
   envelope = self->_typeSpecific.envelope;
   p_typeSpecific = &self->_typeSpecific;
-  if (envelope != v5)
+  if (envelope != envelopeCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&p_typeSpecific->envelope, a3);
-    v5 = v8;
+    v8 = envelopeCopy;
+    objc_storeStrong(&p_typeSpecific->envelope, envelope);
+    envelopeCopy = v8;
   }
 }
 
-- (void)setInternalDate:(id)a3
+- (void)setInternalDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   internalDate = self->_typeSpecific.internalDate;
   p_internalDate = &self->_typeSpecific.internalDate;
-  if (internalDate != v5)
+  if (internalDate != dateCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_internalDate, a3);
-    v5 = v8;
+    v8 = dateCopy;
+    objc_storeStrong(p_internalDate, date);
+    dateCopy = v8;
   }
 }
 
@@ -102,9 +102,9 @@
   return v7;
 }
 
-- (void)setFetchData:(id)a3
+- (void)setFetchData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   itemType = self->_itemType;
   v7 = itemType > 7;
   v8 = (1 << itemType) & 0xB0;
@@ -112,25 +112,25 @@
   {
     sectionData = self->_typeSpecific.bodySectionInfo.sectionData;
     p_sectionData = &self->_typeSpecific.bodySectionInfo.sectionData;
-    if (sectionData != v5)
+    if (sectionData != dataCopy)
     {
-      v12 = v5;
-      objc_storeStrong(p_sectionData, a3);
-      v5 = v12;
+      v12 = dataCopy;
+      objc_storeStrong(p_sectionData, data);
+      dataCopy = v12;
     }
   }
 }
 
-- (void)setBodyStructure:(id)a3
+- (void)setBodyStructure:(id)structure
 {
-  v5 = a3;
+  structureCopy = structure;
   bodyStructure = self->_typeSpecific.bodyStructure;
   p_bodyStructure = &self->_typeSpecific.bodyStructure;
-  if (bodyStructure != v5)
+  if (bodyStructure != structureCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_bodyStructure, a3);
-    v5 = v8;
+    v8 = structureCopy;
+    objc_storeStrong(p_bodyStructure, structure);
+    structureCopy = v8;
   }
 }
 
@@ -180,16 +180,16 @@
   return v5;
 }
 
-- (void)setSection:(id)a3
+- (void)setSection:(id)section
 {
-  v5 = a3;
+  sectionCopy = section;
   section = self->_typeSpecific.bodySectionInfo.section;
   p_bodySectionInfo = &self->_typeSpecific.bodySectionInfo;
-  if (section != v5)
+  if (section != sectionCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&p_bodySectionInfo->section, a3);
-    v5 = v8;
+    v8 = sectionCopy;
+    objc_storeStrong(&p_bodySectionInfo->section, section);
+    sectionCopy = v8;
   }
 }
 
@@ -279,8 +279,8 @@ LABEL_12:
         }
 
         v16 = MEMORY[0x277CCACA8];
-        v7 = [(MFIMAPFetchResult *)self flagsArray];
-        v17 = [(__CFString *)v7 componentsJoinedByString:@" "];
+        flagsArray = [(MFIMAPFetchResult *)self flagsArray];
+        v17 = [(__CFString *)flagsArray componentsJoinedByString:@" "];
         v12 = [v16 stringWithFormat:@"FLAGS (%@)", v17];
 
 LABEL_32:
@@ -293,7 +293,7 @@ LABEL_32:
       }
 
       v6 = MEMORY[0x277CCACA8];
-      v18 = [(MFIMAPFetchResult *)self uniqueRemoteId];
+      uniqueRemoteId = [(MFIMAPFetchResult *)self uniqueRemoteId];
       v5 = @"X-GM-MSGID %llu";
     }
 
@@ -302,8 +302,8 @@ LABEL_32:
       if (itemType == 6)
       {
         v13 = MEMORY[0x277CCACA8];
-        v7 = CFCopyDescription([(MFIMAPFetchResult *)self bodyStructure]);
-        [v13 stringWithFormat:@"BODYSTRUCTURE %@", v7, v19, v20];
+        flagsArray = CFCopyDescription([(MFIMAPFetchResult *)self bodyStructure]);
+        [v13 stringWithFormat:@"BODYSTRUCTURE %@", flagsArray, v19, v20];
         v12 = LABEL_31:;
         goto LABEL_32;
       }
@@ -311,20 +311,20 @@ LABEL_32:
       if (itemType == 7)
       {
 LABEL_12:
-        v7 = [(MFIMAPFetchResult *)self section];
-        v8 = [(MFIMAPFetchResult *)self startOffset];
-        v9 = [(MFIMAPFetchResult *)self fetchData];
-        v10 = [v9 length];
+        flagsArray = [(MFIMAPFetchResult *)self section];
+        startOffset = [(MFIMAPFetchResult *)self startOffset];
+        fetchData = [(MFIMAPFetchResult *)self fetchData];
+        v10 = [fetchData length];
 
         v11 = &stru_288159858;
-        if (v7)
+        if (flagsArray)
         {
-          v11 = v7;
+          v11 = flagsArray;
         }
 
-        if (v8)
+        if (startOffset)
         {
-          [MEMORY[0x277CCACA8] stringWithFormat:@"BODY[%@]<%lu> {%lu}...", v11, v8, v10];
+          [MEMORY[0x277CCACA8] stringWithFormat:@"BODY[%@]<%lu> {%lu}...", v11, startOffset, v10];
         }
 
         else
@@ -336,7 +336,7 @@ LABEL_12:
       }
 
       v6 = MEMORY[0x277CCACA8];
-      v18 = [(MFIMAPFetchResult *)self uid];
+      uniqueRemoteId = [(MFIMAPFetchResult *)self uid];
       v5 = @"UID %u";
     }
 
@@ -358,7 +358,7 @@ LABEL_26:
     }
 
     v6 = MEMORY[0x277CCACA8];
-    v18 = [(MFIMAPFetchResult *)self messageSize];
+    uniqueRemoteId = [(MFIMAPFetchResult *)self messageSize];
     v5 = @"RFC822.SIZE %u";
     goto LABEL_26;
   }
@@ -370,14 +370,14 @@ LABEL_26:
       goto LABEL_34;
     case 1:
       v14 = MEMORY[0x277CCACA8];
-      v7 = [(MFIMAPFetchResult *)self envelope];
-      [v14 stringWithFormat:@"ENVELOPE %@", v7, v19, v20];
+      flagsArray = [(MFIMAPFetchResult *)self envelope];
+      [v14 stringWithFormat:@"ENVELOPE %@", flagsArray, v19, v20];
       goto LABEL_31;
     case 2:
       v4 = MEMORY[0x277CCACA8];
       v5 = @"INTERNALDATE";
 LABEL_27:
-      [v4 stringWithFormat:v5, v18];
+      [v4 stringWithFormat:v5, uniqueRemoteId];
       v12 = LABEL_28:;
       if (v12)
       {

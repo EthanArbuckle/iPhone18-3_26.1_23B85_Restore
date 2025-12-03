@@ -2,12 +2,12 @@
 - (BOOL)accessibilityPerformMagicTap;
 - (BOOL)shouldAutorotate;
 - (UIViewController)childViewControllerForStatusBarStyle;
-- (_TtC5TeaUI27DockContainerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)animationControllerForDismissedController:(id)a3;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
+- (_TtC5TeaUI27DockContainerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)animationControllerForDismissedController:(id)controller;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
 - (void)dockedViewLongPressed;
 - (void)dockedViewTapped;
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -16,7 +16,7 @@
 
 - (UIViewController)childViewControllerForStatusBarStyle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DockContainerViewController.childForStatusBarStyle.getter();
 
   return v3;
@@ -24,13 +24,13 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   DockContainerViewController.viewDidLoad()();
 }
 
 - (BOOL)shouldAutorotate
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DockContainerViewController.shouldAutorotate.getter();
 
   return v3 & 1;
@@ -38,13 +38,13 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   DockContainerViewController.viewDidLayoutSubviews()();
 }
 
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   if (v8)
   {
     v9 = swift_allocObject();
@@ -57,15 +57,15 @@
     v9 = 0;
   }
 
-  v10 = a3;
-  v11 = self;
-  DockContainerViewController.present(_:animated:completion:)(v10, a4, v8, v9);
+  controllerCopy = controller;
+  selfCopy = self;
+  DockContainerViewController.present(_:animated:completion:)(controllerCopy, animated, v8, v9);
   sub_1D7E418F4(v8, v9);
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -78,46 +78,46 @@
     v7 = 0;
   }
 
-  v8 = self;
-  DockContainerViewController.dismiss(animated:completion:)(a3, v6, v7);
+  selfCopy = self;
+  DockContainerViewController.dismiss(animated:completion:)(animated, v6, v7);
   sub_1D7E418F4(v6, v7);
 }
 
 - (void)dockedViewTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D8108CB0();
 }
 
 - (void)dockedViewLongPressed
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D8108D04();
 }
 
-- (_TtC5TeaUI27DockContainerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5TeaUI27DockContainerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1D8190F14();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   DockContainerViewController.init(nibName:bundle:)();
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  v6 = DockContainerViewController.animationController(forDismissed:)(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  v6 = DockContainerViewController.animationController(forDismissed:)(controllerCopy);
 
   return v6;
 }
 
 - (BOOL)accessibilityPerformMagicTap
 {
-  v2 = self;
+  selfCopy = self;
   DockContainerViewController.accessibilityPerformMagicTap()();
 
   return 1;

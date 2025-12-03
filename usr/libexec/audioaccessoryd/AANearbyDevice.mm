@@ -1,24 +1,24 @@
 @interface AANearbyDevice
-- (AANearbyDevice)initWithIdentifier:(id)a3;
-- (BOOL)updateWithCBDevice:(id)a3;
-- (BOOL)updateWithPairedDevice:(id)a3;
-- (BOOL)updateWithPrimaryDevice:(id)a3;
-- (BOOL)updateWithProximityPairingPayload:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithLevel:(int)a3;
+- (AANearbyDevice)initWithIdentifier:(id)identifier;
+- (BOOL)updateWithCBDevice:(id)device;
+- (BOOL)updateWithPairedDevice:(id)device;
+- (BOOL)updateWithPrimaryDevice:(id)device;
+- (BOOL)updateWithProximityPairingPayload:(id)payload;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithLevel:(int)level;
 @end
 
 @implementation AANearbyDevice
 
-- (AANearbyDevice)initWithIdentifier:(id)a3
+- (AANearbyDevice)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [(AANearbyDevice *)self init];
   if (v5)
   {
-    v6 = [v4 uppercaseString];
+    uppercaseString = [identifierCopy uppercaseString];
     identifier = v5->_identifier;
-    v5->_identifier = v6;
+    v5->_identifier = uppercaseString;
 
     v8 = v5;
   }
@@ -26,64 +26,64 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(AANearbyDevice *)self bluetoothAddress];
-  v7 = [v6 copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  bluetoothAddress = [(AANearbyDevice *)self bluetoothAddress];
+  v7 = [bluetoothAddress copyWithZone:zone];
   [v5 setBluetoothAddress:v7];
 
-  v8 = [(AANearbyDevice *)self findMyGroupIdentifier];
-  v9 = [v8 copyWithZone:a3];
+  findMyGroupIdentifier = [(AANearbyDevice *)self findMyGroupIdentifier];
+  v9 = [findMyGroupIdentifier copyWithZone:zone];
   [v5 setFindMyGroupIdentifier:v9];
 
-  v10 = [(AANearbyDevice *)self identifier];
-  v11 = [v10 copyWithZone:a3];
+  identifier = [(AANearbyDevice *)self identifier];
+  v11 = [identifier copyWithZone:zone];
   v12 = v5[5];
   v5[5] = v11;
 
   [v5 setIsCase:{-[AANearbyDevice isCase](self, "isCase")}];
   [v5 setHeartRateMonitorCapability:{-[AANearbyDevice heartRateMonitorCapability](self, "heartRateMonitorCapability")}];
   [v5 setHealthKitDataWriteAllowed:{-[AANearbyDevice healthKitDataWriteAllowed](self, "healthKitDataWriteAllowed")}];
-  v13 = [(AANearbyDevice *)self model];
-  v14 = [v13 copyWithZone:a3];
+  model = [(AANearbyDevice *)self model];
+  v14 = [model copyWithZone:zone];
   [v5 setModel:v14];
 
-  v15 = [(AANearbyDevice *)self name];
-  v16 = [v15 copyWithZone:a3];
+  name = [(AANearbyDevice *)self name];
+  v16 = [name copyWithZone:zone];
   [v5 setName:v16];
 
   [v5 setPaired:{-[AANearbyDevice paired](self, "paired")}];
   [v5 setProductID:{-[AANearbyDevice productID](self, "productID")}];
-  v17 = [(AANearbyDevice *)self proximityPairingPayload];
-  v18 = [v17 payloadData];
-  v19 = [AAProximityPairingPayload proximityPairingPayloadWithData:v18];
+  proximityPairingPayload = [(AANearbyDevice *)self proximityPairingPayload];
+  payloadData = [proximityPairingPayload payloadData];
+  v19 = [AAProximityPairingPayload proximityPairingPayloadWithData:payloadData];
   [v5 setProximityPairingPayload:v19];
 
-  v20 = [(AANearbyDevice *)self caseIdentifier];
-  v21 = [v20 copyWithZone:a3];
+  caseIdentifier = [(AANearbyDevice *)self caseIdentifier];
+  v21 = [caseIdentifier copyWithZone:zone];
   [v5 setCaseIdentifier:v21];
 
-  v22 = [(AANearbyDevice *)self primaryBluetoothAddress];
-  v23 = [v22 copyWithZone:a3];
+  primaryBluetoothAddress = [(AANearbyDevice *)self primaryBluetoothAddress];
+  v23 = [primaryBluetoothAddress copyWithZone:zone];
   [v5 setPrimaryBluetoothAddress:v23];
 
-  v24 = [(AANearbyDevice *)self primaryDeviceIdentifier];
-  v25 = [v24 copyWithZone:a3];
+  primaryDeviceIdentifier = [(AANearbyDevice *)self primaryDeviceIdentifier];
+  v25 = [primaryDeviceIdentifier copyWithZone:zone];
   [v5 setPrimaryDeviceIdentifier:v25];
 
   [v5 setPrimaryProductID:{-[AANearbyDevice primaryProductID](self, "primaryProductID")}];
   return v5;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  v3 = a3;
+  levelCopy = level;
   identifier = self->_identifier;
   NSAppendPrintF_safe();
   v5 = 0;
-  v6 = [(AANearbyDevice *)self bluetoothAddress];
-  if (v6)
+  bluetoothAddress = [(AANearbyDevice *)self bluetoothAddress];
+  if (bluetoothAddress)
   {
     NSAppendPrintF_safe();
     v7 = v5;
@@ -91,8 +91,8 @@
     v5 = v7;
   }
 
-  v8 = [(AANearbyDevice *)self model];
-  if (v8)
+  model = [(AANearbyDevice *)self model];
+  if (model)
   {
     NSAppendPrintF_safe();
     v9 = v5;
@@ -100,8 +100,8 @@
     v5 = v9;
   }
 
-  v10 = [(AANearbyDevice *)self name];
-  if (v10)
+  name = [(AANearbyDevice *)self name];
+  if (name)
   {
     NSAppendPrintF_safe();
     v11 = v5;
@@ -109,9 +109,9 @@
     v5 = v11;
   }
 
-  v12 = [(AANearbyDevice *)self paired];
+  paired = [(AANearbyDevice *)self paired];
   v13 = "not paired";
-  if (v12)
+  if (paired)
   {
     v13 = "paired";
   }
@@ -125,22 +125,22 @@
     NSAppendPrintF_safe();
     v15 = v14;
 
-    v16 = [(AANearbyDevice *)self primaryDeviceIdentifier];
-    v17 = v16;
-    if (v16)
+    primaryDeviceIdentifier = [(AANearbyDevice *)self primaryDeviceIdentifier];
+    v17 = primaryDeviceIdentifier;
+    if (primaryDeviceIdentifier)
     {
-      v33 = v16;
+      v33 = primaryDeviceIdentifier;
       NSAppendPrintF_safe();
       v18 = v15;
 
       v15 = v18;
     }
 
-    v19 = [(AANearbyDevice *)self primaryBluetoothAddress];
-    v20 = v19;
-    if (v19)
+    primaryBluetoothAddress = [(AANearbyDevice *)self primaryBluetoothAddress];
+    v20 = primaryBluetoothAddress;
+    if (primaryBluetoothAddress)
     {
-      v33 = v19;
+      v33 = primaryBluetoothAddress;
       NSAppendPrintF_safe();
       v21 = v15;
 
@@ -150,27 +150,27 @@
     v14 = v15;
   }
 
-  v22 = [(AANearbyDevice *)self proximityPairingPayload];
-  v23 = v22;
-  if (v22)
+  proximityPairingPayload = [(AANearbyDevice *)self proximityPairingPayload];
+  v23 = proximityPairingPayload;
+  if (proximityPairingPayload)
   {
-    v34 = v22;
+    v34 = proximityPairingPayload;
     NSAppendPrintF_safe();
     v24 = v14;
 
     v14 = v24;
   }
 
-  v25 = [(AANearbyDevice *)self heartRateMonitorCapability];
-  if (v25)
+  heartRateMonitorCapability = [(AANearbyDevice *)self heartRateMonitorCapability];
+  if (heartRateMonitorCapability)
   {
     v26 = "Unsupported";
-    if (v25 != 1)
+    if (heartRateMonitorCapability != 1)
     {
       v26 = "?";
     }
 
-    if (v25 == 2)
+    if (heartRateMonitorCapability == 2)
     {
       v26 = "Supported";
     }
@@ -190,7 +190,7 @@
     v14 = v28;
   }
 
-  if (v3 < 0x15u)
+  if (levelCopy < 0x15u)
   {
     NSAppendPrintF_safe();
     v29 = v14;
@@ -201,37 +201,37 @@
   return v14;
 }
 
-- (BOOL)updateWithCBDevice:(id)a3
+- (BOOL)updateWithCBDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 discoveryFlags] & 0x80;
-  v6 = [(AANearbyDevice *)self isCase];
-  v7 = v5 != v6;
-  if (v5 != v6)
+  deviceCopy = device;
+  v5 = [deviceCopy discoveryFlags] & 0x80;
+  isCase = [(AANearbyDevice *)self isCase];
+  v7 = v5 != isCase;
+  if (v5 != isCase)
   {
     [(AANearbyDevice *)self setIsCase:v5 != 0];
   }
 
-  v8 = [v4 identifier];
-  v9 = [v8 uppercaseString];
+  identifier = [deviceCopy identifier];
+  uppercaseString = [identifier uppercaseString];
 
-  v10 = [(AANearbyDevice *)self identifier];
-  v11 = [v10 isEqualToString:v9];
+  identifier2 = [(AANearbyDevice *)self identifier];
+  v11 = [identifier2 isEqualToString:uppercaseString];
 
   if (v11)
   {
-    v12 = [v4 name];
-    if (v12)
+    name = [deviceCopy name];
+    if (name)
     {
-      v13 = v12;
-      v14 = [(AANearbyDevice *)self name];
-      v15 = [v4 name];
-      v16 = [v14 isEqualToString:v15];
+      v13 = name;
+      name2 = [(AANearbyDevice *)self name];
+      name3 = [deviceCopy name];
+      v16 = [name2 isEqualToString:name3];
 
       if ((v16 & 1) == 0)
       {
-        v17 = [v4 name];
-        [(AANearbyDevice *)self setName:v17];
+        name4 = [deviceCopy name];
+        [(AANearbyDevice *)self setName:name4];
 
         v7 = 1;
       }
@@ -239,7 +239,7 @@
 
     if (![(AANearbyDevice *)self isCase])
     {
-      v18 = [v4 discoveryFlags] & 0x800000;
+      v18 = [deviceCopy discoveryFlags] & 0x800000;
       if ([(AANearbyDevice *)self paired]!= v18 >> 23)
       {
         [(AANearbyDevice *)self setPaired:v18 != 0];
@@ -247,84 +247,84 @@
       }
     }
 
-    v19 = [v4 btAddressData];
+    btAddressData = [deviceCopy btAddressData];
     v20 = CUPrintNSDataAddress();
 
-    v21 = [(AANearbyDevice *)self bluetoothAddress];
+    bluetoothAddress = [(AANearbyDevice *)self bluetoothAddress];
 
-    if (!v21 && v20)
+    if (!bluetoothAddress && v20)
     {
       [(AANearbyDevice *)self setBluetoothAddress:v20];
       v7 = 1;
     }
 
-    v22 = [(AANearbyDevice *)self findMyGroupIdentifier];
-    if (v22)
+    findMyGroupIdentifier = [(AANearbyDevice *)self findMyGroupIdentifier];
+    if (findMyGroupIdentifier)
     {
-      v23 = v22;
+      findMyGroupIdentifier3 = findMyGroupIdentifier;
     }
 
     else
     {
-      v24 = [v4 findMyGroupIdentifier];
+      findMyGroupIdentifier2 = [deviceCopy findMyGroupIdentifier];
 
-      if (!v24)
+      if (!findMyGroupIdentifier2)
       {
         goto LABEL_18;
       }
 
-      v23 = [v4 findMyGroupIdentifier];
-      [(AANearbyDevice *)self setFindMyGroupIdentifier:v23];
+      findMyGroupIdentifier3 = [deviceCopy findMyGroupIdentifier];
+      [(AANearbyDevice *)self setFindMyGroupIdentifier:findMyGroupIdentifier3];
       v7 = 1;
     }
 
 LABEL_18:
-    v25 = [(AANearbyDevice *)self caseIdentifier];
-    if (v25)
+    caseIdentifier = [(AANearbyDevice *)self caseIdentifier];
+    if (caseIdentifier)
     {
-      v26 = v25;
+      findMyCaseIdentifier2 = caseIdentifier;
     }
 
     else
     {
-      v27 = [v4 findMyCaseIdentifier];
+      findMyCaseIdentifier = [deviceCopy findMyCaseIdentifier];
 
-      if (!v27)
+      if (!findMyCaseIdentifier)
       {
 LABEL_23:
-        if (!-[AANearbyDevice productID](self, "productID") && [v4 productID])
+        if (!-[AANearbyDevice productID](self, "productID") && [deviceCopy productID])
         {
-          -[AANearbyDevice setProductID:](self, "setProductID:", [v4 productID]);
+          -[AANearbyDevice setProductID:](self, "setProductID:", [deviceCopy productID]);
           v7 = 1;
         }
 
-        v28 = [(AANearbyDevice *)self model];
-        if (v28)
+        model = [(AANearbyDevice *)self model];
+        if (model)
         {
-          v29 = v28;
+          model3 = model;
         }
 
         else
         {
-          v30 = [v4 model];
+          model2 = [deviceCopy model];
 
-          if (!v30)
+          if (!model2)
           {
 LABEL_31:
 
             goto LABEL_32;
           }
 
-          v29 = [v4 model];
-          [(AANearbyDevice *)self setModel:v29];
+          model3 = [deviceCopy model];
+          [(AANearbyDevice *)self setModel:model3];
           v7 = 1;
         }
 
         goto LABEL_31;
       }
 
-      v26 = [v4 findMyCaseIdentifier];
-      [(AANearbyDevice *)self setCaseIdentifier:v26];
+      findMyCaseIdentifier2 = [deviceCopy findMyCaseIdentifier];
+      [(AANearbyDevice *)self setCaseIdentifier:findMyCaseIdentifier2];
       v7 = 1;
     }
 
@@ -336,44 +336,44 @@ LABEL_32:
   return v7;
 }
 
-- (BOOL)updateWithPrimaryDevice:(id)a3
+- (BOOL)updateWithPrimaryDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   if (![(AANearbyDevice *)self isCase])
   {
     v7 = 0;
     goto LABEL_40;
   }
 
-  v5 = [(AANearbyDevice *)self primaryDeviceIdentifier];
-  if (v5)
+  primaryDeviceIdentifier = [(AANearbyDevice *)self primaryDeviceIdentifier];
+  if (primaryDeviceIdentifier)
   {
-    v6 = v5;
+    identifier2 = primaryDeviceIdentifier;
     v7 = 0;
   }
 
   else
   {
-    v8 = [v4 identifier];
+    identifier = [deviceCopy identifier];
 
-    if (!v8)
+    if (!identifier)
     {
       v7 = 0;
       goto LABEL_8;
     }
 
-    v6 = [v4 identifier];
-    [(AANearbyDevice *)self setPrimaryDeviceIdentifier:v6];
+    identifier2 = [deviceCopy identifier];
+    [(AANearbyDevice *)self setPrimaryDeviceIdentifier:identifier2];
     v7 = 1;
   }
 
 LABEL_8:
-  v9 = [v4 btAddressData];
+  btAddressData = [deviceCopy btAddressData];
   v10 = CUPrintNSDataAddress();
 
-  v11 = [(AANearbyDevice *)self primaryBluetoothAddress];
+  primaryBluetoothAddress = [(AANearbyDevice *)self primaryBluetoothAddress];
 
-  if (!v11 && v10)
+  if (!primaryBluetoothAddress && v10)
   {
     [(AANearbyDevice *)self setPrimaryBluetoothAddress:v10];
     v7 = 1;
@@ -381,46 +381,46 @@ LABEL_8:
 
   if (![(AANearbyDevice *)self primaryProductID])
   {
-    v12 = [(AANearbyDevice *)self primaryProductID];
-    if (v12 != [v4 productID])
+    primaryProductID = [(AANearbyDevice *)self primaryProductID];
+    if (primaryProductID != [deviceCopy productID])
     {
-      -[AANearbyDevice setPrimaryProductID:](self, "setPrimaryProductID:", [v4 productID]);
+      -[AANearbyDevice setPrimaryProductID:](self, "setPrimaryProductID:", [deviceCopy productID]);
       v7 = 1;
     }
   }
 
-  v13 = [(AANearbyDevice *)self model];
-  if (v13)
+  model = [(AANearbyDevice *)self model];
+  if (model)
   {
-    v14 = v13;
+    model3 = model;
   }
 
   else
   {
-    v15 = [v4 model];
+    model2 = [deviceCopy model];
 
-    if (!v15)
+    if (!model2)
     {
       goto LABEL_19;
     }
 
-    v14 = [v4 model];
-    [(AANearbyDevice *)self setModel:v14];
+    model3 = [deviceCopy model];
+    [(AANearbyDevice *)self setModel:model3];
     v7 = 1;
   }
 
 LABEL_19:
-  v16 = [v4 name];
-  if (!v16)
+  name = [deviceCopy name];
+  if (!name)
   {
     goto LABEL_28;
   }
 
-  v17 = v16;
-  v18 = [(AANearbyDevice *)self name];
-  v19 = [v4 name];
-  v20 = v18;
-  v21 = v19;
+  name4 = name;
+  name2 = [(AANearbyDevice *)self name];
+  name3 = [deviceCopy name];
+  v20 = name2;
+  v21 = name3;
   v22 = v21;
   if (v20 == v21)
   {
@@ -440,21 +440,21 @@ LABEL_27:
   if ((v23 & 1) == 0)
   {
 LABEL_26:
-    v17 = [v4 name];
-    [(AANearbyDevice *)self setName:v17];
+    name4 = [deviceCopy name];
+    [(AANearbyDevice *)self setName:name4];
     v7 = 1;
     goto LABEL_27;
   }
 
 LABEL_28:
-  v24 = [v4 findMyGroupIdentifier];
-  if (v24)
+  findMyGroupIdentifier = [deviceCopy findMyGroupIdentifier];
+  if (findMyGroupIdentifier)
   {
-    v25 = v24;
-    v26 = [(AANearbyDevice *)self findMyGroupIdentifier];
-    v27 = [v4 findMyGroupIdentifier];
-    v28 = v26;
-    v29 = v27;
+    findMyGroupIdentifier4 = findMyGroupIdentifier;
+    findMyGroupIdentifier2 = [(AANearbyDevice *)self findMyGroupIdentifier];
+    findMyGroupIdentifier3 = [deviceCopy findMyGroupIdentifier];
+    v28 = findMyGroupIdentifier2;
+    v29 = findMyGroupIdentifier3;
     v30 = v29;
     if (v28 == v29)
     {
@@ -476,14 +476,14 @@ LABEL_28:
         }
       }
 
-      v25 = [v4 findMyGroupIdentifier];
-      [(AANearbyDevice *)self setFindMyGroupIdentifier:v25];
+      findMyGroupIdentifier4 = [deviceCopy findMyGroupIdentifier];
+      [(AANearbyDevice *)self setFindMyGroupIdentifier:findMyGroupIdentifier4];
       v7 = 1;
     }
   }
 
 LABEL_37:
-  v32 = [v4 discoveryFlags] & 0x800000;
+  v32 = [deviceCopy discoveryFlags] & 0x800000;
   if ([(AANearbyDevice *)self paired]!= v32 >> 23)
   {
     [(AANearbyDevice *)self setPaired:v32 != 0];
@@ -494,44 +494,44 @@ LABEL_40:
   return v7;
 }
 
-- (BOOL)updateWithProximityPairingPayload:(id)a3
+- (BOOL)updateWithProximityPairingPayload:(id)payload
 {
-  v4 = a3;
-  v5 = [(AANearbyDevice *)self productID];
-  v6 = v5 == 0;
-  if (!v5)
+  payloadCopy = payload;
+  productID = [(AANearbyDevice *)self productID];
+  v6 = productID == 0;
+  if (!productID)
   {
-    -[AANearbyDevice setProductID:](self, "setProductID:", [v4 pid]);
+    -[AANearbyDevice setProductID:](self, "setProductID:", [payloadCopy pid]);
   }
 
-  v7 = [(AANearbyDevice *)self proximityPairingPayload];
-  v8 = [v4 isEqual:v7];
+  proximityPairingPayload = [(AANearbyDevice *)self proximityPairingPayload];
+  v8 = [payloadCopy isEqual:proximityPairingPayload];
 
   if ((v8 & 1) == 0)
   {
-    [(AANearbyDevice *)self setProximityPairingPayload:v4];
+    [(AANearbyDevice *)self setProximityPairingPayload:payloadCopy];
     v6 = 1;
   }
 
   return v6;
 }
 
-- (BOOL)updateWithPairedDevice:(id)a3
+- (BOOL)updateWithPairedDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(AANearbyDevice *)self heartRateMonitorCapability];
-  v6 = [v4 heartRateMonitorCapability];
-  v7 = v5 == v6;
-  v8 = v5 != v6;
+  deviceCopy = device;
+  heartRateMonitorCapability = [(AANearbyDevice *)self heartRateMonitorCapability];
+  heartRateMonitorCapability2 = [deviceCopy heartRateMonitorCapability];
+  v7 = heartRateMonitorCapability == heartRateMonitorCapability2;
+  v8 = heartRateMonitorCapability != heartRateMonitorCapability2;
   if (!v7)
   {
-    -[AANearbyDevice setHeartRateMonitorCapability:](self, "setHeartRateMonitorCapability:", [v4 heartRateMonitorCapability]);
+    -[AANearbyDevice setHeartRateMonitorCapability:](self, "setHeartRateMonitorCapability:", [deviceCopy heartRateMonitorCapability]);
   }
 
-  v9 = [(AANearbyDevice *)self healthKitDataWriteAllowed];
-  if (v9 != [v4 healthKitDataWriteAllowed])
+  healthKitDataWriteAllowed = [(AANearbyDevice *)self healthKitDataWriteAllowed];
+  if (healthKitDataWriteAllowed != [deviceCopy healthKitDataWriteAllowed])
   {
-    -[AANearbyDevice setHealthKitDataWriteAllowed:](self, "setHealthKitDataWriteAllowed:", [v4 healthKitDataWriteAllowed]);
+    -[AANearbyDevice setHealthKitDataWriteAllowed:](self, "setHealthKitDataWriteAllowed:", [deviceCopy healthKitDataWriteAllowed]);
     v8 = 1;
   }
 

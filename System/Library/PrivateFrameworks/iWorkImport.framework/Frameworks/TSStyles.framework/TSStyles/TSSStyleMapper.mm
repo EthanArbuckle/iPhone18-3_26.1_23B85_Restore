@@ -1,16 +1,16 @@
 @interface TSSStyleMapper
-- (TSSStyleMapper)initWithTargetStylesheet:(id)a3;
-- (id)_mappedStyleForStyle:(id)a3 depth:(unint64_t)a4;
-- (id)createRootStyleForStyle:(id)a3 withPropertyMap:(id)a4;
-- (id)targetParentByContentTagMatchForStyle:(id)a3;
-- (id)targetParentByIdentifierExactMatchForStyle:(id)a3;
-- (id)targetParentByIdentifierPackageDescriptorFallbackMatchForStyle:(id)a3;
-- (id)targetParentByNameMatchForStyle:(id)a3;
-- (id)targetParentByPropertyMapMatchForUnidentifiedStyle:(id)a3;
-- (id)targetParentForStyle:(id)a3;
+- (TSSStyleMapper)initWithTargetStylesheet:(id)stylesheet;
+- (id)_mappedStyleForStyle:(id)style depth:(unint64_t)depth;
+- (id)createRootStyleForStyle:(id)style withPropertyMap:(id)map;
+- (id)targetParentByContentTagMatchForStyle:(id)style;
+- (id)targetParentByIdentifierExactMatchForStyle:(id)style;
+- (id)targetParentByIdentifierPackageDescriptorFallbackMatchForStyle:(id)style;
+- (id)targetParentByNameMatchForStyle:(id)style;
+- (id)targetParentByPropertyMapMatchForUnidentifiedStyle:(id)style;
+- (id)targetParentForStyle:(id)style;
 - (void)dealloc;
-- (void)popMappingContext:(id)a3;
-- (void)pushMappingContext:(id)a3;
+- (void)popMappingContext:(id)context;
+- (void)pushMappingContext:(id)context;
 @end
 
 @implementation TSSStyleMapper
@@ -22,10 +22,10 @@
   [(TSSStyleMapper *)&v2 dealloc];
 }
 
-- (TSSStyleMapper)initWithTargetStylesheet:(id)a3
+- (TSSStyleMapper)initWithTargetStylesheet:(id)stylesheet
 {
-  v6 = a3;
-  if (!v6)
+  stylesheetCopy = stylesheet;
+  if (!stylesheetCopy)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSSStyleMapper initWithTargetStylesheet:]");
@@ -41,34 +41,34 @@
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_targetStylesheet, a3);
+    objc_storeStrong(&v14->_targetStylesheet, stylesheet);
     v15->_forceMatchStyle = 0;
   }
 
   return v15;
 }
 
-- (void)pushMappingContext:(id)a3
+- (void)pushMappingContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   mappingContext = self->_mappingContext;
-  v8 = v4;
+  v8 = contextCopy;
   if (!mappingContext)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_mappingContext;
     self->_mappingContext = v6;
 
-    v4 = v8;
+    contextCopy = v8;
     mappingContext = self->_mappingContext;
   }
 
-  objc_msgSend_addObject_(mappingContext, v4, v4);
+  objc_msgSend_addObject_(mappingContext, contextCopy, contextCopy);
 }
 
-- (void)popMappingContext:(id)a3
+- (void)popMappingContext:(id)context
 {
-  v9 = a3;
+  contextCopy = context;
   mappingContext = self->_mappingContext;
   if (mappingContext && objc_msgSend_count(mappingContext, v4, v5))
   {
@@ -76,24 +76,24 @@
   }
 }
 
-- (id)createRootStyleForStyle:(id)a3 withPropertyMap:(id)a4
+- (id)createRootStyleForStyle:(id)style withPropertyMap:(id)map
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = objc_msgSend_stylesheetForNewRootStyleFromStyle_(self, v8, v7);
+  mapCopy = map;
+  styleCopy = style;
+  v9 = objc_msgSend_stylesheetForNewRootStyleFromStyle_(self, v8, styleCopy);
   v10 = objc_alloc(objc_opt_class());
   v13 = objc_msgSend_context(v9, v11, v12);
-  v16 = objc_msgSend_name(v7, v14, v15);
+  v16 = objc_msgSend_name(styleCopy, v14, v15);
 
-  isVariation = objc_msgSend_initWithContext_name_overridePropertyMap_isVariation_(v10, v17, v13, v16, v6, 0);
+  isVariation = objc_msgSend_initWithContext_name_overridePropertyMap_isVariation_(v10, v17, v13, v16, mapCopy, 0);
   objc_msgSend_addStyle_(v9, v19, isVariation);
 
   return isVariation;
 }
 
-- (id)targetParentByIdentifierExactMatchForStyle:(id)a3
+- (id)targetParentByIdentifierExactMatchForStyle:(id)style
 {
-  v4 = objc_msgSend_rootIdentifiedAncestor(a3, a2, a3);
+  v4 = objc_msgSend_rootIdentifiedAncestor(style, a2, style);
   v7 = objc_msgSend_styleIdentifier(v4, v5, v6);
 
   if (v7)
@@ -110,9 +110,9 @@
   return v12;
 }
 
-- (id)targetParentByIdentifierPackageDescriptorFallbackMatchForStyle:(id)a3
+- (id)targetParentByIdentifierPackageDescriptorFallbackMatchForStyle:(id)style
 {
-  v4 = objc_msgSend_rootIdentifiedAncestor(a3, a2, a3);
+  v4 = objc_msgSend_rootIdentifiedAncestor(style, a2, style);
   v7 = objc_msgSend_styleIdentifier(v4, v5, v6);
 
   if (v7 && sub_276CB4B00(v7, v8))
@@ -148,10 +148,10 @@
   return v18;
 }
 
-- (id)targetParentByContentTagMatchForStyle:(id)a3
+- (id)targetParentByContentTagMatchForStyle:(id)style
 {
-  v4 = a3;
-  v7 = objc_msgSend_rootIdentifiedAncestor(v4, v5, v6);
+  styleCopy = style;
+  v7 = objc_msgSend_rootIdentifiedAncestor(styleCopy, v5, v6);
   v10 = objc_msgSend_contentTag(v7, v8, v9);
 
   if (v10)
@@ -161,7 +161,7 @@
     v17[1] = 3221225472;
     v17[2] = sub_276CB4E3C;
     v17[3] = &unk_27A6EF0D8;
-    v18 = v4;
+    v18 = styleCopy;
     v19 = v10;
     v15 = objc_msgSend_firstCascadedStylePassingTest_(v13, v14, v17);
   }
@@ -174,10 +174,10 @@
   return v15;
 }
 
-- (id)targetParentByNameMatchForStyle:(id)a3
+- (id)targetParentByNameMatchForStyle:(id)style
 {
-  v4 = a3;
-  v7 = objc_msgSend_rootAncestor(v4, v5, v6);
+  styleCopy = style;
+  v7 = objc_msgSend_rootAncestor(styleCopy, v5, v6);
   v10 = objc_msgSend_name(v7, v8, v9);
 
   if (v10)
@@ -187,7 +187,7 @@
     v32[1] = 3221225472;
     v32[2] = sub_276CB509C;
     v32[3] = &unk_27A6EF100;
-    v14 = v4;
+    v14 = styleCopy;
     v33 = v14;
     v34 = v10;
     v16 = objc_msgSend_cascadedStylesPassingTest_(v13, v15, v32);
@@ -236,9 +236,9 @@ LABEL_15:
   return v27;
 }
 
-- (id)targetParentByPropertyMapMatchForUnidentifiedStyle:(id)a3
+- (id)targetParentByPropertyMapMatchForUnidentifiedStyle:(id)style
 {
-  v4 = objc_msgSend_rootAncestor(a3, a2, a3);
+  v4 = objc_msgSend_rootAncestor(style, a2, style);
   v7 = objc_msgSend_styleIdentifier(v4, v5, v6);
 
   if (v7)
@@ -260,21 +260,21 @@ LABEL_15:
   return v10;
 }
 
-- (id)targetParentForStyle:(id)a3
+- (id)targetParentForStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   v7 = objc_msgSend_targetStylesheet(self, v5, v6);
-  v9 = objc_msgSend_targetParentForStyleMappingByStyleMapper_intoStylesheet_(v4, v8, self, v7);
+  v9 = objc_msgSend_targetParentForStyleMappingByStyleMapper_intoStylesheet_(styleCopy, v8, self, v7);
 
   if (!v9)
   {
-    v11 = objc_msgSend_targetParentByIdentifierExactMatchForStyle_(self, v10, v4);
+    v11 = objc_msgSend_targetParentByIdentifierExactMatchForStyle_(self, v10, styleCopy);
     if (!v11)
     {
-      v11 = objc_msgSend_targetParentByIdentifierPackageDescriptorFallbackMatchForStyle_(self, v12, v4);
+      v11 = objc_msgSend_targetParentByIdentifierPackageDescriptorFallbackMatchForStyle_(self, v12, styleCopy);
       if (!v11)
       {
-        v11 = objc_msgSend_targetParentByPropertyMapMatchForUnidentifiedStyle_(self, v13, v4);
+        v11 = objc_msgSend_targetParentByPropertyMapMatchForUnidentifiedStyle_(self, v13, styleCopy);
       }
     }
 
@@ -284,11 +284,11 @@ LABEL_15:
   return v9;
 }
 
-- (id)_mappedStyleForStyle:(id)a3 depth:(unint64_t)a4
+- (id)_mappedStyleForStyle:(id)style depth:(unint64_t)depth
 {
   v156 = *MEMORY[0x277D85DE8];
-  v125 = a3;
-  if (!v125)
+  styleCopy = style;
+  if (!styleCopy)
   {
     v8 = 0;
     goto LABEL_54;
@@ -308,15 +308,15 @@ LABEL_15:
   v9 = self->_styleMap;
   self->_styleMap = v7;
 
-  v123 = objc_msgSend_stylesheet(v125, v10, v11);
+  v123 = objc_msgSend_stylesheet(styleCopy, v10, v11);
   if ((objc_msgSend_clientsMustRemap(self, v12, v13) & 1) == 0 && v123 == self->_targetStylesheet)
   {
-    v8 = v125;
+    v8 = styleCopy;
   }
 
   else
   {
-    v8 = objc_msgSend_objectForKeyedSubscript_(self->_styleMap, v14, v125);
+    v8 = objc_msgSend_objectForKeyedSubscript_(self->_styleMap, v14, styleCopy);
     if (!v8)
     {
       v15 = objc_opt_new();
@@ -325,13 +325,13 @@ LABEL_15:
       v151[2] = sub_276CB5C08;
       v151[3] = &unk_27A6EF150;
       v151[4] = self;
-      v153 = a4;
+      depthCopy = depth;
       v120 = v15;
       v152 = v120;
       v16 = MEMORY[0x277CA0D60](v151);
-      v124 = objc_msgSend_promiseForStyle_(TSSStylePromise, v17, v125);
-      objc_msgSend_setObject_forKeyedSubscript_(self->_styleMap, v18, v124, v125);
-      v22 = objc_msgSend_targetParentForStyle_(self, v19, v125);
+      v124 = objc_msgSend_promiseForStyle_(TSSStylePromise, v17, styleCopy);
+      objc_msgSend_setObject_forKeyedSubscript_(self->_styleMap, v18, v124, styleCopy);
+      v22 = objc_msgSend_targetParentForStyle_(self, v19, styleCopy);
       if (v22)
       {
         objc_opt_class();
@@ -348,7 +348,7 @@ LABEL_15:
         }
       }
 
-      v32 = objc_msgSend_propertyMap(v125, v20, v21);
+      v32 = objc_msgSend_propertyMap(styleCopy, v20, v21);
       v148[0] = MEMORY[0x277D85DD0];
       v148[1] = 3221225472;
       v148[2] = sub_276CB5C80;
@@ -360,10 +360,10 @@ LABEL_15:
       objc_msgSend_enumeratePropertiesAndObjectsUsingBlock_(v149, v33, v148);
       if (!v22)
       {
-        v41 = objc_msgSend_parent(v125, v34, v35);
-        if (!v41 || (shouldMapParentOfStyle = objc_msgSend_shouldMapParentOfStyle_(self, v40, v125), v41, !shouldMapParentOfStyle) || (objc_msgSend_parent(v125, v40, v43), v44 = objc_claimAutoreleasedReturnValue(), (*(v119 + 2))(v119, v44), v22 = objc_claimAutoreleasedReturnValue(), v44, !v22))
+        v41 = objc_msgSend_parent(styleCopy, v34, v35);
+        if (!v41 || (shouldMapParentOfStyle = objc_msgSend_shouldMapParentOfStyle_(self, v40, styleCopy), v41, !shouldMapParentOfStyle) || (objc_msgSend_parent(styleCopy, v40, v43), v44 = objc_claimAutoreleasedReturnValue(), (*(v119 + 2))(v119, v44), v22 = objc_claimAutoreleasedReturnValue(), v44, !v22))
         {
-          v8 = objc_msgSend_createRootStyleForStyle_withPropertyMap_(self, v40, v125, v122);
+          v8 = objc_msgSend_createRootStyleForStyle_withPropertyMap_(self, v40, styleCopy, v122);
           createdStyles = self->_createdStyles;
           if (!createdStyles)
           {
@@ -490,7 +490,7 @@ LABEL_43:
         if (v8)
         {
 LABEL_44:
-          objc_msgSend_setObject_forKeyedSubscript_(self->_styleMap, v39, v8, v125);
+          objc_msgSend_setObject_forKeyedSubscript_(self->_styleMap, v39, v8, styleCopy);
           v128 = 0u;
           v129 = 0u;
           v126 = 0u;
@@ -519,7 +519,7 @@ LABEL_44:
           }
 
           objc_msgSend_fulfillWithStyle_(v124, v114, v8);
-          objc_msgSend_copyAuxiliaryInformationToMigratedStyle_(v125, v115, v8);
+          objc_msgSend_copyAuxiliaryInformationToMigratedStyle_(styleCopy, v115, v8);
         }
 
         goto LABEL_52;
@@ -536,7 +536,7 @@ LABEL_44:
       v144[3] = &unk_27A6EF1A0;
       v121 = v22;
       v145 = v121;
-      v64 = v125;
+      v64 = styleCopy;
       v146 = v64;
       v65 = v122;
       v147 = v65;

@@ -1,16 +1,16 @@
 @interface RidesharingModeController
 - (IOSChromeViewController)chromeViewController;
 - (RidesharingModeController)init;
-- (RidesharingModeController)initWithApplicationIdentifier:(id)a3;
-- (RidesharingModeController)initWithRideOption:(id)a3;
+- (RidesharingModeController)initWithApplicationIdentifier:(id)identifier;
+- (RidesharingModeController)initWithRideOption:(id)option;
 - (UIView)passThroughView;
 - (id)fullscreenViewControllerDismissalTransition;
 - (id)fullscreenViewControllerPresentationTransition;
 - (id)mapViewDelegate;
 - (void)_setupMapView;
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)setChromeViewController:(id)a3;
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)setChromeViewController:(id)controller;
 @end
 
 @implementation RidesharingModeController
@@ -24,22 +24,22 @@
 
 - (id)mapViewDelegate
 {
-  v3 = [(ContainerViewController *)self->_containerViewController currentViewController];
-  v4 = [(RidesharingContainerViewController *)self->_containerViewController confirmedRideViewController];
-  v5 = [v3 isEqual:v4];
+  currentViewController = [(ContainerViewController *)self->_containerViewController currentViewController];
+  confirmedRideViewController = [(RidesharingContainerViewController *)self->_containerViewController confirmedRideViewController];
+  v5 = [currentViewController isEqual:confirmedRideViewController];
 
   if (v5)
   {
-    v6 = [(RidesharingModeController *)self chromeViewController];
-    v7 = [v6 ridesharingAnnotationsManager];
+    chromeViewController = [(RidesharingModeController *)self chromeViewController];
+    ridesharingAnnotationsManager = [chromeViewController ridesharingAnnotationsManager];
   }
 
   else
   {
-    v7 = self->_containerViewController;
+    ridesharingAnnotationsManager = self->_containerViewController;
   }
 
-  return v7;
+  return ridesharingAnnotationsManager;
 }
 
 - (id)fullscreenViewControllerDismissalTransition
@@ -56,7 +56,7 @@
   return v2;
 }
 
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -73,27 +73,27 @@
   applicationIdentifier = self->_applicationIdentifier;
   self->_applicationIdentifier = 0;
 
-  v9 = [(RidesharingModeController *)self chromeViewController];
-  v10 = [v9 ridesharingAnnotationsManager];
-  [v10 removeCurrentRide];
+  chromeViewController = [(RidesharingModeController *)self chromeViewController];
+  ridesharingAnnotationsManager = [chromeViewController ridesharingAnnotationsManager];
+  [ridesharingAnnotationsManager removeCurrentRide];
 }
 
 - (void)_setupMapView
 {
-  v3 = [(RidesharingModeController *)self chromeViewController];
-  v4 = [v3 displayedViewMode];
+  chromeViewController = [(RidesharingModeController *)self chromeViewController];
+  displayedViewMode = [chromeViewController displayedViewMode];
 
-  if (v4)
+  if (displayedViewMode)
   {
-    v5 = [(RidesharingModeController *)self chromeViewController];
-    [v5 updateViewMode:0 animated:0];
+    chromeViewController2 = [(RidesharingModeController *)self chromeViewController];
+    [chromeViewController2 updateViewMode:0 animated:0];
   }
 }
 
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v7 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  animationCopy = animation;
   if (self->_rideOption)
   {
     [(RidesharingCoordination *)self->_ridebookingCoordinator presentDetailsPicking];
@@ -109,15 +109,15 @@
 
 - (UIView)passThroughView
 {
-  v2 = [(RidesharingModeController *)self chromeViewController];
-  v3 = [v2 passThroughView];
+  chromeViewController = [(RidesharingModeController *)self chromeViewController];
+  passThroughView = [chromeViewController passThroughView];
 
-  return v3;
+  return passThroughView;
 }
 
-- (void)setChromeViewController:(id)a3
+- (void)setChromeViewController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_chromeViewController);
 
   if (WeakRetained != obj)
@@ -127,13 +127,13 @@
   }
 }
 
-- (RidesharingModeController)initWithApplicationIdentifier:(id)a3
+- (RidesharingModeController)initWithApplicationIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [(RidesharingModeController *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     applicationIdentifier = v5->_applicationIdentifier;
     v5->_applicationIdentifier = v6;
   }
@@ -141,14 +141,14 @@
   return v5;
 }
 
-- (RidesharingModeController)initWithRideOption:(id)a3
+- (RidesharingModeController)initWithRideOption:(id)option
 {
-  v5 = a3;
+  optionCopy = option;
   v6 = [(RidesharingModeController *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rideOption, a3);
+    objc_storeStrong(&v6->_rideOption, option);
   }
 
   return v7;

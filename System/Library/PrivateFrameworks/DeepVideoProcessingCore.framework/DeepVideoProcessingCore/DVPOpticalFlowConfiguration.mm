@@ -1,23 +1,23 @@
 @interface DVPOpticalFlowConfiguration
-+ (BOOL)isSupportedRevision:(int64_t)a3;
-+ (CGSize)getFlowBufferDimensionsFromFrameWidth:(int64_t)a3 frameHeight:(int64_t)a4 revision:(int64_t)a5;
++ (BOOL)isSupportedRevision:(int64_t)revision;
++ (CGSize)getFlowBufferDimensionsFromFrameWidth:(int64_t)width frameHeight:(int64_t)height revision:(int64_t)revision;
 + (int64_t)defaultRevision;
-- (DVPOpticalFlowConfiguration)initWithFrameWidth:(int64_t)a3 frameHeight:(int64_t)a4 qualityPrioritization:(int64_t)a5 revision:(int64_t)a6;
+- (DVPOpticalFlowConfiguration)initWithFrameWidth:(int64_t)width frameHeight:(int64_t)height qualityPrioritization:(int64_t)prioritization revision:(int64_t)revision;
 - (void)updateOpticalFlowDimensions;
 @end
 
 @implementation DVPOpticalFlowConfiguration
 
-+ (CGSize)getFlowBufferDimensionsFromFrameWidth:(int64_t)a3 frameHeight:(int64_t)a4 revision:(int64_t)a5
++ (CGSize)getFlowBufferDimensionsFromFrameWidth:(int64_t)width frameHeight:(int64_t)height revision:(int64_t)revision
 {
-  if (a5 == 1)
+  if (revision == 1)
   {
-    FlowDimensionFromUsage = getFlowDimensionFromUsage(a3, a4);
+    FlowDimensionFromUsage = getFlowDimensionFromUsage(width, height);
   }
 
   else
   {
-    FlowDimensionFromUsage = FRCGetFlowDimensionFromUsage(a3, a4);
+    FlowDimensionFromUsage = FRCGetFlowDimensionFromUsage(width, height);
     v6 = v7 + v7;
   }
 
@@ -36,16 +36,16 @@
 + (int64_t)defaultRevision
 {
   v2 = +[DVPOpticalFlowConfiguration supportedRevisions];
-  v3 = [v2 lastIndex];
+  lastIndex = [v2 lastIndex];
 
-  return v3;
+  return lastIndex;
 }
 
-+ (BOOL)isSupportedRevision:(int64_t)a3
++ (BOOL)isSupportedRevision:(int64_t)revision
 {
   v4 = +[DVPOpticalFlowConfiguration supportedRevisions];
-  v5 = [v4 containsIndex:a3];
-  if (a3 == -1)
+  v5 = [v4 containsIndex:revision];
+  if (revision == -1)
   {
     v6 = 1;
   }
@@ -58,7 +58,7 @@
   return v6;
 }
 
-- (DVPOpticalFlowConfiguration)initWithFrameWidth:(int64_t)a3 frameHeight:(int64_t)a4 qualityPrioritization:(int64_t)a5 revision:(int64_t)a6
+- (DVPOpticalFlowConfiguration)initWithFrameWidth:(int64_t)width frameHeight:(int64_t)height qualityPrioritization:(int64_t)prioritization revision:(int64_t)revision
 {
   v18.receiver = self;
   v18.super_class = DVPOpticalFlowConfiguration;
@@ -68,19 +68,19 @@
     goto LABEL_9;
   }
 
-  if (![DVPOpticalFlowConfiguration isSupportedRevision:a6])
+  if (![DVPOpticalFlowConfiguration isSupportedRevision:revision])
   {
-    NSLog(&cfstr_ErrorInvalidDv_1.isa, a6);
+    NSLog(&cfstr_ErrorInvalidDv_1.isa, revision);
 LABEL_9:
     v16 = 0;
     goto LABEL_7;
   }
 
-  v10->_frameWidth = a3;
-  v10->_frameHeight = a4;
-  v10->_qualityPrioritization = a5;
-  v10->_revision = a6;
-  if (a6 == -1)
+  v10->_frameWidth = width;
+  v10->_frameHeight = height;
+  v10->_qualityPrioritization = prioritization;
+  v10->_revision = revision;
+  if (revision == -1)
   {
     v11 = 1278226536;
   }

@@ -1,21 +1,21 @@
 @interface WLAGetWatchListPlayables
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation WLAGetWatchListPlayables
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(WLAGetWatchListPlayables *)self statsId];
-  NSLog(@"WLAGetWatchListPlayables: Got request for playables for stats ID %@.", v5);
-  v6 = [[WLKCanonicalPlayablesRequest alloc] initWithStatsID:v5];
+  completionCopy = completion;
+  statsId = [(WLAGetWatchListPlayables *)self statsId];
+  NSLog(@"WLAGetWatchListPlayables: Got request for playables for stats ID %@.", statsId);
+  v6 = [[WLKCanonicalPlayablesRequest alloc] initWithStatsID:statsId];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __50__WLAGetWatchListPlayables_performWithCompletion___block_invoke;
   v8[3] = &unk_8328;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   [v6 makeRequestWithCompletion:v8];
 }
 

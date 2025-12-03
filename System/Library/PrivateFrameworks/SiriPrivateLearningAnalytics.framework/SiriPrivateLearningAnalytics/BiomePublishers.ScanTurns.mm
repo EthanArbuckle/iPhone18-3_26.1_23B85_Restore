@@ -1,14 +1,14 @@
 @interface BiomePublishers.ScanTurns
 - (_TtCO28SiriPrivateLearningAnalytics15BiomePublishers9ScanTurns)init;
-- (void)subscribe:(id)a3;
+- (void)subscribe:(id)subscribe;
 @end
 
 @implementation BiomePublishers.ScanTurns
 
-- (void)subscribe:(id)a3
+- (void)subscribe:(id)subscribe
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_222A9325C();
   swift_unknownObjectRelease();
 }

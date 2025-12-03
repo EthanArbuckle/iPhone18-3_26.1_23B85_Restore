@@ -1,11 +1,11 @@
 @interface SCNPhysicsNoiseField
 - (SCNPhysicsNoiseField)init;
-- (SCNPhysicsNoiseField)initWithCoder:(id)a3;
-- (id)valueForUndefinedKey:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAnimationSpeed:(double)a3;
-- (void)setSmoothness:(double)a3;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (SCNPhysicsNoiseField)initWithCoder:(id)coder;
+- (id)valueForUndefinedKey:(id)key;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAnimationSpeed:(double)speed;
+- (void)setSmoothness:(double)smoothness;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 @end
 
 @implementation SCNPhysicsNoiseField
@@ -24,16 +24,16 @@
   return result;
 }
 
-- (void)setSmoothness:(double)a3
+- (void)setSmoothness:(double)smoothness
 {
-  self->_smoothness = a3;
+  self->_smoothness = smoothness;
   v5 = [-[SCNNode scene](self->super._node "scene")];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __38__SCNPhysicsNoiseField_setSmoothness___block_invoke;
   v6[3] = &unk_2782FB7D0;
   v6[4] = self;
-  *&v6[5] = a3;
+  *&v6[5] = smoothness;
   [v5 _postCommandWithBlock:v6];
 }
 
@@ -49,16 +49,16 @@ float __38__SCNPhysicsNoiseField_setSmoothness___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setAnimationSpeed:(double)a3
+- (void)setAnimationSpeed:(double)speed
 {
-  self->_animationSpeed = a3;
+  self->_animationSpeed = speed;
   v5 = [-[SCNNode scene](self->super._node "scene")];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__SCNPhysicsNoiseField_setAnimationSpeed___block_invoke;
   v6[3] = &unk_2782FB7D0;
   v6[4] = self;
-  *&v6[5] = a3;
+  *&v6[5] = speed;
   [v5 _postCommandWithBlock:v6];
 }
 
@@ -74,9 +74,9 @@ float __42__SCNPhysicsNoiseField_setAnimationSpeed___block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  if ([a3 isEqualToString:@"smoothness"])
+  if ([key isEqualToString:@"smoothness"])
   {
     v5 = MEMORY[0x277CCABB0];
     v6 = 128;
@@ -84,11 +84,11 @@ float __42__SCNPhysicsNoiseField_setAnimationSpeed___block_invoke(uint64_t a1)
 
   else
   {
-    if (![a3 isEqualToString:@"animationSpeed"])
+    if (![key isEqualToString:@"animationSpeed"])
     {
       v9.receiver = self;
       v9.super_class = SCNPhysicsNoiseField;
-      return [(SCNPhysicsNoiseField *)&v9 valueForUndefinedKey:a3];
+      return [(SCNPhysicsNoiseField *)&v9 valueForUndefinedKey:key];
     }
 
     v5 = MEMORY[0x277CCABB0];
@@ -100,18 +100,18 @@ float __42__SCNPhysicsNoiseField_setAnimationSpeed___block_invoke(uint64_t a1)
   return [v5 numberWithDouble:v7];
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  if ([a4 isEqualToString:@"smoothness"])
+  if ([key isEqualToString:@"smoothness"])
   {
-    [a3 doubleValue];
+    [value doubleValue];
 
     [(SCNPhysicsNoiseField *)self setSmoothness:?];
   }
 
-  else if ([a4 isEqualToString:@"animationSpeed"])
+  else if ([key isEqualToString:@"animationSpeed"])
   {
-    [a3 doubleValue];
+    [value doubleValue];
 
     [(SCNPhysicsNoiseField *)self setAnimationSpeed:?];
   }
@@ -120,20 +120,20 @@ float __42__SCNPhysicsNoiseField_setAnimationSpeed___block_invoke(uint64_t a1)
   {
     v7.receiver = self;
     v7.super_class = SCNPhysicsNoiseField;
-    [(SCNPhysicsNoiseField *)&v7 setValue:a3 forUndefinedKey:a4];
+    [(SCNPhysicsNoiseField *)&v7 setValue:value forUndefinedKey:key];
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SCNPhysicsNoiseField;
   [(SCNPhysicsField *)&v5 encodeWithCoder:?];
-  [a3 encodeDouble:@"smoothness" forKey:self->_smoothness];
-  [a3 encodeDouble:@"animationSpeed" forKey:self->_animationSpeed];
+  [coder encodeDouble:@"smoothness" forKey:self->_smoothness];
+  [coder encodeDouble:@"animationSpeed" forKey:self->_animationSpeed];
 }
 
-- (SCNPhysicsNoiseField)initWithCoder:(id)a3
+- (SCNPhysicsNoiseField)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = SCNPhysicsNoiseField;
@@ -142,9 +142,9 @@ float __42__SCNPhysicsNoiseField_setAnimationSpeed___block_invoke(uint64_t a1)
   {
     v5 = +[SCNTransaction immediateMode];
     [SCNTransaction setImmediateMode:1];
-    [a3 decodeDoubleForKey:@"smoothness"];
+    [coder decodeDoubleForKey:@"smoothness"];
     [(SCNPhysicsNoiseField *)v4 setSmoothness:?];
-    [a3 decodeDoubleForKey:@"animationSpeed"];
+    [coder decodeDoubleForKey:@"animationSpeed"];
     [(SCNPhysicsNoiseField *)v4 setAnimationSpeed:?];
     [SCNTransaction setImmediateMode:v5];
   }

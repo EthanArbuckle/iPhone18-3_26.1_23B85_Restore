@@ -7,7 +7,7 @@
 - (void)requestDismiss
 {
   v2 = *&self->super.OBWelcomeController_opaque[OBJC_IVAR____TtC21MediaSetupViewService23SetupBaseViewController_mainController];
-  v4 = self;
+  selfCopy = self;
   v3 = v2;
   sub_100011B3C(0);
 }

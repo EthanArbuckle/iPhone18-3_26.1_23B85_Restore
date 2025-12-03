@@ -1,37 +1,37 @@
 @interface TSWPHyperlinkField
-+ (BOOL)schemeIsValidForURL:(id)a3;
-+ (BOOL)schemeIsValidForURLReference:(id)a3;
++ (BOOL)schemeIsValidForURL:(id)l;
++ (BOOL)schemeIsValidForURLReference:(id)reference;
 + (id)defaultFileURL;
-+ (id)defaultURLFromDefaultsKey:(id)a3 defaultValue:(id)a4;
++ (id)defaultURLFromDefaultsKey:(id)key defaultValue:(id)value;
 + (id)defaultWebURL;
-+ (id)newURLFromURLReference:(id)a3;
-+ (id)urlReferenceFromURL:(id)a3;
-+ (int)schemeFromURL:(id)a3;
++ (id)newURLFromURLReference:(id)reference;
++ (id)urlReferenceFromURL:(id)l;
++ (int)schemeFromURL:(id)l;
 - (BOOL)isFileURL;
 - (NSString)displayText;
 - (NSURL)url;
-- (TSWPHyperlinkField)initWithContext:(id)a3 url:(id)a4;
+- (TSWPHyperlinkField)initWithContext:(id)context url:(id)url;
 - (id)canonicalRepresentationURL;
-- (id)copyWithContext:(id)a3;
+- (id)copyWithContext:(id)context;
 - (id)filePath;
 - (id)fullPath;
 - (id)urlPrefix;
 - (id)urlReference;
 - (int)scheme;
-- (void)adoptStylesheet:(id)a3 withMapper:(id)a4;
+- (void)adoptStylesheet:(id)stylesheet withMapper:(id)mapper;
 - (void)dealloc;
-- (void)setURL:(id)a3;
-- (void)setURLReference:(id)a3;
+- (void)setURL:(id)l;
+- (void)setURLReference:(id)reference;
 @end
 
 @implementation TSWPHyperlinkField
 
-- (void)setURL:(id)a3
+- (void)setURL:(id)l
 {
   [(TSPObject *)self willModify];
-  v5 = a3;
+  lCopy = l;
 
-  self->_url = a3;
+  self->_url = l;
 }
 
 - (NSString)displayText
@@ -39,23 +39,23 @@
   result = [(TSWPSmartField *)self parentStorage];
   if (result)
   {
-    v4 = [(TSWPSmartField *)self parentStorage];
-    v6 = [(TSWPSmartField *)self range];
+    parentStorage = [(TSWPSmartField *)self parentStorage];
+    range = [(TSWPSmartField *)self range];
 
-    return [(TSWPStorage *)v4 substringWithRange:v6, v5];
+    return [(TSWPStorage *)parentStorage substringWithRange:range, v5];
   }
 
   return result;
 }
 
-+ (int)schemeFromURL:(id)a3
++ (int)schemeFromURL:(id)l
 {
-  if (!a3)
+  if (!l)
   {
     return 8;
   }
 
-  v4 = [objc_msgSend(a3 "scheme")];
+  v4 = [objc_msgSend(l "scheme")];
   if (v4)
   {
     v5 = v4;
@@ -92,12 +92,12 @@
 
   else
   {
-    v7 = [a3 absoluteString];
+    absoluteString = [l absoluteString];
     v6 = 8;
-    if (v7)
+    if (absoluteString)
     {
-      v8 = v7;
-      v9 = [v7 rangeOfString:@"#"] ? 8 : 3;
+      v8 = absoluteString;
+      v9 = [absoluteString rangeOfString:@"#"] ? 8 : 3;
       v10 = [v8 rangeOfString:@"?slide="];
       v11 = [v8 rangeOfString:@"?action=retreat"];
       v12 = !v10 || v11 == 0;
@@ -114,8 +114,8 @@
 
 - (id)canonicalRepresentationURL
 {
-  v3 = [(TSWPHyperlinkField *)self scheme];
-  if (v3 > 7 || ((1 << v3) & 0x87) == 0)
+  scheme = [(TSWPHyperlinkField *)self scheme];
+  if (scheme > 7 || ((1 << scheme) & 0x87) == 0)
   {
     return 0;
   }
@@ -123,10 +123,10 @@
   return [(TSWPHyperlinkField *)self url];
 }
 
-+ (BOOL)schemeIsValidForURL:(id)a3
++ (BOOL)schemeIsValidForURL:(id)l
 {
   v4 = [+[TSKApplicationDelegate sharedDelegate](TSKApplicationDelegate "sharedDelegate")];
-  v5 = [objc_msgSend(a3 "scheme")];
+  v5 = [objc_msgSend(l "scheme")];
   if (v5)
   {
     LOBYTE(v5) = [v4 member:v5] == 0;
@@ -135,9 +135,9 @@
   return v5;
 }
 
-+ (BOOL)schemeIsValidForURLReference:(id)a3
++ (BOOL)schemeIsValidForURLReference:(id)reference
 {
-  v3 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:a3];
+  v3 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:reference];
   if (v3)
   {
     v4 = v3;
@@ -149,14 +149,14 @@
   return v3;
 }
 
-+ (id)defaultURLFromDefaultsKey:(id)a3 defaultValue:(id)a4
++ (id)defaultURLFromDefaultsKey:(id)key defaultValue:(id)value
 {
   v5 = [objc_msgSend(MEMORY[0x277CBEBD0] "standardUserDefaults")];
   if (!v5 || (v6 = v5, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ![v6 length] || (result = objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v6)) == 0)
   {
     v8 = MEMORY[0x277CBEBC0];
 
-    return [v8 URLWithString:a4];
+    return [v8 URLWithString:value];
   }
 
   return result;
@@ -166,7 +166,7 @@
 {
   v3 = [TSWPBundle() localizedStringForKey:@"http://www.apple.com" value:&stru_287D36338 table:@"TSText"];
 
-  return [a1 defaultURLFromDefaultsKey:@"DefaultWebURL" defaultValue:v3];
+  return [self defaultURLFromDefaultsKey:@"DefaultWebURL" defaultValue:v3];
 }
 
 + (id)defaultFileURL
@@ -189,16 +189,16 @@
   return [v4 fileURLWithPath:v3];
 }
 
-+ (id)urlReferenceFromURL:(id)a3
++ (id)urlReferenceFromURL:(id)l
 {
-  if (!a3)
+  if (!l)
   {
     return 0;
   }
 
-  if ([a3 isFileURL])
+  if ([l isFileURL])
   {
-    v4 = CFURLCopyFileSystemPath(a3, kCFURLPOSIXPathStyle);
+    v4 = CFURLCopyFileSystemPath(l, kCFURLPOSIXPathStyle);
     if (v4 && (v5 = v4, v6 = [(__CFString *)v4 stringByAbbreviatingWithTildeInPath], CFRelease(v5), (v7 = CFURLCreateStringByAddingPercentEscapes(0, v6, 0, 0, 0x8000100u)) != 0))
     {
       v8 = v7;
@@ -225,29 +225,29 @@
   else
   {
 
-    return [a3 absoluteString];
+    return [l absoluteString];
   }
 }
 
-+ (id)newURLFromURLReference:(id)a3
++ (id)newURLFromURLReference:(id)reference
 {
-  if (!a3)
+  if (!reference)
   {
     return 0;
   }
 
-  if (![a3 hasPrefix:@"file://"])
+  if (![reference hasPrefix:@"file://"])
   {
-    result = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:a3];
+    result = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:reference];
     if (result)
     {
       return result;
     }
 
-    v10 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSWPHyperlinkField newURLFromURLReference:]"];
-    [v10 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPHyperlinkField.mm"), 394, @"Failed to create an NSURL from %@", a3}];
-    if ([a3 hasPrefix:@"mailto:"])
+    [currentHandler handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPHyperlinkField.mm"), 394, @"Failed to create an NSURL from %@", reference}];
+    if ([reference hasPrefix:@"mailto:"])
     {
       v12 = +[TSWPHyperlinkField defaultMailURL];
       goto LABEL_18;
@@ -256,7 +256,7 @@
     return 0;
   }
 
-  v4 = [a3 substringFromIndex:{objc_msgSend(@"file://", "length")}];
+  v4 = [reference substringFromIndex:{objc_msgSend(@"file://", "length")}];
   if (!v4)
   {
     goto LABEL_14;
@@ -272,9 +272,9 @@
   if (v6)
   {
     v7 = v6;
-    v8 = [(__CFString *)v6 stringByExpandingTildeInPath];
+    stringByExpandingTildeInPath = [(__CFString *)v6 stringByExpandingTildeInPath];
     CFRelease(v7);
-    if (!v8)
+    if (!stringByExpandingTildeInPath)
     {
       goto LABEL_14;
     }
@@ -282,30 +282,30 @@
 
   else
   {
-    v8 = [(__CFString *)v5 stringByExpandingTildeInPath];
-    if (!v8)
+    stringByExpandingTildeInPath = [(__CFString *)v5 stringByExpandingTildeInPath];
+    if (!stringByExpandingTildeInPath)
     {
 LABEL_14:
-      v8 = @"/";
+      stringByExpandingTildeInPath = @"/";
       goto LABEL_15;
     }
   }
 
-  if (![(__CFString *)v8 length])
+  if (![(__CFString *)stringByExpandingTildeInPath length])
   {
     goto LABEL_14;
   }
 
 LABEL_15:
-  result = MEMORY[0x26D6A7D20](0, v8, 0, 0, 0);
+  result = MEMORY[0x26D6A7D20](0, stringByExpandingTildeInPath, 0, 0, 0);
   if (result)
   {
     return result;
   }
 
-  v13 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
   v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSWPHyperlinkField newURLFromURLReference:]"];
-  [v13 handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPHyperlinkField.mm"), 384, @"Failed to create a CFURL from path %@", v8}];
+  [currentHandler2 handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPHyperlinkField.mm"), 384, @"Failed to create a CFURL from path %@", stringByExpandingTildeInPath}];
   v12 = +[TSWPHyperlinkField defaultFileURL];
 LABEL_18:
 
@@ -319,33 +319,33 @@ LABEL_18:
   [(TSWPSmartField *)&v3 dealloc];
 }
 
-- (TSWPHyperlinkField)initWithContext:(id)a3 url:(id)a4
+- (TSWPHyperlinkField)initWithContext:(id)context url:(id)url
 {
   v8.receiver = self;
   v8.super_class = TSWPHyperlinkField;
-  v5 = [(TSWPSmartField *)&v8 initWithContext:a3];
+  v5 = [(TSWPSmartField *)&v8 initWithContext:context];
   v6 = v5;
   if (v5)
   {
-    [(TSWPHyperlinkField *)v5 setURL:a4];
+    [(TSWPHyperlinkField *)v5 setURL:url];
   }
 
   return v6;
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
   v5 = [objc_opt_class() allocWithZone:{-[TSWPHyperlinkField zone](self, "zone")}];
   url = self->_url;
 
-  return [v5 initWithContext:a3 url:url];
+  return [v5 initWithContext:context url:url];
 }
 
-- (void)adoptStylesheet:(id)a3 withMapper:(id)a4
+- (void)adoptStylesheet:(id)stylesheet withMapper:(id)mapper
 {
   v4.receiver = self;
   v4.super_class = TSWPHyperlinkField;
-  [(TSWPSmartField *)&v4 adoptStylesheet:a3 withMapper:a4];
+  [(TSWPSmartField *)&v4 adoptStylesheet:stylesheet withMapper:mapper];
 }
 
 - (NSURL)url
@@ -353,15 +353,15 @@ LABEL_18:
   result = self->_url;
   if (!result)
   {
-    v4 = [(TSWPSmartField *)self range];
-    if (v4 == 0x7FFFFFFFFFFFFFFFLL)
+    range = [(TSWPSmartField *)self range];
+    if (range == 0x7FFFFFFFFFFFFFFFLL)
     {
       return 0;
     }
 
     else
     {
-      v6 = [objc_opt_class() newURLFromURLReference:{-[TSWPStorage substringWithRange:](-[TSWPSmartField parentStorage](self, "parentStorage"), "substringWithRange:", v4, v5)}];
+      v6 = [objc_opt_class() newURLFromURLReference:{-[TSWPStorage substringWithRange:](-[TSWPSmartField parentStorage](self, "parentStorage"), "substringWithRange:", range, v5)}];
 
       return v6;
     }
@@ -382,26 +382,26 @@ LABEL_18:
 
   else
   {
-    v6 = [(TSWPSmartField *)self range];
-    if (v6 == 0x7FFFFFFFFFFFFFFFLL)
+    range = [(TSWPSmartField *)self range];
+    if (range == 0x7FFFFFFFFFFFFFFFLL)
     {
       return 0;
     }
 
     else
     {
-      v8 = v6;
+      v8 = range;
       v9 = v7;
-      v10 = [(TSWPSmartField *)self parentStorage];
+      parentStorage = [(TSWPSmartField *)self parentStorage];
 
-      return [(TSWPStorage *)v10 substringWithRange:v8, v9];
+      return [(TSWPStorage *)parentStorage substringWithRange:v8, v9];
     }
   }
 }
 
-- (void)setURLReference:(id)a3
+- (void)setURLReference:(id)reference
 {
-  v4 = [objc_opt_class() newURLFromURLReference:a3];
+  v4 = [objc_opt_class() newURLFromURLReference:reference];
   if (v4)
   {
     v5 = v4;
@@ -419,14 +419,14 @@ LABEL_18:
 
 - (id)urlPrefix
 {
-  v2 = [(NSURL *)[(TSWPHyperlinkField *)self url] absoluteString];
-  if (!v2)
+  absoluteString = [(NSURL *)[(TSWPHyperlinkField *)self url] absoluteString];
+  if (!absoluteString)
   {
     return &stru_287D36338;
   }
 
-  v3 = v2;
-  v4 = [(NSString *)v2 length];
+  v3 = absoluteString;
+  v4 = [(NSString *)absoluteString length];
   v5 = [(NSString *)v3 findIndexOfCharacter:58 range:0, v4];
   if (!v5)
   {
@@ -464,25 +464,25 @@ LABEL_18:
 
 - (id)fullPath
 {
-  v2 = [(TSWPHyperlinkField *)self filePath];
-  v3 = v2;
-  if (!v2)
+  filePath = [(TSWPHyperlinkField *)self filePath];
+  v3 = filePath;
+  if (!filePath)
   {
     return v3;
   }
 
-  if ([v2 isAbsolutePath])
+  if ([filePath isAbsolutePath])
   {
     return v3;
   }
 
-  v4 = [@"~" stringByExpandingTildeInPath];
-  if (!v4)
+  stringByExpandingTildeInPath = [@"~" stringByExpandingTildeInPath];
+  if (!stringByExpandingTildeInPath)
   {
     return v3;
   }
 
-  return [v4 stringByAppendingPathComponent:v3];
+  return [stringByExpandingTildeInPath stringByAppendingPathComponent:v3];
 }
 
 @end

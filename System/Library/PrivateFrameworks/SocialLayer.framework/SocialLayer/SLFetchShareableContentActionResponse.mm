@@ -1,33 +1,33 @@
 @interface SLFetchShareableContentActionResponse
-+ (id)responseWithResult:(id)a3;
-- (SLFetchShareableContentActionResponse)initWithBSXPCCoder:(id)a3;
-- (SLFetchShareableContentActionResponse)initWithCoder:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)responseWithResult:(id)result;
+- (SLFetchShareableContentActionResponse)initWithBSXPCCoder:(id)coder;
+- (SLFetchShareableContentActionResponse)initWithCoder:(id)coder;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SLFetchShareableContentActionResponse
 
-+ (id)responseWithResult:(id)a3
++ (id)responseWithResult:(id)result
 {
-  v4 = a3;
-  v5 = [a1 response];
-  [v5 setResult:v4];
+  resultCopy = result;
+  response = [self response];
+  [response setResult:resultCopy];
 
-  return v5;
+  return response;
 }
 
-- (SLFetchShareableContentActionResponse)initWithBSXPCCoder:(id)a3
+- (SLFetchShareableContentActionResponse)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = SLFetchShareableContentActionResponse;
-  v5 = [(SLShareableContentActionResponse *)&v11 initWithBSXPCCoder:v4];
+  v5 = [(SLShareableContentActionResponse *)&v11 initWithBSXPCCoder:coderCopy];
   if (v5)
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_result);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     v9 = v5->_result;
     v5->_result = v8;
   }
@@ -35,29 +35,29 @@
   return v5;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SLFetchShareableContentActionResponse *)self result];
+  coderCopy = coder;
+  result = [(SLFetchShareableContentActionResponse *)self result];
   v6 = NSStringFromSelector(sel_result);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:result forKey:v6];
 
   v7.receiver = self;
   v7.super_class = SLFetchShareableContentActionResponse;
-  [(SLShareableContentActionResponse *)&v7 encodeWithBSXPCCoder:v4];
+  [(SLShareableContentActionResponse *)&v7 encodeWithBSXPCCoder:coderCopy];
 }
 
-- (SLFetchShareableContentActionResponse)initWithCoder:(id)a3
+- (SLFetchShareableContentActionResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = SLFetchShareableContentActionResponse;
-  v5 = [(SLShareableContentActionResponse *)&v11 initWithCoder:v4];
+  v5 = [(SLShareableContentActionResponse *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_result);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     v9 = v5->_result;
     v5->_result = v8;
   }
@@ -65,16 +65,16 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SLFetchShareableContentActionResponse *)self result];
+  coderCopy = coder;
+  result = [(SLFetchShareableContentActionResponse *)self result];
   v6 = NSStringFromSelector(sel_result);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:result forKey:v6];
 
   v7.receiver = self;
   v7.super_class = SLFetchShareableContentActionResponse;
-  [(SLShareableContentActionResponse *)&v7 encodeWithCoder:v4];
+  [(SLShareableContentActionResponse *)&v7 encodeWithCoder:coderCopy];
 }
 
 @end

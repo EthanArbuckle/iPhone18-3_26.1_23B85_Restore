@@ -1,51 +1,51 @@
 @interface STStorageItemCell
-+ (id)specifierForItemURL:(id)a3;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
++ (id)specifierForItemURL:(id)l;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation STStorageItemCell
 
-+ (id)specifierForItemURL:(id)a3
++ (id)specifierForItemURL:(id)l
 {
   v3 = MEMORY[0x277D3FAD8];
-  v4 = a3;
+  lCopy = l;
   v5 = [v3 preferenceSpecifierNamed:&stru_282D51E38 target:0 set:0 get:0 detail:0 cell:-1 edit:0];
   [v5 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
-  [v5 setProperty:v4 forKey:@"stItemURL"];
+  [v5 setProperty:lCopy forKey:@"stItemURL"];
 
   return v5;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v19.receiver = self;
   v19.super_class = STStorageItemCell;
-  v4 = a3;
-  [(PSTableCell *)&v19 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 propertyForKey:@"stItemURL"];
+  specifierCopy = specifier;
+  [(PSTableCell *)&v19 refreshCellContentsWithSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:@"stItemURL"];
 
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x277CDAAD8]);
     ScreenScale();
     v8 = [v6 initWithFileAtURL:v5 size:4 scale:29.0 representationTypes:{29.0, v7}];
-    v9 = [MEMORY[0x277CDAAE0] sharedGenerator];
+    mEMORY[0x277CDAAE0] = [MEMORY[0x277CDAAE0] sharedGenerator];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __54__STStorageItemCell_refreshCellContentsWithSpecifier___block_invoke;
     v18[3] = &unk_2782E2958;
     v18[4] = self;
-    [v9 generateBestRepresentationForRequest:v8 completionHandler:v18];
+    [mEMORY[0x277CDAAE0] generateBestRepresentationForRequest:v8 completionHandler:v18];
 
     v17 = 0;
     [v5 getResourceValue:&v17 forKey:*MEMORY[0x277CBE8D0] error:0];
     v10 = v17;
     if (![v10 length])
     {
-      v11 = [v5 URLByDeletingPathExtension];
-      v12 = [v11 lastPathComponent];
+      uRLByDeletingPathExtension = [v5 URLByDeletingPathExtension];
+      lastPathComponent = [uRLByDeletingPathExtension lastPathComponent];
 
-      v10 = v12;
+      v10 = lastPathComponent;
     }
 
     [(STStorageTableCell *)self setTitle:v10];
@@ -55,7 +55,7 @@
     v14[2] = __54__STStorageItemCell_refreshCellContentsWithSpecifier___block_invoke_3;
     v14[3] = &unk_2782E2890;
     v15 = v5;
-    v16 = self;
+    selfCopy = self;
     dispatch_async(v13, v14);
   }
 

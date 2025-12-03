@@ -1,17 +1,17 @@
 @interface AKCommonResponseCodeHandler
-+ (void)handleResponseCode:(int64_t)a3 altDSID:(id)a4;
++ (void)handleResponseCode:(int64_t)code altDSID:(id)d;
 @end
 
 @implementation AKCommonResponseCodeHandler
 
-+ (void)handleResponseCode:(int64_t)a3 altDSID:(id)a4
++ (void)handleResponseCode:(int64_t)code altDSID:(id)d
 {
-  v23 = a1;
+  selfCopy = self;
   v22 = a2;
-  v21 = a3;
+  codeCopy = code;
   location = 0;
-  objc_storeStrong(&location, a4);
-  if (v21 == 437)
+  objc_storeStrong(&location, d);
+  if (codeCopy == 437)
   {
     v19 = _AKLogSystem();
     v18 = OS_LOG_TYPE_DEFAULT;

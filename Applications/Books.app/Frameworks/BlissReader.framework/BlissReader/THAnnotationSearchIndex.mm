@@ -1,13 +1,13 @@
 @interface THAnnotationSearchIndex
-- (id)p_createModelSearchResultForTerm:(id)a3 searchContext:(id)a4 occurrence:(id *)a5 occurrenceIndex:(unsigned int)a6 previousEntry:(id)a7;
-- (void)addTermsForAnnotation:(id)a3;
+- (id)p_createModelSearchResultForTerm:(id)term searchContext:(id)context occurrence:(id *)occurrence occurrenceIndex:(unsigned int)index previousEntry:(id)entry;
+- (void)addTermsForAnnotation:(id)annotation;
 @end
 
 @implementation THAnnotationSearchIndex
 
-- (void)addTermsForAnnotation:(id)a3
+- (void)addTermsForAnnotation:(id)annotation
 {
-  v5 = [objc_msgSend(a3 "annotationNote")];
+  v5 = [objc_msgSend(annotation "annotationNote")];
   v27.length = [(__CFString *)v5 length];
   v27.location = 0;
   v6 = CFStringTokenizerCreate(0, v5, v27, 2uLL, 0);
@@ -51,13 +51,13 @@
               v22[5] = v14;
             }
 
-            v15 = [v14 inflections];
+            inflections = [v14 inflections];
             v19[0] = _NSConcreteStackBlock;
             v19[1] = 3221225472;
             v19[2] = sub_1D11A0;
             v19[3] = &unk_45C908;
             v19[4] = v11;
-            v16 = [v15 tsu_firstObjectPassingTest:v19];
+            v16 = [inflections tsu_firstObjectPassingTest:v19];
             if (!v16)
             {
               v16 = [v22[5] addInflection:v11];
@@ -65,7 +65,7 @@
 
             v17 = [objc_msgSend(v8 objectForKey:{v11), "unsignedIntegerValue"}];
             [v8 setObject:+[NSNumber numberWithUnsignedInteger:](NSNumber forKey:{"numberWithUnsignedInteger:", v17 + 1), v11}];
-            [v16 addOccurrence:objc_msgSend(a3 rank:"annotationUuid") paragraphIndex:100 pageNumber:v17 + 1 displayPageNumber:{objc_msgSend(a3, "annotationAbsolutePhysicalPageIndex"), 0}];
+            [v16 addOccurrence:objc_msgSend(annotation rank:"annotationUuid") paragraphIndex:100 pageNumber:v17 + 1 displayPageNumber:{objc_msgSend(annotation, "annotationAbsolutePhysicalPageIndex"), 0}];
             _Block_object_dispose(&v21, 8);
           }
 
@@ -82,12 +82,12 @@
   }
 }
 
-- (id)p_createModelSearchResultForTerm:(id)a3 searchContext:(id)a4 occurrence:(id *)a5 occurrenceIndex:(unsigned int)a6 previousEntry:(id)a7
+- (id)p_createModelSearchResultForTerm:(id)term searchContext:(id)context occurrence:(id *)occurrence occurrenceIndex:(unsigned int)index previousEntry:(id)entry
 {
-  v8 = [[THModelSearchResult alloc] initWithTerm:a3 annotation:[(THAnnotationStorageController *)[(THAnnotationSearchIndex *)self annotationStorageController] annotationWithUuid:a5->var4] pageNumber:a5->var2 displayPageNumber:0 occurrenceIndex:a6 context:a4];
-  if (a7)
+  v8 = [[THModelSearchResult alloc] initWithTerm:term annotation:[(THAnnotationStorageController *)[(THAnnotationSearchIndex *)self annotationStorageController] annotationWithUuid:occurrence->var4] pageNumber:occurrence->var2 displayPageNumber:0 occurrenceIndex:index context:context];
+  if (entry)
   {
-    -[THModelSearchResult setOccurenceCount:](v8, "setOccurenceCount:", [a7 occurenceCount] + 1);
+    -[THModelSearchResult setOccurenceCount:](v8, "setOccurenceCount:", [entry occurenceCount] + 1);
   }
 
   return v8;

@@ -1,37 +1,37 @@
 @interface HUUtilityOnboardingOTPSelectionTableViewController
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
-- (HUUtilityOnboardingOTPSelectionTableViewController)initWithItemManager:(id)a3;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
+- (HUUtilityOnboardingOTPSelectionTableViewController)initWithItemManager:(id)manager;
 - (OTPSelectionTableDelegate)delegate;
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation HUUtilityOnboardingOTPSelectionTableViewController
 
-- (HUUtilityOnboardingOTPSelectionTableViewController)initWithItemManager:(id)a3
+- (HUUtilityOnboardingOTPSelectionTableViewController)initWithItemManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = HUUtilityOnboardingOTPSelectionTableViewController;
-  return [(HUItemTableViewController *)&v4 initWithItemManager:a3 tableViewStyle:1];
+  return [(HUItemTableViewController *)&v4 initWithItemManager:manager tableViewStyle:1];
 }
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  pathCopy = path;
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 latestResults];
+    latestResults = [itemCopy latestResults];
     v12 = 138413058;
-    v13 = self;
+    selfCopy = self;
     v14 = 2080;
     v15 = "[HUUtilityOnboardingOTPSelectionTableViewController cellClassForItem:indexPath:]";
     v16 = 2112;
-    v17 = v9;
+    v17 = latestResults;
     v18 = 2112;
-    v19 = v7;
+    v19 = pathCopy;
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "%@:%s cell class for item %@ with index %@", &v12, 0x2Au);
   }
 
@@ -40,48 +40,48 @@
   return v10;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path
 {
-  v18 = a3;
-  v7 = a4;
-  v8 = [v7 latestResults];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277D13FE8]];
+  cellCopy = cell;
+  itemCopy = item;
+  latestResults = [itemCopy latestResults];
+  v9 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13FE8]];
 
   if (v9)
   {
-    [v18 setAccessoryType:3];
-    v10 = [(HUUtilityOnboardingOTPSelectionTableViewController *)self delegate];
-    [v10 tableView:self didSelectOTPMethod:v7];
+    [cellCopy setAccessoryType:3];
+    delegate = [(HUUtilityOnboardingOTPSelectionTableViewController *)self delegate];
+    [delegate tableView:self didSelectOTPMethod:itemCopy];
   }
 
-  [v18 setHideIcon:1];
-  v11 = [v7 latestResults];
-  v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
-  [v18 setValueText:v12];
+  [cellCopy setHideIcon:1];
+  latestResults2 = [itemCopy latestResults];
+  v12 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
+  [cellCopy setValueText:v12];
 
   v13 = MEMORY[0x277CCACA8];
-  v14 = [v7 latestResults];
-  v15 = [v14 objectForKeyedSubscript:@"factor-type"];
+  latestResults3 = [itemCopy latestResults];
+  v15 = [latestResults3 objectForKeyedSubscript:@"factor-type"];
   v16 = [v13 stringWithFormat:@"Home.OnboardingView.Utility.OTP.%@", v15];
-  [v18 setAccessibilityIdentifier:v16];
+  [cellCopy setAccessibilityIdentifier:v16];
 
-  v17 = [MEMORY[0x277D75348] tertiarySystemFillColor];
-  [v18 setBackgroundColor:v17];
+  tertiarySystemFillColor = [MEMORY[0x277D75348] tertiarySystemFillColor];
+  [cellCopy setBackgroundColor:tertiarySystemFillColor];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v8 = [(HUUtilityOnboardingOTPSelectionTableViewController *)self tableView];
-  v9 = [v8 indexPathsForVisibleRows];
+  tableView = [(HUUtilityOnboardingOTPSelectionTableViewController *)self tableView];
+  indexPathsForVisibleRows = [tableView indexPathsForVisibleRows];
 
-  v10 = [v9 countByEnumeratingWithState:&v28 objects:v36 count:16];
+  v10 = [indexPathsForVisibleRows countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v10)
   {
     v11 = v10;
@@ -93,12 +93,12 @@
       {
         if (*v29 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(indexPathsForVisibleRows);
         }
 
         v14 = *(*(&v28 + 1) + 8 * v13);
         objc_opt_class();
-        v15 = [v6 cellForRowAtIndexPath:v14];
+        v15 = [viewCopy cellForRowAtIndexPath:v14];
         if (objc_opt_isKindOfClass())
         {
           v16 = v15;
@@ -116,7 +116,7 @@
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v28 objects:v36 count:16];
+      v11 = [indexPathsForVisibleRows countByEnumeratingWithState:&v28 objects:v36 count:16];
     }
 
     while (v11);
@@ -124,10 +124,10 @@
 
   v27.receiver = self;
   v27.super_class = HUUtilityOnboardingOTPSelectionTableViewController;
-  [(HUItemTableViewController *)&v27 tableView:v6 didSelectRowAtIndexPath:v7];
-  [v6 deselectRowAtIndexPath:v7 animated:1];
+  [(HUItemTableViewController *)&v27 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
   objc_opt_class();
-  v18 = [v6 cellForRowAtIndexPath:v7];
+  v18 = [viewCopy cellForRowAtIndexPath:pathCopy];
   if (objc_opt_isKindOfClass())
   {
     v19 = v18;
@@ -141,23 +141,23 @@
   v20 = v19;
 
   [v20 setAccessoryType:3];
-  v21 = [(HUItemTableViewController *)self itemManager];
-  v22 = [v21 displayedItemAtIndexPath:v7];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v22 = [itemManager displayedItemAtIndexPath:pathCopy];
 
   v23 = HFLogForCategory();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
-    v24 = [v22 latestResults];
-    v25 = [v24 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+    latestResults = [v22 latestResults];
+    v25 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
     *buf = 138412546;
-    v33 = self;
+    selfCopy = self;
     v34 = 2112;
     v35 = v25;
     _os_log_impl(&dword_20CEB6000, v23, OS_LOG_TYPE_DEFAULT, "%@: ROW OPTION User tapped item: %@", buf, 0x16u);
   }
 
-  v26 = [(HUUtilityOnboardingOTPSelectionTableViewController *)self delegate];
-  [v26 tableView:self didSelectOTPMethod:v22];
+  delegate = [(HUUtilityOnboardingOTPSelectionTableViewController *)self delegate];
+  [delegate tableView:self didSelectOTPMethod:v22];
 }
 
 - (OTPSelectionTableDelegate)delegate

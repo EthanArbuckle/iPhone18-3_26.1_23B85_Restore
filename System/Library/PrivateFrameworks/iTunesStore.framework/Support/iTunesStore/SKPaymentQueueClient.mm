@@ -1,16 +1,16 @@
 @interface SKPaymentQueueClient
-- (SKPaymentQueueClient)initWithXPCEncoding:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SKPaymentQueueClient)initWithXPCEncoding:(id)encoding;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
 @end
 
 @implementation SKPaymentQueueClient
 
-- (SKPaymentQueueClient)initWithXPCEncoding:(id)a3
+- (SKPaymentQueueClient)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && xpc_get_type(v4) == &_xpc_type_dictionary)
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && xpc_get_type(encodingCopy) == &_xpc_type_dictionary)
   {
     v20.receiver = self;
     v20.super_class = SKPaymentQueueClient;
@@ -80,9 +80,9 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setAllowsBootstrapCellularData:self->_allowsBootstrapCellularData];
   [v4 setBundleIdentifier:self->_bundleIdentifier];
   [v4 setBundleVersion:self->_bundleVersion];

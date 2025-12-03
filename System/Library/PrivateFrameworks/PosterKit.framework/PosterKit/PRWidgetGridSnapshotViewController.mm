@@ -1,5 +1,5 @@
 @interface PRWidgetGridSnapshotViewController
-- (PRWidgetGridSnapshotViewController)initWithScene:(id)a3 complicationLayoutProvider:(id)a4 gridType:(unint64_t)a5;
+- (PRWidgetGridSnapshotViewController)initWithScene:(id)scene complicationLayoutProvider:(id)provider gridType:(unint64_t)type;
 - (void)dealloc;
 - (void)invalidate;
 - (void)viewDidLayoutSubviews;
@@ -8,67 +8,67 @@
 
 @implementation PRWidgetGridSnapshotViewController
 
-- (PRWidgetGridSnapshotViewController)initWithScene:(id)a3 complicationLayoutProvider:(id)a4 gridType:(unint64_t)a5
+- (PRWidgetGridSnapshotViewController)initWithScene:(id)scene complicationLayoutProvider:(id)provider gridType:(unint64_t)type
 {
-  v9 = a3;
-  v10 = a4;
+  sceneCopy = scene;
+  providerCopy = provider;
   v40.receiver = self;
   v40.super_class = PRWidgetGridSnapshotViewController;
   v11 = [(PRWidgetGridSnapshotViewController *)&v40 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_scene, a3);
+    objc_storeStrong(&v11->_scene, scene);
     v13 = objc_opt_new();
     models = v12->_models;
     v12->_models = v13;
 
-    v15 = [v9 settings];
-    v16 = [v15 pui_posterContents];
+    settings = [sceneCopy settings];
+    pui_posterContents = [settings pui_posterContents];
 
-    v36 = [v16 identity];
-    v37 = v16;
-    if ([v36 type] == 3)
+    identity = [pui_posterContents identity];
+    v37 = pui_posterContents;
+    if ([identity type] == 3)
     {
-      v17 = [[PRPosterConfiguration alloc] _initWithPath:v16];
+      pui_previewIdentifier = [[PRPosterConfiguration alloc] _initWithPath:pui_posterContents];
       v39 = 0;
-      v18 = [v17 loadComplicationLayoutWithError:&v39];
+      v18 = [pui_previewIdentifier loadComplicationLayoutWithError:&v39];
       v19 = v39;
       if (v19)
       {
         v20 = PRLogCommon();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
         {
-          [PRWidgetGridSnapshotViewController initWithScene:v17 complicationLayoutProvider:v19 gridType:v20];
+          [PRWidgetGridSnapshotViewController initWithScene:pui_previewIdentifier complicationLayoutProvider:v19 gridType:v20];
         }
       }
     }
 
     else
     {
-      v21 = [v9 settings];
-      v17 = [v21 pui_previewIdentifier];
+      settings2 = [sceneCopy settings];
+      pui_previewIdentifier = [settings2 pui_previewIdentifier];
 
-      v18 = [v10 complicationLayoutForPreviewIdentifier:v17];
+      v18 = [providerCopy complicationLayoutForPreviewIdentifier:pui_previewIdentifier];
     }
 
-    if (a5 == 1)
+    if (type == 1)
     {
-      v22 = [v18 sidebarComplications];
+      sidebarComplications = [v18 sidebarComplications];
       [v18 complicationIconLayout];
     }
 
     else
     {
-      v22 = [v18 complications];
+      sidebarComplications = [v18 complications];
       [v18 sidebarComplicationIconLayout];
     }
     v23 = ;
-    v38 = v10;
+    v38 = providerCopy;
     v24 = MEMORY[0x1E695E0F0];
     if (v18)
     {
-      v25 = [v22 bs_map:&__block_literal_global_20];
+      v25 = [sidebarComplications bs_map:&__block_literal_global_20];
       v26 = [v25 bs_filter:&__block_literal_global_5_0];
     }
 
@@ -88,7 +88,7 @@
       v28 = v24;
     }
 
-    v29 = [(PRWidgetGridModel *)v27 initWithComplicationDescriptors:v28 iconLayout:v23 type:a5];
+    v29 = [(PRWidgetGridModel *)v27 initWithComplicationDescriptors:v28 iconLayout:v23 type:type];
     [(NSMutableArray *)v12->_models bs_safeAddObject:v29];
     v30 = [[PRWidgetGridViewController alloc] initWithModel:v29 iconViewProvider:0];
     widgetGridViewController = v12->_widgetGridViewController;
@@ -96,11 +96,11 @@
 
     [(PRWidgetGridViewController *)v12->_widgetGridViewController setConfigureForSnapshotting:1];
     v32 = v12->_widgetGridViewController;
-    v33 = [v9 clientSettings];
-    v34 = [v33 pr_vibrancyConfiguration];
-    [(PRWidgetGridViewController *)v32 setVibrancyConfiguration:v34];
+    clientSettings = [sceneCopy clientSettings];
+    pr_vibrancyConfiguration = [clientSettings pr_vibrancyConfiguration];
+    [(PRWidgetGridViewController *)v32 setVibrancyConfiguration:pr_vibrancyConfiguration];
 
-    v10 = v38;
+    providerCopy = v38;
   }
 
   return v12;
@@ -142,10 +142,10 @@ void __49__PRWidgetGridSnapshotViewController_viewDidLoad__block_invoke(uint64_t
   v5.receiver = self;
   v5.super_class = PRWidgetGridSnapshotViewController;
   [(PRWidgetGridSnapshotViewController *)&v5 viewDidLayoutSubviews];
-  v3 = [(PRWidgetGridViewController *)self->_widgetGridViewController view];
-  v4 = [(PRWidgetGridSnapshotViewController *)self view];
-  [v4 bounds];
-  [v3 setFrame:?];
+  view = [(PRWidgetGridViewController *)self->_widgetGridViewController view];
+  view2 = [(PRWidgetGridSnapshotViewController *)self view];
+  [view2 bounds];
+  [view setFrame:?];
 }
 
 - (void)dealloc

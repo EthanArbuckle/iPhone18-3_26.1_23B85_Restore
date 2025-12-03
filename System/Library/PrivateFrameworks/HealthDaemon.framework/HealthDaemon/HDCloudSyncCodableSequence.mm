@@ -1,23 +1,23 @@
 @interface HDCloudSyncCodableSequence
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsSlot:(id)a3;
+- (int)StringAsSlot:(id)slot;
 - (int)slot;
 - (unint64_t)hash;
-- (void)addIncludedChildSyncIdentities:(id)a3;
-- (void)addIncludedStoreIdentifiers:(id)a3;
-- (void)addIncludedSyncIdentities:(id)a3;
-- (void)addUnfrozenChangeRecordNames:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasActive:(BOOL)a3;
-- (void)setHasChildRecordCount:(BOOL)a3;
-- (void)setHasEpoch:(BOOL)a3;
-- (void)setHasProtocolVersion:(BOOL)a3;
-- (void)setHasSlot:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addIncludedChildSyncIdentities:(id)identities;
+- (void)addIncludedStoreIdentifiers:(id)identifiers;
+- (void)addIncludedSyncIdentities:(id)identities;
+- (void)addUnfrozenChangeRecordNames:(id)names;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasActive:(BOOL)active;
+- (void)setHasChildRecordCount:(BOOL)count;
+- (void)setHasEpoch:(BOOL)epoch;
+- (void)setHasProtocolVersion:(BOOL)version;
+- (void)setHasSlot:(BOOL)slot;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCloudSyncCodableSequence
@@ -35,9 +35,9 @@
   }
 }
 
-- (void)setHasSlot:(BOOL)a3
+- (void)setHasSlot:(BOOL)slot
 {
-  if (a3)
+  if (slot)
   {
     v3 = 16;
   }
@@ -50,20 +50,20 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (int)StringAsSlot:(id)a3
+- (int)StringAsSlot:(id)slot
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"A"])
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:@"A"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"B"])
+  else if ([slotCopy isEqualToString:@"B"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Tombstone"])
+  else if ([slotCopy isEqualToString:@"Tombstone"])
   {
     v4 = 3;
   }
@@ -76,9 +76,9 @@
   return v4;
 }
 
-- (void)setHasActive:(BOOL)a3
+- (void)setHasActive:(BOOL)active
 {
-  if (a3)
+  if (active)
   {
     v3 = 32;
   }
@@ -91,9 +91,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasEpoch:(BOOL)a3
+- (void)setHasEpoch:(BOOL)epoch
 {
-  if (a3)
+  if (epoch)
   {
     v3 = 4;
   }
@@ -106,63 +106,63 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)addIncludedStoreIdentifiers:(id)a3
+- (void)addIncludedStoreIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   includedStoreIdentifiers = self->_includedStoreIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!includedStoreIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_includedStoreIdentifiers;
     self->_includedStoreIdentifiers = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     includedStoreIdentifiers = self->_includedStoreIdentifiers;
   }
 
-  [(NSMutableArray *)includedStoreIdentifiers addObject:v4];
+  [(NSMutableArray *)includedStoreIdentifiers addObject:identifiersCopy];
 }
 
-- (void)addIncludedSyncIdentities:(id)a3
+- (void)addIncludedSyncIdentities:(id)identities
 {
-  v4 = a3;
+  identitiesCopy = identities;
   includedSyncIdentities = self->_includedSyncIdentities;
-  v8 = v4;
+  v8 = identitiesCopy;
   if (!includedSyncIdentities)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_includedSyncIdentities;
     self->_includedSyncIdentities = v6;
 
-    v4 = v8;
+    identitiesCopy = v8;
     includedSyncIdentities = self->_includedSyncIdentities;
   }
 
-  [(NSMutableArray *)includedSyncIdentities addObject:v4];
+  [(NSMutableArray *)includedSyncIdentities addObject:identitiesCopy];
 }
 
-- (void)addIncludedChildSyncIdentities:(id)a3
+- (void)addIncludedChildSyncIdentities:(id)identities
 {
-  v4 = a3;
+  identitiesCopy = identities;
   includedChildSyncIdentities = self->_includedChildSyncIdentities;
-  v8 = v4;
+  v8 = identitiesCopy;
   if (!includedChildSyncIdentities)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_includedChildSyncIdentities;
     self->_includedChildSyncIdentities = v6;
 
-    v4 = v8;
+    identitiesCopy = v8;
     includedChildSyncIdentities = self->_includedChildSyncIdentities;
   }
 
-  [(NSMutableArray *)includedChildSyncIdentities addObject:v4];
+  [(NSMutableArray *)includedChildSyncIdentities addObject:identitiesCopy];
 }
 
-- (void)setHasProtocolVersion:(BOOL)a3
+- (void)setHasProtocolVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 8;
   }
@@ -175,9 +175,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasChildRecordCount:(BOOL)a3
+- (void)setHasChildRecordCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -190,22 +190,22 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addUnfrozenChangeRecordNames:(id)a3
+- (void)addUnfrozenChangeRecordNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   unfrozenChangeRecordNames = self->_unfrozenChangeRecordNames;
-  v8 = v4;
+  v8 = namesCopy;
   if (!unfrozenChangeRecordNames)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_unfrozenChangeRecordNames;
     self->_unfrozenChangeRecordNames = v6;
 
-    v4 = v8;
+    namesCopy = v8;
     unfrozenChangeRecordNames = self->_unfrozenChangeRecordNames;
   }
 
-  [(NSMutableArray *)unfrozenChangeRecordNames addObject:v4];
+  [(NSMutableArray *)unfrozenChangeRecordNames addObject:namesCopy];
 }
 
 - (id)description
@@ -214,8 +214,8 @@
   v8.receiver = self;
   v8.super_class = HDCloudSyncCodableSequence;
   v4 = [(HDCloudSyncCodableSequence *)&v8 description];
-  v5 = [(HDCloudSyncCodableSequence *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCloudSyncCodableSequence *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -223,7 +223,7 @@
 - (id)dictionaryRepresentation
 {
   v47 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 0x10) != 0)
   {
@@ -238,7 +238,7 @@
       v6 = off_278620488[v5];
     }
 
-    [v3 setObject:v6 forKey:@"slot"];
+    [dictionary setObject:v6 forKey:@"slot"];
 
     has = self->_has;
   }
@@ -246,7 +246,7 @@
   if ((has & 0x20) != 0)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithBool:self->_active];
-    [v3 setObject:v7 forKey:@"active"];
+    [dictionary setObject:v7 forKey:@"active"];
 
     has = self->_has;
   }
@@ -254,13 +254,13 @@
   if ((has & 4) != 0)
   {
     v8 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_epoch];
-    [v3 setObject:v8 forKey:@"epoch"];
+    [dictionary setObject:v8 forKey:@"epoch"];
   }
 
   includedStoreIdentifiers = self->_includedStoreIdentifiers;
   if (includedStoreIdentifiers)
   {
-    [v3 setObject:includedStoreIdentifiers forKey:@"includedStoreIdentifiers"];
+    [dictionary setObject:includedStoreIdentifiers forKey:@"includedStoreIdentifiers"];
   }
 
   if ([(NSMutableArray *)self->_includedSyncIdentities count])
@@ -285,8 +285,8 @@
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v41 + 1) + 8 * i) dictionaryRepresentation];
-          [v10 addObject:v16];
+          dictionaryRepresentation = [*(*(&v41 + 1) + 8 * i) dictionaryRepresentation];
+          [v10 addObject:dictionaryRepresentation];
         }
 
         v13 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v41 objects:v46 count:16];
@@ -295,7 +295,7 @@
       while (v13);
     }
 
-    [v3 setObject:v10 forKey:@"includedSyncIdentities"];
+    [dictionary setObject:v10 forKey:@"includedSyncIdentities"];
   }
 
   if ([(NSMutableArray *)self->_includedChildSyncIdentities count])
@@ -320,8 +320,8 @@
             objc_enumerationMutation(v18);
           }
 
-          v23 = [*(*(&v37 + 1) + 8 * j) dictionaryRepresentation];
-          [v17 addObject:v23];
+          dictionaryRepresentation2 = [*(*(&v37 + 1) + 8 * j) dictionaryRepresentation];
+          [v17 addObject:dictionaryRepresentation2];
         }
 
         v20 = [(NSMutableArray *)v18 countByEnumeratingWithState:&v37 objects:v45 count:16];
@@ -330,34 +330,34 @@
       while (v20);
     }
 
-    [v3 setObject:v17 forKey:@"includedChildSyncIdentities"];
+    [dictionary setObject:v17 forKey:@"includedChildSyncIdentities"];
   }
 
   if ((*&self->_has & 8) != 0)
   {
     v24 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_protocolVersion];
-    [v3 setObject:v24 forKey:@"protocolVersion"];
+    [dictionary setObject:v24 forKey:@"protocolVersion"];
   }
 
   anchorMap = self->_anchorMap;
   if (anchorMap)
   {
-    v26 = [(HDCodableSyncAnchorRangeMap *)anchorMap dictionaryRepresentation];
-    [v3 setObject:v26 forKey:@"anchorMap"];
+    dictionaryRepresentation3 = [(HDCodableSyncAnchorRangeMap *)anchorMap dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"anchorMap"];
   }
 
   frozenAnchorMap = self->_frozenAnchorMap;
   if (frozenAnchorMap)
   {
-    v28 = [(HDCodableSyncAnchorRangeMap *)frozenAnchorMap dictionaryRepresentation];
-    [v3 setObject:v28 forKey:@"frozenAnchorMap"];
+    dictionaryRepresentation4 = [(HDCodableSyncAnchorRangeMap *)frozenAnchorMap dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"frozenAnchorMap"];
   }
 
   v29 = self->_has;
   if (v29)
   {
     v30 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_changeIndex];
-    [v3 setObject:v30 forKey:@"changeIndex"];
+    [dictionary setObject:v30 forKey:@"changeIndex"];
 
     v29 = self->_has;
   }
@@ -365,31 +365,31 @@
   if ((v29 & 2) != 0)
   {
     v31 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_childRecordCount];
-    [v3 setObject:v31 forKey:@"childRecordCount"];
+    [dictionary setObject:v31 forKey:@"childRecordCount"];
   }
 
   unfrozenChangeRecordNames = self->_unfrozenChangeRecordNames;
   if (unfrozenChangeRecordNames)
   {
-    [v3 setObject:unfrozenChangeRecordNames forKey:@"unfrozenChangeRecordNames"];
+    [dictionary setObject:unfrozenChangeRecordNames forKey:@"unfrozenChangeRecordNames"];
   }
 
   syncEntityVersionMap = self->_syncEntityVersionMap;
   if (syncEntityVersionMap)
   {
-    v34 = [(HDCodableSyncEntityVersionMap *)syncEntityVersionMap dictionaryRepresentation];
-    [v3 setObject:v34 forKey:@"syncEntityVersionMap"];
+    dictionaryRepresentation5 = [(HDCodableSyncEntityVersionMap *)syncEntityVersionMap dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"syncEntityVersionMap"];
   }
 
   v35 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v58 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x10) != 0)
   {
@@ -577,9 +577,9 @@ LABEL_5:
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -589,8 +589,8 @@ LABEL_5:
     }
 
 LABEL_37:
-    v4[104] = self->_active;
-    v4[108] |= 0x20u;
+    toCopy[104] = self->_active;
+    toCopy[108] |= 0x20u;
     if ((*&self->_has & 4) == 0)
     {
       goto LABEL_5;
@@ -599,8 +599,8 @@ LABEL_37:
     goto LABEL_4;
   }
 
-  *(v4 + 20) = self->_slot;
-  v4[108] |= 0x10u;
+  *(toCopy + 20) = self->_slot;
+  toCopy[108] |= 0x10u;
   has = self->_has;
   if ((has & 0x20) != 0)
   {
@@ -611,19 +611,19 @@ LABEL_3:
   if ((has & 4) != 0)
   {
 LABEL_4:
-    *(v4 + 3) = self->_epoch;
-    v4[108] |= 4u;
+    *(toCopy + 3) = self->_epoch;
+    toCopy[108] |= 4u;
   }
 
 LABEL_5:
-  v24 = v4;
+  v24 = toCopy;
   if ([(HDCloudSyncCodableSequence *)self includedStoreIdentifiersCount])
   {
     [v24 clearIncludedStoreIdentifiers];
-    v6 = [(HDCloudSyncCodableSequence *)self includedStoreIdentifiersCount];
-    if (v6)
+    includedStoreIdentifiersCount = [(HDCloudSyncCodableSequence *)self includedStoreIdentifiersCount];
+    if (includedStoreIdentifiersCount)
     {
-      v7 = v6;
+      v7 = includedStoreIdentifiersCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(HDCloudSyncCodableSequence *)self includedStoreIdentifiersAtIndex:i];
@@ -635,10 +635,10 @@ LABEL_5:
   if ([(HDCloudSyncCodableSequence *)self includedSyncIdentitiesCount])
   {
     [v24 clearIncludedSyncIdentities];
-    v10 = [(HDCloudSyncCodableSequence *)self includedSyncIdentitiesCount];
-    if (v10)
+    includedSyncIdentitiesCount = [(HDCloudSyncCodableSequence *)self includedSyncIdentitiesCount];
+    if (includedSyncIdentitiesCount)
     {
-      v11 = v10;
+      v11 = includedSyncIdentitiesCount;
       for (j = 0; j != v11; ++j)
       {
         v13 = [(HDCloudSyncCodableSequence *)self includedSyncIdentitiesAtIndex:j];
@@ -650,10 +650,10 @@ LABEL_5:
   if ([(HDCloudSyncCodableSequence *)self includedChildSyncIdentitiesCount])
   {
     [v24 clearIncludedChildSyncIdentities];
-    v14 = [(HDCloudSyncCodableSequence *)self includedChildSyncIdentitiesCount];
-    if (v14)
+    includedChildSyncIdentitiesCount = [(HDCloudSyncCodableSequence *)self includedChildSyncIdentitiesCount];
+    if (includedChildSyncIdentitiesCount)
     {
-      v15 = v14;
+      v15 = includedChildSyncIdentitiesCount;
       for (k = 0; k != v15; ++k)
       {
         v17 = [(HDCloudSyncCodableSequence *)self includedChildSyncIdentitiesAtIndex:k];
@@ -698,10 +698,10 @@ LABEL_5:
   if ([(HDCloudSyncCodableSequence *)self unfrozenChangeRecordNamesCount])
   {
     [v24 clearUnfrozenChangeRecordNames];
-    v20 = [(HDCloudSyncCodableSequence *)self unfrozenChangeRecordNamesCount];
-    if (v20)
+    unfrozenChangeRecordNamesCount = [(HDCloudSyncCodableSequence *)self unfrozenChangeRecordNamesCount];
+    if (unfrozenChangeRecordNamesCount)
     {
-      v21 = v20;
+      v21 = unfrozenChangeRecordNamesCount;
       for (m = 0; m != v21; ++m)
       {
         v23 = [(HDCloudSyncCodableSequence *)self unfrozenChangeRecordNamesAtIndex:m];
@@ -716,10 +716,10 @@ LABEL_5:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v61 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 0x10) != 0)
@@ -773,7 +773,7 @@ LABEL_5:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v53 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v53 + 1) + 8 * i) copyWithZone:zone];
         [v6 addIncludedStoreIdentifiers:v13];
       }
 
@@ -802,7 +802,7 @@ LABEL_5:
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v49 + 1) + 8 * j) copyWithZone:a3];
+        v19 = [*(*(&v49 + 1) + 8 * j) copyWithZone:zone];
         [v6 addIncludedSyncIdentities:v19];
       }
 
@@ -831,7 +831,7 @@ LABEL_5:
           objc_enumerationMutation(v20);
         }
 
-        v25 = [*(*(&v45 + 1) + 8 * k) copyWithZone:a3];
+        v25 = [*(*(&v45 + 1) + 8 * k) copyWithZone:zone];
         [v6 addIncludedChildSyncIdentities:v25];
       }
 
@@ -847,11 +847,11 @@ LABEL_5:
     *(v6 + 108) |= 8u;
   }
 
-  v26 = [(HDCodableSyncAnchorRangeMap *)self->_anchorMap copyWithZone:a3];
+  v26 = [(HDCodableSyncAnchorRangeMap *)self->_anchorMap copyWithZone:zone];
   v27 = *(v6 + 40);
   *(v6 + 40) = v26;
 
-  v28 = [(HDCodableSyncAnchorRangeMap *)self->_frozenAnchorMap copyWithZone:a3];
+  v28 = [(HDCodableSyncAnchorRangeMap *)self->_frozenAnchorMap copyWithZone:zone];
   v29 = *(v6 + 48);
   *(v6 + 48) = v28;
 
@@ -888,7 +888,7 @@ LABEL_5:
           objc_enumerationMutation(v31);
         }
 
-        v36 = [*(*(&v41 + 1) + 8 * m) copyWithZone:{a3, v41}];
+        v36 = [*(*(&v41 + 1) + 8 * m) copyWithZone:{zone, v41}];
         [v6 addUnfrozenChangeRecordNames:v36];
       }
 
@@ -898,7 +898,7 @@ LABEL_5:
     while (v33);
   }
 
-  v37 = [(HDCodableSyncEntityVersionMap *)self->_syncEntityVersionMap copyWithZone:a3];
+  v37 = [(HDCodableSyncEntityVersionMap *)self->_syncEntityVersionMap copyWithZone:zone];
   v38 = *(v6 + 88);
   *(v6 + 88) = v37;
 
@@ -906,76 +906,76 @@ LABEL_5:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
-  v5 = *(v4 + 108);
+  v5 = *(equalCopy + 108);
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 108) & 0x10) == 0 || self->_slot != *(v4 + 20))
+    if ((*(equalCopy + 108) & 0x10) == 0 || self->_slot != *(equalCopy + 20))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 108) & 0x10) != 0)
+  else if ((*(equalCopy + 108) & 0x10) != 0)
   {
     goto LABEL_28;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 108) & 0x20) == 0)
+    if ((*(equalCopy + 108) & 0x20) == 0)
     {
       goto LABEL_28;
     }
 
-    v6 = *(v4 + 104);
+    v6 = *(equalCopy + 104);
     if (self->_active)
     {
-      if ((*(v4 + 104) & 1) == 0)
+      if ((*(equalCopy + 104) & 1) == 0)
       {
         goto LABEL_28;
       }
     }
 
-    else if (*(v4 + 104))
+    else if (*(equalCopy + 104))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 108) & 0x20) != 0)
+  else if ((*(equalCopy + 108) & 0x20) != 0)
   {
     goto LABEL_28;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 108) & 4) == 0 || self->_epoch != *(v4 + 3))
+    if ((*(equalCopy + 108) & 4) == 0 || self->_epoch != *(equalCopy + 3))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 108) & 4) != 0)
+  else if ((*(equalCopy + 108) & 4) != 0)
   {
     goto LABEL_28;
   }
 
   includedStoreIdentifiers = self->_includedStoreIdentifiers;
-  if (includedStoreIdentifiers | *(v4 + 8) && ![(NSMutableArray *)includedStoreIdentifiers isEqual:?])
+  if (includedStoreIdentifiers | *(equalCopy + 8) && ![(NSMutableArray *)includedStoreIdentifiers isEqual:?])
   {
     goto LABEL_28;
   }
 
   includedSyncIdentities = self->_includedSyncIdentities;
-  if (includedSyncIdentities | *(v4 + 9))
+  if (includedSyncIdentities | *(equalCopy + 9))
   {
     if (![(NSMutableArray *)includedSyncIdentities isEqual:?])
     {
@@ -984,7 +984,7 @@ LABEL_5:
   }
 
   includedChildSyncIdentities = self->_includedChildSyncIdentities;
-  if (includedChildSyncIdentities | *(v4 + 7))
+  if (includedChildSyncIdentities | *(equalCopy + 7))
   {
     if (![(NSMutableArray *)includedChildSyncIdentities isEqual:?])
     {
@@ -992,28 +992,28 @@ LABEL_5:
     }
   }
 
-  v10 = *(v4 + 108);
+  v10 = *(equalCopy + 108);
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 108) & 8) == 0 || self->_protocolVersion != *(v4 + 4))
+    if ((*(equalCopy + 108) & 8) == 0 || self->_protocolVersion != *(equalCopy + 4))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 108) & 8) != 0)
+  else if ((*(equalCopy + 108) & 8) != 0)
   {
     goto LABEL_28;
   }
 
   anchorMap = self->_anchorMap;
-  if (anchorMap | *(v4 + 5) && ![(HDCodableSyncAnchorRangeMap *)anchorMap isEqual:?])
+  if (anchorMap | *(equalCopy + 5) && ![(HDCodableSyncAnchorRangeMap *)anchorMap isEqual:?])
   {
     goto LABEL_28;
   }
 
   frozenAnchorMap = self->_frozenAnchorMap;
-  if (frozenAnchorMap | *(v4 + 6))
+  if (frozenAnchorMap | *(equalCopy + 6))
   {
     if (![(HDCodableSyncAnchorRangeMap *)frozenAnchorMap isEqual:?])
     {
@@ -1021,23 +1021,23 @@ LABEL_5:
     }
   }
 
-  v15 = *(v4 + 108);
+  v15 = *(equalCopy + 108);
   if (*&self->_has)
   {
-    if ((*(v4 + 108) & 1) == 0 || self->_changeIndex != *(v4 + 1))
+    if ((*(equalCopy + 108) & 1) == 0 || self->_changeIndex != *(equalCopy + 1))
     {
       goto LABEL_28;
     }
   }
 
-  else if (*(v4 + 108))
+  else if (*(equalCopy + 108))
   {
     goto LABEL_28;
   }
 
   if ((*&self->_has & 2) == 0)
   {
-    if ((*(v4 + 108) & 2) == 0)
+    if ((*(equalCopy + 108) & 2) == 0)
     {
       goto LABEL_46;
     }
@@ -1047,20 +1047,20 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if ((*(v4 + 108) & 2) == 0 || self->_childRecordCount != *(v4 + 2))
+  if ((*(equalCopy + 108) & 2) == 0 || self->_childRecordCount != *(equalCopy + 2))
   {
     goto LABEL_28;
   }
 
 LABEL_46:
   unfrozenChangeRecordNames = self->_unfrozenChangeRecordNames;
-  if (unfrozenChangeRecordNames | *(v4 + 12) && ![(NSMutableArray *)unfrozenChangeRecordNames isEqual:?])
+  if (unfrozenChangeRecordNames | *(equalCopy + 12) && ![(NSMutableArray *)unfrozenChangeRecordNames isEqual:?])
   {
     goto LABEL_28;
   }
 
   syncEntityVersionMap = self->_syncEntityVersionMap;
-  if (syncEntityVersionMap | *(v4 + 11))
+  if (syncEntityVersionMap | *(equalCopy + 11))
   {
     v11 = [(HDCodableSyncEntityVersionMap *)syncEntityVersionMap isEqual:?];
   }
@@ -1155,17 +1155,17 @@ LABEL_16:
   return v13 ^ v14 ^ [(HDCodableSyncEntityVersionMap *)self->_syncEntityVersionMap hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v55 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 108);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 108);
   if ((v6 & 0x10) != 0)
   {
-    self->_slot = *(v4 + 20);
+    self->_slot = *(fromCopy + 20);
     *&self->_has |= 0x10u;
-    v6 = *(v4 + 108);
+    v6 = *(fromCopy + 108);
     if ((v6 & 0x20) == 0)
     {
 LABEL_3:
@@ -1178,17 +1178,17 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 108) & 0x20) == 0)
+  else if ((*(fromCopy + 108) & 0x20) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_active = *(v4 + 104);
+  self->_active = *(fromCopy + 104);
   *&self->_has |= 0x20u;
-  if ((*(v4 + 108) & 4) != 0)
+  if ((*(fromCopy + 108) & 4) != 0)
   {
 LABEL_4:
-    self->_epoch = *(v4 + 3);
+    self->_epoch = *(fromCopy + 3);
     *&self->_has |= 4u;
   }
 
@@ -1197,7 +1197,7 @@ LABEL_5:
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v7 = *(v4 + 8);
+  v7 = *(fromCopy + 8);
   v8 = [v7 countByEnumeratingWithState:&v47 objects:v54 count:16];
   if (v8)
   {

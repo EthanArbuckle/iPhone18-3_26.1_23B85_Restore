@@ -1,31 +1,31 @@
 @interface MUTitleOnlyCategoryRatingViewModel
-- (BOOL)isEqual:(id)a3;
-- (MUTitleOnlyCategoryRatingViewModel)initWithCategoryTitle:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MUTitleOnlyCategoryRatingViewModel)initWithCategoryTitle:(id)title;
 @end
 
 @implementation MUTitleOnlyCategoryRatingViewModel
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     categoryTitle = self->_categoryTitle;
-    v7 = [(MUTitleOnlyCategoryRatingViewModel *)v5 categoryTitle];
-    if (categoryTitle == v7)
+    categoryTitle = [(MUTitleOnlyCategoryRatingViewModel *)v5 categoryTitle];
+    if (categoryTitle == categoryTitle)
     {
       v8 = 1;
     }
 
     else
     {
-      v8 = [(NSString *)categoryTitle isEqual:v7];
+      v8 = [(NSString *)categoryTitle isEqual:categoryTitle];
     }
   }
 
@@ -37,15 +37,15 @@
   return v8;
 }
 
-- (MUTitleOnlyCategoryRatingViewModel)initWithCategoryTitle:(id)a3
+- (MUTitleOnlyCategoryRatingViewModel)initWithCategoryTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v9.receiver = self;
   v9.super_class = MUTitleOnlyCategoryRatingViewModel;
   v5 = [(MUTitleOnlyCategoryRatingViewModel *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [titleCopy copy];
     categoryTitle = v5->_categoryTitle;
     v5->_categoryTitle = v6;
   }

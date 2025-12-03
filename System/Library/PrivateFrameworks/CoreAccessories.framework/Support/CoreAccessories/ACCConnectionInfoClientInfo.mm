@@ -1,29 +1,29 @@
 @interface ACCConnectionInfoClientInfo
-- (ACCConnectionInfoClientInfo)initWithXPCConnection:(id)a3;
+- (ACCConnectionInfoClientInfo)initWithXPCConnection:(id)connection;
 - (id)clientBundleID;
 - (id)clientUID;
 - (id)description;
 - (void)_determineEntitlementsForXPCConnection;
-- (void)setClientBundleID:(id)a3;
-- (void)setClientUID:(id)a3;
+- (void)setClientBundleID:(id)d;
+- (void)setClientUID:(id)d;
 @end
 
 @implementation ACCConnectionInfoClientInfo
 
 - (id)description
 {
-  v3 = [(ACCConnectionInfoClientInfo *)self clientUID];
-  v4 = [(ACCConnectionInfoClientInfo *)self clientBundleID];
-  v5 = [NSString stringWithFormat:@"<ACCConnectionInfoClientInfo:%@ - %@>", v3, v4];
+  clientUID = [(ACCConnectionInfoClientInfo *)self clientUID];
+  clientBundleID = [(ACCConnectionInfoClientInfo *)self clientBundleID];
+  v5 = [NSString stringWithFormat:@"<ACCConnectionInfoClientInfo:%@ - %@>", clientUID, clientBundleID];
 
   return v5;
 }
 
-- (ACCConnectionInfoClientInfo)initWithXPCConnection:(id)a3
+- (ACCConnectionInfoClientInfo)initWithXPCConnection:(id)connection
 {
   v15.receiver = self;
   v15.super_class = ACCConnectionInfoClientInfo;
-  v3 = [(XPCConnectionInfo *)&v15 initWithXPCConnection:a3];
+  v3 = [(XPCConnectionInfo *)&v15 initWithXPCConnection:connection];
   v4 = v3;
   if (v3)
   {
@@ -57,8 +57,8 @@
 
 - (void)_determineEntitlementsForXPCConnection
 {
-  v3 = [(XPCConnectionInfo *)self XPCConnection];
-  self->_allConnectionsNotificationsEntitlement = [v3 hasEntitlement:@"com.apple.private.accessories.showallconnections"];
+  xPCConnection = [(XPCConnectionInfo *)self XPCConnection];
+  self->_allConnectionsNotificationsEntitlement = [xPCConnection hasEntitlement:@"com.apple.private.accessories.showallconnections"];
 
   if (!self->_allConnectionsNotificationsEntitlement)
   {
@@ -90,12 +90,12 @@
 
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(ACCConnectionInfoClientInfo *)self clientUID];
-      v8 = [(ACCConnectionInfoClientInfo *)self clientBundleID];
+      clientUID = [(ACCConnectionInfoClientInfo *)self clientUID];
+      clientBundleID = [(ACCConnectionInfoClientInfo *)self clientBundleID];
       v9 = 138412546;
-      v10 = v7;
+      v10 = clientUID;
       v11 = 2112;
-      v12 = v8;
+      v12 = clientBundleID;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Client %@ (%@) not entitled for showallconnections!!!", &v9, 0x16u);
     }
   }
@@ -110,11 +110,11 @@
   return v3;
 }
 
-- (void)setClientUID:(id)a3
+- (void)setClientUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 copy];
+  v5 = [dCopy copy];
 
   clientUID = self->_clientUID;
   self->_clientUID = v5;
@@ -131,11 +131,11 @@
   return v3;
 }
 
-- (void)setClientBundleID:(id)a3
+- (void)setClientBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 copy];
+  v5 = [dCopy copy];
 
   clientBundleID = self->_clientBundleID;
   self->_clientBundleID = v5;

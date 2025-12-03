@@ -1,28 +1,28 @@
 @interface _PASDatabaseMigrator
-- (BOOL)_allContextsAtVersionZeroWithContexts:(id)a3;
-- (BOOL)_anyContextHasFutureVersionWithContexts:(id)a3;
-- (BOOL)_anyContextHasMismatchedVersionWithContexts:(id)a3;
-- (BOOL)_canContinueMigratingWithContexts:(id)a3;
-- (BOOL)_migrationNeededWithContexts:(id)a3 toVersion:(unsigned int)a4;
+- (BOOL)_allContextsAtVersionZeroWithContexts:(id)contexts;
+- (BOOL)_anyContextHasFutureVersionWithContexts:(id)contexts;
+- (BOOL)_anyContextHasMismatchedVersionWithContexts:(id)contexts;
+- (BOOL)_canContinueMigratingWithContexts:(id)contexts;
+- (BOOL)_migrationNeededWithContexts:(id)contexts toVersion:(unsigned int)version;
 - (BOOL)migrationNeeded;
-- (_PASDatabaseMigrator)initWithMigrationObjects:(id)a3;
-- (id)_contextForMigrationObject:(id)a3;
+- (_PASDatabaseMigrator)initWithMigrationObjects:(id)objects;
+- (id)_contextForMigrationObject:(id)object;
 - (id)description;
-- (unsigned)_clearDatabase:(id)a3;
-- (unsigned)_runQueries:(id)a3 nextVersion:(unsigned int)a4 context:(id)a5;
-- (unsigned)_runQuery:(id)a3 context:(id)a4 database:(id)a5;
-- (unsigned)_skipFromZeroSchemaWithContexts:(id)a3;
-- (unsigned)_unmigrateDatabasesWithContexts:(id)a3;
-- (unsigned)migrateDatabasesToVersion:(unsigned int)a3;
+- (unsigned)_clearDatabase:(id)database;
+- (unsigned)_runQueries:(id)queries nextVersion:(unsigned int)version context:(id)context;
+- (unsigned)_runQuery:(id)query context:(id)context database:(id)database;
+- (unsigned)_skipFromZeroSchemaWithContexts:(id)contexts;
+- (unsigned)_unmigrateDatabasesWithContexts:(id)contexts;
+- (unsigned)migrateDatabasesToVersion:(unsigned int)version;
 - (unsigned)unmigrateDatabases;
-- (void)_prepareContexts:(id)a3;
+- (void)_prepareContexts:(id)contexts;
 @end
 
 @implementation _PASDatabaseMigrator
 
-- (unsigned)_clearDatabase:(id)a3
+- (unsigned)_clearDatabase:(id)database
 {
-  v5 = a3;
+  databaseCopy = database;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -31,11 +31,11 @@
   v8[1] = 3221225472;
   v8[2] = __39___PASDatabaseMigrator__clearDatabase___block_invoke;
   v8[3] = &unk_1E77F1DC0;
-  v6 = v5;
+  v6 = databaseCopy;
   v11 = &v13;
   v12 = a2;
   v9 = v6;
-  v10 = self;
+  selfCopy = self;
   [v6 writeTransaction:v8];
   LOBYTE(a2) = *(v14 + 24);
 
@@ -43,15 +43,15 @@
   return a2;
 }
 
-- (void)_prepareContexts:(id)a3
+- (void)_prepareContexts:(id)contexts
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  contextsCopy = contexts;
+  v4 = [contextsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -63,7 +63,7 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(contextsCopy);
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
@@ -74,7 +74,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [contextsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -83,12 +83,12 @@
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (unsigned)_runQuery:(id)a3 context:(id)a4 database:(id)a5
+- (unsigned)_runQuery:(id)query context:(id)context database:(id)database
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  queryCopy = query;
+  contextCopy = context;
+  databaseCopy = database;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -97,21 +97,21 @@
   v11 = MEMORY[0x1E69E9C10];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v16 = [v9 filename];
+    filename = [databaseCopy filename];
     *buf = 138412546;
-    v26 = v16;
+    v26 = filename;
     v27 = 2112;
-    v28 = v7;
+    v28 = queryCopy;
     _os_log_debug_impl(&dword_1A7F47000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "migrator for %@ running query: %@", buf, 0x16u);
   }
 
-  v12 = NSSelectorFromString(v7);
+  v12 = NSSelectorFromString(queryCopy);
   if (v12)
   {
-    v13 = v8[1];
+    v13 = contextCopy[1];
     if (objc_opt_respondsToSelector())
     {
-      LOBYTE(v12) = ([v8[1] methodForSelector:v12])(v8[1], v12);
+      LOBYTE(v12) = ([contextCopy[1] methodForSelector:v12])(contextCopy[1], v12);
     }
 
     else
@@ -120,8 +120,8 @@
       v17[1] = 3221225472;
       v17[2] = __51___PASDatabaseMigrator__runQuery_context_database___block_invoke;
       v17[3] = &unk_1E77F1B18;
-      v18 = v9;
-      v19 = v7;
+      v18 = databaseCopy;
+      v19 = queryCopy;
       v20 = &v21;
       [v18 prepAndRunQuery:v19 onPrep:0 onRow:0 onError:v17];
       LOBYTE(v12) = *(v22 + 24);
@@ -134,21 +134,21 @@
   return v12;
 }
 
-- (unsigned)_runQueries:(id)a3 nextVersion:(unsigned int)a4 context:(id)a5
+- (unsigned)_runQueries:(id)queries nextVersion:(unsigned int)version context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9[2];
+  queriesCopy = queries;
+  contextCopy = context;
+  v10 = contextCopy[2];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __56___PASDatabaseMigrator__runQueries_nextVersion_context___block_invoke;
   v14[3] = &unk_1E77F1AF0;
-  v15 = v8;
-  v16 = self;
-  v17 = v9;
-  v18 = a4;
-  v11 = v9;
-  v12 = v8;
+  v15 = queriesCopy;
+  selfCopy = self;
+  v17 = contextCopy;
+  versionCopy = version;
+  v11 = contextCopy;
+  v12 = queriesCopy;
   LODWORD(v10) = [v10 frailWriteTransaction:v14];
 
   if (v10)
@@ -162,15 +162,15 @@
   }
 }
 
-- (BOOL)_allContextsAtVersionZeroWithContexts:(id)a3
+- (BOOL)_allContextsAtVersionZeroWithContexts:(id)contexts
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  contextsCopy = contexts;
+  v4 = [contextsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -181,7 +181,7 @@
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(contextsCopy);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
@@ -195,7 +195,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [contextsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v5)
       {
         continue;
@@ -212,18 +212,18 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)_anyContextHasMismatchedVersionWithContexts:(id)a3
+- (BOOL)_anyContextHasMismatchedVersionWithContexts:(id)contexts
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 objectAtIndexedSubscript:0];
+  contextsCopy = contexts;
+  v4 = [contextsCopy objectAtIndexedSubscript:0];
   v5 = v4[6];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v3;
+  v6 = contextsCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v27 count:16];
   if (v7)
   {
@@ -279,15 +279,15 @@ LABEL_13:
   return v7;
 }
 
-- (BOOL)_anyContextHasFutureVersionWithContexts:(id)a3
+- (BOOL)_anyContextHasFutureVersionWithContexts:(id)contexts
 {
   v23 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v22 count:16];
+  contextsCopy = contexts;
+  v4 = [contextsCopy countByEnumeratingWithState:&v14 objects:v22 count:16];
   if (v4)
   {
     v5 = *v15;
@@ -297,7 +297,7 @@ LABEL_13:
       {
         if (*v15 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(contextsCopy);
         }
 
         v7 = *(*(&v14 + 1) + 8 * i);
@@ -324,7 +324,7 @@ LABEL_13:
         objc_autoreleasePoolPop(v8);
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v14 objects:v22 count:16];
+      v4 = [contextsCopy countByEnumeratingWithState:&v14 objects:v22 count:16];
       if (v4)
       {
         continue;
@@ -340,15 +340,15 @@ LABEL_13:
   return v4;
 }
 
-- (unsigned)_skipFromZeroSchemaWithContexts:(id)a3
+- (unsigned)_skipFromZeroSchemaWithContexts:(id)contexts
 {
   v32 = *MEMORY[0x1E69E9840];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = a3;
-  v6 = [v5 countByEnumeratingWithState:&v21 objects:v31 count:16];
+  contextsCopy = contexts;
+  v6 = [contextsCopy countByEnumeratingWithState:&v21 objects:v31 count:16];
   if (v6)
   {
     v7 = v6;
@@ -361,7 +361,7 @@ LABEL_13:
       {
         if (*v22 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(contextsCopy);
         }
 
         v11 = *(*(&v21 + 1) + 8 * i);
@@ -389,8 +389,8 @@ LABEL_13:
             _os_log_fault_impl(&dword_1A7F47000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT, "failed to migrate using skip queries: %@", buf, 0xCu);
           }
 
-          v16 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v16 handleFailureInMethod:v19 object:self file:@"_PASDatabaseMigrator.m" lineNumber:275 description:{@"failed to migrate using skip queries: %@", v11}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:v19 object:self file:@"_PASDatabaseMigrator.m" lineNumber:275 description:{@"failed to migrate using skip queries: %@", v11}];
 
           objc_autoreleasePoolPop(v12);
           v15 = 2;
@@ -400,7 +400,7 @@ LABEL_13:
         objc_autoreleasePoolPop(v12);
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v21 objects:v31 count:16];
+      v7 = [contextsCopy countByEnumeratingWithState:&v21 objects:v31 count:16];
       if (v7)
       {
         continue;
@@ -417,10 +417,10 @@ LABEL_16:
   return v15;
 }
 
-- (BOOL)_canContinueMigratingWithContexts:(id)a3
+- (BOOL)_canContinueMigratingWithContexts:(id)contexts
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  contextsCopy = contexts;
   if (!+[_PASDeviceState isUnlocked])
   {
     if (+[_PASDeviceState isClassCLocked])
@@ -429,7 +429,7 @@ LABEL_16:
       v26 = 0uLL;
       v23 = 0uLL;
       v24 = 0uLL;
-      v5 = v3;
+      v5 = contextsCopy;
       v6 = [v5 countByEnumeratingWithState:&v23 objects:v31 count:16];
       if (v6)
       {
@@ -487,7 +487,7 @@ LABEL_28:
       v30 = 0uLL;
       v27 = 0uLL;
       v28 = 0uLL;
-      v11 = v3;
+      v11 = contextsCopy;
       v12 = [v11 countByEnumeratingWithState:&v27 objects:v34 count:16];
       if (v12)
       {
@@ -548,16 +548,16 @@ LABEL_30:
   return v4;
 }
 
-- (BOOL)_migrationNeededWithContexts:(id)a3 toVersion:(unsigned int)a4
+- (BOOL)_migrationNeededWithContexts:(id)contexts toVersion:(unsigned int)version
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  [(_PASDatabaseMigrator *)self _prepareContexts:v6];
+  contextsCopy = contexts;
+  [(_PASDatabaseMigrator *)self _prepareContexts:contextsCopy];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = v6;
+  v7 = contextsCopy;
   v8 = [v7 countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v8)
   {
@@ -575,13 +575,13 @@ LABEL_30:
         v12 = *(*(&v19 + 1) + 8 * i);
         v13 = objc_autoreleasePoolPush();
         v14 = *(v12 + 24);
-        v15 = a4;
-        if (a4 == -1)
+        versionCopy = version;
+        if (version == -1)
         {
-          v15 = [*(v12 + 32) count];
+          versionCopy = [*(v12 + 32) count];
         }
 
-        if (v15 != v14)
+        if (versionCopy != v14)
         {
           if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
           {
@@ -615,16 +615,16 @@ LABEL_15:
   return v16;
 }
 
-- (unsigned)_unmigrateDatabasesWithContexts:(id)a3
+- (unsigned)_unmigrateDatabasesWithContexts:(id)contexts
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(_PASDatabaseMigrator *)self _prepareContexts:v4];
+  contextsCopy = contexts;
+  [(_PASDatabaseMigrator *)self _prepareContexts:contextsCopy];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v4;
+  v5 = contextsCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v21 count:16];
   if (v6)
   {
@@ -680,22 +680,22 @@ LABEL_14:
   return v12;
 }
 
-- (id)_contextForMigrationObject:(id)a3
+- (id)_contextForMigrationObject:(id)object
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  objectCopy = object;
   v7 = objc_opt_new();
-  objc_storeStrong((v7 + 8), a3);
-  v8 = [v6 databaseHandle];
+  objc_storeStrong((v7 + 8), object);
+  databaseHandle = [objectCopy databaseHandle];
   v9 = *(v7 + 16);
-  *(v7 + 16) = v8;
+  *(v7 + 16) = databaseHandle;
 
   if (!*(v7 + 16))
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
     {
       *buf = 138412290;
-      v17 = v6;
+      v17 = objectCopy;
       _os_log_fault_impl(&dword_1A7F47000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT, "failed to get database handle from %@", buf, 0xCu);
       if (*(v7 + 16))
       {
@@ -703,14 +703,14 @@ LABEL_14:
       }
     }
 
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"_PASDatabaseMigrator.m" lineNumber:126 description:{@"failed to get database handle from %@", v6}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASDatabaseMigrator.m" lineNumber:126 description:{@"failed to get database handle from %@", objectCopy}];
     goto LABEL_8;
   }
 
-  v10 = [v6 migrations];
+  migrations = [objectCopy migrations];
   v11 = *(v7 + 32);
-  *(v7 + 32) = v10;
+  *(v7 + 32) = migrations;
 
   if (*(v7 + 32))
   {
@@ -719,10 +719,10 @@ LABEL_14:
     goto LABEL_10;
   }
 
-  if (!os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT) || (*buf = 138412290, v17 = v6, _os_log_fault_impl(&dword_1A7F47000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT, "failed to get migrations from %@", buf, 0xCu), !*(v7 + 32)))
+  if (!os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT) || (*buf = 138412290, v17 = objectCopy, _os_log_fault_impl(&dword_1A7F47000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT, "failed to get migrations from %@", buf, 0xCu), !*(v7 + 32)))
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"_PASDatabaseMigrator.m" lineNumber:133 description:{@"failed to get migrations from %@", v6}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASDatabaseMigrator.m" lineNumber:133 description:{@"failed to get migrations from %@", objectCopy}];
 LABEL_8:
   }
 
@@ -789,7 +789,7 @@ LABEL_10:
   return v3;
 }
 
-- (unsigned)migrateDatabasesToVersion:(unsigned int)a3
+- (unsigned)migrateDatabasesToVersion:(unsigned int)version
 {
   v8 = 0;
   v9 = &v8;
@@ -802,17 +802,17 @@ LABEL_10:
   v6[3] = &unk_1E77F1A78;
   v6[4] = self;
   v6[5] = &v8;
-  v7 = a3;
+  versionCopy = version;
   [(_PASLock *)contexts runWithLockAcquired:v6];
   v4 = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
   return v4;
 }
 
-- (_PASDatabaseMigrator)initWithMigrationObjects:(id)a3
+- (_PASDatabaseMigrator)initWithMigrationObjects:(id)objects
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectsCopy = objects;
   v25.receiver = self;
   v25.super_class = _PASDatabaseMigrator;
   v5 = [(_PASDatabaseMigrator *)&v25 init];
@@ -823,7 +823,7 @@ LABEL_10:
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v7 = v4;
+    v7 = objectsCopy;
     v8 = [v7 countByEnumeratingWithState:&v21 objects:v28 count:16];
     if (v8)
     {

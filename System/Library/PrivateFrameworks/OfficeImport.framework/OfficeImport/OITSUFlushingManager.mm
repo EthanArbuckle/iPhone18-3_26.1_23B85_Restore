@@ -1,34 +1,34 @@
 @interface OITSUFlushingManager
 + (id)_singletonAlloc;
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 + (id)sharedManager;
 - (OITSUFlushingManager)init;
-- (TSUFlushableObjectInfo)eraseInfoForObject:(id)a3;
-- (void)_backgroundThread:(id)a3;
+- (TSUFlushableObjectInfo)eraseInfoForObject:(id)object;
+- (void)_backgroundThread:(id)thread;
 - (void)_bgTaskFinished;
 - (void)_bgTaskStarted;
 - (void)_bgThreadActive;
 - (void)_bgThreadInactive;
-- (void)_didUseObject:(id)a3;
+- (void)_didUseObject:(id)object;
 - (void)_flushAllEligible;
 - (void)_startFlushingObjects;
 - (void)_stopFlushingObjects;
-- (void)addObject:(id)a3;
+- (void)addObject:(id)object;
 - (void)dealloc;
 - (void)didReceiveMemoryWarning;
-- (void)doneWithObject:(id)a3;
-- (void)insertObjectInfo:(TSUFlushableObjectInfo *)a3;
-- (void)removeObject:(id)a3;
-- (void)safeToFlush:(id)a3 wasAccessed:(BOOL)a4;
+- (void)doneWithObject:(id)object;
+- (void)insertObjectInfo:(TSUFlushableObjectInfo *)info;
+- (void)removeObject:(id)object;
+- (void)safeToFlush:(id)flush wasAccessed:(BOOL)accessed;
 - (void)transferNewObjects;
-- (void)unsafeToFlush:(id)a3;
+- (void)unsafeToFlush:(id)flush;
 @end
 
 @implementation OITSUFlushingManager
 
 + (id)_singletonAlloc
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___OITSUFlushingManager;
   return objc_msgSendSuper2(&v3, sel_allocWithZone_, 0);
 }
@@ -39,7 +39,7 @@
   block[1] = 3221225472;
   block[2] = __37__OITSUFlushingManager_sharedManager__block_invoke;
   block[3] = &unk_2799C60B0;
-  block[4] = a1;
+  block[4] = self;
   if (+[OITSUFlushingManager sharedManager]::sOnceToken != -1)
   {
     dispatch_once(&+[OITSUFlushingManager sharedManager]::sOnceToken, block);
@@ -63,7 +63,7 @@ uint64_t __37__OITSUFlushingManager_sharedManager__block_invoke(uint64_t a1)
   return result;
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[OITSUFlushingManager allocWithZone:]"];
   +[OITSUAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](OITSUAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v3, [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUFlushingManager.mm"], 144, 0, "Don't alloc a singleton");
@@ -190,25 +190,25 @@ uint64_t __37__OITSUFlushingManager_sharedManager__block_invoke(uint64_t a1)
   [(OITSUFlushingManager *)&v19 dealloc];
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
   [(NSCondition *)self->_cond lock];
-  if (![(OITSUNoCopyDictionary *)self->_objects objectForKey:a3])
+  if (![(OITSUNoCopyDictionary *)self->_objects objectForKey:object])
   {
     [(OITSUFlushingManager *)self advanceClock];
     operator new();
   }
 
-  [(OITSUFlushingManager *)self _didUseObject:a3];
+  [(OITSUFlushingManager *)self _didUseObject:object];
   [(NSCondition *)self->_cond broadcast];
   [(NSCondition *)self->_cond unlock];
 }
 
-- (void)removeObject:(id)a3
+- (void)removeObject:(id)object
 {
   [(NSCondition *)self->_cond lock];
   flushingObject = self->_flushingObject;
-  if (flushingObject != a3)
+  if (flushingObject != object)
   {
     goto LABEL_6;
   }
@@ -226,7 +226,7 @@ uint64_t __37__OITSUFlushingManager_sharedManager__block_invoke(uint64_t a1)
   {
     flushingObject = self->_flushingObject;
 LABEL_6:
-    if (flushingObject != a3)
+    if (flushingObject != object)
     {
       break;
     }
@@ -236,10 +236,10 @@ LABEL_6:
 
   if (objc_opt_respondsToSelector())
   {
-    [a3 setFlushingManager:0];
+    [object setFlushingManager:0];
   }
 
-  v8 = [(OITSUFlushingManager *)self eraseInfoForObject:a3];
+  v8 = [(OITSUFlushingManager *)self eraseInfoForObject:object];
   if (v8)
   {
     v9 = v8;
@@ -249,7 +249,7 @@ LABEL_6:
   else
   {
     p_objects = &self->_inactiveObjects;
-    v11 = [-[OITSUNoCopyDictionary objectForKey:](self->_inactiveObjects objectForKey:{a3), "pointerValue"}];
+    v11 = [-[OITSUNoCopyDictionary objectForKey:](self->_inactiveObjects objectForKey:{object), "pointerValue"}];
     if (!v11)
     {
       goto LABEL_14;
@@ -258,7 +258,7 @@ LABEL_6:
     v9 = v11;
   }
 
-  [*p_objects removeObjectForKey:a3];
+  [*p_objects removeObjectForKey:object];
   MEMORY[0x25F897000](v9, 0x1080C40DCAC275BLL);
 LABEL_14:
   cond = self->_cond;
@@ -266,10 +266,10 @@ LABEL_14:
   [(NSCondition *)cond unlock];
 }
 
-- (void)doneWithObject:(id)a3
+- (void)doneWithObject:(id)object
 {
   [(NSCondition *)self->_cond lock];
-  v5 = [(OITSUFlushingManager *)self eraseInfoForObject:a3];
+  v5 = [(OITSUFlushingManager *)self eraseInfoForObject:object];
   if (v5)
   {
     v5->var3 = 2;
@@ -288,14 +288,14 @@ LABEL_14:
   [(NSCondition *)cond unlock];
 }
 
-- (void)unsafeToFlush:(id)a3
+- (void)unsafeToFlush:(id)flush
 {
   [(NSCondition *)self->_cond lock];
-  if (self->_flushingObject != a3)
+  if (self->_flushingObject != flush)
   {
-    if (![(OITSUNoCopyDictionary *)self->_inactiveObjects objectForKey:a3])
+    if (![(OITSUNoCopyDictionary *)self->_inactiveObjects objectForKey:flush])
     {
-      v10 = [(OITSUFlushingManager *)self eraseInfoForObject:a3];
+      v10 = [(OITSUFlushingManager *)self eraseInfoForObject:flush];
       if (!v10)
       {
         v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OITSUFlushingManager unsafeToFlush:]"];
@@ -304,9 +304,9 @@ LABEL_14:
       }
 
       v6 = [objc_alloc(MEMORY[0x277CCAE60]) initWithBytes:&v10 objCType:"^v"];
-      [(OITSUNoCopyDictionary *)self->_inactiveObjects setObject:v6 forUncopiedKey:a3];
+      [(OITSUNoCopyDictionary *)self->_inactiveObjects setObject:v6 forUncopiedKey:flush];
 
-      [(OITSUNoCopyDictionary *)self->_objects removeObjectForKey:a3];
+      [(OITSUNoCopyDictionary *)self->_objects removeObjectForKey:flush];
     }
 
     goto LABEL_12;
@@ -315,7 +315,7 @@ LABEL_14:
   bgThread = self->_bgThread;
   if (bgThread != [MEMORY[0x277CCACC8] currentThread])
   {
-    while (self->_flushingObject == a3)
+    while (self->_flushingObject == flush)
     {
       [(NSCondition *)self->_cond wait];
     }
@@ -333,22 +333,22 @@ LABEL_12:
   [(NSCondition *)cond unlock];
 }
 
-- (void)safeToFlush:(id)a3 wasAccessed:(BOOL)a4
+- (void)safeToFlush:(id)flush wasAccessed:(BOOL)accessed
 {
-  v4 = a4;
+  accessedCopy = accessed;
   [(NSCondition *)self->_cond lock];
-  if ([(OITSUNoCopyDictionary *)self->_objects objectForKey:a3])
+  if ([(OITSUNoCopyDictionary *)self->_objects objectForKey:flush])
   {
-    if (v4)
+    if (accessedCopy)
     {
 LABEL_3:
-      [(OITSUFlushingManager *)self _didUseObject:a3];
+      [(OITSUFlushingManager *)self _didUseObject:flush];
     }
   }
 
   else
   {
-    v9 = [-[OITSUNoCopyDictionary objectForKey:](self->_inactiveObjects objectForKey:{a3), "pointerValue"}];
+    v9 = [-[OITSUNoCopyDictionary objectForKey:](self->_inactiveObjects objectForKey:{flush), "pointerValue"}];
     if (!v9)
     {
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OITSUFlushingManager safeToFlush:wasAccessed:]"];
@@ -357,11 +357,11 @@ LABEL_3:
     }
 
     v8 = [objc_alloc(MEMORY[0x277CCAE60]) initWithBytes:&v9 objCType:"^v"];
-    [(OITSUNoCopyDictionary *)self->_objects setObject:v8 forUncopiedKey:a3];
+    [(OITSUNoCopyDictionary *)self->_objects setObject:v8 forUncopiedKey:flush];
 
-    [(OITSUNoCopyDictionary *)self->_inactiveObjects removeObjectForKey:a3];
+    [(OITSUNoCopyDictionary *)self->_inactiveObjects removeObjectForKey:flush];
     [(OITSUFlushingManager *)self insertObjectInfo:v9];
-    if (v4)
+    if (accessedCopy)
     {
       goto LABEL_3;
     }
@@ -447,11 +447,11 @@ LABEL_3:
   }
 }
 
-- (void)_backgroundThread:(id)a3
+- (void)_backgroundThread:(id)thread
 {
   self->_bgThread = [MEMORY[0x277CCACC8] currentThread];
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   [(OITSUFlushingManager *)self _bgThreadActive];
   [(NSCondition *)self->_cond lock];
   for (i = objc_autoreleasePoolPush(); !self->_stopFlushing; i = objc_autoreleasePoolPush())
@@ -516,9 +516,9 @@ LABEL_2:
   self->_bgThread = 0;
 }
 
-- (TSUFlushableObjectInfo)eraseInfoForObject:(id)a3
+- (TSUFlushableObjectInfo)eraseInfoForObject:(id)object
 {
-  v4 = [-[OITSUNoCopyDictionary objectForKey:](self->_objects objectForKey:{a3), "pointerValue"}];
+  v4 = [-[OITSUNoCopyDictionary objectForKey:](self->_objects objectForKey:{object), "pointerValue"}];
   v6 = v4;
   if (v4)
   {
@@ -536,19 +536,19 @@ LABEL_2:
   return v6;
 }
 
-- (void)insertObjectInfo:(TSUFlushableObjectInfo *)a3
+- (void)insertObjectInfo:(TSUFlushableObjectInfo *)info
 {
-  v5 = a3;
-  if (a3)
+  infoCopy = info;
+  if (info)
   {
     if ([(OITSUFlushingManager *)self isNewObject:?])
     {
-      std::__tree<TSUFlushableObjectInfo *,TSUFlushableObjectInfoPointerTimeStampLess,std::allocator<TSUFlushableObjectInfo *>>::__emplace_unique_key_args<TSUFlushableObjectInfo *,TSUFlushableObjectInfo * const&>(self->_sortedNewObjects, &v5);
+      std::__tree<TSUFlushableObjectInfo *,TSUFlushableObjectInfoPointerTimeStampLess,std::allocator<TSUFlushableObjectInfo *>>::__emplace_unique_key_args<TSUFlushableObjectInfo *,TSUFlushableObjectInfo * const&>(self->_sortedNewObjects, &infoCopy);
     }
 
     else
     {
-      std::__tree<TSUFlushableObjectInfo *,TSUFlushableObjectInfoPointerFlushingOrderLess,std::allocator<TSUFlushableObjectInfo *>>::__emplace_unique_key_args<TSUFlushableObjectInfo *,TSUFlushableObjectInfo * const&>(self->_sortedObjects, &v5);
+      std::__tree<TSUFlushableObjectInfo *,TSUFlushableObjectInfoPointerFlushingOrderLess,std::allocator<TSUFlushableObjectInfo *>>::__emplace_unique_key_args<TSUFlushableObjectInfo *,TSUFlushableObjectInfo * const&>(self->_sortedObjects, &infoCopy);
     }
   }
 
@@ -590,10 +590,10 @@ LABEL_2:
   }
 }
 
-- (void)_didUseObject:(id)a3
+- (void)_didUseObject:(id)object
 {
   [(OITSUFlushingManager *)self advanceClock];
-  v5 = [(OITSUFlushingManager *)self eraseInfoForObject:a3];
+  v5 = [(OITSUFlushingManager *)self eraseInfoForObject:object];
   if (v5)
   {
     var3 = v5->var3;
@@ -618,7 +618,7 @@ LABEL_2:
 
 - (void)_bgTaskStarted
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
   objc_sync_enter(self);
   if (self->_backgroundTransitionTaskId != *MEMORY[0x277D767B0])
   {
@@ -632,18 +632,18 @@ LABEL_2:
   v5[2] = __38__OITSUFlushingManager__bgTaskStarted__block_invoke;
   v5[3] = &unk_2799C60B0;
   v5[4] = self;
-  self->_backgroundTransitionTaskId = [v3 beginBackgroundTaskWithExpirationHandler:v5];
+  self->_backgroundTransitionTaskId = [mEMORY[0x277D75128] beginBackgroundTaskWithExpirationHandler:v5];
   objc_sync_exit(self);
 }
 
 - (void)_bgTaskFinished
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
   objc_sync_enter(self);
   v4 = *MEMORY[0x277D767B0];
   if (self->_backgroundTransitionTaskId != *MEMORY[0x277D767B0])
   {
-    [v3 endBackgroundTask:?];
+    [mEMORY[0x277D75128] endBackgroundTask:?];
     self->_backgroundTransitionTaskId = v4;
   }
 
@@ -652,7 +652,7 @@ LABEL_2:
 
 - (void)_bgThreadActive
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
   objc_sync_enter(self);
   if (self->_activeBgThreadTask != *MEMORY[0x277D767B0])
   {
@@ -666,18 +666,18 @@ LABEL_2:
   v5[2] = __39__OITSUFlushingManager__bgThreadActive__block_invoke;
   v5[3] = &unk_2799C60B0;
   v5[4] = self;
-  self->_activeBgThreadTask = [v3 beginBackgroundTaskWithExpirationHandler:v5];
+  self->_activeBgThreadTask = [mEMORY[0x277D75128] beginBackgroundTaskWithExpirationHandler:v5];
   objc_sync_exit(self);
 }
 
 - (void)_bgThreadInactive
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
   objc_sync_enter(self);
   v4 = *MEMORY[0x277D767B0];
   if (self->_activeBgThreadTask != *MEMORY[0x277D767B0])
   {
-    [v3 endBackgroundTask:?];
+    [mEMORY[0x277D75128] endBackgroundTask:?];
     self->_activeBgThreadTask = v4;
   }
 

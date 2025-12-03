@@ -1,27 +1,27 @@
 @interface UIAccessibilityHierarchyEncoder
-- (CGRect)_convertAccessibilityFrameOfElement:(id)a3 toViewSpaceOfContainer:(id)a4 remoteParent:(id)a5;
-- (UIAccessibilityHierarchyEncoder)initWithRootElement:(id)a3 traversalOptions:(id)a4;
-- (id)encodeWithError:(id *)a3;
-- (id)encodeWithLeafElements:(id)a3 error:(id *)a4;
-- (void)_resolveLeafElementsForRemoteElement:(id)a3 rootElement:(id)a4 addingToLeafElementDescriptions:(id)a5;
+- (CGRect)_convertAccessibilityFrameOfElement:(id)element toViewSpaceOfContainer:(id)container remoteParent:(id)parent;
+- (UIAccessibilityHierarchyEncoder)initWithRootElement:(id)element traversalOptions:(id)options;
+- (id)encodeWithError:(id *)error;
+- (id)encodeWithLeafElements:(id)elements error:(id *)error;
+- (void)_resolveLeafElementsForRemoteElement:(id)element rootElement:(id)rootElement addingToLeafElementDescriptions:(id)descriptions;
 @end
 
 @implementation UIAccessibilityHierarchyEncoder
 
-- (UIAccessibilityHierarchyEncoder)initWithRootElement:(id)a3 traversalOptions:(id)a4
+- (UIAccessibilityHierarchyEncoder)initWithRootElement:(id)element traversalOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  optionsCopy = options;
   v12.receiver = self;
   v12.super_class = UIAccessibilityHierarchyEncoder;
   v8 = [(UIAccessibilityHierarchyEncoder *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    [(UIAccessibilityHierarchyEncoder *)v8 setRootElement:v6];
-    if (v7)
+    [(UIAccessibilityHierarchyEncoder *)v8 setRootElement:elementCopy];
+    if (optionsCopy)
     {
-      [(UIAccessibilityHierarchyEncoder *)v9 setTraversalOptions:v7];
+      [(UIAccessibilityHierarchyEncoder *)v9 setTraversalOptions:optionsCopy];
     }
 
     else
@@ -36,33 +36,33 @@
   return v9;
 }
 
-- (id)encodeWithError:(id *)a3
+- (id)encodeWithError:(id *)error
 {
-  v5 = [(UIAccessibilityHierarchyEncoder *)self rootElement];
-  v6 = [(UIAccessibilityHierarchyEncoder *)self traversalOptions];
-  v7 = [v5 _accessibilityLeafDescendantsWithOptions:v6];
+  rootElement = [(UIAccessibilityHierarchyEncoder *)self rootElement];
+  traversalOptions = [(UIAccessibilityHierarchyEncoder *)self traversalOptions];
+  v7 = [rootElement _accessibilityLeafDescendantsWithOptions:traversalOptions];
 
-  v8 = [(UIAccessibilityHierarchyEncoder *)self encodeWithLeafElements:v7 error:a3];
+  v8 = [(UIAccessibilityHierarchyEncoder *)self encodeWithLeafElements:v7 error:error];
 
   return v8;
 }
 
-- (id)encodeWithLeafElements:(id)a3 error:(id *)a4
+- (id)encodeWithLeafElements:(id)elements error:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  elementsCopy = elements;
   v6 = objc_alloc_init(UIAccessibilityHierarchyDescription);
-  v7 = [(UIAccessibilityHierarchyEncoder *)self rootElement];
-  v8 = [UIAccessibilityElementDescription descriptionWithElement:v7 frameInContainerSpaceOrNil:*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
+  rootElement = [(UIAccessibilityHierarchyEncoder *)self rootElement];
+  v8 = [UIAccessibilityElementDescription descriptionWithElement:rootElement frameInContainerSpaceOrNil:*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
   v24 = v6;
   [(UIAccessibilityHierarchyDescription *)v6 setRootElement:v8];
 
-  v9 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v10 = v5;
+  v10 = elementsCopy;
   v11 = [v10 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v11)
   {
@@ -86,16 +86,16 @@
             goto LABEL_11;
           }
 
-          v17 = [(UIAccessibilityHierarchyEncoder *)self rootElement];
-          [(UIAccessibilityHierarchyEncoder *)self _resolveLeafElementsForRemoteElement:v16 rootElement:v17 addingToLeafElementDescriptions:v9];
+          rootElement2 = [(UIAccessibilityHierarchyEncoder *)self rootElement];
+          [(UIAccessibilityHierarchyEncoder *)self _resolveLeafElementsForRemoteElement:v16 rootElement:rootElement2 addingToLeafElementDescriptions:array];
         }
 
         else
         {
-          v17 = [(UIAccessibilityHierarchyEncoder *)self rootElement];
-          [(UIAccessibilityHierarchyEncoder *)self _convertAccessibilityFrameOfElement:v15 toViewSpaceOfContainer:v17 remoteParent:0];
+          rootElement2 = [(UIAccessibilityHierarchyEncoder *)self rootElement];
+          [(UIAccessibilityHierarchyEncoder *)self _convertAccessibilityFrameOfElement:v15 toViewSpaceOfContainer:rootElement2 remoteParent:0];
           v18 = [UIAccessibilityElementDescription descriptionWithElement:v15 frameInContainerSpaceOrNil:?];
-          [v9 addObject:v18];
+          [array addObject:v18];
         }
 
 LABEL_11:
@@ -107,29 +107,29 @@ LABEL_11:
     while (v12);
   }
 
-  [(UIAccessibilityHierarchyDescription *)v24 setLeafElements:v9];
+  [(UIAccessibilityHierarchyDescription *)v24 setLeafElements:array];
   v26 = 0;
   v19 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v24 requiringSecureCoding:1 error:&v26];
   v20 = v26;
   v21 = v20;
-  if (a4)
+  if (error)
   {
     v22 = v20;
-    *a4 = v21;
+    *error = v21;
   }
 
   return v19;
 }
 
-- (CGRect)_convertAccessibilityFrameOfElement:(id)a3 toViewSpaceOfContainer:(id)a4 remoteParent:(id)a5
+- (CGRect)_convertAccessibilityFrameOfElement:(id)element toViewSpaceOfContainer:(id)container remoteParent:(id)parent
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  containerCopy = container;
+  parentCopy = parent;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v8 accessibilityFrameInContainerSpace], !CGRectIsNull(v49)))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([elementCopy accessibilityFrameInContainerSpace], !CGRectIsNull(v49)))
   {
-    [v8 accessibilityFrameInContainerSpace];
+    [elementCopy accessibilityFrameInContainerSpace];
     v14 = v32;
     v16 = v33;
     v18 = v34;
@@ -138,7 +138,7 @@ LABEL_11:
 
   else
   {
-    v11 = [(UIAccessibilityHierarchyEncoder *)self rootElement];
+    rootElement = [(UIAccessibilityHierarchyEncoder *)self rootElement];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -147,15 +147,15 @@ LABEL_11:
 
     else
     {
-      [v9 _accessibilityParentView];
+      [containerCopy _accessibilityParentView];
     }
     v12 = ;
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v8 bounds];
-      [v8 convertRect:v12 toView:?];
+      [elementCopy bounds];
+      [elementCopy convertRect:v12 toView:?];
       v14 = v13;
       v16 = v15;
       v18 = v17;
@@ -167,18 +167,18 @@ LABEL_11:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v21 = [MEMORY[0x1E6988D68] elementWithUIElement:v8];
+        v21 = [MEMORY[0x1E6988D68] elementWithUIElement:elementCopy];
         [v21 frame];
         v14 = v22;
         v16 = v23;
         v18 = v24;
         v20 = v25;
-        v26 = [v12 window];
+        window = [v12 window];
 
-        if (v10 && !v26)
+        if (parentCopy && !window)
         {
-          v27 = [v10 _accessibilityParentView];
-          [v27 convertRect:v12 toView:{v14, v16, v18, v20}];
+          _accessibilityParentView = [parentCopy _accessibilityParentView];
+          [_accessibilityParentView convertRect:v12 toView:{v14, v16, v18, v20}];
           v14 = v28;
           v16 = v29;
           v18 = v30;
@@ -188,21 +188,21 @@ LABEL_11:
 
       else
       {
-        [v8 accessibilityFrame];
+        [elementCopy accessibilityFrame];
         v14 = v36;
         v16 = v37;
         v18 = v38;
         v20 = v39;
       }
 
-      v40 = [v12 window];
+      window2 = [v12 window];
       v50.origin.x = v14;
       v50.origin.y = v16;
       v50.size.width = v18;
       v50.size.height = v20;
-      if (!CGRectIsEmpty(v50) && v12 && v40)
+      if (!CGRectIsEmpty(v50) && v12 && window2)
       {
-        [v40 convertRect:v12 toView:{v14, v16, v18, v20}];
+        [window2 convertRect:v12 toView:{v14, v16, v18, v20}];
         v14 = v41;
         v16 = v42;
         v18 = v43;
@@ -222,11 +222,11 @@ LABEL_11:
   return result;
 }
 
-- (void)_resolveLeafElementsForRemoteElement:(id)a3 rootElement:(id)a4 addingToLeafElementDescriptions:(id)a5
+- (void)_resolveLeafElementsForRemoteElement:(id)element rootElement:(id)rootElement addingToLeafElementDescriptions:(id)descriptions
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  rootElementCopy = rootElement;
+  descriptionsCopy = descriptions;
   _AXShouldDispatchNonMainThreadCallbacksOnMainThreadPushReason();
   v21 = 0;
   v22 = &v21;
@@ -236,12 +236,12 @@ LABEL_11:
   v15[1] = 3221225472;
   v15[2] = __116__UIAccessibilityHierarchyEncoder__resolveLeafElementsForRemoteElement_rootElement_addingToLeafElementDescriptions___block_invoke;
   v15[3] = &unk_1E78AA7D8;
-  v11 = v10;
+  v11 = descriptionsCopy;
   v16 = v11;
-  v17 = self;
-  v12 = v9;
+  selfCopy = self;
+  v12 = rootElementCopy;
   v18 = v12;
-  v13 = v8;
+  v13 = elementCopy;
   v19 = v13;
   v20 = &v21;
   [v13 getLeafElementsFromRemoteSide:v15];

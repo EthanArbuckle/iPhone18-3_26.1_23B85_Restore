@@ -1,23 +1,23 @@
 @interface GDGraphModeOfTransportation
-- (GDGraphModeOfTransportation)initWithEntityIdentifierField:(id)a3 transportationTypeField:(id)a4 allTransportationTypeField:(id)a5;
+- (GDGraphModeOfTransportation)initWithEntityIdentifierField:(id)field transportationTypeField:(id)typeField allTransportationTypeField:(id)transportationTypeField;
 @end
 
 @implementation GDGraphModeOfTransportation
 
-- (GDGraphModeOfTransportation)initWithEntityIdentifierField:(id)a3 transportationTypeField:(id)a4 allTransportationTypeField:(id)a5
+- (GDGraphModeOfTransportation)initWithEntityIdentifierField:(id)field transportationTypeField:(id)typeField allTransportationTypeField:(id)transportationTypeField
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  fieldCopy = field;
+  typeFieldCopy = typeField;
+  transportationTypeFieldCopy = transportationTypeField;
   v15.receiver = self;
   v15.super_class = GDGraphModeOfTransportation;
   v12 = [(GDGraphModeOfTransportation *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_entityIdentifier, a3);
-    objc_storeStrong(&v13->_transportationType, a4);
-    objc_storeStrong(&v13->_allTransportationType, a5);
+    objc_storeStrong(&v12->_entityIdentifier, field);
+    objc_storeStrong(&v13->_transportationType, typeField);
+    objc_storeStrong(&v13->_allTransportationType, transportationTypeField);
   }
 
   return v13;

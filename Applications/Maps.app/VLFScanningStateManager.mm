@@ -1,11 +1,11 @@
 @interface VLFScanningStateManager
-- (VLFScanningStateManager)initWithSession:(id)a3 delegate:(id)a4;
+- (VLFScanningStateManager)initWithSession:(id)session delegate:(id)delegate;
 - (VLFScanningStateManagerDelegate)delegate;
 - (void)_createMonitors;
 - (void)_recalculateState;
 - (void)_start;
-- (void)scanningStateMonitor:(id)a3 didChangeState:(int64_t)a4;
-- (void)setCurrentState:(int64_t)a3;
+- (void)scanningStateMonitor:(id)monitor didChangeState:(int64_t)state;
+- (void)setCurrentState:(int64_t)state;
 @end
 
 @implementation VLFScanningStateManager
@@ -17,9 +17,9 @@
   return WeakRetained;
 }
 
-- (void)scanningStateMonitor:(id)a3 didChangeState:(int64_t)a4
+- (void)scanningStateMonitor:(id)monitor didChangeState:(int64_t)state
 {
-  v6 = a3;
+  monitorCopy = monitor;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v8 = dispatch_queue_get_label(0);
   if (label != v8)
@@ -65,18 +65,18 @@
   v11 = sub_100980688();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    if ((a4 - 2) > 3)
+    if ((state - 2) > 3)
     {
       v12 = @"VLFScanningStateInitializing";
     }
 
     else
     {
-      v12 = *(&off_1016303D0 + a4 - 2);
+      v12 = *(&off_1016303D0 + state - 2);
     }
 
     *buf = 138412546;
-    v19 = v6;
+    v19 = monitorCopy;
     v20 = 2112;
     v21 = v12;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%@ changed its state to %@", buf, 0x16u);
@@ -100,7 +100,7 @@
   os_activity_scope_leave(&v17);
 }
 
-- (void)setCurrentState:(int64_t)a3
+- (void)setCurrentState:(int64_t)state
 {
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
@@ -141,14 +141,14 @@
     }
   }
 
-  if (self->_currentState != a3)
+  if (self->_currentState != state)
   {
     *state = 0;
     *&state[8] = 0;
-    v8 = [(VLFScanningStateManager *)self activity];
-    os_activity_scope_enter(v8, state);
+    activity = [(VLFScanningStateManager *)self activity];
+    os_activity_scope_enter(activity, state);
 
-    self->_currentState = a3;
+    self->_currentState = state;
     v9 = sub_100980688();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -168,8 +168,8 @@
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Changing state to: %@", &v16, 0xCu);
     }
 
-    v12 = [(VLFScanningStateManager *)self delegate];
-    [v12 scanningStateManager:self didChangeState:self->_currentState];
+    delegate = [(VLFScanningStateManager *)self delegate];
+    [delegate scanningStateManager:self didChangeState:self->_currentState];
 
     os_activity_scope_leave(state);
   }
@@ -218,14 +218,14 @@
 
   *state = 0;
   *&state[8] = 0;
-  v6 = [(VLFScanningStateManager *)self activity];
-  os_activity_scope_enter(v6, state);
+  activity = [(VLFScanningStateManager *)self activity];
+  os_activity_scope_enter(activity, state);
 
-  v7 = [(VLFScanningStateManager *)self cameraMotionMonitor];
-  if (v7)
+  cameraMotionMonitor = [(VLFScanningStateManager *)self cameraMotionMonitor];
+  if (cameraMotionMonitor)
   {
-    v8 = [(VLFScanningStateManager *)self cameraMotionMonitor];
-    v9 = [v8 currentState] == 2;
+    cameraMotionMonitor2 = [(VLFScanningStateManager *)self cameraMotionMonitor];
+    v9 = [cameraMotionMonitor2 currentState] == 2;
 
     if (!v9)
     {
@@ -236,14 +236,14 @@
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "Camera motion monitor detected device is moving too fast; updating state", v20, 2u);
       }
 
-      v14 = [(VLFScanningStateManager *)self cameraMotionMonitor];
-      -[VLFScanningStateManager setCurrentState:](self, "setCurrentState:", [v14 currentState]);
+      cameraMotionMonitor3 = [(VLFScanningStateManager *)self cameraMotionMonitor];
+      -[VLFScanningStateManager setCurrentState:](self, "setCurrentState:", [cameraMotionMonitor3 currentState]);
       goto LABEL_18;
     }
   }
 
-  v10 = [(VLFScanningStateManager *)self cameraPitchMonitor];
-  if ([v10 currentState] == 5)
+  cameraPitchMonitor = [(VLFScanningStateManager *)self cameraPitchMonitor];
+  if ([cameraPitchMonitor currentState] == 5)
   {
 
 LABEL_12:
@@ -254,15 +254,15 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Camera pitch monitor detected device is tilted too much; updating state", v20, 2u);
     }
 
-    v14 = [(VLFScanningStateManager *)self cameraPitchMonitor];
-    -[VLFScanningStateManager setCurrentState:](self, "setCurrentState:", [v14 currentState]);
+    cameraMotionMonitor3 = [(VLFScanningStateManager *)self cameraPitchMonitor];
+    -[VLFScanningStateManager setCurrentState:](self, "setCurrentState:", [cameraMotionMonitor3 currentState]);
 LABEL_18:
 
     goto LABEL_19;
   }
 
-  v11 = [(VLFScanningStateManager *)self cameraPitchMonitor];
-  v12 = [v11 currentState] == 4;
+  cameraPitchMonitor2 = [(VLFScanningStateManager *)self cameraPitchMonitor];
+  v12 = [cameraPitchMonitor2 currentState] == 4;
 
   if (v12)
   {
@@ -285,8 +285,8 @@ LABEL_19:
 {
   state.opaque[0] = 0;
   state.opaque[1] = 0;
-  v3 = [(VLFScanningStateManager *)self activity];
-  os_activity_scope_enter(v3, &state);
+  activity = [(VLFScanningStateManager *)self activity];
+  os_activity_scope_enter(activity, &state);
 
   GEOConfigGetDouble();
   v5 = v4;
@@ -334,32 +334,32 @@ LABEL_19:
 {
   state.opaque[0] = 0;
   state.opaque[1] = 0;
-  v3 = [(VLFScanningStateManager *)self activity];
-  os_activity_scope_enter(v3, &state);
+  activity = [(VLFScanningStateManager *)self activity];
+  os_activity_scope_enter(activity, &state);
 
   v4 = +[NSUserDefaults standardUserDefaults];
   v5 = [v4 BOOLForKey:@"VLFSessionScanningEnableCameraMotionMonitorKey"];
 
-  v6 = sub_100980688();
-  v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
+  session = sub_100980688();
+  v7 = os_log_type_enabled(session, OS_LOG_TYPE_INFO);
   if (v5)
   {
     if (v7)
     {
       *v14 = 0;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Creating camera motion monitor", v14, 2u);
+      _os_log_impl(&_mh_execute_header, session, OS_LOG_TYPE_INFO, "Creating camera motion monitor", v14, 2u);
     }
 
     v8 = [VLFScanningStateCameraMotionMonitor alloc];
-    v6 = [(VLFScanningStateManager *)self session];
-    v9 = [(VLFScanningStateMonitor *)v8 initWithDelegate:self session:v6];
+    session = [(VLFScanningStateManager *)self session];
+    v9 = [(VLFScanningStateMonitor *)v8 initWithDelegate:self session:session];
     [(VLFScanningStateManager *)self setCameraMotionMonitor:v9];
   }
 
   else if (v7)
   {
     *v14 = 0;
-    _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Not creating camera motion monitor", v14, 2u);
+    _os_log_impl(&_mh_execute_header, session, OS_LOG_TYPE_INFO, "Not creating camera motion monitor", v14, 2u);
   }
 
   v10 = sub_100980688();
@@ -370,18 +370,18 @@ LABEL_19:
   }
 
   v11 = [VLFScanningStateCameraPitchMonitor alloc];
-  v12 = [(VLFScanningStateManager *)self session];
-  v13 = [(VLFScanningStateCameraPitchMonitor *)v11 initWithDelegate:self session:v12];
+  session2 = [(VLFScanningStateManager *)self session];
+  v13 = [(VLFScanningStateCameraPitchMonitor *)v11 initWithDelegate:self session:session2];
   [(VLFScanningStateManager *)self setCameraPitchMonitor:v13];
 
   os_activity_scope_leave(&state);
 }
 
-- (VLFScanningStateManager)initWithSession:(id)a3 delegate:(id)a4
+- (VLFScanningStateManager)initWithSession:(id)session delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  sessionCopy = session;
+  delegateCopy = delegate;
+  if (!sessionCopy)
   {
     v13 = sub_10006D178();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -411,7 +411,7 @@ LABEL_19:
     }
   }
 
-  if (!v8)
+  if (!delegateCopy)
   {
     v17 = sub_10006D178();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -451,11 +451,11 @@ LABEL_19:
 
     *state = 0;
     *&state[8] = 0;
-    v11 = [(VLFScanningStateManager *)v9 activity];
-    os_activity_scope_enter(v11, state);
+    activity = [(VLFScanningStateManager *)v9 activity];
+    os_activity_scope_enter(activity, state);
 
-    objc_storeWeak(&v9->_delegate, v8);
-    objc_storeStrong(&v9->_session, a3);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
+    objc_storeStrong(&v9->_session, session);
     v9->_currentState = 1;
     [(VLFScanningStateManager *)v9 _createMonitors];
     [(VLFScanningStateManager *)v9 _start];

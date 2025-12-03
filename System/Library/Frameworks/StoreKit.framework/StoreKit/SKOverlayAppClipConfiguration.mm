@@ -3,7 +3,7 @@
 - (NSString)customProductPageIdentifier;
 - (NSString)latestReleaseID;
 - (NSString)providerToken;
-- (SKOverlayAppClipConfiguration)initWithBacking:(id)a3;
+- (SKOverlayAppClipConfiguration)initWithBacking:(id)backing;
 - (SKOverlayAppClipConfiguration)initWithPosition:(SKOverlayPosition)position;
 - (SKOverlayPosition)position;
 - (id)_init;
@@ -20,10 +20,10 @@
 
 - (SKOverlayAppClipConfiguration)initWithPosition:(SKOverlayPosition)position
 {
-  v4 = [objc_alloc(MEMORY[0x1E698B588]) initWithPosition:position != SKOverlayPositionBottom];
+  sKOverlayPositionBottom = [objc_alloc(MEMORY[0x1E698B588]) initWithPosition:position != SKOverlayPositionBottom];
   v7.receiver = self;
   v7.super_class = SKOverlayAppClipConfiguration;
-  v5 = [(SKOverlayConfiguration *)&v7 initWithBacking:v4];
+  v5 = [(SKOverlayConfiguration *)&v7 initWithBacking:sKOverlayPositionBottom];
 
   return v5;
 }
@@ -35,83 +35,83 @@
   return [(SKOverlayConfiguration *)&v3 _init];
 }
 
-- (SKOverlayAppClipConfiguration)initWithBacking:(id)a3
+- (SKOverlayAppClipConfiguration)initWithBacking:(id)backing
 {
   v4.receiver = self;
   v4.super_class = SKOverlayAppClipConfiguration;
-  return [(SKOverlayConfiguration *)&v4 initWithBacking:a3];
+  return [(SKOverlayConfiguration *)&v4 initWithBacking:backing];
 }
 
 - (void)setCampaignToken:(NSString *)campaignToken
 {
   v4 = campaignToken;
-  v5 = [(SKOverlayConfiguration *)self _backing];
-  [v5 setCampaignToken:v4];
+  _backing = [(SKOverlayConfiguration *)self _backing];
+  [_backing setCampaignToken:v4];
 }
 
 - (NSString)campaignToken
 {
-  v2 = [(SKOverlayConfiguration *)self _backing];
-  v3 = [v2 campaignToken];
+  _backing = [(SKOverlayConfiguration *)self _backing];
+  campaignToken = [_backing campaignToken];
 
-  return v3;
+  return campaignToken;
 }
 
 - (void)setProviderToken:(NSString *)providerToken
 {
   v4 = providerToken;
-  v5 = [(SKOverlayConfiguration *)self _backing];
-  [v5 setProviderToken:v4];
+  _backing = [(SKOverlayConfiguration *)self _backing];
+  [_backing setProviderToken:v4];
 }
 
 - (NSString)providerToken
 {
-  v2 = [(SKOverlayConfiguration *)self _backing];
-  v3 = [v2 providerToken];
+  _backing = [(SKOverlayConfiguration *)self _backing];
+  providerToken = [_backing providerToken];
 
-  return v3;
+  return providerToken;
 }
 
 - (void)setCustomProductPageIdentifier:(NSString *)customProductPageIdentifier
 {
   v4 = customProductPageIdentifier;
-  v5 = [(SKOverlayConfiguration *)self _backing];
-  [v5 setProductVariantID:v4];
+  _backing = [(SKOverlayConfiguration *)self _backing];
+  [_backing setProductVariantID:v4];
 }
 
 - (NSString)customProductPageIdentifier
 {
-  v2 = [(SKOverlayConfiguration *)self _backing];
-  v3 = [v2 productVariantID];
+  _backing = [(SKOverlayConfiguration *)self _backing];
+  productVariantID = [_backing productVariantID];
 
-  return v3;
+  return productVariantID;
 }
 
 - (void)setLatestReleaseID:(NSString *)latestReleaseID
 {
   v4 = latestReleaseID;
-  v5 = [(SKOverlayConfiguration *)self _backing];
-  [v5 setLatestReleaseID:v4];
+  _backing = [(SKOverlayConfiguration *)self _backing];
+  [_backing setLatestReleaseID:v4];
 }
 
 - (NSString)latestReleaseID
 {
-  v2 = [(SKOverlayConfiguration *)self _backing];
-  v3 = [v2 latestReleaseID];
+  _backing = [(SKOverlayConfiguration *)self _backing];
+  latestReleaseID = [_backing latestReleaseID];
 
-  return v3;
+  return latestReleaseID;
 }
 
 - (void)setPosition:(SKOverlayPosition)position
 {
-  v4 = [(SKOverlayConfiguration *)self _backing];
-  [v4 setPosition:position != SKOverlayPositionBottom];
+  _backing = [(SKOverlayConfiguration *)self _backing];
+  [_backing setPosition:position != SKOverlayPositionBottom];
 }
 
 - (SKOverlayPosition)position
 {
-  v2 = [(SKOverlayConfiguration *)self _backing];
-  v3 = ([v2 position] != 0);
+  _backing = [(SKOverlayConfiguration *)self _backing];
+  v3 = ([_backing position] != 0);
 
   return v3;
 }
@@ -120,15 +120,15 @@
 {
   v6 = key;
   v7 = value;
-  v8 = [(SKOverlayConfiguration *)self _backing];
-  [v8 setAdditionalValue:v7 forKey:v6];
+  _backing = [(SKOverlayConfiguration *)self _backing];
+  [_backing setAdditionalValue:v7 forKey:v6];
 }
 
 - (id)additionalValueForKey:(NSString *)key
 {
   v4 = key;
-  v5 = [(SKOverlayConfiguration *)self _backing];
-  v6 = [v5 additionalValueForKey:v4];
+  _backing = [(SKOverlayConfiguration *)self _backing];
+  v6 = [_backing additionalValueForKey:v4];
 
   return v6;
 }

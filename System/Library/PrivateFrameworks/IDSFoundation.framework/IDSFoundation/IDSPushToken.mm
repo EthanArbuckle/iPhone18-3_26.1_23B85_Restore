@@ -1,39 +1,39 @@
 @interface IDSPushToken
-+ (IDSPushToken)pushTokenWithData:(id)a3;
-+ (IDSPushToken)pushTokenWithData:(id)a3 withServiceLoggingHint:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPushToken:(id)a3;
-- (IDSPushToken)initWithCoder:(id)a3;
-- (IDSPushToken)initWithData:(id)a3 withServiceLoggingHint:(id)a4;
++ (IDSPushToken)pushTokenWithData:(id)data;
++ (IDSPushToken)pushTokenWithData:(id)data withServiceLoggingHint:(id)hint;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPushToken:(id)token;
+- (IDSPushToken)initWithCoder:(id)coder;
+- (IDSPushToken)initWithData:(id)data withServiceLoggingHint:(id)hint;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSPushToken
 
-+ (IDSPushToken)pushTokenWithData:(id)a3
++ (IDSPushToken)pushTokenWithData:(id)data
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithData:v4 withServiceLoggingHint:0];
+  dataCopy = data;
+  v5 = [[self alloc] initWithData:dataCopy withServiceLoggingHint:0];
 
   return v5;
 }
 
-+ (IDSPushToken)pushTokenWithData:(id)a3 withServiceLoggingHint:(id)a4
++ (IDSPushToken)pushTokenWithData:(id)data withServiceLoggingHint:(id)hint
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithData:v7 withServiceLoggingHint:v6];
+  hintCopy = hint;
+  dataCopy = data;
+  v8 = [[self alloc] initWithData:dataCopy withServiceLoggingHint:hintCopy];
 
   return v8;
 }
 
-- (IDSPushToken)initWithData:(id)a3 withServiceLoggingHint:(id)a4
+- (IDSPushToken)initWithData:(id)data withServiceLoggingHint:(id)hint
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  dataCopy = data;
+  hintCopy = hint;
+  if (dataCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v13.receiver = self;
     v13.super_class = IDSPushToken;
@@ -41,49 +41,49 @@
     p_isa = &v9->super.isa;
     if (v9)
     {
-      objc_storeStrong(&v9->_rawToken, a3);
-      objc_storeStrong(p_isa + 2, a4);
+      objc_storeStrong(&v9->_rawToken, data);
+      objc_storeStrong(p_isa + 2, hint);
     }
 
     self = p_isa;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (BOOL)isEqualToPushToken:(id)a3
+- (BOOL)isEqualToPushToken:(id)token
 {
-  if (self == a3)
+  if (self == token)
   {
     return 1;
   }
 
-  v4 = [a3 rawToken];
-  v5 = [(IDSPushToken *)self rawToken];
-  v6 = [v4 isEqualToData:v5];
+  rawToken = [token rawToken];
+  rawToken2 = [(IDSPushToken *)self rawToken];
+  v6 = [rawToken isEqualToData:rawToken2];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IDSPushToken *)self isEqualToPushToken:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IDSPushToken *)self isEqualToPushToken:equalCopy];
 
   return v5;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(IDSPushToken *)self rawToken];
-  v3 = [v2 hash];
+  rawToken = [(IDSPushToken *)self rawToken];
+  v3 = [rawToken hash];
 
   return v3;
 }
@@ -98,24 +98,24 @@
   return v6;
 }
 
-- (IDSPushToken)initWithCoder:(id)a3
+- (IDSPushToken)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rawToken"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serviceHint"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rawToken"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serviceHint"];
 
   v7 = [(IDSPushToken *)self initWithData:v5 withServiceLoggingHint:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(IDSPushToken *)self rawToken];
-  [v4 encodeObject:v5 forKey:@"rawToken"];
+  coderCopy = coder;
+  rawToken = [(IDSPushToken *)self rawToken];
+  [coderCopy encodeObject:rawToken forKey:@"rawToken"];
 
-  v6 = [(IDSPushToken *)self serviceLoggingHint];
-  [v4 encodeObject:v6 forKey:@"serviceHint"];
+  serviceLoggingHint = [(IDSPushToken *)self serviceLoggingHint];
+  [coderCopy encodeObject:serviceLoggingHint forKey:@"serviceHint"];
 }
 
 @end

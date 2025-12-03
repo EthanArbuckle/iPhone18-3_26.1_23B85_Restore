@@ -1,42 +1,42 @@
 @interface UMPersonaMachPort
-- (UMPersonaMachPort)initWithCoder:(id)a3;
-- (id)replacementObjectForCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (UMPersonaMachPort)initWithCoder:(id)coder;
+- (id)replacementObjectForCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UMPersonaMachPort
 
-- (id)replacementObjectForCoder:(id)a3
+- (id)replacementObjectForCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = UMPersonaMachPort;
-    v5 = [(UMPersonaMachPort *)&v8 replacementObjectForCoder:v4];
+    selfCopy = [(UMPersonaMachPort *)&v8 replacementObjectForCoder:coderCopy];
   }
 
-  v6 = v5;
+  v6 = selfCopy;
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   if ([(UMPersonaMachPort *)self machPort]&& [(UMPersonaMachPort *)self machPort]!= -1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     [(UMPersonaMachPort *)self machPort];
     v5 = xpc_mach_send_create();
     if (v5)
     {
-      [v4 encodeXPCObject:v5 forKey:@"UMPersonaMachPort"];
+      [coderCopy encodeXPCObject:v5 forKey:@"UMPersonaMachPort"];
     }
   }
 
@@ -44,13 +44,13 @@
   {
     v6.receiver = self;
     v6.super_class = UMPersonaMachPort;
-    [(UMPersonaMachPort *)&v6 encodeWithCoder:v4];
+    [(UMPersonaMachPort *)&v6 encodeWithCoder:coderCopy];
   }
 }
 
-- (UMPersonaMachPort)initWithCoder:(id)a3
+- (UMPersonaMachPort)initWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -58,7 +58,7 @@
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v5 decodeXPCObjectOfType:&_xpc_type_mach_send forKey:@"UMPersonaMachPort"], (v6 = objc_claimAutoreleasedReturnValue()) != 0) && (v7 = v6, v8 = xpc_mach_send_copy_right(), v7, (v8 - 1) <= 0xFFFFFFFD))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([coderCopy decodeXPCObjectOfType:&_xpc_type_mach_send forKey:@"UMPersonaMachPort"], (v6 = objc_claimAutoreleasedReturnValue()) != 0) && (v7 = v6, v8 = xpc_mach_send_copy_right(), v7, (v8 - 1) <= 0xFFFFFFFD))
   {
     v12.receiver = self;
     v12.super_class = UMPersonaMachPort;
@@ -73,7 +73,7 @@
   {
 
     v10 = [NSError errorWithDomain:NSOSStatusErrorDomain code:4864 userInfo:0];
-    [v5 failWithError:v10];
+    [coderCopy failWithError:v10];
 
     v9 = 0;
   }

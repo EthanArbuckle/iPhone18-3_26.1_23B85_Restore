@@ -1,7 +1,7 @@
 @interface NIServerNearbyPeerNbammsSession
-+ (void)generateSOSBeaconDataForSubject:(BOOL)a3 matchingPeerData:(id)a4 completion:(id)a5;
-- (NIServerNearbyPeerNbammsSession)initWithDataSource:(id)a3 delegate:(id)a4 clientQueue:(id)a5;
-- (float)_adjustDutyCycleForInterfaceDelays:(float)a3 schedulingInterval:(unsigned int)a4;
++ (void)generateSOSBeaconDataForSubject:(BOOL)subject matchingPeerData:(id)data completion:(id)completion;
+- (NIServerNearbyPeerNbammsSession)initWithDataSource:(id)source delegate:(id)delegate clientQueue:(id)queue;
+- (float)_adjustDutyCycleForInterfaceDelays:(float)delays schedulingInterval:(unsigned int)interval;
 - (float)_getDutyCycleForTriggeredDutyCycledAcquisition;
 - (id).cxx_construct;
 - (id)_configureForGenericUseCase;
@@ -12,42 +12,42 @@
 - (id)run;
 - (optional<SecondarySchedulingParameters>)_getSecondarySchedulingParameters;
 - (optional<unsigned)_getDitherConst;
-- (shared_ptr<rose::objects::NBAMMSSession>)_buildRoseSession:(const void *)a3;
-- (unsigned)_getNbUwbAcquisitionBandChannel:(id)a3;
-- (unsigned)_getNumMMSFragments:(id)a3;
-- (unsigned)_getRangingTimeoutWithKey:(id)a3 timeoutIfNoOverride:(unsigned __int16)a4;
+- (shared_ptr<rose::objects::NBAMMSSession>)_buildRoseSession:(const void *)session;
+- (unsigned)_getNbUwbAcquisitionBandChannel:(id)channel;
+- (unsigned)_getNumMMSFragments:(id)fragments;
+- (unsigned)_getRangingTimeoutWithKey:(id)key timeoutIfNoOverride:(unsigned __int16)override;
 - (unsigned)_getSchedulingIntervalForTriggeredDutyCycledAcquisition;
-- (void)_initializeCryptoSessionsWithSessionKey:(id)a3 andSessionIdentifier:(id)a4;
-- (void)_nbammsSessionInvalidatedWithReason:(int)a3;
-- (void)didReceiveNewSolution:(const void *)a3;
-- (void)didReceiveRemoteData:(const void *)a3;
-- (void)didReceiveUnsuccessfulSolution:(const void *)a3;
+- (void)_initializeCryptoSessionsWithSessionKey:(id)key andSessionIdentifier:(id)identifier;
+- (void)_nbammsSessionInvalidatedWithReason:(int)reason;
+- (void)didReceiveNewSolution:(const void *)solution;
+- (void)didReceiveRemoteData:(const void *)data;
+- (void)didReceiveUnsuccessfulSolution:(const void *)solution;
 - (void)invalidate;
-- (void)serviceRequestDidUpdateStatus:(ServiceRequestStatusUpdate)a3;
-- (void)updatePeerData:(const void *)a3;
+- (void)serviceRequestDidUpdateStatus:(ServiceRequestStatusUpdate)status;
+- (void)updatePeerData:(const void *)data;
 @end
 
 @implementation NIServerNearbyPeerNbammsSession
 
-- (NIServerNearbyPeerNbammsSession)initWithDataSource:(id)a3 delegate:(id)a4 clientQueue:(id)a5
+- (NIServerNearbyPeerNbammsSession)initWithDataSource:(id)source delegate:(id)delegate clientQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sourceCopy = source;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v20.receiver = self;
   v20.super_class = NIServerNearbyPeerNbammsSession;
   v11 = [(NIServerNearbyPeerNbammsSession *)&v20 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_dataSource, v8);
-    objc_storeWeak(&v12->_delegate, v9);
-    objc_storeStrong(&v12->_clientQueue, a5);
-    v13 = [v8 getResourcesManager];
-    v14 = v13;
-    if (v13)
+    objc_storeWeak(&v11->_dataSource, sourceCopy);
+    objc_storeWeak(&v12->_delegate, delegateCopy);
+    objc_storeStrong(&v12->_clientQueue, queue);
+    getResourcesManager = [sourceCopy getResourcesManager];
+    v14 = getResourcesManager;
+    if (getResourcesManager)
     {
-      [v13 protobufLogger];
+      [getResourcesManager protobufLogger];
       v15 = v19;
     }
 
@@ -74,14 +74,14 @@
 {
   dispatch_assert_queue_V2(self->_clientQueue);
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v4 = [WeakRetained getNIConfiguration];
-  v5 = [v4 useCase];
+  getNIConfiguration = [WeakRetained getNIConfiguration];
+  useCase = [getNIConfiguration useCase];
 
-  if (v5)
+  if (useCase)
   {
-    if (v5 == 1)
+    if (useCase == 1)
     {
-      v6 = [(NIServerNearbyPeerNbammsSession *)self _configureForSOSBeacon];
+      _configureForSOSBeacon = [(NIServerNearbyPeerNbammsSession *)self _configureForSOSBeacon];
     }
 
     else
@@ -91,16 +91,16 @@
         sub_1004BB310();
       }
 
-      v6 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5888 userInfo:0];
+      _configureForSOSBeacon = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5888 userInfo:0];
     }
   }
 
   else
   {
-    v6 = [(NIServerNearbyPeerNbammsSession *)self _configureForGenericUseCase];
+    _configureForSOSBeacon = [(NIServerNearbyPeerNbammsSession *)self _configureForGenericUseCase];
   }
 
-  return v6;
+  return _configureForSOSBeacon;
 }
 
 - (id)_configureForGenericUseCase
@@ -109,8 +109,8 @@
   if (!self->_nbammsSession.__ptr_)
   {
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-    v5 = [WeakRetained getNIConfiguration];
-    v6 = [v5 copy];
+    getNIConfiguration = [WeakRetained getNIConfiguration];
+    v6 = [getNIConfiguration copy];
 
     if (([v6 isExtendedDistanceMeasurementEnabled] & 1) == 0)
     {
@@ -123,10 +123,10 @@
       goto LABEL_44;
     }
 
-    v7 = [WeakRetained getResourcesManager];
-    v8 = [v7 lifecycleSupervisor];
+    getResourcesManager = [WeakRetained getResourcesManager];
+    lifecycleSupervisor = [getResourcesManager lifecycleSupervisor];
 
-    [v8 setTimeoutOnPeerInactivity:1];
+    [lifecycleSupervisor setTimeoutOnPeerInactivity:1];
     v9 = +[NSUserDefaults standardUserDefaults];
     [v9 doubleForKey:@"NIPeerEDM_MaxInactivityBeforeTrackingBeganSeconds"];
     v11 = v10;
@@ -147,7 +147,7 @@
       }
     }
 
-    [v8 setMaxInactivityBeforeTrackingBeganSeconds:v11];
+    [lifecycleSupervisor setMaxInactivityBeforeTrackingBeganSeconds:v11];
     v13 = +[NSUserDefaults standardUserDefaults];
     [v13 doubleForKey:@"NIPeerEDM_MaxInactivityAfterTrackingBeganSeconds"];
     v15 = v14;
@@ -168,15 +168,15 @@
       }
     }
 
-    [v8 setMaxInactivityAfterTrackingBeganSeconds:v15];
-    v17 = [v6 debugParameters];
-    v18 = [v17 objectForKey:@"useTestNbammsMode"];
+    [lifecycleSupervisor setMaxInactivityAfterTrackingBeganSeconds:v15];
+    debugParameters = [v6 debugParameters];
+    v18 = [debugParameters objectForKey:@"useTestNbammsMode"];
     v19 = v18 == 0;
 
     if (!v19)
     {
-      v20 = [v6 debugParameters];
-      v21 = [v20 objectForKey:@"useTestNbammsMode"];
+      debugParameters2 = [v6 debugParameters];
+      v21 = [debugParameters2 objectForKey:@"useTestNbammsMode"];
       self->_useTestNbammsMode = [v21 BOOLValue];
 
       v22 = qword_1009F9820;
@@ -229,15 +229,15 @@ LABEL_39:
       goto LABEL_42;
     }
 
-    v29 = [v6 peerDiscoveryToken];
-    v30 = [v29 deviceCapabilities];
-    v31 = [v30 supportsExtendedDistanceMeasurement];
+    peerDiscoveryToken = [v6 peerDiscoveryToken];
+    deviceCapabilities = [peerDiscoveryToken deviceCapabilities];
+    supportsExtendedDistanceMeasurement = [deviceCapabilities supportsExtendedDistanceMeasurement];
 
     v32 = qword_1009F9820;
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
     {
       v33 = "N";
-      if (v31)
+      if (supportsExtendedDistanceMeasurement)
       {
         v33 = "Y";
       }
@@ -247,17 +247,17 @@ LABEL_39:
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "#peer-nba,Peer supports NBAMMS %s", buf, 0xCu);
     }
 
-    if ((v31 & 1) != 0 || self->_useTestNbammsMode)
+    if ((supportsExtendedDistanceMeasurement & 1) != 0 || self->_useTestNbammsMode)
     {
-      v34 = [v6 peerDiscoveryToken];
-      v35 = v34 == 0;
+      peerDiscoveryToken2 = [v6 peerDiscoveryToken];
+      v35 = peerDiscoveryToken2 == 0;
 
       if (!v35)
       {
-        v36 = [WeakRetained getResourcesManager];
-        v37 = [v36 discoveryToken];
+        getResourcesManager2 = [WeakRetained getResourcesManager];
+        discoveryToken = [getResourcesManager2 discoveryToken];
 
-        if (!v37)
+        if (!discoveryToken)
         {
           if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
           {
@@ -268,9 +268,9 @@ LABEL_39:
           goto LABEL_83;
         }
 
-        v38 = [v6 peerDiscoveryToken];
+        peerDiscoveryToken3 = [v6 peerDiscoveryToken];
         v64 = 0;
-        v39 = [WeakRetained shouldInitiate:v37 peerDiscoveryToken:v38 error:&v64];
+        v39 = [WeakRetained shouldInitiate:discoveryToken peerDiscoveryToken:peerDiscoveryToken3 error:&v64];
         v63 = v64;
         self->_isInitiator = v39;
 
@@ -281,9 +281,9 @@ LABEL_39:
           {
             v59 = [v63 description];
             v60 = v59;
-            v61 = [v59 UTF8String];
+            uTF8String = [v59 UTF8String];
             *buf = 136315138;
-            *&buf[4] = v61;
+            *&buf[4] = uTF8String;
             _os_log_error_impl(&_mh_execute_header, v40, OS_LOG_TYPE_ERROR, "#peer-nba,Unable to determine initiator: %s", buf, 0xCu);
           }
 
@@ -293,20 +293,20 @@ LABEL_39:
         else
         {
           isInitiator = self->_isInitiator;
-          v49 = v37;
+          peerDiscoveryToken4 = discoveryToken;
           if (!isInitiator)
           {
-            v49 = [v6 peerDiscoveryToken];
+            peerDiscoveryToken4 = [v6 peerDiscoveryToken];
           }
 
-          v62 = [(NIServerNearbyPeerNbammsSession *)self _getNbUwbAcquisitionBandChannel:v49];
+          v62 = [(NIServerNearbyPeerNbammsSession *)self _getNbUwbAcquisitionBandChannel:peerDiscoveryToken4];
           if (!isInitiator)
           {
           }
 
-          v50 = [(NIServerNearbyPeerNbammsSession *)self _getNumMMSFragments:v37];
-          v51 = [v6 peerDiscoveryToken];
-          v52 = [(NIServerNearbyPeerNbammsSession *)self _getNumMMSFragments:v51];
+          v50 = [(NIServerNearbyPeerNbammsSession *)self _getNumMMSFragments:discoveryToken];
+          peerDiscoveryToken5 = [v6 peerDiscoveryToken];
+          v52 = [(NIServerNearbyPeerNbammsSession *)self _getNumMMSFragments:peerDiscoveryToken5];
 
           if (v52 >= v50)
           {
@@ -330,8 +330,8 @@ LABEL_39:
             _os_log_impl(&_mh_execute_header, v54, OS_LOG_TYPE_DEFAULT, "#peer-nba,selfMMSNumFragments: %d, peerMMSNumFragments: %d, sharedMMSNumFragments: %d", buf, 0x14u);
           }
 
-          v55 = [v6 peerDiscoveryToken];
-          [(NIServerNearbyPeerNbammsSession *)self _prepareGenericUseCaseServiceRequestForDiscoveryToken:v55 nbUwbAcquisitionBandChannel:v62 mmsNumFragments:v53];
+          peerDiscoveryToken6 = [v6 peerDiscoveryToken];
+          [(NIServerNearbyPeerNbammsSession *)self _prepareGenericUseCaseServiceRequestForDiscoveryToken:peerDiscoveryToken6 nbUwbAcquisitionBandChannel:v62 mmsNumFragments:v53];
           memcpy(buf, __src, 0x241uLL);
 
           if (buf[576] == 1)
@@ -450,7 +450,7 @@ LABEL_45:
   if (self->_nbammsSession.__ptr_)
   {
     dispatch_assert_queue_V2(self->_clientQueue);
-    v3 = [(NIServerNearbyPeerNbammsSession *)self _triggerRanging];
+    _triggerRanging = [(NIServerNearbyPeerNbammsSession *)self _triggerRanging];
   }
 
   else
@@ -460,13 +460,13 @@ LABEL_45:
       sub_1004BB4C8();
     }
 
-    v3 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5888 userInfo:0];
+    _triggerRanging = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5888 userInfo:0];
   }
 
-  return v3;
+  return _triggerRanging;
 }
 
-- (void)updatePeerData:(const void *)a3
+- (void)updatePeerData:(const void *)data
 {
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
   {
@@ -478,7 +478,7 @@ LABEL_45:
   {
     if (self->_selfEncryptionSession)
     {
-      v6 = [NSData dataWithBytes:*a3 length:*(a3 + 1) - *a3];
+      v6 = [NSData dataWithBytes:*data length:*(data + 1) - *data];
       v7 = [(NIServerCryptoSession *)self->_selfEncryptionSession encrypt:v6];
       v8 = v7;
       if (v7 && [v7 length])
@@ -501,7 +501,7 @@ LABEL_45:
 
     else
     {
-      sub_100340788(ptr, a3);
+      sub_100340788(ptr, data);
     }
   }
 }
@@ -516,8 +516,8 @@ LABEL_45:
     selfEncryptionSession = (self->_peerDecryptionSession != 0);
   }
 
-  v5 = [NSString stringWithFormat:@"Test-NBAMMS: %d. Initiator: %d. Crypto enabled: %d", self->_useTestNbammsMode, self->_isInitiator, selfEncryptionSession];
-  [v3 addObject:v5];
+  selfEncryptionSession = [NSString stringWithFormat:@"Test-NBAMMS: %d. Initiator: %d. Crypto enabled: %d", self->_useTestNbammsMode, self->_isInitiator, selfEncryptionSession];
+  [v3 addObject:selfEncryptionSession];
 
   ptr = self->_nbammsSession.__ptr_;
   if (ptr)
@@ -756,10 +756,10 @@ LABEL_45:
   return v3;
 }
 
-- (void)didReceiveNewSolution:(const void *)a3
+- (void)didReceiveNewSolution:(const void *)solution
 {
-  v3 = (a3 + 32);
-  if (((*(a3 + 8) - 1) & 0xFFFFFFFD) != 0)
+  v3 = (solution + 32);
+  if (((*(solution + 8) - 1) & 0xFFFFFFFD) != 0)
   {
     v4 = qword_1009F9820;
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_FAULT))
@@ -772,18 +772,18 @@ LABEL_45:
   {
     dispatch_assert_queue_V2(self->_clientQueue);
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained didReceiveNewSolution:a3];
+    [WeakRetained didReceiveNewSolution:solution];
   }
 }
 
-- (void)didReceiveUnsuccessfulSolution:(const void *)a3
+- (void)didReceiveUnsuccessfulSolution:(const void *)solution
 {
   dispatch_assert_queue_V2(self->_clientQueue);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained didReceiveUnsuccessfulSolution:a3];
+  [WeakRetained didReceiveUnsuccessfulSolution:solution];
 }
 
-- (void)didReceiveRemoteData:(const void *)a3
+- (void)didReceiveRemoteData:(const void *)data
 {
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
   {
@@ -795,17 +795,17 @@ LABEL_45:
   v6 = WeakRetained;
   if (self->_peerDecryptionSession)
   {
-    v7 = [NSData dataWithBytes:*(a3 + 1) length:*(a3 + 2) - *(a3 + 1)];
+    v7 = [NSData dataWithBytes:*(data + 1) length:*(data + 2) - *(data + 1)];
     v8 = [(NIServerCryptoSession *)self->_peerDecryptionSession decrypt:v7];
     v9 = v8;
     if (v8 && [v8 length])
     {
-      v13 = *a3;
+      v13 = *data;
       v15 = 0;
       v16 = 0;
       __p = 0;
-      sub_100009A48(&__p, *(a3 + 1), *(a3 + 2), *(a3 + 2) - *(a3 + 1));
-      v17 = *(a3 + 2);
+      sub_100009A48(&__p, *(data + 1), *(data + 2), *(data + 2) - *(data + 1));
+      v17 = *(data + 2);
       v10 = [v9 length];
       v12 = 0;
       v11 = __p;
@@ -840,14 +840,14 @@ LABEL_45:
 
   else
   {
-    [WeakRetained didReceiveRemoteData:a3];
+    [WeakRetained didReceiveRemoteData:data];
   }
 }
 
-- (void)serviceRequestDidUpdateStatus:(ServiceRequestStatusUpdate)a3
+- (void)serviceRequestDidUpdateStatus:(ServiceRequestStatusUpdate)status
 {
-  var2 = a3.var2;
-  v4 = *&a3.var0;
+  var2 = status.var2;
+  v4 = *&status.var0;
   dispatch_assert_queue_V2(self->_clientQueue);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained didServiceRequestUpdateStatus:{v4, var2}];
@@ -876,39 +876,39 @@ LABEL_45:
   if (self->_nbammsSession.__ptr_)
   {
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-    v3 = [WeakRetained getNIConfiguration];
-    v4 = [v3 copy];
+    getNIConfiguration = [WeakRetained getNIConfiguration];
+    v4 = [getNIConfiguration copy];
 
     v37 = v4;
     dispatch_assert_queue_V2(self->_clientQueue);
-    v5 = [v4 debugParameters];
-    v38 = 10000000;
+    debugParameters = [v4 debugParameters];
+    intValue = 10000000;
 
-    if (v5)
+    if (debugParameters)
     {
-      v6 = [v4 debugParameters];
-      v7 = [v6 objectForKey:@"startTimeUncertainty"];
+      debugParameters2 = [v4 debugParameters];
+      v7 = [debugParameters2 objectForKey:@"startTimeUncertainty"];
 
       if (v7)
       {
-        v38 = [v7 intValue];
+        intValue = [v7 intValue];
       }
     }
 
-    v8 = [(NIServerNearbyPeerNbammsSession *)self _getSchedulingIntervalForTriggeredDutyCycledAcquisition];
+    _getSchedulingIntervalForTriggeredDutyCycledAcquisition = [(NIServerNearbyPeerNbammsSession *)self _getSchedulingIntervalForTriggeredDutyCycledAcquisition];
     [(NIServerNearbyPeerNbammsSession *)self _getDutyCycleForTriggeredDutyCycledAcquisition];
     v10 = v9;
-    v11 = [(NIServerNearbyPeerNbammsSession *)self _getSecondarySchedulingParameters];
+    _getSecondarySchedulingParameters = [(NIServerNearbyPeerNbammsSession *)self _getSecondarySchedulingParameters];
     v14 = v13;
     v15 = *&v13;
     v16 = HIDWORD(v13) & 1;
-    if (!v8 || v10 > 1.0)
+    if (!_getSchedulingIntervalForTriggeredDutyCycledAcquisition || v10 > 1.0)
     {
       goto LABEL_19;
     }
 
     *&v12 = v10;
-    [(NIServerNearbyPeerNbammsSession *)self _adjustDutyCycleForInterfaceDelays:v8 schedulingInterval:v12];
+    [(NIServerNearbyPeerNbammsSession *)self _adjustDutyCycleForInterfaceDelays:_getSchedulingIntervalForTriggeredDutyCycledAcquisition schedulingInterval:v12];
     v10 = v17;
     if ((v14 & 0x100000000) != 0)
     {
@@ -935,9 +935,9 @@ LABEL_45:
 LABEL_19:
     if (self->_isInitiator)
     {
-      v20 = [(NIServerNearbyPeerNbammsSession *)self _getDitherConst];
-      v21 = v20;
-      v22 = HIBYTE(v20);
+      _getDitherConst = [(NIServerNearbyPeerNbammsSession *)self _getDitherConst];
+      v21 = _getDitherConst;
+      v22 = HIBYTE(_getDitherConst);
     }
 
     else
@@ -956,7 +956,7 @@ LABEL_19:
         v24 = 0;
       }
 
-      v57 = v8;
+      v57 = _getSchedulingIntervalForTriggeredDutyCycledAcquisition;
       v58 = 2048;
       *v59 = v10;
       *&v59[8] = 1024;
@@ -970,9 +970,9 @@ LABEL_19:
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109632;
-        v57 = v11;
+        v57 = _getSecondarySchedulingParameters;
         v58 = 1024;
-        *v59 = HIDWORD(v11);
+        *v59 = HIDWORD(_getSecondarySchedulingParameters);
         *&v59[4] = 2048;
         *&v59[6] = v15;
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "#peer-nba,Secondary scheduling params: Delay(us)=%d, Interval(us)=%d, Duty Cycle=%f", buf, 0x18u);
@@ -983,8 +983,8 @@ LABEL_19:
     v60 = 0;
     v61 = 17000;
     v62 = 1;
-    v63 = v38;
-    v64 = v8;
+    v63 = intValue;
+    v64 = _getSchedulingIntervalForTriggeredDutyCycledAcquisition;
     v65 = v10;
     v66 = 0;
     v67 = v21 | (v22 << 8);
@@ -1001,8 +1001,8 @@ LABEL_19:
     v47 = 1;
     v48 = 17000;
     v49 = 1;
-    v50 = v38;
-    v51 = v8;
+    v50 = intValue;
+    v51 = _getSchedulingIntervalForTriggeredDutyCycledAcquisition;
     v52 = v10;
     v53 = 0;
     v54 = v67;
@@ -1026,15 +1026,15 @@ LABEL_19:
       v47 = 1;
       v48 = 17000;
       v49 = 1;
-      v50 = v38;
-      v51 = v8;
+      v50 = intValue;
+      v51 = _getSchedulingIntervalForTriggeredDutyCycledAcquisition;
       v52 = v10;
       v53 = 0;
       v54 = v21 | (v22 << 8);
       *v55 = 0;
       *&v55[4] = 0;
-      *&v55[6] = &_mh_execute_header & 0xFFFFFFFF00000000 | v11;
-      *&v55[14] = &_mh_execute_header & 0xFFFFFFFF00000000 | HIDWORD(v11);
+      *&v55[6] = &_mh_execute_header & 0xFFFFFFFF00000000 | _getSecondarySchedulingParameters;
+      *&v55[14] = &_mh_execute_header & 0xFFFFFFFF00000000 | HIDWORD(_getSecondarySchedulingParameters);
       *&v55[22] = v14;
       v55[26] = 1;
     }
@@ -1110,12 +1110,12 @@ LABEL_50:
   return v19;
 }
 
-- (void)_nbammsSessionInvalidatedWithReason:(int)a3
+- (void)_nbammsSessionInvalidatedWithReason:(int)reason
 {
   v5 = qword_1009F9820;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    sub_100342FC8(a3, v7);
+    sub_100342FC8(reason, v7);
     sub_1004BB708(v7);
   }
 
@@ -1124,52 +1124,52 @@ LABEL_50:
   [WeakRetained didInvalidateUWBSession];
 }
 
-- (shared_ptr<rose::objects::NBAMMSSession>)_buildRoseSession:(const void *)a3
+- (shared_ptr<rose::objects::NBAMMSSession>)_buildRoseSession:(const void *)session
 {
-  v3 = self;
-  WeakRetained = objc_loadWeakRetained(&v3->_dataSource);
-  dispatch_assert_queue_V2(v3->_clientQueue);
-  v5 = [WeakRetained getContainerUniqueIdentifier];
-  sub_100004A08(&__p, [v5 UTF8String]);
+  selfCopy = self;
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_dataSource);
+  dispatch_assert_queue_V2(selfCopy->_clientQueue);
+  getContainerUniqueIdentifier = [WeakRetained getContainerUniqueIdentifier];
+  sub_100004A08(&__p, [getContainerUniqueIdentifier UTF8String]);
 
   operator new();
 }
 
-- (unsigned)_getRangingTimeoutWithKey:(id)a3 timeoutIfNoOverride:(unsigned __int16)a4
+- (unsigned)_getRangingTimeoutWithKey:(id)key timeoutIfNoOverride:(unsigned __int16)override
 {
-  v4 = a4;
-  v5 = a3;
+  overrideCopy = override;
+  keyCopy = key;
   v6 = +[NSUserDefaults standardUserDefaults];
-  v7 = [v6 objectForKey:v5];
+  v7 = [v6 objectForKey:keyCopy];
 
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v8 = [v7 intValue];
+    intValue = [v7 intValue];
     v9 = qword_1009F9820;
     v10 = os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT);
-    if (v8 < 0x10000)
+    if (intValue < 0x10000)
     {
       if (v10)
       {
         v16 = 138412546;
-        v17 = v5;
+        v17 = keyCopy;
         v18 = 1024;
-        v19 = v8;
+        v19 = intValue;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "#peer-nba,Timeout override found for key %@. Returning %d", &v16, 0x12u);
       }
 
-      LOWORD(v4) = v8;
+      LOWORD(overrideCopy) = intValue;
     }
 
     else
     {
-      LOWORD(v4) = -1;
+      LOWORD(overrideCopy) = -1;
       if (v10)
       {
         v16 = 138412802;
-        v17 = v5;
+        v17 = keyCopy;
         v18 = 1024;
-        v19 = v8;
+        v19 = intValue;
         v20 = 1024;
         v21 = 0xFFFF;
         v11 = "#peer-nba,Timeout override found for key %@. Override value %d exceeds max value %d. Returning max value.";
@@ -1187,9 +1187,9 @@ LABEL_8:
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138412546;
-      v17 = v5;
+      v17 = keyCopy;
       v18 = 1024;
-      v19 = v4;
+      v19 = overrideCopy;
       v11 = "#peer-nba,No timeout override found for key %@. Returning timeout %d";
       v12 = v14;
       v13 = 18;
@@ -1197,14 +1197,14 @@ LABEL_8:
     }
   }
 
-  return v4;
+  return overrideCopy;
 }
 
 - (unsigned)_getSchedulingIntervalForTriggeredDutyCycledAcquisition
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v4 = [WeakRetained getNIConfiguration];
-  v5 = [v4 copy];
+  getNIConfiguration = [WeakRetained getNIConfiguration];
+  v5 = [getNIConfiguration copy];
 
   if (self->_isInitiator)
   {
@@ -1221,12 +1221,12 @@ LABEL_8:
 
   if (v8)
   {
-    v9 = 0;
+    intValue = 0;
   }
 
   else
   {
-    v9 = v6;
+    intValue = v6;
   }
 
   v10 = +[NSUserDefaults standardUserDefaults];
@@ -1237,31 +1237,31 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v11 intValue];
+      intValue = [v11 intValue];
     }
   }
 
-  v12 = [v5 debugParameters];
+  debugParameters = [v5 debugParameters];
 
-  if (v12)
+  if (debugParameters)
   {
-    v13 = [v5 debugParameters];
-    v14 = [v13 objectForKey:@"schedulingInterval"];
+    debugParameters2 = [v5 debugParameters];
+    v14 = [debugParameters2 objectForKey:@"schedulingInterval"];
 
     if (v14)
     {
-      v9 = [v14 intValue];
+      intValue = [v14 intValue];
     }
   }
 
-  return v9;
+  return intValue;
 }
 
 - (float)_getDutyCycleForTriggeredDutyCycledAcquisition
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v4 = [WeakRetained getNIConfiguration];
-  v5 = [v4 copy];
+  getNIConfiguration = [WeakRetained getNIConfiguration];
+  v5 = [getNIConfiguration copy];
 
   isInitiator = self->_isInitiator;
   v7 = +[NSUserDefaults standardUserDefaults];
@@ -1290,12 +1290,12 @@ LABEL_8:
     }
   }
 
-  v13 = [v5 debugParameters];
+  debugParameters = [v5 debugParameters];
 
-  if (v13)
+  if (debugParameters)
   {
-    v14 = [v5 debugParameters];
-    v15 = [v14 objectForKey:@"dutyCycle"];
+    debugParameters2 = [v5 debugParameters];
+    v15 = [debugParameters2 objectForKey:@"dutyCycle"];
 
     if (v15)
     {
@@ -1307,13 +1307,13 @@ LABEL_8:
   return v9;
 }
 
-- (float)_adjustDutyCycleForInterfaceDelays:(float)a3 schedulingInterval:(unsigned int)a4
+- (float)_adjustDutyCycleForInterfaceDelays:(float)delays schedulingInterval:(unsigned int)interval
 {
-  v5 = ((a4 - 17000) - 2000);
-  if ((a4 * a3) > v5)
+  v5 = ((interval - 17000) - 2000);
+  if ((interval * delays) > v5)
   {
     v6 = qword_1009F9820;
-    a3 = v5 / a4;
+    delays = v5 / interval;
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
     {
       *v8 = 0;
@@ -1321,7 +1321,7 @@ LABEL_8:
     }
   }
 
-  return a3;
+  return delays;
 }
 
 - (optional<unsigned)_getDitherConst
@@ -1339,8 +1339,8 @@ LABEL_8:
 
 LABEL_8:
     v8 = 0;
-    v9 = 0;
-    return (v9 | (v8 << 8));
+    intValue = 0;
+    return (intValue | (v8 << 8));
   }
 
   v3 = +[NSUserDefaults standardUserDefaults];
@@ -1363,37 +1363,37 @@ LABEL_7:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v11 = [WeakRetained getNIConfiguration];
-  v12 = [v11 copy];
+  getNIConfiguration = [WeakRetained getNIConfiguration];
+  v12 = [getNIConfiguration copy];
 
   v13 = +[NSUserDefaults standardUserDefaults];
   v14 = [v13 objectForKey:@"FindingDitherConst"];
 
   if (v14 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v9 = [v14 intValue];
+    intValue = [v14 intValue];
   }
 
   else
   {
-    v9 = 3;
+    intValue = 3;
   }
 
-  v15 = [v12 debugParameters];
+  debugParameters = [v12 debugParameters];
 
-  if (v15)
+  if (debugParameters)
   {
-    v16 = [v12 debugParameters];
-    v17 = [v16 objectForKey:@"ditherConst"];
+    debugParameters2 = [v12 debugParameters];
+    v17 = [debugParameters2 objectForKey:@"ditherConst"];
 
     if (v17)
     {
-      v9 = [v17 intValue];
+      intValue = [v17 intValue];
     }
   }
 
   v8 = 1;
-  return (v9 | (v8 << 8));
+  return (intValue | (v8 << 8));
 }
 
 - (optional<SecondarySchedulingParameters>)_getSecondarySchedulingParameters
@@ -1412,8 +1412,8 @@ LABEL_7:
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-    v6 = [WeakRetained getNIConfiguration];
-    v7 = [v6 copy];
+    getNIConfiguration = [WeakRetained getNIConfiguration];
+    v7 = [getNIConfiguration copy];
 
     v8 = +[NSUserDefaults standardUserDefaults];
     v9 = [v8 BOOLForKey:@"FindingDisableDutyCycledAcquisition"];
@@ -1436,33 +1436,33 @@ LABEL_7:
       v45 = v16;
       if (v16 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v17 = [v16 intValue];
+        intValue = [v16 intValue];
         v18 = 1;
       }
 
       else
       {
-        v17 = 0;
+        intValue = 0;
         v18 = 0;
       }
 
-      v19 = [v7 debugParameters];
+      debugParameters = [v7 debugParameters];
 
-      if (v19)
+      if (debugParameters)
       {
-        v20 = [v7 debugParameters];
-        v21 = [v20 objectForKey:@"secondarySchedulingDelay"];
+        debugParameters2 = [v7 debugParameters];
+        v21 = [debugParameters2 objectForKey:@"secondarySchedulingDelay"];
 
         if (v21)
         {
-          v17 = [v21 intValue];
+          intValue = [v21 intValue];
           v18 = 1;
         }
       }
 
-      if ((v18 & (v17 != 0)) != 0)
+      if ((v18 & (intValue != 0)) != 0)
       {
-        v22 = v17;
+        v22 = intValue;
       }
 
       else
@@ -1475,33 +1475,33 @@ LABEL_7:
 
       if (v24 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v25 = [v24 intValue];
+        intValue2 = [v24 intValue];
         v26 = 1;
       }
 
       else
       {
-        v25 = 0;
+        intValue2 = 0;
         v26 = 0;
       }
 
-      v27 = [v7 debugParameters];
+      debugParameters3 = [v7 debugParameters];
 
-      if (v27)
+      if (debugParameters3)
       {
-        v28 = [v7 debugParameters];
-        v29 = [v28 objectForKey:@"secondarySchedulingInterval"];
+        debugParameters4 = [v7 debugParameters];
+        v29 = [debugParameters4 objectForKey:@"secondarySchedulingInterval"];
 
         if (v29)
         {
-          v25 = [v29 intValue];
+          intValue2 = [v29 intValue];
           v26 = 1;
         }
       }
 
-      if ((v26 & (v25 != 0)) != 0)
+      if ((v26 & (intValue2 != 0)) != 0)
       {
-        v30 = v25;
+        v30 = intValue2;
       }
 
       else
@@ -1525,12 +1525,12 @@ LABEL_7:
         v35 = 0;
       }
 
-      v36 = [v7 debugParameters];
+      debugParameters5 = [v7 debugParameters];
 
-      if (v36)
+      if (debugParameters5)
       {
-        v37 = [v7 debugParameters];
-        v38 = [v37 objectForKey:@"secondaryDutyCycle"];
+        debugParameters6 = [v7 debugParameters];
+        v38 = [debugParameters6 objectForKey:@"secondaryDutyCycle"];
 
         if (v38)
         {
@@ -1568,23 +1568,23 @@ LABEL_7:
   return result;
 }
 
-- (unsigned)_getNbUwbAcquisitionBandChannel:(id)a3
+- (unsigned)_getNbUwbAcquisitionBandChannel:(id)channel
 {
-  v4 = a3;
-  v5 = v4;
+  channelCopy = channel;
+  v5 = channelCopy;
   if (self->_useTestNbammsMode)
   {
-    v6 = 5;
+    integerValue = 5;
   }
 
   else
   {
-    v7 = [v4 objectInRawTokenOPACKDictForKey:&off_1009C40D0];
+    v7 = [channelCopy objectInRawTokenOPACKDictForKey:&off_1009C40D0];
 
     if (v7)
     {
       v8 = [v5 objectInRawTokenOPACKDictForKey:&off_1009C40D0];
-      v6 = [v8 integerValue];
+      integerValue = [v8 integerValue];
     }
 
     else
@@ -1594,7 +1594,7 @@ LABEL_7:
         sub_1004BB888();
       }
 
-      v6 = 2;
+      integerValue = 2;
     }
   }
 
@@ -1610,7 +1610,7 @@ LABEL_7:
 
   LOBYTE(v15) = v9;
   *(&v15 + 1) = 0;
-  LOWORD(v16) = v6;
+  LOWORD(v16) = integerValue;
   BYTE2(v16) = 1;
   v10 = sub_100428478(&v15);
   v11 = qword_1009F9820;
@@ -1623,7 +1623,7 @@ LABEL_7:
     v17 = 1024;
     v18 = isInitiator;
     v19 = 1024;
-    v20 = v6;
+    v20 = integerValue;
     v21 = 1024;
     v22 = v10;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "#peer-nba,startRangingWithPeer: testMode: %d, isInitiator: %d, NapChIdx: %d, NapBch: %d", &v15, 0x1Au);
@@ -1632,23 +1632,23 @@ LABEL_7:
   return v10;
 }
 
-- (unsigned)_getNumMMSFragments:(id)a3
+- (unsigned)_getNumMMSFragments:(id)fragments
 {
-  v4 = a3;
-  v5 = v4;
+  fragmentsCopy = fragments;
+  v5 = fragmentsCopy;
   if (!self->_useTestNbammsMode)
   {
-    v7 = [v4 objectInRawTokenOPACKDictForKey:&off_1009C40E8];
+    v7 = [fragmentsCopy objectInRawTokenOPACKDictForKey:&off_1009C40E8];
 
     if (v7)
     {
       v8 = [v5 objectInRawTokenOPACKDictForKey:&off_1009C40E8];
-      v6 = [v8 integerValue];
+      integerValue = [v8 integerValue];
 
       goto LABEL_6;
     }
 
-    v6 = 16;
+    integerValue = 16;
     if (!os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_6;
@@ -1657,16 +1657,16 @@ LABEL_7:
     sub_1004BB904();
   }
 
-  v6 = 16;
+  integerValue = 16;
 LABEL_6:
 
-  return v6;
+  return integerValue;
 }
 
-- (void)_initializeCryptoSessionsWithSessionKey:(id)a3 andSessionIdentifier:(id)a4
+- (void)_initializeCryptoSessionsWithSessionKey:(id)key andSessionIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  identifierCopy = identifier;
   if (+[NIPlatformInfo isInternalBuild](NIPlatformInfo, "isInternalBuild") && (+[NSUserDefaults standardUserDefaults](NSUserDefaults, "standardUserDefaults"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 BOOLForKey:@"FindingDisableCrypto"], v8, v9))
   {
     v10 = qword_1009F9820;
@@ -1691,20 +1691,20 @@ LABEL_6:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "#peer-nba,#crypto Initialize. Session key: %{private}@. Session ID: %{private}@", &v18, 0x16u);
     }
 
-    v14 = [[NIServerCryptoSession alloc] initWithKeyDerivationKey:v6 sessionIdentifier:v7 encrypt:1];
+    v14 = [[NIServerCryptoSession alloc] initWithKeyDerivationKey:keyCopy sessionIdentifier:identifierCopy encrypt:1];
     selfEncryptionSession = self->_selfEncryptionSession;
     self->_selfEncryptionSession = v14;
 
-    v16 = [[NIServerCryptoSession alloc] initWithKeyDerivationKey:v6 sessionIdentifier:v7 encrypt:0];
+    v16 = [[NIServerCryptoSession alloc] initWithKeyDerivationKey:keyCopy sessionIdentifier:identifierCopy encrypt:0];
     peerDecryptionSession = self->_peerDecryptionSession;
     self->_peerDecryptionSession = v16;
   }
 }
 
-+ (void)generateSOSBeaconDataForSubject:(BOOL)a3 matchingPeerData:(id)a4 completion:(id)a5
++ (void)generateSOSBeaconDataForSubject:(BOOL)subject matchingPeerData:(id)data completion:(id)completion
 {
-  v6 = a4;
-  v7 = a5;
+  dataCopy = data;
+  completionCopy = completion;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
   {
     sub_1004BB980();
@@ -1714,7 +1714,7 @@ LABEL_6:
   v11 = @"generateData for unsupported use case.";
   v8 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   v9 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-10020 userInfo:v8];
-  v7[2](v7, 0, v9);
+  completionCopy[2](completionCopy, 0, v9);
 }
 
 - (id).cxx_construct

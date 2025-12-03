@@ -1,37 +1,37 @@
 @interface FocusSelectionGesture.Coordinator
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (_TtCV20VisualIntelligenceUI21FocusSelectionGesture11Coordinator)init;
-- (void)didPan:(id)a3;
+- (void)didPan:(id)pan;
 @end
 
 @implementation FocusSelectionGesture.Coordinator
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  selfCopy = self;
   v9 = sub_21E110EF0();
 
   return v9 & 1;
 }
 
-- (void)didPan:(id)a3
+- (void)didPan:(id)pan
 {
-  v4 = a3;
-  v6 = self;
-  v5 = [v4 state];
-  if ((v5 - 1) >= 2)
+  panCopy = pan;
+  selfCopy = self;
+  state = [panCopy state];
+  if ((state - 1) >= 2)
   {
-    if (v5 == 3)
+    if (state == 3)
     {
-      sub_21E1086F8(v4);
+      sub_21E1086F8(panCopy);
     }
   }
 
   else
   {
-    sub_21E1090E0(v4);
+    sub_21E1090E0(panCopy);
   }
 }
 

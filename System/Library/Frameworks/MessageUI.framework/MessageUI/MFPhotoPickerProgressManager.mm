@@ -1,14 +1,14 @@
 @interface MFPhotoPickerProgressManager
 - (BOOL)anyRequestExists;
-- (BOOL)requestExistsForIndexPath:(id)a3;
+- (BOOL)requestExistsForIndexPath:(id)path;
 - (MFPhotoPickerProgressManager)init;
-- (double)progressForIndexPath:(id)a3;
-- (void)_cancelProgressItem:(id)a3;
+- (double)progressForIndexPath:(id)path;
+- (void)_cancelProgressItem:(id)item;
 - (void)cancelEverything;
-- (void)cancelEverythingAtIndexPath:(id)a3;
-- (void)setExportSession:(id)a3 forIndexPath:(id)a4;
-- (void)setImageRequestID:(int)a3 forIndexPath:(id)a4;
-- (void)setProgress:(double)a3 forIndexPath:(id)a4;
+- (void)cancelEverythingAtIndexPath:(id)path;
+- (void)setExportSession:(id)session forIndexPath:(id)path;
+- (void)setImageRequestID:(int)d forIndexPath:(id)path;
+- (void)setProgress:(double)progress forIndexPath:(id)path;
 @end
 
 @implementation MFPhotoPickerProgressManager
@@ -28,45 +28,45 @@
   return v2;
 }
 
-- (void)setProgress:(double)a3 forIndexPath:(id)a4
+- (void)setProgress:(double)progress forIndexPath:(id)path
 {
-  v6 = a4;
-  if (a3 >= 0.0 && a3 <= 1.0)
+  pathCopy = path;
+  if (progress >= 0.0 && progress <= 1.0)
   {
-    v13 = v6;
-    v8 = self;
-    objc_sync_enter(v8);
-    v9 = [(MFPhotoPickerProgressManager *)v8 progressItems];
-    v10 = [v9 objectForKey:v13];
+    v13 = pathCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    progressItems = [(MFPhotoPickerProgressManager *)selfCopy progressItems];
+    v10 = [progressItems objectForKey:v13];
 
     if (v10)
     {
-      [v10 setProgress:a3];
+      [v10 setProgress:progress];
     }
 
     else
     {
       v11 = objc_alloc_init(MFPhotoPickerProgressItem);
-      [(MFPhotoPickerProgressItem *)v11 setProgress:a3];
-      v12 = [(MFPhotoPickerProgressManager *)v8 progressItems];
-      [v12 setObject:v11 forKey:v13];
+      [(MFPhotoPickerProgressItem *)v11 setProgress:progress];
+      progressItems2 = [(MFPhotoPickerProgressManager *)selfCopy progressItems];
+      [progressItems2 setObject:v11 forKey:v13];
 
       v10 = v11;
     }
 
-    objc_sync_exit(v8);
-    v6 = v13;
+    objc_sync_exit(selfCopy);
+    pathCopy = v13;
   }
 }
 
-- (void)setImageRequestID:(int)a3 forIndexPath:(id)a4
+- (void)setImageRequestID:(int)d forIndexPath:(id)path
 {
-  v4 = *&a3;
-  v11 = a4;
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(MFPhotoPickerProgressManager *)v6 progressItems];
-  v8 = [v7 objectForKey:v11];
+  v4 = *&d;
+  pathCopy = path;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  progressItems = [(MFPhotoPickerProgressManager *)selfCopy progressItems];
+  v8 = [progressItems objectForKey:pathCopy];
 
   if (v8)
   {
@@ -77,73 +77,73 @@
   {
     v9 = objc_alloc_init(MFPhotoPickerProgressItem);
     [(MFPhotoPickerProgressItem *)v9 setImageRequestID:v4];
-    v10 = [(MFPhotoPickerProgressManager *)v6 progressItems];
-    [v10 setObject:v9 forKey:v11];
+    progressItems2 = [(MFPhotoPickerProgressManager *)selfCopy progressItems];
+    [progressItems2 setObject:v9 forKey:pathCopy];
 
     v8 = v9;
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setExportSession:(id)a3 forIndexPath:(id)a4
+- (void)setExportSession:(id)session forIndexPath:(id)path
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(MFPhotoPickerProgressManager *)v7 progressItems];
-  v9 = [v8 objectForKey:v6];
+  sessionCopy = session;
+  pathCopy = path;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  progressItems = [(MFPhotoPickerProgressManager *)selfCopy progressItems];
+  v9 = [progressItems objectForKey:pathCopy];
 
   if (v9)
   {
-    [v9 setExportSession:v12];
+    [v9 setExportSession:sessionCopy];
   }
 
   else
   {
     v10 = objc_alloc_init(MFPhotoPickerProgressItem);
-    [(MFPhotoPickerProgressItem *)v10 setExportSession:v12];
-    v11 = [(MFPhotoPickerProgressManager *)v7 progressItems];
-    [v11 setObject:v10 forKey:v6];
+    [(MFPhotoPickerProgressItem *)v10 setExportSession:sessionCopy];
+    progressItems2 = [(MFPhotoPickerProgressManager *)selfCopy progressItems];
+    [progressItems2 setObject:v10 forKey:pathCopy];
 
     v9 = v10;
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
 - (BOOL)anyRequestExists
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MFPhotoPickerProgressManager *)v2 progressItems];
-  v4 = [v3 allValues];
-  v5 = [v4 count] != 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  progressItems = [(MFPhotoPickerProgressManager *)selfCopy progressItems];
+  allValues = [progressItems allValues];
+  v5 = [allValues count] != 0;
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v5;
 }
 
-- (BOOL)requestExistsForIndexPath:(id)a3
+- (BOOL)requestExistsForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(MFPhotoPickerProgressManager *)v5 progressItems];
-  v7 = [v6 objectForKey:v4];
+  pathCopy = path;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  progressItems = [(MFPhotoPickerProgressManager *)selfCopy progressItems];
+  v7 = [progressItems objectForKey:pathCopy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v7 != 0;
 }
 
-- (double)progressForIndexPath:(id)a3
+- (double)progressForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(MFPhotoPickerProgressManager *)v5 progressItems];
-  v7 = [v6 objectForKey:v4];
+  pathCopy = path;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  progressItems = [(MFPhotoPickerProgressManager *)selfCopy progressItems];
+  v7 = [progressItems objectForKey:pathCopy];
 
   if (v7)
   {
@@ -156,27 +156,27 @@
     v9 = -1.0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v9;
 }
 
 - (void)cancelEverything
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MFPhotoPickerProgressManager *)v2 progressItems];
-  v4 = [v3 allValues];
-  [v3 removeAllObjects];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  progressItems = [(MFPhotoPickerProgressManager *)selfCopy progressItems];
+  allValues = [progressItems allValues];
+  [progressItems removeAllObjects];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v5 = dispatch_get_global_queue(17, 0);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__MFPhotoPickerProgressManager_cancelEverything__block_invoke;
   v7[3] = &unk_1E806C520;
-  v8 = v4;
-  v9 = v2;
-  v6 = v4;
+  v8 = allValues;
+  v9 = selfCopy;
+  v6 = allValues;
   dispatch_async(v5, v7);
 }
 
@@ -213,27 +213,27 @@ void __48__MFPhotoPickerProgressManager_cancelEverything__block_invoke(uint64_t 
   }
 }
 
-- (void)cancelEverythingAtIndexPath:(id)a3
+- (void)cancelEverythingAtIndexPath:(id)path
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(MFPhotoPickerProgressManager *)v4 progressItems];
-  v6 = [v5 objectForKey:v7];
-  [v5 removeObjectForKey:v7];
+  pathCopy = path;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  progressItems = [(MFPhotoPickerProgressManager *)selfCopy progressItems];
+  v6 = [progressItems objectForKey:pathCopy];
+  [progressItems removeObjectForKey:pathCopy];
 
-  objc_sync_exit(v4);
-  [(MFPhotoPickerProgressManager *)v4 _cancelProgressItem:v6];
+  objc_sync_exit(selfCopy);
+  [(MFPhotoPickerProgressManager *)selfCopy _cancelProgressItem:v6];
 }
 
-- (void)_cancelProgressItem:(id)a3
+- (void)_cancelProgressItem:(id)item
 {
-  v5 = a3;
-  v3 = [MEMORY[0x1E6978860] defaultManager];
-  [v3 cancelImageRequest:{objc_msgSend(v5, "imageRequestID")}];
+  itemCopy = item;
+  defaultManager = [MEMORY[0x1E6978860] defaultManager];
+  [defaultManager cancelImageRequest:{objc_msgSend(itemCopy, "imageRequestID")}];
 
-  v4 = [v5 exportSession];
-  [v4 cancelExport];
+  exportSession = [itemCopy exportSession];
+  [exportSession cancelExport];
 }
 
 @end

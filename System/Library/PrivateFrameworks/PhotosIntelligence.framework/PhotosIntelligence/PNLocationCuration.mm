@@ -1,5 +1,5 @@
 @interface PNLocationCuration
-+ (id)representativeAssetsForMapDisplayFromAssets:(id)a3;
++ (id)representativeAssetsForMapDisplayFromAssets:(id)assets;
 + (id)requiredFetchPropertySets;
 @end
 
@@ -13,10 +13,10 @@
   return v2;
 }
 
-+ (id)representativeAssetsForMapDisplayFromAssets:(id)a3
++ (id)representativeAssetsForMapDisplayFromAssets:(id)assets
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
+  assetsCopy = assets;
   static LocationCuration.representativeAssetsForMapDisplay(from:)();
 
   sub_1C6FDEC1C();

@@ -2,45 +2,45 @@
 + (id)dbURL;
 + (id)logCategory;
 + (id)sharedVendorDataManager;
-- (BOOL)_loadDatabaseFromDictionary:(id)a3;
-- (BOOL)_loadDatabaseFromFilePath:(id)a3 fileDescription:(id)a4;
-- (BOOL)_loadDatabaseFromFileURL:(id)a3 fileDescription:(id)a4;
-- (BOOL)_parseDatabaseFromDictionary:(id)a3 dataVersion:(int64_t *)a4 collectionsByManufacturer:(id *)a5 entriesByProductData:(id *)a6;
-- (BOOL)_parseManufacturersList:(id)a3 collectionsByManufacturer:(id *)a4 entriesByProductData:(id *)a5;
-- (BOOL)databaseContainsManufacturer:(id)a3;
+- (BOOL)_loadDatabaseFromDictionary:(id)dictionary;
+- (BOOL)_loadDatabaseFromFilePath:(id)path fileDescription:(id)description;
+- (BOOL)_loadDatabaseFromFileURL:(id)l fileDescription:(id)description;
+- (BOOL)_parseDatabaseFromDictionary:(id)dictionary dataVersion:(int64_t *)version collectionsByManufacturer:(id *)manufacturer entriesByProductData:(id *)data;
+- (BOOL)_parseManufacturersList:(id)list collectionsByManufacturer:(id *)manufacturer entriesByProductData:(id *)data;
+- (BOOL)databaseContainsManufacturer:(id)manufacturer;
 - (HMDVendorDataManager)init;
 - (HMDVendorDataManager)initWithDefaults;
-- (HMDVendorDataManager)initWithWorkQueue:(id)a3 downloader:(id)a4 fetchTimer:(id)a5;
+- (HMDVendorDataManager)initWithWorkQueue:(id)queue downloader:(id)downloader fetchTimer:(id)timer;
 - (NSDictionary)collectionsByManufacturer;
 - (NSURL)urlForBundledInternalPlist;
 - (NSURL)urlForBundledPlist;
-- (id)_createMmapFromEncodedData:(id)a3 errorContext:(id)a4;
-- (id)_modelsStringForManufacturer:(id)a3 model:(id)a4 dictionary:(id)a5 key:(id)a6;
-- (id)_parseVendorModelEntryForManufacturer:(id)a3 model:(id)a4 dictionary:(id)a5;
-- (id)modelCollectionForManufacturer:(id)a3;
-- (id)vendorModelEntryForManufacturer:(id)a3 model:(id)a4;
-- (id)vendorModelEntryForProductData:(id)a3;
+- (id)_createMmapFromEncodedData:(id)data errorContext:(id)context;
+- (id)_modelsStringForManufacturer:(id)manufacturer model:(id)model dictionary:(id)dictionary key:(id)key;
+- (id)_parseVendorModelEntryForManufacturer:(id)manufacturer model:(id)model dictionary:(id)dictionary;
+- (id)modelCollectionForManufacturer:(id)manufacturer;
+- (id)vendorModelEntryForManufacturer:(id)manufacturer model:(id)model;
+- (id)vendorModelEntryForProductData:(id)data;
 - (void)_fetchDataFromServer;
-- (void)_handleDataFromServer:(id)a3;
-- (void)_handleServerResponse:(id)a3 withData:(id)a4 error:(id)a5;
+- (void)_handleDataFromServer:(id)server;
+- (void)_handleServerResponse:(id)response withData:(id)data error:(id)error;
 - (void)_loadDatabaseFromLocalFiles;
 - (void)_start;
-- (void)setCollectionsByManufacturer:(id)a3;
-- (void)setEntriesByProductData:(id)a3;
-- (void)timerDidFire:(id)a3;
+- (void)setCollectionsByManufacturer:(id)manufacturer;
+- (void)setEntriesByProductData:(id)data;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDVendorDataManager
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDVendorDataManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  fireCopy = fire;
+  workQueue = [(HMDVendorDataManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -53,17 +53,17 @@
   }
 
   objc_autoreleasePoolPop(v6);
-  [(HMDVendorDataManager *)v7 _fetchDataFromServer];
+  [(HMDVendorDataManager *)selfCopy _fetchDataFromServer];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_parseManufacturersList:(id)a3 collectionsByManufacturer:(id *)a4 entriesByProductData:(id *)a5
+- (BOOL)_parseManufacturersList:(id)list collectionsByManufacturer:(id *)manufacturer entriesByProductData:(id *)data
 {
   v111 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  listCopy = list;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -71,53 +71,53 @@
     *buf = 138543618;
     v105 = v11;
     v106 = 2112;
-    v107 = v7;
+    v107 = listCopy;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_DEBUG, "%{public}@Parsing manufacturers dictionary: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [MEMORY[0x277CBEB38] dictionary];
-  v13 = [MEMORY[0x277CBEB38] dictionary];
-  v14 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
   v99 = 0u;
   v100 = 0u;
   v101 = 0u;
   v102 = 0u;
-  v15 = v7;
+  v15 = listCopy;
   v16 = [(__CFString *)v15 countByEnumeratingWithState:&v99 objects:v110 count:16];
   if (!v16)
   {
 LABEL_37:
 
     v47 = objc_autoreleasePoolPush();
-    v48 = v9;
+    v48 = selfCopy;
     v49 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v49, OS_LOG_TYPE_DEBUG))
     {
       HMFGetLogIdentifier();
-      v51 = v50 = v13;
+      v51 = v50 = dictionary2;
       *buf = 138543618;
       v105 = v51;
       v106 = 2112;
-      v107 = v12;
+      v107 = dictionary;
       _os_log_impl(&dword_229538000, v49, OS_LOG_TYPE_DEBUG, "%{public}@Prepared vendor model entries: %@", buf, 0x16u);
 
-      v13 = v50;
+      dictionary2 = v50;
     }
 
     objc_autoreleasePoolPop(v47);
-    *a4 = [(__CFString *)v12 copy];
-    *a5 = [v13 copy];
+    *manufacturer = [(__CFString *)dictionary copy];
+    *data = [dictionary2 copy];
     v52 = 1;
     goto LABEL_49;
   }
 
   v17 = *v100;
-  v89 = v14;
+  v89 = whitespaceCharacterSet;
   v86 = v15;
-  v93 = v9;
+  v93 = selfCopy;
   v79 = *v100;
-  v80 = a5;
+  dataCopy = data;
 LABEL_5:
   v18 = 0;
   v81 = v16;
@@ -144,7 +144,7 @@ LABEL_6:
 
   v23 = v22;
 
-  v24 = [(__CFString *)v23 stringByTrimmingCharactersInSet:v14];
+  v24 = [(__CFString *)v23 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   v90 = v24;
   if (![(__CFString *)v24 length])
@@ -156,15 +156,15 @@ LABEL_6:
     if (os_log_type_enabled(v65, OS_LOG_TYPE_ERROR))
     {
       HMFGetLogIdentifier();
-      v67 = v66 = v13;
+      v67 = v66 = dictionary2;
       *buf = 138543618;
       v105 = v67;
       v106 = 2112;
       v107 = v21;
       _os_log_impl(&dword_229538000, v65, OS_LOG_TYPE_ERROR, "%{public}@Manufacturers dictionary contains invalid key: %@", buf, 0x16u);
 
-      v13 = v66;
-      v14 = v89;
+      dictionary2 = v66;
+      whitespaceCharacterSet = v89;
     }
 
     objc_autoreleasePoolPop(v63);
@@ -173,18 +173,18 @@ LABEL_6:
     goto LABEL_48;
   }
 
-  v25 = [(__CFString *)v24 lowercaseString];
-  v26 = [(__CFString *)v12 objectForKeyedSubscript:v25];
+  lowercaseString = [(__CFString *)v24 lowercaseString];
+  v26 = [(__CFString *)dictionary objectForKeyedSubscript:lowercaseString];
   if (!v26)
   {
     v26 = objc_alloc_init(HMDVendorModelCollection);
-    [(__CFString *)v12 setObject:v26 forKeyedSubscript:v25];
+    [(__CFString *)dictionary setObject:v26 forKeyedSubscript:lowercaseString];
   }
 
-  v27 = [(__CFString *)v15 hmf_dictionaryForKey:v24, v79, v80];
-  v87 = v25;
+  dataCopy = [(__CFString *)v15 hmf_dictionaryForKey:v24, v79, dataCopy];
+  v87 = lowercaseString;
   v92 = v26;
-  if (!v27)
+  if (!dataCopy)
   {
     v68 = objc_autoreleasePoolPush();
     v69 = v93;
@@ -193,14 +193,14 @@ LABEL_6:
     {
       HMFGetLogIdentifier();
       v71 = v20;
-      v73 = v72 = v13;
+      v73 = v72 = dictionary2;
       *buf = 138543618;
       v105 = v73;
       v106 = 2112;
       v107 = v90;
       _os_log_impl(&dword_229538000, v70, OS_LOG_TYPE_ERROR, "%{public}@Manufacturers dictionary contains an invalid entry for %@", buf, 0x16u);
 
-      v13 = v72;
+      dictionary2 = v72;
       v20 = v71;
       v24 = v90;
     }
@@ -209,8 +209,8 @@ LABEL_6:
     goto LABEL_48;
   }
 
-  v88 = v27;
-  v28 = [v27 hmf_dictionaryForKey:@"Models"];
+  v88 = dataCopy;
+  v28 = [dataCopy hmf_dictionaryForKey:@"Models"];
   if (v28)
   {
     v97 = 0u;
@@ -226,7 +226,7 @@ LABEL_6:
 
     v31 = v30;
     v32 = *v96;
-    v83 = v12;
+    v83 = dictionary;
     v85 = v20;
 LABEL_18:
     v33 = 0;
@@ -242,7 +242,7 @@ LABEL_18:
       v35 = (objc_opt_isKindOfClass() & 1) != 0 ? v34 : 0;
       v36 = v35;
 
-      v37 = [v36 stringByTrimmingCharactersInSet:v14];
+      v37 = [v36 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
       if (![v37 length])
       {
@@ -267,7 +267,7 @@ LABEL_18:
           _os_log_impl(&dword_229538000, v54, OS_LOG_TYPE_ERROR, "%{public}@Manufacturer %@ contains an invalid model entry for %@", buf, 0x20u);
         }
 
-        v12 = v83;
+        dictionary = v83;
         v15 = v86;
         v56 = v87;
 LABEL_46:
@@ -279,19 +279,19 @@ LABEL_46:
       v39 = v38;
       v40 = [(HMDVendorDataManager *)v93 _parseVendorModelEntryForManufacturer:v24 model:v37 dictionary:v38];
       [(HMDVendorModelCollection *)v92 addEntry:v40];
-      v41 = [v40 productData];
-      if (v41)
+      productData = [v40 productData];
+      if (productData)
       {
-        v42 = v13;
-        v43 = [v13 objectForKeyedSubscript:v41];
+        v42 = dictionary2;
+        v43 = [dictionary2 objectForKeyedSubscript:productData];
         v44 = v43;
         if (!v43 || [v43 compare:v40] == -1)
         {
-          [v42 setObject:v40 forKeyedSubscript:v41];
+          [v42 setObject:v40 forKeyedSubscript:productData];
         }
 
-        v13 = v42;
-        v14 = v89;
+        dictionary2 = v42;
+        whitespaceCharacterSet = v89;
       }
 
       ++v33;
@@ -299,7 +299,7 @@ LABEL_46:
       if (v31 == v33)
       {
         v31 = [v29 countByEnumeratingWithState:&v95 objects:v103 count:16];
-        v12 = v83;
+        dictionary = v83;
         v20 = v85;
         if (v31)
         {
@@ -318,9 +318,9 @@ LABEL_33:
         objc_autoreleasePoolPop(v20);
         v18 = v82 + 1;
         v15 = v86;
-        v9 = v93;
+        selfCopy = v93;
         v17 = v79;
-        a5 = v80;
+        data = dataCopy;
         if (v82 + 1 == v81)
         {
           v16 = [(__CFString *)v86 countByEnumeratingWithState:&v99 objects:v110 count:16];
@@ -351,7 +351,7 @@ LABEL_33:
       _os_log_impl(&dword_229538000, v54, OS_LOG_TYPE_ERROR, "%{public}@Models dictionary for %@ contains invalid key: %@", buf, 0x20u);
     }
 
-    v12 = v83;
+    dictionary = v83;
     v15 = v86;
     v56 = v87;
     v57 = v91;
@@ -366,7 +366,7 @@ LABEL_33:
   {
     v77 = HMFGetLogIdentifier();
     [v88 objectForKeyedSubscript:@"Models"];
-    v78 = v94 = v13;
+    v78 = v94 = dictionary2;
     *buf = 138543874;
     v105 = v77;
     v106 = 2112;
@@ -375,8 +375,8 @@ LABEL_33:
     v109 = v78;
     _os_log_impl(&dword_229538000, v76, OS_LOG_TYPE_ERROR, "%{public}@Manufacturers dictionary contains an invalid %@ value: %@", buf, 0x20u);
 
-    v13 = v94;
-    v14 = v89;
+    dictionary2 = v94;
+    whitespaceCharacterSet = v89;
   }
 
   objc_autoreleasePoolPop(v74);
@@ -395,31 +395,31 @@ LABEL_49:
   return v52;
 }
 
-- (id)_parseVendorModelEntryForManufacturer:(id)a3 model:(id)a4 dictionary:(id)a5
+- (id)_parseVendorModelEntryForManufacturer:(id)manufacturer model:(id)model dictionary:(id)dictionary
 {
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v33 = [(HMDVendorDataManager *)self _modelsStringForManufacturer:v8 model:v9 dictionary:v10 key:@"BundleID"];
-  v32 = [(HMDVendorDataManager *)self _modelsStringForManufacturer:v8 model:v9 dictionary:v10 key:@"StoreID"];
-  v31 = [(HMDVendorDataManager *)self _modelsStringForManufacturer:v8 model:v9 dictionary:v10 key:@"FirmwareVersion"];
-  v11 = [(HMDVendorDataManager *)self _modelsStringForManufacturer:v8 model:v9 dictionary:v10 key:@"ProductData"];
+  manufacturerCopy = manufacturer;
+  modelCopy = model;
+  dictionaryCopy = dictionary;
+  v33 = [(HMDVendorDataManager *)self _modelsStringForManufacturer:manufacturerCopy model:modelCopy dictionary:dictionaryCopy key:@"BundleID"];
+  v32 = [(HMDVendorDataManager *)self _modelsStringForManufacturer:manufacturerCopy model:modelCopy dictionary:dictionaryCopy key:@"StoreID"];
+  v31 = [(HMDVendorDataManager *)self _modelsStringForManufacturer:manufacturerCopy model:modelCopy dictionary:dictionaryCopy key:@"FirmwareVersion"];
+  v11 = [(HMDVendorDataManager *)self _modelsStringForManufacturer:manufacturerCopy model:modelCopy dictionary:dictionaryCopy key:@"ProductData"];
   if (v11 && ![HMDAccessory validateProductData:v11])
   {
     context = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       v14 = HMFGetLogIdentifier();
-      v15 = [v10 objectForKeyedSubscript:@"ProductData"];
+      v15 = [dictionaryCopy objectForKeyedSubscript:@"ProductData"];
       *buf = 138544386;
       *&buf[4] = v14;
       *&buf[12] = 2112;
-      *&buf[14] = v8;
+      *&buf[14] = manufacturerCopy;
       *&buf[22] = 2112;
-      v38 = v9;
+      v38 = modelCopy;
       *v39 = 2112;
       *&v39[2] = @"ProductData";
       *&v39[10] = 2112;
@@ -431,17 +431,17 @@ LABEL_49:
     v11 = 0;
   }
 
-  v16 = [v10 objectForKeyedSubscript:@"ProductDataChangeAllowedTo"];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"ProductDataChangeAllowedTo"];
 
   if (v16)
   {
-    v17 = [v10 hmf_arrayForKey:@"ProductDataChangeAllowedTo"];
+    v17 = [dictionaryCopy hmf_arrayForKey:@"ProductDataChangeAllowedTo"];
     if (![v17 count])
     {
       goto LABEL_13;
     }
 
-    v18 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x3032000000;
@@ -452,7 +452,7 @@ LABEL_49:
     v34[1] = 3221225472;
     v34[2] = __79__HMDVendorDataManager__parseVendorModelEntryForManufacturer_model_dictionary___block_invoke;
     v34[3] = &unk_27867E400;
-    v19 = v18;
+    v19 = whitespaceCharacterSet;
     v35 = v19;
     v36 = buf;
     [v17 hmf_enumerateWithAutoreleasePoolUsingBlock:v34];
@@ -464,18 +464,18 @@ LABEL_49:
     {
 LABEL_13:
       contexta = objc_autoreleasePoolPush();
-      v22 = self;
+      selfCopy2 = self;
       v23 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
         v24 = HMFGetLogIdentifier();
-        v25 = [v10 objectForKeyedSubscript:@"ProductDataChangeAllowedTo"];
+        v25 = [dictionaryCopy objectForKeyedSubscript:@"ProductDataChangeAllowedTo"];
         *buf = 138544386;
         *&buf[4] = v24;
         *&buf[12] = 2112;
-        *&buf[14] = v8;
+        *&buf[14] = manufacturerCopy;
         *&buf[22] = 2112;
-        v38 = v9;
+        v38 = modelCopy;
         *v39 = 2112;
         *&v39[2] = @"ProductDataChangeAllowedTo";
         *&v39[10] = 2112;
@@ -493,7 +493,7 @@ LABEL_13:
     v21 = 0;
   }
 
-  v26 = [[HMDVendorModelEntry alloc] initWithManufacturer:v8 model:v9 appBundleID:v33 appStoreID:v32 firmwareVersion:v31 productData:v11 productDataAlternates:v21];
+  v26 = [[HMDVendorModelEntry alloc] initWithManufacturer:manufacturerCopy model:modelCopy appBundleID:v33 appStoreID:v32 firmwareVersion:v31 productData:v11 productDataAlternates:v21];
 
   v27 = *MEMORY[0x277D85DE8];
 
@@ -534,19 +534,19 @@ void __79__HMDVendorDataManager__parseVendorModelEntryForManufacturer_model_dict
   }
 }
 
-- (id)_modelsStringForManufacturer:(id)a3 model:(id)a4 dictionary:(id)a5 key:(id)a6
+- (id)_modelsStringForManufacturer:(id)manufacturer model:(id)model dictionary:(id)dictionary key:(id)key
 {
   v35 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v12 hmf_stringForKey:v13];
+  manufacturerCopy = manufacturer;
+  modelCopy = model;
+  dictionaryCopy = dictionary;
+  keyCopy = key;
+  v14 = [dictionaryCopy hmf_stringForKey:keyCopy];
   if (v14)
   {
     v15 = v14;
-    v16 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v17 = [v15 stringByTrimmingCharactersInSet:v16];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    v17 = [v15 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
     if ([v17 length])
     {
@@ -565,25 +565,25 @@ void __79__HMDVendorDataManager__parseVendorModelEntryForManufacturer_model_dict
   }
 
 LABEL_7:
-  v17 = [v12 objectForKeyedSubscript:v13];
+  v17 = [dictionaryCopy objectForKeyedSubscript:keyCopy];
 
   if (v17)
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       v21 = HMFGetLogIdentifier();
-      v22 = [v12 objectForKeyedSubscript:v13];
+      v22 = [dictionaryCopy objectForKeyedSubscript:keyCopy];
       v25 = 138544386;
       v26 = v21;
       v27 = 2112;
-      v28 = v10;
+      v28 = manufacturerCopy;
       v29 = 2112;
-      v30 = v11;
+      v30 = modelCopy;
       v31 = 2112;
-      v32 = v13;
+      v32 = keyCopy;
       v33 = 2112;
       v34 = v22;
       _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_ERROR, "%{public}@Models dictionary for %@:%@ contains an invalid %@ value: %@", &v25, 0x34u);
@@ -600,14 +600,14 @@ LABEL_11:
   return v17;
 }
 
-- (BOOL)_parseDatabaseFromDictionary:(id)a3 dataVersion:(int64_t *)a4 collectionsByManufacturer:(id *)a5 entriesByProductData:(id *)a6
+- (BOOL)_parseDatabaseFromDictionary:(id)dictionary dataVersion:(int64_t *)version collectionsByManufacturer:(id *)manufacturer entriesByProductData:(id *)data
 {
   v138[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  dictionaryCopy = dictionary;
   HMFUptime();
   v12 = v11;
   v13 = objc_autoreleasePoolPush();
-  v14 = self;
+  selfCopy = self;
   v15 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
@@ -626,29 +626,29 @@ LABEL_11:
   }
 
   objc_autoreleasePoolPop(v13);
-  v17 = [MEMORY[0x277D17DE8] sharedInstance];
+  mEMORY[0x277D17DE8] = [MEMORY[0x277D17DE8] sharedInstance];
   v18 = objc_alloc(MEMORY[0x277D17DF8]);
   v137 = @"state";
   v138[0] = @"vendorDataManagerParsingData";
   v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v138 forKeys:&v137 count:1];
   v20 = [v18 initWithTag:@"vendorDataManagerStart" data:v19];
-  v21 = [MEMORY[0x277D0F770] currentTagProcessorList];
-  [v17 submitTaggedEvent:v20 processorList:v21];
+  currentTagProcessorList = [MEMORY[0x277D0F770] currentTagProcessorList];
+  [mEMORY[0x277D17DE8] submitTaggedEvent:v20 processorList:currentTagProcessorList];
 
-  v22 = [v10 hmf_numberForKey:@"SchemaVersion"];
-  v23 = [v22 integerValue];
+  v22 = [dictionaryCopy hmf_numberForKey:@"SchemaVersion"];
+  integerValue = [v22 integerValue];
 
-  if (v23 != 1)
+  if (integerValue != 1)
   {
     v37 = objc_autoreleasePoolPush();
-    v38 = v14;
+    v38 = selfCopy;
     v39 = HMFGetOSLogHandle();
     v40 = os_log_type_enabled(v39, OS_LOG_TYPE_ERROR);
     v41 = MEMORY[0x277CBEC28];
     if (v40)
     {
       v42 = HMFGetLogIdentifier();
-      v43 = [v10 hmf_numberForKey:@"SchemaVersion"];
+      v43 = [dictionaryCopy hmf_numberForKey:@"SchemaVersion"];
       *buf = 138545410;
       v116 = v42;
       v117 = 2114;
@@ -671,27 +671,27 @@ LABEL_11:
     }
 
     objc_autoreleasePoolPop(v37);
-    v31 = [MEMORY[0x277D17DE8] sharedInstance];
+    mEMORY[0x277D17DE8]2 = [MEMORY[0x277D17DE8] sharedInstance];
     v44 = objc_alloc(MEMORY[0x277D17DF8]);
-    v33 = [v10 hmf_numberForKey:@"SchemaVersion"];
+    mEMORY[0x277D17DE8]3 = [dictionaryCopy hmf_numberForKey:@"SchemaVersion"];
     v34 = HMDTaggedLoggingCreateDictionary();
-    v35 = [v44 initWithTag:@"vendorDataManagerStart" data:{v34, @"state", @"vendorDataManagerParsedData", @"success", v41, @"DataVersion", v33}];
+    v35 = [v44 initWithTag:@"vendorDataManagerStart" data:{v34, @"state", @"vendorDataManagerParsedData", @"success", v41, @"DataVersion", mEMORY[0x277D17DE8]3}];
     v36 = MEMORY[0x277D0F770];
     goto LABEL_12;
   }
 
-  v24 = [v10 hmf_numberForKey:@"DataVersion"];
-  v25 = [v24 integerValue];
+  v24 = [dictionaryCopy hmf_numberForKey:@"DataVersion"];
+  integerValue2 = [v24 integerValue];
 
-  if (v25 <= 52)
+  if (integerValue2 <= 52)
   {
     v26 = objc_autoreleasePoolPush();
-    v27 = v14;
+    v27 = selfCopy;
     v28 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
       v29 = HMFGetLogIdentifier();
-      v30 = [v10 hmf_numberForKey:@"DataVersion"];
+      v30 = [dictionaryCopy hmf_numberForKey:@"DataVersion"];
       *buf = 138545922;
       v116 = v29;
       v117 = 2114;
@@ -718,18 +718,18 @@ LABEL_11:
     }
 
     objc_autoreleasePoolPop(v26);
-    v31 = [MEMORY[0x277D17DE8] sharedInstance];
+    mEMORY[0x277D17DE8]2 = [MEMORY[0x277D17DE8] sharedInstance];
     v32 = objc_alloc(MEMORY[0x277D17DF8]);
-    v33 = [v10 hmf_numberForKey:@"DataVersion"];
-    v99 = v33;
+    mEMORY[0x277D17DE8]3 = [dictionaryCopy hmf_numberForKey:@"DataVersion"];
+    v99 = mEMORY[0x277D17DE8]3;
     v95 = MEMORY[0x277CBEC28];
 LABEL_8:
     v34 = HMDTaggedLoggingCreateDictionary();
     v35 = [v32 initWithTag:@"vendorDataManagerStart" data:{v34, @"state", @"vendorDataManagerParsedData", @"success", v95, @"DataVersion", v99}];
     v36 = MEMORY[0x277D0F770];
 LABEL_12:
-    v45 = [v36 currentTagProcessorList];
-    [(__CFString *)v31 submitTaggedEvent:v35 processorList:v45];
+    currentTagProcessorList2 = [v36 currentTagProcessorList];
+    [(__CFString *)mEMORY[0x277D17DE8]2 submitTaggedEvent:v35 processorList:currentTagProcessorList2];
 LABEL_13:
 
 LABEL_14:
@@ -737,15 +737,15 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (v25 < [(HMDVendorDataManager *)v14 dataVersion])
+  if (integerValue2 < [(HMDVendorDataManager *)selfCopy dataVersion])
   {
     v49 = objc_autoreleasePoolPush();
-    v50 = v14;
+    v50 = selfCopy;
     v51 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
     {
       v52 = HMFGetLogIdentifier();
-      v53 = [MEMORY[0x277CCABB0] numberWithLong:v25];
+      v53 = [MEMORY[0x277CCABB0] numberWithLong:integerValue2];
       v54 = [MEMORY[0x277CCABB0] numberWithLong:{-[HMDVendorDataManager dataVersion](v50, "dataVersion")}];
       *buf = 138545922;
       v116 = v52;
@@ -773,30 +773,30 @@ LABEL_14:
     }
 
     objc_autoreleasePoolPop(v49);
-    v31 = [MEMORY[0x277D17DE8] sharedInstance];
+    mEMORY[0x277D17DE8]2 = [MEMORY[0x277D17DE8] sharedInstance];
     v55 = objc_alloc(MEMORY[0x277D17DF8]);
-    v33 = [MEMORY[0x277CCABB0] numberWithLong:v25];
+    mEMORY[0x277D17DE8]3 = [MEMORY[0x277CCABB0] numberWithLong:integerValue2];
     v34 = [MEMORY[0x277CCABB0] numberWithLong:{-[HMDVendorDataManager dataVersion](v50, "dataVersion")}];
     v96 = MEMORY[0x277CBEC28];
     v35 = HMDTaggedLoggingCreateDictionary();
-    v45 = [v55 initWithTag:@"vendorDataManagerStart" data:{v35, @"state", @"vendorDataManagerParsedData", @"success", v96, @"DataVersion", v33, @"CurrentVersion", v34}];
-    v56 = [MEMORY[0x277D0F770] currentTagProcessorList];
-    [(__CFString *)v31 submitTaggedEvent:v45 processorList:v56];
+    currentTagProcessorList2 = [v55 initWithTag:@"vendorDataManagerStart" data:{v35, @"state", @"vendorDataManagerParsedData", @"success", v96, @"DataVersion", mEMORY[0x277D17DE8]3, @"CurrentVersion", v34}];
+    currentTagProcessorList3 = [MEMORY[0x277D0F770] currentTagProcessorList];
+    [(__CFString *)mEMORY[0x277D17DE8]2 submitTaggedEvent:currentTagProcessorList2 processorList:currentTagProcessorList3];
 
     goto LABEL_13;
   }
 
-  v57 = [(HMDVendorDataManager *)v14 dataVersion];
+  dataVersion = [(HMDVendorDataManager *)selfCopy dataVersion];
   v58 = objc_autoreleasePoolPush();
-  v59 = v14;
+  v59 = selfCopy;
   v60 = HMFGetOSLogHandle();
   v61 = v60;
-  if (v25 == v57)
+  if (integerValue2 == dataVersion)
   {
     if (os_log_type_enabled(v60, OS_LOG_TYPE_INFO))
     {
       v62 = HMFGetLogIdentifier();
-      v63 = [MEMORY[0x277CCABB0] numberWithLong:v25];
+      v63 = [MEMORY[0x277CCABB0] numberWithLong:integerValue2];
       *buf = 138545410;
       v116 = v62;
       v117 = 2114;
@@ -819,10 +819,10 @@ LABEL_14:
     }
 
     objc_autoreleasePoolPop(v58);
-    v31 = [MEMORY[0x277D17DE8] sharedInstance];
+    mEMORY[0x277D17DE8]2 = [MEMORY[0x277D17DE8] sharedInstance];
     v32 = objc_alloc(MEMORY[0x277D17DF8]);
-    v33 = [MEMORY[0x277CCABB0] numberWithLong:v25];
-    v99 = v33;
+    mEMORY[0x277D17DE8]3 = [MEMORY[0x277CCABB0] numberWithLong:integerValue2];
+    v99 = mEMORY[0x277D17DE8]3;
     v95 = MEMORY[0x277CBEC28];
     goto LABEL_8;
   }
@@ -833,12 +833,12 @@ LABEL_14:
     *buf = 138543618;
     v116 = v64;
     v117 = 2048;
-    v118 = v25;
+    v118 = integerValue2;
     _os_log_impl(&dword_229538000, v61, OS_LOG_TYPE_DEFAULT, "%{public}@Parsing data version %ld", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v58);
-  v65 = [v10 hmf_dictionaryForKey:@"Manufacturers"];
+  v65 = [dictionaryCopy hmf_dictionaryForKey:@"Manufacturers"];
   if (!v65)
   {
     v76 = objc_autoreleasePoolPush();
@@ -847,7 +847,7 @@ LABEL_14:
     if (os_log_type_enabled(v78, OS_LOG_TYPE_ERROR))
     {
       v79 = HMFGetLogIdentifier();
-      v80 = [v10 objectForKeyedSubscript:@"Manufacturers"];
+      v80 = [dictionaryCopy objectForKeyedSubscript:@"Manufacturers"];
       *buf = 138545410;
       v116 = v79;
       v117 = 2114;
@@ -870,24 +870,24 @@ LABEL_14:
     }
 
     objc_autoreleasePoolPop(v76);
-    v33 = [MEMORY[0x277D17DE8] sharedInstance];
+    mEMORY[0x277D17DE8]3 = [MEMORY[0x277D17DE8] sharedInstance];
     v81 = objc_alloc(MEMORY[0x277D17DF8]);
-    v34 = [v10 objectForKeyedSubscript:@"Manufacturers"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"Manufacturers"];
     v97 = MEMORY[0x277CBEC28];
     v82 = HMDTaggedLoggingCreateDictionary();
     v83 = [v81 initWithTag:@"vendorDataManagerStart" data:{v82, @"state", @"vendorDataManagerParsedData", @"success", v97, @"Manufacturers", v34}];
-    v84 = [MEMORY[0x277D0F770] currentTagProcessorList];
-    [v33 submitTaggedEvent:v83 processorList:v84];
+    currentTagProcessorList4 = [MEMORY[0x277D0F770] currentTagProcessorList];
+    [mEMORY[0x277D17DE8]3 submitTaggedEvent:v83 processorList:currentTagProcessorList4];
 
-    v31 = 0;
+    mEMORY[0x277D17DE8]2 = 0;
     goto LABEL_14;
   }
 
-  v31 = v65;
+  mEMORY[0x277D17DE8]2 = v65;
   v113 = 0;
   v114 = 0;
   v106 = [(HMDVendorDataManager *)v59 _parseManufacturersList:v65 collectionsByManufacturer:&v114 entriesByProductData:&v113];
-  v33 = v114;
+  mEMORY[0x277D17DE8]3 = v114;
   v34 = v113;
   context = objc_autoreleasePoolPush();
   v111 = v59;
@@ -916,13 +916,13 @@ LABEL_14:
     }
 
     objc_autoreleasePoolPop(context);
-    v86 = [MEMORY[0x277D17DE8] sharedInstance];
+    mEMORY[0x277D17DE8]4 = [MEMORY[0x277D17DE8] sharedInstance];
     v87 = objc_alloc(MEMORY[0x277D17DF8]);
     v98 = MEMORY[0x277CBEC28];
     v88 = HMDTaggedLoggingCreateDictionary();
     v89 = [v87 initWithTag:@"vendorDataManagerStart" data:{v88, @"state", @"vendorDataManagerParsedData", @"success", v98}];
-    v90 = [MEMORY[0x277D0F770] currentTagProcessorList];
-    [v86 submitTaggedEvent:v89 processorList:v90];
+    currentTagProcessorList5 = [MEMORY[0x277D0F770] currentTagProcessorList];
+    [mEMORY[0x277D17DE8]4 submitTaggedEvent:v89 processorList:currentTagProcessorList5];
 
     v91 = objc_autoreleasePoolPush();
     v92 = v111;
@@ -933,7 +933,7 @@ LABEL_14:
       *buf = 138543618;
       v116 = v94;
       v117 = 2112;
-      v118 = v31;
+      v118 = mEMORY[0x277D17DE8]2;
       _os_log_impl(&dword_229538000, v93, OS_LOG_TYPE_ERROR, "%{public}@Failed to parse manufacturers: %@", buf, 0x16u);
     }
 
@@ -948,7 +948,7 @@ LABEL_14:
     v107 = v68;
     HMFUptime();
     v104 = [v103 stringWithFormat:@"%.3f", v69 - v12];
-    v101 = [MEMORY[0x277CCABB0] numberWithLong:v25];
+    v101 = [MEMORY[0x277CCABB0] numberWithLong:integerValue2];
     *buf = 138545922;
     v116 = v107;
     v117 = 2114;
@@ -975,23 +975,23 @@ LABEL_14:
   }
 
   objc_autoreleasePoolPop(context);
-  v112 = [MEMORY[0x277D17DE8] sharedInstance];
+  mEMORY[0x277D17DE8]5 = [MEMORY[0x277D17DE8] sharedInstance];
   v105 = objc_alloc(MEMORY[0x277D17DF8]);
   v70 = MEMORY[0x277CCACA8];
   HMFUptime();
   v108 = [v70 stringWithFormat:@"%.3f", v71 - v12];
-  contexta = [MEMORY[0x277CCABB0] numberWithLong:v25];
+  contexta = [MEMORY[0x277CCABB0] numberWithLong:integerValue2];
   v100 = MEMORY[0x277CBEC38];
   v102 = HMDTaggedLoggingCreateDictionary();
   v72 = [v105 initWithTag:@"vendorDataManagerStart" data:{v102, @"state", @"vendorDataManagerParsedData", @"duration", v108, @"success", v100, @"DataVersion", contexta}];
-  v73 = [MEMORY[0x277D0F770] currentTagProcessorList];
-  [v112 submitTaggedEvent:v72 processorList:v73];
+  currentTagProcessorList6 = [MEMORY[0x277D0F770] currentTagProcessorList];
+  [mEMORY[0x277D17DE8]5 submitTaggedEvent:v72 processorList:currentTagProcessorList6];
 
-  *a4 = v25;
-  v74 = v33;
-  *a5 = v33;
+  *version = integerValue2;
+  v74 = mEMORY[0x277D17DE8]3;
+  *manufacturer = mEMORY[0x277D17DE8]3;
   v75 = v34;
-  *a6 = v34;
+  *data = v34;
   v46 = 1;
 LABEL_15:
 
@@ -999,12 +999,12 @@ LABEL_15:
   return v46;
 }
 
-- (void)_handleDataFromServer:(id)a3
+- (void)_handleDataFromServer:(id)server
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  serverCopy = server;
   v44 = 0;
-  v5 = [MEMORY[0x277CCAC58] propertyListWithData:v4 options:0 format:0 error:&v44];
+  v5 = [MEMORY[0x277CCAC58] propertyListWithData:serverCopy options:0 format:0 error:&v44];
   v6 = v44;
   if (v5)
   {
@@ -1019,7 +1019,7 @@ LABEL_15:
       v36 = v6;
       v38 = v9;
       v10 = objc_autoreleasePoolPush();
-      v11 = self;
+      selfCopy = self;
       v12 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
@@ -1030,38 +1030,38 @@ LABEL_15:
       }
 
       objc_autoreleasePoolPop(v10);
-      [v4 writeToFile:@"/var/mobile/Library/homed/vendor-database" atomically:1];
+      [serverCopy writeToFile:@"/var/mobile/Library/homed/vendor-database" atomically:1];
       v14 = [MEMORY[0x277CBEB58] set];
       v39[0] = MEMORY[0x277D85DD0];
       v39[1] = 3221225472;
       v39[2] = __46__HMDVendorDataManager__handleDataFromServer___block_invoke;
       v39[3] = &unk_27867E3D8;
-      v39[4] = v11;
+      v39[4] = selfCopy;
       v15 = v14;
       v40 = v15;
       [v8 enumerateKeysAndObjectsUsingBlock:v39];
       v16 = MEMORY[0x277CBEB98];
-      v17 = [v8 allKeys];
-      v18 = [v16 setWithArray:v17];
+      allKeys = [v8 allKeys];
+      v18 = [v16 setWithArray:allKeys];
 
       v19 = MEMORY[0x277CBEB58];
-      v20 = [(HMDVendorDataManager *)v11 collectionsByManufacturer];
-      v21 = [v20 allKeys];
-      v22 = [v19 setWithArray:v21];
+      collectionsByManufacturer = [(HMDVendorDataManager *)selfCopy collectionsByManufacturer];
+      allKeys2 = [collectionsByManufacturer allKeys];
+      v22 = [v19 setWithArray:allKeys2];
 
       v37 = v18;
       [v22 minusSet:v18];
       if ([v22 count])
       {
-        v23 = [v22 allObjects];
-        [v15 addObjectsFromArray:v23];
+        allObjects = [v22 allObjects];
+        [v15 addObjectsFromArray:allObjects];
       }
 
-      [(HMDVendorDataManager *)v11 setDataVersion:v43];
-      [(HMDVendorDataManager *)v11 setCollectionsByManufacturer:v8];
-      [(HMDVendorDataManager *)v11 setEntriesByProductData:v38];
+      [(HMDVendorDataManager *)selfCopy setDataVersion:v43];
+      [(HMDVendorDataManager *)selfCopy setCollectionsByManufacturer:v8];
+      [(HMDVendorDataManager *)selfCopy setEntriesByProductData:v38];
       v24 = objc_autoreleasePoolPush();
-      v25 = v11;
+      v25 = selfCopy;
       v26 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
       {
@@ -1076,12 +1076,12 @@ LABEL_15:
       if ([v15 count])
       {
         v45 = @"ChangedManufacturer";
-        v28 = [v15 allObjects];
-        v46 = v28;
+        allObjects2 = [v15 allObjects];
+        v46 = allObjects2;
         v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
 
-        v30 = [MEMORY[0x277CCAB98] defaultCenter];
-        [v30 postNotificationName:@"kHMDVendorInfoUpdatedNotification" object:v25 userInfo:v29];
+        defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+        [defaultCenter postNotificationName:@"kHMDVendorInfoUpdatedNotification" object:v25 userInfo:v29];
       }
 
       v9 = v38;
@@ -1091,7 +1091,7 @@ LABEL_15:
   else
   {
     v31 = objc_autoreleasePoolPush();
-    v32 = self;
+    selfCopy2 = self;
     v33 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
@@ -1122,19 +1122,19 @@ void __46__HMDVendorDataManager__handleDataFromServer___block_invoke(uint64_t a1
   }
 }
 
-- (void)_handleServerResponse:(id)a3 withData:(id)a4 error:(id)a5
+- (void)_handleServerResponse:(id)response withData:(id)data error:(id)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMDVendorDataManager *)self fetchTimer];
-  [v11 kick];
+  responseCopy = response;
+  dataCopy = data;
+  errorCopy = error;
+  fetchTimer = [(HMDVendorDataManager *)self fetchTimer];
+  [fetchTimer kick];
 
-  if (v10)
+  if (errorCopy)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy2 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -1142,7 +1142,7 @@ void __46__HMDVendorDataManager__handleDataFromServer___block_invoke(uint64_t a1
       v27 = 138543618;
       v28 = v15;
       v29 = 2112;
-      v30 = v10;
+      v30 = errorCopy;
       v16 = "%{public}@Failed to get the vendor info with error: %@";
       v17 = v14;
       v18 = 22;
@@ -1159,7 +1159,7 @@ LABEL_9:
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy2 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -1178,18 +1178,18 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v19 = v8;
-  v20 = [v19 statusCode];
-  if (v20 == 200)
+  v19 = responseCopy;
+  statusCode = [v19 statusCode];
+  if (statusCode == 200)
   {
-    [(HMDVendorDataManager *)self _handleDataFromServer:v9];
+    [(HMDVendorDataManager *)self _handleDataFromServer:dataCopy];
   }
 
   else
   {
-    v22 = v20;
+    v22 = statusCode;
     v23 = objc_autoreleasePoolPush();
-    v24 = self;
+    selfCopy3 = self;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
@@ -1212,8 +1212,8 @@ LABEL_11:
 {
   objc_initWeak(&location, self);
   v3 = [objc_alloc(MEMORY[0x277D0F770]) initWithName:@"ManufacturerDB.fetch" parent:0 options:1];
-  v4 = [(HMDVendorDataManager *)self simpleDownloader];
-  v5 = [objc_opt_class() dbURL];
+  simpleDownloader = [(HMDVendorDataManager *)self simpleDownloader];
+  dbURL = [objc_opt_class() dbURL];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__HMDVendorDataManager__fetchDataFromServer__block_invoke;
@@ -1221,7 +1221,7 @@ LABEL_11:
   objc_copyWeak(&v9, &location);
   v6 = v3;
   v8 = v6;
-  [v4 fetchURL:v5 completion:v7];
+  [simpleDownloader fetchURL:dbURL completion:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -1262,13 +1262,13 @@ uint64_t __44__HMDVendorDataManager__fetchDataFromServer__block_invoke_2(uint64_
 
 - (void)_start
 {
-  v3 = [(HMDVendorDataManager *)self workQueue];
+  workQueue = [(HMDVendorDataManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __30__HMDVendorDataManager__start__block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __30__HMDVendorDataManager__start__block_invoke(uint64_t a1)
@@ -1367,26 +1367,26 @@ LABEL_13:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_loadDatabaseFromFilePath:(id)a3 fileDescription:(id)a4
+- (BOOL)_loadDatabaseFromFilePath:(id)path fileDescription:(id)description
 {
   v6 = MEMORY[0x277CBEBC0];
-  v7 = a4;
-  v8 = [v6 fileURLWithPath:a3 isDirectory:0];
-  LOBYTE(self) = [(HMDVendorDataManager *)self _loadDatabaseFromFileURL:v8 fileDescription:v7];
+  descriptionCopy = description;
+  v8 = [v6 fileURLWithPath:path isDirectory:0];
+  LOBYTE(self) = [(HMDVendorDataManager *)self _loadDatabaseFromFileURL:v8 fileDescription:descriptionCopy];
 
   return self;
 }
 
-- (BOOL)_loadDatabaseFromFileURL:(id)a3 fileDescription:(id)a4
+- (BOOL)_loadDatabaseFromFileURL:(id)l fileDescription:(id)description
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  descriptionCopy = description;
   v26 = 0;
-  v8 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:v6 error:&v26];
+  v8 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:lCopy error:&v26];
   v9 = v26;
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   v13 = v12;
   if (!v8)
@@ -1397,7 +1397,7 @@ LABEL_13:
       *buf = 138543874;
       v28 = v20;
       v29 = 2112;
-      v30 = v7;
+      v30 = descriptionCopy;
       v31 = 2112;
       v32 = v9;
       v21 = "%{public}@Failed to read %@ plist file on disk: %@";
@@ -1418,14 +1418,14 @@ LABEL_13:
     *buf = 138543618;
     v28 = v14;
     v29 = 2112;
-    v30 = v7;
+    v30 = descriptionCopy;
     _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_INFO, "%{public}@Read data from %@ plist file on disk", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v10);
-  v15 = [(HMDVendorDataManager *)v11 _loadDatabaseFromDictionary:v8];
+  v15 = [(HMDVendorDataManager *)selfCopy _loadDatabaseFromDictionary:v8];
   v10 = objc_autoreleasePoolPush();
-  v16 = v11;
+  v16 = selfCopy;
   v17 = HMFGetOSLogHandle();
   v13 = v17;
   if (!v15)
@@ -1436,7 +1436,7 @@ LABEL_13:
       *buf = 138543618;
       v28 = v20;
       v29 = 2112;
-      v30 = v7;
+      v30 = descriptionCopy;
       v21 = "%{public}@Failed to parse %@ plist file on disk";
       v22 = v13;
       v23 = 22;
@@ -1452,7 +1452,7 @@ LABEL_13:
     *buf = 138543618;
     v28 = v18;
     v29 = 2112;
-    v30 = v7;
+    v30 = descriptionCopy;
     _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@Loaded database from %@ plist file on disk", buf, 0x16u);
   }
 
@@ -1464,12 +1464,12 @@ LABEL_14:
   return v19;
 }
 
-- (BOOL)_loadDatabaseFromDictionary:(id)a3
+- (BOOL)_loadDatabaseFromDictionary:(id)dictionary
 {
   v9 = 0;
   v10 = 0;
   v8 = 0;
-  v4 = [(HMDVendorDataManager *)self _parseDatabaseFromDictionary:a3 dataVersion:&v10 collectionsByManufacturer:&v9 entriesByProductData:&v8];
+  v4 = [(HMDVendorDataManager *)self _parseDatabaseFromDictionary:dictionary dataVersion:&v10 collectionsByManufacturer:&v9 entriesByProductData:&v8];
   v5 = v9;
   v6 = v8;
   if (v4)
@@ -1498,27 +1498,27 @@ LABEL_14:
   return v3;
 }
 
-- (BOOL)databaseContainsManufacturer:(id)a3
+- (BOOL)databaseContainsManufacturer:(id)manufacturer
 {
-  v3 = [(HMDVendorDataManager *)self modelCollectionForManufacturer:a3];
+  v3 = [(HMDVendorDataManager *)self modelCollectionForManufacturer:manufacturer];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)vendorModelEntryForProductData:(id)a3
+- (id)vendorModelEntryForProductData:(id)data
 {
   v23 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCA900];
-  v5 = a3;
-  v6 = [v4 whitespaceCharacterSet];
-  v7 = [v5 stringByTrimmingCharactersInSet:v6];
+  dataCopy = data;
+  whitespaceCharacterSet = [v4 whitespaceCharacterSet];
+  v7 = [dataCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
-  v8 = [v7 lowercaseString];
+  lowercaseString = [v7 lowercaseString];
 
-  if ([HMDAccessory validateProductData:v8])
+  if ([HMDAccessory validateProductData:lowercaseString])
   {
-    v9 = [(NSData *)self->_entriesByProductDataMmap hmf_objectForKey:v8 forDictionaryAtOffset:0];
+    v9 = [(NSData *)self->_entriesByProductDataMmap hmf_objectForKey:lowercaseString forDictionaryAtOffset:0];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1546,7 +1546,7 @@ LABEL_14:
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -1554,7 +1554,7 @@ LABEL_14:
       v19 = 138543618;
       v20 = v16;
       v21 = 2112;
-      v22 = v8;
+      v22 = lowercaseString;
       _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_ERROR, "%{public}@Invalid product data: %@", &v19, 0x16u);
     }
 
@@ -1567,28 +1567,28 @@ LABEL_14:
   return v12;
 }
 
-- (id)vendorModelEntryForManufacturer:(id)a3 model:(id)a4
+- (id)vendorModelEntryForManufacturer:(id)manufacturer model:(id)model
 {
-  v6 = a4;
-  v7 = [(HMDVendorDataManager *)self modelCollectionForManufacturer:a3];
-  v8 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v9 = [v6 stringByTrimmingCharactersInSet:v8];
+  modelCopy = model;
+  v7 = [(HMDVendorDataManager *)self modelCollectionForManufacturer:manufacturer];
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v9 = [modelCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   v10 = [v7 lookupModel:v9];
 
   return v10;
 }
 
-- (id)modelCollectionForManufacturer:(id)a3
+- (id)modelCollectionForManufacturer:(id)manufacturer
 {
-  v4 = a3;
-  if (v4)
+  manufacturerCopy = manufacturer;
+  if (manufacturerCopy)
   {
-    v5 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v6 = [(HMDVendorModelCollection *)v4 stringByTrimmingCharactersInSet:v5];
-    v7 = [v6 lowercaseString];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    v6 = [(HMDVendorModelCollection *)manufacturerCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
+    lowercaseString = [v6 lowercaseString];
 
-    v8 = [(NSData *)self->_collectionsByManufacturerMmap hmf_objectForKey:v7 forDictionaryAtOffset:0];
+    v8 = [(NSData *)self->_collectionsByManufacturerMmap hmf_objectForKey:lowercaseString forDictionaryAtOffset:0];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1604,16 +1604,16 @@ LABEL_14:
 
     if (v10)
     {
-      v4 = [[HMDVendorModelCollection alloc] initWithEncodedData:v10];
+      manufacturerCopy = [[HMDVendorModelCollection alloc] initWithEncodedData:v10];
     }
 
     else
     {
-      v4 = 0;
+      manufacturerCopy = 0;
     }
   }
 
-  return v4;
+  return manufacturerCopy;
 }
 
 - (NSDictionary)collectionsByManufacturer
@@ -1656,18 +1656,18 @@ void __49__HMDVendorDataManager_collectionsByManufacturer__block_invoke(uint64_t
   [*(a1 + 32) setObject:v7 forKeyedSubscript:v6];
 }
 
-- (void)setCollectionsByManufacturer:(id)a3
+- (void)setCollectionsByManufacturer:(id)manufacturer
 {
   v4 = MEMORY[0x277CBEB38];
-  v5 = a3;
-  v6 = [v4 dictionaryWithCapacity:{objc_msgSend(v5, "count")}];
+  manufacturerCopy = manufacturer;
+  v6 = [v4 dictionaryWithCapacity:{objc_msgSend(manufacturerCopy, "count")}];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __53__HMDVendorDataManager_setCollectionsByManufacturer___block_invoke;
   v11[3] = &unk_27867E360;
   v12 = v6;
   v7 = v6;
-  [v5 enumerateKeysAndObjectsUsingBlock:v11];
+  [manufacturerCopy enumerateKeysAndObjectsUsingBlock:v11];
 
   v8 = objc_opt_new();
   [v8 hmf_appendObject:v7];
@@ -1683,18 +1683,18 @@ void __53__HMDVendorDataManager_setCollectionsByManufacturer___block_invoke(uint
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v5];
 }
 
-- (void)setEntriesByProductData:(id)a3
+- (void)setEntriesByProductData:(id)data
 {
   v4 = MEMORY[0x277CBEB38];
-  v5 = a3;
-  v6 = [v4 dictionaryWithCapacity:{objc_msgSend(v5, "count")}];
+  dataCopy = data;
+  v6 = [v4 dictionaryWithCapacity:{objc_msgSend(dataCopy, "count")}];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __48__HMDVendorDataManager_setEntriesByProductData___block_invoke;
   v11[3] = &unk_27867E338;
   v12 = v6;
   v7 = v6;
-  [v5 enumerateKeysAndObjectsUsingBlock:v11];
+  [dataCopy enumerateKeysAndObjectsUsingBlock:v11];
 
   v8 = objc_opt_new();
   [v8 hmf_appendObject:v7];
@@ -1710,17 +1710,17 @@ void __48__HMDVendorDataManager_setEntriesByProductData___block_invoke(uint64_t 
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v5];
 }
 
-- (id)_createMmapFromEncodedData:(id)a3 errorContext:(id)a4
+- (id)_createMmapFromEncodedData:(id)data errorContext:(id)context
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  contextCopy = context;
   v8 = NSTemporaryDirectory();
   v9 = objc_opt_new();
-  v10 = [v9 UUIDString];
-  v11 = [v8 stringByAppendingPathComponent:v10];
+  uUIDString = [v9 UUIDString];
+  v11 = [v8 stringByAppendingPathComponent:uUIDString];
 
-  [v6 writeToFile:v11 atomically:1];
+  [dataCopy writeToFile:v11 atomically:1];
   v28 = 0;
   v12 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v11 options:1 error:&v28];
   v13 = v28;
@@ -1728,7 +1728,7 @@ void __48__HMDVendorDataManager_setEntriesByProductData___block_invoke(uint64_t 
   {
     v14 = v13;
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -1736,7 +1736,7 @@ void __48__HMDVendorDataManager_setEntriesByProductData___block_invoke(uint64_t 
       *buf = 138543874;
       v30 = v18;
       v31 = 2112;
-      v32 = v7;
+      v32 = contextCopy;
       v33 = 2112;
       v34 = v14;
       _os_log_impl(&dword_229538000, v17, OS_LOG_TYPE_ERROR, "%{public}@Failed to mmap %@: %@", buf, 0x20u);
@@ -1748,14 +1748,14 @@ void __48__HMDVendorDataManager_setEntriesByProductData___block_invoke(uint64_t 
 
   else
   {
-    v20 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v27 = 0;
-    [v20 removeItemAtPath:v11 error:&v27];
+    [defaultManager removeItemAtPath:v11 error:&v27];
     v14 = v27;
     if (v14)
     {
       v21 = objc_autoreleasePoolPush();
-      v22 = self;
+      selfCopy2 = self;
       v23 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
@@ -1763,7 +1763,7 @@ void __48__HMDVendorDataManager_setEntriesByProductData___block_invoke(uint64_t 
         *buf = 138543874;
         v30 = v24;
         v31 = 2112;
-        v32 = v7;
+        v32 = contextCopy;
         v33 = 2112;
         v34 = v14;
         _os_log_impl(&dword_229538000, v23, OS_LOG_TYPE_ERROR, "%{public}@Failed to remove %@ mapping file: %@", buf, 0x20u);
@@ -1786,7 +1786,7 @@ void __48__HMDVendorDataManager_setEntriesByProductData___block_invoke(uint64_t 
   HMFUptime();
   v4 = v3;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1805,24 +1805,24 @@ void __48__HMDVendorDataManager_setEntriesByProductData___block_invoke(uint64_t 
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [MEMORY[0x277D17DE8] sharedInstance];
+  mEMORY[0x277D17DE8] = [MEMORY[0x277D17DE8] sharedInstance];
   v10 = objc_alloc(MEMORY[0x277D17DF8]);
   v53 = @"state";
   v54[0] = @"start";
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v54 forKeys:&v53 count:1];
   v12 = [v10 initWithTag:@"vendorDataManagerStart" data:v11];
-  v13 = [MEMORY[0x277D0F770] currentTagProcessorList];
-  [v9 submitTaggedEvent:v12 processorList:v13];
+  currentTagProcessorList = [MEMORY[0x277D0F770] currentTagProcessorList];
+  [mEMORY[0x277D17DE8] submitTaggedEvent:v12 processorList:currentTagProcessorList];
 
   v14 = HMDispatchQueueNameString();
-  v15 = [v14 UTF8String];
+  uTF8String = [v14 UTF8String];
   v16 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v17 = dispatch_queue_create(v15, v16);
+  v17 = dispatch_queue_create(uTF8String, v16);
 
   v18 = [[HMDDefaultSimpleDownloader alloc] initWithLogIdentifier:@"ManufacturerDB"];
   v19 = objc_alloc(MEMORY[0x277D0F920]);
   v20 = [v19 initWithTimeInterval:5 options:*&vendorInfoFetchPeriod];
-  v21 = [(HMDVendorDataManager *)v6 initWithWorkQueue:v17 downloader:v18 fetchTimer:v20];
+  v21 = [(HMDVendorDataManager *)selfCopy initWithWorkQueue:v17 downloader:v18 fetchTimer:v20];
   [(HMDVendorDataManager *)v21 _loadDatabaseFromLocalFiles];
   v22 = objc_autoreleasePoolPush();
   v23 = v21;
@@ -1851,36 +1851,36 @@ void __48__HMDVendorDataManager_setEntriesByProductData___block_invoke(uint64_t 
   }
 
   objc_autoreleasePoolPop(v22);
-  v29 = [MEMORY[0x277D17DE8] sharedInstance];
+  mEMORY[0x277D17DE8]2 = [MEMORY[0x277D17DE8] sharedInstance];
   v30 = objc_alloc(MEMORY[0x277D17DF8]);
   v31 = MEMORY[0x277CCACA8];
   HMFUptime();
   v33 = [v31 stringWithFormat:@"%.3f", v32 - v4];
   v34 = HMDTaggedLoggingCreateDictionary();
   v35 = [v30 initWithTag:@"vendorDataManagerDone" data:{v34, @"state", @"end", @"duration", v33}];
-  v36 = [MEMORY[0x277D0F770] currentTagProcessorList];
-  [v29 submitTaggedEvent:v35 processorList:v36];
+  currentTagProcessorList2 = [MEMORY[0x277D0F770] currentTagProcessorList];
+  [mEMORY[0x277D17DE8]2 submitTaggedEvent:v35 processorList:currentTagProcessorList2];
 
   v37 = *MEMORY[0x277D85DE8];
   return v23;
 }
 
-- (HMDVendorDataManager)initWithWorkQueue:(id)a3 downloader:(id)a4 fetchTimer:(id)a5
+- (HMDVendorDataManager)initWithWorkQueue:(id)queue downloader:(id)downloader fetchTimer:(id)timer
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queueCopy = queue;
+  downloaderCopy = downloader;
+  timerCopy = timer;
   v15.receiver = self;
   v15.super_class = HMDVendorDataManager;
   v12 = [(HMDVendorDataManager *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_workQueue, a3);
-    objc_storeStrong(&v13->_simpleDownloader, a4);
-    objc_storeStrong(&v13->_fetchTimer, a5);
-    [v11 setDelegate:v13];
-    [v11 setDelegateQueue:v9];
+    objc_storeStrong(&v12->_workQueue, queue);
+    objc_storeStrong(&v13->_simpleDownloader, downloader);
+    objc_storeStrong(&v13->_fetchTimer, timer);
+    [timerCopy setDelegate:v13];
+    [timerCopy setDelegateQueue:queueCopy];
   }
 
   return v13;

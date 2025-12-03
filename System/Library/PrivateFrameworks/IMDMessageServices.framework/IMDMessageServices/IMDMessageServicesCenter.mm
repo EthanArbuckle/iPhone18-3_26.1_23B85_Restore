@@ -4,17 +4,17 @@
 - (BOOL)_disconnect;
 - (IMDMessageServicesCenter)init;
 - (void)_disconnected;
-- (void)_requestExpireStateWithGUID:(id)a3 handler:(id)a4;
-- (void)_requestScheduleMessagesWithGUID:(id)a3 handler:(id)a4;
-- (void)_requestWatchdogWithGUID:(id)a3 handler:(id)a4;
+- (void)_requestExpireStateWithGUID:(id)d handler:(id)handler;
+- (void)_requestScheduleMessagesWithGUID:(id)d handler:(id)handler;
+- (void)_requestWatchdogWithGUID:(id)d handler:(id)handler;
 - (void)dealloc;
-- (void)requestExpireStateForMessageGuid:(id)a3 completionBlock:(id)a4;
-- (void)requestExpireStateWithCompletion:(id)a3;
-- (void)requestRoutingWithDowngradableServices:(id)a3 completion:(id)a4;
-- (void)requestScheduledMessageForGuid:(id)a3 completionBlock:(id)a4;
-- (void)requestScheduledMessagesWithCompletion:(id)a3;
-- (void)requestWatchdogForMessageGuid:(id)a3 completionBlock:(id)a4;
-- (void)requestWatchdogWithCompletion:(id)a3;
+- (void)requestExpireStateForMessageGuid:(id)guid completionBlock:(id)block;
+- (void)requestExpireStateWithCompletion:(id)completion;
+- (void)requestRoutingWithDowngradableServices:(id)services completion:(id)completion;
+- (void)requestScheduledMessageForGuid:(id)guid completionBlock:(id)block;
+- (void)requestScheduledMessagesWithCompletion:(id)completion;
+- (void)requestWatchdogForMessageGuid:(id)guid completionBlock:(id)block;
+- (void)requestWatchdogWithCompletion:(id)completion;
 @end
 
 @implementation IMDMessageServicesCenter
@@ -108,7 +108,7 @@
   return self->_connection != 0;
 }
 
-- (void)requestRoutingWithDowngradableServices:(id)a3 completion:(id)a4
+- (void)requestRoutingWithDowngradableServices:(id)services completion:(id)completion
 {
   if (IMOSLoggingEnabled())
   {
@@ -120,18 +120,18 @@
     }
   }
 
-  [(IMDMessageServicesCenter *)self _requestRoutingWithGUID:0 chatGUID:0 downgradableServices:a3 error:0 handler:a4];
+  [(IMDMessageServicesCenter *)self _requestRoutingWithGUID:0 chatGUID:0 downgradableServices:services error:0 handler:completion];
 }
 
-- (void)_requestExpireStateWithGUID:(id)a3 handler:(id)a4
+- (void)_requestExpireStateWithGUID:(id)d handler:(id)handler
 {
   if ([(IMDMessageServicesCenter *)self _connect])
   {
     v7 = xpc_dictionary_create(0, 0, 0);
     IMInsertStringsToXPCDictionary();
-    if (a3)
+    if (d)
     {
-      [a3 UTF8String];
+      [d UTF8String];
       IMInsertStringsToXPCDictionary();
     }
 
@@ -139,7 +139,7 @@
     handler[1] = 3221225472;
     handler[2] = sub_2547E3950;
     handler[3] = &unk_279788848;
-    handler[4] = a4;
+    handler[4] = handler;
     xpc_connection_send_message_with_reply(self->_connection, v7, MEMORY[0x277D85CD0], handler);
     xpc_release(v7);
   }
@@ -156,14 +156,14 @@
       }
     }
 
-    if (a4)
+    if (handler)
     {
-      (*(a4 + 2))(a4, 0, 0.0);
+      (*(handler + 2))(handler, 0, 0.0);
     }
   }
 }
 
-- (void)requestExpireStateWithCompletion:(id)a3
+- (void)requestExpireStateWithCompletion:(id)completion
 {
   if (IMOSLoggingEnabled())
   {
@@ -175,10 +175,10 @@
     }
   }
 
-  [(IMDMessageServicesCenter *)self _requestExpireStateWithGUID:0 handler:a3];
+  [(IMDMessageServicesCenter *)self _requestExpireStateWithGUID:0 handler:completion];
 }
 
-- (void)requestExpireStateForMessageGuid:(id)a3 completionBlock:(id)a4
+- (void)requestExpireStateForMessageGuid:(id)guid completionBlock:(id)block
 {
   v11 = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
@@ -187,24 +187,24 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v9 = 138412290;
-      v10 = a3;
+      guidCopy = guid;
       _os_log_impl(&dword_2547E2000, v7, OS_LOG_TYPE_INFO, "MessageServices received request for expire state for guid: %@", &v9, 0xCu);
     }
   }
 
-  [(IMDMessageServicesCenter *)self _requestExpireStateWithGUID:a3 handler:a4];
+  [(IMDMessageServicesCenter *)self _requestExpireStateWithGUID:guid handler:block];
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_requestWatchdogWithGUID:(id)a3 handler:(id)a4
+- (void)_requestWatchdogWithGUID:(id)d handler:(id)handler
 {
   if ([(IMDMessageServicesCenter *)self _connect])
   {
     v7 = xpc_dictionary_create(0, 0, 0);
     IMInsertStringsToXPCDictionary();
-    if (a3)
+    if (d)
     {
-      [a3 UTF8String];
+      [d UTF8String];
       IMInsertStringsToXPCDictionary();
     }
 
@@ -212,7 +212,7 @@
     handler[1] = 3221225472;
     handler[2] = sub_2547E3F80;
     handler[3] = &unk_279788848;
-    handler[4] = a4;
+    handler[4] = handler;
     xpc_connection_send_message_with_reply(self->_connection, v7, MEMORY[0x277D85CD0], handler);
     xpc_release(v7);
   }
@@ -229,14 +229,14 @@
       }
     }
 
-    if (a4)
+    if (handler)
     {
-      (*(a4 + 2))(a4, 0, 0.0);
+      (*(handler + 2))(handler, 0, 0.0);
     }
   }
 }
 
-- (void)requestWatchdogWithCompletion:(id)a3
+- (void)requestWatchdogWithCompletion:(id)completion
 {
   if (IMOSLoggingEnabled())
   {
@@ -248,10 +248,10 @@
     }
   }
 
-  [(IMDMessageServicesCenter *)self _requestWatchdogWithGUID:0 handler:a3];
+  [(IMDMessageServicesCenter *)self _requestWatchdogWithGUID:0 handler:completion];
 }
 
-- (void)requestWatchdogForMessageGuid:(id)a3 completionBlock:(id)a4
+- (void)requestWatchdogForMessageGuid:(id)guid completionBlock:(id)block
 {
   v11 = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
@@ -260,24 +260,24 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v9 = 138412290;
-      v10 = a3;
+      guidCopy = guid;
       _os_log_impl(&dword_2547E2000, v7, OS_LOG_TYPE_INFO, "MessageServices received request for watchdog for guid: %@", &v9, 0xCu);
     }
   }
 
-  [(IMDMessageServicesCenter *)self _requestWatchdogWithGUID:a3 handler:a4];
+  [(IMDMessageServicesCenter *)self _requestWatchdogWithGUID:guid handler:block];
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_requestScheduleMessagesWithGUID:(id)a3 handler:(id)a4
+- (void)_requestScheduleMessagesWithGUID:(id)d handler:(id)handler
 {
   if ([(IMDMessageServicesCenter *)self _connect])
   {
     v7 = xpc_dictionary_create(0, 0, 0);
     IMInsertStringsToXPCDictionary();
-    if (a3)
+    if (d)
     {
-      [a3 UTF8String];
+      [d UTF8String];
       IMInsertStringsToXPCDictionary();
     }
 
@@ -285,7 +285,7 @@
     handler[1] = 3221225472;
     handler[2] = sub_2547E45B4;
     handler[3] = &unk_279788848;
-    handler[4] = a4;
+    handler[4] = handler;
     xpc_connection_send_message_with_reply(self->_connection, v7, MEMORY[0x277D85CD0], handler);
     xpc_release(v7);
   }
@@ -302,14 +302,14 @@
       }
     }
 
-    if (a4)
+    if (handler)
     {
-      (*(a4 + 2))(a4, 0, 60.0);
+      (*(handler + 2))(handler, 0, 60.0);
     }
   }
 }
 
-- (void)requestScheduledMessagesWithCompletion:(id)a3
+- (void)requestScheduledMessagesWithCompletion:(id)completion
 {
   if (IMOSLoggingEnabled())
   {
@@ -321,10 +321,10 @@
     }
   }
 
-  [(IMDMessageServicesCenter *)self _requestScheduleMessagesWithGUID:0 handler:a3];
+  [(IMDMessageServicesCenter *)self _requestScheduleMessagesWithGUID:0 handler:completion];
 }
 
-- (void)requestScheduledMessageForGuid:(id)a3 completionBlock:(id)a4
+- (void)requestScheduledMessageForGuid:(id)guid completionBlock:(id)block
 {
   v11 = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
@@ -333,12 +333,12 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v9 = 138412290;
-      v10 = a3;
+      guidCopy = guid;
       _os_log_impl(&dword_2547E2000, v7, OS_LOG_TYPE_INFO, "MessageServices received request for Schedule Messages for guid: %@", &v9, 0xCu);
     }
   }
 
-  [(IMDMessageServicesCenter *)self _requestScheduleMessagesWithGUID:a3 handler:a4];
+  [(IMDMessageServicesCenter *)self _requestScheduleMessagesWithGUID:guid handler:block];
   v8 = *MEMORY[0x277D85DE8];
 }
 

@@ -1,11 +1,11 @@
 @interface BCCacheImageTransformer
 - (BCCacheImageTransformer)init;
-- (CGImage)doRestrictedProcessing:(CGImage *)a3;
-- (id)_bookFilter:(id)a3;
-- (unint64_t)coverEffectStyleForImage:(id)a3;
-- (unint64_t)coverEffectsContentForImage:(id)a3;
-- (void)_applyBookFilter:(id)a3 toImage:(CGImage *)a4 size:(CGSize)a5 completion:(id)a6;
-- (void)transformSource:(id)a3 to:(id)a4 completion:(id)a5;
+- (CGImage)doRestrictedProcessing:(CGImage *)processing;
+- (id)_bookFilter:(id)filter;
+- (unint64_t)coverEffectStyleForImage:(id)image;
+- (unint64_t)coverEffectsContentForImage:(id)image;
+- (void)_applyBookFilter:(id)filter toImage:(CGImage *)image size:(CGSize)size completion:(id)completion;
+- (void)transformSource:(id)source to:(id)to completion:(id)completion;
 @end
 
 @implementation BCCacheImageTransformer
@@ -27,13 +27,13 @@
   return v2;
 }
 
-- (id)_bookFilter:(id)a3
+- (id)_bookFilter:(id)filter
 {
-  v3 = a3;
-  v4 = v3;
+  filterCopy = filter;
+  v4 = filterCopy;
   if (qword_3422D8 == -1)
   {
-    if (v3)
+    if (filterCopy)
     {
 LABEL_3:
       v5 = [qword_3422D0 objectForKeyedSubscript:v4];
@@ -56,69 +56,69 @@ LABEL_6:
   return v5;
 }
 
-- (CGImage)doRestrictedProcessing:(CGImage *)a3
+- (CGImage)doRestrictedProcessing:(CGImage *)processing
 {
-  if (!a3)
+  if (!processing)
   {
     return 0;
   }
 
-  Width = CGImageGetWidth(a3);
-  Height = CGImageGetHeight(a3);
+  Width = CGImageGetWidth(processing);
+  Height = CGImageGetHeight(processing);
 
-  return [BCUCoverEffects restrictedImageFrom:a3 size:Width, Height];
+  return [BCUCoverEffects restrictedImageFrom:processing size:Width, Height];
 }
 
-- (void)transformSource:(id)a3 to:(id)a4 completion:(id)a5
+- (void)transformSource:(id)source to:(id)to completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 quality];
+  sourceCopy = source;
+  toCopy = to;
+  completionCopy = completion;
+  quality = [sourceCopy quality];
   v12 = BCImageCacheLog();
   v13 = v12;
-  if (v11 == 1)
+  if (quality == 1)
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      sub_1E6790(v8, v9, v13);
+      sub_1E6790(sourceCopy, toCopy, v13);
     }
   }
 
   else if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v68 = v8;
+    v68 = sourceCopy;
     v69 = 2112;
-    v70 = v9;
+    v70 = toCopy;
     _os_log_impl(&dword_0, v13, OS_LOG_TYPE_INFO, "BCCacheImageTransformer: \nTransforming:\n %@ \ninto:\n %@", buf, 0x16u);
   }
 
-  v14 = [v9 processingOptions];
-  v15 = [v9 copy];
-  if (v14)
+  processingOptions = [toCopy processingOptions];
+  v15 = [toCopy copy];
+  if (processingOptions)
   {
-    v16 = [v8 image];
-    [v15 setImage:v16];
+    image = [sourceCopy image];
+    [v15 setImage:image];
 
-    [v15 setQuality:{+[BICDescribedImage transformedQualityFrom:](BICDescribedImage, "transformedQualityFrom:", objc_msgSend(v8, "quality"))}];
-    v17 = [v8 image];
+    [v15 setQuality:{+[BICDescribedImage transformedQualityFrom:](BICDescribedImage, "transformedQualityFrom:", objc_msgSend(sourceCopy, "quality"))}];
+    image2 = [sourceCopy image];
 
-    if (v17)
+    if (image2)
     {
       v18 = mainScreenScaleFactor();
-      v19 = +[BCCoverEffects effectIdentifierWithRTL:style:content:nightMode:](BCCoverEffects, "effectIdentifierWithRTL:style:content:nightMode:", ([v9 processingOptions] >> 7) & 1, -[BCCacheImageTransformer coverEffectStyleForImage:](self, "coverEffectStyleForImage:", v9), -[BCCacheImageTransformer coverEffectsContentForImage:](self, "coverEffectsContentForImage:", v9), (objc_msgSend(v9, "processingOptions") >> 6) & 1);
-      [v9 imageSize];
+      v19 = +[BCCoverEffects effectIdentifierWithRTL:style:content:nightMode:](BCCoverEffects, "effectIdentifierWithRTL:style:content:nightMode:", ([toCopy processingOptions] >> 7) & 1, -[BCCacheImageTransformer coverEffectStyleForImage:](self, "coverEffectStyleForImage:", toCopy), -[BCCacheImageTransformer coverEffectsContentForImage:](self, "coverEffectsContentForImage:", toCopy), (objc_msgSend(toCopy, "processingOptions") >> 6) & 1);
+      [toCopy imageSize];
       v21 = v20;
       v23 = v22;
-      [v8 imageSize];
+      [sourceCopy imageSize];
       v25 = v24;
-      [v9 imageSize];
+      [toCopy imageSize];
       if (v25 < v26)
       {
-        [v8 imageSize];
+        [sourceCopy imageSize];
         v28 = v27;
-        [v9 imageSize];
+        [toCopy imageSize];
         if (v28 < v29 && [v15 quality] != 2)
         {
           [v15 setQuality:101];
@@ -127,12 +127,12 @@ LABEL_6:
 
       v30 = v21 / v18;
       v31 = v23 / v18;
-      v32 = [v9 processingOptions];
-      v33 = [v8 image];
-      v34 = [v33 CGImage];
-      if ((v32 & 0x400) != 0)
+      processingOptions2 = [toCopy processingOptions];
+      image3 = [sourceCopy image];
+      cGImage = [image3 CGImage];
+      if ((processingOptions2 & 0x400) != 0)
       {
-        v34 = [(BCCacheImageTransformer *)self doRestrictedProcessing:v34];
+        cGImage = [(BCCacheImageTransformer *)self doRestrictedProcessing:cGImage];
       }
 
       v61[0] = _NSConcreteStackBlock;
@@ -141,15 +141,15 @@ LABEL_6:
       v61[3] = &unk_2CA1C0;
       v66 = v18;
       v62 = v15;
-      v63 = v9;
-      v64 = v8;
-      v65 = v10;
-      [(BCCacheImageTransformer *)self _applyBookFilter:v19 toImage:v34 size:v61 completion:v30, v31];
+      v63 = toCopy;
+      v64 = sourceCopy;
+      v65 = completionCopy;
+      [(BCCacheImageTransformer *)self _applyBookFilter:v19 toImage:cGImage size:v61 completion:v30, v31];
 
       goto LABEL_29;
     }
 
-    v56 = objc_retainBlock(v10);
+    v56 = objc_retainBlock(completionCopy);
     v19 = v56;
     if (!v56)
     {
@@ -162,36 +162,36 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  [v15 setQuality:{+[BICDescribedImage transformedQualityFrom:](BICDescribedImage, "transformedQualityFrom:", objc_msgSend(v8, "quality"))}];
-  v35 = [v8 image];
-  v36 = [v35 CGImage];
+  [v15 setQuality:{+[BICDescribedImage transformedQualityFrom:](BICDescribedImage, "transformedQualityFrom:", objc_msgSend(sourceCopy, "quality"))}];
+  image4 = [sourceCopy image];
+  cGImage2 = [image4 CGImage];
 
-  if (v36)
+  if (cGImage2)
   {
-    Width = CGImageGetWidth(v36);
-    Height = CGImageGetHeight(v36);
-    [v9 imageSize];
+    Width = CGImageGetWidth(cGImage2);
+    Height = CGImageGetHeight(cGImage2);
+    [toCopy imageSize];
     v40 = v39;
-    [v9 imageSize];
+    [toCopy imageSize];
     v42 = v41;
-    [v8 imageSize];
+    [sourceCopy imageSize];
     v44 = v42 * v43;
-    [v8 imageSize];
+    [sourceCopy imageSize];
     v46 = round(v44 / v45);
     v47 = BCImageCacheLog();
     if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
     {
-      v48 = [v8 identifier];
-      [v8 imageSize];
+      identifier = [sourceCopy identifier];
+      [sourceCopy imageSize];
       NSStringFromCGSize(v75);
       v49 = v60 = Height;
-      [v9 imageSize];
+      [toCopy imageSize];
       v50 = NSStringFromCGSize(v76);
       v77.width = v40;
       v77.height = v46;
       v51 = NSStringFromCGSize(v77);
       *buf = 138413058;
-      v68 = v48;
+      v68 = identifier;
       v69 = 2112;
       v70 = v49;
       v71 = 2112;
@@ -210,7 +210,7 @@ LABEL_28:
     v78.origin.y = 0.0;
     v78.size.width = v40;
     v78.size.height = v46;
-    CGContextDrawImage(v53, v78, v36);
+    CGContextDrawImage(v53, v78, cGImage2);
     Image = CGBitmapContextCreateImage(v53);
     CGContextRelease(v53);
     CGColorSpaceRelease(DeviceRGB);
@@ -227,13 +227,13 @@ LABEL_28:
 
   else
   {
-    v58 = [v8 image];
-    [v15 setImage:v58];
+    image5 = [sourceCopy image];
+    [v15 setImage:image5];
   }
 
   [v15 setUnknownAspectRatio:0];
   [BICCacheStats logDescribedImage:v15 withComment:@"CacheTransformWithProcessingOptionNone"];
-  v59 = objc_retainBlock(v10);
+  v59 = objc_retainBlock(completionCopy);
   v19 = v59;
   if (v59)
   {
@@ -244,14 +244,14 @@ LABEL_28:
 LABEL_29:
 }
 
-- (void)_applyBookFilter:(id)a3 toImage:(CGImage *)a4 size:(CGSize)a5 completion:(id)a6
+- (void)_applyBookFilter:(id)filter toImage:(CGImage *)image size:(CGSize)size completion:(id)completion
 {
-  height = a5.height;
-  width = a5.width;
-  v11 = a6;
-  v12 = [(BCCacheImageTransformer *)self _bookFilter:a3];
+  height = size.height;
+  width = size.width;
+  completionCopy = completion;
+  v12 = [(BCCacheImageTransformer *)self _bookFilter:filter];
   v13 = v12;
-  if (a4 && v12)
+  if (image && v12)
   {
     v14 = mainScreenScaleFactor();
     v15 = TUIPriorityDefault;
@@ -260,9 +260,9 @@ LABEL_29:
     v23[2] = sub_68028;
     v23[3] = &unk_2CA1E8;
     v23[4] = self;
-    v24 = v11;
+    v24 = completionCopy;
     LODWORD(v16) = v15;
-    v17 = [v13 newOperationWithImage:a4 size:0 contentsScale:1 priority:0 options:v23 waitForCPUSynchronization:width logKey:height completion:{v14, v16}];
+    v17 = [v13 newOperationWithImage:image size:0 contentsScale:1 priority:0 options:v23 waitForCPUSynchronization:width logKey:height completion:{v14, v16}];
     [v17 start];
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
@@ -278,47 +278,47 @@ LABEL_29:
 
   else
   {
-    v19 = objc_retainBlock(v11);
+    v19 = objc_retainBlock(completionCopy);
     v20 = v19;
     if (v19)
     {
-      (*(v19 + 2))(v19, a4, 0, UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right);
+      (*(v19 + 2))(v19, image, 0, UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right);
     }
   }
 }
 
-- (unint64_t)coverEffectStyleForImage:(id)a3
+- (unint64_t)coverEffectStyleForImage:(id)image
 {
-  v3 = a3;
-  if (([v3 processingOptions] & 2) != 0)
+  imageCopy = image;
+  if (([imageCopy processingOptions] & 2) != 0)
   {
     v4 = 1;
   }
 
-  else if (([v3 processingOptions] & 4) != 0)
+  else if (([imageCopy processingOptions] & 4) != 0)
   {
     v4 = 3;
   }
 
   else
   {
-    v4 = ([v3 processingOptions] >> 2) & 2;
+    v4 = ([imageCopy processingOptions] >> 2) & 2;
   }
 
   return v4;
 }
 
-- (unint64_t)coverEffectsContentForImage:(id)a3
+- (unint64_t)coverEffectsContentForImage:(id)image
 {
-  v3 = a3;
-  if (([v3 processingOptions] & 0x10) != 0)
+  imageCopy = image;
+  if (([imageCopy processingOptions] & 0x10) != 0)
   {
     v4 = 2;
   }
 
   else
   {
-    v4 = ([v3 processingOptions] & 0x100) == 0;
+    v4 = ([imageCopy processingOptions] & 0x100) == 0;
   }
 
   return v4;

@@ -1,20 +1,20 @@
 @interface CloudSyncCollectionViewCell
-- (_TtC18HealthExperienceUI27CloudSyncCollectionViewCell)initWithFrame:(CGRect)a3;
+- (_TtC18HealthExperienceUI27CloudSyncCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)awakeFromNib;
 @end
 
 @implementation CloudSyncCollectionViewCell
 
-- (_TtC18HealthExperienceUI27CloudSyncCollectionViewCell)initWithFrame:(CGRect)a3
+- (_TtC18HealthExperienceUI27CloudSyncCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = OBJC_IVAR____TtC18HealthExperienceUI27CloudSyncCollectionViewCell_cloudSyncDetailView;
-  v9 = [objc_allocWithZone(type metadata accessor for ActivityIndicatorDetailView(0)) initWithFrame_];
-  [v9 setTranslatesAutoresizingMaskIntoConstraints_];
-  *(&self->super.super.super.super.super.isa + v8) = v9;
+  initWithFrame_ = [objc_allocWithZone(type metadata accessor for ActivityIndicatorDetailView(0)) initWithFrame_];
+  [initWithFrame_ setTranslatesAutoresizingMaskIntoConstraints_];
+  *(&self->super.super.super.super.super.isa + v8) = initWithFrame_;
   v10 = self + OBJC_IVAR____TtC18HealthExperienceUI27CloudSyncCollectionViewCell_item;
   v11 = type metadata accessor for CloudSyncCollectionViewCell();
   *v10 = 0u;
@@ -22,10 +22,10 @@
   *(v10 + 4) = 0;
   v14.receiver = self;
   v14.super_class = v11;
-  v12 = [(CloudSyncCollectionViewCell *)&v14 initWithFrame:x, y, width, height];
+  height = [(CloudSyncCollectionViewCell *)&v14 initWithFrame:x, y, width, height];
   sub_1BA060A74();
 
-  return v12;
+  return height;
 }
 
 - (void)awakeFromNib

@@ -1,25 +1,25 @@
 @interface MainLoop.InternalObserver
 - (_TtCC7Measure8MainLoopP33_3089E251FF26A255EE4B430BFB36566C16InternalObserver)init;
-- (void)session:(id)a3 didChangeState:(unint64_t)a4;
-- (void)session:(id)a3 willRunWithConfiguration:(id)a4;
+- (void)session:(id)session didChangeState:(unint64_t)state;
+- (void)session:(id)session willRunWithConfiguration:(id)configuration;
 @end
 
 @implementation MainLoop.InternalObserver
 
-- (void)session:(id)a3 didChangeState:(unint64_t)a4
+- (void)session:(id)session didChangeState:(unint64_t)state
 {
-  v6 = a3;
-  v7 = self;
-  sub_1000E46B4(a4);
+  sessionCopy = session;
+  selfCopy = self;
+  sub_1000E46B4(state);
 }
 
-- (void)session:(id)a3 willRunWithConfiguration:(id)a4
+- (void)session:(id)session willRunWithConfiguration:(id)configuration
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v6 = Strong;
-    v7 = self;
+    selfCopy = self;
     sub_1000E25F8();
   }
 }

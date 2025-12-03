@@ -1,47 +1,47 @@
 @interface NSStringPredicateOperator
-- (BOOL)isEqual:(id)a3;
-- (NSStringPredicateOperator)initWithCoder:(id)a3;
-- (NSStringPredicateOperator)initWithOperatorType:(unint64_t)a3 modifier:(unint64_t)a4 variant:(unint64_t)a5;
+- (BOOL)isEqual:(id)equal;
+- (NSStringPredicateOperator)initWithCoder:(id)coder;
+- (NSStringPredicateOperator)initWithOperatorType:(unint64_t)type modifier:(unint64_t)modifier variant:(unint64_t)variant;
 - (id)_modifierString;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSStringPredicateOperator
 
-- (NSStringPredicateOperator)initWithOperatorType:(unint64_t)a3 modifier:(unint64_t)a4 variant:(unint64_t)a5
+- (NSStringPredicateOperator)initWithOperatorType:(unint64_t)type modifier:(unint64_t)modifier variant:(unint64_t)variant
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = NSStringPredicateOperator;
-  v6 = [(NSPredicateOperator *)&v9 initWithOperatorType:a3 modifier:a4];
+  v6 = [(NSPredicateOperator *)&v9 initWithOperatorType:type modifier:modifier];
   v7 = v6;
   if (v6)
   {
-    [(NSStringPredicateOperator *)v6 _setOptions:a5];
+    [(NSStringPredicateOperator *)v6 _setOptions:variant];
   }
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSPredicates and NSExpressions cannot be encoded by non-keyed archivers" userInfo:0]);
   }
 
   v5.receiver = self;
   v5.super_class = NSStringPredicateOperator;
-  [(NSPredicateOperator *)&v5 encodeWithCoder:a3];
-  [a3 encodeInteger:self->_flags forKey:@"NSFlags"];
+  [(NSPredicateOperator *)&v5 encodeWithCoder:coder];
+  [coder encodeInteger:self->_flags forKey:@"NSFlags"];
 }
 
-- (NSStringPredicateOperator)initWithCoder:(id)a3
+- (NSStringPredicateOperator)initWithCoder:(id)coder
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSPredicates and NSExpressions cannot be decoded by non-keyed archivers" userInfo:0]);
@@ -49,10 +49,10 @@
 
   v7.receiver = self;
   v7.super_class = NSStringPredicateOperator;
-  v5 = [(NSPredicateOperator *)&v7 initWithCoder:a3];
+  v5 = [(NSPredicateOperator *)&v7 initWithCoder:coder];
   if (v5)
   {
-    v5->_flags = [a3 decodeIntegerForKey:@"NSFlags"];
+    v5->_flags = [coder decodeIntegerForKey:@"NSFlags"];
   }
 
   return v5;
@@ -129,37 +129,37 @@ LABEL_8:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     return 0;
   }
 
-  v5 = [(NSPredicateOperator *)self operatorType];
-  if (v5 != [a3 operatorType])
+  operatorType = [(NSPredicateOperator *)self operatorType];
+  if (operatorType != [equal operatorType])
   {
     return 0;
   }
 
-  v6 = [(NSPredicateOperator *)self modifier];
-  if (v6 != [a3 modifier])
+  modifier = [(NSPredicateOperator *)self modifier];
+  if (modifier != [equal modifier])
   {
     return 0;
   }
 
-  v7 = [(NSStringPredicateOperator *)self flags];
-  return v7 == [a3 flags];
+  flags = [(NSStringPredicateOperator *)self flags];
+  return flags == [equal flags];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
-  v5 = [(NSPredicateOperator *)self operatorType];
-  v6 = [(NSPredicateOperator *)self modifier];
+  operatorType = [(NSPredicateOperator *)self operatorType];
+  modifier = [(NSPredicateOperator *)self modifier];
   flags = self->_flags;
 
-  return [v4 _newOperatorWithType:v5 modifier:v6 options:flags];
+  return [v4 _newOperatorWithType:operatorType modifier:modifier options:flags];
 }
 
 @end

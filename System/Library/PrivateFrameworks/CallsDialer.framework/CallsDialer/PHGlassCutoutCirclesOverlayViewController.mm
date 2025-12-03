@@ -8,20 +8,20 @@
 + (id)makeHoldAcceptVoipButtonCircleView;
 + (id)makeHoldAndAcceptButtonCircleView;
 + (id)makeTextSOSButtonCircleView;
-- (PHGlassCutoutCirclesOverlayViewController)initWithCoder:(id)a3;
-- (PHGlassCutoutCirclesOverlayViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PHGlassCutoutCirclesOverlayViewController)initWithCoder:(id)coder;
+- (PHGlassCutoutCirclesOverlayViewController)initWithNibName:(id)name bundle:(id)bundle;
 @end
 
 @implementation PHGlassCutoutCirclesOverlayViewController
 
-- (PHGlassCutoutCirclesOverlayViewController)initWithCoder:(id)a3
+- (PHGlassCutoutCirclesOverlayViewController)initWithCoder:(id)coder
 {
   result = sub_2429E9888();
   __break(1u);
   return result;
 }
 
-- (PHGlassCutoutCirclesOverlayViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PHGlassCutoutCirclesOverlayViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

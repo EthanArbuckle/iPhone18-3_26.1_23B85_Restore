@@ -3,54 +3,54 @@
 + (BOOL)isRunningInExtension;
 + (unint64_t)inferredPersistenceConfiguration;
 - (FLLoggingContext)init;
-- (FLLoggingContext)initWithFileManager:(id)a3 persistenceConfiguration:(unint64_t)a4;
-- (FLLoggingContext)initWithFileManager:(id)a3 persistenceConfiguration:(unint64_t)a4 userDefaults:(id)a5 autoBugCapture:(id)a6 containerStorePathManager:(id)a7;
-- (FLLoggingContext)initWithFileManager:(id)a3 userDefaults:(id)a4 autoBugCapture:(id)a5;
-- (FLLoggingContext)initWithFileManager:(id)a3 userDefaults:(id)a4 autoBugCapture:(id)a5 containerStorePathManager:(id)a6;
-- (id)pathForStore:(id)a3;
-- (id)userCachesDirectoryPathForStore:(id)a3;
-- (void)reportTelemetry:(id)a3 payload:(id)a4;
+- (FLLoggingContext)initWithFileManager:(id)manager persistenceConfiguration:(unint64_t)configuration;
+- (FLLoggingContext)initWithFileManager:(id)manager persistenceConfiguration:(unint64_t)configuration userDefaults:(id)defaults autoBugCapture:(id)capture containerStorePathManager:(id)pathManager;
+- (FLLoggingContext)initWithFileManager:(id)manager userDefaults:(id)defaults autoBugCapture:(id)capture;
+- (FLLoggingContext)initWithFileManager:(id)manager userDefaults:(id)defaults autoBugCapture:(id)capture containerStorePathManager:(id)pathManager;
+- (id)pathForStore:(id)store;
+- (id)userCachesDirectoryPathForStore:(id)store;
+- (void)reportTelemetry:(id)telemetry payload:(id)payload;
 @end
 
 @implementation FLLoggingContext
 
-- (id)userCachesDirectoryPathForStore:(id)a3
+- (id)userCachesDirectoryPathForStore:(id)store
 {
-  v4 = a3;
-  v5 = [(FLLoggingContext *)self storeIdToUserCachesDirectoryPathMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  storeCopy = store;
+  storeIdToUserCachesDirectoryPathMap = [(FLLoggingContext *)self storeIdToUserCachesDirectoryPathMap];
+  path = [storeIdToUserCachesDirectoryPathMap objectForKeyedSubscript:storeCopy];
 
-  if (!v6)
+  if (!path)
   {
-    v7 = [(FLLoggingContext *)self fileManager];
-    v8 = [v7 urlForStoreWithId:v4];
-    v6 = [v8 path];
+    fileManager = [(FLLoggingContext *)self fileManager];
+    v8 = [fileManager urlForStoreWithId:storeCopy];
+    path = [v8 path];
 
-    if (v6)
+    if (path)
     {
-      v9 = [(FLLoggingContext *)self storeIdToUserCachesDirectoryPathMap];
-      [v9 setObject:v6 forKeyedSubscript:v4];
+      storeIdToUserCachesDirectoryPathMap2 = [(FLLoggingContext *)self storeIdToUserCachesDirectoryPathMap];
+      [storeIdToUserCachesDirectoryPathMap2 setObject:path forKeyedSubscript:storeCopy];
     }
   }
 
-  return v6;
+  return path;
 }
 
-- (id)pathForStore:(id)a3
+- (id)pathForStore:(id)store
 {
-  v5 = a3;
-  v6 = [(FLLoggingContext *)self persistenceConfiguration];
-  if (v6)
+  storeCopy = store;
+  persistenceConfiguration = [(FLLoggingContext *)self persistenceConfiguration];
+  if (persistenceConfiguration)
   {
-    if (v6 == 2)
+    if (persistenceConfiguration == 2)
     {
-      v3 = [(FLLoggingContext *)self userCachesDirectoryPathForStore:v5];
+      v3 = [(FLLoggingContext *)self userCachesDirectoryPathForStore:storeCopy];
     }
 
-    else if (v6 == 1)
+    else if (persistenceConfiguration == 1)
     {
-      v7 = [(FLLoggingContext *)self containerStorePathManager];
-      v3 = [v7 containerPathForStoreId:v5];
+      containerStorePathManager = [(FLLoggingContext *)self containerStorePathManager];
+      v3 = [containerStorePathManager containerPathForStoreId:storeCopy];
     }
   }
 
@@ -69,19 +69,19 @@
   return v3;
 }
 
-- (void)reportTelemetry:(id)a3 payload:(id)a4
+- (void)reportTelemetry:(id)telemetry payload:(id)payload
 {
-  v5 = a4;
-  v4 = v5;
+  payloadCopy = payload;
+  v4 = payloadCopy;
   AnalyticsSendEventLazy();
 }
 
-- (FLLoggingContext)initWithFileManager:(id)a3 persistenceConfiguration:(unint64_t)a4 userDefaults:(id)a5 autoBugCapture:(id)a6 containerStorePathManager:(id)a7
+- (FLLoggingContext)initWithFileManager:(id)manager persistenceConfiguration:(unint64_t)configuration userDefaults:(id)defaults autoBugCapture:(id)capture containerStorePathManager:(id)pathManager
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  managerCopy = manager;
+  defaultsCopy = defaults;
+  captureCopy = capture;
+  pathManagerCopy = pathManager;
   v29.receiver = self;
   v29.super_class = FLLoggingContext;
   v17 = [(FLLoggingContext *)&v29 init];
@@ -92,71 +92,71 @@
     log = v18->_log;
     v18->_log = v19;
 
-    objc_storeStrong(&v18->_fileManager, a3);
-    if (!a4)
+    objc_storeStrong(&v18->_fileManager, manager);
+    if (!configuration)
     {
-      a4 = [objc_opt_class() inferredPersistenceConfiguration];
+      configuration = [objc_opt_class() inferredPersistenceConfiguration];
     }
 
-    v18->_persistenceConfiguration = a4;
+    v18->_persistenceConfiguration = configuration;
     v21 = FLGetBootSessionUUID();
     timestampReferenceIdentifier = v18->_timestampReferenceIdentifier;
     v18->_timestampReferenceIdentifier = v21;
 
-    objc_storeStrong(&v18->_userDefaults, a5);
+    objc_storeStrong(&v18->_userDefaults, defaults);
     v23 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v24 = dispatch_queue_create("com.apple.feedbacklogger", v23);
     queue = v18->_queue;
     v18->_queue = v24;
 
-    objc_storeStrong(&v18->_containerStorePathManager, a7);
-    objc_storeStrong(&v18->_autoBugCapture, a6);
-    v26 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v18->_containerStorePathManager, pathManager);
+    objc_storeStrong(&v18->_autoBugCapture, capture);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storeIdToUserCachesDirectoryPathMap = v18->_storeIdToUserCachesDirectoryPathMap;
-    v18->_storeIdToUserCachesDirectoryPathMap = v26;
+    v18->_storeIdToUserCachesDirectoryPathMap = dictionary;
   }
 
   return v18;
 }
 
-- (FLLoggingContext)initWithFileManager:(id)a3 userDefaults:(id)a4 autoBugCapture:(id)a5 containerStorePathManager:(id)a6
+- (FLLoggingContext)initWithFileManager:(id)manager userDefaults:(id)defaults autoBugCapture:(id)capture containerStorePathManager:(id)pathManager
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = -[FLLoggingContext initWithFileManager:persistenceConfiguration:userDefaults:autoBugCapture:containerStorePathManager:](self, "initWithFileManager:persistenceConfiguration:userDefaults:autoBugCapture:containerStorePathManager:", v13, [objc_opt_class() inferredPersistenceConfiguration], v12, v11, v10);
+  pathManagerCopy = pathManager;
+  captureCopy = capture;
+  defaultsCopy = defaults;
+  managerCopy = manager;
+  v14 = -[FLLoggingContext initWithFileManager:persistenceConfiguration:userDefaults:autoBugCapture:containerStorePathManager:](self, "initWithFileManager:persistenceConfiguration:userDefaults:autoBugCapture:containerStorePathManager:", managerCopy, [objc_opt_class() inferredPersistenceConfiguration], defaultsCopy, captureCopy, pathManagerCopy);
 
   return v14;
 }
 
-- (FLLoggingContext)initWithFileManager:(id)a3 userDefaults:(id)a4 autoBugCapture:(id)a5
+- (FLLoggingContext)initWithFileManager:(id)manager userDefaults:(id)defaults autoBugCapture:(id)capture
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  captureCopy = capture;
+  defaultsCopy = defaults;
+  managerCopy = manager;
   v11 = objc_alloc_init(FLContainerStorePathManager);
-  v12 = [(FLLoggingContext *)self initWithFileManager:v10 userDefaults:v9 autoBugCapture:v8 containerStorePathManager:v11];
+  v12 = [(FLLoggingContext *)self initWithFileManager:managerCopy userDefaults:defaultsCopy autoBugCapture:captureCopy containerStorePathManager:v11];
 
   return v12;
 }
 
-- (FLLoggingContext)initWithFileManager:(id)a3 persistenceConfiguration:(unint64_t)a4
+- (FLLoggingContext)initWithFileManager:(id)manager persistenceConfiguration:(unint64_t)configuration
 {
   v6 = MEMORY[0x277CBEBD0];
-  v7 = a3;
+  managerCopy = manager;
   v8 = [[v6 alloc] initWithSuiteName:@"com.apple.parsecd"];
   v9 = objc_alloc_init(FLAutoBugCapture);
   v10 = objc_alloc_init(FLContainerStorePathManager);
-  v11 = [(FLLoggingContext *)self initWithFileManager:v7 persistenceConfiguration:a4 userDefaults:v8 autoBugCapture:v9 containerStorePathManager:v10];
+  v11 = [(FLLoggingContext *)self initWithFileManager:managerCopy persistenceConfiguration:configuration userDefaults:v8 autoBugCapture:v9 containerStorePathManager:v10];
 
   return v11;
 }
 
 - (FLLoggingContext)init
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(FLLoggingContext *)self initWithFileManager:v3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v4 = [(FLLoggingContext *)self initWithFileManager:defaultManager];
 
   return v4;
 }
@@ -197,7 +197,7 @@ uint64_t __35__FLLoggingContext_isInternalBuild__block_invoke()
 
 + (unint64_t)inferredPersistenceConfiguration
 {
-  if ([a1 isRunningInExtension])
+  if ([self isRunningInExtension])
   {
     return 1;
   }

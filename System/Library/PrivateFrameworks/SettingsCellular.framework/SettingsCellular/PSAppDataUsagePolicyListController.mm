@@ -2,7 +2,7 @@
 - (PSAppDataUsagePolicyListController)init;
 - (id)specifiers;
 - (void)_adjustTitle;
-- (void)setSpecifier:(id)a3;
+- (void)setSpecifier:(id)specifier;
 @end
 
 @implementation PSAppDataUsagePolicyListController
@@ -29,19 +29,19 @@
   {
     v17.receiver = self;
     v17.super_class = PSAppDataUsagePolicyListController;
-    v5 = [(PSListItemsController *)&v17 specifiers];
-    v6 = [*(&self->super.super.super.super.super.super.isa + v3) firstObject];
-    v7 = v6;
-    if (v6 && !*(v6 + *MEMORY[0x277D3FC90]))
+    specifiers = [(PSListItemsController *)&v17 specifiers];
+    firstObject = [*(&self->super.super.super.super.super.super.isa + v3) firstObject];
+    v7 = firstObject;
+    if (firstObject && !*(firstObject + *MEMORY[0x277D3FC90]))
     {
-      v8 = [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) appName];
-      if ([v8 length])
+      appName = [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) appName];
+      if ([appName length])
       {
         v9 = MEMORY[0x277CCACA8];
         v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v11 = SFLocalizableWAPIStringKeyForKey();
         v12 = [v10 localizedStringForKey:v11 value:&stru_287730CE8 table:@"WirelessData"];
-        v13 = [v9 stringWithFormat:v12, v8];
+        v13 = [v9 stringWithFormat:v12, appName];
       }
 
       else
@@ -65,11 +65,11 @@
   return v15;
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v4.receiver = self;
   v4.super_class = PSAppDataUsagePolicyListController;
-  [(PSAppDataUsagePolicyListController *)&v4 setSpecifier:a3];
+  [(PSAppDataUsagePolicyListController *)&v4 setSpecifier:specifier];
   [(PSAppDataUsagePolicyListController *)self _adjustTitle];
 }
 
@@ -78,10 +78,10 @@
   v3 = *(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FD20]);
   if (v3)
   {
-    v4 = [v3 displayName];
-    if ([v4 length])
+    displayName = [v3 displayName];
+    if ([displayName length])
     {
-      [(PSAppDataUsagePolicyListController *)self setTitle:v4];
+      [(PSAppDataUsagePolicyListController *)self setTitle:displayName];
     }
   }
 }

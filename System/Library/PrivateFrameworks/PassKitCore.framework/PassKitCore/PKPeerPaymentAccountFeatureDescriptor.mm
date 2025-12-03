@@ -1,12 +1,12 @@
 @interface PKPeerPaymentAccountFeatureDescriptor
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPeerPaymentAccountFeatureDescriptor:(id)a3;
-- (PKPeerPaymentAccountFeatureDescriptor)initWithCoder:(id)a3;
-- (PKPeerPaymentAccountFeatureDescriptor)initWithDictionary:(id)a3;
-- (id)_suggestionsFromStrings:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPeerPaymentAccountFeatureDescriptor:(id)descriptor;
+- (PKPeerPaymentAccountFeatureDescriptor)initWithCoder:(id)coder;
+- (PKPeerPaymentAccountFeatureDescriptor)initWithDictionary:(id)dictionary;
+- (id)_suggestionsFromStrings:(id)strings;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPeerPaymentAccountFeatureDescriptor
@@ -16,16 +16,16 @@
   v11.receiver = self;
   v11.super_class = PKPeerPaymentAccountFeatureDescriptor;
   v3 = [(PKAccountFeatureDescriptor *)&v11 hash];
-  v4 = [MEMORY[0x1E695DF70] array];
-  [v4 safelyAddObject:self->_feePercentage];
-  [v4 safelyAddObject:self->_minimumFee];
-  [v4 safelyAddObject:self->_maximumFee];
-  [v4 safelyAddObject:self->_amountSuggestions];
-  [v4 safelyAddObject:self->_thresholdSuggestions];
-  [v4 safelyAddObject:self->_frequencyOptions];
-  [v4 safelyAddObject:self->_productTimeZone];
-  [v4 safelyAddObject:self->_supportedFundingSourceCountryCodes];
-  v5 = PKCombinedHash(v3, v4);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_feePercentage];
+  [array safelyAddObject:self->_minimumFee];
+  [array safelyAddObject:self->_maximumFee];
+  [array safelyAddObject:self->_amountSuggestions];
+  [array safelyAddObject:self->_thresholdSuggestions];
+  [array safelyAddObject:self->_frequencyOptions];
+  [array safelyAddObject:self->_productTimeZone];
+  [array safelyAddObject:self->_supportedFundingSourceCountryCodes];
+  v5 = PKCombinedHash(v3, array);
   v6 = self->_maximumPayments - v5 + 32 * v5;
   v7 = self->_endProcessingHour - v6 + 32 * v6;
   v8 = self->_proactiveFetchPeriod - v7 + 32 * v7;
@@ -34,55 +34,55 @@
   return v9;
 }
 
-- (PKPeerPaymentAccountFeatureDescriptor)initWithDictionary:(id)a3
+- (PKPeerPaymentAccountFeatureDescriptor)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v29.receiver = self;
   v29.super_class = PKPeerPaymentAccountFeatureDescriptor;
-  v5 = [(PKAccountFeatureDescriptor *)&v29 initWithDictionary:v4];
+  v5 = [(PKAccountFeatureDescriptor *)&v29 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 PKDecimalNumberFromStringForKey:@"feePercentage"];
+    v6 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"feePercentage"];
     feePercentage = v5->_feePercentage;
     v5->_feePercentage = v6;
 
-    v8 = [v4 PKDecimalNumberFromStringForKey:@"minimumFee"];
+    v8 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"minimumFee"];
     minimumFee = v5->_minimumFee;
     v5->_minimumFee = v8;
 
-    v10 = [v4 PKDecimalNumberFromStringForKey:@"maximumFee"];
+    v10 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"maximumFee"];
     maximumFee = v5->_maximumFee;
     v5->_maximumFee = v10;
 
-    v12 = [v4 PKArrayContaining:objc_opt_class() forKey:@"amountSuggestions"];
+    v12 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"amountSuggestions"];
     v13 = [(PKPeerPaymentAccountFeatureDescriptor *)v5 _suggestionsFromStrings:v12];
     amountSuggestions = v5->_amountSuggestions;
     v5->_amountSuggestions = v13;
 
-    v15 = [v4 PKArrayContaining:objc_opt_class() forKey:@"thresholdSuggestions"];
+    v15 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"thresholdSuggestions"];
 
     v16 = [(PKPeerPaymentAccountFeatureDescriptor *)v5 _suggestionsFromStrings:v15];
     thresholdSuggestions = v5->_thresholdSuggestions;
     v5->_thresholdSuggestions = v16;
 
-    v18 = [v4 PKArrayContaining:objc_opt_class() forKey:@"frequencyOptions"];
+    v18 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"frequencyOptions"];
     frequencyOptions = v5->_frequencyOptions;
     v5->_frequencyOptions = v18;
 
     v20 = MEMORY[0x1E695DFE8];
-    v21 = [v4 PKStringForKey:@"productTimeZone"];
+    v21 = [dictionaryCopy PKStringForKey:@"productTimeZone"];
     v22 = [v20 timeZoneWithName:v21];
     productTimeZone = v5->_productTimeZone;
     v5->_productTimeZone = v22;
 
-    v5->_maximumPayments = [v4 PKIntegerForKey:@"maximumPayments"];
-    v5->_endProcessingHour = [v4 PKIntegerForKey:@"endProcessingHour"];
-    [v4 PKDoubleForKey:@"proactiveFetchPeriod"];
+    v5->_maximumPayments = [dictionaryCopy PKIntegerForKey:@"maximumPayments"];
+    v5->_endProcessingHour = [dictionaryCopy PKIntegerForKey:@"endProcessingHour"];
+    [dictionaryCopy PKDoubleForKey:@"proactiveFetchPeriod"];
     v5->_proactiveFetchPeriod = v24;
-    v25 = [(PKAccountFeatureDescriptor *)v5 osVersionRange];
-    v5->_supported = PKDeviceVersionMeetsRequiredVersion(v25);
+    osVersionRange = [(PKAccountFeatureDescriptor *)v5 osVersionRange];
+    v5->_supported = PKDeviceVersionMeetsRequiredVersion(osVersionRange);
 
-    v26 = [v4 PKSetContaining:objc_opt_class() forKey:@"supportedFundingSourceCountryCodes"];
+    v26 = [dictionaryCopy PKSetContaining:objc_opt_class() forKey:@"supportedFundingSourceCountryCodes"];
     supportedFundingSourceCountryCodes = v5->_supportedFundingSourceCountryCodes;
     v5->_supportedFundingSourceCountryCodes = v26;
   }
@@ -90,16 +90,16 @@
   return v5;
 }
 
-- (id)_suggestionsFromStrings:(id)a3
+- (id)_suggestionsFromStrings:(id)strings
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  stringsCopy = strings;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = stringsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -129,60 +129,60 @@
   return v11;
 }
 
-- (PKPeerPaymentAccountFeatureDescriptor)initWithCoder:(id)a3
+- (PKPeerPaymentAccountFeatureDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v36.receiver = self;
   v36.super_class = PKPeerPaymentAccountFeatureDescriptor;
-  v5 = [(PKAccountFeatureDescriptor *)&v36 initWithCoder:v4];
+  v5 = [(PKAccountFeatureDescriptor *)&v36 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"feePercentage"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"feePercentage"];
     feePercentage = v5->_feePercentage;
     v5->_feePercentage = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"minimumFee"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"minimumFee"];
     minimumFee = v5->_minimumFee;
     v5->_minimumFee = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"maximumFee"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"maximumFee"];
     maximumFee = v5->_maximumFee;
     v5->_maximumFee = v10;
 
     v12 = MEMORY[0x1E695DFD8];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"amountSuggestions"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"amountSuggestions"];
     amountSuggestions = v5->_amountSuggestions;
     v5->_amountSuggestions = v15;
 
     v17 = MEMORY[0x1E695DFD8];
     v18 = objc_opt_class();
     v19 = [v17 setWithObjects:{v18, objc_opt_class(), 0}];
-    v20 = [v4 decodeObjectOfClasses:v19 forKey:@"thresholdSuggestions"];
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"thresholdSuggestions"];
     thresholdSuggestions = v5->_thresholdSuggestions;
     v5->_thresholdSuggestions = v20;
 
     v22 = MEMORY[0x1E695DFD8];
     v23 = objc_opt_class();
     v24 = [v22 setWithObjects:{v23, objc_opt_class(), 0}];
-    v25 = [v4 decodeObjectOfClasses:v24 forKey:@"frequencyOptions"];
+    v25 = [coderCopy decodeObjectOfClasses:v24 forKey:@"frequencyOptions"];
     frequencyOptions = v5->_frequencyOptions;
     v5->_frequencyOptions = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"productTimeZone"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"productTimeZone"];
     productTimeZone = v5->_productTimeZone;
     v5->_productTimeZone = v27;
 
-    v5->_maximumPayments = [v4 decodeIntegerForKey:@"maximumPayments"];
-    v5->_endProcessingHour = [v4 decodeIntegerForKey:@"endProcessingHour"];
-    [v4 decodeDoubleForKey:@"proactiveFetchPeriod"];
+    v5->_maximumPayments = [coderCopy decodeIntegerForKey:@"maximumPayments"];
+    v5->_endProcessingHour = [coderCopy decodeIntegerForKey:@"endProcessingHour"];
+    [coderCopy decodeDoubleForKey:@"proactiveFetchPeriod"];
     v5->_proactiveFetchPeriod = v29;
-    v5->_supported = [v4 decodeBoolForKey:@"supported"];
+    v5->_supported = [coderCopy decodeBoolForKey:@"supported"];
     v30 = MEMORY[0x1E695DFD8];
     v31 = objc_opt_class();
     v32 = [v30 setWithObjects:{v31, objc_opt_class(), 0}];
-    v33 = [v4 decodeObjectOfClasses:v32 forKey:@"supportedFundingSourceCountryCodes"];
+    v33 = [coderCopy decodeObjectOfClasses:v32 forKey:@"supportedFundingSourceCountryCodes"];
     supportedFundingSourceCountryCodes = v5->_supportedFundingSourceCountryCodes;
     v5->_supportedFundingSourceCountryCodes = v33;
   }
@@ -190,68 +190,68 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKPeerPaymentAccountFeatureDescriptor;
-  v4 = a3;
-  [(PKAccountFeatureDescriptor *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_feePercentage forKey:{@"feePercentage", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_minimumFee forKey:@"minimumFee"];
-  [v4 encodeObject:self->_maximumFee forKey:@"maximumFee"];
-  [v4 encodeObject:self->_amountSuggestions forKey:@"amountSuggestions"];
-  [v4 encodeObject:self->_thresholdSuggestions forKey:@"thresholdSuggestions"];
-  [v4 encodeObject:self->_frequencyOptions forKey:@"frequencyOptions"];
-  [v4 encodeObject:self->_productTimeZone forKey:@"productTimeZone"];
-  [v4 encodeInteger:self->_maximumPayments forKey:@"maximumPayments"];
-  [v4 encodeInteger:self->_endProcessingHour forKey:@"endProcessingHour"];
-  [v4 encodeDouble:@"proactiveFetchPeriod" forKey:self->_proactiveFetchPeriod];
-  [v4 encodeBool:self->_supported forKey:@"supported"];
-  [v4 encodeObject:self->_supportedFundingSourceCountryCodes forKey:@"supportedFundingSourceCountryCodes"];
+  coderCopy = coder;
+  [(PKAccountFeatureDescriptor *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_feePercentage forKey:{@"feePercentage", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_minimumFee forKey:@"minimumFee"];
+  [coderCopy encodeObject:self->_maximumFee forKey:@"maximumFee"];
+  [coderCopy encodeObject:self->_amountSuggestions forKey:@"amountSuggestions"];
+  [coderCopy encodeObject:self->_thresholdSuggestions forKey:@"thresholdSuggestions"];
+  [coderCopy encodeObject:self->_frequencyOptions forKey:@"frequencyOptions"];
+  [coderCopy encodeObject:self->_productTimeZone forKey:@"productTimeZone"];
+  [coderCopy encodeInteger:self->_maximumPayments forKey:@"maximumPayments"];
+  [coderCopy encodeInteger:self->_endProcessingHour forKey:@"endProcessingHour"];
+  [coderCopy encodeDouble:@"proactiveFetchPeriod" forKey:self->_proactiveFetchPeriod];
+  [coderCopy encodeBool:self->_supported forKey:@"supported"];
+  [coderCopy encodeObject:self->_supportedFundingSourceCountryCodes forKey:@"supportedFundingSourceCountryCodes"];
 }
 
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@: %p ", objc_opt_class(), self];;
-  v4 = [(PKAccountFeatureDescriptor *)self identifier];
-  [v3 appendFormat:@"identifier: '%@'; ", v4];
-  v5 = [(PKAccountFeatureDescriptor *)self minimumAmount];
-  [v3 appendFormat:@"minimumAmount: '%@'; ", v5];
+  identifier = [(PKAccountFeatureDescriptor *)self identifier];
+  [v3 appendFormat:@"identifier: '%@'; ", identifier];
+  minimumAmount = [(PKAccountFeatureDescriptor *)self minimumAmount];
+  [v3 appendFormat:@"minimumAmount: '%@'; ", minimumAmount];
 
-  v6 = [(PKAccountFeatureDescriptor *)self maximumAmount];
-  [v3 appendFormat:@"maximumAmount: '%@'; ", v6];
+  maximumAmount = [(PKAccountFeatureDescriptor *)self maximumAmount];
+  [v3 appendFormat:@"maximumAmount: '%@'; ", maximumAmount];
 
-  if (([v4 isEqualToString:@"loadFromCard"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"sendToUser") & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"recurringPayments"))
+  if (([identifier isEqualToString:@"loadFromCard"] & 1) != 0 || (objc_msgSend(identifier, "isEqualToString:", @"sendToUser") & 1) != 0 || objc_msgSend(identifier, "isEqualToString:", @"recurringPayments"))
   {
-    v7 = [(PKAccountFeatureDescriptor *)self merchantIdentifier];
-    [v3 appendFormat:@"merchantIdentifier: '%@'; ", v7];
+    merchantIdentifier = [(PKAccountFeatureDescriptor *)self merchantIdentifier];
+    [v3 appendFormat:@"merchantIdentifier: '%@'; ", merchantIdentifier];
 
-    v8 = [(PKAccountFeatureDescriptor *)self supportedNetworks];
-    [v3 appendFormat:@"supportedNetworks: '%@'; ", v8];
+    supportedNetworks = [(PKAccountFeatureDescriptor *)self supportedNetworks];
+    [v3 appendFormat:@"supportedNetworks: '%@'; ", supportedNetworks];
 
     v9 = PKMerchantCapabilityToStrings([(PKAccountFeatureDescriptor *)self merchantCapabilities]);
     [v3 appendFormat:@"merchantCapabilities: '%@'; ", v9];
   }
 
-  if ([v4 isEqualToString:@"instantWithdrawal"])
+  if ([identifier isEqualToString:@"instantWithdrawal"])
   {
-    v10 = [(PKPeerPaymentAccountFeatureDescriptor *)self feePercentage];
-    [v3 appendFormat:@"feePercentage: '%@'; ", v10];
+    feePercentage = [(PKPeerPaymentAccountFeatureDescriptor *)self feePercentage];
+    [v3 appendFormat:@"feePercentage: '%@'; ", feePercentage];
 
-    v11 = [(PKPeerPaymentAccountFeatureDescriptor *)self minimumFee];
-    [v3 appendFormat:@"minimumFee: '%@'; ", v11];
+    minimumFee = [(PKPeerPaymentAccountFeatureDescriptor *)self minimumFee];
+    [v3 appendFormat:@"minimumFee: '%@'; ", minimumFee];
 
-    v12 = [(PKPeerPaymentAccountFeatureDescriptor *)self maximumFee];
-    [v3 appendFormat:@"maximumFee: '%@'; ", v12];
+    maximumFee = [(PKPeerPaymentAccountFeatureDescriptor *)self maximumFee];
+    [v3 appendFormat:@"maximumFee: '%@'; ", maximumFee];
   }
 
-  if ([v4 isEqualToString:@"thresholdTopUp"])
+  if ([identifier isEqualToString:@"thresholdTopUp"])
   {
     [v3 appendFormat:@"amountSuggestions: '%@'; ", self->_amountSuggestions];
     [v3 appendFormat:@"thresholdSuggestions: '%@'; ", self->_thresholdSuggestions];
   }
 
-  if ([v4 isEqualToString:@"recurringPayments"])
+  if ([identifier isEqualToString:@"recurringPayments"])
   {
     [v3 appendFormat:@"frequencyOptions: '%@'; ", self->_frequencyOptions];
     [v3 appendFormat:@"productTimeZone: '%@'; ", self->_productTimeZone];
@@ -260,13 +260,13 @@
     [v3 appendFormat:@"proactiveFetchPeriod: '%lf'; ", *&self->_proactiveFetchPeriod];
   }
 
-  v13 = [(PKAccountFeatureDescriptor *)self osVersionRange];
+  osVersionRange = [(PKAccountFeatureDescriptor *)self osVersionRange];
 
-  if (v13)
+  if (osVersionRange)
   {
-    v14 = [(PKAccountFeatureDescriptor *)self osVersionRange];
-    v15 = [v14 asDictionary];
-    [v3 appendFormat:@"osVersionRange: '%@'; ", v15];
+    osVersionRange2 = [(PKAccountFeatureDescriptor *)self osVersionRange];
+    asDictionary = [osVersionRange2 asDictionary];
+    [v3 appendFormat:@"osVersionRange: '%@'; ", asDictionary];
   }
 
   if (self->_supportedFundingSourceCountryCodes)
@@ -290,33 +290,33 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPeerPaymentAccountFeatureDescriptor *)self isEqualToPeerPaymentAccountFeatureDescriptor:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPeerPaymentAccountFeatureDescriptor *)self isEqualToPeerPaymentAccountFeatureDescriptor:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToPeerPaymentAccountFeatureDescriptor:(id)a3
+- (BOOL)isEqualToPeerPaymentAccountFeatureDescriptor:(id)descriptor
 {
-  v4 = a3;
-  if (![(PKAccountFeatureDescriptor *)self isEqualToAccountFeatureDescriptor:v4])
+  descriptorCopy = descriptor;
+  if (![(PKAccountFeatureDescriptor *)self isEqualToAccountFeatureDescriptor:descriptorCopy])
   {
     goto LABEL_55;
   }
 
   feePercentage = self->_feePercentage;
-  v6 = *(v4 + 10);
+  v6 = *(descriptorCopy + 10);
   if (feePercentage)
   {
     v7 = v6 == 0;
@@ -341,7 +341,7 @@
   }
 
   minimumFee = self->_minimumFee;
-  v9 = *(v4 + 11);
+  v9 = *(descriptorCopy + 11);
   if (minimumFee)
   {
     v10 = v9 == 0;
@@ -366,7 +366,7 @@
   }
 
   maximumFee = self->_maximumFee;
-  v12 = *(v4 + 12);
+  v12 = *(descriptorCopy + 12);
   if (maximumFee)
   {
     v13 = v12 == 0;
@@ -391,7 +391,7 @@
   }
 
   amountSuggestions = self->_amountSuggestions;
-  v15 = *(v4 + 13);
+  v15 = *(descriptorCopy + 13);
   if (amountSuggestions && v15)
   {
     if (([(NSArray *)amountSuggestions isEqual:?]& 1) == 0)
@@ -406,7 +406,7 @@
   }
 
   thresholdSuggestions = self->_thresholdSuggestions;
-  v17 = *(v4 + 14);
+  v17 = *(descriptorCopy + 14);
   if (thresholdSuggestions && v17)
   {
     if (([(NSArray *)thresholdSuggestions isEqual:?]& 1) == 0)
@@ -421,7 +421,7 @@
   }
 
   frequencyOptions = self->_frequencyOptions;
-  v19 = *(v4 + 15);
+  v19 = *(descriptorCopy + 15);
   if (frequencyOptions && v19)
   {
     if (([(NSArray *)frequencyOptions isEqual:?]& 1) == 0)
@@ -436,7 +436,7 @@
   }
 
   productTimeZone = self->_productTimeZone;
-  v21 = *(v4 + 16);
+  v21 = *(descriptorCopy + 16);
   if (productTimeZone && v21)
   {
     if (([(NSTimeZone *)productTimeZone isEqual:?]& 1) == 0)
@@ -451,7 +451,7 @@
   }
 
   supportedFundingSourceCountryCodes = self->_supportedFundingSourceCountryCodes;
-  v23 = *(v4 + 20);
+  v23 = *(descriptorCopy + 20);
   if (!supportedFundingSourceCountryCodes || !v23)
   {
     if (supportedFundingSourceCountryCodes == v23)
@@ -470,12 +470,12 @@ LABEL_55:
   }
 
 LABEL_51:
-  if (self->_maximumPayments != *(v4 + 17) || self->_endProcessingHour != *(v4 + 18) || self->_proactiveFetchPeriod != v4[19])
+  if (self->_maximumPayments != *(descriptorCopy + 17) || self->_endProcessingHour != *(descriptorCopy + 18) || self->_proactiveFetchPeriod != descriptorCopy[19])
   {
     goto LABEL_55;
   }
 
-  v24 = self->_supported == *(v4 + 72);
+  v24 = self->_supported == *(descriptorCopy + 72);
 LABEL_56:
 
   return v24;

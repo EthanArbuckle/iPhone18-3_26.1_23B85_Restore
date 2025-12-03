@@ -1,21 +1,21 @@
 @interface SUUIIndexBarSingleEntryListController
-- (SUUIIndexBarSingleEntryListController)initWithEntryViewElement:(id)a3;
-- (id)targetIndexBarEntryIDForEntryDescriptorAtIndex:(int64_t)a3 returningRelativeSectionIndex:(int64_t *)a4;
+- (SUUIIndexBarSingleEntryListController)initWithEntryViewElement:(id)element;
+- (id)targetIndexBarEntryIDForEntryDescriptorAtIndex:(int64_t)index returningRelativeSectionIndex:(int64_t *)sectionIndex;
 - (void)reloadViewElementData;
 @end
 
 @implementation SUUIIndexBarSingleEntryListController
 
-- (SUUIIndexBarSingleEntryListController)initWithEntryViewElement:(id)a3
+- (SUUIIndexBarSingleEntryListController)initWithEntryViewElement:(id)element
 {
-  v5 = a3;
+  elementCopy = element;
   v9.receiver = self;
   v9.super_class = SUUIIndexBarSingleEntryListController;
   v6 = [(SUUIIndexBarSingleEntryListController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_entryViewElement, a3);
+    objc_storeStrong(&v6->_entryViewElement, element);
   }
 
   return v7;
@@ -26,11 +26,11 @@
   v7.receiver = self;
   v7.super_class = SUUIIndexBarSingleEntryListController;
   [(SUUIIndexBarEntryListController *)&v7 reloadViewElementData];
-  v3 = [(SUUIIndexBarEntryViewElement *)self->_entryViewElement childElement];
+  childElement = [(SUUIIndexBarEntryViewElement *)self->_entryViewElement childElement];
   descriptiveViewElement = self->_descriptiveViewElement;
-  if (descriptiveViewElement != v3 && ([(SUUIViewElement *)descriptiveViewElement isEqual:v3]& 1) == 0)
+  if (descriptiveViewElement != childElement && ([(SUUIViewElement *)descriptiveViewElement isEqual:childElement]& 1) == 0)
   {
-    objc_storeStrong(&self->_descriptiveViewElement, v3);
+    objc_storeStrong(&self->_descriptiveViewElement, childElement);
     [(SUUIIndexBarEntryListController *)self _didInvalidate];
   }
 
@@ -43,11 +43,11 @@
   }
 }
 
-- (id)targetIndexBarEntryIDForEntryDescriptorAtIndex:(int64_t)a3 returningRelativeSectionIndex:(int64_t *)a4
+- (id)targetIndexBarEntryIDForEntryDescriptorAtIndex:(int64_t)index returningRelativeSectionIndex:(int64_t *)sectionIndex
 {
-  if (a4)
+  if (sectionIndex)
   {
-    *a4 = 0;
+    *sectionIndex = 0;
   }
 
   return [(SUUIIndexBarEntryViewElement *)self->_entryViewElement targetIndexBarEntryID];

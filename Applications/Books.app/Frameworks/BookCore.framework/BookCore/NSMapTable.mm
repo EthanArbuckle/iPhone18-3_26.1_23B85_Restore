@@ -1,19 +1,19 @@
 @interface NSMapTable
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4;
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript;
 @end
 
 @implementation NSMapTable
 
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript
 {
-  if (a3)
+  if (object)
   {
-    [(NSMapTable *)self setObject:a3 forKey:a4];
+    [(NSMapTable *)self setObject:object forKey:subscript];
   }
 
   else
   {
-    [(NSMapTable *)self removeObjectForKey:a4];
+    [(NSMapTable *)self removeObjectForKey:subscript];
   }
 }
 

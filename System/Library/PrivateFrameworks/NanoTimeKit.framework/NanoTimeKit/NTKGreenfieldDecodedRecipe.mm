@@ -1,38 +1,38 @@
 @interface NTKGreenfieldDecodedRecipe
-- (BOOL)_template:(id)a3 isUnsupportedForComplication:(id)a4;
+- (BOOL)_template:(id)_template isUnsupportedForComplication:(id)complication;
 - (NSDictionary)complicationSlotToTemplateMapping;
-- (NTKGreenfieldDecodedRecipe)initWithCoder:(id)a3;
-- (NTKGreenfieldDecodedRecipe)initWithWatchFace:(id)a3 complicationSlotToTemplateMapping:(id)a4 complicationSlotToItemIdMapping:(id)a5 complicationSlotToNameMapping:(id)a6 complicationSlotToBundleIdMapping:(id)a7 isUsingModifiedComplicationsSet:(BOOL)a8 noBorderFacePreviewImagePath:(id)a9 senderBoxedDeviceSize:(id)a10;
-- (id)_overrideTemplateForComplication:(id)a3 atSlot:(id)a4 face:(id)a5;
+- (NTKGreenfieldDecodedRecipe)initWithCoder:(id)coder;
+- (NTKGreenfieldDecodedRecipe)initWithWatchFace:(id)face complicationSlotToTemplateMapping:(id)mapping complicationSlotToItemIdMapping:(id)idMapping complicationSlotToNameMapping:(id)nameMapping complicationSlotToBundleIdMapping:(id)bundleIdMapping isUsingModifiedComplicationsSet:(BOOL)set noBorderFacePreviewImagePath:(id)path senderBoxedDeviceSize:(id)self0;
+- (id)_overrideTemplateForComplication:(id)complication atSlot:(id)slot face:(id)face;
 - (void)collectOverrideTemplates;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NTKGreenfieldDecodedRecipe
 
-- (NTKGreenfieldDecodedRecipe)initWithWatchFace:(id)a3 complicationSlotToTemplateMapping:(id)a4 complicationSlotToItemIdMapping:(id)a5 complicationSlotToNameMapping:(id)a6 complicationSlotToBundleIdMapping:(id)a7 isUsingModifiedComplicationsSet:(BOOL)a8 noBorderFacePreviewImagePath:(id)a9 senderBoxedDeviceSize:(id)a10
+- (NTKGreenfieldDecodedRecipe)initWithWatchFace:(id)face complicationSlotToTemplateMapping:(id)mapping complicationSlotToItemIdMapping:(id)idMapping complicationSlotToNameMapping:(id)nameMapping complicationSlotToBundleIdMapping:(id)bundleIdMapping isUsingModifiedComplicationsSet:(BOOL)set noBorderFacePreviewImagePath:(id)path senderBoxedDeviceSize:(id)self0
 {
-  v26 = a3;
-  v25 = a4;
-  v24 = a5;
-  v23 = a6;
-  v22 = a7;
-  v16 = a9;
-  v17 = a10;
+  faceCopy = face;
+  mappingCopy = mapping;
+  idMappingCopy = idMapping;
+  nameMappingCopy = nameMapping;
+  bundleIdMappingCopy = bundleIdMapping;
+  pathCopy = path;
+  sizeCopy = size;
   v27.receiver = self;
   v27.super_class = NTKGreenfieldDecodedRecipe;
   v18 = [(NTKGreenfieldDecodedRecipe *)&v27 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_watchFace, a3);
-    objc_storeStrong(&v19->_complicationSlotToTemplateMapping, a4);
-    objc_storeStrong(&v19->_complicationSlotToItemIdMapping, a5);
-    objc_storeStrong(&v19->_complicationSlotToNameMapping, a6);
-    objc_storeStrong(&v19->_complicationSlotToBundleIdMapping, a7);
-    v19->_isUsingModifiedComplicationsSet = a8;
-    objc_storeStrong(&v19->_noBorderFacePreviewImagePath, a9);
-    objc_storeStrong(&v19->_senderBoxedDeviceSize, a10);
+    objc_storeStrong(&v18->_watchFace, face);
+    objc_storeStrong(&v19->_complicationSlotToTemplateMapping, mapping);
+    objc_storeStrong(&v19->_complicationSlotToItemIdMapping, idMapping);
+    objc_storeStrong(&v19->_complicationSlotToNameMapping, nameMapping);
+    objc_storeStrong(&v19->_complicationSlotToBundleIdMapping, bundleIdMapping);
+    v19->_isUsingModifiedComplicationsSet = set;
+    objc_storeStrong(&v19->_noBorderFacePreviewImagePath, path);
+    objc_storeStrong(&v19->_senderBoxedDeviceSize, size);
   }
 
   return v19;
@@ -41,58 +41,58 @@
 - (NSDictionary)complicationSlotToTemplateMapping
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  [v3 addEntriesFromDictionary:self->_complicationSlotToTemplateMapping];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary addEntriesFromDictionary:self->_complicationSlotToTemplateMapping];
   if (self->_complicationSlotToTemplateOverrideMapping)
   {
-    [v3 addEntriesFromDictionary:?];
+    [dictionary addEntriesFromDictionary:?];
   }
 
   v4 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v3;
+    v7 = dictionary;
     _os_log_impl(&dword_22D9C5000, v4, OS_LOG_TYPE_DEFAULT, "complicationSlotToTemplateMapping: %@", &v6, 0xCu);
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(NTKGreenfieldDecodedRecipe *)self watchFace];
-  v11 = [v5 instanceDescriptor];
+  coderCopy = coder;
+  watchFace = [(NTKGreenfieldDecodedRecipe *)self watchFace];
+  instanceDescriptor = [watchFace instanceDescriptor];
 
-  [v4 encodeObject:v11 forKey:@"NTKGreenfieldWatchfaceKey"];
-  [v4 encodeObject:self->_complicationSlotToTemplateMapping forKey:@"NTKGreenfieldComplicationSlotToTemplateMappingKey"];
-  v6 = [(NTKGreenfieldDecodedRecipe *)self complicationSlotToItemIdMapping];
-  [v4 encodeObject:v6 forKey:@"kNTKGreenfieldComplicationSlotToItemIdMappingKey"];
+  [coderCopy encodeObject:instanceDescriptor forKey:@"NTKGreenfieldWatchfaceKey"];
+  [coderCopy encodeObject:self->_complicationSlotToTemplateMapping forKey:@"NTKGreenfieldComplicationSlotToTemplateMappingKey"];
+  complicationSlotToItemIdMapping = [(NTKGreenfieldDecodedRecipe *)self complicationSlotToItemIdMapping];
+  [coderCopy encodeObject:complicationSlotToItemIdMapping forKey:@"kNTKGreenfieldComplicationSlotToItemIdMappingKey"];
 
-  v7 = [(NTKGreenfieldDecodedRecipe *)self complicationSlotToBundleIdMapping];
-  [v4 encodeObject:v7 forKey:@"kNTKGreenfieldComplicationSlotToBundleIdMappingKey"];
+  complicationSlotToBundleIdMapping = [(NTKGreenfieldDecodedRecipe *)self complicationSlotToBundleIdMapping];
+  [coderCopy encodeObject:complicationSlotToBundleIdMapping forKey:@"kNTKGreenfieldComplicationSlotToBundleIdMappingKey"];
 
-  v8 = [(NTKGreenfieldDecodedRecipe *)self complicationSlotToNameMapping];
-  [v4 encodeObject:v8 forKey:@"kNTKGreenfieldComplicationSlotToNameMappingKey"];
+  complicationSlotToNameMapping = [(NTKGreenfieldDecodedRecipe *)self complicationSlotToNameMapping];
+  [coderCopy encodeObject:complicationSlotToNameMapping forKey:@"kNTKGreenfieldComplicationSlotToNameMappingKey"];
 
-  [v4 encodeBool:self->_isUsingModifiedComplicationsSet forKey:@"kNTKGreenfieldIsUsingModifiedComplicationsSet"];
-  v9 = [(NTKGreenfieldDecodedRecipe *)self noBorderFacePreviewImagePath];
-  [v4 encodeObject:v9 forKey:@"NTKGreenfieldNoBordersWatchFaceSnapshotPathKey"];
+  [coderCopy encodeBool:self->_isUsingModifiedComplicationsSet forKey:@"kNTKGreenfieldIsUsingModifiedComplicationsSet"];
+  noBorderFacePreviewImagePath = [(NTKGreenfieldDecodedRecipe *)self noBorderFacePreviewImagePath];
+  [coderCopy encodeObject:noBorderFacePreviewImagePath forKey:@"NTKGreenfieldNoBordersWatchFaceSnapshotPathKey"];
 
-  v10 = [(NTKGreenfieldDecodedRecipe *)self senderBoxedDeviceSize];
-  [v4 encodeObject:v10 forKey:@"NTKGreenfieldDeviceSizePathKey"];
+  senderBoxedDeviceSize = [(NTKGreenfieldDecodedRecipe *)self senderBoxedDeviceSize];
+  [coderCopy encodeObject:senderBoxedDeviceSize forKey:@"NTKGreenfieldDeviceSizePathKey"];
 }
 
-- (NTKGreenfieldDecodedRecipe)initWithCoder:(id)a3
+- (NTKGreenfieldDecodedRecipe)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v33.receiver = self;
   v33.super_class = NTKGreenfieldDecodedRecipe;
   v5 = [(NTKGreenfieldDecodedRecipe *)&v33 init];
   if (v5)
   {
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"NTKGreenfieldWatchfaceKey"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"NTKGreenfieldWatchfaceKey"];
     v6 = [NTKFace faceWithInstanceDescriptor:v32];
     watchFace = v5->_watchFace;
     v5->_watchFace = v6;
@@ -102,7 +102,7 @@
     v10 = objc_opt_class();
     v11 = objc_opt_class();
     v12 = [v8 setWithObjects:{v9, v10, v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"NTKGreenfieldComplicationSlotToTemplateMappingKey"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"NTKGreenfieldComplicationSlotToTemplateMappingKey"];
     complicationSlotToTemplateMapping = v5->_complicationSlotToTemplateMapping;
     v5->_complicationSlotToTemplateMapping = v13;
 
@@ -111,28 +111,28 @@
     v17 = objc_opt_class();
     v18 = [v15 setWithObjects:{v16, v17, objc_opt_class(), 0}];
 
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"kNTKGreenfieldComplicationSlotToItemIdMappingKey"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"kNTKGreenfieldComplicationSlotToItemIdMappingKey"];
     complicationSlotToItemIdMapping = v5->_complicationSlotToItemIdMapping;
     v5->_complicationSlotToItemIdMapping = v19;
 
-    v21 = [v4 decodeObjectOfClasses:v18 forKey:@"kNTKGreenfieldComplicationSlotToBundleIdMappingKey"];
+    v21 = [coderCopy decodeObjectOfClasses:v18 forKey:@"kNTKGreenfieldComplicationSlotToBundleIdMappingKey"];
     complicationSlotToBundleIdMapping = v5->_complicationSlotToBundleIdMapping;
     v5->_complicationSlotToBundleIdMapping = v21;
 
-    v23 = [v4 decodeObjectOfClasses:v18 forKey:@"kNTKGreenfieldComplicationSlotToNameMappingKey"];
+    v23 = [coderCopy decodeObjectOfClasses:v18 forKey:@"kNTKGreenfieldComplicationSlotToNameMappingKey"];
     complicationSlotToNameMapping = v5->_complicationSlotToNameMapping;
     v5->_complicationSlotToNameMapping = v23;
 
-    v5->_isUsingModifiedComplicationsSet = [v4 decodeBoolForKey:@"kNTKGreenfieldIsUsingModifiedComplicationsSet"];
+    v5->_isUsingModifiedComplicationsSet = [coderCopy decodeBoolForKey:@"kNTKGreenfieldIsUsingModifiedComplicationsSet"];
     v25 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
 
-    v26 = [v4 decodeObjectOfClasses:v25 forKey:@"NTKGreenfieldNoBordersWatchFaceSnapshotPathKey"];
+    v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"NTKGreenfieldNoBordersWatchFaceSnapshotPathKey"];
     noBorderFacePreviewImagePath = v5->_noBorderFacePreviewImagePath;
     v5->_noBorderFacePreviewImagePath = v26;
 
     v28 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
 
-    v29 = [v4 decodeObjectOfClasses:v28 forKey:@"NTKGreenfieldDeviceSizePathKey"];
+    v29 = [coderCopy decodeObjectOfClasses:v28 forKey:@"NTKGreenfieldDeviceSizePathKey"];
     senderBoxedDeviceSize = v5->_senderBoxedDeviceSize;
     v5->_senderBoxedDeviceSize = v29;
   }
@@ -140,71 +140,71 @@
   return v5;
 }
 
-- (id)_overrideTemplateForComplication:(id)a3 atSlot:(id)a4 face:(id)a5
+- (id)_overrideTemplateForComplication:(id)complication atSlot:(id)slot face:(id)face
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v32 = a5;
-  v10 = [(NTKFace *)self->_watchFace complicationVariantForComplication:v8 withSlot:v9];
-  v11 = [v10 family];
+  complicationCopy = complication;
+  slotCopy = slot;
+  faceCopy = face;
+  v10 = [(NTKFace *)self->_watchFace complicationVariantForComplication:complicationCopy withSlot:slotCopy];
+  family = [v10 family];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = v8;
-    v13 = [v12 appBundleIdentifier];
-    v14 = [NTKComplicationCollection lsSDKVersionForApplicationID:v13];
+    v12 = complicationCopy;
+    appBundleIdentifier = [v12 appBundleIdentifier];
+    v14 = [NTKComplicationCollection lsSDKVersionForApplicationID:appBundleIdentifier];
 
-    v15 = [v32 device];
-    [NTKCompanionComplicationCollectionManager sharedComplicationCollectionForDevice:v15];
+    device = [faceCopy device];
+    [NTKCompanionComplicationCollectionManager sharedComplicationCollectionForDevice:device];
     v30 = v10;
-    v16 = v31 = v9;
+    v16 = v31 = slotCopy;
     [v12 clientIdentifier];
-    v17 = v8;
+    v17 = complicationCopy;
     v19 = v18 = self;
-    v20 = [v12 complicationDescriptor];
-    v21 = [v12 appBundleIdentifier];
+    complicationDescriptor = [v12 complicationDescriptor];
+    appBundleIdentifier2 = [v12 appBundleIdentifier];
 
-    v22 = [v16 sampleTemplateForClientIdentifier:v19 descriptor:v20 applicationID:v21 family:v11];
+    sharingTemplate = [v16 sampleTemplateForClientIdentifier:v19 descriptor:complicationDescriptor applicationID:appBundleIdentifier2 family:family];
 
     self = v18;
-    v8 = v17;
+    complicationCopy = v17;
 
     v10 = v30;
-    v9 = v31;
+    slotCopy = v31;
   }
 
   else
   {
-    v23 = [v32 device];
-    v15 = [NTKComplicationController controllerForComplication:v8 variant:v10 device:v23];
+    device2 = [faceCopy device];
+    device = [NTKComplicationController controllerForComplication:complicationCopy variant:v10 device:device2];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v22 = [v15 sharingTemplate];
+      sharingTemplate = [device sharingTemplate];
       v14 = 0;
     }
 
     else
     {
       v14 = 0;
-      v22 = 0;
+      sharingTemplate = 0;
     }
   }
 
   v24 = v14;
-  if (v22 || (-[NSDictionary objectForKeyedSubscript:](self->_complicationSlotToNameMapping, "objectForKeyedSubscript:", v9), v25 = objc_claimAutoreleasedReturnValue(), -[NSDictionary objectForKeyedSubscript:](self->_complicationSlotToBundleIdMapping, "objectForKeyedSubscript:", v9), v26 = objc_claimAutoreleasedReturnValue(), [v32 device], v27 = objc_claimAutoreleasedReturnValue(), +[NTKGreenfieldFallbackTemplateProvider templateForClientIdentifier:displayName:family:device:sdkVersion:](NTKGreenfieldFallbackTemplateProvider, "templateForClientIdentifier:displayName:family:device:sdkVersion:", v26, v25, v11, v27, v14), v22 = objc_claimAutoreleasedReturnValue(), v27, v26, v25, v22))
+  if (sharingTemplate || (-[NSDictionary objectForKeyedSubscript:](self->_complicationSlotToNameMapping, "objectForKeyedSubscript:", slotCopy), v25 = objc_claimAutoreleasedReturnValue(), -[NSDictionary objectForKeyedSubscript:](self->_complicationSlotToBundleIdMapping, "objectForKeyedSubscript:", slotCopy), v26 = objc_claimAutoreleasedReturnValue(), [faceCopy device], v27 = objc_claimAutoreleasedReturnValue(), +[NTKGreenfieldFallbackTemplateProvider templateForClientIdentifier:displayName:family:device:sdkVersion:](NTKGreenfieldFallbackTemplateProvider, "templateForClientIdentifier:displayName:family:device:sdkVersion:", v26, v25, family, v27, v14), sharingTemplate = objc_claimAutoreleasedReturnValue(), v27, v26, v25, sharingTemplate))
   {
     v28 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v34 = v8;
+      v34 = complicationCopy;
       v35 = 2112;
-      v36 = v9;
+      v36 = slotCopy;
       v37 = 2112;
-      v38 = v22;
+      v38 = sharingTemplate;
       _os_log_impl(&dword_22D9C5000, v28, OS_LOG_TYPE_DEFAULT, "_overrideTemplateForComplication: '%@' at slot '%@': %@", buf, 0x20u);
     }
   }
@@ -217,23 +217,23 @@
       [NTKGreenfieldDecodedRecipe _overrideTemplateForComplication:v28 atSlot:? face:?];
     }
 
-    v22 = 0;
+    sharingTemplate = 0;
   }
 
-  return v22;
+  return sharingTemplate;
 }
 
 - (void)collectOverrideTemplates
 {
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   watchFace = self->_watchFace;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __54__NTKGreenfieldDecodedRecipe_collectOverrideTemplates__block_invoke;
   v8[3] = &unk_27877F498;
   v8[4] = self;
-  v5 = v3;
+  v5 = dictionary;
   v9 = v5;
   [(NTKFace *)watchFace enumerateComplicationSlotsWithBlock:v8];
   complicationSlotToTemplateOverrideMapping = self->_complicationSlotToTemplateOverrideMapping;
@@ -291,16 +291,16 @@ void __54__NTKGreenfieldDecodedRecipe_collectOverrideTemplates__block_invoke(uin
   }
 }
 
-- (BOOL)_template:(id)a3 isUnsupportedForComplication:(id)a4
+- (BOOL)_template:(id)_template isUnsupportedForComplication:(id)complication
 {
-  v5 = a3;
-  v6 = [a4 complicationType];
+  _templateCopy = _template;
+  complicationType = [complication complicationType];
   v7 = 0;
-  if (v6 > 15)
+  if (complicationType > 15)
   {
-    if (v6 != 16)
+    if (complicationType != 16)
     {
-      if (v6 != 18)
+      if (complicationType != 18)
       {
         goto LABEL_15;
       }
@@ -337,12 +337,12 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (v6 == 1)
+  if (complicationType == 1)
   {
     goto LABEL_11;
   }
 
-  if (v6 == 8)
+  if (complicationType == 8)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)

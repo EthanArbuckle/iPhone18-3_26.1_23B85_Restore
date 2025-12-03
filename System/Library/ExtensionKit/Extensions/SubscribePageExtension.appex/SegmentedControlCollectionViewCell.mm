@@ -1,11 +1,11 @@
 @interface SegmentedControlCollectionViewCell
-- (_TtC22SubscribePageExtension34SegmentedControlCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC22SubscribePageExtension34SegmentedControlCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation SegmentedControlCollectionViewCell
 
-- (_TtC22SubscribePageExtension34SegmentedControlCollectionViewCell)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension34SegmentedControlCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC22SubscribePageExtension34SegmentedControlCollectionViewCell_itemLayoutContext;
   v5 = sub_1007469A4();

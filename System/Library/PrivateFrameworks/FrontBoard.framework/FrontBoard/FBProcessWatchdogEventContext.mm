@@ -1,8 +1,8 @@
 @interface FBProcessWatchdogEventContext
-+ (id)contextForEvent:(int64_t)a3 settings:(id)a4 transitionContext:(id)a5;
++ (id)contextForEvent:(int64_t)event settings:(id)settings transitionContext:(id)context;
 - (FBSSceneTransitionContext)sceneTransitionContext;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
@@ -16,31 +16,31 @@
   return WeakRetained;
 }
 
-+ (id)contextForEvent:(int64_t)a3 settings:(id)a4 transitionContext:(id)a5
++ (id)contextForEvent:(int64_t)event settings:(id)settings transitionContext:(id)context
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = objc_alloc_init(a1);
+  settingsCopy = settings;
+  contextCopy = context;
+  v10 = objc_alloc_init(self);
   v11 = *(v10 + 2);
-  *(v10 + 1) = a3;
-  *(v10 + 2) = v8;
-  v12 = v8;
+  *(v10 + 1) = event;
+  *(v10 + 2) = settingsCopy;
+  v12 = settingsCopy;
 
-  objc_storeWeak(v10 + 3, v9);
-  v13 = [v9 updateContext];
+  objc_storeWeak(v10 + 3, contextCopy);
+  updateContext = [contextCopy updateContext];
 
   v14 = *(v10 + 4);
-  *(v10 + 4) = v13;
+  *(v10 + 4) = updateContext;
 
   return v10;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(FBProcessWatchdogEventContext *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(FBProcessWatchdogEventContext *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -52,28 +52,28 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(FBProcessWatchdogEventContext *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(FBProcessWatchdogEventContext *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(FBProcessWatchdogEventContext *)self succinctDescriptionBuilder];
-  v6 = v5;
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(FBProcessWatchdogEventContext *)self succinctDescriptionBuilder];
+  v6 = succinctDescriptionBuilder;
   if (self->_sceneUpdateContext)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __71__FBProcessWatchdogEventContext_descriptionBuilderWithMultilinePrefix___block_invoke;
     v8[3] = &unk_1E783B240;
-    v9 = v5;
-    v10 = self;
-    [v9 appendBodySectionWithName:0 multilinePrefix:v4 block:v8];
+    v9 = succinctDescriptionBuilder;
+    selfCopy = self;
+    [v9 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v8];
   }
 
   return v6;

@@ -1,16 +1,16 @@
 @interface PLCloudPersistentHistoryTransactionsResult
 + (id)_coalescingLimitTest;
 + (id)_isTransactionSyncableFilter;
-+ (id)fetchTransactionsSinceToken:(id)a3 inContext:(id)a4;
++ (id)fetchTransactionsSinceToken:(id)token inContext:(id)context;
 + (int64_t)_changeCoalescingLimit;
 + (int64_t)_transactionCoalescingLimit;
-- (BOOL)_sendLocalEvent:(id)a3 toEnumerationBlock:(id)a4;
-- (PLCloudPersistentHistoryTransactionsResult)initWithResultType:(int64_t)a3 transactionIterator:(id)a4;
-- (PLCloudPersistentHistoryTransactionsResult)initWithSuccesfulTransactionIterator:(id)a3;
-- (PLCloudPersistentHistoryTransactionsResult)initWithUnsuccessfulResultType:(int64_t)a3;
+- (BOOL)_sendLocalEvent:(id)event toEnumerationBlock:(id)block;
+- (PLCloudPersistentHistoryTransactionsResult)initWithResultType:(int64_t)type transactionIterator:(id)iterator;
+- (PLCloudPersistentHistoryTransactionsResult)initWithSuccesfulTransactionIterator:(id)iterator;
+- (PLCloudPersistentHistoryTransactionsResult)initWithUnsuccessfulResultType:(int64_t)type;
 - (id)_nextLocalEventUpToNonCoalescableTransaction;
 - (void)_updateLastProcessedCoreDataToken;
-- (void)enumerateLocalEventsWithBlock:(id)a3;
+- (void)enumerateLocalEventsWithBlock:(id)block;
 @end
 
 @implementation PLCloudPersistentHistoryTransactionsResult
@@ -18,10 +18,10 @@
 - (void)_updateLastProcessedCoreDataToken
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = [(PLPersistentHistoryTransactionIterator *)self->_transactionIterator lastIteratedToken];
-  if (v3)
+  lastIteratedToken = [(PLPersistentHistoryTransactionIterator *)self->_transactionIterator lastIteratedToken];
+  if (lastIteratedToken)
   {
-    objc_storeStrong(&self->_lastProcessedCoreDataToken, v3);
+    objc_storeStrong(&self->_lastProcessedCoreDataToken, lastIteratedToken);
     if ((*MEMORY[0x1E6994D48] & 1) == 0)
     {
       v4 = __CPLAssetsdOSLogDomain();
@@ -58,12 +58,12 @@ void __90__PLCloudPersistentHistoryTransactionsResult__nextLocalEventUpToNonCoal
   [v3 recordTransactionsFromIterator:*(*(a1 + 32) + 16) untilTest:v5];
 }
 
-- (BOOL)_sendLocalEvent:(id)a3 toEnumerationBlock:(id)a4
+- (BOOL)_sendLocalEvent:(id)event toEnumerationBlock:(id)block
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  eventCopy = event;
+  blockCopy = block;
+  if ([eventCopy count])
   {
     v12 = 0;
     if ((*MEMORY[0x1E6994D48] & 1) == 0)
@@ -71,14 +71,14 @@ void __90__PLCloudPersistentHistoryTransactionsResult__nextLocalEventUpToNonCoal
       v7 = __CPLAssetsdOSLogDomain();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
       {
-        v8 = [v5 _pl_prettyDescription];
+        _pl_prettyDescription = [eventCopy _pl_prettyDescription];
         *buf = 138412290;
-        v14 = v8;
+        v14 = _pl_prettyDescription;
         _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_DEBUG, "Enumerating local event: %@", buf, 0xCu);
       }
     }
 
-    v6[2](v6, v5, &v12);
+    blockCopy[2](blockCopy, eventCopy, &v12);
     v9 = v12;
   }
 
@@ -100,31 +100,31 @@ void __90__PLCloudPersistentHistoryTransactionsResult__nextLocalEventUpToNonCoal
   return v9 & 1;
 }
 
-- (void)enumerateLocalEventsWithBlock:(id)a3
+- (void)enumerateLocalEventsWithBlock:(id)block
 {
-  v9 = a3;
+  blockCopy = block;
   if (self->_resultType)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PLCloudPersistentHistoryTransactionsResult.m" lineNumber:87 description:@"Can only enumerate succesful results"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCloudPersistentHistoryTransactionsResult.m" lineNumber:87 description:@"Can only enumerate succesful results"];
   }
 
-  v5 = [(PLCloudPersistentHistoryTransactionsResult *)self _nextLocalEventUpToNonCoalescableTransaction];
-  if ([v5 count])
+  _nextLocalEventUpToNonCoalescableTransaction = [(PLCloudPersistentHistoryTransactionsResult *)self _nextLocalEventUpToNonCoalescableTransaction];
+  if ([_nextLocalEventUpToNonCoalescableTransaction count])
   {
     while (1)
     {
       v6 = objc_autoreleasePoolPush();
-      if ([(PLCloudPersistentHistoryTransactionsResult *)self _sendLocalEvent:v5 toEnumerationBlock:v9])
+      if ([(PLCloudPersistentHistoryTransactionsResult *)self _sendLocalEvent:_nextLocalEventUpToNonCoalescableTransaction toEnumerationBlock:blockCopy])
       {
         break;
       }
 
-      v7 = [(PLCloudPersistentHistoryTransactionsResult *)self _nextLocalEventUpToNonCoalescableTransaction];
+      _nextLocalEventUpToNonCoalescableTransaction2 = [(PLCloudPersistentHistoryTransactionsResult *)self _nextLocalEventUpToNonCoalescableTransaction];
 
       objc_autoreleasePoolPop(v6);
-      v5 = v7;
-      if (![v7 count])
+      _nextLocalEventUpToNonCoalescableTransaction = _nextLocalEventUpToNonCoalescableTransaction2;
+      if (![_nextLocalEventUpToNonCoalescableTransaction2 count])
       {
         goto LABEL_9;
       }
@@ -133,22 +133,22 @@ void __90__PLCloudPersistentHistoryTransactionsResult__nextLocalEventUpToNonCoal
     objc_autoreleasePoolPop(v6);
   }
 
-  v7 = v5;
+  _nextLocalEventUpToNonCoalescableTransaction2 = _nextLocalEventUpToNonCoalescableTransaction;
 LABEL_9:
   [(PLCloudPersistentHistoryTransactionsResult *)self _updateLastProcessedCoreDataToken];
 }
 
-- (PLCloudPersistentHistoryTransactionsResult)initWithResultType:(int64_t)a3 transactionIterator:(id)a4
+- (PLCloudPersistentHistoryTransactionsResult)initWithResultType:(int64_t)type transactionIterator:(id)iterator
 {
-  v7 = a4;
+  iteratorCopy = iterator;
   v13.receiver = self;
   v13.super_class = PLCloudPersistentHistoryTransactionsResult;
   v8 = [(PLCloudPersistentHistoryTransactionsResult *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    v8->_resultType = a3;
-    objc_storeStrong(&v8->_transactionIterator, a4);
+    v8->_resultType = type;
+    objc_storeStrong(&v8->_transactionIterator, iterator);
     lastProcessedCoreDataToken = v9->_lastProcessedCoreDataToken;
     v9->_lastProcessedCoreDataToken = 0;
 
@@ -158,27 +158,27 @@ LABEL_9:
   return v9;
 }
 
-- (PLCloudPersistentHistoryTransactionsResult)initWithUnsuccessfulResultType:(int64_t)a3
+- (PLCloudPersistentHistoryTransactionsResult)initWithUnsuccessfulResultType:(int64_t)type
 {
-  if (!a3)
+  if (!type)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PLCloudPersistentHistoryTransactionsResult.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"resultType != PLCloudChangeEventsResultSuccess"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCloudPersistentHistoryTransactionsResult.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"resultType != PLCloudChangeEventsResultSuccess"}];
   }
 
-  return [(PLCloudPersistentHistoryTransactionsResult *)self initWithResultType:a3 transactionIterator:0];
+  return [(PLCloudPersistentHistoryTransactionsResult *)self initWithResultType:type transactionIterator:0];
 }
 
-- (PLCloudPersistentHistoryTransactionsResult)initWithSuccesfulTransactionIterator:(id)a3
+- (PLCloudPersistentHistoryTransactionsResult)initWithSuccesfulTransactionIterator:(id)iterator
 {
-  v5 = a3;
-  if (!v5)
+  iteratorCopy = iterator;
+  if (!iteratorCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PLCloudPersistentHistoryTransactionsResult.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"iterator != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCloudPersistentHistoryTransactionsResult.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"iterator != nil"}];
   }
 
-  v6 = [(PLCloudPersistentHistoryTransactionsResult *)self initWithResultType:0 transactionIterator:v5];
+  v6 = [(PLCloudPersistentHistoryTransactionsResult *)self initWithResultType:0 transactionIterator:iteratorCopy];
 
   return v6;
 }
@@ -426,13 +426,13 @@ LABEL_21:
   return v25;
 }
 
-+ (id)fetchTransactionsSinceToken:(id)a3 inContext:(id)a4
++ (id)fetchTransactionsSinceToken:(id)token inContext:(id)context
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  tokenCopy = token;
+  contextCopy = context;
   v17 = 0;
-  v7 = [PLPersistentHistoryTransactionIterator iteratorSinceToken:v5 withManagedObjectObjectContext:v6 error:&v17];
+  v7 = [PLPersistentHistoryTransactionIterator iteratorSinceToken:tokenCopy withManagedObjectObjectContext:contextCopy error:&v17];
   v8 = v17;
   if (!v7)
   {
@@ -444,9 +444,9 @@ LABEL_21:
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v19 = v5;
+          v19 = tokenCopy;
           v20 = 2114;
-          v21 = v6;
+          v21 = contextCopy;
           v13 = "Token was expired, sending back PLCloudChangeEventsResultHistoryTokenInvalid, token: %{public}@, context: %{public}@";
 LABEL_15:
           _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_ERROR, v13, buf, 0x16u);
@@ -471,9 +471,9 @@ LABEL_15:
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543874;
-          v19 = v5;
+          v19 = tokenCopy;
           v20 = 2112;
-          v21 = v6;
+          v21 = contextCopy;
           v22 = 2112;
           v23 = v8;
           _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_ERROR, "Failed to fetch transactions since token: %{public}@, context: %@, error: %@,", buf, 0x20u);
@@ -489,9 +489,9 @@ LABEL_15:
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v19 = v5;
+          v19 = tokenCopy;
           v20 = 2114;
-          v21 = v6;
+          v21 = contextCopy;
           v13 = "Token is inconsistent (token passed to NSPersistentChangeRequest does not contain the store), sending back PLCloudChangeEventsResultHistoryTokenInvalid, token: %{public}@, context: %{public}@";
           goto LABEL_15;
         }

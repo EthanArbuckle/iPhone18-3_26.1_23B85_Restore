@@ -3,53 +3,53 @@
 - (ACHAwardsClient)client;
 - (ACHAwardsWorkoutClient)workoutClient;
 - (ACHEarnedInstanceAwardingEngine)engine;
-- (ACHMindfulMinutesAwardingSource)initWithClient:(id)a3 healthStore:(id)a4 workoutClient:(id)a5 awardingEngine:(id)a6 templateStore:(id)a7 creatorDevice:(unsigned __int8)a8 progressEngine:(id)a9;
+- (ACHMindfulMinutesAwardingSource)initWithClient:(id)client healthStore:(id)store workoutClient:(id)workoutClient awardingEngine:(id)engine templateStore:(id)templateStore creatorDevice:(unsigned __int8)device progressEngine:(id)progressEngine;
 - (ACHTemplateStore)templateStore;
 - (BOOL)isAppleWatch;
 - (NSDate)currentDate;
 - (NSString)watchCountryCode;
 - (id)_progressEnvironement;
-- (id)_queue_evaluateSession:(id)a3 shouldLog:(BOOL)a4;
-- (id)_queue_goalQuantityForTemplate:(id)a3 progressEnvironment:(id)a4;
-- (id)_queue_progressQuantityForTemplate:(id)a3 progressEnvironment:(id)a4;
-- (id)_relevantTemplatesForMindfulSession:(id)a3;
-- (id)earnedInstancesForHistoricalInterval:(id)a3 error:(id *)a4;
+- (id)_queue_evaluateSession:(id)session shouldLog:(BOOL)log;
+- (id)_queue_goalQuantityForTemplate:(id)template progressEnvironment:(id)environment;
+- (id)_queue_progressQuantityForTemplate:(id)template progressEnvironment:(id)environment;
+- (id)_relevantTemplatesForMindfulSession:(id)session;
+- (id)earnedInstancesForHistoricalInterval:(id)interval error:(id *)error;
 - (void)_queue_startSampleQueryIfNecessary;
-- (void)_runIncrementalEvaluation:(id)a3;
+- (void)_runIncrementalEvaluation:(id)evaluation;
 - (void)_startSampleQuery;
 - (void)_stopSampleQuery;
 - (void)activate;
 - (void)dealloc;
-- (void)requestAchievementProgressUpdatesForTemplates:(id)a3;
-- (void)sessionAdded:(id)a3;
+- (void)requestAchievementProgressUpdatesForTemplates:(id)templates;
+- (void)sessionAdded:(id)added;
 @end
 
 @implementation ACHMindfulMinutesAwardingSource
 
-- (ACHMindfulMinutesAwardingSource)initWithClient:(id)a3 healthStore:(id)a4 workoutClient:(id)a5 awardingEngine:(id)a6 templateStore:(id)a7 creatorDevice:(unsigned __int8)a8 progressEngine:(id)a9
+- (ACHMindfulMinutesAwardingSource)initWithClient:(id)client healthStore:(id)store workoutClient:(id)workoutClient awardingEngine:(id)engine templateStore:(id)templateStore creatorDevice:(unsigned __int8)device progressEngine:(id)progressEngine
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a9;
+  clientCopy = client;
+  storeCopy = store;
+  workoutClientCopy = workoutClient;
+  engineCopy = engine;
+  templateStoreCopy = templateStore;
+  progressEngineCopy = progressEngine;
   v28.receiver = self;
   v28.super_class = ACHMindfulMinutesAwardingSource;
   v21 = [(ACHMindfulMinutesAwardingSource *)&v28 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeWeak(&v21->_client, v15);
-    objc_storeStrong(&v22->_healthStore, a4);
-    objc_storeWeak(&v22->_workoutClient, v17);
-    objc_storeWeak(&v22->_engine, v18);
-    objc_storeWeak(&v22->_progressEngine, v20);
-    objc_storeWeak(&v22->_templateStore, v19);
-    v22->_creatorDevice = a8;
-    v23 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+    objc_storeWeak(&v21->_client, clientCopy);
+    objc_storeStrong(&v22->_healthStore, store);
+    objc_storeWeak(&v22->_workoutClient, workoutClientCopy);
+    objc_storeWeak(&v22->_engine, engineCopy);
+    objc_storeWeak(&v22->_progressEngine, progressEngineCopy);
+    objc_storeWeak(&v22->_templateStore, templateStoreCopy);
+    v22->_creatorDevice = device;
+    hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
     calendar = v22->_calendar;
-    v22->_calendar = v23;
+    v22->_calendar = hk_gregorianCalendar;
 
     v25 = HKCreateSerialDispatchQueue();
     internalQueue = v22->_internalQueue;
@@ -62,7 +62,7 @@
 - (void)activate
 {
   objc_initWeak(&location, self);
-  v3 = [*MEMORY[0x277CE8C10] UTF8String];
+  uTF8String = [*MEMORY[0x277CE8C10] UTF8String];
   v4 = MEMORY[0x277D85CD0];
   v5 = MEMORY[0x277D85CD0];
   v6 = MEMORY[0x277D85DD0];
@@ -70,7 +70,7 @@
   v8 = __43__ACHMindfulMinutesAwardingSource_activate__block_invoke;
   v9 = &unk_2784907F8;
   objc_copyWeak(&v10, &location);
-  notify_register_dispatch(v3, &self->_protectedDataToken, v4, &v6);
+  notify_register_dispatch(uTF8String, &self->_protectedDataToken, v4, &v6);
 
   [(ACHMindfulMinutesAwardingSource *)self _queue_startSampleQueryIfNecessary:v6];
   objc_destroyWeak(&v10);
@@ -118,13 +118,13 @@ void __43__ACHMindfulMinutesAwardingSource_activate__block_invoke(uint64_t a1)
   if (!self->_sampleQuery)
   {
     objc_initWeak(&location, self);
-    v3 = [(ACHMindfulMinutesAwardingSource *)self internalQueue];
+    internalQueue = [(ACHMindfulMinutesAwardingSource *)self internalQueue];
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
     v4[2] = __69__ACHMindfulMinutesAwardingSource__queue_startSampleQueryIfNecessary__block_invoke;
     v4[3] = &unk_278490820;
     objc_copyWeak(&v5, &location);
-    dispatch_async(v3, v4);
+    dispatch_async(internalQueue, v4);
 
     objc_destroyWeak(&v5);
     objc_destroyWeak(&location);
@@ -143,13 +143,13 @@ void __69__ACHMindfulMinutesAwardingSource__queue_startSampleQueryIfNecessary__b
   v3 = [MEMORY[0x277CCD8D8] categoryTypeForIdentifier:*MEMORY[0x277CCBA30]];
   objc_initWeak(&location, self);
   v4 = objc_alloc(MEMORY[0x277CCCFF0]);
-  v5 = [MEMORY[0x277CCD840] latestAnchor];
+  latestAnchor = [MEMORY[0x277CCD840] latestAnchor];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __52__ACHMindfulMinutesAwardingSource__startSampleQuery__block_invoke;
   v10[3] = &unk_278490848;
   objc_copyWeak(&v11, &location);
-  v6 = [v4 initWithType:v3 predicate:0 anchor:v5 limit:0 resultsHandler:v10];
+  v6 = [v4 initWithType:v3 predicate:0 anchor:latestAnchor limit:0 resultsHandler:v10];
   sampleQuery = self->_sampleQuery;
   self->_sampleQuery = v6;
 
@@ -223,17 +223,17 @@ void __51__ACHMindfulMinutesAwardingSource__stopSampleQuery__block_invoke(uint64
   *(v2 + 112) = 0;
 }
 
-- (void)sessionAdded:(id)a3
+- (void)sessionAdded:(id)added
 {
-  v4 = a3;
+  addedCopy = added;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__ACHMindfulMinutesAwardingSource_sessionAdded___block_invoke;
   v7[3] = &unk_278490898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = addedCopy;
+  v6 = addedCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -257,30 +257,30 @@ void __48__ACHMindfulMinutesAwardingSource_sessionAdded___block_invoke(uint64_t 
 
 - (BOOL)isAppleWatch
 {
-  v3 = [(ACHMindfulMinutesAwardingSource *)self overrideIsAppleWatch];
+  overrideIsAppleWatch = [(ACHMindfulMinutesAwardingSource *)self overrideIsAppleWatch];
 
-  if (v3)
+  if (overrideIsAppleWatch)
   {
-    v4 = [(ACHMindfulMinutesAwardingSource *)self overrideIsAppleWatch];
-    v5 = [v4 BOOLValue];
+    overrideIsAppleWatch2 = [(ACHMindfulMinutesAwardingSource *)self overrideIsAppleWatch];
+    bOOLValue = [overrideIsAppleWatch2 BOOLValue];
   }
 
   else
   {
-    v4 = [MEMORY[0x277CCDD30] sharedBehavior];
-    v5 = [v4 isAppleWatch];
+    overrideIsAppleWatch2 = [MEMORY[0x277CCDD30] sharedBehavior];
+    bOOLValue = [overrideIsAppleWatch2 isAppleWatch];
   }
 
-  v6 = v5;
+  v6 = bOOLValue;
 
   return v6;
 }
 
 - (NSString)watchCountryCode
 {
-  v3 = [(ACHMindfulMinutesAwardingSource *)self overrideWatchCountryCode];
+  overrideWatchCountryCode = [(ACHMindfulMinutesAwardingSource *)self overrideWatchCountryCode];
 
-  if (v3)
+  if (overrideWatchCountryCode)
   {
     [(ACHMindfulMinutesAwardingSource *)self overrideWatchCountryCode];
   }
@@ -296,9 +296,9 @@ void __48__ACHMindfulMinutesAwardingSource_sessionAdded___block_invoke(uint64_t 
 
 - (NSDate)currentDate
 {
-  v3 = [(ACHMindfulMinutesAwardingSource *)self currentDateOverride];
+  currentDateOverride = [(ACHMindfulMinutesAwardingSource *)self currentDateOverride];
 
-  if (v3)
+  if (currentDateOverride)
   {
     [(ACHMindfulMinutesAwardingSource *)self currentDateOverride];
   }
@@ -318,23 +318,23 @@ void __48__ACHMindfulMinutesAwardingSource_sessionAdded___block_invoke(uint64_t 
   healthStore = self->_healthStore;
   WeakRetained = objc_loadWeakRetained(&self->_workoutClient);
   calendar = self->_calendar;
-  v7 = [(ACHMindfulMinutesAwardingSource *)self currentDate];
-  v8 = [(ACHMindfulMinutesAwardingEnvironment *)v3 initWithHealthStore:healthStore workoutClient:WeakRetained calendar:calendar currentDate:v7];
+  currentDate = [(ACHMindfulMinutesAwardingSource *)self currentDate];
+  v8 = [(ACHMindfulMinutesAwardingEnvironment *)v3 initWithHealthStore:healthStore workoutClient:WeakRetained calendar:calendar currentDate:currentDate];
 
   return v8;
 }
 
-- (id)_relevantTemplatesForMindfulSession:(id)a3
+- (id)_relevantTemplatesForMindfulSession:(id)session
 {
-  v4 = a3;
-  v5 = [(ACHMindfulMinutesAwardingSource *)self watchCountryCode];
+  sessionCopy = session;
+  watchCountryCode = [(ACHMindfulMinutesAwardingSource *)self watchCountryCode];
   calendar = self->_calendar;
-  v7 = [v4 endDate];
+  endDate = [sessionCopy endDate];
 
-  v8 = [(NSCalendar *)calendar components:28 fromDate:v7];
+  v8 = [(NSCalendar *)calendar components:28 fromDate:endDate];
 
   WeakRetained = objc_loadWeakRetained(&self->_templateStore);
-  v10 = [WeakRetained availableTemplatesForDateComponents:v8 countryCode:v5];
+  v10 = [WeakRetained availableTemplatesForDateComponents:v8 countryCode:watchCountryCode];
 
   v11 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global];
   v12 = [v10 filteredArrayUsingPredicate:v11];
@@ -342,29 +342,29 @@ void __48__ACHMindfulMinutesAwardingSource_sessionAdded___block_invoke(uint64_t 
   return v12;
 }
 
-- (id)_queue_evaluateSession:(id)a3 shouldLog:(BOOL)a4
+- (id)_queue_evaluateSession:(id)session shouldLog:(BOOL)log
 {
-  v4 = a4;
+  logCopy = log;
   v67 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(ACHMindfulMinutesAwardingSource *)self internalQueue];
-  dispatch_assert_queue_V2(v7);
+  sessionCopy = session;
+  internalQueue = [(ACHMindfulMinutesAwardingSource *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
   calendar = self->_calendar;
-  v9 = [v6 startDate];
-  v50 = [(NSCalendar *)calendar components:28 fromDate:v9];
+  startDate = [sessionCopy startDate];
+  v50 = [(NSCalendar *)calendar components:28 fromDate:startDate];
 
   v49 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v10 = [(ACHMindfulMinutesAwardingSource *)self _relevantTemplatesForMindfulSession:v6];
-  v48 = v4;
-  if (v4)
+  v10 = [(ACHMindfulMinutesAwardingSource *)self _relevantTemplatesForMindfulSession:sessionCopy];
+  v48 = logCopy;
+  if (logCopy)
   {
     v11 = ACHLogAwardEngine();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = ACHTriggerOptionsToString();
       v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v10, "count")}];
-      v14 = [v6 UUID];
+      uUID = [sessionCopy UUID];
       *buf = 138413058;
       v60 = v12;
       v61 = 2114;
@@ -372,7 +372,7 @@ void __48__ACHMindfulMinutesAwardingSource_sessionAdded___block_invoke(uint64_t 
       v63 = 2114;
       v64 = v50;
       v65 = 2112;
-      v66 = v14;
+      v66 = uUID;
       _os_log_impl(&dword_221DDC000, v11, OS_LOG_TYPE_DEFAULT, "[ACHMindfulMinutesAwardingSource] Evaluating triggers %@ for %{public}@ templates using activity summary with date %{public}@, values: %@", buf, 0x2Au);
     }
   }
@@ -381,9 +381,9 @@ void __48__ACHMindfulMinutesAwardingSource_sessionAdded___block_invoke(uint64_t 
   healthStore = self->_healthStore;
   WeakRetained = objc_loadWeakRetained(&self->_workoutClient);
   v18 = self->_calendar;
-  v47 = v6;
-  v19 = [v6 endDate];
-  v53 = [(ACHMindfulMinutesAwardingEnvironment *)v15 initWithHealthStore:healthStore workoutClient:WeakRetained calendar:v18 currentDate:v19];
+  v47 = sessionCopy;
+  endDate = [sessionCopy endDate];
+  v53 = [(ACHMindfulMinutesAwardingEnvironment *)v15 initWithHealthStore:healthStore workoutClient:WeakRetained calendar:v18 currentDate:endDate];
 
   v56 = 0u;
   v57 = 0u;
@@ -409,27 +409,27 @@ void __48__ACHMindfulMinutesAwardingSource_sessionAdded___block_invoke(uint64_t 
         }
 
         v26 = *(*(&v54 + 1) + 8 * v25);
-        v27 = [v26 gracePredicate];
-        v28 = v27;
-        if (v27)
+        gracePredicate = [v26 gracePredicate];
+        v28 = gracePredicate;
+        if (gracePredicate)
         {
-          v29 = v27;
+          predicate = gracePredicate;
         }
 
         else
         {
-          v29 = [v26 predicate];
+          predicate = [v26 predicate];
         }
 
-        v30 = v29;
+        v30 = predicate;
 
         v31 = [*(v24 + 3120) predicateWithFormat:v30];
         [v31 allowEvaluation];
         if ([v31 evaluateWithObject:v53])
         {
           v32 = objc_alloc_init(MEMORY[0x277CE8D38]);
-          v33 = [v26 uniqueName];
-          [v32 setTemplateUniqueName:v33];
+          uniqueName = [v26 uniqueName];
+          [v32 setTemplateUniqueName:uniqueName];
 
           [v50 year];
           [v50 month];
@@ -437,23 +437,23 @@ void __48__ACHMindfulMinutesAwardingSource_sessionAdded___block_invoke(uint64_t 
           v34 = ACHDateComponentsForYearMonthDay();
           [v32 setEarnedDateComponents:v34];
 
-          v35 = [v26 graceValueExpression];
-          if (v35)
+          graceValueExpression = [v26 graceValueExpression];
+          if (graceValueExpression)
           {
-            v36 = v35;
+            valueExpression = graceValueExpression;
 LABEL_17:
-            v37 = [v26 canonicalUnit];
+            canonicalUnit = [v26 canonicalUnit];
 
-            if (v37)
+            if (canonicalUnit)
             {
-              v38 = [MEMORY[0x277CCA9C0] expressionWithFormat:v36];
+              v38 = [MEMORY[0x277CCA9C0] expressionWithFormat:valueExpression];
               v39 = [v38 expressionValueWithObject:v53 context:0];
               if (v39)
               {
                 v40 = MEMORY[0x277CCD7E8];
-                v41 = [v26 canonicalUnit];
+                canonicalUnit2 = [v26 canonicalUnit];
                 [v39 doubleValue];
-                v42 = [v40 quantityWithUnit:v41 doubleValue:?];
+                v42 = [v40 quantityWithUnit:canonicalUnit2 doubleValue:?];
                 [v32 setValue:v42];
 
                 v21 = v48;
@@ -463,8 +463,8 @@ LABEL_17:
 
           else
           {
-            v36 = [v26 valueExpression];
-            if (v36)
+            valueExpression = [v26 valueExpression];
+            if (valueExpression)
             {
               goto LABEL_17;
             }
@@ -505,28 +505,28 @@ LABEL_17:
   return v44;
 }
 
-- (void)_runIncrementalEvaluation:(id)a3
+- (void)_runIncrementalEvaluation:(id)evaluation
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  evaluationCopy = evaluation;
   v5 = ACHLogAwardEngine();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v13 = [v4 count];
+    v13 = [evaluationCopy count];
     _os_log_impl(&dword_221DDC000, v5, OS_LOG_TYPE_DEFAULT, "[ACHMindfulMinutesAwardingSource] Running incremental evaluation for %lu sessions", buf, 0xCu);
   }
 
-  v6 = [(ACHMindfulMinutesAwardingSource *)self engine];
-  v7 = [(ACHMindfulMinutesAwardingSource *)self uniqueName];
+  engine = [(ACHMindfulMinutesAwardingSource *)self engine];
+  uniqueName = [(ACHMindfulMinutesAwardingSource *)self uniqueName];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __61__ACHMindfulMinutesAwardingSource__runIncrementalEvaluation___block_invoke;
   v10[3] = &unk_278490908;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
-  [v6 requestIncrementalEvaluationForSource:v7 evaluationBlock:v10];
+  v11 = evaluationCopy;
+  v8 = evaluationCopy;
+  [engine requestIncrementalEvaluationForSource:uniqueName evaluationBlock:v10];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -603,17 +603,17 @@ void __61__ACHMindfulMinutesAwardingSource__runIncrementalEvaluation___block_inv
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)earnedInstancesForHistoricalInterval:(id)a3 error:(id *)a4
+- (id)earnedInstancesForHistoricalInterval:(id)interval error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(ACHMindfulMinutesAwardingSource *)self internalQueue];
-  dispatch_assert_queue_not_V2(v7);
+  intervalCopy = interval;
+  internalQueue = [(ACHMindfulMinutesAwardingSource *)self internalQueue];
+  dispatch_assert_queue_not_V2(internalQueue);
 
   v8 = ACHLogAwardEngine();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 description];
+    v9 = [intervalCopy description];
     LODWORD(buf) = 138412290;
     *(&buf + 4) = v9;
     _os_log_impl(&dword_221DDC000, v8, OS_LOG_TYPE_DEFAULT, "[ACHMindfulMinutesAwardingSource] Running historical evaluation for date interval %@", &buf, 0xCu);
@@ -630,13 +630,13 @@ void __61__ACHMindfulMinutesAwardingSource__runIncrementalEvaluation___block_inv
   v16 = 3221225472;
   v17 = __78__ACHMindfulMinutesAwardingSource_earnedInstancesForHistoricalInterval_error___block_invoke;
   v18 = &unk_278490980;
-  v19 = self;
-  v11 = v6;
+  selfCopy = self;
+  v11 = intervalCopy;
   v20 = v11;
   p_buf = &buf;
-  v22 = a4;
+  errorCopy = error;
   dispatch_sync(internalQueue, &v15);
-  v12 = [MEMORY[0x277CBEB98] setWithArray:{*(*(&buf + 1) + 40), v15, v16, v17, v18, v19}];
+  v12 = [MEMORY[0x277CBEB98] setWithArray:{*(*(&buf + 1) + 40), v15, v16, v17, v18, selfCopy}];
 
   _Block_object_dispose(&buf, 8);
   v13 = *MEMORY[0x277D85DE8];
@@ -724,18 +724,18 @@ void __78__ACHMindfulMinutesAwardingSource_earnedInstancesForHistoricalInterval_
   *(v5 + 40) = v3;
 }
 
-- (void)requestAchievementProgressUpdatesForTemplates:(id)a3
+- (void)requestAchievementProgressUpdatesForTemplates:(id)templates
 {
-  v4 = a3;
-  v5 = [(ACHMindfulMinutesAwardingSource *)self internalQueue];
+  templatesCopy = templates;
+  internalQueue = [(ACHMindfulMinutesAwardingSource *)self internalQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __81__ACHMindfulMinutesAwardingSource_requestAchievementProgressUpdatesForTemplates___block_invoke;
   v7[3] = &unk_278490898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = templatesCopy;
+  v6 = templatesCopy;
+  dispatch_async(internalQueue, v7);
 }
 
 void __81__ACHMindfulMinutesAwardingSource_requestAchievementProgressUpdatesForTemplates___block_invoke(uint64_t a1)
@@ -796,34 +796,34 @@ void __81__ACHMindfulMinutesAwardingSource_requestAchievementProgressUpdatesForT
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_queue_goalQuantityForTemplate:(id)a3 progressEnvironment:(id)a4
+- (id)_queue_goalQuantityForTemplate:(id)template progressEnvironment:(id)environment
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 graceGoalExpression];
-  v8 = v7;
-  if (v7)
+  templateCopy = template;
+  environmentCopy = environment;
+  graceGoalExpression = [templateCopy graceGoalExpression];
+  v8 = graceGoalExpression;
+  if (graceGoalExpression)
   {
-    v9 = v7;
+    goalExpression = graceGoalExpression;
   }
 
   else
   {
-    v9 = [v5 goalExpression];
+    goalExpression = [templateCopy goalExpression];
   }
 
-  v10 = v9;
+  v10 = goalExpression;
 
   v11 = [MEMORY[0x277CCA9C0] expressionWithFormat:v10];
   [v11 allowEvaluation];
-  v12 = [v11 expressionValueWithObject:v6 context:0];
+  v12 = [v11 expressionValueWithObject:environmentCopy context:0];
 
   if (v12)
   {
     v13 = MEMORY[0x277CCD7E8];
-    v14 = [v5 canonicalUnit];
+    canonicalUnit = [templateCopy canonicalUnit];
     [v12 doubleValue];
-    v15 = [v13 quantityWithUnit:v14 doubleValue:?];
+    v15 = [v13 quantityWithUnit:canonicalUnit doubleValue:?];
   }
 
   else
@@ -834,39 +834,39 @@ void __81__ACHMindfulMinutesAwardingSource_requestAchievementProgressUpdatesForT
   return v15;
 }
 
-- (id)_queue_progressQuantityForTemplate:(id)a3 progressEnvironment:(id)a4
+- (id)_queue_progressQuantityForTemplate:(id)template progressEnvironment:(id)environment
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-  v9 = [(ACHMindfulMinutesAwardingSource *)self currentDate];
-  IsAvailableForCalendarAndDate = ACHTemplateIsAvailableForCalendarAndDate(v6, v8, v9);
+  templateCopy = template;
+  environmentCopy = environment;
+  hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+  currentDate = [(ACHMindfulMinutesAwardingSource *)self currentDate];
+  IsAvailableForCalendarAndDate = ACHTemplateIsAvailableForCalendarAndDate(templateCopy, hk_gregorianCalendar, currentDate);
 
   if (IsAvailableForCalendarAndDate)
   {
-    v11 = [v6 graceProgressExpression];
-    v12 = v11;
-    if (v11)
+    graceProgressExpression = [templateCopy graceProgressExpression];
+    v12 = graceProgressExpression;
+    if (graceProgressExpression)
     {
-      v13 = v11;
+      progressExpression = graceProgressExpression;
     }
 
     else
     {
-      v13 = [v6 progressExpression];
+      progressExpression = [templateCopy progressExpression];
     }
 
-    v14 = v13;
+    canonicalUnit2 = progressExpression;
 
-    v16 = [MEMORY[0x277CCA9C0] expressionWithFormat:v14];
+    v16 = [MEMORY[0x277CCA9C0] expressionWithFormat:canonicalUnit2];
     [v16 allowEvaluation];
-    v17 = [v16 expressionValueWithObject:v7 context:0];
+    v17 = [v16 expressionValueWithObject:environmentCopy context:0];
     if (v17)
     {
       v18 = MEMORY[0x277CCD7E8];
-      v19 = [v6 canonicalUnit];
+      canonicalUnit = [templateCopy canonicalUnit];
       [v17 doubleValue];
-      v15 = [v18 quantityWithUnit:v19 doubleValue:?];
+      v15 = [v18 quantityWithUnit:canonicalUnit doubleValue:?];
     }
 
     else
@@ -877,7 +877,7 @@ void __81__ACHMindfulMinutesAwardingSource_requestAchievementProgressUpdatesForT
 
   else
   {
-    v14 = [v6 canonicalUnit];
+    canonicalUnit2 = [templateCopy canonicalUnit];
     v15 = ACHHKQuantityWithValueAndUnit();
   }
 

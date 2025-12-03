@@ -1,15 +1,15 @@
 @interface SpriteView
-- (_TtC32NTKEsterbrookFaceBundleCompanion10SpriteView)initWithFrame:(CGRect)a3;
+- (_TtC32NTKEsterbrookFaceBundleCompanion10SpriteView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setShowDebugHelpers:(BOOL)a3;
+- (void)setShowDebugHelpers:(BOOL)helpers;
 @end
 
 @implementation SpriteView
 
-- (void)setShowDebugHelpers:(BOOL)a3
+- (void)setShowDebugHelpers:(BOOL)helpers
 {
-  *(&self->super.super.super.isa + OBJC_IVAR____TtC32NTKEsterbrookFaceBundleCompanion10SpriteView_showDebugHelpers) = a3;
-  v3 = self;
+  *(&self->super.super.super.isa + OBJC_IVAR____TtC32NTKEsterbrookFaceBundleCompanion10SpriteView_showDebugHelpers) = helpers;
+  selfCopy = self;
   sub_23BE22BB8();
 }
 
@@ -30,7 +30,7 @@
   sub_23BE23890();
 }
 
-- (_TtC32NTKEsterbrookFaceBundleCompanion10SpriteView)initWithFrame:(CGRect)a3
+- (_TtC32NTKEsterbrookFaceBundleCompanion10SpriteView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -7,28 +7,28 @@
 
 - (BOOL)nc_isPlatterSubordinateIconShadowEnabled
 {
-  v1 = [a1 layer];
-  [v1 shadowOpacity];
+  layer = [self layer];
+  [layer shadowOpacity];
   if (!BSFloatEqualToFloat())
   {
     goto LABEL_7;
   }
 
-  [v1 shadowRadius];
+  [layer shadowRadius];
   if (v2 != 7.0)
   {
     goto LABEL_7;
   }
 
-  [v1 shadowOffset];
+  [layer shadowOffset];
   v4 = 0;
   if (v5 == 0.0 && v3 == 3.0)
   {
-    if ([v1 shadowColor])
+    if ([layer shadowColor])
     {
-      v6 = [v1 shadowColor];
-      v7 = [MEMORY[0x277D75348] blackColor];
-      v4 = CGColorEqualToColor(v6, [v7 CGColor]);
+      shadowColor = [layer shadowColor];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      v4 = CGColorEqualToColor(shadowColor, [blackColor CGColor]);
 
       goto LABEL_8;
     }
@@ -44,13 +44,13 @@ LABEL_8:
 
 - (void)nc_setPlatterSubordinateIconShadowEnabled:()NCPlatterShadowAdditions
 {
-  v4 = [a1 layer];
-  v7 = v4;
+  layer = [self layer];
+  v7 = layer;
   if (a3)
   {
-    [v4 setShadowPathIsBounds:1];
-    v5 = [MEMORY[0x277D75348] blackColor];
-    [v7 setShadowColor:{objc_msgSend(v5, "CGColor")}];
+    [layer setShadowPathIsBounds:1];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [v7 setShadowColor:{objc_msgSend(blackColor, "CGColor")}];
 
     LODWORD(v6) = 1045220557;
     [v7 setShadowOpacity:v6];
@@ -60,7 +60,7 @@ LABEL_8:
 
   else
   {
-    [v4 setShadowOpacity:0.0];
+    [layer setShadowOpacity:0.0];
   }
 }
 

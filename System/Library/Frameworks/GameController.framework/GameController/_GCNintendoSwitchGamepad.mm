@@ -1,14 +1,14 @@
 @interface _GCNintendoSwitchGamepad
-- (_GCNintendoSwitchGamepad)initWithCoder:(id)a3;
-- (_GCNintendoSwitchGamepad)initWithController:(id)a3;
+- (_GCNintendoSwitchGamepad)initWithCoder:(id)coder;
+- (_GCNintendoSwitchGamepad)initWithController:(id)controller;
 - (void)initializeExtraControllerElements;
 @end
 
 @implementation _GCNintendoSwitchGamepad
 
-- (_GCNintendoSwitchGamepad)initWithController:(id)a3
+- (_GCNintendoSwitchGamepad)initWithController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
@@ -29,7 +29,7 @@
   BYTE9(v16) = 0;
   v10.receiver = self;
   v10.super_class = _GCNintendoSwitchGamepad;
-  v6 = [(GCExtendedGamepad *)&v10 initWithController:v4 initInfo:v11];
+  v6 = [(GCExtendedGamepad *)&v10 initWithController:controllerCopy initInfo:v11];
   v7 = v6;
   if (v6)
   {
@@ -44,11 +44,11 @@
   return v7;
 }
 
-- (_GCNintendoSwitchGamepad)initWithCoder:(id)a3
+- (_GCNintendoSwitchGamepad)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = _GCNintendoSwitchGamepad;
-  v3 = [(GCExtendedGamepad *)&v6 initWithCoder:a3];
+  v3 = [(GCExtendedGamepad *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -60,71 +60,71 @@
 
 - (void)initializeExtraControllerElements
 {
-  v3 = [(GCExtendedGamepad *)self buttonHome];
-  [v3 setUnmappedNameLocalizationKey:@"SWITCH_BUTTON_HOME"];
+  buttonHome = [(GCExtendedGamepad *)self buttonHome];
+  [buttonHome setUnmappedNameLocalizationKey:@"SWITCH_BUTTON_HOME"];
 
-  v4 = [(GCExtendedGamepad *)self buttonOptions];
-  [v4 setUnmappedNameLocalizationKey:@"SWITCH_BUTTON_OPTIONS"];
+  buttonOptions = [(GCExtendedGamepad *)self buttonOptions];
+  [buttonOptions setUnmappedNameLocalizationKey:@"SWITCH_BUTTON_OPTIONS"];
 
-  v5 = [(GCExtendedGamepad *)self buttonMenu];
-  [v5 setUnmappedNameLocalizationKey:@"SWITCH_BUTTON_MENU"];
+  buttonMenu = [(GCExtendedGamepad *)self buttonMenu];
+  [buttonMenu setUnmappedNameLocalizationKey:@"SWITCH_BUTTON_MENU"];
 
-  v6 = [(GCExtendedGamepad *)self dpad];
-  [v6 setUnmappedNameLocalizationKey:@"SWITCH_DIRECTION_PAD"];
+  dpad = [(GCExtendedGamepad *)self dpad];
+  [dpad setUnmappedNameLocalizationKey:@"SWITCH_DIRECTION_PAD"];
 
-  v7 = [(GCExtendedGamepad *)self buttonA];
-  [v7 setUnmappedNameLocalizationKey:@"SWITCH_BUTTON_A"];
+  buttonA = [(GCExtendedGamepad *)self buttonA];
+  [buttonA setUnmappedNameLocalizationKey:@"SWITCH_BUTTON_A"];
 
-  v8 = [(GCExtendedGamepad *)self buttonB];
-  [v8 setUnmappedNameLocalizationKey:@"SWITCH_BUTTON_B"];
+  buttonB = [(GCExtendedGamepad *)self buttonB];
+  [buttonB setUnmappedNameLocalizationKey:@"SWITCH_BUTTON_B"];
 
-  v9 = [(GCExtendedGamepad *)self buttonX];
-  [v9 setUnmappedNameLocalizationKey:@"SWITCH_BUTTON_X"];
+  buttonX = [(GCExtendedGamepad *)self buttonX];
+  [buttonX setUnmappedNameLocalizationKey:@"SWITCH_BUTTON_X"];
 
-  v10 = [(GCExtendedGamepad *)self buttonY];
-  [v10 setUnmappedNameLocalizationKey:@"SWITCH_BUTTON_Y"];
+  buttonY = [(GCExtendedGamepad *)self buttonY];
+  [buttonY setUnmappedNameLocalizationKey:@"SWITCH_BUTTON_Y"];
 
-  v11 = [(GCExtendedGamepad *)self leftShoulder];
-  [v11 setUnmappedNameLocalizationKey:@"SWITCH_LEFT_SHOULDER"];
+  leftShoulder = [(GCExtendedGamepad *)self leftShoulder];
+  [leftShoulder setUnmappedNameLocalizationKey:@"SWITCH_LEFT_SHOULDER"];
 
-  v12 = [(GCExtendedGamepad *)self rightShoulder];
-  [v12 setUnmappedNameLocalizationKey:@"SWITCH_RIGHT_SHOULDER"];
+  rightShoulder = [(GCExtendedGamepad *)self rightShoulder];
+  [rightShoulder setUnmappedNameLocalizationKey:@"SWITCH_RIGHT_SHOULDER"];
 
-  v13 = [(GCExtendedGamepad *)self leftTrigger];
-  [v13 setUnmappedNameLocalizationKey:@"SWITCH_LEFT_TRIGGER"];
+  leftTrigger = [(GCExtendedGamepad *)self leftTrigger];
+  [leftTrigger setUnmappedNameLocalizationKey:@"SWITCH_LEFT_TRIGGER"];
 
-  v14 = [(GCExtendedGamepad *)self rightTrigger];
-  [v14 setUnmappedNameLocalizationKey:@"SWITCH_RIGHT_TRIGGER"];
+  rightTrigger = [(GCExtendedGamepad *)self rightTrigger];
+  [rightTrigger setUnmappedNameLocalizationKey:@"SWITCH_RIGHT_TRIGGER"];
 
-  v15 = [(GCExtendedGamepad *)self leftThumbstick];
-  [v15 setUnmappedNameLocalizationKey:@"SWITCH_LEFT_THUMBSTICK"];
+  leftThumbstick = [(GCExtendedGamepad *)self leftThumbstick];
+  [leftThumbstick setUnmappedNameLocalizationKey:@"SWITCH_LEFT_THUMBSTICK"];
 
-  v16 = [(GCExtendedGamepad *)self rightThumbstick];
-  [v16 setUnmappedNameLocalizationKey:@"SWITCH_RIGHT_THUMBSTICK"];
+  rightThumbstick = [(GCExtendedGamepad *)self rightThumbstick];
+  [rightThumbstick setUnmappedNameLocalizationKey:@"SWITCH_RIGHT_THUMBSTICK"];
 
-  v17 = [(GCExtendedGamepad *)self leftThumbstickButton];
-  [v17 setUnmappedNameLocalizationKey:@"SWITCH_BUTTON_LEFT_THUMBSTICK"];
+  leftThumbstickButton = [(GCExtendedGamepad *)self leftThumbstickButton];
+  [leftThumbstickButton setUnmappedNameLocalizationKey:@"SWITCH_BUTTON_LEFT_THUMBSTICK"];
 
-  v18 = [(GCExtendedGamepad *)self rightThumbstickButton];
-  [v18 setUnmappedNameLocalizationKey:@"SWITCH_BUTTON_RIGHT_THUMBSTICK"];
+  rightThumbstickButton = [(GCExtendedGamepad *)self rightThumbstickButton];
+  [rightThumbstickButton setUnmappedNameLocalizationKey:@"SWITCH_BUTTON_RIGHT_THUMBSTICK"];
 
-  v19 = [(GCExtendedGamepad *)self leftTrigger];
-  [v19 setUnmappedSfSymbolsName:@"zl.rectangle.roundedtop"];
+  leftTrigger2 = [(GCExtendedGamepad *)self leftTrigger];
+  [leftTrigger2 setUnmappedSfSymbolsName:@"zl.rectangle.roundedtop"];
 
-  v20 = [(GCExtendedGamepad *)self rightTrigger];
-  [v20 setUnmappedSfSymbolsName:@"zr.rectangle.roundedtop"];
+  rightTrigger2 = [(GCExtendedGamepad *)self rightTrigger];
+  [rightTrigger2 setUnmappedSfSymbolsName:@"zr.rectangle.roundedtop"];
 
-  v21 = [(GCExtendedGamepad *)self leftShoulder];
-  [v21 setUnmappedSfSymbolsName:@"l.rectangle.roundedbottom"];
+  leftShoulder2 = [(GCExtendedGamepad *)self leftShoulder];
+  [leftShoulder2 setUnmappedSfSymbolsName:@"l.rectangle.roundedbottom"];
 
-  v22 = [(GCExtendedGamepad *)self rightShoulder];
-  [v22 setUnmappedSfSymbolsName:@"r.rectangle.roundedbottom"];
+  rightShoulder2 = [(GCExtendedGamepad *)self rightShoulder];
+  [rightShoulder2 setUnmappedSfSymbolsName:@"r.rectangle.roundedbottom"];
 
-  v23 = [(GCExtendedGamepad *)self buttonOptions];
-  [v23 setUnmappedSfSymbolsName:@"minus.circle"];
+  buttonOptions2 = [(GCExtendedGamepad *)self buttonOptions];
+  [buttonOptions2 setUnmappedSfSymbolsName:@"minus.circle"];
 
-  v24 = [(GCExtendedGamepad *)self buttonMenu];
-  [v24 setUnmappedSfSymbolsName:@"plus.circle"];
+  buttonMenu2 = [(GCExtendedGamepad *)self buttonMenu];
+  [buttonMenu2 setUnmappedSfSymbolsName:@"plus.circle"];
 }
 
 @end

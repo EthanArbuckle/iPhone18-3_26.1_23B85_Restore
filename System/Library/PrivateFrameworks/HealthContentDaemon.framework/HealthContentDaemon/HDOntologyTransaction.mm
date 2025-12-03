@@ -1,7 +1,7 @@
 @interface HDOntologyTransaction
 - (HDInternalContentDatabaseManager)internalContentDatabaseManager;
 - (HDOntologyTransaction)init;
-- (HDOntologyTransaction)initWithProfile:(id)a3 databaseTransaction:(id)a4 graphDatabase:(id)a5 isWriteTransaction:(BOOL)a6;
+- (HDOntologyTransaction)initWithProfile:(id)profile databaseTransaction:(id)transaction graphDatabase:(id)database isWriteTransaction:(BOOL)writeTransaction;
 - (HDProfile)profile;
 @end
 
@@ -17,21 +17,21 @@
   return 0;
 }
 
-- (HDOntologyTransaction)initWithProfile:(id)a3 databaseTransaction:(id)a4 graphDatabase:(id)a5 isWriteTransaction:(BOOL)a6
+- (HDOntologyTransaction)initWithProfile:(id)profile databaseTransaction:(id)transaction graphDatabase:(id)database isWriteTransaction:(BOOL)writeTransaction
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  profileCopy = profile;
+  transactionCopy = transaction;
+  databaseCopy = database;
   v16.receiver = self;
   v16.super_class = HDOntologyTransaction;
   v13 = [(HDOntologyTransaction *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeWeak(&v13->_profile, v10);
-    objc_storeStrong(&v14->_databaseTransaction, a4);
-    objc_storeStrong(&v14->_graphDatabase, a5);
-    v14->_isWriteTransaction = a6;
+    objc_storeWeak(&v13->_profile, profileCopy);
+    objc_storeStrong(&v14->_databaseTransaction, transaction);
+    objc_storeStrong(&v14->_graphDatabase, database);
+    v14->_isWriteTransaction = writeTransaction;
   }
 
   return v14;
@@ -40,9 +40,9 @@
 - (HDInternalContentDatabaseManager)internalContentDatabaseManager
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v3 = [WeakRetained internalContentDatabaseManager];
+  internalContentDatabaseManager = [WeakRetained internalContentDatabaseManager];
 
-  return v3;
+  return internalContentDatabaseManager;
 }
 
 - (HDProfile)profile

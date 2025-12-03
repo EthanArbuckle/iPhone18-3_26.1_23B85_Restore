@@ -1,36 +1,36 @@
 @interface LPMapCollectionPublisherMetadata
-- (BOOL)canGeneratePresentationPropertiesForURL:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (LPMapCollectionPublisherMetadata)initWithCoder:(id)a3;
+- (BOOL)canGeneratePresentationPropertiesForURL:(id)l;
+- (BOOL)isEqual:(id)equal;
+- (LPMapCollectionPublisherMetadata)initWithCoder:(id)coder;
 - (id)_guideCount;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)fallbackIconForTransformer:(id)a3;
-- (id)presentationPropertiesForTransformer:(id)a3;
-- (id)previewImageForTransformer:(id)a3;
-- (id)previewSummaryForTransformer:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)populateMetadataForBackwardCompatibility:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)fallbackIconForTransformer:(id)transformer;
+- (id)presentationPropertiesForTransformer:(id)transformer;
+- (id)previewImageForTransformer:(id)transformer;
+- (id)previewSummaryForTransformer:(id)transformer;
+- (void)encodeWithCoder:(id)coder;
+- (void)populateMetadataForBackwardCompatibility:(id)compatibility;
 @end
 
 @implementation LPMapCollectionPublisherMetadata
 
-- (LPMapCollectionPublisherMetadata)initWithCoder:(id)a3
+- (LPMapCollectionPublisherMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = LPMapCollectionPublisherMetadata;
   v5 = [(LPMapCollectionPublisherMetadata *)&v13 init];
   if (v5)
   {
-    v6 = decodeStringForKey(v4, @"name");
+    v6 = decodeStringForKey(coderCopy, @"name");
     v7 = *&v5->_numberOfPublishedCollections;
     *&v5->_numberOfPublishedCollections = v6;
 
-    v8 = [v4 _lp_strictlyDecodeLPImageForKey:@"icon"];
+    v8 = [coderCopy _lp_strictlyDecodeLPImageForKey:@"icon"];
     name = v5->_name;
     v5->_name = v8;
 
-    v10 = decodeNumberForKey(v4, @"numberOfPublishedCollections");
+    v10 = decodeNumberForKey(coderCopy, @"numberOfPublishedCollections");
     *(&v5->super.__disallowsURLOverrideByDelegate + 2) = [v10 unsignedIntValue];
 
     v11 = v5;
@@ -39,25 +39,25 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 _lp_encodeStringIfNotNil:*&self->_numberOfPublishedCollections forKey:@"name"];
-  [v5 _lp_encodeObjectIfNotNil:self->_name forKey:@"icon"];
+  coderCopy = coder;
+  [coderCopy _lp_encodeStringIfNotNil:*&self->_numberOfPublishedCollections forKey:@"name"];
+  [coderCopy _lp_encodeObjectIfNotNil:self->_name forKey:@"icon"];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(&self->super.__disallowsURLOverrideByDelegate + 2)];
-  [v5 _lp_encodeObjectIfNotNil:v4 forKey:@"numberOfPublishedCollections"];
+  [coderCopy _lp_encodeObjectIfNotNil:v4 forKey:@"numberOfPublishedCollections"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [LPMapCollectionPublisherMetadata allocWithZone:a3];
+  v4 = [LPMapCollectionPublisherMetadata allocWithZone:zone];
   if (v4)
   {
-    v5 = [(LPMapCollectionPublisherMetadata *)self name];
-    [(LPMapCollectionPublisherMetadata *)v4 setName:v5];
+    name = [(LPMapCollectionPublisherMetadata *)self name];
+    [(LPMapCollectionPublisherMetadata *)v4 setName:name];
 
-    v6 = [(LPMapCollectionPublisherMetadata *)self icon];
-    [(LPMapCollectionPublisherMetadata *)v4 setIcon:v6];
+    icon = [(LPMapCollectionPublisherMetadata *)self icon];
+    [(LPMapCollectionPublisherMetadata *)v4 setIcon:icon];
 
     [(LPMapCollectionPublisherMetadata *)v4 setNumberOfPublishedCollections:[(LPMapCollectionPublisherMetadata *)self numberOfPublishedCollections]];
     v7 = v4;
@@ -66,12 +66,12 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = LPMapCollectionPublisherMetadata;
-  if ([(LPMapCollectionPublisherMetadata *)&v8 isEqual:v4])
+  if ([(LPMapCollectionPublisherMetadata *)&v8 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -81,7 +81,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       v5 = (objectsAreEqual_0(v6[2], *&self->_numberOfPublishedCollections) & 1) != 0 && objectsAreEqual_0(v6[3], self->_name) && *(v6 + 3) == *(&self->super.__disallowsURLOverrideByDelegate + 2);
     }
 
@@ -111,36 +111,36 @@
   return v5;
 }
 
-- (id)presentationPropertiesForTransformer:(id)a3
+- (id)presentationPropertiesForTransformer:(id)transformer
 {
-  v4 = a3;
-  v5 = [v4 commonPresentationPropertiesForStyle:31];
+  transformerCopy = transformer;
+  v5 = [transformerCopy commonPresentationPropertiesForStyle:31];
   v6 = objc_alloc_init(LPCaptionBarPresentationProperties);
   [v5 setCaptionBar:v6];
 
-  v7 = [(LPMapCollectionPublisherMetadata *)self icon];
-  [v4 _populateProperties:v5 withPrimaryIcon:v7];
+  icon = [(LPMapCollectionPublisherMetadata *)self icon];
+  [transformerCopy _populateProperties:v5 withPrimaryIcon:icon];
 
-  v8 = [v4 _rowConfigurationForStyle:{objc_msgSend(v5, "style")}];
+  v8 = [transformerCopy _rowConfigurationForStyle:{objc_msgSend(v5, "style")}];
   if ((v8 - 2) < 2)
   {
-    v19 = [(LPMapCollectionPublisherMetadata *)self name];
-    v20 = [v5 captionBar];
-    v21 = [v20 top];
-    v22 = [v21 leading];
-    [v22 setText:v19];
+    name = [(LPMapCollectionPublisherMetadata *)self name];
+    captionBar = [v5 captionBar];
+    v21 = [captionBar top];
+    leading = [v21 leading];
+    [leading setText:name];
 
-    v23 = [(LPMapCollectionPublisherMetadata *)self _guideCount];
-    v24 = [v5 captionBar];
-    v25 = [v24 bottom];
-    v26 = [v25 leading];
-    [v26 setText:v23];
+    _guideCount = [(LPMapCollectionPublisherMetadata *)self _guideCount];
+    captionBar2 = [v5 captionBar];
+    bottom = [captionBar2 bottom];
+    leading2 = [bottom leading];
+    [leading2 setText:_guideCount];
 
-    v13 = LPLocalizedString(@" Maps");
-    v14 = [v5 captionBar];
-    v15 = [v14 belowBottom];
-    v16 = [v15 leading];
-    [v16 setText:v13];
+    name3 = LPLocalizedString(@" Maps");
+    captionBar3 = [v5 captionBar];
+    belowBottom = [captionBar3 belowBottom];
+    leading3 = [belowBottom leading];
+    [leading3 setText:name3];
   }
 
   else if (v8)
@@ -150,28 +150,28 @@
       goto LABEL_8;
     }
 
-    v9 = [(LPMapCollectionPublisherMetadata *)self name];
-    v10 = [v5 captionBar];
-    v11 = [v10 top];
-    v12 = [v11 leading];
-    [v12 setText:v9];
+    name2 = [(LPMapCollectionPublisherMetadata *)self name];
+    captionBar4 = [v5 captionBar];
+    v11 = [captionBar4 top];
+    leading4 = [v11 leading];
+    [leading4 setText:name2];
 
-    v13 = LPLocalizedString(@" Maps");
-    v14 = [(LPMapCollectionPublisherMetadata *)self _guideCount];
-    v15 = joinedByDot(v13, v14);
-    v16 = [v5 captionBar];
-    v17 = [v16 bottom];
-    v18 = [v17 leading];
-    [v18 setText:v15];
+    name3 = LPLocalizedString(@" Maps");
+    captionBar3 = [(LPMapCollectionPublisherMetadata *)self _guideCount];
+    belowBottom = joinedByDot(name3, captionBar3);
+    leading3 = [v5 captionBar];
+    bottom2 = [leading3 bottom];
+    leading5 = [bottom2 leading];
+    [leading5 setText:belowBottom];
   }
 
   else
   {
-    v13 = [(LPMapCollectionPublisherMetadata *)self name];
-    v14 = [v5 captionBar];
-    v15 = [v14 top];
-    v16 = [v15 leading];
-    [v16 setText:v13];
+    name3 = [(LPMapCollectionPublisherMetadata *)self name];
+    captionBar3 = [v5 captionBar];
+    belowBottom = [captionBar3 top];
+    leading3 = [belowBottom leading];
+    [leading3 setText:name3];
   }
 
 LABEL_8:
@@ -179,46 +179,46 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)canGeneratePresentationPropertiesForURL:(id)a3
+- (BOOL)canGeneratePresentationPropertiesForURL:(id)l
 {
-  v3 = a3;
-  v4 = [LPPresentationSpecializations isAppleMapsURL:v3]|| [LPPresentationSpecializations isAppleMapsCollectionURL:v3];
+  lCopy = l;
+  v4 = [LPPresentationSpecializations isAppleMapsURL:lCopy]|| [LPPresentationSpecializations isAppleMapsCollectionURL:lCopy];
 
   return v4;
 }
 
-- (id)previewSummaryForTransformer:(id)a3
+- (id)previewSummaryForTransformer:(id)transformer
 {
   v4 = MEMORY[0x1E696AEC0];
   v5 = LPLocalizedString(@"Maps Guide: %@");
-  v6 = [(LPMapCollectionPublisherMetadata *)self name];
-  v7 = [v4 localizedStringWithFormat:v5, v6];
+  name = [(LPMapCollectionPublisherMetadata *)self name];
+  v7 = [v4 localizedStringWithFormat:v5, name];
 
   return v7;
 }
 
-- (id)previewImageForTransformer:(id)a3
+- (id)previewImageForTransformer:(id)transformer
 {
-  v3 = [(LPMapCollectionPublisherMetadata *)self icon];
+  icon = [(LPMapCollectionPublisherMetadata *)self icon];
 
-  return v3;
+  return icon;
 }
 
-- (id)fallbackIconForTransformer:(id)a3
+- (id)fallbackIconForTransformer:(id)transformer
 {
   v3 = +[LPResources mapIcon];
 
   return v3;
 }
 
-- (void)populateMetadataForBackwardCompatibility:(id)a3
+- (void)populateMetadataForBackwardCompatibility:(id)compatibility
 {
-  v6 = a3;
-  v4 = [(LPMapCollectionPublisherMetadata *)self name];
-  [v6 setTitle:v4];
+  compatibilityCopy = compatibility;
+  name = [(LPMapCollectionPublisherMetadata *)self name];
+  [compatibilityCopy setTitle:name];
 
-  v5 = [(LPMapCollectionPublisherMetadata *)self icon];
-  [v6 setIcon:v5];
+  icon = [(LPMapCollectionPublisherMetadata *)self icon];
+  [compatibilityCopy setIcon:icon];
 }
 
 @end

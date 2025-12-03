@@ -1,24 +1,24 @@
 @interface PXPhotoKitMoveToPersonalLibraryActionPerformer
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6;
-+ (BOOL)canPerformWithSelectionSnapshot:(id)a3 person:(id)a4 socialGroup:(id)a5;
-+ (id)createBarButtonItemWithTarget:(id)a3 action:(SEL)a4 actionManager:(id)a5;
-+ (id)createPreviewActionWithTitle:(id)a3 image:(id)a4 handler:(id)a5;
-- (id)_multiContributorConfirmationAlertControllerForAssets:(id)a3 contributorName:(id)a4;
-- (void)_moveAssetsToPersonalLibraryWithCompletionHandler:(id)a3;
-- (void)_presentFailureWithError:(id)a3 completionHandler:(id)a4;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group;
++ (BOOL)canPerformWithSelectionSnapshot:(id)snapshot person:(id)person socialGroup:(id)group;
++ (id)createBarButtonItemWithTarget:(id)target action:(SEL)action actionManager:(id)manager;
++ (id)createPreviewActionWithTitle:(id)title image:(id)image handler:(id)handler;
+- (id)_multiContributorConfirmationAlertControllerForAssets:(id)assets contributorName:(id)name;
+- (void)_moveAssetsToPersonalLibraryWithCompletionHandler:(id)handler;
+- (void)_presentFailureWithError:(id)error completionHandler:(id)handler;
 - (void)performBackgroundTask;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotoKitMoveToPersonalLibraryActionPerformer
 
-+ (id)createBarButtonItemWithTarget:(id)a3 action:(SEL)a4 actionManager:(id)a5
++ (id)createBarButtonItemWithTarget:(id)target action:(SEL)action actionManager:(id)manager
 {
-  v7 = a3;
-  v8 = [a5 selectionManager];
-  v9 = [v8 selectionSnapshot];
-  v10 = [v9 allItemsEnumerator];
-  v11 = _PXSharedLibraryFetchAssetsFromAssets(v10, 0, 1, 0);
+  targetCopy = target;
+  selectionManager = [manager selectionManager];
+  selectionSnapshot = [selectionManager selectionSnapshot];
+  allItemsEnumerator = [selectionSnapshot allItemsEnumerator];
+  v11 = _PXSharedLibraryFetchAssetsFromAssets(allItemsEnumerator, 0, 1, 0);
 
   v12 = [v11 count];
   if (v12)
@@ -28,45 +28,45 @@
 
   v13 = [PXLabelBarButtonItem alloc];
   v14 = PXLocalizedStringFromTable(@"PXSelectItems", @"PhotosUICore");
-  v15 = [(PXLabelBarButtonItem *)v13 initWithTitle:v14 style:0 target:v7 action:a4];
+  v15 = [(PXLabelBarButtonItem *)v13 initWithTitle:v14 style:0 target:targetCopy action:action];
 
   return v15;
 }
 
-+ (id)createPreviewActionWithTitle:(id)a3 image:(id)a4 handler:(id)a5
++ (id)createPreviewActionWithTitle:(id)title image:(id)image handler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   v8 = MEMORY[0x1E69DC628];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __93__PXPhotoKitMoveToPersonalLibraryActionPerformer_createPreviewActionWithTitle_image_handler___block_invoke;
   v12[3] = &unk_1E7742C90;
-  v13 = v7;
-  v9 = v7;
-  v10 = [v8 actionWithTitle:a3 image:a4 identifier:0 handler:v12];
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = [v8 actionWithTitle:title image:image identifier:0 handler:v12];
 
   return v10;
 }
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if ([a4 px_allowsMoveToPersonalLibrary])
+  assetCopy = asset;
+  if ([collection px_allowsMoveToPersonalLibrary])
   {
-    v8 = [v7 photoLibrary];
-    v9 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:v8];
+    photoLibrary = [assetCopy photoLibrary];
+    v9 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:photoLibrary];
 
-    v10 = [v9 exiting];
+    exiting = [v9 exiting];
 
-    if (v10)
+    if (exiting)
     {
       LOBYTE(CanMoveAssetsToPersonalLibrary) = 0;
     }
 
     else
     {
-      v14[0] = v7;
+      v14[0] = assetCopy;
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
       CanMoveAssetsToPersonalLibrary = PXSharedLibraryCanMoveAssetsToPersonalLibrary(v12);
     }
@@ -80,33 +80,33 @@
   return CanMoveAssetsToPersonalLibrary;
 }
 
-+ (BOOL)canPerformWithSelectionSnapshot:(id)a3 person:(id)a4 socialGroup:(id)a5
++ (BOOL)canPerformWithSelectionSnapshot:(id)snapshot person:(id)person socialGroup:(id)group
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isAnyItemSelected])
+  snapshotCopy = snapshot;
+  personCopy = person;
+  groupCopy = group;
+  if ([snapshotCopy isAnyItemSelected])
   {
-    v11 = [v8 allItemsEnumerator];
-    v12 = PXSharedLibraryFetchAnySharedAssetFromAssets(v11);
+    allItemsEnumerator = [snapshotCopy allItemsEnumerator];
+    v12 = PXSharedLibraryFetchAnySharedAssetFromAssets(allItemsEnumerator);
 
     if (v12)
     {
-      v13 = [v12 photoLibrary];
-      v14 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:v13];
+      photoLibrary = [v12 photoLibrary];
+      v14 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:photoLibrary];
 
-      v15 = [v14 exiting];
+      exiting = [v14 exiting];
 
-      if (v15)
+      if (exiting)
       {
         v16 = 0;
       }
 
       else
       {
-        v18.receiver = a1;
+        v18.receiver = self;
         v18.super_class = &OBJC_METACLASS___PXPhotoKitMoveToPersonalLibraryActionPerformer;
-        v16 = objc_msgSendSuper2(&v18, sel_canPerformWithSelectionSnapshot_person_socialGroup_, v8, v9, v10);
+        v16 = objc_msgSendSuper2(&v18, sel_canPerformWithSelectionSnapshot_person_socialGroup_, snapshotCopy, personCopy, groupCopy);
       }
     }
 
@@ -124,9 +124,9 @@
   return v16;
 }
 
-- (void)_presentFailureWithError:(id)a3 completionHandler:(id)a4
+- (void)_presentFailureWithError:(id)error completionHandler:(id)handler
 {
-  v5 = a3;
+  errorCopy = error;
   v6 = PXLocalizedSharedLibraryString(@"PXSharedLibraryMoveToPersonalLibraryFailureAlertTitle");
   v7 = PXLocalizedSharedLibraryString(@"PXSharedLibraryGenericFailureAlertMessage");
   v8 = PXLocalizedStringFromTable(@"PXOK", @"PhotosUICore");
@@ -137,7 +137,7 @@
   v16[2] = __93__PXPhotoKitMoveToPersonalLibraryActionPerformer__presentFailureWithError_completionHandler___block_invoke;
   v16[3] = &unk_1E774A2C8;
   v16[4] = self;
-  v11 = v5;
+  v11 = errorCopy;
   v17 = v11;
   v12 = [v10 actionWithTitle:v8 style:0 handler:v16];
   [v9 addAction:v12];
@@ -156,24 +156,24 @@
   }
 }
 
-- (void)_moveAssetsToPersonalLibraryWithCompletionHandler:(id)a3
+- (void)_moveAssetsToPersonalLibraryWithCompletionHandler:(id)handler
 {
-  if (!a3)
+  if (!handler)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXPhotoKitMoveToPersonalLibraryActionPerformer.m" lineNumber:252 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitMoveToPersonalLibraryActionPerformer.m" lineNumber:252 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  v5 = [(PXPhotoKitMoveToPersonalLibraryActionPerformer *)self assetsToMove];
-  if (![v5 count])
+  assetsToMove = [(PXPhotoKitMoveToPersonalLibraryActionPerformer *)self assetsToMove];
+  if (![assetsToMove count])
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXPhotoKitMoveToPersonalLibraryActionPerformer.m" lineNumber:255 description:{@"Invalid parameter not satisfying: %@", @"assetsToMove.count"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPhotoKitMoveToPersonalLibraryActionPerformer.m" lineNumber:255 description:{@"Invalid parameter not satisfying: %@", @"assetsToMove.count"}];
   }
 
   PXLocalizedSharedLibraryString(@"PXSharedLibraryMoveToPersonalLibraryToastTitle");
   objc_claimAutoreleasedReturnValue();
-  PXLocalizedAssetCountForUsage([v5 count], 0, 0, 0);
+  PXLocalizedAssetCountForUsage([assetsToMove count], 0, 0, 0);
 }
 
 void __100__PXPhotoKitMoveToPersonalLibraryActionPerformer__moveAssetsToPersonalLibraryWithCompletionHandler___block_invoke(uint64_t a1, int a2, void *a3)
@@ -204,21 +204,21 @@ void __100__PXPhotoKitMoveToPersonalLibraryActionPerformer__moveAssetsToPersonal
 
 - (void)performUserInteractionTask
 {
-  v4 = [(PXPhotoKitAssetActionPerformer *)self assetsFetchResult];
-  v5 = _PXSharedLibraryFetchAssetsFromAssets(v4, 0, 1, 0);
+  assetsFetchResult = [(PXPhotoKitAssetActionPerformer *)self assetsFetchResult];
+  v5 = _PXSharedLibraryFetchAssetsFromAssets(assetsFetchResult, 0, 1, 0);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __76__PXPhotoKitMoveToPersonalLibraryActionPerformer_performUserInteractionTask__block_invoke;
   aBlock[3] = &unk_1E7749FF8;
   v6 = v5;
-  v13 = self;
+  selfCopy = self;
   v14 = a2;
   v12 = v6;
   v7 = _Block_copy(aBlock);
-  v8 = [(PXPhotoKitAssetActionPerformer *)self assetsFetchResult];
-  v9 = [v8 photoLibrary];
+  assetsFetchResult2 = [(PXPhotoKitAssetActionPerformer *)self assetsFetchResult];
+  photoLibrary = [assetsFetchResult2 photoLibrary];
 
-  v10 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:v9];
+  v10 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:photoLibrary];
   if (-[PXPhotoKitMoveToPersonalLibraryActionPerformer shouldShowConfirmation](self, "shouldShowConfirmation") && PXSharedLibraryShouldDisplayMoveToPersonalLibraryConfirmation([v10 hasPreview]))
   {
     PXSharedLibraryGetMoveToPersonalLibraryConfirmationTitleAndMessage(v6);
@@ -433,11 +433,11 @@ void __76__PXPhotoKitMoveToPersonalLibraryActionPerformer_performUserInteraction
   [v1 completeUserInteractionTaskWithSuccess:0 error:v2];
 }
 
-- (id)_multiContributorConfirmationAlertControllerForAssets:(id)a3 contributorName:(id)a4
+- (id)_multiContributorConfirmationAlertControllerForAssets:(id)assets contributorName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 count];
+  assetsCopy = assets;
+  nameCopy = name;
+  v8 = [assetsCopy count];
   v9 = &stru_1F1741150;
   if (v8 > 1)
   {
@@ -445,14 +445,14 @@ void __76__PXPhotoKitMoveToPersonalLibraryActionPerformer_performUserInteraction
   }
 
   v10 = v9;
-  v11 = [v7 length];
-  v12 = [v6 count];
+  v11 = [nameCopy length];
+  v12 = [assetsCopy count];
   if (v11)
   {
     v30 = 0;
     v28 = 0;
     v29 = 0;
-    [PXPhotoKitDeletePhotosActionController assetTypeCountsForAssets:v6 photosCount:&v30 videosCount:&v29 othersCount:&v28];
+    [PXPhotoKitDeletePhotosActionController assetTypeCountsForAssets:assetsCopy photosCount:&v30 videosCount:&v29 othersCount:&v28];
     if (v30 == v12)
     {
       [MEMORY[0x1E696AEC0] stringWithFormat:@"PXSharedLibrary_MoveToPersonalLibrary_MC_ConfirmationMessage_For_Contributor_Photo%@", v10];
@@ -476,7 +476,7 @@ void __76__PXPhotoKitMoveToPersonalLibraryActionPerformer_performUserInteraction
   v30 = 0;
   v28 = 0;
   v29 = 0;
-  [PXPhotoKitDeletePhotosActionController assetTypeCountsForAssets:v6 photosCount:&v30 videosCount:&v29 othersCount:&v28];
+  [PXPhotoKitDeletePhotosActionController assetTypeCountsForAssets:assetsCopy photosCount:&v30 videosCount:&v29 othersCount:&v28];
   if (v30 == v12)
   {
     [MEMORY[0x1E696AEC0] stringWithFormat:@"PXSharedLibrary_MoveToPersonalLibrary_MC_ConfirmationMessage_Photo%@", v10];
@@ -501,8 +501,8 @@ void __76__PXPhotoKitMoveToPersonalLibraryActionPerformer_performUserInteraction
   v26[2] = __120__PXPhotoKitMoveToPersonalLibraryActionPerformer__multiContributorConfirmationAlertControllerForAssets_contributorName___block_invoke;
   v26[3] = &unk_1E774A2C8;
   v26[4] = self;
-  v27 = v6;
-  v19 = v6;
+  v27 = assetsCopy;
+  v19 = assetsCopy;
   v20 = [v17 actionWithTitle:v18 style:0 handler:v26];
   [v16 addAction:v20];
 

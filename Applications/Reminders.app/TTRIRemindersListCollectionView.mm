@@ -1,8 +1,8 @@
 @interface TTRIRemindersListCollectionView
 - (CGPoint)contentOffset;
-- (_TtC9Reminders31TTRIRemindersListCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4;
+- (_TtC9Reminders31TTRIRemindersListCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout;
 - (void)safeAreaInsetsDidChange;
-- (void)setContentOffset:(CGPoint)a3;
+- (void)setContentOffset:(CGPoint)offset;
 @end
 
 @implementation TTRIRemindersListCollectionView
@@ -17,20 +17,20 @@
   return result;
 }
 
-- (void)setContentOffset:(CGPoint)a3
+- (void)setContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = offset.y;
+  x = offset.x;
+  selfCopy = self;
   sub_10028FC0C(x, y);
 }
 
-- (_TtC9Reminders31TTRIRemindersListCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4
+- (_TtC9Reminders31TTRIRemindersListCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v11 = (&self->super.super.super.super.super.isa + OBJC_IVAR____TtC9Reminders31TTRIRemindersListCollectionView_ownerViewControllerFor52010514);
   *v11 = 0;
@@ -38,12 +38,12 @@
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC9Reminders31TTRIRemindersListCollectionView____lazy_storage___insetsUpdater) = 0;
   v18.receiver = self;
   v18.super_class = ObjectType;
-  v12 = a4;
-  v13 = [(TTRIRemindersListCollectionView *)&v18 initWithFrame:v12 collectionViewLayout:x, y, width, height];
+  layoutCopy = layout;
+  height = [(TTRIRemindersListCollectionView *)&v18 initWithFrame:layoutCopy collectionViewLayout:x, y, width, height];
   v14 = objc_opt_self();
-  v15 = v13;
-  v16 = [v14 systemBackgroundColor];
-  [(TTRIRemindersListCollectionView *)v15 setBackgroundColor:v16];
+  v15 = height;
+  systemBackgroundColor = [v14 systemBackgroundColor];
+  [(TTRIRemindersListCollectionView *)v15 setBackgroundColor:systemBackgroundColor];
 
   return v15;
 }

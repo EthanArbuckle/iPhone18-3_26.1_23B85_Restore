@@ -1,36 +1,36 @@
 @interface _INPBPayloadNeedsExecuteIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBPayloadNeedsExecuteIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBPayloadNeedsExecuteIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBPayloadNeedsExecuteIntent
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBPayloadNeedsExecuteIntent *)self intentExecution];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"intentExecution"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  intentExecution = [(_INPBPayloadNeedsExecuteIntent *)self intentExecution];
+  dictionaryRepresentation = [intentExecution dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"intentExecution"];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_INPBPayloadNeedsExecuteIntent *)self intentExecution];
-    v6 = [v4 intentExecution];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    intentExecution = [(_INPBPayloadNeedsExecuteIntent *)self intentExecution];
+    intentExecution2 = [equalCopy intentExecution];
+    v7 = intentExecution2;
+    if ((intentExecution != 0) != (intentExecution2 == 0))
     {
-      v8 = [(_INPBPayloadNeedsExecuteIntent *)self intentExecution];
-      if (!v8)
+      intentExecution3 = [(_INPBPayloadNeedsExecuteIntent *)self intentExecution];
+      if (!intentExecution3)
       {
 
 LABEL_10:
@@ -38,10 +38,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_INPBPayloadNeedsExecuteIntent *)self intentExecution];
-      v11 = [v4 intentExecution];
-      v12 = [v10 isEqual:v11];
+      v9 = intentExecution3;
+      intentExecution4 = [(_INPBPayloadNeedsExecuteIntent *)self intentExecution];
+      intentExecution5 = [equalCopy intentExecution];
+      v12 = [intentExecution4 isEqual:intentExecution5];
 
       if (v12)
       {
@@ -60,47 +60,47 @@ LABEL_8:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBPayloadNeedsExecuteIntent allocWithZone:](_INPBPayloadNeedsExecuteIntent init];
-  v6 = [(_INPBIntentExecutionRequest *)self->_intentExecution copyWithZone:a3];
+  v6 = [(_INPBIntentExecutionRequest *)self->_intentExecution copyWithZone:zone];
   [(_INPBPayloadNeedsExecuteIntent *)v5 setIntentExecution:v6];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBPayloadNeedsExecuteIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBPayloadNeedsExecuteIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBPayloadNeedsExecuteIntent)initWithCoder:(id)a3
+- (_INPBPayloadNeedsExecuteIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBPayloadNeedsExecuteIntent *)self initWithData:v6];
+    self = [(_INPBPayloadNeedsExecuteIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(_INPBPayloadNeedsExecuteIntent *)self intentExecution];
+  toCopy = to;
+  intentExecution = [(_INPBPayloadNeedsExecuteIntent *)self intentExecution];
 
-  if (v4)
+  if (intentExecution)
   {
-    v5 = [(_INPBPayloadNeedsExecuteIntent *)self intentExecution];
+    intentExecution2 = [(_INPBPayloadNeedsExecuteIntent *)self intentExecution];
     PBDataWriterWriteSubmessage();
   }
 }

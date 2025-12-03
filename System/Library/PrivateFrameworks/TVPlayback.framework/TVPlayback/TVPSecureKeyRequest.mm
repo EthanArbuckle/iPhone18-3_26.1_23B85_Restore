@@ -1,47 +1,47 @@
 @interface TVPSecureKeyRequest
 - (BOOL)isRenewal;
-- (BOOL)loadKeyRequestDataWithError:(id *)a3;
+- (BOOL)loadKeyRequestDataWithError:(id *)error;
 - (BOOL)offlineKeyUsageAllowed;
-- (TVPSecureKeyRequest)initWithAssetResourceLoadingRequest:(id)a3;
-- (id)offlineKeyDataForResponseData:(id)a3 error:(id *)a4;
-- (void)finishLoadingWithResponseData:(id)a3 renewalDate:(id)a4 keyType:(int64_t)a5;
-- (void)loadKeyRequestDataAsynchronouslyWithCompletion:(id)a3;
+- (TVPSecureKeyRequest)initWithAssetResourceLoadingRequest:(id)request;
+- (id)offlineKeyDataForResponseData:(id)data error:(id *)error;
+- (void)finishLoadingWithResponseData:(id)data renewalDate:(id)date keyType:(int64_t)type;
+- (void)loadKeyRequestDataAsynchronouslyWithCompletion:(id)completion;
 @end
 
 @implementation TVPSecureKeyRequest
 
-- (TVPSecureKeyRequest)initWithAssetResourceLoadingRequest:(id)a3
+- (TVPSecureKeyRequest)initWithAssetResourceLoadingRequest:(id)request
 {
   v9.receiver = self;
   v9.super_class = TVPSecureKeyRequest;
-  v3 = [(TVPResourceLoadingRequest *)&v9 initWithAssetResourceLoadingRequest:a3];
+  v3 = [(TVPResourceLoadingRequest *)&v9 initWithAssetResourceLoadingRequest:request];
   v4 = v3;
   if (v3)
   {
     v3->_requestID = (atomic_fetch_add_explicit(sSecureRequestID, 1u, memory_order_relaxed) + 1);
-    v5 = [MEMORY[0x277CCAD78] UUID];
-    v6 = [v5 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     reportingID = v4->_reportingID;
-    v4->_reportingID = v6;
+    v4->_reportingID = uUIDString;
   }
 
   return v4;
 }
 
-- (BOOL)loadKeyRequestDataWithError:(id *)a3
+- (BOOL)loadKeyRequestDataWithError:(id *)error
 {
-  v5 = [MEMORY[0x277CBEAA8] date];
-  [(TVPSecureKeyRequest *)self setStartDate:v5];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(TVPSecureKeyRequest *)self setStartDate:date];
 
-  v6 = [(TVPSecureKeyRequest *)self keyRequestData];
+  keyRequestData = [(TVPSecureKeyRequest *)self keyRequestData];
 
-  if (v6)
+  if (keyRequestData)
   {
     return 1;
   }
 
-  v8 = [(TVPSecureKeyRequest *)self requestOptions];
-  v9 = [v8 mutableCopy];
+  requestOptions = [(TVPSecureKeyRequest *)self requestOptions];
+  v9 = [requestOptions mutableCopy];
 
   if (!v9)
   {
@@ -53,10 +53,10 @@
     [v9 setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CE5CC8]];
   }
 
-  v10 = [(TVPResourceLoadingRequest *)self loadingRequest];
-  v11 = [(TVPSecureKeyRequest *)self certificateData];
-  v12 = [(TVPSecureKeyRequest *)self contentIdentifierData];
-  v13 = [v10 streamingContentKeyRequestDataForApp:v11 contentIdentifier:v12 options:v9 error:a3];
+  loadingRequest = [(TVPResourceLoadingRequest *)self loadingRequest];
+  certificateData = [(TVPSecureKeyRequest *)self certificateData];
+  contentIdentifierData = [(TVPSecureKeyRequest *)self contentIdentifierData];
+  v13 = [loadingRequest streamingContentKeyRequestDataForApp:certificateData contentIdentifier:contentIdentifierData options:v9 error:error];
 
   v7 = v13 != 0;
   if (v13)
@@ -67,15 +67,15 @@
   return v7;
 }
 
-- (void)loadKeyRequestDataAsynchronouslyWithCompletion:(id)a3
+- (void)loadKeyRequestDataAsynchronouslyWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEAA8] date];
-  [(TVPSecureKeyRequest *)self setStartDate:v5];
+  completionCopy = completion;
+  date = [MEMORY[0x277CBEAA8] date];
+  [(TVPSecureKeyRequest *)self setStartDate:date];
 
-  v6 = [(TVPSecureKeyRequest *)self keyRequestData];
+  keyRequestData = [(TVPSecureKeyRequest *)self keyRequestData];
 
-  if (v6)
+  if (keyRequestData)
   {
     v7 = sTVPPlaybackPerfToken_0++;
     block[0] = MEMORY[0x277D85DD0];
@@ -83,15 +83,15 @@
     block[2] = __70__TVPSecureKeyRequest_loadKeyRequestDataAsynchronouslyWithCompletion___block_invoke_3;
     block[3] = &unk_279D7BF08;
     v15 = v7;
-    v14 = v4;
+    v14 = completionCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 
   else
   {
     objc_initWeak(&location, self);
-    v8 = [(TVPSecureKeyRequest *)self requestOptions];
-    v9 = [v8 mutableCopy];
+    requestOptions = [(TVPSecureKeyRequest *)self requestOptions];
+    v9 = [requestOptions mutableCopy];
 
     if (!v9)
     {
@@ -103,16 +103,16 @@
       [v9 setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CE5CC8]];
     }
 
-    v10 = [(TVPResourceLoadingRequest *)self loadingRequest];
-    v11 = [(TVPSecureKeyRequest *)self certificateData];
-    v12 = [(TVPSecureKeyRequest *)self contentIdentifierData];
+    loadingRequest = [(TVPResourceLoadingRequest *)self loadingRequest];
+    certificateData = [(TVPSecureKeyRequest *)self certificateData];
+    contentIdentifierData = [(TVPSecureKeyRequest *)self contentIdentifierData];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __70__TVPSecureKeyRequest_loadKeyRequestDataAsynchronouslyWithCompletion___block_invoke;
     v16[3] = &unk_279D7D2D0;
     objc_copyWeak(&v18, &location);
-    v17 = v4;
-    [v10 generateStreamingContentKeyRequestDataAsynchronouslyForApp:v11 contentIdentifier:v12 options:v9 completionHandler:v16];
+    v17 = completionCopy;
+    [loadingRequest generateStreamingContentKeyRequestDataAsynchronouslyForApp:certificateData contentIdentifier:contentIdentifierData options:v9 completionHandler:v16];
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(&location);
@@ -172,13 +172,13 @@ uint64_t __70__TVPSecureKeyRequest_loadKeyRequestDataAsynchronouslyWithCompletio
   return result;
 }
 
-- (id)offlineKeyDataForResponseData:(id)a3 error:(id *)a4
+- (id)offlineKeyDataForResponseData:(id)data error:(id *)error
 {
-  if (a3)
+  if (data)
   {
-    v6 = a3;
-    v7 = [(TVPResourceLoadingRequest *)self loadingRequest];
-    v8 = [v7 persistentContentKeyFromKeyVendorResponse:v6 options:0 error:a4];
+    dataCopy = data;
+    loadingRequest = [(TVPResourceLoadingRequest *)self loadingRequest];
+    v8 = [loadingRequest persistentContentKeyFromKeyVendorResponse:dataCopy options:0 error:error];
   }
 
   else
@@ -189,16 +189,16 @@ uint64_t __70__TVPSecureKeyRequest_loadKeyRequestDataAsynchronouslyWithCompletio
   return v8;
 }
 
-- (void)finishLoadingWithResponseData:(id)a3 renewalDate:(id)a4 keyType:(int64_t)a5
+- (void)finishLoadingWithResponseData:(id)data renewalDate:(id)date keyType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = TVPSecureKeyRequest;
-  [(TVPResourceLoadingRequest *)&v5 finishLoadingWithResponseData:a3 renewalDate:a4 keyType:a5];
+  [(TVPResourceLoadingRequest *)&v5 finishLoadingWithResponseData:data renewalDate:date keyType:type];
 }
 
 - (BOOL)isRenewal
 {
-  v2 = [(TVPResourceLoadingRequest *)self loadingRequest];
+  loadingRequest = [(TVPResourceLoadingRequest *)self loadingRequest];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -207,10 +207,10 @@ uint64_t __70__TVPSecureKeyRequest_loadKeyRequestDataAsynchronouslyWithCompletio
 
 - (BOOL)offlineKeyUsageAllowed
 {
-  v2 = [(TVPResourceLoadingRequest *)self loadingRequest];
-  v3 = [v2 contentInformationRequest];
-  v4 = [v3 allowedContentTypes];
-  v5 = [v4 containsObject:*MEMORY[0x277CE6188]];
+  loadingRequest = [(TVPResourceLoadingRequest *)self loadingRequest];
+  contentInformationRequest = [loadingRequest contentInformationRequest];
+  allowedContentTypes = [contentInformationRequest allowedContentTypes];
+  v5 = [allowedContentTypes containsObject:*MEMORY[0x277CE6188]];
 
   return v5;
 }

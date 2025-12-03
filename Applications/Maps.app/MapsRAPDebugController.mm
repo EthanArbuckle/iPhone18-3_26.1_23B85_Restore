@@ -1,13 +1,13 @@
 @interface MapsRAPDebugController
 - (MapsRAPDebugController)init;
 - (void)_refreshServerVersionNumber;
-- (void)openAnalyticsWithURL:(id)a3;
+- (void)openAnalyticsWithURL:(id)l;
 - (void)prepareContent;
 - (void)prepareDefaultSimJanaURL;
-- (void)simulateFixForProblemWithID:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)webBundleEncounteredError:(id)a3;
-- (void)webBundleUpdatedWithWebBundlePath:(id)a3;
+- (void)simulateFixForProblemWithID:(id)d;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)webBundleEncounteredError:(id)error;
+- (void)webBundleUpdatedWithWebBundlePath:(id)path;
 @end
 
 @implementation MapsRAPDebugController
@@ -27,29 +27,29 @@
   objc_destroyWeak(&location);
 }
 
-- (void)webBundleEncounteredError:(id)a3
+- (void)webBundleEncounteredError:(id)error
 {
-  v4 = [a3 localizedDescription];
-  [(MapsRAPDebugController *)self displayMessage:v4 titled:@"RAP Web Bundle Download Error"];
+  localizedDescription = [error localizedDescription];
+  [(MapsRAPDebugController *)self displayMessage:localizedDescription titled:@"RAP Web Bundle Download Error"];
 }
 
-- (void)webBundleUpdatedWithWebBundlePath:(id)a3
+- (void)webBundleUpdatedWithWebBundlePath:(id)path
 {
-  v4 = a3;
-  v5 = [NSString stringWithFormat:@"Web Bundle Updated with Path:%@", v4];
-  [(MapsRAPDebugController *)self displayMessage:v5 titled:@"RAP Web Bundle Downloaded"];
+  pathCopy = path;
+  pathCopy = [NSString stringWithFormat:@"Web Bundle Updated with Path:%@", pathCopy];
+  [(MapsRAPDebugController *)self displayMessage:pathCopy titled:@"RAP Web Bundle Downloaded"];
 
-  v6 = [v4 absoluteString];
+  absoluteString = [pathCopy absoluteString];
 
-  v7 = [(MapsRAPDebugController *)self deviceVersionNumberRow];
-  [v7 setSubtitle:v6];
+  deviceVersionNumberRow = [(MapsRAPDebugController *)self deviceVersionNumberRow];
+  [deviceVersionNumberRow setSubtitle:absoluteString];
 
   [(MapsDebugValuesViewController *)self reloadData];
 }
 
-- (void)simulateFixForProblemWithID:(id)a3
+- (void)simulateFixForProblemWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[NSUserDefaults standardUserDefaults];
   v6 = [v5 stringForKey:@"RAPDebugSimJanaURL"];
 
@@ -58,8 +58,8 @@
 
   v9 = [[NSMutableURLRequest alloc] initWithURL:v8];
   [v9 setHTTPMethod:@"POST"];
-  v10 = [NSString stringWithFormat:@"problem_id=%@", v4];
-  v11 = [v10 dataUsingEncoding:4];
+  dCopy = [NSString stringWithFormat:@"problem_id=%@", dCopy];
+  v11 = [dCopy dataUsingEncoding:4];
   [v9 setHTTPBody:v11];
 
   v12 = +[NSURLSession sharedSession];
@@ -68,18 +68,18 @@
   v15[2] = sub_100B83F68;
   v15[3] = &unk_10163BF08;
   v15[4] = self;
-  v16 = v4;
-  v13 = v4;
+  v16 = dCopy;
+  v13 = dCopy;
   v14 = [v12 dataTaskWithRequest:v9 completionHandler:v15];
 
   [v14 resume];
 }
 
-- (void)openAnalyticsWithURL:(id)a3
+- (void)openAnalyticsWithURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v5 = +[UIApplication sharedApplication];
-  v4 = [NSURL URLWithString:v3];
+  v4 = [NSURL URLWithString:lCopy];
 
   [v5 openURL:v4 options:&__NSDictionary0__struct completionHandler:0];
 }
@@ -89,17 +89,17 @@
   [(MapsRAPDebugController *)self prepareDefaultSimJanaURL];
   objc_initWeak(location, self);
   v3 = objc_alloc_init(RAPWebBundleConfigurationManager);
-  v4 = [(RAPWebBundleConfigurationManager *)v3 configuration];
+  configuration = [(RAPWebBundleConfigurationManager *)v3 configuration];
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
   v29[2] = sub_100B84694;
   v29[3] = &unk_101658D78;
   objc_copyWeak(&v31, location);
-  v5 = v4;
+  v5 = configuration;
   v30 = v5;
   v6 = [(MapsDebugValuesViewController *)self addSectionWithTitle:0 content:v29];
-  v7 = [(MapsRAPDebugController *)self environmentsSectionController];
-  [v7 appendEnvironmentSectionToDebugController:self];
+  environmentsSectionController = [(MapsRAPDebugController *)self environmentsSectionController];
+  [environmentsSectionController appendEnvironmentSectionToDebugController:self];
 
   v8 = [(MapsDebugValuesViewController *)self addSectionWithTitle:@"Submission Debug Settings" content:&stru_10163B6B0];
   v9 = [(MapsDebugValuesViewController *)self addSectionWithTitle:@"Notification" content:&stru_10163B6D0];
@@ -159,11 +159,11 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = MapsRAPDebugController;
-  [(MapsDebugValuesViewController *)&v4 viewWillAppear:a3];
+  [(MapsDebugValuesViewController *)&v4 viewWillAppear:appear];
   [(MapsRAPDebugController *)self _viewWillAppear];
   [(MapsRAPDebugController *)self _refreshServerVersionNumber];
 }

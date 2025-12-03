@@ -1,32 +1,32 @@
 @interface STAlwaysAllowList
-- (STAlwaysAllowList)initWithBlueprint:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (STAlwaysAllowList)initWithBlueprint:(id)blueprint;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation STAlwaysAllowList
 
-- (STAlwaysAllowList)initWithBlueprint:(id)a3
+- (STAlwaysAllowList)initWithBlueprint:(id)blueprint
 {
-  v4 = a3;
+  blueprintCopy = blueprint;
   v18.receiver = self;
   v18.super_class = STAlwaysAllowList;
   v5 = [(STAlwaysAllowList *)&v18 init];
   if (v5)
   {
-    v6 = [v4 configurations];
-    v7 = [v6 anyObject];
+    configurations = [blueprintCopy configurations];
+    anyObject = [configurations anyObject];
 
-    if (v7)
+    if (anyObject)
     {
       v8 = MEMORY[0x277CFBBC8];
-      v9 = [v7 payloadPlist];
+      payloadPlist = [anyObject payloadPlist];
       v17 = 0;
-      v10 = [v8 declarationForData:v9 error:&v17];
+      v10 = [v8 declarationForData:payloadPlist error:&v17];
       v11 = v17;
 
       if (v10)
       {
-        v12 = [v10 payloadApps];
+        payloadApps = [v10 payloadApps];
       }
 
       else
@@ -37,22 +37,22 @@
           [STAlwaysAllowList initWithBlueprint:];
         }
 
-        v12 = 0;
+        payloadApps = 0;
       }
 
-      v14 = [v10 unknownPayloadKeys];
-      v5->_shouldAllowEditing = [v14 count] == 0;
+      unknownPayloadKeys = [v10 unknownPayloadKeys];
+      v5->_shouldAllowEditing = [unknownPayloadKeys count] == 0;
     }
 
     else
     {
-      v12 = [MEMORY[0x277D4B928] defaultAlwaysAllowBundleIDs];
+      payloadApps = [MEMORY[0x277D4B928] defaultAlwaysAllowBundleIDs];
       v5->_shouldAllowEditing = 1;
     }
 
-    if (v12)
+    if (payloadApps)
     {
-      v15 = v12;
+      v15 = payloadApps;
     }
 
     else
@@ -66,7 +66,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v4 = objc_opt_new();

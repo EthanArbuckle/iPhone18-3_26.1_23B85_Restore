@@ -1,34 +1,34 @@
 @interface XRCInspectorProperty
-+ (void)_continueFetchingProperties:(id)a3 fetchedProperties:(id)a4 fetchedValues:(id)a5 completionBlock:(id)a6;
-+ (void)fetchValuesForProperties:(id)a3 completionBlock:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (void)_continueFetchingProperties:(id)properties fetchedProperties:(id)fetchedProperties fetchedValues:(id)values completionBlock:(id)block;
++ (void)fetchValuesForProperties:(id)properties completionBlock:(id)block;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)showElementClassName;
 - (BOOL)showIgnoredElements;
 - (NSString)title;
 - (XRCInspectorPropertyDelegate)delegate;
 - (id)_OSXConstantsToSelectorsDict;
-- (id)_OSXSelectorForAction:(id)a3;
-- (id)_OSXSelectorForAttribute:(id)a3;
-- (id)_spacedStringFromCamelCase:(id)a3;
+- (id)_OSXSelectorForAction:(id)action;
+- (id)_OSXSelectorForAttribute:(id)attribute;
+- (id)_spacedStringFromCamelCase:(id)case;
 - (id)description;
-- (void)fetchValueWithCompletionBlock:(id)a3;
-- (void)focusOnElement:(id)a3;
+- (void)fetchValueWithCompletionBlock:(id)block;
+- (void)focusOnElement:(id)element;
 - (void)performAction;
-- (void)previewElement:(id)a3;
-- (void)setNewValue:(id)a3;
+- (void)previewElement:(id)element;
+- (void)setNewValue:(id)value;
 @end
 
 @implementation XRCInspectorProperty
 
-+ (void)_continueFetchingProperties:(id)a3 fetchedProperties:(id)a4 fetchedValues:(id)a5 completionBlock:(id)a6
++ (void)_continueFetchingProperties:(id)properties fetchedProperties:(id)fetchedProperties fetchedValues:(id)values completionBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v11)
+  propertiesCopy = properties;
+  fetchedPropertiesCopy = fetchedProperties;
+  valuesCopy = values;
+  blockCopy = block;
+  if (fetchedPropertiesCopy)
   {
-    if (v12)
+    if (valuesCopy)
     {
       goto LABEL_3;
     }
@@ -36,34 +36,34 @@
 
   else
   {
-    v11 = objc_opt_new();
-    if (v12)
+    fetchedPropertiesCopy = objc_opt_new();
+    if (valuesCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v12 = objc_opt_new();
+  valuesCopy = objc_opt_new();
 LABEL_3:
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __100__XRCInspectorProperty__continueFetchingProperties_fetchedProperties_fetchedValues_completionBlock___block_invoke;
   v20[3] = &unk_278BE2EB8;
-  v14 = v11;
+  v14 = fetchedPropertiesCopy;
   v21 = v14;
-  v15 = v12;
+  v15 = valuesCopy;
   v22 = v15;
-  v25 = a1;
-  v16 = v10;
+  selfCopy = self;
+  v16 = propertiesCopy;
   v23 = v16;
-  v17 = v13;
+  v17 = blockCopy;
   v24 = v17;
   v18 = MEMORY[0x23EEEA2E0](v20);
-  v19 = [v16 firstObject];
-  if (v19)
+  firstObject = [v16 firstObject];
+  if (firstObject)
   {
-    [v16 removeObject:v19];
-    [v19 fetchValueWithCompletionBlock:v18];
+    [v16 removeObject:firstObject];
+    [firstObject fetchValueWithCompletionBlock:v18];
   }
 
   else
@@ -91,11 +91,11 @@ uint64_t __100__XRCInspectorProperty__continueFetchingProperties_fetchedProperti
   return [v7 _continueFetchingProperties:v11 fetchedProperties:v9 fetchedValues:v10 completionBlock:v8];
 }
 
-+ (void)fetchValuesForProperties:(id)a3 completionBlock:(id)a4
++ (void)fetchValuesForProperties:(id)properties completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = [a3 mutableCopy];
-  [a1 _continueFetchingProperties:v7 fetchedProperties:0 fetchedValues:0 completionBlock:v6];
+  blockCopy = block;
+  v7 = [properties mutableCopy];
+  [self _continueFetchingProperties:v7 fetchedProperties:0 fetchedValues:0 completionBlock:blockCopy];
 }
 
 - (id)description
@@ -103,18 +103,18 @@ uint64_t __100__XRCInspectorProperty__continueFetchingProperties_fetchedProperti
   v8.receiver = self;
   v8.super_class = XRCInspectorProperty;
   v3 = [(XRCInspectorProperty *)&v8 description];
-  v4 = [(XRCInspectorProperty *)self elementAttribute];
-  v5 = [(XRCInspectorProperty *)self title];
-  v6 = [v3 stringByAppendingFormat:@"Attribute:%@ Title:%@", v4, v5];
+  elementAttribute = [(XRCInspectorProperty *)self elementAttribute];
+  title = [(XRCInspectorProperty *)self title];
+  v6 = [v3 stringByAppendingFormat:@"Attribute:%@ Title:%@", elementAttribute, title];
 
   return v6;
 }
 
-- (id)_spacedStringFromCamelCase:(id)a3
+- (id)_spacedStringFromCamelCase:(id)case
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 length];
+  caseCopy = case;
+  v4 = [caseCopy length];
   v5 = objc_opt_new();
   v6 = v5;
   if (v4 >= 1)
@@ -125,17 +125,17 @@ uint64_t __100__XRCInspectorProperty__continueFetchingProperties_fetchedProperti
     v9 = -1;
     do
     {
-      v10 = [v3 characterAtIndex:v7];
+      v10 = [caseCopy characterAtIndex:v7];
       v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%c", v10];
-      v12 = [MEMORY[0x277CCA900] uppercaseLetterCharacterSet];
-      v13 = [v11 rangeOfCharacterFromSet:v12];
+      uppercaseLetterCharacterSet = [MEMORY[0x277CCA900] uppercaseLetterCharacterSet];
+      v13 = [v11 rangeOfCharacterFromSet:uppercaseLetterCharacterSet];
 
       v14 = (v13 == 0x7FFFFFFFFFFFFFFFLL) | v8;
       if (v13 != 0x7FFFFFFFFFFFFFFFLL && (v8 & 1) != 0)
       {
         if (v9 != -1)
         {
-          v15 = [v3 substringWithRange:{v9, v7 - v9}];
+          v15 = [caseCopy substringWithRange:{v9, v7 - v9}];
           [v27 addObject:v15];
         }
 
@@ -151,7 +151,7 @@ uint64_t __100__XRCInspectorProperty__continueFetchingProperties_fetchedProperti
     v6 = v27;
     if (v9 != -1)
     {
-      v16 = [v3 substringWithRange:{v9, objc_msgSend(v3, "length") - v9}];
+      v16 = [caseCopy substringWithRange:{v9, objc_msgSend(caseCopy, "length") - v9}];
       [v27 addObject:v16];
     }
   }
@@ -180,8 +180,8 @@ uint64_t __100__XRCInspectorProperty__continueFetchingProperties_fetchedProperti
         if ([v17 length])
         {
           [v17 appendString:@" "];
-          v24 = [v23 lowercaseString];
-          [v17 appendString:v24];
+          lowercaseString = [v23 lowercaseString];
+          [v17 appendString:lowercaseString];
         }
 
         else
@@ -210,24 +210,24 @@ uint64_t __100__XRCInspectorProperty__continueFetchingProperties_fetchedProperti
   return v4;
 }
 
-- (id)_OSXSelectorForAction:(id)a3
+- (id)_OSXSelectorForAction:(id)action
 {
-  v4 = a3;
-  v5 = [(XRCInspectorProperty *)self _OSXConstantsToSelectorsDict];
-  v6 = [v5 objectForKey:@"actions"];
-  v7 = [v6 objectForKey:v4];
+  actionCopy = action;
+  _OSXConstantsToSelectorsDict = [(XRCInspectorProperty *)self _OSXConstantsToSelectorsDict];
+  v6 = [_OSXConstantsToSelectorsDict objectForKey:@"actions"];
+  v7 = [v6 objectForKey:actionCopy];
 
   v8 = [v7 objectForKey:@"cocoa_protocol_selector"];
 
   return v8;
 }
 
-- (id)_OSXSelectorForAttribute:(id)a3
+- (id)_OSXSelectorForAttribute:(id)attribute
 {
-  v4 = a3;
-  v5 = [(XRCInspectorProperty *)self _OSXConstantsToSelectorsDict];
-  v6 = [v5 objectForKey:@"attributes"];
-  v7 = [v6 objectForKey:v4];
+  attributeCopy = attribute;
+  _OSXConstantsToSelectorsDict = [(XRCInspectorProperty *)self _OSXConstantsToSelectorsDict];
+  v6 = [_OSXConstantsToSelectorsDict objectForKey:@"attributes"];
+  v7 = [v6 objectForKey:attributeCopy];
 
   v8 = [v7 objectForKey:@"cocoa_protocol_selector"];
 
@@ -236,68 +236,68 @@ uint64_t __100__XRCInspectorProperty__continueFetchingProperties_fetchedProperti
 
 - (NSString)title
 {
-  v2 = [(XRCInspectorProperty *)self elementAttribute];
-  v3 = [v2 humanReadableName];
+  elementAttribute = [(XRCInspectorProperty *)self elementAttribute];
+  humanReadableName = [elementAttribute humanReadableName];
 
-  return v3;
+  return humanReadableName;
 }
 
-- (void)fetchValueWithCompletionBlock:(id)a3
+- (void)fetchValueWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(XRCInspectorProperty *)self delegate];
-  [v5 fetchValueForProperty:self completionBlock:v4];
+  blockCopy = block;
+  delegate = [(XRCInspectorProperty *)self delegate];
+  [delegate fetchValueForProperty:self completionBlock:blockCopy];
 }
 
-- (void)setNewValue:(id)a3
+- (void)setNewValue:(id)value
 {
-  v5 = a3;
-  v4 = [(XRCInspectorProperty *)self delegate];
-  [v4 updateProperty:self withNewValue:v5];
+  valueCopy = value;
+  delegate = [(XRCInspectorProperty *)self delegate];
+  [delegate updateProperty:self withNewValue:valueCopy];
 
-  [(XRCInspectorProperty *)self setValue:v5];
+  [(XRCInspectorProperty *)self setValue:valueCopy];
 }
 
 - (void)performAction
 {
-  v3 = [(XRCInspectorProperty *)self delegate];
-  [v3 performAction:self];
+  delegate = [(XRCInspectorProperty *)self delegate];
+  [delegate performAction:self];
 }
 
-- (void)previewElement:(id)a3
+- (void)previewElement:(id)element
 {
-  v4 = a3;
-  v5 = [(XRCInspectorProperty *)self delegate];
-  [v5 previewOnElement:v4];
+  elementCopy = element;
+  delegate = [(XRCInspectorProperty *)self delegate];
+  [delegate previewOnElement:elementCopy];
 }
 
-- (void)focusOnElement:(id)a3
+- (void)focusOnElement:(id)element
 {
-  v4 = a3;
-  v5 = [(XRCInspectorProperty *)self delegate];
-  [v5 focusOnElement:v4];
+  elementCopy = element;
+  delegate = [(XRCInspectorProperty *)self delegate];
+  [delegate focusOnElement:elementCopy];
 }
 
 - (BOOL)showElementClassName
 {
-  v2 = [(XRCInspectorProperty *)self delegate];
-  v3 = [v2 showElementClassName];
+  delegate = [(XRCInspectorProperty *)self delegate];
+  showElementClassName = [delegate showElementClassName];
 
-  return v3;
+  return showElementClassName;
 }
 
 - (BOOL)showIgnoredElements
 {
-  v2 = [(XRCInspectorProperty *)self delegate];
-  v3 = [v2 showIgnoredElements];
+  delegate = [(XRCInspectorProperty *)self delegate];
+  showIgnoredElements = [delegate showIgnoredElements];
 
-  return v3;
+  return showIgnoredElements;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -307,14 +307,14 @@ uint64_t __100__XRCInspectorProperty__continueFetchingProperties_fetchedProperti
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(XRCInspectorProperty *)v5 elementAttribute];
-      v7 = [(XRCInspectorProperty *)self elementAttribute];
-      if ([v6 isEqual:v7])
+      v5 = equalCopy;
+      elementAttribute = [(XRCInspectorProperty *)v5 elementAttribute];
+      elementAttribute2 = [(XRCInspectorProperty *)self elementAttribute];
+      if ([elementAttribute isEqual:elementAttribute2])
       {
-        v8 = [(XRCInspectorProperty *)v5 element];
-        v9 = [(XRCInspectorProperty *)self element];
-        v10 = [v8 isEqual:v9];
+        element = [(XRCInspectorProperty *)v5 element];
+        element2 = [(XRCInspectorProperty *)self element];
+        v10 = [element isEqual:element2];
       }
 
       else

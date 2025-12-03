@@ -1,24 +1,24 @@
 @interface SUUIButtonCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation SUUIButtonCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SUUIButtonCollectionViewCell" hasInstanceVariable:@"_button" withType:"UIControl"];
-  [v3 validateClass:@"UIView" hasInstanceMethod:@"isUserInteractionEnabled" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SUUIButtonCollectionViewCell" hasInstanceVariable:@"_button" withType:"UIControl"];
+  [validationsCopy validateClass:@"UIView" hasInstanceMethod:@"isUserInteractionEnabled" withFullSignature:{"B", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(SUUIButtonCollectionViewCellAccessibility *)self safeValueForKey:@"_button"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits
@@ -28,7 +28,7 @@
   v4 = __UIAccessibilityCastAsClass();
 
   v5 = [v4 safeBoolForKey:@"isUserInteractionEnabled"];
-  v6 = [v4 accessibilityTraits];
+  accessibilityTraits = [v4 accessibilityTraits];
   if (v5)
   {
     v7 = *MEMORY[0x29EDC7F70];
@@ -39,7 +39,7 @@
     v7 = 0;
   }
 
-  return v6 | v7;
+  return accessibilityTraits | v7;
 }
 
 @end

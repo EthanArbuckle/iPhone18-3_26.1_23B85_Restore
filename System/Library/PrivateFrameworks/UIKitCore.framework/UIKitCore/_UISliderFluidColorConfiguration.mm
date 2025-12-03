@@ -1,15 +1,15 @@
 @interface _UISliderFluidColorConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)colors;
 - (NSArray)locations;
 - (_UISliderFluidColorConfiguration)init;
-- (_UISliderFluidColorConfiguration)initWithColors:(id)a3;
-- (_UISliderFluidColorConfiguration)initWithColors:(id)a3 locations:(id)a4;
-- (_UISliderFluidColorConfiguration)initWithColors:(id)a3 locations:(id)a4 numberOfTicks:(int64_t)a5 tickBehavior:(int64_t)a6;
-- (_UISliderFluidColorConfiguration)initWithColors:(id)a3 locations:(id)a4 ticks:(id)a5 tickBehavior:(int64_t)a6;
-- (_UISliderFluidColorConfiguration)initWithNumberOfTicks:(int64_t)a3 behavior:(int64_t)a4;
-- (_UISliderFluidColorConfiguration)initWithTicks:(id)a3 behavior:(int64_t)a4;
-- (id)copyWithZone:(void *)a3;
+- (_UISliderFluidColorConfiguration)initWithColors:(id)colors;
+- (_UISliderFluidColorConfiguration)initWithColors:(id)colors locations:(id)locations;
+- (_UISliderFluidColorConfiguration)initWithColors:(id)colors locations:(id)locations numberOfTicks:(int64_t)ticks tickBehavior:(int64_t)behavior;
+- (_UISliderFluidColorConfiguration)initWithColors:(id)colors locations:(id)locations ticks:(id)ticks tickBehavior:(int64_t)behavior;
+- (_UISliderFluidColorConfiguration)initWithNumberOfTicks:(int64_t)ticks behavior:(int64_t)behavior;
+- (_UISliderFluidColorConfiguration)initWithTicks:(id)ticks behavior:(int64_t)behavior;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation _UISliderFluidColorConfiguration
@@ -40,14 +40,14 @@
   return v2;
 }
 
-- (_UISliderFluidColorConfiguration)initWithColors:(id)a3 locations:(id)a4 ticks:(id)a5 tickBehavior:(int64_t)a6
+- (_UISliderFluidColorConfiguration)initWithColors:(id)colors locations:(id)locations ticks:(id)ticks tickBehavior:(int64_t)behavior
 {
   sub_188A34624(0, qword_1ED4913C0);
   v9 = sub_18A4A7548();
-  if (a4)
+  if (locations)
   {
     sub_188A34624(0, &qword_1ED48FD80);
-    a4 = sub_18A4A7548();
+    locations = sub_18A4A7548();
   }
 
   sub_188A34624(0, &unk_1EA92FD90);
@@ -57,46 +57,46 @@
   *(&self->super.super.super.isa + OBJC_IVAR____UISliderFluidColorConfiguration_maxGain) = 0x3FF0000000000000;
   *(&self->super.super.super.isa + OBJC_IVAR____UISliderFluidColorConfiguration_showCheckerboard) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____UISliderFluidColorConfiguration__colors) = v9;
-  *(&self->super.super.super.isa + v10) = a4;
+  *(&self->super.super.super.isa + v10) = locations;
   v11 = sub_18A4A7518();
 
   v14.receiver = self;
   v14.super_class = _UISliderFluidColorConfiguration;
-  v12 = [(_UISliderFluidTickConfiguration *)&v14 initWithTicks:v11 behavior:a6];
+  v12 = [(_UISliderFluidTickConfiguration *)&v14 initWithTicks:v11 behavior:behavior];
 
   return v12;
 }
 
-- (_UISliderFluidColorConfiguration)initWithColors:(id)a3 locations:(id)a4 numberOfTicks:(int64_t)a5 tickBehavior:(int64_t)a6
+- (_UISliderFluidColorConfiguration)initWithColors:(id)colors locations:(id)locations numberOfTicks:(int64_t)ticks tickBehavior:(int64_t)behavior
 {
-  v8 = a4;
-  if (a4)
+  locationsCopy = locations;
+  if (locations)
   {
     sub_188A34624(0, &qword_1ED48FD80);
     sub_18A4A7548();
-    v11 = a3;
-    v8 = sub_18A4A7518();
+    colorsCopy = colors;
+    locationsCopy = sub_18A4A7518();
   }
 
   else
   {
-    v12 = a3;
+    colorsCopy2 = colors;
   }
 
-  sub_189017030(a5);
+  sub_189017030(ticks);
   sub_188A34624(0, &unk_1EA92FD90);
   v13 = sub_18A4A7518();
 
-  v14 = [(_UISliderFluidColorConfiguration *)self initWithColors:a3 locations:v8 ticks:v13 tickBehavior:a6];
+  v14 = [(_UISliderFluidColorConfiguration *)self initWithColors:colors locations:locationsCopy ticks:v13 tickBehavior:behavior];
 
   return v14;
 }
 
-- (_UISliderFluidColorConfiguration)initWithColors:(id)a3 locations:(id)a4
+- (_UISliderFluidColorConfiguration)initWithColors:(id)colors locations:(id)locations
 {
   sub_188A34624(0, qword_1ED4913C0);
   v6 = sub_18A4A7548();
-  if (a4)
+  if (locations)
   {
     sub_188A34624(0, &qword_1ED48FD80);
     v7 = sub_18A4A7548();
@@ -122,7 +122,7 @@
   return v10;
 }
 
-- (_UISliderFluidColorConfiguration)initWithColors:(id)a3
+- (_UISliderFluidColorConfiguration)initWithColors:(id)colors
 {
   sub_188A34624(0, qword_1ED4913C0);
   v4 = sub_18A4A7548();
@@ -141,7 +141,7 @@
   return v7;
 }
 
-- (_UISliderFluidColorConfiguration)initWithTicks:(id)a3 behavior:(int64_t)a4
+- (_UISliderFluidColorConfiguration)initWithTicks:(id)ticks behavior:(int64_t)behavior
 {
   sub_188A34624(0, &unk_1EA92FD90);
   sub_18A4A7548();
@@ -155,12 +155,12 @@
 
   v10.receiver = self;
   v10.super_class = _UISliderFluidColorConfiguration;
-  v8 = [(_UISliderFluidTickConfiguration *)&v10 initWithTicks:v7 behavior:a4];
+  v8 = [(_UISliderFluidTickConfiguration *)&v10 initWithTicks:v7 behavior:behavior];
 
   return v8;
 }
 
-- (_UISliderFluidColorConfiguration)initWithNumberOfTicks:(int64_t)a3 behavior:(int64_t)a4
+- (_UISliderFluidColorConfiguration)initWithNumberOfTicks:(int64_t)ticks behavior:(int64_t)behavior
 {
   v4 = OBJC_IVAR____UISliderFluidColorConfiguration__locations;
   *(&self->super.super.super.isa + OBJC_IVAR____UISliderFluidColorConfiguration__locations) = 0;
@@ -170,7 +170,7 @@
   *(&self->super.super.super.isa + v4) = 0;
   v6.receiver = self;
   v6.super_class = _UISliderFluidColorConfiguration;
-  return [(_UISliderFluidTickConfiguration *)&v6 initWithNumberOfTicks:a3 behavior:a4];
+  return [(_UISliderFluidTickConfiguration *)&v6 initWithNumberOfTicks:ticks behavior:behavior];
 }
 
 - (_UISliderFluidColorConfiguration)init
@@ -182,10 +182,10 @@
   return v4;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v4 = self;
-  _UISliderFluidColorConfiguration.copy(with:)(a3, v7);
+  selfCopy = self;
+  _UISliderFluidColorConfiguration.copy(with:)(zone, v7);
 
   __swift_project_boxed_opaque_existential_0(v7, v7[3]);
   v5 = sub_18A4A86A8();
@@ -193,11 +193,11 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_18A4A7DE8();
     swift_unknownObjectRelease();
@@ -206,7 +206,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = _UISliderFluidColorConfiguration.isEqual(_:)(v8);

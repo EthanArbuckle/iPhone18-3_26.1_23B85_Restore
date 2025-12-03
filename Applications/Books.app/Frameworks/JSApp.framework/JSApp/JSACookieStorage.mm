@@ -2,13 +2,13 @@
 + (JSACookieStorage)sharedInstance;
 - (JSACookieStorage)init;
 - (NSDictionary)activeCookiesForDefaultURL;
-- (void)_handleCookieDidExpire:(id)a3;
-- (void)account:(unint64_t)a3 didChangeWithReason:(unint64_t)a4;
+- (void)_handleCookieDidExpire:(id)expire;
+- (void)account:(unint64_t)account didChangeWithReason:(unint64_t)reason;
 - (void)dealloc;
-- (void)deleteCookie:(id)a3 :(id)a4;
-- (void)notificationHandler:(id)a3;
-- (void)registerOnCookieStorageChange:(id)a3;
-- (void)setCookie:(id)a3 :(id)a4;
+- (void)deleteCookie:(id)cookie :(id)a4;
+- (void)notificationHandler:(id)handler;
+- (void)registerOnCookieStorageChange:(id)change;
+- (void)setCookie:(id)cookie :(id)a4;
 @end
 
 @implementation JSACookieStorage
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = sub_266AC;
   block[3] = &unk_B25E8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_CC1B0 != -1)
   {
     dispatch_once(&qword_CC1B0, block);
@@ -90,8 +90,8 @@
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(JSACookieStorage *)self invalidationTimers];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  invalidationTimers = [(JSACookieStorage *)self invalidationTimers];
+  v7 = [invalidationTimers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -103,7 +103,7 @@
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(invalidationTimers);
         }
 
         [*(*(&v12 + 1) + 8 * v10) invalidate];
@@ -111,7 +111,7 @@
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [invalidationTimers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -136,24 +136,24 @@
   return activeCookiesForDefaultURL;
 }
 
-- (void)setCookie:(id)a3 :(id)a4
+- (void)setCookie:(id)cookie :(id)a4
 {
   v6 = a4;
-  v7 = a3;
+  cookieCopy = cookie;
   v8 = [NSHTTPCookie alloc];
-  v9 = [v8 jsa_initWithScriptingCookie:v7];
+  v9 = [v8 jsa_initWithScriptingCookie:cookieCopy];
 
   v10 = +[BUAccountsProvider sharedProvider];
-  v11 = [v10 localStoreAccount];
+  localStoreAccount = [v10 localStoreAccount];
 
   v20 = v9;
   v12 = [NSArray arrayWithObjects:&v20 count:1];
-  [v11 ams_addCookies:v12];
+  [localStoreAccount ams_addCookies:v12];
 
-  if ([v11 isDirty])
+  if ([localStoreAccount isDirty])
   {
     v13 = +[ACAccountStore bu_sharedAccountStore];
-    v14 = [v13 ams_saveAccount:v11 verifyCredentials:0];
+    v14 = [v13 ams_saveAccount:localStoreAccount verifyCredentials:0];
 
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
@@ -178,28 +178,28 @@
   }
 }
 
-- (void)deleteCookie:(id)a3 :(id)a4
+- (void)deleteCookie:(id)cookie :(id)a4
 {
-  v6 = a3;
+  cookieCopy = cookie;
   v7 = a4;
-  v8 = [v6 name];
-  if (!v8)
+  name = [cookieCopy name];
+  if (!name)
   {
     goto LABEL_6;
   }
 
-  v9 = v8;
-  v10 = [v6 domain];
-  if (!v10)
+  v9 = name;
+  domain = [cookieCopy domain];
+  if (!domain)
   {
 
     goto LABEL_6;
   }
 
-  v11 = v10;
-  v12 = [v6 path];
+  v11 = domain;
+  path = [cookieCopy path];
 
-  if (!v12)
+  if (!path)
   {
 LABEL_6:
     v18 = +[JSABridge sharedInstance];
@@ -209,14 +209,14 @@ LABEL_6:
   }
 
   v21[0] = NSHTTPCookieName;
-  v13 = [v6 name];
-  v22[0] = v13;
+  name2 = [cookieCopy name];
+  v22[0] = name2;
   v21[1] = NSHTTPCookieDomain;
-  v14 = [v6 domain];
-  v22[1] = v14;
+  domain2 = [cookieCopy domain];
+  v22[1] = domain2;
   v21[2] = NSHTTPCookiePath;
-  v15 = [v6 path];
-  v22[2] = v15;
+  path2 = [cookieCopy path];
+  v22[2] = path2;
   v16 = [NSDictionary dictionaryWithObjects:v22 forKeys:v21 count:3];
 
   v17 = +[ACAccountStore bu_sharedAccountStore];
@@ -232,9 +232,9 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)registerOnCookieStorageChange:(id)a3
+- (void)registerOnCookieStorageChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = JSALog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -242,12 +242,12 @@ LABEL_7:
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Registering on cookie storage change", v7, 2u);
   }
 
-  v6 = [JSManagedValue managedValueWithValue:v4];
+  v6 = [JSManagedValue managedValueWithValue:changeCopy];
 
   [(JSACookieStorage *)self setCookieStorageChangeHandler:v6];
 }
 
-- (void)notificationHandler:(id)a3
+- (void)notificationHandler:(id)handler
 {
   v5 = JSALog();
   if (sub_27AEC(v5))
@@ -261,7 +261,7 @@ LABEL_7:
   }
 }
 
-- (void)_handleCookieDidExpire:(id)a3
+- (void)_handleCookieDidExpire:(id)expire
 {
   v5 = JSALog();
   if (sub_27AEC(v5))
@@ -275,7 +275,7 @@ LABEL_7:
   }
 }
 
-- (void)account:(unint64_t)a3 didChangeWithReason:(unint64_t)a4
+- (void)account:(unint64_t)account didChangeWithReason:(unint64_t)reason
 {
   v6 = JSALog();
   if (sub_27AEC(v6))

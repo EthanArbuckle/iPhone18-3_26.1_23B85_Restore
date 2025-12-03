@@ -1,11 +1,11 @@
 @interface _LTBatchTextTranslationRequest
-- (void)_startTranslationWithService:(id)a3 done:(id)a4;
-- (void)_translationFailedWithError:(id)a3;
+- (void)_startTranslationWithService:(id)service done:(id)done;
+- (void)_translationFailedWithError:(id)error;
 @end
 
 @implementation _LTBatchTextTranslationRequest
 
-- (void)_startTranslationWithService:(id)a3 done:(id)a4
+- (void)_startTranslationWithService:(id)service done:(id)done
 {
   v4 = _LTOSLogTranslationEngine();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -14,14 +14,14 @@
   }
 }
 
-- (void)_translationFailedWithError:(id)a3
+- (void)_translationFailedWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   translationHandler = self->_translationHandler;
-  v7 = v4;
+  v7 = errorCopy;
   if (translationHandler)
   {
-    translationHandler[2](translationHandler, 0, v4);
+    translationHandler[2](translationHandler, 0, errorCopy);
   }
 
   textHandler = self->_textHandler;

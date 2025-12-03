@@ -1,19 +1,19 @@
 @interface _UIContextMenuActionScrubbingHandoffGestureRecognizer
 - (BOOL)_gestureIsStillValid;
 - (BOOL)_satisfiedHysteresis;
-- (_UIContextMenuActionScrubbingHandoffGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (_UIContextMenuActionScrubbingHandoffGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (void)_beginGestureIfPossible;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation _UIContextMenuActionScrubbingHandoffGestureRecognizer
 
-- (_UIContextMenuActionScrubbingHandoffGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_UIContextMenuActionScrubbingHandoffGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = _UIContextMenuActionScrubbingHandoffGestureRecognizer;
-  v4 = [(UIGestureRecognizer *)&v7 initWithTarget:a3 action:a4];
+  v4 = [(UIGestureRecognizer *)&v7 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -25,36 +25,36 @@
   return v5;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   p_initialLocation = &self->_initialLocation;
-  [(UIGestureRecognizer *)self locationInView:0, a4];
+  [(UIGestureRecognizer *)self locationInView:0, event];
   p_initialLocation->x = v6;
   p_initialLocation->y = v7;
 
   [(_UIContextMenuActionScrubbingHandoffGestureRecognizer *)self _beginGestureIfPossible];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v5 = [(UIGestureRecognizer *)self state:a3];
+  v5 = [(UIGestureRecognizer *)self state:moved];
   if (v5)
   {
     if (v5 <= UIGestureRecognizerStateChanged)
     {
       if ([(_UIContextMenuActionScrubbingHandoffGestureRecognizer *)self _gestureIsStillValid])
       {
-        v6 = self;
+        selfCopy2 = self;
         v7 = 2;
       }
 
       else
       {
-        v6 = self;
+        selfCopy2 = self;
         v7 = 4;
       }
 
-      [(UIGestureRecognizer *)v6 setState:v7];
+      [(UIGestureRecognizer *)selfCopy2 setState:v7];
     }
   }
 
@@ -90,9 +90,9 @@
 
 - (BOOL)_gestureIsStillValid
 {
-  v2 = [(UIGestureRecognizer *)self _activeTouchesEvent];
-  v3 = [v2 allTouches];
-  v4 = [v3 count] < 2;
+  _activeTouchesEvent = [(UIGestureRecognizer *)self _activeTouchesEvent];
+  allTouches = [_activeTouchesEvent allTouches];
+  v4 = [allTouches count] < 2;
 
   return v4;
 }

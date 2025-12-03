@@ -1,28 +1,28 @@
 @interface MRRapportTransportConnection
-- (BOOL)_targetDeviceMatch:(id)a3 deviceUID:(id)a4;
-- (MRRapportTransportConnection)initWithCompanionLinkClient:(id)a3 device:(id)a4 sessionUID:(id)a5;
-- (MRRapportTransportConnection)initWithDeviceUID:(id)a3 sessionUID:(id)a4 targetDevice:(id *)a5 error:(id *)a6;
-- (unint64_t)sendTransportData:(id)a3 options:(id)a4;
+- (BOOL)_targetDeviceMatch:(id)match deviceUID:(id)d;
+- (MRRapportTransportConnection)initWithCompanionLinkClient:(id)client device:(id)device sessionUID:(id)d;
+- (MRRapportTransportConnection)initWithDeviceUID:(id)d sessionUID:(id)iD targetDevice:(id *)device error:(id *)error;
+- (unint64_t)sendTransportData:(id)data options:(id)options;
 - (void)_registerCallbacks;
-- (void)closeWithError:(id)a3;
+- (void)closeWithError:(id)error;
 @end
 
 @implementation MRRapportTransportConnection
 
-- (MRRapportTransportConnection)initWithCompanionLinkClient:(id)a3 device:(id)a4 sessionUID:(id)a5
+- (MRRapportTransportConnection)initWithCompanionLinkClient:(id)client device:(id)device sessionUID:(id)d
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  clientCopy = client;
+  deviceCopy = device;
+  dCopy = d;
   v17.receiver = self;
   v17.super_class = MRRapportTransportConnection;
   v12 = [(MRExternalDeviceTransportConnection *)&v17 initWithDataSource:self];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_sessionUID, a5);
-    objc_storeStrong(&v13->_connection, a3);
-    [(RPCompanionLinkClient *)v13->_connection setDestinationDevice:v10];
+    objc_storeStrong(&v12->_sessionUID, d);
+    objc_storeStrong(&v13->_connection, client);
+    [(RPCompanionLinkClient *)v13->_connection setDestinationDevice:deviceCopy];
     v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"com.apple.mediaremote.remotecontrol.event.%@", v13->_sessionUID];
     eventID = v13->_eventID;
     v13->_eventID = v14;
@@ -33,11 +33,11 @@
   return v13;
 }
 
-- (MRRapportTransportConnection)initWithDeviceUID:(id)a3 sessionUID:(id)a4 targetDevice:(id *)a5 error:(id *)a6
+- (MRRapportTransportConnection)initWithDeviceUID:(id)d sessionUID:(id)iD targetDevice:(id *)device error:(id *)error
 {
   v66 = *MEMORY[0x1E69E9840];
-  v36 = a3;
-  v33 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v55 = 0;
   v56 = &v55;
   v57 = 0x3032000000;
@@ -82,9 +82,9 @@
   v41[1] = 3221225472;
   v41[2] = __80__MRRapportTransportConnection_initWithDeviceUID_sessionUID_targetDevice_error___block_invoke_2;
   v41[3] = &unk_1E76A47A0;
-  v16 = self;
-  v42 = v16;
-  v17 = v36;
+  selfCopy = self;
+  v42 = selfCopy;
+  v17 = dCopy;
   v43 = v17;
   v45 = &v49;
   v18 = v15;
@@ -94,8 +94,8 @@
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v19 = [v7 activeDevices];
-  v20 = [v19 countByEnumeratingWithState:&v37 objects:v65 count:16];
+  activeDevices = [v7 activeDevices];
+  v20 = [activeDevices countByEnumeratingWithState:&v37 objects:v65 count:16];
   if (v20)
   {
     v21 = *v38;
@@ -105,18 +105,18 @@
       {
         if (*v38 != v21)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(activeDevices);
         }
 
         v23 = *(*(&v37 + 1) + 8 * i);
-        if ([(MRRapportTransportConnection *)v16 _targetDeviceMatch:v23 deviceUID:v17])
+        if ([(MRRapportTransportConnection *)selfCopy _targetDeviceMatch:v23 deviceUID:v17])
         {
           objc_storeStrong(v50 + 5, v23);
           dispatch_semaphore_signal(v18);
         }
       }
 
-      v20 = [v19 countByEnumeratingWithState:&v37 objects:v65 count:16];
+      v20 = [activeDevices countByEnumeratingWithState:&v37 objects:v65 count:16];
     }
 
     while (v20);
@@ -140,25 +140,25 @@ LABEL_16:
       *buf = 138543618;
       v62 = v28;
       v63 = 2112;
-      v64 = v36;
+      v64 = dCopy;
       _os_log_impl(&dword_1A2860000, v27, OS_LOG_TYPE_ERROR, "[MRRapportTransportConnection] Error %{public}@ creating rapportTransportConnection for %@", buf, 0x16u);
     }
 
     v29 = 0;
-    if (a6)
+    if (error)
     {
-      *a6 = v56[5];
+      *error = v56[5];
     }
   }
 
   else
   {
-    if (a5)
+    if (device)
     {
-      *a5 = v50[5];
+      *device = v50[5];
     }
 
-    v29 = [(MRRapportTransportConnection *)v16 initWithCompanionLinkClient:v7 device:v50[5] sessionUID:v33];
+    v29 = [(MRRapportTransportConnection *)selfCopy initWithCompanionLinkClient:v7 device:v50[5] sessionUID:iDCopy];
     self = v29;
   }
 
@@ -188,49 +188,49 @@ void __80__MRRapportTransportConnection_initWithDeviceUID_sessionUID_targetDevic
   }
 }
 
-- (unint64_t)sendTransportData:(id)a3 options:(id)a4
+- (unint64_t)sendTransportData:(id)data options:(id)options
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v23 = a4;
+  dataCopy = data;
+  optionsCopy = options;
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [v7 setObject:v6 forKeyedSubscript:@"data"];
+  [v7 setObject:dataCopy forKeyedSubscript:@"data"];
   v8 = MRLogCategoryConnections();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 length];
-    v22 = [(RPCompanionLinkClient *)self->_connection destinationDevice];
-    v10 = [v22 effectiveIdentifier];
-    v11 = [(RPCompanionLinkClient *)self->_connection destinationDevice];
-    v12 = [v11 name];
-    v13 = [(MRExternalDeviceTransportConnection *)self destinationOutputDeviceUID];
-    v14 = [(MRRapportTransportConnection *)self sessionUID];
+    v9 = [dataCopy length];
+    destinationDevice = [(RPCompanionLinkClient *)self->_connection destinationDevice];
+    effectiveIdentifier = [destinationDevice effectiveIdentifier];
+    destinationDevice2 = [(RPCompanionLinkClient *)self->_connection destinationDevice];
+    name = [destinationDevice2 name];
+    destinationOutputDeviceUID = [(MRExternalDeviceTransportConnection *)self destinationOutputDeviceUID];
+    sessionUID = [(MRRapportTransportConnection *)self sessionUID];
     *buf = 134219010;
     v27 = v9;
     v28 = 2114;
-    v29 = v10;
+    v29 = effectiveIdentifier;
     v30 = 2114;
-    v31 = v12;
+    v31 = name;
     v32 = 2114;
-    v33 = v13;
+    v33 = destinationOutputDeviceUID;
     v34 = 2114;
-    v35 = v14;
+    v35 = sessionUID;
     _os_log_impl(&dword_1A2860000, v8, OS_LOG_TYPE_DEFAULT, "[MRRapportTransportConnection] Writing %llu bytes to device=%{public}@(%{public}@) destination=%{public}@, session=%{public}@", buf, 0x34u);
   }
 
   objc_initWeak(buf, self);
   connection = self->_connection;
-  v16 = [(MRRapportTransportConnection *)self eventID];
-  v17 = [(RPCompanionLinkClient *)self->_connection destinationDevice];
-  v18 = [v17 effectiveIdentifier];
+  eventID = [(MRRapportTransportConnection *)self eventID];
+  destinationDevice3 = [(RPCompanionLinkClient *)self->_connection destinationDevice];
+  effectiveIdentifier2 = [destinationDevice3 effectiveIdentifier];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __58__MRRapportTransportConnection_sendTransportData_options___block_invoke;
   v24[3] = &unk_1E769D2F8;
   objc_copyWeak(&v25, buf);
-  [(RPCompanionLinkClient *)connection sendEventID:v16 event:v7 destinationID:v18 options:0 completion:v24];
+  [(RPCompanionLinkClient *)connection sendEventID:eventID event:v7 destinationID:effectiveIdentifier2 options:0 completion:v24];
 
-  v19 = [v6 length];
+  v19 = [dataCopy length];
   objc_destroyWeak(&v25);
   objc_destroyWeak(buf);
 
@@ -249,28 +249,28 @@ void __58__MRRapportTransportConnection_sendTransportData_options___block_invoke
   }
 }
 
-- (void)closeWithError:(id)a3
+- (void)closeWithError:(id)error
 {
   connection = self->_connection;
-  v5 = a3;
+  errorCopy = error;
   [(RPCompanionLinkClient *)connection invalidate];
-  [(MRExternalDeviceTransportConnection *)self _notifyDelegateDidCloseWithError:v5];
+  [(MRExternalDeviceTransportConnection *)self _notifyDelegateDidCloseWithError:errorCopy];
 }
 
-- (BOOL)_targetDeviceMatch:(id)a3 deviceUID:(id)a4
+- (BOOL)_targetDeviceMatch:(id)match deviceUID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 effectiveIdentifier];
-  if ([v7 isEqualToString:v6])
+  matchCopy = match;
+  dCopy = d;
+  effectiveIdentifier = [matchCopy effectiveIdentifier];
+  if ([effectiveIdentifier isEqualToString:dCopy])
   {
     v8 = 1;
   }
 
   else
   {
-    v9 = [v5 mediaRouteIdentifier];
-    v8 = [v9 isEqualToString:v6];
+    mediaRouteIdentifier = [matchCopy mediaRouteIdentifier];
+    v8 = [mediaRouteIdentifier isEqualToString:dCopy];
   }
 
   return v8;
@@ -292,13 +292,13 @@ void __58__MRRapportTransportConnection_sendTransportData_options___block_invoke
   objc_copyWeak(&v8, &location);
   [(RPCompanionLinkClient *)self->_connection setDeviceLostHandler:v7];
   connection = self->_connection;
-  v4 = [(MRRapportTransportConnection *)self eventID];
+  eventID = [(MRRapportTransportConnection *)self eventID];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __50__MRRapportTransportConnection__registerCallbacks__block_invoke_3;
   v5[3] = &unk_1E76A47F0;
   objc_copyWeak(&v6, &location);
-  [(RPCompanionLinkClient *)connection registerEventID:v4 options:0 handler:v5];
+  [(RPCompanionLinkClient *)connection registerEventID:eventID options:0 handler:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&v8);

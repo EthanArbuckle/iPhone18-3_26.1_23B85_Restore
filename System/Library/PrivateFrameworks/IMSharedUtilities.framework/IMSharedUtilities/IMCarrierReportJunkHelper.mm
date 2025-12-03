@@ -1,36 +1,36 @@
 @interface IMCarrierReportJunkHelper
-+ (BOOL)canReportJunkOverCellularServiceOfMessageItem:(id)a3;
-+ (BOOL)isReportJunkServiceAllowedForMessageItem:(id)a3 junkChatStyle:(unsigned __int8)a4;
-+ (BOOL)userInHomeCountryWithDestinationCallerID:(id)a3;
-+ (BOOL)validateReportJunkCarrierAddress:(id)a3;
-+ (BOOL)wifiCallingEnabledForDestinationCallerID:(id)a3;
-+ (id)fetchMMSReportJunkCarrierAddressForPhoneNumber:(id)a3 simID:(id)a4;
-+ (id)fetchSMSReportJunkCarrierAddressForPhoneNumber:(id)a3 simID:(id)a4;
-+ (id)reportJunkCarrierAddressForMessageItem:(id)a3 junkChatStyle:(unsigned __int8)a4;
++ (BOOL)canReportJunkOverCellularServiceOfMessageItem:(id)item;
++ (BOOL)isReportJunkServiceAllowedForMessageItem:(id)item junkChatStyle:(unsigned __int8)style;
++ (BOOL)userInHomeCountryWithDestinationCallerID:(id)d;
++ (BOOL)validateReportJunkCarrierAddress:(id)address;
++ (BOOL)wifiCallingEnabledForDestinationCallerID:(id)d;
++ (id)fetchMMSReportJunkCarrierAddressForPhoneNumber:(id)number simID:(id)d;
++ (id)fetchSMSReportJunkCarrierAddressForPhoneNumber:(id)number simID:(id)d;
++ (id)reportJunkCarrierAddressForMessageItem:(id)item junkChatStyle:(unsigned __int8)style;
 @end
 
 @implementation IMCarrierReportJunkHelper
 
-+ (BOOL)canReportJunkOverCellularServiceOfMessageItem:(id)a3
++ (BOOL)canReportJunkOverCellularServiceOfMessageItem:(id)item
 {
-  v4 = [a3 destinationCallerID];
-  v5 = [a1 userInHomeCountryWithDestinationCallerID:v4];
-  LOBYTE(a1) = [a1 wifiCallingEnabledForDestinationCallerID:v4] | v5;
+  destinationCallerID = [item destinationCallerID];
+  v5 = [self userInHomeCountryWithDestinationCallerID:destinationCallerID];
+  LOBYTE(self) = [self wifiCallingEnabledForDestinationCallerID:destinationCallerID] | v5;
 
-  return a1 & 1;
+  return self & 1;
 }
 
-+ (BOOL)isReportJunkServiceAllowedForMessageItem:(id)a3 junkChatStyle:(unsigned __int8)a4
++ (BOOL)isReportJunkServiceAllowedForMessageItem:(id)item junkChatStyle:(unsigned __int8)style
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  styleCopy = style;
+  itemCopy = item;
+  v7 = itemCopy;
+  if (itemCopy)
   {
-    v8 = [v6 service];
-    v9 = [v8 isEqualToString:IMServiceNameRCS[0]];
+    service = [itemCopy service];
+    v9 = [service isEqualToString:IMServiceNameRCS[0]];
 
-    v10 = [a1 reportJunkCarrierAddressForMessageItem:v7 junkChatStyle:v4];
+    v10 = [self reportJunkCarrierAddressForMessageItem:v7 junkChatStyle:styleCopy];
     if (!v10)
     {
       v11 = IMCarrierReportJunkLogHandle();
@@ -54,8 +54,8 @@
       }
     }
 
-    v13 = [v7 destinationCallerID];
-    v11 = [IMCTSMSUtilities carrierNameForPhoneNumber:v13];
+    destinationCallerID = [v7 destinationCallerID];
+    v11 = [IMCTSMSUtilities carrierNameForPhoneNumber:destinationCallerID];
 
     if (v9)
     {
@@ -64,7 +64,7 @@
 
     else
     {
-      v14 = (v11 != 0) & [a1 validateReportJunkCarrierAddress:v10];
+      v14 = (v11 != 0) & [self validateReportJunkCarrierAddress:v10];
     }
 
 LABEL_16:
@@ -85,19 +85,19 @@ LABEL_17:
   return v14;
 }
 
-+ (id)reportJunkCarrierAddressForMessageItem:(id)a3 junkChatStyle:(unsigned __int8)a4
++ (id)reportJunkCarrierAddressForMessageItem:(id)item junkChatStyle:(unsigned __int8)style
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 destinationCallerID];
-  if (!v7 || (IMStringIsEmail() & 1) != 0)
+  styleCopy = style;
+  itemCopy = item;
+  destinationCallerID = [itemCopy destinationCallerID];
+  if (!destinationCallerID || (IMStringIsEmail() & 1) != 0)
   {
     v8 = 0;
     goto LABEL_14;
   }
 
-  v9 = MEMORY[0x1AC570A50](v7);
-  v10 = v7;
+  v9 = MEMORY[0x1AC570A50](destinationCallerID);
+  v10 = destinationCallerID;
   v11 = v9 == 0;
   if (v9)
   {
@@ -119,24 +119,24 @@ LABEL_17:
     v13 = 0;
   }
 
-  v14 = [v6 subject];
-  if ([v14 length])
+  subject = [itemCopy subject];
+  if ([subject length])
   {
   }
 
   else
   {
-    v17 = [v6 fileTransferGUIDs];
-    v18 = [v17 count];
+    fileTransferGUIDs = [itemCopy fileTransferGUIDs];
+    v18 = [fileTransferGUIDs count];
 
-    if (v4 == 45 && !v18)
+    if (styleCopy == 45 && !v18)
     {
-      v15 = [a1 fetchSMSReportJunkCarrierAddressForPhoneNumber:v12 simID:v13];
+      v15 = [self fetchSMSReportJunkCarrierAddressForPhoneNumber:v12 simID:v13];
       goto LABEL_13;
     }
   }
 
-  v15 = [a1 fetchMMSReportJunkCarrierAddressForPhoneNumber:v12 simID:v13];
+  v15 = [self fetchMMSReportJunkCarrierAddressForPhoneNumber:v12 simID:v13];
 LABEL_13:
   v8 = v15;
 
@@ -145,12 +145,12 @@ LABEL_14:
   return v8;
 }
 
-+ (id)fetchSMSReportJunkCarrierAddressForPhoneNumber:(id)a3 simID:(id)a4
++ (id)fetchSMSReportJunkCarrierAddressForPhoneNumber:(id)number simID:(id)d
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [IMCTSMSUtilities carrierBundleValueForKeyHierarchy:&unk_1F1BFAE68 phoneNumber:v5 simID:v6];
+  numberCopy = number;
+  dCopy = d;
+  v7 = [IMCTSMSUtilities carrierBundleValueForKeyHierarchy:&unk_1F1BFAE68 phoneNumber:numberCopy simID:dCopy];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = v7;
@@ -190,12 +190,12 @@ LABEL_14:
   return v11;
 }
 
-+ (id)fetchMMSReportJunkCarrierAddressForPhoneNumber:(id)a3 simID:(id)a4
++ (id)fetchMMSReportJunkCarrierAddressForPhoneNumber:(id)number simID:(id)d
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [IMCTSMSUtilities carrierBundleValueForKeyHierarchy:&unk_1F1BFAE80 phoneNumber:v5 simID:v6];
+  numberCopy = number;
+  dCopy = d;
+  v7 = [IMCTSMSUtilities carrierBundleValueForKeyHierarchy:&unk_1F1BFAE80 phoneNumber:numberCopy simID:dCopy];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = v7;
@@ -235,16 +235,16 @@ LABEL_14:
   return v11;
 }
 
-+ (BOOL)validateReportJunkCarrierAddress:(id)a3
++ (BOOL)validateReportJunkCarrierAddress:(id)address
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  addressCopy = address;
   v4 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SELF MATCHES %@", @"^[+]?[0-9]+$"];
-  if ([v4 evaluateWithObject:v3])
+  if ([v4 evaluateWithObject:addressCopy])
   {
-    v5 = [objc_alloc(MEMORY[0x1E695CF50]) initWithStringValue:v3];
-    v6 = [v5 digitsRemovingDialingCode];
-    v7 = [v6 length];
+    v5 = [objc_alloc(MEMORY[0x1E695CF50]) initWithStringValue:addressCopy];
+    digitsRemovingDialingCode = [v5 digitsRemovingDialingCode];
+    v7 = [digitsRemovingDialingCode length];
     v8 = v7 < 11;
     if (IMOSLoggingEnabled())
     {
@@ -272,7 +272,7 @@ LABEL_14:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v14 = v3;
+        v14 = addressCopy;
         _os_log_impl(&dword_1A85E5000, v11, OS_LOG_TYPE_INFO, "Not a valid report junk address from carrier. Carrier report junk address - %@", buf, 0xCu);
       }
     }
@@ -283,13 +283,13 @@ LABEL_14:
   return v8;
 }
 
-+ (BOOL)userInHomeCountryWithDestinationCallerID:(id)a3
++ (BOOL)userInHomeCountryWithDestinationCallerID:(id)d
 {
-  v3 = a3;
-  if (v3 && (IMStringIsEmail() & 1) == 0)
+  dCopy = d;
+  if (dCopy && (IMStringIsEmail() & 1) == 0)
   {
-    v5 = MEMORY[0x1AC570A50](v3);
-    v6 = v3;
+    v5 = MEMORY[0x1AC570A50](dCopy);
+    v6 = dCopy;
     v7 = v5 == 0;
     if (v5)
     {
@@ -312,8 +312,8 @@ LABEL_14:
     }
 
     v10 = +[IMCTSubscriptionUtilities sharedInstance];
-    v11 = [v10 ctSubscriptionInfo];
-    v12 = [v11 __im_subscriptionContextForForSimID:v9 phoneNumber:v8];
+    ctSubscriptionInfo = [v10 ctSubscriptionInfo];
+    v12 = [ctSubscriptionInfo __im_subscriptionContextForForSimID:v9 phoneNumber:v8];
 
     v13 = +[IMCTSubscriptionUtilities sharedInstance];
     v4 = [v13 simInHomeCountryWithSubscriptionContext:v12];
@@ -327,13 +327,13 @@ LABEL_14:
   return v4;
 }
 
-+ (BOOL)wifiCallingEnabledForDestinationCallerID:(id)a3
++ (BOOL)wifiCallingEnabledForDestinationCallerID:(id)d
 {
-  v3 = a3;
-  if (v3 && (IMStringIsEmail() & 1) == 0)
+  dCopy = d;
+  if (dCopy && (IMStringIsEmail() & 1) == 0)
   {
-    v5 = MEMORY[0x1AC570A50](v3);
-    v6 = v3;
+    v5 = MEMORY[0x1AC570A50](dCopy);
+    v6 = dCopy;
     v7 = v5 == 0;
     if (v5)
     {
@@ -356,8 +356,8 @@ LABEL_14:
     }
 
     v10 = +[IMCTSubscriptionUtilities sharedInstance];
-    v11 = [v10 ctSubscriptionInfo];
-    v12 = [v11 __im_subscriptionContextForForSimID:v9 phoneNumber:v8];
+    ctSubscriptionInfo = [v10 ctSubscriptionInfo];
+    v12 = [ctSubscriptionInfo __im_subscriptionContextForForSimID:v9 phoneNumber:v8];
 
     v13 = +[IMCTSubscriptionUtilities sharedInstance];
     v4 = [v13 wifiCallingEnabledForSubscriptionContext:v12];

@@ -1,14 +1,14 @@
 @interface MastheadViewProvider
 - (_TtC7NewsUI220MastheadViewProvider)init;
-- (void)bundleSubscriptionDidSubscribe:(void *)a3;
+- (void)bundleSubscriptionDidSubscribe:(void *)subscribe;
 @end
 
 @implementation MastheadViewProvider
 
-- (void)bundleSubscriptionDidSubscribe:(void *)a3
+- (void)bundleSubscriptionDidSubscribe:(void *)subscribe
 {
-  v4 = a3;
-  v5 = a1;
+  subscribeCopy = subscribe;
+  selfCopy = self;
   sub_218F896DC();
 }
 

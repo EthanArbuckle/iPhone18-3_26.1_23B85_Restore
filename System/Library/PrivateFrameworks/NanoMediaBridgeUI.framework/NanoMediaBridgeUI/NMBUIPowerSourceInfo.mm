@@ -2,20 +2,20 @@
 - (BOOL)_hasExternalPowerSourceConnected;
 - (NMBUIPowerSourceInfoDelegate)delegate;
 - (void)_handlePowerSourceNotification;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation NMBUIPowerSourceInfo
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   location[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != delegateCopy)
   {
-    if (v4)
+    if (delegateCopy)
     {
       v6 = objc_loadWeakRetained(&self->_delegate);
 
@@ -62,11 +62,11 @@
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(location[0]) = 138412290;
-      *(location + 4) = v4;
+      *(location + 4) = delegateCopy;
       _os_log_impl(&dword_25B260000, v16, OS_LOG_TYPE_DEFAULT, "NMBUIPowerSourceInfo set new delegate %@", location, 0xCu);
     }
 
-    objc_storeWeak(&self->_delegate, v4);
+    objc_storeWeak(&self->_delegate, delegateCopy);
   }
 }
 
@@ -112,7 +112,7 @@ void __36__NMBUIPowerSourceInfo_setDelegate___block_invoke_5(uint64_t a1)
     if (v4)
     {
       v5 = v4;
-      v15 = 0;
+      bOOLValue = 0;
       v6 = *v17;
       do
       {
@@ -133,7 +133,7 @@ void __36__NMBUIPowerSourceInfo_setDelegate___block_invoke_5(uint64_t a1)
             if (v10)
             {
               v11 = [v8 objectForKeyedSubscript:@"Is Charging"];
-              v15 = [v11 BOOLValue];
+              bOOLValue = [v11 BOOLValue];
             }
           }
         }
@@ -146,11 +146,11 @@ void __36__NMBUIPowerSourceInfo_setDelegate___block_invoke_5(uint64_t a1)
 
     else
     {
-      v15 = 0;
+      bOOLValue = 0;
     }
 
     CFRelease(cf);
-    v12 = v15;
+    v12 = bOOLValue;
   }
 
   else
@@ -168,11 +168,11 @@ void __36__NMBUIPowerSourceInfo_setDelegate___block_invoke_5(uint64_t a1)
 
   if (v4)
   {
-    v5 = [(NMBUIPowerSourceInfo *)self _hasExternalPowerSourceConnected];
+    _hasExternalPowerSourceConnected = [(NMBUIPowerSourceInfo *)self _hasExternalPowerSourceConnected];
     lastNotifiedExternalPowerSourceConnected = self->_lastNotifiedExternalPowerSourceConnected;
-    if (!lastNotifiedExternalPowerSourceConnected || v5 != [(NSNumber *)lastNotifiedExternalPowerSourceConnected BOOLValue])
+    if (!lastNotifiedExternalPowerSourceConnected || _hasExternalPowerSourceConnected != [(NSNumber *)lastNotifiedExternalPowerSourceConnected BOOLValue])
     {
-      v7 = [MEMORY[0x277CCABB0] numberWithBool:v5];
+      v7 = [MEMORY[0x277CCABB0] numberWithBool:_hasExternalPowerSourceConnected];
       v8 = self->_lastNotifiedExternalPowerSourceConnected;
       self->_lastNotifiedExternalPowerSourceConnected = v7;
 

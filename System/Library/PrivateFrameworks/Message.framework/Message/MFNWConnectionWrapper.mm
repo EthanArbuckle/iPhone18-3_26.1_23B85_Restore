@@ -1,30 +1,30 @@
 @interface MFNWConnectionWrapper
 + (id)log;
-- (BOOL)_connectToEndpoint:(id)a3 service:(id)a4;
+- (BOOL)_connectToEndpoint:(id)endpoint service:(id)service;
 - (BOOL)isCellularConnection;
 - (BOOL)isConnectionSecure;
 - (BOOL)isConstrained;
-- (BOOL)setSecurityProtocol:(id)a3;
+- (BOOL)setSecurityProtocol:(id)protocol;
 - (MFNWConnectionWrapper)init;
 - (NSString)description;
 - (NSString)remoteHostname;
-- (id)_createConnectionWithEndpoint:(id)a3 error:(int *)a4;
+- (id)_createConnectionWithEndpoint:(id)endpoint error:(int *)error;
 - (id)_negotiatedSecurityProtocol;
 - (id)securityProtocol;
-- (int64_t)readBytesIntoBuffer:(char *)a3 maxLength:(unint64_t)a4;
-- (int64_t)writeBytes:(const char *)a3 length:(unint64_t)a4;
+- (int64_t)readBytesIntoBuffer:(char *)buffer maxLength:(unint64_t)length;
+- (int64_t)writeBytes:(const char *)bytes length:(unint64_t)length;
 - (unsigned)remotePortNumber;
-- (void)_closeWithError:(id)a3;
-- (void)_closeWithErrorDomain:(id)a3 code:(int64_t)a4;
-- (void)_configureTLS:(id)a3;
-- (void)_handleConnectionFailure:(int)a3;
+- (void)_closeWithError:(id)error;
+- (void)_closeWithErrorDomain:(id)domain code:(int64_t)code;
+- (void)_configureTLS:(id)s;
+- (void)_handleConnectionFailure:(int)failure;
 - (void)_networkActivityEnded;
 - (void)_networkActivityStarted;
 - (void)_scheduleNextRead;
 - (void)cancel;
 - (void)dealloc;
-- (void)enableThroughputMonitoring:(BOOL)a3;
-- (void)registerForBytesAvailableWithHandler:(id)a3;
+- (void)enableThroughputMonitoring:(BOOL)monitoring;
+- (void)registerForBytesAvailableWithHandler:(id)handler;
 - (void)unregisterForBytesAvailable;
 @end
 
@@ -36,7 +36,7 @@
   block[1] = 3221225472;
   block[2] = __28__MFNWConnectionWrapper_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_25 != -1)
   {
     dispatch_once(&log_onceToken_25, block);
@@ -97,29 +97,29 @@ void __28__MFNWConnectionWrapper_log__block_invoke(uint64_t a1)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B0389000, v3, OS_LOG_TYPE_DEFAULT, "Connection cancelled: %@", &v6, 0xCu);
   }
 
-  v4 = [MEMORY[0x1E696ABC0] ef_cancelledError];
-  [(MFNWConnectionWrapper *)self _closeWithError:v4];
+  ef_cancelledError = [MEMORY[0x1E696ABC0] ef_cancelledError];
+  [(MFNWConnectionWrapper *)self _closeWithError:ef_cancelledError];
 
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_connectToEndpoint:(id)a3 service:(id)a4
+- (BOOL)_connectToEndpoint:(id)endpoint service:(id)service
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  endpointCopy = endpoint;
+  serviceCopy = service;
   v35 = 0;
-  v8 = [(MFNWConnectionWrapper *)self _createConnectionWithEndpoint:v6 error:&v35];
+  v8 = [(MFNWConnectionWrapper *)self _createConnectionWithEndpoint:endpointCopy error:&v35];
   if (!v8)
   {
     v23 = +[MFNWConnectionWrapper log];
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      v24 = [MEMORY[0x1E696AEC0] stringWithUTF8String:nw_endpoint_get_hostname(v6)];
+      v24 = [MEMORY[0x1E696AEC0] stringWithUTF8String:nw_endpoint_get_hostname(endpointCopy)];
       [(MFNWConnectionWrapper *)v24 _connectToEndpoint:buf service:v23];
     }
 
@@ -127,7 +127,7 @@ void __28__MFNWConnectionWrapper_log__block_invoke(uint64_t a1)
     goto LABEL_27;
   }
 
-  objc_storeStrong(&self->_service, a4);
+  objc_storeStrong(&self->_service, service);
   objc_storeStrong(&self->_connection, v8);
   nw_connection_set_queue(v8, self->_queue);
   [MEMORY[0x1E699B310] attachCurrentActivityToConnection:v8];
@@ -188,13 +188,13 @@ void __28__MFNWConnectionWrapper_log__block_invoke(uint64_t a1)
   v17 = +[MFNWConnectionWrapper log];
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [(MFNWConnectionWrapper *)self securityProtocol];
+    securityProtocol = [(MFNWConnectionWrapper *)self securityProtocol];
     *buf = 134218498;
-    v37 = self;
+    selfCopy5 = self;
     v38 = 2112;
-    v39 = *&v6;
+    v39 = *&endpointCopy;
     v40 = 2112;
-    v41 = v18;
+    v41 = securityProtocol;
     _os_log_impl(&dword_1B0389000, v17, OS_LOG_TYPE_DEFAULT, "opening connection %p to %@ (%@)", buf, 0x20u);
   }
 
@@ -208,7 +208,7 @@ void __28__MFNWConnectionWrapper_log__block_invoke(uint64_t a1)
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v37 = self;
+      selfCopy5 = self;
       _os_log_impl(&dword_1B0389000, v21, OS_LOG_TYPE_DEFAULT, "opening connection %p timed out", buf, 0xCu);
     }
 
@@ -225,7 +225,7 @@ void __28__MFNWConnectionWrapper_log__block_invoke(uint64_t a1)
       {
         v27 = CFAbsoluteTimeGetCurrent();
         *buf = 134218240;
-        v37 = self;
+        selfCopy5 = self;
         v38 = 2048;
         v39 = v27 - Current;
         _os_log_impl(&dword_1B0389000, v26, OS_LOG_TYPE_DEFAULT, "opening connection %p took %f seconds", buf, 0x16u);
@@ -234,11 +234,11 @@ void __28__MFNWConnectionWrapper_log__block_invoke(uint64_t a1)
       v28 = +[MFNWConnectionWrapper log];
       if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
       {
-        v29 = [(MFNWConnectionWrapper *)self _negotiatedSecurityProtocol];
+        _negotiatedSecurityProtocol = [(MFNWConnectionWrapper *)self _negotiatedSecurityProtocol];
         *buf = 134218242;
-        v37 = self;
+        selfCopy5 = self;
         v38 = 2114;
-        v39 = *&v29;
+        v39 = *&_negotiatedSecurityProtocol;
         _os_log_impl(&dword_1B0389000, v28, OS_LOG_TYPE_INFO, "negotiated SSL version for connection %p is %{public}@", buf, 0x16u);
       }
 
@@ -259,7 +259,7 @@ void __28__MFNWConnectionWrapper_log__block_invoke(uint64_t a1)
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v37 = self;
+      selfCopy5 = self;
       _os_log_impl(&dword_1B0389000, v21, OS_LOG_TYPE_DEFAULT, "connection %p failed to connect", buf, 0xCu);
     }
 
@@ -415,13 +415,13 @@ void __52__MFNWConnectionWrapper__connectToEndpoint_service___block_invoke_14(ui
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_createConnectionWithEndpoint:(id)a3 error:(int *)a4
+- (id)_createConnectionWithEndpoint:(id)endpoint error:(int *)error
 {
-  v7 = a3;
-  if (!v7)
+  endpointCopy = endpoint;
+  if (!endpointCopy)
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"MFNWConnectionWrapper.m" lineNumber:240 description:@"endpoint is NULL!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MFNWConnectionWrapper.m" lineNumber:240 description:@"endpoint is NULL!"];
   }
 
   v8 = _Block_copy(*MEMORY[0x1E6977EC0]);
@@ -447,7 +447,7 @@ void __52__MFNWConnectionWrapper__connectToEndpoint_service___block_invoke_14(ui
       [MFNWConnectionWrapper _createConnectionWithEndpoint:error:];
     }
 
-    if (!a4)
+    if (!error)
     {
       v23 = 0;
       goto LABEL_37;
@@ -458,21 +458,21 @@ void __52__MFNWConnectionWrapper__connectToEndpoint_service___block_invoke_14(ui
     goto LABEL_36;
   }
 
-  v12 = [(MFNWConnectionWrapper *)self networkAccountIdentifier];
+  networkAccountIdentifier = [(MFNWConnectionWrapper *)self networkAccountIdentifier];
 
-  if (v12)
+  if (networkAccountIdentifier)
   {
-    v13 = [(MFNWConnectionWrapper *)self networkAccountIdentifier];
-    [v13 UTF8String];
+    networkAccountIdentifier2 = [(MFNWConnectionWrapper *)self networkAccountIdentifier];
+    [networkAccountIdentifier2 UTF8String];
     nw_parameters_set_account_id();
   }
 
-  v14 = [(MFNWConnectionWrapper *)self sourceApplicationBundleIdentifier];
+  sourceApplicationBundleIdentifier = [(MFNWConnectionWrapper *)self sourceApplicationBundleIdentifier];
 
-  if (v14)
+  if (sourceApplicationBundleIdentifier)
   {
-    v15 = [(MFNWConnectionWrapper *)self sourceApplicationBundleIdentifier];
-    [v15 UTF8String];
+    sourceApplicationBundleIdentifier2 = [(MFNWConnectionWrapper *)self sourceApplicationBundleIdentifier];
+    [sourceApplicationBundleIdentifier2 UTF8String];
     nw_parameters_set_source_application_by_bundle_id();
   }
 
@@ -487,14 +487,14 @@ void __52__MFNWConnectionWrapper__connectToEndpoint_service___block_invoke_14(ui
   }
 
   nw_parameters_set_attribution(secure_tcp, v16);
-  v17 = [(MFNWConnectionWrapper *)self connectionServiceType];
+  connectionServiceType = [(MFNWConnectionWrapper *)self connectionServiceType];
 
-  if (v17)
+  if (connectionServiceType)
   {
-    v18 = [(MFNWConnectionWrapper *)self connectionServiceType];
-    v19 = [v18 UTF8String];
+    connectionServiceType2 = [(MFNWConnectionWrapper *)self connectionServiceType];
+    uTF8String = [connectionServiceType2 UTF8String];
 
-    if (!strncmp(v19, "kCTDataConnectionServiceType", 0x1CuLL))
+    if (!strncmp(uTF8String, "kCTDataConnectionServiceType", 0x1CuLL))
     {
       v20 = xpc_array_create(0, 0);
       v24 = xpc_array_create(0, 0);
@@ -502,7 +502,7 @@ void __52__MFNWConnectionWrapper__connectToEndpoint_service___block_invoke_14(ui
       if (v20 && v24)
       {
         xpc_array_set_string(v20, 0xFFFFFFFFFFFFFFFFLL, "Cellular");
-        xpc_array_set_string(v25, 0xFFFFFFFFFFFFFFFFLL, v19 + 28);
+        xpc_array_set_string(v25, 0xFFFFFFFFFFFFFFFFLL, uTF8String + 28);
         nw_parameters_set_required_netagent_classes();
       }
 
@@ -526,7 +526,7 @@ void __52__MFNWConnectionWrapper__connectToEndpoint_service___block_invoke_14(ui
     }
   }
 
-  v23 = nw_connection_create(v7, secure_tcp);
+  v23 = nw_connection_create(endpointCopy, secure_tcp);
   if (!v23)
   {
     v27 = +[MFNWConnectionWrapper log];
@@ -535,11 +535,11 @@ void __52__MFNWConnectionWrapper__connectToEndpoint_service___block_invoke_14(ui
       [MFNWConnectionWrapper _createConnectionWithEndpoint:error:];
     }
 
-    if (a4)
+    if (error)
     {
       v22 = __error();
 LABEL_36:
-      *a4 = *v22;
+      *error = *v22;
     }
   }
 
@@ -548,30 +548,30 @@ LABEL_37:
   return v23;
 }
 
-- (void)_handleConnectionFailure:(int)a3
+- (void)_handleConnectionFailure:(int)failure
 {
-  if (a3 == 5)
+  if (failure == 5)
   {
     dispatch_semaphore_signal(self->_eventSemaphore);
   }
 
-  else if (a3 == 4)
+  else if (failure == 4)
   {
     nw_connection_cancel(self->_connection);
   }
 }
 
-- (void)_configureTLS:(id)a3
+- (void)_configureTLS:(id)s
 {
-  v4 = a3;
-  v5 = [(MFNWConnectionWrapper *)self clientCertificates];
-  v6 = [v5 count];
+  sCopy = s;
+  clientCertificates = [(MFNWConnectionWrapper *)self clientCertificates];
+  v6 = [clientCertificates count];
 
   if (v6)
   {
-    v7 = [(MFNWConnectionWrapper *)self clientCertificates];
-    v8 = [v7 objectAtIndexedSubscript:0];
-    sec_protocol_options_set_local_identity(v4, v8);
+    clientCertificates2 = [(MFNWConnectionWrapper *)self clientCertificates];
+    v8 = [clientCertificates2 objectAtIndexedSubscript:0];
+    sec_protocol_options_set_local_identity(sCopy, v8);
   }
 
   objc_initWeak(&location, self);
@@ -580,7 +580,7 @@ LABEL_37:
   v9[2] = __39__MFNWConnectionWrapper__configureTLS___block_invoke;
   v9[3] = &unk_1E7AA7518;
   objc_copyWeak(&v10, &location);
-  sec_protocol_options_set_verify_block(v4, v9, self->_queue);
+  sec_protocol_options_set_verify_block(sCopy, v9, self->_queue);
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
 }
@@ -632,21 +632,21 @@ void __39__MFNWConnectionWrapper__configureTLS___block_invoke(uint64_t a1, uint6
     negotiated_protocol_version = sec_protocol_metadata_get_negotiated_protocol_version(v4);
     if (negotiated_protocol_version < 0xB && ((0x595u >> negotiated_protocol_version) & 1) != 0)
     {
-      v6 = off_1E7AA75F8[negotiated_protocol_version];
+      negotiated_protocol_version = off_1E7AA75F8[negotiated_protocol_version];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unknown-protocol-version(%d)", negotiated_protocol_version];
+      negotiated_protocol_version = [MEMORY[0x1E696AEC0] stringWithFormat:@"unknown-protocol-version(%d)", negotiated_protocol_version];
     }
   }
 
   else
   {
-    v6 = 0;
+    negotiated_protocol_version = 0;
   }
 
-  return v6;
+  return negotiated_protocol_version;
 }
 
 - (BOOL)isConnectionSecure
@@ -667,27 +667,27 @@ void __39__MFNWConnectionWrapper__configureTLS___block_invoke(uint64_t a1, uint6
 - (void)_networkActivityStarted
 {
   ECAssertNetworkActivityAllowed();
-  v3 = [(MFNWConnectionWrapper *)self networkActivityChangeBlock];
+  networkActivityChangeBlock = [(MFNWConnectionWrapper *)self networkActivityChangeBlock];
 
-  if (v3)
+  if (networkActivityChangeBlock)
   {
-    v4 = [(MFNWConnectionWrapper *)self networkActivityChangeBlock];
-    v4[2](v4, 1);
+    networkActivityChangeBlock2 = [(MFNWConnectionWrapper *)self networkActivityChangeBlock];
+    networkActivityChangeBlock2[2](networkActivityChangeBlock2, 1);
   }
 }
 
 - (void)_networkActivityEnded
 {
-  v3 = [(MFNWConnectionWrapper *)self networkActivityChangeBlock];
+  networkActivityChangeBlock = [(MFNWConnectionWrapper *)self networkActivityChangeBlock];
 
-  if (v3)
+  if (networkActivityChangeBlock)
   {
-    v4 = [(MFNWConnectionWrapper *)self networkActivityChangeBlock];
-    v4[2](v4, 0);
+    networkActivityChangeBlock2 = [(MFNWConnectionWrapper *)self networkActivityChangeBlock];
+    networkActivityChangeBlock2[2](networkActivityChangeBlock2, 0);
   }
 }
 
-- (int64_t)writeBytes:(const char *)a3 length:(unint64_t)a4
+- (int64_t)writeBytes:(const char *)bytes length:(unint64_t)length
 {
   v30 = *MEMORY[0x1E69E9840];
   v22 = 0;
@@ -698,16 +698,16 @@ void __39__MFNWConnectionWrapper__configureTLS___block_invoke(uint64_t a1, uint6
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 134218240;
-    v27 = self;
+    selfCopy2 = self;
     v28 = 2048;
-    v29 = *&a4;
+    v29 = *&length;
     _os_log_impl(&dword_1B0389000, v7, OS_LOG_TYPE_INFO, "writeBytes on connection %p for %zu bytes", buf, 0x16u);
   }
 
   if (self->_connection && self->_writable)
   {
     [(MFNWConnectionWrapper *)self _networkActivityStarted];
-    v8 = dispatch_data_create(a3, a4, 0, 0);
+    v8 = dispatch_data_create(bytes, length, 0, 0);
     dispatch_group_enter(self->_writeGroup);
     connection = self->_connection;
     v10 = *MEMORY[0x1E6977E90];
@@ -717,7 +717,7 @@ void __39__MFNWConnectionWrapper__configureTLS___block_invoke(uint64_t a1, uint6
     completion[3] = &unk_1E7AA7540;
     completion[4] = self;
     completion[5] = &v22;
-    completion[6] = a4;
+    completion[6] = length;
     nw_connection_send(connection, v8, v10, 0, completion);
     writeGroup = self->_writeGroup;
     v12 = dispatch_time(0, 1000000000 * self->_timeout);
@@ -731,7 +731,7 @@ void __39__MFNWConnectionWrapper__configureTLS___block_invoke(uint64_t a1, uint6
         v20 = Current - connectTime;
         LODWORD(connectTime) = self->_timeout;
         *buf = 134218240;
-        v27 = self;
+        selfCopy2 = self;
         v28 = 2048;
         v29 = v20 - *&connectTime;
         _os_log_error_impl(&dword_1B0389000, v13, OS_LOG_TYPE_ERROR, "writeBytes: connection %p timed out (lifetime: %f seconds)", buf, 0x16u);
@@ -770,7 +770,7 @@ void __43__MFNWConnectionWrapper_writeBytes_length___block_invoke(void *a1, void
   dispatch_group_leave(*(a1[4] + 64));
 }
 
-- (int64_t)readBytesIntoBuffer:(char *)a3 maxLength:(unint64_t)a4
+- (int64_t)readBytesIntoBuffer:(char *)buffer maxLength:(unint64_t)length
 {
   v7 = +[MFNWConnectionWrapper log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -788,8 +788,8 @@ void __43__MFNWConnectionWrapper_writeBytes_length___block_invoke(void *a1, void
   aBlock[2] = __55__MFNWConnectionWrapper_readBytesIntoBuffer_maxLength___block_invoke;
   aBlock[3] = &unk_1E7AA7568;
   aBlock[4] = self;
-  aBlock[5] = a4;
-  aBlock[6] = a3;
+  aBlock[5] = length;
+  aBlock[6] = buffer;
   v8 = _Block_copy(aBlock);
   [(MFNWConnectionWrapper *)self _networkActivityStarted];
   v9 = v8[2];
@@ -1084,21 +1084,21 @@ void __42__MFNWConnectionWrapper__scheduleNextRead__block_invoke(uint64_t a1, vo
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_closeWithError:(id)a3
+- (void)_closeWithError:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  errorCopy = error;
+  if (errorCopy)
   {
-    [(MFNWConnectionWrapper *)self setError:v4];
+    [(MFNWConnectionWrapper *)self setError:errorCopy];
     v5 = +[MFNWConnectionWrapper log];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v4 ef_publicDescription];
+      ef_publicDescription = [errorCopy ef_publicDescription];
       v16 = 134218242;
-      v17 = self;
+      selfCopy2 = self;
       v18 = 2114;
-      v19 = v6;
+      v19 = ef_publicDescription;
       _os_log_impl(&dword_1B0389000, v5, OS_LOG_TYPE_DEFAULT, "closing connection %p with error: %{public}@", &v16, 0x16u);
     }
   }
@@ -1109,7 +1109,7 @@ void __42__MFNWConnectionWrapper__scheduleNextRead__block_invoke(uint64_t a1, vo
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 134217984;
-      v17 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B0389000, v5, OS_LOG_TYPE_DEFAULT, "closing connection %p", &v16, 0xCu);
     }
   }
@@ -1178,9 +1178,9 @@ LABEL_21:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_closeWithErrorDomain:(id)a3 code:(int64_t)a4
+- (void)_closeWithErrorDomain:(id)domain code:(int64_t)code
 {
-  v5 = [MEMORY[0x1E696ABC0] errorWithDomain:a3 code:a4 userInfo:0];
+  v5 = [MEMORY[0x1E696ABC0] errorWithDomain:domain code:code userInfo:0];
   [(MFNWConnectionWrapper *)self _closeWithError:?];
 }
 
@@ -1197,12 +1197,12 @@ LABEL_21:
   }
 }
 
-- (BOOL)setSecurityProtocol:(id)a3
+- (BOOL)setSecurityProtocol:(id)protocol
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  protocolCopy = protocol;
   os_unfair_lock_lock(&self->_lock);
-  if ([(NSString *)self->_securityProtocol isEqualToString:v6])
+  if ([(NSString *)self->_securityProtocol isEqualToString:protocolCopy])
   {
     v7 = 0;
   }
@@ -1210,20 +1210,20 @@ LABEL_21:
   else
   {
     v7 = self->_securityProtocol;
-    objc_storeStrong(&self->_securityProtocol, a3);
+    objc_storeStrong(&self->_securityProtocol, protocol);
   }
 
   os_unfair_lock_unlock(&self->_lock);
   if (self->_connection)
   {
     v8 = 1;
-    if (v6 && v7 != v6 && ![(NSString *)v6 isEqualToString:*MEMORY[0x1E695E968]])
+    if (protocolCopy && v7 != protocolCopy && ![(NSString *)protocolCopy isEqualToString:*MEMORY[0x1E695E968]])
     {
       v9 = +[MFNWConnectionWrapper log];
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         v19 = 134217984;
-        v20 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_1B0389000, v9, OS_LOG_TYPE_INFO, "starting TLS on connection %p", &v19, 0xCu);
       }
 
@@ -1231,8 +1231,8 @@ LABEL_21:
       [(MFNWConnectionWrapper *)self _configureTLS:options];
       if (!self->_eventSemaphore)
       {
-        v18 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v18 handleFailureInMethod:a2 object:self file:@"MFNWConnectionWrapper.m" lineNumber:613 description:@"event semaphore is NULL"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"MFNWConnectionWrapper.m" lineNumber:613 description:@"event semaphore is NULL"];
       }
 
       connection = self->_connection;
@@ -1255,11 +1255,11 @@ LABEL_21:
           v14 = +[MFNWConnectionWrapper log];
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
           {
-            v15 = [(MFNWConnectionWrapper *)self _negotiatedSecurityProtocol];
+            _negotiatedSecurityProtocol = [(MFNWConnectionWrapper *)self _negotiatedSecurityProtocol];
             v19 = 134218242;
-            v20 = self;
+            selfCopy2 = self;
             v21 = 2114;
-            v22 = v15;
+            v22 = _negotiatedSecurityProtocol;
             _os_log_impl(&dword_1B0389000, v14, OS_LOG_TYPE_DEFAULT, "negotiated SSL version for connection %p changed to %{public}@", &v19, 0x16u);
           }
 
@@ -1288,9 +1288,9 @@ LABEL_23:
   return v8;
 }
 
-- (void)enableThroughputMonitoring:(BOOL)a3
+- (void)enableThroughputMonitoring:(BOOL)monitoring
 {
-  v3 = a3;
+  monitoringCopy = monitoring;
   v11 = *MEMORY[0x1E69E9840];
   if (enableThroughputMonitoring__onceToken != -1)
   {
@@ -1301,12 +1301,12 @@ LABEL_23:
   {
     v5 = +[MFNWConnectionWrapper log];
     v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-    if (v3)
+    if (monitoringCopy)
     {
       if (v6)
       {
         *buf = 134217984;
-        v10 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_1B0389000, v5, OS_LOG_TYPE_DEFAULT, "turning throughput monitoring ON for connection %p", buf, 0xCu);
       }
     }
@@ -1314,7 +1314,7 @@ LABEL_23:
     else if (v6)
     {
       *buf = 134217984;
-      v10 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B0389000, v5, OS_LOG_TYPE_DEFAULT, "turning throughput monitoring OFF for connection %p", buf, 0xCu);
     }
 
@@ -1377,9 +1377,9 @@ uint64_t __52__MFNWConnectionWrapper_enableThroughputMonitoring___block_invoke_7
   return result;
 }
 
-- (void)registerForBytesAvailableWithHandler:(id)a3
+- (void)registerForBytesAvailableWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[MFNWConnectionWrapper log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -1391,8 +1391,8 @@ uint64_t __52__MFNWConnectionWrapper_enableThroughputMonitoring___block_invoke_7
   v9 = 3221225472;
   v10 = __62__MFNWConnectionWrapper_registerForBytesAvailableWithHandler___block_invoke;
   v11 = &unk_1E7AA4EE0;
-  v12 = self;
-  v7 = v4;
+  selfCopy = self;
+  v7 = handlerCopy;
   v13 = v7;
   dispatch_sync(queue, &v8);
   [(MFNWConnectionWrapper *)self _scheduleNextRead:v8];
@@ -1484,8 +1484,8 @@ uint64_t __52__MFNWConnectionWrapper_enableThroughputMonitoring___block_invoke_7
   connectionState = self->_connectionState;
   v6 = nw_connection_state_to_string();
   endpoint = self->_endpoint;
-  v8 = [(MFNWConnectionWrapper *)self networkAccountIdentifier];
-  v9 = [v3 stringWithFormat:@"<%@ %p> state=%s endpoint=%@ account-id=%@ service=%@", v4, self, v6, endpoint, v8, self->_service];
+  networkAccountIdentifier = [(MFNWConnectionWrapper *)self networkAccountIdentifier];
+  v9 = [v3 stringWithFormat:@"<%@ %p> state=%s endpoint=%@ account-id=%@ service=%@", v4, self, v6, endpoint, networkAccountIdentifier, self->_service];
 
   return v9;
 }

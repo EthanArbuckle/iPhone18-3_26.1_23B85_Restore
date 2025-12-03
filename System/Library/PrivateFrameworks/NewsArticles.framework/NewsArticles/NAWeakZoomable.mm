@@ -1,11 +1,11 @@
 @interface NAWeakZoomable
 - (NAWeakZoomable)init;
-- (NAWeakZoomable)initWithZoomable:(id)a3;
+- (NAWeakZoomable)initWithZoomable:(id)zoomable;
 @end
 
 @implementation NAWeakZoomable
 
-- (NAWeakZoomable)initWithZoomable:(id)a3
+- (NAWeakZoomable)initWithZoomable:(id)zoomable
 {
   ObjectType = swift_getObjectType();
   swift_unknownObjectWeakInit();

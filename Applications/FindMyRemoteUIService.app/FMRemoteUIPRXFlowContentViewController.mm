@@ -1,27 +1,27 @@
 @interface FMRemoteUIPRXFlowContentViewController
-- (_TtC21FindMyRemoteUIService38FMRemoteUIPRXFlowContentViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC21FindMyRemoteUIService38FMRemoteUIPRXFlowContentViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)proxCardFlowDidDismiss;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation FMRemoteUIPRXFlowContentViewController
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10005A2E0(a3);
+  selfCopy = self;
+  sub_10005A2E0(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_10005A538(a3);
+  selfCopy = self;
+  sub_10005A538(disappear);
 }
 
-- (_TtC21FindMyRemoteUIService38FMRemoteUIPRXFlowContentViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC21FindMyRemoteUIService38FMRemoteUIPRXFlowContentViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -33,13 +33,13 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_10005A8AC(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_10005A8AC(v5, v7, bundle);
 }
 
 - (void)proxCardFlowDidDismiss
 {
-  v2 = self;
+  selfCopy = self;
   sub_10005AB58();
 }
 

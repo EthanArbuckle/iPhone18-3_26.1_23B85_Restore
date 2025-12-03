@@ -1,21 +1,21 @@
 @interface UIStatusBarSignalStrengthItemView
-- (BOOL)_updateWithRaw:(int)a3 bars:(int)a4 enableRSSI:(BOOL)a5 showFailure:(BOOL)a6 useSmallBars:(BOOL)a7;
-- (BOOL)updateForNewData:(id)a3 actions:(int)a4;
+- (BOOL)_updateWithRaw:(int)raw bars:(int)bars enableRSSI:(BOOL)i showFailure:(BOOL)failure useSmallBars:(BOOL)smallBars;
+- (BOOL)updateForNewData:(id)data actions:(int)actions;
 - (double)extraLeftPadding;
 - (double)extraRightPadding;
 - (id)_signalStrengthBarsImageName;
 - (id)accessibilityHUDRepresentation;
 - (id)contentsImage;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation UIStatusBarSignalStrengthItemView
 
-- (BOOL)updateForNewData:(id)a3 actions:(int)a4
+- (BOOL)updateForNewData:(id)data actions:(int)actions
 {
-  v5 = [a3 rawData];
-  v6 = *(v5 + 432);
-  v7 = *(v5 + 440);
+  rawData = [data rawData];
+  v6 = *(rawData + 432);
+  v7 = *(rawData + 440);
   if (v7 >= 4)
   {
     v8 = 4;
@@ -26,51 +26,51 @@
     v8 = v7;
   }
 
-  v9 = (*(v5 + 2529) >> 1) & 1;
-  v10 = *(v5 + 2072) == 6;
-  v11 = *(v5 + 5);
+  v9 = (*(rawData + 2529) >> 1) & 1;
+  v10 = *(rawData + 2072) == 6;
+  v11 = *(rawData + 5);
 
   return [(UIStatusBarSignalStrengthItemView *)self _updateWithRaw:v6 bars:v8 enableRSSI:v9 showFailure:v10 useSmallBars:v11];
 }
 
-- (BOOL)_updateWithRaw:(int)a3 bars:(int)a4 enableRSSI:(BOOL)a5 showFailure:(BOOL)a6 useSmallBars:(BOOL)a7
+- (BOOL)_updateWithRaw:(int)raw bars:(int)bars enableRSSI:(BOOL)i showFailure:(BOOL)failure useSmallBars:(BOOL)smallBars
 {
-  v7 = a7;
-  v8 = a6;
-  if (self->_enableRSSI == a5)
+  smallBarsCopy = smallBars;
+  failureCopy = failure;
+  if (self->_enableRSSI == i)
   {
     v12 = 0;
   }
 
   else
   {
-    self->_enableRSSI = a5;
-    v12 = self->_showRSSI != a5;
-    self->_showRSSI = a5;
+    self->_enableRSSI = i;
+    v12 = self->_showRSSI != i;
+    self->_showRSSI = i;
     [(UIView *)self setUserInteractionEnabled:self->_enableRSSI];
   }
 
-  if (self->_signalStrengthRaw != a3)
+  if (self->_signalStrengthRaw != raw)
   {
-    self->_signalStrengthRaw = a3;
+    self->_signalStrengthRaw = raw;
     v12 = self->_showRSSI || v12;
   }
 
-  if (self->_signalStrengthBars != a4)
+  if (self->_signalStrengthBars != bars)
   {
-    self->_signalStrengthBars = a4;
+    self->_signalStrengthBars = bars;
     LOBYTE(v12) = !self->_showRSSI || v12;
   }
 
-  if (self->_showFailure != v8)
+  if (self->_showFailure != failureCopy)
   {
-    self->_showFailure = v8;
+    self->_showFailure = failureCopy;
     LOBYTE(v12) = 1;
   }
 
-  if (self->_useSmallBars != v7)
+  if (self->_useSmallBars != smallBarsCopy)
   {
-    self->_useSmallBars = v7;
+    self->_useSmallBars = smallBarsCopy;
     LOBYTE(v12) = 1;
   }
 
@@ -82,7 +82,7 @@
   signalStrengthBars = self->_signalStrengthBars;
   if ((signalStrengthBars & 0x80000000) != 0)
   {
-    v5 = @"Bars_NoSim";
+    signalStrengthBars = @"Bars_NoSim";
   }
 
   else
@@ -97,10 +97,10 @@
       v4 = @"%d_Bars";
     }
 
-    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:v4, signalStrengthBars];
+    signalStrengthBars = [MEMORY[0x1E696AEC0] stringWithFormat:v4, signalStrengthBars];
   }
 
-  return v5;
+  return signalStrengthBars;
 }
 
 - (id)contentsImage
@@ -114,14 +114,14 @@
   {
     if (self->_showRSSI)
     {
-      v4 = [(UIStatusBarSignalStrengthItemView *)self _stringForRSSI];
-      v3 = [(UIStatusBarItemView *)self imageWithText:v4];
+      _stringForRSSI = [(UIStatusBarSignalStrengthItemView *)self _stringForRSSI];
+      v3 = [(UIStatusBarItemView *)self imageWithText:_stringForRSSI];
     }
 
     else
     {
-      v4 = [(UIStatusBarSignalStrengthItemView *)self _signalStrengthBarsImageName];
-      v3 = [(UIStatusBarItemView *)self imageWithShadowNamed:v4];
+      _stringForRSSI = [(UIStatusBarSignalStrengthItemView *)self _signalStrengthBarsImageName];
+      v3 = [(UIStatusBarItemView *)self imageWithShadowNamed:_stringForRSSI];
       if ([(UIStatusBarItemView *)self _shouldReverseLayoutDirection])
       {
         v5 = [v3 imageSetWithOrientation:4];
@@ -134,10 +134,10 @@
   return v3;
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  endedCopy = ended;
+  eventCopy = event;
   if (self->_enableRSSI)
   {
     self->_showRSSI ^= 1u;
@@ -145,33 +145,33 @@
     if (v8 != 0.0)
     {
       v9 = v8;
-      v10 = [(UIStatusBarItemView *)self layoutManager];
-      [v10 itemView:self sizeChangedBy:v9];
+      layoutManager = [(UIStatusBarItemView *)self layoutManager];
+      [layoutManager itemView:self sizeChangedBy:v9];
     }
   }
 
   v11.receiver = self;
   v11.super_class = UIStatusBarSignalStrengthItemView;
-  [(UIResponder *)&v11 touchesEnded:v6 withEvent:v7];
+  [(UIResponder *)&v11 touchesEnded:endedCopy withEvent:eventCopy];
 }
 
 - (double)extraRightPadding
 {
-  v3 = [(UIStatusBarItemView *)self foregroundStyle];
-  v4 = [v3 usesVerticalLayout];
+  foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+  usesVerticalLayout = [foregroundStyle usesVerticalLayout];
 
-  if (v4)
+  if (usesVerticalLayout)
   {
     [(UIStatusBarItemView *)&v12 extraRightPadding:v10.receiver];
   }
 
   else
   {
-    v6 = [(UIStatusBarItemView *)self layoutManager];
-    v7 = [v6 foregroundView];
-    v8 = [v7 isShowingBreadcrumb];
+    layoutManager = [(UIStatusBarItemView *)self layoutManager];
+    foregroundView = [layoutManager foregroundView];
+    isShowingBreadcrumb = [foregroundView isShowingBreadcrumb];
 
-    if (v8)
+    if (isShowingBreadcrumb)
     {
       [(UIStatusBarItemView *)&v11 extraRightPadding:v10.receiver];
     }
@@ -203,16 +203,16 @@
 {
   if (self->_showFailure)
   {
-    v3 = @"CellularFailure";
+    _signalStrengthBarsImageName = @"CellularFailure";
   }
 
   else
   {
-    v3 = [(UIStatusBarSignalStrengthItemView *)self _signalStrengthBarsImageName];
+    _signalStrengthBarsImageName = [(UIStatusBarSignalStrengthItemView *)self _signalStrengthBarsImageName];
   }
 
-  v4 = [(UIStatusBarItemView *)self foregroundStyle];
-  v5 = [v4 accessibilityHUDImageNamed:v3];
+  foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+  v5 = [foregroundStyle accessibilityHUDImageNamed:_signalStrengthBarsImageName];
 
   v6 = [[UIAccessibilityHUDItem alloc] initWithTitle:0 image:v5 imageInsets:1 scaleImage:0.0, 0.0, 0.0, 0.0];
 

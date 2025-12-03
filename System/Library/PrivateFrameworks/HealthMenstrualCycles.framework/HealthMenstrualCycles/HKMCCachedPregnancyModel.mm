@@ -1,35 +1,35 @@
 @interface HKMCCachedPregnancyModel
-- (BOOL)isEqual:(id)a3;
-- (HKMCCachedPregnancyModel)initWithCoder:(id)a3;
-- (HKMCCachedPregnancyModel)initWithModel:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HKMCCachedPregnancyModel)initWithCoder:(id)coder;
+- (HKMCCachedPregnancyModel)initWithModel:(id)model;
 @end
 
 @implementation HKMCCachedPregnancyModel
 
-- (HKMCCachedPregnancyModel)initWithModel:(id)a3
+- (HKMCCachedPregnancyModel)initWithModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = HKMCCachedPregnancyModel;
   v6 = [(HKMCCachedPregnancyModel *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_cachedModel, a3);
+    objc_storeStrong(&v6->_cachedModel, model);
   }
 
   return v7;
 }
 
-- (HKMCCachedPregnancyModel)initWithCoder:(id)a3
+- (HKMCCachedPregnancyModel)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = HKMCCachedPregnancyModel;
   v5 = [(HKMCCachedPregnancyModel *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CachedPregnancyModel"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CachedPregnancyModel"];
     cachedModel = v5->_cachedModel;
     v5->_cachedModel = v6;
   }
@@ -37,10 +37,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     goto LABEL_6;
   }
@@ -54,7 +54,7 @@ LABEL_7:
   }
 
   cachedModel = self->_cachedModel;
-  v6 = v4->_cachedModel;
+  v6 = equalCopy->_cachedModel;
   if (cachedModel == v6)
   {
 LABEL_6:

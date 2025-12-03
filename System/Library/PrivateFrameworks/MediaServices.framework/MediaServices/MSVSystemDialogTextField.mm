@@ -1,19 +1,19 @@
 @interface MSVSystemDialogTextField
-+ (id)textFieldWithTitle:(id)a3;
-- (MSVSystemDialogTextField)initWithTitle:(id)a3;
++ (id)textFieldWithTitle:(id)title;
+- (MSVSystemDialogTextField)initWithTitle:(id)title;
 @end
 
 @implementation MSVSystemDialogTextField
 
-- (MSVSystemDialogTextField)initWithTitle:(id)a3
+- (MSVSystemDialogTextField)initWithTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v9.receiver = self;
   v9.super_class = MSVSystemDialogTextField;
   v5 = [(MSVSystemDialogTextField *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [titleCopy copy];
     title = v5->_title;
     v5->_title = v6;
 
@@ -23,10 +23,10 @@
   return v5;
 }
 
-+ (id)textFieldWithTitle:(id)a3
++ (id)textFieldWithTitle:(id)title
 {
-  v3 = a3;
-  v4 = [[MSVSystemDialogTextField alloc] initWithTitle:v3];
+  titleCopy = title;
+  v4 = [[MSVSystemDialogTextField alloc] initWithTitle:titleCopy];
 
   return v4;
 }

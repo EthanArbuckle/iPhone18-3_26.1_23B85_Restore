@@ -1,6 +1,6 @@
 @interface RPVideoEffectsModule
 - (RPVideoEffectsModule)init;
-- (id)contentViewControllerForContext:(id)a3;
+- (id)contentViewControllerForContext:(id)context;
 - (void)dealloc;
 @end
 
@@ -13,13 +13,13 @@
   return [(RPVideoEffectsModule *)&v3 init];
 }
 
-- (id)contentViewControllerForContext:(id)a3
+- (id)contentViewControllerForContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_alloc_init(_TtC34VideoConferenceControlCenterModule26VideoEffectsViewController);
-  v6 = [v4 environment];
+  environment = [contextCopy environment];
 
-  [(VideoEffectsViewController *)v5 setShouldLoadFromSensor:v6 != &dword_0 + 2];
+  [(VideoEffectsViewController *)v5 setShouldLoadFromSensor:environment != &dword_0 + 2];
   [(VideoEffectsViewController *)v5 setContentModuleContext:self->_contentModuleContext];
   objc_storeStrong(&self->_currentContentViewController, v5);
 

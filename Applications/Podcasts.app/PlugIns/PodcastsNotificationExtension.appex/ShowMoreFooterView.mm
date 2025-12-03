@@ -1,10 +1,10 @@
 @interface ShowMoreFooterView
 + (double)defaultHeight;
-- (ShowMoreFooterView)initWithFrame:(CGRect)a3;
+- (ShowMoreFooterView)initWithFrame:(CGRect)frame;
 - (ShowMoreFooterViewActionHandler)actionHandler;
-- (void)buttonTapped:(id)a3;
+- (void)buttonTapped:(id)tapped;
 - (void)loadViewAndConstraints;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateConstraints;
 - (void)updateDynamicConstraints;
 @end
@@ -14,21 +14,21 @@
 + (double)defaultHeight
 {
   v2 = +[EpisodeListAvailableStyle defaultStyle];
-  v3 = [v2 seeMore_containerTop_To_buttonBL];
-  [v3 currentConstant];
+  seeMore_containerTop_To_buttonBL = [v2 seeMore_containerTop_To_buttonBL];
+  [seeMore_containerTop_To_buttonBL currentConstant];
   v5 = v4;
-  v6 = [v2 seeMore_buttonBL_To_containerBottom];
-  [v6 currentConstant];
+  seeMore_buttonBL_To_containerBottom = [v2 seeMore_buttonBL_To_containerBottom];
+  [seeMore_buttonBL_To_containerBottom currentConstant];
   v8 = v5 + v7;
 
   return v8;
 }
 
-- (ShowMoreFooterView)initWithFrame:(CGRect)a3
+- (ShowMoreFooterView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = ShowMoreFooterView;
-  v3 = [(ShowMoreFooterView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ShowMoreFooterView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[EpisodeListAvailableStyle defaultStyle];
@@ -43,52 +43,52 @@
 
 - (void)loadViewAndConstraints
 {
-  v2 = self;
-  [(ShowMoreFooterView *)v2 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v3 = [(ShowMoreFooterView *)v2 style];
-  v4 = [v3 newSeeMoreButton];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v4 addTarget:v2 action:"buttonTapped:" forControlEvents:64];
-  [(ShowMoreFooterView *)v2 addSubview:v4];
-  v5 = [v4 leadingAnchor];
-  v6 = [(ShowMoreFooterView *)v2 leadingAnchor];
-  [v3 defaultMarginH];
-  v7 = [v5 constraintEqualToAnchor:v6 constant:?];
+  selfCopy = self;
+  [(ShowMoreFooterView *)selfCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  style = [(ShowMoreFooterView *)selfCopy style];
+  newSeeMoreButton = [style newSeeMoreButton];
+  [newSeeMoreButton setTranslatesAutoresizingMaskIntoConstraints:0];
+  [newSeeMoreButton addTarget:selfCopy action:"buttonTapped:" forControlEvents:64];
+  [(ShowMoreFooterView *)selfCopy addSubview:newSeeMoreButton];
+  leadingAnchor = [newSeeMoreButton leadingAnchor];
+  leadingAnchor2 = [(ShowMoreFooterView *)selfCopy leadingAnchor];
+  [style defaultMarginH];
+  v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
 
-  v8 = [v4 firstBaselineAnchor];
-  v9 = [(ShowMoreFooterView *)v2 topAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
-  v11 = [v3 seeMore_containerTop_To_buttonBL];
-  v12 = [v10 mt_copyWithDynamicTypeConstant:v11];
+  firstBaselineAnchor = [newSeeMoreButton firstBaselineAnchor];
+  topAnchor = [(ShowMoreFooterView *)selfCopy topAnchor];
+  v10 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor];
+  seeMore_containerTop_To_buttonBL = [style seeMore_containerTop_To_buttonBL];
+  v12 = [v10 mt_copyWithDynamicTypeConstant:seeMore_containerTop_To_buttonBL];
 
   v21[1] = v12;
-  v13 = [(ShowMoreFooterView *)v2 bottomAnchor];
-  v14 = [v4 lastBaselineAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
-  v16 = [v3 seeMore_buttonBL_To_containerBottom];
-  v17 = [v15 mt_copyWithDynamicTypeConstant:v16];
+  bottomAnchor = [(ShowMoreFooterView *)selfCopy bottomAnchor];
+  lastBaselineAnchor = [newSeeMoreButton lastBaselineAnchor];
+  v15 = [bottomAnchor constraintEqualToAnchor:lastBaselineAnchor];
+  seeMore_buttonBL_To_containerBottom = [style seeMore_buttonBL_To_containerBottom];
+  v17 = [v15 mt_copyWithDynamicTypeConstant:seeMore_buttonBL_To_containerBottom];
 
   v21[2] = v17;
   v18 = [NSArray arrayWithObjects:v21 count:3];
-  installedConstraints = v2->_installedConstraints;
-  v2->_installedConstraints = v18;
+  installedConstraints = selfCopy->_installedConstraints;
+  selfCopy->_installedConstraints = v18;
 
-  v20 = [(ShowMoreFooterView *)v2 installedConstraints];
+  installedConstraints = [(ShowMoreFooterView *)selfCopy installedConstraints];
 
-  [NSLayoutConstraint activateConstraints:v20];
+  [NSLayoutConstraint activateConstraints:installedConstraints];
 }
 
 - (void)updateDynamicConstraints
 {
-  v2 = [(ShowMoreFooterView *)self installedConstraints];
-  [MTDynamicTypeConstant updateDynamicConstantInConstraints:v2];
+  installedConstraints = [(ShowMoreFooterView *)self installedConstraints];
+  [MTDynamicTypeConstant updateDynamicConstantInConstraints:installedConstraints];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = ShowMoreFooterView;
-  [(ShowMoreFooterView *)&v4 traitCollectionDidChange:a3];
+  [(ShowMoreFooterView *)&v4 traitCollectionDidChange:change];
   [(ShowMoreFooterView *)self setNeedsUpdateConstraints];
 }
 
@@ -100,10 +100,10 @@
   [(ShowMoreFooterView *)self updateDynamicConstraints];
 }
 
-- (void)buttonTapped:(id)a3
+- (void)buttonTapped:(id)tapped
 {
-  v4 = [(ShowMoreFooterView *)self actionHandler];
-  [v4 handleShowMoreEpisodesForFooterView:self];
+  actionHandler = [(ShowMoreFooterView *)self actionHandler];
+  [actionHandler handleShowMoreEpisodesForFooterView:self];
 }
 
 - (ShowMoreFooterViewActionHandler)actionHandler

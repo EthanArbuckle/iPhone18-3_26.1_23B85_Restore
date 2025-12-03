@@ -8,17 +8,17 @@
 - (id)cacheableResourceAssociatedIdentifier
 {
   v1 = MEMORY[0x1E696AEC0];
-  v2 = [a1 name];
-  v3 = [v1 stringWithFormat:@"_%@", v2];
+  name = [self name];
+  v3 = [v1 stringWithFormat:@"_%@", name];
 
   return v3;
 }
 
 - (unint64_t)cacheableResourceAssociatedCost
 {
-  [a1 size];
+  [self size];
   v3 = v2;
-  [a1 size];
+  [self size];
   return (v3 * v4);
 }
 

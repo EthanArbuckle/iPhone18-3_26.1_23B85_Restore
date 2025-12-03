@@ -9,15 +9,15 @@
 {
   v18 = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E695DF70];
-  v3 = [a1 tokens];
-  v4 = [v2 arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  tokens = [self tokens];
+  v4 = [v2 arrayWithCapacity:{objc_msgSend(tokens, "count")}];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [a1 tokens];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  tokens2 = [self tokens];
+  v6 = [tokens2 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -28,14 +28,14 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(tokens2);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) af_speechToken];
-        [v4 addObject:v10];
+        af_speechToken = [*(*(&v13 + 1) + 8 * i) af_speechToken];
+        [v4 addObject:af_speechToken];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [tokens2 countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -49,13 +49,13 @@
 - (id)af_correctionContext
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v2 = [a1 refId];
+  refId = [self refId];
 
-  if (v2)
+  if (refId)
   {
     v7 = @"interactionId";
-    v3 = [a1 refId];
-    v8[0] = v3;
+    refId2 = [self refId];
+    v8[0] = refId2;
     v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
   }
 

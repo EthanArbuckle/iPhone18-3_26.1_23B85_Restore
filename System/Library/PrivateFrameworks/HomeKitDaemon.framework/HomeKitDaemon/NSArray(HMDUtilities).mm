@@ -13,7 +13,7 @@
   v8[3] = &unk_278686EA0;
   v9 = v4;
   v5 = v4;
-  v6 = [a1 na_filter:v8];
+  v6 = [self na_filter:v8];
 
   return v6;
 }

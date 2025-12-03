@@ -1,31 +1,31 @@
 @interface RTBluePOIMetricManager
 - (BOOL)_requestCollectQueryEvent;
 - (BOOL)requestCollectQueryEvent;
-- (RTBluePOIMetricManager)initWithDefaultsManager:(id)a3 bluePOITileStore:(id)a4 distanceCalculator:(id)a5 fileManager:(id)a6;
-- (id)objectForKey:(id)a3;
-- (void)_onDailyMetricsNotification:(id)a3;
-- (void)_setEventMetricsValue:(id)a3 forKey:(id)a4;
-- (void)_setObject:(id)a3 forKey:(id)a4;
+- (RTBluePOIMetricManager)initWithDefaultsManager:(id)manager bluePOITileStore:(id)store distanceCalculator:(id)calculator fileManager:(id)fileManager;
+- (id)objectForKey:(id)key;
+- (void)_onDailyMetricsNotification:(id)notification;
+- (void)_setEventMetricsValue:(id)value forKey:(id)key;
+- (void)_setObject:(id)object forKey:(id)key;
 - (void)_setup;
 - (void)_stopCollectQueryEvent;
 - (void)_submitEventMetrics;
-- (void)onDailyMetricsNotification:(id)a3;
-- (void)setEventMetricsValue:(id)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)onDailyMetricsNotification:(id)notification;
+- (void)setEventMetricsValue:(id)value forKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 - (void)stopCollectQueryEvent;
 - (void)submitEventMetrics;
 @end
 
 @implementation RTBluePOIMetricManager
 
-- (RTBluePOIMetricManager)initWithDefaultsManager:(id)a3 bluePOITileStore:(id)a4 distanceCalculator:(id)a5 fileManager:(id)a6
+- (RTBluePOIMetricManager)initWithDefaultsManager:(id)manager bluePOITileStore:(id)store distanceCalculator:(id)calculator fileManager:(id)fileManager
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v14;
-  if (!v11)
+  managerCopy = manager;
+  storeCopy = store;
+  calculatorCopy = calculator;
+  fileManagerCopy = fileManager;
+  v15 = fileManagerCopy;
+  if (!managerCopy)
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -40,7 +40,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (!v12)
+  if (!storeCopy)
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -53,7 +53,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (!v13)
+  if (!calculatorCopy)
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -66,7 +66,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (!v14)
+  if (!fileManagerCopy)
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -78,7 +78,7 @@ LABEL_16:
 
 LABEL_17:
 
-    v24 = 0;
+    selfCopy = 0;
     goto LABEL_18;
   }
 
@@ -88,11 +88,11 @@ LABEL_17:
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_bluePOITileStore, a4);
-    objc_storeStrong(&v17->_defaultsManager, a3);
-    objc_storeStrong(&v17->_distanceCalculator, a5);
-    objc_storeStrong(&v17->_fileManager, a6);
-    v18 = [[RTBluePOIDailyMetrics alloc] initWithDefaultsManager:v11];
+    objc_storeStrong(&v16->_bluePOITileStore, store);
+    objc_storeStrong(&v17->_defaultsManager, manager);
+    objc_storeStrong(&v17->_distanceCalculator, calculator);
+    objc_storeStrong(&v17->_fileManager, fileManager);
+    v18 = [[RTBluePOIDailyMetrics alloc] initWithDefaultsManager:managerCopy];
     dailyMetrics = v17->_dailyMetrics;
     v17->_dailyMetrics = v18;
 
@@ -109,36 +109,36 @@ LABEL_17:
 
   [(RTService *)v17 setup];
   self = v17;
-  v24 = self;
+  selfCopy = self;
 LABEL_18:
 
-  return v24;
+  return selfCopy;
 }
 
 - (void)_setup
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_onDailyMetricsNotification_ name:@"RTMetricManagerDailyMetricNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_onDailyMetricsNotification_ name:@"RTMetricManagerDailyMetricNotification" object:0];
 }
 
-- (void)onDailyMetricsNotification:(id)a3
+- (void)onDailyMetricsNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__RTBluePOIMetricManager_onDailyMetricsNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onDailyMetricsNotification:(id)a3
+- (void)_onDailyMetricsNotification:(id)notification
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  notificationCopy = notification;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityBluePOI);
@@ -148,27 +148,27 @@ LABEL_18:
       *buf = 138412546;
       v16 = v7;
       v17 = 2112;
-      v18 = v5;
+      v18 = notificationCopy;
       _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%@, received notification, %@", buf, 0x16u);
     }
   }
 
   v8 = MEMORY[0x277CCAA00];
-  v9 = [(RTBluePOIMetricManager *)self bluePOIModelPath];
-  v10 = vcvtpd_u64_f64(vcvtd_n_f64_u64([v8 directorySizeAtPath:v9], 0x14uLL));
+  bluePOIModelPath = [(RTBluePOIMetricManager *)self bluePOIModelPath];
+  v10 = vcvtpd_u64_f64(vcvtd_n_f64_u64([v8 directorySizeAtPath:bluePOIModelPath], 0x14uLL));
 
-  v11 = [(RTBluePOIMetricManager *)self dailyMetrics];
+  dailyMetrics = [(RTBluePOIMetricManager *)self dailyMetrics];
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v10];
-  [v11 setValue:v12 forKey:@"BluePOIDailyEventTotalSavedModelSize"];
+  [dailyMetrics setValue:v12 forKey:@"BluePOIDailyEventTotalSavedModelSize"];
 
-  v13 = [(RTBluePOIMetricManager *)self bluePOITileStore];
+  bluePOITileStore = [(RTBluePOIMetricManager *)self bluePOITileStore];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __54__RTBluePOIMetricManager__onDailyMetricsNotification___block_invoke;
   v14[3] = &unk_2788CC0A8;
   v14[4] = self;
   v14[5] = a2;
-  [v13 fetchBluePOITileCountWithHandler:v14];
+  [bluePOITileStore fetchBluePOITileCountWithHandler:v14];
 }
 
 void __54__RTBluePOIMetricManager__onDailyMetricsNotification___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -208,73 +208,73 @@ void __54__RTBluePOIMetricManager__onDailyMetricsNotification___block_invoke(uin
 
 - (void)submitEventMetrics
 {
-  v3 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44__RTBluePOIMetricManager_submitEventMetrics__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_submitEventMetrics
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
   v4 = [v3 initWithCString:RTAnalyticsEventBluePOIQueryEvent encoding:1];
-  v5 = [(RTBluePOIMetricManager *)self eventMetrics];
-  log_analytics_submission(v4, v5);
+  eventMetrics = [(RTBluePOIMetricManager *)self eventMetrics];
+  log_analytics_submission(v4, eventMetrics);
 
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.%@", v4];
-  v7 = [(RTBluePOIMetricManager *)self eventMetrics];
+  eventMetrics2 = [(RTBluePOIMetricManager *)self eventMetrics];
   AnalyticsSendEvent();
 
-  v8 = [(RTBluePOIMetricManager *)self eventMetrics];
-  [v8 removeAllObjects];
+  eventMetrics3 = [(RTBluePOIMetricManager *)self eventMetrics];
+  [eventMetrics3 removeAllObjects];
 
   [(RTBluePOIMetricManager *)self setCollectingEventMetrics:0];
 }
 
-- (void)setEventMetricsValue:(id)a3 forKey:(id)a4
+- (void)setEventMetricsValue:(id)value forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  valueCopy = value;
+  keyCopy = key;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__RTBluePOIMetricManager_setEventMetricsValue_forKey___block_invoke;
   block[3] = &unk_2788C76F8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = valueCopy;
+  v13 = keyCopy;
+  v9 = keyCopy;
+  v10 = valueCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_setEventMetricsValue:(id)a3 forKey:(id)a4
+- (void)_setEventMetricsValue:(id)value forKey:(id)key
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  valueCopy = value;
+  keyCopy = key;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityBluePOI);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = NSStringFromSelector(a2);
-      v11 = [(RTBluePOIMetricManager *)self collectingEventMetrics];
+      collectingEventMetrics = [(RTBluePOIMetricManager *)self collectingEventMetrics];
       v12 = @"NO";
       *v14 = 138413058;
       *&v14[4] = v10;
       *&v14[12] = 2112;
-      if (v11)
+      if (collectingEventMetrics)
       {
         v12 = @"YES";
       }
 
-      *&v14[14] = v8;
+      *&v14[14] = keyCopy;
       v15 = 2112;
-      v16 = v7;
+      v16 = valueCopy;
       v17 = 2112;
       v18 = v12;
       _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "%@, key, %@, value, %@, collectingEventMetrics, %@", v14, 0x2Au);
@@ -283,42 +283,42 @@ void __54__RTBluePOIMetricManager__onDailyMetricsNotification___block_invoke(uin
 
   if ([(RTBluePOIMetricManager *)self collectingEventMetrics])
   {
-    v13 = [(RTBluePOIMetricManager *)self eventMetrics];
-    [v13 setObject:v7 forKey:v8];
+    eventMetrics = [(RTBluePOIMetricManager *)self eventMetrics];
+    [eventMetrics setObject:valueCopy forKey:keyCopy];
   }
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(RTBluePOIMetricManager *)self defaultsManager];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  defaultsManager = [(RTBluePOIMetricManager *)self defaultsManager];
+  v6 = [defaultsManager objectForKey:keyCopy];
 
   return v6;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  objectCopy = object;
+  keyCopy = key;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__RTBluePOIMetricManager_setObject_forKey___block_invoke;
   block[3] = &unk_2788C76F8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = objectCopy;
+  v13 = keyCopy;
+  v9 = keyCopy;
+  v10 = objectCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_setObject:(id)a3 forKey:(id)a4
+- (void)_setObject:(id)object forKey:(id)key
 {
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  keyCopy = key;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityBluePOI);
@@ -328,36 +328,36 @@ void __54__RTBluePOIMetricManager__onDailyMetricsNotification___block_invoke(uin
       v12 = 138412802;
       v13 = v10;
       v14 = 2112;
-      v15 = v8;
+      v15 = keyCopy;
       v16 = 2112;
-      v17 = v7;
+      v17 = objectCopy;
       _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "%@, key, %@, obj, %@", &v12, 0x20u);
     }
   }
 
-  v11 = [(RTBluePOIMetricManager *)self defaultsManager];
-  [v11 setObject:v7 forKey:v8];
+  defaultsManager = [(RTBluePOIMetricManager *)self defaultsManager];
+  [defaultsManager setObject:objectCopy forKey:keyCopy];
 }
 
 - (BOOL)requestCollectQueryEvent
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __50__RTBluePOIMetricManager_requestCollectQueryEvent__block_invoke;
   v5[3] = &unk_2788C7FB0;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(queue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 uint64_t __50__RTBluePOIMetricManager_requestCollectQueryEvent__block_invoke(uint64_t a1)
@@ -387,12 +387,12 @@ uint64_t __50__RTBluePOIMetricManager_requestCollectQueryEvent__block_invoke(uin
     return 0;
   }
 
-  v6 = [(RTBluePOIMetricManager *)self defaultsManager];
-  v7 = [v6 objectForKey:@"BluePOIQueryEventSamplingRate"];
+  defaultsManager = [(RTBluePOIMetricManager *)self defaultsManager];
+  v7 = [defaultsManager objectForKey:@"BluePOIQueryEventSamplingRate"];
   if (v7)
   {
-    v8 = [(RTBluePOIMetricManager *)self defaultsManager];
-    v9 = [v8 objectForKey:@"BluePOIQueryEventSamplingRate"];
+    defaultsManager2 = [(RTBluePOIMetricManager *)self defaultsManager];
+    v9 = [defaultsManager2 objectForKey:@"BluePOIQueryEventSamplingRate"];
     [v9 doubleValue];
     v11 = v10;
   }
@@ -409,11 +409,11 @@ uint64_t __50__RTBluePOIMetricManager_requestCollectQueryEvent__block_invoke(uin
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       v14 = NSStringFromSelector(a2);
-      v15 = [(RTBluePOIMetricManager *)self collectingEventMetrics];
+      collectingEventMetrics = [(RTBluePOIMetricManager *)self collectingEventMetrics];
       v16 = @"NO";
       v20 = 138413058;
       v21 = v14;
-      if (v15)
+      if (collectingEventMetrics)
       {
         v17 = @"YES";
       }
@@ -450,13 +450,13 @@ uint64_t __50__RTBluePOIMetricManager_requestCollectQueryEvent__block_invoke(uin
 
 - (void)stopCollectQueryEvent
 {
-  v3 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__RTBluePOIMetricManager_stopCollectQueryEvent__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 }
 
 - (void)_stopCollectQueryEvent
@@ -468,9 +468,9 @@ uint64_t __50__RTBluePOIMetricManager_requestCollectQueryEvent__block_invoke(uin
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v5 = NSStringFromSelector(a2);
-      v6 = [(RTBluePOIMetricManager *)self collectingEventMetrics];
+      collectingEventMetrics = [(RTBluePOIMetricManager *)self collectingEventMetrics];
       v7 = @"NO";
-      if (v6)
+      if (collectingEventMetrics)
       {
         v7 = @"YES";
       }

@@ -4,7 +4,7 @@
 - (void)_configureTapGesture;
 - (void)_handleTapGesture;
 - (void)_layoutSubviews;
-- (void)setContentAlpha:(double)a3;
+- (void)setContentAlpha:(double)alpha;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -16,7 +16,7 @@
   v8.receiver = self;
   v8.super_class = SBActivityAmbientCompactOverlayViewController;
   [(SBActivityViewController *)&v8 viewDidLoad];
-  v3 = [(SBActivityAmbientCompactOverlayViewController *)self view];
+  view = [(SBActivityAmbientCompactOverlayViewController *)self view];
   v4 = [objc_alloc(MEMORY[0x277D3D328]) initWithRecipe:52];
   platterView = self->_platterView;
   self->_platterView = v4;
@@ -24,11 +24,11 @@
   [(PLPlatterView *)self->_platterView setUsesBackgroundView:1];
   [(PLPlatterView *)self->_platterView setOverrideUserInterfaceStyle:2];
   [(PLPlatterView *)self->_platterView setMaterialGroupNameBase:@"Activities"];
-  [v3 addSubview:self->_platterView];
-  [v3 sendSubviewToBack:self->_platterView];
-  v6 = [(SBActivityViewController *)self activityHostViewController];
-  v7 = [v6 view];
-  [v7 bs_setHitTestingDisabled:1];
+  [view addSubview:self->_platterView];
+  [view sendSubviewToBack:self->_platterView];
+  activityHostViewController = [(SBActivityViewController *)self activityHostViewController];
+  view2 = [activityHostViewController view];
+  [view2 bs_setHitTestingDisabled:1];
 
   [(SBActivityAmbientCompactOverlayViewController *)self _configureTapGesture];
 }
@@ -55,17 +55,17 @@
   return result;
 }
 
-- (void)setContentAlpha:(double)a3
+- (void)setContentAlpha:(double)alpha
 {
-  v5 = [(SBActivityViewController *)self activityHostViewController];
-  v4 = [v5 view];
-  [v4 setAlpha:a3];
+  activityHostViewController = [(SBActivityViewController *)self activityHostViewController];
+  view = [activityHostViewController view];
+  [view setAlpha:alpha];
 }
 
 - (void)_layoutSubviews
 {
-  v3 = [(SBActivityAmbientCompactOverlayViewController *)self view];
-  [v3 bounds];
+  view = [(SBActivityAmbientCompactOverlayViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -79,15 +79,15 @@
 - (void)_configureTapGesture
 {
   v4 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__handleTapGesture];
-  v3 = [(SBActivityAmbientCompactOverlayViewController *)self view];
-  [v3 addGestureRecognizer:v4];
+  view = [(SBActivityAmbientCompactOverlayViewController *)self view];
+  [view addGestureRecognizer:v4];
 }
 
 - (void)_handleTapGesture
 {
-  v4 = [(SBActivityAmbientCompactOverlayViewController *)self compactOverlayDelegate];
-  v3 = [(SBActivityViewController *)self activityItem];
-  [v4 handleTapForCompactOverlayViewController:self withActivityItem:v3];
+  compactOverlayDelegate = [(SBActivityAmbientCompactOverlayViewController *)self compactOverlayDelegate];
+  activityItem = [(SBActivityViewController *)self activityItem];
+  [compactOverlayDelegate handleTapForCompactOverlayViewController:self withActivityItem:activityItem];
 }
 
 - (SBActivityAmbientCompactOverlayViewControllerDelegate)compactOverlayDelegate

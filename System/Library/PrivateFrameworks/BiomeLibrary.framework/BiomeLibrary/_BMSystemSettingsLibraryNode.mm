@@ -8,7 +8,7 @@
 + (id)storeConfigurationForAppearanceSetup;
 + (id)storeConfigurationForChildMultitaskingSetup;
 + (id)storeConfigurationForSearchTerms;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)sublibraries;
 + (id)validKeyPaths;
 @end
@@ -18,8 +18,8 @@
 + (id)sublibraries
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [a1 GestureEducation];
-  v6[0] = v2;
+  gestureEducation = [self GestureEducation];
+  v6[0] = gestureEducation;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];
@@ -27,26 +27,26 @@
   return v3;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"AppearanceSetup"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"AppearanceSetup"])
   {
-    v5 = [a1 AppearanceSetup];
+    appearanceSetup = [self AppearanceSetup];
 LABEL_7:
-    v6 = v5;
+    v6 = appearanceSetup;
     goto LABEL_8;
   }
 
-  if ([v4 isEqualToString:@"ChildMultitaskingSetup"])
+  if ([nameCopy isEqualToString:@"ChildMultitaskingSetup"])
   {
-    v5 = [a1 ChildMultitaskingSetup];
+    appearanceSetup = [self ChildMultitaskingSetup];
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"SearchTerms"])
+  if ([nameCopy isEqualToString:@"SearchTerms"])
   {
-    v5 = [a1 SearchTerms];
+    appearanceSetup = [self SearchTerms];
     goto LABEL_7;
   }
 
@@ -75,13 +75,13 @@ LABEL_8:
 
 + (id)configurationForSearchTerms
 {
-  v3 = [a1 storeConfigurationForSearchTerms];
-  v4 = [a1 syncPolicyForSearchTerms];
+  storeConfigurationForSearchTerms = [self storeConfigurationForSearchTerms];
+  syncPolicyForSearchTerms = [self syncPolicyForSearchTerms];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"8542704B-813A-40D9-BEFF-B422445FB40F"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"SystemSettings.SearchTerms" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"SystemSettings.SearchTerms" eventClass:objc_opt_class() storeConfig:storeConfigurationForSearchTerms syncPolicy:syncPolicyForSearchTerms legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -96,13 +96,13 @@ LABEL_8:
 
 + (id)configurationForChildMultitaskingSetup
 {
-  v3 = [a1 storeConfigurationForChildMultitaskingSetup];
-  v4 = [a1 syncPolicyForChildMultitaskingSetup];
+  storeConfigurationForChildMultitaskingSetup = [self storeConfigurationForChildMultitaskingSetup];
+  syncPolicyForChildMultitaskingSetup = [self syncPolicyForChildMultitaskingSetup];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"08A95594-A3F1-4274-A5AA-AD569DC25BE7"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"SystemSettings.ChildMultitaskingSetup" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"SystemSettings.ChildMultitaskingSetup" eventClass:objc_opt_class() storeConfig:storeConfigurationForChildMultitaskingSetup syncPolicy:syncPolicyForChildMultitaskingSetup legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -117,13 +117,13 @@ LABEL_8:
 
 + (id)configurationForAppearanceSetup
 {
-  v3 = [a1 storeConfigurationForAppearanceSetup];
-  v4 = [a1 syncPolicyForAppearanceSetup];
+  storeConfigurationForAppearanceSetup = [self storeConfigurationForAppearanceSetup];
+  syncPolicyForAppearanceSetup = [self syncPolicyForAppearanceSetup];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"A5403BAB-1A1E-4151-BC68-34A9F711AFE9"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"SystemSettings.AppearanceSetup" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"SystemSettings.AppearanceSetup" eventClass:objc_opt_class() storeConfig:storeConfigurationForAppearanceSetup syncPolicy:syncPolicyForAppearanceSetup legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -139,7 +139,7 @@ LABEL_8:
 + (id)SearchTerms
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForSearchTerms];
+  configurationForSearchTerms = [self configurationForSearchTerms];
   v3 = +[BMSystemSettingsSearchTerms columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -151,7 +151,7 @@ LABEL_8:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"SystemSettings.SearchTerms" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"SystemSettings.SearchTerms" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"SystemSettings.SearchTerms" schema:v9 configuration:configurationForSearchTerms];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -161,7 +161,7 @@ LABEL_8:
 + (id)ChildMultitaskingSetup
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForChildMultitaskingSetup];
+  configurationForChildMultitaskingSetup = [self configurationForChildMultitaskingSetup];
   v3 = +[BMSystemSettingsChildMultitaskingSetup columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -173,7 +173,7 @@ LABEL_8:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"SystemSettings.ChildMultitaskingSetup" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"SystemSettings.ChildMultitaskingSetup" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"SystemSettings.ChildMultitaskingSetup" schema:v9 configuration:configurationForChildMultitaskingSetup];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -183,7 +183,7 @@ LABEL_8:
 + (id)AppearanceSetup
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForAppearanceSetup];
+  configurationForAppearanceSetup = [self configurationForAppearanceSetup];
   v3 = +[BMSystemSettingsAppearanceSetup columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -195,7 +195,7 @@ LABEL_8:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"SystemSettings.AppearanceSetup" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"SystemSettings.AppearanceSetup" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"SystemSettings.AppearanceSetup" schema:v9 configuration:configurationForAppearanceSetup];
 
   v11 = *MEMORY[0x1E69E9840];
 

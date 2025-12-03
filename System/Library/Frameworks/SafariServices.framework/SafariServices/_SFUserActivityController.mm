@@ -1,5 +1,5 @@
 @interface _SFUserActivityController
-+ (id)searchableItemAttributesForDictionary:(id)a3 profileIdentifier:(id)a4;
++ (id)searchableItemAttributesForDictionary:(id)dictionary profileIdentifier:(id)identifier;
 + (id)sharedActivityController;
 @end
 
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __53___SFUserActivityController_sharedActivityController__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[_SFUserActivityController sharedActivityController]::onceToken != -1)
   {
     dispatch_once(&+[_SFUserActivityController sharedActivityController]::onceToken, block);
@@ -22,19 +22,19 @@
   return v2;
 }
 
-+ (id)searchableItemAttributesForDictionary:(id)a3 profileIdentifier:(id)a4
++ (id)searchableItemAttributesForDictionary:(id)dictionary profileIdentifier:(id)identifier
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKey:@"streetAddress"];
+  dictionaryCopy = dictionary;
+  identifierCopy = identifier;
+  v7 = [dictionaryCopy objectForKey:@"streetAddress"];
   if (v7)
   {
   }
 
   else
   {
-    v8 = [v5 objectForKey:@"telephone"];
+    v8 = [dictionaryCopy objectForKey:@"telephone"];
 
     if (!v8)
     {
@@ -61,28 +61,28 @@
   v10 = v9;
   _Block_object_dispose(&v26, 8);
   v8 = [[v9 alloc] initWithItemContentType:@"com.apple.mobilesafari.UserActivity.ProactiveConnection"];
-  v11 = [MEMORY[0x1E69C9078] coreSpotlightPageDonationIdentifierForProfileWithIdentifier:v6];
+  v11 = [MEMORY[0x1E69C9078] coreSpotlightPageDonationIdentifierForProfileWithIdentifier:identifierCopy];
   [v8 setDomainIdentifier:v11];
 
-  v12 = [v5 objectForKeyedSubscript:@"addressLocality"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"addressLocality"];
   if (v12)
   {
     [v8 setCity:v12];
   }
 
-  v13 = [v5 objectForKeyedSubscript:@"addressCountry"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"addressCountry"];
   if (v13)
   {
     [v8 setCountry:v13];
   }
 
-  v14 = [v5 objectForKeyedSubscript:@"addressRegion"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"addressRegion"];
   if (v14)
   {
     [v8 setStateOrProvince:v14];
   }
 
-  v15 = [v5 objectForKeyedSubscript:@"telephone"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"telephone"];
   v16 = v15;
   if (v15)
   {
@@ -91,28 +91,28 @@
     [v8 setPhoneNumbers:v17];
   }
 
-  v18 = [v5 objectForKeyedSubscript:@"name"];
+  v18 = [dictionaryCopy objectForKeyedSubscript:@"name"];
   if (v18)
   {
     [v8 setNamedLocation:v18];
   }
 
-  v19 = [v5 objectForKeyedSubscript:@"url"];
+  v19 = [dictionaryCopy objectForKeyedSubscript:@"url"];
   if (v19)
   {
     v20 = [MEMORY[0x1E695DFF8] safari_URLWithDataAsString:v19];
     [v8 setURL:v20];
-    v21 = [MEMORY[0x1E69C9078] historyItemIdentifierForURL:v20 profileIdentifier:v6];
+    v21 = [MEMORY[0x1E69C9078] historyItemIdentifierForURL:v20 profileIdentifier:identifierCopy];
     [v8 setRelatedUniqueIdentifier:v21];
   }
 
-  v22 = [v5 objectForKeyedSubscript:@"postalCode"];
+  v22 = [dictionaryCopy objectForKeyedSubscript:@"postalCode"];
   if (v22)
   {
     [v8 setPostalCode:v22];
   }
 
-  v23 = [v5 objectForKeyedSubscript:@"streetAddress"];
+  v23 = [dictionaryCopy objectForKeyedSubscript:@"streetAddress"];
   if (v23)
   {
     [v8 setThoroughfare:v23];

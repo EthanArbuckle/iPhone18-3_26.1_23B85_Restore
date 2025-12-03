@@ -1,16 +1,16 @@
 @interface PXAssetCollectionActionManager
-- (BOOL)canPerformActionType:(id)a3;
+- (BOOL)canPerformActionType:(id)type;
 - (PXAssetCollectionActionManager)init;
-- (PXAssetCollectionActionManager)initWithAssetCollectionReference:(id)a3;
+- (PXAssetCollectionActionManager)initWithAssetCollectionReference:(id)reference;
 - (PXAssetCollectionReference)assetCollectionReference;
 - (UIDragSession)dragSession;
 - (UIDropSession)dropSession;
 - (UITraitEnvironment)traitEnvironment;
-- (id)actionPerformerForActionType:(id)a3;
-- (id)localizedTitleForActionType:(id)a3 useCase:(unint64_t)a4;
-- (id)menuElementsForActionType:(id)a3;
-- (id)systemImageNameForActionType:(id)a3;
-- (void)setPhotosEnvironmentReference:(id)a3;
+- (id)actionPerformerForActionType:(id)type;
+- (id)localizedTitleForActionType:(id)type useCase:(unint64_t)case;
+- (id)menuElementsForActionType:(id)type;
+- (id)systemImageNameForActionType:(id)type;
+- (void)setPhotosEnvironmentReference:(id)reference;
 @end
 
 @implementation PXAssetCollectionActionManager
@@ -36,10 +36,10 @@
   return WeakRetained;
 }
 
-- (void)setPhotosEnvironmentReference:(id)a3
+- (void)setPhotosEnvironmentReference:(id)reference
 {
-  v4 = a3;
-  if (!v4 || (photosEnvironmentReference = self->_photosEnvironmentReference) != 0)
+  referenceCopy = reference;
+  if (!referenceCopy || (photosEnvironmentReference = self->_photosEnvironmentReference) != 0)
   {
     v6 = PXAssertGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
@@ -51,17 +51,17 @@
     photosEnvironmentReference = self->_photosEnvironmentReference;
   }
 
-  self->_photosEnvironmentReference = v4;
+  self->_photosEnvironmentReference = referenceCopy;
 }
 
-- (id)systemImageNameForActionType:(id)a3
+- (id)systemImageNameForActionType:(id)type
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXAssetCollectionActionManager *)self assetCollectionReference];
-  if (v5)
+  typeCopy = type;
+  assetCollectionReference = [(PXAssetCollectionActionManager *)self assetCollectionReference];
+  if (assetCollectionReference)
   {
-    v6 = [(PXAssetCollectionActionManager *)self systemImageNameForActionType:v4 assetCollectionReference:v5];
+    v6 = [(PXAssetCollectionActionManager *)self systemImageNameForActionType:typeCopy assetCollectionReference:assetCollectionReference];
   }
 
   else
@@ -70,7 +70,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = typeCopy;
       _os_log_error_impl(&dword_1B3F73000, v7, OS_LOG_TYPE_ERROR, "systemImageNameForActionType: %@ with no assetCollection", &v9, 0xCu);
     }
 
@@ -80,14 +80,14 @@
   return v6;
 }
 
-- (id)localizedTitleForActionType:(id)a3 useCase:(unint64_t)a4
+- (id)localizedTitleForActionType:(id)type useCase:(unint64_t)case
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PXAssetCollectionActionManager *)self assetCollectionReference];
-  if (v7)
+  typeCopy = type;
+  assetCollectionReference = [(PXAssetCollectionActionManager *)self assetCollectionReference];
+  if (assetCollectionReference)
   {
-    v8 = [(PXAssetCollectionActionManager *)self localizedTitleForActionType:v6 useCase:a4 assetCollectionReference:v7];
+    v8 = [(PXAssetCollectionActionManager *)self localizedTitleForActionType:typeCopy useCase:case assetCollectionReference:assetCollectionReference];
   }
 
   else
@@ -96,7 +96,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v11 = 138412290;
-      v12 = v6;
+      v12 = typeCopy;
       _os_log_error_impl(&dword_1B3F73000, v9, OS_LOG_TYPE_ERROR, "localizedTitleForActionType: %@ with no assetCollection", &v11, 0xCu);
     }
 
@@ -106,14 +106,14 @@
   return v8;
 }
 
-- (id)actionPerformerForActionType:(id)a3
+- (id)actionPerformerForActionType:(id)type
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXAssetCollectionActionManager *)self assetCollectionReference];
-  if (v5)
+  typeCopy = type;
+  assetCollectionReference = [(PXAssetCollectionActionManager *)self assetCollectionReference];
+  if (assetCollectionReference)
   {
-    v6 = [(PXAssetCollectionActionManager *)self actionPerformerForActionType:v4 assetCollectionReference:v5];
+    v6 = [(PXAssetCollectionActionManager *)self actionPerformerForActionType:typeCopy assetCollectionReference:assetCollectionReference];
   }
 
   else
@@ -122,7 +122,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = typeCopy;
       _os_log_error_impl(&dword_1B3F73000, v7, OS_LOG_TYPE_ERROR, "actionPerformerForActionType: %@ with no assetCollection", &v9, 0xCu);
     }
 
@@ -132,14 +132,14 @@
   return v6;
 }
 
-- (BOOL)canPerformActionType:(id)a3
+- (BOOL)canPerformActionType:(id)type
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXAssetCollectionActionManager *)self assetCollectionReference];
-  if (v5)
+  typeCopy = type;
+  assetCollectionReference = [(PXAssetCollectionActionManager *)self assetCollectionReference];
+  if (assetCollectionReference)
   {
-    v6 = [(PXAssetCollectionActionManager *)self canPerformActionType:v4 assetCollectionReference:v5];
+    v6 = [(PXAssetCollectionActionManager *)self canPerformActionType:typeCopy assetCollectionReference:assetCollectionReference];
   }
 
   else
@@ -148,7 +148,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = typeCopy;
       _os_log_error_impl(&dword_1B3F73000, v7, OS_LOG_TYPE_ERROR, "canPerformActionType: %@ with no assetCollection", &v9, 0xCu);
     }
 
@@ -160,9 +160,9 @@
 
 - (PXAssetCollectionReference)assetCollectionReference
 {
-  v3 = [(PXAssetCollectionActionManager *)self assetsDataSourceManager];
+  assetsDataSourceManager = [(PXAssetCollectionActionManager *)self assetsDataSourceManager];
 
-  if (!v3 || (-[PXAssetCollectionActionManager assetsDataSourceManager](self, "assetsDataSourceManager"), v4 = objc_claimAutoreleasedReturnValue(), [v4 dataSource], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "assetCollectionReferenceForAssetCollectionReference:", self->_initialAssetCollectionReference), v6 = objc_claimAutoreleasedReturnValue(), v5, v4, (initialAssetCollectionReference = v6) == 0))
+  if (!assetsDataSourceManager || (-[PXAssetCollectionActionManager assetsDataSourceManager](self, "assetsDataSourceManager"), v4 = objc_claimAutoreleasedReturnValue(), [v4 dataSource], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "assetCollectionReferenceForAssetCollectionReference:", self->_initialAssetCollectionReference), v6 = objc_claimAutoreleasedReturnValue(), v5, v4, (initialAssetCollectionReference = v6) == 0))
   {
     v6 = 0;
     initialAssetCollectionReference = self->_initialAssetCollectionReference;
@@ -173,17 +173,17 @@
   return initialAssetCollectionReference;
 }
 
-- (PXAssetCollectionActionManager)initWithAssetCollectionReference:(id)a3
+- (PXAssetCollectionActionManager)initWithAssetCollectionReference:(id)reference
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  referenceCopy = reference;
   v11.receiver = self;
   v11.super_class = PXAssetCollectionActionManager;
   v6 = [(PXAssetCollectionActionManager *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_initialAssetCollectionReference, a3);
+    objc_storeStrong(&v6->_initialAssetCollectionReference, reference);
     v12 = PXActionTypeAddContent;
     v13[0] = @"PXAssetCollectionActionTypeAddContent";
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
@@ -196,20 +196,20 @@
 
 - (PXAssetCollectionActionManager)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXAssetCollectionActionManager.m" lineNumber:80 description:{@"%s is not available as initializer", "-[PXAssetCollectionActionManager init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetCollectionActionManager.m" lineNumber:80 description:{@"%s is not available as initializer", "-[PXAssetCollectionActionManager init]"}];
 
   abort();
 }
 
-- (id)menuElementsForActionType:(id)a3
+- (id)menuElementsForActionType:(id)type
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXAssetCollectionActionManager *)self assetCollectionReference];
-  if (v5)
+  typeCopy = type;
+  assetCollectionReference = [(PXAssetCollectionActionManager *)self assetCollectionReference];
+  if (assetCollectionReference)
   {
-    v6 = [(PXAssetCollectionActionManager *)self menuElementsForActionType:v4 assetCollectionReference:v5];
+    v6 = [(PXAssetCollectionActionManager *)self menuElementsForActionType:typeCopy assetCollectionReference:assetCollectionReference];
   }
 
   else
@@ -218,7 +218,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = typeCopy;
       _os_log_error_impl(&dword_1B3F73000, v7, OS_LOG_TYPE_ERROR, "canPerformActionType: %@ with no assetCollection", &v9, 0xCu);
     }
 

@@ -42,7 +42,7 @@ LABEL_4:
         if (objc_opt_isKindOfClass())
         {
           v38 = 0;
-          v20 = [a1 makeFromWidgetPlistableRepresentation:v19 error:&v38];
+          v20 = [self makeFromWidgetPlistableRepresentation:v19 error:&v38];
           v21 = v38;
           if (v21)
           {

@@ -32,10 +32,10 @@
 - (id)cmsCoded
 {
   v2 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:2];
-  v3 = [a1 identifier];
-  [v2 cmsSetOptionalObject:v3 forKey:@"identifier"];
+  identifier = [self identifier];
+  [v2 cmsSetOptionalObject:identifier forKey:@"identifier"];
 
-  v4 = INMediaItemTypeToString([a1 type]);
+  v4 = INMediaItemTypeToString([self type]);
   [v2 cmsSetOptionalObject:v4 forKey:@"type"];
 
   return v2;

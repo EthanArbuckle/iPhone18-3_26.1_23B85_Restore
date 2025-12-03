@@ -1,33 +1,33 @@
 @interface MotionBlurEngine
-- (BOOL)motionBlurBetweenFirstFrame:(id)a3 secondFrame:(id)a4 forwardFlow:(__CVBuffer *)a5 backwardFlow:(__CVBuffer *)a6 depth:(__CVBuffer *)a7 shutterAngle:(id)a8 destination:(__CVBuffer *)a9 withError:(id *)a10;
-- (BOOL)motionBlurForCurrentFrame:(id)a3 futureFrame:(id)a4 prevFrame:(id)a5 prevFlowPair:(id *)a6 currFlowPair:(id *)a7 shutterAngle:(id)a8 destination:(__CVBuffer *)a9 withError:(id *)a10;
-- (BOOL)startSessionWithQualityMode:(int64_t)a3 useExternalFlow:(BOOL)a4 streamingMode:(BOOL)a5 pseudoDepth:(BOOL)a6 error:(id *)a7;
+- (BOOL)motionBlurBetweenFirstFrame:(id)frame secondFrame:(id)secondFrame forwardFlow:(__CVBuffer *)flow backwardFlow:(__CVBuffer *)backwardFlow depth:(__CVBuffer *)depth shutterAngle:(id)angle destination:(__CVBuffer *)destination withError:(id *)self0;
+- (BOOL)motionBlurForCurrentFrame:(id)frame futureFrame:(id)futureFrame prevFrame:(id)prevFrame prevFlowPair:(id *)pair currFlowPair:(id *)flowPair shutterAngle:(id)angle destination:(__CVBuffer *)destination withError:(id *)self0;
+- (BOOL)startSessionWithQualityMode:(int64_t)mode useExternalFlow:(BOOL)flow streamingMode:(BOOL)streamingMode pseudoDepth:(BOOL)depth error:(id *)error;
 - (CGAffineTransform)preferredTransform;
-- (MotionBlurEngine)initWithWidth:(unint64_t)a3 height:(unint64_t)a4 vsaPipeMode:(int64_t)a5;
-- (id)errorWithErrorCode:(int64_t)a3;
+- (MotionBlurEngine)initWithWidth:(unint64_t)width height:(unint64_t)height vsaPipeMode:(int64_t)mode;
+- (id)errorWithErrorCode:(int64_t)code;
 - (int64_t)allocateInternalBuffers;
-- (int64_t)allocateSubmodulesBuffersWithFlowWidth:(unint64_t)a3 flowHeight:(unint64_t)a4 depthFactor:(unint64_t)a5;
-- (int64_t)bindWithMTLTextureFromDownscaledImage:(__CVBuffer *)a3 downscaledSecond:(__CVBuffer *)a4 forwardFlow:(__CVBuffer *)a5 backwardFlow:(__CVBuffer *)a6 prevBackwardFlow:(__CVBuffer *)a7 remianedErrorMask:(__CVBuffer *)a8 fullresImage:(__CVBuffer *)a9 upscaledFlow:(__CVBuffer *)a10 depth:(__CVBuffer *)a11 interleaveFactor:(unint64_t)a12;
+- (int64_t)allocateSubmodulesBuffersWithFlowWidth:(unint64_t)width flowHeight:(unint64_t)height depthFactor:(unint64_t)factor;
+- (int64_t)bindWithMTLTextureFromDownscaledImage:(__CVBuffer *)image downscaledSecond:(__CVBuffer *)second forwardFlow:(__CVBuffer *)flow backwardFlow:(__CVBuffer *)backwardFlow prevBackwardFlow:(__CVBuffer *)prevBackwardFlow remianedErrorMask:(__CVBuffer *)mask fullresImage:(__CVBuffer *)fullresImage upscaledFlow:(__CVBuffer *)self0 depth:(__CVBuffer *)self1 interleaveFactor:(unint64_t)self2;
 - (int64_t)endSession;
-- (int64_t)flowUpscalingAndPseudoDepthComputingWarmup:(BOOL)a3;
-- (int64_t)getFrameRotation:(int64_t)a3;
-- (int64_t)synthesizeMotionBlurredFrameForTimeScale:(float)a3 destination:(__CVBuffer *)a4 scalerEnabled:(BOOL)a5 frameIndex:(unint64_t)a6 lastFrame:(BOOL)a7;
-- (int64_t)synthesizeMotionBlurredFrames:(id)a3 second:(id)a4 timeScale:(id)a5 destination:(__CVBuffer *)a6 scalerEnabled:(BOOL)a7;
-- (int64_t)warmpupComputationFromPrevFrame:(id)a3 currFrame:(id)a4 prevFlowPair:(id *)a5;
+- (int64_t)flowUpscalingAndPseudoDepthComputingWarmup:(BOOL)warmup;
+- (int64_t)getFrameRotation:(int64_t)rotation;
+- (int64_t)synthesizeMotionBlurredFrameForTimeScale:(float)scale destination:(__CVBuffer *)destination scalerEnabled:(BOOL)enabled frameIndex:(unint64_t)index lastFrame:(BOOL)frame;
+- (int64_t)synthesizeMotionBlurredFrames:(id)frames second:(id)second timeScale:(id)scale destination:(__CVBuffer *)destination scalerEnabled:(BOOL)enabled;
+- (int64_t)warmpupComputationFromPrevFrame:(id)frame currFrame:(id)currFrame prevFlowPair:(id *)pair;
 - (void)configureSynthesis;
 - (void)dealloc;
 - (void)initExtSubModules;
 - (void)releaseInternalBuffers;
-- (void)setPreferredTransform:(CGAffineTransform *)a3;
+- (void)setPreferredTransform:(CGAffineTransform *)transform;
 - (void)setPropertiesFromDefaults;
-- (void)updateLastFramePts:(id *)a3 duration:(id *)a4 toSynthesize:(unint64_t)a5;
+- (void)updateLastFramePts:(id *)pts duration:(id *)duration toSynthesize:(unint64_t)synthesize;
 @end
 
 @implementation MotionBlurEngine
 
-- (int64_t)getFrameRotation:(int64_t)a3
+- (int64_t)getFrameRotation:(int64_t)rotation
 {
-  if ((a3 & 0x1000) != 0)
+  if ((rotation & 0x1000) != 0)
   {
     return 2;
   }
@@ -87,9 +87,9 @@
   kdebug_trace();
 }
 
-- (BOOL)startSessionWithQualityMode:(int64_t)a3 useExternalFlow:(BOOL)a4 streamingMode:(BOOL)a5 pseudoDepth:(BOOL)a6 error:(id *)a7
+- (BOOL)startSessionWithQualityMode:(int64_t)mode useExternalFlow:(BOOL)flow streamingMode:(BOOL)streamingMode pseudoDepth:(BOOL)depth error:(id *)error
 {
-  v8 = a6;
+  depthCopy = depth;
   v25 = *MEMORY[0x277D85DE8];
   if (![(MotionBlurEngine *)self stateExt]|| [(MotionBlurEngine *)self stateExt]== 3 && self->_opticalFlowNeeded)
   {
@@ -104,13 +104,13 @@
   }
 
   [(MotionBlurEngine *)self setStateExt:2];
-  self->_useExternalFlow = a4;
-  self->_streamingMode = a5;
-  self->_pseudoDepth = v8;
+  self->_useExternalFlow = flow;
+  self->_streamingMode = streamingMode;
+  self->_pseudoDepth = depthCopy;
   self->_synthesisMode = 5;
-  if ((a3 - 1) >= 2)
+  if ((mode - 1) >= 2)
   {
-    if (a3 == 3)
+    if (mode == 3)
     {
       v13 = 0;
       goto LABEL_9;
@@ -118,7 +118,7 @@
 
     v23 = 12;
 LABEL_17:
-    [MotionBlurEngine startSessionWithQualityMode:v23 useExternalFlow:a7 streamingMode:v24 pseudoDepth:? error:?];
+    [MotionBlurEngine startSessionWithQualityMode:v23 useExternalFlow:error streamingMode:v24 pseudoDepth:? error:?];
     return v24[0];
   }
 
@@ -127,7 +127,7 @@ LABEL_9:
   self->_imageGuideUpscale = v13;
   self->_flowFailureDetection = v13;
   self->_postprocessOutput = v13;
-  [(ImageProcessor_Ext *)self->_imageProcessor setPseudoDepth:v8];
+  [(ImageProcessor_Ext *)self->_imageProcessor setPseudoDepth:depthCopy];
   [(MotionBlurEngine *)self setPropertiesFromDefaults];
   if (self->_blurNeeded)
   {
@@ -155,9 +155,9 @@ LABEL_9:
   *&self->_lastFrameDuration.value = v17;
   self->_lastFrameDuration.epoch = v18;
   self->_lastFramesToSynthesize = 0;
-  v19 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   startTime = self->_startTime;
-  self->_startTime = v19;
+  self->_startTime = date;
 
   self->_totalFramesSynthesized = 0;
   self->_totalFramePairsProcessed = 0;
@@ -181,9 +181,9 @@ LABEL_9:
 
 - (void)configureSynthesis
 {
-  v3 = [(MotionBlurEngine *)self usage];
+  usage = [(MotionBlurEngine *)self usage];
   [(Synthesis_Ext *)self->_synthesis setSynthesisMode:self->_synthesisMode];
-  [(Synthesis_Ext *)self->_synthesis switchUsageTo:v3];
+  [(Synthesis_Ext *)self->_synthesis switchUsageTo:usage];
   [(Synthesis_Ext *)self->_synthesis setPseudoDepth:[(MotionBlurEngine *)self pseudoDepth]];
   [(Synthesis_Ext *)self->_synthesis setPostprocessOutput:[(MotionBlurEngine *)self postprocessOutput]];
   [(Synthesis_Ext *)self->_synthesis setImage2motion:[(MotionBlurEngine *)self image2motion]];
@@ -277,15 +277,15 @@ LABEL_9:
   self->_upscaleFlow = 0;
 }
 
-- (id)errorWithErrorCode:(int64_t)a3
+- (id)errorWithErrorCode:(int64_t)code
 {
   v4 = &stru_285B30308;
-  if (a3 == 7)
+  if (code == 7)
   {
     v4 = @"VSA failed to create sub-modules.";
   }
 
-  if (a3 == 3)
+  if (code == 3)
   {
     v5 = @"Session has not started yet. Call startSession first";
   }
@@ -296,36 +296,36 @@ LABEL_9:
   }
 
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObject:v5 forKey:*MEMORY[0x277CCA450]];
-  v7 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.VirtualShutterAngle" code:a3 userInfo:v6];
+  v7 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.VirtualShutterAngle" code:code userInfo:v6];
 
   return v7;
 }
 
-- (void)updateLastFramePts:(id *)a3 duration:(id *)a4 toSynthesize:(unint64_t)a5
+- (void)updateLastFramePts:(id *)pts duration:(id *)duration toSynthesize:(unint64_t)synthesize
 {
-  v5 = *&a3->var0;
-  self->_lastFramePts.epoch = a3->var3;
+  v5 = *&pts->var0;
+  self->_lastFramePts.epoch = pts->var3;
   *&self->_lastFramePts.value = v5;
-  var3 = a4->var3;
-  *&self->_lastFrameDuration.value = *&a4->var0;
+  var3 = duration->var3;
+  *&self->_lastFrameDuration.value = *&duration->var0;
   self->_lastFrameDuration.epoch = var3;
-  self->_lastFramesToSynthesize = a5;
+  self->_lastFramesToSynthesize = synthesize;
 }
 
-- (BOOL)motionBlurBetweenFirstFrame:(id)a3 secondFrame:(id)a4 forwardFlow:(__CVBuffer *)a5 backwardFlow:(__CVBuffer *)a6 depth:(__CVBuffer *)a7 shutterAngle:(id)a8 destination:(__CVBuffer *)a9 withError:(id *)a10
+- (BOOL)motionBlurBetweenFirstFrame:(id)frame secondFrame:(id)secondFrame forwardFlow:(__CVBuffer *)flow backwardFlow:(__CVBuffer *)backwardFlow depth:(__CVBuffer *)depth shutterAngle:(id)angle destination:(__CVBuffer *)destination withError:(id *)self0
 {
-  v15 = a3;
-  v16 = a4;
-  v29 = a8;
+  frameCopy = frame;
+  secondFrameCopy = secondFrame;
+  angleCopy = angle;
   if ([(MotionBlurEngine *)self stateExt]!= 2)
   {
     v28 = 3;
-    v24 = v29;
+    v24 = angleCopy;
 LABEL_34:
-    if (a10)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.VirtualShutterAngle" code:v28 userInfo:0];
-      *a10 = v25 = 0;
+      *error = v25 = 0;
     }
 
     else
@@ -338,10 +338,10 @@ LABEL_34:
 
   ++self->_totalFramePairsProcessed;
   memset(&v34, 0, sizeof(v34));
-  if (!v16)
+  if (!secondFrameCopy)
   {
     memset(&lhs, 0, sizeof(lhs));
-    if (v15)
+    if (frameCopy)
     {
       goto LABEL_4;
     }
@@ -351,14 +351,14 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  [v16 presentationTimeStamp];
-  if (!v15)
+  [secondFrameCopy presentationTimeStamp];
+  if (!frameCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_4:
-  [v15 presentationTimeStamp];
+  [frameCopy presentationTimeStamp];
 LABEL_7:
   CMTimeSubtract(&v34, &lhs, &rhs);
   rhs = *(&self->_onDemandSynthesisBufferAllocation + 4);
@@ -366,11 +366,11 @@ LABEL_7:
   CMTimeMaximum(&lhs, &rhs, &time2);
   *(&self->_onDemandSynthesisBufferAllocation + 4) = lhs;
   v17 = getCurrentTimeStamp();
-  v18 = -[ImageProcessor_Ext getPixelAttributesForBuffer:](self->_imageProcessor, "getPixelAttributesForBuffer:", [v15 buffer]);
-  if (v18 || ((width = self->_width, width == CVPixelBufferGetWidth([v15 buffer])) && !-[ImageProcessor_Ext isYUV](self->_imageProcessor, "isYUV") ? (v20 = 0) : (v20 = 1), (v18 = -[ImageProcessor_Ext preserveCMAttachmentFirstFrame:secondFrame:](self->_imageProcessor, "preserveCMAttachmentFirstFrame:secondFrame:", v15, v16)) != 0 || (a5 ? (v21 = a6 == 0) : (v21 = 1), v21 ? (v22 = 0) : (v22 = 1), self->_useExternalFlow = v22, self->_useExternalDepth = a7 != 0, kdebug_trace(), (v18 = -[ImageProcessor_Ext preProcessFirstInput:secondInput:waitForCompletion:](self->_imageProcessor, "preProcessFirstInput:secondInput:waitForCompletion:", objc_msgSend(v15, "buffer"), objc_msgSend(v16, "buffer"), 0)) != 0)))
+  v18 = -[ImageProcessor_Ext getPixelAttributesForBuffer:](self->_imageProcessor, "getPixelAttributesForBuffer:", [frameCopy buffer]);
+  if (v18 || ((width = self->_width, width == CVPixelBufferGetWidth([frameCopy buffer])) && !-[ImageProcessor_Ext isYUV](self->_imageProcessor, "isYUV") ? (v20 = 0) : (v20 = 1), (v18 = -[ImageProcessor_Ext preserveCMAttachmentFirstFrame:secondFrame:](self->_imageProcessor, "preserveCMAttachmentFirstFrame:secondFrame:", frameCopy, secondFrameCopy)) != 0 || (flow ? (v21 = backwardFlow == 0) : (v21 = 1), v21 ? (v22 = 0) : (v22 = 1), self->_useExternalFlow = v22, self->_useExternalDepth = depth != 0, kdebug_trace(), (v18 = -[ImageProcessor_Ext preProcessFirstInput:secondInput:waitForCompletion:](self->_imageProcessor, "preProcessFirstInput:secondInput:waitForCompletion:", objc_msgSend(frameCopy, "buffer"), objc_msgSend(secondFrameCopy, "buffer"), 0)) != 0)))
   {
     v28 = v18;
-    v24 = v29;
+    v24 = angleCopy;
 LABEL_33:
 
     goto LABEL_34;
@@ -380,26 +380,26 @@ LABEL_33:
   kdebug_trace();
   if (self->_useExternalFlow)
   {
-    self->_flowForward = a5;
-    self->_flowBackward = a6;
+    self->_flowForward = flow;
+    self->_flowBackward = backwardFlow;
   }
 
   if (self->_useExternalDepth)
   {
-    self->_depth = a7;
+    self->_depth = depth;
   }
 
   v23 = [(MotionBlurEngine *)self flowUpscalingAndPseudoDepthComputingWarmup:0];
-  v24 = v29;
-  if (v23 || (v23 = [(MotionBlurEngine *)self synthesizeMotionBlurredFrames:v15 second:v16 timeScale:v29 destination:a9 scalerEnabled:v20]) != 0)
+  v24 = angleCopy;
+  if (v23 || (v23 = [(MotionBlurEngine *)self synthesizeMotionBlurredFrames:frameCopy second:secondFrameCopy timeScale:angleCopy destination:destination scalerEnabled:v20]) != 0)
   {
     v28 = v23;
     goto LABEL_33;
   }
 
-  if (v16)
+  if (secondFrameCopy)
   {
-    [v16 presentationTimeStamp];
+    [secondFrameCopy presentationTimeStamp];
   }
 
   else
@@ -417,22 +417,22 @@ LABEL_30:
   return v25;
 }
 
-- (BOOL)motionBlurForCurrentFrame:(id)a3 futureFrame:(id)a4 prevFrame:(id)a5 prevFlowPair:(id *)a6 currFlowPair:(id *)a7 shutterAngle:(id)a8 destination:(__CVBuffer *)a9 withError:(id *)a10
+- (BOOL)motionBlurForCurrentFrame:(id)frame futureFrame:(id)futureFrame prevFrame:(id)prevFrame prevFlowPair:(id *)pair currFlowPair:(id *)flowPair shutterAngle:(id)angle destination:(__CVBuffer *)destination withError:(id *)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v39 = a8;
+  frameCopy = frame;
+  futureFrameCopy = futureFrame;
+  prevFrameCopy = prevFrame;
+  angleCopy = angle;
   if ([(MotionBlurEngine *)self stateExt]== 2)
   {
     v19 = 12;
-    if (v16 && a9)
+    if (frameCopy && destination)
     {
       ++self->_totalFramePairsProcessed;
       memset(&v43, 0, sizeof(v43));
-      if (v17)
+      if (futureFrameCopy)
       {
-        [v17 presentationTimeStamp];
+        [futureFrameCopy presentationTimeStamp];
       }
 
       else
@@ -440,14 +440,14 @@ LABEL_30:
         memset(&lhs, 0, sizeof(lhs));
       }
 
-      [v16 presentationTimeStamp];
+      [frameCopy presentationTimeStamp];
       CMTimeSubtract(&v43, &lhs, &rhs);
       rhs = *(&self->_onDemandSynthesisBufferAllocation + 4);
       time2 = v43;
       CMTimeMaximum(&lhs, &rhs, &time2);
       *(&self->_onDemandSynthesisBufferAllocation + 4) = lhs;
       v20 = getCurrentTimeStamp();
-      v21 = -[ImageProcessor_Ext getPixelAttributesForBuffer:](self->_imageProcessor, "getPixelAttributesForBuffer:", [v16 buffer]);
+      v21 = -[ImageProcessor_Ext getPixelAttributesForBuffer:](self->_imageProcessor, "getPixelAttributesForBuffer:", [frameCopy buffer]);
       if (v21)
       {
         v19 = v21;
@@ -456,15 +456,15 @@ LABEL_30:
       else
       {
         width = self->_width;
-        v38 = width != CVPixelBufferGetWidth([v16 buffer]) || -[ImageProcessor_Ext isYUV](self->_imageProcessor, "isYUV");
-        v23 = a6;
-        self->_firstFrame = [v18 buffer] == 0;
-        v24 = [v17 buffer];
-        self->_lastFrame = v24 == 0;
-        if (v24)
+        v38 = width != CVPixelBufferGetWidth([frameCopy buffer]) || -[ImageProcessor_Ext isYUV](self->_imageProcessor, "isYUV");
+        pairCopy = pair;
+        self->_firstFrame = [prevFrameCopy buffer] == 0;
+        buffer = [futureFrameCopy buffer];
+        self->_lastFrame = buffer == 0;
+        if (buffer)
         {
           lastFrame = 0;
-          v26 = v18;
+          v26 = prevFrameCopy;
         }
 
         else
@@ -472,56 +472,56 @@ LABEL_30:
 
           v26 = 0;
           lastFrame = self->_lastFrame;
-          a7 = v23;
-          v17 = v18;
-          v23 = 0;
+          flowPair = pairCopy;
+          futureFrameCopy = prevFrameCopy;
+          pairCopy = 0;
         }
 
         v27 = !self->_streamingMode || self->_streamingModeChange;
         [(PseudoDepthGenerator *)self->_pseudoDepthGenerator updateUsePreviousInfoFromIsFirstFrame:self->_firstFrame isLastFrame:lastFrame isRandomAccessMode:v27 effectiveResolution:1 isInitialization:self->_effectiveFlowResolution.width, self->_effectiveFlowResolution.height];
-        if ((!self->_streamingMode || self->_streamingModeChange) && !self->_firstFrame && !self->_lastFrame && (v28 = [(MotionBlurEngine *)self warmpupComputationFromPrevFrame:v26 currFrame:v16 prevFlowPair:v23]) != 0 || (v28 = [(ImageProcessor_Ext *)self->_imageProcessor preserveCMAttachmentFirstFrame:v16 secondFrame:v17]) != 0)
+        if ((!self->_streamingMode || self->_streamingModeChange) && !self->_firstFrame && !self->_lastFrame && (v28 = [(MotionBlurEngine *)self warmpupComputationFromPrevFrame:v26 currFrame:frameCopy prevFlowPair:pairCopy]) != 0 || (v28 = [(ImageProcessor_Ext *)self->_imageProcessor preserveCMAttachmentFirstFrame:frameCopy secondFrame:futureFrameCopy]) != 0)
         {
           v19 = v28;
-          v18 = v26;
+          prevFrameCopy = v26;
         }
 
         else
         {
           v29 = v26;
-          self->_useExternalFlow = a7 != 0;
+          self->_useExternalFlow = flowPair != 0;
           kdebug_trace();
           [(ImageProcessor_Ext *)self->_imageProcessor setPseudoDepth:self->_pseudoDepth];
-          v30 = -[ImageProcessor_Ext preProcessFirstInput:secondInput:waitForCompletion:](self->_imageProcessor, "preProcessFirstInput:secondInput:waitForCompletion:", [v16 buffer], objc_msgSend(v17, "buffer"), 0);
+          v30 = -[ImageProcessor_Ext preProcessFirstInput:secondInput:waitForCompletion:](self->_imageProcessor, "preProcessFirstInput:secondInput:waitForCompletion:", [frameCopy buffer], objc_msgSend(futureFrameCopy, "buffer"), 0);
           if (!v30)
           {
             kdebug_trace();
             kdebug_trace();
-            if (a7)
+            if (flowPair)
             {
-              var0 = a7->var0;
+              var0 = flowPair->var0;
               if (self->_lastFrame)
               {
-                var1 = a7->var1;
-                a7->var0 = var1;
-                a7->var1 = var0;
+                var1 = flowPair->var1;
+                flowPair->var0 = var1;
+                flowPair->var1 = var0;
                 var0 = var1;
               }
 
               self->_flowForward = var0;
-              self->_flowBackward = a7->var1;
+              self->_flowBackward = flowPair->var1;
               self->_bindTexture = 0;
             }
 
             v30 = [(MotionBlurEngine *)self flowUpscalingAndPseudoDepthComputingWarmup:0];
             if (!v30)
             {
-              v33 = v39;
-              v34 = [(MotionBlurEngine *)self synthesizeMotionBlurredFrames:v16 second:v17 timeScale:v39 destination:a9 scalerEnabled:v38];
+              v33 = angleCopy;
+              v34 = [(MotionBlurEngine *)self synthesizeMotionBlurredFrames:frameCopy second:futureFrameCopy timeScale:angleCopy destination:destination scalerEnabled:v38];
               if (!v34)
               {
-                if (v17)
+                if (futureFrameCopy)
                 {
-                  [v17 presentationTimeStamp];
+                  [futureFrameCopy presentationTimeStamp];
                 }
 
                 else
@@ -539,17 +539,17 @@ LABEL_30:
               }
 
               v19 = v34;
-              v18 = v26;
+              prevFrameCopy = v26;
               goto LABEL_42;
             }
           }
 
           v19 = v30;
-          v18 = v26;
+          prevFrameCopy = v26;
         }
       }
 
-      v33 = v39;
+      v33 = angleCopy;
 LABEL_42:
 
       goto LABEL_43;
@@ -561,12 +561,12 @@ LABEL_42:
     v19 = 3;
   }
 
-  v33 = v39;
+  v33 = angleCopy;
 LABEL_43:
-  if (a10)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.VirtualShutterAngle" code:v19 userInfo:0];
-    *a10 = v35 = 0;
+    *error = v35 = 0;
   }
 
   else
@@ -574,7 +574,7 @@ LABEL_43:
     v35 = 0;
   }
 
-  v29 = v18;
+  v29 = prevFrameCopy;
 LABEL_35:
 
   return v35;
@@ -589,16 +589,16 @@ LABEL_35:
   return self;
 }
 
-- (void)setPreferredTransform:(CGAffineTransform *)a3
+- (void)setPreferredTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_preferredTransform.c = *&a3->c;
+  v3 = *&transform->a;
+  v4 = *&transform->tx;
+  *&self->_preferredTransform.c = *&transform->c;
   *&self->_preferredTransform.tx = v4;
   *&self->_preferredTransform.a = v3;
 }
 
-- (MotionBlurEngine)initWithWidth:(unint64_t)a3 height:(unint64_t)a4 vsaPipeMode:(int64_t)a5
+- (MotionBlurEngine)initWithWidth:(unint64_t)width height:(unint64_t)height vsaPipeMode:(int64_t)mode
 {
   v21.receiver = self;
   v21.super_class = MotionBlurEngine;
@@ -618,11 +618,11 @@ LABEL_35:
     }
   }
 
-  *(v8 + 5) = a3;
-  *(v8 + 6) = a4;
-  *(v8 + 7) = a3;
-  *(v8 + 8) = a4;
-  UsageFromSize = getUsageFromSize(a3, a4);
+  *(v8 + 5) = width;
+  *(v8 + 6) = height;
+  *(v8 + 7) = width;
+  *(v8 + 8) = height;
+  UsageFromSize = getUsageFromSize(width, height);
   *(v8 + 51) = UsageFromSize;
   if (UsageFromSize == -1)
   {
@@ -644,9 +644,9 @@ LABEL_2:
 
     *(v8 + 51) = v13 & 0xFFF;
     getAlignedInputFrameSizeForUsage(v13 & 0xFFF, v8 + 5, v8 + 6);
-    *(v8 + 48) = a5;
-    v8[392] = (a5 - 1) < 2;
-    v8[393] = (a5 & 0xFFFFFFFFFFFFFFFDLL) == 0;
+    *(v8 + 48) = mode;
+    v8[392] = (mode - 1) < 2;
+    v8[393] = (mode & 0xFFFFFFFFFFFFFFFDLL) == 0;
     *(v8 + 197) = 256;
     v8[216] = 0;
     [*(v8 + 1) setFramePipeline:1];
@@ -654,9 +654,9 @@ LABEL_2:
     v16 = *(v8 + 46);
     *(v8 + 46) = v15;
 
-    v17 = [*(v8 + 46) newCommandQueue];
+    newCommandQueue = [*(v8 + 46) newCommandQueue];
     v18 = *(v8 + 47);
-    *(v8 + 47) = v17;
+    *(v8 + 47) = newCommandQueue;
 
     [v8 initExtSubModules];
     if ((v8[216] & 1) == 0 && v8[393] == 1)
@@ -727,7 +727,7 @@ LABEL_2:
   return 0;
 }
 
-- (int64_t)allocateSubmodulesBuffersWithFlowWidth:(unint64_t)a3 flowHeight:(unint64_t)a4 depthFactor:(unint64_t)a5
+- (int64_t)allocateSubmodulesBuffersWithFlowWidth:(unint64_t)width flowHeight:(unint64_t)height depthFactor:(unint64_t)factor
 {
   remainedFlowErrorMask = self->_remainedFlowErrorMask;
   if (remainedFlowErrorMask)
@@ -735,19 +735,19 @@ LABEL_2:
     CVPixelBufferRelease(remainedFlowErrorMask);
   }
 
-  PixelBuffer = CreatePixelBuffer(a3, a4, 1278226536);
+  PixelBuffer = CreatePixelBuffer(width, height, 1278226536);
   self->_remainedFlowErrorMask = PixelBuffer;
   if (!PixelBuffer)
   {
     return 9;
   }
 
-  if (!self->_imageGuideUpscale || ([(FlowUpscale *)self->_flowUpscale releaseResources], (result = [(FlowUpscale *)self->_flowUpscale allocateInternalBuffersWithLrWidth:a3 lrHeight:a4 hrWidth:self->_width hrHeight:self->_height interleaveFactor:1]) == 0))
+  if (!self->_imageGuideUpscale || ([(FlowUpscale *)self->_flowUpscale releaseResources], (result = [(FlowUpscale *)self->_flowUpscale allocateInternalBuffersWithLrWidth:width lrHeight:height hrWidth:self->_width hrHeight:self->_height interleaveFactor:1]) == 0))
   {
     if (self->_flowFailureDetection || self->_pseudoDepth)
     {
       [(PseudoDepthGenerator *)self->_pseudoDepthGenerator releaseResources];
-      result = [(PseudoDepthGenerator *)self->_pseudoDepthGenerator allocateBufferAndTextureWithFlowWidth:a3 flowHeight:a4 depthWidth:vcvts_n_f32_u64(self->_width depthHeight:2uLL) interleaveFactor:vcvts_n_f32_u64(self->_height, 2uLL), 1];
+      result = [(PseudoDepthGenerator *)self->_pseudoDepthGenerator allocateBufferAndTextureWithFlowWidth:width flowHeight:height depthWidth:vcvts_n_f32_u64(self->_width depthHeight:2uLL) interleaveFactor:vcvts_n_f32_u64(self->_height, 2uLL), 1];
       if (!result)
       {
         prevBackwardFlow = self->_prevBackwardFlow;
@@ -756,7 +756,7 @@ LABEL_2:
           CVPixelBufferRelease(prevBackwardFlow);
         }
 
-        v12 = CreatePixelBuffer(a3, a4, 843264104);
+        v12 = CreatePixelBuffer(width, height, 843264104);
         self->_prevBackwardFlow = v12;
         if (v12)
         {
@@ -779,10 +779,10 @@ LABEL_2:
   return result;
 }
 
-- (int64_t)bindWithMTLTextureFromDownscaledImage:(__CVBuffer *)a3 downscaledSecond:(__CVBuffer *)a4 forwardFlow:(__CVBuffer *)a5 backwardFlow:(__CVBuffer *)a6 prevBackwardFlow:(__CVBuffer *)a7 remianedErrorMask:(__CVBuffer *)a8 fullresImage:(__CVBuffer *)a9 upscaledFlow:(__CVBuffer *)a10 depth:(__CVBuffer *)a11 interleaveFactor:(unint64_t)a12
+- (int64_t)bindWithMTLTextureFromDownscaledImage:(__CVBuffer *)image downscaledSecond:(__CVBuffer *)second forwardFlow:(__CVBuffer *)flow backwardFlow:(__CVBuffer *)backwardFlow prevBackwardFlow:(__CVBuffer *)prevBackwardFlow remianedErrorMask:(__CVBuffer *)mask fullresImage:(__CVBuffer *)fullresImage upscaledFlow:(__CVBuffer *)self0 depth:(__CVBuffer *)self1 interleaveFactor:(unint64_t)self2
 {
   result = 12;
-  if (a3 && a4 && a5 && a6 && a7 && a8 && a9 && a10 && a11)
+  if (image && second && flow && backwardFlow && prevBackwardFlow && mask && fullresImage && upscaledFlow && depth)
   {
     if (self->_streamingMode && !self->_streamingModeChange)
     {
@@ -800,7 +800,7 @@ LABEL_2:
       self->_bindTexture = 0;
     }
 
-    if ((!self->_pseudoDepth || (createRGBATextureFromCVPixelBuffer(a3, self->_device), v17 = objc_claimAutoreleasedReturnValue(), downscaleFirstImageTexture = self->_downscaleFirstImageTexture, self->_downscaleFirstImageTexture = v17, downscaleFirstImageTexture, createRGBATextureFromCVPixelBuffer(a4, self->_device), v19 = objc_claimAutoreleasedReturnValue(), downscaleSecondImageTexture = self->_downscaleSecondImageTexture, self->_downscaleSecondImageTexture = v19, downscaleSecondImageTexture, self->_downscaleSecondImageTexture) && (OUTLINED_FUNCTION_7(), createTexturesFromCVPixelBuffer(v21, v22, v23, v24), v25 = objc_claimAutoreleasedReturnValue(), flowForwardTexture = self->_flowForwardTexture, self->_flowForwardTexture = v25, flowForwardTexture, self->_flowForwardTexture) && (OUTLINED_FUNCTION_7(), createTexturesFromCVPixelBuffer(v27, v28, v29, v30), v31 = objc_claimAutoreleasedReturnValue(), prevBackwardFlowTexture = self->_prevBackwardFlowTexture, self->_prevBackwardFlowTexture = v31, prevBackwardFlowTexture, self->_prevBackwardFlowTexture)) && (createTexturesFromCVPixelBuffer(a8, self->_device, a12, 1uLL), v33 = objc_claimAutoreleasedReturnValue(), remainedFlowErrorMaskTexture = self->_remainedFlowErrorMaskTexture, self->_remainedFlowErrorMaskTexture = v33, remainedFlowErrorMaskTexture, self->_remainedFlowErrorMaskTexture) && (OUTLINED_FUNCTION_7(), createTexturesFromCVPixelBuffer(v35, v36, v37, v38), v39 = objc_claimAutoreleasedReturnValue(), flowBackwardTexture = self->_flowBackwardTexture, self->_flowBackwardTexture = v39, flowBackwardTexture, self->_flowBackwardTexture) && (createTexturesFromCVPixelBuffer(a11, self->_device, a12, 1uLL), v41 = objc_claimAutoreleasedReturnValue(), depthTexture = self->_depthTexture, self->_depthTexture = v41, depthTexture, self->_depthTexture) && (OUTLINED_FUNCTION_7(), createTexturesFromCVPixelBuffer(v43, v44, v45, v46), v47 = objc_claimAutoreleasedReturnValue(), upscaleFlowTexture = self->_upscaleFlowTexture, self->_upscaleFlowTexture = v47, upscaleFlowTexture, self->_upscaleFlowTexture) && (createTexturesFromCVPixelBuffer(a9, self->_device, 4, 1uLL), v49 = objc_claimAutoreleasedReturnValue(), fullresGuideImageTexture = self->_fullresGuideImageTexture, self->_fullresGuideImageTexture = v49, fullresGuideImageTexture, self->_fullresGuideImageTexture))
+    if ((!self->_pseudoDepth || (createRGBATextureFromCVPixelBuffer(image, self->_device), v17 = objc_claimAutoreleasedReturnValue(), downscaleFirstImageTexture = self->_downscaleFirstImageTexture, self->_downscaleFirstImageTexture = v17, downscaleFirstImageTexture, createRGBATextureFromCVPixelBuffer(second, self->_device), v19 = objc_claimAutoreleasedReturnValue(), downscaleSecondImageTexture = self->_downscaleSecondImageTexture, self->_downscaleSecondImageTexture = v19, downscaleSecondImageTexture, self->_downscaleSecondImageTexture) && (OUTLINED_FUNCTION_7(), createTexturesFromCVPixelBuffer(v21, v22, v23, v24), v25 = objc_claimAutoreleasedReturnValue(), flowForwardTexture = self->_flowForwardTexture, self->_flowForwardTexture = v25, flowForwardTexture, self->_flowForwardTexture) && (OUTLINED_FUNCTION_7(), createTexturesFromCVPixelBuffer(v27, v28, v29, v30), v31 = objc_claimAutoreleasedReturnValue(), prevBackwardFlowTexture = self->_prevBackwardFlowTexture, self->_prevBackwardFlowTexture = v31, prevBackwardFlowTexture, self->_prevBackwardFlowTexture)) && (createTexturesFromCVPixelBuffer(mask, self->_device, factor, 1uLL), v33 = objc_claimAutoreleasedReturnValue(), remainedFlowErrorMaskTexture = self->_remainedFlowErrorMaskTexture, self->_remainedFlowErrorMaskTexture = v33, remainedFlowErrorMaskTexture, self->_remainedFlowErrorMaskTexture) && (OUTLINED_FUNCTION_7(), createTexturesFromCVPixelBuffer(v35, v36, v37, v38), v39 = objc_claimAutoreleasedReturnValue(), flowBackwardTexture = self->_flowBackwardTexture, self->_flowBackwardTexture = v39, flowBackwardTexture, self->_flowBackwardTexture) && (createTexturesFromCVPixelBuffer(depth, self->_device, factor, 1uLL), v41 = objc_claimAutoreleasedReturnValue(), depthTexture = self->_depthTexture, self->_depthTexture = v41, depthTexture, self->_depthTexture) && (OUTLINED_FUNCTION_7(), createTexturesFromCVPixelBuffer(v43, v44, v45, v46), v47 = objc_claimAutoreleasedReturnValue(), upscaleFlowTexture = self->_upscaleFlowTexture, self->_upscaleFlowTexture = v47, upscaleFlowTexture, self->_upscaleFlowTexture) && (createTexturesFromCVPixelBuffer(fullresImage, self->_device, 4, 1uLL), v49 = objc_claimAutoreleasedReturnValue(), fullresGuideImageTexture = self->_fullresGuideImageTexture, self->_fullresGuideImageTexture = v49, fullresGuideImageTexture, self->_fullresGuideImageTexture))
     {
       result = 0;
       *p_bindTexture = 1;
@@ -815,16 +815,16 @@ LABEL_2:
   return result;
 }
 
-- (int64_t)flowUpscalingAndPseudoDepthComputingWarmup:(BOOL)a3
+- (int64_t)flowUpscalingAndPseudoDepthComputingWarmup:(BOOL)warmup
 {
-  v3 = a3;
+  warmupCopy = warmup;
   OUTLINED_FUNCTION_0_0();
   result = [(MotionBlurEngine *)self bindWithMTLTextureFromDownscaledImage:[(ImageProcessor_Ext *)self->_imageProcessor packedDownscaledFirstRGB] downscaledSecond:[(ImageProcessor_Ext *)self->_imageProcessor packedDownscaledSecondRGB] forwardFlow:self->_flowForward backwardFlow:self->_flowBackward prevBackwardFlow:self->_prevBackwardFlow remianedErrorMask:self->_remainedFlowErrorMask fullresImage:[(ImageProcessor_Ext *)self->_imageProcessor unifiedRGB] upscaledFlow:self->_upscaleFlow depth:self->_depth interleaveFactor:1];
   if (!result)
   {
-    if (!self->_pseudoDepth && !self->_flowFailureDetection || (LOBYTE(v16) = v3, LODWORD(v6) = 1.0, (result = [(PseudoDepthGenerator *)self->_pseudoDepthGenerator flowFailureAndCorrectionFromDownscaleFirstImage:self->_downscaleFirstImageTexture downscaleSecondImage:self->_downscaleSecondImageTexture backwardFlow:self->_flowBackwardTexture forwardFlow:self->_flowForwardTexture prevBackFlow:self->_prevBackwardFlowTexture remainedErrorMask:self->_remainedFlowErrorMaskTexture effectiveResolution:self->_effectiveFlowResolution.width interleave_factor:self->_effectiveFlowResolution.height timeScale:v6 warmup:1, v16]) == 0))
+    if (!self->_pseudoDepth && !self->_flowFailureDetection || (LOBYTE(v16) = warmupCopy, LODWORD(v6) = 1.0, (result = [(PseudoDepthGenerator *)self->_pseudoDepthGenerator flowFailureAndCorrectionFromDownscaleFirstImage:self->_downscaleFirstImageTexture downscaleSecondImage:self->_downscaleSecondImageTexture backwardFlow:self->_flowBackwardTexture forwardFlow:self->_flowForwardTexture prevBackFlow:self->_prevBackwardFlowTexture remainedErrorMask:self->_remainedFlowErrorMaskTexture effectiveResolution:self->_effectiveFlowResolution.width interleave_factor:self->_effectiveFlowResolution.height timeScale:v6 warmup:1, v16]) == 0))
     {
-      if (v3)
+      if (warmupCopy)
       {
         goto LABEL_19;
       }
@@ -875,10 +875,10 @@ LABEL_2:
 
         else
         {
-          v13 = [(ImageProcessor_Ext *)self->_imageProcessor rgbaFirst];
-          v14 = [(ImageProcessor_Ext *)self->_imageProcessor rgbaSecond];
+          rgbaFirst = [(ImageProcessor_Ext *)self->_imageProcessor rgbaFirst];
+          rgbaSecond = [(ImageProcessor_Ext *)self->_imageProcessor rgbaSecond];
           LODWORD(v15) = 1.0;
-          result = [(PseudoDepthGenerator *)pseudoDepthGenerator approximateDepthWithBackwarpLossFromFirstImage:v13 secondImage:v14 fullresFlow:self->_upscaleFlow depth:self->_depth interleavFactor:1 timeScale:v15];
+          result = [(PseudoDepthGenerator *)pseudoDepthGenerator approximateDepthWithBackwarpLossFromFirstImage:rgbaFirst secondImage:rgbaSecond fullresFlow:self->_upscaleFlow depth:self->_depth interleavFactor:1 timeScale:v15];
           if (result)
           {
             return result;
@@ -896,28 +896,28 @@ LABEL_19:
   return result;
 }
 
-- (int64_t)warmpupComputationFromPrevFrame:(id)a3 currFrame:(id)a4 prevFlowPair:(id *)a5
+- (int64_t)warmpupComputationFromPrevFrame:(id)frame currFrame:(id)currFrame prevFlowPair:(id *)pair
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
+  frameCopy = frame;
+  currFrameCopy = currFrame;
+  v10 = currFrameCopy;
   v11 = 12;
-  if (v8 && v9)
+  if (frameCopy && currFrameCopy)
   {
-    v12 = [(ImageProcessor_Ext *)self->_imageProcessor preserveCMAttachmentFirstFrame:v8 secondFrame:v9];
+    v12 = [(ImageProcessor_Ext *)self->_imageProcessor preserveCMAttachmentFirstFrame:frameCopy secondFrame:currFrameCopy];
     if (!v12)
     {
       OUTLINED_FUNCTION_0_0();
-      v12 = -[ImageProcessor_Ext preProcessFirstInput:secondInput:waitForCompletion:](self->_imageProcessor, "preProcessFirstInput:secondInput:waitForCompletion:", [v8 buffer], objc_msgSend(v10, "buffer"), 0);
+      v12 = -[ImageProcessor_Ext preProcessFirstInput:secondInput:waitForCompletion:](self->_imageProcessor, "preProcessFirstInput:secondInput:waitForCompletion:", [frameCopy buffer], objc_msgSend(v10, "buffer"), 0);
       if (!v12)
       {
         OUTLINED_FUNCTION_0_0();
-        self->_flowForward = a5->var0;
-        self->_flowBackward = a5->var1;
+        self->_flowForward = pair->var0;
+        self->_flowBackward = pair->var1;
         v12 = [(MotionBlurEngine *)self flowUpscalingAndPseudoDepthComputingWarmup:1];
         if (!v12)
         {
-          v12 = [(ImageProcessor_Ext *)self->_imageProcessor restoreCMAttachmentToFirstFrame:v8 secondFrame:v10 synthesizedFrame:0];
+          v12 = [(ImageProcessor_Ext *)self->_imageProcessor restoreCMAttachmentToFirstFrame:frameCopy secondFrame:v10 synthesizedFrame:0];
         }
       }
     }
@@ -928,14 +928,14 @@ LABEL_19:
   return v11;
 }
 
-- (int64_t)synthesizeMotionBlurredFrames:(id)a3 second:(id)a4 timeScale:(id)a5 destination:(__CVBuffer *)a6 scalerEnabled:(BOOL)a7
+- (int64_t)synthesizeMotionBlurredFrames:(id)frames second:(id)second timeScale:(id)scale destination:(__CVBuffer *)destination scalerEnabled:(BOOL)enabled
 {
-  v7 = a7;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  enabledCopy = enabled;
+  framesCopy = frames;
+  secondCopy = second;
+  scaleCopy = scale;
   v15 = 12;
-  if (v12 && v13 && a6)
+  if (framesCopy && secondCopy && destination)
   {
     OUTLINED_FUNCTION_0_0();
     v16 = [(Synthesis_Ext *)self->_synthesis createFeaturesFromImage:[(ImageProcessor_Ext *)self->_imageProcessor unifiedRGB] flowForward:self->_flowForward flowBackward:self->_flowBackward depth:self->_depth fullresFlow:self->_upscaleFlow remainedErrorMask:self->_remainedFlowErrorMask];
@@ -946,12 +946,12 @@ LABEL_19:
 
     else
     {
-      [v14 floatValue];
+      [scaleCopy floatValue];
       v18 = v17;
       v19 = getCurrentTimeStamp();
-      CMRemoveAllAttachments(a6);
+      CMRemoveAllAttachments(destination);
       LODWORD(v20) = v18;
-      v21 = [(MotionBlurEngine *)self synthesizeMotionBlurredFrameForTimeScale:a6 destination:v7 scalerEnabled:0 frameIndex:1 lastFrame:v20];
+      v21 = [(MotionBlurEngine *)self synthesizeMotionBlurredFrameForTimeScale:destination destination:enabledCopy scalerEnabled:0 frameIndex:1 lastFrame:v20];
       if (v21)
       {
         v15 = v21;
@@ -966,7 +966,7 @@ LABEL_19:
           [(Synthesis_Ext *)self->_synthesis releaseResources];
         }
 
-        v15 = [(ImageProcessor_Ext *)self->_imageProcessor restoreCMAttachmentToFirstFrame:v12 secondFrame:v13 synthesizedFrame:a6];
+        v15 = [(ImageProcessor_Ext *)self->_imageProcessor restoreCMAttachmentToFirstFrame:framesCopy secondFrame:secondCopy synthesizedFrame:destination];
         if (!v15)
         {
           ++self->_totalFramesSynthesized;
@@ -979,31 +979,31 @@ LABEL_19:
   return v15;
 }
 
-- (int64_t)synthesizeMotionBlurredFrameForTimeScale:(float)a3 destination:(__CVBuffer *)a4 scalerEnabled:(BOOL)a5 frameIndex:(unint64_t)a6 lastFrame:(BOOL)a7
+- (int64_t)synthesizeMotionBlurredFrameForTimeScale:(float)scale destination:(__CVBuffer *)destination scalerEnabled:(BOOL)enabled frameIndex:(unint64_t)index lastFrame:(BOOL)frame
 {
-  if (!a4)
+  if (!destination)
   {
     return 12;
   }
 
   v12 = getCurrentTimeStamp();
-  v13 = [(ImageProcessor_VSA *)self->_imageProcessor useScalerForPostprocessOutput:a4];
-  PixelBuffer = a4;
+  v13 = [(ImageProcessor_VSA *)self->_imageProcessor useScalerForPostprocessOutput:destination];
+  PixelBuffer = destination;
   if (v13)
   {
     PixelBuffer = CreatePixelBuffer(self->_width, self->_height, [(ImageProcessor_Ext *)self->_imageProcessor RGBAFormat]);
   }
 
-  *&v14 = a3;
-  v16 = [(Synthesis_Ext *)self->_synthesis synthesizeFrameForTimeScale:a6 frameIndex:PixelBuffer destination:v14];
+  *&v14 = scale;
+  v16 = [(Synthesis_Ext *)self->_synthesis synthesizeFrameForTimeScale:index frameIndex:PixelBuffer destination:v14];
   v17 = getCurrentTimeStamp();
   v18 = getCurrentTimeStamp();
   if (![(ImageProcessor_Ext *)self->_imageProcessor isFullRange])
   {
-    CMSetAttachments(a4, [(ImageProcessor_Ext *)self->_imageProcessor anchorFrameCMAttachment], 1u);
+    CMSetAttachments(destination, [(ImageProcessor_Ext *)self->_imageProcessor anchorFrameCMAttachment], 1u);
   }
 
-  if (a7)
+  if (frame)
   {
     v19 = 1;
   }
@@ -1014,7 +1014,7 @@ LABEL_19:
   }
 
   v20 = getCurrentTimeStamp();
-  if (!v13 || (v16 = [(ImageProcessor_VSA *)self->_imageProcessor postprocessFrameWithScaler:PixelBuffer output:a4 waitForCompletion:v19], CVPixelBufferRelease(PixelBuffer), !v16))
+  if (!v13 || (v16 = [(ImageProcessor_VSA *)self->_imageProcessor postprocessFrameWithScaler:PixelBuffer output:destination waitForCompletion:v19], CVPixelBufferRelease(PixelBuffer), !v16))
   {
     v21 = getCurrentTimeStamp();
   }

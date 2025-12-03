@@ -8,14 +8,14 @@
 {
   if (!a3)
   {
-    [NSTextLayoutFragment(FragmentView) _ck_getFragmentViewFrame:a2 getBounds:a1 textContainerInset:?];
+    [NSTextLayoutFragment(FragmentView) _ck_getFragmentViewFrame:a2 getBounds:self textContainerInset:?];
     if (a4)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    [NSTextLayoutFragment(FragmentView) _ck_getFragmentViewFrame:a2 getBounds:a1 textContainerInset:?];
+    [NSTextLayoutFragment(FragmentView) _ck_getFragmentViewFrame:a2 getBounds:self textContainerInset:?];
     goto LABEL_3;
   }
 
@@ -25,9 +25,9 @@ LABEL_8:
   }
 
 LABEL_3:
-  [a1 layoutFragmentFrame];
+  [self layoutFragmentFrame];
   v9 = v8;
-  [a1 renderingSurfaceBounds];
+  [self renderingSurfaceBounds];
   v19 = CGRectIntegral(v18);
   x = v19.origin.x;
   y = v19.origin.y;

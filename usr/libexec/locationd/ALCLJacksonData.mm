@@ -1,21 +1,21 @@
 @interface ALCLJacksonData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasLsest:(BOOL)a3;
-- (void)setHasSumest:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasLsest:(BOOL)lsest;
+- (void)setHasSumest:(BOOL)sumest;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ALCLJacksonData
 
-- (void)setHasLsest:(BOOL)a3
+- (void)setHasLsest:(BOOL)lsest
 {
-  if (a3)
+  if (lsest)
   {
     v3 = 2;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSumest:(BOOL)a3
+- (void)setHasSumest:(BOOL)sumest
 {
-  if (a3)
+  if (sumest)
   {
     v3 = 4;
   }
@@ -91,7 +91,7 @@ LABEL_4:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   PBDataWriterWriteUint32Field();
   has = self->_has;
@@ -130,14 +130,14 @@ LABEL_7:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 4) = self->_nPairs;
+  *(to + 4) = self->_nPairs;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 3) = LODWORD(self->_lsest);
-    *(a3 + 24) |= 2u;
+    *(to + 3) = LODWORD(self->_lsest);
+    *(to + 24) |= 2u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -148,8 +148,8 @@ LABEL_3:
       }
 
 LABEL_7:
-      *(a3 + 2) = self->_fPal;
-      *(a3 + 24) |= 1u;
+      *(to + 2) = self->_fPal;
+      *(to + 24) |= 1u;
       return;
     }
   }
@@ -159,17 +159,17 @@ LABEL_7:
     goto LABEL_3;
   }
 
-  *(a3 + 5) = LODWORD(self->_sumest);
-  *(a3 + 24) |= 4u;
+  *(to + 5) = LODWORD(self->_sumest);
+  *(to + 24) |= 4u;
   if (*&self->_has)
   {
     goto LABEL_7;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 4) = self->_nPairs;
   has = self->_has;
   if ((has & 2) != 0)
@@ -207,12 +207,12 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    if (self->_nPairs != *(a3 + 4))
+    if (self->_nPairs != *(equal + 4))
     {
 LABEL_17:
       LOBYTE(v5) = 0;
@@ -221,34 +221,34 @@ LABEL_17:
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 24) & 2) == 0 || self->_lsest != *(a3 + 3))
+      if ((*(equal + 24) & 2) == 0 || self->_lsest != *(equal + 3))
       {
         goto LABEL_17;
       }
     }
 
-    else if ((*(a3 + 24) & 2) != 0)
+    else if ((*(equal + 24) & 2) != 0)
     {
       goto LABEL_17;
     }
 
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 24) & 4) == 0 || self->_sumest != *(a3 + 5))
+      if ((*(equal + 24) & 4) == 0 || self->_sumest != *(equal + 5))
       {
         goto LABEL_17;
       }
     }
 
-    else if ((*(a3 + 24) & 4) != 0)
+    else if ((*(equal + 24) & 4) != 0)
     {
       goto LABEL_17;
     }
 
-    LOBYTE(v5) = (*(a3 + 24) & 1) == 0;
+    LOBYTE(v5) = (*(equal + 24) & 1) == 0;
     if (*&self->_has)
     {
-      if ((*(a3 + 24) & 1) == 0 || self->_fPal != *(a3 + 2))
+      if ((*(equal + 24) & 1) == 0 || self->_fPal != *(equal + 2))
       {
         goto LABEL_17;
       }
@@ -342,15 +342,15 @@ LABEL_17:
   return v4 ^ v8 ^ v12 ^ (2654435761 * self->_nPairs);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_nPairs = *(a3 + 4);
-  v3 = *(a3 + 24);
+  self->_nPairs = *(from + 4);
+  v3 = *(from + 24);
   if ((v3 & 2) != 0)
   {
-    self->_lsest = *(a3 + 3);
+    self->_lsest = *(from + 3);
     *&self->_has |= 2u;
-    v3 = *(a3 + 24);
+    v3 = *(from + 24);
     if ((v3 & 4) == 0)
     {
 LABEL_3:
@@ -360,20 +360,20 @@ LABEL_3:
       }
 
 LABEL_7:
-      self->_fPal = *(a3 + 2);
+      self->_fPal = *(from + 2);
       *&self->_has |= 1u;
       return;
     }
   }
 
-  else if ((*(a3 + 24) & 4) == 0)
+  else if ((*(from + 24) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_sumest = *(a3 + 5);
+  self->_sumest = *(from + 5);
   *&self->_has |= 4u;
-  if (*(a3 + 24))
+  if (*(from + 24))
   {
     goto LABEL_7;
   }

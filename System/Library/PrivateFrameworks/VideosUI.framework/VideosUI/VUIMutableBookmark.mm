@@ -1,22 +1,22 @@
 @interface VUIMutableBookmark
-- (void)setBookmarkTime:(double)a3;
-- (void)setBookmarkTimestamp:(id)a3;
+- (void)setBookmarkTime:(double)time;
+- (void)setBookmarkTimestamp:(id)timestamp;
 @end
 
 @implementation VUIMutableBookmark
 
-- (void)setBookmarkTime:(double)a3
+- (void)setBookmarkTime:(double)time
 {
-  [(VUIBookmark *)self _setBookmarkTimeWithoutUpdatingTimestamp:a3];
-  v4 = [MEMORY[0x1E695DF00] date];
-  [(VUIBookmark *)self _setBookmarkTimestamp:v4];
+  [(VUIBookmark *)self _setBookmarkTimeWithoutUpdatingTimestamp:time];
+  date = [MEMORY[0x1E695DF00] date];
+  [(VUIBookmark *)self _setBookmarkTimestamp:date];
 
   [(VUIBookmark *)self setHasFakeTimestamp:1];
 }
 
-- (void)setBookmarkTimestamp:(id)a3
+- (void)setBookmarkTimestamp:(id)timestamp
 {
-  [(VUIBookmark *)self _setBookmarkTimestamp:a3];
+  [(VUIBookmark *)self _setBookmarkTimestamp:timestamp];
 
   [(VUIBookmark *)self setHasFakeTimestamp:0];
 }

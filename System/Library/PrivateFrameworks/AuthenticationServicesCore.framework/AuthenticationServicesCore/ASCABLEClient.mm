@@ -1,12 +1,12 @@
 @interface ASCABLEClient
 - (NSURL)qrCodeURL;
 - (_TtC26AuthenticationServicesCore13ASCABLEClient)init;
-- (_TtC26AuthenticationServicesCore13ASCABLEClient)initWithDelegate:(id)a3 isRegistrationRequest:(BOOL)a4;
+- (_TtC26AuthenticationServicesCore13ASCABLEClient)initWithDelegate:(id)delegate isRegistrationRequest:(BOOL)request;
 - (void)cancelIfNecessary;
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6;
-- (void)centralManager:(id)a3 didFailToScanWithError:(id)a4;
-- (void)centralManagerDidUpdateState:(id)a3;
-- (void)performAuthenticationOperation:(int64_t)a3 forRelyingPartyIdentifier:(id)a4 completionHandler:(id)a5;
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i;
+- (void)centralManager:(id)manager didFailToScanWithError:(id)error;
+- (void)centralManagerDidUpdateState:(id)state;
+- (void)performAuthenticationOperation:(int64_t)operation forRelyingPartyIdentifier:(id)identifier completionHandler:(id)handler;
 @end
 
 @implementation ASCABLEClient
@@ -42,12 +42,12 @@
   return v11;
 }
 
-- (_TtC26AuthenticationServicesCore13ASCABLEClient)initWithDelegate:(id)a3 isRegistrationRequest:(BOOL)a4
+- (_TtC26AuthenticationServicesCore13ASCABLEClient)initWithDelegate:(id)delegate isRegistrationRequest:(BOOL)request
 {
   swift_getObjectType();
-  v11 = a4;
+  requestCopy = request;
   v6 = swift_unknownObjectRetain();
-  v7 = sub_1C20F1F30(v6, &v11);
+  v7 = sub_1C20F1F30(v6, &requestCopy);
   swift_unknownObjectRelease();
   v8 = *((*MEMORY[0x1E69E7D40] & self->super.isa) + 0x30);
   v9 = *((*MEMORY[0x1E69E7D40] & self->super.isa) + 0x34);
@@ -55,46 +55,46 @@
   return v7;
 }
 
-- (void)performAuthenticationOperation:(int64_t)a3 forRelyingPartyIdentifier:(id)a4 completionHandler:(id)a5
+- (void)performAuthenticationOperation:(int64_t)operation forRelyingPartyIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(handler);
   v8 = sub_1C2170914();
   v10 = v9;
   v11 = swift_allocObject();
   *(v11 + 16) = v7;
-  v12 = self;
-  sub_1C20EC924(a3, v8, v10, sub_1C20EB1A4, v11);
+  selfCopy = self;
+  sub_1C20EC924(operation, v8, v10, sub_1C20EB1A4, v11);
 }
 
 - (void)cancelIfNecessary
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C20F2980(4);
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C20ED324(v4);
+  stateCopy = state;
+  selfCopy = self;
+  sub_1C20ED324(stateCopy);
 }
 
-- (void)centralManager:(id)a3 didFailToScanWithError:(id)a4
+- (void)centralManager:(id)manager didFailToScanWithError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_1C20F2EA4(a4);
+  managerCopy = manager;
+  selfCopy = self;
+  errorCopy = error;
+  sub_1C20F2EA4(error);
 }
 
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i
 {
   v10 = sub_1C2170864();
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = self;
-  sub_1C20F3040(v12, v10);
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  iCopy = i;
+  selfCopy = self;
+  sub_1C20F3040(peripheralCopy, v10);
 }
 
 - (_TtC26AuthenticationServicesCore13ASCABLEClient)init

@@ -1,34 +1,34 @@
 @interface PreferencesAssistantSetAirplaneMode
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation PreferencesAssistantSetAirplaneMode
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[PSAirplaneModeSettingsDetail isEnabled];
-  v6 = [(PreferencesAssistantSetAirplaneMode *)self failOnSiriDisconnectWarnings];
+  failOnSiriDisconnectWarnings = [(PreferencesAssistantSetAirplaneMode *)self failOnSiriDisconnectWarnings];
   if ([(PreferencesAssistantSetAirplaneMode *)self toggle])
   {
-    v7 = (v5 ^ 1);
+    value = (v5 ^ 1);
   }
 
   else
   {
-    v7 = [(PreferencesAssistantSetAirplaneMode *)self value];
+    value = [(PreferencesAssistantSetAirplaneMode *)self value];
   }
 
-  v8 = [(PreferencesAssistantSetAirplaneMode *)self dryRun];
-  v9 = v6 & v7;
-  v10 = v5 ^ v7 ^ 1;
+  dryRun = [(PreferencesAssistantSetAirplaneMode *)self dryRun];
+  v9 = failOnSiriDisconnectWarnings & value;
+  v10 = v5 ^ value ^ 1;
   if ((v9 & 1) != 0 || v10)
   {
     v12 = objc_alloc_init(SACommandFailed);
     v11 = v12;
-    if ((v7 | v10))
+    if ((value | v10))
     {
-      if (v7)
+      if (value)
       {
         v13 = @"This action will disconnect the user from reaching Siri Servers.";
       }
@@ -39,7 +39,7 @@
       }
 
       v14 = &SASettingSiriDisconnectErrorCode;
-      if (!v7)
+      if (!value)
       {
         v14 = &SASettingValueUnchangedErrorCode;
       }
@@ -61,19 +61,19 @@
 
   else
   {
-    v15 = v8;
+    v15 = dryRun;
   }
 
   if ((v15 & 1) == 0)
   {
-    [PSAirplaneModeSettingsDetail setEnabled:v7];
+    [PSAirplaneModeSettingsDetail setEnabled:value];
   }
 
   v16 = PALogForCategory(0);
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v17 = @"Set";
-    if (v8)
+    if (dryRun)
     {
       v17 = @"Dry Run";
     }
@@ -93,7 +93,7 @@
     *&v25[12] = 2112;
     *&v25[14] = v18;
     *&v25[22] = 2112;
-    if (v7)
+    if (value)
     {
       v19 = @"ON";
     }
@@ -114,7 +114,7 @@
   if (!v11)
   {
     v22 = objc_alloc_init(SASettingBooleanEntity);
-    [v22 setValue:v7];
+    [v22 setValue:value];
     v23 = [NSNumber numberWithBool:v5];
     [v22 setPreviousValue:v23];
 
@@ -122,8 +122,8 @@
     [v21 setSetting:v22];
   }
 
-  v24 = [v21 dictionary];
-  v4[2](v4, v24);
+  dictionary = [v21 dictionary];
+  completionCopy[2](completionCopy, dictionary);
 }
 
 @end

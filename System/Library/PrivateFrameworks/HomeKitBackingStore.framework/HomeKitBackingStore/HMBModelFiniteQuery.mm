@@ -1,34 +1,34 @@
 @interface HMBModelFiniteQuery
-+ (id)queryWithSQLPredicate:(id)a3 maximumRowsReturned:(unint64_t)a4 indexedProperties:(id)a5 arguments:(id)a6;
++ (id)queryWithSQLPredicate:(id)predicate maximumRowsReturned:(unint64_t)returned indexedProperties:(id)properties arguments:(id)arguments;
 - (id)indexName;
-- (id)performQueryOn:(id)a3 arguments:(id)a4;
-- (id)sqlSelectStatementForModelType:(id)a3;
+- (id)performQueryOn:(id)on arguments:(id)arguments;
+- (id)sqlSelectStatementForModelType:(id)type;
 @end
 
 @implementation HMBModelFiniteQuery
 
-- (id)sqlSelectStatementForModelType:(id)a3
+- (id)sqlSelectStatementForModelType:(id)type
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [(HMBModelQuery *)self sqlPredicate];
-  v7 = [v4 stringWithFormat:@"SELECT _record_id FROM queryable_%@ WHERE _store_id = :_store_id AND %@ LIMIT %lu", v5, v6, -[HMBModelQuery maximumRowsPerSelect](self, "maximumRowsPerSelect")];
+  typeCopy = type;
+  sqlPredicate = [(HMBModelQuery *)self sqlPredicate];
+  v7 = [v4 stringWithFormat:@"SELECT _record_id FROM queryable_%@ WHERE _store_id = :_store_id AND %@ LIMIT %lu", typeCopy, sqlPredicate, -[HMBModelQuery maximumRowsPerSelect](self, "maximumRowsPerSelect")];
 
   return v7;
 }
 
-- (id)performQueryOn:(id)a3 arguments:(id)a4
+- (id)performQueryOn:(id)on arguments:(id)arguments
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMBModelQuery *)self preparedQueries];
-  v9 = [v6 sql];
-  v10 = [v8 objectForKey:v9];
+  onCopy = on;
+  argumentsCopy = arguments;
+  preparedQueries = [(HMBModelQuery *)self preparedQueries];
+  v9 = [onCopy sql];
+  v10 = [preparedQueries objectForKey:v9];
 
   if (v10)
   {
-    v11 = __encodeArguments(self, v10, v7);
-    v12 = [[HMBLocalZoneQueryResultRecordID alloc] initWithLocalZone:v6 statement:v10 initialSequence:0 arguments:v11 maximumRowsPerSelect:[(HMBModelQuery *)self maximumRowsPerSelect]];
+    v11 = __encodeArguments(self, v10, argumentsCopy);
+    v12 = [[HMBLocalZoneQueryResultRecordID alloc] initWithLocalZone:onCopy statement:v10 initialSequence:0 arguments:v11 maximumRowsPerSelect:[(HMBModelQuery *)self maximumRowsPerSelect]];
 
     return v12;
   }
@@ -44,39 +44,39 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = NSStringFromClass([(HMBModelQuery *)self modelClass]);
-  v5 = [(HMBModelIndexedQuery *)self indexNameSuffix];
-  v6 = [v3 stringWithFormat:@"qf_%@_%@", v4, v5];
+  indexNameSuffix = [(HMBModelIndexedQuery *)self indexNameSuffix];
+  v6 = [v3 stringWithFormat:@"qf_%@_%@", v4, indexNameSuffix];
 
   return v6;
 }
 
-+ (id)queryWithSQLPredicate:(id)a3 maximumRowsReturned:(unint64_t)a4 indexedProperties:(id)a5 arguments:(id)a6
++ (id)queryWithSQLPredicate:(id)predicate maximumRowsReturned:(unint64_t)returned indexedProperties:(id)properties arguments:(id)arguments
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  if (!v9)
+  predicateCopy = predicate;
+  propertiesCopy = properties;
+  argumentsCopy = arguments;
+  if (!predicateCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  if (!a4)
+  if (!returned)
   {
 LABEL_9:
     _HMFPreconditionFailure();
     goto LABEL_10;
   }
 
-  if (!v10)
+  if (!propertiesCopy)
   {
 LABEL_10:
     _HMFPreconditionFailure();
     goto LABEL_11;
   }
 
-  v12 = v11;
-  if (!v11)
+  v12 = argumentsCopy;
+  if (!argumentsCopy)
   {
 LABEL_11:
     v19 = _HMFPreconditionFailure();
@@ -84,13 +84,13 @@ LABEL_11:
     return result;
   }
 
-  v13 = [v10 componentsJoinedByString:@"_"];
-  v14 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v10, "count") + 1}];
+  v13 = [propertiesCopy componentsJoinedByString:@"_"];
+  v14 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(propertiesCopy, "count") + 1}];
   [v14 addObject:@"_store_id"];
-  [v14 addObjectsFromArray:v10];
+  [v14 addObjectsFromArray:propertiesCopy];
   v15 = [HMBModelFiniteQuery alloc];
   v16 = [v14 copy];
-  v17 = [(HMBModelIndexedQuery *)v15 initWithSQLPredicate:v9 initialSequence:0 maximumRowsPerSelect:a4 indexNameSuffix:v13 indexedColumns:v16 arguments:v12];
+  v17 = [(HMBModelIndexedQuery *)v15 initWithSQLPredicate:predicateCopy initialSequence:0 maximumRowsPerSelect:returned indexNameSuffix:v13 indexedColumns:v16 arguments:v12];
 
   return v17;
 }

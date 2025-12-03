@@ -1,19 +1,19 @@
 @interface SAUtilities
-+ (id)breakCommaSeparatedStringToComponents:(id)a3;
-+ (id)createCommaSeparatedString:(id)a3;
-+ (id)splitArray:(id)a3 into:(int)a4;
++ (id)breakCommaSeparatedStringToComponents:(id)components;
++ (id)createCommaSeparatedString:(id)string;
++ (id)splitArray:(id)array into:(int)into;
 + (int)killSADaemon;
 + (int)loadSADaemon;
-+ (void)getFileSize:(id)a3 reply:(id)a4;
++ (void)getFileSize:(id)size reply:(id)reply;
 @end
 
 @implementation SAUtilities
 
-+ (id)splitArray:(id)a3 into:(int)a4
++ (id)splitArray:(id)array into:(int)into
 {
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  arrayCopy = array;
+  v6 = arrayCopy;
+  if (!arrayCopy)
   {
     v7 = SALog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -24,12 +24,12 @@
     goto LABEL_18;
   }
 
-  if ([v5 count] < a4)
+  if ([arrayCopy count] < into)
   {
     v7 = SALog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(SAUtilities *)v6 splitArray:a4 into:v7];
+      [(SAUtilities *)v6 splitArray:into into:v7];
     }
 
 LABEL_18:
@@ -38,12 +38,12 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (a4 <= 0)
+  if (into <= 0)
   {
     v7 = SALog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [SAUtilities splitArray:a4 into:v7];
+      [SAUtilities splitArray:into into:v7];
     }
 
     goto LABEL_18;
@@ -53,7 +53,7 @@ LABEL_18:
   v9 = [v6 count];
   v10 = 0;
   v11 = 0;
-  v12 = v9 / a4;
+  v12 = v9 / into;
   do
   {
     if (v12 >= v9)
@@ -66,7 +66,7 @@ LABEL_18:
       v13 = v12;
     }
 
-    if (v11 >= a4 - 1)
+    if (v11 >= into - 1)
     {
       v13 = v9;
     }
@@ -79,19 +79,19 @@ LABEL_18:
     v9 -= v12;
   }
 
-  while (a4 != v11);
+  while (into != v11);
 LABEL_19:
 
   return v8;
 }
 
-+ (void)getFileSize:(id)a3 reply:(id)a4
++ (void)getFileSize:(id)size reply:(id)reply
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  sizeCopy = size;
   v6 = MEMORY[0x277CBEBC0];
-  v7 = a4;
-  v8 = [v6 fileURLWithPath:v5];
+  replyCopy = reply;
+  v8 = [v6 fileURLWithPath:sizeCopy];
   v18 = 0;
   v9 = *MEMORY[0x277CBE7D0];
   v17 = 0;
@@ -124,7 +124,7 @@ LABEL_19:
       }
 
       *buf = 138412546;
-      v20 = v5;
+      v20 = sizeCopy;
       v21 = 2112;
       v22 = v16;
       _os_log_error_impl(&dword_26B26B000, v13, OS_LOG_TYPE_ERROR, "Failed to get physical size for file (%@)%@", buf, 0x16u);
@@ -133,15 +133,15 @@ LABEL_19:
       }
     }
 
-    v14 = 0;
+    unsignedLongValue = 0;
   }
 
   else
   {
-    v14 = [v10 unsignedLongValue];
+    unsignedLongValue = [v10 unsignedLongValue];
   }
 
-  v7[2](v7, v14, v11);
+  replyCopy[2](replyCopy, unsignedLongValue, v11);
 
   v15 = *MEMORY[0x277D85DE8];
 }
@@ -191,19 +191,19 @@ LABEL_3:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)createCommaSeparatedString:(id)a3
++ (id)createCommaSeparatedString:(id)string
 {
-  v3 = [a3 allObjects];
-  v4 = [v3 sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
+  allObjects = [string allObjects];
+  v4 = [allObjects sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
 
   v5 = [v4 componentsJoinedByString:{@", "}];
 
   return v5;
 }
 
-+ (id)breakCommaSeparatedStringToComponents:(id)a3
++ (id)breakCommaSeparatedStringToComponents:(id)components
 {
-  v3 = [a3 componentsSeparatedByString:{@", "}];
+  v3 = [components componentsSeparatedByString:{@", "}];
   v4 = [MEMORY[0x277CBEB98] setWithArray:v3];
 
   return v4;
@@ -216,9 +216,9 @@ LABEL_3:
   [v2 setArguments:&unk_287BCCB50];
   [v2 launchAndReturnError:0];
   [v2 waitUntilExit];
-  v3 = [v2 terminationStatus];
+  terminationStatus = [v2 terminationStatus];
 
-  return v3;
+  return terminationStatus;
 }
 
 + (int)loadSADaemon
@@ -228,9 +228,9 @@ LABEL_3:
   [v2 setArguments:&unk_287BCCB68];
   [v2 launchAndReturnError:0];
   [v2 waitUntilExit];
-  v3 = [v2 terminationStatus];
+  terminationStatus = [v2 terminationStatus];
 
-  return v3;
+  return terminationStatus;
 }
 
 + (void)splitArray:(int)a1 into:(NSObject *)a2 .cold.1(int a1, NSObject *a2)

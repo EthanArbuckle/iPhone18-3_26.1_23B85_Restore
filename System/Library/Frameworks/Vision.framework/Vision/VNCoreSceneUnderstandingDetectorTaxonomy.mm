@@ -1,58 +1,58 @@
 @interface VNCoreSceneUnderstandingDetectorTaxonomy
-+ (id)taxonomyForCSUTaxonomy:(id)a3 vocabularyNames:(id)a4 error:(id *)a5;
-- (id)_initWithLabels:(id)a3 classificationMetricsForLabelDictionary:(id)a4;
-- (id)classificationMetricsForLabel:(id)a3;
-- (id)labelsFilteredByDisallowedList:(id)a3;
++ (id)taxonomyForCSUTaxonomy:(id)taxonomy vocabularyNames:(id)names error:(id *)error;
+- (id)_initWithLabels:(id)labels classificationMetricsForLabelDictionary:(id)dictionary;
+- (id)classificationMetricsForLabel:(id)label;
+- (id)labelsFilteredByDisallowedList:(id)list;
 @end
 
 @implementation VNCoreSceneUnderstandingDetectorTaxonomy
 
-- (id)classificationMetricsForLabel:(id)a3
+- (id)classificationMetricsForLabel:(id)label
 {
-  v3 = [(NSDictionary *)self->_classificationMetricsForLabelDictionary objectForKey:a3];
+  v3 = [(NSDictionary *)self->_classificationMetricsForLabelDictionary objectForKey:label];
 
   return v3;
 }
 
-- (id)labelsFilteredByDisallowedList:(id)a3
+- (id)labelsFilteredByDisallowedList:(id)list
 {
-  v4 = a3;
-  v5 = [(VNCoreSceneUnderstandingDetectorTaxonomy *)self labels];
-  if (v4)
+  listCopy = list;
+  labels = [(VNCoreSceneUnderstandingDetectorTaxonomy *)self labels];
+  if (listCopy)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __75__VNCoreSceneUnderstandingDetectorTaxonomy_labelsFilteredByDisallowedList___block_invoke;
     v10[3] = &unk_1E77B4DF0;
-    v11 = v4;
-    v6 = [v5 indexesOfObjectsPassingTest:v10];
+    v11 = listCopy;
+    v6 = [labels indexesOfObjectsPassingTest:v10];
     if ([v6 count])
     {
-      v7 = [v5 mutableCopy];
+      v7 = [labels mutableCopy];
       [v7 removeObjectsAtIndexes:v6];
       v8 = [v7 copy];
 
-      v5 = v8;
+      labels = v8;
     }
   }
 
-  return v5;
+  return labels;
 }
 
-- (id)_initWithLabels:(id)a3 classificationMetricsForLabelDictionary:(id)a4
+- (id)_initWithLabels:(id)labels classificationMetricsForLabelDictionary:(id)dictionary
 {
-  v6 = a3;
-  v7 = a4;
+  labelsCopy = labels;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = VNCoreSceneUnderstandingDetectorTaxonomy;
   v8 = [(VNCoreSceneUnderstandingDetectorTaxonomy *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [labelsCopy copy];
     labels = v8->_labels;
     v8->_labels = v9;
 
-    v11 = [v7 copy];
+    v11 = [dictionaryCopy copy];
     classificationMetricsForLabelDictionary = v8->_classificationMetricsForLabelDictionary;
     v8->_classificationMetricsForLabelDictionary = v11;
   }
@@ -60,11 +60,11 @@
   return v8;
 }
 
-+ (id)taxonomyForCSUTaxonomy:(id)a3 vocabularyNames:(id)a4 error:(id *)a5
++ (id)taxonomyForCSUTaxonomy:(id)taxonomy vocabularyNames:(id)names error:(id *)error
 {
   v43 = *MEMORY[0x1E69E9840];
-  v20 = a3;
-  v21 = a4;
+  taxonomyCopy = taxonomy;
+  namesCopy = names;
   v19 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v36 = 0;
@@ -83,7 +83,7 @@
   aBlock[3] = &unk_1E77B4DC8;
   v9 = v19;
   v27 = v9;
-  v10 = v20;
+  v10 = taxonomyCopy;
   v28 = v10;
   v30 = &v36;
   v31 = &v32;
@@ -94,7 +94,7 @@
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v13 = v21;
+  v13 = namesCopy;
   v14 = [v13 countByEnumeratingWithState:&v22 objects:v42 count:16];
   if (v14)
   {
@@ -111,9 +111,9 @@
         [v10 enumerateLabelsInVocabularyNamed:*(*(&v22 + 1) + 8 * i) usingBlock:v12];
         if ((v33[3] & 1) == 0)
         {
-          if (a5)
+          if (error)
           {
-            *a5 = v37[5];
+            *error = v37[5];
           }
 
           v17 = 0;
@@ -132,7 +132,7 @@
   }
 
   [v9 sortUsingSelector:sel_compare_];
-  v17 = [[a1 alloc] _initWithLabels:v9 classificationMetricsForLabelDictionary:v11];
+  v17 = [[self alloc] _initWithLabels:v9 classificationMetricsForLabelDictionary:v11];
 LABEL_13:
 
   _Block_object_dispose(&v32, 8);

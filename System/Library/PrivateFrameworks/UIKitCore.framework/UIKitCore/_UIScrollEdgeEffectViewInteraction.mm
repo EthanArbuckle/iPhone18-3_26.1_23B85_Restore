@@ -4,25 +4,25 @@
 - (UIEdgeInsets)effectInsets;
 - (UIView)_view;
 - (UIView)view;
-- (id)debugInfoVerbose:(BOOL)a3;
-- (id)edgeEffectFor:(unint64_t)a3;
-- (id)existingPocketFor:(unint64_t)a3;
-- (id)forcingPocketFor:(unint64_t)a3;
-- (void)_scrollPocketRegistrationInteractionDidInvalidatePosition:(id)a3;
+- (id)debugInfoVerbose:(BOOL)verbose;
+- (id)edgeEffectFor:(unint64_t)for;
+- (id)existingPocketFor:(unint64_t)for;
+- (id)forcingPocketFor:(unint64_t)for;
+- (void)_scrollPocketRegistrationInteractionDidInvalidatePosition:(id)position;
 - (void)_viewVisibilityDidChange;
-- (void)appendDescriptionToStream:(id)a3;
+- (void)appendDescriptionToStream:(id)stream;
 - (void)backgroundColorDidChange;
-- (void)setBottomPocket:(id)a3;
-- (void)setIsEnabled:(BOOL)a3;
-- (void)setLeftPocket:(id)a3;
-- (void)setRegistrationInteraction:(id)a3;
-- (void)setRightPocket:(id)a3;
-- (void)setTopPocket:(id)a3;
-- (void)set_view:(id)a3;
+- (void)setBottomPocket:(id)pocket;
+- (void)setIsEnabled:(BOOL)enabled;
+- (void)setLeftPocket:(id)pocket;
+- (void)setRegistrationInteraction:(id)interaction;
+- (void)setRightPocket:(id)pocket;
+- (void)setTopPocket:(id)pocket;
+- (void)set_view:(id)set_view;
 - (void)updateEffectAndCaptureViewFrames;
-- (void)updatePocket:(id)a3 contentRect:(CGRect)a4 velocity:(double)a5 isTracking:(BOOL)a6 shouldAnimateVisibility:(BOOL)a7;
+- (void)updatePocket:(id)pocket contentRect:(CGRect)rect velocity:(double)velocity isTracking:(BOOL)tracking shouldAnimateVisibility:(BOOL)visibility;
 - (void)updateScrollPocketCollectorModelHidden;
-- (void)updateWithContentRect:(CGRect)a3 velocity:(double)a4 isTracking:(BOOL)a5 shouldAnimateVisibility:(BOOL)a6;
+- (void)updateWithContentRect:(CGRect)rect velocity:(double)velocity isTracking:(BOOL)tracking shouldAnimateVisibility:(BOOL)visibility;
 @end
 
 @implementation _UIScrollEdgeEffectViewInteraction
@@ -34,97 +34,97 @@
   return Strong;
 }
 
-- (void)set_view:(id)a3
+- (void)set_view:(id)set_view
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   swift_unknownObjectWeakAssign();
-  v6 = a3;
-  v7 = self;
+  set_viewCopy = set_view;
+  selfCopy = self;
   sub_189046E5C(Strong);
 }
 
 - (UIView)view
 {
-  v2 = [(_UIScrollEdgeEffectViewInteraction *)self _view];
+  _view = [(_UIScrollEdgeEffectViewInteraction *)self _view];
 
-  return v2;
+  return _view;
 }
 
-- (id)edgeEffectFor:(unint64_t)a3
+- (id)edgeEffectFor:(unint64_t)for
 {
-  v4 = self;
-  v5 = sub_189047034(a3);
+  selfCopy = self;
+  v5 = sub_189047034(for);
 
   return v5;
 }
 
-- (void)setIsEnabled:(BOOL)a3
+- (void)setIsEnabled:(BOOL)enabled
 {
   v4 = *(self + OBJC_IVAR____UIScrollEdgeEffectViewInteraction_isEnabled);
-  *(self + OBJC_IVAR____UIScrollEdgeEffectViewInteraction_isEnabled) = a3;
-  if (v4 != a3)
+  *(self + OBJC_IVAR____UIScrollEdgeEffectViewInteraction_isEnabled) = enabled;
+  if (v4 != enabled)
   {
-    v6 = self;
-    [(_UIScrollEdgeEffectViewInteraction *)v6 updateScrollPocketCollectorModelHidden];
-    v5 = [(_UIScrollEdgeEffectViewInteraction *)v6 view];
-    [(UIView *)v5 setNeedsLayout];
+    selfCopy = self;
+    [(_UIScrollEdgeEffectViewInteraction *)selfCopy updateScrollPocketCollectorModelHidden];
+    view = [(_UIScrollEdgeEffectViewInteraction *)selfCopy view];
+    [(UIView *)view setNeedsLayout];
   }
 }
 
-- (void)setRegistrationInteraction:(id)a3
+- (void)setRegistrationInteraction:(id)interaction
 {
   v4 = *(self + OBJC_IVAR____UIScrollEdgeEffectViewInteraction_registrationInteraction);
-  *(self + OBJC_IVAR____UIScrollEdgeEffectViewInteraction_registrationInteraction) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____UIScrollEdgeEffectViewInteraction_registrationInteraction) = interaction;
+  interactionCopy = interaction;
 }
 
-- (void)setTopPocket:(id)a3
+- (void)setTopPocket:(id)pocket
 {
   v4 = *(self + OBJC_IVAR____UIScrollEdgeEffectViewInteraction_topPocket);
-  *(self + OBJC_IVAR____UIScrollEdgeEffectViewInteraction_topPocket) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____UIScrollEdgeEffectViewInteraction_topPocket) = pocket;
+  pocketCopy = pocket;
 }
 
-- (void)setLeftPocket:(id)a3
+- (void)setLeftPocket:(id)pocket
 {
   v4 = *(self + OBJC_IVAR____UIScrollEdgeEffectViewInteraction_leftPocket);
-  *(self + OBJC_IVAR____UIScrollEdgeEffectViewInteraction_leftPocket) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____UIScrollEdgeEffectViewInteraction_leftPocket) = pocket;
+  pocketCopy = pocket;
 }
 
-- (void)setBottomPocket:(id)a3
+- (void)setBottomPocket:(id)pocket
 {
   v4 = *(self + OBJC_IVAR____UIScrollEdgeEffectViewInteraction_bottomPocket);
-  *(self + OBJC_IVAR____UIScrollEdgeEffectViewInteraction_bottomPocket) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____UIScrollEdgeEffectViewInteraction_bottomPocket) = pocket;
+  pocketCopy = pocket;
 }
 
-- (void)setRightPocket:(id)a3
+- (void)setRightPocket:(id)pocket
 {
   v4 = *(self + OBJC_IVAR____UIScrollEdgeEffectViewInteraction_rightPocket);
-  *(self + OBJC_IVAR____UIScrollEdgeEffectViewInteraction_rightPocket) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____UIScrollEdgeEffectViewInteraction_rightPocket) = pocket;
+  pocketCopy = pocket;
 }
 
-- (id)existingPocketFor:(unint64_t)a3
+- (id)existingPocketFor:(unint64_t)for
 {
-  v4 = self;
-  v5 = sub_1890473E0(a3);
+  selfCopy = self;
+  v5 = sub_1890473E0(for);
 
   return v5;
 }
 
-- (id)forcingPocketFor:(unint64_t)a3
+- (id)forcingPocketFor:(unint64_t)for
 {
-  v4 = self;
-  v5 = sub_189047484(a3);
+  selfCopy = self;
+  v5 = sub_189047484(for);
 
   return v5;
 }
 
 - (BOOL)needsPockets
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_189047838();
 
   return v3 & 1;
@@ -132,7 +132,7 @@
 
 - (UIEdgeInsets)effectInsets
 {
-  v2 = self;
+  selfCopy = self;
   sub_189047B5C();
   v4 = v3;
   v6 = v5;
@@ -152,81 +152,81 @@
 
 - (void)updateScrollPocketCollectorModelHidden
 {
-  v2 = self;
+  selfCopy = self;
   sub_189048130();
 }
 
-- (void)updateWithContentRect:(CGRect)a3 velocity:(double)a4 isTracking:(BOOL)a5 shouldAnimateVisibility:(BOOL)a6
+- (void)updateWithContentRect:(CGRect)rect velocity:(double)velocity isTracking:(BOOL)tracking shouldAnimateVisibility:(BOOL)visibility
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = self;
-  sub_18904834C(a5, a6, x, y, width, height, a4);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
+  sub_18904834C(tracking, visibility, x, y, width, height, velocity);
 }
 
 - (void)updateEffectAndCaptureViewFrames
 {
-  v2 = self;
+  selfCopy = self;
   sub_1890485E8();
 }
 
-- (void)updatePocket:(id)a3 contentRect:(CGRect)a4 velocity:(double)a5 isTracking:(BOOL)a6 shouldAnimateVisibility:(BOOL)a7
+- (void)updatePocket:(id)pocket contentRect:(CGRect)rect velocity:(double)velocity isTracking:(BOOL)tracking shouldAnimateVisibility:(BOOL)visibility
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v16 = a3;
-  v17 = self;
-  sub_189048728(a3, a6, a7, x, y, width, height, a5);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  pocketCopy = pocket;
+  selfCopy = self;
+  sub_189048728(pocket, tracking, visibility, x, y, width, height, velocity);
 }
 
 - (void)backgroundColorDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_189049910();
 }
 
-- (void)_scrollPocketRegistrationInteractionDidInvalidatePosition:(id)a3
+- (void)_scrollPocketRegistrationInteractionDidInvalidatePosition:(id)position
 {
-  v4 = a3;
-  v5 = self;
+  positionCopy = position;
+  selfCopy = self;
   sub_18904AE58();
 }
 
 - (void)_viewVisibilityDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_189049AA4();
 }
 
 - (NSString)description
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 descriptionForRootObject_];
-  if (!v5)
+  selfCopy = self;
+  descriptionForRootObject_ = [v3 descriptionForRootObject_];
+  if (!descriptionForRootObject_)
   {
     sub_18A4A7288();
-    v5 = sub_18A4A7258();
+    descriptionForRootObject_ = sub_18A4A7258();
   }
 
-  return v5;
+  return descriptionForRootObject_;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
-  v5 = self;
-  sub_189049D24(v4);
+  streamCopy = stream;
+  selfCopy = self;
+  sub_189049D24(streamCopy);
 }
 
-- (id)debugInfoVerbose:(BOOL)a3
+- (id)debugInfoVerbose:(BOOL)verbose
 {
-  v4 = self;
-  sub_18904A2F4(a3);
+  selfCopy = self;
+  sub_18904A2F4(verbose);
 
   v5 = sub_18A4A7258();
 

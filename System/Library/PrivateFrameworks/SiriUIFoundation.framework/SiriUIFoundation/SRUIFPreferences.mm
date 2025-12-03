@@ -1,13 +1,13 @@
 @interface SRUIFPreferences
-- (SRUIFPreferences)initWithDefaultsAtURL:(id)a3;
-- (SRUIFPreferences)initWithDefaultsResource:(id)a3 withExtension:(id)a4 inBundle:(id)a5;
-- (SRUIFPreferences)initWithSuiteName:(id)a3;
+- (SRUIFPreferences)initWithDefaultsAtURL:(id)l;
+- (SRUIFPreferences)initWithDefaultsResource:(id)resource withExtension:(id)extension inBundle:(id)bundle;
+- (SRUIFPreferences)initWithSuiteName:(id)name;
 - (SRUIFPreferencesDelegate)delegate;
-- (void)_mutateValueForKey:(id)a3 block:(id)a4;
-- (void)setBool:(BOOL)a3 forKey:(id)a4;
-- (void)setDouble:(double)a3 forKey:(id)a4;
-- (void)setInteger:(int64_t)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)_mutateValueForKey:(id)key block:(id)block;
+- (void)setBool:(BOOL)bool forKey:(id)key;
+- (void)setDouble:(double)double forKey:(id)key;
+- (void)setInteger:(int64_t)integer forKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation SRUIFPreferences
@@ -19,15 +19,15 @@
   return WeakRetained;
 }
 
-- (SRUIFPreferences)initWithSuiteName:(id)a3
+- (SRUIFPreferences)initWithSuiteName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = SRUIFPreferences;
   v5 = [(SRUIFPreferences *)&v9 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:v4];
+    v6 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:nameCopy];
     userDefaults = v5->_userDefaults;
     v5->_userDefaults = v6;
   }
@@ -35,10 +35,10 @@
   return v5;
 }
 
-- (SRUIFPreferences)initWithDefaultsAtURL:(id)a3
+- (SRUIFPreferences)initWithDefaultsAtURL:(id)l
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   v18.receiver = self;
   v18.super_class = SRUIFPreferences;
   v5 = [(SRUIFPreferences *)&v18 init];
@@ -48,10 +48,10 @@
     userDefaults = v5->_userDefaults;
     v5->_userDefaults = v6;
 
-    if (v4)
+    if (lCopy)
     {
       v17 = 0;
-      v8 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v4 options:0 error:&v17];
+      v8 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:lCopy options:0 error:&v17];
       v9 = v17;
       if (v8)
       {
@@ -74,7 +74,7 @@
             v21 = 2114;
             v22 = v5;
             v23 = 2114;
-            v24 = v4;
+            v24 = lCopy;
             v25 = 2114;
             v26 = v11;
             _os_log_error_impl(&dword_26951F000, v13, OS_LOG_TYPE_ERROR, "%s %{public}@ unable to parse defaults property list at %{public}@: %{public}@", buf, 0x2Au);
@@ -94,7 +94,7 @@
           v21 = 2114;
           v22 = v5;
           v23 = 2114;
-          v24 = v4;
+          v24 = lCopy;
           v25 = 2114;
           v26 = v9;
           _os_log_error_impl(&dword_26951F000, v12, OS_LOG_TYPE_ERROR, "%s %{public}@ unable to read defaults from %{public}@: %{public}@", buf, 0x2Au);
@@ -107,44 +107,44 @@
   return v5;
 }
 
-- (SRUIFPreferences)initWithDefaultsResource:(id)a3 withExtension:(id)a4 inBundle:(id)a5
+- (SRUIFPreferences)initWithDefaultsResource:(id)resource withExtension:(id)extension inBundle:(id)bundle
 {
-  v6 = [a5 URLForResource:a3 withExtension:a4];
+  v6 = [bundle URLForResource:resource withExtension:extension];
   v7 = [(SRUIFPreferences *)self initWithDefaultsAtURL:v6];
 
   return v7;
 }
 
-- (void)_mutateValueForKey:(id)a3 block:(id)a4
+- (void)_mutateValueForKey:(id)key block:(id)block
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  keyCopy = key;
+  blockCopy = block;
+  v7 = blockCopy;
+  if (blockCopy)
   {
-    (*(v6 + 2))(v6);
-    v8 = [(SRUIFPreferences *)self delegate];
+    (*(blockCopy + 2))(blockCopy);
+    delegate = [(SRUIFPreferences *)self delegate];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(SRUIFPreferences *)self delegate];
-      [v10 preferences:self didChangeValueForKey:v11];
+      delegate2 = [(SRUIFPreferences *)self delegate];
+      [delegate2 preferences:self didChangeValueForKey:keyCopy];
     }
   }
 }
 
-- (void)setInteger:(int64_t)a3 forKey:(id)a4
+- (void)setInteger:(int64_t)integer forKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __38__SRUIFPreferences_setInteger_forKey___block_invoke;
   v8[3] = &unk_279C617D0;
   objc_copyWeak(v10, &location);
-  v10[1] = a3;
-  v7 = v6;
+  v10[1] = integer;
+  v7 = keyCopy;
   v9 = v7;
   [(SRUIFPreferences *)self _mutateValueForKey:v7 block:v8];
 
@@ -158,17 +158,17 @@ void __38__SRUIFPreferences_setInteger_forKey___block_invoke(uint64_t a1)
   [WeakRetained[1] setInteger:*(a1 + 48) forKey:*(a1 + 32)];
 }
 
-- (void)setDouble:(double)a3 forKey:(id)a4
+- (void)setDouble:(double)double forKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __37__SRUIFPreferences_setDouble_forKey___block_invoke;
   v8[3] = &unk_279C617D0;
   objc_copyWeak(v10, &location);
-  v10[1] = *&a3;
-  v7 = v6;
+  v10[1] = *&double;
+  v7 = keyCopy;
   v9 = v7;
   [(SRUIFPreferences *)self _mutateValueForKey:v7 block:v8];
 
@@ -182,17 +182,17 @@ void __37__SRUIFPreferences_setDouble_forKey___block_invoke(uint64_t a1)
   [WeakRetained[1] setDouble:*(a1 + 32) forKey:*(a1 + 48)];
 }
 
-- (void)setBool:(BOOL)a3 forKey:(id)a4
+- (void)setBool:(BOOL)bool forKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __35__SRUIFPreferences_setBool_forKey___block_invoke;
   v8[3] = &unk_279C617F8;
   objc_copyWeak(&v10, &location);
-  v11 = a3;
-  v7 = v6;
+  boolCopy = bool;
+  v7 = keyCopy;
   v9 = v7;
   [(SRUIFPreferences *)self _mutateValueForKey:v7 block:v8];
 
@@ -206,19 +206,19 @@ void __35__SRUIFPreferences_setBool_forKey___block_invoke(uint64_t a1)
   [WeakRetained[1] setBool:*(a1 + 48) forKey:*(a1 + 32)];
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  keyCopy = key;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __37__SRUIFPreferences_setObject_forKey___block_invoke;
   v10[3] = &unk_279C61820;
   objc_copyWeak(&v13, &location);
-  v8 = v6;
+  v8 = objectCopy;
   v11 = v8;
-  v9 = v7;
+  v9 = keyCopy;
   v12 = v9;
   [(SRUIFPreferences *)self _mutateValueForKey:v9 block:v10];
 

@@ -1,13 +1,13 @@
 @interface AlwaysAllowed
 + (id)defaultAlwaysAllowed;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSSet)apps;
 - (_TtC14ScreenTimeCore13AlwaysAllowed)init;
-- (_TtC14ScreenTimeCore13AlwaysAllowed)initWithApps:(id)a3;
-- (id)addWithApp:(id)a3;
-- (id)removeWithApp:(id)a3;
+- (_TtC14ScreenTimeCore13AlwaysAllowed)initWithApps:(id)apps;
+- (id)addWithApp:(id)app;
+- (id)removeWithApp:(id)app;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AlwaysAllowed
@@ -21,7 +21,7 @@
   return v3;
 }
 
-- (_TtC14ScreenTimeCore13AlwaysAllowed)initWithApps:(id)a3
+- (_TtC14ScreenTimeCore13AlwaysAllowed)initWithApps:(id)apps
 {
   *(self + OBJC_IVAR____TtC14ScreenTimeCore13AlwaysAllowed_apps) = sub_1B83DDE7C();
   v5.receiver = self;
@@ -43,7 +43,7 @@
   return v5;
 }
 
-- (id)addWithApp:(id)a3
+- (id)addWithApp:(id)app
 {
   v4 = sub_1B83DDCEC();
   v6 = v5;
@@ -53,7 +53,7 @@
   *(inited + 16) = xmmword_1B83E80B0;
   *(inited + 32) = v4;
   *(inited + 40) = v6;
-  v9 = self;
+  selfCopy = self;
 
   v10 = sub_1B83A57BC(inited, v7);
   swift_setDeallocating();
@@ -68,7 +68,7 @@
   return v13;
 }
 
-- (id)removeWithApp:(id)a3
+- (id)removeWithApp:(id)app
 {
   v4 = sub_1B83DDCEC();
   v6 = v5;
@@ -78,7 +78,7 @@
   *(inited + 16) = xmmword_1B83E80B0;
   *(inited + 32) = v4;
   *(inited + 40) = v6;
-  v9 = self;
+  selfCopy = self;
 
   v10 = sub_1B83A321C(inited, v7);
   swift_setDeallocating();
@@ -94,32 +94,32 @@
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *(self + OBJC_IVAR____TtC14ScreenTimeCore13AlwaysAllowed_apps);
-  v5 = a3;
-  v8 = self;
+  coderCopy = coder;
+  selfCopy = self;
   v6 = sub_1B83DDE5C();
   v7 = sub_1B83DDCBC();
-  [v5 encodeObject:v6 forKey:v7];
+  [coderCopy encodeObject:v6 forKey:v7];
 }
 
 - (int64_t)hash
 {
   sub_1B83DE25C();
   v3 = *(self + OBJC_IVAR____TtC14ScreenTimeCore13AlwaysAllowed_apps);
-  v4 = self;
+  selfCopy = self;
   sub_1B83A52D0(v7, v3);
   v5 = sub_1B83DE23C();
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1B83DDF5C();
     swift_unknownObjectRelease();
@@ -128,7 +128,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_1B83A2460(v8);

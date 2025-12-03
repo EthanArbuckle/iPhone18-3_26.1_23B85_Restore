@@ -1,14 +1,14 @@
 @interface NTKRichComplicationExtraLargeCircularStackTextView
-+ (BOOL)handlesComplicationTemplate:(id)a3;
++ (BOOL)handlesComplicationTemplate:(id)template;
 - (NTKRichComplicationExtraLargeCircularStackTextView)init;
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4;
+- (void)_handleTemplate:(id)template reason:(int64_t)reason;
 @end
 
 @implementation NTKRichComplicationExtraLargeCircularStackTextView
 
-+ (BOOL)handlesComplicationTemplate:(id)a3
++ (BOOL)handlesComplicationTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -22,17 +22,17 @@
   return [(NTKRichComplicationBaseCircularStackTextView *)&v3 initWithFamily:12];
 }
 
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4
+- (void)_handleTemplate:(id)template reason:(int64_t)reason
 {
-  v5 = a3;
-  v6 = [v5 line1TextProvider];
-  v7 = [(NTKRichComplicationBaseCircularStackTextView *)self line1Label];
-  [v7 setTextProvider:v6];
+  templateCopy = template;
+  line1TextProvider = [templateCopy line1TextProvider];
+  line1Label = [(NTKRichComplicationBaseCircularStackTextView *)self line1Label];
+  [line1Label setTextProvider:line1TextProvider];
 
-  v9 = [v5 line2TextProvider];
+  line2TextProvider = [templateCopy line2TextProvider];
 
-  v8 = [(NTKRichComplicationBaseCircularStackTextView *)self line2Label];
-  [v8 setTextProvider:v9];
+  line2Label = [(NTKRichComplicationBaseCircularStackTextView *)self line2Label];
+  [line2Label setTextProvider:line2TextProvider];
 }
 
 @end

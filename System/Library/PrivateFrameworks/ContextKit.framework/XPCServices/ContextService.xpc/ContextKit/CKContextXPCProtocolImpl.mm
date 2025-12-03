@@ -1,36 +1,36 @@
 @interface CKContextXPCProtocolImpl
 + (id)dumpEnvironment;
-+ (void)_shutdownServiceWithReply:(id)a3;
++ (void)_shutdownServiceWithReply:(id)reply;
 + (void)initialize;
-- (CKContextXPCProtocolImpl)initWithAssets:(id)a3;
+- (CKContextXPCProtocolImpl)initWithAssets:(id)assets;
 - (id)_contextEngineInstance;
-- (unint64_t)_totalDonationsToWaitForWithDonationState:(id)a3;
-- (void)_findResultsForRequest:(id)a3 withReply:(id)a4 isServiceInternal:(BOOL)a5 transaction:(id)a6;
-- (void)ancestorsForTopics:(id)a3 withReply:(id)a4;
-- (void)capabilitiesForRequestType:(unint64_t)a3 withReply:(id)a4;
+- (unint64_t)_totalDonationsToWaitForWithDonationState:(id)state;
+- (void)_findResultsForRequest:(id)request withReply:(id)reply isServiceInternal:(BOOL)internal transaction:(id)transaction;
+- (void)ancestorsForTopics:(id)topics withReply:(id)reply;
+- (void)capabilitiesForRequestType:(unint64_t)type withReply:(id)reply;
 - (void)dealloc;
-- (void)donate:(id)a3;
-- (void)findCategorizationsForRequest:(id)a3 withReply:(id)a4;
-- (void)findResultsForRequest:(id)a3 withReply:(id)a4;
-- (void)groupResponses:(id)a3 withReply:(id)a4;
-- (void)logEngagementForResponseId:(id)a3 result:(id)a4 rank:(unint64_t)a5 inputLength:(unint64_t)a6 completionLength:(unint64_t)a7 requestType:(unint64_t)a8 logType:(unint64_t)a9;
-- (void)logTransactionSuccessfulForResponseId:(id)a3 inputLength:(unint64_t)a4 completionLength:(unint64_t)a5 requestType:(unint64_t)a6 logType:(unint64_t)a7;
-- (void)shutdownServiceWithReply:(id)a3;
-- (void)statusWithReply:(id)a3;
-- (void)warmUpForRequestType:(unint64_t)a3 withReply:(id)a4;
+- (void)donate:(id)donate;
+- (void)findCategorizationsForRequest:(id)request withReply:(id)reply;
+- (void)findResultsForRequest:(id)request withReply:(id)reply;
+- (void)groupResponses:(id)responses withReply:(id)reply;
+- (void)logEngagementForResponseId:(id)id result:(id)result rank:(unint64_t)rank inputLength:(unint64_t)length completionLength:(unint64_t)completionLength requestType:(unint64_t)type logType:(unint64_t)logType;
+- (void)logTransactionSuccessfulForResponseId:(id)id inputLength:(unint64_t)length completionLength:(unint64_t)completionLength requestType:(unint64_t)type logType:(unint64_t)logType;
+- (void)shutdownServiceWithReply:(id)reply;
+- (void)statusWithReply:(id)reply;
+- (void)warmUpForRequestType:(unint64_t)type withReply:(id)reply;
 @end
 
 @implementation CKContextXPCProtocolImpl
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     pthread_mutex_init(&stru_1005571A8, 0);
     atomic_store(0, &qword_100557198);
-    v2 = [[CKContextSemaphore alloc] initSemaphoreForXPCService];
+    initSemaphoreForXPCService = [[CKContextSemaphore alloc] initSemaphoreForXPCService];
     v3 = qword_1005571A0;
-    qword_1005571A0 = v2;
+    qword_1005571A0 = initSemaphoreForXPCService;
 
     [qword_1005571A0 resetPending];
     if (notify_register_plain() && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -48,16 +48,16 @@
   }
 }
 
-- (CKContextXPCProtocolImpl)initWithAssets:(id)a3
+- (CKContextXPCProtocolImpl)initWithAssets:(id)assets
 {
-  v5 = a3;
+  assetsCopy = assets;
   v20.receiver = self;
   v20.super_class = CKContextXPCProtocolImpl;
   v6 = [(CKContextXPCProtocolImpl *)&v20 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_assets, a3);
+    objc_storeStrong(&v6->_assets, assets);
     v8 = [NSMapTable mapTableWithKeyOptions:0 valueOptions:5];
     donationExecutorsMap = v7->_donationExecutorsMap;
     v7->_donationExecutorsMap = v8;
@@ -106,23 +106,23 @@
   [(CKContextXPCProtocolImpl *)&v8 dealloc];
 }
 
-- (void)shutdownServiceWithReply:(id)a3
+- (void)shutdownServiceWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     *v4 = 0;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "Received shutdown request", v4, 2u);
   }
 
-  [objc_opt_class() _shutdownServiceWithReply:v3];
+  [objc_opt_class() _shutdownServiceWithReply:replyCopy];
 }
 
-+ (void)_shutdownServiceWithReply:(id)a3
++ (void)_shutdownServiceWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v5 = +[NSNotificationCenter defaultCenter];
-  v4 = objc_retainBlock(v3);
+  v4 = objc_retainBlock(replyCopy);
 
   [v5 postNotificationName:@"shutdownService" object:v4];
 }
@@ -143,12 +143,12 @@
   return v5;
 }
 
-- (void)warmUpForRequestType:(unint64_t)a3 withReply:(id)a4
+- (void)warmUpForRequestType:(unint64_t)type withReply:(id)reply
 {
-  v5 = a4;
+  replyCopy = reply;
   v6 = objc_autoreleasePoolPush();
-  v7 = [(CKContextXPCProtocolImpl *)self _contextEngineInstance];
-  if ([v7 disabled])
+  _contextEngineInstance = [(CKContextXPCProtocolImpl *)self _contextEngineInstance];
+  if ([_contextEngineInstance disabled])
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
     {
@@ -156,23 +156,23 @@
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "Engine is disabled", buf, 2u);
     }
 
-    v8 = +[CKContextResponse serviceDisabledError];
-    v5[2](v5, v8);
+    warmUpDatPath = +[CKContextResponse serviceDisabledError];
+    replyCopy[2](replyCopy, warmUpDatPath);
     goto LABEL_16;
   }
 
-  if ([v7 stillWarmingUp])
+  if ([_contextEngineInstance stillWarmingUp])
   {
-    v8 = [v7 warmUpDatPath];
+    warmUpDatPath = [_contextEngineInstance warmUpDatPath];
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
     {
       sub_1002A4390();
-      if (v8)
+      if (warmUpDatPath)
       {
 LABEL_8:
         v22 = 0;
         v9 = +[NSFileManager defaultManager];
-        v10 = [v9 fileExistsAtPath:v8 isDirectory:&v22];
+        v10 = [v9 fileExistsAtPath:warmUpDatPath isDirectory:&v22];
 
         if ((v10 & 1) == 0)
         {
@@ -195,7 +195,7 @@ LABEL_8:
         }
 
         v21 = 0;
-        v11 = [NSData dataWithContentsOfFile:v8 options:1 error:&v21];
+        v11 = [NSData dataWithContentsOfFile:warmUpDatPath options:1 error:&v21];
         v12 = v21;
         if (v12)
         {
@@ -206,7 +206,7 @@ LABEL_8:
             _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Could not read from warm-up file: %@", buf, 0xCu);
           }
 
-          v5[2](v5, v12);
+          replyCopy[2](replyCopy, v12);
           goto LABEL_32;
         }
 
@@ -227,7 +227,7 @@ LABEL_8:
                 v19[1] = 3221225472;
                 v19[2] = sub_1002A09FC;
                 v19[3] = &unk_100483C98;
-                v20 = v5;
+                v20 = replyCopy;
                 [(CKContextXPCProtocolImpl *)self findResultsForRequest:v18 isServiceInternal:1 reply:v19];
               }
 
@@ -239,7 +239,7 @@ LABEL_8:
                   _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Could not read text from warm-up file", buf, 2u);
                 }
 
-                v5[2](v5, 0);
+                replyCopy[2](replyCopy, 0);
               }
             }
 
@@ -251,7 +251,7 @@ LABEL_8:
                 _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Warm-up file is not in the expected format", buf, 2u);
               }
 
-              v5[2](v5, 0);
+              replyCopy[2](replyCopy, 0);
             }
 
             goto LABEL_33;
@@ -274,7 +274,7 @@ LABEL_8:
           if (!os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
           {
 LABEL_31:
-            v5[2](v5, 0);
+            replyCopy[2](replyCopy, 0);
 LABEL_32:
 
 LABEL_33:
@@ -291,28 +291,28 @@ LABEL_33:
       }
     }
 
-    else if (v8)
+    else if (warmUpDatPath)
     {
       goto LABEL_8;
     }
 
 LABEL_15:
-    v5[2](v5, 0);
+    replyCopy[2](replyCopy, 0);
 LABEL_16:
 
     goto LABEL_17;
   }
 
-  v5[2](v5, 0);
+  replyCopy[2](replyCopy, 0);
 LABEL_17:
 
   objc_autoreleasePoolPop(v6);
 }
 
-- (void)findCategorizationsForRequest:(id)a3 withReply:(id)a4
+- (void)findCategorizationsForRequest:(id)request withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   objc_initWeak(&location, self);
   screenTimeRequestQueue = self->_screenTimeRequestQueue;
   v11[0] = _NSConcreteStackBlock;
@@ -320,21 +320,21 @@ LABEL_17:
   v11[2] = sub_1002A0B48;
   v11[3] = &unk_100483CC0;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v6;
-  v10 = v7;
+  v12 = requestCopy;
+  v13 = replyCopy;
+  v9 = requestCopy;
+  v10 = replyCopy;
   dispatch_async(screenTimeRequestQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
 }
 
-- (void)findResultsForRequest:(id)a3 withReply:(id)a4
+- (void)findResultsForRequest:(id)request withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v6 type] == 10 || objc_msgSend(v6, "type") == 20) && objc_msgSend(objc_opt_class(), "_isDeviceLocked"))
+  requestCopy = request;
+  replyCopy = reply;
+  if (([requestCopy type] == 10 || objc_msgSend(requestCopy, "type") == 20) && objc_msgSend(objc_opt_class(), "_isDeviceLocked"))
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
     {
@@ -342,12 +342,12 @@ LABEL_17:
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "Immediately returning empty results because the device is locked.", buf, 2u);
     }
 
-    v8 = [[CKContextResponse alloc] initWithResults:&__NSArray0__struct requestType:{objc_msgSend(v6, "type")}];
-    v7[2](v7, v8);
+    v8 = [[CKContextResponse alloc] initWithResults:&__NSArray0__struct requestType:{objc_msgSend(requestCopy, "type")}];
+    replyCopy[2](replyCopy, v8);
     goto LABEL_29;
   }
 
-  if ([v6 type] != 6)
+  if ([requestCopy type] != 6)
   {
     goto LABEL_28;
   }
@@ -359,9 +359,9 @@ LABEL_17:
   }
 
   v25 = +[NSXPCConnection currentConnection];
-  v9 = [v25 processIdentifier];
+  processIdentifier = [v25 processIdentifier];
   *__error() = 0;
-  v10 = proc_name(v9, buf, 0x400u);
+  v10 = proc_name(processIdentifier, buf, 0x400u);
   __error();
   if ((v10 & 0x80000000) != 0)
   {
@@ -390,11 +390,11 @@ LABEL_17:
     [(ScreenTimeRequestInfo *)v14 setAllowance:500];
   }
 
-  v15 = [(ScreenTimeRequestInfo *)v14 latestRequest];
-  v16 = v15;
-  if (v15)
+  latestRequest = [(ScreenTimeRequestInfo *)v14 latestRequest];
+  v16 = latestRequest;
+  if (latestRequest)
   {
-    v17 = v15;
+    v17 = latestRequest;
   }
 
   else
@@ -412,8 +412,8 @@ LABEL_17:
     [(ScreenTimeRequestInfo *)v14 setAllowance:500];
   }
 
-  v20 = [(ScreenTimeRequestInfo *)v14 allowance];
-  if (v20)
+  allowance = [(ScreenTimeRequestInfo *)v14 allowance];
+  if (allowance)
   {
     [(ScreenTimeRequestInfo *)v14 setAllowance:([(ScreenTimeRequestInfo *)v14 allowance]+ -1.0)];
     [(NSMutableDictionary *)self->_processNameToScreenTimeRequestInfo setObject:v14 forKeyedSubscript:v11];
@@ -429,12 +429,12 @@ LABEL_17:
     v21 = [NSDictionary dictionaryWithObject:@"Too many concurrent requests at this time" forKey:NSLocalizedFailureReasonErrorKey];
     v22 = [NSError errorWithDomain:ContextKitErrorDomain code:6 userInfo:v21];
 
-    v23 = [[CKContextResponse alloc] initWithError:v22 requestType:{objc_msgSend(v6, "type")}];
-    v7[2](v7, v23);
+    v23 = [[CKContextResponse alloc] initWithError:v22 requestType:{objc_msgSend(requestCopy, "type")}];
+    replyCopy[2](replyCopy, v23);
   }
 
   objc_sync_exit(v12);
-  if (v20)
+  if (allowance)
   {
 LABEL_28:
     v26[0] = _NSConcreteStackBlock;
@@ -442,36 +442,36 @@ LABEL_28:
     v26[2] = sub_1002A1398;
     v26[3] = &unk_100483CE8;
     v26[4] = self;
-    v27 = -[RequestTransaction initWithTransactionId:decPending:]([RequestTransaction alloc], "initWithTransactionId:decPending:", @"ContextService.findResults", [v6 incPending]);
-    v28 = v7;
+    v27 = -[RequestTransaction initWithTransactionId:decPending:]([RequestTransaction alloc], "initWithTransactionId:decPending:", @"ContextService.findResults", [requestCopy incPending]);
+    v28 = replyCopy;
     v8 = v27;
-    [(CKContextXPCProtocolImpl *)self _findResultsForRequest:v6 withReply:v26 isServiceInternal:0 transaction:v8];
+    [(CKContextXPCProtocolImpl *)self _findResultsForRequest:requestCopy withReply:v26 isServiceInternal:0 transaction:v8];
     v24 = objc_opt_self();
 
 LABEL_29:
   }
 }
 
-- (void)_findResultsForRequest:(id)a3 withReply:(id)a4 isServiceInternal:(BOOL)a5 transaction:(id)a6
+- (void)_findResultsForRequest:(id)request withReply:(id)reply isServiceInternal:(BOOL)internal transaction:(id)transaction
 {
-  v154 = a3;
-  v155 = a4;
-  v149 = a6;
+  requestCopy = request;
+  replyCopy = reply;
+  transactionCopy = transaction;
   context = objc_autoreleasePoolPush();
-  v150 = [(CKContextXPCProtocolImpl *)self _contextEngineInstance];
+  _contextEngineInstance = [(CKContextXPCProtocolImpl *)self _contextEngineInstance];
   v153 = +[ContextConfiguration sharedInstance];
-  if (!v155)
+  if (!replyCopy)
   {
     v13 = +[MetricsLogging instance];
     goto LABEL_5;
   }
 
-  if (([v150 disabled] & 1) != 0 || (objc_msgSend(v153, "portraitEnabled") & 1) == 0 && objc_msgSend(v154, "type") == 2)
+  if (([_contextEngineInstance disabled] & 1) != 0 || (objc_msgSend(v153, "portraitEnabled") & 1) == 0 && objc_msgSend(requestCopy, "type") == 2)
   {
     v10 = [CKContextResponse alloc];
     v11 = +[CKContextResponse serviceDisabledError];
-    v12 = [v10 initWithError:v11 requestType:{objc_msgSend(v154, "type")}];
-    v155[2](v155, v12);
+    v12 = [v10 initWithError:v11 requestType:{objc_msgSend(requestCopy, "type")}];
+    replyCopy[2](replyCopy, v12);
 
     v13 = +[MetricsLogging instance];
 LABEL_5:
@@ -481,22 +481,22 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v15 = [v153 debugFakeResults];
+  debugFakeResults = [v153 debugFakeResults];
 
-  if (!v15)
+  if (!debugFakeResults)
   {
     v23 = mach_absolute_time();
     v136 = +[NSXPCConnection currentConnection];
-    if (a5 || ([v136 valueForEntitlement:@"com.apple.private.contextkit.include-original-request"], v24 = objc_claimAutoreleasedReturnValue(), v24, v24))
+    if (internal || ([v136 valueForEntitlement:@"com.apple.private.contextkit.include-original-request"], v24 = objc_claimAutoreleasedReturnValue(), v24, v24))
     {
       v25 = 1;
-      v26 = v154;
+      v26 = requestCopy;
     }
 
     else
     {
-      v26 = v154;
-      if ([v154 includeRequestInResponse])
+      v26 = requestCopy;
+      if ([requestCopy includeRequestInResponse])
       {
         goto LABEL_36;
       }
@@ -504,19 +504,19 @@ LABEL_5:
       v25 = 0;
     }
 
-    v27 = [v26 isRequestingContentFromActiveApplications];
-    if (!v27 || a5 || !v136 || ([v136 valueForEntitlement:@"com.apple.private.contextkit.request-external-content"], v28 = objc_claimAutoreleasedReturnValue(), v28, v28))
+    isRequestingContentFromActiveApplications = [v26 isRequestingContentFromActiveApplications];
+    if (!isRequestingContentFromActiveApplications || internal || !v136 || ([v136 valueForEntitlement:@"com.apple.private.contextkit.request-external-content"], v28 = objc_claimAutoreleasedReturnValue(), v28, v28))
     {
-      v131 = [v150 stillWarmingUp];
+      stillWarmingUp = [_contextEngineInstance stillWarmingUp];
       *&buf = 0;
       *(&buf + 1) = &buf;
       v188 = 0x3032000000;
       v189 = sub_1002A2C78;
       v190 = sub_1002A2C88;
-      v191 = [v150 indexId];
-      v134 = [v154 text];
-      v29 = [v154 type];
-      if (v29 != 15 && v29 != 1)
+      indexId = [_contextEngineInstance indexId];
+      text = [requestCopy text];
+      type = [requestCopy type];
+      if (type != 15 && type != 1)
       {
         LOBYTE(v33) = 0;
 LABEL_41:
@@ -525,16 +525,16 @@ LABEL_41:
         v169[2] = sub_1002A2C90;
         v169[3] = &unk_100483D38;
         v176 = v25;
-        v135 = v154;
+        v135 = requestCopy;
         v170 = v135;
         v175 = v23;
         p_buf = &buf;
-        v173 = v155;
-        v171 = self;
-        v172 = v149;
+        v173 = replyCopy;
+        selfCopy = self;
+        v172 = transactionCopy;
         v132 = objc_retainBlock(v169);
         v43 = v135;
-        if (v134 && [v134 length] <= 3)
+        if (text && [text length] <= 3)
         {
           v44 = [v135 url];
           if (v44)
@@ -544,15 +544,15 @@ LABEL_41:
             goto LABEL_45;
           }
 
-          v58 = [v135 itemIds];
-          if (![v58 count])
+          itemIds = [v135 itemIds];
+          if (![itemIds count])
           {
 
 LABEL_70:
             v61 = &_os_log_default;
             if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
             {
-              sub_1002A455C(&v179, [v134 length]);
+              sub_1002A455C(&v179, [text length]);
             }
 
             dsema = [[CKContextResponse alloc] initWithResults:&__NSArray0__struct requestType:{objc_msgSend(v135, "type")}];
@@ -587,7 +587,7 @@ LABEL_45:
           goto LABEL_171;
         }
 
-        if (v27)
+        if (isRequestingContentFromActiveApplications)
         {
           v48 = &_os_log_default;
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
@@ -707,17 +707,17 @@ LABEL_45:
           [v130 markReadyAndAwaitCompletion];
           v69 = v53;
           objc_sync_enter(v69);
-          v70 = [(DonationState *)v69 balancedMarkIncomplete];
+          balancedMarkIncomplete = [(DonationState *)v69 balancedMarkIncomplete];
           [(DonationState *)v69 setBalancedMarkIncomplete:1];
           objc_sync_exit(v69);
           v129 = v69;
 
-          if ((v70 & 1) == 0)
+          if ((balancedMarkIncomplete & 1) == 0)
           {
             [v130 markReady];
           }
 
-          v71 = [(DonationState *)v69 donations];
+          donations = [(DonationState *)v69 donations];
           v72 = self->_donationExecutorsMap;
           objc_sync_enter(v72);
           v73 = self->_donationExecutorsMap;
@@ -730,7 +730,7 @@ LABEL_45:
           v77 = &_os_log_default;
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
           {
-            sub_1002A4664(v186, [v71 count], -[DonationState numberOfApplicationsToWaitFor](v129, "numberOfApplicationsToWaitFor"), v76);
+            sub_1002A4664(v186, [donations count], -[DonationState numberOfApplicationsToWaitFor](v129, "numberOfApplicationsToWaitFor"), v76);
           }
 
           v138 = +[NSMutableArray array];
@@ -740,12 +740,12 @@ LABEL_45:
           v167 = 0u;
           v164 = 0u;
           v165 = 0u;
-          obj = v71;
+          obj = donations;
           v80 = [obj countByEnumeratingWithState:&v164 objects:v185 count:16];
           if (v80)
           {
-            v139 = 0;
-            v140 = 0;
+            internal_bestSnapshot = 0;
+            internal_bestLeadImage = 0;
             v141 = *v165;
             v144 = &stru_100484358;
             v145 = &stru_100484358;
@@ -763,67 +763,67 @@ LABEL_45:
                 }
 
                 v82 = *(*(&v164 + 1) + 8 * i);
-                v156 = [v82 items];
-                v83 = [v82 donorBundleIdentifier];
-                if ([v83 length])
+                items = [v82 items];
+                donorBundleIdentifier = [v82 donorBundleIdentifier];
+                if ([donorBundleIdentifier length])
                 {
-                  [v138 addObject:v83];
+                  [v138 addObject:donorBundleIdentifier];
                 }
 
-                if ([v156 count])
+                if ([items count])
                 {
-                  v152 = [v82 concatenatedRequestsText];
-                  if ([v152 length])
+                  concatenatedRequestsText = [v82 concatenatedRequestsText];
+                  if ([concatenatedRequestsText length])
                   {
-                    v84 = [(__CFString *)v147 stringByAppendingString:v152];
+                    v84 = [(__CFString *)v147 stringByAppendingString:concatenatedRequestsText];
 
                     v147 = [v84 stringByAppendingString:@"\n\n"];
                   }
 
-                  v151 = [v82 concatenatedRequestsDebugText];
-                  if ([v151 length])
+                  concatenatedRequestsDebugText = [v82 concatenatedRequestsDebugText];
+                  if ([concatenatedRequestsDebugText length])
                   {
-                    v85 = [(__CFString *)v146 stringByAppendingString:v151];
+                    v85 = [(__CFString *)v146 stringByAppendingString:concatenatedRequestsDebugText];
 
                     v146 = [v85 stringByAppendingString:@"\n\n"];
                   }
 
                   if (![(__CFString *)v145 length])
                   {
-                    v86 = [v82 internal_bestDebugUrlString];
+                    internal_bestDebugUrlString = [v82 internal_bestDebugUrlString];
 
-                    v145 = v86;
+                    v145 = internal_bestDebugUrlString;
                   }
 
                   if (![(__CFString *)v144 length])
                   {
-                    v87 = [v82 internal_bestTitle];
+                    internal_bestTitle = [v82 internal_bestTitle];
 
-                    v144 = v87;
+                    v144 = internal_bestTitle;
                   }
 
                   if (![(__CFString *)v143 length])
                   {
-                    v88 = [v82 internal_bestRawHTML];
+                    internal_bestRawHTML = [v82 internal_bestRawHTML];
 
-                    v143 = v88;
+                    v143 = internal_bestRawHTML;
                   }
 
-                  if (!v140)
+                  if (!internal_bestLeadImage)
                   {
-                    v140 = [v82 internal_bestLeadImage];
+                    internal_bestLeadImage = [v82 internal_bestLeadImage];
                   }
 
-                  if (!v139)
+                  if (!internal_bestSnapshot)
                   {
-                    v139 = [v82 internal_bestSnapshot];
+                    internal_bestSnapshot = [v82 internal_bestSnapshot];
                   }
 
                   v162 = 0u;
                   v163 = 0u;
                   v160 = 0u;
                   v161 = 0u;
-                  v89 = v156;
+                  v89 = items;
                   v90 = [v89 countByEnumeratingWithState:&v160 objects:v184 count:16];
                   if (v90)
                   {
@@ -838,16 +838,16 @@ LABEL_45:
                         }
 
                         v93 = *(*(&v160 + 1) + 8 * j);
-                        v94 = [v93 uiElements];
-                        if ([v94 count])
+                        uiElements = [v93 uiElements];
+                        if ([uiElements count])
                         {
-                          [v78 addObjectsFromArray:v94];
+                          [v78 addObjectsFromArray:uiElements];
                         }
 
-                        v95 = [v93 extractionItems];
-                        if ([v95 count])
+                        extractionItems = [v93 extractionItems];
+                        if ([extractionItems count])
                         {
-                          [v79 addObjectsFromArray:v95];
+                          [v79 addObjectsFromArray:extractionItems];
                         }
                       }
 
@@ -867,8 +867,8 @@ LABEL_45:
 
           else
           {
-            v139 = 0;
-            v140 = 0;
+            internal_bestSnapshot = 0;
+            internal_bestLeadImage = 0;
             v144 = &stru_100484358;
             v145 = &stru_100484358;
             v146 = &stru_100484358;
@@ -883,16 +883,16 @@ LABEL_45:
           objc_sync_exit(v96);
           if ([v135 debug])
           {
-            v97 = 1;
+            includeRequestInResponse = 1;
           }
 
           else
           {
-            v97 = [v135 includeRequestInResponse];
+            includeRequestInResponse = [v135 includeRequestInResponse];
           }
 
           [v135 setText:v147];
-          if (v97)
+          if (includeRequestInResponse)
           {
             v98 = v146;
           }
@@ -903,7 +903,7 @@ LABEL_45:
           }
 
           [v135 setDebugText:v98];
-          if (v97)
+          if (includeRequestInResponse)
           {
             v99 = v145;
           }
@@ -914,7 +914,7 @@ LABEL_45:
           }
 
           [v135 setDebugUrlString:v99];
-          if (v97)
+          if (includeRequestInResponse)
           {
             v100 = v143;
           }
@@ -952,7 +952,7 @@ LABEL_45:
             [v135 setExtractionItems:v79];
           }
 
-          if (v140)
+          if (internal_bestLeadImage)
           {
             v104 = &_os_log_default;
             if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
@@ -960,10 +960,10 @@ LABEL_45:
               sub_1002A47B4();
             }
 
-            [v135 setLeadImage:v140];
+            [v135 setLeadImage:internal_bestLeadImage];
           }
 
-          if (v139)
+          if (internal_bestSnapshot)
           {
             v105 = &_os_log_default;
             if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
@@ -971,7 +971,7 @@ LABEL_45:
               sub_1002A47F8();
             }
 
-            [v135 setSnapshot:v139];
+            [v135 setSnapshot:internal_bestSnapshot];
           }
         }
 
@@ -1011,11 +1011,11 @@ LABEL_45:
         v115 = &_os_log_default;
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
         {
-          v116 = [v150 description];
+          v116 = [_contextEngineInstance description];
           sub_1002A483C(v116, &buf + 8, v177);
         }
 
-        [v150 findResultsForRequest:v135 withReply:v113];
+        [_contextEngineInstance findResultsForRequest:v135 withReply:v113];
         [Util elapsedNanosSinceMachAbsolute:v114];
         *&v117 = v117;
         v118 = dispatch_semaphore_wait(v112, [v153 findResultsTimeoutWithNanosAlreadySpent:v117]) == 0;
@@ -1033,8 +1033,8 @@ LABEL_45:
           }
 
           v122 = +[MetricsLogging instance];
-          v127 = [v135 type];
-          [v122 recordSlowFindResults:0 requestType:v127 indexId:*(*(&buf + 1) + 40) coldEngine:v131];
+          type2 = [v135 type];
+          [v122 recordSlowFindResults:0 requestType:type2 indexId:*(*(&buf + 1) + 40) coldEngine:stillWarmingUp];
         }
 
         else
@@ -1045,8 +1045,8 @@ LABEL_45:
           (v132[2])(v132, v121);
 
           v122 = +[MetricsLogging instance];
-          v123 = [v135 type];
-          [v122 recordSlowFindResults:1 requestType:v123 indexId:*(*(&buf + 1) + 40) coldEngine:v131];
+          type3 = [v135 type];
+          [v122 recordSlowFindResults:1 requestType:type3 indexId:*(*(&buf + 1) + 40) coldEngine:stillWarmingUp];
         }
 
 LABEL_170:
@@ -1061,14 +1061,14 @@ LABEL_171:
       v30 = &_os_log_default;
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
       {
-        v31 = [v154 languageTag];
+        languageTag = [requestCopy languageTag];
         LODWORD(v179) = 138412290;
-        *(&v179 + 4) = v31;
+        *(&v179 + 4) = languageTag;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "Safari request with language tag: %@", &v179, 0xCu);
       }
 
-      v32 = [v154 text];
-      v33 = [v32 length] == 0;
+      text2 = [requestCopy text];
+      v33 = [text2 length] == 0;
 
       if (v33)
       {
@@ -1078,12 +1078,12 @@ LABEL_171:
           sub_1002A4518();
         }
 
-        v27 = 1;
+        isRequestingContentFromActiveApplications = 1;
         goto LABEL_40;
       }
 
-      v34 = [v154 text];
-      v35 = [v34 length] < 0x40;
+      text3 = [requestCopy text];
+      v35 = [text3 length] < 0x40;
 
       v36 = &_os_log_default;
       v37 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
@@ -1113,8 +1113,8 @@ LABEL_40:
 LABEL_36:
     v40 = [CKContextResponse alloc];
     v41 = +[CKContextResponse missingEntitlementError];
-    v42 = [v40 initWithError:v41 requestType:{objc_msgSend(v154, "type")}];
-    v155[2](v155, v42);
+    v42 = [v40 initWithError:v41 requestType:{objc_msgSend(requestCopy, "type")}];
+    replyCopy[2](replyCopy, v42);
 
 LABEL_172:
     goto LABEL_6;
@@ -1137,20 +1137,20 @@ LABEL_172:
   }
 
   v20 = [CKContextResponse alloc];
-  v21 = [v153 debugFakeResults];
-  v22 = [v20 initWithResults:v21 requestType:{objc_msgSend(v154, "type")}];
-  v155[2](v155, v22);
+  debugFakeResults2 = [v153 debugFakeResults];
+  v22 = [v20 initWithResults:debugFakeResults2 requestType:{objc_msgSend(requestCopy, "type")}];
+  replyCopy[2](replyCopy, v22);
 
 LABEL_6:
   objc_autoreleasePoolPop(context);
 }
 
-- (void)capabilitiesForRequestType:(unint64_t)a3 withReply:(id)a4
+- (void)capabilitiesForRequestType:(unint64_t)type withReply:(id)reply
 {
-  v5 = a4;
+  replyCopy = reply;
   v12 = +[NSMutableSet set];
-  v6 = [(CKContextXPCProtocolImpl *)self _contextEngineInstance];
-  if (([v6 disabled] & 1) == 0)
+  _contextEngineInstance = [(CKContextXPCProtocolImpl *)self _contextEngineInstance];
+  if (([_contextEngineInstance disabled] & 1) == 0)
   {
     [v12 addObject:&off_1004A9EF0];
     v7 = +[ContextConfiguration sharedInstance];
@@ -1176,141 +1176,141 @@ LABEL_6:
   }
 
   v8 = +[ContextConfiguration sharedInstance];
-  v9 = [v8 indexVersionId];
-  v10 = [v6 indexId];
-  v11 = [NSString stringWithFormat:@"%@-%@", v9, v10];
+  indexVersionId = [v8 indexVersionId];
+  indexId = [_contextEngineInstance indexId];
+  v11 = [NSString stringWithFormat:@"%@-%@", indexVersionId, indexId];
 
-  v5[2](v5, v12, v11, 0);
+  replyCopy[2](replyCopy, v12, v11, 0);
 }
 
-- (void)ancestorsForTopics:(id)a3 withReply:(id)a4
+- (void)ancestorsForTopics:(id)topics withReply:(id)reply
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(CKContextXPCProtocolImpl *)self _contextEngineInstance];
-  if ([v7 disabled] || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  topicsCopy = topics;
+  replyCopy = reply;
+  _contextEngineInstance = [(CKContextXPCProtocolImpl *)self _contextEngineInstance];
+  if ([_contextEngineInstance disabled] || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v8 = +[CKContextResponse serviceDisabledError];
-    v6[2](v6, 0, v8);
+    replyCopy[2](replyCopy, 0, v8);
   }
 
   else
   {
-    v8 = [v7 ancestorsForTopics:v10];
+    v8 = [_contextEngineInstance ancestorsForTopics:topicsCopy];
     if (v8)
     {
-      (v6)[2](v6, v8, 0);
+      (replyCopy)[2](replyCopy, v8, 0);
     }
 
     else
     {
       v9 = +[CKContextResponse timeoutError];
-      v6[2](v6, 0, v9);
+      replyCopy[2](replyCopy, 0, v9);
     }
   }
 }
 
-- (void)groupResponses:(id)a3 withReply:(id)a4
+- (void)groupResponses:(id)responses withReply:(id)reply
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(CKContextXPCProtocolImpl *)self _contextEngineInstance];
-  if ([v7 disabled] || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  responsesCopy = responses;
+  replyCopy = reply;
+  _contextEngineInstance = [(CKContextXPCProtocolImpl *)self _contextEngineInstance];
+  if ([_contextEngineInstance disabled] || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v8 = +[CKContextResponse serviceDisabledError];
-    v6[2](v6, 0, v8);
+    replyCopy[2](replyCopy, 0, v8);
   }
 
   else
   {
-    v8 = [v7 groupResponses:v9];
-    (v6)[2](v6, v8, 0);
+    v8 = [_contextEngineInstance groupResponses:responsesCopy];
+    (replyCopy)[2](replyCopy, v8, 0);
   }
 }
 
-- (void)statusWithReply:(id)a3
+- (void)statusWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = +[MetricsLogging instance];
   [v5 recordAssetInfo:self->_assets];
 
   v33 = objc_opt_new();
-  v6 = [(CTKAssets *)self->_assets common];
-  if (v6)
+  common = [(CTKAssets *)self->_assets common];
+  if (common)
   {
     v7 = objc_opt_new();
-    v8 = [v6 assetVersion];
-    v9 = [v6 compatibilityVersion];
-    if (v8 != 0x7FFFFFFFFFFFFFFFLL)
+    assetVersion = [common assetVersion];
+    compatibilityVersion = [common compatibilityVersion];
+    if (assetVersion != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v10 = [NSNumber numberWithUnsignedInteger:v8];
+      v10 = [NSNumber numberWithUnsignedInteger:assetVersion];
       [v7 setObject:v10 forKeyedSubscript:@"contentVersion"];
     }
 
-    if (v9 != 0x7FFFFFFFFFFFFFFFLL)
+    if (compatibilityVersion != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v11 = [NSNumber numberWithUnsignedInteger:v9];
+      v11 = [NSNumber numberWithUnsignedInteger:compatibilityVersion];
       [v7 setObject:v11 forKeyedSubscript:@"compatVersion"];
     }
 
     [v33 setObject:v7 forKeyedSubscript:@"common"];
   }
 
-  v12 = [(CTKAssets *)self->_assets index];
-  if (v12)
+  index = [(CTKAssets *)self->_assets index];
+  if (index)
   {
     v13 = objc_opt_new();
-    v14 = [v12 first];
-    v15 = [v14 assetVersion];
+    first = [index first];
+    assetVersion2 = [first assetVersion];
 
-    v16 = [v12 first];
-    v17 = [v16 compatibilityVersion];
+    first2 = [index first];
+    compatibilityVersion2 = [first2 compatibilityVersion];
 
-    if (v15 != 0x7FFFFFFFFFFFFFFFLL)
+    if (assetVersion2 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v18 = [NSNumber numberWithUnsignedInteger:v15];
+      v18 = [NSNumber numberWithUnsignedInteger:assetVersion2];
       [v13 setObject:v18 forKeyedSubscript:@"contentVersion"];
     }
 
-    if (v17 != 0x7FFFFFFFFFFFFFFFLL)
+    if (compatibilityVersion2 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v19 = [NSNumber numberWithUnsignedInteger:v17];
+      v19 = [NSNumber numberWithUnsignedInteger:compatibilityVersion2];
       [v13 setObject:v19 forKeyedSubscript:@"compatVersion"];
     }
 
-    v20 = [v12 second];
-    [v13 setObject:v20 forKeyedSubscript:@"indexIdentifier"];
+    second = [index second];
+    [v13 setObject:second forKeyedSubscript:@"indexIdentifier"];
 
     [v33 setObject:v13 forKeyedSubscript:@"index"];
   }
 
   v21 = +[ContextConfiguration sharedInstance];
-  v22 = [v21 debugStatus];
-  [v33 setObject:v22 forKeyedSubscript:@"currentConfiguration"];
+  debugStatus = [v21 debugStatus];
+  [v33 setObject:debugStatus forKeyedSubscript:@"currentConfiguration"];
 
-  v23 = [(CKContextXPCProtocolImpl *)self _contextEngineInstance];
-  v24 = [v23 debugStatus];
-  [v33 setObject:v24 forKeyedSubscript:@"engineStatus"];
+  _contextEngineInstance = [(CKContextXPCProtocolImpl *)self _contextEngineInstance];
+  debugStatus2 = [_contextEngineInstance debugStatus];
+  [v33 setObject:debugStatus2 forKeyedSubscript:@"engineStatus"];
 
   v25 = +[CTKABHelper refId];
   v26 = [v25 description];
   [v33 setObject:v26 forKeyedSubscript:@"refId"];
 
-  v27 = [(CKContextXPCProtocolImpl *)self _contextEngineInstance];
-  v28 = [v27 indexId];
-  [v33 setObject:v28 forKeyedSubscript:@"indexId"];
+  _contextEngineInstance2 = [(CKContextXPCProtocolImpl *)self _contextEngineInstance];
+  indexId = [_contextEngineInstance2 indexId];
+  [v33 setObject:indexId forKeyedSubscript:@"indexId"];
 
   v29 = +[MetricsLogging instance];
-  v30 = [v29 debugStatus];
-  [v33 setObject:v30 forKeyedSubscript:@"loggingStatus"];
+  debugStatus3 = [v29 debugStatus];
+  [v33 setObject:debugStatus3 forKeyedSubscript:@"loggingStatus"];
 
   v31 = +[_PASDeviceState currentOsBuild];
   [v33 setObject:v31 forKeyedSubscript:@"osBuildNumber"];
 
-  v32 = [objc_opt_class() dumpEnvironment];
-  [v33 setObject:v32 forKeyedSubscript:@"environment"];
+  dumpEnvironment = [objc_opt_class() dumpEnvironment];
+  [v33 setObject:dumpEnvironment forKeyedSubscript:@"environment"];
 
-  v4[2](v4, v33, 0);
+  replyCopy[2](replyCopy, v33, 0);
 }
 
 + (id)dumpEnvironment
@@ -1335,22 +1335,22 @@ LABEL_6:
   return v2;
 }
 
-- (void)donate:(id)a3
+- (void)donate:(id)donate
 {
-  v4 = a3;
+  donateCopy = donate;
   v5 = +[NSXPCConnection currentConnection];
   v6 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v5 processIdentifier]);
-  v7 = [v4 nonce];
-  if (v7 || ([v4 associatedUserActivity], v23 = objc_claimAutoreleasedReturnValue(), v23, !v23))
+  nonce = [donateCopy nonce];
+  if (nonce || ([donateCopy associatedUserActivity], v23 = objc_claimAutoreleasedReturnValue(), v23, !v23))
   {
-    v8 = [v4 items];
-    v9 = [v8 count];
+    items = [donateCopy items];
+    v9 = [items count];
 
-    v10 = [v4 remoteProcesses];
+    remoteProcesses = [donateCopy remoteProcesses];
     v11 = self->_donationExecutorsMap;
     objc_sync_enter(v11);
     donationExecutorsMap = self->_donationExecutorsMap;
-    v13 = [NSNumber numberWithUnsignedLongLong:v7];
+    v13 = [NSNumber numberWithUnsignedLongLong:nonce];
     v14 = [(NSMapTable *)donationExecutorsMap objectForKey:v13];
 
     objc_sync_exit(v11);
@@ -1358,53 +1358,53 @@ LABEL_6:
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
       {
-        v26 = [v4 donorBundleIdentifier];
+        donorBundleIdentifier = [donateCopy donorBundleIdentifier];
         v28 = 134218498;
         v29 = v9;
         v30 = 2112;
         v31 = v6;
         v32 = 2112;
-        v33 = v26;
+        v33 = donorBundleIdentifier;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "Refusing donation of %lu items from PID %@ for %@: unexpected/too late", &v28, 0x20u);
       }
 
       goto LABEL_18;
     }
 
-    v15 = [v14 context];
+    context = [v14 context];
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
     {
-      v16 = [v4 donorBundleIdentifier];
-      v17 = [v15 dateCreated];
-      [v17 timeIntervalSinceNow];
+      donorBundleIdentifier2 = [donateCopy donorBundleIdentifier];
+      dateCreated = [context dateCreated];
+      [dateCreated timeIntervalSinceNow];
       v28 = 134219010;
       v29 = v9;
       v30 = 2048;
-      v31 = v10;
+      v31 = remoteProcesses;
       v32 = 2112;
       v33 = v6;
       v34 = 2112;
-      v35 = v16;
+      v35 = donorBundleIdentifier2;
       v36 = 1024;
       v37 = (v18 * -1000.0);
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "Donation of %lu items / rc:%lu from PID %@ for %@ received after %i ms", &v28, 0x30u);
     }
 
-    if (v9 | v10)
+    if (v9 | remoteProcesses)
     {
-      v19 = v15;
+      v19 = context;
       objc_sync_enter(v19);
-      [v19 setAdditionalDonationsToWaitFor:{objc_msgSend(v19, "additionalDonationsToWaitFor") + v10}];
-      v20 = [v19 donations];
-      [v20 addObject:v4];
+      [v19 setAdditionalDonationsToWaitFor:{objc_msgSend(v19, "additionalDonationsToWaitFor") + remoteProcesses}];
+      donations = [v19 donations];
+      [donations addObject:donateCopy];
 
-      v21 = [v19 donations];
-      v22 = [v21 count];
+      donations2 = [v19 donations];
+      v22 = [donations2 count];
       if (v22 >= [(CKContextXPCProtocolImpl *)self _totalDonationsToWaitForWithDonationState:v19])
       {
-        v27 = [v19 balancedMarkIncomplete];
+        balancedMarkIncomplete = [v19 balancedMarkIncomplete];
 
-        if ((v27 & 1) == 0)
+        if ((balancedMarkIncomplete & 1) == 0)
         {
           [v19 setBalancedMarkIncomplete:1];
           objc_sync_exit(v19);
@@ -1437,26 +1437,26 @@ LABEL_18:
   v14 = os_transaction_create();
   recentsManager = self->_recentsManager;
   v25 = +[NSUserDefaults standardUserDefaults];
-  -[CKContextUniversalRecentsManager processDonation:retrievingTopics:](recentsManager, "processDonation:retrievingTopics:", v4, [v25 BOOLForKey:@"CKContextUniversalRecentsTopicExtraction"]);
+  -[CKContextUniversalRecentsManager processDonation:retrievingTopics:](recentsManager, "processDonation:retrievingTopics:", donateCopy, [v25 BOOLForKey:@"CKContextUniversalRecentsTopicExtraction"]);
 
 LABEL_19:
 }
 
-- (unint64_t)_totalDonationsToWaitForWithDonationState:(id)a3
+- (unint64_t)_totalDonationsToWaitForWithDonationState:(id)state
 {
-  v3 = a3;
-  if (v3)
+  stateCopy = state;
+  if (stateCopy)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
     {
-      v4 = [v3 additionalDonationsToWaitFor];
+      additionalDonationsToWaitFor = [stateCopy additionalDonationsToWaitFor];
       v8 = 134217984;
-      v9 = &v4[[v3 numberOfApplicationsToWaitFor]];
+      v9 = &additionalDonationsToWaitFor[[stateCopy numberOfApplicationsToWaitFor]];
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "Total donations to wait for is %lu", &v8, 0xCu);
     }
 
-    v5 = [v3 additionalDonationsToWaitFor];
-    v6 = &v5[[v3 numberOfApplicationsToWaitFor]];
+    additionalDonationsToWaitFor2 = [stateCopy additionalDonationsToWaitFor];
+    v6 = &additionalDonationsToWaitFor2[[stateCopy numberOfApplicationsToWaitFor]];
   }
 
   else
@@ -1467,20 +1467,20 @@ LABEL_19:
   return v6;
 }
 
-- (void)logEngagementForResponseId:(id)a3 result:(id)a4 rank:(unint64_t)a5 inputLength:(unint64_t)a6 completionLength:(unint64_t)a7 requestType:(unint64_t)a8 logType:(unint64_t)a9
+- (void)logEngagementForResponseId:(id)id result:(id)result rank:(unint64_t)rank inputLength:(unint64_t)length completionLength:(unint64_t)completionLength requestType:(unint64_t)type logType:(unint64_t)logType
 {
   contextEngine = self->_contextEngine;
-  v14 = a4;
-  v16 = [(ContextEngine *)contextEngine indexId];
+  resultCopy = result;
+  indexId = [(ContextEngine *)contextEngine indexId];
   v15 = +[MetricsLogging instance];
-  [v15 recordQueryEngagementWithUserInputLength:a6 completionLength:a7 result:v14 rank:a5 indexId:v16 requestType:a8 logType:a9];
+  [v15 recordQueryEngagementWithUserInputLength:length completionLength:completionLength result:resultCopy rank:rank indexId:indexId requestType:type logType:logType];
 }
 
-- (void)logTransactionSuccessfulForResponseId:(id)a3 inputLength:(unint64_t)a4 completionLength:(unint64_t)a5 requestType:(unint64_t)a6 logType:(unint64_t)a7
+- (void)logTransactionSuccessfulForResponseId:(id)id inputLength:(unint64_t)length completionLength:(unint64_t)completionLength requestType:(unint64_t)type logType:(unint64_t)logType
 {
-  v12 = [(ContextEngine *)self->_contextEngine indexId];
+  indexId = [(ContextEngine *)self->_contextEngine indexId];
   v11 = +[MetricsLogging instance];
-  [v11 recordTransactionSuccessfulWithUserInputLength:a4 completionLength:a5 indexId:v12 requestType:a6 logType:a7];
+  [v11 recordTransactionSuccessfulWithUserInputLength:length completionLength:completionLength indexId:indexId requestType:type logType:logType];
 }
 
 @end

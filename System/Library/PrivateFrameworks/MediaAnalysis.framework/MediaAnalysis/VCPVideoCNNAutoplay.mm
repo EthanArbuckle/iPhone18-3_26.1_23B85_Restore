@@ -2,8 +2,8 @@
 - (VCPVideoCNNAutoplay)init;
 - (id).cxx_construct;
 - (id)results;
-- (int)loadAnalysisResults:(id)a3 audioResults:(id)a4;
-- (int)run:(id)a3;
+- (int)loadAnalysisResults:(id)results audioResults:(id)audioResults;
+- (int)run:(id)run;
 - (void)dealloc;
 @end
 
@@ -17,10 +17,10 @@
   v2 = [(VCPVideoCNNAutoplay *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
-    v4 = [v3 resourceURL];
+    vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+    resourceURL = [vcp_mediaAnalysisBundle resourceURL];
 
-    [MEMORY[0x1E695DFF8] URLWithString:@"autoplay_head.espresso.net" relativeToURL:v4];
+    [MEMORY[0x1E695DFF8] URLWithString:@"autoplay_head.espresso.net" relativeToURL:resourceURL];
     objc_claimAutoreleasedReturnValue();
     summaryResults = v2->_summaryResults;
     v2->_summaryResults = 0;
@@ -51,12 +51,12 @@
   [(VCPVideoCNNAutoplay *)&v4 dealloc];
 }
 
-- (int)loadAnalysisResults:(id)a3 audioResults:(id)a4
+- (int)loadAnalysisResults:(id)results audioResults:(id)audioResults
 {
   v23[8] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v20 = a4;
-  v21 = v6;
+  resultsCopy = results;
+  audioResultsCopy = audioResults;
+  v21 = resultsCopy;
   {
     v23[0] = @"QualityResults";
     v23[1] = @"FineSubjectMotionResults";
@@ -66,11 +66,11 @@
     v23[5] = @"CameraMotionResults";
     v23[6] = @"expressionChangeScore";
     v23[7] = @"visualPleasingScore";
-    [VCPVideoCNNAutoplay loadAnalysisResults:audioResults:]::analysisKeys = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:{8, v20}];
+    [VCPVideoCNNAutoplay loadAnalysisResults:audioResults:]::analysisKeys = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:{8, audioResultsCopy}];
   }
 
   bzero(self->_analysisInput, 0x300uLL);
-  v7 = [v6 objectForKeyedSubscript:@"MovieSummaryResults"];
+  v7 = [resultsCopy objectForKeyedSubscript:@"MovieSummaryResults"];
   v8 = v7 == 0;
 
   if (v8)
@@ -87,7 +87,7 @@
     self->_summaryResults = v11;
   }
 
-  v13 = [v21 objectForKeyedSubscript:{@"SettlingEffectsGatingResults", v20}];
+  v13 = [v21 objectForKeyedSubscript:{@"SettlingEffectsGatingResults", audioResultsCopy}];
   v14 = [v13 objectAtIndexedSubscript:0];
   v15 = [v14 mutableCopy];
   settlingGatingResults = self->_settlingGatingResults;
@@ -101,12 +101,12 @@
   operator new[]();
 }
 
-- (int)run:(id)a3
+- (int)run:(id)run
 {
-  v4 = a3;
-  if ([v4 outputBeforeFc] && !self->_skip)
+  runCopy = run;
+  if ([runCopy outputBeforeFc] && !self->_skip)
   {
-    *self->_inputsData.__begin_ = [v4 outputBeforeFc];
+    *self->_inputsData.__begin_ = [runCopy outputBeforeFc];
     *(self->_inputsData.__begin_ + 1) = self->_analysisInput;
     modelEspresso = self->_modelEspresso;
     v57 = 0;
@@ -169,14 +169,14 @@
     [(NSMutableDictionary *)self->_summaryResults setObject:v50 forKeyedSubscript:@"quality"];
   }
 
-  if (![v4 outputBeforeFcSettling])
+  if (![runCopy outputBeforeFcSettling])
   {
 LABEL_12:
     v6 = 0;
     goto LABEL_26;
   }
 
-  *self->_inputsData.__begin_ = [v4 outputBeforeFcSettling];
+  *self->_inputsData.__begin_ = [runCopy outputBeforeFcSettling];
   *(self->_inputsData.__begin_ + 1) = self->_analysisInput;
   v5 = self->_modelEspresso;
   v53 = 0;
@@ -262,22 +262,22 @@ LABEL_26:
 - (id)results
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_summaryResults)
   {
     v8[0] = self->_summaryResults;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
-    [v3 setObject:v4 forKeyedSubscript:@"MovieSummaryResults"];
+    [dictionary setObject:v4 forKeyedSubscript:@"MovieSummaryResults"];
   }
 
   if (self->_settlingGatingResults)
   {
     settlingGatingResults = self->_settlingGatingResults;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:&settlingGatingResults count:1];
-    [v3 setObject:v5 forKeyedSubscript:@"SettlingEffectsGatingResults"];
+    [dictionary setObject:v5 forKeyedSubscript:@"SettlingEffectsGatingResults"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id).cxx_construct

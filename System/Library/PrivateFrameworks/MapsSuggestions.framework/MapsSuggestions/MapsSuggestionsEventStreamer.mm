@@ -3,14 +3,14 @@
 - (NSString)notificationName;
 - (NSString)uniqueName;
 - (_TtC15MapsSuggestions28MapsSuggestionsEventStreamer)init;
-- (_TtC15MapsSuggestions28MapsSuggestionsEventStreamer)initWithLookAheadPeriod:(double)a3 pingInterval:(double)a4 notificationName:(id)a5 identifyingName:(id)a6;
-- (void)broadcastEventFrom:(id)a3 to:(id)a4;
+- (_TtC15MapsSuggestions28MapsSuggestionsEventStreamer)initWithLookAheadPeriod:(double)period pingInterval:(double)interval notificationName:(id)name identifyingName:(id)identifyingName;
+- (void)broadcastEventFrom:(id)from to:(id)to;
 - (void)dealloc;
 - (void)invalidateAllTimers;
 - (void)rescan;
-- (void)setUniqueName:(id)a3;
-- (void)set_notifyTimers:(id)a3;
-- (void)set_scanTimer:(id)a3;
+- (void)setUniqueName:(id)name;
+- (void)set_notifyTimers:(id)timers;
+- (void)set_scanTimer:(id)timer;
 @end
 
 @implementation MapsSuggestionsEventStreamer
@@ -33,9 +33,9 @@
   return v3;
 }
 
-- (void)setUniqueName:(id)a3
+- (void)setUniqueName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v4 = sub_1C529D72C();
     v6 = v5;
@@ -61,11 +61,11 @@
   return v2;
 }
 
-- (void)set_scanTimer:(id)a3
+- (void)set_scanTimer:(id)timer
 {
   v4 = *(self + OBJC_IVAR____TtC15MapsSuggestions28MapsSuggestionsEventStreamer__scanTimer);
-  *(self + OBJC_IVAR____TtC15MapsSuggestions28MapsSuggestionsEventStreamer__scanTimer) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC15MapsSuggestions28MapsSuggestionsEventStreamer__scanTimer) = timer;
+  timerCopy = timer;
 }
 
 - (NSArray)_notifyTimers
@@ -78,7 +78,7 @@
   return v2;
 }
 
-- (void)set_notifyTimers:(id)a3
+- (void)set_notifyTimers:(id)timers
 {
   type metadata accessor for TimerClass();
   v4 = sub_1C529D7DC();
@@ -87,15 +87,15 @@
   *(self + v5) = v4;
 }
 
-- (_TtC15MapsSuggestions28MapsSuggestionsEventStreamer)initWithLookAheadPeriod:(double)a3 pingInterval:(double)a4 notificationName:(id)a5 identifyingName:(id)a6
+- (_TtC15MapsSuggestions28MapsSuggestionsEventStreamer)initWithLookAheadPeriod:(double)period pingInterval:(double)interval notificationName:(id)name identifyingName:(id)identifyingName
 {
   v8 = sub_1C529D72C();
   v10 = v9;
   v11 = sub_1C529D72C();
-  return MapsSuggestionsEventStreamer.init(lookAheadPeriod:pingInterval:notificationName:identifyingName:)(v8, v10, v11, v12, a3, a4);
+  return MapsSuggestionsEventStreamer.init(lookAheadPeriod:pingInterval:notificationName:identifyingName:)(v8, v10, v11, v12, period, interval);
 }
 
-- (void)broadcastEventFrom:(id)a3 to:(id)a4
+- (void)broadcastEventFrom:(id)from to:(id)to
 {
   v5 = sub_1C529D3AC();
   v6 = *(v5 - 8);
@@ -105,7 +105,7 @@
   v11 = &v14 - v10;
   sub_1C529D37C();
   sub_1C529D37C();
-  v12 = self;
+  selfCopy = self;
   sub_1C5251364(v11, v9);
 
   v13 = *(v6 + 8);
@@ -115,21 +115,21 @@
 
 - (void)rescan
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C5252854();
 }
 
 - (void)invalidateAllTimers
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C525297C();
 }
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C525297C();
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = type metadata accessor for MapsSuggestionsEventStreamer();
   [(MapsSuggestionsEventStreamer *)&v3 dealloc];
 }

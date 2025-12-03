@@ -10,32 +10,32 @@
 {
   v7.receiver = self;
   v7.super_class = HMDMPCSessionControllerExecutionEvent;
-  v3 = [(HMDMediaPlaybackActionEvent *)&v7 coreAnalyticsEventDictionary];
-  v4 = [v3 mutableCopy];
+  coreAnalyticsEventDictionary = [(HMDMediaPlaybackActionEvent *)&v7 coreAnalyticsEventDictionary];
+  v4 = [coreAnalyticsEventDictionary mutableCopy];
 
-  v5 = [(HMDMPCSessionControllerExecutionEvent *)self resultString];
-  [v4 setObject:v5 forKeyedSubscript:@"executionResult"];
+  resultString = [(HMDMPCSessionControllerExecutionEvent *)self resultString];
+  [v4 setObject:resultString forKeyedSubscript:@"executionResult"];
 
   return v4;
 }
 
 - (NSString)resultString
 {
-  v3 = [(HMMLogEvent *)self error];
-  if (v3)
+  error = [(HMMLogEvent *)self error];
+  if (error)
   {
-    v4 = v3;
-    v5 = [(HMDMPCSessionControllerExecutionEvent *)self didPartiallySucceed];
+    v4 = error;
+    didPartiallySucceed = [(HMDMPCSessionControllerExecutionEvent *)self didPartiallySucceed];
 
-    if (v5)
+    if (didPartiallySucceed)
     {
       return @"Partial Success";
     }
   }
 
-  v7 = [(HMMLogEvent *)self error];
+  error2 = [(HMMLogEvent *)self error];
 
-  if (v7)
+  if (error2)
   {
     return @"Failure";
   }

@@ -1,57 +1,57 @@
 @interface PKSearchOrderResult
-- (BOOL)isEqual:(id)a3;
-- (PKSearchOrderResult)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKSearchOrderResult)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKSearchOrderResult
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   uri = self->_uri;
-  v5 = a3;
-  [v5 encodeObject:uri forKey:@"uri"];
-  [v5 encodeObject:self->_orderTypeIdentifier forKey:@"orderTypeIdentifier"];
-  [v5 encodeObject:self->_orderIdentifier forKey:@"orderIdentifier"];
-  [v5 encodeObject:self->_displayName forKey:@"displayName"];
-  [v5 encodeObject:self->_spotlightDisplayName forKey:@"spotlightDisplayName"];
-  [v5 encodeObject:self->_contentDescription forKey:@"contentDescription"];
-  [v5 encodeObject:self->_thumbnailData forKey:@"thumbnailData"];
+  coderCopy = coder;
+  [coderCopy encodeObject:uri forKey:@"uri"];
+  [coderCopy encodeObject:self->_orderTypeIdentifier forKey:@"orderTypeIdentifier"];
+  [coderCopy encodeObject:self->_orderIdentifier forKey:@"orderIdentifier"];
+  [coderCopy encodeObject:self->_displayName forKey:@"displayName"];
+  [coderCopy encodeObject:self->_spotlightDisplayName forKey:@"spotlightDisplayName"];
+  [coderCopy encodeObject:self->_contentDescription forKey:@"contentDescription"];
+  [coderCopy encodeObject:self->_thumbnailData forKey:@"thumbnailData"];
 }
 
-- (PKSearchOrderResult)initWithCoder:(id)a3
+- (PKSearchOrderResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKSearchOrderResult *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uri"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uri"];
     uri = v5->_uri;
     v5->_uri = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"orderTypeIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"orderTypeIdentifier"];
     orderTypeIdentifier = v5->_orderTypeIdentifier;
     v5->_orderTypeIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"orderIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"orderIdentifier"];
     orderIdentifier = v5->_orderIdentifier;
     v5->_orderIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
     displayName = v5->_displayName;
     v5->_displayName = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"spotlightDisplayName"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"spotlightDisplayName"];
     spotlightDisplayName = v5->_spotlightDisplayName;
     v5->_spotlightDisplayName = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contentDescription"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contentDescription"];
     contentDescription = v5->_contentDescription;
     v5->_contentDescription = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"thumbnailData"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"thumbnailData"];
     thumbnailData = v5->_thumbnailData;
     v5->_thumbnailData = v18;
   }
@@ -84,9 +84,9 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -94,7 +94,7 @@
   }
 
   uri = self->_uri;
-  v6 = v4[1];
+  v6 = equalCopy[1];
   if (uri && v6)
   {
     if (([(NSString *)uri isEqual:?]& 1) == 0)
@@ -109,7 +109,7 @@
   }
 
   orderTypeIdentifier = self->_orderTypeIdentifier;
-  v8 = v4[2];
+  v8 = equalCopy[2];
   if (orderTypeIdentifier && v8)
   {
     if (([(NSString *)orderTypeIdentifier isEqual:?]& 1) == 0)
@@ -124,7 +124,7 @@
   }
 
   orderIdentifier = self->_orderIdentifier;
-  v10 = v4[3];
+  v10 = equalCopy[3];
   if (orderIdentifier && v10)
   {
     if (([(NSString *)orderIdentifier isEqual:?]& 1) == 0)
@@ -139,7 +139,7 @@
   }
 
   displayName = self->_displayName;
-  v12 = v4[4];
+  v12 = equalCopy[4];
   if (displayName && v12)
   {
     if (([(NSString *)displayName isEqual:?]& 1) == 0)
@@ -154,7 +154,7 @@
   }
 
   spotlightDisplayName = self->_spotlightDisplayName;
-  v14 = v4[5];
+  v14 = equalCopy[5];
   if (spotlightDisplayName && v14)
   {
     if (([(NSString *)spotlightDisplayName isEqual:?]& 1) == 0)
@@ -169,7 +169,7 @@
   }
 
   contentDescription = self->_contentDescription;
-  v16 = v4[6];
+  v16 = equalCopy[6];
   if (!contentDescription || !v16)
   {
     if (contentDescription == v16)
@@ -189,7 +189,7 @@ LABEL_34:
 
 LABEL_30:
   thumbnailData = self->_thumbnailData;
-  v18 = v4[7];
+  v18 = equalCopy[7];
   if (thumbnailData && v18)
   {
     v19 = [(NSData *)thumbnailData isEqual:?];

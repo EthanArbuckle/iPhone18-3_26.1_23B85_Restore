@@ -1,9 +1,9 @@
 @interface MTRDoorLockClusterGetWeekDayScheduleResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRDoorLockClusterGetWeekDayScheduleResponseParams)init;
-- (MTRDoorLockClusterGetWeekDayScheduleResponseParams)initWithDecodableStruct:(const void *)a3;
+- (MTRDoorLockClusterGetWeekDayScheduleResponseParams)initWithDecodableStruct:(const void *)struct;
 - (MTRDoorLockClusterGetWeekDayScheduleResponseParams)initWithResponseValue:(NSDictionary *)responseValue error:(NSError *)error;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -48,35 +48,35 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDoorLockClusterGetWeekDayScheduleResponseParams);
-  v5 = [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)self weekDayIndex];
-  [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)v4 setWeekDayIndex:v5];
+  weekDayIndex = [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)self weekDayIndex];
+  [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)v4 setWeekDayIndex:weekDayIndex];
 
-  v6 = [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)self userIndex];
-  [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)v4 setUserIndex:v6];
+  userIndex = [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)self userIndex];
+  [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)v4 setUserIndex:userIndex];
 
-  v7 = [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)self status];
-  [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)v4 setStatus:v7];
+  status = [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)self status];
+  [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)v4 setStatus:status];
 
-  v8 = [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)self daysMask];
-  [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)v4 setDaysMask:v8];
+  daysMask = [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)self daysMask];
+  [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)v4 setDaysMask:daysMask];
 
-  v9 = [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)self startHour];
-  [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)v4 setStartHour:v9];
+  startHour = [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)self startHour];
+  [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)v4 setStartHour:startHour];
 
-  v10 = [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)self startMinute];
-  [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)v4 setStartMinute:v10];
+  startMinute = [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)self startMinute];
+  [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)v4 setStartMinute:startMinute];
 
-  v11 = [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)self endHour];
-  [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)v4 setEndHour:v11];
+  endHour = [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)self endHour];
+  [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)v4 setEndHour:endHour];
 
-  v12 = [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)self endMinute];
-  [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)v4 setEndMinute:v12];
+  endMinute = [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)self endMinute];
+  [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)v4 setEndMinute:endMinute];
 
-  v13 = [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)self timedInvokeTimeoutMs];
-  [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)v4 setTimedInvokeTimeoutMs:v13];
+  timedInvokeTimeoutMs = [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)self timedInvokeTimeoutMs];
+  [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
   return v4;
 }
@@ -140,7 +140,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRDoorLockClusterGetWeekDayScheduleResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTRDoorLockClusterGetWeekDayScheduleResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRDoorLockClusterGetWeekDayScheduleResponseParams;
@@ -148,7 +148,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -164,20 +164,20 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*struct];
   [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)self setWeekDayIndex:v5];
 
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*(a3 + 1)];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*(struct + 1)];
   [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)self setUserIndex:v6];
 
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(a3 + 4)];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(struct + 4)];
   [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)self setStatus:v7];
 
-  if (*(a3 + 5) == 1)
+  if (*(struct + 5) == 1)
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*sub_238DE36D8(a3 + 5)];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*sub_238DE36D8(struct + 5)];
     [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)self setDaysMask:v8];
   }
 
@@ -186,9 +186,9 @@ LABEL_6:
     [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)self setDaysMask:0];
   }
 
-  if (*(a3 + 7) == 1)
+  if (*(struct + 7) == 1)
   {
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*sub_238DE36D8(a3 + 7)];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*sub_238DE36D8(struct + 7)];
     [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)self setStartHour:v9];
   }
 
@@ -197,9 +197,9 @@ LABEL_6:
     [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)self setStartHour:0];
   }
 
-  if (*(a3 + 9) == 1)
+  if (*(struct + 9) == 1)
   {
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*sub_238DE36D8(a3 + 9)];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*sub_238DE36D8(struct + 9)];
     [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)self setStartMinute:v10];
   }
 
@@ -208,9 +208,9 @@ LABEL_6:
     [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)self setStartMinute:0];
   }
 
-  if (*(a3 + 11) == 1)
+  if (*(struct + 11) == 1)
   {
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*sub_238DE36D8(a3 + 11)];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*sub_238DE36D8(struct + 11)];
     [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)self setEndHour:v11];
   }
 
@@ -219,8 +219,8 @@ LABEL_6:
     [(MTRDoorLockClusterGetWeekDayScheduleResponseParams *)self setEndHour:0];
   }
 
-  v13 = *(a3 + 13);
-  v12 = a3 + 13;
+  v13 = *(struct + 13);
+  v12 = struct + 13;
   if (v13 == 1)
   {
     v14 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*sub_238DE36D8(v12)];

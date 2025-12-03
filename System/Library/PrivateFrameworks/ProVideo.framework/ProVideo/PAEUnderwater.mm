@@ -1,21 +1,21 @@
 @interface PAEUnderwater
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (BOOL)getOutputWidth:(unint64_t *)a3 height:(unint64_t *)a4 withInput:(id *)a5 withInfo:(id *)a6;
-- (PAEUnderwater)initWithAPIManager:(id)a3;
-- (id)dynamicPropertiesAtTime:(id)a3 withError:(id *)a4;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (BOOL)getOutputWidth:(unint64_t *)width height:(unint64_t *)height withInput:(id *)input withInfo:(id *)info;
+- (PAEUnderwater)initWithAPIManager:(id)manager;
+- (id)dynamicPropertiesAtTime:(id)time withError:(id *)error;
 - (id)properties;
 - (void)dealloc;
 @end
 
 @implementation PAEUnderwater
 
-- (PAEUnderwater)initWithAPIManager:(id)a3
+- (PAEUnderwater)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEUnderwater;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (void)dealloc
@@ -32,7 +32,7 @@
   [(PAESharedDefaultBase *)&v11 addParameters];
   v3 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735B348];
   v4 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735F2C8];
-  v5 = [v4 versionAtCreation];
+  versionAtCreation = [v4 versionAtCreation];
   if (v3)
   {
     v6 = v4 == 0;
@@ -46,7 +46,7 @@
   v7 = !v6;
   if (!v6)
   {
-    v8 = v5 == 0;
+    v8 = versionAtCreation == 0;
     v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     [v3 addFloatSliderWithName:objc_msgSend(v9 parmId:"localizedStringForKey:value:table:" defaultValue:@"Underwater::Size" parameterMin:0 parameterMax:0) sliderMin:1 sliderMax:0 delta:2.0 parmFlags:{0.001, 100.0, 0.001, 10.0, 1.0}];
     [v3 addFloatSliderWithName:objc_msgSend(v9 parmId:"localizedStringForKey:value:table:" defaultValue:@"Underwater::Speed" parameterMin:0 parameterMax:0) sliderMin:2 sliderMax:0 delta:0.5 parmFlags:{0.0, 100.0, 0.0, 2.0, 0.1}];
@@ -57,11 +57,11 @@
   return v7;
 }
 
-- (BOOL)getOutputWidth:(unint64_t *)a3 height:(unint64_t *)a4 withInput:(id *)a5 withInfo:(id *)a6
+- (BOOL)getOutputWidth:(unint64_t *)width height:(unint64_t *)height withInput:(id *)input withInfo:(id *)info
 {
-  if (a3)
+  if (width)
   {
-    v6 = a4 == 0;
+    v6 = height == 0;
   }
 
   else
@@ -72,14 +72,14 @@
   result = !v6;
   if (!v6)
   {
-    *a3 = a5->var0;
-    *a4 = a5->var1;
+    *width = input->var0;
+    *height = input->var1;
   }
 
   return result;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v45[19] = *MEMORY[0x277D85DE8];
   v9 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
@@ -100,12 +100,12 @@
   }
 
   v44 = 0.0;
-  [v9 getFloatValue:&v44 fromParm:3 atFxTime:a5->var0.var1];
+  [v9 getFloatValue:&v44 fromParm:3 atFxTime:info->var0.var1];
   if (v44 == 0.0)
   {
-    if (a4)
+    if (input)
     {
-      [a4 heliumRef];
+      [input heliumRef];
     }
 
     else
@@ -113,7 +113,7 @@
       v40[0] = 0;
     }
 
-    [a3 setHeliumRef:v40];
+    [output setHeliumRef:v40];
     if (v40[0])
     {
       (*(*v40[0] + 24))(v40[0]);
@@ -124,22 +124,22 @@
 
   else
   {
-    [a4 width];
-    [a4 height];
-    v13 = [a3 imageType];
-    v14 = [(PAESharedDefaultBase *)self getRenderMode:a5->var0.var1];
+    [input width];
+    [input height];
+    imageType = [output imageType];
+    v14 = [(PAESharedDefaultBase *)self getRenderMode:info->var0.var1];
     result = 0;
-    if (v14 && v13 == 3)
+    if (v14 && imageType == 3)
     {
-      [(PAESharedDefaultBase *)self getPixelTransformForImage:a4];
-      [(PAESharedDefaultBase *)self getInversePixelTransformForImage:a4];
+      [(PAESharedDefaultBase *)self getPixelTransformForImage:input];
+      [(PAESharedDefaultBase *)self getInversePixelTransformForImage:input];
       v43 = 0.0;
-      [v9 getFloatValue:&v43 fromParm:1 atFxTime:a5->var0.var1];
+      [v9 getFloatValue:&v43 fromParm:1 atFxTime:info->var0.var1];
       v43 = v43 * 0.1;
       v42 = 0.0;
-      [v9 getFloatValue:&v42 fromParm:2 atFxTime:a5->var0.var1];
+      [v9 getFloatValue:&v42 fromParm:2 atFxTime:info->var0.var1];
       v41 = 0;
-      [v9 getBoolValue:&v41 fromParm:6 atFxTime:a5->var0.var1];
+      [v9 getBoolValue:&v41 fromParm:6 atFxTime:info->var0.var1];
       v15 = 589505315;
       for (i = 1; i != 102; ++i)
       {
@@ -147,7 +147,7 @@
         v40[i] = v15;
       }
 
-      [(PAESharedDefaultBase *)self secondsFromFxTime:a5->var0.var1];
+      [(PAESharedDefaultBase *)self secondsFromFxTime:info->var0.var1];
       v17 = 0;
       *&v18 = v18;
       v39 = v42 * *&v18;
@@ -219,15 +219,15 @@
   return result;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 
@@ -241,10 +241,10 @@
   return [v2 dictionaryWithObjectsAndKeys:{v3, @"PositionIndependent", v4, @"MayRemapTime", v5, @"SupportsLargeRenderScale", v6, @"SupportsHeliumRendering", objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", 3), @"AutoColorProcessingSupport", 0}];
 }
 
-- (id)dynamicPropertiesAtTime:(id)a3 withError:(id *)a4
+- (id)dynamicPropertiesAtTime:(id)time withError:(id *)error
 {
   v9 = 0.0;
-  if ([-[PAEFilterDefaultBase getParamAPIWithError:](self getParamAPIWithError:{a4), "getFloatValue:fromParm:atFxTime:", &v9, 3, a3.var1}])
+  if ([-[PAEFilterDefaultBase getParamAPIWithError:](self getParamAPIWithError:{error), "getFloatValue:fromParm:atFxTime:", &v9, 3, time.var1}])
   {
     if (v9 == 0.0)
     {
@@ -259,11 +259,11 @@
     return [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithInt:", v6, v9), @"PixelTransformSupport", 0}];
   }
 
-  else if (a4)
+  else if (error)
   {
     v8 = [(PAEFilterDefaultBase *)self getParamErrorFor:@"PAEUnderwater"];
     result = 0;
-    *a4 = v8;
+    *error = v8;
   }
 
   else

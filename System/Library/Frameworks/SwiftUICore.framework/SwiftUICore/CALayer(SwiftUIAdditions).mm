@@ -14,58 +14,58 @@
 {
   v2 = objc_opt_class();
 
-  return [a1 setDelegate:v2];
+  return [self setDelegate:v2];
 }
 
 - (uint64_t)swiftUI_displayListID
 {
-  v1 = [a1 valueForKey:@"_swiftUI_displayListID"];
+  v1 = [self valueForKey:@"_swiftUI_displayListID"];
   v2 = v1;
   if (v1)
   {
-    v3 = [v1 integerValue];
+    integerValue = [v1 integerValue];
   }
 
   else
   {
-    v3 = 0x7FFFFFFFFFFFFFFFLL;
+    integerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v3;
+  return integerValue;
 }
 
 - (void)setSwiftUI_displayListID:()SwiftUIAdditions
 {
   v2 = [MEMORY[0x1E696AD98] numberWithInteger:?];
-  [a1 setValue:v2 forKey:@"_swiftUI_displayListID"];
+  [self setValue:v2 forKey:@"_swiftUI_displayListID"];
 }
 
 - (uint64_t)swiftUI_viewTestProperties
 {
-  v1 = [a1 valueForKey:@"_swiftUI_viewTestProperties"];
-  v2 = [v1 integerValue];
+  v1 = [self valueForKey:@"_swiftUI_viewTestProperties"];
+  integerValue = [v1 integerValue];
 
-  return v2;
+  return integerValue;
 }
 
 - (void)setSwiftUI_viewTestProperties:()SwiftUIAdditions
 {
   v2 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:?];
-  [a1 setValue:v2 forKey:@"_swiftUI_viewTestProperties"];
+  [self setValue:v2 forKey:@"_swiftUI_viewTestProperties"];
 }
 
 - (uint64_t)setCoordinatedAnimationDelegate
 {
   v2 = objc_opt_class();
 
-  return [a1 setDelegate:v2];
+  return [self setDelegate:v2];
 }
 
 - (uint64_t)setSDFCoordinatedAnimationDelegate
 {
   v2 = objc_opt_class();
 
-  return [a1 setDelegate:v2];
+  return [self setDelegate:v2];
 }
 
 @end

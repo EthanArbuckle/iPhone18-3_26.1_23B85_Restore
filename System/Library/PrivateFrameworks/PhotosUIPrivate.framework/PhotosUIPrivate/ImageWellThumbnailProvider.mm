@@ -1,22 +1,22 @@
 @interface ImageWellThumbnailProvider
-- (void)cancelThumbnailRequest:(int64_t)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)cancelThumbnailRequest:(int64_t)request;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 @end
 
 @implementation ImageWellThumbnailProvider
 
-- (void)cancelThumbnailRequest:(int64_t)a3
+- (void)cancelThumbnailRequest:(int64_t)request
 {
-  v4 = self;
-  sub_1B371E224(a3);
+  selfCopy = self;
+  sub_1B371E224(request);
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v5 = a4;
-  v7 = a3;
-  v8 = self;
-  sub_1B371E34C(v7, v5);
+  changeCopy = change;
+  observableCopy = observable;
+  selfCopy = self;
+  sub_1B371E34C(observableCopy, changeCopy);
 }
 
 @end

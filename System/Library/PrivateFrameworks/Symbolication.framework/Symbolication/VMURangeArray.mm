@@ -1,21 +1,21 @@
 @interface VMURangeArray
-- (BOOL)containsRange:(_VMURange)a3;
-- (BOOL)intersectsRange:(_VMURange)a3;
+- (BOOL)containsRange:(_VMURange)range;
+- (BOOL)intersectsRange:(_VMURange)range;
 - (VMURangeArray)init;
-- (VMURangeArray)initWithRanges:(const _VMURange *)a3 count:(unsigned int)a4;
+- (VMURangeArray)initWithRanges:(const _VMURange *)ranges count:(unsigned int)count;
 - (_VMURange)largestRange;
 - (_VMURange)range;
-- (_VMURange)rangeAtIndex:(unsigned int)a3;
-- (_VMURange)rangeForLocation:(unint64_t)a3;
-- (_VMURange)subrangeNotExcludedBySelfForRange:(_VMURange)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_VMURange)rangeAtIndex:(unsigned int)index;
+- (_VMURange)rangeForLocation:(unint64_t)location;
+- (_VMURange)subrangeNotExcludedBySelfForRange:(_VMURange)range;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (unint64_t)indexForLocation:(unint64_t)a3;
+- (unint64_t)indexForLocation:(unint64_t)location;
 - (unint64_t)sumLengths;
-- (void)addRange:(_VMURange)a3;
-- (void)addRanges:(id)a3;
+- (void)addRange:(_VMURange)range;
+- (void)addRanges:(id)ranges;
 - (void)dealloc;
-- (void)setCapacity:(unsigned int)a3;
+- (void)setCapacity:(unsigned int)capacity;
 - (void)sort;
 @end
 
@@ -38,7 +38,7 @@
   return v3;
 }
 
-- (VMURangeArray)initWithRanges:(const _VMURange *)a3 count:(unsigned int)a4
+- (VMURangeArray)initWithRanges:(const _VMURange *)ranges count:(unsigned int)count
 {
   v11.receiver = self;
   v11.super_class = VMURangeArray;
@@ -46,21 +46,21 @@
   v7 = v6;
   if (v6)
   {
-    if (a4 <= 8)
+    if (count <= 8)
     {
-      v8 = 8;
+      countCopy = 8;
     }
 
     else
     {
-      v8 = a4;
+      countCopy = count;
     }
 
-    v6->_max = v8;
-    v6->_count = a4;
-    v9 = malloc_type_malloc(16 * v8, 0x1000040451B5BE8uLL);
+    v6->_max = countCopy;
+    v6->_count = count;
+    v9 = malloc_type_malloc(16 * countCopy, 0x1000040451B5BE8uLL);
     v7->_ranges = v9;
-    memmove(v9, a3, 16 * a4);
+    memmove(v9, ranges, 16 * count);
     v7->_sorted = 0;
   }
 
@@ -80,7 +80,7 @@
   [(VMURangeArray *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [[VMURangeArray allocWithZone:?]count:"initWithRanges:count:", self->_ranges, self->_count];
   if (result)
@@ -91,12 +91,12 @@
   return result;
 }
 
-- (void)setCapacity:(unsigned int)a3
+- (void)setCapacity:(unsigned int)capacity
 {
-  if (self->_max < a3)
+  if (self->_max < capacity)
   {
-    self->_max = a3;
-    self->_ranges = malloc_type_realloc(self->_ranges, 16 * a3, 0x1000040451B5BE8uLL);
+    self->_max = capacity;
+    self->_ranges = malloc_type_realloc(self->_ranges, 16 * capacity, 0x1000040451B5BE8uLL);
   }
 }
 
@@ -109,32 +109,32 @@
   }
 }
 
-- (void)addRange:(_VMURange)a3
+- (void)addRange:(_VMURange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   if (self->_sorted)
   {
     count = self->_count;
     if (count)
     {
       v6 = &self->_ranges[count - 1];
-      if (v6->length + v6->location > a3.location)
+      if (v6->length + v6->location > range.location)
       {
         self->_sorted = 0;
       }
     }
   }
 
-  v7 = self;
-  v8 = v7;
-  v9 = v7->_count;
-  if (v9 >= v7->_max)
+  selfCopy = self;
+  v8 = selfCopy;
+  v9 = selfCopy->_count;
+  if (v9 >= selfCopy->_max)
   {
     v11 = (3 * v9 + 3) >> 1;
-    v7->_max = v11;
-    v13 = v7;
-    ranges = malloc_type_realloc(v7->_ranges, 16 * v11, 0x1000040451B5BE8uLL);
+    selfCopy->_max = v11;
+    v13 = selfCopy;
+    ranges = malloc_type_realloc(selfCopy->_ranges, 16 * v11, 0x1000040451B5BE8uLL);
     v8 = v13;
     v13->_ranges = ranges;
     v9 = v13->_count;
@@ -142,7 +142,7 @@
 
   else
   {
-    ranges = v7->_ranges;
+    ranges = selfCopy->_ranges;
   }
 
   v8->_count = v9 + 1;
@@ -151,14 +151,14 @@
   p_location[1] = length;
 }
 
-- (void)addRanges:(id)a3
+- (void)addRanges:(id)ranges
 {
-  if (a3)
+  if (ranges)
   {
-    v3 = *(a3 + 2);
+    v3 = *(ranges + 2);
     if (v3)
     {
-      v5 = (*(a3 + 2) + 8);
+      v5 = (*(ranges + 2) + 8);
       do
       {
         [(VMURangeArray *)self addRange:*(v5 - 1), *v5];
@@ -171,9 +171,9 @@
   }
 }
 
-- (_VMURange)rangeAtIndex:(unsigned int)a3
+- (_VMURange)rangeAtIndex:(unsigned int)index
 {
-  if (self->_count <= a3)
+  if (self->_count <= index)
   {
     location = 0;
     length = 0;
@@ -181,7 +181,7 @@
 
   else
   {
-    v3 = &self->_ranges[a3];
+    v3 = &self->_ranges[index];
     location = v3->location;
     length = v3->length;
   }
@@ -191,7 +191,7 @@
   return result;
 }
 
-- (unint64_t)indexForLocation:(unint64_t)a3
+- (unint64_t)indexForLocation:(unint64_t)location
 {
   sorted = self->_sorted;
   result = self->_count;
@@ -201,7 +201,7 @@
     {
       --result;
       v11 = &self->_ranges[i];
-      if (a3 - v11[-1].location < v11[-1].length)
+      if (location - v11[-1].location < v11[-1].length)
       {
         return result;
       }
@@ -221,12 +221,12 @@
   {
     v8 = v6 + (result >> 1);
     v9 = &ranges[v8];
-    if (a3 - v9->location < v9->length)
+    if (location - v9->location < v9->length)
     {
       break;
     }
 
-    if (a3 < v9->location)
+    if (location < v9->location)
     {
       result >>= 1;
     }
@@ -246,9 +246,9 @@
   return v6 + (result >> 1);
 }
 
-- (_VMURange)rangeForLocation:(unint64_t)a3
+- (_VMURange)rangeForLocation:(unint64_t)location
 {
-  v4 = [(VMURangeArray *)self indexForLocation:a3];
+  v4 = [(VMURangeArray *)self indexForLocation:location];
 
   v5 = [(VMURangeArray *)self rangeAtIndex:v4];
   result.length = v6;
@@ -256,10 +256,10 @@
   return result;
 }
 
-- (BOOL)containsRange:(_VMURange)a3
+- (BOOL)containsRange:(_VMURange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   count = self->_count;
   if (self->_sorted)
   {
@@ -320,10 +320,10 @@
   return v11;
 }
 
-- (BOOL)intersectsRange:(_VMURange)a3
+- (BOOL)intersectsRange:(_VMURange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   count = self->_count;
   if (self->_sorted)
   {
@@ -384,11 +384,11 @@
   return v11;
 }
 
-- (_VMURange)subrangeNotExcludedBySelfForRange:(_VMURange)a3
+- (_VMURange)subrangeNotExcludedBySelfForRange:(_VMURange)range
 {
-  length = a3.length;
-  location = a3.location;
-  if (a3.length)
+  length = range.length;
+  location = range.location;
+  if (range.length)
   {
     count = self->_count;
     if (count)
@@ -549,8 +549,8 @@ LABEL_13:
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  v4 = v3;
+  string = [MEMORY[0x1E696AD60] string];
+  v4 = string;
   if (self->_sorted)
   {
     v5 = "YES";
@@ -561,7 +561,7 @@ LABEL_13:
     v5 = "NO";
   }
 
-  [v3 appendFormat:@"_sorted?  %s\n", v5];
+  [string appendFormat:@"_sorted?  %s\n", v5];
   if (self->_count)
   {
     v6 = 0;

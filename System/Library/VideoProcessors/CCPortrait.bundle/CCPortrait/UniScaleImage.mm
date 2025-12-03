@@ -1,34 +1,34 @@
 @interface UniScaleImage
 - (CGRect)extentForImage;
-- (UniScaleImage)initWithDevice:(id)a3;
+- (UniScaleImage)initWithDevice:(id)device;
 - (id)inputNameArray;
-- (id)outputImage:(id)a3;
+- (id)outputImage:(id)image;
 - (id)outputNameArray;
-- (id)run:(id)a3;
-- (int)_loadShaders:(id)a3;
+- (id)run:(id)run;
+- (int)_loadShaders:(id)shaders;
 @end
 
 @implementation UniScaleImage
 
-- (UniScaleImage)initWithDevice:(id)a3
+- (UniScaleImage)initWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v10.receiver = self;
   v10.super_class = UniScaleImage;
   v5 = [(UniKernel *)&v10 init];
   v7 = v5;
   if (v5)
   {
-    objc_msgSend_setDevice_(v5, v6, v4);
-    objc_msgSend__loadShaders_(v7, v8, v4);
+    objc_msgSend_setDevice_(v5, v6, deviceCopy);
+    objc_msgSend__loadShaders_(v7, v8, deviceCopy);
   }
 
   return v7;
 }
 
-- (id)run:(id)a3
+- (id)run:(id)run
 {
-  v4 = a3;
+  runCopy = run;
   v7 = objc_msgSend_inputs(self, v5, v6);
   v9 = objc_msgSend_objectForKey_(v7, v8, *MEMORY[0x29EDB9238]);
 
@@ -51,9 +51,9 @@
   v64 = v9;
   v22 = objc_msgSend_device(v16, v19, v20);
   v25 = v22;
-  if (v4)
+  if (runCopy)
   {
-    v26 = v4;
+    v26 = runCopy;
   }
 
   else
@@ -128,9 +128,9 @@
   return result;
 }
 
-- (id)outputImage:(id)a3
+- (id)outputImage:(id)image
 {
-  v3 = objc_msgSend_copy(self, a2, a3);
+  v3 = objc_msgSend_copy(self, a2, image);
   v6 = objc_msgSend_inputs(v3, v4, v5);
   v8 = objc_msgSend_objectForKey_(v6, v7, *MEMORY[0x29EDB9238]);
 
@@ -206,7 +206,7 @@ LABEL_10:
   return v2;
 }
 
-- (int)_loadShaders:(id)a3
+- (int)_loadShaders:(id)shaders
 {
   v4 = MEMORY[0x29EDB9F48];
   v5 = objc_opt_class();

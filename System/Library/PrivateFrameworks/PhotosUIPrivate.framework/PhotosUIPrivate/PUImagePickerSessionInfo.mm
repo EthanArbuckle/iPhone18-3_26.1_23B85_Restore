@@ -1,24 +1,24 @@
 @interface PUImagePickerSessionInfo
-- (PUImagePickerSessionInfo)initWithPhotosViewDelegate:(id)a3 loadingStatusManager:(id)a4 allowMultipleSelection:(BOOL)a5 limitedLibrary:(BOOL)a6;
+- (PUImagePickerSessionInfo)initWithPhotosViewDelegate:(id)delegate loadingStatusManager:(id)manager allowMultipleSelection:(BOOL)selection limitedLibrary:(BOOL)library;
 @end
 
 @implementation PUImagePickerSessionInfo
 
-- (PUImagePickerSessionInfo)initWithPhotosViewDelegate:(id)a3 loadingStatusManager:(id)a4 allowMultipleSelection:(BOOL)a5 limitedLibrary:(BOOL)a6
+- (PUImagePickerSessionInfo)initWithPhotosViewDelegate:(id)delegate loadingStatusManager:(id)manager allowMultipleSelection:(BOOL)selection limitedLibrary:(BOOL)library
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
+  selectionCopy = selection;
+  delegateCopy = delegate;
+  managerCopy = manager;
   v15.receiver = self;
   v15.super_class = PUImagePickerSessionInfo;
   v12 = [(PUSessionInfo *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    [(PUSessionInfo *)v12 setPhotosViewDelegate:v10];
-    [(PUSessionInfo *)v13 setLoadingStatusManager:v11];
-    [(PUSessionInfo *)v13 setAllowsMultipleSelection:v7];
-    v13->_isLimitedLibraryPicker = a6;
+    [(PUSessionInfo *)v12 setPhotosViewDelegate:delegateCopy];
+    [(PUSessionInfo *)v13 setLoadingStatusManager:managerCopy];
+    [(PUSessionInfo *)v13 setAllowsMultipleSelection:selectionCopy];
+    v13->_isLimitedLibraryPicker = library;
   }
 
   return v13;

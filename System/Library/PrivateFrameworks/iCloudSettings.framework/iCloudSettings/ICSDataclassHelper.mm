@@ -1,53 +1,53 @@
 @interface ICSDataclassHelper
-+ (id)attributedLinkForDataclass:(id)a3;
++ (id)attributedLinkForDataclass:(id)dataclass;
 + (id)dataclassAttributedLinkDictionary;
-+ (id)dataclassSubTitleDictionary:(id)a3 idmsAccount:(id)a4 securityLevel:(unint64_t)a5;
++ (id)dataclassSubTitleDictionary:(id)dictionary idmsAccount:(id)account securityLevel:(unint64_t)level;
 + (id)dataclassTitleDictionary;
-+ (id)healthDataclassSubtitleForSecurityLevel:(unint64_t)a3;
-+ (id)localizedSubTitleForDataclass:(id)a3 idmsAccount:(id)a4 securityLevel:(unint64_t)a5;
-+ (id)localizedTitleForDataclass:(id)a3;
-+ (unint64_t)currentSecurityLevel:(unint64_t)a3;
++ (id)healthDataclassSubtitleForSecurityLevel:(unint64_t)level;
++ (id)localizedSubTitleForDataclass:(id)dataclass idmsAccount:(id)account securityLevel:(unint64_t)level;
++ (id)localizedTitleForDataclass:(id)dataclass;
++ (unint64_t)currentSecurityLevel:(unint64_t)level;
 @end
 
 @implementation ICSDataclassHelper
 
-+ (id)localizedTitleForDataclass:(id)a3
++ (id)localizedTitleForDataclass:(id)dataclass
 {
-  v4 = a3;
-  v5 = [a1 dataclassTitleDictionary];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dataclassCopy = dataclass;
+  dataclassTitleDictionary = [self dataclassTitleDictionary];
+  v6 = [dataclassTitleDictionary objectForKeyedSubscript:dataclassCopy];
 
   return v6;
 }
 
-+ (id)localizedSubTitleForDataclass:(id)a3 idmsAccount:(id)a4 securityLevel:(unint64_t)a5
++ (id)localizedSubTitleForDataclass:(id)dataclass idmsAccount:(id)account securityLevel:(unint64_t)level
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a3;
+  accountCopy = account;
+  dataclassCopy = dataclass;
   v10 = LogSubsystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412546;
-    v16 = v8;
+    v16 = accountCopy;
     v17 = 2048;
-    v18 = a5;
+    levelCopy = level;
     _os_log_impl(&dword_275819000, v10, OS_LOG_TYPE_DEFAULT, "localizedSubTitleForDataclass idmsAccount: %@, securityLevel: %lu", &v15, 0x16u);
   }
 
-  v11 = [a1 dataclassSubTitleDictionary:v9 idmsAccount:v8 securityLevel:a5];
-  v12 = [v11 objectForKeyedSubscript:v9];
+  v11 = [self dataclassSubTitleDictionary:dataclassCopy idmsAccount:accountCopy securityLevel:level];
+  v12 = [v11 objectForKeyedSubscript:dataclassCopy];
 
   v13 = *MEMORY[0x277D85DE8];
 
   return v12;
 }
 
-+ (id)attributedLinkForDataclass:(id)a3
++ (id)attributedLinkForDataclass:(id)dataclass
 {
-  v4 = a3;
-  v5 = [a1 dataclassAttributedLinkDictionary];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dataclassCopy = dataclass;
+  dataclassAttributedLinkDictionary = [self dataclassAttributedLinkDictionary];
+  v6 = [dataclassAttributedLinkDictionary objectForKeyedSubscript:dataclassCopy];
 
   return v6;
 }
@@ -58,7 +58,7 @@
   block[1] = 3221225472;
   block[2] = __46__ICSDataclassHelper_dataclassTitleDictionary__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (dataclassTitleDictionary_onceToken != -1)
   {
     dispatch_once(&dataclassTitleDictionary_onceToken, block);
@@ -133,12 +133,12 @@ void __46__ICSDataclassHelper_dataclassTitleDictionary__block_invoke(uint64_t a1
   dataclassTitleDictionary_dataclassTitleMap = v37;
 }
 
-+ (id)dataclassSubTitleDictionary:(id)a3 idmsAccount:(id)a4 securityLevel:(unint64_t)a5
++ (id)dataclassSubTitleDictionary:(id)dictionary idmsAccount:(id)account securityLevel:(unint64_t)level
 {
-  v8 = [a3 isEqualToString:*MEMORY[0x277CB89A0]];
-  if (a4 && v8)
+  v8 = [dictionary isEqualToString:*MEMORY[0x277CB89A0]];
+  if (account && v8)
   {
-    v9 = [a1 healthDataclassSubtitleForSecurityLevel:a5];
+    v9 = [self healthDataclassSubtitleForSecurityLevel:level];
   }
 
   else
@@ -160,7 +160,7 @@ void __46__ICSDataclassHelper_dataclassTitleDictionary__block_invoke(uint64_t a1
   v18[2] = __76__ICSDataclassHelper_dataclassSubTitleDictionary_idmsAccount_securityLevel___block_invoke;
   v18[3] = &unk_27A666A68;
   v19 = v9;
-  v20 = a1;
+  selfCopy = self;
   v13 = dataclassSubTitleDictionary_idmsAccount_securityLevel__onceToken;
   v14 = v9;
   if (v13 != -1)
@@ -203,9 +203,9 @@ void __76__ICSDataclassHelper_dataclassSubTitleDictionary_idmsAccount_securityLe
   dataclassSubTitleDictionary_idmsAccount_securityLevel__dataclassSubTitleMap = v14;
 }
 
-+ (id)healthDataclassSubtitleForSecurityLevel:(unint64_t)a3
++ (id)healthDataclassSubtitleForSecurityLevel:(unint64_t)level
 {
-  v3 = [a1 currentSecurityLevel:a3];
+  v3 = [self currentSecurityLevel:level];
   if (v3 > 3)
   {
     v7 = 0;
@@ -222,24 +222,24 @@ void __76__ICSDataclassHelper_dataclassSubTitleDictionary_idmsAccount_securityLe
   return v7;
 }
 
-+ (unint64_t)currentSecurityLevel:(unint64_t)a3
++ (unint64_t)currentSecurityLevel:(unint64_t)level
 {
-  v4 = [MEMORY[0x277CFD4F8] sharedInstance];
-  v5 = [v4 hasLocalSecret];
+  mEMORY[0x277CFD4F8] = [MEMORY[0x277CFD4F8] sharedInstance];
+  hasLocalSecret = [mEMORY[0x277CFD4F8] hasLocalSecret];
 
   v6 = 1;
-  if (a3 != 4)
+  if (level != 4)
   {
     v6 = 2;
   }
 
   v7 = 3;
-  if (a3 != 4)
+  if (level != 4)
   {
     v7 = 0;
   }
 
-  if (v5)
+  if (hasLocalSecret)
   {
     return v6;
   }
@@ -256,7 +256,7 @@ void __76__ICSDataclassHelper_dataclassSubTitleDictionary_idmsAccount_securityLe
   block[1] = 3221225472;
   block[2] = __55__ICSDataclassHelper_dataclassAttributedLinkDictionary__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (dataclassAttributedLinkDictionary_onceToken != -1)
   {
     dispatch_once(&dataclassAttributedLinkDictionary_onceToken, block);

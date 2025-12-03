@@ -1,99 +1,99 @@
 @interface SCNView
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
 + (BOOL)usesSeparateWorkGroup;
 + (Class)layerClass;
-+ (id)deviceForOptions:(id)a3;
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3;
-+ (unint64_t)renderingAPIForOptions:(id)a3;
++ (id)deviceForOptions:(id)options;
++ (id)keyPathsForValuesAffectingValueForKey:(id)key;
++ (unint64_t)renderingAPIForOptions:(id)options;
 - (BOOL)_canJitter;
 - (BOOL)_checkAndUpdateDisplayLinkStateIfNeeded;
-- (BOOL)isNodeInsideFrustum:(id)a3 withPointOfView:(id)a4;
-- (BOOL)prepareObject:(id)a3 shouldAbortBlock:(id)a4;
+- (BOOL)isNodeInsideFrustum:(id)frustum withPointOfView:(id)view;
+- (BOOL)prepareObject:(id)object shouldAbortBlock:(id)block;
 - (CGRect)currentViewport;
 - (CGSize)_updateBackingSize;
-- (CGSize)backingSizeForBoundSize:(CGSize)a3;
+- (CGSize)backingSizeForBoundSize:(CGSize)size;
 - (NSInteger)preferredFramesPerSecond;
 - (NSString)description;
 - (SCNCameraController)defaultCameraController;
 - (SCNMatrix4)_screenTransform;
-- (SCNVector3)projectPoint:(SCNVector3)a3;
-- (SCNVector3)unprojectPoint:(SCNVector3)a3;
+- (SCNVector3)projectPoint:(SCNVector3)point;
+- (SCNVector3)unprojectPoint:(SCNVector3)point;
 - (SCNVector4)_viewport;
-- (SCNView)initWithCoder:(id)a3;
+- (SCNView)initWithCoder:(id)coder;
 - (SCNView)initWithFrame:(CGRect)frame options:(NSDictionary *)options;
 - (UIImage)snapshot;
-- (double)_runFPSTestWithDuration:(double)a3;
-- (id)focusItemsInRect:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 options:(id)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)nodesInsideFrustumWithPointOfView:(id)a3;
+- (double)_runFPSTestWithDuration:(double)duration;
+- (id)focusItemsInRect:(CGRect)rect;
+- (id)hitTest:(CGPoint)test options:(id)options;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)nodesInsideFrustumWithPointOfView:(id)view;
 - (unint64_t)_renderOptions;
 - (void)_adjustBackingLayerPixelFormat;
 - (void)_backgroundDidChange;
-- (void)_commonInit:(id)a3;
+- (void)_commonInit:(id)init;
 - (void)_createDisplayLinkIfNeeded;
-- (void)_drawAtTime:(double)a3;
-- (void)_enterBackground:(id)a3;
-- (void)_enterForeground:(id)a3;
+- (void)_drawAtTime:(double)time;
+- (void)_enterBackground:(id)background;
+- (void)_enterForeground:(id)foreground;
 - (void)_flushDisplayLink;
-- (void)_initializeDisplayLinkWithScreen:(id)a3 policy:(unint64_t)a4 completionHandler:(id)a5;
-- (void)_sceneDidUpdate:(id)a3;
-- (void)_selectRenderingAPIWithOptions:(id)a3;
+- (void)_initializeDisplayLinkWithScreen:(id)screen policy:(unint64_t)policy completionHandler:(id)handler;
+- (void)_sceneDidUpdate:(id)update;
+- (void)_selectRenderingAPIWithOptions:(id)options;
 - (void)_setNeedsDisplay;
-- (void)_systemTimeAnimationStarted:(id)a3;
+- (void)_systemTimeAnimationStarted:(id)started;
 - (void)_updateContentsScaleFactor;
 - (void)_updateOpacity;
 - (void)context;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)displayLayer:(id)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)displayLayer:(id)layer;
+- (void)drawRect:(CGRect)rect;
+- (void)encodeWithCoder:(id)coder;
 - (void)eventHandlerWantsRedraw;
 - (void)layoutSubviews;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)pauseDisplayLink;
-- (void)prepareObjects:(id)a3 withCompletionHandler:(id)a4;
-- (void)presentScene:(id)a3 withTransition:(id)a4 incomingPointOfView:(id)a5 completionHandler:(id)a6;
+- (void)prepareObjects:(id)objects withCompletionHandler:(id)handler;
+- (void)presentScene:(id)scene withTransition:(id)transition incomingPointOfView:(id)view completionHandler:(id)handler;
 - (void)resumeDisplayLink;
 - (void)safeAreaInsetsDidChange;
-- (void)scn_setBackingLayer:(id)a3;
-- (void)scn_setGestureRecognizers:(id)a3;
+- (void)scn_setBackingLayer:(id)layer;
+- (void)scn_setGestureRecognizers:(id)recognizers;
 - (void)scn_updateGestureRecognizers;
 - (void)setAllowsCameraControl:(BOOL)allowsCameraControl;
 - (void)setAntialiasingMode:(SCNAntialiasingMode)antialiasingMode;
-- (void)setAutoenablesDefaultLighting:(BOOL)a3;
+- (void)setAutoenablesDefaultLighting:(BOOL)lighting;
 - (void)setBackgroundColor:(NSColor *)backgroundColor;
-- (void)setContentScaleFactor:(double)a3;
-- (void)setDebugOptions:(unint64_t)a3;
-- (void)setDisplayLink:(id)a3;
-- (void)setEventHandler:(id)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setJitteringEnabled:(BOOL)a3;
-- (void)setNavigationCameraController:(id)a3;
+- (void)setContentScaleFactor:(double)factor;
+- (void)setDebugOptions:(unint64_t)options;
+- (void)setDisplayLink:(id)link;
+- (void)setEventHandler:(id)handler;
+- (void)setHidden:(BOOL)hidden;
+- (void)setJitteringEnabled:(BOOL)enabled;
+- (void)setNavigationCameraController:(id)controller;
 - (void)setNeedsDisplay;
-- (void)setOverlaySKScene:(id)a3;
-- (void)setPlaying:(BOOL)a3;
-- (void)setPointOfCulling:(id)a3;
-- (void)setPointOfView:(id)a3;
-- (void)setPointOfView:(id)a3 animate:(BOOL)a4;
+- (void)setOverlaySKScene:(id)scene;
+- (void)setPlaying:(BOOL)playing;
+- (void)setPointOfCulling:(id)culling;
+- (void)setPointOfView:(id)view;
+- (void)setPointOfView:(id)view animate:(BOOL)animate;
 - (void)setPreferredFramesPerSecond:(NSInteger)preferredFramesPerSecond;
 - (void)setRendersContinuously:(BOOL)rendersContinuously;
 - (void)setScene:(SCNScene *)scene;
-- (void)setSceneTime:(double)a3;
-- (void)setShowsStatistics:(BOOL)a3;
-- (void)set_disableLinearRendering:(BOOL)a3;
-- (void)set_renderOptions:(unint64_t)a3;
-- (void)set_screenTransform:(SCNMatrix4 *)a3;
+- (void)setSceneTime:(double)time;
+- (void)setShowsStatistics:(BOOL)statistics;
+- (void)set_disableLinearRendering:(BOOL)rendering;
+- (void)set_renderOptions:(unint64_t)options;
+- (void)set_screenTransform:(SCNMatrix4 *)transform;
 - (void)stop:(id)sender;
-- (void)switchToCameraNamed:(id)a3;
+- (void)switchToCameraNamed:(id)named;
 - (void)switchToNextCamera;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
+- (void)traitCollectionDidChange:(id)change;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation SCNView
@@ -102,7 +102,7 @@
 {
   if (!gTmpRenderingAPI)
   {
-    [a1 lowLatency];
+    [self lowLatency];
   }
 
   return objc_opt_class();
@@ -157,19 +157,19 @@
 
 - (void)_updateOpacity
 {
-  v3 = scn_NSColorFromCGColorIfApplicable([(SCNMaterialProperty *)[(SCNScene *)self->_scene background] contents]);
+  backgroundColor = scn_NSColorFromCGColorIfApplicable([(SCNMaterialProperty *)[(SCNScene *)self->_scene background] contents]);
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || !v3)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || !backgroundColor)
   {
-    v3 = [(SCNView *)self backgroundColor];
-    if (!v3)
+    backgroundColor = [(SCNView *)self backgroundColor];
+    if (!backgroundColor)
     {
-      v3 = [(SCNView *)self _defaultBackgroundColor];
+      backgroundColor = [(SCNView *)self _defaultBackgroundColor];
     }
   }
 
   v8 = 0;
-  [(NSColor *)v3 scn_C3DColorIgnoringColorSpace:0 success:&v8];
+  [(NSColor *)backgroundColor scn_C3DColorIgnoringColorSpace:0 success:&v8];
   *&v5 = v4;
   v6 = *(self + 456);
   v7 = (v8 ^ 1) & 1u | (v4 == 1.0);
@@ -187,8 +187,8 @@
   {
     [(SCNView *)self lock];
     [(SCNRenderer *)self->_renderer lock];
-    v4 = [(SCNView *)self isOpaque];
-    [(SCNMTLRenderContext *)[(SCNRenderer *)self->_renderer _renderContextMetal] setIsOpaque:v4];
+    isOpaque = [(SCNView *)self isOpaque];
+    [(SCNMTLRenderContext *)[(SCNRenderer *)self->_renderer _renderContextMetal] setIsOpaque:isOpaque];
     if (C3DWideGamutIsUsed())
     {
       v5 = [objc_msgSend(-[SCNView window](self "window")] == 1;
@@ -201,14 +201,14 @@
       v6 = 0;
     }
 
-    v7 = [(SCNRenderer *)self->_renderer _antialiasingMode];
+    _antialiasingMode = [(SCNRenderer *)self->_renderer _antialiasingMode];
     v8 = v6 | 8;
-    if (!v7)
+    if (!_antialiasingMode)
     {
       v8 = v6;
     }
 
-    if (v4)
+    if (isOpaque)
     {
       v9 = v8;
     }
@@ -230,14 +230,14 @@
 
 - (void)scn_updateGestureRecognizers
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   navigationCameraController = self->_navigationCameraController;
   if (navigationCameraController)
   {
-    [v3 addObjectsFromArray:{-[SCNEventHandler gestureRecognizers](navigationCameraController, "gestureRecognizers")}];
+    [array addObjectsFromArray:{-[SCNEventHandler gestureRecognizers](navigationCameraController, "gestureRecognizers")}];
   }
 
-  [(SCNView *)self scn_setGestureRecognizers:v3];
+  [(SCNView *)self scn_setGestureRecognizers:array];
 }
 
 - (void)_createDisplayLinkIfNeeded
@@ -249,13 +249,13 @@
       self->_displayLinkCreationRequested = 1;
       objc_initWeak(&location, self);
       v3 = [-[SCNView window](self "window")];
-      v4 = [objc_opt_class() displayLinkPolicy];
+      displayLinkPolicy = [objc_opt_class() displayLinkPolicy];
       v5[0] = MEMORY[0x277D85DD0];
       v5[1] = 3221225472;
       v5[2] = __37__SCNView__createDisplayLinkIfNeeded__block_invoke;
       v5[3] = &unk_278300120;
       objc_copyWeak(&v6, &location);
-      [(SCNView *)self _initializeDisplayLinkWithScreen:v3 policy:v4 completionHandler:v5];
+      [(SCNView *)self _initializeDisplayLinkWithScreen:v3 policy:displayLinkPolicy completionHandler:v5];
       objc_destroyWeak(&v6);
       objc_destroyWeak(&location);
     }
@@ -265,9 +265,9 @@
 - (void)pauseDisplayLink
 {
   [(SCNJitterer *)self->_jitterer stopIfNeeded];
-  v3 = [(SCNView *)self displayLink];
+  displayLink = [(SCNView *)self displayLink];
 
-  [v3 setPaused:1];
+  [displayLink setPaused:1];
 }
 
 - (void)_flushDisplayLink
@@ -297,21 +297,21 @@
   }
 }
 
-- (void)_initializeDisplayLinkWithScreen:(id)a3 policy:(unint64_t)a4 completionHandler:(id)a5
+- (void)_initializeDisplayLinkWithScreen:(id)screen policy:(unint64_t)policy completionHandler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  screenCopy = screen;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __85__SCNView_SCNDisplayLink___initializeDisplayLinkWithScreen_policy_completionHandler___block_invoke;
   aBlock[3] = &unk_2782FD9C8;
   objc_copyWeak(v22, &location);
-  v10 = v8;
+  v10 = screenCopy;
   v20 = v10;
-  v22[1] = a4;
-  v11 = v9;
+  v22[1] = policy;
+  v11 = handlerCopy;
   v21 = v11;
   v12 = _Block_copy(aBlock);
   [(SCNView *)self _renderThreadPriority];
@@ -423,7 +423,7 @@ void __85__SCNView_SCNDisplayLink___initializeDisplayLinkWithScreen_policy_compl
   }
 }
 
-+ (unint64_t)renderingAPIForOptions:(id)a3
++ (unint64_t)renderingAPIForOptions:(id)options
 {
   if (C3DPreferencesGetBool(0) || !C3DMetalIsSupported())
   {
@@ -436,7 +436,7 @@ void __85__SCNView_SCNDisplayLink___initializeDisplayLinkWithScreen_policy_compl
   }
 
   v5 = C3DWasLinkedBeforeMajorOSYear2015();
-  v6 = [a3 objectForKey:@"SCNPreferredRenderingAPIKey"];
+  v6 = [options objectForKey:@"SCNPreferredRenderingAPIKey"];
   if (C3DGetInfoPlistFlagIsSet(@"PrefersOpenGL", 0))
   {
     if (v6 && ![v6 integerValue])
@@ -464,7 +464,7 @@ void __85__SCNView_SCNDisplayLink___initializeDisplayLinkWithScreen_policy_compl
   return [v6 integerValue];
 }
 
-+ (id)deviceForOptions:(id)a3
++ (id)deviceForOptions:(id)options
 {
   v3 = MTLCreateSystemDefaultDevice();
   if (!v3 && (deviceForOptions__done & 1) == 0)
@@ -480,7 +480,7 @@ void __85__SCNView_SCNDisplayLink___initializeDisplayLinkWithScreen_policy_compl
   return v3;
 }
 
-- (void)_commonInit:(id)a3
+- (void)_commonInit:(id)init
 {
   v20[2] = *MEMORY[0x277D85DE8];
   SCNGetPerformanceStatisticsEnabled();
@@ -489,11 +489,11 @@ void __85__SCNView_SCNDisplayLink___initializeDisplayLinkWithScreen_policy_compl
   self->_currentSystemTime = CACurrentMediaTime();
   self->_lock = objc_alloc_init(SCNRecursiveLock);
   renderingAPI = self->_renderingAPI;
-  v6 = [(SCNView *)self layer];
-  v7 = v6;
+  layer = [(SCNView *)self layer];
+  v7 = layer;
   if (renderingAPI)
   {
-    [v6 setOpaque:1];
+    [layer setOpaque:1];
     v8 = *MEMORY[0x277CD93B8];
     v19[0] = *MEMORY[0x277CD93C0];
     v19[1] = v8;
@@ -502,12 +502,12 @@ void __85__SCNView_SCNDisplayLink___initializeDisplayLinkWithScreen_policy_compl
     v20[1] = v9;
     [v7 setDrawableProperties:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v20, v19, 2)}];
     [(SCNView *)self scn_setBackingLayer:v7];
-    v10 = [(SCNView *)self eaglContext];
-    if (!v10)
+    eaglContext = [(SCNView *)self eaglContext];
+    if (!eaglContext)
     {
       if ([objc_msgSend(MEMORY[0x277D75128] "sharedApplication")] == 2)
       {
-        v10 = 0;
+        eaglContext = 0;
       }
 
       else
@@ -522,45 +522,45 @@ void __85__SCNView_SCNDisplayLink___initializeDisplayLinkWithScreen_policy_compl
           v11 = 2;
         }
 
-        v10 = SCNCreateGLESContext(v11);
+        eaglContext = SCNCreateGLESContext(v11);
       }
     }
   }
 
   else
   {
-    _setupMetalBackingLayer(v6, (*(self + 457) >> 1) & 1);
+    _setupMetalBackingLayer(layer, (*(self + 457) >> 1) & 1);
     [(SCNView *)self scn_setBackingLayer:v7];
-    v10 = [v7 device];
-    self->_device = v10;
+    eaglContext = [v7 device];
+    self->_device = eaglContext;
   }
 
   if ([objc_opt_class() shouldObserveApplicationStateToPreventBackgroundGPUAccess])
   {
     if (_UIApplicationIsExtension())
     {
-      v12 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v12 addObserver:self selector:sel__enterForeground_ name:*MEMORY[0x277CCA0C0] object:0];
-      v13 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:self selector:sel__enterForeground_ name:*MEMORY[0x277CCA0C0] object:0];
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
       v14 = MEMORY[0x277CCA0D8];
     }
 
     else
     {
       v15 = [objc_msgSend(MEMORY[0x277D75DA0] "_applicationKeyWindow")];
-      v16 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
       if (v15)
       {
-        [v16 addObserver:self selector:sel__enterForeground_ name:@"_UIViewServiceHostDidBecomeActiveNotification" object:0];
-        v13 = [MEMORY[0x277CCAB98] defaultCenter];
+        [defaultCenter3 addObserver:self selector:sel__enterForeground_ name:@"_UIViewServiceHostDidBecomeActiveNotification" object:0];
+        defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
         v17 = @"_UIViewServiceHostWillResignActiveNotification";
 LABEL_17:
-        [v13 addObserver:self selector:sel__enterBackground_ name:v17 object:0];
+        [defaultCenter2 addObserver:self selector:sel__enterBackground_ name:v17 object:0];
         goto LABEL_18;
       }
 
-      [v16 addObserver:self selector:sel__enterForeground_ name:*MEMORY[0x277D76648] object:0];
-      v13 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter3 addObserver:self selector:sel__enterForeground_ name:*MEMORY[0x277D76648] object:0];
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
       v14 = MEMORY[0x277D76768];
     }
 
@@ -573,7 +573,7 @@ LABEL_18:
   [(SCNView *)self setContentScaleFactor:?];
   [(SCNView *)self setContentMode:4];
   [(SCNView *)self setMultipleTouchEnabled:1];
-  self->_renderer = [[SCNRenderer alloc] _initWithOptions:a3 isPrivateRenderer:1 privateRendererOwner:self clearsOnDraw:1 context:v10 renderingAPI:self->_renderingAPI];
+  self->_renderer = [[SCNRenderer alloc] _initWithOptions:init isPrivateRenderer:1 privateRendererOwner:self clearsOnDraw:1 context:eaglContext renderingAPI:self->_renderingAPI];
   self->_jitterer = [[SCNJitterer alloc] initWithDelegate:self];
   [(SCNView *)self setBackgroundColor:[(SCNView *)self _defaultBackgroundColor]];
   if (C3DPreferencesGetBool(3))
@@ -616,21 +616,21 @@ LABEL_18:
   [(SCNView *)self _selectRenderingAPIWithOptions:?];
   v13.receiver = self;
   v13.super_class = SCNView;
-  v10 = [(SCNView *)&v13 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(SCNView *)&v13 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    v10->_boundsSize.width = width;
-    v10->_boundsSize.height = height;
-    [(SCNView *)v10 _commonInit:options];
+    height->_boundsSize.width = width;
+    height->_boundsSize.height = height;
+    [(SCNView *)height _commonInit:options];
   }
 
   return v11;
 }
 
-- (void)_selectRenderingAPIWithOptions:(id)a3
+- (void)_selectRenderingAPIWithOptions:(id)options
 {
-  self->_renderingAPI = [objc_opt_class() renderingAPIForOptions:a3];
+  self->_renderingAPI = [objc_opt_class() renderingAPIForOptions:options];
   v4 = objc_opt_class();
   InstanceMethod = class_getInstanceMethod(v4, sel_renderingAPI);
   Implementation = method_getImplementation(InstanceMethod);
@@ -675,12 +675,12 @@ LABEL_9:
   gTmpRenderingAPI = renderingAPI;
 }
 
-- (SCNView)initWithCoder:(id)a3
+- (SCNView)initWithCoder:(id)coder
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  if ([a3 containsValueForKey:@"ibPreferredRenderingAPI"])
+  if ([coder containsValueForKey:@"ibPreferredRenderingAPI"])
   {
-    v5 = [a3 decodeIntegerForKey:@"ibPreferredRenderingAPI"];
+    v5 = [coder decodeIntegerForKey:@"ibPreferredRenderingAPI"];
     v6 = v5;
     if (v5 == 2)
     {
@@ -726,7 +726,7 @@ LABEL_14:
   [(SCNView *)self _selectRenderingAPIWithOptions:v9];
   v23.receiver = self;
   v23.super_class = SCNView;
-  v10 = [(SCNView *)&v23 initWithCoder:a3];
+  v10 = [(SCNView *)&v23 initWithCoder:coder];
   v11 = v10;
   if (v10)
   {
@@ -735,9 +735,9 @@ LABEL_14:
     *&p_boundsSize->width = v13;
     v11->_boundsSize.height = v14;
     [(SCNView *)v11 set_ibPreferredRenderingAPI:v6];
-    if ([a3 containsValueForKey:@"ibWantsMultisampling"])
+    if ([coder containsValueForKey:@"ibWantsMultisampling"])
     {
-      v15 = [a3 decodeBoolForKey:@"ibWantsMultisampling"];
+      v15 = [coder decodeBoolForKey:@"ibWantsMultisampling"];
     }
 
     else
@@ -752,58 +752,58 @@ LABEL_14:
       [(SCNView *)v11 setAntialiasingMode:2];
     }
 
-    if ([a3 containsValueForKey:@"loops"])
+    if ([coder containsValueForKey:@"loops"])
     {
-      -[SCNView setLoops:](v11, "setLoops:", [a3 decodeBoolForKey:@"loops"]);
+      -[SCNView setLoops:](v11, "setLoops:", [coder decodeBoolForKey:@"loops"]);
     }
 
-    if ([a3 containsValueForKey:@"playing"])
+    if ([coder containsValueForKey:@"playing"])
     {
-      -[SCNView setPlaying:](v11, "setPlaying:", [a3 decodeBoolForKey:@"playing"]);
+      -[SCNView setPlaying:](v11, "setPlaying:", [coder decodeBoolForKey:@"playing"]);
     }
 
-    if ([a3 containsValueForKey:@"autoenablesDefaultLighting"])
+    if ([coder containsValueForKey:@"autoenablesDefaultLighting"])
     {
-      -[SCNView setAutoenablesDefaultLighting:](v11, "setAutoenablesDefaultLighting:", [a3 decodeBoolForKey:@"autoenablesDefaultLighting"]);
+      -[SCNView setAutoenablesDefaultLighting:](v11, "setAutoenablesDefaultLighting:", [coder decodeBoolForKey:@"autoenablesDefaultLighting"]);
     }
 
-    if ([a3 containsValueForKey:@"jitteringEnabled"])
+    if ([coder containsValueForKey:@"jitteringEnabled"])
     {
-      -[SCNView setJitteringEnabled:](v11, "setJitteringEnabled:", [a3 decodeBoolForKey:@"jitteringEnabled"]);
+      -[SCNView setJitteringEnabled:](v11, "setJitteringEnabled:", [coder decodeBoolForKey:@"jitteringEnabled"]);
     }
 
-    if ([a3 containsValueForKey:@"temporalAntialiasingEnabled"])
+    if ([coder containsValueForKey:@"temporalAntialiasingEnabled"])
     {
-      -[SCNView setTemporalAntialiasingEnabled:](v11, "setTemporalAntialiasingEnabled:", [a3 decodeBoolForKey:@"temporalAntialiasingEnabled"]);
+      -[SCNView setTemporalAntialiasingEnabled:](v11, "setTemporalAntialiasingEnabled:", [coder decodeBoolForKey:@"temporalAntialiasingEnabled"]);
     }
 
-    if ([a3 containsValueForKey:@"allowsCameraControl"])
+    if ([coder containsValueForKey:@"allowsCameraControl"])
     {
-      -[SCNView setAllowsCameraControl:](v11, "setAllowsCameraControl:", [a3 decodeBoolForKey:@"allowsCameraControl"]);
+      -[SCNView setAllowsCameraControl:](v11, "setAllowsCameraControl:", [coder decodeBoolForKey:@"allowsCameraControl"]);
     }
 
-    if ([a3 containsValueForKey:@"backgroundColor"])
+    if ([coder containsValueForKey:@"backgroundColor"])
     {
-      -[SCNView setBackgroundColor:](v11, "setBackgroundColor:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"backgroundColor"]);
+      -[SCNView setBackgroundColor:](v11, "setBackgroundColor:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"backgroundColor"]);
     }
 
-    -[SCNView set_ibSceneName:](v11, "set_ibSceneName:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"ibSceneName"]);
+    -[SCNView set_ibSceneName:](v11, "set_ibSceneName:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"ibSceneName"]);
     if ([(NSString *)v11->__ibSceneName length])
     {
-      v16 = [(NSString *)v11->__ibSceneName pathExtension];
+      pathExtension = [(NSString *)v11->__ibSceneName pathExtension];
       v17 = SCNGetResourceBundle();
-      v18 = [(NSString *)v11->__ibSceneName stringByDeletingPathExtension];
-      if ([(__CFString *)v16 isEqualToString:&stru_282DCC058])
+      stringByDeletingPathExtension = [(NSString *)v11->__ibSceneName stringByDeletingPathExtension];
+      if ([(__CFString *)pathExtension isEqualToString:&stru_282DCC058])
       {
         v19 = @"dae";
       }
 
       else
       {
-        v19 = v16;
+        v19 = pathExtension;
       }
 
-      v20 = [v17 URLForResource:v18 withExtension:v19];
+      v20 = [v17 URLForResource:stringByDeletingPathExtension withExtension:v19];
       if (v20)
       {
         v24[0] = @"kSceneSourceCreateCameraIfAbsent";
@@ -822,21 +822,21 @@ LABEL_14:
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SCNView;
   [(SCNView *)&v5 encodeWithCoder:?];
-  [a3 encodeBool:-[SCNView loops](self forKey:{"loops"), @"loops"}];
-  [a3 encodeBool:-[SCNView isPlaying](self forKey:{"isPlaying"), @"playing"}];
-  [a3 encodeBool:-[SCNView autoenablesDefaultLighting](self forKey:{"autoenablesDefaultLighting"), @"autoenablesDefaultLighting"}];
-  [a3 encodeBool:-[SCNView isJitteringEnabled](self forKey:{"isJitteringEnabled"), @"jitteringEnabled"}];
-  [a3 encodeBool:-[SCNView isTemporalAntialiasingEnabled](self forKey:{"isTemporalAntialiasingEnabled"), @"temporalAntialiasingEnabled"}];
-  [a3 encodeBool:-[SCNView allowsCameraControl](self forKey:{"allowsCameraControl"), @"allowsCameraControl"}];
-  [a3 encodeObject:-[SCNView backgroundColor](self forKey:{"backgroundColor"), @"backgroundColor"}];
-  [a3 encodeObject:-[SCNView _ibSceneName](self forKey:{"_ibSceneName"), @"ibSceneName"}];
-  [a3 encodeBool:-[SCNView _ibWantsMultisampling](self forKey:{"_ibWantsMultisampling"), @"ibWantsMultisampling"}];
-  [a3 encodeInteger:-[SCNView _ibPreferredRenderingAPI](self forKey:{"_ibPreferredRenderingAPI"), @"ibPreferredRenderingAPI"}];
+  [coder encodeBool:-[SCNView loops](self forKey:{"loops"), @"loops"}];
+  [coder encodeBool:-[SCNView isPlaying](self forKey:{"isPlaying"), @"playing"}];
+  [coder encodeBool:-[SCNView autoenablesDefaultLighting](self forKey:{"autoenablesDefaultLighting"), @"autoenablesDefaultLighting"}];
+  [coder encodeBool:-[SCNView isJitteringEnabled](self forKey:{"isJitteringEnabled"), @"jitteringEnabled"}];
+  [coder encodeBool:-[SCNView isTemporalAntialiasingEnabled](self forKey:{"isTemporalAntialiasingEnabled"), @"temporalAntialiasingEnabled"}];
+  [coder encodeBool:-[SCNView allowsCameraControl](self forKey:{"allowsCameraControl"), @"allowsCameraControl"}];
+  [coder encodeObject:-[SCNView backgroundColor](self forKey:{"backgroundColor"), @"backgroundColor"}];
+  [coder encodeObject:-[SCNView _ibSceneName](self forKey:{"_ibSceneName"), @"ibSceneName"}];
+  [coder encodeBool:-[SCNView _ibWantsMultisampling](self forKey:{"_ibWantsMultisampling"), @"ibWantsMultisampling"}];
+  [coder encodeInteger:-[SCNView _ibPreferredRenderingAPI](self forKey:{"_ibPreferredRenderingAPI"), @"ibPreferredRenderingAPI"}];
 }
 
 - (void)dealloc
@@ -865,27 +865,27 @@ LABEL_14:
   [(SCNView *)&v3 dealloc];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
   v5.receiver = self;
   v5.super_class = SCNView;
   [(SCNView *)&v5 setHidden:?];
-  self->_isHidden = a3;
+  self->_isHidden = hidden;
 }
 
-- (void)presentScene:(id)a3 withTransition:(id)a4 incomingPointOfView:(id)a5 completionHandler:(id)a6
+- (void)presentScene:(id)scene withTransition:(id)transition incomingPointOfView:(id)view completionHandler:(id)handler
 {
   v11 = self->_scene;
-  v12 = [(SCNView *)self pointOfView];
+  pointOfView = [(SCNView *)self pointOfView];
   [(SCNView *)self lock];
   +[SCNTransaction begin];
   [SCNTransaction setAnimationDuration:0.0];
   [SCNTransaction setImmediateMode:1];
-  [(SCNView *)self setScene:a3];
-  [(SCNView *)self setPointOfView:a5];
-  if (a4)
+  [(SCNView *)self setScene:scene];
+  [(SCNView *)self setPointOfView:view];
+  if (transition)
   {
-    [(SCNRenderer *)self->_renderer _prepareForTransition:a4 outgoingScene:v11 outgoingPointOfView:v12 completionHandler:a6];
+    [(SCNRenderer *)self->_renderer _prepareForTransition:transition outgoingScene:v11 outgoingPointOfView:pointOfView completionHandler:handler];
   }
 
   +[SCNTransaction commit];
@@ -922,13 +922,13 @@ LABEL_14:
   }
 }
 
-- (void)set_screenTransform:(SCNMatrix4 *)a3
+- (void)set_screenTransform:(SCNMatrix4 *)transform
 {
-  v3 = *&a3->m21;
-  v5[0] = *&a3->m11;
+  v3 = *&transform->m21;
+  v5[0] = *&transform->m11;
   v5[1] = v3;
-  v4 = *&a3->m41;
-  v5[2] = *&a3->m31;
+  v4 = *&transform->m41;
+  v5[2] = *&transform->m31;
   v5[3] = v4;
   [(SCNRenderer *)self->_renderer set_screenTransform:v5];
 }
@@ -948,13 +948,13 @@ LABEL_14:
   return result;
 }
 
-- (void)set_renderOptions:(unint64_t)a3
+- (void)set_renderOptions:(unint64_t)options
 {
-  v3 = a3;
-  valuePtr = a3;
-  v5 = [(SCNRenderer *)self->_renderer _engineContext];
-  v6 = v5;
-  if (v3)
+  optionsCopy = options;
+  valuePtr = options;
+  _engineContext = [(SCNRenderer *)self->_renderer _engineContext];
+  v6 = _engineContext;
+  if (optionsCopy)
   {
     v7 = CFNumberCreate(*MEMORY[0x277CBECE8], kCFNumberSInt32Type, &valuePtr);
     C3DEngineContextSetRenderingOptionForKey(v6, @"debugRendering", v7);
@@ -963,7 +963,7 @@ LABEL_14:
 
   else
   {
-    C3DEngineContextSetRenderingOptionForKey(v5, @"debugRendering", 0);
+    C3DEngineContextSetRenderingOptionForKey(_engineContext, @"debugRendering", 0);
   }
 
   [(SCNView *)self _setNeedsDisplay];
@@ -982,21 +982,21 @@ LABEL_14:
   return result;
 }
 
-- (void)scn_setBackingLayer:(id)a3
+- (void)scn_setBackingLayer:(id)layer
 {
   backingLayer = self->_backingLayer;
-  if (backingLayer != a3)
+  if (backingLayer != layer)
   {
 
-    self->_backingLayer = a3;
+    self->_backingLayer = layer;
   }
 }
 
-- (void)setJitteringEnabled:(BOOL)a3
+- (void)setJitteringEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   [(SCNJitterer *)self->_jitterer setEnabled:?];
-  [(SCNRenderer *)self->_renderer setJitteringEnabled:v3];
+  [(SCNRenderer *)self->_renderer setJitteringEnabled:enabledCopy];
 
   [(SCNView *)self _setNeedsDisplay];
 }
@@ -1034,9 +1034,9 @@ LABEL_14:
 
 + (BOOL)usesSeparateWorkGroup
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
 
-  return [v2 BOOLForKey:@"com.apple.sceneKit.forceSeparateWorkGroup"];
+  return [standardUserDefaults BOOLForKey:@"com.apple.sceneKit.forceSeparateWorkGroup"];
 }
 
 - (void)_updateContentsScaleFactor
@@ -1047,10 +1047,10 @@ LABEL_14:
   [(SCNRenderer *)renderer _setContentsScaleFactor:?];
 }
 
-- (CGSize)backingSizeForBoundSize:(CGSize)a3
+- (CGSize)backingSizeForBoundSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(SCNView *)self contentScaleFactor];
   v7 = width * v6;
   [(SCNView *)self contentScaleFactor];
@@ -1086,7 +1086,7 @@ LABEL_14:
   return result;
 }
 
-- (void)_drawAtTime:(double)a3
+- (void)_drawAtTime:(double)time
 {
   if ((*(self + 456) & 0x40) != 0 || (*(self + 456) & 0x10) != 0)
   {
@@ -1131,9 +1131,9 @@ LABEL_14:
       kdebug_trace();
       +[SCNTransaction lock];
       currentSystemTime = CACurrentMediaTime();
-      if (a3 != 0.0)
+      if (time != 0.0)
       {
-        currentSystemTime = a3;
+        currentSystemTime = time;
       }
 
       self->_currentSystemTime = currentSystemTime;
@@ -1187,28 +1187,28 @@ LABEL_14:
   [(SCNView *)self _setNeedsDisplay];
 }
 
-- (void)setPointOfView:(id)a3 animate:(BOOL)a4
+- (void)setPointOfView:(id)view animate:(BOOL)animate
 {
-  v4 = a4;
+  animateCopy = animate;
   +[SCNTransaction begin];
   v7 = 0.0;
-  if (v4)
+  if (animateCopy)
   {
     v7 = 0.75;
   }
 
   [SCNTransaction setAnimationDuration:v7];
-  [(SCNView *)self setPointOfView:a3];
+  [(SCNView *)self setPointOfView:view];
 
   +[SCNTransaction commit];
 }
 
-- (void)setPointOfView:(id)a3
+- (void)setPointOfView:(id)view
 {
-  if ([(SCNView *)self pointOfView]!= a3)
+  if ([(SCNView *)self pointOfView]!= view)
   {
     [(SCNEventHandler *)self->_navigationCameraController cameraWillChange];
-    [(SCNRenderer *)self->_renderer setPointOfView:a3];
+    [(SCNRenderer *)self->_renderer setPointOfView:view];
     navigationCameraController = self->_navigationCameraController;
 
     [(SCNEventHandler *)navigationCameraController cameraDidChange];
@@ -1225,13 +1225,13 @@ LABEL_14:
   return result;
 }
 
-- (void)setPointOfCulling:(id)a3
+- (void)setPointOfCulling:(id)culling
 {
-  if ([(SCNView *)self pointOfCulling]!= a3)
+  if ([(SCNView *)self pointOfCulling]!= culling)
   {
     renderer = self->_renderer;
 
-    [(SCNRenderer *)renderer setPointOfCulling:a3];
+    [(SCNRenderer *)renderer setPointOfCulling:culling];
   }
 }
 
@@ -1248,22 +1248,22 @@ LABEL_14:
 
 - (SCNCameraController)defaultCameraController
 {
-  v2 = [(SCNView *)self navigationCameraController];
+  navigationCameraController = [(SCNView *)self navigationCameraController];
 
-  return [v2 cameraController];
+  return [navigationCameraController cameraController];
 }
 
-- (void)setPlaying:(BOOL)a3
+- (void)setPlaying:(BOOL)playing
 {
-  v3 = a3;
-  if ([(SCNView *)self isPlaying]!= a3)
+  playingCopy = playing;
+  if ([(SCNView *)self isPlaying]!= playing)
   {
-    [(SCNRenderer *)self->_renderer setPlaying:v3];
-    if (v3)
+    [(SCNRenderer *)self->_renderer setPlaying:playingCopy];
+    if (playingCopy)
     {
-      v5 = [(SCNView *)self displayLink];
+      displayLink = [(SCNView *)self displayLink];
 
-      [v5 setPaused:0];
+      [displayLink setPaused:0];
     }
 
     else
@@ -1298,9 +1298,9 @@ LABEL_14:
     [(SCNRenderer *)self->_renderer setRendersContinuously:?];
     if ((*(self + 456) & 2) != 0)
     {
-      v8 = [(SCNView *)self displayLink];
+      displayLink = [(SCNView *)self displayLink];
 
-      [v8 setPaused:0];
+      [displayLink setPaused:0];
     }
 
     else
@@ -1337,38 +1337,38 @@ LABEL_14:
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 options:(id)a4
+- (id)hitTest:(CGPoint)test options:(id)options
 {
-  x = a3.x;
-  [(SCNView *)self _flipY:a3.y];
+  x = test.x;
+  [(SCNView *)self _flipY:test.y];
   renderer = self->_renderer;
   width = self->_boundsSize.width;
   height = self->_boundsSize.height;
 
-  return [(SCNRenderer *)renderer _hitTest:a4 viewport:x options:v7, width, height];
+  return [(SCNRenderer *)renderer _hitTest:options viewport:x options:v7, width, height];
 }
 
-- (BOOL)isNodeInsideFrustum:(id)a3 withPointOfView:(id)a4
+- (BOOL)isNodeInsideFrustum:(id)frustum withPointOfView:(id)view
 {
   renderer = self->_renderer;
   [(SCNView *)self _viewport];
 
-  return [(SCNRenderer *)renderer _isNodeInsideFrustum:a3 withPointOfView:a4 viewport:?];
+  return [(SCNRenderer *)renderer _isNodeInsideFrustum:frustum withPointOfView:view viewport:?];
 }
 
-- (id)nodesInsideFrustumWithPointOfView:(id)a3
+- (id)nodesInsideFrustumWithPointOfView:(id)view
 {
   renderer = self->_renderer;
   [(SCNView *)self _viewport];
 
-  return [(SCNRenderer *)renderer _nodesInsideFrustumWithPointOfView:a3 viewport:?];
+  return [(SCNRenderer *)renderer _nodesInsideFrustumWithPointOfView:view viewport:?];
 }
 
-- (SCNVector3)projectPoint:(SCNVector3)a3
+- (SCNVector3)projectPoint:(SCNVector3)point
 {
-  z = a3.z;
-  y = a3.y;
-  x = a3.x;
+  z = point.z;
+  y = point.y;
+  x = point.x;
   renderer = self->_renderer;
   [(SCNView *)self _viewport];
   v9 = v8;
@@ -1395,11 +1395,11 @@ LABEL_14:
   return result;
 }
 
-- (SCNVector3)unprojectPoint:(SCNVector3)a3
+- (SCNVector3)unprojectPoint:(SCNVector3)point
 {
-  z = a3.z;
-  x = a3.x;
-  [(SCNView *)self _flipY:a3.y];
+  z = point.z;
+  x = point.x;
+  [(SCNView *)self _flipY:point.y];
   v7 = v6;
   renderer = self->_renderer;
   [(SCNView *)self _viewport];
@@ -1422,11 +1422,11 @@ LABEL_14:
   return result;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == @"kSCNViewObservingContext")
+  if (context == @"kSCNViewObservingContext")
   {
-    if ([a3 isEqualToString:{@"background.contents", a4, a5}])
+    if ([path isEqualToString:{@"background.contents", object, change}])
     {
 
       [(SCNView *)self _updateOpacity];
@@ -1437,51 +1437,51 @@ LABEL_14:
   {
     v7.receiver = self;
     v7.super_class = SCNView;
-    [(SCNView *)&v7 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(SCNView *)&v7 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3
++ (id)keyPathsForValuesAffectingValueForKey:(id)key
 {
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___SCNView;
   v5 = objc_msgSendSuper2(&v7, sel_keyPathsForValuesAffectingValueForKey_);
-  if ([objc_msgSend(a1 "_kvoKeysForwardedToRenderer")])
+  if ([objc_msgSend(self "_kvoKeysForwardedToRenderer")])
   {
-    return [objc_msgSend(MEMORY[0x277CBEB98] setWithObject:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"renderer.%@", a3)), "setByAddingObjectsFromSet:", v5}];
+    return [objc_msgSend(MEMORY[0x277CBEB98] setWithObject:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"renderer.%@", key)), "setByAddingObjectsFromSet:", v5}];
   }
 
   return v5;
 }
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
-  if ([objc_msgSend(a1 "_kvoKeysForwardedToRenderer")])
+  if ([objc_msgSend(self "_kvoKeysForwardedToRenderer")])
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___SCNView;
-  return objc_msgSendSuper2(&v6, sel_automaticallyNotifiesObserversForKey_, a3);
+  return objc_msgSendSuper2(&v6, sel_automaticallyNotifiesObserversForKey_, key);
 }
 
-- (void)setEventHandler:(id)a3
+- (void)setEventHandler:(id)handler
 {
   [(SCNView *)self setNavigationCameraController:?];
-  [a3 setView:self];
+  [handler setView:self];
 
   [(SCNView *)self setAllowsCameraControl:1];
 }
 
-- (void)setNavigationCameraController:(id)a3
+- (void)setNavigationCameraController:(id)controller
 {
   navigationCameraController = self->_navigationCameraController;
-  if (navigationCameraController != a3)
+  if (navigationCameraController != controller)
   {
     [(SCNEventHandler *)navigationCameraController setDelegate:0];
 
-    self->_navigationCameraController = a3;
+    self->_navigationCameraController = controller;
     [-[SCNView navigationCameraController](self "navigationCameraController")];
 
     [(SCNView *)self scn_updateGestureRecognizers];
@@ -1490,37 +1490,37 @@ LABEL_14:
 
 - (void)eventHandlerWantsRedraw
 {
-  v2 = [(SCNView *)self displayLink];
+  displayLink = [(SCNView *)self displayLink];
 
-  [v2 setPaused:0];
+  [displayLink setPaused:0];
 }
 
 - (void)setBackgroundColor:(NSColor *)backgroundColor
 {
-  v3 = backgroundColor;
+  _defaultBackgroundColor = backgroundColor;
   v5 = self->_backgroundColor;
   if (v5 != backgroundColor)
   {
 
-    self->_backgroundColor = v3;
+    self->_backgroundColor = _defaultBackgroundColor;
   }
 
-  if (!v3)
+  if (!_defaultBackgroundColor)
   {
-    v3 = [(SCNView *)self _defaultBackgroundColor];
+    _defaultBackgroundColor = [(SCNView *)self _defaultBackgroundColor];
   }
 
   v8.receiver = self;
   v8.super_class = SCNView;
-  [(SCNView *)&v8 setBackgroundColor:v3];
-  v6 = [(SCNView *)self traitCollection];
+  [(SCNView *)&v8 setBackgroundColor:_defaultBackgroundColor];
+  traitCollection = [(SCNView *)self traitCollection];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __30__SCNView_setBackgroundColor___block_invoke;
   v7[3] = &unk_2782FC928;
-  v7[4] = v6;
+  v7[4] = traitCollection;
   v7[5] = self;
-  v7[6] = v3;
+  v7[6] = _defaultBackgroundColor;
   [SCNTransaction postCommandWithContext:0 object:self applyBlock:v7];
   [(SCNView *)self _backgroundDidChange];
 }
@@ -1537,19 +1537,19 @@ uint64_t __30__SCNView_setBackgroundColor___block_invoke(uint64_t a1)
   return [*(a1 + 40) _setNeedsDisplay];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = SCNView;
   [(SCNView *)&v7 traitCollectionDidChange:?];
-  v5 = [(SCNView *)self traitCollection];
-  if ([v5 hasDifferentColorAppearanceComparedToTraitCollection:a3])
+  traitCollection = [(SCNView *)self traitCollection];
+  if ([traitCollection hasDifferentColorAppearanceComparedToTraitCollection:change])
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __36__SCNView_traitCollectionDidChange___block_invoke;
     v6[3] = &unk_2782FC950;
-    v6[4] = v5;
+    v6[4] = traitCollection;
     v6[5] = self;
     [SCNTransaction postCommandWithContext:0 object:self applyBlock:v6];
   }
@@ -1568,16 +1568,16 @@ uint64_t __36__SCNView_traitCollectionDidChange___block_invoke(uint64_t a1)
   return [*(a1 + 40) _setNeedsDisplay];
 }
 
-- (void)setSceneTime:(double)a3
+- (void)setSceneTime:(double)time
 {
-  [(SCNRenderer *)self->_renderer setSceneTime:a3];
+  [(SCNRenderer *)self->_renderer setSceneTime:time];
 
   [(SCNView *)self _setNeedsDisplay];
 }
 
-- (void)setAutoenablesDefaultLighting:(BOOL)a3
+- (void)setAutoenablesDefaultLighting:(BOOL)lighting
 {
-  [(SCNRenderer *)self->_renderer setAutoenablesDefaultLighting:a3];
+  [(SCNRenderer *)self->_renderer setAutoenablesDefaultLighting:lighting];
 
   [(SCNView *)self _setNeedsDisplay];
 }
@@ -1595,29 +1595,29 @@ uint64_t __36__SCNView_traitCollectionDidChange___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)prepareObject:(id)a3 shouldAbortBlock:(id)a4
+- (BOOL)prepareObject:(id)object shouldAbortBlock:(id)block
 {
   [(SCNRenderer *)self->_renderer setContext:[(SCNView *)self context]];
   renderer = self->_renderer;
 
-  return [(SCNRenderer *)renderer prepareObject:a3 shouldAbortBlock:a4];
+  return [(SCNRenderer *)renderer prepareObject:object shouldAbortBlock:block];
 }
 
-- (void)prepareObjects:(id)a3 withCompletionHandler:(id)a4
+- (void)prepareObjects:(id)objects withCompletionHandler:(id)handler
 {
   [(SCNRenderer *)self->_renderer setContext:[(SCNView *)self context]];
   renderer = self->_renderer;
 
-  [(SCNRenderer *)renderer prepareObjects:a3 withCompletionHandler:a4];
+  [(SCNRenderer *)renderer prepareObjects:objects withCompletionHandler:handler];
 }
 
-- (void)setOverlaySKScene:(id)a3
+- (void)setOverlaySKScene:(id)scene
 {
   [[(SCNView *)self overlaySKScene] willMoveFromView:self];
-  [(SCNRenderer *)self->_renderer setOverlaySKScene:a3];
-  if (a3)
+  [(SCNRenderer *)self->_renderer setOverlaySKScene:scene];
+  if (scene)
   {
-    [a3 _didMoveToView:self];
+    [scene _didMoveToView:self];
     spriteKitEventHandler = self->_spriteKitEventHandler;
     if (!spriteKitEventHandler)
     {
@@ -1625,7 +1625,7 @@ uint64_t __36__SCNView_traitCollectionDidChange___block_invoke(uint64_t a1)
       self->_spriteKitEventHandler = spriteKitEventHandler;
     }
 
-    [(SCNSpriteKitEventHandler *)spriteKitEventHandler setScene:a3];
+    [(SCNSpriteKitEventHandler *)spriteKitEventHandler setScene:scene];
   }
 
   else
@@ -1641,13 +1641,13 @@ uint64_t __36__SCNView_traitCollectionDidChange___block_invoke(uint64_t a1)
   [(SCNView *)self _setNeedsDisplay];
 }
 
-- (void)setDisplayLink:(id)a3
+- (void)setDisplayLink:(id)link
 {
   displayLink = self->_displayLink;
-  if (displayLink != a3)
+  if (displayLink != link)
   {
 
-    self->_displayLink = a3;
+    self->_displayLink = link;
   }
 }
 
@@ -1704,10 +1704,10 @@ id __37__SCNView__createDisplayLinkIfNeeded__block_invoke_2(uint64_t a1)
 
 - (NSInteger)preferredFramesPerSecond
 {
-  v3 = [(SCNView *)self displayLink];
-  if (v3)
+  displayLink = [(SCNView *)self displayLink];
+  if (displayLink)
   {
-    [v3 preferredFrameRate];
+    [displayLink preferredFrameRate];
   }
 
   else
@@ -1720,11 +1720,11 @@ id __37__SCNView__createDisplayLinkIfNeeded__block_invoke_2(uint64_t a1)
 
 - (void)setPreferredFramesPerSecond:(NSInteger)preferredFramesPerSecond
 {
-  v5 = [(SCNView *)self displayLink];
-  if (v5)
+  displayLink = [(SCNView *)self displayLink];
+  if (displayLink)
   {
     *&v6 = preferredFramesPerSecond;
-    [v5 setPreferredFrameRate:v6];
+    [displayLink setPreferredFrameRate:v6];
   }
 
   self->_preferredFramePerSeconds = preferredFramesPerSecond;
@@ -1746,23 +1746,23 @@ uint64_t __27__SCNView__setNeedsDisplay__block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (void)_systemTimeAnimationStarted:(id)a3
+- (void)_systemTimeAnimationStarted:(id)started
 {
-  v3 = [(SCNView *)self displayLink];
+  displayLink = [(SCNView *)self displayLink];
 
-  [v3 setPaused:0];
+  [displayLink setPaused:0];
 }
 
-- (void)_sceneDidUpdate:(id)a3
+- (void)_sceneDidUpdate:(id)update
 {
   self->_lastUpdate = CACurrentMediaTime();
 
   [(SCNView *)self _setNeedsDisplay];
 }
 
-- (void)setShowsStatistics:(BOOL)a3
+- (void)setShowsStatistics:(BOOL)statistics
 {
-  [(SCNRenderer *)self->_renderer setShowsStatistics:C3DPreferencesGetBool(2) | a3];
+  [(SCNRenderer *)self->_renderer setShowsStatistics:C3DPreferencesGetBool(2) | statistics];
 
   [(SCNView *)self _setNeedsDisplay];
 }
@@ -1778,9 +1778,9 @@ uint64_t __27__SCNView__setNeedsDisplay__block_invoke_2(uint64_t a1)
   renderer = self->_renderer;
   [(SCNRenderer *)renderer _systemTime];
   v11 = v10;
-  v12 = [(SCNView *)self antialiasingMode];
+  antialiasingMode = [(SCNView *)self antialiasingMode];
 
-  return [(SCNRenderer *)renderer snapshotAtTime:v12 withSize:v11 antialiasingMode:v6, v8];
+  return [(SCNRenderer *)renderer snapshotAtTime:antialiasingMode withSize:v11 antialiasingMode:v6, v8];
 }
 
 - (NSString)description
@@ -1790,14 +1790,14 @@ uint64_t __27__SCNView__setNeedsDisplay__block_invoke_2(uint64_t a1)
   v4 = MEMORY[0x277CCACA8];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [(SCNView *)self scene];
+  scene = [(SCNView *)self scene];
   [(SCNView *)self sceneTime];
-  return [v4 stringWithFormat:@"<%@: %p | scene=%@ sceneTime=%f frame=%@ pointOfView=%@>", v6, self, v7, v8, v3, -[SCNView pointOfView](self, "pointOfView")];
+  return [v4 stringWithFormat:@"<%@: %p | scene=%@ sceneTime=%f frame=%@ pointOfView=%@>", v6, self, scene, v8, v3, -[SCNView pointOfView](self, "pointOfView")];
 }
 
-- (void)switchToCameraNamed:(id)a3
+- (void)switchToCameraNamed:(id)named
 {
-  v5 = [(SCNNode *)[(SCNScene *)[(SCNView *)self scene] rootNode] childNodeWithName:a3 recursively:1];
+  v5 = [(SCNNode *)[(SCNScene *)[(SCNView *)self scene] rootNode] childNodeWithName:named recursively:1];
   if (v5)
   {
 
@@ -1809,7 +1809,7 @@ uint64_t __27__SCNView__setNeedsDisplay__block_invoke_2(uint64_t a1)
     v6 = scn_default_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(SCNView *)a3 switchToCameraNamed:v6];
+      [(SCNView *)named switchToCameraNamed:v6];
     }
   }
 }
@@ -1822,21 +1822,21 @@ uint64_t __27__SCNView__setNeedsDisplay__block_invoke_2(uint64_t a1)
     v4 = [(NSArray *)v3 indexOfObject:[(SCNRenderer *)self->_renderer pointOfView]];
     if (v4 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v5 = [(NSArray *)v3 firstObject];
+      firstObject = [(NSArray *)v3 firstObject];
     }
 
     else
     {
-      v5 = [(NSArray *)v3 objectAtIndex:(v4 + 1) % [(NSArray *)v3 count]];
+      firstObject = [(NSArray *)v3 objectAtIndex:(v4 + 1) % [(NSArray *)v3 count]];
     }
 
-    [(SCNView *)self setPointOfView:v5 animate:1];
+    [(SCNView *)self setPointOfView:firstObject animate:1];
   }
 }
 
-- (void)set_disableLinearRendering:(BOOL)a3
+- (void)set_disableLinearRendering:(BOOL)rendering
 {
-  if (a3)
+  if (rendering)
   {
     v3 = 2;
   }
@@ -1850,9 +1850,9 @@ uint64_t __27__SCNView__setNeedsDisplay__block_invoke_2(uint64_t a1)
   [(SCNView *)self _adjustBackingLayerPixelFormat];
 }
 
-- (void)setDebugOptions:(unint64_t)a3
+- (void)setDebugOptions:(unint64_t)options
 {
-  [(SCNRenderer *)self->_renderer setDebugOptions:a3];
+  [(SCNRenderer *)self->_renderer setDebugOptions:options];
 
   [(SCNView *)self _setNeedsDisplay];
 }
@@ -1864,7 +1864,7 @@ uint64_t __27__SCNView__setNeedsDisplay__block_invoke_2(uint64_t a1)
   [(SCNView *)self _setNeedsDisplay];
 }
 
-- (double)_runFPSTestWithDuration:(double)a3
+- (double)_runFPSTestWithDuration:(double)duration
 {
   v9 = 0;
   v10 = &v9;
@@ -1875,15 +1875,15 @@ uint64_t __27__SCNView__setNeedsDisplay__block_invoke_2(uint64_t a1)
     [(SCNView *)self context];
   }
 
-  v5 = [(SCNRenderer *)self->_renderer _renderingQueue];
+  _renderingQueue = [(SCNRenderer *)self->_renderer _renderingQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __35__SCNView__runFPSTestWithDuration___block_invoke;
   block[3] = &unk_278300148;
-  *&block[6] = a3;
+  *&block[6] = duration;
   block[4] = self;
   block[5] = &v9;
-  dispatch_sync(v5, block);
+  dispatch_sync(_renderingQueue, block);
   v6 = v10[6];
   _Block_object_dispose(&v9, 8);
   return v6;
@@ -1915,11 +1915,11 @@ float __35__SCNView__runFPSTestWithDuration___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setContentScaleFactor:(double)a3
+- (void)setContentScaleFactor:(double)factor
 {
   v4.receiver = self;
   v4.super_class = SCNView;
-  [(SCNView *)&v4 setContentScaleFactor:a3];
+  [(SCNView *)&v4 setContentScaleFactor:factor];
   if (self->_renderer)
   {
     [(SCNView *)self _updateBackingSize];
@@ -1927,25 +1927,25 @@ float __35__SCNView__runFPSTestWithDuration___block_invoke(uint64_t a1)
   }
 }
 
-- (void)displayLayer:(id)a3
+- (void)displayLayer:(id)layer
 {
   if (self->_renderingAPI)
   {
-    v4 = [(SCNRenderer *)self->_renderer _renderingQueue];
+    _renderingQueue = [(SCNRenderer *)self->_renderer _renderingQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __24__SCNView_displayLayer___block_invoke;
     block[3] = &unk_2782FB608;
     block[4] = self;
-    dispatch_sync(v4, block);
+    dispatch_sync(_renderingQueue, block);
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   if (self->_renderingAPI || (*(self + 456) & 4) == 0)
   {
-    v4 = [(SCNRenderer *)self->_renderer _renderingQueue:a3.origin.x];
+    v4 = [(SCNRenderer *)self->_renderer _renderingQueue:rect.origin.x];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __20__SCNView_drawRect___block_invoke;
@@ -1955,7 +1955,7 @@ float __35__SCNView__runFPSTestWithDuration___block_invoke(uint64_t a1)
   }
 }
 
-- (void)scn_setGestureRecognizers:(id)a3
+- (void)scn_setGestureRecognizers:(id)recognizers
 {
   v25 = *MEMORY[0x277D85DE8];
   v19 = 0u;
@@ -1986,13 +1986,13 @@ float __35__SCNView__runFPSTestWithDuration___block_invoke(uint64_t a1)
     while (v7);
   }
 
-  v10 = a3;
-  self->_controllerGestureRecognizers = v10;
+  recognizersCopy = recognizers;
+  self->_controllerGestureRecognizers = recognizersCopy;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v11 = [(NSArray *)v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
+  v11 = [(NSArray *)recognizersCopy countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v11)
   {
     v12 = v11;
@@ -2003,23 +2003,23 @@ float __35__SCNView__runFPSTestWithDuration___block_invoke(uint64_t a1)
       {
         if (*v16 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(recognizersCopy);
         }
 
         [(SCNView *)self addGestureRecognizer:*(*(&v15 + 1) + 8 * j)];
       }
 
-      v12 = [(NSArray *)v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
+      v12 = [(NSArray *)recognizersCopy countByEnumeratingWithState:&v15 objects:v23 count:16];
     }
 
     while (v12);
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v23 = *MEMORY[0x277D85DE8];
   if (SCNContainsUIKitViews())
   {
@@ -2067,56 +2067,56 @@ float __35__SCNView__runFPSTestWithDuration___block_invoke(uint64_t a1)
 
   v17.receiver = self;
   v17.super_class = SCNView;
-  return [(SCNView *)&v17 hitTest:a4 withEvent:x, y];
+  return [(SCNView *)&v17 hitTest:event withEvent:x, y];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  if (!-[SCNView showsStatistics](self, "showsStatistics") || ([objc_msgSend(a3 "anyObject")], v8 = v7, v10 = v9, -[SCNView bounds](self, "bounds"), (objc_msgSend(-[SCNView _authoringEnvironment](self, "_authoringEnvironment"), "didTapAtPoint:", v8, v11 - v10) & 1) == 0))
+  if (!-[SCNView showsStatistics](self, "showsStatistics") || ([objc_msgSend(began "anyObject")], v8 = v7, v10 = v9, -[SCNView bounds](self, "bounds"), (objc_msgSend(-[SCNView _authoringEnvironment](self, "_authoringEnvironment"), "didTapAtPoint:", v8, v11 - v10) & 1) == 0))
   {
-    if (![(SCNSpriteKitEventHandler *)self->_spriteKitEventHandler touchesBegan:a3 withEvent:a4])
+    if (![(SCNSpriteKitEventHandler *)self->_spriteKitEventHandler touchesBegan:began withEvent:event])
     {
       v12.receiver = self;
       v12.super_class = SCNView;
-      [(SCNView *)&v12 touchesBegan:a3 withEvent:a4];
+      [(SCNView *)&v12 touchesBegan:began withEvent:event];
     }
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   if (![SCNSpriteKitEventHandler touchesMoved:"touchesMoved:withEvent:" withEvent:?])
   {
     v7.receiver = self;
     v7.super_class = SCNView;
-    [(SCNView *)&v7 touchesMoved:a3 withEvent:a4];
+    [(SCNView *)&v7 touchesMoved:moved withEvent:event];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   if (![SCNSpriteKitEventHandler touchesEnded:"touchesEnded:withEvent:" withEvent:?])
   {
     v7.receiver = self;
     v7.super_class = SCNView;
-    [(SCNView *)&v7 touchesEnded:a3 withEvent:a4];
+    [(SCNView *)&v7 touchesEnded:ended withEvent:event];
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   if (![SCNSpriteKitEventHandler touchesCancelled:"touchesCancelled:withEvent:" withEvent:?])
   {
     v7.receiver = self;
     v7.super_class = SCNView;
-    [(SCNView *)&v7 touchesCancelled:a3 withEvent:a4];
+    [(SCNView *)&v7 touchesCancelled:cancelled withEvent:event];
   }
 }
 
 - (void)resumeDisplayLink
 {
   [(SCNView *)self _createDisplayLinkIfNeeded];
-  v3 = [(SCNView *)self displayLink];
+  displayLink = [(SCNView *)self displayLink];
   if ((*(self + 456) & 2) != 0)
   {
     v4 = 0;
@@ -2129,7 +2129,7 @@ float __35__SCNView__runFPSTestWithDuration___block_invoke(uint64_t a1)
 
   [(SCNRenderer *)self->_renderer _nextFrameTime];
 
-  [v3 setPaused:v4 nextFrameTimeHint:? lastUpdate:?];
+  [displayLink setPaused:v4 nextFrameTimeHint:? lastUpdate:?];
 }
 
 - (void)didMoveToWindow
@@ -2150,9 +2150,9 @@ float __35__SCNView__runFPSTestWithDuration___block_invoke(uint64_t a1)
   [(SCNRenderer *)self->_renderer _interfaceOrientationDidChange];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  if (!a3)
+  if (!window)
   {
     SCNUIKitSourceNotifyViewWasRemoved(self);
     [(SCNView *)self pauseDisplayLink];
@@ -2161,10 +2161,10 @@ float __35__SCNView__runFPSTestWithDuration___block_invoke(uint64_t a1)
 
   v5.receiver = self;
   v5.super_class = SCNView;
-  [(SCNView *)&v5 willMoveToWindow:a3];
+  [(SCNView *)&v5 willMoveToWindow:window];
 }
 
-- (void)_enterForeground:(id)a3
+- (void)_enterForeground:(id)foreground
 {
   *(self + 456) &= ~0x40u;
   v4 = *(self + 456);
@@ -2187,7 +2187,7 @@ float __35__SCNView__runFPSTestWithDuration___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_enterBackground:(id)a3
+- (void)_enterBackground:(id)background
 {
   *(self + 456) |= 0x40u;
   if (![(SCNScene *)[(SCNView *)self scene] isPaused])
@@ -2218,12 +2218,12 @@ float __35__SCNView__runFPSTestWithDuration___block_invoke(uint64_t a1)
   [(SCNRenderer *)self->_renderer _interfaceOrientationDidChange];
 }
 
-- (id)focusItemsInRect:(CGRect)a3
+- (id)focusItemsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v12.receiver = self;
   v12.super_class = SCNView;
   v8 = [(SCNView *)&v12 focusItemsInRect:?];

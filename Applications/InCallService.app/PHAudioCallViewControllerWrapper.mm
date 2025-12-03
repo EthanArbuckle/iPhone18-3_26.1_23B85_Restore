@@ -1,6 +1,6 @@
 @interface PHAudioCallViewControllerWrapper
 - (ICSCallDisplayStyleHandler)viewController;
-- (PHAudioCallViewControllerWrapper)initWithCallDisplayStyleManager:(id)a3 callCenter:(id)a4 width:(double)a5 inCallRootViewController:(id)a6;
+- (PHAudioCallViewControllerWrapper)initWithCallDisplayStyleManager:(id)manager callCenter:(id)center width:(double)width inCallRootViewController:(id)controller;
 @end
 
 @implementation PHAudioCallViewControllerWrapper
@@ -12,10 +12,10 @@
   return v2;
 }
 
-- (PHAudioCallViewControllerWrapper)initWithCallDisplayStyleManager:(id)a3 callCenter:(id)a4 width:(double)a5 inCallRootViewController:(id)a6
+- (PHAudioCallViewControllerWrapper)initWithCallDisplayStyleManager:(id)manager callCenter:(id)center width:(double)width inCallRootViewController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  centerCopy = center;
   swift_unknownObjectRetain();
   return sub_1001B0EE0();
 }

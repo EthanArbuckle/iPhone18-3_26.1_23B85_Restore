@@ -2,10 +2,10 @@
 + (MKCircle)circleWithCenterCoordinate:(CLLocationCoordinate2D)coord radius:(CLLocationDistance)radius;
 + (MKCircle)circleWithMapRect:(MKMapRect)mapRect;
 - (CLLocationCoordinate2D)coordinate;
-- (MKCircle)initWithCoder:(id)a3;
+- (MKCircle)initWithCoder:(id)coder;
 - (MKMapRect)boundingMapRect;
-- (id)_initWithCenterCoordinate:(CLLocationCoordinate2D)a3 radius:(double)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)_initWithCenterCoordinate:(CLLocationCoordinate2D)coordinate radius:(double)radius;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MKCircle
@@ -32,37 +32,37 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = MKCircle;
-  v4 = a3;
-  [(MKShape *)&v8 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(MKShape *)&v8 encodeWithCoder:coderCopy];
   v5 = [MEMORY[0x1E696AD98] numberWithDouble:{self->_coordinate.latitude, v8.receiver, v8.super_class}];
-  [v4 encodeObject:v5 forKey:@"MKCircleLatitude"];
+  [coderCopy encodeObject:v5 forKey:@"MKCircleLatitude"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithDouble:self->_coordinate.longitude];
-  [v4 encodeObject:v6 forKey:@"MKCircleLongitude"];
+  [coderCopy encodeObject:v6 forKey:@"MKCircleLongitude"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithDouble:self->_radius];
-  [v4 encodeObject:v7 forKey:@"MKCircleRadius"];
+  [coderCopy encodeObject:v7 forKey:@"MKCircleRadius"];
 }
 
-- (MKCircle)initWithCoder:(id)a3
+- (MKCircle)initWithCoder:(id)coder
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = MKCircle;
-  v5 = [(MKShape *)&v25 initWithCoder:v4];
+  v5 = [(MKShape *)&v25 initWithCoder:coderCopy];
   if (!v5)
   {
     goto LABEL_11;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MKCircleLatitude"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MKCircleLongitude"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MKCircleRadius"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MKCircleLatitude"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MKCircleLongitude"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MKCircleRadius"];
   v9 = v8;
   if (v6)
   {
@@ -98,7 +98,7 @@ LABEL_11:
   v27[0] = @"Expected circle data missing.";
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:&v26 count:1];
   v15 = [v12 errorWithDomain:v13 code:4864 userInfo:v14];
-  [v4 failWithError:v15];
+  [coderCopy failWithError:v15];
 
   v16 = 0;
 LABEL_12:
@@ -106,10 +106,10 @@ LABEL_12:
   return v16;
 }
 
-- (id)_initWithCenterCoordinate:(CLLocationCoordinate2D)a3 radius:(double)a4
+- (id)_initWithCenterCoordinate:(CLLocationCoordinate2D)coordinate radius:(double)radius
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v13.receiver = self;
   v13.super_class = MKCircle;
   v7 = [(MKCircle *)&v13 init];
@@ -118,8 +118,8 @@ LABEL_12:
   {
     v7->_coordinate.latitude = latitude;
     v7->_coordinate.longitude = longitude;
-    v7->_radius = a4;
-    v7->_boundingMapRect.origin.x = MKMapRectMakeWithRadialDistance(latitude, longitude, a4);
+    v7->_radius = radius;
+    v7->_boundingMapRect.origin.x = MKMapRectMakeWithRadialDistance(latitude, longitude, radius);
     v8->_boundingMapRect.origin.y = v9;
     v8->_boundingMapRect.size.width = v10;
     v8->_boundingMapRect.size.height = v11;

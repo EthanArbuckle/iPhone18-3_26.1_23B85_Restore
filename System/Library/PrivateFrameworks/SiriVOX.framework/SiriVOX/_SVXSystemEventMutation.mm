@@ -1,5 +1,5 @@
 @interface _SVXSystemEventMutation
-- (_SVXSystemEventMutation)initWithBaseModel:(id)a3;
+- (_SVXSystemEventMutation)initWithBaseModel:(id)model;
 - (id)generate;
 @end
 
@@ -29,42 +29,42 @@ LABEL_8:
         if ((mutationFlags & 8) != 0)
         {
 LABEL_9:
-          v10 = self->_deviceSetupFlowScene;
+          deviceSetupFlowScene = self->_deviceSetupFlowScene;
 LABEL_13:
-          v11 = v10;
+          v11 = deviceSetupFlowScene;
           if ((*&self->_mutationFlags & 0x10) != 0)
           {
-            v12 = self->_storeDemo;
+            storeDemo = self->_storeDemo;
           }
 
           else
           {
-            v12 = [(SVXSystemEvent *)self->_baseModel storeDemo];
+            storeDemo = [(SVXSystemEvent *)self->_baseModel storeDemo];
           }
 
-          v13 = v12;
+          v13 = storeDemo;
           if ((*&self->_mutationFlags & 0x20) != 0)
           {
-            v14 = self->_orderedAlarmAndTimerIDs;
+            orderedAlarmAndTimerIDs = self->_orderedAlarmAndTimerIDs;
           }
 
           else
           {
-            v14 = [(SVXSystemEvent *)self->_baseModel orderedAlarmAndTimerIDs];
+            orderedAlarmAndTimerIDs = [(SVXSystemEvent *)self->_baseModel orderedAlarmAndTimerIDs];
           }
 
-          v15 = v14;
+          v15 = orderedAlarmAndTimerIDs;
           if ((*&self->_mutationFlags & 0x40) != 0)
           {
-            v16 = self->_speechSynthesisRequest;
+            speechSynthesisRequest = self->_speechSynthesisRequest;
           }
 
           else
           {
-            v16 = [(SVXSystemEvent *)self->_baseModel speechSynthesisRequest];
+            speechSynthesisRequest = [(SVXSystemEvent *)self->_baseModel speechSynthesisRequest];
           }
 
-          v17 = v16;
+          v17 = speechSynthesisRequest;
           if ((*&self->_mutationFlags & 0x80000000) != 0)
           {
             audioSessionID = self->_audioSessionID;
@@ -82,7 +82,7 @@ LABEL_13:
         }
 
 LABEL_12:
-        v10 = [(SVXSystemEvent *)self->_baseModel deviceSetupFlowScene];
+        deviceSetupFlowScene = [(SVXSystemEvent *)self->_baseModel deviceSetupFlowScene];
         goto LABEL_13;
       }
     }
@@ -114,16 +114,16 @@ LABEL_26:
   return v7;
 }
 
-- (_SVXSystemEventMutation)initWithBaseModel:(id)a3
+- (_SVXSystemEventMutation)initWithBaseModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = _SVXSystemEventMutation;
   v6 = [(_SVXSystemEventMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_baseModel, a3);
+    objc_storeStrong(&v6->_baseModel, model);
   }
 
   return v7;

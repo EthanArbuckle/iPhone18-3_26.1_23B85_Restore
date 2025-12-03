@@ -1,32 +1,32 @@
 @interface MFIMAPMessage
 - (BOOL)isMessageContentsLocallyAvailable;
-- (MFIMAPMessage)initWithFlags:(unint64_t)a3 customFlags:(id)a4 size:(unint64_t)a5 uid:(unsigned int)a6;
+- (MFIMAPMessage)initWithFlags:(unint64_t)flags customFlags:(id)customFlags size:(unint64_t)size uid:(unsigned int)uid;
 - (id)_privacySafeDescription;
 - (id)mailboxName;
 - (id)messageID;
 - (id)remoteID;
 - (id)remoteMailboxURL;
-- (int64_t)compareByNumberWithMessage:(id)a3;
+- (int64_t)compareByNumberWithMessage:(id)message;
 - (void)dealloc;
-- (void)setIsPartial:(BOOL)a3;
-- (void)setPreferredEncoding:(unsigned int)a3;
+- (void)setIsPartial:(BOOL)partial;
+- (void)setPreferredEncoding:(unsigned int)encoding;
 @end
 
 @implementation MFIMAPMessage
 
-- (MFIMAPMessage)initWithFlags:(unint64_t)a3 customFlags:(id)a4 size:(unint64_t)a5 uid:(unsigned int)a6
+- (MFIMAPMessage)initWithFlags:(unint64_t)flags customFlags:(id)customFlags size:(unint64_t)size uid:(unsigned int)uid
 {
-  v11 = a4;
+  customFlagsCopy = customFlags;
   v16.receiver = self;
   v16.super_class = MFIMAPMessage;
   v12 = [(MFIMAPMessage *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    [(MFMailMessage *)v12 setMessageFlags:a3];
-    v13->_size = a5;
-    v13->_uid = a6;
-    objc_storeStrong(&v13->_customFlags, a4);
+    [(MFMailMessage *)v12 setMessageFlags:flags];
+    v13->_size = size;
+    v13->_uid = uid;
+    objc_storeStrong(&v13->_customFlags, customFlags);
     v14 = v13;
   }
 
@@ -44,9 +44,9 @@
 {
   v7.receiver = self;
   v7.super_class = MFIMAPMessage;
-  v3 = [(MFMailMessage *)&v7 _privacySafeDescription];
-  v4 = [(MFIMAPMessage *)self remoteID];
-  v5 = [v3 stringByAppendingFormat:@" remoteID=%@", v4];
+  _privacySafeDescription = [(MFMailMessage *)&v7 _privacySafeDescription];
+  remoteID = [(MFIMAPMessage *)self remoteID];
+  v5 = [_privacySafeDescription stringByAppendingFormat:@" remoteID=%@", remoteID];
 
   return v5;
 }
@@ -71,16 +71,16 @@
   return v4;
 }
 
-- (int64_t)compareByNumberWithMessage:(id)a3
+- (int64_t)compareByNumberWithMessage:(id)message
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  messageCopy = message;
+  v5 = messageCopy;
+  if (messageCopy)
   {
-    v6 = (HIDWORD(self->super._messageFlags) & 1) + ((*(v4 + 23) >> 1) >> 31);
+    v6 = (HIDWORD(self->super._messageFlags) & 1) + ((*(messageCopy + 23) >> 1) >> 31);
     if (!v6)
     {
-      v6 = self->_uid - *(v4 + 60);
+      v6 = self->_uid - *(messageCopy + 60);
     }
 
     v7 = v6 < 0;
@@ -104,10 +104,10 @@
   return v9;
 }
 
-- (void)setIsPartial:(BOOL)a3
+- (void)setIsPartial:(BOOL)partial
 {
   v3 = 0x400000000;
-  if (!a3)
+  if (!partial)
   {
     v3 = 0;
   }
@@ -117,16 +117,16 @@
 
 - (BOOL)isMessageContentsLocallyAvailable
 {
-  v2 = self;
-  v3 = [(MFMailMessage *)self messageStore];
-  LOBYTE(v2) = [v3 hasValidCacheFileForMessage:v2];
+  selfCopy = self;
+  messageStore = [(MFMailMessage *)self messageStore];
+  LOBYTE(selfCopy) = [messageStore hasValidCacheFileForMessage:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)setPreferredEncoding:(unsigned int)a3
+- (void)setPreferredEncoding:(unsigned int)encoding
 {
-  self->super._messageFlags = self->super._messageFlags & 0xFFFFFFF7FFFFFFFFLL | ((a3 != -1) << 35);
+  self->super._messageFlags = self->super._messageFlags & 0xFFFFFFF7FFFFFFFFLL | ((encoding != -1) << 35);
   v3.receiver = self;
   v3.super_class = MFIMAPMessage;
   [(MFIMAPMessage *)&v3 setPreferredEncoding:?];
@@ -134,26 +134,26 @@
 
 - (id)mailboxName
 {
-  v2 = [(MFMailMessage *)self messageStore];
-  v3 = [v2 mailboxName];
+  messageStore = [(MFMailMessage *)self messageStore];
+  mailboxName = [messageStore mailboxName];
 
-  return v3;
+  return mailboxName;
 }
 
 - (id)remoteID
 {
   v2 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_uid];
-  v3 = [v2 stringValue];
+  stringValue = [v2 stringValue];
 
-  return v3;
+  return stringValue;
 }
 
 - (id)remoteMailboxURL
 {
-  v2 = [(MFMailMessage *)self mailbox];
-  v3 = [v2 URLString];
+  mailbox = [(MFMailMessage *)self mailbox];
+  uRLString = [mailbox URLString];
 
-  return v3;
+  return uRLString;
 }
 
 @end

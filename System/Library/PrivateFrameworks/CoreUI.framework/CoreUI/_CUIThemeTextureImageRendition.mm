@@ -1,5 +1,5 @@
 @interface _CUIThemeTextureImageRendition
-- (id)_initWithCSIHeader:(const _csiheader *)a3 version:(unsigned int)a4;
+- (id)_initWithCSIHeader:(const _csiheader *)header version:(unsigned int)version;
 - (void)dealloc;
 @end
 
@@ -12,14 +12,14 @@
   [(CUIThemeRendition *)&v3 dealloc];
 }
 
-- (id)_initWithCSIHeader:(const _csiheader *)a3 version:(unsigned int)a4
+- (id)_initWithCSIHeader:(const _csiheader *)header version:(unsigned int)version
 {
   v42.receiver = self;
   v42.super_class = _CUIThemeTextureImageRendition;
-  v6 = [(CUIThemeRendition *)&v42 _initWithCSIHeader:a3 version:*&a4];
-  v6[27] = [[NSMutableArray alloc] initWithCapacity:a3->var11.var0];
-  var10 = a3->var10;
-  v8 = &a3->var11.var1[a3->var11.var0];
+  v6 = [(CUIThemeRendition *)&v42 _initWithCSIHeader:header version:*&version];
+  v6[27] = [[NSMutableArray alloc] initWithCapacity:header->var11.var0];
+  var10 = header->var10;
+  v8 = &header->var11.var1[header->var11.var0];
   v9 = v8 + var10 + 4;
   v10 = 0;
   if (var10)
@@ -43,7 +43,7 @@
     while (v11 < v9);
   }
 
-  var6 = a3->var6;
+  var6 = header->var6;
   if (var6 > 1195456543)
   {
     if (var6 == 1195456544)
@@ -53,7 +53,7 @@
 
     if (var6 == 1380401751)
     {
-      v21 = (*(a3 + 7) & 0xF) - 3;
+      v21 = (*(header + 7) & 0xF) - 3;
       if (v21 > 2)
       {
         v22 = &kCGColorSpaceSRGB;
@@ -78,7 +78,7 @@ LABEL_21:
     v23 = +[NSAssertionHandler currentHandler];
     v24 = objc_opt_class();
     v25 = NSStringFromClass(v24);
-    [(NSAssertionHandler *)v23 handleFailureInMethod:a2 object:v6 file:@"CUIThemeRendition.m" lineNumber:2907 description:@"CoreUI: [%@ %@] unknown pixel format %d", v25, NSStringFromSelector(a2), a3->var6];
+    [(NSAssertionHandler *)v23 handleFailureInMethod:a2 object:v6 file:@"CUIThemeRendition.m" lineNumber:2907 description:@"CoreUI: [%@ %@] unknown pixel format %d", v25, NSStringFromSelector(a2), header->var6];
     v26 = 0;
     goto LABEL_29;
   }
@@ -86,7 +86,7 @@ LABEL_21:
   if (var6 == 1095911234)
   {
     v27 = &kCGColorSpaceGenericRGB;
-    if ((*(a3 + 7) & 0xF) != 0)
+    if ((*(header + 7) & 0xF) != 0)
     {
       v27 = &kCGColorSpaceSRGB;
     }
@@ -100,7 +100,7 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  if ((*(a3 + 7) & 0xF) == 6)
+  if ((*(header + 7) & 0xF) == 6)
   {
     v13 = &kCGColorSpaceExtendedGray;
   }
@@ -122,17 +122,17 @@ LABEL_20:
 LABEL_28:
   v26 = DeviceRGB;
 LABEL_29:
-  if (a3->var11.var0)
+  if (header->var11.var0)
   {
     v34 = 0;
     do
     {
-      v35 = (v9 + a3->var11.var1[v34]);
+      v35 = (v9 + header->var11.var1[v34]);
       if (!v34)
       {
         var0 = v35->var1.var0;
-        v37 = [v6 renditionFlags];
-        *v37 = *v37 & 0xFFFFFFFD | (2 * ((var0 >> 1) & 1));
+        renditionFlags = [v6 renditionFlags];
+        *renditionFlags = *renditionFlags & 0xFFFFFFFD | (2 * ((var0 >> 1) & 1));
       }
 
       v38 = objc_alloc_init(CSITextureHelper);
@@ -149,15 +149,15 @@ LABEL_29:
       }
 
       v38->sourceRowbytes = v39;
-      v38->width = a3->var3;
-      v38->height = a3->var4;
-      v38->pixelFormat = a3->var6;
+      v38->width = header->var3;
+      v38->height = header->var4;
+      v38->pixelFormat = header->var6;
       [v6[27] addObject:v38];
 
       ++v34;
     }
 
-    while (v34 < a3->var11.var0);
+    while (v34 < header->var11.var0);
   }
 
   CGColorSpaceRelease(v26);

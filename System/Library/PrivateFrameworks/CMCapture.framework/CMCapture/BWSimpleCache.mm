@@ -1,7 +1,7 @@
 @interface BWSimpleCache
 - (BWSimpleCache)init;
-- (id)copyAndClearObjectForKey:(id)a3;
-- (void)cacheObject:(id)a3 forKey:(id)a4;
+- (id)copyAndClearObjectForKey:(id)key;
+- (void)cacheObject:(id)object forKey:(id)key;
 - (void)dealloc;
 @end
 
@@ -29,19 +29,19 @@
   [(BWSimpleCache *)&v3 dealloc];
 }
 
-- (void)cacheObject:(id)a3 forKey:(id)a4
+- (void)cacheObject:(id)object forKey:(id)key
 {
   FigSimpleMutexLock();
-  [(NSMutableDictionary *)self->_cache setObject:a3 forKeyedSubscript:a4];
+  [(NSMutableDictionary *)self->_cache setObject:object forKeyedSubscript:key];
 
   FigSimpleMutexUnlock();
 }
 
-- (id)copyAndClearObjectForKey:(id)a3
+- (id)copyAndClearObjectForKey:(id)key
 {
   FigSimpleMutexLock();
-  v5 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:a3];
-  [(NSMutableDictionary *)self->_cache setObject:0 forKeyedSubscript:a3];
+  v5 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:key];
+  [(NSMutableDictionary *)self->_cache setObject:0 forKeyedSubscript:key];
   FigSimpleMutexUnlock();
   return v5;
 }

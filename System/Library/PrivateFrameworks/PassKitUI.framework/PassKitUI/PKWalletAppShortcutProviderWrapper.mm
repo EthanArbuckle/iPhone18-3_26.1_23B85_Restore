@@ -1,13 +1,13 @@
 @interface PKWalletAppShortcutProviderWrapper
-+ (void)updateAppShortcutParametersWithCompletion:(id)a3;
++ (void)updateAppShortcutParametersWithCompletion:(id)completion;
 - (PKWalletAppShortcutProviderWrapper)init;
 @end
 
 @implementation PKWalletAppShortcutProviderWrapper
 
-+ (void)updateAppShortcutParametersWithCompletion:(id)a3
++ (void)updateAppShortcutParametersWithCompletion:(id)completion
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(completion);
   if (v3)
   {
     v4 = v3;

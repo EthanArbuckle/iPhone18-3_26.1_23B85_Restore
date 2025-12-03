@@ -1,20 +1,20 @@
 @interface _UIStatusBarBatteryItemAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (_UIStatusBarBatteryItemAccessibility)init;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation _UIStatusBarBatteryItemAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v7 = location;
   v6 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v4 = @"_UIStatusBarBatteryItem";
   v5 = "@";
   [location[0] validateClass:0 hasInstanceMethod:? withFullSignature:?];
@@ -30,12 +30,12 @@
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = _UIStatusBarBatteryItemAccessibility;
   [(_UIStatusBarBatteryItemAccessibility *)&v3 _accessibilityLoadAccessibilityInformation];
-  v2 = [(_UIStatusBarBatteryItemAccessibility *)v5 safeValueForKey:@"percentView"];
+  v2 = [(_UIStatusBarBatteryItemAccessibility *)selfCopy safeValueForKey:@"percentView"];
   [v2 setIsAccessibilityElement:0];
   objc_storeStrong(&v2, 0);
 }
@@ -58,24 +58,24 @@
   return v3;
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
-  v32 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, update);
   v30 = 0;
-  objc_storeStrong(&v30, a4);
-  v28.receiver = v32;
+  objc_storeStrong(&v30, item);
+  v28.receiver = selfCopy;
   v28.super_class = _UIStatusBarBatteryItemAccessibility;
   v29 = [(_UIStatusBarBatteryItemAccessibility *)&v28 applyUpdate:location[0] toDisplayItem:v30];
   v27 = [v30 safeValueForKey:@"identifier"];
   v26 = [objc_opt_class() safeValueForKey:@"percentDisplayIdentifier"];
   if ([v27 isEqual:v26])
   {
-    v25 = [(_UIStatusBarBatteryItemAccessibility *)v32 safeUIViewForKey:@"batteryView"];
+    v25 = [(_UIStatusBarBatteryItemAccessibility *)selfCopy safeUIViewForKey:@"batteryView"];
     objc_initWeak(&from, v25);
-    v23 = [(_UIStatusBarBatteryItemAccessibility *)v32 safeUIViewForKey:@"percentView"];
+    v23 = [(_UIStatusBarBatteryItemAccessibility *)selfCopy safeUIViewForKey:@"percentView"];
     objc_initWeak(&v22, v23);
     if ([v30 safeBoolForKey:@"isEnabled"])
     {

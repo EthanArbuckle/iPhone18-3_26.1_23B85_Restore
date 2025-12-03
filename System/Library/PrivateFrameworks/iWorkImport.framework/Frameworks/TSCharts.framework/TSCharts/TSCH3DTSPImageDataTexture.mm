@@ -1,41 +1,41 @@
 @interface TSCH3DTSPImageDataTexture
-+ (TSCH3DTSPImageDataTexture)textureWithImageData:(id)a3 colorFill:(id)a4 optimizedMipmapData:(id)a5 textureSetId:(id)a6 imageName:(id)a7;
-+ (TSCH3DTSPImageDataTexture)textureWithImageData:(id)a3 colorFill:(id)a4 textureSetId:(id)a5 imageName:(id)a6;
-+ (TSCH3DTSPImageDataTexture)textureWithImageData:(id)a3 optimizedMipmapData:(id)a4 textureSetId:(id)a5 imageName:(id)a6;
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4;
++ (TSCH3DTSPImageDataTexture)textureWithImageData:(id)data colorFill:(id)fill optimizedMipmapData:(id)mipmapData textureSetId:(id)id imageName:(id)name;
++ (TSCH3DTSPImageDataTexture)textureWithImageData:(id)data colorFill:(id)fill textureSetId:(id)id imageName:(id)name;
++ (TSCH3DTSPImageDataTexture)textureWithImageData:(id)data optimizedMipmapData:(id)mipmapData textureSetId:(id)id imageName:(id)name;
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver;
 - (BOOL)hasCompleteData;
-- (BOOL)isEqual:(id)a3;
-- (TSCH3DTSPImageDataTexture)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (TSCH3DTSPImageDataTexture)initWithImageData:(id)a3 colorFill:(id)a4 optimizedMipmapData:(id)a5 textureSetId:(id)a6 imageName:(id)a7;
-- (id)databufferForDataCache:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (TSCH3DTSPImageDataTexture)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (TSCH3DTSPImageDataTexture)initWithImageData:(id)data colorFill:(id)fill optimizedMipmapData:(id)mipmapData textureSetId:(id)id imageName:(id)name;
+- (id)databufferForDataCache:(id)cache;
 - (id)representativeColorBuffer;
 - (unint64_t)hash;
-- (void)p_setOptimizedMipMapData:(id)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
+- (void)p_setOptimizedMipMapData:(id)data;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
 @end
 
 @implementation TSCH3DTSPImageDataTexture
 
-+ (TSCH3DTSPImageDataTexture)textureWithImageData:(id)a3 colorFill:(id)a4 optimizedMipmapData:(id)a5 textureSetId:(id)a6 imageName:(id)a7
++ (TSCH3DTSPImageDataTexture)textureWithImageData:(id)data colorFill:(id)fill optimizedMipmapData:(id)mipmapData textureSetId:(id)id imageName:(id)name
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [a1 alloc];
-  v22 = objc_msgSend_initWithImageData_colorFill_optimizedMipmapData_textureSetId_imageName_(v17, v18, v19, v20, v21, v12, v13, v14, v15, v16);
+  dataCopy = data;
+  fillCopy = fill;
+  mipmapDataCopy = mipmapData;
+  idCopy = id;
+  nameCopy = name;
+  v17 = [self alloc];
+  v22 = objc_msgSend_initWithImageData_colorFill_optimizedMipmapData_textureSetId_imageName_(v17, v18, v19, v20, v21, dataCopy, fillCopy, mipmapDataCopy, idCopy, nameCopy);
 
   return v22;
 }
 
-- (TSCH3DTSPImageDataTexture)initWithImageData:(id)a3 colorFill:(id)a4 optimizedMipmapData:(id)a5 textureSetId:(id)a6 imageName:(id)a7
+- (TSCH3DTSPImageDataTexture)initWithImageData:(id)data colorFill:(id)fill optimizedMipmapData:(id)mipmapData textureSetId:(id)id imageName:(id)name
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  dataCopy = data;
+  fillCopy = fill;
+  mipmapDataCopy = mipmapData;
+  idCopy = id;
+  nameCopy = name;
   v42.receiver = self;
   v42.super_class = TSCH3DTSPImageDataTexture;
   v18 = [(TSCH3DTexture *)&v42 init];
@@ -45,52 +45,52 @@
     cachedHashOnce = v18->_cachedHashOnce;
     v18->_cachedHashOnce = v19;
 
-    objc_storeStrong(&v18->_data, a3);
+    objc_storeStrong(&v18->_data, data);
     objc_msgSend_setParent_(v18->_data, v21, v22, v23, v24, v18);
-    objc_storeStrong(&v18->_optimizedMipmapData, a5);
+    objc_storeStrong(&v18->_optimizedMipmapData, mipmapData);
     objc_msgSend_setParent_(v18->_optimizedMipmapData, v25, v26, v27, v28, v18);
-    v33 = objc_msgSend_copy(v16, v29, v30, v31, v32);
+    v33 = objc_msgSend_copy(idCopy, v29, v30, v31, v32);
     textureSetId = v18->_textureSetId;
     v18->_textureSetId = v33;
 
-    v39 = objc_msgSend_copy(v17, v35, v36, v37, v38);
+    v39 = objc_msgSend_copy(nameCopy, v35, v36, v37, v38);
     imageName = v18->_imageName;
     v18->_imageName = v39;
 
-    objc_storeStrong(&v18->_colorFill, a4);
+    objc_storeStrong(&v18->_colorFill, fill);
   }
 
   return v18;
 }
 
-+ (TSCH3DTSPImageDataTexture)textureWithImageData:(id)a3 colorFill:(id)a4 textureSetId:(id)a5 imageName:(id)a6
++ (TSCH3DTSPImageDataTexture)textureWithImageData:(id)data colorFill:(id)fill textureSetId:(id)id imageName:(id)name
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [a1 alloc];
-  v19 = objc_msgSend_initWithImageData_colorFill_optimizedMipmapData_textureSetId_imageName_(v14, v15, v16, v17, v18, v10, v11, 0, v12, v13);
+  dataCopy = data;
+  fillCopy = fill;
+  idCopy = id;
+  nameCopy = name;
+  v14 = [self alloc];
+  v19 = objc_msgSend_initWithImageData_colorFill_optimizedMipmapData_textureSetId_imageName_(v14, v15, v16, v17, v18, dataCopy, fillCopy, 0, idCopy, nameCopy);
 
   return v19;
 }
 
-+ (TSCH3DTSPImageDataTexture)textureWithImageData:(id)a3 optimizedMipmapData:(id)a4 textureSetId:(id)a5 imageName:(id)a6
++ (TSCH3DTSPImageDataTexture)textureWithImageData:(id)data optimizedMipmapData:(id)mipmapData textureSetId:(id)id imageName:(id)name
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [a1 alloc];
-  v19 = objc_msgSend_initWithImageData_colorFill_optimizedMipmapData_textureSetId_imageName_(v14, v15, v16, v17, v18, v10, 0, v11, v12, v13);
+  dataCopy = data;
+  mipmapDataCopy = mipmapData;
+  idCopy = id;
+  nameCopy = name;
+  v14 = [self alloc];
+  v19 = objc_msgSend_initWithImageData_colorFill_optimizedMipmapData_textureSetId_imageName_(v14, v15, v16, v17, v18, dataCopy, 0, mipmapDataCopy, idCopy, nameCopy);
 
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v80 = 1;
     goto LABEL_15;
@@ -145,7 +145,7 @@
   v40 = objc_msgSend_uniqueFilename(*(v6 + 16), v36, v37, v38, v39);
   v45 = objc_msgSend_isEqual_(v35, v41, v42, v43, v44, v40);
 
-  if ((v45 & 1) != 0 && (objc_msgSend_data(self->_data, v46, v47, v48, v49), v50 = objc_claimAutoreleasedReturnValue(), objc_msgSend_context(v50, v51, v52, v53, v54), v55 = objc_claimAutoreleasedReturnValue(), objc_msgSend_data(*(v6 + 16), v56, v57, v58, v59), v60 = objc_claimAutoreleasedReturnValue(), objc_msgSend_context(v60, v61, v62, v63, v64), v65 = objc_claimAutoreleasedReturnValue(), v65, v60, v55, v50, v55 == v65) && (v82.receiver = self, v82.super_class = TSCH3DTSPImageDataTexture, [(TSCH3DTexture *)&v82 isEqual:v4]))
+  if ((v45 & 1) != 0 && (objc_msgSend_data(self->_data, v46, v47, v48, v49), v50 = objc_claimAutoreleasedReturnValue(), objc_msgSend_context(v50, v51, v52, v53, v54), v55 = objc_claimAutoreleasedReturnValue(), objc_msgSend_data(*(v6 + 16), v56, v57, v58, v59), v60 = objc_claimAutoreleasedReturnValue(), objc_msgSend_context(v60, v61, v62, v63, v64), v65 = objc_claimAutoreleasedReturnValue(), v65, v60, v55, v50, v55 == v65) && (v82.receiver = self, v82.super_class = TSCH3DTSPImageDataTexture, [(TSCH3DTexture *)&v82 isEqual:equalCopy]))
   {
     v70 = objc_msgSend_data(self->_data, v66, v67, v68, v69);
     v75 = objc_msgSend_data(*(v6 + 16), v71, v72, v73, v74);
@@ -190,9 +190,9 @@ LABEL_15:
   }
 }
 
-- (id)databufferForDataCache:(id)a3
+- (id)databufferForDataCache:(id)cache
 {
-  v6 = a3;
+  cacheCopy = cache;
   if (byte_280A46430 == 1)
   {
     v10 = objc_opt_class();
@@ -205,7 +205,7 @@ LABEL_15:
 
   if (v17)
   {
-    objc_msgSend_databufferForDataCache_(self->_data, v18, v19, v20, v21, v6);
+    objc_msgSend_databufferForDataCache_(self->_data, v18, v19, v20, v21, cacheCopy);
   }
 
   else
@@ -237,18 +237,18 @@ LABEL_15:
   return v3;
 }
 
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v5 = a4;
+  unarchiverCopy = unarchiver;
   v6 = [TSCH3DTSPImageDataTexture alloc];
-  v11 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, v8, v9, v10, a3, v5);
+  v11 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, v8, v9, v10, archive, unarchiverCopy);
 
   return v11;
 }
 
-- (void)p_setOptimizedMipMapData:(id)a3
+- (void)p_setOptimizedMipMapData:(id)data
 {
-  v34 = a3;
+  dataCopy = data;
   if (self->_optimizedMipmapData)
   {
     v8 = MEMORY[0x277D81150];
@@ -259,10 +259,10 @@ LABEL_15:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20, v21, v22);
   }
 
-  if (v34)
+  if (dataCopy)
   {
     v23 = [TSCH3DTSPMipmapData alloc];
-    v28 = objc_msgSend_initWithTSPData_(v23, v24, v25, v26, v27, v34);
+    v28 = objc_msgSend_initWithTSPData_(v23, v24, v25, v26, v27, dataCopy);
     optimizedMipmapData = self->_optimizedMipmapData;
     self->_optimizedMipmapData = v28;
 
@@ -270,9 +270,9 @@ LABEL_15:
   }
 }
 
-- (TSCH3DTSPImageDataTexture)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSCH3DTSPImageDataTexture)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v54.receiver = self;
   v54.super_class = TSCH3DTSPImageDataTexture;
   v7 = [(TSCH3DTexture *)&v54 init];
@@ -286,16 +286,16 @@ LABEL_15:
   data = v7->_data;
   v7->_data = v13;
 
-  v19 = *(a3 + 4);
+  v19 = *(archive + 4);
   if (v19)
   {
-    v25 = *(a3 + 3);
+    v25 = *(archive + 3);
     v52[0] = MEMORY[0x277D85DD0];
     v52[1] = 3221225472;
     v52[2] = sub_2761D7B30;
     v52[3] = &unk_27A6B68F8;
     v53 = v7;
-    v26 = v6;
+    v26 = unarchiverCopy;
     v27 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v26, v28, v29, v30, v31, v25, v27, 0, v52);
 
@@ -305,22 +305,22 @@ LABEL_15:
 
   if ((v19 & 4) != 0)
   {
-    v20 = objc_msgSend_readDataReferenceMessage_(v6, v15, v16, v17, v18, *(a3 + 5));
+    v20 = objc_msgSend_readDataReferenceMessage_(unarchiverCopy, v15, v16, v17, v18, *(archive + 5));
     objc_msgSend_setData_(v7->_data, v21, v22, v23, v24, v20);
 LABEL_6:
   }
 
   objc_msgSend_setParent_(v7->_data, v15, v16, v17, v18, v7);
-  v36 = *(a3 + 4);
+  v36 = *(archive + 4);
   if ((v36 & 2) != 0)
   {
-    v42 = *(a3 + 4);
+    v42 = *(archive + 4);
     v50[0] = MEMORY[0x277D85DD0];
     v50[1] = 3221225472;
     v50[2] = sub_2761D7BA8;
     v50[3] = &unk_27A6B68F8;
     v51 = v7;
-    v43 = v6;
+    v43 = unarchiverCopy;
     v44 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v43, v45, v46, v47, v48, v42, v44, 0, v50);
 
@@ -330,7 +330,7 @@ LABEL_6:
 
   if ((v36 & 8) != 0)
   {
-    v37 = objc_msgSend_readDataReferenceMessage_(v6, v32, v33, v34, v35, *(a3 + 6));
+    v37 = objc_msgSend_readDataReferenceMessage_(unarchiverCopy, v32, v33, v34, v35, *(archive + 6));
     objc_msgSend_p_setOptimizedMipMapData_(v7, v38, v39, v40, v41, v37);
 LABEL_11:
   }
@@ -340,29 +340,29 @@ LABEL_12:
   return v7;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v34 = a4;
+  archiverCopy = archiver;
   v10 = objc_msgSend_data(self->_data, v6, v7, v8, v9);
 
   if (v10)
   {
     v16 = objc_msgSend_data(self->_data, v11, v12, v13, v14);
-    *(a3 + 4) |= 4u;
-    v20 = *(a3 + 5);
+    *(archive + 4) |= 4u;
+    v20 = *(archive + 5);
     if (!v20)
     {
-      v21 = *(a3 + 1);
+      v21 = *(archive + 1);
       if (v21)
       {
         v21 = *(v21 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v20 = MEMORY[0x277C97B10](v21);
-      *(a3 + 5) = v20;
+      *(archive + 5) = v20;
     }
 
-    objc_msgSend_setDataReference_message_(v34, v15, v17, v18, v19, v16, v20);
+    objc_msgSend_setDataReference_message_(archiverCopy, v15, v17, v18, v19, v16, v20);
   }
 
   v22 = objc_msgSend_data(self->_optimizedMipmapData, v11, v12, v13, v14);
@@ -370,21 +370,21 @@ LABEL_12:
   if (v22)
   {
     v28 = objc_msgSend_data(self->_optimizedMipmapData, v23, v24, v25, v26);
-    *(a3 + 4) |= 8u;
-    v32 = *(a3 + 6);
+    *(archive + 4) |= 8u;
+    v32 = *(archive + 6);
     if (!v32)
     {
-      v33 = *(a3 + 1);
+      v33 = *(archive + 1);
       if (v33)
       {
         v33 = *(v33 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v32 = MEMORY[0x277C97B10](v33);
-      *(a3 + 6) = v32;
+      *(archive + 6) = v32;
     }
 
-    objc_msgSend_setDataReference_message_(v34, v27, v29, v30, v31, v28, v32);
+    objc_msgSend_setDataReference_message_(archiverCopy, v27, v29, v30, v31, v28, v32);
   }
 }
 

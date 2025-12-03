@@ -1,20 +1,20 @@
 @interface CKDPRecordFieldValue
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)typeAsString:(int)a3;
-- (int)StringAsType:(id)a3;
+- (id)typeAsString:(int)string;
+- (int)StringAsType:(id)type;
 - (int)type;
 - (unint64_t)hash;
-- (void)_CKLogToFileHandle:(id)a3 atDepth:(int)a4;
-- (void)addListValue:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsEncrypted:(BOOL)a3;
-- (void)setHasSignedValue:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)_CKLogToFileHandle:(id)handle atDepth:(int)depth;
+- (void)addListValue:(id)value;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsEncrypted:(BOOL)encrypted;
+- (void)setHasSignedValue:(BOOL)value;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPRecordFieldValue
@@ -32,10 +32,10 @@
   }
 }
 
-- (void)_CKLogToFileHandle:(id)a3 atDepth:(int)a4
+- (void)_CKLogToFileHandle:(id)handle atDepth:(int)depth
 {
   v59 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  handleCopy = handle;
   v7 = objc_autoreleasePoolPush();
   v10 = objc_msgSend_dictionaryRepresentation(self, v8, v9);
   v12 = objc_msgSend_standaloneTranslatorWithDatabaseScope_(CKDProtocolTranslator, v11, 2);
@@ -70,12 +70,12 @@
   if (objc_opt_isKindOfClass())
   {
     v24 = sub_225199CCC();
-    objc_msgSend_writeData_(v6, v25, v24);
+    objc_msgSend_writeData_(handleCopy, v25, v24);
 
     v26 = sub_2251995B8();
-    objc_msgSend_writeData_(v6, v27, v26);
+    objc_msgSend_writeData_(handleCopy, v27, v26);
 
-    sub_22519960C(a4 + 1, v6);
+    sub_22519960C(depth + 1, handleCopy);
     v56 = 0u;
     v57 = 0u;
     v54 = 0u;
@@ -95,9 +95,9 @@
             objc_enumerationMutation(v28);
           }
 
-          objc_msgSend__CKLogToFileHandle_atDepth_(*(*(&v54 + 1) + 8 * i), v31, v6, (a4 + 1), v54);
+          objc_msgSend__CKLogToFileHandle_atDepth_(*(*(&v54 + 1) + 8 * i), v31, handleCopy, (depth + 1), v54);
           v35 = sub_2251995B8();
-          objc_msgSend_writeData_(v6, v36, v35);
+          objc_msgSend_writeData_(handleCopy, v36, v35);
         }
 
         v32 = objc_msgSend_countByEnumeratingWithState_objects_count_(v28, v31, &v54, v58, 16);
@@ -106,20 +106,20 @@
       while (v32);
     }
 
-    sub_22519960C(a4, v6);
+    sub_22519960C(depth, handleCopy);
     v37 = sub_225199D74();
   }
 
   else
   {
     v39 = sub_22519AF58();
-    objc_msgSend_writeData_(v6, v40, v39);
+    objc_msgSend_writeData_(handleCopy, v40, v39);
 
     v42 = objc_msgSend_objectForKeyedSubscript_(v10, v41, @"type");
-    objc_msgSend_CKWriteString_(v6, v43, v42);
+    objc_msgSend_CKWriteString_(handleCopy, v43, v42);
 
     v44 = sub_22519AFAC();
-    objc_msgSend_writeData_(v6, v45, v44);
+    objc_msgSend_writeData_(handleCopy, v45, v44);
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -162,32 +162,32 @@
     {
 LABEL_35:
       v49 = sub_22519B000();
-      objc_msgSend_writeData_(v6, v50, v49);
+      objc_msgSend_writeData_(handleCopy, v50, v49);
 
-      objc_msgSend__CKLogToFileHandle_atDepth_(v14, v51, v6, (a4 + 1));
+      objc_msgSend__CKLogToFileHandle_atDepth_(v14, v51, handleCopy, (depth + 1));
       v52 = sub_22519B000();
-      objc_msgSend_writeData_(v6, v53, v52);
+      objc_msgSend_writeData_(handleCopy, v53, v52);
     }
 
     else
     {
 LABEL_21:
-      objc_msgSend__CKLogToFileHandle_atDepth_(v14, v46, v6, (a4 + 1));
+      objc_msgSend__CKLogToFileHandle_atDepth_(v14, v46, handleCopy, (depth + 1));
     }
 
     v37 = sub_22519AA58();
   }
 
   v47 = v37;
-  objc_msgSend_writeData_(v6, v38, v37, v54);
+  objc_msgSend_writeData_(handleCopy, v38, v37, v54);
 
   objc_autoreleasePoolPop(v7);
   v48 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -200,156 +200,156 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (id)typeAsString:(int)a3
+- (id)typeAsString:(int)string
 {
-  v4 = a3 - 1;
-  if (a3 - 1) < 0x1F && ((0x799FFFFFu >> v4))
+  v4 = string - 1;
+  if (string - 1) < 0x1F && ((0x799FFFFFu >> v4))
   {
     v5 = off_27854CA40[v4];
   }
 
   else
   {
-    v5 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", a3);
+    v5 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", string);
   }
 
   return v5;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if (objc_msgSend_isEqualToString_(v3, v4, @"bytesType"))
+  typeCopy = type;
+  if (objc_msgSend_isEqualToString_(typeCopy, v4, @"bytesType"))
   {
     v6 = 1;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v5, @"dateType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v5, @"dateType"))
   {
     v6 = 2;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v7, @"stringType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v7, @"stringType"))
   {
     v6 = 3;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v8, @"locationType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v8, @"locationType"))
   {
     v6 = 4;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v9, @"referenceType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v9, @"referenceType"))
   {
     v6 = 5;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v10, @"assetType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v10, @"assetType"))
   {
     v6 = 6;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v11, @"int64Type"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v11, @"int64Type"))
   {
     v6 = 7;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v12, @"doubleType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v12, @"doubleType"))
   {
     v6 = 8;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v13, @"emptyList"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v13, @"emptyList"))
   {
     v6 = 9;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v14, @"dateListType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v14, @"dateListType"))
   {
     v6 = 10;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v15, @"bytesListType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v15, @"bytesListType"))
   {
     v6 = 11;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v16, @"locationListType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v16, @"locationListType"))
   {
     v6 = 12;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v17, @"referenceListType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v17, @"referenceListType"))
   {
     v6 = 13;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v18, @"assetListType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v18, @"assetListType"))
   {
     v6 = 14;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v19, @"stringListType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v19, @"stringListType"))
   {
     v6 = 15;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v20, @"listType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v20, @"listType"))
   {
     v6 = 16;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v21, @"int64ListType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v21, @"int64ListType"))
   {
     v6 = 17;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v22, @"doubleListType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v22, @"doubleListType"))
   {
     v6 = 18;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v23, @"packageType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v23, @"packageType"))
   {
     v6 = 19;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v24, @"encryptedBytesType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v24, @"encryptedBytesType"))
   {
     v6 = 20;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v25, @"encryptedBytesListType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v25, @"encryptedBytesListType"))
   {
     v6 = 21;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v26, @"streamingAsset"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v26, @"streamingAsset"))
   {
     v6 = 24;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v27, @"streamingAssetList"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v27, @"streamingAssetList"))
   {
     v6 = 25;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v28, @"mergeableValueType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v28, @"mergeableValueType"))
   {
     v6 = 28;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v29, @"encryptedMergeableValueType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v29, @"encryptedMergeableValueType"))
   {
     v6 = 29;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v30, @"tupleType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v30, @"tupleType"))
   {
     v6 = 30;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v31, @"tupleListType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v31, @"tupleListType"))
   {
     v6 = 31;
   }
@@ -362,9 +362,9 @@ LABEL_21:
   return v6;
 }
 
-- (void)setHasSignedValue:(BOOL)a3
+- (void)setHasSignedValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 2;
   }
@@ -377,27 +377,27 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addListValue:(id)a3
+- (void)addListValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   listValues = self->_listValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!listValues)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_listValues;
     self->_listValues = v6;
 
-    v4 = v8;
+    valueCopy = v8;
     listValues = self->_listValues;
   }
 
-  objc_msgSend_addObject_(listValues, v4, v4);
+  objc_msgSend_addObject_(listValues, valueCopy, valueCopy);
 }
 
-- (void)setHasIsEncrypted:(BOOL)a3
+- (void)setHasIsEncrypted:(BOOL)encrypted
 {
-  if (a3)
+  if (encrypted)
   {
     v3 = 8;
   }
@@ -580,10 +580,10 @@ LABEL_21:
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
     type = self->_type;
@@ -697,35 +697,35 @@ LABEL_21:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
-    v4[30] = self->_type;
-    *(v4 + 128) |= 4u;
+    toCopy[30] = self->_type;
+    *(toCopy + 128) |= 4u;
   }
 
   bytesValue = self->_bytesValue;
-  v28 = v4;
+  v28 = toCopy;
   if (bytesValue)
   {
-    objc_msgSend_setBytesValue_(v4, v5, bytesValue);
-    v4 = v28;
+    objc_msgSend_setBytesValue_(toCopy, v5, bytesValue);
+    toCopy = v28;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 2) = self->_signedValue;
-    *(v4 + 128) |= 2u;
+    *(toCopy + 2) = self->_signedValue;
+    *(toCopy + 128) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 1) = *&self->_ckDoubleValue;
-    *(v4 + 128) |= 1u;
+    *(toCopy + 1) = *&self->_ckDoubleValue;
+    *(toCopy + 128) |= 1u;
   }
 
   dateValue = self->_dateValue;
@@ -815,11 +815,11 @@ LABEL_21:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v62 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v12 = v10;
   if ((*&self->_has & 4) != 0)
@@ -828,7 +828,7 @@ LABEL_21:
     *(v10 + 128) |= 4u;
   }
 
-  v13 = objc_msgSend_copyWithZone_(self->_bytesValue, v11, a3);
+  v13 = objc_msgSend_copyWithZone_(self->_bytesValue, v11, zone);
   v14 = *(v12 + 40);
   *(v12 + 40) = v13;
 
@@ -846,23 +846,23 @@ LABEL_21:
     *(v12 + 128) |= 1u;
   }
 
-  v17 = objc_msgSend_copyWithZone_(self->_dateValue, v15, a3);
+  v17 = objc_msgSend_copyWithZone_(self->_dateValue, v15, zone);
   v18 = *(v12 + 48);
   *(v12 + 48) = v17;
 
-  v20 = objc_msgSend_copyWithZone_(self->_stringValue, v19, a3);
+  v20 = objc_msgSend_copyWithZone_(self->_stringValue, v19, zone);
   v21 = *(v12 + 112);
   *(v12 + 112) = v20;
 
-  v23 = objc_msgSend_copyWithZone_(self->_locationValue, v22, a3);
+  v23 = objc_msgSend_copyWithZone_(self->_locationValue, v22, zone);
   v24 = *(v12 + 72);
   *(v12 + 72) = v23;
 
-  v26 = objc_msgSend_copyWithZone_(self->_referenceValue, v25, a3);
+  v26 = objc_msgSend_copyWithZone_(self->_referenceValue, v25, zone);
   v27 = *(v12 + 96);
   *(v12 + 96) = v26;
 
-  v29 = objc_msgSend_copyWithZone_(self->_assetValue, v28, a3);
+  v29 = objc_msgSend_copyWithZone_(self->_assetValue, v28, zone);
   v30 = *(v12 + 32);
   *(v12 + 32) = v29;
 
@@ -885,7 +885,7 @@ LABEL_21:
           objc_enumerationMutation(v31);
         }
 
-        v38 = objc_msgSend_copyWithZone_(*(*(&v57 + 1) + 8 * i), v34, a3, v57);
+        v38 = objc_msgSend_copyWithZone_(*(*(&v57 + 1) + 8 * i), v34, zone, v57);
         objc_msgSend_addListValue_(v12, v39, v38);
       }
 
@@ -895,7 +895,7 @@ LABEL_21:
     while (v35);
   }
 
-  v41 = objc_msgSend_copyWithZone_(self->_packageValue, v40, a3);
+  v41 = objc_msgSend_copyWithZone_(self->_packageValue, v40, zone);
   v42 = *(v12 + 88);
   *(v12 + 88) = v41;
 
@@ -905,19 +905,19 @@ LABEL_21:
     *(v12 + 128) |= 8u;
   }
 
-  v44 = objc_msgSend_copyWithZone_(self->_appliedCryptoFeatures, v43, a3, v57);
+  v44 = objc_msgSend_copyWithZone_(self->_appliedCryptoFeatures, v43, zone, v57);
   v45 = *(v12 + 24);
   *(v12 + 24) = v44;
 
-  v47 = objc_msgSend_copyWithZone_(self->_streamingAssetValue, v46, a3);
+  v47 = objc_msgSend_copyWithZone_(self->_streamingAssetValue, v46, zone);
   v48 = *(v12 + 104);
   *(v12 + 104) = v47;
 
-  v50 = objc_msgSend_copyWithZone_(self->_mergeableValue, v49, a3);
+  v50 = objc_msgSend_copyWithZone_(self->_mergeableValue, v49, zone);
   v51 = *(v12 + 80);
   *(v12 + 80) = v50;
 
-  v53 = objc_msgSend_copyWithZone_(self->_encryptedMergeableValue, v52, a3);
+  v53 = objc_msgSend_copyWithZone_(self->_encryptedMergeableValue, v52, zone);
   v54 = *(v12 + 56);
   *(v12 + 56) = v53;
 
@@ -925,32 +925,32 @@ LABEL_21:
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_45;
   }
 
   has = self->_has;
-  v9 = *(v4 + 128);
+  v9 = *(equalCopy + 128);
   if ((has & 4) != 0)
   {
-    if ((v4[16] & 4) == 0 || self->_type != *(v4 + 30))
+    if ((equalCopy[16] & 4) == 0 || self->_type != *(equalCopy + 30))
     {
       goto LABEL_45;
     }
   }
 
-  else if ((v4[16] & 4) != 0)
+  else if ((equalCopy[16] & 4) != 0)
   {
     goto LABEL_45;
   }
 
   bytesValue = self->_bytesValue;
-  v11 = v4[5];
+  v11 = equalCopy[5];
   if (bytesValue | v11)
   {
     if (!objc_msgSend_isEqual_(bytesValue, v7, v11))
@@ -959,12 +959,12 @@ LABEL_21:
     }
 
     has = self->_has;
-    v9 = *(v4 + 128);
+    v9 = *(equalCopy + 128);
   }
 
   if ((has & 2) != 0)
   {
-    if ((v9 & 2) == 0 || self->_signedValue != v4[2])
+    if ((v9 & 2) == 0 || self->_signedValue != equalCopy[2])
     {
       goto LABEL_45;
     }
@@ -977,7 +977,7 @@ LABEL_21:
 
   if (has)
   {
-    if ((v9 & 1) == 0 || self->_ckDoubleValue != *(v4 + 1))
+    if ((v9 & 1) == 0 || self->_ckDoubleValue != *(equalCopy + 1))
     {
       goto LABEL_45;
     }
@@ -989,14 +989,14 @@ LABEL_21:
   }
 
   dateValue = self->_dateValue;
-  v13 = v4[6];
+  v13 = equalCopy[6];
   if (dateValue | v13 && !objc_msgSend_isEqual_(dateValue, v7, v13))
   {
     goto LABEL_45;
   }
 
   stringValue = self->_stringValue;
-  v15 = v4[14];
+  v15 = equalCopy[14];
   if (stringValue | v15)
   {
     if (!objc_msgSend_isEqual_(stringValue, v7, v15))
@@ -1006,7 +1006,7 @@ LABEL_21:
   }
 
   locationValue = self->_locationValue;
-  v17 = v4[9];
+  v17 = equalCopy[9];
   if (locationValue | v17)
   {
     if (!objc_msgSend_isEqual_(locationValue, v7, v17))
@@ -1016,7 +1016,7 @@ LABEL_21:
   }
 
   referenceValue = self->_referenceValue;
-  v19 = v4[12];
+  v19 = equalCopy[12];
   if (referenceValue | v19)
   {
     if (!objc_msgSend_isEqual_(referenceValue, v7, v19))
@@ -1026,7 +1026,7 @@ LABEL_21:
   }
 
   assetValue = self->_assetValue;
-  v21 = v4[4];
+  v21 = equalCopy[4];
   if (assetValue | v21)
   {
     if (!objc_msgSend_isEqual_(assetValue, v7, v21))
@@ -1036,7 +1036,7 @@ LABEL_21:
   }
 
   listValues = self->_listValues;
-  v23 = v4[8];
+  v23 = equalCopy[8];
   if (listValues | v23)
   {
     if (!objc_msgSend_isEqual_(listValues, v7, v23))
@@ -1046,7 +1046,7 @@ LABEL_21:
   }
 
   packageValue = self->_packageValue;
-  v25 = v4[11];
+  v25 = equalCopy[11];
   if (packageValue | v25)
   {
     if (!objc_msgSend_isEqual_(packageValue, v7, v25))
@@ -1055,10 +1055,10 @@ LABEL_21:
     }
   }
 
-  v26 = *(v4 + 128);
+  v26 = *(equalCopy + 128);
   if ((*&self->_has & 8) == 0)
   {
-    if ((v4[16] & 8) == 0)
+    if ((equalCopy[16] & 8) == 0)
     {
       goto LABEL_36;
     }
@@ -1068,35 +1068,35 @@ LABEL_45:
     goto LABEL_46;
   }
 
-  if ((v4[16] & 8) == 0)
+  if ((equalCopy[16] & 8) == 0)
   {
     goto LABEL_45;
   }
 
-  v37 = *(v4 + 124);
+  v37 = *(equalCopy + 124);
   if (self->_isEncrypted)
   {
-    if ((*(v4 + 124) & 1) == 0)
+    if ((*(equalCopy + 124) & 1) == 0)
     {
       goto LABEL_45;
     }
   }
 
-  else if (*(v4 + 124))
+  else if (*(equalCopy + 124))
   {
     goto LABEL_45;
   }
 
 LABEL_36:
   appliedCryptoFeatures = self->_appliedCryptoFeatures;
-  v28 = v4[3];
+  v28 = equalCopy[3];
   if (appliedCryptoFeatures | v28 && !objc_msgSend_isEqual_(appliedCryptoFeatures, v7, v28))
   {
     goto LABEL_45;
   }
 
   streamingAssetValue = self->_streamingAssetValue;
-  v30 = v4[13];
+  v30 = equalCopy[13];
   if (streamingAssetValue | v30)
   {
     if (!objc_msgSend_isEqual_(streamingAssetValue, v7, v30))
@@ -1106,7 +1106,7 @@ LABEL_36:
   }
 
   mergeableValue = self->_mergeableValue;
-  v32 = v4[10];
+  v32 = equalCopy[10];
   if (mergeableValue | v32)
   {
     if (!objc_msgSend_isEqual_(mergeableValue, v7, v32))
@@ -1116,7 +1116,7 @@ LABEL_36:
   }
 
   encryptedMergeableValue = self->_encryptedMergeableValue;
-  v34 = v4[7];
+  v34 = equalCopy[7];
   if (encryptedMergeableValue | v34)
   {
     isEqual = objc_msgSend_isEqual_(encryptedMergeableValue, v7, v34);
@@ -1215,18 +1215,18 @@ LABEL_12:
   return v34 ^ v41 ^ objc_msgSend_hash(self->_encryptedMergeableValue, v42, v43);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v6 = v4;
-  if ((*(v4 + 128) & 4) != 0)
+  fromCopy = from;
+  v6 = fromCopy;
+  if ((*(fromCopy + 128) & 4) != 0)
   {
-    self->_type = *(v4 + 30);
+    self->_type = *(fromCopy + 30);
     *&self->_has |= 4u;
   }
 
-  v7 = *(v4 + 5);
+  v7 = *(fromCopy + 5);
   if (v7)
   {
     objc_msgSend_setBytesValue_(self, v5, v7);

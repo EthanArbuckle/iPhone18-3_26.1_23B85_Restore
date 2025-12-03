@@ -1,27 +1,27 @@
 @interface MRUNowPlayingHeaderView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MRUNowPlayingHeaderView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MRUNowPlayingHeaderView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setContentScale:(double)a3;
-- (void)setHapticView:(id)a3;
-- (void)setLayout:(int64_t)a3;
-- (void)setShowHaptic:(BOOL)a3;
-- (void)setShowRoutingButton:(BOOL)a3;
-- (void)setShowTransportButton:(BOOL)a3;
-- (void)setShowWaveform:(BOOL)a3;
-- (void)setStylingProvider:(id)a3;
-- (void)setTextAlignment:(int64_t)a3;
-- (void)setWaveformView:(id)a3;
+- (void)setContentScale:(double)scale;
+- (void)setHapticView:(id)view;
+- (void)setLayout:(int64_t)layout;
+- (void)setShowHaptic:(BOOL)haptic;
+- (void)setShowRoutingButton:(BOOL)button;
+- (void)setShowTransportButton:(BOOL)button;
+- (void)setShowWaveform:(BOOL)waveform;
+- (void)setStylingProvider:(id)provider;
+- (void)setTextAlignment:(int64_t)alignment;
+- (void)setWaveformView:(id)view;
 - (void)updateVisibility;
 @end
 
 @implementation MRUNowPlayingHeaderView
 
-- (MRUNowPlayingHeaderView)initWithFrame:(CGRect)a3
+- (MRUNowPlayingHeaderView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = MRUNowPlayingHeaderView;
-  v3 = [(MRUNowPlayingHeaderView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MRUNowPlayingHeaderView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MRUNowPlayingLabelView);
@@ -300,18 +300,18 @@ LABEL_26:
   [*p_labelView setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   if (self->_layout == 2)
   {
-    [(MRUNowPlayingLabelView *)self->_labelView sizeThatFits:a3.width, a3.height];
+    [(MRUNowPlayingLabelView *)self->_labelView sizeThatFits:fits.width, fits.height];
   }
 
   else
   {
-    [(MRUTransportButton *)self->_routingButton sizeThatFits:a3.width, a3.height];
+    [(MRUTransportButton *)self->_routingButton sizeThatFits:fits.width, fits.height];
     v8 = v7;
     [(MRUNowPlayingLabelView *)self->_labelView sizeThatFits:width, height];
     if (v8 >= v6)
@@ -326,28 +326,28 @@ LABEL_26:
   return result;
 }
 
-- (void)setStylingProvider:(id)a3
+- (void)setStylingProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_stylingProvider != v5)
+  providerCopy = provider;
+  if (self->_stylingProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_stylingProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_stylingProvider, provider);
     [(MRUWaveformView *)self->_waveformView setStylingProvider:v6];
     [(MRUHapticView *)self->_hapticView setStylingProvider:v6];
     [(MRUNowPlayingLabelView *)self->_labelView setStylingProvider:v6];
     [(MRUTransportButton *)self->_transportButton setStylingProvider:v6];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
-- (void)setWaveformView:(id)a3
+- (void)setWaveformView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(MRUWaveformView *)self->_waveformView removeFromSuperview];
   waveformView = self->_waveformView;
-  self->_waveformView = v4;
-  v6 = v4;
+  self->_waveformView = viewCopy;
+  v6 = viewCopy;
 
   [(MRUWaveformView *)self->_waveformView setStylingProvider:self->_stylingProvider];
   [(MRUNowPlayingHeaderView *)self addSubview:v6];
@@ -357,13 +357,13 @@ LABEL_26:
   [(MRUNowPlayingHeaderView *)self setNeedsLayout];
 }
 
-- (void)setHapticView:(id)a3
+- (void)setHapticView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(MRUHapticView *)self->_hapticView removeFromSuperview];
   hapticView = self->_hapticView;
-  self->_hapticView = v4;
-  v6 = v4;
+  self->_hapticView = viewCopy;
+  v6 = viewCopy;
 
   [(MRUHapticView *)self->_hapticView setStylingProvider:self->_stylingProvider];
   [(MRUNowPlayingHeaderView *)self addSubview:v6];
@@ -373,77 +373,77 @@ LABEL_26:
   [(MRUNowPlayingHeaderView *)self setNeedsLayout];
 }
 
-- (void)setLayout:(int64_t)a3
+- (void)setLayout:(int64_t)layout
 {
-  if (self->_layout != a3)
+  if (self->_layout != layout)
   {
-    self->_layout = a3;
+    self->_layout = layout;
     [(MRUNowPlayingHeaderView *)self updateVisibility];
 
     [(MRUNowPlayingHeaderView *)self setNeedsLayout];
   }
 }
 
-- (void)setShowTransportButton:(BOOL)a3
+- (void)setShowTransportButton:(BOOL)button
 {
-  if (self->_showTransportButton != a3)
+  if (self->_showTransportButton != button)
   {
-    self->_showTransportButton = a3;
+    self->_showTransportButton = button;
     [(MRUNowPlayingHeaderView *)self updateVisibility];
 
     [(MRUNowPlayingHeaderView *)self setNeedsLayout];
   }
 }
 
-- (void)setShowWaveform:(BOOL)a3
+- (void)setShowWaveform:(BOOL)waveform
 {
-  if (self->_showWaveform != a3)
+  if (self->_showWaveform != waveform)
   {
-    self->_showWaveform = a3;
+    self->_showWaveform = waveform;
     [(MRUNowPlayingHeaderView *)self updateVisibility];
 
     [(MRUNowPlayingHeaderView *)self setNeedsLayout];
   }
 }
 
-- (void)setShowHaptic:(BOOL)a3
+- (void)setShowHaptic:(BOOL)haptic
 {
-  if (self->_showHaptic != a3)
+  if (self->_showHaptic != haptic)
   {
-    self->_showHaptic = a3;
+    self->_showHaptic = haptic;
     [(MRUNowPlayingHeaderView *)self updateVisibility];
 
     [(MRUNowPlayingHeaderView *)self setNeedsLayout];
   }
 }
 
-- (void)setShowRoutingButton:(BOOL)a3
+- (void)setShowRoutingButton:(BOOL)button
 {
-  if (self->_showRoutingButton != a3)
+  if (self->_showRoutingButton != button)
   {
-    self->_showRoutingButton = a3;
+    self->_showRoutingButton = button;
     [(MRUNowPlayingHeaderView *)self updateVisibility];
 
     [(MRUNowPlayingHeaderView *)self setNeedsLayout];
   }
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
-  if (self->_textAlignment != a3)
+  if (self->_textAlignment != alignment)
   {
-    self->_textAlignment = a3;
+    self->_textAlignment = alignment;
     [(MRUNowPlayingLabelView *)self->_labelView setTextAlignment:?];
 
     [(MRUNowPlayingHeaderView *)self setNeedsLayout];
   }
 }
 
-- (void)setContentScale:(double)a3
+- (void)setContentScale:(double)scale
 {
-  if (vabdd_f64(self->_contentScale, a3) > 2.22044605e-16)
+  if (vabdd_f64(self->_contentScale, scale) > 2.22044605e-16)
   {
-    self->_contentScale = a3;
+    self->_contentScale = scale;
     [(MRUNowPlayingLabelView *)self->_labelView setContentScale:?];
   }
 }

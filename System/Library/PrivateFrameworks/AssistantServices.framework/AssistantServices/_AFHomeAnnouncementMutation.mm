@@ -1,5 +1,5 @@
 @interface _AFHomeAnnouncementMutation
-- (_AFHomeAnnouncementMutation)initWithBase:(id)a3;
+- (_AFHomeAnnouncementMutation)initWithBase:(id)base;
 - (id)getFinishedDate;
 - (id)getIdentifier;
 - (id)getStartedDate;
@@ -13,30 +13,30 @@
 {
   if ((*&self->_mutationFlags & 0x20) != 0)
   {
-    v2 = self->_finishedDate;
+    finishedDate = self->_finishedDate;
   }
 
   else
   {
-    v2 = [(AFHomeAnnouncement *)self->_base finishedDate];
+    finishedDate = [(AFHomeAnnouncement *)self->_base finishedDate];
   }
 
-  return v2;
+  return finishedDate;
 }
 
 - (id)getStartedDate
 {
   if ((*&self->_mutationFlags & 0x10) != 0)
   {
-    v2 = self->_startedDate;
+    startedDate = self->_startedDate;
   }
 
   else
   {
-    v2 = [(AFHomeAnnouncement *)self->_base startedDate];
+    startedDate = [(AFHomeAnnouncement *)self->_base startedDate];
   }
 
-  return v2;
+  return startedDate;
 }
 
 - (unint64_t)getFinishedHostTime
@@ -69,27 +69,27 @@
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_identifier;
+    identifier = self->_identifier;
   }
 
   else
   {
-    v2 = [(AFHomeAnnouncement *)self->_base identifier];
+    identifier = [(AFHomeAnnouncement *)self->_base identifier];
   }
 
-  return v2;
+  return identifier;
 }
 
-- (_AFHomeAnnouncementMutation)initWithBase:(id)a3
+- (_AFHomeAnnouncementMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFHomeAnnouncementMutation;
   v6 = [(_AFHomeAnnouncementMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

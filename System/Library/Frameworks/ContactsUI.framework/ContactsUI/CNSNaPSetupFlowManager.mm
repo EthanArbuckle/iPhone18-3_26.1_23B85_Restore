@@ -2,85 +2,85 @@
 + (id)descriptorForRequiredKeys;
 + (id)log;
 - (BOOL)multiplePhoneNumbersTiedToAppleID;
-- (BOOL)shouldShowItemEditorForContactImage:(id)a3;
+- (BOOL)shouldShowItemEditorForContactImage:(id)image;
 - (CNContactImageStore)contactImageStore;
 - (CNPresenterDelegate)presenterDelegate;
-- (CNSNaPSetupFlowManager)initWithBaseViewController:(id)a3 contactStore:(id)a4 mode:(int64_t)a5 presenterDelegate:(id)a6;
+- (CNSNaPSetupFlowManager)initWithBaseViewController:(id)controller contactStore:(id)store mode:(int64_t)mode presenterDelegate:(id)delegate;
 - (CNSNaPSetupFlowManagerDelegate)delegate;
-- (id)contactPosterFromWallpaper:(id)a3;
-- (id)posterEditOptionsNavigationControllerForContact:(id)a3;
-- (id)posterOnboardingWelcomeNavigationControllerForContact:(id)a3 hasOptionToSkip:(BOOL)a4 hasExistingNickname:(BOOL)a5;
-- (id)posterPreviewControllerWithPosterConfiguration:(id)a3 providerItem:(id)a4 mode:(int64_t)a5;
-- (id)providerItemForRecentAvatar:(id)a3 inView:(id)a4;
+- (id)contactPosterFromWallpaper:(id)wallpaper;
+- (id)posterEditOptionsNavigationControllerForContact:(id)contact;
+- (id)posterOnboardingWelcomeNavigationControllerForContact:(id)contact hasOptionToSkip:(BOOL)skip hasExistingNickname:(BOOL)nickname;
+- (id)posterPreviewControllerWithPosterConfiguration:(id)configuration providerItem:(id)item mode:(int64_t)mode;
+- (id)providerItemForRecentAvatar:(id)avatar inView:(id)view;
 - (id)recentAvatarFromPendingVisualIdentity;
 - (id)recentPosterFromPendingVisualIdentity;
 - (id)sharingSettingsViewControllerForOnboarding;
 - (id)wallpaperGalleryNavigationController;
-- (id)wallpaperGalleryNavigationControllerForMode:(int64_t)a3;
+- (id)wallpaperGalleryNavigationControllerForMode:(int64_t)mode;
 - (int64_t)defaultModalPresentationStyle;
-- (unint64_t)recentAvatarsCountForContactIdentifier:(id)a3;
-- (void)avatarEditingDidFinishWithProviderItem:(id)a3 fromViewController:(id)a4;
-- (void)avatarPreviewViewController:(id)a3 didFinishWithContactImage:(id)a4;
-- (void)avatarPreviewViewControllerDidSelectCustomizeLater:(id)a3;
-- (void)cleanupTemporaryPosterArchiveDataIfNeededFromURL:(id)a3 fileManager:(id)a4;
-- (void)cleanupTemporaryPosterConfigurationsFromURL:(id)a3 fileManager:(id)a4;
+- (unint64_t)recentAvatarsCountForContactIdentifier:(id)identifier;
+- (void)avatarEditingDidFinishWithProviderItem:(id)item fromViewController:(id)controller;
+- (void)avatarPreviewViewController:(id)controller didFinishWithContactImage:(id)image;
+- (void)avatarPreviewViewControllerDidSelectCustomizeLater:(id)later;
+- (void)cleanupTemporaryPosterArchiveDataIfNeededFromURL:(id)l fileManager:(id)manager;
+- (void)cleanupTemporaryPosterConfigurationsFromURL:(id)l fileManager:(id)manager;
 - (void)cleanupTemporaryPosterData;
 - (void)dealloc;
-- (void)dismissNavigationController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)dismissNavigationController:(id)controller animated:(BOOL)animated completion:(id)completion;
 - (void)dismissOnboardingIfNeeded;
 - (void)dismissPosterEditingFlow;
-- (void)dismissViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)editAvatar:(id)a3 inView:(id)a4;
-- (void)finishFlowAndSaveAsRecent:(BOOL)a3;
-- (void)imagePickerController:(id)a3 didFinishWithProviderItem:(id)a4;
+- (void)dismissViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)editAvatar:(id)avatar inView:(id)view;
+- (void)finishFlowAndSaveAsRecent:(BOOL)recent;
+- (void)imagePickerController:(id)controller didFinishWithProviderItem:(id)item;
 - (void)linkCurrentImageToCurrentPoster;
 - (void)notifyDelegateOfUpdatesAndDismissIfNeeded;
-- (void)posterEditOptionsViewController:(id)a3 didEditPosterWithContext:(id)a4;
-- (void)posterEditOptionsViewController:(id)a3 didLoadCurrentAvatar:(id)a4 poster:(id)a5 backedByRecents:(BOOL)a6;
-- (void)posterEditOptionsViewController:(id)a3 didSelectAvatar:(id)a4 poster:(id)a5;
-- (void)posterEditOptionsViewController:(id)a3 didSelectEditAvatarWithContext:(id)a4;
-- (void)posterEditOptionsViewControllerDidCancel:(id)a3;
-- (void)posterEditOptionsViewControllerDidDeleteCurrentPosterPair:(id)a3;
-- (void)posterEditOptionsViewControllerDidSelectCreateNew:(id)a3;
-- (void)posterOnboardingViewControllerDidDidTapCancel:(id)a3;
-- (void)posterOnboardingViewControllerDidTapContinue:(id)a3;
-- (void)posterPreviewViewController:(id)a3 didFinishWithPosterConfiguration:(id)a4;
-- (void)posterPreviewViewControllerDidSelectCustomizeLater:(id)a3;
-- (void)posterPreviewViewControllerDidSelectUseDifferentPoster:(id)a3;
-- (void)presentCreateNewAvatarViewControllerFromViewController:(id)a3;
-- (void)presentNavigationController:(id)a3;
-- (void)previewPendingPoster:(id)a3;
-- (void)pushNextStepWithViewController:(id)a3;
+- (void)posterEditOptionsViewController:(id)controller didEditPosterWithContext:(id)context;
+- (void)posterEditOptionsViewController:(id)controller didLoadCurrentAvatar:(id)avatar poster:(id)poster backedByRecents:(BOOL)recents;
+- (void)posterEditOptionsViewController:(id)controller didSelectAvatar:(id)avatar poster:(id)poster;
+- (void)posterEditOptionsViewController:(id)controller didSelectEditAvatarWithContext:(id)context;
+- (void)posterEditOptionsViewControllerDidCancel:(id)cancel;
+- (void)posterEditOptionsViewControllerDidDeleteCurrentPosterPair:(id)pair;
+- (void)posterEditOptionsViewControllerDidSelectCreateNew:(id)new;
+- (void)posterOnboardingViewControllerDidDidTapCancel:(id)cancel;
+- (void)posterOnboardingViewControllerDidTapContinue:(id)continue;
+- (void)posterPreviewViewController:(id)controller didFinishWithPosterConfiguration:(id)configuration;
+- (void)posterPreviewViewControllerDidSelectCustomizeLater:(id)later;
+- (void)posterPreviewViewControllerDidSelectUseDifferentPoster:(id)poster;
+- (void)presentCreateNewAvatarViewControllerFromViewController:(id)controller;
+- (void)presentNavigationController:(id)controller;
+- (void)previewPendingPoster:(id)poster;
+- (void)pushNextStepWithViewController:(id)controller;
 - (void)resetEditingState;
 - (void)saveCurrentVisualIdentityIfNeeded;
-- (void)saveRecentAvatar:(id)a3 withPairedPoster:(id)a4 ignoreExisting:(BOOL)a5;
-- (void)saveRecentPoster:(id)a3;
+- (void)saveRecentAvatar:(id)avatar withPairedPoster:(id)poster ignoreExisting:(BOOL)existing;
+- (void)saveRecentPoster:(id)poster;
 - (void)saveRecentVisualIdentity;
-- (void)setGalleryNavigationController:(id)a3;
-- (void)sharingEditAvatarFlowManager:(id)a3 didFinishWithProviderItem:(id)a4 fromViewController:(id)a5;
-- (void)sharingEditAvatarFlowManagerDidCancel:(id)a3;
-- (void)sharingSettingsViewController:(id)a3 didSelectSharingAudience:(unint64_t)a4;
-- (void)sharingSettingsViewController:(id)a3 didUpdateSharingState:(BOOL)a4;
-- (void)sharingSettingsViewController:(id)a3 didUpdateWithSharingResult:(id)a4;
-- (void)startContactCardFlowForContact:(id)a3 isEditing:(BOOL)a4;
-- (void)startEditFlowWithSNaPContact:(id)a3;
-- (void)startOnboardingFlowWithNicknameContact:(id)a3 meContact:(id)a4;
+- (void)setGalleryNavigationController:(id)controller;
+- (void)sharingEditAvatarFlowManager:(id)manager didFinishWithProviderItem:(id)item fromViewController:(id)controller;
+- (void)sharingEditAvatarFlowManagerDidCancel:(id)cancel;
+- (void)sharingSettingsViewController:(id)controller didSelectSharingAudience:(unint64_t)audience;
+- (void)sharingSettingsViewController:(id)controller didUpdateSharingState:(BOOL)state;
+- (void)sharingSettingsViewController:(id)controller didUpdateWithSharingResult:(id)result;
+- (void)startContactCardFlowForContact:(id)contact isEditing:(BOOL)editing;
+- (void)startEditFlowWithSNaPContact:(id)contact;
+- (void)startOnboardingFlowWithNicknameContact:(id)contact meContact:(id)meContact;
 - (void)submitAndResetFlowReporter;
-- (void)suggestionsGalleryViewController:(id)a3 didFinishWithPosterConfiguration:(id)a4 name:(id)a5;
-- (void)suggestionsGalleryViewController:(id)a3 didSelectAvatarSourceType:(int64_t)a4 name:(id)a5;
-- (void)suggestionsGalleryViewController:(id)a3 didSelectSuggestedAvatar:(id)a4 name:(id)a5;
-- (void)suggestionsGalleryViewControllerDidCancel:(id)a3;
-- (void)suggestionsGalleryViewControllerDidSelectCustomizeLater:(id)a3;
-- (void)updateEditingContact:(id)a3 watchWallpaperImageDataForConfiguration:(id)a4 completion:(id)a5;
-- (void)updateEditingContactWithVisualIdentity:(id)a3;
-- (void)updateEditingContextWithPendingPoster:(id)a3;
-- (void)updateEditingStateForAction:(int64_t)a3;
-- (void)updateEditingStateForRevertedAction:(int64_t)a3 dismissingSetupFlow:(BOOL)a4;
-- (void)updatePendingVisualIdentityWithAvatar:(id)a3 contactPoster:(id)a4 viewController:(id)a5;
-- (void)updatePendingVisualIdentityWithAvatar:(id)a3 pendingPosterEdit:(id)a4 viewController:(id)a5;
-- (void)updatePendingVisualIdentityWithWallpaper:(id)a3;
-- (void)validateAndUpdateAvatarDataForVisualIdentity:(id)a3;
-- (void)viewControllerDidSelectCustomizePosterLater:(id)a3;
+- (void)suggestionsGalleryViewController:(id)controller didFinishWithPosterConfiguration:(id)configuration name:(id)name;
+- (void)suggestionsGalleryViewController:(id)controller didSelectAvatarSourceType:(int64_t)type name:(id)name;
+- (void)suggestionsGalleryViewController:(id)controller didSelectSuggestedAvatar:(id)avatar name:(id)name;
+- (void)suggestionsGalleryViewControllerDidCancel:(id)cancel;
+- (void)suggestionsGalleryViewControllerDidSelectCustomizeLater:(id)later;
+- (void)updateEditingContact:(id)contact watchWallpaperImageDataForConfiguration:(id)configuration completion:(id)completion;
+- (void)updateEditingContactWithVisualIdentity:(id)identity;
+- (void)updateEditingContextWithPendingPoster:(id)poster;
+- (void)updateEditingStateForAction:(int64_t)action;
+- (void)updateEditingStateForRevertedAction:(int64_t)action dismissingSetupFlow:(BOOL)flow;
+- (void)updatePendingVisualIdentityWithAvatar:(id)avatar contactPoster:(id)poster viewController:(id)controller;
+- (void)updatePendingVisualIdentityWithAvatar:(id)avatar pendingPosterEdit:(id)edit viewController:(id)controller;
+- (void)updatePendingVisualIdentityWithWallpaper:(id)wallpaper;
+- (void)validateAndUpdateAvatarDataForVisualIdentity:(id)identity;
+- (void)viewControllerDidSelectCustomizePosterLater:(id)later;
 - (void)writeToDefaultsPosterSkippedIfNeeded;
 @end
 
@@ -123,46 +123,46 @@
   return [v2 multiplePhoneNumbersTiedToAppleID];
 }
 
-- (void)cleanupTemporaryPosterConfigurationsFromURL:(id)a3 fileManager:(id)a4
+- (void)cleanupTemporaryPosterConfigurationsFromURL:(id)l fileManager:(id)manager
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [a3 URLByAppendingPathComponent:@"PosterConfigurations"];
-  v7 = [v6 path];
-  v8 = [v5 fileExistsAtPath:v7];
+  managerCopy = manager;
+  v6 = [l URLByAppendingPathComponent:@"PosterConfigurations"];
+  path = [v6 path];
+  v8 = [managerCopy fileExistsAtPath:path];
 
   if (v8)
   {
     v13 = 0;
-    v9 = [v5 removeItemAtURL:v6 error:&v13];
+    v9 = [managerCopy removeItemAtURL:v6 error:&v13];
     v10 = v13;
     if ((v9 & 1) == 0)
     {
       v11 = CNUILogPosters();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        v12 = [v10 localizedDescription];
+        localizedDescription = [v10 localizedDescription];
         *buf = 138412290;
-        v15 = v12;
+        v15 = localizedDescription;
         _os_log_error_impl(&dword_199A75000, v11, OS_LOG_TYPE_ERROR, "Failed to clean up poster configurations from temporary directory, %@", buf, 0xCu);
       }
     }
   }
 }
 
-- (void)cleanupTemporaryPosterArchiveDataIfNeededFromURL:(id)a3 fileManager:(id)a4
+- (void)cleanupTemporaryPosterArchiveDataIfNeededFromURL:(id)l fileManager:(id)manager
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695E000] standardUserDefaults];
-  if (([v7 BOOLForKey:@"CNPostersHasPerformedTemporaryArchiveCleanup"] & 1) == 0)
+  lCopy = l;
+  managerCopy = manager;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  if (([standardUserDefaults BOOLForKey:@"CNPostersHasPerformedTemporaryArchiveCleanup"] & 1) == 0)
   {
-    v20 = v7;
+    v20 = standardUserDefaults;
     v32[0] = *MEMORY[0x1E695DC30];
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:1];
-    v21 = v5;
-    v9 = [v6 contentsOfDirectoryAtURL:v5 includingPropertiesForKeys:v8 options:0 error:0];
+    v21 = lCopy;
+    v9 = [managerCopy contentsOfDirectoryAtURL:lCopy includingPropertiesForKeys:v8 options:0 error:0];
 
     v25 = 0u;
     v26 = 0u;
@@ -184,11 +184,11 @@
           }
 
           v15 = *(*(&v23 + 1) + 8 * i);
-          v16 = [v15 pathExtension];
-          if (([v16 isEqualToString:@"apa"] & 1) != 0 || objc_msgSend(v16, "isEqualToString:", @"zapa"))
+          pathExtension = [v15 pathExtension];
+          if (([pathExtension isEqualToString:@"apa"] & 1) != 0 || objc_msgSend(pathExtension, "isEqualToString:", @"zapa"))
           {
             v22 = 0;
-            v17 = [v6 removeItemAtURL:v15 error:&v22];
+            v17 = [managerCopy removeItemAtURL:v15 error:&v22];
             v18 = v22;
             if ((v17 & 1) == 0)
             {
@@ -196,7 +196,7 @@
               if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412546;
-                v28 = v16;
+                v28 = pathExtension;
                 v29 = 2112;
                 v30 = v18;
                 _os_log_error_impl(&dword_199A75000, v19, OS_LOG_TYPE_ERROR, "Failed to clean up %@ type file from temporary directory, %@", buf, 0x16u);
@@ -211,23 +211,23 @@
       while (v12);
     }
 
-    v7 = v20;
+    standardUserDefaults = v20;
     [v20 setBool:1 forKey:@"CNPostersHasPerformedTemporaryArchiveCleanup"];
 
-    v5 = v21;
+    lCopy = v21;
   }
 }
 
 - (void)cleanupTemporaryPosterData
 {
-  v3 = [MEMORY[0x1E6996820] defaultProvider];
-  v4 = [v3 backgroundScheduler];
+  defaultProvider = [MEMORY[0x1E6996820] defaultProvider];
+  backgroundScheduler = [defaultProvider backgroundScheduler];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __52__CNSNaPSetupFlowManager_cleanupTemporaryPosterData__block_invoke;
   v5[3] = &unk_1E74E6A88;
   v5[4] = self;
-  [v4 performBlock:v5];
+  [backgroundScheduler performBlock:v5];
 }
 
 void __52__CNSNaPSetupFlowManager_cleanupTemporaryPosterData__block_invoke(uint64_t a1)
@@ -246,53 +246,53 @@ void __52__CNSNaPSetupFlowManager_cleanupTemporaryPosterData__block_invoke(uint6
   [(CNSNaPSetupFlowManager *)self setAvatarPosterEditingContext:0];
 }
 
-- (void)updateEditingStateForRevertedAction:(int64_t)a3 dismissingSetupFlow:(BOOL)a4
+- (void)updateEditingStateForRevertedAction:(int64_t)action dismissingSetupFlow:(BOOL)flow
 {
-  v4 = a4;
-  [(CNSNaPSetupFlowManager *)self setEditingState:[CNMeCardSharingSettingsEditingStateMachine stateAfterRevertingAction:a3 onState:[(CNSNaPSetupFlowManager *)self editingState]]];
-  if (v4)
+  flowCopy = flow;
+  [(CNSNaPSetupFlowManager *)self setEditingState:[CNMeCardSharingSettingsEditingStateMachine stateAfterRevertingAction:action onState:[(CNSNaPSetupFlowManager *)self editingState]]];
+  if (flowCopy)
   {
 
     [(CNSNaPSetupFlowManager *)self setAvatarPosterEditingContext:0];
   }
 }
 
-- (void)updateEditingStateForAction:(int64_t)a3
+- (void)updateEditingStateForAction:(int64_t)action
 {
-  v4 = [CNMeCardSharingSettingsEditingStateMachine stateAfterPerformingAction:a3 onState:[(CNSNaPSetupFlowManager *)self editingState]];
+  v4 = [CNMeCardSharingSettingsEditingStateMachine stateAfterPerformingAction:action onState:[(CNSNaPSetupFlowManager *)self editingState]];
 
   [(CNSNaPSetupFlowManager *)self setEditingState:v4];
 }
 
-- (id)providerItemForRecentAvatar:(id)a3 inView:(id)a4
+- (id)providerItemForRecentAvatar:(id)avatar inView:(id)view
 {
-  v6 = a3;
-  v7 = [a4 effectiveUserInterfaceLayoutDirection] == 1;
+  avatarCopy = avatar;
+  v7 = [view effectiveUserInterfaceLayoutDirection] == 1;
   v8 = [CNPhotoPickerRecentsProvider alloc];
-  v9 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
-  v10 = [(CNPhotoPickerRecentsProvider *)v8 initWithVisualIdentity:v9];
+  pendingVisualIdentity = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
+  v10 = [(CNPhotoPickerRecentsProvider *)v8 initWithVisualIdentity:pendingVisualIdentity];
 
-  v11 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v11 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v13 = v12;
-  v14 = [(CNSNaPSetupFlowManager *)self providerItemRenderingQueue];
-  v15 = [(CNSNaPSetupFlowManager *)self providerItemCallbackQueue];
-  v16 = [(CNPhotoPickerRecentsProvider *)v10 providerItemForContactImage:v6 size:v7 scale:v14 RTL:v15 renderingQueue:1 callbackQueue:250.0 fallbackToDefaultItem:250.0, v13];
+  providerItemRenderingQueue = [(CNSNaPSetupFlowManager *)self providerItemRenderingQueue];
+  providerItemCallbackQueue = [(CNSNaPSetupFlowManager *)self providerItemCallbackQueue];
+  v16 = [(CNPhotoPickerRecentsProvider *)v10 providerItemForContactImage:avatarCopy size:v7 scale:providerItemRenderingQueue RTL:providerItemCallbackQueue renderingQueue:1 callbackQueue:250.0 fallbackToDefaultItem:250.0, v13];
 
   return v16;
 }
 
-- (void)saveRecentPoster:(id)a3
+- (void)saveRecentPoster:(id)poster
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  posterCopy = poster;
+  if (posterCopy)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695CE00]);
     v6 = MEMORY[0x1E695CDD8];
-    v7 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
-    v8 = [v7 identifier];
-    v9 = [v6 requestToCreatePoster:v4 forContactIdentifier:v8];
+    pendingVisualIdentity = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
+    identifier = [pendingVisualIdentity identifier];
+    v9 = [v6 requestToCreatePoster:posterCopy forContactIdentifier:identifier];
 
     v14 = 0;
     [v5 performCreateRequest:v9 error:&v14];
@@ -302,10 +302,10 @@ void __52__CNSNaPSetupFlowManager_cleanupTemporaryPosterData__block_invoke(uint6
       v11 = [objc_opt_class() log];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
-        v12 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
-        v13 = [v12 identifier];
+        pendingVisualIdentity2 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
+        identifier2 = [pendingVisualIdentity2 identifier];
         *buf = 138412290;
-        v16 = v13;
+        v16 = identifier2;
         _os_log_impl(&dword_199A75000, v11, OS_LOG_TYPE_INFO, "Failed to save item to recent poster store for contact identifier <%@>", buf, 0xCu);
       }
     }
@@ -322,39 +322,39 @@ void __52__CNSNaPSetupFlowManager_cleanupTemporaryPosterData__block_invoke(uint6
   }
 }
 
-- (void)saveRecentAvatar:(id)a3 withPairedPoster:(id)a4 ignoreExisting:(BOOL)a5
+- (void)saveRecentAvatar:(id)avatar withPairedPoster:(id)poster ignoreExisting:(BOOL)existing
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  avatarCopy = avatar;
+  posterCopy = poster;
+  if (avatarCopy)
   {
-    if (a5)
+    if (existing)
     {
-      v10 = 0;
+      existingAvatar = 0;
     }
 
     else
     {
-      v12 = [(CNSNaPSetupFlowManager *)self avatarPosterEditingContext];
-      v10 = [v12 existingAvatar];
+      avatarPosterEditingContext = [(CNSNaPSetupFlowManager *)self avatarPosterEditingContext];
+      existingAvatar = [avatarPosterEditingContext existingAvatar];
     }
 
-    [v8 setPairedPoster:v9];
-    v13 = [(CNSNaPSetupFlowManager *)self contactImageStore];
-    v14 = [(CNSNaPSetupFlowManager *)self editingContact];
-    v15 = [v14 identifier];
+    [avatarCopy setPairedPoster:posterCopy];
+    contactImageStore = [(CNSNaPSetupFlowManager *)self contactImageStore];
+    editingContact = [(CNSNaPSetupFlowManager *)self editingContact];
+    identifier = [editingContact identifier];
 
-    if (v10)
+    if (existingAvatar)
     {
       v16 = MEMORY[0x1E695CD98];
-      v17 = [v10 identifier];
-      v18 = [v16 requestToDeleteImageForIdentifier:v17];
+      identifier2 = [existingAvatar identifier];
+      v18 = [v16 requestToDeleteImageForIdentifier:identifier2];
 
       v26 = 0;
-      LOBYTE(v17) = [v13 performDeleteRequest:v18 error:&v26];
+      LOBYTE(identifier2) = [contactImageStore performDeleteRequest:v18 error:&v26];
       v19 = v26;
-      if ((v17 & 1) == 0)
+      if ((identifier2 & 1) == 0)
       {
         v20 = [objc_opt_class() log];
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -370,9 +370,9 @@ void __52__CNSNaPSetupFlowManager_cleanupTemporaryPosterData__block_invoke(uint6
       v19 = 0;
     }
 
-    v21 = [MEMORY[0x1E695CD90] requestToCreateRecentImage:v8 forContactIdentifier:v15];
+    v21 = [MEMORY[0x1E695CD90] requestToCreateRecentImage:avatarCopy forContactIdentifier:identifier];
     v25 = v19;
-    v22 = [v13 performCreateRequest:v21 error:&v25];
+    v22 = [contactImageStore performCreateRequest:v21 error:&v25];
     v23 = v25;
 
     if ((v22 & 1) == 0)
@@ -381,7 +381,7 @@ void __52__CNSNaPSetupFlowManager_cleanupTemporaryPosterData__block_invoke(uint6
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v28 = v15;
+        v28 = identifier;
         _os_log_impl(&dword_199A75000, v24, OS_LOG_TYPE_INFO, "Failed to save item to recent image store for contact identifier <%@>", buf, 0xCu);
       }
     }
@@ -396,36 +396,36 @@ void __52__CNSNaPSetupFlowManager_cleanupTemporaryPosterData__block_invoke(uint6
       _os_log_impl(&dword_199A75000, v11, OS_LOG_TYPE_INFO, "Contact image is nil, saving poster without any paired avatar", buf, 2u);
     }
 
-    [(CNSNaPSetupFlowManager *)self saveRecentPoster:v9];
+    [(CNSNaPSetupFlowManager *)self saveRecentPoster:posterCopy];
   }
 }
 
-- (id)contactPosterFromWallpaper:(id)a3
+- (id)contactPosterFromWallpaper:(id)wallpaper
 {
-  v3 = a3;
-  v4 = [v3 posterArchiveData];
-  if (v4)
+  wallpaperCopy = wallpaper;
+  posterArchiveData = [wallpaperCopy posterArchiveData];
+  if (posterArchiveData)
   {
-    v5 = [CNPRSPosterArchiver unarchiveCNConfigurationFromData:v4 error:0];
-    v6 = [v5 serverUUID];
-    v7 = [v6 UUIDString];
-    v8 = v7;
-    if (v7)
+    v5 = [CNPRSPosterArchiver unarchiveCNConfigurationFromData:posterArchiveData error:0];
+    serverUUID = [v5 serverUUID];
+    uUIDString = [serverUUID UUIDString];
+    v8 = uUIDString;
+    if (uUIDString)
     {
-      v9 = v7;
+      uUIDString2 = uUIDString;
     }
 
     else
     {
-      v11 = [MEMORY[0x1E696AFB0] UUID];
-      v9 = [v11 UUIDString];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString2 = [uUID UUIDString];
     }
 
     v12 = objc_alloc(MEMORY[0x1E695CDD0]);
     v13 = [MEMORY[0x1E695DF00] now];
-    v10 = [v12 initWithIdentifier:v9 posterData:v4 lastUsedDate:v13];
+    v10 = [v12 initWithIdentifier:uUIDString2 posterData:posterArchiveData lastUsedDate:v13];
 
-    [v10 setContentIsSensitive:{objc_msgSend(v3, "contentIsSensitive")}];
+    [v10 setContentIsSensitive:{objc_msgSend(wallpaperCopy, "contentIsSensitive")}];
   }
 
   else
@@ -438,95 +438,95 @@ void __52__CNSNaPSetupFlowManager_cleanupTemporaryPosterData__block_invoke(uint6
 
 - (id)recentPosterFromPendingVisualIdentity
 {
-  v3 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
-  v4 = [v3 wallpaper];
-  v5 = [(CNSNaPSetupFlowManager *)self contactPosterFromWallpaper:v4];
+  pendingVisualIdentity = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
+  wallpaper = [pendingVisualIdentity wallpaper];
+  v5 = [(CNSNaPSetupFlowManager *)self contactPosterFromWallpaper:wallpaper];
 
   return v5;
 }
 
 - (id)recentAvatarFromPendingVisualIdentity
 {
-  v3 = [(CNSNaPSetupFlowManager *)self avatarPosterEditingContext];
-  v4 = [v3 updatedAvatar];
+  avatarPosterEditingContext = [(CNSNaPSetupFlowManager *)self avatarPosterEditingContext];
+  updatedAvatar = [avatarPosterEditingContext updatedAvatar];
 
-  if (!v4)
+  if (!updatedAvatar)
   {
-    v5 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
-    v6 = [v5 imageData];
+    pendingVisualIdentity = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
+    imageData = [pendingVisualIdentity imageData];
 
-    if (v6)
+    if (imageData)
     {
       v7 = objc_alloc(MEMORY[0x1E695CD88]);
-      v8 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
-      [v8 cropRect];
+      pendingVisualIdentity2 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
+      [pendingVisualIdentity2 cropRect];
       v10 = v9;
       v12 = v11;
       v14 = v13;
       v16 = v15;
       v17 = [MEMORY[0x1E695DF00] now];
-      v4 = [v7 initWithImageData:v6 cropRect:v17 lastUsedDate:{v10, v12, v14, v16}];
+      updatedAvatar = [v7 initWithImageData:imageData cropRect:v17 lastUsedDate:{v10, v12, v14, v16}];
 
-      v18 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
-      [v4 setSource:{objc_msgSend(v18, "contactImageSource")}];
+      pendingVisualIdentity3 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
+      [updatedAvatar setSource:{objc_msgSend(pendingVisualIdentity3, "contactImageSource")}];
     }
 
     else
     {
-      v4 = 0;
+      updatedAvatar = 0;
     }
   }
 
-  return v4;
+  return updatedAvatar;
 }
 
 - (void)linkCurrentImageToCurrentPoster
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CNSNaPSetupFlowManager *)self currentContactImage];
+  currentContactImage = [(CNSNaPSetupFlowManager *)self currentContactImage];
 
-  if (v3)
+  if (currentContactImage)
   {
-    v4 = [(CNSNaPSetupFlowManager *)self currentContactImage];
-    v5 = [v4 encodingType];
+    currentContactImage2 = [(CNSNaPSetupFlowManager *)self currentContactImage];
+    encodingType = [currentContactImage2 encodingType];
 
-    v6 = [(CNSNaPSetupFlowManager *)self currentContactPoster];
+    currentContactPoster = [(CNSNaPSetupFlowManager *)self currentContactPoster];
 
-    if (v6)
+    if (currentContactPoster)
     {
-      v7 = [(CNSNaPSetupFlowManager *)self currentContactPoster];
-      v8 = [v7 pairedImage];
+      currentContactPoster2 = [(CNSNaPSetupFlowManager *)self currentContactPoster];
+      pairedImage = [currentContactPoster2 pairedImage];
 
-      if (!v8)
+      if (!pairedImage)
       {
-        v9 = [(CNSNaPSetupFlowManager *)self editingContact];
-        v10 = [v9 identifier];
+        editingContact = [(CNSNaPSetupFlowManager *)self editingContact];
+        identifier = [editingContact identifier];
 
-        if (v10)
+        if (identifier)
         {
           v11 = MEMORY[0x1E695CDF8];
-          v19[0] = v10;
+          v19[0] = identifier;
           v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
           v13 = [v11 currentPostersRequestForContactIdentifiers:v12];
 
           v14 = objc_alloc_init(MEMORY[0x1E695CE00]);
           v15 = [v14 performFetchRequest:v13 error:0];
-          v16 = [v15 firstObject];
+          firstObject = [v15 firstObject];
         }
 
         else
         {
-          v16 = 0;
+          firstObject = 0;
         }
 
-        v17 = [(CNSNaPSetupFlowManager *)self currentContactImage];
-        [(CNSNaPSetupFlowManager *)self saveRecentAvatar:v17 withPairedPoster:v16 ignoreExisting:1];
+        currentContactImage3 = [(CNSNaPSetupFlowManager *)self currentContactImage];
+        [(CNSNaPSetupFlowManager *)self saveRecentAvatar:currentContactImage3 withPairedPoster:firstObject ignoreExisting:1];
       }
     }
 
-    else if (v5 != 1)
+    else if (encodingType != 1)
     {
-      v18 = [(CNSNaPSetupFlowManager *)self currentContactImage];
+      currentContactImage4 = [(CNSNaPSetupFlowManager *)self currentContactImage];
       [CNSNaPSetupFlowManager saveRecentAvatar:"saveRecentAvatar:withPairedPoster:ignoreExisting:" withPairedPoster:? ignoreExisting:?];
     }
   }
@@ -534,45 +534,45 @@ void __52__CNSNaPSetupFlowManager_cleanupTemporaryPosterData__block_invoke(uint6
 
 - (void)saveRecentVisualIdentity
 {
-  v3 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v4 = [v3 featureFlags];
-  v5 = [v4 isFeatureEnabled:22];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v5 = [featureFlags isFeatureEnabled:22];
 
   if ((v5 & 1) == 0)
   {
-    v7 = [(CNSNaPSetupFlowManager *)self recentAvatarFromPendingVisualIdentity];
-    v6 = [(CNSNaPSetupFlowManager *)self recentPosterFromPendingVisualIdentity];
-    [(CNSNaPSetupFlowManager *)self saveRecentAvatar:v7 withPairedPoster:v6 ignoreExisting:0];
+    recentAvatarFromPendingVisualIdentity = [(CNSNaPSetupFlowManager *)self recentAvatarFromPendingVisualIdentity];
+    recentPosterFromPendingVisualIdentity = [(CNSNaPSetupFlowManager *)self recentPosterFromPendingVisualIdentity];
+    [(CNSNaPSetupFlowManager *)self saveRecentAvatar:recentAvatarFromPendingVisualIdentity withPairedPoster:recentPosterFromPendingVisualIdentity ignoreExisting:0];
   }
 }
 
 - (void)saveCurrentVisualIdentityIfNeeded
 {
-  v3 = [(CNSNaPSetupFlowManager *)self currentContactImage];
-  if (v3)
+  currentContactImage = [(CNSNaPSetupFlowManager *)self currentContactImage];
+  if (currentContactImage)
   {
   }
 
   else
   {
-    v4 = [(CNSNaPSetupFlowManager *)self currentContactPoster];
+    currentContactPoster = [(CNSNaPSetupFlowManager *)self currentContactPoster];
 
-    if (!v4)
+    if (!currentContactPoster)
     {
       return;
     }
   }
 
   v5 = MEMORY[0x1E695CF98];
-  v6 = [(CNSNaPSetupFlowManager *)self currentContactPoster];
-  v7 = [(CNSNaPSetupFlowManager *)self editingContact];
-  LODWORD(v5) = [v5 shouldSaveCurrentPoster:v6 toRecentsForContact:v7];
+  currentContactPoster2 = [(CNSNaPSetupFlowManager *)self currentContactPoster];
+  editingContact = [(CNSNaPSetupFlowManager *)self editingContact];
+  LODWORD(v5) = [v5 shouldSaveCurrentPoster:currentContactPoster2 toRecentsForContact:editingContact];
 
   if (v5)
   {
-    v8 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v9 = [v8 featureFlags];
-    v10 = [v9 isFeatureEnabled:22];
+    currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+    featureFlags = [currentEnvironment featureFlags];
+    v10 = [featureFlags isFeatureEnabled:22];
 
     if (v10)
     {
@@ -582,25 +582,25 @@ void __52__CNSNaPSetupFlowManager_cleanupTemporaryPosterData__block_invoke(uint6
 
     else
     {
-      v12 = [(CNSNaPSetupFlowManager *)self currentContactImage];
-      v11 = [(CNSNaPSetupFlowManager *)self currentContactPoster];
-      [(CNSNaPSetupFlowManager *)self saveRecentAvatar:v12 withPairedPoster:v11 ignoreExisting:1];
+      currentContactImage2 = [(CNSNaPSetupFlowManager *)self currentContactImage];
+      currentContactPoster3 = [(CNSNaPSetupFlowManager *)self currentContactPoster];
+      [(CNSNaPSetupFlowManager *)self saveRecentAvatar:currentContactImage2 withPairedPoster:currentContactPoster3 ignoreExisting:1];
     }
   }
 }
 
-- (unint64_t)recentAvatarsCountForContactIdentifier:(id)a3
+- (unint64_t)recentAvatarsCountForContactIdentifier:(id)identifier
 {
   v4 = MEMORY[0x1E695CFB0];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [v4 alloc];
-  v7 = [(CNSNaPSetupFlowManager *)self contactStore];
-  v8 = [v6 initWithContactStore:v7];
+  contactStore = [(CNSNaPSetupFlowManager *)self contactStore];
+  v8 = [v6 initWithContactStore:contactStore];
 
-  v9 = [v8 recentImagesForContactWithIdentifier:v5];
+  v9 = [v8 recentImagesForContactWithIdentifier:identifierCopy];
 
-  v10 = [(CNSNaPSetupFlowManager *)self contactImageStore];
-  v11 = [v10 countForFetchRequest:v9 error:0];
+  contactImageStore = [(CNSNaPSetupFlowManager *)self contactImageStore];
+  v11 = [contactImageStore countForFetchRequest:v9 error:0];
 
   return v11;
 }
@@ -628,17 +628,17 @@ id __43__CNSNaPSetupFlowManager_contactImageStore__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)imagePickerController:(id)a3 didFinishWithProviderItem:(id)a4
+- (void)imagePickerController:(id)controller didFinishWithProviderItem:(id)item
 {
-  v6 = a4;
+  itemCopy = item;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __74__CNSNaPSetupFlowManager_imagePickerController_didFinishWithProviderItem___block_invoke;
   v8[3] = &unk_1E74E77C0;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [a3 dismissViewControllerAnimated:1 completion:v8];
+  v9 = itemCopy;
+  v7 = itemCopy;
+  [controller dismissViewControllerAnimated:1 completion:v8];
 }
 
 void __74__CNSNaPSetupFlowManager_imagePickerController_didFinishWithProviderItem___block_invoke(uint64_t a1)
@@ -651,50 +651,50 @@ void __74__CNSNaPSetupFlowManager_imagePickerController_didFinishWithProviderIte
   [v4 presentAvatarEditorViewControllerForProviderItem:*(a1 + 40)];
 }
 
-- (void)presentCreateNewAvatarViewControllerFromViewController:(id)a3
+- (void)presentCreateNewAvatarViewControllerFromViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = [CNSNaPSuggestionsGalleryViewController alloc];
-  v6 = [(CNSNaPSetupFlowManager *)self editingContact];
-  v7 = [(CNSNaPSuggestionsGalleryViewController *)v5 initWithMode:0 contact:v6 isEditingSNaP:[(CNSNaPSetupFlowManager *)self isEditingContactCard]^ 1 isOnboarding:[(CNSNaPSetupFlowManager *)self isOnboarding]];
+  editingContact = [(CNSNaPSetupFlowManager *)self editingContact];
+  v7 = [(CNSNaPSuggestionsGalleryViewController *)v5 initWithMode:0 contact:editingContact isEditingSNaP:[(CNSNaPSetupFlowManager *)self isEditingContactCard]^ 1 isOnboarding:[(CNSNaPSetupFlowManager *)self isOnboarding]];
 
   [(CNSNaPSuggestionsGalleryViewController *)v7 setDelegate:self];
   v8 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v7];
   [v8 setModalPresentationStyle:{-[CNSNaPSetupFlowManager defaultModalPresentationStyle](self, "defaultModalPresentationStyle")}];
-  if (v4)
+  if (controllerCopy)
   {
-    v9 = v4;
+    v9 = controllerCopy;
   }
 
   else
   {
-    v10 = [(CNSNaPSetupFlowManager *)self galleryNavigationController];
-    v11 = v10;
-    if (v10)
+    galleryNavigationController = [(CNSNaPSetupFlowManager *)self galleryNavigationController];
+    v11 = galleryNavigationController;
+    if (galleryNavigationController)
     {
-      v12 = v10;
+      posterEditOptionsNavigationController = galleryNavigationController;
     }
 
     else
     {
-      v12 = [(CNSNaPSetupFlowManager *)self posterEditOptionsNavigationController];
+      posterEditOptionsNavigationController = [(CNSNaPSetupFlowManager *)self posterEditOptionsNavigationController];
     }
 
-    v9 = v12;
+    v9 = posterEditOptionsNavigationController;
   }
 
-  v13 = [v9 presentedViewController];
+  presentedViewController = [v9 presentedViewController];
 
-  if (v13)
+  if (presentedViewController)
   {
-    v14 = [v9 presentedViewController];
+    presentedViewController2 = [v9 presentedViewController];
     v16 = MEMORY[0x1E69E9820];
     v17 = 3221225472;
     v18 = __81__CNSNaPSetupFlowManager_presentCreateNewAvatarViewControllerFromViewController___block_invoke;
     v19 = &unk_1E74E77C0;
     v20 = v9;
     v21 = v8;
-    [v14 dismissViewControllerAnimated:1 completion:&v16];
+    [presentedViewController2 dismissViewControllerAnimated:1 completion:&v16];
   }
 
   else
@@ -706,30 +706,30 @@ void __74__CNSNaPSetupFlowManager_imagePickerController_didFinishWithProviderIte
   [v15 setBaseNavigationController:v8];
 }
 
-- (void)avatarPreviewViewControllerDidSelectCustomizeLater:(id)a3
+- (void)avatarPreviewViewControllerDidSelectCustomizeLater:(id)later
 {
-  v4 = [(CNSNaPSetupFlowManager *)self avatarPosterEditingContext];
-  if (v4 && (v5 = v4, v6 = [(CNSNaPSetupFlowManager *)self editingState], v5, v6))
+  avatarPosterEditingContext = [(CNSNaPSetupFlowManager *)self avatarPosterEditingContext];
+  if (avatarPosterEditingContext && (v5 = avatarPosterEditingContext, v6 = [(CNSNaPSetupFlowManager *)self editingState], v5, v6))
   {
     [(PosterEditFlowReporter *)self->_editFlowReporter didSkipAvatar];
-    v7 = [(CNSNaPSetupFlowManager *)self avatarPosterEditingContext];
-    v8 = [v7 isEditingExisting];
+    avatarPosterEditingContext2 = [(CNSNaPSetupFlowManager *)self avatarPosterEditingContext];
+    isEditingExisting = [avatarPosterEditingContext2 isEditingExisting];
 
-    if (v8)
+    if (isEditingExisting)
     {
-      v9 = [(CNSNaPSetupFlowManager *)self avatarPosterEditingContext];
-      v10 = [v9 existingAvatar];
-      v11 = [(CNSNaPSetupFlowManager *)self avatarPosterEditingContext];
-      [v11 setUpdatedAvatar:v10];
+      avatarPosterEditingContext3 = [(CNSNaPSetupFlowManager *)self avatarPosterEditingContext];
+      existingAvatar = [avatarPosterEditingContext3 existingAvatar];
+      avatarPosterEditingContext4 = [(CNSNaPSetupFlowManager *)self avatarPosterEditingContext];
+      [avatarPosterEditingContext4 setUpdatedAvatar:existingAvatar];
     }
 
     else
     {
-      v13 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
-      [v13 clearImage];
+      pendingVisualIdentity = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
+      [pendingVisualIdentity clearImage];
 
-      v9 = [(CNSNaPSetupFlowManager *)self avatarPosterEditingContext];
-      [v9 setUpdatedAvatar:0];
+      avatarPosterEditingContext3 = [(CNSNaPSetupFlowManager *)self avatarPosterEditingContext];
+      [avatarPosterEditingContext3 setUpdatedAvatar:0];
     }
 
     [(CNSNaPSetupFlowManager *)self finishFlow];
@@ -746,104 +746,104 @@ void __74__CNSNaPSetupFlowManager_imagePickerController_didFinishWithProviderIte
   }
 }
 
-- (void)avatarPreviewViewController:(id)a3 didFinishWithContactImage:(id)a4
+- (void)avatarPreviewViewController:(id)controller didFinishWithContactImage:(id)image
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  imageCopy = image;
   [(CNSNaPSetupFlowManager *)self updateEditingStateForAction:0];
-  v8 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
-  [v8 clearImage];
+  pendingVisualIdentity = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
+  [pendingVisualIdentity clearImage];
 
-  v9 = [MEMORY[0x1E695CD58] imageTypeStringIdentifierForImageSource:{objc_msgSend(v7, "source")}];
-  v10 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
-  [v10 setImageType:v9];
+  v9 = [MEMORY[0x1E695CD58] imageTypeStringIdentifierForImageSource:{objc_msgSend(imageCopy, "source")}];
+  pendingVisualIdentity2 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
+  [pendingVisualIdentity2 setImageType:v9];
 
-  if ([v7 source] == 3)
+  if ([imageCopy source] == 3)
   {
     v11 = [CNPhotoPickerAnimojiProviderItem alloc];
-    v12 = [v7 imageData];
-    [v7 cropRect];
+    imageData = [imageCopy imageData];
+    [imageCopy cropRect];
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v20 = v19;
-    v21 = [v7 variant];
-    v22 = [CNPhotoPickerVariantsManager colorVariantWithColorNamed:v21];
-    v23 = [(CNPhotoPickerAnimojiProviderItem *)v11 initWithOriginalImageData:v12 cropRect:v22 backgroundColorVariant:v14, v16, v18, v20];
+    variant = [imageCopy variant];
+    v22 = [CNPhotoPickerVariantsManager colorVariantWithColorNamed:variant];
+    v23 = [(CNPhotoPickerAnimojiProviderItem *)v11 initWithOriginalImageData:imageData cropRect:v22 backgroundColorVariant:v14, v16, v18, v20];
 
     v24 = MEMORY[0x1E695CF08];
-    v25 = [v7 sourceIdentifier];
-    v26 = [v24 avatarRecordForIdentifier:v25];
+    sourceIdentifier = [imageCopy sourceIdentifier];
+    pendingVisualIdentity6 = [v24 avatarRecordForIdentifier:sourceIdentifier];
 
-    [(CNPhotoPickerAnimojiProviderItem *)v23 setAvatarRecord:v26];
-    v27 = [CNPhotoPickerRecentsProvider poseConfigurationFromContactImage:v7];
+    [(CNPhotoPickerAnimojiProviderItem *)v23 setAvatarRecord:pendingVisualIdentity6];
+    v27 = [CNPhotoPickerRecentsProvider poseConfigurationFromContactImage:imageCopy];
     [(CNPhotoPickerAnimojiProviderItem *)v23 setPoseConfiguration:v27];
 
     [(CNPhotoPickerAnimojiProviderItem *)v23 generateAllImageDatasIfNeeded];
-    v28 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
-    [(CNPhotoPickerAnimojiProviderItem *)v23 updateVisualIdentity:v28];
+    pendingVisualIdentity3 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
+    [(CNPhotoPickerAnimojiProviderItem *)v23 updateVisualIdentity:pendingVisualIdentity3];
   }
 
   else
   {
-    v29 = [v7 imageData];
-    v30 = [v7 variant];
-    v31 = [CNPhotoPickerProviderItem generateImageDataWithData:v29 filterName:v30];
+    imageData2 = [imageCopy imageData];
+    variant2 = [imageCopy variant];
+    v31 = [CNPhotoPickerProviderItem generateImageDataWithData:imageData2 filterName:variant2];
     v32 = v31;
     if (v31)
     {
-      v33 = v31;
+      imageData3 = v31;
     }
 
     else
     {
-      v33 = [v7 imageData];
+      imageData3 = [imageCopy imageData];
     }
 
-    v23 = v33;
+    v23 = imageData3;
 
-    v34 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
-    [v34 setImageData:v23];
+    pendingVisualIdentity4 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
+    [pendingVisualIdentity4 setImageData:v23];
 
-    [v7 cropRect];
+    [imageCopy cropRect];
     v35 = [CNPhotoPickerProviderItem generateThumbnailImageDataWithData:v23 cropRect:?];
-    v36 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
-    [v36 setThumbnailImageData:v35];
+    pendingVisualIdentity5 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
+    [pendingVisualIdentity5 setThumbnailImageData:v35];
 
-    [v7 cropRect];
+    [imageCopy cropRect];
     v38 = v37;
     v40 = v39;
     v42 = v41;
     v44 = v43;
-    v26 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
-    [v26 setCropRect:{v38, v40, v42, v44}];
+    pendingVisualIdentity6 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
+    [pendingVisualIdentity6 setCropRect:{v38, v40, v42, v44}];
   }
 
-  v45 = [(CNSNaPSetupFlowManager *)self avatarPosterEditingContext];
-  [v45 setUpdatedAvatar:v7];
+  avatarPosterEditingContext = [(CNSNaPSetupFlowManager *)self avatarPosterEditingContext];
+  [avatarPosterEditingContext setUpdatedAvatar:imageCopy];
 
   [(PosterEditFlowReporter *)self->_editFlowReporter didModifyAvatar];
   if (-[CNSNaPSetupFlowManager editingState](self, "editingState") == 1 && ([MEMORY[0x1E69DC938] currentDevice], v46 = objc_claimAutoreleasedReturnValue(), v47 = objc_msgSend(v46, "userInterfaceIdiom"), v46, (v47 & 0xFFFFFFFFFFFFFFFBLL) != 1))
   {
-    v50 = [(CNSNaPSetupFlowManager *)self avatarPosterEditingContext];
-    v51 = [v50 existingPoster];
-    v52 = [v51 posterData];
-    v53 = v52;
-    if (v52)
+    avatarPosterEditingContext2 = [(CNSNaPSetupFlowManager *)self avatarPosterEditingContext];
+    existingPoster = [avatarPosterEditingContext2 existingPoster];
+    posterData = [existingPoster posterData];
+    v53 = posterData;
+    if (posterData)
     {
-      v54 = v52;
+      posterArchiveData = posterData;
     }
 
     else
     {
-      v55 = [(CNSNaPSetupFlowManager *)self editingContact];
-      v56 = [v55 wallpaper];
-      v54 = [v56 posterArchiveData];
+      editingContact = [(CNSNaPSetupFlowManager *)self editingContact];
+      wallpaper = [editingContact wallpaper];
+      posterArchiveData = [wallpaper posterArchiveData];
     }
 
-    if (v54)
+    if (posterArchiveData)
     {
-      v57 = [CNPRSPosterArchiver unarchiveCNConfigurationFromData:v54 error:0];
+      v57 = [CNPRSPosterArchiver unarchiveCNConfigurationFromData:posterArchiveData error:0];
     }
 
     else
@@ -852,23 +852,23 @@ void __74__CNSNaPSetupFlowManager_imagePickerController_didFinishWithProviderIte
     }
 
     v58 = [(CNSNaPSetupFlowManager *)self posterPreviewControllerWithPosterConfiguration:v57 providerItem:0 mode:[(CNSNaPSetupFlowManager *)self mode]];
-    v59 = [v6 navigationController];
-    [v59 pushViewController:v58 animated:1];
+    navigationController = [controllerCopy navigationController];
+    [navigationController pushViewController:v58 animated:1];
   }
 
   else
   {
-    v48 = [MEMORY[0x1E69DC938] currentDevice];
-    v49 = [v48 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v49 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v60[0] = MEMORY[0x1E69E9820];
       v60[1] = 3221225472;
       v60[2] = __80__CNSNaPSetupFlowManager_avatarPreviewViewController_didFinishWithContactImage___block_invoke;
       v60[3] = &unk_1E74E6A88;
       v60[4] = self;
-      [v6 dismissViewControllerAnimated:1 completion:v60];
+      [controllerCopy dismissViewControllerAnimated:1 completion:v60];
     }
 
     else
@@ -878,64 +878,64 @@ void __74__CNSNaPSetupFlowManager_imagePickerController_didFinishWithProviderIte
   }
 }
 
-- (void)posterOnboardingViewControllerDidDidTapCancel:(id)a3
+- (void)posterOnboardingViewControllerDidDidTapCancel:(id)cancel
 {
   editFlowReporter = self->_editFlowReporter;
-  v5 = a3;
+  cancelCopy = cancel;
   [(PosterEditFlowReporter *)editFlowReporter didCancelFromOnboardingWelcome];
   [(CNSNaPSetupFlowManager *)self submitAndResetFlowReporter];
   [(CNPRUISPosterSnapshotController *)self->_snapshotController releaseKeepActiveAssertionForReason:@"CNMeCardSharingEditPosterAvatarFlowManager"];
-  [v5 dismissViewControllerAnimated:1 completion:0];
+  [cancelCopy dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)posterOnboardingViewControllerDidTapContinue:(id)a3
+- (void)posterOnboardingViewControllerDidTapContinue:(id)continue
 {
-  v7 = a3;
+  continueCopy = continue;
   if ([(CNSNaPSetupFlowManager *)self isOnboarding])
   {
-    v4 = [(CNSNaPSetupFlowManager *)self wallpaperGalleryNavigationController];
-    [(CNSNaPSetupFlowManager *)self setGalleryNavigationController:v4];
+    wallpaperGalleryNavigationController = [(CNSNaPSetupFlowManager *)self wallpaperGalleryNavigationController];
+    [(CNSNaPSetupFlowManager *)self setGalleryNavigationController:wallpaperGalleryNavigationController];
 
-    v5 = [(CNSNaPSetupFlowManager *)self onboardingWelcomeNavigationController];
-    v6 = [(CNSNaPSetupFlowManager *)self galleryNavigationController];
-    [v5 presentViewController:v6 animated:1 completion:0];
+    onboardingWelcomeNavigationController = [(CNSNaPSetupFlowManager *)self onboardingWelcomeNavigationController];
+    galleryNavigationController = [(CNSNaPSetupFlowManager *)self galleryNavigationController];
+    [onboardingWelcomeNavigationController presentViewController:galleryNavigationController animated:1 completion:0];
   }
 
   else
   {
-    [v7 dismissViewControllerAnimated:1 completion:0];
+    [continueCopy dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)sharingEditAvatarFlowManagerDidCancel:(id)a3
+- (void)sharingEditAvatarFlowManagerDidCancel:(id)cancel
 {
   [(PosterEditFlowReporter *)self->_editFlowReporter didCancelFromAvatarEditor];
 
   [(CNSNaPSetupFlowManager *)self updateEditingStateForRevertedAction:0 dismissingSetupFlow:0];
 }
 
-- (void)avatarEditingDidFinishWithProviderItem:(id)a3 fromViewController:(id)a4
+- (void)avatarEditingDidFinishWithProviderItem:(id)item fromViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 contactImageForMetadataStore];
-  v9 = [(CNSNaPSetupFlowManager *)self avatarPosterEditingContext];
-  [v9 setUpdatedAvatar:v8];
+  itemCopy = item;
+  controllerCopy = controller;
+  contactImageForMetadataStore = [itemCopy contactImageForMetadataStore];
+  avatarPosterEditingContext = [(CNSNaPSetupFlowManager *)self avatarPosterEditingContext];
+  [avatarPosterEditingContext setUpdatedAvatar:contactImageForMetadataStore];
 
-  v10 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
-  [v6 updateVisualIdentity:v10];
+  pendingVisualIdentity = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
+  [itemCopy updateVisualIdentity:pendingVisualIdentity];
 
-  v11 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
-  [(CNSNaPSetupFlowManager *)self updateEditingContactWithVisualIdentity:v11];
+  pendingVisualIdentity2 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
+  [(CNSNaPSetupFlowManager *)self updateEditingContactWithVisualIdentity:pendingVisualIdentity2];
 
   [(CNSNaPSetupFlowManager *)self updateEditingStateForAction:0];
   if ([(CNSNaPSetupFlowManager *)self editingState]== 1)
   {
     [(PosterEditFlowReporter *)self->_editFlowReporter didModifyAvatar];
-    v12 = [MEMORY[0x1E69DC938] currentDevice];
-    v13 = [v12 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v13 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       if ([(CNSNaPSetupFlowManager *)self isCreatingNewAvatar])
       {
@@ -944,7 +944,7 @@ void __74__CNSNaPSetupFlowManager_imagePickerController_didFinishWithProviderIte
         v40[2] = __84__CNSNaPSetupFlowManager_avatarEditingDidFinishWithProviderItem_fromViewController___block_invoke;
         v40[3] = &unk_1E74E6A88;
         v40[4] = self;
-        [(CNSNaPSetupFlowManager *)self dismissViewController:v7 animated:1 completion:v40];
+        [(CNSNaPSetupFlowManager *)self dismissViewController:controllerCopy animated:1 completion:v40];
       }
 
       else if ([(CNSNaPSetupFlowManager *)self isOnboarding]|| [(CNSNaPSetupFlowManager *)self isEditingContactCard])
@@ -954,7 +954,7 @@ void __74__CNSNaPSetupFlowManager_imagePickerController_didFinishWithProviderIte
         v39[2] = __84__CNSNaPSetupFlowManager_avatarEditingDidFinishWithProviderItem_fromViewController___block_invoke_2;
         v39[3] = &unk_1E74E6A88;
         v39[4] = self;
-        [v7 dismissViewControllerAnimated:1 completion:v39];
+        [controllerCopy dismissViewControllerAnimated:1 completion:v39];
       }
 
       else
@@ -965,39 +965,39 @@ void __74__CNSNaPSetupFlowManager_imagePickerController_didFinishWithProviderIte
 
     else
     {
-      if ([v6 imageType] == 4 || objc_msgSend(v6, "imageType") == 1 && (v28 = *MEMORY[0x1E6996568], objc_msgSend(v6, "assetIdentifier"), v29 = objc_claimAutoreleasedReturnValue(), LODWORD(v28) = (*(v28 + 16))(v28, v29), v29, v28))
+      if ([itemCopy imageType] == 4 || objc_msgSend(itemCopy, "imageType") == 1 && (v28 = *MEMORY[0x1E6996568], objc_msgSend(itemCopy, "assetIdentifier"), v29 = objc_claimAutoreleasedReturnValue(), LODWORD(v28) = (*(v28 + 16))(v28, v29), v29, v28))
       {
         v19 = [CNSNaPSuggestionsGalleryViewController alloc];
-        v20 = [(CNSNaPSetupFlowManager *)self editingContact];
-        v21 = [(CNSNaPSetupFlowManager *)self isEditingContactCard];
-        v22 = [(CNSNaPSetupFlowManager *)self isOnboarding];
-        v23 = [v6 assetIdentifier];
-        v24 = [(CNSNaPSuggestionsGalleryViewController *)v19 initWithMode:1 contact:v20 isEditingSNaP:!v21 isOnboarding:v22 photoLibraryAssetID:v23];
+        editingContact = [(CNSNaPSetupFlowManager *)self editingContact];
+        isEditingContactCard = [(CNSNaPSetupFlowManager *)self isEditingContactCard];
+        isOnboarding = [(CNSNaPSetupFlowManager *)self isOnboarding];
+        assetIdentifier = [itemCopy assetIdentifier];
+        v24 = [(CNSNaPSuggestionsGalleryViewController *)v19 initWithMode:1 contact:editingContact isEditingSNaP:!isEditingContactCard isOnboarding:isOnboarding photoLibraryAssetID:assetIdentifier];
 
         [(CNSNaPSuggestionsGalleryViewController *)v24 setDelegate:self];
       }
 
       else
       {
-        v30 = [(CNSNaPSetupFlowManager *)self avatarPosterEditingContext];
-        v31 = [v30 existingPoster];
-        v32 = [v31 posterData];
-        v33 = v32;
-        if (v32)
+        avatarPosterEditingContext2 = [(CNSNaPSetupFlowManager *)self avatarPosterEditingContext];
+        existingPoster = [avatarPosterEditingContext2 existingPoster];
+        posterData = [existingPoster posterData];
+        v33 = posterData;
+        if (posterData)
         {
-          v34 = v32;
+          posterArchiveData = posterData;
         }
 
         else
         {
-          v35 = [(CNSNaPSetupFlowManager *)self editingContact];
-          v36 = [v35 wallpaper];
-          v34 = [v36 posterArchiveData];
+          editingContact2 = [(CNSNaPSetupFlowManager *)self editingContact];
+          wallpaper = [editingContact2 wallpaper];
+          posterArchiveData = [wallpaper posterArchiveData];
         }
 
-        if (v34)
+        if (posterArchiveData)
         {
-          v37 = [CNPRSPosterArchiver unarchiveCNConfigurationFromData:v34 error:0];
+          v37 = [CNPRSPosterArchiver unarchiveCNConfigurationFromData:posterArchiveData error:0];
         }
 
         else
@@ -1005,22 +1005,22 @@ void __74__CNSNaPSetupFlowManager_imagePickerController_didFinishWithProviderIte
           v37 = 0;
         }
 
-        v24 = [(CNSNaPSetupFlowManager *)self posterPreviewControllerWithPosterConfiguration:v37 providerItem:v6 mode:[(CNSNaPSetupFlowManager *)self mode]];
+        v24 = [(CNSNaPSetupFlowManager *)self posterPreviewControllerWithPosterConfiguration:v37 providerItem:itemCopy mode:[(CNSNaPSetupFlowManager *)self mode]];
       }
 
-      v38 = [v7 navigationController];
-      [v38 pushViewController:v24 animated:1];
+      navigationController = [controllerCopy navigationController];
+      [navigationController pushViewController:v24 animated:1];
     }
   }
 
   else
   {
     objc_opt_class();
-    v14 = [(CNSNaPSetupFlowManager *)self galleryNavigationController];
-    v15 = [v14 topViewController];
+    galleryNavigationController = [(CNSNaPSetupFlowManager *)self galleryNavigationController];
+    topViewController = [galleryNavigationController topViewController];
     if (objc_opt_isKindOfClass())
     {
-      v16 = v15;
+      v16 = topViewController;
     }
 
     else
@@ -1032,26 +1032,26 @@ void __74__CNSNaPSetupFlowManager_imagePickerController_didFinishWithProviderIte
 
     if (v17)
     {
-      [v17 updateWithProviderItem:v6];
-      v18 = [(CNSNaPSetupFlowManager *)self galleryNavigationController];
-      [v18 dismissViewControllerAnimated:1 completion:0];
+      [v17 updateWithProviderItem:itemCopy];
+      galleryNavigationController2 = [(CNSNaPSetupFlowManager *)self galleryNavigationController];
+      [galleryNavigationController2 dismissViewControllerAnimated:1 completion:0];
     }
 
     else
     {
       [(PosterEditFlowReporter *)self->_editFlowReporter didModifyAvatar];
-      v25 = [MEMORY[0x1E695CD58] stringIdentifierForImageType:{objc_msgSend(v6, "imageType")}];
+      v25 = [MEMORY[0x1E695CD58] stringIdentifierForImageType:{objc_msgSend(itemCopy, "imageType")}];
       [(CNVisualIdentity *)self->_pendingVisualIdentity setImageType:v25];
 
-      v26 = [v6 imageData];
-      [(CNVisualIdentity *)self->_pendingVisualIdentity setImageData:v26];
+      imageData = [itemCopy imageData];
+      [(CNVisualIdentity *)self->_pendingVisualIdentity setImageData:imageData];
 
-      [v6 cropRect];
+      [itemCopy cropRect];
       [(CNVisualIdentity *)self->_pendingVisualIdentity setCropRect:?];
       if ([(CNSNaPSetupFlowManager *)self isEditingContactCard])
       {
-        v27 = [(CNSNaPSetupFlowManager *)self posterEditOptionsNavigationController];
-        [v27 dismissViewControllerAnimated:1 completion:0];
+        posterEditOptionsNavigationController = [(CNSNaPSetupFlowManager *)self posterEditOptionsNavigationController];
+        [posterEditOptionsNavigationController dismissViewControllerAnimated:1 completion:0];
       }
 
       [(CNSNaPSetupFlowManager *)self finishFlow];
@@ -1059,24 +1059,24 @@ void __74__CNSNaPSetupFlowManager_imagePickerController_didFinishWithProviderIte
   }
 }
 
-- (void)sharingEditAvatarFlowManager:(id)a3 didFinishWithProviderItem:(id)a4 fromViewController:(id)a5
+- (void)sharingEditAvatarFlowManager:(id)manager didFinishWithProviderItem:(id)item fromViewController:(id)controller
 {
-  v7 = a5;
-  v8 = a4;
+  controllerCopy = controller;
+  itemCopy = item;
   [(CNSNaPSetupFlowManager *)self updateEditingStateForAction:0];
-  [(CNSNaPSetupFlowManager *)self avatarEditingDidFinishWithProviderItem:v8 fromViewController:v7];
+  [(CNSNaPSetupFlowManager *)self avatarEditingDidFinishWithProviderItem:itemCopy fromViewController:controllerCopy];
 }
 
-- (void)suggestionsGalleryViewControllerDidSelectCustomizeLater:(id)a3
+- (void)suggestionsGalleryViewControllerDidSelectCustomizeLater:(id)later
 {
-  [(CNSNaPSetupFlowManager *)self viewControllerDidSelectCustomizePosterLater:a3];
+  [(CNSNaPSetupFlowManager *)self viewControllerDidSelectCustomizePosterLater:later];
 
   [(CNSNaPSetupFlowManager *)self writeToDefaultsPosterSkippedIfNeeded];
 }
 
-- (void)suggestionsGalleryViewControllerDidCancel:(id)a3
+- (void)suggestionsGalleryViewControllerDidCancel:(id)cancel
 {
-  v9 = a3;
+  cancelCopy = cancel;
   if ([(CNSNaPSetupFlowManager *)self isOnboarding])
   {
     [(PosterEditFlowReporter *)self->_editFlowReporter didCancelFromOnboardingNew];
@@ -1084,9 +1084,9 @@ void __74__CNSNaPSetupFlowManager_imagePickerController_didFinishWithProviderIte
 
   else
   {
-    v4 = [v9 mode];
+    mode = [cancelCopy mode];
     editFlowReporter = self->_editFlowReporter;
-    if (v4)
+    if (mode)
     {
       [(PosterEditFlowReporter *)editFlowReporter didCancelFromPosterEditor];
     }
@@ -1097,152 +1097,152 @@ void __74__CNSNaPSetupFlowManager_imagePickerController_didFinishWithProviderIte
     }
   }
 
-  v6 = [(CNSNaPSetupFlowManager *)self galleryNavigationController];
-  v7 = [v6 viewControllers];
-  v8 = [v7 firstObject];
+  galleryNavigationController = [(CNSNaPSetupFlowManager *)self galleryNavigationController];
+  viewControllers = [galleryNavigationController viewControllers];
+  firstObject = [viewControllers firstObject];
 
-  if (v8 == v9)
+  if (firstObject == cancelCopy)
   {
-    [(CNSNaPSetupFlowManager *)self dismissViewController:v9 animated:1 completion:0];
+    [(CNSNaPSetupFlowManager *)self dismissViewController:cancelCopy animated:1 completion:0];
   }
 
   else
   {
-    [v9 dismissViewControllerAnimated:1 completion:0];
+    [cancelCopy dismissViewControllerAnimated:1 completion:0];
   }
 
-  -[CNSNaPSetupFlowManager updateEditingStateForRevertedAction:dismissingSetupFlow:](self, "updateEditingStateForRevertedAction:dismissingSetupFlow:", [v9 mode] != 0, v8 == v9);
+  -[CNSNaPSetupFlowManager updateEditingStateForRevertedAction:dismissingSetupFlow:](self, "updateEditingStateForRevertedAction:dismissingSetupFlow:", [cancelCopy mode] != 0, firstObject == cancelCopy);
 }
 
-- (void)suggestionsGalleryViewController:(id)a3 didFinishWithPosterConfiguration:(id)a4 name:(id)a5
+- (void)suggestionsGalleryViewController:(id)controller didFinishWithPosterConfiguration:(id)configuration name:(id)name
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  nameCopy = name;
+  configurationCopy = configuration;
+  controllerCopy = controller;
   [(CNSNaPSetupFlowManager *)self updateEditingStateForAction:1];
-  v11 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
-  v12 = [v8 given];
-  v13 = [v8 family];
+  pendingVisualIdentity = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
+  given = [nameCopy given];
+  family = [nameCopy family];
 
-  [v11 updateContactWithGivenName:v12 familyName:v13];
+  [pendingVisualIdentity updateContactWithGivenName:given familyName:family];
   if (![(CNSNaPSetupFlowManager *)self isEditingContactCard])
   {
-    v14 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
-    [(CNSNaPSetupFlowManager *)self updateEditingContactWithVisualIdentity:v14];
+    pendingVisualIdentity2 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
+    [(CNSNaPSetupFlowManager *)self updateEditingContactWithVisualIdentity:pendingVisualIdentity2];
   }
 
-  v16 = -[CNSNaPSetupFlowManager posterPreviewControllerWithPosterConfiguration:providerItem:mode:](self, "posterPreviewControllerWithPosterConfiguration:providerItem:mode:", v9, 0, [v10 mode]);
+  v16 = -[CNSNaPSetupFlowManager posterPreviewControllerWithPosterConfiguration:providerItem:mode:](self, "posterPreviewControllerWithPosterConfiguration:providerItem:mode:", configurationCopy, 0, [controllerCopy mode]);
 
-  v15 = [v10 navigationController];
+  navigationController = [controllerCopy navigationController];
 
-  [v15 pushViewController:v16 animated:1];
+  [navigationController pushViewController:v16 animated:1];
 }
 
-- (void)suggestionsGalleryViewController:(id)a3 didSelectSuggestedAvatar:(id)a4 name:(id)a5
+- (void)suggestionsGalleryViewController:(id)controller didSelectSuggestedAvatar:(id)avatar name:(id)name
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
-  v12 = [v8 given];
-  v13 = [v8 family];
+  nameCopy = name;
+  avatarCopy = avatar;
+  controllerCopy = controller;
+  pendingVisualIdentity = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
+  given = [nameCopy given];
+  family = [nameCopy family];
 
-  [v11 updateContactWithGivenName:v12 familyName:v13];
+  [pendingVisualIdentity updateContactWithGivenName:given familyName:family];
   v14 = [CNPhotoPickerRecentsProvider alloc];
-  v15 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
-  v24 = [(CNPhotoPickerRecentsProvider *)v14 initWithVisualIdentity:v15];
+  pendingVisualIdentity2 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
+  v24 = [(CNPhotoPickerRecentsProvider *)v14 initWithVisualIdentity:pendingVisualIdentity2];
 
-  v16 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v16 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v18 = v17;
-  v19 = [v10 view];
-  v20 = [v19 effectiveUserInterfaceLayoutDirection] == 1;
-  v21 = [(CNSNaPSetupFlowManager *)self providerItemRenderingQueue];
-  v22 = [(CNSNaPSetupFlowManager *)self providerItemCallbackQueue];
-  v23 = [(CNPhotoPickerRecentsProvider *)v24 providerItemForContactImage:v9 size:v20 scale:v21 RTL:v22 renderingQueue:1 callbackQueue:250.0 fallbackToDefaultItem:250.0, v18];
+  view = [controllerCopy view];
+  v20 = [view effectiveUserInterfaceLayoutDirection] == 1;
+  providerItemRenderingQueue = [(CNSNaPSetupFlowManager *)self providerItemRenderingQueue];
+  providerItemCallbackQueue = [(CNSNaPSetupFlowManager *)self providerItemCallbackQueue];
+  v23 = [(CNPhotoPickerRecentsProvider *)v24 providerItemForContactImage:avatarCopy size:v20 scale:providerItemRenderingQueue RTL:providerItemCallbackQueue renderingQueue:1 callbackQueue:250.0 fallbackToDefaultItem:250.0, v18];
 
-  [(CNSNaPSetupFlowManager *)self avatarEditingDidFinishWithProviderItem:v23 fromViewController:v10];
+  [(CNSNaPSetupFlowManager *)self avatarEditingDidFinishWithProviderItem:v23 fromViewController:controllerCopy];
 }
 
-- (void)suggestionsGalleryViewController:(id)a3 didSelectAvatarSourceType:(int64_t)a4 name:(id)a5
+- (void)suggestionsGalleryViewController:(id)controller didSelectAvatarSourceType:(int64_t)type name:(id)name
 {
-  v17 = a3;
-  v8 = a5;
-  v9 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
-  v10 = [v8 given];
-  v11 = [v8 family];
+  controllerCopy = controller;
+  nameCopy = name;
+  pendingVisualIdentity = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
+  given = [nameCopy given];
+  family = [nameCopy family];
 
-  [v9 updateContactWithGivenName:v10 familyName:v11];
-  v12 = [(CNSNaPSetupFlowManager *)self mode];
-  if (v12 != [v17 mode])
+  [pendingVisualIdentity updateContactWithGivenName:given familyName:family];
+  mode = [(CNSNaPSetupFlowManager *)self mode];
+  if (mode != [controllerCopy mode])
   {
-    v13 = [v17 navigationController];
-    v14 = [(CNSNaPSetupFlowManager *)self avatarEditFlowManager];
-    [v14 setBaseNavigationController:v13];
+    navigationController = [controllerCopy navigationController];
+    avatarEditFlowManager = [(CNSNaPSetupFlowManager *)self avatarEditFlowManager];
+    [avatarEditFlowManager setBaseNavigationController:navigationController];
   }
 
-  v15 = [(CNSNaPSetupFlowManager *)self avatarEditFlowManager];
-  v16 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
-  [v15 presentEditorForAvatarSourceType:a4 visualIdentity:v16 fromGalleryViewController:v17];
+  avatarEditFlowManager2 = [(CNSNaPSetupFlowManager *)self avatarEditFlowManager];
+  pendingVisualIdentity2 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
+  [avatarEditFlowManager2 presentEditorForAvatarSourceType:type visualIdentity:pendingVisualIdentity2 fromGalleryViewController:controllerCopy];
 }
 
-- (void)sharingSettingsViewController:(id)a3 didSelectSharingAudience:(unint64_t)a4
+- (void)sharingSettingsViewController:(id)controller didSelectSharingAudience:(unint64_t)audience
 {
-  v6 = [(CNSNaPSetupFlowManager *)self delegate];
+  delegate = [(CNSNaPSetupFlowManager *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(CNSNaPSetupFlowManager *)self delegate];
-    [v8 onboardingFromFlowManager:self didSelectSharingAudience:a4];
+    delegate2 = [(CNSNaPSetupFlowManager *)self delegate];
+    [delegate2 onboardingFromFlowManager:self didSelectSharingAudience:audience];
   }
 }
 
-- (void)sharingSettingsViewController:(id)a3 didUpdateSharingState:(BOOL)a4
+- (void)sharingSettingsViewController:(id)controller didUpdateSharingState:(BOOL)state
 {
-  v4 = a4;
-  v6 = [(CNSNaPSetupFlowManager *)self delegate];
+  stateCopy = state;
+  delegate = [(CNSNaPSetupFlowManager *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(CNSNaPSetupFlowManager *)self delegate];
-    [v8 onboardingFromFlowManager:self didUpdateSharingState:v4];
+    delegate2 = [(CNSNaPSetupFlowManager *)self delegate];
+    [delegate2 onboardingFromFlowManager:self didUpdateSharingState:stateCopy];
   }
 }
 
-- (void)sharingSettingsViewController:(id)a3 didUpdateWithSharingResult:(id)a4
+- (void)sharingSettingsViewController:(id)controller didUpdateWithSharingResult:(id)result
 {
-  v9 = a4;
-  v5 = [(CNSNaPSetupFlowManager *)self delegate];
+  resultCopy = result;
+  delegate = [(CNSNaPSetupFlowManager *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CNSNaPSetupFlowManager *)self delegate];
-    [v7 onboardingFromFlowManager:self didUpdateWithSharingResult:v9];
+    delegate2 = [(CNSNaPSetupFlowManager *)self delegate];
+    [delegate2 onboardingFromFlowManager:self didUpdateWithSharingResult:resultCopy];
 
-    v8 = [(CNSNaPSetupFlowManager *)self onboardingWelcomeNavigationController];
-    [(CNSNaPSetupFlowManager *)self dismissNavigationController:v8 animated:1 completion:0];
+    onboardingWelcomeNavigationController = [(CNSNaPSetupFlowManager *)self onboardingWelcomeNavigationController];
+    [(CNSNaPSetupFlowManager *)self dismissNavigationController:onboardingWelcomeNavigationController animated:1 completion:0];
   }
 }
 
-- (void)updateEditingContact:(id)a3 watchWallpaperImageDataForConfiguration:(id)a4 completion:(id)a5
+- (void)updateEditingContact:(id)contact watchWallpaperImageDataForConfiguration:(id)configuration completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  contactCopy = contact;
+  completionCopy = completion;
   editingContact = self->_editingContact;
-  v11 = a4;
-  v12 = [(CNMutableContact *)editingContact wallpaper];
+  configurationCopy = configuration;
+  wallpaper = [(CNMutableContact *)editingContact wallpaper];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __98__CNSNaPSetupFlowManager_updateEditingContact_watchWallpaperImageDataForConfiguration_completion___block_invoke;
   v15[3] = &unk_1E74E6C00;
-  v16 = v8;
-  v17 = v9;
-  v13 = v9;
-  v14 = v8;
-  [v12 snapshotImageDataForWatchForContact:v14 posterConfiguration:v11 completion:v15];
+  v16 = contactCopy;
+  v17 = completionCopy;
+  v13 = completionCopy;
+  v14 = contactCopy;
+  [wallpaper snapshotImageDataForWatchForContact:v14 posterConfiguration:configurationCopy completion:v15];
 }
 
 uint64_t __98__CNSNaPSetupFlowManager_updateEditingContact_watchWallpaperImageDataForConfiguration_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -1255,27 +1255,27 @@ uint64_t __98__CNSNaPSetupFlowManager_updateEditingContact_watchWallpaperImageDa
 
 - (void)dismissPosterEditingFlow
 {
-  v4 = [(CNSNaPSetupFlowManager *)self galleryNavigationController];
+  galleryNavigationController = [(CNSNaPSetupFlowManager *)self galleryNavigationController];
 
-  if (v4)
+  if (galleryNavigationController)
   {
-    v5 = [(CNSNaPSetupFlowManager *)self galleryNavigationController];
-    [(CNSNaPSetupFlowManager *)self dismissNavigationController:v5 animated:1 completion:0];
+    galleryNavigationController2 = [(CNSNaPSetupFlowManager *)self galleryNavigationController];
+    [(CNSNaPSetupFlowManager *)self dismissNavigationController:galleryNavigationController2 animated:1 completion:0];
   }
 
-  v6 = [(CNSNaPSetupFlowManager *)self posterEditOptionsNavigationController];
+  posterEditOptionsNavigationController = [(CNSNaPSetupFlowManager *)self posterEditOptionsNavigationController];
 
-  if (v6)
+  if (posterEditOptionsNavigationController)
   {
-    v11 = [(CNSNaPSetupFlowManager *)self posterEditOptionsNavigationController];
-    v7 = [(CNSNaPSetupFlowManager *)self posterEditOptionsNavigationController];
-    v8 = [v7 presentedViewController];
-    if (v8 || ([(CNSNaPSetupFlowManager *)self galleryNavigationController], (v2 = objc_claimAutoreleasedReturnValue()) != 0))
+    posterEditOptionsNavigationController2 = [(CNSNaPSetupFlowManager *)self posterEditOptionsNavigationController];
+    posterEditOptionsNavigationController3 = [(CNSNaPSetupFlowManager *)self posterEditOptionsNavigationController];
+    presentedViewController = [posterEditOptionsNavigationController3 presentedViewController];
+    if (presentedViewController || ([(CNSNaPSetupFlowManager *)self galleryNavigationController], (v2 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v9 = [(CNSNaPSetupFlowManager *)self posterEditOptionsNavigationController];
-      v10 = [v9 presentingViewController];
+      posterEditOptionsNavigationController4 = [(CNSNaPSetupFlowManager *)self posterEditOptionsNavigationController];
+      presentingViewController = [posterEditOptionsNavigationController4 presentingViewController];
 
-      if (v8)
+      if (presentedViewController)
       {
       }
 
@@ -1283,26 +1283,26 @@ uint64_t __98__CNSNaPSetupFlowManager_updateEditingContact_watchWallpaperImageDa
       {
       }
 
-      if (!v10)
+      if (!presentingViewController)
       {
         goto LABEL_13;
       }
 
-      [v11 presentingViewController];
-      v11 = v7 = v11;
+      [posterEditOptionsNavigationController2 presentingViewController];
+      posterEditOptionsNavigationController2 = posterEditOptionsNavigationController3 = posterEditOptionsNavigationController2;
     }
 
 LABEL_13:
-    [(CNSNaPSetupFlowManager *)self dismissViewController:v11 animated:1 completion:0];
+    [(CNSNaPSetupFlowManager *)self dismissViewController:posterEditOptionsNavigationController2 animated:1 completion:0];
   }
 }
 
 - (void)notifyDelegateOfUpdatesAndDismissIfNeeded
 {
-  v3 = [(CNSNaPSetupFlowManager *)self delegate];
-  v4 = [(CNSNaPSetupFlowManager *)self editingContact];
-  v5 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
-  [v3 avatarPosterEditorFromFlowManager:self didUpdateContact:v4 withVisualIdentity:v5];
+  delegate = [(CNSNaPSetupFlowManager *)self delegate];
+  editingContact = [(CNSNaPSetupFlowManager *)self editingContact];
+  pendingVisualIdentity = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
+  [delegate avatarPosterEditorFromFlowManager:self didUpdateContact:editingContact withVisualIdentity:pendingVisualIdentity];
 
   if ([(CNSNaPSetupFlowManager *)self isEditingContactCard])
   {
@@ -1311,17 +1311,17 @@ LABEL_13:
   }
 }
 
-- (void)pushNextStepWithViewController:(id)a3
+- (void)pushNextStepWithViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(CNSNaPSetupFlowManager *)self isOnboarding];
-  v6 = [(CNSNaPSetupFlowManager *)self galleryNavigationController];
-  if (v5)
+  controllerCopy = controller;
+  isOnboarding = [(CNSNaPSetupFlowManager *)self isOnboarding];
+  galleryNavigationController = [(CNSNaPSetupFlowManager *)self galleryNavigationController];
+  if (isOnboarding)
   {
-    v8 = v6;
-    v7 = [v6 presentingViewController];
+    v8 = galleryNavigationController;
+    presentingViewController = [galleryNavigationController presentingViewController];
 
-    if (v7)
+    if (presentingViewController)
     {
       [(CNSNaPSetupFlowManager *)self galleryNavigationController];
     }
@@ -1330,85 +1330,85 @@ LABEL_13:
     {
       [(CNSNaPSetupFlowManager *)self onboardingWelcomeNavigationController];
     }
-    v6 = ;
+    galleryNavigationController = ;
   }
 
-  v9 = v6;
-  [v6 pushViewController:v4 animated:1];
+  v9 = galleryNavigationController;
+  [galleryNavigationController pushViewController:controllerCopy animated:1];
 }
 
-- (void)finishFlowAndSaveAsRecent:(BOOL)a3
+- (void)finishFlowAndSaveAsRecent:(BOOL)recent
 {
-  v3 = a3;
+  recentCopy = recent;
   v5 = *MEMORY[0x1E6996590];
-  v6 = [(CNSNaPSetupFlowManager *)self avatarPosterEditingContext];
-  v7 = [v6 pendingWallpaperFuture];
-  v8 = [v7 result:0];
+  avatarPosterEditingContext = [(CNSNaPSetupFlowManager *)self avatarPosterEditingContext];
+  pendingWallpaperFuture = [avatarPosterEditingContext pendingWallpaperFuture];
+  v8 = [pendingWallpaperFuture result:0];
   v9 = (*(v5 + 16))(v5, v8);
   [(CNSNaPSetupFlowManager *)self updatePendingVisualIdentityWithWallpaper:v9];
 
-  v10 = [(CNSNaPSetupFlowManager *)self avatarPosterEditingContext];
-  v11 = [v10 pendingPosterEdit];
-  v12 = [v11 posterConfiguration];
+  avatarPosterEditingContext2 = [(CNSNaPSetupFlowManager *)self avatarPosterEditingContext];
+  pendingPosterEdit = [avatarPosterEditingContext2 pendingPosterEdit];
+  posterConfiguration = [pendingPosterEdit posterConfiguration];
 
   if (![(CNSNaPSetupFlowManager *)self currentAvatarPosterPairIsBackedByRecents])
   {
     [(CNSNaPSetupFlowManager *)self saveCurrentVisualIdentityIfNeeded];
   }
 
-  if (v3)
+  if (recentCopy)
   {
     [(CNSNaPSetupFlowManager *)self saveRecentVisualIdentity];
   }
 
-  v13 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
-  v14 = [v13 wallpaper];
+  pendingVisualIdentity = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
+  wallpaper = [pendingVisualIdentity wallpaper];
 
-  if (v14)
+  if (wallpaper)
   {
-    v15 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
-    v16 = [v15 wallpaper];
-    v32 = [v16 posterArchiveData];
+    pendingVisualIdentity2 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
+    wallpaper2 = [pendingVisualIdentity2 wallpaper];
+    posterArchiveData = [wallpaper2 posterArchiveData];
 
-    v17 = [MEMORY[0x1E695CFC8] reducedSizePosterArchiveDataFromData:v32 posterConfiguration:v12];
+    v17 = [MEMORY[0x1E695CFC8] reducedSizePosterArchiveDataFromData:posterArchiveData posterConfiguration:posterConfiguration];
     v18 = objc_alloc(MEMORY[0x1E695CFC8]);
-    v19 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
-    [v19 wallpaper];
-    v21 = v20 = v12;
-    v22 = [v21 metadata];
-    v23 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
-    v24 = [v23 wallpaper];
-    v25 = [v18 initWithPosterArchiveData:v17 metadata:v22 contentIsSensitive:{objc_msgSend(v24, "contentIsSensitive")}];
-    v26 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
-    [v26 setWallpaper:v25];
+    pendingVisualIdentity3 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
+    [pendingVisualIdentity3 wallpaper];
+    v21 = v20 = posterConfiguration;
+    metadata = [v21 metadata];
+    pendingVisualIdentity4 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
+    wallpaper3 = [pendingVisualIdentity4 wallpaper];
+    v25 = [v18 initWithPosterArchiveData:v17 metadata:metadata contentIsSensitive:{objc_msgSend(wallpaper3, "contentIsSensitive")}];
+    pendingVisualIdentity5 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
+    [pendingVisualIdentity5 setWallpaper:v25];
 
-    v12 = v20;
+    posterConfiguration = v20;
   }
 
-  v27 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
-  [(CNSNaPSetupFlowManager *)self updateEditingContactWithVisualIdentity:v27];
+  pendingVisualIdentity6 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
+  [(CNSNaPSetupFlowManager *)self updateEditingContactWithVisualIdentity:pendingVisualIdentity6];
 
   [(CNSNaPSetupFlowManager *)self submitAndResetFlowReporter];
   [(CNSNaPSetupFlowManager *)self cleanupTemporaryPosterData];
   if (!self->_isOnboarding)
   {
     [(CNSNaPSetupFlowManager *)self resetEditingState];
-    v29 = [(CNSNaPSetupFlowManager *)self delegate];
+    delegate = [(CNSNaPSetupFlowManager *)self delegate];
     v30 = objc_opt_respondsToSelector();
 
     if (v30)
     {
-      v31 = [(CNMutableContact *)self->_editingContact wallpaper];
+      wallpaper4 = [(CNMutableContact *)self->_editingContact wallpaper];
 
-      if (v31)
+      if (wallpaper4)
       {
-        v28 = [(CNSNaPSetupFlowManager *)self editingContact];
+        editingContact = [(CNSNaPSetupFlowManager *)self editingContact];
         v33[0] = MEMORY[0x1E69E9820];
         v33[1] = 3221225472;
         v33[2] = __52__CNSNaPSetupFlowManager_finishFlowAndSaveAsRecent___block_invoke;
         v33[3] = &unk_1E74E6A88;
         v33[4] = self;
-        [(CNSNaPSetupFlowManager *)self updateEditingContact:v28 watchWallpaperImageDataForConfiguration:v12 completion:v33];
+        [(CNSNaPSetupFlowManager *)self updateEditingContact:editingContact watchWallpaperImageDataForConfiguration:posterConfiguration completion:v33];
         goto LABEL_12;
       }
 
@@ -1419,9 +1419,9 @@ LABEL_13:
     goto LABEL_15;
   }
 
-  v28 = [(CNSNaPSetupFlowManager *)self sharingSettingsViewControllerForOnboarding];
-  [v28 setDelegate:self];
-  [(CNSNaPSetupFlowManager *)self pushNextStepWithViewController:v28];
+  editingContact = [(CNSNaPSetupFlowManager *)self sharingSettingsViewControllerForOnboarding];
+  [editingContact setDelegate:self];
+  [(CNSNaPSetupFlowManager *)self pushNextStepWithViewController:editingContact];
 LABEL_12:
 
 LABEL_15:
@@ -1436,19 +1436,19 @@ uint64_t __52__CNSNaPSetupFlowManager_finishFlowAndSaveAsRecent___block_invoke(u
   return [v2 setGalleryNavigationController:0];
 }
 
-- (void)updateEditingContextWithPendingPoster:(id)a3
+- (void)updateEditingContextWithPendingPoster:(id)poster
 {
-  v4 = a3;
-  v5 = [(CNSNaPSetupFlowManager *)self avatarPosterEditingContext];
+  posterCopy = poster;
+  avatarPosterEditingContext = [(CNSNaPSetupFlowManager *)self avatarPosterEditingContext];
 
-  if (!v5)
+  if (!avatarPosterEditingContext)
   {
     v6 = +[CNAvatarPosterCarouselEditingContext contextForCreateNew];
     [(CNSNaPSetupFlowManager *)self setAvatarPosterEditingContext:v6];
   }
 
-  v7 = [(CNSNaPSetupFlowManager *)self avatarPosterEditingContext];
-  [v7 setPendingPosterEdit:v4];
+  avatarPosterEditingContext2 = [(CNSNaPSetupFlowManager *)self avatarPosterEditingContext];
+  [avatarPosterEditingContext2 setPendingPosterEdit:posterCopy];
 }
 
 - (void)writeToDefaultsPosterSkippedIfNeeded
@@ -1460,9 +1460,9 @@ uint64_t __52__CNSNaPSetupFlowManager_finishFlowAndSaveAsRecent___block_invoke(u
   }
 }
 
-- (void)viewControllerDidSelectCustomizePosterLater:(id)a3
+- (void)viewControllerDidSelectCustomizePosterLater:(id)later
 {
-  v4 = a3;
+  laterCopy = later;
   [(PosterEditFlowReporter *)self->_editFlowReporter didSkipPoster];
   if ([(CNSNaPSetupFlowManager *)self isOnboarding]|| [(CNSNaPSetupFlowManager *)self isEditingContactCard])
   {
@@ -1471,7 +1471,7 @@ uint64_t __52__CNSNaPSetupFlowManager_finishFlowAndSaveAsRecent___block_invoke(u
     v5[2] = __70__CNSNaPSetupFlowManager_viewControllerDidSelectCustomizePosterLater___block_invoke;
     v5[3] = &unk_1E74E6A88;
     v5[4] = self;
-    [v4 dismissViewControllerAnimated:1 completion:v5];
+    [laterCopy dismissViewControllerAnimated:1 completion:v5];
   }
 
   else
@@ -1480,44 +1480,44 @@ uint64_t __52__CNSNaPSetupFlowManager_finishFlowAndSaveAsRecent___block_invoke(u
   }
 }
 
-- (void)posterPreviewViewControllerDidSelectUseDifferentPoster:(id)a3
+- (void)posterPreviewViewControllerDidSelectUseDifferentPoster:(id)poster
 {
-  v4 = a3;
+  posterCopy = poster;
   v5 = [CNSNaPSuggestionsGalleryViewController alloc];
-  v6 = [(CNSNaPSetupFlowManager *)self editingContact];
-  v8 = [(CNSNaPSuggestionsGalleryViewController *)v5 initWithMode:1 contact:v6 isEditingSNaP:[(CNSNaPSetupFlowManager *)self isEditingContactCard]^ 1 isOnboarding:[(CNSNaPSetupFlowManager *)self isOnboarding]];
+  editingContact = [(CNSNaPSetupFlowManager *)self editingContact];
+  v8 = [(CNSNaPSuggestionsGalleryViewController *)v5 initWithMode:1 contact:editingContact isEditingSNaP:[(CNSNaPSetupFlowManager *)self isEditingContactCard]^ 1 isOnboarding:[(CNSNaPSetupFlowManager *)self isOnboarding]];
 
   [(CNSNaPSuggestionsGalleryViewController *)v8 setDelegate:self];
-  v7 = [v4 navigationController];
+  navigationController = [posterCopy navigationController];
 
-  [v7 pushViewController:v8 animated:1];
+  [navigationController pushViewController:v8 animated:1];
 }
 
-- (void)posterPreviewViewControllerDidSelectCustomizeLater:(id)a3
+- (void)posterPreviewViewControllerDidSelectCustomizeLater:(id)later
 {
-  [(CNSNaPSetupFlowManager *)self viewControllerDidSelectCustomizePosterLater:a3];
+  [(CNSNaPSetupFlowManager *)self viewControllerDidSelectCustomizePosterLater:later];
 
   [(CNSNaPSetupFlowManager *)self writeToDefaultsPosterSkippedIfNeeded];
 }
 
-- (void)posterPreviewViewController:(id)a3 didFinishWithPosterConfiguration:(id)a4
+- (void)posterPreviewViewController:(id)controller didFinishWithPosterConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  configurationCopy = configuration;
   [(PosterEditFlowReporter *)self->_editFlowReporter didModifyPoster];
   [(CNSNaPSetupFlowManager *)self updateEditingStateForAction:1];
-  v8 = [CNAvatarPosterCarouselPendingPosterEdit pendingEditFromPosterConfiguration:v7];
+  v8 = [CNAvatarPosterCarouselPendingPosterEdit pendingEditFromPosterConfiguration:configurationCopy];
   [(CNSNaPSetupFlowManager *)self updateEditingContextWithPendingPoster:v8];
 
   if ([(CNSNaPSetupFlowManager *)self editingState]== 2)
   {
     v9 = [CNPosterSetupAvatarPreviewViewController alloc];
-    v10 = [(CNSNaPSetupFlowManager *)self editingContact];
-    v11 = [(CNPosterSetupAvatarPreviewViewController *)v9 initWithPosterConfiguration:v7 forEditingContact:v10];
+    editingContact = [(CNSNaPSetupFlowManager *)self editingContact];
+    v11 = [(CNPosterSetupAvatarPreviewViewController *)v9 initWithPosterConfiguration:configurationCopy forEditingContact:editingContact];
 
     [(CNPosterSetupAvatarPreviewViewController *)v11 setDelegate:self];
-    v12 = [v6 navigationController];
-    [v12 pushViewController:v11 animated:1];
+    navigationController = [controllerCopy navigationController];
+    [navigationController pushViewController:v11 animated:1];
   }
 
   else if ([(CNSNaPSetupFlowManager *)self isOnboarding]|| [(CNSNaPSetupFlowManager *)self isEditingContactCard])
@@ -1527,7 +1527,7 @@ uint64_t __52__CNSNaPSetupFlowManager_finishFlowAndSaveAsRecent___block_invoke(u
     v13[2] = __87__CNSNaPSetupFlowManager_posterPreviewViewController_didFinishWithPosterConfiguration___block_invoke;
     v13[3] = &unk_1E74E6A88;
     v13[4] = self;
-    [v6 dismissViewControllerAnimated:1 completion:v13];
+    [controllerCopy dismissViewControllerAnimated:1 completion:v13];
   }
 
   else
@@ -1536,75 +1536,75 @@ uint64_t __52__CNSNaPSetupFlowManager_finishFlowAndSaveAsRecent___block_invoke(u
   }
 }
 
-- (void)posterEditOptionsViewControllerDidCancel:(id)a3
+- (void)posterEditOptionsViewControllerDidCancel:(id)cancel
 {
   [(PosterEditFlowReporter *)self->_editFlowReporter didCancelFromCarousel];
   [(CNSNaPSetupFlowManager *)self submitAndResetFlowReporter];
-  v4 = [(CNSNaPSetupFlowManager *)self posterEditOptionsNavigationController];
-  [(CNSNaPSetupFlowManager *)self dismissNavigationController:v4 animated:1 completion:0];
+  posterEditOptionsNavigationController = [(CNSNaPSetupFlowManager *)self posterEditOptionsNavigationController];
+  [(CNSNaPSetupFlowManager *)self dismissNavigationController:posterEditOptionsNavigationController animated:1 completion:0];
 
   [(CNSNaPSetupFlowManager *)self cleanupTemporaryPosterData];
-  v5 = [(CNSNaPSetupFlowManager *)self delegate];
+  delegate = [(CNSNaPSetupFlowManager *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CNSNaPSetupFlowManager *)self delegate];
-    [v7 avatarPosterEditorFromFlowManagerDidCancel:self];
+    delegate2 = [(CNSNaPSetupFlowManager *)self delegate];
+    [delegate2 avatarPosterEditorFromFlowManagerDidCancel:self];
   }
 }
 
-- (void)updatePendingVisualIdentityWithWallpaper:(id)a3
+- (void)updatePendingVisualIdentityWithWallpaper:(id)wallpaper
 {
-  v4 = a3;
-  v5 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
-  [v5 setWallpaper:v4];
+  wallpaperCopy = wallpaper;
+  pendingVisualIdentity = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
+  [pendingVisualIdentity setWallpaper:wallpaperCopy];
 }
 
-- (void)updatePendingVisualIdentityWithAvatar:(id)a3 pendingPosterEdit:(id)a4 viewController:(id)a5
+- (void)updatePendingVisualIdentityWithAvatar:(id)avatar pendingPosterEdit:(id)edit viewController:(id)controller
 {
-  v24 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
-  [v10 clearImageAndWallpaper];
+  avatarCopy = avatar;
+  editCopy = edit;
+  controllerCopy = controller;
+  pendingVisualIdentity = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
+  [pendingVisualIdentity clearImageAndWallpaper];
 
-  v11 = [v9 view];
+  view = [controllerCopy view];
 
-  v12 = [v11 effectiveUserInterfaceLayoutDirection];
-  if (v24)
+  effectiveUserInterfaceLayoutDirection = [view effectiveUserInterfaceLayoutDirection];
+  if (avatarCopy)
   {
-    v13 = v12 == 1;
+    v13 = effectiveUserInterfaceLayoutDirection == 1;
     v14 = [CNPhotoPickerRecentsProvider alloc];
-    v15 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
-    v16 = [(CNPhotoPickerRecentsProvider *)v14 initWithVisualIdentity:v15];
+    pendingVisualIdentity2 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
+    v16 = [(CNPhotoPickerRecentsProvider *)v14 initWithVisualIdentity:pendingVisualIdentity2];
 
-    v17 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v17 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v19 = v18;
-    v20 = [(CNSNaPSetupFlowManager *)self providerItemRenderingQueue];
-    v21 = [(CNSNaPSetupFlowManager *)self providerItemCallbackQueue];
-    v22 = [(CNPhotoPickerRecentsProvider *)v16 providerItemForContactImage:v24 size:v13 scale:v20 RTL:v21 renderingQueue:1 callbackQueue:250.0 fallbackToDefaultItem:250.0, v19];
+    providerItemRenderingQueue = [(CNSNaPSetupFlowManager *)self providerItemRenderingQueue];
+    providerItemCallbackQueue = [(CNSNaPSetupFlowManager *)self providerItemCallbackQueue];
+    v22 = [(CNPhotoPickerRecentsProvider *)v16 providerItemForContactImage:avatarCopy size:v13 scale:providerItemRenderingQueue RTL:providerItemCallbackQueue renderingQueue:1 callbackQueue:250.0 fallbackToDefaultItem:250.0, v19];
 
-    v23 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
-    [v22 updateVisualIdentity:v23];
+    pendingVisualIdentity3 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
+    [v22 updateVisualIdentity:pendingVisualIdentity3];
   }
 
-  if (v8)
+  if (editCopy)
   {
-    [(CNSNaPSetupFlowManager *)self updateEditingContextWithPendingPoster:v8];
+    [(CNSNaPSetupFlowManager *)self updateEditingContextWithPendingPoster:editCopy];
   }
 }
 
-- (void)updatePendingVisualIdentityWithAvatar:(id)a3 contactPoster:(id)a4 viewController:(id)a5
+- (void)updatePendingVisualIdentityWithAvatar:(id)avatar contactPoster:(id)poster viewController:(id)controller
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [CNAvatarPosterCarouselPendingPosterEdit pendingEditFromContactPoster:a4];
-  [(CNSNaPSetupFlowManager *)self updatePendingVisualIdentityWithAvatar:v9 pendingPosterEdit:v10 viewController:v8];
+  controllerCopy = controller;
+  avatarCopy = avatar;
+  v10 = [CNAvatarPosterCarouselPendingPosterEdit pendingEditFromContactPoster:poster];
+  [(CNSNaPSetupFlowManager *)self updatePendingVisualIdentityWithAvatar:avatarCopy pendingPosterEdit:v10 viewController:controllerCopy];
 }
 
-- (void)posterEditOptionsViewControllerDidDeleteCurrentPosterPair:(id)a3
+- (void)posterEditOptionsViewControllerDidDeleteCurrentPosterPair:(id)pair
 {
   [(CNSNaPSetupFlowManager *)self setCurrentContactImage:0];
   [(CNSNaPSetupFlowManager *)self setCurrentContactPoster:0];
@@ -1612,76 +1612,76 @@ uint64_t __52__CNSNaPSetupFlowManager_finishFlowAndSaveAsRecent___block_invoke(u
   [(CNSNaPSetupFlowManager *)self setCurrentAvatarPosterPairIsBackedByRecents:0];
 }
 
-- (void)posterEditOptionsViewController:(id)a3 didLoadCurrentAvatar:(id)a4 poster:(id)a5 backedByRecents:(BOOL)a6
+- (void)posterEditOptionsViewController:(id)controller didLoadCurrentAvatar:(id)avatar poster:(id)poster backedByRecents:(BOOL)recents
 {
-  v6 = a6;
-  v9 = a5;
-  [(CNSNaPSetupFlowManager *)self setCurrentContactImage:a4];
-  [(CNSNaPSetupFlowManager *)self setCurrentContactPoster:v9];
+  recentsCopy = recents;
+  posterCopy = poster;
+  [(CNSNaPSetupFlowManager *)self setCurrentContactImage:avatar];
+  [(CNSNaPSetupFlowManager *)self setCurrentContactPoster:posterCopy];
 
-  [(CNSNaPSetupFlowManager *)self setCurrentAvatarPosterPairIsBackedByRecents:v6];
+  [(CNSNaPSetupFlowManager *)self setCurrentAvatarPosterPairIsBackedByRecents:recentsCopy];
 }
 
-- (void)posterEditOptionsViewController:(id)a3 didSelectAvatar:(id)a4 poster:(id)a5
+- (void)posterEditOptionsViewController:(id)controller didSelectAvatar:(id)avatar poster:(id)poster
 {
-  [(CNSNaPSetupFlowManager *)self updatePendingVisualIdentityWithAvatar:a4 contactPoster:a5 viewController:a3];
+  [(CNSNaPSetupFlowManager *)self updatePendingVisualIdentityWithAvatar:avatar contactPoster:poster viewController:controller];
 
   [(CNSNaPSetupFlowManager *)self finishFlowAndSaveAsRecent:0];
 }
 
-- (void)posterEditOptionsViewControllerDidSelectCreateNew:(id)a3
+- (void)posterEditOptionsViewControllerDidSelectCreateNew:(id)new
 {
   [(PosterEditFlowReporter *)self->_editFlowReporter willEditCreatingNew];
-  v4 = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
-  [v4 clearImageAndWallpaper];
+  pendingVisualIdentity = [(CNSNaPSetupFlowManager *)self pendingVisualIdentity];
+  [pendingVisualIdentity clearImageAndWallpaper];
 
-  v5 = [(CNSNaPSetupFlowManager *)self wallpaperGalleryNavigationController];
-  [(CNSNaPSetupFlowManager *)self setGalleryNavigationController:v5];
+  wallpaperGalleryNavigationController = [(CNSNaPSetupFlowManager *)self wallpaperGalleryNavigationController];
+  [(CNSNaPSetupFlowManager *)self setGalleryNavigationController:wallpaperGalleryNavigationController];
 
   v6 = +[CNAvatarPosterCarouselEditingContext contextForCreateNew];
   [(CNSNaPSetupFlowManager *)self setAvatarPosterEditingContext:v6];
 
-  v8 = [(CNSNaPSetupFlowManager *)self posterEditOptionsNavigationController];
-  v7 = [(CNSNaPSetupFlowManager *)self galleryNavigationController];
-  [v8 presentViewController:v7 animated:1 completion:0];
+  posterEditOptionsNavigationController = [(CNSNaPSetupFlowManager *)self posterEditOptionsNavigationController];
+  galleryNavigationController = [(CNSNaPSetupFlowManager *)self galleryNavigationController];
+  [posterEditOptionsNavigationController presentViewController:galleryNavigationController animated:1 completion:0];
 }
 
-- (void)previewPendingPoster:(id)a3
+- (void)previewPendingPoster:(id)poster
 {
-  v4 = a3;
-  v5 = [v4 posterConfiguration];
+  posterCopy = poster;
+  posterConfiguration = [posterCopy posterConfiguration];
 
-  if (v5)
+  if (posterConfiguration)
   {
-    [v4 posterConfiguration];
+    [posterCopy posterConfiguration];
   }
 
   else
   {
-    v6 = [v4 contactPoster];
+    contactPoster = [posterCopy contactPoster];
 
-    v4 = [v6 posterData];
+    posterCopy = [contactPoster posterData];
 
-    [CNPRSPosterArchiver unarchiveCNConfigurationFromData:v4 error:0];
+    [CNPRSPosterArchiver unarchiveCNConfigurationFromData:posterCopy error:0];
   }
   v9 = ;
 
   v7 = [(CNSNaPSetupFlowManager *)self posterPreviewControllerWithPosterConfiguration:v9 providerItem:0 mode:1];
-  v8 = [(CNSNaPSetupFlowManager *)self posterEditOptionsNavigationController];
-  [v8 pushViewController:v7 animated:1];
+  posterEditOptionsNavigationController = [(CNSNaPSetupFlowManager *)self posterEditOptionsNavigationController];
+  [posterEditOptionsNavigationController pushViewController:v7 animated:1];
 }
 
-- (void)posterEditOptionsViewController:(id)a3 didEditPosterWithContext:(id)a4
+- (void)posterEditOptionsViewController:(id)controller didEditPosterWithContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  [(CNSNaPSetupFlowManager *)self setAvatarPosterEditingContext:v6];
-  v12 = [v6 pendingPosterEdit];
+  contextCopy = context;
+  controllerCopy = controller;
+  [(CNSNaPSetupFlowManager *)self setAvatarPosterEditingContext:contextCopy];
+  pendingPosterEdit = [contextCopy pendingPosterEdit];
   [(CNSNaPSetupFlowManager *)self updateEditingStateForAction:1];
-  v8 = [v6 existingAvatar];
+  existingAvatar = [contextCopy existingAvatar];
 
-  [(CNSNaPSetupFlowManager *)self updatePendingVisualIdentityWithAvatar:v8 pendingPosterEdit:v12 viewController:v7];
-  if (v12)
+  [(CNSNaPSetupFlowManager *)self updatePendingVisualIdentityWithAvatar:existingAvatar pendingPosterEdit:pendingPosterEdit viewController:controllerCopy];
+  if (pendingPosterEdit)
   {
     [(CNSNaPSetupFlowManager *)self previewPendingPoster:?];
   }
@@ -1691,63 +1691,63 @@ uint64_t __52__CNSNaPSetupFlowManager_finishFlowAndSaveAsRecent___block_invoke(u
     v9 = [(CNSNaPSetupFlowManager *)self wallpaperGalleryNavigationControllerForMode:1];
     [(CNSNaPSetupFlowManager *)self setGalleryNavigationController:v9];
 
-    v10 = [(CNSNaPSetupFlowManager *)self posterEditOptionsNavigationController];
-    v11 = [(CNSNaPSetupFlowManager *)self galleryNavigationController];
-    [v10 presentViewController:v11 animated:1 completion:0];
+    posterEditOptionsNavigationController = [(CNSNaPSetupFlowManager *)self posterEditOptionsNavigationController];
+    galleryNavigationController = [(CNSNaPSetupFlowManager *)self galleryNavigationController];
+    [posterEditOptionsNavigationController presentViewController:galleryNavigationController animated:1 completion:0];
   }
 }
 
-- (BOOL)shouldShowItemEditorForContactImage:(id)a3
+- (BOOL)shouldShowItemEditorForContactImage:(id)image
 {
-  v3 = a3;
-  v4 = [v3 source];
-  if (v4 == 3)
+  imageCopy = image;
+  source = [imageCopy source];
+  if (source == 3)
   {
-    v6 = [v3 variant];
-    LOBYTE(v7) = v6 != 0;
+    variant = [imageCopy variant];
+    LOBYTE(v7) = variant != 0;
   }
 
   else
   {
-    if (v4 != 2)
+    if (source != 2)
     {
       LOBYTE(v7) = 1;
       goto LABEL_7;
     }
 
     v5 = *MEMORY[0x1E6996540];
-    v6 = [v3 imageData];
-    v7 = (*(v5 + 16))(v5, v6) ^ 1;
+    variant = [imageCopy imageData];
+    v7 = (*(v5 + 16))(v5, variant) ^ 1;
   }
 
 LABEL_7:
   return v7;
 }
 
-- (void)editAvatar:(id)a3 inView:(id)a4
+- (void)editAvatar:(id)avatar inView:(id)view
 {
-  v16 = a3;
-  v6 = a4;
-  if (![(CNSNaPSetupFlowManager *)self shouldShowItemEditorForContactImage:v16])
+  avatarCopy = avatar;
+  viewCopy = view;
+  if (![(CNSNaPSetupFlowManager *)self shouldShowItemEditorForContactImage:avatarCopy])
   {
     goto LABEL_6;
   }
 
-  v7 = [v16 source];
-  if ((v7 - 3) < 2 || v7 == 1)
+  source = [avatarCopy source];
+  if ((source - 3) < 2 || source == 1)
   {
-    v10 = [(CNSNaPSetupFlowManager *)self providerItemForRecentAvatar:v16 inView:v6];
-    v13 = [(CNSNaPSetupFlowManager *)self posterEditOptionsNavigationController];
-    v14 = [(CNSNaPSetupFlowManager *)self avatarEditFlowManager];
-    [v14 setBaseNavigationController:v13];
+    v10 = [(CNSNaPSetupFlowManager *)self providerItemForRecentAvatar:avatarCopy inView:viewCopy];
+    posterEditOptionsNavigationController = [(CNSNaPSetupFlowManager *)self posterEditOptionsNavigationController];
+    avatarEditFlowManager = [(CNSNaPSetupFlowManager *)self avatarEditFlowManager];
+    [avatarEditFlowManager setBaseNavigationController:posterEditOptionsNavigationController];
 
-    v15 = [(CNSNaPSetupFlowManager *)self avatarEditFlowManager];
-    [v15 presentAvatarEditorViewControllerForProviderItem:v10];
+    avatarEditFlowManager2 = [(CNSNaPSetupFlowManager *)self avatarEditFlowManager];
+    [avatarEditFlowManager2 presentAvatarEditorViewControllerForProviderItem:v10];
 
     goto LABEL_8;
   }
 
-  if (v7 != 2)
+  if (source != 2)
   {
 LABEL_6:
     [(CNSNaPSetupFlowManager *)self presentCreateNewAvatarViewController];
@@ -1755,57 +1755,57 @@ LABEL_6:
   }
 
   v8 = [CNPosterSetupAvatarPreviewViewController alloc];
-  v9 = [(CNSNaPSetupFlowManager *)self editingContact];
-  v10 = [(CNPosterSetupAvatarPreviewViewController *)v8 initWithContactImage:v16 imageType:1 forEditingContact:v9];
+  editingContact = [(CNSNaPSetupFlowManager *)self editingContact];
+  v10 = [(CNPosterSetupAvatarPreviewViewController *)v8 initWithContactImage:avatarCopy imageType:1 forEditingContact:editingContact];
 
   [(CNPosterSetupAvatarPreviewViewController *)v10 setDelegate:self];
   [(CNPosterSetupAvatarPreviewViewController *)v10 setHideSkipOption:1];
   [(CNPosterSetupAvatarPreviewViewController *)v10 setShouldShowCancelButton:1];
   v11 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v10];
   [v11 setModalPresentationStyle:{-[CNSNaPSetupFlowManager defaultModalPresentationStyle](self, "defaultModalPresentationStyle")}];
-  v12 = [(CNSNaPSetupFlowManager *)self posterEditOptionsNavigationController];
-  [v12 presentViewController:v11 animated:1 completion:0];
+  posterEditOptionsNavigationController2 = [(CNSNaPSetupFlowManager *)self posterEditOptionsNavigationController];
+  [posterEditOptionsNavigationController2 presentViewController:v11 animated:1 completion:0];
 
 LABEL_8:
 LABEL_9:
 }
 
-- (void)posterEditOptionsViewController:(id)a3 didSelectEditAvatarWithContext:(id)a4
+- (void)posterEditOptionsViewController:(id)controller didSelectEditAvatarWithContext:(id)context
 {
   editFlowReporter = self->_editFlowReporter;
-  v7 = a4;
-  v8 = a3;
+  contextCopy = context;
+  controllerCopy = controller;
   [(PosterEditFlowReporter *)editFlowReporter willEditAvatar];
-  [(CNSNaPSetupFlowManager *)self setAvatarPosterEditingContext:v7];
-  v11 = [v7 existingAvatar];
+  [(CNSNaPSetupFlowManager *)self setAvatarPosterEditingContext:contextCopy];
+  existingAvatar = [contextCopy existingAvatar];
   [(CNSNaPSetupFlowManager *)self updateEditingStateForAction:0];
-  v9 = [v7 existingPoster];
+  existingPoster = [contextCopy existingPoster];
 
-  [(CNSNaPSetupFlowManager *)self updatePendingVisualIdentityWithAvatar:v11 contactPoster:v9 viewController:v8];
-  v10 = [v8 view];
+  [(CNSNaPSetupFlowManager *)self updatePendingVisualIdentityWithAvatar:existingAvatar contactPoster:existingPoster viewController:controllerCopy];
+  view = [controllerCopy view];
 
-  [(CNSNaPSetupFlowManager *)self editAvatar:v11 inView:v10];
+  [(CNSNaPSetupFlowManager *)self editAvatar:existingAvatar inView:view];
 }
 
-- (void)validateAndUpdateAvatarDataForVisualIdentity:(id)a3
+- (void)validateAndUpdateAvatarDataForVisualIdentity:(id)identity
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 imageData];
+  identityCopy = identity;
+  imageData = [identityCopy imageData];
 
-  v5 = [v3 thumbnailImageData];
+  thumbnailImageData = [identityCopy thumbnailImageData];
 
-  v6 = [v3 fullscreenImageData];
+  fullscreenImageData = [identityCopy fullscreenImageData];
 
-  if (!(v4 | v5))
+  if (!(imageData | thumbnailImageData))
   {
-    [v3 clearImage];
+    [identityCopy clearImage];
     goto LABEL_16;
   }
 
-  if (v4)
+  if (imageData)
   {
-    if (v5)
+    if (thumbnailImageData)
     {
       goto LABEL_4;
     }
@@ -1816,19 +1816,19 @@ LABEL_9:
     v7 = [objc_opt_class() log];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v3 imageType];
+      imageType = [identityCopy imageType];
       v17 = 138412290;
-      v18 = v8;
+      v18 = imageType;
     }
 
-    v9 = [v3 thumbnailImageData];
-    [v3 setImageData:v9];
+    thumbnailImageData2 = [identityCopy thumbnailImageData];
+    [identityCopy setImageData:thumbnailImageData2];
 
-    [v3 setCropRect:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-    if (v5)
+    [identityCopy setCropRect:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+    if (thumbnailImageData)
     {
 LABEL_4:
-      if (v6)
+      if (fullscreenImageData)
       {
         goto LABEL_16;
       }
@@ -1840,52 +1840,52 @@ LABEL_4:
   v10 = [objc_opt_class() log];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v3 imageType];
+    imageType2 = [identityCopy imageType];
     v17 = 138412290;
-    v18 = v11;
+    v18 = imageType2;
   }
 
-  v12 = [v3 imageData];
-  [v3 cropRect];
+  imageData2 = [identityCopy imageData];
+  [identityCopy cropRect];
   v13 = CNImageUtilsCroppedImageDataFromFullSizeImageData();
-  [v3 setThumbnailImageData:v13];
+  [identityCopy setThumbnailImageData:v13];
 
-  if (!v6)
+  if (!fullscreenImageData)
   {
 LABEL_13:
     v14 = [objc_opt_class() log];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v3 imageType];
+      imageType3 = [identityCopy imageType];
       v17 = 138412290;
-      v18 = v15;
+      v18 = imageType3;
     }
 
-    v16 = [v3 imageData];
-    [v3 setFullscreenImageData:v16];
+    imageData3 = [identityCopy imageData];
+    [identityCopy setFullscreenImageData:imageData3];
   }
 
 LABEL_16:
 }
 
-- (void)updateEditingContactWithVisualIdentity:(id)a3
+- (void)updateEditingContactWithVisualIdentity:(id)identity
 {
-  v4 = a3;
-  [(CNSNaPSetupFlowManager *)self validateAndUpdateAvatarDataForVisualIdentity:v4];
-  v5 = [(CNSNaPSetupFlowManager *)self editingContact];
-  [v4 updateImageForContact:v5];
+  identityCopy = identity;
+  [(CNSNaPSetupFlowManager *)self validateAndUpdateAvatarDataForVisualIdentity:identityCopy];
+  editingContact = [(CNSNaPSetupFlowManager *)self editingContact];
+  [identityCopy updateImageForContact:editingContact];
 
-  v6 = [v4 contacts];
+  contacts = [identityCopy contacts];
 
-  v11 = [v6 firstObject];
+  firstObject = [contacts firstObject];
 
-  v7 = [v11 givenName];
-  v8 = [(CNSNaPSetupFlowManager *)self editingContact];
-  [v8 setGivenName:v7];
+  givenName = [firstObject givenName];
+  editingContact2 = [(CNSNaPSetupFlowManager *)self editingContact];
+  [editingContact2 setGivenName:givenName];
 
-  v9 = [v11 familyName];
-  v10 = [(CNSNaPSetupFlowManager *)self editingContact];
-  [v10 setFamilyName:v9];
+  familyName = [firstObject familyName];
+  editingContact3 = [(CNSNaPSetupFlowManager *)self editingContact];
+  [editingContact3 setFamilyName:familyName];
 }
 
 - (id)sharingSettingsViewControllerForOnboarding
@@ -1893,31 +1893,31 @@ LABEL_16:
   v3 = [[CNMeCardSharingContactNameProvider alloc] initWithContact:self->_editingContact];
   v4 = [[CNMeCardSharingContactAvatarProvider alloc] initWithContact:self->_editingContact];
   v5 = [CNMeCardSharingSettingsViewController alloc];
-  v6 = [(CNSNaPSetupFlowManager *)self contactStore];
+  contactStore = [(CNSNaPSetupFlowManager *)self contactStore];
   LOBYTE(v9) = 1;
-  v7 = [(CNMeCardSharingSettingsViewController *)v5 initForOnboardingWithContactStore:v6 contact:self->_editingContact avatarProvider:v4 nameProvider:v3 sharingEnabled:1 selectedSharingAudience:1 showsWallpaperSuggestionsGalleryPicker:v9 headerMode:[(CNSNaPSetupFlowManager *)self mode]];
+  v7 = [(CNMeCardSharingSettingsViewController *)v5 initForOnboardingWithContactStore:contactStore contact:self->_editingContact avatarProvider:v4 nameProvider:v3 sharingEnabled:1 selectedSharingAudience:1 showsWallpaperSuggestionsGalleryPicker:v9 headerMode:[(CNSNaPSetupFlowManager *)self mode]];
 
   return v7;
 }
 
-- (id)posterPreviewControllerWithPosterConfiguration:(id)a3 providerItem:(id)a4 mode:(int64_t)a5
+- (id)posterPreviewControllerWithPosterConfiguration:(id)configuration providerItem:(id)item mode:(int64_t)mode
 {
-  v7 = a4;
-  v8 = a3;
+  itemCopy = item;
+  configurationCopy = configuration;
   v9 = [CNPosterPreviewViewController alloc];
-  v10 = [(CNSNaPSetupFlowManager *)self editingContact];
-  v11 = [(CNPosterPreviewViewController *)v9 initWithPosterConfiguration:v8 fromProviderItem:v7 contact:v10 editingState:[(CNSNaPSetupFlowManager *)self editingState] isEditingSNaP:[(CNSNaPSetupFlowManager *)self isEditingContactCard]^ 1];
+  editingContact = [(CNSNaPSetupFlowManager *)self editingContact];
+  v11 = [(CNPosterPreviewViewController *)v9 initWithPosterConfiguration:configurationCopy fromProviderItem:itemCopy contact:editingContact editingState:[(CNSNaPSetupFlowManager *)self editingState] isEditingSNaP:[(CNSNaPSetupFlowManager *)self isEditingContactCard]^ 1];
 
   [(CNPosterPreviewViewController *)v11 setDelegate:self];
 
   return v11;
 }
 
-- (id)wallpaperGalleryNavigationControllerForMode:(int64_t)a3
+- (id)wallpaperGalleryNavigationControllerForMode:(int64_t)mode
 {
   v5 = [CNSNaPSuggestionsGalleryViewController alloc];
-  v6 = [(CNSNaPSetupFlowManager *)self editingContact];
-  v7 = [(CNSNaPSuggestionsGalleryViewController *)v5 initWithMode:a3 contact:v6 isEditingSNaP:[(CNSNaPSetupFlowManager *)self isEditingContactCard]^ 1 isOnboarding:[(CNSNaPSetupFlowManager *)self isOnboarding]];
+  editingContact = [(CNSNaPSetupFlowManager *)self editingContact];
+  v7 = [(CNSNaPSuggestionsGalleryViewController *)v5 initWithMode:mode contact:editingContact isEditingSNaP:[(CNSNaPSetupFlowManager *)self isEditingContactCard]^ 1 isOnboarding:[(CNSNaPSetupFlowManager *)self isOnboarding]];
 
   [(CNSNaPSuggestionsGalleryViewController *)v7 setDelegate:self];
   +[(CNVisualIdentityPickerViewController *)CNPhotoPickerViewController];
@@ -1931,15 +1931,15 @@ LABEL_16:
 
 - (id)wallpaperGalleryNavigationController
 {
-  v3 = [(CNSNaPSetupFlowManager *)self mode];
+  mode = [(CNSNaPSetupFlowManager *)self mode];
 
-  return [(CNSNaPSetupFlowManager *)self wallpaperGalleryNavigationControllerForMode:v3];
+  return [(CNSNaPSetupFlowManager *)self wallpaperGalleryNavigationControllerForMode:mode];
 }
 
-- (id)posterEditOptionsNavigationControllerForContact:(id)a3
+- (id)posterEditOptionsNavigationControllerForContact:(id)contact
 {
-  v4 = a3;
-  v5 = [[CNPosterEditOptionsViewController alloc] initWithContact:v4 mode:[(CNSNaPSetupFlowManager *)self mode]];
+  contactCopy = contact;
+  v5 = [[CNPosterEditOptionsViewController alloc] initWithContact:contactCopy mode:[(CNSNaPSetupFlowManager *)self mode]];
 
   [(CNPosterEditOptionsViewController *)v5 setDelegate:self];
   +[(CNVisualIdentityPickerViewController *)CNPhotoPickerViewController];
@@ -1958,15 +1958,15 @@ LABEL_16:
     [(CNSNaPSetupFlowManager *)self dismissOnboardingIfNeeded];
   }
 
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1 && ![(CNSNaPSetupFlowManager *)self isEditingContactCard])
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 && ![(CNSNaPSetupFlowManager *)self isEditingContactCard])
   {
-    v5 = [(CNSNaPSetupFlowManager *)self posterEditOptionsNavigationController];
-    v6 = [v5 presentingViewController];
+    posterEditOptionsNavigationController = [(CNSNaPSetupFlowManager *)self posterEditOptionsNavigationController];
+    presentingViewController = [posterEditOptionsNavigationController presentingViewController];
 
-    if (v6)
+    if (presentingViewController)
     {
       [(CNSNaPSetupFlowManager *)self dismissPosterEditingFlow];
     }
@@ -1977,25 +1977,25 @@ LABEL_16:
   [(CNSNaPSetupFlowManager *)&v7 dealloc];
 }
 
-- (id)posterOnboardingWelcomeNavigationControllerForContact:(id)a3 hasOptionToSkip:(BOOL)a4 hasExistingNickname:(BOOL)a5
+- (id)posterOnboardingWelcomeNavigationControllerForContact:(id)contact hasOptionToSkip:(BOOL)skip hasExistingNickname:(BOOL)nickname
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  v9 = [[CNPosterOnboardingWelcomeViewController alloc] initWithContact:v8];
+  nicknameCopy = nickname;
+  skipCopy = skip;
+  contactCopy = contact;
+  v9 = [[CNPosterOnboardingWelcomeViewController alloc] initWithContact:contactCopy];
 
-  [(CNPosterOnboardingWelcomeViewController *)v9 setHasOptionToSkip:v6];
-  [(CNPosterOnboardingWelcomeViewController *)v9 setHasExistingNickname:v5];
+  [(CNPosterOnboardingWelcomeViewController *)v9 setHasOptionToSkip:skipCopy];
+  [(CNPosterOnboardingWelcomeViewController *)v9 setHasExistingNickname:nicknameCopy];
   [(CNPosterOnboardingWelcomeViewController *)v9 setDelegate:self];
   +[(CNVisualIdentityPickerViewController *)CNPhotoPickerViewController];
   [(CNPosterOnboardingWelcomeViewController *)v9 setPreferredContentSize:?];
-  v10 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v11 = [v10 featureFlags];
-  if ([v11 isFeatureEnabled:26])
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  if ([featureFlags isFeatureEnabled:26])
   {
-    v12 = [(CNSNaPSetupFlowManager *)self multiplePhoneNumbersTiedToAppleID];
+    multiplePhoneNumbersTiedToAppleID = [(CNSNaPSetupFlowManager *)self multiplePhoneNumbersTiedToAppleID];
 
-    if (v12)
+    if (multiplePhoneNumbersTiedToAppleID)
     {
       v13 = objc_opt_new();
       v14 = [[CNPhotoPickerNavigationViewController alloc] initWithRootViewController:v13];
@@ -2069,14 +2069,14 @@ void __116__CNSNaPSetupFlowManager_posterOnboardingWelcomeNavigationControllerFo
   MEMORY[0x1EEE66BB8](v3, editFlowReporter);
 }
 
-- (void)dismissViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)dismissViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v13 = a3;
-  v7 = a5;
+  controllerCopy = controller;
+  completionCopy = completion;
   [(CNPRUISPosterSnapshotController *)self->_snapshotController releaseKeepActiveAssertionForReason:@"CNMeCardSharingEditPosterAvatarFlowManager"];
-  if (v7)
+  if (completionCopy)
   {
-    v8 = _Block_copy(v7);
+    v8 = _Block_copy(completionCopy);
   }
 
   else
@@ -2088,18 +2088,18 @@ void __116__CNSNaPSetupFlowManager_posterOnboardingWelcomeNavigationControllerFo
 
   if (WeakRetained)
   {
-    v10 = [(CNSNaPSetupFlowManager *)self presenterDelegate];
-    [v10 sender:self dismissViewController:v13 completionHandler:v8];
+    presenterDelegate = [(CNSNaPSetupFlowManager *)self presenterDelegate];
+    [presenterDelegate sender:self dismissViewController:controllerCopy completionHandler:v8];
   }
 
   else
   {
-    v11 = [v13 presentingViewController];
+    presentingViewController = [controllerCopy presentingViewController];
 
-    if (v11)
+    if (presentingViewController)
     {
-      v12 = [v13 presentingViewController];
-      [v12 dismissViewControllerAnimated:0 completion:v8];
+      presentingViewController2 = [controllerCopy presentingViewController];
+      [presentingViewController2 dismissViewControllerAnimated:0 completion:v8];
     }
 
     else
@@ -2109,16 +2109,16 @@ void __116__CNSNaPSetupFlowManager_posterOnboardingWelcomeNavigationControllerFo
   }
 }
 
-- (void)dismissNavigationController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)dismissNavigationController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v12 = a3;
-  v8 = a5;
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
   [(CNPRUISPosterSnapshotController *)self->_snapshotController releaseKeepActiveAssertionForReason:@"CNMeCardSharingEditPosterAvatarFlowManager"];
   baseViewController = self->_baseViewController;
   if (baseViewController)
   {
-    [(UIViewController *)baseViewController dismissViewControllerAnimated:v6 completion:v8];
+    [(UIViewController *)baseViewController dismissViewControllerAnimated:animatedCopy completion:completionCopy];
   }
 
   else
@@ -2127,17 +2127,17 @@ void __116__CNSNaPSetupFlowManager_posterOnboardingWelcomeNavigationControllerFo
 
     if (WeakRetained)
     {
-      v11 = [(CNSNaPSetupFlowManager *)self presenterDelegate];
-      [v11 sender:self dismissViewController:v12];
+      presenterDelegate = [(CNSNaPSetupFlowManager *)self presenterDelegate];
+      [presenterDelegate sender:self dismissViewController:controllerCopy];
     }
   }
 }
 
 - (void)dismissOnboardingIfNeeded
 {
-  v3 = [(CNSNaPSetupFlowManager *)self onboardingWelcomeNavigationController];
+  onboardingWelcomeNavigationController = [(CNSNaPSetupFlowManager *)self onboardingWelcomeNavigationController];
 
-  if (v3)
+  if (onboardingWelcomeNavigationController)
   {
     v4 = [objc_opt_class() log];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2146,19 +2146,19 @@ void __116__CNSNaPSetupFlowManager_posterOnboardingWelcomeNavigationControllerFo
       _os_log_impl(&dword_199A75000, v4, OS_LOG_TYPE_DEFAULT, "Dismissing onboarding if needed", v6, 2u);
     }
 
-    v5 = [(CNSNaPSetupFlowManager *)self onboardingWelcomeNavigationController];
-    [v5 dismissViewControllerAnimated:1 completion:0];
+    onboardingWelcomeNavigationController2 = [(CNSNaPSetupFlowManager *)self onboardingWelcomeNavigationController];
+    [onboardingWelcomeNavigationController2 dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)presentNavigationController:(id)a3
+- (void)presentNavigationController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   baseViewController = self->_baseViewController;
-  v8 = v4;
+  v8 = controllerCopy;
   if (baseViewController)
   {
-    [(UIViewController *)baseViewController presentViewController:v4 animated:1 completion:0];
+    [(UIViewController *)baseViewController presentViewController:controllerCopy animated:1 completion:0];
   }
 
   else
@@ -2167,30 +2167,30 @@ void __116__CNSNaPSetupFlowManager_posterOnboardingWelcomeNavigationControllerFo
 
     if (WeakRetained)
     {
-      v7 = [(CNSNaPSetupFlowManager *)self presenterDelegate];
-      [v7 sender:self presentViewController:v8];
+      presenterDelegate = [(CNSNaPSetupFlowManager *)self presenterDelegate];
+      [presenterDelegate sender:self presentViewController:v8];
     }
   }
 }
 
-- (void)startOnboardingFlowWithNicknameContact:(id)a3 meContact:(id)a4
+- (void)startOnboardingFlowWithNicknameContact:(id)contact meContact:(id)meContact
 {
-  v7 = a3 != 0;
-  if (a3)
+  v7 = contact != 0;
+  if (contact)
   {
-    v8 = a3;
+    meContactCopy = contact;
   }
 
   else
   {
-    v8 = a4;
+    meContactCopy = meContact;
   }
 
   self->_isOnboarding = 1;
-  v9 = v8;
-  v10 = a4;
-  v24 = a3;
-  v11 = [v10 mutableCopy];
+  v9 = meContactCopy;
+  meContactCopy2 = meContact;
+  contactCopy2 = contact;
+  v11 = [meContactCopy2 mutableCopy];
   editingContact = self->_editingContact;
   self->_editingContact = v11;
 
@@ -2201,10 +2201,10 @@ void __116__CNSNaPSetupFlowManager_posterOnboardingWelcomeNavigationControllerFo
   v15 = +[CNAvatarPosterCarouselEditingContext contextForCreateNew];
   [(CNSNaPSetupFlowManager *)self setAvatarPosterEditingContext:v15];
 
-  v16 = [MEMORY[0x1E6996BA8] unifiedMeContactMonitor];
-  v17 = [v16 isMeContact:v10];
-  v18 = [(CNSNaPSetupFlowManager *)self imagePickerController];
-  [v18 setIsMeContact:v17];
+  unifiedMeContactMonitor = [MEMORY[0x1E6996BA8] unifiedMeContactMonitor];
+  v17 = [unifiedMeContactMonitor isMeContact:meContactCopy2];
+  imagePickerController = [(CNSNaPSetupFlowManager *)self imagePickerController];
+  [imagePickerController setIsMeContact:v17];
 
   v19 = [v9 mutableCopy];
   v20 = [(CNSNaPSetupFlowManager *)self posterOnboardingWelcomeNavigationControllerForContact:v19 hasOptionToSkip:1 hasExistingNickname:v7];
@@ -2212,64 +2212,64 @@ void __116__CNSNaPSetupFlowManager_posterOnboardingWelcomeNavigationControllerFo
 
   [(CNPRUISPosterSnapshotController *)self->_snapshotController acquireKeepActiveAssertionForReason:@"CNMeCardSharingEditPosterAvatarFlowManager"];
   editFlowReporter = self->_editFlowReporter;
-  v22 = [(CNSNaPSetupFlowManager *)self imagePickerController];
-  -[PosterEditFlowReporter startingFromOnboardingWithMeCard:](editFlowReporter, "startingFromOnboardingWithMeCard:", [v22 isMeContact]);
+  imagePickerController2 = [(CNSNaPSetupFlowManager *)self imagePickerController];
+  -[PosterEditFlowReporter startingFromOnboardingWithMeCard:](editFlowReporter, "startingFromOnboardingWithMeCard:", [imagePickerController2 isMeContact]);
 
-  v23 = [(CNSNaPSetupFlowManager *)self onboardingWelcomeNavigationController];
-  [(CNSNaPSetupFlowManager *)self presentNavigationController:v23];
+  onboardingWelcomeNavigationController = [(CNSNaPSetupFlowManager *)self onboardingWelcomeNavigationController];
+  [(CNSNaPSetupFlowManager *)self presentNavigationController:onboardingWelcomeNavigationController];
 }
 
-- (void)startContactCardFlowForContact:(id)a3 isEditing:(BOOL)a4
+- (void)startContactCardFlowForContact:(id)contact isEditing:(BOOL)editing
 {
-  v4 = a4;
-  v23 = a3;
-  objc_storeStrong(&self->_editingContact, a3);
-  v7 = [[CNVisualIdentity alloc] initWithContact:v23];
+  editingCopy = editing;
+  contactCopy = contact;
+  objc_storeStrong(&self->_editingContact, contact);
+  v7 = [[CNVisualIdentity alloc] initWithContact:contactCopy];
   pendingVisualIdentity = self->_pendingVisualIdentity;
   self->_pendingVisualIdentity = v7;
 
   self->_isEditingContactCard = 1;
   [(CNPRUISPosterSnapshotController *)self->_snapshotController acquireKeepActiveAssertionForReason:@"CNMeCardSharingEditPosterAvatarFlowManager"];
   editFlowReporter = self->_editFlowReporter;
-  v10 = [(CNSNaPSetupFlowManager *)self imagePickerController];
-  -[PosterEditFlowReporter startingFromContactsWithMeCard:isEditing:](editFlowReporter, "startingFromContactsWithMeCard:isEditing:", [v10 isMeContact], v4);
+  imagePickerController = [(CNSNaPSetupFlowManager *)self imagePickerController];
+  -[PosterEditFlowReporter startingFromContactsWithMeCard:isEditing:](editFlowReporter, "startingFromContactsWithMeCard:isEditing:", [imagePickerController isMeContact], editingCopy);
 
   v11 = *MEMORY[0x1E6996540];
-  v12 = [v23 imageData];
-  if (!(*(v11 + 16))(v11, v12))
+  imageData = [contactCopy imageData];
+  if (!(*(v11 + 16))(v11, imageData))
   {
     goto LABEL_6;
   }
 
-  v13 = [v23 wallpaper];
-  v14 = [v13 posterArchiveData];
-  if (((*(v11 + 16))(v11, v14) & 1) == 0)
+  wallpaper = [contactCopy wallpaper];
+  posterArchiveData = [wallpaper posterArchiveData];
+  if (((*(v11 + 16))(v11, posterArchiveData) & 1) == 0)
   {
 
 LABEL_6:
     goto LABEL_7;
   }
 
-  v15 = [v23 identifier];
-  v16 = [(CNSNaPSetupFlowManager *)self recentAvatarsCountForContactIdentifier:v15];
+  identifier = [contactCopy identifier];
+  v16 = [(CNSNaPSetupFlowManager *)self recentAvatarsCountForContactIdentifier:identifier];
 
   if (!v16)
   {
-    v17 = [(CNSNaPSetupFlowManager *)self wallpaperGalleryNavigationController];
-    [(CNSNaPSetupFlowManager *)self setGalleryNavigationController:v17];
+    wallpaperGalleryNavigationController = [(CNSNaPSetupFlowManager *)self wallpaperGalleryNavigationController];
+    [(CNSNaPSetupFlowManager *)self setGalleryNavigationController:wallpaperGalleryNavigationController];
 
-    v18 = [(CNSNaPSetupFlowManager *)self galleryNavigationController];
-    [(CNSNaPSetupFlowManager *)self presentNavigationController:v18];
+    galleryNavigationController = [(CNSNaPSetupFlowManager *)self galleryNavigationController];
+    [(CNSNaPSetupFlowManager *)self presentNavigationController:galleryNavigationController];
 
     [(CNSNaPSetupFlowManager *)self setIsCreatingNewAvatar:1];
     goto LABEL_10;
   }
 
 LABEL_7:
-  v19 = [MEMORY[0x1E69DC938] currentDevice];
-  v20 = [v19 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v20 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     [(CNSNaPSetupFlowManager *)self setMode:1];
   }
@@ -2277,43 +2277,43 @@ LABEL_7:
   v21 = [(CNSNaPSetupFlowManager *)self posterEditOptionsNavigationControllerForContact:self->_editingContact];
   [(CNSNaPSetupFlowManager *)self setPosterEditOptionsNavigationController:v21];
 
-  v22 = [(CNSNaPSetupFlowManager *)self posterEditOptionsNavigationController];
-  [(CNSNaPSetupFlowManager *)self presentNavigationController:v22];
+  posterEditOptionsNavigationController = [(CNSNaPSetupFlowManager *)self posterEditOptionsNavigationController];
+  [(CNSNaPSetupFlowManager *)self presentNavigationController:posterEditOptionsNavigationController];
 
 LABEL_10:
 }
 
-- (void)startEditFlowWithSNaPContact:(id)a3
+- (void)startEditFlowWithSNaPContact:(id)contact
 {
-  objc_storeStrong(&self->_editingContact, a3);
-  v5 = a3;
-  v6 = [[CNVisualIdentity alloc] initWithContact:v5];
+  objc_storeStrong(&self->_editingContact, contact);
+  contactCopy = contact;
+  v6 = [[CNVisualIdentity alloc] initWithContact:contactCopy];
   pendingVisualIdentity = self->_pendingVisualIdentity;
   self->_pendingVisualIdentity = v6;
 
-  v8 = [MEMORY[0x1E6996BA8] unifiedMeContactMonitor];
-  v9 = [v8 isMeContact:v5];
-  v10 = [(CNSNaPSetupFlowManager *)self imagePickerController];
-  [v10 setIsMeContact:v9];
+  unifiedMeContactMonitor = [MEMORY[0x1E6996BA8] unifiedMeContactMonitor];
+  v9 = [unifiedMeContactMonitor isMeContact:contactCopy];
+  imagePickerController = [(CNSNaPSetupFlowManager *)self imagePickerController];
+  [imagePickerController setIsMeContact:v9];
 
   editFlowReporter = self->_editFlowReporter;
-  v12 = [(CNSNaPSetupFlowManager *)self imagePickerController];
-  -[PosterEditFlowReporter startingFromSNAPWithMeCard:](editFlowReporter, "startingFromSNAPWithMeCard:", [v12 isMeContact]);
+  imagePickerController2 = [(CNSNaPSetupFlowManager *)self imagePickerController];
+  -[PosterEditFlowReporter startingFromSNAPWithMeCard:](editFlowReporter, "startingFromSNAPWithMeCard:", [imagePickerController2 isMeContact]);
 
   v13 = [(CNSNaPSetupFlowManager *)self posterEditOptionsNavigationControllerForContact:self->_editingContact];
   [(CNSNaPSetupFlowManager *)self setPosterEditOptionsNavigationController:v13];
 
   [(CNPRUISPosterSnapshotController *)self->_snapshotController acquireKeepActiveAssertionForReason:@"CNMeCardSharingEditPosterAvatarFlowManager"];
-  v14 = [(CNSNaPSetupFlowManager *)self posterEditOptionsNavigationController];
-  [(CNSNaPSetupFlowManager *)self presentNavigationController:v14];
+  posterEditOptionsNavigationController = [(CNSNaPSetupFlowManager *)self posterEditOptionsNavigationController];
+  [(CNSNaPSetupFlowManager *)self presentNavigationController:posterEditOptionsNavigationController];
 }
 
 - (int64_t)defaultModalPresentationStyle
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     return -2;
   }
@@ -2324,28 +2324,28 @@ LABEL_10:
   }
 }
 
-- (void)setGalleryNavigationController:(id)a3
+- (void)setGalleryNavigationController:(id)controller
 {
-  objc_storeStrong(&self->_galleryNavigationController, a3);
-  v5 = a3;
-  v6 = [(CNSNaPSetupFlowManager *)self avatarEditFlowManager];
-  [v6 setBaseNavigationController:v5];
+  objc_storeStrong(&self->_galleryNavigationController, controller);
+  controllerCopy = controller;
+  avatarEditFlowManager = [(CNSNaPSetupFlowManager *)self avatarEditFlowManager];
+  [avatarEditFlowManager setBaseNavigationController:controllerCopy];
 }
 
-- (CNSNaPSetupFlowManager)initWithBaseViewController:(id)a3 contactStore:(id)a4 mode:(int64_t)a5 presenterDelegate:(id)a6
+- (CNSNaPSetupFlowManager)initWithBaseViewController:(id)controller contactStore:(id)store mode:(int64_t)mode presenterDelegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  controllerCopy = controller;
+  storeCopy = store;
+  delegateCopy = delegate;
   v35.receiver = self;
   v35.super_class = CNSNaPSetupFlowManager;
   v14 = [(CNSNaPSetupFlowManager *)&v35 initWithNibName:0 bundle:0];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_baseViewController, a3);
-    objc_storeWeak(&v15->_presenterDelegate, v13);
-    objc_storeStrong(&v15->_contactStore, a4);
+    objc_storeStrong(&v14->_baseViewController, controller);
+    objc_storeWeak(&v15->_presenterDelegate, delegateCopy);
+    objc_storeStrong(&v15->_contactStore, store);
     v16 = objc_alloc_init(CNMeCardSharingEditAvatarFlowManager);
     avatarEditFlowManager = v15->_avatarEditFlowManager;
     v15->_avatarEditFlowManager = v16;
@@ -2356,34 +2356,34 @@ LABEL_10:
     v15->_imagePickerController = v18;
 
     [(CNVisualIdentityImagePickerController *)v15->_imagePickerController setDelegate:v15];
-    v20 = [MEMORY[0x1E6996820] defaultProvider];
-    v21 = [v20 newSerialSchedulerWithName:@"com.apple.ContactsUI.sharedProfileSetup.providerItem.workQueue"];
+    defaultProvider = [MEMORY[0x1E6996820] defaultProvider];
+    v21 = [defaultProvider newSerialSchedulerWithName:@"com.apple.ContactsUI.sharedProfileSetup.providerItem.workQueue"];
     providerItemRenderingQueue = v15->_providerItemRenderingQueue;
     v15->_providerItemRenderingQueue = v21;
 
-    v23 = [MEMORY[0x1E6996820] defaultProvider];
-    v24 = [v23 mainThreadScheduler];
+    defaultProvider2 = [MEMORY[0x1E6996820] defaultProvider];
+    mainThreadScheduler = [defaultProvider2 mainThreadScheduler];
     providerItemCallbackQueue = v15->_providerItemCallbackQueue;
-    v15->_providerItemCallbackQueue = v24;
+    v15->_providerItemCallbackQueue = mainThreadScheduler;
 
     v26 = objc_alloc_init(CNPRUISPosterSnapshotController);
     snapshotController = v15->_snapshotController;
     v15->_snapshotController = v26;
 
-    v28 = [MEMORY[0x1E69DC938] currentDevice];
-    v29 = [v28 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v29 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
-      v30 = 0;
+      modeCopy = 0;
     }
 
     else
     {
-      v30 = a5;
+      modeCopy = mode;
     }
 
-    v15->_mode = v30;
+    v15->_mode = modeCopy;
     v15->_editingState = 0;
     v31 = objc_alloc_init(_TtC10ContactsUI22PosterEditFlowReporter);
     editFlowReporter = v15->_editFlowReporter;

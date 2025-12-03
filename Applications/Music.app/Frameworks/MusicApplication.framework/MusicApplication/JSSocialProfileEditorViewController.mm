@@ -1,15 +1,15 @@
 @interface JSSocialProfileEditorViewController
-- (BOOL)collectionView:(id)a3 tableLayout:(id)a4 shouldIndentWhileEditingRowAtIndexPath:(id)a5;
-- (_TtC16MusicApplication35JSSocialProfileEditorViewController)initWithCollectionViewLayout:(id)a3;
-- (_TtC16MusicApplication35JSSocialProfileEditorViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (double)collectionView:(id)a3 heightForHeaderViewInTableLayout:(id)a4;
-- (double)collectionView:(id)a3 tableLayout:(id)a4 heightForRowAtIndexPath:(id)a5;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (int64_t)collectionView:(id)a3 tableLayout:(id)a4 editingStyleForRowAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4;
-- (void)imagePickerControllerDidCancel:(id)a3;
+- (BOOL)collectionView:(id)view tableLayout:(id)layout shouldIndentWhileEditingRowAtIndexPath:(id)path;
+- (_TtC16MusicApplication35JSSocialProfileEditorViewController)initWithCollectionViewLayout:(id)layout;
+- (_TtC16MusicApplication35JSSocialProfileEditorViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (double)collectionView:(id)view heightForHeaderViewInTableLayout:(id)layout;
+- (double)collectionView:(id)view tableLayout:(id)layout heightForRowAtIndexPath:(id)path;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (int64_t)collectionView:(id)view tableLayout:(id)layout editingStyleForRowAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info;
+- (void)imagePickerControllerDidCancel:(id)cancel;
 - (void)viewDidLoad;
 @end
 
@@ -17,11 +17,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_4E243C();
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
   v7 = sub_AB3820();
   v8 = *(v7 - 8);
@@ -33,13 +33,13 @@
   if (v11)
   {
     v12 = v11;
-    v13 = a4;
-    v14 = a5;
-    v15 = [v12 tableViewCell];
-    if (v15)
+    cellCopy = cell;
+    pathCopy = path;
+    tableViewCell = [v12 tableViewCell];
+    if (tableViewCell)
     {
-      v16 = v15;
-      [v15 setSeparatorStyle:0];
+      v16 = tableViewCell;
+      [tableViewCell setSeparatorStyle:0];
       (*(v8 + 8))(v10, v7);
     }
 
@@ -55,16 +55,16 @@
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v7 = sub_AB3820();
   v8 = *(v7 - 8);
   __chkstk_darwin(v7);
   v10 = &v16 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_AB3790();
-  v11 = a3;
-  v12 = a4;
-  v13 = self;
+  viewCopy = view;
+  pathCopy = path;
+  selfCopy = self;
   v14 = sub_4E3B34();
 
   (*(v8 + 8))(v10, v7);
@@ -72,7 +72,7 @@
   return v14;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
   v9 = sub_AB3820();
   v10 = *(v9 - 8);
@@ -81,20 +81,20 @@
   v13 = sub_AB92A0();
   v15 = v14;
   sub_AB3790();
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = self;
-  v20 = sub_4E44E4(v16, v13, v15, v12);
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
+  selfCopy = self;
+  v20 = sub_4E44E4(viewCopy, v13, v15, v12);
 
   (*(v10 + 8))(v12, v9);
 
   return v20;
 }
 
-- (double)collectionView:(id)a3 heightForHeaderViewInTableLayout:(id)a4
+- (double)collectionView:(id)view heightForHeaderViewInTableLayout:(id)layout
 {
-  [a3 bounds];
+  [view bounds];
   v5 = 128.0;
   if (v4 <= 128.0)
   {
@@ -104,7 +104,7 @@
   return v5 + 32.0;
 }
 
-- (double)collectionView:(id)a3 tableLayout:(id)a4 heightForRowAtIndexPath:(id)a5
+- (double)collectionView:(id)view tableLayout:(id)layout heightForRowAtIndexPath:(id)path
 {
   v7 = sub_AB3820();
   v8 = *(v7 - 8);
@@ -112,17 +112,17 @@
   v10 = &v18 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_AB3790();
   type metadata accessor for SocialProfileEditorCell();
-  v11 = a5;
-  v12 = self;
-  v13 = [(JSSocialProfileEditorViewController *)v12 traitCollection];
-  v14 = sub_722BC(v13, 0.0);
+  pathCopy = path;
+  selfCopy = self;
+  traitCollection = [(JSSocialProfileEditorViewController *)selfCopy traitCollection];
+  v14 = sub_722BC(traitCollection, 0.0);
   v16 = v15;
   (*(v8 + 8))(v10, v7, v14);
 
   return v16;
 }
 
-- (int64_t)collectionView:(id)a3 tableLayout:(id)a4 editingStyleForRowAtIndexPath:(id)a5
+- (int64_t)collectionView:(id)view tableLayout:(id)layout editingStyleForRowAtIndexPath:(id)path
 {
   v5 = sub_AB3820();
   v6 = *(v5 - 8);
@@ -133,7 +133,7 @@
   return 0;
 }
 
-- (BOOL)collectionView:(id)a3 tableLayout:(id)a4 shouldIndentWhileEditingRowAtIndexPath:(id)a5
+- (BOOL)collectionView:(id)view tableLayout:(id)layout shouldIndentWhileEditingRowAtIndexPath:(id)path
 {
   v5 = sub_AB3820();
   v6 = *(v5 - 8);
@@ -144,32 +144,32 @@
   return 0;
 }
 
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info
 {
   type metadata accessor for InfoKey(0);
   sub_4E9BAC(&unk_E05380, 255, type metadata accessor for InfoKey);
   v7 = sub_AB8FF0();
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  sub_4E5770(v8, v7);
+  controllerCopy = controller;
+  infoCopy = info;
+  selfCopy = self;
+  sub_4E5770(controllerCopy, v7);
 }
 
-- (void)imagePickerControllerDidCancel:(id)a3
+- (void)imagePickerControllerDidCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = self;
-  sub_4E5BCC(v4);
+  cancelCopy = cancel;
+  selfCopy = self;
+  sub_4E5BCC(cancelCopy);
 }
 
-- (_TtC16MusicApplication35JSSocialProfileEditorViewController)initWithCollectionViewLayout:(id)a3
+- (_TtC16MusicApplication35JSSocialProfileEditorViewController)initWithCollectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC16MusicApplication35JSSocialProfileEditorViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16MusicApplication35JSSocialProfileEditorViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

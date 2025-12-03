@@ -1,42 +1,42 @@
 @interface WCM_PolicyManager
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 + (id)singleton;
 - (BOOL)fetchWRMdebugPlistDisableLow5GRate;
 - (BOOL)fetchWRMdebugPlistForceRTG;
 - (BOOL)isCellularOnGPSIMDBand;
 - (BOOL)isCellularOnIMD3CellBand;
 - (BOOL)isCellularOnWiFi3FoBand;
-- (BOOL)isWiFiChannel:(int)a3 inChannelMap:(id)a4;
+- (BOOL)isWiFiChannel:(int)channel inChannelMap:(id)map;
 - (BOOL)processDynamicAntennaBlocking;
 - (WCM_PolicyManager)init;
-- (id)getControllerOfId:(int)a3;
-- (id)getLTErFemFrequencyRanges:(BOOL)a3;
-- (id)getNRrFemFrequencyRanges:(BOOL)a3;
+- (id)getControllerOfId:(int)id;
+- (id)getLTErFemFrequencyRanges:(BOOL)ranges;
+- (id)getNRrFemFrequencyRanges:(BOOL)ranges;
 - (id)legacyWiFiChannelsToAvoidFor3FoWiFi;
 - (id)legacyWiFiChannelsToAvoidForIMD2GPS;
 - (id)legacyWiFiChannelsToAvoidForIMD3Cell;
 - (int)cellularCoexBand;
-- (int)parseCenterFreqtoUNIIBand:(unsigned int)a3;
+- (int)parseCenterFreqtoUNIIBand:(unsigned int)band;
 - (unsigned)getBtBlockedAntennaForPencilCoexByPlatform;
 - (unsigned)getWifiAntennaBitmapForPencilCoexByPlatform;
 - (void)audioRouteChanged;
-- (void)combineWifiChannelList:(id)a3 withChannelList:(id)a4;
-- (void)combineWifiChannelList:(id)a3 withChannelList:(id)a4 inAllowedChannelSet:(id)a5;
+- (void)combineWifiChannelList:(id)list withChannelList:(id)channelList;
+- (void)combineWifiChannelList:(id)list withChannelList:(id)channelList inAllowedChannelSet:(id)set;
 - (void)configureBTAntennaSelection;
 - (void)configureForLTECDRXWiFiTimeSharing;
 - (void)configureTimeSharingWifiChannels;
-- (void)configureWCI2BitmapForTimeSharingWifiChannels:(id)a3;
+- (void)configureWCI2BitmapForTimeSharingWifiChannels:(id)channels;
 - (void)configureWiFiChannelMap;
 - (void)configureWiFiChannelsForConditionalMitigation;
 - (void)configureWifiAntennaSelectionForCoex;
 - (void)dealloc;
 - (void)evaluateGen9rFemConfig;
 - (void)evaluateULCARestrictions;
-- (void)getPencilCoexCellRatBand:(char *)a3 band:(unsigned __int16 *)a4;
-- (void)getUpdatedWifiAntennaSelectionEnhConfigsWithbmWifiEnhAntTx000:(unsigned __int16 *)a3 bmWiFiEnhAntTx001:(unsigned __int16 *)a4 bmWiFiEnhAntTx010:(unsigned __int16 *)a5 bmWiFiEnhAntTx011:(unsigned __int16 *)a6 bmWiFiEnhAntTx100:(unsigned __int16 *)a7 bmWiFiEnhAntTx101:(unsigned __int16 *)a8 bmWiFiEnhAntTx110:(unsigned __int16 *)a9 bmWiFiEnhAntTx111:(unsigned __int16 *)a10 bmWiFiBand:(unsigned __int16 *)a11;
-- (void)handleBTCoexConnectedDevicesEvent_numA2DP:(unint64_t)a3 numLLA:(unint64_t)a4 numHID:(unint64_t)a5 numSCO:(unint64_t)a6 numeSCO:(unint64_t)a7 numLE:(unint64_t)a8 numLEA:(unint64_t)a9;
-- (void)handleBTCoexStatsEvent_tddCnt:(unsigned int)a3 hybridCnt:(unsigned int)a4 btDurMs:(unsigned int)a5 totDurMs:(unsigned int)a6 parallelCnt:(unsigned int)a7 btDurAirMs:(unsigned int)a8 wlrssiCoex:(char)a9 btrssiCoex:(char)a10;
-- (void)handleBTCoexWiFiStateEvent:(int)a3 wifiChannel:(unsigned int)a4;
+- (void)getPencilCoexCellRatBand:(char *)band band:(unsigned __int16 *)a4;
+- (void)getUpdatedWifiAntennaSelectionEnhConfigsWithbmWifiEnhAntTx000:(unsigned __int16 *)tx000 bmWiFiEnhAntTx001:(unsigned __int16 *)tx001 bmWiFiEnhAntTx010:(unsigned __int16 *)tx010 bmWiFiEnhAntTx011:(unsigned __int16 *)tx011 bmWiFiEnhAntTx100:(unsigned __int16 *)tx100 bmWiFiEnhAntTx101:(unsigned __int16 *)tx101 bmWiFiEnhAntTx110:(unsigned __int16 *)tx110 bmWiFiEnhAntTx111:(unsigned __int16 *)self0 bmWiFiBand:(unsigned __int16 *)self1;
+- (void)handleBTCoexConnectedDevicesEvent_numA2DP:(unint64_t)p numLLA:(unint64_t)a numHID:(unint64_t)d numSCO:(unint64_t)o numeSCO:(unint64_t)cO numLE:(unint64_t)e numLEA:(unint64_t)eA;
+- (void)handleBTCoexStatsEvent_tddCnt:(unsigned int)cnt hybridCnt:(unsigned int)hybridCnt btDurMs:(unsigned int)ms totDurMs:(unsigned int)durMs parallelCnt:(unsigned int)parallelCnt btDurAirMs:(unsigned int)airMs wlrssiCoex:(char)coex btrssiCoex:(char)self0;
+- (void)handleBTCoexWiFiStateEvent:(int)event wifiChannel:(unsigned int)channel;
 - (void)handleBTConnectionChange;
 - (void)handleBTLeConn;
 - (void)handleBTLeDiscoveryScanStateChange;
@@ -46,19 +46,19 @@
 - (void)handleCallLQMStateChange;
 - (void)handleCameraStateIndication;
 - (void)handleCellularNetworkUpdate;
-- (void)handleControllerAvailability:(unint64_t)a3;
+- (void)handleControllerAvailability:(unint64_t)availability;
 - (void)handleFTCall;
 - (void)handleHPCellularSessionEnd;
 - (void)handleHPCellularSessionStart;
 - (void)handleLeADVePAStateChange;
-- (void)handleLow5GRate:(BOOL)a3 forceReset:(BOOL)a4;
+- (void)handleLow5GRate:(BOOL)rate forceReset:(BOOL)reset;
 - (void)handleMavCameraStateIndication;
 - (void)handleMedtronicConnection;
 - (void)handlePencilStateIndication;
 - (void)handleRCU2ContentionChange;
-- (void)handleSessionNotification:(unint64_t)a3;
+- (void)handleSessionNotification:(unint64_t)notification;
 - (void)handleWiFiBTAirplayChange;
-- (void)handleWiFiBTCatsChange:(BOOL)a3;
+- (void)handleWiFiBTCatsChange:(BOOL)change;
 - (void)handleWiFiBTCoexChange;
 - (void)handleWiFiBTULOFDMAChange;
 - (void)handleWiFiConfigChange;
@@ -72,24 +72,24 @@
 - (void)legacyType7MsgForWiFiChannels;
 - (void)queryHPCellularInitialState;
 - (void)refreshWiFiWCI2Bitmap;
-- (void)sendNRFrequencyBandUpdateForMic:(double)a3 dlHighFreq:(double)a4 ulLowFreq:(double)a5 ulHighFreq:(double)a6;
+- (void)sendNRFrequencyBandUpdateForMic:(double)mic dlHighFreq:(double)freq ulLowFreq:(double)lowFreq ulHighFreq:(double)highFreq;
 - (void)sendRCU2UpdateMessage;
-- (void)sendULFrequencyUpdates:(int64_t)a3 ulCenterFreq:(double)a4 ulBandwidth:(double)a5;
+- (void)sendULFrequencyUpdates:(int64_t)updates ulCenterFreq:(double)freq ulBandwidth:(double)bandwidth;
 - (void)startHomeKitTimer;
 - (void)stopHomeKitTimer;
 - (void)submitWifiAntselPolicyStats;
-- (void)updateAntselPolicyStatsArray:(id)a3;
+- (void)updateAntselPolicyStatsArray:(id)array;
 - (void)updateBTRCU2TimingArray;
 - (void)updateBTStateChangeToCellular;
 - (void)updateCTSacDriverRemoveAllFromWifiClient;
 - (void)updateCTSacDriverWifiInfo;
 - (void)updateCellTxPowerLimit;
-- (void)updateCellularPencilCoex_TriggeredByPowerOnEvent:(BOOL)a3;
-- (void)updateControllerState:(unint64_t)a3;
+- (void)updateCellularPencilCoex_TriggeredByPowerOnEvent:(BOOL)event;
+- (void)updateControllerState:(unint64_t)state;
 - (void)updateGpsbandsInfoForBB;
 - (void)updateGpsbandsInfoForBBv2;
 - (void)updateHPCellularMetric;
-- (void)updateLqmState:(int)a3 deviceRRCState:(unsigned __int8)a4 subscriptionSlot:(int64_t)a5;
+- (void)updateLqmState:(int)state deviceRRCState:(unsigned __int8)cState subscriptionSlot:(int64_t)slot;
 - (void)updatePHSWifiChannels;
 - (void)updatePencilCoexActivationCondition;
 - (void)updateWiFiBTConnectionReport;
@@ -105,22 +105,22 @@
 - (void)updateWiFiRCU2ULOFDMAStatus;
 - (void)updateWifiAntennaSelectionV1V2Configs;
 - (void)updateWifiOCLChannelList;
-- (void)wrmCACoexSubmit_BTAFHIssue:(unsigned int)a3 issueType:(unsigned int)a4;
-- (void)wrmCACoexSubmit_BTAFHMap:(id)a3;
+- (void)wrmCACoexSubmit_BTAFHIssue:(unsigned int)issue issueType:(unsigned int)type;
+- (void)wrmCACoexSubmit_BTAFHMap:(id)map;
 @end
 
 @implementation WCM_PolicyManager
 
 + (id)singleton
 {
-  objc_sync_enter(a1);
+  objc_sync_enter(self);
   v3 = qword_1002B8130;
   if (qword_1002B8130)
   {
     goto LABEL_25;
   }
 
-  v11.receiver = a1;
+  v11.receiver = self;
   v11.super_class = &OBJC_METACLASS___WCM_PolicyManager;
   qword_1002B8130 = [objc_msgSendSuper2(&v11 allocWithZone:{0), "init"}];
   if ([objc_msgSend(qword_1002B8130 "platformManager")])
@@ -196,7 +196,7 @@ LABEL_23:
 
 LABEL_25:
   v3[36] = 0;
-  objc_sync_exit(a1);
+  objc_sync_exit(self);
   return v3;
 }
 
@@ -214,34 +214,34 @@ LABEL_25:
 
     if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"CoexBBUnifiedSensorInfoSupport"])
     {
-      v3 = [(WCM_R1Controller *)[(WCM_PolicyManager *)self rcu1Controller] mRCU1PowerOn];
-      v4 = [(WCM_PolicyManager *)self cellularController];
-      v5 = [(WCM_PolicyManager *)self rcu1Controller];
-      if (v3)
+      mRCU1PowerOn = [(WCM_R1Controller *)[(WCM_PolicyManager *)self rcu1Controller] mRCU1PowerOn];
+      cellularController = [(WCM_PolicyManager *)self cellularController];
+      rcu1Controller = [(WCM_PolicyManager *)self rcu1Controller];
+      if (mRCU1PowerOn)
       {
-        v6 = [(WCM_R1Controller *)v5 mRCU1ChannelNum];
+        mRCU1ChannelNum = [(WCM_R1Controller *)rcu1Controller mRCU1ChannelNum];
       }
 
       else
       {
-        v6 = [(WCM_R1Controller *)v5 mRCU1PowerOn];
+        mRCU1ChannelNum = [(WCM_R1Controller *)rcu1Controller mRCU1PowerOn];
       }
 
-      v7 = v6;
-      v8 = [(WCM_R1Controller *)[(WCM_PolicyManager *)self rcu1Controller] mRCU1UseCaseNum];
+      v7 = mRCU1ChannelNum;
+      mRCU1UseCaseNum = [(WCM_R1Controller *)[(WCM_PolicyManager *)self rcu1Controller] mRCU1UseCaseNum];
 
-      [(WCM_CellularController *)v4 sendBBCoexSensorMessage:3 band:v7 usecase:v8];
+      [(WCM_CellularController *)cellularController sendBBCoexSensorMessage:3 band:v7 usecase:mRCU1UseCaseNum];
     }
   }
 }
 
 - (void)updateWiFiRCU1ModeChange
 {
-  v3 = [(WCM_R1Controller *)[(WCM_PolicyManager *)self rcu1Controller] mRCU1PowerOn];
-  v4 = [(WCM_R1Controller *)[(WCM_PolicyManager *)self rcu1Controller] mRCU1ChannelNum];
-  v5 = [(WCM_R1Controller *)[(WCM_PolicyManager *)self rcu1Controller] mRCU1NbBandMask];
-  v6 = [(WCM_R1Controller *)[(WCM_PolicyManager *)self rcu1Controller] mRCU15GHzInUse];
-  v7 = [(WCM_R1Controller *)[(WCM_PolicyManager *)self rcu1Controller] mRCU1CurrentMode];
+  mRCU1PowerOn = [(WCM_R1Controller *)[(WCM_PolicyManager *)self rcu1Controller] mRCU1PowerOn];
+  mRCU1ChannelNum = [(WCM_R1Controller *)[(WCM_PolicyManager *)self rcu1Controller] mRCU1ChannelNum];
+  mRCU1NbBandMask = [(WCM_R1Controller *)[(WCM_PolicyManager *)self rcu1Controller] mRCU1NbBandMask];
+  mRCU15GHzInUse = [(WCM_R1Controller *)[(WCM_PolicyManager *)self rcu1Controller] mRCU15GHzInUse];
+  mRCU1CurrentMode = [(WCM_R1Controller *)[(WCM_PolicyManager *)self rcu1Controller] mRCU1CurrentMode];
   if (![(WCM_PolicyManager *)self wifiController])
   {
     v12 = 0;
@@ -249,32 +249,32 @@ LABEL_25:
   }
 
   v8 = [objc_msgSend(+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")];
-  v9 = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiState];
-  v10 = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] didWiFiDeviceReset];
-  v11 = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] powerState];
+  wifiState = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiState];
+  didWiFiDeviceReset = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] didWiFiDeviceReset];
+  powerState = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] powerState];
   if (v8)
   {
-    if (v11 & v3)
+    if (powerState & mRCU1PowerOn)
     {
-      if (v5)
+      if (mRCU1NbBandMask)
       {
-        v4 = 5;
+        mRCU1ChannelNum = 5;
       }
 
       v12 = 257;
-      if (v10)
+      if (didWiFiDeviceReset)
       {
         goto LABEL_20;
       }
 
 LABEL_9:
-      v10 = 0;
+      didWiFiDeviceReset = 0;
       goto LABEL_21;
     }
 
 LABEL_19:
     v12 = 0;
-    if (!v10)
+    if (!didWiFiDeviceReset)
     {
       goto LABEL_21;
     }
@@ -282,9 +282,9 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (v9 == 3)
+  if (wifiState == 3)
   {
-    v13 = v11;
+    v13 = powerState;
   }
 
   else
@@ -297,56 +297,56 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v12 = v4 == 5 && v3;
-  if (!v10)
+  v12 = mRCU1ChannelNum == 5 && mRCU1PowerOn;
+  if (!didWiFiDeviceReset)
   {
     goto LABEL_9;
   }
 
 LABEL_20:
-  v10 = 1;
+  didWiFiDeviceReset = 1;
   [WCM_Logging logLevel:2 message:@"updateWiFiRCU1ModeChange wifiReset (%d)", 1];
 LABEL_21:
-  v14 = v10;
-  if (v12 != v7)
+  v14 = didWiFiDeviceReset;
+  if (v12 != mRCU1CurrentMode)
   {
-    [WCM_Logging logLevel:2 message:@"updateWiFiRCU1ModeChange mode change old (0x%04x) new (0x%04x)", v7, v12];
+    [WCM_Logging logLevel:2 message:@"updateWiFiRCU1ModeChange mode change old (0x%04x) new (0x%04x)", mRCU1CurrentMode, v12];
     [(WCM_R1Controller *)[(WCM_PolicyManager *)self rcu1Controller] setMRCU1CurrentMode:v12];
     v14 = 1;
   }
 
-  if (word_1002B7A28 != v4)
+  if (word_1002B7A28 != mRCU1ChannelNum)
   {
-    [WCM_Logging logLevel:2 message:@"updateWiFiRCU1ModeChange chan change old (%d) new (%d)", word_1002B7A28, v4];
-    word_1002B7A28 = v4;
-    v10 = 1;
+    [WCM_Logging logLevel:2 message:@"updateWiFiRCU1ModeChange chan change old (%d) new (%d)", word_1002B7A28, mRCU1ChannelNum];
+    word_1002B7A28 = mRCU1ChannelNum;
+    didWiFiDeviceReset = 1;
   }
 
-  if (v3 != word_1002B818E)
+  if (mRCU1PowerOn != word_1002B818E)
   {
-    [WCM_Logging logLevel:2 message:@"updateWiFiRCU1ModeChange pwr change old (%d) new (%d)", word_1002B818E, v3];
-    word_1002B818E = v3;
-    if (!v3)
+    [WCM_Logging logLevel:2 message:@"updateWiFiRCU1ModeChange pwr change old (%d) new (%d)", word_1002B818E, mRCU1PowerOn];
+    word_1002B818E = mRCU1PowerOn;
+    if (!mRCU1PowerOn)
     {
-      v4 = 0;
+      mRCU1ChannelNum = 0;
     }
 
-    v10 = 1;
+    didWiFiDeviceReset = 1;
     goto LABEL_31;
   }
 
-  if (v14 | v10)
+  if (v14 | didWiFiDeviceReset)
   {
 LABEL_31:
-    [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] updateWiFiRCU1ModeChanged:v14 andChannelChanged:v10 andMode:[NSNumber andChannel:"numberWithUnsignedInt:" numberWithUnsignedInt:v12], [NSNumber numberWithShort:v4]];
+    [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] updateWiFiRCU1ModeChanged:v14 andChannelChanged:didWiFiDeviceReset andMode:[NSNumber andChannel:"numberWithUnsignedInt:" numberWithUnsignedInt:v12], [NSNumber numberWithShort:mRCU1ChannelNum]];
   }
 
-  if (word_1002B8190 != v6)
+  if (word_1002B8190 != mRCU15GHzInUse)
   {
     if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"WiFiFigaroCoex"])
     {
-      [(WCM_BTController *)[(WCM_PolicyManager *)self btController] updateUWB5GHzActive:v6];
-      word_1002B8190 = v6;
+      [(WCM_BTController *)[(WCM_PolicyManager *)self btController] updateUWB5GHzActive:mRCU15GHzInUse];
+      word_1002B8190 = mRCU15GHzInUse;
     }
   }
 }
@@ -357,23 +357,23 @@ LABEL_31:
   {
     if ([(WCM_PolicyManager *)self wifiController])
     {
-      v3 = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] powerState];
-      v4 = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiState];
-      if (v4 == 4 || v4 == 3)
+      powerState = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] powerState];
+      wifiState = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiState];
+      if (wifiState == 4 || wifiState == 3)
       {
         v5 = 2;
       }
 
       else
       {
-        v5 = v4 == 2;
+        v5 = wifiState == 2;
       }
     }
 
     else
     {
       v5 = 0;
-      v3 = 0;
+      powerState = 0;
     }
 
     if ([objc_msgSend(+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")])
@@ -383,65 +383,65 @@ LABEL_31:
 
     if ([(WCM_PolicyManager *)self btController])
     {
-      v6 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] powerState];
-      v7 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] getAny5GHzBTDevicesConnected];
+      powerState2 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] powerState];
+      getAny5GHzBTDevicesConnected = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] getAny5GHzBTDevicesConnected];
     }
 
     else
     {
-      v6 = 0;
-      v7 = 0;
+      powerState2 = 0;
+      getAny5GHzBTDevicesConnected = 0;
     }
 
-    v8 = [(WCM_PolicyManager *)self rcu1Controller];
+    rcu1Controller = [(WCM_PolicyManager *)self rcu1Controller];
 
-    [(WCM_R1Controller *)v8 sendRCU1Message:v3 wifiBand:v5 btPowerState:v6 btBand:v7 isForce:0];
+    [(WCM_R1Controller *)rcu1Controller sendRCU1Message:powerState wifiBand:v5 btPowerState:powerState2 btBand:getAny5GHzBTDevicesConnected isForce:0];
   }
 }
 
 - (void)handleWiFiBTCoexChange
 {
-  v46 = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiState];
+  wifiState = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiState];
   *(&v47 + 1) = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] numSCODevice];
   *&v47 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] numeSCODevice];
-  v3 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] getNum2GHzAclA2DPDevices];
-  v4 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] numHIDDevice];
-  v48 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] numLEDevice];
-  v49 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] numLEADevice];
-  v5 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] numLLADevice];
-  v6 = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] getPhyMode];
+  getNum2GHzAclA2DPDevices = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] getNum2GHzAclA2DPDevices];
+  numHIDDevice = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] numHIDDevice];
+  numLEDevice = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] numLEDevice];
+  numLEADevice = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] numLEADevice];
+  numLLADevice = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] numLLADevice];
+  getPhyMode = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] getPhyMode];
   if ([objc_msgSend(+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")])
   {
-    v7 = [(WCM_CtrXPCClient *)[(WCM_RCU2Controller *)[(WCM_PolicyManager *)self rcu2Controller] threadClient] getRCU2Status];
-    [(WCM_BTController *)[(WCM_PolicyManager *)self btController] updateThreadRadioStatus:v7];
+    getRCU2Status = [(WCM_CtrXPCClient *)[(WCM_RCU2Controller *)[(WCM_PolicyManager *)self rcu2Controller] threadClient] getRCU2Status];
+    [(WCM_BTController *)[(WCM_PolicyManager *)self btController] updateThreadRadioStatus:getRCU2Status];
   }
 
   else
   {
-    v7 = 0;
+    getRCU2Status = 0;
   }
 
-  [WCM_Logging logLevel:4 message:@"threadActive is %d", v7];
+  [WCM_Logging logLevel:4 message:@"threadActive is %d", getRCU2Status];
   if (self->_forceRealTimeAWDL)
   {
     [WCM_Logging logLevel:2 message:@"Forcing AWDL RTG Active due to defaults write"];
     [(WCM_BTController *)[(WCM_PolicyManager *)self btController] updateAWDLRTGActive:1];
   }
 
-  [WCM_Logging logLevel:2 message:@"Handle WiFi/BT Coex change phyMode11ax: %d", v6 == 6];
+  [WCM_Logging logLevel:2 message:@"Handle WiFi/BT Coex change phyMode11ax: %d", getPhyMode == 6];
   self->_coexProfile2GTDDReason = 0;
   [WCM_Logging logLevel:2 message:@"Handle WiFi/BT Coex change -  findMyPencilScanActive(%d)", self->_findMyPencilScanActive];
   if ([objc_msgSend(+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")] && -[WCM_WiFiController powerState](-[WCM_PolicyManager wifiController](self, "wifiController"), "powerState"))
   {
     [WCM_Logging logLevel:2 message:@"Handle WiFi/BT Coex change - WIFI_BT_PROFILE"];
-    if ([(WCM_BTController *)[(WCM_PolicyManager *)self btController] powerState]&& (v47 != 0 || v3 || v4 || v48))
+    if ([(WCM_BTController *)[(WCM_PolicyManager *)self btController] powerState]&& (v47 != 0 || getNum2GHzAclA2DPDevices || numHIDDevice || numLEDevice))
     {
-      if (*(&v47 + 1) || !(v4 | v48) || v47 || v3 || v49)
+      if (*(&v47 + 1) || !(numHIDDevice | numLEDevice) || v47 || getNum2GHzAclA2DPDevices || numLEADevice)
       {
-        if (v47 == 0 || v4 || v48)
+        if (v47 == 0 || numHIDDevice || numLEDevice)
         {
-          v8 = [(WCM_PolicyManager *)self wifiController];
-          if (v3 != 1 || v4 || v48)
+          wifiController = [(WCM_PolicyManager *)self wifiController];
+          if (getNum2GHzAclA2DPDevices != 1 || numHIDDevice || numLEDevice)
           {
             v9 = 4;
           }
@@ -454,21 +454,21 @@ LABEL_31:
 
         else
         {
-          v8 = [(WCM_PolicyManager *)self wifiController];
+          wifiController = [(WCM_PolicyManager *)self wifiController];
           v9 = 2;
         }
       }
 
       else
       {
-        v8 = [(WCM_PolicyManager *)self wifiController];
+        wifiController = [(WCM_PolicyManager *)self wifiController];
         v9 = 1;
       }
     }
 
     else
     {
-      v8 = [(WCM_PolicyManager *)self wifiController];
+      wifiController = [(WCM_PolicyManager *)self wifiController];
       v9 = 0;
     }
 
@@ -487,7 +487,7 @@ LABEL_31:
 
     enablePencilCoexTDDProfile = self->_enablePencilCoexTDDProfile;
     findMyPencilScanActive = self->_findMyPencilScanActive;
-    if (enablePencilCoexTDDProfile || v7 || findMyPencilScanActive)
+    if (enablePencilCoexTDDProfile || getRCU2Status || findMyPencilScanActive)
     {
       goto LABEL_146;
     }
@@ -495,26 +495,26 @@ LABEL_31:
 LABEL_29:
     if ([(WCM_BTController *)[(WCM_PolicyManager *)self btController] getAny2GHzBTDevicesConnected])
     {
-      if (v4 | v48 && ![(WCM_BTController *)[(WCM_PolicyManager *)self btController] get2GHzSub15msAudioDevicesConnected]&& !v3 && !v49)
+      if (numHIDDevice | numLEDevice && ![(WCM_BTController *)[(WCM_PolicyManager *)self btController] get2GHzSub15msAudioDevicesConnected]&& !getNum2GHzAclA2DPDevices && !numLEADevice)
       {
-        v8 = [(WCM_PolicyManager *)self wifiController];
+        wifiController = [(WCM_PolicyManager *)self wifiController];
         v9 = 1;
 LABEL_47:
         v10 = 6;
 LABEL_48:
-        [(WCM_WiFiController *)v8 updateWiFiBTCoexActiveProfileFor2G:v9 and5G:v10];
+        [(WCM_WiFiController *)wifiController updateWiFiBTCoexActiveProfileFor2G:v9 and5G:v10];
         goto LABEL_49;
       }
 
-      if ([(WCM_BTController *)[(WCM_PolicyManager *)self btController] get2GHzSub15msAudioDevicesConnected]&& !v4 && !v48)
+      if ([(WCM_BTController *)[(WCM_PolicyManager *)self btController] get2GHzSub15msAudioDevicesConnected]&& !numHIDDevice && !numLEDevice)
       {
-        v8 = [(WCM_PolicyManager *)self wifiController];
+        wifiController = [(WCM_PolicyManager *)self wifiController];
         v9 = 2;
         goto LABEL_47;
       }
 
-      v8 = [(WCM_PolicyManager *)self wifiController];
-      if (v3 == 1 && !v4 && !v48)
+      wifiController = [(WCM_PolicyManager *)self wifiController];
+      if (getNum2GHzAclA2DPDevices == 1 && !numHIDDevice && !numLEDevice)
       {
         v9 = 3;
         goto LABEL_47;
@@ -526,7 +526,7 @@ LABEL_46:
     }
 
 LABEL_36:
-    v8 = [(WCM_PolicyManager *)self wifiController];
+    wifiController = [(WCM_PolicyManager *)self wifiController];
     v9 = 0;
     goto LABEL_47;
   }
@@ -542,7 +542,7 @@ LABEL_36:
     v13 = @"Handle WiFi/BT Coex change- WIFI_BT_EXT_PROFILE- BT is not power on- set TDD profile";
 LABEL_45:
     [WCM_Logging logLevel:2 message:v13];
-    v8 = [(WCM_PolicyManager *)self wifiController];
+    wifiController = [(WCM_PolicyManager *)self wifiController];
     goto LABEL_46;
   }
 
@@ -554,13 +554,13 @@ LABEL_45:
 
   enablePencilCoexTDDProfile = self->_enablePencilCoexTDDProfile;
   findMyPencilScanActive = self->_findMyPencilScanActive;
-  if (!enablePencilCoexTDDProfile && !v7 && !findMyPencilScanActive)
+  if (!enablePencilCoexTDDProfile && !getRCU2Status && !findMyPencilScanActive)
   {
     goto LABEL_29;
   }
 
 LABEL_146:
-  [WCM_Logging logLevel:2 message:@"Setting TDD profile for 2.4GHz - _enablePencilCoexTDDProfile || _findMyPencilScanActive || threadActive is (%d || %d || %d)", enablePencilCoexTDDProfile, findMyPencilScanActive, v7];
+  [WCM_Logging logLevel:2 message:@"Setting TDD profile for 2.4GHz - _enablePencilCoexTDDProfile || _findMyPencilScanActive || threadActive is (%d || %d || %d)", enablePencilCoexTDDProfile, findMyPencilScanActive, getRCU2Status];
   [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] updateWiFiBTCoexActiveProfileFor2G:4 and5G:6];
   if (self->_enablePencilCoexTDDProfile)
   {
@@ -604,21 +604,21 @@ LABEL_78:
     {
       if ([objc_msgSend(+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")])
       {
-        v18 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] get2GHzSub15msNonSCOConnected];
-        if (v6 == 6 && v18)
+        get2GHzSub15msNonSCOConnected = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] get2GHzSub15msNonSCOConnected];
+        if (getPhyMode == 6 && get2GHzSub15msNonSCOConnected)
         {
           v14 = @"Handle WiFi/BT Coex 11ax AND Sub15msBTAudio active";
           goto LABEL_77;
         }
 
-        v40 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] get2GHzSub15msNonSCOConnected];
+        get2GHzSub15msNonSCOConnected2 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] get2GHzSub15msNonSCOConnected];
         v41 = "InActive";
-        if (v40)
+        if (get2GHzSub15msNonSCOConnected2)
         {
           v41 = "Active";
         }
 
-        [WCM_Logging logLevel:2 message:@"Handle WiFi/BT Coex 11ax(%d) OR Sub15msBTAudio(%s) link not active", v6 == 6, v41];
+        [WCM_Logging logLevel:2 message:@"Handle WiFi/BT Coex 11ax(%d) OR Sub15msBTAudio(%s) link not active", getPhyMode == 6, v41];
       }
 
       else
@@ -628,20 +628,20 @@ LABEL_78:
           goto LABEL_79;
         }
 
-        if ([(WCM_BTController *)[(WCM_PolicyManager *)self btController] get2GHzSub15msNonSCOConnected]&& v4 >= 2)
+        if ([(WCM_BTController *)[(WCM_PolicyManager *)self btController] get2GHzSub15msNonSCOConnected]&& numHIDDevice >= 2)
         {
           v14 = @"Handle WiFi/BT Coex eSCOplus2HID true";
           goto LABEL_77;
         }
 
-        v42 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] get2GHzSub15msNonSCOConnected];
+        get2GHzSub15msNonSCOConnected3 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] get2GHzSub15msNonSCOConnected];
         v43 = "InActive";
-        if (v42)
+        if (get2GHzSub15msNonSCOConnected3)
         {
           v43 = "Active";
         }
 
-        [WCM_Logging logLevel:2 message:@"Handle WiFi/BT Coex Sub15msBTAudio: %s, numHID: %lu", v43, v4];
+        [WCM_Logging logLevel:2 message:@"Handle WiFi/BT Coex Sub15msBTAudio: %s, numHID: %lu", v43, numHIDDevice];
       }
 
       if ([(WCM_BTController *)[(WCM_PolicyManager *)self btController] get2GHzSub15msNonSCOConnected])
@@ -653,22 +653,22 @@ LABEL_78:
     }
 
     [WCM_Logging logLevel:2 message:@"Handle WiFi/BT Coex eSCOplus2HID state %d", byte_1002B813F];
-    if ([(WCM_BTController *)[(WCM_PolicyManager *)self btController] get2GHzSub15msNonSCOConnected]&& v4 >= 2 && (byte_1002B813F & 1) == 0)
+    if ([(WCM_BTController *)[(WCM_PolicyManager *)self btController] get2GHzSub15msNonSCOConnected]&& numHIDDevice >= 2 && (byte_1002B813F & 1) == 0)
     {
       byte_1002B813F = 1;
-      v15 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] get2GHzSub15msNonSCOConnected];
+      get2GHzSub15msNonSCOConnected4 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] get2GHzSub15msNonSCOConnected];
       v16 = "InActive";
-      if (v15)
+      if (get2GHzSub15msNonSCOConnected4)
       {
         v16 = "Active";
       }
 
-      [WCM_Logging logLevel:2 message:@"Handle WiFi/BT Coex Sub15msBTAudio: %s, numHID: %lu", v16, v4];
+      [WCM_Logging logLevel:2 message:@"Handle WiFi/BT Coex Sub15msBTAudio: %s, numHID: %lu", v16, numHIDDevice];
       byte_1002B813E = 1;
     }
 
-    v17 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] get2GHzSub15msNonSCOConnected];
-    if (v6 == 6 && v17 && (byte_1002B813F & 1) == 0)
+    get2GHzSub15msNonSCOConnected5 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] get2GHzSub15msNonSCOConnected];
+    if (getPhyMode == 6 && get2GHzSub15msNonSCOConnected5 && (byte_1002B813F & 1) == 0)
     {
       [WCM_Logging logLevel:2 message:@"Handle WiFi/BT Coex 11ax AND eSCO link active"];
       byte_1002B813E = 1;
@@ -677,7 +677,7 @@ LABEL_78:
     if (![(WCM_BTController *)[(WCM_PolicyManager *)self btController] get2GHzSub15msNonSCOConnected])
     {
       byte_1002B813F = 0;
-      [WCM_Logging logLevel:2 message:@"Handle WiFi/BT Coex Sub15msBTAudio: InActive, numHID: %lu", v4];
+      [WCM_Logging logLevel:2 message:@"Handle WiFi/BT Coex Sub15msBTAudio: InActive, numHID: %lu", numHIDDevice];
       goto LABEL_72;
     }
   }
@@ -685,36 +685,36 @@ LABEL_78:
 LABEL_79:
   v20 = byte_1002B813E;
   [WCM_Logging logLevel:2 message:@"Handle WiFi/BT Coex LA final enable(%d) useCase(%d)", byte_1002B813E, byte_1002B813E];
-  v21 = [(WCM_PolicyManager *)self wifiController];
-  [(WCM_WiFiController *)v21 updateWiFiLimitedAggregationActiveStatus:byte_1002B813E andUseCase:v20];
-  if ([objc_msgSend(+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")] && -[WCM_WiFiController powerState](-[WCM_PolicyManager wifiController](self, "wifiController"), "powerState") && byte_1002B8140 != (v3 != 0))
+  wifiController2 = [(WCM_PolicyManager *)self wifiController];
+  [(WCM_WiFiController *)wifiController2 updateWiFiLimitedAggregationActiveStatus:byte_1002B813E andUseCase:v20];
+  if ([objc_msgSend(+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")] && -[WCM_WiFiController powerState](-[WCM_PolicyManager wifiController](self, "wifiController"), "powerState") && byte_1002B8140 != (getNum2GHzAclA2DPDevices != 0))
   {
-    [WCM_Logging logLevel:2 message:@"Handle WiFi/BT Coex send Wifi controller A2DP status to %d", v3 != 0];
-    [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] updateWiFiA2DPActiveStatus:v3 != 0];
-    byte_1002B8140 = v3 != 0;
+    [WCM_Logging logLevel:2 message:@"Handle WiFi/BT Coex send Wifi controller A2DP status to %d", getNum2GHzAclA2DPDevices != 0];
+    [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] updateWiFiA2DPActiveStatus:getNum2GHzAclA2DPDevices != 0];
+    byte_1002B8140 = getNum2GHzAclA2DPDevices != 0;
   }
 
-  if ([objc_msgSend(+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")] && -[WCM_WiFiController powerState](-[WCM_PolicyManager wifiController](self, "wifiController"), "powerState") && byte_1002B8141 != (v5 != 0))
+  if ([objc_msgSend(+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")] && -[WCM_WiFiController powerState](-[WCM_PolicyManager wifiController](self, "wifiController"), "powerState") && byte_1002B8141 != (numLLADevice != 0))
   {
-    [WCM_Logging logLevel:2 message:@"Handle WiFi/BT Coex send Wifi controller LLA status to %d", v5 != 0];
-    [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] updateWiFiA2DPLLAActiveStatus:v5 != 0];
-    byte_1002B8141 = v5 != 0;
+    [WCM_Logging logLevel:2 message:@"Handle WiFi/BT Coex send Wifi controller LLA status to %d", numLLADevice != 0];
+    [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] updateWiFiA2DPLLAActiveStatus:numLLADevice != 0];
+    byte_1002B8141 = numLLADevice != 0;
   }
 
   if ([objc_msgSend(+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")] && -[WCM_WiFiController powerState](-[WCM_PolicyManager wifiController](self, "wifiController"), "powerState"))
   {
-    v22 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] get2GHzSub15msAudioDevicesConnected];
-    if (v3)
+    get2GHzSub15msAudioDevicesConnected = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] get2GHzSub15msAudioDevicesConnected];
+    if (getNum2GHzAclA2DPDevices)
     {
       v23 = 1;
     }
 
     else
     {
-      v23 = v22;
+      v23 = get2GHzSub15msAudioDevicesConnected;
     }
 
-    if (v49)
+    if (numLEADevice)
     {
       v24 = 1;
     }
@@ -734,11 +734,11 @@ LABEL_79:
     [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] updateLPSCBeaconOffload:v24 andScanOffload:v24];
   }
 
-  v26 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] get2GHzSub15msNonSCOConnected];
-  if (byte_1002B8142 != v26)
+  get2GHzSub15msNonSCOConnected6 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] get2GHzSub15msNonSCOConnected];
+  if (byte_1002B8142 != get2GHzSub15msNonSCOConnected6)
   {
-    v27 = v26;
-    [WCM_Logging logLevel:2 message:@"Handle WiFi/BT Coex change sending Wifi controller sub15msNonSCO traffic status to %d", v26];
+    v27 = get2GHzSub15msNonSCOConnected6;
+    [WCM_Logging logLevel:2 message:@"Handle WiFi/BT Coex change sending Wifi controller sub15msNonSCO traffic status to %d", get2GHzSub15msNonSCOConnected6];
     [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] updateWiFieSCOActiveStatus:v27];
     byte_1002B8142 = v27;
   }
@@ -757,16 +757,16 @@ LABEL_79:
 
   if ([objc_msgSend(+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")])
   {
-    v28 = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] getNumberOfSpatialStreamOnAccessPoint];
+    getNumberOfSpatialStreamOnAccessPoint = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] getNumberOfSpatialStreamOnAccessPoint];
     if ([(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] isAWDLInProgress])
     {
       [WCM_Logging logLevel:3 message:@"Defer WiFi antenna fallback wifiAWDLInProgress(%d)", 1];
       return;
     }
 
-    if ([(WCM_BTController *)[(WCM_PolicyManager *)self btController] powerState]&& ((v6 & 0xFFFFFFFE) == 2 || v28 == 1))
+    if ([(WCM_BTController *)[(WCM_PolicyManager *)self btController] powerState]&& ((getPhyMode & 0xFFFFFFFE) == 2 || getNumberOfSpatialStreamOnAccessPoint == 1))
     {
-      [WCM_Logging logLevel:3 message:@"phyMode(%d) numNSSOnAP(%d)", v6, v28];
+      [WCM_Logging logLevel:3 message:@"phyMode(%d) numNSSOnAP(%d)", getPhyMode, getNumberOfSpatialStreamOnAccessPoint];
       v29 = 1;
     }
 
@@ -784,20 +784,20 @@ LABEL_79:
   v50 = 0u;
   if ([(WCM_BTController *)[(WCM_PolicyManager *)self btController] powerState])
   {
-    *&v50 = v3;
-    *(&v50 + 1) = v5;
+    *&v50 = getNum2GHzAclA2DPDevices;
+    *(&v50 + 1) = numLLADevice;
     v30 = *(&v47 + 1);
-    *&v51 = v4;
+    *&v51 = numHIDDevice;
     *(&v51 + 1) = *(&v47 + 1);
-    v31 = v49;
-    v32 = v48;
+    v31 = numLEADevice;
+    v32 = numLEDevice;
     v33 = v47;
     *&v52 = v47;
-    *(&v52 + 1) = v48;
-    v34 = v4;
-    v35 = v5;
-    v36 = v3;
-    v53 = v49;
+    *(&v52 + 1) = numLEDevice;
+    v34 = numHIDDevice;
+    v35 = numLLADevice;
+    v36 = getNum2GHzAclA2DPDevices;
+    v53 = numLEADevice;
   }
 
   else
@@ -814,8 +814,8 @@ LABEL_79:
 
   if (unk_1002B8148 != v36 || xmmword_1002B8150 != __PAIR128__(v34, v35) || qword_1002B8160 != v30 || unk_1002B8168 != v33 || xmmword_1002B8170 != __PAIR128__(v31, v32))
   {
-    [WCM_Logging logLevel:2 message:@"updateBTConnectedDevices with numA2DP=%lu, numLLA=%lu, numHID=%lu, numSCO=%lu, numeSCO=%lu, numLE=%lu, numLEA=%lu", v3, v5, v4, *(&v47 + 1), v47, v48, v49];
-    [(WCM_PolicyManager *)self handleBTCoexConnectedDevicesEvent_numA2DP:v3 numLLA:v5 numHID:v4 numSCO:*(&v47 + 1) numeSCO:v47 numLE:v48 numLEA:v49];
+    [WCM_Logging logLevel:2 message:@"updateBTConnectedDevices with numA2DP=%lu, numLLA=%lu, numHID=%lu, numSCO=%lu, numeSCO=%lu, numLE=%lu, numLEA=%lu", getNum2GHzAclA2DPDevices, numLLADevice, numHIDDevice, *(&v47 + 1), v47, numLEDevice, numLEADevice];
+    [(WCM_PolicyManager *)self handleBTCoexConnectedDevicesEvent_numA2DP:getNum2GHzAclA2DPDevices numLLA:numLLADevice numHID:numHIDDevice numSCO:*(&v47 + 1) numeSCO:v47 numLE:numLEDevice numLEA:numLEADevice];
     [+[WCM_UCMClientManager WCM_UCMClientManagerSingleton](WCM_UCMClientManager "WCM_UCMClientManagerSingleton")];
     unk_1002B8148 = v50;
     *(&xmmword_1002B8150 + 8) = v51;
@@ -825,7 +825,7 @@ LABEL_79:
 
   if ([objc_msgSend(+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")])
   {
-    [(WCM_CtrXPCClient *)[(WCM_RCU2Controller *)[(WCM_PolicyManager *)self rcu2Controller] threadClient] updateWiFiBand:v46];
+    [(WCM_CtrXPCClient *)[(WCM_RCU2Controller *)[(WCM_PolicyManager *)self rcu2Controller] threadClient] updateWiFiBand:wifiState];
     [(WCM_CtrXPCClient *)[(WCM_RCU2Controller *)[(WCM_PolicyManager *)self rcu2Controller] threadClient] updateWiFiChannel:[(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiChannel]];
   }
 
@@ -848,12 +848,12 @@ LABEL_79:
   if ([(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] powerState])
   {
     v3 = [objc_msgSend(+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")];
-    v4 = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiState];
-    v5 = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] didWiFiDeviceReset];
-    if (v4 >= 4)
+    wifiState = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiState];
+    didWiFiDeviceReset = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] didWiFiDeviceReset];
+    if (wifiState >= 4)
     {
       v6 = "INVALID_STATE!!!";
-      if (v4 == 4)
+      if (wifiState == 4)
       {
         v6 = "ASSOCIATED_6G";
       }
@@ -861,23 +861,23 @@ LABEL_79:
 
     else
     {
-      v6 = off_100241CB8[v4];
+      v6 = off_100241CB8[wifiState];
     }
 
     [WCM_Logging logLevel:2 message:@"WiFiState(%s)", v6];
-    v7 = [(WCM_R1Controller *)[(WCM_PolicyManager *)self rcu1Controller] mRCU1PowerOn];
-    v8 = [(WCM_R1Controller *)[(WCM_PolicyManager *)self rcu1Controller] mRCU1ChannelNum];
-    v9 = v8 << 16;
-    [WCM_Logging logLevel:2 message:@"NR State : Power:(%d) ChannelNo:(%d)", v7, v8];
-    v10 = v7 && v9 == 327680;
-    if (v4 != 3)
+    mRCU1PowerOn = [(WCM_R1Controller *)[(WCM_PolicyManager *)self rcu1Controller] mRCU1PowerOn];
+    mRCU1ChannelNum = [(WCM_R1Controller *)[(WCM_PolicyManager *)self rcu1Controller] mRCU1ChannelNum];
+    v9 = mRCU1ChannelNum << 16;
+    [WCM_Logging logLevel:2 message:@"NR State : Power:(%d) ChannelNo:(%d)", mRCU1PowerOn, mRCU1ChannelNum];
+    v10 = mRCU1PowerOn && v9 == 327680;
+    if (wifiState != 3)
     {
       v10 = 0;
     }
 
     if (v3)
     {
-      v11 = (v4 - 3 < 2) & v7;
+      v11 = (wifiState - 3 < 2) & mRCU1PowerOn;
     }
 
     else
@@ -885,13 +885,13 @@ LABEL_79:
       v11 = v10;
     }
 
-    if (byte_1002B818D != v11 || v5)
+    if (byte_1002B818D != v11 || didWiFiDeviceReset)
     {
-      [WCM_Logging logLevel:2 message:@"WiFi/RCU1 UL OFDMA disable state change prev (%d) current (%d) wifiReset (%d)", byte_1002B818D, v11, v5];
+      [WCM_Logging logLevel:2 message:@"WiFi/RCU1 UL OFDMA disable state change prev (%d) current (%d) wifiReset (%d)", byte_1002B818D, v11, didWiFiDeviceReset];
       byte_1002B818D = v11;
-      v12 = [(WCM_PolicyManager *)self wifiController];
+      wifiController = [(WCM_PolicyManager *)self wifiController];
 
-      [(WCM_WiFiController *)v12 updateWiFiRCU1ULOFDMAstate:v11];
+      [(WCM_WiFiController *)wifiController updateWiFiRCU1ULOFDMAstate:v11];
     }
   }
 
@@ -903,7 +903,7 @@ LABEL_79:
 
 - (void)updateGpsbandsInfoForBB
 {
-  v3 = [(WCM_PolicyManager *)self cellularController];
+  cellularController = [(WCM_PolicyManager *)self cellularController];
   if (![(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"AntennaTuningForGpsBB20"])
   {
     return;
@@ -918,12 +918,12 @@ LABEL_79:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v6 = [(WCM_PolicyManager *)self gpsBandInfoList];
-    v7 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    gpsBandInfoList = [(WCM_PolicyManager *)self gpsBandInfoList];
+    v7 = [(NSMutableArray *)gpsBandInfoList countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v7)
     {
       v8 = v7;
-      v22 = v3;
+      v22 = cellularController;
       v9 = 0;
       v23 = 0;
       v10 = 0;
@@ -936,7 +936,7 @@ LABEL_79:
         {
           if (*v27 != v11)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(gpsBandInfoList);
           }
 
           v14 = *(*(&v26 + 1) + 8 * i);
@@ -995,12 +995,12 @@ LABEL_79:
           }
         }
 
-        v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v8 = [(NSMutableArray *)gpsBandInfoList countByEnumeratingWithState:&v26 objects:v30 count:16];
       }
 
       while (v8);
       v17 = v12;
-      v3 = v22;
+      cellularController = v22;
       v4 = WRM_IPTelephonyController;
       v18 = v23;
       goto LABEL_29;
@@ -1023,7 +1023,7 @@ LABEL_79:
 LABEL_29:
   v19 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] getNum2GHzAclA2DPDevices]!= 0;
   [&v4[98] logLevel:1 message:{@"BB20: updateGpsbandsInfoForBB: L1enabled = %d, L5Enabled = %d, btA2DPEnabled = %d, l5Level = %d, l1Level = %d\n", v9 & 1, v18 & 1, v19, v5, v17}];
-  [(WCM_CellularController *)v3 setGpsBandInfoToBB:v9 & 1 l5Enabled:v18 & 1 btA2DPEnabled:v19 l5Level:v5];
+  [(WCM_CellularController *)cellularController setGpsBandInfoToBB:v9 & 1 l5Enabled:v18 & 1 btA2DPEnabled:v19 l5Level:v5];
   if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"CoexBBUnifiedSensorInfoSupport"])
   {
     v20 = [(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"AntennaTunningForGpsL1Level"];
@@ -1033,7 +1033,7 @@ LABEL_29:
       v21 = 0;
     }
 
-    [(WCM_CellularController *)v3 sendBBCoexSensorMessage:0 band:v10 usecase:v21 & 0xF0 | v5 & 0xFu];
+    [(WCM_CellularController *)cellularController sendBBCoexSensorMessage:0 band:v10 usecase:v21 & 0xF0 | v5 & 0xFu];
   }
 }
 
@@ -1052,15 +1052,15 @@ LABEL_29:
     {
       if (self->_pencilCoexActive)
       {
-        v3 = [(WCM_PolicyManager *)self getWifiAntennaBitmapForPencilCoexByPlatform];
-        v4 = v3 | 0x800;
-        v16 = v3 | 0x1800;
-        v5 = v3 | 0x2800;
-        v6 = v3 | 0x3800;
-        v7 = v3 | 0x4800;
-        v8 = v3 | 0x5800;
-        v9 = v3 | 0x6800;
-        v10 = v3 | 0x7800;
+        getWifiAntennaBitmapForPencilCoexByPlatform = [(WCM_PolicyManager *)self getWifiAntennaBitmapForPencilCoexByPlatform];
+        v4 = getWifiAntennaBitmapForPencilCoexByPlatform | 0x800;
+        v16 = getWifiAntennaBitmapForPencilCoexByPlatform | 0x1800;
+        v5 = getWifiAntennaBitmapForPencilCoexByPlatform | 0x2800;
+        v6 = getWifiAntennaBitmapForPencilCoexByPlatform | 0x3800;
+        v7 = getWifiAntennaBitmapForPencilCoexByPlatform | 0x4800;
+        v8 = getWifiAntennaBitmapForPencilCoexByPlatform | 0x5800;
+        v9 = getWifiAntennaBitmapForPencilCoexByPlatform | 0x6800;
+        v10 = getWifiAntennaBitmapForPencilCoexByPlatform | 0x7800;
       }
 
       else
@@ -1094,9 +1094,9 @@ LABEL_29:
 
         else
         {
-          v12 = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiState];
+          wifiState = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiState];
           v11 = "INVALID_STATE!!!";
-          if (v12 == 4)
+          if (wifiState == 4)
           {
             v11 = "ASSOCIATED_6G";
           }
@@ -1362,51 +1362,51 @@ LABEL_38:
 
 - (void)updateCellTxPowerLimit
 {
-  v3 = [(WCM_PolicyManager *)self platformManager];
-  v4 = [(WCM_PolicyManager *)self cellularController];
-  LODWORD(v5) = [(NSNumber *)[(WCM_PlatformManager *)v3 wcmCellularWCI2ModeLTEMaxTxPowerHigh] intValue];
-  if ([(WCM_PlatformManager *)v3 wcmWiFiCellCoexIssueTable])
+  platformManager = [(WCM_PolicyManager *)self platformManager];
+  cellularController = [(WCM_PolicyManager *)self cellularController];
+  LODWORD(cellTxPowerLimit) = [(NSNumber *)[(WCM_PlatformManager *)platformManager wcmCellularWCI2ModeLTEMaxTxPowerHigh] intValue];
+  if ([(WCM_PlatformManager *)platformManager wcmWiFiCellCoexIssueTable])
   {
-    v5 = v5;
+    cellTxPowerLimit = cellTxPowerLimit;
     if ([(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiState]< 2)
     {
       goto LABEL_27;
     }
 
-    [(WCM_CellularController *)v4 dlCenterFreq];
+    [(WCM_CellularController *)cellularController dlCenterFreq];
     if (v6 == 0.0)
     {
       goto LABEL_27;
     }
 
-    [(WCM_CellularController *)v4 dlBandwidth];
+    [(WCM_CellularController *)cellularController dlBandwidth];
     if (v7 == 0.0)
     {
       goto LABEL_27;
     }
 
-    [(WCM_CellularController *)v4 ulCenterFreq];
+    [(WCM_CellularController *)cellularController ulCenterFreq];
     if (v8 != 0.0)
     {
-      [(WCM_CellularController *)v4 ulBandwidth];
+      [(WCM_CellularController *)cellularController ulBandwidth];
       if (v9 != 0.0)
       {
-        v10 = [(WCM_CellularController *)v4 bandInfoType];
-        [(WCM_CellularController *)v4 dlCenterFreq];
+        bandInfoType = [(WCM_CellularController *)cellularController bandInfoType];
+        [(WCM_CellularController *)cellularController dlCenterFreq];
         v37 = v11;
-        [(WCM_CellularController *)v4 dlBandwidth];
+        [(WCM_CellularController *)cellularController dlBandwidth];
         v13 = v12 * 0.5;
-        [(WCM_CellularController *)v4 dlCenterFreq];
+        [(WCM_CellularController *)cellularController dlCenterFreq];
         v15 = v14;
-        [(WCM_CellularController *)v4 dlBandwidth];
+        [(WCM_CellularController *)cellularController dlBandwidth];
         v17 = v16 * 0.5;
-        [(WCM_CellularController *)v4 ulCenterFreq];
+        [(WCM_CellularController *)cellularController ulCenterFreq];
         v19 = v18;
-        [(WCM_CellularController *)v4 ulBandwidth];
+        [(WCM_CellularController *)cellularController ulBandwidth];
         v21 = v20;
-        [(WCM_CellularController *)v4 ulCenterFreq];
+        [(WCM_CellularController *)cellularController ulCenterFreq];
         v23 = v22;
-        [(WCM_CellularController *)v4 ulBandwidth];
+        [(WCM_CellularController *)cellularController ulBandwidth];
         v25 = v24;
         if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"EnableULCA"])
         {
@@ -1416,7 +1416,7 @@ LABEL_38:
 
         else
         {
-          [(WCM_CellularController *)v4 getCombinedUplinkFreqRange];
+          [(WCM_CellularController *)cellularController getCombinedUplinkFreqRange];
           v26 = v28;
           v27 = v28 + v29;
         }
@@ -1424,16 +1424,16 @@ LABEL_38:
         v30 = v37 - v13;
         v38 = 0;
         v31 = [(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"WiFiEnhCoexSupport"];
-        v32 = [(WCM_PlatformManager *)v3 wcmWiFiCellCoexIssueTable];
-        v33 = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiChannel];
+        wcmWiFiCellCoexIssueTable = [(WCM_PlatformManager *)platformManager wcmWiFiCellCoexIssueTable];
+        wifiChannel = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiChannel];
         if (v31)
         {
-          v34 = [(WCM_WiFiCellCoexIssueBandTable *)v32 findWiFiAntennaOrCellTxPowerConstraintWiFiEnhCoexIssueByCellBandInfoType:v10 cellDlLowFreq:v33 cellDlHighFreq:[(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] channelCenterFreqMHz] cellUlLowFreq:[(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] channelBandwidthMHz] cellUlHighFreq:[(WCM_PolicyManager *)self gpsRadioActive] wifiChannel:&v38 + 1 wifiCenterFreq:v30 wifiBandwidth:v15 + v17 gpsRadioActive:v26 wifiAntennaConstraint:v27 cellTxPowerConstraint:&v38];
+          v34 = [(WCM_WiFiCellCoexIssueBandTable *)wcmWiFiCellCoexIssueTable findWiFiAntennaOrCellTxPowerConstraintWiFiEnhCoexIssueByCellBandInfoType:bandInfoType cellDlLowFreq:wifiChannel cellDlHighFreq:[(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] channelCenterFreqMHz] cellUlLowFreq:[(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] channelBandwidthMHz] cellUlHighFreq:[(WCM_PolicyManager *)self gpsRadioActive] wifiChannel:&v38 + 1 wifiCenterFreq:v30 wifiBandwidth:v15 + v17 gpsRadioActive:v26 wifiAntennaConstraint:v27 cellTxPowerConstraint:&v38];
         }
 
         else
         {
-          v34 = [(WCM_WiFiCellCoexIssueBandTable *)v32 findWiFiAntennaOrCellTxPowerConstraintCoexIssueByCellBandInfoType:v10 cellDlLowFreq:v33 cellDlHighFreq:[(WCM_PolicyManager *)self gpsRadioActive] cellUlLowFreq:&v38 + 1 cellUlHighFreq:&v38 wifiChannel:v30 gpsRadioActive:v15 + v17 wifiAntennaConstraint:v26 cellTxPowerConstraint:v27];
+          v34 = [(WCM_WiFiCellCoexIssueBandTable *)wcmWiFiCellCoexIssueTable findWiFiAntennaOrCellTxPowerConstraintCoexIssueByCellBandInfoType:bandInfoType cellDlLowFreq:wifiChannel cellDlHighFreq:[(WCM_PolicyManager *)self gpsRadioActive] cellUlLowFreq:&v38 + 1 cellUlHighFreq:&v38 wifiChannel:v30 gpsRadioActive:v15 + v17 wifiAntennaConstraint:v26 cellTxPowerConstraint:v27];
         }
 
         v35 = v34;
@@ -1457,12 +1457,12 @@ LABEL_38:
           v36 = @"WiFiEnh_: Apply Cell Tx power limit to %lld dBm";
         }
 
-        v5 = [v35 cellTxPowerLimit];
-        [WCM_Logging logLevel:4 message:v36, v5];
+        cellTxPowerLimit = [v35 cellTxPowerLimit];
+        [WCM_Logging logLevel:4 message:v36, cellTxPowerLimit];
 LABEL_26:
-        [WCM_Logging logLevel:3 message:@"apply Cell Tx power limit to %lld dBm", v5];
+        [WCM_Logging logLevel:3 message:@"apply Cell Tx power limit to %lld dBm", cellTxPowerLimit];
 LABEL_27:
-        [(WCM_CellularController *)v4 updateControllerTxPower:v5];
+        [(WCM_CellularController *)cellularController updateControllerTxPower:cellTxPowerLimit];
       }
     }
   }
@@ -1476,18 +1476,18 @@ LABEL_27:
 
 - (void)evaluateULCARestrictions
 {
-  v3 = [(WCM_PolicyManager *)self platformManager];
-  v4 = [(WCM_PolicyManager *)self cellularController];
-  v5 = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiChannel];
-  v63 = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] channelCenterFreqMHz];
-  v62 = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] channelBandwidthMHz];
-  if (v4)
+  platformManager = [(WCM_PolicyManager *)self platformManager];
+  cellularController = [(WCM_PolicyManager *)self cellularController];
+  wifiChannel = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiChannel];
+  channelCenterFreqMHz = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] channelCenterFreqMHz];
+  channelBandwidthMHz = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] channelBandwidthMHz];
+  if (cellularController)
   {
-    v6 = [(WCM_CellularController *)v4 getActiveULCAConfig];
-    if (v6)
+    getActiveULCAConfig = [(WCM_CellularController *)cellularController getActiveULCAConfig];
+    if (getActiveULCAConfig)
     {
-      v7 = v6;
-      [(WCM_CellularController *)v4 bandInfoType];
+      v7 = getActiveULCAConfig;
+      [(WCM_CellularController *)cellularController bandInfoType];
       *&v7->var3 = 0;
       v7->var5 = 0;
       v7->var9 = 0;
@@ -1498,9 +1498,9 @@ LABEL_27:
         v64 = 0;
         v58 = 0;
         p_var5 = &v7->var0[0].var5;
-        v59 = 99;
+        ulcaPriorityCCWiFi = 99;
         v60 = 0;
-        v61 = v5;
+        v61 = wifiChannel;
         while (1)
         {
           v11 = *(p_var5 - 3);
@@ -1516,16 +1516,16 @@ LABEL_27:
           *(p_var5 + 28) = 0;
           v19 = *(p_var5 + 6);
           v20 = [(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"WiFiEnhCoexSupport"];
-          v21 = [(WCM_PlatformManager *)v3 wcmWiFiCellCoexIssueTable];
-          v22 = [(WCM_PolicyManager *)self gpsRadioActive];
+          wcmWiFiCellCoexIssueTable = [(WCM_PlatformManager *)platformManager wcmWiFiCellCoexIssueTable];
+          gpsRadioActive = [(WCM_PolicyManager *)self gpsRadioActive];
           if (v20)
           {
-            v23 = [(WCM_WiFiCellCoexIssueBandTable *)v21 findWiFiAntennaOrCellTxPowerConstraintWiFiEnhCoexIssueByCellBandInfoType:v19 cellDlLowFreq:v5 cellDlHighFreq:v63 cellUlLowFreq:v62 cellUlHighFreq:v22 wifiChannel:&v65 + 1 wifiCenterFreq:v15 wifiBandwidth:v16 gpsRadioActive:v17 wifiAntennaConstraint:v18 cellTxPowerConstraint:&v65];
+            v23 = [(WCM_WiFiCellCoexIssueBandTable *)wcmWiFiCellCoexIssueTable findWiFiAntennaOrCellTxPowerConstraintWiFiEnhCoexIssueByCellBandInfoType:v19 cellDlLowFreq:wifiChannel cellDlHighFreq:channelCenterFreqMHz cellUlLowFreq:channelBandwidthMHz cellUlHighFreq:gpsRadioActive wifiChannel:&v65 + 1 wifiCenterFreq:v15 wifiBandwidth:v16 gpsRadioActive:v17 wifiAntennaConstraint:v18 cellTxPowerConstraint:&v65];
           }
 
           else
           {
-            v23 = [(WCM_WiFiCellCoexIssueBandTable *)v21 findWiFiAntennaOrCellTxPowerConstraintCoexIssueByCellBandInfoType:v19 cellDlLowFreq:v5 cellDlHighFreq:v22 cellUlLowFreq:&v65 + 1 cellUlHighFreq:&v65 wifiChannel:v15 gpsRadioActive:v16 wifiAntennaConstraint:v17 cellTxPowerConstraint:v18];
+            v23 = [(WCM_WiFiCellCoexIssueBandTable *)wcmWiFiCellCoexIssueTable findWiFiAntennaOrCellTxPowerConstraintCoexIssueByCellBandInfoType:v19 cellDlLowFreq:wifiChannel cellDlHighFreq:gpsRadioActive cellUlLowFreq:&v65 + 1 cellUlHighFreq:&v65 wifiChannel:v15 gpsRadioActive:v16 wifiAntennaConstraint:v17 cellTxPowerConstraint:v18];
           }
 
           v24 = v23;
@@ -1541,8 +1541,8 @@ LABEL_27:
             goto LABEL_12;
           }
 
-          v25 = [v23 ulcaPriority];
-          if (v25 < [v64 ulcaPriority])
+          ulcaPriority = [v23 ulcaPriority];
+          if (ulcaPriority < [v64 ulcaPriority])
           {
             break;
           }
@@ -1550,17 +1550,17 @@ LABEL_27:
 LABEL_14:
           if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"WiFiWCI2BitmapV2Enabled"])
           {
-            v27 = [(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)v3 wcmWiFiCellCoexIssueTable] findWiFiVictimCoexIssueByCellBandInfoType:v19 cellDlLowFreq:v15 cellDlHighFreq:v16 cellUlLowFreq:v17 cellUlHighFreq:v18];
+            v27 = [(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)platformManager wcmWiFiCellCoexIssueTable] findWiFiVictimCoexIssueByCellBandInfoType:v19 cellDlLowFreq:v15 cellDlHighFreq:v16 cellUlLowFreq:v17 cellUlHighFreq:v18];
             p_var5[1] = v27;
             if (v27)
             {
-              if ([v27 ulcaPriorityCCWiFi] && v59 > objc_msgSend(p_var5[1], "ulcaPriorityCCWiFi"))
+              if ([v27 ulcaPriorityCCWiFi] && ulcaPriorityCCWiFi > objc_msgSend(p_var5[1], "ulcaPriorityCCWiFi"))
               {
-                v59 = [p_var5[1] ulcaPriorityCCWiFi];
+                ulcaPriorityCCWiFi = [p_var5[1] ulcaPriorityCCWiFi];
                 v7->var3 = v9;
                 v28 = v8 + 98;
                 v8 = WRM_IPTelephonyController;
-                v5 = v61;
+                wifiChannel = v61;
                 -[__objc2_class logLevel:message:](v28, "logLevel:message:", 2, @"evaluateULCARestrictions: Carrier %d set as critical carrier(CC2, WiFi Victim), UL (%f, %f), BandInfoType(%d), CarrierId(%d), ULCA Priority(%d)", v9, *&v17, *&v18, *(p_var5 + 6), *(p_var5 - 2), [*p_var5 ulcaPriority]);
                 v58 = 1;
               }
@@ -1574,7 +1574,7 @@ LABEL_14:
 
           if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"WiFi5GHzType7NR79AntBlocking"])
           {
-            v29 = [(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)v3 wcmWiFiCellCoexIssueTable] isNR79FoundForCellUlLowFreq:v17 cellUlHighFreq:v18];
+            v29 = [(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)platformManager wcmWiFiCellCoexIssueTable] isNR79FoundForCellUlLowFreq:v17 cellUlHighFreq:v18];
             *(p_var5 + 28) = v29;
             [&v8[98] logLevel:2 message:{@"DLDebug_ CC2UnitTest: ulcaConfig->scell_config[%d].nr79Found=%d", v9, v29}];
             var4 = v7->var4;
@@ -1589,7 +1589,7 @@ LABEL_14:
 
           if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"Type72GWiFiSupport"])
           {
-            v31 = [(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)v3 wcmWiFiCellCoexIssueTable] isLTEB7FoundForCellDlLowFreq:v15 cellDlHighFreq:v16 cellUlLowFreq:v17 cellUlHighFreq:v18];
+            v31 = [(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)platformManager wcmWiFiCellCoexIssueTable] isLTEB7FoundForCellDlLowFreq:v15 cellDlHighFreq:v16 cellUlLowFreq:v17 cellUlHighFreq:v18];
             *(p_var5 + 29) = v31;
             [&v8[98] logLevel:4 message:{@"TYPE7_2GWIFI_SUPPORT_ : ulcaConfig->scell_config[%d].lteB7Found=%d", v9, v31}];
             var5 = v7->var5;
@@ -1628,7 +1628,7 @@ LABEL_12:
         v8 = WRM_IPTelephonyController;
         -[__objc2_class logLevel:message:](v26, "logLevel:message:", 2, @"evaluateULCARestrictions: Carrier %d set as critical carrier(CC1, Cell Victim), UL (%f, %f), BandInfoType(%d), CarrierId(%d), ULCA Priority(%d)", v9, *&v17, *&v18, *(p_var5 + 6), *(p_var5 - 2), [v24 ulcaPriority]);
         v64 = v24;
-        v5 = v61;
+        wifiChannel = v61;
         goto LABEL_14;
       }
 
@@ -1706,17 +1706,17 @@ LABEL_34:
 
 - (void)handleCellularNetworkUpdate
 {
-  v3 = [(WCM_PolicyManager *)self cellularCoexBand];
-  v4 = [(WCM_PolicyManager *)self cellularController];
-  v5 = [(WCM_PolicyManager *)self platformManager];
-  v6 = [(WCM_PolicyManager *)self wifiController];
-  v7 = [(WCM_CellularController *)v4 getActiveULCAConfig];
-  v118 = v3 != 7;
+  cellularCoexBand = [(WCM_PolicyManager *)self cellularCoexBand];
+  cellularController = [(WCM_PolicyManager *)self cellularController];
+  platformManager = [(WCM_PolicyManager *)self platformManager];
+  wifiController = [(WCM_PolicyManager *)self wifiController];
+  getActiveULCAConfig = [(WCM_CellularController *)cellularController getActiveULCAConfig];
+  v118 = cellularCoexBand != 7;
   v136 = 0;
   v137 = 0;
   v114 = [NSArray arrayWithObjects:&off_100271328, &off_100271340, &off_100271358, &off_100271370, &off_100271388, &off_1002713A0, &off_1002713B8, 0];
   v135 = 0;
-  if ((v3 - 1) >= 2)
+  if ((cellularCoexBand - 1) >= 2)
   {
     v8 = 255;
   }
@@ -1731,8 +1731,8 @@ LABEL_34:
   [WCM_Logging logLevel:2 message:@"Handling Cellular Network Update"];
   if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"BLEActiveScanPwrLmtEnabled"])
   {
-    v10 = v3;
-    if ((v3 & 0xFFFFFFFE) == 2)
+    v10 = cellularCoexBand;
+    if ((cellularCoexBand & 0xFFFFFFFE) == 2)
     {
       v11 = 5;
     }
@@ -1742,65 +1742,65 @@ LABEL_34:
       v11 = 0;
     }
 
-    v12 = [(WCM_PolicyManager *)self BLEActiveScanPwrLmtAssrInt];
-    v13 = [(WCM_PolicyManager *)self BLEActiveScanPwrLmtAssrInt];
-    if (v11 == v12)
+    bLEActiveScanPwrLmtAssrInt = [(WCM_PolicyManager *)self BLEActiveScanPwrLmtAssrInt];
+    bLEActiveScanPwrLmtAssrInt2 = [(WCM_PolicyManager *)self BLEActiveScanPwrLmtAssrInt];
+    if (v11 == bLEActiveScanPwrLmtAssrInt)
     {
-      [WCM_Logging logLevel:4 message:@"DLDebugBLEIntervalTooOften_ updateBLEActiveScanPwrLmtAssertionInterval is called by handleCellularNetworkUpdate. No Need to update with same value --- new interval (%d), old interval (%d)", v11, v13];
+      [WCM_Logging logLevel:4 message:@"DLDebugBLEIntervalTooOften_ updateBLEActiveScanPwrLmtAssertionInterval is called by handleCellularNetworkUpdate. No Need to update with same value --- new interval (%d), old interval (%d)", v11, bLEActiveScanPwrLmtAssrInt2];
     }
 
     else
     {
-      [WCM_Logging logLevel:4 message:@"DLDebugBLEIntervalTooOften_ updateBLEActiveScanPwrLmtAssertionInterval is called by handleCellularNetworkUpdate. Updating with new interval (%d), old interval (%d)", v11, v13];
+      [WCM_Logging logLevel:4 message:@"DLDebugBLEIntervalTooOften_ updateBLEActiveScanPwrLmtAssertionInterval is called by handleCellularNetworkUpdate. Updating with new interval (%d), old interval (%d)", v11, bLEActiveScanPwrLmtAssrInt2];
       [(WCM_PolicyManager *)self setBLEActiveScanPwrLmtAssrInt:v11];
       [(WCM_BTController *)[(WCM_PolicyManager *)self btController] updateBLEActiveScanPwrLmtAssertionInterval:[(WCM_PolicyManager *)self BLEActiveScanPwrLmtAssrInt]];
     }
 
-    v3 = v10;
+    cellularCoexBand = v10;
   }
 
   v116 = objc_autoreleasePoolPush();
-  if ([(WCM_PlatformManager *)v5 wcmWiFiCellCoexIssueTable])
+  if ([(WCM_PlatformManager *)platformManager wcmWiFiCellCoexIssueTable])
   {
-    v14 = [(WCM_CellularController *)v4 bandInfoType];
-    [(WCM_CellularController *)v4 dlCenterFreq];
+    bandInfoType = [(WCM_CellularController *)cellularController bandInfoType];
+    [(WCM_CellularController *)cellularController dlCenterFreq];
     v16 = v15;
-    [(WCM_CellularController *)v4 dlBandwidth];
+    [(WCM_CellularController *)cellularController dlBandwidth];
     v18 = v16 - v17 * 0.5;
-    [(WCM_CellularController *)v4 dlCenterFreq];
+    [(WCM_CellularController *)cellularController dlCenterFreq];
     v20 = v19;
-    [(WCM_CellularController *)v4 dlBandwidth];
+    [(WCM_CellularController *)cellularController dlBandwidth];
     v22 = v20 + v21 * 0.5;
-    [(WCM_CellularController *)v4 ulCenterFreq];
+    [(WCM_CellularController *)cellularController ulCenterFreq];
     v24 = v23;
-    [(WCM_CellularController *)v4 ulBandwidth];
+    [(WCM_CellularController *)cellularController ulBandwidth];
     v26 = v24 - v25 * 0.5;
-    [(WCM_CellularController *)v4 ulCenterFreq];
+    [(WCM_CellularController *)cellularController ulCenterFreq];
     v28 = v27;
-    [(WCM_CellularController *)v4 ulBandwidth];
+    [(WCM_CellularController *)cellularController ulBandwidth];
     v30 = v28 + v29 * 0.5;
-    v112 = [(WCM_WiFiController *)v6 wifiChannel];
-    v31 = [(WCM_WiFiController *)v6 channelBandwidthMHz];
-    v32 = [(WCM_WiFiController *)v6 channelCenterFreqMHz];
+    wifiChannel = [(WCM_WiFiController *)wifiController wifiChannel];
+    channelBandwidthMHz = [(WCM_WiFiController *)wifiController channelBandwidthMHz];
+    channelCenterFreqMHz = [(WCM_WiFiController *)wifiController channelCenterFreqMHz];
     [WCM_Logging logLevel:4 message:@"V2BtimapDebug_ handleCellularNetworkUpdate gets called with dlLowFreq = %f, dlHighFreq = %f, ulLowFreq = %f, ulHighFreq = %f.", *&v18, *&v22, *&v26, *&v30];
     [(WCM_PolicyManager *)self sendNRFrequencyBandUpdateForMic:v18 dlHighFreq:v22 ulLowFreq:v26 ulHighFreq:v30];
-    [(WCM_CellularController *)v4 ulCenterFreq];
+    [(WCM_CellularController *)cellularController ulCenterFreq];
     if (v33 != 0.0)
     {
-      [(WCM_CellularController *)v4 ulCenterFreq];
+      [(WCM_CellularController *)cellularController ulCenterFreq];
       v35 = v34;
-      [(WCM_CellularController *)v4 ulBandwidth];
-      [(WCM_PolicyManager *)self sendULFrequencyUpdates:v14 ulCenterFreq:v35 ulBandwidth:v36];
+      [(WCM_CellularController *)cellularController ulBandwidth];
+      [(WCM_PolicyManager *)self sendULFrequencyUpdates:bandInfoType ulCenterFreq:v35 ulBandwidth:v36];
     }
 
     if (![(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"EnableULCA"])
     {
-      [(WCM_CellularController *)v4 getCombinedUplinkFreqRange];
+      [(WCM_CellularController *)cellularController getCombinedUplinkFreqRange];
       v26 = v37;
       v30 = v37 + v38;
     }
 
-    if (v7)
+    if (getActiveULCAConfig)
     {
       if (self->_cellularRc1PolicyManager)
       {
@@ -1815,31 +1815,31 @@ LABEL_34:
 
       if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"LegacyNonCoexBandBitmapFix"])
       {
-        [(WCM_PolicyManager *)self setWcmCellularCoexBand:[(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)v5 wcmWiFiCellCoexIssueTable] coexBandCheckBandInfoType:v14 cellDlLowFreq:v18 cellDlHighFreq:v22 cellUlLowFreq:v26 cellUlHighFreq:v30]];
-        v42 = [(WCM_PolicyManager *)self cellularCoexBand];
-        v44 = v42 != 7 || v3 != 7;
+        [(WCM_PolicyManager *)self setWcmCellularCoexBand:[(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)platformManager wcmWiFiCellCoexIssueTable] coexBandCheckBandInfoType:bandInfoType cellDlLowFreq:v18 cellDlHighFreq:v22 cellUlLowFreq:v26 cellUlHighFreq:v30]];
+        cellularCoexBand2 = [(WCM_PolicyManager *)self cellularCoexBand];
+        v44 = cellularCoexBand2 != 7 || cellularCoexBand != 7;
         v9 = WRM_IPTelephonyController;
-        [WCM_Logging logLevel:1 message:@"InCoexBandCheck %d %d %d", [(WCM_PolicyManager *)self wcmCellularCoexBand], v42, v44];
+        [WCM_Logging logLevel:1 message:@"InCoexBandCheck %d %d %d", [(WCM_PolicyManager *)self wcmCellularCoexBand], cellularCoexBand2, v44];
         v118 = v44;
-        v3 = v42;
+        cellularCoexBand = cellularCoexBand2;
       }
 
       if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"WiFiWCI2BitmapV2Enabled"]|| [(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"WiFiFVGHzPDHLS"])
       {
-        var8 = v7->var6.var8;
-        var2 = v7->var6.var2;
-        v47 = v7->var6.var3 * 0.5;
+        var8 = getActiveULCAConfig->var6.var8;
+        var2 = getActiveULCAConfig->var6.var2;
+        v47 = getActiveULCAConfig->var6.var3 * 0.5;
         v48 = var2 - v47;
         v49 = var2 + v47;
-        var0 = v7->var6.var0;
-        v51 = v7->var6.var1 * 0.5;
+        var0 = getActiveULCAConfig->var6.var0;
+        v51 = getActiveULCAConfig->var6.var1 * 0.5;
         v52 = var0 - v51;
         v53 = var0 + v51;
         if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"WiFiEnhCoexSupport"])
         {
           if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"WiFiEnhCoexSupport"])
           {
-            v54 = [(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)v5 wcmWiFiCellCoexIssueTable] wifiChannelsToEnableWCI2WiFiEnhForCellBandInfoType:var8 cellDlLowFreq:&v135 cellDlHighFreq:v48 cellUlLowFreq:v49 cellUlHighFreq:v52 pissueBandMatch:v53];
+            v54 = [(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)platformManager wcmWiFiCellCoexIssueTable] wifiChannelsToEnableWCI2WiFiEnhForCellBandInfoType:var8 cellDlLowFreq:&v135 cellDlHighFreq:v48 cellUlLowFreq:v49 cellUlHighFreq:v52 pissueBandMatch:v53];
             [WCM_Logging logLevel:4 message:@"WCI2_WiFiEnh: wifiChannelEnhDict = %@", v54];
             -[WCM_PolicyManager setWifiChannelsToEnableWCI2Gand5G:](self, "setWifiChannelsToEnableWCI2Gand5G:", [v54 objectForKey:@"wifiChannels2Gand5G"]);
             -[WCM_PolicyManager setWifiChannelsToEnableWCI2WiFiEnh:](self, "setWifiChannelsToEnableWCI2WiFiEnh:", [v54 objectForKey:@"wifiChannelsEnh"]);
@@ -1848,20 +1848,20 @@ LABEL_34:
 
         else
         {
-          [(WCM_PolicyManager *)self setWifiChannelsToEnableWCI2V2:[(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)v5 wcmWiFiCellCoexIssueTable] wifiChannelsToEnableWCI2V2ForCellBandInfoType:var8 cellDlLowFreq:&v135 cellDlHighFreq:v48 cellUlLowFreq:v49 cellUlHighFreq:v52 pissueBandMatch:v53]];
+          [(WCM_PolicyManager *)self setWifiChannelsToEnableWCI2V2:[(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)platformManager wcmWiFiCellCoexIssueTable] wifiChannelsToEnableWCI2V2ForCellBandInfoType:var8 cellDlLowFreq:&v135 cellDlHighFreq:v48 cellUlLowFreq:v49 cellUlHighFreq:v52 pissueBandMatch:v53]];
           [WCM_Logging logLevel:4 message:@"WCI2_V2: self.wifiChannelsToEnableWCI2V2 = %@", [(WCM_PolicyManager *)self wifiChannelsToEnableWCI2V2]];
         }
 
         [(WCM_PolicyManager *)self setWcmCellularCoexBand:v135];
-        v3 = [(WCM_PolicyManager *)self cellularCoexBand];
-        v118 |= v3 != 7;
-        [WCM_Logging logLevel:1 message:@"InCoexBandCheck %d %d %d", [(WCM_PolicyManager *)self wcmCellularCoexBand], v3, v118 & 1];
+        cellularCoexBand = [(WCM_PolicyManager *)self cellularCoexBand];
+        v118 |= cellularCoexBand != 7;
+        [WCM_Logging logLevel:1 message:@"InCoexBandCheck %d %d %d", [(WCM_PolicyManager *)self wcmCellularCoexBand], cellularCoexBand, v118 & 1];
         v9 = WRM_IPTelephonyController;
       }
 
       else
       {
-        [(WCM_PolicyManager *)self setWifiChannelsToEnableWCI2:[(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)v5 wcmWiFiCellCoexIssueTable] wifiChannelsToEnableWCI2ForCellBandInfoType:v14 cellDlLowFreq:v18 cellDlHighFreq:v22 cellUlLowFreq:v26 cellUlHighFreq:v30]];
+        [(WCM_PolicyManager *)self setWifiChannelsToEnableWCI2:[(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)platformManager wcmWiFiCellCoexIssueTable] wifiChannelsToEnableWCI2ForCellBandInfoType:bandInfoType cellDlLowFreq:v18 cellDlHighFreq:v22 cellUlLowFreq:v26 cellUlHighFreq:v30]];
         [(NSMutableArray *)[(WCM_PolicyManager *)self wifiChannelsToEnableLTEMBType7] addObject:&off_100271310];
       }
 
@@ -1879,16 +1879,16 @@ LABEL_34:
     }
 
     v55 = [(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"BTSeparateAGCCoexMode"];
-    v56 = [(WCM_PlatformManager *)v5 wcmWiFiCellCoexIssueTable];
+    wcmWiFiCellCoexIssueTable = [(WCM_PlatformManager *)platformManager wcmWiFiCellCoexIssueTable];
     if (v55)
     {
-      if (![(WCM_WiFiCellCoexIssueBandTable *)v56 wifiBtAgcCoexModeEnableCheckBandCombinationV2:v14 cellDlLowFreq:v112 cellDlHighFreq:v32 cellUlLowFreq:v31 cellUlHighFreq:&v137 wifiChannel:&v136 channelCenterFreqMHz:v18 channelBandwidthMHz:v22 coexModeWifiLevel:v26 coexModeBTLevel:v30])
+      if (![(WCM_WiFiCellCoexIssueBandTable *)wcmWiFiCellCoexIssueTable wifiBtAgcCoexModeEnableCheckBandCombinationV2:bandInfoType cellDlLowFreq:wifiChannel cellDlHighFreq:channelCenterFreqMHz cellUlLowFreq:channelBandwidthMHz cellUlHighFreq:&v137 wifiChannel:&v136 channelCenterFreqMHz:v18 channelBandwidthMHz:v22 coexModeWifiLevel:v26 coexModeBTLevel:v30])
       {
         goto LABEL_68;
       }
     }
 
-    else if (![(WCM_WiFiCellCoexIssueBandTable *)v56 wifiBtAgcCoexModeEnableCheckBandCombination:v14 cellDlLowFreq:&v137 cellDlHighFreq:v18 cellUlLowFreq:v22 cellUlHighFreq:v26 coexModeWifiLevel:v30])
+    else if (![(WCM_WiFiCellCoexIssueBandTable *)wcmWiFiCellCoexIssueTable wifiBtAgcCoexModeEnableCheckBandCombination:bandInfoType cellDlLowFreq:&v137 cellDlHighFreq:v18 cellUlLowFreq:v22 cellUlHighFreq:v26 coexModeWifiLevel:v30])
     {
       goto LABEL_68;
     }
@@ -1922,7 +1922,7 @@ LABEL_34:
       {
         v59 = &off_100271688;
 LABEL_127:
-        v60 = self;
+        selfCopy2 = self;
         goto LABEL_128;
       }
 
@@ -1940,10 +1940,10 @@ LABEL_126:
     if (v137 == 2)
     {
       [(WCM_PolicyManager *)self setWifiAgcCoexModeLevel:&off_100271688];
-      v60 = self;
+      selfCopy2 = self;
       v59 = &off_100271688;
 LABEL_128:
-      [(WCM_PolicyManager *)v60 setBtAgcCoexModeEnable:v59];
+      [(WCM_PolicyManager *)selfCopy2 setBtAgcCoexModeEnable:v59];
       goto LABEL_129;
     }
 
@@ -1976,10 +1976,10 @@ LABEL_138:
 LABEL_141:
         if ([(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] powerState])
         {
-          [(WCM_CellularController *)v4 ulCenterFreq];
+          [(WCM_CellularController *)cellularController ulCenterFreq];
           if (v88 != 0.0)
           {
-            [(WCM_CellularController *)v4 ulBandwidth];
+            [(WCM_CellularController *)cellularController ulBandwidth];
             if (v89 != 0.0)
             {
               [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] updateCellularFrequencyConfig:[(WCM_PolicyManager *)self cellularController] withWiFiRangingDesenseFlag:v87];
@@ -1989,14 +1989,14 @@ LABEL_141:
 
 LABEL_145:
         v90 = [(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"WiFiOCLSupport"];
-        v91 = [(WCM_PolicyManager *)self activeCoexFeatures];
+        activeCoexFeatures = [(WCM_PolicyManager *)self activeCoexFeatures];
         if (v90)
         {
-          v92 = [(NSSet *)v91 containsObject:@"WiFiEnhCoexSupport"];
-          v93 = [(WCM_PlatformManager *)v5 wcmWiFiCellCoexIssueTable];
+          v92 = [(NSSet *)activeCoexFeatures containsObject:@"WiFiEnhCoexSupport"];
+          wcmWiFiCellCoexIssueTable2 = [(WCM_PlatformManager *)platformManager wcmWiFiCellCoexIssueTable];
           if (v92)
           {
-            v94 = [(WCM_WiFiCellCoexIssueBandTable *)v93 wifiChannelsToDisableOCLWiFiEnhForCellBandInfoType:v14 cellDlLowFreq:v18 cellDlHighFreq:v22 cellUlLowFreq:v26 cellUlHighFreq:v30];
+            v94 = [(WCM_WiFiCellCoexIssueBandTable *)wcmWiFiCellCoexIssueTable2 wifiChannelsToDisableOCLWiFiEnhForCellBandInfoType:bandInfoType cellDlLowFreq:v18 cellDlHighFreq:v22 cellUlLowFreq:v26 cellUlHighFreq:v30];
             [WCM_Logging logLevel:4 message:@"OCLDisable_WiFiEnh: wifiChannelEnhDict = %@", v94];
             -[WCM_PolicyManager setWifiChannelsToDisableOCL2G5G:](self, "setWifiChannelsToDisableOCL2G5G:", [v94 objectForKey:@"wifiChannels2Gand5G"]);
             -[WCM_PolicyManager setWifiChannelsToDisableOCLEnh:](self, "setWifiChannelsToDisableOCLEnh:", [v94 objectForKey:@"wifiChannelsEnh"]);
@@ -2004,7 +2004,7 @@ LABEL_145:
 
           else
           {
-            [(WCM_PolicyManager *)self setWifiChannelsToDisableOCL:[(WCM_WiFiCellCoexIssueBandTable *)v93 wifiChannelsToDisableOCLForCellBandInfoType:v14 cellDlLowFreq:v18 cellDlHighFreq:v22 cellUlLowFreq:v26 cellUlHighFreq:v30]];
+            [(WCM_PolicyManager *)self setWifiChannelsToDisableOCL:[(WCM_WiFiCellCoexIssueBandTable *)wcmWiFiCellCoexIssueTable2 wifiChannelsToDisableOCLForCellBandInfoType:bandInfoType cellDlLowFreq:v18 cellDlHighFreq:v22 cellUlLowFreq:v26 cellUlHighFreq:v30]];
           }
 
           if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"WiFiOCLSupportFix"])
@@ -2027,44 +2027,44 @@ LABEL_145:
           }
         }
 
-        else if ([(NSSet *)v91 containsObject:@"WiFiOCLSupportV2"])
+        else if ([(NSSet *)activeCoexFeatures containsObject:@"WiFiOCLSupportV2"])
         {
           [(WCM_PolicyManager *)self updateWifiOCLChannelList];
         }
 
         if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"BTUseC0B1AntennaConfig"])
         {
-          [(WCM_PolicyManager *)self setBtPreferredChannelMap:[(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)v5 wcmWiFiCellCoexIssueTable] btPreferredChannelMapForCellBandInfoType:v14 cellDlLowFreq:0 cellDlHighFreq:v18 cellUlLowFreq:v22 cellUlHighFreq:v26 gpsRadioActive:v30]];
-          [(WCM_PolicyManager *)self setBtPreferredChannelMapOnGpsRadioActive:[(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)v5 wcmWiFiCellCoexIssueTable] btPreferredChannelMapForCellBandInfoType:v14 cellDlLowFreq:1 cellDlHighFreq:v18 cellUlLowFreq:v22 cellUlHighFreq:v26 gpsRadioActive:v30]];
+          [(WCM_PolicyManager *)self setBtPreferredChannelMap:[(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)platformManager wcmWiFiCellCoexIssueTable] btPreferredChannelMapForCellBandInfoType:bandInfoType cellDlLowFreq:0 cellDlHighFreq:v18 cellUlLowFreq:v22 cellUlHighFreq:v26 gpsRadioActive:v30]];
+          [(WCM_PolicyManager *)self setBtPreferredChannelMapOnGpsRadioActive:[(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)platformManager wcmWiFiCellCoexIssueTable] btPreferredChannelMapForCellBandInfoType:bandInfoType cellDlLowFreq:1 cellDlHighFreq:v18 cellUlLowFreq:v22 cellUlHighFreq:v26 gpsRadioActive:v30]];
           if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"hpcellularstatemonitorsupport"])
           {
-            [(WCM_PolicyManager *)self setBtPreferredChannelMapHPCellularActive:[(WCM_PlatformManager *)v5 wcmHPCellularBTAFHMapFixed]];
+            [(WCM_PolicyManager *)self setBtPreferredChannelMapHPCellularActive:[(WCM_PlatformManager *)platformManager wcmHPCellularBTAFHMapFixed]];
           }
         }
 
         else
         {
-          if ([(WCM_PlatformManager *)v5 wcmBTMaxNumberOfChannelsToAvoidForCellOOB])
+          if ([(WCM_PlatformManager *)platformManager wcmBTMaxNumberOfChannelsToAvoidForCellOOB])
           {
-            v97 = [(NSNumber *)[(WCM_PlatformManager *)v5 wcmBTMaxNumberOfChannelsToAvoidForCellOOB] intValue];
+            intValue = [(NSNumber *)[(WCM_PlatformManager *)platformManager wcmBTMaxNumberOfChannelsToAvoidForCellOOB] intValue];
           }
 
           else
           {
-            v97 = 0;
+            intValue = 0;
           }
 
-          [(WCM_PolicyManager *)self setBtPreferredChannelMap:[(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)v5 wcmWiFiCellCoexIssueTable] btPreferredChannelMapFromLegacyWiFiConfigForCellBandInfoType:v14 cellDlLowFreq:0 cellDlHighFreq:v97 cellUlLowFreq:v18 cellUlHighFreq:v22 gpsRadioActive:v26 maxChannelsToAvoidForCellOOB:v30]];
-          [(WCM_PolicyManager *)self setBtPreferredChannelMapOnGpsRadioActive:[(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)v5 wcmWiFiCellCoexIssueTable] btPreferredChannelMapFromLegacyWiFiConfigForCellBandInfoType:v14 cellDlLowFreq:1 cellDlHighFreq:v97 cellUlLowFreq:v18 cellUlHighFreq:v22 gpsRadioActive:v26 maxChannelsToAvoidForCellOOB:v30]];
+          [(WCM_PolicyManager *)self setBtPreferredChannelMap:[(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)platformManager wcmWiFiCellCoexIssueTable] btPreferredChannelMapFromLegacyWiFiConfigForCellBandInfoType:bandInfoType cellDlLowFreq:0 cellDlHighFreq:intValue cellUlLowFreq:v18 cellUlHighFreq:v22 gpsRadioActive:v26 maxChannelsToAvoidForCellOOB:v30]];
+          [(WCM_PolicyManager *)self setBtPreferredChannelMapOnGpsRadioActive:[(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)platformManager wcmWiFiCellCoexIssueTable] btPreferredChannelMapFromLegacyWiFiConfigForCellBandInfoType:bandInfoType cellDlLowFreq:1 cellDlHighFreq:intValue cellUlLowFreq:v18 cellUlHighFreq:v22 gpsRadioActive:v26 maxChannelsToAvoidForCellOOB:v30]];
         }
 
         v98 = objc_autoreleasePoolPush();
         if (_os_feature_enabled_impl() && [(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"HFBTCoex"])
         {
           [WCM_Logging logLevel:3 message:@"HFAFHDebug_ Recaculate channel bitmap"];
-          [(WCM_PolicyManager *)self setBtPreferred5GChannelMap:[(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)v5 wcmWiFiCellCoexIssueTable] HFBTPreferredChannelMapForCellBandInfoType:v14 cellDlLowFreq:self->_gpsRadioActive cellDlHighFreq:v18 cellUlLowFreq:v22 cellUlHighFreq:v26 gpsRadioActive:v30]];
+          [(WCM_PolicyManager *)self setBtPreferred5GChannelMap:[(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)platformManager wcmWiFiCellCoexIssueTable] HFBTPreferredChannelMapForCellBandInfoType:bandInfoType cellDlLowFreq:self->_gpsRadioActive cellDlHighFreq:v18 cellUlLowFreq:v22 cellUlHighFreq:v26 gpsRadioActive:v30]];
           [WCM_Logging logLevel:3 message:@"HFBTAntBlkDebug_ update ant blocking configs"];
-          [(WCM_PolicyManager *)self setHFBTAntBlkEnableBands:[(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)v5 wcmWiFiCellCoexIssueTable] HFBTAntBlockingBandsFromWiFiConfigForCellBandInfoType:v14 cellDlLowFreq:v18 cellDlHighFreq:v22 cellUlLowFreq:v26 cellUlHighFreq:v30]];
+          [(WCM_PolicyManager *)self setHFBTAntBlkEnableBands:[(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)platformManager wcmWiFiCellCoexIssueTable] HFBTAntBlockingBandsFromWiFiConfigForCellBandInfoType:bandInfoType cellDlLowFreq:v18 cellDlHighFreq:v22 cellUlLowFreq:v26 cellUlHighFreq:v30]];
           [WCM_Logging logLevel:4 message:@"HFBTAntBlkDebug_ Updated enabled bands = %@", [(WCM_PolicyManager *)self HFBTAntBlkEnableBands]];
         }
 
@@ -2085,81 +2085,81 @@ LABEL_145:
     goto LABEL_141;
   }
 
-  v110 = v3;
-  if (v3 <= 1)
+  v110 = cellularCoexBand;
+  if (cellularCoexBand <= 1)
   {
-    if (!v3)
+    if (!cellularCoexBand)
     {
-      v39 = [(WCM_PlatformManager *)v5 wcmWiFiB7BlocklistChannels];
-      v40 = [(WCM_PlatformManager *)v5 wcmWiFiB7WCI2EnabledChannels];
-      v41 = [(WCM_PlatformManager *)v5 wcmBTB7AFHMap];
+      wcmWiFiB7BlocklistChannels = [(WCM_PlatformManager *)platformManager wcmWiFiB7BlocklistChannels];
+      wcmWiFiB7WCI2EnabledChannels = [(WCM_PlatformManager *)platformManager wcmWiFiB7WCI2EnabledChannels];
+      wcmBTB7AFHMap = [(WCM_PlatformManager *)platformManager wcmBTB7AFHMap];
       goto LABEL_72;
     }
 
-    if (v3 == 1)
+    if (cellularCoexBand == 1)
     {
-      v39 = [(WCM_PlatformManager *)v5 wcmWiFiB40ABlocklistChannels];
-      v40 = [(WCM_PlatformManager *)v5 wcmWiFiB40AWCI2EnabledChannels];
-      v41 = [(WCM_PlatformManager *)v5 wcmBTB40AAFHMap];
+      wcmWiFiB7BlocklistChannels = [(WCM_PlatformManager *)platformManager wcmWiFiB40ABlocklistChannels];
+      wcmWiFiB7WCI2EnabledChannels = [(WCM_PlatformManager *)platformManager wcmWiFiB40AWCI2EnabledChannels];
+      wcmBTB7AFHMap = [(WCM_PlatformManager *)platformManager wcmBTB40AAFHMap];
       goto LABEL_72;
     }
 
 LABEL_123:
-    v61 = [(WCM_PlatformManager *)v5 wcmBTAFHMapDefault];
-    v39 = &off_100285E98;
-    v40 = &off_100285EB0;
+    wcmBTAFHMapDefault = [(WCM_PlatformManager *)platformManager wcmBTAFHMapDefault];
+    wcmWiFiB7BlocklistChannels = &off_100285E98;
+    wcmWiFiB7WCI2EnabledChannels = &off_100285EB0;
     goto LABEL_73;
   }
 
-  if (v3 == 2)
+  if (cellularCoexBand == 2)
   {
-    v39 = [(WCM_PlatformManager *)v5 wcmWiFiB40BBlocklistChannels];
-    v40 = [(WCM_PlatformManager *)v5 wcmWiFiB40BWCI2EnabledChannels];
-    v41 = [(WCM_PlatformManager *)v5 wcmBTB40BAFHMap];
+    wcmWiFiB7BlocklistChannels = [(WCM_PlatformManager *)platformManager wcmWiFiB40BBlocklistChannels];
+    wcmWiFiB7WCI2EnabledChannels = [(WCM_PlatformManager *)platformManager wcmWiFiB40BWCI2EnabledChannels];
+    wcmBTB7AFHMap = [(WCM_PlatformManager *)platformManager wcmBTB40BAFHMap];
     goto LABEL_72;
   }
 
-  if (v3 == 3)
+  if (cellularCoexBand == 3)
   {
-    v39 = [(WCM_PlatformManager *)v5 wcmWiFiB41A1BlocklistChannels];
-    v40 = [(WCM_PlatformManager *)v5 wcmWiFiB41A1WCI2EnabledChannels];
-    v41 = [(WCM_PlatformManager *)v5 wcmBTB41A1AFHMap];
+    wcmWiFiB7BlocklistChannels = [(WCM_PlatformManager *)platformManager wcmWiFiB41A1BlocklistChannels];
+    wcmWiFiB7WCI2EnabledChannels = [(WCM_PlatformManager *)platformManager wcmWiFiB41A1WCI2EnabledChannels];
+    wcmBTB7AFHMap = [(WCM_PlatformManager *)platformManager wcmBTB41A1AFHMap];
     goto LABEL_72;
   }
 
-  if (v3 != 4)
+  if (cellularCoexBand != 4)
   {
     goto LABEL_123;
   }
 
-  v39 = [(WCM_PlatformManager *)v5 wcmWiFiB41A2BlocklistChannels];
-  v40 = [(WCM_PlatformManager *)v5 wcmWiFiB41A2WCI2EnabledChannels];
-  v41 = [(WCM_PlatformManager *)v5 wcmBTB41A2AFHMap];
+  wcmWiFiB7BlocklistChannels = [(WCM_PlatformManager *)platformManager wcmWiFiB41A2BlocklistChannels];
+  wcmWiFiB7WCI2EnabledChannels = [(WCM_PlatformManager *)platformManager wcmWiFiB41A2WCI2EnabledChannels];
+  wcmBTB7AFHMap = [(WCM_PlatformManager *)platformManager wcmBTB41A2AFHMap];
 LABEL_72:
-  v61 = v41;
+  wcmBTAFHMapDefault = wcmBTB7AFHMap;
 LABEL_73:
-  [WCM_Logging logLevel:3 message:@"BT AFH channel bitmap %@", v61];
-  [(WCM_PolicyManager *)self setBtPreferredChannelMap:v61];
-  [(WCM_PolicyManager *)self setBtPreferredChannelMapOnGpsRadioActive:v61];
+  [WCM_Logging logLevel:3 message:@"BT AFH channel bitmap %@", wcmBTAFHMapDefault];
+  [(WCM_PolicyManager *)self setBtPreferredChannelMap:wcmBTAFHMapDefault];
+  [(WCM_PolicyManager *)self setBtPreferredChannelMapOnGpsRadioActive:wcmBTAFHMapDefault];
   if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"WiFiWCI2BitmapV2Enabled"])
   {
-    [(WCM_PolicyManager *)self setWifiChannelsToEnableWCI2V2:[NSMutableArray arrayWithArray:v40]];
+    [(WCM_PolicyManager *)self setWifiChannelsToEnableWCI2V2:[NSMutableArray arrayWithArray:wcmWiFiB7WCI2EnabledChannels]];
   }
 
   else
   {
-    [(WCM_PolicyManager *)self setWifiChannelsToEnableWCI2:v40];
+    [(WCM_PolicyManager *)self setWifiChannelsToEnableWCI2:wcmWiFiB7WCI2EnabledChannels];
   }
 
   v62 = +[NSMutableArray array];
-  v63 = [(WCM_PolicyManager *)self legacyWiFiChannelsToAvoidForIMD3Cell];
-  if ([v63 count])
+  legacyWiFiChannelsToAvoidForIMD3Cell = [(WCM_PolicyManager *)self legacyWiFiChannelsToAvoidForIMD3Cell];
+  if ([legacyWiFiChannelsToAvoidForIMD3Cell count])
   {
     v133 = 0u;
     v134 = 0u;
     v131 = 0u;
     v132 = 0u;
-    v64 = [v63 countByEnumeratingWithState:&v131 objects:v141 count:16];
+    v64 = [legacyWiFiChannelsToAvoidForIMD3Cell countByEnumeratingWithState:&v131 objects:v141 count:16];
     if (v64)
     {
       v65 = v64;
@@ -2170,7 +2170,7 @@ LABEL_73:
         {
           if (*v132 != v66)
           {
-            objc_enumerationMutation(v63);
+            objc_enumerationMutation(legacyWiFiChannelsToAvoidForIMD3Cell);
           }
 
           v68 = *(*(&v131 + 1) + 8 * i);
@@ -2180,7 +2180,7 @@ LABEL_73:
           }
         }
 
-        v65 = [v63 countByEnumeratingWithState:&v131 objects:v141 count:16];
+        v65 = [legacyWiFiChannelsToAvoidForIMD3Cell countByEnumeratingWithState:&v131 objects:v141 count:16];
       }
 
       while (v65);
@@ -2189,14 +2189,14 @@ LABEL_73:
     [WCM_Logging logLevel:3 message:@"blocklist channels after combining channels for IMD3 Cell %@", v62];
   }
 
-  v69 = [(WCM_PolicyManager *)self legacyWiFiChannelsToAvoidFor3FoWiFi];
-  if ([v69 count])
+  legacyWiFiChannelsToAvoidFor3FoWiFi = [(WCM_PolicyManager *)self legacyWiFiChannelsToAvoidFor3FoWiFi];
+  if ([legacyWiFiChannelsToAvoidFor3FoWiFi count])
   {
     v129 = 0u;
     v130 = 0u;
     v127 = 0u;
     v128 = 0u;
-    v70 = [v69 countByEnumeratingWithState:&v127 objects:v140 count:16];
+    v70 = [legacyWiFiChannelsToAvoidFor3FoWiFi countByEnumeratingWithState:&v127 objects:v140 count:16];
     if (v70)
     {
       v71 = v70;
@@ -2207,7 +2207,7 @@ LABEL_73:
         {
           if (*v128 != v72)
           {
-            objc_enumerationMutation(v69);
+            objc_enumerationMutation(legacyWiFiChannelsToAvoidFor3FoWiFi);
           }
 
           v74 = *(*(&v127 + 1) + 8 * j);
@@ -2217,7 +2217,7 @@ LABEL_73:
           }
         }
 
-        v71 = [v69 countByEnumeratingWithState:&v127 objects:v140 count:16];
+        v71 = [legacyWiFiChannelsToAvoidFor3FoWiFi countByEnumeratingWithState:&v127 objects:v140 count:16];
       }
 
       while (v71);
@@ -2226,13 +2226,13 @@ LABEL_73:
     [WCM_Logging logLevel:4 message:@"blocklist channels after combining channels for 3Fo WiFi %@", v62];
   }
 
-  [(WCM_PolicyManager *)self setLegacyWiFiBlocklistChannelsFor3FoWiFi:v69];
-  v75 = [(WCM_PolicyManager *)self legacyWiFiChannelsToAvoidForIMD2GPS];
+  [(WCM_PolicyManager *)self setLegacyWiFiBlocklistChannelsFor3FoWiFi:legacyWiFiChannelsToAvoidFor3FoWiFi];
+  legacyWiFiChannelsToAvoidForIMD2GPS = [(WCM_PolicyManager *)self legacyWiFiChannelsToAvoidForIMD2GPS];
   v123 = 0u;
   v124 = 0u;
   v125 = 0u;
   v126 = 0u;
-  v76 = [v75 countByEnumeratingWithState:&v123 objects:v139 count:16];
+  v76 = [legacyWiFiChannelsToAvoidForIMD2GPS countByEnumeratingWithState:&v123 objects:v139 count:16];
   if (v76)
   {
     v77 = v76;
@@ -2243,7 +2243,7 @@ LABEL_73:
       {
         if (*v124 != v78)
         {
-          objc_enumerationMutation(v75);
+          objc_enumerationMutation(legacyWiFiChannelsToAvoidForIMD2GPS);
         }
 
         v80 = *(*(&v123 + 1) + 8 * k);
@@ -2253,7 +2253,7 @@ LABEL_73:
         }
       }
 
-      v77 = [v75 countByEnumeratingWithState:&v123 objects:v139 count:16];
+      v77 = [legacyWiFiChannelsToAvoidForIMD2GPS countByEnumeratingWithState:&v123 objects:v139 count:16];
     }
 
     while (v77);
@@ -2261,13 +2261,13 @@ LABEL_73:
 
   v9 = WRM_IPTelephonyController;
   [WCM_Logging logLevel:4 message:@"blocklist channels after combining channels for IMD2 GPS %@", v62];
-  if (![(NSArray *)v39 isEqualToArray:&off_100285EC8])
+  if (![(NSArray *)wcmWiFiB7BlocklistChannels isEqualToArray:&off_100285EC8])
   {
     v121 = 0u;
     v122 = 0u;
     v119 = 0u;
     v120 = 0u;
-    v81 = [(NSArray *)v39 countByEnumeratingWithState:&v119 objects:v138 count:16];
+    v81 = [(NSArray *)wcmWiFiB7BlocklistChannels countByEnumeratingWithState:&v119 objects:v138 count:16];
     if (v81)
     {
       v82 = v81;
@@ -2278,7 +2278,7 @@ LABEL_73:
         {
           if (*v120 != v83)
           {
-            objc_enumerationMutation(v39);
+            objc_enumerationMutation(wcmWiFiB7BlocklistChannels);
           }
 
           v85 = *(*(&v119 + 1) + 8 * m);
@@ -2288,7 +2288,7 @@ LABEL_73:
           }
         }
 
-        v82 = [(NSArray *)v39 countByEnumeratingWithState:&v119 objects:v138 count:16];
+        v82 = [(NSArray *)wcmWiFiB7BlocklistChannels countByEnumeratingWithState:&v119 objects:v138 count:16];
       }
 
       while (v82);
@@ -2298,7 +2298,7 @@ LABEL_73:
     [WCM_Logging logLevel:4 message:@"blocklist channels after combined with wifiBlocklistChannelsForOOB: %@", v62];
   }
 
-  v3 = v110;
+  cellularCoexBand = v110;
   if (sub_100010258(v62))
   {
     [v62 removeObject:&off_100271778];
@@ -2317,17 +2317,17 @@ LABEL_73:
 LABEL_166:
   objc_autoreleasePoolPop(v86);
   v99 = v118;
-  if (v3 == 1)
+  if (cellularCoexBand == 1)
   {
-    v100 = [(WCM_PlatformManager *)v5 wcmCellularWCI2ModeRBThresholdHigh];
+    wcmCellularWCI2ModeRBThresholdHigh = [(WCM_PlatformManager *)platformManager wcmCellularWCI2ModeRBThresholdHigh];
   }
 
   else
   {
-    v100 = [(WCM_PlatformManager *)v5 wcmCellularWCI2ModeRBThresholdLow];
+    wcmCellularWCI2ModeRBThresholdHigh = [(WCM_PlatformManager *)platformManager wcmCellularWCI2ModeRBThresholdLow];
   }
 
-  [(WCM_CellularController *)v4 updateRBThreshold:[(NSNumber *)v100 intValue]];
+  [(WCM_CellularController *)cellularController updateRBThreshold:[(NSNumber *)wcmCellularWCI2ModeRBThresholdHigh intValue]];
   if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"UseWCMAriDriver"])
   {
     [(WCM_PolicyManager *)self configureTimeSharingWifiChannels];
@@ -2358,15 +2358,15 @@ LABEL_166:
   {
     if ([(WCM_PolicyManager *)self gpsRadioActive])
     {
-      v101 = [(WCM_PolicyManager *)self btPreferredChannelMapOnGpsRadioActive];
+      btPreferredChannelMapOnGpsRadioActive = [(WCM_PolicyManager *)self btPreferredChannelMapOnGpsRadioActive];
     }
 
     else
     {
-      v101 = [(WCM_PolicyManager *)self btPreferredChannelMap];
+      btPreferredChannelMapOnGpsRadioActive = [(WCM_PolicyManager *)self btPreferredChannelMap];
     }
 
-    btPreferredChannelMapHPCellularActive = v101;
+    btPreferredChannelMapHPCellularActive = btPreferredChannelMapOnGpsRadioActive;
     if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"hpcellularstatemonitorsupport"]&& (_os_feature_enabled_impl() & 1) == 0)
     {
       if ([(WCM_PolicyManager *)self hpCellNeedMitigation])
@@ -2380,17 +2380,17 @@ LABEL_166:
     [(WCM_BTController *)[(WCM_PolicyManager *)self btController] updatePreferredAFHMap:btPreferredChannelMapHPCellularActive];
     if (_os_feature_enabled_impl() && [(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"HFBTCoex"])
     {
-      v103 = [(WCM_PolicyManager *)self btPreferred5GChannelMap];
+      btPreferred5GChannelMap = [(WCM_PolicyManager *)self btPreferred5GChannelMap];
       [WCM_Logging logLevel:3 message:@"HFAFHDebug_ Update channel bitmap"];
-      [(WCM_BTController *)[(WCM_PolicyManager *)self btController] updatePreferredHFBTChannelMap:v103];
+      [(WCM_BTController *)[(WCM_PolicyManager *)self btController] updatePreferredHFBTChannelMap:btPreferred5GChannelMap];
     }
 
     if (_os_feature_enabled_impl() && [(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"HFBTCoex"])
     {
       [WCM_Logging logLevel:4 message:@"HFBTAntBlkDebug_ Current enabled bands = %@", [(WCM_PolicyManager *)self HFBTAntBlkEnableBands]];
       v104 = [(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"HFBTConditionId"];
-      v105 = [(WCM_PolicyManager *)self btController];
-      v106 = [(WCM_PolicyManager *)self btAntBlockDuration];
+      btController = [(WCM_PolicyManager *)self btController];
+      btAntBlockDuration = [(WCM_PolicyManager *)self btAntBlockDuration];
       v117 = [-[NSDictionary objectForKeyedSubscript:](-[WCM_PolicyManager HFBTAntBlkEnableBands](self "HFBTAntBlkEnableBands")];
       v115 = [-[NSDictionary objectForKeyedSubscript:](-[WCM_PolicyManager HFBTAntBlkEnableBands](self "HFBTAntBlkEnableBands")];
       v113 = [-[NSDictionary objectForKeyedSubscript:](-[WCM_PolicyManager HFBTAntBlkEnableBands](self "HFBTAntBlkEnableBands")];
@@ -2402,13 +2402,13 @@ LABEL_166:
         v9 = WRM_IPTelephonyController;
         v99 = v118;
         LOBYTE(v109) = v108;
-        -[WCM_BTController updateHFBtAntennaRequestWithDuration:unii1Enabled:unii3Enabled:unii5aEnabled:unii5bEnabled:unii5cEnabled:unii5dEnabled:unii1ConditionId:unii3ConditionId:unii5aConditionId:unii5bConditionId:unii5cConditionId:unii5dConditionId:](v105, "updateHFBtAntennaRequestWithDuration:unii1Enabled:unii3Enabled:unii5aEnabled:unii5bEnabled:unii5cEnabled:unii5dEnabled:unii1ConditionId:unii3ConditionId:unii5aConditionId:unii5bConditionId:unii5cConditionId:unii5dConditionId:", v106, v117, v115, v113, v111, v107, v109, [&off_100271730 unsignedIntValue], objc_msgSend(&off_100271730, "unsignedIntValue"), objc_msgSend(&off_100271748, "unsignedIntValue"), objc_msgSend(&off_100271748, "unsignedIntValue"), objc_msgSend(&off_100271748, "unsignedIntValue"), objc_msgSend(&off_100271748, "unsignedIntValue"));
+        -[WCM_BTController updateHFBtAntennaRequestWithDuration:unii1Enabled:unii3Enabled:unii5aEnabled:unii5bEnabled:unii5cEnabled:unii5dEnabled:unii1ConditionId:unii3ConditionId:unii5aConditionId:unii5bConditionId:unii5cConditionId:unii5dConditionId:](btController, "updateHFBtAntennaRequestWithDuration:unii1Enabled:unii3Enabled:unii5aEnabled:unii5bEnabled:unii5cEnabled:unii5dEnabled:unii1ConditionId:unii3ConditionId:unii5aConditionId:unii5bConditionId:unii5cConditionId:unii5dConditionId:", btAntBlockDuration, v117, v115, v113, v111, v107, v109, [&off_100271730 unsignedIntValue], objc_msgSend(&off_100271730, "unsignedIntValue"), objc_msgSend(&off_100271748, "unsignedIntValue"), objc_msgSend(&off_100271748, "unsignedIntValue"), objc_msgSend(&off_100271748, "unsignedIntValue"), objc_msgSend(&off_100271748, "unsignedIntValue"));
       }
 
       else
       {
         LOBYTE(v109) = v108;
-        [(WCM_BTController *)v105 updateHFBtAntennaRequestWithDuration:v106 unii1Enabled:v117 unii3Enabled:v115 unii5aEnabled:v113 unii5bEnabled:v111 unii5cEnabled:v107 unii5dEnabled:v109];
+        [(WCM_BTController *)btController updateHFBtAntennaRequestWithDuration:btAntBlockDuration unii1Enabled:v117 unii3Enabled:v115 unii5aEnabled:v113 unii5bEnabled:v111 unii5cEnabled:v107 unii5dEnabled:v109];
       }
     }
 
@@ -2419,10 +2419,10 @@ LABEL_166:
 
     if ((([(WCM_PolicyManager *)self cellularWCI2CoexPolicyBitmap]!= 0) & v99) == 1)
     {
-      [(WCM_BTController *)[(WCM_PolicyManager *)self btController] updateMWSFrameConfig:v4];
+      [(WCM_BTController *)[(WCM_PolicyManager *)self btController] updateMWSFrameConfig:cellularController];
     }
 
-    [(WCM_BTController *)[(WCM_PolicyManager *)self btController] updateMWSChannelParameters:v4];
+    [(WCM_BTController *)[(WCM_PolicyManager *)self btController] updateMWSChannelParameters:cellularController];
     if ((v99 & 1) == 0)
     {
       [&v9[98] logLevel:4 message:{@"ZeroFreqDebug: For non-coex scenario (including RRC idle), WRM pass actual frequences instead of zeros to BT, inCoexBand= %d", 0}];
@@ -2458,25 +2458,25 @@ LABEL_166:
   }
 
   [(WCM_PolicyManager *)self handleFTCall];
-  [(WCM_PolicyManager *)self updateCoexMonitorState:v3];
+  [(WCM_PolicyManager *)self updateCoexMonitorState:cellularCoexBand];
 }
 
 - (int)cellularCoexBand
 {
-  v3 = [(WCM_PolicyManager *)self cellularController];
-  [(WCM_CellularController *)v3 ulCenterFreq];
+  cellularController = [(WCM_PolicyManager *)self cellularController];
+  [(WCM_CellularController *)cellularController ulCenterFreq];
   v5 = v4;
-  [(WCM_CellularController *)v3 ulBandwidth];
+  [(WCM_CellularController *)cellularController ulBandwidth];
   v7 = v6;
-  [(WCM_CellularController *)v3 dlCenterFreq];
+  [(WCM_CellularController *)cellularController dlCenterFreq];
   v9 = v8;
-  [(WCM_CellularController *)v3 dlBandwidth];
+  [(WCM_CellularController *)cellularController dlBandwidth];
   v11 = v10;
-  LODWORD(v3) = [(WCM_CellularController *)v3 tddBand];
-  v12 = [(WCM_PolicyManager *)self platformManager];
-  if (v3)
+  LODWORD(cellularController) = [(WCM_CellularController *)cellularController tddBand];
+  platformManager = [(WCM_PolicyManager *)self platformManager];
+  if (cellularController)
   {
-    if ([(WCM_PlatformManager *)v12 isBand40ACoexActiveForULFreq:v5 ulBW:v7 dlFreq:v9 dlBW:v11])
+    if ([(WCM_PlatformManager *)platformManager isBand40ACoexActiveForULFreq:v5 ulBW:v7 dlFreq:v9 dlBW:v11])
     {
       return 1;
     }
@@ -2497,7 +2497,7 @@ LABEL_166:
     }
   }
 
-  else if ([(WCM_PlatformManager *)v12 isBand7CoexActiveForULFreq:v5 ulBW:v7 dlFreq:v9 dlBW:v11])
+  else if ([(WCM_PlatformManager *)platformManager isBand7CoexActiveForULFreq:v5 ulBW:v7 dlFreq:v9 dlBW:v11])
   {
     return 0;
   }
@@ -2517,85 +2517,85 @@ LABEL_166:
 
 - (void)updatePHSWifiChannels
 {
-  v3 = [(WCM_PolicyManager *)self cellularController];
-  v4 = [(WCM_PolicyManager *)self platformManager];
-  v5 = [(WCM_CellularController *)v3 bandInfoType];
-  v6 = [(WCM_CellularController *)v3 getActiveULCAConfig];
-  [(WCM_CellularController *)v3 dlCenterFreq];
+  cellularController = [(WCM_PolicyManager *)self cellularController];
+  platformManager = [(WCM_PolicyManager *)self platformManager];
+  bandInfoType = [(WCM_CellularController *)cellularController bandInfoType];
+  getActiveULCAConfig = [(WCM_CellularController *)cellularController getActiveULCAConfig];
+  [(WCM_CellularController *)cellularController dlCenterFreq];
   v8 = v7;
-  [(WCM_CellularController *)v3 dlBandwidth];
+  [(WCM_CellularController *)cellularController dlBandwidth];
   v10 = v8 - v9 * 0.5;
-  [(WCM_CellularController *)v3 dlCenterFreq];
+  [(WCM_CellularController *)cellularController dlCenterFreq];
   v12 = v11;
-  [(WCM_CellularController *)v3 dlBandwidth];
+  [(WCM_CellularController *)cellularController dlBandwidth];
   v14 = v12 + v13 * 0.5;
-  [(WCM_CellularController *)v3 ulCenterFreq];
+  [(WCM_CellularController *)cellularController ulCenterFreq];
   v16 = v15;
-  [(WCM_CellularController *)v3 ulBandwidth];
+  [(WCM_CellularController *)cellularController ulBandwidth];
   v18 = v17;
-  [(WCM_CellularController *)v3 ulCenterFreq];
+  [(WCM_CellularController *)cellularController ulCenterFreq];
   v20 = v19;
-  [(WCM_CellularController *)v3 ulBandwidth];
+  [(WCM_CellularController *)cellularController ulBandwidth];
   v22 = v21;
-  [(WCM_CellularController *)v3 ulCenterFreq];
+  [(WCM_CellularController *)cellularController ulCenterFreq];
   if (v23 == 0.0)
   {
-    [(WCM_CellularController *)v3 dlCenterFreq];
+    [(WCM_CellularController *)cellularController dlCenterFreq];
     if (v24 != 0.0)
     {
-      if ([(WCM_CellularController *)v3 cellBandInfo])
+      if ([(WCM_CellularController *)cellularController cellBandInfo])
       {
-        if (v5 == 64)
+        if (bandInfoType == 64)
         {
-          [(WCM_CellularController *)v3 dlCenterFreq];
+          [(WCM_CellularController *)cellularController dlCenterFreq];
           v27 = v49;
-          v28 = [(WCM_CellularController *)v3 cellBandInfo];
+          cellBandInfo = [(WCM_CellularController *)cellularController cellBandInfo];
           v29 = &unk_100196030;
         }
 
-        else if (v5 == 8)
+        else if (bandInfoType == 8)
         {
-          [(WCM_CellularController *)v3 dlCenterFreq];
+          [(WCM_CellularController *)cellularController dlCenterFreq];
           v27 = v48;
-          v28 = [(WCM_CellularController *)v3 cellBandInfo];
+          cellBandInfo = [(WCM_CellularController *)cellularController cellBandInfo];
           v29 = &unk_100197A98;
         }
 
         else
         {
           v25 = 0.0;
-          if (v5 != 1)
+          if (bandInfoType != 1)
           {
             goto LABEL_26;
           }
 
-          [(WCM_CellularController *)v3 dlCenterFreq];
+          [(WCM_CellularController *)cellularController dlCenterFreq];
           v27 = v26;
-          v28 = [(WCM_CellularController *)v3 cellBandInfo];
+          cellBandInfo = [(WCM_CellularController *)cellularController cellBandInfo];
           v29 = &unk_100196CB0;
         }
 
-        v25 = v27 - v29[5 * v28 + 4];
+        v25 = v27 - v29[5 * cellBandInfo + 4];
 LABEL_26:
-        [(WCM_CellularController *)v3 dlCenterFreq];
-        [WCM_Logging logLevel:4 message:@"PDHLSV2: RRC Idle state projectedUlCenterFreq %1f, dlCenterFreq %1f, band %d", *&v25, v50, [(WCM_CellularController *)v3 cellBandInfo]];
+        [(WCM_CellularController *)cellularController dlCenterFreq];
+        [WCM_Logging logLevel:4 message:@"PDHLSV2: RRC Idle state projectedUlCenterFreq %1f, dlCenterFreq %1f, band %d", *&v25, v50, [(WCM_CellularController *)cellularController cellBandInfo]];
         if (v25 > 0.0)
         {
-          [(WCM_CellularController *)v3 dlBandwidth];
+          [(WCM_CellularController *)cellularController dlBandwidth];
           v52 = v25 - v51 * 0.5;
-          [(WCM_CellularController *)v3 dlBandwidth];
+          [(WCM_CellularController *)cellularController dlBandwidth];
           v54 = v25 + v53 * 0.5;
           v55 = [(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"WiFiFVGHzPDHLS"];
-          v56 = [(WCM_PlatformManager *)v4 wcmWiFiCellCoexIssueTable];
+          wcmWiFiCellCoexIssueTable = [(WCM_PlatformManager *)platformManager wcmWiFiCellCoexIssueTable];
           if (v55)
           {
-            [(WCM_PolicyManager *)self setWifiChannelsToBlocklist:[(WCM_WiFiCellCoexIssueBandTable *)v56 wifiPHSChannelsToBlocklistV2ForCellBandInfoType:v5 cellDlLowFreq:v10 cellDlHighFreq:v14 cellUlLowFreq:v52 cellUlHighFreq:v54]];
+            [(WCM_PolicyManager *)self setWifiChannelsToBlocklist:[(WCM_WiFiCellCoexIssueBandTable *)wcmWiFiCellCoexIssueTable wifiPHSChannelsToBlocklistV2ForCellBandInfoType:bandInfoType cellDlLowFreq:v10 cellDlHighFreq:v14 cellUlLowFreq:v52 cellUlHighFreq:v54]];
             [WCM_Logging logLevel:4 message:@"PDHLSV2: wifi PHS channels blocklist RRC Idle state %@", [(WCM_PolicyManager *)self wifiChannelsToBlocklist]];
           }
 
           else
           {
-            [(WCM_PolicyManager *)self setWifiChannelsToBlocklist:[(WCM_WiFiCellCoexIssueBandTable *)v56 wifiPHSChannelsToBlocklistForCellBandInfoType:v5 cellDlLowFreq:v10 cellDlHighFreq:v14 cellUlLowFreq:v52 cellUlHighFreq:v54]];
+            [(WCM_PolicyManager *)self setWifiChannelsToBlocklist:[(WCM_WiFiCellCoexIssueBandTable *)wcmWiFiCellCoexIssueTable wifiPHSChannelsToBlocklistForCellBandInfoType:bandInfoType cellDlLowFreq:v10 cellDlHighFreq:v14 cellUlLowFreq:v52 cellUlHighFreq:v54]];
             [WCM_Logging logLevel:4 message:@"wifi PHS channels blocklist RRC Idle state %@", [(WCM_PolicyManager *)self wifiChannelsToBlocklist]];
           }
         }
@@ -2609,17 +2609,17 @@ LABEL_26:
   v31 = v20 + v22 * 0.5;
   if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"WiFiFVGHzPDHLS"])
   {
-    var8 = v6->var6.var8;
-    var2 = v6->var6.var2;
-    v34 = v6->var6.var3 * 0.5;
+    var8 = getActiveULCAConfig->var6.var8;
+    var2 = getActiveULCAConfig->var6.var2;
+    v34 = getActiveULCAConfig->var6.var3 * 0.5;
     v35 = var2 - v34;
     v36 = var2 + v34;
-    var0 = v6->var6.var0;
-    v38 = v6->var6.var1 * 0.5;
+    var0 = getActiveULCAConfig->var6.var0;
+    v38 = getActiveULCAConfig->var6.var1 * 0.5;
     v39 = var0 - v38;
     v40 = var0 + v38;
     v41 = +[NSMutableArray array];
-    v42 = [(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)v4 wcmWiFiCellCoexIssueTable] wifiPHSChannelsToBlocklistForCellBandInfoType:v5 cellDlLowFreq:v10 cellDlHighFreq:v14 cellUlLowFreq:v30 cellUlHighFreq:v31];
+    v42 = [(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)platformManager wcmWiFiCellCoexIssueTable] wifiPHSChannelsToBlocklistForCellBandInfoType:bandInfoType cellDlLowFreq:v10 cellDlHighFreq:v14 cellUlLowFreq:v30 cellUlHighFreq:v31];
     if ([v42 count])
     {
       v59 = 0u;
@@ -2656,52 +2656,52 @@ LABEL_26:
       [WCM_Logging logLevel:4 message:@"PDHLSV2: channel blocklist after combining channels for CC1 %@", v41];
     }
 
-    [(WCM_PolicyManager *)self combineWifiChannelList:v41 withChannelList:[(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)v4 wcmWiFiCellCoexIssueTable] wifiPHSChannelsToBlocklistV2ForCellBandInfoType:var8 cellDlLowFreq:v35 cellDlHighFreq:v36 cellUlLowFreq:v39 cellUlHighFreq:v40]];
+    [(WCM_PolicyManager *)self combineWifiChannelList:v41 withChannelList:[(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)platformManager wcmWiFiCellCoexIssueTable] wifiPHSChannelsToBlocklistV2ForCellBandInfoType:var8 cellDlLowFreq:v35 cellDlHighFreq:v36 cellUlLowFreq:v39 cellUlHighFreq:v40]];
     [WCM_Logging logLevel:4 message:@"PDHLSV2: channel blocklist after combining channels for CC2 %@", v41];
     [(WCM_PolicyManager *)self setWifiChannelsToBlocklist:v41];
   }
 
   else
   {
-    [(WCM_PolicyManager *)self setWifiChannelsToBlocklist:[(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)v4 wcmWiFiCellCoexIssueTable] wifiPHSChannelsToBlocklistForCellBandInfoType:v5 cellDlLowFreq:v10 cellDlHighFreq:v14 cellUlLowFreq:v30 cellUlHighFreq:v31]];
+    [(WCM_PolicyManager *)self setWifiChannelsToBlocklist:[(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)platformManager wcmWiFiCellCoexIssueTable] wifiPHSChannelsToBlocklistForCellBandInfoType:bandInfoType cellDlLowFreq:v10 cellDlHighFreq:v14 cellUlLowFreq:v30 cellUlHighFreq:v31]];
     [WCM_Logging logLevel:4 message:@"PHS wifi channel blocklist %@", [(WCM_PolicyManager *)self wifiChannelsToBlocklist]];
   }
 }
 
 - (void)configureWiFiChannelsForConditionalMitigation
 {
-  v3 = [(WCM_PolicyManager *)self cellularController];
-  v4 = [(WCM_PolicyManager *)self platformManager];
-  v5 = [(WCM_CellularController *)v3 getActiveULCAConfig];
+  cellularController = [(WCM_PolicyManager *)self cellularController];
+  platformManager = [(WCM_PolicyManager *)self platformManager];
+  getActiveULCAConfig = [(WCM_CellularController *)cellularController getActiveULCAConfig];
   v32 = 0;
   v31 = 0;
-  [(WCM_CellularController *)v3 bandInfoType];
-  [(WCM_CellularController *)v3 dlCenterFreq];
-  [(WCM_CellularController *)v3 dlBandwidth];
-  [(WCM_CellularController *)v3 dlCenterFreq];
-  [(WCM_CellularController *)v3 dlBandwidth];
-  [(WCM_CellularController *)v3 ulCenterFreq];
-  [(WCM_CellularController *)v3 ulBandwidth];
-  [(WCM_CellularController *)v3 ulCenterFreq];
-  [(WCM_CellularController *)v3 ulBandwidth];
+  [(WCM_CellularController *)cellularController bandInfoType];
+  [(WCM_CellularController *)cellularController dlCenterFreq];
+  [(WCM_CellularController *)cellularController dlBandwidth];
+  [(WCM_CellularController *)cellularController dlCenterFreq];
+  [(WCM_CellularController *)cellularController dlBandwidth];
+  [(WCM_CellularController *)cellularController ulCenterFreq];
+  [(WCM_CellularController *)cellularController ulBandwidth];
+  [(WCM_CellularController *)cellularController ulCenterFreq];
+  [(WCM_CellularController *)cellularController ulBandwidth];
   [(NSMutableArray *)[(WCM_PolicyManager *)self wifi2GHzChannelsToEnableType7MSGCombined] removeAllObjects];
   [(NSMutableArray *)[(WCM_PolicyManager *)self wifi5GHzChannelsToEnableType7MSGCombined] removeAllObjects];
   [(NSMutableArray *)[(WCM_PolicyManager *)self wifiEnhChannelsToEnableType7MSG] removeAllObjects];
-  if (v5)
+  if (getActiveULCAConfig)
   {
-    [WCM_Logging logLevel:2 message:@"update WiFi conditional mitigation channel list: total valid cellular carrier = %d", v5->var1];
-    if (v5->var1)
+    [WCM_Logging logLevel:2 message:@"update WiFi conditional mitigation channel list: total valid cellular carrier = %d", getActiveULCAConfig->var1];
+    if (getActiveULCAConfig->var1)
     {
       v6 = 0;
       v27 = 99;
       v28 = 99;
       v7 = @"Conditional Mitigation: carrier[%d], ulLowFrq = %fMHz, ulHighFreq = %fMHz";
       v8 = @"Conditional Mitigation: ulcaPriority2G = %d, ulcaPriority5G = %d, ulcaPriority6G = %d";
-      v9 = v5;
+      v9 = getActiveULCAConfig;
       v26 = 99;
       v10 = @"Conditional Mitigation: Wrong wifi channel list: %@";
-      v29 = v5;
-      v30 = v4;
+      v29 = getActiveULCAConfig;
+      v30 = platformManager;
       while (1)
       {
         var2 = v9->var0[0].var2;
@@ -2713,7 +2713,7 @@ LABEL_26:
         v17 = v9->var0[0].var0 + v15;
         var8 = v9->var0[0].var8;
         [WCM_Logging logLevel:4 message:v7, v6, *&v16, *&v17];
-        v19 = [(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)v4 wcmWiFiCellCoexIssueTable] wifiChannelsToEnableConditionalMitigationForCellBandInfoType:var8 cellDlLowFreq:&v32 + 1 cellDlHighFreq:&v32 cellUlLowFreq:&v31 cellUlHighFreq:v13 ulcaPriority2G:v14 ulcaPriority5G:v16 ulcaPriorityEnh:v17];
+        v19 = [(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)platformManager wcmWiFiCellCoexIssueTable] wifiChannelsToEnableConditionalMitigationForCellBandInfoType:var8 cellDlLowFreq:&v32 + 1 cellDlHighFreq:&v32 cellUlLowFreq:&v31 cellUlHighFreq:v13 ulcaPriority2G:v14 ulcaPriority5G:v16 ulcaPriorityEnh:v17];
         [WCM_Logging logLevel:4 message:v8, HIBYTE(v32), v32, v31];
         if (v19)
         {
@@ -2726,7 +2726,7 @@ LABEL_26:
         [WCM_Logging logLevel:0 message:v10, v19];
 LABEL_27:
         v9 = (v9 + 72);
-        if (++v6 >= v5->var1)
+        if (++v6 >= getActiveULCAConfig->var1)
         {
           goto LABEL_28;
         }
@@ -2750,7 +2750,7 @@ LABEL_27:
         v10 = v20;
         if ([v24 count])
         {
-          v5 = v29;
+          getActiveULCAConfig = v29;
           if (v32 < v27 || ![(NSMutableArray *)[(WCM_PolicyManager *)self wifi5GHzChannelsToEnableType7MSGCombined] count])
           {
             [(NSMutableArray *)[(WCM_PolicyManager *)self wifi5GHzChannelsToEnableType7MSGCombined] removeAllObjects];
@@ -2783,7 +2783,7 @@ LABEL_19:
 
           v8 = v21;
 LABEL_26:
-          v4 = v30;
+          platformManager = v30;
           goto LABEL_27;
         }
       }
@@ -2793,7 +2793,7 @@ LABEL_26:
         v10 = v20;
       }
 
-      v5 = v29;
+      getActiveULCAConfig = v29;
       goto LABEL_19;
     }
   }
@@ -2838,32 +2838,32 @@ LABEL_28:
 
 - (void)refreshWiFiWCI2Bitmap
 {
-  v3 = [(WCM_PolicyManager *)self wifiController];
+  wifiController = [(WCM_PolicyManager *)self wifiController];
   if (![(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"WlanConditionId"])
   {
     if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"WiFiWCI2BitmapV2Enabled"])
     {
       if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"WiFiEnhCoexSupport"])
       {
-        v4 = [(WCM_PolicyManager *)self wifiChannelsToEnableWCI2Gand5G];
+        wifiChannelsToEnableWCI2Gand5G = [(WCM_PolicyManager *)self wifiChannelsToEnableWCI2Gand5G];
         [(WCM_PolicyManager *)self wifiChannelsToEnableWCI2WiFiEnh];
 
-        [(WCM_WiFiController *)v3 updateChannelsToEnableWCI2WiFiEnh:v4 WiFiEnhChannels:?];
+        [(WCM_WiFiController *)wifiController updateChannelsToEnableWCI2WiFiEnh:wifiChannelsToEnableWCI2Gand5G WiFiEnhChannels:?];
       }
 
       else
       {
-        v6 = [(WCM_PolicyManager *)self wifiChannelsToEnableWCI2V2];
+        wifiChannelsToEnableWCI2V2 = [(WCM_PolicyManager *)self wifiChannelsToEnableWCI2V2];
 
-        [(WCM_WiFiController *)v3 updateChannelsToEnableWCI2V2:v6];
+        [(WCM_WiFiController *)wifiController updateChannelsToEnableWCI2V2:wifiChannelsToEnableWCI2V2];
       }
     }
 
     else
     {
-      v5 = [(WCM_PolicyManager *)self wifiChannelsToEnableWCI2];
+      wifiChannelsToEnableWCI2 = [(WCM_PolicyManager *)self wifiChannelsToEnableWCI2];
 
-      [(WCM_WiFiController *)v3 updateChannelsToEnableWCI2:v5];
+      [(WCM_WiFiController *)wifiController updateChannelsToEnableWCI2:wifiChannelsToEnableWCI2];
     }
   }
 }
@@ -2923,14 +2923,14 @@ LABEL_14:
 
   if (!v7)
   {
-    v8 = 0;
+    getBand40BUlCenterFreq = 0;
     v10 = 0;
 LABEL_25:
     if (![(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"UseWCMAriDriver"]&& ((v7 ^ 1) & 1) == 0 && ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"Bb20PolicyConversion"]|| [(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"BB_POLICY_CONFIG_SUPPORT"]))
     {
-      v11 = [(WCM_PolicyManager *)self cellularController];
+      cellularController = [(WCM_PolicyManager *)self cellularController];
 
-      [(WCM_CellularController *)v11 configureCellularTimeShareConfigReqParamsWithCenterFreq:v8 bandwidth:v10];
+      [(WCM_CellularController *)cellularController configureCellularTimeShareConfigReqParamsWithCenterFreq:getBand40BUlCenterFreq bandwidth:v10];
     }
 
     return;
@@ -2938,25 +2938,25 @@ LABEL_25:
 
   if ([(WCM_PolicyManager *)self cellularCoexBand]== 2)
   {
-    v8 = [(WCM_PlatformManager *)[(WCM_PolicyManager *)self platformManager] getBand40BUlCenterFreq];
-    v9 = [(WCM_PlatformManager *)[(WCM_PolicyManager *)self platformManager] getBand40BUlBw];
+    getBand40BUlCenterFreq = [(WCM_PlatformManager *)[(WCM_PolicyManager *)self platformManager] getBand40BUlCenterFreq];
+    getBand40BUlBw = [(WCM_PlatformManager *)[(WCM_PolicyManager *)self platformManager] getBand40BUlBw];
 LABEL_24:
-    v10 = v9;
-    [WCM_Logging logLevel:4 message:@"Cellular/WiFi TimeSharing: Enabled for freq %llu and bw %llu", v8, v9];
+    v10 = getBand40BUlBw;
+    [WCM_Logging logLevel:4 message:@"Cellular/WiFi TimeSharing: Enabled for freq %llu and bw %llu", getBand40BUlCenterFreq, getBand40BUlBw];
     goto LABEL_25;
   }
 
   if ([(WCM_PolicyManager *)self cellularCoexBand]== 3)
   {
-    v8 = [(WCM_PlatformManager *)[(WCM_PolicyManager *)self platformManager] getBand41A1UlCenterFreq];
-    v9 = [(WCM_PlatformManager *)[(WCM_PolicyManager *)self platformManager] getBand41A1UlBw];
+    getBand40BUlCenterFreq = [(WCM_PlatformManager *)[(WCM_PolicyManager *)self platformManager] getBand41A1UlCenterFreq];
+    getBand40BUlBw = [(WCM_PlatformManager *)[(WCM_PolicyManager *)self platformManager] getBand41A1UlBw];
     goto LABEL_24;
   }
 
   if ([(WCM_PolicyManager *)self cellularCoexBand]== 4)
   {
-    v8 = [(WCM_PlatformManager *)[(WCM_PolicyManager *)self platformManager] getBand41A2UlCenterFreq];
-    v9 = [(WCM_PlatformManager *)[(WCM_PolicyManager *)self platformManager] getBand41A2UlBw];
+    getBand40BUlCenterFreq = [(WCM_PlatformManager *)[(WCM_PolicyManager *)self platformManager] getBand41A2UlCenterFreq];
+    getBand40BUlBw = [(WCM_PlatformManager *)[(WCM_PolicyManager *)self platformManager] getBand41A2UlBw];
     goto LABEL_24;
   }
 
@@ -2965,14 +2965,14 @@ LABEL_24:
 
 - (void)evaluateGen9rFemConfig
 {
-  v2 = [(WCM_PolicyManager *)self cellularController];
-  if (v2)
+  cellularController = [(WCM_PolicyManager *)self cellularController];
+  if (cellularController)
   {
-    v3 = v2;
-    v4 = [(WCM_CellularController *)v2 getActiveULCAConfig];
-    if (v4)
+    v3 = cellularController;
+    getActiveULCAConfig = [(WCM_CellularController *)cellularController getActiveULCAConfig];
+    if (getActiveULCAConfig)
     {
-      v5 = v4;
+      v5 = getActiveULCAConfig;
       [(WCM_CellularController *)v3 bandInfoType];
       if (v5->var1)
       {
@@ -3256,14 +3256,14 @@ LABEL_62:
 
 - (void)handleWiFiConfigChange
 {
-  v3 = [(WCM_PolicyManager *)self wifiController];
-  v4 = [(WCM_PolicyManager *)self cellularController];
-  v5 = [(WCM_WiFiController *)v3 wifiState];
-  v6 = [(WCM_WiFiController *)v3 wifiChannel];
-  if (v5 >= 4)
+  wifiController = [(WCM_PolicyManager *)self wifiController];
+  cellularController = [(WCM_PolicyManager *)self cellularController];
+  wifiState = [(WCM_WiFiController *)wifiController wifiState];
+  wifiChannel = [(WCM_WiFiController *)wifiController wifiChannel];
+  if (wifiState >= 4)
   {
     v7 = "INVALID_STATE!!!";
-    if (v5 == 4)
+    if (wifiState == 4)
     {
       v7 = "ASSOCIATED_6G";
     }
@@ -3271,18 +3271,18 @@ LABEL_62:
 
   else
   {
-    v7 = off_100241CB8[v5];
+    v7 = off_100241CB8[wifiState];
   }
 
-  [WCM_Logging logLevel:4 message:@"handleWiFiConfigChange: wifiState(%s), wifiChannel(%u)", v7, v6];
+  [WCM_Logging logLevel:4 message:@"handleWiFiConfigChange: wifiState(%s), wifiChannel(%u)", v7, wifiChannel];
   if (![(WCM_PlatformManager *)[(WCM_PolicyManager *)self platformManager] wcmWiFiCellCoexIssueTable])
   {
-    v9 = v5 == 2 && v6 >= 0xB && [(WCM_CellularController *)v4 isInCoexBand7LowerEdge]? [(WCM_PlatformManager *)[(WCM_PolicyManager *)self platformManager] wcmCellularWCI2ModeLTEMaxTxPowerLow]: [(WCM_PlatformManager *)[(WCM_PolicyManager *)self platformManager] wcmCellularWCI2ModeLTEMaxTxPowerHigh];
-    [(WCM_CellularController *)v4 updateControllerTxPower:[(NSNumber *)v9 intValue]];
-    if (v5 == 2 && v6 && [(WCM_PolicyManager *)self isWiFiChannel:v6 inChannelMap:[(WCM_PolicyManager *)self legacyWiFiBlocklistChannelsFor3FoWiFi]])
+    v9 = wifiState == 2 && wifiChannel >= 0xB && [(WCM_CellularController *)cellularController isInCoexBand7LowerEdge]? [(WCM_PlatformManager *)[(WCM_PolicyManager *)self platformManager] wcmCellularWCI2ModeLTEMaxTxPowerLow]: [(WCM_PlatformManager *)[(WCM_PolicyManager *)self platformManager] wcmCellularWCI2ModeLTEMaxTxPowerHigh];
+    [(WCM_CellularController *)cellularController updateControllerTxPower:[(NSNumber *)v9 intValue]];
+    if (wifiState == 2 && wifiChannel && [(WCM_PolicyManager *)self isWiFiChannel:wifiChannel inChannelMap:[(WCM_PolicyManager *)self legacyWiFiBlocklistChannelsFor3FoWiFi]])
     {
       [(WCM_PolicyManager *)self setWifiRxPriThreshold:[(WCM_PlatformManager *)[(WCM_PolicyManager *)self platformManager] wcmWiFiPriThresholdMed]];
-      [WCM_Logging logLevel:4 message:@"WiFi associated on 3Fo Impacted channel %d", v6];
+      [WCM_Logging logLevel:4 message:@"WiFi associated on 3Fo Impacted channel %d", wifiChannel];
     }
   }
 
@@ -3294,20 +3294,20 @@ LABEL_62:
 
   [(WCM_PolicyManager *)self configureWifiAntennaSelectionForCoex];
   [(WCM_PolicyManager *)self updateCellTxPowerLimit];
-  [(WCM_WiFiController *)v3 updateMWSFrameConfig:v4];
+  [(WCM_WiFiController *)wifiController updateMWSFrameConfig:cellularController];
   if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"CellularNeedWiFiStatus"])
   {
     if ([(WCM_PolicyManager *)self audioBuiltInReceiver])
     {
-      v8 = [(WCM_WiFiController *)v3 headTxPowerCapdBm];
+      headTxPowerCapdBm = [(WCM_WiFiController *)wifiController headTxPowerCapdBm];
     }
 
     else
     {
-      v8 = [(WCM_WiFiController *)v3 bodyTxPowerCapdBm];
+      headTxPowerCapdBm = [(WCM_WiFiController *)wifiController bodyTxPowerCapdBm];
     }
 
-    [(WCM_CellularController *)v4 updateWiFiStatusCenterFreq:[(WCM_WiFiController *)v3 channelCenterFreqMHz] bandwidth:[(WCM_WiFiController *)v3 channelBandwidthMHz] txPower:v8];
+    [(WCM_CellularController *)cellularController updateWiFiStatusCenterFreq:[(WCM_WiFiController *)wifiController channelCenterFreqMHz] bandwidth:[(WCM_WiFiController *)wifiController channelBandwidthMHz] txPower:headTxPowerCapdBm];
   }
 
   [(WCM_PolicyManager *)self updateCoexMonitorState:[(WCM_PolicyManager *)self cellularCoexBand]];
@@ -3333,19 +3333,19 @@ LABEL_62:
 
   if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"CoexBBUnifiedSensorInfoSupport"])
   {
-    [(WCM_CellularController *)[(WCM_PolicyManager *)self cellularController] sendBBCoexSensorMessage:1 band:v5 usecase:0];
+    [(WCM_CellularController *)[(WCM_PolicyManager *)self cellularController] sendBBCoexSensorMessage:1 band:wifiState usecase:0];
   }
 
   if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"SacPolicySupport"]&& ![(WCM_SacManager *)self->_sacManager isTestMode])
   {
-    v10 = [(WCM_SacManager *)self->_sacManager getQueue];
+    getQueue = [(WCM_SacManager *)self->_sacManager getQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100014284;
     block[3] = &unk_10023DC80;
     block[4] = self;
-    block[5] = v3;
-    dispatch_async(v10, block);
+    block[5] = wifiController;
+    dispatch_async(getQueue, block);
   }
 
   if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"WifiGen9rFemConfig"])
@@ -3356,24 +3356,24 @@ LABEL_62:
 
 - (void)configureWiFiChannelMap
 {
-  v3 = [(WCM_PolicyManager *)self platformManager];
-  v4 = [(WCM_PolicyManager *)self wifiController];
-  v5 = [(WCM_PolicyManager *)self cellularCoexBand];
-  v6 = v5;
-  if (v5 > 1)
+  platformManager = [(WCM_PolicyManager *)self platformManager];
+  wifiController = [(WCM_PolicyManager *)self wifiController];
+  cellularCoexBand = [(WCM_PolicyManager *)self cellularCoexBand];
+  v6 = cellularCoexBand;
+  if (cellularCoexBand > 1)
   {
-    if (v5 == 2)
+    if (cellularCoexBand == 2)
     {
       if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"DisablePhyRateBasedRxPriReq"])
       {
         goto LABEL_8;
       }
 
-      v8 = [(WCM_PlatformManager *)v3 wcmWiFiPriThresholdHigh];
+      wcmWiFiPriThresholdHigh = [(WCM_PlatformManager *)platformManager wcmWiFiPriThresholdHigh];
       goto LABEL_10;
     }
 
-    if (v5 != 3 && v5 != 4)
+    if (cellularCoexBand != 3 && cellularCoexBand != 4)
     {
       goto LABEL_8;
     }
@@ -3384,13 +3384,13 @@ LABEL_7:
       goto LABEL_8;
     }
 
-    v8 = [(WCM_PlatformManager *)v3 wcmWiFiPriThresholdLow];
+    wcmWiFiPriThresholdHigh = [(WCM_PlatformManager *)platformManager wcmWiFiPriThresholdLow];
 LABEL_10:
-    v7 = v8;
+    v7 = wcmWiFiPriThresholdHigh;
     goto LABEL_11;
   }
 
-  if (v5 <= 1)
+  if (cellularCoexBand <= 1)
   {
     goto LABEL_7;
   }
@@ -3399,23 +3399,23 @@ LABEL_8:
   v7 = &off_100271310;
 LABEL_11:
   [(WCM_PolicyManager *)self setWifiRxPriThreshold:v7];
-  [(WCM_WiFiController *)v4 updateChannelsToBlocklist:[(WCM_PolicyManager *)self wifiChannelsToBlocklist]];
+  [(WCM_WiFiController *)wifiController updateChannelsToBlocklist:[(WCM_PolicyManager *)self wifiChannelsToBlocklist]];
   if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"WiFiOCLSupport"]|| [(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"WiFiOCLSupportV2"])
   {
     if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"WiFiEnhCoexSupport"])
     {
-      [(WCM_WiFiController *)v4 updateChannelsToDisableOCLWiFiEnh:[(WCM_PolicyManager *)self wifiChannelsToDisableOCL2G5G] WiFiEnhChannels:[(WCM_PolicyManager *)self wifiChannelsToDisableOCLEnh]];
+      [(WCM_WiFiController *)wifiController updateChannelsToDisableOCLWiFiEnh:[(WCM_PolicyManager *)self wifiChannelsToDisableOCL2G5G] WiFiEnhChannels:[(WCM_PolicyManager *)self wifiChannelsToDisableOCLEnh]];
     }
 
     else
     {
-      [(WCM_WiFiController *)v4 updateChannelsToDisableOCL:[(WCM_PolicyManager *)self wifiChannelsToDisableOCL]];
+      [(WCM_WiFiController *)wifiController updateChannelsToDisableOCL:[(WCM_PolicyManager *)self wifiChannelsToDisableOCL]];
     }
   }
 
   if (v6 == 7)
   {
-    [(WCM_WiFiController *)v4 updateChannelsToEnableWCI2:&off_100285F70];
+    [(WCM_WiFiController *)wifiController updateChannelsToEnableWCI2:&off_100285F70];
   }
 
   else if ([(WCM_PolicyManager *)self cellularWCI2CoexPolicyBitmap])
@@ -3442,9 +3442,9 @@ LABEL_11:
 
   if ([(WCM_PolicyManager *)self cellularWCI2CoexPolicyBitmap])
   {
-    v9 = [(WCM_PolicyManager *)self wifiRxPriThreshold];
+    wifiRxPriThreshold = [(WCM_PolicyManager *)self wifiRxPriThreshold];
 
-    [(WCM_WiFiController *)v4 updateRxPriorityThreshold:v9];
+    [(WCM_WiFiController *)wifiController updateRxPriorityThreshold:wifiRxPriThreshold];
   }
 }
 
@@ -3457,18 +3457,18 @@ LABEL_11:
   }
 
   [WCM_Logging logLevel:4 message:@"YYDebug_ processDynamicAntennaBlocking"];
-  v3 = [(WCM_PolicyManager *)self wifiController];
-  v4 = [(WCM_PolicyManager *)self cellularController];
-  v5 = [(WCM_CellularController *)v4 getActiveULCAConfig];
-  v6 = [(WCM_PolicyManager *)self platformManager];
+  wifiController = [(WCM_PolicyManager *)self wifiController];
+  cellularController = [(WCM_PolicyManager *)self cellularController];
+  getActiveULCAConfig = [(WCM_CellularController *)cellularController getActiveULCAConfig];
+  platformManager = [(WCM_PolicyManager *)self platformManager];
   v7 = objc_autoreleasePoolPush();
-  if (!v4)
+  if (!cellularController)
   {
     goto LABEL_12;
   }
 
-  [(WCM_CellularController *)v4 getActiveULCAConfig];
-  if (!v5)
+  [(WCM_CellularController *)cellularController getActiveULCAConfig];
+  if (!getActiveULCAConfig)
   {
     [WCM_Logging logLevel:0 message:@"YYDebug_ processDynamicAntennaBlocking activeULCAConfig->cellConfigNR79 is NULL"];
 LABEL_12:
@@ -3476,44 +3476,44 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  var8 = v5->var7.var8;
-  var2 = v5->var7.var2;
-  v10 = v5->var7.var3 * 0.5;
+  var8 = getActiveULCAConfig->var7.var8;
+  var2 = getActiveULCAConfig->var7.var2;
+  v10 = getActiveULCAConfig->var7.var3 * 0.5;
   v11 = var2 - v10;
   v12 = var2 + v10;
-  var0 = v5->var7.var0;
-  v14 = v5->var7.var1 * 0.5;
+  var0 = getActiveULCAConfig->var7.var0;
+  v14 = getActiveULCAConfig->var7.var1 * 0.5;
   v15 = var0 - v14;
   v16 = var0 + v14;
-  v17 = [(WCM_WiFiController *)v3 wifiChannel];
-  [WCM_Logging logLevel:4 message:@"YYDebug_ processDynamicAntennaBlocking gets wifiChannel = %d, channelBandwidthMHz = %d, channelCenterFreqMHz = %d.", v17, [(WCM_WiFiController *)v3 channelBandwidthMHz], [(WCM_WiFiController *)v3 channelCenterFreqMHz]];
-  [WCM_Logging logLevel:4 message:@"YYDebug_ processDynamicAntennaBlocking gets ccNR79 info dlLowFreq = %lf, dlHighFreq = %lf, ulLowFreq = %lf, ulHighFreq = %lf, nr79Found = %d.", *&v11, *&v12, *&v15, *&v16, v5->var7.var9];
+  wifiChannel = [(WCM_WiFiController *)wifiController wifiChannel];
+  [WCM_Logging logLevel:4 message:@"YYDebug_ processDynamicAntennaBlocking gets wifiChannel = %d, channelBandwidthMHz = %d, channelCenterFreqMHz = %d.", wifiChannel, [(WCM_WiFiController *)wifiController channelBandwidthMHz], [(WCM_WiFiController *)wifiController channelCenterFreqMHz]];
+  [WCM_Logging logLevel:4 message:@"YYDebug_ processDynamicAntennaBlocking gets ccNR79 info dlLowFreq = %lf, dlHighFreq = %lf, ulLowFreq = %lf, ulHighFreq = %lf, nr79Found = %d.", *&v11, *&v12, *&v15, *&v16, getActiveULCAConfig->var7.var9];
   v24 = 0;
   v23 = 0;
-  [(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)v6 wcmWiFiCellCoexIssueTable] getCellDynamicAntBlockingIndex:var8 cellDlLowFreq:v17 cellDlHighFreq:&v24 cellUlLowFreq:&v23 + 1 cellUlHighFreq:&v23 wifiChannel:v11 pissueBandMatchAntIdx:v12 cellAntBlkEnableIdx1:v15 cellAntBlkEnableIdx2:v16];
-  v18 = [(WCM_PolicyManager *)self dynamicAntBlkingBand];
-  v19 = v18 != v24;
-  if (v18 != v24)
+  [(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)platformManager wcmWiFiCellCoexIssueTable] getCellDynamicAntBlockingIndex:var8 cellDlLowFreq:wifiChannel cellDlHighFreq:&v24 cellUlLowFreq:&v23 + 1 cellUlHighFreq:&v23 wifiChannel:v11 pissueBandMatchAntIdx:v12 cellAntBlkEnableIdx1:v15 cellAntBlkEnableIdx2:v16];
+  dynamicAntBlkingBand = [(WCM_PolicyManager *)self dynamicAntBlkingBand];
+  v19 = dynamicAntBlkingBand != v24;
+  if (dynamicAntBlkingBand != v24)
   {
     [(WCM_PolicyManager *)self setDynamicAntBlkingBand:?];
   }
 
-  v20 = [(WCM_PolicyManager *)self dynamicCellAntBlkEnableIdx1];
-  if (v20 != HIBYTE(v23))
+  dynamicCellAntBlkEnableIdx1 = [(WCM_PolicyManager *)self dynamicCellAntBlkEnableIdx1];
+  if (dynamicCellAntBlkEnableIdx1 != HIBYTE(v23))
   {
     [(WCM_PolicyManager *)self setDynamicCellAntBlkEnableIdx1:?];
     v19 = 1;
   }
 
-  v21 = [(WCM_PolicyManager *)self dynamicCellAntBlkEnableIdx2];
-  if (v21 != v23)
+  dynamicCellAntBlkEnableIdx2 = [(WCM_PolicyManager *)self dynamicCellAntBlkEnableIdx2];
+  if (dynamicCellAntBlkEnableIdx2 != v23)
   {
     [(WCM_PolicyManager *)self setDynamicCellAntBlkEnableIdx2:?];
     v19 = 1;
-    v21 = v23;
+    dynamicCellAntBlkEnableIdx2 = v23;
   }
 
-  [WCM_Logging logLevel:4 message:@"YYDebug_ processDynamicAntennaBlocking dynamicAntBlkingBand = %d, ant1 = %d, ant2 = %d", v24, HIBYTE(v23), v21];
+  [WCM_Logging logLevel:4 message:@"YYDebug_ processDynamicAntennaBlocking dynamicAntBlkingBand = %d, ant1 = %d, ant2 = %d", v24, HIBYTE(v23), dynamicCellAntBlkEnableIdx2];
 LABEL_13:
   objc_autoreleasePoolPop(v7);
   return v19;
@@ -3533,9 +3533,9 @@ LABEL_13:
     [(WCM_PolicyManager *)self handleWiFiBTCoexChange];
   }
 
-  v3 = [(WCM_PolicyManager *)self wifiController];
+  wifiController = [(WCM_PolicyManager *)self wifiController];
 
-  [(WCM_WiFiController *)v3 handleWiFiResetFlag];
+  [(WCM_WiFiController *)wifiController handleWiFiResetFlag];
 }
 
 - (void)handleWiFiBTULOFDMAChange
@@ -3552,12 +3552,12 @@ LABEL_13:
     return;
   }
 
-  v3 = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiState];
-  v4 = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] didWiFiDeviceReset];
-  if (v3 >= 4)
+  wifiState = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiState];
+  didWiFiDeviceReset = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] didWiFiDeviceReset];
+  if (wifiState >= 4)
   {
     v5 = "INVALID_STATE!!!";
-    if (v3 == 4)
+    if (wifiState == 4)
     {
       v5 = "ASSOCIATED_6G";
     }
@@ -3565,14 +3565,14 @@ LABEL_13:
 
   else
   {
-    v5 = off_100241CB8[v3];
+    v5 = off_100241CB8[wifiState];
   }
 
   [WCM_Logging logLevel:2 message:@"WiFiState(%s)", v5];
-  [WCM_Logging logLevel:2 message:@"WiFiReset(%d)", v4];
+  [WCM_Logging logLevel:2 message:@"WiFiReset(%d)", didWiFiDeviceReset];
   if ([objc_msgSend(+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")])
   {
-    if (v3 == 2)
+    if (wifiState == 2)
     {
       if (![(WCM_BTController *)[(WCM_PolicyManager *)self btController] getAny2GHzBTDevicesConnected]|| ![(WCM_BTController *)[(WCM_PolicyManager *)self btController] isBtAntennaDesensed])
       {
@@ -3585,7 +3585,7 @@ LABEL_19:
     }
 
 LABEL_17:
-    if (v3 - 3 > 1 || ![(WCM_BTController *)[(WCM_PolicyManager *)self btController] getAny5GHzBTDevicesConnected])
+    if (wifiState - 3 > 1 || ![(WCM_BTController *)[(WCM_PolicyManager *)self btController] getAny5GHzBTDevicesConnected])
     {
       goto LABEL_20;
     }
@@ -3593,7 +3593,7 @@ LABEL_17:
     goto LABEL_19;
   }
 
-  if (v3 != 2)
+  if (wifiState != 2)
   {
     goto LABEL_17;
   }
@@ -3606,21 +3606,21 @@ LABEL_17:
 LABEL_20:
   v6 = 0;
 LABEL_21:
-  if (byte_1002B818C != v6 || v4)
+  if (byte_1002B818C != v6 || didWiFiDeviceReset)
   {
-    [WCM_Logging logLevel:2 message:@"WiFi/BT UL OFDMA disable state change prev (%d) current (%d) wifiReset (%d)", byte_1002B818C, v6, v4];
+    [WCM_Logging logLevel:2 message:@"WiFi/BT UL OFDMA disable state change prev (%d) current (%d) wifiReset (%d)", byte_1002B818C, v6, didWiFiDeviceReset];
     byte_1002B818C = v6;
-    v7 = [(WCM_PolicyManager *)self wifiController];
+    wifiController = [(WCM_PolicyManager *)self wifiController];
 
-    [(WCM_WiFiController *)v7 updateWiFiBTULOFDMAstate:v6];
+    [(WCM_WiFiController *)wifiController updateWiFiBTULOFDMAstate:v6];
   }
 }
 
 - (void)handleFTCall
 {
-  v3 = [(WCM_PolicyManager *)self cellularCoexBand];
+  cellularCoexBand = [(WCM_PolicyManager *)self cellularCoexBand];
   [(WCM_PolicyManager *)self cellularController];
-  [WCM_Logging logLevel:3 message:@"Facetime update coexBand(%d)", v3];
+  [WCM_Logging logLevel:3 message:@"Facetime update coexBand(%d)", cellularCoexBand];
   v4 = "FT off";
   if ([(WCM_PolicyManager *)self ftController]&& [(WCM_FTController *)[(WCM_PolicyManager *)self ftController] getFTState])
   {
@@ -3630,15 +3630,15 @@ LABEL_21:
   v5 = "BT off";
   if ([(WCM_PolicyManager *)self btController])
   {
-    v6 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] getBTState];
-    v7 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] audioType];
+    getBTState = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] getBTState];
+    audioType = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] audioType];
     v8 = "BT on, not HFP";
-    if (v7 == 3)
+    if (audioType == 3)
     {
       v8 = "BT on, HFP";
     }
 
-    if (v6)
+    if (getBTState)
     {
       v5 = v8;
     }
@@ -3649,21 +3649,21 @@ LABEL_21:
     goto LABEL_13;
   }
 
-  v9 = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiState];
+  wifiState = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiState];
   v10 = "WiFi on, associated";
-  if (v9 == 1)
+  if (wifiState == 1)
   {
     v10 = "WiFi on, not associated";
   }
 
-  if (!v9)
+  if (!wifiState)
   {
 LABEL_13:
     v10 = "WiFi off";
   }
 
   [WCM_Logging logLevel:5 message:@"Current radio states are %s, %s, %s", v5, v10, v4];
-  [(WCM_PolicyManager *)self updateCoexMonitorState:v3];
+  [(WCM_PolicyManager *)self updateCoexMonitorState:cellularCoexBand];
   [(WCM_PolicyManager *)self updateBTStateChangeToCellular];
   if ([(WCM_PolicyManager *)self isInHpSession])
   {
@@ -3762,17 +3762,17 @@ LABEL_20:
   [(WCM_CellularController *)[(WCM_PolicyManager *)self cellularController] sendBBCoexSensorMessage:2 band:v4 usecase:v3];
   if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"UseWCMAriDriver"])
   {
-    v7 = [(WCM_PolicyManager *)self cellularController];
+    cellularController = [(WCM_PolicyManager *)self cellularController];
 
-    [(WCM_CellularController *)v7 sendBBCoexSensorMessage:4 band:v6 usecase:v5];
+    [(WCM_CellularController *)cellularController sendBBCoexSensorMessage:4 band:v6 usecase:v5];
   }
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  v3 = [a1 singleton];
+  singleton = [self singleton];
 
-  return v3;
+  return singleton;
 }
 
 - (WCM_PolicyManager)init
@@ -3874,10 +3874,10 @@ LABEL_10:
     *(v2 + 55) = 0;
     *(v2 + 31) = 0;
     v29 = [*(v2 + 26) containsObject:@"CellularRC1PolicyManager"];
-    v30 = [*(v2 + 11) wrmPlatformId];
+    wrmPlatformId = [*(v2 + 11) wrmPlatformId];
     if (v29)
     {
-      [WCM_Logging logLevel:2 message:@"Initialize WCM_CellularRc1PolicyManager on PlatformId(%d)...", v30];
+      [WCM_Logging logLevel:2 message:@"Initialize WCM_CellularRc1PolicyManager on PlatformId(%d)...", wrmPlatformId];
       v31 = objc_alloc_init(WCM_CellularRc1PolicyManager);
       *(v2 + 10) = v31;
       [(WCM_CellularRc1PolicyManager *)v31 setPlatformManager:*(v2 + 11)];
@@ -3885,7 +3885,7 @@ LABEL_10:
 
     else
     {
-      [WCM_Logging logLevel:2 message:@"WCM_CellularRc1PolicyManager not created on PlatformId(%d)...feature not enabled", v30];
+      [WCM_Logging logLevel:2 message:@"WCM_CellularRc1PolicyManager not created on PlatformId(%d)...feature not enabled", wrmPlatformId];
       *(v2 + 10) = 0;
     }
 
@@ -3949,8 +3949,8 @@ LABEL_10:
     }
 
     v2[37] = [v2 fetchWRMdebugPlistForceRTG];
-    v36 = [v2 fetchWRMdebugPlistDisableLow5GRate];
-    v2[38] = v36;
+    fetchWRMdebugPlistDisableLow5GRate = [v2 fetchWRMdebugPlistDisableLow5GRate];
+    v2[38] = fetchWRMdebugPlistDisableLow5GRate;
     if (v2[37] == 1)
     {
       [WCM_Logging logLevel:2 message:@"Forcing AWDL RTG Active with defaults write"];
@@ -3960,7 +3960,7 @@ LABEL_10:
       }
     }
 
-    else if (!v36)
+    else if (!fetchWRMdebugPlistDisableLow5GRate)
     {
       goto LABEL_32;
     }
@@ -4108,15 +4108,15 @@ LABEL_11:
 
 - (BOOL)isCellularOnGPSIMDBand
 {
-  v2 = [(WCM_PolicyManager *)self cellularController];
-  [(WCM_CellularController *)v2 cachedULCenterFreq];
+  cellularController = [(WCM_PolicyManager *)self cellularController];
+  [(WCM_CellularController *)cellularController cachedULCenterFreq];
   result = 0;
   if (v3 != 0.0)
   {
-    [(WCM_CellularController *)v2 cachedULCenterFreq];
+    [(WCM_CellularController *)cellularController cachedULCenterFreq];
     if (v4 >= 800.0)
     {
-      [(WCM_CellularController *)v2 cachedULCenterFreq];
+      [(WCM_CellularController *)cellularController cachedULCenterFreq];
       if (v5 <= 915.0)
       {
         return 1;
@@ -4129,15 +4129,15 @@ LABEL_11:
 
 - (BOOL)isCellularOnWiFi3FoBand
 {
-  v2 = [(WCM_PolicyManager *)self cellularController];
-  [(WCM_CellularController *)v2 cachedULCenterFreq];
+  cellularController = [(WCM_PolicyManager *)self cellularController];
+  [(WCM_CellularController *)cellularController cachedULCenterFreq];
   result = 0;
   if (v3 != 0.0)
   {
-    [(WCM_CellularController *)v2 cachedULCenterFreq];
+    [(WCM_CellularController *)cellularController cachedULCenterFreq];
     if (v4 >= 806.0)
     {
-      [(WCM_CellularController *)v2 cachedULCenterFreq];
+      [(WCM_CellularController *)cellularController cachedULCenterFreq];
       if (v5 <= 901.0)
       {
         return 1;
@@ -4150,15 +4150,15 @@ LABEL_11:
 
 - (BOOL)isCellularOnIMD3CellBand
 {
-  v2 = [(WCM_PolicyManager *)self cellularController];
-  [(WCM_CellularController *)v2 cachedULCenterFreq];
+  cellularController = [(WCM_PolicyManager *)self cellularController];
+  [(WCM_CellularController *)cellularController cachedULCenterFreq];
   result = 0;
-  if (v3 != 0.0 && ![(WCM_CellularController *)v2 tddBand])
+  if (v3 != 0.0 && ![(WCM_CellularController *)cellularController tddBand])
   {
-    [(WCM_CellularController *)v2 cachedULCenterFreq];
+    [(WCM_CellularController *)cellularController cachedULCenterFreq];
     if (v4 >= 2500.0)
     {
-      [(WCM_CellularController *)v2 cachedULCenterFreq];
+      [(WCM_CellularController *)cellularController cachedULCenterFreq];
       if (v5 >= 2570.0)
       {
         return 1;
@@ -4169,18 +4169,18 @@ LABEL_11:
   return result;
 }
 
-- (id)getControllerOfId:(int)a3
+- (id)getControllerOfId:(int)id
 {
-  if (a3 <= 28)
+  if (id <= 28)
   {
-    if (a3 > 2)
+    if (id > 2)
     {
-      if (a3 == 3)
+      if (id == 3)
       {
         return [(WCM_PolicyManager *)self cellularController];
       }
 
-      if (a3 == 4)
+      if (id == 4)
       {
         return [(WCM_PolicyManager *)self btController];
       }
@@ -4188,12 +4188,12 @@ LABEL_11:
 
     else
     {
-      if (a3 == 1)
+      if (id == 1)
       {
         return [(WCM_PolicyManager *)self wifiController];
       }
 
-      if (a3 == 2)
+      if (id == 2)
       {
         return [(WCM_PolicyManager *)self ftController];
       }
@@ -4202,9 +4202,9 @@ LABEL_11:
     return 0;
   }
 
-  if (a3 > 30)
+  if (id > 30)
   {
-    switch(a3)
+    switch(id)
     {
       case 31:
         return [(WCM_PolicyManager *)self airplayController];
@@ -4217,7 +4217,7 @@ LABEL_11:
     return 0;
   }
 
-  if (a3 == 29)
+  if (id == 29)
   {
     return [(WCM_PolicyManager *)self rcu1Controller];
   }
@@ -4228,27 +4228,27 @@ LABEL_11:
   }
 }
 
-- (void)updateControllerState:(unint64_t)a3
+- (void)updateControllerState:(unint64_t)state
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1000DA4D8;
   v3[3] = &unk_10023DD88;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = state;
   dispatch_async([+[WCM_Server singleton](WCM_Server "singleton")], v3);
 }
 
-- (void)handleSessionNotification:(unint64_t)a3
+- (void)handleSessionNotification:(unint64_t)notification
 {
-  [WCM_Logging logLevel:2 message:@"WCM_PolicyManager: handle event message(%llu)", a3];
-  if (a3 > 518)
+  [WCM_Logging logLevel:2 message:@"WCM_PolicyManager: handle event message(%llu)", notification];
+  if (notification > 518)
   {
-    if (a3 > 1799)
+    if (notification > 1799)
     {
-      if (a3 > 2701)
+      if (notification > 2701)
       {
-        switch(a3)
+        switch(notification)
         {
           case 0xA8EuLL:
 
@@ -4267,7 +4267,7 @@ LABEL_11:
 
       else
       {
-        switch(a3)
+        switch(notification)
         {
           case 0x708uLL:
 
@@ -4285,9 +4285,9 @@ LABEL_11:
       }
     }
 
-    else if (a3 > 1199)
+    else if (notification > 1199)
     {
-      switch(a3)
+      switch(notification)
       {
         case 0x4B0uLL:
 
@@ -4306,7 +4306,7 @@ LABEL_11:
 
     else
     {
-      switch(a3)
+      switch(notification)
       {
         case 0x207uLL:
 
@@ -4324,11 +4324,11 @@ LABEL_11:
     }
   }
 
-  else if (a3 > 299)
+  else if (notification > 299)
   {
-    if (a3 > 505)
+    if (notification > 505)
     {
-      switch(a3)
+      switch(notification)
       {
         case 0x1FAuLL:
 
@@ -4347,7 +4347,7 @@ LABEL_11:
 
     else
     {
-      switch(a3)
+      switch(notification)
       {
         case 0x12CuLL:
 
@@ -4367,9 +4367,9 @@ LABEL_11:
 
   else
   {
-    if (a3 <= 104)
+    if (notification <= 104)
     {
-      switch(a3)
+      switch(notification)
       {
         case 'd':
 
@@ -4388,7 +4388,7 @@ LABEL_11:
       return;
     }
 
-    switch(a3)
+    switch(notification)
     {
       case 0x69uLL:
 
@@ -4409,17 +4409,17 @@ LABEL_33:
   }
 }
 
-- (void)handleControllerAvailability:(unint64_t)a3
+- (void)handleControllerAvailability:(unint64_t)availability
 {
-  if (a3 < 0x2A && ((0x3EEEFFFFFFFuLL >> a3) & 1) != 0)
+  if (availability < 0x2A && ((0x3EEEFFFFFFFuLL >> availability) & 1) != 0)
   {
-    v5 = off_100241B68[a3];
+    v5 = off_100241B68[availability];
   }
 
   else
   {
     v5 = "INVALID_PROC_ID!!!";
-    if (a3 == 42)
+    if (availability == 42)
     {
       v5 = "WRMSOS";
     }
@@ -4436,23 +4436,23 @@ LABEL_33:
   block[2] = sub_1000DAA80;
   block[3] = &unk_10023DD88;
   block[4] = self;
-  block[5] = a3;
+  block[5] = availability;
   dispatch_async([+[WCM_Server singleton](WCM_Server "singleton")], block);
-  if (a3 == 2)
+  if (availability == 2)
   {
     [(WCM_FTController *)[(WCM_PolicyManager *)self ftController] getFaceTimeCallConfig];
   }
 }
 
-- (void)combineWifiChannelList:(id)a3 withChannelList:(id)a4
+- (void)combineWifiChannelList:(id)list withChannelList:(id)channelList
 {
-  if (a3 && a4)
+  if (list && channelList)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v6 = [a4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v6 = [channelList countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -4463,43 +4463,43 @@ LABEL_33:
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(a4);
+            objc_enumerationMutation(channelList);
           }
 
           v10 = *(*(&v11 + 1) + 8 * i);
-          if (([a3 containsObject:v10] & 1) == 0)
+          if (([list containsObject:v10] & 1) == 0)
           {
-            [a3 addObject:v10];
+            [list addObject:v10];
           }
         }
 
-        v7 = [a4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [channelList countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
     }
 
-    if ([a3 containsObject:&off_100271310] && objc_msgSend(a3, "count") >= 2)
+    if ([list containsObject:&off_100271310] && objc_msgSend(list, "count") >= 2)
     {
-      [a3 removeObject:&off_100271310];
+      [list removeObject:&off_100271310];
     }
 
-    if (![a3 count])
+    if (![list count])
     {
-      [a3 addObject:&off_100271310];
+      [list addObject:&off_100271310];
     }
   }
 }
 
-- (void)combineWifiChannelList:(id)a3 withChannelList:(id)a4 inAllowedChannelSet:(id)a5
+- (void)combineWifiChannelList:(id)list withChannelList:(id)channelList inAllowedChannelSet:(id)set
 {
-  if (a3 && a4 && a5)
+  if (list && channelList && set)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v8 = [a4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v8 = [channelList countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v8)
     {
       v9 = v8;
@@ -4510,78 +4510,78 @@ LABEL_33:
         {
           if (*v14 != v10)
           {
-            objc_enumerationMutation(a4);
+            objc_enumerationMutation(channelList);
           }
 
           v12 = *(*(&v13 + 1) + 8 * i);
-          if (([a3 containsObject:v12] & 1) == 0 && objc_msgSend(a5, "containsObject:", v12))
+          if (([list containsObject:v12] & 1) == 0 && objc_msgSend(set, "containsObject:", v12))
           {
-            [a3 addObject:v12];
+            [list addObject:v12];
           }
         }
 
-        v9 = [a4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v9 = [channelList countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v9);
     }
 
-    if ([a3 containsObject:&off_100271310] && objc_msgSend(a3, "count") >= 2)
+    if ([list containsObject:&off_100271310] && objc_msgSend(list, "count") >= 2)
     {
-      [a3 removeObject:&off_100271310];
+      [list removeObject:&off_100271310];
     }
 
-    if (![a3 count])
+    if (![list count])
     {
-      [a3 addObject:&off_100271310];
+      [list addObject:&off_100271310];
     }
   }
 
-  else if (a3 && ![a3 count])
+  else if (list && ![list count])
   {
 
-    [a3 addObject:&off_100271310];
+    [list addObject:&off_100271310];
   }
 }
 
 - (void)updateWifiOCLChannelList
 {
   [(WCM_PolicyManager *)self wifiController];
-  v3 = [(WCM_PolicyManager *)self cellularController];
-  v4 = [(WCM_PolicyManager *)self platformManager];
-  v5 = [(WCM_CellularController *)v3 getActiveULCAConfig];
+  cellularController = [(WCM_PolicyManager *)self cellularController];
+  platformManager = [(WCM_PolicyManager *)self platformManager];
+  getActiveULCAConfig = [(WCM_CellularController *)cellularController getActiveULCAConfig];
   v6 = [NSArray arrayWithObjects:&off_100271328, &off_100271340, &off_100271358, &off_100271370, &off_100271388, &off_1002713A0, &off_1002713B8, 0];
-  v7 = [(WCM_CellularController *)v3 bandInfoType];
-  [(WCM_CellularController *)v3 dlCenterFreq];
+  bandInfoType = [(WCM_CellularController *)cellularController bandInfoType];
+  [(WCM_CellularController *)cellularController dlCenterFreq];
   v9 = v8;
-  [(WCM_CellularController *)v3 dlBandwidth];
+  [(WCM_CellularController *)cellularController dlBandwidth];
   v11 = v10;
-  [(WCM_CellularController *)v3 dlCenterFreq];
+  [(WCM_CellularController *)cellularController dlCenterFreq];
   v13 = v12;
-  [(WCM_CellularController *)v3 dlBandwidth];
+  [(WCM_CellularController *)cellularController dlBandwidth];
   v15 = v14;
-  [(WCM_CellularController *)v3 ulCenterFreq];
+  [(WCM_CellularController *)cellularController ulCenterFreq];
   v17 = v16;
-  [(WCM_CellularController *)v3 ulBandwidth];
+  [(WCM_CellularController *)cellularController ulBandwidth];
   v19 = v18;
-  [(WCM_CellularController *)v3 ulCenterFreq];
+  [(WCM_CellularController *)cellularController ulCenterFreq];
   v21 = v20;
-  [(WCM_CellularController *)v3 ulBandwidth];
+  [(WCM_CellularController *)cellularController ulBandwidth];
   v23 = v22;
   v24 = objc_alloc_init(NSMutableArray);
   v25 = objc_alloc_init(NSMutableArray);
   v54 = objc_alloc_init(NSMutableArray);
   v26 = WRM_IPTelephonyController;
-  if (v5)
+  if (getActiveULCAConfig)
   {
-    [WCM_Logging logLevel:2 message:@"update WiFi OCL channel list: total valid cellular carrier = %d", v5->var1];
-    if (v5->var1)
+    [WCM_Logging logLevel:2 message:@"update WiFi OCL channel list: total valid cellular carrier = %d", getActiveULCAConfig->var1];
+    if (getActiveULCAConfig->var1)
     {
       v27 = v25;
       v28 = v24;
       v53 = v6;
       v29 = 0;
-      v30 = v5;
+      v30 = getActiveULCAConfig;
       do
       {
         var2 = v30->var0[0].var2;
@@ -4595,31 +4595,31 @@ LABEL_33:
         [&v26[98] logLevel:4 message:{@"OCLDisable_WiFiEnh: carrier[%d], ulLowFrq = %fMHz, ulHighFreq = %fMHz, bandInfoType = %d", v29, *&v36, *&v37, var8}];
         v39 = v26;
         v40 = [(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"WiFiEnhCoexSupport"];
-        v41 = [(WCM_PlatformManager *)v4 wcmWiFiCellCoexIssueTable];
+        wcmWiFiCellCoexIssueTable = [(WCM_PlatformManager *)platformManager wcmWiFiCellCoexIssueTable];
         if (v40)
         {
-          v42 = [(WCM_WiFiCellCoexIssueBandTable *)v41 wifiChannelsToDisableOCLWiFiEnhForCellBandInfoType:var8 cellDlLowFreq:v33 cellDlHighFreq:v34 cellUlLowFreq:v36 cellUlHighFreq:v37];
+          v42 = [(WCM_WiFiCellCoexIssueBandTable *)wcmWiFiCellCoexIssueTable wifiChannelsToDisableOCLWiFiEnhForCellBandInfoType:var8 cellDlLowFreq:v33 cellDlHighFreq:v34 cellUlLowFreq:v36 cellUlHighFreq:v37];
           [&v39[98] logLevel:4 message:{@"OCLDisable_WiFiEnh: wifiChannelEnhDict = %@", v42}];
           -[WCM_PolicyManager combineWifiChannelList:withChannelList:](self, "combineWifiChannelList:withChannelList:", v28, [v42 objectForKey:@"wifiChannels2Gand5G"]);
           v43 = [v42 objectForKey:@"wifiChannelsEnh"];
-          v44 = self;
+          selfCopy2 = self;
           v45 = v27;
         }
 
         else
         {
-          v43 = [(WCM_WiFiCellCoexIssueBandTable *)v41 wifiChannelsToDisableOCLForCellBandInfoType:var8 cellDlLowFreq:v33 cellDlHighFreq:v34 cellUlLowFreq:v36 cellUlHighFreq:v37];
-          v44 = self;
+          v43 = [(WCM_WiFiCellCoexIssueBandTable *)wcmWiFiCellCoexIssueTable wifiChannelsToDisableOCLForCellBandInfoType:var8 cellDlLowFreq:v33 cellDlHighFreq:v34 cellUlLowFreq:v36 cellUlHighFreq:v37];
+          selfCopy2 = self;
           v45 = v54;
         }
 
-        [(WCM_PolicyManager *)v44 combineWifiChannelList:v45 withChannelList:v43];
+        [(WCM_PolicyManager *)selfCopy2 combineWifiChannelList:v45 withChannelList:v43];
         v26 = v39;
         v30 = (v30 + 72);
         ++v29;
       }
 
-      while (v29 < v5->var1);
+      while (v29 < getActiveULCAConfig->var1);
       v6 = v53;
       v24 = v28;
       v25 = v27;
@@ -4629,14 +4629,14 @@ LABEL_33:
   else
   {
     v46 = [(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"WiFiEnhCoexSupport"];
-    v47 = [(WCM_PlatformManager *)v4 wcmWiFiCellCoexIssueTable];
+    wcmWiFiCellCoexIssueTable2 = [(WCM_PlatformManager *)platformManager wcmWiFiCellCoexIssueTable];
     v48 = v9 - v11 * 0.5;
     v49 = v13 + v15 * 0.5;
     v50 = v17 - v19 * 0.5;
     v51 = v21 + v23 * 0.5;
     if (v46)
     {
-      v52 = [(WCM_WiFiCellCoexIssueBandTable *)v47 wifiChannelsToDisableOCLWiFiEnhForCellBandInfoType:v7 cellDlLowFreq:v48 cellDlHighFreq:v49 cellUlLowFreq:v50 cellUlHighFreq:v51];
+      v52 = [(WCM_WiFiCellCoexIssueBandTable *)wcmWiFiCellCoexIssueTable2 wifiChannelsToDisableOCLWiFiEnhForCellBandInfoType:bandInfoType cellDlLowFreq:v48 cellDlHighFreq:v49 cellUlLowFreq:v50 cellUlHighFreq:v51];
       [WCM_Logging logLevel:4 message:@"OCLDisable_WiFiEnh: wifiChannelEnhDict = %@", v52];
       v24 = [v52 objectForKey:@"wifiChannels2Gand5G"];
       v25 = [v52 objectForKey:@"wifiChannelsEnh"];
@@ -4644,7 +4644,7 @@ LABEL_33:
 
     else
     {
-      [(WCM_PolicyManager *)self combineWifiChannelList:v54 withChannelList:[(WCM_WiFiCellCoexIssueBandTable *)v47 wifiChannelsToDisableOCLForCellBandInfoType:v7 cellDlLowFreq:v48 cellDlHighFreq:v49 cellUlLowFreq:v50 cellUlHighFreq:v51]];
+      [(WCM_PolicyManager *)self combineWifiChannelList:v54 withChannelList:[(WCM_WiFiCellCoexIssueBandTable *)wcmWiFiCellCoexIssueTable2 wifiChannelsToDisableOCLForCellBandInfoType:bandInfoType cellDlLowFreq:v48 cellDlHighFreq:v49 cellUlLowFreq:v50 cellUlHighFreq:v51]];
     }
   }
 
@@ -4664,17 +4664,17 @@ LABEL_33:
   }
 }
 
-- (void)getPencilCoexCellRatBand:(char *)a3 band:(unsigned __int16 *)a4
+- (void)getPencilCoexCellRatBand:(char *)band band:(unsigned __int16 *)a4
 {
-  v6 = [(WCM_CellularController *)[(WCM_PolicyManager *)self cellularController] getActiveULCAConfig];
-  v25 = a3;
+  getActiveULCAConfig = [(WCM_CellularController *)[(WCM_PolicyManager *)self cellularController] getActiveULCAConfig];
+  bandCopy = band;
   v26 = a4;
-  *a3 = 0;
+  *band = 0;
   *a4 = 0;
-  if (v6)
+  if (getActiveULCAConfig)
   {
-    v7 = v6;
-    if (v6->var1)
+    v7 = getActiveULCAConfig;
+    if (getActiveULCAConfig->var1)
     {
       v8 = 0;
       while (1)
@@ -4699,8 +4699,8 @@ LABEL_8:
             v31 = 0u;
             v28 = 0u;
             v29 = 0u;
-            v15 = [(WCM_PlatformManager *)[(WCM_PolicyManager *)self platformManager] wcmCellularAccessoryCoexBands];
-            v16 = [(NSArray *)v15 countByEnumeratingWithState:&v28 objects:v32 count:16];
+            wcmCellularAccessoryCoexBands = [(WCM_PlatformManager *)[(WCM_PolicyManager *)self platformManager] wcmCellularAccessoryCoexBands];
+            v16 = [(NSArray *)wcmCellularAccessoryCoexBands countByEnumeratingWithState:&v28 objects:v32 count:16];
             if (v16)
             {
               v17 = v16;
@@ -4711,7 +4711,7 @@ LABEL_8:
                 {
                   if (*v29 != v18)
                   {
-                    objc_enumerationMutation(v15);
+                    objc_enumerationMutation(wcmCellularAccessoryCoexBands);
                   }
 
                   v20 = *(*(&v28 + 1) + 8 * i);
@@ -4731,12 +4731,12 @@ LABEL_8:
                       v24 = 2;
                     }
 
-                    *v25 = v24;
+                    *bandCopy = v24;
                     goto LABEL_26;
                   }
                 }
 
-                v17 = [(NSArray *)v15 countByEnumeratingWithState:&v28 objects:v32 count:16];
+                v17 = [(NSArray *)wcmCellularAccessoryCoexBands countByEnumeratingWithState:&v28 objects:v32 count:16];
                 if (v17)
                 {
                   continue;
@@ -4761,10 +4761,10 @@ LABEL_26:
   }
 }
 
-- (void)updateCellularPencilCoex_TriggeredByPowerOnEvent:(BOOL)a3
+- (void)updateCellularPencilCoex_TriggeredByPowerOnEvent:(BOOL)event
 {
-  v5 = [(WCM_PolicyManager *)self pencilState];
-  v6 = v5 != 0;
+  pencilState = [(WCM_PolicyManager *)self pencilState];
+  v6 = pencilState != 0;
   v15 = 0;
   v14 = 0;
   [(WCM_PolicyManager *)self getPencilCoexCellRatBand:&v15 band:&v14];
@@ -4792,35 +4792,35 @@ LABEL_26:
     v9 = byte_1002B813D;
   }
 
-  v10 = a3 | v9;
-  [WCM_Logging logLevel:2 message:@"updateCellularPencilCoex: Coex CellBand:(%u), CellRAT:(%u), Accessory:(%u), Coex_Active:(%u), update_wifi_bt:(%u)", v14, v15, v5 != 0, v7, v10 & 1];
-  byte_1002B8138 = v5 != 0;
+  v10 = event | v9;
+  [WCM_Logging logLevel:2 message:@"updateCellularPencilCoex: Coex CellBand:(%u), CellRAT:(%u), Accessory:(%u), Coex_Active:(%u), update_wifi_bt:(%u)", v14, v15, pencilState != 0, v7, v10 & 1];
+  byte_1002B8138 = pencilState != 0;
   word_1002B813A = v14;
   byte_1002B813C = v15;
   byte_1002B813D = v7;
   if (v10)
   {
-    v11 = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] powerState];
+    powerState = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] powerState];
     if (v7)
     {
-      if (v11)
+      if (powerState)
       {
         self->_enablePencilCoexTDDProfile = 1;
         [(WCM_PolicyManager *)self handleWiFiBTCoexChange];
-        v12 = [(WCM_PolicyManager *)self wifiController];
-        [(WCM_WiFiController *)v12 updateAccessoryCoexEnable:1 AccessoryType:v6 CellRAT:v15 CellBand:v14];
+        wifiController = [(WCM_PolicyManager *)self wifiController];
+        [(WCM_WiFiController *)wifiController updateAccessoryCoexEnable:1 AccessoryType:v6 CellRAT:v15 CellBand:v14];
       }
 
       if ([(WCM_BTController *)[(WCM_PolicyManager *)self btController] powerState])
       {
-        v13 = [(WCM_PolicyManager *)self btController];
-        [(WCM_BTController *)v13 updateAccessoryCoex:v6 CellRAT:v15 CellBand:v14];
+        btController = [(WCM_PolicyManager *)self btController];
+        [(WCM_BTController *)btController updateAccessoryCoex:v6 CellRAT:v15 CellBand:v14];
       }
     }
 
     else
     {
-      if (v11)
+      if (powerState)
       {
         self->_enablePencilCoexTDDProfile = 0;
         [(WCM_PolicyManager *)self handleWiFiBTCoexChange];
@@ -4840,12 +4840,12 @@ LABEL_26:
 
 - (void)legacyType7MsgForWiFiChannels
 {
-  v3 = [(WCM_PolicyManager *)self cellularController];
-  v4 = [(WCM_PolicyManager *)self platformManager];
-  v5 = [(WCM_CellularController *)v3 getActiveULCAConfig];
-  if (v5)
+  cellularController = [(WCM_PolicyManager *)self cellularController];
+  platformManager = [(WCM_PolicyManager *)self platformManager];
+  getActiveULCAConfig = [(WCM_CellularController *)cellularController getActiveULCAConfig];
+  if (getActiveULCAConfig)
   {
-    v6 = v5;
+    v6 = getActiveULCAConfig;
     v31 = 0;
     if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"WiFiType7LTEMBAntBlocking"])
     {
@@ -4860,7 +4860,7 @@ LABEL_26:
       v15 = var0 + v13;
       if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"WiFiType7LTEMBAntBlocking"])
       {
-        [(WCM_PolicyManager *)self setWifiChannelsToEnableLTEMBType7:[(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)v4 wcmWiFiCellCoexIssueTable] wifiChannelsToEnableLTEMBType7ForCellBandInfoType:var8 cellDlLowFreq:&v31 + 2 cellDlHighFreq:v10 cellUlLowFreq:v11 cellUlHighFreq:v14 pissueBandMatchAntIdx:v15]];
+        [(WCM_PolicyManager *)self setWifiChannelsToEnableLTEMBType7:[(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)platformManager wcmWiFiCellCoexIssueTable] wifiChannelsToEnableLTEMBType7ForCellBandInfoType:var8 cellDlLowFreq:&v31 + 2 cellDlHighFreq:v10 cellUlLowFreq:v11 cellUlHighFreq:v14 pissueBandMatchAntIdx:v15]];
         [(WCM_PolicyManager *)self setType7CellAntBlkIdx:HIWORD(v31)];
         [WCM_Logging logLevel:0 message:@"LTEMB_Type7 matching band found and issueBandMatchLTEMBType7AntIdx = %d", HIWORD(v31)];
       }
@@ -4872,7 +4872,7 @@ LABEL_26:
 
       if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"WiFiEnhCoexSupport"])
       {
-        [(WCM_PolicyManager *)self setWifiEnhChannelsToEnableType7MSG:[(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)v4 wcmWiFiCellCoexIssueTable] wifiChannelsToEnableType7WiFiEnhForCellBandInfoType:var8 cellDlLowFreq:&v31 cellDlHighFreq:v10 cellUlLowFreq:v11 cellUlHighFreq:v14 pissueBandMatchAntIdx:v15]];
+        [(WCM_PolicyManager *)self setWifiEnhChannelsToEnableType7MSG:[(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)platformManager wcmWiFiCellCoexIssueTable] wifiChannelsToEnableType7WiFiEnhForCellBandInfoType:var8 cellDlLowFreq:&v31 cellDlHighFreq:v10 cellUlLowFreq:v11 cellUlHighFreq:v14 pissueBandMatchAntIdx:v15]];
         [(WCM_PolicyManager *)self setType7WiFiEnhCellAntBlkIdx:v31];
         [WCM_Logging logLevel:0 message:@"WiFiType7_WiFiEnh matching band found and issueBandMatchWiFiEnhType7AntIdx = %d", v31];
       }
@@ -4886,7 +4886,7 @@ LABEL_26:
       v19 = v16 + v17;
       v20 = v6->var7.var0;
       v21 = v6->var7.var1 * 0.5;
-      [(WCM_PolicyManager *)self setWifi5GHzChannelsToEnableType7MSG:[(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)v4 wcmWiFiCellCoexIssueTable] wifi5GHzChannelsToEnableType7MSGForCellBandInfoType:v6->var7.var8 cellDlLowFreq:v18 cellDlHighFreq:v19 cellUlLowFreq:v20 - v21 cellUlHighFreq:v20 + v21]];
+      [(WCM_PolicyManager *)self setWifi5GHzChannelsToEnableType7MSG:[(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)platformManager wcmWiFiCellCoexIssueTable] wifi5GHzChannelsToEnableType7MSGForCellBandInfoType:v6->var7.var8 cellDlLowFreq:v18 cellDlHighFreq:v19 cellUlLowFreq:v20 - v21 cellUlHighFreq:v20 + v21]];
     }
 
     if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"WiFi5GHzType7NR79AntBlocking"]|| [(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"WiFiType7LTEMBAntBlocking"])
@@ -4910,7 +4910,7 @@ LABEL_26:
       v29 = v27 - v28;
       v30 = v27 + v28;
       [WCM_Logging logLevel:4 message:@"TYPE7_2GWIFI_SUPPORT_: Band7 Cell info: BandType: bandinfoType(0x%x) downlink(%lf ~ %lf) uplink(%lf ~ %lf)", v22, *&v25, *&v26, v27 - v28, v27 + v28];
-      [(WCM_PolicyManager *)self setWifi2GHzLTEB7IMD3ChannelsEnableType7:[(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)v4 wcmWiFiCellCoexIssueTable] wifi2GHzLTEB7IMD3EnableType7ForCellBandInfoType:v22 cellDlLowFreq:v25 cellDlHighFreq:v26 cellUlLowFreq:v29 cellUlHighFreq:v30]];
+      [(WCM_PolicyManager *)self setWifi2GHzLTEB7IMD3ChannelsEnableType7:[(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)platformManager wcmWiFiCellCoexIssueTable] wifi2GHzLTEB7IMD3EnableType7ForCellBandInfoType:v22 cellDlLowFreq:v25 cellDlHighFreq:v26 cellUlLowFreq:v29 cellUlHighFreq:v30]];
       [WCM_Logging logLevel:4 message:@"TYPE7_2GWIFI_SUPPORT_: 2.4GHz Channels to enable Type7 MSG due to LTEB7 IMD issue = %@", [(WCM_PolicyManager *)self wifi2GHzLTEB7IMD3ChannelsEnableType7]];
     }
 
@@ -4941,10 +4941,10 @@ LABEL_26:
 
 - (void)queryHPCellularInitialState
 {
-  v2 = [(WCM_PolicyManager *)self hpCellularMonitor];
-  if (v2)
+  hpCellularMonitor = [(WCM_PolicyManager *)self hpCellularMonitor];
+  if (hpCellularMonitor)
   {
-    if ([(WCM_HPCellularStateMonitor *)v2 start])
+    if ([(WCM_HPCellularStateMonitor *)hpCellularMonitor start])
     {
       v3 = @"HPCellular: WCM_HPCellularStateMonitor started.";
     }
@@ -4964,24 +4964,24 @@ LABEL_26:
   if ([(WCM_PolicyManager *)self btController])
   {
     v3 = [(NSMutableArray *)[(WCM_BTController *)[(WCM_PolicyManager *)self btController] allBTConnections] count];
-    v4 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] getNum2GHzAclA2DPDevices];
-    v5 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] numeSCODevice];
-    v6 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] numSCODevice];
-    v7 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] numHIDDevice];
-    v8 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] numLEDevice];
-    v9 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] numLEADevice];
-    v10 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] numLLADevice];
+    getNum2GHzAclA2DPDevices = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] getNum2GHzAclA2DPDevices];
+    numeSCODevice = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] numeSCODevice];
+    numSCODevice = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] numSCODevice];
+    numHIDDevice = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] numHIDDevice];
+    numLEDevice = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] numLEDevice];
+    numLEADevice = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] numLEADevice];
+    numLLADevice = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] numLLADevice];
   }
 
   else
   {
-    v4 = 0;
-    v5 = 0;
-    v6 = 0;
-    v7 = 0;
-    v8 = 0;
-    v9 = 0;
-    v10 = 0;
+    getNum2GHzAclA2DPDevices = 0;
+    numeSCODevice = 0;
+    numSCODevice = 0;
+    numHIDDevice = 0;
+    numLEDevice = 0;
+    numLEADevice = 0;
+    numLLADevice = 0;
     v3 = 0;
   }
 
@@ -5013,25 +5013,25 @@ LABEL_26:
   {
     [(WCM_PolicyManager *)self combineWifiChannelList:v4 withChannelList:[(WCM_PolicyManager *)self wifi5GHzChannelsToEnableType7MSGCombined]];
     v5 = [NSMutableArray arrayWithArray:[(WCM_PolicyManager *)self wifiEnhChannelsToEnableType7MSG]];
-    v6 = [(WCM_PolicyManager *)self wifiController];
+    wifiController = [(WCM_PolicyManager *)self wifiController];
 
-    [(WCM_WiFiController *)v6 updateChannelsToEnableType7MSGWiFiEnh:v4 WiFiEnhChannels:v5];
+    [(WCM_WiFiController *)wifiController updateChannelsToEnableType7MSGWiFiEnh:v4 WiFiEnhChannels:v5];
   }
 
   else
   {
     [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] updateChannelsToEnableType7MSG:[NSMutableArray arrayWithArray:[(WCM_PolicyManager *)self wifi5GHzChannelsToEnableType7MSGCombined]]];
-    v7 = [(WCM_PolicyManager *)self wifiController];
+    wifiController2 = [(WCM_PolicyManager *)self wifiController];
 
-    [(WCM_WiFiController *)v7 updateChannelsToEnableType7MSG2GWiFi:v4];
+    [(WCM_WiFiController *)wifiController2 updateChannelsToEnableType7MSG2GWiFi:v4];
   }
 }
 
 - (void)handleBTConnectionChange
 {
-  v3 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] getBTState];
-  [WCM_Logging logLevel:3 message:@"Handle BT connection change btState(%d)", v3];
-  if (v3 == 2)
+  getBTState = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] getBTState];
+  [WCM_Logging logLevel:3 message:@"Handle BT connection change btState(%d)", getBTState];
+  if (getBTState == 2)
   {
     [(WCM_BTController *)[(WCM_PolicyManager *)self btController] updatePreferredRole:[(WCM_PolicyManager *)self btPreferredRole]];
   }
@@ -5042,30 +5042,30 @@ LABEL_26:
 - (void)handleBTPowerStateChange
 {
   v3 = WRM_IPTelephonyController;
-  v4 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] powerState];
+  powerState = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] powerState];
   v5 = "off";
-  if (v4)
+  if (powerState)
   {
     v5 = "on";
   }
 
   [WCM_Logging logLevel:2 message:@"Updating policy for BT power %s", v5];
-  v6 = [(WCM_PolicyManager *)self cellularCoexBand];
+  cellularCoexBand = [(WCM_PolicyManager *)self cellularCoexBand];
   if ([(WCM_BTController *)[(WCM_PolicyManager *)self btController] powerState])
   {
     [(WCM_BTController *)[(WCM_PolicyManager *)self btController] updateWCI2Mode:0];
     [(WCM_BTController *)[(WCM_PolicyManager *)self btController] updateMWSSignalingConfig];
     if ([(WCM_PolicyManager *)self gpsRadioActive])
     {
-      v7 = [(WCM_PolicyManager *)self btPreferredChannelMapOnGpsRadioActive];
+      btPreferredChannelMapOnGpsRadioActive = [(WCM_PolicyManager *)self btPreferredChannelMapOnGpsRadioActive];
     }
 
     else
     {
-      v7 = [(WCM_PolicyManager *)self btPreferredChannelMap];
+      btPreferredChannelMapOnGpsRadioActive = [(WCM_PolicyManager *)self btPreferredChannelMap];
     }
 
-    btPreferredChannelMapHPCellularActive = v7;
+    btPreferredChannelMapHPCellularActive = btPreferredChannelMapOnGpsRadioActive;
     if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"hpcellularstatemonitorsupport"]&& (_os_feature_enabled_impl() & 1) == 0)
     {
       if ([(WCM_PolicyManager *)self hpCellNeedMitigation])
@@ -5079,14 +5079,14 @@ LABEL_26:
     [(WCM_BTController *)[(WCM_PolicyManager *)self btController] updatePreferredAFHMap:btPreferredChannelMapHPCellularActive];
     if (_os_feature_enabled_impl() && [(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"HFBTCoex"])
     {
-      v9 = [(WCM_PolicyManager *)self btPreferred5GChannelMap];
+      btPreferred5GChannelMap = [(WCM_PolicyManager *)self btPreferred5GChannelMap];
       [WCM_Logging logLevel:3 message:@"HFAFHDebug_ Update channel bitmap"];
-      [(WCM_BTController *)[(WCM_PolicyManager *)self btController] updatePreferredHFBTChannelMap:v9];
+      [(WCM_BTController *)[(WCM_PolicyManager *)self btController] updatePreferredHFBTChannelMap:btPreferred5GChannelMap];
     }
 
     if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"BLEActiveScanPwrLmtEnabled"])
     {
-      if ((v6 & 0xFFFFFFFE) == 2)
+      if ((cellularCoexBand & 0xFFFFFFFE) == 2)
       {
         v10 = 5;
       }
@@ -5096,16 +5096,16 @@ LABEL_26:
         v10 = 0;
       }
 
-      v11 = [(WCM_PolicyManager *)self BLEActiveScanPwrLmtAssrInt];
-      v12 = [(WCM_PolicyManager *)self BLEActiveScanPwrLmtAssrInt];
-      if (v10 == v11)
+      bLEActiveScanPwrLmtAssrInt = [(WCM_PolicyManager *)self BLEActiveScanPwrLmtAssrInt];
+      bLEActiveScanPwrLmtAssrInt2 = [(WCM_PolicyManager *)self BLEActiveScanPwrLmtAssrInt];
+      if (v10 == bLEActiveScanPwrLmtAssrInt)
       {
-        [WCM_Logging logLevel:4 message:@"DLDebugBLEIntervalTooOften_ updateBLEActiveScanPwrLmtAssertionInterval is called by handleBTPowerStateChange. No Need to update with same value --- new interval (%lld), old interval (%lld)", v10, v12];
+        [WCM_Logging logLevel:4 message:@"DLDebugBLEIntervalTooOften_ updateBLEActiveScanPwrLmtAssertionInterval is called by handleBTPowerStateChange. No Need to update with same value --- new interval (%lld), old interval (%lld)", v10, bLEActiveScanPwrLmtAssrInt2];
       }
 
       else
       {
-        [WCM_Logging logLevel:4 message:@"DLDebugBLEIntervalTooOften_ updateBLEActiveScanPwrLmtAssertionInterval is called by handleBTPowerStateChange. Updating with new interval (%lld), old interval (%lld)", v10, v12];
+        [WCM_Logging logLevel:4 message:@"DLDebugBLEIntervalTooOften_ updateBLEActiveScanPwrLmtAssertionInterval is called by handleBTPowerStateChange. Updating with new interval (%lld), old interval (%lld)", v10, bLEActiveScanPwrLmtAssrInt2];
         [(WCM_PolicyManager *)self setBLEActiveScanPwrLmtAssrInt:v10];
         [(WCM_BTController *)[(WCM_PolicyManager *)self btController] updateBLEActiveScanPwrLmtAssertionInterval:[(WCM_PolicyManager *)self BLEActiveScanPwrLmtAssrInt]];
       }
@@ -5127,19 +5127,19 @@ LABEL_26:
     if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"LTEScanProtection"])
     {
       v13 = [(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"LTEScanProtectionBTseparate"];
-      v14 = [(WCM_PolicyManager *)self btController];
-      v15 = [(WCM_PolicyManager *)self platformManager];
+      btController = [(WCM_PolicyManager *)self btController];
+      platformManager = [(WCM_PolicyManager *)self platformManager];
       if (v13)
       {
-        v16 = [(WCM_PlatformManager *)v15 wcmCellularScanProtectionCellFrequenciesforBT];
+        wcmCellularScanProtectionCellFrequenciesforBT = [(WCM_PlatformManager *)platformManager wcmCellularScanProtectionCellFrequenciesforBT];
       }
 
       else
       {
-        v16 = [(WCM_PlatformManager *)v15 wcmCellularScanProtectionCellFrequencies];
+        wcmCellularScanProtectionCellFrequenciesforBT = [(WCM_PlatformManager *)platformManager wcmCellularScanProtectionCellFrequencies];
       }
 
-      [(WCM_BTController *)v14 updateMWSScanFrequencyTable:v16];
+      [(WCM_BTController *)btController updateMWSScanFrequencyTable:wcmCellularScanProtectionCellFrequenciesforBT];
     }
 
     if (_os_feature_enabled_impl() && [(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"HFBTCoex"])
@@ -5147,8 +5147,8 @@ LABEL_26:
       [(WCM_BTController *)[(WCM_PolicyManager *)self btController] updateHFBtTxIndication:1];
       [WCM_Logging logLevel:4 message:@"HFBTAntBlkDebug_ Current enabled bands = %@", [(WCM_PolicyManager *)self HFBTAntBlkEnableBands]];
       v17 = [(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"HFBTConditionId"];
-      v18 = [(WCM_PolicyManager *)self btController];
-      v19 = [(WCM_PolicyManager *)self btAntBlockDuration];
+      btController2 = [(WCM_PolicyManager *)self btController];
+      btAntBlockDuration = [(WCM_PolicyManager *)self btAntBlockDuration];
       v20 = [-[NSDictionary objectForKeyedSubscript:](-[WCM_PolicyManager HFBTAntBlkEnableBands](self "HFBTAntBlkEnableBands")];
       v21 = [-[NSDictionary objectForKeyedSubscript:](-[WCM_PolicyManager HFBTAntBlkEnableBands](self "HFBTAntBlkEnableBands")];
       v22 = [-[NSDictionary objectForKeyedSubscript:](-[WCM_PolicyManager HFBTAntBlkEnableBands](self "HFBTAntBlkEnableBands")];
@@ -5158,33 +5158,33 @@ LABEL_26:
       v25 = v24;
       if (v17)
       {
-        v39 = [&off_100271730 unsignedIntValue];
+        unsignedIntValue = [&off_100271730 unsignedIntValue];
         v38 = v20;
-        v37 = [&off_100271730 unsignedIntValue];
+        unsignedIntValue2 = [&off_100271730 unsignedIntValue];
         v36 = v22;
-        v26 = v18;
-        v27 = [&off_100271748 unsignedIntValue];
+        v26 = btController2;
+        unsignedIntValue3 = [&off_100271748 unsignedIntValue];
         v28 = v21;
-        v29 = [&off_100271748 unsignedIntValue];
-        v30 = v19;
-        v31 = [&off_100271748 unsignedIntValue];
-        v32 = [&off_100271748 unsignedIntValue];
+        unsignedIntValue4 = [&off_100271748 unsignedIntValue];
+        v30 = btAntBlockDuration;
+        unsignedIntValue5 = [&off_100271748 unsignedIntValue];
+        unsignedIntValue6 = [&off_100271748 unsignedIntValue];
         LOBYTE(v35) = v25;
         v33 = v30;
         v3 = WRM_IPTelephonyController;
-        [(WCM_BTController *)v26 updateHFBtAntennaRequestWithDuration:v33 unii1Enabled:v38 unii3Enabled:v28 unii5aEnabled:v36 unii5bEnabled:v40 unii5cEnabled:v23 unii5dEnabled:v35 unii1ConditionId:v39 unii3ConditionId:v37 unii5aConditionId:v27 unii5bConditionId:v29 unii5cConditionId:v31 unii5dConditionId:v32];
+        [(WCM_BTController *)v26 updateHFBtAntennaRequestWithDuration:v33 unii1Enabled:v38 unii3Enabled:v28 unii5aEnabled:v36 unii5bEnabled:v40 unii5cEnabled:v23 unii5dEnabled:v35 unii1ConditionId:unsignedIntValue unii3ConditionId:unsignedIntValue2 unii5aConditionId:unsignedIntValue3 unii5bConditionId:unsignedIntValue4 unii5cConditionId:unsignedIntValue5 unii5dConditionId:unsignedIntValue6];
       }
 
       else
       {
         LOBYTE(v35) = v24;
-        [(WCM_BTController *)v18 updateHFBtAntennaRequestWithDuration:v19 unii1Enabled:v20 unii3Enabled:v21 unii5aEnabled:v22 unii5bEnabled:v40 unii5cEnabled:v23 unii5dEnabled:v35];
+        [(WCM_BTController *)btController2 updateHFBtAntennaRequestWithDuration:btAntBlockDuration unii1Enabled:v20 unii3Enabled:v21 unii5aEnabled:v22 unii5bEnabled:v40 unii5cEnabled:v23 unii5dEnabled:v35];
       }
     }
 
-    v34 = [(WCM_PolicyManager *)self cellularCoexBand];
+    cellularCoexBand2 = [(WCM_PolicyManager *)self cellularCoexBand];
     [(WCM_BTController *)[(WCM_PolicyManager *)self btController] updateMWSChannelParameters:[(WCM_PolicyManager *)self cellularController]];
-    if (v34 == 7)
+    if (cellularCoexBand2 == 7)
     {
       [&v3[98] logLevel:4 message:{@"ZeroFreqDebug: For non-coex scenario (including RRC idle), WRM pass actual frequences instead of zeros to BT. ([self cellularCoexBand] != WRM_BNON_COEX) as a BOOL is %d.", -[WCM_PolicyManager cellularCoexBand](self, "cellularCoexBand") != 7}];
     }
@@ -5233,9 +5233,9 @@ LABEL_26:
     }
 
     forceRealTimeAWDL = self->_forceRealTimeAWDL;
-    v4 = [(WCM_PolicyManager *)self btController];
+    btController = [(WCM_PolicyManager *)self btController];
     v5 = forceRealTimeAWDL || [(WCM_P2PAWDLController *)[(WCM_PolicyManager *)self p2pAwdlController] mRealTimeAwdlTrafficEnabled];
-    [(WCM_BTController *)v4 updateAWDLRTGActive:v5];
+    [(WCM_BTController *)btController updateAWDLRTGActive:v5];
     [(WCM_BTController *)[(WCM_PolicyManager *)self btController] updateWiFiChannelInfo:[(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiChannel] bandwidth:[(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] channelBandwidthMHz] regBand:[(WCM_PolicyManager *)self parseCenterFreqtoUNIIBand:[(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] channelCenterFreqMHz]]];
     [(WCM_BTController *)[(WCM_PolicyManager *)self btController] updateLowWiFi5GRates:0];
 
@@ -5264,44 +5264,44 @@ LABEL_26:
       [WCM_Logging logLevel:0 message:@"BT power state off - not sending afh map"];
     }
 
-    v3 = [(WCM_PolicyManager *)self rcu2Controller];
+    rcu2Controller = [(WCM_PolicyManager *)self rcu2Controller];
 
-    [(WCM_RCU2Controller *)v3 handleRCU2Connection];
+    [(WCM_RCU2Controller *)rcu2Controller handleRCU2Connection];
   }
 }
 
 - (void)handleBTScanConfigChange
 {
-  v3 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] getBTState];
-  v4 = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] isCarPlaySessionInProgress];
-  v5 = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] getCarPlayScanRelaxReason];
-  [WCM_Logging logLevel:3 message:@"handleBTScanConfigChange Handle BT radio state (%d)", v3];
-  if (!v3 || v5)
+  getBTState = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] getBTState];
+  isCarPlaySessionInProgress = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] isCarPlaySessionInProgress];
+  getCarPlayScanRelaxReason = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] getCarPlayScanRelaxReason];
+  [WCM_Logging logLevel:3 message:@"handleBTScanConfigChange Handle BT radio state (%d)", getBTState];
+  if (!getBTState || getCarPlayScanRelaxReason)
   {
-    [WCM_Logging logLevel:3 message:@"BT controller is off or Carplay is not a reason, didnt send Carplay scan param changes btState(%d) reason (%d)", v3, v5];
+    [WCM_Logging logLevel:3 message:@"BT controller is off or Carplay is not a reason, didnt send Carplay scan param changes btState(%d) reason (%d)", getBTState, getCarPlayScanRelaxReason];
   }
 
   else
   {
-    [(WCM_BTController *)[(WCM_PolicyManager *)self btController] updateCarplayBTScanParams:v4 reason:0];
-    [WCM_Logging logLevel:3 message:@"Sent message to BT controller about Carplay scan param changes carPlayState(%d) carPlayReason(%d)", v4, 0];
+    [(WCM_BTController *)[(WCM_PolicyManager *)self btController] updateCarplayBTScanParams:isCarPlaySessionInProgress reason:0];
+    [WCM_Logging logLevel:3 message:@"Sent message to BT controller about Carplay scan param changes carPlayState(%d) carPlayReason(%d)", isCarPlaySessionInProgress, 0];
   }
 }
 
 - (void)handleRCU2ContentionChange
 {
-  v3 = [(WCM_RCU2Controller *)[(WCM_PolicyManager *)self rcu2Controller] mRCU2PowerOn];
-  v4 = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] getLeastCongestedWifiParam];
-  [WCM_Logging logLevel:3 message:@"handleRCU2ContentionChange Handle RC2 radio state (%d)", v3];
+  mRCU2PowerOn = [(WCM_RCU2Controller *)[(WCM_PolicyManager *)self rcu2Controller] mRCU2PowerOn];
+  getLeastCongestedWifiParam = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] getLeastCongestedWifiParam];
+  [WCM_Logging logLevel:3 message:@"handleRCU2ContentionChange Handle RC2 radio state (%d)", mRCU2PowerOn];
   if ([objc_msgSend(+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")])
   {
-    if (!v3)
+    if (!mRCU2PowerOn)
     {
-      [WCM_Logging logLevel:3 message:@"RC2 controller is off (%d)", v3];
+      [WCM_Logging logLevel:3 message:@"RC2 controller is off (%d)", mRCU2PowerOn];
       return;
     }
 
-    -[WCM_RCU2Controller updateContentionFreeWiFiInfoToRC2:count:](-[WCM_PolicyManager rcu2Controller](self, "rcu2Controller"), "updateContentionFreeWiFiInfoToRC2:count:", [objc_msgSend(v4 objectAtIndex:{0), "unsignedIntValue"}], objc_msgSend(objc_msgSend(v4, "objectAtIndex:", 1), "unsignedIntValue"));
+    -[WCM_RCU2Controller updateContentionFreeWiFiInfoToRC2:count:](-[WCM_PolicyManager rcu2Controller](self, "rcu2Controller"), "updateContentionFreeWiFiInfoToRC2:count:", [objc_msgSend(getLeastCongestedWifiParam objectAtIndex:{0), "unsignedIntValue"}], objc_msgSend(objc_msgSend(getLeastCongestedWifiParam, "objectAtIndex:", 1), "unsignedIntValue"));
     v5 = @"Sent message to RC2 controller about least contested WiFi channel";
   }
 
@@ -5313,69 +5313,69 @@ LABEL_26:
   [WCM_Logging logLevel:3 message:v5];
 }
 
-- (int)parseCenterFreqtoUNIIBand:(unsigned int)a3
+- (int)parseCenterFreqtoUNIIBand:(unsigned int)band
 {
-  if (a3 - 1 < 0x9AF)
+  if (band - 1 < 0x9AF)
   {
     return 1;
   }
 
-  if (a3 - 5150 < 0x65)
+  if (band - 5150 < 0x65)
   {
     return 2;
   }
 
-  if (a3 - 5250 < 0x65)
+  if (band - 5250 < 0x65)
   {
     return 3;
   }
 
-  if (a3 - 5470 < 0x100)
+  if (band - 5470 < 0x100)
   {
     return 4;
   }
 
-  if (a3 - 5725 < 0x65)
+  if (band - 5725 < 0x65)
   {
     return 5;
   }
 
-  if (a3 - 5850 < 0x4C)
+  if (band - 5850 < 0x4C)
   {
     return 6;
   }
 
-  if (a3 - 5925 < 0x7E)
+  if (band - 5925 < 0x7E)
   {
     return 7;
   }
 
-  if (a3 - 6051 < 0x7D)
+  if (band - 6051 < 0x7D)
   {
     return 8;
   }
 
-  if (a3 - 6176 < 0x7D)
+  if (band - 6176 < 0x7D)
   {
     return 9;
   }
 
-  if (a3 - 6301 < 0x7D)
+  if (band - 6301 < 0x7D)
   {
     return 10;
   }
 
-  if (a3 - 6425 < 0x65)
+  if (band - 6425 < 0x65)
   {
     return 11;
   }
 
-  if (a3 - 6525 < 0x15F)
+  if (band - 6525 < 0x15F)
   {
     return 12;
   }
 
-  if (a3 - 6875 >= 0xFB)
+  if (band - 6875 >= 0xFB)
   {
     return 0;
   }
@@ -5417,14 +5417,14 @@ LABEL_26:
   {
     if ([(WCM_PolicyManager *)self rcu1Controller])
     {
-      v3 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] getAny5GHzBTDevicesConnected];
+      getAny5GHzBTDevicesConnected = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] getAny5GHzBTDevicesConnected];
       [(WCM_R1Controller *)[(WCM_PolicyManager *)self rcu1Controller] setMRCU1CurrentMode:0];
-      [(WCM_R1Controller *)[(WCM_PolicyManager *)self rcu1Controller] sendRCU1Message:0 wifiBand:0 btPowerState:[(WCM_BTController *)[(WCM_PolicyManager *)self btController] powerState] btBand:v3 isForce:0];
+      [(WCM_R1Controller *)[(WCM_PolicyManager *)self rcu1Controller] sendRCU1Message:0 wifiBand:0 btPowerState:[(WCM_BTController *)[(WCM_PolicyManager *)self btController] powerState] btBand:getAny5GHzBTDevicesConnected isForce:0];
       if ([objc_msgSend(+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")])
       {
-        v4 = [(WCM_PolicyManager *)self rcu1Controller];
+        rcu1Controller = [(WCM_PolicyManager *)self rcu1Controller];
 
-        [(WCM_R1Controller *)v4 sendBlockEnhancedMms:0];
+        [(WCM_R1Controller *)rcu1Controller sendBlockEnhancedMms:0];
       }
     }
   }
@@ -5439,39 +5439,39 @@ LABEL_26:
   }
 }
 
-- (void)handleWiFiBTCatsChange:(BOOL)a3
+- (void)handleWiFiBTCatsChange:(BOOL)change
 {
-  v3 = a3;
-  v5 = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiState];
-  v6 = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] catsAppPriority];
-  v7 = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] catsAppBitmap];
-  if (v3)
+  changeCopy = change;
+  wifiState = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiState];
+  catsAppPriority = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] catsAppPriority];
+  catsAppBitmap = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] catsAppBitmap];
+  if (changeCopy)
   {
     [WCM_Logging logLevel:2 message:@"handleWiFiBTCatsChange WiFi is turning off"];
-    v6 = 0;
+    catsAppPriority = 0;
     v8 = 0;
-    v5 = 0;
+    wifiState = 0;
   }
 
   else
   {
-    v8 = v7;
+    v8 = catsAppBitmap;
   }
 
-  [WCM_Logging logLevel:2 message:@"handleWiFiBTCatsChange catsState(%d -> %d) bitmap(0x%x -> 0x%x) wifiState(%d -> %d)", byte_1002B8198, v6, qword_1002B81A0, v8, dword_1002B8194, v5];
-  if (byte_1002B8198 != v6 || qword_1002B81A0 != v8 || dword_1002B8194 != v5)
+  [WCM_Logging logLevel:2 message:@"handleWiFiBTCatsChange catsState(%d -> %d) bitmap(0x%x -> 0x%x) wifiState(%d -> %d)", byte_1002B8198, catsAppPriority, qword_1002B81A0, v8, dword_1002B8194, wifiState];
+  if (byte_1002B8198 != catsAppPriority || qword_1002B81A0 != v8 || dword_1002B8194 != wifiState)
   {
-    if ((v5 - 1) > 3)
+    if ((wifiState - 1) > 3)
     {
       v9 = 0;
     }
 
     else
     {
-      v9 = dword_1001992D0[(v5 - 1)];
+      v9 = dword_1001992D0[(wifiState - 1)];
     }
 
-    if (v6 == 2)
+    if (catsAppPriority == 2)
     {
       v10 = 3;
     }
@@ -5482,9 +5482,9 @@ LABEL_26:
     }
 
     [WCM_Logging logLevel:2 message:@"handleWiFiBTCatsChange updating cats state to BT"];
-    [(WCM_PolicyManager *)self updateBTCatsState:v6 bitmap:v8 band:v9 desiredBtDc:v10];
-    dword_1002B8194 = v5;
-    byte_1002B8198 = v6;
+    [(WCM_PolicyManager *)self updateBTCatsState:catsAppPriority bitmap:v8 band:v9 desiredBtDc:v10];
+    dword_1002B8194 = wifiState;
+    byte_1002B8198 = catsAppPriority;
     qword_1002B81A0 = v8;
   }
 }
@@ -5497,17 +5497,17 @@ LABEL_26:
     return;
   }
 
-  v3 = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiState];
-  v4 = [(WCM_PolicyManager *)self btController];
+  wifiState = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiState];
+  btController = [(WCM_PolicyManager *)self btController];
   v5 = &unk_1002B8000;
   v6 = &unk_1002B8000;
-  if (!v4)
+  if (!btController)
   {
-    v15 = 0;
+    getLeConnReason = 0;
     v10 = 0;
-    v8 = 0;
-    v7 = 0;
-    if (v3 != 2)
+    getLeConnDuration = 0;
+    getLeConnDutyCycle = 0;
+    if (wifiState != 2)
     {
 LABEL_20:
       if ((byte_1002B81B4 & 1) == 0)
@@ -5528,17 +5528,17 @@ LABEL_27:
 
     v12 = 0;
     v13 = @"Set OFF due to WiFi in 2G, current enable=0, and lastSent enable=1";
-    v10 = v4;
+    v10 = btController;
     goto LABEL_29;
   }
 
-  v7 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] getLeConnDutyCycle];
-  v8 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] getLeConnDuration];
-  v15 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] getLeConnReason];
-  v9 = v7 - 1;
-  if (v7 == 1)
+  getLeConnDutyCycle = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] getLeConnDutyCycle];
+  getLeConnDuration = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] getLeConnDuration];
+  getLeConnReason = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] getLeConnReason];
+  v9 = getLeConnDutyCycle - 1;
+  if (getLeConnDutyCycle == 1)
   {
-    v10 = v8;
+    v10 = getLeConnDuration;
   }
 
   else
@@ -5547,19 +5547,19 @@ LABEL_27:
   }
 
   [WCM_Logging logLevel:2 message:@"LastSent: EN(%d) DC(%d) DUR(%d) Peak(%d)", byte_1002B81B4, dword_1002B81A8, dword_1002B81AC, dword_1002B81B0];
-  if (v3 <= 1)
+  if (wifiState <= 1)
   {
-    if (!v3)
+    if (!wifiState)
     {
       v11 = "DISABLED";
       goto LABEL_19;
     }
 
-    if (v3 == 1)
+    if (wifiState == 1)
     {
       v11 = "ENABLED";
 LABEL_19:
-      [WCM_Logging logLevel:2 message:@"CurrState: wifi(%s) EN(%d) DC(%d) DUR(%d) Peak(%d) ", v11, v9 < 4, v7, v8, v10];
+      [WCM_Logging logLevel:2 message:@"CurrState: wifi(%s) EN(%d) DC(%d) DUR(%d) Peak(%d) ", v11, v9 < 4, getLeConnDutyCycle, getLeConnDuration, v10];
       v5 = &unk_1002B8000;
       v6 = &unk_1002B8000;
       goto LABEL_20;
@@ -5568,9 +5568,9 @@ LABEL_19:
     goto LABEL_15;
   }
 
-  if (v3 != 2)
+  if (wifiState != 2)
   {
-    if (v3 == 3)
+    if (wifiState == 3)
     {
       v11 = "ASSOCIATED_5G";
       goto LABEL_19;
@@ -5578,7 +5578,7 @@ LABEL_19:
 
 LABEL_15:
     v11 = "INVALID_STATE!!!";
-    if (v3 == 4)
+    if (wifiState == 4)
     {
       v11 = "ASSOCIATED_6G";
     }
@@ -5586,10 +5586,10 @@ LABEL_15:
     goto LABEL_19;
   }
 
-  [WCM_Logging logLevel:2 message:@"CurrState: wifi(%s) EN(%d) DC(%d) DUR(%d) Peak(%d) ", "ASSOCIATED_2G", v9 < 4, v7, v8, v10];
+  [WCM_Logging logLevel:2 message:@"CurrState: wifi(%s) EN(%d) DC(%d) DUR(%d) Peak(%d) ", "ASSOCIATED_2G", v9 < 4, getLeConnDutyCycle, getLeConnDuration, v10];
   if (v9 >= 4)
   {
-    v4 = v10;
+    btController = v10;
     v5 = &unk_1002B8000;
     v6 = &unk_1002B8000;
     goto LABEL_27;
@@ -5599,16 +5599,16 @@ LABEL_15:
   v12 = 1;
   v13 = @"Set ON due to WiFi in 2G, current enable=1, and DC or DUR changed";
   v5 = &unk_1002B8000;
-  if (dword_1002B81A8 != v7 || dword_1002B81AC != v8)
+  if (dword_1002B81A8 != getLeConnDutyCycle || dword_1002B81AC != getLeConnDuration)
   {
 LABEL_29:
     v14 = v6;
     [WCM_Logging logLevel:2 message:v13];
-    [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] updateWiFiBTLeConnEnable:v12 andPeakOutageMs:v10 andDurationMs:v8 andDutyCycle:v7 andReason:v15];
+    [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] updateWiFiBTLeConnEnable:v12 andPeakOutageMs:v10 andDurationMs:getLeConnDuration andDutyCycle:getLeConnDutyCycle andReason:getLeConnReason];
     byte_1002B81B4 = v12;
     dword_1002B81B0 = v10;
-    v5[107] = v8;
-    v14[106] = v7;
+    v5[107] = getLeConnDuration;
+    v14[106] = getLeConnDutyCycle;
   }
 }
 
@@ -5618,16 +5618,16 @@ LABEL_29:
   v4 = "stopped";
   if ([(WCM_PolicyManager *)self btController])
   {
-    v5 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] getLeDiscoveryScanState];
-    v6 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] getLeDiscoveryScanUseCase];
-    v7 = v5 == 1;
+    getLeDiscoveryScanState = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] getLeDiscoveryScanState];
+    getLeDiscoveryScanUseCase = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] getLeDiscoveryScanUseCase];
+    v7 = getLeDiscoveryScanState == 1;
     if (v7)
     {
       v4 = "started";
     }
 
-    v8 = v6 == 1;
-    if (v6 == 1)
+    v8 = getLeDiscoveryScanUseCase == 1;
+    if (getLeDiscoveryScanUseCase == 1)
     {
       v3 = "FindMyPencil";
     }
@@ -5653,12 +5653,12 @@ LABEL_29:
 {
   if ([objc_msgSend(+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")])
   {
-    v3 = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiState];
-    v4 = [(WCM_AirplayController *)[(WCM_PolicyManager *)self airplayController] mAirplayIsCritical];
+    wifiState = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiState];
+    mAirplayIsCritical = [(WCM_AirplayController *)[(WCM_PolicyManager *)self airplayController] mAirplayIsCritical];
     [WCM_Logging logLevel:2 message:@"handleWiFiBTAirplayChange updating Airplay Critical to WiFi and BT"];
-    v5 = v3 - 2 < 3;
-    v6 = v4 & v5;
-    if ((v4 & v5) != 0)
+    v5 = wifiState - 2 < 3;
+    v6 = mAirplayIsCritical & v5;
+    if ((mAirplayIsCritical & v5) != 0)
     {
       v7 = "on";
     }
@@ -5680,17 +5680,17 @@ LABEL_29:
   if ([objc_msgSend(+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")])
   {
     forceRealTimeAWDL = self->_forceRealTimeAWDL;
-    v4 = [(WCM_PolicyManager *)self btController];
+    btController = [(WCM_PolicyManager *)self btController];
     v5 = forceRealTimeAWDL || [(WCM_P2PAWDLController *)[(WCM_PolicyManager *)self p2pAwdlController] mRealTimeAwdlTrafficEnabled]|| [(WCM_P2PNANController *)[(WCM_PolicyManager *)self p2pNanController] mNanRealTimeEnabled];
-    [(WCM_BTController *)v4 updateAWDLRTGActive:v5];
+    [(WCM_BTController *)btController updateAWDLRTGActive:v5];
   }
 
   if ([objc_msgSend(+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")])
   {
-    v6 = [(WCM_RCU2Controller *)[(WCM_PolicyManager *)self rcu2Controller] threadClient];
-    v7 = [(WCM_P2PAWDLController *)[(WCM_PolicyManager *)self p2pAwdlController] mRealTimeAwdlTrafficEnabled]|| [(WCM_P2PNANController *)[(WCM_PolicyManager *)self p2pNanController] mNanRealTimeEnabled];
+    threadClient = [(WCM_RCU2Controller *)[(WCM_PolicyManager *)self rcu2Controller] threadClient];
+    mNanRealTimeEnabled = [(WCM_P2PAWDLController *)[(WCM_PolicyManager *)self p2pAwdlController] mRealTimeAwdlTrafficEnabled]|| [(WCM_P2PNANController *)[(WCM_PolicyManager *)self p2pNanController] mNanRealTimeEnabled];
 
-    [(WCM_CtrXPCClient *)v6 updateAWDLRealTimeMode:v7];
+    [(WCM_CtrXPCClient *)threadClient updateAWDLRealTimeMode:mNanRealTimeEnabled];
   }
 }
 
@@ -5698,10 +5698,10 @@ LABEL_29:
 {
   if ([(WCM_PolicyManager *)self wifiController]&& [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] powerState])
   {
-    v3 = [(WCM_RCU2Controller *)[(WCM_PolicyManager *)self rcu2Controller] getRC2CoexMode];
-    v4 = [(WCM_PolicyManager *)self wifiController];
+    getRC2CoexMode = [(WCM_RCU2Controller *)[(WCM_PolicyManager *)self rcu2Controller] getRC2CoexMode];
+    wifiController = [(WCM_PolicyManager *)self wifiController];
 
-    [(WCM_WiFiController *)v4 updateWiFiRCU2CoexMode:v3];
+    [(WCM_WiFiController *)wifiController updateWiFiRCU2CoexMode:getRC2CoexMode];
   }
 }
 
@@ -5709,10 +5709,10 @@ LABEL_29:
 {
   if ([(WCM_PolicyManager *)self wifiController]&& [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] powerState])
   {
-    v3 = [(WCM_RCU2Controller *)[(WCM_PolicyManager *)self rcu2Controller] getRC2PMProtectionMode];
-    v4 = [(WCM_PolicyManager *)self wifiController];
+    getRC2PMProtectionMode = [(WCM_RCU2Controller *)[(WCM_PolicyManager *)self rcu2Controller] getRC2PMProtectionMode];
+    wifiController = [(WCM_PolicyManager *)self wifiController];
 
-    [(WCM_WiFiController *)v4 updateWiFiRCU2PMProtectionMode:v3];
+    [(WCM_WiFiController *)wifiController updateWiFiRCU2PMProtectionMode:getRC2PMProtectionMode];
   }
 }
 
@@ -5721,12 +5721,12 @@ LABEL_29:
   [WCM_Logging logLevel:2 message:@"Handle WiFi RC2 UL_OFDMA state change"];
   if ([(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] powerState])
   {
-    v3 = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiState];
-    v4 = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] didWiFiDeviceReset];
-    if (v3 >= 4)
+    wifiState = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiState];
+    didWiFiDeviceReset = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] didWiFiDeviceReset];
+    if (wifiState >= 4)
     {
       v5 = "INVALID_STATE!!!";
-      if (v3 == 4)
+      if (wifiState == 4)
       {
         v5 = "ASSOCIATED_6G";
       }
@@ -5734,20 +5734,20 @@ LABEL_29:
 
     else
     {
-      v5 = off_100241CB8[v3];
+      v5 = off_100241CB8[wifiState];
     }
 
     [WCM_Logging logLevel:2 message:@"WiFiState(%s)", v5];
     [WCM_Logging logLevel:2 message:@"WiFiState : Power:(%d) ChannelNo:(%d)", [(WCM_RCU2Controller *)[(WCM_PolicyManager *)self rcu2Controller] mRCU2PowerOn], [(WCM_RCU2Controller *)[(WCM_PolicyManager *)self rcu2Controller] mRCU2ChannelNum]];
-    v6 = v3 == 2;
-    if (byte_1002B81B5 != v6 || v4)
+    v6 = wifiState == 2;
+    if (byte_1002B81B5 != v6 || didWiFiDeviceReset)
     {
-      v7 = v3 == 2;
-      [WCM_Logging logLevel:2 message:@"WiFi/RCU2 UL OFDMA disable state change prev (%d) current (%d) wifiReset (%d)", byte_1002B81B5, v7, v4];
+      v7 = wifiState == 2;
+      [WCM_Logging logLevel:2 message:@"WiFi/RCU2 UL OFDMA disable state change prev (%d) current (%d) wifiReset (%d)", byte_1002B81B5, v7, didWiFiDeviceReset];
       byte_1002B81B5 = v6;
-      v8 = [(WCM_PolicyManager *)self wifiController];
+      wifiController = [(WCM_PolicyManager *)self wifiController];
 
-      [(WCM_WiFiController *)v8 updateWiFiRCU2ULOFDMAstate:v7];
+      [(WCM_WiFiController *)wifiController updateWiFiRCU2ULOFDMAstate:v7];
     }
   }
 
@@ -5761,32 +5761,32 @@ LABEL_29:
 {
   if ([(WCM_PolicyManager *)self wifiController])
   {
-    v3 = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] powerState];
+    powerState = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] powerState];
   }
 
   else
   {
-    v3 = 0;
+    powerState = 0;
   }
 
   if ([(WCM_PolicyManager *)self btController])
   {
-    v4 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] powerState];
+    powerState2 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] powerState];
   }
 
   else
   {
-    v4 = 0;
+    powerState2 = 0;
   }
 
   if ([(WCM_PolicyManager *)self rcu2Controller])
   {
-    v5 = [(WCM_RCU2Controller *)[(WCM_PolicyManager *)self rcu2Controller] mRCU2PowerOn];
-    if (v4)
+    mRCU2PowerOn = [(WCM_RCU2Controller *)[(WCM_PolicyManager *)self rcu2Controller] mRCU2PowerOn];
+    if (powerState2)
     {
 LABEL_9:
-      v6 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] getNumberOfBTGameCtrlDev];
-      [WCM_Logging logLevel:2 message:@"Getting RCU2 radio status %d total controllers >= 2 ? %d", v5, v6 > 1];
+      getNumberOfBTGameCtrlDev = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] getNumberOfBTGameCtrlDev];
+      [WCM_Logging logLevel:2 message:@"Getting RCU2 radio status %d total controllers >= 2 ? %d", mRCU2PowerOn, getNumberOfBTGameCtrlDev > 1];
       if ([objc_msgSend(+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")] && !-[WCM_RCU2Controller mRCU2ChannelActivity](-[WCM_PolicyManager rcu2Controller](self, "rcu2Controller"), "mRCU2ChannelActivity"))
       {
         [WCM_Logging logLevel:2 message:@"Disabling RCU2 CTS2S"];
@@ -5795,12 +5795,12 @@ LABEL_9:
       else
       {
         [WCM_Logging logLevel:2 message:@"Enabling RCU2 CTS2S"];
-        if (v6 > 1 && v5 && (!v3 || [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiState]!= 2))
+        if (getNumberOfBTGameCtrlDev > 1 && mRCU2PowerOn && (!powerState || [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiState]!= 2))
         {
-          v7 = [(WCM_RCU2Controller *)[(WCM_PolicyManager *)self rcu2Controller] getRC2BTTimingParam];
-          v8 = [v7 objectAtIndex:0];
-          v9 = [v7 objectAtIndex:1];
-          v10 = [v7 objectAtIndex:2];
+          getRC2BTTimingParam = [(WCM_RCU2Controller *)[(WCM_PolicyManager *)self rcu2Controller] getRC2BTTimingParam];
+          v8 = [getRC2BTTimingParam objectAtIndex:0];
+          v9 = [getRC2BTTimingParam objectAtIndex:1];
+          v10 = [getRC2BTTimingParam objectAtIndex:2];
 LABEL_21:
           v11[0] = v10;
           v11[1] = v8;
@@ -5819,8 +5819,8 @@ LABEL_21:
 
   else
   {
-    v5 = 0;
-    if (v4)
+    mRCU2PowerOn = 0;
+    if (powerState2)
     {
       goto LABEL_9;
     }
@@ -5833,36 +5833,36 @@ LABEL_21:
 {
   if ([(WCM_PolicyManager *)self wifiController])
   {
-    v3 = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] powerState];
+    powerState = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] powerState];
   }
 
   else
   {
-    v3 = 0;
+    powerState = 0;
   }
 
   if ([(WCM_PolicyManager *)self btController])
   {
-    v4 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] powerState];
+    powerState2 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] powerState];
   }
 
   else
   {
-    v4 = 0;
+    powerState2 = 0;
   }
 
   if ([(WCM_PolicyManager *)self rcu2Controller])
   {
-    v5 = [(WCM_RCU2Controller *)[(WCM_PolicyManager *)self rcu2Controller] mRCU2PowerOn];
+    mRCU2PowerOn = [(WCM_RCU2Controller *)[(WCM_PolicyManager *)self rcu2Controller] mRCU2PowerOn];
   }
 
   else
   {
-    v5 = 0;
+    mRCU2PowerOn = 0;
   }
 
-  v6 = [(WCM_WiFiService *)[(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiService] getP2pRCU2CoexEventStatus];
-  if (v4)
+  getP2pRCU2CoexEventStatus = [(WCM_WiFiService *)[(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiService] getP2pRCU2CoexEventStatus];
+  if (powerState2)
   {
     v7 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] getNumberOfBTGameCtrlDev]> 1;
   }
@@ -5872,7 +5872,7 @@ LABEL_21:
     v7 = 0;
   }
 
-  if (v3)
+  if (powerState)
   {
     [WCM_Logging logLevel:2 message:@"Channel activity %lld", [(WCM_RCU2Controller *)[(WCM_PolicyManager *)self rcu2Controller] mRCU2ChannelActivity]];
     if ([objc_msgSend(+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")] && !-[WCM_RCU2Controller mRCU2ChannelActivity](-[WCM_PolicyManager rcu2Controller](self, "rcu2Controller"), "mRCU2ChannelActivity"))
@@ -5883,19 +5883,19 @@ LABEL_21:
     else
     {
       [WCM_Logging logLevel:2 message:@"Enabling RCU2 CTS2S"];
-      [WCM_Logging logLevel:2 message:@"P2pRCU2CoexEventInProgress(%d)", v6];
-      if (v5 & v6)
+      [WCM_Logging logLevel:2 message:@"P2pRCU2CoexEventInProgress(%d)", getP2pRCU2CoexEventStatus];
+      if (mRCU2PowerOn & getP2pRCU2CoexEventStatus)
       {
-        [WCM_Logging logLevel:2 message:@"Disabling CTS2S due to P2pRCU2CoexEventInProgress(%d)", v6];
+        [WCM_Logging logLevel:2 message:@"Disabling CTS2S due to P2pRCU2CoexEventInProgress(%d)", getP2pRCU2CoexEventStatus];
       }
 
-      else if (v5)
+      else if (mRCU2PowerOn)
       {
-        v8 = [(WCM_RCU2Controller *)[(WCM_PolicyManager *)self rcu2Controller] getRC2WiFiTimingParam];
-        v9 = [v8 objectAtIndex:0];
-        v10 = [v8 objectAtIndex:1];
-        v11 = [v8 objectAtIndex:2];
-        v12 = [v8 objectAtIndex:3];
+        getRC2WiFiTimingParam = [(WCM_RCU2Controller *)[(WCM_PolicyManager *)self rcu2Controller] getRC2WiFiTimingParam];
+        v9 = [getRC2WiFiTimingParam objectAtIndex:0];
+        v10 = [getRC2WiFiTimingParam objectAtIndex:1];
+        v11 = [getRC2WiFiTimingParam objectAtIndex:2];
+        v12 = [getRC2WiFiTimingParam objectAtIndex:3];
         if (v7)
         {
           v13 = v12;
@@ -5931,10 +5931,10 @@ LABEL_27:
   {
     if ([(WCM_PolicyManager *)self rcu2Controller]&& [(WCM_RCU2Controller *)[(WCM_PolicyManager *)self rcu2Controller] mRCU2PowerOn])
     {
-      v3 = [(WCM_RCU2Controller *)[(WCM_PolicyManager *)self rcu2Controller] getRC2WiFiTimingParam];
+      getRC2WiFiTimingParam = [(WCM_RCU2Controller *)[(WCM_PolicyManager *)self rcu2Controller] getRC2WiFiTimingParam];
       [WCM_Logging logLevel:2 message:@"updateWiFiRCU2CoexParams - not ignoring t3/t4 as channel activity is not 0"];
-      v4 = [v3 objectAtIndex:0];
-      v5 = [v3 objectAtIndex:1];
+      v4 = [getRC2WiFiTimingParam objectAtIndex:0];
+      v5 = [getRC2WiFiTimingParam objectAtIndex:1];
     }
 
     else
@@ -5958,9 +5958,9 @@ LABEL_27:
     if ([(WCM_PolicyManager *)self wifiController])
     {
       [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] didWiFiDeviceReset];
-      v3 = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] powerState];
+      powerState = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] powerState];
       [WCM_Logging logLevel:2 message:@"handleWiFiRCU2Change state change WiFi (%d) and RC2 (%d)", [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] powerState], [(WCM_RCU2Controller *)[(WCM_PolicyManager *)self rcu2Controller] mRCU2PowerOn]];
-      if (v3)
+      if (powerState)
       {
         [(WCM_PolicyManager *)self updateWiFiRCU2CoexParams];
         [(WCM_PolicyManager *)self updateWiFiRCU2CoexMode];
@@ -5977,18 +5977,18 @@ LABEL_27:
   }
 }
 
-- (id)getLTErFemFrequencyRanges:(BOOL)a3
+- (id)getLTErFemFrequencyRanges:(BOOL)ranges
 {
-  v3 = a3;
-  v4 = [(WCM_PolicyManager *)self platformManager];
+  rangesCopy = ranges;
+  platformManager = [(WCM_PolicyManager *)self platformManager];
   v5 = objc_alloc_init(NSMutableArray);
-  if (v3)
+  if (rangesCopy)
   {
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    obj = [(NSDictionary *)[(WCM_PlatformManager *)v4 wcmGen9rFemDefaultMode2gWiFiCellularbands] objectForKey:@"LTE"];
+    obj = [(NSDictionary *)[(WCM_PlatformManager *)platformManager wcmGen9rFemDefaultMode2gWiFiCellularbands] objectForKey:@"LTE"];
     v6 = [obj countByEnumeratingWithState:&v28 objects:v37 count:16];
     if (v6)
     {
@@ -6026,7 +6026,7 @@ LABEL_27:
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    obja = [(NSDictionary *)[(WCM_PlatformManager *)v4 wcmGen9rFemDefaultMode5gWiFiCellularbands] objectForKey:@"LTE"];
+    obja = [(NSDictionary *)[(WCM_PlatformManager *)platformManager wcmGen9rFemDefaultMode5gWiFiCellularbands] objectForKey:@"LTE"];
     v13 = [obja countByEnumeratingWithState:&v24 objects:v34 count:16];
     if (v13)
     {
@@ -6062,18 +6062,18 @@ LABEL_27:
   return v5;
 }
 
-- (id)getNRrFemFrequencyRanges:(BOOL)a3
+- (id)getNRrFemFrequencyRanges:(BOOL)ranges
 {
-  v3 = a3;
-  v4 = [(WCM_PolicyManager *)self platformManager];
+  rangesCopy = ranges;
+  platformManager = [(WCM_PolicyManager *)self platformManager];
   v5 = objc_alloc_init(NSMutableArray);
-  if (v3)
+  if (rangesCopy)
   {
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    obj = [(NSDictionary *)[(WCM_PlatformManager *)v4 wcmGen9rFemDefaultMode2gWiFiCellularbands] objectForKey:@"NR"];
+    obj = [(NSDictionary *)[(WCM_PlatformManager *)platformManager wcmGen9rFemDefaultMode2gWiFiCellularbands] objectForKey:@"NR"];
     v6 = [obj countByEnumeratingWithState:&v28 objects:v37 count:16];
     if (v6)
     {
@@ -6111,7 +6111,7 @@ LABEL_27:
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    obja = [(NSDictionary *)[(WCM_PlatformManager *)v4 wcmGen9rFemDefaultMode5gWiFiCellularbands] objectForKey:@"NR"];
+    obja = [(NSDictionary *)[(WCM_PlatformManager *)platformManager wcmGen9rFemDefaultMode5gWiFiCellularbands] objectForKey:@"NR"];
     v13 = [obja countByEnumeratingWithState:&v24 objects:v34 count:16];
     if (v13)
     {
@@ -6180,14 +6180,14 @@ LABEL_27:
 - (void)updatePencilCoexActivationCondition
 {
   [WCM_Logging logLevel:2 message:@"YYDebug_ check pencil coex activation condition"];
-  v3 = [(WCM_PolicyManager *)self cellularController];
+  cellularController = [(WCM_PolicyManager *)self cellularController];
   if (![(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"EnableULCA"])
   {
     goto LABEL_11;
   }
 
   [WCM_Logging logLevel:2 message:@"YYDebug_ ENABLED_UL_CA"];
-  if (!v3 || (v4 = [(WCM_CellularController *)v3 getActiveULCAConfig]) == 0)
+  if (!cellularController || (v4 = [(WCM_CellularController *)cellularController getActiveULCAConfig]) == 0)
   {
     [WCM_Logging logLevel:0 message:@"YYDebug_ pencil coex Error: No ULCA config"];
     goto LABEL_11;
@@ -6224,19 +6224,19 @@ LABEL_11:
 
   while (v6 < v5->var1);
 LABEL_12:
-  [(WCM_CellularController *)v3 ulCenterFreq];
+  [(WCM_CellularController *)cellularController ulCenterFreq];
   if (v14 != 0.0)
   {
-    [(WCM_CellularController *)v3 ulBandwidth];
+    [(WCM_CellularController *)cellularController ulBandwidth];
     if (v15 != 0.0)
     {
-      [(WCM_CellularController *)v3 ulCenterFreq];
+      [(WCM_CellularController *)cellularController ulCenterFreq];
       v17 = v16;
-      [(WCM_CellularController *)v3 ulBandwidth];
+      [(WCM_CellularController *)cellularController ulBandwidth];
       v19 = v18;
-      [(WCM_CellularController *)v3 ulCenterFreq];
+      [(WCM_CellularController *)cellularController ulCenterFreq];
       v21 = v20;
-      [(WCM_CellularController *)v3 ulBandwidth];
+      [(WCM_CellularController *)cellularController ulBandwidth];
       v23 = v22;
       if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"EnableULCA"])
       {
@@ -6246,7 +6246,7 @@ LABEL_12:
 
       else
       {
-        [(WCM_CellularController *)v3 getCombinedUplinkFreqRange];
+        [(WCM_CellularController *)cellularController getCombinedUplinkFreqRange];
         v25 = v24 + v26;
       }
 
@@ -6273,60 +6273,60 @@ LABEL_12:
   }
 }
 
-- (void)getUpdatedWifiAntennaSelectionEnhConfigsWithbmWifiEnhAntTx000:(unsigned __int16 *)a3 bmWiFiEnhAntTx001:(unsigned __int16 *)a4 bmWiFiEnhAntTx010:(unsigned __int16 *)a5 bmWiFiEnhAntTx011:(unsigned __int16 *)a6 bmWiFiEnhAntTx100:(unsigned __int16 *)a7 bmWiFiEnhAntTx101:(unsigned __int16 *)a8 bmWiFiEnhAntTx110:(unsigned __int16 *)a9 bmWiFiEnhAntTx111:(unsigned __int16 *)a10 bmWiFiBand:(unsigned __int16 *)a11
+- (void)getUpdatedWifiAntennaSelectionEnhConfigsWithbmWifiEnhAntTx000:(unsigned __int16 *)tx000 bmWiFiEnhAntTx001:(unsigned __int16 *)tx001 bmWiFiEnhAntTx010:(unsigned __int16 *)tx010 bmWiFiEnhAntTx011:(unsigned __int16 *)tx011 bmWiFiEnhAntTx100:(unsigned __int16 *)tx100 bmWiFiEnhAntTx101:(unsigned __int16 *)tx101 bmWiFiEnhAntTx110:(unsigned __int16 *)tx110 bmWiFiEnhAntTx111:(unsigned __int16 *)self0 bmWiFiBand:(unsigned __int16 *)self1
 {
-  v17 = [(WCM_PolicyManager *)self platformManager];
-  v18 = [(WCM_PolicyManager *)self cellularController];
+  platformManager = [(WCM_PolicyManager *)self platformManager];
+  cellularController = [(WCM_PolicyManager *)self cellularController];
   if ([(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiState]< 2)
   {
     goto LABEL_47;
   }
 
-  [(WCM_CellularController *)v18 dlCenterFreq];
+  [(WCM_CellularController *)cellularController dlCenterFreq];
   if (v19 == 0.0)
   {
     goto LABEL_47;
   }
 
-  [(WCM_CellularController *)v18 dlBandwidth];
+  [(WCM_CellularController *)cellularController dlBandwidth];
   if (v20 == 0.0)
   {
     goto LABEL_47;
   }
 
-  [(WCM_CellularController *)v18 ulCenterFreq];
+  [(WCM_CellularController *)cellularController ulCenterFreq];
   if (v21 == 0.0)
   {
     return;
   }
 
-  [(WCM_CellularController *)v18 ulBandwidth];
+  [(WCM_CellularController *)cellularController ulBandwidth];
   if (v22 == 0.0)
   {
     return;
   }
 
-  v47 = [(WCM_CellularController *)v18 bandInfoType];
-  [(WCM_CellularController *)v18 dlCenterFreq];
+  bandInfoType = [(WCM_CellularController *)cellularController bandInfoType];
+  [(WCM_CellularController *)cellularController dlCenterFreq];
   v24 = v23;
-  [(WCM_CellularController *)v18 dlBandwidth];
+  [(WCM_CellularController *)cellularController dlBandwidth];
   v26 = v24 - v25 * 0.5;
-  [(WCM_CellularController *)v18 dlCenterFreq];
+  [(WCM_CellularController *)cellularController dlCenterFreq];
   v28 = v27;
-  [(WCM_CellularController *)v18 dlBandwidth];
+  [(WCM_CellularController *)cellularController dlBandwidth];
   v30 = v28 + v29 * 0.5;
-  [(WCM_CellularController *)v18 ulCenterFreq];
+  [(WCM_CellularController *)cellularController ulCenterFreq];
   v32 = v31;
-  [(WCM_CellularController *)v18 ulBandwidth];
+  [(WCM_CellularController *)cellularController ulBandwidth];
   v34 = v32 - v33 * 0.5;
-  [(WCM_CellularController *)v18 ulCenterFreq];
+  [(WCM_CellularController *)cellularController ulCenterFreq];
   v36 = v35;
-  [(WCM_CellularController *)v18 ulBandwidth];
+  [(WCM_CellularController *)cellularController ulBandwidth];
   v38 = v36 + v37 * 0.5;
   [WCM_Logging logLevel:2 message:@"YYDebug_ configure wifi antenna selection with ul freq = (%f, %f) and dl freq = (%f, %f) ", *&v34, *&v38, *&v26, *&v30];
   if (![(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"EnableULCA"])
   {
-    [(WCM_CellularController *)v18 getCombinedUplinkFreqRange];
+    [(WCM_CellularController *)cellularController getCombinedUplinkFreqRange];
     v34 = v39;
     v38 = v39 + v40;
   }
@@ -6340,7 +6340,7 @@ LABEL_46:
     goto LABEL_47;
   }
 
-  v41 = [(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)v17 wcmWiFiCellCoexIssueTable] findWiFiAntennaOrCellTxPowerConstraintWiFiEnhCoexIssueByCellBandInfoType:v47 cellDlLowFreq:[(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiChannel] cellDlHighFreq:[(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] channelCenterFreqMHz] cellUlLowFreq:[(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] channelBandwidthMHz] cellUlHighFreq:[(WCM_PolicyManager *)self gpsRadioActive] wifiChannel:v49 + 1 wifiCenterFreq:v26 wifiBandwidth:v30 gpsRadioActive:v34 wifiAntennaConstraint:v38 cellTxPowerConstraint:v49];
+  v41 = [(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)platformManager wcmWiFiCellCoexIssueTable] findWiFiAntennaOrCellTxPowerConstraintWiFiEnhCoexIssueByCellBandInfoType:bandInfoType cellDlLowFreq:[(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiChannel] cellDlHighFreq:[(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] channelCenterFreqMHz] cellUlLowFreq:[(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] channelBandwidthMHz] cellUlHighFreq:[(WCM_PolicyManager *)self gpsRadioActive] wifiChannel:v49 + 1 wifiCenterFreq:v26 wifiBandwidth:v30 gpsRadioActive:v34 wifiAntennaConstraint:v38 cellTxPowerConstraint:v49];
   if (!v41 || HIBYTE(v49[0]) != 1)
   {
     goto LABEL_47;
@@ -6356,106 +6356,106 @@ LABEL_46:
   if ([v42 wifiUlAntennaBitmapOnCellAntBitmap000])
   {
     [WCM_Logging logLevel:3 message:@"WiFiEnh_: apply WiFi UL antenna constraint for Cellular Antenna Bitmap 000"];
-    *a3 |= ([v42 wifiUlAntennaBitmapOnCellAntBitmap000] << 6) | 0x800;
+    *tx000 |= ([v42 wifiUlAntennaBitmapOnCellAntBitmap000] << 6) | 0x800;
   }
 
   if ([v42 wifiUlAntennaBitmapOnCellAntBitmap001])
   {
     [WCM_Logging logLevel:3 message:@"WiFiEnh_: apply WiFi UL antenna constraint for Cellular Antenna bitmap 001"];
-    *a4 |= ([v42 wifiUlAntennaBitmapOnCellAntBitmap001] << 6) | 0x800;
+    *tx001 |= ([v42 wifiUlAntennaBitmapOnCellAntBitmap001] << 6) | 0x800;
   }
 
   if ([v42 wifiUlAntennaBitmapOnCellAntBitmap010])
   {
     [WCM_Logging logLevel:3 message:@"WiFiEnh_: apply WiFi UL antenna constraint for Cellular Antenna bitmap 010"];
-    *a5 |= ([v42 wifiUlAntennaBitmapOnCellAntBitmap010] << 6) | 0x800;
+    *tx010 |= ([v42 wifiUlAntennaBitmapOnCellAntBitmap010] << 6) | 0x800;
   }
 
   if ([v42 wifiUlAntennaBitmapOnCellAntBitmap011])
   {
     [WCM_Logging logLevel:3 message:@"WiFiEnh_: apply WiFi UL antenna constraint for Cellular Antenna bitmap 011"];
-    *a6 |= ([v42 wifiUlAntennaBitmapOnCellAntBitmap011] << 6) | 0x800;
+    *tx011 |= ([v42 wifiUlAntennaBitmapOnCellAntBitmap011] << 6) | 0x800;
   }
 
   if ([v42 wifiUlAntennaBitmapOnCellAntBitmap100])
   {
     [WCM_Logging logLevel:3 message:@"WiFiEnh_: apply WiFi UL antenna constraint for Cellular Antenna bitmap 100"];
-    *a7 |= ([v42 wifiUlAntennaBitmapOnCellAntBitmap100] << 6) | 0x800;
+    *tx100 |= ([v42 wifiUlAntennaBitmapOnCellAntBitmap100] << 6) | 0x800;
   }
 
   if ([v42 wifiUlAntennaBitmapOnCellAntBitmap101])
   {
     [WCM_Logging logLevel:3 message:@"WiFiEnh_: apply WiFi UL antenna constraint for Cellular Antenna bitmap 101"];
-    *a8 |= ([v42 wifiUlAntennaBitmapOnCellAntBitmap101] << 6) | 0x800;
+    *tx101 |= ([v42 wifiUlAntennaBitmapOnCellAntBitmap101] << 6) | 0x800;
   }
 
   if ([v42 wifiUlAntennaBitmapOnCellAntBitmap110])
   {
     [WCM_Logging logLevel:3 message:@"WiFiEnh_: apply WiFi UL antenna constraint for Cellular Antenna bitmap 110"];
-    *a9 |= ([v42 wifiUlAntennaBitmapOnCellAntBitmap110] << 6) | 0x800;
+    *tx110 |= ([v42 wifiUlAntennaBitmapOnCellAntBitmap110] << 6) | 0x800;
   }
 
   if ([v42 wifiUlAntennaBitmapOnCellAntBitmap111])
   {
     [WCM_Logging logLevel:3 message:@"WiFiEnh_: apply WiFi UL antenna constraint for Cellular Antenna bitmap 111"];
-    *a10 |= ([v42 wifiUlAntennaBitmapOnCellAntBitmap111] << 6) | 0x800;
+    *tx111 |= ([v42 wifiUlAntennaBitmapOnCellAntBitmap111] << 6) | 0x800;
   }
 
   if ([v42 wifiDlAntennaBitmapOnCellAntBitmap000])
   {
     [WCM_Logging logLevel:3 message:@"WiFiEnh_: apply WiFi DL antenna constraint for Cellular Antenna Bitmap 000"];
-    *a3 |= [v42 wifiDlAntennaBitmapOnCellAntBitmap000] | 0x20;
+    *tx000 |= [v42 wifiDlAntennaBitmapOnCellAntBitmap000] | 0x20;
   }
 
   if ([v42 wifiDlAntennaBitmapOnCellAntBitmap001])
   {
     [WCM_Logging logLevel:3 message:@"WiFiEnh_: apply WiFi DL antenna constraint for Cellular Antenna bitmap 001"];
-    *a4 |= [v42 wifiDlAntennaBitmapOnCellAntBitmap001] | 0x20;
+    *tx001 |= [v42 wifiDlAntennaBitmapOnCellAntBitmap001] | 0x20;
   }
 
   if ([v42 wifiDlAntennaBitmapOnCellAntBitmap010])
   {
     [WCM_Logging logLevel:3 message:@"WiFiEnh_: apply WiFi DL antenna constraint for Cellular Antenna bitmap 010"];
-    *a5 |= [v42 wifiDlAntennaBitmapOnCellAntBitmap010] | 0x20;
+    *tx010 |= [v42 wifiDlAntennaBitmapOnCellAntBitmap010] | 0x20;
   }
 
   if ([v42 wifiDlAntennaBitmapOnCellAntBitmap011])
   {
     [WCM_Logging logLevel:3 message:@"WiFiEnh_: apply WiFi DL antenna constraint for Cellular Antenna bitmap 011"];
-    *a6 |= [v42 wifiDlAntennaBitmapOnCellAntBitmap011] | 0x20;
+    *tx011 |= [v42 wifiDlAntennaBitmapOnCellAntBitmap011] | 0x20;
   }
 
   if ([v42 wifiDlAntennaBitmapOnCellAntBitmap100])
   {
     [WCM_Logging logLevel:3 message:@"WiFiEnh_: apply WiFi DL antenna constraint for Cellular Antenna bitmap 100"];
-    *a7 |= [v42 wifiDlAntennaBitmapOnCellAntBitmap100] | 0x20;
+    *tx100 |= [v42 wifiDlAntennaBitmapOnCellAntBitmap100] | 0x20;
   }
 
   if ([v42 wifiDlAntennaBitmapOnCellAntBitmap101])
   {
     [WCM_Logging logLevel:3 message:@"WiFiEnh_: apply WiFi DL antenna constraint for Cellular Antenna bitmap 101"];
-    *a8 |= [v42 wifiDlAntennaBitmapOnCellAntBitmap101] | 0x20;
+    *tx101 |= [v42 wifiDlAntennaBitmapOnCellAntBitmap101] | 0x20;
   }
 
   if ([v42 wifiDlAntennaBitmapOnCellAntBitmap110])
   {
     [WCM_Logging logLevel:3 message:@"WiFiEnh_: apply WiFi DL antenna constraint for Cellular Antenna bitmap 110"];
-    *a9 |= [v42 wifiDlAntennaBitmapOnCellAntBitmap110] | 0x20;
+    *tx110 |= [v42 wifiDlAntennaBitmapOnCellAntBitmap110] | 0x20;
   }
 
   if ([v42 wifiDlAntennaBitmapOnCellAntBitmap111])
   {
     [WCM_Logging logLevel:3 message:@"WiFiEnh_: apply WiFi DL antenna constraint for Cellular Antenna bitmap 111"];
-    *a10 |= [v42 wifiDlAntennaBitmapOnCellAntBitmap111] | 0x20;
+    *tx111 |= [v42 wifiDlAntennaBitmapOnCellAntBitmap111] | 0x20;
   }
 
 LABEL_47:
-  *a11 = 0;
+  *band = 0;
   if ([(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiState]== 2)
   {
     v44 = 1;
 LABEL_53:
-    *a11 = v44;
+    *band = v44;
     goto LABEL_54;
   }
 
@@ -6491,9 +6491,9 @@ LABEL_54:
 
     else
     {
-      v46 = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiState];
+      wifiState = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiState];
       v45 = "INVALID_STATE!!!";
-      if (v46 == 4)
+      if (wifiState == 4)
       {
         v45 = "ASSOCIATED_6G";
       }
@@ -6505,14 +6505,14 @@ LABEL_54:
     v45 = "DISABLED";
   }
 
-  [WCM_Logging logLevel:1 message:@"WiFiEnh_: with WiFi State (%s), calculated bmWiFiBand %d bitmaps 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x", v45, *a11, *a3, *a4, *a5, *a6, *a7, *a8, *a9, *a10];
+  [WCM_Logging logLevel:1 message:@"WiFiEnh_: with WiFi State (%s), calculated bmWiFiBand %d bitmaps 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x", v45, *band, *tx000, *tx001, *tx010, *tx011, *tx100, *tx101, *tx110, *tx111];
 }
 
 - (void)updateWifiAntennaSelectionV1V2Configs
 {
-  v3 = [(WCM_PolicyManager *)self platformManager];
-  v4 = [(WCM_PolicyManager *)self cellularController];
-  if (![(WCM_PlatformManager *)v3 wcmWiFiCellCoexIssueTable])
+  platformManager = [(WCM_PolicyManager *)self platformManager];
+  cellularController = [(WCM_PolicyManager *)self cellularController];
+  if (![(WCM_PlatformManager *)platformManager wcmWiFiCellCoexIssueTable])
   {
     return;
   }
@@ -6522,46 +6522,46 @@ LABEL_54:
     goto LABEL_18;
   }
 
-  [(WCM_CellularController *)v4 dlCenterFreq];
+  [(WCM_CellularController *)cellularController dlCenterFreq];
   if (v5 == 0.0)
   {
     goto LABEL_18;
   }
 
-  [(WCM_CellularController *)v4 dlBandwidth];
+  [(WCM_CellularController *)cellularController dlBandwidth];
   if (v6 == 0.0)
   {
     goto LABEL_18;
   }
 
-  [(WCM_CellularController *)v4 ulCenterFreq];
+  [(WCM_CellularController *)cellularController ulCenterFreq];
   if (v7 == 0.0)
   {
     return;
   }
 
-  [(WCM_CellularController *)v4 ulBandwidth];
+  [(WCM_CellularController *)cellularController ulBandwidth];
   if (v8 == 0.0)
   {
     return;
   }
 
-  v9 = [(WCM_CellularController *)v4 bandInfoType];
-  [(WCM_CellularController *)v4 dlCenterFreq];
+  bandInfoType = [(WCM_CellularController *)cellularController bandInfoType];
+  [(WCM_CellularController *)cellularController dlCenterFreq];
   v94 = v10;
-  [(WCM_CellularController *)v4 dlBandwidth];
+  [(WCM_CellularController *)cellularController dlBandwidth];
   v12 = v11;
-  [(WCM_CellularController *)v4 dlCenterFreq];
+  [(WCM_CellularController *)cellularController dlCenterFreq];
   v14 = v13;
-  [(WCM_CellularController *)v4 dlBandwidth];
+  [(WCM_CellularController *)cellularController dlBandwidth];
   v16 = v15;
-  [(WCM_CellularController *)v4 ulCenterFreq];
+  [(WCM_CellularController *)cellularController ulCenterFreq];
   v18 = v17;
-  [(WCM_CellularController *)v4 ulBandwidth];
+  [(WCM_CellularController *)cellularController ulBandwidth];
   v20 = v19;
-  [(WCM_CellularController *)v4 ulCenterFreq];
+  [(WCM_CellularController *)cellularController ulCenterFreq];
   v22 = v21;
-  [(WCM_CellularController *)v4 ulBandwidth];
+  [(WCM_CellularController *)cellularController ulBandwidth];
   v24 = v23;
   if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"EnableULCA"])
   {
@@ -6571,7 +6571,7 @@ LABEL_54:
 
   else
   {
-    [(WCM_CellularController *)v4 getCombinedUplinkFreqRange];
+    [(WCM_CellularController *)cellularController getCombinedUplinkFreqRange];
     v25 = v27;
     v26 = v27 + v28;
   }
@@ -6585,7 +6585,7 @@ LABEL_54:
 
   else
   {
-    v31 = [(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)v3 wcmWiFiCellCoexIssueTable] findWiFiAntennaOrCellTxPowerConstraintCoexIssueByCellBandInfoType:v9 cellDlLowFreq:[(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiChannel] cellDlHighFreq:[(WCM_PolicyManager *)self gpsRadioActive] cellUlLowFreq:&v96 + 1 cellUlHighFreq:&v96 wifiChannel:v94 - v12 * 0.5 gpsRadioActive:v14 + v16 * 0.5 wifiAntennaConstraint:v25 cellTxPowerConstraint:v26];
+    v31 = [(WCM_WiFiCellCoexIssueBandTable *)[(WCM_PlatformManager *)platformManager wcmWiFiCellCoexIssueTable] findWiFiAntennaOrCellTxPowerConstraintCoexIssueByCellBandInfoType:bandInfoType cellDlLowFreq:[(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiChannel] cellDlHighFreq:[(WCM_PolicyManager *)self gpsRadioActive] cellUlLowFreq:&v96 + 1 cellUlHighFreq:&v96 wifiChannel:v94 - v12 * 0.5 gpsRadioActive:v14 + v16 * 0.5 wifiAntennaConstraint:v25 cellTxPowerConstraint:v26];
     if (!v31 || HIBYTE(v96) != 1)
     {
       goto LABEL_18;
@@ -6597,9 +6597,9 @@ LABEL_54:
       if ([v32 wifiUlAntennaBitmapOnCellLAT])
       {
         [WCM_Logging logLevel:3 message:@"apply WiFi UL antenna constraint for Cellular primary antenna"];
-        v33 = [v32 wifiUlAntennaBitmapOnCellLAT];
-        v34 = (v33 << 7) | 0x2000;
-        v35 = (v33 << 7) | 0xA000;
+        wifiUlAntennaBitmapOnCellLAT = [v32 wifiUlAntennaBitmapOnCellLAT];
+        v34 = (wifiUlAntennaBitmapOnCellLAT << 7) | 0x2000;
+        v35 = (wifiUlAntennaBitmapOnCellLAT << 7) | 0xA000;
       }
 
       else
@@ -6625,18 +6625,18 @@ LABEL_54:
       if ([v32 wifiDlAntennaBitmapOnCellLAT])
       {
         [WCM_Logging logLevel:3 message:@"apply WiFi DL antenna constraint for Cellular primary antenna"];
-        v54 = [v32 wifiDlAntennaBitmapOnCellLAT];
-        v34 = v34 | v54 | 0x40;
-        v35 |= v54 | 0x40;
+        wifiDlAntennaBitmapOnCellLAT = [v32 wifiDlAntennaBitmapOnCellLAT];
+        v34 = v34 | wifiDlAntennaBitmapOnCellLAT | 0x40;
+        v35 |= wifiDlAntennaBitmapOnCellLAT | 0x40;
       }
 
       if ([v32 wifiDlAntennaBitmapOnCellUAT])
       {
         [WCM_Logging logLevel:3 message:@"apply WiFi DL antenna constraint for Cellular secondary antenna"];
-        v55 = [v32 wifiDlAntennaBitmapOnCellUAT];
+        wifiDlAntennaBitmapOnCellUAT = [v32 wifiDlAntennaBitmapOnCellUAT];
         v36 = 0;
-        v41 = v41 | v55 | 0x40;
-        v40 |= v55 | 0x40;
+        v41 = v41 | wifiDlAntennaBitmapOnCellUAT | 0x40;
+        v40 |= wifiDlAntennaBitmapOnCellUAT | 0x40;
       }
 
       else
@@ -6667,9 +6667,9 @@ LABEL_54:
       if ([v32 wifiUlAntennaBitmapOnCellLAT])
       {
         [WCM_Logging logLevel:3 message:@"apply WiFi UL antenna constraint for Cellular primary antenna"];
-        v51 = [v32 wifiUlAntennaBitmapOnCellLAT];
-        v36 = (v51 << 6) | 0x800;
-        v52 = (v51 << 6) | 0x8800;
+        wifiUlAntennaBitmapOnCellLAT2 = [v32 wifiUlAntennaBitmapOnCellLAT];
+        v36 = (wifiUlAntennaBitmapOnCellLAT2 << 6) | 0x800;
+        v52 = (wifiUlAntennaBitmapOnCellLAT2 << 6) | 0x8800;
       }
 
       else
@@ -6681,9 +6681,9 @@ LABEL_54:
       if ([v32 wifiUlAntennaBitmapOnCellUAT])
       {
         [WCM_Logging logLevel:3 message:@"apply WiFi UL antenna constraint for Cellular secondary antenna"];
-        v56 = [v32 wifiUlAntennaBitmapOnCellUAT];
-        v57 = (v56 << 6) | 0x1800;
-        v38 = (v56 << 6) | 0x9800;
+        wifiUlAntennaBitmapOnCellUAT = [v32 wifiUlAntennaBitmapOnCellUAT];
+        v57 = (wifiUlAntennaBitmapOnCellUAT << 6) | 0x1800;
+        v38 = (wifiUlAntennaBitmapOnCellUAT << 6) | 0x9800;
       }
 
       else
@@ -6704,10 +6704,10 @@ LABEL_54:
       if ([v32 wifiDlAntennaBitmapOnCellUAT])
       {
         [WCM_Logging logLevel:3 message:@"apply WiFi DL antenna constraint for Cellular secondary antenna"];
-        v59 = [v32 wifiDlAntennaBitmapOnCellUAT];
+        wifiDlAntennaBitmapOnCellUAT2 = [v32 wifiDlAntennaBitmapOnCellUAT];
         v34 = 0;
-        v87 = v57 | v59 | 0x20;
-        v38 |= v59 | 0x20;
+        v87 = v57 | wifiDlAntennaBitmapOnCellUAT2 | 0x20;
+        v38 |= wifiDlAntennaBitmapOnCellUAT2 | 0x20;
       }
 
       else
@@ -6738,9 +6738,9 @@ LABEL_54:
       if ([v32 wifiUlAntennaBitmapOnCellAntBitmap000])
       {
         [WCM_Logging logLevel:3 message:@"apply WiFi UL antenna constraint for Cellular Antenna Bitmap 000"];
-        v60 = [v32 wifiUlAntennaBitmapOnCellAntBitmap000];
-        v36 = (v60 << 6) | 0x800;
-        v61 = (v60 << 6) | 0x8800;
+        wifiUlAntennaBitmapOnCellAntBitmap000 = [v32 wifiUlAntennaBitmapOnCellAntBitmap000];
+        v36 = (wifiUlAntennaBitmapOnCellAntBitmap000 << 6) | 0x800;
+        v61 = (wifiUlAntennaBitmapOnCellAntBitmap000 << 6) | 0x8800;
       }
 
       else
@@ -6753,9 +6753,9 @@ LABEL_54:
       if ([v32 wifiUlAntennaBitmapOnCellAntBitmap001])
       {
         [WCM_Logging logLevel:3 message:@"apply WiFi UL antenna constraint for Cellular Antenna bitmap 001"];
-        v62 = [v32 wifiUlAntennaBitmapOnCellAntBitmap001];
-        v63 = (v62 << 6) | 0x1800;
-        v38 = (v62 << 6) | 0x9800;
+        wifiUlAntennaBitmapOnCellAntBitmap001 = [v32 wifiUlAntennaBitmapOnCellAntBitmap001];
+        v63 = (wifiUlAntennaBitmapOnCellAntBitmap001 << 6) | 0x1800;
+        v38 = (wifiUlAntennaBitmapOnCellAntBitmap001 << 6) | 0x9800;
       }
 
       else
@@ -6767,9 +6767,9 @@ LABEL_54:
       if ([v32 wifiUlAntennaBitmapOnCellAntBitmap010])
       {
         [WCM_Logging logLevel:3 message:@"apply WiFi UL antenna constraint for Cellular Antenna bitmap 010"];
-        v64 = [v32 wifiUlAntennaBitmapOnCellAntBitmap010];
-        v85 = (v64 << 6) | 0x2800;
-        v37 = (v64 << 6) | 0xA800;
+        wifiUlAntennaBitmapOnCellAntBitmap010 = [v32 wifiUlAntennaBitmapOnCellAntBitmap010];
+        v85 = (wifiUlAntennaBitmapOnCellAntBitmap010 << 6) | 0x2800;
+        v37 = (wifiUlAntennaBitmapOnCellAntBitmap010 << 6) | 0xA800;
       }
 
       else
@@ -6782,9 +6782,9 @@ LABEL_54:
       if ([v32 wifiUlAntennaBitmapOnCellAntBitmap011])
       {
         [WCM_Logging logLevel:3 message:@"apply WiFi UL antenna constraint for Cellular Antenna bitmap 011"];
-        v65 = [v32 wifiUlAntennaBitmapOnCellAntBitmap011];
-        LODWORD(v39) = (v65 << 6) | 0x3800;
-        v66 = (v65 << 6) | 0xB800;
+        wifiUlAntennaBitmapOnCellAntBitmap011 = [v32 wifiUlAntennaBitmapOnCellAntBitmap011];
+        LODWORD(v39) = (wifiUlAntennaBitmapOnCellAntBitmap011 << 6) | 0x3800;
+        v66 = (wifiUlAntennaBitmapOnCellAntBitmap011 << 6) | 0xB800;
       }
 
       else
@@ -6796,10 +6796,10 @@ LABEL_54:
       if ([v32 wifiUlAntennaBitmapOnCellAntBitmap100])
       {
         [WCM_Logging logLevel:3 message:@"apply WiFi UL antenna constraint for Cellular Antenna bitmap 100"];
-        v67 = [v32 wifiUlAntennaBitmapOnCellAntBitmap100];
+        wifiUlAntennaBitmapOnCellAntBitmap100 = [v32 wifiUlAntennaBitmapOnCellAntBitmap100];
         v68 = v32;
-        LODWORD(v32) = (v67 << 6) | 0x4800;
-        v93 = (v67 << 6) | 0xC800;
+        LODWORD(v32) = (wifiUlAntennaBitmapOnCellAntBitmap100 << 6) | 0x4800;
+        v93 = (wifiUlAntennaBitmapOnCellAntBitmap100 << 6) | 0xC800;
       }
 
       else
@@ -6812,9 +6812,9 @@ LABEL_54:
       if ([v68 wifiUlAntennaBitmapOnCellAntBitmap101])
       {
         [WCM_Logging logLevel:3 message:@"apply WiFi UL antenna constraint for Cellular Antenna bitmap 101"];
-        v69 = [v68 wifiUlAntennaBitmapOnCellAntBitmap101];
-        v84 = (v69 << 6) | 0x5800;
-        v70 = (v69 << 6) | 0xD800;
+        wifiUlAntennaBitmapOnCellAntBitmap101 = [v68 wifiUlAntennaBitmapOnCellAntBitmap101];
+        v84 = (wifiUlAntennaBitmapOnCellAntBitmap101 << 6) | 0x5800;
+        v70 = (wifiUlAntennaBitmapOnCellAntBitmap101 << 6) | 0xD800;
       }
 
       else
@@ -6826,9 +6826,9 @@ LABEL_54:
       if ([v68 wifiUlAntennaBitmapOnCellAntBitmap110])
       {
         [WCM_Logging logLevel:3 message:@"apply WiFi UL antenna constraint for Cellular Antenna bitmap 110"];
-        v71 = [v68 wifiUlAntennaBitmapOnCellAntBitmap110];
-        v83 = (v71 << 6) | 0x6800;
-        v72 = (v71 << 6) | 0xE800;
+        wifiUlAntennaBitmapOnCellAntBitmap110 = [v68 wifiUlAntennaBitmapOnCellAntBitmap110];
+        v83 = (wifiUlAntennaBitmapOnCellAntBitmap110 << 6) | 0x6800;
+        v72 = (wifiUlAntennaBitmapOnCellAntBitmap110 << 6) | 0xE800;
       }
 
       else
@@ -6840,9 +6840,9 @@ LABEL_54:
       if ([v68 wifiUlAntennaBitmapOnCellAntBitmap111])
       {
         [WCM_Logging logLevel:3 message:@"apply WiFi UL antenna constraint for Cellular Antenna bitmap 111"];
-        v73 = [v68 wifiUlAntennaBitmapOnCellAntBitmap111];
-        v82 = (v73 << 6) | 0x7800;
-        v95 = (v73 << 6) | 0xF800;
+        wifiUlAntennaBitmapOnCellAntBitmap111 = [v68 wifiUlAntennaBitmapOnCellAntBitmap111];
+        v82 = (wifiUlAntennaBitmapOnCellAntBitmap111 << 6) | 0x7800;
+        v95 = (wifiUlAntennaBitmapOnCellAntBitmap111 << 6) | 0xF800;
       }
 
       else
@@ -6913,10 +6913,10 @@ LABEL_54:
       if ([v68 wifiDlAntennaBitmapOnCellAntBitmap111])
       {
         [WCM_Logging logLevel:3 message:@"apply WiFi DL antenna constraint for Cellular Antenna bitmap 111"];
-        v81 = [v68 wifiDlAntennaBitmapOnCellAntBitmap111];
+        wifiDlAntennaBitmapOnCellAntBitmap111 = [v68 wifiDlAntennaBitmapOnCellAntBitmap111];
         v34 = 0;
-        v82 |= v81 | 0x20;
-        v95 |= v81 | 0x20;
+        v82 |= wifiDlAntennaBitmapOnCellAntBitmap111 | 0x20;
+        v95 |= wifiDlAntennaBitmapOnCellAntBitmap111 | 0x20;
       }
 
       else
@@ -6961,12 +6961,12 @@ LABEL_20:
   if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"AntennaSelectionCoex"])
   {
     [WCM_Logging logLevel:3 message:@"Trying to update antenna selection bitmaps 0x%x 0x%x 0x%x 0x%x", v34, v41, v35, v40];
-    v42 = [(WCM_PolicyManager *)self wifiController];
+    wifiController = [(WCM_PolicyManager *)self wifiController];
     v98[0] = [NSNumber numberWithUnsignedShort:v34];
     v98[1] = [NSNumber numberWithUnsignedShort:v41];
     v98[2] = [NSNumber numberWithUnsignedShort:v35];
     v98[3] = [NSNumber numberWithUnsignedShort:v40];
-    [(WCM_WiFiController *)v42 updateAntennaSelection:[NSArray arrayWithObjects:v98 count:4]];
+    [(WCM_WiFiController *)wifiController updateAntennaSelection:[NSArray arrayWithObjects:v98 count:4]];
   }
 
   else if (([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"AntennaSelectionV2Coex"]|| [(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"AntennaSelectionV1_1Coex"]) && ![(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"WiFiEnhCoexSupport"])
@@ -6983,8 +6983,8 @@ LABEL_20:
       v89 = 0x8000;
     }
 
-    v43 = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiState];
-    if (v43 == 3)
+    wifiState = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] wifiState];
+    if (wifiState == 3)
     {
       v44 = 0;
     }
@@ -6994,7 +6994,7 @@ LABEL_20:
       v44 = v36;
     }
 
-    if (v43 == 3)
+    if (wifiState == 3)
     {
       v45 = 4096;
     }
@@ -7004,7 +7004,7 @@ LABEL_20:
       v45 = v87;
     }
 
-    if (v43 == 3)
+    if (wifiState == 3)
     {
       v46 = 0x2000;
     }
@@ -7014,7 +7014,7 @@ LABEL_20:
       v46 = v85;
     }
 
-    if (v43 == 3)
+    if (wifiState == 3)
     {
       v39 = 12288;
     }
@@ -7024,7 +7024,7 @@ LABEL_20:
       v39 = v39;
     }
 
-    if (v43 == 3)
+    if (wifiState == 3)
     {
       v32 = 0x4000;
     }
@@ -7034,7 +7034,7 @@ LABEL_20:
       v32 = v32;
     }
 
-    if (v43 == 3)
+    if (wifiState == 3)
     {
       v47 = 20480;
     }
@@ -7044,7 +7044,7 @@ LABEL_20:
       v47 = v84;
     }
 
-    if (v43 == 3)
+    if (wifiState == 3)
     {
       v48 = 24576;
     }
@@ -7054,7 +7054,7 @@ LABEL_20:
       v48 = v83;
     }
 
-    if (v43 == 3)
+    if (wifiState == 3)
     {
       v49 = 28672;
     }
@@ -7067,7 +7067,7 @@ LABEL_20:
     v86 = v48;
     v88 = v49;
     [WCM_Logging logLevel:1 message:@"Trying to update antenna selection V2 bitmaps 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x", v44, v45, v46, v39, v32, v47, v48, v49, v89, v38, v37, v92, v93, v91, v90, v95];
-    v50 = [(WCM_PolicyManager *)self wifiController];
+    wifiController2 = [(WCM_PolicyManager *)self wifiController];
     v97[0] = [NSNumber numberWithUnsignedShort:v44];
     v97[1] = [NSNumber numberWithUnsignedShort:v45];
     v97[2] = [NSNumber numberWithUnsignedShort:v46];
@@ -7084,7 +7084,7 @@ LABEL_20:
     v97[13] = [NSNumber numberWithUnsignedShort:v91];
     v97[14] = [NSNumber numberWithUnsignedShort:v90];
     v97[15] = [NSNumber numberWithUnsignedShort:v95];
-    [(WCM_WiFiController *)v50 updateAntennaSelectionV2:[NSArray arrayWithObjects:v97 count:16]];
+    [(WCM_WiFiController *)wifiController2 updateAntennaSelectionV2:[NSArray arrayWithObjects:v97 count:16]];
   }
 
   else
@@ -7098,35 +7098,35 @@ LABEL_20:
   [WCM_Logging logLevel:2 message:@"BTAntennaSelection_ configureBTAntennaSelection: BT power state = %d, ", [(WCM_BTController *)[(WCM_PolicyManager *)self btController] powerState]];
   if (self->_pencilCoexActive)
   {
-    v3 = [(WCM_PolicyManager *)self getBtBlockedAntennaForPencilCoexByPlatform];
+    getBtBlockedAntennaForPencilCoexByPlatform = [(WCM_PolicyManager *)self getBtBlockedAntennaForPencilCoexByPlatform];
     [WCM_Logging logLevel:2 message:@"BTAntennaSelection_ enable BT pencil coex mitigation config"];
-    [(WCM_BTController *)[(WCM_PolicyManager *)self btController] updatePencilCoexAntennaSelectionPolicy:1 param1:v3 param2:v3];
+    [(WCM_BTController *)[(WCM_PolicyManager *)self btController] updatePencilCoexAntennaSelectionPolicy:1 param1:getBtBlockedAntennaForPencilCoexByPlatform param2:getBtBlockedAntennaForPencilCoexByPlatform];
   }
 
   else
   {
     [WCM_Logging logLevel:2 message:@"BTAntennaSelection_ disable BT pencil coex mitigation config"];
     [(WCM_BTController *)[(WCM_PolicyManager *)self btController] updatePencilCoexAntennaSelectionPolicy:0 param1:0 param2:0];
-    v3 = 0;
+    getBtBlockedAntennaForPencilCoexByPlatform = 0;
   }
 
   [WCM_Logging logLevel:2 message:@"BTAntennaSelection_ sending parameters to thread"];
-  v4 = [(WCM_RCU2Controller *)[(WCM_PolicyManager *)self rcu2Controller] threadClient];
+  threadClient = [(WCM_RCU2Controller *)[(WCM_PolicyManager *)self rcu2Controller] threadClient];
 
-  [(WCM_CtrXPCClient *)v4 updateAntennaPreference:v3];
+  [(WCM_CtrXPCClient *)threadClient updateAntennaPreference:getBtBlockedAntennaForPencilCoexByPlatform];
 }
 
 - (void)handleWiFiPowerStateChange
 {
-  v3 = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] powerState];
+  powerState = [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] powerState];
   v4 = "off";
-  if (v3)
+  if (powerState)
   {
     v4 = "on";
   }
 
   [WCM_Logging logLevel:5 message:@"WCM_PolicyManager: handleWiFiPowerStateChange - Updating policy for WiFi power %s", v4];
-  v5 = [(WCM_PolicyManager *)self cellularController];
+  cellularController = [(WCM_PolicyManager *)self cellularController];
   if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"UseWCMAriDriver"])
   {
     [(WCM_PolicyManager *)self setWifi2GChanelBitmapForTimesharing:0];
@@ -7140,7 +7140,7 @@ LABEL_20:
 
   if ([(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] powerState]|| [(WCM_BTController *)[(WCM_PolicyManager *)self btController] powerState])
   {
-    [(WCM_CellularController *)v5 updateWCI2CoexPolicy:[(WCM_PolicyManager *)self cellularWCI2CoexPolicyBitmap]];
+    [(WCM_CellularController *)cellularController updateWCI2CoexPolicy:[(WCM_PolicyManager *)self cellularWCI2CoexPolicyBitmap]];
     [(WCM_PolicyManager *)self sendRCU2UpdateMessage];
   }
 
@@ -7169,13 +7169,13 @@ LABEL_20:
   [(WCM_PolicyManager *)self handleWiFiConfigChange];
 }
 
-- (BOOL)isWiFiChannel:(int)a3 inChannelMap:(id)a4
+- (BOOL)isWiFiChannel:(int)channel inChannelMap:(id)map
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [a4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v6 = [map countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -7187,10 +7187,10 @@ LABEL_20:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(map);
         }
 
-        if ([*(*(&v11 + 1) + 8 * v9) intValue] == a3)
+        if ([*(*(&v11 + 1) + 8 * v9) intValue] == channel)
         {
           LOBYTE(v6) = 1;
           return v6;
@@ -7200,7 +7200,7 @@ LABEL_20:
       }
 
       while (v7 != v9);
-      v6 = [a4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [map countByEnumeratingWithState:&v11 objects:v15 count:16];
       v7 = v6;
       if (v6)
       {
@@ -7222,11 +7222,11 @@ LABEL_20:
     LODWORD(v4) = 0;
     do
     {
-      v5 = [(WCM_PolicyManager *)self platformManager];
+      platformManager = [(WCM_PolicyManager *)self platformManager];
       [(WCM_CellularController *)[(WCM_PolicyManager *)self cellularController] cachedULCenterFreq];
       v7 = v6;
       [(WCM_CellularController *)[(WCM_PolicyManager *)self cellularController] cachedULBandwidth];
-      if ([(WCM_PlatformManager *)v5 isIMD2ForFirstFreq:v7 firstBW:v8 secondFreq:(5 * v4 + 2412) secondBW:20.0 resultantFreq:1575.42 resultantBW:4.092])
+      if ([(WCM_PlatformManager *)platformManager isIMD2ForFirstFreq:v7 firstBW:v8 secondFreq:(5 * v4 + 2412) secondBW:20.0 resultantFreq:1575.42 resultantBW:4.092])
       {
         v4 = (v4 + 1);
         [v3 addObject:{+[NSNumber numberWithInt:](NSNumber, "numberWithInt:", v4)}];
@@ -7253,11 +7253,11 @@ LABEL_20:
     LODWORD(v4) = 0;
     do
     {
-      v5 = [(WCM_PolicyManager *)self platformManager];
+      platformManager = [(WCM_PolicyManager *)self platformManager];
       [(WCM_CellularController *)[(WCM_PolicyManager *)self cellularController] cachedULCenterFreq];
       v7 = v6;
       [(WCM_CellularController *)[(WCM_PolicyManager *)self cellularController] cachedULBandwidth];
-      if ([(WCM_PlatformManager *)v5 is3FoForFreq:v7 bw:v8 resultantFreq:(5 * v4 + 2412) resultantBW:20.0])
+      if ([(WCM_PlatformManager *)platformManager is3FoForFreq:v7 bw:v8 resultantFreq:(5 * v4 + 2412) resultantBW:20.0])
       {
         v4 = (v4 + 1);
         [v3 addObject:{+[NSNumber numberWithInt:](NSNumber, "numberWithInt:", v4)}];
@@ -7278,35 +7278,35 @@ LABEL_20:
 
 - (id)legacyWiFiChannelsToAvoidForIMD3Cell
 {
-  v3 = [(WCM_PolicyManager *)self cellularController];
+  cellularController = [(WCM_PolicyManager *)self cellularController];
   v4 = +[NSMutableArray array];
   if ([(WCM_PolicyManager *)self isCellularOnIMD3CellBand])
   {
-    [(WCM_CellularController *)v3 cachedULCenterFreq];
+    [(WCM_CellularController *)cellularController cachedULCenterFreq];
     v6 = v5;
-    [(WCM_CellularController *)v3 cachedULBandwidth];
+    [(WCM_CellularController *)cellularController cachedULBandwidth];
     v8 = v7;
-    [(WCM_CellularController *)v3 dlCenterFreq];
+    [(WCM_CellularController *)cellularController dlCenterFreq];
     v10 = v9;
-    [(WCM_CellularController *)v3 dlBandwidth];
+    [(WCM_CellularController *)cellularController dlBandwidth];
     v12 = v11;
     [WCM_Logging logLevel:4 message:@"Find Block Listed Channels for IMD3 Cell UlCenterFreq(%lf) UlBandwidth(%lf) DlCenterFreq(%lf) DlBandwidth(%lf)", *&v6, *&v8, *&v10, *&v11];
-    LODWORD(v3) = 0;
+    LODWORD(cellularController) = 0;
     do
     {
-      if ([(WCM_PlatformManager *)[(WCM_PolicyManager *)self platformManager] isIMD3ForFirstFreq:v6 firstBW:v8 secondFreq:(5 * v3 + 2412) secondBW:20.0 resultantFreq:v10 resultantBW:v12])
+      if ([(WCM_PlatformManager *)[(WCM_PolicyManager *)self platformManager] isIMD3ForFirstFreq:v6 firstBW:v8 secondFreq:(5 * cellularController + 2412) secondBW:20.0 resultantFreq:v10 resultantBW:v12])
       {
-        v3 = (v3 + 1);
-        [v4 addObject:{+[NSNumber numberWithInt:](NSNumber, "numberWithInt:", v3)}];
+        cellularController = (cellularController + 1);
+        [v4 addObject:{+[NSNumber numberWithInt:](NSNumber, "numberWithInt:", cellularController)}];
       }
 
       else
       {
-        LODWORD(v3) = v3 + 1;
+        LODWORD(cellularController) = cellularController + 1;
       }
     }
 
-    while (v3 != 13);
+    while (cellularController != 13);
     if (sub_100010258(v4))
     {
       if (v6 >= 2550.0)
@@ -7328,15 +7328,15 @@ LABEL_20:
   return v4;
 }
 
-- (void)configureWCI2BitmapForTimeSharingWifiChannels:(id)a3
+- (void)configureWCI2BitmapForTimeSharingWifiChannels:(id)channels
 {
-  [WCM_Logging logLevel:4 message:@"configureWCI2BitmapForTimeSharingWifiChannels: %@", a3];
-  if (a3 && ![(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"WLAN25ASupport"]&& [(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"WlanConditionId"]&& [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] powerState])
+  [WCM_Logging logLevel:4 message:@"configureWCI2BitmapForTimeSharingWifiChannels: %@", channels];
+  if (channels && ![(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"WLAN25ASupport"]&& [(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"WlanConditionId"]&& [(WCM_WiFiController *)[(WCM_PolicyManager *)self wifiController] powerState])
   {
-    v5 = [NSMutableArray arrayWithArray:a3];
+    v5 = [NSMutableArray arrayWithArray:channels];
     v6 = [(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"WiFiEnhCoexSupport"];
-    v7 = [(WCM_PolicyManager *)self wifiController];
-    v8 = v7;
+    wifiController = [(WCM_PolicyManager *)self wifiController];
+    v8 = wifiController;
     if (v6)
     {
       [(WCM_PolicyManager *)self wifiChannelsToEnableWCI2WiFiEnh];
@@ -7347,25 +7347,25 @@ LABEL_20:
     else
     {
 
-      [(WCM_WiFiController *)v7 updateChannelsToEnableWCI2V2:v5];
+      [(WCM_WiFiController *)wifiController updateChannelsToEnableWCI2V2:v5];
     }
   }
 }
 
 - (void)configureTimeSharingWifiChannels
 {
-  v2 = self;
-  v3 = [(WCM_PolicyManager *)self platformManager];
-  v4 = [(WCM_PolicyManager *)v2 cellularController];
-  v5 = [(WCM_CellularController *)v4 getActiveULCAConfig];
-  v6 = [(WCM_PlatformManager *)v3 wcmCellularTimesharingPolicy];
-  if (!v5)
+  selfCopy = self;
+  platformManager = [(WCM_PolicyManager *)self platformManager];
+  cellularController = [(WCM_PolicyManager *)selfCopy cellularController];
+  getActiveULCAConfig = [(WCM_CellularController *)cellularController getActiveULCAConfig];
+  wcmCellularTimesharingPolicy = [(WCM_PlatformManager *)platformManager wcmCellularTimesharingPolicy];
+  if (!getActiveULCAConfig)
   {
     var1 = 0;
     goto LABEL_13;
   }
 
-  var1 = v5->var1;
+  var1 = getActiveULCAConfig->var1;
   if (!var1)
   {
 LABEL_13:
@@ -7379,7 +7379,7 @@ LABEL_13:
   v10 = 0;
   v11 = 0;
   v12 = 0;
-  p_var4 = &v5->var0[0].var4;
+  p_var4 = &getActiveULCAConfig->var0[0].var4;
   v7 = 0.5;
   do
   {
@@ -7416,7 +7416,7 @@ LABEL_13:
 LABEL_14:
   [WCM_Logging logLevel:4 message:@"Cellular/WiFi TimeSharing: Configure wifi channels for LTE PCell dlFreqLow = %dMHz, dlFreqHigh = %dMHz, ulFreqLow = %dMHz, ulFreqHigh = %dMHz", v7, v9 / 0x3E8uLL, v10 / 0x3E8uLL, v20, var1];
   v21 = objc_alloc_init(NSMutableArray);
-  if (!v6 || ![(NSArray *)v6 count])
+  if (!wcmCellularTimesharingPolicy || ![(NSArray *)wcmCellularTimesharingPolicy count])
   {
     v35 = @"Cellular/WiFi TimeSharing:  No TimeSharing policy, WiFi channel is not configured";
 LABEL_45:
@@ -7424,19 +7424,19 @@ LABEL_45:
     goto LABEL_46;
   }
 
-  if ([(WCM_CellularController *)v4 tddBand])
+  if ([(WCM_CellularController *)cellularController tddBand])
   {
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v22 = [(NSArray *)v6 countByEnumeratingWithState:&v38 objects:v42 count:16];
+    v22 = [(NSArray *)wcmCellularTimesharingPolicy countByEnumeratingWithState:&v38 objects:v42 count:16];
     if (v22)
     {
       v23 = v22;
       v24 = *v39;
-      v36 = v2;
-      obj = v6;
+      v36 = selfCopy;
+      obj = wcmCellularTimesharingPolicy;
       while (2)
       {
         for (i = 0; i != v23; i = i + 1)
@@ -7475,12 +7475,12 @@ LABEL_45:
           }
 
           [WCM_Logging logLevel:4 message:@"Cellular/WiFi TimeSharing:  TimeSharing enable = %d", 1];
-          v2 = v36;
+          selfCopy = v36;
           goto LABEL_41;
         }
 
         v23 = [(NSArray *)obj countByEnumeratingWithState:&v38 objects:v42 count:16];
-        v2 = v36;
+        selfCopy = v36;
         if (v23)
         {
           continue;
@@ -7495,26 +7495,26 @@ LABEL_45:
   [v21 addObject:{+[NSNumber numberWithUnsignedShort:](NSNumber, "numberWithUnsignedShort:", 0)}];
   v34 = 0;
 LABEL_41:
-  if ([(WCM_PolicyManager *)v2 wifi2GChanelBitmapForTimesharing]== v34 || ![(WCM_WiFiController *)[(WCM_PolicyManager *)v2 wifiController] powerState])
+  if ([(WCM_PolicyManager *)selfCopy wifi2GChanelBitmapForTimesharing]== v34 || ![(WCM_WiFiController *)[(WCM_PolicyManager *)selfCopy wifiController] powerState])
   {
     v35 = @"Cellular/WiFi TimeSharing:  No change of WiFi channel config for TimeSharing";
     goto LABEL_45;
   }
 
-  [(WCM_PolicyManager *)v2 setWifi2GChanelBitmapForTimesharing:v34];
+  [(WCM_PolicyManager *)selfCopy setWifi2GChanelBitmapForTimesharing:v34];
   [WCM_Logging logLevel:4 message:@"Cellular/WiFi TimeSharing:  Configure WiFi channel for TimeSharing: %@", v21];
-  [(WCM_WiFiController *)[(WCM_PolicyManager *)v2 wifiController] updateChannelsForTimeSharingMode:v21];
-  [(WCM_PolicyManager *)v2 configureWCI2BitmapForTimeSharingWifiChannels:v21];
+  [(WCM_WiFiController *)[(WCM_PolicyManager *)selfCopy wifiController] updateChannelsForTimeSharingMode:v21];
+  [(WCM_PolicyManager *)selfCopy configureWCI2BitmapForTimeSharingWifiChannels:v21];
 LABEL_46:
 }
 
 - (void)handleMedtronicConnection
 {
   [WCM_Logging logLevel:4 message:@"External : In handleMBTConnection; connection status = %d", [(WCM_ExternalAccessory *)self->_extAccessory eaConnection]];
-  v3 = [(WCM_PolicyManager *)self wifiController];
-  v4 = [(WCM_ExternalAccessory *)self->_extAccessory eaConnection];
+  wifiController = [(WCM_PolicyManager *)self wifiController];
+  eaConnection = [(WCM_ExternalAccessory *)self->_extAccessory eaConnection];
 
-  [(WCM_WiFiController *)v3 updateMedtronicState:v4];
+  [(WCM_WiFiController *)wifiController updateMedtronicState:eaConnection];
 }
 
 - (void)handleCCConnectionUpdate
@@ -7536,23 +7536,23 @@ LABEL_46:
 
 - (void)updateCTSacDriverWifiInfo
 {
-  v3 = [(WCM_PolicyManager *)self wifiController];
-  v4 = [(WCM_WiFiController *)v3 wifiState];
-  v5 = [(WCM_WiFiController *)v3 wifiChannel];
-  v6 = [(WCM_WiFiController *)v3 reportedChannelCenterFreqMHz];
+  wifiController = [(WCM_PolicyManager *)self wifiController];
+  wifiState = [(WCM_WiFiController *)wifiController wifiState];
+  wifiChannel = [(WCM_WiFiController *)wifiController wifiChannel];
+  reportedChannelCenterFreqMHz = [(WCM_WiFiController *)wifiController reportedChannelCenterFreqMHz];
   v7 = objc_alloc_init(NSMutableArray);
   v13 = objc_alloc_init(NSMutableArray);
-  [WCM_Logging logLevel:3 message:@"Sac Driver: updateCTSacDriverWifiInfo Wifi frequency details wifistate = %d channel = %d st.frequency = %d re.Frequency = %d recal.frequency = %d\n", v4, v5, self->_sacWifiFrequency, v6, [(WCM_WiFiController *)v3 channelCenterFreqMHz]];
-  if ([(WCM_PolicyManager *)self sacWifiFrequency]!= v6)
+  [WCM_Logging logLevel:3 message:@"Sac Driver: updateCTSacDriverWifiInfo Wifi frequency details wifistate = %d channel = %d st.frequency = %d re.Frequency = %d recal.frequency = %d\n", wifiState, wifiChannel, self->_sacWifiFrequency, reportedChannelCenterFreqMHz, [(WCM_WiFiController *)wifiController channelCenterFreqMHz]];
+  if ([(WCM_PolicyManager *)self sacWifiFrequency]!= reportedChannelCenterFreqMHz)
   {
     if ([(WCM_PolicyManager *)self sacWifiFrequency])
     {
-      v8 = [(WCM_PolicyManager *)self sacWifiFrequency];
+      sacWifiFrequency = [(WCM_PolicyManager *)self sacWifiFrequency];
       [(WCM_PolicyManager *)self setSacWifiFrequency:0];
-      if (!v6)
+      if (!reportedChannelCenterFreqMHz)
       {
         v9 = 2;
-        [WCM_Logging logLevel:3 message:@"Sac Driver: updateCTSacDriverWifiInfo-2 F.remove %d F.add %d Oper %d\n", v8, 0, 2];
+        [WCM_Logging logLevel:3 message:@"Sac Driver: updateCTSacDriverWifiInfo-2 F.remove %d F.add %d Oper %d\n", sacWifiFrequency, 0, 2];
         goto LABEL_11;
       }
 
@@ -7561,22 +7561,22 @@ LABEL_46:
 
     else
     {
-      if (!v6)
+      if (!reportedChannelCenterFreqMHz)
       {
         [WCM_Logging logLevel:3 message:@"Sac Driver: updateCTSacDriverWifiInfo-2 F.remove %d F.add %d Oper %d\n", 0, 0, 0];
         goto LABEL_12;
       }
 
-      v8 = 0;
+      sacWifiFrequency = 0;
       v9 = 1;
     }
 
-    [v7 addObject:{+[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", v6)}];
+    [v7 addObject:{+[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", reportedChannelCenterFreqMHz)}];
     [v13 addObject:{+[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", 20)}];
-    [(WCM_PolicyManager *)self setSacWifiFrequency:v6];
-    [WCM_Logging logLevel:3 message:@"Sac Driver: updateCTSacDriverWifiInfo-2 F.remove %d F.add %d Oper %d\n", v8, v6, v9];
+    [(WCM_PolicyManager *)self setSacWifiFrequency:reportedChannelCenterFreqMHz];
+    [WCM_Logging logLevel:3 message:@"Sac Driver: updateCTSacDriverWifiInfo-2 F.remove %d F.add %d Oper %d\n", sacWifiFrequency, reportedChannelCenterFreqMHz, v9];
 LABEL_11:
-    [(WCM_PolicyManager *)self updateCTSacDriver:v9 frequencyToAdd:v7 frequencyToAddBw:v13 frequencytoRemove:v8 client:1];
+    [(WCM_PolicyManager *)self updateCTSacDriver:v9 frequencyToAdd:v7 frequencyToAddBw:v13 frequencytoRemove:sacWifiFrequency client:1];
     goto LABEL_12;
   }
 
@@ -7598,23 +7598,23 @@ LABEL_12:
 
 - (void)updateGpsbandsInfoForBBv2
 {
-  v2 = self;
-  v3 = [(WCM_PolicyManager *)self cellularController];
+  selfCopy = self;
+  cellularController = [(WCM_PolicyManager *)self cellularController];
   v4 = 4;
-  [WCM_Logging logLevel:4 message:@"BB20: updateGpsbandsInfoForBBv2: Count =  %lu\n", [(NSMutableArray *)[(WCM_PolicyManager *)v2 gpsBandInfoList] count]];
-  if ([(NSMutableArray *)[(WCM_PolicyManager *)v2 gpsBandInfoList] count])
+  [WCM_Logging logLevel:4 message:@"BB20: updateGpsbandsInfoForBBv2: Count =  %lu\n", [(NSMutableArray *)[(WCM_PolicyManager *)selfCopy gpsBandInfoList] count]];
+  if ([(NSMutableArray *)[(WCM_PolicyManager *)selfCopy gpsBandInfoList] count])
   {
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v5 = [(WCM_PolicyManager *)v2 gpsBandInfoList];
-    v6 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v30 objects:v34 count:16];
+    gpsBandInfoList = [(WCM_PolicyManager *)selfCopy gpsBandInfoList];
+    v6 = [(NSMutableArray *)gpsBandInfoList countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v6)
     {
       v7 = v6;
-      v24 = v2;
-      v25 = v3;
+      v24 = selfCopy;
+      v25 = cellularController;
       v8 = 0;
       v9 = 0;
       v10 = 0;
@@ -7627,7 +7627,7 @@ LABEL_12:
         {
           if (*v31 != v11)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(gpsBandInfoList);
           }
 
           v13 = *(*(&v30 + 1) + 8 * i);
@@ -7732,13 +7732,13 @@ LABEL_24:
           }
         }
 
-        v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v30 objects:v34 count:16];
+        v7 = [(NSMutableArray *)gpsBandInfoList countByEnumeratingWithState:&v30 objects:v34 count:16];
         if (!v7)
         {
           v21 = v9 & 1;
           v22 = v10 & 1;
-          v2 = v24;
-          v3 = v25;
+          selfCopy = v24;
+          cellularController = v25;
           v23 = v26;
           v4 = v27;
           goto LABEL_37;
@@ -7762,11 +7762,11 @@ LABEL_24:
   v23 = 4;
 LABEL_37:
   [WCM_Logging logLevel:1 message:@"updateGpsbandsInfoForBBv2: L1enabled = %d, L5Enabled = %d, l1Level = %llu, l5Level = %llu\n", v21, v22, v23, v4];
-  if ([(NSSet *)[(WCM_PolicyManager *)v2 activeCoexFeatures] containsObject:@"CoexBBUnifiedSensorInfoSupport"])
+  if ([(NSSet *)[(WCM_PolicyManager *)selfCopy activeCoexFeatures] containsObject:@"CoexBBUnifiedSensorInfoSupport"])
   {
-    if ([(NSSet *)[(WCM_PolicyManager *)v2 activeCoexFeatures] containsObject:@"UseWCMAriDriver"])
+    if ([(NSSet *)[(WCM_PolicyManager *)selfCopy activeCoexFeatures] containsObject:@"UseWCMAriDriver"])
     {
-      [(WCM_CellularController *)v3 sendBBCoexSensorMessage:0 band:v8 usecase:v4 & 0xF | (16 * v23)];
+      [(WCM_CellularController *)cellularController sendBBCoexSensorMessage:0 band:v8 usecase:v4 & 0xF | (16 * v23)];
     }
   }
 }
@@ -7786,59 +7786,59 @@ LABEL_37:
   }
 }
 
-- (void)updateLqmState:(int)a3 deviceRRCState:(unsigned __int8)a4 subscriptionSlot:(int64_t)a5
+- (void)updateLqmState:(int)state deviceRRCState:(unsigned __int8)cState subscriptionSlot:(int64_t)slot
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000E2708;
   block[3] = &unk_10023E0D0;
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  cStateCopy = cState;
   block[4] = self;
-  block[5] = a5;
+  block[5] = slot;
   dispatch_async([+[WCM_Server singleton](WCM_Server "singleton")], block);
 }
 
-- (void)wrmCACoexSubmit_BTAFHIssue:(unsigned int)a3 issueType:(unsigned int)a4
+- (void)wrmCACoexSubmit_BTAFHIssue:(unsigned int)issue issueType:(unsigned int)type
 {
   if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"WATCH_COEX_COREANALYTICS_SUPPORT"])
   {
     [WCM_Logging logLevel:2 message:@"wrmCACoexSubmit_BTAFHIssue"];
-    v6 = [NSString stringWithUTF8String:sub_10000BFB8(a3)];
-    v7 = [NSString stringWithUTF8String:sub_10000BF80(a4)];
+    v6 = [NSString stringWithUTF8String:sub_10000BFB8(issue)];
+    v7 = [NSString stringWithUTF8String:sub_10000BF80(type)];
     v8 = +[WCM_CoreAnalyticsService singleton];
     if (v8)
     {
-      v9 = [v8 mWatchCoexStats];
+      mWatchCoexStats = [v8 mWatchCoexStats];
 
-      [v9 updateCABTAFHIssue:v6 issueType:v7];
+      [mWatchCoexStats updateCABTAFHIssue:v6 issueType:v7];
     }
   }
 }
 
-- (void)wrmCACoexSubmit_BTAFHMap:(id)a3
+- (void)wrmCACoexSubmit_BTAFHMap:(id)map
 {
   if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"WATCH_COEX_COREANALYTICS_SUPPORT"])
   {
     [WCM_Logging logLevel:2 message:@"wrmCACoexSubmit_BTAFHMap"];
-    if (a3)
+    if (map)
     {
       v4 = +[WCM_CoreAnalyticsService singleton];
       if (v4)
       {
-        v5 = [v4 mWatchCoexStats];
+        mWatchCoexStats = [v4 mWatchCoexStats];
 
-        [v5 updateCABTPreferredMap:a3];
+        [mWatchCoexStats updateCABTPreferredMap:map];
       }
     }
   }
 }
 
-- (void)updateAntselPolicyStatsArray:(id)a3
+- (void)updateAntselPolicyStatsArray:(id)array
 {
   obj = [(WCM_PolicyManager *)self lockObjectWifiAntselPolicyStats];
   objc_sync_enter(obj);
-  v15 = self;
+  selfCopy = self;
   v5 = [NSArray arrayWithArray:[(WCM_PolicyManager *)self wifiAntselPolicyStatsArray]];
   v18 = 0u;
   v19 = 0u;
@@ -7859,16 +7859,16 @@ LABEL_37:
 
         v9 = *(*(&v16 + 1) + 8 * i);
         v10 = [objc_msgSend(v9 objectForKeyedSubscript:{@"IsCoexBand", obj), "BOOLValue"}];
-        if (v10 == [objc_msgSend(a3 objectForKeyedSubscript:{@"IsCoexBand", "BOOLValue"}])
+        if (v10 == [objc_msgSend(array objectForKeyedSubscript:{@"IsCoexBand", "BOOLValue"}])
         {
           v11 = [objc_msgSend(v9 objectForKeyedSubscript:{@"HasAntConstraint", "BOOLValue"}];
-          if (v11 == [objc_msgSend(a3 objectForKeyedSubscript:{@"HasAntConstraint", "BOOLValue"}] && objc_msgSend(objc_msgSend(v9, "objectForKeyedSubscript:", @"IssueBand"), "isEqualToString:", objc_msgSend(a3, "objectForKeyedSubscript:", @"IssueBand")) && objc_msgSend(objc_msgSend(v9, "objectForKeyedSubscript:", @"IssueType"), "isEqualToString:", objc_msgSend(a3, "objectForKeyedSubscript:", @"IssueType")))
+          if (v11 == [objc_msgSend(array objectForKeyedSubscript:{@"HasAntConstraint", "BOOLValue"}] && objc_msgSend(objc_msgSend(v9, "objectForKeyedSubscript:", @"IssueBand"), "isEqualToString:", objc_msgSend(array, "objectForKeyedSubscript:", @"IssueBand")) && objc_msgSend(objc_msgSend(v9, "objectForKeyedSubscript:", @"IssueType"), "isEqualToString:", objc_msgSend(array, "objectForKeyedSubscript:", @"IssueType")))
           {
             v12 = [objc_msgSend(v9 objectForKeyedSubscript:{@"count", "integerValue"}];
             v13 = [NSMutableDictionary dictionaryWithDictionary:v9];
             [(NSMutableDictionary *)v13 setObject:[NSNumber forKeyedSubscript:"numberWithInteger:" numberWithInteger:?], @"count"];
-            [(NSMutableArray *)[(WCM_PolicyManager *)v15 wifiAntselPolicyStatsArray] removeObject:v9];
-            [(NSMutableArray *)[(WCM_PolicyManager *)v15 wifiAntselPolicyStatsArray] addObject:v13];
+            [(NSMutableArray *)[(WCM_PolicyManager *)selfCopy wifiAntselPolicyStatsArray] removeObject:v9];
+            [(NSMutableArray *)[(WCM_PolicyManager *)selfCopy wifiAntselPolicyStatsArray] addObject:v13];
             goto LABEL_14;
           }
         }
@@ -7884,15 +7884,15 @@ LABEL_37:
     }
   }
 
-  [(NSMutableArray *)[(WCM_PolicyManager *)v15 wifiAntselPolicyStatsArray] addObject:a3];
+  [(NSMutableArray *)[(WCM_PolicyManager *)selfCopy wifiAntselPolicyStatsArray] addObject:array];
 LABEL_14:
   objc_sync_exit(obj);
 }
 
 - (void)submitWifiAntselPolicyStats
 {
-  v7 = [(WCM_PolicyManager *)self lockObjectWifiAntselPolicyStats];
-  objc_sync_enter(v7);
+  lockObjectWifiAntselPolicyStats = [(WCM_PolicyManager *)self lockObjectWifiAntselPolicyStats];
+  objc_sync_enter(lockObjectWifiAntselPolicyStats);
   [WCM_Logging logLevel:2 message:@"submitWifiAntselPolicyStats"];
   v3 = [NSArray arrayWithArray:[(WCM_PolicyManager *)self wifiAntselPolicyStatsArray]];
   v11 = 0u;
@@ -7924,39 +7924,39 @@ LABEL_14:
   }
 
   [(NSMutableArray *)[(WCM_PolicyManager *)self wifiAntselPolicyStatsArray] removeAllObjects];
-  objc_sync_exit(v7);
+  objc_sync_exit(lockObjectWifiAntselPolicyStats);
 }
 
-- (void)handleBTCoexWiFiStateEvent:(int)a3 wifiChannel:(unsigned int)a4
+- (void)handleBTCoexWiFiStateEvent:(int)event wifiChannel:(unsigned int)channel
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000E3608;
   block[3] = &unk_10023DD00;
-  v5 = a3;
-  v6 = a4;
+  eventCopy = event;
+  channelCopy = channel;
   dispatch_async([+[WCM_Server singleton](WCM_Server "singleton")], block);
 }
 
-- (void)handleLow5GRate:(BOOL)a3 forceReset:(BOOL)a4
+- (void)handleLow5GRate:(BOOL)rate forceReset:(BOOL)reset
 {
-  v4 = a4;
-  v5 = a3;
+  resetCopy = reset;
+  rateCopy = rate;
   if (![objc_msgSend(+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")] || self->_forceDisableLow5GRate)
   {
     return;
   }
 
-  if (v4)
+  if (resetCopy)
   {
     byte_1002B81B8 = 0;
-    v7 = [(WCM_PolicyManager *)self btController];
+    btController = [(WCM_PolicyManager *)self btController];
 
-    [(WCM_BTController *)v7 updateLowWiFi5GRates:0];
+    [(WCM_BTController *)btController updateLowWiFi5GRates:0];
     return;
   }
 
-  if (v5)
+  if (rateCopy)
   {
     [WCM_Logging logLevel:2 message:@"PolicyManager: WiFi 5G rates dropped, moved any AoS to 2G"];
     v8 = 1;
@@ -8002,37 +8002,37 @@ LABEL_15:
   }
 }
 
-- (void)handleBTCoexConnectedDevicesEvent_numA2DP:(unint64_t)a3 numLLA:(unint64_t)a4 numHID:(unint64_t)a5 numSCO:(unint64_t)a6 numeSCO:(unint64_t)a7 numLE:(unint64_t)a8 numLEA:(unint64_t)a9
+- (void)handleBTCoexConnectedDevicesEvent_numA2DP:(unint64_t)p numLLA:(unint64_t)a numHID:(unint64_t)d numSCO:(unint64_t)o numeSCO:(unint64_t)cO numLE:(unint64_t)e numLEA:(unint64_t)eA
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000E3938;
   block[3] = &unk_100241A88;
-  block[4] = a3;
-  block[5] = a4;
-  block[6] = a5;
-  block[7] = a6;
-  block[8] = a7;
-  block[9] = a8;
-  block[10] = a9;
+  block[4] = p;
+  block[5] = a;
+  block[6] = d;
+  block[7] = o;
+  block[8] = cO;
+  block[9] = e;
+  block[10] = eA;
   dispatch_async([+[WCM_Server singleton](WCM_Server "singleton")], block);
 }
 
-- (void)handleBTCoexStatsEvent_tddCnt:(unsigned int)a3 hybridCnt:(unsigned int)a4 btDurMs:(unsigned int)a5 totDurMs:(unsigned int)a6 parallelCnt:(unsigned int)a7 btDurAirMs:(unsigned int)a8 wlrssiCoex:(char)a9 btrssiCoex:(char)a10
+- (void)handleBTCoexStatsEvent_tddCnt:(unsigned int)cnt hybridCnt:(unsigned int)hybridCnt btDurMs:(unsigned int)ms totDurMs:(unsigned int)durMs parallelCnt:(unsigned int)parallelCnt btDurAirMs:(unsigned int)airMs wlrssiCoex:(char)coex btrssiCoex:(char)self0
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000E3A88;
   block[3] = &unk_100241AB0;
   block[4] = self;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
-  v17 = a9;
-  v18 = a10;
+  cntCopy = cnt;
+  hybridCntCopy = hybridCnt;
+  msCopy = ms;
+  durMsCopy = durMs;
+  parallelCntCopy = parallelCnt;
+  airMsCopy = airMs;
+  coexCopy = coex;
+  btrssiCoexCopy = btrssiCoex;
   dispatch_async([+[WCM_Server singleton](WCM_Server "singleton")], block);
 }
 
@@ -8075,9 +8075,9 @@ LABEL_15:
 
   if ([(WCM_IOKitWrapper *)self->_iokitWrapper isBackSuperWideCameraSupported])
   {
-    v4 = [(WCM_PolicyManager *)self cellularController];
+    cellularController = [(WCM_PolicyManager *)self cellularController];
 
-    [(WCM_CellularController *)v4 sendBBCameraState:43 state:(cameraState >> 9) & 1];
+    [(WCM_CellularController *)cellularController sendBBCameraState:43 state:(cameraState >> 9) & 1];
   }
 }
 
@@ -8107,7 +8107,7 @@ LABEL_15:
   [v2 stopHomeKitTimer];
 }
 
-- (void)sendNRFrequencyBandUpdateForMic:(double)a3 dlHighFreq:(double)a4 ulLowFreq:(double)a5 ulHighFreq:(double)a6
+- (void)sendNRFrequencyBandUpdateForMic:(double)mic dlHighFreq:(double)freq ulLowFreq:(double)lowFreq ulHighFreq:(double)highFreq
 {
   if ([objc_msgSend(+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")])
   {
@@ -8115,27 +8115,27 @@ LABEL_15:
     v23[1] = 3221225472;
     v24 = sub_1000E4150;
     v25 = &unk_100241AD0;
-    v26 = a3;
-    v27 = a4;
-    v28 = a5;
-    v29 = a6;
+    micCopy = mic;
+    freqCopy = freq;
+    lowFreqCopy = lowFreq;
+    highFreqCopy = highFreq;
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v17 = sub_1000E41B4;
     v18 = &unk_100241AD0;
-    v19 = a3;
-    v20 = a4;
-    v21 = a5;
-    v22 = a6;
+    micCopy2 = mic;
+    freqCopy2 = freq;
+    lowFreqCopy2 = lowFreq;
+    highFreqCopy2 = highFreq;
     v30[0] = @"kWRMNR41FreuquencyUpdate";
     v11 = 2496.0;
-    if (a3 < 2496.0 || a4 > 2690.0)
+    if (mic < 2496.0 || freq > 2690.0)
     {
       v11 = 2496.0;
-      if (a5 >= 2496.0)
+      if (lowFreq >= 2496.0)
       {
         v11 = 2690.0;
-        v13 = a6 <= 2690.0;
+        v13 = highFreq <= 2690.0;
       }
 
       else
@@ -8180,14 +8180,14 @@ LABEL_15:
   }
 }
 
-- (void)sendULFrequencyUpdates:(int64_t)a3 ulCenterFreq:(double)a4 ulBandwidth:(double)a5
+- (void)sendULFrequencyUpdates:(int64_t)updates ulCenterFreq:(double)freq ulBandwidth:(double)bandwidth
 {
   v10[0] = @"BandInfoType";
-  v11[0] = [NSNumber numberWithLongLong:a3];
+  v11[0] = [NSNumber numberWithLongLong:updates];
   v10[1] = @"ULCenterFrequency";
-  v11[1] = [NSNumber numberWithDouble:a4];
+  v11[1] = [NSNumber numberWithDouble:freq];
   v10[2] = @"ULBandwidth";
-  v11[2] = [NSNumber numberWithDouble:a5];
+  v11[2] = [NSNumber numberWithDouble:bandwidth];
   v8 = [NSDictionary dictionaryWithObjects:v11 forKeys:v10 count:3];
   if (v8)
   {
@@ -8205,10 +8205,10 @@ LABEL_15:
 {
   if ([(NSSet *)[(WCM_PolicyManager *)self activeCoexFeatures] containsObject:@"COEX_AWARE_CELL_SAR_BUDGET"]&& [(WCM_PolicyManager *)self wcmRadioStateIndicator])
   {
-    v3 = [(WCM_PolicyManager *)self wcmRadioStateIndicator];
-    v4 = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] leADVePAState];
+    wcmRadioStateIndicator = [(WCM_PolicyManager *)self wcmRadioStateIndicator];
+    leADVePAState = [(WCM_BTController *)[(WCM_PolicyManager *)self btController] leADVePAState];
 
-    [(WCM_RadioStateIndicator *)v3 updateBTLeADVePAStateChange:v4];
+    [(WCM_RadioStateIndicator *)wcmRadioStateIndicator updateBTLeADVePAStateChange:leADVePAState];
   }
 }
 

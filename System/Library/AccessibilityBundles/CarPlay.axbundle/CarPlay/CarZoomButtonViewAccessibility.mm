@@ -1,17 +1,17 @@
 @interface CarZoomButtonViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (CarZoomButtonViewAccessibility)initWithFrame:(CGRect)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (CarZoomButtonViewAccessibility)initWithFrame:(CGRect)frame;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation CarZoomButtonViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CarZoomButtonView" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
-  [v3 validateClass:@"CarZoomButtonView" hasInstanceVariable:@"_zoomInButton" withType:"CarFocusableImageButton"];
-  [v3 validateClass:@"CarZoomButtonView" hasInstanceVariable:@"_zoomOutButton" withType:"CarFocusableImageButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CarZoomButtonView" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  [validationsCopy validateClass:@"CarZoomButtonView" hasInstanceVariable:@"_zoomInButton" withType:"CarFocusableImageButton"];
+  [validationsCopy validateClass:@"CarZoomButtonView" hasInstanceVariable:@"_zoomOutButton" withType:"CarFocusableImageButton"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -26,11 +26,11 @@
   [v4 setAccessibilityIdentifier:@"CarZoomButton-In"];
 }
 
-- (CarZoomButtonViewAccessibility)initWithFrame:(CGRect)a3
+- (CarZoomButtonViewAccessibility)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = CarZoomButtonViewAccessibility;
-  v3 = [(CarZoomButtonViewAccessibility *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CarZoomButtonViewAccessibility *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(CarZoomButtonViewAccessibility *)v3 _accessibilityLoadAccessibilityInformation];
 
   return v3;

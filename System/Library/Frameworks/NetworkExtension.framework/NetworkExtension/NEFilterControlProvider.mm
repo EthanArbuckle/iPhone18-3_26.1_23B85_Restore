@@ -13,12 +13,12 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BA83C000, v3, OS_LOG_TYPE_INFO, "%@: Notify rules changed", &v6, 0xCu);
   }
 
-  v4 = [(NEProvider *)self context];
-  [v4 notifyRulesChanged];
+  context = [(NEProvider *)self context];
+  [context notifyRulesChanged];
 
   v5 = *MEMORY[0x1E69E9840];
 }
@@ -32,7 +32,7 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v10 = 138412546;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = v6;
     _os_log_impl(&dword_1BA83C000, v8, OS_LOG_TYPE_INFO, "%@: Handle remediation for flow: %@", &v10, 0x16u);
@@ -51,7 +51,7 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v10 = 138412546;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = v6;
     _os_log_impl(&dword_1BA83C000, v8, OS_LOG_TYPE_INFO, "%@: Handle new flow: %@", &v10, 0x16u);

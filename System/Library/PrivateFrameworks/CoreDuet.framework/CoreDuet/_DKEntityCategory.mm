@@ -1,13 +1,13 @@
 @interface _DKEntityCategory
-+ (id)value:(int64_t)a3;
++ (id)value:(int64_t)value;
 @end
 
 @implementation _DKEntityCategory
 
-+ (id)value:(int64_t)a3
++ (id)value:(int64_t)value
 {
-  v4 = [a1 type];
-  v5 = [_DKCategory categoryWithInteger:a3 type:v4];
+  type = [self type];
+  v5 = [_DKCategory categoryWithInteger:value type:type];
 
   return v5;
 }

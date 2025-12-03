@@ -1,66 +1,66 @@
 @interface VNClassRegistrar
-+ (BOOL)getClassCode:(unsigned int *)a3 forClass:(Class)a4 error:(id *)a5;
-+ (BOOL)getClassCode:(unsigned int *)a3 forClassName:(id)a4 error:(id *)a5;
-+ (BOOL)observationBoundsAreNormalizedToROIForRequestClassCode:(unsigned int)a3 revision:(unint64_t)a4;
-+ (BOOL)validateRequestClassName:(id)a3 error:(id *)a4;
-+ (Class)classForClassCode:(unsigned int)a3 error:(id *)a4;
-+ (id)classNameForClassCode:(unsigned int)a3 error:(id *)a4;
-+ (unsigned)entryTypeForClassCode:(unsigned int)a3;
-+ (unsigned)entryTypeForClassName:(id)a3;
-+ (void)enumerateEntriesUsingBlock:(id)a3;
++ (BOOL)getClassCode:(unsigned int *)code forClass:(Class)class error:(id *)error;
++ (BOOL)getClassCode:(unsigned int *)code forClassName:(id)name error:(id *)error;
++ (BOOL)observationBoundsAreNormalizedToROIForRequestClassCode:(unsigned int)code revision:(unint64_t)revision;
++ (BOOL)validateRequestClassName:(id)name error:(id *)error;
++ (Class)classForClassCode:(unsigned int)code error:(id *)error;
++ (id)classNameForClassCode:(unsigned int)code error:(id *)error;
++ (unsigned)entryTypeForClassCode:(unsigned int)code;
++ (unsigned)entryTypeForClassName:(id)name;
++ (void)enumerateEntriesUsingBlock:(id)block;
 @end
 
 @implementation VNClassRegistrar
 
-+ (BOOL)validateRequestClassName:(id)a3 error:(id *)a4
++ (BOOL)validateRequestClassName:(id)name error:(id *)error
 {
-  v6 = a3;
+  nameCopy = name;
   v9 = 0;
-  if (![a1 getClassCode:&v9 forClassName:v6 error:a4])
+  if (![self getClassCode:&v9 forClassName:nameCopy error:error])
   {
     goto LABEL_12;
   }
 
-  if ((![v6 hasPrefix:@"VN"] || (objc_msgSend(v6, "hasSuffix:", @"Request") & 1) == 0) && (objc_msgSend(v6, "isEqualToString:", @"VNVYvzEtX1JlUdu8xx5qhDI") & 1) == 0 && (objc_msgSend(v6, "isEqualToString:", @"VN6kBnCOr2mZlSV6yV1dLwB") & 1) == 0 && (objc_msgSend(v6, "isEqualToString:", @"VN5kJNH3eYuyaLxNpZr5Z7zi") & 1) == 0 && (objc_msgSend(v6, "isEqualToString:", @"VN6Mb1ME89lyW3HpahkEygIG") & 1) == 0 && (objc_msgSend(v6, "isEqualToString:", @"VN1JC7R3k4455fKQz0dY1VhQ") & 1) == 0)
+  if ((![nameCopy hasPrefix:@"VN"] || (objc_msgSend(nameCopy, "hasSuffix:", @"Request") & 1) == 0) && (objc_msgSend(nameCopy, "isEqualToString:", @"VNVYvzEtX1JlUdu8xx5qhDI") & 1) == 0 && (objc_msgSend(nameCopy, "isEqualToString:", @"VN6kBnCOr2mZlSV6yV1dLwB") & 1) == 0 && (objc_msgSend(nameCopy, "isEqualToString:", @"VN5kJNH3eYuyaLxNpZr5Z7zi") & 1) == 0 && (objc_msgSend(nameCopy, "isEqualToString:", @"VN6Mb1ME89lyW3HpahkEygIG") & 1) == 0 && (objc_msgSend(nameCopy, "isEqualToString:", @"VN1JC7R3k4455fKQz0dY1VhQ") & 1) == 0)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_13;
     }
 
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is not a VNRequest subclass", v6];
-    *a4 = [VNError errorForInvalidArgumentWithLocalizedDescription:v7];
+    nameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is not a VNRequest subclass", nameCopy];
+    *error = [VNError errorForInvalidArgumentWithLocalizedDescription:nameCopy];
 
 LABEL_12:
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_13;
   }
 
-  LOBYTE(a4) = 1;
+  LOBYTE(error) = 1;
 LABEL_13:
 
-  return a4;
+  return error;
 }
 
-+ (BOOL)getClassCode:(unsigned int *)a3 forClassName:(id)a4 error:(id *)a5
++ (BOOL)getClassCode:(unsigned int *)code forClassName:(id)name error:(id *)error
 {
-  v7 = a4;
+  nameCopy = name;
   if (getClassCode_forClassName_error__onceToken != -1)
   {
     dispatch_once(&getClassCode_forClassName_error__onceToken, &__block_literal_global_41);
   }
 
-  v8 = [getClassCode_forClassName_error__ourClassCodeForNameDictionary objectForKeyedSubscript:v7];
+  v8 = [getClassCode_forClassName_error__ourClassCodeForNameDictionary objectForKeyedSubscript:nameCopy];
   v9 = v8;
   if (v8)
   {
-    *a3 = [v8 unsignedIntValue];
+    *code = [v8 unsignedIntValue];
   }
 
-  else if (a5)
+  else if (error)
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ does not have a registry entry", v7];
-    *a5 = [VNError errorForDataUnavailableWithLocalizedDescription:v10];
+    nameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ does not have a registry entry", nameCopy];
+    *error = [VNError errorForDataUnavailableWithLocalizedDescription:nameCopy];
   }
 
   return v9 != 0;
@@ -90,17 +90,17 @@ void __52__VNClassRegistrar_getClassCode_forClassName_error___block_invoke()
   objc_autoreleasePoolPop(v0);
 }
 
-+ (BOOL)getClassCode:(unsigned int *)a3 forClass:(Class)a4 error:(id *)a5
++ (BOOL)getClassCode:(unsigned int *)code forClass:(Class)class error:(id *)error
 {
-  v8 = NSStringFromClass(a4);
-  LOBYTE(a5) = [a1 getClassCode:a3 forClassName:v8 error:a5];
+  v8 = NSStringFromClass(class);
+  LOBYTE(error) = [self getClassCode:code forClassName:v8 error:error];
 
-  return a5;
+  return error;
 }
 
-+ (id)classNameForClassCode:(unsigned int)a3 error:(id *)a4
++ (id)classNameForClassCode:(unsigned int)code error:(id *)error
 {
-  v5 = *&a3;
+  v5 = *&code;
   if (classNameForClassCode_error__onceToken != -1)
   {
     dispatch_once(&classNameForClassCode_error__onceToken, &__block_literal_global_34);
@@ -114,10 +114,10 @@ void __52__VNClassRegistrar_getClassCode_forClassName_error___block_invoke()
     v9 = v7;
   }
 
-  else if (a4)
+  else if (error)
   {
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is not a registered class code", VisionCoreFourCharCodeToString()];
-    *a4 = [VNError errorForDataUnavailableWithLocalizedDescription:v10];
+    *error = [VNError errorForDataUnavailableWithLocalizedDescription:v10];
   }
 
   return v8;
@@ -149,18 +149,18 @@ void __48__VNClassRegistrar_classNameForClassCode_error___block_invoke()
   objc_autoreleasePoolPop(v0);
 }
 
-+ (Class)classForClassCode:(unsigned int)a3 error:(id *)a4
++ (Class)classForClassCode:(unsigned int)code error:(id *)error
 {
-  v5 = [a1 classNameForClassCode:*&a3 error:?];
+  v5 = [self classNameForClassCode:*&code error:?];
   v6 = v5;
   if (v5)
   {
     v7 = NSClassFromString(v5);
     v8 = v7;
-    if (a4 && !v7)
+    if (error && !v7)
     {
       v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is no longer supported by Vision", v6];
-      *a4 = [VNError errorForDataUnavailableWithLocalizedDescription:v9];
+      *error = [VNError errorForDataUnavailableWithLocalizedDescription:v9];
     }
 
     v10 = v8;
@@ -174,7 +174,7 @@ void __48__VNClassRegistrar_classNameForClassCode_error___block_invoke()
   return v10;
 }
 
-+ (unsigned)entryTypeForClassCode:(unsigned int)a3
++ (unsigned)entryTypeForClassCode:(unsigned int)code
 {
   objc_opt_self();
   if (_entryForClassCode__onceToken != -1)
@@ -183,7 +183,7 @@ void __48__VNClassRegistrar_classNameForClassCode_error___block_invoke()
   }
 
   value = 0;
-  if (!NSMapMember(_entryForClassCode__ourClassCodeToRegistryEntryTable, a3, 0, &value) || value == 0)
+  if (!NSMapMember(_entryForClassCode__ourClassCodeToRegistryEntryTable, code, 0, &value) || value == 0)
   {
     return 0;
   }
@@ -215,9 +215,9 @@ void __39__VNClassRegistrar__entryForClassCode___block_invoke()
   while (v0);
 }
 
-+ (unsigned)entryTypeForClassName:(id)a3
++ (unsigned)entryTypeForClassName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   objc_opt_self();
   if (_entryForClassName__onceToken != -1)
   {
@@ -226,9 +226,9 @@ void __39__VNClassRegistrar__entryForClassCode___block_invoke()
 
   value = 0;
   v4 = _entryForClassName__ourClassNameToRegistryEntryTable;
-  v5 = [v3 UTF8String];
+  uTF8String = [nameCopy UTF8String];
 
-  v6 = NSMapMember(v4, v5, 0, &value);
+  v6 = NSMapMember(v4, uTF8String, 0, &value);
   result = 0;
   if (v6)
   {
@@ -259,9 +259,9 @@ void __39__VNClassRegistrar__entryForClassName___block_invoke()
   while (v0);
 }
 
-+ (void)enumerateEntriesUsingBlock:(id)a3
++ (void)enumerateEntriesUsingBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = objc_autoreleasePoolPush();
   v11 = 0;
   v5 = 183;
@@ -272,7 +272,7 @@ void __39__VNClassRegistrar__entryForClassName___block_invoke()
     v8 = *(v6 + 8);
     v9 = *(v6 - 2);
     v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:*v6];
-    v3[2](v3, v8, v9, v10, &v11);
+    blockCopy[2](blockCopy, v8, v9, v10, &v11);
 
     if (v11)
     {
@@ -287,24 +287,24 @@ void __39__VNClassRegistrar__entryForClassName___block_invoke()
   objc_autoreleasePoolPop(v4);
 }
 
-+ (BOOL)observationBoundsAreNormalizedToROIForRequestClassCode:(unsigned int)a3 revision:(unint64_t)a4
++ (BOOL)observationBoundsAreNormalizedToROIForRequestClassCode:(unsigned int)code revision:(unint64_t)revision
 {
   result = 0;
-  if (a3 > 1146386547)
+  if (code > 1146386547)
   {
-    if (a3 <= 1196384850)
+    if (code <= 1196384850)
     {
-      if (a3 == 1146386548)
+      if (code == 1146386548)
       {
         return result;
       }
 
-      if (a3 == 1195471955)
+      if (code == 1195471955)
       {
         result = 0;
         v6 = -61441;
 LABEL_22:
-        if (a4 + (v6 & 0xFFFFFFFF0000FFFFLL | 0x21350000) >= 2 && a4 != 1)
+        if (revision + (v6 & 0xFFFFFFFF0000FFFFLL | 0x21350000) >= 2 && revision != 1)
         {
           return 1;
         }
@@ -317,9 +317,9 @@ LABEL_22:
 
     else
     {
-      if (a3 <= 1752327526)
+      if (code <= 1752327526)
       {
-        if (a3 != 1196384851)
+        if (code != 1196384851)
         {
           v5 = 1380019817;
           goto LABEL_18;
@@ -330,7 +330,7 @@ LABEL_22:
         goto LABEL_22;
       }
 
-      if (a3 == 1752327527)
+      if (code == 1752327527)
       {
         return result;
       }
@@ -339,7 +339,7 @@ LABEL_22:
     }
 
 LABEL_18:
-    if (a3 == v5)
+    if (code == v5)
     {
       return result;
     }
@@ -347,14 +347,14 @@ LABEL_18:
     return 1;
   }
 
-  if (a3 <= 1145463138)
+  if (code <= 1145463138)
   {
-    if (a3 == 1145201010)
+    if (code == 1145201010)
     {
-      return a4 != 1;
+      return revision != 1;
     }
 
-    if (a3 == 1145455441)
+    if (code == 1145455441)
     {
       return result;
     }
@@ -363,7 +363,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (a3 != 1145463139 && a3 != 1145599314)
+  if (code != 1145463139 && code != 1145599314)
   {
     v5 = 1146250595;
     goto LABEL_18;

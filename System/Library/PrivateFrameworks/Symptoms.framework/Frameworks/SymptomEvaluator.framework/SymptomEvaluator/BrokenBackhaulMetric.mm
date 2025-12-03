@@ -1,116 +1,116 @@
 @interface BrokenBackhaulMetric
 - (id)eventPayload;
-- (void)_populateNetworkPropertiesOnCellRelay:(id)a3 isIngress:(BOOL)a4;
-- (void)_populateNetworkPropertiesOnWiFiRelay:(id)a3 isIngress:(BOOL)a4;
-- (void)_populateWifiPropertiesToCAPayload:(id)a3 isIngress:(BOOL)a4;
+- (void)_populateNetworkPropertiesOnCellRelay:(id)relay isIngress:(BOOL)ingress;
+- (void)_populateNetworkPropertiesOnWiFiRelay:(id)relay isIngress:(BOOL)ingress;
+- (void)_populateWifiPropertiesToCAPayload:(id)payload isIngress:(BOOL)ingress;
 @end
 
 @implementation BrokenBackhaulMetric
 
-- (void)_populateNetworkPropertiesOnCellRelay:(id)a3 isIngress:(BOOL)a4
+- (void)_populateNetworkPropertiesOnCellRelay:(id)relay isIngress:(BOOL)ingress
 {
   v5 = 32;
-  if (a4)
+  if (ingress)
   {
     v5 = 24;
   }
 
   v8 = *(&self->super.isa + v5);
-  v6 = a3;
+  relayCopy = relay;
   [v8 removeAllObjects];
-  v7 = [v6 active];
+  active = [relayCopy active];
 
-  if (v7)
+  if (active)
   {
     [v8 addObject:&unk_2847EFBD8];
   }
 }
 
-- (void)_populateNetworkPropertiesOnWiFiRelay:(id)a3 isIngress:(BOOL)a4
+- (void)_populateNetworkPropertiesOnWiFiRelay:(id)relay isIngress:(BOOL)ingress
 {
-  v4 = a4;
-  v10 = a3;
+  ingressCopy = ingress;
+  relayCopy = relay;
   v6 = 16;
-  if (v4)
+  if (ingressCopy)
   {
     v6 = 8;
   }
 
   v7 = *(&self->super.isa + v6);
   [v7 removeAllObjects];
-  if ([v10 active])
+  if ([relayCopy active])
   {
     [v7 addObject:&unk_2847EFBD8];
   }
 
-  if ([v10 primary])
+  if ([relayCopy primary])
   {
     [v7 addObject:&unk_2847EFBF0];
   }
 
-  if ([v10 tcpProgressHintsScore])
+  if ([relayCopy tcpProgressHintsScore])
   {
     [v7 addObject:&unk_2847EFC08];
-    v8 = [v10 tcpProgressHintsScore];
+    tcpProgressHintsScore = [relayCopy tcpProgressHintsScore];
     v9 = 44;
-    if (v4)
+    if (ingressCopy)
     {
       v9 = 40;
     }
 
-    *(&self->super.isa + v9) = v8;
+    *(&self->super.isa + v9) = tcpProgressHintsScore;
   }
 
-  if ([v10 rxSignalFullBars])
+  if ([relayCopy rxSignalFullBars])
   {
     [v7 addObject:&unk_2847EFC20];
   }
 
-  if ([v10 rxSignalThresholded])
+  if ([relayCopy rxSignalThresholded])
   {
     [v7 addObject:&unk_2847EFC38];
   }
 
-  if ([v10 dnsOut])
+  if ([relayCopy dnsOut])
   {
     [v7 addObject:&unk_2847EFC50];
   }
 
-  if ([v10 internetDnsOut])
+  if ([relayCopy internetDnsOut])
   {
     [v7 addObject:&unk_2847EFC68];
   }
 
-  if ([v10 apsdFailure])
+  if ([relayCopy apsdFailure])
   {
     [v7 addObject:&unk_2847EFC80];
   }
 
-  if ([v10 stuckDefRoute])
+  if ([relayCopy stuckDefRoute])
   {
     [v7 addObject:&unk_2847EFC98];
   }
 
-  if ([v10 appleServicesConnectionFriction])
+  if ([relayCopy appleServicesConnectionFriction])
   {
     [v7 addObject:&unk_2847EFCB0];
   }
 }
 
-- (void)_populateWifiPropertiesToCAPayload:(id)a3 isIngress:(BOOL)a4
+- (void)_populateWifiPropertiesToCAPayload:(id)payload isIngress:(BOOL)ingress
 {
-  v4 = a4;
+  ingressCopy = ingress;
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = !v4;
+  payloadCopy = payload;
+  v7 = !ingressCopy;
   v8 = 16;
-  if (v4)
+  if (ingressCopy)
   {
     v8 = 8;
   }
 
   v9 = *(&self->super.isa + v8);
-  if (v4)
+  if (ingressCopy)
   {
     v10 = @"ingressWifi";
   }
@@ -169,21 +169,21 @@
           objc_enumerationMutation(obj);
         }
 
-        v21 = [*(*(&v29 + 1) + 8 * i) unsignedIntValue];
+        unsignedIntValue = [*(*(&v29 + 1) + 8 * i) unsignedIntValue];
         v22 = objc_alloc(MEMORY[0x277CCACA8]);
-        if ((v21 - 1) >= 0x21)
+        if ((unsignedIntValue - 1) >= 0x21)
         {
-          v23 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(unknown: %i)", v21];
+          v23 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(unknown: %i)", unsignedIntValue];
         }
 
         else
         {
-          v23 = off_27898F458[(v21 - 1)];
+          v23 = off_27898F458[(unsignedIntValue - 1)];
         }
 
         v24 = [v22 initWithFormat:@"%@_%@", v14, v23];
 
-        if (v21 == 17)
+        if (unsignedIntValue == 17)
         {
           v25 = v19;
         }
@@ -193,7 +193,7 @@
           v25 = MEMORY[0x277CBEC38];
         }
 
-        [v6 setObject:v25 forKeyedSubscript:v24];
+        [payloadCopy setObject:v25 forKeyedSubscript:v24];
       }
 
       v16 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
@@ -239,7 +239,7 @@
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v32 = self;
+  selfCopy = self;
   obj = [(NSMutableSet *)self->_egressCellInputTypes allObjects];
   v12 = [obj countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v12)
@@ -256,16 +256,16 @@
           objc_enumerationMutation(obj);
         }
 
-        v17 = [*(*(&v39 + 1) + 8 * i) unsignedIntValue];
+        unsignedIntValue = [*(*(&v39 + 1) + 8 * i) unsignedIntValue];
         v18 = objc_alloc(MEMORY[0x277CCACA8]);
-        if ((v17 - 1) >= 0x21)
+        if ((unsignedIntValue - 1) >= 0x21)
         {
-          v19 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(unknown: %i)", v17];
+          v19 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(unknown: %i)", unsignedIntValue];
         }
 
         else
         {
-          v19 = off_27898F458[(v17 - 1)];
+          v19 = off_27898F458[(unsignedIntValue - 1)];
         }
 
         v20 = [v18 initWithFormat:@"%@_%@", @"egressCell", v19];
@@ -283,7 +283,7 @@
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obja = [(NSMutableSet *)v32->_ingressCellInputTypes allObjects];
+  obja = [(NSMutableSet *)selfCopy->_ingressCellInputTypes allObjects];
   v21 = [obja countByEnumeratingWithState:&v35 objects:v43 count:16];
   if (v21)
   {
@@ -299,16 +299,16 @@
           objc_enumerationMutation(obja);
         }
 
-        v26 = [*(*(&v35 + 1) + 8 * j) unsignedIntValue];
+        unsignedIntValue2 = [*(*(&v35 + 1) + 8 * j) unsignedIntValue];
         v27 = objc_alloc(MEMORY[0x277CCACA8]);
-        if ((v26 - 1) >= 0x21)
+        if ((unsignedIntValue2 - 1) >= 0x21)
         {
-          v28 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(unknown: %i)", v26];
+          v28 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(unknown: %i)", unsignedIntValue2];
         }
 
         else
         {
-          v28 = off_27898F458[(v26 - 1)];
+          v28 = off_27898F458[(unsignedIntValue2 - 1)];
         }
 
         v29 = [v27 initWithFormat:@"%@_%@", @"ingressCell", v28];

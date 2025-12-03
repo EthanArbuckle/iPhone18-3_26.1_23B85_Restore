@@ -1,18 +1,18 @@
 @interface SUUIStorePageSplitsDescription
 - (SUUIStorePageSplit)firstSplit;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int64_t)numberOfSplits;
-- (void)enumerateSplitsUsingBlock:(id)a3;
-- (void)sizeSplitsToFitWidth:(double)a3 usingBlock:(id)a4;
+- (void)enumerateSplitsUsingBlock:(id)block;
+- (void)sizeSplitsToFitWidth:(double)width usingBlock:(id)block;
 @end
 
 @implementation SUUIStorePageSplitsDescription
 
-- (void)enumerateSplitsUsingBlock:(id)a3
+- (void)enumerateSplitsUsingBlock:(id)block
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v5 = self->_topSplit;
   v6 = self->_leftSplit;
   v7 = self->_rightSplit;
@@ -31,7 +31,7 @@
     v13 = *(v16 + v9);
     if (v13)
     {
-      v4[2](v4, v13, v10, &v15);
+      blockCopy[2](blockCopy, v13, v10, &v15);
       if (v15)
       {
         break;
@@ -86,9 +86,9 @@
   return v2;
 }
 
-- (void)sizeSplitsToFitWidth:(double)a3 usingBlock:(id)a4
+- (void)sizeSplitsToFitWidth:(double)width usingBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   rightSplit = self->_rightSplit;
   if (!rightSplit)
   {
@@ -99,15 +99,15 @@
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x2020000000;
-  *&v16[3] = a3;
+  *&v16[3] = width;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __66__SUUIStorePageSplitsDescription_sizeSplitsToFitWidth_usingBlock___block_invoke;
   v11[3] = &unk_2798FB600;
   v11[4] = self;
-  v9 = v6;
+  v9 = blockCopy;
   v13 = v9;
-  v15 = a3;
+  widthCopy = width;
   v10 = v8;
   v12 = v10;
   v14 = v16;
@@ -152,9 +152,9 @@ LABEL_8:
 LABEL_9:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setBottomSplit:self->_bottomSplit];
   [v4 setLeftSplit:self->_leftSplit];
   [v4 setRightSplit:self->_rightSplit];

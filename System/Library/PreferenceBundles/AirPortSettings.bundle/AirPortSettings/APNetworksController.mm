@@ -1,8 +1,8 @@
 @interface APNetworksController
-- (APNetworksController)initWithNibName:(id)a3 bundle:(id)a4;
+- (APNetworksController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)_loadHealthOverrides;
-- (void)_notifyAirPortSettingsVisible:(BOOL)a3;
-- (void)handleURL:(id)a3;
+- (void)_notifyAirPortSettingsVisible:(BOOL)visible;
+- (void)handleURL:(id)l;
 - (void)loadView;
 - (void)willBecomeActive;
 - (void)willResignActive;
@@ -10,7 +10,7 @@
 
 @implementation APNetworksController
 
-- (APNetworksController)initWithNibName:(id)a3 bundle:(id)a4
+- (APNetworksController)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = APNetworksController;
@@ -20,8 +20,8 @@
     v5 = WFWiFiTitleString();
     [(APNetworksController *)v4 setTitle:v5];
 
-    v6 = [(APNetworksController *)v4 navigationItem];
-    [v6 setLargeTitleDisplayMode:2];
+    navigationItem = [(APNetworksController *)v4 navigationItem];
+    [navigationItem setLargeTitleDisplayMode:2];
   }
 
   return v4;
@@ -46,50 +46,50 @@
   self->_airportController = v7;
 
   [(APNetworksController *)self addChildViewController:v5];
-  v9 = [(APNetworksController *)self view];
-  v10 = [(WFAirportViewController *)v5 view];
-  [v9 addSubview:v10];
+  view = [(APNetworksController *)self view];
+  view2 = [(WFAirportViewController *)v5 view];
+  [view addSubview:view2];
 
-  v11 = [(APNetworksController *)self view];
-  [v11 frame];
+  view3 = [(APNetworksController *)self view];
+  [view3 frame];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(WFAirportViewController *)v5 view];
+  view4 = [(WFAirportViewController *)v5 view];
 
-  [v20 setFrame:{v13, v15, v17, v19}];
+  [view4 setFrame:{v13, v15, v17, v19}];
   [(APNetworksController *)self _loadHealthOverrides];
-  v21 = [(APNetworksController *)self healthOverrides];
+  healthOverrides = [(APNetworksController *)self healthOverrides];
 
-  if (v21)
+  if (healthOverrides)
   {
-    v22 = [(APNetworksController *)self healthOverrides];
-    v23 = [(APNetworksController *)self airportController];
-    [v23 setHealthRecommendationOverrides:v22];
+    healthOverrides2 = [(APNetworksController *)self healthOverrides];
+    airportController = [(APNetworksController *)self airportController];
+    [airportController setHealthRecommendationOverrides:healthOverrides2];
   }
 
   else
   {
-    v22 = [(APNetworksController *)self airportController];
-    [v22 setHealthRecommendationOverrides:0];
+    healthOverrides2 = [(APNetworksController *)self airportController];
+    [healthOverrides2 setHealthRecommendationOverrides:0];
   }
 
   if (self->_pushDataUsage)
   {
-    v24 = [(APNetworksController *)self airportController];
-    [v24 pushDataUsageViewController];
+    airportController2 = [(APNetworksController *)self airportController];
+    [airportController2 pushDataUsageViewController];
 
     self->_pushDataUsage = 0;
   }
 
-  v25 = [(APNetworksController *)self deferredURL];
+  deferredURL = [(APNetworksController *)self deferredURL];
 
-  if (v25)
+  if (deferredURL)
   {
-    v26 = [(APNetworksController *)self airportController];
-    v27 = [(APNetworksController *)self deferredURL];
-    [v26 handleURL:v27];
+    airportController3 = [(APNetworksController *)self airportController];
+    deferredURL2 = [(APNetworksController *)self deferredURL];
+    [airportController3 handleURL:deferredURL2];
 
     [(APNetworksController *)self setDeferredURL:0];
   }
@@ -111,11 +111,11 @@
   [(APNetworksController *)&v3 willBecomeActive];
 }
 
-- (void)handleURL:(id)a3
+- (void)handleURL:(id)l
 {
-  v4 = a3;
-  v15 = [v4 objectForKey:@"path"];
-  v5 = [v4 objectForKey:@"root"];
+  lCopy = l;
+  v15 = [lCopy objectForKey:@"path"];
+  v5 = [lCopy objectForKey:@"root"];
 
   if ([v15 length])
   {
@@ -124,8 +124,8 @@
       self->_pushDataUsage = 1;
       if (self->_viewLoaded)
       {
-        v6 = [(APNetworksController *)self airportController];
-        [v6 pushDataUsageViewController];
+        airportController = [(APNetworksController *)self airportController];
+        [airportController pushDataUsageViewController];
 
         self->_pushDataUsage = 0;
       }
@@ -133,8 +133,8 @@
 
     else if (v5)
     {
-      v7 = [v5 lowercaseString];
-      v8 = [v7 isEqualToString:@"wifi"];
+      lowercaseString = [v5 lowercaseString];
+      v8 = [lowercaseString isEqualToString:@"wifi"];
 
       if (v8)
       {
@@ -159,13 +159,13 @@
   }
 }
 
-- (void)_notifyAirPortSettingsVisible:(BOOL)a3
+- (void)_notifyAirPortSettingsVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v4 = _notifyAirPortSettingsVisible__token;
   if (_notifyAirPortSettingsVisible__token != -1 || (notify_register_check("com.apple.airportsettingsvisible", &_notifyAirPortSettingsVisible__token), v4 = _notifyAirPortSettingsVisible__token, _notifyAirPortSettingsVisible__token != -1))
   {
-    notify_set_state(v4, v3);
+    notify_set_state(v4, visibleCopy);
 
     notify_post("com.apple.airportsettingsvisible");
   }

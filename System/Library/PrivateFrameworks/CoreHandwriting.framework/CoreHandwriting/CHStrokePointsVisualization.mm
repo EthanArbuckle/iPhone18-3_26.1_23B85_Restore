@@ -1,17 +1,17 @@
 @interface CHStrokePointsVisualization
-- (void)drawStrokesFromStrokeProvider:(id)a3 inRect:(CGRect)a4 context:(CGContext *)a5;
+- (void)drawStrokesFromStrokeProvider:(id)provider inRect:(CGRect)rect context:(CGContext *)context;
 @end
 
 @implementation CHStrokePointsVisualization
 
-- (void)drawStrokesFromStrokeProvider:(id)a3 inRect:(CGRect)a4 context:(CGContext *)a5
+- (void)drawStrokesFromStrokeProvider:(id)provider inRect:(CGRect)rect context:(CGContext *)context
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v42 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  providerCopy = provider;
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   color = CGColorCreate(DeviceRGB, dbl_1839D0268);
   v33 = CGColorCreate(DeviceRGB, dbl_1839D0288);
@@ -19,7 +19,7 @@
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v17 = objc_msgSend_orderedStrokes(v10, v12, v13, v14, v15, v16);
+  v17 = objc_msgSend_orderedStrokes(providerCopy, v12, v13, v14, v15, v16);
   v20 = objc_msgSend_countByEnumeratingWithState_objects_count_(v17, v18, &v37, v41, 16, v19);
   if (v20)
   {
@@ -49,18 +49,18 @@
           v36[3] = &unk_1E6DDE2D8;
           v36[4] = Mutable;
           objc_msgSend_enumeratePointsForStroke_interpolationType_resolution_usingBlock_(CHStrokeUtilities, v31, v29, 1, 1, v36);
-          CGContextSetStrokeColorWithColor(a5, color);
-          CGContextSetLineWidth(a5, 5.0);
-          CGContextAddPath(a5, Mutable);
-          CGContextStrokePath(a5);
+          CGContextSetStrokeColorWithColor(context, color);
+          CGContextSetLineWidth(context, 5.0);
+          CGContextAddPath(context, Mutable);
+          CGContextStrokePath(context);
           CGPathRelease(Mutable);
-          CGContextSetFillColorWithColor(a5, v33);
+          CGContextSetFillColorWithColor(context, v33);
           v35[0] = MEMORY[0x1E69E9820];
           v35[1] = 3221225472;
           v35[2] = sub_1837D3C44;
           v35[3] = &unk_1E6DDE568;
           v35[4] = 0x4000000000000000;
-          v35[5] = a5;
+          v35[5] = context;
           objc_msgSend_enumeratePointsForStroke_interpolationType_resolution_usingBlock_(CHStrokeUtilities, v32, v29, 0, 1, v35);
         }
       }

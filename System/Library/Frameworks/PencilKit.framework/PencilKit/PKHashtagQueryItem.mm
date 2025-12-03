@@ -1,23 +1,23 @@
 @interface PKHashtagQueryItem
-- (BOOL)isEqual:(id)a3;
-- (PKHashtagQueryItem)initWithCoreHandwritingPrefixQueryItem:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKHashtagQueryItem)initWithCoreHandwritingPrefixQueryItem:(id)item;
 - (id)baselinePath;
 @end
 
 @implementation PKHashtagQueryItem
 
-- (PKHashtagQueryItem)initWithCoreHandwritingPrefixQueryItem:(id)a3
+- (PKHashtagQueryItem)initWithCoreHandwritingPrefixQueryItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = PKHashtagQueryItem;
   v5 = [(PKHashtagQueryItem *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(PKHashtagQueryItem *)v5 setCoreHandwritingPrefixQueryItem:v4];
-    v7 = [v4 queryResult];
-    [(PKHashtagQueryItem *)v6 setHashtagResult:v7];
+    [(PKHashtagQueryItem *)v5 setCoreHandwritingPrefixQueryItem:itemCopy];
+    queryResult = [itemCopy queryResult];
+    [(PKHashtagQueryItem *)v6 setHashtagResult:queryResult];
   }
 
   return v6;
@@ -26,15 +26,15 @@
 - (id)baselinePath
 {
   v2 = MEMORY[0x1E69DC728];
-  v3 = [(CHPrefixQueryItem *)self->_coreHandwritingPrefixQueryItem estimatedBaseline];
+  estimatedBaseline = [(CHPrefixQueryItem *)self->_coreHandwritingPrefixQueryItem estimatedBaseline];
 
-  return [v2 bezierPathWithCGPath:v3];
+  return [v2 bezierPathWithCGPath:estimatedBaseline];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -45,8 +45,8 @@
     if (objc_opt_isKindOfClass())
     {
       coreHandwritingPrefixQueryItem = self->_coreHandwritingPrefixQueryItem;
-      v6 = [(PKHashtagQueryItem *)v4 coreHandwritingPrefixQueryItem];
-      v7 = [(CHPrefixQueryItem *)coreHandwritingPrefixQueryItem isEqualToPrefixQueryItem:v6];
+      coreHandwritingPrefixQueryItem = [(PKHashtagQueryItem *)equalCopy coreHandwritingPrefixQueryItem];
+      v7 = [(CHPrefixQueryItem *)coreHandwritingPrefixQueryItem isEqualToPrefixQueryItem:coreHandwritingPrefixQueryItem];
     }
 
     else

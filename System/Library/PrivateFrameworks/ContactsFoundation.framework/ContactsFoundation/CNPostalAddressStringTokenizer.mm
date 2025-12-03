@@ -1,27 +1,27 @@
 @interface CNPostalAddressStringTokenizer
-+ (id)countryCodeByLookingUpCountryName:(id)a3;
-+ (id)countryCodeForCountryName:(id)a3;
++ (id)countryCodeByLookingUpCountryName:(id)name;
++ (id)countryCodeForCountryName:(id)name;
 + (id)countryCodeFromCurrentLocale;
-+ (id)postalAddressFromString:(id)a3 error:(id *)a4;
-+ (id)tokenNameForScannerResultType:(id)a3;
-- (id)postalAddressFromString:(id)a3 error:(id *)a4;
++ (id)postalAddressFromString:(id)string error:(id *)error;
++ (id)tokenNameForScannerResultType:(id)type;
+- (id)postalAddressFromString:(id)string error:(id *)error;
 @end
 
 @implementation CNPostalAddressStringTokenizer
 
-+ (id)postalAddressFromString:(id)a3 error:(id *)a4
++ (id)postalAddressFromString:(id)string error:(id *)error
 {
-  v5 = a3;
+  stringCopy = string;
   v6 = objc_alloc_init(CNPostalAddressStringTokenizer);
-  v7 = [(CNPostalAddressStringTokenizer *)v6 postalAddressFromString:v5 error:a4];
+  v7 = [(CNPostalAddressStringTokenizer *)v6 postalAddressFromString:stringCopy error:error];
 
   return v7;
 }
 
-- (id)postalAddressFromString:(id)a3 error:(id *)a4
+- (id)postalAddressFromString:(id)string error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E6999A88] scanString:a3];
+  v5 = [MEMORY[0x1E6999A88] scanString:string];
   v6 = [v5 _cn_firstObjectPassingTest:&__block_literal_global_69];
   if (v6)
   {
@@ -31,8 +31,8 @@
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v8 = [v6 subResults];
-    v9 = [v8 countByEnumeratingWithState:&v28 objects:v32 count:16];
+    subResults = [v6 subResults];
+    v9 = [subResults countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v9)
     {
       v10 = v9;
@@ -43,22 +43,22 @@
         {
           if (*v29 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(subResults);
           }
 
           v13 = *(*(&v28 + 1) + 8 * i);
           v14 = objc_opt_class();
-          v15 = [v13 type];
-          v16 = [v14 tokenNameForScannerResultType:v15];
+          type = [v13 type];
+          v16 = [v14 tokenNameForScannerResultType:type];
 
           if (v16)
           {
-            v17 = [v13 value];
-            [v7 setObject:v17 forKeyedSubscript:v16];
+            value = [v13 value];
+            [v7 setObject:value forKeyedSubscript:v16];
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v28 objects:v32 count:16];
+        v10 = [subResults countByEnumeratingWithState:&v28 objects:v32 count:16];
       }
 
       while (v10);
@@ -76,18 +76,18 @@
     }
 
     v5 = v27;
-    v23 = [v19 uppercaseString];
+    uppercaseString = [v19 uppercaseString];
 
-    [v7 setObject:v23 forKeyedSubscript:@"ISOCountryCode"];
+    [v7 setObject:uppercaseString forKeyedSubscript:@"ISOCountryCode"];
   }
 
   else
   {
     v24 = [CNFoundationError errorWithCode:9 userInfo:0];
-    if (a4)
+    if (error)
     {
       v24 = v24;
-      *a4 = v24;
+      *error = v24;
     }
 
     v7 = 0;
@@ -98,7 +98,7 @@
   return v7;
 }
 
-+ (id)tokenNameForScannerResultType:(id)a3
++ (id)tokenNameForScannerResultType:(id)type
 {
   v13[7] = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E6999A38];
@@ -119,52 +119,52 @@
   v12[6] = *MEMORY[0x1E69999A0];
   v13[6] = @"country";
   v6 = MEMORY[0x1E695DF20];
-  v7 = a3;
+  typeCopy = type;
   v8 = [v6 dictionaryWithObjects:v13 forKeys:v12 count:7];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  v9 = [v8 objectForKeyedSubscript:typeCopy];
 
   v10 = *MEMORY[0x1E69E9840];
 
   return v9;
 }
 
-+ (id)countryCodeForCountryName:(id)a3
++ (id)countryCodeForCountryName:(id)name
 {
-  v4 = [a1 countryCodeByLookingUpCountryName:a3];
-  if (off_1EF440708(&__block_literal_global_120, v4))
+  countryCodeFromCurrentNetwork = [self countryCodeByLookingUpCountryName:name];
+  if (off_1EF440708(&__block_literal_global_120, countryCodeFromCurrentNetwork))
   {
 
-    v4 = [a1 countryCodeFromCurrentNetwork];
-    if (off_1EF440708(&__block_literal_global_120, v4))
+    countryCodeFromCurrentNetwork = [self countryCodeFromCurrentNetwork];
+    if (off_1EF440708(&__block_literal_global_120, countryCodeFromCurrentNetwork))
     {
 
-      v4 = [a1 countryCodeFromHomeNetwork];
-      if (off_1EF440708(&__block_literal_global_120, v4))
+      countryCodeFromCurrentNetwork = [self countryCodeFromHomeNetwork];
+      if (off_1EF440708(&__block_literal_global_120, countryCodeFromCurrentNetwork))
       {
 
-        v4 = [a1 countryCodeFromCurrentLocale];
+        countryCodeFromCurrentNetwork = [self countryCodeFromCurrentLocale];
       }
     }
   }
 
-  return v4;
+  return countryCodeFromCurrentNetwork;
 }
 
-+ (id)countryCodeByLookingUpCountryName:(id)a3
++ (id)countryCodeByLookingUpCountryName:(id)name
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  nameCopy = name;
+  if (nameCopy)
   {
     v4 = +[(CNEnvironmentBase *)CNEnvironment];
-    v5 = [v4 currentLocale];
+    currentLocale = [v4 currentLocale];
 
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = [MEMORY[0x1E695DF58] ISOCountryCodes];
-    v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    iSOCountryCodes = [MEMORY[0x1E695DF58] ISOCountryCodes];
+    v7 = [iSOCountryCodes countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v7)
     {
       v8 = v7;
@@ -176,12 +176,12 @@
         {
           if (*v18 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(iSOCountryCodes);
           }
 
           v12 = *(*(&v17 + 1) + 8 * i);
-          v13 = [v5 displayNameForKey:v10 value:v12];
-          if (![v3 compare:v13 options:129])
+          v13 = [currentLocale displayNameForKey:v10 value:v12];
+          if (![nameCopy compare:v13 options:129])
           {
             v14 = v12;
 
@@ -189,7 +189,7 @@
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v8 = [iSOCountryCodes countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v8)
         {
           continue;
@@ -216,8 +216,8 @@ LABEL_12:
 + (id)countryCodeFromCurrentLocale
 {
   v2 = +[(CNEnvironmentBase *)CNEnvironment];
-  v3 = [v2 currentLocale];
-  v4 = [v3 objectForKey:*MEMORY[0x1E695D978]];
+  currentLocale = [v2 currentLocale];
+  v4 = [currentLocale objectForKey:*MEMORY[0x1E695D978]];
 
   return v4;
 }

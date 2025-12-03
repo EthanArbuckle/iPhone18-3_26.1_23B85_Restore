@@ -1,13 +1,13 @@
 @interface PXAppleMusicAudioSession
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)currentTime;
-- (PXAppleMusicAudioSession)initWithAsset:(id)a3 volume:(float)a4 startTime:(id *)a5 queue:(id)a6 audioSessionDelegate:(id)a7 playerController:(id)a8;
+- (PXAppleMusicAudioSession)initWithAsset:(id)asset volume:(float)volume startTime:(id *)time queue:(id)queue audioSessionDelegate:(id)delegate playerController:(id)controller;
 - (void)_ensureCurrentPlayerClient;
-- (void)_handlePlayerPreparedToPlay:(BOOL)a3 error:(id)a4;
-- (void)_handlePlayerTransactionDeclinedWithError:(id)a3;
-- (void)_stateQueue_handlePlayerPreparedToPlay:(BOOL)a3 error:(id)a4;
+- (void)_handlePlayerPreparedToPlay:(BOOL)play error:(id)error;
+- (void)_handlePlayerTransactionDeclinedWithError:(id)error;
+- (void)_stateQueue_handlePlayerPreparedToPlay:(BOOL)play error:(id)error;
 - (void)_stateQueue_pause;
 - (void)_stateQueue_play;
-- (void)_stateQueue_playFromTime:(id *)a3;
+- (void)_stateQueue_playFromTime:(id *)time;
 - (void)_stateQueue_prepareToPlayIfNeeded;
 - (void)_stateQueue_updateState;
 - (void)_updateContentLoudness;
@@ -15,28 +15,28 @@
 - (void)_updateStatus;
 - (void)desiredPlayerVolumeDidChange;
 - (void)errorDidChange;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)pause;
 - (void)performFinalCleanup;
 - (void)play;
-- (void)playFromTime:(id *)a3;
+- (void)playFromTime:(id *)time;
 - (void)prepareToPlay;
-- (void)setPlayerController:(id)a3;
-- (void)setStateQueue_isPreparingToPlay:(BOOL)a3;
-- (void)setStateQueue_playerPlaybackState:(int64_t)a3;
+- (void)setPlayerController:(id)controller;
+- (void)setStateQueue_isPreparingToPlay:(BOOL)play;
+- (void)setStateQueue_playerPlaybackState:(int64_t)state;
 @end
 
 @implementation PXAppleMusicAudioSession
 
-- (void)_handlePlayerTransactionDeclinedWithError:(id)a3
+- (void)_handlePlayerTransactionDeclinedWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __70__PXAppleMusicAudioSession__handlePlayerTransactionDeclinedWithError___block_invoke;
   v6[3] = &unk_1E77365A0;
-  v7 = v4;
-  v5 = v4;
+  v7 = errorCopy;
+  v5 = errorCopy;
   [(PXAudioSession *)self performInternalChanges:v6];
 }
 
@@ -98,20 +98,20 @@ void __51__PXAppleMusicAudioSession__stateQueue_updateState__block_invoke_2(uint
   [v5 setStatus:v4];
 }
 
-- (void)setStateQueue_playerPlaybackState:(int64_t)a3
+- (void)setStateQueue_playerPlaybackState:(int64_t)state
 {
-  if (self->_stateQueue_playerPlaybackState != a3)
+  if (self->_stateQueue_playerPlaybackState != state)
   {
-    self->_stateQueue_playerPlaybackState = a3;
+    self->_stateQueue_playerPlaybackState = state;
     [(PXAppleMusicAudioSession *)self _stateQueue_updateState];
   }
 }
 
 - (void)_updateStatus
 {
-  v3 = [(PXAudioSession *)self error];
+  error = [(PXAudioSession *)self error];
 
-  if (v3)
+  if (error)
   {
 
     [(PXAudioSession *)self performInternalChanges:&__block_literal_global_39];
@@ -120,13 +120,13 @@ void __51__PXAppleMusicAudioSession__stateQueue_updateState__block_invoke_2(uint
   else
   {
     objc_initWeak(&location, self);
-    v4 = [(PXAppleMusicAudioSession *)self stateQueue];
+    stateQueue = [(PXAppleMusicAudioSession *)self stateQueue];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __41__PXAppleMusicAudioSession__updateStatus__block_invoke_2;
     v5[3] = &unk_1E774C318;
     objc_copyWeak(&v6, &location);
-    dispatch_async(v4, v5);
+    dispatch_async(stateQueue, v5);
 
     objc_destroyWeak(&v6);
     objc_destroyWeak(&location);
@@ -139,10 +139,10 @@ void __41__PXAppleMusicAudioSession__updateStatus__block_invoke_2(uint64_t a1)
   [WeakRetained _stateQueue_updateState];
 }
 
-- (void)_stateQueue_handlePlayerPreparedToPlay:(BOOL)a3 error:(id)a4
+- (void)_stateQueue_handlePlayerPreparedToPlay:(BOOL)play error:(id)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  errorCopy = error;
   v7 = [(PXAppleMusicAudioSession *)self log];
   v8 = os_signpost_id_make_with_pointer(v7, self);
   if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
@@ -151,14 +151,14 @@ void __41__PXAppleMusicAudioSession__updateStatus__block_invoke_2(uint64_t a1)
     if (os_signpost_enabled(v7))
     {
       *buf = 134217984;
-      v29 = [(PXAppleMusicAudioSession *)self logContext];
+      selfCopy3 = [(PXAppleMusicAudioSession *)self logContext];
       _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v7, OS_SIGNPOST_INTERVAL_END, v9, "StoryAppleMusicSessionPrepareToPlay", "Context=%{signpost.telemetry:string2}lu ", buf, 0xCu);
     }
   }
 
   [(PXAppleMusicAudioSession *)self setStateQueue_isPreparingToPlay:0];
-  v10 = [(PXAppleMusicAudioSession *)self stateQueue_shouldPlayWhenPrepared];
-  if ([v6 px_isDomain:@"PXAppleMusicPlayerControllerErrorDomain" code:2])
+  stateQueue_shouldPlayWhenPrepared = [(PXAppleMusicAudioSession *)self stateQueue_shouldPlayWhenPrepared];
+  if ([errorCopy px_isDomain:@"PXAppleMusicPlayerControllerErrorDomain" code:2])
   {
     v11 = MEMORY[0x1E696ABC0];
     v12 = @"Apple Music player timed out while preparing to play.";
@@ -166,9 +166,9 @@ void __41__PXAppleMusicAudioSession__updateStatus__block_invoke_2(uint64_t a1)
     goto LABEL_6;
   }
 
-  if (!a3)
+  if (!play)
   {
-    v19 = [v6 px_isDomain:@"PXAppleMusicPlayerControllerErrorDomain" code:3];
+    v19 = [errorCopy px_isDomain:@"PXAppleMusicPlayerControllerErrorDomain" code:3];
     v20 = PLAudioPlaybackGetLog();
     v21 = v20;
     if (v19)
@@ -176,9 +176,9 @@ void __41__PXAppleMusicAudioSession__updateStatus__block_invoke_2(uint64_t a1)
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v29 = self;
+        selfCopy3 = self;
         v30 = 2112;
-        v31 = v6;
+        v31 = errorCopy;
         _os_log_impl(&dword_1A3C1C000, v21, OS_LOG_TYPE_DEFAULT, "%@ player was cancelled while preparing to play: %@", buf, 0x16u);
       }
 
@@ -189,9 +189,9 @@ void __41__PXAppleMusicAudioSession__updateStatus__block_invoke_2(uint64_t a1)
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v29 = self;
+      selfCopy3 = self;
       v30 = 2112;
-      v31 = v6;
+      v31 = errorCopy;
       _os_log_impl(&dword_1A3C1C000, v21, OS_LOG_TYPE_ERROR, "%@ player encountered error while preparing to play: %@", buf, 0x16u);
     }
 
@@ -199,7 +199,7 @@ void __41__PXAppleMusicAudioSession__updateStatus__block_invoke_2(uint64_t a1)
     v12 = @"Apple Music encountered an error while preparing to play";
     v13 = 1;
 LABEL_6:
-    v14 = [v11 px_errorWithDomain:@"PXAudioSessionErrorDomain" code:v13 underlyingError:v6 debugDescription:v12];
+    v14 = [v11 px_errorWithDomain:@"PXAudioSessionErrorDomain" code:v13 underlyingError:errorCopy debugDescription:v12];
 LABEL_7:
     v15 = 0;
     goto LABEL_12;
@@ -208,9 +208,9 @@ LABEL_7:
   v16 = PLAudioPlaybackGetLog();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
-    v17 = [MEMORY[0x1E696AD98] numberWithBool:v10];
+    v17 = [MEMORY[0x1E696AD98] numberWithBool:stateQueue_shouldPlayWhenPrepared];
     *buf = 138412546;
-    v29 = self;
+    selfCopy3 = self;
     v30 = 2112;
     v31 = v17;
     _os_log_impl(&dword_1A3C1C000, v16, OS_LOG_TYPE_DEBUG, "%@ player finished preparing to play. Will begin playback: %@", buf, 0x16u);
@@ -227,7 +227,7 @@ LABEL_12:
   v18 = v14;
   v26 = v18;
   [(PXAudioSession *)self performInternalChanges:&v22];
-  if (v10 & v15)
+  if (stateQueue_shouldPlayWhenPrepared & v15)
   {
     [(PXAppleMusicAudioSession *)self _stateQueue_play:v22];
   }
@@ -241,20 +241,20 @@ void __73__PXAppleMusicAudioSession__stateQueue_handlePlayerPreparedToPlay_error
   [v4 setError:*(a1 + 32)];
 }
 
-- (void)_handlePlayerPreparedToPlay:(BOOL)a3 error:(id)a4
+- (void)_handlePlayerPreparedToPlay:(BOOL)play error:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   objc_initWeak(&location, self);
-  v7 = [(PXAppleMusicAudioSession *)self stateQueue];
+  stateQueue = [(PXAppleMusicAudioSession *)self stateQueue];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __62__PXAppleMusicAudioSession__handlePlayerPreparedToPlay_error___block_invoke;
   v9[3] = &unk_1E7749CD8;
   objc_copyWeak(&v11, &location);
-  v12 = a3;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, v9);
+  playCopy = play;
+  v10 = errorCopy;
+  v8 = errorCopy;
+  dispatch_async(stateQueue, v9);
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -266,11 +266,11 @@ void __62__PXAppleMusicAudioSession__handlePlayerPreparedToPlay_error___block_in
   [WeakRetained _stateQueue_handlePlayerPreparedToPlay:*(a1 + 48) error:*(a1 + 32)];
 }
 
-- (void)setStateQueue_isPreparingToPlay:(BOOL)a3
+- (void)setStateQueue_isPreparingToPlay:(BOOL)play
 {
-  if (self->_stateQueue_isPreparingToPlay != a3)
+  if (self->_stateQueue_isPreparingToPlay != play)
   {
-    self->_stateQueue_isPreparingToPlay = a3;
+    self->_stateQueue_isPreparingToPlay = play;
     [(PXAppleMusicAudioSession *)self _updateStatus];
   }
 }
@@ -283,11 +283,11 @@ void __62__PXAppleMusicAudioSession__handlePlayerPreparedToPlay_error___block_in
     v3 = PLAudioPlaybackGetLog();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(PXAudioSession *)self asset];
+      asset = [(PXAudioSession *)self asset];
       *buf = 138412546;
-      v15 = self;
+      selfCopy = self;
       v16 = 2112;
-      v17 = v4;
+      v17 = asset;
       _os_log_impl(&dword_1A3C1C000, v3, OS_LOG_TYPE_DEFAULT, "%@ will begin preparing to play %@.", buf, 0x16u);
     }
 
@@ -300,21 +300,21 @@ void __62__PXAppleMusicAudioSession__handlePlayerPreparedToPlay_error___block_in
       v7 = v6;
       if (os_signpost_enabled(v5))
       {
-        v8 = [(PXAppleMusicAudioSession *)self logContext];
+        logContext = [(PXAppleMusicAudioSession *)self logContext];
         *buf = 134217984;
-        v15 = v8;
+        selfCopy = logContext;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v5, OS_SIGNPOST_INTERVAL_BEGIN, v7, "StoryAppleMusicSessionPrepareToPlay", "Context=%{signpost.telemetry:string2}lu ", buf, 0xCu);
       }
     }
 
-    v9 = [(PXAppleMusicAudioSession *)self playerController];
-    v10 = [(PXAppleMusicAudioSession *)self playerClientIdentifier];
+    playerController = [(PXAppleMusicAudioSession *)self playerController];
+    playerClientIdentifier = [(PXAppleMusicAudioSession *)self playerClientIdentifier];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __61__PXAppleMusicAudioSession__stateQueue_prepareToPlayIfNeeded__block_invoke;
     v11[3] = &unk_1E7736658;
     objc_copyWeak(&v12, &location);
-    [v9 clientIdentifier:v10 performAsyncPlayerTransaction:v11];
+    [playerController clientIdentifier:playerClientIdentifier performAsyncPlayerTransaction:v11];
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
@@ -353,18 +353,18 @@ void __61__PXAppleMusicAudioSession__stateQueue_prepareToPlayIfNeeded__block_inv
 - (void)_stateQueue_pause
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(PXAppleMusicAudioSession *)self stateQueue_isPreparingToPlay];
+  stateQueue_isPreparingToPlay = [(PXAppleMusicAudioSession *)self stateQueue_isPreparingToPlay];
   v4 = PLAudioPlaybackGetLog();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (stateQueue_isPreparingToPlay)
   {
     if (v5)
     {
-      v6 = [(PXAudioSession *)self asset];
+      asset = [(PXAudioSession *)self asset];
       v10 = 138412546;
-      v11 = self;
+      selfCopy2 = self;
       v12 = 2112;
-      v13 = v6;
+      v13 = asset;
       _os_log_impl(&dword_1A3C1C000, v4, OS_LOG_TYPE_DEFAULT, "%@ cancelling playback of %@ when preparation finishes.", &v10, 0x16u);
     }
 
@@ -375,35 +375,35 @@ void __61__PXAppleMusicAudioSession__stateQueue_prepareToPlayIfNeeded__block_inv
   {
     if (v5)
     {
-      v7 = [(PXAudioSession *)self asset];
+      asset2 = [(PXAudioSession *)self asset];
       v10 = 138412546;
-      v11 = self;
+      selfCopy2 = self;
       v12 = 2112;
-      v13 = v7;
+      v13 = asset2;
       _os_log_impl(&dword_1A3C1C000, v4, OS_LOG_TYPE_DEFAULT, "%@ will pause playback of %@.", &v10, 0x16u);
     }
 
-    v8 = [(PXAppleMusicAudioSession *)self playerController];
-    v9 = [(PXAppleMusicAudioSession *)self playerClientIdentifier];
-    [v8 clientIdentifier:v9 performAsyncPlayerTransaction:&__block_literal_global_29_86487];
+    playerController = [(PXAppleMusicAudioSession *)self playerController];
+    playerClientIdentifier = [(PXAppleMusicAudioSession *)self playerClientIdentifier];
+    [playerController clientIdentifier:playerClientIdentifier performAsyncPlayerTransaction:&__block_literal_global_29_86487];
   }
 }
 
 - (void)_stateQueue_play
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(PXAppleMusicAudioSession *)self stateQueue_isPreparingToPlay];
+  stateQueue_isPreparingToPlay = [(PXAppleMusicAudioSession *)self stateQueue_isPreparingToPlay];
   v4 = PLAudioPlaybackGetLog();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (stateQueue_isPreparingToPlay)
   {
     if (v5)
     {
-      v6 = [(PXAudioSession *)self asset];
+      asset = [(PXAudioSession *)self asset];
       *buf = 138412546;
-      v19 = self;
+      selfCopy2 = self;
       v20 = 2112;
-      v21 = v6;
+      v21 = asset;
       _os_log_impl(&dword_1A3C1C000, v4, OS_LOG_TYPE_DEFAULT, "%@ will begin playback of %@ when preparation finishes.", buf, 0x16u);
     }
 
@@ -414,26 +414,26 @@ void __61__PXAppleMusicAudioSession__stateQueue_prepareToPlayIfNeeded__block_inv
   {
     if (v5)
     {
-      v7 = [(PXAudioSession *)self asset];
+      asset2 = [(PXAudioSession *)self asset];
       *buf = 138412546;
-      v19 = self;
+      selfCopy2 = self;
       v20 = 2112;
-      v21 = v7;
+      v21 = asset2;
       _os_log_impl(&dword_1A3C1C000, v4, OS_LOG_TYPE_DEFAULT, "%@ will begin playback of %@.", buf, 0x16u);
     }
 
     [(PXAudioSession *)self desiredPlayerVolume];
     v9 = v8;
     objc_initWeak(buf, self);
-    v10 = [(PXAppleMusicAudioSession *)self playerController];
-    v11 = [(PXAppleMusicAudioSession *)self playerClientIdentifier];
+    playerController = [(PXAppleMusicAudioSession *)self playerController];
+    playerClientIdentifier = [(PXAppleMusicAudioSession *)self playerClientIdentifier];
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = __44__PXAppleMusicAudioSession__stateQueue_play__block_invoke;
     v15 = &unk_1E7736630;
     v17 = v9;
     objc_copyWeak(&v16, buf);
-    [v10 clientIdentifier:v11 becomeCurrentClientIfNeeded:1 performAsyncPlayerTransaction:&v12];
+    [playerController clientIdentifier:playerClientIdentifier becomeCurrentClientIfNeeded:1 performAsyncPlayerTransaction:&v12];
 
     [(PXAppleMusicAudioSession *)self setStateQueue_hasSeekedOrPlayed:1, v12, v13, v14, v15];
     objc_destroyWeak(&v16);
@@ -456,70 +456,70 @@ void __44__PXAppleMusicAudioSession__stateQueue_play__block_invoke(uint64_t a1, 
   }
 }
 
-- (void)setPlayerController:(id)a3
+- (void)setPlayerController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   playerController = self->_playerController;
-  if (playerController != v5)
+  if (playerController != controllerCopy)
   {
-    v10 = v5;
-    v7 = [(PXAppleMusicPlayerController *)playerController observable];
-    [v7 unregisterChangeObserver:self context:PlayerControllerContext];
+    v10 = controllerCopy;
+    observable = [(PXAppleMusicPlayerController *)playerController observable];
+    [observable unregisterChangeObserver:self context:PlayerControllerContext];
 
-    objc_storeStrong(&self->_playerController, a3);
-    v8 = [(PXAppleMusicAudioSession *)self playerClientIdentifier];
-    [(PXAppleMusicPlayerController *)self->_playerController setCurrentClientIdentifier:v8];
+    objc_storeStrong(&self->_playerController, controller);
+    playerClientIdentifier = [(PXAppleMusicAudioSession *)self playerClientIdentifier];
+    [(PXAppleMusicPlayerController *)self->_playerController setCurrentClientIdentifier:playerClientIdentifier];
 
-    v9 = [(PXAppleMusicPlayerController *)self->_playerController observable];
-    [v9 registerChangeObserver:self context:PlayerControllerContext];
+    observable2 = [(PXAppleMusicPlayerController *)self->_playerController observable];
+    [observable2 registerChangeObserver:self context:PlayerControllerContext];
 
     [(PXAppleMusicAudioSession *)self _updatePlayerVolume];
-    v5 = v10;
+    controllerCopy = v10;
   }
 }
 
 - (void)_ensureCurrentPlayerClient
 {
-  v4 = [(PXAppleMusicAudioSession *)self playerClientIdentifier];
-  v3 = [(PXAppleMusicAudioSession *)self playerController];
-  [v3 setCurrentClientIdentifier:v4];
+  playerClientIdentifier = [(PXAppleMusicAudioSession *)self playerClientIdentifier];
+  playerController = [(PXAppleMusicAudioSession *)self playerController];
+  [playerController setCurrentClientIdentifier:playerClientIdentifier];
 }
 
 - (void)_updatePlayerVolume
 {
   [(PXAudioSession *)self desiredPlayerVolume];
   v4 = v3;
-  v5 = [(PXAppleMusicAudioSession *)self playerController];
-  v6 = [(PXAppleMusicAudioSession *)self playerClientIdentifier];
+  playerController = [(PXAppleMusicAudioSession *)self playerController];
+  playerClientIdentifier = [(PXAppleMusicAudioSession *)self playerClientIdentifier];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__PXAppleMusicAudioSession__updatePlayerVolume__block_invoke;
   v7[3] = &__block_descriptor_36_e62_v28__0___PXMutableAppleMusicPlayerController__8B16__NSError_20l;
   v8 = v4;
-  [v5 clientIdentifier:v6 performAsyncPlayerTransaction:v7];
+  [playerController clientIdentifier:playerClientIdentifier performAsyncPlayerTransaction:v7];
 }
 
 - (void)_updateContentLoudness
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(PXAudioSession *)self asset];
+  asset = [(PXAudioSession *)self asset];
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v4 = v3;
+    v4 = asset;
 
     if (v4)
     {
       v5 = PLAudioPlaybackGetLog();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
-        v6 = [v4 loudnessMainValue];
-        v7 = [v4 loudnessMainPeak];
+        loudnessMainValue = [v4 loudnessMainValue];
+        loudnessMainPeak = [v4 loudnessMainPeak];
         *buf = 138543874;
         v11 = v4;
         v12 = 2114;
-        v13 = v6;
+        v13 = loudnessMainValue;
         v14 = 2114;
-        v15 = v7;
+        v15 = loudnessMainPeak;
         _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEFAULT, "Applying content loudness for %{public}@:\n\tLoudness: %{public}@\n\tPeak: %{public}@", buf, 0x20u);
       }
 
@@ -551,23 +551,23 @@ void __50__PXAppleMusicAudioSession__updateContentLoudness__block_invoke(uint64_
   [v4 setContentLoudnessInLKFS:v6];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if ((a4 & 1) != 0 && PlayerControllerContext == a5)
+  if ((change & 1) != 0 && PlayerControllerContext == context)
   {
     v11[10] = v5;
     v11[11] = v6;
-    v8 = [(PXAppleMusicAudioSession *)self playerController];
-    v9 = [v8 playbackState];
+    playerController = [(PXAppleMusicAudioSession *)self playerController];
+    playbackState = [playerController playbackState];
 
-    v10 = [(PXAppleMusicAudioSession *)self stateQueue];
+    stateQueue = [(PXAppleMusicAudioSession *)self stateQueue];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __57__PXAppleMusicAudioSession_observable_didChange_context___block_invoke;
     v11[3] = &unk_1E77498A0;
     v11[4] = self;
-    v11[5] = v9;
-    dispatch_async(v10, v11);
+    v11[5] = playbackState;
+    dispatch_async(stateQueue, v11);
   }
 }
 
@@ -576,9 +576,9 @@ void __50__PXAppleMusicAudioSession__updateContentLoudness__block_invoke(uint64_
   v5.receiver = self;
   v5.super_class = PXAppleMusicAudioSession;
   [(PXAudioSession *)&v5 performFinalCleanup];
-  v3 = [(PXAppleMusicAudioSession *)self playerController];
-  v4 = [(PXAppleMusicAudioSession *)self playerClientIdentifier];
-  [v3 clientIdentifier:v4 performAsyncPlayerTransaction:&__block_literal_global_86496];
+  playerController = [(PXAppleMusicAudioSession *)self playerController];
+  playerClientIdentifier = [(PXAppleMusicAudioSession *)self playerClientIdentifier];
+  [playerController clientIdentifier:playerClientIdentifier performAsyncPlayerTransaction:&__block_literal_global_86496];
 
   [(PXAppleMusicAudioSession *)self setPlayerController:0];
 }
@@ -600,8 +600,8 @@ void __50__PXAppleMusicAudioSession__updateContentLoudness__block_invoke(uint64_
   {
     if (self->_stateQueue_hasSeekedOrPlayed)
     {
-      v6 = [(PXAppleMusicAudioSession *)self playerController];
-      [v6 fetchCurrentTime];
+      playerController = [(PXAppleMusicAudioSession *)self playerController];
+      [playerController fetchCurrentTime];
       v11 = v7;
       v12 = v8;
     }
@@ -619,17 +619,17 @@ void __50__PXAppleMusicAudioSession__updateContentLoudness__block_invoke(uint64_
   return result;
 }
 
-- (void)_stateQueue_playFromTime:(id *)a3
+- (void)_stateQueue_playFromTime:(id *)time
 {
-  v5 = [(PXAppleMusicAudioSession *)self playerController];
-  v6 = [(PXAppleMusicAudioSession *)self playerClientIdentifier];
+  playerController = [(PXAppleMusicAudioSession *)self playerController];
+  playerClientIdentifier = [(PXAppleMusicAudioSession *)self playerClientIdentifier];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__PXAppleMusicAudioSession__stateQueue_playFromTime___block_invoke;
   v7[3] = &unk_1E77365C8;
   v7[4] = self;
-  v8 = *a3;
-  [v5 clientIdentifier:v6 performAsyncPlayerTransaction:v7];
+  v8 = *time;
+  [playerController clientIdentifier:playerClientIdentifier performAsyncPlayerTransaction:v7];
 }
 
 void __53__PXAppleMusicAudioSession__stateQueue_playFromTime___block_invoke(uint64_t a1, void *a2)
@@ -645,17 +645,17 @@ void __53__PXAppleMusicAudioSession__stateQueue_playFromTime___block_invoke(uint
   [v4 play];
 }
 
-- (void)playFromTime:(id *)a3
+- (void)playFromTime:(id *)time
 {
   objc_initWeak(&location, self);
-  v5 = [(PXAppleMusicAudioSession *)self stateQueue];
+  stateQueue = [(PXAppleMusicAudioSession *)self stateQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __41__PXAppleMusicAudioSession_playFromTime___block_invoke;
   block[3] = &unk_1E7747EF8;
   objc_copyWeak(&v7, &location);
-  v8 = *a3;
-  dispatch_async(v5, block);
+  v8 = *time;
+  dispatch_async(stateQueue, block);
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -672,13 +672,13 @@ void __41__PXAppleMusicAudioSession_playFromTime___block_invoke(uint64_t a1)
 - (void)play
 {
   objc_initWeak(&location, self);
-  v3 = [(PXAppleMusicAudioSession *)self stateQueue];
+  stateQueue = [(PXAppleMusicAudioSession *)self stateQueue];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __32__PXAppleMusicAudioSession_play__block_invoke;
   v4[3] = &unk_1E774C318;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(stateQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -692,25 +692,25 @@ void __32__PXAppleMusicAudioSession_play__block_invoke(uint64_t a1)
 
 - (void)pause
 {
-  v3 = [(PXAppleMusicAudioSession *)self stateQueue];
+  stateQueue = [(PXAppleMusicAudioSession *)self stateQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __33__PXAppleMusicAudioSession_pause__block_invoke;
   block[3] = &unk_1E774C648;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(stateQueue, block);
 }
 
 - (void)prepareToPlay
 {
   objc_initWeak(&location, self);
-  v3 = [(PXAppleMusicAudioSession *)self stateQueue];
+  stateQueue = [(PXAppleMusicAudioSession *)self stateQueue];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __41__PXAppleMusicAudioSession_prepareToPlay__block_invoke;
   v4[3] = &unk_1E774C318;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(stateQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -730,17 +730,17 @@ void __41__PXAppleMusicAudioSession_prepareToPlay__block_invoke(uint64_t a1)
   [(PXAppleMusicAudioSession *)self _updatePlayerVolume];
 }
 
-- (PXAppleMusicAudioSession)initWithAsset:(id)a3 volume:(float)a4 startTime:(id *)a5 queue:(id)a6 audioSessionDelegate:(id)a7 playerController:(id)a8
+- (PXAppleMusicAudioSession)initWithAsset:(id)asset volume:(float)volume startTime:(id *)time queue:(id)queue audioSessionDelegate:(id)delegate playerController:(id)controller
 {
   v27 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  assetCopy = asset;
+  queueCopy = queue;
+  delegateCopy = delegate;
+  controllerCopy = controller;
   v25.receiver = self;
   v25.super_class = PXAppleMusicAudioSession;
-  buf = *a5;
-  v19 = [(PXAudioSession *)&v25 initWithAsset:v15 volume:&buf startTime:v16 queue:v17 audioSessionDelegate:COERCE_DOUBLE(__PAIR64__(HIDWORD(buf.var0), LODWORD(a4)))];
+  buf = *time;
+  v19 = [(PXAudioSession *)&v25 initWithAsset:assetCopy volume:&buf startTime:queueCopy queue:delegateCopy audioSessionDelegate:COERCE_DOUBLE(__PAIR64__(HIDWORD(buf.var0), LODWORD(volume)))];
   if (v19)
   {
     v20 = PLAudioPlaybackGetLog();
@@ -751,14 +751,14 @@ void __41__PXAppleMusicAudioSession_prepareToPlay__block_invoke(uint64_t a1)
       LODWORD(buf.var0) = 138412546;
       *(&buf.var0 + 4) = v22;
       LOWORD(buf.var2) = 2112;
-      *(&buf.var2 + 2) = v15;
+      *(&buf.var2 + 2) = assetCopy;
       _os_log_impl(&dword_1A3C1C000, v20, OS_LOG_TYPE_DEFAULT, "Creating %@ instance to play asset %@.", &buf, 0x16u);
     }
 
-    if ([v15 catalog] != 2)
+    if ([assetCopy catalog] != 2)
     {
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v24 handleFailureInMethod:a2 object:v19 file:@"PXAppleMusicAudioSession.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"asset.catalog == PXAudioAssetCatalogAppleMusic"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v19 file:@"PXAppleMusicAudioSession.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"asset.catalog == PXAudioAssetCatalogAppleMusic"}];
     }
 
     dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);

@@ -1,21 +1,21 @@
 @interface SUWebScriptReloadContext
 - (id)_copyScriptDictionaryRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SUWebScriptReloadContext
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = [(SUWebScriptReloadContext *)self URL];
   [v4 setURL:v5];
 
-  v6 = [(SUWebScriptReloadContext *)self referringUserAgent];
-  [v4 setReferringUserAgent:v6];
+  referringUserAgent = [(SUWebScriptReloadContext *)self referringUserAgent];
+  [v4 setReferringUserAgent:referringUserAgent];
 
-  v7 = [(SUWebScriptReloadContext *)self referrerURL];
-  [v4 setReferrerURL:v7];
+  referrerURL = [(SUWebScriptReloadContext *)self referrerURL];
+  [v4 setReferrerURL:referrerURL];
 
   return v4;
 }
@@ -24,25 +24,25 @@
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v4 = [(SUWebScriptReloadContext *)self URL];
-  v5 = [v4 absoluteString];
+  absoluteString = [v4 absoluteString];
 
-  if (v5)
+  if (absoluteString)
   {
-    [v3 setObject:v5 forKey:@"url"];
+    [v3 setObject:absoluteString forKey:@"url"];
   }
 
-  v6 = [(SUWebScriptReloadContext *)self referringUserAgent];
-  if (v6)
+  referringUserAgent = [(SUWebScriptReloadContext *)self referringUserAgent];
+  if (referringUserAgent)
   {
-    [v3 setObject:v6 forKey:@"referringUserAgent"];
+    [v3 setObject:referringUserAgent forKey:@"referringUserAgent"];
   }
 
-  v7 = [(SUWebScriptReloadContext *)self referrerURL];
-  v8 = [v7 absoluteString];
+  referrerURL = [(SUWebScriptReloadContext *)self referrerURL];
+  absoluteString2 = [referrerURL absoluteString];
 
-  if (v8)
+  if (absoluteString2)
   {
-    [v3 setObject:v8 forKey:@"referrerURL"];
+    [v3 setObject:absoluteString2 forKey:@"referrerURL"];
   }
 
   v9 = [[SUScriptDictionary alloc] initWithDictionary:v3];

@@ -1,6 +1,6 @@
 @interface MCAirPlayPayloadHandler
 + (void)recomputeAirPlaySettings;
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6;
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error;
 - (void)_addDependency;
 - (void)_removeDependency;
 - (void)remove;
@@ -8,18 +8,18 @@
 
 @implementation MCAirPlayPayloadHandler
 
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error
 {
-  v7 = [(MCNewPayloadHandler *)self payload:a3];
-  v33 = self;
+  v7 = [(MCNewPayloadHandler *)self payload:installer];
+  selfCopy = self;
   [(MCAirPlayPayloadHandler *)self _addDependency];
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
   v30 = v7;
-  v8 = [v7 destinationsWithPasswords];
-  v9 = [v8 countByEnumeratingWithState:&v35 objects:v41 count:16];
+  destinationsWithPasswords = [v7 destinationsWithPasswords];
+  v9 = [destinationsWithPasswords countByEnumeratingWithState:&v35 objects:v41 count:16];
   if (v9)
   {
     v10 = v9;
@@ -32,46 +32,46 @@
       {
         if (*v36 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(destinationsWithPasswords);
         }
 
         v13 = *(*(&v35 + 1) + 8 * i);
-        v14 = [v13 deviceName];
-        if (v14)
+        deviceName = [v13 deviceName];
+        if (deviceName)
         {
-          v15 = v14;
-          v16 = [v13 password];
+          v15 = deviceName;
+          password = [v13 password];
 
-          if (v16)
+          if (password)
           {
             v17 = _MCLogObjects[0];
             if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEFAULT))
             {
               v18 = v17;
-              v19 = [v13 deviceName];
+              deviceName2 = [v13 deviceName];
               *buf = 138543362;
-              v40 = v19;
+              v40 = deviceName2;
               _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Setting AirPlay password for device name %{public}@", buf, 0xCu);
             }
 
-            v20 = [v13 password];
-            v21 = [v13 deviceName];
-            v22 = [(MCNewPayloadHandler *)v33 profileHandler];
-            v23 = [v22 profile];
-            v24 = [v23 isInstalledForSystem];
+            password2 = [v13 password];
+            deviceName3 = [v13 deviceName];
+            profileHandler = [(MCNewPayloadHandler *)selfCopy profileHandler];
+            profile = [profileHandler profile];
+            isInstalledForSystem = [profile isInstalledForSystem];
             v34 = 0;
-            LOBYTE(v28) = v24;
-            [MCKeychain setString:v20 forService:v32 account:v21 label:0 description:0 group:v31 useSystemKeychain:v28 outError:&v34];
+            LOBYTE(v28) = isInstalledForSystem;
+            [MCKeychain setString:password2 forService:v32 account:deviceName3 label:0 description:0 group:v31 useSystemKeychain:v28 outError:&v34];
             v25 = v34;
 
             if (v25)
             {
 
-              [(MCAirPlayPayloadHandler *)v33 _removeDependency];
+              [(MCAirPlayPayloadHandler *)selfCopy _removeDependency];
               v26 = 0;
-              if (a6)
+              if (error)
               {
-                *a6 = [v25 MCCopyAsPrimaryError];
+                *error = [v25 MCCopyAsPrimaryError];
               }
 
               goto LABEL_16;
@@ -80,7 +80,7 @@
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v35 objects:v41 count:16];
+      v10 = [destinationsWithPasswords countByEnumeratingWithState:&v35 objects:v41 count:16];
       if (v10)
       {
         continue;
@@ -99,13 +99,13 @@ LABEL_16:
 
 - (void)_addDependency
 {
-  v2 = [(MCNewPayloadHandler *)self payload];
+  payload = [(MCNewPayloadHandler *)self payload];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v3 = [v2 allowListDestinations];
-  v4 = [v3 countByEnumeratingWithState:&v37 objects:v42 count:16];
+  allowListDestinations = [payload allowListDestinations];
+  v4 = [allowListDestinations countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v4)
   {
     v5 = v4;
@@ -120,31 +120,31 @@ LABEL_16:
       {
         if (*v38 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allowListDestinations);
         }
 
         v10 = *(*(&v37 + 1) + 8 * i);
-        v11 = [v10 deviceName];
+        deviceName = [v10 deviceName];
 
         v12 = +[MCDependencyManager sharedManager];
-        if (v11)
+        if (deviceName)
         {
-          v13 = [v10 deviceName];
-          v14 = [v2 UUID];
+          deviceName2 = [v10 deviceName];
+          uUID = [payload UUID];
           v15 = v12;
-          v16 = v13;
-          v17 = v14;
+          v16 = deviceName2;
+          v17 = uUID;
           v18 = v7;
           v19 = v8;
         }
 
         else
         {
-          v13 = [v10 deviceID];
-          v14 = [v2 UUID];
+          deviceName2 = [v10 deviceID];
+          uUID = [payload UUID];
           v15 = v12;
-          v16 = v13;
-          v17 = v14;
+          v16 = deviceName2;
+          v17 = uUID;
           v19 = v31;
           v18 = v32;
         }
@@ -152,7 +152,7 @@ LABEL_16:
         [v15 addDependent:v16 ofParent:v17 inDomain:v18 reciprocalDomain:v19];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v37 objects:v42 count:16];
+      v5 = [allowListDestinations countByEnumeratingWithState:&v37 objects:v42 count:16];
     }
 
     while (v5);
@@ -162,8 +162,8 @@ LABEL_16:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v20 = [v2 destinationsWithPasswords];
-  v21 = [v20 countByEnumeratingWithState:&v33 objects:v41 count:16];
+  destinationsWithPasswords = [payload destinationsWithPasswords];
+  v21 = [destinationsWithPasswords countByEnumeratingWithState:&v33 objects:v41 count:16];
   if (v21)
   {
     v22 = v21;
@@ -176,17 +176,17 @@ LABEL_16:
       {
         if (*v34 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(destinationsWithPasswords);
         }
 
         v27 = *(*(&v33 + 1) + 8 * j);
         v28 = +[MCDependencyManager sharedManager];
-        v29 = [v27 deviceName];
-        v30 = [v2 UUID];
-        [v28 addDependent:v29 ofParent:v30 inDomain:v24 reciprocalDomain:v25];
+        deviceName3 = [v27 deviceName];
+        uUID2 = [payload UUID];
+        [v28 addDependent:deviceName3 ofParent:uUID2 inDomain:v24 reciprocalDomain:v25];
       }
 
-      v22 = [v20 countByEnumeratingWithState:&v33 objects:v41 count:16];
+      v22 = [destinationsWithPasswords countByEnumeratingWithState:&v33 objects:v41 count:16];
     }
 
     while (v22);
@@ -195,13 +195,13 @@ LABEL_16:
 
 - (void)_removeDependency
 {
-  v2 = [(MCNewPayloadHandler *)self payload];
+  payload = [(MCNewPayloadHandler *)self payload];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v3 = [v2 allowListDestinations];
-  v4 = [v3 countByEnumeratingWithState:&v37 objects:v42 count:16];
+  allowListDestinations = [payload allowListDestinations];
+  v4 = [allowListDestinations countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v4)
   {
     v5 = v4;
@@ -216,31 +216,31 @@ LABEL_16:
       {
         if (*v38 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allowListDestinations);
         }
 
         v10 = *(*(&v37 + 1) + 8 * i);
-        v11 = [v10 deviceName];
+        deviceName = [v10 deviceName];
 
         v12 = +[MCDependencyManager sharedManager];
-        if (v11)
+        if (deviceName)
         {
-          v13 = [v10 deviceName];
-          v14 = [v2 UUID];
+          deviceName2 = [v10 deviceName];
+          uUID = [payload UUID];
           v15 = v12;
-          v16 = v13;
-          v17 = v14;
+          v16 = deviceName2;
+          v17 = uUID;
           v18 = v7;
           v19 = v8;
         }
 
         else
         {
-          v13 = [v10 deviceID];
-          v14 = [v2 UUID];
+          deviceName2 = [v10 deviceID];
+          uUID = [payload UUID];
           v15 = v12;
-          v16 = v13;
-          v17 = v14;
+          v16 = deviceName2;
+          v17 = uUID;
           v19 = v31;
           v18 = v32;
         }
@@ -248,7 +248,7 @@ LABEL_16:
         [v15 removeDependent:v16 fromParent:v17 inDomain:v18 reciprocalDomain:v19];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v37 objects:v42 count:16];
+      v5 = [allowListDestinations countByEnumeratingWithState:&v37 objects:v42 count:16];
     }
 
     while (v5);
@@ -258,8 +258,8 @@ LABEL_16:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v20 = [v2 destinationsWithPasswords];
-  v21 = [v20 countByEnumeratingWithState:&v33 objects:v41 count:16];
+  destinationsWithPasswords = [payload destinationsWithPasswords];
+  v21 = [destinationsWithPasswords countByEnumeratingWithState:&v33 objects:v41 count:16];
   if (v21)
   {
     v22 = v21;
@@ -272,17 +272,17 @@ LABEL_16:
       {
         if (*v34 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(destinationsWithPasswords);
         }
 
         v27 = *(*(&v33 + 1) + 8 * j);
         v28 = +[MCDependencyManager sharedManager];
-        v29 = [v27 deviceName];
-        v30 = [v2 UUID];
-        [v28 removeDependent:v29 fromParent:v30 inDomain:v24 reciprocalDomain:v25];
+        deviceName3 = [v27 deviceName];
+        uUID2 = [payload UUID];
+        [v28 removeDependent:deviceName3 fromParent:uUID2 inDomain:v24 reciprocalDomain:v25];
       }
 
-      v22 = [v20 countByEnumeratingWithState:&v33 objects:v41 count:16];
+      v22 = [destinationsWithPasswords countByEnumeratingWithState:&v33 objects:v41 count:16];
     }
 
     while (v22);
@@ -291,10 +291,10 @@ LABEL_16:
 
 - (void)remove
 {
-  v3 = [(MCNewPayloadHandler *)self profileHandler];
-  v4 = [v3 isSetAside];
+  profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+  isSetAside = [profileHandler isSetAside];
 
-  if ((v4 & 1) == 0)
+  if ((isSetAside & 1) == 0)
   {
 
     [(MCAirPlayPayloadHandler *)self _removeDependency];
@@ -449,8 +449,8 @@ LABEL_16:
   v28 = CFPreferencesCopyAppValue(@"deviceFilter", @"com.apple.airplay");
   if (v28 | v8 && ([v8 allObjects], v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(v28, "isEqualToArray:", v29), v29, (v30 & 1) == 0))
   {
-    v32 = [v8 allObjects];
-    CFPreferencesSetAppValue(@"deviceFilter", v32, @"com.apple.airplay");
+    allObjects = [v8 allObjects];
+    CFPreferencesSetAppValue(@"deviceFilter", allObjects, @"com.apple.airplay");
 
     v31 = 1;
   }
@@ -463,8 +463,8 @@ LABEL_16:
   v33 = CFPreferencesCopyAppValue(@"deviceNameFilter", @"com.apple.airplay");
   if (v33 | v20 && ([v20 allObjects], v34 = objc_claimAutoreleasedReturnValue(), v35 = objc_msgSend(v33, "isEqualToArray:", v34), v34, (v35 & 1) == 0))
   {
-    v36 = [v20 allObjects];
-    CFPreferencesSetAppValue(@"deviceNameFilter", v36, @"com.apple.airplay");
+    allObjects2 = [v20 allObjects];
+    CFPreferencesSetAppValue(@"deviceNameFilter", allObjects2, @"com.apple.airplay");
   }
 
   else if (!v31)

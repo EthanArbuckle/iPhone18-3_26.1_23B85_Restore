@@ -1,39 +1,39 @@
 @interface SGM2EventICSOpportunity
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)key;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsRecipient:(id)a3;
-- (int)StringAsSource:(id)a3;
+- (int)StringAsRecipient:(id)recipient;
+- (int)StringAsSource:(id)source;
 - (int)recipient;
 - (int)source;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAccountSetup:(BOOL)a3;
-- (void)setHasSource:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAccountSetup:(BOOL)setup;
+- (void)setHasSource:(BOOL)source;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SGM2EventICSOpportunity
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(SGM2EventICSOpportunity *)self setKey:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 2) != 0)
   {
-    self->_source = *(v4 + 5);
+    self->_source = *(fromCopy + 5);
     *&self->_has |= 2u;
-    v5 = *(v4 + 28);
+    v5 = *(fromCopy + 28);
     if ((v5 & 1) == 0)
     {
 LABEL_5:
@@ -46,17 +46,17 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 28) & 1) == 0)
+  else if ((*(fromCopy + 28) & 1) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_recipient = *(v4 + 4);
+  self->_recipient = *(fromCopy + 4);
   *&self->_has |= 1u;
-  if ((*(v4 + 28) & 4) != 0)
+  if ((*(fromCopy + 28) & 4) != 0)
   {
 LABEL_6:
-    self->_accountSetup = *(v4 + 24);
+    self->_accountSetup = *(fromCopy + 24);
     *&self->_has |= 4u;
   }
 
@@ -104,16 +104,16 @@ LABEL_4:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   key = self->_key;
-  if (key | *(v4 + 1))
+  if (key | *(equalCopy + 1))
   {
     if (![(NSString *)key isEqual:?])
     {
@@ -123,34 +123,34 @@ LABEL_4:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_source != *(v4 + 5))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_source != *(equalCopy + 5))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 28) & 2) != 0)
+  else if ((*(equalCopy + 28) & 2) != 0)
   {
     goto LABEL_16;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_recipient != *(v4 + 4))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_recipient != *(equalCopy + 4))
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
     goto LABEL_16;
   }
 
-  v6 = (*(v4 + 28) & 4) == 0;
+  v6 = (*(equalCopy + 28) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 28) & 4) == 0)
+    if ((*(equalCopy + 28) & 4) == 0)
     {
 LABEL_16:
       v6 = 0;
@@ -159,13 +159,13 @@ LABEL_16:
 
     if (self->_accountSetup)
     {
-      if ((*(v4 + 24) & 1) == 0)
+      if ((*(equalCopy + 24) & 1) == 0)
       {
         goto LABEL_16;
       }
     }
 
-    else if (*(v4 + 24))
+    else if (*(equalCopy + 24))
     {
       goto LABEL_16;
     }
@@ -178,10 +178,10 @@ LABEL_17:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_key copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_key copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -223,21 +223,21 @@ LABEL_4:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_key)
   {
-    v6 = v4;
-    [v4 setKey:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setKey:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 5) = self->_source;
-    *(v4 + 28) |= 2u;
+    *(toCopy + 5) = self->_source;
+    *(toCopy + 28) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -256,26 +256,26 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 4) = self->_recipient;
-  *(v4 + 28) |= 1u;
+  *(toCopy + 4) = self->_recipient;
+  *(toCopy + 28) |= 1u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_6:
-    *(v4 + 24) = self->_accountSetup;
-    *(v4 + 28) |= 4u;
+    *(toCopy + 24) = self->_accountSetup;
+    *(toCopy + 28) |= 4u;
   }
 
 LABEL_7:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_key)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -283,7 +283,7 @@ LABEL_7:
   {
     source = self->_source;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -304,13 +304,13 @@ LABEL_5:
 
   recipient = self->_recipient;
   PBDataWriterWriteInt32Field();
-  v4 = v9;
+  toCopy = v9;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_6:
     accountSetup = self->_accountSetup;
     PBDataWriterWriteBOOLField();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_7:
@@ -318,12 +318,12 @@ LABEL_7:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   key = self->_key;
   if (key)
   {
-    [v3 setObject:key forKey:@"key"];
+    [dictionary setObject:key forKey:@"key"];
   }
 
   has = self->_has;
@@ -393,15 +393,15 @@ LABEL_7:
   v8.receiver = self;
   v8.super_class = SGM2EventICSOpportunity;
   v4 = [(SGM2EventICSOpportunity *)&v8 description];
-  v5 = [(SGM2EventICSOpportunity *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SGM2EventICSOpportunity *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasAccountSetup:(BOOL)a3
+- (void)setHasAccountSetup:(BOOL)setup
 {
-  if (a3)
+  if (setup)
   {
     v3 = 4;
   }
@@ -414,30 +414,30 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsRecipient:(id)a3
+- (int)StringAsRecipient:(id)recipient
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SGMEventICSSourceTypeiCloud"])
+  recipientCopy = recipient;
+  if ([recipientCopy isEqualToString:@"SGMEventICSSourceTypeiCloud"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventICSSourceTypeGoogle"])
+  else if ([recipientCopy isEqualToString:@"SGMEventICSSourceTypeGoogle"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventICSSourceTypeYahoo"])
+  else if ([recipientCopy isEqualToString:@"SGMEventICSSourceTypeYahoo"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventICSSourceTypeOffice"])
+  else if ([recipientCopy isEqualToString:@"SGMEventICSSourceTypeOffice"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventICSSourceTypeOther"])
+  else if ([recipientCopy isEqualToString:@"SGMEventICSSourceTypeOther"])
   {
     v4 = 4;
   }
@@ -463,30 +463,30 @@ LABEL_7:
   }
 }
 
-- (int)StringAsSource:(id)a3
+- (int)StringAsSource:(id)source
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SGMEventICSSourceTypeiCloud"])
+  sourceCopy = source;
+  if ([sourceCopy isEqualToString:@"SGMEventICSSourceTypeiCloud"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventICSSourceTypeGoogle"])
+  else if ([sourceCopy isEqualToString:@"SGMEventICSSourceTypeGoogle"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventICSSourceTypeYahoo"])
+  else if ([sourceCopy isEqualToString:@"SGMEventICSSourceTypeYahoo"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventICSSourceTypeOffice"])
+  else if ([sourceCopy isEqualToString:@"SGMEventICSSourceTypeOffice"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventICSSourceTypeOther"])
+  else if ([sourceCopy isEqualToString:@"SGMEventICSSourceTypeOther"])
   {
     v4 = 4;
   }
@@ -499,9 +499,9 @@ LABEL_7:
   return v4;
 }
 
-- (void)setHasSource:(BOOL)a3
+- (void)setHasSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 2;
   }

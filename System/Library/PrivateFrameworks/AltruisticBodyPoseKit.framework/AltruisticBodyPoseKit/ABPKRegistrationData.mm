@@ -1,5 +1,5 @@
 @interface ABPKRegistrationData
-- (ABPKRegistrationData)initWithImagePoints:(ABPKRegistrationData *)self imagePointsCount:(SEL)a2 jointsLifted3D:jointsLifted3DCount:cameraIntrinsics:imageDimensions:cameraFromBodyPose:registrationValid:;
+- (ABPKRegistrationData)initWithImagePoints:(ABPKRegistrationData *)self imagePointsCount:(SEL)count jointsLifted3D:jointsLifted3DCount:cameraIntrinsics:imageDimensions:cameraFromBodyPose:registrationValid:;
 - (CGSize)imageDimensions;
 - (__n128)cameraFromBodyPose;
 - (__n128)cameraIntrinsics;
@@ -8,7 +8,7 @@
 
 @implementation ABPKRegistrationData
 
-- (ABPKRegistrationData)initWithImagePoints:(ABPKRegistrationData *)self imagePointsCount:(SEL)a2 jointsLifted3D:jointsLifted3DCount:cameraIntrinsics:imageDimensions:cameraFromBodyPose:registrationValid:
+- (ABPKRegistrationData)initWithImagePoints:(ABPKRegistrationData *)self imagePointsCount:(SEL)count jointsLifted3D:jointsLifted3DCount:cameraIntrinsics:imageDimensions:cameraFromBodyPose:registrationValid:
 {
   v12 = v6;
   v13 = v5;
@@ -83,9 +83,9 @@
 
 - (__n128)cameraIntrinsics
 {
-  result = *(a1 + 96);
-  v2 = *(a1 + 112);
-  v3 = *(a1 + 128);
+  result = *(self + 96);
+  v2 = *(self + 112);
+  v3 = *(self + 128);
   return result;
 }
 
@@ -100,10 +100,10 @@
 
 - (__n128)cameraFromBodyPose
 {
-  result = *(a1 + 144);
-  v2 = *(a1 + 160);
-  v3 = *(a1 + 176);
-  v4 = *(a1 + 192);
+  result = *(self + 144);
+  v2 = *(self + 160);
+  v3 = *(self + 176);
+  v4 = *(self + 192);
   return result;
 }
 

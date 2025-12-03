@@ -1,18 +1,18 @@
 @interface NSData
-+ (NSData)dataWithHexString:(id)a3;
-+ (id)adjustData:(id)a3 toLength:(unint64_t)a4;
-+ (id)generateRandomBytesOfSize:(unint64_t)a3;
++ (NSData)dataWithHexString:(id)string;
++ (id)adjustData:(id)data toLength:(unint64_t)length;
++ (id)generateRandomBytesOfSize:(unint64_t)size;
 - (id)hexStringRepresentation;
 @end
 
 @implementation NSData
 
-+ (id)generateRandomBytesOfSize:(unint64_t)a3
++ (id)generateRandomBytesOfSize:(unint64_t)size
 {
   v4 = [NSMutableData dataWithCapacity:?];
-  if (a3 >= 4)
+  if (size >= 4)
   {
-    v5 = a3 >> 2;
+    v5 = size >> 2;
     v6 = 1;
     do
     {
@@ -26,10 +26,10 @@
   return v4;
 }
 
-+ (NSData)dataWithHexString:(id)a3
++ (NSData)dataWithHexString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 length];
+  stringCopy = string;
+  v4 = [stringCopy length];
   v5 = v4;
   if (v4 && (v4 & 1) == 0)
   {
@@ -37,11 +37,11 @@
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 mutableBytes];
-      v9 = [v3 UTF8String];
+      mutableBytes = [v6 mutableBytes];
+      uTF8String = [stringCopy UTF8String];
       __str[2] = 0;
-      v10 = *v9;
-      if (!*v9)
+      v10 = *uTF8String;
+      if (!*uTF8String)
       {
 LABEL_11:
         v13 = [v7 copy];
@@ -50,7 +50,7 @@ LABEL_22:
         goto LABEL_23;
       }
 
-      v11 = v9 + 2;
+      v11 = uTF8String + 2;
       while (1)
       {
         __str[0] = v10;
@@ -72,7 +72,7 @@ LABEL_22:
           break;
         }
 
-        *v8++ = strtoul(__str, 0, 16);
+        *mutableBytes++ = strtoul(__str, 0, 16);
         v10 = *v11;
         v11 += 2;
         if (!v10)
@@ -108,7 +108,7 @@ LABEL_22:
   v14 = qword_1000B84A0;
   if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_ERROR))
   {
-    sub_10005F800(v3, v5, v14);
+    sub_10005F800(stringCopy, v5, v14);
   }
 
   v13 = 0;
@@ -117,16 +117,16 @@ LABEL_23:
   return v13;
 }
 
-+ (id)adjustData:(id)a3 toLength:(unint64_t)a4
++ (id)adjustData:(id)data toLength:(unint64_t)length
 {
-  v5 = a3;
-  v6 = [v5 mutableCopy];
-  v7 = [v6 length] - a4;
+  dataCopy = data;
+  v6 = [dataCopy mutableCopy];
+  v7 = [v6 length] - length;
   if (v7 < 1)
   {
     if (v7 < 0)
     {
-      v8 = +[NSData dataWithBytes:length:](NSData, "dataWithBytes:length:", [v5 bytes], a4);
+      v8 = +[NSData dataWithBytes:length:](NSData, "dataWithBytes:length:", [dataCopy bytes], length);
       v9 = [v8 mutableCopy];
 
       v6 = v9;
@@ -147,10 +147,10 @@ LABEL_23:
 {
   v3 = [(NSData *)self length];
   v4 = [NSMutableString stringWithCapacity:2 * v3];
-  v5 = [(NSData *)self bytes];
+  bytes = [(NSData *)self bytes];
   if (v3)
   {
-    v6 = v5;
+    v6 = bytes;
     do
     {
       v7 = *v6++;

@@ -1,9 +1,9 @@
 @interface BSUIDownloadProgressCenter
 - (BSUIDownloadProgressCenter)init;
-- (id)dynamicProgressForKind:(id)a3 instance:(id)a4 parameters:(id)a5;
-- (void)_audiobookDownloadStatusNotification:(id)a3;
-- (void)_ubiquityDownloadStatusNotification:(id)a3;
-- (void)downloadQueue:(id)a3 downloadStatesDidChange:(id)a4;
+- (id)dynamicProgressForKind:(id)kind instance:(id)instance parameters:(id)parameters;
+- (void)_audiobookDownloadStatusNotification:(id)notification;
+- (void)_ubiquityDownloadStatusNotification:(id)notification;
+- (void)downloadQueue:(id)queue downloadStatesDidChange:(id)change;
 @end
 
 @implementation BSUIDownloadProgressCenter
@@ -43,11 +43,11 @@
   return v2;
 }
 
-- (id)dynamicProgressForKind:(id)a3 instance:(id)a4 parameters:(id)a5
+- (id)dynamicProgressForKind:(id)kind instance:(id)instance parameters:(id)parameters
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  kindCopy = kind;
+  instanceCopy = instance;
+  parametersCopy = parameters;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -59,14 +59,14 @@
   block[1] = 3221225472;
   block[2] = sub_29C9C;
   block[3] = &unk_387C08;
-  v20 = v10;
+  v20 = parametersCopy;
   v21 = &v22;
   block[4] = self;
-  v18 = v9;
-  v19 = v8;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v18 = instanceCopy;
+  v19 = kindCopy;
+  v12 = parametersCopy;
+  v13 = kindCopy;
+  v14 = instanceCopy;
   dispatch_sync(accessQ, block);
   v15 = v23[5];
 
@@ -75,14 +75,14 @@
   return v15;
 }
 
-- (void)downloadQueue:(id)a3 downloadStatesDidChange:(id)a4
+- (void)downloadQueue:(id)queue downloadStatesDidChange:(id)change
 {
-  v12 = a3;
+  queueCopy = queue;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = a4;
+  obj = change;
   v6 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v6)
   {
@@ -115,8 +115,8 @@
         dispatch_sync(accessQ, block);
         if (v16[5])
         {
-          v11 = [v9 percentComplete];
-          [v16[5] setProgress:v11];
+          percentComplete = [v9 percentComplete];
+          [v16[5] setProgress:percentComplete];
         }
 
         _Block_object_dispose(&v15, 8);
@@ -132,12 +132,12 @@
   }
 }
 
-- (void)_audiobookDownloadStatusNotification:(id)a3
+- (void)_audiobookDownloadStatusNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   objc_opt_class();
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"BSUIAudioBookDownloadProgressKey"];
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"BSUIAudioBookDownloadProgressKey"];
   v7 = BUDynamicCast();
 
   if (v7)
@@ -163,24 +163,24 @@
       v10 = BCBookDownloadLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
-        v11 = [v9 progress];
-        sub_2BD7B4(v11, buf, v10);
+        progress = [v9 progress];
+        sub_2BD7B4(progress, buf, v10);
       }
 
-      v12 = [v9 progress];
-      [v17[5] setProgress:v12];
+      progress2 = [v9 progress];
+      [v17[5] setProgress:progress2];
     }
 
     _Block_object_dispose(&v16, 8);
   }
 }
 
-- (void)_ubiquityDownloadStatusNotification:(id)a3
+- (void)_ubiquityDownloadStatusNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   objc_opt_class();
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"BSUIUbiquityDownloadProgressKey"];
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"BSUIUbiquityDownloadProgressKey"];
   v7 = BUDynamicCast();
 
   if (v7)
@@ -206,12 +206,12 @@
       v10 = BCBookDownloadLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
-        v11 = [v9 progress];
-        sub_2BD80C(v11, buf, v10);
+        progress = [v9 progress];
+        sub_2BD80C(progress, buf, v10);
       }
 
-      v12 = [v9 progress];
-      [v17[5] setProgress:v12];
+      progress2 = [v9 progress];
+      [v17[5] setProgress:progress2];
     }
 
     _Block_object_dispose(&v16, 8);

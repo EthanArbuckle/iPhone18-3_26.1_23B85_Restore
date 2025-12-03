@@ -1,18 +1,18 @@
 @interface ADDeviceAuthenticationSessionV1
 - (ADDeviceAuthenticationSessionV1)init;
-- (BOOL)completeWithHandshakeResponse:(id)a3 error:(id *)a4;
-- (id)_exchangeData:(id)a3 error:(id *)a4;
-- (id)handshakeRequestWithCertificateData:(id)a3 error:(id *)a4;
-- (id)signData:(id)a3 error:(id *)a4;
+- (BOOL)completeWithHandshakeResponse:(id)response error:(id *)error;
+- (id)_exchangeData:(id)data error:(id *)error;
+- (id)handshakeRequestWithCertificateData:(id)data error:(id *)error;
+- (id)signData:(id)data error:(id *)error;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation ADDeviceAuthenticationSessionV1
 
-- (id)signData:(id)a3 error:(id *)a4
+- (id)signData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v7 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
   {
@@ -31,11 +31,11 @@
     {
       v10 = [NSError errorWithDomain:@"com.apple.assistant.deviceAuth.session.GenericError" code:v9 userInfo:&off_1005340E0];
       v11 = v10;
-      if (a4)
+      if (error)
       {
         v12 = v10;
         v13 = 0;
-        *a4 = v11;
+        *error = v11;
       }
 
       else
@@ -61,7 +61,7 @@
   return v13;
 }
 
-- (id)_exchangeData:(id)a3 error:(id *)a4
+- (id)_exchangeData:(id)data error:(id *)error
 {
   fairplayContext = self->_fairplayContext;
   if (!fairplayContext)
@@ -75,12 +75,12 @@ LABEL_12:
   v26 = 0;
   v25 = 0;
   v24 = -1;
-  v8 = a3;
-  v9 = a3;
-  v10 = [v9 bytes];
-  v11 = [v9 length];
+  dataCopy = data;
+  dataCopy2 = data;
+  bytes = [dataCopy2 bytes];
+  v11 = [dataCopy2 length];
 
-  sub_100050AC8(200, &self->_hardwareInfo, fairplayContext, v10, v11, &v26, &v25, &v24);
+  sub_100050AC8(200, &self->_hardwareInfo, fairplayContext, bytes, v11, &v26, &v25, &v24);
   if (v12)
   {
     v13 = v12;
@@ -109,10 +109,10 @@ LABEL_12:
     v17 = v16;
     v18 = [NSError errorWithDomain:v17 code:v15 userInfo:&off_1005340B8];
     v19 = v18;
-    if (a4)
+    if (error)
     {
       v20 = v18;
-      *a4 = v19;
+      *error = v19;
     }
 
     goto LABEL_12;
@@ -139,9 +139,9 @@ LABEL_18:
   return v21;
 }
 
-- (BOOL)completeWithHandshakeResponse:(id)a3 error:(id *)a4
+- (BOOL)completeWithHandshakeResponse:(id)response error:(id *)error
 {
-  v6 = a3;
+  responseCopy = response;
   v7 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
   {
@@ -150,15 +150,15 @@ LABEL_18:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s ", &v11, 0xCu);
   }
 
-  v8 = [(ADDeviceAuthenticationSessionV1 *)self _exchangeData:v6 error:a4];
+  v8 = [(ADDeviceAuthenticationSessionV1 *)self _exchangeData:responseCopy error:error];
   v9 = v8 != 0;
 
   return v9;
 }
 
-- (id)handshakeRequestWithCertificateData:(id)a3 error:(id *)a4
+- (id)handshakeRequestWithCertificateData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v7 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
   {
@@ -167,7 +167,7 @@ LABEL_18:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s ", &v10, 0xCu);
   }
 
-  v8 = [(ADDeviceAuthenticationSessionV1 *)self _exchangeData:v6 error:a4];
+  v8 = [(ADDeviceAuthenticationSessionV1 *)self _exchangeData:dataCopy error:error];
 
   return v8;
 }

@@ -1,21 +1,21 @@
 @interface TSDButtonKnob
-- (BOOL)isHitByUnscaledPoint:(CGPoint)a3 andRep:(id)a4 returningDistance:(double *)a5;
-- (TSDButtonKnob)initWithImage:(id)a3 tag:(unint64_t)a4 onRep:(id)a5;
+- (BOOL)isHitByUnscaledPoint:(CGPoint)point andRep:(id)rep returningDistance:(double *)distance;
+- (TSDButtonKnob)initWithImage:(id)image tag:(unint64_t)tag onRep:(id)rep;
 - (id)knobImage;
 - (void)dealloc;
 - (void)p_updateLayerImage;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setImage:(id)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setImage:(id)image;
 @end
 
 @implementation TSDButtonKnob
 
-- (TSDButtonKnob)initWithImage:(id)a3 tag:(unint64_t)a4 onRep:(id)a5
+- (TSDButtonKnob)initWithImage:(id)image tag:(unint64_t)tag onRep:(id)rep
 {
-  if (a3)
+  if (image)
   {
-    [a3 size];
+    [image size];
   }
 
   else
@@ -26,10 +26,10 @@
 
   v13.receiver = self;
   v13.super_class = TSDButtonKnob;
-  v11 = [(TSDKnob *)&v13 initWithType:0 position:a4 radius:a5 tag:*MEMORY[0x277CBF348] onRep:*(MEMORY[0x277CBF348] + 8), fmax(v9, v10) * 0.5];
+  v11 = [(TSDKnob *)&v13 initWithType:0 position:tag radius:rep tag:*MEMORY[0x277CBF348] onRep:*(MEMORY[0x277CBF348] + 8), fmax(v9, v10) * 0.5];
   if (v11)
   {
-    v11->mImage = a3;
+    v11->mImage = image;
     v11->mEnabled = 1;
   }
 
@@ -43,17 +43,17 @@
   [(TSDKnob *)&v3 dealloc];
 }
 
-- (BOOL)isHitByUnscaledPoint:(CGPoint)a3 andRep:(id)a4 returningDistance:(double *)a5
+- (BOOL)isHitByUnscaledPoint:(CGPoint)point andRep:(id)rep returningDistance:(double *)distance
 {
-  y = a3.y;
-  x = a3.x;
-  v10 = [(TSDKnob *)self layer];
-  if ([(CALayer *)v10 isHidden])
+  y = point.y;
+  x = point.x;
+  layer = [(TSDKnob *)self layer];
+  if ([(CALayer *)layer isHidden])
   {
     return 0;
   }
 
-  [(CALayer *)v10 opacity];
+  [(CALayer *)layer opacity];
   if (v11 <= 0.0)
   {
     return 0;
@@ -61,7 +61,7 @@
 
   v13.receiver = self;
   v13.super_class = TSDButtonKnob;
-  return [(TSDKnob *)&v13 isHitByUnscaledPoint:a4 andRep:a5 returningDistance:x, y];
+  return [(TSDKnob *)&v13 isHitByUnscaledPoint:rep andRep:distance returningDistance:x, y];
 }
 
 - (id)knobImage
@@ -73,7 +73,7 @@
       return self->mImage;
     }
 
-    v3 = [MEMORY[0x277D6C2A8] blackColor];
+    blackColor = [MEMORY[0x277D6C2A8] blackColor];
     mImage = self->mImage;
     v5 = 0.466666669;
     v6 = kCGBlendModeSourceAtop;
@@ -81,50 +81,50 @@
 
   else
   {
-    v3 = [MEMORY[0x277D6C2A8] lightGrayColor];
+    blackColor = [MEMORY[0x277D6C2A8] lightGrayColor];
     mImage = self->mImage;
     v5 = 0.5;
     v6 = kCGBlendModeDestinationOut;
   }
 
-  return TSUCompositeImageWithColor(mImage, v3, v6, v5);
+  return TSUCompositeImageWithColor(mImage, blackColor, v6, v5);
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
   mImage = self->mImage;
-  if (mImage != a3)
+  if (mImage != image)
   {
 
-    self->mImage = a3;
+    self->mImage = image;
 
     [(TSDButtonKnob *)self p_updateLayerImage];
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->mEnabled != a3)
+  if (self->mEnabled != enabled)
   {
-    self->mEnabled = a3;
+    self->mEnabled = enabled;
     [(TSDButtonKnob *)self p_updateLayerImage];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->mHighlighted != a3)
+  if (self->mHighlighted != highlighted)
   {
-    self->mHighlighted = a3;
+    self->mHighlighted = highlighted;
     [(TSDButtonKnob *)self p_updateLayerImage];
   }
 }
 
 - (void)p_updateLayerImage
 {
-  v3 = [(TSDButtonKnob *)self knobImage];
+  knobImage = [(TSDButtonKnob *)self knobImage];
   [(TSDCanvas *)[(TSDRep *)[(TSDKnob *)self rep] canvas] contentsScale];
-  v4 = [v3 CGImageForContentsScale:?];
+  v4 = [knobImage CGImageForContentsScale:?];
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
   [(CALayer *)[(TSDKnob *)self layer] setContents:v4];

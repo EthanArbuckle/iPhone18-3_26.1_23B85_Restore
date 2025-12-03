@@ -1,15 +1,15 @@
 @interface _UIFindNavigatorViewLayout
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)preferredContentSize;
 - (UIFont)preferredTextFieldFont;
-- (id)commonButtonConfigWithGlass:(BOOL)a3 withCompletion:(id)a4;
-- (id)commonButtonConfigWithImageName:(id)a3 isAccessory:(BOOL)a4;
-- (id)commonButtonConfigWithTitle:(id)a3 isGlass:(BOOL)a4;
+- (id)commonButtonConfigWithGlass:(BOOL)glass withCompletion:(id)completion;
+- (id)commonButtonConfigWithImageName:(id)name isAccessory:(BOOL)accessory;
+- (id)commonButtonConfigWithTitle:(id)title isGlass:(BOOL)glass;
 @end
 
 @implementation _UIFindNavigatorViewLayout
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v3 = objc_opt_class();
   v4 = objc_opt_class();
@@ -21,14 +21,14 @@
 {
   if (self->_usesAssistantBarHeight)
   {
-    v3 = [(UIView *)self traitCollection];
-    [UISystemInputAssistantViewController _defaultPreferredHeightForTraitCollection:v3];
+    traitCollection = [(UIView *)self traitCollection];
+    [UISystemInputAssistantViewController _defaultPreferredHeightForTraitCollection:traitCollection];
   }
 
   else
   {
-    v5 = [(UIView *)self _inheritedRenderConfig];
-    if ([v5 colorAdaptiveBackground])
+    _inheritedRenderConfig = [(UIView *)self _inheritedRenderConfig];
+    if ([_inheritedRenderConfig colorAdaptiveBackground])
     {
       v6 = 53.0;
     }
@@ -38,8 +38,8 @@
       v6 = 49.0;
     }
 
-    v3 = [(_UIFindNavigatorViewLayout *)self preferredTextFieldFont];
-    [v3 _scaledValueForValue:v6];
+    traitCollection = [(_UIFindNavigatorViewLayout *)self preferredTextFieldFont];
+    [traitCollection _scaledValueForValue:v6];
     UIRoundToViewScale(self);
   }
 
@@ -54,21 +54,21 @@
 
 - (UIFont)preferredTextFieldFont
 {
-  v2 = [(_UIFindNavigatorViewLayout *)self preferredMaximumContentSizeCategory];
-  v3 = [off_1E70ECC18 _preferredFontForTextStyle:@"UICTFontTextStyleBody" maximumContentSizeCategory:v2];
+  preferredMaximumContentSizeCategory = [(_UIFindNavigatorViewLayout *)self preferredMaximumContentSizeCategory];
+  v3 = [off_1E70ECC18 _preferredFontForTextStyle:@"UICTFontTextStyleBody" maximumContentSizeCategory:preferredMaximumContentSizeCategory];
 
   return v3;
 }
 
-- (id)commonButtonConfigWithGlass:(BOOL)a3 withCompletion:(id)a4
+- (id)commonButtonConfigWithGlass:(BOOL)glass withCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  glassCopy = glass;
+  completionCopy = completion;
   v7 = +[UIButtonConfiguration borderlessButtonConfiguration];
-  v8 = [(UIView *)self _inheritedRenderConfig];
-  v9 = [v8 colorAdaptiveBackground];
+  _inheritedRenderConfig = [(UIView *)self _inheritedRenderConfig];
+  colorAdaptiveBackground = [_inheritedRenderConfig colorAdaptiveBackground];
 
-  if (v9 && v4)
+  if (colorAdaptiveBackground && glassCopy)
   {
     v10 = +[UIButtonConfiguration glassButtonConfiguration];
 
@@ -76,24 +76,24 @@
   }
 
   [v7 setMacIdiomStyle:1];
-  v6[2](v6, v7);
+  completionCopy[2](completionCopy, v7);
 
   return v7;
 }
 
-- (id)commonButtonConfigWithTitle:(id)a3 isGlass:(BOOL)a4
+- (id)commonButtonConfigWithTitle:(id)title isGlass:(BOOL)glass
 {
-  v4 = a4;
-  v6 = a3;
+  glassCopy = glass;
+  titleCopy = title;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __66___UIFindNavigatorViewLayout_commonButtonConfigWithTitle_isGlass___block_invoke;
   v10[3] = &unk_1E70F34F0;
-  v7 = v6;
+  v7 = titleCopy;
   v11 = v7;
   objc_copyWeak(&v12, &location);
-  v8 = [(_UIFindNavigatorViewLayout *)self commonButtonConfigWithGlass:v4 withCompletion:v10];
+  v8 = [(_UIFindNavigatorViewLayout *)self commonButtonConfigWithGlass:glassCopy withCompletion:v10];
   objc_destroyWeak(&v12);
 
   objc_destroyWeak(&location);
@@ -101,15 +101,15 @@
   return v8;
 }
 
-- (id)commonButtonConfigWithImageName:(id)a3 isAccessory:(BOOL)a4
+- (id)commonButtonConfigWithImageName:(id)name isAccessory:(BOOL)accessory
 {
-  v5 = a3;
+  nameCopy = name;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __74___UIFindNavigatorViewLayout_commonButtonConfigWithImageName_isAccessory___block_invoke;
   v9[3] = &unk_1E70F3518;
-  v10 = v5;
-  v6 = v5;
+  v10 = nameCopy;
+  v6 = nameCopy;
   v7 = [(_UIFindNavigatorViewLayout *)self commonButtonConfigWithGlass:0 withCompletion:v9];
 
   return v7;

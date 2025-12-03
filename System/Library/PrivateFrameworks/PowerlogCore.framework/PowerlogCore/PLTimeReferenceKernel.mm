@@ -3,7 +3,7 @@
 - (id)currentTime;
 - (mach_timebase_info)getTimebaseInfo;
 - (void)currentTime;
-- (void)initializeOffsetWithEntries:(id)a3;
+- (void)initializeOffsetWithEntries:(id)entries;
 @end
 
 @implementation PLTimeReferenceKernel
@@ -16,31 +16,31 @@
     [PLTimeReferenceKernel currentTime];
   }
 
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [(PLTimeReferenceKernel *)self lastSystemTimeRecalibrated];
-  if (!v4)
+  date = [MEMORY[0x1E695DF00] date];
+  lastSystemTimeRecalibrated = [(PLTimeReferenceKernel *)self lastSystemTimeRecalibrated];
+  if (!lastSystemTimeRecalibrated)
   {
     goto LABEL_8;
   }
 
-  v5 = v4;
-  v6 = [(PLTimeReferenceKernel *)self lastSystemTimeRecalibrated];
-  [v3 timeIntervalSinceDate:v6];
+  v5 = lastSystemTimeRecalibrated;
+  lastSystemTimeRecalibrated2 = [(PLTimeReferenceKernel *)self lastSystemTimeRecalibrated];
+  [date timeIntervalSinceDate:lastSystemTimeRecalibrated2];
   v8 = v7;
 
   if (v8 >= 0.0 && v8 < 30.0)
   {
-    v12 = [(PLTimeReferenceKernel *)self lastKernelTimeRecalibrated];
-    v13 = [v12 dateByAddingTimeInterval:v8];
+    lastKernelTimeRecalibrated = [(PLTimeReferenceKernel *)self lastKernelTimeRecalibrated];
+    v13 = [lastKernelTimeRecalibrated dateByAddingTimeInterval:v8];
 
     v14 = PLLogTimeManager();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
-      v20 = [(PLTimeReferenceKernel *)self lastSystemTimeRecalibrated];
+      lastSystemTimeRecalibrated3 = [(PLTimeReferenceKernel *)self lastSystemTimeRecalibrated];
       *buf = 138412802;
-      *&buf[4] = v3;
+      *&buf[4] = date;
       v23 = 2112;
-      v24 = v20;
+      v24 = lastSystemTimeRecalibrated3;
       v25 = 2112;
       v26 = v13;
       _os_log_debug_impl(&dword_1D8611000, v14, OS_LOG_TYPE_DEBUG, "Linear approximation: systemNow=%@, lastSystemTimeRecalibrated=%@, currentTime=%@", buf, 0x20u);
@@ -60,23 +60,23 @@ LABEL_8:
         [PLTimeReferenceKernel currentTime];
       }
 
-      v11 = [MEMORY[0x1E695DF00] date];
+      date2 = [MEMORY[0x1E695DF00] date];
     }
 
     else
     {
       v15 = *buf / 1000000.0;
       [(PLTimeReferenceKernel *)self resolution];
-      v11 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:v15 + v16 * 0.5];
+      date2 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:v15 + v16 * 0.5];
     }
 
-    v13 = v11;
-    [(PLTimeReferenceKernel *)self setLastSystemTimeRecalibrated:v3];
+    v13 = date2;
+    [(PLTimeReferenceKernel *)self setLastSystemTimeRecalibrated:date];
     [(PLTimeReferenceKernel *)self setLastKernelTimeRecalibrated:v13];
     v17 = PLLogTimeManager();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      [(PLTimeReferenceKernel *)v3 currentTime];
+      [(PLTimeReferenceKernel *)date currentTime];
     }
   }
 
@@ -95,22 +95,22 @@ LABEL_8:
   return *&resolution_sInterval;
 }
 
-- (void)initializeOffsetWithEntries:(id)a3
+- (void)initializeOffsetWithEntries:(id)entries
 {
-  v4 = a3;
-  v5 = [(PLTimeReferenceKernel *)self currentTime];
-  if (v4 && [v4 count])
+  entriesCopy = entries;
+  currentTime = [(PLTimeReferenceKernel *)self currentTime];
+  if (entriesCopy && [entriesCopy count])
   {
-    v6 = [v4 lastObject];
-    v7 = [v6 objectForKeyedSubscript:@"system"];
+    lastObject = [entriesCopy lastObject];
+    v7 = [lastObject objectForKeyedSubscript:@"system"];
     [v7 doubleValue];
     v9 = v8;
 
-    v10 = [v6 objectForKeyedSubscript:@"kernel"];
+    v10 = [lastObject objectForKeyedSubscript:@"kernel"];
     [v10 doubleValue];
     v12 = v11;
 
-    v13 = [v6 entryDate];
+    entryDate = [lastObject entryDate];
   }
 
   else
@@ -135,21 +135,21 @@ LABEL_8:
     v21 = [-[PLTimeReferenceKernel class](&v34 class)];
     v22 = [PLDefaults objectForKey:v21];
     [v22 doubleValue];
-    v13 = [v20 dateWithTimeIntervalSince1970:?];
+    entryDate = [v20 dateWithTimeIntervalSince1970:?];
   }
 
-  if (v9 == 0.0 || (v12 != 0.0 ? (v23 = v13 == 0) : (v23 = 1), v23))
+  if (v9 == 0.0 || (v12 != 0.0 ? (v23 = entryDate == 0) : (v23 = 1), v23))
   {
-    v24 = [(PLTimeReference *)self timeManager];
-    v27 = [v24 initialMonotonicTime];
-    [v5 timeIntervalSinceDate:v27];
+    timeManager = [(PLTimeReference *)self timeManager];
+    initialMonotonicTime = [timeManager initialMonotonicTime];
+    [currentTime timeIntervalSinceDate:initialMonotonicTime];
     [(PLTimeReference *)&v31 setOffset:self, PLTimeReferenceKernel];
   }
 
   else
   {
-    v24 = [v13 dateByAddingTimeInterval:v12];
-    [v5 timeIntervalSinceDate:v24];
+    timeManager = [entryDate dateByAddingTimeInterval:v12];
+    [currentTime timeIntervalSinceDate:timeManager];
     if (v25 >= 0.0)
     {
       v32.receiver = self;
@@ -158,10 +158,10 @@ LABEL_8:
       goto LABEL_19;
     }
 
-    v26 = [MEMORY[0x1E695DF00] date];
-    v27 = [v26 dateByAddingTimeInterval:-v9];
+    date = [MEMORY[0x1E695DF00] date];
+    initialMonotonicTime = [date dateByAddingTimeInterval:-v9];
 
-    [v27 timeIntervalSinceDate:v13];
+    [initialMonotonicTime timeIntervalSinceDate:entryDate];
     v29 = v28;
     v30 = PLLogTimeManager();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
@@ -174,7 +174,7 @@ LABEL_8:
       [(PLTimeReferenceKernel *)self quarantineWithExitReason:1006];
     }
 
-    [v5 timeIntervalSinceDate:v27];
+    [currentTime timeIntervalSinceDate:initialMonotonicTime];
     v33.receiver = self;
     v33.super_class = PLTimeReferenceKernel;
     [(PLTimeReference *)&v33 setOffset:v31.receiver, v31.super_class];
@@ -273,7 +273,7 @@ double __40__PLTimeReferenceKernel_getTimebaseInfo__block_invoke()
 {
   v8 = *MEMORY[0x1E69E9840];
   v4 = 138412546;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2112;
   v7 = a2;
   _os_log_debug_impl(&dword_1D8611000, log, OS_LOG_TYPE_DEBUG, "Recalibration: systemNow=%@, currentTime=%@", &v4, 0x16u);

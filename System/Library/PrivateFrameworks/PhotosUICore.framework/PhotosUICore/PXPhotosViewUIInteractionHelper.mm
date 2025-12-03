@@ -1,50 +1,50 @@
 @interface PXPhotosViewUIInteractionHelper
-- (BOOL)handlePresentingPinchGestureRecognizer:(id)a3 forViewInteraction:(id)a4;
-- (BOOL)isContextMenuInteractionActiveForViewInteraction:(id)a3;
-- (BOOL)oneUpPresentation:(id)a3 allowsActionsForContextMenuInteraction:(id)a4;
-- (BOOL)oneUpPresentation:(id)a3 allowsMultiSelectMenuForInteraction:(id)a4;
-- (BOOL)oneUpPresentation:(id)a3 allowsPreviewCommittingForContextMenuInteraction:(id)a4;
-- (BOOL)oneUpPresentation:(id)a3 canStartPreviewingForContextMenuInteraction:(id)a4;
-- (BOOL)oneUpPresentation:(id)a3 commitPreviewForContextMenuInteraction:(id)a4;
-- (BOOL)oneUpPresentationShouldDisableAutoPlayback:(id)a3;
-- (BOOL)oneUpPresentationShouldPreventShowInAllPhotosAction:(id)a3;
-- (BOOL)oneUpPresentationWantsShowInLibraryButton:(id)a3;
-- (BOOL)presentOneUpForAssetReference:(id)a3 configurationHandler:(id)a4;
-- (BOOL)presentOneUpForAssetReference:(id)a3 configurationHandler:(id)a4 completionHandler:(id)a5;
-- (BOOL)presentOneUpForAssetReference:(id)a3 style:(int64_t)a4;
+- (BOOL)handlePresentingPinchGestureRecognizer:(id)recognizer forViewInteraction:(id)interaction;
+- (BOOL)isContextMenuInteractionActiveForViewInteraction:(id)interaction;
+- (BOOL)oneUpPresentation:(id)presentation allowsActionsForContextMenuInteraction:(id)interaction;
+- (BOOL)oneUpPresentation:(id)presentation allowsMultiSelectMenuForInteraction:(id)interaction;
+- (BOOL)oneUpPresentation:(id)presentation allowsPreviewCommittingForContextMenuInteraction:(id)interaction;
+- (BOOL)oneUpPresentation:(id)presentation canStartPreviewingForContextMenuInteraction:(id)interaction;
+- (BOOL)oneUpPresentation:(id)presentation commitPreviewForContextMenuInteraction:(id)interaction;
+- (BOOL)oneUpPresentationShouldDisableAutoPlayback:(id)playback;
+- (BOOL)oneUpPresentationShouldPreventShowInAllPhotosAction:(id)action;
+- (BOOL)oneUpPresentationWantsShowInLibraryButton:(id)button;
+- (BOOL)presentOneUpForAssetReference:(id)reference configurationHandler:(id)handler;
+- (BOOL)presentOneUpForAssetReference:(id)reference configurationHandler:(id)handler completionHandler:(id)completionHandler;
+- (BOOL)presentOneUpForAssetReference:(id)reference style:(int64_t)style;
 - (PXPhotosViewUIInteraction)interaction;
 - (PXPhotosViewUIInteractionHelper)init;
-- (PXPhotosViewUIInteractionHelper)initWithInteraction:(id)a3 viewModel:(id)a4;
-- (id)_createActionManagerForNavigatedAssetReferenceUsingSectionDataSource:(BOOL)a3;
+- (PXPhotosViewUIInteractionHelper)initWithInteraction:(id)interaction viewModel:(id)model;
+- (id)_createActionManagerForNavigatedAssetReferenceUsingSectionDataSource:(BOOL)source;
 - (id)_createSelectionManagerForNavigatedAssetSection;
-- (id)_targetedPreviewForSecondaryAssetReference:(id)a3;
-- (id)contextMenuInteractionForViewInteraction:(id)a3;
-- (id)oneUpPresentation:(id)a3 accessoriesForContextMenuInteraction:(id)a4 configuration:(id)a5;
-- (id)oneUpPresentation:(id)a3 currentImageForAssetReference:(id)a4;
-- (id)oneUpPresentation:(id)a3 presentingScrollViewForAssetReference:(id)a4;
-- (id)oneUpPresentation:(id)a3 regionOfInterestForAssetReference:(id)a4;
-- (id)oneUpPresentation:(id)a3 secondaryIdentifiersForConfiguration:(id)a4;
-- (id)oneUpPresentation:(id)a3 styleForContextMenuInteraction:(id)a4 configuration:(id)a5;
-- (id)oneUpPresentationActionManager:(id)a3;
-- (id)oneUpPresentationActionManagerForPreviewing:(id)a3;
-- (id)oneUpPresentationContextualVideoThumbnailIdentifier:(id)a3;
-- (id)oneUpPresentationDataSourceManager:(id)a3;
-- (id)oneUpPresentationInitialAssetReference:(id)a3;
-- (id)oneUpPresentationMediaProvider:(id)a3;
-- (id)oneUpPresentationPrivacyController:(id)a3;
-- (id)oneUpPresentationSearchQueryMatchInfo:(id)a3;
-- (int64_t)oneUpPresentationActionContext:(id)a3;
-- (int64_t)oneUpPresentationOrigin:(id)a3;
-- (void)didMakeInteractiveSelectionChangeForInteraction:(id)a3;
-- (void)didSetupGesturesForInteraction:(id)a3;
-- (void)navigatedSectionDataSourceManagerDidChangeForInteraction:(id)a3;
-- (void)oneUpPresentation:(id)a3 scrollAssetReferenceToVisible:(id)a4;
-- (void)oneUpPresentation:(id)a3 setHiddenAssetReferences:(id)a4;
-- (void)oneUpPresentation:(id)a3 willEndPreviewingForContextMenuInteraction:(id)a4 configuration:(id)a5;
-- (void)preventTargetedContextMenuDismissalAnimationForViewInteraction:(id)a3;
-- (void)scrollViewControllerDidChangeForInteraction:(id)a3;
-- (void)scrollViewControllerDidScroll:(id)a3;
-- (void)setOneUpPresentation:(id)a3;
+- (id)_targetedPreviewForSecondaryAssetReference:(id)reference;
+- (id)contextMenuInteractionForViewInteraction:(id)interaction;
+- (id)oneUpPresentation:(id)presentation accessoriesForContextMenuInteraction:(id)interaction configuration:(id)configuration;
+- (id)oneUpPresentation:(id)presentation currentImageForAssetReference:(id)reference;
+- (id)oneUpPresentation:(id)presentation presentingScrollViewForAssetReference:(id)reference;
+- (id)oneUpPresentation:(id)presentation regionOfInterestForAssetReference:(id)reference;
+- (id)oneUpPresentation:(id)presentation secondaryIdentifiersForConfiguration:(id)configuration;
+- (id)oneUpPresentation:(id)presentation styleForContextMenuInteraction:(id)interaction configuration:(id)configuration;
+- (id)oneUpPresentationActionManager:(id)manager;
+- (id)oneUpPresentationActionManagerForPreviewing:(id)previewing;
+- (id)oneUpPresentationContextualVideoThumbnailIdentifier:(id)identifier;
+- (id)oneUpPresentationDataSourceManager:(id)manager;
+- (id)oneUpPresentationInitialAssetReference:(id)reference;
+- (id)oneUpPresentationMediaProvider:(id)provider;
+- (id)oneUpPresentationPrivacyController:(id)controller;
+- (id)oneUpPresentationSearchQueryMatchInfo:(id)info;
+- (int64_t)oneUpPresentationActionContext:(id)context;
+- (int64_t)oneUpPresentationOrigin:(id)origin;
+- (void)didMakeInteractiveSelectionChangeForInteraction:(id)interaction;
+- (void)didSetupGesturesForInteraction:(id)interaction;
+- (void)navigatedSectionDataSourceManagerDidChangeForInteraction:(id)interaction;
+- (void)oneUpPresentation:(id)presentation scrollAssetReferenceToVisible:(id)visible;
+- (void)oneUpPresentation:(id)presentation setHiddenAssetReferences:(id)references;
+- (void)oneUpPresentation:(id)presentation willEndPreviewingForContextMenuInteraction:(id)interaction configuration:(id)configuration;
+- (void)preventTargetedContextMenuDismissalAnimationForViewInteraction:(id)interaction;
+- (void)scrollViewControllerDidChangeForInteraction:(id)interaction;
+- (void)scrollViewControllerDidScroll:(id)scroll;
+- (void)setOneUpPresentation:(id)presentation;
 @end
 
 @implementation PXPhotosViewUIInteractionHelper
@@ -56,26 +56,26 @@
   return WeakRetained;
 }
 
-- (id)_targetedPreviewForSecondaryAssetReference:(id)a3
+- (id)_targetedPreviewForSecondaryAssetReference:(id)reference
 {
-  v4 = a3;
-  v5 = [(PXPhotosViewUIInteractionHelper *)self viewModel];
-  v6 = [v5 selectionManager];
-  v7 = [v6 selectionSnapshot];
+  referenceCopy = reference;
+  viewModel = [(PXPhotosViewUIInteractionHelper *)self viewModel];
+  selectionManager = [viewModel selectionManager];
+  selectionSnapshot = [selectionManager selectionSnapshot];
 
-  v8 = [v7 dataSource];
-  v9 = v8;
-  if (v4)
+  dataSource = [selectionSnapshot dataSource];
+  v9 = dataSource;
+  if (referenceCopy)
   {
-    v10 = [v8 assetReferenceForAssetReference:v4];
+    v10 = [dataSource assetReferenceForAssetReference:referenceCopy];
     v11 = v10;
     if (v10)
     {
       [v10 indexPath];
-      if ([v7 isIndexPathSelected:&v15])
+      if ([selectionSnapshot isIndexPathSelected:&v15])
       {
-        v12 = [(PXPhotosViewUIInteractionHelper *)self interaction];
-        v13 = [v12 targetedPreviewForAssetReference:v11];
+        interaction = [(PXPhotosViewUIInteractionHelper *)self interaction];
+        v13 = [interaction targetedPreviewForAssetReference:v11];
 
         goto LABEL_7;
       }
@@ -93,25 +93,25 @@ LABEL_7:
   return v13;
 }
 
-- (id)oneUpPresentation:(id)a3 secondaryIdentifiersForConfiguration:(id)a4
+- (id)oneUpPresentation:(id)presentation secondaryIdentifiersForConfiguration:(id)configuration
 {
-  v5 = [(PXPhotosViewUIInteractionHelper *)self viewModel:a3];
+  v5 = [(PXPhotosViewUIInteractionHelper *)self viewModel:presentation];
   if ([v5 isInSelectMode] && objc_msgSend(v5, "allowsMultiSelectMenu"))
   {
-    v6 = [v5 selectionManager];
-    v7 = [v6 selectionSnapshot];
+    selectionManager = [v5 selectionManager];
+    selectionSnapshot = [selectionManager selectionSnapshot];
 
-    v8 = [v7 dataSource];
-    v9 = [(PXPhotosViewUIInteractionHelper *)self interaction];
-    v10 = [v9 navigatedAssetReference];
+    dataSource = [selectionSnapshot dataSource];
+    interaction = [(PXPhotosViewUIInteractionHelper *)self interaction];
+    navigatedAssetReference = [interaction navigatedAssetReference];
 
     v21 = 0u;
     v22 = 0u;
-    if (v10)
+    if (navigatedAssetReference)
     {
-      if (v8)
+      if (dataSource)
       {
-        [v8 indexPathForAssetReference:v10];
+        [dataSource indexPathForAssetReference:navigatedAssetReference];
       }
     }
 
@@ -122,11 +122,11 @@ LABEL_7:
       v22 = v12;
     }
 
-    v13 = [v7 selectedIndexPaths];
+    selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
     v11 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v20[0] = v21;
     v20[1] = v22;
-    if ([v13 containsIndexPath:v20])
+    if ([selectedIndexPaths containsIndexPath:v20])
     {
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
@@ -134,9 +134,9 @@ LABEL_7:
       v15[3] = &unk_1E7733920;
       v18 = v21;
       v19 = v22;
-      v16 = v8;
+      v16 = dataSource;
       v17 = v11;
-      [v13 enumerateAllIndexPathsUsingBlock:v15];
+      [selectedIndexPaths enumerateAllIndexPathsUsingBlock:v15];
     }
   }
 
@@ -161,29 +161,29 @@ void __90__PXPhotosViewUIInteractionHelper_oneUpPresentation_secondaryIdentifier
   }
 }
 
-- (id)oneUpPresentationContextualVideoThumbnailIdentifier:(id)a3
+- (id)oneUpPresentationContextualVideoThumbnailIdentifier:(id)identifier
 {
-  v4 = [(PXPhotosViewUIInteractionHelper *)self interaction];
-  v5 = [v4 navigatedAssetReference];
+  interaction = [(PXPhotosViewUIInteractionHelper *)self interaction];
+  navigatedAssetReference = [interaction navigatedAssetReference];
 
-  v6 = [(PXPhotosViewUIInteractionHelper *)self viewModel];
-  v7 = [v6 searchContextualVideoThumbnailIdentifiers];
-  if (![v7 count])
+  viewModel = [(PXPhotosViewUIInteractionHelper *)self viewModel];
+  searchContextualVideoThumbnailIdentifiers = [viewModel searchContextualVideoThumbnailIdentifiers];
+  if (![searchContextualVideoThumbnailIdentifiers count])
   {
     v12 = 0;
     goto LABEL_5;
   }
 
-  v8 = [v5 asset];
-  v9 = [v8 uuid];
+  asset = [navigatedAssetReference asset];
+  uuid = [asset uuid];
 
-  if (v9)
+  if (uuid)
   {
-    v6 = [(PXPhotosViewUIInteractionHelper *)self viewModel];
-    v7 = [v6 searchContextualVideoThumbnailIdentifiers];
-    v10 = [v5 asset];
-    v11 = [v10 uuid];
-    v12 = [v7 objectForKeyedSubscript:v11];
+    viewModel = [(PXPhotosViewUIInteractionHelper *)self viewModel];
+    searchContextualVideoThumbnailIdentifiers = [viewModel searchContextualVideoThumbnailIdentifiers];
+    asset2 = [navigatedAssetReference asset];
+    uuid2 = [asset2 uuid];
+    v12 = [searchContextualVideoThumbnailIdentifiers objectForKeyedSubscript:uuid2];
 
 LABEL_5:
     goto LABEL_7;
@@ -195,44 +195,44 @@ LABEL_7:
   return v12;
 }
 
-- (id)oneUpPresentationSearchQueryMatchInfo:(id)a3
+- (id)oneUpPresentationSearchQueryMatchInfo:(id)info
 {
-  v3 = [(PXPhotosViewUIInteractionHelper *)self viewModel];
-  v4 = [v3 searchQueryMatchInfo];
+  viewModel = [(PXPhotosViewUIInteractionHelper *)self viewModel];
+  searchQueryMatchInfo = [viewModel searchQueryMatchInfo];
 
-  return v4;
+  return searchQueryMatchInfo;
 }
 
-- (BOOL)oneUpPresentationWantsShowInLibraryButton:(id)a3
+- (BOOL)oneUpPresentationWantsShowInLibraryButton:(id)button
 {
-  v3 = [(PXPhotosViewUIInteractionHelper *)self viewModel];
-  v4 = [v3 wantsOneUpShowInLibraryButton];
+  viewModel = [(PXPhotosViewUIInteractionHelper *)self viewModel];
+  wantsOneUpShowInLibraryButton = [viewModel wantsOneUpShowInLibraryButton];
 
-  return v4;
+  return wantsOneUpShowInLibraryButton;
 }
 
-- (BOOL)oneUpPresentationShouldPreventShowInAllPhotosAction:(id)a3
+- (BOOL)oneUpPresentationShouldPreventShowInAllPhotosAction:(id)action
 {
-  v3 = [(PXPhotosViewUIInteractionHelper *)self viewModel];
-  v4 = [v3 preventShowInAllPhotosAction];
+  viewModel = [(PXPhotosViewUIInteractionHelper *)self viewModel];
+  preventShowInAllPhotosAction = [viewModel preventShowInAllPhotosAction];
 
-  return v4;
+  return preventShowInAllPhotosAction;
 }
 
-- (int64_t)oneUpPresentationActionContext:(id)a3
+- (int64_t)oneUpPresentationActionContext:(id)context
 {
-  v4 = [(PXPhotosViewUIInteractionHelper *)self viewModel];
-  v5 = [v4 allowsCMMActions];
+  viewModel = [(PXPhotosViewUIInteractionHelper *)self viewModel];
+  allowsCMMActions = [viewModel allowsCMMActions];
 
-  if (v5)
+  if (allowsCMMActions)
   {
     return 4;
   }
 
-  v7 = [(PXPhotosViewUIInteractionHelper *)self viewModel];
-  v8 = [v7 allowsPickAssetAction];
+  viewModel2 = [(PXPhotosViewUIInteractionHelper *)self viewModel];
+  allowsPickAssetAction = [viewModel2 allowsPickAssetAction];
 
-  if (v8)
+  if (allowsPickAssetAction)
   {
     return 6;
   }
@@ -243,96 +243,96 @@ LABEL_7:
   }
 }
 
-- (id)oneUpPresentation:(id)a3 presentingScrollViewForAssetReference:(id)a4
+- (id)oneUpPresentation:(id)presentation presentingScrollViewForAssetReference:(id)reference
 {
-  v4 = [(PXPhotosViewUIInteractionHelper *)self interaction:a3];
-  v5 = [v4 scrollView];
+  v4 = [(PXPhotosViewUIInteractionHelper *)self interaction:presentation];
+  scrollView = [v4 scrollView];
 
-  return v5;
+  return scrollView;
 }
 
-- (id)oneUpPresentationActionManagerForPreviewing:(id)a3
+- (id)oneUpPresentationActionManagerForPreviewing:(id)previewing
 {
-  v3 = [(PXPhotosViewUIInteractionHelper *)self interaction];
-  v4 = [v3 createContextMenuActionManagerForNavigatedPreviewAssetReference];
+  interaction = [(PXPhotosViewUIInteractionHelper *)self interaction];
+  createContextMenuActionManagerForNavigatedPreviewAssetReference = [interaction createContextMenuActionManagerForNavigatedPreviewAssetReference];
 
-  return v4;
+  return createContextMenuActionManagerForNavigatedPreviewAssetReference;
 }
 
-- (id)oneUpPresentationActionManager:(id)a3
+- (id)oneUpPresentationActionManager:(id)manager
 {
-  v4 = [(PXPhotosViewUIInteractionHelper *)self viewModel];
-  v5 = [v4 oneUpAssetsViewMode] != 0;
+  viewModel = [(PXPhotosViewUIInteractionHelper *)self viewModel];
+  v5 = [viewModel oneUpAssetsViewMode] != 0;
 
   return [(PXPhotosViewUIInteractionHelper *)self _createActionManagerForNavigatedAssetReferenceUsingSectionDataSource:v5];
 }
 
-- (void)oneUpPresentation:(id)a3 setHiddenAssetReferences:(id)a4
+- (void)oneUpPresentation:(id)presentation setHiddenAssetReferences:(id)references
 {
-  v5 = a4;
-  v6 = [(PXPhotosViewUIInteractionHelper *)self interaction];
-  [v6 setHiddenAssetReferences:v5];
+  referencesCopy = references;
+  interaction = [(PXPhotosViewUIInteractionHelper *)self interaction];
+  [interaction setHiddenAssetReferences:referencesCopy];
 }
 
-- (void)oneUpPresentation:(id)a3 scrollAssetReferenceToVisible:(id)a4
+- (void)oneUpPresentation:(id)presentation scrollAssetReferenceToVisible:(id)visible
 {
-  v10 = a4;
-  v5 = [(PXPhotosViewUIInteractionHelper *)self interaction];
-  v6 = v5;
-  if (v5)
+  visibleCopy = visible;
+  interaction = [(PXPhotosViewUIInteractionHelper *)self interaction];
+  v6 = interaction;
+  if (interaction)
   {
-    v7 = [v5 adjustOneUpAssetReferenceToScrollToVisible:v10];
+    v7 = [interaction adjustOneUpAssetReferenceToScrollToVisible:visibleCopy];
 
     v8 = v7;
   }
 
   else
   {
-    v8 = v10;
+    v8 = visibleCopy;
   }
 
   v11 = v8;
   if (v8)
   {
-    v9 = [v6 contentController];
-    [v9 scrollToRevealAssetReference:v11 completionHandler:0];
+    contentController = [v6 contentController];
+    [contentController scrollToRevealAssetReference:v11 completionHandler:0];
 
     [v6 setNavigatedAssetReference:v11];
   }
 }
 
-- (id)oneUpPresentation:(id)a3 currentImageForAssetReference:(id)a4
+- (id)oneUpPresentation:(id)presentation currentImageForAssetReference:(id)reference
 {
-  v5 = a4;
-  v6 = [(PXPhotosViewUIInteractionHelper *)self interaction];
+  referenceCopy = reference;
+  interaction = [(PXPhotosViewUIInteractionHelper *)self interaction];
   v11 = 0;
-  v7 = [v6 regionOfInterestForAssetReference:v5 image:&v11];
+  v7 = [interaction regionOfInterestForAssetReference:referenceCopy image:&v11];
   v8 = v11;
   v9 = v11;
 
   return v8;
 }
 
-- (id)oneUpPresentation:(id)a3 regionOfInterestForAssetReference:(id)a4
+- (id)oneUpPresentation:(id)presentation regionOfInterestForAssetReference:(id)reference
 {
-  v5 = a4;
-  v6 = [(PXPhotosViewUIInteractionHelper *)self interaction];
-  v7 = [v6 regionOfInterestForAssetReference:v5 image:0];
+  referenceCopy = reference;
+  interaction = [(PXPhotosViewUIInteractionHelper *)self interaction];
+  v7 = [interaction regionOfInterestForAssetReference:referenceCopy image:0];
 
   return v7;
 }
 
-- (id)oneUpPresentation:(id)a3 styleForContextMenuInteraction:(id)a4 configuration:(id)a5
+- (id)oneUpPresentation:(id)presentation styleForContextMenuInteraction:(id)interaction configuration:(id)configuration
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(PXPhotosViewUIInteractionHelper *)self viewModel];
-  v10 = [v9 allowsAccessoriesContextMenuCustomization];
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  viewModel = [(PXPhotosViewUIInteractionHelper *)self viewModel];
+  allowsAccessoriesContextMenuCustomization = [viewModel allowsAccessoriesContextMenuCustomization];
 
-  if (v10)
+  if (allowsAccessoriesContextMenuCustomization)
   {
-    v11 = [(PXPhotosViewUIInteractionHelper *)self interaction];
-    v12 = [v11 _contextMenuInteraction:v7 styleForMenuWithConfiguration:v8];
+    interaction = [(PXPhotosViewUIInteractionHelper *)self interaction];
+    v12 = [interaction _contextMenuInteraction:interactionCopy styleForMenuWithConfiguration:configurationCopy];
   }
 
   else
@@ -343,17 +343,17 @@ LABEL_7:
   return v12;
 }
 
-- (id)oneUpPresentation:(id)a3 accessoriesForContextMenuInteraction:(id)a4 configuration:(id)a5
+- (id)oneUpPresentation:(id)presentation accessoriesForContextMenuInteraction:(id)interaction configuration:(id)configuration
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(PXPhotosViewUIInteractionHelper *)self viewModel];
-  v10 = [v9 allowsAccessoriesContextMenuCustomization];
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  viewModel = [(PXPhotosViewUIInteractionHelper *)self viewModel];
+  allowsAccessoriesContextMenuCustomization = [viewModel allowsAccessoriesContextMenuCustomization];
 
-  if (v10)
+  if (allowsAccessoriesContextMenuCustomization)
   {
-    v11 = [(PXPhotosViewUIInteractionHelper *)self interaction];
-    v12 = [v11 _contextMenuInteraction:v7 accessoriesForMenuWithConfiguration:v8];
+    interaction = [(PXPhotosViewUIInteractionHelper *)self interaction];
+    v12 = [interaction _contextMenuInteraction:interactionCopy accessoriesForMenuWithConfiguration:configurationCopy];
   }
 
   else
@@ -364,173 +364,173 @@ LABEL_7:
   return v12;
 }
 
-- (void)oneUpPresentation:(id)a3 willEndPreviewingForContextMenuInteraction:(id)a4 configuration:(id)a5
+- (void)oneUpPresentation:(id)presentation willEndPreviewingForContextMenuInteraction:(id)interaction configuration:(id)configuration
 {
-  v12 = a4;
-  v7 = a5;
-  v8 = [(PXPhotosViewUIInteractionHelper *)self interaction];
-  [v8 willEndPreviewingForContextMenuInteraction:v12];
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  interaction = [(PXPhotosViewUIInteractionHelper *)self interaction];
+  [interaction willEndPreviewingForContextMenuInteraction:interactionCopy];
 
-  v9 = [(PXPhotosViewUIInteractionHelper *)self viewModel];
-  v10 = [v9 allowsAccessoriesContextMenuCustomization];
+  viewModel = [(PXPhotosViewUIInteractionHelper *)self viewModel];
+  allowsAccessoriesContextMenuCustomization = [viewModel allowsAccessoriesContextMenuCustomization];
 
-  if (v10)
+  if (allowsAccessoriesContextMenuCustomization)
   {
-    v11 = [(PXPhotosViewUIInteractionHelper *)self interaction];
-    [v11 contextMenuInteraction:v12 willEndForConfiguration:v7 animator:0];
+    interaction2 = [(PXPhotosViewUIInteractionHelper *)self interaction];
+    [interaction2 contextMenuInteraction:interactionCopy willEndForConfiguration:configurationCopy animator:0];
   }
 }
 
-- (BOOL)oneUpPresentation:(id)a3 commitPreviewForContextMenuInteraction:(id)a4
+- (BOOL)oneUpPresentation:(id)presentation commitPreviewForContextMenuInteraction:(id)interaction
 {
-  v5 = a4;
-  v6 = [(PXPhotosViewUIInteractionHelper *)self interaction];
-  v7 = [v6 commitPreviewForContextMenuInteraction:v5];
+  interactionCopy = interaction;
+  interaction = [(PXPhotosViewUIInteractionHelper *)self interaction];
+  v7 = [interaction commitPreviewForContextMenuInteraction:interactionCopy];
 
   return v7;
 }
 
-- (BOOL)oneUpPresentation:(id)a3 allowsPreviewCommittingForContextMenuInteraction:(id)a4
+- (BOOL)oneUpPresentation:(id)presentation allowsPreviewCommittingForContextMenuInteraction:(id)interaction
 {
-  v5 = a4;
-  v6 = [(PXPhotosViewUIInteractionHelper *)self interaction];
-  v7 = [v6 allowsPreviewCommittingForContextMenuInteraction:v5];
+  interactionCopy = interaction;
+  interaction = [(PXPhotosViewUIInteractionHelper *)self interaction];
+  v7 = [interaction allowsPreviewCommittingForContextMenuInteraction:interactionCopy];
 
   return v7;
 }
 
-- (BOOL)oneUpPresentation:(id)a3 allowsMultiSelectMenuForInteraction:(id)a4
+- (BOOL)oneUpPresentation:(id)presentation allowsMultiSelectMenuForInteraction:(id)interaction
 {
-  v4 = [(PXPhotosViewUIInteractionHelper *)self viewModel:a3];
+  v4 = [(PXPhotosViewUIInteractionHelper *)self viewModel:presentation];
   if ([v4 allowsMultiSelectMenu])
   {
-    v5 = [v4 isInSelectMode];
+    isInSelectMode = [v4 isInSelectMode];
   }
 
   else
   {
-    v5 = 0;
+    isInSelectMode = 0;
   }
 
-  return v5;
+  return isInSelectMode;
 }
 
-- (BOOL)oneUpPresentationShouldDisableAutoPlayback:(id)a3
+- (BOOL)oneUpPresentationShouldDisableAutoPlayback:(id)playback
 {
-  v3 = [(PXPhotosViewUIInteractionHelper *)self viewModel];
-  v4 = [v3 disableAutoPlaybackInOneUp];
+  viewModel = [(PXPhotosViewUIInteractionHelper *)self viewModel];
+  disableAutoPlaybackInOneUp = [viewModel disableAutoPlaybackInOneUp];
 
-  return v4;
+  return disableAutoPlaybackInOneUp;
 }
 
-- (BOOL)oneUpPresentation:(id)a3 allowsActionsForContextMenuInteraction:(id)a4
+- (BOOL)oneUpPresentation:(id)presentation allowsActionsForContextMenuInteraction:(id)interaction
 {
-  v5 = a4;
-  v6 = [(PXPhotosViewUIInteractionHelper *)self interaction];
-  v7 = [v6 allowsActionsForContextMenuInteraction:v5];
+  interactionCopy = interaction;
+  interaction = [(PXPhotosViewUIInteractionHelper *)self interaction];
+  v7 = [interaction allowsActionsForContextMenuInteraction:interactionCopy];
 
   return v7;
 }
 
-- (BOOL)oneUpPresentation:(id)a3 canStartPreviewingForContextMenuInteraction:(id)a4
+- (BOOL)oneUpPresentation:(id)presentation canStartPreviewingForContextMenuInteraction:(id)interaction
 {
-  v5 = a4;
-  v6 = [(PXPhotosViewUIInteractionHelper *)self interaction];
-  v7 = [v6 canStartContextMenuInteraction:v5];
+  interactionCopy = interaction;
+  interaction = [(PXPhotosViewUIInteractionHelper *)self interaction];
+  v7 = [interaction canStartContextMenuInteraction:interactionCopy];
 
   return v7;
 }
 
-- (id)oneUpPresentationInitialAssetReference:(id)a3
+- (id)oneUpPresentationInitialAssetReference:(id)reference
 {
-  v3 = [(PXPhotosViewUIInteractionHelper *)self interaction];
-  v4 = [v3 navigatedAssetReference];
+  interaction = [(PXPhotosViewUIInteractionHelper *)self interaction];
+  navigatedAssetReference = [interaction navigatedAssetReference];
 
-  return v4;
+  return navigatedAssetReference;
 }
 
-- (id)oneUpPresentationPrivacyController:(id)a3
+- (id)oneUpPresentationPrivacyController:(id)controller
 {
-  v3 = [(PXPhotosViewUIInteractionHelper *)self viewModel];
-  v4 = [v3 privacyController];
+  viewModel = [(PXPhotosViewUIInteractionHelper *)self viewModel];
+  privacyController = [viewModel privacyController];
 
-  return v4;
+  return privacyController;
 }
 
-- (id)oneUpPresentationMediaProvider:(id)a3
+- (id)oneUpPresentationMediaProvider:(id)provider
 {
-  v3 = [(PXPhotosViewUIInteractionHelper *)self viewModel];
-  v4 = [v3 mediaProvider];
+  viewModel = [(PXPhotosViewUIInteractionHelper *)self viewModel];
+  mediaProvider = [viewModel mediaProvider];
 
-  return v4;
+  return mediaProvider;
 }
 
-- (id)oneUpPresentationDataSourceManager:(id)a3
+- (id)oneUpPresentationDataSourceManager:(id)manager
 {
-  v4 = [(PXPhotosViewUIInteractionHelper *)self viewModel];
-  if ([v4 oneUpAssetsViewMode])
+  viewModel = [(PXPhotosViewUIInteractionHelper *)self viewModel];
+  if ([viewModel oneUpAssetsViewMode])
   {
-    v5 = [(PXPhotosViewUIInteractionHelper *)self interaction];
-    v6 = [v5 navigatedAssetSectionDataSourceManager];
+    interaction = [(PXPhotosViewUIInteractionHelper *)self interaction];
+    navigatedAssetSectionDataSourceManager = [interaction navigatedAssetSectionDataSourceManager];
   }
 
   else
   {
-    v6 = [v4 dataSourceManager];
+    navigatedAssetSectionDataSourceManager = [viewModel dataSourceManager];
   }
 
-  return v6;
+  return navigatedAssetSectionDataSourceManager;
 }
 
-- (int64_t)oneUpPresentationOrigin:(id)a3
+- (int64_t)oneUpPresentationOrigin:(id)origin
 {
-  v3 = [(PXPhotosViewUIInteractionHelper *)self viewModel];
-  v4 = [v3 oneUpPresentationOrigin];
+  viewModel = [(PXPhotosViewUIInteractionHelper *)self viewModel];
+  oneUpPresentationOrigin = [viewModel oneUpPresentationOrigin];
 
-  return v4;
+  return oneUpPresentationOrigin;
 }
 
-- (BOOL)presentOneUpForAssetReference:(id)a3 configurationHandler:(id)a4
+- (BOOL)presentOneUpForAssetReference:(id)reference configurationHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXPhotosViewUIInteractionHelper *)self viewModel];
-  v9 = [v8 viewDelegateRespondsTo:0x80000];
+  referenceCopy = reference;
+  handlerCopy = handler;
+  viewModel = [(PXPhotosViewUIInteractionHelper *)self viewModel];
+  v9 = [viewModel viewDelegateRespondsTo:0x80000];
 
   if (v9)
   {
-    v10 = [(PXPhotosViewUIInteractionHelper *)self viewModel];
-    v11 = [v10 viewDelegate];
-    v12 = [(PXPhotosViewUIInteractionHelper *)self interaction];
-    v13 = [v12 presentingViewController];
-    [v11 photosViewController:v13 didPresentOneUp:1 forAsset:v6];
+    viewModel2 = [(PXPhotosViewUIInteractionHelper *)self viewModel];
+    viewDelegate = [viewModel2 viewDelegate];
+    interaction = [(PXPhotosViewUIInteractionHelper *)self interaction];
+    presentingViewController = [interaction presentingViewController];
+    [viewDelegate photosViewController:presentingViewController didPresentOneUp:1 forAsset:referenceCopy];
   }
 
-  v14 = [(PXPhotosViewUIInteractionHelper *)self presentOneUpForAssetReference:v6 configurationHandler:v7 completionHandler:0];
+  v14 = [(PXPhotosViewUIInteractionHelper *)self presentOneUpForAssetReference:referenceCopy configurationHandler:handlerCopy completionHandler:0];
 
   return v14;
 }
 
-- (BOOL)presentOneUpForAssetReference:(id)a3 configurationHandler:(id)a4 completionHandler:(id)a5
+- (BOOL)presentOneUpForAssetReference:(id)reference configurationHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PXPhotosViewUIInteractionHelper *)self oneUpPresentation];
-  v12 = [(PXPhotosViewUIInteractionHelper *)self viewModel];
-  v13 = [(PXPhotosViewUIInteractionHelper *)self interaction];
+  referenceCopy = reference;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  oneUpPresentation = [(PXPhotosViewUIInteractionHelper *)self oneUpPresentation];
+  viewModel = [(PXPhotosViewUIInteractionHelper *)self viewModel];
+  interaction = [(PXPhotosViewUIInteractionHelper *)self interaction];
   [(PXPhotosViewUIInteractionHelper *)self setSensitivityInterventionManager:0];
-  v14 = [v8 asset];
+  asset = [referenceCopy asset];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 
     goto LABEL_7;
   }
 
-  v15 = [v8 asset];
-  v16 = [v15 isContentAnalyzedAsPreviewable];
+  asset2 = [referenceCopy asset];
+  isContentAnalyzedAsPreviewable = [asset2 isContentAnalyzedAsPreviewable];
 
-  if (v16)
+  if (isContentAnalyzedAsPreviewable)
   {
 LABEL_7:
     v19 = 0;
@@ -538,23 +538,23 @@ LABEL_7:
   }
 
   v17 = [PXSensitivityInterventionManager alloc];
-  v18 = [v8 asset];
-  v19 = [(PXSensitivityInterventionManager *)v17 initWithAsset:v18 interventionType:0];
+  asset3 = [referenceCopy asset];
+  v19 = [(PXSensitivityInterventionManager *)v17 initWithAsset:asset3 interventionType:0];
 
   [(PXPhotosViewUIInteractionHelper *)self setSensitivityInterventionManager:v19];
   if (v19)
   {
-    v20 = [(PXSensitivityInterventionManager *)v19 viewControllerToPresent];
+    viewControllerToPresent = [(PXSensitivityInterventionManager *)v19 viewControllerToPresent];
 
-    if (v20)
+    if (viewControllerToPresent)
     {
-      v21 = [v13 presentingViewController];
+      presentingViewController = [interaction presentingViewController];
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __104__PXPhotosViewUIInteractionHelper_presentOneUpForAssetReference_configurationHandler_completionHandler___block_invoke;
       v24[3] = &unk_1E774B308;
       v24[4] = self;
-      [(PXSensitivityInterventionManager *)v19 presentFromViewController:v21 completionHandler:v24];
+      [(PXSensitivityInterventionManager *)v19 presentFromViewController:presentingViewController completionHandler:v24];
 
 LABEL_12:
       v22 = 0;
@@ -563,31 +563,31 @@ LABEL_12:
   }
 
 LABEL_8:
-  if (![v12 canPresentOneUp])
+  if (![viewModel canPresentOneUp])
   {
     goto LABEL_12;
   }
 
-  [v13 setNavigatedAssetReference:v8];
-  if ([v12 oneUpAssetsViewMode] == 2)
+  [interaction setNavigatedAssetReference:referenceCopy];
+  if ([viewModel oneUpAssetsViewMode] == 2)
   {
-    if (v10)
+    if (completionHandlerCopy)
     {
-      v10[2](v10, 0);
+      completionHandlerCopy[2](completionHandlerCopy, 0);
     }
 
     goto LABEL_12;
   }
 
-  v22 = [v11 startWithConfigurationHandler:v9];
+  v22 = [oneUpPresentation startWithConfigurationHandler:handlerCopy];
   if ((v22 & 1) == 0)
   {
-    [v13 setNavigatedAssetReference:0];
+    [interaction setNavigatedAssetReference:0];
   }
 
-  if (v10)
+  if (completionHandlerCopy)
   {
-    [v11 waitForTransitionToFinishWithTimeout:v10 completionHandler:5.0];
+    [oneUpPresentation waitForTransitionToFinishWithTimeout:completionHandlerCopy completionHandler:5.0];
   }
 
 LABEL_13:
@@ -595,130 +595,130 @@ LABEL_13:
   return v22;
 }
 
-- (void)scrollViewControllerDidScroll:(id)a3
+- (void)scrollViewControllerDidScroll:(id)scroll
 {
-  v3 = [(PXPhotosViewUIInteractionHelper *)self oneUpPresentation];
-  [v3 invalidatePresentingGeometry];
+  oneUpPresentation = [(PXPhotosViewUIInteractionHelper *)self oneUpPresentation];
+  [oneUpPresentation invalidatePresentingGeometry];
 }
 
-- (void)didMakeInteractiveSelectionChangeForInteraction:(id)a3
+- (void)didMakeInteractiveSelectionChangeForInteraction:(id)interaction
 {
-  v3 = [(PXPhotosViewUIInteractionHelper *)self interaction];
-  v6 = [v3 presentingViewController];
+  interaction = [(PXPhotosViewUIInteractionHelper *)self interaction];
+  presentingViewController = [interaction presentingViewController];
 
-  v4 = [v6 px_splitViewController];
-  v5 = v4;
-  if (v4)
+  px_splitViewController = [presentingViewController px_splitViewController];
+  v5 = px_splitViewController;
+  if (px_splitViewController)
   {
-    [v4 requestFocusUpdateWithPreferredFocusEnvironment:v6];
+    [px_splitViewController requestFocusUpdateWithPreferredFocusEnvironment:presentingViewController];
   }
 }
 
-- (void)navigatedSectionDataSourceManagerDidChangeForInteraction:(id)a3
+- (void)navigatedSectionDataSourceManagerDidChangeForInteraction:(id)interaction
 {
-  v4 = [(PXPhotosViewUIInteractionHelper *)self interaction];
-  v5 = [v4 navigatedAssetSectionDataSourceManager];
-  v6 = [v5 dataSource];
-  v7 = [v6 containsAnyItems];
+  interaction = [(PXPhotosViewUIInteractionHelper *)self interaction];
+  navigatedAssetSectionDataSourceManager = [interaction navigatedAssetSectionDataSourceManager];
+  dataSource = [navigatedAssetSectionDataSourceManager dataSource];
+  containsAnyItems = [dataSource containsAnyItems];
 
-  if (v7)
+  if (containsAnyItems)
   {
-    v10 = [(PXPhotosViewUIInteractionHelper *)self viewModel];
-    if ([v10 oneUpAssetsViewMode] == 2)
+    viewModel = [(PXPhotosViewUIInteractionHelper *)self viewModel];
+    if ([viewModel oneUpAssetsViewMode] == 2)
     {
-      v8 = [(PXPhotosViewUIInteractionHelper *)self oneUpPresentation];
-      if ([v10 canPresentOneUp] && !objc_msgSend(v8, "state") && (objc_msgSend(v8, "startWithConfigurationHandler:", 0) & 1) == 0)
+      oneUpPresentation = [(PXPhotosViewUIInteractionHelper *)self oneUpPresentation];
+      if ([viewModel canPresentOneUp] && !objc_msgSend(oneUpPresentation, "state") && (objc_msgSend(oneUpPresentation, "startWithConfigurationHandler:", 0) & 1) == 0)
       {
-        v9 = [(PXPhotosViewUIInteractionHelper *)self interaction];
-        [v9 setNavigatedAssetReference:0];
+        interaction2 = [(PXPhotosViewUIInteractionHelper *)self interaction];
+        [interaction2 setNavigatedAssetReference:0];
       }
     }
   }
 
   else
   {
-    v10 = [(PXPhotosViewUIInteractionHelper *)self oneUpPresentation];
-    [v10 stopAnimated:1];
+    viewModel = [(PXPhotosViewUIInteractionHelper *)self oneUpPresentation];
+    [viewModel stopAnimated:1];
   }
 }
 
-- (void)scrollViewControllerDidChangeForInteraction:(id)a3
+- (void)scrollViewControllerDidChangeForInteraction:(id)interaction
 {
-  v4 = [a3 scrollViewController];
-  [v4 registerObserver:self];
+  scrollViewController = [interaction scrollViewController];
+  [scrollViewController registerObserver:self];
 }
 
-- (void)didSetupGesturesForInteraction:(id)a3
+- (void)didSetupGesturesForInteraction:(id)interaction
 {
-  v4 = [(PXPhotosViewUIInteractionHelper *)self oneUpPresentation];
+  oneUpPresentation = [(PXPhotosViewUIInteractionHelper *)self oneUpPresentation];
 
-  if (!v4)
+  if (!oneUpPresentation)
   {
-    v7 = [(PXPhotosViewUIInteractionHelper *)self interaction];
-    v5 = [v7 presentingViewController];
-    v6 = [v5 px_oneUpPresentation];
-    [(PXPhotosViewUIInteractionHelper *)self setOneUpPresentation:v6];
+    interaction = [(PXPhotosViewUIInteractionHelper *)self interaction];
+    presentingViewController = [interaction presentingViewController];
+    px_oneUpPresentation = [presentingViewController px_oneUpPresentation];
+    [(PXPhotosViewUIInteractionHelper *)self setOneUpPresentation:px_oneUpPresentation];
   }
 }
 
-- (void)preventTargetedContextMenuDismissalAnimationForViewInteraction:(id)a3
+- (void)preventTargetedContextMenuDismissalAnimationForViewInteraction:(id)interaction
 {
-  v3 = [(PXPhotosViewUIInteractionHelper *)self oneUpPresentation];
-  [v3 preventTargetedContextMenuDismissalAnimation];
+  oneUpPresentation = [(PXPhotosViewUIInteractionHelper *)self oneUpPresentation];
+  [oneUpPresentation preventTargetedContextMenuDismissalAnimation];
 }
 
-- (BOOL)handlePresentingPinchGestureRecognizer:(id)a3 forViewInteraction:(id)a4
+- (BOOL)handlePresentingPinchGestureRecognizer:(id)recognizer forViewInteraction:(id)interaction
 {
-  v5 = a3;
-  v6 = [(PXPhotosViewUIInteractionHelper *)self oneUpPresentation];
-  v7 = [v6 handlePresentingPinchGestureRecognizer:v5];
+  recognizerCopy = recognizer;
+  oneUpPresentation = [(PXPhotosViewUIInteractionHelper *)self oneUpPresentation];
+  v7 = [oneUpPresentation handlePresentingPinchGestureRecognizer:recognizerCopy];
 
   return v7;
 }
 
-- (BOOL)isContextMenuInteractionActiveForViewInteraction:(id)a3
+- (BOOL)isContextMenuInteractionActiveForViewInteraction:(id)interaction
 {
-  v3 = [(PXPhotosViewUIInteractionHelper *)self oneUpPresentation];
-  v4 = [v3 isContextMenuInteractionActive];
+  oneUpPresentation = [(PXPhotosViewUIInteractionHelper *)self oneUpPresentation];
+  isContextMenuInteractionActive = [oneUpPresentation isContextMenuInteractionActive];
 
-  return v4;
+  return isContextMenuInteractionActive;
 }
 
-- (id)contextMenuInteractionForViewInteraction:(id)a3
+- (id)contextMenuInteractionForViewInteraction:(id)interaction
 {
-  v3 = [(PXPhotosViewUIInteractionHelper *)self oneUpPresentation];
-  v4 = [v3 contextMenuInteraction];
+  oneUpPresentation = [(PXPhotosViewUIInteractionHelper *)self oneUpPresentation];
+  contextMenuInteraction = [oneUpPresentation contextMenuInteraction];
 
-  return v4;
+  return contextMenuInteraction;
 }
 
-- (BOOL)presentOneUpForAssetReference:(id)a3 style:(int64_t)a4
+- (BOOL)presentOneUpForAssetReference:(id)reference style:(int64_t)style
 {
-  v7 = a3;
-  v8 = [(PXPhotosViewUIInteractionHelper *)self viewModel];
-  v9 = [v8 canPresentOneUp];
+  referenceCopy = reference;
+  viewModel = [(PXPhotosViewUIInteractionHelper *)self viewModel];
+  canPresentOneUp = [viewModel canPresentOneUp];
 
-  if (v9)
+  if (canPresentOneUp)
   {
-    if (a4 == 2)
+    if (style == 2)
     {
       v12 = &__block_literal_global_21;
     }
 
     else
     {
-      if (a4 != 1)
+      if (style != 1)
       {
-        if (a4)
+        if (style)
         {
-          v15 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v15 handleFailureInMethod:a2 object:self file:@"PXPhotosViewUIInteractionHelper.m" lineNumber:123 description:{@"Unknown 1up presentation style %ld", a4}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosViewUIInteractionHelper.m" lineNumber:123 description:{@"Unknown 1up presentation style %ld", style}];
 
           abort();
         }
 
-        v10 = self;
-        v11 = v7;
+        selfCopy2 = self;
+        v11 = referenceCopy;
         v12 = 0;
         goto LABEL_10;
       }
@@ -726,10 +726,10 @@ LABEL_13:
       v12 = &__block_literal_global_19_59098;
     }
 
-    v10 = self;
-    v11 = v7;
+    selfCopy2 = self;
+    v11 = referenceCopy;
 LABEL_10:
-    v13 = [(PXPhotosViewUIInteractionHelper *)v10 presentOneUpForAssetReference:v11 configurationHandler:v12];
+    v13 = [(PXPhotosViewUIInteractionHelper *)selfCopy2 presentOneUpForAssetReference:v11 configurationHandler:v12];
     goto LABEL_11;
   }
 
@@ -739,29 +739,29 @@ LABEL_11:
   return v13;
 }
 
-- (id)_createActionManagerForNavigatedAssetReferenceUsingSectionDataSource:(BOOL)a3
+- (id)_createActionManagerForNavigatedAssetReferenceUsingSectionDataSource:(BOOL)source
 {
-  v3 = a3;
-  v5 = [(PXPhotosViewUIInteractionHelper *)self viewModel];
-  v6 = [(PXPhotosViewUIInteractionHelper *)self interaction];
-  v7 = [v6 navigatedAssetReference];
-  if (!v7)
+  sourceCopy = source;
+  viewModel = [(PXPhotosViewUIInteractionHelper *)self viewModel];
+  interaction = [(PXPhotosViewUIInteractionHelper *)self interaction];
+  navigatedAssetReference = [interaction navigatedAssetReference];
+  if (!navigatedAssetReference)
   {
     PXAssertGetLog();
   }
 
-  v8 = [v5 assetActionManager];
-  if (v3)
+  assetActionManager = [viewModel assetActionManager];
+  if (sourceCopy)
   {
-    v9 = [(PXPhotosViewUIInteractionHelper *)self _createSelectionManagerForNavigatedAssetSection];
-    v10 = [objc_alloc(objc_opt_class()) initWithSelectionManager:v9];
+    _createSelectionManagerForNavigatedAssetSection = [(PXPhotosViewUIInteractionHelper *)self _createSelectionManagerForNavigatedAssetSection];
+    v10 = [objc_alloc(objc_opt_class()) initWithSelectionManager:_createSelectionManagerForNavigatedAssetSection];
   }
 
   else
   {
     v11 = objc_alloc(objc_opt_class());
-    v9 = [v5 dataSourceManager];
-    v10 = [v11 initWithSelectedObjectReference:v7 dataSourceManager:v9];
+    _createSelectionManagerForNavigatedAssetSection = [viewModel dataSourceManager];
+    v10 = [v11 initWithSelectedObjectReference:navigatedAssetReference dataSourceManager:_createSelectionManagerForNavigatedAssetSection];
   }
 
   v12 = v10;
@@ -772,11 +772,11 @@ LABEL_11:
     [v12 setSupportsAirPlay:1];
   }
 
-  [v12 setPerformerDelegate:v6];
-  v13 = [v8 allowedActionTypes];
-  [v12 setAllowedActionTypes:v13];
+  [v12 setPerformerDelegate:interaction];
+  allowedActionTypes = [assetActionManager allowedActionTypes];
+  [v12 setAllowedActionTypes:allowedActionTypes];
 
-  [v12 setAdditionalPropertiesFromActionManager:v8];
+  [v12 setAdditionalPropertiesFromActionManager:assetActionManager];
 
   return v12;
 }
@@ -784,48 +784,48 @@ LABEL_11:
 - (id)_createSelectionManagerForNavigatedAssetSection
 {
   v3 = [off_1E77218C8 alloc];
-  v4 = [(PXPhotosViewUIInteractionHelper *)self interaction];
-  v5 = [v4 navigatedAssetSectionDataSourceManager];
-  v6 = [v3 initWithDataSourceManager:v5];
+  interaction = [(PXPhotosViewUIInteractionHelper *)self interaction];
+  navigatedAssetSectionDataSourceManager = [interaction navigatedAssetSectionDataSourceManager];
+  v6 = [v3 initWithDataSourceManager:navigatedAssetSectionDataSourceManager];
 
   [v6 performChanges:&__block_literal_global_59111];
 
   return v6;
 }
 
-- (void)setOneUpPresentation:(id)a3
+- (void)setOneUpPresentation:(id)presentation
 {
-  v5 = a3;
-  if (self->_oneUpPresentation != v5)
+  presentationCopy = presentation;
+  if (self->_oneUpPresentation != presentationCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_oneUpPresentation, a3);
+    v7 = presentationCopy;
+    objc_storeStrong(&self->_oneUpPresentation, presentation);
     [(PXOneUpPresentation *)v7 setDelegate:self];
-    v6 = [(PXPhotosViewUIInteractionHelper *)self interaction];
-    [v6 invalidateContextMenuInteraction];
+    interaction = [(PXPhotosViewUIInteractionHelper *)self interaction];
+    [interaction invalidateContextMenuInteraction];
 
-    v5 = v7;
+    presentationCopy = v7;
   }
 }
 
 - (PXPhotosViewUIInteractionHelper)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXPhotosViewUIInteractionHelper.m" lineNumber:46 description:{@"%s is not available as initializer", "-[PXPhotosViewUIInteractionHelper init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosViewUIInteractionHelper.m" lineNumber:46 description:{@"%s is not available as initializer", "-[PXPhotosViewUIInteractionHelper init]"}];
 
   abort();
 }
 
-- (PXPhotosViewUIInteractionHelper)initWithInteraction:(id)a3 viewModel:(id)a4
+- (PXPhotosViewUIInteractionHelper)initWithInteraction:(id)interaction viewModel:(id)model
 {
-  v7 = a3;
-  v8 = a4;
+  interactionCopy = interaction;
+  modelCopy = model;
   v17.receiver = self;
   v17.super_class = PXPhotosViewUIInteractionHelper;
   v9 = [(PXPhotosViewUIInteractionHelper *)&v17 init];
   if (v9)
   {
-    v10 = v7;
+    v10 = interactionCopy;
     if (v10)
     {
       objc_opt_class();
@@ -833,24 +833,24 @@ LABEL_11:
       {
 LABEL_4:
         objc_storeWeak(&v9->_interaction, v10);
-        objc_storeStrong(&v9->_viewModel, a4);
+        objc_storeStrong(&v9->_viewModel, model);
 
         goto LABEL_5;
       }
 
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v15 = objc_opt_class();
       v14 = NSStringFromClass(v15);
-      v16 = [v10 px_descriptionForAssertionMessage];
-      [v12 handleFailureInMethod:a2 object:v9 file:@"PXPhotosViewUIInteractionHelper.m" lineNumber:38 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"interaction", v14, v16}];
+      px_descriptionForAssertionMessage = [v10 px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:v9 file:@"PXPhotosViewUIInteractionHelper.m" lineNumber:38 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"interaction", v14, px_descriptionForAssertionMessage}];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v13 = objc_opt_class();
       v14 = NSStringFromClass(v13);
-      [v12 handleFailureInMethod:a2 object:v9 file:@"PXPhotosViewUIInteractionHelper.m" lineNumber:38 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"interaction", v14}];
+      [currentHandler handleFailureInMethod:a2 object:v9 file:@"PXPhotosViewUIInteractionHelper.m" lineNumber:38 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"interaction", v14}];
     }
 
     goto LABEL_4;

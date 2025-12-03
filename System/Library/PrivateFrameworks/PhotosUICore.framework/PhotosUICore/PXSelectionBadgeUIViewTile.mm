@@ -1,12 +1,12 @@
 @interface PXSelectionBadgeUIViewTile
 + (CGSize)preferredSize;
-- (PXSelectionBadgeUIViewTile)initWithFrame:(CGRect)a3;
-- (void)_setSelected:(BOOL)a3;
+- (PXSelectionBadgeUIViewTile)initWithFrame:(CGRect)frame;
+- (void)_setSelected:(BOOL)selected;
 - (void)_showSelectedView;
 - (void)_showUnselectedView;
 - (void)_updateBadgeViewIfNeeded;
 - (void)becomeReusable;
-- (void)didApplyGeometry:(PXTileGeometry *)a3 withUserData:(id)a4;
+- (void)didApplyGeometry:(PXTileGeometry *)geometry withUserData:(id)data;
 - (void)prepareForReuse;
 @end
 
@@ -27,8 +27,8 @@
     v6 = self->_unselectedView;
     self->_unselectedView = v5;
 
-    v7 = [(PXSelectionBadgeUIViewTile *)self view];
-    [v7 addSubview:self->_unselectedView];
+    view = [(PXSelectionBadgeUIViewTile *)self view];
+    [view addSubview:self->_unselectedView];
 
     unselectedView = self->_unselectedView;
   }
@@ -48,13 +48,13 @@
   if (!selectedView)
   {
     v5 = MEMORY[0x1E69DD250];
-    v6 = [MEMORY[0x1E69DC888] systemBlueColor];
-    v7 = [v5 px_circularGlyphViewWithName:@"checkmark.circle" prefersMulticolor:0 backgroundColor:v6];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    v7 = [v5 px_circularGlyphViewWithName:@"checkmark.circle" prefersMulticolor:0 backgroundColor:systemBlueColor];
     v8 = self->_selectedView;
     self->_selectedView = v7;
 
-    v9 = [(PXSelectionBadgeUIViewTile *)self view];
-    [v9 addSubview:self->_selectedView];
+    view = [(PXSelectionBadgeUIViewTile *)self view];
+    [view addSubview:self->_selectedView];
 
     selectedView = self->_selectedView;
   }
@@ -81,41 +81,41 @@
   }
 }
 
-- (void)_setSelected:(BOOL)a3
+- (void)_setSelected:(BOOL)selected
 {
-  if (self->__selected != a3)
+  if (self->__selected != selected)
   {
-    self->__selected = a3;
+    self->__selected = selected;
     [(PXSelectionBadgeUIViewTile *)self _invalidate];
   }
 }
 
-- (void)didApplyGeometry:(PXTileGeometry *)a3 withUserData:(id)a4
+- (void)didApplyGeometry:(PXTileGeometry *)geometry withUserData:(id)data
 {
-  -[PXSelectionBadgeUIViewTile _setSelected:](self, "_setSelected:", [a4 isSelected]);
+  -[PXSelectionBadgeUIViewTile _setSelected:](self, "_setSelected:", [data isSelected]);
 
   [(PXSelectionBadgeUIViewTile *)self _updateBadgeViewIfNeeded];
 }
 
 - (void)prepareForReuse
 {
-  v3 = [(PXSelectionBadgeUIViewTile *)self view];
-  [v3 setHidden:0];
+  view = [(PXSelectionBadgeUIViewTile *)self view];
+  [view setHidden:0];
 
   [(PXSelectionBadgeUIViewTile *)self _invalidate];
 }
 
 - (void)becomeReusable
 {
-  v2 = [(PXSelectionBadgeUIViewTile *)self view];
-  [v2 setHidden:1];
+  view = [(PXSelectionBadgeUIViewTile *)self view];
+  [view setHidden:1];
 }
 
-- (PXSelectionBadgeUIViewTile)initWithFrame:(CGRect)a3
+- (PXSelectionBadgeUIViewTile)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PXSelectionBadgeUIViewTile;
-  v3 = [(PXSelectionBadgeUIViewTile *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXSelectionBadgeUIViewTile *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

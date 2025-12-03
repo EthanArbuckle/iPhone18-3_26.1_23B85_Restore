@@ -1,5 +1,5 @@
 @interface AFHeartBeat
-- (AFHeartBeat)initWithIdentifier:(id)a3 queue:(id)a4 effectiveDate:(id)a5 expirationDuration:(double)a6 heartBeatInterval:(double)a7 heartBeatHandler:(id)a8 invalidationHandler:(id)a9;
+- (AFHeartBeat)initWithIdentifier:(id)identifier queue:(id)queue effectiveDate:(id)date expirationDuration:(double)duration heartBeatInterval:(double)interval heartBeatHandler:(id)handler invalidationHandler:(id)invalidationHandler;
 - (NSString)description;
 - (void)_fire;
 - (void)_invalidate;
@@ -22,7 +22,7 @@
       v8 = 136315906;
       v9 = "[AFHeartBeat _fire]";
       v10 = 2048;
-      v11 = self;
+      selfCopy = self;
       v12 = 2112;
       v13 = identifier;
       v14 = 2048;
@@ -51,7 +51,7 @@
     v13 = 136315906;
     v14 = "[AFHeartBeat _invalidate]";
     v15 = 2048;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
     v18 = identifier;
     v19 = 2048;
@@ -95,7 +95,7 @@
     *buf = 136315394;
     v8 = "[AFHeartBeat invalidate]";
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1912FE000, v3, OS_LOG_TYPE_INFO, "%s %p", buf, 0x16u);
   }
 
@@ -135,7 +135,7 @@
     *buf = 136315650;
     v8 = "[AFHeartBeat dealloc]";
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
     v12 = identifier;
     _os_log_impl(&dword_1912FE000, v3, OS_LOG_TYPE_INFO, "%s %p identifier = %@", buf, 0x20u);
@@ -148,14 +148,14 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (AFHeartBeat)initWithIdentifier:(id)a3 queue:(id)a4 effectiveDate:(id)a5 expirationDuration:(double)a6 heartBeatInterval:(double)a7 heartBeatHandler:(id)a8 invalidationHandler:(id)a9
+- (AFHeartBeat)initWithIdentifier:(id)identifier queue:(id)queue effectiveDate:(id)date expirationDuration:(double)duration heartBeatInterval:(double)interval heartBeatHandler:(id)handler invalidationHandler:(id)invalidationHandler
 {
   v82 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a8;
-  v20 = a9;
+  identifierCopy = identifier;
+  queueCopy = queue;
+  dateCopy = date;
+  handlerCopy = handler;
+  invalidationHandlerCopy = invalidationHandler;
   v69.receiver = self;
   v69.super_class = AFHeartBeat;
   v21 = [(AFHeartBeat *)&v69 init];
@@ -172,49 +172,49 @@
     v72 = 2048;
     v73 = v21;
     v74 = 2112;
-    v75 = *&v16;
+    intervalCopy2 = *&identifierCopy;
     v76 = 2112;
-    v77 = *&v18;
+    durationCopy3 = *&dateCopy;
     v78 = 2048;
-    v79 = a6;
+    durationCopy = duration;
     v80 = 2048;
-    v81 = a7;
+    intervalCopy = interval;
     _os_log_impl(&dword_1912FE000, v22, OS_LOG_TYPE_INFO, "%s %p identifier = %@, effectiveDate = %@, expirationDuration = %f, heartBeatInterval = %f", buf, 0x3Eu);
   }
 
-  v23 = [v16 copy];
+  v23 = [identifierCopy copy];
   v24 = *(v21 + 7);
   *(v21 + 7) = v23;
 
-  objc_storeStrong(v21 + 1, a4);
-  v25 = [v18 copy];
+  objc_storeStrong(v21 + 1, queue);
+  v25 = [dateCopy copy];
   v26 = v25;
   if (v25)
   {
-    v27 = v25;
+    date = v25;
   }
 
   else
   {
-    v27 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
   }
 
   v28 = *(v21 + 8);
-  *(v21 + 8) = v27;
+  *(v21 + 8) = date;
 
-  *(v21 + 9) = a6;
-  *(v21 + 10) = a7;
-  v29 = MEMORY[0x193AFB7B0](v19);
+  *(v21 + 9) = duration;
+  *(v21 + 10) = interval;
+  v29 = MEMORY[0x193AFB7B0](handlerCopy);
   v30 = *(v21 + 4);
   *(v21 + 4) = v29;
 
-  v31 = MEMORY[0x193AFB7B0](v20);
+  v31 = MEMORY[0x193AFB7B0](invalidationHandlerCopy);
   v32 = *(v21 + 5);
   *(v21 + 5) = v31;
 
-  if (a7 > 0.0)
+  if (interval > 0.0)
   {
-    if (a6 < 0.0)
+    if (duration < 0.0)
     {
       v33 = AFSiriLogContextUtility;
       if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_ERROR))
@@ -224,7 +224,7 @@
         v72 = 2048;
         v73 = v21;
         v74 = 2048;
-        v75 = a6;
+        intervalCopy2 = duration;
         _os_log_error_impl(&dword_1912FE000, v33, OS_LOG_TYPE_ERROR, "%s %p Expiration duration %f is invalid.", buf, 0x20u);
       }
 
@@ -241,8 +241,8 @@
       goto LABEL_25;
     }
 
-    [v18 timeIntervalSinceNow];
-    if (a6 > 0.0 && v41 < 0.0 && v41 + a6 < 0.0)
+    [dateCopy timeIntervalSinceNow];
+    if (duration > 0.0 && v41 < 0.0 && v41 + duration < 0.0)
     {
       v42 = AFSiriLogContextUtility;
       if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_ERROR))
@@ -252,9 +252,9 @@
         v72 = 2048;
         v73 = v21;
         v74 = 2112;
-        v75 = *&v18;
+        intervalCopy2 = *&dateCopy;
         v76 = 2048;
-        v77 = a6;
+        durationCopy3 = duration;
         _os_log_error_impl(&dword_1912FE000, v42, OS_LOG_TYPE_ERROR, "%s %p Effective date %@ and expiration duration %f are in the past.", buf, 0x2Au);
       }
 
@@ -272,13 +272,13 @@
     }
 
     objc_initWeak(buf, v21);
-    v46 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v17);
+    v46 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, queueCopy);
     v47 = *(v21 + 2);
     *(v21 + 2) = v46;
 
     v48 = *(v21 + 2);
-    v49 = AFDispatchTimeGetFromDateAndOffset(v18, 0.0);
-    dispatch_source_set_timer(v48, v49, (a7 * 1000000000.0), 0);
+    v49 = AFDispatchTimeGetFromDateAndOffset(dateCopy, 0.0);
+    dispatch_source_set_timer(v48, v49, (interval * 1000000000.0), 0);
     v50 = *(v21 + 2);
     handler[0] = MEMORY[0x1E69E9820];
     handler[1] = 3221225472;
@@ -287,14 +287,14 @@
     objc_copyWeak(&v62, buf);
     dispatch_source_set_event_handler(v50, handler);
     dispatch_resume(*(v21 + 2));
-    if (a6 > 0.0)
+    if (duration > 0.0)
     {
-      v51 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v17);
+      v51 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, queueCopy);
       v52 = *(v21 + 3);
       *(v21 + 3) = v51;
 
       v53 = *(v21 + 3);
-      v54 = AFDispatchTimeGetFromDateAndOffset(v18, a6);
+      v54 = AFDispatchTimeGetFromDateAndOffset(dateCopy, duration);
       dispatch_source_set_timer(v53, v54, 0xFFFFFFFFFFFFFFFFLL, 0);
       v55 = *(v21 + 3);
       v59[0] = MEMORY[0x1E69E9820];
@@ -322,7 +322,7 @@ LABEL_24:
     v72 = 2048;
     v73 = v21;
     v74 = 2048;
-    v75 = a7;
+    intervalCopy2 = interval;
     _os_log_error_impl(&dword_1912FE000, v37, OS_LOG_TYPE_ERROR, "%s %p Heart beat interval %f is invalid.", buf, 0x20u);
   }
 

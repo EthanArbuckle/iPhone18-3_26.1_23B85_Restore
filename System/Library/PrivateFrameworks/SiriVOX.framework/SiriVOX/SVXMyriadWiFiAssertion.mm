@@ -1,8 +1,8 @@
 @interface SVXMyriadWiFiAssertion
-- (SVXMyriadWiFiAssertion)initWithQueue:(id)a3 delegate:(id)a4;
+- (SVXMyriadWiFiAssertion)initWithQueue:(id)queue delegate:(id)delegate;
 - (SVXMyriadWiFiAssertionProtocol)delegate;
 - (void)_releaseAssertion;
-- (void)acquireHomeKitAccessoryWiFiAssertionWithTimeout:(double)a3;
+- (void)acquireHomeKitAccessoryWiFiAssertionWithTimeout:(double)timeout;
 - (void)releaseHomeKitAccessoryWiFiAssertion;
 @end
 
@@ -26,7 +26,7 @@
   dispatch_async(workQueue, block);
 }
 
-- (void)acquireHomeKitAccessoryWiFiAssertionWithTimeout:(double)a3
+- (void)acquireHomeKitAccessoryWiFiAssertionWithTimeout:(double)timeout
 {
   workQueue = self->_workQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -34,7 +34,7 @@
   v4[2] = __74__SVXMyriadWiFiAssertion_acquireHomeKitAccessoryWiFiAssertionWithTimeout___block_invoke;
   v4[3] = &unk_279C68C68;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = timeout;
   dispatch_async(workQueue, v4);
 }
 
@@ -120,17 +120,17 @@ void __74__SVXMyriadWiFiAssertion_acquireHomeKitAccessoryWiFiAssertionWithTimeou
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (SVXMyriadWiFiAssertion)initWithQueue:(id)a3 delegate:(id)a4
+- (SVXMyriadWiFiAssertion)initWithQueue:(id)queue delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = SVXMyriadWiFiAssertion;
   v7 = [(SVXMyriadWiFiAssertion *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    v7->_workQueue = a3;
-    objc_storeWeak(&v7->_delegate, v6);
+    v7->_workQueue = queue;
+    objc_storeWeak(&v7->_delegate, delegateCopy);
   }
 
   return v8;

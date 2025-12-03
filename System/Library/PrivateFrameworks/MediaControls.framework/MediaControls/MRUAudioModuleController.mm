@@ -1,30 +1,30 @@
 @interface MRUAudioModuleController
 + (MRUAudioModuleController)sharedController;
 - (MRUAudioModuleController)init;
-- (MRUAudioModuleController)initWithOutputDeviceRouteController:(id)a3;
+- (MRUAudioModuleController)initWithOutputDeviceRouteController:(id)controller;
 - (MRUConversationAwarenessController)conversationAwarenessController;
 - (MRUHearingServiceController)hearingServiceController;
 - (MRUListeningModeController)listeningModeController;
 - (MRUSpatialAudioController)spatialAudioController;
 - (MRUSystemVolumeController)volumeController;
-- (void)conversationAwarenessController:(id)a3 didChangeConversationAwarenessEnabled:(BOOL)a4;
-- (void)conversationAwarenessController:(id)a3 didChangeConversationAwarenessSupported:(BOOL)a4;
-- (void)hearingServiceController:(id)a3 didChangePrimaryAmplification:(float)a4;
-- (void)hearingServiceController:(id)a3 didChangePrimaryHearingAidEnabled:(BOOL)a4;
-- (void)hearingServiceController:(id)a3 didChangePrimaryListeningModeOffAllowed:(BOOL)a4;
-- (void)hearingServiceController:(id)a3 didChangeSecondaryAmplification:(float)a4;
-- (void)hearingServiceController:(id)a3 didChangeSecondaryHearingAidEnabled:(BOOL)a4;
-- (void)hearingServiceController:(id)a3 didChangeSecondaryListeningModeOffAllowed:(BOOL)a4;
-- (void)listeningModeController:(id)a3 didChangeAvailablePrimaryListeningMode:(id)a4;
-- (void)listeningModeController:(id)a3 didChangeAvailableSecondaryListeningModes:(id)a4;
-- (void)listeningModeController:(id)a3 didChangePrimaryListeningMode:(id)a4;
-- (void)listeningModeController:(id)a3 didChangeSecondaryListeningMode:(id)a4;
-- (void)spatialAudioController:(id)a3 didChangeAvailableSpatialModes:(id)a4;
-- (void)spatialAudioController:(id)a3 didChangeNowPlayingInfo:(id)a4;
-- (void)spatialAudioController:(id)a3 didChangeSelectedSpatialMode:(id)a4;
-- (void)systemOutputDeviceRouteControllerDidUpdateOutputDeviceProperties:(id)a3;
-- (void)systemOutputDeviceRouteControllerDidUpdateOutputDevices:(id)a3;
-- (void)systemVolumeController:(id)a3 didChangeVolumeControlCapabilities:(unsigned int)a4 effectiveVolumeValue:(float)a5 forType:(int64_t)a6;
+- (void)conversationAwarenessController:(id)controller didChangeConversationAwarenessEnabled:(BOOL)enabled;
+- (void)conversationAwarenessController:(id)controller didChangeConversationAwarenessSupported:(BOOL)supported;
+- (void)hearingServiceController:(id)controller didChangePrimaryAmplification:(float)amplification;
+- (void)hearingServiceController:(id)controller didChangePrimaryHearingAidEnabled:(BOOL)enabled;
+- (void)hearingServiceController:(id)controller didChangePrimaryListeningModeOffAllowed:(BOOL)allowed;
+- (void)hearingServiceController:(id)controller didChangeSecondaryAmplification:(float)amplification;
+- (void)hearingServiceController:(id)controller didChangeSecondaryHearingAidEnabled:(BOOL)enabled;
+- (void)hearingServiceController:(id)controller didChangeSecondaryListeningModeOffAllowed:(BOOL)allowed;
+- (void)listeningModeController:(id)controller didChangeAvailablePrimaryListeningMode:(id)mode;
+- (void)listeningModeController:(id)controller didChangeAvailableSecondaryListeningModes:(id)modes;
+- (void)listeningModeController:(id)controller didChangePrimaryListeningMode:(id)mode;
+- (void)listeningModeController:(id)controller didChangeSecondaryListeningMode:(id)mode;
+- (void)spatialAudioController:(id)controller didChangeAvailableSpatialModes:(id)modes;
+- (void)spatialAudioController:(id)controller didChangeNowPlayingInfo:(id)info;
+- (void)spatialAudioController:(id)controller didChangeSelectedSpatialMode:(id)mode;
+- (void)systemOutputDeviceRouteControllerDidUpdateOutputDeviceProperties:(id)properties;
+- (void)systemOutputDeviceRouteControllerDidUpdateOutputDevices:(id)devices;
+- (void)systemVolumeController:(id)controller didChangeVolumeControlCapabilities:(unsigned int)capabilities effectiveVolumeValue:(float)value forType:(int64_t)type;
 @end
 
 @implementation MRUAudioModuleController
@@ -55,8 +55,8 @@
     self->_listeningModeController = v4;
 
     [(MRUListeningModeController *)self->_listeningModeController setDelegate:self];
-    v6 = [(MRUAudioModuleController *)self hearingServiceController];
-    [(MRUListeningModeController *)self->_listeningModeController setHearingServiceController:v6];
+    hearingServiceController = [(MRUAudioModuleController *)self hearingServiceController];
+    [(MRUListeningModeController *)self->_listeningModeController setHearingServiceController:hearingServiceController];
 
     listeningModeController = self->_listeningModeController;
   }
@@ -141,29 +141,29 @@ uint64_t __44__MRUAudioModuleController_sharedController__block_invoke()
   return v4;
 }
 
-- (MRUAudioModuleController)initWithOutputDeviceRouteController:(id)a3
+- (MRUAudioModuleController)initWithOutputDeviceRouteController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = MRUAudioModuleController;
   v6 = [(MRUAudioModuleController *)&v10 init];
   if (v6)
   {
-    v7 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v6->_observers;
-    v6->_observers = v7;
+    v6->_observers = weakObjectsHashTable;
 
-    objc_storeStrong(&v6->_outputDeviceRouteController, a3);
+    objc_storeStrong(&v6->_outputDeviceRouteController, controller);
     [(MRUSystemOutputDeviceRouteController *)v6->_outputDeviceRouteController add:v6];
   }
 
   return v6;
 }
 
-- (void)systemOutputDeviceRouteControllerDidUpdateOutputDevices:(id)a3
+- (void)systemOutputDeviceRouteControllerDidUpdateOutputDevices:(id)devices
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  devicesCopy = devices;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -187,7 +187,7 @@ uint64_t __44__MRUAudioModuleController_sharedController__block_invoke()
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 audioModuleController:self systemOutputDeviceRouteControllerDidUpdateOutputDevices:v4];
+          [v10 audioModuleController:self systemOutputDeviceRouteControllerDidUpdateOutputDevices:devicesCopy];
         }
 
         ++v9;
@@ -201,10 +201,10 @@ uint64_t __44__MRUAudioModuleController_sharedController__block_invoke()
   }
 }
 
-- (void)systemOutputDeviceRouteControllerDidUpdateOutputDeviceProperties:(id)a3
+- (void)systemOutputDeviceRouteControllerDidUpdateOutputDeviceProperties:(id)properties
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  propertiesCopy = properties;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -228,7 +228,7 @@ uint64_t __44__MRUAudioModuleController_sharedController__block_invoke()
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 audioModuleController:self systemOutputDeviceRouteControllerDidUpdateOutputDeviceProperties:v4];
+          [v10 audioModuleController:self systemOutputDeviceRouteControllerDidUpdateOutputDeviceProperties:propertiesCopy];
         }
 
         ++v9;
@@ -242,11 +242,11 @@ uint64_t __44__MRUAudioModuleController_sharedController__block_invoke()
   }
 }
 
-- (void)conversationAwarenessController:(id)a3 didChangeConversationAwarenessEnabled:(BOOL)a4
+- (void)conversationAwarenessController:(id)controller didChangeConversationAwarenessEnabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  controllerCopy = controller;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -270,7 +270,7 @@ uint64_t __44__MRUAudioModuleController_sharedController__block_invoke()
         v12 = *(*(&v13 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          [v12 audioModuleController:self conversationAwarenessController:v6 didChangeConversationAwarenessEnabled:v4];
+          [v12 audioModuleController:self conversationAwarenessController:controllerCopy didChangeConversationAwarenessEnabled:enabledCopy];
         }
 
         ++v11;
@@ -284,11 +284,11 @@ uint64_t __44__MRUAudioModuleController_sharedController__block_invoke()
   }
 }
 
-- (void)conversationAwarenessController:(id)a3 didChangeConversationAwarenessSupported:(BOOL)a4
+- (void)conversationAwarenessController:(id)controller didChangeConversationAwarenessSupported:(BOOL)supported
 {
-  v4 = a4;
+  supportedCopy = supported;
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  controllerCopy = controller;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -312,7 +312,7 @@ uint64_t __44__MRUAudioModuleController_sharedController__block_invoke()
         v12 = *(*(&v13 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          [v12 audioModuleController:self conversationAwarenessController:v6 didChangeConversationAwarenessSupported:v4];
+          [v12 audioModuleController:self conversationAwarenessController:controllerCopy didChangeConversationAwarenessSupported:supportedCopy];
         }
 
         ++v11;
@@ -326,11 +326,11 @@ uint64_t __44__MRUAudioModuleController_sharedController__block_invoke()
   }
 }
 
-- (void)listeningModeController:(id)a3 didChangeAvailablePrimaryListeningMode:(id)a4
+- (void)listeningModeController:(id)controller didChangeAvailablePrimaryListeningMode:(id)mode
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  modeCopy = mode;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -354,7 +354,7 @@ uint64_t __44__MRUAudioModuleController_sharedController__block_invoke()
         v13 = *(*(&v14 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 audioModuleController:self listeningModeController:v6 didChangeAvailablePrimaryListeningMode:v7];
+          [v13 audioModuleController:self listeningModeController:controllerCopy didChangeAvailablePrimaryListeningMode:modeCopy];
         }
 
         ++v12;
@@ -368,11 +368,11 @@ uint64_t __44__MRUAudioModuleController_sharedController__block_invoke()
   }
 }
 
-- (void)listeningModeController:(id)a3 didChangePrimaryListeningMode:(id)a4
+- (void)listeningModeController:(id)controller didChangePrimaryListeningMode:(id)mode
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  modeCopy = mode;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -396,7 +396,7 @@ uint64_t __44__MRUAudioModuleController_sharedController__block_invoke()
         v13 = *(*(&v14 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 audioModuleController:self listeningModeController:v6 didChangePrimaryListeningMode:v7];
+          [v13 audioModuleController:self listeningModeController:controllerCopy didChangePrimaryListeningMode:modeCopy];
         }
 
         ++v12;
@@ -410,11 +410,11 @@ uint64_t __44__MRUAudioModuleController_sharedController__block_invoke()
   }
 }
 
-- (void)listeningModeController:(id)a3 didChangeAvailableSecondaryListeningModes:(id)a4
+- (void)listeningModeController:(id)controller didChangeAvailableSecondaryListeningModes:(id)modes
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  modesCopy = modes;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -438,7 +438,7 @@ uint64_t __44__MRUAudioModuleController_sharedController__block_invoke()
         v13 = *(*(&v14 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 audioModuleController:self listeningModeController:v6 didChangeAvailableSecondaryListeningModes:v7];
+          [v13 audioModuleController:self listeningModeController:controllerCopy didChangeAvailableSecondaryListeningModes:modesCopy];
         }
 
         ++v12;
@@ -452,11 +452,11 @@ uint64_t __44__MRUAudioModuleController_sharedController__block_invoke()
   }
 }
 
-- (void)listeningModeController:(id)a3 didChangeSecondaryListeningMode:(id)a4
+- (void)listeningModeController:(id)controller didChangeSecondaryListeningMode:(id)mode
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  modeCopy = mode;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -480,7 +480,7 @@ uint64_t __44__MRUAudioModuleController_sharedController__block_invoke()
         v13 = *(*(&v14 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 audioModuleController:self listeningModeController:v6 didChangeSecondaryListeningMode:v7];
+          [v13 audioModuleController:self listeningModeController:controllerCopy didChangeSecondaryListeningMode:modeCopy];
         }
 
         ++v12;
@@ -494,11 +494,11 @@ uint64_t __44__MRUAudioModuleController_sharedController__block_invoke()
   }
 }
 
-- (void)spatialAudioController:(id)a3 didChangeAvailableSpatialModes:(id)a4
+- (void)spatialAudioController:(id)controller didChangeAvailableSpatialModes:(id)modes
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  modesCopy = modes;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -522,7 +522,7 @@ uint64_t __44__MRUAudioModuleController_sharedController__block_invoke()
         v13 = *(*(&v14 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 audioModuleController:self spatialAudioController:v6 didChangeAvailableSpatialModes:v7];
+          [v13 audioModuleController:self spatialAudioController:controllerCopy didChangeAvailableSpatialModes:modesCopy];
         }
 
         ++v12;
@@ -536,11 +536,11 @@ uint64_t __44__MRUAudioModuleController_sharedController__block_invoke()
   }
 }
 
-- (void)spatialAudioController:(id)a3 didChangeSelectedSpatialMode:(id)a4
+- (void)spatialAudioController:(id)controller didChangeSelectedSpatialMode:(id)mode
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  modeCopy = mode;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -564,7 +564,7 @@ uint64_t __44__MRUAudioModuleController_sharedController__block_invoke()
         v13 = *(*(&v14 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 audioModuleController:self spatialAudioController:v6 didChangeSelectedSpatialMode:v7];
+          [v13 audioModuleController:self spatialAudioController:controllerCopy didChangeSelectedSpatialMode:modeCopy];
         }
 
         ++v12;
@@ -578,11 +578,11 @@ uint64_t __44__MRUAudioModuleController_sharedController__block_invoke()
   }
 }
 
-- (void)spatialAudioController:(id)a3 didChangeNowPlayingInfo:(id)a4
+- (void)spatialAudioController:(id)controller didChangeNowPlayingInfo:(id)info
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  infoCopy = info;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -606,7 +606,7 @@ uint64_t __44__MRUAudioModuleController_sharedController__block_invoke()
         v13 = *(*(&v14 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 audioModuleController:self spatialAudioController:v6 didChangeNowPlayingInfo:v7];
+          [v13 audioModuleController:self spatialAudioController:controllerCopy didChangeNowPlayingInfo:infoCopy];
         }
 
         ++v12;
@@ -620,11 +620,11 @@ uint64_t __44__MRUAudioModuleController_sharedController__block_invoke()
   }
 }
 
-- (void)systemVolumeController:(id)a3 didChangeVolumeControlCapabilities:(unsigned int)a4 effectiveVolumeValue:(float)a5 forType:(int64_t)a6
+- (void)systemVolumeController:(id)controller didChangeVolumeControlCapabilities:(unsigned int)capabilities effectiveVolumeValue:(float)value forType:(int64_t)type
 {
-  v8 = *&a4;
+  v8 = *&capabilities;
   v23 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  controllerCopy = controller;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -648,8 +648,8 @@ uint64_t __44__MRUAudioModuleController_sharedController__block_invoke()
         v16 = *(*(&v18 + 1) + 8 * v15);
         if (objc_opt_respondsToSelector())
         {
-          *&v17 = a5;
-          [v16 audioModuleController:self volumeController:v10 didChangeVolumeControlCapabilities:v8 effectiveVolumeValue:a6 forType:v17];
+          *&v17 = value;
+          [v16 audioModuleController:self volumeController:controllerCopy didChangeVolumeControlCapabilities:v8 effectiveVolumeValue:type forType:v17];
         }
 
         ++v15;
@@ -663,11 +663,11 @@ uint64_t __44__MRUAudioModuleController_sharedController__block_invoke()
   }
 }
 
-- (void)hearingServiceController:(id)a3 didChangePrimaryHearingAidEnabled:(BOOL)a4
+- (void)hearingServiceController:(id)controller didChangePrimaryHearingAidEnabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  controllerCopy = controller;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -691,7 +691,7 @@ uint64_t __44__MRUAudioModuleController_sharedController__block_invoke()
         v12 = *(*(&v13 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          [v12 audioModuleController:self hearingServiceController:v6 didChangePrimaryHearingAidEnabled:v4];
+          [v12 audioModuleController:self hearingServiceController:controllerCopy didChangePrimaryHearingAidEnabled:enabledCopy];
         }
 
         ++v11;
@@ -705,10 +705,10 @@ uint64_t __44__MRUAudioModuleController_sharedController__block_invoke()
   }
 }
 
-- (void)hearingServiceController:(id)a3 didChangePrimaryAmplification:(float)a4
+- (void)hearingServiceController:(id)controller didChangePrimaryAmplification:(float)amplification
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  controllerCopy = controller;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -732,8 +732,8 @@ uint64_t __44__MRUAudioModuleController_sharedController__block_invoke()
         v12 = *(*(&v14 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          *&v13 = a4;
-          [v12 audioModuleController:self hearingServiceController:v6 didChangePrimaryAmplification:v13];
+          *&v13 = amplification;
+          [v12 audioModuleController:self hearingServiceController:controllerCopy didChangePrimaryAmplification:v13];
         }
 
         ++v11;
@@ -747,11 +747,11 @@ uint64_t __44__MRUAudioModuleController_sharedController__block_invoke()
   }
 }
 
-- (void)hearingServiceController:(id)a3 didChangePrimaryListeningModeOffAllowed:(BOOL)a4
+- (void)hearingServiceController:(id)controller didChangePrimaryListeningModeOffAllowed:(BOOL)allowed
 {
-  v4 = a4;
+  allowedCopy = allowed;
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  controllerCopy = controller;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -775,7 +775,7 @@ uint64_t __44__MRUAudioModuleController_sharedController__block_invoke()
         v12 = *(*(&v13 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          [v12 audioModuleController:self hearingServiceController:v6 didChangePrimaryListeningModeOffAllowed:v4];
+          [v12 audioModuleController:self hearingServiceController:controllerCopy didChangePrimaryListeningModeOffAllowed:allowedCopy];
         }
 
         ++v11;
@@ -789,11 +789,11 @@ uint64_t __44__MRUAudioModuleController_sharedController__block_invoke()
   }
 }
 
-- (void)hearingServiceController:(id)a3 didChangeSecondaryHearingAidEnabled:(BOOL)a4
+- (void)hearingServiceController:(id)controller didChangeSecondaryHearingAidEnabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  controllerCopy = controller;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -817,7 +817,7 @@ uint64_t __44__MRUAudioModuleController_sharedController__block_invoke()
         v12 = *(*(&v13 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          [v12 audioModuleController:self hearingServiceController:v6 didChangeSecondaryHearingAidEnabled:v4];
+          [v12 audioModuleController:self hearingServiceController:controllerCopy didChangeSecondaryHearingAidEnabled:enabledCopy];
         }
 
         ++v11;
@@ -831,10 +831,10 @@ uint64_t __44__MRUAudioModuleController_sharedController__block_invoke()
   }
 }
 
-- (void)hearingServiceController:(id)a3 didChangeSecondaryAmplification:(float)a4
+- (void)hearingServiceController:(id)controller didChangeSecondaryAmplification:(float)amplification
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  controllerCopy = controller;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -858,8 +858,8 @@ uint64_t __44__MRUAudioModuleController_sharedController__block_invoke()
         v12 = *(*(&v14 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          *&v13 = a4;
-          [v12 audioModuleController:self hearingServiceController:v6 didChangeSecondaryAmplification:v13];
+          *&v13 = amplification;
+          [v12 audioModuleController:self hearingServiceController:controllerCopy didChangeSecondaryAmplification:v13];
         }
 
         ++v11;
@@ -873,11 +873,11 @@ uint64_t __44__MRUAudioModuleController_sharedController__block_invoke()
   }
 }
 
-- (void)hearingServiceController:(id)a3 didChangeSecondaryListeningModeOffAllowed:(BOOL)a4
+- (void)hearingServiceController:(id)controller didChangeSecondaryListeningModeOffAllowed:(BOOL)allowed
 {
-  v4 = a4;
+  allowedCopy = allowed;
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  controllerCopy = controller;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -901,7 +901,7 @@ uint64_t __44__MRUAudioModuleController_sharedController__block_invoke()
         v12 = *(*(&v13 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          [v12 audioModuleController:self hearingServiceController:v6 didChangeSecondaryListeningModeOffAllowed:v4];
+          [v12 audioModuleController:self hearingServiceController:controllerCopy didChangeSecondaryListeningModeOffAllowed:allowedCopy];
         }
 
         ++v11;

@@ -1,61 +1,61 @@
 @interface BDSServiceCenter
-+ (void)_nextSortOrderForCollectionMemberManager:(id)a3 collectionID:(id)a4 completion:(id)a5;
-+ (void)addStoreID:(id)a3 toCollectionID:(id)a4 completion:(id)a5;
-+ (void)fetchIsAssetID:(id)a3 inCollectionID:(id)a4 completion:(id)a5;
-+ (void)setFinishedState:(BOOL)a3 assetIDs:(id)a4 completion:(id)a5;
++ (void)_nextSortOrderForCollectionMemberManager:(id)manager collectionID:(id)d completion:(id)completion;
++ (void)addStoreID:(id)d toCollectionID:(id)iD completion:(id)completion;
++ (void)fetchIsAssetID:(id)d inCollectionID:(id)iD completion:(id)completion;
++ (void)setFinishedState:(BOOL)state assetIDs:(id)ds completion:(id)completion;
 @end
 
 @implementation BDSServiceCenter
 
-+ (void)addStoreID:(id)a3 toCollectionID:(id)a4 completion:(id)a5
++ (void)addStoreID:(id)d toCollectionID:(id)iD completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[BCMutableStoreItem alloc] initWithStoreID:v8];
+  dCopy = d;
+  iDCopy = iD;
+  completionCopy = completion;
+  v11 = [[BCMutableStoreItem alloc] initWithStoreID:dCopy];
   v12 = +[BCCloudAssetManager sharedManager];
-  v13 = [v12 storeAssetManager];
+  storeAssetManager = [v12 storeAssetManager];
 
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100081E9C;
   v17[3] = &unk_100241FE8;
-  v20 = v10;
-  v21 = a1;
-  v18 = v8;
-  v19 = v9;
-  v14 = v9;
-  v15 = v10;
-  v16 = v8;
-  [v13 addStoreItem:v11 completion:v17];
+  v20 = completionCopy;
+  selfCopy = self;
+  v18 = dCopy;
+  v19 = iDCopy;
+  v14 = iDCopy;
+  v15 = completionCopy;
+  v16 = dCopy;
+  [storeAssetManager addStoreItem:v11 completion:v17];
 }
 
-+ (void)fetchIsAssetID:(id)a3 inCollectionID:(id)a4 completion:(id)a5
++ (void)fetchIsAssetID:(id)d inCollectionID:(id)iD completion:(id)completion
 {
-  v7 = a5;
-  v8 = [BCCollectionMember collectionMemberIDWithCollectionID:a4 assetID:a3];
+  completionCopy = completion;
+  v8 = [BCCollectionMember collectionMemberIDWithCollectionID:iD assetID:d];
   v9 = +[BCCloudCollectionsManager sharedManager];
-  v10 = [v9 collectionMemberManager];
+  collectionMemberManager = [v9 collectionMemberManager];
 
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100082260;
   v12[3] = &unk_100242010;
-  v13 = v7;
-  v11 = v7;
-  [v10 collectionMemberForCollectionMemberID:v8 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [collectionMemberManager collectionMemberForCollectionMemberID:v8 completion:v12];
 }
 
-+ (void)setFinishedState:(BOOL)a3 assetIDs:(id)a4 completion:(id)a5
++ (void)setFinishedState:(BOOL)state assetIDs:(id)ds completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  dsCopy = ds;
+  completionCopy = completion;
   v9 = objc_alloc_init(NSMutableDictionary);
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v10 = v7;
+  v10 = dsCopy;
   v11 = [v10 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v11)
   {
@@ -96,43 +96,43 @@
   }
 
   v19 = +[BCCloudAssetManager sharedManager];
-  v20 = [v19 storeAssetManager];
+  storeAssetManager = [v19 storeAssetManager];
 
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_100082544;
   v24[3] = &unk_100242060;
   v26 = v10;
-  v27 = v8;
+  v27 = completionCopy;
   v25 = v9;
-  v28 = a3;
+  stateCopy = state;
   v21 = v10;
-  v22 = v8;
+  v22 = completionCopy;
   v23 = v9;
-  [v20 addStoreItems:v23 completion:v24];
+  [storeAssetManager addStoreItems:v23 completion:v24];
 }
 
-+ (void)_nextSortOrderForCollectionMemberManager:(id)a3 collectionID:(id)a4 completion:(id)a5
++ (void)_nextSortOrderForCollectionMemberManager:(id)manager collectionID:(id)d completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  managerCopy = manager;
+  dCopy = d;
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (completionCopy)
   {
-    if (v7 && v8)
+    if (managerCopy && dCopy)
     {
       v11[0] = _NSConcreteStackBlock;
       v11[1] = 3221225472;
       v11[2] = sub_100082B20;
       v11[3] = &unk_100242088;
-      v12 = v9;
-      [v7 fetchMaxSortOrderInCollectionID:v8 completion:v11];
+      v12 = completionCopy;
+      [managerCopy fetchMaxSortOrderInCollectionID:dCopy completion:v11];
     }
 
     else
     {
-      (*(v9 + 2))(v9, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }

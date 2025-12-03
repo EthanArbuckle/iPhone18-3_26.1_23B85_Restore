@@ -1,24 +1,24 @@
 @interface AudioAccommodationsTransparencyViewController
 - (AudioAccommodationsTransparencyViewController)init;
-- (id)beamformingEnabled:(id)a3;
-- (id)customTransparencyEnabled:(id)a3;
+- (id)beamformingEnabled:(id)enabled;
+- (id)customTransparencyEnabled:(id)enabled;
 - (id)specifiers;
-- (id)transparencyAmplification:(id)a3;
-- (id)transparencyBalance:(id)a3;
+- (id)transparencyAmplification:(id)amplification;
+- (id)transparencyBalance:(id)balance;
 - (id)transparencyDeviceAddress;
-- (id)transparencyNoiseSuppression:(id)a3;
-- (id)transparencyTone:(id)a3;
-- (id)transparencyVoiceAmplification:(id)a3;
+- (id)transparencyNoiseSuppression:(id)suppression;
+- (id)transparencyTone:(id)tone;
+- (id)transparencyVoiceAmplification:(id)amplification;
 - (void)mediaServerDied;
 - (void)registerNotifications;
-- (void)setBeamformingEnabled:(id)a3 specifier:(id)a4;
-- (void)setCustomTransparencyEnabled:(id)a3 specifier:(id)a4;
-- (void)setSpecifier:(id)a3;
-- (void)setTransparencyAmplification:(id)a3 specifier:(id)a4;
-- (void)setTransparencyBalance:(id)a3 specifier:(id)a4;
-- (void)setTransparencyNoiseSuppression:(id)a3 specifier:(id)a4;
-- (void)setTransparencyTone:(id)a3 specifier:(id)a4;
-- (void)setTransparencyVoiceAmplification:(id)a3 specifier:(id)a4;
+- (void)setBeamformingEnabled:(id)enabled specifier:(id)specifier;
+- (void)setCustomTransparencyEnabled:(id)enabled specifier:(id)specifier;
+- (void)setSpecifier:(id)specifier;
+- (void)setTransparencyAmplification:(id)amplification specifier:(id)specifier;
+- (void)setTransparencyBalance:(id)balance specifier:(id)specifier;
+- (void)setTransparencyNoiseSuppression:(id)suppression specifier:(id)specifier;
+- (void)setTransparencyTone:(id)tone specifier:(id)specifier;
+- (void)setTransparencyVoiceAmplification:(id)amplification specifier:(id)specifier;
 - (void)viewDidLoad;
 - (void)willBecomeActive;
 @end
@@ -99,50 +99,50 @@
   v21.receiver = self;
   v21.super_class = AudioAccommodationsTransparencyViewController;
   [(AudioAccommodationsTransparencyViewController *)&v21 viewDidLoad];
-  v3 = [(AudioAccommodationsTransparencyViewController *)self table];
+  table = [(AudioAccommodationsTransparencyViewController *)self table];
   v4 = objc_opt_class();
   v5 = +[AAStrengthSliderCell cellReuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [table registerClass:v4 forCellReuseIdentifier:v5];
 
-  v6 = [(AudioAccommodationsTransparencyViewController *)self table];
+  table2 = [(AudioAccommodationsTransparencyViewController *)self table];
   v7 = objc_opt_class();
   v8 = +[AABalanceSliderCell cellReuseIdentifier];
-  [v6 registerClass:v7 forCellReuseIdentifier:v8];
+  [table2 registerClass:v7 forCellReuseIdentifier:v8];
 
-  v9 = [(AudioAccommodationsTransparencyViewController *)self table];
+  table3 = [(AudioAccommodationsTransparencyViewController *)self table];
   v10 = objc_opt_class();
   v11 = +[AAToneSliderCell cellReuseIdentifier];
-  [v9 registerClass:v10 forCellReuseIdentifier:v11];
+  [table3 registerClass:v10 forCellReuseIdentifier:v11];
 
-  v12 = [(AudioAccommodationsTransparencyViewController *)self table];
+  table4 = [(AudioAccommodationsTransparencyViewController *)self table];
   v13 = objc_opt_class();
   v14 = +[AANoiseSuppressorSliderCell cellReuseIdentifier];
-  [v12 registerClass:v13 forCellReuseIdentifier:v14];
+  [table4 registerClass:v13 forCellReuseIdentifier:v14];
 
-  v15 = [(AudioAccommodationsTransparencyViewController *)self table];
+  table5 = [(AudioAccommodationsTransparencyViewController *)self table];
   v16 = objc_opt_class();
   v17 = +[AAVoiceAmplificationSliderCell cellReuseIdentifier];
-  [v15 registerClass:v16 forCellReuseIdentifier:v17];
+  [table5 registerClass:v16 forCellReuseIdentifier:v17];
 
-  v18 = [(AudioAccommodationsTransparencyViewController *)self table];
+  table6 = [(AudioAccommodationsTransparencyViewController *)self table];
   v19 = objc_opt_class();
   v20 = +[AAAmplificationCell cellReuseIdentifier];
-  [v18 registerClass:v19 forCellReuseIdentifier:v20];
+  [table6 registerClass:v19 forCellReuseIdentifier:v20];
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v7.receiver = self;
   v7.super_class = AudioAccommodationsTransparencyViewController;
-  [(AudioAccommodationsTransparencyViewController *)&v7 setSpecifier:a3];
+  [(AudioAccommodationsTransparencyViewController *)&v7 setSpecifier:specifier];
   v4 = +[HUAccessoryManager sharedInstance];
-  v5 = [(AudioAccommodationsTransparencyViewController *)self transparencyDeviceAddress];
+  transparencyDeviceAddress = [(AudioAccommodationsTransparencyViewController *)self transparencyDeviceAddress];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_A0FC;
   v6[3] = &unk_48B20;
   v6[4] = self;
-  [v4 getPSEVersionForAddress:v5 withCompletion:v6];
+  [v4 getPSEVersionForAddress:transparencyDeviceAddress withCompletion:v6];
 }
 
 - (id)specifiers
@@ -153,19 +153,19 @@
   {
     if (self->_displayingInEnrollment)
     {
-      v5 = [(AudioAccommodationsTransparencyViewController *)self table];
+      table = [(AudioAccommodationsTransparencyViewController *)self table];
       v6 = +[UIColor clearColor];
-      [v5 setBackgroundColor:v6];
+      [table setBackgroundColor:v6];
 
-      v7 = [(AudioAccommodationsTransparencyViewController *)self view];
+      view = [(AudioAccommodationsTransparencyViewController *)self view];
       v8 = +[UIColor clearColor];
-      [v7 setBackgroundColor:v8];
+      [view setBackgroundColor:v8];
     }
 
     v9 = [objc_allocWithZone(NSMutableArray) init];
     v10 = +[PASettings sharedInstance];
-    v11 = [(AudioAccommodationsTransparencyViewController *)self transparencyDeviceAddress];
-    v12 = [v10 transparencyCustomizedForAddress:v11];
+    transparencyDeviceAddress = [(AudioAccommodationsTransparencyViewController *)self transparencyDeviceAddress];
+    v12 = [v10 transparencyCustomizedForAddress:transparencyDeviceAddress];
 
     if (self->_displayingInEnrollment)
     {
@@ -259,16 +259,16 @@ LABEL_17:
     [v13 setUserInfo:self];
     [v13 setIdentifier:@"AAToneSpecID"];
     [v9 addObject:v13];
-    v37 = [(AudioAccommodationsTransparencyViewController *)self currentDevicePSEVersion];
+    currentDevicePSEVersion = [(AudioAccommodationsTransparencyViewController *)self currentDevicePSEVersion];
     v38 = HCLogAudioAccommodations();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v58 = v37;
+      v58 = currentDevicePSEVersion;
       _os_log_impl(&dword_0, v38, OS_LOG_TYPE_DEFAULT, "Found PSE device with version %lu", buf, 0xCu);
     }
 
-    if (_os_feature_enabled_impl() && v37 >= 2)
+    if (_os_feature_enabled_impl() && currentDevicePSEVersion >= 2)
     {
       v39 = paLocString();
       v40 = [PSSpecifier groupSpecifierWithName:v39];
@@ -285,7 +285,7 @@ LABEL_17:
       [v43 setProperty:&__kCFBooleanTrue forKey:v30];
       [v43 setUserInfo:self];
       [v9 addObject:v43];
-      if (v37 >= 4)
+      if (currentDevicePSEVersion >= 4)
       {
         v44 = paLocString();
         v45 = [PSSpecifier groupSpecifierWithName:v44];
@@ -327,152 +327,152 @@ LABEL_18:
   return v4;
 }
 
-- (void)setBeamformingEnabled:(id)a3 specifier:(id)a4
+- (void)setBeamformingEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v8 = +[PASettings sharedInstance];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  v7 = [(AudioAccommodationsTransparencyViewController *)self transparencyDeviceAddress];
-  [v8 setTransparencyBeamforming:v6 forAddress:v7];
+  transparencyDeviceAddress = [(AudioAccommodationsTransparencyViewController *)self transparencyDeviceAddress];
+  [v8 setTransparencyBeamforming:bOOLValue forAddress:transparencyDeviceAddress];
 }
 
-- (id)beamformingEnabled:(id)a3
+- (id)beamformingEnabled:(id)enabled
 {
   v4 = +[PASettings sharedInstance];
-  v5 = [(AudioAccommodationsTransparencyViewController *)self transparencyDeviceAddress];
-  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 transparencyBeamformingForAddress:v5]);
+  transparencyDeviceAddress = [(AudioAccommodationsTransparencyViewController *)self transparencyDeviceAddress];
+  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 transparencyBeamformingForAddress:transparencyDeviceAddress]);
 
   return v6;
 }
 
-- (void)setTransparencyNoiseSuppression:(id)a3 specifier:(id)a4
+- (void)setTransparencyNoiseSuppression:(id)suppression specifier:(id)specifier
 {
-  v5 = a3;
+  suppressionCopy = suppression;
   v9 = +[PASettings sharedInstance];
-  [v5 doubleValue];
+  [suppressionCopy doubleValue];
   v7 = v6;
 
-  v8 = [(AudioAccommodationsTransparencyViewController *)self transparencyDeviceAddress];
-  [v9 setTransparencyNoiseSupressor:v8 forAddress:v7];
+  transparencyDeviceAddress = [(AudioAccommodationsTransparencyViewController *)self transparencyDeviceAddress];
+  [v9 setTransparencyNoiseSupressor:transparencyDeviceAddress forAddress:v7];
 }
 
-- (id)transparencyNoiseSuppression:(id)a3
+- (id)transparencyNoiseSuppression:(id)suppression
 {
   v4 = +[PASettings sharedInstance];
-  v5 = [(AudioAccommodationsTransparencyViewController *)self transparencyDeviceAddress];
-  [v4 transparencyNoiseSupressorForAddress:v5];
+  transparencyDeviceAddress = [(AudioAccommodationsTransparencyViewController *)self transparencyDeviceAddress];
+  [v4 transparencyNoiseSupressorForAddress:transparencyDeviceAddress];
   v6 = [NSNumber numberWithDouble:?];
 
   return v6;
 }
 
-- (void)setCustomTransparencyEnabled:(id)a3 specifier:(id)a4
+- (void)setCustomTransparencyEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v8 = +[PASettings sharedInstance];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  v7 = [(AudioAccommodationsTransparencyViewController *)self transparencyDeviceAddress];
-  [v8 setTransparencyCustomized:v6 forAddress:v7];
+  transparencyDeviceAddress = [(AudioAccommodationsTransparencyViewController *)self transparencyDeviceAddress];
+  [v8 setTransparencyCustomized:bOOLValue forAddress:transparencyDeviceAddress];
 }
 
-- (id)customTransparencyEnabled:(id)a3
+- (id)customTransparencyEnabled:(id)enabled
 {
   v4 = +[PASettings sharedInstance];
-  v5 = [(AudioAccommodationsTransparencyViewController *)self transparencyDeviceAddress];
-  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 transparencyCustomizedForAddress:v5]);
+  transparencyDeviceAddress = [(AudioAccommodationsTransparencyViewController *)self transparencyDeviceAddress];
+  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 transparencyCustomizedForAddress:transparencyDeviceAddress]);
 
   return v6;
 }
 
 - (id)transparencyDeviceAddress
 {
-  v2 = [(AudioAccommodationsTransparencyViewController *)self specifier];
-  v3 = [v2 userInfo];
+  specifier = [(AudioAccommodationsTransparencyViewController *)self specifier];
+  userInfo = [specifier userInfo];
 
-  return v3;
+  return userInfo;
 }
 
-- (void)setTransparencyAmplification:(id)a3 specifier:(id)a4
+- (void)setTransparencyAmplification:(id)amplification specifier:(id)specifier
 {
-  v5 = a3;
+  amplificationCopy = amplification;
   v9 = +[PASettings sharedInstance];
-  [v5 doubleValue];
+  [amplificationCopy doubleValue];
   v7 = v6;
 
-  v8 = [(AudioAccommodationsTransparencyViewController *)self transparencyDeviceAddress];
-  [v9 setTransparencyAmplification:v8 forAddress:v7];
+  transparencyDeviceAddress = [(AudioAccommodationsTransparencyViewController *)self transparencyDeviceAddress];
+  [v9 setTransparencyAmplification:transparencyDeviceAddress forAddress:v7];
 }
 
-- (id)transparencyAmplification:(id)a3
+- (id)transparencyAmplification:(id)amplification
 {
   v4 = +[PASettings sharedInstance];
-  v5 = [(AudioAccommodationsTransparencyViewController *)self transparencyDeviceAddress];
-  [v4 transparencyAmplificationForAddress:v5];
+  transparencyDeviceAddress = [(AudioAccommodationsTransparencyViewController *)self transparencyDeviceAddress];
+  [v4 transparencyAmplificationForAddress:transparencyDeviceAddress];
   v6 = [NSNumber numberWithDouble:?];
 
   return v6;
 }
 
-- (void)setTransparencyBalance:(id)a3 specifier:(id)a4
+- (void)setTransparencyBalance:(id)balance specifier:(id)specifier
 {
-  v5 = a3;
+  balanceCopy = balance;
   v9 = +[PASettings sharedInstance];
-  [v5 doubleValue];
+  [balanceCopy doubleValue];
   v7 = v6;
 
-  v8 = [(AudioAccommodationsTransparencyViewController *)self transparencyDeviceAddress];
-  [v9 setTransparencyBalance:v8 forAddress:v7];
+  transparencyDeviceAddress = [(AudioAccommodationsTransparencyViewController *)self transparencyDeviceAddress];
+  [v9 setTransparencyBalance:transparencyDeviceAddress forAddress:v7];
 }
 
-- (id)transparencyBalance:(id)a3
+- (id)transparencyBalance:(id)balance
 {
   v4 = +[PASettings sharedInstance];
-  v5 = [(AudioAccommodationsTransparencyViewController *)self transparencyDeviceAddress];
-  [v4 transparencyBalanceForAddress:v5];
+  transparencyDeviceAddress = [(AudioAccommodationsTransparencyViewController *)self transparencyDeviceAddress];
+  [v4 transparencyBalanceForAddress:transparencyDeviceAddress];
   v6 = [NSNumber numberWithDouble:?];
 
   return v6;
 }
 
-- (void)setTransparencyTone:(id)a3 specifier:(id)a4
+- (void)setTransparencyTone:(id)tone specifier:(id)specifier
 {
-  v5 = a3;
+  toneCopy = tone;
   v9 = +[PASettings sharedInstance];
-  [v5 doubleValue];
+  [toneCopy doubleValue];
   v7 = v6;
 
-  v8 = [(AudioAccommodationsTransparencyViewController *)self transparencyDeviceAddress];
-  [v9 setTransparencyTone:v8 forAddress:v7];
+  transparencyDeviceAddress = [(AudioAccommodationsTransparencyViewController *)self transparencyDeviceAddress];
+  [v9 setTransparencyTone:transparencyDeviceAddress forAddress:v7];
 }
 
-- (id)transparencyTone:(id)a3
+- (id)transparencyTone:(id)tone
 {
   v4 = +[PASettings sharedInstance];
-  v5 = [(AudioAccommodationsTransparencyViewController *)self transparencyDeviceAddress];
-  [v4 transparencyToneForAddress:v5];
+  transparencyDeviceAddress = [(AudioAccommodationsTransparencyViewController *)self transparencyDeviceAddress];
+  [v4 transparencyToneForAddress:transparencyDeviceAddress];
   v6 = [NSNumber numberWithDouble:?];
 
   return v6;
 }
 
-- (void)setTransparencyVoiceAmplification:(id)a3 specifier:(id)a4
+- (void)setTransparencyVoiceAmplification:(id)amplification specifier:(id)specifier
 {
-  v5 = a3;
+  amplificationCopy = amplification;
   v9 = +[PASettings sharedInstance];
-  [v5 doubleValue];
+  [amplificationCopy doubleValue];
   v7 = v6;
 
-  v8 = [(AudioAccommodationsTransparencyViewController *)self transparencyDeviceAddress];
-  [v9 setTransparencyOwnVoice:v8 forAddress:v7];
+  transparencyDeviceAddress = [(AudioAccommodationsTransparencyViewController *)self transparencyDeviceAddress];
+  [v9 setTransparencyOwnVoice:transparencyDeviceAddress forAddress:v7];
 }
 
-- (id)transparencyVoiceAmplification:(id)a3
+- (id)transparencyVoiceAmplification:(id)amplification
 {
   v4 = +[PASettings sharedInstance];
-  v5 = [(AudioAccommodationsTransparencyViewController *)self transparencyDeviceAddress];
-  [v4 transparencyOwnVoiceForAddress:v5];
+  transparencyDeviceAddress = [(AudioAccommodationsTransparencyViewController *)self transparencyDeviceAddress];
+  [v4 transparencyOwnVoiceForAddress:transparencyDeviceAddress];
   v6 = [NSNumber numberWithDouble:?];
 
   return v6;

@@ -1,28 +1,28 @@
 @interface CRSettingsController
 + (BOOL)_showsCarPlayInternalSettingsUI;
-+ (id)specifierForStoredVehicle:(id)a3 vehicleManager:(id)a4 featureAvailability:(id)a5;
-- (BOOL)storedVehicles:(id)a3 containsMatchForDiscoveredVehicle:(id)a4;
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (id)_specifierForIndexPath:(id)a3;
-- (id)specifierForDiscoveredVehicle:(id)a3;
-- (id)specifierForStoredVehicle:(id)a3;
++ (id)specifierForStoredVehicle:(id)vehicle vehicleManager:(id)manager featureAvailability:(id)availability;
+- (BOOL)storedVehicles:(id)vehicles containsMatchForDiscoveredVehicle:(id)vehicle;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (id)_specifierForIndexPath:(id)path;
+- (id)specifierForDiscoveredVehicle:(id)vehicle;
+- (id)specifierForStoredVehicle:(id)vehicle;
 - (id)specifiers;
-- (id)statusForDiscoveredVehicleSpecifier:(id)a3;
-- (id)tableView:(id)a3 titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (void)_setSpecifier:(id)a3 shouldShowActivity:(BOOL)a4;
-- (void)_showActivityOnOtherCarsGroup:(BOOL)a3;
-- (void)_updateSpecifierForVehicle:(id)a3;
+- (id)statusForDiscoveredVehicleSpecifier:(id)specifier;
+- (id)tableView:(id)view titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (void)_setSpecifier:(id)specifier shouldShowActivity:(BOOL)activity;
+- (void)_showActivityOnOtherCarsGroup:(BOOL)group;
+- (void)_updateSpecifierForVehicle:(id)vehicle;
 - (void)dealloc;
 - (void)handleCarPlayAllowedDidChange;
-- (void)handlePairedVehiclesChanged:(id)a3;
-- (void)pairAccessorySpecifier:(id)a3;
-- (void)pairVehicle:(id)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)unpairVehicle:(id)a3;
-- (void)vehicleDiscoverer:(id)a3 didDiscoverVehicle:(id)a4;
-- (void)vehicleDiscoverer:(id)a3 didRemoveVehicle:(id)a4;
-- (void)vehicleDiscoverer:(id)a3 didUpdateVehicle:(id)a4;
+- (void)handlePairedVehiclesChanged:(id)changed;
+- (void)pairAccessorySpecifier:(id)specifier;
+- (void)pairVehicle:(id)vehicle;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)unpairVehicle:(id)vehicle;
+- (void)vehicleDiscoverer:(id)discoverer didDiscoverVehicle:(id)vehicle;
+- (void)vehicleDiscoverer:(id)discoverer didRemoveVehicle:(id)vehicle;
+- (void)vehicleDiscoverer:(id)discoverer didUpdateVehicle:(id)vehicle;
 - (void)viewDidLoad;
 @end
 
@@ -30,8 +30,8 @@
 
 - (void)dealloc
 {
-  v3 = [(CRSettingsController *)self carplayPreferences];
-  [v3 setPreferencesDelegate:0];
+  carplayPreferences = [(CRSettingsController *)self carplayPreferences];
+  [carplayPreferences setPreferencesDelegate:0];
 
   v4 = +[NSDistributedNotificationCenter defaultCenter];
   [v4 removeObserver:self];
@@ -41,19 +41,19 @@
   [(CRSettingsController *)&v5 dealloc];
 }
 
-- (void)pairVehicle:(id)a3
+- (void)pairVehicle:(id)vehicle
 {
-  v4 = a3;
-  [v4 setPairingStatus:2];
+  vehicleCopy = vehicle;
+  [vehicleCopy setPairingStatus:2];
   objc_initWeak(&location, self);
-  v5 = [(CRSettingsController *)self vehicleManager];
+  vehicleManager = [(CRSettingsController *)self vehicleManager];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_7024;
   v7[3] = &unk_6E430;
-  v6 = v4;
+  v6 = vehicleCopy;
   v8 = v6;
-  [v5 saveVehicle:v6 completion:v7];
+  [vehicleManager saveVehicle:v6 completion:v7];
 
   objc_destroyWeak(&location);
 }
@@ -67,43 +67,43 @@
   v4 = [v3 localizedStringForKey:@"CARPLAY_NAVIGATION_TITLE" value:&stru_6FD90 table:@"Localizable"];
   [(CRSettingsController *)self setTitle:v4];
 
-  v5 = [(CRSettingsController *)self table];
+  table = [(CRSettingsController *)self table];
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  [v5 registerClass:v6 forCellReuseIdentifier:v8];
+  [table registerClass:v6 forCellReuseIdentifier:v8];
 
-  v9 = [(CRSettingsController *)self table];
+  table2 = [(CRSettingsController *)self table];
   v10 = objc_opt_class();
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
-  [v9 registerClass:v10 forHeaderFooterViewReuseIdentifier:v12];
+  [table2 registerClass:v10 forHeaderFooterViewReuseIdentifier:v12];
 }
 
-- (void)unpairVehicle:(id)a3
+- (void)unpairVehicle:(id)vehicle
 {
-  v4 = a3;
+  vehicleCopy = vehicle;
   objc_initWeak(&location, self);
-  v5 = [(CRSettingsController *)self vehicleManager];
+  vehicleManager = [(CRSettingsController *)self vehicleManager];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_73C8;
   v7[3] = &unk_6E480;
-  v6 = v4;
+  v6 = vehicleCopy;
   v8 = v6;
-  [v5 removeVehicle:v6 completion:v7];
+  [vehicleManager removeVehicle:v6 completion:v7];
 
   objc_destroyWeak(&location);
 }
 
-- (void)pairAccessorySpecifier:(id)a3
+- (void)pairAccessorySpecifier:(id)specifier
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 accessory];
-  if (v5)
+  userInfo = [specifier userInfo];
+  accessory = [userInfo accessory];
+  if (accessory)
   {
-    v6 = [v4 accessory];
-    v7 = [CRVehicle vehicleForMessagingVehicle:v6];
+    accessory2 = [userInfo accessory];
+    v7 = [CRVehicle vehicleForMessagingVehicle:accessory2];
 
     if (v7)
     {
@@ -113,8 +113,8 @@
 
   else
   {
-    v8 = [(CRSettingsController *)self vehicleDiscoverer];
-    v9 = [v8 bluetoothPairVehicle:v4];
+    vehicleDiscoverer = [(CRSettingsController *)self vehicleDiscoverer];
+    v9 = [vehicleDiscoverer bluetoothPairVehicle:userInfo];
 
     if ((v9 & 1) == 0)
     {
@@ -125,28 +125,28 @@
       }
     }
 
-    [(CRSettingsController *)self _updateSpecifierForVehicle:v4];
+    [(CRSettingsController *)self _updateSpecifierForVehicle:userInfo];
   }
 }
 
-- (void)vehicleDiscoverer:(id)a3 didDiscoverVehicle:(id)a4
+- (void)vehicleDiscoverer:(id)discoverer didDiscoverVehicle:(id)vehicle
 {
-  v5 = a4;
+  vehicleCopy = vehicle;
   v6 = CarGeneralLogging();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v22 = v5;
+    v22 = vehicleCopy;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "vehicle discovered %@", buf, 0xCu);
   }
 
-  v7 = [(CRSettingsController *)self specifierForDiscoveredVehicle:v5];
+  v7 = [(CRSettingsController *)self specifierForDiscoveredVehicle:vehicleCopy];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [(CRSettingsController *)self specifiers];
-  v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  specifiers = [(CRSettingsController *)self specifiers];
+  v9 = [specifiers countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
     v10 = v9;
@@ -158,12 +158,12 @@
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(specifiers);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) name];
-        v14 = [v7 name];
-        v15 = [v13 isEqual:v14];
+        name = [*(*(&v16 + 1) + 8 * v12) name];
+        name2 = [v7 name];
+        v15 = [name isEqual:name2];
 
         if (v15)
         {
@@ -175,7 +175,7 @@
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v10 = [specifiers countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v10)
       {
         continue;
@@ -189,28 +189,28 @@
 LABEL_13:
 }
 
-- (void)vehicleDiscoverer:(id)a3 didUpdateVehicle:(id)a4
+- (void)vehicleDiscoverer:(id)discoverer didUpdateVehicle:(id)vehicle
 {
-  v5 = a4;
+  vehicleCopy = vehicle;
   v6 = CarGeneralLogging();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v5;
+    v8 = vehicleCopy;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "vehicle updated %@", &v7, 0xCu);
   }
 
-  [(CRSettingsController *)self _updateSpecifierForVehicle:v5];
+  [(CRSettingsController *)self _updateSpecifierForVehicle:vehicleCopy];
 }
 
-- (void)vehicleDiscoverer:(id)a3 didRemoveVehicle:(id)a4
+- (void)vehicleDiscoverer:(id)discoverer didRemoveVehicle:(id)vehicle
 {
-  v5 = a4;
+  vehicleCopy = vehicle;
   v6 = CarGeneralLogging();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = v5;
+    v21 = vehicleCopy;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "vehicle removed %@", buf, 0xCu);
   }
 
@@ -218,8 +218,8 @@ LABEL_13:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [(CRSettingsController *)self specifiers];
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  specifiers = [(CRSettingsController *)self specifiers];
+  v8 = [specifiers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -230,12 +230,12 @@ LABEL_13:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(specifiers);
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        v13 = [v12 userInfo];
-        v14 = [v13 isEqual:v5];
+        userInfo = [v12 userInfo];
+        v14 = [userInfo isEqual:vehicleCopy];
 
         if (v14)
         {
@@ -243,14 +243,14 @@ LABEL_13:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [specifiers countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)handlePairedVehiclesChanged:(id)a3
+- (void)handlePairedVehiclesChanged:(id)changed
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -276,24 +276,24 @@ LABEL_13:
   return CRIsInternalInstall() & v2;
 }
 
-+ (id)specifierForStoredVehicle:(id)a3 vehicleManager:(id)a4 featureAvailability:(id)a5
++ (id)specifierForStoredVehicle:(id)vehicle vehicleManager:(id)manager featureAvailability:(id)availability
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 displayName];
-  v12 = [PSSpecifier preferenceSpecifierNamed:v11 target:a1 set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
+  vehicleCopy = vehicle;
+  availabilityCopy = availability;
+  managerCopy = manager;
+  displayName = [vehicleCopy displayName];
+  v12 = [PSSpecifier preferenceSpecifierNamed:displayName target:self set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
 
-  v13 = [v8 identifier];
-  v14 = [v13 UUIDString];
-  v15 = [NSString stringWithFormat:@"stored-%@", v14];
+  identifier = [vehicleCopy identifier];
+  uUIDString = [identifier UUIDString];
+  v15 = [NSString stringWithFormat:@"stored-%@", uUIDString];
   [v12 setIdentifier:v15];
 
-  v16 = [[CRVehicleSettingManager alloc] initWithPairedVehicleManager:v10 featureAvailability:v9 vehicle:v8];
+  v16 = [[CRVehicleSettingManager alloc] initWithPairedVehicleManager:managerCopy featureAvailability:availabilityCopy vehicle:vehicleCopy];
   [v12 setUserInfo:v16];
   [v12 setProperty:&__kCFBooleanTrue forKey:@"isStoredVehicle"];
-  v17 = [v8 displayName];
-  [v12 setProperty:v17 forKey:PSTitleKey];
+  displayName2 = [vehicleCopy displayName];
+  [v12 setProperty:displayName2 forKey:PSTitleKey];
 
   if (+[CRSettingsController _showsCarPlayInternalSettingsUI])
   {
@@ -303,26 +303,26 @@ LABEL_13:
     }
 
     v18 = +[NSMutableString string];
-    v19 = [v8 lastConnectedDate];
+    lastConnectedDate = [vehicleCopy lastConnectedDate];
 
-    if (v19)
+    if (lastConnectedDate)
     {
       v20 = qword_7C540;
-      v21 = [v8 lastConnectedDate];
-      v22 = [v20 stringFromDate:v21];
+      lastConnectedDate2 = [vehicleCopy lastConnectedDate];
+      v22 = [v20 stringFromDate:lastConnectedDate2];
       [v18 appendString:v22];
     }
 
     if ([v18 length])
     {
-      v23 = [v8 vehicleModelName];
-      v24 = [v23 length];
+      vehicleModelName = [vehicleCopy vehicleModelName];
+      v24 = [vehicleModelName length];
 
       if (v24)
       {
         [v18 appendString:@" • "];
-        v25 = [v8 vehicleModelName];
-        [v18 appendString:v25];
+        vehicleModelName2 = [vehicleCopy vehicleModelName];
+        [v18 appendString:vehicleModelName2];
       }
     }
 
@@ -337,58 +337,58 @@ LABEL_13:
   return v12;
 }
 
-- (id)specifierForStoredVehicle:(id)a3
+- (id)specifierForStoredVehicle:(id)vehicle
 {
-  v4 = a3;
-  v5 = [(CRSettingsController *)self vehicleManager];
-  v6 = [(CRSettingsController *)self featureAvailability];
-  v7 = [CRSettingsController specifierForStoredVehicle:v4 vehicleManager:v5 featureAvailability:v6];
+  vehicleCopy = vehicle;
+  vehicleManager = [(CRSettingsController *)self vehicleManager];
+  featureAvailability = [(CRSettingsController *)self featureAvailability];
+  v7 = [CRSettingsController specifierForStoredVehicle:vehicleCopy vehicleManager:vehicleManager featureAvailability:featureAvailability];
 
   return v7;
 }
 
-- (id)specifierForDiscoveredVehicle:(id)a3
+- (id)specifierForDiscoveredVehicle:(id)vehicle
 {
-  v4 = a3;
-  v5 = [v4 displayName];
-  v6 = [PSSpecifier preferenceSpecifierNamed:v5 target:self set:0 get:"statusForDiscoveredVehicleSpecifier:" detail:0 cell:4 edit:0];
+  vehicleCopy = vehicle;
+  displayName = [vehicleCopy displayName];
+  v6 = [PSSpecifier preferenceSpecifierNamed:displayName target:self set:0 get:"statusForDiscoveredVehicleSpecifier:" detail:0 cell:4 edit:0];
 
-  v7 = [v4 identifier];
-  v8 = [NSString stringWithFormat:@"connected-%@", v7];
+  identifier = [vehicleCopy identifier];
+  v8 = [NSString stringWithFormat:@"connected-%@", identifier];
   [v6 setIdentifier:v8];
 
-  [v6 setUserInfo:v4];
+  [v6 setUserInfo:vehicleCopy];
   [v6 setButtonAction:"pairAccessorySpecifier:"];
 
   return v6;
 }
 
-- (id)statusForDiscoveredVehicleSpecifier:(id)a3
+- (id)statusForDiscoveredVehicleSpecifier:(id)specifier
 {
-  v3 = a3;
+  specifierCopy = specifier;
   if (CRSettingsDebugUIEnabled())
   {
-    v4 = [v3 userInfo];
-    v5 = [v4 debugConnectionStatusDescription];
+    userInfo = [specifierCopy userInfo];
+    debugConnectionStatusDescription = [userInfo debugConnectionStatusDescription];
   }
 
   else
   {
-    v5 = 0;
+    debugConnectionStatusDescription = 0;
   }
 
-  return v5;
+  return debugConnectionStatusDescription;
 }
 
-- (BOOL)storedVehicles:(id)a3 containsMatchForDiscoveredVehicle:(id)a4
+- (BOOL)storedVehicles:(id)vehicles containsMatchForDiscoveredVehicle:(id)vehicle
 {
-  v5 = a3;
-  v6 = a4;
+  vehiclesCopy = vehicles;
+  vehicleCopy = vehicle;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = v5;
+  v7 = vehiclesCopy;
   v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
@@ -403,11 +403,11 @@ LABEL_13:
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
-        v12 = [v11 certificateSerialNumber];
-        v13 = [v6 accessory];
-        v14 = [v13 certificateSerialNumber];
+        certificateSerialNumber = [v11 certificateSerialNumber];
+        accessory = [vehicleCopy accessory];
+        certificateSerialNumber2 = [accessory certificateSerialNumber];
 
-        if (v12 && [v12 isEqualToData:v14])
+        if (certificateSerialNumber && [certificateSerialNumber isEqualToData:certificateSerialNumber2])
         {
 
 LABEL_16:
@@ -415,11 +415,11 @@ LABEL_16:
           goto LABEL_17;
         }
 
-        v15 = [v11 bluetoothAddress];
-        if (v15)
+        bluetoothAddress = [v11 bluetoothAddress];
+        if (bluetoothAddress)
         {
-          v16 = [v6 bluetoothAddress];
-          v17 = [v15 isEqualToString:v16];
+          bluetoothAddress2 = [vehicleCopy bluetoothAddress];
+          v17 = [bluetoothAddress isEqualToString:bluetoothAddress2];
 
           if (v17)
           {
@@ -454,9 +454,9 @@ LABEL_17:
   {
     v46 = OBJC_IVAR___PSListController__specifiers;
     v48 = +[NSMutableArray array];
-    v4 = [(CRSettingsController *)self carplayPreferences];
+    carplayPreferences = [(CRSettingsController *)self carplayPreferences];
 
-    if (!v4)
+    if (!carplayPreferences)
     {
       v5 = objc_alloc_init(CRCarPlayPreferences);
       [(CRSettingsController *)self setCarplayPreferences:v5];
@@ -464,23 +464,23 @@ LABEL_17:
       [(CRSettingsController *)self handleCarPlayAllowedDidChange];
     }
 
-    v6 = [(CRSettingsController *)self featureAvailability];
+    featureAvailability = [(CRSettingsController *)self featureAvailability];
 
-    if (!v6)
+    if (!featureAvailability)
     {
       v7 = objc_alloc_init(CRFeatureAvailability);
       [(CRSettingsController *)self setFeatureAvailability:v7];
     }
 
-    v8 = [(CRSettingsController *)self carplayPreferences];
-    v9 = [v8 isWirelessCarPlayEnabled];
+    carplayPreferences2 = [(CRSettingsController *)self carplayPreferences];
+    isWirelessCarPlayEnabled = [carplayPreferences2 isWirelessCarPlayEnabled];
 
-    v45 = v9;
-    if (v9)
+    v45 = isWirelessCarPlayEnabled;
+    if (isWirelessCarPlayEnabled)
     {
-      v10 = [(CRSettingsController *)self radiosPowerPrompt];
+      radiosPowerPrompt = [(CRSettingsController *)self radiosPowerPrompt];
 
-      if (!v10)
+      if (!radiosPowerPrompt)
       {
         v11 = objc_alloc_init(CARRadiosAvailabilityPrompt);
         [(CRSettingsController *)self setRadiosPowerPrompt:v11];
@@ -496,18 +496,18 @@ LABEL_17:
 
     v14 = +[NSMutableArray array];
     v49 = +[NSMutableArray array];
-    v15 = [(CRSettingsController *)self vehicleDiscoverer];
+    vehicleDiscoverer = [(CRSettingsController *)self vehicleDiscoverer];
 
-    if (!v15)
+    if (!vehicleDiscoverer)
     {
       v16 = objc_alloc_init(CARVehicleDiscoverer);
       [(CRSettingsController *)self setVehicleDiscoverer:v16];
       [(CARVehicleDiscoverer *)v16 setDiscoveryDelegate:self];
     }
 
-    v17 = [(CRSettingsController *)self vehicleManager];
+    vehicleManager = [(CRSettingsController *)self vehicleManager];
 
-    if (!v17)
+    if (!vehicleManager)
     {
       v18 = objc_alloc_init(CRPairedVehicleManager);
       [(CRSettingsController *)self setVehicleManager:v18];
@@ -524,7 +524,7 @@ LABEL_17:
     v64 = sub_8A70;
     v65 = sub_8A80;
     v66 = 0;
-    v21 = [(CRSettingsController *)self vehicleManager];
+    vehicleManager2 = [(CRSettingsController *)self vehicleManager];
     v58[0] = _NSConcreteStackBlock;
     v58[1] = 3221225472;
     v58[2] = sub_8A88;
@@ -532,7 +532,7 @@ LABEL_17:
     v60 = &v61;
     dsema = v20;
     v59 = dsema;
-    [v21 fetchAllVehiclesWithCompletion:v58];
+    [vehicleManager2 fetchAllVehiclesWithCompletion:v58];
 
     v22 = dispatch_time(0, 5000000000);
     dispatch_semaphore_wait(dsema, v22);
@@ -569,10 +569,10 @@ LABEL_17:
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v28 = [(CRSettingsController *)self vehicleDiscoverer];
-    v29 = [v28 discoveredVehicles];
+    vehicleDiscoverer2 = [(CRSettingsController *)self vehicleDiscoverer];
+    discoveredVehicles = [vehicleDiscoverer2 discoveredVehicles];
 
-    v30 = [v29 countByEnumeratingWithState:&v50 objects:v69 count:16];
+    v30 = [discoveredVehicles countByEnumeratingWithState:&v50 objects:v69 count:16];
     if (v30)
     {
       v31 = *v51;
@@ -582,7 +582,7 @@ LABEL_17:
         {
           if (*v51 != v31)
           {
-            objc_enumerationMutation(v29);
+            objc_enumerationMutation(discoveredVehicles);
           }
 
           v33 = *(*(&v50 + 1) + 8 * j);
@@ -601,7 +601,7 @@ LABEL_17:
           }
         }
 
-        v30 = [v29 countByEnumeratingWithState:&v50 objects:v69 count:16];
+        v30 = [discoveredVehicles countByEnumeratingWithState:&v50 objects:v69 count:16];
       }
 
       while (v30);
@@ -645,32 +645,32 @@ LABEL_17:
   return v3;
 }
 
-- (void)_showActivityOnOtherCarsGroup:(BOOL)a3
+- (void)_showActivityOnOtherCarsGroup:(BOOL)group
 {
-  if (self->_otherCarsHeaderIsSpinning != a3)
+  if (self->_otherCarsHeaderIsSpinning != group)
   {
-    self->_otherCarsHeaderIsSpinning = a3;
+    self->_otherCarsHeaderIsSpinning = group;
     [(CRSettingsController *)self reloadSpecifierID:@"OTHER_CARS" animated:1];
   }
 }
 
-- (id)_specifierForIndexPath:(id)a3
+- (id)_specifierForIndexPath:(id)path
 {
-  v4 = [(CRSettingsController *)self indexForIndexPath:a3];
+  v4 = [(CRSettingsController *)self indexForIndexPath:path];
   v5 = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
 
   return [v5 objectAtIndex:v4];
 }
 
-- (void)_updateSpecifierForVehicle:(id)a3
+- (void)_updateSpecifierForVehicle:(id)vehicle
 {
-  v4 = a3;
+  vehicleCopy = vehicle;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(CRSettingsController *)self specifiers];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  specifiers = [(CRSettingsController *)self specifiers];
+  v6 = [specifiers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -681,43 +681,43 @@ LABEL_17:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(specifiers);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 userInfo];
-        v12 = [v11 isEqual:v4];
+        userInfo = [v10 userInfo];
+        v12 = [userInfo isEqual:vehicleCopy];
 
         if (v12)
         {
-          v13 = [v4 displayName];
-          [v10 setName:v13];
+          displayName = [vehicleCopy displayName];
+          [v10 setName:displayName];
 
-          -[CRSettingsController _setSpecifier:shouldShowActivity:](self, "_setSpecifier:shouldShowActivity:", v10, [v4 isConnecting]);
+          -[CRSettingsController _setSpecifier:shouldShowActivity:](self, "_setSpecifier:shouldShowActivity:", v10, [vehicleCopy isConnecting]);
           [(CRSettingsController *)self reloadSpecifier:v10];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [specifiers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_setSpecifier:(id)a3 shouldShowActivity:(BOOL)a4
+- (void)_setSpecifier:(id)specifier shouldShowActivity:(BOOL)activity
 {
-  v4 = a4;
-  v5 = [a3 propertyForKey:PSTableCellKey];
+  activityCopy = activity;
+  v5 = [specifier propertyForKey:PSTableCellKey];
   if (v5)
   {
     v8 = v5;
-    v6 = [v5 accessoryView];
+    accessoryView = [v5 accessoryView];
 
-    if (v4)
+    if (activityCopy)
     {
       v5 = v8;
-      if (v6)
+      if (accessoryView)
       {
         goto LABEL_8;
       }
@@ -730,7 +730,7 @@ LABEL_17:
     else
     {
       v5 = v8;
-      if (!v6)
+      if (!accessoryView)
       {
         goto LABEL_8;
       }
@@ -744,22 +744,22 @@ LABEL_17:
 LABEL_8:
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v4 = [(CRSettingsController *)self _specifierForIndexPath:a4];
+  v4 = [(CRSettingsController *)self _specifierForIndexPath:path];
   v5 = [v4 propertyForKey:@"isStoredVehicle"];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (id)tableView:(id)a3 titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path
 {
-  v4 = [(CRSettingsController *)self _specifierForIndexPath:a4];
+  v4 = [(CRSettingsController *)self _specifierForIndexPath:path];
   v5 = [v4 propertyForKey:@"isStoredVehicle"];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     v7 = [NSBundle bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:@"FORGET" value:&stru_6FD90 table:@"Localizable"];
@@ -773,21 +773,21 @@ LABEL_8:
   return v8;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  if (a4 == 1)
+  if (style == 1)
   {
     block[9] = v5;
     block[10] = v6;
-    v8 = [(CRSettingsController *)self _specifierForIndexPath:a5];
-    v9 = [v8 userInfo];
-    v10 = [v9 vehicle];
+    v8 = [(CRSettingsController *)self _specifierForIndexPath:path];
+    userInfo = [v8 userInfo];
+    vehicle = [userInfo vehicle];
 
     [(CRSettingsController *)self setSuppressNextReloadForPairedVehicleChanged:1];
-    [(CRSettingsController *)self unpairVehicle:v10];
+    [(CRSettingsController *)self unpairVehicle:vehicle];
     [(CRSettingsController *)self removeSpecifier:v8 animated:1];
-    v11 = [(CRSettingsController *)self storedCarsSpecifiers];
-    [v11 removeObject:v8];
+    storedCarsSpecifiers = [(CRSettingsController *)self storedCarsSpecifiers];
+    [storedCarsSpecifiers removeObject:v8];
 
     v12 = [(CRSettingsController *)self specifierForID:@"OTHER_CARS"];
     [(CRSettingsController *)self _updateOtherCarsGroupNameForSpecifier:v12];
@@ -802,19 +802,19 @@ LABEL_8:
   }
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   v7 = [(CRSettingsController *)self specifierForID:@"OTHER_CARS"];
-  if (v7 && (-[CRSettingsController indexPathForSpecifier:](self, "indexPathForSpecifier:", v7), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 section], v8, v9 == a4))
+  if (v7 && (-[CRSettingsController indexPathForSpecifier:](self, "indexPathForSpecifier:", v7), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 section], v8, v9 == section))
   {
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    v12 = [v6 dequeueReusableHeaderFooterViewWithIdentifier:v11];
+    v12 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:v11];
 
     [v12 setIsSpinning:self->_otherCarsHeaderIsSpinning];
-    v13 = [(CRSettingsController *)self storedCarsSpecifiers];
-    v14 = [v13 count];
+    storedCarsSpecifiers = [(CRSettingsController *)self storedCarsSpecifiers];
+    v14 = [storedCarsSpecifiers count];
     v15 = [NSBundle bundleForClass:objc_opt_class()];
     v16 = v15;
     if (v14)
@@ -835,7 +835,7 @@ LABEL_8:
   {
     v20.receiver = self;
     v20.super_class = CRSettingsController;
-    v12 = [(CRSettingsController *)&v20 tableView:v6 viewForHeaderInSection:a4];
+    v12 = [(CRSettingsController *)&v20 tableView:viewCopy viewForHeaderInSection:section];
   }
 
   return v12;

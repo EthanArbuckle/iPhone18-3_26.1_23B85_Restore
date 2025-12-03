@@ -1,23 +1,23 @@
 @interface PDDPStateChangePayload
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addInfo:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDomain:(BOOL)a3;
-- (void)setHasDomainVersion:(BOOL)a3;
-- (void)setHasState:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addInfo:(id)info;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDomain:(BOOL)domain;
+- (void)setHasDomainVersion:(BOOL)version;
+- (void)setHasState:(BOOL)state;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPStateChangePayload
 
-- (void)setHasDomain:(BOOL)a3
+- (void)setHasDomain:(BOOL)domain
 {
-  if (a3)
+  if (domain)
   {
     v3 = 2;
   }
@@ -30,9 +30,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasDomainVersion:(BOOL)a3
+- (void)setHasDomainVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }
@@ -45,9 +45,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasState:(BOOL)a3
+- (void)setHasState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 8;
   }
@@ -60,22 +60,22 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)addInfo:(id)a3
+- (void)addInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   infos = self->_infos;
-  v8 = v4;
+  v8 = infoCopy;
   if (!infos)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_infos;
     self->_infos = v6;
 
-    v4 = v8;
+    infoCopy = v8;
     infos = self->_infos;
   }
 
-  [(NSMutableArray *)infos addObject:v4];
+  [(NSMutableArray *)infos addObject:infoCopy];
 }
 
 - (id)description
@@ -83,8 +83,8 @@
   v7.receiver = self;
   v7.super_class = PDDPStateChangePayload;
   v3 = [(PDDPStateChangePayload *)&v7 description];
-  v4 = [(PDDPStateChangePayload *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPStateChangePayload *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -95,15 +95,15 @@
   participants = self->_participants;
   if (participants)
   {
-    v5 = [(PDDPStateChangeParticipants *)participants dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"participants"];
+    dictionaryRepresentation = [(PDDPStateChangeParticipants *)participants dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"participants"];
   }
 
   meta = self->_meta;
   if (meta)
   {
-    v7 = [(PDDPStateChangeMeta *)meta dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"meta"];
+    dictionaryRepresentation2 = [(PDDPStateChangeMeta *)meta dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"meta"];
   }
 
   has = self->_has;
@@ -191,8 +191,8 @@ LABEL_10:
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v24 + 1) + 8 * i) dictionaryRepresentation];
-          [v12 addObject:v18];
+          dictionaryRepresentation3 = [*(*(&v24 + 1) + 8 * i) dictionaryRepresentation];
+          [v12 addObject:dictionaryRepresentation3];
         }
 
         v15 = [(NSMutableArray *)v13 countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -213,9 +213,9 @@ LABEL_10:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_participants)
   {
     PBDataWriterWriteSubmessage();
@@ -319,27 +319,27 @@ LABEL_10:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_participants)
   {
-    [v4 setParticipants:?];
-    v4 = v10;
+    [toCopy setParticipants:?];
+    toCopy = v10;
   }
 
   if (self->_meta)
   {
     [v10 setMeta:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 6) = self->_domain;
-    *(v4 + 76) |= 2u;
+    *(toCopy + 6) = self->_domain;
+    *(toCopy + 76) |= 2u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -358,8 +358,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(v4 + 7) = self->_domainVersion;
-  *(v4 + 76) |= 4u;
+  *(toCopy + 7) = self->_domainVersion;
+  *(toCopy + 76) |= 4u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -373,13 +373,13 @@ LABEL_8:
   }
 
 LABEL_25:
-  *(v4 + 18) = self->_state;
-  *(v4 + 76) |= 8u;
+  *(toCopy + 18) = self->_state;
+  *(toCopy + 76) |= 8u;
   if (*&self->_has)
   {
 LABEL_9:
-    *(v4 + 1) = self->_flags;
-    *(v4 + 76) |= 1u;
+    *(toCopy + 1) = self->_flags;
+    *(toCopy + 76) |= 1u;
   }
 
 LABEL_10:
@@ -396,10 +396,10 @@ LABEL_10:
   if ([(PDDPStateChangePayload *)self infosCount])
   {
     [v10 clearInfos];
-    v6 = [(PDDPStateChangePayload *)self infosCount];
-    if (v6)
+    infosCount = [(PDDPStateChangePayload *)self infosCount];
+    if (infosCount)
     {
-      v7 = v6;
+      v7 = infosCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(PDDPStateChangePayload *)self infoAtIndex:i];
@@ -414,14 +414,14 @@ LABEL_10:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(PDDPStateChangeParticipants *)self->_participants copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(PDDPStateChangeParticipants *)self->_participants copyWithZone:zone];
   v7 = v5[8];
   v5[8] = v6;
 
-  v8 = [(PDDPStateChangeMeta *)self->_meta copyWithZone:a3];
+  v8 = [(PDDPStateChangeMeta *)self->_meta copyWithZone:zone];
   v9 = v5[5];
   v5[5] = v8;
 
@@ -473,11 +473,11 @@ LABEL_5:
   }
 
 LABEL_6:
-  v11 = [(NSString *)self->_note copyWithZone:a3];
+  v11 = [(NSString *)self->_note copyWithZone:zone];
   v12 = v5[6];
   v5[6] = v11;
 
-  v13 = [(NSString *)self->_assetUrl copyWithZone:a3];
+  v13 = [(NSString *)self->_assetUrl copyWithZone:zone];
   v14 = v5[2];
   v5[2] = v13;
 
@@ -500,7 +500,7 @@ LABEL_6:
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v24 + 1) + 8 * i) copyWithZone:{a3, v24}];
+        v20 = [*(*(&v24 + 1) + 8 * i) copyWithZone:{zone, v24}];
         [v5 addInfo:v20];
       }
 
@@ -510,23 +510,23 @@ LABEL_6:
     while (v17);
   }
 
-  v21 = [(NSString *)self->_objectId copyWithZone:a3];
+  v21 = [(NSString *)self->_objectId copyWithZone:zone];
   v22 = v5[7];
   v5[7] = v21;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_34;
   }
 
   participants = self->_participants;
-  if (participants | *(v4 + 8))
+  if (participants | *(equalCopy + 8))
   {
     if (![(PDDPStateChangeParticipants *)participants isEqual:?])
     {
@@ -535,7 +535,7 @@ LABEL_6:
   }
 
   meta = self->_meta;
-  if (meta | *(v4 + 5))
+  if (meta | *(equalCopy + 5))
   {
     if (![(PDDPStateChangeMeta *)meta isEqual:?])
     {
@@ -543,16 +543,16 @@ LABEL_6:
     }
   }
 
-  v7 = *(v4 + 76);
+  v7 = *(equalCopy + 76);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 76) & 2) == 0 || self->_domain != *(v4 + 6))
+    if ((*(equalCopy + 76) & 2) == 0 || self->_domain != *(equalCopy + 6))
     {
       goto LABEL_34;
     }
   }
 
-  else if ((*(v4 + 76) & 2) != 0)
+  else if ((*(equalCopy + 76) & 2) != 0)
   {
 LABEL_34:
     v12 = 0;
@@ -561,51 +561,51 @@ LABEL_34:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 76) & 4) == 0 || self->_domainVersion != *(v4 + 7))
+    if ((*(equalCopy + 76) & 4) == 0 || self->_domainVersion != *(equalCopy + 7))
     {
       goto LABEL_34;
     }
   }
 
-  else if ((*(v4 + 76) & 4) != 0)
+  else if ((*(equalCopy + 76) & 4) != 0)
   {
     goto LABEL_34;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 76) & 8) == 0 || self->_state != *(v4 + 18))
+    if ((*(equalCopy + 76) & 8) == 0 || self->_state != *(equalCopy + 18))
     {
       goto LABEL_34;
     }
   }
 
-  else if ((*(v4 + 76) & 8) != 0)
+  else if ((*(equalCopy + 76) & 8) != 0)
   {
     goto LABEL_34;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 76) & 1) == 0 || self->_flags != *(v4 + 1))
+    if ((*(equalCopy + 76) & 1) == 0 || self->_flags != *(equalCopy + 1))
     {
       goto LABEL_34;
     }
   }
 
-  else if (*(v4 + 76))
+  else if (*(equalCopy + 76))
   {
     goto LABEL_34;
   }
 
   note = self->_note;
-  if (note | *(v4 + 6) && ![(NSString *)note isEqual:?])
+  if (note | *(equalCopy + 6) && ![(NSString *)note isEqual:?])
   {
     goto LABEL_34;
   }
 
   assetUrl = self->_assetUrl;
-  if (assetUrl | *(v4 + 2))
+  if (assetUrl | *(equalCopy + 2))
   {
     if (![(NSString *)assetUrl isEqual:?])
     {
@@ -614,7 +614,7 @@ LABEL_34:
   }
 
   infos = self->_infos;
-  if (infos | *(v4 + 4))
+  if (infos | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)infos isEqual:?])
     {
@@ -623,7 +623,7 @@ LABEL_34:
   }
 
   objectId = self->_objectId;
-  if (objectId | *(v4 + 7))
+  if (objectId | *(equalCopy + 7))
   {
     v12 = [(NSString *)objectId isEqual:?];
   }
@@ -698,11 +698,11 @@ LABEL_10:
   return v9 ^ v11 ^ [(NSString *)self->_objectId hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   participants = self->_participants;
-  v6 = *(v4 + 8);
+  v6 = *(fromCopy + 8);
   if (participants)
   {
     if (v6)
@@ -717,7 +717,7 @@ LABEL_10:
   }
 
   meta = self->_meta;
-  v8 = *(v4 + 5);
+  v8 = *(fromCopy + 5);
   if (meta)
   {
     if (v8)
@@ -731,12 +731,12 @@ LABEL_10:
     [(PDDPStateChangePayload *)self setMeta:?];
   }
 
-  v9 = *(v4 + 76);
+  v9 = *(fromCopy + 76);
   if ((v9 & 2) != 0)
   {
-    self->_domain = *(v4 + 6);
+    self->_domain = *(fromCopy + 6);
     *&self->_has |= 2u;
-    v9 = *(v4 + 76);
+    v9 = *(fromCopy + 76);
     if ((v9 & 4) == 0)
     {
 LABEL_13:
@@ -749,14 +749,14 @@ LABEL_13:
     }
   }
 
-  else if ((*(v4 + 76) & 4) == 0)
+  else if ((*(fromCopy + 76) & 4) == 0)
   {
     goto LABEL_13;
   }
 
-  self->_domainVersion = *(v4 + 7);
+  self->_domainVersion = *(fromCopy + 7);
   *&self->_has |= 4u;
-  v9 = *(v4 + 76);
+  v9 = *(fromCopy + 76);
   if ((v9 & 8) == 0)
   {
 LABEL_14:
@@ -769,22 +769,22 @@ LABEL_14:
   }
 
 LABEL_32:
-  self->_state = *(v4 + 18);
+  self->_state = *(fromCopy + 18);
   *&self->_has |= 8u;
-  if (*(v4 + 76))
+  if (*(fromCopy + 76))
   {
 LABEL_15:
-    self->_flags = *(v4 + 1);
+    self->_flags = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
 LABEL_16:
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(PDDPStateChangePayload *)self setNote:?];
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(PDDPStateChangePayload *)self setAssetUrl:?];
   }
@@ -793,7 +793,7 @@ LABEL_16:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v10 = *(v4 + 4);
+  v10 = *(fromCopy + 4);
   v11 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v11)
   {
@@ -817,7 +817,7 @@ LABEL_16:
     while (v12);
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(PDDPStateChangePayload *)self setObjectId:?];
   }

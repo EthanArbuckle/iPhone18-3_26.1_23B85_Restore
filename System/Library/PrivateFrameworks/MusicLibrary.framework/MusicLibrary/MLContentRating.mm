@@ -1,44 +1,44 @@
 @interface MLContentRating
-- (MLContentRating)initWithContentRatingDictionary:(id)a3;
-- (MLContentRating)initWithStringRepresentation:(id)a3;
+- (MLContentRating)initWithContentRatingDictionary:(id)dictionary;
+- (MLContentRating)initWithStringRepresentation:(id)representation;
 - (NSNumber)ratingRank;
 - (id)copyStringRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_setValue:(id)a3 forKey:(id)a4;
-- (void)_setValueCopy:(id)a3 forKey:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_setValue:(id)value forKey:(id)key;
+- (void)_setValueCopy:(id)copy forKey:(id)key;
 @end
 
 @implementation MLContentRating
 
-- (void)_setValueCopy:(id)a3 forKey:(id)a4
+- (void)_setValueCopy:(id)copy forKey:(id)key
 {
-  v6 = a4;
-  v7 = [a3 copy];
-  [(MLContentRating *)self _setValue:v7 forKey:v6];
+  keyCopy = key;
+  v7 = [copy copy];
+  [(MLContentRating *)self _setValue:v7 forKey:keyCopy];
 }
 
-- (void)_setValue:(id)a3 forKey:(id)a4
+- (void)_setValue:(id)value forKey:(id)key
 {
   dictionary = self->_dictionary;
-  if (a3)
+  if (value)
   {
-    [(NSMutableDictionary *)dictionary setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)dictionary setObject:value forKey:key];
   }
 
   else
   {
-    [(NSMutableDictionary *)dictionary removeObjectForKey:a4];
+    [(NSMutableDictionary *)dictionary removeObjectForKey:key];
   }
 }
 
 - (id)copyStringRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  v4 = [(MLContentRating *)self ratingSystem];
-  v5 = v4;
-  if (v4)
+  ratingSystem = [(MLContentRating *)self ratingSystem];
+  v5 = ratingSystem;
+  if (ratingSystem)
   {
-    v6 = v4;
+    v6 = ratingSystem;
   }
 
   else
@@ -47,11 +47,11 @@
   }
 
   [v3 appendFormat:@"%@|", v6];
-  v7 = [(MLContentRating *)self ratingLabel];
+  ratingLabel = [(MLContentRating *)self ratingLabel];
 
-  if (v7)
+  if (ratingLabel)
   {
-    v8 = v7;
+    v8 = ratingLabel;
   }
 
   else
@@ -60,12 +60,12 @@
   }
 
   [v3 appendFormat:@"%@|", v8];
-  v9 = [(MLContentRating *)self ratingRank];
-  v10 = [v9 stringValue];
+  ratingRank = [(MLContentRating *)self ratingRank];
+  stringValue = [ratingRank stringValue];
 
-  if (v10)
+  if (stringValue)
   {
-    v11 = v10;
+    v11 = stringValue;
   }
 
   else
@@ -74,11 +74,11 @@
   }
 
   [v3 appendFormat:@"%@|", v11];
-  v12 = [(MLContentRating *)self ratingDescription];
+  ratingDescription = [(MLContentRating *)self ratingDescription];
 
-  if (v12)
+  if (ratingDescription)
   {
-    v13 = v12;
+    v13 = ratingDescription;
   }
 
   else
@@ -91,13 +91,13 @@
   return v3;
 }
 
-- (MLContentRating)initWithStringRepresentation:(id)a3
+- (MLContentRating)initWithStringRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  if ([v4 length])
+  if ([representationCopy length])
   {
-    v6 = [v4 componentsSeparatedByString:@"|"];
+    v6 = [representationCopy componentsSeparatedByString:@"|"];
     v7 = [v6 count];
     if (v7)
     {
@@ -154,7 +154,7 @@ LABEL_7:
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   dictionary = self->_dictionary;
@@ -162,17 +162,17 @@ LABEL_7:
   return [v4 initWithContentRatingDictionary:dictionary];
 }
 
-- (MLContentRating)initWithContentRatingDictionary:(id)a3
+- (MLContentRating)initWithContentRatingDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = MLContentRating;
   v5 = [(MLContentRating *)&v9 init];
   if (v5)
   {
-    if (v4)
+    if (dictionaryCopy)
     {
-      v6 = [v4 mutableCopy];
+      v6 = [dictionaryCopy mutableCopy];
     }
 
     else

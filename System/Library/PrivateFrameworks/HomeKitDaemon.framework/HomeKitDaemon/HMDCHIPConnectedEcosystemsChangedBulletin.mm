@@ -1,9 +1,9 @@
 @interface HMDCHIPConnectedEcosystemsChangedBulletin
-+ (id)localizedBodyForAccessoryName:(id)a3;
-+ (id)localizedBodyForAppleEcosystemWithAccessoryName:(id)a3;
-+ (id)localizedBodyForEcosystemName:(id)a3 accessoryName:(id)a4;
-- (HMDCHIPConnectedEcosystemsChangedBulletin)initWithAddedPairing:(id)a3 accessory:(id)a4;
-- (HMDCHIPConnectedEcosystemsChangedBulletin)initWithTitle:(id)a3 body:(id)a4 threadIdentifier:(id)a5 dateOfOccurrence:(id)a6 userInfo:(id)a7 isTimeSensitive:(BOOL)a8;
++ (id)localizedBodyForAccessoryName:(id)name;
++ (id)localizedBodyForAppleEcosystemWithAccessoryName:(id)name;
++ (id)localizedBodyForEcosystemName:(id)name accessoryName:(id)accessoryName;
+- (HMDCHIPConnectedEcosystemsChangedBulletin)initWithAddedPairing:(id)pairing accessory:(id)accessory;
+- (HMDCHIPConnectedEcosystemsChangedBulletin)initWithTitle:(id)title body:(id)body threadIdentifier:(id)identifier dateOfOccurrence:(id)occurrence userInfo:(id)info isTimeSensitive:(BOOL)sensitive;
 - (id)attributeDescriptions;
 @end
 
@@ -13,24 +13,24 @@
 {
   v24[6] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v23 = [(HMDCHIPConnectedEcosystemsChangedBulletin *)self title];
-  v22 = [v3 initWithName:@"Title" value:v23];
+  title = [(HMDCHIPConnectedEcosystemsChangedBulletin *)self title];
+  v22 = [v3 initWithName:@"Title" value:title];
   v24[0] = v22;
   v4 = objc_alloc(MEMORY[0x277D0F778]);
-  v21 = [(HMDCHIPConnectedEcosystemsChangedBulletin *)self body];
-  v5 = [v4 initWithName:@"Body" value:v21];
+  body = [(HMDCHIPConnectedEcosystemsChangedBulletin *)self body];
+  v5 = [v4 initWithName:@"Body" value:body];
   v24[1] = v5;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(HMDCHIPConnectedEcosystemsChangedBulletin *)self threadIdentifier];
-  v8 = [v6 initWithName:@"Thread ID" value:v7];
+  threadIdentifier = [(HMDCHIPConnectedEcosystemsChangedBulletin *)self threadIdentifier];
+  v8 = [v6 initWithName:@"Thread ID" value:threadIdentifier];
   v24[2] = v8;
   v9 = objc_alloc(MEMORY[0x277D0F778]);
-  v10 = [(HMDCHIPConnectedEcosystemsChangedBulletin *)self dateOfOccurrence];
-  v11 = [v9 initWithName:@"Date" value:v10];
+  dateOfOccurrence = [(HMDCHIPConnectedEcosystemsChangedBulletin *)self dateOfOccurrence];
+  v11 = [v9 initWithName:@"Date" value:dateOfOccurrence];
   v24[3] = v11;
   v12 = objc_alloc(MEMORY[0x277D0F778]);
-  v13 = [(HMDCHIPConnectedEcosystemsChangedBulletin *)self userInfo];
-  v14 = [v12 initWithName:@"User Info" value:v13];
+  userInfo = [(HMDCHIPConnectedEcosystemsChangedBulletin *)self userInfo];
+  v14 = [v12 initWithName:@"User Info" value:userInfo];
   v24[4] = v14;
   v15 = objc_alloc(MEMORY[0x277D0F778]);
   [(HMDCHIPConnectedEcosystemsChangedBulletin *)self isTimeSensitive];
@@ -44,57 +44,57 @@
   return v18;
 }
 
-- (HMDCHIPConnectedEcosystemsChangedBulletin)initWithAddedPairing:(id)a3 accessory:(id)a4
+- (HMDCHIPConnectedEcosystemsChangedBulletin)initWithAddedPairing:(id)pairing accessory:(id)accessory
 {
   v58[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  pairingCopy = pairing;
+  accessoryCopy = accessory;
+  if (!pairingCopy)
   {
     _HMFPreconditionFailure();
 LABEL_12:
     _HMFPreconditionFailure();
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = accessoryCopy;
+  if (!accessoryCopy)
   {
     goto LABEL_12;
   }
 
-  v56 = [objc_opt_class() localizedTitle];
-  v9 = [v6 home];
-  v10 = [v9 ecosystem];
-  v11 = [v10 vendor];
-  v12 = [v11 isAppleVendor];
+  localizedTitle = [objc_opt_class() localizedTitle];
+  home = [pairingCopy home];
+  ecosystem = [home ecosystem];
+  vendor = [ecosystem vendor];
+  isAppleVendor = [vendor isAppleVendor];
 
-  v57 = v6;
-  if (!v12)
+  v57 = pairingCopy;
+  if (!isAppleVendor)
   {
-    v53 = self;
-    v16 = [v6 home];
-    v17 = [v16 ecosystem];
-    v18 = [v17 vendor];
-    v19 = [v18 name];
-    if (v19)
+    selfCopy = self;
+    home2 = [pairingCopy home];
+    ecosystem2 = [home2 ecosystem];
+    vendor2 = [ecosystem2 vendor];
+    name = [vendor2 name];
+    if (name)
     {
-      v20 = v19;
-      v21 = [v6 home];
-      v22 = [v21 ecosystem];
-      v23 = [v22 vendor];
-      v24 = [v23 isSystemCommissionerVendor];
+      v20 = name;
+      home3 = [pairingCopy home];
+      ecosystem3 = [home3 ecosystem];
+      vendor3 = [ecosystem3 vendor];
+      isSystemCommissionerVendor = [vendor3 isSystemCommissionerVendor];
 
-      if ((v24 & 1) == 0)
+      if ((isSystemCommissionerVendor & 1) == 0)
       {
         v25 = objc_opt_class();
-        v14 = [v6 home];
-        v26 = [v14 ecosystem];
-        v27 = [v26 vendor];
-        v28 = [v27 name];
-        v29 = [v8 name];
-        v55 = [v25 localizedBodyForEcosystemName:v28 accessoryName:v29];
+        home4 = [pairingCopy home];
+        ecosystem4 = [home4 ecosystem];
+        vendor4 = [ecosystem4 vendor];
+        name2 = [vendor4 name];
+        name3 = [v8 name];
+        v55 = [v25 localizedBodyForEcosystemName:name2 accessoryName:name3];
 
-        v15 = v53;
+        selfCopy2 = selfCopy;
         goto LABEL_10;
       }
     }
@@ -103,29 +103,29 @@ LABEL_12:
     {
     }
 
-    v15 = v53;
+    selfCopy2 = selfCopy;
     v30 = objc_opt_class();
-    v14 = [v8 name];
-    v55 = [v30 localizedBodyForAccessoryName:v14];
+    home4 = [v8 name];
+    v55 = [v30 localizedBodyForAccessoryName:home4];
     goto LABEL_10;
   }
 
   v13 = objc_opt_class();
-  v14 = [v8 name];
-  v55 = [v13 localizedBodyForAppleEcosystemWithAccessoryName:v14];
-  v15 = self;
+  home4 = [v8 name];
+  v55 = [v13 localizedBodyForAppleEcosystemWithAccessoryName:home4];
+  selfCopy2 = self;
 LABEL_10:
 
-  v31 = [v8 home];
+  home5 = [v8 home];
   v32 = MEMORY[0x277CD1878];
-  v33 = [v8 contextSPIUniqueIdentifier];
-  v34 = [v33 UUIDString];
-  v52 = [v32 tupleWithQueryType:1 uuidString:v34];
+  contextSPIUniqueIdentifier = [v8 contextSPIUniqueIdentifier];
+  uUIDString = [contextSPIUniqueIdentifier UUIDString];
+  v52 = [v32 tupleWithQueryType:1 uuidString:uUIDString];
 
   v35 = MEMORY[0x277CD1878];
-  v36 = [v31 contextSPIUniqueIdentifier];
-  v37 = [v36 UUIDString];
-  v54 = [v35 tupleWithQueryType:0 uuidString:v37];
+  contextSPIUniqueIdentifier2 = [home5 contextSPIUniqueIdentifier];
+  uUIDString2 = [contextSPIUniqueIdentifier2 UUIDString];
+  v54 = [v35 tupleWithQueryType:0 uuidString:uUIDString2];
 
   v38 = MEMORY[0x277CBEB98];
   v58[0] = v54;
@@ -133,60 +133,60 @@ LABEL_10:
   v40 = [v38 setWithArray:v39];
   v41 = generateURLForHomeKitObject();
 
-  v42 = [v8 accessoryBulletinContext];
-  v43 = [v42 mutableCopy];
+  accessoryBulletinContext = [v8 accessoryBulletinContext];
+  v43 = [accessoryBulletinContext mutableCopy];
 
-  v44 = [v41 absoluteString];
-  [v43 setObject:v44 forKeyedSubscript:*MEMORY[0x277CD13D8]];
+  absoluteString = [v41 absoluteString];
+  [v43 setObject:absoluteString forKeyedSubscript:*MEMORY[0x277CD13D8]];
 
-  v45 = [v31 contextID];
-  [v43 setObject:v45 forKeyedSubscript:@"home"];
+  contextID = [home5 contextID];
+  [v43 setObject:contextID forKeyedSubscript:@"home"];
 
-  v46 = [v31 uuid];
-  v47 = [v46 UUIDString];
-  v48 = [MEMORY[0x277CBEAA8] date];
-  v49 = [(HMDCHIPConnectedEcosystemsChangedBulletin *)v15 initWithTitle:v56 body:v55 threadIdentifier:v47 dateOfOccurrence:v48 userInfo:v43 isTimeSensitive:1];
+  uuid = [home5 uuid];
+  uUIDString3 = [uuid UUIDString];
+  date = [MEMORY[0x277CBEAA8] date];
+  v49 = [(HMDCHIPConnectedEcosystemsChangedBulletin *)selfCopy2 initWithTitle:localizedTitle body:v55 threadIdentifier:uUIDString3 dateOfOccurrence:date userInfo:v43 isTimeSensitive:1];
 
   v50 = *MEMORY[0x277D85DE8];
   return v49;
 }
 
-- (HMDCHIPConnectedEcosystemsChangedBulletin)initWithTitle:(id)a3 body:(id)a4 threadIdentifier:(id)a5 dateOfOccurrence:(id)a6 userInfo:(id)a7 isTimeSensitive:(BOOL)a8
+- (HMDCHIPConnectedEcosystemsChangedBulletin)initWithTitle:(id)title body:(id)body threadIdentifier:(id)identifier dateOfOccurrence:(id)occurrence userInfo:(id)info isTimeSensitive:(BOOL)sensitive
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  if (!v14)
+  titleCopy = title;
+  bodyCopy = body;
+  identifierCopy = identifier;
+  occurrenceCopy = occurrence;
+  infoCopy = info;
+  if (!titleCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_10;
   }
 
-  if (!v15)
+  if (!bodyCopy)
   {
 LABEL_10:
     _HMFPreconditionFailure();
     goto LABEL_11;
   }
 
-  if (!v16)
+  if (!identifierCopy)
   {
 LABEL_11:
     _HMFPreconditionFailure();
     goto LABEL_12;
   }
 
-  if (!v17)
+  if (!occurrenceCopy)
   {
 LABEL_12:
     _HMFPreconditionFailure();
     goto LABEL_13;
   }
 
-  v19 = v18;
-  if (!v18)
+  v19 = infoCopy;
+  if (!infoCopy)
   {
 LABEL_13:
     v32 = _HMFPreconditionFailure();
@@ -198,19 +198,19 @@ LABEL_13:
   v20 = [(HMDCHIPConnectedEcosystemsChangedBulletin *)&v36 init];
   if (v20)
   {
-    v21 = [v14 copy];
+    v21 = [titleCopy copy];
     title = v20->_title;
     v20->_title = v21;
 
-    v23 = [v15 copy];
+    v23 = [bodyCopy copy];
     body = v20->_body;
     v20->_body = v23;
 
-    v25 = [v16 copy];
+    v25 = [identifierCopy copy];
     threadIdentifier = v20->_threadIdentifier;
     v20->_threadIdentifier = v25;
 
-    v27 = [v17 copy];
+    v27 = [occurrenceCopy copy];
     dateOfOccurrence = v20->_dateOfOccurrence;
     v20->_dateOfOccurrence = v27;
 
@@ -218,25 +218,25 @@ LABEL_13:
     userInfo = v20->_userInfo;
     v20->_userInfo = v29;
 
-    v20->_timeSensitive = a8;
+    v20->_timeSensitive = sensitive;
   }
 
   return v20;
 }
 
-+ (id)localizedBodyForEcosystemName:(id)a3 accessoryName:(id)a4
++ (id)localizedBodyForEcosystemName:(id)name accessoryName:(id)accessoryName
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  nameCopy = name;
+  accessoryNameCopy = accessoryName;
   v7 = MEMORY[0x277CCACA8];
   v8 = HMDLocalizedStringForKey(@"BULLETIN_CONNECTED_CHIP_ECOSYSTEMS_ADDED_BODY_THIRD_PARTY");
   v18 = 0;
-  v9 = [v7 localizedStringWithValidatedFormat:v8 validFormatSpecifiers:@"%@ %@" error:&v18, v6, v5];
+  nameCopy = [v7 localizedStringWithValidatedFormat:v8 validFormatSpecifiers:@"%@ %@" error:&v18, accessoryNameCopy, nameCopy];
   v10 = v18;
 
-  v11 = v9;
-  if (!v9)
+  v11 = nameCopy;
+  if (!nameCopy)
   {
     v12 = objc_autoreleasePoolPush();
     v13 = HMFGetOSLogHandle();
@@ -264,18 +264,18 @@ LABEL_13:
   return v11;
 }
 
-+ (id)localizedBodyForAppleEcosystemWithAccessoryName:(id)a3
++ (id)localizedBodyForAppleEcosystemWithAccessoryName:(id)name
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  nameCopy = name;
   v4 = MEMORY[0x277CCACA8];
   v5 = HMDLocalizedStringForKey(@"BULLETIN_CONNECTED_CHIP_ECOSYSTEMS_ADDED_BODY_APPLE");
   v15 = 0;
-  v6 = [v4 localizedStringWithValidatedFormat:v5 validFormatSpecifiers:@"%@" error:&v15, v3];
+  nameCopy = [v4 localizedStringWithValidatedFormat:v5 validFormatSpecifiers:@"%@" error:&v15, nameCopy];
   v7 = v15;
 
-  v8 = v6;
-  if (!v6)
+  v8 = nameCopy;
+  if (!nameCopy)
   {
     v9 = objc_autoreleasePoolPush();
     v10 = HMFGetOSLogHandle();
@@ -303,18 +303,18 @@ LABEL_13:
   return v8;
 }
 
-+ (id)localizedBodyForAccessoryName:(id)a3
++ (id)localizedBodyForAccessoryName:(id)name
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  nameCopy = name;
   v4 = MEMORY[0x277CCACA8];
   v5 = HMDLocalizedStringForKey(@"BULLETIN_CONNECTED_CHIP_ECOSYSTEMS_ADDED_BODY_GENERIC");
   v15 = 0;
-  v6 = [v4 localizedStringWithValidatedFormat:v5 validFormatSpecifiers:@"%@" error:&v15, v3];
+  nameCopy = [v4 localizedStringWithValidatedFormat:v5 validFormatSpecifiers:@"%@" error:&v15, nameCopy];
   v7 = v15;
 
-  v8 = v6;
-  if (!v6)
+  v8 = nameCopy;
+  if (!nameCopy)
   {
     v9 = objc_autoreleasePoolPush();
     v10 = HMFGetOSLogHandle();

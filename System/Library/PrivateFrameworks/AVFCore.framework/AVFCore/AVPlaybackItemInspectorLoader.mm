@@ -1,11 +1,11 @@
 @interface AVPlaybackItemInspectorLoader
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)duration;
-- (AVPlaybackItemInspectorLoader)initWithURL:(id)a3 playbackItem:(OpaqueFigPlaybackItem *)a4 trackIDs:(id)a5 dynamicBehavior:(BOOL)a6;
-- (BOOL)isEqual:(id)a3;
-- (OpaqueFigFormatReader)_copyFormatReaderFromFigObjectWithFigErrorCode:(int *)a3;
+- (AVPlaybackItemInspectorLoader)initWithURL:(id)l playbackItem:(OpaqueFigPlaybackItem *)item trackIDs:(id)ds dynamicBehavior:(BOOL)behavior;
+- (BOOL)isEqual:(id)equal;
+- (OpaqueFigFormatReader)_copyFormatReaderFromFigObjectWithFigErrorCode:(int *)code;
 - (id)_dictionaryOfSpecialGettersForKeyValueStatus;
-- (id)_loadValuesUsingDefaultLoadingMethodWhileMutexLockedForKeys:(id)a3;
-- (id)_playbackItemPropertiesForKeys:(id)a3;
+- (id)_loadValuesUsingDefaultLoadingMethodWhileMutexLockedForKeys:(id)keys;
+- (id)_playbackItemPropertiesForKeys:(id)keys;
 - (id)assetInspector;
 - (unint64_t)hash;
 - (void)_addFigObjectNotifications;
@@ -16,19 +16,19 @@
 
 @implementation AVPlaybackItemInspectorLoader
 
-- (AVPlaybackItemInspectorLoader)initWithURL:(id)a3 playbackItem:(OpaqueFigPlaybackItem *)a4 trackIDs:(id)a5 dynamicBehavior:(BOOL)a6
+- (AVPlaybackItemInspectorLoader)initWithURL:(id)l playbackItem:(OpaqueFigPlaybackItem *)item trackIDs:(id)ds dynamicBehavior:(BOOL)behavior
 {
   v13.receiver = self;
   v13.super_class = AVPlaybackItemInspectorLoader;
-  v9 = [(AVAssetMakeReadyForInspectionLoader *)&v13 initWithURL:a3];
+  v9 = [(AVAssetMakeReadyForInspectionLoader *)&v13 initWithURL:l];
   v10 = v9;
   if (v9)
   {
-    if (a4)
+    if (item)
     {
-      v9->_playbackItem = CFRetain(a4);
-      v10->_trackIDs = a5;
-      v10->_shouldCacheDuration = !a6;
+      v9->_playbackItem = CFRetain(item);
+      v10->_trackIDs = ds;
+      v10->_shouldCacheDuration = !behavior;
       v11 = MEMORY[0x1E6960C70];
       *&v10->_cachedDuration.flags = *(MEMORY[0x1E6960C70] + 16);
       *(&v10->_shouldCacheDuration + 4) = *v11;
@@ -48,13 +48,13 @@
 - (void)_addFigObjectNotifications
 {
   v3 = [AVCMNotificationDispatcher notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
-  v4 = [(AVAssetInspectorLoader *)self _weakReference];
-  CFRetain(v4);
-  [v3 addListenerWithWeakReference:v4 callback:handlePlaybackItemNotification name:*MEMORY[0x1E6972570] object:self->_playbackItem flags:0];
+  _weakReference = [(AVAssetInspectorLoader *)self _weakReference];
+  CFRetain(_weakReference);
+  [v3 addListenerWithWeakReference:_weakReference callback:handlePlaybackItemNotification name:*MEMORY[0x1E6972570] object:self->_playbackItem flags:0];
   v5 = *MEMORY[0x1E69724C0];
   playbackItem = self->_playbackItem;
 
-  [v3 addListenerWithWeakReference:v4 callback:handlePlaybackItemNotification name:v5 object:playbackItem flags:0];
+  [v3 addListenerWithWeakReference:_weakReference callback:handlePlaybackItemNotification name:v5 object:playbackItem flags:0];
 }
 
 - (void)_removeFigObjectNotifications
@@ -62,11 +62,11 @@
   if (self->_playbackItem)
   {
     v3 = [AVCMNotificationDispatcher notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
-    v4 = [(AVAssetInspectorLoader *)self _weakReference];
-    [v3 removeListenerWithWeakReference:v4 callback:handlePlaybackItemNotification name:*MEMORY[0x1E6972570] object:self->_playbackItem];
-    [v3 removeListenerWithWeakReference:v4 callback:handlePlaybackItemNotification name:*MEMORY[0x1E69724C0] object:self->_playbackItem];
+    _weakReference = [(AVAssetInspectorLoader *)self _weakReference];
+    [v3 removeListenerWithWeakReference:_weakReference callback:handlePlaybackItemNotification name:*MEMORY[0x1E6972570] object:self->_playbackItem];
+    [v3 removeListenerWithWeakReference:_weakReference callback:handlePlaybackItemNotification name:*MEMORY[0x1E69724C0] object:self->_playbackItem];
 
-    CFRelease(v4);
+    CFRelease(_weakReference);
   }
 }
 
@@ -85,7 +85,7 @@
   [(AVAssetMakeReadyForInspectionLoader *)&v4 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -93,20 +93,20 @@
     return 0;
   }
 
-  v5 = [(AVPlaybackItemInspectorLoader *)self _playbackItem];
-  v6 = [a3 _playbackItem];
-  if (v5 == v6)
+  _playbackItem = [(AVPlaybackItemInspectorLoader *)self _playbackItem];
+  _playbackItem2 = [equal _playbackItem];
+  if (_playbackItem == _playbackItem2)
   {
     return 1;
   }
 
-  v7 = v6;
+  v7 = _playbackItem2;
   result = 0;
-  if (v5)
+  if (_playbackItem)
   {
     if (v7)
     {
-      return CFEqual(v5, v7) != 0;
+      return CFEqual(_playbackItem, v7) != 0;
     }
   }
 
@@ -115,11 +115,11 @@
 
 - (unint64_t)hash
 {
-  v3 = [(AVPlaybackItemInspectorLoader *)self _playbackItem];
-  if (v3)
+  _playbackItem = [(AVPlaybackItemInspectorLoader *)self _playbackItem];
+  if (_playbackItem)
   {
 
-    return CFHash(v3);
+    return CFHash(_playbackItem);
   }
 
   else
@@ -157,14 +157,14 @@
   [(AVAssetMakeReadyForInspectionLoader *)&v4 cancelLoading];
 }
 
-- (OpaqueFigFormatReader)_copyFormatReaderFromFigObjectWithFigErrorCode:(int *)a3
+- (OpaqueFigFormatReader)_copyFormatReaderFromFigObjectWithFigErrorCode:(int *)code
 {
   v8 = 0;
   playbackItem = self->_playbackItem;
   if (!playbackItem)
   {
     v6 = 0;
-    if (!a3)
+    if (!code)
     {
       return v8;
     }
@@ -176,7 +176,7 @@
   if (v5)
   {
     v6 = v5(playbackItem, &v8);
-    if (!a3)
+    if (!code)
     {
       return v8;
     }
@@ -185,10 +185,10 @@
   }
 
   v6 = -12782;
-  if (a3)
+  if (code)
   {
 LABEL_6:
-    *a3 = v6;
+    *code = v6;
   }
 
   return v8;
@@ -204,9 +204,9 @@ LABEL_6:
   return getDictionaryOfSpecialPlaybackItemGettersForKeyValueStatus_sSpecialPlaybackItemGettersForKeyValueStatus;
 }
 
-- (id)_playbackItemPropertiesForKeys:(id)a3
+- (id)_playbackItemPropertiesForKeys:(id)keys
 {
-  v3 = [0 objectsForKeys:a3 notFoundMarker:{objc_msgSend(MEMORY[0x1E695DFB0], "null")}];
+  v3 = [0 objectsForKeys:keys notFoundMarker:{objc_msgSend(MEMORY[0x1E695DFB0], "null")}];
   v4 = [MEMORY[0x1E695DFA8] setWithArray:v3];
   [v4 removeObject:{objc_msgSend(MEMORY[0x1E695DFB0], "null")}];
   result = [v4 count];
@@ -219,7 +219,7 @@ LABEL_6:
   return result;
 }
 
-- (id)_loadValuesUsingDefaultLoadingMethodWhileMutexLockedForKeys:(id)a3
+- (id)_loadValuesUsingDefaultLoadingMethodWhileMutexLockedForKeys:(id)keys
 {
   v5 = [(AVPlaybackItemInspectorLoader *)self _playbackItemPropertiesForKeys:?];
   v12 = 0;
@@ -254,7 +254,7 @@ LABEL_6:
   [(AVAssetMakeReadyForInspectionLoader *)self _updateStatusWhileMutexLocked:v10 figErrorCode:v8];
   if (v12)
   {
-    return a3;
+    return keys;
   }
 
   else
@@ -265,7 +265,7 @@ LABEL_6:
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)duration
 {
-  v3 = self;
+  selfCopy = self;
   if (LOBYTE(self[3].var3) == 1 && (self[4].var1 & 1) != 0)
   {
     *&retstr->var0 = *(&self[3].var3 + 4);
@@ -290,10 +290,10 @@ LABEL_6:
       retstr->var3 = 0;
     }
 
-    if (LOBYTE(v3[3].var3) == 1)
+    if (LOBYTE(selfCopy[3].var3) == 1)
     {
-      *(&v3[3].var3 + 4) = *&retstr->var0;
-      *&v3[4].var2 = retstr->var3;
+      *(&selfCopy[3].var3 + 4) = *&retstr->var0;
+      *&selfCopy[4].var2 = retstr->var3;
     }
   }
 

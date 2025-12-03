@@ -1,15 +1,15 @@
 @interface _UVServiceHubServiceFactory
-+ (id)makeAgentPipeServiceAndReturnError:(id *)a3 messageHandler:(id)a4;
-+ (id)makePreviewServiceAndReturnError:(id *)a3;
-+ (id)makeShellPipeServiceAndReturnError:(id *)a3 messageHandler:(id)a4;
++ (id)makeAgentPipeServiceAndReturnError:(id *)error messageHandler:(id)handler;
++ (id)makePreviewServiceAndReturnError:(id *)error;
++ (id)makeShellPipeServiceAndReturnError:(id *)error messageHandler:(id)handler;
 - (_TtC17PreviewsOSSupport27_UVServiceHubServiceFactory)init;
 @end
 
 @implementation _UVServiceHubServiceFactory
 
-+ (id)makeAgentPipeServiceAndReturnError:(id *)a3 messageHandler:(id)a4
++ (id)makeAgentPipeServiceAndReturnError:(id *)error messageHandler:(id)handler
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27FD90A08, &qword_25F5049B0);
@@ -36,9 +36,9 @@
   return v15;
 }
 
-+ (id)makeShellPipeServiceAndReturnError:(id *)a3 messageHandler:(id)a4
++ (id)makeShellPipeServiceAndReturnError:(id *)error messageHandler:(id)handler
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27FD90A20, &qword_25F5049D0);
@@ -65,7 +65,7 @@
   return v15;
 }
 
-+ (id)makePreviewServiceAndReturnError:(id *)a3
++ (id)makePreviewServiceAndReturnError:(id *)error
 {
   v3 = sub_25F4F5A7C();
 

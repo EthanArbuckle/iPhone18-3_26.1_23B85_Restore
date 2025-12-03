@@ -1,6 +1,6 @@
 @interface EKUIAlertController
 - (unint64_t)supportedInterfaceOrientations;
-- (void)setProhibitsRotation:(BOOL)a3;
+- (void)setProhibitsRotation:(BOOL)rotation;
 @end
 
 @implementation EKUIAlertController
@@ -9,12 +9,12 @@
 {
   if (self->_prohibitsRotation)
   {
-    v2 = [(EKUIAlertController *)self view];
-    v3 = [v2 window];
-    v4 = [v3 windowScene];
-    v5 = [v4 interfaceOrientation];
+    view = [(EKUIAlertController *)self view];
+    window = [view window];
+    windowScene = [window windowScene];
+    interfaceOrientation = [windowScene interfaceOrientation];
 
-    return 1 << v5;
+    return 1 << interfaceOrientation;
   }
 
   else
@@ -25,11 +25,11 @@
   }
 }
 
-- (void)setProhibitsRotation:(BOOL)a3
+- (void)setProhibitsRotation:(BOOL)rotation
 {
-  if (self->_prohibitsRotation != a3)
+  if (self->_prohibitsRotation != rotation)
   {
-    self->_prohibitsRotation = a3;
+    self->_prohibitsRotation = rotation;
     [(EKUIAlertController *)self setNeedsUpdateOfSupportedInterfaceOrientations];
   }
 }

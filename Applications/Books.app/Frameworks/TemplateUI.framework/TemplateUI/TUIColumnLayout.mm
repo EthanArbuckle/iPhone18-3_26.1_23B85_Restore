@@ -6,8 +6,8 @@
 
 - (void)computeLayout
 {
-  v3 = [(TUILayout *)self layoutAncestor];
-  if (v3)
+  layoutAncestor = [(TUILayout *)self layoutAncestor];
+  if (layoutAncestor)
   {
     do
     {
@@ -17,12 +17,12 @@
         break;
       }
 
-      v5 = [v3 layoutAncestor];
+      v3LayoutAncestor = [layoutAncestor layoutAncestor];
 
-      v3 = v5;
+      layoutAncestor = v3LayoutAncestor;
     }
 
-    while (v5);
+    while (v3LayoutAncestor);
     v6 = v4 ^ 1;
   }
 
@@ -31,10 +31,10 @@
     v6 = 1;
   }
 
-  v20 = v3;
+  v20 = layoutAncestor;
   v7 = [(TUILayout *)self box];
-  v8 = [v7 columnSpan];
-  v9 = [v20 columnLayoutProviderColumnSpanForColumnSpan:v8];
+  columnSpan = [v7 columnSpan];
+  v9 = [v20 columnLayoutProviderColumnSpanForColumnSpan:columnSpan];
 
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -68,14 +68,14 @@ LABEL_11:
 
   v11 = NAN;
 LABEL_18:
-  v15 = [(TUILayout *)self children];
-  v16 = [v15 firstObject];
+  children = [(TUILayout *)self children];
+  firstObject = [children firstObject];
 
-  [v16 setContainingWidth:v11];
-  [v16 validateLayout];
-  [v16 computedTransformedSize];
+  [firstObject setContainingWidth:v11];
+  [firstObject validateLayout];
+  [firstObject computedTransformedSize];
   v18 = v17;
-  [v16 setComputedOrigin:{(v11 - v19) * 0.5, 0.0}];
+  [firstObject setComputedOrigin:{(v11 - v19) * 0.5, 0.0}];
   [(TUILayout *)self setComputedNaturalSize:v11, v18];
 }
 

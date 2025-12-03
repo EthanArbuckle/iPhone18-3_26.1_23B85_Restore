@@ -1,7 +1,7 @@
 @interface NSSQLSubqueryExpressionIntermediatePredicateVisitor
-- (BOOL)checkPredicate:(id)a3;
+- (BOOL)checkPredicate:(id)predicate;
 - (void)dealloc;
-- (void)visitPredicateExpression:(id)a3;
+- (void)visitPredicateExpression:(id)expression;
 @end
 
 @implementation NSSQLSubqueryExpressionIntermediatePredicateVisitor
@@ -13,21 +13,21 @@
   [(NSSQLSubqueryExpressionIntermediatePredicateVisitor *)&v3 dealloc];
 }
 
-- (void)visitPredicateExpression:(id)a3
+- (void)visitPredicateExpression:(id)expression
 {
-  v5 = [a3 expressionType];
-  if (v5 == 3 || v5 == 4 && (sel_valueForKey_ == [a3 selector] || sel_valueForKeyPath_ == objc_msgSend(a3, "selector")))
+  expressionType = [expression expressionType];
+  if (expressionType == 3 || expressionType == 4 && (sel_valueForKey_ == [expression selector] || sel_valueForKeyPath_ == objc_msgSend(expression, "selector")))
   {
-    if ([(NSSQLIntermediate *)self->_scope isVariableBasedKeypathScopedBySubquery:a3])
+    if ([(NSSQLIntermediate *)self->_scope isVariableBasedKeypathScopedBySubquery:expression])
     {
       self->_foundKeypath = 1;
     }
   }
 }
 
-- (BOOL)checkPredicate:(id)a3
+- (BOOL)checkPredicate:(id)predicate
 {
-  [a3 acceptVisitor:self flags:1];
+  [predicate acceptVisitor:self flags:1];
   foundKeypath = self->_foundKeypath;
   self->_foundKeypath = 0;
   return !foundKeypath;

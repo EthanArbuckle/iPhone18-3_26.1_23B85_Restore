@@ -29,12 +29,12 @@
   v7 = sub_1EA68();
   (*(*(v7 - 8) + 56))(v6, 1, 1, v7);
   sub_1EA48();
-  v8 = self;
+  selfCopy = self;
   v9 = sub_1EA38();
   v10 = swift_allocObject();
   v10[2] = v9;
   v10[3] = &protocol witness table for MainActor;
-  v10[4] = v8;
+  v10[4] = selfCopy;
   sub_F71C(0, 0, v6, &unk_1FF00, v10);
 }
 

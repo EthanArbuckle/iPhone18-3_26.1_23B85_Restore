@@ -1,13 +1,13 @@
 @interface SBUIProudLockIconContentView
-- (BOOL)_requiresSecureIndicatorForState:(int64_t)a3;
-- (BOOL)setState:(int64_t)a3 animated:(BOOL)a4 transitionSpeed:(double)a5 completion:(id)a6;
+- (BOOL)_requiresSecureIndicatorForState:(int64_t)state;
+- (BOOL)setState:(int64_t)state animated:(BOOL)animated transitionSpeed:(double)speed completion:(id)completion;
 - (SBUIProudLockIconContentView)init;
 - (id)_fileNameForCurrentDevice;
-- (id)_packageViewStateFromIconViewState:(int64_t)a3;
+- (id)_packageViewStateFromIconViewState:(int64_t)state;
 - (void)_updateContentViews;
 - (void)layoutSubviews;
-- (void)setIsForCapture:(BOOL)a3;
-- (void)setIsSecurelyRenderingInJindo:(BOOL)a3;
+- (void)setIsForCapture:(BOOL)capture;
+- (void)setIsSecurelyRenderingInJindo:(BOOL)jindo;
 @end
 
 @implementation SBUIProudLockIconContentView
@@ -17,9 +17,9 @@
   if (!self->_lockView)
   {
     v3 = objc_alloc(MEMORY[0x1E698E7D8]);
-    v4 = [(SBUIProudLockIconContentView *)self _fileNameForCurrentDevice];
+    _fileNameForCurrentDevice = [(SBUIProudLockIconContentView *)self _fileNameForCurrentDevice];
     v5 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-    v6 = [v3 initWithPackageName:v4 inBundle:v5];
+    v6 = [v3 initWithPackageName:_fileNameForCurrentDevice inBundle:v5];
     lockView = self->_lockView;
     self->_lockView = v6;
 
@@ -95,40 +95,40 @@ LABEL_9:
   return v3;
 }
 
-- (void)setIsForCapture:(BOOL)a3
+- (void)setIsForCapture:(BOOL)capture
 {
-  if (self->_isForCapture != a3)
+  if (self->_isForCapture != capture)
   {
-    self->_isForCapture = a3;
+    self->_isForCapture = capture;
     [(SBUIProudLockIconContentView *)self _updateContentViews];
   }
 }
 
-- (void)setIsSecurelyRenderingInJindo:(BOOL)a3
+- (void)setIsSecurelyRenderingInJindo:(BOOL)jindo
 {
-  if (self->_isSecurelyRenderingInJindo != a3)
+  if (self->_isSecurelyRenderingInJindo != jindo)
   {
-    self->_isSecurelyRenderingInJindo = a3;
+    self->_isSecurelyRenderingInJindo = jindo;
     [(SBUIProudLockIconContentView *)self _updateContentViews];
   }
 }
 
-- (BOOL)setState:(int64_t)a3 animated:(BOOL)a4 transitionSpeed:(double)a5 completion:(id)a6
+- (BOOL)setState:(int64_t)state animated:(BOOL)animated transitionSpeed:(double)speed completion:(id)completion
 {
-  v7 = a4;
-  v10 = a6;
+  animatedCopy = animated;
+  completionCopy = completion;
   [(SBUIProudLockIconContentView *)self _updateContentViews];
   lockView = self->_lockView;
-  v12 = [(SBUIProudLockIconContentView *)self _packageViewStateFromIconViewState:a3];
-  LOBYTE(v7) = [(BSUICAPackageView *)lockView setState:v12 animated:v7 transitionSpeed:v10 completion:a5];
+  v12 = [(SBUIProudLockIconContentView *)self _packageViewStateFromIconViewState:state];
+  LOBYTE(animatedCopy) = [(BSUICAPackageView *)lockView setState:v12 animated:animatedCopy transitionSpeed:completionCopy completion:speed];
 
-  return v7;
+  return animatedCopy;
 }
 
 - (id)_fileNameForCurrentDevice
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v2 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v3 = BSFloatEqualToFloat();
 
   v4 = @"@3x";
@@ -139,9 +139,9 @@ LABEL_9:
 
   v5 = v4;
   v6 = +[SBUIBiometricResource sharedInstance];
-  v7 = [v6 hasPoseidonSupport];
+  hasPoseidonSupport = [v6 hasPoseidonSupport];
 
-  if ((MGGetBoolAnswer() & 1) != 0 || (v8 = &stru_1F1D7ED48, v7))
+  if ((MGGetBoolAnswer() & 1) != 0 || (v8 = &stru_1F1D7ED48, hasPoseidonSupport))
   {
     if (__sb__runningInSpringBoard())
     {
@@ -158,8 +158,8 @@ LABEL_9:
 
     else
     {
-      v9 = [MEMORY[0x1E69DC938] currentDevice];
-      if ([v9 userInterfaceIdiom] == 1)
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      if ([currentDevice userInterfaceIdiom] == 1)
       {
         v8 = @"-120fps";
       }
@@ -184,10 +184,10 @@ LABEL_15:
 
   else
   {
-    v12 = [MEMORY[0x1E69DC938] currentDevice];
-    v13 = [v12 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice2 userInterfaceIdiom];
 
-    if (v13 == 1)
+    if (userInterfaceIdiom == 1)
     {
       goto LABEL_15;
     }
@@ -223,7 +223,7 @@ LABEL_24:
   return v14;
 }
 
-- (BOOL)_requiresSecureIndicatorForState:(int64_t)a3
+- (BOOL)_requiresSecureIndicatorForState:(int64_t)state
 {
   isForCapture = self->_isForCapture;
   if (isForCapture)
@@ -231,12 +231,12 @@ LABEL_24:
     goto LABEL_2;
   }
 
-  if (a3 > 7)
+  if (state > 7)
   {
     return isForCapture & 1;
   }
 
-  if (((1 << a3) & 0x33) != 0)
+  if (((1 << state) & 0x33) != 0)
   {
     if (SBUIAllowsIndicatorSecureRendering())
     {
@@ -252,16 +252,16 @@ LABEL_2:
   return SBUIAllowsIndicatorSecureRendering();
 }
 
-- (id)_packageViewStateFromIconViewState:(int64_t)a3
+- (id)_packageViewStateFromIconViewState:(int64_t)state
 {
-  if ((a3 - 1) > 6)
+  if ((state - 1) > 6)
   {
     return @"Sleep";
   }
 
   else
   {
-    return off_1E789DAE0[a3 - 1];
+    return off_1E789DAE0[state - 1];
   }
 }
 

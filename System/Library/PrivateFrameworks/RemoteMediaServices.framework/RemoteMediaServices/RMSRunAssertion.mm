@@ -1,18 +1,18 @@
 @interface RMSRunAssertion
-- (RMSRunAssertion)initWithDescription:(id)a3;
+- (RMSRunAssertion)initWithDescription:(id)description;
 @end
 
 @implementation RMSRunAssertion
 
-- (RMSRunAssertion)initWithDescription:(id)a3
+- (RMSRunAssertion)initWithDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v10.receiver = self;
   v10.super_class = RMSRunAssertion;
   v5 = [(RMSRunAssertion *)&v10 init];
   if (v5)
   {
-    v6 = [@"com.apple.RemoteMediaServices.RMSRunAssertion." stringByAppendingString:v4];
+    v6 = [@"com.apple.RemoteMediaServices.RMSRunAssertion." stringByAppendingString:descriptionCopy];
     [v6 UTF8String];
     v7 = os_transaction_create();
     transaction = v5->_transaction;

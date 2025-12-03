@@ -1,30 +1,30 @@
 @interface DTTapMessageHandlerArchiver
-- (DTTapMessageHandlerArchiver)initWithConfig:(id)a3 archiveURL:(id)a4;
-- (id)messageReceived:(id)a3;
+- (DTTapMessageHandlerArchiver)initWithConfig:(id)config archiveURL:(id)l;
+- (id)messageReceived:(id)received;
 - (void)_helperConnectionError;
 - (void)dealloc;
 @end
 
 @implementation DTTapMessageHandlerArchiver
 
-- (DTTapMessageHandlerArchiver)initWithConfig:(id)a3 archiveURL:(id)a4
+- (DTTapMessageHandlerArchiver)initWithConfig:(id)config archiveURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  configCopy = config;
+  lCopy = l;
   v22.receiver = self;
   v22.super_class = DTTapMessageHandlerArchiver;
-  v8 = [(DTTapMessageHandler *)&v22 initWithConfig:v6];
+  v8 = [(DTTapMessageHandler *)&v22 initWithConfig:configCopy];
   if (v8)
   {
-    if (!v7)
+    if (!lCopy)
     {
       sub_24802FF04();
     }
 
     v9 = objc_alloc(MEMORY[0x277D03658]);
-    v10 = [v7 path];
+    path = [lCopy path];
     v21 = 0;
-    v11 = [v9 initWithIncomingFilePath:0 outgoingFilePath:v10 error:&v21];
+    v11 = [v9 initWithIncomingFilePath:0 outgoingFilePath:path error:&v21];
     v12 = v21;
 
     if (v11 && !v12 && (v13 = [objc_alloc(MEMORY[0x277D03650]) initWithTransport:v11], v14 = v8->_helperConnection, v8->_helperConnection = v13, v14, (v15 = v8->_helperConnection) != 0))
@@ -64,32 +64,32 @@
   [(DTTapMessageHandlerArchiver *)&v3 dealloc];
 }
 
-- (id)messageReceived:(id)a3
+- (id)messageReceived:(id)received
 {
-  v4 = a3;
-  v5 = [(DTTapMessageHandler *)self config];
-  v6 = [v5 statusHandler];
+  receivedCopy = received;
+  config = [(DTTapMessageHandler *)self config];
+  statusHandler = [config statusHandler];
 
-  if (v6)
+  if (statusHandler)
   {
     v7 = [MEMORY[0x277CBEB98] setWithObject:objc_opt_class()];
-    v8 = [v4 objectWithAllowedClasses:v7];
+    v8 = [receivedCopy objectWithAllowedClasses:v7];
 
     if (v8)
     {
-      v9 = [(DTTapMessageHandler *)self config];
-      v10 = [v9 statusHandler];
-      v11 = [v8 status];
-      v12 = [v8 timestamp];
-      v13 = [v8 notice];
-      v14 = [v8 info];
-      (v10)[2](v10, v11, v12, v13, v14);
+      config2 = [(DTTapMessageHandler *)self config];
+      statusHandler2 = [config2 statusHandler];
+      status = [v8 status];
+      timestamp = [v8 timestamp];
+      notice = [v8 notice];
+      info = [v8 info];
+      (statusHandler2)[2](statusHandler2, status, timestamp, notice, info);
     }
   }
 
-  if (![v4 errorStatus])
+  if (![receivedCopy errorStatus])
   {
-    [(DTXConnection *)self->_helperConnection sendMessage:v4 replyHandler:0];
+    [(DTXConnection *)self->_helperConnection sendMessage:receivedCopy replyHandler:0];
   }
 
   return 0;

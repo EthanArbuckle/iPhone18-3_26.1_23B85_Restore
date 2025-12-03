@@ -1,25 +1,25 @@
 @interface MADPhotosFullClusterProcessingTask
-+ (id)taskWithPhotoLibrary:(id)a3;
-- (MADPhotosFullClusterProcessingTask)initWithPhotoLibrary:(id)a3;
-- (int64_t)databaseValueForKey:(id)a3;
++ (id)taskWithPhotoLibrary:(id)library;
+- (MADPhotosFullClusterProcessingTask)initWithPhotoLibrary:(id)library;
+- (int64_t)databaseValueForKey:(id)key;
 - (unint64_t)queryMediaAnalysisImagePriority1ProgressPercentage;
 - (void)cacheMediaAnalysisImagePriority1Progress;
 - (void)process;
-- (void)signalPhotosFeatureAvailabilityChangesWithVUWGallery:(id)a3;
+- (void)signalPhotosFeatureAvailabilityChangesWithVUWGallery:(id)gallery;
 @end
 
 @implementation MADPhotosFullClusterProcessingTask
 
-- (MADPhotosFullClusterProcessingTask)initWithPhotoLibrary:(id)a3
+- (MADPhotosFullClusterProcessingTask)initWithPhotoLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v11.receiver = self;
   v11.super_class = MADPhotosFullClusterProcessingTask;
   v6 = [(MADProcessingTask *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_photoLibrary, a3);
+    objc_storeStrong(&v6->_photoLibrary, library);
     v8 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v7->_photoLibrary];
     database = v7->_database;
     v7->_database = v8;
@@ -28,10 +28,10 @@
   return v7;
 }
 
-+ (id)taskWithPhotoLibrary:(id)a3
++ (id)taskWithPhotoLibrary:(id)library
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithPhotoLibrary:v4];
+  libraryCopy = library;
+  v5 = [[self alloc] initWithPhotoLibrary:libraryCopy];
 
   return v5;
 }
@@ -94,9 +94,9 @@
       qos_class_self();
       v16 = VCPMAQoSDescription();
       v17 = v16;
-      v18 = [v16 UTF8String];
+      uTF8String = [v16 UTF8String];
       *buf = 136446722;
-      v25 = v18;
+      v25 = uTF8String;
       v26 = 2050;
       v27 = v22;
       v28 = 2050;
@@ -126,18 +126,18 @@
   return v13;
 }
 
-- (int64_t)databaseValueForKey:(id)a3
+- (int64_t)databaseValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if (+[MADManagedKeyValueStore isMACDReadEnabled])
   {
-    v5 = [(PHPhotoLibrary *)self->_photoLibrary mad_fetchRequest];
-    v6 = [v5 dataStoreValueForKey:v4];
+    mad_fetchRequest = [(PHPhotoLibrary *)self->_photoLibrary mad_fetchRequest];
+    v6 = [mad_fetchRequest dataStoreValueForKey:keyCopy];
   }
 
   else
   {
-    v6 = [(VCPDatabaseWriter *)self->_database valueForKey:v4];
+    v6 = [(VCPDatabaseWriter *)self->_database valueForKey:keyCopy];
   }
 
   return v6;
@@ -145,7 +145,7 @@
 
 - (void)cacheMediaAnalysisImagePriority1Progress
 {
-  v3 = [(MADPhotosFullClusterProcessingTask *)self queryMediaAnalysisImagePriority1ProgressPercentage];
+  queryMediaAnalysisImagePriority1ProgressPercentage = [(MADPhotosFullClusterProcessingTask *)self queryMediaAnalysisImagePriority1ProgressPercentage];
   v4 = +[NSDate now];
   [v4 timeIntervalSinceReferenceDate];
   v6 = v5;
@@ -161,7 +161,7 @@
     v15[1] = 3221225472;
     v15[2] = sub_1001B915C;
     v15[3] = &unk_100288978;
-    v15[4] = v3;
+    v15[4] = queryMediaAnalysisImagePriority1ProgressPercentage;
     v15[5] = v10;
     v15[6] = v6;
     v15[7] = v8;
@@ -169,9 +169,9 @@
     return;
   }
 
-  if (v3 < VCPAnalysisComplete90Percentage)
+  if (queryMediaAnalysisImagePriority1ProgressPercentage < VCPAnalysisComplete90Percentage)
   {
-    if (v3 < 0x4B)
+    if (queryMediaAnalysisImagePriority1ProgressPercentage < 0x4B)
     {
       [(VCPDatabaseWriter *)self->_database removeKey:v9];
       database = self->_database;
@@ -217,9 +217,9 @@ LABEL_15:
   [(VCPDatabaseWriter *)v14 commit];
 }
 
-- (void)signalPhotosFeatureAvailabilityChangesWithVUWGallery:(id)a3
+- (void)signalPhotosFeatureAvailabilityChangesWithVUWGallery:(id)gallery
 {
-  v4 = a3;
+  galleryCopy = gallery;
   v5 = [PLFeatureAvailabilitySignalledChanges alloc];
   v6 = [v5 initWithSourceIdentifier:MediaAnalysisDaemonDomain];
   v7 = [NSDate dateWithTimeIntervalSinceReferenceDate:[(MADPhotosFullClusterProcessingTask *)self databaseValueForKey:VCPKeyValueMediaAnalysisImagePriority1LastFullModeClusterTimestamp]];
@@ -235,7 +235,7 @@ LABEL_15:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v11, OS_SIGNPOST_INTERVAL_BEGIN, v9, "VUWGallery_assetCountForType_Scene", "", buf, 2u);
   }
 
-  v12 = [v4 assetCountForType:0];
+  v12 = [galleryCopy assetCountForType:0];
   v13 = VCPSignPostLog();
   v14 = v13;
   if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
@@ -286,10 +286,10 @@ LABEL_15:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v23, OS_SIGNPOST_INTERVAL_BEGIN, v21, "PhotoLibraryClient_SignalAvailabilityWithChanges", "", buf, 2u);
   }
 
-  v24 = [(PHPhotoLibrary *)self->_photoLibrary assetsdClient];
-  v25 = [v24 libraryInternalClient];
+  assetsdClient = [(PHPhotoLibrary *)self->_photoLibrary assetsdClient];
+  libraryInternalClient = [assetsdClient libraryInternalClient];
   v38 = 0;
-  v26 = [v25 signalAvailabilityWithChanges:v6 error:&v38];
+  v26 = [libraryInternalClient signalAvailabilityWithChanges:v6 error:&v38];
   v27 = v38;
 
   v28 = VCPSignPostLog();
@@ -307,15 +307,15 @@ LABEL_15:
       v30 = VCPLogToOSLogType[5];
       if (os_log_type_enabled(&_os_log_default, v30))
       {
-        v31 = [v6 lastFullVUIndexClusterDate];
-        v32 = [v6 countOfAssetsIndexedInVUClustering];
-        v33 = [v6 fractionOfCuratedAssetsIndexedInVUClustering];
+        lastFullVUIndexClusterDate = [v6 lastFullVUIndexClusterDate];
+        countOfAssetsIndexedInVUClustering = [v6 countOfAssetsIndexedInVUClustering];
+        fractionOfCuratedAssetsIndexedInVUClustering = [v6 fractionOfCuratedAssetsIndexedInVUClustering];
         *buf = 138412802;
-        v40 = v31;
+        v40 = lastFullVUIndexClusterDate;
         v41 = 2112;
-        v42 = v32;
+        v42 = countOfAssetsIndexedInVUClustering;
         v43 = 2112;
-        v44 = *&v33;
+        v44 = *&fractionOfCuratedAssetsIndexedInVUClustering;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v30, "[FullCluster] Signalled Photos availability state change (lastFullVUIndexClusterDate=%@, countOfAssetsIndexedInVUClustering=%@, fractionOfCuratedAssetsIndexedInVUClustering=%@)", buf, 0x20u);
       }
     }
@@ -326,15 +326,15 @@ LABEL_15:
     v34 = VCPLogToOSLogType[3];
     if (os_log_type_enabled(&_os_log_default, v34))
     {
-      v35 = [v6 lastFullVUIndexClusterDate];
-      v36 = [v6 countOfAssetsIndexedInVUClustering];
-      v37 = [v6 fractionOfCuratedAssetsIndexedInVUClustering];
+      lastFullVUIndexClusterDate2 = [v6 lastFullVUIndexClusterDate];
+      countOfAssetsIndexedInVUClustering2 = [v6 countOfAssetsIndexedInVUClustering];
+      fractionOfCuratedAssetsIndexedInVUClustering2 = [v6 fractionOfCuratedAssetsIndexedInVUClustering];
       *buf = 138412802;
-      v40 = v35;
+      v40 = lastFullVUIndexClusterDate2;
       v41 = 2112;
-      v42 = v36;
+      v42 = countOfAssetsIndexedInVUClustering2;
       v43 = 2112;
-      v44 = *&v37;
+      v44 = *&fractionOfCuratedAssetsIndexedInVUClustering2;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v34, "[FullCluster] Failed to signal Photos availability state change (lastFullVUIndexClusterDate=%@, countOfAssetsIndexedInVUClustering=%@, fractionOfCuratedAssetsIndexedInVUClustering=%@)", buf, 0x20u);
     }
   }
@@ -362,11 +362,11 @@ LABEL_9:
       return;
     }
 
-    v5 = [(MADProcessingTask *)self cancelBlock];
-    if (v5)
+    cancelBlock = [(MADProcessingTask *)self cancelBlock];
+    if (cancelBlock)
     {
-      v6 = [(MADProcessingTask *)self cancelBlock];
-      v7 = v6[2]();
+      cancelBlock2 = [(MADProcessingTask *)self cancelBlock];
+      v7 = cancelBlock2[2]();
 
       if (v7)
       {
@@ -488,8 +488,8 @@ LABEL_86:
     v32 = v31;
     if (v31)
     {
-      v33 = [v31 databaseDirectoryURL];
-      v34 = v33 == 0;
+      databaseDirectoryURL = [v31 databaseDirectoryURL];
+      v34 = databaseDirectoryURL == 0;
 
       if (v34)
       {
@@ -498,9 +498,9 @@ LABEL_86:
           v62 = VCPLogToOSLogType[3];
           if (os_log_type_enabled(&_os_log_default, v62))
           {
-            v63 = [(PHPhotoLibrary *)self->_photoLibrary photoLibraryURL];
+            photoLibraryURL = [(PHPhotoLibrary *)self->_photoLibrary photoLibraryURL];
             *buf = 138412290;
-            *v83 = v63;
+            *v83 = photoLibraryURL;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v62, "[FullCluster] Failed to obtain vector database directory for library %@", buf, 0xCu);
           }
         }
@@ -509,8 +509,8 @@ LABEL_86:
       else
       {
         v81 = -1;
-        v35 = [(MADProcessingTask *)self cancelBlock];
-        v36 = [v32 rebuildWithForce:v25 cancelBlock:v35 extendTimeoutBlock:&stru_100288998 totalEmbeddingCount:&v81] == 0;
+        cancelBlock3 = [(MADProcessingTask *)self cancelBlock];
+        v36 = [v32 rebuildWithForce:v25 cancelBlock:cancelBlock3 extendTimeoutBlock:&stru_100288998 totalEmbeddingCount:&v81] == 0;
 
         if (!v36 && MediaAnalysisLogLevel() >= 4)
         {
@@ -522,8 +522,8 @@ LABEL_86:
           }
         }
 
-        v38 = [(MADProcessingTask *)self cancelBlock];
-        if (v38 && ([(MADProcessingTask *)self cancelBlock], v39 = objc_claimAutoreleasedReturnValue(), v40 = v39[2](), v39, v38, v40))
+        cancelBlock4 = [(MADProcessingTask *)self cancelBlock];
+        if (cancelBlock4 && ([(MADProcessingTask *)self cancelBlock], v39 = objc_claimAutoreleasedReturnValue(), v40 = v39[2](), v39, cancelBlock4, v40))
         {
           if (MediaAnalysisLogLevel() >= 4)
           {
@@ -569,9 +569,9 @@ LABEL_86:
             v80[3] = &unk_1002876B8;
             v80[4] = self;
             v71 = objc_retainBlock(v80);
-            v49 = [v32 databaseDirectoryURL];
+            databaseDirectoryURL2 = [v32 databaseDirectoryURL];
             v79 = 0;
-            v50 = [v73 updateForType:0 withVectorStore:v49 mode:v74 progressHandler:v71 error:&v79];
+            v50 = [v73 updateForType:0 withVectorStore:databaseDirectoryURL2 mode:v74 progressHandler:v71 error:&v79];
             v72 = v79;
 
             if (v50)
@@ -591,11 +591,11 @@ LABEL_86:
                 qos_class_self();
                 v55 = VCPMAQoSDescription();
                 v56 = v55;
-                v57 = [v55 UTF8String];
+                uTF8String = [v55 UTF8String];
                 *buf = 136446978;
                 *v83 = v75;
                 *&v83[8] = 2082;
-                v84 = v57;
+                v84 = uTF8String;
                 v85 = 2050;
                 v86 = v51;
                 v87 = 2050;
@@ -665,9 +665,9 @@ LABEL_86:
             v64 = VCPLogToOSLogType[3];
             if (os_log_type_enabled(&_os_log_default, v64))
             {
-              v65 = [(PHPhotoLibrary *)self->_photoLibrary photoLibraryURL];
+              photoLibraryURL2 = [(PHPhotoLibrary *)self->_photoLibrary photoLibraryURL];
               *buf = 138412290;
-              *v83 = v65;
+              *v83 = photoLibraryURL2;
               _os_log_impl(&_mh_execute_header, &_os_log_default, v64, "[FullCluster] Failed to obtain VUWGallery for library %@", buf, 0xCu);
             }
           }
@@ -680,9 +680,9 @@ LABEL_86:
       v42 = VCPLogToOSLogType[3];
       if (os_log_type_enabled(&_os_log_default, v42))
       {
-        v43 = [(PHPhotoLibrary *)self->_photoLibrary photoLibraryURL];
+        photoLibraryURL3 = [(PHPhotoLibrary *)self->_photoLibrary photoLibraryURL];
         *buf = 138412290;
-        *v83 = v43;
+        *v83 = photoLibraryURL3;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v42, "[FullCluster] Failed to obtain vector database for library %@", buf, 0xCu);
       }
     }

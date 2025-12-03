@@ -1,9 +1,9 @@
 @interface MCTouchInput
 - (CGPoint)touchPoint;
-- (MCTouchInput)initWithTouchPoint:(CGPoint)a3 radius:(double)a4 timestamp:(double)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MCTouchInput)initWithTouchPoint:(CGPoint)point radius:(double)radius timestamp:(double)timestamp;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)shortDescriptionWithLeadingString:(id)a3;
+- (id)shortDescriptionWithLeadingString:(id)string;
 @end
 
 @implementation MCTouchInput
@@ -17,7 +17,7 @@
   return result;
 }
 
-- (id)shortDescriptionWithLeadingString:(id)a3
+- (id)shortDescriptionWithLeadingString:(id)string
 {
   v4 = MEMORY[0x277CCACA8];
   [(MCTouchInput *)self touchPoint];
@@ -39,11 +39,11 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = MCTouchInput;
-  result = [(MCKeyboardInput *)&v5 copyWithZone:a3];
+  result = [(MCKeyboardInput *)&v5 copyWithZone:zone];
   if (result)
   {
     *(result + 3) = self->_touchPoint;
@@ -54,10 +54,10 @@
   return result;
 }
 
-- (MCTouchInput)initWithTouchPoint:(CGPoint)a3 radius:(double)a4 timestamp:(double)a5
+- (MCTouchInput)initWithTouchPoint:(CGPoint)point radius:(double)radius timestamp:(double)timestamp
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v10.receiver = self;
   v10.super_class = MCTouchInput;
   result = [(MCKeyboardInput *)&v10 init];
@@ -65,8 +65,8 @@
   {
     result->_touchPoint.x = x;
     result->_touchPoint.y = y;
-    result->_radius = a4;
-    result->_timestamp = a5;
+    result->_radius = radius;
+    result->_timestamp = timestamp;
   }
 
   return result;

@@ -1,5 +1,5 @@
 @interface CBTrackedAnimation
-- (CBTrackedAnimation)initWithIdentifier:(id)a3;
+- (CBTrackedAnimation)initWithIdentifier:(id)identifier;
 - (void)dealloc;
 - (void)startTracking;
 - (void)stopTracking;
@@ -7,31 +7,31 @@
 
 @implementation CBTrackedAnimation
 
-- (CBTrackedAnimation)initWithIdentifier:(id)a3
+- (CBTrackedAnimation)initWithIdentifier:(id)identifier
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  identifierCopy = identifier;
   v6.receiver = self;
   v6.super_class = CBTrackedAnimation;
-  v9 = [(CBTrackedAnimation *)&v6 init];
+  selfCopy = [(CBTrackedAnimation *)&v6 init];
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [v3 initWithFormat:@"Brightness-%@", v7];
-  v9->_reason = v4;
-  return v9;
+  identifierCopy = [v3 initWithFormat:@"Brightness-%@", identifierCopy];
+  selfCopy->_reason = identifierCopy;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v2 = MEMORY[0x1E69E5920](self->_reason).n128_u64[0];
-  if (v5->_trackingObject)
+  if (selfCopy->_trackingObject)
   {
-    v2 = MEMORY[0x1E69E5920](v5->_trackingObject).n128_u64[0];
+    v2 = MEMORY[0x1E69E5920](selfCopy->_trackingObject).n128_u64[0];
   }
 
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = CBTrackedAnimation;
   [(CBTrackedAnimation *)&v3 dealloc];
 }

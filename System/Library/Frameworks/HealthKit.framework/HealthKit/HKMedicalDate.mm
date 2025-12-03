@@ -1,147 +1,147 @@
 @interface HKMedicalDate
-+ (HKMedicalDate)medicalDateWithYear:(int64_t)a3 error:(id *)a4;
-+ (HKMedicalDate)medicalDateWithYear:(int64_t)a3 month:(int64_t)a4 day:(int64_t)a5 error:(id *)a6;
-+ (HKMedicalDate)medicalDateWithYear:(int64_t)a3 month:(int64_t)a4 day:(int64_t)a5 hour:(int64_t)a6 minute:(int64_t)a7 second:(int64_t)a8 nanosecond:(int64_t)a9 originalTimeZoneString:(id)a10 error:(id *)a11;
-+ (HKMedicalDate)medicalDateWithYear:(int64_t)a3 month:(int64_t)a4 day:(int64_t)a5 hour:(int64_t)a6 minute:(int64_t)a7 second:(int64_t)a8 originalTimeZoneString:(id)a9 error:(id *)a10;
-+ (HKMedicalDate)medicalDateWithYear:(int64_t)a3 month:(int64_t)a4 error:(id *)a5;
-+ (id)_adjustDate:(id)a3 calendar:(id)a4 form:(int64_t)a5;
-+ (id)_descriptionForForm:(int64_t)a3;
-+ (id)_medicalDateWithForm:(int64_t)a3 underlyingDate:(id)a4 originalTimeZoneString:(id)a5;
-+ (id)medicalDateFromComponents:(id)a3 originalTimeZoneString:(id)a4 form:(int64_t)a5 error:(id *)a6;
-+ (id)medicalDateFromDate:(id)a3 originalTimeZone:(id)a4;
-+ (unint64_t)_calendarUnitForForm:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (HKMedicalDate)initWithCoder:(id)a3;
-- (id)_initWithForm:(int64_t)a3 underlyingDate:(id)a4 originalTimeZoneString:(id)a5;
-- (id)adjustedDateForCalendar:(id)a3;
++ (HKMedicalDate)medicalDateWithYear:(int64_t)year error:(id *)error;
++ (HKMedicalDate)medicalDateWithYear:(int64_t)year month:(int64_t)month day:(int64_t)day error:(id *)error;
++ (HKMedicalDate)medicalDateWithYear:(int64_t)year month:(int64_t)month day:(int64_t)day hour:(int64_t)hour minute:(int64_t)minute second:(int64_t)second nanosecond:(int64_t)nanosecond originalTimeZoneString:(id)self0 error:(id *)self1;
++ (HKMedicalDate)medicalDateWithYear:(int64_t)year month:(int64_t)month day:(int64_t)day hour:(int64_t)hour minute:(int64_t)minute second:(int64_t)second originalTimeZoneString:(id)string error:(id *)self0;
++ (HKMedicalDate)medicalDateWithYear:(int64_t)year month:(int64_t)month error:(id *)error;
++ (id)_adjustDate:(id)date calendar:(id)calendar form:(int64_t)form;
++ (id)_descriptionForForm:(int64_t)form;
++ (id)_medicalDateWithForm:(int64_t)form underlyingDate:(id)date originalTimeZoneString:(id)string;
++ (id)medicalDateFromComponents:(id)components originalTimeZoneString:(id)string form:(int64_t)form error:(id *)error;
++ (id)medicalDateFromDate:(id)date originalTimeZone:(id)zone;
++ (unint64_t)_calendarUnitForForm:(int64_t)form;
+- (BOOL)isEqual:(id)equal;
+- (HKMedicalDate)initWithCoder:(id)coder;
+- (id)_initWithForm:(int64_t)form underlyingDate:(id)date originalTimeZoneString:(id)string;
+- (id)adjustedDateForCalendar:(id)calendar;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMedicalDate
 
-+ (id)medicalDateFromComponents:(id)a3 originalTimeZoneString:(id)a4 form:(int64_t)a5 error:(id *)a6
++ (id)medicalDateFromComponents:(id)components originalTimeZoneString:(id)string form:(int64_t)form error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  if ([v10 isValidDate])
+  componentsCopy = components;
+  stringCopy = string;
+  if ([componentsCopy isValidDate])
   {
-    v12 = [a1 referenceCalendar];
-    v13 = [v12 dateFromComponents:v10];
+    referenceCalendar = [self referenceCalendar];
+    v13 = [referenceCalendar dateFromComponents:componentsCopy];
 
-    v14 = [[HKMedicalDate alloc] _initWithForm:a5 underlyingDate:v13 originalTimeZoneString:v11];
+    v14 = [[HKMedicalDate alloc] _initWithForm:form underlyingDate:v13 originalTimeZoneString:stringCopy];
   }
 
   else
   {
     v15 = MEMORY[0x1E696ABC0];
     v16 = objc_opt_class();
-    v13 = [HKMedicalDate _descriptionForForm:a5];
-    [v15 hk_assignError:a6 code:3 format:{@"%@: Invalid date components for form: %@", v16, v13}];
+    v13 = [HKMedicalDate _descriptionForForm:form];
+    [v15 hk_assignError:error code:3 format:{@"%@: Invalid date components for form: %@", v16, v13}];
     v14 = 0;
   }
 
   return v14;
 }
 
-+ (HKMedicalDate)medicalDateWithYear:(int64_t)a3 error:(id *)a4
++ (HKMedicalDate)medicalDateWithYear:(int64_t)year error:(id *)error
 {
   v7 = objc_alloc_init(MEMORY[0x1E695DF10]);
-  v8 = [a1 referenceCalendar];
-  [v7 setCalendar:v8];
+  referenceCalendar = [self referenceCalendar];
+  [v7 setCalendar:referenceCalendar];
 
-  [v7 setYear:a3];
-  v9 = [a1 medicalDateFromComponents:v7 originalTimeZoneString:0 form:3 error:a4];
+  [v7 setYear:year];
+  v9 = [self medicalDateFromComponents:v7 originalTimeZoneString:0 form:3 error:error];
 
   return v9;
 }
 
-+ (HKMedicalDate)medicalDateWithYear:(int64_t)a3 month:(int64_t)a4 error:(id *)a5
++ (HKMedicalDate)medicalDateWithYear:(int64_t)year month:(int64_t)month error:(id *)error
 {
   v9 = objc_alloc_init(MEMORY[0x1E695DF10]);
-  v10 = [a1 referenceCalendar];
-  [v9 setCalendar:v10];
+  referenceCalendar = [self referenceCalendar];
+  [v9 setCalendar:referenceCalendar];
 
-  [v9 setYear:a3];
-  [v9 setMonth:a4];
-  v11 = [a1 medicalDateFromComponents:v9 originalTimeZoneString:0 form:2 error:a5];
+  [v9 setYear:year];
+  [v9 setMonth:month];
+  v11 = [self medicalDateFromComponents:v9 originalTimeZoneString:0 form:2 error:error];
 
   return v11;
 }
 
-+ (HKMedicalDate)medicalDateWithYear:(int64_t)a3 month:(int64_t)a4 day:(int64_t)a5 error:(id *)a6
++ (HKMedicalDate)medicalDateWithYear:(int64_t)year month:(int64_t)month day:(int64_t)day error:(id *)error
 {
   v11 = objc_alloc_init(MEMORY[0x1E695DF10]);
-  v12 = [a1 referenceCalendar];
-  [v11 setCalendar:v12];
+  referenceCalendar = [self referenceCalendar];
+  [v11 setCalendar:referenceCalendar];
 
-  [v11 setYear:a3];
-  [v11 setMonth:a4];
-  [v11 setDay:a5];
-  v13 = [a1 medicalDateFromComponents:v11 originalTimeZoneString:0 form:1 error:a6];
+  [v11 setYear:year];
+  [v11 setMonth:month];
+  [v11 setDay:day];
+  v13 = [self medicalDateFromComponents:v11 originalTimeZoneString:0 form:1 error:error];
 
   return v13;
 }
 
-+ (HKMedicalDate)medicalDateWithYear:(int64_t)a3 month:(int64_t)a4 day:(int64_t)a5 hour:(int64_t)a6 minute:(int64_t)a7 second:(int64_t)a8 originalTimeZoneString:(id)a9 error:(id *)a10
++ (HKMedicalDate)medicalDateWithYear:(int64_t)year month:(int64_t)month day:(int64_t)day hour:(int64_t)hour minute:(int64_t)minute second:(int64_t)second originalTimeZoneString:(id)string error:(id *)self0
 {
   v17 = MEMORY[0x1E695DF10];
-  v18 = a9;
+  stringCopy = string;
   v19 = objc_alloc_init(v17);
-  v20 = [a1 referenceCalendar];
-  [v19 setCalendar:v20];
+  referenceCalendar = [self referenceCalendar];
+  [v19 setCalendar:referenceCalendar];
 
-  [v19 setYear:a3];
-  [v19 setMonth:a4];
-  [v19 setDay:a5];
-  [v19 setHour:a6];
-  [v19 setMinute:a7];
-  [v19 setSecond:a8];
-  v21 = [a1 medicalDateFromComponents:v19 originalTimeZoneString:v18 form:0 error:a10];
+  [v19 setYear:year];
+  [v19 setMonth:month];
+  [v19 setDay:day];
+  [v19 setHour:hour];
+  [v19 setMinute:minute];
+  [v19 setSecond:second];
+  v21 = [self medicalDateFromComponents:v19 originalTimeZoneString:stringCopy form:0 error:error];
 
   return v21;
 }
 
-+ (HKMedicalDate)medicalDateWithYear:(int64_t)a3 month:(int64_t)a4 day:(int64_t)a5 hour:(int64_t)a6 minute:(int64_t)a7 second:(int64_t)a8 nanosecond:(int64_t)a9 originalTimeZoneString:(id)a10 error:(id *)a11
++ (HKMedicalDate)medicalDateWithYear:(int64_t)year month:(int64_t)month day:(int64_t)day hour:(int64_t)hour minute:(int64_t)minute second:(int64_t)second nanosecond:(int64_t)nanosecond originalTimeZoneString:(id)self0 error:(id *)self1
 {
   v17 = MEMORY[0x1E695DF10];
-  v18 = a10;
+  stringCopy = string;
   v19 = objc_alloc_init(v17);
-  v20 = [a1 referenceCalendar];
-  [v19 setCalendar:v20];
+  referenceCalendar = [self referenceCalendar];
+  [v19 setCalendar:referenceCalendar];
 
-  [v19 setYear:a3];
-  [v19 setMonth:a4];
-  [v19 setDay:a5];
-  [v19 setHour:a6];
-  [v19 setMinute:a7];
-  [v19 setSecond:a8];
-  [v19 setNanosecond:a9];
-  v21 = [a1 medicalDateFromComponents:v19 originalTimeZoneString:v18 form:0 error:a11];
+  [v19 setYear:year];
+  [v19 setMonth:month];
+  [v19 setDay:day];
+  [v19 setHour:hour];
+  [v19 setMinute:minute];
+  [v19 setSecond:second];
+  [v19 setNanosecond:nanosecond];
+  v21 = [self medicalDateFromComponents:v19 originalTimeZoneString:stringCopy form:0 error:error];
 
   return v21;
 }
 
-+ (id)medicalDateFromDate:(id)a3 originalTimeZone:(id)a4
++ (id)medicalDateFromDate:(id)date originalTimeZone:(id)zone
 {
   v5 = MEMORY[0x1E695DF00];
-  v6 = a4;
-  [a3 timeIntervalSince1970];
+  zoneCopy = zone;
+  [date timeIntervalSince1970];
   v8 = [v5 dateWithTimeIntervalSince1970:trunc(v7)];
   v9 = [HKMedicalDate alloc];
-  v10 = [v6 name];
+  name = [zoneCopy name];
 
-  v11 = [(HKMedicalDate *)v9 _initWithForm:0 underlyingDate:v8 originalTimeZoneString:v10];
+  v11 = [(HKMedicalDate *)v9 _initWithForm:0 underlyingDate:v8 originalTimeZoneString:name];
 
   return v11;
 }
 
-- (id)adjustedDateForCalendar:(id)a3
+- (id)adjustedDateForCalendar:(id)calendar
 {
   underlyingDate = self->_underlyingDate;
-  v5 = a3;
-  v6 = [HKMedicalDate _adjustDate:underlyingDate calendar:v5 form:[(HKMedicalDate *)self form]];
+  calendarCopy = calendar;
+  v6 = [HKMedicalDate _adjustDate:underlyingDate calendar:calendarCopy form:[(HKMedicalDate *)self form]];
 
   return v6;
 }
@@ -151,46 +151,46 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = [HKMedicalDate _descriptionForForm:[(HKMedicalDate *)self form]];
-  v6 = [(HKMedicalDate *)self underlyingDate];
-  v7 = [(HKMedicalDate *)self originalTimeZoneString];
-  v8 = [v3 stringWithFormat:@"%@: form: %@, underlyingDate: %@, originalTimeZoneString: %@", v4, v5, v6, v7];
+  underlyingDate = [(HKMedicalDate *)self underlyingDate];
+  originalTimeZoneString = [(HKMedicalDate *)self originalTimeZoneString];
+  v8 = [v3 stringWithFormat:@"%@: form: %@, underlyingDate: %@, originalTimeZoneString: %@", v4, v5, underlyingDate, originalTimeZoneString];
 
   return v8;
 }
 
-+ (id)_medicalDateWithForm:(int64_t)a3 underlyingDate:(id)a4 originalTimeZoneString:(id)a5
++ (id)_medicalDateWithForm:(int64_t)form underlyingDate:(id)date originalTimeZoneString:(id)string
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [[HKMedicalDate alloc] _initWithForm:a3 underlyingDate:v8 originalTimeZoneString:v7];
+  stringCopy = string;
+  dateCopy = date;
+  v9 = [[HKMedicalDate alloc] _initWithForm:form underlyingDate:dateCopy originalTimeZoneString:stringCopy];
 
   return v9;
 }
 
-+ (id)_adjustDate:(id)a3 calendar:(id)a4 form:(int64_t)a5
++ (id)_adjustDate:(id)date calendar:(id)calendar form:(int64_t)form
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [a1 referenceCalendar];
-  if ([v9 isEqual:v10])
+  dateCopy = date;
+  calendarCopy = calendar;
+  referenceCalendar = [self referenceCalendar];
+  if ([calendarCopy isEqual:referenceCalendar])
   {
-    v11 = v8;
+    v11 = dateCopy;
   }
 
   else
   {
-    v12 = [v10 components:+[HKMedicalDate _calendarUnitForForm:](HKMedicalDate fromDate:{"_calendarUnitForForm:", a5), v8}];
-    v11 = [v9 dateFromComponents:v12];
+    v12 = [referenceCalendar components:+[HKMedicalDate _calendarUnitForForm:](HKMedicalDate fromDate:{"_calendarUnitForForm:", form), dateCopy}];
+    v11 = [calendarCopy dateFromComponents:v12];
   }
 
   return v11;
 }
 
-- (id)_initWithForm:(int64_t)a3 underlyingDate:(id)a4 originalTimeZoneString:(id)a5
+- (id)_initWithForm:(int64_t)form underlyingDate:(id)date originalTimeZoneString:(id)string
 {
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  dateCopy = date;
+  stringCopy = string;
+  if (!dateCopy)
   {
     [HKMedicalDate _initWithForm:a2 underlyingDate:self originalTimeZoneString:?];
   }
@@ -201,12 +201,12 @@
   v12 = v11;
   if (v11)
   {
-    v11->_form = a3;
-    v13 = [v9 copy];
+    v11->_form = form;
+    v13 = [dateCopy copy];
     underlyingDate = v12->_underlyingDate;
     v12->_underlyingDate = v13;
 
-    v15 = [v10 copy];
+    v15 = [stringCopy copy];
     originalTimeZoneString = v12->_originalTimeZoneString;
     v12->_originalTimeZoneString = v15;
   }
@@ -214,48 +214,48 @@
   return v12;
 }
 
-+ (unint64_t)_calendarUnitForForm:(int64_t)a3
++ (unint64_t)_calendarUnitForForm:(int64_t)form
 {
-  if (a3 > 2)
+  if (form > 2)
   {
     return 6;
   }
 
   else
   {
-    return qword_191DCD160[a3];
+    return qword_191DCD160[form];
   }
 }
 
-+ (id)_descriptionForForm:(int64_t)a3
++ (id)_descriptionForForm:(int64_t)form
 {
-  if (a3 >= 4)
+  if (form >= 4)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid HKMedicalDateForm: %ld", a3];
+    form = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid HKMedicalDateForm: %ld", form];
   }
 
   else
   {
-    v4 = off_1E7380E40[a3];
+    form = off_1E7380E40[form];
   }
 
-  return v4;
+  return form;
 }
 
-- (HKMedicalDate)initWithCoder:(id)a3
+- (HKMedicalDate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = HKMedicalDate;
   v5 = [(HKMedicalDate *)&v11 init];
   if (v5)
   {
-    v5->_form = [v4 decodeIntegerForKey:@"form"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"underlyingDate"];
+    v5->_form = [coderCopy decodeIntegerForKey:@"form"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"underlyingDate"];
     underlyingDate = v5->_underlyingDate;
     v5->_underlyingDate = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originalTimezoneString"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originalTimezoneString"];
     originalTimeZoneString = v5->_originalTimeZoneString;
     v5->_originalTimeZoneString = v8;
   }
@@ -263,32 +263,32 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[HKMedicalDate form](self forKey:{"form"), @"form"}];
-  v5 = [(HKMedicalDate *)self underlyingDate];
-  [v4 encodeObject:v5 forKey:@"underlyingDate"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[HKMedicalDate form](self forKey:{"form"), @"form"}];
+  underlyingDate = [(HKMedicalDate *)self underlyingDate];
+  [coderCopy encodeObject:underlyingDate forKey:@"underlyingDate"];
 
-  v6 = [(HKMedicalDate *)self originalTimeZoneString];
-  [v4 encodeObject:v6 forKey:@"originalTimezoneString"];
+  originalTimeZoneString = [(HKMedicalDate *)self originalTimeZoneString];
+  [coderCopy encodeObject:originalTimeZoneString forKey:@"originalTimezoneString"];
 }
 
 - (unint64_t)hash
 {
-  v3 = [(HKMedicalDate *)self form];
-  v4 = [(HKMedicalDate *)self underlyingDate];
-  v5 = [v4 hash] ^ v3;
-  v6 = [(HKMedicalDate *)self originalTimeZoneString];
-  v7 = [v6 hash];
+  form = [(HKMedicalDate *)self form];
+  underlyingDate = [(HKMedicalDate *)self underlyingDate];
+  v5 = [underlyingDate hash] ^ form;
+  originalTimeZoneString = [(HKMedicalDate *)self originalTimeZoneString];
+  v7 = [originalTimeZoneString hash];
 
   return v5 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v15 = 1;
   }
@@ -298,32 +298,32 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HKMedicalDate *)self form];
-      if (v6 != [(HKMedicalDate *)v5 form])
+      v5 = equalCopy;
+      form = [(HKMedicalDate *)self form];
+      if (form != [(HKMedicalDate *)v5 form])
       {
         goto LABEL_16;
       }
 
-      v7 = [(HKMedicalDate *)self underlyingDate];
-      v8 = [(HKMedicalDate *)v5 underlyingDate];
-      v9 = v8;
-      if (v7 == v8)
+      underlyingDate = [(HKMedicalDate *)self underlyingDate];
+      underlyingDate2 = [(HKMedicalDate *)v5 underlyingDate];
+      v9 = underlyingDate2;
+      if (underlyingDate == underlyingDate2)
       {
       }
 
       else
       {
-        v10 = [(HKMedicalDate *)v5 underlyingDate];
-        if (!v10)
+        underlyingDate3 = [(HKMedicalDate *)v5 underlyingDate];
+        if (!underlyingDate3)
         {
           goto LABEL_15;
         }
 
-        v11 = v10;
-        v12 = [(HKMedicalDate *)self underlyingDate];
-        v13 = [(HKMedicalDate *)v5 underlyingDate];
-        v14 = [v12 isEqualToDate:v13];
+        v11 = underlyingDate3;
+        underlyingDate4 = [(HKMedicalDate *)self underlyingDate];
+        underlyingDate5 = [(HKMedicalDate *)v5 underlyingDate];
+        v14 = [underlyingDate4 isEqualToDate:underlyingDate5];
 
         if (!v14)
         {
@@ -331,10 +331,10 @@
         }
       }
 
-      v7 = [(HKMedicalDate *)self originalTimeZoneString];
-      v16 = [(HKMedicalDate *)v5 originalTimeZoneString];
-      v9 = v16;
-      if (v7 == v16)
+      underlyingDate = [(HKMedicalDate *)self originalTimeZoneString];
+      originalTimeZoneString = [(HKMedicalDate *)v5 originalTimeZoneString];
+      v9 = originalTimeZoneString;
+      if (underlyingDate == originalTimeZoneString)
       {
 
 LABEL_20:
@@ -342,13 +342,13 @@ LABEL_20:
         goto LABEL_17;
       }
 
-      v17 = [(HKMedicalDate *)v5 originalTimeZoneString];
-      if (v17)
+      originalTimeZoneString2 = [(HKMedicalDate *)v5 originalTimeZoneString];
+      if (originalTimeZoneString2)
       {
-        v18 = v17;
-        v19 = [(HKMedicalDate *)self originalTimeZoneString];
-        v20 = [(HKMedicalDate *)v5 originalTimeZoneString];
-        v21 = [v19 isEqualToString:v20];
+        v18 = originalTimeZoneString2;
+        originalTimeZoneString3 = [(HKMedicalDate *)self originalTimeZoneString];
+        originalTimeZoneString4 = [(HKMedicalDate *)v5 originalTimeZoneString];
+        v21 = [originalTimeZoneString3 isEqualToString:originalTimeZoneString4];
 
         if (v21)
         {

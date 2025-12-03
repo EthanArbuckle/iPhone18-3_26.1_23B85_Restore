@@ -1,58 +1,58 @@
 @interface NTKSalmonFaceBundle
 + (id)identifier;
-- (id)_legacyGalleryFacesForDevice:(id)a3;
-- (id)defaultFaceForDevice:(id)a3;
-- (id)galleryFacesForDevice:(id)a3;
-- (id)galleryPigmentsForDevice:(id)a3;
-- (id)heroFacesForDevice:(id)a3;
+- (id)_legacyGalleryFacesForDevice:(id)device;
+- (id)defaultFaceForDevice:(id)device;
+- (id)galleryFacesForDevice:(id)device;
+- (id)galleryPigmentsForDevice:(id)device;
+- (id)heroFacesForDevice:(id)device;
 @end
 
 @implementation NTKSalmonFaceBundle
 
 + (id)identifier
 {
-  v3 = [NSBundle bundleForClass:a1];
-  v4 = [v3 bundleIdentifier];
-  v5 = NSStringFromClass(a1);
-  v6 = [NSString stringWithFormat:@"%@.%@", v4, v5];
+  v3 = [NSBundle bundleForClass:self];
+  bundleIdentifier = [v3 bundleIdentifier];
+  v5 = NSStringFromClass(self);
+  v6 = [NSString stringWithFormat:@"%@.%@", bundleIdentifier, v5];
 
   return v6;
 }
 
-- (id)defaultFaceForDevice:(id)a3
+- (id)defaultFaceForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [objc_opt_class() identifier];
-  v5 = [objc_opt_class() analyticsIdentifier];
-  v6 = [NTKSalmonFace bundledFaceWithIdentifier:v4 analyticsIdentifier:v5 forDevice:v3 initCustomization:0];
+  deviceCopy = device;
+  identifier = [objc_opt_class() identifier];
+  analyticsIdentifier = [objc_opt_class() analyticsIdentifier];
+  v6 = [NTKSalmonFace bundledFaceWithIdentifier:identifier analyticsIdentifier:analyticsIdentifier forDevice:deviceCopy initCustomization:0];
 
   return v6;
 }
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(NTKSalmonFaceBundle *)self defaultFaceForDevice:v4];
+  deviceCopy = device;
+  v5 = [(NTKSalmonFaceBundle *)self defaultFaceForDevice:deviceCopy];
   if ([v5 deviceSupportsPigmentEditOption])
   {
     v8.receiver = self;
     v8.super_class = NTKSalmonFaceBundle;
-    v6 = [(NTKSalmonFaceBundle *)&v8 galleryFacesForDevice:v4];
+    v6 = [(NTKSalmonFaceBundle *)&v8 galleryFacesForDevice:deviceCopy];
 
     [v6 enumerateObjectsUsingBlock:&stru_39378];
   }
 
   else
   {
-    v6 = [(NTKSalmonFaceBundle *)self _legacyGalleryFacesForDevice:v4];
+    v6 = [(NTKSalmonFaceBundle *)self _legacyGalleryFacesForDevice:deviceCopy];
   }
 
   return v6;
 }
 
-- (id)galleryPigmentsForDevice:(id)a3
+- (id)galleryPigmentsForDevice:(id)device
 {
-  if ([a3 isRunningNapiliGMOrLater])
+  if ([device isRunningNapiliGMOrLater])
   {
     v3 = [NTKPigmentEditOption duotoneNameWithName:ntk_evergreen_navyBlue otherName:ntk_evergreen_watermelon];
     v4 = ntk_evergreen_warmGray;
@@ -71,9 +71,9 @@
   return v7;
 }
 
-- (id)_legacyGalleryFacesForDevice:(id)a3
+- (id)_legacyGalleryFacesForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = +[NSMutableArray array];
   v16 = 0u;
   v17 = 0u;
@@ -94,13 +94,13 @@
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [objc_opt_class() identifier];
-        v11 = [objc_opt_class() analyticsIdentifier];
-        v12 = [NTKSalmonFace bundledFaceWithIdentifier:v10 analyticsIdentifier:v11 forDevice:v3 initCustomization:0];
+        identifier = [objc_opt_class() identifier];
+        analyticsIdentifier = [objc_opt_class() analyticsIdentifier];
+        v12 = [NTKSalmonFace bundledFaceWithIdentifier:identifier analyticsIdentifier:analyticsIdentifier forDevice:deviceCopy initCustomization:0];
 
         if (v12)
         {
-          v13 = +[NTKSalmonColorEditOption optionWithColor:forDevice:](NTKSalmonColorEditOption, "optionWithColor:forDevice:", [v9 unsignedIntValue], v3);
+          v13 = +[NTKSalmonColorEditOption optionWithColor:forDevice:](NTKSalmonColorEditOption, "optionWithColor:forDevice:", [v9 unsignedIntValue], deviceCopy);
           [v12 selectOption:v13 forCustomEditMode:10 slot:0];
 
           [v4 addObject:v12];
@@ -118,17 +118,17 @@
   return v14;
 }
 
-- (id)heroFacesForDevice:(id)a3
+- (id)heroFacesForDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 supportsPDRCapability:4094027452])
+  deviceCopy = device;
+  if ([deviceCopy supportsPDRCapability:4094027452])
   {
     v5 = &__NSArray0__struct;
   }
 
   else
   {
-    v6 = [(NTKSalmonFaceBundle *)self defaultFaceForDevice:v4];
+    v6 = [(NTKSalmonFaceBundle *)self defaultFaceForDevice:deviceCopy];
     v7 = [[NTKFaceBundleSortableGalleryFace alloc] initWithFace:v6 priority:500];
     v8 = v7;
     if (v7)

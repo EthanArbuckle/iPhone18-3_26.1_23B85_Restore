@@ -1,33 +1,33 @@
 @interface CNFRegRegionChooserController
-- (CNFRegRegionChooserController)initWithRegionList:(id)a3 selectedRegionID:(id)a4;
-- (CNFRegRegionChooserController)initWithStyle:(int64_t)a3;
+- (CNFRegRegionChooserController)initWithRegionList:(id)list selectedRegionID:(id)d;
+- (CNFRegRegionChooserController)initWithStyle:(int64_t)style;
 - (id)drillDownControllerList;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_drillDownControllersWithArray:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_drillDownControllersWithArray:(id)array;
 - (void)_hideTableViewCells;
-- (void)_selectRegionID:(id)a3;
-- (void)_selectRegionList:(id)a3;
+- (void)_selectRegionID:(id)d;
+- (void)_selectRegionList:(id)list;
 - (void)_showTableViewCells;
 - (void)dealloc;
-- (void)didPresentSearchController:(id)a3;
+- (void)didPresentSearchController:(id)controller;
 - (void)loadView;
-- (void)regionChooser:(id)a3 selectedRegionID:(id)a4;
-- (void)setSpecifier:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (void)regionChooser:(id)chooser selectedRegionID:(id)d;
+- (void)setSpecifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)viewDidLoad;
 - (void)viewDidUnload;
-- (void)willPresentSearchController:(id)a3;
+- (void)willPresentSearchController:(id)controller;
 @end
 
 @implementation CNFRegRegionChooserController
 
-- (CNFRegRegionChooserController)initWithStyle:(int64_t)a3
+- (CNFRegRegionChooserController)initWithStyle:(int64_t)style
 {
   v8.receiver = self;
   v8.super_class = CNFRegRegionChooserController;
-  v3 = [(CNFRegRegionChooserController *)&v8 initWithStyle:a3];
+  v3 = [(CNFRegRegionChooserController *)&v8 initWithStyle:style];
   if (v3)
   {
     v4 = CommunicationsSetupUIBundle();
@@ -39,27 +39,27 @@
   return v3;
 }
 
-- (CNFRegRegionChooserController)initWithRegionList:(id)a3 selectedRegionID:(id)a4
+- (CNFRegRegionChooserController)initWithRegionList:(id)list selectedRegionID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  listCopy = list;
+  dCopy = d;
   v8 = [(CNFRegRegionChooserController *)self initWithStyle:0];
   v9 = v8;
   if (v8)
   {
-    [(CNFRegRegionChooserController *)v8 setRegionList:v6];
-    [(CNFRegRegionChooserController *)v9 setSelectedRegionID:v7];
-    if (v6)
+    [(CNFRegRegionChooserController *)v8 setRegionList:listCopy];
+    [(CNFRegRegionChooserController *)v9 setSelectedRegionID:dCopy];
+    if (listCopy)
     {
-      if ([v6 count])
+      if ([listCopy count])
       {
-        v10 = [v6 objectAtIndex:0];
-        v11 = [v10 parentRegion];
-        v12 = v11;
-        if (v11)
+        v10 = [listCopy objectAtIndex:0];
+        parentRegion = [v10 parentRegion];
+        v12 = parentRegion;
+        if (parentRegion)
         {
-          v13 = [v11 label];
-          [(CNFRegRegionChooserController *)v9 setTitle:v13];
+          label = [parentRegion label];
+          [(CNFRegRegionChooserController *)v9 setTitle:label];
         }
       }
     }
@@ -73,15 +73,15 @@
   v7.receiver = self;
   v7.super_class = CNFRegRegionChooserController;
   [(CNFRegRegionChooserController *)&v7 viewDidUnload];
-  v3 = [(CNFRegRegionChooserController *)self searchController];
-  [v3 setDelegate:0];
+  searchController = [(CNFRegRegionChooserController *)self searchController];
+  [searchController setDelegate:0];
 
-  v4 = [(CNFRegRegionChooserController *)self searchController];
-  [v4 setSearchResultsUpdater:0];
+  searchController2 = [(CNFRegRegionChooserController *)self searchController];
+  [searchController2 setSearchResultsUpdater:0];
 
-  v5 = [(CNFRegRegionChooserController *)self searchController];
-  v6 = [v5 searchBar];
-  [v6 setDelegate:0];
+  searchController3 = [(CNFRegRegionChooserController *)self searchController];
+  searchBar = [searchController3 searchBar];
+  [searchBar setDelegate:0];
 
   [(CNFRegRegionChooserController *)self setSearchController:0];
   [(CNFRegRegionChooserController *)self setFilteredRegionList:0];
@@ -92,8 +92,8 @@
   self->_delegate = 0;
   [(UISearchController *)self->_searchController setDelegate:0];
   [(UISearchController *)self->_searchController setSearchResultsUpdater:0];
-  v3 = [(UISearchController *)self->_searchController searchBar];
-  [v3 setDelegate:0];
+  searchBar = [(UISearchController *)self->_searchController searchBar];
+  [searchBar setDelegate:0];
 
   v4.receiver = self;
   v4.super_class = CNFRegRegionChooserController;
@@ -108,62 +108,62 @@
   v3 = +[CNFRegAppearanceController globalAppearanceController];
   if ([v3 styleUsesCustomTableStyle])
   {
-    v4 = [v3 tableBackgroundColor];
+    tableBackgroundColor = [v3 tableBackgroundColor];
 
-    if (v4)
+    if (tableBackgroundColor)
     {
-      v5 = [v3 tableBackgroundColor];
-      v6 = [(CNFRegRegionChooserController *)self tableView];
-      [v6 setBackgroundColor:v5];
+      tableBackgroundColor2 = [v3 tableBackgroundColor];
+      tableView = [(CNFRegRegionChooserController *)self tableView];
+      [tableView setBackgroundColor:tableBackgroundColor2];
 
-      v7 = [(CNFRegRegionChooserController *)self tableView];
-      [v7 setBackgroundView:0];
+      tableView2 = [(CNFRegRegionChooserController *)self tableView];
+      [tableView2 setBackgroundView:0];
     }
 
     if ([v3 styleUsesCustomSeparatorStyle])
     {
-      v8 = [(CNFRegRegionChooserController *)self tableView];
-      [v8 _setDrawsTopShadowInGroupedSections:0];
+      tableView3 = [(CNFRegRegionChooserController *)self tableView];
+      [tableView3 _setDrawsTopShadowInGroupedSections:0];
 
-      v9 = [v3 tableSeparatorStyle];
-      v10 = [(CNFRegRegionChooserController *)self tableView];
-      [v10 setSeparatorStyle:v9];
+      tableSeparatorStyle = [v3 tableSeparatorStyle];
+      tableView4 = [(CNFRegRegionChooserController *)self tableView];
+      [tableView4 setSeparatorStyle:tableSeparatorStyle];
 
-      v11 = [v3 tableSeparatorColor];
+      tableSeparatorColor = [v3 tableSeparatorColor];
 
-      if (v11)
+      if (tableSeparatorColor)
       {
-        v12 = [v3 tableSeparatorColor];
-        v13 = [(CNFRegRegionChooserController *)self tableView];
-        [v13 setSeparatorColor:v12];
+        tableSeparatorColor2 = [v3 tableSeparatorColor];
+        tableView5 = [(CNFRegRegionChooserController *)self tableView];
+        [tableView5 setSeparatorColor:tableSeparatorColor2];
       }
 
-      v14 = [v3 tableSeparatorTopShadowColor];
+      tableSeparatorTopShadowColor = [v3 tableSeparatorTopShadowColor];
 
-      if (v14)
+      if (tableSeparatorTopShadowColor)
       {
-        v15 = [v3 tableSeparatorTopShadowColor];
-        v16 = [(CNFRegRegionChooserController *)self tableView];
-        [v16 setSeparatorTopShadowColor:v15];
+        tableSeparatorTopShadowColor2 = [v3 tableSeparatorTopShadowColor];
+        tableView6 = [(CNFRegRegionChooserController *)self tableView];
+        [tableView6 setSeparatorTopShadowColor:tableSeparatorTopShadowColor2];
       }
 
-      v17 = [v3 tableSeparatorBottomShadowColor];
+      tableSeparatorBottomShadowColor = [v3 tableSeparatorBottomShadowColor];
 
-      if (v17)
+      if (tableSeparatorBottomShadowColor)
       {
-        v18 = [v3 tableSeparatorBottomShadowColor];
-        v19 = [(CNFRegRegionChooserController *)self tableView];
-        [v19 setSeparatorBottomShadowColor:v18];
+        tableSeparatorBottomShadowColor2 = [v3 tableSeparatorBottomShadowColor];
+        tableView7 = [(CNFRegRegionChooserController *)self tableView];
+        [tableView7 setSeparatorBottomShadowColor:tableSeparatorBottomShadowColor2];
       }
     }
 
-    v20 = [v3 tableSectionBorderColor];
+    tableSectionBorderColor = [v3 tableSectionBorderColor];
 
-    if (v20)
+    if (tableSectionBorderColor)
     {
-      v21 = [v3 tableSectionBorderColor];
-      v22 = [(CNFRegRegionChooserController *)self tableView];
-      [v22 setSectionBorderColor:v21];
+      tableSectionBorderColor2 = [v3 tableSectionBorderColor];
+      tableView8 = [(CNFRegRegionChooserController *)self tableView];
+      [tableView8 setSectionBorderColor:tableSectionBorderColor2];
     }
   }
 }
@@ -177,43 +177,43 @@
   v4 = [objc_alloc(MEMORY[0x277D759F0]) initWithSearchResultsController:0];
   [(CNFRegRegionChooserController *)self setSearchController:v4];
 
-  v5 = [(CNFRegRegionChooserController *)self searchController];
-  [v5 setDimsBackgroundDuringPresentation:0];
+  searchController = [(CNFRegRegionChooserController *)self searchController];
+  [searchController setDimsBackgroundDuringPresentation:0];
 
-  v6 = [(CNFRegRegionChooserController *)self searchController];
-  [v6 setHidesNavigationBarDuringPresentation:0];
+  searchController2 = [(CNFRegRegionChooserController *)self searchController];
+  [searchController2 setHidesNavigationBarDuringPresentation:0];
 
-  v7 = [(CNFRegRegionChooserController *)self searchController];
-  [v7 setSearchResultsUpdater:self];
+  searchController3 = [(CNFRegRegionChooserController *)self searchController];
+  [searchController3 setSearchResultsUpdater:self];
 
-  v8 = [(CNFRegRegionChooserController *)self searchController];
-  v9 = [v8 searchBar];
-  [v9 setAutocapitalizationType:0];
+  searchController4 = [(CNFRegRegionChooserController *)self searchController];
+  searchBar = [searchController4 searchBar];
+  [searchBar setAutocapitalizationType:0];
 
-  v10 = [v3 navigationBarStyle];
-  v11 = [(CNFRegRegionChooserController *)self searchController];
-  v12 = [v11 searchBar];
-  [v12 setBarStyle:v10];
+  navigationBarStyle = [v3 navigationBarStyle];
+  searchController5 = [(CNFRegRegionChooserController *)self searchController];
+  searchBar2 = [searchController5 searchBar];
+  [searchBar2 setBarStyle:navigationBarStyle];
 
-  v13 = [(CNFRegRegionChooserController *)self searchController];
-  v14 = [v13 searchBar];
-  [v14 setDelegate:self];
+  searchController6 = [(CNFRegRegionChooserController *)self searchController];
+  searchBar3 = [searchController6 searchBar];
+  [searchBar3 setDelegate:self];
 
-  v15 = [(CNFRegRegionChooserController *)self searchController];
-  v16 = [v15 searchBar];
-  v17 = [(CNFRegRegionChooserController *)self tableView];
-  [v17 setTableHeaderView:v16];
+  searchController7 = [(CNFRegRegionChooserController *)self searchController];
+  searchBar4 = [searchController7 searchBar];
+  tableView = [(CNFRegRegionChooserController *)self tableView];
+  [tableView setTableHeaderView:searchBar4];
 
-  v18 = [(CNFRegRegionChooserController *)self searchController];
-  v19 = [v18 searchBar];
-  [v19 sizeToFit];
+  searchController8 = [(CNFRegRegionChooserController *)self searchController];
+  searchBar5 = [searchController8 searchBar];
+  [searchBar5 sizeToFit];
 
   [(CNFRegRegionChooserController *)self setDefinesPresentationContext:1];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if ([(UISearchController *)self->_searchController isActive:a3])
+  if ([(UISearchController *)self->_searchController isActive:view])
   {
     [(CNFRegRegionChooserController *)self filteredRegionList];
   }
@@ -228,10 +228,10 @@
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"RegionCell"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"RegionCell"];
   if (!v7)
   {
     v7 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:@"RegionCell"];
@@ -247,14 +247,14 @@
     [(CNFRegRegionChooserController *)self regionList];
   }
   v8 = ;
-  v9 = [v8 objectAtIndex:{objc_msgSend(v6, "row")}];
+  v9 = [v8 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-  v10 = [v9 label];
+  label = [v9 label];
   if ([v9 isLeafNode])
   {
-    v11 = [v9 regionID];
-    v12 = [(CNFRegRegionChooserController *)self selectedRegionID];
-    v13 = [v11 isEqualToString:v12];
+    regionID = [v9 regionID];
+    selectedRegionID = [(CNFRegRegionChooserController *)self selectedRegionID];
+    v13 = [regionID isEqualToString:selectedRegionID];
 
     if (v13)
     {
@@ -272,72 +272,72 @@
     v14 = 1;
   }
 
-  v15 = [v7 textLabel];
-  [v15 setText:v10];
+  textLabel = [v7 textLabel];
+  [textLabel setText:label];
 
   [v7 setAccessoryType:v14];
   v16 = +[CNFRegAppearanceController globalAppearanceController];
   if ([v16 styleUsesCustomTableStyle])
   {
-    v17 = [v16 tableCellBackgroundColor];
+    tableCellBackgroundColor = [v16 tableCellBackgroundColor];
 
-    if (v17)
+    if (tableCellBackgroundColor)
     {
-      v18 = [v16 tableCellBackgroundColor];
-      [v7 setBackgroundColor:v18];
+      tableCellBackgroundColor2 = [v16 tableCellBackgroundColor];
+      [v7 setBackgroundColor:tableCellBackgroundColor2];
     }
 
-    v19 = [v16 tableCellTextLabelColor];
+    tableCellTextLabelColor = [v16 tableCellTextLabelColor];
 
-    if (v19)
+    if (tableCellTextLabelColor)
     {
-      v20 = [v16 tableCellTextLabelColor];
-      v21 = [v7 textLabel];
-      [v21 setTextColor:v20];
+      tableCellTextLabelColor2 = [v16 tableCellTextLabelColor];
+      textLabel2 = [v7 textLabel];
+      [textLabel2 setTextColor:tableCellTextLabelColor2];
     }
 
-    v22 = [v16 tableCellTextLabelBackgroundColor];
+    tableCellTextLabelBackgroundColor = [v16 tableCellTextLabelBackgroundColor];
 
-    if (v22)
+    if (tableCellTextLabelBackgroundColor)
     {
-      v23 = [v16 tableCellTextLabelBackgroundColor];
-      v24 = [v7 textLabel];
-      [v24 setBackgroundColor:v23];
+      tableCellTextLabelBackgroundColor2 = [v16 tableCellTextLabelBackgroundColor];
+      textLabel3 = [v7 textLabel];
+      [textLabel3 setBackgroundColor:tableCellTextLabelBackgroundColor2];
     }
 
-    v25 = [v16 tableCellDetailLabelColor];
+    tableCellDetailLabelColor = [v16 tableCellDetailLabelColor];
 
-    if (v25)
+    if (tableCellDetailLabelColor)
     {
-      v26 = [v16 tableCellDetailLabelColor];
-      v27 = [v7 detailTextLabel];
-      [v27 setTextColor:v26];
+      tableCellDetailLabelColor2 = [v16 tableCellDetailLabelColor];
+      detailTextLabel = [v7 detailTextLabel];
+      [detailTextLabel setTextColor:tableCellDetailLabelColor2];
     }
 
-    v28 = [v16 tableCellDetailLabelBackgroundColor];
+    tableCellDetailLabelBackgroundColor = [v16 tableCellDetailLabelBackgroundColor];
 
-    if (v28)
+    if (tableCellDetailLabelBackgroundColor)
     {
-      v29 = [v16 tableCellDetailLabelBackgroundColor];
-      v30 = [v7 detailTextLabel];
-      [v30 setBackgroundColor:v29];
+      tableCellDetailLabelBackgroundColor2 = [v16 tableCellDetailLabelBackgroundColor];
+      detailTextLabel2 = [v7 detailTextLabel];
+      [detailTextLabel2 setBackgroundColor:tableCellDetailLabelBackgroundColor2];
     }
   }
 
   return v7;
 }
 
-- (void)_drillDownControllersWithArray:(id)a3
+- (void)_drillDownControllersWithArray:(id)array
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 addObject:self];
+  arrayCopy = array;
+  [arrayCopy addObject:self];
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [(CNFRegRegionChooserController *)self regionList];
-  v6 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  regionList = [(CNFRegRegionChooserController *)self regionList];
+  v6 = [regionList countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v6)
   {
     v7 = v6;
@@ -348,40 +348,40 @@
       {
         if (*v22 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(regionList);
         }
 
         v10 = *(*(&v21 + 1) + 8 * i);
-        v11 = [(CNFRegRegionChooserController *)self selectedRegionID];
-        v12 = [v10 regionWithID:v11];
+        selectedRegionID = [(CNFRegRegionChooserController *)self selectedRegionID];
+        v12 = [v10 regionWithID:selectedRegionID];
 
         if (v12)
         {
           if (([v10 isLeafNode] & 1) == 0)
           {
             v13 = [CNFRegRegionChooserController alloc];
-            v14 = [v10 subRegions];
-            v15 = [(CNFRegRegionChooserController *)self selectedRegionID];
-            v16 = [(CNFRegRegionChooserController *)v13 initWithRegionList:v14 selectedRegionID:v15];
+            subRegions = [v10 subRegions];
+            selectedRegionID2 = [(CNFRegRegionChooserController *)self selectedRegionID];
+            v16 = [(CNFRegRegionChooserController *)v13 initWithRegionList:subRegions selectedRegionID:selectedRegionID2];
 
             [(CNFRegRegionChooserController *)v16 setDelegate:self];
-            v17 = [(CNFRegRegionChooserController *)self parentController];
-            [(CNFRegRegionChooserController *)v16 setParentController:v17];
+            parentController = [(CNFRegRegionChooserController *)self parentController];
+            [(CNFRegRegionChooserController *)v16 setParentController:parentController];
 
-            v18 = [(CNFRegRegionChooserController *)self rootController];
-            [(CNFRegRegionChooserController *)v16 setRootController:v18];
+            rootController = [(CNFRegRegionChooserController *)self rootController];
+            [(CNFRegRegionChooserController *)v16 setRootController:rootController];
 
-            v19 = [(CNFRegRegionChooserController *)self specifier];
-            [(CNFRegRegionChooserController *)v16 setSpecifier:v19];
+            specifier = [(CNFRegRegionChooserController *)self specifier];
+            [(CNFRegRegionChooserController *)v16 setSpecifier:specifier];
 
-            [(CNFRegRegionChooserController *)v16 _drillDownControllersWithArray:v4];
+            [(CNFRegRegionChooserController *)v16 _drillDownControllersWithArray:arrayCopy];
           }
 
           goto LABEL_12;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v7 = [regionList countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v7)
       {
         continue;
@@ -398,34 +398,34 @@ LABEL_12:
 
 - (id)drillDownControllerList
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  [(CNFRegRegionChooserController *)self _drillDownControllersWithArray:v3];
-  v4 = [v3 copy];
+  array = [MEMORY[0x277CBEB18] array];
+  [(CNFRegRegionChooserController *)self _drillDownControllersWithArray:array];
+  v4 = [array copy];
 
   return v4;
 }
 
-- (void)_selectRegionList:(id)a3
+- (void)_selectRegionList:(id)list
 {
-  v4 = a3;
-  if (v4)
+  listCopy = list;
+  if (listCopy)
   {
-    v11 = v4;
-    if ([v4 count])
+    v11 = listCopy;
+    if ([listCopy count])
     {
       v5 = [CNFRegRegionChooserController alloc];
-      v6 = [(CNFRegRegionChooserController *)self selectedRegionID];
-      v7 = [(CNFRegRegionChooserController *)v5 initWithRegionList:v11 selectedRegionID:v6];
+      selectedRegionID = [(CNFRegRegionChooserController *)self selectedRegionID];
+      v7 = [(CNFRegRegionChooserController *)v5 initWithRegionList:v11 selectedRegionID:selectedRegionID];
 
       [(CNFRegRegionChooserController *)v7 setDelegate:self];
-      v8 = [(CNFRegRegionChooserController *)self parentController];
-      [(CNFRegRegionChooserController *)v7 setParentController:v8];
+      parentController = [(CNFRegRegionChooserController *)self parentController];
+      [(CNFRegRegionChooserController *)v7 setParentController:parentController];
 
-      v9 = [(CNFRegRegionChooserController *)self rootController];
-      [(CNFRegRegionChooserController *)v7 setRootController:v9];
+      rootController = [(CNFRegRegionChooserController *)self rootController];
+      [(CNFRegRegionChooserController *)v7 setRootController:rootController];
 
-      v10 = [(CNFRegRegionChooserController *)self specifier];
-      [(CNFRegRegionChooserController *)v7 setSpecifier:v10];
+      specifier = [(CNFRegRegionChooserController *)self specifier];
+      [(CNFRegRegionChooserController *)v7 setSpecifier:specifier];
 
       [(CNFRegRegionChooserController *)self showController:v7];
     }
@@ -434,26 +434,26 @@ LABEL_12:
   MEMORY[0x2821F96F8]();
 }
 
-- (void)_selectRegionID:(id)a3
+- (void)_selectRegionID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v10 = v4;
-    if ([v4 length])
+    v10 = dCopy;
+    if ([dCopy length])
     {
       [(CNFRegRegionChooserController *)self setSelectedRegionID:v10];
-      v5 = [(CNFRegRegionChooserController *)self delegate];
-      if (v5)
+      delegate = [(CNFRegRegionChooserController *)self delegate];
+      if (delegate)
       {
-        v6 = v5;
-        v7 = [(CNFRegRegionChooserController *)self delegate];
+        v6 = delegate;
+        delegate2 = [(CNFRegRegionChooserController *)self delegate];
         v8 = objc_opt_respondsToSelector();
 
         if (v8)
         {
-          v9 = [(CNFRegRegionChooserController *)self delegate];
-          [v9 regionChooser:self selectedRegionID:v10];
+          delegate3 = [(CNFRegRegionChooserController *)self delegate];
+          [delegate3 regionChooser:self selectedRegionID:v10];
         }
       }
     }
@@ -462,10 +462,10 @@ LABEL_12:
   MEMORY[0x2821F96F8]();
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   searchController = self->_searchController;
-  v6 = a4;
+  pathCopy = path;
   if ([(UISearchController *)searchController isActive])
   {
     [(CNFRegRegionChooserController *)self filteredRegionList];
@@ -476,37 +476,37 @@ LABEL_12:
     [(CNFRegRegionChooserController *)self regionList];
   }
   v7 = ;
-  v8 = [v6 row];
+  v8 = [pathCopy row];
 
   v10 = [v7 objectAtIndex:v8];
 
   if ([v10 isLeafNode])
   {
-    v9 = [v10 regionID];
-    [(CNFRegRegionChooserController *)self _selectRegionID:v9];
+    regionID = [v10 regionID];
+    [(CNFRegRegionChooserController *)self _selectRegionID:regionID];
   }
 
   else
   {
-    v9 = [v10 subRegions];
-    [(CNFRegRegionChooserController *)self _selectRegionList:v9];
+    regionID = [v10 subRegions];
+    [(CNFRegRegionChooserController *)self _selectRegionList:regionID];
   }
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 searchBar];
-  v6 = [v5 text];
+  controllerCopy = controller;
+  searchBar = [controllerCopy searchBar];
+  text = [searchBar text];
 
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [(CNFRegRegionChooserController *)self regionList];
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v25 count:16];
+  regionList = [(CNFRegRegionChooserController *)self regionList];
+  v9 = [regionList countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v9)
   {
     v10 = *v18;
@@ -517,14 +517,14 @@ LABEL_12:
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(regionList);
         }
 
-        [*(*(&v17 + 1) + 8 * v11++) search:v6 withResults:v7];
+        [*(*(&v17 + 1) + 8 * v11++) search:text withResults:v7];
       }
 
       while (v9 != v11);
-      v9 = [v8 countByEnumeratingWithState:&v17 objects:v25 count:16];
+      v9 = [regionList countByEnumeratingWithState:&v17 objects:v25 count:16];
     }
 
     while (v9);
@@ -535,7 +535,7 @@ LABEL_12:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v22 = v6;
+    v22 = text;
     v23 = 2112;
     v24 = v7;
     _os_log_impl(&dword_243BE5000, v12, OS_LOG_TYPE_DEBUG, "Search results for {%@} : %@", buf, 0x16u);
@@ -543,14 +543,14 @@ LABEL_12:
 
   if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
   {
-    v15 = v6;
+    v15 = text;
     v16 = v7;
     IMLogString();
   }
 
   [(CNFRegRegionChooserController *)self setFilteredRegionList:v7, v15, v16];
-  v13 = [(CNFRegRegionChooserController *)self tableView];
-  [v13 reloadData];
+  tableView = [(CNFRegRegionChooserController *)self tableView];
+  [tableView reloadData];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -572,10 +572,10 @@ uint64_t __72__CNFRegRegionChooserController_updateSearchResultsForSearchControl
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(CNFRegRegionChooserController *)self tableView];
-  v3 = [v2 visibleCells];
+  tableView = [(CNFRegRegionChooserController *)self tableView];
+  visibleCells = [tableView visibleCells];
 
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [visibleCells countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -587,14 +587,14 @@ uint64_t __72__CNFRegRegionChooserController_updateSearchResultsForSearchControl
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(visibleCells);
         }
 
         [*(*(&v9 + 1) + 8 * v7++) setAlpha:0.0];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [visibleCells countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -610,10 +610,10 @@ uint64_t __72__CNFRegRegionChooserController_updateSearchResultsForSearchControl
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(CNFRegRegionChooserController *)self tableView];
-  v3 = [v2 visibleCells];
+  tableView = [(CNFRegRegionChooserController *)self tableView];
+  visibleCells = [tableView visibleCells];
 
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [visibleCells countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -625,14 +625,14 @@ uint64_t __72__CNFRegRegionChooserController_updateSearchResultsForSearchControl
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(visibleCells);
         }
 
         [*(*(&v9 + 1) + 8 * v7++) setAlpha:1.0];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [visibleCells countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -641,74 +641,74 @@ uint64_t __72__CNFRegRegionChooserController_updateSearchResultsForSearchControl
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)willPresentSearchController:(id)a3
+- (void)willPresentSearchController:(id)controller
 {
   v23 = +[CNFRegAppearanceController globalAppearanceController];
   if ([v23 styleUsesCustomTableStyle])
   {
-    v4 = [v23 tableBackgroundColor];
+    tableBackgroundColor = [v23 tableBackgroundColor];
 
-    if (v4)
+    if (tableBackgroundColor)
     {
-      v5 = [v23 tableBackgroundColor];
-      v6 = [(CNFRegRegionChooserController *)self tableView];
-      [v6 setBackgroundColor:v5];
+      tableBackgroundColor2 = [v23 tableBackgroundColor];
+      tableView = [(CNFRegRegionChooserController *)self tableView];
+      [tableView setBackgroundColor:tableBackgroundColor2];
 
-      v7 = [(CNFRegRegionChooserController *)self tableView];
-      [v7 setBackgroundView:0];
+      tableView2 = [(CNFRegRegionChooserController *)self tableView];
+      [tableView2 setBackgroundView:0];
     }
 
     if ([v23 styleUsesCustomSearchResultsStyle])
     {
-      v8 = [(CNFRegRegionChooserController *)self tableView];
-      [v8 _setDrawsTopShadowInGroupedSections:0];
+      tableView3 = [(CNFRegRegionChooserController *)self tableView];
+      [tableView3 _setDrawsTopShadowInGroupedSections:0];
 
-      v9 = [v23 searchResultsTableSeparatorStyle];
-      v10 = [(CNFRegRegionChooserController *)self tableView];
-      [v10 setSeparatorStyle:v9];
+      searchResultsTableSeparatorStyle = [v23 searchResultsTableSeparatorStyle];
+      tableView4 = [(CNFRegRegionChooserController *)self tableView];
+      [tableView4 setSeparatorStyle:searchResultsTableSeparatorStyle];
 
-      v11 = [v23 searchResultsTableSeparatorColor];
+      searchResultsTableSeparatorColor = [v23 searchResultsTableSeparatorColor];
 
-      if (v11)
+      if (searchResultsTableSeparatorColor)
       {
-        v12 = [v23 searchResultsTableSeparatorColor];
-        v13 = [(CNFRegRegionChooserController *)self tableView];
-        [v13 setSeparatorColor:v12];
+        searchResultsTableSeparatorColor2 = [v23 searchResultsTableSeparatorColor];
+        tableView5 = [(CNFRegRegionChooserController *)self tableView];
+        [tableView5 setSeparatorColor:searchResultsTableSeparatorColor2];
       }
 
-      v14 = [v23 searchResultsTableSeparatorTopShadowColor];
+      searchResultsTableSeparatorTopShadowColor = [v23 searchResultsTableSeparatorTopShadowColor];
 
-      if (v14)
+      if (searchResultsTableSeparatorTopShadowColor)
       {
-        v15 = [v23 searchResultsTableSeparatorTopShadowColor];
-        v16 = [(CNFRegRegionChooserController *)self tableView];
-        [v16 setSeparatorTopShadowColor:v15];
+        searchResultsTableSeparatorTopShadowColor2 = [v23 searchResultsTableSeparatorTopShadowColor];
+        tableView6 = [(CNFRegRegionChooserController *)self tableView];
+        [tableView6 setSeparatorTopShadowColor:searchResultsTableSeparatorTopShadowColor2];
       }
 
-      v17 = [v23 searchResultsTableSeparatorBottomShadowColor];
+      searchResultsTableSeparatorBottomShadowColor = [v23 searchResultsTableSeparatorBottomShadowColor];
 
-      if (v17)
+      if (searchResultsTableSeparatorBottomShadowColor)
       {
-        v18 = [v23 searchResultsTableSeparatorBottomShadowColor];
-        v19 = [(CNFRegRegionChooserController *)self tableView];
-        [v19 setSeparatorBottomShadowColor:v18];
+        searchResultsTableSeparatorBottomShadowColor2 = [v23 searchResultsTableSeparatorBottomShadowColor];
+        tableView7 = [(CNFRegRegionChooserController *)self tableView];
+        [tableView7 setSeparatorBottomShadowColor:searchResultsTableSeparatorBottomShadowColor2];
       }
     }
 
-    v20 = [v23 tableSectionBorderColor];
+    tableSectionBorderColor = [v23 tableSectionBorderColor];
 
-    if (v20)
+    if (tableSectionBorderColor)
     {
-      v21 = [v23 tableSectionBorderColor];
-      v22 = [(CNFRegRegionChooserController *)self tableView];
-      [v22 setSectionBorderColor:v21];
+      tableSectionBorderColor2 = [v23 tableSectionBorderColor];
+      tableView8 = [(CNFRegRegionChooserController *)self tableView];
+      [tableView8 setSectionBorderColor:tableSectionBorderColor2];
     }
 
     [(CNFRegRegionChooserController *)self _hideTableViewCells];
   }
 }
 
-- (void)didPresentSearchController:(id)a3
+- (void)didPresentSearchController:(id)controller
 {
   v4 = +[CNFRegAppearanceController globalAppearanceController];
   if ([v4 styleUsesCustomTableStyle])
@@ -717,25 +717,25 @@ uint64_t __72__CNFRegRegionChooserController_updateSearchResultsForSearchControl
   }
 }
 
-- (void)regionChooser:(id)a3 selectedRegionID:(id)a4
+- (void)regionChooser:(id)chooser selectedRegionID:(id)d
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6 && [v6 length])
+  chooserCopy = chooser;
+  dCopy = d;
+  v7 = dCopy;
+  if (dCopy && [dCopy length])
   {
     [(CNFRegRegionChooserController *)self _selectRegionID:v7];
   }
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  v5 = a3;
-  if (self->_specifier != v5)
+  specifierCopy = specifier;
+  if (self->_specifier != specifierCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_specifier, a3);
-    v5 = v6;
+    v6 = specifierCopy;
+    objc_storeStrong(&self->_specifier, specifier);
+    specifierCopy = v6;
   }
 }
 

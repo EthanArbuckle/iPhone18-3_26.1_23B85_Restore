@@ -1,5 +1,5 @@
 @interface CAMLivePhotoStatusIndicatorAccessibility
-- (id)_axValueForLivePhotoMode:(int64_t)a3;
+- (id)_axValueForLivePhotoMode:(int64_t)mode;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
 @end
@@ -9,20 +9,20 @@
 - (id)accessibilityValue
 {
   v3 = [(CAMLivePhotoStatusIndicatorAccessibility *)self safeValueForKey:@"livePhotoMode"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  return [(CAMLivePhotoStatusIndicatorAccessibility *)self _axValueForLivePhotoMode:v4];
+  return [(CAMLivePhotoStatusIndicatorAccessibility *)self _axValueForLivePhotoMode:integerValue];
 }
 
-- (id)_axValueForLivePhotoMode:(int64_t)a3
+- (id)_axValueForLivePhotoMode:(int64_t)mode
 {
   v3 = @"LIVEPHOTO_MODE_BUTTON_VALUE_AUTO";
-  if (a3 == 1)
+  if (mode == 1)
   {
     v3 = @"LIVEPHOTO_MODE_BUTTON_VALUE_ON";
   }
 
-  if (a3)
+  if (mode)
   {
     v4 = v3;
   }

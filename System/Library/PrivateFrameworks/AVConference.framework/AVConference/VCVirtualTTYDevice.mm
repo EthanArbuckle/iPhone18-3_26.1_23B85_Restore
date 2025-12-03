@@ -1,21 +1,21 @@
 @interface VCVirtualTTYDevice
-- (VCVirtualTTYDevice)initWithMode:(int64_t)a3 clientPid:(int)a4;
-- (id)setPause:(BOOL)a3;
+- (VCVirtualTTYDevice)initWithMode:(int64_t)mode clientPid:(int)pid;
+- (id)setPause:(BOOL)pause;
 - (id)start;
-- (id)stopWithError:(id)a3;
+- (id)stopWithError:(id)error;
 - (void)dealloc;
-- (void)didUpdateBasebandCodec:(const _VCRemoteCodecInfo *)a3;
-- (void)pullAudioSamples:(opaqueVCAudioBufferList *)a3;
-- (void)pushAudioSamples:(opaqueVCAudioBufferList *)a3;
-- (void)sendCharacter:(unsigned __int16)a3;
-- (void)sendText:(id)a3;
+- (void)didUpdateBasebandCodec:(const _VCRemoteCodecInfo *)codec;
+- (void)pullAudioSamples:(opaqueVCAudioBufferList *)samples;
+- (void)pushAudioSamples:(opaqueVCAudioBufferList *)samples;
+- (void)sendCharacter:(unsigned __int16)character;
+- (void)sendText:(id)text;
 - (void)serverDidDie;
 - (void)start;
 @end
 
 @implementation VCVirtualTTYDevice
 
-- (VCVirtualTTYDevice)initWithMode:(int64_t)a3 clientPid:(int)a4
+- (VCVirtualTTYDevice)initWithMode:(int64_t)mode clientPid:(int)pid
 {
   v29 = *MEMORY[0x1E69E9840];
   v25.receiver = self;
@@ -24,13 +24,13 @@
   v7 = v6;
   if (v6)
   {
-    v6->_clientPid = a4;
+    v6->_clientPid = pid;
     v6->_audioSessionId = VCUniqueIDGenerator_GenerateID();
     CustomRootQueue = VCDispatchQueue_GetCustomRootQueue(47);
     v7->delegateNotificationQueue = dispatch_queue_create_with_target_V2("com.apple.AVConference.VCVirtualTTYDevice.delegateNotificationQueue", 0, CustomRootQueue);
-    if (a3)
+    if (mode)
     {
-      if (a3 == 1)
+      if (mode == 1)
       {
         v9 = v7;
         v10 = 2;
@@ -38,7 +38,7 @@
 
       else
       {
-        if (a3 != 2)
+        if (mode != 2)
         {
           if (VRTraceGetErrorLogLevelForModule() >= 3)
           {
@@ -71,12 +71,12 @@ LABEL_9:
 
     v13 = [[VCAudioPayload alloc] initWithConfig:v12];
     v7->_currentAudioPayload = v13;
-    v14 = [(VCAudioPayloadConfig *)[(VCAudioPayload *)v13 config] codecSampleRate];
-    v7->_vpioFormat.format.mSampleRate = v14;
+    codecSampleRate = [(VCAudioPayloadConfig *)[(VCAudioPayload *)v13 config] codecSampleRate];
+    v7->_vpioFormat.format.mSampleRate = codecSampleRate;
     *&v7->_vpioFormat.format.mFormatID = xmmword_1DBD453C0;
     *&v7->_vpioFormat.format.mBytesPerFrame = 0x100000004;
     v7->_vpioFormat.format.mBitsPerChannel = 32;
-    v7->_vpioFormat.samplesPerFrame = (v14 / 50.0);
+    v7->_vpioFormat.samplesPerFrame = (codecSampleRate / 50.0);
     [(VCAudioPayload *)v7->_currentAudioPayload createEncoderWithInputFormat:&v7->_vpioFormat];
 
     pthread_mutex_init(&v7->sessionLock, 0);
@@ -281,8 +281,8 @@ LABEL_9:
     memset(v18, 0, sizeof(v18));
     AUIOGetAUNumber(v19);
     [(VCAudioIO *)self->_audioIO setFarEndVersionInfo:v18];
-    v10 = [(VCAudioIO *)self->_audioIO start];
-    if (v10)
+    start = [(VCAudioIO *)self->_audioIO start];
+    if (start)
     {
 
       self->_audioIO = 0;
@@ -296,15 +296,15 @@ LABEL_9:
     [(VCVirtualTTYDevice *)self unlock];
   }
 
-  return v10;
+  return start;
 }
 
-- (void)sendCharacter:(unsigned __int16)a3
+- (void)sendCharacter:(unsigned __int16)character
 {
-  v3 = a3;
+  characterCopy = character;
   v22 = *MEMORY[0x1E69E9840];
   v5 = VCMemoryPool_Alloc(self->_characterPool);
-  *v5 = v3;
+  *v5 = characterCopy;
   if (CMSimpleQueueEnqueue(self->_charQueue, v5))
   {
     if (objc_opt_class() == self)
@@ -346,7 +346,7 @@ LABEL_9:
           v18 = 2112;
           v19 = v6;
           v20 = 2048;
-          v21 = self;
+          selfCopy = self;
           _os_log_error_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_ERROR, "VCVirtualTTYDevice [%s] %s:%d %@(%p) CMSimpleQueueEnqueue Full", &v12, 0x30u);
         }
       }
@@ -371,19 +371,19 @@ LABEL_9:
         v16 = 1024;
         v17 = 203;
         v18 = 1024;
-        LODWORD(v19) = v3;
+        LODWORD(v19) = characterCopy;
         _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, "VCVirtualTTYDevice [%s] %s:%d Sending character:'%C'", &v12, 0x22u);
       }
     }
 
     else if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      [(VCVirtualTTYDevice *)v9 sendCharacter:v3, v10];
+      [(VCVirtualTTYDevice *)v9 sendCharacter:characterCopy, v10];
     }
   }
 }
 
-- (void)sendText:(id)a3
+- (void)sendText:(id)text
 {
   if (VRTraceGetErrorLogLevelForModule() >= 3)
   {
@@ -395,12 +395,12 @@ LABEL_9:
   }
 }
 
-- (id)stopWithError:(id)a3
+- (id)stopWithError:(id)error
 {
   [(VCVirtualTTYDevice *)self lock];
   if (self->_state == 1)
   {
-    v4 = [(VCAudioIO *)self->_audioIO stop];
+    stop = [(VCAudioIO *)self->_audioIO stop];
 
     self->_audioIO = 0;
     self->_state = 0;
@@ -408,16 +408,16 @@ LABEL_9:
 
   else
   {
-    v4 = 0;
+    stop = 0;
   }
 
   [(VCVirtualTTYDevice *)self unlock];
-  return v4;
+  return stop;
 }
 
-- (id)setPause:(BOOL)a3
+- (id)setPause:(BOOL)pause
 {
-  v3 = a3;
+  pauseCopy = pause;
   v14 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -435,7 +435,7 @@ LABEL_9:
     }
   }
 
-  if (v3)
+  if (pauseCopy)
   {
     return [(VCVirtualTTYDevice *)self stop];
   }
@@ -446,12 +446,12 @@ LABEL_9:
   }
 }
 
-- (void)pullAudioSamples:(opaqueVCAudioBufferList *)a3
+- (void)pullAudioSamples:(opaqueVCAudioBufferList *)samples
 {
   v11 = *MEMORY[0x1E69E9840];
-  SampleFormat = VCAudioBufferList_GetSampleFormat(a3);
+  SampleFormat = VCAudioBufferList_GetSampleFormat(samples);
   v10 = -1431655766;
-  BufferAtIndex = VCAudioBufferList_GetBufferAtIndex(a3, 0, &v10);
+  BufferAtIndex = VCAudioBufferList_GetBufferAtIndex(samples, 0, &v10);
   v7 = *(SampleFormat + 16) * v10;
   v9 = v7;
   if (CMSimpleQueueGetCount(self->_charQueue) < 1)
@@ -466,14 +466,14 @@ LABEL_9:
     VCMemoryPool_Free(self->_characterPool, v8);
   }
 
-  VCAudioBufferList_InvalidateAveragePower(a3);
+  VCAudioBufferList_InvalidateAveragePower(samples);
 }
 
-- (void)pushAudioSamples:(opaqueVCAudioBufferList *)a3
+- (void)pushAudioSamples:(opaqueVCAudioBufferList *)samples
 {
   v24 = *MEMORY[0x1E69E9840];
   memset(v23, 0, sizeof(v23));
-  v4 = [(VCAudioPayload *)self->_currentAudioPayload encodeAudio:a3 numInputSamples:VCAudioBufferList_GetSampleCount(a3) outputBytes:v23 numOutputBytes:32 shortREDBytes:0];
+  v4 = [(VCAudioPayload *)self->_currentAudioPayload encodeAudio:samples numInputSamples:VCAudioBufferList_GetSampleCount(samples) outputBytes:v23 numOutputBytes:32 shortREDBytes:0];
   if (v4 >= 1)
   {
     v5 = v4;
@@ -557,7 +557,7 @@ uint64_t __39__VCVirtualTTYDevice_pushAudioSamples___block_invoke(uint64_t a1)
   dispatch_async(delegateNotificationQueue, v3);
 }
 
-- (void)didUpdateBasebandCodec:(const _VCRemoteCodecInfo *)a3
+- (void)didUpdateBasebandCodec:(const _VCRemoteCodecInfo *)codec
 {
   if (VRTraceGetErrorLogLevelForModule() >= 3)
   {
@@ -587,7 +587,7 @@ uint64_t __39__VCVirtualTTYDevice_pushAudioSamples___block_invoke(uint64_t a1)
   v12 = *MEMORY[0x1E69E9840];
   v3 = *a2;
   v4 = 136315906;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2080;
   v7 = "[VCVirtualTTYDevice start]";
   v8 = 1024;

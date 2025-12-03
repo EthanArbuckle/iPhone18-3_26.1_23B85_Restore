@@ -1,6 +1,6 @@
 @interface _GCDefaultPhysicalDevice
-+ (id)identifierForService:(id)a3;
-- (BOOL)conformsToProtocol:(id)a3;
++ (id)identifierForService:(id)service;
+- (BOOL)conformsToProtocol:(id)protocol;
 - (BOOL)sensorsActive;
 - (BOOL)supportsAdaptiveTriggers;
 - (BOOL)supportsBattery;
@@ -16,7 +16,7 @@
 - (NSString)debugDescription;
 - (NSString)description;
 - (_GCDefaultPhysicalDevice)init;
-- (_GCDefaultPhysicalDevice)initWithHIDDevice:(id)a3 manager:(id)a4;
+- (_GCDefaultPhysicalDevice)initWithHIDDevice:(id)device manager:(id)manager;
 - (_GCDefaultPhysicalDeviceDelegate)delegate;
 - (_GCDeviceManager)manager;
 - (_GCGamepadEventSourceDescription)gamepadEventSource;
@@ -28,65 +28,65 @@
 - (id)deviceLightServiceConnectedHandler;
 - (id)deviceMotionServiceConnectedHandler;
 - (id)deviceSystemGestureTriggeredHandler;
-- (id)propertyForKey:(id)a3;
+- (id)propertyForKey:(id)key;
 - (id)redactedDescription;
 - (int64_t)indicatedPlayerIndex;
-- (void)_displayBatteryAlertIfNeededForBatteryLevel:(char)a3 charging:;
-- (void)_updatePowerSourceWithBatteryLevel:(uint64_t)a1 charging:(uint64_t)a2;
-- (void)_workaround_MFiCombinedHomeVendorButton:(id)a3;
-- (void)_workaround_backbone_97462229:(id)a3;
+- (void)_displayBatteryAlertIfNeededForBatteryLevel:(char)level charging:;
+- (void)_updatePowerSourceWithBatteryLevel:(uint64_t)level charging:(uint64_t)charging;
+- (void)_workaround_MFiCombinedHomeVendorButton:(id)button;
+- (void)_workaround_backbone_97462229:(id)_workaround_backbone_97462229;
 - (void)createPowerSource;
 - (void)dealloc;
 - (void)eaAccessoriesDidChange;
-- (void)handleButton:(unsigned int)a3 gesture:(unint64_t)a4;
+- (void)handleButton:(unsigned int)button gesture:(unint64_t)gesture;
 - (void)refreshHomeButtonConfiguration;
-- (void)requestIdleDisconnect:(id)a3;
-- (void)setDeviceAdaptiveTriggersComponentStatusUpdatedHandler:(id)a3;
-- (void)setDeviceAdaptiveTriggersServiceConnectedHandler:(id)a3;
-- (void)setDeviceBatteryComponentBatteryUpdatedHandler:(id)a3;
-- (void)setDeviceBatteryServiceConnectedHandler:(id)a3;
-- (void)setDeviceLightServiceConnectedHandler:(id)a3;
-- (void)setDeviceMotionServiceConnectedHandler:(id)a3;
-- (void)setDeviceSystemGestureTriggeredHandler:(id)a3;
-- (void)setDriverConnection:(id)a3;
-- (void)setFilterConnection:(id)a3;
-- (void)setIndicatedPlayerIndex:(int64_t)a3;
-- (void)setLight:(id)a3;
-- (void)updateAdaptiveTriggerStatusWithLeftMode:(unsigned __int8)a3 leftStatus:(unsigned __int8)a4 leftArmPosition:(unsigned __int8)a5 rightMode:(unsigned __int8)a6 rightStatus:(unsigned __int8)a7 rightArmPosition:(unsigned __int8)a8;
+- (void)requestIdleDisconnect:(id)disconnect;
+- (void)setDeviceAdaptiveTriggersComponentStatusUpdatedHandler:(id)handler;
+- (void)setDeviceAdaptiveTriggersServiceConnectedHandler:(id)handler;
+- (void)setDeviceBatteryComponentBatteryUpdatedHandler:(id)handler;
+- (void)setDeviceBatteryServiceConnectedHandler:(id)handler;
+- (void)setDeviceLightServiceConnectedHandler:(id)handler;
+- (void)setDeviceMotionServiceConnectedHandler:(id)handler;
+- (void)setDeviceSystemGestureTriggeredHandler:(id)handler;
+- (void)setDriverConnection:(id)connection;
+- (void)setFilterConnection:(id)connection;
+- (void)setIndicatedPlayerIndex:(int64_t)index;
+- (void)setLight:(id)light;
+- (void)updateAdaptiveTriggerStatusWithLeftMode:(unsigned __int8)mode leftStatus:(unsigned __int8)status leftArmPosition:(unsigned __int8)position rightMode:(unsigned __int8)rightMode rightStatus:(unsigned __int8)rightStatus rightArmPosition:(unsigned __int8)armPosition;
 - (void)updateGlyphFlags;
 @end
 
 @implementation _GCDefaultPhysicalDevice
 
-- (_GCDefaultPhysicalDevice)initWithHIDDevice:(id)a3 manager:(id)a4
+- (_GCDefaultPhysicalDevice)initWithHIDDevice:(id)device manager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  managerCopy = manager;
   v14.receiver = self;
   v14.super_class = _GCDefaultPhysicalDevice;
   v9 = [(_GCDefaultPhysicalDevice *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_serviceInfo, a3);
-    objc_storeWeak(&v10->_manager, v8);
-    v11 = [objc_opt_class() identifierForService:v7];
+    objc_storeStrong(&v9->_serviceInfo, device);
+    objc_storeWeak(&v10->_manager, managerCopy);
+    v11 = [objc_opt_class() identifierForService:deviceCopy];
     identifier = v10->_identifier;
     v10->_identifier = v11;
 
     v10->_cachedGlyphFlags = 0;
-    [(_GCDefaultPhysicalDevice *)v10 _workaround_backbone_97462229:v7];
-    [(_GCDefaultPhysicalDevice *)v10 _workaround_MFiCombinedHomeVendorButton:v7];
+    [(_GCDefaultPhysicalDevice *)v10 _workaround_backbone_97462229:deviceCopy];
+    [(_GCDefaultPhysicalDevice *)v10 _workaround_MFiCombinedHomeVendorButton:deviceCopy];
   }
 
   return v10;
 }
 
-- (void)_workaround_backbone_97462229:(id)a3
+- (void)_workaround_backbone_97462229:(id)_workaround_backbone_97462229
 {
-  v4 = a3;
-  v5 = [v4 numberPropertyForKey:@"VendorID"];
-  v6 = [v4 numberPropertyForKey:@"ProductID"];
+  _workaround_backbone_97462229Copy = _workaround_backbone_97462229;
+  v5 = [_workaround_backbone_97462229Copy numberPropertyForKey:@"VendorID"];
+  v6 = [_workaround_backbone_97462229Copy numberPropertyForKey:@"ProductID"];
 
   if ([v5 intValue] == 5901 && objc_msgSend(v6, "intValue") == 1359 || objc_msgSend(v5, "intValue") == 13706)
   {
@@ -95,18 +95,18 @@
       [_GCDefaultPhysicalDevice _workaround_backbone_97462229:];
     }
 
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 addObserver:self selector:sel_eaAccessoriesDidChange name:*MEMORY[0x1E6966D70] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_eaAccessoriesDidChange name:*MEMORY[0x1E6966D70] object:0];
 
     [GCEAAccessoryManagerWrapper registerForLocalNotificationsWithObserver:self];
   }
 }
 
-- (void)_workaround_MFiCombinedHomeVendorButton:(id)a3
+- (void)_workaround_MFiCombinedHomeVendorButton:(id)button
 {
-  v4 = a3;
-  v5 = [v4 numberPropertyForKey:@"VendorID"];
-  v6 = [v4 numberPropertyForKey:@"ProductID"];
+  buttonCopy = button;
+  v5 = [buttonCopy numberPropertyForKey:@"VendorID"];
+  v6 = [buttonCopy numberPropertyForKey:@"ProductID"];
 
   if ([v5 intValue] == 13706 || objc_msgSend(v5, "intValue") == 5901 && objc_msgSend(v6, "intValue") == 1359 || objc_msgSend(v5, "intValue") == 5901 && objc_msgSend(v6, "intValue") == 1358)
   {
@@ -183,61 +183,61 @@ LABEL_4:
   }
 
   [GCEAAccessoryManagerWrapper unregisterForLocalNotificationsWithObserver:self];
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self name:*MEMORY[0x1E6966D70] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E6966D70] object:0];
 
   v6.receiver = self;
   v6.super_class = _GCDefaultPhysicalDevice;
   [(_GCDefaultPhysicalDevice *)&v6 dealloc];
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
-  v4 = a3;
-  v5 = v4;
-  if (&unk_1F4E9B320 == v4)
+  protocolCopy = protocol;
+  v5 = protocolCopy;
+  if (&unk_1F4E9B320 == protocolCopy)
   {
-    v6 = [(_GCDefaultPhysicalDevice *)self supportsGamepad];
+    supportsGamepad = [(_GCDefaultPhysicalDevice *)self supportsGamepad];
   }
 
-  else if (&unk_1F4E9B3C8 == v4)
+  else if (&unk_1F4E9B3C8 == protocolCopy)
   {
-    v6 = [(_GCDefaultPhysicalDevice *)self supportsPlayerIndicator];
+    supportsGamepad = [(_GCDefaultPhysicalDevice *)self supportsPlayerIndicator];
   }
 
-  else if (&unk_1F4E9FF28 == v4)
+  else if (&unk_1F4E9FF28 == protocolCopy)
   {
-    v6 = [(_GCDefaultPhysicalDevice *)self supportsLight];
+    supportsGamepad = [(_GCDefaultPhysicalDevice *)self supportsLight];
   }
 
-  else if (&unk_1F4E9FE68 == v4)
+  else if (&unk_1F4E9FE68 == protocolCopy)
   {
-    v6 = [(_GCDefaultPhysicalDevice *)self supportsAdaptiveTriggers];
+    supportsGamepad = [(_GCDefaultPhysicalDevice *)self supportsAdaptiveTriggers];
   }
 
-  else if (&unk_1F4E9B580 == v4)
+  else if (&unk_1F4E9B580 == protocolCopy)
   {
-    v6 = [(_GCDefaultPhysicalDevice *)self supportsHapticCapabilities];
+    supportsGamepad = [(_GCDefaultPhysicalDevice *)self supportsHapticCapabilities];
   }
 
-  else if (&unk_1F4EA0008 == v4)
+  else if (&unk_1F4EA0008 == protocolCopy)
   {
-    v6 = [(_GCDefaultPhysicalDevice *)self supportsMotion];
+    supportsGamepad = [(_GCDefaultPhysicalDevice *)self supportsMotion];
   }
 
-  else if (&unk_1F4E9B500 == v4)
+  else if (&unk_1F4E9B500 == protocolCopy)
   {
-    v6 = [(_GCDefaultPhysicalDevice *)self supportsBattery];
+    supportsGamepad = [(_GCDefaultPhysicalDevice *)self supportsBattery];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = _GCDefaultPhysicalDevice;
-    v6 = [(_GCDefaultPhysicalDevice *)&v9 conformsToProtocol:v4];
+    supportsGamepad = [(_GCDefaultPhysicalDevice *)&v9 conformsToProtocol:protocolCopy];
   }
 
-  v7 = v6;
+  v7 = supportsGamepad;
 
   return v7;
 }
@@ -247,8 +247,8 @@ LABEL_4:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   identifier = self->_identifier;
-  v6 = [(GCHIDServiceInfo *)self->_serviceInfo registryID];
-  v7 = [v3 stringWithFormat:@"<%@ '%@' registryID = %@>", v4, identifier, v6];
+  registryID = [(GCHIDServiceInfo *)self->_serviceInfo registryID];
+  v7 = [v3 stringWithFormat:@"<%@ '%@' registryID = %@>", v4, identifier, registryID];
 
   return v7;
 }
@@ -258,8 +258,8 @@ LABEL_4:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = [self->_identifier hash];
-  v6 = [(GCHIDServiceInfo *)self->_serviceInfo registryID];
-  v7 = [v3 stringWithFormat:@"<%@ '#%llx' registryID = %@>", v4, v5, v6];
+  registryID = [(GCHIDServiceInfo *)self->_serviceInfo registryID];
+  v7 = [v3 stringWithFormat:@"<%@ '#%llx' registryID = %@>", v4, v5, registryID];
 
   return v7;
 }
@@ -270,28 +270,28 @@ LABEL_4:
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   identifier = self->_identifier;
-  v7 = [(GCHIDServiceInfo *)self->_serviceInfo registryID];
-  v8 = [v3 stringWithFormat:@"<%@ %p '%@' registryID = %@>", v5, self, identifier, v7];
+  registryID = [(GCHIDServiceInfo *)self->_serviceInfo registryID];
+  v8 = [v3 stringWithFormat:@"<%@ %p '%@' registryID = %@>", v5, self, identifier, registryID];
 
   return v8;
 }
 
-- (void)setFilterConnection:(id)a3
+- (void)setFilterConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   filterConnectionInvalidationRegistration = self->_filterConnectionInvalidationRegistration;
   self->_filterConnectionInvalidationRegistration = 0;
 
   filterConnection = self->_filterConnection;
   self->_filterConnection = 0;
 
-  objc_storeStrong(&self->_filterConnection, a3);
+  objc_storeStrong(&self->_filterConnection, connection);
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __48___GCDefaultPhysicalDevice_setFilterConnection___block_invoke;
   v16[3] = &unk_1E8418C28;
   v16[4] = self;
-  v8 = [v5 addInvalidationHandler:v16];
+  v8 = [connectionCopy addInvalidationHandler:v16];
   v9 = self->_filterConnectionInvalidationRegistration;
   self->_filterConnectionInvalidationRegistration = v8;
 
@@ -300,9 +300,9 @@ LABEL_4:
   activity_block[1] = 3221225472;
   activity_block[2] = __48___GCDefaultPhysicalDevice_setFilterConnection___block_invoke_2;
   activity_block[3] = &unk_1E8419CD8;
-  v12 = v5;
-  v13 = self;
-  v10 = v5;
+  v12 = connectionCopy;
+  selfCopy = self;
+  v10 = connectionCopy;
   objc_copyWeak(&v14, &location);
   _os_activity_initiate(&dword_1D2CD5000, "Connect Game Intent Service", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
   objc_destroyWeak(&v14);
@@ -310,22 +310,22 @@ LABEL_4:
   objc_destroyWeak(&location);
 }
 
-- (void)setDriverConnection:(id)a3
+- (void)setDriverConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   driverConnectionInvalidationRegistration = self->_driverConnectionInvalidationRegistration;
   self->_driverConnectionInvalidationRegistration = 0;
 
   driverConnection = self->_driverConnection;
   self->_driverConnection = 0;
 
-  objc_storeStrong(&self->_driverConnection, a3);
+  objc_storeStrong(&self->_driverConnection, connection);
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
   v36[2] = __48___GCDefaultPhysicalDevice_setDriverConnection___block_invoke;
   v36[3] = &unk_1E8418C28;
   v36[4] = self;
-  v8 = [v5 addInvalidationHandler:v36];
+  v8 = [connectionCopy addInvalidationHandler:v36];
   v9 = self->_driverConnectionInvalidationRegistration;
   self->_driverConnectionInvalidationRegistration = v8;
 
@@ -334,9 +334,9 @@ LABEL_4:
   activity_block[1] = 3221225472;
   activity_block[2] = __48___GCDefaultPhysicalDevice_setDriverConnection___block_invoke_2;
   activity_block[3] = &unk_1E8419CD8;
-  v10 = v5;
+  v10 = connectionCopy;
   v32 = v10;
-  v33 = self;
+  selfCopy = self;
   objc_copyWeak(&v34, &location);
   _os_activity_initiate(&dword_1D2CD5000, "Connect Light Service", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
   objc_destroyWeak(&v34);
@@ -347,7 +347,7 @@ LABEL_4:
   v27[3] = &unk_1E8419CD8;
   v11 = v10;
   v28 = v11;
-  v29 = self;
+  selfCopy2 = self;
   objc_copyWeak(&v30, &location);
   _os_activity_initiate(&dword_1D2CD5000, "Connect Adaptive Triggers Service", OS_ACTIVITY_FLAG_DEFAULT, v27);
   objc_destroyWeak(&v30);
@@ -358,7 +358,7 @@ LABEL_4:
   v23[3] = &unk_1E8419CD8;
   v12 = v11;
   v24 = v12;
-  v25 = self;
+  selfCopy3 = self;
   objc_copyWeak(&v26, &location);
   _os_activity_initiate(&dword_1D2CD5000, "Connect Motion Service", OS_ACTIVITY_FLAG_DEFAULT, v23);
   objc_destroyWeak(&v26);
@@ -369,7 +369,7 @@ LABEL_4:
   v19[3] = &unk_1E8419CD8;
   v13 = v12;
   v20 = v13;
-  v21 = self;
+  selfCopy4 = self;
   objc_copyWeak(&v22, &location);
   _os_activity_initiate(&dword_1D2CD5000, "Connect Battery Service", OS_ACTIVITY_FLAG_DEFAULT, v19);
   objc_destroyWeak(&v22);
@@ -379,7 +379,7 @@ LABEL_4:
   v15[2] = __48___GCDefaultPhysicalDevice_setDriverConnection___block_invoke_2_256;
   v15[3] = &unk_1E8419CD8;
   v16 = v13;
-  v17 = self;
+  selfCopy5 = self;
   v14 = v13;
   objc_copyWeak(&v18, &location);
   _os_activity_initiate(&dword_1D2CD5000, "Connect Idle Service", OS_ACTIVITY_FLAG_DEFAULT, v15);
@@ -388,31 +388,31 @@ LABEL_4:
   objc_destroyWeak(&location);
 }
 
-- (id)propertyForKey:(id)a3
+- (id)propertyForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(__CFString *)v4 isEqualToString:@"RegistryID"];
+  keyCopy = key;
+  v5 = [(__CFString *)keyCopy isEqualToString:@"RegistryID"];
   serviceInfo = self->_serviceInfo;
   if (v5)
   {
-    v7 = [(GCHIDServiceInfo *)serviceInfo registryID];
+    registryID = [(GCHIDServiceInfo *)serviceInfo registryID];
   }
 
   else
   {
-    v7 = IOHIDServiceClientCopyProperty([(GCHIDServiceInfo *)serviceInfo service], v4);
+    registryID = IOHIDServiceClientCopyProperty([(GCHIDServiceInfo *)serviceInfo service], keyCopy);
   }
 
-  v8 = v7;
+  v8 = registryID;
 
   return v8;
 }
 
-+ (id)identifierForService:(id)a3
++ (id)identifierForService:(id)service
 {
-  v3 = a3;
-  v4 = [v3 stringPropertyForKey:@"Transport"];
-  v5 = [v3 stringPropertyForKey:@"PhysicalDeviceUniqueID"];
+  serviceCopy = service;
+  v4 = [serviceCopy stringPropertyForKey:@"Transport"];
+  v5 = [serviceCopy stringPropertyForKey:@"PhysicalDeviceUniqueID"];
   if (v5 && ([v4 isEqualToString:@"iAP"] & 1) == 0)
   {
     v9 = v5;
@@ -420,19 +420,19 @@ LABEL_4:
 
   else
   {
-    v6 = [v3 stringPropertyForKey:@"SerialNumber"];
+    v6 = [serviceCopy stringPropertyForKey:@"SerialNumber"];
     v7 = v6;
     if (v6)
     {
-      v8 = v6;
+      uUID = v6;
     }
 
     else
     {
-      v8 = [MEMORY[0x1E696AFB0] UUID];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
     }
 
-    v9 = v8;
+    v9 = uUID;
   }
 
   return v9;
@@ -445,8 +445,8 @@ LABEL_4:
   if (cachedGlyphFlags != self->_cachedGlyphFlags)
   {
     self->_cachedGlyphFlags = cachedGlyphFlags;
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 postNotificationName:@"GCRefreshPhysicalDeviceConfigurationNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"GCRefreshPhysicalDeviceConfigurationNotification" object:self];
   }
 }
 
@@ -533,10 +533,10 @@ LABEL_6:
 
 - (BOOL)supportsMotion
 {
-  v3 = [(_GCDefaultPhysicalDevice *)self delegate];
+  delegate = [(_GCDefaultPhysicalDevice *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 physicalDeviceSupportsMotion:self];
+    v4 = [delegate physicalDeviceSupportsMotion:self];
   }
 
   else
@@ -554,9 +554,9 @@ LABEL_6:
   return v2;
 }
 
-- (void)setDeviceMotionServiceConnectedHandler:(id)a3
+- (void)setDeviceMotionServiceConnectedHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   motionComponentServiceConnectedHandler = self->_motionComponentServiceConnectedHandler;
   self->_motionComponentServiceConnectedHandler = v4;
 
@@ -593,7 +593,7 @@ LABEL_6:
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v4 = [(_GCDefaultPhysicalDevice *)self delegate];
+  delegate = [(_GCDefaultPhysicalDevice *)self delegate];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __49___GCDefaultPhysicalDevice_Motion__sensorsActive__block_invoke;
@@ -601,7 +601,7 @@ LABEL_6:
   v10 = &v11;
   v5 = v3;
   v9 = v5;
-  [v4 physicalDevice:self getSensorsActiveWithReply:v8];
+  [delegate physicalDevice:self getSensorsActiveWithReply:v8];
 
   v6 = dispatch_time(0, 1000000000);
   dispatch_semaphore_wait(v5, v6);
@@ -613,7 +613,7 @@ LABEL_6:
 
 - (BOOL)supportsPlayerIndicator
 {
-  v2 = [(_GCDefaultPhysicalDevice *)self delegate];
+  delegate = [(_GCDefaultPhysicalDevice *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v3 = objc_opt_respondsToSelector();
@@ -629,21 +629,21 @@ LABEL_6:
 
 - (int64_t)indicatedPlayerIndex
 {
-  v3 = [(_GCDefaultPhysicalDevice *)self delegate];
-  v4 = [v3 physicalDeviceGetIndicatedPlayerIndex:self];
+  delegate = [(_GCDefaultPhysicalDevice *)self delegate];
+  v4 = [delegate physicalDeviceGetIndicatedPlayerIndex:self];
 
   return v4;
 }
 
-- (void)setIndicatedPlayerIndex:(int64_t)a3
+- (void)setIndicatedPlayerIndex:(int64_t)index
 {
-  v5 = [(_GCDefaultPhysicalDevice *)self delegate];
-  [v5 physicalDevice:self setIndicatedPlayerIndex:a3];
+  delegate = [(_GCDefaultPhysicalDevice *)self delegate];
+  [delegate physicalDevice:self setIndicatedPlayerIndex:index];
 }
 
 - (BOOL)supportsLight
 {
-  v2 = [(_GCDefaultPhysicalDevice *)self delegate];
+  delegate = [(_GCDefaultPhysicalDevice *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v3 = objc_opt_respondsToSelector();
@@ -664,9 +664,9 @@ LABEL_6:
   return v2;
 }
 
-- (void)setDeviceLightServiceConnectedHandler:(id)a3
+- (void)setDeviceLightServiceConnectedHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   lightComponentServiceConnectedHandler = self->_lightComponentServiceConnectedHandler;
   self->_lightComponentServiceConnectedHandler = v4;
 
@@ -696,7 +696,7 @@ LABEL_6:
   v15 = __Block_byref_object_copy__5;
   v16 = __Block_byref_object_dispose__5;
   v17 = 0;
-  v4 = [(_GCDefaultPhysicalDevice *)self delegate];
+  delegate = [(_GCDefaultPhysicalDevice *)self delegate];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __40___GCDefaultPhysicalDevice_Light__light__block_invoke;
@@ -704,7 +704,7 @@ LABEL_6:
   v11 = &v12;
   v5 = v3;
   v10 = v5;
-  [v4 physicalDevice:self getLightWithReply:v9];
+  [delegate physicalDevice:self getLightWithReply:v9];
 
   v6 = dispatch_time(0, 1000000000);
   dispatch_semaphore_wait(v5, v6);
@@ -715,16 +715,16 @@ LABEL_6:
   return v7;
 }
 
-- (void)setLight:(id)a3
+- (void)setLight:(id)light
 {
-  v4 = a3;
-  v5 = [(_GCDefaultPhysicalDevice *)self delegate];
-  [v5 physicalDevice:self setLight:v4];
+  lightCopy = light;
+  delegate = [(_GCDefaultPhysicalDevice *)self delegate];
+  [delegate physicalDevice:self setLight:lightCopy];
 }
 
 - (BOOL)supportsAdaptiveTriggers
 {
-  v2 = [(_GCDefaultPhysicalDevice *)self delegate];
+  delegate = [(_GCDefaultPhysicalDevice *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v3 = objc_opt_respondsToSelector();
@@ -745,9 +745,9 @@ LABEL_6:
   return v2;
 }
 
-- (void)setDeviceAdaptiveTriggersServiceConnectedHandler:(id)a3
+- (void)setDeviceAdaptiveTriggersServiceConnectedHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   adaptiveTriggersComponentServiceConnectedHandler = self->_adaptiveTriggersComponentServiceConnectedHandler;
   self->_adaptiveTriggersComponentServiceConnectedHandler = v4;
 
@@ -775,9 +775,9 @@ LABEL_6:
   return v2;
 }
 
-- (void)setDeviceAdaptiveTriggersComponentStatusUpdatedHandler:(id)a3
+- (void)setDeviceAdaptiveTriggersComponentStatusUpdatedHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   adaptiveTriggersComponentStatusUpdatedHandler = self->_adaptiveTriggersComponentStatusUpdatedHandler;
   self->_adaptiveTriggersComponentStatusUpdatedHandler = v4;
 }
@@ -791,7 +791,7 @@ LABEL_6:
   v15 = __Block_byref_object_copy__5;
   v16 = __Block_byref_object_dispose__5;
   v17 = 0;
-  v4 = [(_GCDefaultPhysicalDevice *)self delegate];
+  delegate = [(_GCDefaultPhysicalDevice *)self delegate];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __61___GCDefaultPhysicalDevice_AdaptiveTriggers__triggerStatuses__block_invoke;
@@ -799,7 +799,7 @@ LABEL_6:
   v11 = &v12;
   v5 = v3;
   v10 = v5;
-  [v4 physicalDevice:self getAdaptiveTriggersStatusesWithReply:v9];
+  [delegate physicalDevice:self getAdaptiveTriggersStatusesWithReply:v9];
 
   v6 = dispatch_time(0, 1000000000);
   dispatch_semaphore_wait(v5, v6);
@@ -810,7 +810,7 @@ LABEL_6:
   return v7;
 }
 
-- (void)updateAdaptiveTriggerStatusWithLeftMode:(unsigned __int8)a3 leftStatus:(unsigned __int8)a4 leftArmPosition:(unsigned __int8)a5 rightMode:(unsigned __int8)a6 rightStatus:(unsigned __int8)a7 rightArmPosition:(unsigned __int8)a8
+- (void)updateAdaptiveTriggerStatusWithLeftMode:(unsigned __int8)mode leftStatus:(unsigned __int8)status leftArmPosition:(unsigned __int8)position rightMode:(unsigned __int8)rightMode rightStatus:(unsigned __int8)rightStatus rightArmPosition:(unsigned __int8)armPosition
 {
   if (self->_adaptiveTriggersComponentStatusUpdatedHandler)
   {
@@ -820,12 +820,12 @@ LABEL_6:
     block[2] = __158___GCDefaultPhysicalDevice_AdaptiveTriggersClient__updateAdaptiveTriggerStatusWithLeftMode_leftStatus_leftArmPosition_rightMode_rightStatus_rightArmPosition___block_invoke;
     block[3] = &unk_1E841A7A8;
     objc_copyWeak(&v15, &location);
-    v16 = a4;
-    v17 = a5;
-    v18 = a3;
-    v19 = a7;
-    v20 = a8;
-    v21 = a6;
+    statusCopy = status;
+    positionCopy = position;
+    modeCopy = mode;
+    rightStatusCopy = rightStatus;
+    armPositionCopy = armPosition;
+    rightModeCopy = rightMode;
     dispatch_async(MEMORY[0x1E69E96A0], block);
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
@@ -834,8 +834,8 @@ LABEL_6:
 
 - (BOOL)supportsBattery
 {
-  v3 = [(_GCDefaultPhysicalDevice *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ![v3 physicalDeviceSupportsBattery:self])
+  delegate = [(_GCDefaultPhysicalDevice *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ![delegate physicalDeviceSupportsBattery:self])
   {
     v4 = 0;
   }
@@ -855,9 +855,9 @@ LABEL_6:
   return v2;
 }
 
-- (void)setDeviceBatteryServiceConnectedHandler:(id)a3
+- (void)setDeviceBatteryServiceConnectedHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   batteryComponentServiceConnectedHandler = self->_batteryComponentServiceConnectedHandler;
   self->_batteryComponentServiceConnectedHandler = v4;
 
@@ -885,9 +885,9 @@ LABEL_6:
   return v2;
 }
 
-- (void)setDeviceBatteryComponentBatteryUpdatedHandler:(id)a3
+- (void)setDeviceBatteryComponentBatteryUpdatedHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   batteryComponentBatteryUpdatedHandler = self->_batteryComponentBatteryUpdatedHandler;
   self->_batteryComponentBatteryUpdatedHandler = v4;
 }
@@ -901,7 +901,7 @@ LABEL_6:
   v15 = __Block_byref_object_copy__5;
   v16 = __Block_byref_object_dispose__5;
   v17 = 0;
-  v4 = [(_GCDefaultPhysicalDevice *)self delegate];
+  delegate = [(_GCDefaultPhysicalDevice *)self delegate];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __44___GCDefaultPhysicalDevice_Battery__battery__block_invoke;
@@ -909,7 +909,7 @@ LABEL_6:
   v11 = &v12;
   v5 = v3;
   v10 = v5;
-  [v4 physicalDevice:self getBatteryWithReply:v9];
+  [delegate physicalDevice:self getBatteryWithReply:v9];
 
   v6 = dispatch_time(0, 1000000000);
   dispatch_semaphore_wait(v5, v6);
@@ -922,8 +922,8 @@ LABEL_6:
 
 - (void)createPowerSource
 {
-  v3 = [(_GCDefaultPhysicalDevice *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v3 physicalDeviceShouldPublishPowerSource:self])
+  delegate = [(_GCDefaultPhysicalDevice *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [delegate physicalDeviceShouldPublishPowerSource:self])
   {
     if (self->_powerSourceID || !IOPSCreatePowerSource() && self->_powerSourceID)
     {
@@ -990,13 +990,13 @@ LABEL_6:
       }
 
       objc_initWeak(&location, self);
-      v13 = [(_GCDefaultPhysicalDevice *)self batteryServiceServer];
+      batteryServiceServer = [(_GCDefaultPhysicalDevice *)self batteryServiceServer];
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __54___GCDefaultPhysicalDevice_Battery__createPowerSource__block_invoke;
       v18[3] = &unk_1E841A7F8;
       objc_copyWeak(&v19, &location);
-      [v13 readBatteryWithReply:v18];
+      [batteryServiceServer readBatteryWithReply:v18];
 
       if (gc_isInternalBuild())
       {
@@ -1028,25 +1028,25 @@ LABEL_6:
   }
 }
 
-- (void)_displayBatteryAlertIfNeededForBatteryLevel:(char)a3 charging:
+- (void)_displayBatteryAlertIfNeededForBatteryLevel:(char)level charging:
 {
-  if (a1)
+  if (self)
   {
-    if ((a3 & 1) == 0 && (*(a1 + 88) & 1) == 0)
+    if ((level & 1) == 0 && (*(self + 88) & 1) == 0)
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 152));
+      WeakRetained = objc_loadWeakRetained((self + 152));
       v6 = objc_opt_respondsToSelector();
 
       if (v6)
       {
-        v7 = objc_loadWeakRetained((a1 + 152));
-        v8 = [v7 physicalDeviceShouldDisplayAlertAtBatteryLevel:a1];
+        v7 = objc_loadWeakRetained((self + 152));
+        v8 = [v7 physicalDeviceShouldDisplayAlertAtBatteryLevel:self];
 
         if ((a2 - 1) < v8)
         {
-          *(a1 + 88) = 1;
+          *(self + 88) = 1;
 
-          [a1 _displayBatteryAlertForBatteryLevel:a2];
+          [self _displayBatteryAlertForBatteryLevel:a2];
         }
       }
     }
@@ -1055,10 +1055,10 @@ LABEL_6:
 
 - (BOOL)supportsHapticCapabilities
 {
-  v3 = [(_GCDefaultPhysicalDevice *)self delegate];
+  delegate = [(_GCDefaultPhysicalDevice *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 physicalDeviceGetHapticCapabilities:self];
+    v4 = [delegate physicalDeviceGetHapticCapabilities:self];
     v5 = v4;
     if (v4)
     {
@@ -1081,16 +1081,16 @@ LABEL_6:
 
 - (NSArray)hapticEngines
 {
-  v3 = [(_GCDefaultPhysicalDevice *)self delegate];
-  v4 = [v3 physicalDeviceGetHapticCapabilities:self];
+  delegate = [(_GCDefaultPhysicalDevice *)self delegate];
+  v4 = [delegate physicalDeviceGetHapticCapabilities:self];
 
   return v4;
 }
 
 - (GCHapticCapabilityGraph)hapticCapabilityGraph
 {
-  v3 = [(_GCDefaultPhysicalDevice *)self delegate];
-  v4 = [v3 physicalDeviceGetHapticCapabilityGraph:self];
+  delegate = [(_GCDefaultPhysicalDevice *)self delegate];
+  v4 = [delegate physicalDeviceGetHapticCapabilityGraph:self];
 
   return v4;
 }
@@ -1155,12 +1155,12 @@ LABEL_6:
   v12 = _gc_log_physical_device();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [(GCHIDServiceInfo *)self->_serviceInfo registryID];
-    v14 = [v13 unsignedLongLongValue];
+    registryID = [(GCHIDServiceInfo *)self->_serviceInfo registryID];
+    unsignedLongLongValue = [registryID unsignedLongLongValue];
     hasCombinedMFiHomeVendorButton = self->_hasCombinedMFiHomeVendorButton;
     v16 = v8;
     v18 = 134219264;
-    v19 = v14;
+    v19 = unsignedLongLongValue;
     v20 = 1024;
     v21 = 786979;
     v22 = 1024;
@@ -1190,34 +1190,34 @@ LABEL_6:
   return v2;
 }
 
-- (void)setDeviceSystemGestureTriggeredHandler:(id)a3
+- (void)setDeviceSystemGestureTriggeredHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   deviceSystemGestureTriggeredHandler = self->_deviceSystemGestureTriggeredHandler;
   self->_deviceSystemGestureTriggeredHandler = v4;
 }
 
-- (void)handleButton:(unsigned int)a3 gesture:(unint64_t)a4
+- (void)handleButton:(unsigned int)button gesture:(unint64_t)gesture
 {
   v18 = *MEMORY[0x1E69E9840];
   v7 = _gc_log_physical_device();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(GCHIDServiceInfo *)self->_serviceInfo registryID];
+    registryID = [(GCHIDServiceInfo *)self->_serviceInfo registryID];
     *buf = 134218496;
-    v13 = [v8 unsignedLongLongValue];
+    unsignedLongLongValue = [registryID unsignedLongLongValue];
     v14 = 1024;
-    v15 = a3;
+    buttonCopy = button;
     v16 = 2048;
-    v17 = a4;
+    gestureCopy = gesture;
     _os_log_impl(&dword_1D2CD5000, v7, OS_LOG_TYPE_DEFAULT, "[%#010llx] Handle button:%#x gesture:%zu", buf, 0x1Cu);
   }
 
-  if (a3 == 786979 && a4 - 1 <= 1 && self->_deviceSystemGestureTriggeredHandler)
+  if (button == 786979 && gesture - 1 <= 1 && self->_deviceSystemGestureTriggeredHandler)
   {
     if (self->_hasCombinedMFiHomeVendorButton)
     {
-      a4 = 1;
+      gesture = 1;
     }
 
     objc_initWeak(buf, self);
@@ -1226,7 +1226,7 @@ LABEL_6:
     v10[2] = __67___GCDefaultPhysicalDevice_GameIntentClient__handleButton_gesture___block_invoke;
     v10[3] = &unk_1E841A848;
     objc_copyWeak(v11, buf);
-    v11[1] = a4;
+    v11[1] = gesture;
     dispatch_async(MEMORY[0x1E69E96A0], v10);
     objc_destroyWeak(v11);
     objc_destroyWeak(buf);
@@ -1235,34 +1235,34 @@ LABEL_6:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestIdleDisconnect:(id)a3
+- (void)requestIdleDisconnect:(id)disconnect
 {
-  v3 = a3;
+  disconnectCopy = disconnect;
   if (gc_isInternalBuild())
   {
     [_GCDefaultPhysicalDevice(Idle) requestIdleDisconnect:];
   }
 
-  v4 = [_GCBluetoothDeviceIdentifier identifierWithHardwareAddressString:v3];
+  v4 = [_GCBluetoothDeviceIdentifier identifierWithHardwareAddressString:disconnectCopy];
   v5 = [[_GCBluetoothDeviceDisconnectionRequest alloc] initWithDeviceIdentifier:v4];
   [(_GCBluetoothDeviceDisconnectionRequest *)v5 performRequest:0];
 }
 
-- (void)_updatePowerSourceWithBatteryLevel:(uint64_t)a1 charging:(uint64_t)a2
+- (void)_updatePowerSourceWithBatteryLevel:(uint64_t)level charging:(uint64_t)charging
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (level)
   {
-    if (*(a1 + 72))
+    if (*(level + 72))
     {
-      v3 = *(a1 + 80);
+      v3 = *(level + 80);
       if (v3)
       {
         CFDictionarySetValue(v3, @"Is Charging", [MEMORY[0x1E696AD98] numberWithBool:?]);
-        CFDictionarySetValue(*(a1 + 80), @"Max Capacity", &unk_1F4E8E390);
-        CFDictionarySetValue(*(a1 + 80), @"Current Capacity", [MEMORY[0x1E696AD98] numberWithUnsignedChar:a2]);
-        v5 = *(a1 + 72);
-        v6 = *(a1 + 80);
+        CFDictionarySetValue(*(level + 80), @"Max Capacity", &unk_1F4E8E390);
+        CFDictionarySetValue(*(level + 80), @"Current Capacity", [MEMORY[0x1E696AD98] numberWithUnsignedChar:charging]);
+        v5 = *(level + 72);
+        v6 = *(level + 80);
         if (IOPSSetPowerSourceDetails())
         {
           if (gc_isInternalBuild())

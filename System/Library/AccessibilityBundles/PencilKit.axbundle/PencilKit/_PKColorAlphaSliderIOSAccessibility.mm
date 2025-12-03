@@ -1,24 +1,24 @@
 @interface _PKColorAlphaSliderIOSAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (double)_accessibilityColorAlpha;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
-- (void)_accessibilitySetColorAlpha:(double)a3;
+- (void)_accessibilitySetColorAlpha:(double)alpha;
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
-- (void)didPanSliderKnob:(id)a3;
+- (void)didPanSliderKnob:(id)knob;
 @end
 
 @implementation _PKColorAlphaSliderIOSAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_PKColorAlphaSliderIOS" hasInstanceMethod:@"color" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_PKColorAlphaSliderIOS" hasInstanceMethod:@"sliderKnobView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_PKColorAlphaSliderIOS" hasInstanceMethod:@"setColor:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"_PKColorAlphaSliderIOS" hasInstanceMethod:@"didPanSliderKnob:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_PKColorAlphaSliderIOS" hasInstanceMethod:@"color" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_PKColorAlphaSliderIOS" hasInstanceMethod:@"sliderKnobView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_PKColorAlphaSliderIOS" hasInstanceMethod:@"setColor:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"_PKColorAlphaSliderIOS" hasInstanceMethod:@"didPanSliderKnob:" withFullSignature:{"v", "@", 0}];
 }
 
 - (double)_accessibilityColorAlpha
@@ -33,13 +33,13 @@
   return v6;
 }
 
-- (void)_accessibilitySetColorAlpha:(double)a3
+- (void)_accessibilitySetColorAlpha:(double)alpha
 {
   objc_opt_class();
   v5 = [(_PKColorAlphaSliderIOSAccessibility *)self safeValueForKey:@"color"];
   v6 = __UIAccessibilityCastAsClass();
 
-  v8 = [v6 colorWithAlphaComponent:a3];
+  v8 = [v6 colorWithAlphaComponent:alpha];
   v7 = v8;
   AXPerformSafeBlock();
 }
@@ -92,16 +92,16 @@
   return result;
 }
 
-- (void)didPanSliderKnob:(id)a3
+- (void)didPanSliderKnob:(id)knob
 {
   v6.receiver = self;
   v6.super_class = _PKColorAlphaSliderIOSAccessibility;
-  [(_PKColorAlphaSliderIOSAccessibility *)&v6 didPanSliderKnob:a3];
+  [(_PKColorAlphaSliderIOSAccessibility *)&v6 didPanSliderKnob:knob];
   if (CFAbsoluteTimeGetCurrent() - *&didPanSliderKnob__LastOutput > 1.0)
   {
     v4 = *MEMORY[0x29EDC7EA8];
-    v5 = [(_PKColorAlphaSliderIOSAccessibility *)self accessibilityValue];
-    UIAccessibilityPostNotification(v4, v5);
+    accessibilityValue = [(_PKColorAlphaSliderIOSAccessibility *)self accessibilityValue];
+    UIAccessibilityPostNotification(v4, accessibilityValue);
 
     didPanSliderKnob__LastOutput = CFAbsoluteTimeGetCurrent();
   }

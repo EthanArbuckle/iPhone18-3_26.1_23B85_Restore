@@ -1,20 +1,20 @@
 @interface HangEventTableViewCell
-+ (id)_textColorForDurationLevel:(int64_t)a3;
++ (id)_textColorForDurationLevel:(int64_t)level;
 - (CGSize)_disclosureIndicatorSize;
-- (HangEventTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
-- (void)updateConfigurationUsingState:(id)a3;
+- (HangEventTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
+- (void)updateConfigurationUsingState:(id)state;
 - (void)updateConstraints;
 - (void)updateDurationFont;
 @end
 
 @implementation HangEventTableViewCell
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   [(HangEventTableViewCell *)self setAutomaticallyUpdatesBackgroundConfiguration:0];
-  v7 = [v4 copy];
+  v7 = [stateCopy copy];
 
   if ([(HangEventTableViewCell *)self editingStyle]== &dword_0 + 3)
   {
@@ -22,16 +22,16 @@
     [v7 setHighlighted:0];
   }
 
-  v5 = [(HangEventTableViewCell *)self defaultBackgroundConfiguration];
-  v6 = [v5 updatedConfigurationForState:v7];
+  defaultBackgroundConfiguration = [(HangEventTableViewCell *)self defaultBackgroundConfiguration];
+  v6 = [defaultBackgroundConfiguration updatedConfigurationForState:v7];
   [(HangEventTableViewCell *)self setBackgroundConfiguration:v6];
 }
 
-- (HangEventTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (HangEventTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v109.receiver = self;
   v109.super_class = HangEventTableViewCell;
-  v5 = [(HangEventTableViewCell *)&v109 initWithStyle:3 reuseIdentifier:a4 specifier:a5];
+  v5 = [(HangEventTableViewCell *)&v109 initWithStyle:3 reuseIdentifier:identifier specifier:specifier];
   v6 = v5;
   if (v5)
   {
@@ -104,8 +104,8 @@
     [(UIActivityIndicatorView *)v6->_spinner setColor:v36];
 
     [(UIActivityIndicatorView *)v6->_spinner setTranslatesAutoresizingMaskIntoConstraints:0];
-    v37 = [(HangEventTableViewCell *)v6 contentView];
-    [v37 addSubview:v6->_spinner];
+    contentView = [(HangEventTableViewCell *)v6 contentView];
+    [contentView addSubview:v6->_spinner];
 
     v38 = [UIStackView alloc];
     v113[0] = v6->_nameLabel;
@@ -130,11 +130,11 @@
     [v44 setTranslatesAutoresizingMaskIntoConstraints:0];
     v107 = v44;
     [v44 setCustomSpacing:v41 afterView:1.17549435e-38];
-    v46 = [(HangEventTableViewCell *)v6 contentView];
-    [v46 addSubview:v45];
+    contentView2 = [(HangEventTableViewCell *)v6 contentView];
+    [contentView2 addSubview:v45];
 
-    v47 = [(HangEventTableViewCell *)v6 contentView];
-    [v47 addSubview:v6->_spinner];
+    contentView3 = [(HangEventTableViewCell *)v6 contentView];
+    [contentView3 addSubview:v6->_spinner];
 
     [(HangEventTableViewCell *)v6 _disclosureIndicatorSize];
     v49 = v48;
@@ -142,77 +142,77 @@
     v52 = objc_alloc_init(UIView);
     [v52 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v52 addSubview:v6->_spinner];
-    v53 = [(HangEventTableViewCell *)v6 contentView];
-    [v53 addSubview:v52];
+    contentView4 = [(HangEventTableViewCell *)v6 contentView];
+    [contentView4 addSubview:v52];
 
-    v102 = [v52 centerYAnchor];
-    v104 = [(HangEventTableViewCell *)v6 contentView];
-    v100 = [v104 centerYAnchor];
-    v98 = [v102 constraintEqualToAnchor:v100];
+    centerYAnchor = [v52 centerYAnchor];
+    contentView5 = [(HangEventTableViewCell *)v6 contentView];
+    centerYAnchor2 = [contentView5 centerYAnchor];
+    v98 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v111[0] = v98;
-    v94 = [v52 trailingAnchor];
-    v96 = [(HangEventTableViewCell *)v6 contentView];
-    v93 = [v96 layoutMarginsGuide];
-    v91 = [v93 trailingAnchor];
-    v90 = [v94 constraintEqualToAnchor:v91];
+    trailingAnchor = [v52 trailingAnchor];
+    contentView6 = [(HangEventTableViewCell *)v6 contentView];
+    layoutMarginsGuide = [contentView6 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide trailingAnchor];
+    v90 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v111[1] = v90;
-    v89 = [v52 widthAnchor];
-    v88 = [v89 constraintEqualToConstant:v49];
+    widthAnchor = [v52 widthAnchor];
+    v88 = [widthAnchor constraintEqualToConstant:v49];
     v111[2] = v88;
-    v54 = [v52 heightAnchor];
-    v55 = [v54 constraintEqualToConstant:v51];
+    heightAnchor = [v52 heightAnchor];
+    v55 = [heightAnchor constraintEqualToConstant:v51];
     v111[3] = v55;
-    v56 = [(UIActivityIndicatorView *)v6->_spinner centerYAnchor];
+    centerYAnchor3 = [(UIActivityIndicatorView *)v6->_spinner centerYAnchor];
     v108 = v52;
-    v57 = [v52 centerYAnchor];
-    v58 = [v56 constraintEqualToAnchor:v57];
+    centerYAnchor4 = [v52 centerYAnchor];
+    v58 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v111[4] = v58;
-    v59 = [(UIActivityIndicatorView *)v6->_spinner centerXAnchor];
-    v60 = [v52 centerXAnchor];
-    v61 = [v59 constraintEqualToAnchor:v60];
+    centerXAnchor = [(UIActivityIndicatorView *)v6->_spinner centerXAnchor];
+    centerXAnchor2 = [v52 centerXAnchor];
+    v61 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v111[5] = v61;
     v62 = [NSArray arrayWithObjects:v111 count:6];
     [NSLayoutConstraint activateConstraints:v62];
 
-    v63 = [v107 trailingAnchor];
-    v64 = [(HangEventTableViewCell *)v6 contentView];
-    v65 = [v64 trailingAnchor];
-    v66 = [v63 constraintEqualToAnchor:v65];
+    trailingAnchor3 = [v107 trailingAnchor];
+    contentView7 = [(HangEventTableViewCell *)v6 contentView];
+    trailingAnchor4 = [contentView7 trailingAnchor];
+    v66 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     trailingConstraint = v6->_trailingConstraint;
     v6->_trailingConstraint = v66;
 
-    v68 = [v107 trailingAnchor];
-    v69 = [(HangEventTableViewCell *)v6 contentView];
-    v70 = [v69 layoutMarginsGuide];
-    v71 = [v70 trailingAnchor];
-    v72 = [v68 constraintEqualToAnchor:v71];
+    trailingAnchor5 = [v107 trailingAnchor];
+    contentView8 = [(HangEventTableViewCell *)v6 contentView];
+    layoutMarginsGuide2 = [contentView8 layoutMarginsGuide];
+    trailingAnchor6 = [layoutMarginsGuide2 trailingAnchor];
+    v72 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     processingTrailingConstraint = v6->_processingTrailingConstraint;
     v6->_processingTrailingConstraint = v72;
 
-    v74 = [v108 leadingAnchor];
-    v75 = [v107 trailingAnchor];
-    v76 = [v74 constraintEqualToSystemSpacingAfterAnchor:v75 multiplier:1.0];
+    leadingAnchor = [v108 leadingAnchor];
+    trailingAnchor7 = [v107 trailingAnchor];
+    v76 = [leadingAnchor constraintEqualToSystemSpacingAfterAnchor:trailingAnchor7 multiplier:1.0];
     spinnerConstraint = v6->_spinnerConstraint;
     v6->_spinnerConstraint = v76;
 
-    v103 = [v107 leadingAnchor];
-    v105 = [(HangEventTableViewCell *)v6 contentView];
-    v101 = [v105 layoutMarginsGuide];
-    v99 = [v101 leadingAnchor];
-    v97 = [v103 constraintEqualToAnchor:v99];
+    leadingAnchor2 = [v107 leadingAnchor];
+    contentView9 = [(HangEventTableViewCell *)v6 contentView];
+    layoutMarginsGuide3 = [contentView9 layoutMarginsGuide];
+    leadingAnchor3 = [layoutMarginsGuide3 leadingAnchor];
+    v97 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3];
     v110[0] = v97;
     v110[1] = v6->_trailingConstraint;
-    v92 = [v107 topAnchor];
-    v95 = [(HangEventTableViewCell *)v6 contentView];
-    v78 = [v95 layoutMarginsGuide];
-    v79 = [v78 topAnchor];
-    v80 = [v92 constraintEqualToAnchor:v79 constant:1.0];
+    topAnchor = [v107 topAnchor];
+    contentView10 = [(HangEventTableViewCell *)v6 contentView];
+    layoutMarginsGuide4 = [contentView10 layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide4 topAnchor];
+    v80 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:1.0];
     v110[2] = v80;
-    v81 = [v107 bottomAnchor];
-    v82 = [(HangEventTableViewCell *)v6 contentView];
-    v83 = [v82 layoutMarginsGuide];
-    v84 = [v83 bottomAnchor];
-    v85 = [v81 constraintEqualToAnchor:v84 constant:-2.0];
+    bottomAnchor = [v107 bottomAnchor];
+    contentView11 = [(HangEventTableViewCell *)v6 contentView];
+    layoutMarginsGuide5 = [contentView11 layoutMarginsGuide];
+    bottomAnchor2 = [layoutMarginsGuide5 bottomAnchor];
+    v85 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-2.0];
     v110[3] = v85;
     v86 = [NSArray arrayWithObjects:v110 count:4];
     [NSLayoutConstraint activateConstraints:v86];
@@ -223,13 +223,13 @@
 
 - (void)updateDurationFont
 {
-  v3 = [(HangEventTableViewCell *)self traitCollection];
-  v11 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleCallout compatibleWithTraitCollection:v3];
+  traitCollection = [(HangEventTableViewCell *)self traitCollection];
+  v11 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleCallout compatibleWithTraitCollection:traitCollection];
 
   [v11 pointSize];
   v5 = v4;
-  v6 = [v11 fontAttributes];
-  v7 = [v6 objectForKeyedSubscript:UIFontDescriptorTraitsAttribute];
+  fontAttributes = [v11 fontAttributes];
+  v7 = [fontAttributes objectForKeyedSubscript:UIFontDescriptorTraitsAttribute];
   v8 = [v7 objectForKeyedSubscript:UIFontWeightTrait];
   [v8 floatValue];
   v10 = [UIFont monospacedDigitSystemFontOfSize:v5 weight:v9];
@@ -241,25 +241,25 @@
   v4.receiver = self;
   v4.super_class = HangEventTableViewCell;
   [(HangEventTableViewCell *)&v4 updateConstraints];
-  v3 = [(UIActivityIndicatorView *)self->_spinner isAnimating];
-  [(NSLayoutConstraint *)self->_trailingConstraint setActive:!([(HangEventTableViewCell *)self isEditing]| v3)];
-  [(NSLayoutConstraint *)self->_processingTrailingConstraint setActive:[(HangEventTableViewCell *)self isEditing]& !v3];
-  [(NSLayoutConstraint *)self->_spinnerConstraint setActive:v3];
+  isAnimating = [(UIActivityIndicatorView *)self->_spinner isAnimating];
+  [(NSLayoutConstraint *)self->_trailingConstraint setActive:!([(HangEventTableViewCell *)self isEditing]| isAnimating)];
+  [(NSLayoutConstraint *)self->_processingTrailingConstraint setActive:[(HangEventTableViewCell *)self isEditing]& !isAnimating];
+  [(NSLayoutConstraint *)self->_spinnerConstraint setActive:isAnimating];
 }
 
 - (CGSize)_disclosureIndicatorSize
 {
-  v2 = [(HangEventTableViewCell *)self traitCollection];
-  v3 = v2;
+  traitCollection = [(HangEventTableViewCell *)self traitCollection];
+  v3 = traitCollection;
   if (!qword_49E20)
   {
     goto LABEL_5;
   }
 
-  v4 = [v2 preferredContentSizeCategory];
-  v5 = [qword_49E28 preferredContentSizeCategory];
-  v6 = v5;
-  if (v4 != v5)
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [qword_49E28 preferredContentSizeCategory];
+  v6 = preferredContentSizeCategory2;
+  if (preferredContentSizeCategory != preferredContentSizeCategory2)
   {
 
 LABEL_5:
@@ -272,10 +272,10 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v7 = [v3 legibilityWeight];
-  v8 = [qword_49E28 legibilityWeight];
+  legibilityWeight = [v3 legibilityWeight];
+  legibilityWeight2 = [qword_49E28 legibilityWeight];
 
-  if (v7 != v8)
+  if (legibilityWeight != legibilityWeight2)
   {
     goto LABEL_5;
   }
@@ -292,38 +292,38 @@ LABEL_6:
   return result;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v18.receiver = self;
   v18.super_class = HangEventTableViewCell;
-  v4 = a3;
-  [(HangEventTableViewCell *)&v18 refreshCellContentsWithSpecifier:v4];
+  specifierCopy = specifier;
+  [(HangEventTableViewCell *)&v18 refreshCellContentsWithSpecifier:specifierCopy];
   v5 = [(HangEventTableViewCell *)self textLabel:v18.receiver];
-  v6 = [v5 text];
-  [(UILabel *)self->_nameLabel setText:v6];
+  text = [v5 text];
+  [(UILabel *)self->_nameLabel setText:text];
 
-  v7 = [(HangEventTableViewCell *)self detailTextLabel];
-  v8 = [v7 text];
-  [(UILabel *)self->_dateLabel setText:v8];
+  detailTextLabel = [(HangEventTableViewCell *)self detailTextLabel];
+  text2 = [detailTextLabel text];
+  [(UILabel *)self->_dateLabel setText:text2];
 
-  v9 = [(HangEventTableViewCell *)self textLabel];
-  [v9 setHidden:1];
+  textLabel = [(HangEventTableViewCell *)self textLabel];
+  [textLabel setHidden:1];
 
-  v10 = [(HangEventTableViewCell *)self detailTextLabel];
-  [v10 setHidden:1];
+  detailTextLabel2 = [(HangEventTableViewCell *)self detailTextLabel];
+  [detailTextLabel2 setHidden:1];
 
-  v11 = [v4 objectForKeyedSubscript:@"HangsDataControllerFormattedDuration"];
+  v11 = [specifierCopy objectForKeyedSubscript:@"HangsDataControllerFormattedDuration"];
   [(UILabel *)self->_durationLabel setText:v11];
 
-  v12 = [v4 objectForKeyedSubscript:@"HangsDataControllerDurationLevel"];
+  v12 = [specifierCopy objectForKeyedSubscript:@"HangsDataControllerDurationLevel"];
   v13 = +[HangEventTableViewCell _textColorForDurationLevel:](HangEventTableViewCell, "_textColorForDurationLevel:", [v12 integerValue]);
   [(UILabel *)self->_durationLabel setTextColor:v13];
 
-  v14 = [v4 objectForKeyedSubscript:@"HangsDataControllerIsProcessing"];
+  v14 = [specifierCopy objectForKeyedSubscript:@"HangsDataControllerIsProcessing"];
 
-  LODWORD(v4) = [v14 BOOLValue];
+  LODWORD(specifierCopy) = [v14 BOOLValue];
   spinner = self->_spinner;
-  if (v4)
+  if (specifierCopy)
   {
     [(UIActivityIndicatorView *)spinner startAnimating];
   }
@@ -333,25 +333,25 @@ LABEL_6:
     [(UIActivityIndicatorView *)spinner stopAnimating];
   }
 
-  v16 = [(HangEventTableViewCell *)self isSelected];
+  isSelected = [(HangEventTableViewCell *)self isSelected];
   [(HangEventTableViewCell *)self setSelected:0 animated:0];
-  v17 = [(HangEventTableViewCell *)self configurationState];
-  [(HangEventTableViewCell *)self updateConfigurationUsingState:v17];
+  configurationState = [(HangEventTableViewCell *)self configurationState];
+  [(HangEventTableViewCell *)self updateConfigurationUsingState:configurationState];
 
-  [(HangEventTableViewCell *)self setSelected:v16 animated:0];
+  [(HangEventTableViewCell *)self setSelected:isSelected animated:0];
   [(HangEventTableViewCell *)self setNeedsUpdateConstraints];
 }
 
-+ (id)_textColorForDurationLevel:(int64_t)a3
++ (id)_textColorForDurationLevel:(int64_t)level
 {
-  if (a3 == 2)
+  if (level == 2)
   {
     v3 = +[UIColor systemRedColor];
   }
 
   else
   {
-    if (a3 == 1)
+    if (level == 1)
     {
       +[UIColor systemOrangeColor];
     }

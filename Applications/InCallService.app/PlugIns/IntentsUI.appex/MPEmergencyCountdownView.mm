@@ -1,17 +1,17 @@
 @interface MPEmergencyCountdownView
 - (MPEmergencyCountdownView)init;
-- (MPEmergencyCountdownView)initWithCoder:(id)a3;
-- (MPEmergencyCountdownView)initWithDiameter:(float)a3;
-- (MPEmergencyCountdownView)initWithFrame:(CGRect)a3;
+- (MPEmergencyCountdownView)initWithCoder:(id)coder;
+- (MPEmergencyCountdownView)initWithDiameter:(float)diameter;
+- (MPEmergencyCountdownView)initWithFrame:(CGRect)frame;
 - (void)cancel;
 - (void)commonInit;
 - (void)setupConstraints;
-- (void)startCountdownFromNumber:(unint64_t)a3 withTimeInterval:(float)a4 completion:(id)a5;
+- (void)startCountdownFromNumber:(unint64_t)number withTimeInterval:(float)interval completion:(id)completion;
 @end
 
 @implementation MPEmergencyCountdownView
 
-- (MPEmergencyCountdownView)initWithDiameter:(float)a3
+- (MPEmergencyCountdownView)initWithDiameter:(float)diameter
 {
   v7.receiver = self;
   v7.super_class = MPEmergencyCountdownView;
@@ -19,7 +19,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_circleDiameter = a3;
+    v4->_circleDiameter = diameter;
     [(MPEmergencyCountdownView *)v4 commonInit];
   }
 
@@ -33,14 +33,14 @@
   return 0;
 }
 
-- (MPEmergencyCountdownView)initWithFrame:(CGRect)a3
+- (MPEmergencyCountdownView)initWithFrame:(CGRect)frame
 {
-  [(MPEmergencyCountdownView *)self doesNotRecognizeSelector:a2, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(MPEmergencyCountdownView *)self doesNotRecognizeSelector:a2, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 
   return 0;
 }
 
-- (MPEmergencyCountdownView)initWithCoder:(id)a3
+- (MPEmergencyCountdownView)initWithCoder:(id)coder
 {
   [(MPEmergencyCountdownView *)self doesNotRecognizeSelector:a2];
 
@@ -59,8 +59,8 @@
 
   [(MPEmergencyCountdownView *)self circleDiameter];
   v10 = (v9 * 0.5);
-  v11 = [(UIView *)self->_circleView layer];
-  [v11 setCornerRadius:v10];
+  layer = [(UIView *)self->_circleView layer];
+  [layer setCornerRadius:v10];
 
   v12 = +[UIColor redColor];
   [(UIView *)self->_circleView setBackgroundColor:v12];
@@ -84,36 +84,36 @@
   [(MPEmergencyCountdownView *)self setupConstraints];
 }
 
-- (void)startCountdownFromNumber:(unint64_t)a3 withTimeInterval:(float)a4 completion:(id)a5
+- (void)startCountdownFromNumber:(unint64_t)number withTimeInterval:(float)interval completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v9 = PHDefaultLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 134217984;
-    *(&buf + 4) = a3;
+    *(&buf + 4) = number;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "count down from number: %ld", &buf, 0xCu);
   }
 
-  v10 = [NSString stringWithFormat:@"%ld", a3];
-  v11 = [(MPEmergencyCountdownView *)self countdownLabel];
-  [v11 setText:v10];
+  number = [NSString stringWithFormat:@"%ld", number];
+  countdownLabel = [(MPEmergencyCountdownView *)self countdownLabel];
+  [countdownLabel setText:number];
 
   [(MPEmergencyCountdownView *)self cancel];
   *&buf = 0;
   *(&buf + 1) = &buf;
   v19 = 0x2020000000;
-  v20 = a3;
+  numberCopy = number;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10000B874;
   v14[3] = &unk_1000B1D98;
   p_buf = &buf;
-  v17 = a3;
+  numberCopy2 = number;
   v14[4] = self;
-  v12 = v8;
+  v12 = completionCopy;
   v15 = v12;
-  v13 = [NSTimer scheduledTimerWithTimeInterval:1 repeats:v14 block:a4];
+  v13 = [NSTimer scheduledTimerWithTimeInterval:1 repeats:v14 block:interval];
   [(MPEmergencyCountdownView *)self setCountdownTimer:v13];
 
   _Block_object_dispose(&buf, 8);
@@ -121,13 +121,13 @@
 
 - (void)cancel
 {
-  v3 = [(MPEmergencyCountdownView *)self countdownTimer];
-  v4 = [v3 isValid];
+  countdownTimer = [(MPEmergencyCountdownView *)self countdownTimer];
+  isValid = [countdownTimer isValid];
 
-  if (v4)
+  if (isValid)
   {
-    v5 = [(MPEmergencyCountdownView *)self countdownTimer];
-    [v5 invalidate];
+    countdownTimer2 = [(MPEmergencyCountdownView *)self countdownTimer];
+    [countdownTimer2 invalidate];
 
     [(MPEmergencyCountdownView *)self setCountdownTimer:0];
   }
@@ -135,47 +135,47 @@
 
 - (void)setupConstraints
 {
-  v3 = [(MPEmergencyCountdownView *)self countdownLabel];
-  v4 = [v3 centerXAnchor];
-  v5 = [(MPEmergencyCountdownView *)self circleView];
-  v6 = [v5 centerXAnchor];
-  v37 = [v4 constraintEqualToAnchor:v6];
+  countdownLabel = [(MPEmergencyCountdownView *)self countdownLabel];
+  centerXAnchor = [countdownLabel centerXAnchor];
+  circleView = [(MPEmergencyCountdownView *)self circleView];
+  centerXAnchor2 = [circleView centerXAnchor];
+  v37 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
-  v7 = [(MPEmergencyCountdownView *)self countdownLabel];
-  v8 = [v7 centerYAnchor];
-  v9 = [(MPEmergencyCountdownView *)self circleView];
-  v10 = [v9 centerYAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  countdownLabel2 = [(MPEmergencyCountdownView *)self countdownLabel];
+  centerYAnchor = [countdownLabel2 centerYAnchor];
+  circleView2 = [(MPEmergencyCountdownView *)self circleView];
+  centerYAnchor2 = [circleView2 centerYAnchor];
+  v11 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
 
-  v12 = [(MPEmergencyCountdownView *)self circleView];
-  v13 = [v12 widthAnchor];
+  circleView3 = [(MPEmergencyCountdownView *)self circleView];
+  widthAnchor = [circleView3 widthAnchor];
   [(MPEmergencyCountdownView *)self circleDiameter];
-  v15 = [v13 constraintEqualToConstant:v14];
+  v15 = [widthAnchor constraintEqualToConstant:v14];
 
-  v16 = [(MPEmergencyCountdownView *)self circleView];
-  v17 = [v16 heightAnchor];
+  circleView4 = [(MPEmergencyCountdownView *)self circleView];
+  heightAnchor = [circleView4 heightAnchor];
   [(MPEmergencyCountdownView *)self circleDiameter];
-  v19 = [v17 constraintEqualToConstant:v18];
+  v19 = [heightAnchor constraintEqualToConstant:v18];
 
-  v20 = [(MPEmergencyCountdownView *)self topAnchor];
-  v21 = [(MPEmergencyCountdownView *)self circleView];
-  v22 = [v21 topAnchor];
-  v23 = [v20 constraintEqualToAnchor:v22];
+  topAnchor = [(MPEmergencyCountdownView *)self topAnchor];
+  circleView5 = [(MPEmergencyCountdownView *)self circleView];
+  topAnchor2 = [circleView5 topAnchor];
+  v23 = [topAnchor constraintEqualToAnchor:topAnchor2];
 
-  v24 = [(MPEmergencyCountdownView *)self bottomAnchor];
-  v25 = [(MPEmergencyCountdownView *)self circleView];
-  v26 = [v25 bottomAnchor];
-  v27 = [v24 constraintEqualToAnchor:v26];
+  bottomAnchor = [(MPEmergencyCountdownView *)self bottomAnchor];
+  circleView6 = [(MPEmergencyCountdownView *)self circleView];
+  bottomAnchor2 = [circleView6 bottomAnchor];
+  v27 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
 
-  v28 = [(MPEmergencyCountdownView *)self leftAnchor];
-  v29 = [(MPEmergencyCountdownView *)self circleView];
-  v30 = [v29 leftAnchor];
-  v31 = [v28 constraintEqualToAnchor:v30];
+  leftAnchor = [(MPEmergencyCountdownView *)self leftAnchor];
+  circleView7 = [(MPEmergencyCountdownView *)self circleView];
+  leftAnchor2 = [circleView7 leftAnchor];
+  v31 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
 
-  v32 = [(MPEmergencyCountdownView *)self rightAnchor];
-  v33 = [(MPEmergencyCountdownView *)self circleView];
-  v34 = [v33 rightAnchor];
-  v35 = [v32 constraintEqualToAnchor:v34];
+  rightAnchor = [(MPEmergencyCountdownView *)self rightAnchor];
+  circleView8 = [(MPEmergencyCountdownView *)self circleView];
+  rightAnchor2 = [circleView8 rightAnchor];
+  v35 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
 
   v38[0] = v37;
   v38[1] = v11;

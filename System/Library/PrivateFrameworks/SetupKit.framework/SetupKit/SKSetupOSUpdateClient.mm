@@ -23,9 +23,9 @@
       switch(runState)
       {
         case 0xC:
-          v7 = [(SKConnection *)self->super._skCnx state];
+          state = [(SKConnection *)self->super._skCnx state];
           v5 = self->super._runState;
-          if (v7 != 1)
+          if (state != 1)
           {
             break;
           }
@@ -34,9 +34,9 @@ LABEL_15:
           ++v5;
           goto LABEL_16;
         case 0xD:
-          v6 = [(SKSetupBase *)self _runSteps];
+          _runSteps = [(SKSetupBase *)self _runSteps];
           v5 = self->super._runState;
-          if (v6)
+          if (_runSteps)
           {
             goto LABEL_15;
           }

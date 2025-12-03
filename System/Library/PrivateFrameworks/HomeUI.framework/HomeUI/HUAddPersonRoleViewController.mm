@@ -2,32 +2,32 @@
 - (BOOL)_disableAddPinCode;
 - (BOOL)shouldShowPinCodeRoleOption;
 - (BOOL)shouldShowRestrictedGuestRoleOption;
-- (HUAddPersonRoleViewController)initWithHome:(id)a3;
-- (HUAddPersonRoleViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5;
-- (HUAddPersonRoleViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 adoptTableViewScrollView:(BOOL)a6;
-- (HUAddPersonRoleViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 adoptTableViewScrollView:(BOOL)a6;
+- (HUAddPersonRoleViewController)initWithHome:(id)home;
+- (HUAddPersonRoleViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon;
+- (HUAddPersonRoleViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon adoptTableViewScrollView:(BOOL)view;
+- (HUAddPersonRoleViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name adoptTableViewScrollView:(BOOL)view;
 - (HUPresentationDelegate)presentationDelegate;
-- (id)finishPresentation:(id)a3 animated:(BOOL)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)cancelButtonPressed:(id)a3;
-- (void)didSelectPeopleForInvite:(id)a3 inviteeAddresses:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)finishPresentation:(id)presentation animated:(BOOL)animated;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)cancelButtonPressed:(id)pressed;
+- (void)didSelectPeopleForInvite:(id)invite inviteeAddresses:(id)addresses;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation HUAddPersonRoleViewController
 
-- (HUAddPersonRoleViewController)initWithHome:(id)a3
+- (HUAddPersonRoleViewController)initWithHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v5 = _HULocalizedStringWithDefaultValue(@"HUAddPersonRoleTitle", @"HUAddPersonRoleTitle", 1);
   v6 = _HULocalizedStringWithDefaultValue(@"HUAddPersonRoleSubtitle", @"HUAddPersonRoleSubtitle", 1);
-  if ([v4 hf_canAddRestrictedGuest])
+  if ([homeCopy hf_canAddRestrictedGuest])
   {
     v7 = _HULocalizedStringWithDefaultValue(@"HUAddPersonRole_Title", @"HUAddPersonRole_Title", 1);
 
@@ -43,60 +43,60 @@
   v10 = v9;
   if (v9)
   {
-    [(HUAddPersonRoleViewController *)v9 setHome:v4];
-    v11 = [(HUAddPersonRoleViewController *)v10 headerView];
-    [v11 setTitleAccessibilityIdentifier:@"Home.Users.AddPerson.ChooseRole.Title"];
+    [(HUAddPersonRoleViewController *)v9 setHome:homeCopy];
+    headerView = [(HUAddPersonRoleViewController *)v10 headerView];
+    [headerView setTitleAccessibilityIdentifier:@"Home.Users.AddPerson.ChooseRole.Title"];
 
-    v12 = [(HUAddPersonRoleViewController *)v10 headerView];
-    [v12 setDetailTextAccessibilityIdentifier:@"Home.Users.AddPerson.ChooseRole.Subtitle"];
+    headerView2 = [(HUAddPersonRoleViewController *)v10 headerView];
+    [headerView2 setDetailTextAccessibilityIdentifier:@"Home.Users.AddPerson.ChooseRole.Subtitle"];
 
     v13 = objc_alloc(MEMORY[0x277D75B40]);
     v14 = [v13 initWithFrame:2 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     [(OBTableWelcomeController *)v10 setTableView:v14];
 
-    v15 = [(OBTableWelcomeController *)v10 tableView];
-    [v15 setDataSource:v10];
+    tableView = [(OBTableWelcomeController *)v10 tableView];
+    [tableView setDataSource:v10];
 
-    v16 = [(OBTableWelcomeController *)v10 tableView];
-    [v16 setDelegate:v10];
+    tableView2 = [(OBTableWelcomeController *)v10 tableView];
+    [tableView2 setDelegate:v10];
 
-    v17 = [(OBTableWelcomeController *)v10 tableView];
-    [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
+    tableView3 = [(OBTableWelcomeController *)v10 tableView];
+    [tableView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v18 = [MEMORY[0x277D75348] clearColor];
-    v19 = [(OBTableWelcomeController *)v10 tableView];
-    [v19 setBackgroundColor:v18];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    tableView4 = [(OBTableWelcomeController *)v10 tableView];
+    [tableView4 setBackgroundColor:clearColor];
 
-    v20 = [(OBTableWelcomeController *)v10 tableView];
-    [v20 registerClass:objc_opt_class() forCellReuseIdentifier:@"HUAddPersonRoleCell"];
+    tableView5 = [(OBTableWelcomeController *)v10 tableView];
+    [tableView5 registerClass:objc_opt_class() forCellReuseIdentifier:@"HUAddPersonRoleCell"];
   }
 
   return v10;
 }
 
-- (HUAddPersonRoleViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5
+- (HUAddPersonRoleViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v8 = NSStringFromSelector(sel_initWithHome_);
-  [v7 handleFailureInMethod:a2 object:self file:@"HUAddPersonRoleViewController.m" lineNumber:74 description:{@"%s is unavailable; use %@ instead", "-[HUAddPersonRoleViewController initWithTitle:detailText:icon:]", v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUAddPersonRoleViewController.m" lineNumber:74 description:{@"%s is unavailable; use %@ instead", "-[HUAddPersonRoleViewController initWithTitle:detailText:icon:]", v8}];
 
   return 0;
 }
 
-- (HUAddPersonRoleViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 adoptTableViewScrollView:(BOOL)a6
+- (HUAddPersonRoleViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon adoptTableViewScrollView:(BOOL)view
 {
-  v8 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v9 = NSStringFromSelector(sel_initWithHome_);
-  [v8 handleFailureInMethod:a2 object:self file:@"HUAddPersonRoleViewController.m" lineNumber:79 description:{@"%s is unavailable; use %@ instead", "-[HUAddPersonRoleViewController initWithTitle:detailText:icon:adoptTableViewScrollView:]", v9}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUAddPersonRoleViewController.m" lineNumber:79 description:{@"%s is unavailable; use %@ instead", "-[HUAddPersonRoleViewController initWithTitle:detailText:icon:adoptTableViewScrollView:]", v9}];
 
   return 0;
 }
 
-- (HUAddPersonRoleViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 adoptTableViewScrollView:(BOOL)a6
+- (HUAddPersonRoleViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name adoptTableViewScrollView:(BOOL)view
 {
-  v8 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v9 = NSStringFromSelector(sel_initWithHome_);
-  [v8 handleFailureInMethod:a2 object:self file:@"HUAddPersonRoleViewController.m" lineNumber:84 description:{@"%s is unavailable; use %@ instead", "-[HUAddPersonRoleViewController initWithTitle:detailText:symbolName:adoptTableViewScrollView:]", v9}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUAddPersonRoleViewController.m" lineNumber:84 description:{@"%s is unavailable; use %@ instead", "-[HUAddPersonRoleViewController initWithTitle:detailText:symbolName:adoptTableViewScrollView:]", v9}];
 
   return 0;
 }
@@ -107,15 +107,15 @@
   v7.super_class = HUAddPersonRoleViewController;
   [(OBTableWelcomeController *)&v7 viewDidLoad];
   v3 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_cancelButtonPressed_];
-  v4 = [(OBBaseWelcomeController *)self navigationItem];
-  [v4 setLeftBarButtonItem:v3];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v3];
 
-  v5 = [(OBBaseWelcomeController *)self navigationItem];
-  v6 = [v5 leftBarButtonItem];
-  [v6 setAccessibilityIdentifier:@"Home.Users.AddPerson.CancelButton"];
+  navigationItem2 = [(OBBaseWelcomeController *)self navigationItem];
+  leftBarButtonItem = [navigationItem2 leftBarButtonItem];
+  [leftBarButtonItem setAccessibilityIdentifier:@"Home.Users.AddPerson.CancelButton"];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if ([(HUAddPersonRoleViewController *)self shouldShowPinCodeRoleOption])
   {
@@ -128,14 +128,14 @@
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     return 1;
   }
 
-  if ([(HUAddPersonRoleViewController *)self shouldShowRestrictedGuestRoleOption:a3])
+  if ([(HUAddPersonRoleViewController *)self shouldShowRestrictedGuestRoleOption:view])
   {
     return 2;
   }
@@ -143,64 +143,64 @@
   return 1;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"HUAddPersonRoleCell"];
-  v8 = [MEMORY[0x277D756E0] subtitleCellConfiguration];
-  if ([v6 section])
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"HUAddPersonRoleCell"];
+  subtitleCellConfiguration = [MEMORY[0x277D756E0] subtitleCellConfiguration];
+  if ([pathCopy section])
   {
-    if ([v6 section] == 1)
+    if ([pathCopy section] == 1)
     {
       v9 = _HULocalizedStringWithDefaultValue(@"HUAddPersonPinGuestTitle", @"HUAddPersonPinGuestTitle", 1);
-      [v8 setText:v9];
+      [subtitleCellConfiguration setText:v9];
 
       v10 = _HULocalizedStringWithDefaultValue(@"HUAddPersonPinGuestSubitle", @"HUAddPersonPinGuestSubitle", 1);
-      [v8 setSecondaryText:v10];
+      [subtitleCellConfiguration setSecondaryText:v10];
 
       [v7 setAccessibilityIdentifier:@"Home.Users.AddPerson.PinCodeGuest"];
       if ([(HUAddPersonRoleViewController *)self shouldShowRestrictedGuestRoleOption])
       {
         v11 = _HULocalizedStringWithDefaultValue(@"HUAddPersonRole_PinCode_Title", @"HUAddPersonRole_PinCode_Title", 1);
-        [v8 setText:v11];
+        [subtitleCellConfiguration setText:v11];
 
-        [v8 setSecondaryText:0];
+        [subtitleCellConfiguration setSecondaryText:0];
         v12 = [MEMORY[0x277D755B8] _systemImageNamed:@"number"];
-        [v8 setImage:v12];
+        [subtitleCellConfiguration setImage:v12];
 
-        v13 = [MEMORY[0x277D75348] systemGrayColor];
-        v14 = [v8 imageProperties];
-        [v14 setTintColor:v13];
+        systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+        imageProperties = [subtitleCellConfiguration imageProperties];
+        [imageProperties setTintColor:systemGrayColor];
 
         [v7 setAccessibilityIdentifier:@"Home.Users.AddPerson.PincodeAccess"];
       }
 
       if ([(HUAddPersonRoleViewController *)self _disableAddPinCode])
       {
-        v15 = [MEMORY[0x277D75348] secondaryLabelColor];
-        v16 = [v8 textProperties];
-        [v16 setColor:v15];
+        secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+        textProperties = [subtitleCellConfiguration textProperties];
+        [textProperties setColor:secondaryLabelColor];
       }
     }
   }
 
   else
   {
-    if ([v6 row])
+    if ([pathCopy row])
     {
-      if ([v6 row] != 1)
+      if ([pathCopy row] != 1)
       {
         goto LABEL_13;
       }
 
       v17 = _HULocalizedStringWithDefaultValue(@"HUAddPersonRole_RestrictedGuest_Title", @"HUAddPersonRole_RestrictedGuest_Title", 1);
-      [v8 setText:v17];
+      [subtitleCellConfiguration setText:v17];
 
       v18 = _HULocalizedStringWithDefaultValue(@"HUAddPersonRole_RestrictedGuest_Subtitle", @"HUAddPersonRole_RestrictedGuest_Subtitle", 1);
-      [v8 setSecondaryText:v18];
+      [subtitleCellConfiguration setSecondaryText:v18];
 
       v19 = [MEMORY[0x277D755B8] _systemImageNamed:@"person"];
-      [v8 setImage:v19];
+      [subtitleCellConfiguration setImage:v19];
 
       v20 = @"Home.Users.AddPerson.Guest";
     }
@@ -208,10 +208,10 @@
     else
     {
       v21 = _HULocalizedStringWithDefaultValue(@"HUAddPersonResidentTitle", @"HUAddPersonResidentTitle", 1);
-      [v8 setText:v21];
+      [subtitleCellConfiguration setText:v21];
 
       v22 = _HULocalizedStringWithDefaultValue(@"HUAddPersonResidentSubitle", @"HUAddPersonResidentSubitle", 1);
-      [v8 setSecondaryText:v22];
+      [subtitleCellConfiguration setSecondaryText:v22];
 
       if (![(HUAddPersonRoleViewController *)self shouldShowRestrictedGuestRoleOption])
       {
@@ -219,10 +219,10 @@
       }
 
       v23 = _HULocalizedStringWithDefaultValue(@"HUAddPersonRole_Resident_Subtitle", @"HUAddPersonRole_Resident_Subtitle", 1);
-      [v8 setSecondaryText:v23];
+      [subtitleCellConfiguration setSecondaryText:v23];
 
       v24 = [MEMORY[0x277D755B8] _systemImageNamed:@"house.fill"];
-      [v8 setImage:v24];
+      [subtitleCellConfiguration setImage:v24];
 
       v20 = @"Home.Users.AddPerson.Resident";
     }
@@ -231,27 +231,27 @@
   }
 
 LABEL_13:
-  v25 = [MEMORY[0x277D75348] secondaryLabelColor];
-  v26 = [v8 secondaryTextProperties];
-  [v26 setColor:v25];
+  secondaryLabelColor2 = [MEMORY[0x277D75348] secondaryLabelColor];
+  secondaryTextProperties = [subtitleCellConfiguration secondaryTextProperties];
+  [secondaryTextProperties setColor:secondaryLabelColor2];
 
-  [v8 setAxesPreservingSuperviewLayoutMargins:3];
-  [v7 setContentConfiguration:v8];
+  [subtitleCellConfiguration setAxesPreservingSuperviewLayoutMargins:3];
+  [v7 setContentConfiguration:subtitleCellConfiguration];
   [v7 setAccessoryType:1];
-  v27 = [MEMORY[0x277D751C0] listGroupedCellConfiguration];
-  v28 = [MEMORY[0x277D75348] tertiarySystemGroupedBackgroundColor];
-  [v27 setBackgroundColor:v28];
+  listGroupedCellConfiguration = [MEMORY[0x277D751C0] listGroupedCellConfiguration];
+  tertiarySystemGroupedBackgroundColor = [MEMORY[0x277D75348] tertiarySystemGroupedBackgroundColor];
+  [listGroupedCellConfiguration setBackgroundColor:tertiarySystemGroupedBackgroundColor];
 
-  [v7 setBackgroundConfiguration:v27];
+  [v7 setBackgroundConfiguration:listGroupedCellConfiguration];
 
   return v7;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if (a4 == 1)
+  if (section == 1)
   {
-    if ([(HUAddPersonRoleViewController *)self _disableAddPinCode:a3])
+    if ([(HUAddPersonRoleViewController *)self _disableAddPinCode:view])
     {
       v6 = _HULocalizedStringWithDefaultValue(@"HUAddPersonPinGuestSectionHeaderDisabled", @"HUAddPersonPinGuestSectionHeaderDisabled", 1);
     }
@@ -270,9 +270,9 @@ LABEL_13:
   return v6;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  if (a4 == 1 && [(HUAddPersonRoleViewController *)self _disableAddPinCode])
+  if (section == 1 && [(HUAddPersonRoleViewController *)self _disableAddPinCode])
   {
     v5 = _HULocalizedStringWithDefaultValue(@"HUAddPersonPinGuestFooterDisabled", @"HUAddPersonPinGuestFooterDisabled", 1);
     if ([(HUAddPersonRoleViewController *)self shouldShowRestrictedGuestRoleOption])
@@ -291,11 +291,11 @@ LABEL_13:
   return v5;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = v5;
-  if ([v5 section] == 1)
+  pathCopy = path;
+  v6 = pathCopy;
+  if ([pathCopy section] == 1)
   {
     if ([(HUAddPersonRoleViewController *)self _disableAddPinCode])
     {
@@ -304,7 +304,7 @@ LABEL_13:
 
     else
     {
-      v6 = v5;
+      v6 = pathCopy;
     }
   }
 
@@ -313,26 +313,26 @@ LABEL_13:
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if (![v5 section])
+  pathCopy = path;
+  if (![pathCopy section])
   {
-    if (![v5 row])
+    if (![pathCopy row])
     {
-      v9 = [(HUAddPersonRoleViewController *)self navigationController];
-      v10 = [(HUAddPersonRoleViewController *)self home];
-      [HUAddPeopleViewController presentAddPersonOrAlertForHH2Upgrade:v9 withHome:v10 viewContext:0 delegate:0 presentationDelegate:self];
+      navigationController = [(HUAddPersonRoleViewController *)self navigationController];
+      home = [(HUAddPersonRoleViewController *)self home];
+      [HUAddPeopleViewController presentAddPersonOrAlertForHH2Upgrade:navigationController withHome:home viewContext:0 delegate:0 presentationDelegate:self];
       v12 = @"HUAddPersonRoleSectionUser - HUUserSectionRowResident";
       goto LABEL_9;
     }
 
-    if ([v5 row] == 1)
+    if ([pathCopy row] == 1)
     {
-      v9 = [(HUAddPersonRoleViewController *)self navigationController];
-      v10 = [(HUAddPersonRoleViewController *)self home];
-      [HUAddPeopleViewController presentAddPersonOrAlertForHH2Upgrade:v9 withHome:v10 viewContext:1 delegate:self presentationDelegate:self];
+      navigationController = [(HUAddPersonRoleViewController *)self navigationController];
+      home = [(HUAddPersonRoleViewController *)self home];
+      [HUAddPeopleViewController presentAddPersonOrAlertForHH2Upgrade:navigationController withHome:home viewContext:1 delegate:self presentationDelegate:self];
       v12 = @"HUAddPersonRoleSectionUser - HUUserSectionRowRestrictedGuest";
       goto LABEL_9;
     }
@@ -342,19 +342,19 @@ LABEL_7:
     goto LABEL_10;
   }
 
-  if ([v5 section] != 1)
+  if ([pathCopy section] != 1)
   {
     goto LABEL_7;
   }
 
   v6 = [HUAddGuestViewController alloc];
-  v7 = [(HUAddPersonRoleViewController *)self pinCodeManager];
-  v8 = [(HUAddPersonRoleViewController *)self home];
-  v9 = [(HUAddGuestViewController *)v6 initWithPinCodeManager:v7 home:v8];
+  pinCodeManager = [(HUAddPersonRoleViewController *)self pinCodeManager];
+  home2 = [(HUAddPersonRoleViewController *)self home];
+  navigationController = [(HUAddGuestViewController *)v6 initWithPinCodeManager:pinCodeManager home:home2];
 
-  [(HUAddGuestViewController *)v9 setPresentationDelegate:self];
-  v10 = [(HUAddPersonRoleViewController *)self navigationController];
-  v11 = [v10 hu_pushPreloadableViewController:v9 animated:1];
+  [(HUAddGuestViewController *)navigationController setPresentationDelegate:self];
+  home = [(HUAddPersonRoleViewController *)self navigationController];
+  v11 = [home hu_pushPreloadableViewController:navigationController animated:1];
   v12 = @"HUAddPersonRoleSectionPinCode";
 LABEL_9:
 
@@ -370,17 +370,17 @@ LABEL_10:
   }
 }
 
-- (void)cancelButtonPressed:(id)a3
+- (void)cancelButtonPressed:(id)pressed
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pressedCopy = pressed;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136315394;
     v7 = "[HUAddPersonRoleViewController cancelButtonPressed:]";
     v8 = 2112;
-    v9 = v4;
+    v9 = pressedCopy;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "(%s) User tapped 'cancel' button %@", &v6, 0x16u);
   }
 
@@ -389,25 +389,25 @@ LABEL_10:
 
 - (BOOL)shouldShowRestrictedGuestRoleOption
 {
-  v2 = [(HUAddPersonRoleViewController *)self home];
-  v3 = [v2 hf_canAddRestrictedGuest];
+  home = [(HUAddPersonRoleViewController *)self home];
+  hf_canAddRestrictedGuest = [home hf_canAddRestrictedGuest];
 
-  return v3;
+  return hf_canAddRestrictedGuest;
 }
 
 - (BOOL)shouldShowPinCodeRoleOption
 {
-  v2 = [(HUAddPersonRoleViewController *)self home];
-  v3 = [v2 hf_canAddAccessCode];
+  home = [(HUAddPersonRoleViewController *)self home];
+  hf_canAddAccessCode = [home hf_canAddAccessCode];
 
-  return v3;
+  return hf_canAddAccessCode;
 }
 
 - (BOOL)_disableAddPinCode
 {
-  v3 = [(HUAddPersonRoleViewController *)self home];
-  v4 = [v3 hf_accessoriesSupportingAccessCodes];
-  v5 = [v4 na_any:&__block_literal_global_198];
+  home = [(HUAddPersonRoleViewController *)self home];
+  hf_accessoriesSupportingAccessCodes = [home hf_accessoriesSupportingAccessCodes];
+  v5 = [hf_accessoriesSupportingAccessCodes na_any:&__block_literal_global_198];
 
   if (v5)
   {
@@ -416,20 +416,20 @@ LABEL_10:
 
   else
   {
-    v7 = [(HUAddPersonRoleViewController *)self home];
-    v6 = [v7 hf_hasEnabledResident] ^ 1;
+    home2 = [(HUAddPersonRoleViewController *)self home];
+    v6 = [home2 hf_hasEnabledResident] ^ 1;
   }
 
   return v6;
 }
 
-- (id)finishPresentation:(id)a3 animated:(BOOL)a4
+- (id)finishPresentation:(id)presentation animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 conformsToProtocol:&unk_2824C3AE0])
+  animatedCopy = animated;
+  presentationCopy = presentation;
+  if ([presentationCopy conformsToProtocol:&unk_2824C3AE0])
   {
-    v7 = v6;
+    v7 = presentationCopy;
   }
 
   else
@@ -438,44 +438,44 @@ LABEL_10:
   }
 
   v8 = v7;
-  v9 = [v8 requiresPresentingViewControllerDismissal];
+  requiresPresentingViewControllerDismissal = [v8 requiresPresentingViewControllerDismissal];
 
-  if (v9)
+  if (requiresPresentingViewControllerDismissal)
   {
-    v10 = [(HUAddPersonRoleViewController *)self presentationDelegate];
-    v11 = [v10 finishPresentation:self animated:v4];
+    presentationDelegate = [(HUAddPersonRoleViewController *)self presentationDelegate];
+    v11 = [presentationDelegate finishPresentation:self animated:animatedCopy];
   }
 
   else
   {
-    v11 = [(UIViewController *)self hu_dismissViewControllerAnimated:v4];
+    v11 = [(UIViewController *)self hu_dismissViewControllerAnimated:animatedCopy];
   }
 
   return v11;
 }
 
-- (void)didSelectPeopleForInvite:(id)a3 inviteeAddresses:(id)a4
+- (void)didSelectPeopleForInvite:(id)invite inviteeAddresses:(id)addresses
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  addressesCopy = addresses;
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = NSStringFromSelector(a2);
     v14 = 138412546;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
     v17 = v8;
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "%@:%@ User did select people to invite. Continuing with restricted guest flow.", &v14, 0x16u);
   }
 
   v9 = [HUAddRestrictedGuestViewController alloc];
-  v10 = [(HUAddPersonRoleViewController *)self home];
-  v11 = [(HUAddRestrictedGuestViewController *)v9 initWithHome:v10 inviteeAddresses:v6];
+  home = [(HUAddPersonRoleViewController *)self home];
+  v11 = [(HUAddRestrictedGuestViewController *)v9 initWithHome:home inviteeAddresses:addressesCopy];
 
   [(HUAddRestrictedGuestViewController *)v11 setPresentationDelegate:self];
-  v12 = [(HUAddPersonRoleViewController *)self navigationController];
-  v13 = [v12 hu_pushPreloadableViewController:v11 animated:1];
+  navigationController = [(HUAddPersonRoleViewController *)self navigationController];
+  v13 = [navigationController hu_pushPreloadableViewController:v11 animated:1];
 }
 
 - (HUPresentationDelegate)presentationDelegate

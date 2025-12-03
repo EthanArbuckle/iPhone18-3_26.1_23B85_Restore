@@ -1,34 +1,34 @@
 @interface _BSActionResponder
-+ (os_unfair_lock_s)action_decodeFromXPCObject:(uint64_t)a1;
++ (os_unfair_lock_s)action_decodeFromXPCObject:(uint64_t)object;
 + (void)originator_nullResponder;
-+ (void)originator_responderOnQueue:(void *)a3 forHandler:;
++ (void)originator_responderOnQueue:(void *)queue forHandler:;
 - (_BSActionResponder)init;
 - (const)_lock_canSendResponse;
 - (const)_lock_invalidateForEncode:(const os_unfair_lock *)result;
-- (id)_descriptionBuilderOfType:(os_unfair_lock_s *)a1 withMultilinePrefix:(uint64_t)a2;
-- (id)action_encode:(uint64_t)a1;
+- (id)_descriptionBuilderOfType:(os_unfair_lock_s *)type withMultilinePrefix:(uint64_t)prefix;
+- (id)action_encode:(uint64_t)action_encode;
 - (id)action_fullIdentifier;
 - (id)action_shortIdentifier;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (os_unfair_lock_s)_initWithReply:(os_unfair_lock_s *)a1;
+- (os_unfair_lock_s)_initWithReply:(os_unfair_lock_s *)reply;
 - (os_unfair_lock_s)action_canSendResponse;
 - (os_unfair_lock_s)action_isValid;
-- (uint64_t)_consumeLock_trySendResponse:(int)a3 alreadyLocked:(int)a4 alreadyOnResponseQueue:(int)a5 fireLegacyInvalidationHandler:;
+- (uint64_t)_consumeLock_trySendResponse:(int)response alreadyLocked:(int)locked alreadyOnResponseQueue:(int)queue fireLegacyInvalidationHandler:;
 - (uint64_t)_lock_isValid;
-- (uint64_t)action:(void *)a3 sendResponse:;
-- (void)_consumeLock_originator_annulWithCode:(int)a3 alreadyOnResponseQueue:;
-- (void)_initWithQueue:(void *)a3 handler:;
-- (void)_lock_logResponse:(uint64_t)a1;
-- (void)action:(void *)a3 setNullificationQueue:(int)a4 isLegacy:(void *)a5 handler:;
+- (uint64_t)action:(void *)action sendResponse:;
+- (void)_consumeLock_originator_annulWithCode:(int)code alreadyOnResponseQueue:;
+- (void)_initWithQueue:(void *)queue handler:;
+- (void)_lock_logResponse:(uint64_t)response;
+- (void)action:(void *)action setNullificationQueue:(int)queue isLegacy:(void *)legacy handler:;
 - (void)action_didDealloc;
 - (void)action_invalidate;
 - (void)dealloc;
-- (void)originator_annulWithErrorCode:(os_unfair_lock_s *)a1;
-- (void)originator_didInit:(uint64_t)a1;
-- (void)originator_setTimeout:(uint64_t)a1;
+- (void)originator_annulWithErrorCode:(os_unfair_lock_s *)code;
+- (void)originator_didInit:(uint64_t)init;
+- (void)originator_setTimeout:(uint64_t)timeout;
 @end
 
 @implementation _BSActionResponder
@@ -36,60 +36,60 @@
 - (void)action_invalidate
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  os_unfair_lock_lock((a1 + 96));
-  if (*(a1 + 105) == 1)
+  os_unfair_lock_lock((self + 96));
+  if (*(self + 105) == 1)
   {
-    v2 = a1;
+    selfCopy2 = self;
 LABEL_20:
-    [(_BSActionResponder *)v2 _lock_invalidateForEncode:?];
+    [(_BSActionResponder *)selfCopy2 _lock_invalidateForEncode:?];
 
-    os_unfair_lock_unlock((a1 + 96));
+    os_unfair_lock_unlock((self + 96));
     return;
   }
 
-  os_unfair_lock_assert_owner((a1 + 96));
-  if (*(a1 + 104) & 1) != 0 || (*(a1 + 103))
+  os_unfair_lock_assert_owner((self + 96));
+  if (*(self + 104) & 1) != 0 || (*(self + 103))
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = *(a1 + 105) ^ 1;
+    v3 = *(self + 105) ^ 1;
   }
 
-  *(a1 + 105) = 1;
-  if (!*(a1 + 64))
+  *(self + 105) = 1;
+  if (!*(self + 64))
   {
-    v4 = [MEMORY[0x1E696AF00] callStackSymbols];
-    v5 = *(a1 + 64);
-    *(a1 + 64) = v4;
+    callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+    v5 = *(self + 64);
+    *(self + 64) = callStackSymbols;
   }
 
-  v2 = a1;
+  selfCopy2 = self;
   if ((v3 & 1) == 0)
   {
     goto LABEL_20;
   }
 
-  if ([(_BSActionResponder *)a1 _lock_canSendResponse])
+  if ([(_BSActionResponder *)self _lock_canSendResponse])
   {
     v6 = BSLogBSAction();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = *(a1 + 56);
+      v7 = *(self + 56);
       v10 = 138543362;
       v11 = v7;
       _os_log_impl(&dword_18FEF6000, v6, OS_LOG_TYPE_INFO, "Invalidate %{public}@", &v10, 0xCu);
     }
   }
 
-  if (*(a1 + 102))
+  if (*(self + 102))
   {
     v8 = 1;
   }
@@ -100,7 +100,7 @@ LABEL_20:
   }
 
   v9 = [BSActionResponse responseForErrorCode:v8];
-  [(_BSActionResponder *)a1 _consumeLock_trySendResponse:v9 alreadyLocked:1 alreadyOnResponseQueue:0 fireLegacyInvalidationHandler:1];
+  [(_BSActionResponder *)self _consumeLock_trySendResponse:v9 alreadyLocked:1 alreadyOnResponseQueue:0 fireLegacyInvalidationHandler:1];
 }
 
 - (const)_lock_canSendResponse
@@ -126,24 +126,24 @@ LABEL_20:
 - (void)action_didDealloc
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 96));
-    os_unfair_lock_assert_owner((a1 + 96));
-    if (*(a1 + 104) & 1) != 0 || (*(a1 + 103) & 1) != 0 || (*(a1 + 105))
+    os_unfair_lock_lock((self + 96));
+    os_unfair_lock_assert_owner((self + 96));
+    if (*(self + 104) & 1) != 0 || (*(self + 103) & 1) != 0 || (*(self + 105))
     {
 
-      os_unfair_lock_unlock((a1 + 96));
+      os_unfair_lock_unlock((self + 96));
     }
 
     else
     {
-      if ([(_BSActionResponder *)a1 _lock_canSendResponse])
+      if ([(_BSActionResponder *)self _lock_canSendResponse])
       {
         v2 = BSLogBSAction();
         if (os_log_type_enabled(v2, OS_LOG_TYPE_INFO))
         {
-          v3 = *(a1 + 56);
+          v3 = *(self + 56);
           v5 = 138543362;
           v6 = v3;
           _os_log_impl(&dword_18FEF6000, v2, OS_LOG_TYPE_INFO, "Dealloc %{public}@", &v5, 0xCu);
@@ -151,7 +151,7 @@ LABEL_20:
       }
 
       v4 = [BSActionResponse responseForErrorCode:?];
-      [(_BSActionResponder *)a1 _consumeLock_trySendResponse:v4 alreadyLocked:1 alreadyOnResponseQueue:0 fireLegacyInvalidationHandler:1];
+      [(_BSActionResponder *)self _consumeLock_trySendResponse:v4 alreadyLocked:1 alreadyOnResponseQueue:0 fireLegacyInvalidationHandler:1];
     }
   }
 }
@@ -175,7 +175,7 @@ LABEL_20:
         v14 = 2114;
         v15 = v9;
         v16 = 2048;
-        v17 = self;
+        selfCopy = self;
         v18 = 2114;
         v19 = @"BSActionResponder.m";
         v20 = 1024;
@@ -214,7 +214,7 @@ LABEL_20:
 
 - (id)action_shortIdentifier
 {
-  if (a1 && ([(_BSActionResponder *)a1 action_fullIdentifier], (v1 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (self && ([(_BSActionResponder *)self action_fullIdentifier], (v1 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v2 = v1;
     v3 = [v1 rangeOfString:@"0x"];
@@ -239,11 +239,11 @@ LABEL_20:
 
 - (id)action_fullIdentifier
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 96));
-    v2 = *(a1 + 56);
-    os_unfair_lock_unlock((a1 + 96));
+    os_unfair_lock_lock((self + 96));
+    v2 = *(self + 56);
+    os_unfair_lock_unlock((self + 96));
   }
 
   else
@@ -260,9 +260,9 @@ LABEL_20:
   {
     v1 = result;
     os_unfair_lock_lock(result + 24);
-    v2 = [(_BSActionResponder *)v1 _lock_canSendResponse];
+    _lock_canSendResponse = [(_BSActionResponder *)v1 _lock_canSendResponse];
     os_unfair_lock_unlock(&v1[24]);
-    return v2;
+    return _lock_canSendResponse;
   }
 
   return result;
@@ -274,9 +274,9 @@ LABEL_20:
   {
     v1 = result;
     os_unfair_lock_lock(result + 24);
-    v2 = [(_BSActionResponder *)v1 _lock_isValid];
+    _lock_isValid = [(_BSActionResponder *)v1 _lock_isValid];
     os_unfair_lock_unlock(v1 + 24);
-    return v2;
+    return _lock_isValid;
   }
 
   return result;
@@ -332,7 +332,7 @@ LABEL_20:
     v12 = 2114;
     v13 = v7;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
     v17 = @"BSActionResponder.m";
     v18 = 1024;
@@ -349,26 +349,26 @@ LABEL_20:
   return result;
 }
 
-- (void)_initWithQueue:(void *)a3 handler:
+- (void)_initWithQueue:(void *)queue handler:
 {
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  queueCopy = queue;
+  if (self)
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = _BSActionResponder;
     v8 = objc_msgSendSuper2(&v12, sel_init);
-    a1 = v8;
+    self = v8;
     if (v8)
     {
       *(v8 + 24) = 0;
       *(v8 + 100) = 1;
-      if (v7)
+      if (queueCopy)
       {
         objc_storeStrong(v8 + 1, a2);
-        v9 = [v7 copy];
-        v10 = a1[2];
-        a1[2] = v9;
+        v9 = [queueCopy copy];
+        v10 = self[2];
+        self[2] = v9;
       }
 
       else
@@ -378,15 +378,15 @@ LABEL_20:
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (os_unfair_lock_s)_initWithReply:(os_unfair_lock_s *)a1
+- (os_unfair_lock_s)_initWithReply:(os_unfair_lock_s *)reply
 {
   v28 = *MEMORY[0x1E69E9840];
   v4 = a2;
   v5 = v4;
-  if (a1)
+  if (reply)
   {
     v6 = v4;
     if (v6)
@@ -405,7 +405,7 @@ LABEL_20:
           v18 = 2114;
           v19 = v13;
           v20 = 2048;
-          v21 = a1;
+          replyCopy = reply;
           v22 = 2114;
           v23 = @"BSActionResponder.m";
           v24 = 1024;
@@ -422,23 +422,23 @@ LABEL_20:
       }
     }
 
-    v15.receiver = a1;
+    v15.receiver = reply;
     v15.super_class = _BSActionResponder;
     v7 = objc_msgSendSuper2(&v15, sel_init);
-    a1 = v7;
+    reply = v7;
     if (v7)
     {
       *(v7 + 24) = 0;
       if (v6)
       {
         objc_storeStrong(v7 + 5, a2);
-        v8 = [(BSMachPortRight *)a1[5] _port];
-        if (v8)
+        _port = [(BSMachPortRight *)reply[5] _port];
+        if (_port)
         {
-          [(BSMachPortRight *)a1[5] _port];
+          [(BSMachPortRight *)reply[5] _port];
         }
 
-        *(a1 + 106) = v8 == 0;
+        *(reply + 106) = _port == 0;
       }
 
       else
@@ -448,15 +448,15 @@ LABEL_20:
     }
   }
 
-  return a1;
+  return reply;
 }
 
-- (uint64_t)_consumeLock_trySendResponse:(int)a3 alreadyLocked:(int)a4 alreadyOnResponseQueue:(int)a5 fireLegacyInvalidationHandler:
+- (uint64_t)_consumeLock_trySendResponse:(int)response alreadyLocked:(int)locked alreadyOnResponseQueue:(int)queue fireLegacyInvalidationHandler:
 {
   v66 = *MEMORY[0x1E69E9840];
   v10 = a2;
   v11 = v10;
-  if (!a1)
+  if (!self)
   {
     v55 = 0;
     goto LABEL_56;
@@ -477,7 +477,7 @@ LABEL_20:
       v58 = 2114;
       *v59 = v45;
       *&v59[8] = 2048;
-      *&v59[10] = a1;
+      *&v59[10] = self;
       v60 = 2114;
       v61 = @"BSActionResponder.m";
       v62 = 1024;
@@ -506,7 +506,7 @@ LABEL_20:
       v58 = 2114;
       *v59 = v50;
       *&v59[8] = 2048;
-      *&v59[10] = a1;
+      *&v59[10] = self;
       v60 = 2114;
       v61 = @"BSActionResponder.m";
       v62 = 1024;
@@ -522,11 +522,11 @@ LABEL_20:
     JUMPOUT(0x18FF63F2CLL);
   }
 
-  v12 = (a1 + 96);
-  if (a3)
+  v12 = (self + 96);
+  if (response)
   {
     os_unfair_lock_assert_owner(v12);
-    if (!a4)
+    if (!locked)
     {
       goto LABEL_10;
     }
@@ -535,20 +535,20 @@ LABEL_20:
   else
   {
     os_unfair_lock_lock(v12);
-    if (!a4)
+    if (!locked)
     {
       goto LABEL_10;
     }
   }
 
-  v13 = *(a1 + 8);
+  v13 = *(self + 8);
   if (v13)
   {
     dispatch_assert_queue_V2(v13);
   }
 
 LABEL_10:
-  v14 = *(a1 + 72);
+  v14 = *(self + 72);
   if (v14)
   {
     v15 = v14;
@@ -558,45 +558,45 @@ LABEL_10:
 
   else
   {
-    objc_storeStrong((a1 + 72), a2);
+    objc_storeStrong((self + 72), a2);
   }
 
-  v16 = *(a1 + 40);
+  v16 = *(self + 40);
   if (!v16)
   {
-    v25 = *(a1 + 24);
+    v25 = *(self + 24);
     if (v25)
     {
       dispatch_source_cancel(v25);
-      v26 = *(a1 + 24);
-      *(a1 + 24) = 0;
+      v26 = *(self + 24);
+      *(self + 24) = 0;
     }
 
-    if (*(a1 + 32))
+    if (*(self + 32))
     {
-      [(_BSActionResponder *)a1 _lock_logResponse:v11];
-      dispatch_source_cancel(*(a1 + 32));
-      v27 = *(a1 + 32);
-      *(a1 + 32) = 0;
+      [(_BSActionResponder *)self _lock_logResponse:v11];
+      dispatch_source_cancel(*(self + 32));
+      v27 = *(self + 32);
+      *(self + 32) = 0;
     }
 
-    v28 = *(a1 + 16);
+    v28 = *(self + 16);
     if (v28)
     {
-      if (a4)
+      if (locked)
       {
         v29 = 0;
       }
 
       else
       {
-        v29 = *(a1 + 8);
-        v28 = *(a1 + 16);
+        v29 = *(self + 8);
+        v28 = *(self + 16);
       }
 
       v33 = MEMORY[0x193AE5AC0](v28);
-      v34 = *(a1 + 16);
-      *(a1 + 16) = 0;
+      v34 = *(self + 16);
+      *(self + 16) = 0;
 
       v32 = 1;
     }
@@ -611,16 +611,16 @@ LABEL_10:
     goto LABEL_45;
   }
 
-  v17 = [v16 extractPortAndIKnowWhatImDoingISwear];
-  v18 = v17;
-  if (v17 - 1 > 0xFFFFFFFD)
+  extractPortAndIKnowWhatImDoingISwear = [v16 extractPortAndIKnowWhatImDoingISwear];
+  v18 = extractPortAndIKnowWhatImDoingISwear;
+  if (extractPortAndIKnowWhatImDoingISwear - 1 > 0xFFFFFFFD)
   {
-    if (v17)
+    if (extractPortAndIKnowWhatImDoingISwear)
     {
       v30 = BSLogBSAction();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
       {
-        v31 = *(a1 + 56);
+        v31 = *(self + 56);
         *buf = 138543362;
         v57 = v31;
         _os_log_impl(&dword_18FEF6000, v30, OS_LOG_TYPE_DEFAULT, "Reply failed %{public}@: port is invalid (originating action likely timed out)", buf, 0xCu);
@@ -633,14 +633,14 @@ LABEL_10:
     goto LABEL_44;
   }
 
-  [(_BSActionResponder *)a1 _lock_logResponse:v11];
+  [(_BSActionResponder *)self _lock_logResponse:v11];
   reply_from_port = xpc_pipe_create_reply_from_port();
   if (!reply_from_port)
   {
     v35 = BSLogBSAction();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
     {
-      v40 = *(a1 + 56);
+      v40 = *(self + 56);
       *buf = 138543362;
       v57 = v40;
       _os_log_error_impl(&dword_18FEF6000, v35, OS_LOG_TYPE_ERROR, "Reply failed %{public}@: xpc_pipe_create_reply_from_port() failed to create a reply", buf, 0xCu);
@@ -660,7 +660,7 @@ LABEL_10:
       v23 = BSLogBSAction();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
-        v24 = *(a1 + 56);
+        v24 = *(self + 56);
         *buf = 138543362;
         v57 = v24;
         _os_log_impl(&dword_18FEF6000, v23, OS_LOG_TYPE_DEFAULT, "Reply failed %{public}@: receiver is no longer valid (EPIPE)", buf, 0xCu);
@@ -672,7 +672,7 @@ LABEL_10:
       v23 = BSLogBSAction();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
-        v41 = *(a1 + 56);
+        v41 = *(self + 56);
         *buf = 138543874;
         v57 = v41;
         v58 = 1024;
@@ -692,14 +692,14 @@ LABEL_42:
 LABEL_43:
 
 LABEL_44:
-  [*(a1 + 40) invalidate];
+  [*(self + 40) invalidate];
   v33 = 0;
   v29 = 0;
 LABEL_45:
-  v36 = *(a1 + 80);
-  if (a5 && *(a1 + 107) == 1)
+  v36 = *(self + 80);
+  if (queue && *(self + 107) == 1)
   {
-    v37 = *(a1 + 88);
+    v37 = *(self + 88);
   }
 
   else
@@ -708,8 +708,8 @@ LABEL_45:
   }
 
   v38 = MEMORY[0x193AE5AC0](v37);
-  [(_BSActionResponder *)a1 _lock_invalidateForEncode:?];
-  os_unfair_lock_unlock((a1 + 96));
+  [(_BSActionResponder *)self _lock_invalidateForEncode:?];
+  os_unfair_lock_unlock((self + 96));
   if (v33)
   {
     if (v29)
@@ -770,15 +770,15 @@ LABEL_56:
   return result;
 }
 
-- (uint64_t)action:(void *)a3 sendResponse:
+- (uint64_t)action:(void *)action sendResponse:
 {
   v45 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  actionCopy = action;
+  v7 = actionCopy;
+  if (self)
   {
-    v8 = v6;
+    v8 = actionCopy;
     NSClassFromString(&cfstr_Bsactionrespon_0.isa);
     if (!v8)
     {
@@ -793,7 +793,7 @@ LABEL_56:
         v35 = 2114;
         v36 = v26;
         v37 = 2048;
-        v38 = a1;
+        selfCopy4 = self;
         v39 = 2114;
         v40 = @"BSActionResponder.m";
         v41 = 1024;
@@ -822,7 +822,7 @@ LABEL_56:
         v35 = 2114;
         v36 = v31;
         v37 = 2048;
-        v38 = a1;
+        selfCopy4 = self;
         v39 = 2114;
         v40 = @"BSActionResponder.m";
         v41 = 1024;
@@ -838,12 +838,12 @@ LABEL_56:
       JUMPOUT(0x18FF645E4);
     }
 
-    os_unfair_lock_lock((a1 + 96));
-    os_unfair_lock_assert_owner((a1 + 96));
-    if ((*(a1 + 104) & 1) != 0 || (*(a1 + 103) & 1) != 0 || *(a1 + 105) == 1)
+    os_unfair_lock_lock((self + 96));
+    os_unfair_lock_assert_owner((self + 96));
+    if ((*(self + 104) & 1) != 0 || (*(self + 103) & 1) != 0 || *(self + 105) == 1)
     {
-      v12 = *(a1 + 64);
-      os_unfair_lock_unlock((a1 + 96));
+      v12 = *(self + 64);
+      os_unfair_lock_unlock((self + 96));
       v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"cannot -sendResponse: from an inactive instance : action=%@\nprevious inactivation was at %@", v5, v12];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -855,7 +855,7 @@ LABEL_56:
         v35 = 2114;
         v36 = v16;
         v37 = 2048;
-        v38 = a1;
+        selfCopy4 = self;
         v39 = 2114;
         v40 = @"BSActionResponder.m";
         v41 = 1024;
@@ -871,14 +871,14 @@ LABEL_56:
       JUMPOUT(0x18FF642CCLL);
     }
 
-    *(a1 + 104) = 1;
-    v9 = [MEMORY[0x1E696AF00] callStackSymbols];
-    v10 = *(a1 + 64);
-    *(a1 + 64) = v9;
+    *(self + 104) = 1;
+    callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+    v10 = *(self + 64);
+    *(self + 64) = callStackSymbols;
 
-    if (*(a1 + 101) == 1)
+    if (*(self + 101) == 1)
     {
-      os_unfair_lock_unlock((a1 + 96));
+      os_unfair_lock_unlock((self + 96));
       v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"cannot -sendResponse: if no response was expected : action=%@", v5];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -890,7 +890,7 @@ LABEL_56:
         v35 = 2114;
         v36 = v21;
         v37 = 2048;
-        v38 = a1;
+        selfCopy4 = self;
         v39 = 2114;
         v40 = @"BSActionResponder.m";
         v41 = 1024;
@@ -906,27 +906,27 @@ LABEL_56:
       JUMPOUT(0x18FF643D4);
     }
 
-    a1 = [(_BSActionResponder *)a1 _consumeLock_trySendResponse:v8 alreadyLocked:1 alreadyOnResponseQueue:0 fireLegacyInvalidationHandler:0];
+    self = [(_BSActionResponder *)self _consumeLock_trySendResponse:v8 alreadyLocked:1 alreadyOnResponseQueue:0 fireLegacyInvalidationHandler:0];
   }
 
-  return a1;
+  return self;
 }
 
-- (id)action_encode:(uint64_t)a1
+- (id)action_encode:(uint64_t)action_encode
 {
   v59 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (!a1)
+  if (!action_encode)
   {
     goto LABEL_49;
   }
 
-  os_unfair_lock_lock((a1 + 96));
-  os_unfair_lock_assert_owner((a1 + 96));
-  if ((*(a1 + 104) & 1) != 0 || (*(a1 + 103) & 1) != 0 || *(a1 + 105) == 1)
+  os_unfair_lock_lock((action_encode + 96));
+  os_unfair_lock_assert_owner((action_encode + 96));
+  if ((*(action_encode + 104) & 1) != 0 || (*(action_encode + 103) & 1) != 0 || *(action_encode + 105) == 1)
   {
-    v11 = *(a1 + 64);
-    os_unfair_lock_unlock((a1 + 96));
+    v11 = *(action_encode + 64);
+    os_unfair_lock_unlock((action_encode + 96));
     v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"cannot -encode from an inactive instance : action=%@\nprevious inactivation was at %@", v3, v11];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -938,7 +938,7 @@ LABEL_56:
       *(&buf.service_port_name + 2) = 2114;
       *(buf.reserved + 6) = v15;
       *(&buf.service_port_name + 7) = 2048;
-      v52 = a1;
+      action_encodeCopy5 = action_encode;
       v53 = 2114;
       v54 = @"BSActionResponder.m";
       v55 = 1024;
@@ -954,36 +954,36 @@ LABEL_56:
     JUMPOUT(0x18FF64914);
   }
 
-  *(a1 + 103) = 1;
-  v4 = [MEMORY[0x1E696AF00] callStackSymbols];
-  v5 = *(a1 + 64);
-  *(a1 + 64) = v4;
+  *(action_encode + 103) = 1;
+  callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+  v5 = *(action_encode + 64);
+  *(action_encode + 64) = callStackSymbols;
 
-  if (*(a1 + 101))
+  if (*(action_encode + 101))
   {
     v6 = 0;
 LABEL_30:
-    [(_BSActionResponder *)a1 _lock_invalidateForEncode:?];
-    os_unfair_lock_unlock((a1 + 96));
+    [(_BSActionResponder *)action_encode _lock_invalidateForEncode:?];
+    os_unfair_lock_unlock((action_encode + 96));
     goto LABEL_31;
   }
 
   v7 = BSLogBSAction();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = *(a1 + 56);
+    v8 = *(action_encode + 56);
     buf.flags = 138543362;
     *&buf.mpl.mpl_qlimit = v8;
     _os_log_impl(&dword_18FEF6000, v7, OS_LOG_TYPE_INFO, "Encode %{public}@", &buf, 0xCu);
   }
 
-  if (*(a1 + 100) != 1)
+  if (*(action_encode + 100) != 1)
   {
-    v9 = *(a1 + 40);
+    v9 = *(action_encode + 40);
     goto LABEL_13;
   }
 
-  if (*(a1 + 106))
+  if (*(action_encode + 106))
   {
     v9 = [[BSMachPortSendOnceRight alloc] initWithPort:0];
 LABEL_13:
@@ -1002,7 +1002,7 @@ LABEL_24:
         *(&buf.service_port_name + 2) = 2114;
         *(buf.reserved + 6) = v29;
         *(&buf.service_port_name + 7) = 2048;
-        v52 = a1;
+        action_encodeCopy5 = action_encode;
         v53 = 2114;
         v54 = @"BSActionResponder.m";
         v55 = 1024;
@@ -1020,12 +1020,12 @@ LABEL_24:
 
     v23 = xpc_dictionary_create(0, 0, 0);
     v6 = v23;
-    if (*(a1 + 102) == 1)
+    if (*(action_encode + 102) == 1)
     {
       xpc_dictionary_set_BOOL(v23, "bsar_isnp", 1);
     }
 
-    v24 = *(a1 + 56);
+    v24 = *(action_encode + 56);
     if (v24)
     {
       xpc_dictionary_set_string(v6, "bsar_aid", [v24 UTF8String]);
@@ -1037,7 +1037,7 @@ LABEL_24:
     goto LABEL_30;
   }
 
-  if (!*(a1 + 8))
+  if (!*(action_encode + 8))
   {
     v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"missing response queue"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1050,7 +1050,7 @@ LABEL_24:
       *(&buf.service_port_name + 2) = 2114;
       *(buf.reserved + 6) = v34;
       *(&buf.service_port_name + 7) = 2048;
-      v52 = a1;
+      action_encodeCopy5 = action_encode;
       v53 = 2114;
       v54 = @"BSActionResponder.m";
       v55 = 1024;
@@ -1066,7 +1066,7 @@ LABEL_24:
     JUMPOUT(0x18FF64D68);
   }
 
-  if (!*(a1 + 16))
+  if (!*(action_encode + 16))
   {
     v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"missing response handler"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1079,7 +1079,7 @@ LABEL_24:
       *(&buf.service_port_name + 2) = 2114;
       *(buf.reserved + 6) = v39;
       *(&buf.service_port_name + 7) = 2048;
-      v52 = a1;
+      action_encodeCopy5 = action_encode;
       v53 = 2114;
       v54 = @"BSActionResponder.m";
       v55 = 1024;
@@ -1095,7 +1095,7 @@ LABEL_24:
     JUMPOUT(0x18FF64E64);
   }
 
-  if (*(a1 + 32))
+  if (*(action_encode + 32))
   {
     v41 = [MEMORY[0x1E696AEC0] stringWithFormat:@"mach source already set up"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1108,7 +1108,7 @@ LABEL_24:
       *(&buf.service_port_name + 2) = 2114;
       *(buf.reserved + 6) = v44;
       *(&buf.service_port_name + 7) = 2048;
-      v52 = a1;
+      action_encodeCopy5 = action_encode;
       v53 = 2114;
       v54 = @"BSActionResponder.m";
       v55 = 1024;
@@ -1127,7 +1127,7 @@ LABEL_24:
   name = 0;
   buf.8 = 0u;
   *&buf.flags = 163;
-  if (mach_port_construct(*MEMORY[0x1E69E9A60], &buf, a1 + 96, &name))
+  if (mach_port_construct(*MEMORY[0x1E69E9A60], &buf, action_encode + 96, &name))
   {
     _os_assert_log();
     _os_crash();
@@ -1140,29 +1140,29 @@ LABEL_24:
     if ((SendOnceRight + 1) >= 2)
     {
       v10 = [[BSMachPortSendOnceRight alloc] initWithPort:SendOnceRight];
-      v18 = dispatch_source_create(MEMORY[0x1E69E96D8], name, 0, *(a1 + 8));
-      v19 = *(a1 + 32);
-      *(a1 + 32) = v18;
+      v18 = dispatch_source_create(MEMORY[0x1E69E96D8], name, 0, *(action_encode + 8));
+      v19 = *(action_encode + 32);
+      *(action_encode + 32) = v18;
 
-      v20 = *(a1 + 32);
+      v20 = *(action_encode + 32);
       handler[0] = MEMORY[0x1E69E9820];
       handler[1] = 3221225472;
       handler[2] = __36___BSActionResponder_action_encode___block_invoke;
       handler[3] = &__block_descriptor_44_e5_v8__0l;
       v49 = name;
-      handler[4] = a1 + 96;
+      handler[4] = action_encode + 96;
       dispatch_source_set_cancel_handler(v20, handler);
-      v21 = *(a1 + 32);
+      v21 = *(action_encode + 32);
       v46[0] = MEMORY[0x1E69E9820];
       v46[1] = 3221225472;
       v46[2] = __36___BSActionResponder_action_encode___block_invoke_2;
       v46[3] = &unk_1E72CBB30;
       v47 = name;
-      v46[4] = a1;
-      v46[5] = a1;
-      v22 = a1;
+      v46[4] = action_encode;
+      v46[5] = action_encode;
+      action_encodeCopy6 = action_encode;
       dispatch_source_set_event_handler(v21, v46);
-      dispatch_resume(*(a1 + 32));
+      dispatch_resume(*(action_encode + 32));
 
       goto LABEL_24;
     }
@@ -1184,7 +1184,7 @@ LABEL_31:
   return v6;
 }
 
-+ (os_unfair_lock_s)action_decodeFromXPCObject:(uint64_t)a1
++ (os_unfair_lock_s)action_decodeFromXPCObject:(uint64_t)object
 {
   v21 = *MEMORY[0x1E69E9840];
   v2 = a2;
@@ -1218,8 +1218,8 @@ LABEL_6:
   if (!v10)
   {
     v17 = v3;
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:sel_action_decodeFromXPCObject_ object:v17 file:@"BSActionResponder.m" lineNumber:256 description:@"must decode to a reply even if it is invalid"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel_action_decodeFromXPCObject_ object:v17 file:@"BSActionResponder.m" lineNumber:256 description:@"must decode to a reply even if it is invalid"];
   }
 
   v9 = [[_BSActionResponder alloc] _initWithReply:v10];
@@ -1246,71 +1246,71 @@ LABEL_14:
   return v9;
 }
 
-- (void)action:(void *)a3 setNullificationQueue:(int)a4 isLegacy:(void *)a5 handler:
+- (void)action:(void *)action setNullificationQueue:(int)queue isLegacy:(void *)legacy handler:
 {
   v48 = *MEMORY[0x1E69E9840];
   v9 = a2;
-  v10 = a3;
-  v11 = a5;
-  if (a1)
+  actionCopy = action;
+  legacyCopy = legacy;
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 96));
-    if (*(a1 + 48))
+    os_unfair_lock_lock((self + 96));
+    if (*(self + 48))
     {
       dispatch_mach_cancel();
-      v12 = *(a1 + 80);
-      *(a1 + 80) = 0;
+      v12 = *(self + 80);
+      *(self + 80) = 0;
 
-      v13 = *(a1 + 48);
-      *(a1 + 48) = 0;
+      v13 = *(self + 48);
+      *(self + 48) = 0;
     }
 
-    if (!v11)
+    if (!legacyCopy)
     {
-      v14 = *(a1 + 80);
-      *(a1 + 80) = 0;
+      v14 = *(self + 80);
+      *(self + 80) = 0;
 
-      v15 = *(a1 + 88);
-      *(a1 + 88) = 0;
+      v15 = *(self + 88);
+      *(self + 88) = 0;
 
 LABEL_19:
-      os_unfair_lock_unlock((a1 + 96));
+      os_unfair_lock_unlock((self + 96));
       goto LABEL_20;
     }
 
-    if (v10)
+    if (actionCopy)
     {
-      if (a4)
+      if (queue)
       {
 LABEL_7:
-        if ((*(a1 + 104) & 1) != 0 || *(a1 + 103) == 1)
+        if ((*(self + 104) & 1) != 0 || *(self + 103) == 1)
         {
           goto LABEL_18;
         }
 
-        if (*(a1 + 105))
+        if (*(self + 105))
         {
 LABEL_17:
-          dispatch_async(v10, v11);
+          dispatch_async(actionCopy, legacyCopy);
 LABEL_18:
 
-          v11 = 0;
+          legacyCopy = 0;
           goto LABEL_19;
         }
 
 LABEL_16:
-        if (*(a1 + 106) != 1)
+        if (*(self + 106) != 1)
         {
-          objc_storeStrong((a1 + 80), v10);
-          v16 = [v11 copy];
-          v17 = *(a1 + 88);
-          *(a1 + 88) = v16;
+          objc_storeStrong((self + 80), actionCopy);
+          v16 = [legacyCopy copy];
+          v17 = *(self + 88);
+          *(self + 88) = v16;
 
-          *(a1 + 107) = a4;
-          v18 = *(a1 + 40);
+          *(self + 107) = queue;
+          v18 = *(self + 40);
           if (v18)
           {
-            if (*(a1 + 48))
+            if (*(self + 48))
             {
               v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"dispatch mach already set up"];
               if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1323,7 +1323,7 @@ LABEL_16:
                 v38 = 2114;
                 v39 = v32;
                 v40 = 2048;
-                v41 = a1;
+                selfCopy2 = self;
                 v42 = 2114;
                 v43 = @"BSActionResponder.m";
                 v44 = 1024;
@@ -1343,26 +1343,26 @@ LABEL_16:
             v34[1] = 3221225472;
             v34[2] = __68___BSActionResponder_action_setNullificationQueue_isLegacy_handler___block_invoke;
             v34[3] = &unk_1E72CBB80;
-            v34[4] = a1;
-            v19 = v10;
+            v34[4] = self;
+            v19 = actionCopy;
             v35 = v19;
             [v18 accessPort:v34];
-            if (!*(a1 + 48))
+            if (!*(self + 48))
             {
-              *(a1 + 106) = 1;
-              v20 = *(a1 + 88);
+              *(self + 106) = 1;
+              v20 = *(self + 88);
               if (v20)
               {
-                dispatch_async(*(a1 + 80), v20);
-                v21 = *(a1 + 80);
-                *(a1 + 80) = 0;
+                dispatch_async(*(self + 80), v20);
+                v21 = *(self + 80);
+                *(self + 80) = 0;
 
-                v22 = *(a1 + 88);
-                *(a1 + 88) = 0;
+                v22 = *(self + 88);
+                *(self + 88) = 0;
               }
             }
 
-            v10 = v19;
+            actionCopy = v19;
           }
 
           goto LABEL_19;
@@ -1374,18 +1374,18 @@ LABEL_16:
 
     else
     {
-      v10 = dispatch_get_global_queue(21, 0);
-      if (a4)
+      actionCopy = dispatch_get_global_queue(21, 0);
+      if (queue)
       {
         goto LABEL_7;
       }
     }
 
-    os_unfair_lock_assert_owner((a1 + 96));
-    if ((*(a1 + 104) & 1) != 0 || (*(a1 + 103) & 1) != 0 || *(a1 + 105) == 1)
+    os_unfair_lock_assert_owner((self + 96));
+    if ((*(self + 104) & 1) != 0 || (*(self + 103) & 1) != 0 || *(self + 105) == 1)
     {
-      v23 = *(a1 + 64);
-      os_unfair_lock_unlock((a1 + 96));
+      v23 = *(self + 64);
+      os_unfair_lock_unlock((self + 96));
       v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"cannot -setNullificationHandler: on an inactive instance : action=%@\nprevious inactivation was at %@", v9, v23];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -1397,7 +1397,7 @@ LABEL_16:
         v38 = 2114;
         v39 = v27;
         v40 = 2048;
-        v41 = a1;
+        selfCopy2 = self;
         v42 = 2114;
         v43 = @"BSActionResponder.m";
         v44 = 1024;
@@ -1419,12 +1419,12 @@ LABEL_16:
 LABEL_20:
 }
 
-- (void)originator_didInit:(uint64_t)a1
+- (void)originator_didInit:(uint64_t)init
 {
   v33 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (init)
   {
-    if ((*(a1 + 100) & 1) == 0)
+    if ((*(init + 100) & 1) == 0)
     {
       v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"must be called on the originator"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1437,7 +1437,7 @@ LABEL_20:
         v23 = 2114;
         v24 = v14;
         v25 = 2048;
-        v26 = a1;
+        initCopy2 = init;
         v27 = 2114;
         v28 = @"BSActionResponder.m";
         v29 = 1024;
@@ -1453,8 +1453,8 @@ LABEL_20:
       JUMPOUT(0x18FF662FCLL);
     }
 
-    os_unfair_lock_lock((a1 + 96));
-    if (*(a1 + 56))
+    os_unfair_lock_lock((init + 96));
+    if (*(init + 56))
     {
       v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"_lock_action_identifier == nil"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1467,7 +1467,7 @@ LABEL_20:
         v23 = 2114;
         v24 = v19;
         v25 = 2048;
-        v26 = a1;
+        initCopy2 = init;
         v27 = 2114;
         v28 = @"BSActionResponder.m";
         v29 = 1024;
@@ -1483,34 +1483,34 @@ LABEL_20:
       JUMPOUT(0x18FF66404);
     }
 
-    if ((*(a1 + 101) & 1) == 0)
+    if ((*(init + 101) & 1) == 0)
     {
       add_explicit = atomic_fetch_add_explicit(&originator_didInit____count, 1u, memory_order_relaxed);
       v5 = MEMORY[0x1E696AEC0];
       v6 = NSStringFromClass(a2);
-      v7 = [v5 stringWithFormat:@"<%@: 0x%04x%04x>", v6, getpid(), add_explicit];
-      v8 = *(a1 + 56);
-      *(a1 + 56) = v7;
+      add_explicit = [v5 stringWithFormat:@"<%@: 0x%04x%04x>", v6, getpid(), add_explicit];
+      v8 = *(init + 56);
+      *(init + 56) = add_explicit;
 
       v9 = BSLogBSAction();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
-        v10 = *(a1 + 56);
+        v10 = *(init + 56);
         *buf = 138543362;
         v22 = v10;
         _os_log_debug_impl(&dword_18FEF6000, v9, OS_LOG_TYPE_DEBUG, "Alloc %{public}@", buf, 0xCu);
       }
     }
 
-    os_unfair_lock_unlock((a1 + 96));
+    os_unfair_lock_unlock((init + 96));
   }
 }
 
-+ (void)originator_responderOnQueue:(void *)a3 forHandler:
++ (void)originator_responderOnQueue:(void *)queue forHandler:
 {
   v31 = *MEMORY[0x1E69E9840];
   v4 = a2;
-  v5 = a3;
+  queueCopy = queue;
   v6 = objc_opt_self();
   if (!v4)
   {
@@ -1541,7 +1541,7 @@ LABEL_20:
     JUMPOUT(0x18FF66630);
   }
 
-  if (!v5)
+  if (!queueCopy)
   {
     v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"handler"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1570,17 +1570,17 @@ LABEL_20:
     JUMPOUT(0x18FF66738);
   }
 
-  v7 = [[_BSActionResponder alloc] _initWithQueue:v4 handler:v5];
+  v7 = [[_BSActionResponder alloc] _initWithQueue:v4 handler:queueCopy];
 
   return v7;
 }
 
-- (void)originator_setTimeout:(uint64_t)a1
+- (void)originator_setTimeout:(uint64_t)timeout
 {
   v38 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (timeout)
   {
-    if ((*(a1 + 100) & 1) == 0)
+    if ((*(timeout + 100) & 1) == 0)
     {
       v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"must be called on the originator"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1593,7 +1593,7 @@ LABEL_20:
         v28 = 2114;
         v29 = v13;
         v30 = 2048;
-        v31 = a1;
+        timeoutCopy3 = timeout;
         v32 = 2114;
         v33 = @"BSActionResponder.m";
         v34 = 1024;
@@ -1609,18 +1609,18 @@ LABEL_20:
       JUMPOUT(0x18FF66A14);
     }
 
-    os_unfair_lock_lock((a1 + 96));
-    v4 = *(a1 + 24);
+    os_unfair_lock_lock((timeout + 96));
+    v4 = *(timeout + 24);
     if (v4)
     {
       dispatch_source_cancel(v4);
-      v5 = *(a1 + 24);
-      *(a1 + 24) = 0;
+      v5 = *(timeout + 24);
+      *(timeout + 24) = 0;
     }
 
-    if (a2 != -1 && !*(a1 + 72))
+    if (a2 != -1 && !*(timeout + 72))
     {
-      v6 = *(a1 + 8);
+      v6 = *(timeout + 8);
       if (!v6)
       {
         v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"missing response queue"];
@@ -1634,7 +1634,7 @@ LABEL_20:
           v28 = 2114;
           v29 = v18;
           v30 = 2048;
-          v31 = a1;
+          timeoutCopy3 = timeout;
           v32 = 2114;
           v33 = @"BSActionResponder.m";
           v34 = 1024;
@@ -1650,7 +1650,7 @@ LABEL_20:
         JUMPOUT(0x18FF66B10);
       }
 
-      if (!*(a1 + 16))
+      if (!*(timeout + 16))
       {
         v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"missing response handler"];
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1663,7 +1663,7 @@ LABEL_20:
           v28 = 2114;
           v29 = v23;
           v30 = 2048;
-          v31 = a1;
+          timeoutCopy3 = timeout;
           v32 = 2114;
           v33 = @"BSActionResponder.m";
           v34 = 1024;
@@ -1680,31 +1680,31 @@ LABEL_20:
       }
 
       v7 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v6);
-      v8 = *(a1 + 24);
-      *(a1 + 24) = v7;
+      v8 = *(timeout + 24);
+      *(timeout + 24) = v7;
 
-      dispatch_source_set_timer(*(a1 + 24), a2, 0xFFFFFFFFFFFFFFFFLL, 0);
-      objc_initWeak(location, a1);
-      v9 = *(a1 + 24);
+      dispatch_source_set_timer(*(timeout + 24), a2, 0xFFFFFFFFFFFFFFFFLL, 0);
+      objc_initWeak(location, timeout);
+      v9 = *(timeout + 24);
       handler[0] = MEMORY[0x1E69E9820];
       handler[1] = 3221225472;
       handler[2] = __44___BSActionResponder_originator_setTimeout___block_invoke;
       handler[3] = &unk_1E72CB830;
       objc_copyWeak(&v26, location);
       dispatch_source_set_event_handler(v9, handler);
-      dispatch_resume(*(a1 + 24));
+      dispatch_resume(*(timeout + 24));
       objc_destroyWeak(&v26);
       objc_destroyWeak(location);
     }
 
-    os_unfair_lock_unlock((a1 + 96));
+    os_unfair_lock_unlock((timeout + 96));
   }
 }
 
-- (void)originator_annulWithErrorCode:(os_unfair_lock_s *)a1
+- (void)originator_annulWithErrorCode:(os_unfair_lock_s *)code
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (code)
   {
     if (!a2)
     {
@@ -1719,7 +1719,7 @@ LABEL_20:
         v11 = 2114;
         v12 = v7;
         v13 = 2048;
-        v14 = a1;
+        codeCopy = code;
         v15 = 2114;
         v16 = @"BSActionResponder.m";
         v17 = 1024;
@@ -1735,26 +1735,26 @@ LABEL_20:
       JUMPOUT(0x18FF66E54);
     }
 
-    os_unfair_lock_lock(a1 + 24);
+    os_unfair_lock_lock(code + 24);
 
-    [(_BSActionResponder *)a1 _consumeLock_originator_annulWithCode:a2 alreadyOnResponseQueue:0];
+    [(_BSActionResponder *)code _consumeLock_originator_annulWithCode:a2 alreadyOnResponseQueue:0];
   }
 }
 
-- (void)_consumeLock_originator_annulWithCode:(int)a3 alreadyOnResponseQueue:
+- (void)_consumeLock_originator_annulWithCode:(int)code alreadyOnResponseQueue:
 {
   v37 = *MEMORY[0x1E69E9840];
-  os_unfair_lock_assert_owner((a1 + 96));
-  if (a3)
+  os_unfair_lock_assert_owner((self + 96));
+  if (code)
   {
-    v6 = *(a1 + 8);
+    v6 = *(self + 8);
     if (v6)
     {
       dispatch_assert_queue_V2(v6);
     }
   }
 
-  if ((*(a1 + 100) & 1) == 0)
+  if ((*(self + 100) & 1) == 0)
   {
     v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"annul may only be called on the originator"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1767,7 +1767,7 @@ LABEL_20:
       v27 = 2114;
       v28 = v17;
       v29 = 2048;
-      v30 = a1;
+      selfCopy2 = self;
       v31 = 2114;
       v32 = @"BSActionResponder.m";
       v33 = 1024;
@@ -1783,38 +1783,38 @@ LABEL_20:
     JUMPOUT(0x18FF67190);
   }
 
-  if (*(a1 + 106) == 1)
+  if (*(self + 106) == 1)
   {
-    [(_BSActionResponder *)a1 _lock_invalidateForEncode:?];
+    [(_BSActionResponder *)self _lock_invalidateForEncode:?];
 
-    os_unfair_lock_unlock((a1 + 96));
+    os_unfair_lock_unlock((self + 96));
   }
 
   else
   {
-    if (*(a1 + 56))
+    if (*(self + 56))
     {
       v7 = BSLogBSAction();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
-        v8 = *(a1 + 56);
+        v8 = *(self + 56);
         v25 = 138543362;
         v26 = v8;
         _os_log_impl(&dword_18FEF6000, v7, OS_LOG_TYPE_INFO, "Annul %{public}@", &v25, 0xCu);
       }
     }
 
-    *(a1 + 106) = 1;
-    v9 = *(a1 + 80);
-    v10 = MEMORY[0x193AE5AC0](*(a1 + 88));
-    v11 = *(a1 + 80);
-    *(a1 + 80) = 0;
+    *(self + 106) = 1;
+    v9 = *(self + 80);
+    v10 = MEMORY[0x193AE5AC0](*(self + 88));
+    v11 = *(self + 80);
+    *(self + 80) = 0;
 
-    v12 = *(a1 + 88);
-    *(a1 + 88) = 0;
+    v12 = *(self + 88);
+    *(self + 88) = 0;
 
     v13 = [BSActionResponse responseForErrorCode:a2];
-    [(_BSActionResponder *)a1 _consumeLock_trySendResponse:v13 alreadyLocked:1 alreadyOnResponseQueue:a3 fireLegacyInvalidationHandler:1];
+    [(_BSActionResponder *)self _consumeLock_trySendResponse:v13 alreadyLocked:1 alreadyOnResponseQueue:code fireLegacyInvalidationHandler:1];
     if (v10)
     {
       if (!v9)
@@ -1831,7 +1831,7 @@ LABEL_20:
           v23 = v22;
           v28 = v22;
           v29 = 2048;
-          v30 = a1;
+          selfCopy2 = self;
           v31 = 2114;
           v32 = @"BSActionResponder.m";
           v33 = 1024;
@@ -1852,11 +1852,11 @@ LABEL_20:
   }
 }
 
-- (void)_lock_logResponse:(uint64_t)a1
+- (void)_lock_logResponse:(uint64_t)response
 {
   v23 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (*(a1 + 40))
+  if (*(response + 40))
   {
     v4 = @"Reply";
   }
@@ -1867,18 +1867,18 @@ LABEL_20:
   }
 
   v5 = v4;
-  v6 = [v3 error];
-  v7 = v6;
-  if (v6)
+  error = [v3 error];
+  v7 = error;
+  if (error)
   {
-    v8 = [v6 domain];
-    if ([v8 isEqualToString:@"BSActionErrorDomain"])
+    domain = [error domain];
+    if ([domain isEqualToString:@"BSActionErrorDomain"])
     {
       v9 = NSStringFromBSActionErrorCode([v7 code]);
       v10 = BSLogBSAction();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = *(a1 + 56);
+        v11 = *(response + 56);
         v15 = 138543874;
         v16 = v5;
         v17 = 2114;
@@ -1894,14 +1894,14 @@ LABEL_20:
       v9 = BSLogBSAction();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v7 code];
-        v14 = *(a1 + 56);
+        code = [v7 code];
+        v14 = *(response + 56);
         v15 = 138544130;
         v16 = v5;
         v17 = 2114;
-        v18 = v8;
+        v18 = domain;
         v19 = 2048;
-        v20 = v13;
+        v20 = code;
         v21 = 2114;
         v22 = v14;
         _os_log_impl(&dword_18FEF6000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ (error: %{public}@/%ld) %{public}@", &v15, 0x2Au);
@@ -1911,27 +1911,27 @@ LABEL_20:
 
   else
   {
-    v8 = BSLogBSAction();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+    domain = BSLogBSAction();
+    if (os_log_type_enabled(domain, OS_LOG_TYPE_INFO))
     {
-      v12 = *(a1 + 56);
+      v12 = *(response + 56);
       v15 = 138543618;
       v16 = v5;
       v17 = 2114;
       v18 = v12;
-      _os_log_impl(&dword_18FEF6000, v8, OS_LOG_TYPE_INFO, "%{public}@ %{public}@", &v15, 0x16u);
+      _os_log_impl(&dword_18FEF6000, domain, OS_LOG_TYPE_INFO, "%{public}@ %{public}@", &v15, 0x16u);
     }
   }
 }
 
-- (id)_descriptionBuilderOfType:(os_unfair_lock_s *)a1 withMultilinePrefix:(uint64_t)a2
+- (id)_descriptionBuilderOfType:(os_unfair_lock_s *)type withMultilinePrefix:(uint64_t)prefix
 {
-  if (a1)
+  if (type)
   {
-    os_unfair_lock_lock(a1 + 24);
-    v4 = [BSDescriptionBuilder builderWithObject:a1];
+    os_unfair_lock_lock(type + 24);
+    v4 = [BSDescriptionBuilder builderWithObject:type];
     v5 = v4;
-    if (a2 == 2)
+    if (prefix == 2)
     {
       [v4 setUseDebugDescription:1];
     }
@@ -1942,21 +1942,21 @@ LABEL_20:
     v15[3] = &unk_1E72CACC0;
     v6 = v5;
     v16 = v6;
-    v17 = a1;
+    typeCopy = type;
     v7 = [v6 modifyProem:v15];
-    if (a2)
+    if (prefix)
     {
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __68___BSActionResponder__descriptionBuilderOfType_withMultilinePrefix___block_invoke_2;
       v11[3] = &unk_1E72CB8A8;
       v12 = v6;
-      v13 = a1;
-      v14 = a2;
+      typeCopy2 = type;
+      prefixCopy = prefix;
       v8 = [v12 modifyBody:v11];
     }
 
-    os_unfair_lock_unlock(a1 + 24);
+    os_unfair_lock_unlock(type + 24);
     v9 = v6;
   }
 
@@ -1970,33 +1970,33 @@ LABEL_20:
 
 - (id)succinctDescription
 {
-  v2 = [(_BSActionResponder *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(_BSActionResponder *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_BSActionResponder *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_BSActionResponder *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v3 = [_BSActionResponder _descriptionBuilderOfType:1 withMultilinePrefix:?];
 
   return v3;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
   v3 = [_BSActionResponder _descriptionBuilderOfType:2 withMultilinePrefix:?];
-  v4 = [v3 build];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

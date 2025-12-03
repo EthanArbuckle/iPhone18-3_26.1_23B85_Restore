@@ -1,16 +1,16 @@
 @interface VKUntetheredCameraController
-- (CGPoint)currentScreenPointFromTranslation:(CGPoint)a3;
+- (CGPoint)currentScreenPointFromTranslation:(CGPoint)translation;
 - (Matrix<double,)cameraCollisionResponseSphereCentre;
 - (Matrix<double,)forwardVector;
 - (Matrix<double,)groundPoint;
-- (Matrix<double,)normalizedMercatorFromWorldPosition:(const void *)a3;
+- (Matrix<double,)normalizedMercatorFromWorldPosition:(const void *)position;
 - (Matrix<double,)rightVector;
 - (Matrix<double,)upVector;
-- (Matrix<double,)worldFromNormalizedMercatorPosition:(const void *)a3;
+- (Matrix<double,)worldFromNormalizedMercatorPosition:(const void *)position;
 - (Matrix<double,)worldPositionFromVkCamera;
 - (VKCameraRegionRestriction)regionRestriction;
 - (VKCameraState)cameraState;
-- (VKUntetheredCameraController)initWithMapDataAccess:(void *)a3 animationRunner:(AnimationRunner *)a4 runLoopController:(RunLoopController *)a5 cameraDelegate:(id)a6 mapEngine:(void *)a7;
+- (VKUntetheredCameraController)initWithMapDataAccess:(void *)access animationRunner:(AnimationRunner *)runner runLoopController:(RunLoopController *)controller cameraDelegate:(id)delegate mapEngine:(void *)engine;
 - (const)orientation;
 - (const)position;
 - (double)cameraCollisionResponseRadius;
@@ -19,82 +19,82 @@
 - (double)maxPitchRadian;
 - (double)minHeight;
 - (double)pitchRadian;
-- (double)unitsPerMeterAtPoint:(const void *)a3;
+- (double)unitsPerMeterAtPoint:(const void *)point;
 - (double)yawRadian;
 - (id).cxx_construct;
 - (optional<gm::Matrix<double,)getStartingGroundPointOpt;
 - (optional<gm::Matrix<double,)getTranslationToAvoidCollisions:(1>> *__return_ptr)retstr softness:(VKUntetheredCameraController *)self;
 - (optional<gm::Matrix<double,)groundPointFromScreenPoint:(1>> *__return_ptr)retstr;
-- (optional<gm::Matrix<double,)intersectsRay:(1>> *__return_ptr)retstr target:(VKUntetheredCameraController *)self lastHit:(SEL)a3;
-- (optional<gm::Matrix<double,)intersectsRay:(1>> *__return_ptr)retstr target:(VKUntetheredCameraController *)self lastHit:(SEL)a3 zScale:()Matrix<double;
+- (optional<gm::Matrix<double,)intersectsRay:(1>> *__return_ptr)retstr target:(VKUntetheredCameraController *)self lastHit:(SEL)hit;
+- (optional<gm::Matrix<double,)intersectsRay:(1>> *__return_ptr)retstr target:(VKUntetheredCameraController *)self lastHit:(SEL)hit zScale:()Matrix<double;
 - (pair<gm::Matrix<double,)lookAtFromCameraFrame:()1>;
 - (pair<gm::Matrix<double,)lookAtFromVkCameraPosition;
 - (pair<std::optional<gm::Matrix<double,)collisionPointFromScreenPoint:()1>>;
-- (void)_executeStartPanningAtPoint:(CGPoint)a3 panAtStartPoint:(BOOL)a4;
-- (void)_executeStartPinchingWithFocusPoint:(CGPoint)a3;
-- (void)_executeStartPitchingWithFocusPoint:(CGPoint)a3;
-- (void)_executeStartRotatingWithFocusPoint:(CGPoint)a3;
-- (void)_executeStopPanningAtPoint:(CGPoint)a3;
-- (void)_executeStopPinchingWithFocusPoint:(CGPoint)a3;
-- (void)_executeStopPitchingWithFocusPoint:(CGPoint)a3;
-- (void)_executeStopRotatingWithFocusPoint:(CGPoint)a3;
-- (void)_executeUpdatePanWithTranslation:(CGPoint)a3;
-- (void)_executeUpdatePinchWithFocusPoint:(CGPoint)a3 oldFactor:(double)a4 newFactor:(double)a5;
-- (void)_executeUpdatePitchWithFocusPoint:(CGPoint)a3 degrees:(double)a4;
-- (void)_executeUpdatePitchWithFocusPoint:(CGPoint)a3 translation:(double)a4;
-- (void)_executeUpdateRotationWithFocusPoint:(CGPoint)a3 newValue:(double)a4;
-- (void)_executeZoom:(double)a3 withFocusPoint:(CGPoint)a4 completionHandler:(id)a5;
-- (void)_executeZoomToLevel:(double)a3 withFocusPoint:(CGPoint)a4;
-- (void)adoptCollisions:(void *)a3 bvhRoots:(void *)a4;
-- (void)avoidCurrentCollision:(double)a3;
+- (void)_executeStartPanningAtPoint:(CGPoint)point panAtStartPoint:(BOOL)startPoint;
+- (void)_executeStartPinchingWithFocusPoint:(CGPoint)point;
+- (void)_executeStartPitchingWithFocusPoint:(CGPoint)point;
+- (void)_executeStartRotatingWithFocusPoint:(CGPoint)point;
+- (void)_executeStopPanningAtPoint:(CGPoint)point;
+- (void)_executeStopPinchingWithFocusPoint:(CGPoint)point;
+- (void)_executeStopPitchingWithFocusPoint:(CGPoint)point;
+- (void)_executeStopRotatingWithFocusPoint:(CGPoint)point;
+- (void)_executeUpdatePanWithTranslation:(CGPoint)translation;
+- (void)_executeUpdatePinchWithFocusPoint:(CGPoint)point oldFactor:(double)factor newFactor:(double)newFactor;
+- (void)_executeUpdatePitchWithFocusPoint:(CGPoint)point degrees:(double)degrees;
+- (void)_executeUpdatePitchWithFocusPoint:(CGPoint)point translation:(double)translation;
+- (void)_executeUpdateRotationWithFocusPoint:(CGPoint)point newValue:(double)value;
+- (void)_executeZoom:(double)zoom withFocusPoint:(CGPoint)point completionHandler:(id)handler;
+- (void)_executeZoomToLevel:(double)level withFocusPoint:(CGPoint)point;
+- (void)adoptCollisions:(void *)collisions bvhRoots:(void *)roots;
+- (void)avoidCurrentCollision:(double)collision;
 - (void)dealloc;
-- (void)executeStartPanningAtPoint:(CGPoint)a3 panAtStartPoint:(BOOL)a4;
-- (void)executeStartPinchingWithFocusPoint:(CGPoint)a3;
-- (void)executeStartPitchingWithFocusPoint:(CGPoint)a3;
-- (void)executeStartRotatingWithFocusPoint:(CGPoint)a3;
-- (void)executeStopPanningAtPoint:(CGPoint)a3;
-- (void)executeStopPinchingWithFocusPoint:(CGPoint)a3;
-- (void)executeStopPitchingWithFocusPoint:(CGPoint)a3;
-- (void)executeStopRotatingWithFocusPoint:(CGPoint)a3;
-- (void)executeUpdatePanWithTranslation:(CGPoint)a3;
-- (void)executeUpdatePinchWithFocusPoint:(CGPoint)a3 oldFactor:(double)a4 newFactor:(double)a5;
-- (void)executeUpdatePitchWithFocusPoint:(CGPoint)a3 degrees:(double)a4;
-- (void)executeUpdatePitchWithFocusPoint:(CGPoint)a3 translation:(double)a4;
-- (void)executeUpdateRotationWithFocusPoint:(CGPoint)a3 newValue:(double)a4;
-- (void)executeZoom:(double)a3 withFocusPoint:(CGPoint)a4 completionHandler:(id)a5;
-- (void)executeZoomToLevel:(double)a3 withFocusPoint:(CGPoint)a4;
+- (void)executeStartPanningAtPoint:(CGPoint)point panAtStartPoint:(BOOL)startPoint;
+- (void)executeStartPinchingWithFocusPoint:(CGPoint)point;
+- (void)executeStartPitchingWithFocusPoint:(CGPoint)point;
+- (void)executeStartRotatingWithFocusPoint:(CGPoint)point;
+- (void)executeStopPanningAtPoint:(CGPoint)point;
+- (void)executeStopPinchingWithFocusPoint:(CGPoint)point;
+- (void)executeStopPitchingWithFocusPoint:(CGPoint)point;
+- (void)executeStopRotatingWithFocusPoint:(CGPoint)point;
+- (void)executeUpdatePanWithTranslation:(CGPoint)translation;
+- (void)executeUpdatePinchWithFocusPoint:(CGPoint)point oldFactor:(double)factor newFactor:(double)newFactor;
+- (void)executeUpdatePitchWithFocusPoint:(CGPoint)point degrees:(double)degrees;
+- (void)executeUpdatePitchWithFocusPoint:(CGPoint)point translation:(double)translation;
+- (void)executeUpdateRotationWithFocusPoint:(CGPoint)point newValue:(double)value;
+- (void)executeZoom:(double)zoom withFocusPoint:(CGPoint)point completionHandler:(id)handler;
+- (void)executeZoomToLevel:(double)level withFocusPoint:(CGPoint)point;
 - (void)gestureEnd;
 - (void)intersectsRay:target:lastHit:zScale:;
-- (void)rotateAboutPoint:(const void *)a3 newYaw:()Unit<geo:(double>)a4 :()Unit<geo:(double>)a5 :RadianUnitDescription RadianUnitDescription newPitch:;
-- (void)setCamera:(shared_ptr<gdc::Camera>)a3;
-- (void)setCenterCoordinate3D:(id)a3 altitude:(double)a4 yaw:(double)a5 pitch:(double)a6 duration:(double)a7 animationStyle:(int64_t)a8 timingCurve:(id)a9 completion:(id)a10;
-- (void)setCenterCoordinate:(id)a3 altitude:(double)a4 yaw:(double)a5 pitch:(double)a6 duration:(double)a7 animationStyle:(int64_t)a8 timingCurve:(id)a9 completion:(id)a10;
-- (void)setGestureInitiatedMovement:(BOOL)a3;
-- (void)setMapRegion:(id)a3 pitch:(double)a4 yaw:(double)a5 duration:(double)a6 timingCurve:(id)a7 completion:(id)a8;
-- (void)setOrientation:(const void *)a3;
-- (void)setPosition:(const void *)a3;
-- (void)setPreferredAvoidanceDirection:(const void *)a3 newPrefernce:(BOOL)a4 allowReverse:(BOOL)a5;
+- (void)rotateAboutPoint:(const void *)point newYaw:()Unit<geo:(double>)geo :()Unit<geo:(double>)a5 :RadianUnitDescription RadianUnitDescription newPitch:;
+- (void)setCamera:(shared_ptr<gdc::Camera>)camera;
+- (void)setCenterCoordinate3D:(id)d altitude:(double)altitude yaw:(double)yaw pitch:(double)pitch duration:(double)duration animationStyle:(int64_t)style timingCurve:(id)curve completion:(id)self0;
+- (void)setCenterCoordinate:(id)coordinate altitude:(double)altitude yaw:(double)yaw pitch:(double)pitch duration:(double)duration animationStyle:(int64_t)style timingCurve:(id)curve completion:(id)self0;
+- (void)setGestureInitiatedMovement:(BOOL)movement;
+- (void)setMapRegion:(id)region pitch:(double)pitch yaw:(double)yaw duration:(double)duration timingCurve:(id)curve completion:(id)completion;
+- (void)setOrientation:(const void *)orientation;
+- (void)setPosition:(const void *)position;
+- (void)setPreferredAvoidanceDirection:(const void *)direction newPrefernce:(BOOL)prefernce allowReverse:(BOOL)reverse;
 - (void)setPreferredAvoidanceDirectionAsCollisionPointToEye;
-- (void)startPanningAtPoint:(CGPoint)a3 panAtStartPoint:(BOOL)a4;
-- (void)startPinchingWithFocusPoint:(CGPoint)a3;
-- (void)startPitchingWithFocusPoint:(CGPoint)a3;
-- (void)startRotatingWithFocusPoint:(CGPoint)a3;
-- (void)stopPanningAtPoint:(CGPoint)a3;
-- (void)stopPinchingWithFocusPoint:(CGPoint)a3;
-- (void)stopPitchingWithFocusPoint:(CGPoint)a3;
-- (void)stopRotatingWithFocusPoint:(CGPoint)a3;
+- (void)startPanningAtPoint:(CGPoint)point panAtStartPoint:(BOOL)startPoint;
+- (void)startPinchingWithFocusPoint:(CGPoint)point;
+- (void)startPitchingWithFocusPoint:(CGPoint)point;
+- (void)startRotatingWithFocusPoint:(CGPoint)point;
+- (void)stopPanningAtPoint:(CGPoint)point;
+- (void)stopPinchingWithFocusPoint:(CGPoint)point;
+- (void)stopPitchingWithFocusPoint:(CGPoint)point;
+- (void)stopRotatingWithFocusPoint:(CGPoint)point;
 - (void)updateCameraFrame;
-- (void)updateCollisionAvoidanceStyle:(int)a3;
+- (void)updateCollisionAvoidanceStyle:(int)style;
 - (void)updateCurrentGesturingCollisionPoint;
-- (void)updateGestureWithFocusPoint:(CGPoint)a3;
-- (void)updatePanWithTranslation:(CGPoint)a3;
-- (void)updatePinchWithFocusPoint:(CGPoint)a3 oldFactor:(double)a4 newFactor:(double)a5;
-- (void)updatePitchWithFocusPoint:(CGPoint)a3 degrees:(double)a4;
-- (void)updatePitchWithFocusPoint:(CGPoint)a3 translation:(double)a4;
-- (void)updateRotationWithFocusPoint:(CGPoint)a3 newValue:(double)a4;
-- (void)updateWithTimestamp:(double)a3 withContext:(void *)a4;
-- (void)zoom:(double)a3 withFocusPoint:(CGPoint)a4 completionHandler:(id)a5;
-- (void)zoomToLevel:(double)a3 withFocusPoint:(CGPoint)a4;
+- (void)updateGestureWithFocusPoint:(CGPoint)point;
+- (void)updatePanWithTranslation:(CGPoint)translation;
+- (void)updatePinchWithFocusPoint:(CGPoint)point oldFactor:(double)factor newFactor:(double)newFactor;
+- (void)updatePitchWithFocusPoint:(CGPoint)point degrees:(double)degrees;
+- (void)updatePitchWithFocusPoint:(CGPoint)point translation:(double)translation;
+- (void)updateRotationWithFocusPoint:(CGPoint)point newValue:(double)value;
+- (void)updateWithTimestamp:(double)timestamp withContext:(void *)context;
+- (void)zoom:(double)zoom withFocusPoint:(CGPoint)point completionHandler:(id)handler;
+- (void)zoomToLevel:(double)level withFocusPoint:(CGPoint)point;
 @end
 
 @implementation VKUntetheredCameraController
@@ -139,9 +139,9 @@
   return self;
 }
 
-- (void)_executeStopPitchingWithFocusPoint:(CGPoint)a3
+- (void)_executeStopPitchingWithFocusPoint:(CGPoint)point
 {
-  [(VKUntetheredCameraController *)self gestureEnd:a3.x];
+  [(VKUntetheredCameraController *)self gestureEnd:point.x];
   v4 = *[(VKCameraController *)self runLoopController];
   if (v4)
   {
@@ -150,10 +150,10 @@
   }
 }
 
-- (void)_executeUpdatePitchWithFocusPoint:(CGPoint)a3 degrees:(double)a4
+- (void)_executeUpdatePitchWithFocusPoint:(CGPoint)point degrees:(double)degrees
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(VKUntetheredCameraController *)self upVector];
   v26[0] = v9;
   v26[1] = v10;
@@ -166,8 +166,8 @@
   p_startingPitch = &self->_startingPitch;
   if (!self->_startingPitch.__engaged_)
   {
-    v4 = [(VKCameraController *)self vkCamera];
-    [v4 pitch];
+    vkCamera = [(VKCameraController *)self vkCamera];
+    [vkCamera pitch];
     if (!self->_startingPitch.__engaged_)
     {
       self->_startingPitch.__engaged_ = 1;
@@ -178,22 +178,22 @@
 
   if (v27 == 1)
   {
-    if (!self->_startingPitch.__engaged_ || ((value = p_startingPitch->var0.__val_._value, -[VKCameraController vkCamera](self, "vkCamera"), v4 = objc_claimAutoreleasedReturnValue(), [v4 maxPitch], v15 = value + a4 * -0.0174532925, v17 = fmin(v16, v15), v15 >= 0.0) ? (v18 = v17) : (v18 = 0.0), v4, (v27 & 1) == 0))
+    if (!self->_startingPitch.__engaged_ || ((value = p_startingPitch->var0.__val_._value, -[VKCameraController vkCamera](self, "vkCamera"), vkCamera = objc_claimAutoreleasedReturnValue(), [vkCamera maxPitch], v15 = value + degrees * -0.0174532925, v17 = fmin(v16, v15), v15 >= 0.0) ? (v18 = v17) : (v18 = 0.0), vkCamera, (v27 & 1) == 0))
     {
       v23 = std::__throw_bad_optional_access[abi:nn200100]();
 
       _Unwind_Resume(v23);
     }
 
-    v19 = [(VKCameraController *)self vkCamera];
-    [v19 yaw];
+    vkCamera2 = [(VKCameraController *)self vkCamera];
+    [vkCamera2 yaw];
     v24 = v18;
     v25 = v20;
     [(VKUntetheredCameraController *)self rotateAboutPoint:v26 newYaw:&v25 newPitch:&v24];
   }
 
-  v21 = [(VKCameraController *)self cameraDelegate];
-  [v21 mapLayerDidChangeVisibleRegion];
+  cameraDelegate = [(VKCameraController *)self cameraDelegate];
+  [cameraDelegate mapLayerDidChangeVisibleRegion];
 
   v22 = *[(VKCameraController *)self runLoopController];
   if (v22)
@@ -203,24 +203,24 @@
   }
 }
 
-- (void)_executeUpdatePitchWithFocusPoint:(CGPoint)a3 translation:(double)a4
+- (void)_executeUpdatePitchWithFocusPoint:(CGPoint)point translation:(double)translation
 {
-  y = a3.y;
-  x = a3.x;
-  v12 = [(VKCameraController *)self canvas];
-  [v12 contentScale];
+  y = point.y;
+  x = point.x;
+  canvas = [(VKCameraController *)self canvas];
+  [canvas contentScale];
   v9 = v8;
-  v10 = [(VKCameraController *)self canvas];
-  [v10 size];
-  [(VKUntetheredCameraController *)self _executeUpdatePitchWithFocusPoint:x degrees:y, a4 * v9 * 57.2957795 / v11];
+  canvas2 = [(VKCameraController *)self canvas];
+  [canvas2 size];
+  [(VKUntetheredCameraController *)self _executeUpdatePitchWithFocusPoint:x degrees:y, translation * v9 * 57.2957795 / v11];
 }
 
-- (void)_executeStartPitchingWithFocusPoint:(CGPoint)a3
+- (void)_executeStartPitchingWithFocusPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(VKCameraController *)self vkCamera];
-  [v6 pitch];
+  y = point.y;
+  x = point.x;
+  vkCamera = [(VKCameraController *)self vkCamera];
+  [vkCamera pitch];
   if (!self->_startingPitch.__engaged_)
   {
     self->_startingPitch.__engaged_ = 1;
@@ -244,9 +244,9 @@
   }
 }
 
-- (void)_executeStopRotatingWithFocusPoint:(CGPoint)a3
+- (void)_executeStopRotatingWithFocusPoint:(CGPoint)point
 {
-  [(VKUntetheredCameraController *)self gestureEnd:a3.x];
+  [(VKUntetheredCameraController *)self gestureEnd:point.x];
   v4 = *[(VKCameraController *)self runLoopController];
   if (v4)
   {
@@ -255,10 +255,10 @@
   }
 }
 
-- (void)_executeUpdateRotationWithFocusPoint:(CGPoint)a3 newValue:(double)a4
+- (void)_executeUpdateRotationWithFocusPoint:(CGPoint)point newValue:(double)value
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v20 = 0x3FF0000000000000;
   v19 = VKVectorZAxis;
   v21 = 1;
@@ -269,8 +269,8 @@
   p_startingYaw = &self->_startingYaw;
   if (!self->_startingYaw.__engaged_)
   {
-    v4 = [(VKCameraController *)self vkCamera];
-    [v4 yaw];
+    vkCamera = [(VKCameraController *)self vkCamera];
+    [vkCamera yaw];
     if (!self->_startingYaw.__engaged_)
     {
       self->_startingYaw.__engaged_ = 1;
@@ -288,16 +288,16 @@
       _Unwind_Resume(v16);
     }
 
-    v11 = fmod(3.14159265 - a4 + p_startingYaw->var0.__val_._value, 6.28318531);
+    v11 = fmod(3.14159265 - value + p_startingYaw->var0.__val_._value, 6.28318531);
     v18 = fmod(v11 + 6.28318531, 6.28318531) + -3.14159265;
-    v12 = [(VKCameraController *)self vkCamera];
-    [v12 pitch];
+    vkCamera2 = [(VKCameraController *)self vkCamera];
+    [vkCamera2 pitch];
     v17 = v13;
     [(VKUntetheredCameraController *)self rotateAboutPoint:&v19 newYaw:&v18 newPitch:&v17];
   }
 
-  v14 = [(VKCameraController *)self cameraDelegate];
-  [v14 mapLayerDidChangeVisibleRegion];
+  cameraDelegate = [(VKCameraController *)self cameraDelegate];
+  [cameraDelegate mapLayerDidChangeVisibleRegion];
 
   v15 = *[(VKCameraController *)self runLoopController];
   if (v15)
@@ -307,12 +307,12 @@
   }
 }
 
-- (void)_executeStartRotatingWithFocusPoint:(CGPoint)a3
+- (void)_executeStartRotatingWithFocusPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(VKCameraController *)self vkCamera];
-  [v6 yaw];
+  y = point.y;
+  x = point.x;
+  vkCamera = [(VKCameraController *)self vkCamera];
+  [vkCamera yaw];
   if (!self->_startingYaw.__engaged_)
   {
     self->_startingYaw.__engaged_ = 1;
@@ -334,9 +334,9 @@
   }
 }
 
-- (void)_executeStopPanningAtPoint:(CGPoint)a3
+- (void)_executeStopPanningAtPoint:(CGPoint)point
 {
-  [(VKUntetheredCameraController *)self gestureEnd:a3.x];
+  [(VKUntetheredCameraController *)self gestureEnd:point.x];
   v4 = *[(VKCameraController *)self runLoopController];
   if (v4)
   {
@@ -345,10 +345,10 @@
   }
 }
 
-- (void)_executeUpdatePanWithTranslation:(CGPoint)a3
+- (void)_executeUpdatePanWithTranslation:(CGPoint)translation
 {
-  y = a3.y;
-  x = a3.x;
+  y = translation.y;
+  x = translation.x;
   if (self->_startingScreenPointOpt.__engaged_)
   {
     [(VKUntetheredCameraController *)self updateGestureWithFocusPoint:self->_startingScreenPointOpt.var0.__val_.x, self->_startingScreenPointOpt.var0.__val_.y];
@@ -369,21 +369,21 @@
     v19 = v16;
     v17 = 1;
     [(VKUntetheredCameraController *)self setPreferredAvoidanceDirection:&v15 newPrefernce:1 allowReverse:0];
-    v7 = [(VKCameraController *)self vkCamera];
-    v8 = [(VKCameraController *)self vkCamera];
-    v9 = [v8 position];
+    vkCamera = [(VKCameraController *)self vkCamera];
+    vkCamera2 = [(VKCameraController *)self vkCamera];
+    position = [vkCamera2 position];
     for (j = 0; j != 24; j += 8)
     {
-      *(&v15 + j) = *(&v18 + j) + *(v9 + j);
+      *(&v15 + j) = *(&v18 + j) + *(position + j);
     }
 
     v13 = v15;
     v14 = v16;
-    [v7 setPosition:&v13];
+    [vkCamera setPosition:&v13];
   }
 
-  v11 = [(VKCameraController *)self cameraDelegate];
-  [v11 mapLayerDidChangeVisibleRegion];
+  cameraDelegate = [(VKCameraController *)self cameraDelegate];
+  [cameraDelegate mapLayerDidChangeVisibleRegion];
 
   v12 = *[(VKCameraController *)self runLoopController];
   if (v12)
@@ -393,9 +393,9 @@
   }
 }
 
-- (void)_executeStartPanningAtPoint:(CGPoint)a3 panAtStartPoint:(BOOL)a4
+- (void)_executeStartPanningAtPoint:(CGPoint)point panAtStartPoint:(BOOL)startPoint
 {
-  [(VKCameraController *)self scaledScreenPointForPoint:a4, a3.x, a3.y];
+  [(VKCameraController *)self scaledScreenPointForPoint:startPoint, point.x, point.y];
   [(VKUntetheredCameraController *)self updateGestureWithFocusPoint:?];
   v5 = *[(VKCameraController *)self runLoopController];
   if (v5)
@@ -405,9 +405,9 @@
   }
 }
 
-- (void)_executeStopPinchingWithFocusPoint:(CGPoint)a3
+- (void)_executeStopPinchingWithFocusPoint:(CGPoint)point
 {
-  [(VKUntetheredCameraController *)self gestureEnd:a3.x];
+  [(VKUntetheredCameraController *)self gestureEnd:point.x];
   v4 = *[(VKCameraController *)self runLoopController];
   if (v4)
   {
@@ -416,10 +416,10 @@
   }
 }
 
-- (void)_executeUpdatePinchWithFocusPoint:(CGPoint)a3 oldFactor:(double)a4 newFactor:(double)a5
+- (void)_executeUpdatePinchWithFocusPoint:(CGPoint)point oldFactor:(double)factor newFactor:(double)newFactor
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(VKCameraController *)self scaledScreenPointForPoint:?];
   [(VKUntetheredCameraController *)self updateGestureWithFocusPoint:?];
   [(VKUntetheredCameraController *)self getStartingGroundPointOpt];
@@ -427,10 +427,10 @@
   {
     v31 = v33;
     v32 = v34;
-    v10 = [(VKCameraController *)self vkCamera];
-    v11 = [v10 position];
-    v29 = *v11;
-    v30 = *(v11 + 16);
+    vkCamera = [(VKCameraController *)self vkCamera];
+    position = [vkCamera position];
+    v29 = *position;
+    v30 = *(position + 16);
 
     for (i = 0; i != 24; i += 8)
     {
@@ -440,7 +440,7 @@
     v13 = 0;
     v27 = v20;
     v28 = v21;
-    v14 = a5 / a4;
+    v14 = newFactor / factor;
     do
     {
       *(&v20 + v13) = *(&v27 + v13) * (1.0 / v14);
@@ -485,10 +485,10 @@
   }
 }
 
-- (void)_executeStartPinchingWithFocusPoint:(CGPoint)a3
+- (void)_executeStartPinchingWithFocusPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v7[0] = 0;
   v7[24] = 0;
   [(VKUntetheredCameraController *)self setPreferredAvoidanceDirection:v7 newPrefernce:1 allowReverse:1];
@@ -502,20 +502,20 @@
   }
 }
 
-- (void)_executeZoomToLevel:(double)a3 withFocusPoint:(CGPoint)a4
+- (void)_executeZoomToLevel:(double)level withFocusPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  [(VKCameraController *)self scaledScreenPointForPoint:a4.x, a4.y];
+  y = point.y;
+  x = point.x;
+  [(VKCameraController *)self scaledScreenPointForPoint:point.x, point.y];
   [(VKUntetheredCameraController *)self updateGestureWithFocusPoint:?];
   [(VKUntetheredCameraController *)self getStartingGroundPointOpt];
-  exp2(-a3);
+  exp2(-level);
   [(VKUntetheredCameraController *)self minHeight];
-  v8 = [(VKCameraController *)self vkCamera];
+  vkCamera = [(VKCameraController *)self vkCamera];
   [(VKCameraController *)self scaledScreenPointForPoint:x, y];
-  if (v8)
+  if (vkCamera)
   {
-    [v8 groundPointFromScreenPoint:? atGroundLevel:?];
+    [vkCamera groundPointFromScreenPoint:? atGroundLevel:?];
   }
 
   else
@@ -524,10 +524,10 @@
     v22 = 0u;
   }
 
-  v9 = [(VKCameraController *)self vkCamera];
-  v10 = [v9 position];
-  v11 = *v10;
-  v20 = *(v10 + 16);
+  vkCamera2 = [(VKCameraController *)self vkCamera];
+  position = [vkCamera2 position];
+  v11 = *position;
+  v20 = *(position + 16);
   v19 = v11;
 
   if (BYTE8(v22) == 1)
@@ -547,11 +547,11 @@
     }
   }
 
-  v13 = [(VKCameraController *)self vkCamera];
-  v14 = [v13 position];
+  vkCamera3 = [(VKCameraController *)self vkCamera];
+  position2 = [vkCamera3 position];
   for (i = 0; i != 24; i += 8)
   {
-    *(&v26 + i) = *(&v19 + i) - *(v14 + i);
+    *(&v26 + i) = *(&v19 + i) - *(position2 + i);
   }
 
   v16 = v26;
@@ -562,11 +562,11 @@
   [(VKUntetheredCameraController *)self setPosition:&v19];
 }
 
-- (void)_executeZoom:(double)a3 withFocusPoint:(CGPoint)a4 completionHandler:(id)a5
+- (void)_executeZoom:(double)zoom withFocusPoint:(CGPoint)point completionHandler:(id)handler
 {
-  y = a4.y;
-  x = a4.x;
-  v11 = a5;
+  y = point.y;
+  x = point.x;
+  handlerCopy = handler;
   [(VKCameraController *)self scaledScreenPointForPoint:x, y];
   [(VKUntetheredCameraController *)self updateGestureWithFocusPoint:?];
   [(VKUntetheredCameraController *)self getStartingGroundPointOpt];
@@ -576,18 +576,18 @@
   v49[2] = __78__VKUntetheredCameraController__executeZoom_withFocusPoint_completionHandler___block_invoke;
   v49[3] = &unk_1E7B3DE58;
   objc_copyWeak(&v51, &location);
-  v12 = v11;
+  v12 = handlerCopy;
   v50 = v12;
   v13 = MEMORY[0x1B8C62DA0](v49);
   v14 = v13;
   if (v55)
   {
-    v15 = [(VKCameraController *)self vkCamera];
-    v16 = [v15 position];
-    v47 = *v16;
-    v48 = *(v16 + 16);
+    vkCamera = [(VKCameraController *)self vkCamera];
+    position = [vkCamera position];
+    v47 = *position;
+    v48 = *(position + 16);
 
-    v17 = exp2(-a3);
+    v17 = exp2(-zoom);
     if ((v55 & 1) == 0)
     {
       v28 = std::__throw_bad_optional_access[abi:nn200100]();
@@ -634,11 +634,11 @@
     v40 = v37;
     if (v37 <= 1.0 && ([(VKUntetheredCameraController *)self minHeight], v21 >= v22))
     {
-      v23 = [(VKCameraController *)self vkCamera];
-      v24 = [v23 position];
+      vkCamera2 = [(VKCameraController *)self vkCamera];
+      position2 = [vkCamera2 position];
       for (i = 0; i != 24; i += 8)
       {
-        *(&v56 + i) = *(&v39 + i) - *(v24 + i);
+        *(&v56 + i) = *(&v39 + i) - *(position2 + i);
       }
 
       v36 = v56;
@@ -657,8 +657,8 @@
       v35 = v40;
       [(VKTimedAnimation *)v26 setStepHandler:&v29];
       [(VKAnimation *)v26 setCompletionHandler:v14, v29, v30, v31, v32];
-      v27 = [(VKCameraController *)self cameraDelegate];
-      [v27 willBeginAnimatingAccess];
+      cameraDelegate = [(VKCameraController *)self cameraDelegate];
+      [cameraDelegate willBeginAnimatingAccess];
 
       md::AnimationRunner::runAnimation([(VKCameraController *)self animationRunner], &v26->super);
       objc_destroyWeak(&v33);
@@ -733,14 +733,14 @@ void __78__VKUntetheredCameraController__executeZoom_withFocusPoint_completionHa
   }
 }
 
-- (void)executeStopPitchingWithFocusPoint:(CGPoint)a3
+- (void)executeStopPitchingWithFocusPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = +[VKDebugSettings sharedSettings];
-  v7 = [v6 cameraDebugSimplestCollisionGestures];
+  cameraDebugSimplestCollisionGestures = [v6 cameraDebugSimplestCollisionGestures];
 
-  if (v7)
+  if (cameraDebugSimplestCollisionGestures)
   {
 
     [(VKUntetheredCameraController *)self _executeStartPinchingWithFocusPoint:x, y];
@@ -755,36 +755,36 @@ void __78__VKUntetheredCameraController__executeZoom_withFocusPoint_completionHa
   }
 }
 
-- (void)executeUpdatePitchWithFocusPoint:(CGPoint)a3 degrees:(double)a4
+- (void)executeUpdatePitchWithFocusPoint:(CGPoint)point degrees:(double)degrees
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   self->_currentGesturingState = 3;
   v8 = +[VKDebugSettings sharedSettings];
-  v9 = [v8 cameraDebugSimplestCollisionGestures];
+  cameraDebugSimplestCollisionGestures = [v8 cameraDebugSimplestCollisionGestures];
 
-  if (v9)
+  if (cameraDebugSimplestCollisionGestures)
   {
 
-    [(VKUntetheredCameraController *)self _executeUpdatePitchWithFocusPoint:x degrees:y, a4];
+    [(VKUntetheredCameraController *)self _executeUpdatePitchWithFocusPoint:x degrees:y, degrees];
   }
 
   else
   {
     v10 = +[VKDebugSettings sharedSettings];
-    v11 = [v10 cameraCollisionGestures];
+    cameraCollisionGestures = [v10 cameraCollisionGestures];
 
-    if (v11)
+    if (cameraCollisionGestures)
     {
       [(VKUntetheredCameraController *)self updateCollisionAvoidanceStyle:3];
       [(VKUntetheredCameraController *)self getStartingGroundPointOpt];
       if (self->_currentClosestHit.__engaged_ && v34 == 1)
       {
-        v12 = [(VKCameraController *)self vkCamera];
-        v13 = [v12 position];
+        vkCamera = [(VKCameraController *)self vkCamera];
+        position = [vkCamera position];
         for (i = 0; i != 3; ++i)
         {
-          *(&v35 + i * 8) = self->_currentClosestHit.var0.__val_._e[i] - *(v13 + i * 8);
+          *(&v35 + i * 8) = self->_currentClosestHit.var0.__val_._e[i] - *(position + i * 8);
         }
 
         v15 = 0;
@@ -806,13 +806,13 @@ void __78__VKUntetheredCameraController__executeZoom_withFocusPoint_completionHa
           _Unwind_Resume(v29);
         }
 
-        v17 = [(VKCameraController *)self vkCamera];
-        v18 = [v17 position];
+        vkCamera2 = [(VKCameraController *)self vkCamera];
+        position2 = [vkCamera2 position];
         v19 = 0;
         v20 = sqrt(v16);
         do
         {
-          *(&v35 + v19) = *&v33[v19] - *(v18 + v19);
+          *(&v35 + v19) = *&v33[v19] - *(position2 + v19);
           v19 += 8;
         }
 
@@ -854,40 +854,40 @@ void __78__VKUntetheredCameraController__executeZoom_withFocusPoint_completionHa
 
     v30.receiver = self;
     v30.super_class = VKUntetheredCameraController;
-    [(VKScreenCameraController *)&v30 updatePitchWithFocusPoint:x degrees:y, a4];
+    [(VKScreenCameraController *)&v30 updatePitchWithFocusPoint:x degrees:y, degrees];
   }
 }
 
-- (void)executeUpdatePitchWithFocusPoint:(CGPoint)a3 translation:(double)a4
+- (void)executeUpdatePitchWithFocusPoint:(CGPoint)point translation:(double)translation
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   self->_currentGesturingState = 3;
   v8 = +[VKDebugSettings sharedSettings];
-  v9 = [v8 cameraDebugSimplestCollisionGestures];
+  cameraDebugSimplestCollisionGestures = [v8 cameraDebugSimplestCollisionGestures];
 
-  if (v9)
+  if (cameraDebugSimplestCollisionGestures)
   {
 
-    [(VKUntetheredCameraController *)self _executeUpdatePitchWithFocusPoint:x translation:y, a4];
+    [(VKUntetheredCameraController *)self _executeUpdatePitchWithFocusPoint:x translation:y, translation];
   }
 
   else
   {
     v10 = +[VKDebugSettings sharedSettings];
-    v11 = [v10 cameraCollisionGestures];
+    cameraCollisionGestures = [v10 cameraCollisionGestures];
 
-    if (v11)
+    if (cameraCollisionGestures)
     {
       [(VKUntetheredCameraController *)self updateCollisionAvoidanceStyle:3];
       [(VKUntetheredCameraController *)self getStartingGroundPointOpt];
       if (self->_currentClosestHit.__engaged_ && v34 == 1)
       {
-        v12 = [(VKCameraController *)self vkCamera];
-        v13 = [v12 position];
+        vkCamera = [(VKCameraController *)self vkCamera];
+        position = [vkCamera position];
         for (i = 0; i != 3; ++i)
         {
-          *(&v35 + i * 8) = self->_currentClosestHit.var0.__val_._e[i] - *(v13 + i * 8);
+          *(&v35 + i * 8) = self->_currentClosestHit.var0.__val_._e[i] - *(position + i * 8);
         }
 
         v15 = 0;
@@ -909,13 +909,13 @@ void __78__VKUntetheredCameraController__executeZoom_withFocusPoint_completionHa
           _Unwind_Resume(v29);
         }
 
-        v17 = [(VKCameraController *)self vkCamera];
-        v18 = [v17 position];
+        vkCamera2 = [(VKCameraController *)self vkCamera];
+        position2 = [vkCamera2 position];
         v19 = 0;
         v20 = sqrt(v16);
         do
         {
-          *(&v35 + v19) = *&v33[v19] - *(v18 + v19);
+          *(&v35 + v19) = *&v33[v19] - *(position2 + v19);
           v19 += 8;
         }
 
@@ -957,19 +957,19 @@ void __78__VKUntetheredCameraController__executeZoom_withFocusPoint_completionHa
 
     v30.receiver = self;
     v30.super_class = VKUntetheredCameraController;
-    [(VKScreenCameraController *)&v30 updatePitchWithFocusPoint:x translation:y, a4];
+    [(VKScreenCameraController *)&v30 updatePitchWithFocusPoint:x translation:y, translation];
   }
 }
 
-- (void)executeStartPitchingWithFocusPoint:(CGPoint)a3
+- (void)executeStartPitchingWithFocusPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   self->_currentGesturingState = 3;
   v6 = +[VKDebugSettings sharedSettings];
-  v7 = [v6 cameraDebugSimplestCollisionGestures];
+  cameraDebugSimplestCollisionGestures = [v6 cameraDebugSimplestCollisionGestures];
 
-  if (v7)
+  if (cameraDebugSimplestCollisionGestures)
   {
 
     [(VKUntetheredCameraController *)self _executeStartPitchingWithFocusPoint:x, y];
@@ -978,9 +978,9 @@ void __78__VKUntetheredCameraController__executeZoom_withFocusPoint_completionHa
   else
   {
     v8 = +[VKDebugSettings sharedSettings];
-    v9 = [v8 cameraCollisionGestures];
+    cameraCollisionGestures = [v8 cameraCollisionGestures];
 
-    if (v9)
+    if (cameraCollisionGestures)
     {
       [(VKUntetheredCameraController *)self updateCollisionAvoidanceStyle:3];
     }
@@ -991,14 +991,14 @@ void __78__VKUntetheredCameraController__executeZoom_withFocusPoint_completionHa
   }
 }
 
-- (void)executeStopRotatingWithFocusPoint:(CGPoint)a3
+- (void)executeStopRotatingWithFocusPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = +[VKDebugSettings sharedSettings];
-  v7 = [v6 cameraDebugSimplestCollisionGestures];
+  cameraDebugSimplestCollisionGestures = [v6 cameraDebugSimplestCollisionGestures];
 
-  if (v7)
+  if (cameraDebugSimplestCollisionGestures)
   {
 
     [(VKUntetheredCameraController *)self _executeStopRotatingWithFocusPoint:x, y];
@@ -1013,45 +1013,45 @@ void __78__VKUntetheredCameraController__executeZoom_withFocusPoint_completionHa
   }
 }
 
-- (void)executeUpdateRotationWithFocusPoint:(CGPoint)a3 newValue:(double)a4
+- (void)executeUpdateRotationWithFocusPoint:(CGPoint)point newValue:(double)value
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   self->_currentGesturingState = 4;
   v8 = +[VKDebugSettings sharedSettings];
-  v9 = [v8 cameraDebugSimplestCollisionGestures];
+  cameraDebugSimplestCollisionGestures = [v8 cameraDebugSimplestCollisionGestures];
 
-  if (v9)
+  if (cameraDebugSimplestCollisionGestures)
   {
 
-    [(VKUntetheredCameraController *)self _executeUpdateRotationWithFocusPoint:x newValue:y, a4];
+    [(VKUntetheredCameraController *)self _executeUpdateRotationWithFocusPoint:x newValue:y, value];
   }
 
   else
   {
     v10 = +[VKDebugSettings sharedSettings];
-    v11 = [v10 cameraCollisionGestures];
+    cameraCollisionGestures = [v10 cameraCollisionGestures];
 
-    if (v11)
+    if (cameraCollisionGestures)
     {
       [(VKUntetheredCameraController *)self updateCollisionAvoidanceStyle:4];
     }
 
     v12.receiver = self;
     v12.super_class = VKUntetheredCameraController;
-    [(VKScreenCameraController *)&v12 updateRotationWithFocusPoint:x newValue:y, a4];
+    [(VKScreenCameraController *)&v12 updateRotationWithFocusPoint:x newValue:y, value];
   }
 }
 
-- (void)executeStartRotatingWithFocusPoint:(CGPoint)a3
+- (void)executeStartRotatingWithFocusPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   self->_currentGesturingState = 4;
   v6 = +[VKDebugSettings sharedSettings];
-  v7 = [v6 cameraDebugSimplestCollisionGestures];
+  cameraDebugSimplestCollisionGestures = [v6 cameraDebugSimplestCollisionGestures];
 
-  if (v7)
+  if (cameraDebugSimplestCollisionGestures)
   {
 
     [(VKUntetheredCameraController *)self _executeStartRotatingWithFocusPoint:x, y];
@@ -1060,9 +1060,9 @@ void __78__VKUntetheredCameraController__executeZoom_withFocusPoint_completionHa
   else
   {
     v8 = +[VKDebugSettings sharedSettings];
-    v9 = [v8 cameraCollisionGestures];
+    cameraCollisionGestures = [v8 cameraCollisionGestures];
 
-    if (v9)
+    if (cameraCollisionGestures)
     {
       [(VKUntetheredCameraController *)self updateCollisionAvoidanceStyle:4];
     }
@@ -1073,14 +1073,14 @@ void __78__VKUntetheredCameraController__executeZoom_withFocusPoint_completionHa
   }
 }
 
-- (void)executeStopPanningAtPoint:(CGPoint)a3
+- (void)executeStopPanningAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = +[VKDebugSettings sharedSettings];
-  v7 = [v6 cameraDebugSimplestCollisionGestures];
+  cameraDebugSimplestCollisionGestures = [v6 cameraDebugSimplestCollisionGestures];
 
-  if (v7)
+  if (cameraDebugSimplestCollisionGestures)
   {
 
     [(VKUntetheredCameraController *)self _executeStopPanningAtPoint:x, y];
@@ -1095,19 +1095,19 @@ void __78__VKUntetheredCameraController__executeZoom_withFocusPoint_completionHa
   }
 }
 
-- (void)executeUpdatePanWithTranslation:(CGPoint)a3
+- (void)executeUpdatePanWithTranslation:(CGPoint)translation
 {
-  y = a3.y;
-  x = a3.x;
+  y = translation.y;
+  x = translation.x;
   if ((self->_currentGesturingState - 2) >= 3)
   {
     self->_currentGesturingState = 1;
   }
 
   v6 = +[VKDebugSettings sharedSettings];
-  v7 = [v6 cameraDebugSimplestCollisionGestures];
+  cameraDebugSimplestCollisionGestures = [v6 cameraDebugSimplestCollisionGestures];
 
-  if (v7)
+  if (cameraDebugSimplestCollisionGestures)
   {
 
     [(VKUntetheredCameraController *)self _executeUpdatePanWithTranslation:x, y];
@@ -1116,9 +1116,9 @@ void __78__VKUntetheredCameraController__executeZoom_withFocusPoint_completionHa
   else
   {
     v8 = +[VKDebugSettings sharedSettings];
-    v9 = [v8 cameraCollisionGestures];
+    cameraCollisionGestures = [v8 cameraCollisionGestures];
 
-    if (v9)
+    if (cameraCollisionGestures)
     {
       [(VKUntetheredCameraController *)self updateCollisionAvoidanceStyle:1];
     }
@@ -1129,49 +1129,49 @@ void __78__VKUntetheredCameraController__executeZoom_withFocusPoint_completionHa
   }
 }
 
-- (void)executeStartPanningAtPoint:(CGPoint)a3 panAtStartPoint:(BOOL)a4
+- (void)executeStartPanningAtPoint:(CGPoint)point panAtStartPoint:(BOOL)startPoint
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
+  startPointCopy = startPoint;
+  y = point.y;
+  x = point.x;
   if ((self->_currentGesturingState - 2) >= 3)
   {
     self->_currentGesturingState = 1;
   }
 
   v8 = +[VKDebugSettings sharedSettings];
-  v9 = [v8 cameraDebugSimplestCollisionGestures];
+  cameraDebugSimplestCollisionGestures = [v8 cameraDebugSimplestCollisionGestures];
 
-  if (v9)
+  if (cameraDebugSimplestCollisionGestures)
   {
 
-    [(VKUntetheredCameraController *)self _executeStartPanningAtPoint:v4 panAtStartPoint:x, y];
+    [(VKUntetheredCameraController *)self _executeStartPanningAtPoint:startPointCopy panAtStartPoint:x, y];
   }
 
   else
   {
     v10 = +[VKDebugSettings sharedSettings];
-    v11 = [v10 cameraCollisionGestures];
+    cameraCollisionGestures = [v10 cameraCollisionGestures];
 
-    if (v11)
+    if (cameraCollisionGestures)
     {
       [(VKUntetheredCameraController *)self updateCollisionAvoidanceStyle:1];
     }
 
     v12.receiver = self;
     v12.super_class = VKUntetheredCameraController;
-    [(VKScreenCameraController *)&v12 startPanningAtPoint:v4 panAtStartPoint:x, y];
+    [(VKScreenCameraController *)&v12 startPanningAtPoint:startPointCopy panAtStartPoint:x, y];
   }
 }
 
-- (void)executeStopPinchingWithFocusPoint:(CGPoint)a3
+- (void)executeStopPinchingWithFocusPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = +[VKDebugSettings sharedSettings];
-  v7 = [v6 cameraDebugSimplestCollisionGestures];
+  cameraDebugSimplestCollisionGestures = [v6 cameraDebugSimplestCollisionGestures];
 
-  if (v7)
+  if (cameraDebugSimplestCollisionGestures)
   {
 
     [(VKUntetheredCameraController *)self _executeStopPinchingWithFocusPoint:x, y];
@@ -1186,33 +1186,33 @@ void __78__VKUntetheredCameraController__executeZoom_withFocusPoint_completionHa
   }
 }
 
-- (void)executeUpdatePinchWithFocusPoint:(CGPoint)a3 oldFactor:(double)a4 newFactor:(double)a5
+- (void)executeUpdatePinchWithFocusPoint:(CGPoint)point oldFactor:(double)factor newFactor:(double)newFactor
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   self->_currentGesturingState = 2;
   v10 = +[VKDebugSettings sharedSettings];
-  v11 = [v10 cameraDebugSimplestCollisionGestures];
+  cameraDebugSimplestCollisionGestures = [v10 cameraDebugSimplestCollisionGestures];
 
-  if (v11)
+  if (cameraDebugSimplestCollisionGestures)
   {
 
-    [(VKUntetheredCameraController *)self _executeUpdatePinchWithFocusPoint:x oldFactor:y newFactor:a4, a5];
+    [(VKUntetheredCameraController *)self _executeUpdatePinchWithFocusPoint:x oldFactor:y newFactor:factor, newFactor];
   }
 
   else
   {
     v12 = +[VKDebugSettings sharedSettings];
-    v13 = [v12 cameraCollisionGestures];
+    cameraCollisionGestures = [v12 cameraCollisionGestures];
 
-    if (v13)
+    if (cameraCollisionGestures)
     {
       [(VKUntetheredCameraController *)self updateCollisionAvoidanceStyle:2];
-      v14 = a5 / a4;
-      if (a5 / a4 > 1.0)
+      v14 = newFactor / factor;
+      if (newFactor / factor > 1.0)
       {
-        v15 = [(VKCameraController *)self vkCamera];
-        v16 = *([v15 position] + 16);
+        vkCamera = [(VKCameraController *)self vkCamera];
+        v16 = *([vkCamera position] + 16);
         [(VKUntetheredCameraController *)self minHeight];
         if (v16 / v14 <= v17)
         {
@@ -1225,7 +1225,7 @@ void __78__VKUntetheredCameraController__executeZoom_withFocusPoint_completionHa
 
           if (v19 > 1.0e-12)
           {
-            [(VKScreenCameraController *)&v22 updatePinchWithFocusPoint:x oldFactor:y newFactor:a4, a5, v20.receiver, v20.super_class, v21.receiver, v21.super_class, self, VKUntetheredCameraController];
+            [(VKScreenCameraController *)&v22 updatePinchWithFocusPoint:x oldFactor:y newFactor:factor, newFactor, v20.receiver, v20.super_class, v21.receiver, v21.super_class, self, VKUntetheredCameraController];
             return;
           }
         }
@@ -1233,26 +1233,26 @@ void __78__VKUntetheredCameraController__executeZoom_withFocusPoint_completionHa
 
       if (v14 < 1.0)
       {
-        [(VKScreenCameraController *)&v21 updatePinchWithFocusPoint:x oldFactor:y newFactor:a4, a5, v20.receiver, v20.super_class, self, VKUntetheredCameraController, v22.receiver, v22.super_class];
+        [(VKScreenCameraController *)&v21 updatePinchWithFocusPoint:x oldFactor:y newFactor:factor, newFactor, v20.receiver, v20.super_class, self, VKUntetheredCameraController, v22.receiver, v22.super_class];
       }
     }
 
     else
     {
-      [(VKScreenCameraController *)&v20 updatePinchWithFocusPoint:x oldFactor:y newFactor:a4, a5, self, VKUntetheredCameraController, v21.receiver, v21.super_class, v22.receiver, v22.super_class];
+      [(VKScreenCameraController *)&v20 updatePinchWithFocusPoint:x oldFactor:y newFactor:factor, newFactor, self, VKUntetheredCameraController, v21.receiver, v21.super_class, v22.receiver, v22.super_class];
     }
   }
 }
 
-- (void)executeStartPinchingWithFocusPoint:(CGPoint)a3
+- (void)executeStartPinchingWithFocusPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   self->_currentGesturingState = 2;
   v6 = +[VKDebugSettings sharedSettings];
-  v7 = [v6 cameraDebugSimplestCollisionGestures];
+  cameraDebugSimplestCollisionGestures = [v6 cameraDebugSimplestCollisionGestures];
 
-  if (v7)
+  if (cameraDebugSimplestCollisionGestures)
   {
 
     [(VKUntetheredCameraController *)self _executeStartPinchingWithFocusPoint:x, y];
@@ -1261,9 +1261,9 @@ void __78__VKUntetheredCameraController__executeZoom_withFocusPoint_completionHa
   else
   {
     v8 = +[VKDebugSettings sharedSettings];
-    v9 = [v8 cameraCollisionGestures];
+    cameraCollisionGestures = [v8 cameraCollisionGestures];
 
-    if (v9)
+    if (cameraCollisionGestures)
     {
       [(VKUntetheredCameraController *)self updateCollisionAvoidanceStyle:2];
     }
@@ -1274,56 +1274,56 @@ void __78__VKUntetheredCameraController__executeZoom_withFocusPoint_completionHa
   }
 }
 
-- (void)executeZoomToLevel:(double)a3 withFocusPoint:(CGPoint)a4
+- (void)executeZoomToLevel:(double)level withFocusPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   self->_currentGesturingState = 6;
   v8 = +[VKDebugSettings sharedSettings];
-  v9 = [v8 cameraDebugSimplestCollisionGestures];
+  cameraDebugSimplestCollisionGestures = [v8 cameraDebugSimplestCollisionGestures];
 
-  if (v9)
+  if (cameraDebugSimplestCollisionGestures)
   {
 
-    [(VKUntetheredCameraController *)self _executeZoomToLevel:a3 withFocusPoint:x, y];
+    [(VKUntetheredCameraController *)self _executeZoomToLevel:level withFocusPoint:x, y];
   }
 
   else
   {
     v10 = +[VKDebugSettings sharedSettings];
-    v11 = [v10 cameraCollisionGestures];
+    cameraCollisionGestures = [v10 cameraCollisionGestures];
 
-    if (v11)
+    if (cameraCollisionGestures)
     {
       [(VKUntetheredCameraController *)self updateCollisionAvoidanceStyle:6];
     }
 
     v12.receiver = self;
     v12.super_class = VKUntetheredCameraController;
-    [(VKMapCameraController *)&v12 zoomToLevel:a3 withFocusPoint:x, y];
+    [(VKMapCameraController *)&v12 zoomToLevel:level withFocusPoint:x, y];
   }
 }
 
-- (void)executeZoom:(double)a3 withFocusPoint:(CGPoint)a4 completionHandler:(id)a5
+- (void)executeZoom:(double)zoom withFocusPoint:(CGPoint)point completionHandler:(id)handler
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a5;
+  y = point.y;
+  x = point.x;
+  handlerCopy = handler;
   self->_currentGesturingState = 5;
   v10 = +[VKDebugSettings sharedSettings];
-  v11 = [v10 cameraDebugSimplestCollisionGestures];
+  cameraDebugSimplestCollisionGestures = [v10 cameraDebugSimplestCollisionGestures];
 
-  if (v11)
+  if (cameraDebugSimplestCollisionGestures)
   {
-    [(VKUntetheredCameraController *)self _executeZoom:v9 withFocusPoint:a3 completionHandler:x, y];
+    [(VKUntetheredCameraController *)self _executeZoom:handlerCopy withFocusPoint:zoom completionHandler:x, y];
   }
 
   else
   {
     v12 = +[VKDebugSettings sharedSettings];
-    v13 = [v12 cameraCollisionGestures];
+    cameraCollisionGestures = [v12 cameraCollisionGestures];
 
-    if (v13)
+    if (cameraCollisionGestures)
     {
       [(VKUntetheredCameraController *)self updateCollisionAvoidanceStyle:5];
     }
@@ -1334,10 +1334,10 @@ void __78__VKUntetheredCameraController__executeZoom_withFocusPoint_completionHa
     v15[2] = __77__VKUntetheredCameraController_executeZoom_withFocusPoint_completionHandler___block_invoke;
     v15[3] = &unk_1E7B39AB0;
     objc_copyWeak(&v17, &location);
-    v16 = v9;
+    v16 = handlerCopy;
     v14.receiver = self;
     v14.super_class = VKUntetheredCameraController;
-    [(VKMapCameraController *)&v14 zoom:v15 withFocusPoint:a3 completionHandler:x, y];
+    [(VKMapCameraController *)&v14 zoom:v15 withFocusPoint:zoom completionHandler:x, y];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
@@ -1361,58 +1361,58 @@ void __77__VKUntetheredCameraController_executeZoom_withFocusPoint_completionHan
   }
 }
 
-- (void)updateCollisionAvoidanceStyle:(int)a3
+- (void)updateCollisionAvoidanceStyle:(int)style
 {
   v5 = +[VKDebugSettings sharedSettings];
   v6 = v5;
-  if (a3 > 3)
+  if (style > 3)
   {
-    if (a3 == 4)
+    if (style == 4)
     {
-      v7 = [v5 rotateCollisionResponseStyle];
+      rotateCollisionResponseStyle = [v5 rotateCollisionResponseStyle];
       goto LABEL_15;
     }
 
-    if (a3 != 5)
+    if (style != 5)
     {
-      if (a3 == 6)
+      if (style == 6)
       {
-        v7 = [v5 zoomToLevelCollisionResponseStyle];
+        rotateCollisionResponseStyle = [v5 zoomToLevelCollisionResponseStyle];
         goto LABEL_15;
       }
 
       goto LABEL_12;
     }
 
-    v7 = [v5 zoomCollisionResponseStyle];
+    rotateCollisionResponseStyle = [v5 zoomCollisionResponseStyle];
   }
 
   else
   {
-    if (a3 == 1)
+    if (style == 1)
     {
-      v7 = [v5 panCollisionResponseStyle];
+      rotateCollisionResponseStyle = [v5 panCollisionResponseStyle];
       goto LABEL_15;
     }
 
-    if (a3 != 2)
+    if (style != 2)
     {
-      if (a3 == 3)
+      if (style == 3)
       {
-        v7 = [v5 pitchCollisionResponseStyle];
+        rotateCollisionResponseStyle = [v5 pitchCollisionResponseStyle];
         goto LABEL_15;
       }
 
 LABEL_12:
-      v7 = [v5 gestureEndCollisionResponseStyle];
+      rotateCollisionResponseStyle = [v5 gestureEndCollisionResponseStyle];
       goto LABEL_15;
     }
 
-    v7 = [v5 pinchCollisionResponseStyle];
+    rotateCollisionResponseStyle = [v5 pinchCollisionResponseStyle];
   }
 
 LABEL_15:
-  v8 = v7;
+  v8 = rotateCollisionResponseStyle;
 
   if (v8 > 2u)
   {
@@ -1474,8 +1474,8 @@ LABEL_35:
   [(VKUntetheredCameraController *)self getStartingGroundPointOpt];
   if (v13 == 1)
   {
-    v3 = [(VKCameraController *)self vkCamera];
-    v4 = [v3 position];
+    vkCamera = [(VKCameraController *)self vkCamera];
+    position = [vkCamera position];
     if ((v13 & 1) == 0)
     {
       v7 = std::__throw_bad_optional_access[abi:nn200100]();
@@ -1485,7 +1485,7 @@ LABEL_35:
 
     for (i = 0; i != 24; i += 8)
     {
-      *(&v9 + i) = *(v4 + i) - *&v12[i];
+      *(&v9 + i) = *(position + i) - *&v12[i];
     }
 
     v6 = v10;
@@ -1498,19 +1498,19 @@ LABEL_35:
   }
 }
 
-- (void)setPreferredAvoidanceDirection:(const void *)a3 newPrefernce:(BOOL)a4 allowReverse:(BOOL)a5
+- (void)setPreferredAvoidanceDirection:(const void *)direction newPrefernce:(BOOL)prefernce allowReverse:(BOOL)reverse
 {
-  if (!a4 && self->_preferredAvoidanceDirection.__engaged_)
+  if (!prefernce && self->_preferredAvoidanceDirection.__engaged_)
   {
     return;
   }
 
-  v6 = *(a3 + 24);
+  v6 = *(direction + 24);
   if (v6 == 1)
   {
-    v24 = *(a3 + 2);
-    v23 = *a3;
-    if (a5 && v24 < 0.0)
+    v24 = *(direction + 2);
+    v23 = *direction;
+    if (reverse && v24 < 0.0)
     {
       for (i = 0; i != 24; i += 8)
       {
@@ -1553,8 +1553,8 @@ LABEL_20:
       return;
     }
 
-    v22 = *a3;
-    self->_preferredAvoidanceDirection.var0.__val_._e[2] = *(a3 + 2);
+    v22 = *direction;
+    self->_preferredAvoidanceDirection.var0.__val_._e[2] = *(direction + 2);
     *&p_preferredAvoidanceDirection->var0.__null_state_ = v22;
 LABEL_19:
     v21 = 1;
@@ -1565,7 +1565,7 @@ LABEL_19:
   {
     for (j = 0; j != 3; ++j)
     {
-      p_preferredAvoidanceDirection->var0.__val_._e[j] = *(a3 + j * 8);
+      p_preferredAvoidanceDirection->var0.__val_._e[j] = *(direction + j * 8);
     }
   }
 }
@@ -1653,10 +1653,10 @@ LABEL_19:
   }
 }
 
-- (void)updateGestureWithFocusPoint:(CGPoint)a3
+- (void)updateGestureWithFocusPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(VKUntetheredCameraController *)self setGestureInitiatedMovement:1];
   engaged = self->_startingScreenPointOpt.__engaged_;
   self->_startingScreenPointOpt.var0.__val_.x = x;
@@ -1667,9 +1667,9 @@ LABEL_19:
   }
 
   v7 = +[VKDebugSettings sharedSettings];
-  v8 = [v7 cameraDebugSimplestCollisionGestures];
+  cameraDebugSimplestCollisionGestures = [v7 cameraDebugSimplestCollisionGestures];
 
-  if (v8)
+  if (cameraDebugSimplestCollisionGestures)
   {
 
     [(VKUntetheredCameraController *)self updateCurrentGesturingCollisionPoint];
@@ -1701,10 +1701,10 @@ LABEL_19:
   return self;
 }
 
-- (CGPoint)currentScreenPointFromTranslation:(CGPoint)a3
+- (CGPoint)currentScreenPointFromTranslation:(CGPoint)translation
 {
-  y = a3.y;
-  x = a3.x;
+  y = translation.y;
+  x = translation.x;
   if (self->_startingScreenPointOpt.__engaged_)
   {
     v7 = self->_startingScreenPointOpt.var0.__val_.x;
@@ -1718,12 +1718,12 @@ LABEL_19:
     v6 = v9;
   }
 
-  v10 = [(VKCameraController *)self canvas];
-  [v10 size];
+  canvas = [(VKCameraController *)self canvas];
+  [canvas size];
   v12 = v11;
 
-  v13 = [(VKCameraController *)self canvas];
-  [v13 size];
+  canvas2 = [(VKCameraController *)self canvas];
+  [canvas2 size];
   v15 = v14;
 
   v16 = x / v12 + v7;
@@ -1741,9 +1741,9 @@ LABEL_19:
   }
 
   v3 = +[VKDebugSettings sharedSettings];
-  v4 = [v3 drawCollisionHitPoints];
+  drawCollisionHitPoints = [v3 drawCollisionHitPoints];
 
-  if ((v4 & 1) == 0 && self->_startingCollisionAndGroundPointOpt.__engaged_)
+  if ((drawCollisionHitPoints & 1) == 0 && self->_startingCollisionAndGroundPointOpt.__engaged_)
   {
     self->_startingCollisionAndGroundPointOpt.__engaged_ = 0;
   }
@@ -1766,45 +1766,45 @@ LABEL_19:
   self->_currentGesturingState = 7;
 }
 
-- (void)setCenterCoordinate3D:(id)a3 altitude:(double)a4 yaw:(double)a5 pitch:(double)a6 duration:(double)a7 animationStyle:(int64_t)a8 timingCurve:(id)a9 completion:(id)a10
+- (void)setCenterCoordinate3D:(id)d altitude:(double)altitude yaw:(double)yaw pitch:(double)pitch duration:(double)duration animationStyle:(int64_t)style timingCurve:(id)curve completion:(id)self0
 {
-  var2 = a3.var2;
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v20 = a9;
-  v21 = a10;
+  var2 = d.var2;
+  var1 = d.var1;
+  var0 = d.var0;
+  curveCopy = curve;
+  completionCopy = completion;
   [(VKUntetheredCameraController *)self setGestureInitiatedMovement:0];
   v22.receiver = self;
   v22.super_class = VKUntetheredCameraController;
-  [(VKMapCameraController *)&v22 setCenterCoordinate3D:a8 altitude:v20 yaw:v21 pitch:var0 duration:var1 animationStyle:var2 timingCurve:a4 completion:a5, a6, a7];
+  [(VKMapCameraController *)&v22 setCenterCoordinate3D:style altitude:curveCopy yaw:completionCopy pitch:var0 duration:var1 animationStyle:var2 timingCurve:altitude completion:yaw, pitch, duration];
 }
 
-- (void)setCenterCoordinate:(id)a3 altitude:(double)a4 yaw:(double)a5 pitch:(double)a6 duration:(double)a7 animationStyle:(int64_t)a8 timingCurve:(id)a9 completion:(id)a10
+- (void)setCenterCoordinate:(id)coordinate altitude:(double)altitude yaw:(double)yaw pitch:(double)pitch duration:(double)duration animationStyle:(int64_t)style timingCurve:(id)curve completion:(id)self0
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v19 = a9;
-  v20 = a10;
+  var1 = coordinate.var1;
+  var0 = coordinate.var0;
+  curveCopy = curve;
+  completionCopy = completion;
   [(VKUntetheredCameraController *)self setGestureInitiatedMovement:0];
   v21.receiver = self;
   v21.super_class = VKUntetheredCameraController;
-  [(VKMapCameraController *)&v21 setCenterCoordinate:a8 altitude:v19 yaw:v20 pitch:var0 duration:var1 animationStyle:a4 timingCurve:a5 completion:a6, a7];
+  [(VKMapCameraController *)&v21 setCenterCoordinate:style altitude:curveCopy yaw:completionCopy pitch:var0 duration:var1 animationStyle:altitude timingCurve:yaw completion:pitch, duration];
 }
 
-- (void)setMapRegion:(id)a3 pitch:(double)a4 yaw:(double)a5 duration:(double)a6 timingCurve:(id)a7 completion:(id)a8
+- (void)setMapRegion:(id)region pitch:(double)pitch yaw:(double)yaw duration:(double)duration timingCurve:(id)curve completion:(id)completion
 {
-  v14 = a3;
-  v15 = a7;
-  v16 = a8;
+  regionCopy = region;
+  curveCopy = curve;
+  completionCopy = completion;
   [(VKUntetheredCameraController *)self setGestureInitiatedMovement:0];
   v17.receiver = self;
   v17.super_class = VKUntetheredCameraController;
-  [(VKMapCameraController *)&v17 setMapRegion:v14 pitch:v15 yaw:v16 duration:a4 timingCurve:a5 completion:a6];
+  [(VKMapCameraController *)&v17 setMapRegion:regionCopy pitch:curveCopy yaw:completionCopy duration:pitch timingCurve:yaw completion:duration];
 }
 
-- (void)setGestureInitiatedMovement:(BOOL)a3
+- (void)setGestureInitiatedMovement:(BOOL)movement
 {
-  if (a3)
+  if (movement)
   {
     if (self->_currentGesturingState)
     {
@@ -1831,9 +1831,9 @@ LABEL_6:
   }
 }
 
-- (void)stopPitchingWithFocusPoint:(CGPoint)a3
+- (void)stopPitchingWithFocusPoint:(CGPoint)point
 {
-  v4[0] = a3;
+  v4[0] = point;
   v5 = 14;
   v6[0] = 14;
   std::__variant_detail::__move_constructor<std::__variant_detail::__traits<md::cc::Zoom,md::cc::ZoomToLevel,md::cc::StartPinchingWithFocusPoint,md::cc::UpdatePinchWithFocusPoint,md::cc::StopPinchingWithFocusPoint,md::cc::StartPanningAtPoint,md::cc::UpdatePanWithTranslation,md::cc::StopPanningAtPoint,md::cc::StartRotatingWithFocusPoint,md::cc::UpdateRotationWithFocusPoint,md::cc::StopRotatingWithFocusPoint,md::cc::StartPitchingWithFocusPoint,md::cc::UpdatePitchWithFocusPoint,md::cc::updatePitchWithFocusPointDegrees,md::cc::StopPitchingWithFocusPoint>,(std::__variant_detail::_Trait)1>::__move_constructor[abi:nn200100](v7, v4);
@@ -1850,13 +1850,13 @@ LABEL_6:
   }
 }
 
-- (void)updatePitchWithFocusPoint:(CGPoint)a3 degrees:(double)a4
+- (void)updatePitchWithFocusPoint:(CGPoint)point degrees:(double)degrees
 {
-  v5 = a3;
-  v6 = a4;
+  pointCopy = point;
+  degreesCopy = degrees;
   v7 = 13;
   v8[0] = 13;
-  std::__variant_detail::__move_constructor<std::__variant_detail::__traits<md::cc::Zoom,md::cc::ZoomToLevel,md::cc::StartPinchingWithFocusPoint,md::cc::UpdatePinchWithFocusPoint,md::cc::StopPinchingWithFocusPoint,md::cc::StartPanningAtPoint,md::cc::UpdatePanWithTranslation,md::cc::StopPanningAtPoint,md::cc::StartRotatingWithFocusPoint,md::cc::UpdateRotationWithFocusPoint,md::cc::StopRotatingWithFocusPoint,md::cc::StartPitchingWithFocusPoint,md::cc::UpdatePitchWithFocusPoint,md::cc::updatePitchWithFocusPointDegrees,md::cc::StopPitchingWithFocusPoint>,(std::__variant_detail::_Trait)1>::__move_constructor[abi:nn200100](v9, &v5);
+  std::__variant_detail::__move_constructor<std::__variant_detail::__traits<md::cc::Zoom,md::cc::ZoomToLevel,md::cc::StartPinchingWithFocusPoint,md::cc::UpdatePinchWithFocusPoint,md::cc::StopPinchingWithFocusPoint,md::cc::StartPanningAtPoint,md::cc::UpdatePanWithTranslation,md::cc::StopPanningAtPoint,md::cc::StartRotatingWithFocusPoint,md::cc::UpdateRotationWithFocusPoint,md::cc::StopRotatingWithFocusPoint,md::cc::StartPitchingWithFocusPoint,md::cc::UpdatePitchWithFocusPoint,md::cc::updatePitchWithFocusPointDegrees,md::cc::StopPitchingWithFocusPoint>,(std::__variant_detail::_Trait)1>::__move_constructor[abi:nn200100](v9, &pointCopy);
   std::vector<std::pair<md::cc::CameraCommandType,std::variant<md::cc::Zoom,md::cc::ZoomToLevel,md::cc::StartPinchingWithFocusPoint,md::cc::UpdatePinchWithFocusPoint,md::cc::StopPinchingWithFocusPoint,md::cc::StartPanningAtPoint,md::cc::UpdatePanWithTranslation,md::cc::StopPanningAtPoint,md::cc::StartRotatingWithFocusPoint,md::cc::UpdateRotationWithFocusPoint,md::cc::StopRotatingWithFocusPoint,md::cc::StartPitchingWithFocusPoint,md::cc::UpdatePitchWithFocusPoint,md::cc::updatePitchWithFocusPointDegrees,md::cc::StopPitchingWithFocusPoint>>>::push_back[abi:nn200100](&self->_commands, v8);
   if (v10 != -1)
   {
@@ -1866,17 +1866,17 @@ LABEL_6:
   v10 = -1;
   if (v7 != -1)
   {
-    (off_1F2A2F978[v7])(&v11, &v5);
+    (off_1F2A2F978[v7])(&v11, &pointCopy);
   }
 }
 
-- (void)updatePitchWithFocusPoint:(CGPoint)a3 translation:(double)a4
+- (void)updatePitchWithFocusPoint:(CGPoint)point translation:(double)translation
 {
-  v5 = a3;
-  v6 = a4;
+  pointCopy = point;
+  translationCopy = translation;
   v7 = 12;
   v8[0] = 12;
-  std::__variant_detail::__move_constructor<std::__variant_detail::__traits<md::cc::Zoom,md::cc::ZoomToLevel,md::cc::StartPinchingWithFocusPoint,md::cc::UpdatePinchWithFocusPoint,md::cc::StopPinchingWithFocusPoint,md::cc::StartPanningAtPoint,md::cc::UpdatePanWithTranslation,md::cc::StopPanningAtPoint,md::cc::StartRotatingWithFocusPoint,md::cc::UpdateRotationWithFocusPoint,md::cc::StopRotatingWithFocusPoint,md::cc::StartPitchingWithFocusPoint,md::cc::UpdatePitchWithFocusPoint,md::cc::updatePitchWithFocusPointDegrees,md::cc::StopPitchingWithFocusPoint>,(std::__variant_detail::_Trait)1>::__move_constructor[abi:nn200100](v9, &v5);
+  std::__variant_detail::__move_constructor<std::__variant_detail::__traits<md::cc::Zoom,md::cc::ZoomToLevel,md::cc::StartPinchingWithFocusPoint,md::cc::UpdatePinchWithFocusPoint,md::cc::StopPinchingWithFocusPoint,md::cc::StartPanningAtPoint,md::cc::UpdatePanWithTranslation,md::cc::StopPanningAtPoint,md::cc::StartRotatingWithFocusPoint,md::cc::UpdateRotationWithFocusPoint,md::cc::StopRotatingWithFocusPoint,md::cc::StartPitchingWithFocusPoint,md::cc::UpdatePitchWithFocusPoint,md::cc::updatePitchWithFocusPointDegrees,md::cc::StopPitchingWithFocusPoint>,(std::__variant_detail::_Trait)1>::__move_constructor[abi:nn200100](v9, &pointCopy);
   std::vector<std::pair<md::cc::CameraCommandType,std::variant<md::cc::Zoom,md::cc::ZoomToLevel,md::cc::StartPinchingWithFocusPoint,md::cc::UpdatePinchWithFocusPoint,md::cc::StopPinchingWithFocusPoint,md::cc::StartPanningAtPoint,md::cc::UpdatePanWithTranslation,md::cc::StopPanningAtPoint,md::cc::StartRotatingWithFocusPoint,md::cc::UpdateRotationWithFocusPoint,md::cc::StopRotatingWithFocusPoint,md::cc::StartPitchingWithFocusPoint,md::cc::UpdatePitchWithFocusPoint,md::cc::updatePitchWithFocusPointDegrees,md::cc::StopPitchingWithFocusPoint>>>::push_back[abi:nn200100](&self->_commands, v8);
   if (v10 != -1)
   {
@@ -1886,13 +1886,13 @@ LABEL_6:
   v10 = -1;
   if (v7 != -1)
   {
-    (off_1F2A2F978[v7])(&v11, &v5);
+    (off_1F2A2F978[v7])(&v11, &pointCopy);
   }
 }
 
-- (void)startPitchingWithFocusPoint:(CGPoint)a3
+- (void)startPitchingWithFocusPoint:(CGPoint)point
 {
-  v4[0] = a3;
+  v4[0] = point;
   v5 = 11;
   v6[0] = 11;
   std::__variant_detail::__move_constructor<std::__variant_detail::__traits<md::cc::Zoom,md::cc::ZoomToLevel,md::cc::StartPinchingWithFocusPoint,md::cc::UpdatePinchWithFocusPoint,md::cc::StopPinchingWithFocusPoint,md::cc::StartPanningAtPoint,md::cc::UpdatePanWithTranslation,md::cc::StopPanningAtPoint,md::cc::StartRotatingWithFocusPoint,md::cc::UpdateRotationWithFocusPoint,md::cc::StopRotatingWithFocusPoint,md::cc::StartPitchingWithFocusPoint,md::cc::UpdatePitchWithFocusPoint,md::cc::updatePitchWithFocusPointDegrees,md::cc::StopPitchingWithFocusPoint>,(std::__variant_detail::_Trait)1>::__move_constructor[abi:nn200100](v7, v4);
@@ -1909,9 +1909,9 @@ LABEL_6:
   }
 }
 
-- (void)stopRotatingWithFocusPoint:(CGPoint)a3
+- (void)stopRotatingWithFocusPoint:(CGPoint)point
 {
-  v4[0] = a3;
+  v4[0] = point;
   v5 = 10;
   v6[0] = 10;
   std::__variant_detail::__move_constructor<std::__variant_detail::__traits<md::cc::Zoom,md::cc::ZoomToLevel,md::cc::StartPinchingWithFocusPoint,md::cc::UpdatePinchWithFocusPoint,md::cc::StopPinchingWithFocusPoint,md::cc::StartPanningAtPoint,md::cc::UpdatePanWithTranslation,md::cc::StopPanningAtPoint,md::cc::StartRotatingWithFocusPoint,md::cc::UpdateRotationWithFocusPoint,md::cc::StopRotatingWithFocusPoint,md::cc::StartPitchingWithFocusPoint,md::cc::UpdatePitchWithFocusPoint,md::cc::updatePitchWithFocusPointDegrees,md::cc::StopPitchingWithFocusPoint>,(std::__variant_detail::_Trait)1>::__move_constructor[abi:nn200100](v7, v4);
@@ -1928,13 +1928,13 @@ LABEL_6:
   }
 }
 
-- (void)updateRotationWithFocusPoint:(CGPoint)a3 newValue:(double)a4
+- (void)updateRotationWithFocusPoint:(CGPoint)point newValue:(double)value
 {
-  v5 = a3;
-  v6 = a4;
+  pointCopy = point;
+  valueCopy = value;
   v7 = 9;
   v8[0] = 9;
-  std::__variant_detail::__move_constructor<std::__variant_detail::__traits<md::cc::Zoom,md::cc::ZoomToLevel,md::cc::StartPinchingWithFocusPoint,md::cc::UpdatePinchWithFocusPoint,md::cc::StopPinchingWithFocusPoint,md::cc::StartPanningAtPoint,md::cc::UpdatePanWithTranslation,md::cc::StopPanningAtPoint,md::cc::StartRotatingWithFocusPoint,md::cc::UpdateRotationWithFocusPoint,md::cc::StopRotatingWithFocusPoint,md::cc::StartPitchingWithFocusPoint,md::cc::UpdatePitchWithFocusPoint,md::cc::updatePitchWithFocusPointDegrees,md::cc::StopPitchingWithFocusPoint>,(std::__variant_detail::_Trait)1>::__move_constructor[abi:nn200100](v9, &v5);
+  std::__variant_detail::__move_constructor<std::__variant_detail::__traits<md::cc::Zoom,md::cc::ZoomToLevel,md::cc::StartPinchingWithFocusPoint,md::cc::UpdatePinchWithFocusPoint,md::cc::StopPinchingWithFocusPoint,md::cc::StartPanningAtPoint,md::cc::UpdatePanWithTranslation,md::cc::StopPanningAtPoint,md::cc::StartRotatingWithFocusPoint,md::cc::UpdateRotationWithFocusPoint,md::cc::StopRotatingWithFocusPoint,md::cc::StartPitchingWithFocusPoint,md::cc::UpdatePitchWithFocusPoint,md::cc::updatePitchWithFocusPointDegrees,md::cc::StopPitchingWithFocusPoint>,(std::__variant_detail::_Trait)1>::__move_constructor[abi:nn200100](v9, &pointCopy);
   std::vector<std::pair<md::cc::CameraCommandType,std::variant<md::cc::Zoom,md::cc::ZoomToLevel,md::cc::StartPinchingWithFocusPoint,md::cc::UpdatePinchWithFocusPoint,md::cc::StopPinchingWithFocusPoint,md::cc::StartPanningAtPoint,md::cc::UpdatePanWithTranslation,md::cc::StopPanningAtPoint,md::cc::StartRotatingWithFocusPoint,md::cc::UpdateRotationWithFocusPoint,md::cc::StopRotatingWithFocusPoint,md::cc::StartPitchingWithFocusPoint,md::cc::UpdatePitchWithFocusPoint,md::cc::updatePitchWithFocusPointDegrees,md::cc::StopPitchingWithFocusPoint>>>::push_back[abi:nn200100](&self->_commands, v8);
   if (v10 != -1)
   {
@@ -1944,13 +1944,13 @@ LABEL_6:
   v10 = -1;
   if (v7 != -1)
   {
-    (off_1F2A2F978[v7])(&v11, &v5);
+    (off_1F2A2F978[v7])(&v11, &pointCopy);
   }
 }
 
-- (void)startRotatingWithFocusPoint:(CGPoint)a3
+- (void)startRotatingWithFocusPoint:(CGPoint)point
 {
-  v4[0] = a3;
+  v4[0] = point;
   v5 = 8;
   v6[0] = 8;
   std::__variant_detail::__move_constructor<std::__variant_detail::__traits<md::cc::Zoom,md::cc::ZoomToLevel,md::cc::StartPinchingWithFocusPoint,md::cc::UpdatePinchWithFocusPoint,md::cc::StopPinchingWithFocusPoint,md::cc::StartPanningAtPoint,md::cc::UpdatePanWithTranslation,md::cc::StopPanningAtPoint,md::cc::StartRotatingWithFocusPoint,md::cc::UpdateRotationWithFocusPoint,md::cc::StopRotatingWithFocusPoint,md::cc::StartPitchingWithFocusPoint,md::cc::UpdatePitchWithFocusPoint,md::cc::updatePitchWithFocusPointDegrees,md::cc::StopPitchingWithFocusPoint>,(std::__variant_detail::_Trait)1>::__move_constructor[abi:nn200100](v7, v4);
@@ -1967,9 +1967,9 @@ LABEL_6:
   }
 }
 
-- (void)stopPanningAtPoint:(CGPoint)a3
+- (void)stopPanningAtPoint:(CGPoint)point
 {
-  v4[0] = a3;
+  v4[0] = point;
   v5 = 7;
   v6[0] = 7;
   std::__variant_detail::__move_constructor<std::__variant_detail::__traits<md::cc::Zoom,md::cc::ZoomToLevel,md::cc::StartPinchingWithFocusPoint,md::cc::UpdatePinchWithFocusPoint,md::cc::StopPinchingWithFocusPoint,md::cc::StartPanningAtPoint,md::cc::UpdatePanWithTranslation,md::cc::StopPanningAtPoint,md::cc::StartRotatingWithFocusPoint,md::cc::UpdateRotationWithFocusPoint,md::cc::StopRotatingWithFocusPoint,md::cc::StartPitchingWithFocusPoint,md::cc::UpdatePitchWithFocusPoint,md::cc::updatePitchWithFocusPointDegrees,md::cc::StopPitchingWithFocusPoint>,(std::__variant_detail::_Trait)1>::__move_constructor[abi:nn200100](v7, v4);
@@ -1986,9 +1986,9 @@ LABEL_6:
   }
 }
 
-- (void)updatePanWithTranslation:(CGPoint)a3
+- (void)updatePanWithTranslation:(CGPoint)translation
 {
-  v4[0] = a3;
+  v4[0] = translation;
   v5 = 6;
   v6[0] = 6;
   std::__variant_detail::__move_constructor<std::__variant_detail::__traits<md::cc::Zoom,md::cc::ZoomToLevel,md::cc::StartPinchingWithFocusPoint,md::cc::UpdatePinchWithFocusPoint,md::cc::StopPinchingWithFocusPoint,md::cc::StartPanningAtPoint,md::cc::UpdatePanWithTranslation,md::cc::StopPanningAtPoint,md::cc::StartRotatingWithFocusPoint,md::cc::UpdateRotationWithFocusPoint,md::cc::StopRotatingWithFocusPoint,md::cc::StartPitchingWithFocusPoint,md::cc::UpdatePitchWithFocusPoint,md::cc::updatePitchWithFocusPointDegrees,md::cc::StopPitchingWithFocusPoint>,(std::__variant_detail::_Trait)1>::__move_constructor[abi:nn200100](v7, v4);
@@ -2005,13 +2005,13 @@ LABEL_6:
   }
 }
 
-- (void)startPanningAtPoint:(CGPoint)a3 panAtStartPoint:(BOOL)a4
+- (void)startPanningAtPoint:(CGPoint)point panAtStartPoint:(BOOL)startPoint
 {
-  v5 = a3;
-  v6 = a4;
+  pointCopy = point;
+  startPointCopy = startPoint;
   v7 = 5;
   v8[0] = 5;
-  std::__variant_detail::__move_constructor<std::__variant_detail::__traits<md::cc::Zoom,md::cc::ZoomToLevel,md::cc::StartPinchingWithFocusPoint,md::cc::UpdatePinchWithFocusPoint,md::cc::StopPinchingWithFocusPoint,md::cc::StartPanningAtPoint,md::cc::UpdatePanWithTranslation,md::cc::StopPanningAtPoint,md::cc::StartRotatingWithFocusPoint,md::cc::UpdateRotationWithFocusPoint,md::cc::StopRotatingWithFocusPoint,md::cc::StartPitchingWithFocusPoint,md::cc::UpdatePitchWithFocusPoint,md::cc::updatePitchWithFocusPointDegrees,md::cc::StopPitchingWithFocusPoint>,(std::__variant_detail::_Trait)1>::__move_constructor[abi:nn200100](v9, &v5);
+  std::__variant_detail::__move_constructor<std::__variant_detail::__traits<md::cc::Zoom,md::cc::ZoomToLevel,md::cc::StartPinchingWithFocusPoint,md::cc::UpdatePinchWithFocusPoint,md::cc::StopPinchingWithFocusPoint,md::cc::StartPanningAtPoint,md::cc::UpdatePanWithTranslation,md::cc::StopPanningAtPoint,md::cc::StartRotatingWithFocusPoint,md::cc::UpdateRotationWithFocusPoint,md::cc::StopRotatingWithFocusPoint,md::cc::StartPitchingWithFocusPoint,md::cc::UpdatePitchWithFocusPoint,md::cc::updatePitchWithFocusPointDegrees,md::cc::StopPitchingWithFocusPoint>,(std::__variant_detail::_Trait)1>::__move_constructor[abi:nn200100](v9, &pointCopy);
   std::vector<std::pair<md::cc::CameraCommandType,std::variant<md::cc::Zoom,md::cc::ZoomToLevel,md::cc::StartPinchingWithFocusPoint,md::cc::UpdatePinchWithFocusPoint,md::cc::StopPinchingWithFocusPoint,md::cc::StartPanningAtPoint,md::cc::UpdatePanWithTranslation,md::cc::StopPanningAtPoint,md::cc::StartRotatingWithFocusPoint,md::cc::UpdateRotationWithFocusPoint,md::cc::StopRotatingWithFocusPoint,md::cc::StartPitchingWithFocusPoint,md::cc::UpdatePitchWithFocusPoint,md::cc::updatePitchWithFocusPointDegrees,md::cc::StopPitchingWithFocusPoint>>>::push_back[abi:nn200100](&self->_commands, v8);
   if (v10 != -1)
   {
@@ -2021,13 +2021,13 @@ LABEL_6:
   v10 = -1;
   if (v7 != -1)
   {
-    (off_1F2A2F978[v7])(&v11, &v5);
+    (off_1F2A2F978[v7])(&v11, &pointCopy);
   }
 }
 
-- (void)stopPinchingWithFocusPoint:(CGPoint)a3
+- (void)stopPinchingWithFocusPoint:(CGPoint)point
 {
-  v4[0] = a3;
+  v4[0] = point;
   v5 = 4;
   v6[0] = 4;
   std::__variant_detail::__move_constructor<std::__variant_detail::__traits<md::cc::Zoom,md::cc::ZoomToLevel,md::cc::StartPinchingWithFocusPoint,md::cc::UpdatePinchWithFocusPoint,md::cc::StopPinchingWithFocusPoint,md::cc::StartPanningAtPoint,md::cc::UpdatePanWithTranslation,md::cc::StopPanningAtPoint,md::cc::StartRotatingWithFocusPoint,md::cc::UpdateRotationWithFocusPoint,md::cc::StopRotatingWithFocusPoint,md::cc::StartPitchingWithFocusPoint,md::cc::UpdatePitchWithFocusPoint,md::cc::updatePitchWithFocusPointDegrees,md::cc::StopPitchingWithFocusPoint>,(std::__variant_detail::_Trait)1>::__move_constructor[abi:nn200100](v7, v4);
@@ -2044,14 +2044,14 @@ LABEL_6:
   }
 }
 
-- (void)updatePinchWithFocusPoint:(CGPoint)a3 oldFactor:(double)a4 newFactor:(double)a5
+- (void)updatePinchWithFocusPoint:(CGPoint)point oldFactor:(double)factor newFactor:(double)newFactor
 {
-  v6 = a3;
+  pointCopy = point;
   v9 = 3;
   v10[0] = 3;
-  v7 = a4;
-  v8 = a5;
-  std::__variant_detail::__move_constructor<std::__variant_detail::__traits<md::cc::Zoom,md::cc::ZoomToLevel,md::cc::StartPinchingWithFocusPoint,md::cc::UpdatePinchWithFocusPoint,md::cc::StopPinchingWithFocusPoint,md::cc::StartPanningAtPoint,md::cc::UpdatePanWithTranslation,md::cc::StopPanningAtPoint,md::cc::StartRotatingWithFocusPoint,md::cc::UpdateRotationWithFocusPoint,md::cc::StopRotatingWithFocusPoint,md::cc::StartPitchingWithFocusPoint,md::cc::UpdatePitchWithFocusPoint,md::cc::updatePitchWithFocusPointDegrees,md::cc::StopPitchingWithFocusPoint>,(std::__variant_detail::_Trait)1>::__move_constructor[abi:nn200100](v11, &v6);
+  factorCopy = factor;
+  newFactorCopy = newFactor;
+  std::__variant_detail::__move_constructor<std::__variant_detail::__traits<md::cc::Zoom,md::cc::ZoomToLevel,md::cc::StartPinchingWithFocusPoint,md::cc::UpdatePinchWithFocusPoint,md::cc::StopPinchingWithFocusPoint,md::cc::StartPanningAtPoint,md::cc::UpdatePanWithTranslation,md::cc::StopPanningAtPoint,md::cc::StartRotatingWithFocusPoint,md::cc::UpdateRotationWithFocusPoint,md::cc::StopRotatingWithFocusPoint,md::cc::StartPitchingWithFocusPoint,md::cc::UpdatePitchWithFocusPoint,md::cc::updatePitchWithFocusPointDegrees,md::cc::StopPitchingWithFocusPoint>,(std::__variant_detail::_Trait)1>::__move_constructor[abi:nn200100](v11, &pointCopy);
   std::vector<std::pair<md::cc::CameraCommandType,std::variant<md::cc::Zoom,md::cc::ZoomToLevel,md::cc::StartPinchingWithFocusPoint,md::cc::UpdatePinchWithFocusPoint,md::cc::StopPinchingWithFocusPoint,md::cc::StartPanningAtPoint,md::cc::UpdatePanWithTranslation,md::cc::StopPanningAtPoint,md::cc::StartRotatingWithFocusPoint,md::cc::UpdateRotationWithFocusPoint,md::cc::StopRotatingWithFocusPoint,md::cc::StartPitchingWithFocusPoint,md::cc::UpdatePitchWithFocusPoint,md::cc::updatePitchWithFocusPointDegrees,md::cc::StopPitchingWithFocusPoint>>>::push_back[abi:nn200100](&self->_commands, v10);
   if (v12 != -1)
   {
@@ -2061,13 +2061,13 @@ LABEL_6:
   v12 = -1;
   if (v9 != -1)
   {
-    (off_1F2A2F978[v9])(&v13, &v6);
+    (off_1F2A2F978[v9])(&v13, &pointCopy);
   }
 }
 
-- (void)startPinchingWithFocusPoint:(CGPoint)a3
+- (void)startPinchingWithFocusPoint:(CGPoint)point
 {
-  v4[0] = a3;
+  v4[0] = point;
   v5 = 2;
   v6[0] = 2;
   std::__variant_detail::__move_constructor<std::__variant_detail::__traits<md::cc::Zoom,md::cc::ZoomToLevel,md::cc::StartPinchingWithFocusPoint,md::cc::UpdatePinchWithFocusPoint,md::cc::StopPinchingWithFocusPoint,md::cc::StartPanningAtPoint,md::cc::UpdatePanWithTranslation,md::cc::StopPanningAtPoint,md::cc::StartRotatingWithFocusPoint,md::cc::UpdateRotationWithFocusPoint,md::cc::StopRotatingWithFocusPoint,md::cc::StartPitchingWithFocusPoint,md::cc::UpdatePitchWithFocusPoint,md::cc::updatePitchWithFocusPointDegrees,md::cc::StopPitchingWithFocusPoint>,(std::__variant_detail::_Trait)1>::__move_constructor[abi:nn200100](v7, v4);
@@ -2084,13 +2084,13 @@ LABEL_6:
   }
 }
 
-- (void)zoomToLevel:(double)a3 withFocusPoint:(CGPoint)a4
+- (void)zoomToLevel:(double)level withFocusPoint:(CGPoint)point
 {
-  v5 = a3;
-  v6 = a4;
+  levelCopy = level;
+  pointCopy = point;
   v7 = 1;
   v8[0] = 1;
-  std::__variant_detail::__move_constructor<std::__variant_detail::__traits<md::cc::Zoom,md::cc::ZoomToLevel,md::cc::StartPinchingWithFocusPoint,md::cc::UpdatePinchWithFocusPoint,md::cc::StopPinchingWithFocusPoint,md::cc::StartPanningAtPoint,md::cc::UpdatePanWithTranslation,md::cc::StopPanningAtPoint,md::cc::StartRotatingWithFocusPoint,md::cc::UpdateRotationWithFocusPoint,md::cc::StopRotatingWithFocusPoint,md::cc::StartPitchingWithFocusPoint,md::cc::UpdatePitchWithFocusPoint,md::cc::updatePitchWithFocusPointDegrees,md::cc::StopPitchingWithFocusPoint>,(std::__variant_detail::_Trait)1>::__move_constructor[abi:nn200100](v9, &v5);
+  std::__variant_detail::__move_constructor<std::__variant_detail::__traits<md::cc::Zoom,md::cc::ZoomToLevel,md::cc::StartPinchingWithFocusPoint,md::cc::UpdatePinchWithFocusPoint,md::cc::StopPinchingWithFocusPoint,md::cc::StartPanningAtPoint,md::cc::UpdatePanWithTranslation,md::cc::StopPanningAtPoint,md::cc::StartRotatingWithFocusPoint,md::cc::UpdateRotationWithFocusPoint,md::cc::StopRotatingWithFocusPoint,md::cc::StartPitchingWithFocusPoint,md::cc::UpdatePitchWithFocusPoint,md::cc::updatePitchWithFocusPointDegrees,md::cc::StopPitchingWithFocusPoint>,(std::__variant_detail::_Trait)1>::__move_constructor[abi:nn200100](v9, &levelCopy);
   std::vector<std::pair<md::cc::CameraCommandType,std::variant<md::cc::Zoom,md::cc::ZoomToLevel,md::cc::StartPinchingWithFocusPoint,md::cc::UpdatePinchWithFocusPoint,md::cc::StopPinchingWithFocusPoint,md::cc::StartPanningAtPoint,md::cc::UpdatePanWithTranslation,md::cc::StopPanningAtPoint,md::cc::StartRotatingWithFocusPoint,md::cc::UpdateRotationWithFocusPoint,md::cc::StopRotatingWithFocusPoint,md::cc::StartPitchingWithFocusPoint,md::cc::UpdatePitchWithFocusPoint,md::cc::updatePitchWithFocusPointDegrees,md::cc::StopPitchingWithFocusPoint>>>::push_back[abi:nn200100](&self->_commands, v8);
   if (v10 != -1)
   {
@@ -2100,16 +2100,16 @@ LABEL_6:
   v10 = -1;
   if (v7 != -1)
   {
-    (off_1F2A2F978[v7])(&v11, &v5);
+    (off_1F2A2F978[v7])(&v11, &levelCopy);
   }
 }
 
-- (void)zoom:(double)a3 withFocusPoint:(CGPoint)a4 completionHandler:(id)a5
+- (void)zoom:(double)zoom withFocusPoint:(CGPoint)point completionHandler:(id)handler
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = MEMORY[0x1B8C62DA0](a5, a2);
-  *v12 = a3;
+  y = point.y;
+  x = point.x;
+  v9 = MEMORY[0x1B8C62DA0](handler, a2);
+  *v12 = zoom;
   *&v12[1] = x;
   *&v12[2] = y;
   v12[3] = MEMORY[0x1B8C62DA0](v9, v10, v11);
@@ -2129,11 +2129,11 @@ LABEL_6:
   }
 }
 
-- (void)updateWithTimestamp:(double)a3 withContext:(void *)a4
+- (void)updateWithTimestamp:(double)timestamp withContext:(void *)context
 {
   v33.receiver = self;
   v33.super_class = VKUntetheredCameraController;
-  [(VKMapCameraController *)&v33 updateWithTimestamp:a3 withContext:?];
+  [(VKMapCameraController *)&v33 updateWithTimestamp:timestamp withContext:?];
   [(VKUntetheredCameraController *)self updateCameraFrame];
   if ([(VKMapCameraController *)self mapEngine])
   {
@@ -2145,11 +2145,11 @@ LABEL_6:
   }
 
   v7 = +[VKDebugSettings sharedSettings];
-  v8 = [v7 drawCollisionGeometries];
+  drawCollisionGeometries = [v7 drawCollisionGeometries];
 
-  if (v8)
+  if (drawCollisionGeometries)
   {
-    v9 = *(a4 + 94);
+    v9 = *(context + 94);
     v10 = *(v9 + 4112);
     v11 = *(v9 + 4128);
     if (*(v9 + 4104) == v10)
@@ -2263,9 +2263,9 @@ LABEL_6:
   if (self->_currentGesturingState == 1)
   {
     v14 = +[VKDebugSettings sharedSettings];
-    v15 = [v14 panWithCollisionPointsAllowsElevationDelta];
+    panWithCollisionPointsAllowsElevationDelta = [v14 panWithCollisionPointsAllowsElevationDelta];
 
-    if (v15)
+    if (panWithCollisionPointsAllowsElevationDelta)
     {
       return;
     }
@@ -2287,11 +2287,11 @@ LABEL_6:
   retstr->second.var0.__null_state_ = 0;
   p_second = &retstr->second;
   retstr->second.__engaged_ = 0;
-  v9 = [(VKCameraController *)self vkCamera];
-  v10 = v9;
-  if (v9)
+  vkCamera = [(VKCameraController *)self vkCamera];
+  v10 = vkCamera;
+  if (vkCamera)
   {
-    [v9 groundPointFromScreenPoint:{x, y}];
+    [vkCamera groundPointFromScreenPoint:{x, y}];
   }
 
   else
@@ -2328,7 +2328,7 @@ LABEL_6:
   return result;
 }
 
-- (optional<gm::Matrix<double,)intersectsRay:(1>> *__return_ptr)retstr target:(VKUntetheredCameraController *)self lastHit:(SEL)a3
+- (optional<gm::Matrix<double,)intersectsRay:(1>> *__return_ptr)retstr target:(VKUntetheredCameraController *)self lastHit:(SEL)hit
 {
   elevationContext = self->_elevationContext;
   if (elevationContext)
@@ -2344,7 +2344,7 @@ LABEL_6:
   return [(VKUntetheredCameraController *)self intersectsRay:a6 target:a4._e[0] lastHit:a4._e[1] zScale:a4._e[2], a5._e[0], a5._e[1], a5._e[2], v7];
 }
 
-- (optional<gm::Matrix<double,)intersectsRay:(1>> *__return_ptr)retstr target:(VKUntetheredCameraController *)self lastHit:(SEL)a3 zScale:()Matrix<double
+- (optional<gm::Matrix<double,)intersectsRay:(1>> *__return_ptr)retstr target:(VKUntetheredCameraController *)self lastHit:(SEL)hit zScale:()Matrix<double
 {
   v7 = a4._e[1];
   v8 = a4._e[0];
@@ -2355,7 +2355,7 @@ LABEL_6:
   v81 = a4._e[2];
   v79 = a5;
   v10 = +[VKDebugSettings sharedSettings];
-  v67 = [v10 drawCollisionGeometries];
+  drawCollisionGeometries = [v10 drawCollisionGeometries];
 
   for (i = 0; i != 3; ++i)
   {
@@ -2383,11 +2383,11 @@ LABEL_6:
       objc_initWeak(&location, self);
       LOBYTE(v98) = 0;
       v101 = 0;
-      v19 = [(VKUntetheredCameraController *)self geometryContext];
+      geometryContext = [(VKUntetheredCameraController *)self geometryContext];
       v20 = *(*begin + 160);
       [(VKCameraController *)self camera];
       v21 = *v68;
-      v22 = md::GeometryContext::zTransformConstantData(v19, v20, v21, *(v20 + 440), *(v20 + 448));
+      v22 = md::GeometryContext::zTransformConstantData(geometryContext, v20, v21, *(v20 + 440), *(v20 + 448));
       v24 = v23;
       v25 = v114;
       gdc::Tiled::matrixForCameraType(v114, v20, v21);
@@ -2500,7 +2500,7 @@ LABEL_6:
       *(&v93 + 1) = v49;
       *&v94 = v50;
       *(&v94 + 1) = v51;
-      if (v67)
+      if (drawCollisionGeometries)
       {
         objc_copyWeak(to, &location);
         if (v101 == 1)
@@ -2586,7 +2586,7 @@ LABEL_6:
     v53 = v75;
     if (v75 == 2.22507386e-308)
     {
-      if (v67)
+      if (drawCollisionGeometries)
       {
         goto LABEL_41;
       }
@@ -2600,7 +2600,7 @@ LABEL_6:
     v53 = v76;
     if (v76 == 1.79769313e308)
     {
-      if (v67)
+      if (drawCollisionGeometries)
       {
 LABEL_41:
         v92 = v73;
@@ -2641,7 +2641,7 @@ LABEL_42:
   while (v59 != 3);
   v60 = v92;
   v61 = *&v93;
-  if (v67)
+  if (drawCollisionGeometries)
   {
     v92 = v73;
     v93 = *v74;
@@ -2663,12 +2663,12 @@ LABEL_50:
 
 - (void)intersectsRay:target:lastHit:zScale:
 {
-  objc_destroyWeak((a1 + 8));
+  objc_destroyWeak((self + 8));
 
   JUMPOUT(0x1B8C62190);
 }
 
-- (void)adoptCollisions:(void *)a3 bvhRoots:(void *)a4
+- (void)adoptCollisions:(void *)collisions bvhRoots:(void *)roots
 {
   p_collisions = &self->_collisions;
   begin = self->_collisions.__begin_;
@@ -2681,11 +2681,11 @@ LABEL_50:
     p_collisions->__cap_ = 0;
   }
 
-  *&p_collisions->__begin_ = *a3;
-  p_collisions->__cap_ = *(a3 + 2);
-  *a3 = 0;
-  *(a3 + 1) = 0;
-  *(a3 + 2) = 0;
+  *&p_collisions->__begin_ = *collisions;
+  p_collisions->__cap_ = *(collisions + 2);
+  *collisions = 0;
+  *(collisions + 1) = 0;
+  *(collisions + 2) = 0;
   p_bvhRoots = &self->_bvhRoots;
   if (self->_bvhRoots.__begin_)
   {
@@ -2696,11 +2696,11 @@ LABEL_50:
     self->_bvhRoots.__cap_ = 0;
   }
 
-  *&p_bvhRoots->__begin_ = *a4;
-  self->_bvhRoots.__cap_ = *(a4 + 2);
-  *a4 = 0;
-  *(a4 + 1) = 0;
-  *(a4 + 2) = 0;
+  *&p_bvhRoots->__begin_ = *roots;
+  self->_bvhRoots.__cap_ = *(roots + 2);
+  *roots = 0;
+  *(roots + 1) = 0;
+  *(roots + 2) = 0;
   v10 = p_collisions->__begin_;
   end = p_collisions->__end_;
   v12 = p_collisions->__begin_ + 72;
@@ -2733,11 +2733,11 @@ LABEL_50:
   }
 }
 
-- (void)setCamera:(shared_ptr<gdc::Camera>)a3
+- (void)setCamera:(shared_ptr<gdc::Camera>)camera
 {
-  ptr = a3.__ptr_;
-  v5 = *(a3.__ptr_ + 1);
-  v21 = *a3.__ptr_;
+  ptr = camera.__ptr_;
+  v5 = *(camera.__ptr_ + 1);
+  v21 = *camera.__ptr_;
   v22 = v5;
   if (v5)
   {
@@ -2746,7 +2746,7 @@ LABEL_50:
 
   v20.receiver = self;
   v20.super_class = VKUntetheredCameraController;
-  [(VKMapCameraController *)&v20 setCamera:&v21, a3.__cntrl_];
+  [(VKMapCameraController *)&v20 setCamera:&v21, camera.__cntrl_];
   if (v22)
   {
     std::__shared_weak_count::__release_shared[abi:nn200100](v22);
@@ -2777,11 +2777,11 @@ LABEL_50:
       std::__shared_weak_count::__release_shared[abi:nn200100](v16);
     }
 
-    v11 = [(VKCameraController *)self vkCamera];
-    [v11 setPosition:&v17];
+    vkCamera = [(VKCameraController *)self vkCamera];
+    [vkCamera setPosition:&v17];
 
-    v12 = [(VKCameraController *)self vkCamera];
-    [v12 setOrientation:&v19];
+    vkCamera2 = [(VKCameraController *)self vkCamera];
+    [vkCamera2 setOrientation:&v19];
   }
 }
 
@@ -2810,11 +2810,11 @@ LABEL_50:
     }
   }
 
-  v5 = [(VKCameraController *)self vkCamera];
+  vkCamera = [(VKCameraController *)self vkCamera];
   [(VKCameraController *)self camera];
-  if (v5)
+  if (vkCamera)
   {
-    [v5 cameraFrame:!gdc::ToCoordinateSystem(*v56)];
+    [vkCamera cameraFrame:!gdc::ToCoordinateSystem(*v56)];
   }
 
   else
@@ -2836,9 +2836,9 @@ LABEL_50:
     if ([v6 activeCameraCollisionAvoidance])
     {
       v7 = +[VKDebugSettings sharedSettings];
-      v8 = [v7 shouldFreezeLayoutCamera];
+      shouldFreezeLayoutCamera = [v7 shouldFreezeLayoutCamera];
 
-      if (v8)
+      if (shouldFreezeLayoutCamera)
       {
         goto LABEL_17;
       }
@@ -3037,14 +3037,14 @@ LABEL_41:
 
   self->_elevationUpdateType = 2;
 LABEL_42:
-  v46 = [(VKCameraController *)self vkCamera];
+  vkCamera2 = [(VKCameraController *)self vkCamera];
   [(VKCameraController *)self camera];
   v56 = v82;
   v57 = v83;
   v58 = v84;
   v59 = v85;
   std::__function::__value_func<BOOL ()(std::shared_ptr<gdc::Camera>,geo::Unit<geo::MeterUnitDescription,double> &,geo::Unit<geo::MeterUnitDescription,double> &)>::__value_func[abi:nn200100](v81, v86);
-  [v46 updateCamera:v60 cameraFrame:&v56 withAdjustment:v81];
+  [vkCamera2 updateCamera:v60 cameraFrame:&v56 withAdjustment:v81];
   std::__function::__value_func<BOOL ()(std::shared_ptr<gdc::Camera>,geo::Unit<geo::MeterUnitDescription,double> &,geo::Unit<geo::MeterUnitDescription,double> &)>::~__value_func[abi:nn200100](v81);
   if (v61)
   {
@@ -3075,19 +3075,19 @@ LABEL_42:
 
 - (VKCameraRegionRestriction)regionRestriction
 {
-  v2 = [(VKCameraController *)self vkCamera];
-  v3 = [v2 regionRestriction];
+  vkCamera = [(VKCameraController *)self vkCamera];
+  regionRestriction = [vkCamera regionRestriction];
 
-  return v3;
+  return regionRestriction;
 }
 
 - (VKCameraState)cameraState
 {
-  v4 = [(VKCameraController *)self vkCamera];
-  v6 = v4;
-  if (v4)
+  vkCamera = [(VKCameraController *)self vkCamera];
+  v6 = vkCamera;
+  if (vkCamera)
   {
-    [v4 cameraState];
+    [vkCamera cameraState];
   }
 
   else
@@ -3104,8 +3104,8 @@ LABEL_42:
 
 - (Matrix<double,)groundPoint
 {
-  v2 = [(VKCameraController *)self vkCamera];
-  [v2 groundPoint];
+  vkCamera = [(VKCameraController *)self vkCamera];
+  [vkCamera groundPoint];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -3126,15 +3126,15 @@ LABEL_42:
   {
 
 LABEL_22:
-    v29 = [(VKCameraController *)self vkCamera];
-    [v29 maxPitchRadian];
+    vkCamera = [(VKCameraController *)self vkCamera];
+    [vkCamera maxPitchRadian];
     v36 = v37;
     goto LABEL_23;
   }
 
-  v4 = [(VKUntetheredCameraController *)self gestureInitiatedMovement];
+  gestureInitiatedMovement = [(VKUntetheredCameraController *)self gestureInitiatedMovement];
 
-  if (!v4)
+  if (!gestureInitiatedMovement)
   {
     goto LABEL_22;
   }
@@ -3212,12 +3212,12 @@ LABEL_22:
   while (v20 != 24);
   v24 = cos(v18);
   v25 = v53;
-  v26 = [(VKCameraController *)self vkCamera];
-  [v26 maxPitchRadian];
+  vkCamera2 = [(VKCameraController *)self vkCamera];
+  [vkCamera2 maxPitchRadian];
   v28 = v27;
 
-  v29 = [(VKCameraController *)self vkCamera];
-  [v29 maxPitchRadian];
+  vkCamera = [(VKCameraController *)self vkCamera];
+  [vkCamera maxPitchRadian];
   v31 = v30;
   v32 = v24 - v19 + -0.0698131701;
   v33 = (*&v25 * *&v7 + *(&v25 + 1) * *(&v7 + 1)) / sqrt((*&v7 * *&v7 + *(&v7 + 1) * *(&v7 + 1)) * (*&v25 * *&v25 + *(&v25 + 1) * *(&v25 + 1)));
@@ -3249,8 +3249,8 @@ LABEL_23:
 
 - (Matrix<double,)forwardVector
 {
-  v2 = [(VKCameraController *)self vkCamera];
-  [v2 forwardVector];
+  vkCamera = [(VKCameraController *)self vkCamera];
+  [vkCamera forwardVector];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -3266,8 +3266,8 @@ LABEL_23:
 
 - (Matrix<double,)upVector
 {
-  v2 = [(VKCameraController *)self vkCamera];
-  [v2 upVector];
+  vkCamera = [(VKCameraController *)self vkCamera];
+  [vkCamera upVector];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -3283,8 +3283,8 @@ LABEL_23:
 
 - (Matrix<double,)rightVector
 {
-  v2 = [(VKCameraController *)self vkCamera];
-  [v2 rightVector];
+  vkCamera = [(VKCameraController *)self vkCamera];
+  [vkCamera rightVector];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -3300,8 +3300,8 @@ LABEL_23:
 
 - (double)yawRadian
 {
-  v2 = [(VKCameraController *)self vkCamera];
-  [v2 yaw];
+  vkCamera = [(VKCameraController *)self vkCamera];
+  [vkCamera yaw];
   v4 = v3;
 
   return v4;
@@ -3309,8 +3309,8 @@ LABEL_23:
 
 - (double)pitchRadian
 {
-  v2 = [(VKCameraController *)self vkCamera];
-  [v2 pitchRadian];
+  vkCamera = [(VKCameraController *)self vkCamera];
+  [vkCamera pitchRadian];
   v4 = v3;
 
   return v4;
@@ -3318,8 +3318,8 @@ LABEL_23:
 
 - (double)maxHeight
 {
-  v2 = [(VKCameraController *)self vkCamera];
-  [v2 maxHeight];
+  vkCamera = [(VKCameraController *)self vkCamera];
+  [vkCamera maxHeight];
   v4 = v3;
 
   return v4;
@@ -3332,15 +3332,15 @@ LABEL_23:
   {
 
 LABEL_7:
-    v12 = [(VKCameraController *)self vkCamera];
-    [v12 minHeight];
+    vkCamera = [(VKCameraController *)self vkCamera];
+    [vkCamera minHeight];
     v14 = v15;
     goto LABEL_8;
   }
 
-  v4 = [(VKUntetheredCameraController *)self gestureInitiatedMovement];
+  gestureInitiatedMovement = [(VKUntetheredCameraController *)self gestureInitiatedMovement];
 
-  if (!v4)
+  if (!gestureInitiatedMovement)
   {
     goto LABEL_7;
   }
@@ -3348,8 +3348,8 @@ LABEL_7:
   [(VKUntetheredCameraController *)self currentHitDistance];
   if (v5 <= 1.0e-12)
   {
-    v12 = [(VKCameraController *)self vkCamera];
-    v14 = *([v12 position] + 16);
+    vkCamera = [(VKCameraController *)self vkCamera];
+    v14 = *([vkCamera position] + 16);
     goto LABEL_8;
   }
 
@@ -3361,13 +3361,13 @@ LABEL_7:
 
   [(VKUntetheredCameraController *)self cameraCollisionResponseRadius];
   v7 = v6;
-  v8 = [(VKCameraController *)self vkCamera];
-  v9 = *([v8 position] + 16);
+  vkCamera2 = [(VKCameraController *)self vkCamera];
+  v9 = *([vkCamera2 position] + 16);
   [(VKUntetheredCameraController *)self cameraCollisionResponseSphereCentre];
   v11 = v10;
 
-  v12 = [(VKCameraController *)self vkCamera];
-  [v12 minHeight];
+  vkCamera = [(VKCameraController *)self vkCamera];
+  [vkCamera minHeight];
   v14 = fmax(v17 + v7 + 1.0e-12 + fmax(fmin(v9 - v11, 1.0), 0.0), v13);
 LABEL_8:
 
@@ -3387,9 +3387,9 @@ LABEL_8:
   if (self->_currentGesturingState == 1)
   {
     v8 = +[VKDebugSettings sharedSettings];
-    v9 = [v8 panWithCollisionPointsAllowsElevationDelta];
+    panWithCollisionPointsAllowsElevationDelta = [v8 panWithCollisionPointsAllowsElevationDelta];
 
-    if (v9)
+    if (panWithCollisionPointsAllowsElevationDelta)
     {
       [(VKUntetheredCameraController *)self updateCurrentGesturingCollisionPoint];
     }
@@ -3399,11 +3399,11 @@ LABEL_8:
   if ((v15 & 1) == 0)
   {
 LABEL_8:
-    v12 = [(VKCameraController *)self vkCamera];
-    v11 = v12;
-    if (v12)
+    vkCamera = [(VKCameraController *)self vkCamera];
+    v11 = vkCamera;
+    if (vkCamera)
     {
-      [v12 groundPointFromScreenPoint:{x, y}];
+      [vkCamera groundPointFromScreenPoint:{x, y}];
       goto LABEL_11;
     }
 
@@ -3413,14 +3413,14 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v10 = [(VKCameraController *)self vkCamera];
-  v11 = v10;
-  if (!v10)
+  vkCamera2 = [(VKCameraController *)self vkCamera];
+  v11 = vkCamera2;
+  if (!vkCamera2)
   {
     goto LABEL_10;
   }
 
-  [v10 groundPointFromScreenPoint:x atGroundLevel:{y, v14}];
+  [vkCamera2 groundPointFromScreenPoint:x atGroundLevel:{y, v14}];
 LABEL_11:
 
   return result;
@@ -3428,27 +3428,27 @@ LABEL_11:
 
 - (const)orientation
 {
-  v2 = [(VKCameraController *)self vkCamera];
-  v3 = [v2 orientation];
+  vkCamera = [(VKCameraController *)self vkCamera];
+  orientation = [vkCamera orientation];
 
-  return v3;
+  return orientation;
 }
 
-- (void)setOrientation:(const void *)a3
+- (void)setOrientation:(const void *)orientation
 {
-  v4 = [(VKCameraController *)self vkCamera];
-  [v4 setOrientation:a3];
+  vkCamera = [(VKCameraController *)self vkCamera];
+  [vkCamera setOrientation:orientation];
 }
 
 - (const)position
 {
-  v2 = [(VKCameraController *)self vkCamera];
-  v3 = [v2 position];
+  vkCamera = [(VKCameraController *)self vkCamera];
+  position = [vkCamera position];
 
-  return v3;
+  return position;
 }
 
-- (void)setPosition:(const void *)a3
+- (void)setPosition:(const void *)position
 {
   p_lastExternallySetPosition = &self->_lastExternallySetPosition;
   if (![(VKUntetheredCameraController *)self gestureInitiatedMovement])
@@ -3471,7 +3471,7 @@ LABEL_26:
     {
       for (i = 0; i != 3; ++i)
       {
-        *(&v23 + i * 8) = p_lastExternallySetPosition->var0.__val_._e[i] - *(a3 + i * 8);
+        *(&v23 + i * 8) = p_lastExternallySetPosition->var0.__val_._e[i] - *(position + i * 8);
       }
 
       v10 = v24;
@@ -3521,8 +3521,8 @@ LABEL_26:
 LABEL_21:
   if (!self->_lastExternallySetPosition.__engaged_)
   {
-    v15 = *a3;
-    self->_lastExternallySetPosition.var0.__val_._e[2] = *(a3 + 2);
+    v15 = *position;
+    self->_lastExternallySetPosition.var0.__val_._e[2] = *(position + 2);
     *&p_lastExternallySetPosition->var0.__null_state_ = v15;
     v13 = 1;
     goto LABEL_26;
@@ -3530,26 +3530,26 @@ LABEL_21:
 
   for (j = 0; j != 3; ++j)
   {
-    p_lastExternallySetPosition->var0.__val_._e[j] = *(a3 + j * 8);
+    p_lastExternallySetPosition->var0.__val_._e[j] = *(position + j * 8);
   }
 
 LABEL_27:
-  v23 = *a3;
-  v24 = *(a3 + 2);
+  v23 = *position;
+  v24 = *(position + 2);
   if (self->_currentGesturingState == 1)
   {
     v16 = +[VKDebugSettings sharedSettings];
-    v17 = [v16 panWithCollisionPointsAllowsElevationDelta];
+    panWithCollisionPointsAllowsElevationDelta = [v16 panWithCollisionPointsAllowsElevationDelta];
 
-    if ((v17 & 1) == 0)
+    if ((panWithCollisionPointsAllowsElevationDelta & 1) == 0)
     {
-      v18 = [(VKCameraController *)self vkCamera];
-      v24 = *([v18 position] + 16);
+      vkCamera = [(VKCameraController *)self vkCamera];
+      v24 = *([vkCamera position] + 16);
     }
   }
 
-  v19 = [(VKCameraController *)self vkCamera];
-  [v19 setPosition:&v23];
+  vkCamera2 = [(VKCameraController *)self vkCamera];
+  [vkCamera2 setPosition:&v23];
 
   if ([(VKUntetheredCameraController *)self gestureInitiatedMovement])
   {
@@ -3562,11 +3562,11 @@ LABEL_27:
   }
 }
 
-- (void)rotateAboutPoint:(const void *)a3 newYaw:()Unit<geo:(double>)a4 :()Unit<geo:(double>)a5 :RadianUnitDescription RadianUnitDescription newPitch:
+- (void)rotateAboutPoint:(const void *)point newYaw:()Unit<geo:(double>)geo :()Unit<geo:(double>)a5 :RadianUnitDescription RadianUnitDescription newPitch:
 {
   v7 = v6;
   v10 = *v5;
-  [(VKUntetheredCameraController *)self yawRadian:a4._value];
+  [(VKUntetheredCameraController *)self yawRadian:geo._value];
   v12 = fmod(3.14159265 - v10 + v11, 6.28318531);
   v13 = fmod(v12 + 6.28318531, 6.28318531);
   [(VKUntetheredCameraController *)self maxPitchRadian];
@@ -3600,16 +3600,16 @@ LABEL_27:
   v30 = v35;
   v31 = cos(v23);
   v26 = [(VKUntetheredCameraController *)self position:gm::Quaternion<double>::operator*(&v34];
-  *&v29 = gm::rotateAboutPoint<double>(v26, &v34, a3);
+  *&v29 = gm::rotateAboutPoint<double>(v26, &v34, point);
   *(&v29 + 1) = v27;
   v30 = v28;
   [(VKUntetheredCameraController *)self setPosition:&v29];
   [(VKUntetheredCameraController *)self setOrientation:v33, gm::Quaternion<double>::operator*(v33, &v34, [(VKUntetheredCameraController *)self orientation])];
 }
 
-- (void)avoidCurrentCollision:(double)a3
+- (void)avoidCurrentCollision:(double)collision
 {
-  v40 = a3;
+  collisionCopy = collision;
   Current = CFAbsoluteTimeGetCurrent();
   v6 = Current - self->_lastCollisionAvoisionTime;
   if (v6 >= 0.00833333333)
@@ -3619,7 +3619,7 @@ LABEL_27:
     *&v41 = v7;
     *(&v41 + 1) = v8;
     v42 = v9;
-    [(VKUntetheredCameraController *)self getTranslationToAvoidCollisions:&v41 softness:&v40];
+    [(VKUntetheredCameraController *)self getTranslationToAvoidCollisions:&v41 softness:&collisionCopy];
     if (v39 == 1)
     {
       v10 = +[VKDebugSettings sharedSettings];
@@ -3664,8 +3664,8 @@ LABEL_27:
         v35 = v20;
       }
 
-      v21 = [(VKCameraController *)self vkCamera];
-      v22 = [v21 position];
+      vkCamera = [(VKCameraController *)self vkCamera];
+      position = [vkCamera position];
       v23 = 0;
       v24 = 0.0;
       do
@@ -3689,7 +3689,7 @@ LABEL_27:
       v33 = v42;
       do
       {
-        *(&v41 + v27) = *(&v32 + v27) + *(v22 + v27);
+        *(&v41 + v27) = *(&v32 + v27) + *(position + v27);
         v27 += 8;
       }
 
@@ -3867,8 +3867,8 @@ LABEL_27:
   v3 = +[VKDebugSettings sharedSettings];
   if ([v3 cameraCollisionSphereIsNearPlaneCentred])
   {
-    v4 = [(VKCameraController *)self vkCamera];
-    v5 = [v4 position];
+    vkCamera = [(VKCameraController *)self vkCamera];
+    position = [vkCamera position];
     [(VKUntetheredCameraController *)self forwardVector];
     v22[0] = v6;
     v22[1] = v7;
@@ -3876,8 +3876,8 @@ LABEL_27:
     v23[0] = gm::Matrix<double,3,1>::normalized<int,void>(v22);
     v23[1] = v9;
     v23[2] = v10;
-    v11 = [(VKCameraController *)self vkCamera];
-    [v11 nearClipDistance];
+    vkCamera2 = [(VKCameraController *)self vkCamera];
+    [vkCamera2 nearClipDistance];
     for (i = 0; i != 3; ++i)
     {
       *(&v26 + i * 8) = *&v23[i] * v12;
@@ -3888,7 +3888,7 @@ LABEL_27:
     v25 = v27;
     do
     {
-      *(&v26 + v14) = *(&v24 + v14) + *(v5 + v14);
+      *(&v26 + v14) = *(&v24 + v14) + *(position + v14);
       v14 += 8;
     }
 
@@ -3900,11 +3900,11 @@ LABEL_27:
 
   else
   {
-    v4 = [(VKCameraController *)self vkCamera];
-    v18 = [v4 position];
-    v15 = v18[1];
-    v17 = v18[2];
-    v16 = *v18;
+    vkCamera = [(VKCameraController *)self vkCamera];
+    position2 = [vkCamera position];
+    v15 = position2[1];
+    v17 = position2[2];
+    v16 = *position2;
   }
 
   v19 = v16;
@@ -3924,32 +3924,32 @@ LABEL_27:
 
   if (v5 >= 0.0)
   {
-    v8 = [(VKCameraController *)self vkCamera];
-    -[VKUntetheredCameraController unitsPerMeterAtPoint:](self, "unitsPerMeterAtPoint:", [v8 position]);
+    vkCamera = [(VKCameraController *)self vkCamera];
+    -[VKUntetheredCameraController unitsPerMeterAtPoint:](self, "unitsPerMeterAtPoint:", [vkCamera position]);
     v24 = v5 / v23;
   }
 
   else
   {
     v6 = +[VKDebugSettings sharedSettings];
-    v7 = [v6 cameraCollisionSphereIsNearPlaneCentred];
+    cameraCollisionSphereIsNearPlaneCentred = [v6 cameraCollisionSphereIsNearPlaneCentred];
 
-    v8 = [(VKCameraController *)self vkCamera];
-    [v8 nearClipDistance];
+    vkCamera = [(VKCameraController *)self vkCamera];
+    [vkCamera nearClipDistance];
     v10 = v9;
     [(VKCameraController *)self vkCamera];
-    if (v7)
+    if (cameraCollisionSphereIsNearPlaneCentred)
       v11 = {;
       [v11 tanHalfHorizFOV];
       v13 = v12;
-      v14 = [(VKCameraController *)self vkCamera];
-      [v14 tanHalfHorizFOV];
+      vkCamera2 = [(VKCameraController *)self vkCamera];
+      [vkCamera2 tanHalfHorizFOV];
       v16 = v15;
-      v17 = [(VKCameraController *)self vkCamera];
-      [v17 tanHalfVerticalFOV];
+      vkCamera3 = [(VKCameraController *)self vkCamera];
+      [vkCamera3 tanHalfVerticalFOV];
       v19 = v18;
-      v20 = [(VKCameraController *)self vkCamera];
-      [v20 tanHalfVerticalFOV];
+      vkCamera4 = [(VKCameraController *)self vkCamera];
+      [vkCamera4 tanHalfVerticalFOV];
       v22 = v16 * v13;
     }
 
@@ -3957,14 +3957,14 @@ LABEL_27:
       v11 = {;
       [v11 tanHalfHorizFOV];
       v26 = v25;
-      v14 = [(VKCameraController *)self vkCamera];
-      [v14 tanHalfHorizFOV];
+      vkCamera2 = [(VKCameraController *)self vkCamera];
+      [vkCamera2 tanHalfHorizFOV];
       v28 = v27;
-      v17 = [(VKCameraController *)self vkCamera];
-      [v17 tanHalfVerticalFOV];
+      vkCamera3 = [(VKCameraController *)self vkCamera];
+      [vkCamera3 tanHalfVerticalFOV];
       v19 = v29;
-      v20 = [(VKCameraController *)self vkCamera];
-      [v20 tanHalfVerticalFOV];
+      vkCamera4 = [(VKCameraController *)self vkCamera];
+      [vkCamera4 tanHalfVerticalFOV];
       v22 = v28 * v26 + 1.0;
     }
 
@@ -3998,11 +3998,11 @@ LABEL_27:
 
 - (pair<gm::Matrix<double,)lookAtFromVkCameraPosition
 {
-  v4 = [(VKCameraController *)self vkCamera];
+  vkCamera = [(VKCameraController *)self vkCamera];
   [(VKCameraController *)self camera];
-  if (v4)
+  if (vkCamera)
   {
-    [v4 cameraFrame:!gdc::ToCoordinateSystem(*v6)];
+    [vkCamera cameraFrame:!gdc::ToCoordinateSystem(*v6)];
   }
 
   else
@@ -4045,11 +4045,11 @@ LABEL_27:
   return result;
 }
 
-- (Matrix<double,)normalizedMercatorFromWorldPosition:(const void *)a3
+- (Matrix<double,)normalizedMercatorFromWorldPosition:(const void *)position
 {
-  v5 = *a3;
-  v6 = *(a3 + 1);
-  v7 = *(a3 + 2);
+  v5 = *position;
+  v6 = *(position + 1);
+  v7 = *(position + 2);
   [(VKCameraController *)self camera];
   v8 = gdc::ToCoordinateSystem(**&v26);
   if (v27)
@@ -4059,8 +4059,8 @@ LABEL_27:
 
   if (v8)
   {
-    v24 = *a3;
-    v25 = *(a3 + 2);
+    v24 = *position;
+    v25 = *(position + 2);
     v26 = 0.0;
     v27 = 0uLL;
     geo::Geocentric<double>::toCoordinate3D<geo::Radians,double>(&v24, &v26);
@@ -4088,11 +4088,11 @@ LABEL_27:
   return result;
 }
 
-- (Matrix<double,)worldFromNormalizedMercatorPosition:(const void *)a3
+- (Matrix<double,)worldFromNormalizedMercatorPosition:(const void *)position
 {
-  v5 = *a3;
-  v6 = *(a3 + 1);
-  v7 = *(a3 + 2);
+  v5 = *position;
+  v6 = *(position + 1);
+  v7 = *(position + 2);
   [(VKCameraController *)self camera];
   v8 = gdc::ToCoordinateSystem(*v14);
   if (*(&v14 + 1))
@@ -4102,9 +4102,9 @@ LABEL_27:
 
   if (v8)
   {
-    [(VKUntetheredCameraController *)self unitsPerMeterAtPoint:a3];
-    v15 = *(a3 + 2);
-    v14 = *a3;
+    [(VKUntetheredCameraController *)self unitsPerMeterAtPoint:position];
+    v15 = *(position + 2);
+    v14 = *position;
     v15 = v15 / v9;
     geo::Mercator3<double>::toGeocentric<double>(&v14, v13);
     v5 = v13[0];
@@ -4121,7 +4121,7 @@ LABEL_27:
   return result;
 }
 
-- (double)unitsPerMeterAtPoint:(const void *)a3
+- (double)unitsPerMeterAtPoint:(const void *)point
 {
   [(VKCameraController *)self camera];
   v4 = gdc::ToCoordinateSystem(*v8);
@@ -4135,7 +4135,7 @@ LABEL_27:
     return 0.0000000249532021;
   }
 
-  v5 = exp(*(a3 + 1) * 6.28318531 + -3.14159265);
+  v5 = exp(*(point + 1) * 6.28318531 + -3.14159265);
   v6 = atan(v5);
   return geo::WGS84::unitsPerMeterAtLatitude<geo::Degrees,double>(v6 * 114.591559 + -90.0);
 }
@@ -4147,19 +4147,19 @@ LABEL_27:
   [(VKMapCameraController *)&v2 dealloc];
 }
 
-- (VKUntetheredCameraController)initWithMapDataAccess:(void *)a3 animationRunner:(AnimationRunner *)a4 runLoopController:(RunLoopController *)a5 cameraDelegate:(id)a6 mapEngine:(void *)a7
+- (VKUntetheredCameraController)initWithMapDataAccess:(void *)access animationRunner:(AnimationRunner *)runner runLoopController:(RunLoopController *)controller cameraDelegate:(id)delegate mapEngine:(void *)engine
 {
-  v12 = a6;
+  delegateCopy = delegate;
   v13 = objc_alloc_init(VKUntetheredForwardMovableCamera);
   v18.receiver = self;
   v18.super_class = VKUntetheredCameraController;
-  v14 = [(VKMapCameraController *)&v18 initWithMapDataAccess:a3 animationRunner:a4 runLoopController:a5 cameraDelegate:v12 cameraBehavior:0];
+  v14 = [(VKMapCameraController *)&v18 initWithMapDataAccess:access animationRunner:runner runLoopController:controller cameraDelegate:delegateCopy cameraBehavior:0];
   v15 = v14;
   if (v14)
   {
     v17.receiver = v14;
     v17.super_class = VKUntetheredCameraController;
-    [(VKMapCameraController *)&v17 setMapEngine:a7];
+    [(VKMapCameraController *)&v17 setMapEngine:engine];
     [(VKUntetheredForwardMovableCamera *)v13 setMoveableCamera:v15];
     v15->_geometryContext = 0;
     v15->_elevationContext = 0;

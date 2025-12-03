@@ -13,16 +13,16 @@
 - (id)_customTimingFunction;
 - (id)_zoomSpring;
 - (int64_t)coverContentMode;
-- (void)_setControlsAlpha:(double)a3;
-- (void)_setLayerShadowOpacity:(float)a3;
-- (void)_setToolbarAlpha:(double)a3;
+- (void)_setControlsAlpha:(double)alpha;
+- (void)_setLayerShadowOpacity:(float)opacity;
+- (void)_setToolbarAlpha:(double)alpha;
 - (void)_setupViews;
 - (void)_teardownLocalViews;
 - (void)animateNonInteractive;
 - (void)animationsDidFinish;
 - (void)bookContentDidLoad;
-- (void)setAudiobookToTransform:(CGAffineTransform *)a3;
-- (void)teardownViews:(BOOL)a3;
+- (void)setAudiobookToTransform:(CGAffineTransform *)transform;
+- (void)teardownViews:(BOOL)views;
 @end
 
 @implementation BKAudiobookOpenAnimator
@@ -92,8 +92,8 @@
 
   else
   {
-    v4 = [(BKAudiobookOpenAnimator *)self _zoomSpring];
-    [v4 settlingDuration];
+    _zoomSpring = [(BKAudiobookOpenAnimator *)self _zoomSpring];
+    [_zoomSpring settlingDuration];
     v6 = v5;
 
     return v6;
@@ -117,9 +117,9 @@
 {
   if ([(BKAudiobookOpenAnimator *)self useLegacyTiming])
   {
-    v3 = [(BKBookOpenAnimator *)self opening];
+    opening = [(BKBookOpenAnimator *)self opening];
     v4 = 0.2;
-    if (v3)
+    if (opening)
     {
       v4 = 0.47;
     }
@@ -136,9 +136,9 @@
 
 - (double)toolbarFadeDuration
 {
-  v3 = [(BKBookOpenAnimator *)self opening];
+  opening = [(BKBookOpenAnimator *)self opening];
   v4 = 0.1;
-  if (v3)
+  if (opening)
   {
     v4 = 0.5;
   }
@@ -168,8 +168,8 @@
 
 - (double)animationScale
 {
-  v3 = [(BKAudiobookOpenAnimator *)self audiobookViewController];
-  [v3 transitionCoverFrame];
+  audiobookViewController = [(BKAudiobookOpenAnimator *)self audiobookViewController];
+  [audiobookViewController transitionCoverFrame];
 
   [(BKBookOpenAnimator *)self closedCoverFrame];
 
@@ -185,16 +185,16 @@
   return [CAMediaTimingFunction functionWithControlPoints:v2];
 }
 
-- (void)_setControlsAlpha:(double)a3
+- (void)_setControlsAlpha:(double)alpha
 {
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(BKAudiobookOpenAnimator *)self audiobookViewController];
-  v5 = [v4 transitionControlsViews];
+  audiobookViewController = [(BKAudiobookOpenAnimator *)self audiobookViewController];
+  transitionControlsViews = [audiobookViewController transitionControlsViews];
 
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [transitionControlsViews countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -206,41 +206,41 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(transitionControlsViews);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) setAlpha:a3];
+        [*(*(&v10 + 1) + 8 * v9) setAlpha:alpha];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [transitionControlsViews countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_setLayerShadowOpacity:(float)a3
+- (void)_setLayerShadowOpacity:(float)opacity
 {
-  v4 = [(BKAudiobookOpenAnimator *)self coverControlView];
-  v7 = [v4 layer];
+  coverControlView = [(BKAudiobookOpenAnimator *)self coverControlView];
+  layer = [coverControlView layer];
 
-  *&v5 = a3;
+  *&v5 = opacity;
   v6 = [NSNumber numberWithFloat:v5];
-  [v7 setValue:v6 forKeyPath:@"shadowOpacity"];
+  [layer setValue:v6 forKeyPath:@"shadowOpacity"];
 }
 
-- (void)_setToolbarAlpha:(double)a3
+- (void)_setToolbarAlpha:(double)alpha
 {
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(BKAudiobookOpenAnimator *)self audiobookViewController];
-  v5 = [v4 transitionToolbarViews];
+  audiobookViewController = [(BKAudiobookOpenAnimator *)self audiobookViewController];
+  transitionToolbarViews = [audiobookViewController transitionToolbarViews];
 
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [transitionToolbarViews countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -252,15 +252,15 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(transitionToolbarViews);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) setAlpha:a3];
+        [*(*(&v10 + 1) + 8 * v9) setAlpha:alpha];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [transitionToolbarViews countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
@@ -269,13 +269,13 @@
 
 - (void)_setupViews
 {
-  v3 = [(BKBookOpenAnimator *)self opening];
-  v4 = [(BKAudiobookOpenAnimator *)self audiobookViewController];
-  v5 = v4;
-  if (v3)
+  opening = [(BKBookOpenAnimator *)self opening];
+  audiobookViewController = [(BKAudiobookOpenAnimator *)self audiobookViewController];
+  v5 = audiobookViewController;
+  if (opening)
   {
-    v6 = [v4 view];
-    v7 = [v6 snapshotViewAfterScreenUpdates:0];
+    view = [audiobookViewController view];
+    v7 = [view snapshotViewAfterScreenUpdates:0];
 
     v8 = 0.0;
     v9 = 1.0;
@@ -287,47 +287,47 @@
     v9 = 0.0;
   }
 
-  v10 = [v5 transitionBackgroundImageView];
+  transitionBackgroundImageView = [v5 transitionBackgroundImageView];
   v11 = [UIImageView alloc];
-  v12 = [v10 superview];
-  [v10 frame];
+  superview = [transitionBackgroundImageView superview];
+  [transitionBackgroundImageView frame];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [(BKBookOpenAnimator *)self containerView];
-  [v12 convertRect:v21 toView:{v14, v16, v18, v20}];
+  containerView = [(BKBookOpenAnimator *)self containerView];
+  [superview convertRect:containerView toView:{v14, v16, v18, v20}];
   v22 = [v11 initWithFrame:?];
   [(BKAudiobookOpenAnimator *)self setBackgroundView:v22];
 
   v23 = +[UIColor bc_booksBackground];
-  v24 = [(BKAudiobookOpenAnimator *)self backgroundView];
-  [v24 setBackgroundColor:v23];
+  backgroundView = [(BKAudiobookOpenAnimator *)self backgroundView];
+  [backgroundView setBackgroundColor:v23];
 
-  v25 = [v10 contentMode];
-  v26 = [(BKAudiobookOpenAnimator *)self backgroundView];
-  [v26 setContentMode:v25];
+  contentMode = [transitionBackgroundImageView contentMode];
+  backgroundView2 = [(BKAudiobookOpenAnimator *)self backgroundView];
+  [backgroundView2 setContentMode:contentMode];
 
-  v27 = [v10 image];
-  v28 = [(BKAudiobookOpenAnimator *)self backgroundView];
-  [v28 setImage:v27];
+  image = [transitionBackgroundImageView image];
+  backgroundView3 = [(BKAudiobookOpenAnimator *)self backgroundView];
+  [backgroundView3 setImage:image];
 
-  [v10 setAlpha:0.0];
-  v29 = [(BKBookOpenAnimator *)self containerView];
-  v30 = [(BKAudiobookOpenAnimator *)self backgroundView];
-  [v29 addSubview:v30];
+  [transitionBackgroundImageView setAlpha:0.0];
+  containerView2 = [(BKBookOpenAnimator *)self containerView];
+  backgroundView4 = [(BKAudiobookOpenAnimator *)self backgroundView];
+  [containerView2 addSubview:backgroundView4];
 
-  v31 = [(BKBookOpenAnimator *)self containerView];
-  v32 = [(BKBookOpenAnimator *)self bookContainerView];
-  [v31 addSubview:v32];
+  containerView3 = [(BKBookOpenAnimator *)self containerView];
+  bookContainerView = [(BKBookOpenAnimator *)self bookContainerView];
+  [containerView3 addSubview:bookContainerView];
 
-  v33 = [(BKBookOpenAnimator *)self containerView];
-  v34 = [(BKBookOpenAnimator *)self coverContainerView];
-  [v33 addSubview:v34];
+  containerView4 = [(BKBookOpenAnimator *)self containerView];
+  coverContainerView = [(BKBookOpenAnimator *)self coverContainerView];
+  [containerView4 addSubview:coverContainerView];
 
-  v35 = [(BKAudiobookOpenAnimator *)self backgroundView];
+  backgroundView5 = [(BKAudiobookOpenAnimator *)self backgroundView];
   v118 = v8;
-  [v35 setAlpha:v8];
+  [backgroundView5 setAlpha:v8];
 
   v117 = v9;
   [(BKAudiobookOpenAnimator *)self setBackgroundToAlpha:v9];
@@ -336,10 +336,10 @@
   v39 = v38;
   v41 = v40;
   v43 = v42;
-  v44 = [(BKBookOpenAnimator *)self coverContainerView];
-  v45 = [v44 superview];
-  v46 = [v5 view];
-  [v45 convertRect:v46 fromView:{v37, v39, v41, v43}];
+  coverContainerView2 = [(BKBookOpenAnimator *)self coverContainerView];
+  superview2 = [coverContainerView2 superview];
+  view2 = [v5 view];
+  [superview2 convertRect:view2 fromView:{v37, v39, v41, v43}];
   v48 = v47;
   v50 = v49;
   v52 = v51;
@@ -350,7 +350,7 @@
   v58 = v56;
   v60 = v59;
   v62 = v61;
-  if (!v3)
+  if (!opening)
   {
     v55 = v48;
     v56 = v50;
@@ -361,7 +361,7 @@
   v64 = v50;
   v65 = v52;
   v66 = v54;
-  if ((v3 & 1) == 0)
+  if ((opening & 1) == 0)
   {
     v63 = v57;
     v64 = v58;
@@ -374,34 +374,34 @@
   v68 = v67;
   v70 = v69;
   CGRectGetCenterNoRounding();
-  v71 = [v5 view];
-  [v71 frame];
+  view3 = [v5 view];
+  [view3 frame];
 
   CGRectGetCenterNoRounding();
   v73 = v72;
   v75 = v74;
-  v76 = [v5 view];
-  v77 = [v76 superview];
-  v78 = [(BKBookOpenAnimator *)self coverContainerView];
-  v79 = [v78 superview];
-  [v77 convertPoint:v79 toView:{v73, v75}];
+  view4 = [v5 view];
+  superview3 = [view4 superview];
+  coverContainerView3 = [(BKBookOpenAnimator *)self coverContainerView];
+  superview4 = [coverContainerView3 superview];
+  [superview3 convertPoint:superview4 toView:{v73, v75}];
   CGPointSubtract();
 
   [(BKAudiobookOpenAnimator *)self animationScale];
   v81 = v80;
   CGPointMultiply();
-  v82 = [v5 view];
-  v83 = [v82 superview];
-  v84 = [(BKBookOpenAnimator *)self coverContainerView];
-  v85 = [v84 superview];
-  [v83 convertPoint:v85 fromView:{v68, v70}];
+  view5 = [v5 view];
+  superview5 = [view5 superview];
+  coverContainerView4 = [(BKBookOpenAnimator *)self coverContainerView];
+  superview6 = [coverContainerView4 superview];
+  [superview5 convertPoint:superview6 fromView:{v68, v70}];
   CGPointAdd();
   v87 = v86;
   v89 = v88;
 
-  v90 = [v5 view];
-  v91 = v90;
-  if (v3)
+  view6 = [v5 view];
+  v91 = view6;
+  if (opening)
   {
     v92 = v89;
   }
@@ -411,7 +411,7 @@
     v92 = v75;
   }
 
-  if (v3)
+  if (opening)
   {
     v93 = v87;
   }
@@ -421,21 +421,21 @@
     v93 = v73;
   }
 
-  if (v3)
+  if (opening)
   {
     v89 = v75;
     v87 = v73;
   }
 
-  [v90 setCenter:{v93, v92}];
+  [view6 setCenter:{v93, v92}];
 
   [(BKAudiobookOpenAnimator *)self setAudiobookToCenter:v87, v89];
   memset(&v125, 0, sizeof(v125));
-  v94 = [v5 view];
-  v95 = v94;
-  if (v94)
+  view7 = [v5 view];
+  v95 = view7;
+  if (view7)
   {
-    [v94 transform];
+    [view7 transform];
   }
 
   else
@@ -447,7 +447,7 @@
   CGAffineTransformMakeScale(&t2, v81, v81);
   t1 = v125;
   CGAffineTransformConcat(&v124, &t1, &t2);
-  if (v3)
+  if (opening)
   {
     v96 = &v124;
   }
@@ -460,7 +460,7 @@
   *&v121.a = *&v96->a;
   *&v121.c = *&v96->c;
   *&v121.tx = *&v96->tx;
-  if (v3)
+  if (opening)
   {
     v97 = &v125;
   }
@@ -470,9 +470,9 @@
     v97 = &v124;
   }
 
-  v98 = [v5 view];
+  view8 = [v5 view];
   t2 = v121;
-  [v98 setTransform:&t2];
+  [view8 setTransform:&t2];
 
   v119 = *&v97->c;
   v120 = *&v97->tx;
@@ -495,8 +495,8 @@
     }
   }
 
-  v101 = [(BKBookOpenAnimator *)self bookContainerView];
-  [v101 setAlpha:v100];
+  bookContainerView2 = [(BKBookOpenAnimator *)self bookContainerView];
+  [bookContainerView2 setAlpha:v100];
 
   if (![(BKBookOpenAnimator *)self opening])
   {
@@ -514,12 +514,12 @@
   [(BKAudiobookOpenAnimator *)self setBookContainerToAlpha:v99];
   [(BKAudiobookOpenAnimator *)self _setControlsAlpha:v118];
   [(BKAudiobookOpenAnimator *)self setControlsToAlpha:v117];
-  if (v3)
+  if (opening)
   {
     v102 = 0.0;
     [(BKAudiobookOpenAnimator *)self _setToolbarAlpha:0.0];
-    v103 = [(BKAudiobookOpenAnimator *)self audiobookViewController];
-    [v103 transitionToolbarAlpha];
+    audiobookViewController2 = [(BKAudiobookOpenAnimator *)self audiobookViewController];
+    [audiobookViewController2 transitionToolbarAlpha];
     [(BKAudiobookOpenAnimator *)self setToolbarToAlpha:?];
 
     if ([(BKBookOpenAnimator *)self fadeInCover])
@@ -532,11 +532,11 @@
       v104 = 1.0;
     }
 
-    v105 = [(BKBookOpenAnimator *)self coverContainerView];
-    [v105 setAlpha:v104];
+    coverContainerView5 = [(BKBookOpenAnimator *)self coverContainerView];
+    [coverContainerView5 setAlpha:v104];
 
-    v106 = [(BKBookOpenAnimator *)self coverImageView];
-    [v106 _setContinuousCornerRadius:0.0];
+    coverImageView = [(BKBookOpenAnimator *)self coverImageView];
+    [coverImageView _setContinuousCornerRadius:0.0];
 
     [v5 coverCornerRadius];
     [(BKAudiobookOpenAnimator *)self setCoverToCornerRadius:?];
@@ -544,30 +544,30 @@
 
   else
   {
-    v107 = [v5 transitionCoverImagePlayControl];
-    [(BKAudiobookOpenAnimator *)self setCoverControlView:v107];
+    transitionCoverImagePlayControl = [v5 transitionCoverImagePlayControl];
+    [(BKAudiobookOpenAnimator *)self setCoverControlView:transitionCoverImagePlayControl];
 
-    v108 = [(BKAudiobookOpenAnimator *)self audiobookViewController];
-    [v108 transitionCoverImagePlayControlShadowOpacityValue];
+    audiobookViewController3 = [(BKAudiobookOpenAnimator *)self audiobookViewController];
+    [audiobookViewController3 transitionCoverImagePlayControlShadowOpacityValue];
     *&v109 = v109;
     [(BKAudiobookOpenAnimator *)self _setLayerShadowOpacity:v109];
 
     [(BKAudiobookOpenAnimator *)self setCoverControlViewToShadowOpacity:0.0];
-    v110 = [(BKAudiobookOpenAnimator *)self coverControlView];
-    [v110 addAnimatablePropertyWithKey:@"shadowOpacity"];
+    coverControlView = [(BKAudiobookOpenAnimator *)self coverControlView];
+    [coverControlView addAnimatablePropertyWithKey:@"shadowOpacity"];
 
-    v111 = [(BKAudiobookOpenAnimator *)self audiobookViewController];
-    [v111 transitionToolbarAlpha];
+    audiobookViewController4 = [(BKAudiobookOpenAnimator *)self audiobookViewController];
+    [audiobookViewController4 transitionToolbarAlpha];
     [(BKAudiobookOpenAnimator *)self _setToolbarAlpha:?];
 
     [(BKAudiobookOpenAnimator *)self setToolbarToAlpha:0.0];
-    v112 = [(BKBookOpenAnimator *)self coverContainerView];
-    [v112 setAlpha:0.0];
+    coverContainerView6 = [(BKBookOpenAnimator *)self coverContainerView];
+    [coverContainerView6 setAlpha:0.0];
 
     [v5 coverCornerRadius];
     v114 = v113;
-    v115 = [(BKBookOpenAnimator *)self coverImageView];
-    [v115 _setContinuousCornerRadius:v114];
+    coverImageView2 = [(BKBookOpenAnimator *)self coverImageView];
+    [coverImageView2 _setContinuousCornerRadius:v114];
 
     [(BKAudiobookOpenAnimator *)self setCoverToCornerRadius:0.0];
     if ([(BKBookOpenAnimator *)self fadeInCover])
@@ -584,8 +584,8 @@
   [(BKAudiobookOpenAnimator *)self setCoverToAlpha:v102];
   if (([v5 transitionHasCustomArtwork] & 1) == 0)
   {
-    v116 = [(BKBookOpenAnimator *)self coverShadowView];
-    [v116 setAlpha:v117];
+    coverShadowView = [(BKBookOpenAnimator *)self coverShadowView];
+    [coverShadowView setAlpha:v117];
 
     [(BKAudiobookOpenAnimator *)self setCoverShadowToAlpha:v118];
   }
@@ -593,8 +593,8 @@
 
 - (void)animateNonInteractive
 {
-  v3 = [(BKBookOpenAnimator *)self opening];
-  if (v3 && ![(BKAudiobookOpenAnimator *)self contentLoaded])
+  opening = [(BKBookOpenAnimator *)self opening];
+  if (opening && ![(BKAudiobookOpenAnimator *)self contentLoaded])
   {
 
     [(BKAudiobookOpenAnimator *)self setWaitingForContentLoaded:1];
@@ -618,11 +618,11 @@
     v48[3] = &unk_100A06A58;
     v48[4] = self;
     v48[5] = v51;
-    v49 = v3;
+    v49 = opening;
     v5 = objc_retainBlock(v48);
     [(BKAudiobookOpenAnimator *)self _setupViews];
-    v6 = [(BKAudiobookOpenAnimator *)self audiobookViewController];
-    v36 = [v6 transitionHasCustomArtwork];
+    audiobookViewController = [(BKAudiobookOpenAnimator *)self audiobookViewController];
+    transitionHasCustomArtwork = [audiobookViewController transitionHasCustomArtwork];
     [(BKAudiobookOpenAnimator *)self zoomDuration];
     v8 = v7;
     [(BKAudiobookOpenAnimator *)self toolbarFadeDuration];
@@ -631,7 +631,7 @@
     v12 = v11;
     [(BKAudiobookOpenAnimator *)self controlsFadeDuration];
     v14 = v13;
-    if (v3)
+    if (opening)
     {
       v15 = 0.0;
     }
@@ -653,16 +653,16 @@
     v16 = ;
     [(BKBookOpenAnimator *)self animateNavigationBarPrepare];
     v17 = v8 * 0.25;
-    if (v3)
+    if (opening)
     {
       v17 = 0.0;
     }
 
     [(BKBookOpenAnimator *)self animateNavigationBarWithDuration:v8 * 0.5 delay:v17];
     (v4[2])(v4);
-    v18 = [(BKAudiobookOpenAnimator *)self useLegacyTiming];
+    useLegacyTiming = [(BKAudiobookOpenAnimator *)self useLegacyTiming];
     v19 = v8;
-    if ((v18 & 1) == 0)
+    if ((useLegacyTiming & 1) == 0)
     {
       [(BKBookOpenAnimator *)self adjustDuration:0.3];
     }
@@ -679,23 +679,23 @@
     v45[2] = sub_1000C8CA4;
     v45[3] = &unk_100A03440;
     v45[4] = self;
-    v20 = v6;
+    v20 = audiobookViewController;
     v46 = v20;
     v21 = objc_retainBlock(v45);
     if ([(BKAudiobookOpenAnimator *)self useLegacyTiming])
     {
-      v22 = [(BKAudiobookOpenAnimator *)self zoomTimingFunction];
-      [UIView animateWithDuration:v22 delay:0 timingFunction:v21 options:v5 animations:v8 completion:v15];
+      zoomTimingFunction = [(BKAudiobookOpenAnimator *)self zoomTimingFunction];
+      [UIView animateWithDuration:zoomTimingFunction delay:0 timingFunction:v21 options:v5 animations:v8 completion:v15];
     }
 
     else
     {
-      v22 = [(BKAudiobookOpenAnimator *)self _zoomSpring];
-      [v22 mass];
+      zoomTimingFunction = [(BKAudiobookOpenAnimator *)self _zoomSpring];
+      [zoomTimingFunction mass];
       v24 = v23;
-      [v22 stiffness];
+      [zoomTimingFunction stiffness];
       v26 = v25;
-      [v22 damping];
+      [zoomTimingFunction damping];
       [UIView _animateUsingSpringWithDuration:0 delay:v21 options:v5 mass:v8 stiffness:v15 damping:v24 initialVelocity:v26 animations:v27 completion:0.0];
     }
 
@@ -705,8 +705,8 @@
     v42[2] = sub_1000C8D64;
     v42[3] = &unk_100A04030;
     v42[4] = self;
-    v43 = v36;
-    v44 = v3;
+    v43 = transitionHasCustomArtwork;
+    v44 = opening;
     [UIView animateWithDuration:v16 delay:0 timingFunction:v42 options:v5 animations:v8 completion:v15];
     (v4[2])(v4);
     v41[0] = _NSConcreteStackBlock;
@@ -716,7 +716,7 @@
     v41[4] = self;
     [UIView animateWithDuration:v16 delay:0 timingFunction:v41 options:v5 animations:v8 completion:v15];
     (v4[2])(v4);
-    if (v3)
+    if (opening)
     {
       v28 = v12;
     }
@@ -734,11 +734,11 @@
     [UIView animateWithDuration:v16 delay:0 timingFunction:v40 options:v5 animations:v14 completion:v28];
     (v4[2])(v4);
     v29 = 0.0;
-    if (v3)
+    if (opening)
     {
-      v30 = [(BKAudiobookOpenAnimator *)self useLegacyTiming];
+      useLegacyTiming2 = [(BKAudiobookOpenAnimator *)self useLegacyTiming];
       v31 = 0.7;
-      if (v30)
+      if (useLegacyTiming2)
       {
         v31 = 1.0;
       }
@@ -746,21 +746,21 @@
       v29 = v8 * v31;
     }
 
-    v32 = [(BKAudiobookOpenAnimator *)self useLegacyTiming];
-    v33 = v16;
-    if (v32)
+    useLegacyTiming3 = [(BKAudiobookOpenAnimator *)self useLegacyTiming];
+    fadeTimingFunction = v16;
+    if (useLegacyTiming3)
     {
-      v33 = [(BKAudiobookOpenAnimator *)self fadeTimingFunction];
+      fadeTimingFunction = [(BKAudiobookOpenAnimator *)self fadeTimingFunction];
     }
 
     v38[0] = _NSConcreteStackBlock;
     v38[1] = 3221225472;
     v38[2] = sub_1000C8F18;
     v38[3] = &unk_100A044C8;
-    v39 = v36;
+    v39 = transitionHasCustomArtwork;
     v38[4] = self;
-    [UIView animateWithDuration:v33 delay:0 timingFunction:v38 options:v5 animations:v10 completion:v29];
-    if (v32)
+    [UIView animateWithDuration:fadeTimingFunction delay:0 timingFunction:v38 options:v5 animations:v10 completion:v29];
+    if (useLegacyTiming3)
     {
     }
 
@@ -785,16 +785,16 @@
 
 - (void)animationsDidFinish
 {
-  v3 = [(BKAudiobookOpenAnimator *)self audiobookViewController];
-  v4 = [v3 transitionBackgroundImageView];
-  [v4 setAlpha:1.0];
+  audiobookViewController = [(BKAudiobookOpenAnimator *)self audiobookViewController];
+  transitionBackgroundImageView = [audiobookViewController transitionBackgroundImageView];
+  [transitionBackgroundImageView setAlpha:1.0];
 
-  v5 = [v3 view];
+  view = [audiobookViewController view];
   v6 = *&CGAffineTransformIdentity.c;
   v8[0] = *&CGAffineTransformIdentity.a;
   v8[1] = v6;
   v8[2] = *&CGAffineTransformIdentity.tx;
-  [v5 setTransform:v8];
+  [view setTransform:v8];
 
   [(BKAudiobookOpenAnimator *)self _setControlsAlpha:1.0];
   [(BKAudiobookOpenAnimator *)self toolbarToAlpha];
@@ -806,36 +806,36 @@
 
 - (void)_teardownLocalViews
 {
-  v3 = [(BKAudiobookOpenAnimator *)self backgroundView];
-  [v3 removeFromSuperview];
+  backgroundView = [(BKAudiobookOpenAnimator *)self backgroundView];
+  [backgroundView removeFromSuperview];
 
   [(BKAudiobookOpenAnimator *)self setBackgroundView:0];
 }
 
-- (void)teardownViews:(BOOL)a3
+- (void)teardownViews:(BOOL)views
 {
-  v3 = a3;
+  viewsCopy = views;
   [(BKAudiobookOpenAnimator *)self _teardownLocalViews];
   v5.receiver = self;
   v5.super_class = BKAudiobookOpenAnimator;
-  [(BKBookOpenAnimator *)&v5 teardownViews:v3];
+  [(BKBookOpenAnimator *)&v5 teardownViews:viewsCopy];
 }
 
 - (int64_t)coverContentMode
 {
-  v3 = [(BKAudiobookOpenAnimator *)self audiobookViewController];
-  if (v3)
+  audiobookViewController = [(BKAudiobookOpenAnimator *)self audiobookViewController];
+  if (audiobookViewController)
   {
-    v4 = [(BKAudiobookOpenAnimator *)self audiobookViewController];
-    v5 = [v4 coverContentMode];
+    audiobookViewController2 = [(BKAudiobookOpenAnimator *)self audiobookViewController];
+    coverContentMode = [audiobookViewController2 coverContentMode];
   }
 
   else
   {
-    v5 = 2;
+    coverContentMode = 2;
   }
 
-  return v5;
+  return coverContentMode;
 }
 
 - (void)bookContentDidLoad
@@ -885,11 +885,11 @@
   return self;
 }
 
-- (void)setAudiobookToTransform:(CGAffineTransform *)a3
+- (void)setAudiobookToTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_audiobookToTransform.a = *&a3->a;
+  v4 = *&transform->c;
+  v3 = *&transform->tx;
+  *&self->_audiobookToTransform.a = *&transform->a;
   *&self->_audiobookToTransform.c = v4;
   *&self->_audiobookToTransform.tx = v3;
 }

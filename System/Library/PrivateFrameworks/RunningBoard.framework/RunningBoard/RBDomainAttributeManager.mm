@@ -1,33 +1,33 @@
 @interface RBDomainAttributeManager
-- (BOOL)areTargetPropertiesValidForContext:(id)a3 forAttributeWithDomain:(id)a4 andName:(id)a5;
-- (BOOL)containsAttributeWithDomain:(id)a3 andName:(id)a4;
+- (BOOL)areTargetPropertiesValidForContext:(id)context forAttributeWithDomain:(id)domain andName:(id)name;
+- (BOOL)containsAttributeWithDomain:(id)domain andName:(id)name;
 - (NSString)debugDescription;
 - (NSString)stateCaptureTitle;
-- (RBDomainAttributeManager)initWithDataProvider:(id)a3;
-- (id)additionalRestrictionsForDomain:(id)a3 andName:(id)a4;
+- (RBDomainAttributeManager)initWithDataProvider:(id)provider;
+- (id)additionalRestrictionsForDomain:(id)domain andName:(id)name;
 - (id)allEntitlements;
-- (id)attributesForDomain:(id)a3 andName:(id)a4 context:(id)a5 withError:(id *)a6;
-- (id)endowmentNamespaceForDomain:(id)a3 andName:(id)a4;
-- (id)originatorEntitlementsForDomain:(id)a3 andName:(id)a4;
-- (id)restrictionsForDomain:(id)a3 andName:(id)a4;
-- (id)targetEntitlementsForDomain:(id)a3 andName:(id)a4;
-- (uint64_t)_compareRestrictions:(void *)a3 withContext:;
-- (uint64_t)_compareTargetBundleProperties:(void *)a3 withContext:;
+- (id)attributesForDomain:(id)domain andName:(id)name context:(id)context withError:(id *)error;
+- (id)endowmentNamespaceForDomain:(id)domain andName:(id)name;
+- (id)originatorEntitlementsForDomain:(id)domain andName:(id)name;
+- (id)restrictionsForDomain:(id)domain andName:(id)name;
+- (id)targetEntitlementsForDomain:(id)domain andName:(id)name;
+- (uint64_t)_compareRestrictions:(void *)restrictions withContext:;
+- (uint64_t)_compareTargetBundleProperties:(void *)properties withContext:;
 - (void)_prepareAttributeTemplates;
 @end
 
 @implementation RBDomainAttributeManager
 
-- (RBDomainAttributeManager)initWithDataProvider:(id)a3
+- (RBDomainAttributeManager)initWithDataProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = RBDomainAttributeManager;
   v6 = [(RBDomainAttributeManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataProvider, a3);
+    objc_storeStrong(&v6->_dataProvider, provider);
     [(RBDomainAttributeManager *)v7 _prepareAttributeTemplates];
   }
 
@@ -61,20 +61,20 @@ void __44__RBDomainAttributeManager_debugDescription__block_invoke(uint64_t a1, 
   [v4 appendFormat:@"\n\t%@={\n%@\n\t}", v5, v6];
 }
 
-- (id)attributesForDomain:(id)a3 andName:(id)a4 context:(id)a5 withError:(id *)a6
+- (id)attributesForDomain:(id)domain andName:(id)name context:(id)context withError:(id *)error
 {
   v60[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(NSDictionary *)self->_domainAttributeTemplatesByDomain objectForKeyedSubscript:v10];
+  domainCopy = domain;
+  nameCopy = name;
+  contextCopy = context;
+  v13 = [(NSDictionary *)self->_domainAttributeTemplatesByDomain objectForKeyedSubscript:domainCopy];
   v14 = v13;
   if (v13)
   {
-    v15 = [v13 objectForKeyedSubscript:v11];
+    v15 = [v13 objectForKeyedSubscript:nameCopy];
     if (v15)
     {
-      v16 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v51 = 0u;
       v52 = 0u;
       v53 = 0u;
@@ -89,8 +89,8 @@ void __44__RBDomainAttributeManager_debugDescription__block_invoke(uint64_t a1, 
       v18 = v17;
       v41 = v15;
       v42 = v14;
-      v43 = v11;
-      v44 = v10;
+      v43 = nameCopy;
+      v44 = domainCopy;
       v46 = *v52;
       v19 = obj;
       while (1)
@@ -103,16 +103,16 @@ void __44__RBDomainAttributeManager_debugDescription__block_invoke(uint64_t a1, 
           }
 
           v21 = *(*(&v51 + 1) + 8 * i);
-          if (!v12)
+          if (!contextCopy)
           {
             goto LABEL_11;
           }
 
-          v22 = [*(*(&v51 + 1) + 8 * i) targetBundleProperties];
-          if ([(RBDomainAttributeManager *)self _compareTargetBundleProperties:v22 withContext:v12])
+          targetBundleProperties = [*(*(&v51 + 1) + 8 * i) targetBundleProperties];
+          if ([(RBDomainAttributeManager *)self _compareTargetBundleProperties:targetBundleProperties withContext:contextCopy])
           {
-            v23 = [v21 restriction];
-            v24 = [(RBDomainAttributeManager *)self _compareRestrictions:v23 withContext:v12];
+            restriction = [v21 restriction];
+            v24 = [(RBDomainAttributeManager *)self _compareRestrictions:restriction withContext:contextCopy];
 
             if (!v24)
             {
@@ -124,13 +124,13 @@ LABEL_11:
             v50 = 0u;
             v47 = 0u;
             v48 = 0u;
-            v22 = [v21 attributes];
-            v25 = [v22 countByEnumeratingWithState:&v47 objects:v55 count:16];
+            targetBundleProperties = [v21 attributes];
+            v25 = [targetBundleProperties countByEnumeratingWithState:&v47 objects:v55 count:16];
             if (v25)
             {
               v26 = v25;
-              v27 = v12;
-              v28 = self;
+              v27 = contextCopy;
+              selfCopy = self;
               v29 = *v48;
               do
               {
@@ -138,23 +138,23 @@ LABEL_11:
                 {
                   if (*v48 != v29)
                   {
-                    objc_enumerationMutation(v22);
+                    objc_enumerationMutation(targetBundleProperties);
                   }
 
                   v31 = *(*(&v47 + 1) + 8 * j);
                   if (v31)
                   {
                     v32 = [v31 copy];
-                    [v16 addObject:v32];
+                    [array addObject:v32];
                   }
                 }
 
-                v26 = [v22 countByEnumeratingWithState:&v47 objects:v55 count:16];
+                v26 = [targetBundleProperties countByEnumeratingWithState:&v47 objects:v55 count:16];
               }
 
               while (v26);
-              self = v28;
-              v12 = v27;
+              self = selfCopy;
+              contextCopy = v27;
               v19 = obj;
             }
           }
@@ -163,8 +163,8 @@ LABEL_11:
         v18 = [v19 countByEnumeratingWithState:&v51 objects:v56 count:16];
         if (!v18)
         {
-          v11 = v43;
-          v10 = v44;
+          nameCopy = v43;
+          domainCopy = v44;
           v15 = v41;
           v14 = v42;
           goto LABEL_35;
@@ -172,69 +172,69 @@ LABEL_11:
       }
     }
 
-    if (a6)
+    if (error)
     {
       v36 = MEMORY[0x277CCA9B8];
       v37 = *MEMORY[0x277D47050];
       v57 = *MEMORY[0x277CCA470];
       v58 = @"Could not find attribute name in domain plist";
       v38 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v58 forKeys:&v57 count:1];
-      *a6 = [v36 errorWithDomain:v37 code:2 userInfo:v38];
+      *error = [v36 errorWithDomain:v37 code:2 userInfo:v38];
     }
 
     obj = rbs_assertion_log();
     if (os_log_type_enabled(obj, OS_LOG_TYPE_ERROR))
     {
-      [RBDomainAttributeManager attributesForDomain:v11 andName:v10 context:obj withError:?];
+      [RBDomainAttributeManager attributesForDomain:nameCopy andName:domainCopy context:obj withError:?];
     }
 
-    v16 = 0;
+    array = 0;
 LABEL_35:
   }
 
   else
   {
-    if (a6)
+    if (error)
     {
       v33 = MEMORY[0x277CCA9B8];
       v34 = *MEMORY[0x277D47050];
       v59 = *MEMORY[0x277CCA470];
       v60[0] = @"Could not find plist for domain attribute";
       v35 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v60 forKeys:&v59 count:1];
-      *a6 = [v33 errorWithDomain:v34 code:2 userInfo:v35];
+      *error = [v33 errorWithDomain:v34 code:2 userInfo:v35];
     }
 
     v15 = rbs_assertion_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      [RBDomainAttributeManager attributesForDomain:v10 andName:v15 context:? withError:?];
+      [RBDomainAttributeManager attributesForDomain:domainCopy andName:v15 context:? withError:?];
     }
 
-    v16 = 0;
+    array = 0;
   }
 
   v39 = *MEMORY[0x277D85DE8];
 
-  return v16;
+  return array;
 }
 
-- (uint64_t)_compareTargetBundleProperties:(void *)a3 withContext:
+- (uint64_t)_compareTargetBundleProperties:(void *)properties withContext:
 {
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  propertiesCopy = properties;
+  v7 = propertiesCopy;
+  if (self)
   {
     v16 = 0;
     v17 = &v16;
     v18 = 0x2020000000;
     v19 = 1;
-    v8 = [v6 targetProperties];
+    targetProperties = [propertiesCopy targetProperties];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __71__RBDomainAttributeManager__compareTargetBundleProperties_withContext___block_invoke;
     v12[3] = &unk_279B33CF8;
-    v9 = v8;
+    v9 = targetProperties;
     v13 = v9;
     v15 = &v16;
     v14 = v7;
@@ -298,90 +298,90 @@ void __43__RBDomainAttributeManager_allEntitlements__block_invoke_3(uint64_t a1,
   [v10 unionSet:v11];
 }
 
-- (id)originatorEntitlementsForDomain:(id)a3 andName:(id)a4
+- (id)originatorEntitlementsForDomain:(id)domain andName:(id)name
 {
   domainAttributeTemplatesByDomain = self->_domainAttributeTemplatesByDomain;
-  v6 = a4;
-  v7 = [(NSDictionary *)domainAttributeTemplatesByDomain objectForKeyedSubscript:a3];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  nameCopy = name;
+  v7 = [(NSDictionary *)domainAttributeTemplatesByDomain objectForKeyedSubscript:domain];
+  v8 = [v7 objectForKeyedSubscript:nameCopy];
 
-  v9 = [v8 originatorEntitlements];
+  originatorEntitlements = [v8 originatorEntitlements];
 
-  return v9;
+  return originatorEntitlements;
 }
 
-- (id)targetEntitlementsForDomain:(id)a3 andName:(id)a4
+- (id)targetEntitlementsForDomain:(id)domain andName:(id)name
 {
   domainAttributeTemplatesByDomain = self->_domainAttributeTemplatesByDomain;
-  v6 = a4;
-  v7 = [(NSDictionary *)domainAttributeTemplatesByDomain objectForKeyedSubscript:a3];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  nameCopy = name;
+  v7 = [(NSDictionary *)domainAttributeTemplatesByDomain objectForKeyedSubscript:domain];
+  v8 = [v7 objectForKeyedSubscript:nameCopy];
 
-  v9 = [v8 targetEntitlements];
+  targetEntitlements = [v8 targetEntitlements];
 
-  return v9;
+  return targetEntitlements;
 }
 
-- (id)additionalRestrictionsForDomain:(id)a3 andName:(id)a4
+- (id)additionalRestrictionsForDomain:(id)domain andName:(id)name
 {
   domainAttributeTemplatesByDomain = self->_domainAttributeTemplatesByDomain;
-  v6 = a4;
-  v7 = [(NSDictionary *)domainAttributeTemplatesByDomain objectForKeyedSubscript:a3];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  nameCopy = name;
+  v7 = [(NSDictionary *)domainAttributeTemplatesByDomain objectForKeyedSubscript:domain];
+  v8 = [v7 objectForKeyedSubscript:nameCopy];
 
   v9 = MEMORY[0x277CBEB98];
-  v10 = [v8 additionalRestrictions];
-  v11 = [v10 allKeys];
-  v12 = [v9 setWithArray:v11];
+  additionalRestrictions = [v8 additionalRestrictions];
+  allKeys = [additionalRestrictions allKeys];
+  v12 = [v9 setWithArray:allKeys];
 
   return v12;
 }
 
-- (id)restrictionsForDomain:(id)a3 andName:(id)a4
+- (id)restrictionsForDomain:(id)domain andName:(id)name
 {
   domainAttributeTemplatesByDomain = self->_domainAttributeTemplatesByDomain;
-  v6 = a4;
-  v7 = [(NSDictionary *)domainAttributeTemplatesByDomain objectForKeyedSubscript:a3];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  nameCopy = name;
+  v7 = [(NSDictionary *)domainAttributeTemplatesByDomain objectForKeyedSubscript:domain];
+  v8 = [v7 objectForKeyedSubscript:nameCopy];
 
-  v9 = [v8 restriction];
+  restriction = [v8 restriction];
 
-  return v9;
+  return restriction;
 }
 
-- (id)endowmentNamespaceForDomain:(id)a3 andName:(id)a4
+- (id)endowmentNamespaceForDomain:(id)domain andName:(id)name
 {
   domainAttributeTemplatesByDomain = self->_domainAttributeTemplatesByDomain;
-  v6 = a4;
-  v7 = [(NSDictionary *)domainAttributeTemplatesByDomain objectForKeyedSubscript:a3];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  nameCopy = name;
+  v7 = [(NSDictionary *)domainAttributeTemplatesByDomain objectForKeyedSubscript:domain];
+  v8 = [v7 objectForKeyedSubscript:nameCopy];
 
-  v9 = [(RBDomainAttributeTemplate *)v8 endowmentNamespace];
+  endowmentNamespace = [(RBDomainAttributeTemplate *)v8 endowmentNamespace];
 
-  return v9;
+  return endowmentNamespace;
 }
 
-- (BOOL)areTargetPropertiesValidForContext:(id)a3 forAttributeWithDomain:(id)a4 andName:(id)a5
+- (BOOL)areTargetPropertiesValidForContext:(id)context forAttributeWithDomain:(id)domain andName:(id)name
 {
-  v7 = self;
+  selfCopy = self;
   domainAttributeTemplatesByDomain = self->_domainAttributeTemplatesByDomain;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(NSDictionary *)domainAttributeTemplatesByDomain objectForKeyedSubscript:a4];
-  v12 = [v11 objectForKeyedSubscript:v9];
+  nameCopy = name;
+  contextCopy = context;
+  v11 = [(NSDictionary *)domainAttributeTemplatesByDomain objectForKeyedSubscript:domain];
+  v12 = [v11 objectForKeyedSubscript:nameCopy];
 
-  v13 = [v12 targetBundleProperties];
-  LOBYTE(v7) = [(RBDomainAttributeManager *)v7 _compareTargetBundleProperties:v13 withContext:v10];
+  targetBundleProperties = [v12 targetBundleProperties];
+  LOBYTE(selfCopy) = [(RBDomainAttributeManager *)selfCopy _compareTargetBundleProperties:targetBundleProperties withContext:contextCopy];
 
-  return v7;
+  return selfCopy;
 }
 
-- (BOOL)containsAttributeWithDomain:(id)a3 andName:(id)a4
+- (BOOL)containsAttributeWithDomain:(id)domain andName:(id)name
 {
   domainAttributeTemplatesByDomain = self->_domainAttributeTemplatesByDomain;
-  v6 = a4;
-  v7 = [(NSDictionary *)domainAttributeTemplatesByDomain objectForKeyedSubscript:a3];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  nameCopy = name;
+  v7 = [(NSDictionary *)domainAttributeTemplatesByDomain objectForKeyedSubscript:domain];
+  v8 = [v7 objectForKeyedSubscript:nameCopy];
 
   return v8 != 0;
 }
@@ -638,35 +638,35 @@ LABEL_64:
 
 - (void)_prepareAttributeTemplates
 {
-  if (a1)
+  if (self)
   {
     v2 = objc_autoreleasePoolPush();
-    v3 = [*(a1 + 16) templatesByDomain];
-    v4 = *(a1 + 8);
-    *(a1 + 8) = v3;
+    templatesByDomain = [*(self + 16) templatesByDomain];
+    v4 = *(self + 8);
+    *(self + 8) = templatesByDomain;
 
     objc_autoreleasePoolPop(v2);
   }
 }
 
-- (uint64_t)_compareRestrictions:(void *)a3 withContext:
+- (uint64_t)_compareRestrictions:(void *)restrictions withContext:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  restrictionsCopy = restrictions;
+  if (self)
   {
     if (v5)
     {
-      a1 = [v5 allowsContext:v6 withError:0];
+      self = [v5 allowsContext:restrictionsCopy withError:0];
     }
 
     else
     {
-      a1 = 1;
+      self = 1;
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (void)attributesForDomain:(os_log_t)log andName:context:withError:.cold.1(uint64_t a1, uint64_t a2, os_log_t log)

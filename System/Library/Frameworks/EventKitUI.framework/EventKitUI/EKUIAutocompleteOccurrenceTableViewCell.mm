@@ -1,17 +1,17 @@
 @interface EKUIAutocompleteOccurrenceTableViewCell
-+ (BOOL)_shouldShowOtherTimeZoneForResult:(id)a3;
-+ (double)cellHeightForResult:(id)a3 forWidth:(double)a4;
-+ (id)_foundInStringForResult:(id)a3 pasteboardEvent:(BOOL)a4;
-+ (id)_inviteeStringForResult:(id)a3;
-+ (id)_locationStringForResult:(id)a3;
-+ (id)_timeStringForResult:(id)a3 usingTimeZone:(id)a4;
-+ (id)_titleStringForResult:(id)a3;
++ (BOOL)_shouldShowOtherTimeZoneForResult:(id)result;
++ (double)cellHeightForResult:(id)result forWidth:(double)width;
++ (id)_foundInStringForResult:(id)result pasteboardEvent:(BOOL)event;
++ (id)_inviteeStringForResult:(id)result;
++ (id)_locationStringForResult:(id)result;
++ (id)_timeStringForResult:(id)result usingTimeZone:(id)zone;
++ (id)_titleStringForResult:(id)result;
 + (id)reuseIdentifier;
-- (EKUIAutocompleteOccurrenceTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)_addConstraintsForLabel:(id)a3 belowView:(id)a4 toArray:(id)a5;
+- (EKUIAutocompleteOccurrenceTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)_addConstraintsForLabel:(id)label belowView:(id)view toArray:(id)array;
 - (void)setLabelFonts;
 - (void)setupConstraints;
-- (void)updateWithResult:(id)a3;
+- (void)updateWithResult:(id)result;
 @end
 
 @implementation EKUIAutocompleteOccurrenceTableViewCell
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = __58__EKUIAutocompleteOccurrenceTableViewCell_reuseIdentifier__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (reuseIdentifier_onceToken != -1)
   {
     dispatch_once(&reuseIdentifier_onceToken, block);
@@ -41,19 +41,19 @@ void __58__EKUIAutocompleteOccurrenceTableViewCell_reuseIdentifier__block_invoke
   reuseIdentifier_reuseIdentifier = v1;
 }
 
-- (EKUIAutocompleteOccurrenceTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (EKUIAutocompleteOccurrenceTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v32[5] = *MEMORY[0x1E69E9840];
   v31.receiver = self;
   v31.super_class = EKUIAutocompleteOccurrenceTableViewCell;
-  v4 = [(EKUIAutocompleteSearchResultBaseCell *)&v31 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(EKUIAutocompleteSearchResultBaseCell *)&v31 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     if ((MEMORY[0x1D38B98D0]() & 1) == 0)
     {
       [(EKUITableViewCell *)v4 setDrawsOwnRowSeparators:1];
-      v5 = [MEMORY[0x1E69DC888] systemMidGrayColor];
-      [(EKUITableViewCell *)v4 setRowSeparatorColor:v5];
+      systemMidGrayColor = [MEMORY[0x1E69DC888] systemMidGrayColor];
+      [(EKUITableViewCell *)v4 setRowSeparatorColor:systemMidGrayColor];
 
       v6 = EKHalfSystemGroupedBackgroundColor();
       [(EKUIAutocompleteOccurrenceTableViewCell *)v4 setBackgroundColor:v6];
@@ -66,50 +66,50 @@ void __58__EKUIAutocompleteOccurrenceTableViewCell_reuseIdentifier__block_invoke
     v4->_colorDotView = v7;
 
     [(UIImageView *)v4->_colorDotView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v9 = [(EKUIAutocompleteOccurrenceTableViewCell *)v4 contentView];
-    [v9 addSubview:v4->_colorDotView];
+    contentView = [(EKUIAutocompleteOccurrenceTableViewCell *)v4 contentView];
+    [contentView addSubview:v4->_colorDotView];
 
-    v10 = [(EKUIAutocompleteSearchResultBaseCell *)v4 createPrimaryLabel];
+    createPrimaryLabel = [(EKUIAutocompleteSearchResultBaseCell *)v4 createPrimaryLabel];
     titleTextLabel = v4->_titleTextLabel;
-    v4->_titleTextLabel = v10;
+    v4->_titleTextLabel = createPrimaryLabel;
 
-    v12 = [(EKUIAutocompleteOccurrenceTableViewCell *)v4 contentView];
-    [v12 addSubview:v4->_titleTextLabel];
+    contentView2 = [(EKUIAutocompleteOccurrenceTableViewCell *)v4 contentView];
+    [contentView2 addSubview:v4->_titleTextLabel];
 
-    v13 = [(EKUIAutocompleteSearchResultBaseCell *)v4 createSecondaryLabel];
+    createSecondaryLabel = [(EKUIAutocompleteSearchResultBaseCell *)v4 createSecondaryLabel];
     locationTextLabel = v4->_locationTextLabel;
-    v4->_locationTextLabel = v13;
+    v4->_locationTextLabel = createSecondaryLabel;
 
-    v15 = [(EKUIAutocompleteOccurrenceTableViewCell *)v4 contentView];
-    [v15 addSubview:v4->_locationTextLabel];
+    contentView3 = [(EKUIAutocompleteOccurrenceTableViewCell *)v4 contentView];
+    [contentView3 addSubview:v4->_locationTextLabel];
 
-    v16 = [(EKUIAutocompleteSearchResultBaseCell *)v4 createSecondaryLabel];
+    createSecondaryLabel2 = [(EKUIAutocompleteSearchResultBaseCell *)v4 createSecondaryLabel];
     timeTextLabelWithThisTimeZone = v4->_timeTextLabelWithThisTimeZone;
-    v4->_timeTextLabelWithThisTimeZone = v16;
+    v4->_timeTextLabelWithThisTimeZone = createSecondaryLabel2;
 
-    v18 = [(EKUIAutocompleteOccurrenceTableViewCell *)v4 contentView];
-    [v18 addSubview:v4->_timeTextLabelWithThisTimeZone];
+    contentView4 = [(EKUIAutocompleteOccurrenceTableViewCell *)v4 contentView];
+    [contentView4 addSubview:v4->_timeTextLabelWithThisTimeZone];
 
-    v19 = [(EKUIAutocompleteSearchResultBaseCell *)v4 createSecondaryLabel];
+    createSecondaryLabel3 = [(EKUIAutocompleteSearchResultBaseCell *)v4 createSecondaryLabel];
     timeTextLabelWithResultTimeZone = v4->_timeTextLabelWithResultTimeZone;
-    v4->_timeTextLabelWithResultTimeZone = v19;
+    v4->_timeTextLabelWithResultTimeZone = createSecondaryLabel3;
 
-    v21 = [(EKUIAutocompleteOccurrenceTableViewCell *)v4 contentView];
-    [v21 addSubview:v4->_timeTextLabelWithResultTimeZone];
+    contentView5 = [(EKUIAutocompleteOccurrenceTableViewCell *)v4 contentView];
+    [contentView5 addSubview:v4->_timeTextLabelWithResultTimeZone];
 
-    v22 = [(EKUIAutocompleteSearchResultBaseCell *)v4 createSecondaryLabel];
+    createSecondaryLabel4 = [(EKUIAutocompleteSearchResultBaseCell *)v4 createSecondaryLabel];
     inviteesTextLabel = v4->_inviteesTextLabel;
-    v4->_inviteesTextLabel = v22;
+    v4->_inviteesTextLabel = createSecondaryLabel4;
 
-    v24 = [(EKUIAutocompleteOccurrenceTableViewCell *)v4 contentView];
-    [v24 addSubview:v4->_inviteesTextLabel];
+    contentView6 = [(EKUIAutocompleteOccurrenceTableViewCell *)v4 contentView];
+    [contentView6 addSubview:v4->_inviteesTextLabel];
 
-    v25 = [(EKUIAutocompleteSearchResultBaseCell *)v4 createSecondaryLabel];
+    createSecondaryLabel5 = [(EKUIAutocompleteSearchResultBaseCell *)v4 createSecondaryLabel];
     foundInTextLabel = v4->_foundInTextLabel;
-    v4->_foundInTextLabel = v25;
+    v4->_foundInTextLabel = createSecondaryLabel5;
 
-    v27 = [(EKUIAutocompleteOccurrenceTableViewCell *)v4 contentView];
-    [v27 addSubview:v4->_foundInTextLabel];
+    contentView7 = [(EKUIAutocompleteOccurrenceTableViewCell *)v4 contentView];
+    [contentView7 addSubview:v4->_foundInTextLabel];
 
     v32[0] = v4->_locationTextLabel;
     v32[1] = v4->_timeTextLabelWithThisTimeZone;
@@ -130,9 +130,9 @@ void __58__EKUIAutocompleteOccurrenceTableViewCell_reuseIdentifier__block_invoke
 - (void)setLabelFonts
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(EKUITableViewCellWithPrimaryAndSecondaryFonts *)self primaryTextLabelFont];
-  v4 = [objc_opt_class() secondaryTextLabelFont];
-  [(UILabel *)self->_titleTextLabel setFont:v3];
+  primaryTextLabelFont = [(EKUITableViewCellWithPrimaryAndSecondaryFonts *)self primaryTextLabelFont];
+  secondaryTextLabelFont = [objc_opt_class() secondaryTextLabelFont];
+  [(UILabel *)self->_titleTextLabel setFont:primaryTextLabelFont];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
@@ -153,7 +153,7 @@ void __58__EKUIAutocompleteOccurrenceTableViewCell_reuseIdentifier__block_invoke
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) setFont:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v9++) setFont:{secondaryTextLabelFont, v10}];
       }
 
       while (v7 != v9);
@@ -169,8 +169,8 @@ void __58__EKUIAutocompleteOccurrenceTableViewCell_reuseIdentifier__block_invoke
   v45 = *MEMORY[0x1E69E9840];
   if (self->_ekUIAutocompleteOccurrenceTableViewCellConstraints)
   {
-    v3 = [(EKUIAutocompleteOccurrenceTableViewCell *)self contentView];
-    [v3 removeConstraints:self->_ekUIAutocompleteOccurrenceTableViewCellConstraints];
+    contentView = [(EKUIAutocompleteOccurrenceTableViewCell *)self contentView];
+    [contentView removeConstraints:self->_ekUIAutocompleteOccurrenceTableViewCellConstraints];
 
     ekUIAutocompleteOccurrenceTableViewCellConstraints = self->_ekUIAutocompleteOccurrenceTableViewCellConstraints;
     self->_ekUIAutocompleteOccurrenceTableViewCellConstraints = 0;
@@ -179,36 +179,36 @@ void __58__EKUIAutocompleteOccurrenceTableViewCell_reuseIdentifier__block_invoke
   v5 = objc_opt_new();
   v6 = MEMORY[0x1E696ACD8];
   colorDotView = self->_colorDotView;
-  v8 = [(EKUIAutocompleteOccurrenceTableViewCell *)self contentView];
-  v9 = [v6 constraintWithItem:colorDotView attribute:5 relatedBy:0 toItem:v8 attribute:5 multiplier:1.0 constant:18.0];
+  contentView2 = [(EKUIAutocompleteOccurrenceTableViewCell *)self contentView];
+  v9 = [v6 constraintWithItem:colorDotView attribute:5 relatedBy:0 toItem:contentView2 attribute:5 multiplier:1.0 constant:18.0];
   [(NSArray *)v5 addObject:v9];
 
   v10 = MEMORY[0x1E696ACD8];
   v11 = self->_colorDotView;
-  v12 = [(EKUIAutocompleteOccurrenceTableViewCell *)self contentView];
+  contentView3 = [(EKUIAutocompleteOccurrenceTableViewCell *)self contentView];
   [(EKUIAutocompleteSearchResultBaseCell *)self verticalSpacingTopToColorDot];
-  v14 = [v10 constraintWithItem:v11 attribute:3 relatedBy:0 toItem:v12 attribute:3 multiplier:1.0 constant:v13];
+  v14 = [v10 constraintWithItem:v11 attribute:3 relatedBy:0 toItem:contentView3 attribute:3 multiplier:1.0 constant:v13];
   [(NSArray *)v5 addObject:v14];
 
   v15 = MEMORY[0x1E696ACD8];
   v16 = self->_colorDotView;
-  v17 = [(UIImageView *)v16 image];
-  [v17 size];
+  image = [(UIImageView *)v16 image];
+  [image size];
   v19 = [v15 constraintWithItem:v16 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v18];
   [(NSArray *)v5 addObject:v19];
 
   v20 = MEMORY[0x1E696ACD8];
   v21 = self->_colorDotView;
-  v22 = [(UIImageView *)v21 image];
-  [v22 size];
+  image2 = [(UIImageView *)v21 image];
+  [image2 size];
   v23 = [v20 constraintWithItem:v21 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:?];
   [(NSArray *)v5 addObject:v23];
 
   v24 = MEMORY[0x1E696ACD8];
   titleTextLabel = self->_titleTextLabel;
-  v26 = [(EKUIAutocompleteOccurrenceTableViewCell *)self contentView];
+  contentView4 = [(EKUIAutocompleteOccurrenceTableViewCell *)self contentView];
   [(EKUIAutocompleteSearchResultBaseCell *)self verticalSpacingTopToBaselineForTopLabel];
-  v28 = [v24 constraintWithItem:titleTextLabel attribute:11 relatedBy:0 toItem:v26 attribute:3 multiplier:1.0 constant:v27];
+  v28 = [v24 constraintWithItem:titleTextLabel attribute:11 relatedBy:0 toItem:contentView4 attribute:3 multiplier:1.0 constant:v27];
   [(NSArray *)v5 addObject:v28];
 
   [(EKUIAutocompleteOccurrenceTableViewCell *)self _addConstraintsForLabel:self->_titleTextLabel belowView:0 toArray:v5];
@@ -248,105 +248,105 @@ void __58__EKUIAutocompleteOccurrenceTableViewCell_reuseIdentifier__block_invoke
     while (v32);
   }
 
-  v37 = [(EKUIAutocompleteOccurrenceTableViewCell *)self contentView];
-  [v37 addConstraints:v5];
+  contentView5 = [(EKUIAutocompleteOccurrenceTableViewCell *)self contentView];
+  [contentView5 addConstraints:v5];
 
   v38 = self->_ekUIAutocompleteOccurrenceTableViewCellConstraints;
   self->_ekUIAutocompleteOccurrenceTableViewCellConstraints = v5;
   v39 = v5;
 }
 
-- (void)_addConstraintsForLabel:(id)a3 belowView:(id)a4 toArray:(id)a5
+- (void)_addConstraintsForLabel:(id)label belowView:(id)view toArray:(id)array
 {
-  v19 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x1E696ACD8] constraintWithItem:v19 attribute:5 relatedBy:0 toItem:self->_colorDotView attribute:6 multiplier:1.0 constant:12.0];
-  [v9 addObject:v10];
+  labelCopy = label;
+  viewCopy = view;
+  arrayCopy = array;
+  v10 = [MEMORY[0x1E696ACD8] constraintWithItem:labelCopy attribute:5 relatedBy:0 toItem:self->_colorDotView attribute:6 multiplier:1.0 constant:12.0];
+  [arrayCopy addObject:v10];
 
   v11 = MEMORY[0x1E696ACD8];
-  v12 = [(EKUIAutocompleteOccurrenceTableViewCell *)self contentView];
-  v13 = [(EKUIAutocompleteOccurrenceTableViewCell *)self contentView];
-  [v13 layoutMargins];
-  v15 = [v11 constraintWithItem:v19 attribute:6 relatedBy:0 toItem:v12 attribute:6 multiplier:1.0 constant:-v14];
-  [v9 addObject:v15];
+  contentView = [(EKUIAutocompleteOccurrenceTableViewCell *)self contentView];
+  contentView2 = [(EKUIAutocompleteOccurrenceTableViewCell *)self contentView];
+  [contentView2 layoutMargins];
+  v15 = [v11 constraintWithItem:labelCopy attribute:6 relatedBy:0 toItem:contentView attribute:6 multiplier:1.0 constant:-v14];
+  [arrayCopy addObject:v15];
 
-  if (v8)
+  if (viewCopy)
   {
     v16 = MEMORY[0x1E696ACD8];
     [(EKUIAutocompleteSearchResultBaseCell *)self verticalSpacingTopToBaselineForBottomLabel];
-    v18 = [v16 constraintWithItem:v19 attribute:11 relatedBy:0 toItem:v8 attribute:11 multiplier:1.0 constant:v17];
-    [v9 addObject:v18];
+    v18 = [v16 constraintWithItem:labelCopy attribute:11 relatedBy:0 toItem:viewCopy attribute:11 multiplier:1.0 constant:v17];
+    [arrayCopy addObject:v18];
   }
 }
 
-+ (id)_titleStringForResult:(id)a3
++ (id)_titleStringForResult:(id)result
 {
-  v3 = a3;
-  if ([v3 source] == 2)
+  resultCopy = result;
+  if ([resultCopy source] == 2)
   {
     v4 = MEMORY[0x1E696AEC0];
     v5 = EventKitUIBundle();
     v6 = [v5 localizedStringForKey:@"Maybe: %@" value:&stru_1F4EF6790 table:0];
-    v7 = [v3 title];
-    v8 = [v4 localizedStringWithFormat:v6, v7];
+    title = [resultCopy title];
+    title2 = [v4 localizedStringWithFormat:v6, title];
   }
 
   else
   {
-    v8 = [v3 title];
+    title2 = [resultCopy title];
   }
 
-  return v8;
+  return title2;
 }
 
-+ (id)_locationStringForResult:(id)a3
++ (id)_locationStringForResult:(id)result
 {
-  v3 = a3;
+  resultCopy = result;
   v4 = MEMORY[0x1E69669D0];
-  v5 = [v3 notes];
-  v6 = [v4 deserializeConference:v5];
-  v7 = [v6 conference];
+  notes = [resultCopy notes];
+  v6 = [v4 deserializeConference:notes];
+  conference = [v6 conference];
 
-  v8 = [v7 joinMethods];
-  v9 = [v8 firstObject];
-  v10 = [v9 URL];
+  joinMethods = [conference joinMethods];
+  firstObject = [joinMethods firstObject];
+  v10 = [firstObject URL];
 
-  v11 = [v7 joinMethods];
-  v12 = [v11 firstObject];
-  v13 = [v12 isBroadcast];
+  joinMethods2 = [conference joinMethods];
+  firstObject2 = [joinMethods2 firstObject];
+  isBroadcast = [firstObject2 isBroadcast];
 
-  v14 = [MEMORY[0x1E695DF70] array];
-  v15 = [v3 displayLocationWithoutPrediction];
+  array = [MEMORY[0x1E695DF70] array];
+  displayLocationWithoutPrediction = [resultCopy displayLocationWithoutPrediction];
 
-  if (v15)
+  if (displayLocationWithoutPrediction)
   {
-    v16 = [v3 displayLocationWithoutPrediction];
-    [v14 addObject:v16];
+    displayLocationWithoutPrediction2 = [resultCopy displayLocationWithoutPrediction];
+    [array addObject:displayLocationWithoutPrediction2];
   }
 
-  v17 = [v3 notes];
+  notes2 = [resultCopy notes];
 
-  if (v17)
+  if (notes2)
   {
-    v18 = [v3 notes];
-    [v14 addObject:v18];
+    notes3 = [resultCopy notes];
+    [array addObject:notes3];
   }
 
-  v19 = [v3 URL];
+  v19 = [resultCopy URL];
 
   if (v19)
   {
-    v20 = [v3 URL];
-    v21 = [v20 absoluteString];
-    [v14 addObject:v21];
+    v20 = [resultCopy URL];
+    absoluteString = [v20 absoluteString];
+    [array addObject:absoluteString];
   }
 
-  v22 = [MEMORY[0x1E6992F40] conferenceURLFromSources:v14];
+  v22 = [MEMORY[0x1E6992F40] conferenceURLFromSources:array];
   v23 = MEMORY[0x1E6993408];
-  v24 = [v3 displayLocation];
-  v25 = [v3 displayLocationWithoutPrediction];
-  v26 = [v3 preferredLocation];
+  displayLocation = [resultCopy displayLocation];
+  displayLocationWithoutPrediction3 = [resultCopy displayLocationWithoutPrediction];
+  preferredLocation = [resultCopy preferredLocation];
   if (v10)
   {
     v27 = v10;
@@ -357,17 +357,17 @@ void __58__EKUIAutocompleteOccurrenceTableViewCell_reuseIdentifier__block_invoke
     v27 = v22;
   }
 
-  v28 = [v23 locationStringForLocation:v24 locationWithoutPrediction:v25 preferredLocation:v26 conferenceURL:v27 conferenceURLIsBroadcast:v13];
+  v28 = [v23 locationStringForLocation:displayLocation locationWithoutPrediction:displayLocationWithoutPrediction3 preferredLocation:preferredLocation conferenceURL:v27 conferenceURLIsBroadcast:isBroadcast];
 
   return v28;
 }
 
-+ (id)_foundInStringForResult:(id)a3 pasteboardEvent:(BOOL)a4
++ (id)_foundInStringForResult:(id)result pasteboardEvent:(BOOL)event
 {
-  v4 = a4;
-  v5 = [a3 foundInBundleID];
+  eventCopy = event;
+  foundInBundleID = [result foundInBundleID];
   v6 = 0;
-  if (!v5 && v4)
+  if (!foundInBundleID && eventCopy)
   {
     v7 = MEMORY[0x1E69DB7F0];
     v8 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"doc.on.clipboard"];
@@ -385,18 +385,18 @@ void __58__EKUIAutocompleteOccurrenceTableViewCell_reuseIdentifier__block_invoke
   return v6;
 }
 
-+ (BOOL)_shouldShowOtherTimeZoneForResult:(id)a3
++ (BOOL)_shouldShowOtherTimeZoneForResult:(id)result
 {
-  v3 = a3;
-  if (([v3 allDay] & 1) != 0 || (objc_msgSend(v3, "timeZone"), v4 = objc_claimAutoreleasedReturnValue(), v4, !v4))
+  resultCopy = result;
+  if (([resultCopy allDay] & 1) != 0 || (objc_msgSend(resultCopy, "timeZone"), v4 = objc_claimAutoreleasedReturnValue(), v4, !v4))
   {
     v7 = 0;
   }
 
   else
   {
-    v5 = [v3 timeZone];
-    v6 = [v3 startDate];
+    timeZone = [resultCopy timeZone];
+    startDate = [resultCopy startDate];
     if (CUIKShouldShowTimezoneClarification())
     {
       v7 = 1;
@@ -404,8 +404,8 @@ void __58__EKUIAutocompleteOccurrenceTableViewCell_reuseIdentifier__block_invoke
 
     else
     {
-      v8 = [v3 timeZone];
-      v9 = [v3 endDate];
+      timeZone2 = [resultCopy timeZone];
+      endDate = [resultCopy endDate];
       v7 = CUIKShouldShowTimezoneClarification();
     }
   }
@@ -413,45 +413,45 @@ void __58__EKUIAutocompleteOccurrenceTableViewCell_reuseIdentifier__block_invoke
   return v7;
 }
 
-+ (id)_timeStringForResult:(id)a3 usingTimeZone:(id)a4
++ (id)_timeStringForResult:(id)result usingTimeZone:(id)zone
 {
-  v5 = a4 != 0;
-  v6 = a4;
-  v7 = a3;
+  v5 = zone != 0;
+  zoneCopy = zone;
+  resultCopy = result;
   v8 = +[EKStringFactory sharedInstance];
-  v9 = [v7 startDate];
-  v10 = [v7 endDate];
-  v11 = [v7 allDay];
+  startDate = [resultCopy startDate];
+  endDate = [resultCopy endDate];
+  allDay = [resultCopy allDay];
 
-  v12 = [v8 dateStringForSuggestedEventWithStartDate:v9 endDate:v10 timeZone:v6 allDay:v11 showTimeZone:v5];
+  v12 = [v8 dateStringForSuggestedEventWithStartDate:startDate endDate:endDate timeZone:zoneCopy allDay:allDay showTimeZone:v5];
 
   return v12;
 }
 
-+ (id)_inviteeStringForResult:(id)a3
++ (id)_inviteeStringForResult:(id)result
 {
   v3 = MEMORY[0x1E6993400];
-  v4 = [a3 attendees];
-  v5 = [v3 inviteeStringForAttendees:v4];
+  attendees = [result attendees];
+  v5 = [v3 inviteeStringForAttendees:attendees];
 
   return v5;
 }
 
-- (void)updateWithResult:(id)a3
+- (void)updateWithResult:(id)result
 {
-  v26 = a3;
-  v4 = [v26 source];
-  if (v4 == 4)
+  resultCopy = result;
+  source = [resultCopy source];
+  if (source == 4)
   {
-    v5 = [v26 pasteboardResults];
-    v6 = [v5 firstObject];
+    pasteboardResults = [resultCopy pasteboardResults];
+    firstObject = [pasteboardResults firstObject];
 
-    v7 = v6;
+    v7 = firstObject;
   }
 
   else
   {
-    v7 = v26;
+    v7 = resultCopy;
   }
 
   v27 = v7;
@@ -460,8 +460,8 @@ void __58__EKUIAutocompleteOccurrenceTableViewCell_reuseIdentifier__block_invoke
   {
     objc_storeStrong(&self->_eventCalendarColor, v8);
     eventCalendarColor = self->_eventCalendarColor;
-    v10 = [(UILabel *)self->_titleTextLabel font];
-    v11 = ScaledCalendarColorDotImageForColor_SuggestedEvent(eventCalendarColor, v10);
+    font = [(UILabel *)self->_titleTextLabel font];
+    v11 = ScaledCalendarColorDotImageForColor_SuggestedEvent(eventCalendarColor, font);
     [(UIImageView *)self->_colorDotView setImage:v11];
   }
 
@@ -531,8 +531,8 @@ LABEL_20:
   }
 
   v18 = MEMORY[0x1E69933A0];
-  v19 = [v27 timeZone];
-  v20 = [v18 timeStringForResult:v27 usingTimeZone:v19];
+  timeZone = [v27 timeZone];
+  v20 = [v18 timeStringForResult:v27 usingTimeZone:timeZone];
 
   eventTimeWithResultTimeZone = self->_eventTimeWithResultTimeZone;
   if (eventTimeWithResultTimeZone)
@@ -579,7 +579,7 @@ LABEL_33:
   }
 
   [(UILabel *)self->_inviteesTextLabel setHidden:self->_eventInvitees == 0];
-  v24 = [objc_opt_class() _foundInStringForResult:v27 pasteboardEvent:v4 == 4];
+  v24 = [objc_opt_class() _foundInStringForResult:v27 pasteboardEvent:source == 4];
   eventFoundIn = self->_eventFoundIn;
   if (!eventFoundIn)
   {
@@ -602,23 +602,23 @@ LABEL_38:
   [(EKUIAutocompleteOccurrenceTableViewCell *)self setupConstraints];
 }
 
-+ (double)cellHeightForResult:(id)a3 forWidth:(double)a4
++ (double)cellHeightForResult:(id)result forWidth:(double)width
 {
-  v6 = a3;
-  v7 = [v6 source];
-  if (v7 == 4)
+  resultCopy = result;
+  source = [resultCopy source];
+  if (source == 4)
   {
-    v8 = [v6 pasteboardResults];
-    v9 = [v8 firstObject];
+    pasteboardResults = [resultCopy pasteboardResults];
+    firstObject = [pasteboardResults firstObject];
 
-    v6 = v9;
+    resultCopy = firstObject;
   }
 
-  v10 = [a1 primaryTextLabelFontForWidth:a4];
-  v11 = [a1 secondaryTextLabelFont];
-  v12 = [MEMORY[0x1E69933A0] locationStringForResult:v6 outGlyphNames:0];
+  v10 = [self primaryTextLabelFontForWidth:width];
+  secondaryTextLabelFont = [self secondaryTextLabelFont];
+  v12 = [MEMORY[0x1E69933A0] locationStringForResult:resultCopy outGlyphNames:0];
 
-  v13 = [MEMORY[0x1E69933A0] timeStringForResult:v6 usingTimeZone:0];
+  v13 = [MEMORY[0x1E69933A0] timeStringForResult:resultCopy usingTimeZone:0];
 
   v14 = 1;
   if (v12)
@@ -636,11 +636,11 @@ LABEL_38:
     v15 = v12 != 0;
   }
 
-  if ([MEMORY[0x1E69933A0] shouldShowOtherTimeZoneForResult:v6])
+  if ([MEMORY[0x1E69933A0] shouldShowOtherTimeZoneForResult:resultCopy])
   {
     v16 = MEMORY[0x1E69933A0];
-    v17 = [v6 timeZone];
-    v18 = [v16 timeStringForResult:v6 usingTimeZone:v17];
+    timeZone = [resultCopy timeZone];
+    v18 = [v16 timeStringForResult:resultCopy usingTimeZone:timeZone];
 
     if (v18)
     {
@@ -648,8 +648,8 @@ LABEL_38:
     }
   }
 
-  v19 = v7 == 4;
-  v20 = [MEMORY[0x1E69933A0] inviteeStringForResult:v6];
+  v19 = source == 4;
+  v20 = [MEMORY[0x1E69933A0] inviteeStringForResult:resultCopy];
 
   if (v20)
   {
@@ -661,7 +661,7 @@ LABEL_38:
     v21 = v15;
   }
 
-  v22 = [a1 _foundInStringForResult:v6 pasteboardEvent:v19];
+  v22 = [self _foundInStringForResult:resultCopy pasteboardEvent:v19];
 
   if (v22)
   {
@@ -673,13 +673,13 @@ LABEL_38:
     v23 = v21;
   }
 
-  [a1 verticalSpacingTopToBaselineForTopLabelWithPrimaryFont:v10];
+  [self verticalSpacingTopToBaselineForTopLabelWithPrimaryFont:v10];
   v25 = v24;
-  [a1 verticalSpacingBottomToBaselineForBottomLabelWithPrimaryFont:v10];
+  [self verticalSpacingBottomToBaselineForBottomLabelWithPrimaryFont:v10];
   v27 = v25 + v26;
-  [a1 verticalSpacingTopToBaselineForBottomLabelWithSecondaryFont:v11];
+  [self verticalSpacingTopToBaselineForBottomLabelWithSecondaryFont:secondaryTextLabelFont];
   v29 = v27 + v23 * v28;
-  [a1 rowSeparatorThickness];
+  [self rowSeparatorThickness];
   CalRoundToScreenScale(v29 + v30);
   v32 = v31;
 

@@ -1,39 +1,39 @@
 @interface VOTNameSearcher
 - (BOOL)itemsLoaded;
-- (VOTNameSearcher)initWithDelegate:(id)a3 itemSource:(id)a4 filter:(id)a5;
+- (VOTNameSearcher)initWithDelegate:(id)delegate itemSource:(id)source filter:(id)filter;
 - (VOTNameSearcherDelegate)delegate;
 - (VOTNameSearcherFilter)filter;
-- (void)_focusOnItemAtIndexInFilteredItems:(int64_t)a3;
+- (void)_focusOnItemAtIndexInFilteredItems:(int64_t)items;
 - (void)_updateFilteredItemsWithSearchText;
-- (void)didRetrieveAllEntries:(id)a3;
+- (void)didRetrieveAllEntries:(id)entries;
 - (void)focusOnFirstMatchingItem;
 - (void)focusOnLastMatchingItem;
 - (void)focusOnNextMatchingItem;
 - (void)focusOnPreviousMatchingItem;
 - (void)selectFocusedItem;
-- (void)setFocusedEntry:(id)a3;
+- (void)setFocusedEntry:(id)entry;
 - (void)updateMatchingItems;
 @end
 
 @implementation VOTNameSearcher
 
-- (VOTNameSearcher)initWithDelegate:(id)a3 itemSource:(id)a4 filter:(id)a5
+- (VOTNameSearcher)initWithDelegate:(id)delegate itemSource:(id)source filter:(id)filter
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  sourceCopy = source;
+  filterCopy = filter;
   v16.receiver = self;
   v16.super_class = VOTNameSearcher;
   v11 = [(VOTNameSearcher *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    [(VOTNameSearcher *)v11 setDelegate:v8];
-    [(VOTNameSearcher *)v12 setItemSource:v9];
-    [(VOTNameSearcher *)v12 setFilter:v10];
+    [(VOTNameSearcher *)v11 setDelegate:delegateCopy];
+    [(VOTNameSearcher *)v12 setItemSource:sourceCopy];
+    [(VOTNameSearcher *)v12 setFilter:filterCopy];
     [(VOTNameSearcher *)v12 setSearchPending:0];
-    v13 = [(VOTNameSearcher *)v12 itemSource];
-    [v13 retrieveAllEntries:v12];
+    itemSource = [(VOTNameSearcher *)v12 itemSource];
+    [itemSource retrieveAllEntries:v12];
 
     v14 = v12;
   }
@@ -41,25 +41,25 @@
   return v12;
 }
 
-- (void)setFocusedEntry:(id)a3
+- (void)setFocusedEntry:(id)entry
 {
-  v6 = a3;
-  v5 = [(VOTNameSearcher *)self focusedEntry];
+  entryCopy = entry;
+  focusedEntry = [(VOTNameSearcher *)self focusedEntry];
 
-  if (v5 != v6)
+  if (focusedEntry != entryCopy)
   {
-    objc_storeStrong(&self->_focusedEntry, a3);
-    if (v6)
+    objc_storeStrong(&self->_focusedEntry, entry);
+    if (entryCopy)
     {
-      [v6 focus];
+      [entryCopy focus];
     }
   }
 }
 
 - (BOOL)itemsLoaded
 {
-  v2 = [(VOTNameSearcher *)self filteredEntries];
-  v3 = v2 != 0;
+  filteredEntries = [(VOTNameSearcher *)self filteredEntries];
+  v3 = filteredEntries != 0;
 
   return v3;
 }
@@ -83,16 +83,16 @@
 {
   if ([(VOTNameSearcher *)self itemsLoaded])
   {
-    v3 = [(VOTNameSearcher *)self filteredEntries];
-    v4 = [(VOTNameSearcher *)self focusedEntry];
-    v5 = [v3 indexOfObject:v4];
+    filteredEntries = [(VOTNameSearcher *)self filteredEntries];
+    focusedEntry = [(VOTNameSearcher *)self focusedEntry];
+    v5 = [filteredEntries indexOfObject:focusedEntry];
 
     v6 = 0x7FFFFFFFFFFFFFFFLL;
     if (v5 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v7 = (v5 + 1);
-      v8 = [(VOTNameSearcher *)self filteredEntries];
-      v6 = v7 % [v8 count];
+      filteredEntries2 = [(VOTNameSearcher *)self filteredEntries];
+      v6 = v7 % [filteredEntries2 count];
     }
 
     [(VOTNameSearcher *)self _focusOnItemAtIndexInFilteredItems:v6];
@@ -103,9 +103,9 @@
 {
   if ([(VOTNameSearcher *)self itemsLoaded])
   {
-    v3 = [(VOTNameSearcher *)self filteredEntries];
-    v4 = [(VOTNameSearcher *)self focusedEntry];
-    v5 = [v3 indexOfObject:v4];
+    filteredEntries = [(VOTNameSearcher *)self filteredEntries];
+    focusedEntry = [(VOTNameSearcher *)self focusedEntry];
+    v5 = [filteredEntries indexOfObject:focusedEntry];
 
     if (v5)
     {
@@ -117,8 +117,8 @@
 
     else
     {
-      v6 = [(VOTNameSearcher *)self filteredEntries];
-      v5 = [v6 count] - 1;
+      filteredEntries2 = [(VOTNameSearcher *)self filteredEntries];
+      v5 = [filteredEntries2 count] - 1;
     }
 
     [(VOTNameSearcher *)self _focusOnItemAtIndexInFilteredItems:v5];
@@ -138,8 +138,8 @@
 {
   if ([(VOTNameSearcher *)self itemsLoaded])
   {
-    v3 = [(VOTNameSearcher *)self filteredEntries];
-    -[VOTNameSearcher _focusOnItemAtIndexInFilteredItems:](self, "_focusOnItemAtIndexInFilteredItems:", [v3 count] - 1);
+    filteredEntries = [(VOTNameSearcher *)self filteredEntries];
+    -[VOTNameSearcher _focusOnItemAtIndexInFilteredItems:](self, "_focusOnItemAtIndexInFilteredItems:", [filteredEntries count] - 1);
   }
 }
 
@@ -147,27 +147,27 @@
 {
   if ([(VOTNameSearcher *)self itemsLoaded])
   {
-    v3 = [(VOTNameSearcher *)self focusedEntry];
+    focusedEntry = [(VOTNameSearcher *)self focusedEntry];
 
-    if (v3)
+    if (focusedEntry)
     {
-      v4 = [(VOTNameSearcher *)self focusedEntry];
-      [v4 select];
+      focusedEntry2 = [(VOTNameSearcher *)self focusedEntry];
+      [focusedEntry2 select];
     }
 
-    v8 = [(VOTNameSearcher *)self delegate];
-    v5 = [(VOTNameSearcher *)self itemSource];
-    v6 = [(VOTNameSearcher *)self focusedEntry];
-    v7 = [v6 name];
-    [v8 itemSource:v5 didSelect:v7];
+    delegate = [(VOTNameSearcher *)self delegate];
+    itemSource = [(VOTNameSearcher *)self itemSource];
+    focusedEntry3 = [(VOTNameSearcher *)self focusedEntry];
+    name = [focusedEntry3 name];
+    [delegate itemSource:itemSource didSelect:name];
   }
 }
 
-- (void)didRetrieveAllEntries:(id)a3
+- (void)didRetrieveAllEntries:(id)entries
 {
-  v4 = a3;
-  [(VOTNameSearcher *)self setAllEntries:v4];
-  [(VOTNameSearcher *)self setFilteredEntries:v4];
+  entriesCopy = entries;
+  [(VOTNameSearcher *)self setAllEntries:entriesCopy];
+  [(VOTNameSearcher *)self setFilteredEntries:entriesCopy];
 
   if ([(VOTNameSearcher *)self searchPending])
   {
@@ -179,21 +179,21 @@
 
 - (void)_updateFilteredItemsWithSearchText
 {
-  v23 = [(VOTNameSearcher *)self filteredEntries];
-  v4 = [(VOTNameSearcher *)self focusedEntry];
-  v5 = [(VOTNameSearcher *)self filter];
-  v6 = [(VOTNameSearcher *)self allEntries];
-  v7 = [v5 nameSearcherEntriesPassingSearchFrom:v6];
+  filteredEntries = [(VOTNameSearcher *)self filteredEntries];
+  focusedEntry = [(VOTNameSearcher *)self focusedEntry];
+  filter = [(VOTNameSearcher *)self filter];
+  allEntries = [(VOTNameSearcher *)self allEntries];
+  v7 = [filter nameSearcherEntriesPassingSearchFrom:allEntries];
   [(VOTNameSearcher *)self setFilteredEntries:v7];
 
-  v8 = [(VOTNameSearcher *)self filteredEntries];
-  v9 = [v8 count];
+  filteredEntries2 = [(VOTNameSearcher *)self filteredEntries];
+  v9 = [filteredEntries2 count];
 
   if (v9)
   {
-    v10 = [(VOTNameSearcher *)self filteredEntries];
-    v11 = [v10 firstObject];
-    [(VOTNameSearcher *)self setFocusedEntry:v11];
+    filteredEntries3 = [(VOTNameSearcher *)self filteredEntries];
+    firstObject = [filteredEntries3 firstObject];
+    [(VOTNameSearcher *)self setFocusedEntry:firstObject];
   }
 
   else
@@ -201,41 +201,41 @@
     [(VOTNameSearcher *)self setFocusedEntry:0];
   }
 
-  v12 = [(VOTNameSearcher *)self filteredEntries];
-  v13 = [v23 isEqualToArray:v12];
+  filteredEntries4 = [(VOTNameSearcher *)self filteredEntries];
+  v13 = [filteredEntries isEqualToArray:filteredEntries4];
 
-  v14 = [(VOTNameSearcher *)self focusedEntry];
-  v15 = [v4 isEqual:v14];
+  focusedEntry2 = [(VOTNameSearcher *)self focusedEntry];
+  v15 = [focusedEntry isEqual:focusedEntry2];
 
-  v16 = [(VOTNameSearcher *)self delegate];
-  v17 = [(VOTNameSearcher *)self itemSource];
+  delegate = [(VOTNameSearcher *)self delegate];
+  itemSource = [(VOTNameSearcher *)self itemSource];
   if (v13)
   {
     v18 = 0;
     if ((v15 & 1) == 0)
     {
 LABEL_6:
-      v2 = [(VOTNameSearcher *)self focusedEntry];
-      v19 = [v2 name];
+      focusedEntry3 = [(VOTNameSearcher *)self focusedEntry];
+      name = [focusedEntry3 name];
       goto LABEL_9;
     }
   }
 
   else
   {
-    v22 = [(VOTNameSearcher *)self filteredEntries];
-    v18 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v22 count]);
+    filteredEntries5 = [(VOTNameSearcher *)self filteredEntries];
+    v18 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [filteredEntries5 count]);
     if ((v15 & 1) == 0)
     {
       goto LABEL_6;
     }
   }
 
-  v19 = 0;
+  name = 0;
 LABEL_9:
-  v20 = [(VOTNameSearcher *)self focusedEntry];
-  v21 = [v20 value];
-  [v16 itemSource:v17 didFilter:v18 didSwitchFocus:v19 focusedValue:v21];
+  focusedEntry4 = [(VOTNameSearcher *)self focusedEntry];
+  value = [focusedEntry4 value];
+  [delegate itemSource:itemSource didFilter:v18 didSwitchFocus:name focusedValue:value];
 
   if ((v15 & 1) == 0)
   {
@@ -246,22 +246,22 @@ LABEL_9:
   }
 }
 
-- (void)_focusOnItemAtIndexInFilteredItems:(int64_t)a3
+- (void)_focusOnItemAtIndexInFilteredItems:(int64_t)items
 {
-  v5 = [(VOTNameSearcher *)self filteredEntries];
-  v6 = v5;
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  filteredEntries = [(VOTNameSearcher *)self filteredEntries];
+  v6 = filteredEntries;
+  if (items != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [v5 objectAtIndex:a3];
-    [(VOTNameSearcher *)self setFocusedEntry:v7];
+    filteredEntries2 = [filteredEntries objectAtIndex:items];
+    [(VOTNameSearcher *)self setFocusedEntry:filteredEntries2];
     goto LABEL_5;
   }
 
-  if ([v5 count])
+  if ([filteredEntries count])
   {
-    v7 = [(VOTNameSearcher *)self filteredEntries];
-    v8 = [v7 firstObject];
-    [(VOTNameSearcher *)self setFocusedEntry:v8];
+    filteredEntries2 = [(VOTNameSearcher *)self filteredEntries];
+    firstObject = [filteredEntries2 firstObject];
+    [(VOTNameSearcher *)self setFocusedEntry:firstObject];
 
 LABEL_5:
     goto LABEL_6;
@@ -270,13 +270,13 @@ LABEL_5:
   [(VOTNameSearcher *)self setFocusedEntry:0];
 LABEL_6:
 
-  v14 = [(VOTNameSearcher *)self delegate];
-  v9 = [(VOTNameSearcher *)self itemSource];
-  v10 = [(VOTNameSearcher *)self focusedEntry];
-  v11 = [v10 name];
-  v12 = [(VOTNameSearcher *)self focusedEntry];
-  v13 = [v12 value];
-  [v14 itemSource:v9 didFilter:0 didSwitchFocus:v11 focusedValue:v13];
+  delegate = [(VOTNameSearcher *)self delegate];
+  itemSource = [(VOTNameSearcher *)self itemSource];
+  focusedEntry = [(VOTNameSearcher *)self focusedEntry];
+  name = [focusedEntry name];
+  focusedEntry2 = [(VOTNameSearcher *)self focusedEntry];
+  value = [focusedEntry2 value];
+  [delegate itemSource:itemSource didFilter:0 didSwitchFocus:name focusedValue:value];
 }
 
 - (VOTNameSearcherDelegate)delegate

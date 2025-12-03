@@ -1,8 +1,8 @@
 @interface AXMProminentObjectsDetectorNode
-- (AXMProminentObjectsDetectorNode)initWithCoder:(id)a3;
+- (AXMProminentObjectsDetectorNode)initWithCoder:(id)coder;
 - (BOOL)validateVisionKitSoftLinkSymbols;
-- (void)encodeWithCoder:(id)a3;
-- (void)evaluate:(id)a3 metrics:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)evaluate:(id)evaluate metrics:(id)metrics;
 - (void)nodeInitialize;
 @end
 
@@ -15,18 +15,18 @@
   [(AXMEvaluationNode *)&v2 nodeInitialize];
 }
 
-- (AXMProminentObjectsDetectorNode)initWithCoder:(id)a3
+- (AXMProminentObjectsDetectorNode)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = AXMProminentObjectsDetectorNode;
-  return [(AXMEvaluationNode *)&v4 initWithCoder:a3];
+  return [(AXMEvaluationNode *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = AXMProminentObjectsDetectorNode;
-  [(AXMEvaluationNode *)&v3 encodeWithCoder:a3];
+  [(AXMEvaluationNode *)&v3 encodeWithCoder:coder];
 }
 
 - (BOOL)validateVisionKitSoftLinkSymbols
@@ -50,44 +50,44 @@
   }
 }
 
-- (void)evaluate:(id)a3 metrics:(id)a4
+- (void)evaluate:(id)evaluate metrics:(id)metrics
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  evaluateCopy = evaluate;
+  metricsCopy = metrics;
   v25.receiver = self;
   v25.super_class = AXMProminentObjectsDetectorNode;
-  [(AXMEvaluationNode *)&v25 evaluate:v6 metrics:v7];
+  [(AXMEvaluationNode *)&v25 evaluate:evaluateCopy metrics:metricsCopy];
   v8 = objc_autoreleasePoolPush();
-  v9 = [(AXMProminentObjectsDetectorNode *)self _imageSaliencyRequest];
+  _imageSaliencyRequest = [(AXMProminentObjectsDetectorNode *)self _imageSaliencyRequest];
 
-  if (!v9)
+  if (!_imageSaliencyRequest)
   {
     v10 = objc_alloc_init(getVNGenerateAttentionBasedSaliencyImageRequestClass());
     [(AXMProminentObjectsDetectorNode *)self set_imageSaliencyRequest:v10];
 
-    v11 = [(AXMProminentObjectsDetectorNode *)self _imageSaliencyRequest];
-    [AXMEvaluationNode configureForRunningOnANEIfPossibleWithRequest:v11];
+    _imageSaliencyRequest2 = [(AXMProminentObjectsDetectorNode *)self _imageSaliencyRequest];
+    [AXMEvaluationNode configureForRunningOnANEIfPossibleWithRequest:_imageSaliencyRequest2];
   }
 
-  v12 = [(AXMProminentObjectsDetectorNode *)self _imageSaliencyRequest];
-  v26[0] = v12;
+  _imageSaliencyRequest3 = [(AXMProminentObjectsDetectorNode *)self _imageSaliencyRequest];
+  v26[0] = _imageSaliencyRequest3;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
-  [(AXMEvaluationNode *)self evaluateRequests:v13 withContext:v6 requestHandlerOptions:0 metrics:v7 error:0];
+  [(AXMEvaluationNode *)self evaluateRequests:v13 withContext:evaluateCopy requestHandlerOptions:0 metrics:metricsCopy error:0];
 
-  v14 = [v12 results];
-  v15 = [v14 firstObject];
+  results = [_imageSaliencyRequest3 results];
+  firstObject = [results firstObject];
 
-  v16 = [v15 salientObjects];
+  salientObjects = [firstObject salientObjects];
   v19 = MEMORY[0x1E69E9820];
   v20 = 3221225472;
   v21 = __52__AXMProminentObjectsDetectorNode_evaluate_metrics___block_invoke;
   v22 = &unk_1E7A1E1E0;
-  v23 = v15;
-  v17 = v6;
+  v23 = firstObject;
+  v17 = evaluateCopy;
   v24 = v17;
-  v18 = v15;
-  [v16 enumerateObjectsUsingBlock:&v19];
+  v18 = firstObject;
+  [salientObjects enumerateObjectsUsingBlock:&v19];
   [v17 addEvaluatedFeatureType:{19, v19, v20, v21, v22}];
 
   objc_autoreleasePoolPop(v8);

@@ -18,12 +18,12 @@
 {
   os_unfair_lock_lock(&unk_1ED5FAD70);
   [(CLPermissiveTimer *)self dbgAssertInside];
-  v3 = [(CLTimer *)self handler];
+  handler = [(CLTimer *)self handler];
 
-  if (v3)
+  if (handler)
   {
-    v4 = [(CLTimer *)self handler];
-    v5 = [v4 copy];
+    handler2 = [(CLTimer *)self handler];
+    v5 = [handler2 copy];
 
     os_unfair_lock_unlock(&unk_1ED5FAD70);
     v5[2]();

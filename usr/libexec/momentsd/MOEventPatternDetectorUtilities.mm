@@ -1,13 +1,13 @@
 @interface MOEventPatternDetectorUtilities
-+ (id)getHomeVisitChunksForStandardDay:(id)a3;
++ (id)getHomeVisitChunksForStandardDay:(id)day;
 @end
 
 @implementation MOEventPatternDetectorUtilities
 
-+ (id)getHomeVisitChunksForStandardDay:(id)a3
++ (id)getHomeVisitChunksForStandardDay:(id)day
 {
-  v3 = a3;
-  if ([v3 count])
+  dayCopy = day;
+  if ([dayCopy count])
   {
     v4 = +[NSCalendar currentCalendar];
     v5 = objc_opt_new();
@@ -15,8 +15,8 @@
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v28 = v3;
-    obj = v3;
+    v28 = dayCopy;
+    obj = dayCopy;
     v32 = [obj countByEnumeratingWithState:&v35 objects:v40 count:16];
     if (v32)
     {
@@ -33,14 +33,14 @@
           }
 
           v7 = *(*(&v35 + 1) + 8 * v6);
-          v8 = [v7 startDate];
-          v9 = [v7 endDate];
-          v10 = [v4 components:28 fromDate:v8];
+          startDate = [v7 startDate];
+          endDate = [v7 endDate];
+          v10 = [v4 components:28 fromDate:startDate];
           [v10 setHour:3];
           v11 = [v4 dateFromComponents:v10];
           v33 = v10;
           v34 = v6;
-          if ([v8 isOnOrAfter:v11])
+          if ([startDate isOnOrAfter:v11])
           {
             v12 = [v4 dateFromComponents:v10];
             v13 = [v12 dateByAddingTimeInterval:86400.0];
@@ -48,44 +48,44 @@
             v11 = v13;
           }
 
-          if ([v8 isBeforeDate:v9])
+          if ([startDate isBeforeDate:endDate])
           {
             v14 = 0;
-            v15 = v8;
+            v15 = startDate;
             v16 = v11;
             do
             {
-              if ([v15 isBeforeDate:v16] && objc_msgSend(v9, "isOnOrAfter:", v16))
+              if ([v15 isBeforeDate:v16] && objc_msgSend(endDate, "isOnOrAfter:", v16))
               {
                 v17 = [v16 dateByAddingTimeInterval:-1.0];
               }
 
               else
               {
-                v17 = v9;
+                v17 = endDate;
               }
 
               v18 = v17;
 
               v19 = [MOEvent alloc];
-              v20 = [v7 eventIdentifier];
-              v21 = [v7 creationDate];
-              v22 = -[MOEvent initWithEventIdentifier:startDate:endDate:creationDate:provider:category:](v19, "initWithEventIdentifier:startDate:endDate:creationDate:provider:category:", v20, v15, v18, v21, [v7 provider], objc_msgSend(v7, "category"));
+              eventIdentifier = [v7 eventIdentifier];
+              creationDate = [v7 creationDate];
+              v22 = -[MOEvent initWithEventIdentifier:startDate:endDate:creationDate:provider:category:](v19, "initWithEventIdentifier:startDate:endDate:creationDate:provider:category:", eventIdentifier, v15, v18, creationDate, [v7 provider], objc_msgSend(v7, "category"));
 
-              v23 = [v7 expirationDate];
-              [(MOEvent *)v22 setExpirationDate:v23];
+              expirationDate = [v7 expirationDate];
+              [(MOEvent *)v22 setExpirationDate:expirationDate];
 
               [v5 addObject:v22];
-              v8 = [v18 dateByAddingTimeInterval:1.0];
+              startDate = [v18 dateByAddingTimeInterval:1.0];
 
               v11 = [v16 dateByAddingTimeInterval:86400.0];
 
-              v15 = v8;
+              v15 = startDate;
               v16 = v11;
               v14 = v18;
             }
 
-            while (([v8 isBeforeDate:v9] & 1) != 0);
+            while (([startDate isBeforeDate:endDate] & 1) != 0);
           }
 
           else
@@ -109,7 +109,7 @@
     v25 = [NSArray arrayWithObjects:&v39 count:1];
     v26 = [v5 sortedArrayUsingDescriptors:v25];
 
-    v3 = v28;
+    dayCopy = v28;
   }
 
   else

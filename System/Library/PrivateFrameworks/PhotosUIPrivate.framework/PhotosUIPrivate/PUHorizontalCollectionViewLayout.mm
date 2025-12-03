@@ -1,19 +1,19 @@
 @interface PUHorizontalCollectionViewLayout
-- (BOOL)_shouldInvalidateCachedLayoutForBoundsChange:(CGRect)a3;
+- (BOOL)_shouldInvalidateCachedLayoutForBoundsChange:(CGRect)change;
 - (CGRect)collectionViewBounds;
 - (CGSize)collectionViewContentSize;
 - (CGSize)itemSize;
 - (PUHorizontalCollectionViewLayout)init;
 - (PUHorizontalCollectionViewLayoutDelegate)delegate;
 - (UIEdgeInsets)itemsContentInset;
-- (id)_layoutAttributesForItemAtIndexPath:(id)a3;
-- (id)invalidationContextForBoundsChange:(CGRect)a3;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (void)invalidateLayoutWithContext:(id)a3;
+- (id)_layoutAttributesForItemAtIndexPath:(id)path;
+- (id)invalidationContextForBoundsChange:(CGRect)change;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (void)invalidateLayoutWithContext:(id)context;
 - (void)prepareLayout;
-- (void)setInteritemSpacing:(double)a3;
-- (void)setItemSize:(CGSize)a3;
-- (void)setItemsContentInset:(UIEdgeInsets)a3;
+- (void)setInteritemSpacing:(double)spacing;
+- (void)setItemSize:(CGSize)size;
+- (void)setItemsContentInset:(UIEdgeInsets)inset;
 @end
 
 @implementation PUHorizontalCollectionViewLayout
@@ -49,8 +49,8 @@
 
 - (CGRect)collectionViewBounds
 {
-  v2 = [(PUHorizontalCollectionViewLayout *)self collectionView];
-  [v2 bounds];
+  collectionView = [(PUHorizontalCollectionViewLayout *)self collectionView];
+  [collectionView bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -67,21 +67,21 @@
   return result;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_lastRequestedRect = &self->_lastRequestedRect;
-  if (CGRectEqualToRect(a3, self->_lastRequestedRect) && (lastRequestedLayoutAttributesInRect = self->_lastRequestedLayoutAttributesInRect) != 0)
+  if (CGRectEqualToRect(rect, self->_lastRequestedRect) && (lastRequestedLayoutAttributesInRect = self->_lastRequestedLayoutAttributesInRect) != 0)
   {
-    v10 = lastRequestedLayoutAttributesInRect;
+    array = lastRequestedLayoutAttributesInRect;
   }
 
   else
   {
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v11 = objc_alloc_init(MEMORY[0x1E69DC858]);
     [v11 setFrame:{x, y, width, height}];
     v12 = [(NSArray *)self->_cachedSectionFrames count];
@@ -102,14 +102,14 @@
         if (v13 == v17)
         {
           v23 = v19 - v20 + 1;
-          v24 = v10;
+          v24 = array;
           v25 = v15;
           v26 = v22;
         }
 
         else
         {
-          PUInsertObjectsInRange(v10, v15, v20, [v15 count] - v20);
+          PUInsertObjectsInRange(array, v15, v20, [v15 count] - v20);
           v27 = v13 + 1;
           if (v27 >= v17)
           {
@@ -122,7 +122,7 @@
             {
               v28 = [(NSArray *)self->_cachedItemLayoutAttributes objectAtIndexedSubscript:v27];
 
-              [(NSArray *)v10 addObjectsFromArray:v28];
+              [(NSArray *)array addObjectsFromArray:v28];
               ++v27;
               v15 = v28;
             }
@@ -133,7 +133,7 @@
           v15 = [(NSArray *)self->_cachedItemLayoutAttributes objectAtIndexedSubscript:v17];
 
           v23 = v19 + 1;
-          v24 = v10;
+          v24 = array;
           v25 = v15;
           v26 = 0;
         }
@@ -146,10 +146,10 @@
     p_lastRequestedRect->origin.y = y;
     p_lastRequestedRect->size.width = width;
     p_lastRequestedRect->size.height = height;
-    objc_storeStrong(&self->_lastRequestedLayoutAttributesInRect, v10);
+    objc_storeStrong(&self->_lastRequestedLayoutAttributesInRect, array);
   }
 
-  return v10;
+  return array;
 }
 
 uint64_t __70__PUHorizontalCollectionViewLayout_layoutAttributesForElementsInRect___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -206,11 +206,11 @@ uint64_t __70__PUHorizontalCollectionViewLayout_layoutAttributesForElementsInRec
 {
   if (!self->_cachedItemLayoutAttributes || !self->_cachedSectionFrames)
   {
-    v69 = [(PUHorizontalCollectionViewLayout *)self collectionView];
-    v3 = [(PUHorizontalCollectionViewLayout *)self delegate];
-    v4 = [v69 numberOfSections];
-    v57 = [MEMORY[0x1E695DF70] arrayWithCapacity:v4];
-    v58 = [MEMORY[0x1E695DF70] arrayWithCapacity:v4];
+    collectionView = [(PUHorizontalCollectionViewLayout *)self collectionView];
+    delegate = [(PUHorizontalCollectionViewLayout *)self delegate];
+    numberOfSections = [collectionView numberOfSections];
+    v57 = [MEMORY[0x1E695DF70] arrayWithCapacity:numberOfSections];
+    v58 = [MEMORY[0x1E695DF70] arrayWithCapacity:numberOfSections];
     [(PUHorizontalCollectionViewLayout *)self interitemSpacing];
     [(PUHorizontalCollectionViewLayout *)self itemsContentInset];
     v6 = v5;
@@ -219,10 +219,10 @@ uint64_t __70__PUHorizontalCollectionViewLayout_layoutAttributesForElementsInRec
     v55 = v11;
     [(PUHorizontalCollectionViewLayout *)self collectionViewBounds];
     v70 = v12 - (v6 + v10);
-    [v69 px_screenScale];
+    [collectionView px_screenScale];
     [(PUHorizontalCollectionViewLayout *)self itemSize];
-    v56 = v4;
-    if (v4 >= 1)
+    v56 = numberOfSections;
+    if (numberOfSections >= 1)
     {
       v13 = 0;
       v14 = 0.0;
@@ -230,7 +230,7 @@ uint64_t __70__PUHorizontalCollectionViewLayout_layoutAttributesForElementsInRec
       v16 = 0.0;
       do
       {
-        v17 = [v69 numberOfItemsInSection:v13];
+        v17 = [collectionView numberOfItemsInSection:v13];
         v18 = [MEMORY[0x1E695DF70] arrayWithCapacity:v17];
         if (v17 >= 1)
         {
@@ -242,9 +242,9 @@ uint64_t __70__PUHorizontalCollectionViewLayout_layoutAttributesForElementsInRec
             v72.size.width = v15;
             v72.size.height = v16;
             MaxX = CGRectGetMaxX(v72);
-            if (v3)
+            if (delegate)
             {
-              [v3 layout:self collectionView:v69 sizeForItemAtIndexPath:{v20, MaxX}];
+              [delegate layout:self collectionView:collectionView sizeForItemAtIndexPath:{v20, MaxX}];
             }
 
             UIRectIntegralWithScale();
@@ -259,15 +259,15 @@ uint64_t __70__PUHorizontalCollectionViewLayout_layoutAttributesForElementsInRec
         }
 
         [(NSArray *)v57 addObject:v18];
-        v27 = [v18 firstObject];
-        [v27 frame];
+        firstObject = [v18 firstObject];
+        [firstObject frame];
         v29 = v28;
         v65 = v31;
         v67 = v30;
         v63 = v32;
 
-        v33 = [v18 lastObject];
-        [v33 frame];
+        lastObject = [v18 lastObject];
+        [lastObject frame];
         v61 = v35;
         v62 = v34;
         r2 = v37;
@@ -304,10 +304,10 @@ uint64_t __70__PUHorizontalCollectionViewLayout_layoutAttributesForElementsInRec
     self->_cachedSectionFrames = v58;
     v43 = v58;
 
-    v44 = [(NSArray *)self->_cachedItemLayoutAttributes lastObject];
+    lastObject2 = [(NSArray *)self->_cachedItemLayoutAttributes lastObject];
 
-    v45 = [v44 lastObject];
-    [v45 frame];
+    v44LastObject = [lastObject2 lastObject];
+    [v44LastObject frame];
     v47 = v46;
     v49 = v48;
     v51 = v50;
@@ -323,13 +323,13 @@ uint64_t __70__PUHorizontalCollectionViewLayout_layoutAttributesForElementsInRec
   }
 }
 
-- (void)invalidateLayoutWithContext:(id)a3
+- (void)invalidateLayoutWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = PUHorizontalCollectionViewLayout;
-  [(PUHorizontalCollectionViewLayout *)&v9 invalidateLayoutWithContext:v4];
-  if (([v4 invalidateCachedLayout] & 1) != 0 || (objc_msgSend(v4, "invalidateDataSourceCounts") & 1) != 0 || objc_msgSend(v4, "invalidateEverything"))
+  [(PUHorizontalCollectionViewLayout *)&v9 invalidateLayoutWithContext:contextCopy];
+  if (([contextCopy invalidateCachedLayout] & 1) != 0 || (objc_msgSend(contextCopy, "invalidateDataSourceCounts") & 1) != 0 || objc_msgSend(contextCopy, "invalidateEverything"))
   {
     cachedItemLayoutAttributes = self->_cachedItemLayoutAttributes;
     self->_cachedItemLayoutAttributes = 0;
@@ -345,12 +345,12 @@ uint64_t __70__PUHorizontalCollectionViewLayout_layoutAttributesForElementsInRec
   }
 }
 
-- (id)invalidationContextForBoundsChange:(CGRect)a3
+- (id)invalidationContextForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
   v11.receiver = self;
   v11.super_class = PUHorizontalCollectionViewLayout;
   v8 = [(PUHorizontalCollectionViewLayout *)&v11 invalidationContextForBoundsChange:?];
@@ -360,19 +360,19 @@ uint64_t __70__PUHorizontalCollectionViewLayout_layoutAttributesForElementsInRec
   return v8;
 }
 
-- (BOOL)_shouldInvalidateCachedLayoutForBoundsChange:(CGRect)a3
+- (BOOL)_shouldInvalidateCachedLayoutForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  [(PUHorizontalCollectionViewLayout *)self collectionViewBounds:a3.origin.x];
+  height = change.size.height;
+  [(PUHorizontalCollectionViewLayout *)self collectionViewBounds:change.origin.x];
   return v4 != height;
 }
 
-- (void)setItemsContentInset:(UIEdgeInsets)a3
+- (void)setItemsContentInset:(UIEdgeInsets)inset
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = inset.right;
+  bottom = inset.bottom;
+  left = inset.left;
+  top = inset.top;
   [(PUHorizontalCollectionViewLayout *)self itemsContentInset];
   if (v11 != left || v8 != top || v10 != right || v9 != bottom)
   {
@@ -386,21 +386,21 @@ uint64_t __70__PUHorizontalCollectionViewLayout_layoutAttributesForElementsInRec
   }
 }
 
-- (void)setInteritemSpacing:(double)a3
+- (void)setInteritemSpacing:(double)spacing
 {
   [(PUHorizontalCollectionViewLayout *)self interitemSpacing];
-  if (v5 != a3)
+  if (v5 != spacing)
   {
-    self->_interitemSpacing = a3;
+    self->_interitemSpacing = spacing;
 
     [(PUHorizontalCollectionViewLayout *)self invalidateLayout];
   }
 }
 
-- (void)setItemSize:(CGSize)a3
+- (void)setItemSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(PUHorizontalCollectionViewLayout *)self itemSize];
   if (v7 != width || v6 != height)
   {
@@ -411,29 +411,29 @@ uint64_t __70__PUHorizontalCollectionViewLayout_layoutAttributesForElementsInRec
   }
 }
 
-- (id)_layoutAttributesForItemAtIndexPath:(id)a3
+- (id)_layoutAttributesForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 section];
-  v6 = [v4 item];
+  pathCopy = path;
+  section = [pathCopy section];
+  item = [pathCopy item];
 
-  if (v5 >= [(NSArray *)self->_cachedItemLayoutAttributes count])
+  if (section >= [(NSArray *)self->_cachedItemLayoutAttributes count])
   {
     v9 = 0;
   }
 
   else
   {
-    v7 = [(NSArray *)self->_cachedItemLayoutAttributes objectAtIndexedSubscript:v5];
-    if (v6 >= [v7 count])
+    v7 = [(NSArray *)self->_cachedItemLayoutAttributes objectAtIndexedSubscript:section];
+    if (item >= [v7 count])
     {
       v9 = 0;
     }
 
     else
     {
-      v8 = [(NSArray *)self->_cachedItemLayoutAttributes objectAtIndexedSubscript:v5];
-      v9 = [v8 objectAtIndexedSubscript:v6];
+      v8 = [(NSArray *)self->_cachedItemLayoutAttributes objectAtIndexedSubscript:section];
+      v9 = [v8 objectAtIndexedSubscript:item];
     }
   }
 

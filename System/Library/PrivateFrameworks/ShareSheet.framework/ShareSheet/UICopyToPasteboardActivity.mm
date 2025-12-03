@@ -1,8 +1,8 @@
 @interface UICopyToPasteboardActivity
 + (unint64_t)_xpcAttributes;
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (id)activityTitle;
-- (void)prepareWithActivityItems:(id)a3;
+- (void)prepareWithActivityItems:(id)items;
 @end
 
 @implementation UICopyToPasteboardActivity
@@ -29,17 +29,17 @@
   return v3;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  itemsCopy = items;
   if (_UIActivityItemTypes() == 0x4000)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = v3;
+    v4 = itemsCopy;
     v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
@@ -85,30 +85,30 @@ LABEL_14:
   return v10;
 }
 
-- (void)prepareWithActivityItems:(id)a3
+- (void)prepareWithActivityItems:(id)items
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   if (_UIActivityItemTypes() == 0x4000)
   {
     v5 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_19];
-    v6 = [v4 filteredArrayUsingPredicate:v5];
+    v6 = [itemsCopy filteredArrayUsingPredicate:v5];
 
-    v7 = [(UICopyToPasteboardActivity *)self pasteboard];
-    [v7 setItemProviders:v6];
+    pasteboard = [(UICopyToPasteboardActivity *)self pasteboard];
+    [pasteboard setItemProviders:v6];
 
     goto LABEL_49;
   }
 
-  v35 = self;
-  v8 = [MEMORY[0x1E695DF70] array];
+  selfCopy = self;
+  array = [MEMORY[0x1E695DF70] array];
   [MEMORY[0x1E695DF70] array];
-  v37 = v36 = v4;
+  v37 = v36 = itemsCopy;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v9 = v4;
+  v9 = itemsCopy;
   v10 = [v9 countByEnumeratingWithState:&v44 objects:v48 count:16];
   v11 = 0x1E696A000uLL;
   if (!v10)
@@ -120,7 +120,7 @@ LABEL_14:
   v13 = *v45;
   inTagClass = *MEMORY[0x1E6963710];
   v38 = *MEMORY[0x1E6963798];
-  v40 = v8;
+  v40 = array;
   do
   {
     v14 = 0;
@@ -143,7 +143,7 @@ LABEL_19:
         }
 
 LABEL_20:
-        [v8 addObject:v19];
+        [array addObject:v19];
 
         goto LABEL_21;
       }
@@ -152,8 +152,8 @@ LABEL_20:
       if ((objc_opt_isKindOfClass() & 1) != 0 && [v15 isFileURL])
       {
         v16 = v15;
-        v17 = [v16 pathExtension];
-        if (!v17 || (PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(inTagClass, v17, 0)) == 0)
+        pathExtension = [v16 pathExtension];
+        if (!pathExtension || (PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(inTagClass, pathExtension, 0)) == 0)
         {
           PreferredIdentifierForTag = v38;
         }
@@ -166,11 +166,11 @@ LABEL_20:
         v43 = v16;
         v20 = v16;
         [v19 registerFileRepresentationForTypeIdentifier:PreferredIdentifierForTag fileOptions:0 visibility:0 loadHandler:v42];
-        v21 = [v20 lastPathComponent];
-        [v19 setSuggestedName:v21];
+        lastPathComponent = [v20 lastPathComponent];
+        [v19 setSuggestedName:lastPathComponent];
 
         v11 = 0x1E696A000;
-        v8 = v40;
+        array = v40;
 LABEL_35:
         if (v19)
         {
@@ -245,24 +245,24 @@ LABEL_21:
   while (v26);
 LABEL_39:
 
-  if (![v8 count])
+  if (![array count])
   {
-    v27 = [v9 firstObject];
+    firstObject = [v9 firstObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v29 = [v9 firstObject];
+      firstObject2 = [v9 firstObject];
       v30 = +[SHSheetGroupActivity groupActivityType];
-      if ([v29 hasItemConformingToTypeIdentifier:v30])
+      if ([firstObject2 hasItemConformingToTypeIdentifier:v30])
       {
-        v31 = [v29 registeredTypeIdentifiers];
-        v32 = [v31 count];
+        registeredTypeIdentifiers = [firstObject2 registeredTypeIdentifiers];
+        v32 = [registeredTypeIdentifiers count];
 
         if (v32 >= 2)
         {
-          [v8 addObject:v29];
+          [array addObject:firstObject2];
         }
       }
 
@@ -272,16 +272,16 @@ LABEL_39:
     }
   }
 
-  v33 = [(UICopyToPasteboardActivity *)v35 pasteboard];
-  [v33 setItemProviders:v8];
+  pasteboard2 = [(UICopyToPasteboardActivity *)selfCopy pasteboard];
+  [pasteboard2 setItemProviders:array];
 
   if ([v37 count])
   {
-    v34 = [(UICopyToPasteboardActivity *)v35 pasteboard];
-    [v34 addItems:v37];
+    pasteboard3 = [(UICopyToPasteboardActivity *)selfCopy pasteboard];
+    [pasteboard3 addItems:v37];
   }
 
-  v4 = v36;
+  itemsCopy = v36;
 LABEL_49:
 }
 

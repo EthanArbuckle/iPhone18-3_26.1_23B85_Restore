@@ -4,10 +4,10 @@
 - (void)_pressesDidEnd;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
-- (void)setViewController:(id)a3;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
+- (void)setViewController:(id)controller;
 @end
 
 @implementation _TVStackCollectionViewCell
@@ -21,9 +21,9 @@
   [(_TVStackCollectionViewCell *)self setBackgroundColor:0];
 }
 
-- (void)setViewController:(id)a3
+- (void)setViewController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
 
   v5 = obj;
@@ -40,10 +40,10 @@
     goto LABEL_13;
   }
 
-  v7 = [obj view];
+  view = [obj view];
   v8 = objc_loadWeakRetained(&self->_cellContentView);
 
-  if (v8 != v7)
+  if (v8 != view)
   {
     v9 = objc_loadWeakRetained(&self->_cellContentView);
     v10 = objc_loadWeakRetained(&self->_stowedContentView);
@@ -57,13 +57,13 @@
 
     else
     {
-      v13 = [v11 superview];
-      v14 = [(_TVStackCollectionViewCell *)self contentView];
+      superview = [v11 superview];
+      contentView = [(_TVStackCollectionViewCell *)self contentView];
 
-      if (v13 != v14)
+      if (superview != contentView)
       {
 LABEL_9:
-        objc_storeWeak(&self->_cellContentView, v7);
+        objc_storeWeak(&self->_cellContentView, view);
         goto LABEL_10;
       }
 
@@ -76,17 +76,17 @@ LABEL_9:
 
 LABEL_10:
   v15 = objc_loadWeakRetained(&self->_cellContentView);
-  v16 = [v15 superview];
-  v17 = [(_TVStackCollectionViewCell *)self contentView];
+  superview2 = [v15 superview];
+  contentView2 = [(_TVStackCollectionViewCell *)self contentView];
 
-  if (v16 != v17)
+  if (superview2 != contentView2)
   {
     v18 = objc_loadWeakRetained(&self->_cellContentView);
     [v18 setHidden:0];
 
-    v19 = [(_TVStackCollectionViewCell *)self contentView];
+    contentView3 = [(_TVStackCollectionViewCell *)self contentView];
     v20 = objc_loadWeakRetained(&self->_cellContentView);
-    [v19 addSubview:v20];
+    [contentView3 addSubview:v20];
   }
 
   v5 = obj;
@@ -101,19 +101,19 @@ LABEL_13:
   [(_TVStackCollectionViewCell *)self bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [(_TVStackCollectionViewCell *)self viewController];
-  v8 = [v7 view];
-  [v8 setFrame:{0.0, 0.0, v4, v6}];
+  viewController = [(_TVStackCollectionViewCell *)self viewController];
+  view = [viewController view];
+  [view setFrame:{0.0, 0.0, v4, v6}];
 }
 
 - (id)preferredFocusEnvironments
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v3 = [(_TVStackCollectionViewCell *)self viewController];
-  if (v3)
+  viewController = [(_TVStackCollectionViewCell *)self viewController];
+  if (viewController)
   {
-    v4 = [(_TVStackCollectionViewCell *)self viewController];
-    v7[0] = v4;
+    viewController2 = [(_TVStackCollectionViewCell *)self viewController];
+    v7[0] = viewController2;
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
   }
 
@@ -125,11 +125,11 @@ LABEL_13:
   return v5;
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = _TVStackCollectionViewCell;
-  [(_TVStackCollectionViewCell *)&v7 pressesBegan:a3 withEvent:a4];
+  [(_TVStackCollectionViewCell *)&v7 pressesBegan:began withEvent:event];
   pressesEventDepth = self->_pressesEventDepth;
   self->_pressesEventDepth = pressesEventDepth + 1;
   if (!pressesEventDepth)
@@ -139,19 +139,19 @@ LABEL_13:
   }
 }
 
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = _TVStackCollectionViewCell;
-  [(_TVStackCollectionViewCell *)&v5 pressesCancelled:a3 withEvent:a4];
+  [(_TVStackCollectionViewCell *)&v5 pressesCancelled:cancelled withEvent:event];
   [(_TVStackCollectionViewCell *)self _pressesDidEnd];
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = _TVStackCollectionViewCell;
-  [(_TVStackCollectionViewCell *)&v5 pressesEnded:a3 withEvent:a4];
+  [(_TVStackCollectionViewCell *)&v5 pressesEnded:ended withEvent:event];
   [(_TVStackCollectionViewCell *)self _pressesDidEnd];
 }
 
@@ -177,10 +177,10 @@ LABEL_13:
     else
     {
       v8 = objc_loadWeakRetained(&self->_stowedContentView);
-      v9 = [v8 superview];
-      v10 = [(_TVStackCollectionViewCell *)self contentView];
+      superview = [v8 superview];
+      contentView = [(_TVStackCollectionViewCell *)self contentView];
 
-      if (v9 != v10)
+      if (superview != contentView)
       {
 LABEL_11:
 

@@ -1,16 +1,16 @@
 @interface TSUUnfairMapTable
-+ (id)mapTableWithKeyOptions:(unint64_t)a3 valueOptions:(unint64_t)a4;
-- (TSUUnfairMapTable)initWithKeyOptions:(unint64_t)a3 valueOptions:(unint64_t)a4 capacity:(unint64_t)a5;
-- (id)objectForKey:(id)a3;
++ (id)mapTableWithKeyOptions:(unint64_t)options valueOptions:(unint64_t)valueOptions;
+- (TSUUnfairMapTable)initWithKeyOptions:(unint64_t)options valueOptions:(unint64_t)valueOptions capacity:(unint64_t)capacity;
+- (id)objectForKey:(id)key;
 - (unint64_t)count;
 - (void)removeAllObjects;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation TSUUnfairMapTable
 
-- (TSUUnfairMapTable)initWithKeyOptions:(unint64_t)a3 valueOptions:(unint64_t)a4 capacity:(unint64_t)a5
+- (TSUUnfairMapTable)initWithKeyOptions:(unint64_t)options valueOptions:(unint64_t)valueOptions capacity:(unint64_t)capacity
 {
   v13.receiver = self;
   v13.super_class = TSUUnfairMapTable;
@@ -20,7 +20,7 @@
   {
     v8->_unfairLock._os_unfair_lock_opaque = 0;
     __dmb(0xBu);
-    v10 = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:a3 valueOptions:a4 capacity:a5];
+    v10 = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:options valueOptions:valueOptions capacity:capacity];
     mapTable = v9->_mapTable;
     v9->_mapTable = v10;
   }
@@ -28,39 +28,39 @@
   return v9;
 }
 
-+ (id)mapTableWithKeyOptions:(unint64_t)a3 valueOptions:(unint64_t)a4
++ (id)mapTableWithKeyOptions:(unint64_t)options valueOptions:(unint64_t)valueOptions
 {
-  v4 = [[TSUUnfairMapTable alloc] initWithKeyOptions:a3 valueOptions:a4 capacity:4];
+  v4 = [[TSUUnfairMapTable alloc] initWithKeyOptions:options valueOptions:valueOptions capacity:4];
 
   return v4;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_unfairLock);
-  v5 = [(NSMapTable *)self->_mapTable objectForKey:v4];
+  v5 = [(NSMapTable *)self->_mapTable objectForKey:keyCopy];
 
   os_unfair_lock_unlock(&self->_unfairLock);
 
   return v5;
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_unfairLock);
-  [(NSMapTable *)self->_mapTable removeObjectForKey:v4];
+  [(NSMapTable *)self->_mapTable removeObjectForKey:keyCopy];
 
   os_unfair_lock_unlock(&self->_unfairLock);
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  objectCopy = object;
   os_unfair_lock_lock(&self->_unfairLock);
-  [(NSMapTable *)self->_mapTable setObject:v7 forKey:v6];
+  [(NSMapTable *)self->_mapTable setObject:objectCopy forKey:keyCopy];
 
   os_unfair_lock_unlock(&self->_unfairLock);
 }

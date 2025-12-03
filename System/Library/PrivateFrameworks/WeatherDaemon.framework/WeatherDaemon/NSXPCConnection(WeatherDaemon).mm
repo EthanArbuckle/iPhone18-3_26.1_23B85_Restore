@@ -11,7 +11,7 @@
   v34 = *MEMORY[0x1E69E9840];
   v25 = 0u;
   v26 = 0u;
-  [a1 auditToken];
+  [self auditToken];
   memset(buf, 0, sizeof(buf));
   v2 = MSVBundleIDForAuditToken();
   if (!v2)
@@ -20,7 +20,7 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      *&buf[4] = a1;
+      *&buf[4] = self;
       _os_log_impl(&dword_1B6020000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: Failed to retrieve bundle identifier of the requesting application from the audit_token_t; instead, using bundle identifier.", buf, 0xCu);
     }
   }
@@ -35,11 +35,11 @@
     v6 = WDLogForCategory(1uLL);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v5 msv_description];
+      msv_description = [v5 msv_description];
       *buf = 138543618;
-      *&buf[4] = a1;
+      *&buf[4] = self;
       *&buf[12] = 2114;
-      *&buf[14] = v7;
+      *&buf[14] = msv_description;
       _os_log_impl(&dword_1B6020000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Failed to retrieve bundle extension record with error: %{public}@.", buf, 0x16u);
     }
   }
@@ -53,11 +53,11 @@
     }
 
     v6 = v4;
-    v8 = [v6 containingBundleRecord];
+    containingBundleRecord = [v6 containingBundleRecord];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v8;
+      v9 = containingBundleRecord;
     }
 
     else
@@ -70,13 +70,13 @@
         v13 = objc_opt_class();
         v14 = NSStringFromClass(v13);
         *buf = 138544386;
-        *&buf[4] = a1;
+        *&buf[4] = self;
         *&buf[12] = 2114;
         *&buf[14] = v6;
         *&buf[22] = 2114;
         *&buf[24] = v12;
         v28 = 2114;
-        v29 = v8;
+        v29 = containingBundleRecord;
         v30 = 2114;
         v31 = v14;
         _os_log_impl(&dword_1B6020000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: Requesting application extension %{public}@ (%{public}@) has a containing bundle which is not an application: %{public}@ (%{public}@).", buf, 0x34u);
@@ -85,8 +85,8 @@
       v9 = 0;
     }
 
-    v15 = [v9 bundleIdentifier];
-    if (v15)
+    bundleIdentifier = [v9 bundleIdentifier];
+    if (bundleIdentifier)
     {
       v16 = WDLogForCategory(1uLL);
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -96,13 +96,13 @@
         v18 = objc_opt_class();
         v19 = NSStringFromClass(v18);
         *buf = 138544642;
-        *&buf[4] = a1;
+        *&buf[4] = self;
         *&buf[12] = 2114;
         *&buf[14] = v6;
         *&buf[22] = 2114;
         *&buf[24] = v23;
         v28 = 2114;
-        v29 = v15;
+        v29 = bundleIdentifier;
         v30 = 2114;
         v31 = v9;
         v32 = 2114;
@@ -110,7 +110,7 @@
         _os_log_impl(&dword_1B6020000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@: Client is an application extension: %{public}@ (%{public}@). Using bundle identifier %{public}@ from containing application: %{public}@ (%{public}@).", buf, 0x3Eu);
       }
 
-      v20 = v15;
+      v20 = bundleIdentifier;
       v2 = v20;
     }
   }
@@ -124,7 +124,7 @@ LABEL_20:
 - (id)wd_codesigningIdentifier
 {
   v1 = *MEMORY[0x1E695E480];
-  [a1 auditToken];
+  [self auditToken];
   v2 = SecTaskCreateWithAuditToken(v1, &cf);
   if (v2)
   {

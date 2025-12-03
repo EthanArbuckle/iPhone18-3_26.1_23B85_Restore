@@ -1,9 +1,9 @@
 @interface SBLockScreenDisabledAssertionManager
-- (BOOL)shouldAutoUnlockForSource:(int)a3;
+- (BOOL)shouldAutoUnlockForSource:(int)source;
 - (NSString)description;
 - (SBLockScreenDisabledAssertionManager)init;
-- (void)addLockScreenDisableAssertion:(id)a3;
-- (void)removeLockScreenDisableAssertion:(id)a3;
+- (void)addLockScreenDisableAssertion:(id)assertion;
+- (void)removeLockScreenDisableAssertion:(id)assertion;
 @end
 
 @implementation SBLockScreenDisabledAssertionManager
@@ -32,57 +32,57 @@
     v5 = [v3 appendObject:self->_disableLockScreenIfPossibleAssertions withName:@"assertions"];
   }
 
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
-- (void)addLockScreenDisableAssertion:(id)a3
+- (void)addLockScreenDisableAssertion:(id)assertion
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assertionCopy = assertion;
   v5 = SBLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = assertionCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "Adding lock screen disable assertion %@", &v7, 0xCu);
   }
 
-  v6 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:v4];
+  v6 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:assertionCopy];
   [(NSMutableSet *)self->_disableLockScreenIfPossibleAssertions addObject:v6];
 }
 
-- (void)removeLockScreenDisableAssertion:(id)a3
+- (void)removeLockScreenDisableAssertion:(id)assertion
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assertionCopy = assertion;
   v5 = SBLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = assertionCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "Removing lock screen disable assertion %@", &v7, 0xCu);
   }
 
-  v6 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:v4];
+  v6 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:assertionCopy];
   [(NSMutableSet *)self->_disableLockScreenIfPossibleAssertions removeObject:v6];
 }
 
-- (BOOL)shouldAutoUnlockForSource:(int)a3
+- (BOOL)shouldAutoUnlockForSource:(int)source
 {
   v4 = +[SBLockScreenManager sharedInstance];
   if ([v4 isLockScreenActive])
   {
-    v5 = [(SBLockScreenDisabledAssertionManager *)self isLockScreenDisabledForAssertion];
+    isLockScreenDisabledForAssertion = [(SBLockScreenDisabledAssertionManager *)self isLockScreenDisabledForAssertion];
   }
 
   else
   {
-    v5 = 0;
+    isLockScreenDisabledForAssertion = 0;
   }
 
-  return v5;
+  return isLockScreenDisabledForAssertion;
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface MSDaemon
 - (BOOL)isBusy;
 - (MSDaemon)init;
-- (void)_didChangeIdleBusyState:(BOOL)a3;
-- (void)_hysteresisTimerDidFire:(id)a3;
+- (void)_didChangeIdleBusyState:(BOOL)state;
+- (void)_hysteresisTimerDidFire:(id)fire;
 - (void)releaseBusy;
 - (void)releaseUIBusy;
 - (void)retainBusy;
@@ -11,17 +11,17 @@
 
 @implementation MSDaemon
 
-- (void)_hysteresisTimerDidFire:(id)a3
+- (void)_hysteresisTimerDidFire:(id)fire
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = [(MSDaemon *)self hysteresisTimer];
-  [v4 invalidate];
+  hysteresisTimer = [(MSDaemon *)self hysteresisTimer];
+  [hysteresisTimer invalidate];
 
   [(MSDaemon *)self setHysteresisTimer:0];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%{public}@ Hysteresis-stabilized idled.", &v6, 0xCu);
   }
 
@@ -30,15 +30,15 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_didChangeIdleBusyState:(BOOL)a3
+- (void)_didChangeIdleBusyState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v14 = *MEMORY[0x277D85DE8];
-  v5 = [(MSDaemon *)self hysteresisTimer];
-  v6 = v5;
-  if (v3)
+  hysteresisTimer = [(MSDaemon *)self hysteresisTimer];
+  v6 = hysteresisTimer;
+  if (stateCopy)
   {
-    [v5 invalidate];
+    [hysteresisTimer invalidate];
 
     [(MSDaemon *)self setHysteresisTimer:0];
     if (![(MSDaemon *)self stabilizedIsBusy])
@@ -46,7 +46,7 @@
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
       {
         *buf = 138543362;
-        v13 = self;
+        selfCopy = self;
         _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%{public}@: Hysteresis-stabilized unidled.", buf, 0xCu);
       }
 
@@ -62,9 +62,9 @@
 
     if (v6)
     {
-      v11 = [(MSDaemon *)self hysteresisTimer];
-      v8 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:1.0];
-      [v11 setFireDate:v8];
+      hysteresisTimer2 = [(MSDaemon *)self hysteresisTimer];
+      hysteresisTimer3 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:1.0];
+      [hysteresisTimer2 setFireDate:hysteresisTimer3];
     }
 
     else
@@ -72,9 +72,9 @@
       v9 = [MEMORY[0x277CBEBB8] timerWithTimeInterval:self target:sel__hysteresisTimerDidFire_ selector:0 userInfo:0 repeats:1.0];
       [(MSDaemon *)self setHysteresisTimer:v9];
 
-      v11 = [MEMORY[0x277CBEB88] currentRunLoop];
-      v8 = [(MSDaemon *)self hysteresisTimer];
-      [v11 addTimer:v8 forMode:*MEMORY[0x277CBE738]];
+      hysteresisTimer2 = [MEMORY[0x277CBEB88] currentRunLoop];
+      hysteresisTimer3 = [(MSDaemon *)self hysteresisTimer];
+      [hysteresisTimer2 addTimer:hysteresisTimer3 forMode:*MEMORY[0x277CBE738]];
     }
 
     v10 = *MEMORY[0x277D85DE8];
@@ -235,23 +235,23 @@ void *__24__MSDaemon_retainUIBusy__block_invoke_2(void *result)
 
 - (BOOL)isBusy
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(MSDaemon *)self idleCountQueue];
+  idleCountQueue = [(MSDaemon *)self idleCountQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __18__MSDaemon_isBusy__block_invoke;
   v5[3] = &unk_278E92700;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(idleCountQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (void)releaseBusy

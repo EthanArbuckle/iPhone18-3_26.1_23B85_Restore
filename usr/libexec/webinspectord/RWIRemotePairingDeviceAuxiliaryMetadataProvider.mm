@@ -1,15 +1,15 @@
 @interface RWIRemotePairingDeviceAuxiliaryMetadataProvider
-+ (void)registerBoolMetadataWithDomain:(id)a3 key:(id)a4 value:(BOOL)a5;
++ (void)registerBoolMetadataWithDomain:(id)domain key:(id)key value:(BOOL)value;
 - (RWIRemotePairingDeviceAuxiliaryMetadataProvider)init;
 @end
 
 @implementation RWIRemotePairingDeviceAuxiliaryMetadataProvider
 
-+ (void)registerBoolMetadataWithDomain:(id)a3 key:(id)a4 value:(BOOL)a5
++ (void)registerBoolMetadataWithDomain:(id)domain key:(id)key value:(BOOL)value
 {
-  v7 = a3;
-  v8 = a4;
-  _s13webinspectord47RWIRemotePairingDeviceAuxiliaryMetadataProviderC012registerBoolF06domain3key5valueySo8NSStringC_AISbtFZ_0(v7, v8, a5);
+  domainCopy = domain;
+  keyCopy = key;
+  _s13webinspectord47RWIRemotePairingDeviceAuxiliaryMetadataProviderC012registerBoolF06domain3key5valueySo8NSStringC_AISbtFZ_0(domainCopy, keyCopy, value);
 }
 
 - (RWIRemotePairingDeviceAuxiliaryMetadataProvider)init

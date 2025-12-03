@@ -8,31 +8,31 @@
 - (float)SPL_unnormalized;
 - (float)SPL_unnormalized_end;
 - (id).cxx_construct;
-- (uint64_t)initWithMetrics:(void *)a3 unnormalized:;
+- (uint64_t)initWithMetrics:(void *)metrics unnormalized:;
 @end
 
 @implementation SiriTTSTrainerAudioQualityAssessment
 
-- (uint64_t)initWithMetrics:(void *)a3 unnormalized:
+- (uint64_t)initWithMetrics:(void *)metrics unnormalized:
 {
-  if (!a1)
+  if (!self)
   {
     goto LABEL_65;
   }
 
-  if (a1 + 1 != a2)
+  if (self + 1 != a2)
   {
     v5 = a2 + 1;
     v6 = *a2;
-    if (a1[3])
+    if (self[3])
     {
-      v8 = (a1 + 2);
-      v7 = a1[2];
-      v9 = a1[1];
-      a1[1] = (a1 + 2);
+      v8 = (self + 2);
+      v7 = self[2];
+      v9 = self[1];
+      self[1] = (self + 2);
       *(v7 + 16) = 0;
-      a1[2] = 0;
-      a1[3] = 0;
+      self[2] = 0;
+      self[3] = 0;
       if (*(v9 + 8))
       {
         v10 = *(v9 + 8);
@@ -61,8 +61,8 @@
             *(v10 + 32) = v14;
             *(v10 + 40) = v12[5];
             v15 = *v8;
-            v16 = (a1 + 2);
-            v17 = (a1 + 2);
+            v16 = (self + 2);
+            v17 = (self + 2);
             if (*v8)
             {
               do
@@ -91,7 +91,7 @@
             }
 
 LABEL_16:
-            std::__tree<std::__value_type<float,kaldi::MelBanks *>,std::__map_value_compare<float,std::__value_type<float,kaldi::MelBanks *>,std::less<float>,true>,std::allocator<std::__value_type<float,kaldi::MelBanks *>>>::__insert_node_at(a1 + 1, v16, v17, v10);
+            std::__tree<std::__value_type<float,kaldi::MelBanks *>,std::__map_value_compare<float,std::__value_type<float,kaldi::MelBanks *>,std::less<float>,true>,std::allocator<std::__value_type<float,kaldi::MelBanks *>>>::__insert_node_at(self + 1, v16, v17, v10);
             if (v11)
             {
               v11 = std::__tree<std::__value_type<AudioQualityMetric,double>,std::__map_value_compare<AudioQualityMetric,std::__value_type<AudioQualityMetric,double>,std::less<AudioQualityMetric>,true>,std::allocator<std::__value_type<AudioQualityMetric,double>>>::_DetachedTreeCache::__detach_next(v11);
@@ -138,7 +138,7 @@ LABEL_16:
           while (v6 != v5);
         }
 
-        std::__tree<std::__value_type<float,kaldi::MelBanks *>,std::__map_value_compare<float,std::__value_type<float,kaldi::MelBanks *>,std::less<float>,true>,std::allocator<std::__value_type<float,kaldi::MelBanks *>>>::destroy((a1 + 1), v13);
+        std::__tree<std::__value_type<float,kaldi::MelBanks *>,std::__map_value_compare<float,std::__value_type<float,kaldi::MelBanks *>,std::less<float>,true>,std::allocator<std::__value_type<float,kaldi::MelBanks *>>>::destroy((self + 1), v13);
         if (!v11)
         {
           goto LABEL_34;
@@ -149,13 +149,13 @@ LABEL_16:
           v11 = i;
         }
 
-        v20 = (a1 + 1);
+        v20 = (self + 1);
         v21 = v11;
       }
 
       else
       {
-        v20 = (a1 + 1);
+        v20 = (self + 1);
         v21 = 0;
       }
 
@@ -169,19 +169,19 @@ LABEL_34:
     }
   }
 
-  if (a3[2])
+  if (metrics[2])
   {
-    v23 = *a3;
-    if (*a3 != a3 + 1)
+    v23 = *metrics;
+    if (*metrics != metrics + 1)
     {
-      v24 = (a1 + 2);
+      v24 = (self + 2);
       do
       {
         v25 = *v24;
         if (*v24)
         {
           v26 = *(v23 + 8);
-          v27 = (a1 + 2);
+          v27 = (self + 2);
           while (1)
           {
             while (1)
@@ -223,8 +223,8 @@ LABEL_34:
         else
         {
           v30 = 1;
-          v28 = (a1 + 2);
-          v27 = (a1 + 2);
+          v28 = (self + 2);
+          v27 = (self + 2);
         }
 
 LABEL_49:
@@ -280,28 +280,28 @@ LABEL_49:
             while (!v19);
           }
 
-          if (*a3 == v23)
+          if (*metrics == v23)
           {
-            *a3 = v36;
+            *metrics = v36;
           }
 
-          v37 = a3[1];
-          --a3[2];
+          v37 = metrics[1];
+          --metrics[2];
           std::__tree_remove[abi:ne200100]<std::__tree_node_base<void *> *>(v37, v23);
-          std::__tree<std::__value_type<float,kaldi::MelBanks *>,std::__map_value_compare<float,std::__value_type<float,kaldi::MelBanks *>,std::less<float>,true>,std::allocator<std::__value_type<float,kaldi::MelBanks *>>>::__insert_node_at(a1 + 1, v28, v27, v23);
+          std::__tree<std::__value_type<float,kaldi::MelBanks *>,std::__map_value_compare<float,std::__value_type<float,kaldi::MelBanks *>,std::less<float>,true>,std::allocator<std::__value_type<float,kaldi::MelBanks *>>>::__insert_node_at(self + 1, v28, v27, v23);
         }
 
         v23 = v34;
       }
 
-      while (v34 != a3 + 1);
+      while (v34 != metrics + 1);
     }
   }
 
-  v38 = a1;
+  selfCopy = self;
 LABEL_65:
 
-  return a1;
+  return self;
 }
 
 - (float)SPL

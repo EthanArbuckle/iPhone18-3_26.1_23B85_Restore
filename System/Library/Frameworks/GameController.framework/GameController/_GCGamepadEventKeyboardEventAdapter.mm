@@ -1,29 +1,29 @@
 @interface _GCGamepadEventKeyboardEventAdapter
 - (_GCGamepadEventKeyboardEventAdapter)init;
-- (_GCGamepadEventKeyboardEventAdapter)initWithConfiguration:(id)a3 source:(id)a4;
-- (id)observeGamepadEvents:(id)a3;
+- (_GCGamepadEventKeyboardEventAdapter)initWithConfiguration:(id)configuration source:(id)source;
+- (id)observeGamepadEvents:(id)events;
 - (void)dealloc;
 @end
 
 @implementation _GCGamepadEventKeyboardEventAdapter
 
-- (_GCGamepadEventKeyboardEventAdapter)initWithConfiguration:(id)a3 source:(id)a4
+- (_GCGamepadEventKeyboardEventAdapter)initWithConfiguration:(id)configuration source:(id)source
 {
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  sourceCopy = source;
   v17.receiver = self;
   v17.super_class = _GCGamepadEventKeyboardEventAdapter;
   v9 = [(_GCGamepadEventKeyboardEventAdapter *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_config, a3);
+    objc_storeStrong(&v9->_config, configuration);
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __68___GCGamepadEventKeyboardEventAdapter_initWithConfiguration_source___block_invoke;
     v16[3] = &__block_descriptor_40_e28_v16__0____GCKeyboardEvent__8lu32l8;
     v16[4] = v10;
-    v11 = [v8 observeKeyboardEvents:v16];
+    v11 = [sourceCopy observeKeyboardEvents:v16];
     observation = v10->_observation;
     v10->_observation = v11;
 
@@ -52,27 +52,27 @@
   [(_GCGamepadEventKeyboardEventAdapter *)&v4 dealloc];
 }
 
-- (id)observeGamepadEvents:(id)a3
+- (id)observeGamepadEvents:(id)events
 {
-  v4 = [a3 copy];
-  v5 = [(_GCGamepadEventKeyboardEventAdapter *)self observers];
+  v4 = [events copy];
+  observers = [(_GCGamepadEventKeyboardEventAdapter *)self observers];
   v6 = _Block_copy(v4);
-  v7 = [v5 containsObject:v6];
+  v7 = [observers containsObject:v6];
 
   if ((v7 & 1) == 0)
   {
     do
     {
-      v8 = [(_GCGamepadEventKeyboardEventAdapter *)self observers];
-      v9 = [v8 mutableCopy];
+      observers2 = [(_GCGamepadEventKeyboardEventAdapter *)self observers];
+      v9 = [observers2 mutableCopy];
 
       v10 = _Block_copy(v4);
       [v9 addObject:v10];
 
       [(_GCGamepadEventKeyboardEventAdapter *)self setObservers:v9];
-      v11 = [(_GCGamepadEventKeyboardEventAdapter *)self observers];
+      observers3 = [(_GCGamepadEventKeyboardEventAdapter *)self observers];
       v12 = _Block_copy(v4);
-      v13 = [v11 containsObject:v12];
+      v13 = [observers3 containsObject:v12];
     }
 
     while (!v13);

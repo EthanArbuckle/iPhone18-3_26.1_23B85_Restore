@@ -1,26 +1,26 @@
 @interface VFXCameraEffectToneMapping
 + (id)toneMapping;
-- (VFXCameraEffectToneMapping)initWithCoder:(id)a3;
+- (VFXCameraEffectToneMapping)initWithCoder:(id)coder;
 - (double)createCFXObject;
-- (float)eval:(float)a3;
+- (float)eval:(float)eval;
 - (float)gamma;
 - (float)shoulderAngle;
 - (float)shoulderLength;
 - (float)shoulderStrength;
 - (float)toeLength;
 - (float)toeStrength;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)mode;
 - (void)_updateModelFromPresentation;
 - (void)_updatePresentationFromModel;
-- (void)encodeWithCoder:(id)a3;
-- (void)setGamma:(float)a3;
-- (void)setMode:(int64_t)a3;
-- (void)setShoulderAngle:(float)a3;
-- (void)setShoulderLength:(float)a3;
-- (void)setShoulderStrength:(float)a3;
-- (void)setToeLength:(float)a3;
-- (void)setToeStrength:(float)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setGamma:(float)gamma;
+- (void)setMode:(int64_t)mode;
+- (void)setShoulderAngle:(float)angle;
+- (void)setShoulderLength:(float)length;
+- (void)setShoulderStrength:(float)strength;
+- (void)setToeLength:(float)length;
+- (void)setToeStrength:(float)strength;
 @end
 
 @implementation VFXCameraEffectToneMapping
@@ -67,19 +67,19 @@
   return v11;
 }
 
-- (void)setMode:(int64_t)a3
+- (void)setMode:(int64_t)mode
 {
-  if (self->super._isPresentationObject || self->_mode != a3)
+  if (self->super._isPresentationObject || self->_mode != mode)
   {
     v5[6] = v3;
     v5[7] = v4;
-    self->_mode = a3;
+    self->_mode = mode;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF2AEEE0;
     v5[3] = &unk_1E7A7E248;
     v5[4] = self;
-    v5[5] = a3;
+    v5[5] = mode;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"mode", v5);
   }
 }
@@ -108,19 +108,19 @@
   return v11;
 }
 
-- (void)setToeStrength:(float)a3
+- (void)setToeStrength:(float)strength
 {
-  if (self->super._isPresentationObject || self->_toeStrength != a3)
+  if (self->super._isPresentationObject || self->_toeStrength != strength)
   {
     v7 = v3;
     v8 = v4;
-    self->_toeStrength = a3;
+    self->_toeStrength = strength;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF2AF040;
     v5[3] = &unk_1E7A7E270;
     v5[4] = self;
-    v6 = a3;
+    strengthCopy = strength;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"toeStrength", v5);
   }
 }
@@ -149,19 +149,19 @@
   return v11;
 }
 
-- (void)setToeLength:(float)a3
+- (void)setToeLength:(float)length
 {
-  if (self->super._isPresentationObject || self->_toeLength != a3)
+  if (self->super._isPresentationObject || self->_toeLength != length)
   {
     v7 = v3;
     v8 = v4;
-    self->_toeLength = a3;
+    self->_toeLength = length;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF2AF1A0;
     v5[3] = &unk_1E7A7E270;
     v5[4] = self;
-    v6 = a3;
+    lengthCopy = length;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"toeLength", v5);
   }
 }
@@ -190,19 +190,19 @@
   return v11;
 }
 
-- (void)setShoulderStrength:(float)a3
+- (void)setShoulderStrength:(float)strength
 {
-  if (self->super._isPresentationObject || self->_shoulderStrength != a3)
+  if (self->super._isPresentationObject || self->_shoulderStrength != strength)
   {
     v7 = v3;
     v8 = v4;
-    self->_shoulderStrength = a3;
+    self->_shoulderStrength = strength;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF2AF300;
     v5[3] = &unk_1E7A7E270;
     v5[4] = self;
-    v6 = a3;
+    strengthCopy = strength;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"shoulderStrength", v5);
   }
 }
@@ -231,19 +231,19 @@
   return v11;
 }
 
-- (void)setShoulderLength:(float)a3
+- (void)setShoulderLength:(float)length
 {
-  if (self->super._isPresentationObject || self->_shoulderLength != a3)
+  if (self->super._isPresentationObject || self->_shoulderLength != length)
   {
     v7 = v3;
     v8 = v4;
-    self->_shoulderLength = a3;
+    self->_shoulderLength = length;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF2AF460;
     v5[3] = &unk_1E7A7E270;
     v5[4] = self;
-    v6 = a3;
+    lengthCopy = length;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"shoulderLength", v5);
   }
 }
@@ -272,19 +272,19 @@
   return v11;
 }
 
-- (void)setShoulderAngle:(float)a3
+- (void)setShoulderAngle:(float)angle
 {
-  if (self->super._isPresentationObject || self->_shoulderAngle != a3)
+  if (self->super._isPresentationObject || self->_shoulderAngle != angle)
   {
     v7 = v3;
     v8 = v4;
-    self->_shoulderAngle = a3;
+    self->_shoulderAngle = angle;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF2AF5C0;
     v5[3] = &unk_1E7A7E270;
     v5[4] = self;
-    v6 = a3;
+    angleCopy = angle;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"shoulderAngle", v5);
   }
 }
@@ -313,19 +313,19 @@
   return v11;
 }
 
-- (void)setGamma:(float)a3
+- (void)setGamma:(float)gamma
 {
-  if (self->super._isPresentationObject || self->_gamma != a3)
+  if (self->super._isPresentationObject || self->_gamma != gamma)
   {
     v7 = v3;
     v8 = v4;
-    self->_gamma = a3;
+    self->_gamma = gamma;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF2AF720;
     v5[3] = &unk_1E7A7E270;
     v5[4] = self;
-    v6 = a3;
+    gammaCopy = gamma;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"gamma", v5);
   }
 }
@@ -337,7 +337,7 @@
   return v2;
 }
 
-- (float)eval:(float)a3
+- (float)eval:(float)eval
 {
   v7 = objc_msgSend_worldRef(self, a2, v3, v4);
   v8 = v7;
@@ -349,7 +349,7 @@
   cameraEffect = self->super._cameraEffect;
   if (cameraEffect)
   {
-    a3 = sub_1AF161DB8(cameraEffect, a3);
+    eval = sub_1AF161DB8(cameraEffect, eval);
   }
 
   if (v8)
@@ -357,14 +357,14 @@
     sub_1AF1CEA9C(v8);
   }
 
-  return a3;
+  return eval;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v32.receiver = self;
   v32.super_class = VFXCameraEffectToneMapping;
-  v4 = [(VFXCameraEffect *)&v32 copyWithZone:a3];
+  v4 = [(VFXCameraEffect *)&v32 copyWithZone:zone];
   objc_msgSend_setMode_(v4, v5, self->_mode, v6);
   *&v7 = self->_toeStrength;
   objc_msgSend_setToeStrength_(v4, v8, v9, v10, v7);
@@ -405,27 +405,27 @@
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v2);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v24.receiver = self;
   v24.super_class = VFXCameraEffectToneMapping;
   [(VFXCameraEffect *)&v24 encodeWithCoder:?];
-  objc_msgSend_encodeInteger_forKey_(a3, v5, self->_mode, @"mode");
+  objc_msgSend_encodeInteger_forKey_(coder, v5, self->_mode, @"mode");
   *&v6 = self->_toeStrength;
-  objc_msgSend_encodeFloat_forKey_(a3, v7, @"toeStrength", v8, v6);
+  objc_msgSend_encodeFloat_forKey_(coder, v7, @"toeStrength", v8, v6);
   *&v9 = self->_toeLength;
-  objc_msgSend_encodeFloat_forKey_(a3, v10, @"toeLength", v11, v9);
+  objc_msgSend_encodeFloat_forKey_(coder, v10, @"toeLength", v11, v9);
   *&v12 = self->_shoulderStrength;
-  objc_msgSend_encodeFloat_forKey_(a3, v13, @"shoulderStrength", v14, v12);
+  objc_msgSend_encodeFloat_forKey_(coder, v13, @"shoulderStrength", v14, v12);
   *&v15 = self->_shoulderLength;
-  objc_msgSend_encodeFloat_forKey_(a3, v16, @"shoulderLength", v17, v15);
+  objc_msgSend_encodeFloat_forKey_(coder, v16, @"shoulderLength", v17, v15);
   *&v18 = self->_shoulderAngle;
-  objc_msgSend_encodeFloat_forKey_(a3, v19, @"shoulderAngle", v20, v18);
+  objc_msgSend_encodeFloat_forKey_(coder, v19, @"shoulderAngle", v20, v18);
   *&v21 = self->_gamma;
-  objc_msgSend_encodeFloat_forKey_(a3, v22, @"gamma", v23, v21);
+  objc_msgSend_encodeFloat_forKey_(coder, v22, @"gamma", v23, v21);
 }
 
-- (VFXCameraEffectToneMapping)initWithCoder:(id)a3
+- (VFXCameraEffectToneMapping)initWithCoder:(id)coder
 {
   v49.receiver = self;
   v49.super_class = VFXCameraEffectToneMapping;
@@ -434,19 +434,19 @@
   {
     v8 = objc_msgSend_immediateMode(VFXTransaction, v4, v5, v6);
     objc_msgSend_setImmediateMode_(VFXTransaction, v9, 1, v10);
-    v13 = objc_msgSend_decodeIntegerForKey_(a3, v11, @"mode", v12);
+    v13 = objc_msgSend_decodeIntegerForKey_(coder, v11, @"mode", v12);
     objc_msgSend_setMode_(v7, v14, v13, v15);
-    objc_msgSend_decodeFloatForKey_(a3, v16, @"toeStrength", v17);
+    objc_msgSend_decodeFloatForKey_(coder, v16, @"toeStrength", v17);
     objc_msgSend_setToeStrength_(v7, v18, v19, v20);
-    objc_msgSend_decodeFloatForKey_(a3, v21, @"toeLength", v22);
+    objc_msgSend_decodeFloatForKey_(coder, v21, @"toeLength", v22);
     objc_msgSend_setToeLength_(v7, v23, v24, v25);
-    objc_msgSend_decodeFloatForKey_(a3, v26, @"shoulderStrength", v27);
+    objc_msgSend_decodeFloatForKey_(coder, v26, @"shoulderStrength", v27);
     objc_msgSend_setShoulderStrength_(v7, v28, v29, v30);
-    objc_msgSend_decodeFloatForKey_(a3, v31, @"shoulderLength", v32);
+    objc_msgSend_decodeFloatForKey_(coder, v31, @"shoulderLength", v32);
     objc_msgSend_setShoulderLength_(v7, v33, v34, v35);
-    objc_msgSend_decodeFloatForKey_(a3, v36, @"shoulderAngle", v37);
+    objc_msgSend_decodeFloatForKey_(coder, v36, @"shoulderAngle", v37);
     objc_msgSend_setShoulderAngle_(v7, v38, v39, v40);
-    objc_msgSend_decodeFloatForKey_(a3, v41, @"gamma", v42);
+    objc_msgSend_decodeFloatForKey_(coder, v41, @"gamma", v42);
     objc_msgSend_setGamma_(v7, v43, v44, v45);
     objc_msgSend_setImmediateMode_(VFXTransaction, v46, v8, v47);
   }

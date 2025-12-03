@@ -1,58 +1,58 @@
 @interface PKMediaSize
-+ (id)mediaSizeWithWidth:(int)a3 height:(int)a4;
-- (_NSRange)getRange:(id)a3;
++ (id)mediaSizeWithWidth:(int)width height:(int)height;
+- (_NSRange)getRange:(id)range;
 - (_NSRange)yRange;
 - (id)userCodableDictionary;
-- (int)getInt:(id)a3;
-- (int)getThingType:(id)a3;
+- (int)getInt:(id)int;
+- (int)getThingType:(id)type;
 @end
 
 @implementation PKMediaSize
 
-- (int)getThingType:(id)a3
+- (int)getThingType:(id)type
 {
-  v4 = a3;
-  v5 = [(PKCollectionSpecialization *)self collection];
-  v6 = [v5 _findAttribute0:v4 valueTag:0];
+  typeCopy = type;
+  collection = [(PKCollectionSpecialization *)self collection];
+  v6 = [collection _findAttribute0:typeCopy valueTag:0];
 
   if (v6)
   {
-    v7 = [v6 value_tag];
+    value_tag = [v6 value_tag];
   }
 
   else
   {
-    v7 = 0;
+    value_tag = 0;
   }
 
-  return v7;
+  return value_tag;
 }
 
-- (int)getInt:(id)a3
+- (int)getInt:(id)int
 {
-  v4 = a3;
-  v5 = [(PKCollectionSpecialization *)self collection];
-  v6 = [v5 _findAttribute0:v4 valueTag:0];
+  intCopy = int;
+  collection = [(PKCollectionSpecialization *)self collection];
+  v6 = [collection _findAttribute0:intCopy valueTag:0];
 
-  v7 = [v6 values];
-  v8 = [v7 objectAtIndexedSubscript:0];
-  v9 = [v8 integer];
+  values = [v6 values];
+  v8 = [values objectAtIndexedSubscript:0];
+  integer = [v8 integer];
 
-  return v9;
+  return integer;
 }
 
-- (_NSRange)getRange:(id)a3
+- (_NSRange)getRange:(id)range
 {
-  v4 = a3;
-  v5 = [(PKCollectionSpecialization *)self collection];
-  v6 = [v5 _findAttribute0:v4 valueTag:0];
+  rangeCopy = range;
+  collection = [(PKCollectionSpecialization *)self collection];
+  v6 = [collection _findAttribute0:rangeCopy valueTag:0];
 
   if (v6)
   {
     if ([v6 value_tag] == 33)
     {
-      v7 = [v6 values];
-      v8 = [v7 objectAtIndexedSubscript:0];
+      values = [v6 values];
+      v8 = [values objectAtIndexedSubscript:0];
       v9 = v8;
       if (v8)
       {
@@ -64,15 +64,15 @@
         v16 = 0;
       }
 
-      v10 = v16 - 1;
+      integer = v16 - 1;
       v11 = SHIDWORD(v16) - v16;
     }
 
     else
     {
-      v12 = [v6 values];
-      v13 = [v12 objectAtIndexedSubscript:0];
-      v10 = [v13 integer];
+      values2 = [v6 values];
+      v13 = [values2 objectAtIndexedSubscript:0];
+      integer = [v13 integer];
 
       v11 = 1;
     }
@@ -80,11 +80,11 @@
 
   else
   {
-    v10 = 0;
+    integer = 0;
     v11 = 0;
   }
 
-  v14 = v10;
+  v14 = integer;
   v15 = v11;
   result.length = v15;
   result.location = v14;
@@ -108,8 +108,8 @@
   if ([(PKMediaSize *)self yDimensionIsRange])
   {
     v5 = MEMORY[0x277CCAE60];
-    v6 = [(PKMediaSize *)self yRange];
-    [v5 valueWithRange:{v6, v7}];
+    yRange = [(PKMediaSize *)self yRange];
+    [v5 valueWithRange:{yRange, v7}];
   }
 
   else
@@ -122,10 +122,10 @@
   return v3;
 }
 
-+ (id)mediaSizeWithWidth:(int)a3 height:(int)a4
++ (id)mediaSizeWithWidth:(int)width height:(int)height
 {
-  v4 = *&a4;
-  v5 = *&a3;
+  v4 = *&height;
+  v5 = *&width;
   v6 = objc_opt_new();
   [v6 _addInteger:0 valueTag:33 name:@"x-dimension" value:v5];
   [v6 _addInteger:0 valueTag:33 name:@"y-dimension" value:v4];

@@ -1,60 +1,60 @@
 @interface RootViewController
-- (_TtC9SeymourUI18RootViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)accountButtonTapped:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC9SeymourUI18RootViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)accountButtonTapped:(id)tapped;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation RootViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_20BE86950();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_20BE86C14(a3);
+  selfCopy = self;
+  sub_20BE86C14(appear);
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v3 = a3;
+  appearingCopy = appearing;
   v7.receiver = self;
   v7.super_class = type metadata accessor for RootViewController();
   v4 = v7.receiver;
-  [(RootViewController *)&v7 viewIsAppearing:v3];
+  [(RootViewController *)&v7 viewIsAppearing:appearingCopy];
   [*(*(*&v4[OBJC_IVAR____TtC9SeymourUI18RootViewController_dataProvider] + 48) + OBJC_IVAR____TtC9SeymourUI11CatalogPage_collectionView) contentOffset];
   sub_20BE83104(v5, v6);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_20BE86F00(a3);
+  selfCopy = self;
+  sub_20BE86F00(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_20BE873C4(a3);
+  selfCopy = self;
+  sub_20BE873C4(disappear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for RootViewController();
   v4 = v5.receiver;
-  [(RootViewController *)&v5 viewDidDisappear:v3];
+  [(RootViewController *)&v5 viewDidDisappear:disappearCopy];
   v4[OBJC_IVAR____TtC9SeymourUI18RootViewController_engagementPresentability] = 2;
   sub_20BE8F2DC(&qword_27C76FCE8, type metadata accessor for RootViewController);
   sub_20BE8F2DC(&unk_27C76FCF0, type metadata accessor for RootViewController);
@@ -75,23 +75,23 @@
   sub_20B9D8614(v6, v7, v8, v9);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_20BE8781C(a4, width, height);
+  selfCopy = self;
+  sub_20BE8781C(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
-- (void)accountButtonTapped:(id)a3
+- (void)accountButtonTapped:(id)tapped
 {
-  v3 = self;
+  selfCopy = self;
   sub_20BE8462C();
 }
 
-- (_TtC9SeymourUI18RootViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI18RootViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

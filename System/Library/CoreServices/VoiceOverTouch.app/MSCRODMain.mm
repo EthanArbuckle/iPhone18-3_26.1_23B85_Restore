@@ -1,7 +1,7 @@
 @interface MSCRODMain
-- (id)_safeHandlerForType:(int *)a3;
+- (id)_safeHandlerForType:(int *)type;
 - (int)run;
-- (void)_goDogGo:(id)a3;
+- (void)_goDogGo:(id)go;
 - (void)dealloc;
 - (void)stop;
 @end
@@ -27,15 +27,15 @@
   [(MSCRODMain *)&v7 dealloc];
 }
 
-- (id)_safeHandlerForType:(int *)a3
+- (id)_safeHandlerForType:(int *)type
 {
-  v3 = *a3;
-  if ((*a3 - 3) < 0xFFFFFFFE)
+  v3 = *type;
+  if ((*type - 3) < 0xFFFFFFFE)
   {
     v3 = 0;
   }
 
-  *a3 = v3;
+  *type = v3;
   return self->_handlers[v3];
 }
 
@@ -68,9 +68,9 @@
 
   v12 = objc_allocWithZone(NSDictionary);
   v13 = +[SCROServer sharedServer];
-  v14 = [v13 serverSource];
+  serverSource = [v13 serverSource];
   v15 = [NSNumber numberWithInt:0];
-  v16 = [v12 initWithObjectsAndKeys:{v14, @"server", v15, @"index", 0}];
+  v16 = [v12 initWithObjectsAndKeys:{serverSource, @"server", v15, @"index", 0}];
 
   [NSThread detachNewThreadSelector:"_goDogGo:" toTarget:self withObject:v16];
   [(MSCRODMain *)self _goDogGo:0];
@@ -92,13 +92,13 @@
   return v3;
 }
 
-- (void)_goDogGo:(id)a3
+- (void)_goDogGo:(id)go
 {
-  v10 = a3;
+  goCopy = go;
   v4 = objc_autoreleasePoolPush();
   AXSetThreadPriority();
-  v5 = [v10 objectForKey:@"index"];
-  v6 = [v10 objectForKey:@"server"];
+  v5 = [goCopy objectForKey:@"index"];
+  v6 = [goCopy objectForKey:@"server"];
   Current = CFRunLoopGetCurrent();
   v8 = Current;
   if (Current != self->_mainRunLoop)

@@ -1,34 +1,34 @@
 @interface PXAutoloopVideoProcessTask
-- (void)performTaskWithInput:(id)a3;
+- (void)performTaskWithInput:(id)input;
 @end
 
 @implementation PXAutoloopVideoProcessTask
 
-- (void)performTaskWithInput:(id)a3
+- (void)performTaskWithInput:(id)input
 {
   v64 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  inputCopy = input;
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [MEMORY[0x1E696AFB0] UUID];
-  v7 = [v6 UUIDString];
-  v8 = [v5 stringWithFormat:@"autoloop-tmp-%@", v7];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v8 = [v5 stringWithFormat:@"autoloop-tmp-%@", uUIDString];
 
   v9 = MEMORY[0x1E695DFF8];
   v10 = NSTemporaryDirectory();
   v11 = [v10 stringByAppendingPathComponent:v8];
   v12 = [v9 fileURLWithPath:v11];
 
-  v13 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v52 = 0;
-  v14 = [v13 createDirectoryAtURL:v12 withIntermediateDirectories:1 attributes:0 error:&v52];
+  v14 = [defaultManager createDirectoryAtURL:v12 withIntermediateDirectories:1 attributes:0 error:&v52];
   v15 = v52;
 
   if (v14)
   {
-    v16 = [v12 path];
-    [(PXAutoloopVideoTask *)self setTemporaryFilesDirectory:v16];
+    path = [v12 path];
+    [(PXAutoloopVideoTask *)self setTemporaryFilesDirectory:path];
 
-    [v4 asset];
+    [inputCopy asset];
     v51 = 0;
     v17 = v50 = 0;
     location = 0;
@@ -53,9 +53,9 @@
     _Block_object_dispose(&location, 8);
     if (!v18)
     {
-      v40 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v41 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"struct autoloopSettings *_createAutoLoopSettingsForAsset(AVAsset *__strong, autoloopErrorCode *)"}];
-      [v40 handleFailureInFunction:v41 file:@"PXAutoloopSoftLinks.m" lineNumber:25 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v41 file:@"PXAutoloopSoftLinks.m" lineNumber:25 description:{@"%s", dlerror()}];
 
       goto LABEL_35;
     }
@@ -91,9 +91,9 @@
         {
           while (1)
           {
-            v42 = [MEMORY[0x1E696AAA8] currentHandler];
+            currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
             v43 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"CFURLRef _createBundleDefaultGatingClassifierURL(void)"];
-            [v42 handleFailureInFunction:v43 file:@"PXAutoloopSoftLinks.m" lineNumber:28 description:{@"%s", dlerror()}];
+            [currentHandler2 handleFailureInFunction:v43 file:@"PXAutoloopSoftLinks.m" lineNumber:28 description:{@"%s", dlerror()}];
 
 LABEL_35:
             __break(1u);
@@ -101,11 +101,11 @@ LABEL_35:
         }
 
         cf = v23();
-        v26 = [v4 imageURL];
-        v27 = v26;
-        if (v26)
+        imageURL = [inputCopy imageURL];
+        v27 = imageURL;
+        if (imageURL)
         {
-          _autoloopSettingsSetGating(v21, cf, v26);
+          _autoloopSettingsSetGating(v21, cf, imageURL);
         }
 
         else
@@ -134,16 +134,16 @@ LABEL_35:
       {
         v46 = _liveAnalysisResultToDictionary(v50);
         v31 = MEMORY[0x1E695DFF8];
-        v32 = [(PXAutoloopVideoTask *)self temporaryFilesDirectory];
-        v45 = [v31 fileURLWithPath:v32 isDirectory:1];
+        temporaryFilesDirectory = [(PXAutoloopVideoTask *)self temporaryFilesDirectory];
+        v45 = [v31 fileURLWithPath:temporaryFilesDirectory isDirectory:1];
 
         v44 = [v45 URLByAppendingPathComponent:@"liveAnalysisResult.plist" isDirectory:0];
         LOBYTE(v31) = [v46 writeToURL:? error:?];
         v33 = 0;
         if ((v31 & 1) == 0)
         {
-          v34 = [(PXAutoloopVideoTask *)self temporaryFilesDirectory];
-          NSLog(&cfstr_CouldnTWriteTo.isa, @"liveAnalysisResult.plist", v34, v33);
+          temporaryFilesDirectory2 = [(PXAutoloopVideoTask *)self temporaryFilesDirectory];
+          NSLog(&cfstr_CouldnTWriteTo.isa, @"liveAnalysisResult.plist", temporaryFilesDirectory2, v33);
         }
 
         [(PXAutoloopVideoTask *)self setStatus:4];

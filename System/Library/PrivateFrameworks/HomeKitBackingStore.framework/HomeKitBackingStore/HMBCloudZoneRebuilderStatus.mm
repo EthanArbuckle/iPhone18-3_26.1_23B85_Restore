@@ -1,10 +1,10 @@
 @interface HMBCloudZoneRebuilderStatus
-+ (id)hmbDecodeData:(id)a3 fromStorageLocation:(unint64_t)a4 error:(id *)a5;
-+ (id)keyStatusString:(int64_t)a3;
-+ (id)rebuilderStateString:(unint64_t)a3;
-- (HMBCloudZoneRebuilderStatus)initWithState:(unint64_t)a3 message:(id)a4;
++ (id)hmbDecodeData:(id)data fromStorageLocation:(unint64_t)location error:(id *)error;
++ (id)keyStatusString:(int64_t)string;
++ (id)rebuilderStateString:(unint64_t)string;
+- (HMBCloudZoneRebuilderStatus)initWithState:(unint64_t)state message:(id)message;
 - (id)attributeDescriptions;
-- (id)hmbEncodeForStorageLocation:(unint64_t)a3 error:(id *)a4;
+- (id)hmbEncodeForStorageLocation:(unint64_t)location error:(id *)error;
 @end
 
 @implementation HMBCloudZoneRebuilderStatus
@@ -13,73 +13,73 @@
 {
   v3 = [HMBCloudZoneRebuilderStatus rebuilderStateString:[(HMBCloudZoneRebuilderStatus *)self rebuildState]];
   v4 = [HMBCloudZoneRebuilderStatus keyStatusString:[(HMBCloudZoneRebuilderStatus *)self keyStatus]];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6 = [objc_alloc(MEMORY[0x277D0F778]) initWithName:@"Key Status" value:v4];
-  [v5 addObject:v6];
+  [array addObject:v6];
 
   v7 = [objc_alloc(MEMORY[0x277D0F778]) initWithName:@"Rebuild State" value:v3];
-  [v5 addObject:v7];
+  [array addObject:v7];
 
   v8 = objc_alloc(MEMORY[0x277D0F778]);
-  v9 = [(HMBCloudZoneRebuilderStatus *)self message];
-  v10 = [v8 initWithName:@"Message" value:v9];
-  [v5 addObject:v10];
+  message = [(HMBCloudZoneRebuilderStatus *)self message];
+  v10 = [v8 initWithName:@"Message" value:message];
+  [array addObject:v10];
 
-  return v5;
+  return array;
 }
 
-- (id)hmbEncodeForStorageLocation:(unint64_t)a3 error:(id *)a4
+- (id)hmbEncodeForStorageLocation:(unint64_t)location error:(id *)error
 {
   v13[2] = *MEMORY[0x277D85DE8];
   v12[0] = @"ZCRS.m";
-  v6 = [(HMBCloudZoneRebuilderStatus *)self message];
+  message = [(HMBCloudZoneRebuilderStatus *)self message];
   v12[1] = @"ZCRS.se";
-  v13[0] = v6;
+  v13[0] = message;
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMBCloudZoneRebuilderStatus rebuildState](self, "rebuildState")}];
   v13[1] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
 
-  v9 = [v8 hmbOPACKDataFromDictionaryWithError:a4];
+  v9 = [v8 hmbOPACKDataFromDictionaryWithError:error];
 
   v10 = *MEMORY[0x277D85DE8];
 
   return v9;
 }
 
-- (HMBCloudZoneRebuilderStatus)initWithState:(unint64_t)a3 message:(id)a4
+- (HMBCloudZoneRebuilderStatus)initWithState:(unint64_t)state message:(id)message
 {
-  v6 = a4;
+  messageCopy = message;
   v11.receiver = self;
   v11.super_class = HMBCloudZoneRebuilderStatus;
   v7 = [(HMBCloudZoneRebuilderStatus *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [messageCopy copy];
     message = v7->_message;
     v7->_message = v8;
 
-    if (a3 <= 7)
+    if (state <= 7)
     {
-      v7->_keyStatus = qword_22ADB7078[a3];
+      v7->_keyStatus = qword_22ADB7078[state];
     }
 
-    v7->_rebuildState = a3;
+    v7->_rebuildState = state;
   }
 
   return v7;
 }
 
-+ (id)hmbDecodeData:(id)a3 fromStorageLocation:(unint64_t)a4 error:(id *)a5
++ (id)hmbDecodeData:(id)data fromStorageLocation:(unint64_t)location error:(id *)error
 {
-  v5 = [MEMORY[0x277CBEAC0] hmbDictionaryFromOPACKData:a3 error:a5];
+  v5 = [MEMORY[0x277CBEAC0] hmbDictionaryFromOPACKData:data error:error];
   v6 = v5;
   if (v5)
   {
     v7 = [v5 hmf_stringForKey:@"ZCRS.m"];
     v8 = [v6 hmf_numberForKey:@"ZCRS.se"];
-    v9 = [v8 unsignedIntegerValue];
+    unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-    v10 = [[HMBCloudZoneRebuilderStatus alloc] initWithState:v9 message:v7];
+    v10 = [[HMBCloudZoneRebuilderStatus alloc] initWithState:unsignedIntegerValue message:v7];
   }
 
   else
@@ -90,34 +90,34 @@
   return v10;
 }
 
-+ (id)keyStatusString:(int64_t)a3
++ (id)keyStatusString:(int64_t)string
 {
-  if (a3 >= 3)
+  if (string >= 3)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"<UNKNOWN %lu>", a3];
+    string = [MEMORY[0x277CCACA8] stringWithFormat:@"<UNKNOWN %lu>", string];
   }
 
   else
   {
-    v4 = off_2786E0820[a3];
+    string = off_2786E0820[string];
   }
 
-  return v4;
+  return string;
 }
 
-+ (id)rebuilderStateString:(unint64_t)a3
++ (id)rebuilderStateString:(unint64_t)string
 {
-  if (a3 >= 8)
+  if (string >= 8)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"<UNKNOWN %lu>", a3];
+    string = [MEMORY[0x277CCACA8] stringWithFormat:@"<UNKNOWN %lu>", string];
   }
 
   else
   {
-    v4 = off_2786E07E0[a3];
+    string = off_2786E07E0[string];
   }
 
-  return v4;
+  return string;
 }
 
 @end

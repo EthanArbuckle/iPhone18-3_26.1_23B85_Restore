@@ -1,53 +1,53 @@
 @interface ACHActivitySummaryIterator
-- (ACHActivitySummaryIterator)initWithHealthStore:(id)a3 shouldIncludePrivateProperties:(BOOL)a4;
-- (id)newEmptyActivitySummaryFromSummary:(id)a3;
+- (ACHActivitySummaryIterator)initWithHealthStore:(id)store shouldIncludePrivateProperties:(BOOL)properties;
+- (id)newEmptyActivitySummaryFromSummary:(id)summary;
 - (id)remoteInterface;
-- (void)_enumerateActivitySummariesIncludingEmptySummariesForDateComponentInterval:(id)a3 handler:(id)a4 errorHandler:(id)a5;
-- (void)enumerateActivitySummariesForDateComponentInterval:(id)a3 handler:(id)a4 errorHandler:(id)a5;
-- (void)enumerateActivitySummariesForDateComponentInterval:(id)a3 includeNilSummaries:(BOOL)a4 handler:(id)a5 errorHandler:(id)a6;
+- (void)_enumerateActivitySummariesIncludingEmptySummariesForDateComponentInterval:(id)interval handler:(id)handler errorHandler:(id)errorHandler;
+- (void)enumerateActivitySummariesForDateComponentInterval:(id)interval handler:(id)handler errorHandler:(id)errorHandler;
+- (void)enumerateActivitySummariesForDateComponentInterval:(id)interval includeNilSummaries:(BOOL)summaries handler:(id)handler errorHandler:(id)errorHandler;
 @end
 
 @implementation ACHActivitySummaryIterator
 
-- (ACHActivitySummaryIterator)initWithHealthStore:(id)a3 shouldIncludePrivateProperties:(BOOL)a4
+- (ACHActivitySummaryIterator)initWithHealthStore:(id)store shouldIncludePrivateProperties:(BOOL)properties
 {
-  v7 = a3;
+  storeCopy = store;
   v19.receiver = self;
   v19.super_class = ACHActivitySummaryIterator;
   v8 = [(ACHActivitySummaryIterator *)&v19 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_healthStore, a3);
-    v10 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+    objc_storeStrong(&v8->_healthStore, store);
+    hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
     calendar = v9->_calendar;
-    v9->_calendar = v10;
+    v9->_calendar = hk_gregorianCalendar;
 
     v12 = objc_alloc(MEMORY[0x277CCDAA0]);
     healthStore = v9->_healthStore;
     v14 = *MEMORY[0x277CE8AD0];
-    v15 = [MEMORY[0x277CCAD78] UUID];
-    v16 = [v12 initWithHealthStore:healthStore taskIdentifier:v14 exportedObject:v9 taskUUID:v15];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v16 = [v12 initWithHealthStore:healthStore taskIdentifier:v14 exportedObject:v9 taskUUID:uUID];
     proxyProvider = v9->_proxyProvider;
     v9->_proxyProvider = v16;
 
-    v9->_includePrivateProperties = a4;
+    v9->_includePrivateProperties = properties;
   }
 
   return v9;
 }
 
-- (void)enumerateActivitySummariesForDateComponentInterval:(id)a3 handler:(id)a4 errorHandler:(id)a5
+- (void)enumerateActivitySummariesForDateComponentInterval:(id)interval handler:(id)handler errorHandler:(id)errorHandler
 {
   v52 = *MEMORY[0x277D85DE8];
-  v22 = a3;
-  v8 = a4;
-  v24 = a5;
-  v9 = [(ACHActivitySummaryIterator *)self calendar];
-  v10 = [v22 chunked:100 calendar:v9];
+  intervalCopy = interval;
+  handlerCopy = handler;
+  errorHandlerCopy = errorHandler;
+  calendar = [(ACHActivitySummaryIterator *)self calendar];
+  v10 = [intervalCopy chunked:100 calendar:calendar];
   v11 = [v10 mutableCopy];
 
-  v26 = [(ACHActivitySummaryIterator *)self includePrivateProperties];
+  includePrivateProperties = [(ACHActivitySummaryIterator *)self includePrivateProperties];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
@@ -80,12 +80,12 @@
         v38 = __Block_byref_object_dispose__3;
         v39 = MEMORY[0x277CBEBF8];
         v15 = objc_autoreleasePoolPush();
-        v16 = [(ACHActivitySummaryIterator *)self proxyProvider];
+        proxyProvider = [(ACHActivitySummaryIterator *)self proxyProvider];
         v32[0] = MEMORY[0x277D85DD0];
         v32[1] = 3221225472;
         v32[2] = __102__ACHActivitySummaryIterator_enumerateActivitySummariesForDateComponentInterval_handler_errorHandler___block_invoke;
         v32[3] = &unk_278491148;
-        v33 = v26;
+        v33 = includePrivateProperties;
         v32[4] = v14;
         v32[5] = &v34;
         v32[6] = &v40;
@@ -94,7 +94,7 @@
         v31[2] = __102__ACHActivitySummaryIterator_enumerateActivitySummariesForDateComponentInterval_handler_errorHandler___block_invoke_3;
         v31[3] = &unk_278490958;
         v31[4] = &v40;
-        [v16 getSynchronousProxyWithHandler:v32 errorHandler:v31];
+        [proxyProvider getSynchronousProxyWithHandler:v32 errorHandler:v31];
 
         objc_autoreleasePoolPop(v15);
         v29 = 0u;
@@ -115,7 +115,7 @@
                 objc_enumerationMutation(v17);
               }
 
-              v8[2](v8, *(*(&v27 + 1) + 8 * j));
+              handlerCopy[2](handlerCopy, *(*(&v27 + 1) + 8 * j));
             }
 
             v18 = [v17 countByEnumeratingWithState:&v27 objects:v50 count:16];
@@ -126,7 +126,7 @@
 
         if (v41[5])
         {
-          v24[2]();
+          errorHandlerCopy[2]();
         }
 
         _Block_object_dispose(&v34, 8);
@@ -172,16 +172,16 @@ void __102__ACHActivitySummaryIterator_enumerateActivitySummariesForDateComponen
   *(v9 + 40) = v6;
 }
 
-- (void)enumerateActivitySummariesForDateComponentInterval:(id)a3 includeNilSummaries:(BOOL)a4 handler:(id)a5 errorHandler:(id)a6
+- (void)enumerateActivitySummariesForDateComponentInterval:(id)interval includeNilSummaries:(BOOL)summaries handler:(id)handler errorHandler:(id)errorHandler
 {
-  v7 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v7)
+  summariesCopy = summaries;
+  handlerCopy = handler;
+  v11 = handlerCopy;
+  if (summariesCopy)
   {
-    v12 = a6;
-    v13 = a3;
-    [(ACHActivitySummaryIterator *)self _enumerateActivitySummariesIncludingEmptySummariesForDateComponentInterval:v13 handler:v11 errorHandler:v12];
+    errorHandlerCopy = errorHandler;
+    intervalCopy = interval;
+    [(ACHActivitySummaryIterator *)self _enumerateActivitySummariesIncludingEmptySummariesForDateComponentInterval:intervalCopy handler:v11 errorHandler:errorHandlerCopy];
   }
 
   else
@@ -190,13 +190,13 @@ void __102__ACHActivitySummaryIterator_enumerateActivitySummariesForDateComponen
     aBlock[1] = 3221225472;
     aBlock[2] = __122__ACHActivitySummaryIterator_enumerateActivitySummariesForDateComponentInterval_includeNilSummaries_handler_errorHandler___block_invoke;
     aBlock[3] = &unk_278491170;
-    v18 = v10;
-    v14 = a6;
-    v15 = a3;
+    v18 = handlerCopy;
+    errorHandlerCopy2 = errorHandler;
+    intervalCopy2 = interval;
     v16 = _Block_copy(aBlock);
-    [(ACHActivitySummaryIterator *)self enumerateActivitySummariesForDateComponentInterval:v15 handler:v16 errorHandler:v14];
+    [(ACHActivitySummaryIterator *)self enumerateActivitySummariesForDateComponentInterval:intervalCopy2 handler:v16 errorHandler:errorHandlerCopy2];
 
-    v13 = v18;
+    intervalCopy = v18;
   }
 }
 
@@ -208,17 +208,17 @@ void __122__ACHActivitySummaryIterator_enumerateActivitySummariesForDateComponen
   (*(v2 + 16))(v2, v3, v4);
 }
 
-- (void)_enumerateActivitySummariesIncludingEmptySummariesForDateComponentInterval:(id)a3 handler:(id)a4 errorHandler:(id)a5
+- (void)_enumerateActivitySummariesIncludingEmptySummariesForDateComponentInterval:(id)interval handler:(id)handler errorHandler:(id)errorHandler
 {
   v52 = *MEMORY[0x277D85DE8];
-  v25 = a3;
-  v8 = a4;
-  v27 = a5;
-  v9 = [(ACHActivitySummaryIterator *)self calendar];
-  v10 = [v25 chunked:100 calendar:v9];
+  intervalCopy = interval;
+  handlerCopy = handler;
+  errorHandlerCopy = errorHandler;
+  calendar = [(ACHActivitySummaryIterator *)self calendar];
+  v10 = [intervalCopy chunked:100 calendar:calendar];
   v11 = [v10 mutableCopy];
 
-  v29 = [(ACHActivitySummaryIterator *)self includePrivateProperties];
+  includePrivateProperties = [(ACHActivitySummaryIterator *)self includePrivateProperties];
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
@@ -253,12 +253,12 @@ void __122__ACHActivitySummaryIterator_enumerateActivitySummariesForDateComponen
         v38 = __Block_byref_object_copy__3;
         v39 = __Block_byref_object_dispose__3;
         v40 = objc_alloc_init(MEMORY[0x277CBEB38]);
-        v15 = [(ACHActivitySummaryIterator *)self proxyProvider];
+        proxyProvider = [(ACHActivitySummaryIterator *)self proxyProvider];
         v33[0] = MEMORY[0x277D85DD0];
         v33[1] = 3221225472;
         v33[2] = __126__ACHActivitySummaryIterator__enumerateActivitySummariesIncludingEmptySummariesForDateComponentInterval_handler_errorHandler___block_invoke;
         v33[3] = &unk_2784911C0;
-        v34 = v29;
+        v34 = includePrivateProperties;
         v33[4] = v14;
         v33[5] = self;
         v33[6] = &v35;
@@ -268,15 +268,15 @@ void __122__ACHActivitySummaryIterator_enumerateActivitySummariesForDateComponen
         v32[2] = __126__ACHActivitySummaryIterator__enumerateActivitySummariesIncludingEmptySummariesForDateComponentInterval_handler_errorHandler___block_invoke_3;
         v32[3] = &unk_278490958;
         v32[4] = &v41;
-        [v15 getSynchronousProxyWithHandler:v33 errorHandler:v32];
+        [proxyProvider getSynchronousProxyWithHandler:v33 errorHandler:v32];
 
         calendar = self->_calendar;
-        v17 = [v14 startDateComponents];
-        v18 = [(NSCalendar *)calendar dateFromComponents:v17];
+        startDateComponents = [v14 startDateComponents];
+        v18 = [(NSCalendar *)calendar dateFromComponents:startDateComponents];
 
         v19 = self->_calendar;
-        v20 = [v14 endDateComponents];
-        v21 = [(NSCalendar *)v19 dateFromComponents:v20];
+        endDateComponents = [v14 endDateComponents];
+        v21 = [(NSCalendar *)v19 dateFromComponents:endDateComponents];
         while (1)
         {
 
@@ -285,9 +285,9 @@ void __122__ACHActivitySummaryIterator_enumerateActivitySummariesForDateComponen
             break;
           }
 
-          v20 = [(NSCalendar *)self->_calendar components:v12 fromDate:v18];
-          v22 = [v36[5] objectForKeyedSubscript:v20];
-          v8[2](v8, v22, v20);
+          endDateComponents = [(NSCalendar *)self->_calendar components:v12 fromDate:v18];
+          v22 = [v36[5] objectForKeyedSubscript:endDateComponents];
+          handlerCopy[2](handlerCopy, v22, endDateComponents);
           v23 = [(NSCalendar *)self->_calendar hk_startOfDateByAddingDays:1 toDate:v18];
 
           v18 = v23;
@@ -295,7 +295,7 @@ void __122__ACHActivitySummaryIterator_enumerateActivitySummariesForDateComponen
 
         if (v42[5])
         {
-          v27[2]();
+          errorHandlerCopy[2]();
         }
 
         _Block_object_dispose(&v35, 8);
@@ -376,25 +376,25 @@ void __126__ACHActivitySummaryIterator__enumerateActivitySummariesIncludingEmpty
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)newEmptyActivitySummaryFromSummary:(id)a3
+- (id)newEmptyActivitySummaryFromSummary:(id)summary
 {
   v3 = MEMORY[0x277CCCFB0];
-  v4 = a3;
+  summaryCopy = summary;
   v5 = objc_alloc_init(v3);
-  [v5 _setActivitySummaryIndex:{objc_msgSend(v4, "_activitySummaryIndex")}];
-  [v5 setActivityMoveMode:{objc_msgSend(v4, "activityMoveMode")}];
-  v6 = [v4 activeEnergyBurnedGoal];
-  [v5 setActiveEnergyBurnedGoal:v6];
+  [v5 _setActivitySummaryIndex:{objc_msgSend(summaryCopy, "_activitySummaryIndex")}];
+  [v5 setActivityMoveMode:{objc_msgSend(summaryCopy, "activityMoveMode")}];
+  activeEnergyBurnedGoal = [summaryCopy activeEnergyBurnedGoal];
+  [v5 setActiveEnergyBurnedGoal:activeEnergyBurnedGoal];
 
-  v7 = [v4 appleMoveTimeGoal];
-  [v5 setAppleMoveTimeGoal:v7];
+  appleMoveTimeGoal = [summaryCopy appleMoveTimeGoal];
+  [v5 setAppleMoveTimeGoal:appleMoveTimeGoal];
 
-  v8 = [v4 appleStandHoursGoal];
-  [v5 setAppleStandHoursGoal:v8];
+  appleStandHoursGoal = [summaryCopy appleStandHoursGoal];
+  [v5 setAppleStandHoursGoal:appleStandHoursGoal];
 
-  v9 = [v4 appleExerciseTimeGoal];
+  appleExerciseTimeGoal = [summaryCopy appleExerciseTimeGoal];
 
-  [v5 setAppleExerciseTimeGoal:v9];
+  [v5 setAppleExerciseTimeGoal:appleExerciseTimeGoal];
   return v5;
 }
 

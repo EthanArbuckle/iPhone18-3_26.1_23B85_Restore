@@ -1,17 +1,17 @@
 @interface SUUISettingsTableHeaderFooterView
-- (void)displaySettingsHeaderFooterDescriptionView:(id)a3;
+- (void)displaySettingsHeaderFooterDescriptionView:(id)view;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation SUUISettingsTableHeaderFooterView
 
-- (void)displaySettingsHeaderFooterDescriptionView:(id)a3
+- (void)displaySettingsHeaderFooterDescriptionView:(id)view
 {
-  objc_storeStrong(&self->_settingsHeaderFooterDescriptionView, a3);
-  v5 = a3;
-  v6 = [(SUUISettingsTableHeaderFooterView *)self contentView];
-  [v6 addSubview:self->_settingsHeaderFooterDescriptionView];
+  objc_storeStrong(&self->_settingsHeaderFooterDescriptionView, view);
+  viewCopy = view;
+  contentView = [(SUUISettingsTableHeaderFooterView *)self contentView];
+  [contentView addSubview:self->_settingsHeaderFooterDescriptionView];
 
   [(SUUISettingsTableHeaderFooterView *)self setNeedsLayout];
 }
@@ -28,8 +28,8 @@
   v12.receiver = self;
   v12.super_class = SUUISettingsTableHeaderFooterView;
   [(SUUISettingsTableHeaderFooterView *)&v12 layoutSubviews];
-  v3 = [(SUUISettingsTableHeaderFooterView *)self contentView];
-  [v3 bounds];
+  contentView = [(SUUISettingsTableHeaderFooterView *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;

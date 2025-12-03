@@ -1,8 +1,8 @@
 @interface EffectLayer
 - (CGRect)bounds;
-- (_TtC8CameraUIP33_B4AB758274177FA425381CC8A1577C4311EffectLayer)initWithCoder:(id)a3;
-- (_TtC8CameraUIP33_B4AB758274177FA425381CC8A1577C4311EffectLayer)initWithLayer:(id)a3;
-- (void)setBounds:(CGRect)a3;
+- (_TtC8CameraUIP33_B4AB758274177FA425381CC8A1577C4311EffectLayer)initWithCoder:(id)coder;
+- (_TtC8CameraUIP33_B4AB758274177FA425381CC8A1577C4311EffectLayer)initWithLayer:(id)layer;
+- (void)setBounds:(CGRect)bounds;
 @end
 
 @implementation EffectLayer
@@ -19,12 +19,12 @@
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v10.receiver = self;
   v10.super_class = type metadata accessor for EffectLayer();
   v7 = v10.receiver;
@@ -38,7 +38,7 @@
   [v8 commit];
 }
 
-- (_TtC8CameraUIP33_B4AB758274177FA425381CC8A1577C4311EffectLayer)initWithCoder:(id)a3
+- (_TtC8CameraUIP33_B4AB758274177FA425381CC8A1577C4311EffectLayer)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8CameraUIP33_B4AB758274177FA425381CC8A1577C4311EffectLayer_warpBackdrop;
   *(&self->super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x1E6979310]) init];
@@ -48,7 +48,7 @@
   return result;
 }
 
-- (_TtC8CameraUIP33_B4AB758274177FA425381CC8A1577C4311EffectLayer)initWithLayer:(id)a3
+- (_TtC8CameraUIP33_B4AB758274177FA425381CC8A1577C4311EffectLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_1A3A31E60();

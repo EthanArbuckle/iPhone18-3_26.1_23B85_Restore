@@ -1,37 +1,37 @@
 @interface CHCoachingDiagnosticManager
 - (BOOL)_queue_performRingCompletionDiagnostics;
-- (CHCoachingDiagnosticManager)initWithProfile:(id)a3;
+- (CHCoachingDiagnosticManager)initWithProfile:(id)profile;
 - (id)_queue_lastSubmittedDate;
 - (id)diagnosticDescription;
 - (int64_t)_queue_lastRingCompletionSubmittedIndex;
 - (void)_queue_lastRingCompletionSubmittedIndex;
 - (void)_queue_lastSubmittedDate;
-- (void)_queue_setLastRingCompletionSubmittedIndex:(int64_t)a3;
-- (void)_queue_setLastSubmittedDate:(id)a3;
+- (void)_queue_setLastRingCompletionSubmittedIndex:(int64_t)index;
+- (void)_queue_setLastSubmittedDate:(id)date;
 - (void)dealloc;
-- (void)profileDidBecomeReady:(id)a3;
+- (void)profileDidBecomeReady:(id)ready;
 @end
 
 @implementation CHCoachingDiagnosticManager
 
-- (CHCoachingDiagnosticManager)initWithProfile:(id)a3
+- (CHCoachingDiagnosticManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v11.receiver = self;
   v11.super_class = CHCoachingDiagnosticManager;
   v5 = [(CHCoachingDiagnosticManager *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = HKCreateSerialUtilityDispatchQueue();
     queue = v6->_queue;
     v6->_queue = v7;
 
-    v9 = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
-    [v9 addObject:v6];
+    mEMORY[0x277D10AF8] = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
+    [mEMORY[0x277D10AF8] addObject:v6];
 
-    [v4 registerProfileReadyObserver:v6 queue:v6->_queue];
+    [profileCopy registerProfileReadyObserver:v6 queue:v6->_queue];
   }
 
   return v6;
@@ -39,17 +39,17 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
-  [v3 removeObject:self];
+  mEMORY[0x277D10AF8] = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
+  [mEMORY[0x277D10AF8] removeObject:self];
 
   v4.receiver = self;
   v4.super_class = CHCoachingDiagnosticManager;
   [(CHCoachingDiagnosticManager *)&v4 dealloc];
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
-  v4 = a3;
+  readyCopy = ready;
   objc_initWeak(&location, self);
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
@@ -58,9 +58,9 @@
   objc_copyWeak(&v22, &location);
   v5 = MEMORY[0x245D4E260](v21);
   v6 = objc_alloc(MEMORY[0x277D106B0]);
-  v7 = [v4 database];
+  database = [readyCopy database];
   v8 = HKLogCoachingCategory();
-  v9 = [v6 initWithDatabase:v7 loggingCategory:v8];
+  v9 = [v6 initWithDatabase:database loggingCategory:v8];
   databaseAvailableCondition = self->_databaseAvailableCondition;
   self->_databaseAvailableCondition = v9;
 
@@ -70,17 +70,17 @@
   repeatingBackgroundTask = self->_repeatingBackgroundTask;
   self->_repeatingBackgroundTask = v13;
 
-  v15 = [(HDRepeatingBackgroundTask *)self->_repeatingBackgroundTask getRequest];
-  if (!v15)
+  getRequest = [(HDRepeatingBackgroundTask *)self->_repeatingBackgroundTask getRequest];
+  if (!getRequest)
   {
-    v15 = [objc_alloc(MEMORY[0x277CF07D8]) initWithIdentifier:@"com.apple.healthd.coaching-diagnostic"];
-    [v15 setPriority:1];
-    [v15 setInterval:28800.0];
-    [v15 setRequiresExternalPower:0];
-    [v15 setRequiresProtectionClass:1];
+    getRequest = [objc_alloc(MEMORY[0x277CF07D8]) initWithIdentifier:@"com.apple.healthd.coaching-diagnostic"];
+    [getRequest setPriority:1];
+    [getRequest setInterval:28800.0];
+    [getRequest setRequiresExternalPower:0];
+    [getRequest setRequiresProtectionClass:1];
     v16 = self->_repeatingBackgroundTask;
     v20 = 0;
-    v17 = [(HDRepeatingBackgroundTask *)v16 submitRequest:v15 error:&v20];
+    v17 = [(HDRepeatingBackgroundTask *)v16 submitRequest:getRequest error:&v20];
     v18 = v20;
     if ((v17 & 1) == 0)
     {
@@ -135,20 +135,20 @@ uint64_t __53__CHCoachingDiagnosticManager_profileDidBecomeReady___block_invoke_
   if (!FIIsFitnessTrackingEnabled() || ([MEMORY[0x277CCDD30] sharedBehavior], v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_msgSend(v3, "isStandalonePhoneFitnessMode"), v3, (v4 & 1) == 0))
   {
 LABEL_6:
-    v9 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     lastRunDate = self->_lastRunDate;
-    self->_lastRunDate = v9;
+    self->_lastRunDate = date;
 
     v11 = 1;
     goto LABEL_7;
   }
 
   v5 = activitySummaryIndexForReporting();
-  v6 = [(CHCoachingDiagnosticManager *)self _queue_lastRingCompletionSubmittedIndex];
+  _queue_lastRingCompletionSubmittedIndex = [(CHCoachingDiagnosticManager *)self _queue_lastRingCompletionSubmittedIndex];
   _HKInitializeLogging();
   v7 = *MEMORY[0x277CCC290];
   v8 = os_log_type_enabled(*MEMORY[0x277CCC290], OS_LOG_TYPE_DEFAULT);
-  if (v5 == v6)
+  if (v5 == _queue_lastRingCompletionSubmittedIndex)
   {
     if (v8)
     {
@@ -182,19 +182,19 @@ LABEL_6:
 
     FIActivityAnalyticsSubmissionWithPayload();
     [(CHCoachingDiagnosticManager *)self _queue_setLastRingCompletionSubmittedIndex:v5];
-    v20 = [MEMORY[0x277CBEAA8] date];
-    [(CHCoachingDiagnosticManager *)self _queue_setLastSubmittedDate:v20];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    [(CHCoachingDiagnosticManager *)self _queue_setLastSubmittedDate:date2];
 
-    v21 = [MEMORY[0x277CBEAA8] date];
+    date3 = [MEMORY[0x277CBEAA8] date];
     v22 = self->_lastRunDate;
-    self->_lastRunDate = v21;
+    self->_lastRunDate = date3;
   }
 
   else
   {
-    v23 = [MEMORY[0x277CBEAA8] date];
+    date4 = [MEMORY[0x277CBEAA8] date];
     v18 = self->_lastRunDate;
-    self->_lastRunDate = v23;
+    self->_lastRunDate = date4;
   }
 
 LABEL_7:
@@ -229,9 +229,9 @@ LABEL_7:
   return result;
 }
 
-- (void)_queue_setLastRingCompletionSubmittedIndex:(int64_t)a3
+- (void)_queue_setLastRingCompletionSubmittedIndex:(int64_t)index
 {
-  self->_lastRingCompletionSubmittedIndex = a3;
+  self->_lastRingCompletionSubmittedIndex = index;
   v4 = MEMORY[0x277D10808];
   v5 = [MEMORY[0x277CCABB0] numberWithLongLong:?];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
@@ -283,10 +283,10 @@ LABEL_7:
   return cachedLastSubmittedDate;
 }
 
-- (void)_queue_setLastSubmittedDate:(id)a3
+- (void)_queue_setLastSubmittedDate:(id)date
 {
-  v5 = a3;
-  objc_storeStrong(&self->_cachedLastSubmittedDate, a3);
+  dateCopy = date;
+  objc_storeStrong(&self->_cachedLastSubmittedDate, date);
   v6 = MEMORY[0x277D10808];
   cachedLastSubmittedDate = self->_cachedLastSubmittedDate;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
@@ -343,8 +343,8 @@ LABEL_7:
   v7 = @"NO";
   if (v6)
   {
-    v2 = [MEMORY[0x277CCDD30] sharedBehavior];
-    if ([v2 isStandalonePhoneFitnessMode])
+    mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+    if ([mEMORY[0x277CCDD30] isStandalonePhoneFitnessMode])
     {
       v7 = @"YES";
     }

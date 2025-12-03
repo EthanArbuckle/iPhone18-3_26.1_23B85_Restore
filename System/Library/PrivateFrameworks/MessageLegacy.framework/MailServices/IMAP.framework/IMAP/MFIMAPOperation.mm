@@ -1,14 +1,14 @@
 @interface MFIMAPOperation
-+ (id)deserializedCopyFromData:(id)a3 cursor:(unint64_t *)a4;
-- (BOOL)actsOnTemporaryUid:(unsigned int)a3;
-- (BOOL)getMessageId:(id *)a3 andInternalDate:(id *)a4 forDestinationUid:(unsigned int)a5;
-- (BOOL)isSourceOfTemporaryUid:(unsigned int)a3;
++ (id)deserializedCopyFromData:(id)data cursor:(unint64_t *)cursor;
+- (BOOL)actsOnTemporaryUid:(unsigned int)uid;
+- (BOOL)getMessageId:(id *)id andInternalDate:(id *)date forDestinationUid:(unsigned int)uid;
+- (BOOL)isSourceOfTemporaryUid:(unsigned int)uid;
 - (BOOL)isValid;
-- (MFIMAPOperation)initWithAppendedUid:(unsigned int)a3 approximateSize:(unsigned int)a4 flags:(id)a5 internalDate:(id)a6 mailbox:(id)a7;
-- (MFIMAPOperation)initWithFlagsToSet:(id)a3 flagsToClear:(id)a4 forUids:(id)a5 inMailbox:(id)a6;
-- (MFIMAPOperation)initWithType:(int)a3 mailbox:(id)a4;
-- (MFIMAPOperation)initWithUidsToCopy:(id)a3 fromMailbox:(id)a4 toMailbox:(id)a5 firstNewUid:(unsigned int)a6;
-- (id)_deserializeOpSpecificValuesFromData:(id)a3 cursor:(unint64_t *)a4;
+- (MFIMAPOperation)initWithAppendedUid:(unsigned int)uid approximateSize:(unsigned int)size flags:(id)flags internalDate:(id)date mailbox:(id)mailbox;
+- (MFIMAPOperation)initWithFlagsToSet:(id)set flagsToClear:(id)clear forUids:(id)uids inMailbox:(id)mailbox;
+- (MFIMAPOperation)initWithType:(int)type mailbox:(id)mailbox;
+- (MFIMAPOperation)initWithUidsToCopy:(id)copy fromMailbox:(id)mailbox toMailbox:(id)toMailbox firstNewUid:(unsigned int)uid;
+- (id)_deserializeOpSpecificValuesFromData:(id)data cursor:(unint64_t *)cursor;
 - (id)description;
 - (id)destinationMailbox;
 - (id)destinationUids;
@@ -30,24 +30,24 @@
 - (unsigned)approximateSize;
 - (unsigned)firstTemporaryUid;
 - (unsigned)lastTemporaryUid;
-- (unsigned)sourceUidForTemporaryUid:(unsigned int)a3;
+- (unsigned)sourceUidForTemporaryUid:(unsigned int)uid;
 - (unsigned)uid;
 - (void)dealloc;
-- (void)expungeTemporaryUid:(unsigned int)a3;
-- (void)serializeIntoData:(id)a3;
-- (void)setMessageId:(id)a3 andInternalDate:(id)a4 forMessageWithSourceUid:(unsigned int)a5;
-- (void)setUsesRealUids:(BOOL)a3;
+- (void)expungeTemporaryUid:(unsigned int)uid;
+- (void)serializeIntoData:(id)data;
+- (void)setMessageId:(id)id andInternalDate:(id)date forMessageWithSourceUid:(unsigned int)uid;
+- (void)setUsesRealUids:(BOOL)uids;
 @end
 
 @implementation MFIMAPOperation
 
-+ (id)deserializedCopyFromData:(id)a3 cursor:(unint64_t *)a4
++ (id)deserializedCopyFromData:(id)data cursor:(unint64_t *)cursor
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0;
-  [a3 getBytes:&v17 + 1 range:{(*a4)++, 1}];
-  [a3 getBytes:&v17 range:?];
-  v7 = (*a4)++;
+  [data getBytes:&v17 + 1 range:{(*cursor)++, 1}];
+  [data getBytes:&v17 range:?];
+  v7 = (*cursor)++;
   v8 = v17;
   if (!HIBYTE(v17))
   {
@@ -64,7 +64,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE648] format:{@"%@: Unexpected byte %x at position %lu", a1, HIBYTE(v17), v7}];
+  [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE648] format:{@"%@: Unexpected byte %x at position %lu", self, HIBYTE(v17), v7}];
   v11 = 0;
 LABEL_7:
   if ((v8 & 7u) - 1 > 4)
@@ -72,7 +72,7 @@ LABEL_7:
     v14 = MFLogGeneral();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
-      v15 = *a4;
+      v15 = *cursor;
       *buf = 67109376;
       v19 = v17;
       v20 = 2048;
@@ -87,49 +87,49 @@ LABEL_7:
   {
     v12 = objc_alloc_init(v11);
     v12[8] = v17 & 0x80 | v8 & 0x7F;
-    result = [v12 _deserializeOpSpecificValuesFromData:a3 cursor:a4];
+    result = [v12 _deserializeOpSpecificValuesFromData:data cursor:cursor];
   }
 
   v16 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (id)_deserializeOpSpecificValuesFromData:(id)a3 cursor:(unint64_t *)a4
+- (id)_deserializeOpSpecificValuesFromData:(id)data cursor:(unint64_t *)cursor
 {
-  v6 = self;
-  self->_mailboxName = _createStringFromData(a3, a4);
-  v7 = *(v6 + 8) & 7;
+  selfCopy = self;
+  self->_mailboxName = _createStringFromData(data, cursor);
+  v7 = *(selfCopy + 8) & 7;
   switch(v7)
   {
     case 5:
-      v6->_opSpecific.store.trueFlags = _createUidArrayFromData(a3, a4);
-      v6->_opSpecific.store.falseFlags = _createUidArrayFromData(a3, a4);
-      StringFromData = _createStringFromData(a3, a4);
+      selfCopy->_opSpecific.store.trueFlags = _createUidArrayFromData(data, cursor);
+      selfCopy->_opSpecific.store.falseFlags = _createUidArrayFromData(data, cursor);
+      StringFromData = _createStringFromData(data, cursor);
       break;
     case 4:
-      v6->_opSpecific.store.falseFlags = _createStringArrayFromData(a3, a4);
-      [a3 getBytes:&v11 range:{*a4, 4}];
-      *a4 += 4;
-      v6->_opSpecific.append.internalDate = v11;
-      [a3 getBytes:&v12 range:{*a4, 4}];
-      *a4 += 4;
-      v6->_opSpecific.append.uid = v12;
-      [a3 getBytes:&v13 range:{*a4, 4}];
-      *a4 += 4;
-      v6->_opSpecific.append.size = v13;
+      selfCopy->_opSpecific.store.falseFlags = _createStringArrayFromData(data, cursor);
+      [data getBytes:&v11 range:{*cursor, 4}];
+      *cursor += 4;
+      selfCopy->_opSpecific.append.internalDate = v11;
+      [data getBytes:&v12 range:{*cursor, 4}];
+      *cursor += 4;
+      selfCopy->_opSpecific.append.uid = v12;
+      [data getBytes:&v13 range:{*cursor, 4}];
+      *cursor += 4;
+      selfCopy->_opSpecific.append.size = v13;
       goto LABEL_8;
     case 3:
-      v6->_opSpecific.store.trueFlags = _createStringArrayFromData(a3, a4);
-      v6->_opSpecific.store.falseFlags = _createStringArrayFromData(a3, a4);
-      StringFromData = _createUidArrayFromData(a3, a4);
+      selfCopy->_opSpecific.store.trueFlags = _createStringArrayFromData(data, cursor);
+      selfCopy->_opSpecific.store.falseFlags = _createStringArrayFromData(data, cursor);
+      StringFromData = _createUidArrayFromData(data, cursor);
       break;
     default:
       goto LABEL_8;
   }
 
-  v6->_opSpecific.store.uids = StringFromData;
+  selfCopy->_opSpecific.store.uids = StringFromData;
 LABEL_8:
-  if (![(MFIMAPOperation *)v6 isValid])
+  if (![(MFIMAPOperation *)selfCopy isValid])
   {
     v9 = MFLogGeneral();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -140,44 +140,44 @@ LABEL_8:
     return 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)serializeIntoData:(id)a3
+- (void)serializeIntoData:(id)data
 {
-  v7 = [(MFIMAPOperation *)self _magic];
+  _magic = [(MFIMAPOperation *)self _magic];
   v6 = *(self + 8);
-  [a3 appendBytes:&v7 length:1];
-  [a3 appendBytes:&v6 length:1];
-  _serializeStringToData(self->_mailboxName, a3);
+  [data appendBytes:&_magic length:1];
+  [data appendBytes:&v6 length:1];
+  _serializeStringToData(self->_mailboxName, data);
   v5 = *(self + 8) & 7;
   switch(v5)
   {
     case 5:
-      _serializeUidArrayToData(self->_opSpecific.copy.srcUids, a3);
-      _serializeUidArrayToData(self->_opSpecific.copy.dstUids, a3);
-      _serializeStringToData(self->_opSpecific.store.uids, a3);
+      _serializeUidArrayToData(self->_opSpecific.copy.srcUids, data);
+      _serializeUidArrayToData(self->_opSpecific.copy.dstUids, data);
+      _serializeStringToData(self->_opSpecific.store.uids, data);
       break;
     case 4:
-      _serializeStringArrayToData(self->_opSpecific.store.falseFlags, a3);
+      _serializeStringArrayToData(self->_opSpecific.store.falseFlags, data);
       internalDate = self->_opSpecific.append.internalDate;
-      [a3 appendBytes:&internalDate length:4];
+      [data appendBytes:&internalDate length:4];
       uid = self->_opSpecific.append.uid;
-      [a3 appendBytes:&uid length:4];
+      [data appendBytes:&uid length:4];
       size = self->_opSpecific.append.size;
-      [a3 appendBytes:&size length:4];
+      [data appendBytes:&size length:4];
       break;
     case 3:
-      _serializeStringArrayToData(self->_opSpecific.store.trueFlags, a3);
-      _serializeStringArrayToData(self->_opSpecific.store.falseFlags, a3);
-      _serializeUidArrayToData(self->_opSpecific.store.uids, a3);
+      _serializeStringArrayToData(self->_opSpecific.store.trueFlags, data);
+      _serializeStringArrayToData(self->_opSpecific.store.falseFlags, data);
+      _serializeUidArrayToData(self->_opSpecific.store.uids, data);
       break;
   }
 }
 
-- (MFIMAPOperation)initWithType:(int)a3 mailbox:(id)a4
+- (MFIMAPOperation)initWithType:(int)type mailbox:(id)mailbox
 {
-  if ([a4 length])
+  if ([mailbox length])
   {
     v11.receiver = self;
     v11.super_class = MFIMAPOperation;
@@ -185,8 +185,8 @@ LABEL_8:
     v8 = v7;
     if (v7)
     {
-      *(v7 + 8) = *(v7 + 8) & 0xF8 | a3 & 7;
-      v7->_mailboxName = [a4 copy];
+      *(v7 + 8) = *(v7 + 8) & 0xF8 | type & 7;
+      v7->_mailboxName = [mailbox copy];
     }
   }
 
@@ -195,7 +195,7 @@ LABEL_8:
     v9 = MFLogGeneral();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(MFIMAPOperation *)a4 initWithType:a3 mailbox:v9];
+      [(MFIMAPOperation *)mailbox initWithType:type mailbox:v9];
     }
 
     return 0;
@@ -204,15 +204,15 @@ LABEL_8:
   return v8;
 }
 
-- (MFIMAPOperation)initWithFlagsToSet:(id)a3 flagsToClear:(id)a4 forUids:(id)a5 inMailbox:(id)a6
+- (MFIMAPOperation)initWithFlagsToSet:(id)set flagsToClear:(id)clear forUids:(id)uids inMailbox:(id)mailbox
 {
   v22 = *MEMORY[0x277D85DE8];
-  v9 = [(MFIMAPOperation *)self initWithType:3 mailbox:a6];
+  v9 = [(MFIMAPOperation *)self initWithType:3 mailbox:mailbox];
   if (v9)
   {
-    v9->_opSpecific.store.trueFlags = [a3 copy];
-    v9->_opSpecific.store.falseFlags = [a4 copy];
-    v9->_opSpecific.store.uids = _createUidArrayFromStringArray(a5);
+    v9->_opSpecific.store.trueFlags = [set copy];
+    v9->_opSpecific.store.falseFlags = [clear copy];
+    v9->_opSpecific.store.uids = _createUidArrayFromStringArray(uids);
     if (![(MFIMAPOperation *)v9 isValid])
     {
       v10 = MFLogGeneral();
@@ -238,13 +238,13 @@ LABEL_8:
   return v9;
 }
 
-- (MFIMAPOperation)initWithUidsToCopy:(id)a3 fromMailbox:(id)a4 toMailbox:(id)a5 firstNewUid:(unsigned int)a6
+- (MFIMAPOperation)initWithUidsToCopy:(id)copy fromMailbox:(id)mailbox toMailbox:(id)toMailbox firstNewUid:(unsigned int)uid
 {
   v26 = *MEMORY[0x277D85DE8];
-  v9 = [(MFIMAPOperation *)self initWithType:5 mailbox:a4];
+  v9 = [(MFIMAPOperation *)self initWithType:5 mailbox:mailbox];
   if (v9)
   {
-    UidArrayFromStringArray = _createUidArrayFromStringArray(a3);
+    UidArrayFromStringArray = _createUidArrayFromStringArray(copy);
     v9->_opSpecific.store.trueFlags = UidArrayFromStringArray;
     if (UidArrayFromStringArray)
     {
@@ -254,7 +254,7 @@ LABEL_8:
       {
         do
         {
-          CFArrayAppendValue(v9->_opSpecific.copy.dstUids, a6++);
+          CFArrayAppendValue(v9->_opSpecific.copy.dstUids, uid++);
           --Count;
         }
 
@@ -267,13 +267,13 @@ LABEL_8:
       v9->_opSpecific.store.falseFlags = 0;
     }
 
-    v9->_opSpecific.store.uids = [a5 copy];
+    v9->_opSpecific.store.uids = [toMailbox copy];
     if (![(MFIMAPOperation *)v9 isValid])
     {
       v12 = MFLogGeneral();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v15 = [a3 count];
+        v15 = [copy count];
         v16 = [(NSArray *)v9->_opSpecific.store.falseFlags count];
         uids = v9->_opSpecific.store.uids;
         v18 = 134218752;
@@ -295,17 +295,17 @@ LABEL_8:
   return v9;
 }
 
-- (MFIMAPOperation)initWithAppendedUid:(unsigned int)a3 approximateSize:(unsigned int)a4 flags:(id)a5 internalDate:(id)a6 mailbox:(id)a7
+- (MFIMAPOperation)initWithAppendedUid:(unsigned int)uid approximateSize:(unsigned int)size flags:(id)flags internalDate:(id)date mailbox:(id)mailbox
 {
-  v11 = [(MFIMAPOperation *)self initWithType:4 mailbox:a7];
+  v11 = [(MFIMAPOperation *)self initWithType:4 mailbox:mailbox];
   v12 = v11;
   if (v11)
   {
-    v11->_opSpecific.append.uid = a3;
-    v11->_opSpecific.store.falseFlags = [a5 copy];
-    [a6 timeIntervalSinceReferenceDate];
+    v11->_opSpecific.append.uid = uid;
+    v11->_opSpecific.store.falseFlags = [flags copy];
+    [date timeIntervalSinceReferenceDate];
     v12->_opSpecific.append.internalDate = v13;
-    v12->_opSpecific.append.size = a4;
+    v12->_opSpecific.append.size = size;
   }
 
   return v12;
@@ -421,7 +421,7 @@ LABEL_18:
   return uids;
 }
 
-- (BOOL)isSourceOfTemporaryUid:(unsigned int)a3
+- (BOOL)isSourceOfTemporaryUid:(unsigned int)uid
 {
   v4 = *(self + 8) & 7;
   if (v4 == 5)
@@ -431,19 +431,19 @@ LABEL_18:
     {
       v7.length = CFArrayGetCount(self->_opSpecific.copy.dstUids);
       v7.location = 0;
-      return CFArrayGetLastIndexOfValue(falseFlags, v7, a3) != -1;
+      return CFArrayGetLastIndexOfValue(falseFlags, v7, uid) != -1;
     }
   }
 
   else if (v4 == 4)
   {
-    return self->_opSpecific.append.uid == a3;
+    return self->_opSpecific.append.uid == uid;
   }
 
   return 0;
 }
 
-- (BOOL)actsOnTemporaryUid:(unsigned int)a3
+- (BOOL)actsOnTemporaryUid:(unsigned int)uid
 {
   v3 = *(self + 8);
   if ((v3 & 0x80000000) == 0)
@@ -472,13 +472,13 @@ LABEL_18:
   {
     v9.length = CFArrayGetCount(*(&self->super.isa + v7));
     v9.location = 0;
-    return CFArrayGetFirstIndexOfValue(v8, v9, a3) != -1;
+    return CFArrayGetFirstIndexOfValue(v8, v9, uid) != -1;
   }
 
   return 0;
 }
 
-- (void)expungeTemporaryUid:(unsigned int)a3
+- (void)expungeTemporaryUid:(unsigned int)uid
 {
   v5 = *(self + 8);
   v6 = v5 & 7;
@@ -492,7 +492,7 @@ LABEL_18:
         Count = CFArrayGetCount(uids);
         v15.location = 0;
         v15.length = Count;
-        LastIndexOfValue = CFArrayGetLastIndexOfValue(self->_opSpecific.store.uids, v15, a3);
+        LastIndexOfValue = CFArrayGetLastIndexOfValue(self->_opSpecific.store.uids, v15, uid);
         if (LastIndexOfValue != -1)
         {
           CFArrayRemoveValueAtIndex(self->_opSpecific.store.uids, LastIndexOfValue);
@@ -514,7 +514,7 @@ LABEL_18:
       v8 = CFArrayGetCount(falseFlags);
       v14.location = 0;
       v14.length = v8;
-      v9 = CFArrayGetLastIndexOfValue(self->_opSpecific.copy.dstUids, v14, a3);
+      v9 = CFArrayGetLastIndexOfValue(self->_opSpecific.copy.dstUids, v14, uid);
       if (v9 != -1)
       {
         v10 = v9;
@@ -530,7 +530,7 @@ LABEL_18:
     }
   }
 
-  else if (v6 == 4 && self->_opSpecific.append.uid == a3)
+  else if (v6 == 4 && self->_opSpecific.append.uid == uid)
   {
     self->_opSpecific.append.uid = 0;
   }
@@ -538,7 +538,7 @@ LABEL_18:
 
 - (unsigned)firstTemporaryUid
 {
-  v2 = self;
+  selfCopy = self;
   v3 = *(self + 8) & 7;
   if (v3 == 5)
   {
@@ -548,7 +548,7 @@ LABEL_18:
       self = CFArrayGetCount(self);
       if (self)
       {
-        LODWORD(self) = CFArrayGetValueAtIndex(v2->_opSpecific.copy.dstUids, 0);
+        LODWORD(self) = CFArrayGetValueAtIndex(selfCopy->_opSpecific.copy.dstUids, 0);
       }
     }
   }
@@ -568,7 +568,7 @@ LABEL_18:
 
 - (unsigned)lastTemporaryUid
 {
-  v2 = self;
+  selfCopy = self;
   v3 = *(self + 8) & 7;
   if (v3 == 5)
   {
@@ -578,7 +578,7 @@ LABEL_18:
       self = CFArrayGetCount(self);
       if (self)
       {
-        LODWORD(self) = CFArrayGetValueAtIndex(v2->_opSpecific.copy.dstUids, &self[-1]._opSpecific.copy.destinationMailbox + 7);
+        LODWORD(self) = CFArrayGetValueAtIndex(selfCopy->_opSpecific.copy.dstUids, &self[-1]._opSpecific.copy.destinationMailbox + 7);
       }
     }
   }
@@ -622,9 +622,9 @@ LABEL_18:
   }
 }
 
-- (void)setUsesRealUids:(BOOL)a3
+- (void)setUsesRealUids:(BOOL)uids
 {
-  if (a3)
+  if (uids)
   {
     v3 = 0;
   }
@@ -736,13 +736,13 @@ LABEL_18:
   return self->_opSpecific.store.uids;
 }
 
-- (unsigned)sourceUidForTemporaryUid:(unsigned int)a3
+- (unsigned)sourceUidForTemporaryUid:(unsigned int)uid
 {
   falseFlags = self->_opSpecific.store.falseFlags;
   if (falseFlags)
   {
     Count = CFArrayGetCount(falseFlags);
-    if (Count < 1 || (v9.length = Count, v9.location = 0, FirstIndexOfValue = CFArrayGetFirstIndexOfValue(self->_opSpecific.copy.dstUids, v9, a3), FirstIndexOfValue == -1))
+    if (Count < 1 || (v9.length = Count, v9.location = 0, FirstIndexOfValue = CFArrayGetFirstIndexOfValue(self->_opSpecific.copy.dstUids, v9, uid), FirstIndexOfValue == -1))
     {
       LODWORD(falseFlags) = 0;
     }
@@ -756,7 +756,7 @@ LABEL_18:
   return falseFlags;
 }
 
-- (BOOL)getMessageId:(id *)a3 andInternalDate:(id *)a4 forDestinationUid:(unsigned int)a5
+- (BOOL)getMessageId:(id *)id andInternalDate:(id *)date forDestinationUid:(unsigned int)uid
 {
   if ((*(self + 8) & 7) != 5)
   {
@@ -766,7 +766,7 @@ LABEL_18:
   return 0;
 }
 
-- (void)setMessageId:(id)a3 andInternalDate:(id)a4 forMessageWithSourceUid:(unsigned int)a5
+- (void)setMessageId:(id)id andInternalDate:(id)date forMessageWithSourceUid:(unsigned int)uid
 {
   if ((*(self + 8) & 7) != 5)
   {

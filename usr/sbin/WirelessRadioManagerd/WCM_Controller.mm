@@ -1,13 +1,13 @@
 @interface WCM_Controller
 - (WCM_Controller)init;
-- (WCM_Controller)initWithConnection:(id)a3 processId:(int)a4;
+- (WCM_Controller)initWithConnection:(id)connection processId:(int)id;
 - (void)dealloc;
-- (void)handleDisconnection:(id)a3;
-- (void)handleMessage:(id)a3;
-- (void)handlePowerState:(BOOL)a3;
+- (void)handleDisconnection:(id)disconnection;
+- (void)handleMessage:(id)message;
+- (void)handlePowerState:(BOOL)state;
 - (void)releaseConnection;
-- (void)sendMessage:(unint64_t)a3 withArgs:(id)a4;
-- (void)sendMessage:(unint64_t)a3 withArgs:(id)a4 withExtraKey:(const char *)a5 andExtraValue:(id)a6;
+- (void)sendMessage:(unint64_t)message withArgs:(id)args;
+- (void)sendMessage:(unint64_t)message withArgs:(id)args withExtraKey:(const char *)key andExtraValue:(id)value;
 @end
 
 @implementation WCM_Controller
@@ -42,24 +42,24 @@
   [(WCM_Controller *)&v4 dealloc];
 }
 
-- (WCM_Controller)initWithConnection:(id)a3 processId:(int)a4
+- (WCM_Controller)initWithConnection:(id)connection processId:(int)id
 {
-  self->mConnection = a3;
-  if (a3)
+  self->mConnection = connection;
+  if (connection)
   {
-    xpc_retain(a3);
+    xpc_retain(connection);
   }
 
-  self->mProcessId = a4;
-  if (a4 < 0x2A && ((0x3EEEFFFFFFFuLL >> a4) & 1) != 0)
+  self->mProcessId = id;
+  if (id < 0x2A && ((0x3EEEFFFFFFFuLL >> id) & 1) != 0)
   {
-    v6 = (&off_100241758)[a4];
+    v6 = (&off_100241758)[id];
   }
 
   else
   {
     v6 = "INVALID_PROC_ID!!!";
-    if (a4 == 42)
+    if (id == 42)
     {
       v6 = "WRMSOS";
     }
@@ -94,7 +94,7 @@
   }
 }
 
-- (void)handlePowerState:(BOOL)a3
+- (void)handlePowerState:(BOOL)state
 {
   mProcessId = self->mProcessId;
   if (mProcessId < 0x2A && ((0x3EEEFFFFFFFuLL >> mProcessId) & 1) != 0)
@@ -115,7 +115,7 @@
   [WCM_Logging logLevel:0 message:@"WCM_Controller(%s) handlePowerState default implementation", v4];
 }
 
-- (void)handleMessage:(id)a3
+- (void)handleMessage:(id)message
 {
   mProcessId = self->mProcessId;
   if (mProcessId < 0x2A && ((0x3EEEFFFFFFFuLL >> mProcessId) & 1) != 0)
@@ -136,7 +136,7 @@
   [WCM_Logging logLevel:0 message:@"WCM_Controller(%s) handleMessage default implementation", v4];
 }
 
-- (void)handleDisconnection:(id)a3
+- (void)handleDisconnection:(id)disconnection
 {
   mProcessId = self->mProcessId;
   if (mProcessId < 0x2A && ((0x3EEEFFFFFFFuLL >> mProcessId) & 1) != 0)
@@ -154,14 +154,14 @@
     v6 = "INVALID_PROC_ID!!!";
   }
 
-  [WCM_Logging logLevel:0 message:@"WCM_Controller(%s) handleDisconnection default implementation (conn=%p)", v6, a3, v3, v4];
+  [WCM_Logging logLevel:0 message:@"WCM_Controller(%s) handleDisconnection default implementation (conn=%p)", v6, disconnection, v3, v4];
 }
 
-- (void)sendMessage:(unint64_t)a3 withArgs:(id)a4
+- (void)sendMessage:(unint64_t)message withArgs:(id)args
 {
   *keys = *&off_100241748;
-  values[0] = xpc_uint64_create(a3);
-  values[1] = a4;
+  values[0] = xpc_uint64_create(message);
+  values[1] = args;
   v7 = xpc_dictionary_create(keys, values, 2uLL);
   mProcessId = self->mProcessId;
   if (self->mConnection)
@@ -181,7 +181,7 @@
       v9 = "INVALID_PROC_ID!!!";
     }
 
-    [WCM_Logging logLevel:2 message:@"Sending messageId(%lld) to %s %@", a3, v9, v7];
+    [WCM_Logging logLevel:2 message:@"Sending messageId(%lld) to %s %@", message, v9, v7];
     xpc_connection_send_message(self->mConnection, v7);
   }
 
@@ -209,14 +209,14 @@
   xpc_release(v7);
 }
 
-- (void)sendMessage:(unint64_t)a3 withArgs:(id)a4 withExtraKey:(const char *)a5 andExtraValue:(id)a6
+- (void)sendMessage:(unint64_t)message withArgs:(id)args withExtraKey:(const char *)key andExtraValue:(id)value
 {
   keys[0] = "kMessageId";
   keys[1] = "kMessageArgs";
-  keys[2] = a5;
-  values[0] = xpc_uint64_create(a3);
-  values[1] = a4;
-  values[2] = a6;
+  keys[2] = key;
+  values[0] = xpc_uint64_create(message);
+  values[1] = args;
+  values[2] = value;
   v10 = xpc_dictionary_create(keys, values, 3uLL);
   if (self->mConnection)
   {
@@ -236,7 +236,7 @@
       v12 = "INVALID_PROC_ID!!!";
     }
 
-    [WCM_Logging logLevel:2 message:@"Sending messageId(%lld) to %s %@", a3, v12, v10];
+    [WCM_Logging logLevel:2 message:@"Sending messageId(%lld) to %s %@", message, v12, v10];
     xpc_connection_send_message(self->mConnection, v10);
   }
 

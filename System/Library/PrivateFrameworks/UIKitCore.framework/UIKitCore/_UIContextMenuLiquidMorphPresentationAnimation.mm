@@ -1,7 +1,7 @@
 @interface _UIContextMenuLiquidMorphPresentationAnimation
 - ($670CA482A27156A98D0A7E5F20B9370A)_dismissedMenuLayout;
 - (BOOL)_hasVisibleBackground;
-- (BOOL)addCompletion:(id)a3;
+- (BOOL)addCompletion:(id)completion;
 - (BOOL)isCompactMenu;
 - (BOOL)sourcePreviewMorphsToMenu;
 - (NSArray)_accessoryViews;
@@ -11,82 +11,82 @@
 - (UITargetedPreview)sourcePreview;
 - (_UIContentPlatterView)contentPlatterView;
 - (_UIContextMenuLiquidMorphPresentationAnimation)init;
-- (_UIContextMenuLiquidMorphPresentationAnimation)initWithUIController:(id)a3;
-- (_UIContextMenuLiquidMorphPresentationAnimation)initWithUIController:(id)a3 previousAnimation:(id)a4;
+- (_UIContextMenuLiquidMorphPresentationAnimation)initWithUIController:(id)controller;
+- (_UIContextMenuLiquidMorphPresentationAnimation)initWithUIController:(id)controller previousAnimation:(id)animation;
 - (_UIContextMenuPlatformMetrics)_currentPlatformMetrics;
-- (id)_secondaryDismissalPreviewFor:(id)a3;
+- (id)_secondaryDismissalPreviewFor:(id)for;
 - (id)accessoryAnimationBlock;
 - (void)_installAccessories;
 - (void)_prepareAnimatablePropertyBasedAnimations;
-- (void)_setBackgroundVisible:(BOOL)a3;
-- (void)_updateAccessoryAttachment:(id)a3;
+- (void)_setBackgroundVisible:(BOOL)visible;
+- (void)_updateAccessoryAttachment:(id)attachment;
 - (void)performTransition;
-- (void)prepareTransitionToView:(id)a3;
-- (void)retargetDismissingMenuToPreview:(id)a3;
-- (void)setAccessoryAnimationBlock:(id)a3;
-- (void)setMorphAnimation:(id)a3;
-- (void)setOutgoingAnimationPreview:(id)a3;
-- (void)setPresentedLayout:(id)a3;
-- (void)setSourcePreview:(id)a3;
-- (void)setStashedDismissalPivot:(id)a3;
-- (void)setStashedDismissalPreview:(id)a3;
-- (void)transitionDidEnd:(BOOL)a3;
+- (void)prepareTransitionToView:(id)view;
+- (void)retargetDismissingMenuToPreview:(id)preview;
+- (void)setAccessoryAnimationBlock:(id)block;
+- (void)setMorphAnimation:(id)animation;
+- (void)setOutgoingAnimationPreview:(id)preview;
+- (void)setPresentedLayout:(id)layout;
+- (void)setSourcePreview:(id)preview;
+- (void)setStashedDismissalPivot:(id)pivot;
+- (void)setStashedDismissalPreview:(id)preview;
+- (void)transitionDidEnd:(BOOL)end;
 @end
 
 @implementation _UIContextMenuLiquidMorphPresentationAnimation
 
-- (_UIContextMenuLiquidMorphPresentationAnimation)initWithUIController:(id)a3 previousAnimation:(id)a4
+- (_UIContextMenuLiquidMorphPresentationAnimation)initWithUIController:(id)controller previousAnimation:(id)animation
 {
-  v5 = a3;
-  v6 = a4;
-  return sub_188D1EBB4(v5, a4);
+  controllerCopy = controller;
+  animationCopy = animation;
+  return sub_188D1EBB4(controllerCopy, animation);
 }
 
-- (void)setSourcePreview:(id)a3
+- (void)setSourcePreview:(id)preview
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [(_UIContextMenuPresentationAnimation *)v5 uiController];
-  [(_UIContextMenuUIController *)v6 endSourcePreviewHidingIfNeeded];
+  previewCopy = preview;
+  selfCopy = self;
+  uiController = [(_UIContextMenuPresentationAnimation *)selfCopy uiController];
+  [(_UIContextMenuUIController *)uiController endSourcePreviewHidingIfNeeded];
 
-  v7.receiver = v5;
+  v7.receiver = selfCopy;
   v7.super_class = _UIContextMenuLiquidMorphPresentationAnimation;
-  [(_UIContextMenuPresentationAnimation *)&v7 setSourcePreview:v4];
+  [(_UIContextMenuPresentationAnimation *)&v7 setSourcePreview:previewCopy];
 }
 
-- (void)setOutgoingAnimationPreview:(id)a3
+- (void)setOutgoingAnimationPreview:(id)preview
 {
   v4 = *(self + OBJC_IVAR____UIContextMenuLiquidMorphPresentationAnimation_outgoingAnimationPreview);
-  *(self + OBJC_IVAR____UIContextMenuLiquidMorphPresentationAnimation_outgoingAnimationPreview) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____UIContextMenuLiquidMorphPresentationAnimation_outgoingAnimationPreview) = preview;
+  previewCopy = preview;
 }
 
-- (void)prepareTransitionToView:(id)a3
+- (void)prepareTransitionToView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_188D78398(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_188D78398(viewCopy);
 }
 
 - (void)_installAccessories
 {
-  v2 = self;
+  selfCopy = self;
   sub_188D710E0();
 }
 
 - (NSArray)_accessoryViews
 {
-  v2 = self;
-  v3 = [(_UIContextMenuPresentationAnimation *)v2 uiController];
-  v4 = [(_UIContextMenuUIController *)v3 menuConfiguration];
+  selfCopy = self;
+  uiController = [(_UIContextMenuPresentationAnimation *)selfCopy uiController];
+  menuConfiguration = [(_UIContextMenuUIController *)uiController menuConfiguration];
 
-  v5 = [(_UIFulfilledContextMenuConfiguration *)v4 accessoryViews];
-  if (v5)
+  accessoryViews = [(_UIFulfilledContextMenuConfiguration *)menuConfiguration accessoryViews];
+  if (accessoryViews)
   {
     sub_188A34624(0, &qword_1EA930348);
     sub_18A4A7548();
 
-    v2 = v5;
+    selfCopy = accessoryViews;
   }
 
   sub_188A34624(0, &qword_1EA930348);
@@ -97,49 +97,49 @@
 
 - (void)_prepareAnimatablePropertyBasedAnimations
 {
-  v2 = self;
+  selfCopy = self;
   sub_188D713EC();
 }
 
 - (UITargetedPreview)morphPreviewFromAttachmentPoint
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_188D83DDC();
 
   return v3;
 }
 
-- (void)setMorphAnimation:(id)a3
+- (void)setMorphAnimation:(id)animation
 {
   v4 = *(self + OBJC_IVAR____UIContextMenuLiquidMorphPresentationAnimation_morphAnimation);
-  *(self + OBJC_IVAR____UIContextMenuLiquidMorphPresentationAnimation_morphAnimation) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____UIContextMenuLiquidMorphPresentationAnimation_morphAnimation) = animation;
+  animationCopy = animation;
 }
 
-- (void)_setBackgroundVisible:(BOOL)a3
+- (void)_setBackgroundVisible:(BOOL)visible
 {
-  v4 = self;
-  sub_188D74A54(a3);
+  selfCopy = self;
+  sub_188D74A54(visible);
 }
 
 - (BOOL)_hasVisibleBackground
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_188D74C04();
 
   return v3;
 }
 
-- (void)setPresentedLayout:(id)a3
+- (void)setPresentedLayout:(id)layout
 {
   v4 = *(self + OBJC_IVAR____UIContextMenuLiquidMorphPresentationAnimation_presentedLayout);
-  *(self + OBJC_IVAR____UIContextMenuLiquidMorphPresentationAnimation_presentedLayout) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____UIContextMenuLiquidMorphPresentationAnimation_presentedLayout) = layout;
+  layoutCopy = layout;
 }
 
-- (void)setAccessoryAnimationBlock:(id)a3
+- (void)setAccessoryAnimationBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   if (v4)
   {
     v5 = v4;
@@ -157,7 +157,7 @@
   v8 = *(self + OBJC_IVAR____UIContextMenuLiquidMorphPresentationAnimation_accessoryAnimationBlock);
   *v7 = v6;
   v7[1] = v4;
-  v9 = self;
+  selfCopy = self;
   sub_188A55B8C(v8);
 }
 
@@ -183,23 +183,23 @@
   return v3;
 }
 
-- (void)transitionDidEnd:(BOOL)a3
+- (void)transitionDidEnd:(BOOL)end
 {
-  if (a3)
+  if (end)
   {
-    v6 = self;
-    v3 = [(_UIContextMenuPresentationAnimation *)v6 uiController];
-    v4 = [(_UIContextMenuUIController *)v3 menuView];
+    selfCopy = self;
+    uiController = [(_UIContextMenuPresentationAnimation *)selfCopy uiController];
+    menuView = [(_UIContextMenuUIController *)uiController menuView];
 
-    v5 = v6;
-    if (v4)
+    v5 = selfCopy;
+    if (menuView)
     {
-      if (![(_UIContextMenuPresentationAnimation *)v6 isDismissTransition])
+      if (![(_UIContextMenuPresentationAnimation *)selfCopy isDismissTransition])
       {
-        [(_UIContextMenuView *)v4 didCompleteMenuAppearanceAnimation];
+        [(_UIContextMenuView *)menuView didCompleteMenuAppearanceAnimation];
       }
 
-      v5 = v6;
+      v5 = selfCopy;
     }
   }
 }
@@ -208,18 +208,18 @@
 {
   v4.receiver = self;
   v4.super_class = _UIContextMenuLiquidMorphPresentationAnimation;
-  v2 = [(_UIContextMenuPresentationAnimation *)&v4 sourcePreview];
+  sourcePreview = [(_UIContextMenuPresentationAnimation *)&v4 sourcePreview];
 
-  return v2;
+  return sourcePreview;
 }
 
 - (_UIContentPlatterView)contentPlatterView
 {
-  v2 = self;
-  v3 = [(_UIContextMenuPresentationAnimation *)v2 uiController];
-  v4 = [(_UIContextMenuUIController *)v3 contentPlatterView];
+  selfCopy = self;
+  uiController = [(_UIContextMenuPresentationAnimation *)selfCopy uiController];
+  contentPlatterView = [(_UIContextMenuUIController *)uiController contentPlatterView];
 
-  if (v4)
+  if (contentPlatterView)
   {
     objc_opt_self();
     v5 = swift_dynamicCastObjCClass();
@@ -237,61 +237,61 @@ LABEL_5:
 
 - (void)performTransition
 {
-  v2 = self;
+  selfCopy = self;
   sub_188D82378();
 }
 
-- (void)setStashedDismissalPreview:(id)a3
+- (void)setStashedDismissalPreview:(id)preview
 {
   v4 = *(self + OBJC_IVAR____UIContextMenuLiquidMorphPresentationAnimation_stashedDismissalPreview);
-  *(self + OBJC_IVAR____UIContextMenuLiquidMorphPresentationAnimation_stashedDismissalPreview) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____UIContextMenuLiquidMorphPresentationAnimation_stashedDismissalPreview) = preview;
+  previewCopy = preview;
 }
 
-- (void)setStashedDismissalPivot:(id)a3
+- (void)setStashedDismissalPivot:(id)pivot
 {
   v4 = *(self + OBJC_IVAR____UIContextMenuLiquidMorphPresentationAnimation_stashedDismissalPivot);
-  *(self + OBJC_IVAR____UIContextMenuLiquidMorphPresentationAnimation_stashedDismissalPivot) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____UIContextMenuLiquidMorphPresentationAnimation_stashedDismissalPivot) = pivot;
+  pivotCopy = pivot;
 }
 
 - (UITargetedPreview)resolvedSourcePreview
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18921A498();
 
   return v3;
 }
 
-- (id)_secondaryDismissalPreviewFor:(id)a3
+- (id)_secondaryDismissalPreviewFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [(_UIContextMenuPresentationAnimation *)v5 uiController];
-  [v4 _internalIdentifier];
+  forCopy = for;
+  selfCopy = self;
+  uiController = [(_UIContextMenuPresentationAnimation *)selfCopy uiController];
+  [forCopy _internalIdentifier];
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EA940A10);
   v7 = sub_18A4A7D28();
   swift_unknownObjectRelease();
-  v8 = [(_UIContextMenuUIController *)v6 dismissalPreviewForSecondaryItem:v7 style:[(_UIContextMenuPresentationAnimation *)v5 dismissalStyle]];
+  v8 = [(_UIContextMenuUIController *)uiController dismissalPreviewForSecondaryItem:v7 style:[(_UIContextMenuPresentationAnimation *)selfCopy dismissalStyle]];
 
   swift_unknownObjectRelease();
 
   return v8;
 }
 
-- (void)retargetDismissingMenuToPreview:(id)a3
+- (void)retargetDismissingMenuToPreview:(id)preview
 {
-  v5 = a3;
-  v6 = self;
-  sub_18921A8B0(a3);
+  previewCopy = preview;
+  selfCopy = self;
+  sub_18921A8B0(preview);
 }
 
-- (BOOL)addCompletion:(id)a3
+- (BOOL)addCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_18921AC94(sub_188A4AA04, v5);
 
   return 1;
@@ -299,50 +299,50 @@ LABEL_5:
 
 - (BOOL)isCompactMenu
 {
-  v2 = self;
-  v3 = [(_UIContextMenuPresentationAnimation *)v2 uiController];
-  v4 = [(_UIContextMenuUIController *)v3 menuStyle];
+  selfCopy = self;
+  uiController = [(_UIContextMenuPresentationAnimation *)selfCopy uiController];
+  menuStyle = [(_UIContextMenuUIController *)uiController menuStyle];
 
-  v5 = [(_UIContextMenuStyle *)v4 preferredLayout];
-  return v5 == 3;
+  preferredLayout = [(_UIContextMenuStyle *)menuStyle preferredLayout];
+  return preferredLayout == 3;
 }
 
 - (BOOL)sourcePreviewMorphsToMenu
 {
-  v2 = self;
-  if ([(_UIContextMenuLiquidMorphPresentationAnimation *)v2 isCompactMenu])
+  selfCopy = self;
+  if ([(_UIContextMenuLiquidMorphPresentationAnimation *)selfCopy isCompactMenu])
   {
-    v3 = [(_UIContextMenuPresentationAnimation *)v2 uiController];
-    v4 = [(_UIContextMenuUIController *)v3 menuStyle];
+    uiController = [(_UIContextMenuPresentationAnimation *)selfCopy uiController];
+    menuStyle = [(_UIContextMenuUIController *)uiController menuStyle];
 
-    v5 = [(_UIContextMenuStyle *)v4 shouldMenuOverlapSourcePreview];
+    shouldMenuOverlapSourcePreview = [(_UIContextMenuStyle *)menuStyle shouldMenuOverlapSourcePreview];
   }
 
   else
   {
-    v5 = 0;
+    shouldMenuOverlapSourcePreview = 0;
   }
 
-  return v5;
+  return shouldMenuOverlapSourcePreview;
 }
 
 - (_UIContextMenuPlatformMetrics)_currentPlatformMetrics
 {
-  v2 = self;
-  v3 = [(_UIContextMenuPresentationAnimation *)v2 uiController];
-  v4 = [(_UIContextMenuUIController *)v3 platterContainerView];
+  selfCopy = self;
+  uiController = [(_UIContextMenuPresentationAnimation *)selfCopy uiController];
+  platterContainerView = [(_UIContextMenuUIController *)uiController platterContainerView];
 
-  v5 = [(UIView *)v4 traitCollection];
-  v6 = [(UITraitCollection *)v5 userInterfaceIdiom];
+  traitCollection = [(UIView *)platterContainerView traitCollection];
+  userInterfaceIdiom = [(UITraitCollection *)traitCollection userInterfaceIdiom];
 
-  v7 = _UIContextMenuGetPlatformMetrics(v6);
+  v7 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
 
   return v7;
 }
 
 - ($670CA482A27156A98D0A7E5F20B9370A)_dismissedMenuLayout
 {
-  v4 = self;
+  selfCopy = self;
   sub_18921B028(v13);
 
   v6 = v13[1];
@@ -365,21 +365,21 @@ LABEL_5:
 
 - (UITargetedPreview)_targetedPreviewForDismissalAnimation
 {
-  v2 = self;
+  selfCopy = self;
   sub_18921B2D4();
   v4 = v3;
 
   return v4;
 }
 
-- (void)_updateAccessoryAttachment:(id)a3
+- (void)_updateAccessoryAttachment:(id)attachment
 {
-  v4 = a3;
-  v5 = self;
-  sub_18921BB18(v4);
+  attachmentCopy = attachment;
+  selfCopy = self;
+  sub_18921BB18(attachmentCopy);
 }
 
-- (_UIContextMenuLiquidMorphPresentationAnimation)initWithUIController:(id)a3
+- (_UIContextMenuLiquidMorphPresentationAnimation)initWithUIController:(id)controller
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

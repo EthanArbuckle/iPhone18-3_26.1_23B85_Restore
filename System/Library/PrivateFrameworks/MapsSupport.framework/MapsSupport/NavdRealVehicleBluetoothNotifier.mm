@@ -2,7 +2,7 @@
 - (NavdRealVehicleBluetoothNotifier)init;
 - (id).cxx_construct;
 - (void)clear;
-- (void)showWithTitle:(id)a3 message:(id)a4 actionURL:(id)a5;
+- (void)showWithTitle:(id)title message:(id)message actionURL:(id)l;
 @end
 
 @implementation NavdRealVehicleBluetoothNotifier
@@ -32,20 +32,20 @@
   return v2;
 }
 
-- (void)showWithTitle:(id)a3 message:(id)a4 actionURL:(id)a5
+- (void)showWithTitle:(id)title message:(id)message actionURL:(id)l
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000301B0;
   v11[3] = &unk_100067818;
-  v12 = self;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  innerQueue = v12->_queue._innerQueue;
-  v8 = v15;
-  v9 = v14;
-  v10 = v13;
+  selfCopy = self;
+  titleCopy = title;
+  messageCopy = message;
+  lCopy = l;
+  innerQueue = selfCopy->_queue._innerQueue;
+  v8 = lCopy;
+  v9 = messageCopy;
+  v10 = titleCopy;
   dispatch_async(innerQueue, v11);
 }
 

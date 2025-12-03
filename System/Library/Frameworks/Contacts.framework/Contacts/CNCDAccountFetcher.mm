@@ -1,44 +1,44 @@
 @interface CNCDAccountFetcher
-+ (id)accountsForPredicate:(id)a3 inPersistenceStack:(id)a4 error:(id *)a5;
++ (id)accountsForPredicate:(id)predicate inPersistenceStack:(id)stack error:(id *)error;
 - (CNCDAccountFetcher)init;
-- (CNCDAccountFetcher)initWithPredicate:(id)a3 persistenceContext:(id)a4;
-- (id)fetchAccounts:(id *)a3;
+- (CNCDAccountFetcher)initWithPredicate:(id)predicate persistenceContext:(id)context;
+- (id)fetchAccounts:(id *)accounts;
 @end
 
 @implementation CNCDAccountFetcher
 
-+ (id)accountsForPredicate:(id)a3 inPersistenceStack:(id)a4 error:(id *)a5
++ (id)accountsForPredicate:(id)predicate inPersistenceStack:(id)stack error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  predicateCopy = predicate;
+  stackCopy = stack;
   v9 = MEMORY[0x1E69966C0];
   v18 = MEMORY[0x1E69E9820];
   v19 = 3221225472;
   v20 = __68__CNCDAccountFetcher_accountsForPredicate_inPersistenceStack_error___block_invoke;
   v21 = &unk_1E7413B78;
-  v10 = v8;
+  v10 = stackCopy;
   v22 = v10;
-  v11 = v7;
+  v11 = predicateCopy;
   v23 = v11;
   v12 = [v9 eitherWithBlock:&v18];
   if ((*(*MEMORY[0x1E6996490] + 16))(*MEMORY[0x1E6996490], v12, v13, v14))
   {
-    v15 = [v12 left];
+    left = [v12 left];
   }
 
   else
   {
-    v16 = [v12 right];
-    if (a5)
+    right = [v12 right];
+    if (error)
     {
-      v16 = v16;
-      *a5 = v16;
+      right = right;
+      *error = right;
     }
 
-    v15 = 0;
+    left = 0;
   }
 
-  return v15;
+  return left;
 }
 
 id __68__CNCDAccountFetcher_accountsForPredicate_inPersistenceStack_error___block_invoke(uint64_t a1, uint64_t a2)
@@ -52,46 +52,46 @@ id __68__CNCDAccountFetcher_accountsForPredicate_inPersistenceStack_error___bloc
 
 - (CNCDAccountFetcher)init
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNInitializerUnavailableException();
   objc_exception_throw(v3);
 }
 
-- (CNCDAccountFetcher)initWithPredicate:(id)a3 persistenceContext:(id)a4
+- (CNCDAccountFetcher)initWithPredicate:(id)predicate persistenceContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  predicateCopy = predicate;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = CNCDAccountFetcher;
   v9 = [(CNCDAccountFetcher *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_predicate, a3);
-    objc_storeStrong(&v10->_persistenceContext, a4);
+    objc_storeStrong(&v9->_predicate, predicate);
+    objc_storeStrong(&v10->_persistenceContext, context);
     v11 = v10;
   }
 
   return v10;
 }
 
-- (id)fetchAccounts:(id *)a3
+- (id)fetchAccounts:(id *)accounts
 {
-  v4 = [(CNCDAccountFetcher *)self predicate];
+  predicate = [(CNCDAccountFetcher *)self predicate];
 
-  v5 = [(CNCDAccountFetcher *)self persistenceContext];
-  v6 = [v5 allContainers];
-  v7 = v6;
-  if (v4)
+  persistenceContext = [(CNCDAccountFetcher *)self persistenceContext];
+  allContainers = [persistenceContext allContainers];
+  v7 = allContainers;
+  if (predicate)
   {
-    v8 = [(CNCDAccountFetcher *)self predicate];
-    v9 = [v7 filteredArrayUsingPredicate:v8];
+    predicate2 = [(CNCDAccountFetcher *)self predicate];
+    v9 = [v7 filteredArrayUsingPredicate:predicate2];
     v10 = [v9 _cn_map:sABCDContainerToCNAccount];
   }
 
   else
   {
-    v10 = [v6 _cn_map:sABCDContainerToCNAccount];
+    v10 = [allContainers _cn_map:sABCDContainerToCNAccount];
   }
 
   return v10;

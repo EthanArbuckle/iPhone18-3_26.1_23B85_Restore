@@ -1,41 +1,41 @@
 @interface HKOverlayRoomPhysicalEffortViewController
-+ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)a3 chartFactory:(id)a4 applicationItems:(id)a5 displayDate:(id)a6 preferredOverlay:(int64_t)a7 restorationUserActivity:(id)a8 trendModel:(id)a9 factorDisplayTypes:(id)a10 additionalChartOptions:(unint64_t)a11;
++ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)identifier chartFactory:(id)factory applicationItems:(id)items displayDate:(id)date preferredOverlay:(int64_t)overlay restorationUserActivity:(id)activity trendModel:(id)model factorDisplayTypes:(id)self0 additionalChartOptions:(unint64_t)self1;
 - (BOOL)supportsShowAllFilters;
-- (HKOverlayRoomPhysicalEffortViewController)initWithDisplayDate:(id)a3 applicationItems:(id)a4 mode:(int64_t)a5 identifier:(id)a6 preferredOverlay:(int64_t)a7 trendModel:(id)a8 factorDisplayTypes:(id)a9;
-- (id)contextSectionContainersForMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5;
-- (id)controllerTitleWithApplicationItems:(id)a3;
+- (HKOverlayRoomPhysicalEffortViewController)initWithDisplayDate:(id)date applicationItems:(id)items mode:(int64_t)mode identifier:(id)identifier preferredOverlay:(int64_t)overlay trendModel:(id)model factorDisplayTypes:(id)types;
+- (id)contextSectionContainersForMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller;
+- (id)controllerTitleWithApplicationItems:(id)items;
 - (id)createChartOverlayViewController;
-- (id)createViewControllerForMode:(int64_t)a3 displayDate:(id)a4 applicationItems:(id)a5;
-- (id)primaryDisplayTypeWithApplicationItems:(id)a3;
+- (id)createViewControllerForMode:(int64_t)mode displayDate:(id)date applicationItems:(id)items;
+- (id)primaryDisplayTypeWithApplicationItems:(id)items;
 - (void)viewDidLoad;
 @end
 
 @implementation HKOverlayRoomPhysicalEffortViewController
 
-+ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)a3 chartFactory:(id)a4 applicationItems:(id)a5 displayDate:(id)a6 preferredOverlay:(int64_t)a7 restorationUserActivity:(id)a8 trendModel:(id)a9 factorDisplayTypes:(id)a10 additionalChartOptions:(unint64_t)a11
++ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)identifier chartFactory:(id)factory applicationItems:(id)items displayDate:(id)date preferredOverlay:(int64_t)overlay restorationUserActivity:(id)activity trendModel:(id)model factorDisplayTypes:(id)self0 additionalChartOptions:(unint64_t)self1
 {
-  v16 = a10;
-  v17 = a9;
-  v18 = a8;
-  v19 = a6;
-  v20 = a5;
-  v21 = a3;
-  v22 = [[HKOverlayRoomPhysicalEffortViewController alloc] initWithDisplayDate:v19 applicationItems:v20 mode:1 identifier:v21 preferredOverlay:a7 trendModel:v17 factorDisplayTypes:v16];
+  typesCopy = types;
+  modelCopy = model;
+  activityCopy = activity;
+  dateCopy = date;
+  itemsCopy = items;
+  identifierCopy = identifier;
+  v22 = [[HKOverlayRoomPhysicalEffortViewController alloc] initWithDisplayDate:dateCopy applicationItems:itemsCopy mode:1 identifier:identifierCopy preferredOverlay:overlay trendModel:modelCopy factorDisplayTypes:typesCopy];
 
-  [(HKOverlayRoomViewController *)v22 setRestorationUserActivity:v18];
-  [(HKOverlayRoomViewController *)v22 setAdditionalChartOptions:a11];
+  [(HKOverlayRoomViewController *)v22 setRestorationUserActivity:activityCopy];
+  [(HKOverlayRoomViewController *)v22 setAdditionalChartOptions:options];
 
   return v22;
 }
 
-- (HKOverlayRoomPhysicalEffortViewController)initWithDisplayDate:(id)a3 applicationItems:(id)a4 mode:(int64_t)a5 identifier:(id)a6 preferredOverlay:(int64_t)a7 trendModel:(id)a8 factorDisplayTypes:(id)a9
+- (HKOverlayRoomPhysicalEffortViewController)initWithDisplayDate:(id)date applicationItems:(id)items mode:(int64_t)mode identifier:(id)identifier preferredOverlay:(int64_t)overlay trendModel:(id)model factorDisplayTypes:(id)types
 {
-  v14 = a3;
-  v30 = a6;
-  v15 = a8;
-  v16 = a9;
-  v17 = a4;
-  v18 = [HKOverlayRoomTrendContext findInitialDateFromTrendModel:v15];
+  dateCopy = date;
+  identifierCopy = identifier;
+  modelCopy = model;
+  typesCopy = types;
+  itemsCopy = items;
+  v18 = [HKOverlayRoomTrendContext findInitialDateFromTrendModel:modelCopy];
   v19 = v18;
   if (v18)
   {
@@ -44,34 +44,34 @@
 
   else
   {
-    v20 = v14;
+    v20 = dateCopy;
   }
 
   v21 = v20;
 
   v31.receiver = self;
   v31.super_class = HKOverlayRoomPhysicalEffortViewController;
-  v22 = [(HKOverlayRoomViewController *)&v31 initWithDisplayDate:v21 applicationItems:v17 factorDisplayTypes:v16 mode:a5];
+  v22 = [(HKOverlayRoomViewController *)&v31 initWithDisplayDate:v21 applicationItems:itemsCopy factorDisplayTypes:typesCopy mode:mode];
 
   if (v22)
   {
-    objc_storeStrong(&v22->_quantityTypeIdentifier, a6);
-    v22->_preferredOverlay = a7;
+    objc_storeStrong(&v22->_quantityTypeIdentifier, identifier);
+    v22->_preferredOverlay = overlay;
     preferredOverlayIndex = v22->_preferredOverlayIndex;
     v22->_preferredOverlayIndex = 0;
 
-    objc_storeStrong(&v22->_trendModel, a8);
-    if (a5 == 3)
+    objc_storeStrong(&v22->_trendModel, model);
+    if (mode == 3)
     {
       v24 = 0;
     }
 
     else
     {
-      v25 = [v15 selectTrendInitially];
-      if (a5)
+      selectTrendInitially = [modelCopy selectTrendInitially];
+      if (mode)
       {
-        v26 = a7 == 0;
+        v26 = overlay == 0;
       }
 
       else
@@ -80,10 +80,10 @@
       }
 
       v27 = !v26;
-      v24 = v27 | v25;
+      v24 = v27 | selectTrendInitially;
     }
 
-    [(HKOverlayRoomViewController *)v22 setShouldSelectInitialOverlay:v24 & 1, a7, v30];
+    [(HKOverlayRoomViewController *)v22 setShouldSelectInitialOverlay:v24 & 1, overlay, identifierCopy];
   }
 
   return v22;
@@ -96,7 +96,7 @@
   [(HKOverlayRoomViewController *)&v2 viewDidLoad];
 }
 
-- (id)controllerTitleWithApplicationItems:(id)a3
+- (id)controllerTitleWithApplicationItems:(id)items
 {
   v3 = HKHealthKitFrameworkBundle();
   v4 = [v3 localizedStringForKey:@"PHYSICAL_EFFORT" value:&stru_1F42FFBE0 table:*MEMORY[0x1E696B910]];
@@ -114,58 +114,58 @@
   return [(HKOverlayRoomViewController *)self healthFactorsEnabled];
 }
 
-- (id)primaryDisplayTypeWithApplicationItems:(id)a3
+- (id)primaryDisplayTypeWithApplicationItems:(id)items
 {
   v3 = MEMORY[0x1E696C2E0];
   quantityTypeIdentifier = self->_quantityTypeIdentifier;
-  v5 = a3;
+  itemsCopy = items;
   v6 = [v3 quantityTypeForIdentifier:quantityTypeIdentifier];
-  v7 = [v5 displayTypeController];
+  displayTypeController = [itemsCopy displayTypeController];
 
-  v8 = [v7 displayTypeForObjectType:v6];
+  v8 = [displayTypeController displayTypeForObjectType:v6];
 
   return v8;
 }
 
-- (id)contextSectionContainersForMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5
+- (id)contextSectionContainersForMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller
 {
   v53[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = [(HKOverlayRoomPhysicalEffortViewController *)self primaryDisplayTypeWithApplicationItems:v8];
+  itemsCopy = items;
+  controllerCopy = controller;
+  v10 = [(HKOverlayRoomPhysicalEffortViewController *)self primaryDisplayTypeWithApplicationItems:itemsCopy];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __117__HKOverlayRoomPhysicalEffortViewController_contextSectionContainersForMode_applicationItems_overlayChartController___block_invoke_2;
   aBlock[3] = &unk_1E81B61A0;
-  v11 = v9;
+  v11 = controllerCopy;
   v45 = v11;
-  v12 = v8;
+  v12 = itemsCopy;
   v46 = v12;
-  v47 = a3;
+  modeCopy = mode;
   v13 = _Block_copy(aBlock);
   v14 = v13[2]();
   v53[0] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v53 count:1];
 
   v16 = [v15 objectAtIndexedSubscript:0];
-  v17 = [(HKOverlayRoomPhysicalEffortViewController *)self trendModel];
+  trendModel = [(HKOverlayRoomPhysicalEffortViewController *)self trendModel];
 
   v43 = v11;
-  if (v17)
+  if (trendModel)
   {
     v18 = [HKOverlayRoomTrendContext alloc];
-    v19 = [(HKOverlayRoomPhysicalEffortViewController *)self trendModel];
-    v20 = [(HKOverlayRoomTrendContext *)v18 initWithBaseDisplayType:v10 trendModel:v19 overlayChartController:v11 applicationItems:v12 overlayMode:a3];
+    trendModel2 = [(HKOverlayRoomPhysicalEffortViewController *)self trendModel];
+    v20 = [(HKOverlayRoomTrendContext *)v18 initWithBaseDisplayType:v10 trendModel:trendModel2 overlayChartController:v11 applicationItems:v12 overlayMode:mode];
 
-    v21 = [(HKOverlayRoomViewController *)self chartController];
-    [v21 setTrendAccessibilityDelegate:v20];
+    chartController = [(HKOverlayRoomViewController *)self chartController];
+    [chartController setTrendAccessibilityDelegate:v20];
 
     v22 = [v15 arrayByAddingObject:v20];
 
-    v23 = [(HKOverlayRoomPhysicalEffortViewController *)self trendModel];
-    LODWORD(v19) = [v23 selectTrendInitially];
+    trendModel3 = [(HKOverlayRoomPhysicalEffortViewController *)self trendModel];
+    LODWORD(trendModel2) = [trendModel3 selectTrendInitially];
 
-    if (v19)
+    if (trendModel2)
     {
       v20 = v20;
 
@@ -184,9 +184,9 @@
     v20 = 0;
   }
 
-  if ((a3 - 1) >= 2)
+  if ((mode - 1) >= 2)
   {
-    if (a3 != 3)
+    if (mode != 3)
     {
       v36 = MEMORY[0x1E695E0F0];
       goto LABEL_17;
@@ -264,36 +264,36 @@ HKOverlayRoomViewControllerLastQuantityContext *__117__HKOverlayRoomPhysicalEffo
 {
   if ([(HKOverlayRoomViewController *)self controllerMode]!= 3)
   {
-    v3 = [(HKOverlayRoomPhysicalEffortViewController *)self trendModel];
-    v4 = [HKOverlayRoomTrendContext findStartingTimeScopeFromTrendModel:v3];
+    trendModel = [(HKOverlayRoomPhysicalEffortViewController *)self trendModel];
+    v4 = [HKOverlayRoomTrendContext findStartingTimeScopeFromTrendModel:trendModel];
 
     if (v4 != 8)
     {
-      v5 = [(HKOverlayRoomViewController *)self applicationItems];
-      v6 = [v5 timeScopeController];
-      [v6 setSelectedTimeScope:v4];
+      applicationItems = [(HKOverlayRoomViewController *)self applicationItems];
+      timeScopeController = [applicationItems timeScopeController];
+      [timeScopeController setSelectedTimeScope:v4];
     }
   }
 
   v9.receiver = self;
   v9.super_class = HKOverlayRoomPhysicalEffortViewController;
-  v7 = [(HKOverlayRoomViewController *)&v9 createChartOverlayViewController];
+  createChartOverlayViewController = [(HKOverlayRoomViewController *)&v9 createChartOverlayViewController];
 
-  return v7;
+  return createChartOverlayViewController;
 }
 
-- (id)createViewControllerForMode:(int64_t)a3 displayDate:(id)a4 applicationItems:(id)a5
+- (id)createViewControllerForMode:(int64_t)mode displayDate:(id)date applicationItems:(id)items
 {
-  v8 = a5;
-  v9 = a4;
+  itemsCopy = items;
+  dateCopy = date;
   v10 = [HKOverlayRoomPhysicalEffortViewController alloc];
   quantityTypeIdentifier = self->_quantityTypeIdentifier;
   preferredOverlay = self->_preferredOverlay;
-  v13 = [(HKOverlayRoomPhysicalEffortViewController *)self trendModel];
-  v14 = [(HKOverlayRoomViewController *)self factorDisplayTypes];
-  v15 = [(HKOverlayRoomPhysicalEffortViewController *)v10 initWithDisplayDate:v9 applicationItems:v8 mode:a3 identifier:quantityTypeIdentifier preferredOverlay:preferredOverlay trendModel:v13 factorDisplayTypes:v14];
+  trendModel = [(HKOverlayRoomPhysicalEffortViewController *)self trendModel];
+  factorDisplayTypes = [(HKOverlayRoomViewController *)self factorDisplayTypes];
+  v15 = [(HKOverlayRoomPhysicalEffortViewController *)v10 initWithDisplayDate:dateCopy applicationItems:itemsCopy mode:mode identifier:quantityTypeIdentifier preferredOverlay:preferredOverlay trendModel:trendModel factorDisplayTypes:factorDisplayTypes];
 
-  [(HKOverlayRoomViewController *)v15 setAdditionalChartOptions:[(HKOverlayRoomViewController *)self filteredInteractiveChartOptionsForMode:a3]];
+  [(HKOverlayRoomViewController *)v15 setAdditionalChartOptions:[(HKOverlayRoomViewController *)self filteredInteractiveChartOptionsForMode:mode]];
 
   return v15;
 }

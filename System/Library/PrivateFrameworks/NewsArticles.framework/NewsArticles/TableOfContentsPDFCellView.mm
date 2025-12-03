@@ -1,10 +1,10 @@
 @interface TableOfContentsPDFCellView
-- (_TtC12NewsArticles26TableOfContentsPDFCellView)initWithCoder:(id)a3;
+- (_TtC12NewsArticles26TableOfContentsPDFCellView)initWithCoder:(id)coder;
 @end
 
 @implementation TableOfContentsPDFCellView
 
-- (_TtC12NewsArticles26TableOfContentsPDFCellView)initWithCoder:(id)a3
+- (_TtC12NewsArticles26TableOfContentsPDFCellView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC12NewsArticles26TableOfContentsPDFCellView_imageView;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(sub_1D7D2C86C()) initWithFrame_];

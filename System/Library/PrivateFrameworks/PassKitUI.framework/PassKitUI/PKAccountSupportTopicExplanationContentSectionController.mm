@@ -1,27 +1,27 @@
 @interface PKAccountSupportTopicExplanationContentSectionController
-- (PKAccountSupportTopicExplanationContentSectionController)initWithContent:(id)a3;
-- (id)cellRegistrationForItem:(id)a3;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
+- (PKAccountSupportTopicExplanationContentSectionController)initWithContent:(id)content;
+- (id)cellRegistrationForItem:(id)item;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
 @end
 
 @implementation PKAccountSupportTopicExplanationContentSectionController
 
-- (PKAccountSupportTopicExplanationContentSectionController)initWithContent:(id)a3
+- (PKAccountSupportTopicExplanationContentSectionController)initWithContent:(id)content
 {
-  v5 = a3;
+  contentCopy = content;
   v9.receiver = self;
   v9.super_class = PKAccountSupportTopicExplanationContentSectionController;
   v6 = [(PKPaymentSetupListSectionController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_content, a3);
+    objc_storeStrong(&v6->_content, content);
   }
 
   return v7;
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
@@ -41,7 +41,7 @@
   return v6;
 }
 
-- (id)cellRegistrationForItem:(id)a3
+- (id)cellRegistrationForItem:(id)item
 {
   v3 = MEMORY[0x1E69DC800];
   v4 = objc_opt_class();

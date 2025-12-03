@@ -3,47 +3,47 @@
 + (CSPerson)mePerson;
 + (NSArray)keyDescriptors;
 + (id)contactStore;
-- (BOOL)isTelephonyCall:(id)a3;
-- (BOOL)needsProviderRefreshForCallProviderIdentifierQueries:(id)a3;
-- (CHSpotlightIndexManager)initWithIndex:(id)a3 metadataCache:(id)a4 contactStore:(id)a5 featureFlags:(id)a6;
-- (id)callProviderIdentifiersForProviderManager:(id)a3;
-- (id)callsForItems:(id)a3;
-- (id)contactHandleForHandle:(id)a3;
-- (id)contactsByHandleForCalls:(id)a3;
-- (id)contactsByHandleForHandles:(id)a3;
-- (id)dialRequestURLForRecentCall:(id)a3;
-- (id)fetchAttributesForCall:(id)a3;
-- (id)fetchCallMediaTypeForCall:(id)a3;
-- (id)fetchCallProviderForCall:(id)a3;
-- (id)fetchCallStatusForCall:(id)a3;
-- (id)fetchLocalisedCallStatusForCall:(id)a3;
-- (id)formattedHandle:(id)a3 isoCountryCode:(id)a4;
-- (id)formattedHandleForComponentSearch:(id)a3 isoCountryCode:(id)a4;
-- (id)handleIdentifierForHandle:(id)a3;
-- (id)joinConversationRequestURLForRecentCall:(id)a3;
-- (id)personForHandle:(id)a3 isoCountryCode:(id)a4 contact:(id)a5;
-- (id)urlForCall:(id)a3;
-- (void)checkAndQuerySpotlightWithSearchString:(id)a3;
+- (BOOL)isTelephonyCall:(id)call;
+- (BOOL)needsProviderRefreshForCallProviderIdentifierQueries:(id)queries;
+- (CHSpotlightIndexManager)initWithIndex:(id)index metadataCache:(id)cache contactStore:(id)store featureFlags:(id)flags;
+- (id)callProviderIdentifiersForProviderManager:(id)manager;
+- (id)callsForItems:(id)items;
+- (id)contactHandleForHandle:(id)handle;
+- (id)contactsByHandleForCalls:(id)calls;
+- (id)contactsByHandleForHandles:(id)handles;
+- (id)dialRequestURLForRecentCall:(id)call;
+- (id)fetchAttributesForCall:(id)call;
+- (id)fetchCallMediaTypeForCall:(id)call;
+- (id)fetchCallProviderForCall:(id)call;
+- (id)fetchCallStatusForCall:(id)call;
+- (id)fetchLocalisedCallStatusForCall:(id)call;
+- (id)formattedHandle:(id)handle isoCountryCode:(id)code;
+- (id)formattedHandleForComponentSearch:(id)search isoCountryCode:(id)code;
+- (id)handleIdentifierForHandle:(id)handle;
+- (id)joinConversationRequestURLForRecentCall:(id)call;
+- (id)personForHandle:(id)handle isoCountryCode:(id)code contact:(id)contact;
+- (id)urlForCall:(id)call;
+- (void)checkAndQuerySpotlightWithSearchString:(id)string;
 - (void)checkProviderStatus;
 - (void)checkProviderStatusAfterDelay;
-- (void)indexInsertedCalls:(id)a3;
-- (void)indexInsertedCallsSync:(id)a3 completion:(id)a4;
-- (void)indexTransactions:(id)a3;
-- (void)indexTransactionsSync:(id)a3;
-- (void)indexedFacetimeAudioCallsWithCompletion:(id)a3;
-- (void)indexedFacetimeVideoCallsWithCompletion:(id)a3;
-- (void)providersChangedForProviderManager:(id)a3;
-- (void)querySpotlightCountWithSearchString:(id)a3 completion:(id)a4;
-- (void)querySpotlightWithSearchString:(id)a3 completion:(id)a4;
-- (void)refreshCallProvidersWithCallProviderIdentifierQueries:(id)a3;
-- (void)reindexItemsForContactsUpdate:(id)a3;
-- (void)removeDeletedCalls:(id)a3;
-- (void)removeDeletedCallsSync:(id)a3;
+- (void)indexInsertedCalls:(id)calls;
+- (void)indexInsertedCallsSync:(id)sync completion:(id)completion;
+- (void)indexTransactions:(id)transactions;
+- (void)indexTransactionsSync:(id)sync;
+- (void)indexedFacetimeAudioCallsWithCompletion:(id)completion;
+- (void)indexedFacetimeVideoCallsWithCompletion:(id)completion;
+- (void)providersChangedForProviderManager:(id)manager;
+- (void)querySpotlightCountWithSearchString:(id)string completion:(id)completion;
+- (void)querySpotlightWithSearchString:(id)string completion:(id)completion;
+- (void)refreshCallProvidersWithCallProviderIdentifierQueries:(id)queries;
+- (void)reindexItemsForContactsUpdate:(id)update;
+- (void)removeDeletedCalls:(id)calls;
+- (void)removeDeletedCallsSync:(id)sync;
 - (void)updateCallsForAcceptedContacts;
-- (void)updateCallsHavingHandles:(id)a3 orContactIdentifier:(id)a4;
+- (void)updateCallsHavingHandles:(id)handles orContactIdentifier:(id)identifier;
 - (void)updateCurrentHistoryToken;
 - (void)updateFacetimeCallsSearchableStatus;
-- (void)updateSearchableStatusFor:(id)a3 newStatus:(BOOL)a4;
+- (void)updateSearchableStatusFor:(id)for newStatus:(BOOL)status;
 @end
 
 @implementation CHSpotlightIndexManager
@@ -84,38 +84,38 @@
   return v3;
 }
 
-- (CHSpotlightIndexManager)initWithIndex:(id)a3 metadataCache:(id)a4 contactStore:(id)a5 featureFlags:(id)a6
+- (CHSpotlightIndexManager)initWithIndex:(id)index metadataCache:(id)cache contactStore:(id)store featureFlags:(id)flags
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  indexCopy = index;
+  cacheCopy = cache;
+  storeCopy = store;
+  flagsCopy = flags;
   v30.receiver = self;
   v30.super_class = CHSpotlightIndexManager;
   v14 = [(CHSpotlightIndexManager *)&v30 initWithName:"CallHistorySpotlightIndexManager"];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_featureFlags, a6);
+    objc_storeStrong(&v14->_featureFlags, flags);
     v16 = objc_alloc_init(TUCallProviderManager);
     [(CHSpotlightIndexManager *)v15 setCallProviderManager:v16];
 
     callProviderManager = v15->_callProviderManager;
-    v18 = [(CHSpotlightIndexManager *)v15 queue];
-    [(TUCallProviderManager *)callProviderManager addDelegate:v15 queue:v18];
+    queue = [(CHSpotlightIndexManager *)v15 queue];
+    [(TUCallProviderManager *)callProviderManager addDelegate:v15 queue:queue];
 
-    [(CHSpotlightIndexManager *)v15 setCsIndex:v10];
-    [(CHSpotlightIndexManager *)v15 setContactStore:v12];
-    [(CHSpotlightIndexManager *)v15 setMetadataCache:v11];
+    [(CHSpotlightIndexManager *)v15 setCsIndex:indexCopy];
+    [(CHSpotlightIndexManager *)v15 setContactStore:storeCopy];
+    [(CHSpotlightIndexManager *)v15 setMetadataCache:cacheCopy];
     v19 = [CHContactChangeManager alloc];
-    v20 = [(CHSpotlightIndexManager *)v15 featureFlags];
-    v21 = [(CHContactChangeManager *)v19 initWithSpotlightIndexManager:v15 featureFlags:v20];
+    featureFlags = [(CHSpotlightIndexManager *)v15 featureFlags];
+    v21 = [(CHContactChangeManager *)v19 initWithSpotlightIndexManager:v15 featureFlags:featureFlags];
     [(CHSpotlightIndexManager *)v15 setContactChangeManager:v21];
 
     v22 = [TUSubtitleProvider alloc];
-    v23 = [(CHSpotlightIndexManager *)v15 metadataCache];
-    v24 = [(CHSpotlightIndexManager *)v15 callProviderManager];
-    v25 = [v22 initWithMetadataCache:v23 callProviderManager:v24];
+    metadataCache = [(CHSpotlightIndexManager *)v15 metadataCache];
+    callProviderManager = [(CHSpotlightIndexManager *)v15 callProviderManager];
+    v25 = [v22 initWithMetadataCache:metadataCache callProviderManager:callProviderManager];
     subtitleProvider = v15->_subtitleProvider;
     v15->_subtitleProvider = v25;
 
@@ -129,9 +129,9 @@
   return v15;
 }
 
-- (void)indexTransactions:(id)a3
+- (void)indexTransactions:(id)transactions
 {
-  v4 = a3;
+  transactionsCopy = transactions;
   if ([(CHFeatureFlags *)self->_featureFlags callHistorySearchEnabled])
   {
     v5[0] = _NSConcreteStackBlock;
@@ -139,23 +139,23 @@
     v5[2] = sub_10000B484;
     v5[3] = &unk_100050E90;
     v5[4] = self;
-    v6 = v4;
+    v6 = transactionsCopy;
     [(CHSpotlightIndexManager *)self executeSync:v5];
   }
 }
 
-- (void)indexTransactionsSync:(id)a3
+- (void)indexTransactionsSync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   if ([(CHFeatureFlags *)self->_featureFlags callHistorySearchEnabled])
   {
-    v26 = self;
-    v5 = [(CHSpotlightIndexManager *)self logHandle];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    selfCopy = self;
+    logHandle = [(CHSpotlightIndexManager *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v34 = [v4 count];
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Need to index calls for %lu transactions", buf, 0xCu);
+      v34 = [syncCopy count];
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Need to index calls for %lu transactions", buf, 0xCu);
     }
 
     v25 = +[NSMutableArray array];
@@ -164,8 +164,8 @@
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v23 = v4;
-    v6 = v4;
+    v23 = syncCopy;
+    v6 = syncCopy;
     v7 = [v6 countByEnumeratingWithState:&v29 objects:v37 count:16];
     if (v7)
     {
@@ -182,24 +182,24 @@
           }
 
           v11 = *(*(&v29 + 1) + 8 * v10);
-          v12 = [v11 transactionType];
-          if (v12 == 2)
+          transactionType = [v11 transactionType];
+          if (transactionType == 2)
           {
-            v16 = [v11 record];
+            record = [v11 record];
             v27 = 0;
-            v14 = [CHRecentCall unarchivedObjectFromData:v16 error:&v27];
+            v14 = [CHRecentCall unarchivedObjectFromData:record error:&v27];
             v15 = v27;
 
             if (v14)
             {
-              v17 = [v14 uniqueId];
-              [v24 addObject:v17];
+              uniqueId = [v14 uniqueId];
+              [v24 addObject:uniqueId];
             }
 
             else
             {
-              v17 = [(CHSpotlightIndexManager *)v26 logHandle];
-              if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+              uniqueId = [(CHSpotlightIndexManager *)selfCopy logHandle];
+              if (os_log_type_enabled(uniqueId, OS_LOG_TYPE_ERROR))
               {
                 goto LABEL_22;
               }
@@ -210,27 +210,27 @@ LABEL_18:
             goto LABEL_19;
           }
 
-          if (v12)
+          if (transactionType)
           {
             goto LABEL_20;
           }
 
-          v13 = [v11 record];
+          record2 = [v11 record];
           v28 = 0;
-          v14 = [CHRecentCall unarchivedObjectFromData:v13 error:&v28];
+          v14 = [CHRecentCall unarchivedObjectFromData:record2 error:&v28];
           v15 = v28;
 
           if (!v14)
           {
-            v17 = [(CHSpotlightIndexManager *)v26 logHandle];
-            if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+            uniqueId = [(CHSpotlightIndexManager *)selfCopy logHandle];
+            if (os_log_type_enabled(uniqueId, OS_LOG_TYPE_ERROR))
             {
 LABEL_22:
               *buf = 138412546;
               v34 = v11;
               v35 = 2114;
               v36 = v15;
-              _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Attempt to unarchive call from transaction %@ failed with error %{public}@", buf, 0x16u);
+              _os_log_error_impl(&_mh_execute_header, uniqueId, OS_LOG_TYPE_ERROR, "Attempt to unarchive call from transaction %@ failed with error %{public}@", buf, 0x16u);
             }
 
             goto LABEL_18;
@@ -251,34 +251,34 @@ LABEL_20:
       while (v18);
     }
 
-    v19 = [(CHSpotlightIndexManager *)v26 logHandle];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+    logHandle2 = [(CHSpotlightIndexManager *)selfCopy logHandle];
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
     {
       v20 = [v25 count];
       *buf = 134217984;
       v34 = v20;
-      _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Inserted calls count: %lu", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, logHandle2, OS_LOG_TYPE_DEFAULT, "Inserted calls count: %lu", buf, 0xCu);
     }
 
-    v21 = [(CHSpotlightIndexManager *)v26 logHandle];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+    logHandle3 = [(CHSpotlightIndexManager *)selfCopy logHandle];
+    if (os_log_type_enabled(logHandle3, OS_LOG_TYPE_DEFAULT))
     {
       v22 = [v24 count];
       *buf = 134217984;
       v34 = v22;
-      _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Deleted calls count: %lu", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, logHandle3, OS_LOG_TYPE_DEFAULT, "Deleted calls count: %lu", buf, 0xCu);
     }
 
-    [(CHSpotlightIndexManager *)v26 indexInsertedCallsSync:v25 completion:0];
-    [(CHSpotlightIndexManager *)v26 removeDeletedCallsSync:v24];
+    [(CHSpotlightIndexManager *)selfCopy indexInsertedCallsSync:v25 completion:0];
+    [(CHSpotlightIndexManager *)selfCopy removeDeletedCallsSync:v24];
 
-    v4 = v23;
+    syncCopy = v23;
   }
 }
 
-- (void)indexInsertedCalls:(id)a3
+- (void)indexInsertedCalls:(id)calls
 {
-  v4 = a3;
+  callsCopy = calls;
   if ([(CHFeatureFlags *)self->_featureFlags callHistorySearchEnabled])
   {
     v5[0] = _NSConcreteStackBlock;
@@ -286,14 +286,14 @@ LABEL_20:
     v5[2] = sub_10000B964;
     v5[3] = &unk_100050E90;
     v5[4] = self;
-    v6 = v4;
+    v6 = callsCopy;
     [(CHSpotlightIndexManager *)self executeSync:v5];
   }
 }
 
-- (void)removeDeletedCalls:(id)a3
+- (void)removeDeletedCalls:(id)calls
 {
-  v4 = a3;
+  callsCopy = calls;
   if ([(CHFeatureFlags *)self->_featureFlags callHistorySearchEnabled])
   {
     v5[0] = _NSConcreteStackBlock;
@@ -301,58 +301,58 @@ LABEL_20:
     v5[2] = sub_10000BA20;
     v5[3] = &unk_100050E90;
     v5[4] = self;
-    v6 = v4;
+    v6 = callsCopy;
     [(CHSpotlightIndexManager *)self executeSync:v5];
   }
 }
 
-- (void)indexInsertedCallsSync:(id)a3 completion:(id)a4
+- (void)indexInsertedCallsSync:(id)sync completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (-[CHFeatureFlags callHistorySearchEnabled](self->_featureFlags, "callHistorySearchEnabled") && [v6 count])
+  syncCopy = sync;
+  completionCopy = completion;
+  if (-[CHFeatureFlags callHistorySearchEnabled](self->_featureFlags, "callHistorySearchEnabled") && [syncCopy count])
   {
-    v31 = v7;
-    v8 = [(CHSpotlightIndexManager *)self logHandle];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    v31 = completionCopy;
+    logHandle = [(CHSpotlightIndexManager *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v51 = [v6 count];
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Indexing %lu inserted calls to spotlight", buf, 0xCu);
+      v51 = [syncCopy count];
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Indexing %lu inserted calls to spotlight", buf, 0xCu);
     }
 
     v29 = objc_alloc_init(NSMutableArray);
     v28 = objc_alloc_init(NSMutableDictionary);
     v9 = objc_alloc_init(NSMutableArray);
-    v10 = [(CHSpotlightIndexManager *)self contactsByHandleForCalls:v6];
-    v11 = [objc_opt_class() mePerson];
+    v10 = [(CHSpotlightIndexManager *)self contactsByHandleForCalls:syncCopy];
+    mePerson = [objc_opt_class() mePerson];
     v12 = +[TUCallCapabilities supportsFaceTimeAudioCalls];
     v13 = +[TUCallCapabilities supportsFaceTimeVideoCalls];
     v14 = dispatch_group_create();
-    v15 = [(CHSpotlightIndexManager *)self queue];
+    queue = [(CHSpotlightIndexManager *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10000BDC4;
     block[3] = &unk_100051058;
-    v16 = v6;
+    v16 = syncCopy;
     v41 = v16;
-    v42 = self;
+    selfCopy = self;
     v17 = v10;
     v48 = v12;
     v49 = v13;
     v43 = v17;
-    v44 = v11;
+    v44 = mePerson;
     v18 = v29;
     v45 = v18;
     v19 = v28;
     v46 = v19;
     v20 = v9;
     v47 = v20;
-    v30 = v11;
-    dispatch_group_async(v14, v15, block);
+    v30 = mePerson;
+    dispatch_group_async(v14, queue, block);
 
     v21 = [TUMetadataDestinationID metadataDestinationIDsForCHRecentCalls:v16];
-    v22 = [(CHSpotlightIndexManager *)self metadataCache];
+    metadataCache = [(CHSpotlightIndexManager *)self metadataCache];
     v32[0] = _NSConcreteStackBlock;
     v32[1] = 3221225472;
     v32[2] = sub_10000C540;
@@ -364,55 +364,55 @@ LABEL_20:
     v36 = v19;
     v37 = v17;
     v38 = v18;
-    v7 = v31;
+    completionCopy = v31;
     v39 = v31;
     v23 = v18;
     v24 = v17;
     v25 = v19;
     v26 = v20;
     v27 = v14;
-    [v22 updateCacheWithDestinationIDs:v21 completion:v32];
+    [metadataCache updateCacheWithDestinationIDs:v21 completion:v32];
   }
 }
 
-- (void)removeDeletedCallsSync:(id)a3
+- (void)removeDeletedCallsSync:(id)sync
 {
-  v4 = a3;
-  if (-[CHFeatureFlags callHistorySearchEnabled](self->_featureFlags, "callHistorySearchEnabled") && [v4 count])
+  syncCopy = sync;
+  if (-[CHFeatureFlags callHistorySearchEnabled](self->_featureFlags, "callHistorySearchEnabled") && [syncCopy count])
   {
-    v5 = [(CHSpotlightIndexManager *)self csIndex];
+    csIndex = [(CHSpotlightIndexManager *)self csIndex];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_10000CC10;
     v6[3] = &unk_1000510F8;
     v6[4] = self;
-    [v5 deleteSearchableItemsWithIdentifiers:v4 completionHandler:v6];
+    [csIndex deleteSearchableItemsWithIdentifiers:syncCopy completionHandler:v6];
   }
 }
 
-- (void)reindexItemsForContactsUpdate:(id)a3
+- (void)reindexItemsForContactsUpdate:(id)update
 {
-  v4 = a3;
-  if (-[CHFeatureFlags callHistorySearchEnabled](self->_featureFlags, "callHistorySearchEnabled") && [v4 count])
+  updateCopy = update;
+  if (-[CHFeatureFlags callHistorySearchEnabled](self->_featureFlags, "callHistorySearchEnabled") && [updateCopy count])
   {
-    v5 = [(CHSpotlightIndexManager *)self logHandle];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(CHSpotlightIndexManager *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v46 = [v4 count];
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Reindexing %lu items to spotlight", buf, 0xCu);
+      v46 = [updateCopy count];
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Reindexing %lu items to spotlight", buf, 0xCu);
     }
 
-    v6 = [(CHSpotlightIndexManager *)self callsForItems:v4];
+    v6 = [(CHSpotlightIndexManager *)self callsForItems:updateCopy];
     if ([v6 count])
     {
       v7 = objc_alloc_init(NSMutableArray);
       v8 = objc_alloc_init(NSMutableDictionary);
       v9 = objc_alloc_init(NSMutableArray);
       v10 = [(CHSpotlightIndexManager *)self contactsByHandleForCalls:v6];
-      v11 = [objc_opt_class() mePerson];
+      mePerson = [objc_opt_class() mePerson];
       v12 = dispatch_group_create();
-      v13 = [(CHSpotlightIndexManager *)self queue];
+      queue = [(CHSpotlightIndexManager *)self queue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_10000D00C;
@@ -420,21 +420,21 @@ LABEL_20:
       v29 = v6;
       v14 = v6;
       v38 = v14;
-      v39 = self;
+      selfCopy = self;
       v15 = v10;
       v40 = v15;
-      v41 = v11;
+      v41 = mePerson;
       v16 = v7;
       v42 = v16;
       v17 = v8;
       v43 = v17;
       v18 = v9;
       v44 = v18;
-      v28 = v11;
-      dispatch_group_async(v12, v13, block);
+      v28 = mePerson;
+      dispatch_group_async(v12, queue, block);
 
       v19 = [TUMetadataDestinationID metadataDestinationIDsForCHRecentCalls:v14];
-      v20 = [(CHSpotlightIndexManager *)self metadataCache];
+      metadataCache = [(CHSpotlightIndexManager *)self metadataCache];
       v30[0] = _NSConcreteStackBlock;
       v30[1] = 3221225472;
       v30[2] = sub_10000D5FC;
@@ -453,47 +453,47 @@ LABEL_20:
       v24 = v17;
       v25 = v18;
       v26 = v12;
-      [v20 updateCacheWithDestinationIDs:v19 completion:v30];
+      [metadataCache updateCacheWithDestinationIDs:v19 completion:v30];
 
-      v27 = v28;
+      logHandle2 = v28;
     }
 
     else
     {
-      v27 = [(CHSpotlightIndexManager *)self logHandle];
-      if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+      logHandle2 = [(CHSpotlightIndexManager *)self logHandle];
+      if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_ERROR))
       {
-        sub_100032A20(v4);
+        sub_100032A20(updateCopy);
       }
     }
   }
 }
 
-- (void)updateSearchableStatusFor:(id)a3 newStatus:(BOOL)a4
+- (void)updateSearchableStatusFor:(id)for newStatus:(BOOL)status
 {
-  v4 = a4;
-  v6 = a3;
-  if (-[CHFeatureFlags callHistorySearchEnabled](self->_featureFlags, "callHistorySearchEnabled") && [v6 count])
+  statusCopy = status;
+  forCopy = for;
+  if (-[CHFeatureFlags callHistorySearchEnabled](self->_featureFlags, "callHistorySearchEnabled") && [forCopy count])
   {
-    v7 = [(CHSpotlightIndexManager *)self logHandle];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(CHSpotlightIndexManager *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v28 = [v6 count];
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Reindexing %lu items to spotlight", buf, 0xCu);
+      v28 = [forCopy count];
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Reindexing %lu items to spotlight", buf, 0xCu);
     }
 
-    v8 = [(CHSpotlightIndexManager *)self callsForItems:v6];
+    v8 = [(CHSpotlightIndexManager *)self callsForItems:forCopy];
     if ([v8 count])
     {
       v19 = v8;
-      v20 = self;
-      v9 = objc_alloc_init(NSMutableArray);
+      selfCopy = self;
+      logHandle2 = objc_alloc_init(NSMutableArray);
       v22 = 0u;
       v23 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v10 = v6;
+      v10 = forCopy;
       v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v11)
       {
@@ -509,12 +509,12 @@ LABEL_20:
             }
 
             v15 = *(*(&v22 + 1) + 8 * i);
-            v16 = [NSNumber numberWithInt:!v4, v19];
-            v17 = [v15 attributeSet];
-            [v17 setDisableSearchInSpotlight:v16];
+            v16 = [NSNumber numberWithInt:!statusCopy, v19];
+            attributeSet = [v15 attributeSet];
+            [attributeSet setDisableSearchInSpotlight:v16];
 
             [v15 setIsUpdate:1];
-            [v9 addObject:v15];
+            [logHandle2 addObject:v15];
           }
 
           v12 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -523,48 +523,48 @@ LABEL_20:
         while (v12);
       }
 
-      v18 = [(CHSpotlightIndexManager *)v20 csIndex];
+      csIndex = [(CHSpotlightIndexManager *)selfCopy csIndex];
       v21[0] = _NSConcreteStackBlock;
       v21[1] = 3221225472;
       v21[2] = sub_10000DE84;
       v21[3] = &unk_1000510F8;
-      v21[4] = v20;
-      [v18 indexSearchableItems:v9 completionHandler:v21];
+      v21[4] = selfCopy;
+      [csIndex indexSearchableItems:logHandle2 completionHandler:v21];
 
       v8 = v19;
     }
 
     else
     {
-      v9 = [(CHSpotlightIndexManager *)self logHandle];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      logHandle2 = [(CHSpotlightIndexManager *)self logHandle];
+      if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_ERROR))
       {
-        sub_100032A20(v6);
+        sub_100032A20(forCopy);
       }
     }
   }
 }
 
-- (id)fetchAttributesForCall:(id)a3
+- (id)fetchAttributesForCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   if ([(CHFeatureFlags *)self->_featureFlags callHistorySearchEnabled])
   {
     v5 = objc_alloc_init(CSSearchableItemAttributeSet);
     [v5 setContentType:@"kSpotlightItemTypeCall"];
-    v6 = [v4 date];
-    [v5 setContentCreationDate:v6];
+    date = [callCopy date];
+    [v5 setContentCreationDate:date];
 
-    v7 = [v4 date];
-    [v5 setLastUsedDate:v7];
+    date2 = [callCopy date];
+    [v5 setLastUsedDate:date2];
 
-    v8 = [(CHSpotlightIndexManager *)self fetchCallStatusForCall:v4];
+    v8 = [(CHSpotlightIndexManager *)self fetchCallStatusForCall:callCopy];
     if (v8)
     {
       [v5 setPhoneCallStatus:v8];
     }
 
-    v9 = [(CHSpotlightIndexManager *)self fetchLocalisedCallStatusForCall:v4];
+    v9 = [(CHSpotlightIndexManager *)self fetchLocalisedCallStatusForCall:callCopy];
 
     if (v9)
     {
@@ -572,14 +572,14 @@ LABEL_20:
       [v5 setValue:v9 forCustomKey:v10];
     }
 
-    v11 = [v4 localParticipantUUID];
-    v12 = [v11 UUIDString];
-    [v5 setPhoneSIM:v12];
+    localParticipantUUID = [callCopy localParticipantUUID];
+    uUIDString = [localParticipantUUID UUIDString];
+    [v5 setPhoneSIM:uUIDString];
 
-    v13 = [(CHSpotlightIndexManager *)self urlForCall:v4];
+    v13 = [(CHSpotlightIndexManager *)self urlForCall:callCopy];
     [v5 setPhoneCallBackURL:v13];
 
-    v14 = [(CHSpotlightIndexManager *)self fetchCallMediaTypeForCall:v4];
+    v14 = [(CHSpotlightIndexManager *)self fetchCallMediaTypeForCall:callCopy];
     [v5 setPhoneCallType:v14];
   }
 
@@ -591,19 +591,19 @@ LABEL_20:
   return v5;
 }
 
-- (id)fetchCallMediaTypeForCall:(id)a3
+- (id)fetchCallMediaTypeForCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   if ([(CHFeatureFlags *)self->_featureFlags callHistorySearchEnabled])
   {
-    v5 = [v4 mediaType];
+    mediaType = [callCopy mediaType];
     v6 = @"Video";
-    if (v5 != 2)
+    if (mediaType != 2)
     {
       v6 = 0;
     }
 
-    if (v5 == 1)
+    if (mediaType == 1)
     {
       v7 = @"Audio";
     }
@@ -622,9 +622,9 @@ LABEL_20:
   return v7;
 }
 
-- (id)contactsByHandleForCalls:(id)a3
+- (id)contactsByHandleForCalls:(id)calls
 {
-  v4 = a3;
+  callsCopy = calls;
   if ([(CHFeatureFlags *)self->_featureFlags callHistorySearchEnabled])
   {
     v5 = objc_alloc_init(NSMutableSet);
@@ -632,8 +632,8 @@ LABEL_20:
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v24 = v4;
-    obj = v4;
+    v24 = callsCopy;
+    obj = callsCopy;
     v6 = [obj countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (v6)
     {
@@ -653,8 +653,8 @@ LABEL_20:
           v28 = 0u;
           v29 = 0u;
           v30 = 0u;
-          v10 = [v9 remoteParticipantHandles];
-          v11 = [v10 countByEnumeratingWithState:&v27 objects:v35 count:16];
+          remoteParticipantHandles = [v9 remoteParticipantHandles];
+          v11 = [remoteParticipantHandles countByEnumeratingWithState:&v27 objects:v35 count:16];
           if (v11)
           {
             v12 = v11;
@@ -665,28 +665,28 @@ LABEL_20:
               {
                 if (*v28 != v13)
                 {
-                  objc_enumerationMutation(v10);
+                  objc_enumerationMutation(remoteParticipantHandles);
                 }
 
                 v15 = [(CHSpotlightIndexManager *)self contactHandleForHandle:*(*(&v27 + 1) + 8 * j)];
                 [v5 addObject:v15];
               }
 
-              v12 = [v10 countByEnumeratingWithState:&v27 objects:v35 count:16];
+              v12 = [remoteParticipantHandles countByEnumeratingWithState:&v27 objects:v35 count:16];
             }
 
             while (v12);
           }
 
           v16 = [(CHSpotlightIndexManager *)self fetchCallProviderForCall:v9];
-          v17 = [v9 localParticipantUUID];
-          v18 = [v16 senderIdentityForAccountUUID:v17];
-          v19 = [v18 handle];
-          v20 = [v19 normalizedValue];
+          localParticipantUUID = [v9 localParticipantUUID];
+          v18 = [v16 senderIdentityForAccountUUID:localParticipantUUID];
+          handle = [v18 handle];
+          normalizedValue = [handle normalizedValue];
 
-          if (v20)
+          if (normalizedValue)
           {
-            [v5 addObject:v20];
+            [v5 addObject:normalizedValue];
           }
         }
 
@@ -696,10 +696,10 @@ LABEL_20:
       while (v7);
     }
 
-    v21 = [v5 allObjects];
-    v22 = [(CHSpotlightIndexManager *)self contactsByHandleForHandles:v21];
+    allObjects = [v5 allObjects];
+    v22 = [(CHSpotlightIndexManager *)self contactsByHandleForHandles:allObjects];
 
-    v4 = v24;
+    callsCopy = v24;
   }
 
   else
@@ -710,14 +710,14 @@ LABEL_20:
   return v22;
 }
 
-- (id)contactsByHandleForHandles:(id)a3
+- (id)contactsByHandleForHandles:(id)handles
 {
-  v4 = a3;
+  handlesCopy = handles;
   if ([(CHFeatureFlags *)self->_featureFlags callHistorySearchEnabled])
   {
-    v5 = [(CHSpotlightIndexManager *)self contactStore];
-    v6 = [objc_opt_class() keyDescriptors];
-    v7 = [v5 contactsByContactHandleForContactHandles:v4 keyDescriptors:v6 error:0];
+    contactStore = [(CHSpotlightIndexManager *)self contactStore];
+    keyDescriptors = [objc_opt_class() keyDescriptors];
+    v7 = [contactStore contactsByContactHandleForContactHandles:handlesCopy keyDescriptors:keyDescriptors error:0];
   }
 
   else
@@ -728,31 +728,31 @@ LABEL_20:
   return v7;
 }
 
-- (id)personForHandle:(id)a3 isoCountryCode:(id)a4 contact:(id)a5
+- (id)personForHandle:(id)handle isoCountryCode:(id)code contact:(id)contact
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handleCopy = handle;
+  codeCopy = code;
+  contactCopy = contact;
   if ([(CHFeatureFlags *)self->_featureFlags callHistorySearchEnabled])
   {
-    v11 = [(CHSpotlightIndexManager *)self formattedHandle:v8 isoCountryCode:v9];
-    if (v10)
+    v11 = [(CHSpotlightIndexManager *)self formattedHandle:handleCopy isoCountryCode:codeCopy];
+    if (contactCopy)
     {
-      v12 = [CNContactFormatter stringFromContact:v10 style:0];
+      v12 = [CNContactFormatter stringFromContact:contactCopy style:0];
 
       v11 = v12;
     }
 
     v13 = [CSPerson alloc];
-    v19 = v8;
+    v19 = handleCopy;
     v14 = [NSArray arrayWithObjects:&v19 count:1];
-    v15 = [(CHSpotlightIndexManager *)self handleIdentifierForHandle:v8];
+    v15 = [(CHSpotlightIndexManager *)self handleIdentifierForHandle:handleCopy];
     v16 = [v13 initWithDisplayName:v11 handles:v14 handleIdentifier:v15];
 
-    if (v10)
+    if (contactCopy)
     {
-      v17 = [v10 identifier];
-      [v16 setContactIdentifier:v17];
+      identifier = [contactCopy identifier];
+      [v16 setContactIdentifier:identifier];
     }
   }
 
@@ -766,10 +766,10 @@ LABEL_20:
 
 + (CSPerson)mePerson
 {
-  v2 = [objc_opt_class() contactStore];
+  contactStore = [objc_opt_class() contactStore];
   v3 = [CNContactFetchRequest alloc];
-  v4 = [objc_opt_class() keyDescriptors];
-  v5 = [v3 initWithKeysToFetch:v4];
+  keyDescriptors = [objc_opt_class() keyDescriptors];
+  v5 = [v3 initWithKeysToFetch:keyDescriptors];
 
   v6 = +[CNContact predicateForMeContact];
   [v5 setPredicate:v6];
@@ -785,26 +785,26 @@ LABEL_20:
   }
 
   v25 = 0;
-  v9 = [v2 executeFetchRequest:v5 error:&v25];
+  v9 = [contactStore executeFetchRequest:v5 error:&v25];
   v10 = v25;
   v11 = v10;
   if (v9)
   {
-    v12 = [v9 value];
-    v13 = [v12 firstObject];
+    value = [v9 value];
+    firstObject = [value firstObject];
 
-    if (v13)
+    if (firstObject)
     {
-      v14 = [CNContactFormatter stringFromContact:v13 style:0];
+      v14 = [CNContactFormatter stringFromContact:firstObject style:0];
       v15 = [CSPerson alloc];
       v16 = objc_retainBlock(ch_allPhoneNumbers);
       v26 = v16;
       v17 = [NSArray arrayWithObjects:&v26 count:1];
-      v18 = [v13 handlesIncluding:v17];
+      v18 = [firstObject handlesIncluding:v17];
       v19 = [v15 initWithDisplayName:v14 handles:v18 handleIdentifier:CNContactPhoneNumbersKey];
 
-      v20 = [v13 identifier];
-      [v19 setContactIdentifier:v20];
+      identifier = [firstObject identifier];
+      [v19 setContactIdentifier:identifier];
 
       goto LABEL_14;
     }
@@ -822,12 +822,12 @@ LABEL_20:
   }
 
   v23 = +[CHLogServer sharedInstance];
-  v13 = [v23 logHandleForDomain:"CallHistorySpotlightIndexManager"];
+  firstObject = [v23 logHandleForDomain:"CallHistorySpotlightIndexManager"];
 
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(firstObject, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Contact fetch request for me contact returned no contact", buf, 2u);
+    _os_log_impl(&_mh_execute_header, firstObject, OS_LOG_TYPE_DEFAULT, "Contact fetch request for me contact returned no contact", buf, 2u);
   }
 
   v19 = 0;
@@ -836,13 +836,13 @@ LABEL_14:
   return v19;
 }
 
-- (id)fetchCallProviderForCall:(id)a3
+- (id)fetchCallProviderForCall:(id)call
 {
-  v4 = a3;
-  if (-[CHFeatureFlags callHistorySearchEnabled](self->_featureFlags, "callHistorySearchEnabled") && ([v4 serviceProvider], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  callCopy = call;
+  if (-[CHFeatureFlags callHistorySearchEnabled](self->_featureFlags, "callHistorySearchEnabled") && ([callCopy serviceProvider], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [(CHSpotlightIndexManager *)self callProviderManager];
-    v7 = [v6 providerForRecentCall:v4];
+    callProviderManager = [(CHSpotlightIndexManager *)self callProviderManager];
+    v7 = [callProviderManager providerForRecentCall:callCopy];
   }
 
   else
@@ -853,23 +853,23 @@ LABEL_14:
   return v7;
 }
 
-- (id)fetchLocalisedCallStatusForCall:(id)a3
+- (id)fetchLocalisedCallStatusForCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   if (![(CHFeatureFlags *)self->_featureFlags callHistorySearchEnabled])
   {
     v6 = 0;
     goto LABEL_12;
   }
 
-  if (([v4 callStatus] & 0xD) != 0)
+  if (([callCopy callStatus] & 0xD) != 0)
   {
     v5 = @"INCOMING_CALL";
   }
 
   else
   {
-    if (([v4 callStatus] & 0x12) == 0)
+    if (([callCopy callStatus] & 0x12) == 0)
     {
       v6 = 0;
       goto LABEL_8;
@@ -880,7 +880,7 @@ LABEL_14:
 
   v6 = [CHLocalization localizedStringForKey:v5];
 LABEL_8:
-  if ([v4 callStatus] == 8)
+  if ([callCopy callStatus] == 8)
   {
     v7 = [CHLocalization localizedStringForKey:@"MISSED_CALL"];
     v8 = [v6 stringByAppendingFormat:@" %@", v7];
@@ -888,7 +888,7 @@ LABEL_8:
     v6 = v8;
   }
 
-  if ([v4 callStatus] == 16)
+  if ([callCopy callStatus] == 16)
   {
     v9 = [CHLocalization localizedStringForKey:@"CANCELLED_CALL"];
     v10 = [v6 stringByAppendingFormat:@" %@", v9];
@@ -901,17 +901,17 @@ LABEL_12:
   return v6;
 }
 
-- (id)fetchCallStatusForCall:(id)a3
+- (id)fetchCallStatusForCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   if ([(CHFeatureFlags *)self->_featureFlags callHistorySearchEnabled])
   {
-    if (([v4 callStatus] & 0xD) != 0)
+    if (([callCopy callStatus] & 0xD) != 0)
     {
       v5 = @"Incoming";
     }
 
-    else if (([v4 callStatus] & 0x12) != 0)
+    else if (([callCopy callStatus] & 0x12) != 0)
     {
       v5 = @"Outgoing";
     }
@@ -921,12 +921,12 @@ LABEL_12:
       v5 = 0;
     }
 
-    if ([v4 callStatus] == 8)
+    if ([callCopy callStatus] == 8)
     {
       v5 = [(__CFString *)v5 stringByAppendingFormat:@" %@", @"Missed"];
     }
 
-    if ([v4 callStatus] == 16)
+    if ([callCopy callStatus] == 16)
     {
       v6 = [(__CFString *)v5 stringByAppendingFormat:@" %@", @"Canceled"];
 
@@ -942,9 +942,9 @@ LABEL_12:
   return v5;
 }
 
-- (id)urlForCall:(id)a3
+- (id)urlForCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   if (![(CHFeatureFlags *)self->_featureFlags callHistorySearchEnabled])
   {
     v12 = 0;
@@ -952,11 +952,11 @@ LABEL_12:
   }
 
   v5 = objc_alloc_init(TUFeatureFlags);
-  v6 = [v5 groupConversations];
-  v7 = [v4 validRemoteParticipantHandles];
-  v8 = [v7 count];
+  groupConversations = [v5 groupConversations];
+  validRemoteParticipantHandles = [callCopy validRemoteParticipantHandles];
+  v8 = [validRemoteParticipantHandles count];
   v9 = v8;
-  if (!v6)
+  if (!groupConversations)
   {
 
     if (v9 >= 2)
@@ -965,7 +965,7 @@ LABEL_12:
     }
 
 LABEL_10:
-    v13 = [(CHSpotlightIndexManager *)self dialRequestURLForRecentCall:v4];
+    v13 = [(CHSpotlightIndexManager *)self dialRequestURLForRecentCall:callCopy];
     goto LABEL_11;
   }
 
@@ -975,8 +975,8 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v10 = [v4 serviceProvider];
-  v11 = [v10 isEqualToString:@"com.apple.FaceTime"];
+  serviceProvider = [callCopy serviceProvider];
+  v11 = [serviceProvider isEqualToString:@"com.apple.FaceTime"];
 
   if (!v11)
   {
@@ -984,7 +984,7 @@ LABEL_10:
   }
 
 LABEL_8:
-  v13 = [(CHSpotlightIndexManager *)self joinConversationRequestURLForRecentCall:v4];
+  v13 = [(CHSpotlightIndexManager *)self joinConversationRequestURLForRecentCall:callCopy];
 LABEL_11:
   v12 = v13;
 
@@ -993,11 +993,11 @@ LABEL_12:
   return v12;
 }
 
-- (id)dialRequestURLForRecentCall:(id)a3
+- (id)dialRequestURLForRecentCall:(id)call
 {
-  v4 = a3;
-  v5 = [(CHSpotlightIndexManager *)self callProviderManager];
-  v6 = [v5 dialRequestForRecentCall:v4];
+  callCopy = call;
+  callProviderManager = [(CHSpotlightIndexManager *)self callProviderManager];
+  v6 = [callProviderManager dialRequestForRecentCall:callCopy];
 
   if (v6)
   {
@@ -1013,11 +1013,11 @@ LABEL_12:
   return v7;
 }
 
-- (id)joinConversationRequestURLForRecentCall:(id)a3
+- (id)joinConversationRequestURLForRecentCall:(id)call
 {
-  v4 = a3;
-  v5 = [(CHSpotlightIndexManager *)self callProviderManager];
-  v6 = [v5 joinConversationRequestForRecentCall:v4];
+  callCopy = call;
+  callProviderManager = [(CHSpotlightIndexManager *)self callProviderManager];
+  v6 = [callProviderManager joinConversationRequestForRecentCall:callCopy];
 
   if (v6)
   {
@@ -1033,9 +1033,9 @@ LABEL_12:
   return v7;
 }
 
-- (id)handleIdentifierForHandle:(id)a3
+- (id)handleIdentifierForHandle:(id)handle
 {
-  v3 = [CHHandle handleTypeForValue:a3];
+  v3 = [CHHandle handleTypeForValue:handle];
   v4 = &CNContactPhoneNumbersKey;
   if (v3 != 2)
   {
@@ -1047,37 +1047,37 @@ LABEL_12:
   return v5;
 }
 
-- (id)formattedHandle:(id)a3 isoCountryCode:(id)a4
+- (id)formattedHandle:(id)handle isoCountryCode:(id)code
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
-  v8 = v7;
+  handleCopy = handle;
+  codeCopy = code;
+  v7 = handleCopy;
+  formattedRepresentation = v7;
   if ([CHHandle handleTypeForValue:v7]== 2)
   {
-    v9 = [[CHPhoneNumber alloc] initWithDigits:v7 isoCountryCode:v6];
+    v9 = [[CHPhoneNumber alloc] initWithDigits:v7 isoCountryCode:codeCopy];
     v10 = v9;
-    v8 = v7;
+    formattedRepresentation = v7;
     if (v9)
     {
-      v8 = [v9 formattedRepresentation];
+      formattedRepresentation = [v9 formattedRepresentation];
     }
   }
 
-  return v8;
+  return formattedRepresentation;
 }
 
-- (id)formattedHandleForComponentSearch:(id)a3 isoCountryCode:(id)a4
+- (id)formattedHandleForComponentSearch:(id)search isoCountryCode:(id)code
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[CHPhoneNumber alloc] initWithDigits:v5 isoCountryCode:v6];
+  searchCopy = search;
+  codeCopy = code;
+  v7 = [[CHPhoneNumber alloc] initWithDigits:searchCopy isoCountryCode:codeCopy];
 
-  v8 = [v7 formattedRepresentation];
-  if (v8)
+  formattedRepresentation = [v7 formattedRepresentation];
+  if (formattedRepresentation)
   {
     v9 = [NSCharacterSet characterSetWithCharactersInString:@"() "];
-    v10 = [v8 componentsSeparatedByCharactersInSet:v9];
+    v10 = [formattedRepresentation componentsSeparatedByCharactersInSet:v9];
 
     +[NSMutableArray array];
     v14[0] = _NSConcreteStackBlock;
@@ -1091,20 +1091,20 @@ LABEL_12:
 
   else
   {
-    v12 = v5;
+    v12 = searchCopy;
   }
 
   return v12;
 }
 
-- (BOOL)isTelephonyCall:(id)a3
+- (BOOL)isTelephonyCall:(id)call
 {
-  v3 = a3;
-  v4 = [v3 serviceProvider];
-  if ([v4 isEqualToString:@"com.apple.Telephony"])
+  callCopy = call;
+  serviceProvider = [callCopy serviceProvider];
+  if ([serviceProvider isEqualToString:@"com.apple.Telephony"])
   {
-    v5 = [v3 remoteParticipantHandles];
-    v6 = [v5 count] == 1;
+    remoteParticipantHandles = [callCopy remoteParticipantHandles];
+    v6 = [remoteParticipantHandles count] == 1;
   }
 
   else
@@ -1115,19 +1115,19 @@ LABEL_12:
   return v6;
 }
 
-- (void)updateCallsHavingHandles:(id)a3 orContactIdentifier:(id)a4
+- (void)updateCallsHavingHandles:(id)handles orContactIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  handlesCopy = handles;
+  identifierCopy = identifier;
   if ([(CHFeatureFlags *)self->_featureFlags callHistorySearchEnabled])
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_10000F3C4;
     v8[3] = &unk_100051198;
-    v9 = v6;
-    v10 = v7;
-    v11 = self;
+    v9 = handlesCopy;
+    v10 = identifierCopy;
+    selfCopy = self;
     [(CHSpotlightIndexManager *)self executeSync:v8];
   }
 }
@@ -1158,55 +1158,55 @@ LABEL_12:
   }
 }
 
-- (void)indexedFacetimeAudioCallsWithCompletion:(id)a3
+- (void)indexedFacetimeAudioCallsWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   if ([(CHFeatureFlags *)self->_featureFlags callHistorySearchEnabled])
   {
     v4 = +[CHSpotlightSearchQueryUtilities searchStringForFacetimeAudioCalls];
-    [(CHSpotlightIndexManager *)self querySpotlightWithSearchString:v4 completion:v5];
+    [(CHSpotlightIndexManager *)self querySpotlightWithSearchString:v4 completion:completionCopy];
   }
 }
 
-- (void)indexedFacetimeVideoCallsWithCompletion:(id)a3
+- (void)indexedFacetimeVideoCallsWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   if ([(CHFeatureFlags *)self->_featureFlags callHistorySearchEnabled])
   {
     v4 = +[CHSpotlightSearchQueryUtilities searchStringForFacetimeVideoCalls];
-    [(CHSpotlightIndexManager *)self querySpotlightWithSearchString:v4 completion:v5];
+    [(CHSpotlightIndexManager *)self querySpotlightWithSearchString:v4 completion:completionCopy];
   }
 }
 
-- (void)checkAndQuerySpotlightWithSearchString:(id)a3
+- (void)checkAndQuerySpotlightWithSearchString:(id)string
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10000F8F8;
   v4[3] = &unk_1000511E8;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(CHSpotlightIndexManager *)v5 querySpotlightCountWithSearchString:v3 completion:v4];
+  selfCopy = self;
+  stringCopy = string;
+  v3 = stringCopy;
+  [(CHSpotlightIndexManager *)selfCopy querySpotlightCountWithSearchString:v3 completion:v4];
 }
 
-- (void)querySpotlightCountWithSearchString:(id)a3 completion:(id)a4
+- (void)querySpotlightCountWithSearchString:(id)string completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  stringCopy = string;
+  completionCopy = completion;
+  if ([stringCopy length])
   {
-    v8 = [(CHSpotlightIndexManager *)self logHandle];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(CHSpotlightIndexManager *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v6;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Fetching count for searchString: %@", &buf, 0xCu);
+      *(&buf + 4) = stringCopy;
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Fetching count for searchString: %@", &buf, 0xCu);
     }
 
-    v9 = [CHSpotlightSearchQueryUtilities searchQueryWithSearchString:v6];
-    v10 = [v9 queryContext];
-    [v10 setCounting:1];
+    v9 = [CHSpotlightSearchQueryUtilities searchQueryWithSearchString:stringCopy];
+    queryContext = [v9 queryContext];
+    [queryContext setCounting:1];
 
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -1224,13 +1224,13 @@ LABEL_12:
     v13[3] = &unk_100051238;
     v13[4] = self;
     p_buf = &buf;
-    v14 = v7;
+    v14 = completionCopy;
     [v9 setCompletionHandler:v13];
-    v11 = [(CHSpotlightIndexManager *)self logHandle];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    logHandle2 = [(CHSpotlightIndexManager *)self logHandle];
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
     {
       *v12 = 0;
-      _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Beginning search query", v12, 2u);
+      _os_log_impl(&_mh_execute_header, logHandle2, OS_LOG_TYPE_DEFAULT, "Beginning search query", v12, 2u);
     }
 
     [v9 start];
@@ -1238,21 +1238,21 @@ LABEL_12:
   }
 }
 
-- (void)querySpotlightWithSearchString:(id)a3 completion:(id)a4
+- (void)querySpotlightWithSearchString:(id)string completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  stringCopy = string;
+  completionCopy = completion;
+  if ([stringCopy length])
   {
-    v8 = [(CHSpotlightIndexManager *)self logHandle];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(CHSpotlightIndexManager *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v23 = v6;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Fetching items for searchString: %@", buf, 0xCu);
+      v23 = stringCopy;
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Fetching items for searchString: %@", buf, 0xCu);
     }
 
-    v9 = [CHSpotlightSearchQueryUtilities searchQueryWithSearchString:v6];
+    v9 = [CHSpotlightSearchQueryUtilities searchQueryWithSearchString:stringCopy];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_100010038;
@@ -1264,9 +1264,9 @@ LABEL_12:
     v14 = 3221225472;
     v15 = sub_100010044;
     v16 = &unk_100051260;
-    v17 = self;
+    selfCopy = self;
     v18 = v10;
-    v19 = v7;
+    v19 = completionCopy;
     v11 = v10;
     [v9 setCompletionHandler:&v13];
     v12 = [(CHSpotlightIndexManager *)self logHandle:v13];
@@ -1280,17 +1280,17 @@ LABEL_12:
   }
 }
 
-- (id)callsForItems:(id)a3
+- (id)callsForItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   if ([(CHFeatureFlags *)self->_featureFlags callHistorySearchEnabled])
   {
-    v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+    v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(itemsCopy, "count")}];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = v4;
+    v6 = itemsCopy;
     v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v7)
     {
@@ -1305,8 +1305,8 @@ LABEL_12:
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v16 + 1) + 8 * i) uniqueIdentifier];
-          [v5 addObject:v11];
+          uniqueIdentifier = [*(*(&v16 + 1) + 8 * i) uniqueIdentifier];
+          [v5 addObject:uniqueIdentifier];
         }
 
         v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -1328,42 +1328,42 @@ LABEL_12:
   return v14;
 }
 
-- (id)contactHandleForHandle:(id)a3
+- (id)contactHandleForHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   if ([(CHFeatureFlags *)self->_featureFlags callHistorySearchEnabled])
   {
-    v5 = [v4 normalizedValue];
-    if (![v5 length])
+    normalizedValue = [handleCopy normalizedValue];
+    if (![normalizedValue length])
     {
-      v6 = [v4 value];
+      value = [handleCopy value];
 
-      v5 = v6;
+      normalizedValue = value;
     }
   }
 
   else
   {
-    v5 = 0;
+    normalizedValue = 0;
   }
 
-  return v5;
+  return normalizedValue;
 }
 
 - (void)updateCurrentHistoryToken
 {
-  v2 = [(CHSpotlightIndexManager *)self contactChangeManager];
-  [v2 updateCurrentHistoryToken];
+  contactChangeManager = [(CHSpotlightIndexManager *)self contactChangeManager];
+  [contactChangeManager updateCurrentHistoryToken];
 }
 
-- (void)providersChangedForProviderManager:(id)a3
+- (void)providersChangedForProviderManager:(id)manager
 {
-  v4 = [(CHSpotlightIndexManager *)self callProviderIdentifiersForProviderManager:a3];
-  v5 = [(CHSpotlightIndexManager *)self logHandle];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  v4 = [(CHSpotlightIndexManager *)self callProviderIdentifiersForProviderManager:manager];
+  logHandle = [(CHSpotlightIndexManager *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
     *v6 = 0;
-    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received providersChangedForProviderManager callback", v6, 2u);
+    _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Received providersChangedForProviderManager callback", v6, 2u);
   }
 
   if ([(CHSpotlightIndexManager *)self needsProviderRefreshForCallProviderIdentifierQueries:v4])
@@ -1372,24 +1372,24 @@ LABEL_12:
   }
 }
 
-- (void)refreshCallProvidersWithCallProviderIdentifierQueries:(id)a3
+- (void)refreshCallProvidersWithCallProviderIdentifierQueries:(id)queries
 {
-  v4 = a3;
+  queriesCopy = queries;
   v5 = +[CHSpotlightSearchQueryUtilities userDefaults];
-  v6 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 hash]);
+  v6 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [queriesCopy hash]);
   [v5 setObject:v6 forKey:@"CHCallProvidersHashKey"];
 
-  if ([v4 count])
+  if ([queriesCopy count])
   {
-    v7 = [v4 allObjects];
-    v8 = [v7 componentsJoinedByString:@" && "];
+    allObjects = [queriesCopy allObjects];
+    v8 = [allObjects componentsJoinedByString:@" && "];
 
-    v9 = [(CHSpotlightIndexManager *)self logHandle];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(CHSpotlightIndexManager *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
       v12 = v8;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Provider list changed. Deleted Providers searchString: %@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Provider list changed. Deleted Providers searchString: %@", buf, 0xCu);
     }
 
     v10[0] = _NSConcreteStackBlock;
@@ -1401,10 +1401,10 @@ LABEL_12:
   }
 }
 
-- (id)callProviderIdentifiersForProviderManager:(id)a3
+- (id)callProviderIdentifiersForProviderManager:(id)manager
 {
-  v3 = [a3 providers];
-  v4 = [v3 arrayByApplyingSelector:"bundleIdentifier"];
+  providers = [manager providers];
+  v4 = [providers arrayByApplyingSelector:"bundleIdentifier"];
 
   v5 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v4 count]);
   v14 = 0u;
@@ -1440,33 +1440,33 @@ LABEL_12:
   return v5;
 }
 
-- (BOOL)needsProviderRefreshForCallProviderIdentifierQueries:(id)a3
+- (BOOL)needsProviderRefreshForCallProviderIdentifierQueries:(id)queries
 {
-  v3 = a3;
+  queriesCopy = queries;
   v4 = +[CHSpotlightSearchQueryUtilities userDefaults];
   v5 = [v4 objectForKey:@"CHCallProvidersHashKey"];
-  v6 = [v5 unsignedIntValue];
+  unsignedIntValue = [v5 unsignedIntValue];
 
-  v7 = [v3 hash];
-  return v7 != v6;
+  v7 = [queriesCopy hash];
+  return v7 != unsignedIntValue;
 }
 
 - (void)checkProviderStatusAfterDelay
 {
   v3 = dispatch_time(0, 5000000000);
-  v4 = [(CHSpotlightIndexManager *)self queue];
+  queue = [(CHSpotlightIndexManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001096C;
   block[3] = &unk_100050FA0;
   block[4] = self;
-  dispatch_after(v3, v4, block);
+  dispatch_after(v3, queue, block);
 }
 
 - (void)checkProviderStatus
 {
-  v3 = [(CHSpotlightIndexManager *)self callProviderManager];
-  v4 = [(CHSpotlightIndexManager *)self callProviderIdentifiersForProviderManager:v3];
+  callProviderManager = [(CHSpotlightIndexManager *)self callProviderManager];
+  v4 = [(CHSpotlightIndexManager *)self callProviderIdentifiersForProviderManager:callProviderManager];
 
   if ([(CHSpotlightIndexManager *)self needsProviderRefreshForCallProviderIdentifierQueries:v4])
   {

@@ -1,12 +1,12 @@
 @interface IDSQRProtoPluginControlRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IDSQRProtoPluginControlRequest
@@ -17,42 +17,42 @@
   v8.receiver = self;
   v8.super_class = IDSQRProtoPluginControlRequest;
   v4 = [(IDSQRProtoPluginControlRequest *)&v8 description];
-  v5 = [(IDSQRProtoPluginControlRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(IDSQRProtoPluginControlRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_pluginOperation];
-  [v3 setObject:v4 forKey:@"plugin_operation"];
+  [dictionary setObject:v4 forKey:@"plugin_operation"];
 
   pluginName = self->_pluginName;
   if (pluginName)
   {
-    [v3 setObject:pluginName forKey:@"plugin_name"];
+    [dictionary setObject:pluginName forKey:@"plugin_name"];
   }
 
   if (*&self->_has)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_pluginStreamId];
-    [v3 setObject:v6 forKey:@"plugin_stream_id"];
+    [dictionary setObject:v6 forKey:@"plugin_stream_id"];
   }
 
   pluginClientRawPublicKey = self->_pluginClientRawPublicKey;
   if (pluginClientRawPublicKey)
   {
-    [v3 setObject:pluginClientRawPublicKey forKey:@"plugin_client_raw_public_key"];
+    [dictionary setObject:pluginClientRawPublicKey forKey:@"plugin_client_raw_public_key"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   PBDataWriterWriteUint32Field();
   if (!self->_pluginName)
   {
@@ -65,38 +65,38 @@
     PBDataWriterWriteUint32Field();
   }
 
-  v4 = v5;
+  v4 = toCopy;
   if (self->_pluginClientRawPublicKey)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    v4 = toCopy;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v5 = a3;
-  v5[6] = self->_pluginOperation;
-  [v5 setPluginName:self->_pluginName];
-  v4 = v5;
+  toCopy = to;
+  toCopy[6] = self->_pluginOperation;
+  [toCopy setPluginName:self->_pluginName];
+  v4 = toCopy;
   if (*&self->_has)
   {
-    v5[7] = self->_pluginStreamId;
-    *(v5 + 32) |= 1u;
+    toCopy[7] = self->_pluginStreamId;
+    *(toCopy + 32) |= 1u;
   }
 
   if (self->_pluginClientRawPublicKey)
   {
-    [v5 setPluginClientRawPublicKey:?];
-    v4 = v5;
+    [toCopy setPluginClientRawPublicKey:?];
+    v4 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 24) = self->_pluginOperation;
-  v6 = [(NSString *)self->_pluginName copyWithZone:a3];
+  v6 = [(NSString *)self->_pluginName copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -106,28 +106,28 @@
     *(v5 + 32) |= 1u;
   }
 
-  v8 = [(NSData *)self->_pluginClientRawPublicKey copyWithZone:a3];
+  v8 = [(NSData *)self->_pluginClientRawPublicKey copyWithZone:zone];
   v9 = *(v5 + 8);
   *(v5 + 8) = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  if (self->_pluginOperation != *(v4 + 6))
+  if (self->_pluginOperation != *(equalCopy + 6))
   {
     goto LABEL_12;
   }
 
   pluginName = self->_pluginName;
-  if (pluginName | *(v4 + 2))
+  if (pluginName | *(equalCopy + 2))
   {
     if (![(NSString *)pluginName isEqual:?])
     {
@@ -137,13 +137,13 @@
 
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_pluginStreamId != *(v4 + 7))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_pluginStreamId != *(equalCopy + 7))
     {
       goto LABEL_12;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
 LABEL_12:
     v7 = 0;
@@ -151,7 +151,7 @@ LABEL_12:
   }
 
   pluginClientRawPublicKey = self->_pluginClientRawPublicKey;
-  if (pluginClientRawPublicKey | *(v4 + 1))
+  if (pluginClientRawPublicKey | *(equalCopy + 1))
   {
     v7 = [(NSData *)pluginClientRawPublicKey isEqual:?];
   }
@@ -183,27 +183,27 @@ LABEL_13:
   return v4 ^ v5 ^ [(NSData *)self->_pluginClientRawPublicKey hash]^ (2654435761 * pluginOperation);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_pluginOperation = v4[6];
-  v5 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  self->_pluginOperation = fromCopy[6];
+  v5 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(IDSQRProtoPluginControlRequest *)self setPluginName:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[8])
+  if (fromCopy[8])
   {
-    self->_pluginStreamId = v4[7];
+    self->_pluginStreamId = fromCopy[7];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(IDSQRProtoPluginControlRequest *)self setPluginClientRawPublicKey:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

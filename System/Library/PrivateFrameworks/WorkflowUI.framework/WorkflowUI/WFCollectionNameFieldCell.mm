@@ -1,7 +1,7 @@
 @interface WFCollectionNameFieldCell
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (void)layoutSubviews;
-- (void)textFieldDidEndEditing:(id)a3;
+- (void)textFieldDidEndEditing:(id)editing;
 - (void)textFieldValueDidChange;
 @end
 
@@ -9,28 +9,28 @@
 
 - (void)textFieldValueDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_274820048();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_274820120();
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
-  sub_274820208(v4);
+  editingCopy = editing;
+  selfCopy = self;
+  sub_274820208(editingCopy);
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
-  v5 = self;
-  sub_274820338(v4);
+  returnCopy = return;
+  selfCopy = self;
+  sub_274820338(returnCopy);
 
   return 1;
 }

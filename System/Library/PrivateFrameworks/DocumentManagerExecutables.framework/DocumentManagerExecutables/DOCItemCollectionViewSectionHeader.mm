@@ -1,6 +1,6 @@
 @interface DOCItemCollectionViewSectionHeader
 - (id)accessibilityTitleLabel;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
 - (void)didMoveToWindow;
 - (void)prepareForReuse;
 @end
@@ -13,11 +13,11 @@
   v5.super_class = type metadata accessor for DOCItemCollectionViewSectionHeader();
   v2 = v5.receiver;
   [(DOCItemCollectionViewSectionHeader *)&v5 didMoveToWindow];
-  v3 = [v2 window];
-  if (v3)
+  window = [v2 window];
+  if (window)
   {
 
-    v4 = [v2 traitCollection];
+    traitCollection = [v2 traitCollection];
     (*((*MEMORY[0x277D85000] & *v2) + 0x4A8))();
   }
 }
@@ -33,18 +33,18 @@
   (*((*v3 & *v2) + 0x3B0))(v4, 0.0);
   (*((*v3 & *v2) + 0x430))(0, 0);
   DOCItemCollectionViewSectionHeader.setSeparatorAppearance()();
-  v5 = [v2 traitCollection];
+  traitCollection = [v2 traitCollection];
   (*((*v3 & *v2) + 0x4A8))();
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = type metadata accessor for UICellConfigurationState();
   v5 = *(v4 - 8);
   MEMORY[0x28223BE20](v4, v6);
   v8 = (&v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0));
   static UICellConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   DOCItemCollectionViewSectionHeader.updateConfiguration(using:)(v8);
 
   (*(v5 + 8))(v8, v4);
@@ -52,7 +52,7 @@
 
 - (id)accessibilityTitleLabel
 {
-  v2 = self;
+  selfCopy = self;
   DOCItemCollectionViewSectionHeader.accessibilityTitleLabel()(v3);
   v5 = v4;
 

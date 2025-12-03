@@ -2,38 +2,38 @@
 - (NSIndexSet)indexesOfDeletedItems;
 - (NSIndexSet)indexesOfInsertedItems;
 - (SFCapsuleCollectionView)collectionView;
-- (SFCapsuleCollectionViewUpdate)initWithCollectionView:(id)a3;
+- (SFCapsuleCollectionViewUpdate)initWithCollectionView:(id)view;
 - (void)_calculateIndexesIfNeeded;
-- (void)deleteItemsAtIndexes:(id)a3 animated:(BOOL)a4;
-- (void)insertItemsAtIndexes:(id)a3 animated:(BOOL)a4;
-- (void)setSelectedItemIndex:(int64_t)a3 animated:(BOOL)a4;
+- (void)deleteItemsAtIndexes:(id)indexes animated:(BOOL)animated;
+- (void)insertItemsAtIndexes:(id)indexes animated:(BOOL)animated;
+- (void)setSelectedItemIndex:(int64_t)index animated:(BOOL)animated;
 @end
 
 @implementation SFCapsuleCollectionViewUpdate
 
-- (SFCapsuleCollectionViewUpdate)initWithCollectionView:(id)a3
+- (SFCapsuleCollectionViewUpdate)initWithCollectionView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v26.receiver = self;
   v26.super_class = SFCapsuleCollectionViewUpdate;
   v5 = [(SFCapsuleCollectionViewUpdate *)&v26 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_collectionView, v4);
-    v7 = [v4 _items];
-    v8 = [v7 copy];
+    objc_storeWeak(&v5->_collectionView, viewCopy);
+    _items = [viewCopy _items];
+    v8 = [_items copy];
     itemsBeforeUpdate = v6->_itemsBeforeUpdate;
     v6->_itemsBeforeUpdate = v8;
 
-    v10 = [v4 _indexesOfVisibleItemsIncludingAction:1];
+    v10 = [viewCopy _indexesOfVisibleItemsIncludingAction:1];
     v11 = [v10 copy];
     indexesOfVisibleItemsBeforeUpdate = v6->_indexesOfVisibleItemsBeforeUpdate;
     v6->_indexesOfVisibleItemsBeforeUpdate = v11;
 
-    v6->_selectedItemIndexBeforeUpdate = [v4 selectedItemIndex];
-    v13 = [v4 _items];
-    v14 = [v13 mutableCopy];
+    v6->_selectedItemIndexBeforeUpdate = [viewCopy selectedItemIndex];
+    _items2 = [viewCopy _items];
+    v14 = [_items2 mutableCopy];
     itemsAfterUpdate = v6->_itemsAfterUpdate;
     v6->_itemsAfterUpdate = v14;
 
@@ -46,13 +46,13 @@
     insertedItems = v6->_insertedItems;
     v6->_insertedItems = v18;
 
-    v20 = [MEMORY[0x1E696AC90] indexSet];
+    indexSet = [MEMORY[0x1E696AC90] indexSet];
     indexesOfDeletedItems = v6->_indexesOfDeletedItems;
-    v6->_indexesOfDeletedItems = v20;
+    v6->_indexesOfDeletedItems = indexSet;
 
-    v22 = [MEMORY[0x1E696AC90] indexSet];
+    indexSet2 = [MEMORY[0x1E696AC90] indexSet];
     indexesOfInsertedItems = v6->_indexesOfInsertedItems;
-    v6->_indexesOfInsertedItems = v22;
+    v6->_indexesOfInsertedItems = indexSet2;
 
     v24 = v6;
   }
@@ -60,9 +60,9 @@
   return v6;
 }
 
-- (void)setSelectedItemIndex:(int64_t)a3 animated:(BOOL)a4
+- (void)setSelectedItemIndex:(int64_t)index animated:(BOOL)animated
 {
-  if (self->_selectedItemIndexAfterUpdate != a3)
+  if (self->_selectedItemIndexAfterUpdate != index)
   {
     indexesOfDeletedItems = self->_indexesOfDeletedItems;
     self->_indexesOfDeletedItems = 0;
@@ -70,16 +70,16 @@
     indexesOfInsertedItems = self->_indexesOfInsertedItems;
     self->_indexesOfInsertedItems = 0;
 
-    self->_selectedItemIndexAfterUpdate = a3;
-    self->_animated |= a4;
+    self->_selectedItemIndexAfterUpdate = index;
+    self->_animated |= animated;
   }
 }
 
-- (void)insertItemsAtIndexes:(id)a3 animated:(BOOL)a4
+- (void)insertItemsAtIndexes:(id)indexes animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 count])
+  animatedCopy = animated;
+  indexesCopy = indexes;
+  if ([indexesCopy count])
   {
     indexesOfDeletedItems = self->_indexesOfDeletedItems;
     self->_indexesOfDeletedItems = 0;
@@ -87,9 +87,9 @@
     indexesOfInsertedItems = self->_indexesOfInsertedItems;
     self->_indexesOfInsertedItems = 0;
 
-    v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+    v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(indexesCopy, "count")}];
     v10 = [v9 count];
-    if (v10 < [v6 count])
+    if (v10 < [indexesCopy count])
     {
       do
       {
@@ -101,13 +101,13 @@
         v14 = [v9 count];
       }
 
-      while (v14 < [v6 count]);
+      while (v14 < [indexesCopy count]);
     }
 
     [(NSMutableSet *)self->_insertedItems addObjectsFromArray:v9];
-    [(NSMutableArray *)self->_itemsAfterUpdate insertObjects:v9 atIndexes:v6];
+    [(NSMutableArray *)self->_itemsAfterUpdate insertObjects:v9 atIndexes:indexesCopy];
     selectedItemIndexAfterUpdate = self->_selectedItemIndexAfterUpdate;
-    self->_selectedItemIndexAfterUpdate = [v6 countOfIndexesInRange:{0, selectedItemIndexAfterUpdate + 1}] + selectedItemIndexAfterUpdate;
+    self->_selectedItemIndexAfterUpdate = [indexesCopy countOfIndexesInRange:{0, selectedItemIndexAfterUpdate + 1}] + selectedItemIndexAfterUpdate;
     if ([(NSMutableArray *)self->_itemsAfterUpdate count]> 1)
     {
       v16 = self->_selectedItemIndexAfterUpdate;
@@ -122,10 +122,10 @@
     v20[2] = __63__SFCapsuleCollectionViewUpdate_insertItemsAtIndexes_animated___block_invoke;
     v20[3] = &unk_1E721B498;
     v20[4] = self;
-    v17 = [v6 indexesPassingTest:v20];
+    v17 = [indexesCopy indexesPassingTest:v20];
     v18 = v17;
     animated = self->_animated;
-    if (v4 && !self->_animated)
+    if (animatedCopy && !self->_animated)
     {
       animated = [v17 count] != 0;
     }
@@ -145,10 +145,10 @@ BOOL __63__SFCapsuleCollectionViewUpdate_insertItemsAtIndexes_animated___block_i
   return v2 < 2;
 }
 
-- (void)deleteItemsAtIndexes:(id)a3 animated:(BOOL)a4
+- (void)deleteItemsAtIndexes:(id)indexes animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  indexesCopy = indexes;
   indexesOfDeletedItems = self->_indexesOfDeletedItems;
   self->_indexesOfDeletedItems = 0;
 
@@ -160,30 +160,30 @@ BOOL __63__SFCapsuleCollectionViewUpdate_insertItemsAtIndexes_animated___block_i
   v22[2] = __63__SFCapsuleCollectionViewUpdate_deleteItemsAtIndexes_animated___block_invoke;
   v22[3] = &unk_1E721B498;
   v22[4] = self;
-  v9 = [v6 indexesPassingTest:v22];
+  v9 = [indexesCopy indexesPassingTest:v22];
   v10 = v9;
   animated = self->_animated;
-  if (v4 && !self->_animated)
+  if (animatedCopy && !self->_animated)
   {
     animated = [v9 count] != 0;
   }
 
   self->_animated = animated;
   deletedItems = self->_deletedItems;
-  v13 = [(NSMutableArray *)self->_itemsAfterUpdate objectsAtIndexes:v6];
+  v13 = [(NSMutableArray *)self->_itemsAfterUpdate objectsAtIndexes:indexesCopy];
   [(NSMutableSet *)deletedItems addObjectsFromArray:v13];
 
   v14 = [(NSMutableArray *)self->_itemsAfterUpdate copy];
-  [(NSMutableArray *)self->_itemsAfterUpdate removeObjectsAtIndexes:v6];
+  [(NSMutableArray *)self->_itemsAfterUpdate removeObjectsAtIndexes:indexesCopy];
   selectedItemIndexAfterUpdate = self->_selectedItemIndexAfterUpdate;
-  for (i = -[NSMutableArray count](self->_itemsAfterUpdate, "count"); selectedItemIndexAfterUpdate < i - 1 && [v6 containsIndex:selectedItemIndexAfterUpdate]; i = -[NSMutableArray count](self->_itemsAfterUpdate, "count"))
+  for (i = -[NSMutableArray count](self->_itemsAfterUpdate, "count"); selectedItemIndexAfterUpdate < i - 1 && [indexesCopy containsIndex:selectedItemIndexAfterUpdate]; i = -[NSMutableArray count](self->_itemsAfterUpdate, "count"))
   {
     ++selectedItemIndexAfterUpdate;
   }
 
   if (selectedItemIndexAfterUpdate >= 1)
   {
-    while ([v6 containsIndex:selectedItemIndexAfterUpdate])
+    while ([indexesCopy containsIndex:selectedItemIndexAfterUpdate])
     {
       if (selectedItemIndexAfterUpdate-- <= 1)
       {
@@ -270,7 +270,7 @@ BOOL __63__SFCapsuleCollectionViewUpdate_deleteItemsAtIndexes_animated___block_i
     v17[2] = __58__SFCapsuleCollectionViewUpdate__calculateIndexesIfNeeded__block_invoke;
     v17[3] = &unk_1E721B4C0;
     v18 = v5;
-    v19 = self;
+    selfCopy = self;
     v7 = v5;
     v8 = [(NSArray *)itemsBeforeUpdate indexesOfObjectsPassingTest:v17];
     indexesOfDeletedItems = self->_indexesOfDeletedItems;
@@ -282,7 +282,7 @@ BOOL __63__SFCapsuleCollectionViewUpdate_deleteItemsAtIndexes_animated___block_i
     v14[2] = __58__SFCapsuleCollectionViewUpdate__calculateIndexesIfNeeded__block_invoke_2;
     v14[3] = &unk_1E721B4C0;
     v15 = v4;
-    v16 = self;
+    selfCopy2 = self;
     v11 = v4;
     v12 = [(NSMutableArray *)itemsAfterUpdate indexesOfObjectsPassingTest:v14];
     indexesOfInsertedItems = self->_indexesOfInsertedItems;

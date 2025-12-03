@@ -1,19 +1,19 @@
 @interface ProfileDevicePickerMainController
-- (void)_discoveryFoundDevice:(id)a3;
+- (void)_discoveryFoundDevice:(id)device;
 - (void)_discoveryStart;
 - (void)_discoveryStop;
 - (void)_discoveryTimeout;
 - (void)_pickerAlertCanceled;
-- (void)_pickerAlertHandlePickedDevice:(id)a3;
+- (void)_pickerAlertHandlePickedDevice:(id)device;
 - (void)_pickerAlertShow;
-- (void)_pickerAlertShowError:(id)a3;
+- (void)_pickerAlertShowError:(id)error;
 - (void)_pickerAlertShowNoDevices;
 - (void)_pickerAlertShowSuccess;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)dismiss:(int)a3;
-- (void)handleButtonActions:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)dismiss:(int)dismiss;
+- (void)handleButtonActions:(id)actions;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation ProfileDevicePickerMainController
@@ -54,14 +54,14 @@
   [v9 postNotificationName:@"com.apple.sharing.DeviceProfile" object:@"com.apple.sharingd" userInfo:&off_10019AFC8 deliverImmediately:1];
 }
 
-- (void)_pickerAlertShowError:(id)a3
+- (void)_pickerAlertShowError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"CHOOSE_INSTALL_FAILED_TITLE" value:&stru_100195CA8 table:@"Localizable"];
 
-  v7 = [v4 code];
-  v15 = sub_100127B60(@"CHOOSE_INSTALL_FAILED_INFO_FORMAT", v8, v9, v10, v11, v12, v13, v14, v7);
+  code = [errorCopy code];
+  v15 = sub_100127B60(@"CHOOSE_INSTALL_FAILED_INFO_FORMAT", v8, v9, v10, v11, v12, v13, v14, code);
   v16 = [UIAlertController alertControllerWithTitle:v6 message:v15 preferredStyle:1];
   v17 = +[NSBundle mainBundle];
   v18 = [v17 localizedStringForKey:@"OK_BUTTON_TITLE" value:&stru_100195CA8 table:@"Localizable"];
@@ -75,9 +75,9 @@
   [v16 addAction:v19];
   [(ProfileDevicePickerMainController *)self presentViewController:v16 animated:1 completion:0];
   v25 = @"errorCode";
-  v20 = [v4 code];
+  code2 = [errorCopy code];
 
-  v21 = [NSNumber numberWithInteger:v20];
+  v21 = [NSNumber numberWithInteger:code2];
   v26 = v21;
   v22 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
 
@@ -109,9 +109,9 @@
   [v11 postNotificationName:@"com.apple.sharing.DeviceProfile" object:@"com.apple.sharingd" userInfo:&off_10019AFA0 deliverImmediately:1];
 }
 
-- (void)_pickerAlertHandlePickedDevice:(id)a3
+- (void)_pickerAlertHandlePickedDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   CFDataGetTypeID();
   v5 = CFDictionaryGetTypedValue();
   if (v5)
@@ -120,7 +120,7 @@
     systemSession = self->_systemSession;
     self->_systemSession = v6;
 
-    [(SFSystemSession *)self->_systemSession setPeerDevice:v4];
+    [(SFSystemSession *)self->_systemSession setPeerDevice:deviceCopy];
     [(SFSystemSession *)self->_systemSession activate];
     v8 = self->_systemSession;
     v18[0] = _NSConcreteStackBlock;
@@ -246,10 +246,10 @@ LABEL_16:
               }
 
               v19 = *(*(&v31 + 1) + 8 * i);
-              v20 = [v19 name];
-              if (v20)
+              name = [v19 name];
+              if (name)
               {
-                v21 = v20;
+                v21 = name;
               }
 
               else
@@ -323,23 +323,23 @@ LABEL_28:
   [(ProfileDevicePickerMainController *)self _pickerAlertShow];
 }
 
-- (void)_discoveryFoundDevice:(id)a3
+- (void)_discoveryFoundDevice:(id)device
 {
-  v12 = a3;
-  v4 = [v12 model];
-  v5 = v4;
+  deviceCopy = device;
+  model = [deviceCopy model];
+  v5 = model;
   pickerFlags = self->_pickerFlags;
   if (pickerFlags)
   {
-    if ([v4 hasPrefix:@"AppleTV"])
+    if ([model hasPrefix:@"AppleTV"])
     {
 LABEL_10:
-      v7 = [v12 identifier];
-      if (v7)
+      identifier = [deviceCopy identifier];
+      if (identifier)
       {
         if (dword_1001BEBC0 <= 30 && (dword_1001BEBC0 != -1 || _LogCategory_Initialize()))
         {
-          v11 = v12;
+          v11 = deviceCopy;
           LogPrintF();
         }
 
@@ -353,7 +353,7 @@ LABEL_10:
           devices = self->_devices;
         }
 
-        [(NSMutableDictionary *)devices setObject:v12 forKeyedSubscript:v7, v11];
+        [(NSMutableDictionary *)devices setObject:deviceCopy forKeyedSubscript:identifier, v11];
       }
 
       else if (dword_1001BEBC0 <= 60 && (dword_1001BEBC0 != -1 || _LogCategory_Initialize()))
@@ -412,14 +412,14 @@ LABEL_24:
   [(SFDeviceDiscovery *)self->_deviceDiscovery activateWithCompletion:&stru_100195020];
 }
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [actionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -430,7 +430,7 @@ LABEL_24:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(actionsCopy);
         }
 
         if (([*(*(&v9 + 1) + 8 * i) events] & 0x10) != 0)
@@ -444,20 +444,20 @@ LABEL_24:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [actionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)dismiss:(int)a3
+- (void)dismiss:(int)dismiss
 {
   if (!self->_dismissed)
   {
     self->_dismissed = 1;
-    v4 = [(ProfileDevicePickerMainController *)self _remoteViewControllerProxy];
-    v5 = v4;
+    _remoteViewControllerProxy = [(ProfileDevicePickerMainController *)self _remoteViewControllerProxy];
+    v5 = _remoteViewControllerProxy;
     alertController = self->_alertController;
     if (alertController)
     {
@@ -465,20 +465,20 @@ LABEL_24:
       v7[1] = 3221225472;
       v7[2] = sub_10010DCE0;
       v7[3] = &unk_100195AC0;
-      v8 = v4;
+      v8 = _remoteViewControllerProxy;
       [(UIAlertController *)alertController dismissViewControllerAnimated:1 completion:v7];
     }
 
     else
     {
-      [v4 dismiss];
+      [_remoteViewControllerProxy dismiss];
     }
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (dword_1001BEBC0 <= 30 && (dword_1001BEBC0 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -497,12 +497,12 @@ LABEL_24:
 
   v5.receiver = self;
   v5.super_class = ProfileDevicePickerMainController;
-  [(SVSBaseMainController *)&v5 viewDidDisappear:v3];
+  [(SVSBaseMainController *)&v5 viewDidDisappear:disappearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (dword_1001BEBC0 <= 30 && (dword_1001BEBC0 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -510,16 +510,16 @@ LABEL_24:
 
   v5.receiver = self;
   v5.super_class = ProfileDevicePickerMainController;
-  [(ProfileDevicePickerMainController *)&v5 viewDidAppear:v3];
+  [(ProfileDevicePickerMainController *)&v5 viewDidAppear:appearCopy];
   [(ProfileDevicePickerMainController *)self _discoveryStart];
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 userInfo];
+  completionCopy = completion;
+  userInfo = [context userInfo];
   userInfo = self->super._userInfo;
-  self->super._userInfo = v7;
+  self->super._userInfo = userInfo;
 
   if (dword_1001BEBC0 <= 30 && (dword_1001BEBC0 != -1 || _LogCategory_Initialize()))
   {
@@ -527,9 +527,9 @@ LABEL_24:
   }
 
   self->_pickerFlags = CFDictionaryGetInt64Ranged();
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 

@@ -13,11 +13,11 @@
     v3 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
-      v4 = [(_CKTranscriptNavigationBarTitleView *)self superview];
+      superview = [(_CKTranscriptNavigationBarTitleView *)self superview];
       *buf = 138412546;
-      v7 = self;
+      selfCopy = self;
       v8 = 2112;
-      v9 = v4;
+      v9 = superview;
       _os_log_impl(&dword_19020E000, v3, OS_LOG_TYPE_INFO, "_CKTranscriptNavigationBarTitleView instance\n {%@} is being removed from its superview\n {%@}.", buf, 0x16u);
     }
   }
@@ -38,11 +38,11 @@
     v3 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
-      v4 = [(_CKTranscriptNavigationBarTitleView *)self superview];
+      superview = [(_CKTranscriptNavigationBarTitleView *)self superview];
       *buf = 138412546;
-      v7 = self;
+      selfCopy = self;
       v8 = 2112;
-      v9 = v4;
+      v9 = superview;
       _os_log_impl(&dword_19020E000, v3, OS_LOG_TYPE_INFO, "_CKTranscriptNavigationBarTitleView instance\n {%@} did move to superview\n {%@}.", buf, 0x16u);
     }
   }

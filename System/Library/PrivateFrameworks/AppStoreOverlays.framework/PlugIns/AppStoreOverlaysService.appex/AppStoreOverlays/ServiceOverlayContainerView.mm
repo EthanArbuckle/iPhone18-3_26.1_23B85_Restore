@@ -1,13 +1,13 @@
 @interface ServiceOverlayContainerView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC23AppStoreOverlaysService27ServiceOverlayContainerView)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC23AppStoreOverlaysService27ServiceOverlayContainerView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)setContentView:(id)a3;
+- (void)setContentView:(id)view;
 @end
 
 @implementation ServiceOverlayContainerView
 
-- (_TtC23AppStoreOverlaysService27ServiceOverlayContainerView)initWithCoder:(id)a3
+- (_TtC23AppStoreOverlaysService27ServiceOverlayContainerView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC23AppStoreOverlaysService27ServiceOverlayContainerView_contentView) = 0;
   result = sub_100018588();
@@ -15,24 +15,24 @@
   return result;
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v6 = a3;
-  v5 = self;
-  sub_100011404(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_100011404(view);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100010FF0();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   sub_100011230(width, height);
   v7 = v6;
   v9 = v8;

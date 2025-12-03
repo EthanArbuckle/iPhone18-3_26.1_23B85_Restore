@@ -1,26 +1,26 @@
 @interface RFSchemaRFPatternExecuted
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (RFSchemaRFPatternExecuted)initWithDictionary:(id)a3;
-- (RFSchemaRFPatternExecuted)initWithJSON:(id)a3;
+- (RFSchemaRFPatternExecuted)initWithDictionary:(id)dictionary;
+- (RFSchemaRFPatternExecuted)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasMode:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasMode:(BOOL)mode;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RFSchemaRFPatternExecuted
 
-- (RFSchemaRFPatternExecuted)initWithDictionary:(id)a3
+- (RFSchemaRFPatternExecuted)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = RFSchemaRFPatternExecuted;
   v5 = [(RFSchemaRFPatternExecuted *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"patternId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"patternId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,21 +28,21 @@
       [(RFSchemaRFPatternExecuted *)v5 setPatternId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"pattern"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"pattern"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[RFSchemaRFPatternExecuted setPattern:](v5, "setPattern:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"mode"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"mode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[RFSchemaRFPatternExecuted setMode:](v5, "setMode:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"responseViewId"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"responseViewId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,30 +56,30 @@
   return v5;
 }
 
-- (RFSchemaRFPatternExecuted)initWithJSON:(id)a3
+- (RFSchemaRFPatternExecuted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(RFSchemaRFPatternExecuted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(RFSchemaRFPatternExecuted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(RFSchemaRFPatternExecuted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -92,7 +92,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -107,7 +107,7 @@
       v6 = off_1E78E1E48[v5];
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"mode"];
+    [dictionary setObject:v6 forKeyedSubscript:@"mode"];
     has = self->_has;
   }
 
@@ -124,26 +124,26 @@
       v8 = off_1E78E1E68[v7];
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"pattern"];
+    [dictionary setObject:v8 forKeyedSubscript:@"pattern"];
   }
 
   if (self->_patternId)
   {
-    v9 = [(RFSchemaRFPatternExecuted *)self patternId];
-    v10 = [v9 copy];
-    [v3 setObject:v10 forKeyedSubscript:@"patternId"];
+    patternId = [(RFSchemaRFPatternExecuted *)self patternId];
+    v10 = [patternId copy];
+    [dictionary setObject:v10 forKeyedSubscript:@"patternId"];
   }
 
   if (self->_responseViewId)
   {
-    v11 = [(RFSchemaRFPatternExecuted *)self responseViewId];
-    v12 = [v11 copy];
-    [v3 setObject:v12 forKeyedSubscript:@"responseViewId"];
+    responseViewId = [(RFSchemaRFPatternExecuted *)self responseViewId];
+    v12 = [responseViewId copy];
+    [dictionary setObject:v12 forKeyedSubscript:@"responseViewId"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -173,28 +173,28 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ [(NSString *)self->_responseViewId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
-  v5 = [(RFSchemaRFPatternExecuted *)self patternId];
-  v6 = [v4 patternId];
-  if ((v5 != 0) == (v6 == 0))
+  patternId = [(RFSchemaRFPatternExecuted *)self patternId];
+  patternId2 = [equalCopy patternId];
+  if ((patternId != 0) == (patternId2 == 0))
   {
     goto LABEL_18;
   }
 
-  v7 = [(RFSchemaRFPatternExecuted *)self patternId];
-  if (v7)
+  patternId3 = [(RFSchemaRFPatternExecuted *)self patternId];
+  if (patternId3)
   {
-    v8 = v7;
-    v9 = [(RFSchemaRFPatternExecuted *)self patternId];
-    v10 = [v4 patternId];
-    v11 = [v9 isEqual:v10];
+    v8 = patternId3;
+    patternId4 = [(RFSchemaRFPatternExecuted *)self patternId];
+    patternId5 = [equalCopy patternId];
+    v11 = [patternId4 isEqual:patternId5];
 
     if (!v11)
     {
@@ -207,7 +207,7 @@ LABEL_3:
   }
 
   has = self->_has;
-  v13 = v4[32];
+  v13 = equalCopy[32];
   if ((*&has & 1) != (v13 & 1))
   {
     goto LABEL_19;
@@ -216,13 +216,13 @@ LABEL_3:
   if (*&has)
   {
     pattern = self->_pattern;
-    if (pattern != [v4 pattern])
+    if (pattern != [equalCopy pattern])
     {
       goto LABEL_19;
     }
 
     has = self->_has;
-    v13 = v4[32];
+    v13 = equalCopy[32];
   }
 
   v15 = (*&has >> 1) & 1;
@@ -234,23 +234,23 @@ LABEL_3:
   if (v15)
   {
     mode = self->_mode;
-    if (mode != [v4 mode])
+    if (mode != [equalCopy mode])
     {
       goto LABEL_19;
     }
   }
 
-  v5 = [(RFSchemaRFPatternExecuted *)self responseViewId];
-  v6 = [v4 responseViewId];
-  if ((v5 != 0) == (v6 == 0))
+  patternId = [(RFSchemaRFPatternExecuted *)self responseViewId];
+  patternId2 = [equalCopy responseViewId];
+  if ((patternId != 0) == (patternId2 == 0))
   {
 LABEL_18:
 
     goto LABEL_19;
   }
 
-  v17 = [(RFSchemaRFPatternExecuted *)self responseViewId];
-  if (!v17)
+  responseViewId = [(RFSchemaRFPatternExecuted *)self responseViewId];
+  if (!responseViewId)
   {
 
 LABEL_22:
@@ -258,10 +258,10 @@ LABEL_22:
     goto LABEL_20;
   }
 
-  v18 = v17;
-  v19 = [(RFSchemaRFPatternExecuted *)self responseViewId];
-  v20 = [v4 responseViewId];
-  v21 = [v19 isEqual:v20];
+  v18 = responseViewId;
+  responseViewId2 = [(RFSchemaRFPatternExecuted *)self responseViewId];
+  responseViewId3 = [equalCopy responseViewId];
+  v21 = [responseViewId2 isEqual:responseViewId3];
 
   if (v21)
   {
@@ -275,12 +275,12 @@ LABEL_20:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(RFSchemaRFPatternExecuted *)self patternId];
+  toCopy = to;
+  patternId = [(RFSchemaRFPatternExecuted *)self patternId];
 
-  if (v4)
+  if (patternId)
   {
     PBDataWriterWriteStringField();
   }
@@ -297,19 +297,19 @@ LABEL_20:
     PBDataWriterWriteInt32Field();
   }
 
-  v6 = [(RFSchemaRFPatternExecuted *)self responseViewId];
+  responseViewId = [(RFSchemaRFPatternExecuted *)self responseViewId];
 
-  v7 = v8;
-  if (v6)
+  v7 = toCopy;
+  if (responseViewId)
   {
     PBDataWriterWriteStringField();
-    v7 = v8;
+    v7 = toCopy;
   }
 }
 
-- (void)setHasMode:(BOOL)a3
+- (void)setHasMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 2;
   }

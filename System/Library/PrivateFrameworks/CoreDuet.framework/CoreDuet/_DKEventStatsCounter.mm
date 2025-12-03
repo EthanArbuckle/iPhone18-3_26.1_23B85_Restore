@@ -1,17 +1,17 @@
 @interface _DKEventStatsCounter
-+ (id)counterInCollection:(void *)a3 withEventName:;
++ (id)counterInCollection:(void *)collection withEventName:;
 - (id)eventName;
-- (void)incrementCountByNumber:(uint64_t)a1;
+- (void)incrementCountByNumber:(uint64_t)number;
 @end
 
 @implementation _DKEventStatsCounter
 
-+ (id)counterInCollection:(void *)a3 withEventName:
++ (id)counterInCollection:(void *)collection withEventName:
 {
-  v4 = a3;
+  collectionCopy = collection;
   v5 = a2;
   v6 = objc_opt_self();
-  v7 = [_DKEventStatsCollection counterWithClass:v6 collectionName:v5 eventName:v4 eventType:0 eventTypePossibleValues:0 hasResult:0 scalar:1];
+  v7 = [_DKEventStatsCollection counterWithClass:v6 collectionName:v5 eventName:collectionCopy eventType:0 eventTypePossibleValues:0 hasResult:0 scalar:1];
 
   return v7;
 }
@@ -30,15 +30,15 @@
   }
 }
 
-- (void)incrementCountByNumber:(uint64_t)a1
+- (void)incrementCountByNumber:(uint64_t)number
 {
-  if (a1)
+  if (number)
   {
-    [(_DKEventStatsCounterInternal *)*(a1 + 8) incrementCountByNumber:a2 typeValue:0 success:0];
+    [(_DKEventStatsCounterInternal *)*(number + 8) incrementCountByNumber:a2 typeValue:0 success:0];
     OUTLINED_FUNCTION_3_16();
     if ((v4 & 1) == 0)
     {
-      Property = *(a1 + 8);
+      Property = *(number + 8);
       if (Property)
       {
         OUTLINED_FUNCTION_8_8();

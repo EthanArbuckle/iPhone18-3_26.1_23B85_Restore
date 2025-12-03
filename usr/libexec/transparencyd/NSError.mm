@@ -1,17 +1,17 @@
 @interface NSError
-+ (NSError)errorWithDomain:(id)a3 code:(int64_t)a4 userInfo:(id)a5 description:(id)a6 underlying:(id)a7;
++ (NSError)errorWithDomain:(id)domain code:(int64_t)code userInfo:(id)info description:(id)description underlying:(id)underlying;
 @end
 
 @implementation NSError
 
-+ (NSError)errorWithDomain:(id)a3 code:(int64_t)a4 userInfo:(id)a5 description:(id)a6 underlying:(id)a7
++ (NSError)errorWithDomain:(id)domain code:(int64_t)code userInfo:(id)info description:(id)description underlying:(id)underlying
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a3;
-  if (a5)
+  underlyingCopy = underlying;
+  descriptionCopy = description;
+  domainCopy = domain;
+  if (info)
   {
-    [NSMutableDictionary dictionaryWithDictionary:a5];
+    [NSMutableDictionary dictionaryWithDictionary:info];
   }
 
   else
@@ -19,10 +19,10 @@
     +[NSMutableDictionary dictionary];
   }
   v14 = ;
-  [v14 setObject:v12 forKeyedSubscript:NSLocalizedDescriptionKey];
+  [v14 setObject:descriptionCopy forKeyedSubscript:NSLocalizedDescriptionKey];
 
-  [v14 setObject:v11 forKeyedSubscript:NSUnderlyingErrorKey];
-  v15 = [NSError errorWithDomain:v13 code:a4 userInfo:v14];
+  [v14 setObject:underlyingCopy forKeyedSubscript:NSUnderlyingErrorKey];
+  v15 = [NSError errorWithDomain:domainCopy code:code userInfo:v14];
 
   return v15;
 }

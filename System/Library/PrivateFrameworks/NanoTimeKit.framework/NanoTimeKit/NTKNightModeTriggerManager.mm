@@ -1,41 +1,41 @@
 @interface NTKNightModeTriggerManager
-- (NTKNightModeTriggerManager)initWithFaceAnalyticsIdentifier:(id)a3;
+- (NTKNightModeTriggerManager)initWithFaceAnalyticsIdentifier:(id)identifier;
 - (double)_alsLatency;
 - (void)_notifyObservers;
-- (void)_setNightModeTriggered:(BOOL)a3;
+- (void)_setNightModeTriggered:(BOOL)triggered;
 - (void)_startClockTimer;
 - (void)_stopClockTimer;
 - (void)_updateAverageWithCurrentLux;
 - (void)_updateAverageWithCurrentNits;
-- (void)_updateAverageWithLux:(double)a3;
-- (void)_updateAverageWithNits:(double)a3;
+- (void)_updateAverageWithLux:(double)lux;
+- (void)_updateAverageWithNits:(double)nits;
 - (void)_updateTriggerState;
-- (void)addObserver:(id)a3;
-- (void)ambientIlluminationMonitor:(id)a3 receivedAmbientLux:(double)a4;
+- (void)addObserver:(id)observer;
+- (void)ambientIlluminationMonitor:(id)monitor receivedAmbientLux:(double)lux;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
-- (void)sampleSizeChanged:(id)a3;
-- (void)setNightModeDetectionEnabled:(BOOL)a3;
-- (void)setThresholdLuxHigh:(double)a3;
-- (void)setThresholdLuxLow:(double)a3;
-- (void)setThresholdOffset:(double)a3;
-- (void)thresholdsChanged:(id)a3;
+- (void)removeObserver:(id)observer;
+- (void)sampleSizeChanged:(id)changed;
+- (void)setNightModeDetectionEnabled:(BOOL)enabled;
+- (void)setThresholdLuxHigh:(double)high;
+- (void)setThresholdLuxLow:(double)low;
+- (void)setThresholdOffset:(double)offset;
+- (void)thresholdsChanged:(id)changed;
 @end
 
 @implementation NTKNightModeTriggerManager
 
-- (NTKNightModeTriggerManager)initWithFaceAnalyticsIdentifier:(id)a3
+- (NTKNightModeTriggerManager)initWithFaceAnalyticsIdentifier:(id)identifier
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  identifierCopy = identifier;
   v22.receiver = self;
   v22.super_class = NTKNightModeTriggerManager;
   v6 = [(NTKNightModeTriggerManager *)&v22 init];
   if (v6)
   {
-    v7 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v6->_observers;
-    v6->_observers = v7;
+    v6->_observers = weakObjectsHashTable;
 
     v9 = _NTKLoggingObjectForDomain(23, "NTKLoggingDomainFace");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -45,9 +45,9 @@
       _os_log_impl(&dword_22D9C5000, v9, OS_LOG_TYPE_DEFAULT, "[%p] AutoNightMode manager init", buf, 0xCu);
     }
 
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:v6 selector:sel_thresholdsChanged_ name:@"com.apple.NanoTimeKit.NightModeThresholdsChanged" object:0];
-    [v10 addObserver:v6 selector:sel_sampleSizeChanged_ name:@"com.apple.NanoTimeKit.NightModeSampleSize" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel_thresholdsChanged_ name:@"com.apple.NanoTimeKit.NightModeThresholdsChanged" object:0];
+    [defaultCenter addObserver:v6 selector:sel_sampleSizeChanged_ name:@"com.apple.NanoTimeKit.NightModeSampleSize" object:0];
     v11 = objc_opt_new();
     settings = v6->_settings;
     v6->_settings = v11;
@@ -56,10 +56,10 @@
     v6->_thresholdLuxLow = v13;
     [(NTKNightModeTriggerSettings *)v6->_settings thresholdLuxHigh];
     v6->_thresholdLuxHigh = v14;
-    v15 = [MEMORY[0x277CBBAE8] currentDevice];
-    v6->_isN199 = [v15 productType] == 41;
+    currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+    v6->_isN199 = [currentDevice productType] == 41;
 
-    objc_storeStrong(&v6->_faceAnalyticsIdentifier, a3);
+    objc_storeStrong(&v6->_faceAnalyticsIdentifier, identifier);
     __asm { FMOV            V0.2D, #-1.0 }
 
     *&v6->_activeTime = _Q0;
@@ -71,14 +71,14 @@
 - (void)dealloc
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4 = _NTKLoggingObjectForDomain(23, "NTKLoggingDomainFace");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_22D9C5000, v4, OS_LOG_TYPE_DEFAULT, "[%p] AutoNightMode manager teardown", buf, 0xCu);
   }
 
@@ -87,57 +87,57 @@
   [(NTKNightModeTriggerManager *)&v5 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observerCopy = observer;
   v5 = _NTKLoggingObjectForDomain(23, "NTKLoggingDomainFace");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = [objc_opt_class() description];
     v7 = 134218242;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
     v10 = v6;
     _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "[%p] AutoNightMode observer attaching %@", &v7, 0x16u);
   }
 
-  [(NSHashTable *)self->_observers addObject:v4];
-  [v4 nightModeTriggerManager:self didUpdateNightModeTriggeredState:self->_nightModeTriggered];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
+  [observerCopy nightModeTriggerManager:self didUpdateNightModeTriggeredState:self->_nightModeTriggered];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observerCopy = observer;
   v5 = _NTKLoggingObjectForDomain(23, "NTKLoggingDomainFace");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = [objc_opt_class() description];
     v7 = 134218242;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
     v10 = v6;
     _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "[%p] AutoNightMode observer detaching %@", &v7, 0x16u);
   }
 
-  [(NSHashTable *)self->_observers removeObject:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
 }
 
-- (void)setNightModeDetectionEnabled:(BOOL)a3
+- (void)setNightModeDetectionEnabled:(BOOL)enabled
 {
   v28 = *MEMORY[0x277D85DE8];
-  if (self->_nightModeDetectionEnabled != a3)
+  if (self->_nightModeDetectionEnabled != enabled)
   {
-    v3 = a3;
-    self->_nightModeDetectionEnabled = a3;
+    enabledCopy = enabled;
+    self->_nightModeDetectionEnabled = enabled;
     v5 = _NTKLoggingObjectForDomain(23, "NTKLoggingDomainFace");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v24 = 134218240;
-      v25 = self;
+      selfCopy3 = self;
       v26 = 1024;
-      LODWORD(v27) = v3;
+      LODWORD(v27) = enabledCopy;
       _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "[%p] AutoNightMode detection-enabled changing to %d", &v24, 0x12u);
     }
 
@@ -167,7 +167,7 @@
       {
         v13 = self->_ambientIlluminationMonitor;
         v24 = 134218240;
-        v25 = self;
+        selfCopy3 = self;
         v26 = 2048;
         v27 = v13;
         _os_log_impl(&dword_22D9C5000, v12, OS_LOG_TYPE_DEFAULT, "[%p] AutoNightMode created illumination monitor %p", &v24, 0x16u);
@@ -181,7 +181,7 @@
       {
         v15 = self->_ambientIlluminationMonitor;
         v24 = 134218240;
-        v25 = self;
+        selfCopy3 = self;
         v26 = 2048;
         v27 = v15;
         _os_log_impl(&dword_22D9C5000, v14, OS_LOG_TYPE_DEFAULT, "[%p] AutoNightMode deleting illumination monitor %p", &v24, 0x16u);
@@ -205,20 +205,20 @@
   }
 }
 
-- (void)_setNightModeTriggered:(BOOL)a3
+- (void)_setNightModeTriggered:(BOOL)triggered
 {
   v10 = *MEMORY[0x277D85DE8];
-  if (self->_nightModeTriggered != a3)
+  if (self->_nightModeTriggered != triggered)
   {
-    v3 = a3;
-    self->_nightModeTriggered = a3;
+    triggeredCopy = triggered;
+    self->_nightModeTriggered = triggered;
     v5 = _NTKLoggingObjectForDomain(23, "NTKLoggingDomainFace");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 134218240;
-      v7 = self;
+      selfCopy = self;
       v8 = 1024;
-      v9 = v3;
+      v9 = triggeredCopy;
       _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "[%p] AutoNightMode night-mode-triggered changing to %d", &v6, 0x12u);
     }
 
@@ -260,65 +260,65 @@
   }
 }
 
-- (void)setThresholdLuxLow:(double)a3
+- (void)setThresholdLuxLow:(double)low
 {
   v10 = *MEMORY[0x277D85DE8];
-  self->_thresholdLuxLow = a3;
+  self->_thresholdLuxLow = low;
   v5 = _NTKLoggingObjectForDomain(23, "NTKLoggingDomainFace");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134218240;
-    v7 = self;
+    selfCopy = self;
     v8 = 2048;
-    v9 = a3;
+    lowCopy = low;
     _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "[%p] AutoNightMode threshold low set to %f", &v6, 0x16u);
   }
 
   [(NTKNightModeTriggerManager *)self _updateTriggerState];
 }
 
-- (void)setThresholdLuxHigh:(double)a3
+- (void)setThresholdLuxHigh:(double)high
 {
   v10 = *MEMORY[0x277D85DE8];
-  self->_thresholdLuxHigh = a3;
+  self->_thresholdLuxHigh = high;
   v5 = _NTKLoggingObjectForDomain(23, "NTKLoggingDomainFace");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134218240;
-    v7 = self;
+    selfCopy = self;
     v8 = 2048;
-    v9 = a3;
+    highCopy = high;
     _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "[%p] AutoNightMode threshold high set to %f", &v6, 0x16u);
   }
 
   [(NTKNightModeTriggerManager *)self _updateTriggerState];
 }
 
-- (void)setThresholdOffset:(double)a3
+- (void)setThresholdOffset:(double)offset
 {
   v10 = *MEMORY[0x277D85DE8];
-  self->_thresholdOffset = a3;
+  self->_thresholdOffset = offset;
   v5 = _NTKLoggingObjectForDomain(23, "NTKLoggingDomainFace");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134218240;
-    v7 = self;
+    selfCopy = self;
     v8 = 2048;
-    v9 = a3;
+    offsetCopy = offset;
     _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "[%p] AutoNightMode threshold offset set to %f", &v6, 0x16u);
   }
 
   [(NTKNightModeTriggerManager *)self _updateTriggerState];
 }
 
-- (void)ambientIlluminationMonitor:(id)a3 receivedAmbientLux:(double)a4
+- (void)ambientIlluminationMonitor:(id)monitor receivedAmbientLux:(double)lux
 {
   if (![(NTKMovingStatistic *)self->_luxStatistic sampleCount])
   {
     self->_sensorReadingsTime = CFAbsoluteTimeGetCurrent();
   }
 
-  [(NTKNightModeTriggerManager *)self _updateAverageWithLux:a4];
+  [(NTKNightModeTriggerManager *)self _updateAverageWithLux:lux];
 }
 
 - (void)_startClockTimer
@@ -331,17 +331,17 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v11 = self;
+      selfCopy = self;
       _os_log_impl(&dword_22D9C5000, v3, OS_LOG_TYPE_DEFAULT, "[%p] AutoNightMode manager start clock timer", buf, 0xCu);
     }
 
-    v4 = [MEMORY[0x277CBB700] sharedInstance];
+    mEMORY[0x277CBB700] = [MEMORY[0x277CBB700] sharedInstance];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __46__NTKNightModeTriggerManager__startClockTimer__block_invoke;
     v7[3] = &unk_27877ED48;
     objc_copyWeak(&v8, &location);
-    v5 = [v4 startUpdatesWithUpdateFrequency:2 withHandler:v7 identificationLog:&__block_literal_global_73];
+    v5 = [mEMORY[0x277CBB700] startUpdatesWithUpdateFrequency:2 withHandler:v7 identificationLog:&__block_literal_global_73];
     clockTimerToken = self->_clockTimerToken;
     self->_clockTimerToken = v5;
 
@@ -376,21 +376,21 @@ void __46__NTKNightModeTriggerManager__startClockTimer__block_invoke(uint64_t a1
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 134217984;
-      v7 = self;
+      selfCopy = self;
       _os_log_impl(&dword_22D9C5000, v3, OS_LOG_TYPE_DEFAULT, "[%p] AutoNightMode manager stop clock timer", &v6, 0xCu);
     }
 
-    v4 = [MEMORY[0x277CBB700] sharedInstance];
-    [v4 stopUpdatesForToken:self->_clockTimerToken];
+    mEMORY[0x277CBB700] = [MEMORY[0x277CBB700] sharedInstance];
+    [mEMORY[0x277CBB700] stopUpdatesForToken:self->_clockTimerToken];
 
     clockTimerToken = self->_clockTimerToken;
     self->_clockTimerToken = 0;
   }
 }
 
-- (void)_updateAverageWithLux:(double)a3
+- (void)_updateAverageWithLux:(double)lux
 {
-  [(NTKMovingStatistic *)self->_luxStatistic addNewValue:a3];
+  [(NTKMovingStatistic *)self->_luxStatistic addNewValue:lux];
 
   [(NTKNightModeTriggerManager *)self _updateTriggerState];
 }
@@ -406,9 +406,9 @@ void __46__NTKNightModeTriggerManager__startClockTimer__block_invoke(uint64_t a1
   }
 }
 
-- (void)_updateAverageWithNits:(double)a3
+- (void)_updateAverageWithNits:(double)nits
 {
-  [(NTKMovingStatistic *)self->_nitsStatistic addNewValue:a3];
+  [(NTKMovingStatistic *)self->_nitsStatistic addNewValue:nits];
 
   [(NTKNightModeTriggerManager *)self _updateTriggerState];
 }
@@ -444,8 +444,8 @@ void __46__NTKNightModeTriggerManager__startClockTimer__block_invoke(uint64_t a1
   v118[6] = *MEMORY[0x277D85DE8];
   if ([(NTKNightModeTriggerManager *)self isNightModeDetectionEnabled])
   {
-    v3 = [(NTKNightModeTriggerManager *)self isNightModeTriggered];
-    v4 = [(NTKNightModeTriggerManager *)self _isReady];
+    isNightModeTriggered = [(NTKNightModeTriggerManager *)self isNightModeTriggered];
+    _isReady = [(NTKNightModeTriggerManager *)self _isReady];
     [(NTKNightModeTriggerManager *)self _smoothedLux];
     v6 = v5;
     [(NTKNightModeTriggerManager *)self thresholdOffset];
@@ -509,7 +509,7 @@ void __46__NTKNightModeTriggerManager__startClockTimer__block_invoke(uint64_t a1
     }
 
     v80 = v23;
-    if (v3)
+    if (isNightModeTriggered)
     {
       v24 = v6 <= v23;
     }
@@ -523,8 +523,8 @@ void __46__NTKNightModeTriggerManager__startClockTimer__block_invoke(uint64_t a1
     v26 = v25;
     [(NTKAmbientIlluminationMonitor *)self->_ambientIlluminationMonitor displayNits];
     v28 = v27;
-    v29 = [(NTKMovingStatistic *)self->_luxStatistic sampleSize];
-    v30 = [(NTKMovingStatistic *)self->_luxStatistic sampleCount];
+    sampleSize = [(NTKMovingStatistic *)self->_luxStatistic sampleSize];
+    sampleCount = [(NTKMovingStatistic *)self->_luxStatistic sampleCount];
     lastSensorLux = self->_lastSensorLux;
     v32 = fabs(lastSensorLux);
     v33 = fabs(v26);
@@ -590,16 +590,16 @@ void __46__NTKNightModeTriggerManager__startClockTimer__block_invoke(uint64_t a1
     lastTargetTrigger = self->_lastTargetTrigger;
     lastSampleSize = self->_lastSampleSize;
     lastIsReady = self->_lastIsReady;
-    if (lastIsTriggered == v3 && lastIsReady == v4 && lastThresholdOffset == v8 && lastThresholdLow == v10 && lastThresholdHigh == v12 && lastTargetTrigger == v24 && v34 && v40 && lastSampleSize == v29)
+    if (lastIsTriggered == isNightModeTriggered && lastIsReady == _isReady && lastThresholdOffset == v8 && lastThresholdLow == v10 && lastThresholdHigh == v12 && lastTargetTrigger == v24 && v34 && v40 && lastSampleSize == sampleSize)
     {
       ++self->_skippedLogs;
     }
 
     else
     {
-      v76 = v30;
-      v78 = v4;
-      if (lastIsTriggered == v3)
+      v76 = sampleCount;
+      v78 = _isReady;
+      if (lastIsTriggered == isNightModeTriggered)
       {
         v48 = &stru_284110E98;
       }
@@ -609,7 +609,7 @@ void __46__NTKNightModeTriggerManager__startClockTimer__block_invoke(uint64_t a1
         v48 = @"IsTr";
       }
 
-      if (lastIsReady == v4)
+      if (lastIsReady == _isReady)
       {
         v49 = &stru_284110E98;
       }
@@ -667,7 +667,7 @@ void __46__NTKNightModeTriggerManager__startClockTimer__block_invoke(uint64_t a1
         v55 = @"Nits";
       }
 
-      if (lastSampleSize == v29)
+      if (lastSampleSize == sampleSize)
       {
         v56 = &stru_284110E98;
       }
@@ -697,7 +697,7 @@ void __46__NTKNightModeTriggerManager__startClockTimer__block_invoke(uint64_t a1
       v62 = [MEMORY[0x277CCABB0] numberWithDouble:v82];
       v118[4] = v62;
       v117[5] = @"triggered";
-      v63 = [MEMORY[0x277CCABB0] numberWithBool:v3];
+      v63 = [MEMORY[0x277CCABB0] numberWithBool:isNightModeTriggered];
       v118[5] = v63;
       v64 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v118 forKeys:v117 count:6];
       AnalyticsSendEvent();
@@ -705,20 +705,20 @@ void __46__NTKNightModeTriggerManager__startClockTimer__block_invoke(uint64_t a1
       v65 = _NTKLoggingObjectForDomain(23, "NTKLoggingDomainFace");
       if (os_log_type_enabled(v65, OS_LOG_TYPE_DEFAULT))
       {
-        v66 = [MEMORY[0x277CCABB0] numberWithBool:v3];
+        v66 = [MEMORY[0x277CCABB0] numberWithBool:isNightModeTriggered];
         v74 = [MEMORY[0x277CCABB0] numberWithBool:v24];
         v67 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v76];
-        [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v29];
+        [MEMORY[0x277CCABB0] numberWithUnsignedInteger:sampleSize];
         v68 = v77 = v24;
         v69 = [MEMORY[0x277CCABB0] numberWithDouble:v26];
         [MEMORY[0x277CCABB0] numberWithDouble:v82];
-        v3 = v75 = v3;
+        isNightModeTriggered = v75 = isNightModeTriggered;
         v70 = [MEMORY[0x277CCABB0] numberWithDouble:v10];
         v71 = [MEMORY[0x277CCABB0] numberWithDouble:v12];
         [(NTKNightModeTriggerManager *)self currentFaceAPL];
         skippedLogs = self->_skippedLogs;
         *buf = 134222082;
-        v84 = self;
+        selfCopy = self;
         v85 = 2112;
         v86 = v66;
         v87 = 2112;
@@ -730,7 +730,7 @@ void __46__NTKNightModeTriggerManager__startClockTimer__block_invoke(uint64_t a1
         v93 = 2112;
         v94 = v69;
         v95 = 2112;
-        v96 = v3;
+        v96 = isNightModeTriggered;
         v97 = 2112;
         v98 = v70;
         v99 = 2048;
@@ -753,7 +753,7 @@ void __46__NTKNightModeTriggerManager__startClockTimer__block_invoke(uint64_t a1
         v116 = v79;
         _os_log_impl(&dword_22D9C5000, v65, OS_LOG_TYPE_DEFAULT, "[%p] AutoNightMode updateTriggerState currentlyTriggered:%@ shouldTrigger:%@ samples:%@ of %@ (lux--sensorLux:%@ smoothedLux:%@ threshLow:%@ calib:%0.0f threshHigh:%@ calib:%0.0f calibration:%0.0f apl:%0.2f) (nits--currentNits:%0.3f smoothedNits:%0.3f) [skipped %lu]  %@", buf, 0xACu);
 
-        LOBYTE(v3) = v75;
+        LOBYTE(isNightModeTriggered) = v75;
         v24 = v77;
       }
 
@@ -762,7 +762,7 @@ void __46__NTKNightModeTriggerManager__startClockTimer__block_invoke(uint64_t a1
         [(NTKNightModeTriggerManager *)self _setNightModeTriggered:v24];
       }
 
-      self->_lastIsTriggered = v3;
+      self->_lastIsTriggered = isNightModeTriggered;
       self->_lastSmoothedLux = v82;
       self->_lastThresholdOffset = v8;
       self->_lastThresholdLow = v10;
@@ -771,14 +771,14 @@ void __46__NTKNightModeTriggerManager__startClockTimer__block_invoke(uint64_t a1
       self->_lastTargetTrigger = v24;
       self->_lastSensorLux = v26;
       self->_lastCurrentNits = v28;
-      self->_lastSampleSize = v29;
+      self->_lastSampleSize = sampleSize;
       self->_lastIsReady = v78;
       self->_skippedLogs = 0;
     }
   }
 }
 
-- (void)thresholdsChanged:(id)a3
+- (void)thresholdsChanged:(id)changed
 {
   [(NTKNightModeTriggerSettings *)self->_settings thresholdLuxLow];
   [(NTKNightModeTriggerManager *)self setThresholdLuxLow:?];
@@ -787,12 +787,12 @@ void __46__NTKNightModeTriggerManager__startClockTimer__block_invoke(uint64_t a1
   [(NTKNightModeTriggerManager *)self setThresholdLuxHigh:?];
 }
 
-- (void)sampleSizeChanged:(id)a3
+- (void)sampleSizeChanged:(id)changed
 {
   luxStatistic = self->_luxStatistic;
-  v4 = [(NTKNightModeTriggerSettings *)self->_settings sampleSize];
+  sampleSize = [(NTKNightModeTriggerSettings *)self->_settings sampleSize];
 
-  [(NTKMovingStatistic *)luxStatistic setSampleSize:v4];
+  [(NTKMovingStatistic *)luxStatistic setSampleSize:sampleSize];
 }
 
 @end

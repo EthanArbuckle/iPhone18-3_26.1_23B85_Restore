@@ -1,13 +1,13 @@
 @interface TUIFeedbackController
 + (id)controller;
 - (BOOL)feedbackFeatureEnabled;
-- (BOOL)shouldCompleteStudyWithPreferenceValue:(BOOL)a3;
+- (BOOL)shouldCompleteStudyWithPreferenceValue:(BOOL)value;
 - (id)build;
 - (id)computeSurveyMetadata;
 - (id)currentInputModes;
 - (id)model;
-- (void)_presentSurveyWithParentController:(id)a3 completionHandler:(id)a4;
-- (void)_updateStudyDataWithSurveyOutcome:(int64_t)a3 surveyError:(id)a4 initialState:(int64_t)a5;
+- (void)_presentSurveyWithParentController:(id)controller completionHandler:(id)handler;
+- (void)_updateStudyDataWithSurveyOutcome:(int64_t)outcome surveyError:(id)error initialState:(int64_t)state;
 - (void)feedbackFeatureEnabled;
 @end
 
@@ -20,13 +20,13 @@
   return v2;
 }
 
-- (BOOL)shouldCompleteStudyWithPreferenceValue:(BOOL)a3
+- (BOOL)shouldCompleteStudyWithPreferenceValue:(BOOL)value
 {
-  v4 = [(TUIFeedbackController *)self feedbackFeatureEnabled];
-  if (v4)
+  feedbackFeatureEnabled = [(TUIFeedbackController *)self feedbackFeatureEnabled];
+  if (feedbackFeatureEnabled)
   {
-    v5 = [MEMORY[0x277D6F360] getSupportedLangRegion];
-    v6 = [v5 length];
+    getSupportedLangRegion = [MEMORY[0x277D6F360] getSupportedLangRegion];
+    v6 = [getSupportedLangRegion length];
 
     if (IXACanLogMessageAtLevel())
     {
@@ -37,11 +37,11 @@
       }
     }
 
-    v8 = [MEMORY[0x277D6F360] getFeedbackState];
-    LOBYTE(v4) = 0;
+    getFeedbackState = [MEMORY[0x277D6F360] getFeedbackState];
+    LOBYTE(feedbackFeatureEnabled) = 0;
     if (v6)
     {
-      v9 = v8 == 2;
+      v9 = getFeedbackState == 2;
     }
 
     else
@@ -49,7 +49,7 @@
       v9 = 0;
     }
 
-    if (v9 && !a3)
+    if (v9 && !value)
     {
       if (IXACanLogMessageAtLevel())
       {
@@ -60,27 +60,27 @@
         }
       }
 
-      LOBYTE(v4) = 1;
+      LOBYTE(feedbackFeatureEnabled) = 1;
     }
   }
 
-  return v4;
+  return feedbackFeatureEnabled;
 }
 
-- (void)_presentSurveyWithParentController:(id)a3 completionHandler:(id)a4
+- (void)_presentSurveyWithParentController:(id)controller completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = [MEMORY[0x277D6F360] getFormIdentifier];
+  handlerCopy = handler;
+  getFormIdentifier = [MEMORY[0x277D6F360] getFormIdentifier];
   v7 = MEMORY[0x277D08688];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __78__TUIFeedbackController__presentSurveyWithParentController_completionHandler___block_invoke;
   v10[3] = &unk_2797FCD68;
-  v12 = self;
-  v13 = v5;
-  v11 = v6;
-  v8 = v6;
-  v9 = v5;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v11 = getFormIdentifier;
+  v8 = getFormIdentifier;
+  v9 = handlerCopy;
   [v7 fetchCountsForFormWithIdentifier:v8 completion:v10];
 }
 
@@ -177,32 +177,32 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)_updateStudyDataWithSurveyOutcome:(int64_t)a3 surveyError:(id)a4 initialState:(int64_t)a5
+- (void)_updateStudyDataWithSurveyOutcome:(int64_t)outcome surveyError:(id)error initialState:(int64_t)state
 {
-  v6 = a4;
+  errorCopy = error;
   [MEMORY[0x277D6F360] setFeedbackState:3];
-  [MEMORY[0x277D6F360] setSurveyOutcome:a3];
+  [MEMORY[0x277D6F360] setSurveyOutcome:outcome];
   if (IXACanLogMessageAtLevel())
   {
     v7 = IXAFeedbackLogFacility();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      [TUIFeedbackController _updateStudyDataWithSurveyOutcome:v6 surveyError:a3 initialState:?];
+      [TUIFeedbackController _updateStudyDataWithSurveyOutcome:errorCopy surveyError:outcome initialState:?];
     }
   }
 }
 
 - (id)computeSurveyMetadata
 {
-  v3 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   v4 = [TUIFeedbackSurveyMetadata alloc];
-  v23 = [(TUIFeedbackController *)self build];
-  v22 = [(TUIFeedbackController *)self model];
-  v5 = [v3 languageCode];
-  v6 = v5;
-  if (v5)
+  build = [(TUIFeedbackController *)self build];
+  model = [(TUIFeedbackController *)self model];
+  languageCode = [currentLocale languageCode];
+  v6 = languageCode;
+  if (languageCode)
   {
-    v7 = v5;
+    v7 = languageCode;
   }
 
   else
@@ -211,11 +211,11 @@ LABEL_14:
   }
 
   v21 = v7;
-  v8 = [v3 countryCode];
-  v9 = v8;
-  if (v8)
+  countryCode = [currentLocale countryCode];
+  v9 = countryCode;
+  if (countryCode)
   {
-    v10 = v8;
+    v10 = countryCode;
   }
 
   else
@@ -224,24 +224,24 @@ LABEL_14:
   }
 
   v20 = v10;
-  v11 = [MEMORY[0x277D6F360] getInitialPreferenceValue];
-  v12 = [MEMORY[0x277D6F360] getInitialInputModes];
-  v13 = [MEMORY[0x277D6F360] getInitialTimestamp];
-  v14 = [MEMORY[0x277D6F360] getFinalPreferenceValue];
-  v15 = [MEMORY[0x277D6F360] getFinalInputModes];
-  v16 = [MEMORY[0x277D6F360] getFinalTimestamp];
-  LOBYTE(v19) = v14;
-  v17 = [(TUIFeedbackSurveyMetadata *)v4 initWithBuild:v23 model:v22 language:v21 region:v20 initialPreferenceValue:v11 initialInputModes:v12 initialTimestamp:v13 finalPreferenceValue:v19 finalInputModes:v15 finalTimestamp:v16];
+  getInitialPreferenceValue = [MEMORY[0x277D6F360] getInitialPreferenceValue];
+  getInitialInputModes = [MEMORY[0x277D6F360] getInitialInputModes];
+  getInitialTimestamp = [MEMORY[0x277D6F360] getInitialTimestamp];
+  getFinalPreferenceValue = [MEMORY[0x277D6F360] getFinalPreferenceValue];
+  getFinalInputModes = [MEMORY[0x277D6F360] getFinalInputModes];
+  getFinalTimestamp = [MEMORY[0x277D6F360] getFinalTimestamp];
+  LOBYTE(v19) = getFinalPreferenceValue;
+  v17 = [(TUIFeedbackSurveyMetadata *)v4 initWithBuild:build model:model language:v21 region:v20 initialPreferenceValue:getInitialPreferenceValue initialInputModes:getInitialInputModes initialTimestamp:getInitialTimestamp finalPreferenceValue:v19 finalInputModes:getFinalInputModes finalTimestamp:getFinalTimestamp];
 
   return v17;
 }
 
 - (id)currentInputModes
 {
-  v2 = [MEMORY[0x277D75688] sharedInputModeController];
-  v3 = [v2 enabledInputModeIdentifiers];
+  mEMORY[0x277D75688] = [MEMORY[0x277D75688] sharedInputModeController];
+  enabledInputModeIdentifiers = [mEMORY[0x277D75688] enabledInputModeIdentifiers];
 
-  return v3;
+  return enabledInputModeIdentifiers;
 }
 
 - (BOOL)feedbackFeatureEnabled
@@ -423,11 +423,11 @@ void __78__TUIFeedbackController__presentSurveyWithParentController_completionHa
 {
   v15 = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277CCACA8];
-  v3 = [MEMORY[0x277D6F360] getStudyID];
-  v12 = a1 & 1;
+  getStudyID = [MEMORY[0x277D6F360] getStudyID];
+  v12 = self & 1;
   v4 = [v2 stringWithFormat:@"%s Feedback %@: RC_SEED_BUILD: 0 enabled: %d"];
   OUTLINED_FUNCTION_1();
-  OUTLINED_FUNCTION_0(&dword_25586B000, v5, v6, "%@", v7, v8, v9, v10, "[TUIFeedbackController feedbackFeatureEnabled]", v3, v12, v13, v14);
+  OUTLINED_FUNCTION_0(&dword_25586B000, v5, v6, "%@", v7, v8, v9, v10, "[TUIFeedbackController feedbackFeatureEnabled]", getStudyID, v12, v13, v14);
 
   v11 = *MEMORY[0x277D85DE8];
 }

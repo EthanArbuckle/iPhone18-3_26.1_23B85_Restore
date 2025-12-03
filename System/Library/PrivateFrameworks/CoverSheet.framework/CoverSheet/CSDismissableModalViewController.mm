@@ -1,50 +1,50 @@
 @interface CSDismissableModalViewController
-- (BOOL)handleAction:(id)a3 fromController:(id)a4;
-- (BOOL)handleEvent:(id)a3;
+- (BOOL)handleAction:(id)action fromController:(id)controller;
+- (BOOL)handleEvent:(id)event;
 - (CSDismissableModalViewControllerDelegate)delegate;
 - (void)_addOrRemoveGestureForCurrentSettings;
-- (void)_configureBarSwipeBehaviorWithGrabberViewIfNecessary:(id)a3;
-- (void)_handleBottomEdgeGestureBegan:(id)a3;
-- (void)_handleBottomEdgeGestureChanged:(id)a3;
-- (void)_handleBottomEdgeGestureEnded:(id)a3;
-- (void)_handleBottomEdgeGestureRecognizer:(id)a3;
-- (void)addGrabberView:(id)a3;
-- (void)barSwipeBehaviorActionPerformed:(id)a3;
-- (void)homeGestureParticipantOwningHomeGestureDidChange:(BOOL)a3;
-- (void)homeGestureParticipantUpdateZStackPreferences:(id)a3 forZStackParticipant:(id)a4;
-- (void)setHomeAffordanceController:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)_configureBarSwipeBehaviorWithGrabberViewIfNecessary:(id)necessary;
+- (void)_handleBottomEdgeGestureBegan:(id)began;
+- (void)_handleBottomEdgeGestureChanged:(id)changed;
+- (void)_handleBottomEdgeGestureEnded:(id)ended;
+- (void)_handleBottomEdgeGestureRecognizer:(id)recognizer;
+- (void)addGrabberView:(id)view;
+- (void)barSwipeBehaviorActionPerformed:(id)performed;
+- (void)homeGestureParticipantOwningHomeGestureDidChange:(BOOL)change;
+- (void)homeGestureParticipantUpdateZStackPreferences:(id)preferences forZStackParticipant:(id)participant;
+- (void)setHomeAffordanceController:(id)controller;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CSDismissableModalViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CSDismissableModalViewController;
-  [(CSCoverSheetViewControllerBase *)&v4 viewWillAppear:a3];
+  [(CSCoverSheetViewControllerBase *)&v4 viewWillAppear:appear];
   [(CSDismissableModalViewController *)self _addOrRemoveGestureForCurrentSettings];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CSDismissableModalViewController;
-  [(CSCoverSheetViewControllerBase *)&v4 viewDidDisappear:a3];
+  [(CSCoverSheetViewControllerBase *)&v4 viewDidDisappear:disappear];
   [(CSDismissableModalViewController *)self _addOrRemoveGestureForCurrentSettings];
 }
 
-- (void)setHomeAffordanceController:(id)a3
+- (void)setHomeAffordanceController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   homeAffordanceController = self->_homeAffordanceController;
-  if (homeAffordanceController != v5)
+  if (homeAffordanceController != controllerCopy)
   {
-    v7 = v5;
+    v7 = controllerCopy;
     [(CSModalHomeAffordanceControlling *)homeAffordanceController setHomeGestureRecognizer:0];
     [(CSModalHomeAffordanceControlling *)self->_homeAffordanceController unregisterHomeGestureParticipant];
-    objc_storeStrong(&self->_homeAffordanceController, a3);
+    objc_storeStrong(&self->_homeAffordanceController, controller);
     if (self->_bottomEdgeRecognizer)
     {
       [(CSModalHomeAffordanceControlling *)self->_homeAffordanceController setHomeGestureRecognizer:?];
@@ -52,28 +52,28 @@
     }
 
     homeAffordanceController = [(CSDismissableModalViewController *)self _addOrRemoveGestureForCurrentSettings];
-    v5 = v7;
+    controllerCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](homeAffordanceController, v5);
+  MEMORY[0x2821F96F8](homeAffordanceController, controllerCopy);
 }
 
 - (void)_addOrRemoveGestureForCurrentSettings
 {
   if (SBFEffectiveHomeButtonType() != 2)
   {
-    v3 = [MEMORY[0x277D75418] currentDevice];
-    v4 = [v3 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v4 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
     {
       return;
     }
   }
 
-  v5 = [(CSDismissableModalViewController *)self _appearState];
+  _appearState = [(CSDismissableModalViewController *)self _appearState];
   bottomEdgeRecognizer = self->_bottomEdgeRecognizer;
-  if (v5)
+  if (_appearState)
   {
     if (bottomEdgeRecognizer)
     {
@@ -92,13 +92,13 @@
     if ((_SBF_Private_IsD16() & 1) != 0 || (_SBF_Private_IsD17() & 1) != 0 || (_SBF_Private_IsD63() & 1) != 0 || (_SBF_Private_IsD64() & 1) != 0 || _SBF_Private_IsV59())
     {
       v9 = +[CSLockScreenDomain rootSettings];
-      v10 = [v9 coverSheetDismissGestureSettings];
+      coverSheetDismissGestureSettings = [v9 coverSheetDismissGestureSettings];
 
       v11 = self->_bottomEdgeRecognizer;
-      [v10 edgeRegionSize];
+      [coverSheetDismissGestureSettings edgeRegionSize];
       [(UIScreenEdgePanGestureRecognizer *)v11 _setEdgeRegionSize:?];
       v12 = self->_bottomEdgeRecognizer;
-      [v10 edgeRegionSize];
+      [coverSheetDismissGestureSettings edgeRegionSize];
       [(UIScreenEdgePanGestureRecognizer *)v12 _setBottomEdgeRegionSize:?];
     }
 
@@ -122,9 +122,9 @@
       return;
     }
 
-    v18 = [(CSDismissableModalViewController *)self delegate];
-    [(UIScreenEdgePanGestureRecognizer *)v18 dismissForHomeButton];
-    v17 = v18;
+    delegate = [(CSDismissableModalViewController *)self delegate];
+    [(UIScreenEdgePanGestureRecognizer *)delegate dismissForHomeButton];
+    v17 = delegate;
   }
 
   else
@@ -141,41 +141,41 @@
   }
 }
 
-- (void)_handleBottomEdgeGestureRecognizer:(id)a3
+- (void)_handleBottomEdgeGestureRecognizer:(id)recognizer
 {
-  v7 = a3;
-  v4 = [v7 state];
-  if ((v4 - 3) < 3)
+  recognizerCopy = recognizer;
+  state = [recognizerCopy state];
+  if ((state - 3) < 3)
   {
-    [(CSDismissableModalViewController *)self _handleBottomEdgeGestureEnded:v7];
+    [(CSDismissableModalViewController *)self _handleBottomEdgeGestureEnded:recognizerCopy];
 LABEL_8:
-    v6 = v7;
+    v6 = recognizerCopy;
     goto LABEL_9;
   }
 
-  if (v4 == 2)
+  if (state == 2)
   {
-    [(CSDismissableModalViewController *)self _handleBottomEdgeGestureChanged:v7];
+    [(CSDismissableModalViewController *)self _handleBottomEdgeGestureChanged:recognizerCopy];
     goto LABEL_8;
   }
 
-  v5 = v4 == 1;
-  v6 = v7;
+  v5 = state == 1;
+  v6 = recognizerCopy;
   if (v5)
   {
-    [(CSDismissableModalViewController *)self _handleBottomEdgeGestureBegan:v7];
+    [(CSDismissableModalViewController *)self _handleBottomEdgeGestureBegan:recognizerCopy];
     goto LABEL_8;
   }
 
 LABEL_9:
 }
 
-- (void)_handleBottomEdgeGestureBegan:(id)a3
+- (void)_handleBottomEdgeGestureBegan:(id)began
 {
-  v4 = a3;
-  if (self->_bottomEdgeRecognizer == v4)
+  beganCopy = began;
+  if (self->_bottomEdgeRecognizer == beganCopy)
   {
-    v6 = v4;
+    v6 = beganCopy;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
@@ -184,16 +184,16 @@ LABEL_9:
 
     [(SBFBarSwipeBehavior *)self->_barSwipeBehavior barSwipeInteractionBegan:v6];
 
-    v4 = v6;
+    beganCopy = v6;
   }
 }
 
-- (void)_handleBottomEdgeGestureChanged:(id)a3
+- (void)_handleBottomEdgeGestureChanged:(id)changed
 {
-  v4 = a3;
-  if (self->_bottomEdgeRecognizer == v4)
+  changedCopy = changed;
+  if (self->_bottomEdgeRecognizer == changedCopy)
   {
-    v6 = v4;
+    v6 = changedCopy;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
@@ -202,16 +202,16 @@ LABEL_9:
 
     [(SBFBarSwipeBehavior *)self->_barSwipeBehavior barSwipeInteractionChanged:v6];
 
-    v4 = v6;
+    changedCopy = v6;
   }
 }
 
-- (void)_handleBottomEdgeGestureEnded:(id)a3
+- (void)_handleBottomEdgeGestureEnded:(id)ended
 {
-  v4 = a3;
-  if (self->_bottomEdgeRecognizer == v4)
+  endedCopy = ended;
+  if (self->_bottomEdgeRecognizer == endedCopy)
   {
-    v6 = v4;
+    v6 = endedCopy;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
@@ -220,20 +220,20 @@ LABEL_9:
 
     [(SBFBarSwipeBehavior *)self->_barSwipeBehavior barSwipeInteractionEnded:v6];
 
-    v4 = v6;
+    endedCopy = v6;
   }
 }
 
-- (void)_configureBarSwipeBehaviorWithGrabberViewIfNecessary:(id)a3
+- (void)_configureBarSwipeBehaviorWithGrabberViewIfNecessary:(id)necessary
 {
-  v4 = a3;
+  necessaryCopy = necessary;
   if (!self->_barSwipeBehavior)
   {
-    v9 = v4;
+    v9 = necessaryCopy;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v6 = objc_opt_respondsToSelector();
 
-    v4 = v9;
+    necessaryCopy = v9;
     if (v6)
     {
       v7 = [objc_alloc(MEMORY[0x277D65E10]) initWithGrabberView:v9 settleAffordanceAnimationBehaviorDescription:0];
@@ -241,17 +241,17 @@ LABEL_9:
       self->_barSwipeBehavior = v7;
 
       [(SBFBarSwipeBehavior *)self->_barSwipeBehavior setDelegate:self];
-      v4 = v9;
+      necessaryCopy = v9;
     }
   }
 }
 
-- (void)homeGestureParticipantOwningHomeGestureDidChange:(BOOL)a3
+- (void)homeGestureParticipantOwningHomeGestureDidChange:(BOOL)change
 {
   [(CSCoverSheetViewControllerBase *)self updateAppearanceForController:self];
-  v4 = [(CSModalHomeAffordanceControlling *)self->_homeAffordanceController ownsHomeGesture];
+  ownsHomeGesture = [(CSModalHomeAffordanceControlling *)self->_homeAffordanceController ownsHomeGesture];
   homeAffordanceController = self->_homeAffordanceController;
-  if (v4)
+  if (ownsHomeGesture)
   {
     bottomEdgeRecognizer = self->_bottomEdgeRecognizer;
   }
@@ -264,26 +264,26 @@ LABEL_9:
   [(CSModalHomeAffordanceControlling *)homeAffordanceController setHomeGestureRecognizer:bottomEdgeRecognizer];
 }
 
-- (void)addGrabberView:(id)a3
+- (void)addGrabberView:(id)view
 {
-  v4 = a3;
-  [(CSDismissableModalViewController *)self _configureBarSwipeBehaviorWithGrabberViewIfNecessary:v4];
-  v5 = [(CSDismissableModalViewController *)self delegate];
-  [v5 addGrabberView:v4];
+  viewCopy = view;
+  [(CSDismissableModalViewController *)self _configureBarSwipeBehaviorWithGrabberViewIfNecessary:viewCopy];
+  delegate = [(CSDismissableModalViewController *)self delegate];
+  [delegate addGrabberView:viewCopy];
 }
 
-- (void)homeGestureParticipantUpdateZStackPreferences:(id)a3 forZStackParticipant:(id)a4
+- (void)homeGestureParticipantUpdateZStackPreferences:(id)preferences forZStackParticipant:(id)participant
 {
-  v8 = a3;
-  v6 = a4;
+  preferencesCopy = preferences;
+  participantCopy = participant;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained zStackParticipant:v6 updatePreferences:v8];
+    [WeakRetained zStackParticipant:participantCopy updatePreferences:preferencesCopy];
   }
 }
 
-- (void)barSwipeBehaviorActionPerformed:(id)a3
+- (void)barSwipeBehaviorActionPerformed:(id)performed
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -292,12 +292,12 @@ LABEL_9:
   }
 }
 
-- (BOOL)handleAction:(id)a3 fromController:(id)a4
+- (BOOL)handleAction:(id)action fromController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  controllerCopy = controller;
   v8 = objc_opt_class();
-  v9 = v7;
+  v9 = controllerCopy;
   if (v8)
   {
     if (objc_opt_isKindOfClass())
@@ -319,10 +319,10 @@ LABEL_9:
   v11 = v10;
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [WeakRetained wantsDefaultModalDismissalBehavior] && objc_msgSend(v6, "type") == 1)
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [WeakRetained wantsDefaultModalDismissalBehavior] && objc_msgSend(actionCopy, "type") == 1)
   {
-    v13 = [(CSPresentationViewController *)self contentViewControllers];
-    v14 = [v13 containsObject:v11];
+    contentViewControllers = [(CSPresentationViewController *)self contentViewControllers];
+    v14 = [contentViewControllers containsObject:v11];
 
     if (v14)
     {
@@ -350,27 +350,27 @@ LABEL_9:
   return v15;
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v8.receiver = self;
   v8.super_class = CSDismissableModalViewController;
-  if (!-[CSPresentationViewController handleEvent:](&v8, sel_handleEvent_, v4) || ([v4 isConsumable] & 1) == 0)
+  if (!-[CSPresentationViewController handleEvent:](&v8, sel_handleEvent_, eventCopy) || ([eventCopy isConsumable] & 1) == 0)
   {
-    if ([v4 type] != 27)
+    if ([eventCopy type] != 27)
     {
-      v6 = 0;
+      isConsumable = 0;
       goto LABEL_7;
     }
 
-    v5 = [(CSDismissableModalViewController *)self delegate];
-    [v5 dismissForHomeButton];
+    delegate = [(CSDismissableModalViewController *)self delegate];
+    [delegate dismissForHomeButton];
   }
 
-  v6 = [v4 isConsumable];
+  isConsumable = [eventCopy isConsumable];
 LABEL_7:
 
-  return v6;
+  return isConsumable;
 }
 
 - (CSDismissableModalViewControllerDelegate)delegate

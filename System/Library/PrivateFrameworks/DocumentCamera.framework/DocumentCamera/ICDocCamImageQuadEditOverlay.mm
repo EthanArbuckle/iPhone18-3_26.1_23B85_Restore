@@ -3,35 +3,35 @@
 - (BOOL)isDraggingKnob;
 - (BOOL)isQuadValid;
 - (CGPoint)lastGestureTranslation;
-- (CGRect)rectFromApplyingOrientation:(int64_t)a3 toContentsRect:(CGRect)a4;
+- (CGRect)rectFromApplyingOrientation:(int64_t)orientation toContentsRect:(CGRect)rect;
 - (ICDocCamImageQuad)adjustedQuad;
-- (ICDocCamImageQuadEditOverlay)initWithCoder:(id)a3;
-- (ICDocCamImageQuadEditOverlay)initWithFrame:(CGRect)a3;
+- (ICDocCamImageQuadEditOverlay)initWithCoder:(id)coder;
+- (ICDocCamImageQuadEditOverlay)initWithFrame:(CGRect)frame;
 - (ICDocCamImageQuadEditOverlayDelegate)delegate;
 - (UIBezierPath)outlinePath;
-- (id)closestKnobToPoint:(CGPoint)a3;
+- (id)closestKnobToPoint:(CGPoint)point;
 - (void)commonInit;
-- (void)didPan:(id)a3;
+- (void)didPan:(id)pan;
 - (void)layoutSubviews;
-- (void)setImage:(id)a3 orientation:(int64_t)a4;
-- (void)setSelectedKnob:(id)a3;
-- (void)setTempOverlayMagnification:(double)a3 animationDuration:(double)a4;
+- (void)setImage:(id)image orientation:(int64_t)orientation;
+- (void)setSelectedKnob:(id)knob;
+- (void)setTempOverlayMagnification:(double)magnification animationDuration:(double)duration;
 - (void)setUpKnobs;
 - (void)setupLoupeLayerIfNeeded;
-- (void)updateKnobLocationsToRect:(id)a3;
+- (void)updateKnobLocationsToRect:(id)rect;
 - (void)updateOutlineAndKnobColorForCurrentValidityIfNecessary;
-- (void)updateOutlineAndKnobColorForIsValid:(BOOL)a3;
+- (void)updateOutlineAndKnobColorForIsValid:(BOOL)valid;
 - (void)updateOutlineLayer;
 - (void)updateSelectedKnobContents;
 @end
 
 @implementation ICDocCamImageQuadEditOverlay
 
-- (ICDocCamImageQuadEditOverlay)initWithCoder:(id)a3
+- (ICDocCamImageQuadEditOverlay)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ICDocCamImageQuadEditOverlay;
-  v3 = [(ICDocCamImageQuadEditOverlay *)&v6 initWithCoder:a3];
+  v3 = [(ICDocCamImageQuadEditOverlay *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -41,11 +41,11 @@
   return v4;
 }
 
-- (ICDocCamImageQuadEditOverlay)initWithFrame:(CGRect)a3
+- (ICDocCamImageQuadEditOverlay)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = ICDocCamImageQuadEditOverlay;
-  v3 = [(ICDocCamImageQuadEditOverlay *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ICDocCamImageQuadEditOverlay *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -57,18 +57,18 @@
 
 - (void)commonInit
 {
-  v3 = [MEMORY[0x277D75348] whiteColor];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
   validRectColor = self->_validRectColor;
-  self->_validRectColor = v3;
+  self->_validRectColor = whiteColor;
 
-  v5 = [MEMORY[0x277D75348] whiteColor];
+  whiteColor2 = [MEMORY[0x277D75348] whiteColor];
   invalidRectColor = self->_invalidRectColor;
-  self->_invalidRectColor = v5;
+  self->_invalidRectColor = whiteColor2;
 
   self->_knobHeight = 20.0;
-  v7 = [MEMORY[0x277D75348] whiteColor];
+  whiteColor3 = [MEMORY[0x277D75348] whiteColor];
   knobColor = self->_knobColor;
-  self->_knobColor = v7;
+  self->_knobColor = whiteColor3;
 
   [(ICDocCamImageQuadEditOverlay *)self setUpKnobs];
 }
@@ -78,23 +78,23 @@
   v16.receiver = self;
   v16.super_class = ICDocCamImageQuadEditOverlay;
   [(ICDocCamImageQuadEditOverlay *)&v16 layoutSubviews];
-  v3 = [(ICDocCamImageQuadEditOverlay *)self layer];
-  [v3 bounds];
+  layer = [(ICDocCamImageQuadEditOverlay *)self layer];
+  [layer bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(ICDocCamImageQuadEditOverlay *)self knobLayer];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  knobLayer = [(ICDocCamImageQuadEditOverlay *)self knobLayer];
+  [knobLayer setFrame:{v5, v7, v9, v11}];
 
-  v13 = [(ICDocCamImageQuadEditOverlay *)self delegate];
-  v14 = [v13 quadForOverlay:self];
+  delegate = [(ICDocCamImageQuadEditOverlay *)self delegate];
+  v14 = [delegate quadForOverlay:self];
 
   [(ICDocCamImageQuadEditOverlay *)self updateKnobLocationsToRect:v14];
   [(ICDocCamImageQuadEditOverlay *)self updateOutlineLayer];
   [(ICDocCamImageQuadEditOverlay *)self updateOutlineAndKnobColorForCurrentValidityIfNecessary];
-  v15 = [(ICDocCamImageQuadEditOverlay *)self delegate];
-  [v15 overlayDidLayout:self];
+  delegate2 = [(ICDocCamImageQuadEditOverlay *)self delegate];
+  [delegate2 overlayDidLayout:self];
 }
 
 - (void)setUpKnobs
@@ -102,12 +102,12 @@
   v3 = objc_alloc_init(MEMORY[0x277CD9ED0]);
   [(ICDocCamImageQuadEditOverlay *)self setKnobLayer:v3];
 
-  v4 = [(ICDocCamImageQuadEditOverlay *)self layer];
-  v5 = [(ICDocCamImageQuadEditOverlay *)self knobLayer];
-  [v4 addSublayer:v5];
+  layer = [(ICDocCamImageQuadEditOverlay *)self layer];
+  knobLayer = [(ICDocCamImageQuadEditOverlay *)self knobLayer];
+  [layer addSublayer:knobLayer];
 
   v23 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v7 = 4;
   do
   {
@@ -115,78 +115,78 @@
     [v8 setFrame:{0.0, 0.0, 20.0, 20.0}];
     [v8 frame];
     [v8 setCornerRadius:v9 * 0.5];
-    v10 = [MEMORY[0x277D75348] whiteColor];
-    [v8 setBorderColor:{objc_msgSend(v10, "CGColor")}];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [v8 setBorderColor:{objc_msgSend(whiteColor, "CGColor")}];
 
     [v8 setBorderWidth:1.0];
     [v8 setMasksToBounds:1];
     [v23 addObject:v8];
-    v11 = [(ICDocCamImageQuadEditOverlay *)self knobLayer];
-    [v11 addSublayer:v8];
+    knobLayer2 = [(ICDocCamImageQuadEditOverlay *)self knobLayer];
+    [knobLayer2 addSublayer:v8];
 
     v12 = [[ICDocCamImageQuadEditKnobAccessibilityElement alloc] initWithKnobLayer:v8 overlayView:self];
-    [v6 addObject:v12];
+    [array addObject:v12];
 
     --v7;
   }
 
   while (v7);
   [(ICDocCamImageQuadEditOverlay *)self setKnobs:v23];
-  [(ICDocCamImageQuadEditOverlay *)self setKnobAccessibilityElements:v6];
+  [(ICDocCamImageQuadEditOverlay *)self setKnobAccessibilityElements:array];
   v13 = objc_alloc_init(MEMORY[0x277CD9F90]);
   [(ICDocCamImageQuadEditOverlay *)self setOutlineLayer:v13];
 
-  v14 = [MEMORY[0x277D75348] whiteColor];
-  v15 = [v14 CGColor];
-  v16 = [(ICDocCamImageQuadEditOverlay *)self outlineLayer];
-  [v16 setStrokeColor:v15];
+  whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+  cGColor = [whiteColor2 CGColor];
+  outlineLayer = [(ICDocCamImageQuadEditOverlay *)self outlineLayer];
+  [outlineLayer setStrokeColor:cGColor];
 
-  v17 = [(ICDocCamImageQuadEditOverlay *)self outlineLayer];
-  [v17 setFillColor:0];
+  outlineLayer2 = [(ICDocCamImageQuadEditOverlay *)self outlineLayer];
+  [outlineLayer2 setFillColor:0];
 
-  v18 = [(ICDocCamImageQuadEditOverlay *)self outlineLayer];
-  [v18 setLineWidth:1.0];
+  outlineLayer3 = [(ICDocCamImageQuadEditOverlay *)self outlineLayer];
+  [outlineLayer3 setLineWidth:1.0];
 
-  v19 = [(ICDocCamImageQuadEditOverlay *)self layer];
-  v20 = [(ICDocCamImageQuadEditOverlay *)self outlineLayer];
-  [v19 addSublayer:v20];
+  layer2 = [(ICDocCamImageQuadEditOverlay *)self layer];
+  outlineLayer4 = [(ICDocCamImageQuadEditOverlay *)self outlineLayer];
+  [layer2 addSublayer:outlineLayer4];
 
   v21 = [[ICDocCamImageQuadEditPanGestureRecognizer alloc] initWithTarget:self action:sel_didPan_];
   [(ICDocCamImageQuadEditPanGestureRecognizer *)v21 setDelaysTouchesBegan:0];
   [(ICDocCamImageQuadEditPanGestureRecognizer *)v21 setMaximumNumberOfTouches:1];
   [(ICDocCamImageQuadEditOverlay *)self addGestureRecognizer:v21];
   [(ICDocCamImageQuadEditOverlay *)self setPanGR:v21];
-  v22 = [(ICDocCamImageQuadEditOverlay *)self panGR];
-  [v22 setQuadEditorDelegate:self];
+  panGR = [(ICDocCamImageQuadEditOverlay *)self panGR];
+  [panGR setQuadEditorDelegate:self];
 
   [(ICDocCamImageQuadEditOverlay *)self updateOutlineAndKnobColorForIsValid:[(ICDocCamImageQuadEditOverlay *)self isDisplayingValidQuad]];
 }
 
 - (void)updateOutlineAndKnobColorForCurrentValidityIfNecessary
 {
-  v3 = [(ICDocCamImageQuadEditOverlay *)self isDisplayingValidQuad];
+  isDisplayingValidQuad = [(ICDocCamImageQuadEditOverlay *)self isDisplayingValidQuad];
   if ([(ICDocCamImageQuadEditOverlay *)self isTempOverlay])
   {
-    v4 = [(ICDocCamImageQuadEditOverlay *)self tempOverlayQuadIsValid];
+    tempOverlayQuadIsValid = [(ICDocCamImageQuadEditOverlay *)self tempOverlayQuadIsValid];
   }
 
   else
   {
-    v4 = [(ICDocCamImageQuadEditOverlay *)self isQuadValid];
+    tempOverlayQuadIsValid = [(ICDocCamImageQuadEditOverlay *)self isQuadValid];
   }
 
-  if (v3 != v4)
+  if (isDisplayingValidQuad != tempOverlayQuadIsValid)
   {
 
-    [(ICDocCamImageQuadEditOverlay *)self updateOutlineAndKnobColorForIsValid:v4];
+    [(ICDocCamImageQuadEditOverlay *)self updateOutlineAndKnobColorForIsValid:tempOverlayQuadIsValid];
   }
 }
 
-- (void)updateOutlineAndKnobColorForIsValid:(BOOL)a3
+- (void)updateOutlineAndKnobColorForIsValid:(BOOL)valid
 {
   v18 = *MEMORY[0x277D85DE8];
   [(ICDocCamImageQuadEditOverlay *)self setIsDisplayingValidQuad:?];
-  if (a3)
+  if (valid)
   {
     [(ICDocCamImageQuadEditOverlay *)self validRectColor];
   }
@@ -202,8 +202,8 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(ICDocCamImageQuadEditOverlay *)self knobs];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  knobs = [(ICDocCamImageQuadEditOverlay *)self knobs];
+  v7 = [knobs countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -214,30 +214,30 @@
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(knobs);
         }
 
         [*(*(&v13 + 1) + 8 * i) setBorderColor:{objc_msgSend(v5, "CGColor")}];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [knobs countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
   }
 
-  v11 = [v5 CGColor];
-  v12 = [(ICDocCamImageQuadEditOverlay *)self outlineLayer];
-  [v12 setStrokeColor:v11];
+  cGColor = [v5 CGColor];
+  outlineLayer = [(ICDocCamImageQuadEditOverlay *)self outlineLayer];
+  [outlineLayer setStrokeColor:cGColor];
 
   [MEMORY[0x277CD9FF0] commit];
 }
 
-- (void)setTempOverlayMagnification:(double)a3 animationDuration:(double)a4
+- (void)setTempOverlayMagnification:(double)magnification animationDuration:(double)duration
 {
-  v6 = self;
+  selfCopy = self;
   v38 = *MEMORY[0x277D85DE8];
-  self->_tempOverlayMagnification = a3;
+  self->_tempOverlayMagnification = magnification;
   if (![(ICDocCamImageQuadEditOverlay *)self isTempOverlay])
   {
     v7 = os_log_create("com.apple.documentcamera", "");
@@ -247,9 +247,9 @@
     }
   }
 
-  if ([(ICDocCamImageQuadEditOverlay *)v6 isTempOverlay])
+  if ([(ICDocCamImageQuadEditOverlay *)selfCopy isTempOverlay])
   {
-    if (a4 <= 0.0)
+    if (duration <= 0.0)
     {
       [MEMORY[0x277CD9FF0] begin];
       [MEMORY[0x277CD9FF0] setDisableActions:1];
@@ -259,22 +259,22 @@
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v8 = [(ICDocCamImageQuadEditOverlay *)v6 knobs];
-    v9 = [v8 countByEnumeratingWithState:&v33 objects:v37 count:16];
+    knobs = [(ICDocCamImageQuadEditOverlay *)selfCopy knobs];
+    v9 = [knobs countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v9)
     {
       v10 = v9;
-      v29 = v6;
+      v29 = selfCopy;
       v11 = *v34;
       v12 = *MEMORY[0x277CDA230];
-      v13 = 1.0 / a3;
+      v13 = 1.0 / magnification;
       do
       {
         for (i = 0; i != v10; ++i)
         {
           if (*v34 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(knobs);
           }
 
           v15 = *(*(&v33 + 1) + 8 * i);
@@ -288,10 +288,10 @@
           CATransform3DMakeScale(&v31, v13, v13, 1.0);
           v30 = v31;
           [v15 setTransform:&v30];
-          if (a4 > 0.0)
+          if (duration > 0.0)
           {
             v16 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"transform"];
-            [v16 setDuration:a4];
+            [v16 setDuration:duration];
             v30 = v32;
             v17 = [MEMORY[0x277CCAE60] valueWithCATransform3D:&v30];
             [v16 setFromValue:v17];
@@ -305,26 +305,26 @@
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v33 objects:v37 count:16];
+        v10 = [knobs countByEnumeratingWithState:&v33 objects:v37 count:16];
       }
 
       while (v10);
-      v6 = v29;
+      selfCopy = v29;
     }
 
     else
     {
-      v13 = 1.0 / a3;
+      v13 = 1.0 / magnification;
     }
 
-    v19 = [(ICDocCamImageQuadEditOverlay *)v6 outlineLayer];
-    [v19 lineWidth];
+    outlineLayer = [(ICDocCamImageQuadEditOverlay *)selfCopy outlineLayer];
+    [outlineLayer lineWidth];
     v21 = v20;
 
-    if (a4 <= 0.0)
+    if (duration <= 0.0)
     {
-      v28 = [(ICDocCamImageQuadEditOverlay *)v6 outlineLayer];
-      [v28 setLineWidth:v13];
+      outlineLayer2 = [(ICDocCamImageQuadEditOverlay *)selfCopy outlineLayer];
+      [outlineLayer2 setLineWidth:v13];
 
       [MEMORY[0x277CD9FF0] commit];
     }
@@ -332,46 +332,46 @@
     else
     {
       v22 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"lineWidth"];
-      [v22 setDuration:a4];
+      [v22 setDuration:duration];
       v23 = [MEMORY[0x277CCABB0] numberWithDouble:v13];
       [v22 setToValue:v23];
 
       v24 = [MEMORY[0x277CCABB0] numberWithDouble:v21];
       [v22 setFromValue:v24];
 
-      v25 = [(ICDocCamImageQuadEditOverlay *)v6 outlineLayer];
-      [v25 removeAllAnimations];
+      outlineLayer3 = [(ICDocCamImageQuadEditOverlay *)selfCopy outlineLayer];
+      [outlineLayer3 removeAllAnimations];
 
-      v26 = [(ICDocCamImageQuadEditOverlay *)v6 outlineLayer];
-      [v26 addAnimation:v22 forKey:0];
+      outlineLayer4 = [(ICDocCamImageQuadEditOverlay *)selfCopy outlineLayer];
+      [outlineLayer4 addAnimation:v22 forKey:0];
 
-      v27 = [(ICDocCamImageQuadEditOverlay *)v6 outlineLayer];
-      [v27 setLineWidth:v13];
+      outlineLayer5 = [(ICDocCamImageQuadEditOverlay *)selfCopy outlineLayer];
+      [outlineLayer5 setLineWidth:v13];
     }
   }
 }
 
-- (void)setImage:(id)a3 orientation:(int64_t)a4
+- (void)setImage:(id)image orientation:(int64_t)orientation
 {
-  v7 = a3;
-  if (*&self->_image != __PAIR128__(a4, v7))
+  imageCopy = image;
+  if (*&self->_image != __PAIR128__(orientation, imageCopy))
   {
-    v8 = v7;
-    objc_storeStrong(&self->_image, a3);
-    self->_orientation = a4;
+    v8 = imageCopy;
+    objc_storeStrong(&self->_image, image);
+    self->_orientation = orientation;
     [(ICDocCamImageQuadEditOverlay *)self setupLoupeLayerIfNeeded];
-    v7 = v8;
+    imageCopy = v8;
   }
 }
 
 - (void)setupLoupeLayerIfNeeded
 {
-  v3 = [(ICDocCamImageQuadEditOverlay *)self loupeLayer];
-  if (!v3)
+  loupeLayer = [(ICDocCamImageQuadEditOverlay *)self loupeLayer];
+  if (!loupeLayer)
   {
-    v4 = [(ICDocCamImageQuadEditOverlay *)self image];
+    image = [(ICDocCamImageQuadEditOverlay *)self image];
 
-    if (!v4)
+    if (!image)
     {
       return;
     }
@@ -379,39 +379,39 @@
     v5 = objc_alloc_init(MEMORY[0x277CD9ED0]);
     [(ICDocCamImageQuadEditOverlay *)self setLoupeLayer:v5];
 
-    v6 = [(ICDocCamImageQuadEditOverlay *)self loupeLayer];
-    [v6 setFrame:{0.0, 0.0, 20.0, 20.0}];
+    loupeLayer2 = [(ICDocCamImageQuadEditOverlay *)self loupeLayer];
+    [loupeLayer2 setFrame:{0.0, 0.0, 20.0, 20.0}];
 
-    v7 = [MEMORY[0x277D75348] blackColor];
-    v8 = [v7 CGColor];
-    v9 = [(ICDocCamImageQuadEditOverlay *)self loupeLayer];
-    [v9 setBackgroundColor:v8];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    cGColor = [blackColor CGColor];
+    loupeLayer3 = [(ICDocCamImageQuadEditOverlay *)self loupeLayer];
+    [loupeLayer3 setBackgroundColor:cGColor];
 
     v10 = objc_alloc_init(MEMORY[0x277CD9ED0]);
     [(ICDocCamImageQuadEditOverlay *)self setLoupeContentsLayer:v10];
 
-    v11 = [(ICDocCamImageQuadEditOverlay *)self image];
-    v12 = [v11 CGImage];
-    v13 = [(ICDocCamImageQuadEditOverlay *)self loupeContentsLayer];
-    [v13 setContents:v12];
+    image2 = [(ICDocCamImageQuadEditOverlay *)self image];
+    cGImage = [image2 CGImage];
+    loupeContentsLayer = [(ICDocCamImageQuadEditOverlay *)self loupeContentsLayer];
+    [loupeContentsLayer setContents:cGImage];
 
-    v14 = [(ICDocCamImageQuadEditOverlay *)self loupeLayer];
-    [v14 bounds];
+    loupeLayer4 = [(ICDocCamImageQuadEditOverlay *)self loupeLayer];
+    [loupeLayer4 bounds];
     v16 = v15;
     v18 = v17;
     v20 = v19;
     v22 = v21;
-    v23 = [(ICDocCamImageQuadEditOverlay *)self loupeContentsLayer];
-    [v23 setFrame:{v16, v18, v20, v22}];
+    loupeContentsLayer2 = [(ICDocCamImageQuadEditOverlay *)self loupeContentsLayer];
+    [loupeContentsLayer2 setFrame:{v16, v18, v20, v22}];
 
-    v24 = [(ICDocCamImageQuadEditOverlay *)self loupeContentsLayer];
-    [v24 setMasksToBounds:1];
+    loupeContentsLayer3 = [(ICDocCamImageQuadEditOverlay *)self loupeContentsLayer];
+    [loupeContentsLayer3 setMasksToBounds:1];
 
-    v26 = [(ICDocCamImageQuadEditOverlay *)self loupeLayer];
-    v25 = [(ICDocCamImageQuadEditOverlay *)self loupeContentsLayer];
-    [v26 addSublayer:v25];
+    loupeLayer5 = [(ICDocCamImageQuadEditOverlay *)self loupeLayer];
+    loupeContentsLayer4 = [(ICDocCamImageQuadEditOverlay *)self loupeContentsLayer];
+    [loupeLayer5 addSublayer:loupeContentsLayer4];
 
-    v3 = v26;
+    loupeLayer = loupeLayer5;
   }
 }
 
@@ -422,8 +422,8 @@
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v3 = [(ICDocCamImageQuadEditOverlay *)self knobs];
-  v4 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  knobs = [(ICDocCamImageQuadEditOverlay *)self knobs];
+  v4 = [knobs countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v4)
   {
     v5 = v4;
@@ -434,7 +434,7 @@
       {
         if (*v19 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(knobs);
         }
 
         [*(*(&v18 + 1) + 8 * i) position];
@@ -448,7 +448,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v5 = [knobs countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v5)
       {
         continue;
@@ -467,8 +467,8 @@ LABEL_11:
 - (BOOL)isQuadValid
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [(ICDocCamImageQuadEditOverlay *)self delegate];
-  [v3 imageFrameInOverlayCoordinates];
+  delegate = [(ICDocCamImageQuadEditOverlay *)self delegate];
+  [delegate imageFrameInOverlayCoordinates];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -478,8 +478,8 @@ LABEL_11:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v12 = [(ICDocCamImageQuadEditOverlay *)self knobs];
-  v13 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  knobs = [(ICDocCamImageQuadEditOverlay *)self knobs];
+  v13 = [knobs countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v13)
   {
     v14 = 0;
@@ -490,23 +490,23 @@ LABEL_11:
       {
         if (*v24 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(knobs);
         }
 
         [*(*(&v23 + 1) + 8 * i) position];
         v14 += DCTSDPointInRectInclusive(v17, v18, v5, v7, v9, v11);
       }
 
-      v13 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v13 = [knobs countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v13);
     LODWORD(v13) = v14 == 4;
   }
 
-  v19 = [(ICDocCamImageQuadEditOverlay *)self adjustedQuad];
-  v20 = v19;
-  if (v13 && [v19 isConvex])
+  adjustedQuad = [(ICDocCamImageQuadEditOverlay *)self adjustedQuad];
+  v20 = adjustedQuad;
+  if (v13 && [adjustedQuad isConvex])
   {
     v21 = [v20 containsAngleOutOfValidThreshold] ^ 1;
   }
@@ -521,80 +521,80 @@ LABEL_11:
 
 - (BOOL)isDraggingKnob
 {
-  v2 = [(ICDocCamImageQuadEditOverlay *)self panGR];
-  v3 = [v2 state];
+  panGR = [(ICDocCamImageQuadEditOverlay *)self panGR];
+  state = [panGR state];
 
-  return ((v3 - 1) & 0xFFFFFFFFFFFFFFFDLL) == 0;
+  return ((state - 1) & 0xFFFFFFFFFFFFFFFDLL) == 0;
 }
 
 - (ICDocCamImageQuad)adjustedQuad
 {
   v3 = objc_alloc_init(ICDocCamImageQuad);
-  v4 = [(ICDocCamImageQuadEditOverlay *)self knobs];
-  v5 = [v4 objectAtIndexedSubscript:0];
+  knobs = [(ICDocCamImageQuadEditOverlay *)self knobs];
+  v5 = [knobs objectAtIndexedSubscript:0];
   [v5 position];
   [(ICDocCamImageQuad *)v3 setTopLeft:?];
 
-  v6 = [(ICDocCamImageQuadEditOverlay *)self knobs];
-  v7 = [v6 objectAtIndexedSubscript:1];
+  knobs2 = [(ICDocCamImageQuadEditOverlay *)self knobs];
+  v7 = [knobs2 objectAtIndexedSubscript:1];
   [v7 position];
   [(ICDocCamImageQuad *)v3 setTopRight:?];
 
-  v8 = [(ICDocCamImageQuadEditOverlay *)self knobs];
-  v9 = [v8 objectAtIndexedSubscript:2];
+  knobs3 = [(ICDocCamImageQuadEditOverlay *)self knobs];
+  v9 = [knobs3 objectAtIndexedSubscript:2];
   [v9 position];
   [(ICDocCamImageQuad *)v3 setBottomRight:?];
 
-  v10 = [(ICDocCamImageQuadEditOverlay *)self knobs];
-  v11 = [v10 objectAtIndexedSubscript:3];
+  knobs4 = [(ICDocCamImageQuadEditOverlay *)self knobs];
+  v11 = [knobs4 objectAtIndexedSubscript:3];
   [v11 position];
   [(ICDocCamImageQuad *)v3 setBottomLeft:?];
 
   return v3;
 }
 
-- (void)updateKnobLocationsToRect:(id)a3
+- (void)updateKnobLocationsToRect:(id)rect
 {
-  v4 = a3;
-  [v4 topLeft];
+  rectCopy = rect;
+  [rectCopy topLeft];
   v6 = v5;
   v8 = v7;
-  v9 = [(ICDocCamImageQuadEditOverlay *)self knobs];
-  v10 = [v9 objectAtIndexedSubscript:0];
+  knobs = [(ICDocCamImageQuadEditOverlay *)self knobs];
+  v10 = [knobs objectAtIndexedSubscript:0];
   [v10 setPosition:{v6, v8}];
 
-  [v4 topRight];
+  [rectCopy topRight];
   v12 = v11;
   v14 = v13;
-  v15 = [(ICDocCamImageQuadEditOverlay *)self knobs];
-  v16 = [v15 objectAtIndexedSubscript:1];
+  knobs2 = [(ICDocCamImageQuadEditOverlay *)self knobs];
+  v16 = [knobs2 objectAtIndexedSubscript:1];
   [v16 setPosition:{v12, v14}];
 
-  [v4 bottomRight];
+  [rectCopy bottomRight];
   v18 = v17;
   v20 = v19;
-  v21 = [(ICDocCamImageQuadEditOverlay *)self knobs];
-  v22 = [v21 objectAtIndexedSubscript:2];
+  knobs3 = [(ICDocCamImageQuadEditOverlay *)self knobs];
+  v22 = [knobs3 objectAtIndexedSubscript:2];
   [v22 setPosition:{v18, v20}];
 
-  [v4 bottomLeft];
+  [rectCopy bottomLeft];
   v24 = v23;
   v26 = v25;
 
-  v28 = [(ICDocCamImageQuadEditOverlay *)self knobs];
-  v27 = [v28 objectAtIndexedSubscript:3];
+  knobs4 = [(ICDocCamImageQuadEditOverlay *)self knobs];
+  v27 = [knobs4 objectAtIndexedSubscript:3];
   [v27 setPosition:{v24, v26}];
 }
 
-- (void)didPan:(id)a3
+- (void)didPan:(id)pan
 {
   v71 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 locationInView:self];
+  panCopy = pan;
+  [panCopy locationInView:self];
   v6 = v5;
   v8 = v7;
-  v9 = [v4 state];
-  if (v9 == 1)
+  state = [panCopy state];
+  if (state == 1)
   {
     v10 = [(ICDocCamImageQuadEditOverlay *)self closestKnobToPoint:v6, v8];
     [(ICDocCamImageQuadEditOverlay *)self setSelectedKnob:v10];
@@ -602,7 +602,7 @@ LABEL_11:
     [(ICDocCamImageQuadEditOverlay *)self updateSelectedKnobContents];
     v11 = *MEMORY[0x277CBF348];
     v12 = *(MEMORY[0x277CBF348] + 8);
-    [v4 setTranslation:self inView:{*MEMORY[0x277CBF348], v12}];
+    [panCopy setTranslation:self inView:{*MEMORY[0x277CBF348], v12}];
     v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:10];
     [(ICDocCamImageQuadEditOverlay *)self setPanHistory:v13];
 
@@ -620,12 +620,12 @@ LABEL_11:
   [(ICDocCamImageQuadEditOverlay *)self lastGestureTranslation];
   v17 = v16;
   v19 = v18;
-  [v4 translationInView:self];
+  [panCopy translationInView:self];
   v21 = v20;
   v23 = v22;
-  [v4 setTranslation:self inView:{v11, v12}];
+  [panCopy setTranslation:self inView:{v11, v12}];
   [(ICDocCamImageQuadEditOverlay *)self setLastGestureTranslation:v21, v23];
-  if (v9 == 3)
+  if (state == 3)
   {
     v62 = v19;
     v24 = CACurrentMediaTime();
@@ -633,8 +633,8 @@ LABEL_11:
     v67 = 0u;
     v68 = 0u;
     v69 = 0u;
-    v25 = [(ICDocCamImageQuadEditOverlay *)self panHistory];
-    v26 = [v25 countByEnumeratingWithState:&v66 objects:v70 count:16];
+    panHistory = [(ICDocCamImageQuadEditOverlay *)self panHistory];
+    v26 = [panHistory countByEnumeratingWithState:&v66 objects:v70 count:16];
     v27 = v12;
     v28 = v11;
     if (v26)
@@ -649,7 +649,7 @@ LABEL_11:
         {
           if (*v67 != v30)
           {
-            objc_enumerationMutation(v25);
+            objc_enumerationMutation(panHistory);
           }
 
           v32 = *(*(&v66 + 1) + 8 * i);
@@ -664,7 +664,7 @@ LABEL_11:
           }
         }
 
-        v29 = [v25 countByEnumeratingWithState:&v66 objects:v70 count:16];
+        v29 = [panHistory countByEnumeratingWithState:&v66 objects:v70 count:16];
       }
 
       while (v29);
@@ -702,8 +702,8 @@ LABEL_11:
     v65 = v23;
     v63 = CACurrentMediaTime();
     v35 = [MEMORY[0x277CCAE60] valueWithBytes:&v63 objCType:"{?=d{CGPoint=dd}}"];
-    v36 = [(ICDocCamImageQuadEditOverlay *)self panHistory];
-    [v36 setObject:v35 atIndexedSubscript:{-[ICDocCamImageQuadEditOverlay panHistoryIdx](self, "panHistoryIdx")}];
+    panHistory2 = [(ICDocCamImageQuadEditOverlay *)self panHistory];
+    [panHistory2 setObject:v35 atIndexedSubscript:{-[ICDocCamImageQuadEditOverlay panHistoryIdx](self, "panHistoryIdx")}];
 
     [(ICDocCamImageQuadEditOverlay *)self setPanHistoryIdx:([(ICDocCamImageQuadEditOverlay *)self panHistoryIdx]+ 1) % 0xA];
   }
@@ -714,77 +714,77 @@ LABEL_11:
     v37 = 1;
   }
 
-  if (v9 != 2)
+  if (state != 2)
   {
     v37 = 0;
   }
 
-  if (v9 == 3 || v37)
+  if (state == 3 || v37)
   {
-    v38 = [(ICDocCamImageQuadEditOverlay *)self selectedKnob];
-    [v38 position];
+    selectedKnob = [(ICDocCamImageQuadEditOverlay *)self selectedKnob];
+    [selectedKnob position];
     v40 = v39;
     v42 = v41;
 
-    v43 = [(ICDocCamImageQuadEditOverlay *)self selectedKnob];
-    [v43 position];
+    selectedKnob2 = [(ICDocCamImageQuadEditOverlay *)self selectedKnob];
+    [selectedKnob2 position];
     v45 = DCTSDAddPoints(v21, v23, v44);
     v47 = v46;
 
-    v48 = [(ICDocCamImageQuadEditOverlay *)self knobLayer];
-    [v48 bounds];
+    knobLayer = [(ICDocCamImageQuadEditOverlay *)self knobLayer];
+    [knobLayer bounds];
     v53 = DCTSDClampPointInRect(v45, v47, v49, v50, v51, v52);
     v55 = v54;
 
     [MEMORY[0x277CD9FF0] begin];
     [MEMORY[0x277CD9FF0] setDisableActions:1];
-    v56 = [(ICDocCamImageQuadEditOverlay *)self selectedKnob];
-    [v56 setPosition:{v53, v55}];
+    selectedKnob3 = [(ICDocCamImageQuadEditOverlay *)self selectedKnob];
+    [selectedKnob3 setPosition:{v53, v55}];
 
-    v57 = [(ICDocCamImageQuadEditOverlay *)self adjustedQuad];
-    v58 = [(ICDocCamImageQuadEditOverlay *)self delegate];
-    [v58 imageFrameInOverlayCoordinates];
-    [v57 setBoundingBox:?];
+    adjustedQuad = [(ICDocCamImageQuadEditOverlay *)self adjustedQuad];
+    delegate = [(ICDocCamImageQuadEditOverlay *)self delegate];
+    [delegate imageFrameInOverlayCoordinates];
+    [adjustedQuad setBoundingBox:?];
 
-    if (([v57 isValid] & 1) == 0)
+    if (([adjustedQuad isValid] & 1) == 0)
     {
-      v59 = [(ICDocCamImageQuadEditOverlay *)self selectedKnob];
-      [v59 setPosition:{v40, v42}];
+      selectedKnob4 = [(ICDocCamImageQuadEditOverlay *)self selectedKnob];
+      [selectedKnob4 setPosition:{v40, v42}];
     }
 
     [(ICDocCamImageQuadEditOverlay *)self updateOutlineLayer];
     [MEMORY[0x277CD9FF0] commit];
     [(ICDocCamImageQuadEditOverlay *)self updateSelectedKnobContents];
 
-    if (v9 == 3)
+    if (state == 3)
     {
       [(ICDocCamImageQuadEditOverlay *)self setSelectedKnob:0];
       UIAccessibilityPostNotification(*MEMORY[0x277D76488], 0);
     }
   }
 
-  v60 = [(ICDocCamImageQuadEditOverlay *)self delegate];
-  v61 = [(ICDocCamImageQuadEditOverlay *)self selectedKnob];
-  [v61 frame];
-  [v60 selectedKnobDidPanToRect:?];
+  delegate2 = [(ICDocCamImageQuadEditOverlay *)self delegate];
+  selectedKnob5 = [(ICDocCamImageQuadEditOverlay *)self selectedKnob];
+  [selectedKnob5 frame];
+  [delegate2 selectedKnobDidPanToRect:?];
 
   [(ICDocCamImageQuadEditOverlay *)self updateOutlineAndKnobColorForCurrentValidityIfNecessary];
 }
 
-- (id)closestKnobToPoint:(CGPoint)a3
+- (id)closestKnobToPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v26 = *MEMORY[0x277D85DE8];
-  v6 = [(ICDocCamImageQuadEditOverlay *)self knobs];
-  v7 = [v6 firstObject];
+  knobs = [(ICDocCamImageQuadEditOverlay *)self knobs];
+  firstObject = [knobs firstObject];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = [(ICDocCamImageQuadEditOverlay *)self knobs];
-  v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  knobs2 = [(ICDocCamImageQuadEditOverlay *)self knobs];
+  v9 = [knobs2 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
   {
     v10 = v9;
@@ -796,7 +796,7 @@ LABEL_11:
       {
         if (*v22 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(knobs2);
         }
 
         v14 = *(*(&v21 + 1) + 8 * i);
@@ -807,34 +807,34 @@ LABEL_11:
           v18 = v17;
           v19 = v14;
 
-          v7 = v19;
+          firstObject = v19;
           v12 = v18;
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v10 = [knobs2 countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v10);
   }
 
-  return v7;
+  return firstObject;
 }
 
-- (void)setSelectedKnob:(id)a3
+- (void)setSelectedKnob:(id)knob
 {
   v41 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_selectedKnob != v5)
+  knobCopy = knob;
+  if (self->_selectedKnob != knobCopy)
   {
-    objc_storeStrong(&self->_selectedKnob, a3);
+    objc_storeStrong(&self->_selectedKnob, knob);
     if (self->_selectedKnob)
     {
-      v6 = [(ICDocCamImageQuadEditOverlay *)self loupeLayer];
-      v7 = [v6 superlayer];
+      loupeLayer = [(ICDocCamImageQuadEditOverlay *)self loupeLayer];
+      superlayer = [loupeLayer superlayer];
       selectedKnob = self->_selectedKnob;
 
-      if (v7 != selectedKnob)
+      if (superlayer != selectedKnob)
       {
         [MEMORY[0x277CD9FF0] begin];
         [MEMORY[0x277CD9FF0] setDisableActions:1];
@@ -852,15 +852,15 @@ LABEL_11:
         *&v39.m21 = *(MEMORY[0x277CD9DE8] + 32);
         *&v39.m23 = v13;
         [(CALayer *)v9 setSublayerTransform:&v39];
-        v14 = [(ICDocCamImageQuadEditOverlay *)self loupeLayer];
-        [v14 setHidden:0];
+        loupeLayer2 = [(ICDocCamImageQuadEditOverlay *)self loupeLayer];
+        [loupeLayer2 setHidden:0];
 
-        v15 = [(ICDocCamImageQuadEditOverlay *)self loupeLayer];
-        [v15 setOpacity:0.0];
+        loupeLayer3 = [(ICDocCamImageQuadEditOverlay *)self loupeLayer];
+        [loupeLayer3 setOpacity:0.0];
 
         v16 = self->_selectedKnob;
-        v17 = [(ICDocCamImageQuadEditOverlay *)self loupeLayer];
-        [(CALayer *)v16 addSublayer:v17];
+        loupeLayer4 = [(ICDocCamImageQuadEditOverlay *)self loupeLayer];
+        [(CALayer *)v16 addSublayer:loupeLayer4];
 
         [MEMORY[0x277CD9FF0] commit];
       }
@@ -872,19 +872,19 @@ LABEL_11:
     v19 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7C8]];
     [v18 setAnimationTimingFunction:v19];
 
-    v20 = [(ICDocCamImageQuadEditOverlay *)self loupeLayer];
+    loupeLayer5 = [(ICDocCamImageQuadEditOverlay *)self loupeLayer];
     LODWORD(v21) = 1.0;
-    [v20 setOpacity:v21];
+    [loupeLayer5 setOpacity:v21];
 
     if (!self->_selectedKnob)
     {
-      v22 = [(ICDocCamImageQuadEditOverlay *)self loupeLayer];
-      v23 = [v22 superlayer];
+      loupeLayer6 = [(ICDocCamImageQuadEditOverlay *)self loupeLayer];
+      superlayer2 = [loupeLayer6 superlayer];
 
-      if (v23)
+      if (superlayer2)
       {
-        v24 = [(ICDocCamImageQuadEditOverlay *)self loupeLayer];
-        [v24 setOpacity:0.0];
+        loupeLayer7 = [(ICDocCamImageQuadEditOverlay *)self loupeLayer];
+        [loupeLayer7 setOpacity:0.0];
 
         v38[0] = MEMORY[0x277D85DD0];
         v38[1] = 3221225472;
@@ -899,8 +899,8 @@ LABEL_11:
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v25 = [(ICDocCamImageQuadEditOverlay *)self knobs];
-    v26 = [v25 countByEnumeratingWithState:&v34 objects:v40 count:16];
+    knobs = [(ICDocCamImageQuadEditOverlay *)self knobs];
+    v26 = [knobs countByEnumeratingWithState:&v34 objects:v40 count:16];
     if (v26)
     {
       v27 = v26;
@@ -912,11 +912,11 @@ LABEL_11:
         {
           if (*v35 != v28)
           {
-            objc_enumerationMutation(v25);
+            objc_enumerationMutation(knobs);
           }
 
           v30 = *(*(&v34 + 1) + 8 * v29);
-          if (v30 == v5)
+          if (v30 == knobCopy)
           {
             v31 = 4.0;
           }
@@ -934,15 +934,15 @@ LABEL_11:
         }
 
         while (v27 != v29);
-        v27 = [v25 countByEnumeratingWithState:&v34 objects:v40 count:16];
+        v27 = [knobs countByEnumeratingWithState:&v34 objects:v40 count:16];
       }
 
       while (v27);
     }
 
     [MEMORY[0x277CD9FF0] commit];
-    v32 = [(ICDocCamImageQuadEditOverlay *)self delegate];
-    [v32 selectedKnobDidChange:self->_selectedKnob];
+    delegate = [(ICDocCamImageQuadEditOverlay *)self delegate];
+    [delegate selectedKnobDidChange:self->_selectedKnob];
   }
 }
 
@@ -976,8 +976,8 @@ void __48__ICDocCamImageQuadEditOverlay_setSelectedKnob___block_invoke(uint64_t 
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
   [(ICDocCamImageQuadEditOverlay *)self setupLoupeLayerIfNeeded];
-  v3 = [(ICDocCamImageQuadEditOverlay *)self loupeContentsLayer];
-  [v3 bounds];
+  loupeContentsLayer = [(ICDocCamImageQuadEditOverlay *)self loupeContentsLayer];
+  [loupeContentsLayer bounds];
   v49 = v4;
   v51 = v5;
 
@@ -985,8 +985,8 @@ void __48__ICDocCamImageQuadEditOverlay_setSelectedKnob___block_invoke(uint64_t 
   v7 = v6 + -10.0;
   [(CALayer *)self->_selectedKnob position];
   v9 = v8 + -10.0;
-  v10 = [(ICDocCamImageQuadEditOverlay *)self delegate];
-  [v10 unitImageRectForOverlayRect:{v7, v9, 20.0, 20.0}];
+  delegate = [(ICDocCamImageQuadEditOverlay *)self delegate];
+  [delegate unitImageRectForOverlayRect:{v7, v9, 20.0, 20.0}];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -1012,8 +1012,8 @@ void __48__ICDocCamImageQuadEditOverlay_setSelectedKnob___block_invoke(uint64_t 
   v60.size.width = v16;
   v60.size.height = v18;
   MaxY = CGRectGetMaxY(v60);
-  v21 = [(ICDocCamImageQuadEditOverlay *)self loupeLayer];
-  [v21 bounds];
+  loupeLayer = [(ICDocCamImageQuadEditOverlay *)self loupeLayer];
+  [loupeLayer bounds];
   v23 = v22;
   v25 = v24;
   v52 = v27;
@@ -1075,68 +1075,68 @@ void __48__ICDocCamImageQuadEditOverlay_setSelectedKnob___block_invoke(uint64_t 
   memset(&v56, 0, sizeof(v56));
   CGAffineTransformMakeRotation(&v56, matched * 1.57079633);
   v55 = v56;
-  v36 = [(ICDocCamImageQuadEditOverlay *)self loupeContentsLayer];
+  loupeContentsLayer2 = [(ICDocCamImageQuadEditOverlay *)self loupeContentsLayer];
   v54 = v55;
-  [v36 setAffineTransform:&v54];
+  [loupeContentsLayer2 setAffineTransform:&v54];
 
   [(ICDocCamImageQuadEditOverlay *)self rectFromApplyingOrientation:[(ICDocCamImageQuadEditOverlay *)self orientation] toContentsRect:v30, v33, v16, v18];
   v38 = v37;
   v40 = v39;
   v42 = v41;
   v44 = v43;
-  v45 = [(ICDocCamImageQuadEditOverlay *)self loupeContentsLayer];
-  [v45 setContentsRect:{v38, v40, v42, v44}];
+  loupeContentsLayer3 = [(ICDocCamImageQuadEditOverlay *)self loupeContentsLayer];
+  [loupeContentsLayer3 setContentsRect:{v38, v40, v42, v44}];
 
-  v46 = [(ICDocCamImageQuadEditOverlay *)self loupeContentsLayer];
-  [v46 setFrame:{v50, v34, v53, v52}];
+  loupeContentsLayer4 = [(ICDocCamImageQuadEditOverlay *)self loupeContentsLayer];
+  [loupeContentsLayer4 setFrame:{v50, v34, v53, v52}];
 
   [MEMORY[0x277CD9FF0] commit];
 }
 
 - (void)updateOutlineLayer
 {
-  v6 = [(ICDocCamImageQuadEditOverlay *)self outlinePath];
-  v3 = v6;
-  v4 = [v6 CGPath];
-  v5 = [(ICDocCamImageQuadEditOverlay *)self outlineLayer];
-  [v5 setPath:v4];
+  outlinePath = [(ICDocCamImageQuadEditOverlay *)self outlinePath];
+  v3 = outlinePath;
+  cGPath = [outlinePath CGPath];
+  outlineLayer = [(ICDocCamImageQuadEditOverlay *)self outlineLayer];
+  [outlineLayer setPath:cGPath];
 }
 
 - (UIBezierPath)outlinePath
 {
   v3 = objc_alloc_init(MEMORY[0x277D75208]);
-  v4 = [(ICDocCamImageQuadEditOverlay *)self knobs];
-  v5 = [v4 objectAtIndexedSubscript:0];
+  knobs = [(ICDocCamImageQuadEditOverlay *)self knobs];
+  v5 = [knobs objectAtIndexedSubscript:0];
   [v5 position];
   [v3 moveToPoint:?];
 
-  v6 = [(ICDocCamImageQuadEditOverlay *)self knobs];
-  v7 = [v6 objectAtIndexedSubscript:1];
+  knobs2 = [(ICDocCamImageQuadEditOverlay *)self knobs];
+  v7 = [knobs2 objectAtIndexedSubscript:1];
   [v7 position];
   [v3 addLineToPoint:?];
 
-  v8 = [(ICDocCamImageQuadEditOverlay *)self knobs];
-  v9 = [v8 objectAtIndexedSubscript:2];
+  knobs3 = [(ICDocCamImageQuadEditOverlay *)self knobs];
+  v9 = [knobs3 objectAtIndexedSubscript:2];
   [v9 position];
   [v3 addLineToPoint:?];
 
-  v10 = [(ICDocCamImageQuadEditOverlay *)self knobs];
-  v11 = [v10 objectAtIndexedSubscript:3];
+  knobs4 = [(ICDocCamImageQuadEditOverlay *)self knobs];
+  v11 = [knobs4 objectAtIndexedSubscript:3];
   [v11 position];
   [v3 addLineToPoint:?];
 
-  v12 = [(ICDocCamImageQuadEditOverlay *)self knobs];
-  v13 = [v12 objectAtIndexedSubscript:0];
+  knobs5 = [(ICDocCamImageQuadEditOverlay *)self knobs];
+  v13 = [knobs5 objectAtIndexedSubscript:0];
   [v13 position];
   [v3 addLineToPoint:?];
 
   return v3;
 }
 
-- (CGRect)rectFromApplyingOrientation:(int64_t)a3 toContentsRect:(CGRect)a4
+- (CGRect)rectFromApplyingOrientation:(int64_t)orientation toContentsRect:(CGRect)rect
 {
-  v5 = [ICDocCamImageQuad quadFromCGRect:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
-  [v5 applyOrientation:a3 boundingBox:{0.0, 0.0, 1.0, 1.0}];
+  v5 = [ICDocCamImageQuad quadFromCGRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
+  [v5 applyOrientation:orientation boundingBox:{0.0, 0.0, 1.0, 1.0}];
   [v5 bounds];
   v7 = v6;
   v9 = v8;

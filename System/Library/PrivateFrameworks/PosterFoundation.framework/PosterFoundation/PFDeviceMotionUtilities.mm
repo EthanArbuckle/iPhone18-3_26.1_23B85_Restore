@@ -1,16 +1,16 @@
 @interface PFDeviceMotionUtilities
-+ (__n128)rotationFromSerializedRepresentation:(void *)a1@<X2>;
-+ (id)serializedRepresentationFromRotation:(double *)a3;
++ (__n128)rotationFromSerializedRepresentation:(void *)representation@<X2>;
++ (id)serializedRepresentationFromRotation:(double *)rotation;
 @end
 
 @implementation PFDeviceMotionUtilities
 
-+ (id)serializedRepresentationFromRotation:(double *)a3
++ (id)serializedRepresentationFromRotation:(double *)rotation
 {
-  v3 = *a3;
-  v13 = *(a3 + 1);
-  v4 = a3[3];
-  v5 = a3[1];
+  v3 = *rotation;
+  v13 = *(rotation + 1);
+  v4 = rotation[3];
+  v5 = rotation[1];
   v6 = MEMORY[0x1E695DEC8];
   v7 = [MEMORY[0x1E696AD98] numberWithDouble:?];
   v8 = [MEMORY[0x1E696AD98] numberWithDouble:v5];
@@ -21,19 +21,19 @@
   return v11;
 }
 
-+ (__n128)rotationFromSerializedRepresentation:(void *)a1@<X2>
++ (__n128)rotationFromSerializedRepresentation:(void *)representation@<X2>
 {
-  v3 = a1;
-  v4 = [v3 objectAtIndexedSubscript:0];
+  representationCopy = representation;
+  v4 = [representationCopy objectAtIndexedSubscript:0];
   [v4 doubleValue];
   v17 = v5;
-  v6 = [v3 objectAtIndexedSubscript:1];
+  v6 = [representationCopy objectAtIndexedSubscript:1];
   [v6 doubleValue];
   v14 = v7;
-  v8 = [v3 objectAtIndexedSubscript:2];
+  v8 = [representationCopy objectAtIndexedSubscript:2];
   [v8 doubleValue];
   v15 = v9;
-  v10 = [v3 objectAtIndexedSubscript:3];
+  v10 = [representationCopy objectAtIndexedSubscript:3];
 
   [v10 doubleValue];
   v11.n128_u64[0] = v17;

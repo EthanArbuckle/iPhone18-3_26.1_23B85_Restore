@@ -1,56 +1,56 @@
 @interface SDStreamHandler
 - (BOOL)evaluateCert;
 - (BOOL)shouldReadNetwork;
-- (SDStreamHandler)initWithInputStream:(id)a3 outputStream:(id)a4 isClient:(BOOL)a5;
+- (SDStreamHandler)initWithInputStream:(id)stream outputStream:(id)outputStream isClient:(BOOL)client;
 - (SDStreamHandlerDelegate)delegate;
-- (id)headerWithLength:(unsigned int)a3;
-- (id)messageWithData:(id)a3;
-- (id)trimHeader:(id)a3;
-- (unsigned)parseHeader:(id)a3;
+- (id)headerWithLength:(unsigned int)length;
+- (id)messageWithData:(id)data;
+- (id)trimHeader:(id)header;
+- (unsigned)parseHeader:(id)header;
 - (void)_stop;
-- (void)applySSLSettings:(id)a3;
+- (void)applySSLSettings:(id)settings;
 - (void)dealloc;
 - (void)handleBytesAvailable;
 - (void)handleBytesForMessage;
 - (void)handleBytesForStream;
 - (void)handleHeaderRead;
 - (void)handleMessageRead;
-- (void)handleMessageWritten:(id)a3;
-- (void)handleOpenedStream:(id)a3;
+- (void)handleMessageWritten:(id)written;
+- (void)handleOpenedStream:(id)stream;
 - (void)handleSpaceAvailable;
 - (void)handleSpaceForMessage;
 - (void)handleSpaceForStream;
 - (void)invalidateOpenTimer;
 - (void)logTransfer;
-- (void)openTimerFired:(id)a3;
+- (void)openTimerFired:(id)fired;
 - (void)resetReadState;
-- (void)sendMessage:(id)a3 withCompletionHandler:(id)a4;
-- (void)sendMessage:(id)a3 withErrorHandler:(id)a4;
-- (void)setShouldReadNetwork:(BOOL)a3;
-- (void)setTCPProperties:(id)a3;
+- (void)sendMessage:(id)message withCompletionHandler:(id)handler;
+- (void)sendMessage:(id)message withErrorHandler:(id)handler;
+- (void)setShouldReadNetwork:(BOOL)network;
+- (void)setTCPProperties:(id)properties;
 - (void)start;
 - (void)startOpenTimer;
 - (void)stop;
 - (void)stopIfReady;
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4;
-- (void)writeToStreamWithData:(id)a3;
+- (void)stream:(id)stream handleEvent:(unint64_t)event;
+- (void)writeToStreamWithData:(id)data;
 @end
 
 @implementation SDStreamHandler
 
-- (SDStreamHandler)initWithInputStream:(id)a3 outputStream:(id)a4 isClient:(BOOL)a5
+- (SDStreamHandler)initWithInputStream:(id)stream outputStream:(id)outputStream isClient:(BOOL)client
 {
-  v9 = a3;
-  v10 = a4;
+  streamCopy = stream;
+  outputStreamCopy = outputStream;
   v29.receiver = self;
   v29.super_class = SDStreamHandler;
   v11 = [(SDStreamHandler *)&v29 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_inputStream, a3);
-    objc_storeStrong(&v12->_outputStream, a4);
-    v12->_client = a5;
+    objc_storeStrong(&v11->_inputStream, stream);
+    objc_storeStrong(&v12->_outputStream, outputStream);
+    v12->_client = client;
     v12->_byteIndex = 0;
     v12->_bytesRead = 0;
     bundleID = v12->_bundleID;
@@ -110,7 +110,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@ Deallocating Stream Handler", buf, 0xCu);
   }
 
@@ -212,7 +212,7 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@ Closing input stream", &v13, 0xCu);
     }
 
@@ -231,7 +231,7 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@ Closing output stream", &v13, 0xCu);
     }
 
@@ -267,21 +267,21 @@
 
 - (BOOL)shouldReadNetwork
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  shouldReadNetwork = v2->_shouldReadNetwork;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  shouldReadNetwork = selfCopy->_shouldReadNetwork;
+  objc_sync_exit(selfCopy);
 
   return shouldReadNetwork;
 }
 
-- (void)setShouldReadNetwork:(BOOL)a3
+- (void)setShouldReadNetwork:(BOOL)network
 {
-  v3 = a3;
+  networkCopy = network;
   obj = self;
   objc_sync_enter(obj);
-  obj->_shouldReadNetwork = v3;
-  if (v3 && [(NSInputStream *)obj->_inputStream hasBytesAvailable]&& ![(SDStreamHandler *)obj usingMessages])
+  obj->_shouldReadNetwork = networkCopy;
+  if (networkCopy && [(NSInputStream *)obj->_inputStream hasBytesAvailable]&& ![(SDStreamHandler *)obj usingMessages])
   {
     [(SDStreamHandler *)obj handleBytesForStream];
   }
@@ -359,19 +359,19 @@
   self->_openTimer = v4;
 }
 
-- (void)openTimerFired:(id)a3
+- (void)openTimerFired:(id)fired
 {
   if (![(NSInputStream *)self->_inputStream streamStatus]|| [(NSInputStream *)self->_inputStream streamStatus]== 1 || ![(NSOutputStream *)self->_outputStream streamStatus]|| [(NSOutputStream *)self->_outputStream streamStatus]== 1)
   {
     v4 = streams_log();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(NSInputStream *)self->_inputStream streamStatus];
-      v6 = [(NSOutputStream *)self->_outputStream streamStatus];
+      streamStatus = [(NSInputStream *)self->_inputStream streamStatus];
+      streamStatus2 = [(NSOutputStream *)self->_outputStream streamStatus];
       *buf = 67109376;
-      v14 = v5;
+      v14 = streamStatus;
       v15 = 1024;
-      v16 = v6;
+      v16 = streamStatus2;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Open timer fired with input stream status = %d, output stream status = %d, closing streams", buf, 0xEu);
     }
 
@@ -406,26 +406,26 @@
   }
 }
 
-- (void)applySSLSettings:(id)a3
+- (void)applySSLSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v5 = +[SDStatusMonitor sharedMonitor];
-  v6 = [v5 disableContinuityTLS];
+  disableContinuityTLS = [v5 disableContinuityTLS];
 
-  if ((v6 & 1) == 0)
+  if ((disableContinuityTLS & 1) == 0)
   {
     v7 = +[SDStatusMonitor sharedMonitor];
-    v8 = [v7 copyMyAppleIDSecIdentity];
+    copyMyAppleIDSecIdentity = [v7 copyMyAppleIDSecIdentity];
 
-    if (v8)
+    if (copyMyAppleIDSecIdentity)
     {
       v9 = +[SDStatusMonitor sharedMonitor];
-      v10 = [v9 copyMyAppleIDIntermediateCertificate];
+      copyMyAppleIDIntermediateCertificate = [v9 copyMyAppleIDIntermediateCertificate];
 
-      if (v10)
+      if (copyMyAppleIDIntermediateCertificate)
       {
-        v21[0] = v8;
-        v21[1] = v10;
+        v21[0] = copyMyAppleIDSecIdentity;
+        v21[1] = copyMyAppleIDIntermediateCertificate;
         v11 = [NSArray arrayWithObjects:v21 count:2];
         v19[0] = kCFStreamSSLLevel;
         v19[1] = kCFStreamSSLCertificates;
@@ -453,14 +453,14 @@
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Applying tls settings", v18, 2u);
         }
 
-        [v4 setProperty:v13 forKey:kCFStreamPropertySSLSettings];
-        CFRelease(v10);
+        [settingsCopy setProperty:v13 forKey:kCFStreamPropertySSLSettings];
+        CFRelease(copyMyAppleIDIntermediateCertificate);
       }
 
       else
       {
         v16 = +[SDStatusMonitor sharedMonitor];
-        v17 = [v16 myAppleID];
+        myAppleID = [v16 myAppleID];
         SFMetricsLogUnexpectedEvent();
 
         v11 = streams_log();
@@ -470,7 +470,7 @@
         }
       }
 
-      CFRelease(v8);
+      CFRelease(copyMyAppleIDSecIdentity);
     }
 
     else
@@ -513,8 +513,8 @@
       v16 = v7;
       if (v7)
       {
-        v8 = streams_log();
-        if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+        myAppleIDCommonName = streams_log();
+        if (os_log_type_enabled(myAppleIDCommonName, OS_LOG_TYPE_ERROR))
         {
           sub_1001B8E20(&v16);
         }
@@ -524,11 +524,11 @@
       }
 
       v9 = +[SDStatusMonitor sharedMonitor];
-      v8 = [v9 myAppleIDCommonName];
+      myAppleIDCommonName = [v9 myAppleIDCommonName];
 
-      if ([v8 length])
+      if ([myAppleIDCommonName length])
       {
-        v10 = [v4 isEqualToString:v8];
+        v10 = [v4 isEqualToString:myAppleIDCommonName];
         v11 = streams_log();
         v12 = v11;
         if (v10)
@@ -589,17 +589,17 @@ LABEL_30:
   return v5;
 }
 
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4
+- (void)stream:(id)stream handleEvent:(unint64_t)event
 {
-  v6 = a3;
-  if (a4 <= 3)
+  streamCopy = stream;
+  if (event <= 3)
   {
-    if (a4 == 1)
+    if (event == 1)
     {
-      [(SDStreamHandler *)self handleOpenedStream:v6];
+      [(SDStreamHandler *)self handleOpenedStream:streamCopy];
     }
 
-    else if (a4 == 2)
+    else if (event == 2)
     {
       [(SDStreamHandler *)self handleBytesAvailable];
     }
@@ -607,7 +607,7 @@ LABEL_30:
 
   else
   {
-    switch(a4)
+    switch(event)
     {
       case 4uLL:
         [(SDStreamHandler *)self handleSpaceAvailable];
@@ -616,12 +616,12 @@ LABEL_30:
         v8 = streams_log();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
         {
-          sub_1001B8F68(v6);
+          sub_1001B8F68(streamCopy);
         }
 
-        v9 = [v6 streamError];
+        streamError = [streamCopy streamError];
         streamError = self->_streamError;
-        self->_streamError = v9;
+        self->_streamError = streamError;
 
         goto LABEL_15;
       case 0x10uLL:
@@ -639,10 +639,10 @@ LABEL_15:
   }
 }
 
-- (void)setTCPProperties:(id)a3
+- (void)setTCPProperties:(id)properties
 {
   v6 = -1;
-  v3 = [a3 propertyForKey:kCFStreamPropertySocketNativeHandle];
+  v3 = [properties propertyForKey:kCFStreamPropertySocketNativeHandle];
   [v3 getBytes:&v6 length:4];
   if (v6 < 0)
   {
@@ -668,9 +668,9 @@ LABEL_7:
   }
 }
 
-- (void)handleOpenedStream:(id)a3
+- (void)handleOpenedStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   if ([(NSInputStream *)self->_inputStream streamStatus]>= 2 && [(NSOutputStream *)self->_outputStream streamStatus]>= 2)
   {
     v5 = streams_log();
@@ -706,7 +706,7 @@ LABEL_7:
     [(SDStreamHandler *)self invalidateOpenTimer];
   }
 
-  if ([v4 isEqual:self->_outputStream])
+  if ([streamCopy isEqual:self->_outputStream])
   {
     [(SDStreamHandler *)self setTCPProperties:self->_outputStream];
   }
@@ -721,9 +721,9 @@ LABEL_7:
     goto LABEL_5;
   }
 
-  v4 = [(SDStreamHandler *)self checkedCert];
+  checkedCert = [(SDStreamHandler *)self checkedCert];
 
-  if ((v4 & 1) != 0 || ([(SDStreamHandler *)self setCheckedCert:1], [(SDStreamHandler *)self evaluateCert]))
+  if ((checkedCert & 1) != 0 || ([(SDStreamHandler *)self setCheckedCert:1], [(SDStreamHandler *)self evaluateCert]))
   {
 LABEL_5:
     if ([(SDStreamHandler *)self usingMessages])
@@ -759,9 +759,9 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v4 = [(SDStreamHandler *)self checkedCert];
+  checkedCert = [(SDStreamHandler *)self checkedCert];
 
-  if ((v4 & 1) != 0 || ([(SDStreamHandler *)self setCheckedCert:1], [(SDStreamHandler *)self evaluateCert]))
+  if ((checkedCert & 1) != 0 || ([(SDStreamHandler *)self setCheckedCert:1], [(SDStreamHandler *)self evaluateCert]))
   {
 LABEL_5:
     if ([(SDStreamHandler *)self usingMessages])
@@ -788,9 +788,9 @@ LABEL_5:
   [(SDStreamHandler *)self _stop];
 }
 
-- (void)writeToStreamWithData:(id)a3
+- (void)writeToStreamWithData:(id)data
 {
-  [(NSMutableData *)self->_outputStreamData appendData:a3];
+  [(NSMutableData *)self->_outputStreamData appendData:data];
   if (self->_bufferSpaceAvailable && [(NSMutableData *)self->_outputStreamData length]> 0x20000)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -807,9 +807,9 @@ LABEL_5:
   if ([(SDStreamHandler *)self usingMessages]|| ![(NSOutputStream *)self->_outputStream hasSpaceAvailable])
   {
     v7 = +[SDStatusMonitor sharedMonitor];
-    v8 = [v7 enableStreamDebugging];
+    enableStreamDebugging = [v7 enableStreamDebugging];
 
-    if (v8)
+    if (enableStreamDebugging)
     {
       v9 = streams_log();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -878,9 +878,9 @@ LABEL_5:
 
       self->_readFromNetwork += v4;
       v9 = +[SDStatusMonitor sharedMonitor];
-      v10 = [v9 enableStreamDebugging];
+      enableStreamDebugging = [v9 enableStreamDebugging];
 
-      if (v10)
+      if (enableStreamDebugging)
       {
         v11 = streams_log();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -941,9 +941,9 @@ LABEL_5:
 
       self->_wroteToNetwork += v3;
       v10 = +[SDStatusMonitor sharedMonitor];
-      v11 = [v10 enableStreamDebugging];
+      enableStreamDebugging = [v10 enableStreamDebugging];
 
-      if (v11)
+      if (enableStreamDebugging)
       {
         v12 = streams_log();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -962,9 +962,9 @@ LABEL_5:
   else
   {
     v14 = +[SDStatusMonitor sharedMonitor];
-    v15 = [v14 enableStreamDebugging];
+    enableStreamDebugging2 = [v14 enableStreamDebugging];
 
-    if (!v15)
+    if (!enableStreamDebugging2)
     {
       return;
     }
@@ -978,7 +978,7 @@ LABEL_5:
   }
 }
 
-- (void)sendMessage:(id)a3 withErrorHandler:(id)a4
+- (void)sendMessage:(id)message withErrorHandler:(id)handler
 {
   v4 = streams_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -987,13 +987,13 @@ LABEL_5:
   }
 }
 
-- (void)sendMessage:(id)a3 withCompletionHandler:(id)a4
+- (void)sendMessage:(id)message withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  handlerCopy = handler;
   if ([(SDStreamHandler *)self usingMessages])
   {
-    v8 = [(SDStreamHandler *)self messageWithData:v6];
+    v8 = [(SDStreamHandler *)self messageWithData:messageCopy];
     if (!v8)
     {
       v11 = streams_log();
@@ -1002,20 +1002,20 @@ LABEL_5:
         sub_1001B9268();
       }
 
-      if (v7)
+      if (handlerCopy)
       {
         v17 = NSLocalizedDescriptionKey;
         v18 = @"Could not create message payload";
         v12 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
         v13 = [NSError errorWithDomain:NSPOSIXErrorDomain code:91 userInfo:v12];
-        v7[2](v7, 0, v13);
+        handlerCopy[2](handlerCopy, 0, v13);
       }
 
       goto LABEL_8;
     }
 
     [(NSMutableArray *)self->_messageQueue addObject:v8];
-    v9 = [v7 copy];
+    v9 = [handlerCopy copy];
     [(NSMutableDictionary *)self->_handlers setObject:v9 forKeyedSubscript:v8];
 
     if ([(NSOutputStream *)self->_outputStream hasSpaceAvailable])
@@ -1038,33 +1038,33 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (v7)
+  if (handlerCopy)
   {
     v15 = NSLocalizedDescriptionKey;
     v16 = @"Cannot send messages of these streams";
     v8 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
     v10 = [NSError errorWithDomain:NSPOSIXErrorDomain code:94 userInfo:v8];
-    v7[2](v7, 0, v10);
+    handlerCopy[2](handlerCopy, 0, v10);
     goto LABEL_7;
   }
 
 LABEL_9:
 }
 
-- (id)messageWithData:(id)a3
+- (id)messageWithData:(id)data
 {
-  v4 = a3;
-  v5 = -[SDStreamHandler headerWithLength:](self, "headerWithLength:", [v4 length]);
-  [v5 appendData:v4];
+  dataCopy = data;
+  v5 = -[SDStreamHandler headerWithLength:](self, "headerWithLength:", [dataCopy length]);
+  [v5 appendData:dataCopy];
 
   return v5;
 }
 
-- (id)headerWithLength:(unsigned int)a3
+- (id)headerWithLength:(unsigned int)length
 {
   v7 = 1;
   v4 = [NSMutableData dataWithBytes:&v7 length:1];
-  v6 = bswap32(a3);
+  v6 = bswap32(length);
   [v4 appendBytes:&v6 length:4];
 
   return v4;
@@ -1249,7 +1249,7 @@ LABEL_34:
       outMessage = self->_outMessage;
     }
 
-    v7 = [(NSMutableData *)outMessage mutableBytes];
+    mutableBytes = [(NSMutableData *)outMessage mutableBytes];
     byteIndex = self->_byteIndex;
     p_byteIndex = &self->_byteIndex;
     v10 = [(NSMutableData *)self->_outMessage length];
@@ -1266,7 +1266,7 @@ LABEL_34:
 
     v13 = &v33 - ((v12 + 15) & 0x1FFF0);
     bzero(v13, v12);
-    memcpy(v13, &v7[byteIndex], v12);
+    memcpy(v13, &mutableBytes[byteIndex], v12);
     v14 = [(NSOutputStream *)self->_outputStream write:v13 maxLength:v12];
     v15 = v14;
     if (v14 >= 1)
@@ -1355,14 +1355,14 @@ LABEL_23:
   }
 }
 
-- (void)handleMessageWritten:(id)a3
+- (void)handleMessageWritten:(id)written
 {
-  v4 = a3;
+  writtenCopy = written;
   v5 = [(NSMutableDictionary *)self->_handlers objectForKeyedSubscript:self->_outMessage];
   v6 = v5;
   if (v5)
   {
-    (*(v5 + 16))(v5, v4 == 0, v4);
+    (*(v5 + 16))(v5, writtenCopy == 0, writtenCopy);
     [(NSMutableDictionary *)self->_handlers removeObjectForKey:self->_outMessage];
   }
 
@@ -1382,12 +1382,12 @@ LABEL_23:
   self->_byteIndex = 0;
 }
 
-- (unsigned)parseHeader:(id)a3
+- (unsigned)parseHeader:(id)header
 {
-  v3 = a3;
-  if (*[v3 bytes] == 1)
+  headerCopy = header;
+  if (*[headerCopy bytes] == 1)
   {
-    v4 = bswap32(*([v3 bytes] + 1));
+    v4 = bswap32(*([headerCopy bytes] + 1));
   }
 
   else
@@ -1404,10 +1404,10 @@ LABEL_23:
   return v4;
 }
 
-- (id)trimHeader:(id)a3
+- (id)trimHeader:(id)header
 {
-  v3 = a3;
-  v4 = [v3 subdataWithRange:{5, objc_msgSend(v3, "length") - 5}];
+  headerCopy = header;
+  v4 = [headerCopy subdataWithRange:{5, objc_msgSend(headerCopy, "length") - 5}];
 
   return v4;
 }

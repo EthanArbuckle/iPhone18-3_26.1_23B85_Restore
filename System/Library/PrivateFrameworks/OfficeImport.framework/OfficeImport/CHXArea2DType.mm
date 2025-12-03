@@ -1,31 +1,31 @@
 @interface CHXArea2DType
-+ (id)chdChartTypeFromXmlChartTypeElement:(_xmlNode *)a3 state:(id)a4;
-+ (void)readFrom:(_xmlNode *)a3 chartType:(id)a4 state:(id)a5;
++ (id)chdChartTypeFromXmlChartTypeElement:(_xmlNode *)element state:(id)state;
++ (void)readFrom:(_xmlNode *)from chartType:(id)type state:(id)state;
 @end
 
 @implementation CHXArea2DType
 
-+ (id)chdChartTypeFromXmlChartTypeElement:(_xmlNode *)a3 state:(id)a4
++ (id)chdChartTypeFromXmlChartTypeElement:(_xmlNode *)element state:(id)state
 {
-  v6 = a4;
-  v7 = [v6 chart];
-  v8 = [(CHDChartType *)CHDArea2DType chartTypeWithChart:v7];
+  stateCopy = state;
+  chart = [stateCopy chart];
+  v8 = [(CHDChartType *)CHDArea2DType chartTypeWithChart:chart];
 
-  [a1 readFrom:a3 chartType:v8 state:v6];
+  [self readFrom:element chartType:v8 state:stateCopy];
 
   return v8;
 }
 
-+ (void)readFrom:(_xmlNode *)a3 chartType:(id)a4 state:(id)a5
++ (void)readFrom:(_xmlNode *)from chartType:(id)type state:(id)state
 {
-  v11 = a4;
-  v7 = a5;
-  [v11 setVaryColors:0];
-  v8 = [v7 drawingState];
-  v9 = [v8 OAXChartNamespace];
-  v10 = OCXFindChild(a3, v9, "grouping");
+  typeCopy = type;
+  stateCopy = state;
+  [typeCopy setVaryColors:0];
+  drawingState = [stateCopy drawingState];
+  oAXChartNamespace = [drawingState OAXChartNamespace];
+  v10 = OCXFindChild(from, oAXChartNamespace, "grouping");
 
-  [v11 setGrouping:{+[CHXChartType chdGroupingFromXmlGroupingElement:](CHXChartType, "chdGroupingFromXmlGroupingElement:", v10)}];
+  [typeCopy setGrouping:{+[CHXChartType chdGroupingFromXmlGroupingElement:](CHXChartType, "chdGroupingFromXmlGroupingElement:", v10)}];
 }
 
 @end

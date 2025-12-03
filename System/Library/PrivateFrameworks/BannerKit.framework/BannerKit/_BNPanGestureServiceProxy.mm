@@ -1,41 +1,41 @@
 @interface _BNPanGestureServiceProxy
 - (BNPanGestureProxyDelegate)delegate;
-- (CGPoint)locationInCoordinateSpace:(id)a3;
-- (CGPoint)translationInCoordinateSpace:(id)a3;
-- (CGPoint)velocityInCoordinateSpace:(id)a3;
-- (CGPoint)visualTranslationInCoordinateSpace:(id)a3;
+- (CGPoint)locationInCoordinateSpace:(id)space;
+- (CGPoint)translationInCoordinateSpace:(id)space;
+- (CGPoint)velocityInCoordinateSpace:(id)space;
+- (CGPoint)visualTranslationInCoordinateSpace:(id)space;
 - (void)sendAction;
 @end
 
 @implementation _BNPanGestureServiceProxy
 
-- (CGPoint)locationInCoordinateSpace:(id)a3
+- (CGPoint)locationInCoordinateSpace:(id)space
 {
-  [(BNPanGestureProxyAction *)self->_activePanGestureProxyAction locationInCoordinateSpace:a3];
+  [(BNPanGestureProxyAction *)self->_activePanGestureProxyAction locationInCoordinateSpace:space];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (CGPoint)translationInCoordinateSpace:(id)a3
+- (CGPoint)translationInCoordinateSpace:(id)space
 {
-  [(BNPanGestureProxyAction *)self->_activePanGestureProxyAction translationInCoordinateSpace:a3];
+  [(BNPanGestureProxyAction *)self->_activePanGestureProxyAction translationInCoordinateSpace:space];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (CGPoint)visualTranslationInCoordinateSpace:(id)a3
+- (CGPoint)visualTranslationInCoordinateSpace:(id)space
 {
-  [(BNPanGestureProxyAction *)self->_activePanGestureProxyAction visualTranslationInCoordinateSpace:a3];
+  [(BNPanGestureProxyAction *)self->_activePanGestureProxyAction visualTranslationInCoordinateSpace:space];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (CGPoint)velocityInCoordinateSpace:(id)a3
+- (CGPoint)velocityInCoordinateSpace:(id)space
 {
-  [(BNPanGestureProxyAction *)self->_activePanGestureProxyAction velocityInCoordinateSpace:a3];
+  [(BNPanGestureProxyAction *)self->_activePanGestureProxyAction velocityInCoordinateSpace:space];
   result.y = v4;
   result.x = v3;
   return result;
@@ -43,12 +43,12 @@
 
 - (void)sendAction
 {
-  v3 = [(_BNPanGestureServiceProxy *)self actionHandler];
-  if (v3)
+  actionHandler = [(_BNPanGestureServiceProxy *)self actionHandler];
+  if (actionHandler)
   {
-    v4 = v3;
-    (v3)[2](v3, self);
-    v3 = v4;
+    v4 = actionHandler;
+    (actionHandler)[2](actionHandler, self);
+    actionHandler = v4;
   }
 }
 

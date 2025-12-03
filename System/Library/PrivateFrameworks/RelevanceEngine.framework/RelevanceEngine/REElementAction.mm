@@ -1,19 +1,19 @@
 @interface REElementAction
-- (REElementAction)initWithCoder:(id)a3;
+- (REElementAction)initWithCoder:(id)coder;
 - (REElementActionDelegate)delegate;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation REElementAction
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = objc_opt_class();
 
   return objc_alloc_init(v3);
 }
 
-- (REElementAction)initWithCoder:(id)a3
+- (REElementAction)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = REElementAction;

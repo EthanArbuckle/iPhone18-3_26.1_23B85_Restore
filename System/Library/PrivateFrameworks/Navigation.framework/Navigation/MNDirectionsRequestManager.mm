@@ -1,36 +1,36 @@
 @interface MNDirectionsRequestManager
 - (MNDirectionsRequestManager)init;
-- (void)_logRoutes:(id)a3 error:(id)a4;
-- (void)_requestDirectionsFromTraceWithPath:(id)a3 feedback:(id)a4 auditToken:(id)a5 finishedHandler:(id)a6;
-- (void)_requestServerDirections:(id)a3 preferredRoute:(id)a4 withIdentifier:(id)a5 auditToken:(id)a6 finishedHandler:(id)a7;
-- (void)cancelDirectionsRequestWithIdentifier:(id)a3;
-- (void)requestDirections:(id)a3 withIdentifier:(id)a4 auditToken:(id)a5 finishedHandler:(id)a6;
+- (void)_logRoutes:(id)routes error:(id)error;
+- (void)_requestDirectionsFromTraceWithPath:(id)path feedback:(id)feedback auditToken:(id)token finishedHandler:(id)handler;
+- (void)_requestServerDirections:(id)directions preferredRoute:(id)route withIdentifier:(id)identifier auditToken:(id)token finishedHandler:(id)handler;
+- (void)cancelDirectionsRequestWithIdentifier:(id)identifier;
+- (void)requestDirections:(id)directions withIdentifier:(id)identifier auditToken:(id)token finishedHandler:(id)handler;
 @end
 
 @implementation MNDirectionsRequestManager
 
-- (void)_logRoutes:(id)a3 error:(id)a4
+- (void)_logRoutes:(id)routes error:(id)error
 {
   *&v24[5] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  routesCopy = routes;
+  errorCopy = error;
+  if ([routesCopy count])
   {
-    v7 = [v5 firstObject];
+    firstObject = [routesCopy firstObject];
     BOOL = GEOConfigGetBOOL();
     v9 = MNGetMNRouteLoggingLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v7 route];
-      v11 = v10;
+      route = [firstObject route];
+      v11 = route;
       if (BOOL)
       {
-        [v10 debugDescription];
+        [route debugDescription];
       }
 
       else
       {
-        [v10 description];
+        [route description];
       }
       v12 = ;
       *buf = 138412290;
@@ -39,27 +39,27 @@
     }
 
     v13 = GEOConfigGetBOOL();
-    if ([v5 count] >= 2)
+    if ([routesCopy count] >= 2)
     {
-      v21 = v7;
-      v22 = v6;
+      v21 = firstObject;
+      v22 = errorCopy;
       v14 = 1;
       do
       {
-        v15 = [v5 objectAtIndexedSubscript:{v14, v21, v22}];
+        v15 = [routesCopy objectAtIndexedSubscript:{v14, v21, v22}];
         v16 = MNGetMNRouteLoggingLog();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
-          v17 = [v15 route];
-          v18 = v17;
+          route2 = [v15 route];
+          v18 = route2;
           if (v13)
           {
-            [v17 debugDescription];
+            [route2 debugDescription];
           }
 
           else
           {
-            [v17 description];
+            [route2 description];
           }
           v19 = ;
           *buf = 67109378;
@@ -72,34 +72,34 @@
         ++v14;
       }
 
-      while (v14 < [v5 count]);
-      v7 = v21;
-      v6 = v22;
+      while (v14 < [routesCopy count]);
+      firstObject = v21;
+      errorCopy = v22;
     }
   }
 
   else
   {
-    v7 = MNGetMNRouteLoggingLog();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    firstObject = MNGetMNRouteLoggingLog();
+    if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      *v24 = v6;
-      _os_log_impl(&dword_1D311E000, v7, OS_LOG_TYPE_ERROR, "Error loading routes: %@", buf, 0xCu);
+      *v24 = errorCopy;
+      _os_log_impl(&dword_1D311E000, firstObject, OS_LOG_TYPE_ERROR, "Error loading routes: %@", buf, 0xCu);
     }
   }
 
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_requestDirectionsFromTraceWithPath:(id)a3 feedback:(id)a4 auditToken:(id)a5 finishedHandler:(id)a6
+- (void)_requestDirectionsFromTraceWithPath:(id)path feedback:(id)feedback auditToken:(id)token finishedHandler:(id)handler
 {
   v77 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v13)
+  pathCopy = path;
+  feedbackCopy = feedback;
+  tokenCopy = token;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v51 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
@@ -119,116 +119,116 @@
   v14 = objc_alloc_init(MNTraceLoader);
   v15 = objc_alloc_init(MNDirectionsResponseInfo);
   v64 = 0;
-  v16 = [(MNTraceLoader *)v14 loadTraceWithPath:v10 outError:&v64];
+  v16 = [(MNTraceLoader *)v14 loadTraceWithPath:pathCopy outError:&v64];
   v17 = v64;
   if (v17)
   {
     v18 = v17;
     [(MNDirectionsResponseInfo *)v15 setError:v17];
-    v13[2](v13, v15);
+    handlerCopy[2](handlerCopy, v15);
   }
 
   else
   {
-    v54 = self;
+    selfCopy = self;
     v55 = v14;
     v57 = v16;
-    v58 = v11;
-    v56 = v10;
-    v19 = [v16 directions];
-    v20 = [v19 firstObject];
+    v58 = feedbackCopy;
+    v56 = pathCopy;
+    directions = [v16 directions];
+    firstObject = [directions firstObject];
 
-    v21 = [v20 request];
-    v22 = [v21 copy];
+    request = [firstObject request];
+    v22 = [request copy];
 
-    v23 = [v20 response];
-    v24 = [v22 routeAttributes];
+    response = [firstObject response];
+    routeAttributes = [v22 routeAttributes];
     Integer = GEOConfigGetInteger();
     v60 = v22;
-    v61 = v12;
-    v59 = v24;
+    v61 = tokenCopy;
+    v59 = routeAttributes;
     if (Integer)
     {
       v26 = Integer;
-      v52 = v23;
+      v52 = response;
       v27 = [MNDirectionsRequestDetails alloc];
-      v28 = [v20 waypoints];
+      waypoints = [firstObject waypoints];
       v29 = MEMORY[0x1E69A2500];
-      v30 = [v22 routeAttributes];
-      v31 = [v29 defaultRouteAttributesForTransportType:{objc_msgSend(v30, "mainTransportType")}];
-      v32 = [(MNDirectionsRequestDetails *)v27 initWithWaypoints:v28 routeAttributes:v31];
+      routeAttributes2 = [v22 routeAttributes];
+      v31 = [v29 defaultRouteAttributesForTransportType:{objc_msgSend(routeAttributes2, "mainTransportType")}];
+      v32 = [(MNDirectionsRequestDetails *)v27 initWithWaypoints:waypoints routeAttributes:v31];
 
       if ([v22 mainTransportTypeMaxRouteCount])
       {
-        v33 = [v22 mainTransportTypeMaxRouteCount];
+        mainTransportTypeMaxRouteCount = [v22 mainTransportTypeMaxRouteCount];
       }
 
       else
       {
-        v33 = 3;
+        mainTransportTypeMaxRouteCount = 3;
       }
 
-      v12 = v61;
+      tokenCopy = v61;
       v14 = v55;
-      [(MNDirectionsRequestDetails *)v32 setMaxRouteCount:v33, v52];
+      [(MNDirectionsRequestDetails *)v32 setMaxRouteCount:mainTransportTypeMaxRouteCount, v52];
       v41 = objc_opt_new();
       [(MNDirectionsRequestDetails *)v32 setDirectionsRequestFeedback:v41];
 
-      v42 = [(MNDirectionsRequestDetails *)v32 directionsRequestFeedback];
-      [v42 setPurpose:1];
+      directionsRequestFeedback = [(MNDirectionsRequestDetails *)v32 directionsRequestFeedback];
+      [directionsRequestFeedback setPurpose:1];
 
-      v10 = v56;
+      pathCopy = v56;
       if (v26 == 2)
       {
         v43 = objc_alloc(MEMORY[0x1E69A2538]);
-        v44 = [v20 waypoints];
-        v45 = [v43 initWithWaypoints:v44 routeAttributes:v59 directionsResponse:v53 directionsRequest:v60];
+        waypoints2 = [firstObject waypoints];
+        v45 = [v43 initWithWaypoints:waypoints2 routeAttributes:v59 directionsResponse:v53 directionsRequest:v60];
 
-        v46 = [v45 allRouteInfos];
-        v47 = [v20 selectedRouteIndex];
-        if (v47 >= [v46 count])
+        allRouteInfos = [v45 allRouteInfos];
+        selectedRouteIndex = [firstObject selectedRouteIndex];
+        if (selectedRouteIndex >= [allRouteInfos count])
         {
-          v36 = 0;
+          route = 0;
         }
 
         else
         {
-          v48 = [v46 objectAtIndexedSubscript:{objc_msgSend(v20, "selectedRouteIndex")}];
-          v36 = [v48 route];
+          v48 = [allRouteInfos objectAtIndexedSubscript:{objc_msgSend(firstObject, "selectedRouteIndex")}];
+          route = [v48 route];
         }
 
-        v12 = v61;
+        tokenCopy = v61;
       }
 
       else
       {
-        v36 = 0;
+        route = 0;
       }
 
-      v49 = [MEMORY[0x1E696AFB0] UUID];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
       v62[0] = MEMORY[0x1E69E9820];
       v62[1] = 3221225472;
       v62[2] = __102__MNDirectionsRequestManager__requestDirectionsFromTraceWithPath_feedback_auditToken_finishedHandler___block_invoke;
       v62[3] = &unk_1E842B8B0;
-      v63 = v13;
-      [(MNDirectionsRequestManager *)v54 _requestServerDirections:v32 preferredRoute:v36 withIdentifier:v49 auditToken:v12 finishedHandler:v62];
+      v63 = handlerCopy;
+      [(MNDirectionsRequestManager *)selfCopy _requestServerDirections:v32 preferredRoute:route withIdentifier:uUID auditToken:tokenCopy finishedHandler:v62];
 
       v18 = 0;
-      v23 = v53;
+      response = v53;
     }
 
     else
     {
       v34 = objc_alloc(MEMORY[0x1E69A2538]);
-      v35 = [v20 waypoints];
-      v32 = [v34 initWithWaypoints:v35 routeAttributes:v24 directionsResponse:v23 directionsRequest:v22];
+      waypoints3 = [firstObject waypoints];
+      v32 = [v34 initWithWaypoints:waypoints3 routeAttributes:routeAttributes directionsResponse:response directionsRequest:v22];
 
-      v36 = [(MNDirectionsRequestDetails *)v32 allRouteInfos];
-      [(MNDirectionsRequestManager *)v54 _logRoutes:v36 error:0];
+      route = [(MNDirectionsRequestDetails *)v32 allRouteInfos];
+      [(MNDirectionsRequestManager *)selfCopy _logRoutes:route error:0];
       v18 = 0;
       v14 = v55;
-      v10 = v56;
-      if (![v36 count])
+      pathCopy = v56;
+      if (![route count])
       {
         v37 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Recorded trace response has no routes and no errors."];
         v38 = GEOFindOrCreateLog();
@@ -250,23 +250,23 @@
         v65[0] = @"TracePath";
         v65[1] = @"GEODirectionsResponse";
         v66[0] = v56;
-        v66[1] = v23;
+        v66[1] = response;
         v39 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v66 forKeys:v65 count:2];
         v18 = [MEMORY[0x1E696ABC0] _navigation_errorWithCode:5 userInfo:v39];
       }
 
-      [(MNDirectionsResponseInfo *)v15 setRouteInfos:v36];
-      v40 = [v20 request];
-      [(MNDirectionsResponseInfo *)v15 setRequest:v40];
+      [(MNDirectionsResponseInfo *)v15 setRouteInfos:route];
+      request2 = [firstObject request];
+      [(MNDirectionsResponseInfo *)v15 setRequest:request2];
 
-      [(MNDirectionsResponseInfo *)v15 setResponse:v23];
+      [(MNDirectionsResponseInfo *)v15 setResponse:response];
       [(MNDirectionsResponseInfo *)v15 setError:v18];
-      v13[2](v13, v15);
-      v12 = v61;
+      handlerCopy[2](handlerCopy, v15);
+      tokenCopy = v61;
     }
 
     v16 = v57;
-    v11 = v58;
+    feedbackCopy = v58;
   }
 
   v50 = *MEMORY[0x1E69E9840];
@@ -279,15 +279,15 @@ void __102__MNDirectionsRequestManager__requestDirectionsFromTraceWithPath_feedb
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_requestServerDirections:(id)a3 preferredRoute:(id)a4 withIdentifier:(id)a5 auditToken:(id)a6 finishedHandler:(id)a7
+- (void)_requestServerDirections:(id)directions preferredRoute:(id)route withIdentifier:(id)identifier auditToken:(id)token finishedHandler:(id)handler
 {
   v86 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v59 = a5;
-  v58 = a6;
-  v14 = a7;
-  if (!v14)
+  directionsCopy = directions;
+  routeCopy = route;
+  identifierCopy = identifier;
+  tokenCopy = token;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v57 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
@@ -314,8 +314,8 @@ void __102__MNDirectionsRequestManager__requestDirectionsFromTraceWithPath_feedb
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v15 = [v12 waypoints];
-  v16 = [(MNRouteAttributes *)v15 countByEnumeratingWithState:&v70 objects:v82 count:16];
+  waypoints = [directionsCopy waypoints];
+  v16 = [(MNRouteAttributes *)waypoints countByEnumeratingWithState:&v70 objects:v82 count:16];
   if (v16)
   {
     v17 = *v71;
@@ -325,26 +325,26 @@ void __102__MNDirectionsRequestManager__requestDirectionsFromTraceWithPath_feedb
       {
         if (*v71 != v17)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(waypoints);
         }
 
-        v19 = [*(*(&v70 + 1) + 8 * i) latLng];
-        IsNilOrZero = _navigation_GEOLatLngIsNilOrZero(v19);
+        latLng = [*(*(&v70 + 1) + 8 * i) latLng];
+        IsNilOrZero = _navigation_GEOLatLngIsNilOrZero(latLng);
 
         if (IsNilOrZero)
         {
           v80[0] = @"MNDirectionsRequestDetails";
-          v26 = v12;
-          if (!v12)
+          null = directionsCopy;
+          if (!directionsCopy)
           {
-            v26 = [MEMORY[0x1E695DFB0] null];
+            null = [MEMORY[0x1E695DFB0] null];
           }
 
           v80[1] = *MEMORY[0x1E696A588];
-          v81[0] = v26;
+          v81[0] = null;
           v81[1] = @"Waypoint in request is nil or invalid";
           v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v81 forKeys:v80 count:2];
-          if (!v12)
+          if (!directionsCopy)
           {
           }
 
@@ -358,12 +358,12 @@ void __102__MNDirectionsRequestManager__requestDirectionsFromTraceWithPath_feedb
           }
 
           [*(*&v83[8] + 40) setError:v28];
-          v14[2](v14, *(*&v83[8] + 40));
+          handlerCopy[2](handlerCopy, *(*&v83[8] + 40));
           goto LABEL_33;
         }
       }
 
-      v16 = [(MNRouteAttributes *)v15 countByEnumeratingWithState:&v70 objects:v82 count:16];
+      v16 = [(MNRouteAttributes *)waypoints countByEnumeratingWithState:&v70 objects:v82 count:16];
       if (v16)
       {
         continue;
@@ -373,26 +373,26 @@ void __102__MNDirectionsRequestManager__requestDirectionsFromTraceWithPath_feedb
     }
   }
 
-  v15 = [v12 routeAttributes];
-  v21 = [v12 routeAttributes];
-  v22 = [v21 mainTransportType];
+  waypoints = [directionsCopy routeAttributes];
+  routeAttributes = [directionsCopy routeAttributes];
+  mainTransportType = [routeAttributes mainTransportType];
 
-  if ((v22 - 1) >= 3)
+  if ((mainTransportType - 1) >= 3)
   {
-    if (v22)
+    if (mainTransportType)
     {
       v78 = @"MNDirectionsRequestDetails";
-      v79 = v12;
+      v79 = directionsCopy;
       v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v79 forKeys:&v78 count:1];
       v28 = [MEMORY[0x1E696ABC0] _navigation_errorWithCode:4 userInfo:v27];
       [*(*&v83[8] + 40) setError:v28];
-      v14[2](v14, *(*&v83[8] + 40));
+      handlerCopy[2](handlerCopy, *(*&v83[8] + 40));
       goto LABEL_33;
     }
 
     v30 = [MNRouteAttributes alloc];
-    v31 = [v12 waypoints];
-    v23 = [(MNRouteAttributes *)v30 initWithAttributes:v15 waypoints:v31];
+    waypoints2 = [directionsCopy waypoints];
+    v23 = [(MNRouteAttributes *)v30 initWithAttributes:waypoints waypoints:waypoints2];
 
     if (GEOConfigGetBOOL())
     {
@@ -402,66 +402,66 @@ void __102__MNDirectionsRequestManager__requestDirectionsFromTraceWithPath_feedb
 
   else
   {
-    v23 = v15;
+    v23 = waypoints;
   }
 
   v24 = objc_alloc_init(MEMORY[0x1E69A1D30]);
   global_queue = geo_get_global_queue();
   [v24 setCallbackQueue:global_queue];
 
-  if (v13)
+  if (routeCopy)
   {
     [v24 setRequestType:15];
-    [v24 setCurrentRoute:v13];
+    [v24 setCurrentRoute:routeCopy];
   }
 
   else
   {
-    v32 = [v12 resumeRouteHandle];
-    if (v32 && (v33 = [v12 isResumingMultipointRoute], v32, (v33 & 1) != 0))
+    resumeRouteHandle = [directionsCopy resumeRouteHandle];
+    if (resumeRouteHandle && (v33 = [directionsCopy isResumingMultipointRoute], resumeRouteHandle, (v33 & 1) != 0))
     {
       [v24 setRequestType:12];
-      v34 = [v12 resumeRouteHandle];
-      [v24 setHasVisitedFirstStop:{objc_msgSend(v34, "hasVisitedFirstStop")}];
+      resumeRouteHandle2 = [directionsCopy resumeRouteHandle];
+      [v24 setHasVisitedFirstStop:{objc_msgSend(resumeRouteHandle2, "hasVisitedFirstStop")}];
     }
 
     else
     {
-      [v24 setRequestType:{1, v58}];
+      [v24 setRequestType:{1, tokenCopy}];
     }
 
-    v35 = [v12 waypoints];
-    [v24 setWaypoints:v35];
+    waypoints3 = [directionsCopy waypoints];
+    [v24 setWaypoints:waypoints3];
   }
 
   v36 = [MNFamiliarRouteProvider alloc];
-  v37 = [v12 routeAttributes];
-  v38 = [v37 anyDate];
-  v39 = [(MNFamiliarRouteProvider *)v36 initWithPurpose:0 reason:@"Route Planning" date:v38];
+  routeAttributes2 = [directionsCopy routeAttributes];
+  anyDate = [routeAttributes2 anyDate];
+  v39 = [(MNFamiliarRouteProvider *)v36 initWithPurpose:0 reason:@"Route Planning" date:anyDate];
   [v24 setFamiliarRouteProvider:v39];
 
-  v40 = [v12 resumeRouteHandle];
-  [v24 setResumeRouteHandle:v40];
+  resumeRouteHandle3 = [directionsCopy resumeRouteHandle];
+  [v24 setResumeRouteHandle:resumeRouteHandle3];
 
-  [v24 setTransportType:v22];
+  [v24 setTransportType:mainTransportType];
   [v24 setRouteAttributes:v23];
-  v41 = [v12 traits];
-  [v24 setTraits:v41];
+  traits = [directionsCopy traits];
+  [v24 setTraits:traits];
 
-  v42 = [v12 commonOptions];
-  [v24 setCommonOptions:v42];
+  commonOptions = [directionsCopy commonOptions];
+  [v24 setCommonOptions:commonOptions];
 
-  [v24 setMaxRouteCount:{objc_msgSend(v12, "maxRouteCount")}];
-  v43 = [v12 currentUserLocation];
-  [v24 setCurrentLocation:v43];
+  [v24 setMaxRouteCount:{objc_msgSend(directionsCopy, "maxRouteCount")}];
+  currentUserLocation = [directionsCopy currentUserLocation];
+  [v24 setCurrentLocation:currentUserLocation];
 
-  v44 = [v12 currentMapRegion];
-  [v24 setVisibleRegion:v44];
+  currentMapRegion = [directionsCopy currentMapRegion];
+  [v24 setVisibleRegion:currentMapRegion];
 
-  v45 = [v12 directionsRequestFeedback];
-  [v24 setFeedback:v45];
+  directionsRequestFeedback = [directionsCopy directionsRequestFeedback];
+  [v24 setFeedback:directionsRequestFeedback];
 
-  [v24 setAuditToken:v58];
+  [v24 setAuditToken:tokenCopy];
   v46 = GEOConfigGetDate();
   [v24 setDodgeballOutsideOfMapsPredictedExitDate:v46];
 
@@ -471,9 +471,9 @@ void __102__MNDirectionsRequestManager__requestDirectionsFromTraceWithPath_feedb
   v48 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
   {
-    v49 = off_1E842B8D0[v22];
+    v49 = off_1E842B8D0[mainTransportType];
     *buf = 138412547;
-    v75 = v59;
+    v75 = identifierCopy;
     v76 = 2113;
     v77 = v49;
     _os_log_impl(&dword_1D311E000, v48, OS_LOG_TYPE_INFO, "Requesting directions from server. identifier: %@ | transportType: %{private}@", buf, 0x16u);
@@ -486,15 +486,15 @@ void __102__MNDirectionsRequestManager__requestDirectionsFromTraceWithPath_feedb
   v62[1] = 3221225472;
   v62[2] = __112__MNDirectionsRequestManager__requestServerDirections_preferredRoute_withIdentifier_auditToken_finishedHandler___block_invoke;
   v62[3] = &unk_1E842B888;
-  v53 = v59;
+  v53 = identifierCopy;
   v63 = v53;
-  v64 = self;
-  v65 = v12;
+  selfCopy = self;
+  v65 = directionsCopy;
   v69 = v51;
   v27 = v24;
   v66 = v27;
   v68 = v83;
-  v67 = v14;
+  v67 = handlerCopy;
   v54 = [(GEODirectionsService *)directionsService requestDirections:v27 handler:v62];
   pendingRequestsIsolater = self->_pendingRequestsIsolater;
   v60 = v53;
@@ -502,7 +502,7 @@ void __102__MNDirectionsRequestManager__requestDirectionsFromTraceWithPath_feedb
   geo_isolate_sync();
 
   v28 = v63;
-  v15 = v23;
+  waypoints = v23;
 LABEL_33:
 
   _Block_object_dispose(v83, 8);
@@ -657,9 +657,9 @@ void __112__MNDirectionsRequestManager__requestServerDirections_preferredRoute_w
   v49 = *MEMORY[0x1E69E9840];
 }
 
-- (void)cancelDirectionsRequestWithIdentifier:(id)a3
+- (void)cancelDirectionsRequestWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v7 = 0;
   v8 = &v7;
   v9 = 0x3032000000;
@@ -667,7 +667,7 @@ void __112__MNDirectionsRequestManager__requestServerDirections_preferredRoute_w
   v11 = __Block_byref_object_dispose__7337;
   v12 = 0;
   pendingRequestsIsolater = self->_pendingRequestsIsolater;
-  v6 = v4;
+  v6 = identifierCopy;
   geo_isolate_sync();
   [v8[5] cancel];
 
@@ -687,14 +687,14 @@ uint64_t __68__MNDirectionsRequestManager_cancelDirectionsRequestWithIdentifier_
   return [v6 removeObjectForKey:v5];
 }
 
-- (void)requestDirections:(id)a3 withIdentifier:(id)a4 auditToken:(id)a5 finishedHandler:(id)a6
+- (void)requestDirections:(id)directions withIdentifier:(id)identifier auditToken:(id)token finishedHandler:(id)handler
 {
   v43 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v13)
+  directionsCopy = directions;
+  identifierCopy = identifier;
+  tokenCopy = token;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v14 = MNGetMNDirectionsRequestLog();
     v15 = os_signpost_id_generate(v14);
@@ -706,12 +706,12 @@ uint64_t __68__MNDirectionsRequestManager_cancelDirectionsRequestWithIdentifier_
       _os_signpost_emit_with_name_impl(&dword_1D311E000, v17, OS_SIGNPOST_INTERVAL_BEGIN, v15, "RequestDirections", "", buf, 2u);
     }
 
-    v18 = [v10 tracePath];
+    tracePath = [directionsCopy tracePath];
 
-    if (v18)
+    if (tracePath)
     {
-      v19 = [v10 tracePath];
-      v20 = [v10 directionsRequestFeedback];
+      tracePath2 = [directionsCopy tracePath];
+      directionsRequestFeedback = [directionsCopy directionsRequestFeedback];
       v30[0] = MEMORY[0x1E69E9820];
       v30[1] = 3221225472;
       v30[2] = __90__MNDirectionsRequestManager_requestDirections_withIdentifier_auditToken_finishedHandler___block_invoke;
@@ -720,9 +720,9 @@ uint64_t __68__MNDirectionsRequestManager_cancelDirectionsRequestWithIdentifier_
       v31 = v17;
       v32[1] = v15;
       v22 = v32;
-      v32[0] = v13;
+      v32[0] = handlerCopy;
       v23 = v17;
-      [(MNDirectionsRequestManager *)self _requestDirectionsFromTraceWithPath:v19 feedback:v20 auditToken:v12 finishedHandler:v30];
+      [(MNDirectionsRequestManager *)self _requestDirectionsFromTraceWithPath:tracePath2 feedback:directionsRequestFeedback auditToken:tokenCopy finishedHandler:v30];
     }
 
     else
@@ -735,9 +735,9 @@ uint64_t __68__MNDirectionsRequestManager_cancelDirectionsRequestWithIdentifier_
       v28 = v17;
       v29[1] = v15;
       v22 = v29;
-      v29[0] = v13;
+      v29[0] = handlerCopy;
       v25 = v17;
-      [(MNDirectionsRequestManager *)self _requestServerDirections:v10 preferredRoute:0 withIdentifier:v11 auditToken:v12 finishedHandler:v27];
+      [(MNDirectionsRequestManager *)self _requestServerDirections:directionsCopy preferredRoute:0 withIdentifier:identifierCopy auditToken:tokenCopy finishedHandler:v27];
     }
 
     v24 = *v21;

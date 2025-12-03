@@ -1,11 +1,11 @@
 @interface _PUWallpaperSmartAlbumPreviewReloadRequest
-- (_PUWallpaperSmartAlbumPreviewReloadRequest)initWithPhotoLibrary:(id)a3 shuffleConfiguration:(id)a4 completion:(id)a5;
-- (void)passiveContentDataSourcePreviewAssetsDidChange:(id)a3;
+- (_PUWallpaperSmartAlbumPreviewReloadRequest)initWithPhotoLibrary:(id)library shuffleConfiguration:(id)configuration completion:(id)completion;
+- (void)passiveContentDataSourcePreviewAssetsDidChange:(id)change;
 @end
 
 @implementation _PUWallpaperSmartAlbumPreviewReloadRequest
 
-- (void)passiveContentDataSourcePreviewAssetsDidChange:(id)a3
+- (void)passiveContentDataSourcePreviewAssetsDidChange:(id)change
 {
   objc_initWeak(&location, self);
   v3[0] = MEMORY[0x1E69E9820];
@@ -18,29 +18,29 @@
   objc_destroyWeak(&location);
 }
 
-- (_PUWallpaperSmartAlbumPreviewReloadRequest)initWithPhotoLibrary:(id)a3 shuffleConfiguration:(id)a4 completion:(id)a5
+- (_PUWallpaperSmartAlbumPreviewReloadRequest)initWithPhotoLibrary:(id)library shuffleConfiguration:(id)configuration completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  libraryCopy = library;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v19.receiver = self;
   v19.super_class = _PUWallpaperSmartAlbumPreviewReloadRequest;
   v11 = [(_PUWallpaperSmartAlbumPreviewReloadRequest *)&v19 init];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [completionCopy copy];
     completion = v11->_completion;
     v11->_completion = v12;
 
-    v14 = [objc_alloc(MEMORY[0x1E69C3C90]) initWithPhotoLibrary:v8 changeObserver:v11 centerMedia:0];
+    v14 = [objc_alloc(MEMORY[0x1E69C3C90]) initWithPhotoLibrary:libraryCopy changeObserver:v11 centerMedia:0];
     smartAlbumDataSource = v11->_smartAlbumDataSource;
     v11->_smartAlbumDataSource = v14;
 
-    v16 = [v9 personLocalIdentifiers];
-    v17 = [v16 allObjects];
-    [(PXWallpaperSmartAlbumDataSource *)v11->_smartAlbumDataSource setPeopleLocalIdentifiers:v17];
+    personLocalIdentifiers = [configurationCopy personLocalIdentifiers];
+    allObjects = [personLocalIdentifiers allObjects];
+    [(PXWallpaperSmartAlbumDataSource *)v11->_smartAlbumDataSource setPeopleLocalIdentifiers:allObjects];
 
-    -[PXWallpaperSmartAlbumDataSource setSelectedTypes:](v11->_smartAlbumDataSource, "setSelectedTypes:", [v9 shuffleSmartAlbums]);
+    -[PXWallpaperSmartAlbumDataSource setSelectedTypes:](v11->_smartAlbumDataSource, "setSelectedTypes:", [configurationCopy shuffleSmartAlbums]);
   }
 
   return v11;

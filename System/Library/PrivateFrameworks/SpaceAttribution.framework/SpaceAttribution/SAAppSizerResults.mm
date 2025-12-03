@@ -2,30 +2,30 @@
 - (SAAppSize)systemApp;
 - (SAAppSize)systemDataApp;
 - (SAAppSizerResults)init;
-- (SAAppSizerResults)initWithCoder:(id)a3;
-- (id)mergeAppSet:(id)a3 withAppSet:(id)a4;
-- (unint64_t)getPhySizeForAppSet:(id)a3;
-- (unint64_t)postProcessFilteringWithAppPathList:(id)a3;
+- (SAAppSizerResults)initWithCoder:(id)coder;
+- (id)mergeAppSet:(id)set withAppSet:(id)appSet;
+- (unint64_t)getPhySizeForAppSet:(id)set;
+- (unint64_t)postProcessFilteringWithAppPathList:(id)list;
 - (unsigned)initDiskUsedAndCapacity;
-- (void)accountPurgeableTagsFor:(id)a3 purgeableTagsSize:(unint64_t)a4;
-- (void)accountSUPurgeableFor:(id)a3 purgeableSize:(unint64_t)a4;
-- (void)addToSystemDetails:(unint64_t)a3 key:(id)a4;
-- (void)collectPathSizeInfo:(id)a3 info:(id)a4;
+- (void)accountPurgeableTagsFor:(id)for purgeableTagsSize:(unint64_t)size;
+- (void)accountSUPurgeableFor:(id)for purgeableSize:(unint64_t)size;
+- (void)addToSystemDetails:(unint64_t)details key:(id)key;
+- (void)collectPathSizeInfo:(id)info info:(id)a4;
 - (void)enableAppSizeBreakdown;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateAppsDataUsingBlock:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateAppsDataUsingBlock:(id)block;
 - (void)initDiskUsedAndCapacity;
 - (void)populateAppsData;
 - (void)postProcessMerging;
 - (void)print;
-- (void)removeBundleIDs:(id)a3;
-- (void)setBundleIDs:(id)a3 vendorName:(id)a4;
-- (void)updateBundleIDs:(id)a3 fixedSize:(unint64_t)a4 dataSize:(unint64_t)a5 cloneSize:(unint64_t)a6 purgeableSize:(unint64_t)a7 cloneFixUpSize:(unint64_t)a8 physicalSize:(unint64_t)a9 appCacheSize:(unint64_t)a10 CDPluginSize:(unint64_t)a11;
-- (void)updateBundleIDs:(id)a3 withAppSize:(id)a4;
-- (void)updateBundleIDs:(id)a3 withDataSize:(unint64_t)a4;
-- (void)updateHiddenApp:(id)a3 withPurgeableTagsSize:(unint64_t)a4;
-- (void)updateHiddenApp:(id)a3 withSUPurgeableSize:(unint64_t)a4;
-- (void)updateSystemDataDetailsWith:(id)a3 andSize:(unint64_t)a4;
+- (void)removeBundleIDs:(id)ds;
+- (void)setBundleIDs:(id)ds vendorName:(id)name;
+- (void)updateBundleIDs:(id)ds fixedSize:(unint64_t)size dataSize:(unint64_t)dataSize cloneSize:(unint64_t)cloneSize purgeableSize:(unint64_t)purgeableSize cloneFixUpSize:(unint64_t)upSize physicalSize:(unint64_t)physicalSize appCacheSize:(unint64_t)self0 CDPluginSize:(unint64_t)self1;
+- (void)updateBundleIDs:(id)ds withAppSize:(id)size;
+- (void)updateBundleIDs:(id)ds withDataSize:(unint64_t)size;
+- (void)updateHiddenApp:(id)app withPurgeableTagsSize:(unint64_t)size;
+- (void)updateHiddenApp:(id)app withSUPurgeableSize:(unint64_t)size;
+- (void)updateSystemDataDetailsWith:(id)with andSize:(unint64_t)size;
 - (void)zeroSizeAppsFiltering;
 @end
 
@@ -160,45 +160,45 @@ void __37__SAAppSizerResults_populateAppsData__block_invoke(uint64_t a1, uint64_
   [*(*(*(a1 + 40) + 8) + 40) setObject:v6 forKeyedSubscript:v7];
 }
 
-- (void)updateBundleIDs:(id)a3 fixedSize:(unint64_t)a4 dataSize:(unint64_t)a5 cloneSize:(unint64_t)a6 purgeableSize:(unint64_t)a7 cloneFixUpSize:(unint64_t)a8 physicalSize:(unint64_t)a9 appCacheSize:(unint64_t)a10 CDPluginSize:(unint64_t)a11
+- (void)updateBundleIDs:(id)ds fixedSize:(unint64_t)size dataSize:(unint64_t)dataSize cloneSize:(unint64_t)cloneSize purgeableSize:(unint64_t)purgeableSize cloneFixUpSize:(unint64_t)upSize physicalSize:(unint64_t)physicalSize appCacheSize:(unint64_t)self0 CDPluginSize:(unint64_t)self1
 {
-  v21 = a3;
+  dsCopy = ds;
   v17 = self->_appsDataInternal;
   objc_sync_enter(v17);
-  v18 = [(NSMutableDictionary *)self->_appsDataInternal objectForKey:v21];
+  v18 = [(NSMutableDictionary *)self->_appsDataInternal objectForKey:dsCopy];
   v19 = v18;
   if (v18)
   {
-    [v18 setFixedSize:{objc_msgSend(v18, "fixedSize") + a4}];
-    [v19 setDataSize:{objc_msgSend(v19, "dataSize") + a5}];
-    [v19 setCloneSize:{objc_msgSend(v19, "cloneSize") + a6}];
-    [v19 setPurgeableSize:{objc_msgSend(v19, "purgeableSize") + a7}];
-    [v19 setPhysicalSize:{objc_msgSend(v19, "physicalSize") + a9}];
-    [v19 setCloneFixUpSize:{objc_msgSend(v19, "cloneFixUpSize") + a8}];
-    [v19 setAppCacheSize:{objc_msgSend(v19, "appCacheSize") + a10}];
-    [v19 setCacheDeletePluginSize:{objc_msgSend(v19, "cacheDeletePluginSize") + a11}];
+    [v18 setFixedSize:{objc_msgSend(v18, "fixedSize") + size}];
+    [v19 setDataSize:{objc_msgSend(v19, "dataSize") + dataSize}];
+    [v19 setCloneSize:{objc_msgSend(v19, "cloneSize") + cloneSize}];
+    [v19 setPurgeableSize:{objc_msgSend(v19, "purgeableSize") + purgeableSize}];
+    [v19 setPhysicalSize:{objc_msgSend(v19, "physicalSize") + physicalSize}];
+    [v19 setCloneFixUpSize:{objc_msgSend(v19, "cloneFixUpSize") + upSize}];
+    [v19 setAppCacheSize:{objc_msgSend(v19, "appCacheSize") + cacheSize}];
+    [v19 setCacheDeletePluginSize:{objc_msgSend(v19, "cacheDeletePluginSize") + pluginSize}];
   }
 
   else
   {
-    v20 = [SAAppSize newWithFixedSize:a4 dataSize:a5 cloneSize:a6 purgeableSize:a7 cloneFixUpSize:a8 physicalSize:a9 appCacheSize:a10 CDPluginSize:a11];
-    [(NSMutableDictionary *)self->_appsDataInternal setObject:v20 forKey:v21];
+    v20 = [SAAppSize newWithFixedSize:size dataSize:dataSize cloneSize:cloneSize purgeableSize:purgeableSize cloneFixUpSize:upSize physicalSize:physicalSize appCacheSize:cacheSize CDPluginSize:pluginSize];
+    [(NSMutableDictionary *)self->_appsDataInternal setObject:v20 forKey:dsCopy];
   }
 
   objc_sync_exit(v17);
 }
 
-- (void)setBundleIDs:(id)a3 vendorName:(id)a4
+- (void)setBundleIDs:(id)ds vendorName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  nameCopy = name;
   v8 = self->_appsDataInternal;
   objc_sync_enter(v8);
-  v9 = [(NSMutableDictionary *)self->_appsDataInternal objectForKey:v6];
+  v9 = [(NSMutableDictionary *)self->_appsDataInternal objectForKey:dsCopy];
   v10 = v9;
   if (v9)
   {
-    [v9 setVendorName:v7];
+    [v9 setVendorName:nameCopy];
   }
 
   else
@@ -213,89 +213,89 @@ void __37__SAAppSizerResults_populateAppsData__block_invoke(uint64_t a1, uint64_
   objc_sync_exit(v8);
 }
 
-- (unint64_t)getPhySizeForAppSet:(id)a3
+- (unint64_t)getPhySizeForAppSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v5 = self->_appsDataInternal;
   objc_sync_enter(v5);
-  v6 = [(SAAppSizerResults *)self convertBundlesSetToBundlesKey:v4];
+  v6 = [(SAAppSizerResults *)self convertBundlesSetToBundlesKey:setCopy];
   v7 = [(NSMutableDictionary *)self->_appsDataInternal objectForKey:v6];
-  v8 = [v7 physicalSize];
+  physicalSize = [v7 physicalSize];
 
   objc_sync_exit(v5);
-  return v8;
+  return physicalSize;
 }
 
-- (void)updateBundleIDs:(id)a3 withAppSize:(id)a4
+- (void)updateBundleIDs:(id)ds withAppSize:(id)size
 {
-  v9 = a3;
-  v6 = a4;
+  dsCopy = ds;
+  sizeCopy = size;
   v7 = self->_appsDataInternal;
   objc_sync_enter(v7);
-  v8 = [(NSMutableDictionary *)self->_appsDataInternal objectForKey:v9];
+  v8 = [(NSMutableDictionary *)self->_appsDataInternal objectForKey:dsCopy];
   if (v8)
   {
-    [v8 setFixedSize:{objc_msgSend(v8, "fixedSize") + objc_msgSend(v6, "fixedSize")}];
-    [v8 setDataSize:{objc_msgSend(v8, "dataSize") + objc_msgSend(v6, "dataSize")}];
-    [v8 setCloneSize:{objc_msgSend(v8, "cloneSize") + objc_msgSend(v6, "cloneSize")}];
-    [v8 setPurgeableSize:{objc_msgSend(v8, "purgeableSize") + objc_msgSend(v6, "purgeableSize")}];
-    [v8 setPhysicalSize:{objc_msgSend(v8, "physicalSize") + objc_msgSend(v6, "physicalSize")}];
-    [v8 setCloneFixUpSize:{objc_msgSend(v8, "cloneFixUpSize") + objc_msgSend(v6, "cloneFixUpSize")}];
-    [v8 setAppCacheSize:{objc_msgSend(v8, "appCacheSize") + objc_msgSend(v6, "appCacheSize")}];
-    [v8 setCacheDeletePluginSize:{objc_msgSend(v8, "cacheDeletePluginSize") + objc_msgSend(v6, "cacheDeletePluginSize")}];
+    [v8 setFixedSize:{objc_msgSend(v8, "fixedSize") + objc_msgSend(sizeCopy, "fixedSize")}];
+    [v8 setDataSize:{objc_msgSend(v8, "dataSize") + objc_msgSend(sizeCopy, "dataSize")}];
+    [v8 setCloneSize:{objc_msgSend(v8, "cloneSize") + objc_msgSend(sizeCopy, "cloneSize")}];
+    [v8 setPurgeableSize:{objc_msgSend(v8, "purgeableSize") + objc_msgSend(sizeCopy, "purgeableSize")}];
+    [v8 setPhysicalSize:{objc_msgSend(v8, "physicalSize") + objc_msgSend(sizeCopy, "physicalSize")}];
+    [v8 setCloneFixUpSize:{objc_msgSend(v8, "cloneFixUpSize") + objc_msgSend(sizeCopy, "cloneFixUpSize")}];
+    [v8 setAppCacheSize:{objc_msgSend(v8, "appCacheSize") + objc_msgSend(sizeCopy, "appCacheSize")}];
+    [v8 setCacheDeletePluginSize:{objc_msgSend(v8, "cacheDeletePluginSize") + objc_msgSend(sizeCopy, "cacheDeletePluginSize")}];
   }
 
   else
   {
-    [(NSMutableDictionary *)self->_appsDataInternal setObject:v6 forKey:v9];
+    [(NSMutableDictionary *)self->_appsDataInternal setObject:sizeCopy forKey:dsCopy];
   }
 
   objc_sync_exit(v7);
 }
 
-- (void)accountSUPurgeableFor:(id)a3 purgeableSize:(unint64_t)a4
+- (void)accountSUPurgeableFor:(id)for purgeableSize:(unint64_t)size
 {
-  v8 = a3;
+  forCopy = for;
   v6 = [(NSMutableDictionary *)self->_appsDataInternal objectForKey:?];
   v7 = v6;
   if (v6)
   {
-    [v6 setDataSize:{objc_msgSend(v6, "dataSize") + a4}];
-    [v7 setPurgeableSize:{objc_msgSend(v7, "purgeableSize") - a4}];
+    [v6 setDataSize:{objc_msgSend(v6, "dataSize") + size}];
+    [v7 setPurgeableSize:{objc_msgSend(v7, "purgeableSize") - size}];
   }
 
   else
   {
-    [(SAAppSizerResults *)self updateHiddenApp:v8 withSUPurgeableSize:a4];
+    [(SAAppSizerResults *)self updateHiddenApp:forCopy withSUPurgeableSize:size];
   }
 }
 
-- (void)accountPurgeableTagsFor:(id)a3 purgeableTagsSize:(unint64_t)a4
+- (void)accountPurgeableTagsFor:(id)for purgeableTagsSize:(unint64_t)size
 {
-  v8 = a3;
+  forCopy = for;
   v6 = [(NSMutableDictionary *)self->_appsDataInternal objectForKey:?];
   v7 = v6;
   if (v6)
   {
-    [v6 setDataSize:{objc_msgSend(v6, "dataSize") - a4}];
-    [v7 setPurgeableSize:{objc_msgSend(v7, "purgeableSize") + a4}];
+    [v6 setDataSize:{objc_msgSend(v6, "dataSize") - size}];
+    [v7 setPurgeableSize:{objc_msgSend(v7, "purgeableSize") + size}];
   }
 
   else
   {
-    [(SAAppSizerResults *)self updateHiddenApp:v8 withPurgeableTagsSize:a4];
+    [(SAAppSizerResults *)self updateHiddenApp:forCopy withPurgeableTagsSize:size];
   }
 }
 
-- (void)updateHiddenApp:(id)a3 withSUPurgeableSize:(unint64_t)a4
+- (void)updateHiddenApp:(id)app withSUPurgeableSize:(unint64_t)size
 {
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->_hiddenAppsData objectForKey:v6];
+  appCopy = app;
+  v7 = [(NSMutableDictionary *)self->_hiddenAppsData objectForKey:appCopy];
   v8 = v7;
   if (v7)
   {
-    [v7 setDataSize:{objc_msgSend(v7, "dataSize") + a4}];
-    [v8 setPurgeableSize:{objc_msgSend(v8, "purgeableSize") - a4}];
+    [v7 setDataSize:{objc_msgSend(v7, "dataSize") + size}];
+    [v8 setPurgeableSize:{objc_msgSend(v8, "purgeableSize") - size}];
   }
 
   else
@@ -307,21 +307,21 @@ void __37__SAAppSizerResults_populateAppsData__block_invoke(uint64_t a1, uint64_
     }
   }
 
-  v10 = [(NSDictionary *)self->_systemDataDetails objectForKey:v6];
+  v10 = [(NSDictionary *)self->_systemDataDetails objectForKey:appCopy];
   systemDataDetails = self->_systemDataDetails;
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v10, "unsignedLongLongValue") + a4}];
-  [(NSDictionary *)systemDataDetails setValue:v12 forKey:v6];
+  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v10, "unsignedLongLongValue") + size}];
+  [(NSDictionary *)systemDataDetails setValue:v12 forKey:appCopy];
 }
 
-- (void)updateHiddenApp:(id)a3 withPurgeableTagsSize:(unint64_t)a4
+- (void)updateHiddenApp:(id)app withPurgeableTagsSize:(unint64_t)size
 {
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->_hiddenAppsData objectForKey:v6];
+  appCopy = app;
+  v7 = [(NSMutableDictionary *)self->_hiddenAppsData objectForKey:appCopy];
   v8 = v7;
   if (v7)
   {
-    [v7 setDataSize:{objc_msgSend(v7, "dataSize") - a4}];
-    [v8 setPurgeableSize:{objc_msgSend(v8, "purgeableSize") + a4}];
+    [v7 setDataSize:{objc_msgSend(v7, "dataSize") - size}];
+    [v8 setPurgeableSize:{objc_msgSend(v8, "purgeableSize") + size}];
   }
 
   else
@@ -333,33 +333,33 @@ void __37__SAAppSizerResults_populateAppsData__block_invoke(uint64_t a1, uint64_
     }
   }
 
-  v10 = [(NSDictionary *)self->_systemDataDetails objectForKey:v6];
+  v10 = [(NSDictionary *)self->_systemDataDetails objectForKey:appCopy];
   systemDataDetails = self->_systemDataDetails;
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v10, "unsignedLongLongValue") - a4}];
-  [(NSDictionary *)systemDataDetails setValue:v12 forKey:v6];
+  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v10, "unsignedLongLongValue") - size}];
+  [(NSDictionary *)systemDataDetails setValue:v12 forKey:appCopy];
 }
 
-- (id)mergeAppSet:(id)a3 withAppSet:(id)a4
+- (id)mergeAppSet:(id)set withAppSet:(id)appSet
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 allObjects];
-  v19 = [v8 mutableCopy];
+  appSetCopy = appSet;
+  setCopy = set;
+  allObjects = [setCopy allObjects];
+  v19 = [allObjects mutableCopy];
 
-  v9 = [v6 allObjects];
-  [v19 addObjectsFromArray:v9];
+  allObjects2 = [appSetCopy allObjects];
+  [v19 addObjectsFromArray:allObjects2];
 
   v18 = [MEMORY[0x277CBEB98] setWithArray:v19];
-  v16 = [(SAAppSizerResults *)self convertBundlesSetToBundlesKey:v7];
+  v16 = [(SAAppSizerResults *)self convertBundlesSetToBundlesKey:setCopy];
 
-  v15 = [(SAAppSizerResults *)self convertBundlesSetToBundlesKey:v6];
+  v15 = [(SAAppSizerResults *)self convertBundlesSetToBundlesKey:appSetCopy];
 
   v17 = [(SAAppSizerResults *)self convertBundlesSetToBundlesKey:v18];
   v10 = [(NSMutableDictionary *)self->_appsDataInternal objectForKey:v16];
   v11 = [(NSMutableDictionary *)self->_appsDataInternal objectForKey:v15];
   v12 = +[SAAppSize newWithFixedSize:dataSize:cloneSize:purgeableSize:cloneFixUpSize:physicalSize:appCacheSize:CDPluginSize:](SAAppSize, "newWithFixedSize:dataSize:cloneSize:purgeableSize:cloneFixUpSize:physicalSize:appCacheSize:CDPluginSize:", [v11 fixedSize] + objc_msgSend(v10, "fixedSize"), objc_msgSend(v11, "dataSize") + objc_msgSend(v10, "dataSize"), objc_msgSend(v11, "cloneSize") + objc_msgSend(v10, "cloneSize"), objc_msgSend(v11, "purgeableSize") + objc_msgSend(v10, "purgeableSize"), objc_msgSend(v11, "cloneFixUpSize") + objc_msgSend(v10, "cloneFixUpSize"), objc_msgSend(v11, "physicalSize") + objc_msgSend(v10, "physicalSize"), objc_msgSend(v11, "appCacheSize") + objc_msgSend(v10, "appCacheSize"), objc_msgSend(v11, "cacheDeletePluginSize") + objc_msgSend(v10, "cacheDeletePluginSize"));
-  v13 = [v10 vendorName];
-  [v12 setVendorName:v13];
+  vendorName = [v10 vendorName];
+  [v12 setVendorName:vendorName];
 
   [(NSMutableDictionary *)self->_appsDataInternal removeObjectForKey:v16];
   [(NSMutableDictionary *)self->_appsDataInternal removeObjectForKey:v15];
@@ -368,65 +368,65 @@ void __37__SAAppSizerResults_populateAppsData__block_invoke(uint64_t a1, uint64_
   return v18;
 }
 
-- (void)updateSystemDataDetailsWith:(id)a3 andSize:(unint64_t)a4
+- (void)updateSystemDataDetailsWith:(id)with andSize:(unint64_t)size
 {
-  v10 = a3;
+  withCopy = with;
   v6 = self->_systemDataDetails;
   objc_sync_enter(v6);
-  v7 = [(NSDictionary *)self->_systemDataDetails objectForKey:v10];
+  v7 = [(NSDictionary *)self->_systemDataDetails objectForKey:withCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v7, "unsignedLongLongValue") + a4}];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v7, "unsignedLongLongValue") + size}];
   }
 
   else
   {
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a4];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:size];
   }
 
-  [(NSDictionary *)self->_systemDataDetails setValue:v9 forKey:v10];
+  [(NSDictionary *)self->_systemDataDetails setValue:v9 forKey:withCopy];
 
   objc_sync_exit(v6);
 }
 
-- (void)enumerateAppsDataUsingBlock:(id)a3
+- (void)enumerateAppsDataUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   appsDataInternal = self->_appsDataInternal;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__SAAppSizerResults_enumerateAppsDataUsingBlock___block_invoke;
   v7[3] = &unk_279CD6EF8;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSMutableDictionary *)appsDataInternal enumerateKeysAndObjectsUsingBlock:v7];
 }
 
-- (void)addToSystemDetails:(unint64_t)a3 key:(id)a4
+- (void)addToSystemDetails:(unint64_t)details key:(id)key
 {
-  v11 = a4;
-  v6 = [(SAAppSizerResults *)self systemDetails];
-  objc_sync_enter(v6);
-  v7 = [(SAAppSizerResults *)self systemDetails];
-  v8 = [v7 objectForKey:v11];
+  keyCopy = key;
+  systemDetails = [(SAAppSizerResults *)self systemDetails];
+  objc_sync_enter(systemDetails);
+  systemDetails2 = [(SAAppSizerResults *)self systemDetails];
+  v8 = [systemDetails2 objectForKey:keyCopy];
 
   if (v8)
   {
-    a3 += [v8 unsignedLongLongValue];
+    details += [v8 unsignedLongLongValue];
   }
 
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:details];
 
-  v10 = [(SAAppSizerResults *)self systemDetails];
-  [v10 setValue:v9 forKey:v11];
+  systemDetails3 = [(SAAppSizerResults *)self systemDetails];
+  [systemDetails3 setValue:v9 forKey:keyCopy];
 
-  objc_sync_exit(v6);
+  objc_sync_exit(systemDetails);
 }
 
 - (void)print
 {
-  v2 = self;
+  selfCopy = self;
   v51[2] = *MEMORY[0x277D85DE8];
   *__s = 0;
   v50 = 0;
@@ -437,27 +437,27 @@ void __37__SAAppSizerResults_populateAppsData__block_invoke(uint64_t a1, uint64_
   v3 = SALog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [@"time" UTF8String];
-    v5 = [@"diskUsed" UTF8String];
-    diskCapacity = v2->_diskCapacity;
-    v7 = [@"diskUsed" UTF8String];
-    diskUsed = v2->_diskUsed;
+    uTF8String = [@"time" UTF8String];
+    uTF8String2 = [@"diskUsed" UTF8String];
+    diskCapacity = selfCopy->_diskCapacity;
+    uTF8String3 = [@"diskUsed" UTF8String];
+    diskUsed = selfCopy->_diskUsed;
     *buf = 136316418;
-    v38 = v4;
+    v38 = uTF8String;
     v39 = 2080;
     v40 = __s;
     v41 = 2080;
-    v42 = v5;
+    v42 = uTF8String2;
     v43 = 2048;
     v44 = diskCapacity;
     v45 = 2080;
-    v46 = v7;
+    v46 = uTF8String3;
     v47 = 2048;
     v48 = diskUsed;
     _os_log_impl(&dword_26B26B000, v3, OS_LOG_TYPE_DEFAULT, "%s: %s\n%s: %llu\n%s: %llu\napps data:\n", buf, 0x3Eu);
   }
 
-  appsDataInternal = v2->_appsDataInternal;
+  appsDataInternal = selfCopy->_appsDataInternal;
   if (appsDataInternal)
   {
     v34 = 0u;
@@ -482,8 +482,8 @@ void __37__SAAppSizerResults_populateAppsData__block_invoke(uint64_t a1, uint64_
           }
 
           v15 = *(*(&v32 + 1) + 8 * i);
-          v16 = [(SAAppSizerResults *)v2 convertBundlesSetToBundlesKey:v15, v29];
-          v17 = [(NSMutableDictionary *)v2->_appsDataInternal objectForKeyedSubscript:v16];
+          v16 = [(SAAppSizerResults *)selfCopy convertBundlesSetToBundlesKey:v15, v29];
+          v17 = [(NSMutableDictionary *)selfCopy->_appsDataInternal objectForKeyedSubscript:v16];
           v18 = SALog();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
           {
@@ -495,28 +495,28 @@ void __37__SAAppSizerResults_populateAppsData__block_invoke(uint64_t a1, uint64_
             }
 
             v31 = v20;
-            v21 = [v17 fixedSize];
-            v22 = [v17 dataSize];
-            v23 = v2;
+            fixedSize = [v17 fixedSize];
+            dataSize = [v17 dataSize];
+            v23 = selfCopy;
             v24 = v12;
             v25 = v13;
-            v26 = [v17 cloneSize];
-            v27 = [v17 purgeableSize];
+            cloneSize = [v17 cloneSize];
+            purgeableSize = [v17 purgeableSize];
             *buf = v29;
             v38 = v31;
             v39 = 2112;
             v40 = v16;
             v41 = 2048;
-            v42 = v21;
+            v42 = fixedSize;
             v43 = 2048;
-            v44 = v22;
+            v44 = dataSize;
             v45 = 2048;
-            v46 = v26;
+            v46 = cloneSize;
             v13 = v25;
             v12 = v24;
-            v2 = v23;
+            selfCopy = v23;
             v47 = 2048;
-            v48 = v27;
+            v48 = purgeableSize;
             _os_log_impl(&dword_26B26B000, v18, OS_LOG_TYPE_DEFAULT, "%s: %@\nfixed size: %llu\ndata size: %llu\nclone size: %llu\npurgeable size: %llu\n\n", buf, 0x3Eu);
           }
         }
@@ -531,10 +531,10 @@ void __37__SAAppSizerResults_populateAppsData__block_invoke(uint64_t a1, uint64_
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateBundleIDs:(id)a3 withDataSize:(unint64_t)a4
+- (void)updateBundleIDs:(id)ds withDataSize:(unint64_t)size
 {
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->_appsDataInternal objectForKey:v6];
+  dsCopy = ds;
+  v7 = [(NSMutableDictionary *)self->_appsDataInternal objectForKey:dsCopy];
   v8 = SALog();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
   if (v7)
@@ -555,13 +555,13 @@ void __37__SAAppSizerResults_populateAppsData__block_invoke(uint64_t a1, uint64_
     v7 = objc_opt_new();
   }
 
-  [v7 setDataSize:{objc_msgSend(v7, "dataSize") + a4}];
-  [(NSMutableDictionary *)self->_appsDataInternal setObject:v7 forKey:v6];
+  [v7 setDataSize:{objc_msgSend(v7, "dataSize") + size}];
+  [(NSMutableDictionary *)self->_appsDataInternal setObject:v7 forKey:dsCopy];
 }
 
-- (void)removeBundleIDs:(id)a3
+- (void)removeBundleIDs:(id)ds
 {
-  if (a3)
+  if (ds)
   {
     [(NSMutableDictionary *)self->_appsDataInternal removeObjectForKey:?];
   }
@@ -621,10 +621,10 @@ void __37__SAAppSizerResults_populateAppsData__block_invoke(uint64_t a1, uint64_
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)postProcessFilteringWithAppPathList:(id)a3
+- (unint64_t)postProcessFilteringWithAppPathList:(id)list
 {
   v63 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  listCopy = list;
   [(NSMutableDictionary *)self->_appsDataInternal allKeys];
   v52 = 0u;
   v53 = 0u;
@@ -638,7 +638,7 @@ void __37__SAAppSizerResults_populateAppsData__block_invoke(uint64_t a1, uint64_
     v8 = *v53;
     *&v6 = 138412290;
     v39 = v6;
-    v41 = v4;
+    v41 = listCopy;
     v45 = *v53;
     while (1)
     {
@@ -659,13 +659,13 @@ void __37__SAAppSizerResults_populateAppsData__block_invoke(uint64_t a1, uint64_
           goto LABEL_11;
         }
 
-        v13 = [v12 anyObject];
-        if (([v13 isEqual:@"com.apple.fakeapp.SystemData"] & 1) == 0 && (objc_msgSend(v13, "isEqual:", @"com.apple.fakeapp.System") & 1) == 0 && (objc_msgSend(v13, "isEqual:", @"com.apple.fakeapp.SoftwareUpdate") & 1) == 0)
+        anyObject = [v12 anyObject];
+        if (([anyObject isEqual:@"com.apple.fakeapp.SystemData"] & 1) == 0 && (objc_msgSend(anyObject, "isEqual:", @"com.apple.fakeapp.System") & 1) == 0 && (objc_msgSend(anyObject, "isEqual:", @"com.apple.fakeapp.SoftwareUpdate") & 1) == 0)
         {
 
 LABEL_11:
-          v13 = [(NSMutableDictionary *)self->_appsDataInternal objectForKeyedSubscript:v10, v39];
-          if (!v13)
+          anyObject = [(NSMutableDictionary *)self->_appsDataInternal objectForKeyedSubscript:v10, v39];
+          if (!anyObject)
           {
             goto LABEL_46;
           }
@@ -689,7 +689,7 @@ LABEL_11:
               _os_log_debug_impl(&dword_26B26B000, v16, OS_LOG_TYPE_DEBUG, "Assign to LocalStorage: bundleID set %@ belongs to %@", buf, 0x16u);
             }
 
-            [(SAAppSizerResults *)self updateBundleIDs:v15 withAppSize:v13];
+            [(SAAppSizerResults *)self updateBundleIDs:v15 withAppSize:anyObject];
             [(NSMutableDictionary *)self->_appsDataInternal removeObjectForKey:v10];
             appSizeBreakdownList = self->_appSizeBreakdownList;
             if (appSizeBreakdownList)
@@ -718,7 +718,7 @@ LABEL_11:
               _os_log_debug_impl(&dword_26B26B000, v23, OS_LOG_TYPE_DEBUG, "Remove watch from bundleID set %@ changed to %@", buf, 0x16u);
             }
 
-            [(SAAppSizerResults *)self updateBundleIDs:v22 withAppSize:v13];
+            [(SAAppSizerResults *)self updateBundleIDs:v22 withAppSize:anyObject];
             [(NSMutableDictionary *)self->_appsDataInternal removeObjectForKey:v10];
             v24 = self->_appSizeBreakdownList;
             if (v24)
@@ -730,7 +730,7 @@ LABEL_11:
 
             v47 = v25;
             v19 = v25;
-            v4 = v41;
+            listCopy = v41;
           }
 
           else
@@ -745,7 +745,7 @@ LABEL_25:
           v49[1] = 3221225472;
           v49[2] = __57__SAAppSizerResults_postProcessFilteringWithAppPathList___block_invoke;
           v49[3] = &unk_279CD6F20;
-          v50 = v4;
+          v50 = listCopy;
           v15 = v26;
           v51 = v15;
           [v19 enumerateObjectsUsingBlock:v49];
@@ -779,7 +779,7 @@ LABEL_45:
             }
 
             v30 = [(SAAppSizerResults *)self convertBundlesSetToBundlesKey:v15];
-            [(SAAppSizerResults *)self updateBundleIDs:v30 withAppSize:v13];
+            [(SAAppSizerResults *)self updateBundleIDs:v30 withAppSize:anyObject];
             [(NSMutableDictionary *)self->_appsDataInternal removeObjectForKey:v27];
             v34 = self->_appSizeBreakdownList;
             if (v34)
@@ -794,24 +794,24 @@ LABEL_45:
             v30 = v29;
             if (v29)
             {
-              v43 = [v29 dataSize];
-              v42 = [v30 fixedSize];
+              dataSize = [v29 dataSize];
+              fixedSize = [v30 fixedSize];
               -[SAAppSizerResults updateSystemDataDetailsWith:andSize:](self, "updateSystemDataDetailsWith:andSize:", v27, [v30 fixedSize] + objc_msgSend(v30, "dataSize"));
               v31 = SALog();
               if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
               {
-                v40 = [v30 dataSize];
-                v36 = [v30 fixedSize];
+                dataSize2 = [v30 dataSize];
+                fixedSize2 = [v30 fixedSize];
                 *buf = 134218498;
-                v57 = v40;
+                v57 = dataSize2;
                 v58 = 2048;
-                v59 = v36;
+                v59 = fixedSize2;
                 v60 = 2112;
                 v61 = v19;
                 _os_log_debug_impl(&dword_26B26B000, v31, OS_LOG_TYPE_DEBUG, "Remove hidden: dataSize %llu and fixedSize %llu for bundleID set %@", buf, 0x20u);
               }
 
-              v44 += v43 + v42;
+              v44 += dataSize + fixedSize;
 
               [(NSMutableDictionary *)self->_appsDataInternal removeObjectForKey:v27];
               [(NSMutableDictionary *)self->_hiddenAppsData setObject:v30 forKey:v27];
@@ -821,7 +821,7 @@ LABEL_45:
                 [(SAAppSizeBreakdownList *)v32 removeBundleIDs:v10];
               }
 
-              v4 = v41;
+              listCopy = v41;
             }
 
             else
@@ -877,21 +877,21 @@ void __57__SAAppSizerResults_postProcessFilteringWithAppPathList___block_invoke(
 
 - (void)postProcessMerging
 {
-  v2 = self;
+  selfCopy = self;
   v38 = *MEMORY[0x277D85DE8];
-  v3 = [(NSMutableDictionary *)self->_appsDataInternal allKeys];
+  allKeys = [(NSMutableDictionary *)self->_appsDataInternal allKeys];
   v4 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:100];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v3;
+  obj = allKeys;
   v5 = [obj countByEnumeratingWithState:&v31 objects:v37 count:16];
   if (v5)
   {
     v6 = v5;
     v7 = *v32;
-    v25 = v2;
+    v25 = selfCopy;
     v26 = v4;
     v27 = *v32;
     do
@@ -907,20 +907,20 @@ void __57__SAAppSizerResults_postProcessFilteringWithAppPathList___block_invoke(
 
         v9 = *(*(&v31 + 1) + 8 * v8);
         v10 = objc_autoreleasePoolPush();
-        v11 = [(NSMutableDictionary *)v2->_appsDataInternal objectForKeyedSubscript:v9];
-        v12 = [(SAAppSizerResults *)v2 convertBundlesKeyToBundlesSet:v9];
+        v11 = [(NSMutableDictionary *)selfCopy->_appsDataInternal objectForKeyedSubscript:v9];
+        v12 = [(SAAppSizerResults *)selfCopy convertBundlesKeyToBundlesSet:v9];
         if ([v12 count] >= 2)
         {
-          v13 = [v11 vendorName];
-          if (v13)
+          vendorName = [v11 vendorName];
+          if (vendorName)
           {
-            v14 = [v4 objectForKeyedSubscript:v13];
+            v14 = [v4 objectForKeyedSubscript:vendorName];
 
             if (v14)
             {
               v28 = v10;
-              v15 = [v4 objectForKeyedSubscript:v13];
-              v16 = [SAAppSizerResults mergeAppSet:v2 withAppSet:"mergeAppSet:withAppSet:"];
+              v15 = [v4 objectForKeyedSubscript:vendorName];
+              v16 = [SAAppSizerResults mergeAppSet:selfCopy withAppSet:"mergeAppSet:withAppSet:"];
               v17 = SALog();
               if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
               {
@@ -949,19 +949,19 @@ void __57__SAAppSizerResults_postProcessFilteringWithAppPathList___block_invoke(
               if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
               {
                 *buf = 138412290;
-                v36 = v13;
+                v36 = vendorName;
                 _os_log_debug_impl(&dword_26B26B000, v20, OS_LOG_TYPE_DEBUG, "for vendor %@", buf, 0xCu);
               }
 
-              [v4 setObject:v16 forKeyedSubscript:v13];
-              appSizeBreakdownList = v2->_appSizeBreakdownList;
+              [v4 setObject:v16 forKeyedSubscript:vendorName];
+              appSizeBreakdownList = selfCopy->_appSizeBreakdownList;
               if (appSizeBreakdownList)
               {
-                v22 = [(SAAppSizerResults *)v2 convertBundlesSetToBundlesKey:v15];
-                v23 = [(SAAppSizerResults *)v2 convertBundlesSetToBundlesKey:v16];
+                v22 = [(SAAppSizerResults *)selfCopy convertBundlesSetToBundlesKey:v15];
+                v23 = [(SAAppSizerResults *)selfCopy convertBundlesSetToBundlesKey:v16];
                 [(SAAppSizeBreakdownList *)appSizeBreakdownList mergeBundleIDs:v9 withBundleIDs:v22 newBundleIDs:v23];
 
-                v2 = v25;
+                selfCopy = v25;
                 v4 = v26;
               }
 
@@ -971,7 +971,7 @@ void __57__SAAppSizerResults_postProcessFilteringWithAppPathList___block_invoke(
 
             else
             {
-              [v4 setObject:v12 forKeyedSubscript:v13];
+              [v4 setObject:v12 forKeyedSubscript:vendorName];
               v7 = v27;
             }
           }
@@ -1008,80 +1008,80 @@ void __57__SAAppSizerResults_postProcessFilteringWithAppPathList___block_invoke(
   return 5;
 }
 
-- (void)collectPathSizeInfo:(id)a3 info:(id)a4
+- (void)collectPathSizeInfo:(id)info info:(id)a4
 {
-  v9 = a3;
+  infoCopy = info;
   v6 = a4;
-  v7 = [(SAAppSizerResults *)self pathsList];
-  objc_sync_enter(v7);
-  v8 = [(SAAppSizerResults *)self pathsList];
-  [v8 setObject:v6 forKey:v9];
+  pathsList = [(SAAppSizerResults *)self pathsList];
+  objc_sync_enter(pathsList);
+  pathsList2 = [(SAAppSizerResults *)self pathsList];
+  [pathsList2 setObject:v6 forKey:infoCopy];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(pathsList);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   time = self->_time;
-  v5 = a3;
-  [v5 encodeInteger:time forKey:@"time"];
-  [v5 encodeInteger:self->_status forKey:@"status"];
-  [v5 encodeInt64:self->_diskCapacity forKey:@"diskCapacity"];
-  [v5 encodeInt64:self->_diskUsed forKey:@"diskUsed"];
-  [v5 encodeInt64:self->_totalCDAvailable forKey:@"totalCDAvailable"];
-  [v5 encodeInt64:self->_totalCDPluginsSize forKey:@"totalCDPluginsSize"];
-  [v5 encodeInt64:self->_totalSAFPluginsSize forKey:@"totalSAFPluginsSize"];
-  [v5 encodeInt64:self->_totalSAFAppsCacheSize forKey:@"totalSAFAppsCacheSize"];
-  [v5 encodeInt64:self->_internalFlags forKey:@"internalFlags"];
-  [v5 encodeInt64:self->_totalCDAppsCacheSize forKey:@"totalCDAppsCacheSize"];
-  [v5 encodeInt64:self->_totalPurgeableClones forKey:@"totalPurgeableClones"];
-  [v5 encodeInt64:self->_totalPurgeableDataSize forKey:@"totalPurgeableDataSize"];
-  [v5 encodeInt64:self->_rawSystemDataSize forKey:@"rawSystemDataSize"];
-  [v5 encodeInt64:self->_rawDiskedUsed forKey:@"rawDiskedUsed"];
-  [v5 encodeInt64:self->_APFSDiskUsed forKey:@"APFSDiskUsed"];
-  [v5 encodeObject:self->_appData forKey:@"appData"];
-  [v5 encodeObject:self->_reportedTelemetry forKey:@"reportedTelemetry"];
-  [v5 encodeObject:self->_pathsList forKey:@"pathsList"];
-  [v5 encodeObject:self->_attributionTags forKey:@"attributionTags"];
-  [v5 encodeObject:self->_clonesInfo forKey:@"clonesInfo"];
-  [v5 encodeObject:self->_FSPurgeableData forKey:@"FSPurgeableData"];
-  [v5 encodeObject:self->_systemDataDetails forKey:@"systemDataDetails"];
-  [v5 encodeObject:self->_systemDetails forKey:@"systemDetails"];
-  [v5 encodeObject:self->_hiddenAppsData forKey:@"hiddenAppsData"];
-  [v5 encodeObject:self->_appsList forKey:@"appsList"];
-  [v5 encodeObject:self->_zeroSizeApps forKey:@"zeroSizeApps"];
-  [v5 encodeObject:self->_appsInfo forKey:@"appsInfo"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:time forKey:@"time"];
+  [coderCopy encodeInteger:self->_status forKey:@"status"];
+  [coderCopy encodeInt64:self->_diskCapacity forKey:@"diskCapacity"];
+  [coderCopy encodeInt64:self->_diskUsed forKey:@"diskUsed"];
+  [coderCopy encodeInt64:self->_totalCDAvailable forKey:@"totalCDAvailable"];
+  [coderCopy encodeInt64:self->_totalCDPluginsSize forKey:@"totalCDPluginsSize"];
+  [coderCopy encodeInt64:self->_totalSAFPluginsSize forKey:@"totalSAFPluginsSize"];
+  [coderCopy encodeInt64:self->_totalSAFAppsCacheSize forKey:@"totalSAFAppsCacheSize"];
+  [coderCopy encodeInt64:self->_internalFlags forKey:@"internalFlags"];
+  [coderCopy encodeInt64:self->_totalCDAppsCacheSize forKey:@"totalCDAppsCacheSize"];
+  [coderCopy encodeInt64:self->_totalPurgeableClones forKey:@"totalPurgeableClones"];
+  [coderCopy encodeInt64:self->_totalPurgeableDataSize forKey:@"totalPurgeableDataSize"];
+  [coderCopy encodeInt64:self->_rawSystemDataSize forKey:@"rawSystemDataSize"];
+  [coderCopy encodeInt64:self->_rawDiskedUsed forKey:@"rawDiskedUsed"];
+  [coderCopy encodeInt64:self->_APFSDiskUsed forKey:@"APFSDiskUsed"];
+  [coderCopy encodeObject:self->_appData forKey:@"appData"];
+  [coderCopy encodeObject:self->_reportedTelemetry forKey:@"reportedTelemetry"];
+  [coderCopy encodeObject:self->_pathsList forKey:@"pathsList"];
+  [coderCopy encodeObject:self->_attributionTags forKey:@"attributionTags"];
+  [coderCopy encodeObject:self->_clonesInfo forKey:@"clonesInfo"];
+  [coderCopy encodeObject:self->_FSPurgeableData forKey:@"FSPurgeableData"];
+  [coderCopy encodeObject:self->_systemDataDetails forKey:@"systemDataDetails"];
+  [coderCopy encodeObject:self->_systemDetails forKey:@"systemDetails"];
+  [coderCopy encodeObject:self->_hiddenAppsData forKey:@"hiddenAppsData"];
+  [coderCopy encodeObject:self->_appsList forKey:@"appsList"];
+  [coderCopy encodeObject:self->_zeroSizeApps forKey:@"zeroSizeApps"];
+  [coderCopy encodeObject:self->_appsInfo forKey:@"appsInfo"];
 }
 
-- (SAAppSizerResults)initWithCoder:(id)a3
+- (SAAppSizerResults)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v86.receiver = self;
   v86.super_class = SAAppSizerResults;
   v5 = [(SAAppSizerResults *)&v86 init];
   if (v5)
   {
-    v5->_time = [v4 decodeIntegerForKey:@"time"];
-    v5->_status = [v4 decodeIntegerForKey:@"status"];
-    v5->_diskCapacity = [v4 decodeInt64ForKey:@"diskCapacity"];
-    v5->_diskUsed = [v4 decodeInt64ForKey:@"diskUsed"];
-    v5->_totalCDAvailable = [v4 decodeInt64ForKey:@"totalCDAvailable"];
-    v5->_totalCDPluginsSize = [v4 decodeInt64ForKey:@"totalCDPluginsSize"];
-    v5->_totalSAFPluginsSize = [v4 decodeInt64ForKey:@"totalSAFPluginsSize"];
-    v5->_totalCDAppsCacheSize = [v4 decodeInt64ForKey:@"totalCDAppsCacheSize"];
-    v5->_totalSAFAppsCacheSize = [v4 decodeInt64ForKey:@"totalSAFAppsCacheSize"];
-    v5->_totalPurgeableClones = [v4 decodeInt64ForKey:@"totalPurgeableClones"];
-    v5->_totalPurgeableDataSize = [v4 decodeInt64ForKey:@"totalPurgeableDataSize"];
-    v5->_rawSystemDataSize = [v4 decodeInt64ForKey:@"rawSystemDataSize"];
-    v5->_rawDiskedUsed = [v4 decodeInt64ForKey:@"rawDiskedUsed"];
-    v5->_internalFlags = [v4 decodeInt64ForKey:@"internalFlags"];
-    v5->_APFSDiskUsed = [v4 decodeInt64ForKey:@"APFSDiskUsed"];
+    v5->_time = [coderCopy decodeIntegerForKey:@"time"];
+    v5->_status = [coderCopy decodeIntegerForKey:@"status"];
+    v5->_diskCapacity = [coderCopy decodeInt64ForKey:@"diskCapacity"];
+    v5->_diskUsed = [coderCopy decodeInt64ForKey:@"diskUsed"];
+    v5->_totalCDAvailable = [coderCopy decodeInt64ForKey:@"totalCDAvailable"];
+    v5->_totalCDPluginsSize = [coderCopy decodeInt64ForKey:@"totalCDPluginsSize"];
+    v5->_totalSAFPluginsSize = [coderCopy decodeInt64ForKey:@"totalSAFPluginsSize"];
+    v5->_totalCDAppsCacheSize = [coderCopy decodeInt64ForKey:@"totalCDAppsCacheSize"];
+    v5->_totalSAFAppsCacheSize = [coderCopy decodeInt64ForKey:@"totalSAFAppsCacheSize"];
+    v5->_totalPurgeableClones = [coderCopy decodeInt64ForKey:@"totalPurgeableClones"];
+    v5->_totalPurgeableDataSize = [coderCopy decodeInt64ForKey:@"totalPurgeableDataSize"];
+    v5->_rawSystemDataSize = [coderCopy decodeInt64ForKey:@"rawSystemDataSize"];
+    v5->_rawDiskedUsed = [coderCopy decodeInt64ForKey:@"rawDiskedUsed"];
+    v5->_internalFlags = [coderCopy decodeInt64ForKey:@"internalFlags"];
+    v5->_APFSDiskUsed = [coderCopy decodeInt64ForKey:@"APFSDiskUsed"];
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = [v6 setWithObjects:{v7, v8, v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"appData"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"appData"];
     appData = v5->_appData;
     v5->_appData = v11;
 
@@ -1090,7 +1090,7 @@ void __57__SAAppSizerResults_postProcessFilteringWithAppPathList___block_invoke(
     v15 = objc_opt_class();
     v16 = objc_opt_class();
     v17 = [v13 setWithObjects:{v14, v15, v16, objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"reportedTelemetry"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"reportedTelemetry"];
     reportedTelemetry = v5->_reportedTelemetry;
     v5->_reportedTelemetry = v18;
 
@@ -1099,7 +1099,7 @@ void __57__SAAppSizerResults_postProcessFilteringWithAppPathList___block_invoke(
     v22 = objc_opt_class();
     v23 = objc_opt_class();
     v24 = [v20 setWithObjects:{v21, v22, v23, objc_opt_class(), 0}];
-    v25 = [v4 decodeObjectOfClasses:v24 forKey:@"pathsList"];
+    v25 = [coderCopy decodeObjectOfClasses:v24 forKey:@"pathsList"];
     pathsList = v5->_pathsList;
     v5->_pathsList = v25;
 
@@ -1108,7 +1108,7 @@ void __57__SAAppSizerResults_postProcessFilteringWithAppPathList___block_invoke(
     v29 = objc_opt_class();
     v30 = objc_opt_class();
     v31 = [v27 setWithObjects:{v28, v29, v30, objc_opt_class(), 0}];
-    v32 = [v4 decodeObjectOfClasses:v31 forKey:@"attributionTags"];
+    v32 = [coderCopy decodeObjectOfClasses:v31 forKey:@"attributionTags"];
     attributionTags = v5->_attributionTags;
     v5->_attributionTags = v32;
 
@@ -1118,7 +1118,7 @@ void __57__SAAppSizerResults_postProcessFilteringWithAppPathList___block_invoke(
     v37 = objc_opt_class();
     v38 = objc_opt_class();
     v39 = [v34 setWithObjects:{v35, v36, v37, v38, objc_opt_class(), 0}];
-    v40 = [v4 decodeObjectOfClasses:v39 forKey:@"clonesInfo"];
+    v40 = [coderCopy decodeObjectOfClasses:v39 forKey:@"clonesInfo"];
     clonesInfo = v5->_clonesInfo;
     v5->_clonesInfo = v40;
 
@@ -1126,7 +1126,7 @@ void __57__SAAppSizerResults_postProcessFilteringWithAppPathList___block_invoke(
     v43 = objc_opt_class();
     v44 = objc_opt_class();
     v45 = [v42 setWithObjects:{v43, v44, objc_opt_class(), 0}];
-    v46 = [v4 decodeObjectOfClasses:v45 forKey:@"FSPurgeableData"];
+    v46 = [coderCopy decodeObjectOfClasses:v45 forKey:@"FSPurgeableData"];
     FSPurgeableData = v5->_FSPurgeableData;
     v5->_FSPurgeableData = v46;
 
@@ -1134,7 +1134,7 @@ void __57__SAAppSizerResults_postProcessFilteringWithAppPathList___block_invoke(
     v49 = objc_opt_class();
     v50 = objc_opt_class();
     v51 = [v48 setWithObjects:{v49, v50, objc_opt_class(), 0}];
-    v52 = [v4 decodeObjectOfClasses:v51 forKey:@"systemDataDetails"];
+    v52 = [coderCopy decodeObjectOfClasses:v51 forKey:@"systemDataDetails"];
     systemDataDetails = v5->_systemDataDetails;
     v5->_systemDataDetails = v52;
 
@@ -1142,7 +1142,7 @@ void __57__SAAppSizerResults_postProcessFilteringWithAppPathList___block_invoke(
     v55 = objc_opt_class();
     v56 = objc_opt_class();
     v57 = [v54 setWithObjects:{v55, v56, objc_opt_class(), 0}];
-    v58 = [v4 decodeObjectOfClasses:v57 forKey:@"systemDetails"];
+    v58 = [coderCopy decodeObjectOfClasses:v57 forKey:@"systemDetails"];
     systemDetails = v5->_systemDetails;
     v5->_systemDetails = v58;
 
@@ -1151,7 +1151,7 @@ void __57__SAAppSizerResults_postProcessFilteringWithAppPathList___block_invoke(
     v62 = objc_opt_class();
     v63 = objc_opt_class();
     v64 = [v60 setWithObjects:{v61, v62, v63, objc_opt_class(), 0}];
-    v65 = [v4 decodeObjectOfClasses:v64 forKey:@"hiddenAppsData"];
+    v65 = [coderCopy decodeObjectOfClasses:v64 forKey:@"hiddenAppsData"];
     hiddenAppsData = v5->_hiddenAppsData;
     v5->_hiddenAppsData = v65;
 
@@ -1159,7 +1159,7 @@ void __57__SAAppSizerResults_postProcessFilteringWithAppPathList___block_invoke(
     v68 = objc_opt_class();
     v69 = objc_opt_class();
     v70 = [v67 setWithObjects:{v68, v69, objc_opt_class(), 0}];
-    v71 = [v4 decodeObjectOfClasses:v70 forKey:@"appsList"];
+    v71 = [coderCopy decodeObjectOfClasses:v70 forKey:@"appsList"];
     appsList = v5->_appsList;
     v5->_appsList = v71;
 
@@ -1167,7 +1167,7 @@ void __57__SAAppSizerResults_postProcessFilteringWithAppPathList___block_invoke(
     v74 = objc_opt_class();
     v75 = objc_opt_class();
     v76 = [v73 setWithObjects:{v74, v75, objc_opt_class(), 0}];
-    v77 = [v4 decodeObjectOfClasses:v76 forKey:@"zeroSizeApps"];
+    v77 = [coderCopy decodeObjectOfClasses:v76 forKey:@"zeroSizeApps"];
     zeroSizeApps = v5->_zeroSizeApps;
     v5->_zeroSizeApps = v77;
 
@@ -1175,7 +1175,7 @@ void __57__SAAppSizerResults_postProcessFilteringWithAppPathList___block_invoke(
     v80 = objc_opt_class();
     v81 = objc_opt_class();
     v82 = [v79 setWithObjects:{v80, v81, objc_opt_class(), 0}];
-    v83 = [v4 decodeObjectOfClasses:v82 forKey:@"appsInfo"];
+    v83 = [coderCopy decodeObjectOfClasses:v82 forKey:@"appsInfo"];
     appsInfo = v5->_appsInfo;
     v5->_appsInfo = v83;
   }
@@ -1249,7 +1249,7 @@ void __57__SAAppSizerResults_postProcessFilteringWithAppPathList___block_invoke(
 - (void)initDiskUsedAndCapacity
 {
   v10 = *MEMORY[0x277D85DE8];
-  v8 = *a1;
+  v8 = *self;
   v9 = *a2;
   OUTLINED_FUNCTION_2_0();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0x20u);

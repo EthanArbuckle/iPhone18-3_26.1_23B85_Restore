@@ -1,16 +1,16 @@
 @interface ICMusicSubscriptionStatusCacheKey
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (ICMusicSubscriptionStatusCacheKey)init;
-- (ICMusicSubscriptionStatusCacheKey)initWithDictionaryRepresentation:(id)a3 requiringDSID:(BOOL)a4;
-- (ICMusicSubscriptionStatusCacheKey)initWithStringRepresentation:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ICMusicSubscriptionStatusCacheKey)initWithDictionaryRepresentation:(id)representation requiringDSID:(BOOL)d;
+- (ICMusicSubscriptionStatusCacheKey)initWithStringRepresentation:(id)representation;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)dictionaryRepresentationIncludingDSID:(BOOL)a3;
+- (id)dictionaryRepresentationIncludingDSID:(BOOL)d;
 - (id)stringRepresentation;
 - (unint64_t)hash;
-- (void)setDSID:(id)a3;
-- (void)setPhoneNumber:(id)a3;
-- (void)setStorefrontIdentifier:(id)a3;
+- (void)setDSID:(id)d;
+- (void)setPhoneNumber:(id)number;
+- (void)setStorefrontIdentifier:(id)identifier;
 @end
 
 @implementation ICMusicSubscriptionStatusCacheKey
@@ -162,9 +162,9 @@
   return v4;
 }
 
-- (ICMusicSubscriptionStatusCacheKey)initWithStringRepresentation:(id)a3
+- (ICMusicSubscriptionStatusCacheKey)initWithStringRepresentation:(id)representation
 {
-  v4 = [a3 dataUsingEncoding:4];
+  v4 = [representation dataUsingEncoding:4];
   v5 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v4 options:0 error:0];
   v6 = 0;
   if (_NSIsNSDictionary())
@@ -177,9 +177,9 @@
   return v7;
 }
 
-- (id)dictionaryRepresentationIncludingDSID:(BOOL)a3
+- (id)dictionaryRepresentationIncludingDSID:(BOOL)d
 {
-  v3 = a3;
+  dCopy = d;
   v13[2] = *MEMORY[0x1E69E9840];
   v12[0] = @"phoneNumber";
   v12[1] = @"storefrontID";
@@ -188,7 +188,7 @@
   v13[1] = storefrontIdentifier;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
   v7 = v6;
-  if (v3)
+  if (dCopy)
   {
     v8 = [v6 mutableCopy];
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lli", -[NSNumber longLongValue](self->_DSID, "longLongValue")];
@@ -201,25 +201,25 @@
   return v7;
 }
 
-- (ICMusicSubscriptionStatusCacheKey)initWithDictionaryRepresentation:(id)a3 requiringDSID:(BOOL)a4
+- (ICMusicSubscriptionStatusCacheKey)initWithDictionaryRepresentation:(id)representation requiringDSID:(BOOL)d
 {
-  v4 = a4;
-  v6 = a3;
+  dCopy = d;
+  representationCopy = representation;
   v20.receiver = self;
   v20.super_class = ICMusicSubscriptionStatusCacheKey;
   v7 = [(ICMusicSubscriptionStatusCacheKey *)&v20 init];
   if (v7)
   {
-    v8 = [v6 objectForKey:@"dsid"];
+    v8 = [representationCopy objectForKey:@"dsid"];
     if (_NSIsNSString())
     {
-      v9 = [v8 longLongValue];
-      v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v9];
+      longLongValue = [v8 longLongValue];
+      v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:longLongValue];
       DSID = v7->_DSID;
       v7->_DSID = v10;
     }
 
-    v12 = [v6 objectForKey:@"phoneNumber"];
+    v12 = [representationCopy objectForKey:@"phoneNumber"];
     if (_NSIsNSString())
     {
       v13 = [v12 copy];
@@ -227,7 +227,7 @@
       v7->_phoneNumber = v13;
     }
 
-    v15 = [v6 objectForKey:@"storefrontID"];
+    v15 = [representationCopy objectForKey:@"storefrontID"];
     if (_NSIsNSString())
     {
       v16 = [v15 copy];
@@ -236,7 +236,7 @@
     }
 
     v18 = v7->_DSID;
-    if (v4)
+    if (dCopy)
     {
       if (!v18)
       {
@@ -267,52 +267,52 @@ LABEL_17:
   return v7;
 }
 
-- (void)setStorefrontIdentifier:(id)a3
+- (void)setStorefrontIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    [v7 handleFailureInMethod:a2 object:self file:@"ICMusicSubscriptionStatusCacheKey.m" lineNumber:87 description:{@"Cannot set a nil storefrontIdentifier on an instance of %@", v9}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICMusicSubscriptionStatusCacheKey.m" lineNumber:87 description:{@"Cannot set a nil storefrontIdentifier on an instance of %@", v9}];
   }
 
   storefrontIdentifier = self->_storefrontIdentifier;
-  self->_storefrontIdentifier = v5;
+  self->_storefrontIdentifier = identifierCopy;
 }
 
-- (void)setPhoneNumber:(id)a3
+- (void)setPhoneNumber:(id)number
 {
-  v5 = a3;
-  if (!v5)
+  numberCopy = number;
+  if (!numberCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    [v7 handleFailureInMethod:a2 object:self file:@"ICMusicSubscriptionStatusCacheKey.m" lineNumber:82 description:{@"Cannot set a nil phoneNumber on an instance of %@", v9}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICMusicSubscriptionStatusCacheKey.m" lineNumber:82 description:{@"Cannot set a nil phoneNumber on an instance of %@", v9}];
   }
 
   phoneNumber = self->_phoneNumber;
-  self->_phoneNumber = v5;
+  self->_phoneNumber = numberCopy;
 }
 
-- (void)setDSID:(id)a3
+- (void)setDSID:(id)d
 {
-  v5 = a3;
-  if (!v5)
+  dCopy = d;
+  if (!dCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    [v7 handleFailureInMethod:a2 object:self file:@"ICMusicSubscriptionStatusCacheKey.m" lineNumber:77 description:{@"Cannot set a nil DSID on an instance of %@", v9}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICMusicSubscriptionStatusCacheKey.m" lineNumber:77 description:{@"Cannot set a nil DSID on an instance of %@", v9}];
   }
 
   DSID = self->_DSID;
-  self->_DSID = v5;
+  self->_DSID = dCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(ICMusicSubscriptionStatusCacheKey);
   if (v4)
@@ -333,19 +333,19 @@ LABEL_17:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    if ([(ICMusicSubscriptionStatusCacheKey *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(ICMusicSubscriptionStatusCacheKey *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v5 = v4;
+      v5 = equalCopy;
       DSID = v5->_DSID;
       v7 = self->_DSID;
       v8 = v7;

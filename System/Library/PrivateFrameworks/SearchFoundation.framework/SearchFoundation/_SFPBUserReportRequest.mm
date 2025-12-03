@@ -1,57 +1,57 @@
 @interface _SFPBUserReportRequest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBUserReportRequest)initWithDictionary:(id)a3;
-- (_SFPBUserReportRequest)initWithFacade:(id)a3;
-- (_SFPBUserReportRequest)initWithJSON:(id)a3;
+- (_SFPBUserReportRequest)initWithDictionary:(id)dictionary;
+- (_SFPBUserReportRequest)initWithFacade:(id)facade;
+- (_SFPBUserReportRequest)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addUserReportOptions:(id)a3;
-- (void)setAffordanceText:(id)a3;
-- (void)setAttachmentSectionTitle:(id)a3;
-- (void)setDisclaimerText:(id)a3;
-- (void)setDismissText:(id)a3;
-- (void)setReportOptionsSectionTitle:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setUserReportOptions:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addUserReportOptions:(id)options;
+- (void)setAffordanceText:(id)text;
+- (void)setAttachmentSectionTitle:(id)title;
+- (void)setDisclaimerText:(id)text;
+- (void)setDismissText:(id)text;
+- (void)setReportOptionsSectionTitle:(id)title;
+- (void)setTitle:(id)title;
+- (void)setUserReportOptions:(id)options;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBUserReportRequest
 
-- (_SFPBUserReportRequest)initWithFacade:(id)a3
+- (_SFPBUserReportRequest)initWithFacade:(id)facade
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBUserReportRequest *)self init];
   if (v5)
   {
-    v6 = [v4 affordanceText];
+    affordanceText = [facadeCopy affordanceText];
 
-    if (v6)
+    if (affordanceText)
     {
-      v7 = [v4 affordanceText];
-      [(_SFPBUserReportRequest *)v5 setAffordanceText:v7];
+      affordanceText2 = [facadeCopy affordanceText];
+      [(_SFPBUserReportRequest *)v5 setAffordanceText:affordanceText2];
     }
 
-    v8 = [v4 title];
+    title = [facadeCopy title];
 
-    if (v8)
+    if (title)
     {
-      v9 = [v4 title];
-      [(_SFPBUserReportRequest *)v5 setTitle:v9];
+      title2 = [facadeCopy title];
+      [(_SFPBUserReportRequest *)v5 setTitle:title2];
     }
 
-    v10 = [v4 dismissText];
+    dismissText = [facadeCopy dismissText];
 
-    if (v10)
+    if (dismissText)
     {
-      v11 = [v4 dismissText];
-      [(_SFPBUserReportRequest *)v5 setDismissText:v11];
+      dismissText2 = [facadeCopy dismissText];
+      [(_SFPBUserReportRequest *)v5 setDismissText:dismissText2];
     }
 
-    v12 = [v4 userReportOptions];
-    if (v12)
+    userReportOptions = [facadeCopy userReportOptions];
+    if (userReportOptions)
     {
       v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -65,8 +65,8 @@
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v14 = [v4 userReportOptions];
-    v15 = [v14 countByEnumeratingWithState:&v33 objects:v37 count:16];
+    userReportOptions2 = [facadeCopy userReportOptions];
+    v15 = [userReportOptions2 countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v15)
     {
       v16 = v15;
@@ -77,7 +77,7 @@
         {
           if (*v34 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(userReportOptions2);
           }
 
           v19 = [[_SFPBPunchout alloc] initWithFacade:*(*(&v33 + 1) + 8 * i)];
@@ -87,50 +87,50 @@
           }
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v33 objects:v37 count:16];
+        v16 = [userReportOptions2 countByEnumeratingWithState:&v33 objects:v37 count:16];
       }
 
       while (v16);
     }
 
     [(_SFPBUserReportRequest *)v5 setUserReportOptions:v13];
-    if ([v4 hasReportType])
+    if ([facadeCopy hasReportType])
     {
-      -[_SFPBUserReportRequest setReportType:](v5, "setReportType:", [v4 reportType]);
+      -[_SFPBUserReportRequest setReportType:](v5, "setReportType:", [facadeCopy reportType]);
     }
 
-    v20 = [v4 reportOptionsSectionTitle];
+    reportOptionsSectionTitle = [facadeCopy reportOptionsSectionTitle];
 
-    if (v20)
+    if (reportOptionsSectionTitle)
     {
-      v21 = [v4 reportOptionsSectionTitle];
-      [(_SFPBUserReportRequest *)v5 setReportOptionsSectionTitle:v21];
+      reportOptionsSectionTitle2 = [facadeCopy reportOptionsSectionTitle];
+      [(_SFPBUserReportRequest *)v5 setReportOptionsSectionTitle:reportOptionsSectionTitle2];
     }
 
-    v22 = [v4 disclaimerText];
+    disclaimerText = [facadeCopy disclaimerText];
 
-    if (v22)
+    if (disclaimerText)
     {
-      v23 = [v4 disclaimerText];
-      [(_SFPBUserReportRequest *)v5 setDisclaimerText:v23];
+      disclaimerText2 = [facadeCopy disclaimerText];
+      [(_SFPBUserReportRequest *)v5 setDisclaimerText:disclaimerText2];
     }
 
-    v24 = [v4 disclaimerLearnMorePunchout];
+    disclaimerLearnMorePunchout = [facadeCopy disclaimerLearnMorePunchout];
 
-    if (v24)
+    if (disclaimerLearnMorePunchout)
     {
       v25 = [_SFPBPunchout alloc];
-      v26 = [v4 disclaimerLearnMorePunchout];
-      v27 = [(_SFPBPunchout *)v25 initWithFacade:v26];
+      disclaimerLearnMorePunchout2 = [facadeCopy disclaimerLearnMorePunchout];
+      v27 = [(_SFPBPunchout *)v25 initWithFacade:disclaimerLearnMorePunchout2];
       [(_SFPBUserReportRequest *)v5 setDisclaimerLearnMorePunchout:v27];
     }
 
-    v28 = [v4 attachmentSectionTitle];
+    attachmentSectionTitle = [facadeCopy attachmentSectionTitle];
 
-    if (v28)
+    if (attachmentSectionTitle)
     {
-      v29 = [v4 attachmentSectionTitle];
-      [(_SFPBUserReportRequest *)v5 setAttachmentSectionTitle:v29];
+      attachmentSectionTitle2 = [facadeCopy attachmentSectionTitle];
+      [(_SFPBUserReportRequest *)v5 setAttachmentSectionTitle:attachmentSectionTitle2];
     }
 
     v30 = v5;
@@ -140,16 +140,16 @@
   return v5;
 }
 
-- (_SFPBUserReportRequest)initWithDictionary:(id)a3
+- (_SFPBUserReportRequest)initWithDictionary:(id)dictionary
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v39.receiver = self;
   v39.super_class = _SFPBUserReportRequest;
   v5 = [(_SFPBUserReportRequest *)&v39 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"affordanceText"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"affordanceText"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -157,7 +157,7 @@
       [(_SFPBUserReportRequest *)v5 setAffordanceText:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"title"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -166,7 +166,7 @@
     }
 
     v34 = v8;
-    v10 = [v4 objectForKeyedSubscript:@"dismissText"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"dismissText"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -175,7 +175,7 @@
     }
 
     v33 = v10;
-    v12 = [v4 objectForKeyedSubscript:@"userReportOptions"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"userReportOptions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -217,14 +217,14 @@
       v6 = v32;
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"reportType"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"reportType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBUserReportRequest setReportType:](v5, "setReportType:", [v20 intValue]);
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"reportOptionsSectionTitle"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"reportOptionsSectionTitle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -232,7 +232,7 @@
       [(_SFPBUserReportRequest *)v5 setReportOptionsSectionTitle:v22];
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"disclaimerText"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"disclaimerText"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -240,7 +240,7 @@
       [(_SFPBUserReportRequest *)v5 setDisclaimerText:v24];
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"disclaimerLearnMorePunchout"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"disclaimerLearnMorePunchout"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -248,7 +248,7 @@
       [(_SFPBUserReportRequest *)v5 setDisclaimerLearnMorePunchout:v26];
     }
 
-    v27 = [v4 objectForKeyedSubscript:@"attachmentSectionTitle"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"attachmentSectionTitle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -263,30 +263,30 @@
   return v5;
 }
 
-- (_SFPBUserReportRequest)initWithJSON:(id)a3
+- (_SFPBUserReportRequest)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBUserReportRequest *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBUserReportRequest *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBUserReportRequest *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -300,84 +300,84 @@
 - (id)dictionaryRepresentation
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_affordanceText)
   {
-    v4 = [(_SFPBUserReportRequest *)self affordanceText];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"affordanceText"];
+    affordanceText = [(_SFPBUserReportRequest *)self affordanceText];
+    v5 = [affordanceText copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"affordanceText"];
   }
 
   if (self->_attachmentSectionTitle)
   {
-    v6 = [(_SFPBUserReportRequest *)self attachmentSectionTitle];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"attachmentSectionTitle"];
+    attachmentSectionTitle = [(_SFPBUserReportRequest *)self attachmentSectionTitle];
+    v7 = [attachmentSectionTitle copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"attachmentSectionTitle"];
   }
 
   if (self->_disclaimerLearnMorePunchout)
   {
-    v8 = [(_SFPBUserReportRequest *)self disclaimerLearnMorePunchout];
-    v9 = [v8 dictionaryRepresentation];
-    if (v9)
+    disclaimerLearnMorePunchout = [(_SFPBUserReportRequest *)self disclaimerLearnMorePunchout];
+    dictionaryRepresentation = [disclaimerLearnMorePunchout dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"disclaimerLearnMorePunchout"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"disclaimerLearnMorePunchout"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"disclaimerLearnMorePunchout"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"disclaimerLearnMorePunchout"];
     }
   }
 
   if (self->_disclaimerText)
   {
-    v11 = [(_SFPBUserReportRequest *)self disclaimerText];
-    v12 = [v11 copy];
-    [v3 setObject:v12 forKeyedSubscript:@"disclaimerText"];
+    disclaimerText = [(_SFPBUserReportRequest *)self disclaimerText];
+    v12 = [disclaimerText copy];
+    [dictionary setObject:v12 forKeyedSubscript:@"disclaimerText"];
   }
 
   if (self->_dismissText)
   {
-    v13 = [(_SFPBUserReportRequest *)self dismissText];
-    v14 = [v13 copy];
-    [v3 setObject:v14 forKeyedSubscript:@"dismissText"];
+    dismissText = [(_SFPBUserReportRequest *)self dismissText];
+    v14 = [dismissText copy];
+    [dictionary setObject:v14 forKeyedSubscript:@"dismissText"];
   }
 
   if (self->_reportOptionsSectionTitle)
   {
-    v15 = [(_SFPBUserReportRequest *)self reportOptionsSectionTitle];
-    v16 = [v15 copy];
-    [v3 setObject:v16 forKeyedSubscript:@"reportOptionsSectionTitle"];
+    reportOptionsSectionTitle = [(_SFPBUserReportRequest *)self reportOptionsSectionTitle];
+    v16 = [reportOptionsSectionTitle copy];
+    [dictionary setObject:v16 forKeyedSubscript:@"reportOptionsSectionTitle"];
   }
 
   if (self->_reportType)
   {
-    v17 = [(_SFPBUserReportRequest *)self reportType];
-    if (v17 >= 4)
+    reportType = [(_SFPBUserReportRequest *)self reportType];
+    if (reportType >= 4)
     {
-      v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v17];
+      v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", reportType];
     }
 
     else
     {
-      v18 = off_1E7ACE560[v17];
+      v18 = off_1E7ACE560[reportType];
     }
 
-    [v3 setObject:v18 forKeyedSubscript:@"reportType"];
+    [dictionary setObject:v18 forKeyedSubscript:@"reportType"];
   }
 
   if (self->_title)
   {
-    v19 = [(_SFPBUserReportRequest *)self title];
-    v20 = [v19 copy];
-    [v3 setObject:v20 forKeyedSubscript:@"title"];
+    title = [(_SFPBUserReportRequest *)self title];
+    v20 = [title copy];
+    [dictionary setObject:v20 forKeyedSubscript:@"title"];
   }
 
   if ([(NSArray *)self->_userReportOptions count])
   {
-    v21 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
@@ -397,16 +397,16 @@
             objc_enumerationMutation(v22);
           }
 
-          v27 = [*(*(&v31 + 1) + 8 * i) dictionaryRepresentation];
-          if (v27)
+          dictionaryRepresentation2 = [*(*(&v31 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v21 addObject:v27];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v28 = [MEMORY[0x1E695DFB0] null];
-            [v21 addObject:v28];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -416,12 +416,12 @@
       while (v24);
     }
 
-    [v3 setObject:v21 forKeyedSubscript:@"userReportOptions"];
+    [dictionary setObject:array forKeyedSubscript:@"userReportOptions"];
   }
 
   v29 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -437,28 +437,28 @@
   return v9 ^ v10 ^ [(NSString *)self->_attachmentSectionTitle hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_43;
   }
 
-  v5 = [(_SFPBUserReportRequest *)self affordanceText];
-  v6 = [v4 affordanceText];
-  if ((v5 != 0) == (v6 == 0))
+  affordanceText = [(_SFPBUserReportRequest *)self affordanceText];
+  affordanceText2 = [equalCopy affordanceText];
+  if ((affordanceText != 0) == (affordanceText2 == 0))
   {
     goto LABEL_42;
   }
 
-  v7 = [(_SFPBUserReportRequest *)self affordanceText];
-  if (v7)
+  affordanceText3 = [(_SFPBUserReportRequest *)self affordanceText];
+  if (affordanceText3)
   {
-    v8 = v7;
-    v9 = [(_SFPBUserReportRequest *)self affordanceText];
-    v10 = [v4 affordanceText];
-    v11 = [v9 isEqual:v10];
+    v8 = affordanceText3;
+    affordanceText4 = [(_SFPBUserReportRequest *)self affordanceText];
+    affordanceText5 = [equalCopy affordanceText];
+    v11 = [affordanceText4 isEqual:affordanceText5];
 
     if (!v11)
     {
@@ -470,20 +470,20 @@
   {
   }
 
-  v5 = [(_SFPBUserReportRequest *)self title];
-  v6 = [v4 title];
-  if ((v5 != 0) == (v6 == 0))
+  affordanceText = [(_SFPBUserReportRequest *)self title];
+  affordanceText2 = [equalCopy title];
+  if ((affordanceText != 0) == (affordanceText2 == 0))
   {
     goto LABEL_42;
   }
 
-  v12 = [(_SFPBUserReportRequest *)self title];
-  if (v12)
+  title = [(_SFPBUserReportRequest *)self title];
+  if (title)
   {
-    v13 = v12;
-    v14 = [(_SFPBUserReportRequest *)self title];
-    v15 = [v4 title];
-    v16 = [v14 isEqual:v15];
+    v13 = title;
+    title2 = [(_SFPBUserReportRequest *)self title];
+    title3 = [equalCopy title];
+    v16 = [title2 isEqual:title3];
 
     if (!v16)
     {
@@ -495,20 +495,20 @@
   {
   }
 
-  v5 = [(_SFPBUserReportRequest *)self dismissText];
-  v6 = [v4 dismissText];
-  if ((v5 != 0) == (v6 == 0))
+  affordanceText = [(_SFPBUserReportRequest *)self dismissText];
+  affordanceText2 = [equalCopy dismissText];
+  if ((affordanceText != 0) == (affordanceText2 == 0))
   {
     goto LABEL_42;
   }
 
-  v17 = [(_SFPBUserReportRequest *)self dismissText];
-  if (v17)
+  dismissText = [(_SFPBUserReportRequest *)self dismissText];
+  if (dismissText)
   {
-    v18 = v17;
-    v19 = [(_SFPBUserReportRequest *)self dismissText];
-    v20 = [v4 dismissText];
-    v21 = [v19 isEqual:v20];
+    v18 = dismissText;
+    dismissText2 = [(_SFPBUserReportRequest *)self dismissText];
+    dismissText3 = [equalCopy dismissText];
+    v21 = [dismissText2 isEqual:dismissText3];
 
     if (!v21)
     {
@@ -520,20 +520,20 @@
   {
   }
 
-  v5 = [(_SFPBUserReportRequest *)self userReportOptions];
-  v6 = [v4 userReportOptions];
-  if ((v5 != 0) == (v6 == 0))
+  affordanceText = [(_SFPBUserReportRequest *)self userReportOptions];
+  affordanceText2 = [equalCopy userReportOptions];
+  if ((affordanceText != 0) == (affordanceText2 == 0))
   {
     goto LABEL_42;
   }
 
-  v22 = [(_SFPBUserReportRequest *)self userReportOptions];
-  if (v22)
+  userReportOptions = [(_SFPBUserReportRequest *)self userReportOptions];
+  if (userReportOptions)
   {
-    v23 = v22;
-    v24 = [(_SFPBUserReportRequest *)self userReportOptions];
-    v25 = [v4 userReportOptions];
-    v26 = [v24 isEqual:v25];
+    v23 = userReportOptions;
+    userReportOptions2 = [(_SFPBUserReportRequest *)self userReportOptions];
+    userReportOptions3 = [equalCopy userReportOptions];
+    v26 = [userReportOptions2 isEqual:userReportOptions3];
 
     if (!v26)
     {
@@ -546,25 +546,25 @@
   }
 
   reportType = self->_reportType;
-  if (reportType != [v4 reportType])
+  if (reportType != [equalCopy reportType])
   {
     goto LABEL_43;
   }
 
-  v5 = [(_SFPBUserReportRequest *)self reportOptionsSectionTitle];
-  v6 = [v4 reportOptionsSectionTitle];
-  if ((v5 != 0) == (v6 == 0))
+  affordanceText = [(_SFPBUserReportRequest *)self reportOptionsSectionTitle];
+  affordanceText2 = [equalCopy reportOptionsSectionTitle];
+  if ((affordanceText != 0) == (affordanceText2 == 0))
   {
     goto LABEL_42;
   }
 
-  v28 = [(_SFPBUserReportRequest *)self reportOptionsSectionTitle];
-  if (v28)
+  reportOptionsSectionTitle = [(_SFPBUserReportRequest *)self reportOptionsSectionTitle];
+  if (reportOptionsSectionTitle)
   {
-    v29 = v28;
-    v30 = [(_SFPBUserReportRequest *)self reportOptionsSectionTitle];
-    v31 = [v4 reportOptionsSectionTitle];
-    v32 = [v30 isEqual:v31];
+    v29 = reportOptionsSectionTitle;
+    reportOptionsSectionTitle2 = [(_SFPBUserReportRequest *)self reportOptionsSectionTitle];
+    reportOptionsSectionTitle3 = [equalCopy reportOptionsSectionTitle];
+    v32 = [reportOptionsSectionTitle2 isEqual:reportOptionsSectionTitle3];
 
     if (!v32)
     {
@@ -576,20 +576,20 @@
   {
   }
 
-  v5 = [(_SFPBUserReportRequest *)self disclaimerText];
-  v6 = [v4 disclaimerText];
-  if ((v5 != 0) == (v6 == 0))
+  affordanceText = [(_SFPBUserReportRequest *)self disclaimerText];
+  affordanceText2 = [equalCopy disclaimerText];
+  if ((affordanceText != 0) == (affordanceText2 == 0))
   {
     goto LABEL_42;
   }
 
-  v33 = [(_SFPBUserReportRequest *)self disclaimerText];
-  if (v33)
+  disclaimerText = [(_SFPBUserReportRequest *)self disclaimerText];
+  if (disclaimerText)
   {
-    v34 = v33;
-    v35 = [(_SFPBUserReportRequest *)self disclaimerText];
-    v36 = [v4 disclaimerText];
-    v37 = [v35 isEqual:v36];
+    v34 = disclaimerText;
+    disclaimerText2 = [(_SFPBUserReportRequest *)self disclaimerText];
+    disclaimerText3 = [equalCopy disclaimerText];
+    v37 = [disclaimerText2 isEqual:disclaimerText3];
 
     if (!v37)
     {
@@ -601,20 +601,20 @@
   {
   }
 
-  v5 = [(_SFPBUserReportRequest *)self disclaimerLearnMorePunchout];
-  v6 = [v4 disclaimerLearnMorePunchout];
-  if ((v5 != 0) == (v6 == 0))
+  affordanceText = [(_SFPBUserReportRequest *)self disclaimerLearnMorePunchout];
+  affordanceText2 = [equalCopy disclaimerLearnMorePunchout];
+  if ((affordanceText != 0) == (affordanceText2 == 0))
   {
     goto LABEL_42;
   }
 
-  v38 = [(_SFPBUserReportRequest *)self disclaimerLearnMorePunchout];
-  if (v38)
+  disclaimerLearnMorePunchout = [(_SFPBUserReportRequest *)self disclaimerLearnMorePunchout];
+  if (disclaimerLearnMorePunchout)
   {
-    v39 = v38;
-    v40 = [(_SFPBUserReportRequest *)self disclaimerLearnMorePunchout];
-    v41 = [v4 disclaimerLearnMorePunchout];
-    v42 = [v40 isEqual:v41];
+    v39 = disclaimerLearnMorePunchout;
+    disclaimerLearnMorePunchout2 = [(_SFPBUserReportRequest *)self disclaimerLearnMorePunchout];
+    disclaimerLearnMorePunchout3 = [equalCopy disclaimerLearnMorePunchout];
+    v42 = [disclaimerLearnMorePunchout2 isEqual:disclaimerLearnMorePunchout3];
 
     if (!v42)
     {
@@ -626,17 +626,17 @@
   {
   }
 
-  v5 = [(_SFPBUserReportRequest *)self attachmentSectionTitle];
-  v6 = [v4 attachmentSectionTitle];
-  if ((v5 != 0) == (v6 == 0))
+  affordanceText = [(_SFPBUserReportRequest *)self attachmentSectionTitle];
+  affordanceText2 = [equalCopy attachmentSectionTitle];
+  if ((affordanceText != 0) == (affordanceText2 == 0))
   {
 LABEL_42:
 
     goto LABEL_43;
   }
 
-  v43 = [(_SFPBUserReportRequest *)self attachmentSectionTitle];
-  if (!v43)
+  attachmentSectionTitle = [(_SFPBUserReportRequest *)self attachmentSectionTitle];
+  if (!attachmentSectionTitle)
   {
 
 LABEL_46:
@@ -644,10 +644,10 @@ LABEL_46:
     goto LABEL_44;
   }
 
-  v44 = v43;
-  v45 = [(_SFPBUserReportRequest *)self attachmentSectionTitle];
-  v46 = [v4 attachmentSectionTitle];
-  v47 = [v45 isEqual:v46];
+  v44 = attachmentSectionTitle;
+  attachmentSectionTitle2 = [(_SFPBUserReportRequest *)self attachmentSectionTitle];
+  attachmentSectionTitle3 = [equalCopy attachmentSectionTitle];
+  v47 = [attachmentSectionTitle2 isEqual:attachmentSectionTitle3];
 
   if (v47)
   {
@@ -661,34 +661,34 @@ LABEL_44:
   return v48;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFPBUserReportRequest *)self affordanceText];
-  if (v5)
+  toCopy = to;
+  affordanceText = [(_SFPBUserReportRequest *)self affordanceText];
+  if (affordanceText)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_SFPBUserReportRequest *)self title];
-  if (v6)
+  title = [(_SFPBUserReportRequest *)self title];
+  if (title)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(_SFPBUserReportRequest *)self dismissText];
-  if (v7)
+  dismissText = [(_SFPBUserReportRequest *)self dismissText];
+  if (dismissText)
   {
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(_SFPBUserReportRequest *)self userReportOptions];
+  userReportOptions = [(_SFPBUserReportRequest *)self userReportOptions];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v9 = [userReportOptions countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
     v10 = v9;
@@ -700,7 +700,7 @@ LABEL_44:
       {
         if (*v20 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(userReportOptions);
         }
 
         v13 = *(*(&v19 + 1) + 8 * v12);
@@ -709,7 +709,7 @@ LABEL_44:
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v10 = [userReportOptions countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v10);
@@ -720,26 +720,26 @@ LABEL_44:
     PBDataWriterWriteInt32Field();
   }
 
-  v14 = [(_SFPBUserReportRequest *)self reportOptionsSectionTitle];
-  if (v14)
+  reportOptionsSectionTitle = [(_SFPBUserReportRequest *)self reportOptionsSectionTitle];
+  if (reportOptionsSectionTitle)
   {
     PBDataWriterWriteStringField();
   }
 
-  v15 = [(_SFPBUserReportRequest *)self disclaimerText];
-  if (v15)
+  disclaimerText = [(_SFPBUserReportRequest *)self disclaimerText];
+  if (disclaimerText)
   {
     PBDataWriterWriteStringField();
   }
 
-  v16 = [(_SFPBUserReportRequest *)self disclaimerLearnMorePunchout];
-  if (v16)
+  disclaimerLearnMorePunchout = [(_SFPBUserReportRequest *)self disclaimerLearnMorePunchout];
+  if (disclaimerLearnMorePunchout)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v17 = [(_SFPBUserReportRequest *)self attachmentSectionTitle];
-  if (v17)
+  attachmentSectionTitle = [(_SFPBUserReportRequest *)self attachmentSectionTitle];
+  if (attachmentSectionTitle)
   {
     PBDataWriterWriteStringField();
   }
@@ -747,81 +747,81 @@ LABEL_44:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setAttachmentSectionTitle:(id)a3
+- (void)setAttachmentSectionTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   attachmentSectionTitle = self->_attachmentSectionTitle;
   self->_attachmentSectionTitle = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setDisclaimerText:(id)a3
+- (void)setDisclaimerText:(id)text
 {
-  v4 = [a3 copy];
+  v4 = [text copy];
   disclaimerText = self->_disclaimerText;
   self->_disclaimerText = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setReportOptionsSectionTitle:(id)a3
+- (void)setReportOptionsSectionTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   reportOptionsSectionTitle = self->_reportOptionsSectionTitle;
   self->_reportOptionsSectionTitle = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addUserReportOptions:(id)a3
+- (void)addUserReportOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   userReportOptions = self->_userReportOptions;
-  v8 = v4;
+  v8 = optionsCopy;
   if (!userReportOptions)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_userReportOptions;
-    self->_userReportOptions = v6;
+    self->_userReportOptions = array;
 
-    v4 = v8;
+    optionsCopy = v8;
     userReportOptions = self->_userReportOptions;
   }
 
-  [(NSArray *)userReportOptions addObject:v4];
+  [(NSArray *)userReportOptions addObject:optionsCopy];
 }
 
-- (void)setUserReportOptions:(id)a3
+- (void)setUserReportOptions:(id)options
 {
-  v4 = [a3 copy];
+  v4 = [options copy];
   userReportOptions = self->_userReportOptions;
   self->_userReportOptions = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setDismissText:(id)a3
+- (void)setDismissText:(id)text
 {
-  v4 = [a3 copy];
+  v4 = [text copy];
   dismissText = self->_dismissText;
   self->_dismissText = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   title = self->_title;
   self->_title = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setAffordanceText:(id)a3
+- (void)setAffordanceText:(id)text
 {
-  v4 = [a3 copy];
+  v4 = [text copy];
   affordanceText = self->_affordanceText;
   self->_affordanceText = v4;
 

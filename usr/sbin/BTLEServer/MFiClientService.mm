@@ -1,17 +1,17 @@
 @interface MFiClientService
-- (MFiClientService)initWithManager:(id)a3 peripheral:(id)a4 service:(id)a5;
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5;
+- (MFiClientService)initWithManager:(id)manager peripheral:(id)peripheral service:(id)service;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error;
 - (void)start;
 @end
 
 @implementation MFiClientService
 
-- (MFiClientService)initWithManager:(id)a3 peripheral:(id)a4 service:(id)a5
+- (MFiClientService)initWithManager:(id)manager peripheral:(id)peripheral service:(id)service
 {
   v8.receiver = self;
   v8.super_class = MFiClientService;
-  v5 = [(ClientService *)&v8 initWithManager:a3 peripheral:a4 service:a5];
+  v5 = [(ClientService *)&v8 initWithManager:manager peripheral:peripheral service:service];
   v6 = v5;
   if (v5)
   {
@@ -42,25 +42,25 @@
   v13[5] = v8;
   v9 = [NSArray arrayWithObjects:v13 count:6];
 
-  v10 = [(ClientService *)self peripheral];
-  v11 = [(ClientService *)self service];
-  [v10 discoverCharacteristics:v9 forService:v11];
+  peripheral = [(ClientService *)self peripheral];
+  service = [(ClientService *)self service];
+  [peripheral discoverCharacteristics:v9 forService:service];
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error
 {
-  v8 = a3;
-  v54 = a4;
-  v53 = a5;
-  if (!v53)
+  peripheralCopy = peripheral;
+  serviceCopy = service;
+  errorCopy = error;
+  if (!errorCopy)
   {
-    v60 = v8;
+    v60 = peripheralCopy;
     v64 = 0u;
     v65 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v9 = [v54 characteristics];
-    v10 = [v9 countByEnumeratingWithState:&v62 objects:v70 count:16];
+    characteristics = [serviceCopy characteristics];
+    v10 = [characteristics countByEnumeratingWithState:&v62 objects:v70 count:16];
     if (!v10)
     {
       goto LABEL_36;
@@ -80,20 +80,20 @@
       {
         if (*v63 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(characteristics);
         }
 
         v14 = *(*(&v62 + 1) + 8 * i);
-        v15 = [(MFiClientService *)self teamIDCharacteristic];
-        if (v15)
+        teamIDCharacteristic = [(MFiClientService *)self teamIDCharacteristic];
+        if (teamIDCharacteristic)
         {
         }
 
         else
         {
-          v16 = [v14 UUID];
+          uUID = [v14 UUID];
           v17 = [CBUUID UUIDWithString:v61];
-          v18 = [v16 isEqual:v17];
+          v18 = [uUID isEqual:v17];
 
           if (v18)
           {
@@ -102,16 +102,16 @@
           }
         }
 
-        v19 = [(MFiClientService *)self protocolStringCharacteristic];
-        if (v19)
+        protocolStringCharacteristic = [(MFiClientService *)self protocolStringCharacteristic];
+        if (protocolStringCharacteristic)
         {
         }
 
         else
         {
-          v20 = [v14 UUID];
+          uUID2 = [v14 UUID];
           v21 = [CBUUID UUIDWithString:v59];
-          v22 = [v20 isEqual:v21];
+          v22 = [uUID2 isEqual:v21];
 
           if (v22)
           {
@@ -120,16 +120,16 @@
           }
         }
 
-        v23 = [(MFiClientService *)self commandCharacteristic];
-        if (v23)
+        commandCharacteristic = [(MFiClientService *)self commandCharacteristic];
+        if (commandCharacteristic)
         {
         }
 
         else
         {
-          v24 = [v14 UUID];
+          uUID3 = [v14 UUID];
           v25 = [CBUUID UUIDWithString:v58];
-          v26 = [v24 isEqual:v25];
+          v26 = [uUID3 isEqual:v25];
 
           if (v26)
           {
@@ -138,16 +138,16 @@
           }
         }
 
-        v27 = [(MFiClientService *)self accessoryTypeCharacteristic];
-        if (v27)
+        accessoryTypeCharacteristic = [(MFiClientService *)self accessoryTypeCharacteristic];
+        if (accessoryTypeCharacteristic)
         {
         }
 
         else
         {
-          v28 = [v14 UUID];
+          uUID4 = [v14 UUID];
           v29 = [CBUUID UUIDWithString:v57];
-          v30 = [v28 isEqual:v29];
+          v30 = [uUID4 isEqual:v29];
 
           if (v30)
           {
@@ -156,21 +156,21 @@
           }
         }
 
-        v31 = [(MFiClientService *)self accessoryAttributesCharacteristic];
-        if (v31)
+        accessoryAttributesCharacteristic = [(MFiClientService *)self accessoryAttributesCharacteristic];
+        if (accessoryAttributesCharacteristic)
         {
 
 LABEL_29:
-          v35 = [(MFiClientService *)self mfiAuthPSMCharacteristic];
-          if (v35)
+          mfiAuthPSMCharacteristic = [(MFiClientService *)self mfiAuthPSMCharacteristic];
+          if (mfiAuthPSMCharacteristic)
           {
           }
 
           else
           {
-            v36 = [v14 UUID];
+            uUID5 = [v14 UUID];
             v37 = [CBUUID UUIDWithString:v55];
-            v38 = [v36 isEqual:v37];
+            v38 = [uUID5 isEqual:v37];
 
             if (v38)
             {
@@ -185,9 +185,9 @@ LABEL_29:
           continue;
         }
 
-        v32 = [v14 UUID];
+        uUID6 = [v14 UUID];
         v33 = [CBUUID UUIDWithString:v56];
-        v34 = [v32 isEqual:v33];
+        v34 = [uUID6 isEqual:v33];
 
         if (!v34)
         {
@@ -202,39 +202,39 @@ LABEL_27:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v62 objects:v70 count:16];
+      v11 = [characteristics countByEnumeratingWithState:&v62 objects:v70 count:16];
       if (!v11)
       {
 LABEL_36:
 
-        v8 = v60;
+        peripheralCopy = v60;
         break;
       }
     }
   }
 
-  v39 = [(ClientService *)self manager];
+  manager = [(ClientService *)self manager];
   v40 = [CBUUID UUIDWithString:CBUUIDDeviceInformationServiceString];
-  v41 = [v39 clientServiceForUUID:v40];
+  v41 = [manager clientServiceForUUID:v40];
 
   v68[0] = kACCInfo_Name;
-  v42 = [v8 name];
-  v69[0] = v42;
+  name = [peripheralCopy name];
+  v69[0] = name;
   v68[1] = kACCInfo_Model;
-  v43 = [v41 modelNumber];
-  v69[1] = v43;
+  modelNumber = [v41 modelNumber];
+  v69[1] = modelNumber;
   v68[2] = kACCInfo_SerialNumber;
-  v44 = [v41 serialNumber];
-  v69[2] = v44;
+  serialNumber = [v41 serialNumber];
+  v69[2] = serialNumber;
   v68[3] = kACCInfo_FirmwareVersionActive;
-  v45 = [v41 firmwareRevision];
-  v69[3] = v45;
+  firmwareRevision = [v41 firmwareRevision];
+  v69[3] = firmwareRevision;
   v68[4] = kACCInfo_HardwareVersion;
-  v46 = [v41 hardwareRevision];
-  v69[4] = v46;
+  hardwareRevision = [v41 hardwareRevision];
+  v69[4] = hardwareRevision;
   v68[5] = kACCInfo_Manufacturer;
-  v47 = [v41 manufacturerName];
-  v69[5] = v47;
+  manufacturerName = [v41 manufacturerName];
+  v69[5] = manufacturerName;
   v48 = [NSDictionary dictionaryWithObjects:v69 forKeys:v68 count:6];
 
   v49 = qword_1000DDBC8;
@@ -246,34 +246,34 @@ LABEL_36:
   }
 
   v50 = +[ConnectionManager instance];
-  [v50 setMFiAccessoryInfo:v48 forPeripheral:v8];
+  [v50 setMFiAccessoryInfo:v48 forPeripheral:peripheralCopy];
 
   v51 = +[NSNotificationCenter defaultCenter];
-  v52 = [(ClientService *)self peripheral];
-  [v51 postNotificationName:@"PeerIsUsingBuiltinServiceNotification" object:v52];
+  peripheral = [(ClientService *)self peripheral];
+  [v51 postNotificationName:@"PeerIsUsingBuiltinServiceNotification" object:peripheral];
 
   [(ClientService *)self notifyDidStart];
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
+  if (!errorCopy)
   {
-    v12 = [(MFiClientService *)self mfiAuthPSMCharacteristic];
-    v13 = v12;
-    if (v12 == v9)
+    mfiAuthPSMCharacteristic = [(MFiClientService *)self mfiAuthPSMCharacteristic];
+    v13 = mfiAuthPSMCharacteristic;
+    if (mfiAuthPSMCharacteristic == characteristicCopy)
     {
-      v18 = [(MFiClientService *)self mfiAuthPSMCharacteristic];
-      v19 = [v18 value];
+      mfiAuthPSMCharacteristic2 = [(MFiClientService *)self mfiAuthPSMCharacteristic];
+      value = [mfiAuthPSMCharacteristic2 value];
 
-      if (v19)
+      if (value)
       {
-        v20 = [(MFiClientService *)self mfiAuthPSMCharacteristic];
-        v21 = [v20 value];
-        v14 = [DataInputStream inputStreamWithData:v21 byteOrder:1];
+        mfiAuthPSMCharacteristic3 = [(MFiClientService *)self mfiAuthPSMCharacteristic];
+        value2 = [mfiAuthPSMCharacteristic3 value];
+        v14 = [DataInputStream inputStreamWithData:value2 byteOrder:1];
 
         v24 = 0;
         v22 = [v14 readUint16:&v24];
@@ -287,7 +287,7 @@ LABEL_36:
             _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Opening MFi Auth L2CAP channel with PSM %d", buf, 8u);
           }
 
-          [v8 openL2CAPChannel:v24];
+          [peripheralCopy openL2CAPChannel:v24];
         }
 
         else if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
@@ -304,10 +304,10 @@ LABEL_36:
     }
 
     v14 = +[ConnectionManager instance];
-    v15 = [v9 UUID];
-    v16 = [v15 UUIDString];
-    v17 = [v9 value];
-    [v14 setIAPProperty:v16 withValue:v17 forPeripheral:v8];
+    uUID = [characteristicCopy UUID];
+    uUIDString = [uUID UUIDString];
+    value3 = [characteristicCopy value];
+    [v14 setIAPProperty:uUIDString withValue:value3 forPeripheral:peripheralCopy];
 
 LABEL_7:
     goto LABEL_8;
@@ -316,7 +316,7 @@ LABEL_7:
   v11 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
   {
-    sub_1000748DC(v11, v9, v10);
+    sub_1000748DC(v11, characteristicCopy, errorCopy);
   }
 
 LABEL_8:

@@ -1,29 +1,29 @@
 @interface CUIKOROccurrenceStateCachedLocation
-- (CUIKOROccurrenceStateCachedLocation)initWithGeneratedLocationString:(id)a3 locationImageName:(id)a4 originalOccurrenceLocation:(id)a5 originalOccurrenceLocationWithoutPrediction:(id)a6 originalOccurrenceLocationIsPrediction:(BOOL)a7 originalHasNewTimeProposed:(BOOL)a8 originalConferenceURL:(id)a9;
+- (CUIKOROccurrenceStateCachedLocation)initWithGeneratedLocationString:(id)string locationImageName:(id)name originalOccurrenceLocation:(id)location originalOccurrenceLocationWithoutPrediction:(id)prediction originalOccurrenceLocationIsPrediction:(BOOL)isPrediction originalHasNewTimeProposed:(BOOL)proposed originalConferenceURL:(id)l;
 @end
 
 @implementation CUIKOROccurrenceStateCachedLocation
 
-- (CUIKOROccurrenceStateCachedLocation)initWithGeneratedLocationString:(id)a3 locationImageName:(id)a4 originalOccurrenceLocation:(id)a5 originalOccurrenceLocationWithoutPrediction:(id)a6 originalOccurrenceLocationIsPrediction:(BOOL)a7 originalHasNewTimeProposed:(BOOL)a8 originalConferenceURL:(id)a9
+- (CUIKOROccurrenceStateCachedLocation)initWithGeneratedLocationString:(id)string locationImageName:(id)name originalOccurrenceLocation:(id)location originalOccurrenceLocationWithoutPrediction:(id)prediction originalOccurrenceLocationIsPrediction:(BOOL)isPrediction originalHasNewTimeProposed:(BOOL)proposed originalConferenceURL:(id)l
 {
-  v23 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a9;
+  stringCopy = string;
+  nameCopy = name;
+  locationCopy = location;
+  predictionCopy = prediction;
+  lCopy = l;
   v24.receiver = self;
   v24.super_class = CUIKOROccurrenceStateCachedLocation;
   v18 = [(CUIKOROccurrenceStateCachedLocation *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_generatedLocationString, a3);
-    objc_storeStrong(&v19->_locationImageName, a4);
-    objc_storeStrong(&v19->_originalOccurrenceLocation, a5);
-    objc_storeStrong(&v19->_originalOccurrenceLocationWithoutPrediction, a6);
-    v19->_originalOccurrenceLocationIsPrediction = a7;
-    v19->_originalHasNewTimeProposed = a8;
-    objc_storeStrong(&v19->_originalConferenceURL, a9);
+    objc_storeStrong(&v18->_generatedLocationString, string);
+    objc_storeStrong(&v19->_locationImageName, name);
+    objc_storeStrong(&v19->_originalOccurrenceLocation, location);
+    objc_storeStrong(&v19->_originalOccurrenceLocationWithoutPrediction, prediction);
+    v19->_originalOccurrenceLocationIsPrediction = isPrediction;
+    v19->_originalHasNewTimeProposed = proposed;
+    objc_storeStrong(&v19->_originalConferenceURL, l);
   }
 
   return v19;

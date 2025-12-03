@@ -18,7 +18,7 @@
 - (BOOL)presentsAutocompleteInAPopover;
 - (BOOL)recipientSelectionViewClipsToBounds;
 - (BOOL)searchControllerObscuresConversationList;
-- (BOOL)shouldShowAvatarForWidth:(double)a3;
+- (BOOL)shouldShowAvatarForWidth:(double)width;
 - (BOOL)shouldUnreadIndicatorChangeOnSelection;
 - (BOOL)showsBalloonChevron;
 - (BOOL)supportsOrbPreviewsInConversationList;
@@ -31,7 +31,7 @@
 - (CGSize)audioProgressViewSize;
 - (CGSize)avatarSize;
 - (CGSize)balloonMaskSize;
-- (CGSize)balloonMaskTailSizeForTailShape:(char)a3;
+- (CGSize)balloonMaskTailSizeForTailShape:(char)shape;
 - (CGSize)cancelButtonSize;
 - (CGSize)emojiStickerTranscriptBalloonSize;
 - (CGSize)entryViewPlusButtonSize;
@@ -59,11 +59,11 @@
 - (CGSize)replyDeleteBalloonMaskSize;
 - (CGSize)replyMultilineBalloonMaskSize;
 - (CGSize)replySkinnyBalloonMaskSize;
-- (CGSize)roundBalloonMaskSizeWithTailShape:(char)a3;
+- (CGSize)roundBalloonMaskSizeWithTailShape:(char)shape;
 - (CGSize)skinnyBalloonMaskSize;
 - (CGSize)stickerPopoverSize;
 - (CGSize)taillessMultilineBalloonMaskSize;
-- (CGSize)thumbnailFillSizeForWidth:(double)a3 imageSize:(CGSize)a4;
+- (CGSize)thumbnailFillSizeForWidth:(double)width imageSize:(CGSize)size;
 - (CGSize)transcriptTypingIndicatorDefaultSize;
 - (CGSize)transcriptTypingIndicatorLargeBubbleSize;
 - (CGSize)unreadIndicatorImageViewSize;
@@ -81,7 +81,7 @@
 - (UIEdgeInsets)entryViewHorizontalCoverInsets;
 - (UIEdgeInsets)entryViewVerticalCoverInsets;
 - (UIEdgeInsets)entryViewVerticalTextFieldInsets;
-- (UIEdgeInsets)fieldPlatterMarginInsetsForLayoutMargins:(UIEdgeInsets)a3;
+- (UIEdgeInsets)fieldPlatterMarginInsetsForLayoutMargins:(UIEdgeInsets)margins;
 - (UIEdgeInsets)fromFieldMarginInsets;
 - (UIEdgeInsets)fromPickerStackMarginInset;
 - (UIEdgeInsets)messageAcknowledgmentTranscriptGlyphInset;
@@ -285,14 +285,14 @@
 - (double)tuConversationJoinButtonMinWidth;
 - (double)unreadIndicatorTotalMargins;
 - (double)waveformHeight;
-- (id)appMenuAnimojiStickersIconForTraitCollection:(id)a3;
-- (id)appMenuApplePayIconForTraitCollection:(id)a3;
-- (id)appMenuEffectsIconForTraitCollection:(id)a3;
-- (id)appMenuGenerativePlaygroundIconForTraitCollection:(id)a3;
-- (id)appMenuGenmojiIconForTraitCollection:(id)a3;
-- (id)appMenuHashtagImagesIconForTraitCollection:(id)a3;
-- (id)appMenuPhotosIconForTraitCollection:(id)a3;
-- (id)appMenuSendLaterMessagesIconForTraitCollection:(id)a3;
+- (id)appMenuAnimojiStickersIconForTraitCollection:(id)collection;
+- (id)appMenuApplePayIconForTraitCollection:(id)collection;
+- (id)appMenuEffectsIconForTraitCollection:(id)collection;
+- (id)appMenuGenerativePlaygroundIconForTraitCollection:(id)collection;
+- (id)appMenuGenmojiIconForTraitCollection:(id)collection;
+- (id)appMenuHashtagImagesIconForTraitCollection:(id)collection;
+- (id)appMenuPhotosIconForTraitCollection:(id)collection;
+- (id)appMenuSendLaterMessagesIconForTraitCollection:(id)collection;
 - (id)appMenuTitleFont;
 - (id)audioBalloonSpeedFont;
 - (id)audioBalloonTimeFont;
@@ -305,7 +305,7 @@
 - (id)businessInfoViewGreetingTextFont;
 - (id)businessInfoViewTitleLabelFont;
 - (id)chatNavbarColor;
-- (id)chromeEffectForInterfaceStyle:(int64_t)a3;
+- (id)chromeEffectForInterfaceStyle:(int64_t)style;
 - (id)conversationListBoldSummaryFont;
 - (id)conversationListPinnedConversationNameFont;
 - (id)conversationListSenderFont;
@@ -354,7 +354,7 @@
 - (id)syncBarHairlineColor;
 - (id)syncProgressLabelFont;
 - (id)tapbackPickerSizingFont;
-- (id)textFontUserDefaults:(id)a3;
+- (id)textFontUserDefaults:(id)defaults;
 - (id)theme;
 - (id)transcriptBoldFont;
 - (id)transcriptButtonTextFont;
@@ -448,12 +448,12 @@ double __32__CKUIBehaviorMac_minWindowSize__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)chromeEffectForInterfaceStyle:(int64_t)a3
+- (id)chromeEffectForInterfaceStyle:(int64_t)style
 {
   v15[3] = *MEMORY[0x1E69E9840];
   v4 = [MEMORY[0x1E69DC730] effectWithBlurRadius:30.0];
   v5 = 2.0;
-  if (a3 == 2)
+  if (style == 2)
   {
     v5 = 1.0;
     v6 = 0;
@@ -466,8 +466,8 @@ double __32__CKUIBehaviorMac_minWindowSize__block_invoke(uint64_t a1)
 
   v7 = [MEMORY[0x1E69DC898] colorEffectSaturate:v5];
   v8 = MEMORY[0x1E69DD290];
-  v9 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v10 = [v8 effectCompositingColor:v9 withMode:v6 alpha:0.7];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  v10 = [v8 effectCompositingColor:systemBackgroundColor withMode:v6 alpha:0.7];
 
   v11 = MEMORY[0x1E69DD290];
   v15[0] = v4;
@@ -769,14 +769,14 @@ void __34__CKUIBehaviorMac_newComposeImage__block_invoke()
 
 - (double)_topConversationListSpace
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isConversationListRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isConversationListRefreshEnabled = [mEMORY[0x1E69A8070] isConversationListRefreshEnabled];
 
   v5 = 20.0;
-  if ((v4 & 1) == 0)
+  if ((isConversationListRefreshEnabled & 1) == 0)
   {
-    v6 = [(CKUIBehaviorMac *)self conversationListSenderFont];
-    [v6 _bodyLeading];
+    conversationListSenderFont = [(CKUIBehaviorMac *)self conversationListSenderFont];
+    [conversationListSenderFont _bodyLeading];
     v8 = v7 * 0.6;
     if (CKMainScreenScale_once_62 != -1)
     {
@@ -832,10 +832,10 @@ void __34__CKUIBehaviorMac_newComposeImage__block_invoke()
 
 - (double)_bottomConversationListSpace
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isConversationListRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isConversationListRefreshEnabled = [mEMORY[0x1E69A8070] isConversationListRefreshEnabled];
 
-  if (v4)
+  if (isConversationListRefreshEnabled)
   {
     return 20.0;
   }
@@ -927,9 +927,9 @@ id __37__CKUIBehaviorMac_navigationBarClass__block_invoke(uint64_t a1)
 
   v10 = v9;
   v11 = UIContentSizeCategoryCompareToCategory(conversationListSenderFont_sContentSizeCategory_conversationListSenderFont_0, v3);
-  v12 = [(CKUIBehaviorMac *)self ckShouldUpdateconversationListSenderFont];
+  ckShouldUpdateconversationListSenderFont = [(CKUIBehaviorMac *)self ckShouldUpdateconversationListSenderFont];
   v14 = &unk_1EAD6E000;
-  if (v12 || v11 || conversationListSenderFont_sIsIncreaseContrastEnabled_conversationListSenderFont_0 != v4 || conversationListSenderFont_sIsBoldTextEnabled_conversationListSenderFont_0 != IsBoldTextEnabled || (v13 = conversationListSenderFont_sTextFontSize_conversationListSenderFont_0, *&conversationListSenderFont_sTextFontSize_conversationListSenderFont_0 != v6) || (v13 = conversationListSenderFont_sCustomTextFontSize_conversationListSenderFont_0, *&conversationListSenderFont_sCustomTextFontSize_conversationListSenderFont_0 != v7) || ([conversationListSenderFont_sCustomTextFontName_conversationListSenderFont_0 isEqualToString:{v10, *&conversationListSenderFont_sCustomTextFontSize_conversationListSenderFont_0}] & 1) == 0)
+  if (ckShouldUpdateconversationListSenderFont || v11 || conversationListSenderFont_sIsIncreaseContrastEnabled_conversationListSenderFont_0 != v4 || conversationListSenderFont_sIsBoldTextEnabled_conversationListSenderFont_0 != IsBoldTextEnabled || (v13 = conversationListSenderFont_sTextFontSize_conversationListSenderFont_0, *&conversationListSenderFont_sTextFontSize_conversationListSenderFont_0 != v6) || (v13 = conversationListSenderFont_sCustomTextFontSize_conversationListSenderFont_0, *&conversationListSenderFont_sCustomTextFontSize_conversationListSenderFont_0 != v7) || ([conversationListSenderFont_sCustomTextFontName_conversationListSenderFont_0 isEqualToString:{v10, *&conversationListSenderFont_sCustomTextFontSize_conversationListSenderFont_0}] & 1) == 0)
   {
     v15 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:{*MEMORY[0x1E69DDCF8], *&v13}];
     v30 = *MEMORY[0x1E69DB8F0];
@@ -1643,19 +1643,19 @@ double __53__CKUIBehaviorMac_snapToMinConversationListCellWidth__block_invoke(ui
   return 0;
 }
 
-- (BOOL)shouldShowAvatarForWidth:(double)a3
+- (BOOL)shouldShowAvatarForWidth:(double)width
 {
-  v4 = [(CKUIBehaviorPad *)self canShowContactPhotosInConversationList];
-  if (v4)
+  canShowContactPhotosInConversationList = [(CKUIBehaviorPad *)self canShowContactPhotosInConversationList];
+  if (canShowContactPhotosInConversationList)
   {
 
-    LOBYTE(v4) = [(CKUIBehaviorMac *)self contactPhotosEnabled];
+    LOBYTE(canShowContactPhotosInConversationList) = [(CKUIBehaviorMac *)self contactPhotosEnabled];
   }
 
-  return v4;
+  return canShowContactPhotosInConversationList;
 }
 
-- (UIEdgeInsets)fieldPlatterMarginInsetsForLayoutMargins:(UIEdgeInsets)a3
+- (UIEdgeInsets)fieldPlatterMarginInsetsForLayoutMargins:(UIEdgeInsets)margins
 {
   v3 = 8.0;
   v4 = 8.0;
@@ -2060,11 +2060,11 @@ uint64_t __42__CKUIBehaviorMac_entryViewCoverMinHeight__block_invoke(uint64_t a1
 
 - (double)_entryViewCoverMinHeight
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
   result = 27.0;
-  if (v3)
+  if (isEntryViewRefreshEnabled)
   {
     return 30.0;
   }
@@ -2117,11 +2117,11 @@ uint64_t __51__CKUIBehaviorMac_entryViewVerticalTextFieldInsets__block_invoke(ui
 
 - (UIEdgeInsets)_entryViewVerticalTextFieldInsets
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
   v4 = 5.0;
-  if (v3)
+  if (isEntryViewRefreshEnabled)
   {
     v4 = 7.0;
   }
@@ -2171,10 +2171,10 @@ uint64_t __47__CKUIBehaviorMac_entryViewVerticalCoverInsets__block_invoke(uint64
 
 - (UIEdgeInsets)_entryViewVerticalCoverInsets
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (v3)
+  if (isEntryViewRefreshEnabled)
   {
     v4 = *MEMORY[0x1E69DDCE0];
     v5 = *(MEMORY[0x1E69DDCE0] + 8);
@@ -2221,11 +2221,11 @@ uint64_t __49__CKUIBehaviorMac_entryViewCoverHorizontalMargin__block_invoke(uint
 
 - (double)_entryViewCoverHorizontalMargin
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
   result = 16.0;
-  if (v3)
+  if (isEntryViewRefreshEnabled)
   {
     return 10.0;
   }
@@ -2437,10 +2437,10 @@ uint64_t __49__CKUIBehaviorMac_forceMinTranscriptMarginInsets__block_invoke(uint
 
 - (BOOL)_forceMinTranscriptMarginInsets
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  return v3 ^ 1;
+  return isEntryViewRefreshEnabled ^ 1;
 }
 
 - (double)entryViewPlusButtonToTextFieldPadding
@@ -2510,11 +2510,11 @@ uint64_t __49__CKUIBehaviorMac_entryContentViewTextLeftOffset__block_invoke(uint
 
 - (double)_entryContentViewTextLeftOffset
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
   result = 6.0;
-  if (v3)
+  if (isEntryViewRefreshEnabled)
   {
     return 12.0;
   }
@@ -2629,8 +2629,8 @@ uint64_t __49__CKUIBehaviorMac_entryContentViewTextLeftOffset__block_invoke(uint
 - (id)mentionsCellNameFont
 {
   v2 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD00]];
-  v3 = [v2 fontDescriptor];
-  v4 = [v3 fontDescriptorWithSymbolicTraits:0x8000];
+  fontDescriptor = [v2 fontDescriptor];
+  v4 = [fontDescriptor fontDescriptorWithSymbolicTraits:0x8000];
 
   v5 = MEMORY[0x1E69DB878];
   [v2 pointSize];
@@ -2725,10 +2725,10 @@ uint64_t __33__CKUIBehaviorMac_waveformHeight__block_invoke(uint64_t a1)
   return v15;
 }
 
-- (id)appMenuPhotosIconForTraitCollection:(id)a3
+- (id)appMenuPhotosIconForTraitCollection:(id)collection
 {
-  v3 = a3;
-  [v3 displayScale];
+  collectionCopy = collection;
+  [collectionCopy displayScale];
   if (v4 == 1.0)
   {
     v5 = @"1x";
@@ -2740,28 +2740,28 @@ uint64_t __33__CKUIBehaviorMac_waveformHeight__block_invoke(uint64_t a1)
   }
 
   v6 = [@"Mac-PhotosIcon" stringByAppendingString:v5];
-  v7 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v8 = [v7 isPopoverSendMenuEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isPopoverSendMenuEnabled = [mEMORY[0x1E69A8070] isPopoverSendMenuEnabled];
 
-  if (v8)
+  if (isPopoverSendMenuEnabled)
   {
     v9 = [v6 stringByAppendingString:@"-glass"];
 
     v6 = v9;
   }
 
-  v10 = [MEMORY[0x1E69DCAB8] ckImageNamed:v6 compatibleWithTraitCollection:v3];
+  v10 = [MEMORY[0x1E69DCAB8] ckImageNamed:v6 compatibleWithTraitCollection:collectionCopy];
 
   return v10;
 }
 
-- (id)appMenuEffectsIconForTraitCollection:(id)a3
+- (id)appMenuEffectsIconForTraitCollection:(id)collection
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v5 = [v4 isPopoverSendMenuEnabled];
+  collectionCopy = collection;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isPopoverSendMenuEnabled = [mEMORY[0x1E69A8070] isPopoverSendMenuEnabled];
 
-  if (v5)
+  if (isPopoverSendMenuEnabled)
   {
     v6 = [@"Mac-EffectsIcon" stringByAppendingString:@"-glass"];
   }
@@ -2771,18 +2771,18 @@ uint64_t __33__CKUIBehaviorMac_waveformHeight__block_invoke(uint64_t a1)
     v6 = @"Mac-EffectsIcon";
   }
 
-  v7 = [MEMORY[0x1E69DCAB8] ckImageNamed:v6 compatibleWithTraitCollection:v3];
+  v7 = [MEMORY[0x1E69DCAB8] ckImageNamed:v6 compatibleWithTraitCollection:collectionCopy];
 
   return v7;
 }
 
-- (id)appMenuHashtagImagesIconForTraitCollection:(id)a3
+- (id)appMenuHashtagImagesIconForTraitCollection:(id)collection
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v5 = [v4 isPopoverSendMenuEnabled];
+  collectionCopy = collection;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isPopoverSendMenuEnabled = [mEMORY[0x1E69A8070] isPopoverSendMenuEnabled];
 
-  if (v5)
+  if (isPopoverSendMenuEnabled)
   {
     v6 = [@"Mac-HashtagImagesIcon" stringByAppendingString:@"-glass"];
   }
@@ -2792,18 +2792,18 @@ uint64_t __33__CKUIBehaviorMac_waveformHeight__block_invoke(uint64_t a1)
     v6 = @"Mac-HashtagImagesIcon";
   }
 
-  v7 = [MEMORY[0x1E69DCAB8] ckImageNamed:v6 compatibleWithTraitCollection:v3];
+  v7 = [MEMORY[0x1E69DCAB8] ckImageNamed:v6 compatibleWithTraitCollection:collectionCopy];
 
   return v7;
 }
 
-- (id)appMenuAnimojiStickersIconForTraitCollection:(id)a3
+- (id)appMenuAnimojiStickersIconForTraitCollection:(id)collection
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v5 = [v4 isPopoverSendMenuEnabled];
+  collectionCopy = collection;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isPopoverSendMenuEnabled = [mEMORY[0x1E69A8070] isPopoverSendMenuEnabled];
 
-  if (v5)
+  if (isPopoverSendMenuEnabled)
   {
     v6 = [@"Mac-StickersIcon" stringByAppendingString:@"-glass"];
   }
@@ -2813,18 +2813,18 @@ uint64_t __33__CKUIBehaviorMac_waveformHeight__block_invoke(uint64_t a1)
     v6 = @"Mac-StickersIcon";
   }
 
-  v7 = [MEMORY[0x1E69DCAB8] ckImageNamed:v6 compatibleWithTraitCollection:v3];
+  v7 = [MEMORY[0x1E69DCAB8] ckImageNamed:v6 compatibleWithTraitCollection:collectionCopy];
 
   return v7;
 }
 
-- (id)appMenuApplePayIconForTraitCollection:(id)a3
+- (id)appMenuApplePayIconForTraitCollection:(id)collection
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v5 = [v4 isPopoverSendMenuEnabled];
+  collectionCopy = collection;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isPopoverSendMenuEnabled = [mEMORY[0x1E69A8070] isPopoverSendMenuEnabled];
 
-  if (v5)
+  if (isPopoverSendMenuEnabled)
   {
     v6 = [@"Mac-ApplePayIcon" stringByAppendingString:@"-glass"];
   }
@@ -2834,18 +2834,18 @@ uint64_t __33__CKUIBehaviorMac_waveformHeight__block_invoke(uint64_t a1)
     v6 = @"Mac-ApplePayIcon";
   }
 
-  v7 = [MEMORY[0x1E69DCAB8] ckImageNamed:v6 compatibleWithTraitCollection:v3];
+  v7 = [MEMORY[0x1E69DCAB8] ckImageNamed:v6 compatibleWithTraitCollection:collectionCopy];
 
   return v7;
 }
 
-- (id)appMenuGenmojiIconForTraitCollection:(id)a3
+- (id)appMenuGenmojiIconForTraitCollection:(id)collection
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v5 = [v4 isPopoverSendMenuEnabled];
+  collectionCopy = collection;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isPopoverSendMenuEnabled = [mEMORY[0x1E69A8070] isPopoverSendMenuEnabled];
 
-  if (v5)
+  if (isPopoverSendMenuEnabled)
   {
     v6 = [@"Mac-GenmojiIcon" stringByAppendingString:@"-glass"];
   }
@@ -2855,18 +2855,18 @@ uint64_t __33__CKUIBehaviorMac_waveformHeight__block_invoke(uint64_t a1)
     v6 = @"Mac-GenmojiIcon";
   }
 
-  v7 = [MEMORY[0x1E69DCAB8] ckImageNamed:v6 compatibleWithTraitCollection:v3];
+  v7 = [MEMORY[0x1E69DCAB8] ckImageNamed:v6 compatibleWithTraitCollection:collectionCopy];
 
   return v7;
 }
 
-- (id)appMenuSendLaterMessagesIconForTraitCollection:(id)a3
+- (id)appMenuSendLaterMessagesIconForTraitCollection:(id)collection
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v5 = [v4 isPopoverSendMenuEnabled];
+  collectionCopy = collection;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isPopoverSendMenuEnabled = [mEMORY[0x1E69A8070] isPopoverSendMenuEnabled];
 
-  if (v5)
+  if (isPopoverSendMenuEnabled)
   {
     v6 = [@"Mac-SendLaterIcon" stringByAppendingString:@"-glass"];
   }
@@ -2876,18 +2876,18 @@ uint64_t __33__CKUIBehaviorMac_waveformHeight__block_invoke(uint64_t a1)
     v6 = @"Mac-SendLaterIcon";
   }
 
-  v7 = [MEMORY[0x1E69DCAB8] ckImageNamed:v6 compatibleWithTraitCollection:v3];
+  v7 = [MEMORY[0x1E69DCAB8] ckImageNamed:v6 compatibleWithTraitCollection:collectionCopy];
 
   return v7;
 }
 
-- (id)appMenuGenerativePlaygroundIconForTraitCollection:(id)a3
+- (id)appMenuGenerativePlaygroundIconForTraitCollection:(id)collection
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v5 = [v4 isPopoverSendMenuEnabled];
+  collectionCopy = collection;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isPopoverSendMenuEnabled = [mEMORY[0x1E69A8070] isPopoverSendMenuEnabled];
 
-  if (v5)
+  if (isPopoverSendMenuEnabled)
   {
     v6 = [@"Mac-GenerativePlaygroundIcon" stringByAppendingString:@"-glass"];
   }
@@ -2897,7 +2897,7 @@ uint64_t __33__CKUIBehaviorMac_waveformHeight__block_invoke(uint64_t a1)
     v6 = @"Mac-GenerativePlaygroundIcon";
   }
 
-  v7 = [MEMORY[0x1E69DCAB8] ckImageNamed:v6 compatibleWithTraitCollection:v3];
+  v7 = [MEMORY[0x1E69DCAB8] ckImageNamed:v6 compatibleWithTraitCollection:collectionCopy];
 
   return v7;
 }
@@ -3155,11 +3155,11 @@ uint64_t __53__CKUIBehaviorMac_macEffectPickerTitleLeadingPadding__block_invoke(
 
 - (double)_macEffectPickerTitleLeadingPadding
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
   result = 15.0;
-  if (v3)
+  if (isEntryViewRefreshEnabled)
   {
     return 16.0;
   }
@@ -3699,11 +3699,11 @@ uint64_t __44__CKUIBehaviorMac_minTranscriptMarginInsets__block_invoke(uint64_t 
 
 - (UIEdgeInsets)_minTranscriptMarginInsets
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
   v4 = 11.0;
-  if (!v3)
+  if (!isEntryViewRefreshEnabled)
   {
     v4 = 16.0;
   }
@@ -3784,9 +3784,9 @@ uint64_t __44__CKUIBehaviorMac_minTranscriptMarginInsets__block_invoke(uint64_t 
   v11 = UIContentSizeCategoryCompareToCategory(balloonTextFont_sContentSizeCategory_balloonTextFont_0, v3);
   if (-[CKUIBehaviorMac ckShouldUpdateballoonTextFont](self, "ckShouldUpdateballoonTextFont") || v11 || balloonTextFont_sIsIncreaseContrastEnabled_balloonTextFont_0 != v4 || balloonTextFont_sIsBoldTextEnabled_balloonTextFont_0 != IsBoldTextEnabled || (v12 = balloonTextFont_sTextFontSize_balloonTextFont_0, *&balloonTextFont_sTextFontSize_balloonTextFont_0 != v6) || (v12 = balloonTextFont_sCustomTextFontSize_balloonTextFont_0, *&balloonTextFont_sCustomTextFontSize_balloonTextFont_0 != v7) || ([balloonTextFont_sCustomTextFontName_balloonTextFont_0 isEqualToString:{v10, *&balloonTextFont_sCustomTextFontSize_balloonTextFont_0}] & 1) == 0)
   {
-    v13 = [(CKUIBehaviorMac *)self balloonTextFontUserDefaults];
+    balloonTextFontUserDefaults = [(CKUIBehaviorMac *)self balloonTextFontUserDefaults];
     v14 = balloonTextFont_sBehavior_0;
-    balloonTextFont_sBehavior_0 = v13;
+    balloonTextFont_sBehavior_0 = balloonTextFontUserDefaults;
 
     objc_storeStrong(&balloonTextFont_sContentSizeCategory_balloonTextFont_0, v3);
     balloonTextFont_sIsIncreaseContrastEnabled_balloonTextFont_0 = v4;
@@ -3826,10 +3826,10 @@ uint64_t __44__CKUIBehaviorMac_minTranscriptMarginInsets__block_invoke(uint64_t 
   {
     v19.receiver = self;
     v19.super_class = CKUIBehaviorMac;
-    v13 = [(CKUIBehavior *)&v19 transcriptRegularFont];
-    v14 = [v13 __ck_fontScaledByUserPreference];
+    transcriptRegularFont = [(CKUIBehavior *)&v19 transcriptRegularFont];
+    __ck_fontScaledByUserPreference = [transcriptRegularFont __ck_fontScaledByUserPreference];
     v15 = transcriptRegularFont_sBehavior_0;
-    transcriptRegularFont_sBehavior_0 = v14;
+    transcriptRegularFont_sBehavior_0 = __ck_fontScaledByUserPreference;
 
     objc_storeStrong(&transcriptRegularFont_sContentSizeCategory_transcriptRegularFont_0, v3);
     transcriptRegularFont_sIsIncreaseContrastEnabled_transcriptRegularFont_0 = v4;
@@ -3868,9 +3868,9 @@ uint64_t __44__CKUIBehaviorMac_minTranscriptMarginInsets__block_invoke(uint64_t 
   if (-[CKUIBehaviorMac ckShouldUpdatetranscriptMessageStatusFont](self, "ckShouldUpdatetranscriptMessageStatusFont") || v11 || transcriptMessageStatusFont_sIsIncreaseContrastEnabled_transcriptMessageStatusFont_0 != v4 || transcriptMessageStatusFont_sIsBoldTextEnabled_transcriptMessageStatusFont_0 != IsBoldTextEnabled || *&transcriptMessageStatusFont_sTextFontSize_transcriptMessageStatusFont_0 != v6 || *&transcriptMessageStatusFont_sCustomTextFontSize_transcriptMessageStatusFont_0 != v7 || ([transcriptMessageStatusFont_sCustomTextFontName_transcriptMessageStatusFont_0 isEqualToString:{v10, *&transcriptMessageStatusFont_sCustomTextFontSize_transcriptMessageStatusFont_0}] & 1) == 0)
   {
     v12 = [MEMORY[0x1E69DB878] __ck_fontForStyle:*MEMORY[0x1E69DDD28] weight:*MEMORY[0x1E69DB970]];
-    v13 = [v12 __ck_fontScaledByUserPreference];
+    __ck_fontScaledByUserPreference = [v12 __ck_fontScaledByUserPreference];
     v14 = transcriptMessageStatusFont_sBehavior_0;
-    transcriptMessageStatusFont_sBehavior_0 = v13;
+    transcriptMessageStatusFont_sBehavior_0 = __ck_fontScaledByUserPreference;
 
     objc_storeStrong(&transcriptMessageStatusFont_sContentSizeCategory_transcriptMessageStatusFont_0, v3);
     transcriptMessageStatusFont_sIsIncreaseContrastEnabled_transcriptMessageStatusFont_0 = v4;
@@ -3909,9 +3909,9 @@ uint64_t __44__CKUIBehaviorMac_minTranscriptMarginInsets__block_invoke(uint64_t 
   if (-[CKUIBehaviorMac ckShouldUpdatetranscriptMessageStatusDateFont](self, "ckShouldUpdatetranscriptMessageStatusDateFont") || v11 || transcriptMessageStatusDateFont_sIsIncreaseContrastEnabled_transcriptMessageStatusDateFont_0 != v4 || transcriptMessageStatusDateFont_sIsBoldTextEnabled_transcriptMessageStatusDateFont_0 != IsBoldTextEnabled || *&transcriptMessageStatusDateFont_sTextFontSize_transcriptMessageStatusDateFont_0 != v6 || *&transcriptMessageStatusDateFont_sCustomTextFontSize_transcriptMessageStatusDateFont_0 != v7 || ([transcriptMessageStatusDateFont_sCustomTextFontName_transcriptMessageStatusDateFont_0 isEqualToString:{v10, *&transcriptMessageStatusDateFont_sCustomTextFontSize_transcriptMessageStatusDateFont_0}] & 1) == 0)
   {
     v12 = [MEMORY[0x1E69DB878] __ck_fontForStyle:*MEMORY[0x1E69DDD28] weight:*MEMORY[0x1E69DB978]];
-    v13 = [v12 __ck_fontScaledByUserPreference];
+    __ck_fontScaledByUserPreference = [v12 __ck_fontScaledByUserPreference];
     v14 = transcriptMessageStatusDateFont_sBehavior_0;
-    transcriptMessageStatusDateFont_sBehavior_0 = v13;
+    transcriptMessageStatusDateFont_sBehavior_0 = __ck_fontScaledByUserPreference;
 
     objc_storeStrong(&transcriptMessageStatusDateFont_sContentSizeCategory_transcriptMessageStatusDateFont_0, v3);
     transcriptMessageStatusDateFont_sIsIncreaseContrastEnabled_transcriptMessageStatusDateFont_0 = v4;
@@ -3950,9 +3950,9 @@ uint64_t __44__CKUIBehaviorMac_minTranscriptMarginInsets__block_invoke(uint64_t 
   if (-[CKUIBehaviorMac ckShouldUpdatetranscriptBoldFont](self, "ckShouldUpdatetranscriptBoldFont") || v11 || transcriptBoldFont_sIsIncreaseContrastEnabled_transcriptBoldFont_0 != v4 || transcriptBoldFont_sIsBoldTextEnabled_transcriptBoldFont_0 != IsBoldTextEnabled || *&transcriptBoldFont_sTextFontSize_transcriptBoldFont_0 != v6 || *&transcriptBoldFont_sCustomTextFontSize_transcriptBoldFont_0 != v7 || ([transcriptBoldFont_sCustomTextFontName_transcriptBoldFont_0 isEqualToString:{v10, *&transcriptBoldFont_sCustomTextFontSize_transcriptBoldFont_0}] & 1) == 0)
   {
     v12 = [MEMORY[0x1E69DB878] __ck_fontForStyle:*MEMORY[0x1E69DDD28] weight:*MEMORY[0x1E69DB970]];
-    v13 = [v12 __ck_fontScaledByUserPreference];
+    __ck_fontScaledByUserPreference = [v12 __ck_fontScaledByUserPreference];
     v14 = transcriptBoldFont_sBehavior_0;
-    transcriptBoldFont_sBehavior_0 = v13;
+    transcriptBoldFont_sBehavior_0 = __ck_fontScaledByUserPreference;
 
     objc_storeStrong(&transcriptBoldFont_sContentSizeCategory_transcriptBoldFont_0, v3);
     transcriptBoldFont_sIsIncreaseContrastEnabled_transcriptBoldFont_0 = v4;
@@ -3991,9 +3991,9 @@ uint64_t __44__CKUIBehaviorMac_minTranscriptMarginInsets__block_invoke(uint64_t 
   if (-[CKUIBehaviorMac ckShouldUpdatetranscriptLightFont](self, "ckShouldUpdatetranscriptLightFont") || v11 || transcriptLightFont_sIsIncreaseContrastEnabled_transcriptLightFont_0 != v4 || transcriptLightFont_sIsBoldTextEnabled_transcriptLightFont_0 != IsBoldTextEnabled || *&transcriptLightFont_sTextFontSize_transcriptLightFont_0 != v6 || *&transcriptLightFont_sCustomTextFontSize_transcriptLightFont_0 != v7 || ([transcriptLightFont_sCustomTextFontName_transcriptLightFont_0 isEqualToString:{v10, *&transcriptLightFont_sCustomTextFontSize_transcriptLightFont_0}] & 1) == 0)
   {
     v12 = [MEMORY[0x1E69DB878] __ck_fontForStyle:*MEMORY[0x1E69DDD28] weight:*MEMORY[0x1E69DB968]];
-    v13 = [v12 __ck_fontScaledByUserPreference];
+    __ck_fontScaledByUserPreference = [v12 __ck_fontScaledByUserPreference];
     v14 = transcriptLightFont_sBehavior_0;
-    transcriptLightFont_sBehavior_0 = v13;
+    transcriptLightFont_sBehavior_0 = __ck_fontScaledByUserPreference;
 
     objc_storeStrong(&transcriptLightFont_sContentSizeCategory_transcriptLightFont_0, v3);
     transcriptLightFont_sIsIncreaseContrastEnabled_transcriptLightFont_0 = v4;
@@ -4031,9 +4031,9 @@ uint64_t __44__CKUIBehaviorMac_minTranscriptMarginInsets__block_invoke(uint64_t 
   v11 = UIContentSizeCategoryCompareToCategory(transcriptButtonTextFont_sContentSizeCategory_transcriptButtonTextFont_0, v3);
   if (-[CKUIBehaviorMac ckShouldUpdatetranscriptButtonTextFont](self, "ckShouldUpdatetranscriptButtonTextFont") || v11 || transcriptButtonTextFont_sIsIncreaseContrastEnabled_transcriptButtonTextFont_0 != v4 || transcriptButtonTextFont_sIsBoldTextEnabled_transcriptButtonTextFont_0 != IsBoldTextEnabled || (v12 = transcriptButtonTextFont_sTextFontSize_transcriptButtonTextFont_0, *&transcriptButtonTextFont_sTextFontSize_transcriptButtonTextFont_0 != v6) || (v12 = transcriptButtonTextFont_sCustomTextFontSize_transcriptButtonTextFont_0, *&transcriptButtonTextFont_sCustomTextFontSize_transcriptButtonTextFont_0 != v7) || ([transcriptButtonTextFont_sCustomTextFontName_transcriptButtonTextFont_0 isEqualToString:{v10, *&transcriptButtonTextFont_sCustomTextFontSize_transcriptButtonTextFont_0}] & 1) == 0)
   {
-    v13 = [(CKUIBehaviorMac *)self transcriptBoldFont];
+    transcriptBoldFont = [(CKUIBehaviorMac *)self transcriptBoldFont];
     v14 = transcriptButtonTextFont_sBehavior_0;
-    transcriptButtonTextFont_sBehavior_0 = v13;
+    transcriptButtonTextFont_sBehavior_0 = transcriptBoldFont;
 
     objc_storeStrong(&transcriptButtonTextFont_sContentSizeCategory_transcriptButtonTextFont_0, v3);
     transcriptButtonTextFont_sIsIncreaseContrastEnabled_transcriptButtonTextFont_0 = v4;
@@ -4072,9 +4072,9 @@ uint64_t __44__CKUIBehaviorMac_minTranscriptMarginInsets__block_invoke(uint64_t 
   if (-[CKUIBehaviorMac ckShouldUpdatetranscriptSenderFont](self, "ckShouldUpdatetranscriptSenderFont") || v11 || transcriptSenderFont_sIsIncreaseContrastEnabled_transcriptSenderFont_0 != v4 || transcriptSenderFont_sIsBoldTextEnabled_transcriptSenderFont_0 != IsBoldTextEnabled || *&transcriptSenderFont_sTextFontSize_transcriptSenderFont_0 != v6 || *&transcriptSenderFont_sCustomTextFontSize_transcriptSenderFont_0 != v7 || ([transcriptSenderFont_sCustomTextFontName_transcriptSenderFont_0 isEqualToString:{v10, *&transcriptSenderFont_sCustomTextFontSize_transcriptSenderFont_0}] & 1) == 0)
   {
     v12 = [MEMORY[0x1E69DB878] __ck_fontForStyle:*MEMORY[0x1E69DDD28] weight:*MEMORY[0x1E69DB978]];
-    v13 = [v12 __ck_fontScaledByUserPreference];
+    __ck_fontScaledByUserPreference = [v12 __ck_fontScaledByUserPreference];
     v14 = transcriptSenderFont_sBehavior_0;
-    transcriptSenderFont_sBehavior_0 = v13;
+    transcriptSenderFont_sBehavior_0 = __ck_fontScaledByUserPreference;
 
     objc_storeStrong(&transcriptSenderFont_sContentSizeCategory_transcriptSenderFont_0, v3);
     transcriptSenderFont_sIsIncreaseContrastEnabled_transcriptSenderFont_0 = v4;
@@ -4205,14 +4205,14 @@ uint64_t __44__CKUIBehaviorMac_minTranscriptMarginInsets__block_invoke(uint64_t 
   v10 = UIContentSizeCategoryCompareToCategory(balloonContiguousSpace_sContentSizeCategory_balloonContiguousSpace_0, v3);
   if (-[CKUIBehaviorMac ckShouldUpdateballoonContiguousSpace](self, "ckShouldUpdateballoonContiguousSpace") || v10 || balloonContiguousSpace_sIsBoldTextEnabled_balloonContiguousSpace_0 != IsBoldTextEnabled || (v11 = balloonContiguousSpace_sTextFontSize_balloonContiguousSpace_0, *&balloonContiguousSpace_sTextFontSize_balloonContiguousSpace_0 != v5) || (v11 = balloonContiguousSpace_sCustomTextFontSize_balloonContiguousSpace_0, *&balloonContiguousSpace_sCustomTextFontSize_balloonContiguousSpace_0 != v6) || ([balloonContiguousSpace_sCustomTextFontName_balloonContiguousSpace_0 isEqualToString:{v9, *&balloonContiguousSpace_sCustomTextFontSize_balloonContiguousSpace_0}] & 1) == 0)
   {
-    v12 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v13 = [v12 isRoundTailedBalloonShapeEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isRoundTailedBalloonShapeEnabled = [mEMORY[0x1E69A8070] isRoundTailedBalloonShapeEnabled];
 
     v14 = 3.0;
-    if (v13)
+    if (isRoundTailedBalloonShapeEnabled)
     {
-      v15 = [(CKUIBehavior *)self transcriptTextFont];
-      [v15 _scaledValueForValue:3.0];
+      transcriptTextFont = [(CKUIBehavior *)self transcriptTextFont];
+      [transcriptTextFont _scaledValueForValue:3.0];
       v17 = v16;
       if (CKMainScreenScale_once_62 != -1)
       {
@@ -4262,14 +4262,14 @@ uint64_t __44__CKUIBehaviorMac_minTranscriptMarginInsets__block_invoke(uint64_t 
   v10 = UIContentSizeCategoryCompareToCategory(balloonNonContiguousSpace_sContentSizeCategory_balloonNonContiguousSpace_0, v3);
   if (-[CKUIBehaviorMac ckShouldUpdateballoonNonContiguousSpace](self, "ckShouldUpdateballoonNonContiguousSpace") || v10 || balloonNonContiguousSpace_sIsBoldTextEnabled_balloonNonContiguousSpace_0 != IsBoldTextEnabled || (v11 = balloonNonContiguousSpace_sTextFontSize_balloonNonContiguousSpace_0, *&balloonNonContiguousSpace_sTextFontSize_balloonNonContiguousSpace_0 != v5) || (v11 = balloonNonContiguousSpace_sCustomTextFontSize_balloonNonContiguousSpace_0, *&balloonNonContiguousSpace_sCustomTextFontSize_balloonNonContiguousSpace_0 != v6) || ([balloonNonContiguousSpace_sCustomTextFontName_balloonNonContiguousSpace_0 isEqualToString:{v9, *&balloonNonContiguousSpace_sCustomTextFontSize_balloonNonContiguousSpace_0}] & 1) == 0)
   {
-    v12 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v13 = [v12 isRoundTailedBalloonShapeEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isRoundTailedBalloonShapeEnabled = [mEMORY[0x1E69A8070] isRoundTailedBalloonShapeEnabled];
 
     v14 = 10.0;
-    if (v13)
+    if (isRoundTailedBalloonShapeEnabled)
     {
-      v15 = [(CKUIBehavior *)self transcriptTextFont];
-      [v15 _scaledValueForValue:8.0];
+      transcriptTextFont = [(CKUIBehavior *)self transcriptTextFont];
+      [transcriptTextFont _scaledValueForValue:8.0];
       v17 = v16;
       if (CKMainScreenScale_once_62 != -1)
       {
@@ -4399,14 +4399,14 @@ uint64_t __44__CKUIBehaviorMac_minTranscriptMarginInsets__block_invoke(uint64_t 
     }
   }
 
-  v12 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v13 = [v12 isRoundTailedBalloonShapeEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isRoundTailedBalloonShapeEnabled = [mEMORY[0x1E69A8070] isRoundTailedBalloonShapeEnabled];
 
-  v14 = [(CKUIBehavior *)self transcriptTextFont];
-  v15 = v14;
-  if (v13)
+  transcriptTextFont = [(CKUIBehavior *)self transcriptTextFont];
+  v15 = transcriptTextFont;
+  if (isRoundTailedBalloonShapeEnabled)
   {
-    [v14 _scaledValueForValue:4.0];
+    [transcriptTextFont _scaledValueForValue:4.0];
     v17 = v16;
     if (CKMainScreenScale_once_62 == -1)
     {
@@ -4416,7 +4416,7 @@ uint64_t __44__CKUIBehaviorMac_minTranscriptMarginInsets__block_invoke(uint64_t 
     goto LABEL_18;
   }
 
-  [v14 _scaledValueForValue:5.0];
+  [transcriptTextFont _scaledValueForValue:5.0];
   v17 = v18;
   if (CKMainScreenScale_once_62 != -1)
   {
@@ -4479,14 +4479,14 @@ LABEL_17:
     }
   }
 
-  v12 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v13 = [v12 isRoundTailedBalloonShapeEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isRoundTailedBalloonShapeEnabled = [mEMORY[0x1E69A8070] isRoundTailedBalloonShapeEnabled];
 
-  v14 = [(CKUIBehavior *)self transcriptTextFont];
-  v15 = v14;
-  if (v13)
+  transcriptTextFont = [(CKUIBehavior *)self transcriptTextFont];
+  v15 = transcriptTextFont;
+  if (isRoundTailedBalloonShapeEnabled)
   {
-    [v14 _scaledValueForValue:8.0];
+    [transcriptTextFont _scaledValueForValue:8.0];
     v17 = v16;
     if (CKMainScreenScale_once_62 == -1)
     {
@@ -4496,7 +4496,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  [v14 _scaledValueForValue:12.0];
+  [transcriptTextFont _scaledValueForValue:12.0];
   v17 = v18;
   if (CKMainScreenScale_once_62 != -1)
   {
@@ -4547,8 +4547,8 @@ LABEL_17:
   v10 = UIContentSizeCategoryCompareToCategory(mediumLargeTranscriptSpace_sContentSizeCategory_mediumLargeTranscriptSpace_0, v3);
   if (-[CKUIBehaviorMac ckShouldUpdatemediumLargeTranscriptSpace](self, "ckShouldUpdatemediumLargeTranscriptSpace") || v10 || mediumLargeTranscriptSpace_sIsBoldTextEnabled_mediumLargeTranscriptSpace_0 != IsBoldTextEnabled || (v11 = mediumLargeTranscriptSpace_sTextFontSize_mediumLargeTranscriptSpace_0, *&mediumLargeTranscriptSpace_sTextFontSize_mediumLargeTranscriptSpace_0 != v5) || (v11 = mediumLargeTranscriptSpace_sCustomTextFontSize_mediumLargeTranscriptSpace_0, *&mediumLargeTranscriptSpace_sCustomTextFontSize_mediumLargeTranscriptSpace_0 != v6) || ([mediumLargeTranscriptSpace_sCustomTextFontName_mediumLargeTranscriptSpace_0 isEqualToString:{v9, *&mediumLargeTranscriptSpace_sCustomTextFontSize_mediumLargeTranscriptSpace_0}] & 1) == 0)
   {
-    v12 = [(CKUIBehavior *)self transcriptTextFont];
-    [v12 _scaledValueForValue:16.0];
+    transcriptTextFont = [(CKUIBehavior *)self transcriptTextFont];
+    [transcriptTextFont _scaledValueForValue:16.0];
     v14 = v13;
     if (CKMainScreenScale_once_62 != -1)
     {
@@ -4596,8 +4596,8 @@ LABEL_17:
   v10 = UIContentSizeCategoryCompareToCategory(largeTranscriptSpace_sContentSizeCategory_largeTranscriptSpace_0, v3);
   if (-[CKUIBehaviorMac ckShouldUpdatelargeTranscriptSpace](self, "ckShouldUpdatelargeTranscriptSpace") || v10 || largeTranscriptSpace_sIsBoldTextEnabled_largeTranscriptSpace_0 != IsBoldTextEnabled || (v11 = largeTranscriptSpace_sTextFontSize_largeTranscriptSpace_0, *&largeTranscriptSpace_sTextFontSize_largeTranscriptSpace_0 != v5) || (v11 = largeTranscriptSpace_sCustomTextFontSize_largeTranscriptSpace_0, *&largeTranscriptSpace_sCustomTextFontSize_largeTranscriptSpace_0 != v6) || ([largeTranscriptSpace_sCustomTextFontName_largeTranscriptSpace_0 isEqualToString:{v9, *&largeTranscriptSpace_sCustomTextFontSize_largeTranscriptSpace_0}] & 1) == 0)
   {
-    v12 = [(CKUIBehavior *)self transcriptTextFont];
-    [v12 _scaledValueForValue:20.0];
+    transcriptTextFont = [(CKUIBehavior *)self transcriptTextFont];
+    [transcriptTextFont _scaledValueForValue:20.0];
     v14 = v13;
     if (CKMainScreenScale_once_62 != -1)
     {
@@ -4657,14 +4657,14 @@ LABEL_17:
     }
   }
 
-  v12 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v13 = [v12 isRoundTailedBalloonShapeEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isRoundTailedBalloonShapeEnabled = [mEMORY[0x1E69A8070] isRoundTailedBalloonShapeEnabled];
 
-  v14 = [(CKUIBehavior *)self transcriptTextFont];
-  v15 = v14;
-  if (v13)
+  transcriptTextFont = [(CKUIBehavior *)self transcriptTextFont];
+  v15 = transcriptTextFont;
+  if (isRoundTailedBalloonShapeEnabled)
   {
-    [v14 _scaledValueForValue:32.0];
+    [transcriptTextFont _scaledValueForValue:32.0];
     v17 = v16;
     if (CKMainScreenScale_once_62 == -1)
     {
@@ -4674,7 +4674,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  [v14 _scaledValueForValue:34.0];
+  [transcriptTextFont _scaledValueForValue:34.0];
   v17 = v18;
   if (CKMainScreenScale_once_62 != -1)
   {
@@ -5298,13 +5298,13 @@ void __40__CKUIBehaviorMac_replyButtonEdgeInsets__block_invoke()
   replyButtonEdgeInsets_sBehavior_3_0 = 0x4026000000000000;
 }
 
-- (id)textFontUserDefaults:(id)a3
+- (id)textFontUserDefaults:(id)defaults
 {
-  v4 = a3;
-  [v4 pointSize];
+  defaultsCopy = defaults;
+  [defaultsCopy pointSize];
   v6 = v5;
   [(CKUIBehaviorMac *)self fontSizeOffsetUserDefaults];
-  v8 = [v4 fontWithSize:v6 + v7];
+  v8 = [defaultsCopy fontWithSize:v6 + v7];
 
   return v8;
 }
@@ -5314,12 +5314,12 @@ void __40__CKUIBehaviorMac_replyButtonEdgeInsets__block_invoke()
   v15 = *MEMORY[0x1E69E9840];
   if ([(CKUIBehaviorMac *)self customFontEnabled])
   {
-    v3 = [(CKUIBehaviorMac *)self customFontNameUserDefaults];
-    if (v3)
+    customFontNameUserDefaults = [(CKUIBehaviorMac *)self customFontNameUserDefaults];
+    if (customFontNameUserDefaults)
     {
       v4 = MEMORY[0x1E69DB878];
       [(CKUIBehaviorMac *)self customFontSizeUserDefaults];
-      v5 = [v4 fontWithName:v3 size:?];
+      v5 = [v4 fontWithName:customFontNameUserDefaults size:?];
       if (v5)
       {
 
@@ -5333,7 +5333,7 @@ void __40__CKUIBehaviorMac_replyButtonEdgeInsets__block_invoke()
         {
           [(CKUIBehaviorMac *)self customFontSizeUserDefaults];
           v11 = 138412546;
-          v12 = v3;
+          v12 = customFontNameUserDefaults;
           v13 = 2048;
           v14 = v7;
           _os_log_impl(&dword_19020E000, v6, OS_LOG_TYPE_INFO, "Custom fonts enabled (fontName: %@, size: %f) but UIFont allocator returned nil. Falling back to default font.", &v11, 0x16u);
@@ -5352,13 +5352,13 @@ LABEL_11:
   return v5;
 }
 
-- (CGSize)balloonMaskTailSizeForTailShape:(char)a3
+- (CGSize)balloonMaskTailSizeForTailShape:(char)shape
 {
-  if (a3 >= 2)
+  if (shape >= 2)
   {
     v5 = 5.0;
     v6 = 5.0;
-    if (a3 != 2)
+    if (shape != 2)
     {
       v5 = *MEMORY[0x1E695F060];
       v6 = *(MEMORY[0x1E695F060] + 8);
@@ -5379,13 +5379,13 @@ LABEL_11:
   return result;
 }
 
-- (CGSize)roundBalloonMaskSizeWithTailShape:(char)a3
+- (CGSize)roundBalloonMaskSizeWithTailShape:(char)shape
 {
-  if (a3 >= 2)
+  if (shape >= 2)
   {
     v5 = 28.0;
     v6 = 28.0;
-    if (a3 != 2)
+    if (shape != 2)
     {
       v5 = *MEMORY[0x1E695F060];
       v6 = *(MEMORY[0x1E695F060] + 8);
@@ -5406,11 +5406,11 @@ LABEL_11:
   return result;
 }
 
-- (CGSize)thumbnailFillSizeForWidth:(double)a3 imageSize:(CGSize)a4
+- (CGSize)thumbnailFillSizeForWidth:(double)width imageSize:(CGSize)size
 {
   v6.receiver = self;
   v6.super_class = CKUIBehaviorMac;
-  [(CKUIBehavior *)&v6 unconstrainedAspectFillSizeForWidth:a3 imageSize:a4.width, a4.height];
+  [(CKUIBehavior *)&v6 unconstrainedAspectFillSizeForWidth:width imageSize:size.width, size.height];
   result.height = v5;
   result.width = v4;
   return result;
@@ -5541,8 +5541,8 @@ void __52__CKUIBehaviorMac_imageBalloonSelectionOverlayColor__block_invoke()
   {
     v13 = MEMORY[0x1E69DB878];
     v14 = +[CKUIBehavior sharedBehaviors];
-    v15 = [v14 tuConversationBalloonActionButtonFontStyle];
-    v16 = [v13 __ck_fontForStyle:v15 weight:*MEMORY[0x1E69DB978]];
+    tuConversationBalloonActionButtonFontStyle = [v14 tuConversationBalloonActionButtonFontStyle];
+    v16 = [v13 __ck_fontForStyle:tuConversationBalloonActionButtonFontStyle weight:*MEMORY[0x1E69DB978]];
     v17 = tuConversationBalloonActionButtonFont_sBehavior_0;
     tuConversationBalloonActionButtonFont_sBehavior_0 = v16;
 
@@ -6639,9 +6639,9 @@ __n128 __38__CKUIBehaviorMac_searchResultsInsets__block_invoke()
 
   v10 = v9;
   v11 = UIContentSizeCategoryCompareToCategory(searchHeaderFont_sContentSizeCategory_searchHeaderFont_0, v3);
-  v12 = [(CKUIBehaviorMac *)self ckShouldUpdatesearchHeaderFont];
+  ckShouldUpdatesearchHeaderFont = [(CKUIBehaviorMac *)self ckShouldUpdatesearchHeaderFont];
   v14 = &unk_1EAD6D000;
-  if (v12 || v11 || searchHeaderFont_sIsIncreaseContrastEnabled_searchHeaderFont_0 != v4 || searchHeaderFont_sIsBoldTextEnabled_searchHeaderFont_0 != IsBoldTextEnabled || (v13 = searchHeaderFont_sTextFontSize_searchHeaderFont_0, *&searchHeaderFont_sTextFontSize_searchHeaderFont_0 != v6) || (v13 = searchHeaderFont_sCustomTextFontSize_searchHeaderFont_0, *&searchHeaderFont_sCustomTextFontSize_searchHeaderFont_0 != v7) || ([searchHeaderFont_sCustomTextFontName_searchHeaderFont_0 isEqualToString:{v10, *&searchHeaderFont_sCustomTextFontSize_searchHeaderFont_0}] & 1) == 0)
+  if (ckShouldUpdatesearchHeaderFont || v11 || searchHeaderFont_sIsIncreaseContrastEnabled_searchHeaderFont_0 != v4 || searchHeaderFont_sIsBoldTextEnabled_searchHeaderFont_0 != IsBoldTextEnabled || (v13 = searchHeaderFont_sTextFontSize_searchHeaderFont_0, *&searchHeaderFont_sTextFontSize_searchHeaderFont_0 != v6) || (v13 = searchHeaderFont_sCustomTextFontSize_searchHeaderFont_0, *&searchHeaderFont_sCustomTextFontSize_searchHeaderFont_0 != v7) || ([searchHeaderFont_sCustomTextFontName_searchHeaderFont_0 isEqualToString:{v10, *&searchHeaderFont_sCustomTextFontSize_searchHeaderFont_0}] & 1) == 0)
   {
     v15 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*MEMORY[0x1E69DDD40] addingSymbolicTraits:0x8000 options:{0, *&v13}];
     v30 = *MEMORY[0x1E69DB8F0];
@@ -6699,9 +6699,9 @@ __n128 __38__CKUIBehaviorMac_searchResultsInsets__block_invoke()
 
   v10 = v9;
   v11 = UIContentSizeCategoryCompareToCategory(searchHeaderButtonFont_sContentSizeCategory_searchHeaderButtonFont_0, v3);
-  v12 = [(CKUIBehaviorMac *)self ckShouldUpdatesearchHeaderButtonFont];
+  ckShouldUpdatesearchHeaderButtonFont = [(CKUIBehaviorMac *)self ckShouldUpdatesearchHeaderButtonFont];
   v14 = &unk_1EAD6D000;
-  if (v12 || v11 || searchHeaderButtonFont_sIsIncreaseContrastEnabled_searchHeaderButtonFont_0 != v4 || searchHeaderButtonFont_sIsBoldTextEnabled_searchHeaderButtonFont_0 != IsBoldTextEnabled || (v13 = searchHeaderButtonFont_sTextFontSize_searchHeaderButtonFont_0, *&searchHeaderButtonFont_sTextFontSize_searchHeaderButtonFont_0 != v6) || (v13 = searchHeaderButtonFont_sCustomTextFontSize_searchHeaderButtonFont_0, *&searchHeaderButtonFont_sCustomTextFontSize_searchHeaderButtonFont_0 != v7) || ([searchHeaderButtonFont_sCustomTextFontName_searchHeaderButtonFont_0 isEqualToString:{v10, *&searchHeaderButtonFont_sCustomTextFontSize_searchHeaderButtonFont_0}] & 1) == 0)
+  if (ckShouldUpdatesearchHeaderButtonFont || v11 || searchHeaderButtonFont_sIsIncreaseContrastEnabled_searchHeaderButtonFont_0 != v4 || searchHeaderButtonFont_sIsBoldTextEnabled_searchHeaderButtonFont_0 != IsBoldTextEnabled || (v13 = searchHeaderButtonFont_sTextFontSize_searchHeaderButtonFont_0, *&searchHeaderButtonFont_sTextFontSize_searchHeaderButtonFont_0 != v6) || (v13 = searchHeaderButtonFont_sCustomTextFontSize_searchHeaderButtonFont_0, *&searchHeaderButtonFont_sCustomTextFontSize_searchHeaderButtonFont_0 != v7) || ([searchHeaderButtonFont_sCustomTextFontName_searchHeaderButtonFont_0 isEqualToString:{v10, *&searchHeaderButtonFont_sCustomTextFontSize_searchHeaderButtonFont_0}] & 1) == 0)
   {
     v15 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*MEMORY[0x1E69DDCF8] addingSymbolicTraits:0x8000 options:{0, *&v13}];
     v30 = *MEMORY[0x1E69DB8F0];
@@ -6799,9 +6799,9 @@ __n128 __38__CKUIBehaviorMac_searchResultsInsets__block_invoke()
 
   v10 = v9;
   v11 = UIContentSizeCategoryCompareToCategory(searchMessageBodyTextFont_sContentSizeCategory_searchMessageBodyTextFont, v3);
-  v12 = [(CKUIBehaviorMac *)self ckShouldUpdatesearchMessageBodyTextFont];
+  ckShouldUpdatesearchMessageBodyTextFont = [(CKUIBehaviorMac *)self ckShouldUpdatesearchMessageBodyTextFont];
   v14 = &macToolbarSymbolConfiguration_once;
-  if (v12 || v11 || searchMessageBodyTextFont_sIsIncreaseContrastEnabled_searchMessageBodyTextFont != v4 || searchMessageBodyTextFont_sIsBoldTextEnabled_searchMessageBodyTextFont != IsBoldTextEnabled || (v13 = searchMessageBodyTextFont_sTextFontSize_searchMessageBodyTextFont, *&searchMessageBodyTextFont_sTextFontSize_searchMessageBodyTextFont != v6) || (v13 = searchMessageBodyTextFont_sCustomTextFontSize_searchMessageBodyTextFont, *&searchMessageBodyTextFont_sCustomTextFontSize_searchMessageBodyTextFont != v7) || ([searchMessageBodyTextFont_sCustomTextFontName_searchMessageBodyTextFont isEqualToString:{v10, *&searchMessageBodyTextFont_sCustomTextFontSize_searchMessageBodyTextFont}] & 1) == 0)
+  if (ckShouldUpdatesearchMessageBodyTextFont || v11 || searchMessageBodyTextFont_sIsIncreaseContrastEnabled_searchMessageBodyTextFont != v4 || searchMessageBodyTextFont_sIsBoldTextEnabled_searchMessageBodyTextFont != IsBoldTextEnabled || (v13 = searchMessageBodyTextFont_sTextFontSize_searchMessageBodyTextFont, *&searchMessageBodyTextFont_sTextFontSize_searchMessageBodyTextFont != v6) || (v13 = searchMessageBodyTextFont_sCustomTextFontSize_searchMessageBodyTextFont, *&searchMessageBodyTextFont_sCustomTextFontSize_searchMessageBodyTextFont != v7) || ([searchMessageBodyTextFont_sCustomTextFontName_searchMessageBodyTextFont isEqualToString:{v10, *&searchMessageBodyTextFont_sCustomTextFontSize_searchMessageBodyTextFont}] & 1) == 0)
   {
     v15 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*MEMORY[0x1E69DDD80] addingSymbolicTraits:0x8000 options:{0, *&v13}];
     v30 = *MEMORY[0x1E69DB8F0];
@@ -7529,10 +7529,10 @@ uint64_t __59__CKUIBehaviorMac_groupRecipientSelectionPresentationStyle__block_i
 
 - (int64_t)_groupRecipientSelectionPresentationStyle
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isRedesignedDetailsViewEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isRedesignedDetailsViewEnabled = [mEMORY[0x1E69A8070] isRedesignedDetailsViewEnabled];
 
-  if (v3)
+  if (isRedesignedDetailsViewEnabled)
   {
     return 2;
   }

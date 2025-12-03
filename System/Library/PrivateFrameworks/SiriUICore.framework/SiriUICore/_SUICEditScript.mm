@@ -1,27 +1,27 @@
 @interface _SUICEditScript
-- (_SUICEditScript)initWithOperationPrecedence:(int64_t)a3 orderAtomsAscending:(BOOL)a4;
+- (_SUICEditScript)initWithOperationPrecedence:(int64_t)precedence orderAtomsAscending:(BOOL)ascending;
 - (id)description;
-- (id)operationPrecedenceArrayFromOperationPrecedence:(int64_t)a3;
+- (id)operationPrecedenceArrayFromOperationPrecedence:(int64_t)precedence;
 - (void)computeDistanceMatrix;
 - (void)computeEditsFromMatrix;
 @end
 
 @implementation _SUICEditScript
 
-- (id)operationPrecedenceArrayFromOperationPrecedence:(int64_t)a3
+- (id)operationPrecedenceArrayFromOperationPrecedence:(int64_t)precedence
 {
-  if ((a3 - 1) > 4)
+  if ((precedence - 1) > 4)
   {
     return &unk_1F43C7458;
   }
 
   else
   {
-    return qword_1E81E7B30[a3 - 1];
+    return qword_1E81E7B30[precedence - 1];
   }
 }
 
-- (_SUICEditScript)initWithOperationPrecedence:(int64_t)a3 orderAtomsAscending:(BOOL)a4
+- (_SUICEditScript)initWithOperationPrecedence:(int64_t)precedence orderAtomsAscending:(BOOL)ascending
 {
   v13.receiver = self;
   v13.super_class = _SUICEditScript;
@@ -32,8 +32,8 @@
     distanceMatrix = v6->_distanceMatrix;
     v6->_distanceMatrix = 0;
 
-    v7->_orderAtomsAscending = a4;
-    v9 = [(_SUICEditScript *)v7 operationPrecedenceArrayFromOperationPrecedence:a3];
+    v7->_orderAtomsAscending = ascending;
+    v9 = [(_SUICEditScript *)v7 operationPrecedenceArrayFromOperationPrecedence:precedence];
     operationPrecedenceArray = v7->_operationPrecedenceArray;
     v7->_operationPrecedenceArray = v9;
 
@@ -222,14 +222,14 @@ LABEL_38:
     while (1)
     {
       v20 = [(NSArray *)self->_operationPrecedenceArray objectAtIndex:v13];
-      v21 = [v20 integerValue];
+      integerValue = [v20 integerValue];
 
-      if (v21 == 3)
+      if (integerValue == 3)
       {
         break;
       }
 
-      if (v21 == 2)
+      if (integerValue == 2)
       {
         if (((v13 != 0) & ~v17) == 0)
         {
@@ -249,7 +249,7 @@ LABEL_38:
         }
       }
 
-      else if (v21 == 1 && (!v13 || v19))
+      else if (integerValue == 1 && (!v13 || v19))
       {
         goto LABEL_38;
       }

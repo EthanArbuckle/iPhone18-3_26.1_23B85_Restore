@@ -1,23 +1,23 @@
 @interface MFContactsAutocompleteSearchOperation
-+ (id)operationWithOwner:(id)a3 text:(id)a4 taskID:(id)a5 autocompleteStore:(id)a6;
++ (id)operationWithOwner:(id)owner text:(id)text taskID:(id)d autocompleteStore:(id)store;
 - (MFContactsAutocompleteSearchOperation)init;
 - (id)_simulatedRecipientResults;
-- (void)autocompleteFetch:(id)a3 didReceiveResults:(id)a4;
-- (void)autocompleteFetchDidFinish:(id)a3;
+- (void)autocompleteFetch:(id)fetch didReceiveResults:(id)results;
+- (void)autocompleteFetchDidFinish:(id)finish;
 - (void)cancel;
-- (void)configureForSearchTypes:(unint64_t)a3;
+- (void)configureForSearchTypes:(unint64_t)types;
 - (void)main;
 @end
 
 @implementation MFContactsAutocompleteSearchOperation
 
-+ (id)operationWithOwner:(id)a3 text:(id)a4 taskID:(id)a5 autocompleteStore:(id)a6
++ (id)operationWithOwner:(id)owner text:(id)text taskID:(id)d autocompleteStore:(id)store
 {
-  v10 = a6;
-  v13.receiver = a1;
+  storeCopy = store;
+  v13.receiver = self;
   v13.super_class = &OBJC_METACLASS___MFContactsAutocompleteSearchOperation;
-  v11 = objc_msgSendSuper2(&v13, sel_operationWithOwner_text_taskID_, a3, a4, a5);
-  [v11 setAutocompleteStore:v10];
+  v11 = objc_msgSendSuper2(&v13, sel_operationWithOwner_text_taskID_, owner, text, d);
+  [v11 setAutocompleteStore:storeCopy];
 
   return v11;
 }
@@ -33,9 +33,9 @@
     fetchRequestToken = v2->_fetchRequestToken;
     v2->_fetchRequestToken = v3;
 
-    v5 = [MEMORY[0x1E699B868] promise];
+    promise = [MEMORY[0x1E699B868] promise];
     fetchRequestPromise = v2->_fetchRequestPromise;
-    v2->_fetchRequestPromise = v5;
+    v2->_fetchRequestPromise = promise;
 
     [(EFManualCancelationToken *)v2->_fetchRequestToken addCancelable:v2->_fetchRequestPromise];
   }
@@ -51,13 +51,13 @@
   [(MFContactsAutocompleteSearchOperation *)&v3 cancel];
 }
 
-- (void)configureForSearchTypes:(unint64_t)a3
+- (void)configureForSearchTypes:(unint64_t)types
 {
-  [(MFContactsAutocompleteSearchOperation *)self setIncludeContacts:(a3 >> 1) & 1];
-  [(MFContactsAutocompleteSearchOperation *)self setIncludeRecents:(a3 & 5) != 0];
-  [(MFContactsAutocompleteSearchOperation *)self setIncludeServers:(a3 >> 3) & 1];
+  [(MFContactsAutocompleteSearchOperation *)self setIncludeContacts:(types >> 1) & 1];
+  [(MFContactsAutocompleteSearchOperation *)self setIncludeRecents:(types & 5) != 0];
+  [(MFContactsAutocompleteSearchOperation *)self setIncludeServers:(types >> 3) & 1];
 
-  [(MFContactsAutocompleteSearchOperation *)self setIncludeSuggestions:(a3 >> 4) & 1];
+  [(MFContactsAutocompleteSearchOperation *)self setIncludeSuggestions:(types >> 4) & 1];
 }
 
 - (void)main
@@ -66,8 +66,8 @@
   if ([(MFContactsAutocompleteSearchOperation *)self simulateResults])
   {
     obj = [(MFContactsAutocompleteSearchOperation *)self _simulatedRecipientResults];
-    v3 = [(CNAutocompleteFetchContext *)self->_fetchContext otherAddressesAlreadyChosen];
-    v4 = [v3 count];
+    otherAddressesAlreadyChosen = [(CNAutocompleteFetchContext *)self->_fetchContext otherAddressesAlreadyChosen];
+    v4 = [otherAddressesAlreadyChosen count];
 
     if (v4)
     {
@@ -91,9 +91,9 @@
             }
 
             v9 = *(*(&v44 + 1) + 8 * i);
-            v10 = [v9 uncommentedAddress];
-            v11 = [(CNAutocompleteFetchContext *)self->_fetchContext otherAddressesAlreadyChosen];
-            v12 = [v11 containsObject:v10];
+            uncommentedAddress = [v9 uncommentedAddress];
+            otherAddressesAlreadyChosen2 = [(CNAutocompleteFetchContext *)self->_fetchContext otherAddressesAlreadyChosen];
+            v12 = [otherAddressesAlreadyChosen2 containsObject:uncommentedAddress];
 
             if ((v12 & 1) == 0)
             {
@@ -113,78 +113,78 @@
       v5 = obj;
     }
 
-    v28 = [MEMORY[0x1E699B978] __mui_nextRunLoopMainThreadScheduler];
-    v30 = [(MFContactsSearchOperation *)self owner];
-    v31 = [v30 ef_onScheduler:v28];
-    v32 = [(MFContactsSearchOperation *)self taskID];
-    [v31 _handleContactsAutocompleteSearch:self returnedResults:v5 taskID:v32];
+    __mui_nextRunLoopMainThreadScheduler = [MEMORY[0x1E699B978] __mui_nextRunLoopMainThreadScheduler];
+    owner = [(MFContactsSearchOperation *)self owner];
+    v31 = [owner ef_onScheduler:__mui_nextRunLoopMainThreadScheduler];
+    taskID = [(MFContactsSearchOperation *)self taskID];
+    [v31 _handleContactsAutocompleteSearch:self returnedResults:v5 taskID:taskID];
 
-    v25 = [(MFContactsSearchOperation *)self owner];
-    v29 = [v25 ef_onScheduler:v28];
-    v33 = [(MFContactsSearchOperation *)self taskID];
-    [v29 _handleContactsAutocompleteSearchFinished:self taskID:v33];
+    owner2 = [(MFContactsSearchOperation *)self owner];
+    v29 = [owner2 ef_onScheduler:__mui_nextRunLoopMainThreadScheduler];
+    taskID2 = [(MFContactsSearchOperation *)self taskID];
+    [v29 _handleContactsAutocompleteSearchFinished:self taskID:taskID2];
 
     goto LABEL_22;
   }
 
   objb = [MEMORY[0x1E6996338] request];
-  v13 = [(MFContactsSearchOperation *)self text];
-  [objb setSearchString:v13];
+  text = [(MFContactsSearchOperation *)self text];
+  [objb setSearchString:text];
 
-  v14 = [(MFContactsSearchOperation *)self owner];
-  [objb setSearchType:{objc_msgSend(v14, "autocompleteSearchType")}];
+  owner3 = [(MFContactsSearchOperation *)self owner];
+  [objb setSearchType:{objc_msgSend(owner3, "autocompleteSearchType")}];
 
   [objb setIncludeContacts:self->_includeContacts];
   [objb setIncludeRecents:self->_includeRecents];
   [objb setIncludeSuggestions:self->_includeSuggestions];
   [objb setIncludeDirectoryServers:self->_includeServers];
-  v15 = [(CNAutocompleteFetchContext *)self->_fetchContext sendingAddress];
+  sendingAddress = [(CNAutocompleteFetchContext *)self->_fetchContext sendingAddress];
 
-  if (!v15)
+  if (!sendingAddress)
   {
-    v16 = [(MFContactsSearchOperation *)self owner];
-    v17 = [v16 sendingAddress];
-    [(CNAutocompleteFetchContext *)self->_fetchContext setSendingAddress:v17];
+    owner4 = [(MFContactsSearchOperation *)self owner];
+    sendingAddress2 = [owner4 sendingAddress];
+    [(CNAutocompleteFetchContext *)self->_fetchContext setSendingAddress:sendingAddress2];
   }
 
-  v18 = [(CNAutocompleteFetchContext *)self->_fetchContext sendingAddressAccountIdentifier];
+  sendingAddressAccountIdentifier = [(CNAutocompleteFetchContext *)self->_fetchContext sendingAddressAccountIdentifier];
 
-  if (!v18)
+  if (!sendingAddressAccountIdentifier)
   {
-    v19 = [(MFContactsSearchOperation *)self owner];
-    v20 = [v19 sendingAccountIdentifier];
-    [(CNAutocompleteFetchContext *)self->_fetchContext setSendingAddressAccountIdentifier:v20];
+    owner5 = [(MFContactsSearchOperation *)self owner];
+    sendingAccountIdentifier = [owner5 sendingAccountIdentifier];
+    [(CNAutocompleteFetchContext *)self->_fetchContext setSendingAddressAccountIdentifier:sendingAccountIdentifier];
   }
 
   [objb setFetchContext:self->_fetchContext];
   if (([(MFContactsAutocompleteSearchOperation *)self isCancelled]& 1) == 0)
   {
-    v21 = [(MFContactsSearchOperation *)self taskID];
-    v22 = [(MFContactsAutocompleteSearchOperation *)self autocompleteStore];
-    v23 = [v22 scheduleFetchRequest:objb delegate:self];
+    taskID3 = [(MFContactsSearchOperation *)self taskID];
+    autocompleteStore = [(MFContactsAutocompleteSearchOperation *)self autocompleteStore];
+    v23 = [autocompleteStore scheduleFetchRequest:objb delegate:self];
 
     fetchRequestToken = self->_fetchRequestToken;
     v42[0] = MEMORY[0x1E69E9820];
     v42[1] = 3221225472;
     v42[2] = __45__MFContactsAutocompleteSearchOperation_main__block_invoke;
     v42[3] = &unk_1E806C570;
-    v25 = v23;
-    v43 = v25;
+    owner2 = v23;
+    v43 = owner2;
     [(EFManualCancelationToken *)fetchRequestToken addCancelationBlock:v42];
-    v26 = [(EFPromise *)self->_fetchRequestPromise future];
+    future = [(EFPromise *)self->_fetchRequestPromise future];
     objc_initWeak(&location, self);
-    v27 = [MEMORY[0x1E699B978] mainThreadScheduler];
+    mainThreadScheduler = [MEMORY[0x1E699B978] mainThreadScheduler];
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __45__MFContactsAutocompleteSearchOperation_main__block_invoke_2;
     v38[3] = &unk_1E806DCC0;
     objc_copyWeak(&v40, &location);
-    v28 = v21;
-    v39 = v28;
-    [v26 onScheduler:v27 addSuccessBlock:v38];
+    __mui_nextRunLoopMainThreadScheduler = taskID3;
+    v39 = __mui_nextRunLoopMainThreadScheduler;
+    [future onScheduler:mainThreadScheduler addSuccessBlock:v38];
 
     v37 = 0;
-    [v26 result:&v37];
+    [future result:&v37];
 
     objc_destroyWeak(&v40);
     objc_destroyWeak(&location);
@@ -209,10 +209,10 @@ void __45__MFContactsAutocompleteSearchOperation_main__block_invoke_2(uint64_t a
 
 - (id)_simulatedRecipientResults
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = objc_alloc_init(MFComposeRecipientOriginContext);
-  v5 = [(MFContactsSearchOperation *)self text];
-  [(MFComposeRecipientOriginContext *)v4 setSearchTerm:v5];
+  text = [(MFContactsSearchOperation *)self text];
+  [(MFComposeRecipientOriginContext *)v4 setSearchTerm:text];
 
   [(MFComposeRecipientOriginContext *)v4 setResultType:16];
   v11[0] = MEMORY[0x1E69E9820];
@@ -221,7 +221,7 @@ void __45__MFContactsAutocompleteSearchOperation_main__block_invoke_2(uint64_t a
   v11[3] = &unk_1E806DBD0;
   v6 = v4;
   v12 = v6;
-  v7 = v3;
+  v7 = array;
   v13 = v7;
   v8 = _Block_copy(v11);
   v8[2](v8, @"Rachel Green <rachel@centralp3rk.com>");
@@ -241,18 +241,18 @@ void __67__MFContactsAutocompleteSearchOperation__simulatedRecipientResults__blo
   [*(a1 + 40) addObject:v3];
 }
 
-- (void)autocompleteFetch:(id)a3 didReceiveResults:(id)a4
+- (void)autocompleteFetch:(id)fetch didReceiveResults:(id)results
 {
   v33 = *MEMORY[0x1E69E9840];
-  v25 = a4;
+  resultsCopy = results;
   if (([(MFContactsAutocompleteSearchOperation *)self isCancelled]& 1) == 0)
   {
-    v27 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v25, "count")}];
+    v27 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(resultsCopy, "count")}];
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    obj = v25;
+    obj = resultsCopy;
     v5 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v5)
     {
@@ -270,20 +270,20 @@ void __67__MFContactsAutocompleteSearchOperation__simulatedRecipientResults__blo
           v9 = [MFComposeRecipient composeRecipientWithAutocompleteResult:v8];
           if (v9)
           {
-            v10 = self;
-            v11 = [v8 sourceType];
-            v12 = [v8 sourceType];
-            v13 = [v8 sourceType];
-            v14 = [v8 sourceType];
-            v15 = [v8 sourceType];
-            v16 = v11 & 2 | (v12 & 1);
-            if ((v13 & 0x48) != 0)
+            selfCopy = self;
+            sourceType = [v8 sourceType];
+            sourceType2 = [v8 sourceType];
+            sourceType3 = [v8 sourceType];
+            sourceType4 = [v8 sourceType];
+            sourceType5 = [v8 sourceType];
+            v16 = sourceType & 2 | (sourceType2 & 1);
+            if ((sourceType3 & 0x48) != 0)
             {
               v16 |= 8uLL;
             }
 
-            v17 = v16 & 0xFFFFFFFFFFFFFFEFLL | (16 * ((v14 >> 2) & 1));
-            if (v15)
+            v17 = v16 & 0xFFFFFFFFFFFFFFEFLL | (16 * ((sourceType4 >> 2) & 1));
+            if (sourceType5)
             {
               v18 = v17;
             }
@@ -294,9 +294,9 @@ void __67__MFContactsAutocompleteSearchOperation__simulatedRecipientResults__blo
             }
 
             v19 = objc_alloc_init(MFComposeRecipientOriginContext);
-            self = v10;
-            v20 = [(MFContactsSearchOperation *)v10 text];
-            [(MFComposeRecipientOriginContext *)v19 setSearchTerm:v20];
+            self = selfCopy;
+            text = [(MFContactsSearchOperation *)selfCopy text];
+            [(MFComposeRecipientOriginContext *)v19 setSearchTerm:text];
 
             [(MFComposeRecipientOriginContext *)v19 setResultType:v18];
             [v9 setOriginContext:v19];
@@ -310,18 +310,18 @@ void __67__MFContactsAutocompleteSearchOperation__simulatedRecipientResults__blo
       while (v5);
     }
 
-    v21 = [(MFContactsSearchOperation *)self owner];
-    v22 = [MEMORY[0x1E699B978] __mui_nextRunLoopMainThreadScheduler];
-    v23 = [v21 ef_onScheduler:v22];
-    v24 = [(MFContactsSearchOperation *)self taskID];
-    [v23 _handleContactsAutocompleteSearch:self returnedResults:v27 taskID:v24];
+    owner = [(MFContactsSearchOperation *)self owner];
+    __mui_nextRunLoopMainThreadScheduler = [MEMORY[0x1E699B978] __mui_nextRunLoopMainThreadScheduler];
+    v23 = [owner ef_onScheduler:__mui_nextRunLoopMainThreadScheduler];
+    taskID = [(MFContactsSearchOperation *)self taskID];
+    [v23 _handleContactsAutocompleteSearch:self returnedResults:v27 taskID:taskID];
   }
 }
 
-- (void)autocompleteFetchDidFinish:(id)a3
+- (void)autocompleteFetchDidFinish:(id)finish
 {
   fetchRequestPromise = self->_fetchRequestPromise;
-  v4 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   [(EFPromise *)fetchRequestPromise finishWithResult:?];
 }
 

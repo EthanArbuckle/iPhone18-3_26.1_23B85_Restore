@@ -3,10 +3,10 @@
 - (id)_makeOperation;
 - (id)acceptSharesCompletionBlock;
 - (id)perShareCompletionBlock;
-- (void)_setUpOperation:(id)a3;
-- (void)setAcceptSharesCompletionBlock:(id)a3;
-- (void)setPerShareCompletionBlock:(id)a3;
-- (void)setShareMetadatas:(id)a3;
+- (void)_setUpOperation:(id)operation;
+- (void)setAcceptSharesCompletionBlock:(id)block;
+- (void)setPerShareCompletionBlock:(id)block;
+- (void)setShareMetadatas:(id)metadatas;
 @end
 
 @implementation WBSRetryableCKAcceptSharesOperation
@@ -20,11 +20,11 @@
   return v3;
 }
 
-- (void)setShareMetadatas:(id)a3
+- (void)setShareMetadatas:(id)metadatas
 {
-  v4 = a3;
+  metadatasCopy = metadatas;
   os_unfair_lock_lock(&self->super._internalLock);
-  v5 = [v4 copy];
+  v5 = [metadatasCopy copy];
 
   shareMetadatas = self->_shareMetadatas;
   self->_shareMetadatas = v5;
@@ -43,11 +43,11 @@
   return v3;
 }
 
-- (void)setPerShareCompletionBlock:(id)a3
+- (void)setPerShareCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->super._internalLock);
-  v5 = [v4 copy];
+  v5 = [blockCopy copy];
 
   perShareCompletionBlock = self->_perShareCompletionBlock;
   self->_perShareCompletionBlock = v5;
@@ -66,11 +66,11 @@
   return v3;
 }
 
-- (void)setAcceptSharesCompletionBlock:(id)a3
+- (void)setAcceptSharesCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->super._internalLock);
-  v5 = [v4 copy];
+  v5 = [blockCopy copy];
 
   acceptSharesCompletionBlock = self->_acceptSharesCompletionBlock;
   self->_acceptSharesCompletionBlock = v5;
@@ -87,15 +87,15 @@
   return v2;
 }
 
-- (void)_setUpOperation:(id)a3
+- (void)_setUpOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v10.receiver = self;
   v10.super_class = WBSRetryableCKAcceptSharesOperation;
-  [(WBSRetryableCKOperation *)&v10 _setUpOperation:v4];
+  [(WBSRetryableCKOperation *)&v10 _setUpOperation:operationCopy];
   if ([(NSMutableSet *)self->super._explicitlySetProperties containsObject:@"shareMetadatas"])
   {
-    [v4 setShareMetadatas:self->_shareMetadatas];
+    [operationCopy setShareMetadatas:self->_shareMetadatas];
   }
 
   if (self->_perShareCompletionBlock)
@@ -106,7 +106,7 @@
     v7[2] = __55__WBSRetryableCKAcceptSharesOperation__setUpOperation___block_invoke;
     v7[3] = &unk_1E7FC9D98;
     objc_copyWeak(&v8, &location);
-    [v4 setPerShareCompletionBlock:v7];
+    [operationCopy setPerShareCompletionBlock:v7];
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
   }
@@ -117,7 +117,7 @@
   v5[2] = __55__WBSRetryableCKAcceptSharesOperation__setUpOperation___block_invoke_3;
   v5[3] = &unk_1E7FC9DC0;
   objc_copyWeak(&v6, &location);
-  [v4 setAcceptSharesCompletionBlock:v5];
+  [operationCopy setAcceptSharesCompletionBlock:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }

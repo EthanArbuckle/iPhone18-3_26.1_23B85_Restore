@@ -1,34 +1,34 @@
 @interface FMCameraSession
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_cmTimeForMetrics:(SEL)a3;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_retrieveCmTimeForAbsoluteTimestamp:(SEL)a3;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_cmTimeForMetrics:(SEL)metrics;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_retrieveCmTimeForAbsoluteTimestamp:(SEL)timestamp;
 - (AVCaptureDevice)device;
-- (BOOL)_isPacketWithinRangeForTimestamp:(id *)a3 withSessionStartTime:(id *)a4 andSessionStopTime:(id *)a5;
-- (FMCameraSession)initWithQueue:(id)a3;
+- (BOOL)_isPacketWithinRangeForTimestamp:(id *)timestamp withSessionStartTime:(id *)time andSessionStopTime:(id *)stopTime;
+- (FMCameraSession)initWithQueue:(id)queue;
 - (FMCameraSessionDelegate)delegate;
-- (id)_packetFromMetrics:(id)a3;
-- (unint64_t)_machContinuousTimeForMetrics:(id)a3;
-- (void)captureOutput:(id)a3 didOutputMetadataObjects:(id)a4 fromConnection:(id)a5;
-- (void)generateMessageSessionIdWithSessionStartTimestamp:(double)a3;
-- (void)generateUnlockSessionIdWithSessionStartTimestamp:(id *)a3;
+- (id)_packetFromMetrics:(id)metrics;
+- (unint64_t)_machContinuousTimeForMetrics:(id)metrics;
+- (void)captureOutput:(id)output didOutputMetadataObjects:(id)objects fromConnection:(id)connection;
+- (void)generateMessageSessionIdWithSessionStartTimestamp:(double)timestamp;
+- (void)generateUnlockSessionIdWithSessionStartTimestamp:(id *)timestamp;
 - (void)reportCameraSessionLatency;
 - (void)resetMessageSessionId;
 - (void)resetUnlockSessionId;
 - (void)startCameraSession;
 - (void)stop;
-- (void)updateMessageSessionWithSessionStopTimestamp:(double)a3;
-- (void)updateUnlockSessionWithSessionStopTimestamp:(id *)a3;
+- (void)updateMessageSessionWithSessionStopTimestamp:(double)timestamp;
+- (void)updateUnlockSessionWithSessionStopTimestamp:(id *)timestamp;
 @end
 
 @implementation FMCameraSession
 
-- (FMCameraSession)initWithQueue:(id)a3
+- (FMCameraSession)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v8.receiver = self;
   v8.super_class = FMCameraSession;
   v5 = [(FMCameraSession *)&v8 init];
   queue = v5->_queue;
-  v5->_queue = v4;
+  v5->_queue = queueCopy;
 
   return v5;
 }
@@ -53,20 +53,20 @@
   session = self->_session;
   self->_session = v6;
 
-  v8 = [(FMCameraSession *)self session];
-  [v8 beginConfiguration];
+  session = [(FMCameraSession *)self session];
+  [session beginConfiguration];
 
-  v9 = [(FMCameraSession *)self device];
-  if (v9)
+  device = [(FMCameraSession *)self device];
+  if (device)
   {
-    v10 = [[AVCaptureDeviceInput alloc] initWithDevice:v9 error:0];
-    if (v10)
+    session7 = [[AVCaptureDeviceInput alloc] initWithDevice:device error:0];
+    if (session7)
     {
-      v11 = [(FMCameraSession *)self session];
-      [v11 addInput:v10];
+      session2 = [(FMCameraSession *)self session];
+      [session2 addInput:session7];
 
-      v12 = [v9 deviceType];
-      v13 = [v12 isEqualToString:AVCaptureDeviceTypeBuiltInTrueDepthCamera];
+      deviceType = [device deviceType];
+      v13 = [deviceType isEqualToString:AVCaptureDeviceTypeBuiltInTrueDepthCamera];
 
       if (v13)
       {
@@ -77,37 +77,37 @@
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "device type is true depth: configuring depth format and frame rate", &__buf, 2u);
         }
 
-        [v9 lockForConfiguration:0];
-        v15 = [v9 activeFormat];
-        v16 = [v15 supportedDepthDataFormats];
-        v17 = [v16 lastObject];
-        [v9 setActiveDepthDataFormat:v17];
+        [device lockForConfiguration:0];
+        activeFormat = [device activeFormat];
+        supportedDepthDataFormats = [activeFormat supportedDepthDataFormats];
+        lastObject = [supportedDepthDataFormats lastObject];
+        [device setActiveDepthDataFormat:lastObject];
 
         CMTimeMake(&v26, 1, 15);
         __buf = v26;
-        [v9 setActiveDepthDataMinFrameDuration:&__buf];
-        [v9 unlockForConfiguration];
+        [device setActiveDepthDataMinFrameDuration:&__buf];
+        [device unlockForConfiguration];
       }
 
-      v18 = objc_opt_new();
-      [v18 setMetadataObjectsDelegate:self queue:self->_queue];
-      v19 = [(FMCameraSession *)self session];
-      [v19 addOutput:v18];
+      session6 = objc_opt_new();
+      [session6 setMetadataObjectsDelegate:self queue:self->_queue];
+      session3 = [(FMCameraSession *)self session];
+      [session3 addOutput:session6];
 
-      if ([v18 isFaceTrackingSupported])
+      if ([session6 isFaceTrackingSupported])
       {
-        [v18 setFaceTrackingMetadataObjectTypesAvailable:1];
+        [session6 setFaceTrackingMetadataObjectTypesAvailable:1];
         v28 = AVMetadataObjectTypeTrackedFaces;
         v20 = [NSArray arrayWithObjects:&v28 count:1];
-        [v18 setMetadataObjectTypes:v20];
+        [session6 setMetadataObjectTypes:v20];
 
-        [v18 setFaceTrackingMaxFaces:1];
-        [v18 setFaceTrackingPlusEnabled:1];
-        v21 = [(FMCameraSession *)self session];
-        [v21 commitConfiguration];
+        [session6 setFaceTrackingMaxFaces:1];
+        [session6 setFaceTrackingPlusEnabled:1];
+        session4 = [(FMCameraSession *)self session];
+        [session4 commitConfiguration];
 
-        v22 = [(FMCameraSession *)self session];
-        [v22 startRunning];
+        session5 = [(FMCameraSession *)self session];
+        [session5 startRunning];
       }
 
       else
@@ -118,8 +118,8 @@
           sub_1000058B4();
         }
 
-        v22 = [(FMCameraSession *)self session];
-        [v22 commitConfiguration];
+        session5 = [(FMCameraSession *)self session];
+        [session5 commitConfiguration];
       }
     }
 
@@ -131,8 +131,8 @@
         sub_1000058E8();
       }
 
-      v18 = [(FMCameraSession *)self session];
-      [v18 commitConfiguration];
+      session6 = [(FMCameraSession *)self session];
+      [session6 commitConfiguration];
     }
   }
 
@@ -144,27 +144,27 @@
       sub_10000591C();
     }
 
-    v10 = [(FMCameraSession *)self session];
-    [v10 commitConfiguration];
+    session7 = [(FMCameraSession *)self session];
+    [session7 commitConfiguration];
   }
 }
 
-- (void)generateUnlockSessionIdWithSessionStartTimestamp:(id *)a3
+- (void)generateUnlockSessionIdWithSessionStartTimestamp:(id *)timestamp
 {
   dispatch_assert_queue_V2(self->_queue);
   __buf = 0;
   arc4random_buf(&__buf, 8uLL);
-  v6 = *a3;
+  v6 = *timestamp;
   v7 = *&kCMTimeInvalid.value;
   epoch = kCMTimeInvalid.epoch;
   [(FMCameraSession *)self setUnlockSessionStats:&__buf];
 }
 
-- (void)updateUnlockSessionWithSessionStopTimestamp:(id *)a3
+- (void)updateUnlockSessionWithSessionStopTimestamp:(id *)timestamp
 {
   dispatch_assert_queue_V2(self->_queue);
-  v5 = *&a3->var0;
-  self->_unlockSessionStats.unlockSessionStopTime.epoch = a3->var3;
+  v5 = *&timestamp->var0;
+  self->_unlockSessionStats.unlockSessionStopTime.epoch = timestamp->var3;
   *&self->_unlockSessionStats.unlockSessionStopTime.value = v5;
 }
 
@@ -179,12 +179,12 @@
   [(FMCameraSession *)self setUnlockSessionStats:&v3];
 }
 
-- (void)generateMessageSessionIdWithSessionStartTimestamp:(double)a3
+- (void)generateMessageSessionIdWithSessionStartTimestamp:(double)timestamp
 {
   dispatch_assert_queue_V2(self->_queue);
   memset(&v7[8], 0, 48);
   *v7 = HAFacialMetricsGenerateHashForTimestamp();
-  [(FMCameraSession *)self _retrieveCmTimeForAbsoluteTimestamp:a3];
+  [(FMCameraSession *)self _retrieveCmTimeForAbsoluteTimestamp:timestamp];
   *&v7[48] = kCMTimeInvalid.epoch;
   *&v7[32] = *&kCMTimeInvalid.value;
   v5[0] = *v7;
@@ -194,10 +194,10 @@
   [(FMCameraSession *)self setMessageAppSessionStats:v5];
 }
 
-- (void)updateMessageSessionWithSessionStopTimestamp:(double)a3
+- (void)updateMessageSessionWithSessionStopTimestamp:(double)timestamp
 {
   dispatch_assert_queue_V2(self->_queue);
-  [(FMCameraSession *)self _retrieveCmTimeForAbsoluteTimestamp:a3];
+  [(FMCameraSession *)self _retrieveCmTimeForAbsoluteTimestamp:timestamp];
   self->_messageAppSessionStats.messageSessionStopTime = v5;
 }
 
@@ -252,9 +252,9 @@ LABEL_9:
   return v3;
 }
 
-- (void)captureOutput:(id)a3 didOutputMetadataObjects:(id)a4 fromConnection:(id)a5
+- (void)captureOutput:(id)output didOutputMetadataObjects:(id)objects fromConnection:(id)connection
 {
-  v6 = a4;
+  objectsCopy = objects;
   dispatch_assert_queue_V2(self->_queue);
   if (!self->_firstPacketReceived)
   {
@@ -267,7 +267,7 @@ LABEL_9:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = v6;
+  v7 = objectsCopy;
   v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
@@ -284,8 +284,8 @@ LABEL_5:
       }
 
       v13 = *(*(&v19 + 1) + 8 * v12);
-      v14 = [v13 type];
-      v15 = [v14 isEqualToString:v11];
+      type = [v13 type];
+      v15 = [type isEqualToString:v11];
 
       if (v15)
       {
@@ -304,18 +304,18 @@ LABEL_5:
       }
     }
 
-    v16 = [v13 payload];
+    payload = [v13 payload];
 
-    if (!v16)
+    if (!payload)
     {
       goto LABEL_16;
     }
 
-    v17 = [(FMCameraSession *)self _packetFromMetrics:v16];
+    v17 = [(FMCameraSession *)self _packetFromMetrics:payload];
     if (v17)
     {
-      v18 = [(FMCameraSession *)self delegate];
-      [v18 handleFacialMetricsPacket:v17 withTimestamp:{-[FMCameraSession _machContinuousTimeForMetrics:](self, "_machContinuousTimeForMetrics:", v16)}];
+      delegate = [(FMCameraSession *)self delegate];
+      [delegate handleFacialMetricsPacket:v17 withTimestamp:{-[FMCameraSession _machContinuousTimeForMetrics:](self, "_machContinuousTimeForMetrics:", payload)}];
     }
   }
 
@@ -324,20 +324,20 @@ LABEL_5:
 LABEL_11:
 
 LABEL_16:
-    v16 = sub_100004784();
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    payload = sub_100004784();
+    if (os_log_type_enabled(payload, OS_LOG_TYPE_ERROR))
     {
       sub_100005950();
     }
   }
 }
 
-- (id)_packetFromMetrics:(id)a3
+- (id)_packetFromMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   dispatch_assert_queue_V2(self->_queue);
   memset(&v36, 0, sizeof(v36));
-  [(FMCameraSession *)self _cmTimeForMetrics:v4];
+  [(FMCameraSession *)self _cmTimeForMetrics:metricsCopy];
   v5 = sub_100004784();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -424,7 +424,7 @@ LABEL_16:
 
   if (v11 | v7)
   {
-    v13 = [FMMetricsDistiller packetFromMetrics:v4 withSessionId:self->_cameraSessionId andUnlockSessionId:v7 withSecondsFromStart:Seconds andMessageSessionId:v10 withSecondsFromStart:?];
+    v13 = [FMMetricsDistiller packetFromMetrics:metricsCopy withSessionId:self->_cameraSessionId andUnlockSessionId:v7 withSecondsFromStart:Seconds andMessageSessionId:v10 withSecondsFromStart:?];
     if (v13)
     {
       if (!self->_metricsArePublishable)
@@ -479,9 +479,9 @@ LABEL_16:
   return v15;
 }
 
-- (BOOL)_isPacketWithinRangeForTimestamp:(id *)a3 withSessionStartTime:(id *)a4 andSessionStopTime:(id *)a5
+- (BOOL)_isPacketWithinRangeForTimestamp:(id *)timestamp withSessionStartTime:(id *)time andSessionStopTime:(id *)stopTime
 {
-  if ((a4->var2 & 1) == 0 || (a3->var2 & 1) == 0)
+  if ((time->var2 & 1) == 0 || (timestamp->var2 & 1) == 0)
   {
     v6 = sub_100004784();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
@@ -492,8 +492,8 @@ LABEL_16:
     goto LABEL_5;
   }
 
-  time1 = *a4;
-  v10 = *a3;
+  time1 = *time;
+  v10 = *timestamp;
   if (CMTimeCompare(&time1, &v10) >= 1)
   {
     v6 = sub_100004784();
@@ -511,10 +511,10 @@ LABEL_9:
     goto LABEL_5;
   }
 
-  if (a5->var2)
+  if (stopTime->var2)
   {
-    time1 = *a3;
-    v10 = *a5;
+    time1 = *timestamp;
+    v10 = *stopTime;
     if (CMTimeCompare(&time1, &v10) >= 1)
     {
       v6 = sub_100004784();
@@ -532,7 +532,7 @@ LABEL_9:
   return 1;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_cmTimeForMetrics:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_cmTimeForMetrics:(SEL)metrics
 {
   v5 = a4;
   memset(&v10, 0, sizeof(v10));
@@ -559,7 +559,7 @@ LABEL_9:
   return result;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_retrieveCmTimeForAbsoluteTimestamp:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_retrieveCmTimeForAbsoluteTimestamp:(SEL)timestamp
 {
   memset(&v16, 0, sizeof(v16));
   do
@@ -601,11 +601,11 @@ LABEL_9:
   return CMTimeSubtract(retstr, &v13, &lhs);
 }
 
-- (unint64_t)_machContinuousTimeForMetrics:(id)a3
+- (unint64_t)_machContinuousTimeForMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   memset(&v16, 0, sizeof(v16));
-  v5 = [v4 objectForKeyedSubscript:@"timestamp"];
+  v5 = [metricsCopy objectForKeyedSubscript:@"timestamp"];
   CMTimeMakeFromDictionary(&v16, v5);
 
   if ((v16.flags & 1) == 0)
@@ -613,7 +613,7 @@ LABEL_9:
     v6 = sub_100004784();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      sub_100005B08(v4);
+      sub_100005B08(metricsCopy);
     }
 
 LABEL_11:
@@ -654,8 +654,8 @@ LABEL_12:
 
 - (void)stop
 {
-  v2 = [(FMCameraSession *)self session];
-  [v2 stopRunning];
+  session = [(FMCameraSession *)self session];
+  [session stopRunning];
 }
 
 - (void)reportCameraSessionLatency

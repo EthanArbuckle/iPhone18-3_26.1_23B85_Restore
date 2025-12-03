@@ -1,14 +1,14 @@
 @interface ScrollTracker
-- (void)scrollViewDidScroll:(id)a3;
+- (void)scrollViewDidScroll:(id)scroll;
 @end
 
 @implementation ScrollTracker
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  ScrollTracker.scrollViewDidScroll(_:)(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  ScrollTracker.scrollViewDidScroll(_:)(scrollCopy);
 }
 
 @end

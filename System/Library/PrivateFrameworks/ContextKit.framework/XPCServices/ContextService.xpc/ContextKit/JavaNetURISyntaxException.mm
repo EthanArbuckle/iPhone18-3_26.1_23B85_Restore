@@ -17,18 +17,18 @@
 {
   v15.receiver = self;
   v15.super_class = JavaNetURISyntaxException;
-  v3 = [(JavaLangThrowable *)&v15 getMessage];
+  getMessage = [(JavaLangThrowable *)&v15 getMessage];
   if (self->index_ == -1)
   {
     input = self->input_;
-    return JreStrcat("$$$", v4, v5, v6, v7, v8, v9, v10, v3);
+    return JreStrcat("$$$", v4, v5, v6, v7, v8, v9, v10, getMessage);
   }
 
   else
   {
     v14 = self->input_;
     index = self->index_;
-    return JreStrcat("$$I$$", v4, v5, v6, v7, v8, v9, v10, v3);
+    return JreStrcat("$$I$$", v4, v5, v6, v7, v8, v9, v10, getMessage);
   }
 }
 

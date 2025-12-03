@@ -1,15 +1,15 @@
 @interface INAccountEventPushHandler
 - (INAccountEventPushHandler)init;
-- (INAccountEventPushHandler)initWithAccountStore:(id)a3;
+- (INAccountEventPushHandler)initWithAccountStore:(id)store;
 - (id)_iCloudAccountType;
-- (void)_dismissNotificationsForPushEventWithID:(id)a3;
-- (void)_handleEventDetailsResponse:(id)a3 forEventID:(id)a4 accountID:(id)a5 pushMessage:(id)a6;
-- (void)_requestEventDetailsForPushMessage:(id)a3 withEventID:(id)a4 recipientDSID:(id)a5;
-- (void)_sendAcknowledgementForNotification:(id)a3;
-- (void)accountNotifier:(id)a3 didActivateNotification:(id)a4;
-- (void)accountNotifier:(id)a3 didClearNotification:(id)a4;
-- (void)accountNotifier:(id)a3 didDismissNotification:(id)a4;
-- (void)handleIncomingPushNotification:(id)a3;
+- (void)_dismissNotificationsForPushEventWithID:(id)d;
+- (void)_handleEventDetailsResponse:(id)response forEventID:(id)d accountID:(id)iD pushMessage:(id)message;
+- (void)_requestEventDetailsForPushMessage:(id)message withEventID:(id)d recipientDSID:(id)iD;
+- (void)_sendAcknowledgementForNotification:(id)notification;
+- (void)accountNotifier:(id)notifier didActivateNotification:(id)notification;
+- (void)accountNotifier:(id)notifier didClearNotification:(id)notification;
+- (void)accountNotifier:(id)notifier didDismissNotification:(id)notification;
+- (void)handleIncomingPushNotification:(id)notification;
 @end
 
 @implementation INAccountEventPushHandler
@@ -21,16 +21,16 @@
   return 0;
 }
 
-- (INAccountEventPushHandler)initWithAccountStore:(id)a3
+- (INAccountEventPushHandler)initWithAccountStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v13.receiver = self;
   v13.super_class = INAccountEventPushHandler;
   v6 = [(INAccountEventPushHandler *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountStore, a3);
+    objc_storeStrong(&v6->_accountStore, store);
     v8 = [[ANAccountNotifier alloc] initWithCallbackMachService:@"com.apple.ind.and_callback"];
     accountNotifier = v7->_accountNotifier;
     v7->_accountNotifier = v8;
@@ -44,18 +44,18 @@
   return v7;
 }
 
-- (void)handleIncomingPushNotification:(id)a3
+- (void)handleIncomingPushNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"dsid"];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"dsid"];
 
   if (v6)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
+      stringValue = v6;
     }
 
     else
@@ -73,13 +73,13 @@
         goto LABEL_13;
       }
 
-      v7 = [v6 stringValue];
+      stringValue = [v6 stringValue];
     }
 
-    v9 = v7;
+    v9 = stringValue;
 LABEL_13:
-    v11 = [v4 userInfo];
-    v8 = [v11 objectForKeyedSubscript:@"msgid"];
+    userInfo2 = [notificationCopy userInfo];
+    v8 = [userInfo2 objectForKeyedSubscript:@"msgid"];
 
     if (v8)
     {
@@ -94,8 +94,8 @@ LABEL_13:
       }
     }
 
-    v13 = [v4 userInfo];
-    v14 = [v13 objectForKeyedSubscript:@"event"];
+    userInfo3 = [notificationCopy userInfo];
+    v14 = [userInfo3 objectForKeyedSubscript:@"event"];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v14 isEqualToString:@"dismiss"])
@@ -105,7 +105,7 @@ LABEL_13:
 
     else
     {
-      [(INAccountEventPushHandler *)self _requestEventDetailsForPushMessage:v4 withEventID:v8 recipientDSID:v9];
+      [(INAccountEventPushHandler *)self _requestEventDetailsForPushMessage:notificationCopy withEventID:v8 recipientDSID:v9];
     }
 
     goto LABEL_23;
@@ -121,27 +121,27 @@ LABEL_13:
 LABEL_23:
 }
 
-- (void)_requestEventDetailsForPushMessage:(id)a3 withEventID:(id)a4 recipientDSID:(id)a5
+- (void)_requestEventDetailsForPushMessage:(id)message withEventID:(id)d recipientDSID:(id)iD
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ACAccountStore *)self->_accountStore aa_appleAccountWithPersonID:v10];
+  messageCopy = message;
+  dCopy = d;
+  iDCopy = iD;
+  v11 = [(ACAccountStore *)self->_accountStore aa_appleAccountWithPersonID:iDCopy];
   if (v11)
   {
-    v12 = [[INAccountEventDetailsRequest alloc] initWithAccount:v11 pushMessage:v8];
+    v12 = [[INAccountEventDetailsRequest alloc] initWithAccount:v11 pushMessage:messageCopy];
     v13 = +[INDaemon sharedInstance];
-    v14 = [v13 pushToken];
-    [(INAccountEventDetailsRequest *)v12 setPushToken:v14];
+    pushToken = [v13 pushToken];
+    [(INAccountEventDetailsRequest *)v12 setPushToken:pushToken];
 
     v19 = _NSConcreteStackBlock;
     v20 = 3221225472;
     v21 = sub_10001C284;
     v22 = &unk_100055CD0;
-    v23 = self;
-    v24 = v9;
+    selfCopy = self;
+    v24 = dCopy;
     v25 = v11;
-    v26 = v8;
+    v26 = messageCopy;
     v15 = objc_retainBlock(&v19);
     v16 = _INLogSystem();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -150,7 +150,7 @@ LABEL_23:
     }
 
     v17 = [AARequester alloc];
-    v18 = [v17 initWithRequest:v12 handler:{v15, v19, v20, v21, v22, v23}];
+    v18 = [v17 initWithRequest:v12 handler:{v15, v19, v20, v21, v22, selfCopy}];
     [(NSOperationQueue *)self->_networkingQueue addOperation:v18];
   }
 
@@ -164,50 +164,50 @@ LABEL_23:
   }
 }
 
-- (void)_handleEventDetailsResponse:(id)a3 forEventID:(id)a4 accountID:(id)a5 pushMessage:(id)a6
+- (void)_handleEventDetailsResponse:(id)response forEventID:(id)d accountID:(id)iD pushMessage:(id)message
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  responseCopy = response;
+  dCopy = d;
+  iDCopy = iD;
+  messageCopy = message;
   v14 = _INLogSystem();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    sub_10003930C(v10);
+    sub_10003930C(responseCopy);
   }
 
-  v15 = [v10 error];
+  error = [responseCopy error];
 
-  if (v15)
+  if (error)
   {
-    v16 = _INLogSystem();
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    title = _INLogSystem();
+    if (os_log_type_enabled(title, OS_LOG_TYPE_ERROR))
     {
-      sub_100039390(v10);
+      sub_100039390(responseCopy);
     }
   }
 
-  else if ([v10 showAlert])
+  else if ([responseCopy showAlert])
   {
-    v16 = [v10 title];
-    v17 = [v10 message];
-    if (v16 | v17)
+    title = [responseCopy title];
+    message = [responseCopy message];
+    if (title | message)
     {
       v19 = [ANAccountNotification alloc];
-      v20 = [(INAccountEventPushHandler *)self _iCloudAccountType];
-      v18 = [v19 initForAccountWithType:v20];
+      _iCloudAccountType = [(INAccountEventPushHandler *)self _iCloudAccountType];
+      v18 = [v19 initForAccountWithType:_iCloudAccountType];
 
-      [v18 setTitle:v16];
-      [v18 setMessage:v17];
-      [v18 setEventIdentifier:v11];
-      v21 = [v10 defaultButtonTitle];
-      [v18 setActivateButtonTitle:v21];
+      [v18 setTitle:title];
+      [v18 setMessage:message];
+      [v18 setEventIdentifier:dCopy];
+      defaultButtonTitle = [responseCopy defaultButtonTitle];
+      [v18 setActivateButtonTitle:defaultButtonTitle];
 
-      v22 = [v10 defaultButtonURL];
-      v30 = v22;
-      if (v22)
+      defaultButtonURL = [responseCopy defaultButtonURL];
+      v30 = defaultButtonURL;
+      if (defaultButtonURL)
       {
-        v23 = [ANNotificationAction actionForOpeningWebURL:v22];
+        v23 = [ANNotificationAction actionForOpeningWebURL:defaultButtonURL];
         [v18 setActivateAction:v23];
       }
 
@@ -221,12 +221,12 @@ LABEL_23:
         }
       }
 
-      v24 = [v10 alternateButtonURL];
-      v31 = v17;
-      v29 = v24;
-      if (v24)
+      alternateButtonURL = [responseCopy alternateButtonURL];
+      v31 = message;
+      v29 = alternateButtonURL;
+      if (alternateButtonURL)
       {
-        v25 = [ANNotificationAction actionForOpeningWebURL:v24];
+        v25 = [ANNotificationAction actionForOpeningWebURL:alternateButtonURL];
         [v18 setDismissAction:v25];
       }
 
@@ -241,9 +241,9 @@ LABEL_23:
       }
 
       v26 = objc_alloc_init(NSMutableDictionary);
-      [v26 setObject:v12 forKeyedSubscript:@"INAccountID"];
-      v27 = [v13 userInfo];
-      v28 = [v27 mutableCopy];
+      [v26 setObject:iDCopy forKeyedSubscript:@"INAccountID"];
+      userInfo = [messageCopy userInfo];
+      v28 = [userInfo mutableCopy];
 
       [v28 removeObjectForKey:@"aps"];
       if (v28)
@@ -254,7 +254,7 @@ LABEL_23:
       [v18 setUserInfo:v26];
       [(ANAccountNotifier *)self->_accountNotifier addNotification:v18];
 
-      v17 = v31;
+      message = v31;
     }
 
     else
@@ -269,30 +269,30 @@ LABEL_23:
 
   else
   {
-    v16 = _INLogSystem();
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    title = _INLogSystem();
+    if (os_log_type_enabled(title, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Account event details says not to notify.", buf, 2u);
+      _os_log_impl(&_mh_execute_header, title, OS_LOG_TYPE_DEFAULT, "Account event details says not to notify.", buf, 2u);
     }
   }
 }
 
-- (void)_dismissNotificationsForPushEventWithID:(id)a3
+- (void)_dismissNotificationsForPushEventWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = _INLogSystem();
   v6 = v5;
-  if (v4)
+  if (dCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412290;
-      v8 = v4;
+      v8 = dCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Removing notifications for event ID: %@", &v7, 0xCu);
     }
 
-    [(ANAccountNotifier *)self->_accountNotifier removeNotificationsWithEventIdentifier:v4];
+    [(ANAccountNotifier *)self->_accountNotifier removeNotificationsWithEventIdentifier:dCopy];
   }
 
   else
@@ -304,57 +304,57 @@ LABEL_23:
   }
 }
 
-- (void)accountNotifier:(id)a3 didActivateNotification:(id)a4
+- (void)accountNotifier:(id)notifier didActivateNotification:(id)notification
 {
-  v5 = a4;
+  notificationCopy = notification;
   v6 = _INLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v5;
+    v8 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@", &v7, 0xCu);
   }
 
-  [(INAccountEventPushHandler *)self _sendAcknowledgementForNotification:v5];
+  [(INAccountEventPushHandler *)self _sendAcknowledgementForNotification:notificationCopy];
 }
 
-- (void)accountNotifier:(id)a3 didClearNotification:(id)a4
+- (void)accountNotifier:(id)notifier didClearNotification:(id)notification
 {
-  v4 = a4;
+  notificationCopy = notification;
   v5 = _INLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@", &v6, 0xCu);
   }
 }
 
-- (void)accountNotifier:(id)a3 didDismissNotification:(id)a4
+- (void)accountNotifier:(id)notifier didDismissNotification:(id)notification
 {
-  v5 = a4;
+  notificationCopy = notification;
   v6 = _INLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v5;
+    v8 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@", &v7, 0xCu);
   }
 
-  [(INAccountEventPushHandler *)self _sendAcknowledgementForNotification:v5];
+  [(INAccountEventPushHandler *)self _sendAcknowledgementForNotification:notificationCopy];
 }
 
-- (void)_sendAcknowledgementForNotification:(id)a3
+- (void)_sendAcknowledgementForNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"INAccountID"];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"INAccountID"];
 
   v7 = [(ACAccountStore *)self->_accountStore accountWithIdentifier:v6];
   if (v7)
   {
-    v8 = [v4 userInfo];
-    v9 = [v8 objectForKeyedSubscript:@"INPushMessage"];
+    userInfo2 = [notificationCopy userInfo];
+    v9 = [userInfo2 objectForKeyedSubscript:@"INPushMessage"];
 
     if (!v9)
     {
@@ -368,8 +368,8 @@ LABEL_23:
     v11 = [[INAcknowledgeAccountAlertRequest alloc] initWithAccount:v7 store:self->_accountStore];
     [(INAcknowledgeAccountAlertRequest *)v11 setPushMessageInfo:v9];
     v12 = +[INDaemon sharedInstance];
-    v13 = [v12 pushToken];
-    [(INAcknowledgeAccountAlertRequest *)v11 setPushToken:v13];
+    pushToken = [v12 pushToken];
+    [(INAcknowledgeAccountAlertRequest *)v11 setPushToken:pushToken];
 
     v14 = _INLogSystem();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -396,9 +396,9 @@ LABEL_23:
   iCloudAccountType = self->_iCloudAccountType;
   if (!iCloudAccountType)
   {
-    v4 = [(ACAccountStore *)self->_accountStore aa_appleAccountType];
+    aa_appleAccountType = [(ACAccountStore *)self->_accountStore aa_appleAccountType];
     v5 = self->_iCloudAccountType;
-    self->_iCloudAccountType = v4;
+    self->_iCloudAccountType = aa_appleAccountType;
 
     iCloudAccountType = self->_iCloudAccountType;
   }

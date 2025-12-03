@@ -1,5 +1,5 @@
 @interface _CGFontCacheKey
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (void)dealloc;
 @end
 
@@ -12,9 +12,9 @@
   [(_CGFontCacheKey *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v16) = 1;
   }
@@ -25,13 +25,13 @@
     v21 = v5;
     v22 = v4;
     v23 = v3;
-    if (a3 && (v13 = objc_opt_class(), v13 == objc_opt_class()) && (hash = self->_hash, hash == [a3 hash]))
+    if (equal && (v13 = objc_opt_class(), v13 == objc_opt_class()) && (hash = self->_hash, hash == [equal hash]))
     {
       url = self->_url;
-      if (url == [a3 url] || (v16 = -[NSURL isEqual:](self->_url, "isEqual:", objc_msgSend(a3, "url"))) != 0)
+      if (url == [equal url] || (v16 = -[NSURL isEqual:](self->_url, "isEqual:", objc_msgSend(equal, "url"))) != 0)
       {
         opticalSize = self->_opticalSize;
-        [a3 opticalSize];
+        [equal opticalSize];
         LOBYTE(v16) = opticalSize == v18;
       }
     }

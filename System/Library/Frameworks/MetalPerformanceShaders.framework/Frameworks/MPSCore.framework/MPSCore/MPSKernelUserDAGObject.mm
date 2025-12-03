@@ -1,5 +1,5 @@
 @interface MPSKernelUserDAGObject
-- (MPSKernelUserDAGObject)initWithKernelUserDAG:(void *)a3;
+- (MPSKernelUserDAGObject)initWithKernelUserDAG:(void *)g;
 - (id).cxx_construct;
 - (id)getMTLStitchingGraph;
 - (id)getVisibleFunctions;
@@ -8,13 +8,13 @@
 
 @implementation MPSKernelUserDAGObject
 
-- (MPSKernelUserDAGObject)initWithKernelUserDAG:(void *)a3
+- (MPSKernelUserDAGObject)initWithKernelUserDAG:(void *)g
 {
   v9.receiver = self;
   v9.super_class = MPSKernelUserDAGObject;
   result = [(MPSKernelUserDAGObject *)&v9 init];
-  v6 = *a3;
-  v5 = *(a3 + 1);
+  v6 = *g;
+  v5 = *(g + 1);
   if (v5)
   {
     atomic_fetch_add_explicit((v5 + 8), 1uLL, memory_order_relaxed);
@@ -148,10 +148,10 @@ LABEL_12:
   self->_kernelUserDAGSharedPtr.__cntrl_ = 0;
   if (cntrl && !atomic_fetch_add(cntrl + 1, 0xFFFFFFFFFFFFFFFFLL))
   {
-    v3 = self;
+    selfCopy = self;
     (*(*cntrl + 16))(cntrl, a2);
     std::__shared_weak_count::__release_weak(cntrl);
-    self = v3;
+    self = selfCopy;
   }
 
   v4.receiver = self;

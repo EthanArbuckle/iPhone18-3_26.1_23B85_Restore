@@ -6,16 +6,16 @@
 - (BOOL)areDetectorsReady;
 - (BOOL)isAssetCatalogInstalled;
 - (NSString)description;
-- (id)_addDetectorForAXAsset:(id)a3;
-- (id)_detectorWithIdentifier:(id)a3;
-- (id)_detectorWithName:(id)a3;
+- (id)_addDetectorForAXAsset:(id)asset;
+- (id)_detectorWithIdentifier:(id)identifier;
+- (id)_detectorWithName:(id)name;
 - (id)_detectorsNeedingUpgrade;
 - (id)allDetectors;
 - (id)allDetectorsByIdentifier;
 - (id)customDetectors;
-- (id)detectorWithAssetID:(id)a3;
-- (id)detectorWithIdentifier:(id)a3;
-- (id)detectorWithName:(id)a3;
+- (id)detectorWithAssetID:(id)d;
+- (id)detectorWithIdentifier:(id)identifier;
+- (id)detectorWithName:(id)name;
 - (id)detectorsByIdentifier;
 - (id)enabledDetectors;
 - (id)installedDetectors;
@@ -26,26 +26,26 @@
 - (int64_t)totalUnarchivedFileSize;
 - (unint64_t)numberOfObservers;
 - (void)_createSDDetectors;
-- (void)_downloadAssetsFromDetectors:(id)a3;
-- (void)_enumerateObserversWithBlock:(id)a3;
-- (void)_notifyObserversAvailableDetectorsDidUpdate:(id)a3;
+- (void)_downloadAssetsFromDetectors:(id)detectors;
+- (void)_enumerateObserversWithBlock:(id)block;
+- (void)_notifyObserversAvailableDetectorsDidUpdate:(id)update;
 - (void)_notifyObserversDetectorsAreReady;
-- (void)_notifyObserversDetectorsDownloadProgress:(int64_t)a3 totalSizeExpected:(int64_t)a4 remainingTimeExpected:(double)a5 isStalled:(BOOL)a6;
-- (void)_notifyObserversDetectorsNeedUpdate:(id)a3 toDetectors:(id)a4;
-- (void)_notifyObserversDidFinishPurgingDetectors:(id)a3 wasSuccessful:(BOOL)a4 error:(id)a5;
-- (void)_notifyObserversDidFinishRefreshingDetectors:(id)a3 wasSuccessful:(BOOL)a4 error:(id)a5;
-- (void)_purgeAssetsFromDetectors:(id)a3;
+- (void)_notifyObserversDetectorsDownloadProgress:(int64_t)progress totalSizeExpected:(int64_t)expected remainingTimeExpected:(double)timeExpected isStalled:(BOOL)stalled;
+- (void)_notifyObserversDetectorsNeedUpdate:(id)update toDetectors:(id)detectors;
+- (void)_notifyObserversDidFinishPurgingDetectors:(id)detectors wasSuccessful:(BOOL)successful error:(id)error;
+- (void)_notifyObserversDidFinishRefreshingDetectors:(id)detectors wasSuccessful:(BOOL)successful error:(id)error;
+- (void)_purgeAssetsFromDetectors:(id)detectors;
 - (void)_reloadCustomDetectors;
 - (void)_removeCustomDetectors;
-- (void)addObserver:(id)a3;
-- (void)disableDetector:(id)a3;
-- (void)disableDetectorWithIdentifier:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)disableDetector:(id)detector;
+- (void)disableDetectorWithIdentifier:(id)identifier;
 - (void)downloadDetectors;
-- (void)enableDetector:(id)a3;
-- (void)enableDetectorWithIdentifier:(id)a3;
+- (void)enableDetector:(id)detector;
+- (void)enableDetectorWithIdentifier:(id)identifier;
 - (void)loadDetectors;
 - (void)purgeDetectors;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation AXSDDetectorStore
@@ -76,9 +76,9 @@ uint64_t __35__AXSDDetectorStore_sharedInstance__block_invoke()
   v2 = [(AXSDDetectorStore *)&v16 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
+    weakObjectsPointerArray = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
     observers = v2->_observers;
-    v2->_observers = v3;
+    v2->_observers = weakObjectsPointerArray;
 
     v5 = objc_opt_new();
     detectors = v2->_detectors;
@@ -94,13 +94,13 @@ uint64_t __35__AXSDDetectorStore_sharedInstance__block_invoke()
 
     [(AXUltronModelAssetManager *)v2->_assetManager addObserver:v2];
     objc_initWeak(&location, v2);
-    v11 = [MEMORY[0x277CE6F98] sharedInstance];
+    mEMORY[0x277CE6F98] = [MEMORY[0x277CE6F98] sharedInstance];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __25__AXSDDetectorStore_init__block_invoke;
     v13[3] = &unk_278BDD060;
     objc_copyWeak(&v14, &location);
-    [v11 registerUpdateBlock:v13 forRetrieveSelector:sel_kShotDetectors withListener:v2];
+    [mEMORY[0x277CE6F98] registerUpdateBlock:v13 forRetrieveSelector:sel_kShotDetectors withListener:v2];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
@@ -118,17 +118,17 @@ void __25__AXSDDetectorStore_init__block_invoke(uint64_t a1)
 - (int64_t)totalDownloadSize
 {
   v2 = +[AXUltronModelAssetManager sharedInstance];
-  v3 = [v2 totalSizeExpected];
+  totalSizeExpected = [v2 totalSizeExpected];
 
-  return v3;
+  return totalSizeExpected;
 }
 
 - (int64_t)totalUnarchivedFileSize
 {
   v2 = +[AXUltronModelAssetManager sharedInstance];
-  v3 = [v2 totalSizeOccupied];
+  totalSizeOccupied = [v2 totalSizeOccupied];
 
-  return v3;
+  return totalSizeOccupied;
 }
 
 - (unint64_t)numberOfObservers
@@ -139,25 +139,25 @@ void __25__AXSDDetectorStore_init__block_invoke(uint64_t a1)
   return [(NSPointerArray *)observers count];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = AXLogUltron();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(AXSDDetectorStore *)v4 addObserver:v5];
+    [(AXSDDetectorStore *)observerCopy addObserver:v5];
   }
 
-  [(NSPointerArray *)self->_observers addPointer:v4];
+  [(NSPointerArray *)self->_observers addPointer:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = AXLogUltron();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(AXSDDetectorStore *)v4 removeObserver:v5];
+    [(AXSDDetectorStore *)observerCopy removeObserver:v5];
   }
 
   if ([(NSPointerArray *)self->_observers count])
@@ -167,7 +167,7 @@ void __25__AXSDDetectorStore_init__block_invoke(uint64_t a1)
     {
       v7 = [(NSPointerArray *)self->_observers pointerAtIndex:v6];
       v8 = v7;
-      if (v7 == v4)
+      if (v7 == observerCopy)
       {
         break;
       }
@@ -188,21 +188,21 @@ LABEL_9:
 - (BOOL)isAssetCatalogInstalled
 {
   v2 = +[AXUltronModelAssetManager sharedInstance];
-  v3 = [v2 isAssetCatalogInstalled];
+  isAssetCatalogInstalled = [v2 isAssetCatalogInstalled];
 
-  return v3;
+  return isAssetCatalogInstalled;
 }
 
 - (BOOL)areDetectorsReady
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(AXSDDetectorStore *)self _areKShotDetectorsReady];
+  _areKShotDetectorsReady = [(AXSDDetectorStore *)self _areKShotDetectorsReady];
   if (AXIsSoundDetectionMedinaSupportEnabled())
   {
     v4 = AXLogUltron();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v5 = [MEMORY[0x277CCABB0] numberWithBool:v3];
+      v5 = [MEMORY[0x277CCABB0] numberWithBool:_areKShotDetectorsReady];
       v12 = 138412290;
       v13 = v5;
       _os_log_impl(&dword_23D62D000, v4, OS_LOG_TYPE_INFO, "Medina is Enabled. Are KShot Detectors Ready: %@", &v12, 0xCu);
@@ -211,12 +211,12 @@ LABEL_9:
 
   else
   {
-    v6 = [(AXSDDetectorStore *)self _areStandardDetectorsReady];
+    _areStandardDetectorsReady = [(AXSDDetectorStore *)self _areStandardDetectorsReady];
     v7 = AXLogUltron();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [MEMORY[0x277CCABB0] numberWithBool:v3];
-      v9 = [MEMORY[0x277CCABB0] numberWithBool:v6];
+      v8 = [MEMORY[0x277CCABB0] numberWithBool:_areKShotDetectorsReady];
+      v9 = [MEMORY[0x277CCABB0] numberWithBool:_areStandardDetectorsReady];
       v12 = 138412546;
       v13 = v8;
       v14 = 2112;
@@ -224,27 +224,27 @@ LABEL_9:
       _os_log_impl(&dword_23D62D000, v7, OS_LOG_TYPE_INFO, "Are KShot Detectors Ready: %@. Are Standard Detectors Ready: %@.", &v12, 0x16u);
     }
 
-    LOBYTE(v3) = v3 && v6;
+    LOBYTE(_areKShotDetectorsReady) = _areKShotDetectorsReady && _areStandardDetectorsReady;
   }
 
   v10 = *MEMORY[0x277D85DE8];
-  return v3;
+  return _areKShotDetectorsReady;
 }
 
 - (BOOL)_areStandardDetectorsReady
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CE6F98] sharedInstance];
-  v4 = [v3 supportedSoundDetectionTypes];
+  mEMORY[0x277CE6F98] = [MEMORY[0x277CE6F98] sharedInstance];
+  supportedSoundDetectionTypes = [mEMORY[0x277CE6F98] supportedSoundDetectionTypes];
 
-  v5 = [(AXSDDetectorStore *)self detectorsByIdentifier];
-  if ([v4 count] && (objc_msgSend(v5, "allValues"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, v7))
+  detectorsByIdentifier = [(AXSDDetectorStore *)self detectorsByIdentifier];
+  if ([supportedSoundDetectionTypes count] && (objc_msgSend(detectorsByIdentifier, "allValues"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, v7))
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v8 = v4;
+    v8 = supportedSoundDetectionTypes;
     v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v9)
     {
@@ -259,16 +259,16 @@ LABEL_5:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [v5 objectForKey:{*(*(&v18 + 1) + 8 * v12), v18}];
+        v13 = [detectorsByIdentifier objectForKey:{*(*(&v18 + 1) + 8 * v12), v18}];
         v14 = v13;
         if (!v13)
         {
           break;
         }
 
-        v15 = [v13 isInstalled];
+        isInstalled = [v13 isInstalled];
 
-        if (!v15)
+        if (!isInstalled)
         {
           LOBYTE(v14) = 0;
           break;
@@ -336,9 +336,9 @@ LABEL_3:
         break;
       }
 
-      v11 = [v9 isInstalled];
+      isInstalled = [v9 isInstalled];
 
-      if (!v11)
+      if (!isInstalled)
       {
         LOBYTE(v10) = 0;
         break;
@@ -423,14 +423,14 @@ LABEL_3:
               }
 
               v10 = *(*(&v19 + 1) + 8 * v9);
-              v11 = [(AXSDDetectorStore *)self detectors];
-              v12 = [v11 objectForKey:v10];
+              detectors = [(AXSDDetectorStore *)self detectors];
+              v12 = [detectors objectForKey:v10];
 
               if (!v12)
               {
                 v13 = [[AXSDDetector alloc] initWithIdentifier:v10 andName:v10];
-                v14 = [(AXSDDetectorStore *)self detectors];
-                [v14 setObject:v13 forKey:v10];
+                detectors2 = [(AXSDDetectorStore *)self detectors];
+                [detectors2 setObject:v13 forKey:v10];
               }
 
               ++v9;
@@ -459,12 +459,12 @@ LABEL_3:
 - (void)_removeCustomDetectors
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(AXSDDetectorStore *)self customDetectors];
+  customDetectors = [(AXSDDetectorStore *)self customDetectors];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v4 = [customDetectors countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -476,19 +476,19 @@ LABEL_3:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(customDetectors);
         }
 
         v8 = *(*(&v12 + 1) + 8 * v7);
-        v9 = [(AXSDDetectorStore *)self detectors];
-        v10 = [v8 identifier];
-        [v9 removeObjectForKey:v10];
+        detectors = [(AXSDDetectorStore *)self detectors];
+        identifier = [v8 identifier];
+        [detectors removeObjectForKey:identifier];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [customDetectors countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -501,14 +501,14 @@ LABEL_3:
 {
   v19 = *MEMORY[0x277D85DE8];
   [(AXSDDetectorStore *)self _removeCustomDetectors];
-  v3 = [MEMORY[0x277CE6F98] sharedInstance];
-  v4 = [v3 decodedKShotDetectors];
+  mEMORY[0x277CE6F98] = [MEMORY[0x277CE6F98] sharedInstance];
+  decodedKShotDetectors = [mEMORY[0x277CE6F98] decodedKShotDetectors];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v4;
+  v5 = decodedKShotDetectors;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -525,8 +525,8 @@ LABEL_3:
 
         v10 = *(*(&v14 + 1) + 8 * i);
         v11 = [v5 objectForKey:{v10, v14}];
-        v12 = [(AXSDDetectorStore *)self detectors];
-        [v12 setObject:v11 forKey:v10];
+        detectors = [(AXSDDetectorStore *)self detectors];
+        [detectors setObject:v11 forKey:v10];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -542,12 +542,12 @@ LABEL_3:
 {
   v20 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v4 = [(AXSDDetectorStore *)self unInstalledDetectors];
+  unInstalledDetectors = [(AXSDDetectorStore *)self unInstalledDetectors];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v5 = [unInstalledDetectors countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -558,40 +558,40 @@ LABEL_3:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(unInstalledDetectors);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v3 objectForKey:v10];
+        identifier = [v9 identifier];
+        v11 = [v3 objectForKey:identifier];
 
         if (!v11 || [v11 isOlderThanDetector:v9])
         {
-          v12 = [v9 identifier];
-          [v3 setObject:v9 forKey:v12];
+          identifier2 = [v9 identifier];
+          [v3 setObject:v9 forKey:identifier2];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [unInstalledDetectors countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
   }
 
-  v13 = [v3 allValues];
-  [(AXSDDetectorStore *)self _downloadAssetsFromDetectors:v13];
+  allValues = [v3 allValues];
+  [(AXSDDetectorStore *)self _downloadAssetsFromDetectors:allValues];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_downloadAssetsFromDetectors:(id)a3
+- (void)_downloadAssetsFromDetectors:(id)detectors
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  detectorsCopy = detectors;
   v4 = +[AXUltronModelAssetManager sharedInstance];
-  v5 = [v4 hasInProgressDownloads];
+  hasInProgressDownloads = [v4 hasInProgressDownloads];
 
-  if (v5)
+  if (hasInProgressDownloads)
   {
     v6 = AXLogUltron();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -605,15 +605,15 @@ LABEL_24:
     }
   }
 
-  else if (v3 && [v3 count])
+  else if (detectorsCopy && [detectorsCopy count])
   {
     v6 = objc_opt_new();
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v25 = v3;
-    v9 = v3;
+    v25 = detectorsCopy;
+    v9 = detectorsCopy;
     v10 = [v9 countByEnumeratingWithState:&v26 objects:v34 count:16];
     if (v10)
     {
@@ -631,27 +631,27 @@ LABEL_24:
           v14 = *(*(&v26 + 1) + 8 * i);
           if (([v14 isCustom] & 1) == 0)
           {
-            v15 = [v14 model];
+            model = [v14 model];
 
-            if (v15)
+            if (model)
             {
-              v16 = [v14 model];
-              [v6 addObject:v16];
+              model2 = [v14 model];
+              [v6 addObject:model2];
             }
 
             else
             {
-              v16 = AXLogUltron();
-              if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+              model2 = AXLogUltron();
+              if (os_log_type_enabled(model2, OS_LOG_TYPE_ERROR))
               {
                 v17 = objc_opt_class();
                 v18 = v17;
-                v19 = [v14 model];
+                model3 = [v14 model];
                 *buf = 138412546;
                 v31 = v17;
                 v32 = 2112;
-                v33 = v19;
-                _os_log_error_impl(&dword_23D62D000, v16, OS_LOG_TYPE_ERROR, "[%@]: candidate detector for download has no asset: %@", buf, 0x16u);
+                v33 = model3;
+                _os_log_error_impl(&dword_23D62D000, model2, OS_LOG_TYPE_ERROR, "[%@]: candidate detector for download has no asset: %@", buf, 0x16u);
               }
             }
           }
@@ -678,7 +678,7 @@ LABEL_24:
     v23 = +[AXUltronModelAssetManager sharedInstance];
     [v23 downloadAssets:v6];
 
-    v3 = v25;
+    detectorsCopy = v25;
   }
 
   else
@@ -699,8 +699,8 @@ LABEL_24:
 
 - (void)purgeDetectors
 {
-  v3 = [(AXSDDetectorStore *)self installedDetectors];
-  v4 = [v3 ax_filteredArrayUsingBlock:&__block_literal_global_13];
+  installedDetectors = [(AXSDDetectorStore *)self installedDetectors];
+  v4 = [installedDetectors ax_filteredArrayUsingBlock:&__block_literal_global_13];
 
   [(AXSDDetectorStore *)self _purgeAssetsFromDetectors:v4];
 }
@@ -722,12 +722,12 @@ BOOL __35__AXSDDetectorStore_purgeDetectors__block_invoke(uint64_t a1, void *a2)
   return v3;
 }
 
-- (void)_purgeAssetsFromDetectors:(id)a3
+- (void)_purgeAssetsFromDetectors:(id)detectors
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  detectorsCopy = detectors;
+  v5 = detectorsCopy;
+  if (detectorsCopy && [detectorsCopy count])
   {
     v33 = 0u;
     v34 = 0u;
@@ -799,9 +799,9 @@ BOOL __35__AXSDDetectorStore_purgeDetectors__block_invoke(uint64_t a1, void *a2)
           }
 
           v22 = *(*(&v27 + 1) + 8 * v21);
-          v23 = [(AXSDDetectorStore *)self detectors];
-          v24 = [v22 assetId];
-          [v23 removeObjectForKey:v24];
+          detectors = [(AXSDDetectorStore *)self detectors];
+          assetId = [v22 assetId];
+          [detectors removeObjectForKey:assetId];
 
           ++v21;
         }
@@ -848,15 +848,15 @@ id __47__AXSDDetectorStore__purgeAssetsFromDetectors___block_invoke(uint64_t a1,
 - (id)_detectorsNeedingUpgrade
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = [(AXSDDetectorStore *)self unInstalledDetectors];
-  v4 = [(AXSDDetectorStore *)self detectorsByIdentifier];
+  unInstalledDetectors = [(AXSDDetectorStore *)self unInstalledDetectors];
+  detectorsByIdentifier = [(AXSDDetectorStore *)self detectorsByIdentifier];
   v5 = objc_opt_new();
   v6 = objc_opt_new();
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = v3;
+  v7 = unInstalledDetectors;
   v8 = [v7 countByEnumeratingWithState:&v22 objects:v32 count:16];
   if (v8)
   {
@@ -874,8 +874,8 @@ id __47__AXSDDetectorStore__purgeAssetsFromDetectors___block_invoke(uint64_t a1,
         }
 
         v13 = *(*(&v22 + 1) + 8 * i);
-        v14 = [v13 identifier];
-        v15 = [v4 objectForKey:v14];
+        identifier = [v13 identifier];
+        v15 = [detectorsByIdentifier objectForKey:identifier];
 
         if (!v15)
         {
@@ -926,16 +926,16 @@ id __47__AXSDDetectorStore__purgeAssetsFromDetectors___block_invoke(uint64_t a1,
   return v18;
 }
 
-- (id)detectorWithIdentifier:(id)a3
+- (id)detectorWithIdentifier:(id)identifier
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = [(AXSDDetectorStore *)self customDetectors];
-  v6 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  customDetectors = [(AXSDDetectorStore *)self customDetectors];
+  v6 = [customDetectors countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v6)
   {
     v7 = v6;
@@ -946,12 +946,12 @@ id __47__AXSDDetectorStore__purgeAssetsFromDetectors___block_invoke(uint64_t a1,
       {
         if (*v22 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(customDetectors);
         }
 
         v10 = *(*(&v21 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        v12 = [v11 isEqualToString:v4];
+        identifier = [v10 identifier];
+        v12 = [identifier isEqualToString:identifierCopy];
 
         if (v12)
         {
@@ -960,7 +960,7 @@ id __47__AXSDDetectorStore__purgeAssetsFromDetectors___block_invoke(uint64_t a1,
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v7 = [customDetectors countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v7)
       {
         continue;
@@ -978,21 +978,21 @@ id __47__AXSDDetectorStore__purgeAssetsFromDetectors___block_invoke(uint64_t a1,
   v13 = AXSDSoundDetectionTypeForIdentifier();
   if (v13)
   {
-    v5 = v13;
-    v14 = [(AXSDDetectorStore *)self detectors];
-    v15 = [v14 objectForKey:v5];
+    customDetectors = v13;
+    detectors = [(AXSDDetectorStore *)self detectors];
+    v15 = [detectors objectForKey:customDetectors];
 
     if (v15)
     {
 
 LABEL_13:
-      v16 = [(AXSDDetectorStore *)self _detectorWithIdentifier:v4];
+      v16 = [(AXSDDetectorStore *)self _detectorWithIdentifier:identifierCopy];
       goto LABEL_16;
     }
 
     [(AXSDDetectorStore *)self _createSDDetectors];
-    v20 = [(AXSDDetectorStore *)self detectors];
-    v16 = [v20 objectForKey:v5];
+    detectors2 = [(AXSDDetectorStore *)self detectors];
+    v16 = [detectors2 objectForKey:customDetectors];
 
 LABEL_15:
   }
@@ -1002,7 +1002,7 @@ LABEL_15:
     v19 = AXLogUltron();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      [(AXSDDetectorStore *)v4 detectorWithIdentifier:v19];
+      [(AXSDDetectorStore *)identifierCopy detectorWithIdentifier:v19];
     }
 
     v16 = 0;
@@ -1015,17 +1015,17 @@ LABEL_16:
   return v16;
 }
 
-- (id)_detectorWithIdentifier:(id)a3
+- (id)_detectorWithIdentifier:(id)identifier
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_opt_new();
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v6 = [(AXSDDetectorStore *)self installedDetectors];
-  v7 = [v6 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  installedDetectors = [(AXSDDetectorStore *)self installedDetectors];
+  v7 = [installedDetectors countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1036,12 +1036,12 @@ LABEL_16:
       {
         if (*v29 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(installedDetectors);
         }
 
         v11 = *(*(&v28 + 1) + 8 * i);
-        v12 = [v11 identifier];
-        v13 = [v12 isEqualToString:v4];
+        identifier = [v11 identifier];
+        v13 = [identifier isEqualToString:identifierCopy];
 
         if (v13)
         {
@@ -1049,7 +1049,7 @@ LABEL_16:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      v8 = [installedDetectors countByEnumeratingWithState:&v28 objects:v33 count:16];
     }
 
     while (v8);
@@ -1108,29 +1108,29 @@ LABEL_16:
   return v17;
 }
 
-- (id)detectorWithName:(id)a3
+- (id)detectorWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   if (AXIsSoundDetectionMedinaSupportEnabled())
   {
     [(AXSDDetectorStore *)self _createSDDetectors];
   }
 
-  v5 = [(AXSDDetectorStore *)self _detectorWithName:v4];
+  v5 = [(AXSDDetectorStore *)self _detectorWithName:nameCopy];
 
   return v5;
 }
 
-- (id)_detectorWithName:(id)a3
+- (id)_detectorWithName:(id)name
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(AXSDDetectorStore *)self detectors];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  detectors = [(AXSDDetectorStore *)self detectors];
+  v6 = [detectors countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1141,15 +1141,15 @@ LABEL_3:
     {
       if (*v18 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(detectors);
       }
 
       v10 = *(*(&v17 + 1) + 8 * v9);
-      v11 = [(AXSDDetectorStore *)self detectors];
-      v12 = [v11 objectForKey:v10];
+      detectors2 = [(AXSDDetectorStore *)self detectors];
+      v12 = [detectors2 objectForKey:v10];
 
-      v13 = [v12 name];
-      v14 = [v13 isEqualToString:v4];
+      name = [v12 name];
+      v14 = [name isEqualToString:nameCopy];
 
       if (v14)
       {
@@ -1158,7 +1158,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v7 = [detectors countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -1180,28 +1180,28 @@ LABEL_9:
   return v12;
 }
 
-- (id)detectorWithAssetID:(id)a3
+- (id)detectorWithAssetID:(id)d
 {
-  v4 = a3;
-  v5 = [(AXSDDetectorStore *)self detectors];
-  v6 = [v5 objectForKey:v4];
+  dCopy = d;
+  detectors = [(AXSDDetectorStore *)self detectors];
+  v6 = [detectors objectForKey:dCopy];
 
   return v6;
 }
 
 - (id)allDetectors
 {
-  v2 = [(AXSDDetectorStore *)self detectors];
-  v3 = [v2 allValues];
+  detectors = [(AXSDDetectorStore *)self detectors];
+  allValues = [detectors allValues];
 
-  return v3;
+  return allValues;
 }
 
 - (id)supportedDetectors
 {
-  v2 = [(AXSDDetectorStore *)self detectors];
-  v3 = [v2 allValues];
-  v4 = [v3 ax_filteredArrayUsingBlock:&__block_literal_global_23];
+  detectors = [(AXSDDetectorStore *)self detectors];
+  allValues = [detectors allValues];
+  v4 = [allValues ax_filteredArrayUsingBlock:&__block_literal_global_23];
 
   return v4;
 }
@@ -1224,54 +1224,54 @@ uint64_t __39__AXSDDetectorStore_supportedDetectors__block_invoke(uint64_t a1, v
 
 - (id)installedDetectors
 {
-  v2 = [(AXSDDetectorStore *)self detectors];
-  v3 = [v2 allValues];
-  v4 = [v3 ax_filteredArrayUsingBlock:&__block_literal_global_25];
+  detectors = [(AXSDDetectorStore *)self detectors];
+  allValues = [detectors allValues];
+  v4 = [allValues ax_filteredArrayUsingBlock:&__block_literal_global_25];
 
   return v4;
 }
 
 - (id)unInstalledDetectors
 {
-  v2 = [(AXSDDetectorStore *)self detectors];
-  v3 = [v2 allValues];
-  v4 = [v3 ax_filteredArrayUsingBlock:&__block_literal_global_27];
+  detectors = [(AXSDDetectorStore *)self detectors];
+  allValues = [detectors allValues];
+  v4 = [allValues ax_filteredArrayUsingBlock:&__block_literal_global_27];
 
   return v4;
 }
 
 - (id)customDetectors
 {
-  v2 = [(AXSDDetectorStore *)self detectors];
-  v3 = [v2 allValues];
-  v4 = [v3 ax_filteredArrayUsingBlock:&__block_literal_global_29];
+  detectors = [(AXSDDetectorStore *)self detectors];
+  allValues = [detectors allValues];
+  v4 = [allValues ax_filteredArrayUsingBlock:&__block_literal_global_29];
 
   return v4;
 }
 
 - (id)enabledDetectors
 {
-  v2 = [(AXSDDetectorStore *)self detectors];
-  v3 = [v2 allValues];
-  v4 = [v3 ax_filteredArrayUsingBlock:&__block_literal_global_31];
+  detectors = [(AXSDDetectorStore *)self detectors];
+  allValues = [detectors allValues];
+  v4 = [allValues ax_filteredArrayUsingBlock:&__block_literal_global_31];
 
   return v4;
 }
 
-- (id)_addDetectorForAXAsset:(id)a3
+- (id)_addDetectorForAXAsset:(id)asset
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [[AXSDDetector alloc] initWithModel:v4];
+  assetCopy = asset;
+  v5 = [[AXSDDetector alloc] initWithModel:assetCopy];
   detectors = self->_detectors;
-  v7 = [v4 assetId];
-  [(NSMutableDictionary *)detectors setObject:v5 forKey:v7];
+  assetId = [assetCopy assetId];
+  [(NSMutableDictionary *)detectors setObject:v5 forKey:assetId];
 
   if ((AXIsSoundDetectionMedinaSupportEnabled() & 1) == 0)
   {
-    v8 = [MEMORY[0x277CE6670] store];
-    v9 = [MEMORY[0x277CE66A8] ultronAssetType];
-    v10 = [v8 valueForKey:@"AXUltronAssetsInUse" forAssetType:v9];
+    store = [MEMORY[0x277CE6670] store];
+    ultronAssetType = [MEMORY[0x277CE66A8] ultronAssetType];
+    v10 = [store valueForKey:@"AXUltronAssetsInUse" forAssetType:ultronAssetType];
     v11 = [v10 mutableCopy];
 
     if (!v11)
@@ -1279,13 +1279,13 @@ uint64_t __39__AXSDDetectorStore_supportedDetectors__block_invoke(uint64_t a1, v
       v11 = objc_opt_new();
     }
 
-    v12 = [(AXSDDetector *)v5 identifier];
-    v13 = [v11 objectForKey:v12];
+    identifier = [(AXSDDetector *)v5 identifier];
+    v13 = [v11 objectForKey:identifier];
 
     if (v13)
     {
-      v14 = [v4 assetId];
-      v15 = [v13 isEqualToString:v14];
+      assetId2 = [assetCopy assetId];
+      v15 = [v13 isEqualToString:assetId2];
 
       if (v15)
       {
@@ -1294,13 +1294,13 @@ uint64_t __39__AXSDDetectorStore_supportedDetectors__block_invoke(uint64_t a1, v
         {
           v17 = objc_opt_class();
           v18 = v17;
-          v19 = [(AXSDDetector *)v5 identifier];
+          identifier2 = [(AXSDDetector *)v5 identifier];
           v22 = 138412802;
           v23 = v17;
           v24 = 2112;
           v25 = v13;
           v26 = 2112;
-          v27 = v19;
+          v27 = identifier2;
           _os_log_impl(&dword_23D62D000, v16, OS_LOG_TYPE_INFO, "[%@]: found asset id in metadata store: %@. setting detector: %@ to enabled", &v22, 0x20u);
         }
 
@@ -1322,10 +1322,10 @@ uint64_t __39__AXSDDetectorStore_supportedDetectors__block_invoke(uint64_t a1, v
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(AXSDDetectorStore *)self detectors];
-  v5 = [v4 allValues];
+  detectors = [(AXSDDetectorStore *)self detectors];
+  allValues = [detectors allValues];
 
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1336,22 +1336,22 @@ uint64_t __39__AXSDDetectorStore_supportedDetectors__block_invoke(uint64_t a1, v
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        v12 = [v3 objectForKey:v11];
+        identifier = [v10 identifier];
+        v12 = [v3 objectForKey:identifier];
         if (!v12)
         {
           v12 = objc_opt_new();
         }
 
         [v12 addObject:v10];
-        [v3 setObject:v12 forKey:v11];
+        [v3 setObject:v12 forKey:identifier];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -1367,9 +1367,9 @@ uint64_t __39__AXSDDetectorStore_supportedDetectors__block_invoke(uint64_t a1, v
   v22 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
   v4 = objc_alloc(MEMORY[0x277CBEB98]);
-  v5 = [(AXSDDetectorStore *)self allDetectorsByIdentifier];
-  v6 = [v5 allKeys];
-  v7 = [v4 initWithArray:v6];
+  allDetectorsByIdentifier = [(AXSDDetectorStore *)self allDetectorsByIdentifier];
+  allKeys = [allDetectorsByIdentifier allKeys];
+  v7 = [v4 initWithArray:allKeys];
 
   v19 = 0u;
   v20 = 0u;
@@ -1412,15 +1412,15 @@ uint64_t __39__AXSDDetectorStore_supportedDetectors__block_invoke(uint64_t a1, v
 - (id)localizedNamesByIdentifier
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CE6F98] sharedInstance];
-  v4 = [v3 supportedSoundDetectionTypes];
+  mEMORY[0x277CE6F98] = [MEMORY[0x277CE6F98] sharedInstance];
+  supportedSoundDetectionTypes = [mEMORY[0x277CE6F98] supportedSoundDetectionTypes];
 
   v5 = objc_opt_new();
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v6 = v4;
+  v6 = supportedSoundDetectionTypes;
   v7 = [v6 countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v7)
   {
@@ -1450,8 +1450,8 @@ uint64_t __39__AXSDDetectorStore_supportedDetectors__block_invoke(uint64_t a1, v
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v13 = [(AXSDDetectorStore *)self customDetectors];
-  v14 = [v13 countByEnumeratingWithState:&v23 objects:v31 count:16];
+  customDetectors = [(AXSDDetectorStore *)self customDetectors];
+  v14 = [customDetectors countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v14)
   {
     v15 = v14;
@@ -1462,16 +1462,16 @@ uint64_t __39__AXSDDetectorStore_supportedDetectors__block_invoke(uint64_t a1, v
       {
         if (*v24 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(customDetectors);
         }
 
         v18 = *(*(&v23 + 1) + 8 * j);
-        v19 = [v18 identifier];
-        v20 = [v18 name];
-        [v5 setValue:v20 forKey:v19];
+        identifier = [v18 identifier];
+        name = [v18 name];
+        [v5 setValue:name forKey:identifier];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v23 objects:v31 count:16];
+      v15 = [customDetectors countByEnumeratingWithState:&v23 objects:v31 count:16];
     }
 
     while (v15);
@@ -1482,55 +1482,55 @@ uint64_t __39__AXSDDetectorStore_supportedDetectors__block_invoke(uint64_t a1, v
   return v5;
 }
 
-- (void)enableDetector:(id)a3
+- (void)enableDetector:(id)detector
 {
-  v4 = a3;
-  v5 = [(AXSDDetectorStore *)self detectors];
-  v6 = [v4 model];
-  v7 = [v6 assetId];
-  v8 = [v5 objectForKey:v7];
+  detectorCopy = detector;
+  detectors = [(AXSDDetectorStore *)self detectors];
+  model = [detectorCopy model];
+  assetId = [model assetId];
+  v8 = [detectors objectForKey:assetId];
   [v8 setIsEnabled:1];
 
-  v9 = [MEMORY[0x277CE6F98] sharedInstance];
-  [v9 setDetectorIsEnabled:v4 isEnabled:1];
+  mEMORY[0x277CE6F98] = [MEMORY[0x277CE6F98] sharedInstance];
+  [mEMORY[0x277CE6F98] setDetectorIsEnabled:detectorCopy isEnabled:1];
 }
 
-- (void)enableDetectorWithIdentifier:(id)a3
+- (void)enableDetectorWithIdentifier:(id)identifier
 {
-  v4 = [(AXSDDetectorStore *)self detectorWithIdentifier:a3];
+  v4 = [(AXSDDetectorStore *)self detectorWithIdentifier:identifier];
   [(AXSDDetectorStore *)self enableDetector:v4];
 }
 
-- (void)disableDetector:(id)a3
+- (void)disableDetector:(id)detector
 {
-  v4 = a3;
-  v5 = [(AXSDDetectorStore *)self detectors];
-  v6 = [v4 model];
-  v7 = [v6 assetId];
-  v8 = [v5 objectForKey:v7];
+  detectorCopy = detector;
+  detectors = [(AXSDDetectorStore *)self detectors];
+  model = [detectorCopy model];
+  assetId = [model assetId];
+  v8 = [detectors objectForKey:assetId];
   [v8 setIsEnabled:0];
 
-  v9 = [MEMORY[0x277CE6F98] sharedInstance];
-  [v9 setDetectorIsEnabled:v4 isEnabled:0];
+  mEMORY[0x277CE6F98] = [MEMORY[0x277CE6F98] sharedInstance];
+  [mEMORY[0x277CE6F98] setDetectorIsEnabled:detectorCopy isEnabled:0];
 }
 
-- (void)disableDetectorWithIdentifier:(id)a3
+- (void)disableDetectorWithIdentifier:(id)identifier
 {
-  v4 = [(AXSDDetectorStore *)self detectorWithIdentifier:a3];
+  v4 = [(AXSDDetectorStore *)self detectorWithIdentifier:identifier];
   [(AXSDDetectorStore *)self disableDetector:v4];
 }
 
-- (void)_enumerateObserversWithBlock:(id)a3
+- (void)_enumerateObserversWithBlock:(id)block
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   [(NSPointerArray *)self->_observers compact];
-  v5 = [(NSPointerArray *)self->_observers allObjects];
+  allObjects = [(NSPointerArray *)self->_observers allObjects];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v6 = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1542,19 +1542,19 @@ uint64_t __39__AXSDDetectorStore_supportedDetectors__block_invoke(uint64_t a1, v
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObjects);
         }
 
         if (*(*(&v11 + 1) + 8 * v9))
         {
-          v4[2](v4);
+          blockCopy[2](blockCopy);
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -1563,16 +1563,16 @@ uint64_t __39__AXSDDetectorStore_supportedDetectors__block_invoke(uint64_t a1, v
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_notifyObserversAvailableDetectorsDidUpdate:(id)a3
+- (void)_notifyObserversAvailableDetectorsDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __65__AXSDDetectorStore__notifyObserversAvailableDetectorsDidUpdate___block_invoke;
   v6[3] = &unk_278BDD0C8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = updateCopy;
+  v5 = updateCopy;
   [(AXSDDetectorStore *)self _enumerateObserversWithBlock:v6];
 }
 
@@ -1585,19 +1585,19 @@ void __65__AXSDDetectorStore__notifyObserversAvailableDetectorsDidUpdate___block
   }
 }
 
-- (void)_notifyObserversDetectorsNeedUpdate:(id)a3 toDetectors:(id)a4
+- (void)_notifyObserversDetectorsNeedUpdate:(id)update toDetectors:(id)detectors
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  detectorsCopy = detectors;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __69__AXSDDetectorStore__notifyObserversDetectorsNeedUpdate_toDetectors___block_invoke;
   v10[3] = &unk_278BDD0F0;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = updateCopy;
+  v12 = detectorsCopy;
+  v8 = detectorsCopy;
+  v9 = updateCopy;
   [(AXSDDetectorStore *)self _enumerateObserversWithBlock:v10];
 }
 
@@ -1610,20 +1610,20 @@ void __69__AXSDDetectorStore__notifyObserversDetectorsNeedUpdate_toDetectors___b
   }
 }
 
-- (void)_notifyObserversDidFinishRefreshingDetectors:(id)a3 wasSuccessful:(BOOL)a4 error:(id)a5
+- (void)_notifyObserversDidFinishRefreshingDetectors:(id)detectors wasSuccessful:(BOOL)successful error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  detectorsCopy = detectors;
+  errorCopy = error;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __86__AXSDDetectorStore__notifyObserversDidFinishRefreshingDetectors_wasSuccessful_error___block_invoke;
   v12[3] = &unk_278BDD118;
   v12[4] = self;
-  v13 = v8;
-  v15 = a4;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
+  v13 = detectorsCopy;
+  successfulCopy = successful;
+  v14 = errorCopy;
+  v10 = errorCopy;
+  v11 = detectorsCopy;
   [(AXSDDetectorStore *)self _enumerateObserversWithBlock:v12];
 }
 
@@ -1655,17 +1655,17 @@ void __54__AXSDDetectorStore__notifyObserversDetectorsAreReady__block_invoke(uin
   }
 }
 
-- (void)_notifyObserversDetectorsDownloadProgress:(int64_t)a3 totalSizeExpected:(int64_t)a4 remainingTimeExpected:(double)a5 isStalled:(BOOL)a6
+- (void)_notifyObserversDetectorsDownloadProgress:(int64_t)progress totalSizeExpected:(int64_t)expected remainingTimeExpected:(double)timeExpected isStalled:(BOOL)stalled
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __113__AXSDDetectorStore__notifyObserversDetectorsDownloadProgress_totalSizeExpected_remainingTimeExpected_isStalled___block_invoke;
   v6[3] = &unk_278BDD168;
   v6[4] = self;
-  v6[5] = a4;
-  v6[6] = a3;
-  *&v6[7] = a5;
-  v7 = a6;
+  v6[5] = expected;
+  v6[6] = progress;
+  *&v6[7] = timeExpected;
+  stalledCopy = stalled;
   [(AXSDDetectorStore *)self _enumerateObserversWithBlock:v6];
 }
 
@@ -1687,20 +1687,20 @@ void __119__AXSDDetectorStore__notifyObserversDetectorsDownloadProgress_totalSiz
   }
 }
 
-- (void)_notifyObserversDidFinishPurgingDetectors:(id)a3 wasSuccessful:(BOOL)a4 error:(id)a5
+- (void)_notifyObserversDidFinishPurgingDetectors:(id)detectors wasSuccessful:(BOOL)successful error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  detectorsCopy = detectors;
+  errorCopy = error;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __83__AXSDDetectorStore__notifyObserversDidFinishPurgingDetectors_wasSuccessful_error___block_invoke;
   v12[3] = &unk_278BDD118;
   v12[4] = self;
-  v13 = v8;
-  v15 = a4;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
+  v13 = detectorsCopy;
+  successfulCopy = successful;
+  v14 = errorCopy;
+  v10 = errorCopy;
+  v11 = detectorsCopy;
   [(AXSDDetectorStore *)self _enumerateObserversWithBlock:v12];
 }
 
@@ -1743,8 +1743,8 @@ uint64_t __80__AXSDDetectorStore_assetManager_didFinishRefreshingAssets_wasSucce
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(AXSDDetectorStore *)self detectors];
-  v6 = [v3 stringWithFormat:@"[%@]: Number of Detectors: %lu", v4, objc_msgSend(v5, "count")];
+  detectors = [(AXSDDetectorStore *)self detectors];
+  v6 = [v3 stringWithFormat:@"[%@]: Number of Detectors: %lu", v4, objc_msgSend(detectors, "count")];
 
   return v6;
 }

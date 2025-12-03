@@ -1,16 +1,16 @@
 @interface NUKeyframeSequence
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeOfKeyframeAtIndex:(SEL)a3;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeOfKeyframeAtIndex:(SEL)index;
 - (NUKeyframeSequence)init;
-- (NUKeyframeSequence)initWithInterpolation:(int64_t)a3 count:(unint64_t)a4 times:(id *)a5;
-- (NUKeyframeSequence)initWithKeyframeSequence:(id)a3;
-- (int64_t)indexOfKeyframeAtOrBeforeTime:(id *)a3;
-- (uint64_t)interpolantAtTime:(uint64_t)a3@<X8>;
+- (NUKeyframeSequence)initWithInterpolation:(int64_t)interpolation count:(unint64_t)count times:(id *)times;
+- (NUKeyframeSequence)initWithKeyframeSequence:(id)sequence;
+- (int64_t)indexOfKeyframeAtOrBeforeTime:(id *)time;
+- (uint64_t)interpolantAtTime:(uint64_t)time@<X8>;
 - (void)dealloc;
 @end
 
 @implementation NUKeyframeSequence
 
-- (uint64_t)interpolantAtTime:(uint64_t)a3@<X8>
+- (uint64_t)interpolantAtTime:(uint64_t)time@<X8>
 {
   if ((*(a2 + 12) & 1) == 0)
   {
@@ -60,7 +60,7 @@
         result = [v6 count];
         v22.i64[0] = v13 + 2;
         v23.i64[0] = result;
-        *(a3 + 16) = vbslq_s8(vdupq_lane_s64(vcgtq_s64(v23, v22).i64[0], 0), v24, v24.u64[0]);
+        *(time + 16) = vbslq_s8(vdupq_lane_s64(vcgtq_s64(v23, v22).i64[0], 0), v24, v24.u64[0]);
         v4 = v26;
         goto LABEL_3;
       }
@@ -77,11 +77,11 @@
     }
 
 LABEL_2:
-    *(a3 + 16) = 0;
-    *(a3 + 24) = 0;
+    *(time + 16) = 0;
+    *(time + 24) = 0;
     v4 = xmmword_1C03C2770;
 LABEL_3:
-    *a3 = v4;
+    *time = v4;
     return result;
   }
 
@@ -135,16 +135,16 @@ LABEL_3:
     v12 = 0uLL;
   }
 
-  *a3 = v11;
-  *(a3 + 16) = v12;
+  *time = v11;
+  *(time + 16) = v12;
   return result;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeOfKeyframeAtIndex:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeOfKeyframeAtIndex:(SEL)index
 {
   if (self->var3)
   {
-    v6 = self;
+    selfCopy = self;
     self = [($3CC8671D27C23BF42ADDB32F2B5E48AE *)self count];
     v7 = &self[-1].var3 + 7;
     if (&self[-1].var3 + 7 >= a4)
@@ -152,7 +152,7 @@ LABEL_3:
       v7 = a4;
     }
 
-    v8 = v6->var3 + 24 * (v7 & ~(v7 >> 63));
+    v8 = selfCopy->var3 + 24 * (v7 & ~(v7 >> 63));
   }
 
   else
@@ -165,9 +165,9 @@ LABEL_3:
   return self;
 }
 
-- (int64_t)indexOfKeyframeAtOrBeforeTime:(id *)a3
+- (int64_t)indexOfKeyframeAtOrBeforeTime:(id *)time
 {
-  if ((a3->var2 & 1) == 0)
+  if ((time->var2 & 1) == 0)
   {
     return 0;
   }
@@ -201,7 +201,7 @@ LABEL_3:
       v13 = *&v12->var0;
       time1.epoch = v12->var3;
       *&time1.value = v13;
-      v20 = *a3;
+      v20 = *time;
       if (CMTimeCompare(&time1, &v20) >= 1)
       {
         v9 = v10 + (v9 - v10) / 2;
@@ -226,7 +226,7 @@ LABEL_3:
       v19 = *&v18->var0;
       time1.epoch = v18->var3;
       *&time1.value = v19;
-      v20 = *a3;
+      v20 = *time;
       if (CMTimeCompare(&time1, &v20) > 0)
       {
         break;
@@ -256,17 +256,17 @@ LABEL_3:
   [(NUKeyframeSequence *)&v4 dealloc];
 }
 
-- (NUKeyframeSequence)initWithKeyframeSequence:(id)a3
+- (NUKeyframeSequence)initWithKeyframeSequence:(id)sequence
 {
-  v4 = a3;
+  sequenceCopy = sequence;
   v8.receiver = self;
   v8.super_class = NUKeyframeSequence;
   v5 = [(NUKeyframeSequence *)&v8 init];
-  v5->_interpolation = [v4 interpolation];
-  v5->_count = [v4 count];
-  if (v4)
+  v5->_interpolation = [sequenceCopy interpolation];
+  v5->_count = [sequenceCopy count];
+  if (sequenceCopy)
   {
-    v6 = v4[2];
+    v6 = sequenceCopy[2];
   }
 
   else
@@ -280,19 +280,19 @@ LABEL_3:
   return v5;
 }
 
-- (NUKeyframeSequence)initWithInterpolation:(int64_t)a3 count:(unint64_t)a4 times:(id *)a5
+- (NUKeyframeSequence)initWithInterpolation:(int64_t)interpolation count:(unint64_t)count times:(id *)times
 {
   v11.receiver = self;
   v11.super_class = NUKeyframeSequence;
   v8 = [(NUKeyframeSequence *)&v11 init];
-  v8->_interpolation = a3;
-  v8->_count = a4;
-  if (a4)
+  v8->_interpolation = interpolation;
+  v8->_count = count;
+  if (count)
   {
-    v9 = malloc_type_calloc(a4, 0x18uLL, 0x1000040504FFAC1uLL);
+    v9 = malloc_type_calloc(count, 0x18uLL, 0x1000040504FFAC1uLL);
     v8->_times = v9;
     v8->_ownsTimes = 1;
-    memcpy(v9, a5, 24 * a4);
+    memcpy(v9, times, 24 * count);
   }
 
   return v8;

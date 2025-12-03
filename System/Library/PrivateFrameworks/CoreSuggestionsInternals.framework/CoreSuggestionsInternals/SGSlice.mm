@@ -1,10 +1,10 @@
 @interface SGSlice
-+ (id)sliceWithType:(id)a3 range:(_NSRange)a4;
-+ (id)sliceWithType:(id)a3 start:(unint64_t)a4 end:(unint64_t)a5;
-- (SGSlice)initWithType:(id)a3 start:(unint64_t)a4 end:(unint64_t)a5;
++ (id)sliceWithType:(id)type range:(_NSRange)range;
++ (id)sliceWithType:(id)type start:(unint64_t)start end:(unint64_t)end;
+- (SGSlice)initWithType:(id)type start:(unint64_t)start end:(unint64_t)end;
 - (_NSRange)range;
 - (id)description;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation SGSlice
@@ -16,11 +16,11 @@
   return v2;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   start = self->_start;
-  v6 = v4[2];
+  v6 = compareCopy[2];
   if (start < v6)
   {
     goto LABEL_2;
@@ -32,7 +32,7 @@
   }
 
   end = self->_end;
-  v10 = v4[3];
+  v10 = compareCopy[3];
   if (end < v10)
   {
 LABEL_2:
@@ -48,7 +48,7 @@ LABEL_4:
   }
 
   type = self->_type;
-  v12 = *(v4 + 2);
+  v12 = *(compareCopy + 2);
   v13 = *&type >= v12;
   v14 = *&type > v12;
   if (v13)
@@ -75,31 +75,31 @@ LABEL_5:
   return result;
 }
 
-- (SGSlice)initWithType:(id)a3 start:(unint64_t)a4 end:(unint64_t)a5
+- (SGSlice)initWithType:(id)type start:(unint64_t)start end:(unint64_t)end
 {
   v9.receiver = self;
   v9.super_class = SGSlice;
   result = [(SGSlice *)&v9 init];
   if (result)
   {
-    result->_type = a3;
-    result->_start = a4;
-    result->_end = a5;
+    result->_type = type;
+    result->_start = start;
+    result->_end = end;
   }
 
   return result;
 }
 
-+ (id)sliceWithType:(id)a3 range:(_NSRange)a4
++ (id)sliceWithType:(id)type range:(_NSRange)range
 {
-  v4 = [[SGSlice alloc] initWithType:*&a3 range:a4.location, a4.length];
+  v4 = [[SGSlice alloc] initWithType:*&type range:range.location, range.length];
 
   return v4;
 }
 
-+ (id)sliceWithType:(id)a3 start:(unint64_t)a4 end:(unint64_t)a5
++ (id)sliceWithType:(id)type start:(unint64_t)start end:(unint64_t)end
 {
-  v5 = [[SGSlice alloc] initWithType:*&a3 start:a4 end:a5];
+  v5 = [[SGSlice alloc] initWithType:*&type start:start end:end];
 
   return v5;
 }

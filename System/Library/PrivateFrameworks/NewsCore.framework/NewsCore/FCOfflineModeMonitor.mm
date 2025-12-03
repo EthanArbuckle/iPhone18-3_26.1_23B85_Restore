@@ -3,16 +3,16 @@
 - (BOOL)isLowDataModeEnabled;
 - (BOOL)isNetworkReachableViaWiFi;
 - (BOOL)isNetworkUsageInexpensive;
-- (FCOfflineModeMonitor)initWithAppActivationMonitor:(id)a3 configurationManager:(id)a4 networkBehaviorMonitor:(id)a5;
-- (FCOfflineModeMonitor)initWithNetworkReachability:(id)a3 onlineTransitionMonitor:(id)a4 offlineTransitionMonitor:(id)a5;
+- (FCOfflineModeMonitor)initWithAppActivationMonitor:(id)monitor configurationManager:(id)manager networkBehaviorMonitor:(id)behaviorMonitor;
+- (FCOfflineModeMonitor)initWithNetworkReachability:(id)reachability onlineTransitionMonitor:(id)monitor offlineTransitionMonitor:(id)transitionMonitor;
 - (int64_t)cellularRadioAccessTechnology;
 - (void)_notifyNetworkReachabilityConnectivityDidChange;
 - (void)_notifyNetworkReachabilityDidChange;
-- (void)_transitionToOfflineReason:(int64_t)a3;
-- (void)addObserver:(id)a3;
-- (void)networkReachabilityDidChange:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)wifiReachabilityDidChange:(id)a3;
+- (void)_transitionToOfflineReason:(int64_t)reason;
+- (void)addObserver:(id)observer;
+- (void)networkReachabilityDidChange:(id)change;
+- (void)removeObserver:(id)observer;
+- (void)wifiReachabilityDidChange:(id)change;
 @end
 
 @implementation FCOfflineModeMonitor
@@ -24,27 +24,27 @@
     return 0;
   }
 
-  v4 = [(FCOfflineModeMonitor *)self networkReachability];
-  v5 = [v4 isCloudKitAccessAllowed];
+  networkReachability = [(FCOfflineModeMonitor *)self networkReachability];
+  isCloudKitAccessAllowed = [networkReachability isCloudKitAccessAllowed];
 
-  return v5;
+  return isCloudKitAccessAllowed;
 }
 
 - (BOOL)isLowDataModeEnabled
 {
-  v2 = [(FCOfflineModeMonitor *)self networkReachability];
-  v3 = [v2 isLowDataModeEnabled];
+  networkReachability = [(FCOfflineModeMonitor *)self networkReachability];
+  isLowDataModeEnabled = [networkReachability isLowDataModeEnabled];
 
-  return v3;
+  return isLowDataModeEnabled;
 }
 
-- (FCOfflineModeMonitor)initWithAppActivationMonitor:(id)a3 configurationManager:(id)a4 networkBehaviorMonitor:(id)a5
+- (FCOfflineModeMonitor)initWithAppActivationMonitor:(id)monitor configurationManager:(id)manager networkBehaviorMonitor:(id)behaviorMonitor
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  monitorCopy = monitor;
+  managerCopy = manager;
+  behaviorMonitorCopy = behaviorMonitor;
+  if (!monitorCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v19 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "appActivationMonitor"];
     *buf = 136315906;
@@ -57,13 +57,13 @@
     v28 = v19;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v10)
+    if (behaviorMonitorCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v10)
+  else if (behaviorMonitorCopy)
   {
     goto LABEL_6;
   }
@@ -85,8 +85,8 @@
 LABEL_6:
   v11 = FCCurrentContextEnvironment();
   v12 = FCOfflineModePingHostName(v11);
-  v13 = [[FCPingBasedOnlineNetworkTransitionMonitor alloc] initWithConfigurationManager:v9 hostName:v12 port:443];
-  v14 = [[FCTelemetryBasedOfflineNetworkTransitionMonitor alloc] initWithAppActivationMonitor:v8 configurationManager:v9 networkBehaviorMonitor:v10 onlineTransitionMonitor:v13];
+  v13 = [[FCPingBasedOnlineNetworkTransitionMonitor alloc] initWithConfigurationManager:managerCopy hostName:v12 port:443];
+  v14 = [[FCTelemetryBasedOfflineNetworkTransitionMonitor alloc] initWithAppActivationMonitor:monitorCopy configurationManager:managerCopy networkBehaviorMonitor:behaviorMonitorCopy onlineTransitionMonitor:v13];
   v15 = +[FCNetworkReachability sharedNetworkReachability];
   v16 = [(FCOfflineModeMonitor *)self initWithNetworkReachability:v15 onlineTransitionMonitor:v13 offlineTransitionMonitor:v14];
 
@@ -94,13 +94,13 @@ LABEL_6:
   return v16;
 }
 
-- (FCOfflineModeMonitor)initWithNetworkReachability:(id)a3 onlineTransitionMonitor:(id)a4 offlineTransitionMonitor:(id)a5
+- (FCOfflineModeMonitor)initWithNetworkReachability:(id)reachability onlineTransitionMonitor:(id)monitor offlineTransitionMonitor:(id)transitionMonitor
 {
   v83 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  reachabilityCopy = reachability;
+  monitorCopy = monitor;
+  transitionMonitorCopy = transitionMonitor;
+  if (!reachabilityCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v52 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "networkReachability"];
     *buf = 136315906;
@@ -113,13 +113,13 @@ LABEL_6:
     v82 = v52;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v10)
+    if (monitorCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v10)
+  else if (monitorCopy)
   {
     goto LABEL_6;
   }
@@ -139,7 +139,7 @@ LABEL_6:
   }
 
 LABEL_6:
-  if (!v11 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!transitionMonitorCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v54 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "offlineTransitionMonitor"];
     *buf = 136315906;
@@ -162,10 +162,10 @@ LABEL_6:
     observers = v12->_observers;
     v12->_observers = v13;
 
-    objc_storeStrong(&v12->_networkReachability, a3);
-    [v9 addObserver:v12];
-    objc_storeStrong(&v12->_onlineTransitionMonitor, a4);
-    objc_storeStrong(&v12->_offlineTransitionMonitor, a5);
+    objc_storeStrong(&v12->_networkReachability, reachability);
+    [reachabilityCopy addObserver:v12];
+    objc_storeStrong(&v12->_onlineTransitionMonitor, monitor);
+    objc_storeStrong(&v12->_offlineTransitionMonitor, transitionMonitor);
     v63 = [objc_alloc(MEMORY[0x1E69B6918]) initWithName:@"initial"];
     v62 = [objc_alloc(MEMORY[0x1E69B6918]) initWithName:@"inactiveOffline"];
     v15 = [v62 onWillEnter:&__block_literal_global_26];
@@ -183,7 +183,7 @@ LABEL_6:
     v70[1] = 3221225472;
     v70[2] = __101__FCOfflineModeMonitor_initWithNetworkReachability_onlineTransitionMonitor_offlineTransitionMonitor___block_invoke_62;
     v70[3] = &unk_1E7C3A5A8;
-    v71 = v11;
+    v71 = transitionMonitorCopy;
     v20 = [v19 onWillEnter:v70];
     v68[0] = MEMORY[0x1E69E9820];
     v68[1] = 3221225472;
@@ -195,7 +195,7 @@ LABEL_6:
     v23 = [v22 onWillExit:&__block_literal_global_66_1];
 
     v24 = [objc_alloc(MEMORY[0x1E69B6918]) initWithName:@"activeOffline"];
-    v25 = v10;
+    v25 = monitorCopy;
     v26 = v24;
     v66[0] = MEMORY[0x1E69E9820];
     v66[1] = 3221225472;
@@ -213,11 +213,11 @@ LABEL_6:
     v28 = [v27 onDidEnter:v64];
     v29 = [v28 onWillExit:&__block_literal_global_73_0];
 
-    v30 = [v9 offlineReason];
-    v61 = v9;
-    if (v30)
+    offlineReason = [reachabilityCopy offlineReason];
+    v61 = reachabilityCopy;
+    if (offlineReason)
     {
-      v31 = v30;
+      v31 = offlineReason;
       v32 = v62;
       v33 = v62;
       v58 = [MEMORY[0x1E696AD98] numberWithInteger:v31];
@@ -265,8 +265,8 @@ LABEL_6:
     objc_storeStrong(v59 + 3, v48);
     v49 = [v48 fireEventWithName:@"transitionToFirstState" withContext:v58];
 
-    v10 = v60;
-    v9 = v61;
+    monitorCopy = v60;
+    reachabilityCopy = v61;
   }
 
   v50 = *MEMORY[0x1E69E9840];
@@ -536,46 +536,46 @@ void __101__FCOfflineModeMonitor_initWithNetworkReachability_onlineTransitionMon
 
 - (BOOL)isNetworkUsageInexpensive
 {
-  v2 = [(FCOfflineModeMonitor *)self networkReachability];
-  v3 = [v2 isNetworkUsageExpensive];
+  networkReachability = [(FCOfflineModeMonitor *)self networkReachability];
+  isNetworkUsageExpensive = [networkReachability isNetworkUsageExpensive];
 
-  return v3;
+  return isNetworkUsageExpensive;
 }
 
 - (BOOL)isNetworkReachableViaWiFi
 {
-  v3 = [(FCOfflineModeMonitor *)self isNetworkReachable];
-  if (v3)
+  isNetworkReachable = [(FCOfflineModeMonitor *)self isNetworkReachable];
+  if (isNetworkReachable)
   {
-    v4 = [(FCOfflineModeMonitor *)self networkReachability];
-    v5 = [v4 isNetworkReachableViaWiFi];
+    networkReachability = [(FCOfflineModeMonitor *)self networkReachability];
+    isNetworkReachableViaWiFi = [networkReachability isNetworkReachableViaWiFi];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(isNetworkReachable) = isNetworkReachableViaWiFi;
   }
 
-  return v3;
+  return isNetworkReachable;
 }
 
 - (int64_t)cellularRadioAccessTechnology
 {
-  v2 = [(FCOfflineModeMonitor *)self networkReachability];
-  v3 = [v2 cellularRadioAccessTechnology];
+  networkReachability = [(FCOfflineModeMonitor *)self networkReachability];
+  cellularRadioAccessTechnology = [networkReachability cellularRadioAccessTechnology];
 
-  return v3;
+  return cellularRadioAccessTechnology;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __36__FCOfflineModeMonitor_addObserver___block_invoke_2;
     v6[3] = &unk_1E7C36C58;
     v6[4] = self;
-    v7 = v4;
+    v7 = observerCopy;
     FCPerformBlockOnMainThread(v6);
   }
 }
@@ -586,18 +586,18 @@ void __36__FCOfflineModeMonitor_addObserver___block_invoke_2(uint64_t a1)
   [v2 addObject:*(a1 + 40)];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __39__FCOfflineModeMonitor_removeObserver___block_invoke_2;
     v6[3] = &unk_1E7C36C58;
     v6[4] = self;
-    v7 = v4;
+    v7 = observerCopy;
     FCPerformBlockOnMainThread(v6);
   }
 }
@@ -628,12 +628,12 @@ void __39__FCOfflineModeMonitor_removeObserver___block_invoke_2(uint64_t a1)
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)networkReachabilityDidChange:(id)a3
+- (void)networkReachabilityDidChange:(id)change
 {
-  v4 = [a3 offlineReason];
-  if (v4)
+  offlineReason = [change offlineReason];
+  if (offlineReason)
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:v4];
+    v8 = [MEMORY[0x1E696AD98] numberWithInteger:offlineReason];
     v5 = @"reachabilityWentOffline";
   }
 
@@ -643,15 +643,15 @@ void __39__FCOfflineModeMonitor_removeObserver___block_invoke_2(uint64_t a1)
     v5 = @"reachabilityCameOnline";
   }
 
-  v6 = [(FCOfflineModeMonitor *)self stateMachine];
-  v7 = [v6 fireEventWithName:v5 withContext:v8];
+  stateMachine = [(FCOfflineModeMonitor *)self stateMachine];
+  v7 = [stateMachine fireEventWithName:v5 withContext:v8];
 }
 
-- (void)wifiReachabilityDidChange:(id)a3
+- (void)wifiReachabilityDidChange:(id)change
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = [(FCOfflineModeMonitor *)self observers];
-  v5 = [v4 copy];
+  observers = [(FCOfflineModeMonitor *)self observers];
+  v5 = [observers copy];
 
   v15 = 0u;
   v16 = 0u;
@@ -692,15 +692,15 @@ void __39__FCOfflineModeMonitor_removeObserver___block_invoke_2(uint64_t a1)
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_transitionToOfflineReason:(int64_t)a3
+- (void)_transitionToOfflineReason:(int64_t)reason
 {
-  v5 = [(FCOfflineModeMonitor *)self offlineReason];
-  if (v5 != a3)
+  offlineReason = [(FCOfflineModeMonitor *)self offlineReason];
+  if (offlineReason != reason)
   {
-    v6 = v5;
-    [(FCOfflineModeMonitor *)self setOfflineReason:a3];
+    v6 = offlineReason;
+    [(FCOfflineModeMonitor *)self setOfflineReason:reason];
     [(FCOfflineModeMonitor *)self _notifyNetworkReachabilityDidChange];
-    if (!a3 || !v6)
+    if (!reason || !v6)
     {
 
       [(FCOfflineModeMonitor *)self _notifyNetworkReachabilityConnectivityDidChange];
@@ -711,8 +711,8 @@ void __39__FCOfflineModeMonitor_removeObserver___block_invoke_2(uint64_t a1)
 - (void)_notifyNetworkReachabilityDidChange
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(FCOfflineModeMonitor *)self observers];
-  v4 = [v3 copy];
+  observers = [(FCOfflineModeMonitor *)self observers];
+  v4 = [observers copy];
 
   v14 = 0u;
   v15 = 0u;
@@ -756,8 +756,8 @@ void __39__FCOfflineModeMonitor_removeObserver___block_invoke_2(uint64_t a1)
 - (void)_notifyNetworkReachabilityConnectivityDidChange
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(FCOfflineModeMonitor *)self observers];
-  v4 = [v3 copy];
+  observers = [(FCOfflineModeMonitor *)self observers];
+  v4 = [observers copy];
 
   v14 = 0u;
   v15 = 0u;

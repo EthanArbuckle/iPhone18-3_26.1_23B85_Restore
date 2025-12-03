@@ -1,44 +1,44 @@
 @interface _UIKeyboardStateManagerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)acceptWord:(id)a3 firstDelete:(unint64_t)a4 forInput:(id)a5;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)acceptWord:(id)word firstDelete:(unint64_t)delete forInput:(id)input;
 - (BOOL)autocorrectSpellingEnabled;
 - (BOOL)autocorrectionPreference;
-- (BOOL)callShouldDeleteWithWordCountForRapidDelete:(int)a3 characterCountForRapidDelete:(int)a4;
-- (BOOL)callShouldInsertText:(id)a3;
-- (BOOL)performKeyboardOutput:(id)a3 userInfo:(id)a4;
-- (BOOL)presentTextCompletionAsMarkedText:(id)a3;
+- (BOOL)callShouldDeleteWithWordCountForRapidDelete:(int)delete characterCountForRapidDelete:(int)rapidDelete;
+- (BOOL)callShouldInsertText:(id)text;
+- (BOOL)performKeyboardOutput:(id)output userInfo:(id)info;
+- (BOOL)presentTextCompletionAsMarkedText:(id)text;
 - (id)_accessibilityKeyboardInputDelegate;
 - (uint64_t)_axIsObservingAppLifecycleNotifications;
 - (uint64_t)_axSetIsObservingAppLifecycleNotifications:(uint64_t)result;
-- (unsigned)_setAttributedMarkedText:(id)a3 selectedRange:(_NSRange)a4 inputString:(id)a5 lastInputString:(id)a6 searchString:(id)a7 compareAttributes:(BOOL)a8;
+- (unsigned)_setAttributedMarkedText:(id)text selectedRange:(_NSRange)range inputString:(id)string lastInputString:(id)inputString searchString:(id)searchString compareAttributes:(BOOL)attributes;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axHandleVoiceOverStatusChanged:(id)a3;
-- (void)_axRegisterForVoiceOverNotifications:(id)a3;
+- (void)_axHandleVoiceOverStatusChanged:(id)changed;
+- (void)_axRegisterForVoiceOverNotifications:(id)notifications;
 - (void)_axResetFKAFocusToFirstResponderOnDelegate;
 - (void)_axShowKeyboardIfHidden;
-- (void)_axUnregisterForVoiceOverNotifications:(id)a3;
+- (void)_axUnregisterForVoiceOverNotifications:(id)notifications;
 - (void)_axUpdateAutocorrectionSettings;
-- (void)acceptAutocorrectionWithCompletionHandler:(id)a3 requestedByRemoteInputDestination:(BOOL)a4;
-- (void)acceptCandidate:(id)a3;
+- (void)acceptAutocorrectionWithCompletionHandler:(id)handler requestedByRemoteInputDestination:(BOOL)destination;
+- (void)acceptCandidate:(id)candidate;
 - (void)completeDeleteFromInput;
-- (void)completeHandleKeyEvent:(id)a3;
+- (void)completeHandleKeyEvent:(id)event;
 - (void)dealloc;
-- (void)deleteBackwardAndNotify:(BOOL)a3;
-- (void)handleKeyboardInput:(id)a3 executionContext:(id)a4;
-- (void)setInHardwareKeyboardMode:(BOOL)a3 forceRebuild:(BOOL)a4 shouldMoveKeyboard:(BOOL)a5;
-- (void)setInputMode:(id)a3 userInitiated:(BOOL)a4;
-- (void)setInputModeToNextInPreferredListWithExecutionContext:(id)a3;
-- (void)setShift:(BOOL)a3 autoshift:(BOOL)a4;
-- (void)textDidChange:(id)a3;
+- (void)deleteBackwardAndNotify:(BOOL)notify;
+- (void)handleKeyboardInput:(id)input executionContext:(id)context;
+- (void)setInHardwareKeyboardMode:(BOOL)mode forceRebuild:(BOOL)rebuild shouldMoveKeyboard:(BOOL)keyboard;
+- (void)setInputMode:(id)mode userInitiated:(BOOL)initiated;
+- (void)setInputModeToNextInPreferredListWithExecutionContext:(id)context;
+- (void)setShift:(BOOL)shift autoshift:(BOOL)autoshift;
+- (void)textDidChange:(id)change;
 - (void)touchUpdateLastUsedInputModeAction;
-- (void)unmarkText:(id)a3;
+- (void)unmarkText:(id)text;
 @end
 
 @implementation _UIKeyboardStateManagerAccessibility
 
 - (uint64_t)_axIsObservingAppLifecycleNotifications
 {
-  if (a1)
+  if (self)
   {
     v2 = __UIAccessibilityGetAssociatedBool() & 1;
   }
@@ -61,14 +61,14 @@
   return result;
 }
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v14 = location;
   v13 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v10 = @"_UIKeyboardStateManager";
   v9 = "@";
   [location[0] validateClass:0 hasInstanceMethod:? withFullSignature:?];
@@ -126,13 +126,13 @@
   objc_storeStrong(v14, v13);
 }
 
-- (void)acceptAutocorrectionWithCompletionHandler:(id)a3 requestedByRemoteInputDestination:(BOOL)a4
+- (void)acceptAutocorrectionWithCompletionHandler:(id)handler requestedByRemoteInputDestination:(BOOL)destination
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v12 = a4;
+  objc_storeStrong(location, handler);
+  destinationCopy = destination;
   if (AXSelectionModeVoiceOverSelectionMovement())
   {
     v11 = VOTLogCommon();
@@ -151,24 +151,24 @@
 
   else
   {
-    v7.receiver = v14;
+    v7.receiver = selfCopy;
     v7.super_class = _UIKeyboardStateManagerAccessibility;
-    [(_UIKeyboardStateManagerAccessibility *)&v7 acceptAutocorrectionWithCompletionHandler:location[0] requestedByRemoteInputDestination:v12];
+    [(_UIKeyboardStateManagerAccessibility *)&v7 acceptAutocorrectionWithCompletionHandler:location[0] requestedByRemoteInputDestination:destinationCopy];
     v8 = 0;
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)performKeyboardOutput:(id)a3 userInfo:(id)a4
+- (BOOL)performKeyboardOutput:(id)output userInfo:(id)info
 {
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, output);
   v27 = 0;
-  objc_storeStrong(&v27, a4);
-  v25.receiver = v29;
+  objc_storeStrong(&v27, info);
+  v25.receiver = selfCopy;
   v25.super_class = _UIKeyboardStateManagerAccessibility;
   v26 = [(_UIKeyboardStateManagerAccessibility *)&v25 performKeyboardOutput:location[0] userInfo:v27];
   LOBYTE(v19) = 0;
@@ -179,10 +179,10 @@
 
   v24 = v19;
   v16 = [v27 objectForKeyedSubscript:@"shouldForwardToRemoteInputSource"];
-  v17 = [v16 BOOLValue];
+  bOOLValue = [v16 BOOLValue];
   *&v4 = MEMORY[0x29EDC9740](v16).n128_u64[0];
-  v23 = v17;
-  if (v17 & 1) != 0 && !v24 && ([MEMORY[0x29EDC7AF8] isKeyboardProcess])
+  v23 = bOOLValue;
+  if (bOOLValue & 1) != 0 && !v24 && ([MEMORY[0x29EDC7AF8] isKeyboardProcess])
   {
     v30 = v26 & 1;
     v22 = 1;
@@ -190,31 +190,31 @@
 
   else
   {
-    v15 = [location[0] insertionText];
-    if ([v15 length] || (v14 = 1, !objc_msgSend(location[0], "deletionCount")) && (v14 = 1, !objc_msgSend(location[0], "forwardDeletionCount")))
+    insertionText = [location[0] insertionText];
+    if ([insertionText length] || (_axIsLastKeyBackspace = 1, !objc_msgSend(location[0], "deletionCount")) && (_axIsLastKeyBackspace = 1, !objc_msgSend(location[0], "forwardDeletionCount")))
     {
-      v14 = [(_UIKeyboardStateManagerAccessibility *)v29 _axIsLastKeyBackspace];
+      _axIsLastKeyBackspace = [(_UIKeyboardStateManagerAccessibility *)selfCopy _axIsLastKeyBackspace];
     }
 
-    *&v5 = MEMORY[0x29EDC9740](v15).n128_u64[0];
-    if (v14)
+    *&v5 = MEMORY[0x29EDC9740](insertionText).n128_u64[0];
+    if (_axIsLastKeyBackspace)
     {
-      [(_UIKeyboardStateManagerAccessibility *)v29 _accessibilityPostValueChangedNotificationWithChangeType:*MEMORY[0x29EDBDCC8], v5];
+      [(_UIKeyboardStateManagerAccessibility *)selfCopy _accessibilityPostValueChangedNotificationWithChangeType:*MEMORY[0x29EDBDCC8], v5];
     }
 
     else
     {
-      v12 = [location[0] insertionText];
+      insertionText2 = [location[0] insertionText];
       v13 = 1;
-      if (!v12)
+      if (!insertionText2)
       {
         v11 = 0;
         if (_AXSHoverTextTypingEnabled())
         {
           v10 = 1;
-          if (([(_UIKeyboardStateManagerAccessibility *)v29 safeBoolForKey:@"usesCandidateSelection"]& 1) == 0)
+          if (([(_UIKeyboardStateManagerAccessibility *)selfCopy safeBoolForKey:@"usesCandidateSelection"]& 1) == 0)
           {
-            v10 = [(_UIKeyboardStateManagerAccessibility *)v29 safeBoolForKey:@"_hasMarkedText"];
+            v10 = [(_UIKeyboardStateManagerAccessibility *)selfCopy safeBoolForKey:@"_hasMarkedText"];
           }
 
           v11 = v10;
@@ -223,19 +223,19 @@
         v13 = v11;
       }
 
-      *&v6 = MEMORY[0x29EDC9740](v12).n128_u64[0];
+      *&v6 = MEMORY[0x29EDC9740](insertionText2).n128_u64[0];
       if (v13)
       {
-        v21 = [(_UIKeyboardStateManagerAccessibility *)v29 safeValueForKeyPath:@"inputDelegateManager.keyInputDelegate", v6];
-        v8 = v29;
-        v9 = [location[0] insertionText];
+        v21 = [(_UIKeyboardStateManagerAccessibility *)selfCopy safeValueForKeyPath:@"inputDelegateManager.keyInputDelegate", v6];
+        v8 = selfCopy;
+        insertionText3 = [location[0] insertionText];
         [_UIKeyboardStateManagerAccessibility _accessibilityPostValueChangedNotificationWithInsertedText:v8 keyInputDelegate:"_accessibilityPostValueChangedNotificationWithInsertedText:keyInputDelegate:"];
-        MEMORY[0x29EDC9740](v9);
+        MEMORY[0x29EDC9740](insertionText3);
         objc_storeStrong(&v21, 0);
       }
     }
 
-    v20 = MEMORY[0x29EDC9748](v29);
+    v20 = MEMORY[0x29EDC9748](selfCopy);
     AXPerformBlockAsynchronouslyOnMainThread();
     v30 = v26 & 1;
     v22 = 1;
@@ -247,15 +247,15 @@
   return v30 & 1;
 }
 
-- (void)handleKeyboardInput:(id)a3 executionContext:(id)a4
+- (void)handleKeyboardInput:(id)input executionContext:(id)context
 {
   v14 = *MEMORY[0x29EDCA608];
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, input);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, context);
   v9 = AXLogUIA();
   v8 = OS_LOG_TYPE_INFO;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -266,11 +266,11 @@
 
   objc_storeStrong(&v9, 0);
   _UIAccessibilityBlockPostingOfAllNotifications();
-  -[_UIKeyboardStateManagerAccessibility _axSetIsLastKeyBackspace:](v12, "_axSetIsLastKeyBackspace:", [location[0] isBackspace]);
-  v7.receiver = v12;
+  -[_UIKeyboardStateManagerAccessibility _axSetIsLastKeyBackspace:](selfCopy, "_axSetIsLastKeyBackspace:", [location[0] isBackspace]);
+  v7.receiver = selfCopy;
   v7.super_class = _UIKeyboardStateManagerAccessibility;
   [(_UIKeyboardStateManagerAccessibility *)&v7 handleKeyboardInput:location[0] executionContext:v10];
-  v6 = MEMORY[0x29EDC9748](v12);
+  v6 = MEMORY[0x29EDC9748](selfCopy);
   AXPerformSafeBlock();
   v4 = AXUIKeyboardEntryNotificationBlockTimer();
   [v4 afterDelay:&__block_literal_global_4 processBlock:1.0];
@@ -280,64 +280,64 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)deleteBackwardAndNotify:(BOOL)a3
+- (void)deleteBackwardAndNotify:(BOOL)notify
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  notifyCopy = notify;
   v3.receiver = self;
   v3.super_class = _UIKeyboardStateManagerAccessibility;
-  [(_UIKeyboardStateManagerAccessibility *)&v3 deleteBackwardAndNotify:a3];
-  if (v4)
+  [(_UIKeyboardStateManagerAccessibility *)&v3 deleteBackwardAndNotify:notify];
+  if (notifyCopy)
   {
-    [(_UIKeyboardStateManagerAccessibility *)v6 _accessibilityPostValueChangedNotificationWithChangeType:*MEMORY[0x29EDBDCC8]];
+    [(_UIKeyboardStateManagerAccessibility *)selfCopy _accessibilityPostValueChangedNotificationWithChangeType:*MEMORY[0x29EDBDCC8]];
   }
 }
 
-- (void)unmarkText:(id)a3
+- (void)unmarkText:(id)text
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3.receiver = v5;
+  objc_storeStrong(location, text);
+  v3.receiver = selfCopy;
   v3.super_class = _UIKeyboardStateManagerAccessibility;
   [(_UIKeyboardStateManagerAccessibility *)&v3 unmarkText:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (unsigned)_setAttributedMarkedText:(id)a3 selectedRange:(_NSRange)a4 inputString:(id)a5 lastInputString:(id)a6 searchString:(id)a7 compareAttributes:(BOOL)a8
+- (unsigned)_setAttributedMarkedText:(id)text selectedRange:(_NSRange)range inputString:(id)string lastInputString:(id)inputString searchString:(id)searchString compareAttributes:(BOOL)attributes
 {
-  v21 = a4;
-  v20 = self;
+  rangeCopy = range;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, text);
   v18 = 0;
-  objc_storeStrong(&v18, a5);
+  objc_storeStrong(&v18, string);
   v17 = 0;
-  objc_storeStrong(&v17, a6);
+  objc_storeStrong(&v17, inputString);
   v16 = 0;
-  objc_storeStrong(&v16, a7);
-  v15 = a8;
+  objc_storeStrong(&v16, searchString);
+  attributesCopy = attributes;
   v14 = 0;
-  [(_UIKeyboardStateManagerAccessibility *)v20 _accessibilityPostValueChangedNotificationWithChangeType:0];
-  v13.receiver = v20;
+  [(_UIKeyboardStateManagerAccessibility *)selfCopy _accessibilityPostValueChangedNotificationWithChangeType:0];
+  v13.receiver = selfCopy;
   v13.super_class = _UIKeyboardStateManagerAccessibility;
-  v12 = [(_UIKeyboardStateManagerAccessibility *)&v13 _setAttributedMarkedText:location[0] selectedRange:v21.location inputString:v21.length lastInputString:v18 searchString:v17 compareAttributes:v16, a8];
+  attributes = [(_UIKeyboardStateManagerAccessibility *)&v13 _setAttributedMarkedText:location[0] selectedRange:rangeCopy.location inputString:rangeCopy.length lastInputString:v18 searchString:v17 compareAttributes:v16, attributes];
   objc_storeStrong(&v16, 0);
   objc_storeStrong(&v17, 0);
   objc_storeStrong(&v18, 0);
   objc_storeStrong(location, 0);
-  return v12;
+  return attributes;
 }
 
-- (void)textDidChange:(id)a3
+- (void)textDidChange:(id)change
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, change);
   v5 = [NSClassFromString(&cfstr_Uidictationcon.isa) safeBoolForKey:@"isRunning"];
   v4 = 0;
   if (v5)
@@ -354,8 +354,8 @@
     }
   }
 
-  [(_UIKeyboardStateManagerAccessibility *)v7 _accessibilityPostValueChangedNotificationWithChangeType:v4];
-  v3.receiver = v7;
+  [(_UIKeyboardStateManagerAccessibility *)selfCopy _accessibilityPostValueChangedNotificationWithChangeType:v4];
+  v3.receiver = selfCopy;
   v3.super_class = _UIKeyboardStateManagerAccessibility;
   [(_UIKeyboardStateManagerAccessibility *)&v3 textDidChange:location[0]];
   objc_storeStrong(location, 0);
@@ -363,21 +363,21 @@
 
 - (void)completeDeleteFromInput
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = _UIKeyboardStateManagerAccessibility;
   [(_UIKeyboardStateManagerAccessibility *)&v2 completeDeleteFromInput];
-  [(_UIKeyboardStateManagerAccessibility *)v4 _accessibilityPostValueChangedNotificationWithChangeType:0];
+  [(_UIKeyboardStateManagerAccessibility *)selfCopy _accessibilityPostValueChangedNotificationWithChangeType:0];
 }
 
-- (void)completeHandleKeyEvent:(id)a3
+- (void)completeHandleKeyEvent:(id)event
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v14.receiver = v16;
+  objc_storeStrong(location, event);
+  v14.receiver = selfCopy;
   v14.super_class = _UIKeyboardStateManagerAccessibility;
   [(_UIKeyboardStateManagerAccessibility *)&v14 completeHandleKeyEvent:location[0]];
   if (_AXSAutomationEnabled())
@@ -430,31 +430,31 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)setInputModeToNextInPreferredListWithExecutionContext:(id)a3
+- (void)setInputModeToNextInPreferredListWithExecutionContext:(id)context
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3.receiver = v5;
+  objc_storeStrong(location, context);
+  v3.receiver = selfCopy;
   v3.super_class = _UIKeyboardStateManagerAccessibility;
   [(_UIKeyboardStateManagerAccessibility *)&v3 setInputModeToNextInPreferredListWithExecutionContext:location[0]];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)acceptWord:(id)a3 firstDelete:(unint64_t)a4 forInput:(id)a5
+- (BOOL)acceptWord:(id)word firstDelete:(unint64_t)delete forInput:(id)input
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v14 = a4;
+  objc_storeStrong(location, word);
+  deleteCopy = delete;
   v13 = 0;
-  objc_storeStrong(&v13, a5);
-  v11.receiver = v16;
+  objc_storeStrong(&v13, input);
+  v11.receiver = selfCopy;
   v11.super_class = _UIKeyboardStateManagerAccessibility;
-  v12 = [(_UIKeyboardStateManagerAccessibility *)&v11 acceptWord:location[0] firstDelete:v14 forInput:v13];
+  v12 = [(_UIKeyboardStateManagerAccessibility *)&v11 acceptWord:location[0] firstDelete:deleteCopy forInput:v13];
   if (v12)
   {
     v10 = *MEMORY[0x29EDC7EA8];
@@ -463,9 +463,9 @@
       v10 = *MEMORY[0x29EDC73A0];
     }
 
-    v7 = [location[0] candidate];
-    UIAccessibilityPostNotification(v10, v7);
-    MEMORY[0x29EDC9740](v7);
+    candidate = [location[0] candidate];
+    UIAccessibilityPostNotification(v10, candidate);
+    MEMORY[0x29EDC9740](candidate);
   }
 
   v6 = v12;
@@ -474,87 +474,87 @@
   return v6 & 1;
 }
 
-- (void)setInputMode:(id)a3 userInitiated:(BOOL)a4
+- (void)setInputMode:(id)mode userInitiated:(BOOL)initiated
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = a4;
+  objc_storeStrong(location, mode);
+  initiatedCopy = initiated;
   MEMORY[0x29ED3DFA0](*MEMORY[0x29EDC74D0]);
-  v5.receiver = v8;
+  v5.receiver = selfCopy;
   v5.super_class = _UIKeyboardStateManagerAccessibility;
-  [(_UIKeyboardStateManagerAccessibility *)&v5 setInputMode:location[0] userInitiated:a4];
+  [(_UIKeyboardStateManagerAccessibility *)&v5 setInputMode:location[0] userInitiated:initiated];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7468], 0);
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)setShift:(BOOL)a3 autoshift:(BOOL)a4
+- (void)setShift:(BOOL)shift autoshift:(BOOL)autoshift
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
-  v7 = a4;
+  shiftCopy = shift;
+  autoshiftCopy = autoshift;
   v6 = [(_UIKeyboardStateManagerAccessibility *)self safeBoolForKey:?];
-  v5.receiver = v10;
+  v5.receiver = selfCopy;
   v5.super_class = _UIKeyboardStateManagerAccessibility;
-  [(_UIKeyboardStateManagerAccessibility *)&v5 setShift:v8 autoshift:v7];
+  [(_UIKeyboardStateManagerAccessibility *)&v5 setShift:shiftCopy autoshift:autoshiftCopy];
   v4 = v6 & 1;
-  if (v4 != [(_UIKeyboardStateManagerAccessibility *)v10 safeBoolForKey:@"isShifted"])
+  if (v4 != [(_UIKeyboardStateManagerAccessibility *)selfCopy safeBoolForKey:@"isShifted"])
   {
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
   }
 }
 
-- (void)acceptCandidate:(id)a3
+- (void)acceptCandidate:(id)candidate
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5.receiver = v7;
+  objc_storeStrong(location, candidate);
+  v5.receiver = selfCopy;
   v5.super_class = _UIKeyboardStateManagerAccessibility;
   [(_UIKeyboardStateManagerAccessibility *)&v5 acceptCandidate:location[0]];
   notification = *MEMORY[0x29EDC7EA8];
-  v4 = [location[0] candidate];
-  UIAccessibilityPostNotification(notification, v4);
-  MEMORY[0x29EDC9740](v4);
+  candidate = [location[0] candidate];
+  UIAccessibilityPostNotification(notification, candidate);
+  MEMORY[0x29EDC9740](candidate);
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)presentTextCompletionAsMarkedText:(id)a3
+- (BOOL)presentTextCompletionAsMarkedText:(id)text
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v18.receiver = v21;
+  objc_storeStrong(location, text);
+  v18.receiver = selfCopy;
   v18.super_class = _UIKeyboardStateManagerAccessibility;
   v19 = [(_UIKeyboardStateManagerAccessibility *)&v18 presentTextCompletionAsMarkedText:location[0]];
-  v7 = [MEMORY[0x29EDBDFA0] sharedInstance];
-  v8 = [v7 voiceOverInlineTextCompletionAppearanceFeedback];
-  *&v3 = MEMORY[0x29EDC9740](v7).n128_u64[0];
-  v17 = v8;
+  mEMORY[0x29EDBDFA0] = [MEMORY[0x29EDBDFA0] sharedInstance];
+  voiceOverInlineTextCompletionAppearanceFeedback = [mEMORY[0x29EDBDFA0] voiceOverInlineTextCompletionAppearanceFeedback];
+  *&v3 = MEMORY[0x29EDC9740](mEMORY[0x29EDBDFA0]).n128_u64[0];
+  v17 = voiceOverInlineTextCompletionAppearanceFeedback;
   v15 = 0;
   v10 = 0;
   v9 = 0;
-  if (v8 != 1)
+  if (voiceOverInlineTextCompletionAppearanceFeedback != 1)
   {
     v9 = 0;
     if (v19)
     {
-      v16 = [location[0] displayString];
+      displayString = [location[0] displayString];
       v15 = 1;
       v9 = 0;
-      if ([v16 length])
+      if ([displayString length])
       {
         v9 = 0;
         if ([MEMORY[0x29EDC7AF8] safeBoolForKey:@"presentsInlineTextCompletionAsMarkedText"])
         {
           v14 = 0;
           objc_opt_class();
-          v6 = [(_UIKeyboardStateManagerAccessibility *)v21 safeValueForKey:@"inlineCompletionAsMarkedText"];
+          v6 = [(_UIKeyboardStateManagerAccessibility *)selfCopy safeValueForKey:@"inlineCompletionAsMarkedText"];
           v13 = __UIAccessibilityCastAsClass();
           MEMORY[0x29EDC9740](v6);
           v12 = MEMORY[0x29EDC9748](v13);
@@ -574,7 +574,7 @@
 
   if (v15)
   {
-    MEMORY[0x29EDC9740](v16);
+    MEMORY[0x29EDC9740](displayString);
   }
 
   if (v9 && (v17 & 4) != 0)
@@ -587,48 +587,48 @@
   return v5 & 1;
 }
 
-- (void)setInHardwareKeyboardMode:(BOOL)a3 forceRebuild:(BOOL)a4 shouldMoveKeyboard:(BOOL)a5
+- (void)setInHardwareKeyboardMode:(BOOL)mode forceRebuild:(BOOL)rebuild shouldMoveKeyboard:(BOOL)keyboard
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
-  v7 = a4;
-  v6 = a5;
+  modeCopy = mode;
+  rebuildCopy = rebuild;
+  keyboardCopy = keyboard;
   v5.receiver = self;
   v5.super_class = _UIKeyboardStateManagerAccessibility;
-  [(_UIKeyboardStateManagerAccessibility *)&v5 setInHardwareKeyboardMode:a3 forceRebuild:a4 shouldMoveKeyboard:a5];
-  if ([(_UIKeyboardStateManagerAccessibility *)v10 _axShouldShowKeyboard])
+  [(_UIKeyboardStateManagerAccessibility *)&v5 setInHardwareKeyboardMode:mode forceRebuild:rebuild shouldMoveKeyboard:keyboard];
+  if ([(_UIKeyboardStateManagerAccessibility *)selfCopy _axShouldShowKeyboard])
   {
-    [(_UIKeyboardStateManagerAccessibility *)v10 _axShowKeyboardIfHidden];
+    [(_UIKeyboardStateManagerAccessibility *)selfCopy _axShowKeyboardIfHidden];
   }
 }
 
 - (void)_axShowKeyboardIfHidden
 {
-  v2 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    if ([v2 safeBoolForKey:@"isMinimized"])
+    if ([selfCopy safeBoolForKey:@"isMinimized"])
     {
-      v1 = MEMORY[0x29EDC9748](v2);
+      v1 = MEMORY[0x29EDC9748](selfCopy);
       AXPerformSafeBlock();
       objc_storeStrong(&v1, 0);
     }
   }
 }
 
-- (BOOL)callShouldDeleteWithWordCountForRapidDelete:(int)a3 characterCountForRapidDelete:(int)a4
+- (BOOL)callShouldDeleteWithWordCountForRapidDelete:(int)delete characterCountForRapidDelete:(int)rapidDelete
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
-  v7 = a4;
+  deleteCopy = delete;
+  rapidDeleteCopy = rapidDelete;
   v5.receiver = self;
   v5.super_class = _UIKeyboardStateManagerAccessibility;
-  v6 = [(_UIKeyboardStateManagerAccessibility *)&v5 callShouldDeleteWithWordCountForRapidDelete:a3 characterCountForRapidDelete:a4];
+  v6 = [(_UIKeyboardStateManagerAccessibility *)&v5 callShouldDeleteWithWordCountForRapidDelete:delete characterCountForRapidDelete:rapidDelete];
   if (v6)
   {
-    [(_UIKeyboardStateManagerAccessibility *)v10 _axResetFKAFocusToFirstResponderOnDelegate];
+    [(_UIKeyboardStateManagerAccessibility *)selfCopy _axResetFKAFocusToFirstResponderOnDelegate];
   }
 
   return v6 & 1;
@@ -636,10 +636,10 @@
 
 - (void)_axResetFKAFocusToFirstResponderOnDelegate
 {
-  v2 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v1 = MEMORY[0x29EDC9748](v2);
+    v1 = MEMORY[0x29EDC9748](selfCopy);
     AXPerformSafeBlock();
     objc_storeStrong(&v1, 0);
   }
@@ -647,9 +647,9 @@
 
 - (id)_accessibilityKeyboardInputDelegate
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 safeValueForKey:@"inputDelegate"];
+    v2 = [self safeValueForKey:@"inputDelegate"];
   }
 
   else
@@ -662,28 +662,28 @@
 
 - (void)touchUpdateLastUsedInputModeAction
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   if (!UIAccessibilityIsVoiceOverRunning())
   {
-    v2.receiver = v4;
+    v2.receiver = selfCopy;
     v2.super_class = _UIKeyboardStateManagerAccessibility;
     [(_UIKeyboardStateManagerAccessibility *)&v2 touchUpdateLastUsedInputModeAction];
   }
 }
 
-- (BOOL)callShouldInsertText:(id)a3
+- (BOOL)callShouldInsertText:(id)text
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5.receiver = v8;
+  objc_storeStrong(location, text);
+  v5.receiver = selfCopy;
   v5.super_class = _UIKeyboardStateManagerAccessibility;
   v6 = [(_UIKeyboardStateManagerAccessibility *)&v5 callShouldInsertText:location[0]];
   if (v6)
   {
-    [(_UIKeyboardStateManagerAccessibility *)v8 _axResetFKAFocusToFirstResponderOnDelegate];
+    [(_UIKeyboardStateManagerAccessibility *)selfCopy _axResetFKAFocusToFirstResponderOnDelegate];
   }
 
   v4 = v6;
@@ -693,28 +693,28 @@
 
 - (BOOL)autocorrectSpellingEnabled
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  if (UIAccessibilityIsVoiceOverRunning() && [(_UIKeyboardStateManagerAccessibility *)v6 _axIsHandwritingEnabled])
+  if (UIAccessibilityIsVoiceOverRunning() && [(_UIKeyboardStateManagerAccessibility *)selfCopy _axIsHandwritingEnabled])
   {
     return 0;
   }
 
-  v3.receiver = v6;
+  v3.receiver = selfCopy;
   v3.super_class = _UIKeyboardStateManagerAccessibility;
   return [(_UIKeyboardStateManagerAccessibility *)&v3 autocorrectSpellingEnabled];
 }
 
 - (BOOL)autocorrectionPreference
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  if (UIAccessibilityIsVoiceOverRunning() && [(_UIKeyboardStateManagerAccessibility *)v6 _axIsHandwritingEnabled])
+  if (UIAccessibilityIsVoiceOverRunning() && [(_UIKeyboardStateManagerAccessibility *)selfCopy _axIsHandwritingEnabled])
   {
     return 0;
   }
 
-  v3.receiver = v6;
+  v3.receiver = selfCopy;
   v3.super_class = _UIKeyboardStateManagerAccessibility;
   return [(_UIKeyboardStateManagerAccessibility *)&v3 autocorrectionPreference];
 }
@@ -722,13 +722,13 @@
 - (void)_axUpdateAutocorrectionSettings
 {
   v14 = *MEMORY[0x29EDCA608];
-  v12 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v11 = [v12 safeUnsignedIntegerForKey:@"autocorrectionPreferenceForTraits"] != 0;
+    v11 = [selfCopy safeUnsignedIntegerForKey:@"autocorrectionPreferenceForTraits"] != 0;
     v9 = 0;
     objc_opt_class();
-    v1 = [v12 safeValueForKey:@"m_keyboardState"];
+    v1 = [selfCopy safeValueForKey:@"m_keyboardState"];
     v8 = __UIAccessibilityCastAsClass();
     MEMORY[0x29EDC9740](v1);
     v7 = MEMORY[0x29EDC9748](v8);
@@ -745,7 +745,7 @@
     objc_storeStrong(&v6, 0);
     v2 = MEMORY[0x29EDC9748](v10);
     v4 = v11;
-    v3 = MEMORY[0x29EDC9748](v12);
+    v3 = MEMORY[0x29EDC9748](selfCopy);
     AXPerformSafeBlock();
     objc_storeStrong(&v3, 0);
     objc_storeStrong(&v2, 0);
@@ -755,55 +755,55 @@
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
   v6.receiver = self;
   v6.super_class = _UIKeyboardStateManagerAccessibility;
   [(_UIKeyboardStateManagerAccessibility *)&v6 _accessibilityLoadAccessibilityInformation];
   location = [MEMORY[0x29EDBA068] defaultCenter];
-  if (([(_UIKeyboardStateManagerAccessibility *)v8 _axIsObservingAppLifecycleNotifications]& 1) == 0)
+  if (([(_UIKeyboardStateManagerAccessibility *)selfCopy _axIsObservingAppLifecycleNotifications]& 1) == 0)
   {
-    [location addObserver:v8 selector:sel__axUnregisterForVoiceOverNotifications_ name:*MEMORY[0x29EDC8038] object:?];
-    [location addObserver:v8 selector:sel__axRegisterForVoiceOverNotifications_ name:*MEMORY[0x29EDC8010] object:0];
-    [location addObserver:v8 selector:sel__axHandleVoiceOverStatusChanged_ name:*MEMORY[0x29EDC8000] object:0];
-    [_UIKeyboardStateManagerAccessibility _axSetIsObservingAppLifecycleNotifications:v8];
+    [location addObserver:selfCopy selector:sel__axUnregisterForVoiceOverNotifications_ name:*MEMORY[0x29EDC8038] object:?];
+    [location addObserver:selfCopy selector:sel__axRegisterForVoiceOverNotifications_ name:*MEMORY[0x29EDC8010] object:0];
+    [location addObserver:selfCopy selector:sel__axHandleVoiceOverStatusChanged_ name:*MEMORY[0x29EDC8000] object:0];
+    [_UIKeyboardStateManagerAccessibility _axSetIsObservingAppLifecycleNotifications:selfCopy];
   }
 
-  v3 = [MEMORY[0x29EDC7938] sharedApplication];
-  v4 = [v3 applicationState];
-  *&v2 = MEMORY[0x29EDC9740](v3).n128_u64[0];
-  if (!v4)
+  mEMORY[0x29EDC7938] = [MEMORY[0x29EDC7938] sharedApplication];
+  applicationState = [mEMORY[0x29EDC7938] applicationState];
+  *&v2 = MEMORY[0x29EDC9740](mEMORY[0x29EDC7938]).n128_u64[0];
+  if (!applicationState)
   {
-    [(_UIKeyboardStateManagerAccessibility *)v8 _axRegisterForVoiceOverNotifications:0, v2];
+    [(_UIKeyboardStateManagerAccessibility *)selfCopy _axRegisterForVoiceOverNotifications:0, v2];
   }
 
   objc_storeStrong(&location, 0);
 }
 
-- (void)_axRegisterForVoiceOverNotifications:(id)a3
+- (void)_axRegisterForVoiceOverNotifications:(id)notifications
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, notifications);
   v3 = MEMORY[0x29EDCA5F8];
   v4 = -1073741824;
   v5 = 0;
   v6 = __77___UIKeyboardStateManagerAccessibility__axRegisterForVoiceOverNotifications___block_invoke;
   v7 = &unk_29F30C7C8;
-  v8 = MEMORY[0x29EDC9748](v10);
+  v8 = MEMORY[0x29EDC9748](selfCopy);
   AXPerformBlockOnMainThreadAfterDelay();
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_axUnregisterForVoiceOverNotifications:(id)a3
+- (void)_axUnregisterForVoiceOverNotifications:(id)notifications
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(_UIKeyboardStateManagerAccessibility *)v12 _axIsObservingVoiceOverNotifications])
+  objc_storeStrong(location, notifications);
+  if ([(_UIKeyboardStateManagerAccessibility *)selfCopy _axIsObservingVoiceOverNotifications])
   {
     v9 = VOTLogHandwriting();
     v8 = 2;
@@ -817,10 +817,10 @@
 
     objc_storeStrong(&v9, 0);
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-    CFNotificationCenterRemoveObserver(DarwinNotifyCenter, v12, *MEMORY[0x29EDBDF20], 0);
+    CFNotificationCenterRemoveObserver(DarwinNotifyCenter, selfCopy, *MEMORY[0x29EDBDF20], 0);
     v4 = CFNotificationCenterGetDarwinNotifyCenter();
-    CFNotificationCenterRemoveObserver(v4, v12, *MEMORY[0x29EDBDF18], 0);
-    [(_UIKeyboardStateManagerAccessibility *)v12 _axSetIsObservingVoiceOverNotifications:0];
+    CFNotificationCenterRemoveObserver(v4, selfCopy, *MEMORY[0x29EDBDF18], 0);
+    [(_UIKeyboardStateManagerAccessibility *)selfCopy _axSetIsObservingVoiceOverNotifications:0];
     v10 = 0;
   }
 
@@ -832,30 +832,30 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_axHandleVoiceOverStatusChanged:(id)a3
+- (void)_axHandleVoiceOverStatusChanged:(id)changed
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(_UIKeyboardStateManagerAccessibility *)v4 _axUpdateAutocorrectionSettings];
+  objc_storeStrong(location, changed);
+  [(_UIKeyboardStateManagerAccessibility *)selfCopy _axUpdateAutocorrectionSettings];
   objc_storeStrong(location, 0);
 }
 
 - (void)dealloc
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
   [(_UIKeyboardStateManagerAccessibility *)self _axUnregisterForVoiceOverNotifications:?];
-  v2 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v2 removeObserver:v7 name:*MEMORY[0x29EDC8038] object:0];
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 removeObserver:v7 name:*MEMORY[0x29EDC8010] object:0];
-  v4 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v4 removeObserver:v7 name:*MEMORY[0x29EDC8000] object:0];
-  MEMORY[0x29EDC9740](v4);
-  [_UIKeyboardStateManagerAccessibility _axSetIsObservingAppLifecycleNotifications:v7];
-  v5.receiver = v7;
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter removeObserver:selfCopy name:*MEMORY[0x29EDC8038] object:0];
+  defaultCenter2 = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter2 removeObserver:selfCopy name:*MEMORY[0x29EDC8010] object:0];
+  defaultCenter3 = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter3 removeObserver:selfCopy name:*MEMORY[0x29EDC8000] object:0];
+  MEMORY[0x29EDC9740](defaultCenter3);
+  [_UIKeyboardStateManagerAccessibility _axSetIsObservingAppLifecycleNotifications:selfCopy];
+  v5.receiver = selfCopy;
   v5.super_class = _UIKeyboardStateManagerAccessibility;
   [(_UIKeyboardStateManagerAccessibility *)&v5 dealloc];
 }

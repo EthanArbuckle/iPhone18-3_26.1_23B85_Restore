@@ -1,31 +1,31 @@
 @interface MCActionTrigger
-+ (id)actionTriggerForTargetPlugObjectID:(id)a3 withActionKey:(id)a4;
-- (MCActionTrigger)initWithImprint:(id)a3;
++ (id)actionTriggerForTargetPlugObjectID:(id)d withActionKey:(id)key;
+- (MCActionTrigger)initWithImprint:(id)imprint;
 - (id)description;
 - (id)imprint;
-- (void)_copySelfToSnapshot:(id)a3;
+- (void)_copySelfToSnapshot:(id)snapshot;
 - (void)demolish;
 @end
 
 @implementation MCActionTrigger
 
-+ (id)actionTriggerForTargetPlugObjectID:(id)a3 withActionKey:(id)a4
++ (id)actionTriggerForTargetPlugObjectID:(id)d withActionKey:(id)key
 {
   v6 = objc_alloc_init(MCActionTrigger);
-  [(MCAction *)v6 setTargetObjectID:a3];
-  [(MCActionTrigger *)v6 setActionKey:a4];
+  [(MCAction *)v6 setTargetObjectID:d];
+  [(MCActionTrigger *)v6 setActionKey:key];
 
   return v6;
 }
 
-- (MCActionTrigger)initWithImprint:(id)a3
+- (MCActionTrigger)initWithImprint:(id)imprint
 {
   v6.receiver = self;
   v6.super_class = MCActionTrigger;
   v4 = [(MCAction *)&v6 initWithImprint:?];
   if (v4)
   {
-    v4->_actionKey = [a3 objectForKey:@"actionKey"];
+    v4->_actionKey = [imprint objectForKey:@"actionKey"];
   }
 
   return v4;
@@ -43,18 +43,18 @@
 {
   v7.receiver = self;
   v7.super_class = MCActionTrigger;
-  v3 = [(MCAction *)&v7 imprint];
-  v4 = v3;
+  imprint = [(MCAction *)&v7 imprint];
+  v4 = imprint;
   actionKey = self->_actionKey;
   if (actionKey)
   {
-    [v3 setObject:actionKey forKey:@"actionKey"];
+    [imprint setObject:actionKey forKey:@"actionKey"];
   }
 
   return v4;
 }
 
-- (void)_copySelfToSnapshot:(id)a3
+- (void)_copySelfToSnapshot:(id)snapshot
 {
   v6.receiver = self;
   v6.super_class = MCActionTrigger;
@@ -62,7 +62,7 @@
   actionKey = self->_actionKey;
   if (actionKey)
   {
-    *(a3 + 3) = [(NSString *)actionKey copy];
+    *(snapshot + 3) = [(NSString *)actionKey copy];
   }
 }
 

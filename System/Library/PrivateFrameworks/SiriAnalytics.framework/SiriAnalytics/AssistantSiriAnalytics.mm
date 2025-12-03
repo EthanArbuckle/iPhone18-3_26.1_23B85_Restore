@@ -1,9 +1,9 @@
 @interface AssistantSiriAnalytics
-+ (id)derivedIdentifierForComponentName:(int)a3 fromSourceIdentifier:(id)a4;
++ (id)derivedIdentifierForComponentName:(int)name fromSourceIdentifier:(id)identifier;
 + (id)sharedAnalytics;
 + (id)sharedStream;
 - (AssistantSiriAnalytics)init;
-- (void)createTag:(id)a3 completion:(id)a4;
+- (void)createTag:(id)tag completion:(id)completion;
 @end
 
 @implementation AssistantSiriAnalytics
@@ -11,9 +11,9 @@
 + (id)sharedStream
 {
   v2 = +[AssistantSiriAnalytics sharedAnalytics];
-  v3 = [v2 defaultMessageStream];
+  defaultMessageStream = [v2 defaultMessageStream];
 
-  return v3;
+  return defaultMessageStream;
 }
 
 + (id)sharedAnalytics
@@ -28,12 +28,12 @@
   return v3;
 }
 
-- (void)createTag:(id)a3 completion:(id)a4
+- (void)createTag:(id)tag completion:(id)completion
 {
   remoteService = self->_remoteService;
-  v6 = a4;
-  v7 = [a3 shim];
-  [(SiriAnalyticsRemoteService *)remoteService createTag:v7 completion:v6];
+  completionCopy = completion;
+  shim = [tag shim];
+  [(SiriAnalyticsRemoteService *)remoteService createTag:shim completion:completionCopy];
 }
 
 - (AssistantSiriAnalytics)init
@@ -62,20 +62,20 @@
   return v2;
 }
 
-+ (id)derivedIdentifierForComponentName:(int)a3 fromSourceIdentifier:(id)a4
++ (id)derivedIdentifierForComponentName:(int)name fromSourceIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  if (a3)
+  identifierCopy = identifier;
+  if (name)
   {
-    if (a3 > 0x42)
+    if (name > 0x42)
     {
       v6 = @"COMPONENTNAME_UNKNOWN";
     }
 
     else
     {
-      v6 = off_1E8587A00[a3 - 1];
+      v6 = off_1E8587A00[name - 1];
     }
 
     v9 = MEMORY[0x1E696AFB0];
@@ -85,7 +85,7 @@
 
     if (v12)
     {
-      v8 = [MEMORY[0x1E696AFB0] sa_deterministicUUIDv5ForNamespaceUUID:v12 sourceUUID:v5];
+      v8 = [MEMORY[0x1E696AFB0] sa_deterministicUUIDv5ForNamespaceUUID:v12 sourceUUID:identifierCopy];
     }
 
     else
@@ -101,7 +101,7 @@
         v16 = 136315394;
         v17 = "+[AssistantSiriAnalytics derivedIdentifierForComponentName:fromSourceIdentifier:]";
         v18 = 1024;
-        v19 = a3;
+        nameCopy = name;
         _os_log_error_impl(&dword_1D9863000, v13, OS_LOG_TYPE_ERROR, "%s ComponentName: %d did not map to a component identifier", &v16, 0x12u);
       }
 

@@ -1,26 +1,26 @@
 @interface CKDFetchSubscriptionsOperation
-- (CKDFetchSubscriptionsOperation)initWithOperationInfo:(id)a3 container:(id)a4;
+- (CKDFetchSubscriptionsOperation)initWithOperationInfo:(id)info container:(id)container;
 - (id)activityCreate;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
-- (void)_handleSubscriptionFetched:(id)a3 withID:(id)a4 responseCode:(id)a5;
+- (void)_finishOnCallbackQueueWithError:(id)error;
+- (void)_handleSubscriptionFetched:(id)fetched withID:(id)d responseCode:(id)code;
 - (void)main;
 @end
 
 @implementation CKDFetchSubscriptionsOperation
 
-- (CKDFetchSubscriptionsOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDFetchSubscriptionsOperation)initWithOperationInfo:(id)info container:(id)container
 {
-  v6 = a3;
+  infoCopy = info;
   v15.receiver = self;
   v15.super_class = CKDFetchSubscriptionsOperation;
-  v9 = [(CKDDatabaseOperation *)&v15 initWithOperationInfo:v6 container:a4];
+  v9 = [(CKDDatabaseOperation *)&v15 initWithOperationInfo:infoCopy container:container];
   if (v9)
   {
-    v10 = objc_msgSend_subscriptionIDs(v6, v7, v8);
+    v10 = objc_msgSend_subscriptionIDs(infoCopy, v7, v8);
     subscriptionIDs = v9->_subscriptionIDs;
     v9->_subscriptionIDs = v10;
 
-    v9->_isFetchAllSubscriptionsOperation = objc_msgSend_isFetchAllSubscriptionsOperation(v6, v12, v13);
+    v9->_isFetchAllSubscriptionsOperation = objc_msgSend_isFetchAllSubscriptionsOperation(infoCopy, v12, v13);
   }
 
   return v9;
@@ -33,12 +33,12 @@
   return v2;
 }
 
-- (void)_handleSubscriptionFetched:(id)a3 withID:(id)a4 responseCode:(id)a5
+- (void)_handleSubscriptionFetched:(id)fetched withID:(id)d responseCode:(id)code
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v13 = objc_msgSend_code(v10, v11, v12);
+  fetchedCopy = fetched;
+  dCopy = d;
+  codeCopy = code;
+  v13 = objc_msgSend_code(codeCopy, v11, v12);
   v16 = MEMORY[0x277CBC120];
   if (v13 == 1)
   {
@@ -49,13 +49,13 @@
   {
     v18 = MEMORY[0x277CBC560];
     v19 = *MEMORY[0x277CBC120];
-    v20 = sub_2253962A4(v10);
+    v20 = sub_2253962A4(codeCopy);
     v23 = objc_msgSend_request(self, v21, v22);
-    v24 = sub_225395734(v23, v10);
-    v17 = objc_msgSend_errorWithDomain_code_userInfo_format_(v18, v25, v19, v20, v24, @"Error fetching subscription %@", v9);
+    v24 = sub_225395734(v23, codeCopy);
+    v17 = objc_msgSend_errorWithDomain_code_userInfo_format_(v18, v25, v19, v20, v24, @"Error fetching subscription %@", dCopy);
   }
 
-  if (!(v8 | v17))
+  if (!(fetchedCopy | v17))
   {
     if (*MEMORY[0x277CBC880] != -1)
     {
@@ -71,10 +71,10 @@
 
     v27 = MEMORY[0x277CBC560];
     v28 = *v16;
-    v29 = sub_2253962A4(v10);
+    v29 = sub_2253962A4(codeCopy);
     v32 = objc_msgSend_request(self, v30, v31);
-    v33 = sub_225395734(v32, v10);
-    v17 = objc_msgSend_errorWithDomain_code_userInfo_format_(v27, v34, v28, v29, v33, @"Error fetching subscription %@", v9);
+    v33 = sub_225395734(v32, codeCopy);
+    v17 = objc_msgSend_errorWithDomain_code_userInfo_format_(v27, v34, v28, v29, v33, @"Error fetching subscription %@", dCopy);
   }
 
   v35 = objc_msgSend_callbackQueue(self, v14, v15);
@@ -83,12 +83,12 @@
   block[2] = sub_2252399B4;
   block[3] = &unk_2785463D0;
   block[4] = self;
-  v40 = v8;
-  v41 = v9;
+  v40 = fetchedCopy;
+  v41 = dCopy;
   v42 = v17;
   v36 = v17;
-  v37 = v9;
-  v38 = v8;
+  v37 = dCopy;
+  v38 = fetchedCopy;
   dispatch_async(v35, block);
 }
 
@@ -148,13 +148,13 @@ LABEL_4:
   objc_msgSend_finishWithError_(self, v10, 0);
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   objc_msgSend_setSubscriptionFetchedProgressBlock_(self, v5, 0);
   v6.receiver = self;
   v6.super_class = CKDFetchSubscriptionsOperation;
-  [(CKDOperation *)&v6 _finishOnCallbackQueueWithError:v4];
+  [(CKDOperation *)&v6 _finishOnCallbackQueueWithError:errorCopy];
 }
 
 @end

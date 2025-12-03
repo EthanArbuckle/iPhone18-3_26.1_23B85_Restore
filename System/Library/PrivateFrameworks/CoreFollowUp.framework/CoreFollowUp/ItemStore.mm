@@ -1,24 +1,24 @@
 @interface ItemStore
 + (id)sharedInstance;
-- (BOOL)_unsafe_deleteActionWithID:(int64_t)a3;
-- (BOOL)deleteFollowUpItem:(id)a3;
-- (BOOL)deleteNotificationForFollowUpItem:(id)a3;
-- (BOOL)insertFollowUpItem:(id)a3;
-- (BOOL)updateNotificationForFollowUpItem:(id)a3;
-- (id)_unsafeSelectNotificationForFollowUpItem:(id)a3;
-- (id)dataFromColumn:(int64_t)a3 inStatement:(sqlite3_stmt *)a4;
-- (id)dateFromColumn:(int64_t)a3 inStatement:(sqlite3_stmt *)a4;
+- (BOOL)_unsafe_deleteActionWithID:(int64_t)d;
+- (BOOL)deleteFollowUpItem:(id)item;
+- (BOOL)deleteNotificationForFollowUpItem:(id)item;
+- (BOOL)insertFollowUpItem:(id)item;
+- (BOOL)updateNotificationForFollowUpItem:(id)item;
+- (id)_unsafeSelectNotificationForFollowUpItem:(id)item;
+- (id)dataFromColumn:(int64_t)column inStatement:(sqlite3_stmt *)statement;
+- (id)dateFromColumn:(int64_t)column inStatement:(sqlite3_stmt *)statement;
 - (id)safeSelectFollowUpActions;
-- (id)safeSelectFollowUpItemsWithUniqueIdentifiers:(id)a3;
+- (id)safeSelectFollowUpItemsWithUniqueIdentifiers:(id)identifiers;
 - (id)safeSelectFollowUpNotifications;
-- (id)stringFromColumn:(int64_t)a3 inStatement:(sqlite3_stmt *)a4;
-- (id)urlFromColumn:(int64_t)a3 inStatement:(sqlite3_stmt *)a4;
-- (int64_t)_unsafe_insertAction:(id)a3 item:(id)a4;
-- (int64_t)_unsafe_insertFollowUpItem:(id)a3;
-- (int64_t)_unsafe_insertNotificationForItem:(id)a3;
-- (void)_unsafeSelectFollowUpActionsForItem:(id)a3 orActionID:(int64_t)a4 rowHandler:(id)a5;
-- (void)_unsafeSelectFollowUpItemsWithUniqueIdentifiers:(id)a3 rowHandler:(id)a4;
-- (void)_unsafeSelectFollowUpNotificationsWithRowHandler:(id)a3;
+- (id)stringFromColumn:(int64_t)column inStatement:(sqlite3_stmt *)statement;
+- (id)urlFromColumn:(int64_t)column inStatement:(sqlite3_stmt *)statement;
+- (int64_t)_unsafe_insertAction:(id)action item:(id)item;
+- (int64_t)_unsafe_insertFollowUpItem:(id)item;
+- (int64_t)_unsafe_insertNotificationForItem:(id)item;
+- (void)_unsafeSelectFollowUpActionsForItem:(id)item orActionID:(int64_t)d rowHandler:(id)handler;
+- (void)_unsafeSelectFollowUpItemsWithUniqueIdentifiers:(id)identifiers rowHandler:(id)handler;
+- (void)_unsafeSelectFollowUpNotificationsWithRowHandler:(id)handler;
 @end
 
 @implementation ItemStore
@@ -35,7 +35,7 @@
   return v3;
 }
 
-- (BOOL)insertFollowUpItem:(id)a3
+- (BOOL)insertFollowUpItem:(id)item
 {
   v10 = 0;
   v11 = &v10;
@@ -45,9 +45,9 @@
   v6[1] = 3221225472;
   v6[2] = sub_10000A0AC;
   v6[3] = &unk_100020C08;
-  v4 = a3;
-  v7 = v4;
-  v8 = self;
+  itemCopy = item;
+  v7 = itemCopy;
+  selfCopy = self;
   v9 = &v10;
   [FLSQLiteExecutor performBlockAndWait:v6];
   LOBYTE(self) = *(v11 + 24);
@@ -56,15 +56,15 @@
   return self;
 }
 
-- (int64_t)_unsafe_insertFollowUpItem:(id)a3
+- (int64_t)_unsafe_insertFollowUpItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = [FLSQLiteQuery queryWithString:@"INSERT OR REPLACE INTO items (uuid, title, body, show_in_settings, style, persist_when_activated, persist_when_dismissed, user_info, client_identifier, extension_identifier, group_identifier, target_bundle_identifier, representing_bundle_path, bundle_icon_name, informative_footer_text, category_identifier, expiration_date, account_id, type_id, collection_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10000A41C;
   v13[3] = &unk_100020C30;
-  v6 = v4;
+  v6 = itemCopy;
   v14 = v6;
   [v5 setBindHandler:v13];
   queryExecutor = self->_queryExecutor;
@@ -83,18 +83,18 @@
   return v8;
 }
 
-- (int64_t)_unsafe_insertAction:(id)a3 item:(id)a4
+- (int64_t)_unsafe_insertAction:(id)action item:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  itemCopy = item;
   v8 = [FLSQLiteQuery queryWithString:@"INSERT INTO actions (label, url, launch_url, launch_arguments, item_id, action_identifier) VALUES (?, ?, ?, ?, ?, ?)"];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10000AB90;
   v17[3] = &unk_100020C58;
-  v9 = v6;
+  v9 = actionCopy;
   v18 = v9;
-  v10 = v7;
+  v10 = itemCopy;
   v19 = v10;
   [v8 setBindHandler:v17];
   queryExecutor = self->_queryExecutor;
@@ -113,48 +113,48 @@
   return v12;
 }
 
-- (int64_t)_unsafe_insertNotificationForItem:(id)a3
+- (int64_t)_unsafe_insertNotificationForItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 notification];
-  v6 = [v5 activateAction];
+  itemCopy = item;
+  notification = [itemCopy notification];
+  activateAction = [notification activateAction];
 
-  if (v6)
+  if (activateAction)
   {
-    v7 = [v5 activateAction];
-    v8 = [(ItemStore *)self _unsafe_insertAction:v7 item:0];
-    v9 = [v5 activateAction];
-    [v9 setSqlID:v8];
+    activateAction2 = [notification activateAction];
+    v8 = [(ItemStore *)self _unsafe_insertAction:activateAction2 item:0];
+    activateAction3 = [notification activateAction];
+    [activateAction3 setSqlID:v8];
   }
 
-  v10 = [v4 notification];
-  v11 = [v10 clearAction];
+  notification2 = [itemCopy notification];
+  clearAction = [notification2 clearAction];
 
-  if (v11)
+  if (clearAction)
   {
-    v12 = [v5 clearAction];
-    v13 = [(ItemStore *)self _unsafe_insertAction:v12 item:0];
-    v14 = [v5 clearAction];
-    [v14 setSqlID:v13];
+    clearAction2 = [notification clearAction];
+    v13 = [(ItemStore *)self _unsafe_insertAction:clearAction2 item:0];
+    clearAction3 = [notification clearAction];
+    [clearAction3 setSqlID:v13];
   }
 
-  if ([v5 sqlID])
+  if ([notification sqlID])
   {
-    v15 = [(ItemStore *)self _unsafeSelectNotificationForFollowUpItem:v4];
-    v16 = [v15 activateAction];
+    v15 = [(ItemStore *)self _unsafeSelectNotificationForFollowUpItem:itemCopy];
+    activateAction4 = [v15 activateAction];
 
-    if (v16)
+    if (activateAction4)
     {
-      v17 = [v15 activateAction];
-      -[ItemStore _unsafe_deleteActionWithID:](self, "_unsafe_deleteActionWithID:", [v17 sqlID]);
+      activateAction5 = [v15 activateAction];
+      -[ItemStore _unsafe_deleteActionWithID:](self, "_unsafe_deleteActionWithID:", [activateAction5 sqlID]);
     }
 
-    v18 = [v15 clearAction];
+    clearAction4 = [v15 clearAction];
 
-    if (v18)
+    if (clearAction4)
     {
-      v19 = [v15 clearAction];
-      -[ItemStore _unsafe_deleteActionWithID:](self, "_unsafe_deleteActionWithID:", [v19 sqlID]);
+      clearAction5 = [v15 clearAction];
+      -[ItemStore _unsafe_deleteActionWithID:](self, "_unsafe_deleteActionWithID:", [clearAction5 sqlID]);
     }
 
     v20 = _FLLogSystem();
@@ -165,8 +165,8 @@
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Using creation date from %@", buf, 0xCu);
     }
 
-    v21 = [v15 creationDate];
-    [v5 setCreationDate:v21];
+    creationDate = [v15 creationDate];
+    [notification setCreationDate:creationDate];
 
     v22 = @"INSERT OR REPLACE INTO notifications (item_id, title, body, unlock_label, relevance_date, activate_action_id, dismiss_action_id, clear_action_id, frequency, creationDate, options, subtitle_text, id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
   }
@@ -181,9 +181,9 @@
   v32[1] = 3221225472;
   v32[2] = sub_10000B098;
   v32[3] = &unk_100020C58;
-  v24 = v4;
+  v24 = itemCopy;
   v33 = v24;
-  v25 = v5;
+  v25 = notification;
   v34 = v25;
   [v23 setBindHandler:v32];
   queryExecutor = self->_queryExecutor;
@@ -202,14 +202,14 @@
   return v27;
 }
 
-- (BOOL)deleteFollowUpItem:(id)a3
+- (BOOL)deleteFollowUpItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = _FLLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = itemCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Deleting item: %@", &buf, 0xCu);
   }
 
@@ -221,8 +221,8 @@
   v9[1] = 3221225472;
   v9[2] = sub_10000B5E8;
   v9[3] = &unk_100020C80;
-  v6 = v4;
-  v11 = self;
+  v6 = itemCopy;
+  selfCopy = self;
   p_buf = &buf;
   v10 = v6;
   [FLSQLiteExecutor performBlockAndWait:v9];
@@ -233,7 +233,7 @@
   return v7 & 1;
 }
 
-- (BOOL)updateNotificationForFollowUpItem:(id)a3
+- (BOOL)updateNotificationForFollowUpItem:(id)item
 {
   v9 = 0;
   v10 = &v9;
@@ -245,8 +245,8 @@
   v6[3] = &unk_100020CA8;
   v8 = &v9;
   v6[4] = self;
-  v3 = a3;
-  v7 = v3;
+  itemCopy = item;
+  v7 = itemCopy;
   [FLSQLiteExecutor performBlockAndWait:v6];
   v4 = *(v10 + 24);
 
@@ -254,14 +254,14 @@
   return v4;
 }
 
-- (BOOL)deleteNotificationForFollowUpItem:(id)a3
+- (BOOL)deleteNotificationForFollowUpItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = _FLLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = itemCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Deleting notifications for item %@", &buf, 0xCu);
   }
 
@@ -273,8 +273,8 @@
   v9[1] = 3221225472;
   v9[2] = sub_10000B9F8;
   v9[3] = &unk_100020C80;
-  v6 = v4;
-  v11 = self;
+  v6 = itemCopy;
+  selfCopy = self;
   p_buf = &buf;
   v10 = v6;
   [FLSQLiteExecutor performBlockAndWait:v9];
@@ -284,14 +284,14 @@
   return v7 & 1;
 }
 
-- (BOOL)_unsafe_deleteActionWithID:(int64_t)a3
+- (BOOL)_unsafe_deleteActionWithID:(int64_t)d
 {
   v5 = [FLSQLiteQuery queryWithString:@"DELETE FROM actions WHERE id=?"];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10000BC64;
   v12[3] = &unk_100020CC8;
-  v12[4] = a3;
+  v12[4] = d;
   [v5 setBindHandler:v12];
   queryExecutor = self->_queryExecutor;
   v11 = 0;
@@ -369,9 +369,9 @@
   return v5;
 }
 
-- (id)safeSelectFollowUpItemsWithUniqueIdentifiers:(id)a3
+- (id)safeSelectFollowUpItemsWithUniqueIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = _FLSignpostCreate();
   v6 = _FLSignpostLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -390,7 +390,7 @@
   v13[2] = sub_10000C2FC;
   v13[3] = &unk_100020C08;
   v13[4] = self;
-  v7 = v4;
+  v7 = identifiersCopy;
   v14 = v7;
   v15 = &v16;
   [FLSQLiteExecutor performBlockAndWait:v13];
@@ -413,19 +413,19 @@
   return v11;
 }
 
-- (void)_unsafeSelectFollowUpItemsWithUniqueIdentifiers:(id)a3 rowHandler:(id)a4
+- (void)_unsafeSelectFollowUpItemsWithUniqueIdentifiers:(id)identifiers rowHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   v8 = [NSMutableString stringWithString:@"SELECT id, uuid, title, body, show_in_settings, style, persist_when_activated, persist_when_dismissed, user_info, client_identifier, extension_identifier, group_identifier, target_bundle_identifier, representing_bundle_path, bundle_icon_name, informative_footer_text, category_identifier, expiration_date, account_id, type_id, collection_id FROM items"];
-  if ([v6 count])
+  if ([identifiersCopy count])
   {
     [v8 appendString:@" WHERE"];
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v9 = v6;
+    v9 = identifiersCopy;
     v10 = [v9 countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v10)
     {
@@ -464,7 +464,7 @@
   v24[1] = 3221225472;
   v24[2] = sub_10000C65C;
   v24[3] = &unk_100020C30;
-  v15 = v6;
+  v15 = identifiersCopy;
   v25 = v15;
   [v14 setBindHandler:v24];
   v22[0] = _NSConcreteStackBlock;
@@ -472,7 +472,7 @@
   v22[2] = sub_10000C790;
   v22[3] = &unk_100020DB8;
   v22[4] = self;
-  v16 = v7;
+  v16 = handlerCopy;
   v23 = v16;
   [v14 setRowHandler:v22];
   queryExecutor = self->_queryExecutor;
@@ -489,16 +489,16 @@
   }
 }
 
-- (void)_unsafeSelectFollowUpNotificationsWithRowHandler:(id)a3
+- (void)_unsafeSelectFollowUpNotificationsWithRowHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [FLSQLiteQuery queryWithString:@"SELECT id, title, body, unlock_label, relevance_date, activate_action_id, dismiss_action_id, clear_action_id, frequency, creationDate, options, subtitle_text FROM notifications"];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10000CCF8;
   v12[3] = &unk_100020DB8;
   v12[4] = self;
-  v6 = v4;
+  v6 = handlerCopy;
   v13 = v6;
   [v5 setRowHandler:v12];
   queryExecutor = self->_queryExecutor;
@@ -515,15 +515,15 @@
   }
 }
 
-- (id)_unsafeSelectNotificationForFollowUpItem:(id)a3
+- (id)_unsafeSelectNotificationForFollowUpItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = [FLSQLiteQuery queryWithString:@"SELECT id, title, body, unlock_label, relevance_date, activate_action_id, dismiss_action_id, clear_action_id, frequency, creationDate, options, subtitle_text FROM notifications WHERE item_id = ? LIMIT 1"];
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_10000D2F0;
   v24[3] = &unk_100020C30;
-  v6 = v4;
+  v6 = itemCopy;
   v25 = v6;
   [v5 setBindHandler:v24];
   v18 = 0;
@@ -574,20 +574,20 @@
   return v14;
 }
 
-- (void)_unsafeSelectFollowUpActionsForItem:(id)a3 orActionID:(int64_t)a4 rowHandler:(id)a5
+- (void)_unsafeSelectFollowUpActionsForItem:(id)item orActionID:(int64_t)d rowHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  itemCopy = item;
+  handlerCopy = handler;
   v10 = [NSMutableString stringWithString:@"SELECT id, label, url, launch_url, launch_arguments, action_identifier FROM actions"];
   v11 = v10;
-  if (v8)
+  if (itemCopy)
   {
     v12 = @" WHERE item_id = ?";
   }
 
   else
   {
-    if (a4 < 1)
+    if (d < 1)
     {
       goto LABEL_6;
     }
@@ -602,16 +602,16 @@ LABEL_6:
   v23[1] = 3221225472;
   v23[2] = sub_10000D7F0;
   v23[3] = &unk_100020E08;
-  v14 = v8;
+  v14 = itemCopy;
   v24 = v14;
-  v25 = a4;
+  dCopy = d;
   [v13 setBindHandler:v23];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_10000D844;
   v21[3] = &unk_100020DB8;
   v21[4] = self;
-  v15 = v9;
+  v15 = handlerCopy;
   v22 = v15;
   [v13 setRowHandler:v21];
   queryExecutor = self->_queryExecutor;
@@ -628,9 +628,9 @@ LABEL_6:
   }
 }
 
-- (id)stringFromColumn:(int64_t)a3 inStatement:(sqlite3_stmt *)a4
+- (id)stringFromColumn:(int64_t)column inStatement:(sqlite3_stmt *)statement
 {
-  v4 = sqlite3_column_text(a4, a3);
+  v4 = sqlite3_column_text(statement, column);
   if (v4)
   {
     v4 = [NSString stringWithUTF8String:v4];
@@ -639,9 +639,9 @@ LABEL_6:
   return v4;
 }
 
-- (id)urlFromColumn:(int64_t)a3 inStatement:(sqlite3_stmt *)a4
+- (id)urlFromColumn:(int64_t)column inStatement:(sqlite3_stmt *)statement
 {
-  v4 = [(ItemStore *)self stringFromColumn:a3 inStatement:a4];
+  v4 = [(ItemStore *)self stringFromColumn:column inStatement:statement];
   if (v4)
   {
     v5 = [NSURL URLWithString:v4];
@@ -655,11 +655,11 @@ LABEL_6:
   return v5;
 }
 
-- (id)dataFromColumn:(int64_t)a3 inStatement:(sqlite3_stmt *)a4
+- (id)dataFromColumn:(int64_t)column inStatement:(sqlite3_stmt *)statement
 {
-  v5 = a3;
-  v6 = sqlite3_column_bytes(a4, a3);
-  v7 = sqlite3_column_blob(a4, v5);
+  columnCopy = column;
+  v6 = sqlite3_column_bytes(statement, column);
+  v7 = sqlite3_column_blob(statement, columnCopy);
   v8 = 0;
   if (v7 && v6)
   {
@@ -669,9 +669,9 @@ LABEL_6:
   return v8;
 }
 
-- (id)dateFromColumn:(int64_t)a3 inStatement:(sqlite3_stmt *)a4
+- (id)dateFromColumn:(int64_t)column inStatement:(sqlite3_stmt *)statement
 {
-  [(ItemStore *)self intervalFromColumn:a3 inStatement:a4];
+  [(ItemStore *)self intervalFromColumn:column inStatement:statement];
   if (v4 == 0.0)
   {
     v5 = 0;

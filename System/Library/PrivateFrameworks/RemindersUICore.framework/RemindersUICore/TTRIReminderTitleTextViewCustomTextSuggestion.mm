@@ -1,20 +1,20 @@
 @interface TTRIReminderTitleTextViewCustomTextSuggestion
 - (TTRIReminderTitleTextViewCustomTextSuggestion)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TTRIReminderTitleTextViewCustomTextSuggestion
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
-  v4 = a3;
+  coderCopy = coder;
   v5 = v8.receiver;
-  [(UITextSuggestion *)&v8 encodeWithCoder:v4];
+  [(UITextSuggestion *)&v8 encodeWithCoder:coderCopy];
   v6 = sub_21DBF566C();
   v7 = sub_21DBFA12C();
-  [v4 encodeObject:v6 forKey:{v7, v8.receiver, v8.super_class}];
+  [coderCopy encodeObject:v6 forKey:{v7, v8.receiver, v8.super_class}];
 }
 
 - (TTRIReminderTitleTextViewCustomTextSuggestion)init

@@ -1,22 +1,22 @@
 @interface TVUTSNetworkManagerProxy
-+ (void)cancel:(NSURLRequest *)a3 completion:(id)a4;
-+ (void)executeRequest:(NSURLRequest *)a3 completion:(id)a4;
-+ (void)fetchConfiguration:(BOOL)a3 completion:(id)a4;
++ (void)cancel:(NSURLRequest *)cancel completion:(id)completion;
++ (void)executeRequest:(NSURLRequest *)request completion:(id)completion;
++ (void)fetchConfiguration:(BOOL)configuration completion:(id)completion;
 - (_TtC17TVWidgetExtension24TVUTSNetworkManagerProxy)init;
 @end
 
 @implementation TVUTSNetworkManagerProxy
 
-+ (void)executeRequest:(NSURLRequest *)a3 completion:(id)a4
++ (void)executeRequest:(NSURLRequest *)request completion:(id)completion
 {
   v7 = sub_100006334(&qword_100125288);
   __chkstk_darwin(v7 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = request;
   v11[3] = v10;
-  v11[4] = a1;
+  v11[4] = self;
   v12 = sub_1000D372C();
   (*(*(v12 - 8) + 56))(v9, 1, 1, v12);
   v13 = swift_allocObject();
@@ -29,20 +29,20 @@
   v14[3] = 0;
   v14[4] = &unk_1000EDAE0;
   v14[5] = v13;
-  v15 = a3;
+  requestCopy = request;
   sub_1000CEE14(0, 0, v9, &unk_1000EDAE8, v14);
 }
 
-+ (void)cancel:(NSURLRequest *)a3 completion:(id)a4
++ (void)cancel:(NSURLRequest *)cancel completion:(id)completion
 {
   v7 = sub_100006334(&qword_100125288);
   __chkstk_darwin(v7 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = cancel;
   v11[3] = v10;
-  v11[4] = a1;
+  v11[4] = self;
   v12 = sub_1000D372C();
   (*(*(v12 - 8) + 56))(v9, 1, 1, v12);
   v13 = swift_allocObject();
@@ -55,20 +55,20 @@
   v14[3] = 0;
   v14[4] = &unk_1000EDAC0;
   v14[5] = v13;
-  v15 = a3;
+  cancelCopy = cancel;
   sub_1000CEE14(0, 0, v9, &unk_1000EDAC8, v14);
 }
 
-+ (void)fetchConfiguration:(BOOL)a3 completion:(id)a4
++ (void)fetchConfiguration:(BOOL)configuration completion:(id)completion
 {
   v7 = sub_100006334(&qword_100125288);
   __chkstk_darwin(v7 - 8);
   v9 = &v15 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  *(v11 + 16) = a3;
+  *(v11 + 16) = configuration;
   *(v11 + 24) = v10;
-  *(v11 + 32) = a1;
+  *(v11 + 32) = self;
   v12 = sub_1000D372C();
   (*(*(v12 - 8) + 56))(v9, 1, 1, v12);
   v13 = swift_allocObject();

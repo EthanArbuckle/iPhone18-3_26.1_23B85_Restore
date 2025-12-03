@@ -1,5 +1,5 @@
 @interface _SiriPresentationOptionsMutation
-- (_SiriPresentationOptionsMutation)initWithBaseModel:(id)a3;
+- (_SiriPresentationOptionsMutation)initWithBaseModel:(id)model;
 - (id)generate;
 @end
 
@@ -71,7 +71,7 @@ LABEL_24:
 
   if ((v4 & 2) != 0)
   {
-    v10 = self->_wakeScreen;
+    wakeScreen = self->_wakeScreen;
     if ((v4 & 4) != 0)
     {
 LABEL_9:
@@ -87,7 +87,7 @@ LABEL_9:
 
   else
   {
-    v10 = [(SiriPresentationOptions *)baseModel wakeScreen];
+    wakeScreen = [(SiriPresentationOptions *)baseModel wakeScreen];
     v4 = self->_mutationFlags;
     if ((v4 & 4) != 0)
     {
@@ -130,7 +130,7 @@ LABEL_28:
   if ((v4 & 0x20) != 0)
   {
 LABEL_12:
-    v14 = self->_rotationStyle;
+    rotationStyle = self->_rotationStyle;
     if ((v4 & 0x40) != 0)
     {
       goto LABEL_13;
@@ -140,31 +140,31 @@ LABEL_12:
   }
 
 LABEL_29:
-  v14 = [(SiriPresentationOptions *)self->_baseModel rotationStyle];
+  rotationStyle = [(SiriPresentationOptions *)self->_baseModel rotationStyle];
   v4 = self->_mutationFlags;
   if ((v4 & 0x40) != 0)
   {
 LABEL_13:
-    v15 = self->_requestSource;
+    requestSource = self->_requestSource;
     if ((v4 & 0x80) != 0)
     {
       goto LABEL_14;
     }
 
 LABEL_31:
-    v16 = [(SiriPresentationOptions *)self->_baseModel inputType];
+    inputType = [(SiriPresentationOptions *)self->_baseModel inputType];
     if ((*&self->_mutationFlags & 0x100) != 0)
     {
       goto LABEL_15;
     }
 
 LABEL_32:
-    v17 = [(SiriPresentationOptions *)self->_baseModel launchActions];
+    launchActions = [(SiriPresentationOptions *)self->_baseModel launchActions];
     goto LABEL_33;
   }
 
 LABEL_30:
-  v15 = [(SiriPresentationOptions *)self->_baseModel requestSource];
+  requestSource = [(SiriPresentationOptions *)self->_baseModel requestSource];
   v4 = self->_mutationFlags;
   if ((v4 & 0x80) == 0)
   {
@@ -172,33 +172,33 @@ LABEL_30:
   }
 
 LABEL_14:
-  v16 = self->_inputType;
+  inputType = self->_inputType;
   if ((v4 & 0x100) == 0)
   {
     goto LABEL_32;
   }
 
 LABEL_15:
-  v17 = self->_launchActions;
+  launchActions = self->_launchActions;
 LABEL_33:
-  v21 = v17;
-  v20 = [[SiriPresentationOptions alloc] initWithWakeScreen:v10 hideOtherWindowsDuringAppearance:hideOtherWindowsDuringAppearance shouldAllowBiometricAutoUnlock:shouldAllowBiometricAutoUnlock shouldDeactivateScenesBelow:shouldDeactivateScenesBelow rotationStyle:v14 requestSource:v15 inputType:v16 launchActions:v17];
+  v21 = launchActions;
+  v20 = [[SiriPresentationOptions alloc] initWithWakeScreen:wakeScreen hideOtherWindowsDuringAppearance:hideOtherWindowsDuringAppearance shouldAllowBiometricAutoUnlock:shouldAllowBiometricAutoUnlock shouldDeactivateScenesBelow:shouldDeactivateScenesBelow rotationStyle:rotationStyle requestSource:requestSource inputType:inputType launchActions:launchActions];
 
 LABEL_34:
 
   return v20;
 }
 
-- (_SiriPresentationOptionsMutation)initWithBaseModel:(id)a3
+- (_SiriPresentationOptionsMutation)initWithBaseModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = _SiriPresentationOptionsMutation;
   v6 = [(_SiriPresentationOptionsMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_baseModel, a3);
+    objc_storeStrong(&v6->_baseModel, model);
   }
 
   return v7;

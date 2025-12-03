@@ -1,15 +1,15 @@
 @interface SWPreferredSizeManager
-- (SWPreferredSizeManager)initWithMessageHandlerManager:(id)a3 logger:(id)a4;
-- (void)didReceiveMessage:(id)a3 securityOrigin:(id)a4;
+- (SWPreferredSizeManager)initWithMessageHandlerManager:(id)manager logger:(id)logger;
+- (void)didReceiveMessage:(id)message securityOrigin:(id)origin;
 @end
 
 @implementation SWPreferredSizeManager
 
-- (SWPreferredSizeManager)initWithMessageHandlerManager:(id)a3 logger:(id)a4
+- (SWPreferredSizeManager)initWithMessageHandlerManager:(id)manager logger:(id)logger
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  managerCopy = manager;
+  loggerCopy = logger;
+  if (managerCopy)
   {
     v13.receiver = self;
     v13.super_class = SWPreferredSizeManager;
@@ -17,37 +17,37 @@
     v9 = v8;
     if (v8)
     {
-      objc_storeStrong(&v8->_logger, a4);
+      objc_storeStrong(&v8->_logger, logger);
       v10 = [SWWeakMessageHandler handlerWithMessageHandler:v9];
-      [v6 addMessageHandler:v10 name:@"preferredSize"];
+      [managerCopy addMessageHandler:v10 name:@"preferredSize"];
     }
 
     self = v9;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (void)didReceiveMessage:(id)a3 securityOrigin:(id)a4
+- (void)didReceiveMessage:(id)message securityOrigin:(id)origin
 {
-  v5 = a3;
-  v6 = [v5 body];
-  v19 = [v6 objectForKey:@"height"];
+  messageCopy = message;
+  body = [messageCopy body];
+  v19 = [body objectForKey:@"height"];
 
-  v7 = [v5 body];
-  v8 = [v7 objectForKey:@"width"];
+  body2 = [messageCopy body];
+  v8 = [body2 objectForKey:@"width"];
 
-  v9 = [(SWPreferredSizeManager *)self logger];
+  logger = [(SWPreferredSizeManager *)self logger];
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [v5 name];
+  name = [messageCopy name];
   v12 = ;
-  [v9 log:v12];
+  [logger log:v12];
 
   objc_opt_class();
   v13 = 0.0;
@@ -65,12 +65,12 @@
     v13 = roundf(v16);
   }
 
-  v17 = [(SWPreferredSizeManager *)self preferredSizeBlock];
+  preferredSizeBlock = [(SWPreferredSizeManager *)self preferredSizeBlock];
 
-  if (v17)
+  if (preferredSizeBlock)
   {
-    v18 = [(SWPreferredSizeManager *)self preferredSizeBlock];
-    v18[2](v14, v13);
+    preferredSizeBlock2 = [(SWPreferredSizeManager *)self preferredSizeBlock];
+    preferredSizeBlock2[2](v14, v13);
   }
 }
 

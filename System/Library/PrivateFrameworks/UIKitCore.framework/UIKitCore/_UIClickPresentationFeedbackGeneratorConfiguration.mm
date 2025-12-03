@@ -1,7 +1,7 @@
 @interface _UIClickPresentationFeedbackGeneratorConfiguration
 - (_UIFeedbackDiscretePlayable)draggedPattern;
 - (_UIFeedbackDiscretePlayable)previewedPattern;
-- (id)_alternateFeedback:(id)a3 forDevice:(int64_t)a4 senderID:(unint64_t)a5;
+- (id)_alternateFeedback:(id)feedback forDevice:(int64_t)device senderID:(unint64_t)d;
 - (id)feedbackKeyPaths;
 - (id)hidFeedbackPatternNameKeyPaths;
 @end
@@ -32,11 +32,11 @@
   return v3;
 }
 
-- (id)_alternateFeedback:(id)a3 forDevice:(int64_t)a4 senderID:(unint64_t)a5
+- (id)_alternateFeedback:(id)feedback forDevice:(int64_t)device senderID:(unint64_t)d
 {
-  v8 = a3;
-  v9 = [(_UIClickPresentationFeedbackGeneratorConfiguration *)self previewedPattern];
-  v10 = [v8 isEqual:v9];
+  feedbackCopy = feedback;
+  previewedPattern = [(_UIClickPresentationFeedbackGeneratorConfiguration *)self previewedPattern];
+  v10 = [feedbackCopy isEqual:previewedPattern];
 
   if (v10)
   {
@@ -48,7 +48,7 @@
     [(_UIClickPresentationFeedbackGeneratorConfiguration *)self hidDraggedPatternName];
   }
   v11 = ;
-  v12 = [_UIFeedbackBackBoardHIDPattern feedbackPatternWithName:v11 deviceType:a4 senderID:a5];
+  v12 = [_UIFeedbackBackBoardHIDPattern feedbackPatternWithName:v11 deviceType:device senderID:d];
 
   return v12;
 }
@@ -58,7 +58,7 @@
   v10[3] = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = _UIClickPresentationFeedbackGeneratorConfiguration;
-  v2 = [(_UIFeedbackGeneratorUserInteractionDrivenConfiguration *)&v9 feedbackKeyPaths];
+  feedbackKeyPaths = [(_UIFeedbackGeneratorUserInteractionDrivenConfiguration *)&v9 feedbackKeyPaths];
   v3 = NSStringFromSelector(sel_previewedPattern);
   v10[0] = v3;
   v4 = NSStringFromSelector(sel_poppedPattern);
@@ -66,7 +66,7 @@
   v5 = NSStringFromSelector(sel_draggedPattern);
   v10[2] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:3];
-  v7 = [v2 arrayByAddingObjectsFromArray:v6];
+  v7 = [feedbackKeyPaths arrayByAddingObjectsFromArray:v6];
 
   return v7;
 }
@@ -76,7 +76,7 @@
   v10[3] = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = _UIClickPresentationFeedbackGeneratorConfiguration;
-  v2 = [(_UIFeedbackGeneratorConfiguration *)&v9 hidFeedbackPatternNameKeyPaths];
+  hidFeedbackPatternNameKeyPaths = [(_UIFeedbackGeneratorConfiguration *)&v9 hidFeedbackPatternNameKeyPaths];
   v3 = NSStringFromSelector(sel_hidPreviewedPatternName);
   v10[0] = v3;
   v4 = NSStringFromSelector(sel_hidPoppedPatternName);
@@ -84,7 +84,7 @@
   v5 = NSStringFromSelector(sel_hidDraggedPatternName);
   v10[2] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:3];
-  v7 = [v2 arrayByAddingObjectsFromArray:v6];
+  v7 = [hidFeedbackPatternNameKeyPaths arrayByAddingObjectsFromArray:v6];
 
   return v7;
 }

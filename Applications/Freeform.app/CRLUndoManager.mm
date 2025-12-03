@@ -4,9 +4,9 @@
 - (BOOL)groupsByEvent;
 - (BOOL)isRedoing;
 - (BOOL)isUndoing;
-- (CRLUndoManager)initWithCommandController:(id)a3;
-- (CRLUndoManager)initWithCommandController:(id)a3 delegate:(id)a4;
-- (id)prepareWithInvocationTarget:(id)a3;
+- (CRLUndoManager)initWithCommandController:(id)controller;
+- (CRLUndoManager)initWithCommandController:(id)controller delegate:(id)delegate;
+- (id)prepareWithInvocationTarget:(id)target;
 - (id)redoActionName;
 - (id)undoActionName;
 - (int64_t)groupingLevel;
@@ -15,81 +15,81 @@
 - (void)beginUndoGrouping;
 - (void)enableUndoRegistration;
 - (void)endUndoGrouping;
-- (void)p_commandControllerDidCloseUndoGroup:(id)a3;
-- (void)p_commandControllerDidOpenUndoGroup:(id)a3;
-- (void)p_commandControllerDidRedo:(id)a3;
-- (void)p_commandControllerDidUndo:(id)a3;
-- (void)p_commandControllerWillCloseUndoGroup:(id)a3;
-- (void)p_commandControllerWillRedo:(id)a3;
-- (void)p_commandControllerWillUndo:(id)a3;
+- (void)p_commandControllerDidCloseUndoGroup:(id)group;
+- (void)p_commandControllerDidOpenUndoGroup:(id)group;
+- (void)p_commandControllerDidRedo:(id)redo;
+- (void)p_commandControllerDidUndo:(id)undo;
+- (void)p_commandControllerWillCloseUndoGroup:(id)group;
+- (void)p_commandControllerWillRedo:(id)redo;
+- (void)p_commandControllerWillUndo:(id)undo;
 - (void)p_updateCanUndoAndRedo;
 - (void)redo;
-- (void)registerUndoWithTarget:(id)a3 selector:(SEL)a4 object:(id)a5;
-- (void)removeAllActionsWithTarget:(id)a3;
-- (void)setActionName:(id)a3;
-- (void)setGroupsByEvent:(BOOL)a3;
-- (void)setLevelsOfUndo:(unint64_t)a3;
-- (void)setRunLoopModes:(id)a3;
+- (void)registerUndoWithTarget:(id)target selector:(SEL)selector object:(id)object;
+- (void)removeAllActionsWithTarget:(id)target;
+- (void)setActionName:(id)name;
+- (void)setGroupsByEvent:(BOOL)event;
+- (void)setLevelsOfUndo:(unint64_t)undo;
+- (void)setRunLoopModes:(id)modes;
 - (void)undo;
 - (void)undoNestedGroup;
 @end
 
 @implementation CRLUndoManager
 
-- (CRLUndoManager)initWithCommandController:(id)a3
+- (CRLUndoManager)initWithCommandController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v19.receiver = self;
   v19.super_class = CRLUndoManager;
   v5 = [(CRLUndoManager *)&v19 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_commandController, v4);
+    objc_storeWeak(&v5->_commandController, controllerCopy);
     v7 = +[NSHashTable weakObjectsHashTable];
     delegates = v6->_delegates;
     v6->_delegates = v7;
 
     v9 = +[NSNotificationCenter defaultCenter];
     v10 = +[NSNotification CRLCommandControllerDidOpenUndoGroup];
-    [v9 addObserver:v6 selector:"p_commandControllerDidOpenUndoGroup:" name:v10 object:v4];
+    [v9 addObserver:v6 selector:"p_commandControllerDidOpenUndoGroup:" name:v10 object:controllerCopy];
 
     v11 = +[NSNotification CRLCommandControllerWillCloseUndoGroup];
-    [v9 addObserver:v6 selector:"p_commandControllerWillCloseUndoGroup:" name:v11 object:v4];
+    [v9 addObserver:v6 selector:"p_commandControllerWillCloseUndoGroup:" name:v11 object:controllerCopy];
 
     v12 = +[NSNotification CRLCommandControllerDidCloseUndoGroup];
-    [v9 addObserver:v6 selector:"p_commandControllerDidCloseUndoGroup:" name:v12 object:v4];
+    [v9 addObserver:v6 selector:"p_commandControllerDidCloseUndoGroup:" name:v12 object:controllerCopy];
 
     v13 = +[NSNotification CRLCommandControllerHistoryStateDidChange];
-    [v9 addObserver:v6 selector:"p_commandControllerHistoryStateChanged:" name:v13 object:v4];
+    [v9 addObserver:v6 selector:"p_commandControllerHistoryStateChanged:" name:v13 object:controllerCopy];
 
     v14 = +[NSNotification CRLCommandControllerWillUndo];
-    [v9 addObserver:v6 selector:"p_commandControllerWillUndo:" name:v14 object:v4];
+    [v9 addObserver:v6 selector:"p_commandControllerWillUndo:" name:v14 object:controllerCopy];
 
     v15 = +[NSNotification CRLCommandControllerDidUndo];
-    [v9 addObserver:v6 selector:"p_commandControllerDidUndo:" name:v15 object:v4];
+    [v9 addObserver:v6 selector:"p_commandControllerDidUndo:" name:v15 object:controllerCopy];
 
     v16 = +[NSNotification CRLCommandControllerWillRedo];
-    [v9 addObserver:v6 selector:"p_commandControllerWillRedo:" name:v16 object:v4];
+    [v9 addObserver:v6 selector:"p_commandControllerWillRedo:" name:v16 object:controllerCopy];
 
     v17 = +[NSNotification CRLCommandControllerDidRedo];
-    [v9 addObserver:v6 selector:"p_commandControllerDidRedo:" name:v17 object:v4];
+    [v9 addObserver:v6 selector:"p_commandControllerDidRedo:" name:v17 object:controllerCopy];
 
-    v6->_canUndo = [v4 canUndo];
-    v6->_canRedo = [v4 canRedo];
+    v6->_canUndo = [controllerCopy canUndo];
+    v6->_canRedo = [controllerCopy canRedo];
   }
 
   return v6;
 }
 
-- (CRLUndoManager)initWithCommandController:(id)a3 delegate:(id)a4
+- (CRLUndoManager)initWithCommandController:(id)controller delegate:(id)delegate
 {
-  v6 = a4;
-  v7 = [(CRLUndoManager *)self initWithCommandController:a3];
+  delegateCopy = delegate;
+  v7 = [(CRLUndoManager *)self initWithCommandController:controller];
   v8 = v7;
   if (v7)
   {
-    [(CRLUndoManager *)v7 addDelegate:v6];
+    [(CRLUndoManager *)v7 addDelegate:delegateCopy];
   }
 
   return v8;
@@ -156,9 +156,9 @@
 - (int64_t)groupingLevel
 {
   WeakRetained = objc_loadWeakRetained(&self->_commandController);
-  v3 = [WeakRetained groupingLevel];
+  groupingLevel = [WeakRetained groupingLevel];
 
-  return v3;
+  return groupingLevel;
 }
 
 - (void)enableUndoRegistration
@@ -234,7 +234,7 @@ LABEL_11:
   return 0;
 }
 
-- (void)setGroupsByEvent:(BOOL)a3
+- (void)setGroupsByEvent:(BOOL)event
 {
   +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
@@ -263,7 +263,7 @@ LABEL_11:
   [CRLAssertionHandler handleFailureInFunction:v4 file:v5 lineNumber:92 isFatal:0 description:"CRLUndoManager: undo manager has been overridden. This call is unexpected: setGroupsByEvent:"];
 }
 
-- (void)setLevelsOfUndo:(unint64_t)a3
+- (void)setLevelsOfUndo:(unint64_t)undo
 {
   +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
@@ -295,20 +295,20 @@ LABEL_11:
 - (unint64_t)undoCount
 {
   WeakRetained = objc_loadWeakRetained(&self->_commandController);
-  v3 = [WeakRetained undoCount];
+  undoCount = [WeakRetained undoCount];
 
-  return v3;
+  return undoCount;
 }
 
 - (unint64_t)redoCount
 {
   WeakRetained = objc_loadWeakRetained(&self->_commandController);
-  v3 = [WeakRetained redoCount];
+  redoCount = [WeakRetained redoCount];
 
-  return v3;
+  return redoCount;
 }
 
-- (void)setRunLoopModes:(id)a3
+- (void)setRunLoopModes:(id)modes
 {
   +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
@@ -340,9 +340,9 @@ LABEL_11:
 - (void)undoNestedGroup
 {
   WeakRetained = objc_loadWeakRetained(&self->_commandController);
-  v4 = [WeakRetained canUndo];
+  canUndo = [WeakRetained canUndo];
 
-  if (v4)
+  if (canUndo)
   {
     v5 = objc_loadWeakRetained(&self->_commandController);
     [v5 undo];
@@ -411,7 +411,7 @@ LABEL_11:
   return 0;
 }
 
-- (void)removeAllActionsWithTarget:(id)a3
+- (void)removeAllActionsWithTarget:(id)target
 {
   +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
@@ -440,9 +440,9 @@ LABEL_11:
   [CRLAssertionHandler handleFailureInFunction:v4 file:v5 lineNumber:145 isFatal:0 description:"CRLUndoManager: undo manager has been overridden. This call is unexpected: removeAllActionsWithTarget:"];
 }
 
-- (void)registerUndoWithTarget:(id)a3 selector:(SEL)a4 object:(id)a5
+- (void)registerUndoWithTarget:(id)target selector:(SEL)selector object:(id)object
 {
-  [CRLAssertionHandler _atomicIncrementAssertCount:a3];
+  [CRLAssertionHandler _atomicIncrementAssertCount:target];
   if (qword_101AD5A10 != -1)
   {
     sub_101380C14();
@@ -469,9 +469,9 @@ LABEL_11:
   [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:149 isFatal:0 description:"CRLUndoManager: undo manager has been overridden. This call is unexpected: registerUndoWithTarget"];
 }
 
-- (id)prepareWithInvocationTarget:(id)a3
+- (id)prepareWithInvocationTarget:(id)target
 {
-  v4 = a3;
+  targetCopy = target;
   +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
   {
@@ -500,7 +500,7 @@ LABEL_11:
 
   v10.receiver = self;
   v10.super_class = CRLUndoManager;
-  v8 = [(CRLUndoManager *)&v10 prepareWithInvocationTarget:v4];
+  v8 = [(CRLUndoManager *)&v10 prepareWithInvocationTarget:targetCopy];
 
   return v8;
 }
@@ -508,20 +508,20 @@ LABEL_11:
 - (id)undoActionName
 {
   WeakRetained = objc_loadWeakRetained(&self->_commandController);
-  v3 = [WeakRetained undoActionString];
+  undoActionString = [WeakRetained undoActionString];
 
-  return v3;
+  return undoActionString;
 }
 
 - (id)redoActionName
 {
   WeakRetained = objc_loadWeakRetained(&self->_commandController);
-  v3 = [WeakRetained redoActionString];
+  redoActionString = [WeakRetained redoActionString];
 
-  return v3;
+  return redoActionString;
 }
 
-- (void)setActionName:(id)a3
+- (void)setActionName:(id)name
 {
   +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
@@ -561,8 +561,8 @@ LABEL_11:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(NSHashTable *)self->_delegates allObjects];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allObjects = [(NSHashTable *)self->_delegates allObjects];
+  v4 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -573,7 +573,7 @@ LABEL_11:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allObjects);
         }
 
         if (![*(*(&v10 + 1) + 8 * i) canUndo])
@@ -583,7 +583,7 @@ LABEL_11:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v5)
       {
         continue;
@@ -610,8 +610,8 @@ LABEL_13:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(NSHashTable *)self->_delegates allObjects];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allObjects = [(NSHashTable *)self->_delegates allObjects];
+  v4 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -622,7 +622,7 @@ LABEL_13:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allObjects);
         }
 
         if (![*(*(&v10 + 1) + 8 * i) canRedo])
@@ -632,7 +632,7 @@ LABEL_13:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v5)
       {
         continue;
@@ -651,9 +651,9 @@ LABEL_13:
 - (void)undo
 {
   WeakRetained = objc_loadWeakRetained(&self->_commandController);
-  v4 = [WeakRetained canUndo];
+  canUndo = [WeakRetained canUndo];
 
-  if (v4)
+  if (canUndo)
   {
     v5 = objc_loadWeakRetained(&self->_commandController);
     [v5 undo];
@@ -663,28 +663,28 @@ LABEL_13:
 - (void)redo
 {
   WeakRetained = objc_loadWeakRetained(&self->_commandController);
-  v4 = [WeakRetained canRedo];
+  canRedo = [WeakRetained canRedo];
 
-  if (v4)
+  if (canRedo)
   {
     v5 = objc_loadWeakRetained(&self->_commandController);
     [v5 redo];
   }
 }
 
-- (void)p_commandControllerDidOpenUndoGroup:(id)a3
+- (void)p_commandControllerDidOpenUndoGroup:(id)group
 {
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 postNotificationName:NSUndoManagerDidOpenUndoGroupNotification object:self];
 }
 
-- (void)p_commandControllerWillCloseUndoGroup:(id)a3
+- (void)p_commandControllerWillCloseUndoGroup:(id)group
 {
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 postNotificationName:NSUndoManagerWillCloseUndoGroupNotification object:self];
 }
 
-- (void)p_commandControllerDidCloseUndoGroup:(id)a3
+- (void)p_commandControllerDidCloseUndoGroup:(id)group
 {
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 postNotificationName:NSUndoManagerDidCloseUndoGroupNotification object:self];
@@ -699,25 +699,25 @@ LABEL_13:
   self->_canRedo = [v4 canRedo];
 }
 
-- (void)p_commandControllerWillUndo:(id)a3
+- (void)p_commandControllerWillUndo:(id)undo
 {
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 postNotificationName:NSUndoManagerWillUndoChangeNotification object:self];
 }
 
-- (void)p_commandControllerDidUndo:(id)a3
+- (void)p_commandControllerDidUndo:(id)undo
 {
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 postNotificationName:NSUndoManagerDidUndoChangeNotification object:self];
 }
 
-- (void)p_commandControllerWillRedo:(id)a3
+- (void)p_commandControllerWillRedo:(id)redo
 {
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 postNotificationName:NSUndoManagerWillRedoChangeNotification object:self];
 }
 
-- (void)p_commandControllerDidRedo:(id)a3
+- (void)p_commandControllerDidRedo:(id)redo
 {
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 postNotificationName:NSUndoManagerDidRedoChangeNotification object:self];

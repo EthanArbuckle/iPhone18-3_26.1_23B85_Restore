@@ -8,15 +8,15 @@
 {
   v36.receiver = self;
   v36.super_class = STStorageLocalStorageController;
-  v3 = [(STStorageFPFSController *)&v36 storageApp];
+  storageApp = [(STStorageFPFSController *)&v36 storageApp];
   v4 = +[STFileProviderMonitor sharedMonitor];
-  v5 = [v4 fpDomains];
+  fpDomains = [v4 fpDomains];
 
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v6 = v5;
+  v6 = fpDomains;
   v7 = [v6 countByEnumeratingWithState:&v32 objects:v38 count:16];
   if (!v7)
   {
@@ -35,28 +35,28 @@
       }
 
       v11 = *(*(&v32 + 1) + 8 * i);
-      v12 = [v11 topLevelBundleIdentifier];
-      v13 = v12;
-      if (v12)
+      topLevelBundleIdentifier = [v11 topLevelBundleIdentifier];
+      v13 = topLevelBundleIdentifier;
+      if (topLevelBundleIdentifier)
       {
-        v14 = v12;
+        providerID = topLevelBundleIdentifier;
       }
 
       else
       {
-        v14 = [v11 providerID];
+        providerID = [v11 providerID];
       }
 
-      v15 = v14;
+      v15 = providerID;
 
-      v16 = [v3 bundleIdentifier];
-      v17 = [v15 isEqualToString:v16];
+      bundleIdentifier = [storageApp bundleIdentifier];
+      v17 = [v15 isEqualToString:bundleIdentifier];
 
       if (v17)
       {
-        v18 = v11;
+        name = v11;
 
-        if (!v18)
+        if (!name)
         {
           goto LABEL_16;
         }
@@ -78,15 +78,15 @@
           if (![v19 isEqualToString:@"IPOD"])
           {
 LABEL_22:
-            v24 = [(STStorageLocalStorageController *)self navigationItem];
-            [v24 setTitle:v20];
+            navigationItem = [(STStorageLocalStorageController *)self navigationItem];
+            [navigationItem setTitle:v20];
 
             [(STStorageFPFSController *)self setConfirmDelete:1];
             v25 = +[FPItemManager defaultManager];
-            v26 = [v25 rootCollectionForProviderDomain:v18];
+            v26 = [v25 rootCollectionForProviderDomain:name];
 
             v27 = +[FPItemManager defaultManager];
-            v28 = [v27 trashCollectionForProviderDomain:v18];
+            v28 = [v27 trashCollectionForProviderDomain:name];
 
             v29 = [FPUnionCollection alloc];
             v37[0] = v26;
@@ -119,8 +119,8 @@ LABEL_22:
 LABEL_12:
 
 LABEL_16:
-  v18 = [v3 name];
-  NSLog(@"No file provider specified for %@", v18);
+  name = [storageApp name];
+  NSLog(@"No file provider specified for %@", name);
   v22 = 0;
 LABEL_23:
 

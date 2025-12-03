@@ -1,33 +1,33 @@
 @interface ParkedCarSectionController
-- (ParkedCarSectionController)initWithParkedCar:(id)a3;
-- (void)setParkedCar:(id)a3;
+- (ParkedCarSectionController)initWithParkedCar:(id)car;
+- (void)setParkedCar:(id)car;
 @end
 
 @implementation ParkedCarSectionController
 
-- (void)setParkedCar:(id)a3
+- (void)setParkedCar:(id)car
 {
-  v5 = a3;
-  if (self->_parkedCar != v5)
+  carCopy = car;
+  if (self->_parkedCar != carCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_parkedCar, a3);
+    v6 = carCopy;
+    objc_storeStrong(&self->_parkedCar, car);
     [(ParkedCarSectionController *)self updateFromParkedCar];
-    v5 = v6;
+    carCopy = v6;
   }
 }
 
-- (ParkedCarSectionController)initWithParkedCar:(id)a3
+- (ParkedCarSectionController)initWithParkedCar:(id)car
 {
-  v5 = a3;
-  v6 = [v5 mapItem];
+  carCopy = car;
+  mapItem = [carCopy mapItem];
   v9.receiver = self;
   v9.super_class = ParkedCarSectionController;
-  v7 = [(ParkedCarSectionController *)&v9 initWithMapItem:v6];
+  v7 = [(ParkedCarSectionController *)&v9 initWithMapItem:mapItem];
 
   if (v7)
   {
-    objc_storeStrong(&v7->_parkedCar, a3);
+    objc_storeStrong(&v7->_parkedCar, car);
   }
 
   return v7;

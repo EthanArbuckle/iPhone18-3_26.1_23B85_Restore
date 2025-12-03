@@ -1,8 +1,8 @@
 @interface PIDebugRect
-+ (id)debugRectWithRect:(CGRect)a3 color:(id)a4 label:(id)a5;
++ (id)debugRectWithRect:(CGRect)rect color:(id)color label:(id)label;
 - (CGRect)geometry;
 - (PIDebugRect)init;
-- (PIDebugRect)initWithRect:(CGRect)a3 color:(id)a4 label:(id)a5;
+- (PIDebugRect)initWithRect:(CGRect)rect color:(id)color label:(id)label;
 @end
 
 @implementation PIDebugRect
@@ -20,26 +20,26 @@
   return result;
 }
 
-- (PIDebugRect)initWithRect:(CGRect)a3 color:(id)a4 label:(id)a5
+- (PIDebugRect)initWithRect:(CGRect)rect color:(id)color label:(id)label
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  colorCopy = color;
   v19.receiver = self;
   v19.super_class = PIDebugRect;
-  v12 = a5;
+  labelCopy = label;
   v13 = [(PIDebugRect *)&v19 init];
   v13->_geometry.origin.x = x;
   v13->_geometry.origin.y = y;
   v13->_geometry.size.width = width;
   v13->_geometry.size.height = height;
   color = v13->_color;
-  v13->_color = v11;
-  v15 = v11;
+  v13->_color = colorCopy;
+  v15 = colorCopy;
 
-  v16 = [v12 copy];
+  v16 = [labelCopy copy];
   label = v13->_label;
   v13->_label = v16;
 
@@ -87,8 +87,8 @@ LABEL_11:
           v20 = MEMORY[0x1E696AF00];
           v21 = specific;
           v22 = v18;
-          v23 = [v20 callStackSymbols];
-          v24 = [v23 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v20 callStackSymbols];
+          v24 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v27 = specific;
           v28 = 2114;
@@ -115,8 +115,8 @@ LABEL_11:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v14 callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v17;
       _os_log_error_impl(&dword_1C7694000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -134,17 +134,17 @@ LABEL_14:
   }
 }
 
-+ (id)debugRectWithRect:(CGRect)a3 color:(id)a4 label:(id)a5
++ (id)debugRectWithRect:(CGRect)rect color:(id)color label:(id)label
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a5;
-  v11 = a4;
-  v12 = [[PIDebugRect alloc] initWithRect:v11 color:v10 label:x, y, width, height];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  labelCopy = label;
+  colorCopy = color;
+  height = [[PIDebugRect alloc] initWithRect:colorCopy color:labelCopy label:x, y, width, height];
 
-  return v12;
+  return height;
 }
 
 @end

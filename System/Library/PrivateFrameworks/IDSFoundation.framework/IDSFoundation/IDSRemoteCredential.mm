@@ -2,13 +2,13 @@
 - (BOOL)_connect;
 - (BOOL)_disconnect;
 - (void)_disconnected;
-- (void)_sendMessage:(id)a3 withCompletionBlock:(id)a4;
+- (void)_sendMessage:(id)message withCompletionBlock:(id)block;
 - (void)dealloc;
-- (void)fetchRemoteAccountsOfServiceTypes:(id)a3 withCompletionBlock:(id)a4;
-- (void)fetchRemoteiMessageAndFaceTimeAccountInfoWithCompletionBlock:(id)a3;
-- (void)requestIDStatusForURIs:(id)a3 service:(id)a4 lightQuery:(BOOL)a5 allowQuery:(BOOL)a6 completionBlock:(id)a7;
-- (void)sendAccountSyncMessage:(id)a3 messageID:(id)a4 queueOneIdentifier:(id)a5 allowCloudFallback:(BOOL)a6 completionBlock:(id)a7;
-- (void)sendIDSLocalDeviceInfoRequestWithCompletionBlock:(id)a3;
+- (void)fetchRemoteAccountsOfServiceTypes:(id)types withCompletionBlock:(id)block;
+- (void)fetchRemoteiMessageAndFaceTimeAccountInfoWithCompletionBlock:(id)block;
+- (void)requestIDStatusForURIs:(id)is service:(id)service lightQuery:(BOOL)query allowQuery:(BOOL)allowQuery completionBlock:(id)block;
+- (void)sendAccountSyncMessage:(id)message messageID:(id)d queueOneIdentifier:(id)identifier allowCloudFallback:(BOOL)fallback completionBlock:(id)block;
+- (void)sendIDSLocalDeviceInfoRequestWithCompletionBlock:(id)block;
 @end
 
 @implementation IDSRemoteCredential
@@ -114,9 +114,9 @@
   [(IDSRemoteCredential *)&v3 dealloc];
 }
 
-- (void)fetchRemoteiMessageAndFaceTimeAccountInfoWithCompletionBlock:(id)a3
+- (void)fetchRemoteiMessageAndFaceTimeAccountInfoWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -141,15 +141,15 @@
   v12[1] = 3221225472;
   v12[2] = sub_1A7CBE5F0;
   v12[3] = &unk_1E77E2AB0;
-  v13 = v4;
-  v11 = v4;
+  v13 = blockCopy;
+  v11 = blockCopy;
   [(IDSRemoteCredential *)self _sendMessage:v10 withCompletionBlock:v12, 9, 0];
 }
 
-- (void)fetchRemoteAccountsOfServiceTypes:(id)a3 withCompletionBlock:(id)a4
+- (void)fetchRemoteAccountsOfServiceTypes:(id)types withCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  typesCopy = types;
+  blockCopy = block;
   v8 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -175,19 +175,19 @@
   v15[1] = 3221225472;
   v15[2] = sub_1A7CBE994;
   v15[3] = &unk_1E77E2AB0;
-  v16 = v7;
-  v14 = v7;
-  [(IDSRemoteCredential *)self _sendMessage:v13 withCompletionBlock:v15, v6, 0];
+  v16 = blockCopy;
+  v14 = blockCopy;
+  [(IDSRemoteCredential *)self _sendMessage:v13 withCompletionBlock:v15, typesCopy, 0];
 }
 
-- (void)sendIDSLocalDeviceInfoRequestWithCompletionBlock:(id)a3
+- (void)sendIDSLocalDeviceInfoRequestWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  blockCopy = block;
+  registration = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_1A7AD9000, v5, OS_LOG_TYPE_DEFAULT, "Sending local device info request through credentials agent", buf, 2u);
+    _os_log_impl(&dword_1A7AD9000, registration, OS_LOG_TYPE_DEFAULT, "Sending local device info request through credentials agent", buf, 2u);
   }
 
   v6 = xpc_dictionary_create(0, 0, 0);
@@ -198,17 +198,17 @@
     v7[1] = 3221225472;
     v7[2] = sub_1A7CBECB4;
     v7[3] = &unk_1E77E2AB0;
-    v8 = v4;
+    v8 = blockCopy;
     [(IDSRemoteCredential *)self _sendMessage:v6 withCompletionBlock:v7, 11, 0];
   }
 }
 
-- (void)requestIDStatusForURIs:(id)a3 service:(id)a4 lightQuery:(BOOL)a5 allowQuery:(BOOL)a6 completionBlock:(id)a7
+- (void)requestIDStatusForURIs:(id)is service:(id)service lightQuery:(BOOL)query allowQuery:(BOOL)allowQuery completionBlock:(id)block
 {
-  v8 = a6;
-  v11 = a3;
-  v12 = a4;
-  v13 = a7;
+  allowQueryCopy = allowQuery;
+  isCopy = is;
+  serviceCopy = service;
+  blockCopy = block;
   v14 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -227,7 +227,7 @@
     }
   }
 
-  v19 = [v11 __imArrayByApplyingBlock:&unk_1F1AABB80];
+  v19 = [isCopy __imArrayByApplyingBlock:&unk_1F1AABB80];
   v20 = xpc_dictionary_create(0, 0, 0);
   IMInsertIntsToXPCDictionary();
   IMInsertArraysToXPCDictionary();
@@ -238,25 +238,25 @@
   v23[1] = 3221225472;
   v23[2] = sub_1A7CBEFE4;
   v23[3] = &unk_1E77E2B68;
-  v24 = v12;
-  v25 = v13;
-  v21 = v13;
-  v22 = v12;
-  [(IDSRemoteCredential *)self _sendMessage:v20 withCompletionBlock:v23, v8, 0];
+  v24 = serviceCopy;
+  v25 = blockCopy;
+  v21 = blockCopy;
+  v22 = serviceCopy;
+  [(IDSRemoteCredential *)self _sendMessage:v20 withCompletionBlock:v23, allowQueryCopy, 0];
 }
 
-- (void)sendAccountSyncMessage:(id)a3 messageID:(id)a4 queueOneIdentifier:(id)a5 allowCloudFallback:(BOOL)a6 completionBlock:(id)a7
+- (void)sendAccountSyncMessage:(id)message messageID:(id)d queueOneIdentifier:(id)identifier allowCloudFallback:(BOOL)fallback completionBlock:(id)block
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = [MEMORY[0x1E69A6138] accountSync];
-  if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+  fallbackCopy = fallback;
+  messageCopy = message;
+  dCopy = d;
+  identifierCopy = identifier;
+  blockCopy = block;
+  accountSync = [MEMORY[0x1E69A6138] accountSync];
+  if (os_log_type_enabled(accountSync, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_1A7AD9000, v16, OS_LOG_TYPE_DEFAULT, "Sending account sync message to credentials agent", buf, 2u);
+    _os_log_impl(&dword_1A7AD9000, accountSync, OS_LOG_TYPE_DEFAULT, "Sending account sync message to credentials agent", buf, 2u);
   }
 
   v17 = xpc_dictionary_create(0, 0, 0);
@@ -270,20 +270,20 @@
     v18[1] = 3221225472;
     v18[2] = sub_1A7CBF86C;
     v18[3] = &unk_1E77E2B90;
-    v20 = v15;
-    v19 = v13;
-    [(IDSRemoteCredential *)self _sendMessage:v17 withCompletionBlock:v18, v8, 0];
+    v20 = blockCopy;
+    v19 = dCopy;
+    [(IDSRemoteCredential *)self _sendMessage:v17 withCompletionBlock:v18, fallbackCopy, 0];
   }
 }
 
-- (void)_sendMessage:(id)a3 withCompletionBlock:(id)a4
+- (void)_sendMessage:(id)message withCompletionBlock:(id)block
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  blockCopy = block;
   if ([(IDSRemoteCredential *)self _connect])
   {
-    v8 = MEMORY[0x1AC5657E0](v6);
+    v8 = MEMORY[0x1AC5657E0](messageCopy);
     v9 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -310,9 +310,9 @@
     handler[1] = 3221225472;
     handler[2] = sub_1A7CBFB60;
     handler[3] = &unk_1E77E2BE0;
-    v18 = v7;
+    v18 = blockCopy;
     handler[4] = self;
-    v17 = v6;
+    v17 = messageCopy;
     xpc_connection_send_message_with_reply(connection, v17, v15, handler);
   }
 }

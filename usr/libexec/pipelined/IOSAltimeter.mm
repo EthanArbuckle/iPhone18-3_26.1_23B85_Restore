@@ -1,6 +1,6 @@
 @interface IOSAltimeter
 - (IOSAltimeter)init;
-- (IOSAltimeter)initWithOperationQueue:(id)a3;
+- (IOSAltimeter)initWithOperationQueue:(id)queue;
 - (void)start;
 @end
 
@@ -13,9 +13,9 @@
   return 0;
 }
 
-- (IOSAltimeter)initWithOperationQueue:(id)a3
+- (IOSAltimeter)initWithOperationQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = IOSAltimeter;
   v6 = [(IOSAltimeter *)&v13 init];
@@ -27,7 +27,7 @@
       __cxa_guard_release(&qword_10045D4F8);
     }
 
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     objc_storeStrong(&v6->_altimeter, qword_10045D4F0);
     v7 = v6;
     sub_100338704(&v14);
@@ -77,8 +77,8 @@
   v5[1] = 3321888768;
   v5[2] = sub_100307A74;
   v5[3] = &unk_100448D88;
-  v4 = self;
-  v6 = v4;
+  selfCopy = self;
+  v6 = selfCopy;
   [(CMAltimeter *)altimeter startRelativeAltitudeUpdatesToQueue:queue withHandler:v5];
 }
 

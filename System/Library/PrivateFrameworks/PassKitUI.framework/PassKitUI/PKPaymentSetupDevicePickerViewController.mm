@@ -1,36 +1,36 @@
 @interface PKPaymentSetupDevicePickerViewController
-- (PKPaymentSetupDevicePickerViewController)initWithProvisioningController:(id)a3 context:(int64_t)a4 setupDelegate:(id)a5 product:(id)a6 webService:(id)a7 nanoWebService:(id)a8;
+- (PKPaymentSetupDevicePickerViewController)initWithProvisioningController:(id)controller context:(int64_t)context setupDelegate:(id)delegate product:(id)product webService:(id)service nanoWebService:(id)webService;
 - (PKPaymentSetupDevicePickerViewControllerFlowDelegate)flowDelegate;
-- (void)didSelectWebService:(id)a3;
-- (void)preflightWithCompletion:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)didSelectWebService:(id)service;
+- (void)preflightWithCompletion:(id)completion;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation PKPaymentSetupDevicePickerViewController
 
-- (PKPaymentSetupDevicePickerViewController)initWithProvisioningController:(id)a3 context:(int64_t)a4 setupDelegate:(id)a5 product:(id)a6 webService:(id)a7 nanoWebService:(id)a8
+- (PKPaymentSetupDevicePickerViewController)initWithProvisioningController:(id)controller context:(int64_t)context setupDelegate:(id)delegate product:(id)product webService:(id)service nanoWebService:(id)webService
 {
   v26[2] = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v24 = a5;
-  v23 = a6;
-  v16 = a7;
-  v17 = a8;
+  controllerCopy = controller;
+  delegateCopy = delegate;
+  productCopy = product;
+  serviceCopy = service;
+  webServiceCopy = webService;
   v25.receiver = self;
   v25.super_class = PKPaymentSetupDevicePickerViewController;
   v18 = [(PKDynamicCollectionViewController *)&v25 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_provisioningController, a3);
-    v19->_setupContext = a4;
-    objc_storeStrong(&v19->_setupDelegate, a5);
-    objc_storeStrong(&v19->_product, a6);
-    objc_storeStrong(&v19->_webService, a7);
-    objc_storeStrong(&v19->_nanoWebService, a8);
-    v26[0] = v16;
-    v26[1] = v17;
+    objc_storeStrong(&v18->_provisioningController, controller);
+    v19->_setupContext = context;
+    objc_storeStrong(&v19->_setupDelegate, delegate);
+    objc_storeStrong(&v19->_product, product);
+    objc_storeStrong(&v19->_webService, service);
+    objc_storeStrong(&v19->_nanoWebService, webService);
+    v26[0] = serviceCopy;
+    v26[1] = webServiceCopy;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:2];
     webServices = v19->_webServices;
     v19->_webServices = v20;
@@ -49,8 +49,8 @@
   product = self->_product;
   if (product)
   {
-    v5 = [(PKPaymentSetupProduct *)product displayName];
-    v6 = PKLocalizedPaymentString(&cfstr_IssuerAddPicke.isa, &stru_1F3BD5BF0.isa, v5);
+    displayName = [(PKPaymentSetupProduct *)product displayName];
+    v6 = PKLocalizedPaymentString(&cfstr_IssuerAddPicke.isa, &stru_1F3BD5BF0.isa, displayName);
   }
 
   else
@@ -65,25 +65,25 @@
   [(PKDynamicCollectionViewController *)self setSections:v8 animated:1];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKPaymentSetupDevicePickerViewController;
-  [(PKDynamicCollectionViewController *)&v4 viewDidAppear:a3];
+  [(PKDynamicCollectionViewController *)&v4 viewDidAppear:appear];
   [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportViewAppeared];
 }
 
-- (void)preflightWithCompletion:(id)a3
+- (void)preflightWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   product = self->_product;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __68__PKPaymentSetupDevicePickerViewController_preflightWithCompletion___block_invoke;
   v8[3] = &unk_1E8012AF0;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = completionCopy;
+  v6 = completionCopy;
   v7 = [(PKPaymentSetupProduct *)product digitalCardCachedImage:v8];
 }
 
@@ -171,11 +171,11 @@ uint64_t __68__PKPaymentSetupDevicePickerViewController_preflightWithCompletion_
   return result;
 }
 
-- (void)didSelectWebService:(id)a3
+- (void)didSelectWebService:(id)service
 {
   v18[2] = *MEMORY[0x1E69E9840];
   v5 = 6;
-  if (self->_nanoWebService == a3)
+  if (self->_nanoWebService == service)
   {
     v5 = 15;
     v6 = 16;
@@ -194,29 +194,29 @@ uint64_t __68__PKPaymentSetupDevicePickerViewController_preflightWithCompletion_
   v11 = *MEMORY[0x1E69BA5F8];
   v17[0] = v10;
   v17[1] = v11;
-  v12 = [a3 targetDevice];
-  v13 = [v12 deviceClass];
-  if ([v13 isEqualToString:@"iPhone"])
+  targetDevice = [service targetDevice];
+  deviceClass = [targetDevice deviceClass];
+  if ([deviceClass isEqualToString:@"iPhone"])
   {
     v14 = @"phone";
   }
 
-  else if ([v13 isEqualToString:@"iPad"])
+  else if ([deviceClass isEqualToString:@"iPad"])
   {
     v14 = @"pad";
   }
 
-  else if ([v13 isEqualToString:@"Watch"])
+  else if ([deviceClass isEqualToString:@"Watch"])
   {
     v14 = @"watch";
   }
 
-  else if ([v13 isEqualToString:@"Mac"])
+  else if ([deviceClass isEqualToString:@"Mac"])
   {
     v14 = @"mac";
   }
 
-  else if ([v13 isEqualToString:@"RealityDevice"])
+  else if ([deviceClass isEqualToString:@"RealityDevice"])
   {
     v14 = @"vision";
   }

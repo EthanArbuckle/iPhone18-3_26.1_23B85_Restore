@@ -32,7 +32,7 @@
       *buf = 138412546;
       v7 = GUID;
       v8 = 2048;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&dword_0, v3, OS_LOG_TYPE_INFO, "deallocing %@ %p", buf, 0x16u);
     }
   }
@@ -46,7 +46,7 @@
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(MessageServiceSessionSendBlockWrapper *)self GUID];
+  gUID = [(MessageServiceSessionSendBlockWrapper *)self GUID];
   if ([(MessageServiceSessionSendBlockWrapper *)self isDelayedRichLinkBlock])
   {
     v5 = @"YES";
@@ -57,7 +57,7 @@
     v5 = @"NO";
   }
 
-  return [NSString stringWithFormat:@"<%@:%p GUID %@ isDelayedRichLinkBlock %@ Block %@>", v3, self, v4, v5, [(MessageServiceSessionSendBlockWrapper *)self block]];
+  return [NSString stringWithFormat:@"<%@:%p GUID %@ isDelayedRichLinkBlock %@ Block %@>", v3, self, gUID, v5, [(MessageServiceSessionSendBlockWrapper *)self block]];
 }
 
 @end

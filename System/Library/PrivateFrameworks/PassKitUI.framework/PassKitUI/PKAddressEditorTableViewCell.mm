@@ -1,19 +1,19 @@
 @interface PKAddressEditorTableViewCell
-- (PKAddressEditorTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (PKAddressEditorTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)prepareForReuse;
 @end
 
 @implementation PKAddressEditorTableViewCell
 
-- (PKAddressEditorTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PKAddressEditorTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v18.receiver = self;
   v18.super_class = PKAddressEditorTableViewCell;
-  v4 = [(PKAddressEditorTableViewCell *)&v18 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PKAddressEditorTableViewCell *)&v18 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
-    v5 = [MEMORY[0x1E69DC888] clearColor];
-    [(PKAddressEditorTableViewCell *)v4 setBackgroundColor:v5];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(PKAddressEditorTableViewCell *)v4 setBackgroundColor:clearColor];
 
     [(PKAddressEditorTableViewCell *)v4 setOpaque:0];
     [(PKAddressEditorTableViewCell *)v4 setSelectionStyle:0];
@@ -29,26 +29,26 @@
     [(UIStackView *)v4->_stackView setSpacing:10.0];
     [(UIStackView *)v4->_stackView setPreservesSuperviewLayoutMargins:1];
     v9 = v4->_stackView;
-    v10 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIStackView *)v9 setBackgroundColor:v10];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [(UIStackView *)v9 setBackgroundColor:clearColor2];
 
-    v11 = [(PKAddressEditorTableViewCell *)v4 contentView];
-    [v11 addSubview:v4->_stackView];
-    [v11 setPreservesSuperviewLayoutMargins:1];
-    v12 = [MEMORY[0x1E696ACD8] constraintWithItem:v4->_stackView attribute:6 relatedBy:0 toItem:v11 attribute:6 multiplier:1.0 constant:0.0];
-    [v11 addConstraint:v12];
+    contentView = [(PKAddressEditorTableViewCell *)v4 contentView];
+    [contentView addSubview:v4->_stackView];
+    [contentView setPreservesSuperviewLayoutMargins:1];
+    v12 = [MEMORY[0x1E696ACD8] constraintWithItem:v4->_stackView attribute:6 relatedBy:0 toItem:contentView attribute:6 multiplier:1.0 constant:0.0];
+    [contentView addConstraint:v12];
 
-    v13 = [MEMORY[0x1E696ACD8] constraintWithItem:v4->_stackView attribute:5 relatedBy:0 toItem:v11 attribute:5 multiplier:1.0 constant:0.0];
-    [v11 addConstraint:v13];
+    v13 = [MEMORY[0x1E696ACD8] constraintWithItem:v4->_stackView attribute:5 relatedBy:0 toItem:contentView attribute:5 multiplier:1.0 constant:0.0];
+    [contentView addConstraint:v13];
 
-    v14 = [MEMORY[0x1E696ACD8] constraintWithItem:v4->_stackView attribute:3 relatedBy:0 toItem:v11 attribute:3 multiplier:1.0 constant:0.0];
-    [v11 addConstraint:v14];
+    v14 = [MEMORY[0x1E696ACD8] constraintWithItem:v4->_stackView attribute:3 relatedBy:0 toItem:contentView attribute:3 multiplier:1.0 constant:0.0];
+    [contentView addConstraint:v14];
 
-    v15 = [MEMORY[0x1E696ACD8] constraintWithItem:v4->_stackView attribute:4 relatedBy:0 toItem:v11 attribute:4 multiplier:1.0 constant:0.0];
-    [v11 addConstraint:v15];
+    v15 = [MEMORY[0x1E696ACD8] constraintWithItem:v4->_stackView attribute:4 relatedBy:0 toItem:contentView attribute:4 multiplier:1.0 constant:0.0];
+    [contentView addConstraint:v15];
 
     v16 = [MEMORY[0x1E696ACD8] constraintWithItem:v4->_stackView attribute:8 relatedBy:1 toItem:0 attribute:0 multiplier:1.0 constant:44.0];
-    [v11 addConstraint:v16];
+    [contentView addConstraint:v16];
 
     [(PKAddressEditorTableViewCell *)v4 setNeedsUpdateConstraints];
     [(PKAddressEditorTableViewCell *)v4 setAccessibilityIdentifier:*MEMORY[0x1E69B9410]];
@@ -67,8 +67,8 @@
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [(UIStackView *)self->_stackView arrangedSubviews];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v14 count:16];
+  arrangedSubviews = [(UIStackView *)self->_stackView arrangedSubviews];
+  v4 = [arrangedSubviews countByEnumeratingWithState:&v9 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -79,7 +79,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         v8 = *(*(&v9 + 1) + 8 * i);
@@ -87,7 +87,7 @@
         [v8 removeFromSuperview];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v14 count:16];
+      v5 = [arrangedSubviews countByEnumeratingWithState:&v9 objects:v14 count:16];
     }
 
     while (v5);

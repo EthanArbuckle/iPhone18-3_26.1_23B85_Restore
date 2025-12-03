@@ -1,6 +1,6 @@
 @interface NearbyGroupHostIDSService
 - (_TtC44com_apple_SharePlay_NearbyInvitationsService25NearbyGroupHostIDSService)init;
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7;
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context;
 @end
 
 @implementation NearbyGroupHostIDSService
@@ -12,21 +12,21 @@
   return result;
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context
 {
-  v9 = a5;
-  if (a5)
+  dataCopy = data;
+  if (data)
   {
-    v12 = a3;
-    v13 = a4;
-    v14 = a6;
-    v15 = a7;
-    v16 = self;
-    v17 = v9;
-    v9 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
+    serviceCopy = service;
+    accountCopy = account;
+    dCopy = d;
+    contextCopy = context;
+    selfCopy = self;
+    v17 = dataCopy;
+    dataCopy = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     v19 = v18;
 
-    if (a6)
+    if (d)
     {
 LABEL_3:
       v20 = static String._unconditionallyBridgeFromObjectiveC(_:)();
@@ -38,13 +38,13 @@ LABEL_3:
 
   else
   {
-    v23 = a3;
-    v24 = a4;
-    v25 = a6;
-    v26 = a7;
-    v27 = self;
+    serviceCopy2 = service;
+    accountCopy2 = account;
+    dCopy2 = d;
+    contextCopy2 = context;
+    selfCopy2 = self;
     v19 = 0xF000000000000000;
-    if (a6)
+    if (d)
     {
       goto LABEL_3;
     }
@@ -53,9 +53,9 @@ LABEL_3:
   v20 = 0;
   v22 = 0;
 LABEL_6:
-  specialized NearbyGroupHostIDSService.service(_:account:incomingData:fromID:context:)(v9, v19, v20, v22, a7);
+  specialized NearbyGroupHostIDSService.service(_:account:incomingData:fromID:context:)(dataCopy, v19, v20, v22, context);
 
-  outlined consume of Data?(v9, v19);
+  outlined consume of Data?(dataCopy, v19);
 }
 
 @end

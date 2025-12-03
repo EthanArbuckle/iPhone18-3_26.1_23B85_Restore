@@ -1,12 +1,12 @@
 @interface MFMessageActionRule
 + (id)log;
-- (BOOL)canExecuteRuleOnMessage:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)canExecuteRuleOnMessage:(id)message;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)shouldIncludeInNewMessagesSet;
-- (MFMessageActionRule)initWithMessageActions:(id)a3;
+- (MFMessageActionRule)initWithMessageActions:(id)actions;
 - (id)_firstActionsDestination;
-- (unint64_t)_flagColorForActionFlagColor:(int64_t)a3;
-- (void)performOperationOnMessages:(id)a3 withMessageChangeManager:(id)a4;
+- (unint64_t)_flagColorForActionFlagColor:(int64_t)color;
+- (void)performOperationOnMessages:(id)messages withMessageChangeManager:(id)manager;
 @end
 
 @implementation MFMessageActionRule
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = sub_100073CAC;
   block[3] = &unk_1001562E8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100185920 != -1)
   {
     dispatch_once(&qword_100185920, block);
@@ -28,36 +28,36 @@
   return v2;
 }
 
-- (MFMessageActionRule)initWithMessageActions:(id)a3
+- (MFMessageActionRule)initWithMessageActions:(id)actions
 {
-  v5 = a3;
+  actionsCopy = actions;
   v9.receiver = self;
   v9.super_class = MFMessageActionRule;
   v6 = [(MFMessageActionRule *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_actions, a3);
+    objc_storeStrong(&v6->_actions, actions);
   }
 
   return v7;
 }
 
-- (BOOL)canExecuteRuleOnMessage:(id)a3
+- (BOOL)canExecuteRuleOnMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(MFMessageActionRule *)self _firstActionsDestination];
-  v6 = v5;
-  if (v5)
+  messageCopy = message;
+  _firstActionsDestination = [(MFMessageActionRule *)self _firstActionsDestination];
+  v6 = _firstActionsDestination;
+  if (_firstActionsDestination)
   {
-    [v5 mailboxType];
+    [_firstActionsDestination mailboxType];
     v7 = mailboxUIDTypeFromECMailboxType();
-    v8 = [v4 mailbox];
-    v9 = [v8 type];
+    mailbox = [messageCopy mailbox];
+    type = [mailbox type];
 
     if (v7)
     {
-      v10 = v7 == v9;
+      v10 = v7 == type;
     }
 
     else
@@ -78,18 +78,18 @@
 
 - (BOOL)shouldIncludeInNewMessagesSet
 {
-  v2 = [(MFMessageActionRule *)self _firstActionsDestination];
-  v3 = v2 == 0;
+  _firstActionsDestination = [(MFMessageActionRule *)self _firstActionsDestination];
+  v3 = _firstActionsDestination == 0;
 
   return v3;
 }
 
-- (void)performOperationOnMessages:(id)a3 withMessageChangeManager:(id)a4
+- (void)performOperationOnMessages:(id)messages withMessageChangeManager:(id)manager
 {
-  v6 = a3;
-  v31 = a4;
-  v32 = v6;
-  v30 = [v6 ef_groupBy:&stru_100158E98];
+  messagesCopy = messages;
+  managerCopy = manager;
+  v32 = messagesCopy;
+  v30 = [messagesCopy ef_groupBy:&stru_100158E98];
   v56 = 0u;
   v57 = 0u;
   v54 = 0u;
@@ -99,8 +99,8 @@
   if (!v7)
   {
 
-    v24 = v6;
-    v12 = 0;
+    v24 = messagesCopy;
+    destination3 = 0;
     LOBYTE(v11) = 0;
     v10 = 0;
     v9 = 0;
@@ -110,13 +110,13 @@
     goto LABEL_42;
   }
 
-  v33 = self;
+  selfCopy = self;
   v8 = 0;
   v36 = 0;
   v9 = 0;
   v10 = 0;
   v11 = 0;
-  v12 = 0;
+  destination3 = 0;
   v13 = *v55;
   v34 = 1;
   do
@@ -129,23 +129,23 @@
       }
 
       v15 = *(*(&v54 + 1) + 8 * i);
-      v16 = [v15 destination];
+      destination = [v15 destination];
 
-      if (v16)
+      if (destination)
       {
-        if (v12)
+        if (destination3)
         {
           v17 = +[MFMessageActionRule log];
           if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
           {
-            v18 = [v15 destination];
-            sub_1000D48E8(v18, buf, &v59, v17);
+            destination2 = [v15 destination];
+            sub_1000D48E8(destination2, buf, &v59, v17);
           }
         }
 
         else
         {
-          v12 = [v15 destination];
+          destination3 = [v15 destination];
         }
       }
 
@@ -190,14 +190,14 @@ LABEL_21:
       }
 
 LABEL_24:
-      v21 = [v15 flagChange];
-      v22 = v21;
-      if (!v21)
+      flagChange = [v15 flagChange];
+      v22 = flagChange;
+      if (!flagChange)
       {
         goto LABEL_37;
       }
 
-      if ([v21 flag])
+      if ([flagChange flag])
       {
         if (v9)
         {
@@ -213,7 +213,7 @@ LABEL_34:
           goto LABEL_37;
         }
 
-        v34 = -[MFMessageActionRule _flagColorForActionFlagColor:](v33, "_flagColorForActionFlagColor:", [v22 flag]);
+        v34 = -[MFMessageActionRule _flagColorForActionFlagColor:](selfCopy, "_flagColorForActionFlagColor:", [v22 flag]);
         v9 = 0;
         v8 = 1;
         v36 = 1;
@@ -247,7 +247,7 @@ LABEL_37:
   while (v7);
 
   v24 = v32;
-  if (v12)
+  if (destination3)
   {
     v25 = objc_alloc_init(NSMutableArray);
 
@@ -255,11 +255,11 @@ LABEL_37:
     v42[1] = 3221225472;
     v42[2] = sub_1000744F4;
     v42[3] = &unk_100158EC0;
-    v12 = v12;
-    v43 = v12;
+    destination3 = destination3;
+    v43 = destination3;
     v26 = v25;
     v44 = v26;
-    v45 = v31;
+    v45 = managerCopy;
     [v30 enumerateKeysAndObjectsUsingBlock:v42];
     v27 = v45;
     v24 = v26;
@@ -278,20 +278,20 @@ LABEL_42:
     v37[4] = v34;
     v41 = v9 & 1;
     v28 = [[ECMessageFlagChange alloc] initWithBuilder:v37];
-    v29 = [v31 applyFlagChange:v28 toMessages:v24];
+    v29 = [managerCopy applyFlagChange:v28 toMessages:v24];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if ([v5 isEqual:objc_opt_class()])
   {
-    v6 = v4;
-    v7 = [(MFMessageActionRule *)self actions];
-    v8 = [v6 actions];
-    v9 = [v7 isEqual:v8];
+    v6 = equalCopy;
+    actions = [(MFMessageActionRule *)self actions];
+    actions2 = [v6 actions];
+    v9 = [actions isEqual:actions2];
   }
 
   else
@@ -304,24 +304,24 @@ LABEL_42:
 
 - (id)_firstActionsDestination
 {
-  v2 = [(MFMessageActionRule *)self actions];
-  v3 = [v2 ef_firstObjectPassingTest:&stru_100158F20];
+  actions = [(MFMessageActionRule *)self actions];
+  v3 = [actions ef_firstObjectPassingTest:&stru_100158F20];
 
-  v4 = [v3 destination];
+  destination = [v3 destination];
 
-  return v4;
+  return destination;
 }
 
-- (unint64_t)_flagColorForActionFlagColor:(int64_t)a3
+- (unint64_t)_flagColorForActionFlagColor:(int64_t)color
 {
-  if ((a3 - 2) >= 7)
+  if ((color - 2) >= 7)
   {
     return 1;
   }
 
   else
   {
-    return a3 - 2;
+    return color - 2;
   }
 }
 

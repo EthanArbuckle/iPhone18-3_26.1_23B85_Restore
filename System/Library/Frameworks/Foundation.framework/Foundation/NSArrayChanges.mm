@@ -1,46 +1,46 @@
 @interface NSArrayChanges
-+ (id)allocWithZone:(_NSZone *)a3;
-- (NSArrayChanges)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addChange:(id)a3;
-- (void)addChanges:(id)a3;
-- (void)addObject:(id)a3;
-- (void)applyChangesToArray:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateChanges:(unint64_t)a3 usingBlock:(id)a4;
-- (void)enumerateChangesUsingBlock:(id)a3;
-- (void)exchangeObjectAtIndex:(unint64_t)a3 withObjectAtIndex:(unint64_t)a4;
-- (void)insertObject:(id)a3 atIndex:(unint64_t)a4;
-- (void)moveObjectAtIndex:(unint64_t)a3 toIndex:(unint64_t)a4;
-- (void)moveObjectsAtIndexes:(id)a3 toIndex:(unint64_t)a4;
++ (id)allocWithZone:(_NSZone *)zone;
+- (NSArrayChanges)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addChange:(id)change;
+- (void)addChanges:(id)changes;
+- (void)addObject:(id)object;
+- (void)applyChangesToArray:(id)array;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateChanges:(unint64_t)changes usingBlock:(id)block;
+- (void)enumerateChangesUsingBlock:(id)block;
+- (void)exchangeObjectAtIndex:(unint64_t)index withObjectAtIndex:(unint64_t)atIndex;
+- (void)insertObject:(id)object atIndex:(unint64_t)index;
+- (void)moveObjectAtIndex:(unint64_t)index toIndex:(unint64_t)toIndex;
+- (void)moveObjectsAtIndexes:(id)indexes toIndex:(unint64_t)index;
 - (void)removeLastObject;
-- (void)removeObjectAtIndex:(unint64_t)a3;
-- (void)replaceObjectAtIndex:(unint64_t)a3 withObject:(id)a4;
-- (void)sortUsingFunction:(void *)a3 context:(void *)a4;
-- (void)sortUsingSelector:(SEL)a3;
-- (void)updateObject:(id)a3 atIndex:(unint64_t)a4;
+- (void)removeObjectAtIndex:(unint64_t)index;
+- (void)replaceObjectAtIndex:(unint64_t)index withObject:(id)object;
+- (void)sortUsingFunction:(void *)function context:(void *)context;
+- (void)sortUsingSelector:(SEL)selector;
+- (void)updateObject:(id)object atIndex:(unint64_t)index;
 @end
 
 @implementation NSArrayChanges
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
   v5 = *MEMORY[0x1E69E9840];
-  if (NSArrayChanges == a1)
+  if (NSArrayChanges == self)
   {
 
-    return [(NSArrayChanges *)NSConcreteArrayChanges allocWithZone:a3];
+    return [(NSArrayChanges *)NSConcreteArrayChanges allocWithZone:zone];
   }
 
   else
   {
-    v4.receiver = a1;
+    v4.receiver = self;
     v4.super_class = &OBJC_METACLASS___NSArrayChanges;
-    return objc_msgSendSuper2(&v4, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v4, sel_allocWithZone_, zone);
   }
 }
 
-- (NSArrayChanges)initWithCoder:(id)a3
+- (NSArrayChanges)initWithCoder:(id)coder
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -49,12 +49,12 @@
   if (v4)
   {
     v7 = 0;
-    [a3 decodeValueOfObjCType:"Q" at:&v7 size:8];
+    [coder decodeValueOfObjCType:"Q" at:&v7 size:8];
     if (v7)
     {
       for (i = 0; i < v7; ++i)
       {
-        -[NSArrayChanges addChange:](v4, "addChange:", [a3 decodeObject]);
+        -[NSArrayChanges addChange:](v4, "addChange:", [coder decodeObject]);
       }
     }
   }
@@ -62,20 +62,20 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6[1] = *MEMORY[0x1E69E9840];
   v6[0] = [(NSArrayChanges *)self changeCount];
-  [a3 encodeValueOfObjCType:"Q" at:v6];
+  [coder encodeValueOfObjCType:"Q" at:v6];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __34__NSArrayChanges_encodeWithCoder___block_invoke;
   v5[3] = &unk_1E69F53D8;
-  v5[4] = a3;
+  v5[4] = coder;
   [(NSArrayChanges *)self enumerateChangesUsingBlock:v5];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6[5] = *MEMORY[0x1E69E9840];
   v4 = [[NSArrayChanges allocWithZone:?]];
@@ -88,65 +88,65 @@
   return v4;
 }
 
-- (void)enumerateChangesUsingBlock:(id)a3
+- (void)enumerateChangesUsingBlock:(id)block
 {
   v5 = objc_opt_class();
 
   NSRequestConcreteImplementation(self, a2, v5);
 }
 
-- (void)enumerateChanges:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateChanges:(unint64_t)changes usingBlock:(id)block
 {
   v6 = objc_opt_class();
 
   NSRequestConcreteImplementation(self, a2, v6);
 }
 
-- (void)addChange:(id)a3
+- (void)addChange:(id)change
 {
   v5 = objc_opt_class();
 
   NSRequestConcreteImplementation(self, a2, v5);
 }
 
-- (void)updateObject:(id)a3 atIndex:(unint64_t)a4
+- (void)updateObject:(id)object atIndex:(unint64_t)index
 {
-  v5 = [[NSArrayChange alloc] initWithType:1 sourceIndex:a4 destinationIndex:a4 value:a3];
+  v5 = [[NSArrayChange alloc] initWithType:1 sourceIndex:index destinationIndex:index value:object];
   [(NSArrayChanges *)self addChange:v5];
 }
 
-- (void)replaceObjectAtIndex:(unint64_t)a3 withObject:(id)a4
+- (void)replaceObjectAtIndex:(unint64_t)index withObject:(id)object
 {
-  v5 = [[NSArrayChange alloc] initWithType:4 sourceIndex:a3 destinationIndex:a3 value:a4];
+  v5 = [[NSArrayChange alloc] initWithType:4 sourceIndex:index destinationIndex:index value:object];
   [(NSArrayChanges *)self addChange:v5];
 }
 
-- (void)moveObjectAtIndex:(unint64_t)a3 toIndex:(unint64_t)a4
+- (void)moveObjectAtIndex:(unint64_t)index toIndex:(unint64_t)toIndex
 {
-  v5 = [[NSArrayChange alloc] initWithType:5 sourceIndex:a3 destinationIndex:a4 value:[(NSArrayChanges *)self objectAtIndex:a3]];
+  v5 = [[NSArrayChange alloc] initWithType:5 sourceIndex:index destinationIndex:toIndex value:[(NSArrayChanges *)self objectAtIndex:index]];
   [(NSArrayChanges *)self addChange:v5];
 }
 
-- (void)removeObjectAtIndex:(unint64_t)a3
+- (void)removeObjectAtIndex:(unint64_t)index
 {
-  v4 = [[NSArrayChange alloc] initWithType:3 sourceIndex:a3 destinationIndex:a3 value:0];
+  v4 = [[NSArrayChange alloc] initWithType:3 sourceIndex:index destinationIndex:index value:0];
   [(NSArrayChanges *)self addChange:v4];
 }
 
-- (void)insertObject:(id)a3 atIndex:(unint64_t)a4
+- (void)insertObject:(id)object atIndex:(unint64_t)index
 {
-  v5 = [[NSArrayChange alloc] initWithType:2 sourceIndex:a4 destinationIndex:a4 value:a3];
+  v5 = [[NSArrayChange alloc] initWithType:2 sourceIndex:index destinationIndex:index value:object];
   [(NSArrayChanges *)self addChange:v5];
 }
 
-- (void)applyChangesToArray:(id)a3
+- (void)applyChangesToArray:(id)array
 {
   v3[5] = *MEMORY[0x1E69E9840];
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __60__NSArrayChanges_NSArrayChangeActions__applyChangesToArray___block_invoke;
   v3[3] = &unk_1E69F53D8;
-  v3[4] = a3;
+  v3[4] = array;
   [(NSArrayChanges *)self enumerateChangesUsingBlock:v3];
 }
 
@@ -206,31 +206,31 @@ LABEL_12:
   }
 }
 
-- (void)moveObjectsAtIndexes:(id)a3 toIndex:(unint64_t)a4
+- (void)moveObjectsAtIndexes:(id)indexes toIndex:(unint64_t)index
 {
-  v7 = [a3 firstIndex];
-  if (v7 != 0x7FFFFFFFFFFFFFFFLL)
+  firstIndex = [indexes firstIndex];
+  if (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = v7;
+    v8 = firstIndex;
     do
     {
-      [(NSArrayChanges *)self moveObjectAtIndex:v8 toIndex:a4];
-      v8 = [a3 indexGreaterThanIndex:v8];
-      ++a4;
+      [(NSArrayChanges *)self moveObjectAtIndex:v8 toIndex:index];
+      v8 = [indexes indexGreaterThanIndex:v8];
+      ++index;
     }
 
     while (v8 != 0x7FFFFFFFFFFFFFFFLL);
   }
 }
 
-- (void)exchangeObjectAtIndex:(unint64_t)a3 withObjectAtIndex:(unint64_t)a4
+- (void)exchangeObjectAtIndex:(unint64_t)index withObjectAtIndex:(unint64_t)atIndex
 {
-  if (a3 != a4)
+  if (index != atIndex)
   {
-    v5 = a4;
+    indexCopy2 = atIndex;
     v8 = [(NSArrayChanges *)self objectAtIndex:?];
-    v9 = [(NSArrayChanges *)self objectAtIndex:v5];
-    if (a3 <= v5)
+    v9 = [(NSArrayChanges *)self objectAtIndex:indexCopy2];
+    if (index <= indexCopy2)
     {
       v10 = v9;
     }
@@ -240,48 +240,48 @@ LABEL_12:
       v10 = v8;
     }
 
-    if (a3 <= v5)
+    if (index <= indexCopy2)
     {
-      v11 = v5;
+      indexCopy = indexCopy2;
     }
 
     else
     {
       v8 = v9;
-      v11 = a3;
+      indexCopy = index;
     }
 
-    if (a3 < v5)
+    if (index < indexCopy2)
     {
-      v5 = a3;
+      indexCopy2 = index;
     }
 
-    v12 = [[NSArrayChange alloc] initWithType:5 sourceIndex:v5 destinationIndex:v11 value:v8];
-    v13 = [[NSArrayChange alloc] initWithType:5 sourceIndex:v11 - 1 destinationIndex:v5 value:v10];
+    v12 = [[NSArrayChange alloc] initWithType:5 sourceIndex:indexCopy2 destinationIndex:indexCopy value:v8];
+    v13 = [[NSArrayChange alloc] initWithType:5 sourceIndex:indexCopy - 1 destinationIndex:indexCopy2 value:v10];
     [(NSArrayChanges *)self addChange:v12];
     [(NSArrayChanges *)self addChange:v13];
   }
 }
 
-- (void)addChanges:(id)a3
+- (void)addChanges:(id)changes
 {
-  if ([a3 count])
+  if ([changes count])
   {
     v5 = 0;
     do
     {
-      -[NSArrayChanges addChange:](self, "addChange:", [a3 objectAtIndexedSubscript:v5++]);
+      -[NSArrayChanges addChange:](self, "addChange:", [changes objectAtIndexedSubscript:v5++]);
     }
 
-    while (v5 < [a3 count]);
+    while (v5 < [changes count]);
   }
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
   v5 = [(NSArrayChanges *)self count];
 
-  [(NSArrayChanges *)self insertObject:a3 atIndex:v5];
+  [(NSArrayChanges *)self insertObject:object atIndex:v5];
 }
 
 - (void)removeLastObject
@@ -294,26 +294,26 @@ LABEL_12:
   }
 }
 
-- (void)sortUsingFunction:(void *)a3 context:(void *)a4
+- (void)sortUsingFunction:(void *)function context:(void *)context
 {
   v4[6] = *MEMORY[0x1E69E9840];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __69__NSArrayChanges_NSMutableArrayOverrides__sortUsingFunction_context___block_invoke;
   v4[3] = &__block_descriptor_48_e11_q24__0_8_16l;
-  v4[4] = a3;
-  v4[5] = a4;
+  v4[4] = function;
+  v4[5] = context;
   [(NSArrayChanges *)self sortWithOptions:0 usingComparator:v4];
 }
 
-- (void)sortUsingSelector:(SEL)a3
+- (void)sortUsingSelector:(SEL)selector
 {
   v3[5] = *MEMORY[0x1E69E9840];
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __61__NSArrayChanges_NSMutableArrayOverrides__sortUsingSelector___block_invoke;
   v3[3] = &__block_descriptor_40_e11_q24__0_8_16l;
-  v3[4] = a3;
+  v3[4] = selector;
   [(NSArrayChanges *)self sortWithOptions:0 usingComparator:v3];
 }
 

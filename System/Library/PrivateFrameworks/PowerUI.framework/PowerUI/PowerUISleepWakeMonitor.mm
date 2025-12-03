@@ -1,14 +1,14 @@
 @interface PowerUISleepWakeMonitor
-- (PowerUISleepWakeMonitor)initWithManager:(id)a3 withCheckpoint:(unint64_t)a4 withLastDesktopCheck:(id)a5;
+- (PowerUISleepWakeMonitor)initWithManager:(id)manager withCheckpoint:(unint64_t)checkpoint withLastDesktopCheck:(id)check;
 @end
 
 @implementation PowerUISleepWakeMonitor
 
-- (PowerUISleepWakeMonitor)initWithManager:(id)a3 withCheckpoint:(unint64_t)a4 withLastDesktopCheck:(id)a5
+- (PowerUISleepWakeMonitor)initWithManager:(id)manager withCheckpoint:(unint64_t)checkpoint withLastDesktopCheck:(id)check
 {
   v6.receiver = self;
   v6.super_class = PowerUISleepWakeMonitor;
-  return [(PowerUISleepWakeMonitor *)&v6 init:a3];
+  return [(PowerUISleepWakeMonitor *)&v6 init:manager];
 }
 
 @end

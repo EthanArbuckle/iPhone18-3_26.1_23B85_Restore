@@ -1,24 +1,24 @@
 @interface AVExternalDeviceScreenBorrowToken
-- (AVExternalDeviceScreenBorrowToken)initWithExternalDevice:(id)a3 client:(id)a4 reason:(id)a5;
+- (AVExternalDeviceScreenBorrowToken)initWithExternalDevice:(id)device client:(id)client reason:(id)reason;
 - (void)dealloc;
 @end
 
 @implementation AVExternalDeviceScreenBorrowToken
 
-- (AVExternalDeviceScreenBorrowToken)initWithExternalDevice:(id)a3 client:(id)a4 reason:(id)a5
+- (AVExternalDeviceScreenBorrowToken)initWithExternalDevice:(id)device client:(id)client reason:(id)reason
 {
   v15.receiver = self;
   v15.super_class = AVExternalDeviceScreenBorrowToken;
   v8 = [(AVExternalDeviceScreenBorrowToken *)&v15 init];
   if (v8)
   {
-    v8->_externalDevice = a3;
-    v8->_client = [a4 copy];
-    v8->_reason = [a5 copy];
-    v9 = [(AVExternalDevice *)v8->_externalDevice figEndpoint];
-    if (v9)
+    v8->_externalDevice = device;
+    v8->_client = [client copy];
+    v8->_reason = [reason copy];
+    figEndpoint = [(AVExternalDevice *)v8->_externalDevice figEndpoint];
+    if (figEndpoint)
     {
-      v10 = v9;
+      v10 = figEndpoint;
       FigEndpointExtendedGetClassID();
       if (CMBaseObjectIsMemberOfClass())
       {
@@ -38,10 +38,10 @@
 
 - (void)dealloc
 {
-  v3 = [(AVExternalDevice *)self->_externalDevice figEndpoint];
-  if (v3)
+  figEndpoint = [(AVExternalDevice *)self->_externalDevice figEndpoint];
+  if (figEndpoint)
   {
-    v4 = v3;
+    v4 = figEndpoint;
     FigEndpointExtendedGetClassID();
     if (CMBaseObjectIsMemberOfClass())
     {

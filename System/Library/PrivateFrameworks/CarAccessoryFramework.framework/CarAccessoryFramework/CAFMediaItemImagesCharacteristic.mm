@@ -3,38 +3,38 @@
 + (void)load;
 - (CAFMediaItemImages)mediaItemImagesValue;
 - (id)formattedValue;
-- (void)setMediaItemImagesValue:(id)a3;
+- (void)setMediaItemImagesValue:(id)value;
 @end
 
 @implementation CAFMediaItemImagesCharacteristic
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFMediaItemImagesCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
 - (CAFMediaItemImages)mediaItemImagesValue
 {
-  v2 = [(CAFArrayCharacteristic *)self arrayValue];
-  v3 = [CAFMediaItemImages mediaItemImagesWithArray:v2];
+  arrayValue = [(CAFArrayCharacteristic *)self arrayValue];
+  v3 = [CAFMediaItemImages mediaItemImagesWithArray:arrayValue];
 
   return v3;
 }
 
-- (void)setMediaItemImagesValue:(id)a3
+- (void)setMediaItemImagesValue:(id)value
 {
-  v4 = [a3 arrayRepresentation];
-  [(CAFArrayCharacteristic *)self setArrayValue:v4];
+  arrayRepresentation = [value arrayRepresentation];
+  [(CAFArrayCharacteristic *)self setArrayValue:arrayRepresentation];
 }
 
 - (id)formattedValue
 {
-  v2 = [(CAFMediaItemImagesCharacteristic *)self mediaItemImagesValue];
-  v3 = [v2 formattedValue];
+  mediaItemImagesValue = [(CAFMediaItemImagesCharacteristic *)self mediaItemImagesValue];
+  formattedValue = [mediaItemImagesValue formattedValue];
 
-  return v3;
+  return formattedValue;
 }
 
 + (id)secondaryCharacteristicFormats

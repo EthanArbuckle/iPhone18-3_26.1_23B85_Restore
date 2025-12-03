@@ -37,10 +37,10 @@
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:4];
   v13 = [v2 sectionWithRows:v12 title:@"Settings"];
 
-  v14 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
   v15 = MEMORY[0x1E69C6638];
   v19[0] = v13;
-  v19[1] = v14;
+  v19[1] = px_restoreDefaultsSection;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
   v17 = [v15 moduleWithTitle:@"Grid" contents:v16];
 

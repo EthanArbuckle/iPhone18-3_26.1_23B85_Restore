@@ -1,49 +1,49 @@
 @interface DMCFeatureOverrides
-+ (BOOL)BOOLForDefaultsKey:(id)a3;
++ (BOOL)BOOLForDefaultsKey:(id)key;
 + (BOOL)fakePushToken;
 + (BOOL)forceAppInstallUnremovability;
 + (BOOL)forceAppRemovalOnUnenroll;
 + (BOOL)forceMediaCommandSupport;
-+ (BOOL)sentinelExistsAtPath:(id)a3;
++ (BOOL)sentinelExistsAtPath:(id)path;
 + (BOOL)shouldPreserveUserDefaultsForReturnToService;
 + (BOOL)shouldSimulateMDMCommunication;
 + (BOOL)shouldSuppressRRTSOnIdleTimeout;
-+ (double)accountSignInTimeoutThresholdWithDefaultValue:(double)a3;
-+ (double)awaitSystemDeletableAppsTimeoutWithDefaultValue:(double)a3;
-+ (double)depPushTokenPeriodicSyncIntervalWithDefaultValue:(double)a3;
-+ (double)enrollmentStepTimeoutThresholdWithDefaultValue:(double)a3;
++ (double)accountSignInTimeoutThresholdWithDefaultValue:(double)value;
++ (double)awaitSystemDeletableAppsTimeoutWithDefaultValue:(double)value;
++ (double)depPushTokenPeriodicSyncIntervalWithDefaultValue:(double)value;
++ (double)enrollmentStepTimeoutThresholdWithDefaultValue:(double)value;
 + (double)nagMigrationGracePeriod;
 + (id)_allOverrides;
-+ (id)activationRecordFlagsWithFlags:(id)a3;
-+ (id)appleMDMWellKnownURLWithDefaultValue:(id)a3;
-+ (id)bootstrapTokenOverrideWithDefaultValue:(id)a3;
-+ (id)deviceNameWithDefaultValue:(id)a3;
-+ (id)dictForDefaultsKey:(id)a3;
-+ (id)enrollmentProfileWithDefaultValue:(id)a3;
-+ (id)gestaltOverrideForKey:(__CFString *)a3 withDefaultValue:(id)a4;
-+ (id)mdmAppInstallationSourceIdentifierWithDefaultValue:(id)a3;
-+ (id)modelNameWithDefaultValue:(id)a3;
-+ (id)modelNumberWithDefaultValue:(id)a3;
-+ (id)numberForDefaultsKey:(id)a3;
-+ (id)objectForDefaultsKey:(id)a3;
-+ (id)productNameWithDefaultValue:(id)a3;
-+ (id)serviceDiscoveryDefaultPortWithValue:(id)a3;
-+ (id)serviceDiscoveryDomainWithValue:(id)a3;
-+ (id)serviceDiscoveryFallbackURLWithValue:(id)a3;
++ (id)activationRecordFlagsWithFlags:(id)flags;
++ (id)appleMDMWellKnownURLWithDefaultValue:(id)value;
++ (id)bootstrapTokenOverrideWithDefaultValue:(id)value;
++ (id)deviceNameWithDefaultValue:(id)value;
++ (id)dictForDefaultsKey:(id)key;
++ (id)enrollmentProfileWithDefaultValue:(id)value;
++ (id)gestaltOverrideForKey:(__CFString *)key withDefaultValue:(id)value;
++ (id)mdmAppInstallationSourceIdentifierWithDefaultValue:(id)value;
++ (id)modelNameWithDefaultValue:(id)value;
++ (id)modelNumberWithDefaultValue:(id)value;
++ (id)numberForDefaultsKey:(id)key;
++ (id)objectForDefaultsKey:(id)key;
++ (id)productNameWithDefaultValue:(id)value;
++ (id)serviceDiscoveryDefaultPortWithValue:(id)value;
++ (id)serviceDiscoveryDomainWithValue:(id)value;
++ (id)serviceDiscoveryFallbackURLWithValue:(id)value;
 + (id)simulatedMDMAccountDrivenEnrollmentAuthenticationResults;
-+ (id)softwareUpdateDeviceIDWithDefaultValue:(id)a3;
-+ (id)stringForDefaultsKey:(id)a3;
-+ (id)wellKnownDiscoveryURLWithValue:(id)a3;
++ (id)softwareUpdateDeviceIDWithDefaultValue:(id)value;
++ (id)stringForDefaultsKey:(id)key;
++ (id)wellKnownDiscoveryURLWithValue:(id)value;
 @end
 
 @implementation DMCFeatureOverrides
 
-+ (id)stringForDefaultsKey:(id)a3
++ (id)stringForDefaultsKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   if (+[DMCFeatureFlags isAppleInternal])
   {
-    v4 = [DMCDefaults stringForDefaultsKey:v3];
+    v4 = [DMCDefaults stringForDefaultsKey:keyCopy];
   }
 
   else
@@ -54,12 +54,12 @@
   return v4;
 }
 
-+ (id)numberForDefaultsKey:(id)a3
++ (id)numberForDefaultsKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   if (+[DMCFeatureFlags isAppleInternal])
   {
-    v4 = [DMCDefaults numberForDefaultsKey:v3];
+    v4 = [DMCDefaults numberForDefaultsKey:keyCopy];
   }
 
   else
@@ -70,12 +70,12 @@
   return v4;
 }
 
-+ (BOOL)BOOLForDefaultsKey:(id)a3
++ (BOOL)BOOLForDefaultsKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   if (+[DMCFeatureFlags isAppleInternal])
   {
-    v4 = [DMCDefaults BOOLForDefaultsKey:v3];
+    v4 = [DMCDefaults BOOLForDefaultsKey:keyCopy];
   }
 
   else
@@ -86,12 +86,12 @@
   return v4;
 }
 
-+ (id)dictForDefaultsKey:(id)a3
++ (id)dictForDefaultsKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   if (+[DMCFeatureFlags isAppleInternal])
   {
-    v4 = [DMCDefaults dictForDefaultsKey:v3];
+    v4 = [DMCDefaults dictForDefaultsKey:keyCopy];
   }
 
   else
@@ -102,12 +102,12 @@
   return v4;
 }
 
-+ (id)objectForDefaultsKey:(id)a3
++ (id)objectForDefaultsKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   if (+[DMCFeatureFlags isAppleInternal])
   {
-    v4 = [DMCDefaults objectForDefaultsKey:v3];
+    v4 = [DMCDefaults objectForDefaultsKey:keyCopy];
   }
 
   else
@@ -118,13 +118,13 @@
   return v4;
 }
 
-+ (BOOL)sentinelExistsAtPath:(id)a3
++ (BOOL)sentinelExistsAtPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   if (+[DMCFeatureFlags isAppleInternal])
   {
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
-    v5 = [v4 fileExistsAtPath:v3];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v5 = [defaultManager fileExistsAtPath:pathCopy];
   }
 
   else
@@ -135,23 +135,23 @@
   return v5;
 }
 
-+ (double)accountSignInTimeoutThresholdWithDefaultValue:(double)a3
++ (double)accountSignInTimeoutThresholdWithDefaultValue:(double)value
 {
-  v4 = [a1 numberForDefaultsKey:@"AccountSignInTimeout"];
+  v4 = [self numberForDefaultsKey:@"AccountSignInTimeout"];
   v5 = v4;
   if (v4)
   {
     [v4 doubleValue];
-    a3 = v6;
+    value = v6;
   }
 
-  return a3;
+  return value;
 }
 
-+ (id)enrollmentProfileWithDefaultValue:(id)a3
++ (id)enrollmentProfileWithDefaultValue:(id)value
 {
-  v4 = a3;
-  v5 = [a1 stringForDefaultsKey:@"MDMProfilePath"];
+  valueCopy = value;
+  v5 = [self stringForDefaultsKey:@"MDMProfilePath"];
   if (v5)
   {
     v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v5];
@@ -169,7 +169,7 @@
 
   else
   {
-    v7 = v4;
+    v7 = valueCopy;
   }
 
   v8 = v7;
@@ -177,23 +177,23 @@
   return v7;
 }
 
-+ (double)enrollmentStepTimeoutThresholdWithDefaultValue:(double)a3
++ (double)enrollmentStepTimeoutThresholdWithDefaultValue:(double)value
 {
-  v4 = [a1 numberForDefaultsKey:@"EnrollmentStepTimeout"];
+  v4 = [self numberForDefaultsKey:@"EnrollmentStepTimeout"];
   v5 = v4;
   if (v4)
   {
     [v4 doubleValue];
-    a3 = v6;
+    value = v6;
   }
 
-  return a3;
+  return value;
 }
 
-+ (id)serviceDiscoveryDefaultPortWithValue:(id)a3
++ (id)serviceDiscoveryDefaultPortWithValue:(id)value
 {
-  v4 = a3;
-  v5 = [a1 numberForDefaultsKey:@"ServiceDiscoveryDefaultPort"];
+  valueCopy = value;
+  v5 = [self numberForDefaultsKey:@"ServiceDiscoveryDefaultPort"];
   v6 = v5;
   if (v5)
   {
@@ -202,7 +202,7 @@
 
   else
   {
-    v7 = v4;
+    v7 = valueCopy;
   }
 
   v8 = v7;
@@ -210,10 +210,10 @@
   return v7;
 }
 
-+ (id)serviceDiscoveryDomainWithValue:(id)a3
++ (id)serviceDiscoveryDomainWithValue:(id)value
 {
-  v4 = a3;
-  v5 = [a1 stringForDefaultsKey:@"ServiceDiscoveryDomain"];
+  valueCopy = value;
+  v5 = [self stringForDefaultsKey:@"ServiceDiscoveryDomain"];
   v6 = v5;
   if (v5)
   {
@@ -222,7 +222,7 @@
 
   else
   {
-    v7 = v4;
+    v7 = valueCopy;
   }
 
   v8 = v7;
@@ -230,10 +230,10 @@
   return v7;
 }
 
-+ (id)appleMDMWellKnownURLWithDefaultValue:(id)a3
++ (id)appleMDMWellKnownURLWithDefaultValue:(id)value
 {
-  v4 = a3;
-  v5 = [a1 stringForDefaultsKey:@"AppleMDMWellKnownURL"];
+  valueCopy = value;
+  v5 = [self stringForDefaultsKey:@"AppleMDMWellKnownURL"];
   v6 = v5;
   if (v5)
   {
@@ -242,7 +242,7 @@
 
   else
   {
-    v7 = v4;
+    v7 = valueCopy;
   }
 
   v8 = v7;
@@ -250,10 +250,10 @@
   return v7;
 }
 
-+ (id)serviceDiscoveryFallbackURLWithValue:(id)a3
++ (id)serviceDiscoveryFallbackURLWithValue:(id)value
 {
-  v4 = a3;
-  v5 = [a1 stringForDefaultsKey:@"ServiceDiscoveryFallbackURL"];
+  valueCopy = value;
+  v5 = [self stringForDefaultsKey:@"ServiceDiscoveryFallbackURL"];
   v6 = v5;
   if (v5)
   {
@@ -262,7 +262,7 @@
 
   else
   {
-    v7 = v4;
+    v7 = valueCopy;
   }
 
   v8 = v7;
@@ -270,10 +270,10 @@
   return v7;
 }
 
-+ (id)wellKnownDiscoveryURLWithValue:(id)a3
++ (id)wellKnownDiscoveryURLWithValue:(id)value
 {
-  v4 = a3;
-  v5 = [a1 stringForDefaultsKey:@"WellKnownDiscoveryURL"];
+  valueCopy = value;
+  v5 = [self stringForDefaultsKey:@"WellKnownDiscoveryURL"];
   v6 = v5;
   if (v5)
   {
@@ -282,7 +282,7 @@
 
   else
   {
-    v7 = v4;
+    v7 = valueCopy;
   }
 
   v8 = v7;
@@ -292,30 +292,30 @@
 
 + (BOOL)shouldSimulateMDMCommunication
 {
-  if ([a1 BOOLForDefaultsKey:@"SimulateMDMCommunication"])
+  if ([self BOOLForDefaultsKey:@"SimulateMDMCommunication"])
   {
     return 1;
   }
 
-  return [a1 sentinelExistsAtPath:@"/var/db/MDM_EnableSim"];
+  return [self sentinelExistsAtPath:@"/var/db/MDM_EnableSim"];
 }
 
 + (id)simulatedMDMAccountDrivenEnrollmentAuthenticationResults
 {
-  v2 = [a1 objectForDefaultsKey:@"SimulatedMDMAccountDrivenEnrollmentAuthenticationResults"];
+  v2 = [self objectForDefaultsKey:@"SimulatedMDMAccountDrivenEnrollmentAuthenticationResults"];
   v3 = [v2 mutableCopy];
 
   return v3;
 }
 
-+ (id)activationRecordFlagsWithFlags:(id)a3
++ (id)activationRecordFlagsWithFlags:(id)flags
 {
-  v4 = a3;
-  if (([a1 sentinelExistsAtPath:*MEMORY[0x1E6999728]] & 1) != 0 || (objc_msgSend(a1, "stringForDefaultsKey:", *MEMORY[0x1E69997B8]), v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  flagsCopy = flags;
+  if (([self sentinelExistsAtPath:*MEMORY[0x1E6999728]] & 1) != 0 || (objc_msgSend(self, "stringForDefaultsKey:", *MEMORY[0x1E69997B8]), v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
     if (objc_opt_respondsToSelector())
     {
-      v6 = ([v4 intValue] | 1);
+      v6 = ([flagsCopy intValue] | 1);
     }
 
     else
@@ -328,7 +328,7 @@
 
   else
   {
-    v7 = v4;
+    v7 = flagsCopy;
   }
 
   v8 = v7;
@@ -336,17 +336,17 @@
   return v8;
 }
 
-+ (id)modelNameWithDefaultValue:(id)a3
++ (id)modelNameWithDefaultValue:(id)value
 {
-  v4 = a3;
-  if ([a1 _isUnknownProduct])
+  valueCopy = value;
+  if ([self _isUnknownProduct])
   {
     v5 = @"iProd";
   }
 
   else
   {
-    v5 = [a1 stringForDefaultsKey:@"DMCModelNameOverride"];
+    v5 = [self stringForDefaultsKey:@"DMCModelNameOverride"];
   }
 
   if (v5)
@@ -356,7 +356,7 @@
 
   else
   {
-    v6 = v4;
+    v6 = valueCopy;
   }
 
   v7 = v6;
@@ -364,17 +364,17 @@
   return v6;
 }
 
-+ (id)modelNumberWithDefaultValue:(id)a3
++ (id)modelNumberWithDefaultValue:(id)value
 {
-  v4 = a3;
-  if ([a1 _isUnknownProduct])
+  valueCopy = value;
+  if ([self _isUnknownProduct])
   {
     v5 = @"iProd";
   }
 
   else
   {
-    v5 = [a1 stringForDefaultsKey:@"DMCModelNumberOverride"];
+    v5 = [self stringForDefaultsKey:@"DMCModelNumberOverride"];
   }
 
   if (v5)
@@ -384,7 +384,7 @@
 
   else
   {
-    v6 = v4;
+    v6 = valueCopy;
   }
 
   v7 = v6;
@@ -392,17 +392,17 @@
   return v6;
 }
 
-+ (id)productNameWithDefaultValue:(id)a3
++ (id)productNameWithDefaultValue:(id)value
 {
-  v4 = a3;
-  if ([a1 _isUnknownProduct])
+  valueCopy = value;
+  if ([self _isUnknownProduct])
   {
     v5 = @"iProd1,1";
   }
 
   else
   {
-    v5 = [a1 stringForDefaultsKey:@"DMCProductNameOverride"];
+    v5 = [self stringForDefaultsKey:@"DMCProductNameOverride"];
   }
 
   if (v5)
@@ -412,7 +412,7 @@
 
   else
   {
-    v6 = v4;
+    v6 = valueCopy;
   }
 
   v7 = v6;
@@ -420,17 +420,17 @@
   return v6;
 }
 
-+ (id)deviceNameWithDefaultValue:(id)a3
++ (id)deviceNameWithDefaultValue:(id)value
 {
-  v4 = a3;
-  if ([a1 _isUnknownProduct])
+  valueCopy = value;
+  if ([self _isUnknownProduct])
   {
     v5 = @"iDevice";
   }
 
   else
   {
-    v5 = [a1 stringForDefaultsKey:@"DMCDeviceNameOverride"];
+    v5 = [self stringForDefaultsKey:@"DMCDeviceNameOverride"];
   }
 
   if (v5)
@@ -440,7 +440,7 @@
 
   else
   {
-    v6 = v4;
+    v6 = valueCopy;
   }
 
   v7 = v6;
@@ -448,17 +448,17 @@
   return v6;
 }
 
-+ (id)softwareUpdateDeviceIDWithDefaultValue:(id)a3
++ (id)softwareUpdateDeviceIDWithDefaultValue:(id)value
 {
-  v4 = a3;
-  if ([a1 _isUnknownProduct])
+  valueCopy = value;
+  if ([self _isUnknownProduct])
   {
     v5 = @"iProd1,1";
   }
 
   else
   {
-    v5 = [a1 stringForDefaultsKey:@"DMCSoftwareUpdateDeviceIDOverride"];
+    v5 = [self stringForDefaultsKey:@"DMCSoftwareUpdateDeviceIDOverride"];
   }
 
   if (v5)
@@ -468,7 +468,7 @@
 
   else
   {
-    v6 = v4;
+    v6 = valueCopy;
   }
 
   v7 = v6;
@@ -476,11 +476,11 @@
   return v6;
 }
 
-+ (id)gestaltOverrideForKey:(__CFString *)a3 withDefaultValue:(id)a4
++ (id)gestaltOverrideForKey:(__CFString *)key withDefaultValue:(id)value
 {
-  v6 = a4;
-  v7 = [a1 objectForDefaultsKey:@"DMCMobileGestaltOverride"];
-  v8 = [v7 objectForKeyedSubscript:a3];
+  valueCopy = value;
+  v7 = [self objectForDefaultsKey:@"DMCMobileGestaltOverride"];
+  v8 = [v7 objectForKeyedSubscript:key];
   v9 = v8;
   if (v8)
   {
@@ -489,7 +489,7 @@
 
   else
   {
-    v10 = v6;
+    v10 = valueCopy;
   }
 
   v11 = v10;
@@ -497,10 +497,10 @@
   return v10;
 }
 
-+ (id)mdmAppInstallationSourceIdentifierWithDefaultValue:(id)a3
++ (id)mdmAppInstallationSourceIdentifierWithDefaultValue:(id)value
 {
-  v4 = a3;
-  v5 = [a1 stringForDefaultsKey:@"DMCMDMAppSourceIdentifierOverride"];
+  valueCopy = value;
+  v5 = [self stringForDefaultsKey:@"DMCMDMAppSourceIdentifierOverride"];
   v6 = v5;
   if (v5)
   {
@@ -509,7 +509,7 @@
 
   else
   {
-    v7 = v4;
+    v7 = valueCopy;
   }
 
   v8 = v7;
@@ -519,106 +519,106 @@
 
 + (BOOL)forceAppInstallUnremovability
 {
-  v2 = [a1 numberForDefaultsKey:@"DMCDefaultsKeyForceAppInstallUnremovability"];
+  v2 = [self numberForDefaultsKey:@"DMCDefaultsKeyForceAppInstallUnremovability"];
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)forceAppRemovalOnUnenroll
 {
-  v2 = [a1 numberForDefaultsKey:@"DMCDefaultsKeyForceAppRemovalOnUnenroll"];
+  v2 = [self numberForDefaultsKey:@"DMCDefaultsKeyForceAppRemovalOnUnenroll"];
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)forceMediaCommandSupport
 {
-  v2 = [a1 numberForDefaultsKey:@"DMCEnableMediaCommands"];
+  v2 = [self numberForDefaultsKey:@"DMCEnableMediaCommands"];
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)shouldSuppressRRTSOnIdleTimeout
 {
-  v2 = [a1 numberForDefaultsKey:@"DMCSuppressRRTSOnIdleTimeout"];
+  v2 = [self numberForDefaultsKey:@"DMCSuppressRRTSOnIdleTimeout"];
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)shouldPreserveUserDefaultsForReturnToService
 {
-  v2 = [a1 numberForDefaultsKey:@"DMCPreserveUserDefaultsForRTS"];
+  v2 = [self numberForDefaultsKey:@"DMCPreserveUserDefaultsForRTS"];
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-+ (double)awaitSystemDeletableAppsTimeoutWithDefaultValue:(double)a3
++ (double)awaitSystemDeletableAppsTimeoutWithDefaultValue:(double)value
 {
-  v4 = [a1 numberForDefaultsKey:@"DMCAwaitSystemDeletableAppsTimeout"];
+  v4 = [self numberForDefaultsKey:@"DMCAwaitSystemDeletableAppsTimeout"];
   v5 = v4;
   if (v4)
   {
     [v4 doubleValue];
-    a3 = v6;
+    value = v6;
   }
 
-  return a3;
+  return value;
 }
 
-+ (id)bootstrapTokenOverrideWithDefaultValue:(id)a3
++ (id)bootstrapTokenOverrideWithDefaultValue:(id)value
 {
-  v4 = a3;
-  v5 = [a1 objectForDefaultsKey:@"DMCBootstrapTokenOverride"];
+  valueCopy = value;
+  v5 = [self objectForDefaultsKey:@"DMCBootstrapTokenOverride"];
   v6 = v5;
   if (v5)
   {
@@ -627,7 +627,7 @@
 
   else
   {
-    v7 = v4;
+    v7 = valueCopy;
   }
 
   v8 = v7;
@@ -637,7 +637,7 @@
 
 + (double)nagMigrationGracePeriod
 {
-  v2 = [a1 numberForDefaultsKey:@"DMCNagMigrationGracePeriod"];
+  v2 = [self numberForDefaultsKey:@"DMCNagMigrationGracePeriod"];
   v3 = v2;
   if (v2)
   {
@@ -655,32 +655,32 @@
 
 + (BOOL)fakePushToken
 {
-  v2 = [a1 numberForDefaultsKey:@"DMCFakePushToken"];
+  v2 = [self numberForDefaultsKey:@"DMCFakePushToken"];
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-+ (double)depPushTokenPeriodicSyncIntervalWithDefaultValue:(double)a3
++ (double)depPushTokenPeriodicSyncIntervalWithDefaultValue:(double)value
 {
-  v4 = [a1 numberForDefaultsKey:@"DMCDEPPushTokenSyncInterval"];
+  v4 = [self numberForDefaultsKey:@"DMCDEPPushTokenSyncInterval"];
   v5 = v4;
   if (v4)
   {
     [v4 doubleValue];
-    a3 = v6;
+    value = v6;
   }
 
-  return a3;
+  return value;
 }
 
 + (id)_allOverrides

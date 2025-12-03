@@ -1,72 +1,72 @@
 @interface MCDLibraryTableViewController
-- (BOOL)artistHasCatalogID:(id)a3;
+- (BOOL)artistHasCatalogID:(id)d;
 - (BOOL)canShowFavoriteContent;
-- (BOOL)contentManager:(id)a3 canDrillIntoItem:(id)a4;
+- (BOOL)contentManager:(id)manager canDrillIntoItem:(id)item;
 - (BOOL)hasRowsToDisplay;
-- (MCDLibraryTableViewController)initWithIdentifier:(id)a3 showLocalContent:(BOOL)a4;
-- (MCDLibraryTableViewController)initWithIdentifier:(id)a3 showLocalContent:(BOOL)a4 dataSource:(id)a5;
-- (id)contentManager:(id)a3 viewControllerForItem:(id)a4;
-- (id)favoriteNoContentMessage:(id)a3;
-- (id)showAllActionTitle:(id)a3;
+- (MCDLibraryTableViewController)initWithIdentifier:(id)identifier showLocalContent:(BOOL)content;
+- (MCDLibraryTableViewController)initWithIdentifier:(id)identifier showLocalContent:(BOOL)content dataSource:(id)source;
+- (id)contentManager:(id)manager viewControllerForItem:(id)item;
+- (id)favoriteNoContentMessage:(id)message;
+- (id)showAllActionTitle:(id)title;
 - (id)sortingPreference;
 - (void)checkContentAndSetView;
-- (void)contentManager:(id)a3 didReceiveResponse:(id)a4;
-- (void)contentManager:(id)a3 shouldDisplayViewController:(id)a4;
+- (void)contentManager:(id)manager didReceiveResponse:(id)response;
+- (void)contentManager:(id)manager shouldDisplayViewController:(id)controller;
 - (void)dealloc;
 - (void)filterButtonTapped;
-- (void)replacePlaceholderViewWithView:(id)a3;
-- (void)userDefaultsChanged:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)replacePlaceholderViewWithView:(id)view;
+- (void)userDefaultsChanged:(id)changed;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation MCDLibraryTableViewController
 
-- (MCDLibraryTableViewController)initWithIdentifier:(id)a3 showLocalContent:(BOOL)a4
+- (MCDLibraryTableViewController)initWithIdentifier:(id)identifier showLocalContent:(BOOL)content
 {
-  v4 = a4;
-  v6 = a3;
+  contentCopy = content;
+  identifierCopy = identifier;
   v7 = objc_alloc_init(_MCDLibraryDataSource);
-  v8 = [(MCDLibraryTableViewController *)self initWithIdentifier:v6 showLocalContent:v4 dataSource:v7];
+  v8 = [(MCDLibraryTableViewController *)self initWithIdentifier:identifierCopy showLocalContent:contentCopy dataSource:v7];
 
   return v8;
 }
 
-- (MCDLibraryTableViewController)initWithIdentifier:(id)a3 showLocalContent:(BOOL)a4 dataSource:(id)a5
+- (MCDLibraryTableViewController)initWithIdentifier:(id)identifier showLocalContent:(BOOL)content dataSource:(id)source
 {
-  v6 = a4;
-  v9 = a3;
-  v10 = a5;
+  contentCopy = content;
+  identifierCopy = identifier;
+  sourceCopy = source;
   v25.receiver = self;
   v25.super_class = MCDLibraryTableViewController;
   v11 = [(MCDTableViewController *)&v25 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_identifier, a3);
-    objc_storeStrong(&v12->_dataSource, a5);
-    v12->_showLocalContent = v6;
+    objc_storeStrong(&v11->_identifier, identifier);
+    objc_storeStrong(&v12->_dataSource, source);
+    v12->_showLocalContent = contentCopy;
     v13 = [MCDLibraryContentManager alloc];
     dataSource = v12->_dataSource;
     v15 = +[CPUILimitedUITrait defaultBoolValue];
     v16 = [(MCDPlaybackManager *)[MCDLibraryPlaybackManager alloc] initWithDelegate:v12];
     LOBYTE(v24) = 0;
-    v17 = [(_MCDContentManager *)v13 initWithDataSource:dataSource limitedUI:v15 showLocalContent:v6 delegate:v12 viewController:v12 playbackManager:v16 shouldPerformRequestImmediately:v24];
+    v17 = [(_MCDContentManager *)v13 initWithDataSource:dataSource limitedUI:v15 showLocalContent:contentCopy delegate:v12 viewController:v12 playbackManager:v16 shouldPerformRequestImmediately:v24];
     contentManager = v12->_contentManager;
     v12->_contentManager = &v17->super;
 
-    v19 = [(MCDLibraryTableViewController *)v12 sortingPreferenceKey];
-    if (v19)
+    sortingPreferenceKey = [(MCDLibraryTableViewController *)v12 sortingPreferenceKey];
+    if (sortingPreferenceKey)
     {
     }
 
     else
     {
-      v20 = [(MCDLibraryTableViewController *)v12 filteringPreferenceKey];
+      filteringPreferenceKey = [(MCDLibraryTableViewController *)v12 filteringPreferenceKey];
 
-      if (!v20)
+      if (!filteringPreferenceKey)
       {
         [(_MCDContentManager *)v12->_contentManager performRequest];
         goto LABEL_6;
@@ -105,17 +105,17 @@ LABEL_6:
   v14.receiver = self;
   v14.super_class = MCDLibraryTableViewController;
   [(MCDTableViewController *)&v14 viewDidLoad];
-  v3 = [(MCDLibraryTableViewController *)self tableView];
-  [(MCDLibraryTableViewController *)self setContentTableView:v3];
+  tableView = [(MCDLibraryTableViewController *)self tableView];
+  [(MCDLibraryTableViewController *)self setContentTableView:tableView];
 
-  v4 = [(MCDLibraryTableViewController *)self tableView];
-  v5 = [(MCDLibraryTableViewController *)self contentManager];
-  [v5 setTableView:v4];
+  tableView2 = [(MCDLibraryTableViewController *)self tableView];
+  contentManager = [(MCDLibraryTableViewController *)self contentManager];
+  [contentManager setTableView:tableView2];
 
-  v6 = [(MCDLibraryTableViewController *)self traitCollection];
-  v7 = [v6 shouldLimitMusicLists];
-  v8 = [(MCDLibraryTableViewController *)self contentManager];
-  [v8 setLimitedUI:v7];
+  traitCollection = [(MCDLibraryTableViewController *)self traitCollection];
+  shouldLimitMusicLists = [traitCollection shouldLimitMusicLists];
+  contentManager2 = [(MCDLibraryTableViewController *)self contentManager];
+  [contentManager2 setLimitedUI:shouldLimitMusicLists];
 
   v15 = objc_opt_class();
   v9 = [NSArray arrayWithObjects:&v15 count:1];
@@ -124,35 +124,35 @@ LABEL_6:
   if ([objc_opt_class() wantsTallCells])
   {
     v11 = objc_opt_class();
-    v12 = [(MCDLibraryTableViewController *)self contentManager];
-    [v12 setTableCellClass:v11];
+    contentManager3 = [(MCDLibraryTableViewController *)self contentManager];
+    [contentManager3 setTableCellClass:v11];
   }
 
-  v13 = [(MCDLibraryTableViewController *)self tableView];
-  [v13 _setHeaderAndFooterViewsFloat:0];
+  tableView3 = [(MCDLibraryTableViewController *)self tableView];
+  [tableView3 _setHeaderAndFooterViewsFloat:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v24.receiver = self;
   v24.super_class = MCDLibraryTableViewController;
-  [(MCDTableViewController *)&v24 viewWillAppear:a3];
+  [(MCDTableViewController *)&v24 viewWillAppear:appear];
   if ([(MCDLibraryTableViewController *)self canShowFavoriteContent])
   {
-    v4 = [(MCDLibraryTableViewController *)self navigationTitleView];
+    navigationTitleView = [(MCDLibraryTableViewController *)self navigationTitleView];
 
-    if (!v4)
+    if (!navigationTitleView)
     {
       v5 = [_TtC5Music31LibraryTableNavigationTitleView alloc];
-      v6 = [(MCDLibraryTableViewController *)self title];
-      v7 = [(LibraryTableNavigationTitleView *)v5 initWithTitle:v6];
+      title = [(MCDLibraryTableViewController *)self title];
+      v7 = [(LibraryTableNavigationTitleView *)v5 initWithTitle:title];
       [(MCDLibraryTableViewController *)self setNavigationTitleView:v7];
 
-      v8 = [(MCDLibraryTableViewController *)self contentManager];
-      v9 = [v8 showFavoriteContent];
-      v10 = [(MCDLibraryTableViewController *)self navigationTitleView];
-      v11 = [v10 filterButton];
-      [v11 setSelected:v9];
+      contentManager = [(MCDLibraryTableViewController *)self contentManager];
+      showFavoriteContent = [contentManager showFavoriteContent];
+      navigationTitleView2 = [(MCDLibraryTableViewController *)self navigationTitleView];
+      filterButton = [navigationTitleView2 filterButton];
+      [filterButton setSelected:showFavoriteContent];
 
       objc_initWeak(&location, self);
       v18 = _NSConcreteStackBlock;
@@ -162,84 +162,84 @@ LABEL_6:
       objc_copyWeak(&v22, &location);
       v12 = [UIAction actionWithHandler:&v18];
       v13 = [(MCDLibraryTableViewController *)self navigationTitleView:v18];
-      v14 = [v13 filterButton];
-      [v14 addAction:v12 forControlEvents:64];
+      filterButton2 = [v13 filterButton];
+      [filterButton2 addAction:v12 forControlEvents:64];
 
       objc_destroyWeak(&v22);
       objc_destroyWeak(&location);
     }
 
-    v15 = [(MCDLibraryTableViewController *)self navigationTitleView];
-    v16 = [(MCDLibraryTableViewController *)self navigationItem];
-    [v16 setTitleView:v15];
+    navigationTitleView3 = [(MCDLibraryTableViewController *)self navigationTitleView];
+    navigationItem = [(MCDLibraryTableViewController *)self navigationItem];
+    [navigationItem setTitleView:navigationTitleView3];
   }
 
   else
   {
-    v15 = [(MCDLibraryTableViewController *)self navigationItem];
-    [v15 setTitleView:0];
+    navigationTitleView3 = [(MCDLibraryTableViewController *)self navigationItem];
+    [navigationTitleView3 setTitleView:0];
   }
 
-  v17 = [(MCDLibraryTableViewController *)self tableView];
-  [v17 reloadData];
+  tableView = [(MCDLibraryTableViewController *)self tableView];
+  [tableView reloadData];
 
   [(MCDLibraryTableViewController *)self checkContentAndSetView];
   self->_canModifyView = 0;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = MCDLibraryTableViewController;
-  [(MCDTableViewController *)&v4 viewDidAppear:a3];
+  [(MCDTableViewController *)&v4 viewDidAppear:appear];
   self->_canModifyView = 1;
   [(MCDLibraryTableViewController *)self checkContentAndSetView];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = MCDLibraryTableViewController;
-  [(MCDTableViewController *)&v5 viewWillDisappear:a3];
-  v4 = [(MCDLibraryTableViewController *)self navigationItem];
-  [v4 setTitleView:0];
+  [(MCDTableViewController *)&v5 viewWillDisappear:disappear];
+  navigationItem = [(MCDLibraryTableViewController *)self navigationItem];
+  [navigationItem setTitleView:0];
 }
 
-- (void)userDefaultsChanged:(id)a3
+- (void)userDefaultsChanged:(id)changed
 {
-  v4 = [(MCDLibraryTableViewController *)self contentManager];
-  v5 = [v4 lastReceivedResponse];
-  v6 = v5 == 0;
+  contentManager = [(MCDLibraryTableViewController *)self contentManager];
+  lastReceivedResponse = [contentManager lastReceivedResponse];
+  v6 = lastReceivedResponse == 0;
 
-  v7 = [(MCDLibraryTableViewController *)self contentManager];
-  v24 = [v7 sortingPreference];
+  contentManager2 = [(MCDLibraryTableViewController *)self contentManager];
+  sortingPreference = [contentManager2 sortingPreference];
 
-  v8 = [(MCDLibraryTableViewController *)self sortingPreference];
-  if (v24 != v8)
+  sortingPreference2 = [(MCDLibraryTableViewController *)self sortingPreference];
+  if (sortingPreference != sortingPreference2)
   {
-    v9 = [(MCDLibraryTableViewController *)self sortingPreference];
-    v10 = [v24 isEqualToString:v9];
+    sortingPreference3 = [(MCDLibraryTableViewController *)self sortingPreference];
+    v10 = [sortingPreference isEqualToString:sortingPreference3];
 
     if (v10)
     {
       goto LABEL_5;
     }
 
-    v8 = [(MCDLibraryTableViewController *)self sortingPreference];
-    v11 = [(MCDLibraryTableViewController *)self contentManager];
-    [v11 setSortingPreference:v8];
+    sortingPreference2 = [(MCDLibraryTableViewController *)self sortingPreference];
+    contentManager3 = [(MCDLibraryTableViewController *)self contentManager];
+    [contentManager3 setSortingPreference:sortingPreference2];
 
     v6 = 1;
   }
 
 LABEL_5:
-  v12 = [(MCDLibraryTableViewController *)self filteringPreferenceKey];
-  v13 = [(MCDLibraryTableViewController *)self legacyFilteringPreferenceKey];
-  v14 = [NSString stringWithFormat:@"LibraryFilterOptionsController-%@", v13];
-  v15 = [_TtC5Music30LibraryFilterOptionsController isFilteringToFavoritesWithStorageKey:v12 legacyStorageKey:v14];
+  filteringPreferenceKey = [(MCDLibraryTableViewController *)self filteringPreferenceKey];
+  legacyFilteringPreferenceKey = [(MCDLibraryTableViewController *)self legacyFilteringPreferenceKey];
+  v14 = [NSString stringWithFormat:@"LibraryFilterOptionsController-%@", legacyFilteringPreferenceKey];
+  v15 = [_TtC5Music30LibraryFilterOptionsController isFilteringToFavoritesWithStorageKey:filteringPreferenceKey legacyStorageKey:v14];
 
-  v16 = [(MCDLibraryTableViewController *)self contentManager];
-  LODWORD(v14) = [v16 showFavoriteContent];
+  contentManager4 = [(MCDLibraryTableViewController *)self contentManager];
+  LODWORD(v14) = [contentManager4 showFavoriteContent];
 
   if (v15 == v14)
   {
@@ -251,25 +251,25 @@ LABEL_5:
 
   else
   {
-    v17 = [(MCDLibraryTableViewController *)self navigationTitleView];
-    v18 = [v17 filterButton];
-    [v18 setSelected:v15];
+    navigationTitleView = [(MCDLibraryTableViewController *)self navigationTitleView];
+    filterButton = [navigationTitleView filterButton];
+    [filterButton setSelected:v15];
 
-    v19 = [(MCDLibraryTableViewController *)self contentManager];
-    [v19 setShowFavoriteContent:v15];
+    contentManager5 = [(MCDLibraryTableViewController *)self contentManager];
+    [contentManager5 setShowFavoriteContent:v15];
 
-    v20 = [(MCDLibraryTableViewController *)self contentManager];
-    v21 = [v20 playbackManager];
-    [v21 setFavoriteContentOnly:v15];
+    contentManager6 = [(MCDLibraryTableViewController *)self contentManager];
+    playbackManager = [contentManager6 playbackManager];
+    [playbackManager setFavoriteContentOnly:v15];
 
-    v22 = [(MCDLibraryTableViewController *)self contentManager];
-    [v22 setLastReceivedResponse:0];
+    contentManager7 = [(MCDLibraryTableViewController *)self contentManager];
+    [contentManager7 setLastReceivedResponse:0];
 
     [(MCDLibraryTableViewController *)self dismissViewControllerAnimated:1 completion:0];
   }
 
-  v23 = [(MCDLibraryTableViewController *)self contentManager];
-  [v23 performRequest];
+  contentManager8 = [(MCDLibraryTableViewController *)self contentManager];
+  [contentManager8 performRequest];
 
 LABEL_9:
 }
@@ -277,8 +277,8 @@ LABEL_9:
 - (id)sortingPreference
 {
   v3 = +[NSUserDefaults standardUserDefaults];
-  v4 = [(MCDLibraryTableViewController *)self sortingPreferenceKey];
-  v5 = [v3 stringForKey:v4];
+  sortingPreferenceKey = [(MCDLibraryTableViewController *)self sortingPreferenceKey];
+  v5 = [v3 stringForKey:sortingPreferenceKey];
 
   return v5;
 }
@@ -287,9 +287,9 @@ LABEL_9:
 {
   if ([(NSString *)self->_identifier isEqualToString:MCDAlbumsViewControllerIdentifier])
   {
-    v3 = [(MCDLibraryTableViewController *)self dataSource];
-    v4 = [v3 person];
-    v5 = v4 == 0;
+    dataSource = [(MCDLibraryTableViewController *)self dataSource];
+    person = [dataSource person];
+    v5 = person == 0;
 
     return v5;
   }
@@ -307,14 +307,14 @@ LABEL_9:
 
 - (void)filterButtonTapped
 {
-  v3 = [(MCDLibraryTableViewController *)self contentManager];
-  v4 = [v3 showFavoriteContent];
+  contentManager = [(MCDLibraryTableViewController *)self contentManager];
+  showFavoriteContent = [contentManager showFavoriteContent];
 
   v5 = [UIAlertController alertControllerWithTitle:0 message:0 preferredStyle:0];
   v6 = [UIImage systemImageNamed:@"checkmark"];
   v7 = [(MCDLibraryTableViewController *)self showAllActionTitle:self->_identifier];
   objc_initWeak(&location, self);
-  if (v4)
+  if (showFavoriteContent)
   {
     v8 = 0;
   }
@@ -335,7 +335,7 @@ LABEL_9:
   v17 = v7;
   v10 = +[NSBundle mainBundle];
   v11 = [v10 localizedStringForKey:@"Favorites" value:&stru_101107168 table:0];
-  if (v4)
+  if (showFavoriteContent)
   {
     v12 = v6;
   }
@@ -366,10 +366,10 @@ LABEL_9:
   objc_destroyWeak(&location);
 }
 
-- (id)showAllActionTitle:(id)a3
+- (id)showAllActionTitle:(id)title
 {
-  v3 = a3;
-  if ([v3 isEqualToString:MCDPlaylistsViewControllerIdentifier])
+  titleCopy = title;
+  if ([titleCopy isEqualToString:MCDPlaylistsViewControllerIdentifier])
   {
     v4 = @"All Playlists";
 LABEL_13:
@@ -379,31 +379,31 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if ([v3 isEqualToString:MCDArtistsViewControllerIdentifier])
+  if ([titleCopy isEqualToString:MCDArtistsViewControllerIdentifier])
   {
     v4 = @"All Artists";
     goto LABEL_13;
   }
 
-  if ([v3 isEqualToString:MCDAlbumsViewControllerIdentifier])
+  if ([titleCopy isEqualToString:MCDAlbumsViewControllerIdentifier])
   {
     v4 = @"All Albums";
     goto LABEL_13;
   }
 
-  if ([v3 isEqualToString:MCDCompilationsViewControllerIdentifier])
+  if ([titleCopy isEqualToString:MCDCompilationsViewControllerIdentifier])
   {
     v4 = @"All Compilations";
     goto LABEL_13;
   }
 
-  if ([v3 isEqualToString:MCDSongsViewControllerIdentifier])
+  if ([titleCopy isEqualToString:MCDSongsViewControllerIdentifier])
   {
     v4 = @"All Songs";
     goto LABEL_13;
   }
 
-  if ([v3 isEqualToString:MCDMadeForYouViewControllerIdentifier])
+  if ([titleCopy isEqualToString:MCDMadeForYouViewControllerIdentifier])
   {
     v4 = @"All";
     goto LABEL_13;
@@ -415,10 +415,10 @@ LABEL_14:
   return v6;
 }
 
-- (id)favoriteNoContentMessage:(id)a3
+- (id)favoriteNoContentMessage:(id)message
 {
-  v3 = a3;
-  if ([v3 isEqualToString:MCDPlaylistsViewControllerIdentifier] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", MCDMadeForYouViewControllerIdentifier))
+  messageCopy = message;
+  if ([messageCopy isEqualToString:MCDPlaylistsViewControllerIdentifier] & 1) != 0 || (objc_msgSend(messageCopy, "isEqualToString:", MCDMadeForYouViewControllerIdentifier))
   {
     v4 = @"Playlists you favorite will appear here.";
 LABEL_4:
@@ -428,19 +428,19 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  if ([v3 isEqualToString:MCDArtistsViewControllerIdentifier])
+  if ([messageCopy isEqualToString:MCDArtistsViewControllerIdentifier])
   {
     v4 = @"Artists you favorite will appear here.";
     goto LABEL_4;
   }
 
-  if ([v3 isEqualToString:MCDAlbumsViewControllerIdentifier] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", MCDCompilationsViewControllerIdentifier))
+  if ([messageCopy isEqualToString:MCDAlbumsViewControllerIdentifier] & 1) != 0 || (objc_msgSend(messageCopy, "isEqualToString:", MCDCompilationsViewControllerIdentifier))
   {
     v4 = @"Albums you favorite will appear here.";
     goto LABEL_4;
   }
 
-  if ([v3 isEqualToString:MCDSongsViewControllerIdentifier])
+  if ([messageCopy isEqualToString:MCDSongsViewControllerIdentifier])
   {
     v4 = @"Songs you favorite will appear here.";
     goto LABEL_4;
@@ -466,54 +466,54 @@ LABEL_5:
   return [(MCDTableViewController *)&v5 hasRowsToDisplay];
 }
 
-- (void)contentManager:(id)a3 didReceiveResponse:(id)a4
+- (void)contentManager:(id)manager didReceiveResponse:(id)response
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  responseCopy = response;
   v8 = MCDMusicGeneralLogging();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 results];
-    v10 = [v9 totalItemCount];
-    v11 = [(MCDLibraryTableViewController *)self contentManager];
-    v12 = [v11 showFavoriteContent];
-    v13 = [v7 request];
+    results = [responseCopy results];
+    totalItemCount = [results totalItemCount];
+    contentManager = [(MCDLibraryTableViewController *)self contentManager];
+    showFavoriteContent = [contentManager showFavoriteContent];
+    request = [responseCopy request];
     v15 = 138413570;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
-    v18 = v7;
+    v18 = responseCopy;
     v19 = 2112;
-    v20 = v6;
+    v20 = managerCopy;
     v21 = 2048;
-    v22 = v10;
+    v22 = totalItemCount;
     v23 = 1024;
-    v24 = v12;
+    v24 = showFavoriteContent;
     v25 = 2112;
-    v26 = v13;
+    v26 = request;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@ Received response %@ from %@: itemCount=%ld, showFavoriteContent=%d, request=%@", &v15, 0x3Au);
   }
 
-  v14 = [(MCDLibraryTableViewController *)self tableView];
-  [v14 reloadData];
+  tableView = [(MCDLibraryTableViewController *)self tableView];
+  [tableView reloadData];
 
   [(MCDLibraryTableViewController *)self checkContentAndSetView];
 }
 
-- (id)contentManager:(id)a3 viewControllerForItem:(id)a4
+- (id)contentManager:(id)manager viewControllerForItem:(id)item
 {
-  v5 = a4;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [MCDAlbumsTableViewController albumsForGenre:v5 showLocalContent:[(MCDLibraryTableViewController *)self showLocalContent]];
+    v6 = [MCDAlbumsTableViewController albumsForGenre:itemCopy showLocalContent:[(MCDLibraryTableViewController *)self showLocalContent]];
   }
 
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ([v5 orphanMusicVideo], v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ([itemCopy orphanMusicVideo], v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
     {
-      v6 = [[_TtC5Music27MCDItemDetailViewController alloc] initWithAlbum:v5 onlyDownloaded:[(MCDLibraryTableViewController *)self showLocalContent] preferCatalog:0];
+      v6 = [[_TtC5Music27MCDItemDetailViewController alloc] initWithAlbum:itemCopy onlyDownloaded:[(MCDLibraryTableViewController *)self showLocalContent] preferCatalog:0];
     }
 
     else
@@ -524,7 +524,7 @@ LABEL_5:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v8 = v5;
+          v8 = itemCopy;
           if ([v8 type] == 3)
           {
             v9 = [MCDPlaylistsViewController playlistsViewControllerForFolder:v8 showLocalContent:[(MCDLibraryTableViewController *)self showLocalContent]];
@@ -546,7 +546,7 @@ LABEL_5:
         goto LABEL_13;
       }
 
-      v6 = [MCDAlbumsTableViewController albumsForPerson:v5 showLocalContent:[(MCDLibraryTableViewController *)self showLocalContent]];
+      v6 = [MCDAlbumsTableViewController albumsForPerson:itemCopy showLocalContent:[(MCDLibraryTableViewController *)self showLocalContent]];
     }
   }
 
@@ -556,11 +556,11 @@ LABEL_13:
   return v10;
 }
 
-- (BOOL)contentManager:(id)a3 canDrillIntoItem:(id)a4
+- (BOOL)contentManager:(id)manager canDrillIntoItem:(id)item
 {
-  v4 = a4;
+  itemCopy = item;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v4 orphanMusicVideo], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([itemCopy orphanMusicVideo], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
     isKindOfClass = 0;
   }
@@ -583,25 +583,25 @@ LABEL_13:
   return isKindOfClass & 1;
 }
 
-- (void)contentManager:(id)a3 shouldDisplayViewController:(id)a4
+- (void)contentManager:(id)manager shouldDisplayViewController:(id)controller
 {
-  v5 = a4;
-  [v5 setPlayActivityFeatureNameSourceViewController:self];
-  v6 = [(MCDLibraryTableViewController *)self navigationController];
-  [v6 pushViewController:v5 animated:1];
+  controllerCopy = controller;
+  [controllerCopy setPlayActivityFeatureNameSourceViewController:self];
+  navigationController = [(MCDLibraryTableViewController *)self navigationController];
+  [navigationController pushViewController:controllerCopy animated:1];
 }
 
 - (void)checkContentAndSetView
 {
   self->_isShowingButton = 0;
-  v3 = [(MCDLibraryTableViewController *)self contentManager];
-  v4 = [v3 lastReceivedResponse];
-  if ([v4 isEmpty])
+  contentManager = [(MCDLibraryTableViewController *)self contentManager];
+  lastReceivedResponse = [contentManager lastReceivedResponse];
+  if ([lastReceivedResponse isEmpty])
   {
-    v5 = [(MCDLibraryTableViewController *)self contentManager];
-    v6 = [v5 showFavoriteContent];
+    contentManager2 = [(MCDLibraryTableViewController *)self contentManager];
+    showFavoriteContent = [contentManager2 showFavoriteContent];
 
-    if (v6)
+    if (showFavoriteContent)
     {
       v29 = [(MCDLibraryTableViewController *)self favoriteNoContentMessage:self->_identifier];
       v7 = [_TtC5Music22CarPlayInformationView noContentWithTitle:0 subtitle:v29 buttonText:0 buttonAction:0 isCentered:0];
@@ -615,11 +615,11 @@ LABEL_13:
   {
   }
 
-  v8 = [(MCDLibraryTableViewController *)self contentManager];
-  v9 = [v8 lastReceivedResponse];
-  v10 = [v9 isEmpty];
+  contentManager3 = [(MCDLibraryTableViewController *)self contentManager];
+  lastReceivedResponse2 = [contentManager3 lastReceivedResponse];
+  isEmpty = [lastReceivedResponse2 isEmpty];
 
-  if (v10)
+  if (isEmpty)
   {
     if ([(MCDLibraryTableViewController *)self showLocalContent])
     {
@@ -631,19 +631,19 @@ LABEL_13:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = [(MCDContentManagerDataSource *)self->_dataSource person];
+        person = [(MCDContentManagerDataSource *)self->_dataSource person];
 
-        if (v12)
+        if (person)
         {
-          v13 = [(MCDContentManagerDataSource *)self->_dataSource person];
-          v14 = [(MCDLibraryTableViewController *)self artistHasCatalogID:v13];
+          person2 = [(MCDContentManagerDataSource *)self->_dataSource person];
+          v14 = [(MCDLibraryTableViewController *)self artistHasCatalogID:person2];
           v15 = +[NSBundle mainBundle];
           v16 = v15;
           if (v14)
           {
             v17 = [v15 localizedStringForKey:@"Add music by %@ to save it here value:or start a station to hear similar music." table:{&stru_101107168, 0}];
-            v18 = [(MCDLibraryTableViewController *)self title];
-            v11 = [NSString stringWithFormat:v17, v18];
+            title = [(MCDLibraryTableViewController *)self title];
+            v11 = [NSString stringWithFormat:v17, title];
 
             v19 = +[NSBundle mainBundle];
             v20 = [v19 localizedStringForKey:@"Start Station" value:&stru_101107168 table:0];
@@ -654,8 +654,8 @@ LABEL_13:
           else
           {
             v27 = [v15 localizedStringForKey:@"Add music by %@ to save it here." value:&stru_101107168 table:0];
-            v28 = [(MCDLibraryTableViewController *)self title];
-            v11 = [NSString stringWithFormat:v27, v28];
+            title2 = [(MCDLibraryTableViewController *)self title];
+            v11 = [NSString stringWithFormat:v27, title2];
 
             v20 = 0;
           }
@@ -665,11 +665,11 @@ LABEL_13:
       }
 
       v21 = +[MusicCarPlayApplicationCapabilitiesController sharedController];
-      v22 = [v21 subscriptionCapabilities];
+      subscriptionCapabilities = [v21 subscriptionCapabilities];
 
       v23 = +[NSBundle mainBundle];
       v24 = v23;
-      if (v22)
+      if (subscriptionCapabilities)
       {
         v25 = @"Music added from Apple Music, from your computer, or purchased in iTunes will appear here.";
       }
@@ -703,62 +703,62 @@ LABEL_22:
   [(MCDLibraryTableViewController *)self replacePlaceholderViewWithView:0];
 }
 
-- (void)replacePlaceholderViewWithView:(id)a3
+- (void)replacePlaceholderViewWithView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (self->_canModifyView)
   {
-    v27 = v4;
-    [(MCDLibraryTableViewController *)self setPlaceholderView:v4];
-    v5 = [(MCDLibraryTableViewController *)self placeholderView];
+    v27 = viewCopy;
+    [(MCDLibraryTableViewController *)self setPlaceholderView:viewCopy];
+    placeholderView = [(MCDLibraryTableViewController *)self placeholderView];
 
-    if (v5)
+    if (placeholderView)
     {
-      v6 = [(MCDLibraryTableViewController *)self tableView];
-      [v6 frame];
+      tableView = [(MCDLibraryTableViewController *)self tableView];
+      [tableView frame];
       v8 = v7;
       v10 = v9;
       v12 = v11;
       v14 = v13;
 
-      v15 = [(MCDLibraryTableViewController *)self tableView];
-      [v15 safeAreaInsets];
+      tableView2 = [(MCDLibraryTableViewController *)self tableView];
+      [tableView2 safeAreaInsets];
       v17 = v8 + v16;
       v19 = v10 + v18;
       v21 = v12 - (v16 + v20);
       v23 = v14 - (v18 + v22);
 
-      v24 = [(MCDLibraryTableViewController *)self placeholderView];
-      [v24 setFrame:{v17, v19, v21, v23}];
+      placeholderView2 = [(MCDLibraryTableViewController *)self placeholderView];
+      [placeholderView2 setFrame:{v17, v19, v21, v23}];
 
-      v25 = [(MCDLibraryTableViewController *)self placeholderView];
-      [(MCDLibraryTableViewController *)self setView:v25];
+      placeholderView3 = [(MCDLibraryTableViewController *)self placeholderView];
+      [(MCDLibraryTableViewController *)self setView:placeholderView3];
     }
 
     else
     {
-      v26 = [(MCDLibraryTableViewController *)self contentTableView];
-      [(MCDLibraryTableViewController *)self setView:v26];
+      contentTableView = [(MCDLibraryTableViewController *)self contentTableView];
+      [(MCDLibraryTableViewController *)self setView:contentTableView];
 
-      v25 = [(MCDLibraryTableViewController *)self contentTableView];
-      [v25 reloadData];
+      placeholderView3 = [(MCDLibraryTableViewController *)self contentTableView];
+      [placeholderView3 reloadData];
     }
 
-    v4 = v27;
+    viewCopy = v27;
   }
 }
 
-- (BOOL)artistHasCatalogID:(id)a3
+- (BOOL)artistHasCatalogID:(id)d
 {
-  v3 = [a3 identifiers];
-  v4 = [v3 universalStore];
+  identifiers = [d identifiers];
+  universalStore = [identifiers universalStore];
 
-  if (v4)
+  if (universalStore)
   {
-    v9[1] = [v4 purchasedAdamID];
-    v5 = [v4 adamID];
+    v9[1] = [universalStore purchasedAdamID];
+    adamID = [universalStore adamID];
     v6 = 0;
-    v9[2] = v5;
+    v9[2] = adamID;
     while (!v9[v6])
     {
       if (++v6 == 3)

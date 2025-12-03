@@ -1,17 +1,17 @@
 @interface PKAccountBillPaymentAmountContainerView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKAccountBillPaymentAmountContainerView)initWithCurrencyCode:(id)a3 minimumAmount:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKAccountBillPaymentAmountContainerView)initWithCurrencyCode:(id)code minimumAmount:(id)amount;
 - (double)_amountLabelFontSize;
 - (void)layoutSubviews;
-- (void)setShowAmount:(BOOL)a3;
+- (void)setShowAmount:(BOOL)amount;
 @end
 
 @implementation PKAccountBillPaymentAmountContainerView
 
-- (PKAccountBillPaymentAmountContainerView)initWithCurrencyCode:(id)a3 minimumAmount:(id)a4
+- (PKAccountBillPaymentAmountContainerView)initWithCurrencyCode:(id)code minimumAmount:(id)amount
 {
-  v6 = a3;
-  v7 = a4;
+  codeCopy = code;
+  amountCopy = amount;
   v22.receiver = self;
   v22.super_class = PKAccountBillPaymentAmountContainerView;
   v8 = [(PKAccountBillPaymentAmountContainerView *)&v22 init];
@@ -22,12 +22,12 @@
     v11 = v10;
     v12 = *MEMORY[0x1E69DB970];
     v13 = PKRoundedSystemFontOfSizeAndWeight(v10, *MEMORY[0x1E69DB970]);
-    v14 = [v13 pk_fixedWidthFont];
+    pk_fixedWidthFont = [v13 pk_fixedWidthFont];
 
     v15 = PKRoundedSystemFontOfSizeAndWeight(v11 * 0.5, v12);
-    v16 = [v15 pk_fixedWidthFont];
+    pk_fixedWidthFont2 = [v15 pk_fixedWidthFont];
 
-    v17 = [[PKEnterCurrencyAmountView alloc] initWithCurrency:v6 amount:v7];
+    v17 = [[PKEnterCurrencyAmountView alloc] initWithCurrency:codeCopy amount:amountCopy];
     enterCurrencyAmountView = v9->_enterCurrencyAmountView;
     v9->_enterCurrencyAmountView = v17;
 
@@ -36,8 +36,8 @@
     [(PKEnterCurrencyAmountView *)v19 setKeyboardColor:v20];
 
     [(PKEnterCurrencyAmountView *)v9->_enterCurrencyAmountView setShowsDecimalPointButton:1];
-    [(PKEnterCurrencyAmountView *)v9->_enterCurrencyAmountView setAmountFont:v14];
-    [(PKEnterCurrencyAmountView *)v9->_enterCurrencyAmountView setCurrencySymbolFont:v16];
+    [(PKEnterCurrencyAmountView *)v9->_enterCurrencyAmountView setAmountFont:pk_fixedWidthFont];
+    [(PKEnterCurrencyAmountView *)v9->_enterCurrencyAmountView setCurrencySymbolFont:pk_fixedWidthFont2];
     [(PKEnterCurrencyAmountView *)v9->_enterCurrencyAmountView setKerning:&unk_1F3CC6C08];
     [(PKEnterCurrencyAmountView *)v9->_enterCurrencyAmountView setIgnoreIntegralNumber:1];
     [(PKEnterCurrencyAmountView *)v9->_enterCurrencyAmountView sizeToFit];
@@ -112,22 +112,22 @@
   [(PKEnterCurrencyAmountView *)self->_enterCurrencyAmountView setAlpha:v27];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(PKEnterCurrencyAmountView *)self->_enterCurrencyAmountView sizeThatFits:a3.width, a3.height];
+  width = fits.width;
+  [(PKEnterCurrencyAmountView *)self->_enterCurrencyAmountView sizeThatFits:fits.width, fits.height];
   v5 = width;
   result.height = v4;
   result.width = v5;
   return result;
 }
 
-- (void)setShowAmount:(BOOL)a3
+- (void)setShowAmount:(BOOL)amount
 {
-  if (self->_showAmount == !a3)
+  if (self->_showAmount == !amount)
   {
     [(PKAccountBillPaymentAmountContainerView *)self layoutIfNeeded];
-    self->_showAmount = a3;
+    self->_showAmount = amount;
     [(PKAccountBillPaymentAmountContainerView *)self setNeedsLayout];
     [(PKAccountBillPaymentAmountContainerView *)self setHidden:0];
     v7[0] = MEMORY[0x1E69E9820];
@@ -140,7 +140,7 @@
     v5[2] = __57__PKAccountBillPaymentAmountContainerView_setShowAmount___block_invoke_2;
     v5[3] = &unk_1E8013E98;
     v5[4] = self;
-    v6 = a3;
+    amountCopy = amount;
     [MEMORY[0x1E69DD250] _animateUsingDefaultTimingWithOptions:0 animations:v7 completion:v5];
   }
 }

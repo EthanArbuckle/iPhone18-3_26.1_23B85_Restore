@@ -1,6 +1,6 @@
 @interface MRMicrophoneConnectionResponseMessage
-- (MRMicrophoneConnectionResponseMessage)initWithPairingData:(id)a3 rapportIdentifier:(id)a4;
-- (MRMicrophoneConnectionResponseMessage)initWithResult:(int64_t)a3 rapportIdentifier:(id)a4;
+- (MRMicrophoneConnectionResponseMessage)initWithPairingData:(id)data rapportIdentifier:(id)identifier;
+- (MRMicrophoneConnectionResponseMessage)initWithResult:(int64_t)result rapportIdentifier:(id)identifier;
 - (NSData)pairingData;
 - (NSString)rapportIdentifier;
 - (int64_t)result;
@@ -8,24 +8,24 @@
 
 @implementation MRMicrophoneConnectionResponseMessage
 
-- (MRMicrophoneConnectionResponseMessage)initWithResult:(int64_t)a3 rapportIdentifier:(id)a4
+- (MRMicrophoneConnectionResponseMessage)initWithResult:(int64_t)result rapportIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = MRMicrophoneConnectionResponseMessage;
   v7 = [(MRProtocolMessage *)&v11 init];
   if (v7)
   {
     v8 = objc_alloc_init(_MRMicrophoneConnectionResponseMessageProtobuf);
-    [(_MRMicrophoneConnectionResponseMessageProtobuf *)v8 setRapportIdentifier:v6];
-    if (a3 == 2)
+    [(_MRMicrophoneConnectionResponseMessageProtobuf *)v8 setRapportIdentifier:identifierCopy];
+    if (result == 2)
     {
       v9 = 2;
     }
 
     else
     {
-      v9 = a3 == 1;
+      v9 = result == 1;
     }
 
     [(_MRMicrophoneConnectionResponseMessageProtobuf *)v8 setResult:v9];
@@ -35,19 +35,19 @@
   return v7;
 }
 
-- (MRMicrophoneConnectionResponseMessage)initWithPairingData:(id)a3 rapportIdentifier:(id)a4
+- (MRMicrophoneConnectionResponseMessage)initWithPairingData:(id)data rapportIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = MRMicrophoneConnectionResponseMessage;
   v8 = [(MRProtocolMessage *)&v11 init];
   if (v8)
   {
     v9 = objc_alloc_init(_MRMicrophoneConnectionResponseMessageProtobuf);
-    [(_MRMicrophoneConnectionResponseMessageProtobuf *)v9 setRapportIdentifier:v7];
+    [(_MRMicrophoneConnectionResponseMessageProtobuf *)v9 setRapportIdentifier:identifierCopy];
     [(_MRMicrophoneConnectionResponseMessageProtobuf *)v9 setResult:1];
-    [(_MRMicrophoneConnectionResponseMessageProtobuf *)v9 setPairingData:v6];
+    [(_MRMicrophoneConnectionResponseMessageProtobuf *)v9 setPairingData:dataCopy];
     [(MRProtocolMessage *)v8 setUnderlyingCodableMessage:v9];
   }
 
@@ -56,16 +56,16 @@
 
 - (int64_t)result
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 result];
-  if (v3 == 2)
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  result = [underlyingCodableMessage result];
+  if (result == 2)
   {
     v4 = 2;
   }
 
   else
   {
-    v4 = v3 == 1;
+    v4 = result == 1;
   }
 
   return v4;
@@ -73,18 +73,18 @@
 
 - (NSString)rapportIdentifier
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 rapportIdentifier];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  rapportIdentifier = [underlyingCodableMessage rapportIdentifier];
 
-  return v3;
+  return rapportIdentifier;
 }
 
 - (NSData)pairingData
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 pairingData];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  pairingData = [underlyingCodableMessage pairingData];
 
-  return v3;
+  return pairingData;
 }
 
 @end

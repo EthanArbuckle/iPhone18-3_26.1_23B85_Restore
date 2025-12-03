@@ -4,19 +4,19 @@
 - (SKAccountPageViewController)accountPageViewController;
 - (id)disconnect;
 - (void)didFinishLoading;
-- (void)didPrepareWithResult:(id)a3 error:(id)a4;
+- (void)didPrepareWithResult:(id)result error:(id)error;
 - (void)dismissBridgedViewController;
-- (void)dismissViewControllerWithResult:(id)a3 error:(id)a4;
-- (void)financeInterruptionResolved:(BOOL)a3;
-- (void)overrideCreditCardPresentationWithCompletion:(id)a3;
-- (void)overrideRedeemCameraPerformAction:(int64_t)a3 withObject:(id)a4;
-- (void)overrideRedeemCameraWithCompletion:(id)a3;
-- (void)popBridgedViewControllersToIndex:(unint64_t)a3;
+- (void)dismissViewControllerWithResult:(id)result error:(id)error;
+- (void)financeInterruptionResolved:(BOOL)resolved;
+- (void)overrideCreditCardPresentationWithCompletion:(id)completion;
+- (void)overrideRedeemCameraPerformAction:(int64_t)action withObject:(id)object;
+- (void)overrideRedeemCameraWithCompletion:(id)completion;
+- (void)popBridgedViewControllersToIndex:(unint64_t)index;
 - (void)presentBridgedViewController;
-- (void)pushBridgedViewControllerAnimated:(BOOL)a3 options:(id)a4;
-- (void)setAccountPageViewController:(id)a3;
-- (void)setBridgedNavigationItemWithOptions:(id)a3;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)pushBridgedViewControllerAnimated:(BOOL)animated options:(id)options;
+- (void)setAccountPageViewController:(id)controller;
+- (void)setBridgedNavigationItemWithOptions:(id)options;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation SKRemoteAccountPageViewController
@@ -49,37 +49,37 @@
   return v2;
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_accountPageViewController);
-  [WeakRetained _dismissViewControllerWithResult:0 error:v4];
+  [WeakRetained _dismissViewControllerWithResult:0 error:errorCopy];
 }
 
-- (void)didPrepareWithResult:(id)a3 error:(id)a4
+- (void)didPrepareWithResult:(id)result error:(id)error
 {
-  v11 = a3;
-  v7 = a4;
+  resultCopy = result;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_accountPageViewController);
 
   if (WeakRetained)
   {
     pendingPrepareError = objc_loadWeakRetained(&self->_accountPageViewController);
-    [pendingPrepareError _didPrepareWithResult:objc_msgSend(v11 error:{"BOOLValue"), v7}];
+    [pendingPrepareError _didPrepareWithResult:objc_msgSend(resultCopy error:{"BOOLValue"), errorCopy}];
   }
 
   else
   {
-    objc_storeStrong(&self->_pendingPrepareResult, a3);
-    v10 = v7;
+    objc_storeStrong(&self->_pendingPrepareResult, result);
+    v10 = errorCopy;
     pendingPrepareError = self->_pendingPrepareError;
     self->_pendingPrepareError = v10;
   }
 }
 
-- (void)setAccountPageViewController:(id)a3
+- (void)setAccountPageViewController:(id)controller
 {
-  objc_storeWeak(&self->_accountPageViewController, a3);
+  objc_storeWeak(&self->_accountPageViewController, controller);
   if (*&self->_pendingPrepareResult != 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_accountPageViewController);
@@ -99,63 +99,63 @@
   [WeakRetained _didFinishLoading];
 }
 
-- (void)dismissViewControllerWithResult:(id)a3 error:(id)a4
+- (void)dismissViewControllerWithResult:(id)result error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
+  errorCopy = error;
+  resultCopy = result;
   WeakRetained = objc_loadWeakRetained(&self->_accountPageViewController);
-  v8 = [v7 BOOLValue];
+  bOOLValue = [resultCopy BOOLValue];
 
-  [WeakRetained _dismissViewControllerWithResult:v8 error:v6];
+  [WeakRetained _dismissViewControllerWithResult:bOOLValue error:errorCopy];
 }
 
-- (void)financeInterruptionResolved:(BOOL)a3
+- (void)financeInterruptionResolved:(BOOL)resolved
 {
-  v3 = a3;
+  resolvedCopy = resolved;
   WeakRetained = objc_loadWeakRetained(&self->_accountPageViewController);
-  [WeakRetained _financeInterruptionResolved:v3];
+  [WeakRetained _financeInterruptionResolved:resolvedCopy];
 }
 
-- (void)overrideCreditCardPresentationWithCompletion:(id)a3
+- (void)overrideCreditCardPresentationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_accountPageViewController);
-  [WeakRetained _overrideCreditCardPresentationWithCompletion:v4];
+  [WeakRetained _overrideCreditCardPresentationWithCompletion:completionCopy];
 }
 
-- (void)overrideRedeemCameraPerformAction:(int64_t)a3 withObject:(id)a4
+- (void)overrideRedeemCameraPerformAction:(int64_t)action withObject:(id)object
 {
-  v6 = a4;
+  objectCopy = object;
   WeakRetained = objc_loadWeakRetained(&self->_accountPageViewController);
-  [WeakRetained _overrideRedeemCameraPerformAction:a3 withObject:v6];
+  [WeakRetained _overrideRedeemCameraPerformAction:action withObject:objectCopy];
 }
 
-- (void)overrideRedeemCameraWithCompletion:(id)a3
+- (void)overrideRedeemCameraWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_accountPageViewController);
-  [WeakRetained _overrideRedeemCameraWithCompletion:v4];
+  [WeakRetained _overrideRedeemCameraWithCompletion:completionCopy];
 }
 
-- (void)setBridgedNavigationItemWithOptions:(id)a3
+- (void)setBridgedNavigationItemWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   WeakRetained = objc_loadWeakRetained(&self->_accountPageViewController);
-  [WeakRetained _setBridgedNavigationItemWithOptions:v4];
+  [WeakRetained _setBridgedNavigationItemWithOptions:optionsCopy];
 }
 
-- (void)pushBridgedViewControllerAnimated:(BOOL)a3 options:(id)a4
+- (void)pushBridgedViewControllerAnimated:(BOOL)animated options:(id)options
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  optionsCopy = options;
   WeakRetained = objc_loadWeakRetained(&self->_accountPageViewController);
-  [WeakRetained _pushBridgedViewControllerAnimated:v4 options:v6];
+  [WeakRetained _pushBridgedViewControllerAnimated:animatedCopy options:optionsCopy];
 }
 
-- (void)popBridgedViewControllersToIndex:(unint64_t)a3
+- (void)popBridgedViewControllersToIndex:(unint64_t)index
 {
   WeakRetained = objc_loadWeakRetained(&self->_accountPageViewController);
-  [WeakRetained _popBridgedViewControllersToIndex:a3];
+  [WeakRetained _popBridgedViewControllersToIndex:index];
 }
 
 - (void)presentBridgedViewController
@@ -172,13 +172,13 @@
 
 - (id)disconnect
 {
-  v3 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
-  [v3 dismissPresentingBridgedViewController];
+  serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+  [serviceViewControllerProxy dismissPresentingBridgedViewController];
   v6.receiver = self;
   v6.super_class = SKRemoteAccountPageViewController;
-  v4 = [(_UIRemoteViewController *)&v6 disconnect];
+  disconnect = [(_UIRemoteViewController *)&v6 disconnect];
 
-  return v4;
+  return disconnect;
 }
 
 - (SKAccountPageViewController)accountPageViewController

@@ -1,12 +1,12 @@
 @interface _MRGameControllerPropertiesMessageProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRGameControllerPropertiesMessageProtobuf
@@ -17,69 +17,69 @@
   v8.receiver = self;
   v8.super_class = _MRGameControllerPropertiesMessageProtobuf;
   v4 = [(_MRGameControllerPropertiesMessageProtobuf *)&v8 description];
-  v5 = [(_MRGameControllerPropertiesMessageProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRGameControllerPropertiesMessageProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_controllerID];
-    [v3 setObject:v4 forKey:@"controllerID"];
+    [dictionary setObject:v4 forKey:@"controllerID"];
   }
 
   properties = self->_properties;
   if (properties)
   {
-    v6 = [(_MRGameControllerPropertiesProtobuf *)properties dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"properties"];
+    dictionaryRepresentation = [(_MRGameControllerPropertiesProtobuf *)properties dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"properties"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     controllerID = self->_controllerID;
     PBDataWriterWriteUint64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_properties)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_controllerID;
-    *(v4 + 24) |= 1u;
+    toCopy[1] = self->_controllerID;
+    *(toCopy + 24) |= 1u;
   }
 
   if (self->_properties)
   {
-    v5 = v4;
-    [v4 setProperties:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setProperties:?];
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -87,31 +87,31 @@
     *(v5 + 24) |= 1u;
   }
 
-  v7 = [(_MRGameControllerPropertiesProtobuf *)self->_properties copyWithZone:a3];
+  v7 = [(_MRGameControllerPropertiesProtobuf *)self->_properties copyWithZone:zone];
   v8 = v6[2];
   v6[2] = v7;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  v5 = *(v4 + 24);
+  v5 = *(equalCopy + 24);
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_controllerID != *(v4 + 1))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_controllerID != *(equalCopy + 1))
     {
       goto LABEL_9;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
 LABEL_9:
     v7 = 0;
@@ -119,7 +119,7 @@ LABEL_9:
   }
 
   properties = self->_properties;
-  if (properties | *(v4 + 2))
+  if (properties | *(equalCopy + 2))
   {
     v7 = [(_MRGameControllerPropertiesProtobuf *)properties isEqual:?];
   }
@@ -149,13 +149,13 @@ LABEL_10:
   return [(_MRGameControllerPropertiesProtobuf *)self->_properties hash]^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[3])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[3])
   {
-    self->_controllerID = v4[1];
+    self->_controllerID = fromCopy[1];
     *&self->_has |= 1u;
   }
 

@@ -4,9 +4,9 @@
 - (float)silenceProbability;
 - (int64_t)lookbackFrames;
 - (int64_t)minSilenceInLookbackFrames;
-- (void)setLookbackFrames:(int64_t)a3;
-- (void)setMinSilenceInLookbackFrames:(int64_t)a3;
-- (void)setSilenceProbability:(float)a3;
+- (void)setLookbackFrames:(int64_t)frames;
+- (void)setMinSilenceInLookbackFrames:(int64_t)frames;
+- (void)setSilenceProbability:(float)probability;
 @end
 
 @implementation PreKeywordSilenceConfig
@@ -18,11 +18,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setLookbackFrames:(int64_t)a3
+- (void)setLookbackFrames:(int64_t)frames
 {
   v5 = OBJC_IVAR___PreKeywordSilenceConfig_lookbackFrames;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = frames;
 }
 
 - (int64_t)minSilenceInLookbackFrames
@@ -32,11 +32,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setMinSilenceInLookbackFrames:(int64_t)a3
+- (void)setMinSilenceInLookbackFrames:(int64_t)frames
 {
   v5 = OBJC_IVAR___PreKeywordSilenceConfig_minSilenceInLookbackFrames;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = frames;
 }
 
 - (float)silenceProbability
@@ -46,11 +46,11 @@
   return *v2;
 }
 
-- (void)setSilenceProbability:(float)a3
+- (void)setSilenceProbability:(float)probability
 {
   v4 = (self + OBJC_IVAR___PreKeywordSilenceConfig_silenceProbability);
   swift_beginAccess();
-  *v4 = a3;
+  *v4 = probability;
 }
 
 - (PreKeywordSilenceConfig)init
@@ -72,7 +72,7 @@
   v6 = *(v5 + 48);
   v7 = *(v5 + 52);
   swift_allocObject();
-  v8 = self;
+  selfCopy = self;
   sub_272376B2C();
   type metadata accessor for PreKeywordSilence();
   sub_27227DA80(&qword_280882290, v9, type metadata accessor for PreKeywordSilence);

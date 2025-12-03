@@ -1,27 +1,27 @@
 @interface TSCECategoryRef
 + (TSKUIDStruct)groupByRootUid;
-+ (TSKUIDStruct)relativeAncestorGroupUid:(int)a3;
-+ (int)relativeLevelOfAncestorGroupUid:(const TSKUIDStruct *)a3;
++ (TSKUIDStruct)relativeAncestorGroupUid:(int)uid;
++ (int)relativeLevelOfAncestorGroupUid:(const TSKUIDStruct *)uid;
 - (BOOL)convertToBadRef;
 - (BOOL)isBadRef;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
 - (BOOL)mayReturnArray;
 - (BOOL)restoreFromBadRef;
 - (TSCECategoryRef)init;
-- (TSCECategoryRef)initWithGroupByUID:(const TSKUIDStruct *)a3 absGroupUid:(const TSKUIDStruct *)a4 columnUid:(const TSKUIDStruct *)a5 aggType:(unsigned __int8)a6 groupLevel:(unsigned __int8)a7 aggrIndexLevel:(unsigned __int16)a8;
-- (TSCECategoryRef)initWithGroupByUID:(const TSKUIDStruct *)a3 relGroupUID:(const TSKUIDStruct *)a4 absGroupUid:(const TSKUIDStruct *)a5 columnUid:(const TSKUIDStruct *)a6 aggType:(unsigned __int8)a7 groupLevel:(unsigned __int8)a8 aggrIndexLevel:(unsigned __int16)a9 preserveFlags:(const TSUPreserveFlags *)a10;
-- (TSCECategoryRef)initWithGroupByUID:(const TSKUIDStruct *)a3 relGroupUID:(const TSKUIDStruct *)a4 absGroupUid:(const TSKUIDStruct *)a5 columnUid:(const TSKUIDStruct *)a6 aggType:(unsigned __int8)a7 groupLevel:(unsigned __int8)a8 aggrIndexLevel:(unsigned __int16)a9 preserveFlags:(const TSUPreserveFlags *)a10 relativeColumn:(signed __int16)a11 options:(unsigned __int8)a12;
+- (TSCECategoryRef)initWithGroupByUID:(const TSKUIDStruct *)d absGroupUid:(const TSKUIDStruct *)uid columnUid:(const TSKUIDStruct *)columnUid aggType:(unsigned __int8)type groupLevel:(unsigned __int8)level aggrIndexLevel:(unsigned __int16)indexLevel;
+- (TSCECategoryRef)initWithGroupByUID:(const TSKUIDStruct *)d relGroupUID:(const TSKUIDStruct *)iD absGroupUid:(const TSKUIDStruct *)uid columnUid:(const TSKUIDStruct *)columnUid aggType:(unsigned __int8)type groupLevel:(unsigned __int8)level aggrIndexLevel:(unsigned __int16)indexLevel preserveFlags:(const TSUPreserveFlags *)self0;
+- (TSCECategoryRef)initWithGroupByUID:(const TSKUIDStruct *)d relGroupUID:(const TSKUIDStruct *)iD absGroupUid:(const TSKUIDStruct *)uid columnUid:(const TSKUIDStruct *)columnUid aggType:(unsigned __int8)type groupLevel:(unsigned __int8)level aggrIndexLevel:(unsigned __int16)indexLevel preserveFlags:(const TSUPreserveFlags *)self0 relativeColumn:(signed __int16)self1 options:(unsigned __int8)self2;
 - (TSKUIDStruct)absoluteGroupUid;
 - (TSKUIDStruct)columnUid;
 - (TSKUIDStruct)groupByUid;
 - (TSKUIDStruct)pivotTableUid;
 - (TSKUIDStruct)relativeGroupUid;
-- (id)copyAndReplaceGroupUIDs:(const TSKUIDStruct *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyAndReplaceGroupUIDs:(const TSKUIDStruct *)ds;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)setAsAbsoluteWithGroupUid:(const TSKUIDStruct *)a3;
-- (void)setShowAggregateName:(BOOL)a3;
+- (void)setAsAbsoluteWithGroupUid:(const TSKUIDStruct *)uid;
+- (void)setShowAggregateName:(BOOL)name;
 @end
 
 @implementation TSCECategoryRef
@@ -46,46 +46,46 @@
   return result;
 }
 
-- (TSCECategoryRef)initWithGroupByUID:(const TSKUIDStruct *)a3 relGroupUID:(const TSKUIDStruct *)a4 absGroupUid:(const TSKUIDStruct *)a5 columnUid:(const TSKUIDStruct *)a6 aggType:(unsigned __int8)a7 groupLevel:(unsigned __int8)a8 aggrIndexLevel:(unsigned __int16)a9 preserveFlags:(const TSUPreserveFlags *)a10 relativeColumn:(signed __int16)a11 options:(unsigned __int8)a12
+- (TSCECategoryRef)initWithGroupByUID:(const TSKUIDStruct *)d relGroupUID:(const TSKUIDStruct *)iD absGroupUid:(const TSKUIDStruct *)uid columnUid:(const TSKUIDStruct *)columnUid aggType:(unsigned __int8)type groupLevel:(unsigned __int8)level aggrIndexLevel:(unsigned __int16)indexLevel preserveFlags:(const TSUPreserveFlags *)self0 relativeColumn:(signed __int16)self1 options:(unsigned __int8)self2
 {
   v19.receiver = self;
   v19.super_class = TSCECategoryRef;
   result = [(TSCECategoryRef *)&v19 init];
   if (result)
   {
-    result->_groupByUid = *a3;
-    result->_columnUid = *a6;
-    result->_relativeGroupUid = *a4;
-    result->_absoluteGroupUid = *a5;
-    result->_aggType = a7;
-    result->_groupLevel = a8;
-    result->_aggrIndexLevel = a9;
-    result->_preserveFlags = a10->_flags;
-    result->_relativeColumn = a11;
-    result->_options = a12;
+    result->_groupByUid = *d;
+    result->_columnUid = *columnUid;
+    result->_relativeGroupUid = *iD;
+    result->_absoluteGroupUid = *uid;
+    result->_aggType = type;
+    result->_groupLevel = level;
+    result->_aggrIndexLevel = indexLevel;
+    result->_preserveFlags = flags->_flags;
+    result->_relativeColumn = column;
+    result->_options = options;
   }
 
   return result;
 }
 
-- (TSCECategoryRef)initWithGroupByUID:(const TSKUIDStruct *)a3 relGroupUID:(const TSKUIDStruct *)a4 absGroupUid:(const TSKUIDStruct *)a5 columnUid:(const TSKUIDStruct *)a6 aggType:(unsigned __int8)a7 groupLevel:(unsigned __int8)a8 aggrIndexLevel:(unsigned __int16)a9 preserveFlags:(const TSUPreserveFlags *)a10
+- (TSCECategoryRef)initWithGroupByUID:(const TSKUIDStruct *)d relGroupUID:(const TSKUIDStruct *)iD absGroupUid:(const TSKUIDStruct *)uid columnUid:(const TSKUIDStruct *)columnUid aggType:(unsigned __int8)type groupLevel:(unsigned __int8)level aggrIndexLevel:(unsigned __int16)indexLevel preserveFlags:(const TSUPreserveFlags *)self0
 {
   BYTE2(v12) = 0;
   LOWORD(v12) = 0x7FFF;
-  return objc_msgSend_initWithGroupByUID_relGroupUID_absGroupUid_columnUid_aggType_groupLevel_aggrIndexLevel_preserveFlags_relativeColumn_options_(self, a2, a3, a4, a5, a6, a7, a8, a9, a10, v12);
+  return objc_msgSend_initWithGroupByUID_relGroupUID_absGroupUid_columnUid_aggType_groupLevel_aggrIndexLevel_preserveFlags_relativeColumn_options_(self, a2, d, iD, uid, columnUid, type, level, indexLevel, flags, v12);
 }
 
-- (TSCECategoryRef)initWithGroupByUID:(const TSKUIDStruct *)a3 absGroupUid:(const TSKUIDStruct *)a4 columnUid:(const TSKUIDStruct *)a5 aggType:(unsigned __int8)a6 groupLevel:(unsigned __int8)a7 aggrIndexLevel:(unsigned __int16)a8
+- (TSCECategoryRef)initWithGroupByUID:(const TSKUIDStruct *)d absGroupUid:(const TSKUIDStruct *)uid columnUid:(const TSKUIDStruct *)columnUid aggType:(unsigned __int8)type groupLevel:(unsigned __int8)level aggrIndexLevel:(unsigned __int16)indexLevel
 {
   v12[0] = 0;
   v12[1] = 0;
   v11 = 1;
   BYTE2(v10) = 0;
   LOWORD(v10) = 0x7FFF;
-  return objc_msgSend_initWithGroupByUID_relGroupUID_absGroupUid_columnUid_aggType_groupLevel_aggrIndexLevel_preserveFlags_relativeColumn_options_(self, a2, a3, v12, a4, a5, a6, a7, a8, &v11, v10);
+  return objc_msgSend_initWithGroupByUID_relGroupUID_absGroupUid_columnUid_aggType_groupLevel_aggrIndexLevel_preserveFlags_relativeColumn_options_(self, a2, d, v12, uid, columnUid, type, level, indexLevel, &v11, v10);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TSCECategoryRef alloc];
   BYTE2(v8) = self->_options;
@@ -110,16 +110,16 @@
   return *&veor_s8(*v3.i8, *&vextq_s8(v3, v3, 8uLL)) + self->_aggType + self->_groupLevel + aggrIndexLevel;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v48 = 1;
   }
 
-  else if (v4)
+  else if (equalCopy)
   {
     objc_opt_class();
     v6 = TSUDynamicCast();
@@ -188,9 +188,9 @@
   return result;
 }
 
-- (void)setShowAggregateName:(BOOL)a3
+- (void)setShowAggregateName:(BOOL)name
 {
-  if (a3)
+  if (name)
   {
     v3 = 4;
   }
@@ -203,16 +203,16 @@
   self->_options = self->_options & 0xFB | v3;
 }
 
-- (id)copyAndReplaceGroupUIDs:(const TSKUIDStruct *)a3
+- (id)copyAndReplaceGroupUIDs:(const TSKUIDStruct *)ds
 {
-  v6 = objc_msgSend_copy(self, a2, a3, v3, v4);
-  objc_msgSend_setAbsoluteGroupUid_(v6, v7, a3->_lower, a3->_upper, v8);
+  v6 = objc_msgSend_copy(self, a2, ds, v3, v4);
+  objc_msgSend_setAbsoluteGroupUid_(v6, v7, ds->_lower, ds->_upper, v8);
   return v6;
 }
 
-- (void)setAsAbsoluteWithGroupUid:(const TSKUIDStruct *)a3
+- (void)setAsAbsoluteWithGroupUid:(const TSKUIDStruct *)uid
 {
-  objc_msgSend_setAbsoluteGroupUid_(self, a2, a3->_lower, a3->_upper, v3);
+  objc_msgSend_setAbsoluteGroupUid_(self, a2, uid->_lower, uid->_upper, v3);
   objc_msgSend_setRelativeGroupUid_(self, v5, 0, 0, v6);
   self->_preserveFlags._flags |= 2u;
 }
@@ -262,15 +262,15 @@
   return isBadRef;
 }
 
-+ (TSKUIDStruct)relativeAncestorGroupUid:(int)a3
++ (TSKUIDStruct)relativeAncestorGroupUid:(int)uid
 {
-  if (a3 < 1)
+  if (uid < 1)
   {
     goto LABEL_5;
   }
 
-  v5 = *&a3;
-  if (a3 >= 7)
+  v5 = *&uid;
+  if (uid >= 7)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "+[TSCECategoryRef relativeAncestorGroupUid:]", v3, v4);
@@ -283,7 +283,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v6 = a3 | 0xF4240u;
+  v6 = uid | 0xF4240u;
 LABEL_6:
   v18 = v6;
   result._upper = v18;
@@ -291,16 +291,16 @@ LABEL_6:
   return result;
 }
 
-+ (int)relativeLevelOfAncestorGroupUid:(const TSKUIDStruct *)a3
++ (int)relativeLevelOfAncestorGroupUid:(const TSKUIDStruct *)uid
 {
-  v3 = a3->_lower != a3->_upper || a3->_lower - 1000001 >= 6;
-  v4 = a3->_lower - 1000000;
+  v3 = uid->_lower != uid->_upper || uid->_lower - 1000001 >= 6;
+  v4 = uid->_lower - 1000000;
   if (v3)
   {
     v4 = 0;
   }
 
-  if (*a3 == 0)
+  if (*uid == 0)
   {
     return 0;
   }

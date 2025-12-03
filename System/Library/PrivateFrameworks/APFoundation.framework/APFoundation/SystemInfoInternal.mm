@@ -27,7 +27,7 @@
 
 + (NSString)longBuildVersion
 {
-  v2 = [objc_opt_self() kBuildVersionString];
+  kBuildVersionString = [objc_opt_self() kBuildVersionString];
   v3 = MGGetStringAnswer();
 
   if (v3)
@@ -62,17 +62,17 @@
 
 + (NSString)bundleIdentifier
 {
-  v2 = [objc_opt_self() mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [objc_opt_self() mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if (v3)
+  if (bundleIdentifier)
   {
     sub_1BAF8EC38();
 
-    v3 = sub_1BAF8EC28();
+    bundleIdentifier = sub_1BAF8EC28();
   }
 
-  return v3;
+  return bundleIdentifier;
 }
 
 + (NSString)locale

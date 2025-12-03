@@ -1,21 +1,21 @@
 @interface BGSystemTaskResultDependency
-- (BGSystemTaskResultDependency)initWithIdentifier:(id)a3 batchSize:(unint64_t)a4;
+- (BGSystemTaskResultDependency)initWithIdentifier:(id)identifier batchSize:(unint64_t)size;
 - (id)asDictionary;
 @end
 
 @implementation BGSystemTaskResultDependency
 
-- (BGSystemTaskResultDependency)initWithIdentifier:(id)a3 batchSize:(unint64_t)a4
+- (BGSystemTaskResultDependency)initWithIdentifier:(id)identifier batchSize:(unint64_t)size
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = BGSystemTaskResultDependency;
   v8 = [(BGSystemTaskResultDependency *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_identifier, a3);
-    v9->_batchSize = a4;
+    objc_storeStrong(&v8->_identifier, identifier);
+    v9->_batchSize = size;
   }
 
   return v9;
@@ -23,13 +23,13 @@
 
 - (id)asDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:@"DependencyTypeResult" forKeyedSubscript:@"DependencyType"];
-  [v3 setObject:self->_identifier forKeyedSubscript:@"DependencyIdentifier"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:@"DependencyTypeResult" forKeyedSubscript:@"DependencyType"];
+  [dictionary setObject:self->_identifier forKeyedSubscript:@"DependencyIdentifier"];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_batchSize];
-  [v3 setObject:v4 forKeyedSubscript:@"ResultDependencyBatchSize"];
+  [dictionary setObject:v4 forKeyedSubscript:@"ResultDependencyBatchSize"];
 
-  return v3;
+  return dictionary;
 }
 
 @end

@@ -1,25 +1,25 @@
 @interface MSTonePurchaseContinuation
-- (MSTonePurchaseContinuation)initWithPurchase:(id)a3;
+- (MSTonePurchaseContinuation)initWithPurchase:(id)purchase;
 - (id)_copyAllowedToneStyles;
 - (void)_destroyActionSheet;
 - (void)_destroyAlertView;
 - (void)_dismissContactPicker;
 - (void)_pickAssigneeToneStyle;
 - (void)_showPeoplePicker;
-- (void)actionSheet:(id)a3 didDismissWithButtonIndex:(int64_t)a4;
-- (void)actionSheetCancel:(id)a3;
-- (void)alertView:(id)a3 didDismissWithButtonIndex:(int64_t)a4;
-- (void)alertViewCancel:(id)a3;
+- (void)actionSheet:(id)sheet didDismissWithButtonIndex:(int64_t)index;
+- (void)actionSheetCancel:(id)cancel;
+- (void)alertView:(id)view didDismissWithButtonIndex:(int64_t)index;
+- (void)alertViewCancel:(id)cancel;
 - (void)cancel;
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4;
-- (void)contactPickerDidCancel:(id)a3;
+- (void)contactPicker:(id)picker didSelectContact:(id)contact;
+- (void)contactPickerDidCancel:(id)cancel;
 - (void)dealloc;
 - (void)start;
 @end
 
 @implementation MSTonePurchaseContinuation
 
-- (MSTonePurchaseContinuation)initWithPurchase:(id)a3
+- (MSTonePurchaseContinuation)initWithPurchase:(id)purchase
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -29,7 +29,7 @@
 
   v7.receiver = self;
   v7.super_class = MSTonePurchaseContinuation;
-  return [(SUPurchaseContinuation *)&v7 initWithPurchase:a3];
+  return [(SUPurchaseContinuation *)&v7 initWithPurchase:purchase];
 }
 
 - (void)dealloc
@@ -58,26 +58,26 @@
 
 - (void)start
 {
-  v3 = [(MSTonePurchaseContinuation *)self _copyAllowedToneStyles];
-  if ([v3 count])
+  _copyAllowedToneStyles = [(MSTonePurchaseContinuation *)self _copyAllowedToneStyles];
+  if ([_copyAllowedToneStyles count])
   {
     v4 = objc_alloc_init(MEMORY[0x277D75118]);
     self->_alertView = v4;
     [(UIAlertView *)v4 setDelegate:self];
     -[UIAlertView setTitle:](self->_alertView, "setTitle:", [objc_msgSend(MEMORY[0x277CCA8D8] bundleForClass:{objc_opt_class()), "localizedStringForKey:value:table:", @"BUY_TONE_ALERT_TITLE", &stru_286C31D20, 0}]);
-    v5 = [(SUPurchaseContinuation *)self purchase];
-    v6 = [v5 valueForDownloadProperty:*MEMORY[0x277D6A0E0]];
+    purchase = [(SUPurchaseContinuation *)self purchase];
+    v6 = [purchase valueForDownloadProperty:*MEMORY[0x277D6A0E0]];
     if ([v6 length])
     {
       -[UIAlertView setBodyText:](self->_alertView, "setBodyText:", [MEMORY[0x277CCACA8] stringWithFormat:objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"BUY_TONE_BODY_FORMAT", &stru_286C31D20, 0), v6]);
     }
 
-    if ([v3 containsObject:*MEMORY[0x277D6A2A8]])
+    if ([_copyAllowedToneStyles containsObject:*MEMORY[0x277D6A2A8]])
     {
       -[UIAlertView addButtonWithTitle:](self->_alertView, "addButtonWithTitle:", [objc_msgSend(MEMORY[0x277CCA8D8] bundleForClass:{objc_opt_class()), "localizedStringForKey:value:table:", @"BUY_TONE_SET_AS_DEFAULT_RINGTONE", &stru_286C31D20, 0}]);
     }
 
-    if ([v3 containsObject:*MEMORY[0x277D6A2B0]])
+    if ([_copyAllowedToneStyles containsObject:*MEMORY[0x277D6A2B0]])
     {
       -[UIAlertView addButtonWithTitle:](self->_alertView, "addButtonWithTitle:", [objc_msgSend(MEMORY[0x277CCA8D8] bundleForClass:{objc_opt_class()), "localizedStringForKey:value:table:", @"BUY_TONE_SET_AS_DEFAULT_TEXT_TONE", &stru_286C31D20, 0}]);
     }
@@ -96,7 +96,7 @@
   }
 }
 
-- (void)actionSheetCancel:(id)a3
+- (void)actionSheetCancel:(id)cancel
 {
   [(MSTonePurchaseContinuation *)self _dismissContactPicker];
   [(SUContinuation *)self sendFinishToDelegate];
@@ -104,11 +104,11 @@
   [(MSTonePurchaseContinuation *)self _destroyActionSheet];
 }
 
-- (void)actionSheet:(id)a3 didDismissWithButtonIndex:(int64_t)a4
+- (void)actionSheet:(id)sheet didDismissWithButtonIndex:(int64_t)index
 {
-  if (a4)
+  if (index)
   {
-    if (a4 != 1)
+    if (index != 1)
     {
       goto LABEL_6;
     }
@@ -129,19 +129,19 @@ LABEL_6:
   [(MSTonePurchaseContinuation *)self _destroyActionSheet];
 }
 
-- (void)alertViewCancel:(id)a3
+- (void)alertViewCancel:(id)cancel
 {
   [(SUContinuation *)self sendFinishToDelegate];
 
   [(MSTonePurchaseContinuation *)self _destroyAlertView];
 }
 
-- (void)alertView:(id)a3 didDismissWithButtonIndex:(int64_t)a4
+- (void)alertView:(id)view didDismissWithButtonIndex:(int64_t)index
 {
-  v10 = [(MSTonePurchaseContinuation *)self _copyAllowedToneStyles];
-  if ([v10 containsObject:*MEMORY[0x277D6A2B0]])
+  _copyAllowedToneStyles = [(MSTonePurchaseContinuation *)self _copyAllowedToneStyles];
+  if ([_copyAllowedToneStyles containsObject:*MEMORY[0x277D6A2B0]])
   {
-    v6 = [v10 containsObject:*MEMORY[0x277D6A2A8]];
+    v6 = [_copyAllowedToneStyles containsObject:*MEMORY[0x277D6A2A8]];
     v7 = 2;
     v8 = 1;
     v9 = 0x7FFFFFFFFFFFFFFFLL;
@@ -168,17 +168,17 @@ LABEL_6:
     v7 = 1;
   }
 
-  if (v9 == a4)
+  if (v9 == index)
   {
     [-[SUPurchaseContinuation purchase](self "purchase")];
   }
 
-  else if (v8 == a4)
+  else if (v8 == index)
   {
     [-[SUPurchaseContinuation purchase](self "purchase")];
   }
 
-  else if (v7 == a4)
+  else if (v7 == index)
   {
     [(MSTonePurchaseContinuation *)self _showPeoplePicker];
     goto LABEL_15;
@@ -189,16 +189,16 @@ LABEL_15:
   [(MSTonePurchaseContinuation *)self _destroyAlertView];
 }
 
-- (void)contactPickerDidCancel:(id)a3
+- (void)contactPickerDidCancel:(id)cancel
 {
   [(MSTonePurchaseContinuation *)self _dismissContactPicker];
 
   [(SUContinuation *)self sendFinishToDelegate];
 }
 
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4
+- (void)contactPicker:(id)picker didSelectContact:(id)contact
 {
-  if (a4)
+  if (contact)
   {
     [-[SUPurchaseContinuation purchase](self purchase];
   }
@@ -262,8 +262,8 @@ LABEL_15:
 
 - (void)_pickAssigneeToneStyle
 {
-  v4 = [(MSTonePurchaseContinuation *)self _copyAllowedToneStyles];
-  if ([v4 count] == 1)
+  _copyAllowedToneStyles = [(MSTonePurchaseContinuation *)self _copyAllowedToneStyles];
+  if ([_copyAllowedToneStyles count] == 1)
   {
     [-[SUPurchaseContinuation purchase](self "purchase")];
     [(MSTonePurchaseContinuation *)self _dismissContactPicker];

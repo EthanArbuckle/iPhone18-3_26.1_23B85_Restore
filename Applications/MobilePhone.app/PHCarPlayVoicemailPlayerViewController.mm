@@ -1,24 +1,24 @@
 @interface PHCarPlayVoicemailPlayerViewController
-+ (id)detailStringForVoicemail:(id)a3;
++ (id)detailStringForVoicemail:(id)voicemail;
 - (PHCarPlayVoicemailPlayerViewController)init;
 - (double)labelStackViewBaselineConstraintConstant;
 - (double)nameLabelBaselineConstraintConstant;
-- (void)_handleApplicationDidEnterBackgroundNotification:(id)a3;
-- (void)_handleVoicemailPlayerDidPlayToEnd:(id)a3;
+- (void)_handleApplicationDidEnterBackgroundNotification:(id)notification;
+- (void)_handleVoicemailPlayerDidPlayToEnd:(id)end;
 - (void)_update;
-- (void)callBackButtonTapped:(id)a3;
+- (void)callBackButtonTapped:(id)tapped;
 - (void)dealloc;
-- (void)hardwareControlEventNotification:(id)a3;
+- (void)hardwareControlEventNotification:(id)notification;
 - (void)loadView;
-- (void)playPauseButtonTapped:(id)a3;
-- (void)rewindButtonTapped:(id)a3;
-- (void)setRepresentedVoicemail:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)playPauseButtonTapped:(id)tapped;
+- (void)rewindButtonTapped:(id)tapped;
+- (void)setRepresentedVoicemail:(id)voicemail;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updatePlayPauseButton;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PHCarPlayVoicemailPlayerViewController
@@ -47,11 +47,11 @@
   [(PHCarPlayVoicemailPlayerViewController *)&v4 dealloc];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PHCarPlayVoicemailPlayerViewController;
-  [(PHCarPlayVoicemailPlayerViewController *)&v5 viewWillDisappear:a3];
+  [(PHCarPlayVoicemailPlayerViewController *)&v5 viewWillDisappear:disappear];
   v3 = +[PHVoicemailPlayerController sharedPlayerController];
   [v3 pause];
 
@@ -64,9 +64,9 @@
   if (PHDeviceSupportsDualSim())
   {
     v3 = +[(PHApplicationServices *)MPApplicationServices];
-    v4 = [v3 callProviderManager];
+    callProviderManager = [v3 callProviderManager];
 
-    [v4 addDelegate:self queue:0];
+    [callProviderManager addDelegate:self queue:0];
   }
 
   v5 = [[UIView alloc] initWithFrame:{0.0, 0.0, 400.0, 240.0}];
@@ -91,8 +91,8 @@
 
   [*(&self->_detailLabel + 1) setTranslatesAutoresizingMaskIntoConstraints:0];
   [*(&self->_detailLabel + 1) setAccessibilityIdentifier:@"PHCarPlayVoicemailPlayerProgressView"];
-  v9 = [(PHCarPlayVoicemailPlayerViewController *)self view];
-  [v9 addSubview:*(&self->_detailLabel + 1)];
+  view = [(PHCarPlayVoicemailPlayerViewController *)self view];
+  [view addSubview:*(&self->_detailLabel + 1)];
 
   v10 = [[PHCarPlayVoicemailButton alloc] initWithSymbolType:1];
   v11 = *(&self->_progressView + 1);
@@ -113,9 +113,9 @@
   [*(&self->_progressView + 1) setAccessibilityUserInputLabels:v16];
 
   [*(&self->_progressView + 1) setAccessibilityIdentifier:@"PHCarPlayVoicemailPlayerCallBackButton"];
-  v17 = [(PHCarPlayVoicemailPlayerViewController *)self view];
-  v18 = [(PHCarPlayVoicemailPlayerViewController *)self callBackButton];
-  [v17 addSubview:v18];
+  view2 = [(PHCarPlayVoicemailPlayerViewController *)self view];
+  callBackButton = [(PHCarPlayVoicemailPlayerViewController *)self callBackButton];
+  [view2 addSubview:callBackButton];
 
   v19 = [[PHCarPlayVoicemailButton alloc] initWithSymbolType:24];
   v20 = *(&self->_callBackButton + 1);
@@ -136,9 +136,9 @@
   [*(&self->_callBackButton + 1) setAccessibilityUserInputLabels:v25];
 
   [*(&self->_callBackButton + 1) setAccessibilityIdentifier:@"PHCarPlayVoicemailPlayerRewindButton"];
-  v26 = [(PHCarPlayVoicemailPlayerViewController *)self view];
-  v27 = [(PHCarPlayVoicemailPlayerViewController *)self rewindButton];
-  [v26 addSubview:v27];
+  view3 = [(PHCarPlayVoicemailPlayerViewController *)self view];
+  rewindButton = [(PHCarPlayVoicemailPlayerViewController *)self rewindButton];
+  [view3 addSubview:rewindButton];
 
   v28 = [[PHCarPlayVoicemailButton alloc] initWithSymbolType:25];
   v29 = *(&self->_rewindButton + 1);
@@ -155,8 +155,8 @@
   [*(&self->_rewindButton + 1) setAccessibilityUserInputLabels:v32];
 
   [*(&self->_rewindButton + 1) setAccessibilityIdentifier:@"PHCarPlayVoicemailPlayerPlayPauseButton"];
-  v33 = [(PHCarPlayVoicemailPlayerViewController *)self view];
-  [v33 addSubview:*(&self->_rewindButton + 1)];
+  view4 = [(PHCarPlayVoicemailPlayerViewController *)self view];
+  [view4 addSubview:*(&self->_rewindButton + 1)];
 
   v34 = objc_alloc_init(UILabel);
   v35 = *(&self->_representedVoicemail + 1);
@@ -172,8 +172,8 @@
   [*(&self->_representedVoicemail + 1) setText:&stru_10028F310];
   [*(&self->_representedVoicemail + 1) setTextAlignment:1];
   [*(&self->_representedVoicemail + 1) setAccessibilityIdentifier:@"PHCarPlayVoicemailPlayerNameLabel"];
-  v38 = [(PHCarPlayVoicemailPlayerViewController *)self view];
-  [v38 addSubview:*(&self->_representedVoicemail + 1)];
+  view5 = [(PHCarPlayVoicemailPlayerViewController *)self view];
+  [view5 addSubview:*(&self->_representedVoicemail + 1)];
 
   v39 = objc_alloc_init(UILabel);
   v40 = *(&self->_nameLabel + 1);
@@ -192,159 +192,159 @@
   v43 = objc_alloc_init(UIStackView);
   [(PHCarPlayVoicemailPlayerViewController *)self setLabelStackView:v43];
 
-  v44 = [(PHCarPlayVoicemailPlayerViewController *)self labelStackView];
-  [v44 setAxis:0];
+  labelStackView = [(PHCarPlayVoicemailPlayerViewController *)self labelStackView];
+  [labelStackView setAxis:0];
 
-  v45 = [(PHCarPlayVoicemailPlayerViewController *)self labelStackView];
-  [v45 setDistribution:0];
+  labelStackView2 = [(PHCarPlayVoicemailPlayerViewController *)self labelStackView];
+  [labelStackView2 setDistribution:0];
 
-  v46 = [(PHCarPlayVoicemailPlayerViewController *)self labelStackView];
-  [v46 setAlignment:5];
+  labelStackView3 = [(PHCarPlayVoicemailPlayerViewController *)self labelStackView];
+  [labelStackView3 setAlignment:5];
 
-  v47 = [(PHCarPlayVoicemailPlayerViewController *)self labelStackView];
-  [v47 setTranslatesAutoresizingMaskIntoConstraints:0];
+  labelStackView4 = [(PHCarPlayVoicemailPlayerViewController *)self labelStackView];
+  [labelStackView4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v48 = [(PHCarPlayVoicemailPlayerViewController *)self labelStackView];
-  [v48 setSpacing:4.0];
+  labelStackView5 = [(PHCarPlayVoicemailPlayerViewController *)self labelStackView];
+  [labelStackView5 setSpacing:4.0];
 
-  v49 = [(PHCarPlayVoicemailPlayerViewController *)self view];
-  v50 = [(PHCarPlayVoicemailPlayerViewController *)self labelStackView];
-  [v49 addSubview:v50];
+  view6 = [(PHCarPlayVoicemailPlayerViewController *)self view];
+  labelStackView6 = [(PHCarPlayVoicemailPlayerViewController *)self labelStackView];
+  [view6 addSubview:labelStackView6];
 
-  v51 = [(PHCarPlayVoicemailPlayerViewController *)self labelStackView];
-  [v51 addArrangedSubview:*(&self->_nameLabel + 1)];
+  labelStackView7 = [(PHCarPlayVoicemailPlayerViewController *)self labelStackView];
+  [labelStackView7 addArrangedSubview:*(&self->_nameLabel + 1)];
 
-  v52 = [(PHCarPlayVoicemailPlayerViewController *)self nameLabel];
-  v53 = [v52 firstBaselineAnchor];
-  v54 = [(PHCarPlayVoicemailPlayerViewController *)self view];
-  v55 = [v54 safeAreaLayoutGuide];
-  v56 = [v55 topAnchor];
+  nameLabel = [(PHCarPlayVoicemailPlayerViewController *)self nameLabel];
+  firstBaselineAnchor = [nameLabel firstBaselineAnchor];
+  view7 = [(PHCarPlayVoicemailPlayerViewController *)self view];
+  safeAreaLayoutGuide = [view7 safeAreaLayoutGuide];
+  topAnchor = [safeAreaLayoutGuide topAnchor];
   [(PHCarPlayVoicemailPlayerViewController *)self nameLabelBaselineConstraintConstant];
-  v57 = [v53 constraintEqualToAnchor:v56 constant:?];
+  v57 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:?];
   v58 = *(&self->_playPauseButton + 1);
   *(&self->_playPauseButton + 1) = v57;
 
-  v59 = [(PHCarPlayVoicemailPlayerViewController *)self labelStackView];
-  v60 = [v59 firstBaselineAnchor];
-  v61 = [(PHCarPlayVoicemailPlayerViewController *)self nameLabel];
-  v62 = [v61 lastBaselineAnchor];
+  labelStackView8 = [(PHCarPlayVoicemailPlayerViewController *)self labelStackView];
+  firstBaselineAnchor2 = [labelStackView8 firstBaselineAnchor];
+  nameLabel2 = [(PHCarPlayVoicemailPlayerViewController *)self nameLabel];
+  lastBaselineAnchor = [nameLabel2 lastBaselineAnchor];
   [(PHCarPlayVoicemailPlayerViewController *)self labelStackViewBaselineConstraintConstant];
-  v63 = [v60 constraintEqualToAnchor:v62 constant:?];
+  v63 = [firstBaselineAnchor2 constraintEqualToAnchor:lastBaselineAnchor constant:?];
   v64 = *(&self->_nameLabelBaselineConstraint + 1);
   *(&self->_nameLabelBaselineConstraint + 1) = v63;
 
-  v141 = [(PHCarPlayVoicemailPlayerViewController *)self nameLabelBaselineConstraint];
-  v143[0] = v141;
-  v140 = [(PHCarPlayVoicemailPlayerViewController *)self labelStackViewBaselineConstraint];
-  v143[1] = v140;
-  v139 = [(PHCarPlayVoicemailPlayerViewController *)self playPauseButton];
-  v137 = [v139 topAnchor];
-  v138 = [(PHCarPlayVoicemailPlayerViewController *)self labelStackView];
-  v136 = [v138 lastBaselineAnchor];
-  v135 = [v137 constraintEqualToAnchor:v136 constant:20.0];
+  nameLabelBaselineConstraint = [(PHCarPlayVoicemailPlayerViewController *)self nameLabelBaselineConstraint];
+  v143[0] = nameLabelBaselineConstraint;
+  labelStackViewBaselineConstraint = [(PHCarPlayVoicemailPlayerViewController *)self labelStackViewBaselineConstraint];
+  v143[1] = labelStackViewBaselineConstraint;
+  playPauseButton = [(PHCarPlayVoicemailPlayerViewController *)self playPauseButton];
+  topAnchor2 = [playPauseButton topAnchor];
+  labelStackView9 = [(PHCarPlayVoicemailPlayerViewController *)self labelStackView];
+  lastBaselineAnchor2 = [labelStackView9 lastBaselineAnchor];
+  v135 = [topAnchor2 constraintEqualToAnchor:lastBaselineAnchor2 constant:20.0];
   v143[2] = v135;
-  v134 = [(PHCarPlayVoicemailPlayerViewController *)self progressView];
-  v132 = [v134 topAnchor];
-  v133 = [(PHCarPlayVoicemailPlayerViewController *)self playPauseButton];
-  v131 = [v133 bottomAnchor];
-  v130 = [v132 constraintEqualToAnchor:v131 constant:20.0];
+  progressView = [(PHCarPlayVoicemailPlayerViewController *)self progressView];
+  topAnchor3 = [progressView topAnchor];
+  playPauseButton2 = [(PHCarPlayVoicemailPlayerViewController *)self playPauseButton];
+  bottomAnchor = [playPauseButton2 bottomAnchor];
+  v130 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:20.0];
   v143[3] = v130;
-  v128 = [(PHCarPlayVoicemailPlayerViewController *)self nameLabel];
-  v129 = [(PHCarPlayVoicemailPlayerViewController *)self view];
-  v127 = [v129 safeAreaLayoutGuide];
-  v126 = [NSLayoutConstraint constraintWithItem:v128 attribute:9 relatedBy:0 toItem:v127 attribute:9 multiplier:1.0 constant:0.0];
+  nameLabel3 = [(PHCarPlayVoicemailPlayerViewController *)self nameLabel];
+  view8 = [(PHCarPlayVoicemailPlayerViewController *)self view];
+  safeAreaLayoutGuide2 = [view8 safeAreaLayoutGuide];
+  v126 = [NSLayoutConstraint constraintWithItem:nameLabel3 attribute:9 relatedBy:0 toItem:safeAreaLayoutGuide2 attribute:9 multiplier:1.0 constant:0.0];
   v143[4] = v126;
-  v124 = [(PHCarPlayVoicemailPlayerViewController *)self labelStackView];
-  v125 = [(PHCarPlayVoicemailPlayerViewController *)self view];
-  v123 = [v125 safeAreaLayoutGuide];
-  v122 = [NSLayoutConstraint constraintWithItem:v124 attribute:9 relatedBy:0 toItem:v123 attribute:9 multiplier:1.0 constant:0.0];
+  labelStackView10 = [(PHCarPlayVoicemailPlayerViewController *)self labelStackView];
+  view9 = [(PHCarPlayVoicemailPlayerViewController *)self view];
+  safeAreaLayoutGuide3 = [view9 safeAreaLayoutGuide];
+  v122 = [NSLayoutConstraint constraintWithItem:labelStackView10 attribute:9 relatedBy:0 toItem:safeAreaLayoutGuide3 attribute:9 multiplier:1.0 constant:0.0];
   v143[5] = v122;
-  v120 = [(PHCarPlayVoicemailPlayerViewController *)self playPauseButton];
-  v121 = [(PHCarPlayVoicemailPlayerViewController *)self view];
-  v119 = [v121 safeAreaLayoutGuide];
-  v118 = [NSLayoutConstraint constraintWithItem:v120 attribute:9 relatedBy:0 toItem:v119 attribute:9 multiplier:1.0 constant:0.0];
+  playPauseButton3 = [(PHCarPlayVoicemailPlayerViewController *)self playPauseButton];
+  view10 = [(PHCarPlayVoicemailPlayerViewController *)self view];
+  safeAreaLayoutGuide4 = [view10 safeAreaLayoutGuide];
+  v118 = [NSLayoutConstraint constraintWithItem:playPauseButton3 attribute:9 relatedBy:0 toItem:safeAreaLayoutGuide4 attribute:9 multiplier:1.0 constant:0.0];
   v143[6] = v118;
-  v116 = [(PHCarPlayVoicemailPlayerViewController *)self progressView];
-  v117 = [(PHCarPlayVoicemailPlayerViewController *)self view];
-  v115 = [v117 safeAreaLayoutGuide];
-  v114 = [NSLayoutConstraint constraintWithItem:v116 attribute:9 relatedBy:0 toItem:v115 attribute:9 multiplier:1.0 constant:0.0];
+  progressView2 = [(PHCarPlayVoicemailPlayerViewController *)self progressView];
+  view11 = [(PHCarPlayVoicemailPlayerViewController *)self view];
+  safeAreaLayoutGuide5 = [view11 safeAreaLayoutGuide];
+  v114 = [NSLayoutConstraint constraintWithItem:progressView2 attribute:9 relatedBy:0 toItem:safeAreaLayoutGuide5 attribute:9 multiplier:1.0 constant:0.0];
   v143[7] = v114;
-  v113 = [(PHCarPlayVoicemailPlayerViewController *)self callBackButton];
-  v112 = [(PHCarPlayVoicemailPlayerViewController *)self playPauseButton];
-  v111 = [NSLayoutConstraint constraintWithItem:v113 attribute:10 relatedBy:0 toItem:v112 attribute:10 multiplier:1.0 constant:0.0];
+  callBackButton2 = [(PHCarPlayVoicemailPlayerViewController *)self callBackButton];
+  playPauseButton4 = [(PHCarPlayVoicemailPlayerViewController *)self playPauseButton];
+  v111 = [NSLayoutConstraint constraintWithItem:callBackButton2 attribute:10 relatedBy:0 toItem:playPauseButton4 attribute:10 multiplier:1.0 constant:0.0];
   v143[8] = v111;
-  v110 = [(PHCarPlayVoicemailPlayerViewController *)self rewindButton];
-  v109 = [(PHCarPlayVoicemailPlayerViewController *)self playPauseButton];
-  v108 = [NSLayoutConstraint constraintWithItem:v110 attribute:10 relatedBy:0 toItem:v109 attribute:10 multiplier:1.0 constant:0.0];
+  rewindButton2 = [(PHCarPlayVoicemailPlayerViewController *)self rewindButton];
+  playPauseButton5 = [(PHCarPlayVoicemailPlayerViewController *)self playPauseButton];
+  v108 = [NSLayoutConstraint constraintWithItem:rewindButton2 attribute:10 relatedBy:0 toItem:playPauseButton5 attribute:10 multiplier:1.0 constant:0.0];
   v143[9] = v108;
-  v107 = [(PHCarPlayVoicemailPlayerViewController *)self callBackButton];
-  v106 = [(PHCarPlayVoicemailPlayerViewController *)self playPauseButton];
-  v105 = [NSLayoutConstraint constraintWithItem:v107 attribute:1 relatedBy:0 toItem:v106 attribute:2 multiplier:1.0 constant:12.0];
+  callBackButton3 = [(PHCarPlayVoicemailPlayerViewController *)self callBackButton];
+  playPauseButton6 = [(PHCarPlayVoicemailPlayerViewController *)self playPauseButton];
+  v105 = [NSLayoutConstraint constraintWithItem:callBackButton3 attribute:1 relatedBy:0 toItem:playPauseButton6 attribute:2 multiplier:1.0 constant:12.0];
   v143[10] = v105;
-  v104 = [(PHCarPlayVoicemailPlayerViewController *)self rewindButton];
-  v103 = [(PHCarPlayVoicemailPlayerViewController *)self playPauseButton];
-  v102 = [NSLayoutConstraint constraintWithItem:v104 attribute:2 relatedBy:0 toItem:v103 attribute:1 multiplier:1.0 constant:-12.0];
+  rewindButton3 = [(PHCarPlayVoicemailPlayerViewController *)self rewindButton];
+  playPauseButton7 = [(PHCarPlayVoicemailPlayerViewController *)self playPauseButton];
+  v102 = [NSLayoutConstraint constraintWithItem:rewindButton3 attribute:2 relatedBy:0 toItem:playPauseButton7 attribute:1 multiplier:1.0 constant:-12.0];
   v143[11] = v102;
-  v101 = [(PHCarPlayVoicemailPlayerViewController *)self rewindButton];
-  v100 = [v101 widthAnchor];
-  v99 = [v100 constraintEqualToConstant:84.0];
+  rewindButton4 = [(PHCarPlayVoicemailPlayerViewController *)self rewindButton];
+  widthAnchor = [rewindButton4 widthAnchor];
+  v99 = [widthAnchor constraintEqualToConstant:84.0];
   v143[12] = v99;
-  v98 = [(PHCarPlayVoicemailPlayerViewController *)self rewindButton];
-  v97 = [v98 heightAnchor];
-  v96 = [v97 constraintEqualToConstant:50.0];
+  rewindButton5 = [(PHCarPlayVoicemailPlayerViewController *)self rewindButton];
+  heightAnchor = [rewindButton5 heightAnchor];
+  v96 = [heightAnchor constraintEqualToConstant:50.0];
   v143[13] = v96;
-  v95 = [(PHCarPlayVoicemailPlayerViewController *)self playPauseButton];
-  v93 = [v95 widthAnchor];
-  v94 = [(PHCarPlayVoicemailPlayerViewController *)self rewindButton];
-  v92 = [v94 widthAnchor];
-  v91 = [v93 constraintEqualToAnchor:v92];
+  playPauseButton8 = [(PHCarPlayVoicemailPlayerViewController *)self playPauseButton];
+  widthAnchor2 = [playPauseButton8 widthAnchor];
+  rewindButton6 = [(PHCarPlayVoicemailPlayerViewController *)self rewindButton];
+  widthAnchor3 = [rewindButton6 widthAnchor];
+  v91 = [widthAnchor2 constraintEqualToAnchor:widthAnchor3];
   v143[14] = v91;
-  v90 = [(PHCarPlayVoicemailPlayerViewController *)self playPauseButton];
-  v88 = [v90 heightAnchor];
-  v89 = [(PHCarPlayVoicemailPlayerViewController *)self rewindButton];
-  v87 = [v89 heightAnchor];
-  v86 = [v88 constraintEqualToAnchor:v87];
+  playPauseButton9 = [(PHCarPlayVoicemailPlayerViewController *)self playPauseButton];
+  heightAnchor2 = [playPauseButton9 heightAnchor];
+  rewindButton7 = [(PHCarPlayVoicemailPlayerViewController *)self rewindButton];
+  heightAnchor3 = [rewindButton7 heightAnchor];
+  v86 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3];
   v143[15] = v86;
-  v85 = [(PHCarPlayVoicemailPlayerViewController *)self callBackButton];
-  v83 = [v85 widthAnchor];
-  v84 = [(PHCarPlayVoicemailPlayerViewController *)self rewindButton];
-  v82 = [v84 widthAnchor];
-  v81 = [v83 constraintEqualToAnchor:v82];
+  callBackButton4 = [(PHCarPlayVoicemailPlayerViewController *)self callBackButton];
+  widthAnchor4 = [callBackButton4 widthAnchor];
+  rewindButton8 = [(PHCarPlayVoicemailPlayerViewController *)self rewindButton];
+  widthAnchor5 = [rewindButton8 widthAnchor];
+  v81 = [widthAnchor4 constraintEqualToAnchor:widthAnchor5];
   v143[16] = v81;
-  v80 = [(PHCarPlayVoicemailPlayerViewController *)self callBackButton];
-  v78 = [v80 heightAnchor];
-  v79 = [(PHCarPlayVoicemailPlayerViewController *)self rewindButton];
-  v77 = [v79 heightAnchor];
-  v76 = [v78 constraintEqualToAnchor:v77];
+  callBackButton5 = [(PHCarPlayVoicemailPlayerViewController *)self callBackButton];
+  heightAnchor4 = [callBackButton5 heightAnchor];
+  rewindButton9 = [(PHCarPlayVoicemailPlayerViewController *)self rewindButton];
+  heightAnchor5 = [rewindButton9 heightAnchor];
+  v76 = [heightAnchor4 constraintEqualToAnchor:heightAnchor5];
   v143[17] = v76;
-  v75 = [(PHCarPlayVoicemailPlayerViewController *)self progressView];
-  v65 = [v75 leftAnchor];
-  v66 = [(PHCarPlayVoicemailPlayerViewController *)self rewindButton];
-  v67 = [v66 leftAnchor];
-  v68 = [v65 constraintEqualToAnchor:v67];
+  progressView3 = [(PHCarPlayVoicemailPlayerViewController *)self progressView];
+  leftAnchor = [progressView3 leftAnchor];
+  rewindButton10 = [(PHCarPlayVoicemailPlayerViewController *)self rewindButton];
+  leftAnchor2 = [rewindButton10 leftAnchor];
+  v68 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v143[18] = v68;
-  v69 = [(PHCarPlayVoicemailPlayerViewController *)self progressView];
-  v70 = [v69 rightAnchor];
-  v71 = [(PHCarPlayVoicemailPlayerViewController *)self callBackButton];
-  v72 = [v71 rightAnchor];
-  v73 = [v70 constraintEqualToAnchor:v72];
+  progressView4 = [(PHCarPlayVoicemailPlayerViewController *)self progressView];
+  rightAnchor = [progressView4 rightAnchor];
+  callBackButton6 = [(PHCarPlayVoicemailPlayerViewController *)self callBackButton];
+  rightAnchor2 = [callBackButton6 rightAnchor];
+  v73 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v143[19] = v73;
   v74 = [NSArray arrayWithObjects:v143 count:20];
   [NSLayoutConstraint activateConstraints:v74];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = PHCarPlayVoicemailPlayerViewController;
-  [(PHCarPlayVoicemailPlayerViewController *)&v3 viewWillAppear:a3];
+  [(PHCarPlayVoicemailPlayerViewController *)&v3 viewWillAppear:appear];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = PHCarPlayVoicemailPlayerViewController;
-  [(PHCarPlayGenericViewController *)&v6 viewDidAppear:a3];
+  [(PHCarPlayGenericViewController *)&v6 viewDidAppear:appear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 addObserver:self selector:"hardwareControlEventNotification:" name:TUCarPlayHardwareControlEventNotification object:0];
 
@@ -357,11 +357,11 @@
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PHCarPlayVoicemailPlayerViewController;
-  [(PHCarPlayGenericViewController *)&v5 viewDidDisappear:a3];
+  [(PHCarPlayGenericViewController *)&v5 viewDidDisappear:disappear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self name:TUCarPlayHardwareControlEventNotification object:0];
 }
@@ -384,38 +384,38 @@
   return v4;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v14.receiver = self;
   v14.super_class = PHCarPlayVoicemailPlayerViewController;
-  v4 = a3;
-  [(PHCarPlayVoicemailPlayerViewController *)&v14 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(PHCarPlayVoicemailPlayerViewController *)&v14 traitCollectionDidChange:changeCopy];
   v5 = [(PHCarPlayVoicemailPlayerViewController *)self traitCollection:v14.receiver];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v5 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  if (v6 != v7)
+  if (preferredContentSizeCategory != preferredContentSizeCategory2)
   {
     [(PHCarPlayVoicemailPlayerViewController *)self nameLabelBaselineConstraintConstant];
     v9 = v8;
-    v10 = [(PHCarPlayVoicemailPlayerViewController *)self nameLabelBaselineConstraint];
-    [v10 setConstant:v9];
+    nameLabelBaselineConstraint = [(PHCarPlayVoicemailPlayerViewController *)self nameLabelBaselineConstraint];
+    [nameLabelBaselineConstraint setConstant:v9];
 
     [(PHCarPlayVoicemailPlayerViewController *)self labelStackViewBaselineConstraintConstant];
     v12 = v11;
-    v13 = [(PHCarPlayVoicemailPlayerViewController *)self labelStackViewBaselineConstraint];
-    [v13 setConstant:v12];
+    labelStackViewBaselineConstraint = [(PHCarPlayVoicemailPlayerViewController *)self labelStackViewBaselineConstraint];
+    [labelStackViewBaselineConstraint setConstant:v12];
   }
 }
 
-- (void)playPauseButtonTapped:(id)a3
+- (void)playPauseButtonTapped:(id)tapped
 {
   v4 = +[PHVoicemailPlayerController sharedPlayerController];
-  v5 = [v4 isPlaying];
+  isPlaying = [v4 isPlaying];
 
   v6 = +[PHVoicemailPlayerController sharedPlayerController];
   v7 = v6;
-  if (v5)
+  if (isPlaying)
   {
     [v6 pause];
   }
@@ -428,7 +428,7 @@
   [(PHCarPlayVoicemailPlayerViewController *)self updatePlayPauseButton];
 }
 
-- (void)callBackButtonTapped:(id)a3
+- (void)callBackButtonTapped:(id)tapped
 {
   v4 = +[PHVoicemailPlayerController sharedPlayerController];
   [v4 pause];
@@ -436,35 +436,35 @@
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(PHCarPlayVoicemailPlayerViewController *)self representedVoicemail];
+    representedVoicemail = [(PHCarPlayVoicemailPlayerViewController *)self representedVoicemail];
     v41 = 138412290;
-    v42 = v6;
+    v42 = representedVoicemail;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Call back button tapped in CarPlay for voicemail %@", &v41, 0xCu);
   }
 
-  v7 = [(PHCarPlayVoicemailPlayerViewController *)self representedVoicemail];
-  v8 = [v7 senderDestinationID];
+  representedVoicemail2 = [(PHCarPlayVoicemailPlayerViewController *)self representedVoicemail];
+  senderDestinationID = [representedVoicemail2 senderDestinationID];
 
-  v9 = [(PHCarPlayVoicemailPlayerViewController *)self representedVoicemail];
-  v10 = [v9 callbackDestinationID];
-  v11 = [v10 length];
+  representedVoicemail3 = [(PHCarPlayVoicemailPlayerViewController *)self representedVoicemail];
+  callbackDestinationID = [representedVoicemail3 callbackDestinationID];
+  v11 = [callbackDestinationID length];
 
   if (v11)
   {
-    v12 = [(PHCarPlayVoicemailPlayerViewController *)self representedVoicemail];
-    v13 = [v12 callbackDestinationID];
+    representedVoicemail4 = [(PHCarPlayVoicemailPlayerViewController *)self representedVoicemail];
+    callbackDestinationID2 = [representedVoicemail4 callbackDestinationID];
 
-    v8 = v13;
+    senderDestinationID = callbackDestinationID2;
   }
 
   v14 = +[(PHApplicationServices *)MPApplicationServices];
-  v15 = [v14 callProviderManager];
+  callProviderManager = [v14 callProviderManager];
 
-  v16 = [v15 telephonyProvider];
-  if (v16)
+  telephonyProvider = [callProviderManager telephonyProvider];
+  if (telephonyProvider)
   {
-    v17 = [[TUDialRequest alloc] initWithProvider:v16];
-    v18 = [[TUHandle alloc] initWithType:2 value:v8];
+    v17 = [[TUDialRequest alloc] initWithProvider:telephonyProvider];
+    v18 = [[TUHandle alloc] initWithType:2 value:senderDestinationID];
     [v17 setHandle:v18];
 
     [v17 setOriginatingUIType:48];
@@ -474,23 +474,23 @@
       v41 = 138412802;
       v42 = v17;
       v43 = 2112;
-      v44 = v8;
+      v44 = senderDestinationID;
       v45 = 2112;
-      v46 = v16;
+      v46 = telephonyProvider;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Created a dial request %@ to callback from voicemail in CarPlay to destinationID %@ with telephonyCallProvider %@", &v41, 0x20u);
     }
 
-    v20 = [(PHCarPlayVoicemailPlayerViewController *)self representedVoicemail];
-    v21 = [v20 receiverDestinationID];
-    if (!v21)
+    representedVoicemail5 = [(PHCarPlayVoicemailPlayerViewController *)self representedVoicemail];
+    receiverDestinationID = [representedVoicemail5 receiverDestinationID];
+    if (!receiverDestinationID)
     {
       goto LABEL_19;
     }
 
-    v22 = v21;
-    v23 = [(PHCarPlayVoicemailPlayerViewController *)self representedVoicemail];
-    v24 = [v23 receiverDestinationID];
-    v25 = [v24 length];
+    v22 = receiverDestinationID;
+    representedVoicemail6 = [(PHCarPlayVoicemailPlayerViewController *)self representedVoicemail];
+    receiverDestinationID2 = [representedVoicemail6 receiverDestinationID];
+    v25 = [receiverDestinationID2 length];
 
     if (!v25)
     {
@@ -507,36 +507,36 @@ LABEL_20:
         v39 = PHDefaultLog();
         if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
         {
-          [(PHCarPlayVoicemailPlayerViewController *)v8 callBackButtonTapped:v17, v39];
+          [(PHCarPlayVoicemailPlayerViewController *)senderDestinationID callBackButtonTapped:v17, v39];
         }
       }
 
       goto LABEL_25;
     }
 
-    v26 = [(PHCarPlayVoicemailPlayerViewController *)self representedVoicemail];
-    v27 = [v26 receiverDestinationID];
-    v20 = [TUHandle handleWithDestinationID:v27];
+    representedVoicemail7 = [(PHCarPlayVoicemailPlayerViewController *)self representedVoicemail];
+    receiverDestinationID3 = [representedVoicemail7 receiverDestinationID];
+    representedVoicemail5 = [TUHandle handleWithDestinationID:receiverDestinationID3];
 
-    v28 = [(PHCarPlayVoicemailPlayerViewController *)self representedVoicemail];
-    v29 = [v28 receiverISOCountryCode];
-    v30 = [v20 canonicalHandleForISOCountryCode:v29];
+    representedVoicemail8 = [(PHCarPlayVoicemailPlayerViewController *)self representedVoicemail];
+    receiverISOCountryCode = [representedVoicemail8 receiverISOCountryCode];
+    v30 = [representedVoicemail5 canonicalHandleForISOCountryCode:receiverISOCountryCode];
 
-    v31 = [v16 senderIdentityForHandle:v30];
-    v32 = [v31 accountUUID];
-    [v17 setLocalSenderIdentityAccountUUID:v32];
+    v31 = [telephonyProvider senderIdentityForHandle:v30];
+    accountUUID = [v31 accountUUID];
+    [v17 setLocalSenderIdentityAccountUUID:accountUUID];
 
-    v33 = [v17 localSenderIdentityAccountUUID];
+    localSenderIdentityAccountUUID = [v17 localSenderIdentityAccountUUID];
 
     v34 = PHDefaultLog();
     v35 = os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT);
-    if (v33)
+    if (localSenderIdentityAccountUUID)
     {
       if (v35)
       {
-        v36 = [v17 localSenderIdentityAccountUUID];
+        localSenderIdentityAccountUUID2 = [v17 localSenderIdentityAccountUUID];
         v41 = 138412290;
-        v42 = v36;
+        v42 = localSenderIdentityAccountUUID2;
         _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "To ensure the correct line is used, setting the dial request's local sender identity UUID to: %@", &v41, 0xCu);
 LABEL_17:
       }
@@ -544,13 +544,13 @@ LABEL_17:
 
     else if (v35)
     {
-      v36 = [(PHCarPlayVoicemailPlayerViewController *)self representedVoicemail];
-      v37 = [v36 receiverDestinationID];
-      v38 = [v16 prioritizedSenderIdentities];
+      localSenderIdentityAccountUUID2 = [(PHCarPlayVoicemailPlayerViewController *)self representedVoicemail];
+      receiverDestinationID4 = [localSenderIdentityAccountUUID2 receiverDestinationID];
+      prioritizedSenderIdentities = [telephonyProvider prioritizedSenderIdentities];
       v41 = 138412546;
-      v42 = v37;
+      v42 = receiverDestinationID4;
       v43 = 2112;
-      v44 = v38;
+      v44 = prioritizedSenderIdentities;
       _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "None of the prioritized sender identities matched the voicemail's receiver destination ID: %@. Prioritized sender identities are: %@", &v41, 0x16u);
 
       goto LABEL_17;
@@ -569,7 +569,7 @@ LABEL_19:
 LABEL_25:
 }
 
-- (void)rewindButtonTapped:(id)a3
+- (void)rewindButtonTapped:(id)tapped
 {
   v3 = +[PHVoicemailPlayerController sharedPlayerController];
   v4 = v3;
@@ -596,26 +596,26 @@ LABEL_25:
   [v6 seekToTime:&time];
 }
 
-- (void)hardwareControlEventNotification:(id)a3
+- (void)hardwareControlEventNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v4;
+    v12 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "PHCarPlaykVoicemailPlayerController received hardware control event notification: %@", &v11, 0xCu);
   }
 
   if ([(PHCarPlayVoicemailPlayerViewController *)self isViewLoaded])
   {
     v6 = +[UIApplication sharedApplication];
-    v7 = [v6 isSuspended];
+    isSuspended = [v6 isSuspended];
 
-    if ((v7 & 1) == 0)
+    if ((isSuspended & 1) == 0)
     {
-      v8 = [v4 userInfo];
-      v9 = [v8 valueForKey:kTUCarPlayHardwareControlButtonKey];
+      userInfo = [notificationCopy userInfo];
+      v9 = [userInfo valueForKey:kTUCarPlayHardwareControlButtonKey];
 
       if (v9 == kTUCarPlayHardwareControlButtonGreenTelephone || v9 == kTUCarPlayHardwareControlButtonWhiteTelephone)
       {
@@ -625,17 +625,17 @@ LABEL_25:
   }
 }
 
-- (void)setRepresentedVoicemail:(id)a3
+- (void)setRepresentedVoicemail:(id)voicemail
 {
-  v4 = a3;
+  voicemailCopy = voicemail;
   if (([(PHCarPlayVoicemailPlayerViewController *)self isViewLoaded]& 1) == 0)
   {
     [(PHCarPlayVoicemailPlayerViewController *)self loadView];
   }
 
   v5 = *&self->_isPlaying;
-  *&self->_isPlaying = v4;
-  v6 = v4;
+  *&self->_isPlaying = voicemailCopy;
+  v6 = voicemailCopy;
 
   [(PHCarPlayVoicemailPlayerViewController *)self _update];
   v7 = +[NSNotificationCenter defaultCenter];
@@ -654,12 +654,12 @@ LABEL_25:
 - (void)_update
 {
   v3 = +[(PHApplicationServices *)MPApplicationServices];
-  v4 = [v3 suggestedContactStore];
+  suggestedContactStore = [v3 suggestedContactStore];
 
-  if (v4)
+  if (suggestedContactStore)
   {
-    v5 = [(PHCarPlayVoicemailPlayerViewController *)self representedVoicemail];
-    v6 = [v5 displayNameUsingContactStore:v4];
+    representedVoicemail = [(PHCarPlayVoicemailPlayerViewController *)self representedVoicemail];
+    v6 = [representedVoicemail displayNameUsingContactStore:suggestedContactStore];
   }
 
   else
@@ -675,26 +675,26 @@ LABEL_25:
     v6 = v8;
   }
 
-  v9 = [(PHCarPlayVoicemailPlayerViewController *)self nameLabel];
-  [v9 setText:v6];
+  nameLabel = [(PHCarPlayVoicemailPlayerViewController *)self nameLabel];
+  [nameLabel setText:v6];
 
-  v10 = [(PHCarPlayVoicemailPlayerViewController *)self representedVoicemail];
-  v11 = [PHCarPlayVoicemailPlayerViewController detailStringForVoicemail:v10];
-  v12 = [(PHCarPlayVoicemailPlayerViewController *)self detailLabel];
-  [v12 setText:v11];
+  representedVoicemail2 = [(PHCarPlayVoicemailPlayerViewController *)self representedVoicemail];
+  v11 = [PHCarPlayVoicemailPlayerViewController detailStringForVoicemail:representedVoicemail2];
+  detailLabel = [(PHCarPlayVoicemailPlayerViewController *)self detailLabel];
+  [detailLabel setText:v11];
 
   if (PHDeviceSupportsDualSim())
   {
     v13 = +[(PHApplicationServices *)MPApplicationServices];
-    v14 = [v13 callProviderManager];
+    callProviderManager = [v13 callProviderManager];
 
-    v15 = [v14 telephonyProvider];
-    v16 = [v15 prioritizedSenderIdentities];
-    if ([v16 count] > 1)
+    telephonyProvider = [callProviderManager telephonyProvider];
+    prioritizedSenderIdentities = [telephonyProvider prioritizedSenderIdentities];
+    if ([prioritizedSenderIdentities count] > 1)
     {
-      v17 = [(PHCarPlayVoicemailPlayerViewController *)self representedVoicemail];
-      v18 = [v17 receiverDestinationID];
-      v19 = [v18 length];
+      representedVoicemail3 = [(PHCarPlayVoicemailPlayerViewController *)self representedVoicemail];
+      receiverDestinationID = [representedVoicemail3 receiverDestinationID];
+      v19 = [receiverDestinationID length];
 
       if (!v19)
       {
@@ -703,26 +703,26 @@ LABEL_17:
         goto LABEL_18;
       }
 
-      v20 = [v14 telephonyProvider];
-      v21 = [(PHCarPlayVoicemailPlayerViewController *)self representedVoicemail];
-      v22 = [v21 receiverDestinationID];
-      v23 = [TUHandle handleWithDestinationID:v22];
-      v24 = [v20 senderIdentityForHandle:v23];
-      v15 = [v24 localizedShortName];
+      telephonyProvider2 = [callProviderManager telephonyProvider];
+      representedVoicemail4 = [(PHCarPlayVoicemailPlayerViewController *)self representedVoicemail];
+      receiverDestinationID2 = [representedVoicemail4 receiverDestinationID];
+      v23 = [TUHandle handleWithDestinationID:receiverDestinationID2];
+      v24 = [telephonyProvider2 senderIdentityForHandle:v23];
+      telephonyProvider = [v24 localizedShortName];
 
-      if (![v15 length])
+      if (![telephonyProvider length])
       {
-        v25 = [(PHCarPlayVoicemailPlayerViewController *)self representedVoicemail];
-        v26 = [v25 receiverDestinationID];
+        representedVoicemail5 = [(PHCarPlayVoicemailPlayerViewController *)self representedVoicemail];
+        receiverDestinationID3 = [representedVoicemail5 receiverDestinationID];
 
-        v15 = v26;
+        telephonyProvider = receiverDestinationID3;
       }
 
-      v27 = [(PHCarPlayVoicemailPlayerViewController *)self badgeView];
-      v28 = v27;
-      if (!v15)
+      badgeView = [(PHCarPlayVoicemailPlayerViewController *)self badgeView];
+      v28 = badgeView;
+      if (!telephonyProvider)
       {
-        [v27 removeFromSuperview];
+        [badgeView removeFromSuperview];
 
         [(PHCarPlayVoicemailPlayerViewController *)self setBadgeView:0];
         goto LABEL_16;
@@ -730,16 +730,16 @@ LABEL_17:
 
       if (!v28)
       {
-        v29 = [[TPBadgeView alloc] initWithTitle:v15 theme:5];
+        v29 = [[TPBadgeView alloc] initWithTitle:telephonyProvider theme:5];
         [v29 setSizeCategory:4];
-        v30 = [(PHCarPlayVoicemailPlayerViewController *)self labelStackView];
-        [v30 insertArrangedSubview:v29 atIndex:0];
+        labelStackView = [(PHCarPlayVoicemailPlayerViewController *)self labelStackView];
+        [labelStackView insertArrangedSubview:v29 atIndex:0];
 
         [(PHCarPlayVoicemailPlayerViewController *)self setBadgeView:v29];
       }
 
-      v16 = [(PHCarPlayVoicemailPlayerViewController *)self badgeView];
-      [v16 setTitle:v15];
+      prioritizedSenderIdentities = [(PHCarPlayVoicemailPlayerViewController *)self badgeView];
+      [prioritizedSenderIdentities setTitle:telephonyProvider];
     }
 
 LABEL_16:
@@ -747,8 +747,8 @@ LABEL_16:
   }
 
 LABEL_18:
-  v31 = [*&self->_isPlaying dataURL];
-  v32 = [AVAsset assetWithURL:v31];
+  dataURL = [*&self->_isPlaying dataURL];
+  v32 = [AVAsset assetWithURL:dataURL];
 
   v33 = +[PHVoicemailPlayerController sharedPlayerController];
   CMTimeMake(&v35, 1, 100);
@@ -825,11 +825,11 @@ id __49__PHCarPlayVoicemailPlayerViewController__update__block_invoke_3(uint64_t
 - (void)updatePlayPauseButton
 {
   v3 = +[PHVoicemailPlayerController sharedPlayerController];
-  v4 = [v3 isPlaying];
+  isPlaying = [v3 isPlaying];
 
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = v5;
-  if (v4)
+  if (isPlaying)
   {
     v7 = [v5 localizedStringForKey:@"CARPLAY_VOICEMAIL_PAUSE_BUTTON" value:&stru_10028F310 table:@"PHCarPlay"];
     v14 = v7;
@@ -853,7 +853,7 @@ id __49__PHCarPlayVoicemailPlayerViewController__update__block_invoke_3(uint64_t
   [v11 setImage:v12 forState:0];
 }
 
-- (void)_handleVoicemailPlayerDidPlayToEnd:(id)a3
+- (void)_handleVoicemailPlayerDidPlayToEnd:(id)end
 {
   v4 = +[PHVoicemailPlayerController sharedPlayerController];
   [v4 pause];
@@ -866,26 +866,26 @@ id __49__PHCarPlayVoicemailPlayerViewController__update__block_invoke_3(uint64_t
   [(PHCarPlayVoicemailPlayerViewController *)self updatePlayPauseButton];
 }
 
-- (void)_handleApplicationDidEnterBackgroundNotification:(id)a3
+- (void)_handleApplicationDidEnterBackgroundNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
     v12 = objc_opt_class();
     v13 = 2112;
-    v14 = v4;
+    v14 = notificationCopy;
     v6 = v12;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling <%@>", &v11, 0x16u);
   }
 
   if ([(PHCarPlayVoicemailPlayerViewController *)self isViewLoaded])
   {
-    v7 = [(PHCarPlayVoicemailPlayerViewController *)self view];
-    v8 = [v7 window];
+    view = [(PHCarPlayVoicemailPlayerViewController *)self view];
+    window = [view window];
 
-    if (v8)
+    if (window)
     {
       v9 = +[PHVoicemailPlayerController sharedPlayerController];
       [v9 pause];
@@ -896,15 +896,15 @@ id __49__PHCarPlayVoicemailPlayerViewController__update__block_invoke_3(uint64_t
   }
 }
 
-+ (id)detailStringForVoicemail:(id)a3
++ (id)detailStringForVoicemail:(id)voicemail
 {
-  v3 = a3;
+  voicemailCopy = voicemail;
   v4 = +[(PHApplicationServices *)MPApplicationServices];
-  v5 = [v4 suggestedContactStore];
+  suggestedContactStore = [v4 suggestedContactStore];
 
-  if (v5)
+  if (suggestedContactStore)
   {
-    v6 = [v3 displayNameUsingContactStore:v5];
+    v6 = [voicemailCopy displayNameUsingContactStore:suggestedContactStore];
   }
 
   else
@@ -916,8 +916,8 @@ id __49__PHCarPlayVoicemailPlayerViewController__update__block_invoke_3(uint64_t
   [v7 setTimeStyle:0];
   [v7 setDateStyle:1];
   [v7 setDoesRelativeDateFormatting:1];
-  v8 = [v3 date];
-  v9 = [v7 stringFromDate:v8];
+  date = [voicemailCopy date];
+  v9 = [v7 stringFromDate:date];
 
   if ([v6 length])
   {

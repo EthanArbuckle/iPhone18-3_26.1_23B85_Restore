@@ -1,16 +1,16 @@
 @interface BCPluginLoader
-+ (id)_validatedBundleAtURL:(id)a3;
-+ (id)loadPluginBundlesAtURL:(id)a3;
++ (id)_validatedBundleAtURL:(id)l;
++ (id)loadPluginBundlesAtURL:(id)l;
 @end
 
 @implementation BCPluginLoader
 
-+ (id)_validatedBundleAtURL:(id)a3
++ (id)_validatedBundleAtURL:(id)l
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 lastPathComponent];
-  v5 = [v4 hasSuffix:@"bundle"];
+  lCopy = l;
+  lastPathComponent = [lCopy lastPathComponent];
+  v5 = [lastPathComponent hasSuffix:@"bundle"];
 
   if (!v5)
   {
@@ -22,14 +22,14 @@
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v29 = v3;
+    v29 = lCopy;
     _os_log_impl(&dword_241E55000, v6, OS_LOG_TYPE_DEFAULT, "Checking plugin at %{public}@", buf, 0xCu);
   }
 
   v27 = 0;
   v7 = *MEMORY[0x277CBE868];
   v26 = 0;
-  v8 = [v3 getResourceValue:&v27 forKey:v7 error:&v26];
+  v8 = [lCopy getResourceValue:&v27 forKey:v7 error:&v26];
   v9 = v27;
   v10 = v26;
   if ((v8 & 1) == 0)
@@ -38,7 +38,7 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v29 = v3;
+      v29 = lCopy;
       v30 = 2112;
       v31 = v10;
       _os_log_impl(&dword_241E55000, v12, OS_LOG_TYPE_DEFAULT, "Couldn't get value for the directory at %{public}@: %@", buf, 0x16u);
@@ -56,7 +56,7 @@
   v25 = 0;
   v14 = *MEMORY[0x277CBE8B0];
   v24 = 0;
-  v15 = [v3 getResourceValue:&v25 forKey:v14 error:&v24];
+  v15 = [lCopy getResourceValue:&v25 forKey:v14 error:&v24];
   v16 = v25;
 
   v17 = v24;
@@ -67,7 +67,7 @@
       v9 = v16;
       v10 = v17;
 LABEL_6:
-      v11 = [MEMORY[0x277CCA8D8] bundleWithURL:v3];
+      v11 = [MEMORY[0x277CCA8D8] bundleWithURL:lCopy];
       v12 = v11;
       if (v11)
       {
@@ -81,7 +81,7 @@ LABEL_6:
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v29 = v3;
+          v29 = lCopy;
           _os_log_impl(&dword_241E55000, v21, OS_LOG_TYPE_DEFAULT, "Couldn't create plugin at %{public}@", buf, 0xCu);
         }
 
@@ -95,7 +95,7 @@ LABEL_6:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v29 = v3;
+      v29 = lCopy;
       v18 = "Skipping file at %{public}@ because it isn't a directory";
       v19 = v12;
       v20 = 12;
@@ -109,7 +109,7 @@ LABEL_6:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v29 = v3;
+      v29 = lCopy;
       v30 = 2112;
       v31 = v17;
       v18 = "Couldn't get value for the directory at %{public}@: %@";
@@ -131,16 +131,16 @@ LABEL_25:
   return v13;
 }
 
-+ (id)loadPluginBundlesAtURL:(id)a3
++ (id)loadPluginBundlesAtURL:(id)l
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  if (v4)
+  if (lCopy)
   {
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:{*MEMORY[0x277CBE868], *MEMORY[0x277CBE8B0], 0}];
-    v8 = [v6 enumeratorAtURL:v4 includingPropertiesForKeys:v7 options:1 errorHandler:&__block_literal_global];
+    v8 = [defaultManager enumeratorAtURL:lCopy includingPropertiesForKeys:v7 options:1 errorHandler:&__block_literal_global];
 
     v20 = 0u;
     v21 = 0u;
@@ -161,7 +161,7 @@ LABEL_25:
             objc_enumerationMutation(v9);
           }
 
-          v14 = [a1 _validatedBundleAtURL:*(*(&v18 + 1) + 8 * i)];
+          v14 = [self _validatedBundleAtURL:*(*(&v18 + 1) + 8 * i)];
           if (v14)
           {
             [v5 addObject:v14];

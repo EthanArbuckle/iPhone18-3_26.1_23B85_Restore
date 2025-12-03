@@ -1,15 +1,15 @@
 @interface GAXSpringboard
 + (id)sharedInstance;
-- (BOOL)_applicationWithIdentifierIsWebApplicationAndForegroundRunning:(id)a3;
-- (BOOL)_sendReplayableSimpleMessageToBackboardWithIdentifier:(int)a3 payload:(id)a4 description:(id)a5 error:(id *)a6;
+- (BOOL)_applicationWithIdentifierIsWebApplicationAndForegroundRunning:(id)running;
+- (BOOL)_sendReplayableSimpleMessageToBackboardWithIdentifier:(int)identifier payload:(id)payload description:(id)description error:(id *)error;
 - (BOOL)allowsAutolock;
 - (BOOL)allowsLockButton;
 - (BOOL)allowsMotion;
 - (BOOL)allowsTouch;
 - (BOOL)allowsVolumeButtons;
 - (BOOL)isActive;
-- (BOOL)isBundleIDAllowedApp:(id)a3;
-- (BOOL)isFrontmostAppLayout:(id)a3;
+- (BOOL)isBundleIDAllowedApp:(id)app;
+- (BOOL)isFrontmostAppLayout:(id)layout;
 - (BOOL)isInWorkspace;
 - (BOOL)isInactive;
 - (BOOL)isOnlyGuidedAccessDisablingSystemGestures;
@@ -21,37 +21,37 @@
 - (BOOL)wantsSingleAppModeOrAppSelfLockMode;
 - (GAXSpringboard)init;
 - (id)_debugGAXDescription;
-- (id)_gaxHandleFrontmostAppDidCheckIn:(id)a3;
-- (id)_handleGetDisplayNameForBundleID:(id)a3;
-- (id)_handleGetNewPasscodeLength:(id)a3;
-- (id)_handleIsSystemAppShowingTransientOverlay:(id)a3;
-- (id)_handleIsWebApplicationAndForegroundRunning:(id)a3;
-- (id)_handleLaunchApplication:(id)a3;
-- (id)_handlePrepareTransitionToWorkspace:(id)a3;
-- (id)_handleServerIsReady:(id)a3;
-- (id)_handleServerModeTransitionDidComplete:(id)a3;
-- (id)_handleTerminateApplications:(id)a3;
-- (id)_handleTimeRestrictionStatusDidChange:(id)a3;
-- (id)_handleUpdateGAXBackboardState:(id)a3;
-- (id)_handleUpdateHostedApplicationState:(id)a3;
+- (id)_gaxHandleFrontmostAppDidCheckIn:(id)in;
+- (id)_handleGetDisplayNameForBundleID:(id)d;
+- (id)_handleGetNewPasscodeLength:(id)length;
+- (id)_handleIsSystemAppShowingTransientOverlay:(id)overlay;
+- (id)_handleIsWebApplicationAndForegroundRunning:(id)running;
+- (id)_handleLaunchApplication:(id)application;
+- (id)_handlePrepareTransitionToWorkspace:(id)workspace;
+- (id)_handleServerIsReady:(id)ready;
+- (id)_handleServerModeTransitionDidComplete:(id)complete;
+- (id)_handleTerminateApplications:(id)applications;
+- (id)_handleTimeRestrictionStatusDidChange:(id)change;
+- (id)_handleUpdateGAXBackboardState:(id)state;
+- (id)_handleUpdateHostedApplicationState:(id)state;
 - (int64_t)currentMultitaskingMode;
 - (unsigned)profileConfiguration;
-- (void)_effectiveVolumeChanged:(id)a3;
+- (void)_effectiveVolumeChanged:(id)changed;
 - (void)_endHostingApplicationImmediately;
-- (void)_extendAXSpringServerInstanceIfExists:(id)a3;
-- (void)_handleAXSpringBoardServerDidInit:(id)a3;
-- (void)_handleDeviceWasLockedNotification:(id)a3;
-- (void)_handleDidShowTripleClickAlertNotification:(id)a3;
-- (void)_prepareTransitionToWorkspaceWithCompletionHandler:(id)a3;
-- (void)_sendMessageToBackboardWithIdentifier:(int)a3 payload:(id)a4 description:(id)a5 replyHandler:(id)a6;
-- (void)_updateAVSystemControllerWithVolume:(float)a3;
-- (void)_updateSpringBoardForServerMode:(unsigned int)a3 previousServerMode:(unsigned int)a4;
-- (void)_updateStateOfHostedApplicationWithIdentifier:(id)a3 scaleFactor:(double)a4 center:(CGPoint)a5 animationDuration:(double)a6;
+- (void)_extendAXSpringServerInstanceIfExists:(id)exists;
+- (void)_handleAXSpringBoardServerDidInit:(id)init;
+- (void)_handleDeviceWasLockedNotification:(id)notification;
+- (void)_handleDidShowTripleClickAlertNotification:(id)notification;
+- (void)_prepareTransitionToWorkspaceWithCompletionHandler:(id)handler;
+- (void)_sendMessageToBackboardWithIdentifier:(int)identifier payload:(id)payload description:(id)description replyHandler:(id)handler;
+- (void)_updateAVSystemControllerWithVolume:(float)volume;
+- (void)_updateSpringBoardForServerMode:(unsigned int)mode previousServerMode:(unsigned int)serverMode;
+- (void)_updateStateOfHostedApplicationWithIdentifier:(id)identifier scaleFactor:(double)factor center:(CGPoint)center animationDuration:(double)duration;
 - (void)dealloc;
 - (void)deviceWasUnlocked;
-- (void)handleGuestPassSessionChanged:(BOOL)a3;
-- (void)setCurrentMultitaskingMode:(int64_t)a3;
-- (void)setRequiringWallpaper:(BOOL)a3;
+- (void)handleGuestPassSessionChanged:(BOOL)changed;
+- (void)setCurrentMultitaskingMode:(int64_t)mode;
+- (void)setRequiringWallpaper:(BOOL)wallpaper;
 - (void)setupGuestPassSessionMonitoring;
 @end
 
@@ -148,9 +148,9 @@
   v5 = +[NSNotificationCenter defaultCenter];
   [v5 removeObserver:self name:AXSpringBoardServerInstanceDidInitializeNotification object:0];
 
-  v6 = [(GAXSpringboard *)self springboardServer];
+  springboardServer = [(GAXSpringboard *)self springboardServer];
   v17 = 0;
-  v7 = [v6 stopServerWithError:&v17];
+  v7 = [springboardServer stopServerWithError:&v17];
   v8 = v17;
 
   if ((v7 & 1) == 0)
@@ -162,9 +162,9 @@
     }
   }
 
-  v10 = [(GAXSpringboard *)self backboardClient];
+  backboardClient = [(GAXSpringboard *)self backboardClient];
   v16 = v8;
-  v11 = [v10 disconnectWithError:&v16];
+  v11 = [backboardClient disconnectWithError:&v16];
   v12 = v16;
 
   if ((v11 & 1) == 0)
@@ -177,27 +177,27 @@
   }
 
   [(GAXSpringboard *)self _updateStateOfHostedApplicationWithIdentifier:0 scaleFactor:1.0 center:INFINITY animationDuration:INFINITY, 0.0];
-  v14 = [(GAXSpringboard *)self springboardOverrideHandler];
-  [v14 tearDown];
+  springboardOverrideHandler = [(GAXSpringboard *)self springboardOverrideHandler];
+  [springboardOverrideHandler tearDown];
 
   v15.receiver = self;
   v15.super_class = GAXSpringboard;
   [(GAXSpringboard *)&v15 dealloc];
 }
 
-- (void)_handleAXSpringBoardServerDidInit:(id)a3
+- (void)_handleAXSpringBoardServerDidInit:(id)init
 {
-  v4 = [a3 object];
-  [(GAXSpringboard *)self _extendAXSpringServerInstanceIfExists:v4];
+  object = [init object];
+  [(GAXSpringboard *)self _extendAXSpringServerInstanceIfExists:object];
 }
 
-- (void)_extendAXSpringServerInstanceIfExists:(id)a3
+- (void)_extendAXSpringServerInstanceIfExists:(id)exists
 {
-  v4 = a3;
-  if (v4 && (byte_3B2D0 & 1) == 0)
+  existsCopy = exists;
+  if (existsCopy && (byte_3B2D0 & 1) == 0)
   {
-    v5 = v4;
-    [v4 registerHandlerForMessageKey:4800 target:self selector:"_gaxHandleFrontmostAppDidCheckIn:" entitlements:&off_32658];
+    v5 = existsCopy;
+    [existsCopy registerHandlerForMessageKey:4800 target:self selector:"_gaxHandleFrontmostAppDidCheckIn:" entitlements:&off_32658];
     [v5 registerHandlerForMessageKey:4801 target:self selector:"_handleServerModeTransitionDidComplete:" entitlements:&off_32670];
     [v5 registerHandlerForMessageKey:4802 target:self selector:"_handleIsWebApplicationAndForegroundRunning:" entitlements:&off_32688];
     [v5 registerHandlerForMessageKey:4809 target:self selector:"_handleIsSystemAppShowingTransientOverlay:" entitlements:&off_326A0];
@@ -217,7 +217,7 @@
     [v5 registerHandlerForMessageKey:4817 target:self selector:"_handleServerIsReady:" entitlements:&off_327F0];
     [v5 registerHandlerForMessageKey:4818 target:self selector:"_handleAcquireSystemApertureInertAssertion:" entitlements:&__NSArray0__struct];
     [v5 registerHandlerForMessageKey:4819 target:self selector:"_handleInvalidateSystemApertureInertAssertion:" entitlements:&__NSArray0__struct];
-    v4 = v5;
+    existsCopy = v5;
     byte_3B2D0 = 1;
   }
 }
@@ -393,15 +393,15 @@
   return v3;
 }
 
-- (void)setRequiringWallpaper:(BOOL)a3
+- (void)setRequiringWallpaper:(BOOL)wallpaper
 {
-  if (self->_requiringWallpaper != a3)
+  if (self->_requiringWallpaper != wallpaper)
   {
-    v4 = a3;
-    self->_requiringWallpaper = a3;
+    wallpaperCopy = wallpaper;
+    self->_requiringWallpaper = wallpaper;
     v5 = +[AXSpringBoardServer server];
     v6 = v5;
-    if (v4)
+    if (wallpaperCopy)
     {
       [v5 beginRequiringWallpaper];
     }
@@ -413,29 +413,29 @@
   }
 }
 
-- (void)_updateStateOfHostedApplicationWithIdentifier:(id)a3 scaleFactor:(double)a4 center:(CGPoint)a5 animationDuration:(double)a6
+- (void)_updateStateOfHostedApplicationWithIdentifier:(id)identifier scaleFactor:(double)factor center:(CGPoint)center animationDuration:(double)duration
 {
-  y = a5.y;
-  x = a5.x;
-  v52 = a3;
-  v53 = self;
-  v11 = [(GAXSpringboard *)self hostedApplicationWindow];
+  y = center.y;
+  x = center.x;
+  identifierCopy = identifier;
+  selfCopy = self;
+  hostedApplicationWindow = [(GAXSpringboard *)self hostedApplicationWindow];
   v12 = +[UIScreen mainScreen];
-  v13 = [v12 fixedCoordinateSpace];
-  v14 = fabs(a4 + -1.0);
-  [v13 bounds];
+  fixedCoordinateSpace = [v12 fixedCoordinateSpace];
+  v14 = fabs(factor + -1.0);
+  [fixedCoordinateSpace bounds];
   v16 = v15;
   v18 = v17;
 
-  v19 = [UIApp activeInterfaceOrientation];
+  activeInterfaceOrientation = [UIApp activeInterfaceOrientation];
   v20 = v16 - y;
   v21 = v18 - y;
-  if (v19 != (&dword_0 + 2))
+  if (activeInterfaceOrientation != (&dword_0 + 2))
   {
     v21 = y;
   }
 
-  if (v19 == (&dword_0 + 3))
+  if (activeInterfaceOrientation == (&dword_0 + 3))
   {
     v21 = x;
   }
@@ -445,7 +445,7 @@
     v20 = x;
   }
 
-  if (v19 == &dword_4)
+  if (activeInterfaceOrientation == &dword_4)
   {
     v22 = v18 - x;
   }
@@ -455,7 +455,7 @@
     v22 = v21;
   }
 
-  if (v19 == &dword_4)
+  if (activeInterfaceOrientation == &dword_4)
   {
     v23 = y;
   }
@@ -465,22 +465,22 @@
     v23 = v20;
   }
 
-  if (v14 >= 2.22044605e-16 && v11 == 0)
+  if (v14 >= 2.22044605e-16 && hostedApplicationWindow == 0)
   {
     v27 = +[AXSpringBoardServer server];
-    v28 = [v27 _windowsToHost];
+    _windowsToHost = [v27 _windowsToHost];
 
-    v29 = [v28 firstObject];
-    v51 = [v29 windowScene];
+    firstObject = [_windowsToHost firstObject];
+    windowScene = [firstObject windowScene];
 
-    v57 = [[UIWindow alloc] initWithWindowScene:v51];
+    v57 = [[UIWindow alloc] initWithWindowScene:windowScene];
     [v57 setWindowLevel:10000004.0];
     v55 = +[NSMutableArray array];
     v77 = 0u;
     v78 = 0u;
     v75 = 0u;
     v76 = 0u;
-    obj = v28;
+    obj = _windowsToHost;
     v30 = [obj countByEnumeratingWithState:&v75 objects:v82 count:16];
     if (v30)
     {
@@ -558,8 +558,8 @@
     }
 
     [v57 setHidden:0];
-    [(GAXSpringboard *)v53 setContextHostWrappers:v55];
-    [(GAXSpringboard *)v53 setHostedApplicationWindow:v57];
+    [(GAXSpringboard *)selfCopy setContextHostWrappers:v55];
+    [(GAXSpringboard *)selfCopy setHostedApplicationWindow:v57];
 
     v26 = &stru_2C658;
     v25 = v57;
@@ -571,12 +571,12 @@
     goto LABEL_32;
   }
 
-  v25 = v11;
+  v25 = hostedApplicationWindow;
   if (v14 < 2.22044605e-16)
   {
     if (x == INFINITY && y == INFINITY)
     {
-      [v11 bounds];
+      [hostedApplicationWindow bounds];
       v40 = v83.origin.x;
       v41 = v83.origin.y;
       width = v83.size.width;
@@ -586,7 +586,7 @@
       v84.origin.y = v41;
       v84.size.width = width;
       v84.size.height = height;
-      [v11 convertPoint:0 toWindow:{MidX, CGRectGetMidY(v84)}];
+      [hostedApplicationWindow convertPoint:0 toWindow:{MidX, CGRectGetMidY(v84)}];
       v23 = v45;
       v22 = v46;
     }
@@ -595,11 +595,11 @@
     v65[1] = 3221225472;
     v65[2] = sub_2EF0;
     v65[3] = &unk_2C6D0;
-    v65[4] = v53;
+    v65[4] = selfCopy;
     v26 = objc_retainBlock(v65);
-    a4 = 1.0;
-    v25 = v11;
-    if (!v11)
+    factor = 1.0;
+    v25 = hostedApplicationWindow;
+    if (!hostedApplicationWindow)
     {
       goto LABEL_37;
     }
@@ -611,7 +611,7 @@ LABEL_32:
   }
 
   v26 = &stru_2C658;
-  if (v11)
+  if (hostedApplicationWindow)
   {
     goto LABEL_32;
   }
@@ -623,7 +623,7 @@ LABEL_38:
   v60[1] = 3221225472;
   v60[2] = sub_3084;
   v60[3] = &unk_2C6F8;
-  v47 = a4 / fabs(v39);
+  v47 = factor / fabs(v39);
   v48 = v25;
   v61 = v48;
   v62 = v23;
@@ -631,14 +631,14 @@ LABEL_38:
   v64 = v47;
   v49 = objc_retainBlock(v60);
   v50 = v49;
-  if (fabs(a6) >= 2.22044605e-16)
+  if (fabs(duration) >= 2.22044605e-16)
   {
     v58[0] = _NSConcreteStackBlock;
     v58[1] = 3221225472;
     v58[2] = sub_3110;
     v58[3] = &unk_2C720;
     v59 = v49;
-    [UIView animateWithDuration:v58 animations:v26 completion:a6];
+    [UIView animateWithDuration:v58 animations:v26 completion:duration];
   }
 
   else
@@ -650,15 +650,15 @@ LABEL_38:
 
 - (void)_endHostingApplicationImmediately
 {
-  v3 = [(GAXSpringboard *)self contextHostWrappers];
-  v4 = [(GAXSpringboard *)self hostedApplicationWindow];
-  if (v3 | v4)
+  contextHostWrappers = [(GAXSpringboard *)self contextHostWrappers];
+  hostedApplicationWindow = [(GAXSpringboard *)self hostedApplicationWindow];
+  if (contextHostWrappers | hostedApplicationWindow)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = v3;
+    v5 = contextHostWrappers;
     v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
@@ -683,7 +683,7 @@ LABEL_38:
       while (v7);
     }
 
-    [v4 setHidden:1];
+    [hostedApplicationWindow setHidden:1];
     [(GAXSpringboard *)self setHostedApplicationWindow:0];
     [(GAXSpringboard *)self setContextHostWrappers:0];
   }
@@ -700,9 +700,9 @@ LABEL_38:
 - (BOOL)wantsSingleAppMode
 {
   v2 = +[MCProfileConnection sharedConnection];
-  v3 = [v2 isInSingleAppMode];
+  isInSingleAppMode = [v2 isInSingleAppMode];
 
-  return v3;
+  return isInSingleAppMode;
 }
 
 - (BOOL)wantsAppSelfLockMode
@@ -739,22 +739,22 @@ LABEL_38:
 - (BOOL)isOnlyGuidedAccessDisablingSystemGestures
 {
   v2 = +[_AXSpringBoardServerInstance springBoardServerInstanceIfExists];
-  v3 = [v2 onlySystemGesturesDisabledHolderIsGuidedAccess];
+  onlySystemGesturesDisabledHolderIsGuidedAccess = [v2 onlySystemGesturesDisabledHolderIsGuidedAccess];
 
-  return v3;
+  return onlySystemGesturesDisabledHolderIsGuidedAccess;
 }
 
-- (BOOL)isBundleIDAllowedApp:(id)a3
+- (BOOL)isBundleIDAllowedApp:(id)app
 {
-  v3 = a3;
+  appCopy = app;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v4 = +[MCProfileConnection sharedConnection];
-  v5 = [v4 effectiveWhitelistedAppsAndOptions];
+  effectiveWhitelistedAppsAndOptions = [v4 effectiveWhitelistedAppsAndOptions];
 
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v6 = [effectiveWhitelistedAppsAndOptions countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -766,11 +766,11 @@ LABEL_38:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(effectiveWhitelistedAppsAndOptions);
         }
 
         v11 = [*(*(&v15 + 1) + 8 * i) objectForKey:v9];
-        v12 = [v11 isEqualToString:v3];
+        v12 = [v11 isEqualToString:appCopy];
 
         if (v12)
         {
@@ -780,7 +780,7 @@ LABEL_38:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [effectiveWhitelistedAppsAndOptions countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -790,19 +790,19 @@ LABEL_38:
     }
   }
 
-  v13 = [v3 isEqualToString:@"com.apple.AccessibilityUIServer"];
+  v13 = [appCopy isEqualToString:@"com.apple.AccessibilityUIServer"];
 LABEL_11:
 
   return v13;
 }
 
-- (BOOL)isFrontmostAppLayout:(id)a3
+- (BOOL)isFrontmostAppLayout:(id)layout
 {
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 1;
-  v5 = a3;
+  layoutCopy = layout;
   AXPerformSafeBlock();
   v3 = *(v7 + 24);
 
@@ -810,20 +810,20 @@ LABEL_11:
   return v3;
 }
 
-- (void)_prepareTransitionToWorkspaceWithCompletionHandler:(id)a3
+- (void)_prepareTransitionToWorkspaceWithCompletionHandler:(id)handler
 {
   v35 = _NSConcreteStackBlock;
   v36 = 3221225472;
   v37 = sub_3D0C;
   v38 = &unk_2C7C0;
-  v39 = self;
-  v4 = a3;
-  v40 = v4;
+  selfCopy = self;
+  handlerCopy = handler;
+  v40 = handlerCopy;
   v5 = objc_retainBlock(&v35);
   v6 = [AXSpringBoardServer server:v35];
-  v7 = [v6 isSystemAppFrontmost];
+  isSystemAppFrontmost = [v6 isSystemAppFrontmost];
 
-  if (v7)
+  if (isSystemAppFrontmost)
   {
     v8 = +[AXSettings sharedInstance];
     if ([v8 guidedAccessAllowsUnlockWithTouchID])
@@ -852,7 +852,7 @@ LABEL_11:
     {
     }
 
-    if (!v4)
+    if (!handlerCopy)
     {
       goto LABEL_26;
     }
@@ -873,7 +873,7 @@ LABEL_11:
 LABEL_25:
 
         self->_workspaceTransitionRetryCount = 0;
-        (*(v4 + 2))(v4, 1);
+        (*(handlerCopy + 2))(handlerCopy, 1);
         goto LABEL_26;
       }
     }
@@ -894,11 +894,11 @@ LABEL_25:
 
   self->_workspaceTransitionRetryCount = 0;
   v13 = +[AXSpringBoardServer server];
-  v14 = [v13 isNotificationCenterVisible];
+  isNotificationCenterVisible = [v13 isNotificationCenterVisible];
 
   v15 = +[AXSpringBoardServer server];
   v16 = v15;
-  if (v14)
+  if (isNotificationCenterVisible)
   {
     [v15 hideNotificationCenter];
 
@@ -908,11 +908,11 @@ LABEL_9:
     goto LABEL_26;
   }
 
-  v27 = [v15 isAppSwitcherVisible];
+  isAppSwitcherVisible = [v15 isAppSwitcherVisible];
 
   v28 = +[AXSpringBoardServer server];
   v29 = v28;
-  if (v27)
+  if (isAppSwitcherVisible)
   {
     [v28 dismissAppSwitcher];
 
@@ -922,9 +922,9 @@ LABEL_20:
     goto LABEL_26;
   }
 
-  v31 = [v28 isSiriVisible];
+  isSiriVisible = [v28 isSiriVisible];
 
-  if (v31)
+  if (isSiriVisible)
   {
     v32 = +[AXSpringBoardServer server];
     [v32 dismissSiri];
@@ -932,8 +932,8 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v33 = [(GAXSpringboard *)self didEndRequiringWallpaperCheckTimer];
-  [v33 cancel];
+  didEndRequiringWallpaperCheckTimer = [(GAXSpringboard *)self didEndRequiringWallpaperCheckTimer];
+  [didEndRequiringWallpaperCheckTimer cancel];
 
   if (![(GAXSpringboard *)self isRequiringWallpaper])
   {
@@ -942,19 +942,19 @@ LABEL_20:
     [v34 animateWallpaperStyleToNormal];
   }
 
-  if (v4)
+  if (handlerCopy)
   {
-    (*(v4 + 2))(v4, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
 LABEL_26:
 }
 
-- (BOOL)_applicationWithIdentifierIsWebApplicationAndForegroundRunning:(id)a3
+- (BOOL)_applicationWithIdentifierIsWebApplicationAndForegroundRunning:(id)running
 {
-  v3 = a3;
+  runningCopy = running;
   v4 = +[AXSpringBoardServer server];
-  v5 = [v4 applicationWithIdentifier:v3];
+  v5 = [v4 applicationWithIdentifier:runningCopy];
 
   v6 = [v5 safeValueForKey:@"isWebApplication"];
   LODWORD(v4) = [v6 BOOLValue];
@@ -962,9 +962,9 @@ LABEL_26:
   if (v4)
   {
     v7 = +[AXSpringBoardServer server];
-    v8 = [v7 focusedAppProcess];
+    focusedAppProcess = [v7 focusedAppProcess];
 
-    v9 = [v5 isEqual:v8];
+    v9 = [v5 isEqual:focusedAppProcess];
   }
 
   else
@@ -975,10 +975,10 @@ LABEL_26:
   return v9;
 }
 
-- (void)_updateSpringBoardForServerMode:(unsigned int)a3 previousServerMode:(unsigned int)a4
+- (void)_updateSpringBoardForServerMode:(unsigned int)mode previousServerMode:(unsigned int)serverMode
 {
   v7 = [AXSafeClassFromString() safeValueForKeyPath:@"sharedInstance.mainDisplayWindowScene.floatingDockController"];
-  v8 = a3 - 1 < 2 && a4 == 0;
+  v8 = mode - 1 < 2 && serverMode == 0;
   v9 = v8;
   if (v8)
   {
@@ -1009,9 +1009,9 @@ LABEL_26:
 
   else
   {
-    v15 = a4 == 2;
-    v16 = a3 == 0;
-    if (a3 || a4 - 1 > 1)
+    v15 = serverMode == 2;
+    v16 = mode == 0;
+    if (mode || serverMode - 1 > 1)
     {
       goto LABEL_14;
     }
@@ -1032,8 +1032,8 @@ LABEL_26:
   v16 = v9 ^ 1;
 
 LABEL_14:
-  v18 = a3 != 2 && v15;
-  v19 = a4 != 2 && a3 == 2;
+  v18 = mode != 2 && v15;
+  v19 = serverMode != 2 && mode == 2;
   if (v19 || v18)
   {
     v20 = [AXSafeClassFromString() safeValueForKey:@"sharedInstanceIfExists"];
@@ -1042,22 +1042,22 @@ LABEL_14:
     v29[1] = 3221225472;
     v29[2] = sub_497C;
     v29[3] = &unk_2C808;
-    v30 = a3;
+    modeCopy = mode;
     [v20 _enumerateSwitcherControllersWithBlock:v29];
-    if (a3 == 2)
+    if (mode == 2)
     {
       [(GAXSpringboard *)self setupGuestPassSessionMonitoring];
     }
   }
 
-  v22 = [(GAXSpringboard *)self wantsSingleAppModeOrAppSelfLockMode];
-  if ((v9 | v22))
+  wantsSingleAppModeOrAppSelfLockMode = [(GAXSpringboard *)self wantsSingleAppModeOrAppSelfLockMode];
+  if ((v9 | wantsSingleAppModeOrAppSelfLockMode))
   {
-    v23 = [(GAXSpringboard *)self currentMultitaskingMode];
-    v24 = [(GAXSpringboard *)self currentMultitaskingMode];
-    [(GAXSpringboard *)self setPreviouslyEnabledStageManager:v23 == 2];
-    [(GAXSpringboard *)self setPreviouslyEnabledWindowedApps:v24 == 1];
-    if (v23 == 2 || v24 == 1)
+    currentMultitaskingMode = [(GAXSpringboard *)self currentMultitaskingMode];
+    currentMultitaskingMode2 = [(GAXSpringboard *)self currentMultitaskingMode];
+    [(GAXSpringboard *)self setPreviouslyEnabledStageManager:currentMultitaskingMode == 2];
+    [(GAXSpringboard *)self setPreviouslyEnabledWindowedApps:currentMultitaskingMode2 == 1];
+    if (currentMultitaskingMode == 2 || currentMultitaskingMode2 == 1)
     {
       v25 = GAXLogCommon();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -1070,7 +1070,7 @@ LABEL_14:
     }
   }
 
-  if (!(v22 & 1 | ((v16 & 1) == 0)) && ([(GAXSpringboard *)self previouslyEnabledStageManager]|| [(GAXSpringboard *)self previouslyEnabledWindowedApps]))
+  if (!(wantsSingleAppModeOrAppSelfLockMode & 1 | ((v16 & 1) == 0)) && ([(GAXSpringboard *)self previouslyEnabledStageManager]|| [(GAXSpringboard *)self previouslyEnabledWindowedApps]))
   {
     v26 = GAXLogCommon();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -1108,14 +1108,14 @@ LABEL_14:
   objc_destroyWeak(&location);
 }
 
-- (void)handleGuestPassSessionChanged:(BOOL)a3
+- (void)handleGuestPassSessionChanged:(BOOL)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   v4 = GAXLogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = @"inactive";
-    if (v3)
+    if (changedCopy)
     {
       v5 = @"active";
     }
@@ -1129,13 +1129,13 @@ LABEL_14:
   [v6 updateLockAndIdleTimers];
 }
 
-- (void)_updateAVSystemControllerWithVolume:(float)a3
+- (void)_updateAVSystemControllerWithVolume:(float)volume
 {
   v4 = +[AVSystemController sharedAVSystemController];
   v8 = 0;
   [v4 getActiveCategoryVolume:0 andName:&v8];
   v5 = v8;
-  *&v6 = a3;
+  *&v6 = volume;
   [v4 setActiveCategoryVolumeTo:v6];
   v7 = GAXLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1143,28 +1143,28 @@ LABEL_14:
     *buf = 138412546;
     v10 = v5;
     v11 = 2048;
-    v12 = a3;
+    volumeCopy = volume;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Set volume for category %@ to %f", buf, 0x16u);
   }
 }
 
-- (void)_effectiveVolumeChanged:(id)a3
+- (void)_effectiveVolumeChanged:(id)changed
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 userInfo], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  changedCopy = changed;
+  v5 = changedCopy;
+  if (changedCopy && ([changedCopy userInfo], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
     [(GAXSpringboard *)self volume];
     v8 = v7;
-    v9 = [v5 userInfo];
-    v10 = [v9 objectForKeyedSubscript:AVSystemController_EffectiveVolumeNotificationParameter_Volume];
+    userInfo = [v5 userInfo];
+    v10 = [userInfo objectForKeyedSubscript:AVSystemController_EffectiveVolumeNotificationParameter_Volume];
 
     if (v10)
     {
       [v10 floatValue];
       v12 = v11;
-      v13 = [v5 userInfo];
-      v14 = [v13 objectForKeyedSubscript:AVSystemController_EffectiveVolumeNotificationParameter_VolumeChangeReason];
+      userInfo2 = [v5 userInfo];
+      v14 = [userInfo2 objectForKeyedSubscript:AVSystemController_EffectiveVolumeNotificationParameter_VolumeChangeReason];
 
       v15 = GAXLogCommon();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -1208,11 +1208,11 @@ LABEL_14:
 
 - (int64_t)currentMultitaskingMode
 {
-  v3 = [(GAXSpringboard *)self springBoardDefaults];
-  v4 = [v3 BOOLForKey:@"SBChamoisWindowingEnabled"];
+  springBoardDefaults = [(GAXSpringboard *)self springBoardDefaults];
+  v4 = [springBoardDefaults BOOLForKey:@"SBChamoisWindowingEnabled"];
 
-  v5 = [(GAXSpringboard *)self springBoardDefaults];
-  v6 = [v5 BOOLForKey:@"SBMedusaMultitaskingEnabled"];
+  springBoardDefaults2 = [(GAXSpringboard *)self springBoardDefaults];
+  v6 = [springBoardDefaults2 BOOLForKey:@"SBMedusaMultitaskingEnabled"];
 
   if (v4)
   {
@@ -1225,35 +1225,35 @@ LABEL_14:
   }
 }
 
-- (void)setCurrentMultitaskingMode:(int64_t)a3
+- (void)setCurrentMultitaskingMode:(int64_t)mode
 {
-  v5 = [(GAXSpringboard *)self springBoardDefaults];
-  [v5 setBool:a3 == 2 forKey:@"SBChamoisWindowingEnabled"];
+  springBoardDefaults = [(GAXSpringboard *)self springBoardDefaults];
+  [springBoardDefaults setBool:mode == 2 forKey:@"SBChamoisWindowingEnabled"];
 
-  if (a3 != 2)
+  if (mode != 2)
   {
-    v6 = [(GAXSpringboard *)self springBoardDefaults];
-    [v6 setBool:a3 == 1 forKey:@"SBMedusaMultitaskingEnabled"];
+    springBoardDefaults2 = [(GAXSpringboard *)self springBoardDefaults];
+    [springBoardDefaults2 setBool:mode == 1 forKey:@"SBMedusaMultitaskingEnabled"];
   }
 }
 
 - (BOOL)previouslyEnabledStageManager
 {
-  v2 = [(GAXSpringboard *)self springBoardDefaults];
-  v3 = [v2 BOOLForKey:@"GAXSBChamoisWindowingPreviouslyEnabled"];
+  springBoardDefaults = [(GAXSpringboard *)self springBoardDefaults];
+  v3 = [springBoardDefaults BOOLForKey:@"GAXSBChamoisWindowingPreviouslyEnabled"];
 
   return v3;
 }
 
 - (BOOL)previouslyEnabledWindowedApps
 {
-  v2 = [(GAXSpringboard *)self springBoardDefaults];
-  v3 = [v2 BOOLForKey:@"GAXSBMedusaMultitaskingPreviouslyEnabled"];
+  springBoardDefaults = [(GAXSpringboard *)self springBoardDefaults];
+  v3 = [springBoardDefaults BOOLForKey:@"GAXSBMedusaMultitaskingPreviouslyEnabled"];
 
   return v3;
 }
 
-- (void)_handleDeviceWasLockedNotification:(id)a3
+- (void)_handleDeviceWasLockedNotification:(id)notification
 {
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 postNotificationName:@"GAXDeviceWasLockedOrRelockedNotification" object:0];
@@ -1261,43 +1261,43 @@ LABEL_14:
   [(GAXSpringboard *)self _sendSimpleMessageToBackboardWithIdentifier:13007 payload:0 description:@"device was locked"];
 }
 
-- (void)_handleDidShowTripleClickAlertNotification:(id)a3
+- (void)_handleDidShowTripleClickAlertNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  [(GAXSpringboard *)self _sendSimpleMessageToBackboardWithIdentifier:13008 payload:v4 description:@"did show triple click alert"];
+  userInfo = [notification userInfo];
+  [(GAXSpringboard *)self _sendSimpleMessageToBackboardWithIdentifier:13008 payload:userInfo description:@"did show triple click alert"];
 }
 
-- (id)_gaxHandleFrontmostAppDidCheckIn:(id)a3
+- (id)_gaxHandleFrontmostAppDidCheckIn:(id)in
 {
-  v5 = a3;
-  v3 = v5;
+  inCopy = in;
+  v3 = inCopy;
   AXPerformBlockOnMainThread();
 
   return 0;
 }
 
-- (id)_handleServerModeTransitionDidComplete:(id)a3
+- (id)_handleServerModeTransitionDidComplete:(id)complete
 {
-  v3 = a3;
-  v4 = [v3 payload];
+  completeCopy = complete;
+  payload = [completeCopy payload];
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x2020000000;
-  v5 = [v4 objectForKey:@"GAXIPCPayloadKeyShouldHaveLockScreenDisableAssertion"];
-  v6 = [v5 BOOLValue];
+  v5 = [payload objectForKey:@"GAXIPCPayloadKeyShouldHaveLockScreenDisableAssertion"];
+  bOOLValue = [v5 BOOLValue];
 
-  v10 = v6;
-  v8 = v3;
+  v10 = bOOLValue;
+  v8 = completeCopy;
   AXPerformBlockAsynchronouslyOnMainThread();
 
   _Block_object_dispose(v9, 8);
   return 0;
 }
 
-- (id)_handleIsWebApplicationAndForegroundRunning:(id)a3
+- (id)_handleIsWebApplicationAndForegroundRunning:(id)running
 {
-  v4 = [a3 payload];
-  v5 = [v4 objectForKey:@"GAXIPCPayloadKeyApplicationIdentifier"];
+  payload = [running payload];
+  v5 = [payload objectForKey:@"GAXIPCPayloadKeyApplicationIdentifier"];
 
   if (v5)
   {
@@ -1319,7 +1319,7 @@ LABEL_14:
   return v10;
 }
 
-- (id)_handleIsSystemAppShowingTransientOverlay:(id)a3
+- (id)_handleIsSystemAppShowingTransientOverlay:(id)overlay
 {
   v3 = [AXSafeClassFromString() safeValueForKey:@"mainWorkspace"];
   v4 = [v3 safeValueForKey:@"transientOverlayPresentationManager"];
@@ -1335,9 +1335,9 @@ LABEL_14:
   return v9;
 }
 
-- (id)_handlePrepareTransitionToWorkspace:(id)a3
+- (id)_handlePrepareTransitionToWorkspace:(id)workspace
 {
-  v4 = a3;
+  workspaceCopy = workspace;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -1370,8 +1370,8 @@ LABEL_14:
 
   else
   {
-    v10 = [v4 payload];
-    v11 = [v10 objectForKey:@"GAXIPCPayloadKeyFrontmostAppIdentifier"];
+    payload = [workspaceCopy payload];
+    v11 = [payload objectForKey:@"GAXIPCPayloadKeyFrontmostAppIdentifier"];
 
     if (v11)
     {
@@ -1428,11 +1428,11 @@ LABEL_14:
   return v19;
 }
 
-- (id)_handleUpdateGAXBackboardState:(id)a3
+- (id)_handleUpdateGAXBackboardState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   memset(v17, 0, 28);
-  extractGAXBackboardStateFromMessage(v4, v17);
+  extractGAXBackboardStateFromMessage(stateCopy, v17);
   v9 = 0;
   v10 = &v9;
   v11 = 0x4010000000;
@@ -1457,56 +1457,56 @@ LABEL_14:
   return 0;
 }
 
-- (id)_handleLaunchApplication:(id)a3
+- (id)_handleLaunchApplication:(id)application
 {
-  v4 = a3;
-  v5 = [v4 payload];
-  v6 = [v5 objectForKey:@"GAXIPCPayloadKeyApplicationIdentifier"];
+  applicationCopy = application;
+  payload = [applicationCopy payload];
+  v6 = [payload objectForKey:@"GAXIPCPayloadKeyApplicationIdentifier"];
 
-  v7 = [v4 payload];
-  v8 = [v7 objectForKey:@"GAXIPCPayloadKeyProfileConfiguration"];
+  payload2 = [applicationCopy payload];
+  v8 = [payload2 objectForKey:@"GAXIPCPayloadKeyProfileConfiguration"];
 
-  v9 = [v4 payload];
+  payload3 = [applicationCopy payload];
 
-  v10 = [v9 objectForKey:@"GAXIPCPayloadKeyAppLaunchGeneration"];
+  v10 = [payload3 objectForKey:@"GAXIPCPayloadKeyAppLaunchGeneration"];
 
-  v11 = [(GAXSpringboard *)self applicationLaunchingQueue];
+  applicationLaunchingQueue = [(GAXSpringboard *)self applicationLaunchingQueue];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_67BC;
   v16[3] = &unk_2CB28;
   v17 = v6;
-  v18 = self;
+  selfCopy = self;
   v19 = v10;
   v20 = v8;
   v12 = v8;
   v13 = v10;
   v14 = v6;
-  [v11 performAsynchronousWritingBlock:v16];
+  [applicationLaunchingQueue performAsynchronousWritingBlock:v16];
 
   return 0;
 }
 
-- (id)_handleUpdateHostedApplicationState:(id)a3
+- (id)_handleUpdateHostedApplicationState:(id)state
 {
-  v3 = [a3 payload];
-  v4 = [v3 objectForKey:@"GAXIPCPayloadKeyAnimationDuration"];
+  payload = [state payload];
+  v4 = [payload objectForKey:@"GAXIPCPayloadKeyAnimationDuration"];
   [v4 doubleValue];
 
-  v5 = [v3 objectForKey:@"GAXIPCPayloadKeyHostedApplicationScaleFactor"];
+  v5 = [payload objectForKey:@"GAXIPCPayloadKeyHostedApplicationScaleFactor"];
   [v5 doubleValue];
 
-  v6 = [v3 objectForKey:@"GAXIPCPayloadKeyHostedApplicationCenter"];
+  v6 = [payload objectForKey:@"GAXIPCPayloadKeyHostedApplicationCenter"];
   CGPointFromString(v6);
 
-  v9 = [v3 objectForKey:@"GAXIPCPayloadKeyApplicationIdentifier"];
+  v9 = [payload objectForKey:@"GAXIPCPayloadKeyApplicationIdentifier"];
   v7 = v9;
   AXPerformBlockOnMainThread();
 
   return 0;
 }
 
-- (id)_handleGetNewPasscodeLength:(id)a3
+- (id)_handleGetNewPasscodeLength:(id)length
 {
   v13 = 0;
   v3 = +[MCProfileConnection sharedConnection];
@@ -1538,7 +1538,7 @@ LABEL_14:
   return v11;
 }
 
-- (id)_handleTimeRestrictionStatusDidChange:(id)a3
+- (id)_handleTimeRestrictionStatusDidChange:(id)change
 {
   v3 = +[AXSpringBoardServer server];
   [v3 updateLockAndIdleTimers];
@@ -1546,15 +1546,15 @@ LABEL_14:
   return 0;
 }
 
-- (id)_handleTerminateApplications:(id)a3
+- (id)_handleTerminateApplications:(id)applications
 {
-  v3 = a3;
-  v4 = [v3 payload];
-  v5 = [v4 objectForKeyedSubscript:@"GAXIPCPayloadKeyAppsNotToTerminate"];
+  applicationsCopy = applications;
+  payload = [applicationsCopy payload];
+  v5 = [payload objectForKeyedSubscript:@"GAXIPCPayloadKeyAppsNotToTerminate"];
 
-  v43 = v3;
-  v6 = [v3 payload];
-  v7 = [v6 objectForKeyedSubscript:@"GAXIPCPayloadKeyAppTerminationReason"];
+  v43 = applicationsCopy;
+  payload2 = [applicationsCopy payload];
+  v7 = [payload2 objectForKeyedSubscript:@"GAXIPCPayloadKeyAppTerminationReason"];
 
   v8 = [AXSafeClassFromString() safeValueForKey:@"sharedInstance"];
   buf[0] = 0;
@@ -1694,12 +1694,12 @@ LABEL_34:
 
     else
     {
-      v39 = [v36 domain];
-      if ([v39 isEqualToString:RBSRequestErrorDomain])
+      domain = [v36 domain];
+      if ([domain isEqualToString:RBSRequestErrorDomain])
       {
-        v40 = [v37 code];
+        code = [v37 code];
 
-        if (v40 == &dword_0 + 3)
+        if (code == &dword_0 + 3)
         {
           goto LABEL_32;
         }
@@ -1722,10 +1722,10 @@ LABEL_32:
   return 0;
 }
 
-- (id)_handleGetDisplayNameForBundleID:(id)a3
+- (id)_handleGetDisplayNameForBundleID:(id)d
 {
-  v3 = [a3 payload];
-  v4 = [v3 objectForKeyedSubscript:@"GAXIPCPayloadKeyBundleIdentifier"];
+  payload = [d payload];
+  v4 = [payload objectForKeyedSubscript:@"GAXIPCPayloadKeyBundleIdentifier"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1754,17 +1754,17 @@ LABEL_32:
   return v10;
 }
 
-- (id)_handleServerIsReady:(id)a3
+- (id)_handleServerIsReady:(id)ready
 {
   v3 = [[AXIPCMessage alloc] initWithKey:4817 payload:&off_32808];
 
   return v3;
 }
 
-- (BOOL)_sendReplayableSimpleMessageToBackboardWithIdentifier:(int)a3 payload:(id)a4 description:(id)a5 error:(id *)a6
+- (BOOL)_sendReplayableSimpleMessageToBackboardWithIdentifier:(int)identifier payload:(id)payload description:(id)description error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
+  payloadCopy = payload;
+  descriptionCopy = description;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -1775,22 +1775,22 @@ LABEL_32:
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 0;
-  v12 = [(GAXSpringboard *)self backboardMessageQueue];
+  backboardMessageQueue = [(GAXSpringboard *)self backboardMessageQueue];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_89F8;
   v16[3] = &unk_2CC18;
   v16[4] = self;
-  v20 = a3;
-  v13 = v10;
+  identifierCopy = identifier;
+  v13 = payloadCopy;
   v17 = v13;
   v18 = &v21;
   v19 = &v25;
-  [v12 performSynchronousWritingBlock:v16];
+  [backboardMessageQueue performSynchronousWritingBlock:v16];
 
-  if (a6)
+  if (error)
   {
-    *a6 = v26[5];
+    *error = v26[5];
   }
 
   v14 = *(v22 + 24);
@@ -1801,32 +1801,32 @@ LABEL_32:
   return v14;
 }
 
-- (void)_sendMessageToBackboardWithIdentifier:(int)a3 payload:(id)a4 description:(id)a5 replyHandler:(id)a6
+- (void)_sendMessageToBackboardWithIdentifier:(int)identifier payload:(id)payload description:(id)description replyHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  payloadCopy = payload;
+  descriptionCopy = description;
+  handlerCopy = handler;
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_8C28;
   v24[3] = &unk_2CC40;
-  v25 = v11;
-  v13 = v11;
+  v25 = descriptionCopy;
+  v13 = descriptionCopy;
   v14 = objc_retainBlock(v24);
-  v15 = [(GAXSpringboard *)self backboardMessageQueue];
+  backboardMessageQueue = [(GAXSpringboard *)self backboardMessageQueue];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_8C8C;
   v19[3] = &unk_2CC90;
-  v23 = a3;
+  identifierCopy = identifier;
   v19[4] = self;
-  v20 = v10;
-  v21 = v12;
+  v20 = payloadCopy;
+  v21 = handlerCopy;
   v22 = v14;
   v16 = v14;
-  v17 = v12;
-  v18 = v10;
-  [v15 performAsynchronousWritingBlock:v19];
+  v17 = handlerCopy;
+  v18 = payloadCopy;
+  [backboardMessageQueue performAsynchronousWritingBlock:v19];
 }
 
 - (id)_debugGAXDescription

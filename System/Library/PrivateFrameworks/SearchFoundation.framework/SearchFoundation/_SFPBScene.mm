@@ -1,29 +1,29 @@
 @interface _SFPBScene
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBScene)initWithDictionary:(id)a3;
-- (_SFPBScene)initWithFacade:(id)a3;
-- (_SFPBScene)initWithJSON:(id)a3;
+- (_SFPBScene)initWithDictionary:(id)dictionary;
+- (_SFPBScene)initWithFacade:(id)facade;
+- (_SFPBScene)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBScene
 
-- (_SFPBScene)initWithFacade:(id)a3
+- (_SFPBScene)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBScene *)self init];
   if (v5)
   {
-    if ([v4 hasSceneIdentifier])
+    if ([facadeCopy hasSceneIdentifier])
     {
-      -[_SFPBScene setSceneIdentifier:](v5, "setSceneIdentifier:", [v4 sceneIdentifier]);
+      -[_SFPBScene setSceneIdentifier:](v5, "setSceneIdentifier:", [facadeCopy sceneIdentifier]);
     }
 
-    if ([v4 hasSceneType])
+    if ([facadeCopy hasSceneType])
     {
-      -[_SFPBScene setSceneType:](v5, "setSceneType:", [v4 sceneType]);
+      -[_SFPBScene setSceneType:](v5, "setSceneType:", [facadeCopy sceneType]);
     }
 
     v6 = v5;
@@ -32,22 +32,22 @@
   return v5;
 }
 
-- (_SFPBScene)initWithDictionary:(id)a3
+- (_SFPBScene)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = _SFPBScene;
   v5 = [(_SFPBScene *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"sceneIdentifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"sceneIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBScene setSceneIdentifier:](v5, "setSceneIdentifier:", [v6 unsignedLongLongValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"sceneType"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"sceneType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -60,30 +60,30 @@
   return v5;
 }
 
-- (_SFPBScene)initWithJSON:(id)a3
+- (_SFPBScene)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBScene *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBScene *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBScene *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -96,39 +96,39 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_sceneIdentifier)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[_SFPBScene sceneIdentifier](self, "sceneIdentifier")}];
-    [v3 setObject:v4 forKeyedSubscript:@"sceneIdentifier"];
+    [dictionary setObject:v4 forKeyedSubscript:@"sceneIdentifier"];
   }
 
   if (self->_sceneType)
   {
-    v5 = [(_SFPBScene *)self sceneType];
-    if (v5 >= 4)
+    sceneType = [(_SFPBScene *)self sceneType];
+    if (sceneType >= 4)
     {
-      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v5];
+      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", sceneType];
     }
 
     else
     {
-      v6 = off_1E7ACE560[v5];
+      v6 = off_1E7ACE560[sceneType];
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"sceneType"];
+    [dictionary setObject:v6 forKeyedSubscript:@"sceneType"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (sceneIdentifier = self->_sceneIdentifier, sceneIdentifier == objc_msgSend(v4, "sceneIdentifier")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (sceneIdentifier = self->_sceneIdentifier, sceneIdentifier == objc_msgSend(equalCopy, "sceneIdentifier")))
   {
     sceneType = self->_sceneType;
-    v7 = sceneType == [v4 sceneType];
+    v7 = sceneType == [equalCopy sceneType];
   }
 
   else
@@ -139,9 +139,9 @@
   return v7;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ([(_SFPBScene *)self sceneIdentifier])
   {
     PBDataWriterWriteUint64Field();

@@ -1,20 +1,20 @@
 @interface JavaUtilConcurrentConcurrentHashMap
-+ (int)spreadWithInt:(int)a3;
-+ (void)ensureLoadedWithIOSClass:(id)a3;
++ (int)spreadWithInt:(int)int;
++ (void)ensureLoadedWithIOSClass:(id)class;
 + (void)initialize;
-- (BOOL)containsValueWithId:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)removeWithId:(id)a3 withId:(id)a4;
-- (BOOL)replaceWithId:(id)a3 withId:(id)a4 withId:(id)a5;
-- (JavaUtilConcurrentConcurrentHashMap)initWithJavaUtilMap:(id)a3;
+- (BOOL)containsValueWithId:(id)id;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)removeWithId:(id)id withId:(id)withId;
+- (BOOL)replaceWithId:(id)id withId:(id)withId withId:(id)a5;
+- (JavaUtilConcurrentConcurrentHashMap)initWithJavaUtilMap:(id)map;
 - (NSString)description;
 - (id)elements;
 - (id)entrySet;
-- (id)getWithId:(id)a3;
+- (id)getWithId:(id)id;
 - (id)keySet;
-- (id)keySetWithId:(id)a3;
+- (id)keySetWithId:(id)id;
 - (id)keys;
-- (id)replaceWithId:(id)a3 withId:(id)a4;
+- (id)replaceWithId:(id)id withId:(id)withId;
 - (id)values;
 - (int)size;
 - (unint64_t)hash;
@@ -22,28 +22,28 @@
 - (void)__javaClone;
 - (void)clear;
 - (void)dealloc;
-- (void)putAllWithJavaUtilMap:(id)a3;
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3;
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3;
+- (void)putAllWithJavaUtilMap:(id)map;
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream;
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream;
 @end
 
 @implementation JavaUtilConcurrentConcurrentHashMap
 
-+ (int)spreadWithInt:(int)a3
++ (int)spreadWithInt:(int)int
 {
   if ((atomic_load_explicit(JavaUtilConcurrentConcurrentHashMap__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1001B7300();
   }
 
-  return a3 & 0x7FFFFFFF ^ HIWORD(a3);
+  return int & 0x7FFFFFFF ^ HIWORD(int);
 }
 
-- (JavaUtilConcurrentConcurrentHashMap)initWithJavaUtilMap:(id)a3
+- (JavaUtilConcurrentConcurrentHashMap)initWithJavaUtilMap:(id)map
 {
   JavaUtilAbstractMap_init(self, a2);
   atomic_store(0x10u, &self->sizeCtl_);
-  [(JavaUtilConcurrentConcurrentHashMap *)self putAllWithJavaUtilMap:a3];
+  [(JavaUtilConcurrentConcurrentHashMap *)self putAllWithJavaUtilMap:map];
   return self;
 }
 
@@ -61,8 +61,8 @@
 
 - (unint64_t)sumCount
 {
-  v1 = atomic_load((a1 + 64));
-  result = atomic_load((a1 + 40));
+  v1 = atomic_load((self + 64));
+  result = atomic_load((self + 40));
   if (v1 && *(v1 + 8) >= 1)
   {
     v3 = 0;
@@ -86,14 +86,14 @@
   return result;
 }
 
-- (id)getWithId:(id)a3
+- (id)getWithId:(id)id
 {
-  if (!a3)
+  if (!id)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = [a3 hash];
+  v5 = [id hash];
   if ((atomic_load_explicit(JavaUtilConcurrentConcurrentHashMap__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1001B7300();
@@ -141,7 +141,7 @@
       {
 LABEL_13:
         v13 = v11[2];
-        if (v13 == a3 || v13 && ([a3 isEqual:?] & 1) != 0)
+        if (v13 == id || v13 && ([id isEqual:?] & 1) != 0)
         {
           return atomic_load(v11 + 3);
         }
@@ -151,7 +151,7 @@ LABEL_13:
     return 0;
   }
 
-  result = [result findWithInt:v10 withId:a3];
+  result = [result findWithInt:v10 withId:id];
   v11 = result;
   if (result)
   {
@@ -161,9 +161,9 @@ LABEL_13:
   return result;
 }
 
-- (BOOL)containsValueWithId:(id)a3
+- (BOOL)containsValueWithId:(id)id
 {
-  if (!a3)
+  if (!id)
   {
     v8 = new_JavaLangNullPointerException_init();
     objc_exception_throw(v8);
@@ -182,7 +182,7 @@ LABEL_13:
       }
 
       v7 = atomic_load(v3 + 3);
-      if (v7 == a3 || v7 && ([a3 isEqual:?] & 1) != 0)
+      if (v7 == id || v7 && ([id isEqual:?] & 1) != 0)
       {
         LOBYTE(v3) = 1;
         return v3;
@@ -193,9 +193,9 @@ LABEL_13:
   return v3;
 }
 
-- (void)putAllWithJavaUtilMap:(id)a3
+- (void)putAllWithJavaUtilMap:(id)map
 {
-  if (!a3 || (sub_1001B0244(self, [a3 size]), v14 = 0u, v15 = 0u, v12 = 0u, v13 = 0u, (v5 = objc_msgSend(a3, "entrySet", 0)) == 0))
+  if (!map || (sub_1001B0244(self, [map size]), v14 = 0u, v15 = 0u, v12 = 0u, v13 = 0u, (v5 = objc_msgSend(map, "entrySet", 0)) == 0))
   {
 LABEL_12:
     JreThrowNullPointerException();
@@ -442,21 +442,21 @@ LABEL_19:
   return [v15 description];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     goto LABEL_31;
   }
 
-  LODWORD(v5) = [JavaUtilMap_class_() isInstance:a3];
-  if (!v5)
+  LODWORD(getKey) = [JavaUtilMap_class_() isInstance:equal];
+  if (!getKey)
   {
-    return v5;
+    return getKey;
   }
 
   v6 = JavaUtilMap_class_();
-  if (a3 && ([v6 isInstance:a3] & 1) == 0)
+  if (equal && ([v6 isInstance:equal] & 1) == 0)
   {
     JreThrowClassCastException();
   }
@@ -479,23 +479,23 @@ LABEL_19:
     do
     {
       v11 = atomic_load(v10 + 3);
-      if (!a3)
+      if (!equal)
       {
         goto LABEL_33;
       }
 
-      v5 = [a3 getWithId:v10[2]];
-      if (!v5)
+      getKey = [equal getWithId:v10[2]];
+      if (!getKey)
       {
-        return v5;
+        return getKey;
       }
 
-      if (v5 != v11)
+      if (getKey != v11)
       {
-        LODWORD(v5) = [v5 isEqual:v11];
-        if (!v5)
+        LODWORD(getKey) = [getKey isEqual:v11];
+        if (!getKey)
         {
-          return v5;
+          return getKey;
         }
       }
 
@@ -515,26 +515,26 @@ LABEL_19:
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    if (!a3)
+    if (!equal)
     {
       goto LABEL_33;
     }
   }
 
-  v12 = [a3 entrySet];
-  if (!v12)
+  entrySet = [equal entrySet];
+  if (!entrySet)
   {
 LABEL_33:
     JreThrowNullPointerException();
   }
 
-  v13 = v12;
-  v14 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v13 = entrySet;
+  v14 = [entrySet countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (!v14)
   {
 LABEL_31:
-    LOBYTE(v5) = 1;
-    return v5;
+    LOBYTE(getKey) = 1;
+    return getKey;
   }
 
   v15 = v14;
@@ -554,45 +554,45 @@ LABEL_31:
         goto LABEL_33;
       }
 
-      v5 = [*(*(&v22 + 1) + 8 * i) getKey];
-      if (!v5)
+      getKey = [*(*(&v22 + 1) + 8 * i) getKey];
+      if (!getKey)
       {
-        return v5;
+        return getKey;
       }
 
-      v19 = v5;
-      v5 = [v18 getValue];
-      if (!v5)
+      v19 = getKey;
+      getKey = [v18 getValue];
+      if (!getKey)
       {
-        return v5;
+        return getKey;
       }
 
-      v20 = v5;
-      v5 = [(JavaUtilConcurrentConcurrentHashMap *)self getWithId:v19];
-      if (!v5)
+      v20 = getKey;
+      getKey = [(JavaUtilConcurrentConcurrentHashMap *)self getWithId:v19];
+      if (!getKey)
       {
-        return v5;
+        return getKey;
       }
 
-      if (v20 != v5)
+      if (v20 != getKey)
       {
-        LODWORD(v5) = [v20 isEqual:v5];
-        if (!v5)
+        LODWORD(getKey) = [v20 isEqual:getKey];
+        if (!getKey)
         {
-          return v5;
+          return getKey;
         }
       }
     }
 
     v15 = [v13 countByEnumeratingWithState:&v22 objects:v26 count:16];
-    LOBYTE(v5) = 1;
+    LOBYTE(getKey) = 1;
   }
 
   while (v15);
-  return v5;
+  return getKey;
 }
 
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream
 {
   if (qword_100554D28 != -1)
   {
@@ -620,7 +620,7 @@ LABEL_31:
     while (v6 < v5->super.size_);
   }
 
-  if (!a3 || (v8 = [a3 putFields]) == 0)
+  if (!stream || (v8 = [stream putFields]) == 0)
   {
     JreThrowNullPointerException();
   }
@@ -629,7 +629,7 @@ LABEL_31:
   [v8 putWithNSString:@"segments" withId:v5];
   [v9 putWithNSString:@"segmentShift" withInt:28];
   [v9 putWithNSString:@"segmentMask" withInt:15];
-  [a3 writeFields];
+  [stream writeFields];
   v10 = atomic_load(&self->table_);
   if (v10)
   {
@@ -640,9 +640,9 @@ LABEL_31:
       v13 = v12;
       do
       {
-        [a3 writeObjectWithId:v13[2]];
+        [stream writeObjectWithId:v13[2]];
         v14 = atomic_load(v13 + 3);
-        [a3 writeObjectWithId:v14];
+        [stream writeObjectWithId:v14];
         v13 = [JavaUtilConcurrentConcurrentHashMap_Traverser advance]_0(v11);
       }
 
@@ -650,30 +650,30 @@ LABEL_31:
     }
   }
 
-  [a3 writeObjectWithId:0];
+  [stream writeObjectWithId:0];
 
-  [a3 writeObjectWithId:0];
+  [stream writeObjectWithId:0];
 }
 
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream
 {
   atomic_store(0xFFFFFFFF, &self->sizeCtl_);
-  if (!a3)
+  if (!stream)
   {
 LABEL_48:
     JreThrowNullPointerException();
   }
 
-  [a3 defaultReadObject];
-  v4 = [a3 readObject];
-  v5 = [a3 readObject];
-  if (!v4)
+  [stream defaultReadObject];
+  readObject = [stream readObject];
+  readObject2 = [stream readObject];
+  if (!readObject)
   {
     goto LABEL_12;
   }
 
-  v6 = v5;
-  if (!v5)
+  v6 = readObject2;
+  if (!readObject2)
   {
     goto LABEL_12;
   }
@@ -683,26 +683,26 @@ LABEL_48:
   v9 = 0;
   do
   {
-    v10 = [v4 hash];
+    v10 = [readObject hash];
     if ((atomic_load_explicit(JavaUtilConcurrentConcurrentHashMap__initialized, memory_order_acquire) & 1) == 0)
     {
       sub_1001B7300();
     }
 
-    v9 = new_JavaUtilConcurrentConcurrentHashMap_Node_initWithInt_withId_withId_withJavaUtilConcurrentConcurrentHashMap_Node_(v10 & 0x7FFFFFFF ^ HIWORD(v10), v4, v6, v9);
-    v4 = [a3 readObject];
-    v11 = [a3 readObject];
+    v9 = new_JavaUtilConcurrentConcurrentHashMap_Node_initWithInt_withId_withId_withJavaUtilConcurrentConcurrentHashMap_Node_(v10 & 0x7FFFFFFF ^ HIWORD(v10), readObject, v6, v9);
+    readObject = [stream readObject];
+    readObject3 = [stream readObject];
     --v8;
     v7 = (v7 + 1);
-    if (!v4)
+    if (!readObject)
     {
       break;
     }
 
-    v6 = v11;
+    v6 = readObject3;
   }
 
-  while (v11);
+  while (readObject3);
   if (!v8)
   {
 LABEL_12:
@@ -887,43 +887,43 @@ LABEL_37:
 
   while (v9);
 LABEL_47:
-  v38 = self;
+  selfCopy = self;
   JreVolatileStrongAssign(&self->table_, v14);
   atomic_store(v39 - (v39 >> 2), &self->sizeCtl_);
-  atomic_store(v16, &v38->baseCount_);
+  atomic_store(v16, &selfCopy->baseCount_);
 }
 
-- (BOOL)removeWithId:(id)a3 withId:(id)a4
+- (BOOL)removeWithId:(id)id withId:(id)withId
 {
-  if (!a3)
+  if (!id)
   {
     v5 = new_JavaLangNullPointerException_init();
     objc_exception_throw(v5);
   }
 
-  return a4 && sub_1001B0470(self, a3, 0, a4) != 0;
+  return withId && sub_1001B0470(self, id, 0, withId) != 0;
 }
 
-- (BOOL)replaceWithId:(id)a3 withId:(id)a4 withId:(id)a5
+- (BOOL)replaceWithId:(id)id withId:(id)withId withId:(id)a5
 {
-  if (!a3 || !a4 || !a5)
+  if (!id || !withId || !a5)
   {
     v6 = new_JavaLangNullPointerException_init();
     objc_exception_throw(v6);
   }
 
-  return sub_1001B0470(self, a3, a5, a4) != 0;
+  return sub_1001B0470(self, id, a5, withId) != 0;
 }
 
-- (id)replaceWithId:(id)a3 withId:(id)a4
+- (id)replaceWithId:(id)id withId:(id)withId
 {
-  if (!a3 || !a4)
+  if (!id || !withId)
   {
     v6 = new_JavaLangNullPointerException_init();
     objc_exception_throw(v6);
   }
 
-  return sub_1001B0470(self, a3, a4, 0);
+  return sub_1001B0470(self, id, withId, 0);
 }
 
 - (id)keys
@@ -964,20 +964,20 @@ LABEL_47:
   return v5;
 }
 
-- (id)keySetWithId:(id)a3
+- (id)keySetWithId:(id)id
 {
-  if (!a3)
+  if (!id)
   {
     v5 = new_JavaLangNullPointerException_init();
     objc_exception_throw(v5);
   }
 
-  v3 = new_JavaUtilConcurrentConcurrentHashMap_KeySetView_initWithJavaUtilConcurrentConcurrentHashMap_withId_(self, a3);
+  v3 = new_JavaUtilConcurrentConcurrentHashMap_KeySetView_initWithJavaUtilConcurrentConcurrentHashMap_withId_(self, id);
 
   return v3;
 }
 
-+ (void)ensureLoadedWithIOSClass:(id)a3
++ (void)ensureLoadedWithIOSClass:(id)class
 {
   if ((atomic_load_explicit(JavaUtilConcurrentConcurrentHashMap__initialized, memory_order_acquire) & 1) == 0)
   {
@@ -1008,7 +1008,7 @@ LABEL_47:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     dword_100554CB0 = ~(-1 << (32 - dword_100550388));
     dword_100554CB4 = 32 - dword_100550388;

@@ -1,16 +1,16 @@
 @interface CollectionImageView
-- (CollectionImageView)initWithFrame:(CGRect)a3 makeCornersRounded:(BOOL)a4;
+- (CollectionImageView)initWithFrame:(CGRect)frame makeCornersRounded:(BOOL)rounded;
 - (CollectionImageViewDelegate)delegate;
 - (void)_addVibrancyIfNeeded;
 - (void)_createViews;
-- (void)_enableShadow:(BOOL)a3 imageView:(id)a4;
+- (void)_enableShadow:(BOOL)shadow imageView:(id)view;
 - (void)_updateGlyph;
 - (void)_updateImages;
 - (void)didMoveToWindow;
-- (void)imageAction:(id)a3;
+- (void)imageAction:(id)action;
 - (void)layoutSubviews;
-- (void)setCollectionInfo:(id)a3;
-- (void)setEditing:(BOOL)a3;
+- (void)setCollectionInfo:(id)info;
+- (void)setEditing:(BOOL)editing;
 @end
 
 @implementation CollectionImageView
@@ -85,32 +85,32 @@
 
 - (void)didMoveToWindow
 {
-  v3 = [(CollectionImageView *)self window];
+  window = [(CollectionImageView *)self window];
 
-  if (v3)
+  if (window)
   {
-    v4 = [(CollectionImageView *)self superview];
-    if (v4)
+    superview = [(CollectionImageView *)self superview];
+    if (superview)
     {
       while (1)
       {
-        v7 = v4;
-        if ([v4 conformsToProtocol:&OBJC_PROTOCOL___MKVibrantGroup])
+        v7 = superview;
+        if ([superview conformsToProtocol:&OBJC_PROTOCOL___MKVibrantGroup])
         {
           break;
         }
 
-        v5 = [v7 superview];
+        superview2 = [v7 superview];
 
-        v4 = v5;
-        if (!v5)
+        superview = superview2;
+        if (!superview2)
         {
           return;
         }
       }
 
-      v6 = [v7 vibrancyGroupName];
-      [(UIVisualEffectView *)self->_visualEffectView _setGroupName:v6];
+      vibrancyGroupName = [v7 vibrancyGroupName];
+      [(UIVisualEffectView *)self->_visualEffectView _setGroupName:vibrancyGroupName];
     }
   }
 }
@@ -136,9 +136,9 @@
       v7 = +[UIColor whiteColor];
       [(UIImageView *)self->_mainImageView setTintColor:v7];
 
-      v9 = [(UIVisualEffectView *)self->_visualEffectView contentView];
-      [(UIVisualEffectView *)v9 addSubview:self->_mainImageView];
-      v8 = v9;
+      contentView = [(UIVisualEffectView *)self->_visualEffectView contentView];
+      [(UIVisualEffectView *)contentView addSubview:self->_mainImageView];
+      v8 = contentView;
     }
 
     else
@@ -160,15 +160,15 @@
   if ([(CollectionHandlerInfo *)self->_collectionInfo handlerType]== 1)
   {
     [(CollectionImageView *)self _enableShadow:0 imageView:self->_glyphImageView];
-    v3 = [(CollectionImageView *)self theme];
-    v4 = [v3 keyColor];
-    [(UIImageView *)self->_glyphImageView setTintColor:v4];
+    theme = [(CollectionImageView *)self theme];
+    keyColor = [theme keyColor];
+    [(UIImageView *)self->_glyphImageView setTintColor:keyColor];
 
 LABEL_5:
-    v5 = [(CollectionHandlerInfo *)self->_collectionInfo glyphImage];
+    glyphImage = [(CollectionHandlerInfo *)self->_collectionInfo glyphImage];
 LABEL_6:
-    v6 = v5;
-    [(UIImageView *)self->_glyphImageView setImage:v5];
+    v6 = glyphImage;
+    [(UIImageView *)self->_glyphImageView setImage:glyphImage];
 
     goto LABEL_7;
   }
@@ -176,24 +176,24 @@ LABEL_6:
   if ([(CollectionHandlerInfo *)self->_collectionInfo handlerType]== 2)
   {
     [(CollectionImageView *)self _enableShadow:0 imageView:self->_glyphImageView];
-    v3 = +[UIColor systemGrayColor];
-    [(UIImageView *)self->_glyphImageView setTintColor:v3];
+    theme = +[UIColor systemGrayColor];
+    [(UIImageView *)self->_glyphImageView setTintColor:theme];
     goto LABEL_5;
   }
 
   if ([(CollectionHandlerInfo *)self->_collectionInfo isFavoriteCollection])
   {
     [(CollectionImageView *)self _enableShadow:0 imageView:self->_glyphImageView];
-    v11 = [(CollectionImageView *)self theme];
-    v12 = [v11 favoriteCollectionIconBackgroundColor];
-    [(UIImageView *)self->_glyphImageView setBackgroundColor:v12];
+    theme2 = [(CollectionImageView *)self theme];
+    favoriteCollectionIconBackgroundColor = [theme2 favoriteCollectionIconBackgroundColor];
+    [(UIImageView *)self->_glyphImageView setBackgroundColor:favoriteCollectionIconBackgroundColor];
 
-    v13 = [(CollectionImageView *)self theme];
-    v14 = [v13 favoriteCollectionIconColor];
-    [(UIImageView *)self->_glyphImageView setTintColor:v14];
+    theme3 = [(CollectionImageView *)self theme];
+    favoriteCollectionIconColor = [theme3 favoriteCollectionIconColor];
+    [(UIImageView *)self->_glyphImageView setTintColor:favoriteCollectionIconColor];
 
-    v15 = [(CollectionHandlerInfo *)self->_collectionInfo glyphImage];
-    [(UIImageView *)self->_glyphImageView setImage:v15];
+    glyphImage2 = [(CollectionHandlerInfo *)self->_collectionInfo glyphImage];
+    [(UIImageView *)self->_glyphImageView setImage:glyphImage2];
 
     [(UIImageView *)self->_glyphImageView _setContinuousCornerRadius:8.0];
   }
@@ -202,11 +202,11 @@ LABEL_6:
   {
     if (self->_editing)
     {
-      v16 = [(UIImageView *)self->_mainImageView image];
-      v17 = v16 != 0;
+      image = [(UIImageView *)self->_mainImageView image];
+      v17 = image != 0;
 
       [(CollectionImageView *)self _enableShadow:v17 imageView:self->_glyphImageView];
-      v5 = [UIImage systemImageNamed:@"camera.fill"];
+      glyphImage = [UIImage systemImageNamed:@"camera.fill"];
       goto LABEL_6;
     }
 
@@ -215,11 +215,11 @@ LABEL_6:
   }
 
 LABEL_7:
-  v7 = [(UIImageView *)self->_glyphImageView image];
-  v8 = [v7 isSymbolImage];
+  image2 = [(UIImageView *)self->_glyphImageView image];
+  isSymbolImage = [image2 isSymbolImage];
 
   glyphImageView = self->_glyphImageView;
-  if (v8)
+  if (isSymbolImage)
   {
     v10 = 4;
   }
@@ -241,12 +241,12 @@ LABEL_7:
 
   else
   {
-    v3 = [(CollectionHandlerInfo *)self->_collectionInfo image];
-    [(UIImageView *)self->_mainImageView setImage:v3];
+    image = [(CollectionHandlerInfo *)self->_collectionInfo image];
+    [(UIImageView *)self->_mainImageView setImage:image];
 
-    v4 = [(CollectionImageView *)self theme];
-    v5 = [v4 imageBackgroundColor];
-    [(UIImageView *)self->_mainImageView setTintColor:v5];
+    theme = [(CollectionImageView *)self theme];
+    imageBackgroundColor = [theme imageBackgroundColor];
+    [(UIImageView *)self->_mainImageView setTintColor:imageBackgroundColor];
 
     [(CollectionImageView *)self _addVibrancyIfNeeded];
   }
@@ -254,63 +254,63 @@ LABEL_7:
   [(CollectionImageView *)self _updateGlyph];
 }
 
-- (void)_enableShadow:(BOOL)a3 imageView:(id)a4
+- (void)_enableShadow:(BOOL)shadow imageView:(id)view
 {
-  v4 = a3;
-  v5 = a4;
-  if (v4)
+  shadowCopy = shadow;
+  viewCopy = view;
+  if (shadowCopy)
   {
     v6 = +[UIColor whiteColor];
-    [v5 setTintColor:v6];
+    [viewCopy setTintColor:v6];
 
-    v7 = [v5 layer];
-    [v7 setShadowOffset:{0.0, 0.0}];
+    layer = [viewCopy layer];
+    [layer setShadowOffset:{0.0, 0.0}];
 
     v8 = [UIColor colorWithWhite:0.2 alpha:1.0];
-    v9 = [v8 CGColor];
-    v10 = [v5 layer];
-    [v10 setShadowColor:v9];
+    cGColor = [v8 CGColor];
+    layer2 = [viewCopy layer];
+    [layer2 setShadowColor:cGColor];
 
-    v11 = [v5 layer];
+    layer3 = [viewCopy layer];
     LODWORD(v12) = 1050253722;
-    [v11 setShadowOpacity:v12];
+    [layer3 setShadowOpacity:v12];
 
-    v14 = [v5 layer];
+    layer4 = [viewCopy layer];
 
-    [v14 setShadowRadius:3.0];
+    [layer4 setShadowRadius:3.0];
   }
 
   else
   {
     v13 = [UIColor colorWithWhite:0.620000005 alpha:1.0];
-    [v5 setTintColor:v13];
+    [viewCopy setTintColor:v13];
 
-    v14 = [v5 layer];
+    layer4 = [viewCopy layer];
 
-    [v14 setShadowOpacity:0.0];
+    [layer4 setShadowOpacity:0.0];
   }
 }
 
-- (void)setCollectionInfo:(id)a3
+- (void)setCollectionInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   collectionInfo = self->_collectionInfo;
-  if (collectionInfo != v5)
+  if (collectionInfo != infoCopy)
   {
-    v7 = v5;
+    v7 = infoCopy;
     [(CollectionHandlerInfo *)collectionInfo removeObserver:self];
-    objc_storeStrong(&self->_collectionInfo, a3);
+    objc_storeStrong(&self->_collectionInfo, info);
     [(CollectionHandlerInfo *)self->_collectionInfo addObserver:self];
     [(CollectionImageView *)self _updateImages];
-    v5 = v7;
+    infoCopy = v7;
   }
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
-  if (self->_editing != a3)
+  if (self->_editing != editing)
   {
-    self->_editing = a3;
+    self->_editing = editing;
     if ([(CollectionHandlerInfo *)self->_collectionInfo canEditImage])
     {
       editing = self->_editing;
@@ -327,22 +327,22 @@ LABEL_7:
   }
 }
 
-- (void)imageAction:(id)a3
+- (void)imageAction:(id)action
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained collectionImageViewButtonSelected:self];
 }
 
-- (CollectionImageView)initWithFrame:(CGRect)a3 makeCornersRounded:(BOOL)a4
+- (CollectionImageView)initWithFrame:(CGRect)frame makeCornersRounded:(BOOL)rounded
 {
   v8.receiver = self;
   v8.super_class = CollectionImageView;
-  v5 = [(CollectionImageView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(CollectionImageView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
     [(CollectionImageView *)v5 setAccessibilityIgnoresInvertColors:1];
-    v6->_makeCornersRoundedForMainView = a4;
+    v6->_makeCornersRoundedForMainView = rounded;
     [(CollectionImageView *)v6 _createViews];
   }
 

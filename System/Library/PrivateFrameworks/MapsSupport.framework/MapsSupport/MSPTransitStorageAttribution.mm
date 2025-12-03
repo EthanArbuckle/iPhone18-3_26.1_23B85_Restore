@@ -1,22 +1,22 @@
 @interface MSPTransitStorageAttribution
-- (BOOL)isEqual:(id)a3;
-- (MSPTransitStorageAttribution)initWithAttribution:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MSPTransitStorageAttribution)initWithAttribution:(id)attribution;
 - (NSArray)_providerNames;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)addProviderNames:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addProviderNames:(id)names;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MSPTransitStorageAttribution
 
-- (MSPTransitStorageAttribution)initWithAttribution:(id)a3
+- (MSPTransitStorageAttribution)initWithAttribution:(id)attribution
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  attributionCopy = attribution;
   v18.receiver = self;
   v18.super_class = MSPTransitStorageAttribution;
   v5 = [(MSPTransitStorageAttribution *)&v18 init];
@@ -28,8 +28,8 @@
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = [v4 _providerNames];
-    v8 = [v7 countByEnumeratingWithState:&v14 objects:v19 count:16];
+    _providerNames = [attributionCopy _providerNames];
+    v8 = [_providerNames countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -41,14 +41,14 @@
         {
           if (*v15 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(_providerNames);
           }
 
           [(MSPTransitStorageAttribution *)v6 addProviderNames:*(*(&v14 + 1) + 8 * v11++)];
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v14 objects:v19 count:16];
+        v9 = [_providerNames countByEnumeratingWithState:&v14 objects:v19 count:16];
       }
 
       while (v9);
@@ -66,22 +66,22 @@
   return v2;
 }
 
-- (void)addProviderNames:(id)a3
+- (void)addProviderNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   providerNames = self->_providerNames;
-  v8 = v4;
+  v8 = namesCopy;
   if (!providerNames)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_providerNames;
     self->_providerNames = v6;
 
-    v4 = v8;
+    namesCopy = v8;
     providerNames = self->_providerNames;
   }
 
-  [(NSMutableArray *)providerNames addObject:v4];
+  [(NSMutableArray *)providerNames addObject:namesCopy];
 }
 
 - (NSString)description
@@ -90,36 +90,36 @@
   v8.receiver = self;
   v8.super_class = MSPTransitStorageAttribution;
   v4 = [(MSPTransitStorageAttribution *)&v8 description];
-  v5 = [(MSPTransitStorageAttribution *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MSPTransitStorageAttribution *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   providerNames = self->_providerNames;
   if (providerNames)
   {
-    [v3 setObject:providerNames forKey:@"provider_names"];
+    [dictionary setObject:providerNames forKey:@"provider_names"];
   }
 
   unknownFields = self->_unknownFields;
   if (unknownFields)
   {
-    v7 = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"Unknown Fields"];
+    dictionaryRepresentation = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"Unknown Fields"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -152,33 +152,33 @@
     while (v7);
   }
 
-  [(PBUnknownFields *)self->_unknownFields writeTo:v4, v12];
+  [(PBUnknownFields *)self->_unknownFields writeTo:toCopy, v12];
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(MSPTransitStorageAttribution *)self providerNamesCount])
   {
-    [v8 clearProviderNames];
-    v4 = [(MSPTransitStorageAttribution *)self providerNamesCount];
-    if (v4)
+    [toCopy clearProviderNames];
+    providerNamesCount = [(MSPTransitStorageAttribution *)self providerNamesCount];
+    if (providerNamesCount)
     {
-      v5 = v4;
+      v5 = providerNamesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(MSPTransitStorageAttribution *)self providerNamesAtIndex:i];
-        [v8 addProviderNames:v7];
+        [toCopy addProviderNames:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -199,7 +199,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{a3, v14}];
+        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{zone, v14}];
         [v5 addProviderNames:v11];
 
         ++v10;
@@ -217,13 +217,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     providerNames = self->_providerNames;
-    if (providerNames | v4[2])
+    if (providerNames | equalCopy[2])
     {
       v6 = [(NSMutableArray *)providerNames isEqual:?];
     }
@@ -242,14 +242,14 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = *(a3 + 2);
+  v4 = *(from + 2);
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {

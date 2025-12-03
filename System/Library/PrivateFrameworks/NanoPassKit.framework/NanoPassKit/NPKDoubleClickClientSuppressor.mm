@@ -1,16 +1,16 @@
 @interface NPKDoubleClickClientSuppressor
 + (BOOL)isSuppressingDoubleClickClients;
 + (id)sharedInstance;
-+ (unint64_t)requestDoubleClickClientSuppressionWithResponseHandler:(id)a3;
-+ (void)endDoubleClickClientSuppressionWithRequestToken:(unint64_t)a3;
++ (unint64_t)requestDoubleClickClientSuppressionWithResponseHandler:(id)handler;
++ (void)endDoubleClickClientSuppressionWithRequestToken:(unint64_t)token;
 - (BOOL)isSuppressingDoubleClickClients;
 - (NPKDoubleClickClientSuppressor)init;
-- (unint64_t)requestDoubleClickClientSuppressionWithResponseHandler:(id)a3;
-- (void)_acquireSuppressionAssertionIfNeededWithCompletion:(id)a3;
-- (void)_acquireSuppressionAssertionWithCompletion:(id)a3;
+- (unint64_t)requestDoubleClickClientSuppressionWithResponseHandler:(id)handler;
+- (void)_acquireSuppressionAssertionIfNeededWithCompletion:(id)completion;
+- (void)_acquireSuppressionAssertionWithCompletion:(id)completion;
 - (void)_releaseSuppressionAssertion;
 - (void)dealloc;
-- (void)endDoubleClickClientSuppressionWithRequestToken:(unint64_t)a3;
+- (void)endDoubleClickClientSuppressionWithRequestToken:(unint64_t)token;
 @end
 
 @implementation NPKDoubleClickClientSuppressor
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __48__NPKDoubleClickClientSuppressor_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_5 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_5, block);
@@ -62,13 +62,13 @@ void __48__NPKDoubleClickClientSuppressor_sharedInstance__block_invoke(uint64_t 
 
 - (void)dealloc
 {
-  v3 = [(NPKDoubleClickClientSuppressor *)self suppressorQueue];
+  suppressorQueue = [(NPKDoubleClickClientSuppressor *)self suppressorQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __41__NPKDoubleClickClientSuppressor_dealloc__block_invoke;
   block[3] = &unk_279944F98;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(suppressorQueue, block);
 
   v4.receiver = self;
   v4.super_class = NPKDoubleClickClientSuppressor;
@@ -87,47 +87,47 @@ void __41__NPKDoubleClickClientSuppressor_dealloc__block_invoke(uint64_t a1)
   }
 }
 
-+ (unint64_t)requestDoubleClickClientSuppressionWithResponseHandler:(id)a3
++ (unint64_t)requestDoubleClickClientSuppressionWithResponseHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = +[NPKDoubleClickClientSuppressor sharedInstance];
-  v5 = [v4 requestDoubleClickClientSuppressionWithResponseHandler:v3];
+  v5 = [v4 requestDoubleClickClientSuppressionWithResponseHandler:handlerCopy];
 
   return v5;
 }
 
-+ (void)endDoubleClickClientSuppressionWithRequestToken:(unint64_t)a3
++ (void)endDoubleClickClientSuppressionWithRequestToken:(unint64_t)token
 {
   v4 = +[NPKDoubleClickClientSuppressor sharedInstance];
-  [v4 endDoubleClickClientSuppressionWithRequestToken:a3];
+  [v4 endDoubleClickClientSuppressionWithRequestToken:token];
 }
 
 + (BOOL)isSuppressingDoubleClickClients
 {
   v2 = +[NPKDoubleClickClientSuppressor sharedInstance];
-  v3 = [v2 isSuppressingDoubleClickClients];
+  isSuppressingDoubleClickClients = [v2 isSuppressingDoubleClickClients];
 
-  return v3;
+  return isSuppressingDoubleClickClients;
 }
 
-- (unint64_t)requestDoubleClickClientSuppressionWithResponseHandler:(id)a3
+- (unint64_t)requestDoubleClickClientSuppressionWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
   objc_initWeak(&location, self);
-  v5 = [(NPKDoubleClickClientSuppressor *)self suppressorQueue];
+  suppressorQueue = [(NPKDoubleClickClientSuppressor *)self suppressorQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __89__NPKDoubleClickClientSuppressor_requestDoubleClickClientSuppressionWithResponseHandler___block_invoke;
   v9[3] = &unk_279948D80;
   objc_copyWeak(&v12, &location);
-  v10 = v4;
+  v10 = handlerCopy;
   v11 = &v14;
-  v6 = v4;
-  dispatch_barrier_sync(v5, v9);
+  v6 = handlerCopy;
+  dispatch_barrier_sync(suppressorQueue, v9);
 
   v7 = v15[3];
   objc_destroyWeak(&v12);
@@ -153,17 +153,17 @@ void __89__NPKDoubleClickClientSuppressor_requestDoubleClickClientSuppressionWit
   }
 }
 
-- (void)endDoubleClickClientSuppressionWithRequestToken:(unint64_t)a3
+- (void)endDoubleClickClientSuppressionWithRequestToken:(unint64_t)token
 {
   objc_initWeak(&location, self);
-  v5 = [(NPKDoubleClickClientSuppressor *)self suppressorQueue];
+  suppressorQueue = [(NPKDoubleClickClientSuppressor *)self suppressorQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __82__NPKDoubleClickClientSuppressor_endDoubleClickClientSuppressionWithRequestToken___block_invoke;
   block[3] = &unk_279948DA8;
   objc_copyWeak(v7, &location);
-  v7[1] = a3;
-  dispatch_sync(v5, block);
+  v7[1] = token;
+  dispatch_sync(suppressorQueue, block);
 
   objc_destroyWeak(v7);
   objc_destroyWeak(&location);
@@ -197,20 +197,20 @@ void __82__NPKDoubleClickClientSuppressor_endDoubleClickClientSuppressionWithReq
   v10 = 0x2020000000;
   v11 = 0;
   objc_initWeak(&location, self);
-  v3 = [(NPKDoubleClickClientSuppressor *)self suppressorQueue];
+  suppressorQueue = [(NPKDoubleClickClientSuppressor *)self suppressorQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__NPKDoubleClickClientSuppressor_isSuppressingDoubleClickClients__block_invoke;
   block[3] = &unk_279948DD0;
   objc_copyWeak(&v6, &location);
   block[4] = &v8;
-  dispatch_sync(v3, block);
+  dispatch_sync(suppressorQueue, block);
 
-  LOBYTE(v3) = *(v9 + 24);
+  LOBYTE(suppressorQueue) = *(v9 + 24);
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
   _Block_object_dispose(&v8, 8);
-  return v3;
+  return suppressorQueue;
 }
 
 void __65__NPKDoubleClickClientSuppressor_isSuppressingDoubleClickClients__block_invoke(uint64_t a1)
@@ -232,33 +232,33 @@ void __65__NPKDoubleClickClientSuppressor_isSuppressingDoubleClickClients__block
   }
 }
 
-- (void)_acquireSuppressionAssertionIfNeededWithCompletion:(id)a3
+- (void)_acquireSuppressionAssertionIfNeededWithCompletion:(id)completion
 {
-  v6 = a3;
-  v4 = [(NPKDoubleClickClientSuppressor *)self suppressorQueue];
-  dispatch_assert_queue_V2(v4);
+  completionCopy = completion;
+  suppressorQueue = [(NPKDoubleClickClientSuppressor *)self suppressorQueue];
+  dispatch_assert_queue_V2(suppressorQueue);
 
-  v5 = [(NPKDoubleClickClientSuppressor *)self suppressionAssertion];
+  suppressionAssertion = [(NPKDoubleClickClientSuppressor *)self suppressionAssertion];
 
-  if (v5)
+  if (suppressionAssertion)
   {
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
   else
   {
-    [(NPKDoubleClickClientSuppressor *)self _acquireSuppressionAssertionWithCompletion:v6];
+    [(NPKDoubleClickClientSuppressor *)self _acquireSuppressionAssertionWithCompletion:completionCopy];
   }
 }
 
-- (void)_acquireSuppressionAssertionWithCompletion:(id)a3
+- (void)_acquireSuppressionAssertionWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(NPKDoubleClickClientSuppressor *)self suppressorQueue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  suppressorQueue = [(NPKDoubleClickClientSuppressor *)self suppressorQueue];
+  dispatch_assert_queue_V2(suppressorQueue);
 
   v6 = pk_General_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -275,17 +275,17 @@ void __65__NPKDoubleClickClientSuppressor_isSuppressingDoubleClickClients__block
 
   v9 = [NPKDoublePressSuppressionAssertion alloc];
   v10 = [(NPKDoublePressSuppressionAssertion *)v9 initWithQueue:MEMORY[0x277D85CD0]];
-  v11 = [(NPKDoubleClickClientSuppressor *)self suppressionAssertion];
-  [v11 invalidate];
+  suppressionAssertion = [(NPKDoubleClickClientSuppressor *)self suppressionAssertion];
+  [suppressionAssertion invalidate];
 
-  v12 = [(NPKDoubleClickClientSuppressor *)self suppressionRequestTokens];
-  v13 = [v12 count];
+  suppressionRequestTokens = [(NPKDoubleClickClientSuppressor *)self suppressionRequestTokens];
+  v13 = [suppressionRequestTokens count];
 
   if (!v13)
   {
     [(NPKDoublePressSuppressionAssertion *)v10 invalidate];
     v14 = 1;
-    if (!v4)
+    if (!completionCopy)
     {
       goto LABEL_8;
     }
@@ -295,10 +295,10 @@ void __65__NPKDoubleClickClientSuppressor_isSuppressingDoubleClickClients__block
 
   [(NPKDoubleClickClientSuppressor *)self setSuppressionAssertion:v10];
   v14 = 0;
-  if (v4)
+  if (completionCopy)
   {
 LABEL_7:
-    v4[2](v4, v14);
+    completionCopy[2](completionCopy, v14);
   }
 
 LABEL_8:
@@ -306,8 +306,8 @@ LABEL_8:
 
 - (void)_releaseSuppressionAssertion
 {
-  v3 = [(NPKDoubleClickClientSuppressor *)self suppressorQueue];
-  dispatch_assert_queue_V2(v3);
+  suppressorQueue = [(NPKDoubleClickClientSuppressor *)self suppressorQueue];
+  dispatch_assert_queue_V2(suppressorQueue);
 
   v4 = pk_General_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
@@ -322,8 +322,8 @@ LABEL_8:
     }
   }
 
-  v7 = [(NPKDoubleClickClientSuppressor *)self suppressionAssertion];
-  [v7 invalidate];
+  suppressionAssertion = [(NPKDoubleClickClientSuppressor *)self suppressionAssertion];
+  [suppressionAssertion invalidate];
 
   [(NPKDoubleClickClientSuppressor *)self setSuppressionAssertion:0];
 }

@@ -1,14 +1,14 @@
 @interface SKGContactEdge
-+ (id)edgeFromContact:(id)a3 toNode:(id)a4;
++ (id)edgeFromContact:(id)contact toNode:(id)node;
 @end
 
 @implementation SKGContactEdge
 
-+ (id)edgeFromContact:(id)a3 toNode:(id)a4
++ (id)edgeFromContact:(id)contact toNode:(id)node
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [(SKGEdge *)[SKGContactEdge alloc] initWithSourceNode:v5 targetNode:v6];
+  contactCopy = contact;
+  nodeCopy = node;
+  v7 = [(SKGEdge *)[SKGContactEdge alloc] initWithSourceNode:contactCopy targetNode:nodeCopy];
 
   return v7;
 }

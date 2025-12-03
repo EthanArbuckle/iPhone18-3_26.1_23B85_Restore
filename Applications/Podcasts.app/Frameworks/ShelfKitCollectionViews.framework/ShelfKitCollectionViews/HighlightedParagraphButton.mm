@@ -1,29 +1,29 @@
 @interface HighlightedParagraphButton
-- (_TtC23ShelfKitCollectionViewsP33_300F106C73478CB5ADE35ED9D53492A526HighlightedParagraphButton)initWithCoder:(id)a3;
-- (_TtC23ShelfKitCollectionViewsP33_300F106C73478CB5ADE35ED9D53492A526HighlightedParagraphButton)initWithFrame:(CGRect)a3;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
+- (_TtC23ShelfKitCollectionViewsP33_300F106C73478CB5ADE35ED9D53492A526HighlightedParagraphButton)initWithCoder:(id)coder;
+- (_TtC23ShelfKitCollectionViewsP33_300F106C73478CB5ADE35ED9D53492A526HighlightedParagraphButton)initWithFrame:(CGRect)frame;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
 @end
 
 @implementation HighlightedParagraphButton
 
-- (_TtC23ShelfKitCollectionViewsP33_300F106C73478CB5ADE35ED9D53492A526HighlightedParagraphButton)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViewsP33_300F106C73478CB5ADE35ED9D53492A526HighlightedParagraphButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v9 = (&self->super.super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViewsP33_300F106C73478CB5ADE35ED9D53492A526HighlightedParagraphButton_onDismissMenu);
   *v9 = 0;
   v9[1] = 0;
   v12.receiver = self;
   v12.super_class = ObjectType;
-  v10 = [(HighlightedParagraphButton *)&v12 initWithFrame:x, y, width, height];
-  [(HighlightedParagraphButton *)v10 setShowsMenuAsPrimaryAction:1];
-  return v10;
+  height = [(HighlightedParagraphButton *)&v12 initWithFrame:x, y, width, height];
+  [(HighlightedParagraphButton *)height setShowsMenuAsPrimaryAction:1];
+  return height;
 }
 
-- (_TtC23ShelfKitCollectionViewsP33_300F106C73478CB5ADE35ED9D53492A526HighlightedParagraphButton)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViewsP33_300F106C73478CB5ADE35ED9D53492A526HighlightedParagraphButton)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViewsP33_300F106C73478CB5ADE35ED9D53492A526HighlightedParagraphButton_onDismissMenu);
   *v3 = 0;
@@ -33,15 +33,15 @@
   return result;
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
   v14.receiver = self;
   v14.super_class = swift_getObjectType();
-  v8 = a3;
-  v9 = a4;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
   v10 = v14.receiver;
   swift_unknownObjectRetain();
-  [(HighlightedParagraphButton *)&v14 contextMenuInteraction:v8 willEndForConfiguration:v9 animator:a5];
+  [(HighlightedParagraphButton *)&v14 contextMenuInteraction:interactionCopy willEndForConfiguration:configurationCopy animator:animator];
   v11 = *&v10[OBJC_IVAR____TtC23ShelfKitCollectionViewsP33_300F106C73478CB5ADE35ED9D53492A526HighlightedParagraphButton_onDismissMenu];
   if (v11)
   {

@@ -1,33 +1,33 @@
 @interface MPCModelRadioStationTrackGenericObjectBuilder
-- (MPCModelRadioStationTrackGenericObjectBuilder)initWithRequestedProperties:(id)a3;
-- (id)genericObjectForRadioStationTrack:(id)a3 radioStationContainsVideo:(BOOL)a4 containerUniqueID:(id)a5 userIdentity:(id)a6;
+- (MPCModelRadioStationTrackGenericObjectBuilder)initWithRequestedProperties:(id)properties;
+- (id)genericObjectForRadioStationTrack:(id)track radioStationContainsVideo:(BOOL)video containerUniqueID:(id)d userIdentity:(id)identity;
 @end
 
 @implementation MPCModelRadioStationTrackGenericObjectBuilder
 
-- (id)genericObjectForRadioStationTrack:(id)a3 radioStationContainsVideo:(BOOL)a4 containerUniqueID:(id)a5 userIdentity:(id)a6
+- (id)genericObjectForRadioStationTrack:(id)track radioStationContainsVideo:(BOOL)video containerUniqueID:(id)d userIdentity:(id)identity
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  videoCopy = video;
+  trackCopy = track;
+  dCopy = d;
+  identityCopy = identity;
   if (!self->_storePlatformBuilder)
   {
     v13 = objc_alloc(MEMORY[0x1E69707A0]);
-    v14 = [(MPCModelRadioStationTrackGenericObjectBuilder *)self requestedProperties];
-    v15 = [v13 initWithRequestedProperties:v14];
+    requestedProperties = [(MPCModelRadioStationTrackGenericObjectBuilder *)self requestedProperties];
+    v15 = [v13 initWithRequestedProperties:requestedProperties];
     storePlatformBuilder = self->_storePlatformBuilder;
     self->_storePlatformBuilder = v15;
   }
 
   if ((*&self->_requestedSongProperties & 1) == 0)
   {
-    v17 = [(MPCModelRadioStationTrackGenericObjectBuilder *)self requestedProperties];
-    v18 = [v17 relationships];
-    v19 = [v18 objectForKey:*MEMORY[0x1E6970158]];
+    requestedProperties2 = [(MPCModelRadioStationTrackGenericObjectBuilder *)self requestedProperties];
+    relationships = [requestedProperties2 relationships];
+    v19 = [relationships objectForKey:*MEMORY[0x1E6970158]];
 
-    v20 = [v19 properties];
-    if ([v20 containsObject:*MEMORY[0x1E696FFB8]])
+    properties = [v19 properties];
+    if ([properties containsObject:*MEMORY[0x1E696FFB8]])
     {
       v21 = 2;
     }
@@ -39,8 +39,8 @@
 
     *&self->_requestedSongProperties = *&self->_requestedSongProperties & 0xFD | v21;
 
-    v22 = [v19 properties];
-    if ([v22 containsObject:*MEMORY[0x1E6970A88]])
+    properties2 = [v19 properties];
+    if ([properties2 containsObject:*MEMORY[0x1E6970A88]])
     {
       v23 = 4;
     }
@@ -52,14 +52,14 @@
 
     *&self->_requestedSongProperties = *&self->_requestedSongProperties & 0xFB | v23;
 
-    v24 = [v19 relationships];
-    v25 = [v24 objectForKey:*MEMORY[0x1E69701F8]];
+    relationships2 = [v19 relationships];
+    v25 = [relationships2 objectForKey:*MEMORY[0x1E69701F8]];
     v26 = v25;
     if (v25)
     {
       *&self->_requestedSongProperties.playbackPosition |= 1u;
-      v27 = [v25 properties];
-      if ([v27 containsObject:*MEMORY[0x1E696FD88]])
+      properties3 = [v25 properties];
+      if ([properties3 containsObject:*MEMORY[0x1E696FD88]])
       {
         v28 = 2;
       }
@@ -70,7 +70,7 @@
       }
 
       *&self->_requestedSongProperties.playbackPosition = *&self->_requestedSongProperties.playbackPosition & 0xFD | v28;
-      if ([v27 containsObject:*MEMORY[0x1E696FD98]])
+      if ([properties3 containsObject:*MEMORY[0x1E696FD98]])
       {
         v29 = 4;
       }
@@ -81,7 +81,7 @@
       }
 
       *&self->_requestedSongProperties.playbackPosition = *&self->_requestedSongProperties.playbackPosition & 0xFB | v29;
-      if ([v27 containsObject:*MEMORY[0x1E696FD90]])
+      if ([properties3 containsObject:*MEMORY[0x1E696FD90]])
       {
         v30 = 8;
       }
@@ -92,7 +92,7 @@
       }
 
       *&self->_requestedSongProperties.playbackPosition = *&self->_requestedSongProperties.playbackPosition & 0xF7 | v30;
-      if ([v27 containsObject:*MEMORY[0x1E696FDA0]])
+      if ([properties3 containsObject:*MEMORY[0x1E696FDA0]])
       {
         v31 = 16;
       }
@@ -103,7 +103,7 @@
       }
 
       *&self->_requestedSongProperties.playbackPosition = *&self->_requestedSongProperties.playbackPosition & 0xEF | v31;
-      if ([v27 containsObject:*MEMORY[0x1E696FDA8]])
+      if ([properties3 containsObject:*MEMORY[0x1E696FDA8]])
       {
         v32 = 32;
       }
@@ -114,7 +114,7 @@
       }
 
       *&self->_requestedSongProperties.playbackPosition = *&self->_requestedSongProperties.playbackPosition & 0xDF | v32;
-      if ([v27 containsObject:*MEMORY[0x1E696FDB0]])
+      if ([properties3 containsObject:*MEMORY[0x1E696FDB0]])
       {
         v33 = 64;
       }
@@ -125,7 +125,7 @@
       }
 
       *&self->_requestedSongProperties.playbackPosition = *&self->_requestedSongProperties.playbackPosition & 0xBF | v33;
-      if ([v27 containsObject:*MEMORY[0x1E696FDB8]])
+      if ([properties3 containsObject:*MEMORY[0x1E696FDB8]])
       {
         v34 = 0x80;
       }
@@ -141,10 +141,10 @@
     *&self->_requestedSongProperties |= 1u;
   }
 
-  v35 = [v10 storePlatformMetadata];
-  if (v35)
+  storePlatformMetadata = [trackCopy storePlatformMetadata];
+  if (storePlatformMetadata)
   {
-    v36 = [(MPModelStorePlatformMetadataGenericObjectBuilder *)self->_storePlatformBuilder genericObjectForStorePlatformMetadata:v35 radioStationContainsVideo:v8 userIdentity:v12];
+    v36 = [(MPModelStorePlatformMetadataGenericObjectBuilder *)self->_storePlatformBuilder genericObjectForStorePlatformMetadata:storePlatformMetadata radioStationContainsVideo:videoCopy userIdentity:identityCopy];
   }
 
   else
@@ -154,27 +154,27 @@
 
   if ([v36 type] == 1 && (*&self->_requestedSongProperties.playbackPosition & 1) != 0)
   {
-    v37 = [v36 song];
-    v38 = [v37 identifiers];
+    song = [v36 song];
+    identifiers = [song identifiers];
     v47[0] = MEMORY[0x1E69E9820];
     v47[1] = 3221225472;
     v47[2] = __140__MPCModelRadioStationTrackGenericObjectBuilder_genericObjectForRadioStationTrack_radioStationContainsVideo_containerUniqueID_userIdentity___block_invoke;
     v47[3] = &unk_1E8235970;
-    v48 = v11;
-    v39 = v10;
+    v48 = dCopy;
+    v39 = trackCopy;
     v49 = v39;
-    v50 = v35;
-    v51 = v12;
-    v40 = [v38 copyWithSource:@"RadioStationTrack" block:v47];
+    v50 = storePlatformMetadata;
+    v51 = identityCopy;
+    v40 = [identifiers copyWithSource:@"RadioStationTrack" block:v47];
 
-    v41 = [v36 song];
+    song2 = [v36 song];
     v45[0] = MEMORY[0x1E69E9820];
     v45[1] = 3221225472;
     v45[2] = __140__MPCModelRadioStationTrackGenericObjectBuilder_genericObjectForRadioStationTrack_radioStationContainsVideo_containerUniqueID_userIdentity___block_invoke_4;
     v45[3] = &unk_1E82359C0;
     v45[4] = self;
     v46 = v39;
-    v42 = [v41 copyWithIdentifiers:v40 block:v45];
+    v42 = [song2 copyWithIdentifiers:v40 block:v45];
 
     v43 = [MEMORY[0x1E6970670] genericObjectWithModelObject:v42];
 
@@ -345,15 +345,15 @@ void __140__MPCModelRadioStationTrackGenericObjectBuilder_genericObjectForRadioS
   }
 }
 
-- (MPCModelRadioStationTrackGenericObjectBuilder)initWithRequestedProperties:(id)a3
+- (MPCModelRadioStationTrackGenericObjectBuilder)initWithRequestedProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v9.receiver = self;
   v9.super_class = MPCModelRadioStationTrackGenericObjectBuilder;
   v5 = [(MPCModelRadioStationTrackGenericObjectBuilder *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [propertiesCopy copy];
     requestedProperties = v5->_requestedProperties;
     v5->_requestedProperties = v6;
   }

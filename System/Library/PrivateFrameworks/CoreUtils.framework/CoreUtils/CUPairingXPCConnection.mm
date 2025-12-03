@@ -1,19 +1,19 @@
 @interface CUPairingXPCConnection
-- (int)_entitled:(id)a3 state:(BOOL *)a4 label:(id)a5;
+- (int)_entitled:(id)_entitled state:(BOOL *)state label:(id)label;
 - (void)connectionInvalidated;
-- (void)deletePairingIdentityWithOptions:(unint64_t)a3 completion:(id)a4;
-- (void)findPairedPeer:(id)a3 options:(unint64_t)a4 completion:(id)a5;
-- (void)getPairedPeersWithOptions:(unint64_t)a3 completion:(id)a4;
-- (void)getPairingIdentityWithOptions:(unint64_t)a3 completion:(id)a4;
-- (void)removePairedPeer:(id)a3 options:(unint64_t)a4 completion:(id)a5;
-- (void)savePairedPeer:(id)a3 options:(unint64_t)a4 completion:(id)a5;
-- (void)showWithCompletion:(id)a3;
-- (void)startMonitoringWithOptions:(unint64_t)a3;
+- (void)deletePairingIdentityWithOptions:(unint64_t)options completion:(id)completion;
+- (void)findPairedPeer:(id)peer options:(unint64_t)options completion:(id)completion;
+- (void)getPairedPeersWithOptions:(unint64_t)options completion:(id)completion;
+- (void)getPairingIdentityWithOptions:(unint64_t)options completion:(id)completion;
+- (void)removePairedPeer:(id)peer options:(unint64_t)options completion:(id)completion;
+- (void)savePairedPeer:(id)peer options:(unint64_t)options completion:(id)completion;
+- (void)showWithCompletion:(id)completion;
+- (void)startMonitoringWithOptions:(unint64_t)options;
 @end
 
 @implementation CUPairingXPCConnection
 
-- (void)startMonitoringWithOptions:(unint64_t)a3
+- (void)startMonitoringWithOptions:(unint64_t)options
 {
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (gLogCategory_CUPairingDaemon <= 30 && (gLogCategory_CUPairingDaemon != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingDaemon, 0x1Eu)))
@@ -35,10 +35,10 @@
   }
 }
 
-- (void)showWithCompletion:(id)a3
+- (void)showWithCompletion:(id)completion
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (gLogCategory_CUPairingDaemon <= 30 && (gLogCategory_CUPairingDaemon != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingDaemon, 0x1Eu)))
   {
@@ -53,13 +53,13 @@
 
   else
   {
-    v14 = [(CUPairingDaemon *)self->_daemon detailedDescription];
-    if (v14)
+    detailedDescription = [(CUPairingDaemon *)self->_daemon detailedDescription];
+    if (detailedDescription)
     {
-      v15 = v14;
-      if (v4)
+      v15 = detailedDescription;
+      if (completionCopy)
       {
-        v4[2](v4, v14, 0);
+        completionCopy[2](completionCopy, detailedDescription, 0);
       }
 
       goto LABEL_9;
@@ -73,7 +73,7 @@
     LogPrintF(&gLogCategory_CUPairingDaemon, "[CUPairingXPCConnection showWithCompletion:]", 0x3Cu, "### %@ failed: %#m\n", v10, v11, v12, v13, @"Show");
   }
 
-  if (v4)
+  if (completionCopy)
   {
     v17 = MEMORY[0x1E696ABC0];
     v18 = *MEMORY[0x1E696A768];
@@ -90,33 +90,33 @@
     v26[0] = v22;
     v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
     v24 = [v17 errorWithDomain:v18 code:v19 userInfo:v23];
-    (v4)[2](v4, 0, v24);
+    (completionCopy)[2](completionCopy, 0, v24);
   }
 
   v15 = 0;
 LABEL_9:
 }
 
-- (void)removePairedPeer:(id)a3 options:(unint64_t)a4 completion:(id)a5
+- (void)removePairedPeer:(id)peer options:(unint64_t)options completion:(id)completion
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  peerCopy = peer;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (gLogCategory_CUPairingDaemon <= 30 && (gLogCategory_CUPairingDaemon != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingDaemon, 0x1Eu)))
   {
-    v31 = [v8 identifier];
+    identifier = [peerCopy identifier];
     LogPrintF(&gLogCategory_CUPairingDaemon, "[CUPairingXPCConnection removePairedPeer:options:completion:]", 0x1Eu, "%@ %@ %#{flags}\n", v10, v11, v12, v13, @"RemovePairedPeer");
   }
 
-  if ((a4 & 0x138) != 0)
+  if ((options & 0x138) != 0)
   {
     v17 = -6735;
     v18 = 1;
 LABEL_13:
     if (gLogCategory_CUPairingDaemon <= 60 && (gLogCategory_CUPairingDaemon != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingDaemon, 0x3Cu)))
     {
-      v32 = [v8 identifier];
+      identifier2 = [peerCopy identifier];
       LogPrintF(&gLogCategory_CUPairingDaemon, "[CUPairingXPCConnection removePairedPeer:options:completion:]", 0x3Cu, "### %@ %@ %#{flags} failed: %#m\n", v19, v20, v21, v22, @"RemovePairedPeer");
     }
 
@@ -139,7 +139,7 @@ LABEL_13:
       pmEntitledRemoveAdmin = self->_pmEntitledRemoveAdmin;
     }
 
-    v14 = [(CUPairingDaemon *)self->_daemon removePairedPeer:v8 options:a4 removeAdminAllowed:pmEntitledRemoveAdmin];
+    v14 = [(CUPairingDaemon *)self->_daemon removePairedPeer:peerCopy options:options removeAdminAllowed:pmEntitledRemoveAdmin];
   }
 
   v17 = v14;
@@ -150,7 +150,7 @@ LABEL_13:
   }
 
 LABEL_17:
-  if (v9)
+  if (completionCopy)
   {
     if (v18)
     {
@@ -169,39 +169,39 @@ LABEL_17:
       v34[0] = v28;
       v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:&v33 count:1];
       v30 = [v23 errorWithDomain:v24 code:v25 userInfo:v29];
-      v9[2](v9, v30);
+      completionCopy[2](completionCopy, v30);
     }
 
     else
     {
-      v9[2](v9, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 }
 
-- (void)savePairedPeer:(id)a3 options:(unint64_t)a4 completion:(id)a5
+- (void)savePairedPeer:(id)peer options:(unint64_t)options completion:(id)completion
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  peerCopy = peer;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (gLogCategory_CUPairingDaemon <= 30 && (gLogCategory_CUPairingDaemon != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingDaemon, 0x1Eu)))
   {
-    v30 = [v8 identifier];
+    identifier = [peerCopy identifier];
     LogPrintF(&gLogCategory_CUPairingDaemon, "[CUPairingXPCConnection savePairedPeer:options:completion:]", 0x1Eu, "%@ %@ %#{flags}\n", v10, v11, v12, v13, @"SavePairedPeer");
   }
 
-  if ((a4 & 0x138) != 0)
+  if ((options & 0x138) != 0)
   {
     v17 = -6735;
 LABEL_12:
     if (gLogCategory_CUPairingDaemon <= 60 && (gLogCategory_CUPairingDaemon != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingDaemon, 0x3Cu)))
     {
-      v31 = [v8 identifier];
+      identifier2 = [peerCopy identifier];
       LogPrintF(&gLogCategory_CUPairingDaemon, "[CUPairingXPCConnection savePairedPeer:options:completion:]", 0x3Cu, "### %@ %@ %#{flags} failed: %#m\n", v18, v19, v20, v21, @"SavePairedPeer");
     }
 
-    if (v9)
+    if (completionCopy)
     {
       v22 = MEMORY[0x1E696ABC0];
       v23 = *MEMORY[0x1E696A768];
@@ -218,36 +218,36 @@ LABEL_12:
       v33[0] = v27;
       v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:&v32 count:1];
       v29 = [v22 errorWithDomain:v23 code:v24 userInfo:v28];
-      v9[2](v9, v29);
+      completionCopy[2](completionCopy, v29);
     }
 
     goto LABEL_22;
   }
 
   v14 = [(CUPairingXPCConnection *)self _entitled:@"com.apple.PairingManager.Write" state:&self->_pmEntitledWrite label:@"SavePairedPeer"];
-  if (v14 || (!self->_pmEntitledRemoveAdmin ? (-[NSXPCConnection cuValueForEntitlementNoCache:](self->_xpcCnx, "cuValueForEntitlementNoCache:", @"com.apple.PairingManager.RemoveAdmin"), v16 = objc_claimAutoreleasedReturnValue(), self->_pmEntitledRemoveAdmin = [v16 isEqual:MEMORY[0x1E695E118]], v16, pmEntitledRemoveAdmin = self->_pmEntitledRemoveAdmin) : (pmEntitledRemoveAdmin = 1), (v14 = -[CUPairingDaemon savePairedPeer:options:removeAdminAllowed:](self->_daemon, "savePairedPeer:options:removeAdminAllowed:", v8, a4, pmEntitledRemoveAdmin)) != 0))
+  if (v14 || (!self->_pmEntitledRemoveAdmin ? (-[NSXPCConnection cuValueForEntitlementNoCache:](self->_xpcCnx, "cuValueForEntitlementNoCache:", @"com.apple.PairingManager.RemoveAdmin"), v16 = objc_claimAutoreleasedReturnValue(), self->_pmEntitledRemoveAdmin = [v16 isEqual:MEMORY[0x1E695E118]], v16, pmEntitledRemoveAdmin = self->_pmEntitledRemoveAdmin) : (pmEntitledRemoveAdmin = 1), (v14 = -[CUPairingDaemon savePairedPeer:options:removeAdminAllowed:](self->_daemon, "savePairedPeer:options:removeAdminAllowed:", peerCopy, options, pmEntitledRemoveAdmin)) != 0))
   {
     v17 = v14;
     goto LABEL_12;
   }
 
-  if (v9)
+  if (completionCopy)
   {
-    v9[2](v9, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
 LABEL_22:
 }
 
-- (void)findPairedPeer:(id)a3 options:(unint64_t)a4 completion:(id)a5
+- (void)findPairedPeer:(id)peer options:(unint64_t)options completion:(id)completion
 {
   v38[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  peerCopy = peer;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (gLogCategory_CUPairingDaemon <= 30 && (gLogCategory_CUPairingDaemon != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingDaemon, 0x1Eu)))
   {
-    v31 = [v8 identifier];
+    identifier = [peerCopy identifier];
     LogPrintF(&gLogCategory_CUPairingDaemon, "[CUPairingXPCConnection findPairedPeer:options:completion:]", 0x1Eu, "%@ %@ %#{flags}\n", v10, v11, v12, v13, @"FindPairedPeer");
   }
 
@@ -260,7 +260,7 @@ LABEL_24:
     goto LABEL_12;
   }
 
-  if ((a4 & 0x138) != 0)
+  if ((options & 0x138) != 0)
   {
     v14 = [(CUPairingXPCConnection *)self _entitled:@"com.apple.PairingManager.HomeKit" state:&self->_pmEntitledHomeKit label:@"FindPairedPeer"];
     v36 = v14;
@@ -274,9 +274,9 @@ LABEL_24:
       block[2] = __60__CUPairingXPCConnection_findPairedPeer_options_completion___block_invoke;
       block[3] = &unk_1E73A3938;
       block[4] = self;
-      v33 = v8;
-      v35 = a4;
-      v34 = v9;
+      v33 = peerCopy;
+      optionsCopy = options;
+      v34 = completionCopy;
       dispatch_async(v16, block);
 
       v17 = 0;
@@ -286,7 +286,7 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  v17 = [(CUPairingDaemon *)self->_daemon findPairedPeer:v8 options:a4 error:&v36];
+  v17 = [(CUPairingDaemon *)self->_daemon findPairedPeer:peerCopy options:options error:&v36];
   v14 = v36;
   if (!v36 && !v17)
   {
@@ -300,12 +300,12 @@ LABEL_12:
 LABEL_14:
     if (gLogCategory_CUPairingDaemon <= 60 && (gLogCategory_CUPairingDaemon != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingDaemon, 0x3Cu)))
     {
-      v18 = [v8 identifier];
+      identifier2 = [peerCopy identifier];
       LogPrintF(&gLogCategory_CUPairingDaemon, "[CUPairingXPCConnection findPairedPeer:options:completion:]", 0x3Cu, "### %@ %@ %#{flags} failed: %#m\n", v19, v20, v21, v22, @"FindPairedPeer");
     }
   }
 
-  if (v9)
+  if (completionCopy)
   {
     v23 = v36;
     if (v36)
@@ -324,12 +324,12 @@ LABEL_14:
       v38[0] = v28;
       v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v38 forKeys:&v37 count:1];
       v30 = [v24 errorWithDomain:v25 code:v23 userInfo:v29];
-      (*(v9 + 2))(v9, v17, v30);
+      (*(completionCopy + 2))(completionCopy, v17, v30);
     }
 
     else
     {
-      (*(v9 + 2))(v9, v17, 0);
+      (*(completionCopy + 2))(completionCopy, v17, 0);
     }
   }
 
@@ -399,17 +399,17 @@ LABEL_12:
   }
 }
 
-- (void)getPairedPeersWithOptions:(unint64_t)a3 completion:(id)a4
+- (void)getPairedPeersWithOptions:(unint64_t)options completion:(id)completion
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (gLogCategory_CUPairingDaemon <= 30 && (gLogCategory_CUPairingDaemon != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingDaemon, 0x1Eu)))
   {
     LogPrintF(&gLogCategory_CUPairingDaemon, "[CUPairingXPCConnection getPairedPeersWithOptions:completion:]", 0x1Eu, "%@ %#{flags}\n", v7, v8, v9, v10, @"GetPairedPeers");
   }
 
-  if ((a3 & 0x138) != 0)
+  if ((options & 0x138) != 0)
   {
     v11 = 0;
     v20 = -6735;
@@ -421,7 +421,7 @@ LABEL_24:
   v21 = [(CUPairingXPCConnection *)self _entitled:@"com.apple.PairingManager.Read" state:&self->_pmEntitledRead label:@"GetPairedPeers"];
   if (!v21)
   {
-    v11 = [(CUPairingDaemon *)self->_daemon copyPairedPeersWithOptions:a3 error:&v21];
+    v11 = [(CUPairingDaemon *)self->_daemon copyPairedPeersWithOptions:options error:&v21];
     if (v21 || v11)
     {
       if (!v21)
@@ -444,7 +444,7 @@ LABEL_10:
   }
 
 LABEL_14:
-  if (v6)
+  if (completionCopy)
   {
     v12 = v21;
     if (v21)
@@ -463,27 +463,27 @@ LABEL_14:
       v23[0] = v17;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
       v19 = [v13 errorWithDomain:v14 code:v12 userInfo:v18];
-      v6[2](v6, v11, v19);
+      completionCopy[2](completionCopy, v11, v19);
     }
 
     else
     {
-      v6[2](v6, v11, 0);
+      completionCopy[2](completionCopy, v11, 0);
     }
   }
 }
 
-- (void)deletePairingIdentityWithOptions:(unint64_t)a3 completion:(id)a4
+- (void)deletePairingIdentityWithOptions:(unint64_t)options completion:(id)completion
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (gLogCategory_CUPairingDaemon <= 30 && (gLogCategory_CUPairingDaemon != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingDaemon, 0x1Eu)))
   {
     LogPrintF(&gLogCategory_CUPairingDaemon, "[CUPairingXPCConnection deletePairingIdentityWithOptions:completion:]", 0x1Eu, "%@ %#{flags}\n", v7, v8, v9, v10, @"DeletePairingIdentity");
   }
 
-  if ((a3 & 0x138) != 0)
+  if ((options & 0x138) != 0)
   {
     v12 = -6735;
     v13 = 1;
@@ -499,7 +499,7 @@ LABEL_10:
   v11 = [(CUPairingXPCConnection *)self _entitled:@"com.apple.PairingManager.DeleteIdentity" state:&self->_pmEntitledDeleteIdentity label:@"DeletePairingIdentity"];
   if (!v11)
   {
-    v11 = [(CUPairingDaemon *)self->_daemon deleteIdentityWithOptions:a3];
+    v11 = [(CUPairingDaemon *)self->_daemon deleteIdentityWithOptions:options];
   }
 
   v12 = v11;
@@ -510,7 +510,7 @@ LABEL_10:
   }
 
 LABEL_14:
-  if (v6)
+  if (completionCopy)
   {
     if (v13)
     {
@@ -529,20 +529,20 @@ LABEL_14:
       v23[0] = v19;
       v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
       v21 = [v14 errorWithDomain:v15 code:v16 userInfo:v20];
-      v6[2](v6, v21);
+      completionCopy[2](completionCopy, v21);
     }
 
     else
     {
-      v6[2](v6, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 }
 
-- (void)getPairingIdentityWithOptions:(unint64_t)a3 completion:(id)a4
+- (void)getPairingIdentityWithOptions:(unint64_t)options completion:(id)completion
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (gLogCategory_CUPairingDaemon <= 30 && (gLogCategory_CUPairingDaemon != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingDaemon, 0x1Eu)))
   {
@@ -550,7 +550,7 @@ LABEL_14:
   }
 
   v11 = [(CUPairingXPCConnection *)self _entitled:@"com.apple.PairingManager.Read" state:&self->_pmEntitledRead label:@"GetPairingIdentity"];
-  if (v11 || (a3 & 0x138) != 0 && (v11 = [(CUPairingXPCConnection *)self _entitled:@"com.apple.PairingManager.HomeKit" state:&self->_pmEntitledHomeKit label:@"GetPairingIdentity"]) != 0)
+  if (v11 || (options & 0x138) != 0 && (v11 = [(CUPairingXPCConnection *)self _entitled:@"com.apple.PairingManager.HomeKit" state:&self->_pmEntitledHomeKit label:@"GetPairingIdentity"]) != 0)
   {
     v16 = v11;
     if (v11 != -25300 && gLogCategory_CUPairingDaemon <= 60 && (gLogCategory_CUPairingDaemon != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingDaemon, 0x3Cu)))
@@ -558,7 +558,7 @@ LABEL_14:
       LogPrintF(&gLogCategory_CUPairingDaemon, "[CUPairingXPCConnection getPairingIdentityWithOptions:completion:]", 0x3Cu, "### %@ failed: %#m\n", v12, v13, v14, v15, @"GetPairingIdentity");
     }
 
-    if (v6)
+    if (completionCopy)
     {
       v17 = MEMORY[0x1E696ABC0];
       v18 = *MEMORY[0x1E696A768];
@@ -575,21 +575,21 @@ LABEL_14:
       v26[0] = v22;
       v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
       v24 = [v17 errorWithDomain:v18 code:v19 userInfo:v23];
-      v6[2](v6, 0, v24);
+      completionCopy[2](completionCopy, 0, v24);
     }
   }
 
   else
   {
-    [(CUPairingDaemon *)self->_daemon getIdentityWithOptions:a3 completionHandler:v6];
+    [(CUPairingDaemon *)self->_daemon getIdentityWithOptions:options completionHandler:completionCopy];
   }
 }
 
-- (int)_entitled:(id)a3 state:(BOOL *)a4 label:(id)a5
+- (int)_entitled:(id)_entitled state:(BOOL *)state label:(id)label
 {
-  v8 = a3;
-  v9 = a5;
-  if (*a4 || (-[NSXPCConnection cuValueForEntitlementNoCache:](self->_xpcCnx, "cuValueForEntitlementNoCache:", v8), v10 = objc_claimAutoreleasedReturnValue(), *a4 = [v10 isEqual:MEMORY[0x1E695E118]], v10, *a4) || -[CUPairingDaemon testMode](self->_daemon, "testMode"))
+  _entitledCopy = _entitled;
+  labelCopy = label;
+  if (*state || (-[NSXPCConnection cuValueForEntitlementNoCache:](self->_xpcCnx, "cuValueForEntitlementNoCache:", _entitledCopy), v10 = objc_claimAutoreleasedReturnValue(), *state = [v10 isEqual:MEMORY[0x1E695E118]], v10, *state) || -[CUPairingDaemon testMode](self->_daemon, "testMode"))
   {
     v11 = 0;
   }
@@ -599,8 +599,8 @@ LABEL_14:
     v11 = -71168;
     if (gLogCategory_CUPairingDaemon <= 60 && (gLogCategory_CUPairingDaemon != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingDaemon, 0x3Cu)))
     {
-      v13 = [(NSXPCConnection *)self->_xpcCnx processIdentifier];
-      LogPrintF(&gLogCategory_CUPairingDaemon, "[CUPairingXPCConnection _entitled:state:label:]", 0x3Cu, "### %#{pid} lacks '%@' entitlement to use %@\n", v14, v15, v16, v17, v13);
+      processIdentifier = [(NSXPCConnection *)self->_xpcCnx processIdentifier];
+      LogPrintF(&gLogCategory_CUPairingDaemon, "[CUPairingXPCConnection _entitled:state:label:]", 0x3Cu, "### %#{pid} lacks '%@' entitlement to use %@\n", v14, v15, v16, v17, processIdentifier);
     }
   }
 
@@ -612,8 +612,8 @@ LABEL_14:
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (gLogCategory_CUPairingDaemon <= 20 && (gLogCategory_CUPairingDaemon != -1 || _LogCategory_Initialize(&gLogCategory_CUPairingDaemon, 0x14u)))
   {
-    v3 = [(NSXPCConnection *)self->_xpcCnx processIdentifier];
-    LogPrintF(&gLogCategory_CUPairingDaemon, "[CUPairingXPCConnection connectionInvalidated]", 0x14u, "XPC connection invalidated from %#{pid}\n", v4, v5, v6, v7, v3);
+    processIdentifier = [(NSXPCConnection *)self->_xpcCnx processIdentifier];
+    LogPrintF(&gLogCategory_CUPairingDaemon, "[CUPairingXPCConnection connectionInvalidated]", 0x14u, "XPC connection invalidated from %#{pid}\n", v4, v5, v6, v7, processIdentifier);
   }
 }
 

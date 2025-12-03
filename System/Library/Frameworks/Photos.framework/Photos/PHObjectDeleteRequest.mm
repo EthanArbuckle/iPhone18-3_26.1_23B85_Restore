@@ -1,37 +1,37 @@
 @interface PHObjectDeleteRequest
-+ (id)_deleteRequestsForObjects:(id)a3;
-+ (id)deleteRequestForObject:(id)a3;
-+ (id)deleteRequestsForObjects:(id)a3 ofType:(Class)a4 forSelector:(SEL)a5;
++ (id)_deleteRequestsForObjects:(id)objects;
++ (id)deleteRequestForObject:(id)object;
++ (id)deleteRequestsForObjects:(id)objects ofType:(Class)type forSelector:(SEL)selector;
 - (NSString)managedEntityName;
 - (PHObjectDeleteRequest)init;
-- (PHObjectDeleteRequest)initWithUUID:(id)a3 objectID:(id)a4;
-- (PHObjectDeleteRequest)initWithUUID:(id)a3 request:(id)a4 objectID:(id)a5;
-- (PHObjectDeleteRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5;
+- (PHObjectDeleteRequest)initWithUUID:(id)d objectID:(id)iD;
+- (PHObjectDeleteRequest)initWithUUID:(id)d request:(id)request objectID:(id)iD;
+- (PHObjectDeleteRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization;
 - (id)initForNewObject;
-- (void)encodeToXPCDict:(id)a3;
+- (void)encodeToXPCDict:(id)dict;
 @end
 
 @implementation PHObjectDeleteRequest
 
 - (NSString)managedEntityName
 {
-  v2 = [(NSManagedObjectID *)self->_objectID entity];
-  v3 = [v2 name];
+  entity = [(NSManagedObjectID *)self->_objectID entity];
+  name = [entity name];
 
-  return v3;
+  return name;
 }
 
-- (void)encodeToXPCDict:(id)a3
+- (void)encodeToXPCDict:(id)dict
 {
-  v4 = a3;
-  v5 = [(PHObjectDeleteRequest *)self uuid];
+  dictCopy = dict;
+  uuid = [(PHObjectDeleteRequest *)self uuid];
   PLXPCDictionarySetString();
 
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
   PLXPCDictionarySetString();
 
-  v8 = [(PHObjectDeleteRequest *)self objectID];
+  objectID = [(PHObjectDeleteRequest *)self objectID];
   PLXPCDictionarySetManagedObjectID();
 }
 
@@ -41,13 +41,13 @@
   objc_exception_throw(v2);
 }
 
-- (PHObjectDeleteRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5
+- (PHObjectDeleteRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v10 persistentStoreCoordinator];
-  v12 = xpc_dictionary_get_value(v8, "objectID");
+  dictCopy = dict;
+  authorizationCopy = authorization;
+  requestCopy = request;
+  persistentStoreCoordinator = [requestCopy persistentStoreCoordinator];
+  v12 = xpc_dictionary_get_value(dictCopy, "objectID");
   if (v12)
   {
     v13 = PLManagedObjectIDFromXPCValue();
@@ -59,18 +59,18 @@
   }
 
   v14 = PLStringFromXPCDictionary();
-  v15 = [(PHObjectDeleteRequest *)self initWithUUID:v14 request:v10 objectID:v13];
+  v15 = [(PHObjectDeleteRequest *)self initWithUUID:v14 request:requestCopy objectID:v13];
 
   if (v15)
   {
-    v15->_clientEntitled = [v9 photoKitEntitled];
-    v16 = [v9 trustedCallerDisplayName];
+    v15->_clientEntitled = [authorizationCopy photoKitEntitled];
+    trustedCallerDisplayName = [authorizationCopy trustedCallerDisplayName];
     clientName = v15->_clientName;
-    v15->_clientName = v16;
+    v15->_clientName = trustedCallerDisplayName;
 
-    v18 = [v9 trustedCallerBundleID];
+    trustedCallerBundleID = [authorizationCopy trustedCallerBundleID];
     clientBundleID = v15->_clientBundleID;
-    v15->_clientBundleID = v18;
+    v15->_clientBundleID = trustedCallerBundleID;
   }
 
   return v15;
@@ -82,45 +82,45 @@
   objc_exception_throw(v2);
 }
 
-- (PHObjectDeleteRequest)initWithUUID:(id)a3 request:(id)a4 objectID:(id)a5
+- (PHObjectDeleteRequest)initWithUUID:(id)d request:(id)request objectID:(id)iD
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  requestCopy = request;
+  iDCopy = iD;
   v15.receiver = self;
   v15.super_class = PHObjectDeleteRequest;
   v12 = [(PHChangeRequest *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_uuid, a3);
-    objc_storeStrong(&v13->_objectID, a5);
-    [v10 recordDeleteRequest:v13];
+    objc_storeStrong(&v12->_uuid, d);
+    objc_storeStrong(&v13->_objectID, iD);
+    [requestCopy recordDeleteRequest:v13];
   }
 
   return v13;
 }
 
-- (PHObjectDeleteRequest)initWithUUID:(id)a3 objectID:(id)a4
+- (PHObjectDeleteRequest)initWithUUID:(id)d objectID:(id)iD
 {
-  v6 = a4;
-  v7 = a3;
+  iDCopy = iD;
+  dCopy = d;
   v8 = +[PHPhotoLibrary photoLibraryForCurrentTransaction];
-  v9 = [(PHObjectDeleteRequest *)self initWithUUID:v7 request:v8 objectID:v6];
+  v9 = [(PHObjectDeleteRequest *)self initWithUUID:dCopy request:v8 objectID:iDCopy];
 
   return v9;
 }
 
-+ (id)_deleteRequestsForObjects:(id)a3
++ (id)_deleteRequestsForObjects:(id)objects
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  objectsCopy = objects;
+  array = [MEMORY[0x1E695DF70] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = objectsCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -135,8 +135,8 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [a1 deleteRequestForObject:{*(*(&v13 + 1) + 8 * i), v13}];
-        [v5 _pl_addNonNilObject:v11];
+        v11 = [self deleteRequestForObject:{*(*(&v13 + 1) + 8 * i), v13}];
+        [array _pl_addNonNilObject:v11];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -145,27 +145,27 @@
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
-+ (id)deleteRequestsForObjects:(id)a3 ofType:(Class)a4 forSelector:(SEL)a5
++ (id)deleteRequestsForObjects:(id)objects ofType:(Class)type forSelector:(SEL)selector
 {
-  v8 = a3;
+  objectsCopy = objects;
   +[PHPhotoLibrary assertTransaction];
-  [PHObject assertAllObjects:v8 forSelector:a2 areOfType:a4];
-  v9 = [a1 _deleteRequestsForObjects:v8];
+  [PHObject assertAllObjects:objectsCopy forSelector:a2 areOfType:type];
+  v9 = [self _deleteRequestsForObjects:objectsCopy];
 
   return v9;
 }
 
-+ (id)deleteRequestForObject:(id)a3
++ (id)deleteRequestForObject:(id)object
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [v4 uuid];
-  v7 = [v4 objectID];
+  objectCopy = object;
+  v5 = [self alloc];
+  uuid = [objectCopy uuid];
+  objectID = [objectCopy objectID];
 
-  v8 = [v5 initWithUUID:v6 objectID:v7];
+  v8 = [v5 initWithUUID:uuid objectID:objectID];
 
   return v8;
 }

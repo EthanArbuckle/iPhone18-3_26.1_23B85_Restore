@@ -1,43 +1,43 @@
 @interface ASCArtwork
-- (ASCArtwork)initWithCoder:(id)a3;
-- (ASCArtwork)initWithURLTemplate:(id)a3 width:(double)a4 height:(double)a5 decoration:(id)a6 preferredCrop:(id)a7 preferredFormat:(id)a8;
-- (BOOL)isEqual:(id)a3;
+- (ASCArtwork)initWithCoder:(id)coder;
+- (ASCArtwork)initWithURLTemplate:(id)template width:(double)width height:(double)height decoration:(id)decoration preferredCrop:(id)crop preferredFormat:(id)format;
+- (BOOL)isEqual:(id)equal;
 - (NSString)URLTemplate;
 - (id)description;
-- (id)makeURLWithSubstitutions:(id)a3;
+- (id)makeURLWithSubstitutions:(id)substitutions;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCArtwork
 
-- (ASCArtwork)initWithURLTemplate:(id)a3 width:(double)a4 height:(double)a5 decoration:(id)a6 preferredCrop:(id)a7 preferredFormat:(id)a8
+- (ASCArtwork)initWithURLTemplate:(id)template width:(double)width height:(double)height decoration:(id)decoration preferredCrop:(id)crop preferredFormat:(id)format
 {
-  v14 = a3;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  templateCopy = template;
+  decorationCopy = decoration;
+  cropCopy = crop;
+  formatCopy = format;
   +[ASCEligibility assertCurrentProcessEligibility];
   v28.receiver = self;
   v28.super_class = ASCArtwork;
   v18 = [(ASCArtwork *)&v28 init];
   if (v18)
   {
-    v19 = [v14 copy];
+    v19 = [templateCopy copy];
     dataSource = v18->_dataSource;
     v18->_dataSource = v19;
 
-    v18->_width = a4;
-    v18->_height = a5;
-    v21 = [v15 copy];
+    v18->_width = width;
+    v18->_height = height;
+    v21 = [decorationCopy copy];
     decoration = v18->_decoration;
     v18->_decoration = v21;
 
-    v23 = [v16 copy];
+    v23 = [cropCopy copy];
     preferredCrop = v18->_preferredCrop;
     v18->_preferredCrop = v23;
 
-    v25 = [v17 copy];
+    v25 = [formatCopy copy];
     preferredFormat = v18->_preferredFormat;
     v18->_preferredFormat = v25;
   }
@@ -45,20 +45,20 @@
   return v18;
 }
 
-- (ASCArtwork)initWithCoder:(id)a3
+- (ASCArtwork)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [objc_alloc(MEMORY[0x277CBEB98]) initWithObjects:{objc_opt_class(), 0}];
-  v6 = [v4 decodeObjectOfClasses:v5 forKey:@"dataSource"];
+  v6 = [coderCopy decodeObjectOfClasses:v5 forKey:@"dataSource"];
   if (v6)
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"decoration"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"decoration"];
     if (v7)
     {
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"preferredCrop"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"preferredCrop"];
       if (v8)
       {
-        v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"preferredFormat"];
+        v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"preferredFormat"];
         if (v9)
         {
           v48.receiver = self;
@@ -68,9 +68,9 @@
           if (v10)
           {
             objc_storeStrong(&v10->_dataSource, v6);
-            [v4 decodeDoubleForKey:@"width"];
+            [coderCopy decodeDoubleForKey:@"width"];
             v11->_width = v12;
-            [v4 decodeDoubleForKey:@"height"];
+            [coderCopy decodeDoubleForKey:@"height"];
             v11->_height = v13;
             v11->_isPortrait = v13 >= v11->_width;
             objc_storeStrong(&v11->_decoration, v7);
@@ -79,7 +79,7 @@
           }
 
           self = v11;
-          v14 = self;
+          selfCopy = self;
         }
 
         else
@@ -90,7 +90,7 @@
             [(ASCArtwork *)v39 initWithCoder:v40, v41, v42, v43, v44, v45, v46];
           }
 
-          v14 = 0;
+          selfCopy = 0;
         }
       }
 
@@ -102,7 +102,7 @@
           [(ASCArtwork *)v31 initWithCoder:v32, v33, v34, v35, v36, v37, v38];
         }
 
-        v14 = 0;
+        selfCopy = 0;
       }
     }
 
@@ -114,7 +114,7 @@
         [(ASCArtwork *)v23 initWithCoder:v24, v25, v26, v27, v28, v29, v30];
       }
 
-      v14 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -126,41 +126,41 @@
       [(ASCArtwork *)v15 initWithCoder:v16, v17, v18, v19, v20, v21, v22];
     }
 
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ASCArtwork *)self dataSource];
-  [v4 encodeObject:v5 forKey:@"dataSource"];
+  coderCopy = coder;
+  dataSource = [(ASCArtwork *)self dataSource];
+  [coderCopy encodeObject:dataSource forKey:@"dataSource"];
 
   [(ASCArtwork *)self width];
-  [v4 encodeDouble:@"width" forKey:?];
+  [coderCopy encodeDouble:@"width" forKey:?];
   [(ASCArtwork *)self height];
-  [v4 encodeDouble:@"height" forKey:?];
-  v6 = [(ASCArtwork *)self decoration];
-  [v4 encodeObject:v6 forKey:@"decoration"];
+  [coderCopy encodeDouble:@"height" forKey:?];
+  decoration = [(ASCArtwork *)self decoration];
+  [coderCopy encodeObject:decoration forKey:@"decoration"];
 
-  v7 = [(ASCArtwork *)self preferredCrop];
-  [v4 encodeObject:v7 forKey:@"preferredCrop"];
+  preferredCrop = [(ASCArtwork *)self preferredCrop];
+  [coderCopy encodeObject:preferredCrop forKey:@"preferredCrop"];
 
-  v8 = [(ASCArtwork *)self preferredFormat];
-  [v4 encodeObject:v8 forKey:@"preferredFormat"];
+  preferredFormat = [(ASCArtwork *)self preferredFormat];
+  [coderCopy encodeObject:preferredFormat forKey:@"preferredFormat"];
 }
 
 - (NSString)URLTemplate
 {
   objc_opt_class();
-  v3 = [(ASCArtwork *)self dataSource];
-  if (v3)
+  dataSource = [(ASCArtwork *)self dataSource];
+  if (dataSource)
   {
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
+      v4 = dataSource;
     }
 
     else
@@ -192,33 +192,33 @@
 - (unint64_t)hash
 {
   v3 = objc_alloc_init(ASCHasher);
-  v4 = [(ASCArtwork *)self dataSource];
-  [(ASCHasher *)v3 combineObject:v4];
+  dataSource = [(ASCArtwork *)self dataSource];
+  [(ASCHasher *)v3 combineObject:dataSource];
 
   [(ASCArtwork *)self width];
   [(ASCHasher *)v3 combineDouble:?];
   [(ASCArtwork *)self height];
   [(ASCHasher *)v3 combineDouble:?];
-  v5 = [(ASCArtwork *)self decoration];
-  [(ASCHasher *)v3 combineObject:v5];
+  decoration = [(ASCArtwork *)self decoration];
+  [(ASCHasher *)v3 combineObject:decoration];
 
-  v6 = [(ASCArtwork *)self preferredCrop];
-  [(ASCHasher *)v3 combineObject:v6];
+  preferredCrop = [(ASCArtwork *)self preferredCrop];
+  [(ASCHasher *)v3 combineObject:preferredCrop];
 
-  v7 = [(ASCArtwork *)self preferredFormat];
-  [(ASCHasher *)v3 combineObject:v7];
+  preferredFormat = [(ASCArtwork *)self preferredFormat];
+  [(ASCHasher *)v3 combineObject:preferredFormat];
 
-  v8 = [(ASCHasher *)v3 finalizeHash];
-  return v8;
+  finalizeHash = [(ASCHasher *)v3 finalizeHash];
+  return finalizeHash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self != v4)
+  equalCopy = equal;
+  if (self != equalCopy)
   {
     objc_opt_class();
-    v5 = v4;
+    v5 = equalCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -247,18 +247,18 @@ LABEL_28:
       goto LABEL_29;
     }
 
-    v9 = [(ASCArtwork *)self dataSource];
-    v10 = [(ASCArtwork *)v8 dataSource];
-    v11 = v10;
-    if (v9 && v10)
+    dataSource = [(ASCArtwork *)self dataSource];
+    dataSource2 = [(ASCArtwork *)v8 dataSource];
+    v11 = dataSource2;
+    if (dataSource && dataSource2)
     {
-      if (![v9 isEqual:v10])
+      if (![dataSource isEqual:dataSource2])
       {
         goto LABEL_26;
       }
     }
 
-    else if (v9 != v10)
+    else if (dataSource != dataSource2)
     {
 LABEL_26:
       v7 = 0;
@@ -283,40 +283,40 @@ LABEL_27:
       goto LABEL_26;
     }
 
-    v18 = [(ASCArtwork *)self decoration];
-    v19 = [(ASCArtwork *)v8 decoration];
-    v20 = v19;
-    if (v18 && v19)
+    decoration = [(ASCArtwork *)self decoration];
+    decoration2 = [(ASCArtwork *)v8 decoration];
+    v20 = decoration2;
+    if (decoration && decoration2)
     {
-      if ([v18 isEqual:v19])
+      if ([decoration isEqual:decoration2])
       {
 LABEL_20:
-        v21 = [(ASCArtwork *)self preferredCrop];
-        v22 = [(ASCArtwork *)v8 preferredCrop];
-        v23 = v22;
-        if (v21 && v22)
+        preferredCrop = [(ASCArtwork *)self preferredCrop];
+        preferredCrop2 = [(ASCArtwork *)v8 preferredCrop];
+        v23 = preferredCrop2;
+        if (preferredCrop && preferredCrop2)
         {
-          if ([v21 isEqual:v22])
+          if ([preferredCrop isEqual:preferredCrop2])
           {
             goto LABEL_23;
           }
         }
 
-        else if (v21 == v22)
+        else if (preferredCrop == preferredCrop2)
         {
 LABEL_23:
-          v24 = [(ASCArtwork *)self preferredFormat];
-          v25 = [(ASCArtwork *)v8 preferredFormat];
-          v26 = v25;
-          v28 = v24;
-          if (v24 && v25)
+          preferredFormat = [(ASCArtwork *)self preferredFormat];
+          preferredFormat2 = [(ASCArtwork *)v8 preferredFormat];
+          v26 = preferredFormat2;
+          v28 = preferredFormat;
+          if (preferredFormat && preferredFormat2)
           {
-            v7 = [v24 isEqual:v25];
+            v7 = [preferredFormat isEqual:preferredFormat2];
           }
 
           else
           {
-            v7 = v24 == v25;
+            v7 = preferredFormat == preferredFormat2;
           }
 
           goto LABEL_36;
@@ -329,7 +329,7 @@ LABEL_36:
       }
     }
 
-    else if (v18 == v19)
+    else if (decoration == decoration2)
     {
       goto LABEL_20;
     }
@@ -349,32 +349,32 @@ LABEL_29:
 - (id)description
 {
   v3 = [[ASCDescriber alloc] initWithObject:self];
-  v4 = [(ASCArtwork *)self URLTemplate];
-  [(ASCDescriber *)v3 addObject:v4 withName:@"URLTemplate"];
+  uRLTemplate = [(ASCArtwork *)self URLTemplate];
+  [(ASCDescriber *)v3 addObject:uRLTemplate withName:@"URLTemplate"];
 
   [(ASCArtwork *)self width];
   [(ASCDescriber *)v3 addDouble:@"width" withName:?];
   [(ASCArtwork *)self height];
   [(ASCDescriber *)v3 addDouble:@"height" withName:?];
-  v5 = [(ASCArtwork *)self decoration];
-  [(ASCDescriber *)v3 addObject:v5 withName:@"decoration"];
+  decoration = [(ASCArtwork *)self decoration];
+  [(ASCDescriber *)v3 addObject:decoration withName:@"decoration"];
 
-  v6 = [(ASCArtwork *)self preferredCrop];
-  [(ASCDescriber *)v3 addObject:v6 withName:@"preferredCrop"];
+  preferredCrop = [(ASCArtwork *)self preferredCrop];
+  [(ASCDescriber *)v3 addObject:preferredCrop withName:@"preferredCrop"];
 
-  v7 = [(ASCArtwork *)self preferredFormat];
-  [(ASCDescriber *)v3 addObject:v7 withName:@"preferredFormat"];
+  preferredFormat = [(ASCArtwork *)self preferredFormat];
+  [(ASCDescriber *)v3 addObject:preferredFormat withName:@"preferredFormat"];
 
-  v8 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v8;
+  return finalizeDescription;
 }
 
-- (id)makeURLWithSubstitutions:(id)a3
+- (id)makeURLWithSubstitutions:(id)substitutions
 {
-  v4 = a3;
-  v5 = [(ASCArtwork *)self URLTemplate];
-  v6 = [v5 mutableCopy];
+  substitutionsCopy = substitutions;
+  uRLTemplate = [(ASCArtwork *)self URLTemplate];
+  v6 = [uRLTemplate mutableCopy];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -382,7 +382,7 @@ LABEL_29:
   v10[3] = &unk_2784B14C0;
   v11 = v6;
   v7 = v6;
-  [v4 enumerateKeysAndObjectsUsingBlock:v10];
+  [substitutionsCopy enumerateKeysAndObjectsUsingBlock:v10];
 
   v8 = [MEMORY[0x277CBEBC0] URLWithString:v7];
 

@@ -1,18 +1,18 @@
 @interface BNPendingDequeuePromise
-- (BNPendingDequeuePromise)initWithPostingContext:(id)a3 dequeueBlock:(id)a4;
+- (BNPendingDequeuePromise)initWithPostingContext:(id)context dequeueBlock:(id)block;
 - (void)dequeue;
 @end
 
 @implementation BNPendingDequeuePromise
 
-- (BNPendingDequeuePromise)initWithPostingContext:(id)a3 dequeueBlock:(id)a4
+- (BNPendingDequeuePromise)initWithPostingContext:(id)context dequeueBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  contextCopy = context;
+  blockCopy = block;
+  v10 = blockCopy;
+  if (contextCopy)
   {
-    if (v9)
+    if (blockCopy)
     {
       goto LABEL_3;
     }
@@ -35,7 +35,7 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_postingContext, a3);
+    objc_storeStrong(&v11->_postingContext, context);
     v13 = [v10 copy];
     dequeueBlock = v12->_dequeueBlock;
     v12->_dequeueBlock = v13;

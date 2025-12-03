@@ -1,16 +1,16 @@
 @interface PushConnection
 - (NSString)description;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier;
 @end
 
 @implementation PushConnection
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v5 = a4;
-  v6 = sub_100342358([PushRawMessage alloc], v5);
+  messageCopy = message;
+  v6 = sub_100342358([PushRawMessage alloc], messageCopy);
 
   v7 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -56,26 +56,26 @@ LABEL_12:
   sub_1001D4048(PushConnection, v6, 2);
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  v6 = a4;
+  tokenCopy = token;
   appStoreMessageHistory = self->_appStoreMessageHistory;
   if (appStoreMessageHistory)
   {
-    objc_setProperty_atomic_copy(appStoreMessageHistory, v5, v6, 32);
+    objc_setProperty_atomic_copy(appStoreMessageHistory, v5, tokenCopy, 32);
   }
 
   v8 = objc_alloc_init(_TtC9appstored6LogKey);
   currentToken = self->_currentToken;
   v10 = ASDLogHandleForCategory();
   v11 = v10;
-  if (currentToken && currentToken == v6)
+  if (currentToken && currentToken == tokenCopy)
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v12 = objc_opt_class();
       v13 = v12;
-      v14 = sub_100229BF8(v6);
+      v14 = sub_100229BF8(tokenCopy);
       environment = self->_environment;
       v20 = 138544130;
       v21 = v12;
@@ -95,7 +95,7 @@ LABEL_12:
     {
       v16 = objc_opt_class();
       v17 = v16;
-      v18 = sub_100229BF8(v6);
+      v18 = sub_100229BF8(tokenCopy);
       v19 = self->_environment;
       v20 = 138544130;
       v21 = v16;
@@ -113,35 +113,35 @@ LABEL_12:
   }
 }
 
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier
 {
-  v8 = a4;
-  v9 = a5;
+  tokenCopy = token;
+  topicCopy = topic;
   v10 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = objc_opt_class();
     v12 = v11;
-    v13 = sub_100229BF8(v8);
+    v13 = sub_100229BF8(tokenCopy);
     environment = self->_environment;
     v19 = 138544130;
     v20 = v11;
     v21 = 2114;
     v22 = v13;
     v23 = 2114;
-    v24 = v9;
+    v24 = topicCopy;
     v25 = 2114;
     v26 = environment;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "[%{public}@] Received new token: %{public}@ for topic: %{public}@ environment: %{public}@", &v19, 0x2Au);
   }
 
-  v16 = sub_100342434(PushRawMessage, v9);
+  v16 = sub_100342434(PushRawMessage, topicCopy);
   if (v16 == 2)
   {
     testFlightMessageHistory = self->_testFlightMessageHistory;
     if (testFlightMessageHistory)
     {
-      objc_setProperty_atomic_copy(testFlightMessageHistory, v15, v8, 32);
+      objc_setProperty_atomic_copy(testFlightMessageHistory, v15, tokenCopy, 32);
     }
   }
 
@@ -153,14 +153,14 @@ LABEL_12:
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 LABEL_8:
-  [WeakRetained pushConnection:self didReceiveToken:v8 forTopic:v16];
+  [WeakRetained pushConnection:self didReceiveToken:tokenCopy forTopic:v16];
 }
 
 - (NSString)description
 {
   environment = self->_environment;
-  v3 = [(APSConnection *)self->_connection publicToken];
-  v4 = sub_100229CF0(v3);
+  publicToken = [(APSConnection *)self->_connection publicToken];
+  v4 = sub_100229CF0(publicToken);
   v5 = [NSString stringWithFormat:@"%@/%@", environment, v4];
 
   return v5;

@@ -1,9 +1,9 @@
 @interface SLHighlightDisambiguationCell
 + (id)reuseIdentifier;
-- (SLHighlightDisambiguationCell)initWithFrame:(CGRect)a3;
+- (SLHighlightDisambiguationCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)updateWithAttribution:(id)a3;
+- (void)updateWithAttribution:(id)attribution;
 @end
 
 @implementation SLHighlightDisambiguationCell
@@ -15,20 +15,20 @@
   return NSStringFromClass(v2);
 }
 
-- (SLHighlightDisambiguationCell)initWithFrame:(CGRect)a3
+- (SLHighlightDisambiguationCell)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = SLHighlightDisambiguationCell;
-  return [(SLHighlightDisambiguationCell *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  return [(SLHighlightDisambiguationCell *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
-- (void)updateWithAttribution:(id)a3
+- (void)updateWithAttribution:(id)attribution
 {
-  v5 = a3;
-  if (self->_attribution != v5)
+  attributionCopy = attribution;
+  if (self->_attribution != attributionCopy)
   {
-    v10 = v5;
-    objc_storeStrong(&self->_attribution, a3);
+    v10 = attributionCopy;
+    objc_storeStrong(&self->_attribution, attribution);
     expandedAttributionView = self->_expandedAttributionView;
     if (expandedAttributionView)
     {
@@ -39,11 +39,11 @@
     v8 = self->_expandedAttributionView;
     self->_expandedAttributionView = v7;
 
-    v9 = [(SLHighlightDisambiguationCell *)self expandedAttributionView];
-    [(SLHighlightDisambiguationCell *)self addSubview:v9];
+    expandedAttributionView = [(SLHighlightDisambiguationCell *)self expandedAttributionView];
+    [(SLHighlightDisambiguationCell *)self addSubview:expandedAttributionView];
 
     [(SLHighlightDisambiguationCell *)self setNeedsLayout];
-    v5 = v10;
+    attributionCopy = v10;
   }
 }
 

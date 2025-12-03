@@ -1,8 +1,8 @@
 @interface NUICollectionViewContainerCell
 + (Class)containerViewClass;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (NUICollectionViewContainerCell)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (NUICollectionViewContainerCell)initWithFrame:(CGRect)frame;
 @end
 
 @implementation NUICollectionViewContainerCell
@@ -19,17 +19,17 @@
   return 0;
 }
 
-- (NUICollectionViewContainerCell)initWithFrame:(CGRect)a3
+- (NUICollectionViewContainerCell)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = NUICollectionViewContainerCell;
-  v3 = [(NUICollectionViewContainerCell *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NUICollectionViewContainerCell *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(NUICollectionViewContainerCell *)v3 contentView];
+    contentView = [(NUICollectionViewContainerCell *)v3 contentView];
     containerView = v4->_containerView;
-    v4->_containerView = v5;
+    v4->_containerView = contentView;
 
     [(UIView *)v4->_containerView setInvalidatingIntrinsicContentSizeAlsoInvalidatesSuperview:1];
     [(NUIContainerView *)v4->_containerView setLayoutMarginsRelativeArrangement:1];
@@ -45,11 +45,11 @@
   return v4;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  if (a4 > 50.0)
+  if (priority > 50.0)
   {
-    width = a3.width;
+    width = size.width;
   }
 
   else
@@ -57,9 +57,9 @@
     width = 0.0;
   }
 
-  if (a5 > 50.0)
+  if (fittingPriority > 50.0)
   {
-    height = a3.height;
+    height = size.height;
   }
 
   else
@@ -67,9 +67,9 @@
     height = 0.0;
   }
 
-  v9 = [(NUICollectionViewContainerCell *)self containerView:a3.width];
-  *&v10 = a4;
-  *&v11 = a5;
+  v9 = [(NUICollectionViewContainerCell *)self containerView:size.width];
+  *&v10 = priority;
+  *&v11 = fittingPriority;
   [v9 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v10, v11}];
   v13 = v12;
   v15 = v14;
@@ -81,12 +81,12 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(NUICollectionViewContainerCell *)self containerView];
-  [v5 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  containerView = [(NUICollectionViewContainerCell *)self containerView];
+  [containerView sizeThatFits:{width, height}];
   v7 = v6;
   v9 = v8;
 

@@ -43,18 +43,18 @@ LABEL_8:
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D01160]);
-    v5 = [v3 latitude];
-    [v5 doubleValue];
+    latitude = [v3 latitude];
+    [latitude doubleValue];
     v7 = v6;
-    v8 = [v3 longitude];
-    [v8 doubleValue];
+    longitude = [v3 longitude];
+    [longitude doubleValue];
     v10 = v9;
-    v11 = [v3 uncertainty];
-    [v11 doubleValue];
+    uncertainty = [v3 uncertainty];
+    [uncertainty doubleValue];
     v13 = v12;
-    v14 = [v3 creationDate];
-    v15 = [v3 referenceFrame];
-    v16 = [v4 initWithLatitude:v14 longitude:objc_msgSend(v15 horizontalUncertainty:"intValue") date:v7 referenceFrame:{v10, v13}];
+    creationDate = [v3 creationDate];
+    referenceFrame = [v3 referenceFrame];
+    v16 = [v4 initWithLatitude:creationDate longitude:objc_msgSend(referenceFrame horizontalUncertainty:"intValue") date:v7 referenceFrame:{v10, v13}];
   }
 
   else

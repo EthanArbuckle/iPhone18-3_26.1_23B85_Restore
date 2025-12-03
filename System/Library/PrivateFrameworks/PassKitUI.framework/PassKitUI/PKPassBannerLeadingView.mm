@@ -1,43 +1,43 @@
 @interface PKPassBannerLeadingView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (id)_initWithStyle:(void *)a3 pass:;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (id)_initWithStyle:(void *)style pass:;
 - (void)layoutSubviews;
 @end
 
 @implementation PKPassBannerLeadingView
 
-- (id)_initWithStyle:(void *)a3 pass:
+- (id)_initWithStyle:(void *)style pass:
 {
-  result = a3;
+  result = style;
   v7 = result;
-  if (!a1)
+  if (!self)
   {
 LABEL_7:
 
-    return a1;
+    return self;
   }
 
   if (result)
   {
-    v11.receiver = a1;
+    v11.receiver = self;
     v11.super_class = PKPassBannerLeadingView;
     v8 = objc_msgSendSuper2(&v11, sel_initWithFrame_, *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24));
-    a1 = v8;
+    self = v8;
     if (v8)
     {
       v8[51] = a2;
-      objc_storeStrong(v8 + 52, a3);
+      objc_storeStrong(v8 + 52, style);
       v9 = [PKPassThumbnailView alloc];
       if (v9)
       {
         v9 = [(PKPassThumbnailView *)&v9->super.super.super.isa initWithPass:0x177 suppressedContent:0 rendererState:0 options:?];
       }
 
-      v10 = a1[53];
-      a1[53] = v9;
+      v10 = self[53];
+      self[53] = v9;
 
-      [(PKPassThumbnailView *)a1[53] setShadowVisibility:?];
-      [a1 addSubview:a1[53]];
+      [(PKPassThumbnailView *)self[53] setShadowVisibility:?];
+      [self addSubview:self[53]];
     }
 
     goto LABEL_7;
@@ -47,7 +47,7 @@ LABEL_7:
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   style = self->_style;
   passView = self->_passView;

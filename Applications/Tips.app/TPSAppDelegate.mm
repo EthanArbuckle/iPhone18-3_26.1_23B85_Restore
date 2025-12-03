@@ -1,27 +1,27 @@
 @interface TPSAppDelegate
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (void)buildMenuWithBuilder:(id)a3;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (void)buildMenuWithBuilder:(id)builder;
 - (void)clearBadgeCount;
 - (void)resetCacheDefaults;
 @end
 
 @implementation TPSAppDelegate
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  v5 = [AVAudioSession sharedInstance:a3];
+  v5 = [AVAudioSession sharedInstance:application];
   [v5 setCategory:AVAudioSessionCategoryAmbient error:0];
 
   v6 = +[NSUserDefaults standardUserDefaults];
   [v6 registerDefaults:&off_1000A50F0];
   v7 = +[NSBundle mainBundle];
-  v8 = [v7 infoDictionary];
-  v9 = [v8 objectForKey:@"CFBundleShortVersionString"];
+  infoDictionary = [v7 infoDictionary];
+  v9 = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
 
   v10 = [v6 objectForKey:@"TipsAppLastLaunchedAppVersion"];
-  LOBYTE(v8) = [v9 isEqualToString:v10];
+  LOBYTE(infoDictionary) = [v9 isEqualToString:v10];
 
-  if ((v8 & 1) == 0)
+  if ((infoDictionary & 1) == 0)
   {
     v11 = +[TPSJSONCacheController sharedInstance];
     [v11 removeAllDataCache];
@@ -33,13 +33,13 @@
 
   v12 = MGCopyAnswer();
   v13 = [v12 componentsSeparatedByString:@"."];
-  v14 = [v13 firstObject];
+  firstObject = [v13 firstObject];
 
   v15 = [v6 objectForKey:@"kTipsAppLastLaunchedMajorVersion"];
   v16 = +[TPSCommonDefines hardwareChanged];
-  if (([v14 isEqualToString:v15] & 1) == 0)
+  if (([firstObject isEqualToString:v15] & 1) == 0)
   {
-    [v6 setObject:v14 forKey:@"kTipsAppLastLaunchedMajorVersion"];
+    [v6 setObject:firstObject forKey:@"kTipsAppLastLaunchedMajorVersion"];
     [v6 removeObjectForKey:@"TPSAppLastDisplayedContent"];
     [v6 removeObjectForKey:@"TPSLastViewedTipIdentifier"];
     [v6 removeObjectForKey:@"TPSPreviousFeaturedTipIdentifier"];
@@ -113,11 +113,11 @@ LABEL_8:
   [v2 setBadgeCount:0 withCompletionHandler:0];
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  TPSAppDelegate.buildMenu(with:)(a3);
+  selfCopy = self;
+  TPSAppDelegate.buildMenu(with:)(builder);
   swift_unknownObjectRelease();
 }
 

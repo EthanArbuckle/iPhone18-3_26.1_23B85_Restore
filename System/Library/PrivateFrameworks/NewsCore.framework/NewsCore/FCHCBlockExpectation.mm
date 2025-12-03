@@ -6,12 +6,12 @@
 
 - (void)validate
 {
-  v3 = [(FCHCBlockExpectation *)self block];
+  block = [(FCHCBlockExpectation *)self block];
 
-  if (v3)
+  if (block)
   {
-    v4 = [(FCHCBlockExpectation *)self block];
-    v4[2]();
+    block2 = [(FCHCBlockExpectation *)self block];
+    block2[2]();
   }
 }
 

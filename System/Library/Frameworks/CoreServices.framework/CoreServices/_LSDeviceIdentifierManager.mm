@@ -1,7 +1,7 @@
 @interface _LSDeviceIdentifierManager
 + (id)sharedInstance;
 - (_LSDeviceIdentifierManager)init;
-- (id)cacheForPersona:(id)a3;
+- (id)cacheForPersona:(id)persona;
 @end
 
 @implementation _LSDeviceIdentifierManager
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __44___LSDeviceIdentifierManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[_LSDeviceIdentifierManager sharedInstance]::once != -1)
   {
     dispatch_once(&+[_LSDeviceIdentifierManager sharedInstance]::once, block);
@@ -24,35 +24,35 @@
   return v3;
 }
 
-- (id)cacheForPersona:(id)a3
+- (id)cacheForPersona:(id)persona
 {
-  v4 = a3;
-  if (v4 && (getUMUserPersonaClass(), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  personaCopy = persona;
+  if (personaCopy && (getUMUserPersonaClass(), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
+    v5 = personaCopy;
     if ([v5 isEnterprisePersona])
     {
-      v6 = [v5 userPersonaUniqueString];
+      userPersonaUniqueString = [v5 userPersonaUniqueString];
     }
 
     else
     {
-      v6 = &stru_1EEF65710;
+      userPersonaUniqueString = &stru_1EEF65710;
     }
   }
 
   else
   {
-    v6 = &stru_1EEF65710;
+    userPersonaUniqueString = &stru_1EEF65710;
   }
 
   v7 = self->_sharedCaches;
   objc_sync_enter(v7);
-  v8 = [(NSMutableDictionary *)self->_sharedCaches objectForKey:v6];
+  v8 = [(NSMutableDictionary *)self->_sharedCaches objectForKey:userPersonaUniqueString];
   if (!v8)
   {
-    v8 = [[_LSDeviceIdentifierCache alloc] initWithPersona:v6];
-    [(NSMutableDictionary *)self->_sharedCaches setObject:v8 forKey:v6];
+    v8 = [[_LSDeviceIdentifierCache alloc] initWithPersona:userPersonaUniqueString];
+    [(NSMutableDictionary *)self->_sharedCaches setObject:v8 forKey:userPersonaUniqueString];
   }
 
   objc_sync_exit(v7);

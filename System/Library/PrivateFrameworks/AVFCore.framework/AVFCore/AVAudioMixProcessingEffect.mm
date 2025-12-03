@@ -1,8 +1,8 @@
 @interface AVAudioMixProcessingEffect
-+ (id)processingEffectWithDSPGraphText:(id)a3 properties:(id)a4 parameterSchedule:(id)a5 identifier:(id)a6;
-- (AVAudioMixProcessingEffect)initWithDSPGraphText:(id)a3 properties:(id)a4 parameterSchedule:(id)a5 identifier:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isValueSupported:(id)a3 exceptionReasonOut:(id *)a4;
++ (id)processingEffectWithDSPGraphText:(id)text properties:(id)properties parameterSchedule:(id)schedule identifier:(id)identifier;
+- (AVAudioMixProcessingEffect)initWithDSPGraphText:(id)text properties:(id)properties parameterSchedule:(id)schedule identifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isValueSupported:(id)supported exceptionReasonOut:(id *)out;
 - (NSArray)parameterSchedule;
 - (NSDictionary)properties;
 - (NSString)DSPGraphText;
@@ -17,7 +17,7 @@
 
 @implementation AVAudioMixProcessingEffect
 
-- (BOOL)isValueSupported:(id)a3 exceptionReasonOut:(id *)a4
+- (BOOL)isValueSupported:(id)supported exceptionReasonOut:(id *)out
 {
   if (isValueSupported_exceptionReasonOut__sSupportedValueTypesOnce != -1)
   {
@@ -38,14 +38,14 @@
   v12[1] = 3221225472;
   v12[2] = __66__AVAudioMixProcessingEffect_isValueSupported_exceptionReasonOut___block_invoke_106;
   v12[3] = &unk_1E7463B90;
-  v12[4] = a3;
+  v12[4] = supported;
   v12[5] = self;
   v12[6] = &v19;
   v12[7] = &v13;
   [isValueSupported_exceptionReasonOut__sSupportedValueTypes enumerateObjectsUsingBlock:v12];
   v7 = v20;
   v8 = *(v20 + 24);
-  if (a4 && (v20[3] & 1) == 0)
+  if (out && (v20[3] & 1) == 0)
   {
     v9 = v14;
     v10 = @"Unsupported type sent as value for property";
@@ -54,7 +54,7 @@
       v10 = v14[5];
     }
 
-    *a4 = v10;
+    *out = v10;
     v9[5] = 0;
     v8 = *(v7 + 24);
   }
@@ -179,14 +179,14 @@ LABEL_5:
   return result;
 }
 
-+ (id)processingEffectWithDSPGraphText:(id)a3 properties:(id)a4 parameterSchedule:(id)a5 identifier:(id)a6
++ (id)processingEffectWithDSPGraphText:(id)text properties:(id)properties parameterSchedule:(id)schedule identifier:(id)identifier
 {
-  v6 = [[AVAudioMixProcessingEffect alloc] initWithDSPGraphText:a3 properties:a4 parameterSchedule:a5 identifier:a6];
+  v6 = [[AVAudioMixProcessingEffect alloc] initWithDSPGraphText:text properties:properties parameterSchedule:schedule identifier:identifier];
 
   return v6;
 }
 
-- (AVAudioMixProcessingEffect)initWithDSPGraphText:(id)a3 properties:(id)a4 parameterSchedule:(id)a5 identifier:(id)a6
+- (AVAudioMixProcessingEffect)initWithDSPGraphText:(id)text properties:(id)properties parameterSchedule:(id)schedule identifier:(id)identifier
 {
   v37 = *MEMORY[0x1E69E9840];
   v35.receiver = self;
@@ -194,8 +194,8 @@ LABEL_5:
   v11 = [(AVAudioMixEffect *)&v35 init];
   if (v11)
   {
-    v11->_identifier = [a6 copy];
-    v11->_graphText = [a3 copy];
+    v11->_identifier = [identifier copy];
+    v11->_graphText = [text copy];
     v29 = 0;
     v30 = &v29;
     v31 = 0x3052000000;
@@ -208,7 +208,7 @@ LABEL_5:
     v28[3] = &unk_1E7463BB8;
     v28[4] = v11;
     v28[5] = &v29;
-    [a4 enumerateKeysAndObjectsUsingBlock:v28];
+    [properties enumerateKeysAndObjectsUsingBlock:v28];
     v17 = v30[5];
     if (v17)
     {
@@ -216,13 +216,13 @@ LABEL_5:
       objc_exception_throw(v23);
     }
 
-    v11->_properties = [a4 copy];
+    v11->_properties = [properties copy];
     v11->_scheduleEntries = [MEMORY[0x1E695DF70] array];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v18 = [a5 countByEnumeratingWithState:&v24 objects:v36 count:16];
+    v18 = [schedule countByEnumeratingWithState:&v24 objects:v36 count:16];
     if (v18)
     {
       v19 = *v25;
@@ -233,7 +233,7 @@ LABEL_5:
         {
           if (*v25 != v19)
           {
-            objc_enumerationMutation(a5);
+            objc_enumerationMutation(schedule);
           }
 
           v21 = [*(*(&v24 + 1) + 8 * v20) copy];
@@ -242,7 +242,7 @@ LABEL_5:
         }
 
         while (v18 != v20);
-        v18 = [a5 countByEnumeratingWithState:&v24 objects:v36 count:16];
+        v18 = [schedule countByEnumeratingWithState:&v24 objects:v36 count:16];
       }
 
       while (v18);
@@ -338,7 +338,7 @@ LABEL_9:
   [(AVAudioMixProcessingEffect *)&v4 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -346,32 +346,32 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  if (a3 == self)
+  if (equal == self)
   {
 LABEL_10:
     LOBYTE(v5) = 1;
     return v5;
   }
 
-  v5 = [(NSString *)self->_identifier isEqual:*(a3 + 2)];
+  v5 = [(NSString *)self->_identifier isEqual:*(equal + 2)];
   if (v5)
   {
-    v5 = [(NSMutableArray *)self->_scheduleEntries isEqual:*(a3 + 4)];
+    v5 = [(NSMutableArray *)self->_scheduleEntries isEqual:*(equal + 4)];
     if (v5)
     {
-      v5 = [(NSDictionary *)self->_properties isEqual:*(a3 + 5)];
+      v5 = [(NSDictionary *)self->_properties isEqual:*(equal + 5)];
       if (v5)
       {
         graphText = self->_graphText;
-        if (!graphText || !*(a3 + 3))
+        if (!graphText || !*(equal + 3))
         {
           goto LABEL_10;
         }
 
         v7 = [(NSString *)graphText hash];
-        if (v7 == [*(a3 + 3) hash])
+        if (v7 == [*(equal + 3) hash])
         {
-          v5 = [(NSString *)self->_graphText isEqual:*(a3 + 3)];
+          v5 = [(NSString *)self->_graphText isEqual:*(equal + 3)];
           if (v5)
           {
             goto LABEL_10;
@@ -427,30 +427,30 @@ id __54__AVAudioMixProcessingEffect__fourCCToFigPropertyDict__block_invoke()
 
 - (id)_figAudioProperties
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_graphText)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithInt:1634758764];
-    [v3 setValue:v4 forKey:*MEMORY[0x1E69716C8]];
+    [dictionary setValue:v4 forKey:*MEMORY[0x1E69716C8]];
     v5 = [MEMORY[0x1E696AD98] numberWithInt:1685287015];
-    [v3 setValue:v5 forKey:*MEMORY[0x1E69716D0]];
+    [dictionary setValue:v5 forKey:*MEMORY[0x1E69716D0]];
     v6 = [MEMORY[0x1E696AD98] numberWithInt:1];
-    [v3 setValue:v6 forKey:*MEMORY[0x1E69716D8]];
-    v7 = [(AVAudioMixProcessingEffect *)self _fourCCToFigPropertyDict];
-    v8 = [MEMORY[0x1E695DF90] dictionary];
-    [v8 setValue:self->_graphText forKey:{objc_msgSend(v7, "objectForKey:", objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", 1735554168))}];
+    [dictionary setValue:v6 forKey:*MEMORY[0x1E69716D8]];
+    _fourCCToFigPropertyDict = [(AVAudioMixProcessingEffect *)self _fourCCToFigPropertyDict];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary2 setValue:self->_graphText forKey:{objc_msgSend(_fourCCToFigPropertyDict, "objectForKey:", objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", 1735554168))}];
     properties = self->_properties;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __49__AVAudioMixProcessingEffect__figAudioProperties__block_invoke;
     v11[3] = &unk_1E7463BE0;
-    v11[4] = v8;
-    v11[5] = v7;
+    v11[4] = dictionary2;
+    v11[5] = _fourCCToFigPropertyDict;
     [(NSDictionary *)properties enumerateKeysAndObjectsUsingBlock:v11];
-    [v3 setValue:v8 forKey:*MEMORY[0x1E69716E0]];
+    [dictionary setValue:dictionary2 forKey:*MEMORY[0x1E69716E0]];
   }
 
-  return v3;
+  return dictionary;
 }
 
 uint64_t __49__AVAudioMixProcessingEffect__figAudioProperties__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -464,13 +464,13 @@ uint64_t __49__AVAudioMixProcessingEffect__figAudioProperties__block_invoke(uint
 - (id)_figSchedule
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(AVAudioMixProcessingEffect *)self parameterSchedule];
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  parameterSchedule = [(AVAudioMixProcessingEffect *)self parameterSchedule];
+  v5 = [(NSArray *)parameterSchedule countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -482,20 +482,20 @@ uint64_t __49__AVAudioMixProcessingEffect__figAudioProperties__block_invoke(uint
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(parameterSchedule);
         }
 
-        [v3 addObject:{objc_msgSend(*(*(&v10 + 1) + 8 * v8++), "_figSchedule")}];
+        [array addObject:{objc_msgSend(*(*(&v10 + 1) + 8 * v8++), "_figSchedule")}];
       }
 
       while (v6 != v8);
-      v6 = [(NSArray *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [(NSArray *)parameterSchedule countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 - (NSString)identifier

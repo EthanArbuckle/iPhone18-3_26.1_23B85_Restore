@@ -1,11 +1,11 @@
 @interface HDExtractionResultItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HDExtractionResultItem)init;
-- (HDExtractionResultItem)initWithCoder:(id)a3;
-- (HDExtractionResultItem)initWithOriginalFHIRResource:(id)a3 units:(id)a4 flags:(unint64_t)a5;
+- (HDExtractionResultItem)initWithCoder:(id)coder;
+- (HDExtractionResultItem)initWithOriginalFHIRResource:(id)resource units:(id)units flags:(unint64_t)flags;
 - (id)debugDescription;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDExtractionResultItem
@@ -20,11 +20,11 @@
   return 0;
 }
 
-- (HDExtractionResultItem)initWithOriginalFHIRResource:(id)a3 units:(id)a4 flags:(unint64_t)a5
+- (HDExtractionResultItem)initWithOriginalFHIRResource:(id)resource units:(id)units flags:(unint64_t)flags
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  resourceCopy = resource;
+  unitsCopy = units;
+  if (!resourceCopy)
   {
     [HDExtractionResultItem initWithOriginalFHIRResource:a2 units:self flags:?];
   }
@@ -34,24 +34,24 @@
   v11 = [(HDExtractionResultItem *)&v17 init];
   if (v11)
   {
-    v12 = [v9 copy];
+    v12 = [resourceCopy copy];
     originalFHIRResource = v11->_originalFHIRResource;
     v11->_originalFHIRResource = v12;
 
-    v14 = [v10 copy];
+    v14 = [unitsCopy copy];
     units = v11->_units;
     v11->_units = v14;
 
-    v11->_flags = a5;
+    v11->_flags = flags;
   }
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -61,22 +61,22 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = equalCopy;
       originalFHIRResource = self->_originalFHIRResource;
-      v8 = [(HDExtractionResultItem *)v6 originalFHIRResource];
-      if (originalFHIRResource != v8)
+      originalFHIRResource = [(HDExtractionResultItem *)v6 originalFHIRResource];
+      if (originalFHIRResource != originalFHIRResource)
       {
-        v9 = [(HDExtractionResultItem *)v6 originalFHIRResource];
-        if (!v9)
+        originalFHIRResource2 = [(HDExtractionResultItem *)v6 originalFHIRResource];
+        if (!originalFHIRResource2)
         {
           v12 = 0;
           goto LABEL_21;
         }
 
-        v3 = v9;
+        v3 = originalFHIRResource2;
         v10 = self->_originalFHIRResource;
-        v11 = [(HDExtractionResultItem *)v6 originalFHIRResource];
-        if (![(HDOriginalFHIRResourceObject *)v10 isEqual:v11])
+        originalFHIRResource3 = [(HDExtractionResultItem *)v6 originalFHIRResource];
+        if (![(HDOriginalFHIRResourceObject *)v10 isEqual:originalFHIRResource3])
         {
           v12 = 0;
 LABEL_20:
@@ -84,20 +84,20 @@ LABEL_20:
           goto LABEL_21;
         }
 
-        v22 = v11;
+        v22 = originalFHIRResource3;
       }
 
       units = self->_units;
-      v14 = [(HDExtractionResultItem *)v6 units];
-      if (units != v14)
+      units = [(HDExtractionResultItem *)v6 units];
+      if (units != units)
       {
-        v15 = [(HDExtractionResultItem *)v6 units];
-        if (v15)
+        units2 = [(HDExtractionResultItem *)v6 units];
+        if (units2)
         {
-          v16 = v15;
+          v16 = units2;
           v17 = self->_units;
-          v18 = [(HDExtractionResultItem *)v6 units];
-          if ([(NSArray *)v17 isEqualToArray:v18])
+          units3 = [(HDExtractionResultItem *)v6 units];
+          if ([(NSArray *)v17 isEqualToArray:units3])
           {
             flags = self->_flags;
             v12 = flags == [(HDExtractionResultItem *)v6 flags];
@@ -109,8 +109,8 @@ LABEL_15:
 
         v12 = 0;
 LABEL_19:
-        v11 = v22;
-        if (originalFHIRResource != v8)
+        originalFHIRResource3 = v22;
+        if (originalFHIRResource != originalFHIRResource)
         {
           goto LABEL_20;
         }
@@ -138,8 +138,8 @@ LABEL_22:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(HDFHIRResourceObject *)self->_originalFHIRResource identifier];
-  v7 = [v3 stringWithFormat:@"<%@ %p, FHIR resource: %@, units: %lu, raw flags: %lu>", v5, self, v6, -[NSArray count](self->_units, "count"), self->_flags];
+  identifier = [(HDFHIRResourceObject *)self->_originalFHIRResource identifier];
+  v7 = [v3 stringWithFormat:@"<%@ %p, FHIR resource: %@, units: %lu, raw flags: %lu>", v5, self, identifier, -[NSArray count](self->_units, "count"), self->_flags];
 
   return v7;
 }
@@ -157,35 +157,35 @@ LABEL_22:
   return v9;
 }
 
-- (HDExtractionResultItem)initWithCoder:(id)a3
+- (HDExtractionResultItem)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originalFHIRResource"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originalFHIRResource"];
   if (v5)
   {
     v6 = [MEMORY[0x277CBEB98] hk_typesForArrayOf:objc_opt_class()];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"units"];
-    self = -[HDExtractionResultItem initWithOriginalFHIRResource:units:flags:](self, "initWithOriginalFHIRResource:units:flags:", v5, v7, [v4 decodeIntegerForKey:@"flags"]);
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"units"];
+    self = -[HDExtractionResultItem initWithOriginalFHIRResource:units:flags:](self, "initWithOriginalFHIRResource:units:flags:", v5, v7, [coderCopy decodeIntegerForKey:@"flags"]);
 
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v8 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   originalFHIRResource = self->_originalFHIRResource;
-  v5 = a3;
-  [v5 encodeObject:originalFHIRResource forKey:@"originalFHIRResource"];
-  [v5 encodeObject:self->_units forKey:@"units"];
-  [v5 encodeInteger:self->_flags forKey:@"flags"];
+  coderCopy = coder;
+  [coderCopy encodeObject:originalFHIRResource forKey:@"originalFHIRResource"];
+  [coderCopy encodeObject:self->_units forKey:@"units"];
+  [coderCopy encodeInteger:self->_flags forKey:@"flags"];
 }
 
 - (void)initWithOriginalFHIRResource:(uint64_t)a1 units:(uint64_t)a2 flags:.cold.1(uint64_t a1, uint64_t a2)

@@ -1,14 +1,14 @@
 @interface BRCTapToRadarManager
-- (BRCTapToRadarManager)initWithNamedThrottleManager:(id)a3;
-- (id)_ttrThrottlingRulesForIdentifier:(id)a3;
-- (void)requestTapToRadarWithTitle:(id)a3 description:(id)a4 componentName:(id)a5 componentVersion:(id)a6 componentID:(int64_t)a7 keywords:(id)a8 attachments:(id)a9 sendFullLog:(BOOL)a10 displayReason:(id)a11 triggerRootCause:(id)a12 additionalDevices:(id)a13 completionHandler:(id)a14;
+- (BRCTapToRadarManager)initWithNamedThrottleManager:(id)manager;
+- (id)_ttrThrottlingRulesForIdentifier:(id)identifier;
+- (void)requestTapToRadarWithTitle:(id)title description:(id)description componentName:(id)name componentVersion:(id)version componentID:(int64_t)d keywords:(id)keywords attachments:(id)attachments sendFullLog:(BOOL)self0 displayReason:(id)self1 triggerRootCause:(id)self2 additionalDevices:(id)self3 completionHandler:(id)self4;
 @end
 
 @implementation BRCTapToRadarManager
 
-- (BRCTapToRadarManager)initWithNamedThrottleManager:(id)a3
+- (BRCTapToRadarManager)initWithNamedThrottleManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = BRCTapToRadarManager;
   v6 = [(BRCTapToRadarManager *)&v12 init];
@@ -21,18 +21,18 @@
     executionQueue = v6->_executionQueue;
     v6->_executionQueue = v9;
 
-    objc_storeStrong(&v6->_namedThrottleManager, a3);
+    objc_storeStrong(&v6->_namedThrottleManager, manager);
   }
 
   return v6;
 }
 
-- (id)_ttrThrottlingRulesForIdentifier:(id)a3
+- (id)_ttrThrottlingRulesForIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = [BRCUserDefaults defaultsForMangledID:0];
-  v5 = [v4 weeklyThrottledErrorsForTTR];
-  v6 = [v5 containsObject:v3];
+  weeklyThrottledErrorsForTTR = [v4 weeklyThrottledErrorsForTTR];
+  v6 = [weeklyThrottledErrorsForTTR containsObject:identifierCopy];
 
   if (v6)
   {
@@ -48,32 +48,32 @@
   return v7;
 }
 
-- (void)requestTapToRadarWithTitle:(id)a3 description:(id)a4 componentName:(id)a5 componentVersion:(id)a6 componentID:(int64_t)a7 keywords:(id)a8 attachments:(id)a9 sendFullLog:(BOOL)a10 displayReason:(id)a11 triggerRootCause:(id)a12 additionalDevices:(id)a13 completionHandler:(id)a14
+- (void)requestTapToRadarWithTitle:(id)title description:(id)description componentName:(id)name componentVersion:(id)version componentID:(int64_t)d keywords:(id)keywords attachments:(id)attachments sendFullLog:(BOOL)self0 displayReason:(id)self1 triggerRootCause:(id)self2 additionalDevices:(id)self3 completionHandler:(id)self4
 {
-  v40 = a3;
-  v43 = a4;
-  v41 = a5;
-  v42 = a6;
-  v19 = a8;
-  v20 = a9;
-  v21 = a11;
-  v22 = a12;
-  v23 = a13;
-  if (a14)
+  titleCopy = title;
+  descriptionCopy = description;
+  nameCopy = name;
+  versionCopy = version;
+  keywordsCopy = keywords;
+  attachmentsCopy = attachments;
+  reasonCopy = reason;
+  causeCopy = cause;
+  devicesCopy = devices;
+  if (handler)
   {
-    v24 = a14;
+    handlerCopy = handler;
   }
 
   else
   {
-    v24 = &__block_literal_global_31;
+    handlerCopy = &__block_literal_global_31;
   }
 
-  v25 = MEMORY[0x22AA4A310](v24);
+  v25 = MEMORY[0x22AA4A310](handlerCopy);
   if ([MEMORY[0x277CFAEB0] isInternalBuild])
   {
-    [BRCUserDefaults generateThrottleTTRIdentifiersForTriggerRootCause:v22];
-    v27 = v26 = v22;
+    [BRCUserDefaults generateThrottleTTRIdentifiersForTriggerRootCause:causeCopy];
+    v27 = v26 = causeCopy;
     namedThrottleManager = self->_namedThrottleManager;
     v28 = [objc_opt_class() description];
     v29 = [(BRCTapToRadarManager *)self _ttrThrottlingRulesForIdentifier:v27];
@@ -83,29 +83,29 @@
     v44[2] = __206__BRCTapToRadarManager_requestTapToRadarWithTitle_description_componentName_componentVersion_componentID_keywords_attachments_sendFullLog_displayReason_triggerRootCause_additionalDevices_completionHandler___block_invoke_14;
     v44[3] = &unk_2785032A0;
     v54 = v25;
-    v45 = v41;
+    v45 = nameCopy;
     v46 = v27;
-    v30 = v40;
-    v47 = v40;
-    v48 = v43;
-    v49 = v42;
-    v55 = a7;
-    v56 = a10;
-    v50 = v19;
-    v51 = v20;
-    v52 = v23;
-    v53 = v21;
+    v30 = titleCopy;
+    v47 = titleCopy;
+    v48 = descriptionCopy;
+    v49 = versionCopy;
+    dCopy = d;
+    logCopy = log;
+    v50 = keywordsCopy;
+    v51 = attachmentsCopy;
+    v52 = devicesCopy;
+    v53 = reasonCopy;
     v31 = v27;
-    v22 = v26;
-    v32 = v31;
+    causeCopy = v26;
+    brc_errorNotSupportedInCustomerBuild = v31;
     [(BRCNamedThrottleManager *)namedThrottleManager throttle:v28 subCategory:v31 withRules:v29 onQueue:executionQueue block:v44];
   }
 
   else
   {
-    v39 = v23;
-    v33 = v21;
-    v30 = v40;
+    v39 = devicesCopy;
+    v33 = reasonCopy;
+    v30 = titleCopy;
     v34 = brc_bread_crumbs();
     v35 = brc_default_log();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
@@ -113,10 +113,10 @@
       [BRCTapToRadarManager requestTapToRadarWithTitle:description:componentName:componentVersion:componentID:keywords:attachments:sendFullLog:displayReason:triggerRootCause:additionalDevices:completionHandler:];
     }
 
-    v32 = [MEMORY[0x277CCA9B8] brc_errorNotSupportedInCustomerBuild];
-    (v25)[2](v25, v32);
-    v21 = v33;
-    v23 = v39;
+    brc_errorNotSupportedInCustomerBuild = [MEMORY[0x277CCA9B8] brc_errorNotSupportedInCustomerBuild];
+    (v25)[2](v25, brc_errorNotSupportedInCustomerBuild);
+    reasonCopy = v33;
+    devicesCopy = v39;
   }
 }
 

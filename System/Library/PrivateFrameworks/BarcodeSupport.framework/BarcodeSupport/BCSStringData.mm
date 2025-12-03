@@ -1,19 +1,19 @@
 @interface BCSStringData
-- (BCSStringData)initWithCoder:(id)a3;
-- (BCSStringData)initWithString:(id)a3;
+- (BCSStringData)initWithCoder:(id)coder;
+- (BCSStringData)initWithString:(id)string;
 @end
 
 @implementation BCSStringData
 
-- (BCSStringData)initWithString:(id)a3
+- (BCSStringData)initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v10.receiver = self;
   v10.super_class = BCSStringData;
   v5 = [(BCSStringData *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [stringCopy copy];
     extraPreviewText = v5->_extraPreviewText;
     v5->_extraPreviewText = v6;
 
@@ -23,10 +23,10 @@
   return v5;
 }
 
-- (BCSStringData)initWithCoder:(id)a3
+- (BCSStringData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 _bcs_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"extraPreviewText"];
+  coderCopy = coder;
+  v5 = [coderCopy _bcs_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"extraPreviewText"];
 
   v6 = [(BCSStringData *)self initWithString:v5];
   return v6;

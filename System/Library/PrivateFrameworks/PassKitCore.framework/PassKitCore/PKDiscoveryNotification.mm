@@ -1,31 +1,31 @@
 @interface PKDiscoveryNotification
-- (BOOL)isEqualForDisplayToNotification:(id)a3;
-- (PKDiscoveryNotification)initWithCoder:(id)a3;
-- (PKDiscoveryNotification)initWithDictionary:(id)a3;
+- (BOOL)isEqualForDisplayToNotification:(id)notification;
+- (PKDiscoveryNotification)initWithCoder:(id)coder;
+- (PKDiscoveryNotification)initWithDictionary:(id)dictionary;
 - (id)description;
 - (int64_t)passQualifier;
-- (void)encodeWithCoder:(id)a3;
-- (void)localizeWithBundle:(id)a3;
-- (void)scheduleDeliveryForCurrentDate:(id)a3;
-- (void)updateForRuleResult:(BOOL)a3;
-- (void)updateWithNotification:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)localizeWithBundle:(id)bundle;
+- (void)scheduleDeliveryForCurrentDate:(id)date;
+- (void)updateForRuleResult:(BOOL)result;
+- (void)updateWithNotification:(id)notification;
 @end
 
 @implementation PKDiscoveryNotification
 
-- (PKDiscoveryNotification)initWithDictionary:(id)a3
+- (PKDiscoveryNotification)initWithDictionary:(id)dictionary
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v27.receiver = self;
   v27.super_class = PKDiscoveryNotification;
-  v5 = [(PKDiscoveryObject *)&v27 initWithDictionary:v4];
+  v5 = [(PKDiscoveryObject *)&v27 initWithDictionary:dictionaryCopy];
   if (!v5)
   {
     goto LABEL_16;
   }
 
-  v6 = [v4 PKStringForKey:@"action"];
+  v6 = [dictionaryCopy PKStringForKey:@"action"];
   if ([@"none" isEqualToString:v6])
   {
     v7 = 1;
@@ -76,25 +76,25 @@ LABEL_20:
   }
 
   v5->_actionType = v7;
-  v8 = [v4 PKStringForKey:@"titleKey"];
+  v8 = [dictionaryCopy PKStringForKey:@"titleKey"];
   titleKey = v5->_titleKey;
   v5->_titleKey = v8;
 
-  v10 = [v4 PKStringForKey:@"messageKey"];
+  v10 = [dictionaryCopy PKStringForKey:@"messageKey"];
   messageKey = v5->_messageKey;
   v5->_messageKey = v10;
 
-  v12 = [v4 PKStringForKey:@"actionTitleKey"];
+  v12 = [dictionaryCopy PKStringForKey:@"actionTitleKey"];
   actionTitleKey = v5->_actionTitleKey;
   v5->_actionTitleKey = v12;
 
-  v14 = [v4 PKDictionaryForKey:@"actionInfo"];
+  v14 = [dictionaryCopy PKDictionaryForKey:@"actionInfo"];
   actionInfo = v5->_actionInfo;
   v5->_actionInfo = v14;
 
-  v16 = [(PKDiscoveryObject *)v5 relevantDateRange];
-  v17 = v16;
-  if (!v16 || ([v16 startDate], (v18 = objc_claimAutoreleasedReturnValue()) == 0) || (v19 = v18, [v17 endDate], v20 = objc_claimAutoreleasedReturnValue(), v20, v19, !v20))
+  relevantDateRange = [(PKDiscoveryObject *)v5 relevantDateRange];
+  v17 = relevantDateRange;
+  if (!relevantDateRange || ([relevantDateRange startDate], (v18 = objc_claimAutoreleasedReturnValue()) == 0) || (v19 = v18, [v17 endDate], v20 = objc_claimAutoreleasedReturnValue(), v20, v19, !v20))
   {
     v22 = PKLogFacilityTypeGetObject(0x11uLL);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -135,53 +135,53 @@ LABEL_21:
   return v4;
 }
 
-- (void)localizeWithBundle:(id)a3
+- (void)localizeWithBundle:(id)bundle
 {
   titleKey = self->_titleKey;
-  v5 = a3;
-  v6 = [v5 localizedStringForKey:titleKey value:&stru_1F227FD28 table:@"localizable"];
+  bundleCopy = bundle;
+  v6 = [bundleCopy localizedStringForKey:titleKey value:&stru_1F227FD28 table:@"localizable"];
   localizedTitle = self->_localizedTitle;
   self->_localizedTitle = v6;
 
-  v8 = [v5 localizedStringForKey:self->_messageKey value:&stru_1F227FD28 table:@"localizable"];
+  v8 = [bundleCopy localizedStringForKey:self->_messageKey value:&stru_1F227FD28 table:@"localizable"];
   localizedMessage = self->_localizedMessage;
   self->_localizedMessage = v8;
 
-  v10 = [v5 localizedStringForKey:self->_actionTitleKey value:&stru_1F227FD28 table:@"localizable"];
+  v10 = [bundleCopy localizedStringForKey:self->_actionTitleKey value:&stru_1F227FD28 table:@"localizable"];
 
   localizedActionTitle = self->_localizedActionTitle;
   self->_localizedActionTitle = v10;
 }
 
-- (void)updateWithNotification:(id)a3
+- (void)updateWithNotification:(id)notification
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   v23.receiver = self;
   v23.super_class = PKDiscoveryNotification;
-  if ([(PKDiscoveryObject *)&v23 updateWithDiscoveryObject:v4])
+  if ([(PKDiscoveryObject *)&v23 updateWithDiscoveryObject:notificationCopy])
   {
-    self->_actionType = [v4 actionType];
-    v5 = [v4 titleKey];
+    self->_actionType = [notificationCopy actionType];
+    titleKey = [notificationCopy titleKey];
     titleKey = self->_titleKey;
-    self->_titleKey = v5;
+    self->_titleKey = titleKey;
 
-    v7 = [v4 messageKey];
+    messageKey = [notificationCopy messageKey];
     messageKey = self->_messageKey;
-    self->_messageKey = v7;
+    self->_messageKey = messageKey;
 
-    v9 = [v4 actionTitleKey];
+    actionTitleKey = [notificationCopy actionTitleKey];
     actionTitleKey = self->_actionTitleKey;
-    self->_actionTitleKey = v9;
+    self->_actionTitleKey = actionTitleKey;
 
-    v11 = [v4 actionInfo];
-    v12 = [v11 copy];
+    actionInfo = [notificationCopy actionInfo];
+    v12 = [actionInfo copy];
     actionInfo = self->_actionInfo;
     self->_actionInfo = v12;
 
-    v14 = [(PKDiscoveryObject *)self relevantDateRange];
-    v15 = v14;
-    if (!v14 || ([v14 startDate], (v16 = objc_claimAutoreleasedReturnValue()) == 0) || (v17 = v16, objc_msgSend(v15, "endDate"), v18 = objc_claimAutoreleasedReturnValue(), v18, v17, !v18))
+    relevantDateRange = [(PKDiscoveryObject *)self relevantDateRange];
+    v15 = relevantDateRange;
+    if (!relevantDateRange || ([relevantDateRange startDate], (v16 = objc_claimAutoreleasedReturnValue()) == 0) || (v17 = v16, objc_msgSend(v15, "endDate"), v18 = objc_claimAutoreleasedReturnValue(), v18, v17, !v18))
     {
       v19 = PKLogFacilityTypeGetObject(0x11uLL);
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -190,7 +190,7 @@ LABEL_21:
         *buf = 138412546;
         v25 = v20;
         v26 = 2112;
-        v27 = self;
+        selfCopy = self;
         v21 = v20;
         _os_log_impl(&dword_1AD337000, v19, OS_LOG_TYPE_DEFAULT, "%@: Invalid PKDiscoveryNotification doesn't have relevant date range: %@", buf, 0x16u);
       }
@@ -204,24 +204,24 @@ LABEL_21:
   }
 }
 
-- (void)scheduleDeliveryForCurrentDate:(id)a3
+- (void)scheduleDeliveryForCurrentDate:(id)date
 {
-  v4 = a3;
-  v15 = [(PKDiscoveryObject *)self relevantDateRange];
-  v5 = [v15 startDate];
-  if ([v4 compare:v5] == 1)
+  dateCopy = date;
+  relevantDateRange = [(PKDiscoveryObject *)self relevantDateRange];
+  startDate = [relevantDateRange startDate];
+  if ([dateCopy compare:startDate] == 1)
   {
-    v6 = v4;
+    v6 = dateCopy;
   }
 
   else
   {
-    v6 = v5;
+    v6 = startDate;
   }
 
   v7 = v6;
-  v8 = [v15 endDate];
-  [v8 timeIntervalSinceReferenceDate];
+  endDate = [relevantDateRange endDate];
+  [endDate timeIntervalSinceReferenceDate];
   v10 = v9;
   [v7 timeIntervalSinceReferenceDate];
   v12 = v10 - v11;
@@ -232,25 +232,25 @@ LABEL_21:
   self->_scheduledDeliveryDate = v13;
 }
 
-- (void)updateForRuleResult:(BOOL)a3
+- (void)updateForRuleResult:(BOOL)result
 {
-  v3 = a3;
+  resultCopy = result;
   v20 = *MEMORY[0x1E69E9840];
   if ([(PKDiscoveryObject *)self isTerminalStatus])
   {
     v5 = PKLogFacilityTypeGetObject(0x11uLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(PKDiscoveryObject *)self identifier];
+      identifier = [(PKDiscoveryObject *)self identifier];
       v12 = 138412290;
-      v13 = v6;
+      v13 = identifier;
       _os_log_impl(&dword_1AD337000, v5, OS_LOG_TYPE_DEFAULT, "Discovery Notification with identifier: %@ is in terminal state and won't be updated based on rule result", &v12, 0xCu);
     }
   }
 
   else
   {
-    if (v3)
+    if (resultCopy)
     {
       v7 = 2;
     }
@@ -264,18 +264,18 @@ LABEL_21:
     v8 = PKLogFacilityTypeGetObject(0x11uLL);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(PKDiscoveryObject *)self identifier];
-      v10 = [(PKDiscoveryObject *)self status];
+      identifier2 = [(PKDiscoveryObject *)self identifier];
+      status = [(PKDiscoveryObject *)self status];
       v11 = "NO";
       v12 = 138413058;
-      v13 = v9;
+      v13 = identifier2;
       v14 = 2048;
-      if (v3)
+      if (resultCopy)
       {
         v11 = "YES";
       }
 
-      v15 = v10;
+      v15 = status;
       v16 = 2048;
       v17 = v7;
       v18 = 2080;
@@ -287,28 +287,28 @@ LABEL_21:
   }
 }
 
-- (BOOL)isEqualForDisplayToNotification:(id)a3
+- (BOOL)isEqualForDisplayToNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(PKDiscoveryObject *)self identifier];
-  v6 = [v4 identifier];
-  if ([v5 isEqualToString:v6] && (v7 = -[PKDiscoveryObject version](self, "version"), v7 == objc_msgSend(v4, "version")) && (actionType = self->_actionType, actionType == objc_msgSend(v4, "actionType")))
+  notificationCopy = notification;
+  identifier = [(PKDiscoveryObject *)self identifier];
+  identifier2 = [notificationCopy identifier];
+  if ([identifier isEqualToString:identifier2] && (v7 = -[PKDiscoveryObject version](self, "version"), v7 == objc_msgSend(notificationCopy, "version")) && (actionType = self->_actionType, actionType == objc_msgSend(notificationCopy, "actionType")))
   {
     actionInfo = self->_actionInfo;
-    v10 = [v4 actionInfo];
-    if ([(NSDictionary *)actionInfo isEqualToDictionary:v10])
+    actionInfo = [notificationCopy actionInfo];
+    if ([(NSDictionary *)actionInfo isEqualToDictionary:actionInfo])
     {
       localizedTitle = self->_localizedTitle;
-      v12 = [v4 localizedTitle];
-      if ([(NSString *)localizedTitle isEqualToString:v12])
+      localizedTitle = [notificationCopy localizedTitle];
+      if ([(NSString *)localizedTitle isEqualToString:localizedTitle])
       {
         localizedMessage = self->_localizedMessage;
-        v14 = [v4 localizedMessage];
-        if ([(NSString *)localizedMessage isEqualToString:v14])
+        localizedMessage = [notificationCopy localizedMessage];
+        if ([(NSString *)localizedMessage isEqualToString:localizedMessage])
         {
           localizedActionTitle = self->_localizedActionTitle;
-          v16 = [v4 localizedActionTitle];
-          v17 = [(NSString *)localizedActionTitle isEqualToString:v16];
+          localizedActionTitle = [notificationCopy localizedActionTitle];
+          v17 = [(NSString *)localizedActionTitle isEqualToString:localizedActionTitle];
         }
 
         else
@@ -337,25 +337,25 @@ LABEL_21:
   return v17;
 }
 
-- (PKDiscoveryNotification)initWithCoder:(id)a3
+- (PKDiscoveryNotification)initWithCoder:(id)coder
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v26.receiver = self;
   v26.super_class = PKDiscoveryNotification;
-  v5 = [(PKDiscoveryObject *)&v26 initWithCoder:v4];
+  v5 = [(PKDiscoveryObject *)&v26 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_actionType = [v4 decodeIntForKey:@"action"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"titleKey"];
+    v5->_actionType = [coderCopy decodeIntForKey:@"action"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"titleKey"];
     titleKey = v5->_titleKey;
     v5->_titleKey = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"messageKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"messageKey"];
     messageKey = v5->_messageKey;
     v5->_messageKey = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionTitleKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionTitleKey"];
     actionTitleKey = v5->_actionTitleKey;
     v5->_actionTitleKey = v10;
 
@@ -364,24 +364,24 @@ LABEL_21:
     v27[1] = objc_opt_class();
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:2];
     v14 = [v12 initWithArray:v13];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"actionInfo"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"actionInfo"];
     actionInfo = v5->_actionInfo;
     v5->_actionInfo = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"scheduledDeliveryDate"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"scheduledDeliveryDate"];
     scheduledDeliveryDate = v5->_scheduledDeliveryDate;
     v5->_scheduledDeliveryDate = v17;
 
-    v5->_delivered = [v4 decodeBoolForKey:@"delivered"];
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedTitle"];
+    v5->_delivered = [coderCopy decodeBoolForKey:@"delivered"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedTitle"];
     localizedTitle = v5->_localizedTitle;
     v5->_localizedTitle = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedMessage"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedMessage"];
     localizedMessage = v5->_localizedMessage;
     v5->_localizedMessage = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedActionTitle"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedActionTitle"];
     localizedActionTitle = v5->_localizedActionTitle;
     v5->_localizedActionTitle = v23;
   }
@@ -389,22 +389,22 @@ LABEL_21:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKDiscoveryNotification;
-  v4 = a3;
-  [(PKDiscoveryObject *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_actionType forKey:{@"action", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_titleKey forKey:@"titleKey"];
-  [v4 encodeObject:self->_messageKey forKey:@"messageKey"];
-  [v4 encodeObject:self->_actionTitleKey forKey:@"actionTitleKey"];
-  [v4 encodeObject:self->_actionInfo forKey:@"actionInfo"];
-  [v4 encodeObject:self->_scheduledDeliveryDate forKey:@"delivered"];
-  [v4 encodeBool:self->_delivered forKey:@"delivered"];
-  [v4 encodeObject:self->_localizedTitle forKey:@"localizedTitle"];
-  [v4 encodeObject:self->_localizedMessage forKey:@"localizedMessage"];
-  [v4 encodeObject:self->_localizedActionTitle forKey:@"localizedActionTitle"];
+  coderCopy = coder;
+  [(PKDiscoveryObject *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_actionType forKey:{@"action", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_titleKey forKey:@"titleKey"];
+  [coderCopy encodeObject:self->_messageKey forKey:@"messageKey"];
+  [coderCopy encodeObject:self->_actionTitleKey forKey:@"actionTitleKey"];
+  [coderCopy encodeObject:self->_actionInfo forKey:@"actionInfo"];
+  [coderCopy encodeObject:self->_scheduledDeliveryDate forKey:@"delivered"];
+  [coderCopy encodeBool:self->_delivered forKey:@"delivered"];
+  [coderCopy encodeObject:self->_localizedTitle forKey:@"localizedTitle"];
+  [coderCopy encodeObject:self->_localizedMessage forKey:@"localizedMessage"];
+  [coderCopy encodeObject:self->_localizedActionTitle forKey:@"localizedActionTitle"];
 }
 
 - (id)description

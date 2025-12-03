@@ -1,5 +1,5 @@
 @interface CRLUIViewAccessibility
-+ (id)crlaxCastFrom:(id)a3;
++ (id)crlaxCastFrom:(id)from;
 - (BOOL)_accessibilityShouldUseViewHierarchyForFindingScrollParent;
 - (BOOL)accessibilityPerformEscape;
 - (CGRect)_accessibilityFrameForSorting;
@@ -8,21 +8,21 @@
 - (id)accessibilityContainer;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_crlaxInvalidateChildrenOnParentCanvasView;
-- (void)addSubview:(id)a3;
+- (void)addSubview:(id)subview;
 - (void)crlaxLoadAccessibilityInformation;
 - (void)removeFromSuperview;
-- (void)setAlpha:(double)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setIsAccessibilityElement:(BOOL)a3;
+- (void)setAlpha:(double)alpha;
+- (void)setHidden:(BOOL)hidden;
+- (void)setIsAccessibilityElement:(BOOL)element;
 @end
 
 @implementation CRLUIViewAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
@@ -83,53 +83,53 @@
   v16.super_class = CRLUIViewAccessibility;
   if ([(CRLUIViewAccessibility *)&v16 accessibilityPerformEscape])
   {
-    LOBYTE(v3) = 1;
+    LOBYTE(isPresentingMiniFormatter) = 1;
   }
 
   else
   {
     v15 = 0;
-    v4 = self;
+    selfCopy = self;
     v5 = objc_opt_class();
-    v6 = __CRLAccessibilityCastAsClass(v5, v4, 1, &v15);
-    if (v15 == 1 || (v7 = v6, v4, v15 = 0, [v7 nextResponder], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_opt_class(), __CRLAccessibilityCastAsClass(v9, v8, 1, &v15), v10 = objc_claimAutoreleasedReturnValue(), v15 == 1))
+    v6 = __CRLAccessibilityCastAsClass(v5, selfCopy, 1, &v15);
+    if (v15 == 1 || (v7 = v6, selfCopy, v15 = 0, [v7 nextResponder], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_opt_class(), __CRLAccessibilityCastAsClass(v9, v8, 1, &v15), v10 = objc_claimAutoreleasedReturnValue(), v15 == 1))
     {
       abort();
     }
 
     v11 = v10;
 
-    v12 = [v11 miniFormatterPresenter];
-    v3 = [v12 isPresentingMiniFormatter];
+    miniFormatterPresenter = [v11 miniFormatterPresenter];
+    isPresentingMiniFormatter = [miniFormatterPresenter isPresentingMiniFormatter];
 
-    if (v3)
+    if (isPresentingMiniFormatter)
     {
-      v13 = [v11 miniFormatterPresenter];
-      [v13 dismissMiniFormatter];
+      miniFormatterPresenter2 = [v11 miniFormatterPresenter];
+      [miniFormatterPresenter2 dismissMiniFormatter];
     }
   }
 
-  return v3;
+  return isPresentingMiniFormatter;
 }
 
 - (id)_accessibilityContainingParentForOrdering
 {
   v6.receiver = self;
   v6.super_class = CRLUIViewAccessibility;
-  v3 = [(CRLUIViewAccessibility *)&v6 _accessibilityContainingParentForOrdering];
-  if (!v3)
+  selfCopy = [(CRLUIViewAccessibility *)&v6 _accessibilityContainingParentForOrdering];
+  if (!selfCopy)
   {
-    v3 = self;
+    selfCopy = self;
     do
     {
-      v4 = v3;
-      v3 = [(CRLUIViewAccessibility *)v3 superview];
+      v4 = selfCopy;
+      selfCopy = [(CRLUIViewAccessibility *)selfCopy superview];
     }
 
-    while (([(CRLUIViewAccessibility *)v3 crlaxServesAsContainingParentForOrdering]& 1) == 0 && v3);
+    while (([(CRLUIViewAccessibility *)selfCopy crlaxServesAsContainingParentForOrdering]& 1) == 0 && selfCopy);
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -166,9 +166,9 @@
   NSClassFromString(@"CRLCanvasView");
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v3 = [(CRLUIViewAccessibility *)self _crlaxParentCanvasView];
+    _crlaxParentCanvasView = [(CRLUIViewAccessibility *)self _crlaxParentCanvasView];
 
-    if (v3)
+    if (_crlaxParentCanvasView)
     {
       return 1;
     }
@@ -187,86 +187,86 @@
     goto LABEL_10;
   }
 
-  v3 = [(CRLUIViewAccessibility *)self _crlaxParentCanvasView];
-  if (!v3)
+  _crlaxParentCanvasView = [(CRLUIViewAccessibility *)self _crlaxParentCanvasView];
+  if (!_crlaxParentCanvasView)
   {
     goto LABEL_10;
   }
 
-  v4 = v3;
-  v5 = [(CRLUIViewAccessibility *)self superview];
-  v6 = v5;
-  if (v5 && v5 != v4)
+  accessibilityContainer = _crlaxParentCanvasView;
+  superview = [(CRLUIViewAccessibility *)self superview];
+  superview2 = superview;
+  if (superview && superview != accessibilityContainer)
   {
     do
     {
-      v7 = v6;
-      v8 = [v4 crlaxViewCanBeAddedToContainerElements:v6];
-      v6 = [v6 superview];
+      v7 = superview2;
+      v8 = [accessibilityContainer crlaxViewCanBeAddedToContainerElements:superview2];
+      superview2 = [superview2 superview];
     }
 
-    while (v6 && v6 != v4 && !v8);
+    while (superview2 && superview2 != accessibilityContainer && !v8);
     if (v8)
     {
 
 LABEL_10:
       v10.receiver = self;
       v10.super_class = CRLUIViewAccessibility;
-      v4 = [(CRLUIViewAccessibility *)&v10 accessibilityContainer];
+      accessibilityContainer = [(CRLUIViewAccessibility *)&v10 accessibilityContainer];
       goto LABEL_12;
     }
   }
 
 LABEL_12:
 
-  return v4;
+  return accessibilityContainer;
 }
 
-- (void)setIsAccessibilityElement:(BOOL)a3
+- (void)setIsAccessibilityElement:(BOOL)element
 {
-  v3 = a3;
-  v5 = [(CRLUIViewAccessibility *)self isAccessibilityElement];
+  elementCopy = element;
+  isAccessibilityElement = [(CRLUIViewAccessibility *)self isAccessibilityElement];
   v6.receiver = self;
   v6.super_class = CRLUIViewAccessibility;
-  [(CRLUIViewAccessibility *)&v6 setIsAccessibilityElement:v3];
-  if (v5 != v3)
+  [(CRLUIViewAccessibility *)&v6 setIsAccessibilityElement:elementCopy];
+  if (isAccessibilityElement != elementCopy)
   {
     [(CRLUIViewAccessibility *)self _crlaxInvalidateChildrenOnParentCanvasView];
   }
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v5 = [(CRLUIViewAccessibility *)self isHidden];
+  hiddenCopy = hidden;
+  isHidden = [(CRLUIViewAccessibility *)self isHidden];
   v6.receiver = self;
   v6.super_class = CRLUIViewAccessibility;
-  [(CRLUIViewAccessibility *)&v6 setHidden:v3];
-  if (v5 != v3)
+  [(CRLUIViewAccessibility *)&v6 setHidden:hiddenCopy];
+  if (isHidden != hiddenCopy)
   {
     [(CRLUIViewAccessibility *)self _crlaxInvalidateChildrenOnParentCanvasView];
   }
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   [(CRLUIViewAccessibility *)self alpha];
   v6 = v5;
   v7.receiver = self;
   v7.super_class = CRLUIViewAccessibility;
-  [(CRLUIViewAccessibility *)&v7 setAlpha:a3];
-  if (a3 == 0.0 && v6 > 0.0 || a3 > 0.0 && v6 == 0.0)
+  [(CRLUIViewAccessibility *)&v7 setAlpha:alpha];
+  if (alpha == 0.0 && v6 > 0.0 || alpha > 0.0 && v6 == 0.0)
   {
     [(CRLUIViewAccessibility *)self _crlaxInvalidateChildrenOnParentCanvasView];
   }
 }
 
-- (void)addSubview:(id)a3
+- (void)addSubview:(id)subview
 {
   v5.receiver = self;
   v5.super_class = CRLUIViewAccessibility;
   [(CRLUIViewAccessibility *)&v5 addSubview:?];
-  if (a3)
+  if (subview)
   {
     [(CRLUIViewAccessibility *)self _crlaxInvalidateChildrenOnParentCanvasView];
   }

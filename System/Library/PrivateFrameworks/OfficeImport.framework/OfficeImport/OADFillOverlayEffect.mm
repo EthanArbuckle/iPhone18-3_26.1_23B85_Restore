@@ -1,7 +1,7 @@
 @interface OADFillOverlayEffect
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (OADFillOverlayEffect)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -21,10 +21,10 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [*&self->mBlendMode copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [*&self->mBlendMode copyWithZone:zone];
   [v5 setFill:v6];
   [v5 setBlendMode:*(&self->super.mType + 1)];
 
@@ -40,19 +40,19 @@
   return v3 ^ v4 ^ [(OADEffect *)&v6 hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = *&self->mBlendMode;
-    v6 = [v4 fill];
-    if ([v5 isEqual:v6] && (v7 = *(&self->super.mType + 1), v7 == objc_msgSend(v4, "blendMode")))
+    fill = [equalCopy fill];
+    if ([v5 isEqual:fill] && (v7 = *(&self->super.mType + 1), v7 == objc_msgSend(equalCopy, "blendMode")))
     {
       v10.receiver = self;
       v10.super_class = OADFillOverlayEffect;
-      v8 = [(OADEffect *)&v10 isEqual:v4];
+      v8 = [(OADEffect *)&v10 isEqual:equalCopy];
     }
 
     else

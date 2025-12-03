@@ -1,57 +1,57 @@
 @interface FPImportItemPendingScanningDisk
-- (FPImportItemPendingScanningDisk)initWithCoder:(id)a3;
+- (FPImportItemPendingScanningDisk)initWithCoder:(id)coder;
 - (id)json;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FPImportItemPendingScanningDisk
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   itemIdentifier = self->_itemIdentifier;
-  v5 = a3;
-  [v5 encodeObject:itemIdentifier forKey:@"_itemIdentifier"];
-  [v5 encodeObject:self->_diagnosticAttributes forKey:@"_diagnosticAttributes"];
-  [v5 encodeInteger:self->_itemPendingScanningDiskEnumerationStatus forKey:@"_itemPendingScanningDiskEnumerationStatus"];
-  [v5 encodeBool:self->_itemPendingScanningDiskHasMultiplePagesEnumeration forKey:@"_itemPendingScanningDiskHasMultiplePagesEnumeration"];
-  [v5 encodeInteger:self->_itemPendingScanningDiskNumberOfChildrenPendingReconciliation forKey:@"_itemPendingScanningDiskNumberOfChildrenPendingReconciliation"];
-  [v5 encodeInteger:self->_itemPendingScanningDiskNumberOfChildrenNotPendingReconciliation forKey:@"_itemPendingScanningDiskNumberOfChildrenNotPendingReconciliation"];
-  [v5 encodeInteger:self->_itemPendingScanningDiskNumberOfChildrenPendingSyncUpDeletion forKey:@"_itemPendingScanningDiskNumberOfChildrenPendingSyncUpDeletion"];
-  [v5 encodeInteger:self->_itemPendingScanningDiskNumberOfChildrenPendingSyncDownDeletion forKey:@"_itemPendingScanningDiskNumberOfChildrenPendingSyncDownDeletion"];
-  [v5 encodeInteger:self->_itemPendingScanningDiskNumberOfChildrenPendingSyncUpReparent forKey:@"_itemPendingScanningDiskNumberOfChildrenPendingSyncUpReparent"];
-  [v5 encodeInteger:self->_itemPendingScanningDiskNumberOfChildrenPendingSyncUp forKey:@"_itemPendingScanningDiskNumberOfChildrenPendingSyncUp"];
-  [v5 encodeInteger:self->_itemPendingScanningDiskNumberOfChildrenPendingSyncDownReparent forKey:@"_itemPendingScanningDiskNumberOfChildrenPendingSyncDownReparent"];
-  [v5 encodeInteger:self->_itemPendingScanningDiskNumberOfChildrenPendingSyncDown forKey:@"_itemPendingScanningDiskNumberOfChildrenPendingSyncDown"];
-  [v5 encodeInteger:self->_itemPendingScanningDiskNumberOfChildrenPendingRejection forKey:@"_itemPendingScanningDiskNumberOfChildrenPendingRejection"];
+  coderCopy = coder;
+  [coderCopy encodeObject:itemIdentifier forKey:@"_itemIdentifier"];
+  [coderCopy encodeObject:self->_diagnosticAttributes forKey:@"_diagnosticAttributes"];
+  [coderCopy encodeInteger:self->_itemPendingScanningDiskEnumerationStatus forKey:@"_itemPendingScanningDiskEnumerationStatus"];
+  [coderCopy encodeBool:self->_itemPendingScanningDiskHasMultiplePagesEnumeration forKey:@"_itemPendingScanningDiskHasMultiplePagesEnumeration"];
+  [coderCopy encodeInteger:self->_itemPendingScanningDiskNumberOfChildrenPendingReconciliation forKey:@"_itemPendingScanningDiskNumberOfChildrenPendingReconciliation"];
+  [coderCopy encodeInteger:self->_itemPendingScanningDiskNumberOfChildrenNotPendingReconciliation forKey:@"_itemPendingScanningDiskNumberOfChildrenNotPendingReconciliation"];
+  [coderCopy encodeInteger:self->_itemPendingScanningDiskNumberOfChildrenPendingSyncUpDeletion forKey:@"_itemPendingScanningDiskNumberOfChildrenPendingSyncUpDeletion"];
+  [coderCopy encodeInteger:self->_itemPendingScanningDiskNumberOfChildrenPendingSyncDownDeletion forKey:@"_itemPendingScanningDiskNumberOfChildrenPendingSyncDownDeletion"];
+  [coderCopy encodeInteger:self->_itemPendingScanningDiskNumberOfChildrenPendingSyncUpReparent forKey:@"_itemPendingScanningDiskNumberOfChildrenPendingSyncUpReparent"];
+  [coderCopy encodeInteger:self->_itemPendingScanningDiskNumberOfChildrenPendingSyncUp forKey:@"_itemPendingScanningDiskNumberOfChildrenPendingSyncUp"];
+  [coderCopy encodeInteger:self->_itemPendingScanningDiskNumberOfChildrenPendingSyncDownReparent forKey:@"_itemPendingScanningDiskNumberOfChildrenPendingSyncDownReparent"];
+  [coderCopy encodeInteger:self->_itemPendingScanningDiskNumberOfChildrenPendingSyncDown forKey:@"_itemPendingScanningDiskNumberOfChildrenPendingSyncDown"];
+  [coderCopy encodeInteger:self->_itemPendingScanningDiskNumberOfChildrenPendingRejection forKey:@"_itemPendingScanningDiskNumberOfChildrenPendingRejection"];
 }
 
-- (FPImportItemPendingScanningDisk)initWithCoder:(id)a3
+- (FPImportItemPendingScanningDisk)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = FPImportItemPendingScanningDisk;
   v5 = [(FPImportItemPendingScanningDisk *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_itemIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_itemIdentifier"];
     itemIdentifier = v5->_itemIdentifier;
     v5->_itemIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_diagnosticAttributes"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_diagnosticAttributes"];
     diagnosticAttributes = v5->_diagnosticAttributes;
     v5->_diagnosticAttributes = v8;
 
-    v5->_itemPendingScanningDiskEnumerationStatus = [v4 decodeIntegerForKey:@"_itemPendingScanningDiskEnumerationStatus"];
-    v5->_itemPendingScanningDiskHasMultiplePagesEnumeration = [v4 decodeBoolForKey:@"_itemPendingScanningDiskHasMultiplePagesEnumeration"];
-    v5->_itemPendingScanningDiskNumberOfChildrenPendingReconciliation = [v4 decodeIntegerForKey:@"_itemPendingScanningDiskNumberOfChildrenPendingReconciliation"];
-    v5->_itemPendingScanningDiskNumberOfChildrenNotPendingReconciliation = [v4 decodeIntegerForKey:@"_itemPendingScanningDiskNumberOfChildrenNotPendingReconciliation"];
-    v5->_itemPendingScanningDiskNumberOfChildrenPendingSyncUpDeletion = [v4 decodeIntegerForKey:@"_itemPendingScanningDiskNumberOfChildrenPendingSyncUpDeletion"];
-    v5->_itemPendingScanningDiskNumberOfChildrenPendingSyncDownDeletion = [v4 decodeIntegerForKey:@"_itemPendingScanningDiskNumberOfChildrenPendingSyncDownDeletion"];
-    v5->_itemPendingScanningDiskNumberOfChildrenPendingSyncUpReparent = [v4 decodeIntegerForKey:@"_itemPendingScanningDiskNumberOfChildrenPendingSyncUpReparent"];
-    v5->_itemPendingScanningDiskNumberOfChildrenPendingSyncUp = [v4 decodeIntegerForKey:@"_itemPendingScanningDiskNumberOfChildrenPendingSyncUp"];
-    v5->_itemPendingScanningDiskNumberOfChildrenPendingSyncDownReparent = [v4 decodeIntegerForKey:@"_itemPendingScanningDiskNumberOfChildrenPendingSyncDownReparent"];
-    v5->_itemPendingScanningDiskNumberOfChildrenPendingSyncDown = [v4 decodeIntegerForKey:@"_itemPendingScanningDiskNumberOfChildrenPendingSyncDown"];
-    v5->_itemPendingScanningDiskNumberOfChildrenPendingRejection = [v4 decodeIntegerForKey:@"_itemPendingScanningDiskNumberOfChildrenPendingRejection"];
+    v5->_itemPendingScanningDiskEnumerationStatus = [coderCopy decodeIntegerForKey:@"_itemPendingScanningDiskEnumerationStatus"];
+    v5->_itemPendingScanningDiskHasMultiplePagesEnumeration = [coderCopy decodeBoolForKey:@"_itemPendingScanningDiskHasMultiplePagesEnumeration"];
+    v5->_itemPendingScanningDiskNumberOfChildrenPendingReconciliation = [coderCopy decodeIntegerForKey:@"_itemPendingScanningDiskNumberOfChildrenPendingReconciliation"];
+    v5->_itemPendingScanningDiskNumberOfChildrenNotPendingReconciliation = [coderCopy decodeIntegerForKey:@"_itemPendingScanningDiskNumberOfChildrenNotPendingReconciliation"];
+    v5->_itemPendingScanningDiskNumberOfChildrenPendingSyncUpDeletion = [coderCopy decodeIntegerForKey:@"_itemPendingScanningDiskNumberOfChildrenPendingSyncUpDeletion"];
+    v5->_itemPendingScanningDiskNumberOfChildrenPendingSyncDownDeletion = [coderCopy decodeIntegerForKey:@"_itemPendingScanningDiskNumberOfChildrenPendingSyncDownDeletion"];
+    v5->_itemPendingScanningDiskNumberOfChildrenPendingSyncUpReparent = [coderCopy decodeIntegerForKey:@"_itemPendingScanningDiskNumberOfChildrenPendingSyncUpReparent"];
+    v5->_itemPendingScanningDiskNumberOfChildrenPendingSyncUp = [coderCopy decodeIntegerForKey:@"_itemPendingScanningDiskNumberOfChildrenPendingSyncUp"];
+    v5->_itemPendingScanningDiskNumberOfChildrenPendingSyncDownReparent = [coderCopy decodeIntegerForKey:@"_itemPendingScanningDiskNumberOfChildrenPendingSyncDownReparent"];
+    v5->_itemPendingScanningDiskNumberOfChildrenPendingSyncDown = [coderCopy decodeIntegerForKey:@"_itemPendingScanningDiskNumberOfChildrenPendingSyncDown"];
+    v5->_itemPendingScanningDiskNumberOfChildrenPendingRejection = [coderCopy decodeIntegerForKey:@"_itemPendingScanningDiskNumberOfChildrenPendingRejection"];
   }
 
   return v5;

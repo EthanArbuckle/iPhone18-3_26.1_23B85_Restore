@@ -1,12 +1,12 @@
 @interface HTFenceAssertion
-- (HTFenceAssertion)initWithFenceName:(unint64_t)a3;
+- (HTFenceAssertion)initWithFenceName:(unint64_t)name;
 - (void)blown;
 - (void)invalidate;
 @end
 
 @implementation HTFenceAssertion
 
-- (HTFenceAssertion)initWithFenceName:(unint64_t)a3
+- (HTFenceAssertion)initWithFenceName:(unint64_t)name
 {
   v16.receiver = self;
   v16.super_class = HTFenceAssertion;
@@ -17,7 +17,7 @@
     goto LABEL_7;
   }
 
-  v4->__name = a3;
+  v4->__name = name;
   v4->__startTime = mach_absolute_time();
   if (qword_10002B0D0 != -1)
   {
@@ -25,9 +25,9 @@
   }
 
   v6 = +[HTPrefs sharedPrefs];
-  v7 = [v6 hangtracerDaemonEnabled];
+  hangtracerDaemonEnabled = [v6 hangtracerDaemonEnabled];
 
-  if ((v7 & 1) == 0)
+  if ((hangtracerDaemonEnabled & 1) == 0)
   {
     v12 = shared_ht_log_handle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -39,9 +39,9 @@
   }
 
   v8 = +[HTPrefs sharedPrefs];
-  v9 = [v8 fenceTrackingEnabled];
+  fenceTrackingEnabled = [v8 fenceTrackingEnabled];
 
-  if ((v9 & 1) == 0)
+  if ((fenceTrackingEnabled & 1) == 0)
   {
     v12 = shared_ht_log_handle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))

@@ -1,7 +1,7 @@
 @interface HMMTRFabricV0KeyStore
 + (id)logCategory;
-- (BOOL)forceUpdateNocSigner:(id)a3 ownerSharedOperationalKeyPair:(id)a4;
-- (BOOL)updateNocSigner:(id)a3 ownerSharedOperationalKeyPair:(id)a4;
+- (BOOL)forceUpdateNocSigner:(id)signer ownerSharedOperationalKeyPair:(id)pair;
+- (BOOL)updateNocSigner:(id)signer ownerSharedOperationalKeyPair:(id)pair;
 - (HMMTRMatterKeypair)nocSigner;
 - (HMMTRMatterKeypair)ownerSharedOperationalKeyPair;
 @end
@@ -28,13 +28,13 @@ uint64_t __36__HMMTRFabricV0KeyStore_logCategory__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)forceUpdateNocSigner:(id)a3 ownerSharedOperationalKeyPair:(id)a4
+- (BOOL)forceUpdateNocSigner:(id)signer ownerSharedOperationalKeyPair:(id)pair
 {
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  signerCopy = signer;
+  pairCopy = pair;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -45,13 +45,13 @@ uint64_t __36__HMMTRFabricV0KeyStore_logCategory__block_invoke()
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [(HMMTRFabricV0KeyStore *)v9 nocSigner];
-  if (v12)
+  nocSigner = [(HMMTRFabricV0KeyStore *)selfCopy nocSigner];
+  if (nocSigner)
   {
-    v13 = SecKeyCopyExternalRepresentation([v6 privateKey], 0);
-    v14 = [v12 updateStorageWithPrivateKeyData:v13];
+    v13 = SecKeyCopyExternalRepresentation([signerCopy privateKey], 0);
+    v14 = [nocSigner updateStorageWithPrivateKeyData:v13];
     v15 = objc_autoreleasePoolPush();
-    v16 = v9;
+    v16 = selfCopy;
     v17 = HMFGetOSLogHandle();
     v18 = v17;
     if (v14)
@@ -81,9 +81,9 @@ uint64_t __36__HMMTRFabricV0KeyStore_logCategory__block_invoke()
 
   else
   {
-    v13 = -[HMMTRMatterKeypair initWithV0Account:privateKey:]([HMMTRMatterKeypair alloc], "initWithV0Account:privateKey:", @"CHIPPlugin.nodeopcerts.CA:0", [v6 privateKey]);
+    v13 = -[HMMTRMatterKeypair initWithV0Account:privateKey:]([HMMTRMatterKeypair alloc], "initWithV0Account:privateKey:", @"CHIPPlugin.nodeopcerts.CA:0", [signerCopy privateKey]);
     v15 = objc_autoreleasePoolPush();
-    v16 = v9;
+    v16 = selfCopy;
     v21 = HMFGetOSLogHandle();
     v18 = v21;
     if (v13)
@@ -103,13 +103,13 @@ LABEL_10:
 LABEL_11:
       objc_autoreleasePoolPop(v15);
 
-      v22 = [(HMMTRFabricV0KeyStore *)v9 ownerSharedOperationalKeyPair];
-      if (v22)
+      ownerSharedOperationalKeyPair = [(HMMTRFabricV0KeyStore *)selfCopy ownerSharedOperationalKeyPair];
+      if (ownerSharedOperationalKeyPair)
       {
-        v23 = SecKeyCopyExternalRepresentation([v7 privateKey], 0);
-        v24 = [v22 updateStorageWithPrivateKeyData:v23];
+        v23 = SecKeyCopyExternalRepresentation([pairCopy privateKey], 0);
+        v24 = [ownerSharedOperationalKeyPair updateStorageWithPrivateKeyData:v23];
         v25 = objc_autoreleasePoolPush();
-        v26 = v9;
+        v26 = selfCopy;
         v27 = HMFGetOSLogHandle();
         v28 = v27;
         if (v24)
@@ -143,9 +143,9 @@ LABEL_35:
 
       else
       {
-        v31 = -[HMMTRMatterKeypair initWithV0Account:privateKey:]([HMMTRMatterKeypair alloc], "initWithV0Account:privateKey:", @"CHIPPlugin.nodeOperationalKeyPair.CA:0", [v7 privateKey]);
+        v31 = -[HMMTRMatterKeypair initWithV0Account:privateKey:]([HMMTRMatterKeypair alloc], "initWithV0Account:privateKey:", @"CHIPPlugin.nodeOperationalKeyPair.CA:0", [pairCopy privateKey]);
         v32 = objc_autoreleasePoolPush();
-        v33 = v9;
+        v33 = selfCopy;
         v34 = HMFGetOSLogHandle();
         v35 = v34;
         if (v31)
@@ -195,23 +195,23 @@ LABEL_36:
   return v37;
 }
 
-- (BOOL)updateNocSigner:(id)a3 ownerSharedOperationalKeyPair:(id)a4
+- (BOOL)updateNocSigner:(id)signer ownerSharedOperationalKeyPair:(id)pair
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMMTRFabricV0KeyStore *)self nocSigner];
-  v9 = [v8 serialize];
-  v10 = [v6 serialize];
-  v11 = [v9 isEqual:v10];
+  signerCopy = signer;
+  pairCopy = pair;
+  nocSigner = [(HMMTRFabricV0KeyStore *)self nocSigner];
+  serialize = [nocSigner serialize];
+  serialize2 = [signerCopy serialize];
+  v11 = [serialize isEqual:serialize2];
 
   if (v11)
   {
 LABEL_2:
-    v12 = [(HMMTRFabricV0KeyStore *)self ownerSharedOperationalKeyPair];
-    v13 = [v12 serialize];
-    v14 = [v7 serialize];
-    v15 = [v13 isEqual:v14];
+    ownerSharedOperationalKeyPair = [(HMMTRFabricV0KeyStore *)self ownerSharedOperationalKeyPair];
+    serialize3 = [ownerSharedOperationalKeyPair serialize];
+    serialize4 = [pairCopy serialize];
+    v15 = [serialize3 isEqual:serialize4];
 
     if (v15)
     {
@@ -222,10 +222,10 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    if (v12)
+    if (ownerSharedOperationalKeyPair)
     {
       v22 = objc_autoreleasePoolPush();
-      v23 = self;
+      selfCopy2 = self;
       v24 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
@@ -240,7 +240,7 @@ LABEL_12:
 
     else
     {
-      v30 = -[HMMTRMatterKeypair initWithV0Account:privateKey:]([HMMTRMatterKeypair alloc], "initWithV0Account:privateKey:", @"CHIPPlugin.nodeOperationalKeyPair.CA:0", [v7 privateKey]);
+      v30 = -[HMMTRMatterKeypair initWithV0Account:privateKey:]([HMMTRMatterKeypair alloc], "initWithV0Account:privateKey:", @"CHIPPlugin.nodeOperationalKeyPair.CA:0", [pairCopy privateKey]);
       if (v30)
       {
 
@@ -248,7 +248,7 @@ LABEL_12:
       }
 
       v22 = objc_autoreleasePoolPush();
-      v23 = self;
+      selfCopy2 = self;
       v24 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
@@ -265,10 +265,10 @@ LABEL_12:
     goto LABEL_14;
   }
 
-  if (v8)
+  if (nocSigner)
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy4 = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -283,7 +283,7 @@ LABEL_7:
 
   else
   {
-    v29 = -[HMMTRMatterKeypair initWithV0Account:privateKey:]([HMMTRMatterKeypair alloc], "initWithV0Account:privateKey:", @"CHIPPlugin.nodeopcerts.CA:0", [v6 privateKey]);
+    v29 = -[HMMTRMatterKeypair initWithV0Account:privateKey:]([HMMTRMatterKeypair alloc], "initWithV0Account:privateKey:", @"CHIPPlugin.nodeopcerts.CA:0", [signerCopy privateKey]);
     if (v29)
     {
 
@@ -291,7 +291,7 @@ LABEL_7:
     }
 
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy4 = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {

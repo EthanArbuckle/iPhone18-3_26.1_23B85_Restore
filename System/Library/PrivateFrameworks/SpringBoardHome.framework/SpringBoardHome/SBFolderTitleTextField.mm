@@ -1,17 +1,17 @@
 @interface SBFolderTitleTextField
 + (id)_clearButtonImage;
-- (CGRect)_textRectForBounds:(CGRect)a3;
-- (CGRect)clearButtonRectForBounds:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SBFolderTitleTextField)initWithFrame:(CGRect)a3;
+- (CGRect)_textRectForBounds:(CGRect)bounds;
+- (CGRect)clearButtonRectForBounds:(CGRect)bounds;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SBFolderTitleTextField)initWithFrame:(CGRect)frame;
 - (double)fontSize;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (void)_updateLegibility;
 - (void)layoutSubviews;
-- (void)setFontSize:(double)a3;
-- (void)setLegibilitySettings:(id)a3;
-- (void)setShowsEditUI:(BOOL)a3 animated:(BOOL)a4;
+- (void)setFontSize:(double)size;
+- (void)setLegibilitySettings:(id)settings;
+- (void)setShowsEditUI:(BOOL)i animated:(BOOL)animated;
 @end
 
 @implementation SBFolderTitleTextField
@@ -24,15 +24,15 @@
   return v3;
 }
 
-- (SBFolderTitleTextField)initWithFrame:(CGRect)a3
+- (SBFolderTitleTextField)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = SBFolderTitleTextField;
-  v3 = [(SBFolderTitleTextField *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBFolderTitleTextField *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] whiteColor];
-    [(SBFolderTitleTextField *)v3 setTextColor:v4];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(SBFolderTitleTextField *)v3 setTextColor:whiteColor];
 
     [(SBFolderTitleTextField *)v3 setClearButtonMode:0];
     [(SBFolderTitleTextField *)v3 setTextAlignment:4];
@@ -42,14 +42,14 @@
     [(SBFolderTitleTextField *)v3 setKeyboardAppearance:1];
     [(SBFolderTitleTextField *)v3 setBorderStyle:3];
     [(SBFolderTitleTextField *)v3 _setRoundedRectBackgroundCornerRadius:14.0];
-    v5 = [(SBFolderTitleTextField *)v3 _clearButton];
-    v6 = [objc_opt_class() _clearButtonImage];
-    [v5 setImage:v6 forState:0];
+    _clearButton = [(SBFolderTitleTextField *)v3 _clearButton];
+    _clearButtonImage = [objc_opt_class() _clearButtonImage];
+    [_clearButton setImage:_clearButtonImage forState:0];
 
     [(SBFolderTitleTextField *)v3 _updateLegibility];
     [(SBFolderTitleTextField *)v3 layoutIfNeeded];
-    v7 = [(SBFolderTitleTextField *)v3 _backgroundView];
-    [v7 setAlpha:0.0];
+    _backgroundView = [(SBFolderTitleTextField *)v3 _backgroundView];
+    [_backgroundView setAlpha:0.0];
   }
 
   return v3;
@@ -64,11 +64,11 @@
   [(SBFolderTitleTextField *)self _setContinuousCornerRadius:v3 * 0.5];
 }
 
-- (void)setShowsEditUI:(BOOL)a3 animated:(BOOL)a4
+- (void)setShowsEditUI:(BOOL)i animated:(BOOL)animated
 {
-  if (self->_showingEditUI != a3)
+  if (self->_showingEditUI != i)
   {
-    if (a4)
+    if (animated)
     {
       v6 = 0.25;
     }
@@ -78,11 +78,11 @@
       v6 = 0.0;
     }
 
-    if (a3)
+    if (i)
     {
       [(SBFolderTitleTextField *)self setClearButtonMode:3];
-      v7 = [(SBFolderTitleTextField *)self _clearButton];
-      [v7 setAlpha:0.0];
+      _clearButton = [(SBFolderTitleTextField *)self _clearButton];
+      [_clearButton setAlpha:0.0];
 
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
@@ -107,7 +107,7 @@
       [MEMORY[0x1E69DD250] animateWithDuration:v9 animations:v8 completion:v6];
     }
 
-    self->_showingEditUI = a3;
+    self->_showingEditUI = i;
   }
 }
 
@@ -125,26 +125,26 @@ void __50__SBFolderTitleTextField_setShowsEditUI_animated___block_invoke_2(uint6
   [v2 setAlpha:0.0];
 }
 
-- (void)setFontSize:(double)a3
+- (void)setFontSize:(double)size
 {
-  v4 = [MEMORY[0x1E69DB878] systemFontOfSize:a3 weight:*MEMORY[0x1E69DB958]];
+  v4 = [MEMORY[0x1E69DB878] systemFontOfSize:size weight:*MEMORY[0x1E69DB958]];
   [(SBFolderTitleTextField *)self setFont:v4];
 }
 
 - (double)fontSize
 {
-  v2 = [(SBFolderTitleTextField *)self font];
-  [v2 pointSize];
+  font = [(SBFolderTitleTextField *)self font];
+  [font pointSize];
   v4 = v3;
 
   return v4;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v12.receiver = self;
   v12.super_class = SBFolderTitleTextField;
-  [(SBFolderTitleTextField *)&v12 sizeThatFits:a3.width, a3.height];
+  [(SBFolderTitleTextField *)&v12 sizeThatFits:fits.width, fits.height];
   v4 = v3;
   v6 = v5;
   if (__sb__runningInSpringBoard())
@@ -154,8 +154,8 @@ void __50__SBFolderTitleTextField_setShowsEditUI_animated___block_invoke_2(uint6
 
   else
   {
-    v8 = [MEMORY[0x1E69DC938] currentDevice];
-    v7 = [v8 userInterfaceIdiom] == 1;
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    v7 = [currentDevice userInterfaceIdiom] == 1;
   }
 
   v9 = 13.0;
@@ -171,12 +171,12 @@ void __50__SBFolderTitleTextField_setShowsEditUI_animated___block_invoke_2(uint6
   return result;
 }
 
-- (CGRect)_textRectForBounds:(CGRect)a3
+- (CGRect)_textRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v28.receiver = self;
   v28.super_class = SBFolderTitleTextField;
   [(SBFolderTitleTextField *)&v28 textRectForBounds:?];
@@ -242,12 +242,12 @@ void __50__SBFolderTitleTextField_setShowsEditUI_animated___block_invoke_2(uint6
   return result;
 }
 
-- (CGRect)clearButtonRectForBounds:(CGRect)a3
+- (CGRect)clearButtonRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v11.receiver = self;
   v11.super_class = SBFolderTitleTextField;
   [(SBFolderTitleTextField *)&v11 clearButtonRectForBounds:?];
@@ -268,12 +268,12 @@ void __50__SBFolderTitleTextField_setShowsEditUI_animated___block_invoke_2(uint6
   return result;
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   if (![(SBHLegibilitySettings *)self->_legibilitySettings isEqual:?])
   {
-    objc_storeStrong(&self->_legibilitySettings, a3);
+    objc_storeStrong(&self->_legibilitySettings, settings);
     [(SBFolderTitleTextField *)self _updateLegibility];
   }
 }
@@ -281,22 +281,22 @@ void __50__SBFolderTitleTextField_setShowsEditUI_animated___block_invoke_2(uint6
 - (void)_updateLegibility
 {
   v3 = self->_legibilitySettings;
-  v4 = [(SBHLegibilitySettings *)v3 primaryColor];
-  [(SBFolderTitleTextField *)self setTextColor:v4];
+  primaryColor = [(SBHLegibilitySettings *)v3 primaryColor];
+  [(SBFolderTitleTextField *)self setTextColor:primaryColor];
 
-  v7 = [(SBFolderTitleTextField *)self _clearButton];
-  v5 = [(SBHLegibilitySettings *)v3 primaryColor];
+  _clearButton = [(SBFolderTitleTextField *)self _clearButton];
+  primaryColor2 = [(SBHLegibilitySettings *)v3 primaryColor];
 
-  v6 = [v5 colorWithAlphaComponent:0.6];
-  [v7 setTintColor:v6];
+  v6 = [primaryColor2 colorWithAlphaComponent:0.6];
+  [_clearButton setTintColor:v6];
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v6 = a5;
-  v7 = [(SBFolderTitleTextField *)self showingEditUI];
-  v8 = v6;
-  if (!v7)
+  regionCopy = region;
+  showingEditUI = [(SBFolderTitleTextField *)self showingEditUI];
+  v8 = regionCopy;
+  if (!showingEditUI)
   {
 
     v8 = 0;
@@ -305,10 +305,10 @@ void __50__SBFolderTitleTextField_setShowsEditUI_animated___block_invoke_2(uint6
   return v8;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   v4 = MEMORY[0x1E69DCDC8];
-  v5 = [(SBFolderTitleTextField *)self font:a3];
+  v5 = [(SBFolderTitleTextField *)self font:interaction];
   [v5 lineHeight];
   v6 = [v4 beamWithPreferredLength:2 axis:?];
 

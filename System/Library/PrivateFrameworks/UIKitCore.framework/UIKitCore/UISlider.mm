@@ -6,12 +6,12 @@
 - (CGRect)minimumValueImageRectForBounds:(CGRect)bounds;
 - (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value;
 - (CGRect)trackRectForBounds:(CGRect)bounds;
-- (CGRect)valueTextRectForBounds:(CGRect)a3;
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3;
+- (CGRect)valueTextRectForBounds:(CGRect)bounds;
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size;
 - (UIEdgeInsets)_thumbHitEdgeInsets;
 - (UIEdgeInsets)alignmentRectInsets;
-- (UISlider)initWithCoder:(id)a3;
-- (UISlider)initWithFrame:(CGRect)a3;
+- (UISlider)initWithCoder:(id)coder;
+- (UISlider)initWithFrame:(CGRect)frame;
 - (UISliderTrackConfiguration)trackConfiguration;
 - (_UISliderConfiguration)_sliderConfiguration;
 - (id)_additionalTrackingViews;
@@ -19,44 +19,44 @@
 - (int64_t)sliderStyle;
 - (unint64_t)_fluidUpdateSource;
 - (void)_installVisualElement;
-- (void)_installVisualElement:(id)a3;
-- (void)_intrinsicContentSizeInvalidatedForChildView:(id)a3;
-- (void)_populateArchivedSubviews:(id)a3;
+- (void)_installVisualElement:(id)element;
+- (void)_intrinsicContentSizeInvalidatedForChildView:(id)view;
+- (void)_populateArchivedSubviews:(id)subviews;
 - (void)_reinstallVisualElementIfNeeded;
-- (void)_setFluidTrackHidden:(BOOL)a3;
-- (void)_setMaximumEnabledValue:(float)a3;
-- (void)_setMinimumEnabledValue:(float)a3;
-- (void)_setMinimumTrackVisible:(BOOL)a3 withDuration:(double)a4;
-- (void)_setSliderConfiguration:(int)a3 minimumEnabledValue:(float)a4 maximumEnabledValue:(float)a5 updateMinMaxEnabledValues:;
-- (void)_setSliderSpeedMultiplier:(float)a3;
-- (void)_setSliderStyle:(int64_t)a3;
-- (void)_setThumbEnabled:(BOOL)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setFluidTrackHidden:(BOOL)hidden;
+- (void)_setMaximumEnabledValue:(float)value;
+- (void)_setMinimumEnabledValue:(float)value;
+- (void)_setMinimumTrackVisible:(BOOL)visible withDuration:(double)duration;
+- (void)_setSliderConfiguration:(int)configuration minimumEnabledValue:(float)value maximumEnabledValue:(float)enabledValue updateMinMaxEnabledValues:;
+- (void)_setSliderSpeedMultiplier:(float)multiplier;
+- (void)_setSliderStyle:(int64_t)style;
+- (void)_setThumbEnabled:(BOOL)enabled;
+- (void)encodeWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)setContinuous:(BOOL)continuous;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
 - (void)setMaximumTrackImage:(UIImage *)image forState:(UIControlState)state;
-- (void)setMaximumTrackImage:(id)a3 forStates:(unint64_t)a4;
+- (void)setMaximumTrackImage:(id)image forStates:(unint64_t)states;
 - (void)setMaximumTrackTintColor:(UIColor *)maximumTrackTintColor;
 - (void)setMaximumValue:(float)maximumValue;
 - (void)setMaximumValueImage:(UIImage *)maximumValueImage;
 - (void)setMinimumTrackImage:(UIImage *)image forState:(UIControlState)state;
-- (void)setMinimumTrackImage:(id)a3 forStates:(unint64_t)a4;
+- (void)setMinimumTrackImage:(id)image forStates:(unint64_t)states;
 - (void)setMinimumTrackTintColor:(UIColor *)minimumTrackTintColor;
 - (void)setMinimumValue:(float)minimumValue;
 - (void)setMinimumValueImage:(UIImage *)minimumValueImage;
 - (void)setPreferredBehavioralStyle:(UIBehavioralStyle)preferredBehavioralStyle;
-- (void)setSelected:(BOOL)a3;
-- (void)setSemanticContentAttribute:(int64_t)a3;
-- (void)setShowValue:(BOOL)a3;
-- (void)setSliderStyle:(int64_t)a3;
+- (void)setSelected:(BOOL)selected;
+- (void)setSemanticContentAttribute:(int64_t)attribute;
+- (void)setShowValue:(BOOL)value;
+- (void)setSliderStyle:(int64_t)style;
 - (void)setThumbImage:(UIImage *)image forState:(UIControlState)state;
-- (void)setThumbImage:(id)a3 forStates:(unint64_t)a4;
+- (void)setThumbImage:(id)image forStates:(unint64_t)states;
 - (void)setThumbTintColor:(UIColor *)thumbTintColor;
-- (void)setTrackConfiguration:(id)a3;
-- (void)setTracking:(BOOL)a3;
-- (void)setUserInteractionEnabled:(BOOL)a3;
+- (void)setTrackConfiguration:(id)configuration;
+- (void)setTracking:(BOOL)tracking;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
 @end
 
 @implementation UISlider
@@ -99,11 +99,11 @@
   }
 }
 
-- (UISlider)initWithFrame:(CGRect)a3
+- (UISlider)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = UISlider;
-  v3 = [(UIControl *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIControl *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -127,12 +127,12 @@
   return v4;
 }
 
-- (UISlider)initWithCoder:(id)a3
+- (UISlider)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = UISlider;
-  v5 = [(UIControl *)&v20 initWithCoder:v4];
+  v5 = [(UIControl *)&v20 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_opt_new();
@@ -142,9 +142,9 @@
     [(UISlider *)v5 _installVisualElement];
     [(UIControl *)v5 setSymbolAnimationEnabled:1];
     [(UISlider *)v5 _registerForTraitChanges];
-    if ([v4 containsValueForKey:@"UIBehavioralStyle"])
+    if ([coderCopy containsValueForKey:@"UIBehavioralStyle"])
     {
-      v8 = [v4 decodeIntegerForKey:@"UIBehavioralStyle"];
+      v8 = [coderCopy decodeIntegerForKey:@"UIBehavioralStyle"];
     }
 
     else
@@ -153,61 +153,61 @@
     }
 
     [(UISlider *)v5 setPreferredBehavioralStyle:v8];
-    [v4 decodeFloatForKey:@"UIMinValue"];
+    [coderCopy decodeFloatForKey:@"UIMinValue"];
     [(UISliderDataModel *)v5->_data setMinimumValue:?];
-    v9 = [v4 containsValueForKey:@"UIMaxValue"];
+    v9 = [coderCopy containsValueForKey:@"UIMaxValue"];
     LODWORD(v10) = 1.0;
     if (v9)
     {
-      [v4 decodeFloatForKey:{@"UIMaxValue", v10}];
+      [coderCopy decodeFloatForKey:{@"UIMaxValue", v10}];
     }
 
     [(UISliderDataModel *)v5->_data setMaximumValue:v10];
-    [v4 decodeFloatForKey:@"UIValue"];
+    [coderCopy decodeFloatForKey:@"UIValue"];
     [(UISliderDataModel *)v5->_data setValue:?];
     [(_UISliderVisualElement *)v5->_visualElement didSetValues];
-    if ([v4 containsValueForKey:@"UIContinuous"])
+    if ([coderCopy containsValueForKey:@"UIContinuous"])
     {
-      -[UISliderDataModel setContinuous:](v5->_data, "setContinuous:", [v4 decodeBoolForKey:@"UIContinuous"]);
+      -[UISliderDataModel setContinuous:](v5->_data, "setContinuous:", [coderCopy decodeBoolForKey:@"UIContinuous"]);
       [(_UISliderVisualElement *)v5->_visualElement didSetContinuous];
     }
 
-    v11 = [v4 decodeObjectForKey:@"UIMinimumValueImage"];
+    v11 = [coderCopy decodeObjectForKey:@"UIMinimumValueImage"];
     if (v11)
     {
       [(UISliderDataModel *)v5->_data setMinimumValueImage:v11];
       [(_UISliderVisualElement *)v5->_visualElement didSetMinimumValueImage];
     }
 
-    v12 = [v4 decodeObjectForKey:@"UIMaximumValueImage"];
+    v12 = [coderCopy decodeObjectForKey:@"UIMaximumValueImage"];
     if (v12)
     {
       [(UISliderDataModel *)v5->_data setMaximumValueImage:v12];
       [(_UISliderVisualElement *)v5->_visualElement didSetMaximumValueImage];
     }
 
-    if ([v4 containsValueForKey:@"UIMinimumTintColor"])
+    if ([coderCopy containsValueForKey:@"UIMinimumTintColor"])
     {
       v13 = v5->_data;
-      v14 = [v4 decodeObjectForKey:@"UIMinimumTintColor"];
+      v14 = [coderCopy decodeObjectForKey:@"UIMinimumTintColor"];
       [(UISliderDataModel *)v13 setMinimumTrackTintColor:v14];
 
       [(_UISliderVisualElement *)v5->_visualElement didSetMinimumTrackTintColor];
     }
 
-    if ([v4 containsValueForKey:@"UIMaximumTintColor"])
+    if ([coderCopy containsValueForKey:@"UIMaximumTintColor"])
     {
       v15 = v5->_data;
-      v16 = [v4 decodeObjectForKey:@"UIMaximumTintColor"];
+      v16 = [coderCopy decodeObjectForKey:@"UIMaximumTintColor"];
       [(UISliderDataModel *)v15 setMaximumTrackTintColor:v16];
 
       [(_UISliderVisualElement *)v5->_visualElement didSetMaximumTrackTintColor];
     }
 
-    if ([v4 containsValueForKey:@"UIThumbTintColor"])
+    if ([coderCopy containsValueForKey:@"UIThumbTintColor"])
     {
       v17 = v5->_data;
-      v18 = [v4 decodeObjectForKey:@"UIThumbTintColor"];
+      v18 = [coderCopy decodeObjectForKey:@"UIThumbTintColor"];
       [(UISliderDataModel *)v17 setThumbTintColor:v18];
 
       [(UISlider *)v5 setThumbImage:0 forStates:7];
@@ -218,13 +218,13 @@
   return v5;
 }
 
-- (void)_installVisualElement:(id)a3
+- (void)_installVisualElement:(id)element
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  elementCopy = element;
   [(_UISliderVisualElement *)self->_visualElement setSlider:0];
   [(_UISliderVisualElement *)self->_visualElement removeFromSuperview];
-  objc_storeStrong(&self->_visualElement, a3);
+  objc_storeStrong(&self->_visualElement, element);
   *&self->_visualElementFlags = *&self->_visualElementFlags & 0xFFFE | objc_opt_respondsToSelector() & 1;
   if (objc_opt_respondsToSelector())
   {
@@ -313,8 +313,8 @@
   [(_UISliderVisualElement *)self->_visualElement setSemanticContentAttribute:[(UIView *)self semanticContentAttribute]];
   if (!self->_data)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"UISlider.m" lineNumber:235 description:@"Installing visual element before data model has been created"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISlider.m" lineNumber:235 description:@"Installing visual element before data model has been created"];
   }
 
   [(_UISliderVisualElement *)self->_visualElement setData:?];
@@ -362,96 +362,96 @@ void __34__UISlider__installVisualElement___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)setSemanticContentAttribute:(int64_t)a3
+- (void)setSemanticContentAttribute:(int64_t)attribute
 {
   v5.receiver = self;
   v5.super_class = UISlider;
   [(UIView *)&v5 setSemanticContentAttribute:?];
-  [(_UISliderVisualElement *)self->_visualElement setSemanticContentAttribute:a3];
+  [(_UISliderVisualElement *)self->_visualElement setSemanticContentAttribute:attribute];
 }
 
-- (void)_populateArchivedSubviews:(id)a3
+- (void)_populateArchivedSubviews:(id)subviews
 {
-  v4 = a3;
+  subviewsCopy = subviews;
   v9.receiver = self;
   v9.super_class = UISlider;
-  [(UIView *)&v9 _populateArchivedSubviews:v4];
-  [v4 removeObject:self->_visualElement];
-  [v4 removeObject:self->_visualElement];
+  [(UIView *)&v9 _populateArchivedSubviews:subviewsCopy];
+  [subviewsCopy removeObject:self->_visualElement];
+  [subviewsCopy removeObject:self->_visualElement];
   dummyViews = self->_dummyViews;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__UISlider__populateArchivedSubviews___block_invoke;
   v7[3] = &unk_1E70F3F18;
-  v8 = v4;
-  v6 = v4;
+  v8 = subviewsCopy;
+  v6 = subviewsCopy;
   [(NSArray *)dummyViews enumerateObjectsUsingBlock:v7];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = UISlider;
-  [(UIControl *)&v15 encodeWithCoder:v4];
+  [(UIControl *)&v15 encodeWithCoder:coderCopy];
   [(UISliderDataModel *)self->_data value];
   if (v5 != 0.0)
   {
-    [v4 encodeFloat:@"UIValue" forKey:?];
+    [coderCopy encodeFloat:@"UIValue" forKey:?];
   }
 
   [(UISliderDataModel *)self->_data minimumValue];
   if (v6 != 0.0)
   {
-    [v4 encodeFloat:@"UIMinValue" forKey:?];
+    [coderCopy encodeFloat:@"UIMinValue" forKey:?];
   }
 
   [(UISliderDataModel *)self->_data maximumValue];
   if (v7 != 1.0)
   {
-    [v4 encodeFloat:@"UIMaxValue" forKey:?];
+    [coderCopy encodeFloat:@"UIMaxValue" forKey:?];
   }
 
   if (![(UISliderDataModel *)self->_data isContinuous])
   {
-    [v4 encodeBool:0 forKey:@"UIContinuous"];
+    [coderCopy encodeBool:0 forKey:@"UIContinuous"];
   }
 
-  v8 = [(UISlider *)self minimumValueImage];
+  minimumValueImage = [(UISlider *)self minimumValueImage];
 
-  if (v8)
+  if (minimumValueImage)
   {
-    v9 = [(UISlider *)self minimumValueImage];
-    [v4 encodeObject:v9 forKey:@"UIMinimumValueImage"];
+    minimumValueImage2 = [(UISlider *)self minimumValueImage];
+    [coderCopy encodeObject:minimumValueImage2 forKey:@"UIMinimumValueImage"];
   }
 
-  v10 = [(UISlider *)self maximumValueImage];
+  maximumValueImage = [(UISlider *)self maximumValueImage];
 
-  if (v10)
+  if (maximumValueImage)
   {
-    v11 = [(UISlider *)self maximumValueImage];
-    [v4 encodeObject:v11 forKey:@"UIMaximumValueImage"];
+    maximumValueImage2 = [(UISlider *)self maximumValueImage];
+    [coderCopy encodeObject:maximumValueImage2 forKey:@"UIMaximumValueImage"];
   }
 
-  v12 = [(UISliderDataModel *)self->_data minimumTrackTintColor];
-  if (v12)
+  minimumTrackTintColor = [(UISliderDataModel *)self->_data minimumTrackTintColor];
+  if (minimumTrackTintColor)
   {
-    [v4 encodeObject:v12 forKey:@"UIMinimumTintColor"];
+    [coderCopy encodeObject:minimumTrackTintColor forKey:@"UIMinimumTintColor"];
   }
 
-  v13 = [(UISliderDataModel *)self->_data maximumTrackTintColor];
-  if (v13)
+  maximumTrackTintColor = [(UISliderDataModel *)self->_data maximumTrackTintColor];
+  if (maximumTrackTintColor)
   {
-    [v4 encodeObject:v13 forKey:@"UIMaximumTintColor"];
+    [coderCopy encodeObject:maximumTrackTintColor forKey:@"UIMaximumTintColor"];
   }
 
-  v14 = [(UISliderDataModel *)self->_data thumbTintColor];
-  if (v14)
+  thumbTintColor = [(UISliderDataModel *)self->_data thumbTintColor];
+  if (thumbTintColor)
   {
-    [v4 encodeObject:v14 forKey:@"UIThumbTintColor"];
+    [coderCopy encodeObject:thumbTintColor forKey:@"UIThumbTintColor"];
   }
 
-  [v4 encodeInteger:-[UISlider preferredBehavioralStyle](self forKey:{"preferredBehavioralStyle"), @"UIBehavioralStyle"}];
+  [coderCopy encodeInteger:-[UISlider preferredBehavioralStyle](self forKey:{"preferredBehavioralStyle"), @"UIBehavioralStyle"}];
 }
 
 - (id)description
@@ -483,10 +483,10 @@ void __34__UISlider__installVisualElement___block_invoke(uint64_t a1, void *a2)
 - (void)setThumbTintColor:(UIColor *)thumbTintColor
 {
   v6 = thumbTintColor;
-  v4 = [(UISliderDataModel *)self->_data thumbTintColor];
+  thumbTintColor = [(UISliderDataModel *)self->_data thumbTintColor];
 
   v5 = v6;
-  if (v4 != v6)
+  if (thumbTintColor != v6)
   {
     [(UISliderDataModel *)self->_data setThumbTintColor:v6];
     [(UISlider *)self setThumbImage:0 forStates:7];
@@ -507,10 +507,10 @@ void __34__UISlider__installVisualElement___block_invoke(uint64_t a1, void *a2)
 - (void)setMinimumTrackTintColor:(UIColor *)minimumTrackTintColor
 {
   v6 = minimumTrackTintColor;
-  v4 = [(UISliderDataModel *)self->_data minimumTrackTintColor];
+  minimumTrackTintColor = [(UISliderDataModel *)self->_data minimumTrackTintColor];
 
   v5 = v6;
-  if (v4 != v6)
+  if (minimumTrackTintColor != v6)
   {
     [(UISliderDataModel *)self->_data setMinimumTrackTintColor:v6];
     [(_UISliderVisualElement *)self->_visualElement didSetMinimumTrackTintColor];
@@ -538,10 +538,10 @@ void __34__UISlider__installVisualElement___block_invoke(uint64_t a1, void *a2)
 - (void)setMinimumValueImage:(UIImage *)minimumValueImage
 {
   v6 = minimumValueImage;
-  v4 = [(UISliderDataModel *)self->_data minimumValueImage];
+  minimumValueImage = [(UISliderDataModel *)self->_data minimumValueImage];
 
   v5 = v6;
-  if (v4 != v6)
+  if (minimumValueImage != v6)
   {
     [(UISliderDataModel *)self->_data setMinimumValueImage:v6];
     [(_UISliderVisualElement *)self->_visualElement didSetMinimumValueImage];
@@ -552,10 +552,10 @@ void __34__UISlider__installVisualElement___block_invoke(uint64_t a1, void *a2)
 - (void)setMaximumValueImage:(UIImage *)maximumValueImage
 {
   v6 = maximumValueImage;
-  v4 = [(UISliderDataModel *)self->_data maximumValueImage];
+  maximumValueImage = [(UISliderDataModel *)self->_data maximumValueImage];
 
   v5 = v6;
-  if (v4 != v6)
+  if (maximumValueImage != v6)
   {
     [(UISliderDataModel *)self->_data setMaximumValueImage:v6];
     [(_UISliderVisualElement *)self->_visualElement didSetMaximumValueImage];
@@ -603,25 +603,25 @@ void __34__UISlider__installVisualElement___block_invoke(uint64_t a1, void *a2)
   return result;
 }
 
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size
 {
-  [(_UISliderVisualElement *)self->_visualElement _intrinsicSizeWithinSize:a3.width, a3.height];
+  [(_UISliderVisualElement *)self->_visualElement _intrinsicSizeWithinSize:size.width, size.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (void)_intrinsicContentSizeInvalidatedForChildView:(id)a3
+- (void)_intrinsicContentSizeInvalidatedForChildView:(id)view
 {
-  v4 = a3;
-  if (self->_visualElement == v4)
+  viewCopy = view;
+  if (self->_visualElement == viewCopy)
   {
     [(UIView *)self invalidateIntrinsicContentSize];
   }
 
   v5.receiver = self;
   v5.super_class = UISlider;
-  [(UIView *)&v5 _intrinsicContentSizeInvalidatedForChildView:v4];
+  [(UIView *)&v5 _intrinsicContentSizeInvalidatedForChildView:viewCopy];
 }
 
 - (UIEdgeInsets)alignmentRectInsets
@@ -642,15 +642,15 @@ void __34__UISlider__installVisualElement___block_invoke(uint64_t a1, void *a2)
   [(_UISliderVisualElement *)self->_visualElement didPerformLayout];
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(UIView *)self isUserInteractionEnabled]!= a3)
+  enabledCopy = enabled;
+  if ([(UIView *)self isUserInteractionEnabled]!= enabled)
   {
     v5.receiver = self;
     v5.super_class = UISlider;
-    [(UIView *)&v5 setUserInteractionEnabled:v3];
-    [(UISliderDataModel *)self->_data setUserInteractionEnabled:v3];
+    [(UIView *)&v5 setUserInteractionEnabled:enabledCopy];
+    [(UISliderDataModel *)self->_data setUserInteractionEnabled:enabledCopy];
     if ((*&self->_visualElementFlags & 8) != 0)
     {
       [(_UISliderVisualElement *)self->_visualElement didSetUserInteractionEnabled];
@@ -658,41 +658,41 @@ void __34__UISlider__installVisualElement___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(UIControl *)self isEnabled]!= a3)
+  enabledCopy = enabled;
+  if ([(UIControl *)self isEnabled]!= enabled)
   {
     v5.receiver = self;
     v5.super_class = UISlider;
-    [(UIControl *)&v5 setEnabled:v3];
-    [(UISliderDataModel *)self->_data setEnabled:v3];
+    [(UIControl *)&v5 setEnabled:enabledCopy];
+    [(UISliderDataModel *)self->_data setEnabled:enabledCopy];
     [(_UISliderVisualElement *)self->_visualElement didSetEnabled];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  if ([(UIControl *)self isHighlighted]!= a3)
+  highlightedCopy = highlighted;
+  if ([(UIControl *)self isHighlighted]!= highlighted)
   {
     v5.receiver = self;
     v5.super_class = UISlider;
-    [(UIControl *)&v5 setHighlighted:v3];
-    [(UISliderDataModel *)self->_data setHighlighted:v3];
+    [(UIControl *)&v5 setHighlighted:highlightedCopy];
+    [(UISliderDataModel *)self->_data setHighlighted:highlightedCopy];
     [(_UISliderVisualElement *)self->_visualElement didSetHighlighted];
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
-  if ([(UIControl *)self isSelected]!= a3)
+  selectedCopy = selected;
+  if ([(UIControl *)self isSelected]!= selected)
   {
     v5.receiver = self;
     v5.super_class = UISlider;
-    [(UIControl *)&v5 setSelected:v3];
-    [(UISliderDataModel *)self->_data setSelected:v3];
+    [(UIControl *)&v5 setSelected:selectedCopy];
+    [(UISliderDataModel *)self->_data setSelected:selectedCopy];
     [(_UISliderVisualElement *)self->_visualElement didSetSelected];
   }
 }
@@ -725,13 +725,13 @@ void __34__UISlider__installVisualElement___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)setTracking:(BOOL)a3
+- (void)setTracking:(BOOL)tracking
 {
-  v3 = a3;
+  trackingCopy = tracking;
   v5.receiver = self;
   v5.super_class = UISlider;
   [(UIControl *)&v5 setTracking:?];
-  [(UISliderDataModel *)self->_data setTracking:v3];
+  [(UISliderDataModel *)self->_data setTracking:trackingCopy];
 }
 
 - (BOOL)_deferFinalActions
@@ -750,34 +750,34 @@ void __34__UISlider__installVisualElement___block_invoke(uint64_t a1, void *a2)
 {
   if ((*&self->_visualElementFlags & 0x40) != 0)
   {
-    v2 = [(_UISliderVisualElement *)self->_visualElement additionalTrackingViews];
+    additionalTrackingViews = [(_UISliderVisualElement *)self->_visualElement additionalTrackingViews];
   }
 
   else
   {
     v4.receiver = self;
     v4.super_class = UISlider;
-    v2 = [(UIControl *)&v4 _additionalTrackingViews];
+    additionalTrackingViews = [(UIControl *)&v4 _additionalTrackingViews];
   }
 
-  return v2;
+  return additionalTrackingViews;
 }
 
-- (void)setShowValue:(BOOL)a3
+- (void)setShowValue:(BOOL)value
 {
-  v3 = a3;
-  if ([(UISliderDataModel *)self->_data showValue]!= a3)
+  valueCopy = value;
+  if ([(UISliderDataModel *)self->_data showValue]!= value)
   {
-    [(UISliderDataModel *)self->_data setShowValue:v3];
+    [(UISliderDataModel *)self->_data setShowValue:valueCopy];
     visualElement = self->_visualElement;
 
     [(_UISliderVisualElement *)visualElement didSetShowValue];
   }
 }
 
-- (CGRect)valueTextRectForBounds:(CGRect)a3
+- (CGRect)valueTextRectForBounds:(CGRect)bounds
 {
-  [(_UISliderVisualElement *)self->_visualElement valueTextRectForBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(_UISliderVisualElement *)self->_visualElement valueTextRectForBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -785,51 +785,51 @@ void __34__UISlider__installVisualElement___block_invoke(uint64_t a1, void *a2)
   return result;
 }
 
-- (void)setThumbImage:(id)a3 forStates:(unint64_t)a4
+- (void)setThumbImage:(id)image forStates:(unint64_t)states
 {
-  [(UISliderDataModel *)self->_data setThumbImage:a3 forStates:a4];
+  [(UISliderDataModel *)self->_data setThumbImage:image forStates:states];
   visualElement = self->_visualElement;
 
   [(_UISliderVisualElement *)visualElement didSetThumbImageForStates];
 }
 
-- (void)setMinimumTrackImage:(id)a3 forStates:(unint64_t)a4
+- (void)setMinimumTrackImage:(id)image forStates:(unint64_t)states
 {
-  [(UISliderDataModel *)self->_data setMinimumTrackImage:a3 forStates:a4];
+  [(UISliderDataModel *)self->_data setMinimumTrackImage:image forStates:states];
   visualElement = self->_visualElement;
 
   [(_UISliderVisualElement *)visualElement didSetMinimumTrackImageForStates];
 }
 
-- (void)setMaximumTrackImage:(id)a3 forStates:(unint64_t)a4
+- (void)setMaximumTrackImage:(id)image forStates:(unint64_t)states
 {
-  [(UISliderDataModel *)self->_data setMaximumTrackImage:a3 forStates:a4];
+  [(UISliderDataModel *)self->_data setMaximumTrackImage:image forStates:states];
   visualElement = self->_visualElement;
 
   [(_UISliderVisualElement *)visualElement didSetMaximumTrackImageForStates];
 }
 
-- (void)_setThumbEnabled:(BOOL)a3
+- (void)_setThumbEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(UISliderDataModel *)self->_data isThumbEnabled]!= a3)
+  enabledCopy = enabled;
+  if ([(UISliderDataModel *)self->_data isThumbEnabled]!= enabled)
   {
-    [(UISliderDataModel *)self->_data setThumbEnabled:v3];
+    [(UISliderDataModel *)self->_data setThumbEnabled:enabledCopy];
     visualElement = self->_visualElement;
 
     [(_UISliderVisualElement *)visualElement didSetThumbEnabled];
   }
 }
 
-- (void)_setMinimumTrackVisible:(BOOL)a3 withDuration:(double)a4
+- (void)_setMinimumTrackVisible:(BOOL)visible withDuration:(double)duration
 {
-  v5 = a3;
-  if ([(UISliderDataModel *)self->_data isMinimumTrackVisible]!= a3)
+  visibleCopy = visible;
+  if ([(UISliderDataModel *)self->_data isMinimumTrackVisible]!= visible)
   {
-    [(UISliderDataModel *)self->_data setMinimumTrackVisible:v5];
+    [(UISliderDataModel *)self->_data setMinimumTrackVisible:visibleCopy];
     visualElement = self->_visualElement;
 
-    [(_UISliderVisualElement *)visualElement didChangeMinimumTrackVisibleWithDuration:a4];
+    [(_UISliderVisualElement *)visualElement didChangeMinimumTrackVisibleWithDuration:duration];
   }
 }
 
@@ -843,51 +843,51 @@ void __34__UISlider__installVisualElement___block_invoke(uint64_t a1, void *a2)
   return result;
 }
 
-- (void)_setSliderConfiguration:(int)a3 minimumEnabledValue:(float)a4 maximumEnabledValue:(float)a5 updateMinMaxEnabledValues:
+- (void)_setSliderConfiguration:(int)configuration minimumEnabledValue:(float)value maximumEnabledValue:(float)enabledValue updateMinMaxEnabledValues:
 {
   v9 = a2;
   v10 = v9;
-  if (a1)
+  if (self)
   {
     v20 = v9;
-    v11 = [v9 isEqual:*(a1 + 480)];
+    v11 = [v9 isEqual:*(self + 480)];
     v10 = v20;
     if ((v11 & 1) == 0)
     {
-      if (a3)
+      if (configuration)
       {
-        [*(a1 + 464) minimumValue];
+        [*(self + 464) minimumValue];
         v13 = v12;
-        [*(a1 + 464) maximumValue];
+        [*(self + 464) maximumValue];
         v15 = v14 - v13;
-        v16 = v15 * a4 + v13;
+        v16 = v15 * value + v13;
         *&v16 = v16;
-        [a1 _setMinimumEnabledValue:v16];
-        v17 = v15 * a5 + v13;
+        [self _setMinimumEnabledValue:v16];
+        v17 = v15 * enabledValue + v13;
         *&v17 = v17;
-        [a1 _setMaximumEnabledValue:v17];
+        [self _setMaximumEnabledValue:v17];
         v10 = v20;
       }
 
       v18 = [v10 copyWithZone:0];
-      v19 = *(a1 + 480);
-      *(a1 + 480) = v18;
+      v19 = *(self + 480);
+      *(self + 480) = v18;
 
       v10 = v20;
-      if ((*(a1 + 504) & 2) != 0)
+      if ((*(self + 504) & 2) != 0)
       {
-        [*(a1 + 456) didUpdateConfiguration];
+        [*(self + 456) didUpdateConfiguration];
         v10 = v20;
       }
     }
   }
 }
 
-- (void)_setSliderStyle:(int64_t)a3
+- (void)_setSliderStyle:(int64_t)style
 {
-  if (self->_sliderStyle != a3)
+  if (self->_sliderStyle != style)
   {
-    self->_sliderStyle = a3;
+    self->_sliderStyle = style;
     [(UISlider *)self _installVisualElement];
   }
 }
@@ -907,13 +907,13 @@ void __34__UISlider__installVisualElement___block_invoke(uint64_t a1, void *a2)
   return v3;
 }
 
-- (void)setTrackConfiguration:(id)a3
+- (void)setTrackConfiguration:(id)configuration
 {
-  v7 = a3;
-  [v7 minimumEnabledValue];
+  configurationCopy = configuration;
+  [configurationCopy minimumEnabledValue];
   v5 = v4;
-  [v7 maximumEnabledValue];
-  [(UISlider *)self _setSliderConfiguration:v7 minimumEnabledValue:1 maximumEnabledValue:v5 updateMinMaxEnabledValues:v6];
+  [configurationCopy maximumEnabledValue];
+  [(UISlider *)self _setSliderConfiguration:configurationCopy minimumEnabledValue:1 maximumEnabledValue:v5 updateMinMaxEnabledValues:v6];
 }
 
 - (int64_t)sliderStyle
@@ -929,11 +929,11 @@ void __34__UISlider__installVisualElement___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)setSliderStyle:(int64_t)a3
+- (void)setSliderStyle:(int64_t)style
 {
-  if (a3 <= 99 && self->_sliderStyle != a3)
+  if (style <= 99 && self->_sliderStyle != style)
   {
-    self->_sliderStyle = a3;
+    self->_sliderStyle = style;
     if ((*&self->_visualElementFlags & 4) != 0)
     {
       [(_UISliderVisualElement *)self->_visualElement didUpdateSliderStyle];
@@ -954,16 +954,16 @@ void __34__UISlider__installVisualElement___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)_setFluidTrackHidden:(BOOL)a3
+- (void)_setFluidTrackHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   if ((*&self->_visualElementFlags & 1) == 0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UISlider.m" lineNumber:1096 description:@"Using fluid slider methods on non-fluid slider."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISlider.m" lineNumber:1096 description:@"Using fluid slider methods on non-fluid slider."];
   }
 
-  [(UISliderDataModel *)self->_data setFluidTrackHidden:v3];
+  [(UISliderDataModel *)self->_data setFluidTrackHidden:hiddenCopy];
   visualElement = self->_visualElement;
 
   [(_UISliderVisualElement *)visualElement didSetFluidTrackHidden];
@@ -973,8 +973,8 @@ void __34__UISlider__installVisualElement___block_invoke(uint64_t a1, void *a2)
 {
   if ((*&self->_visualElementFlags & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"UISlider.m" lineNumber:1103 description:@"Using fluid slider methods on non-fluid slider."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISlider.m" lineNumber:1103 description:@"Using fluid slider methods on non-fluid slider."];
   }
 
   data = self->_data;
@@ -982,7 +982,7 @@ void __34__UISlider__installVisualElement___block_invoke(uint64_t a1, void *a2)
   return [(UISliderDataModel *)data isFluidTrackHidden];
 }
 
-- (void)_setMinimumEnabledValue:(float)a3
+- (void)_setMinimumEnabledValue:(float)value
 {
   if ([(UISliderDataModel *)self->_data setMinimumEnabledValue:?])
   {
@@ -992,7 +992,7 @@ void __34__UISlider__installVisualElement___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)_setMaximumEnabledValue:(float)a3
+- (void)_setMaximumEnabledValue:(float)value
 {
   if ([(UISliderDataModel *)self->_data setMaximumEnabledValue:?])
   {
@@ -1002,12 +1002,12 @@ void __34__UISlider__installVisualElement___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)_setSliderSpeedMultiplier:(float)a3
+- (void)_setSliderSpeedMultiplier:(float)multiplier
 {
   [(UISliderDataModel *)self->_data sliderSpeedMultiplier];
-  if (vabds_f32(*&v5, a3) >= 0.00000011921)
+  if (vabds_f32(*&v5, multiplier) >= 0.00000011921)
   {
-    *&v5 = a3;
+    *&v5 = multiplier;
     [(UISliderDataModel *)self->_data setSliderSpeedMultiplier:v5];
     if ((*&self->_visualElementFlags & 0x20) != 0)
     {
@@ -1020,9 +1020,9 @@ void __34__UISlider__installVisualElement___block_invoke(uint64_t a1, void *a2)
 
 - (void)setPreferredBehavioralStyle:(UIBehavioralStyle)preferredBehavioralStyle
 {
-  v5 = [(UISlider *)self behavioralStyle];
+  behavioralStyle = [(UISlider *)self behavioralStyle];
   self->_preferredBehavioralStyle = preferredBehavioralStyle;
-  if (!self->_visualElement || v5 != [(UISlider *)self behavioralStyle])
+  if (!self->_visualElement || behavioralStyle != [(UISlider *)self behavioralStyle])
   {
 
     [(UISlider *)self _installVisualElement];

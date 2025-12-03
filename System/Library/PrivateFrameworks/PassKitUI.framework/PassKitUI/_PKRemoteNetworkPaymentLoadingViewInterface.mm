@@ -1,17 +1,17 @@
 @interface _PKRemoteNetworkPaymentLoadingViewInterface
 - (UIViewController)primaryViewController;
 - (_PKRemoteNetworkPaymentLoadingViewInterface)init;
-- (_PKRemoteNetworkPaymentLoadingViewInterface)initWithConfiguration:(id)a3 host:(id)a4;
+- (_PKRemoteNetworkPaymentLoadingViewInterface)initWithConfiguration:(id)configuration host:(id)host;
 - (void)didAppear;
 @end
 
 @implementation _PKRemoteNetworkPaymentLoadingViewInterface
 
-- (_PKRemoteNetworkPaymentLoadingViewInterface)initWithConfiguration:(id)a3 host:(id)a4
+- (_PKRemoteNetworkPaymentLoadingViewInterface)initWithConfiguration:(id)configuration host:(id)host
 {
-  v5 = a3;
+  configurationCopy = configuration;
   swift_unknownObjectRetain();
-  v6 = sub_1BD9607AC(v5, a4);
+  v6 = sub_1BD9607AC(configurationCopy, host);
 
   swift_unknownObjectRelease();
   return v6;
@@ -19,7 +19,7 @@
 
 - (UIViewController)primaryViewController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1BD95DAEC();
 
   return v3;
@@ -27,7 +27,7 @@
 
 - (void)didAppear
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD95DC94();
 }
 

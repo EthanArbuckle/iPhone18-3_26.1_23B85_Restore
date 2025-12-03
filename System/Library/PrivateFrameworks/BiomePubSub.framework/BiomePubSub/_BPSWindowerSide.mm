@@ -1,48 +1,48 @@
 @interface _BPSWindowerSide
-- (_BPSWindowerSide)initWithKey:(id)a3 identifier:(id)a4 windowerInner:(id)a5;
-- (int64_t)receiveInput:(id)a3;
+- (_BPSWindowerSide)initWithKey:(id)key identifier:(id)identifier windowerInner:(id)inner;
+- (int64_t)receiveInput:(id)input;
 - (void)cancel;
-- (void)receiveCompletion:(id)a3;
-- (void)requestDemand:(int64_t)a3;
+- (void)receiveCompletion:(id)completion;
+- (void)requestDemand:(int64_t)demand;
 @end
 
 @implementation _BPSWindowerSide
 
-- (_BPSWindowerSide)initWithKey:(id)a3 identifier:(id)a4 windowerInner:(id)a5
+- (_BPSWindowerSide)initWithKey:(id)key identifier:(id)identifier windowerInner:(id)inner
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  keyCopy = key;
+  identifierCopy = identifier;
+  innerCopy = inner;
   v15.receiver = self;
   v15.super_class = _BPSWindowerSide;
   v12 = [(_BPSWindowerSide *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_key, a3);
-    objc_storeStrong(&v13->_windowerInner, a5);
-    objc_storeStrong(&v13->_identifier, a4);
+    objc_storeStrong(&v12->_key, key);
+    objc_storeStrong(&v13->_windowerInner, inner);
+    objc_storeStrong(&v13->_identifier, identifier);
   }
 
   return v13;
 }
 
-- (void)receiveCompletion:(id)a3
+- (void)receiveCompletion:(id)completion
 {
   windowerInner = self->_windowerInner;
   key = self->_key;
   identifier = self->_identifier;
-  v7 = self;
-  [(_BPSWindowerInner *)windowerInner receiveCompletion:a3 key:key identifier:identifier];
+  selfCopy = self;
+  [(_BPSWindowerInner *)windowerInner receiveCompletion:completion key:key identifier:identifier];
 }
 
-- (int64_t)receiveInput:(id)a3
+- (int64_t)receiveInput:(id)input
 {
   windowerInner = self->_windowerInner;
   key = self->_key;
   identifier = self->_identifier;
-  v7 = self;
-  v8 = [(_BPSWindowerInner *)windowerInner receiveInput:a3 key:key identifier:identifier];
+  selfCopy = self;
+  v8 = [(_BPSWindowerInner *)windowerInner receiveInput:input key:key identifier:identifier];
 
   return v8;
 }
@@ -52,17 +52,17 @@
   windowerInner = self->_windowerInner;
   key = self->_key;
   identifier = self->_identifier;
-  v5 = self;
+  selfCopy = self;
   [(_BPSWindowerInner *)windowerInner cancelWithKey:key identifier:identifier];
 }
 
-- (void)requestDemand:(int64_t)a3
+- (void)requestDemand:(int64_t)demand
 {
   windowerInner = self->_windowerInner;
   key = self->_key;
   identifier = self->_identifier;
-  v7 = self;
-  [(_BPSWindowerInner *)windowerInner requestDemand:a3 key:key identifier:identifier];
+  selfCopy = self;
+  [(_BPSWindowerInner *)windowerInner requestDemand:demand key:key identifier:identifier];
 }
 
 @end

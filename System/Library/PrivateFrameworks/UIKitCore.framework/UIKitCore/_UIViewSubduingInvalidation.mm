@@ -9,9 +9,9 @@
 
 - (void)endSubduing
 {
-  v3 = [(_UIViewSubduingInvalidation *)self parentView];
-  v4 = [(_UIViewSubduingInvalidation *)self subduingView];
-  v5 = [v3 setSubduesSiblings:0 belowView:v4];
+  parentView = [(_UIViewSubduingInvalidation *)self parentView];
+  subduingView = [(_UIViewSubduingInvalidation *)self subduingView];
+  v5 = [parentView setSubduesSiblings:0 belowView:subduingView];
 
   self->_didInvalidate = 1;
 }

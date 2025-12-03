@@ -1,17 +1,17 @@
 @interface QLPreviewCollection
-+ (id)previewCollectionWithClassName:(id)a3;
-+ (void)previewCollectionUsingRemoteViewController:(BOOL)a3 completionHandler:(id)a4;
++ (id)previewCollectionWithClassName:(id)name;
++ (void)previewCollectionUsingRemoteViewController:(BOOL)controller completionHandler:(id)handler;
 - (BOOL)_isBeingDismissed;
 - (BOOL)_isBeingPresented;
-- (BOOL)_itemViewControllerIsCurrentlyPresentedItemViewController:(id)a3;
+- (BOOL)_itemViewControllerIsCurrentlyPresentedItemViewController:(id)controller;
 - (BOOL)_toggleFullscreenIfPossible;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)isFirstResponderKeyInput;
 - (BOOL)isFirstResponderTextEntry;
-- (BOOL)itemPresenterViewControllerShouldForceAutodownloadFile:(id)a3;
+- (BOOL)itemPresenterViewControllerShouldForceAutodownloadFile:(id)file;
 - (BOOL)pinchDismissGestureInProgress;
 - (BOOL)transitionInProgress;
 - (NSString)hostApplicationBundleIdentifier;
@@ -19,15 +19,15 @@
 - (QLItemViewController)currentPreviewItemViewController;
 - (QLPreviewCollection)init;
 - (id)_defaultKeyCommands;
-- (id)_sandboxExtensionForEditedFileAtURL:(id)a3;
+- (id)_sandboxExtensionForEditedFileAtURL:(id)l;
 - (id)accessoryView;
 - (id)gestureTracker;
-- (id)pageViewController:(id)a3 viewControllerAtIndex:(unint64_t)a4;
+- (id)pageViewController:(id)controller viewControllerAtIndex:(unint64_t)index;
 - (unint64_t)currentPageIndex;
 - (void)_cleanAccessoryViewContainer;
 - (void)_installGestures;
 - (void)_notifyHostPreviewCollectionIsReadyForInvalidationIfNeeded;
-- (void)_updateAccessoryViewWithPreviewItemViewController:(id)a3;
+- (void)_updateAccessoryViewWithPreviewItemViewController:(id)controller;
 - (void)_updateCanChangeCurrentPage;
 - (void)_updateCanDismissWithGesture;
 - (void)_updateEnableChangingPageUsingGestures;
@@ -38,84 +38,84 @@
 - (void)_updatePrinter;
 - (void)_updateTitleFromController;
 - (void)_updateWhitePointAdaptivityStyle;
-- (void)completeTransition:(BOOL)a3 withDuration:(double)a4;
-- (void)configureWithNumberOfItems:(int64_t)a3 currentPreviewItemIndex:(unint64_t)a4 itemProvider:(id)a5 stateManager:(id)a6 fullScreen:(BOOL)a7;
-- (void)displayBarsIfNeededForDestinationViewController:(id)a3;
-- (void)expandContentOfPreviewItemViewController:(id)a3 unarchivedItemsURL:(id)a4;
-- (void)forwardKeyPressToHostIfNeeded:(id)a3 serviceCommands:(id)a4;
-- (void)forwardPressesToHostIfNeeded:(id)a3;
-- (void)hostViewControllerBackgroundColorChanged:(id)a3;
-- (void)keyCommandWasPerformed:(id)a3;
-- (void)keyCommandsWithCompletionHandler:(id)a3;
+- (void)completeTransition:(BOOL)transition withDuration:(double)duration;
+- (void)configureWithNumberOfItems:(int64_t)items currentPreviewItemIndex:(unint64_t)index itemProvider:(id)provider stateManager:(id)manager fullScreen:(BOOL)screen;
+- (void)displayBarsIfNeededForDestinationViewController:(id)controller;
+- (void)expandContentOfPreviewItemViewController:(id)controller unarchivedItemsURL:(id)l;
+- (void)forwardKeyPressToHostIfNeeded:(id)needed serviceCommands:(id)commands;
+- (void)forwardPressesToHostIfNeeded:(id)needed;
+- (void)hostViewControllerBackgroundColorChanged:(id)changed;
+- (void)keyCommandWasPerformed:(id)performed;
+- (void)keyCommandsWithCompletionHandler:(id)handler;
 - (void)loadView;
-- (void)notifyFirstTimeAppearanceWithActions:(unint64_t)a3;
-- (void)notifyStateRestorationUserInfo:(id)a3;
-- (void)pageViewController:(id)a3 isTransitioningFromPage:(id)a4 withIndex:(unint64_t)a5 toPage:(id)a6 withIndex:(unint64_t)a7 withProgress:(double)a8;
-- (void)pageViewController:(id)a3 willBeginInteractiveTransitionFromPage:(id)a4 withIndex:(unint64_t)a5 toPage:(id)a6 withIndex:(unint64_t)a7;
-- (void)prepareForActionSheetPresentationWithCompletionHandler:(id)a3;
-- (void)preparePreviewCollectionForInvalidationWithCompletionHandler:(id)a3;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)previewItemDisplayState:(id)a3 wasAppliedToItemAtIndex:(unint64_t)a4;
-- (void)previewItemViewController:(id)a3 didFailWithError:(id)a4;
-- (void)previewItemViewController:(id)a3 requestsTemporaryEditDirectoryWithCompletionHandler:(id)a4;
-- (void)previewItemViewController:(id)a3 wantsToForwardMessageToHost:(id)a4 completionHandler:(id)a5;
-- (void)previewItemViewController:(id)a3 wantsToOpenURL:(id)a4;
-- (void)previewItemViewController:(id)a3 wantsToShowShareSheetWithPopoverTracker:(id)a4 customSharedURL:(id)a5 dismissCompletion:(id)a6;
-- (void)previewItemViewController:(id)a3 wantsToUpdatePreviewItemDisplayState:(id)a4;
-- (void)previewItemViewController:(id)a3 wantsToUpdateStateRestorationWithUserInfo:(id)a4;
-- (void)previewItemViewControllerDidAcquireLock:(id)a3;
-- (void)previewItemViewControllerDidChangeCurrentPreviewController:(id)a3;
-- (void)previewItemViewControllerDidEditCopyOfPreviewItem:(id)a3 editedCopy:(id)a4 completionHandler:(id)a5;
-- (void)previewItemViewControllerDidHandOverLock:(id)a3;
-- (void)previewItemViewControllerDidUpdateContentFrame:(id)a3;
-- (void)previewItemViewControllerWantsToDismissQuickLook:(id)a3;
-- (void)previewItemViewControllerWantsToShowNoInternetConnectivityAlert:(id)a3;
-- (void)previewItemViewControllerWantsToShowShareSheet:(id)a3;
-- (void)previewItemViewControllerWantsUpdateKeyCommands:(id)a3;
+- (void)notifyFirstTimeAppearanceWithActions:(unint64_t)actions;
+- (void)notifyStateRestorationUserInfo:(id)info;
+- (void)pageViewController:(id)controller isTransitioningFromPage:(id)page withIndex:(unint64_t)index toPage:(id)toPage withIndex:(unint64_t)withIndex withProgress:(double)progress;
+- (void)pageViewController:(id)controller willBeginInteractiveTransitionFromPage:(id)page withIndex:(unint64_t)index toPage:(id)toPage withIndex:(unint64_t)withIndex;
+- (void)prepareForActionSheetPresentationWithCompletionHandler:(id)handler;
+- (void)preparePreviewCollectionForInvalidationWithCompletionHandler:(id)handler;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)previewItemDisplayState:(id)state wasAppliedToItemAtIndex:(unint64_t)index;
+- (void)previewItemViewController:(id)controller didFailWithError:(id)error;
+- (void)previewItemViewController:(id)controller requestsTemporaryEditDirectoryWithCompletionHandler:(id)handler;
+- (void)previewItemViewController:(id)controller wantsToForwardMessageToHost:(id)host completionHandler:(id)handler;
+- (void)previewItemViewController:(id)controller wantsToOpenURL:(id)l;
+- (void)previewItemViewController:(id)controller wantsToShowShareSheetWithPopoverTracker:(id)tracker customSharedURL:(id)l dismissCompletion:(id)completion;
+- (void)previewItemViewController:(id)controller wantsToUpdatePreviewItemDisplayState:(id)state;
+- (void)previewItemViewController:(id)controller wantsToUpdateStateRestorationWithUserInfo:(id)info;
+- (void)previewItemViewControllerDidAcquireLock:(id)lock;
+- (void)previewItemViewControllerDidChangeCurrentPreviewController:(id)controller;
+- (void)previewItemViewControllerDidEditCopyOfPreviewItem:(id)item editedCopy:(id)copy completionHandler:(id)handler;
+- (void)previewItemViewControllerDidHandOverLock:(id)lock;
+- (void)previewItemViewControllerDidUpdateContentFrame:(id)frame;
+- (void)previewItemViewControllerWantsToDismissQuickLook:(id)look;
+- (void)previewItemViewControllerWantsToShowNoInternetConnectivityAlert:(id)alert;
+- (void)previewItemViewControllerWantsToShowShareSheet:(id)sheet;
+- (void)previewItemViewControllerWantsUpdateKeyCommands:(id)commands;
 - (void)removeStandaloneViewController;
-- (void)rotationOrPinchGestureRecognized:(id)a3;
-- (void)saveCurrentPreviewEditsSynchronously:(BOOL)a3 withCompletionHandler:(id)a4;
-- (void)saveIntoPhotoLibraryMediaWithURLWrapper:(id)a3 previewItemType:(unint64_t)a4 completionHandler:(id)a5;
-- (void)setAppearance:(id)a3 animated:(BOOL)a4;
-- (void)setCurrentItemViewControllerIsPerformingFocusedAction:(BOOL)a3;
-- (void)setFullScreen:(BOOL)a3 forceUpdate:(BOOL)a4;
-- (void)setIsContentManaged:(BOOL)a3;
-- (void)setIsEditing:(BOOL)a3;
-- (void)setIsTransitioningPage:(BOOL)a3;
-- (void)setPreviewItemDisplayState:(id)a3 onItemAtIndex:(unint64_t)a4;
-- (void)setScreenEdgePanWidth:(double)a3;
+- (void)rotationOrPinchGestureRecognized:(id)recognized;
+- (void)saveCurrentPreviewEditsSynchronously:(BOOL)synchronously withCompletionHandler:(id)handler;
+- (void)saveIntoPhotoLibraryMediaWithURLWrapper:(id)wrapper previewItemType:(unint64_t)type completionHandler:(id)handler;
+- (void)setAppearance:(id)appearance animated:(BOOL)animated;
+- (void)setCurrentItemViewControllerIsPerformingFocusedAction:(BOOL)action;
+- (void)setFullScreen:(BOOL)screen forceUpdate:(BOOL)update;
+- (void)setIsContentManaged:(BOOL)managed;
+- (void)setIsEditing:(BOOL)editing;
+- (void)setIsTransitioningPage:(BOOL)page;
+- (void)setPreviewItemDisplayState:(id)state onItemAtIndex:(unint64_t)index;
+- (void)setScreenEdgePanWidth:(double)width;
 - (void)setStandaloneViewControllerIfNeeded;
-- (void)shouldDisplayLockActivityWithCompletionHandler:(id)a3;
-- (void)slideToDismissGestureRecognized:(id)a3;
-- (void)startNonInteractiveTransitionPresenting:(BOOL)a3;
-- (void)startTransitionWithSourceViewProvider:(id)a3 transitionController:(id)a4 presenting:(BOOL)a5 useInteractiveTransition:(BOOL)a6 completionHandler:(id)a7;
-- (void)toolbarButtonPressedWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)toolbarButtonsForTraitCollection:(id)a3 withCompletionHandler:(id)a4;
+- (void)shouldDisplayLockActivityWithCompletionHandler:(id)handler;
+- (void)slideToDismissGestureRecognized:(id)recognized;
+- (void)startNonInteractiveTransitionPresenting:(BOOL)presenting;
+- (void)startTransitionWithSourceViewProvider:(id)provider transitionController:(id)controller presenting:(BOOL)presenting useInteractiveTransition:(BOOL)transition completionHandler:(id)handler;
+- (void)toolbarButtonPressedWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)toolbarButtonsForTraitCollection:(id)collection withCompletionHandler:(id)handler;
 - (void)updateCurrentPreviewConfiguration;
-- (void)updateTransitionWithProgress:(double)a3;
+- (void)updateTransitionWithProgress:(double)progress;
 @end
 
 @implementation QLPreviewCollection
 
-- (void)updateTransitionWithProgress:(double)a3
+- (void)updateTransitionWithProgress:(double)progress
 {
-  v4 = [(QLPreviewCollection *)self currentPreviewItemViewController];
-  v5 = [v4 transitioningView];
+  currentPreviewItemViewController = [(QLPreviewCollection *)self currentPreviewItemViewController];
+  transitioningView = [currentPreviewItemViewController transitioningView];
 
-  v6 = [(QLPreviewCollection *)self gestureTracker];
-  [v6 trackedCenter];
-  [v5 setCenter:?];
+  gestureTracker = [(QLPreviewCollection *)self gestureTracker];
+  [gestureTracker trackedCenter];
+  [transitioningView setCenter:?];
 
-  v7 = [v5 layer];
-  v8 = [(QLPreviewCollection *)self gestureTracker];
-  [v8 anchorPoint];
-  [v7 setAnchorPoint:?];
+  layer = [transitioningView layer];
+  gestureTracker2 = [(QLPreviewCollection *)self gestureTracker];
+  [gestureTracker2 anchorPoint];
+  [layer setAnchorPoint:?];
 
-  v9 = [(QLPreviewCollection *)self gestureTracker];
-  v10 = v9;
-  if (v9)
+  gestureTracker3 = [(QLPreviewCollection *)self gestureTracker];
+  v10 = gestureTracker3;
+  if (gestureTracker3)
   {
-    [v9 trackedTransform];
+    [gestureTracker3 trackedTransform];
   }
 
   else
@@ -123,41 +123,41 @@
     memset(v11, 0, sizeof(v11));
   }
 
-  [v5 setTransform:v11];
+  [transitioningView setTransform:v11];
 }
 
-- (void)completeTransition:(BOOL)a3 withDuration:(double)a4
+- (void)completeTransition:(BOOL)transition withDuration:(double)duration
 {
-  v7 = [(QLPreviewCollection *)self currentPreviewItemViewController];
-  v8 = [v7 transitioningView];
+  currentPreviewItemViewController = [(QLPreviewCollection *)self currentPreviewItemViewController];
+  transitioningView = [currentPreviewItemViewController transitioningView];
 
-  v9 = [(QLPreviewCollection *)self view];
-  v10 = [(QLPreviewCollection *)self gestureTracker];
-  [v10 trackedVelocity];
+  view = [(QLPreviewCollection *)self view];
+  gestureTracker = [(QLPreviewCollection *)self gestureTracker];
+  [gestureTracker trackedVelocity];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
 
-  v19 = [(QLPreviewCollection *)self gestureTracker];
-  [v19 finalAnimationSpringDamping];
+  gestureTracker2 = [(QLPreviewCollection *)self gestureTracker];
+  [gestureTracker2 finalAnimationSpringDamping];
   v21 = v20;
 
-  [v8 QL_setAnchorPointAndUpdatePosition:{0.5, 0.5}];
-  if (a3)
+  [transitioningView QL_setAnchorPointAndUpdatePosition:{0.5, 0.5}];
+  if (transition)
   {
-    [(QLPreviewCollection *)self _setUpTransitionDriverForPresenting:0 duration:a4];
-    v22 = [(QLPreviewCollection *)self currentPreviewItemViewController];
+    [(QLPreviewCollection *)self _setUpTransitionDriverForPresenting:0 duration:duration];
+    currentPreviewItemViewController2 = [(QLPreviewCollection *)self currentPreviewItemViewController];
     v23 = objc_opt_respondsToSelector();
 
     if (v23)
     {
-      v24 = [(QLPreviewCollection *)self currentPreviewItemViewController];
-      [v24 transitionWillFinish:0 didComplete:1];
+      currentPreviewItemViewController3 = [(QLPreviewCollection *)self currentPreviewItemViewController];
+      [currentPreviewItemViewController3 transitionWillFinish:0 didComplete:1];
     }
 
-    v25 = [(QLPreviewCollection *)self transitionDriver];
-    [v25 animateTransition];
+    transitionDriver = [(QLPreviewCollection *)self transitionDriver];
+    [transitionDriver animateTransition];
   }
 
   else
@@ -165,18 +165,18 @@
     v43 = v16;
     v44 = v14;
     v45 = v12;
-    [v9 bounds];
+    [view bounds];
     v27 = v26;
     v29 = v28;
     v31 = v30;
     v33 = v32;
-    v34 = [(QLPreviewCollection *)self currentPreviewItemViewController];
+    currentPreviewItemViewController4 = [(QLPreviewCollection *)self currentPreviewItemViewController];
     v35 = objc_opt_respondsToSelector();
 
     if (v35)
     {
-      v36 = [(QLPreviewCollection *)self currentPreviewItemViewController];
-      [v36 transitionWillFinish:0 didComplete:0];
+      currentPreviewItemViewController5 = [(QLPreviewCollection *)self currentPreviewItemViewController];
+      [currentPreviewItemViewController5 transitionWillFinish:0 didComplete:0];
     }
 
     v37 = MEMORY[0x277D75D18];
@@ -201,7 +201,7 @@
     v46[0] = *MEMORY[0x277CBF2C0];
     v46[1] = v42;
     v46[2] = *(MEMORY[0x277CBF2C0] + 32);
-    [v37 qlph_animateView:v8 toCenter:v46 bounds:0 transform:v47 withDuration:MidX delay:MidY usingSpringWithDamping:v40 initialVelocity:v41 options:v31 completion:{v33, a4, 0.0, v21, v45, v44, v43, v18}];
+    [v37 qlph_animateView:transitioningView toCenter:v46 bounds:0 transform:v47 withDuration:MidX delay:MidY usingSpringWithDamping:v40 initialVelocity:v41 options:v31 completion:{v33, duration, 0.0, v21, v45, v44, v43, v18}];
   }
 }
 
@@ -217,7 +217,7 @@ void __79__QLPreviewCollection_InteractiveTransitions__completeTransition_withDu
   }
 }
 
-- (void)startNonInteractiveTransitionPresenting:(BOOL)a3
+- (void)startNonInteractiveTransitionPresenting:(BOOL)presenting
 {
   v14 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D43EF8];
@@ -353,52 +353,52 @@ void __67__QLPreviewCollection_InteractiveTransitions___tearDownTransition___blo
 
 - (id)gestureTracker
 {
-  v3 = [(QLPreviewCollection *)self swipeDownTracker];
-  v4 = v3;
-  if (v3)
+  swipeDownTracker = [(QLPreviewCollection *)self swipeDownTracker];
+  v4 = swipeDownTracker;
+  if (swipeDownTracker)
   {
-    v5 = v3;
+    pinchRotationTracker = swipeDownTracker;
   }
 
   else
   {
-    v5 = [(QLPreviewCollection *)self pinchRotationTracker];
+    pinchRotationTracker = [(QLPreviewCollection *)self pinchRotationTracker];
   }
 
-  v6 = v5;
+  v6 = pinchRotationTracker;
 
   return v6;
 }
 
-- (void)rotationOrPinchGestureRecognized:(id)a3
+- (void)rotationOrPinchGestureRecognized:(id)recognized
 {
-  v4 = a3;
-  v5 = [(QLPreviewCollection *)self view];
-  v6 = [(QLPreviewCollection *)self currentPreviewItemViewController];
-  v7 = [v6 transitioningView];
-  v8 = v7;
-  if (v7)
+  recognizedCopy = recognized;
+  view = [(QLPreviewCollection *)self view];
+  currentPreviewItemViewController = [(QLPreviewCollection *)self currentPreviewItemViewController];
+  transitioningView = [currentPreviewItemViewController transitioningView];
+  v8 = transitioningView;
+  if (transitioningView)
   {
-    v9 = v7;
+    view2 = transitioningView;
   }
 
   else
   {
-    v10 = [(QLPreviewCollection *)self pageViewController];
-    v9 = [v10 view];
+    pageViewController = [(QLPreviewCollection *)self pageViewController];
+    view2 = [pageViewController view];
   }
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v12 = v4;
-  v13 = [v12 state];
-  if ((v13 - 3) >= 3)
+  v12 = recognizedCopy;
+  state = [v12 state];
+  if ((state - 3) >= 3)
   {
-    if (v13 == 2)
+    if (state == 2)
     {
-      v20 = [(QLPreviewCollection *)self pinchRotationTracker];
+      pinchRotationTracker = [(QLPreviewCollection *)self pinchRotationTracker];
 
-      if (!v20)
+      if (!pinchRotationTracker)
       {
         goto LABEL_27;
       }
@@ -408,35 +408,35 @@ void __67__QLPreviewCollection_InteractiveTransitions___tearDownTransition___blo
         goto LABEL_5;
       }
 
-      v21 = [(QLPreviewCollection *)self pinchRotationTracker];
-      [v12 locationInView:v5];
-      [v21 trackGestureLocation:?];
+      pinchRotationTracker2 = [(QLPreviewCollection *)self pinchRotationTracker];
+      [v12 locationInView:view];
+      [pinchRotationTracker2 trackGestureLocation:?];
 
-      v22 = [(QLPreviewCollection *)self pinchRotationTracker];
+      pinchRotationTracker3 = [(QLPreviewCollection *)self pinchRotationTracker];
       if (isKindOfClass)
       {
         [v12 rotation];
-        [v22 trackRotation:?];
+        [pinchRotationTracker3 trackRotation:?];
       }
 
       else
       {
         [v12 scale];
-        [v22 trackScale:?];
+        [pinchRotationTracker3 trackScale:?];
       }
 
-      v44 = [(QLPreviewCollection *)self pinchRotationTracker];
-      [v44 dismissalProgress];
+      pinchRotationTracker4 = [(QLPreviewCollection *)self pinchRotationTracker];
+      [pinchRotationTracker4 dismissalProgress];
       v46 = v45;
 
       [(QLPreviewCollection *)self updateTransitionWithProgress:v46];
-      v19 = [(QLPreviewCollection *)self transitionController];
-      [v19 updateTransitionWithProgress:v46];
+      transitionController = [(QLPreviewCollection *)self transitionController];
+      [transitionController updateTransitionWithProgress:v46];
     }
 
     else
     {
-      if (v13 != 1 || (isKindOfClass & 1) != 0)
+      if (state != 1 || (isKindOfClass & 1) != 0)
       {
         goto LABEL_27;
       }
@@ -444,34 +444,34 @@ void __67__QLPreviewCollection_InteractiveTransitions___tearDownTransition___blo
       [v12 velocity];
       if (v15 <= 0.0)
       {
-        v23 = [(QLPreviewCollection *)self pinchRotationTracker];
+        pinchRotationTracker5 = [(QLPreviewCollection *)self pinchRotationTracker];
 
-        if (!v23)
+        if (!pinchRotationTracker5)
         {
           v24 = objc_opt_new();
           [(QLPreviewCollection *)self setPinchRotationTracker:v24];
 
-          v25 = [(QLPreviewCollection *)self pinchRotationTracker];
-          [v25 setMinimumZoomForDismissal:0.9];
+          pinchRotationTracker6 = [(QLPreviewCollection *)self pinchRotationTracker];
+          [pinchRotationTracker6 setMinimumZoomForDismissal:0.9];
 
-          v26 = [(QLPreviewCollection *)self pinchRotationTracker];
-          [v26 setTargetZoom:0.1];
+          pinchRotationTracker7 = [(QLPreviewCollection *)self pinchRotationTracker];
+          [pinchRotationTracker7 setTargetZoom:0.1];
 
-          [v12 locationInView:v9];
+          [v12 locationInView:view2];
           v28 = v27;
           v30 = v29;
-          v31 = [(QLPreviewCollection *)self pinchRotationTracker];
-          [v9 center];
+          pinchRotationTracker8 = [(QLPreviewCollection *)self pinchRotationTracker];
+          [view2 center];
           v33 = v32;
           v35 = v34;
-          [v9 bounds];
+          [view2 bounds];
           v37 = v36;
           v39 = v38;
           v41 = v40;
           v43 = v42;
-          if (v9)
+          if (view2)
           {
-            [v9 transform];
+            [view2 transform];
           }
 
           else
@@ -481,7 +481,7 @@ void __67__QLPreviewCollection_InteractiveTransitions___tearDownTransition___blo
             v50 = 0u;
           }
 
-          [v31 startTrackingCenter:&v50 bounds:v33 transform:v35 withInitialGestureLocation:{v37, v39, v41, v43, v28, v30}];
+          [pinchRotationTracker8 startTrackingCenter:&v50 bounds:v33 transform:v35 withInitialGestureLocation:{v37, v39, v41, v43, v28, v30}];
         }
 
         v47 = [(QLPreviewCollection *)self currentPreviewItemViewController:v50];
@@ -489,28 +489,28 @@ void __67__QLPreviewCollection_InteractiveTransitions___tearDownTransition___blo
 
         if (v48)
         {
-          v49 = [(QLPreviewCollection *)self currentPreviewItemViewController];
-          [v49 transitionDidStart:0];
+          currentPreviewItemViewController2 = [(QLPreviewCollection *)self currentPreviewItemViewController];
+          [currentPreviewItemViewController2 transitionDidStart:0];
         }
 
         _UIUpdateRequestActivate();
-        v19 = [(QLPreviewCollection *)self stateManager];
-        [v19 beginInteractiveTransition];
+        transitionController = [(QLPreviewCollection *)self stateManager];
+        [transitionController beginInteractiveTransition];
       }
 
       else
       {
-        v16 = [(QLPreviewCollection *)self pinchGesture];
-        [v16 setEnabled:0];
+        pinchGesture = [(QLPreviewCollection *)self pinchGesture];
+        [pinchGesture setEnabled:0];
 
-        v17 = [(QLPreviewCollection *)self rotationGesture];
-        [v17 setEnabled:0];
+        rotationGesture = [(QLPreviewCollection *)self rotationGesture];
+        [rotationGesture setEnabled:0];
 
-        v18 = [(QLPreviewCollection *)self pinchGesture];
-        [v18 setEnabled:1];
+        pinchGesture2 = [(QLPreviewCollection *)self pinchGesture];
+        [pinchGesture2 setEnabled:1];
 
-        v19 = [(QLPreviewCollection *)self rotationGesture];
-        [v19 setEnabled:1];
+        transitionController = [(QLPreviewCollection *)self rotationGesture];
+        [transitionController setEnabled:1];
       }
     }
 
@@ -519,9 +519,9 @@ void __67__QLPreviewCollection_InteractiveTransitions___tearDownTransition___blo
 
 LABEL_5:
   _UIUpdateRequestDeactivate();
-  v14 = [(QLPreviewCollection *)self pinchRotationTracker];
+  pinchRotationTracker9 = [(QLPreviewCollection *)self pinchRotationTracker];
 
-  if (v14)
+  if (pinchRotationTracker9)
   {
     [(QLPreviewCollection *)self triggerInteractiveTransitionAnimationIfNeeded];
   }
@@ -529,82 +529,82 @@ LABEL_5:
 LABEL_27:
 }
 
-- (void)slideToDismissGestureRecognized:(id)a3
+- (void)slideToDismissGestureRecognized:(id)recognized
 {
-  v4 = a3;
-  v5 = [(QLPreviewCollection *)self view];
-  v6 = [(QLPreviewCollection *)self currentPreviewItemViewController];
-  v7 = [v6 transitioningView];
-  v8 = v7;
-  if (v7)
+  recognizedCopy = recognized;
+  view = [(QLPreviewCollection *)self view];
+  currentPreviewItemViewController = [(QLPreviewCollection *)self currentPreviewItemViewController];
+  transitioningView = [currentPreviewItemViewController transitioningView];
+  v8 = transitioningView;
+  if (transitioningView)
   {
-    v9 = v7;
+    view2 = transitioningView;
   }
 
   else
   {
-    v10 = [(QLPreviewCollection *)self pageViewController];
-    v9 = [v10 view];
+    pageViewController = [(QLPreviewCollection *)self pageViewController];
+    view2 = [pageViewController view];
   }
 
-  v11 = [v4 state];
-  if ((v11 - 3) >= 3)
+  state = [recognizedCopy state];
+  if ((state - 3) >= 3)
   {
-    if (v11 == 2)
+    if (state == 2)
     {
-      v35 = [(QLPreviewCollection *)self swipeDownTracker];
+      swipeDownTracker = [(QLPreviewCollection *)self swipeDownTracker];
 
-      if (!v35)
+      if (!swipeDownTracker)
       {
         goto LABEL_18;
       }
 
-      [v4 translationInView:v5];
+      [recognizedCopy translationInView:view];
       v37 = v36;
       v39 = v38;
-      [v4 velocityInView:v5];
+      [recognizedCopy velocityInView:view];
       v41 = v40;
       v43 = v42;
-      v44 = [(QLPreviewCollection *)self swipeDownTracker];
-      [v44 trackGestureTranslation:v37 velocity:{v39, v41, v43}];
+      swipeDownTracker2 = [(QLPreviewCollection *)self swipeDownTracker];
+      [swipeDownTracker2 trackGestureTranslation:v37 velocity:{v39, v41, v43}];
 
-      v45 = [(QLPreviewCollection *)self swipeDownTracker];
-      [v45 dismissalProgress];
+      swipeDownTracker3 = [(QLPreviewCollection *)self swipeDownTracker];
+      [swipeDownTracker3 dismissalProgress];
       v47 = v46;
 
       [(QLPreviewCollection *)self updateTransitionWithProgress:v47];
-      v48 = [(QLPreviewCollection *)self transitionController];
-      [v48 updateTransitionWithProgress:v47];
+      transitionController = [(QLPreviewCollection *)self transitionController];
+      [transitionController updateTransitionWithProgress:v47];
     }
 
     else
     {
-      if (v11 != 1)
+      if (state != 1)
       {
         goto LABEL_18;
       }
 
-      [v4 locationInView:v5];
+      [recognizedCopy locationInView:view];
       v14 = v13;
       v16 = v15;
-      [v4 translationInView:v5];
+      [recognizedCopy translationInView:view];
       v18 = v14 - v17;
       v20 = v16 - v19;
       v21 = objc_opt_new();
       [(QLPreviewCollection *)self setSwipeDownTracker:v21];
 
-      v22 = [(QLPreviewCollection *)self swipeDownTracker];
-      [v9 center];
+      swipeDownTracker4 = [(QLPreviewCollection *)self swipeDownTracker];
+      [view2 center];
       v24 = v23;
       v26 = v25;
-      [v9 bounds];
+      [view2 bounds];
       v28 = v27;
       v30 = v29;
       v32 = v31;
       v34 = v33;
-      if (v9)
+      if (view2)
       {
-        [v9 transform];
+        [view2 transform];
       }
 
       else
@@ -612,29 +612,29 @@ LABEL_27:
         memset(v52, 0, sizeof(v52));
       }
 
-      [v22 startTrackingCenter:v52 bounds:v24 transform:v26 withInitialGestureLocation:{v28, v30, v32, v34, v18, v20}];
+      [swipeDownTracker4 startTrackingCenter:v52 bounds:v24 transform:v26 withInitialGestureLocation:{v28, v30, v32, v34, v18, v20}];
 
-      v49 = [(QLPreviewCollection *)self currentPreviewItemViewController];
+      currentPreviewItemViewController2 = [(QLPreviewCollection *)self currentPreviewItemViewController];
       v50 = objc_opt_respondsToSelector();
 
       if (v50)
       {
-        v51 = [(QLPreviewCollection *)self currentPreviewItemViewController];
-        [v51 transitionDidStart:0];
+        currentPreviewItemViewController3 = [(QLPreviewCollection *)self currentPreviewItemViewController];
+        [currentPreviewItemViewController3 transitionDidStart:0];
       }
 
       _UIUpdateRequestActivate();
-      v48 = [(QLPreviewCollection *)self stateManager];
-      [v48 beginInteractiveTransition];
+      transitionController = [(QLPreviewCollection *)self stateManager];
+      [transitionController beginInteractiveTransition];
     }
 
     goto LABEL_18;
   }
 
   _UIUpdateRequestDeactivate();
-  v12 = [(QLPreviewCollection *)self swipeDownTracker];
+  swipeDownTracker5 = [(QLPreviewCollection *)self swipeDownTracker];
 
-  if (v12)
+  if (swipeDownTracker5)
   {
     [(QLPreviewCollection *)self triggerInteractiveTransitionAnimationIfNeeded];
   }
@@ -642,26 +642,26 @@ LABEL_27:
 LABEL_18:
 }
 
-+ (id)previewCollectionWithClassName:(id)a3
++ (id)previewCollectionWithClassName:(id)name
 {
-  NSClassFromString(a3);
+  NSClassFromString(name);
   v3 = objc_opt_new();
 
   return v3;
 }
 
-+ (void)previewCollectionUsingRemoteViewController:(BOOL)a3 completionHandler:(id)a4
++ (void)previewCollectionUsingRemoteViewController:(BOOL)controller completionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = a4;
-  v6 = v5;
-  if (v4)
+  controllerCopy = controller;
+  handlerCopy = handler;
+  v6 = handlerCopy;
+  if (controllerCopy)
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __84__QLPreviewCollection_previewCollectionUsingRemoteViewController_completionHandler___block_invoke;
     v9[3] = &unk_278B59018;
-    v10 = v5;
+    v10 = handlerCopy;
     [_TtC9QuickLook28QLRemoteUIHostViewController remotePreviewCollectionWithCompletionHandler:v9];
   }
 
@@ -690,49 +690,49 @@ LABEL_18:
     [(QLPreviewCollection *)v2 setPageViewController:v5];
 
     v2->_currentItemIndex = 0x7FFFFFFFFFFFFFFFLL;
-    v6 = [(QLPreviewCollection *)v2 pageViewController];
-    [v6 setDelegate:v2];
+    pageViewController = [(QLPreviewCollection *)v2 pageViewController];
+    [pageViewController setDelegate:v2];
 
-    v7 = [(QLPreviewCollection *)v2 pageViewController];
-    [v7 setIndexedDataSource:v2];
+    pageViewController2 = [(QLPreviewCollection *)v2 pageViewController];
+    [pageViewController2 setIndexedDataSource:v2];
 
-    v8 = [(QLPreviewCollection *)v2 pageViewController];
-    [v8 setParallaxIntensity:0.15];
+    pageViewController3 = [(QLPreviewCollection *)v2 pageViewController];
+    [pageViewController3 setParallaxIntensity:0.15];
 
-    v9 = [(QLPreviewCollection *)v2 pageViewController];
-    [(QLPreviewCollection *)v2 addChildViewController:v9];
+    pageViewController4 = [(QLPreviewCollection *)v2 pageViewController];
+    [(QLPreviewCollection *)v2 addChildViewController:pageViewController4];
 
-    v10 = [(QLPreviewCollection *)v2 view];
-    v11 = [(QLPreviewCollection *)v2 pageViewController];
-    v12 = [v11 view];
-    [v10 addSubview:v12];
+    view = [(QLPreviewCollection *)v2 view];
+    pageViewController5 = [(QLPreviewCollection *)v2 pageViewController];
+    view2 = [pageViewController5 view];
+    [view addSubview:view2];
 
-    v13 = [(QLPreviewCollection *)v2 pageViewController];
-    [v13 didMoveToParentViewController:v2];
+    pageViewController6 = [(QLPreviewCollection *)v2 pageViewController];
+    [pageViewController6 didMoveToParentViewController:v2];
 
-    v14 = [(QLPreviewCollection *)v2 pageViewController];
-    v15 = [v14 view];
-    [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+    pageViewController7 = [(QLPreviewCollection *)v2 pageViewController];
+    view3 = [pageViewController7 view];
+    [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v16 = [(QLPreviewCollection *)v2 view];
+    view4 = [(QLPreviewCollection *)v2 view];
     v17 = MEMORY[0x277CCAAD0];
     v37 = @"pageViewController";
-    v18 = [(QLPreviewCollection *)v2 pageViewController];
-    v19 = [v18 view];
-    v38 = v19;
+    pageViewController8 = [(QLPreviewCollection *)v2 pageViewController];
+    view5 = [pageViewController8 view];
+    v38 = view5;
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
     v21 = [v17 constraintsWithVisualFormat:@"H:|[pageViewController]|" options:0 metrics:0 views:v20];
-    [v16 addConstraints:v21];
+    [view4 addConstraints:v21];
 
-    v22 = [(QLPreviewCollection *)v2 view];
+    view6 = [(QLPreviewCollection *)v2 view];
     v23 = MEMORY[0x277CCAAD0];
     v35 = @"pageViewController";
-    v24 = [(QLPreviewCollection *)v2 pageViewController];
-    v25 = [v24 view];
-    v36 = v25;
+    pageViewController9 = [(QLPreviewCollection *)v2 pageViewController];
+    view7 = [pageViewController9 view];
+    v36 = view7;
     v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
     v27 = [v23 constraintsWithVisualFormat:@"V:|[pageViewController]|" options:0 metrics:0 views:v26];
-    [v22 addConstraints:v27];
+    [view6 addConstraints:v27];
 
     v28 = objc_opt_new();
     itemStore = v2->_itemStore;
@@ -740,8 +740,8 @@ LABEL_18:
 
     [(QLPreviewCollection *)v2 _installGestures];
     [(QLPreviewCollection *)v2 setAutomaticallyAdjustsScrollViewInsets:0];
-    v30 = [MEMORY[0x277CCAD78] UUID];
-    [(QLPreviewCollection *)v2 setUuid:v30];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    [(QLPreviewCollection *)v2 setUuid:uUID];
 
     v31 = v2;
   }
@@ -755,15 +755,15 @@ LABEL_18:
   v5.receiver = self;
   v5.super_class = QLPreviewCollection;
   [(QLPreviewCollection *)&v5 loadView];
-  v3 = [(QLPreviewCollection *)self view];
-  v4 = [v3 layer];
-  [v4 setHitTestsAsOpaque:1];
+  view = [(QLPreviewCollection *)self view];
+  layer = [view layer];
+  [layer setHitTestsAsOpaque:1];
 }
 
-- (void)hostViewControllerBackgroundColorChanged:(id)a3
+- (void)hostViewControllerBackgroundColorChanged:(id)changed
 {
-  v4 = a3;
-  v3 = v4;
+  changedCopy = changed;
+  v3 = changedCopy;
   QLRunInMainThread();
 }
 
@@ -782,27 +782,27 @@ void __64__QLPreviewCollection_hostViewControllerBackgroundColorChanged___block_
 
 - (void)updateCurrentPreviewConfiguration
 {
-  v3 = [(QLPreviewCollection *)self stateManager];
-  [v3 updateKeyCommands];
+  stateManager = [(QLPreviewCollection *)self stateManager];
+  [stateManager updateKeyCommands];
 
   [(QLPreviewCollection *)self _updateOverlay:1];
-  v9 = [(QLPreviewCollection *)self currentPreviewItemViewController];
+  currentPreviewItemViewController = [(QLPreviewCollection *)self currentPreviewItemViewController];
   [(QLPreviewCollection *)self _updateFullscreenBackgroundColor];
   [(QLPreviewCollection *)self _updateFullscreen];
-  [(QLPreviewCollection *)self _updateAccessoryViewWithPreviewItemViewController:v9];
+  [(QLPreviewCollection *)self _updateAccessoryViewWithPreviewItemViewController:currentPreviewItemViewController];
   [(QLPreviewCollection *)self _updateWhitePointAdaptivityStyle];
   [(QLPreviewCollection *)self _updatePrinter];
   [(QLPreviewCollection *)self _updateTitleFromController];
   [(QLPreviewCollection *)self _updatePreferredContentSize];
-  v4 = [(QLPreviewCollection *)self currentPreviewItemViewController];
-  v5 = [v4 scrollView];
+  currentPreviewItemViewController2 = [(QLPreviewCollection *)self currentPreviewItemViewController];
+  scrollView = [currentPreviewItemViewController2 scrollView];
 
-  if (v5)
+  if (scrollView)
   {
-    v6 = [(QLPreviewCollection *)self currentPreviewItemViewController];
-    v7 = [v6 scrollView];
-    v8 = [v7 pinchGestureRecognizer];
-    [v8 requireGestureRecognizerToFail:self->_pinchGesture];
+    currentPreviewItemViewController3 = [(QLPreviewCollection *)self currentPreviewItemViewController];
+    scrollView2 = [currentPreviewItemViewController3 scrollView];
+    pinchGestureRecognizer = [scrollView2 pinchGestureRecognizer];
+    [pinchGestureRecognizer requireGestureRecognizerToFail:self->_pinchGesture];
   }
 }
 
@@ -834,32 +834,32 @@ LABEL_2:
   return localAccessoryViewContainer;
 }
 
-- (void)setFullScreen:(BOOL)a3 forceUpdate:(BOOL)a4
+- (void)setFullScreen:(BOOL)screen forceUpdate:(BOOL)update
 {
-  v4 = a4;
-  v5 = a3;
+  updateCopy = update;
+  screenCopy = screen;
   if ([(QLAppearance *)self->_appearance presentationMode]!= 4 && [(QLAppearance *)self->_appearance presentationMode]!= 3 && [(QLAppearance *)self->_appearance presentationMode]!= 5)
   {
-    v7 = [(QLPreviewCollection *)self currentPreviewItemViewController];
-    v8 = [v7 canEnterFullScreen];
+    currentPreviewItemViewController = [(QLPreviewCollection *)self currentPreviewItemViewController];
+    canEnterFullScreen = [currentPreviewItemViewController canEnterFullScreen];
 
-    v9 = v8 & v5;
-    if (self->_fullScreen != v9 || v4)
+    v9 = canEnterFullScreen & screenCopy;
+    if (self->_fullScreen != v9 || updateCopy)
     {
       self->_fullScreen = v9;
-      v11 = [(QLPreviewCollection *)self stateManager];
-      [v11 setFullScreen:v9];
+      stateManager = [(QLPreviewCollection *)self stateManager];
+      [stateManager setFullScreen:v9];
 
-      v12 = [(QLPreviewCollection *)self currentPreviewItemViewController];
-      [v12 previewBecameFullScreen:v9 animated:1];
+      currentPreviewItemViewController2 = [(QLPreviewCollection *)self currentPreviewItemViewController];
+      [currentPreviewItemViewController2 previewBecameFullScreen:v9 animated:1];
 
-      v13 = [(QLPreviewCollection *)self stateManager];
-      [v13 updateKeyCommands];
+      stateManager2 = [(QLPreviewCollection *)self stateManager];
+      [stateManager2 updateKeyCommands];
     }
   }
 }
 
-- (void)setScreenEdgePanWidth:(double)a3
+- (void)setScreenEdgePanWidth:(double)width
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D43EF8];
@@ -873,7 +873,7 @@ LABEL_2:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 134217984;
-    v8 = a3;
+    widthCopy = width;
     _os_log_impl(&dword_23A714000, v5, OS_LOG_TYPE_INFO, "QLPreviewCollection's edge pan gesture region width has been set to %f #PreviewCollection", &v7, 0xCu);
   }
 
@@ -882,27 +882,27 @@ LABEL_2:
 
 - (QLItemViewController)currentPreviewItemViewController
 {
-  v3 = [(QLPreviewCollection *)self standaloneItemViewController];
+  standaloneItemViewController = [(QLPreviewCollection *)self standaloneItemViewController];
 
-  if (v3)
+  if (standaloneItemViewController)
   {
-    v4 = [(QLPreviewCollection *)self standaloneItemViewController];
+    standaloneItemViewController2 = [(QLPreviewCollection *)self standaloneItemViewController];
   }
 
   else
   {
-    v5 = [(QLPreviewCollection *)self pageViewController];
-    v4 = [v5 currentPage];
+    pageViewController = [(QLPreviewCollection *)self pageViewController];
+    standaloneItemViewController2 = [pageViewController currentPage];
   }
 
-  return v4;
+  return standaloneItemViewController2;
 }
 
 - (unint64_t)currentPageIndex
 {
-  v3 = [(QLPreviewCollection *)self standaloneItemViewController];
+  standaloneItemViewController = [(QLPreviewCollection *)self standaloneItemViewController];
 
-  if (v3)
+  if (standaloneItemViewController)
   {
 
     return [(QLPreviewCollection *)self standaloneItemIndex];
@@ -910,17 +910,17 @@ LABEL_2:
 
   else
   {
-    v5 = [(QLPreviewCollection *)self pageViewController];
-    v6 = [v5 currentPageIndex];
+    pageViewController = [(QLPreviewCollection *)self pageViewController];
+    currentPageIndex = [pageViewController currentPageIndex];
 
-    return v6;
+    return currentPageIndex;
   }
 }
 
-- (void)preparePreviewCollectionForInvalidationWithCompletionHandler:(id)a3
+- (void)preparePreviewCollectionForInvalidationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v3 = v4;
+  handlerCopy = handler;
+  v3 = handlerCopy;
   QLRunInMainThread();
 }
 
@@ -1001,12 +1001,12 @@ uint64_t __84__QLPreviewCollection_preparePreviewCollectionForInvalidationWithCo
   return hostApplicationBundleIdentifier;
 }
 
-- (void)configureWithNumberOfItems:(int64_t)a3 currentPreviewItemIndex:(unint64_t)a4 itemProvider:(id)a5 stateManager:(id)a6 fullScreen:(BOOL)a7
+- (void)configureWithNumberOfItems:(int64_t)items currentPreviewItemIndex:(unint64_t)index itemProvider:(id)provider stateManager:(id)manager fullScreen:(BOOL)screen
 {
-  v8 = a5;
-  v11 = a6;
-  v9 = v11;
-  v10 = v8;
+  providerCopy = provider;
+  managerCopy = manager;
+  v9 = managerCopy;
+  v10 = providerCopy;
   QLRunInMainThread();
 }
 
@@ -1069,15 +1069,15 @@ uint64_t __59__QLPreviewCollection_setCurrentPreviewItemIndex_animated___block_i
   return [v2 _setCurrentPreviewItemIndex:? animated:?];
 }
 
-- (void)setAppearance:(id)a3 animated:(BOOL)a4
+- (void)setAppearance:(id)appearance animated:(BOOL)animated
 {
-  v5 = a3;
+  appearanceCopy = appearance;
   if ([(QLPreviewCollection *)self _isBeingPresented])
   {
     UIAccessibilityIsReduceMotionEnabled();
   }
 
-  v6 = v5;
+  v6 = appearanceCopy;
   QLRunInMainThread();
 }
 
@@ -1088,11 +1088,11 @@ void __46__QLPreviewCollection_setAppearance_animated___block_invoke(uint64_t a1
   [v2 setAppearance:*(a1 + 40) animated:*(a1 + 48)];
 }
 
-- (void)notifyFirstTimeAppearanceWithActions:(unint64_t)a3
+- (void)notifyFirstTimeAppearanceWithActions:(unint64_t)actions
 {
   objc_initWeak(&location, self);
   objc_copyWeak(v4, &location);
-  v4[1] = a3;
+  v4[1] = actions;
   QLRunInMainThread();
   objc_destroyWeak(v4);
   objc_destroyWeak(&location);
@@ -1141,65 +1141,65 @@ void __60__QLPreviewCollection_notifyFirstTimeAppearanceWithActions___block_invo
 
 - (void)setStandaloneViewControllerIfNeeded
 {
-  v3 = [(QLPreviewCollection *)self standaloneItemViewController];
+  standaloneItemViewController = [(QLPreviewCollection *)self standaloneItemViewController];
 
-  if (!v3)
+  if (!standaloneItemViewController)
   {
-    v12 = [(QLPreviewCollection *)self currentPreviewItemViewController];
-    v4 = [v12 context];
-    v5 = [v4 previewItemType];
+    currentPreviewItemViewController = [(QLPreviewCollection *)self currentPreviewItemViewController];
+    context = [currentPreviewItemViewController context];
+    previewItemType = [context previewItemType];
 
-    if (v5 == 12)
+    if (previewItemType == 12)
     {
-      v6 = [(QLPreviewCollection *)self pageViewController];
-      [v6 setIndexedDataSource:0];
+      pageViewController = [(QLPreviewCollection *)self pageViewController];
+      [pageViewController setIndexedDataSource:0];
 
-      v7 = [(QLPreviewCollection *)self pageViewController];
-      [v7 clearInternalCache];
+      pageViewController2 = [(QLPreviewCollection *)self pageViewController];
+      [pageViewController2 clearInternalCache];
 
-      v8 = [(QLPreviewCollection *)self pageViewController];
-      [v8 setCurrentPageIndex:0];
+      pageViewController3 = [(QLPreviewCollection *)self pageViewController];
+      [pageViewController3 setCurrentPageIndex:0];
 
-      v9 = [v12 view];
-      [v9 removeFromSuperview];
+      view = [currentPreviewItemViewController view];
+      [view removeFromSuperview];
 
-      [v12 willMoveToParentViewController:0];
-      [v12 removeFromParentViewController];
-      v10 = [(QLPreviewCollection *)self view];
-      v11 = [v12 view];
-      [v10 addSubview:v11];
+      [currentPreviewItemViewController willMoveToParentViewController:0];
+      [currentPreviewItemViewController removeFromParentViewController];
+      view2 = [(QLPreviewCollection *)self view];
+      view3 = [currentPreviewItemViewController view];
+      [view2 addSubview:view3];
 
-      [(QLPreviewCollection *)self addChildViewController:v12];
-      [v12 didMoveToParentViewController:self];
-      [(QLPreviewCollection *)self setStandaloneItemViewController:v12];
+      [(QLPreviewCollection *)self addChildViewController:currentPreviewItemViewController];
+      [currentPreviewItemViewController didMoveToParentViewController:self];
+      [(QLPreviewCollection *)self setStandaloneItemViewController:currentPreviewItemViewController];
     }
   }
 }
 
 - (void)removeStandaloneViewController
 {
-  v3 = [(QLPreviewCollection *)self standaloneItemViewController];
-  v4 = [v3 view];
-  [v4 removeFromSuperview];
+  standaloneItemViewController = [(QLPreviewCollection *)self standaloneItemViewController];
+  view = [standaloneItemViewController view];
+  [view removeFromSuperview];
 
-  v5 = [(QLPreviewCollection *)self standaloneItemViewController];
-  [v5 willMoveToParentViewController:0];
+  standaloneItemViewController2 = [(QLPreviewCollection *)self standaloneItemViewController];
+  [standaloneItemViewController2 willMoveToParentViewController:0];
 
-  v6 = [(QLPreviewCollection *)self standaloneItemViewController];
-  [v6 removeFromParentViewController];
+  standaloneItemViewController3 = [(QLPreviewCollection *)self standaloneItemViewController];
+  [standaloneItemViewController3 removeFromParentViewController];
 
   [(QLPreviewCollection *)self setStandaloneItemViewController:0];
-  v7 = [(QLPreviewCollection *)self pageViewController];
-  [v7 setIndexedDataSource:self];
+  pageViewController = [(QLPreviewCollection *)self pageViewController];
+  [pageViewController setIndexedDataSource:self];
 
-  v8 = [(QLPreviewCollection *)self pageViewController];
-  [v8 clearInternalCache];
+  pageViewController2 = [(QLPreviewCollection *)self pageViewController];
+  [pageViewController2 clearInternalCache];
 }
 
-- (void)notifyStateRestorationUserInfo:(id)a3
+- (void)notifyStateRestorationUserInfo:(id)info
 {
-  v4 = a3;
-  v3 = v4;
+  infoCopy = info;
+  v3 = infoCopy;
   QLRunInMainThread();
 }
 
@@ -1212,12 +1212,12 @@ void __54__QLPreviewCollection_notifyStateRestorationUserInfo___block_invoke(uin
   }
 }
 
-- (void)toolbarButtonsForTraitCollection:(id)a3 withCompletionHandler:(id)a4
+- (void)toolbarButtonsForTraitCollection:(id)collection withCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v8 = a4;
-  v6 = v5;
-  v7 = v8;
+  collectionCopy = collection;
+  handlerCopy = handler;
+  v6 = collectionCopy;
+  v7 = handlerCopy;
   QLRunInMainThread();
 }
 
@@ -1230,12 +1230,12 @@ void __78__QLPreviewCollection_toolbarButtonsForTraitCollection_withCompletionHa
   (*(v2 + 16))(v2, v3, v4);
 }
 
-- (void)toolbarButtonPressedWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)toolbarButtonPressedWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v5 = a3;
-  v8 = a4;
-  v6 = v8;
-  v7 = v5;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  v6 = handlerCopy;
+  v7 = identifierCopy;
   QLRunInMainThread();
 }
 
@@ -1277,10 +1277,10 @@ void __76__QLPreviewCollection_toolbarButtonPressedWithIdentifier_completionHand
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)saveCurrentPreviewEditsSynchronously:(BOOL)a3 withCompletionHandler:(id)a4
+- (void)saveCurrentPreviewEditsSynchronously:(BOOL)synchronously withCompletionHandler:(id)handler
 {
-  v5 = a4;
-  v4 = v5;
+  handlerCopy = handler;
+  v4 = handlerCopy;
   QLRunInMainThread();
 }
 
@@ -1334,10 +1334,10 @@ uint64_t __82__QLPreviewCollection_saveCurrentPreviewEditsSynchronously_withComp
   return result;
 }
 
-- (void)prepareForActionSheetPresentationWithCompletionHandler:(id)a3
+- (void)prepareForActionSheetPresentationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v3 = v4;
+  handlerCopy = handler;
+  v3 = handlerCopy;
   QLRunInMainThread();
 }
 
@@ -1426,11 +1426,11 @@ void __53__QLPreviewCollection_hostApplicationDidBecomeActive__block_invoke(uint
   }
 }
 
-- (void)shouldDisplayLockActivityWithCompletionHandler:(id)a3
+- (void)shouldDisplayLockActivityWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(QLPreviewCollection *)self currentPreviewItemViewController];
-  v4[2](v4, [v5 canBeLocked]);
+  handlerCopy = handler;
+  currentPreviewItemViewController = [(QLPreviewCollection *)self currentPreviewItemViewController];
+  handlerCopy[2](handlerCopy, [currentPreviewItemViewController canBeLocked]);
 }
 
 void __48__QLPreviewCollection_requestLockForCurrentItem__block_invoke(uint64_t a1)
@@ -1439,31 +1439,31 @@ void __48__QLPreviewCollection_requestLockForCurrentItem__block_invoke(uint64_t 
   [v1 requestLockForCurrentItem];
 }
 
-- (void)saveIntoPhotoLibraryMediaWithURLWrapper:(id)a3 previewItemType:(unint64_t)a4 completionHandler:(id)a5
+- (void)saveIntoPhotoLibraryMediaWithURLWrapper:(id)wrapper previewItemType:(unint64_t)type completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  wrapperCopy = wrapper;
+  handlerCopy = handler;
   gotLoadHelper_x20__OBJC_CLASS___PHPhotoLibrary(v10);
-  v11 = [*(v5 + 2376) systemPhotoLibraryURL];
-  v12 = [objc_alloc(*(v5 + 2376)) initWithPhotoLibraryURL:v11];
-  v13 = [v8 url];
-  v14 = [v13 startAccessingSecurityScopedResource];
+  systemPhotoLibraryURL = [*(v5 + 2376) systemPhotoLibraryURL];
+  v12 = [objc_alloc(*(v5 + 2376)) initWithPhotoLibraryURL:systemPhotoLibraryURL];
+  v13 = [wrapperCopy url];
+  startAccessingSecurityScopedResource = [v13 startAccessingSecurityScopedResource];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __97__QLPreviewCollection_saveIntoPhotoLibraryMediaWithURLWrapper_previewItemType_completionHandler___block_invoke;
   v22[3] = &unk_278B57318;
-  v23 = v8;
-  v24 = a4;
+  v23 = wrapperCopy;
+  typeCopy = type;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __97__QLPreviewCollection_saveIntoPhotoLibraryMediaWithURLWrapper_previewItemType_completionHandler___block_invoke_2;
   v18[3] = &unk_278B590B8;
-  v21 = v14;
+  v21 = startAccessingSecurityScopedResource;
   v19 = v13;
-  v20 = v9;
-  v15 = v9;
+  v20 = handlerCopy;
+  v15 = handlerCopy;
   v16 = v13;
-  v17 = v8;
+  v17 = wrapperCopy;
   [v12 performChanges:v22 completionHandler:v18];
 }
 
@@ -1536,19 +1536,19 @@ void __97__QLPreviewCollection_saveIntoPhotoLibraryMediaWithURLWrapper_previewIt
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  [(QLPreviewCollection *)self forwardPressesToHostIfNeeded:v7];
+  eventCopy = event;
+  beganCopy = began;
+  [(QLPreviewCollection *)self forwardPressesToHostIfNeeded:beganCopy];
   v8.receiver = self;
   v8.super_class = QLPreviewCollection;
-  [(QLPreviewCollection *)&v8 pressesBegan:v7 withEvent:v6];
+  [(QLPreviewCollection *)&v8 pressesBegan:beganCopy withEvent:eventCopy];
 }
 
-- (void)forwardPressesToHostIfNeeded:(id)a3
+- (void)forwardPressesToHostIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   if ([(QLPreviewCollection *)self isFirstResponderTextEntry])
   {
     v5 = MEMORY[0x277D43EF8];
@@ -1576,8 +1576,8 @@ LABEL_11:
       v9[1] = 3221225472;
       v9[2] = __52__QLPreviewCollection_forwardPressesToHostIfNeeded___block_invoke;
       v9[3] = &unk_278B58CA0;
-      v10 = v4;
-      v11 = self;
+      v10 = neededCopy;
+      selfCopy = self;
       [(QLPreviewCollection *)self keyCommandsWithCompletionHandler:v9];
 
       goto LABEL_13;
@@ -1645,39 +1645,39 @@ void __52__QLPreviewCollection_forwardPressesToHostIfNeeded___block_invoke(uint6
 
 - (BOOL)isFirstResponderTextEntry
 {
-  v2 = [(QLPreviewCollection *)self firstResponder];
-  v3 = [v2 conformsToProtocol:&unk_284DCEEA8];
+  firstResponder = [(QLPreviewCollection *)self firstResponder];
+  v3 = [firstResponder conformsToProtocol:&unk_284DCEEA8];
 
   return v3;
 }
 
 - (BOOL)isFirstResponderKeyInput
 {
-  v2 = [MEMORY[0x277D75658] activeKeyboard];
-  v3 = [v2 targetWindow];
-  v4 = [v3 firstResponder];
+  activeKeyboard = [MEMORY[0x277D75658] activeKeyboard];
+  targetWindow = [activeKeyboard targetWindow];
+  firstResponder = [targetWindow firstResponder];
 
-  LOBYTE(v2) = [v4 conformsToProtocol:&unk_284DCEEA8];
-  return v2;
+  LOBYTE(activeKeyboard) = [firstResponder conformsToProtocol:&unk_284DCEEA8];
+  return activeKeyboard;
 }
 
-- (void)forwardKeyPressToHostIfNeeded:(id)a3 serviceCommands:(id)a4
+- (void)forwardKeyPressToHostIfNeeded:(id)needed serviceCommands:(id)commands
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v37 = v6;
-  v8 = [v6 charactersIgnoringModifiers];
-  if ([v8 length])
+  neededCopy = needed;
+  commandsCopy = commands;
+  v37 = neededCopy;
+  charactersIgnoringModifiers = [neededCopy charactersIgnoringModifiers];
+  if ([charactersIgnoringModifiers length])
   {
-    v35 = self;
-    v36 = v7;
+    selfCopy = self;
+    v36 = commandsCopy;
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v9 = v7;
-    v10 = [v9 countByEnumeratingWithState:&v38 objects:v46 count:16];
+    stateManager = commandsCopy;
+    v10 = [stateManager countByEnumeratingWithState:&v38 objects:v46 count:16];
     if (v10)
     {
       v11 = v10;
@@ -1688,26 +1688,26 @@ void __52__QLPreviewCollection_forwardPressesToHostIfNeeded___block_invoke(uint6
         {
           if (*v39 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(stateManager);
           }
 
           v14 = *(*(&v38 + 1) + 8 * i);
-          v15 = [v37 modifierFlags];
-          v16 = [v14 keyCommand];
-          v17 = [v16 input];
-          if ([v8 isEqualToString:v17])
+          modifierFlags = [v37 modifierFlags];
+          keyCommand = [v14 keyCommand];
+          input = [keyCommand input];
+          if ([charactersIgnoringModifiers isEqualToString:input])
           {
-            v18 = v9;
-            v19 = [v16 modifierFlags];
+            v18 = stateManager;
+            modifierFlags2 = [keyCommand modifierFlags];
 
-            v20 = v15 == v19;
-            v9 = v18;
+            v20 = modifierFlags == modifierFlags2;
+            stateManager = v18;
             if (v20)
             {
-              v25 = [v16 modifierFlags];
+              modifierFlags3 = [keyCommand modifierFlags];
               v26 = MEMORY[0x277D43EF8];
               v27 = *MEMORY[0x277D43EF8];
-              if (v25)
+              if (modifierFlags3)
               {
                 if (!v27)
                 {
@@ -1719,14 +1719,14 @@ void __52__QLPreviewCollection_forwardPressesToHostIfNeeded___block_invoke(uint6
                 {
                   v28 = v27;
                   v29 = [v37 description];
-                  v30 = [v16 description];
+                  v30 = [keyCommand description];
                   *buf = 138412546;
                   v43 = v29;
                   v44 = 2112;
                   v45 = v30;
                   _os_log_impl(&dword_23A714000, v28, OS_LOG_TYPE_INFO, "Service ignores key press (%@) with key command (%@) since keycommands with modifiers is already sent to and handled by the host #Remote", buf, 0x16u);
 
-                  v9 = v18;
+                  stateManager = v18;
                 }
               }
 
@@ -1742,17 +1742,17 @@ void __52__QLPreviewCollection_forwardPressesToHostIfNeeded___block_invoke(uint6
                 {
                   v31 = v27;
                   v32 = [v37 description];
-                  v33 = [v16 description];
+                  v33 = [keyCommand description];
                   *buf = 138412546;
                   v43 = v32;
                   v44 = 2112;
                   v45 = v33;
                   _os_log_impl(&dword_23A714000, v31, OS_LOG_TYPE_INFO, "Service will directly handle key press (%@) with key command (%@) since it has no modifier #Remote", buf, 0x16u);
 
-                  v9 = v18;
+                  stateManager = v18;
                 }
 
-                [(QLPreviewCollection *)v35 keyCommandWasPerformed:v14];
+                [(QLPreviewCollection *)selfCopy keyCommandWasPerformed:v14];
               }
 
               goto LABEL_29;
@@ -1764,7 +1764,7 @@ void __52__QLPreviewCollection_forwardPressesToHostIfNeeded___block_invoke(uint6
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v38 objects:v46 count:16];
+        v11 = [stateManager countByEnumeratingWithState:&v38 objects:v46 count:16];
         if (v11)
         {
           continue;
@@ -1791,20 +1791,20 @@ void __52__QLPreviewCollection_forwardPressesToHostIfNeeded___block_invoke(uint6
       _os_log_impl(&dword_23A714000, v23, OS_LOG_TYPE_INFO, "Propagating unhandled key press from service to host: (%@) #Remote", buf, 0xCu);
     }
 
-    v9 = [(QLPreviewCollection *)v35 stateManager];
-    v16 = [v37 charactersIgnoringModifiers];
-    [v9 handleKeyPressWithInput:v16 modifierFlags:{objc_msgSend(v37, "modifierFlags")}];
+    stateManager = [(QLPreviewCollection *)selfCopy stateManager];
+    keyCommand = [v37 charactersIgnoringModifiers];
+    [stateManager handleKeyPressWithInput:keyCommand modifierFlags:{objc_msgSend(v37, "modifierFlags")}];
 LABEL_29:
-    v7 = v36;
+    commandsCopy = v36;
   }
 
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)keyCommandsWithCompletionHandler:(id)a3
+- (void)keyCommandsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v3 = v4;
+  handlerCopy = handler;
+  v3 = handlerCopy;
   QLRunInMainThread();
 }
 
@@ -1821,21 +1821,21 @@ void __56__QLPreviewCollection_keyCommandsWithCompletionHandler___block_invoke(u
 - (id)_defaultKeyCommands
 {
   v3 = objc_opt_new();
-  v4 = [(QLPreviewCollection *)self currentPreviewItemViewController];
-  if ([v4 canEnterFullScreen])
+  currentPreviewItemViewController = [(QLPreviewCollection *)self currentPreviewItemViewController];
+  if ([currentPreviewItemViewController canEnterFullScreen])
   {
-    v5 = [(QLPreviewCollection *)self currentPreviewItemViewController];
-    v6 = [v5 canToggleFullScreen];
+    currentPreviewItemViewController2 = [(QLPreviewCollection *)self currentPreviewItemViewController];
+    canToggleFullScreen = [currentPreviewItemViewController2 canToggleFullScreen];
 
-    if (!v6)
+    if (!canToggleFullScreen)
     {
       goto LABEL_5;
     }
 
     [(QLPreviewCollection *)self fullScreen];
-    v4 = QLLocalizedString();
+    currentPreviewItemViewController = QLLocalizedString();
     v7 = [MEMORY[0x277D75650] keyCommandWithInput:@"f" modifierFlags:1310720 action:sel__toggleFullscreenIfPossible];
-    [v7 setDiscoverabilityTitle:v4];
+    [v7 setDiscoverabilityTitle:currentPreviewItemViewController];
     v8 = [MEMORY[0x277D43F80] keyCommandWithKeyCommand:v7 identifier:5];
     [v3 addObject:v8];
   }
@@ -1845,10 +1845,10 @@ LABEL_5:
   return v3;
 }
 
-- (void)keyCommandWasPerformed:(id)a3
+- (void)keyCommandWasPerformed:(id)performed
 {
-  v4 = a3;
-  v3 = v4;
+  performedCopy = performed;
+  v3 = performedCopy;
   QLRunInMainThread();
 }
 
@@ -1968,12 +1968,12 @@ LABEL_13:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startTransitionWithSourceViewProvider:(id)a3 transitionController:(id)a4 presenting:(BOOL)a5 useInteractiveTransition:(BOOL)a6 completionHandler:(id)a7
+- (void)startTransitionWithSourceViewProvider:(id)provider transitionController:(id)controller presenting:(BOOL)presenting useInteractiveTransition:(BOOL)transition completionHandler:(id)handler
 {
   v26 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a7;
+  providerCopy = provider;
+  controllerCopy = controller;
+  handlerCopy = handler;
   v12 = MEMORY[0x277D43EF8];
   v13 = *MEMORY[0x277D43EF8];
   if (!*MEMORY[0x277D43EF8])
@@ -1994,10 +1994,10 @@ LABEL_13:
     _os_log_impl(&dword_23A714000, v14, OS_LOG_TYPE_INFO, "QLPreviewCollection is preparing for transition (presenting: %@, interactive: %@) #AppearanceTransition", buf, 0x16u);
   }
 
-  v21 = v9;
-  v17 = v11;
-  v18 = v9;
-  v19 = v10;
+  v21 = providerCopy;
+  v17 = handlerCopy;
+  v18 = providerCopy;
+  v19 = controllerCopy;
   QLRunInMainThread();
 
   v20 = *MEMORY[0x277D85DE8];
@@ -2217,27 +2217,27 @@ uint64_t __42__QLPreviewCollection_tearDownTransition___block_invoke(uint64_t a1
 
 - (BOOL)transitionInProgress
 {
-  v2 = [(QLPreviewCollection *)self transitionController];
-  v3 = v2 != 0;
+  transitionController = [(QLPreviewCollection *)self transitionController];
+  v3 = transitionController != 0;
 
   return v3;
 }
 
 - (BOOL)pinchDismissGestureInProgress
 {
-  v2 = [(QLPreviewCollection *)self pinchRotationTracker];
-  v3 = v2 != 0;
+  pinchRotationTracker = [(QLPreviewCollection *)self pinchRotationTracker];
+  v3 = pinchRotationTracker != 0;
 
   return v3;
 }
 
 - (BOOL)_isBeingDismissed
 {
-  v3 = [(QLPreviewCollection *)self transitionDriver];
-  if (v3)
+  transitionDriver = [(QLPreviewCollection *)self transitionDriver];
+  if (transitionDriver)
   {
-    v4 = [(QLPreviewCollection *)self transitionDriver];
-    v5 = [v4 presenting] ^ 1;
+    transitionDriver2 = [(QLPreviewCollection *)self transitionDriver];
+    v5 = [transitionDriver2 presenting] ^ 1;
   }
 
   else
@@ -2250,38 +2250,38 @@ uint64_t __42__QLPreviewCollection_tearDownTransition___block_invoke(uint64_t a1
 
 - (BOOL)_isBeingPresented
 {
-  v3 = [(QLPreviewCollection *)self transitionDriver];
-  if (v3)
+  transitionDriver = [(QLPreviewCollection *)self transitionDriver];
+  if (transitionDriver)
   {
-    v4 = [(QLPreviewCollection *)self transitionDriver];
-    v5 = [v4 presenting];
+    transitionDriver2 = [(QLPreviewCollection *)self transitionDriver];
+    presenting = [transitionDriver2 presenting];
   }
 
   else
   {
-    v5 = 0;
+    presenting = 0;
   }
 
-  return v5;
+  return presenting;
 }
 
 - (NSString)parentApplicationDisplayIdentifier
 {
-  v3 = [(QLPreviewCollection *)self hostApplicationBundleIdentifier];
-  if ([v3 hasPrefix:@"com.apple."] && -[NSString hasPrefix:](self->_overrideParentApplicationDisplayIdentifier, "hasPrefix:", @"com.apple."))
+  hostApplicationBundleIdentifier = [(QLPreviewCollection *)self hostApplicationBundleIdentifier];
+  if ([hostApplicationBundleIdentifier hasPrefix:@"com.apple."] && -[NSString hasPrefix:](self->_overrideParentApplicationDisplayIdentifier, "hasPrefix:", @"com.apple."))
   {
     v4 = self->_overrideParentApplicationDisplayIdentifier;
 
-    v3 = v4;
+    hostApplicationBundleIdentifier = v4;
   }
 
-  return v3;
+  return hostApplicationBundleIdentifier;
 }
 
-- (void)setIsContentManaged:(BOOL)a3
+- (void)setIsContentManaged:(BOOL)managed
 {
-  self->_isContentManaged = a3;
-  if (a3)
+  self->_isContentManaged = managed;
+  if (managed)
   {
     v4 = 2;
   }
@@ -2296,41 +2296,41 @@ uint64_t __42__QLPreviewCollection_tearDownTransition___block_invoke(uint64_t a1
   [(QLPreviewCollection *)self _setDataOwnerForCopy:v4];
 }
 
-- (void)setPreviewItemDisplayState:(id)a3 onItemAtIndex:(unint64_t)a4
+- (void)setPreviewItemDisplayState:(id)state onItemAtIndex:(unint64_t)index
 {
-  v5 = a3;
-  v6 = [(QLPreviewCollection *)self currentPreviewItemViewController];
-  [v6 updatePreviewItemDisplayState:v5];
+  stateCopy = state;
+  currentPreviewItemViewController = [(QLPreviewCollection *)self currentPreviewItemViewController];
+  [currentPreviewItemViewController updatePreviewItemDisplayState:stateCopy];
 }
 
 - (void)_updatePreferredContentSize
 {
-  v4 = [(QLPreviewCollection *)self currentPreviewItemViewController];
-  if (([v4 isLoading] & 1) == 0)
+  currentPreviewItemViewController = [(QLPreviewCollection *)self currentPreviewItemViewController];
+  if (([currentPreviewItemViewController isLoading] & 1) == 0)
   {
-    v3 = [(QLPreviewCollection *)self stateManager];
-    [v4 preferredContentSize];
-    [v3 updatePreferredContentSize:?];
+    stateManager = [(QLPreviewCollection *)self stateManager];
+    [currentPreviewItemViewController preferredContentSize];
+    [stateManager updatePreferredContentSize:?];
   }
 }
 
 - (void)_updateFullscreenBackgroundColor
 {
-  v5 = [(QLPreviewCollection *)self currentPreviewItemViewController];
-  if (([v5 isLoading] & 1) == 0 && objc_msgSend(v5, "isLoaded"))
+  currentPreviewItemViewController = [(QLPreviewCollection *)self currentPreviewItemViewController];
+  if (([currentPreviewItemViewController isLoading] & 1) == 0 && objc_msgSend(currentPreviewItemViewController, "isLoaded"))
   {
-    v3 = [(QLPreviewCollection *)self stateManager];
-    v4 = [v5 fullscreenBackgroundColor];
-    [v3 setFullscreenBackgroundColor:v4];
+    stateManager = [(QLPreviewCollection *)self stateManager];
+    fullscreenBackgroundColor = [currentPreviewItemViewController fullscreenBackgroundColor];
+    [stateManager setFullscreenBackgroundColor:fullscreenBackgroundColor];
   }
 }
 
 - (void)_updateFullscreen
 {
-  v5 = [(QLPreviewCollection *)self currentPreviewItemViewController];
-  if (![v5 isLoading] || (objc_msgSend(v5, "loadingFailed") & 1) != 0 || (objc_msgSend(v5, "context"), v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_msgSend(v3, "previewItemType"), v3, v4 == 15))
+  currentPreviewItemViewController = [(QLPreviewCollection *)self currentPreviewItemViewController];
+  if (![currentPreviewItemViewController isLoading] || (objc_msgSend(currentPreviewItemViewController, "loadingFailed") & 1) != 0 || (objc_msgSend(currentPreviewItemViewController, "context"), v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_msgSend(v3, "previewItemType"), v3, v4 == 15))
   {
-    if (-[QLPreviewCollection fullScreen](self, "fullScreen") && !-[QLPreviewCollection shouldStartFullScreen](self, "shouldStartFullScreen") && ([v5 canEnterFullScreen] & 1) == 0)
+    if (-[QLPreviewCollection fullScreen](self, "fullScreen") && !-[QLPreviewCollection shouldStartFullScreen](self, "shouldStartFullScreen") && ([currentPreviewItemViewController canEnterFullScreen] & 1) == 0)
     {
       [(QLPreviewCollection *)self setFullScreen:0];
     }
@@ -2339,84 +2339,84 @@ uint64_t __42__QLPreviewCollection_tearDownTransition___block_invoke(uint64_t a1
 
 - (void)_updateOverlayVisibility
 {
-  v5 = [(QLPreviewCollection *)self currentPreviewItemViewController];
-  v3 = [(QLPreviewCollection *)self stateManager];
-  [v3 setToolbarCanBeVisible:{objc_msgSend(v5, "canShowToolBar")}];
+  currentPreviewItemViewController = [(QLPreviewCollection *)self currentPreviewItemViewController];
+  stateManager = [(QLPreviewCollection *)self stateManager];
+  [stateManager setToolbarCanBeVisible:{objc_msgSend(currentPreviewItemViewController, "canShowToolBar")}];
 
-  v4 = [(QLPreviewCollection *)self stateManager];
-  [v4 setNavBarCanBeVisible:{objc_msgSend(v5, "canShowNavBar")}];
+  stateManager2 = [(QLPreviewCollection *)self stateManager];
+  [stateManager2 setNavBarCanBeVisible:{objc_msgSend(currentPreviewItemViewController, "canShowNavBar")}];
 }
 
 - (void)_updateTitleFromController
 {
-  v5 = [(QLPreviewCollection *)self currentPreviewItemViewController];
-  if (([v5 isLoading] & 1) == 0)
+  currentPreviewItemViewController = [(QLPreviewCollection *)self currentPreviewItemViewController];
+  if (([currentPreviewItemViewController isLoading] & 1) == 0)
   {
-    v3 = [(QLPreviewCollection *)self stateManager];
-    v4 = [v5 title];
-    [v3 updateTitle:v4];
+    stateManager = [(QLPreviewCollection *)self stateManager];
+    title = [currentPreviewItemViewController title];
+    [stateManager updateTitle:title];
   }
 }
 
 - (void)_updatePrinter
 {
-  v6 = [(QLPreviewCollection *)self currentPreviewItemViewController];
-  if ([v6 isLoading])
+  currentPreviewItemViewController = [(QLPreviewCollection *)self currentPreviewItemViewController];
+  if ([currentPreviewItemViewController isLoading])
   {
-    v3 = [(QLPreviewCollection *)self stateManager];
-    [v3 setPrinter:0];
+    stateManager = [(QLPreviewCollection *)self stateManager];
+    [stateManager setPrinter:0];
   }
 
   else
   {
     if (objc_opt_respondsToSelector())
     {
-      v3 = [v6 printer];
+      stateManager = [currentPreviewItemViewController printer];
     }
 
     else
     {
-      v3 = 0;
+      stateManager = 0;
     }
 
-    v4 = [(QLPreviewCollection *)self stateManager];
-    [v4 setPrinter:0];
+    stateManager2 = [(QLPreviewCollection *)self stateManager];
+    [stateManager2 setPrinter:0];
 
-    if (v3)
+    if (stateManager)
     {
-      v5 = [(QLPreviewCollection *)self stateManager];
-      [v5 setPrinter:v3];
+      stateManager3 = [(QLPreviewCollection *)self stateManager];
+      [stateManager3 setPrinter:stateManager];
     }
   }
 }
 
 - (void)_cleanAccessoryViewContainer
 {
-  v4 = [(QLPreviewCollection *)self accessoryView];
-  v2 = [v4 subviews];
-  v3 = [v2 firstObject];
+  accessoryView = [(QLPreviewCollection *)self accessoryView];
+  subviews = [accessoryView subviews];
+  firstObject = [subviews firstObject];
 
-  [v3 removeFromSuperview];
+  [firstObject removeFromSuperview];
 }
 
-- (void)_updateAccessoryViewWithPreviewItemViewController:(id)a3
+- (void)_updateAccessoryViewWithPreviewItemViewController:(id)controller
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v4 = [a3 accessoryView];
-  v5 = [(QLPreviewCollection *)self accessoryView];
-  v6 = [v5 subviews];
-  v7 = [v6 lastObject];
+  accessoryView = [controller accessoryView];
+  accessoryView2 = [(QLPreviewCollection *)self accessoryView];
+  subviews = [accessoryView2 subviews];
+  lastObject = [subviews lastObject];
 
-  if (v7 != v4)
+  if (lastObject != accessoryView)
   {
-    if (v7)
+    if (lastObject)
     {
       v8 = MEMORY[0x277D75D18];
       v29[0] = MEMORY[0x277D85DD0];
       v29[1] = 3221225472;
       v29[2] = __73__QLPreviewCollection__updateAccessoryViewWithPreviewItemViewController___block_invoke;
       v29[3] = &unk_278B57190;
-      v30 = v7;
+      v30 = lastObject;
       v27[0] = MEMORY[0x277D85DD0];
       v27[1] = 3221225472;
       v27[2] = __73__QLPreviewCollection__updateAccessoryViewWithPreviewItemViewController___block_invoke_2;
@@ -2425,30 +2425,30 @@ uint64_t __42__QLPreviewCollection_tearDownTransition___block_invoke(uint64_t a1
       [v8 animateWithDuration:v29 animations:v27 completion:0.2];
     }
 
-    if (v4)
+    if (accessoryView)
     {
-      [v5 addSubview:v4];
-      [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+      [accessoryView2 addSubview:accessoryView];
+      [accessoryView setTranslatesAutoresizingMaskIntoConstraints:0];
       v9 = MEMORY[0x277CCAAD0];
       v33 = @"view";
-      v34[0] = v4;
+      v34[0] = accessoryView;
       v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:&v33 count:1];
       v11 = [v9 constraintsWithVisualFormat:@"H:|[view]|" options:0 metrics:0 views:v10];
-      [v5 addConstraints:v11];
+      [accessoryView2 addConstraints:v11];
 
       v12 = MEMORY[0x277CCAAD0];
       v31 = @"view";
-      v32 = v4;
+      v32 = accessoryView;
       v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
       v14 = [v12 constraintsWithVisualFormat:@"V:|[view]|" options:0 metrics:0 views:v13];
-      [v5 addConstraints:v14];
+      [accessoryView2 addConstraints:v14];
 
       v15 = MEMORY[0x277D75D18];
       v25[0] = MEMORY[0x277D85DD0];
       v25[1] = 3221225472;
       v25[2] = __73__QLPreviewCollection__updateAccessoryViewWithPreviewItemViewController___block_invoke_3;
       v25[3] = &unk_278B57190;
-      v16 = v4;
+      v16 = accessoryView;
       v26 = v16;
       [v15 performWithoutAnimation:v25];
       [v16 setAlpha:0.0];
@@ -2463,7 +2463,7 @@ uint64_t __42__QLPreviewCollection_tearDownTransition___block_invoke(uint64_t a1
   }
 
   v18 = [(QLPreviewCollection *)self stateManager:v20];
-  [v18 setAccessoryViewVisible:v4 != 0];
+  [v18 setAccessoryViewVisible:accessoryView != 0];
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -2486,19 +2486,19 @@ uint64_t __73__QLPreviewCollection__updateAccessoryViewWithPreviewItemViewContro
 
 - (void)_updateWhitePointAdaptivityStyle
 {
-  v4 = [(QLPreviewCollection *)self stateManager];
+  stateManager = [(QLPreviewCollection *)self stateManager];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(QLPreviewCollection *)self currentPreviewItemViewController];
-    [v4 previewCollectionPrefersWhitePointAdaptivityStyle:{objc_msgSend(v3, "preferredWhitePointAdaptivityStyle")}];
+    currentPreviewItemViewController = [(QLPreviewCollection *)self currentPreviewItemViewController];
+    [stateManager previewCollectionPrefersWhitePointAdaptivityStyle:{objc_msgSend(currentPreviewItemViewController, "preferredWhitePointAdaptivityStyle")}];
   }
 }
 
-- (id)pageViewController:(id)a3 viewControllerAtIndex:(unint64_t)a4
+- (id)pageViewController:(id)controller viewControllerAtIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(QLPreviewItemStore *)self->_itemStore possibleRange];
-  if (a4 < v7 || a4 - v7 >= v8)
+  controllerCopy = controller;
+  possibleRange = [(QLPreviewItemStore *)self->_itemStore possibleRange];
+  if (index < possibleRange || index - possibleRange >= v8)
   {
     v15 = 0;
   }
@@ -2506,9 +2506,9 @@ uint64_t __73__QLPreviewCollection__updateAccessoryViewWithPreviewItemViewContro
   else
   {
     v10 = [QLItemPresenterViewController alloc];
-    v11 = [(QLPreviewCollection *)self hostApplicationBundleIdentifier];
-    v12 = [(QLPreviewCollection *)self parentApplicationDisplayIdentifier];
-    v13 = [(QLItemPresenterViewController *)v10 initWithHostApplicationBundleIdentifier:v11 parentApplicationDisplayIdentifier:v12];
+    hostApplicationBundleIdentifier = [(QLPreviewCollection *)self hostApplicationBundleIdentifier];
+    parentApplicationDisplayIdentifier = [(QLPreviewCollection *)self parentApplicationDisplayIdentifier];
+    v13 = [(QLItemPresenterViewController *)v10 initWithHostApplicationBundleIdentifier:hostApplicationBundleIdentifier parentApplicationDisplayIdentifier:parentApplicationDisplayIdentifier];
 
     [(QLItemViewController *)v13 setAppearance:self->_appearance];
     [(QLItemAggregatedViewController *)v13 setDelegate:self];
@@ -2520,10 +2520,10 @@ uint64_t __73__QLPreviewCollection__updateAccessoryViewWithPreviewItemViewContro
     v17[2] = __64__QLPreviewCollection_pageViewController_viewControllerAtIndex___block_invoke;
     v17[3] = &unk_278B591A8;
     objc_copyWeak(v19, &location);
-    v19[1] = a4;
+    v19[1] = index;
     v15 = v13;
     v18 = v15;
-    [(QLPreviewItemStore *)itemStore previewItemAtIndex:a4 withCompletionHandler:v17];
+    [(QLPreviewItemStore *)itemStore previewItemAtIndex:index withCompletionHandler:v17];
 
     objc_destroyWeak(v19);
     objc_destroyWeak(&location);
@@ -2712,9 +2712,9 @@ void __64__QLPreviewCollection_pageViewController_viewControllerAtIndex___block_
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)displayBarsIfNeededForDestinationViewController:(id)a3
+- (void)displayBarsIfNeededForDestinationViewController:(id)controller
 {
-  IsEmpty = a3;
+  IsEmpty = controller;
   v5 = IsEmpty;
   if (IsEmpty)
   {
@@ -2745,26 +2745,26 @@ void __64__QLPreviewCollection_pageViewController_viewControllerAtIndex___block_
   MEMORY[0x2821F96F8](IsEmpty, v5);
 }
 
-- (void)pageViewController:(id)a3 willBeginInteractiveTransitionFromPage:(id)a4 withIndex:(unint64_t)a5 toPage:(id)a6 withIndex:(unint64_t)a7
+- (void)pageViewController:(id)controller willBeginInteractiveTransitionFromPage:(id)page withIndex:(unint64_t)index toPage:(id)toPage withIndex:(unint64_t)withIndex
 {
-  v10 = a6;
-  v9 = a4;
+  toPageCopy = toPage;
+  pageCopy = page;
   [(QLPreviewCollection *)self setIsTransitioningPage:1];
-  [v10 setAppearance:self->_appearance];
-  [v9 previewWillDisappear:1];
+  [toPageCopy setAppearance:self->_appearance];
+  [pageCopy previewWillDisappear:1];
 
-  [v10 previewWillAppear:1];
-  [v10 previewBecameFullScreen:self->_fullScreen animated:0];
-  [(QLPreviewCollection *)self displayBarsIfNeededForDestinationViewController:v10];
+  [toPageCopy previewWillAppear:1];
+  [toPageCopy previewBecameFullScreen:self->_fullScreen animated:0];
+  [(QLPreviewCollection *)self displayBarsIfNeededForDestinationViewController:toPageCopy];
 }
 
-- (void)pageViewController:(id)a3 isTransitioningFromPage:(id)a4 withIndex:(unint64_t)a5 toPage:(id)a6 withIndex:(unint64_t)a7 withProgress:(double)a8
+- (void)pageViewController:(id)controller isTransitioningFromPage:(id)page withIndex:(unint64_t)index toPage:(id)toPage withIndex:(unint64_t)withIndex withProgress:(double)progress
 {
-  v11 = 1.0 - a8;
-  v12 = a6;
-  [a4 previewIsAppearingWithProgress:v11];
-  [v12 previewIsAppearingWithProgress:a8];
-  [(QLPreviewCollection *)self displayBarsIfNeededForDestinationViewController:v12];
+  v11 = 1.0 - progress;
+  toPageCopy = toPage;
+  [page previewIsAppearingWithProgress:v11];
+  [toPageCopy previewIsAppearingWithProgress:progress];
+  [(QLPreviewCollection *)self displayBarsIfNeededForDestinationViewController:toPageCopy];
 }
 
 - (void)_installGestures
@@ -2773,66 +2773,66 @@ void __64__QLPreviewCollection_pageViewController_viewControllerAtIndex___block_
   v3 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__tapGestureRecognized];
   [(QLPreviewCollection *)self setTapGesture:v3];
 
-  v4 = [(QLPreviewCollection *)self tapGesture];
-  [v4 _setDelaysRecognitionForGreaterTapCounts:1];
+  tapGesture = [(QLPreviewCollection *)self tapGesture];
+  [tapGesture _setDelaysRecognitionForGreaterTapCounts:1];
 
-  v5 = [(QLPreviewCollection *)self tapGesture];
-  [v5 setDelegate:self];
+  tapGesture2 = [(QLPreviewCollection *)self tapGesture];
+  [tapGesture2 setDelegate:self];
 
   v6 = [objc_alloc(MEMORY[0x277D757F8]) initWithTarget:self action:sel_slideToDismissGestureRecognized_];
   [(QLPreviewCollection *)self setSlideGesture:v6];
 
-  v7 = [(QLPreviewCollection *)self slideGesture];
-  [v7 setDelegate:self];
+  slideGesture = [(QLPreviewCollection *)self slideGesture];
+  [slideGesture setDelegate:self];
 
-  v8 = [(QLPreviewCollection *)self slideGesture];
-  [v8 setAllowedScrollTypesMask:2];
+  slideGesture2 = [(QLPreviewCollection *)self slideGesture];
+  [slideGesture2 setAllowedScrollTypesMask:2];
 
-  v9 = [(QLPreviewCollection *)self slideGesture];
-  [v9 setMaximumNumberOfTouches:1];
+  slideGesture3 = [(QLPreviewCollection *)self slideGesture];
+  [slideGesture3 setMaximumNumberOfTouches:1];
 
   v10 = [objc_alloc(MEMORY[0x277D75848]) initWithTarget:self action:sel_rotationOrPinchGestureRecognized_];
   [(QLPreviewCollection *)self setPinchGesture:v10];
 
-  v11 = [(QLPreviewCollection *)self pinchGesture];
-  [v11 setDelegate:self];
+  pinchGesture = [(QLPreviewCollection *)self pinchGesture];
+  [pinchGesture setDelegate:self];
 
   v12 = [objc_alloc(MEMORY[0x277D75938]) initWithTarget:self action:sel_rotationOrPinchGestureRecognized_];
   [(QLPreviewCollection *)self setRotationGesture:v12];
 
-  v13 = [(QLPreviewCollection *)self rotationGesture];
-  [v13 setDelegate:self];
+  rotationGesture = [(QLPreviewCollection *)self rotationGesture];
+  [rotationGesture setDelegate:self];
 
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
-    v14 = [(QLPreviewCollection *)self pageViewController];
-    v15 = [v14 view];
-    [v15 addGestureRecognizer:self->_slideGesture];
+    pageViewController = [(QLPreviewCollection *)self pageViewController];
+    view = [pageViewController view];
+    [view addGestureRecognizer:self->_slideGesture];
 
-    v16 = [(QLPreviewCollection *)self pageViewController];
-    v17 = [v16 view];
-    [v17 addGestureRecognizer:self->_pinchGesture];
+    pageViewController2 = [(QLPreviewCollection *)self pageViewController];
+    view2 = [pageViewController2 view];
+    [view2 addGestureRecognizer:self->_pinchGesture];
 
-    v18 = [(QLPreviewCollection *)self pageViewController];
-    v19 = [v18 view];
-    [v19 addGestureRecognizer:self->_rotationGesture];
+    pageViewController3 = [(QLPreviewCollection *)self pageViewController];
+    view3 = [pageViewController3 view];
+    [view3 addGestureRecognizer:self->_rotationGesture];
   }
 
-  v20 = [(QLPreviewCollection *)self pageViewController];
-  v21 = [v20 view];
-  [v21 addGestureRecognizer:self->_tapGesture];
+  pageViewController4 = [(QLPreviewCollection *)self pageViewController];
+  view4 = [pageViewController4 view];
+  [view4 addGestureRecognizer:self->_tapGesture];
 
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v22 = [(QLPreviewCollection *)self pageViewController];
-  v23 = [v22 view];
-  v24 = [v23 subviews];
-  v25 = [v24 firstObject];
-  v26 = [v25 gestureRecognizers];
+  pageViewController5 = [(QLPreviewCollection *)self pageViewController];
+  view5 = [pageViewController5 view];
+  subviews = [view5 subviews];
+  firstObject = [subviews firstObject];
+  gestureRecognizers = [firstObject gestureRecognizers];
 
-  v27 = [v26 countByEnumeratingWithState:&v40 objects:v44 count:16];
+  v27 = [gestureRecognizers countByEnumeratingWithState:&v40 objects:v44 count:16];
   if (v27)
   {
     v28 = v27;
@@ -2844,7 +2844,7 @@ void __64__QLPreviewCollection_pageViewController_viewControllerAtIndex___block_
       {
         if (*v41 != v29)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(gestureRecognizers);
         }
 
         v31 = *(*(&v40 + 1) + 8 * v30);
@@ -2860,53 +2860,53 @@ void __64__QLPreviewCollection_pageViewController_viewControllerAtIndex___block_
       }
 
       while (v28 != v30);
-      v28 = [v26 countByEnumeratingWithState:&v40 objects:v44 count:16];
+      v28 = [gestureRecognizers countByEnumeratingWithState:&v40 objects:v44 count:16];
     }
 
     while (v28);
   }
 
-  v35 = [(QLPreviewCollection *)self pinchGesture];
-  v36 = [(QLPreviewCollection *)self slideGesture];
-  [v35 requireGestureRecognizerToFail:v36];
+  pinchGesture2 = [(QLPreviewCollection *)self pinchGesture];
+  slideGesture4 = [(QLPreviewCollection *)self slideGesture];
+  [pinchGesture2 requireGestureRecognizerToFail:slideGesture4];
 
-  v37 = [(QLPreviewCollection *)self rotationGesture];
-  v38 = [(QLPreviewCollection *)self slideGesture];
-  [v37 requireGestureRecognizerToFail:v38];
+  rotationGesture2 = [(QLPreviewCollection *)self rotationGesture];
+  slideGesture5 = [(QLPreviewCollection *)self slideGesture];
+  [rotationGesture2 requireGestureRecognizerToFail:slideGesture5];
 
   v39 = *MEMORY[0x277D85DE8];
 }
 
 - (BOOL)_toggleFullscreenIfPossible
 {
-  v3 = [(QLPreviewCollection *)self currentPreviewItemViewController];
-  v4 = [v3 canToggleFullScreen];
+  currentPreviewItemViewController = [(QLPreviewCollection *)self currentPreviewItemViewController];
+  canToggleFullScreen = [currentPreviewItemViewController canToggleFullScreen];
 
-  if (v4)
+  if (canToggleFullScreen)
   {
     [(QLPreviewCollection *)self setFullScreen:[(QLPreviewCollection *)self fullScreen]^ 1];
   }
 
-  return v4;
+  return canToggleFullScreen;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_tapGesture == v6 && (-[QLPreviewCollection currentPreviewItemViewController](self, "currentPreviewItemViewController"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 canClickToToggleFullscreen], v8, (v9 & 1) == 0) && (objc_msgSend(v7, "_isPointerTouch") & 1) != 0)
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  if (self->_tapGesture == recognizerCopy && (-[QLPreviewCollection currentPreviewItemViewController](self, "currentPreviewItemViewController"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 canClickToToggleFullscreen], v8, (v9 & 1) == 0) && (objc_msgSend(touchCopy, "_isPointerTouch") & 1) != 0)
   {
     v10 = 0;
   }
 
   else
   {
-    v11 = [(QLPreviewCollection *)self currentPreviewItemViewController];
+    currentPreviewItemViewController = [(QLPreviewCollection *)self currentPreviewItemViewController];
 
-    if (v11)
+    if (currentPreviewItemViewController)
     {
-      v12 = [(QLPreviewCollection *)self currentPreviewItemViewController];
-      v10 = [v12 shouldAcceptTouch:v7 ofGestureRecognizer:v6];
+      currentPreviewItemViewController2 = [(QLPreviewCollection *)self currentPreviewItemViewController];
+      v10 = [currentPreviewItemViewController2 shouldAcceptTouch:touchCopy ofGestureRecognizer:recognizerCopy];
     }
 
     else
@@ -2918,20 +2918,20 @@ void __64__QLPreviewCollection_pageViewController_viewControllerAtIndex___block_
   return v10;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  beginCopy = begin;
+  v5 = beginCopy;
   slideGesture = self->_slideGesture;
-  if (slideGesture != v4 && self->_rotationGesture != v4 && self->_pinchGesture != v4)
+  if (slideGesture != beginCopy && self->_rotationGesture != beginCopy && self->_pinchGesture != beginCopy)
   {
     goto LABEL_14;
   }
 
-  v7 = [(QLPreviewCollection *)self presentedViewController];
+  presentedViewController = [(QLPreviewCollection *)self presentedViewController];
 
-  if (!v7)
+  if (!presentedViewController)
   {
     if ([(QLPreviewCollection *)self transitionInProgress])
     {
@@ -2957,7 +2957,7 @@ void __64__QLPreviewCollection_pageViewController_viewControllerAtIndex___block_
       }
 
 LABEL_17:
-      v8 = 1;
+      canPinchToDismiss = 1;
       goto LABEL_32;
     }
 
@@ -2965,31 +2965,31 @@ LABEL_17:
 LABEL_14:
     if (slideGesture == v5)
     {
-      v13 = [(QLPreviewCollection *)self currentPreviewItemViewController];
-      v12 = [v13 scrollView];
+      currentPreviewItemViewController = [(QLPreviewCollection *)self currentPreviewItemViewController];
+      scrollView = [currentPreviewItemViewController scrollView];
 
       v14 = self->_slideGesture;
-      v15 = [(UIPanGestureRecognizer *)v14 view];
-      [(UIPanGestureRecognizer *)v14 velocityInView:v15];
+      view = [(UIPanGestureRecognizer *)v14 view];
+      [(UIPanGestureRecognizer *)v14 velocityInView:view];
       v17 = v16;
       v19 = v18;
 
       v20 = fabs(v19) > fabs(v17);
-      if (v12)
+      if (scrollView)
       {
-        [v12 contentOffset];
+        [scrollView contentOffset];
         if (v21 > 0.0)
         {
           v20 = 0;
         }
       }
 
-      [v12 contentOffset];
+      [scrollView contentOffset];
       if (v22 <= 0.0)
       {
-        [v12 frame];
+        [scrollView frame];
         v24 = v23;
-        [v12 contentSize];
+        [scrollView contentSize];
         v26 = v24 >= v25;
         if (v19 >= 0.0)
         {
@@ -3001,17 +3001,17 @@ LABEL_14:
 
       if (self->_allowInteractiveTransitions && (-[QLPreviewCollection currentPreviewItemViewController](self, "currentPreviewItemViewController"), v27 = objc_claimAutoreleasedReturnValue(), v28 = [v27 canSwipeToDismiss] & v20, v27, v28 == 1))
       {
-        v29 = [v12 panGestureRecognizer];
-        [v29 setEnabled:0];
+        panGestureRecognizer = [scrollView panGestureRecognizer];
+        [panGestureRecognizer setEnabled:0];
 
-        v30 = [v12 panGestureRecognizer];
-        v8 = 1;
-        [v30 setEnabled:1];
+        panGestureRecognizer2 = [scrollView panGestureRecognizer];
+        canPinchToDismiss = 1;
+        [panGestureRecognizer2 setEnabled:1];
       }
 
       else
       {
-        v8 = 0;
+        canPinchToDismiss = 0;
       }
     }
 
@@ -3027,61 +3027,61 @@ LABEL_14:
         goto LABEL_5;
       }
 
-      v12 = [(QLPreviewCollection *)self currentPreviewItemViewController];
-      v8 = [v12 canPinchToDismiss];
+      scrollView = [(QLPreviewCollection *)self currentPreviewItemViewController];
+      canPinchToDismiss = [scrollView canPinchToDismiss];
     }
 
     goto LABEL_32;
   }
 
 LABEL_5:
-  v8 = 0;
+  canPinchToDismiss = 0;
 LABEL_32:
 
   v31 = *MEMORY[0x277D85DE8];
-  return v8;
+  return canPinchToDismiss;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_slideGesture == v6)
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  if (self->_slideGesture == recognizerCopy)
   {
-    v8 = [(QLPreviewCollection *)self currentPreviewItemViewController];
-    v9 = [v8 scrollView];
-    v10 = [v9 panGestureRecognizer];
+    currentPreviewItemViewController = [(QLPreviewCollection *)self currentPreviewItemViewController];
+    scrollView = [currentPreviewItemViewController scrollView];
+    panGestureRecognizer = [scrollView panGestureRecognizer];
 
-    if (v10 == v7)
+    if (panGestureRecognizer == gestureRecognizerCopy)
     {
       goto LABEL_14;
     }
   }
 
-  if (self->_pinchGesture == v6)
+  if (self->_pinchGesture == recognizerCopy)
   {
-    v11 = [(QLPreviewCollection *)self currentPreviewItemViewController];
-    v12 = [v11 scrollView];
-    v13 = [v12 pinchGestureRecognizer];
+    currentPreviewItemViewController2 = [(QLPreviewCollection *)self currentPreviewItemViewController];
+    scrollView2 = [currentPreviewItemViewController2 scrollView];
+    pinchGestureRecognizer = [scrollView2 pinchGestureRecognizer];
 
-    if (v13 == v7)
+    if (pinchGestureRecognizer == gestureRecognizerCopy)
     {
       goto LABEL_14;
     }
   }
 
-  v14 = [(UIPanGestureRecognizer *)v7 view];
-  v15 = [(QLPreviewCollection *)self currentPreviewItemViewController];
-  v16 = [v15 view];
-  v17 = [v14 isDescendantOfView:v16];
+  view = [(UIPanGestureRecognizer *)gestureRecognizerCopy view];
+  currentPreviewItemViewController3 = [(QLPreviewCollection *)self currentPreviewItemViewController];
+  view2 = [currentPreviewItemViewController3 view];
+  v17 = [view isDescendantOfView:view2];
 
   if (v17)
   {
-    v18 = [(QLPreviewCollection *)self currentPreviewItemViewController];
-    if ([v18 shouldRecognizeGestureRecognizer:v6])
+    currentPreviewItemViewController4 = [(QLPreviewCollection *)self currentPreviewItemViewController];
+    if ([currentPreviewItemViewController4 shouldRecognizeGestureRecognizer:recognizerCopy])
     {
-      v19 = [(QLPreviewCollection *)self currentPreviewItemViewController];
-      v20 = [v19 gestureRecognizer:v6 shouldRecognizeSimultaneouslyWithGestureRecognizer:v7];
+      currentPreviewItemViewController5 = [(QLPreviewCollection *)self currentPreviewItemViewController];
+      v20 = [currentPreviewItemViewController5 gestureRecognizer:recognizerCopy shouldRecognizeSimultaneouslyWithGestureRecognizer:gestureRecognizerCopy];
 
       if (v20)
       {
@@ -3100,15 +3100,15 @@ LABEL_16:
 
 LABEL_8:
   slideGesture = self->_slideGesture;
-  if (slideGesture == v6)
+  if (slideGesture == recognizerCopy)
   {
-    v24 = self->_verticalPanGesture == v7;
+    v24 = self->_verticalPanGesture == gestureRecognizerCopy;
     goto LABEL_18;
   }
 
-  if (self->_tapGesture == v6)
+  if (self->_tapGesture == recognizerCopy)
   {
-    if (slideGesture != v7 && self->_pinchGesture != v7 && self->_rotationGesture != v7 && self->_pagePanGesture != v7 && self->_pageSwipeGesture != v7)
+    if (slideGesture != gestureRecognizerCopy && self->_pinchGesture != gestureRecognizerCopy && self->_rotationGesture != gestureRecognizerCopy && self->_pagePanGesture != gestureRecognizerCopy && self->_pageSwipeGesture != gestureRecognizerCopy)
     {
       objc_opt_class();
       v24 = objc_opt_isKindOfClass() ^ 1;
@@ -3120,11 +3120,11 @@ LABEL_8:
 
   rotationGesture = self->_rotationGesture;
   pinchGesture = self->_pinchGesture;
-  if ((rotationGesture != v6 || pinchGesture != v7) && (rotationGesture != v7 || pinchGesture != v6))
+  if ((rotationGesture != recognizerCopy || pinchGesture != gestureRecognizerCopy) && (rotationGesture != gestureRecognizerCopy || pinchGesture != recognizerCopy))
   {
-    if (self->_pageSwipeGesture != v7)
+    if (self->_pageSwipeGesture != gestureRecognizerCopy)
     {
-      v24 = self->_pagePanGesture != v7;
+      v24 = self->_pagePanGesture != gestureRecognizerCopy;
       goto LABEL_18;
     }
 
@@ -3138,19 +3138,19 @@ LABEL_18:
   return v24 & 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(QLPreviewCollection *)self currentPreviewItemViewController];
-  v9 = [v8 gestureRecognizer:v6 shouldRequireFailureOfGestureRecognizer:v7];
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  currentPreviewItemViewController = [(QLPreviewCollection *)self currentPreviewItemViewController];
+  v9 = [currentPreviewItemViewController gestureRecognizer:recognizerCopy shouldRequireFailureOfGestureRecognizer:gestureRecognizerCopy];
 
   if (v9)
   {
     isKindOfClass = 1;
   }
 
-  else if (self->_tapGesture == v6)
+  else if (self->_tapGesture == recognizerCopy)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -3176,18 +3176,18 @@ void __85__QLPreviewCollection_previewItemViewController_wantsToSetRemoteEdgePan
   }
 }
 
-- (void)previewItemViewController:(id)a3 wantsToOpenURL:(id)a4
+- (void)previewItemViewController:(id)controller wantsToOpenURL:(id)l
 {
-  v5 = a4;
-  v6 = [(QLPreviewCollection *)self stateManager];
-  [v6 openURLIfAllowed:v5];
+  lCopy = l;
+  stateManager = [(QLPreviewCollection *)self stateManager];
+  [stateManager openURLIfAllowed:lCopy];
 }
 
-- (void)previewItemViewController:(id)a3 didFailWithError:(id)a4
+- (void)previewItemViewController:(id)controller didFailWithError:(id)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  errorCopy = error;
   v8 = MEMORY[0x277D43EF8];
   v9 = *MEMORY[0x277D43EF8];
   if (!*MEMORY[0x277D43EF8])
@@ -3199,19 +3199,19 @@ void __85__QLPreviewCollection_previewItemViewController_wantsToSetRemoteEdgePan
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
     v10 = v9;
-    v11 = [v6 contents];
+    contents = [controllerCopy contents];
     v16 = 138412546;
-    v17 = v11;
+    v17 = contents;
     v18 = 2112;
-    v19 = v7;
+    v19 = errorCopy;
     _os_log_impl(&dword_23A714000, v10, OS_LOG_TYPE_ERROR, "QLItemViewController (contents: %@) did fail with error: %@. #PreviewCollection", &v16, 0x16u);
   }
 
-  v12 = [v6 presentingDelegate];
-  v13 = [v12 itemPresenterViewController];
-  v14 = [(QLPreviewCollection *)self currentPreviewItemViewController];
+  presentingDelegate = [controllerCopy presentingDelegate];
+  itemPresenterViewController = [presentingDelegate itemPresenterViewController];
+  currentPreviewItemViewController = [(QLPreviewCollection *)self currentPreviewItemViewController];
 
-  if (v13 == v14)
+  if (itemPresenterViewController == currentPreviewItemViewController)
   {
     [(QLPreviewCollection *)self updateCurrentPreviewConfiguration];
   }
@@ -3219,46 +3219,46 @@ void __85__QLPreviewCollection_previewItemViewController_wantsToSetRemoteEdgePan
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)previewItemViewControllerWantsToShowShareSheet:(id)a3
+- (void)previewItemViewControllerWantsToShowShareSheet:(id)sheet
 {
-  v3 = [(QLPreviewCollection *)self stateManager];
-  [v3 showShareSheet];
+  stateManager = [(QLPreviewCollection *)self stateManager];
+  [stateManager showShareSheet];
 }
 
-- (void)previewItemViewController:(id)a3 wantsToShowShareSheetWithPopoverTracker:(id)a4 customSharedURL:(id)a5 dismissCompletion:(id)a6
+- (void)previewItemViewController:(id)controller wantsToShowShareSheetWithPopoverTracker:(id)tracker customSharedURL:(id)l dismissCompletion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = [(QLPreviewCollection *)self stateManager];
-  [v12 showShareSheetWithPopoverTracker:v11 customSharedURL:v10 dismissCompletion:v9];
+  completionCopy = completion;
+  lCopy = l;
+  trackerCopy = tracker;
+  stateManager = [(QLPreviewCollection *)self stateManager];
+  [stateManager showShareSheetWithPopoverTracker:trackerCopy customSharedURL:lCopy dismissCompletion:completionCopy];
 }
 
-- (void)previewItemViewControllerWantsUpdateKeyCommands:(id)a3
+- (void)previewItemViewControllerWantsUpdateKeyCommands:(id)commands
 {
-  v3 = [(QLPreviewCollection *)self stateManager];
-  [v3 updateKeyCommands];
+  stateManager = [(QLPreviewCollection *)self stateManager];
+  [stateManager updateKeyCommands];
 }
 
-- (void)previewItemViewControllerWantsToShowNoInternetConnectivityAlert:(id)a3
+- (void)previewItemViewControllerWantsToShowNoInternetConnectivityAlert:(id)alert
 {
-  v3 = [(QLPreviewCollection *)self stateManager];
-  [v3 presentAlertControllerForScenario:0];
+  stateManager = [(QLPreviewCollection *)self stateManager];
+  [stateManager presentAlertControllerForScenario:0];
 }
 
-- (void)previewItemViewController:(id)a3 requestsTemporaryEditDirectoryWithCompletionHandler:(id)a4
+- (void)previewItemViewController:(id)controller requestsTemporaryEditDirectoryWithCompletionHandler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([(QLPreviewCollection *)self _itemViewControllerIsCurrentlyPresentedItemViewController:v6])
+  controllerCopy = controller;
+  handlerCopy = handler;
+  if ([(QLPreviewCollection *)self _itemViewControllerIsCurrentlyPresentedItemViewController:controllerCopy])
   {
-    v8 = [v6 context];
-    v9 = [v8 item];
+    context = [controllerCopy context];
+    item = [context item];
 
-    v10 = [(QLPreviewItemStore *)self->_itemStore indexOfPreviewItem:v9];
-    v11 = [(QLPreviewCollection *)self stateManager];
-    [v11 createTemporaryEditDirectoryForItemAtIndex:v10 completionHandler:v7];
+    v10 = [(QLPreviewItemStore *)self->_itemStore indexOfPreviewItem:item];
+    stateManager = [(QLPreviewCollection *)self stateManager];
+    [stateManager createTemporaryEditDirectoryForItemAtIndex:v10 completionHandler:handlerCopy];
   }
 
   else
@@ -3274,54 +3274,54 @@ void __85__QLPreviewCollection_previewItemViewController_wantsToSetRemoteEdgePan
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       v14 = v13;
-      v15 = [(QLPreviewCollection *)self currentPreviewItemViewController];
+      currentPreviewItemViewController = [(QLPreviewCollection *)self currentPreviewItemViewController];
       v18 = 138412546;
-      v19 = v6;
+      v19 = controllerCopy;
       v20 = 2112;
-      v21 = v15;
+      v21 = currentPreviewItemViewController;
       _os_log_impl(&dword_23A714000, v14, OS_LOG_TYPE_ERROR, "Could not create temporary directory because preview controller (%@) is not the current preview controller (%@) #PreviewCollection", &v18, 0x16u);
     }
 
     v16 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D43EF0] code:1 userInfo:0];
-    (*(v7 + 2))(v7, 0, v16);
+    (*(handlerCopy + 2))(handlerCopy, 0, v16);
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)previewItemViewControllerDidUpdateContentFrame:(id)a3
+- (void)previewItemViewControllerDidUpdateContentFrame:(id)frame
 {
-  v7 = a3;
-  v4 = [(QLPreviewCollection *)self stateManager];
+  frameCopy = frame;
+  stateManager = [(QLPreviewCollection *)self stateManager];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(QLPreviewCollection *)self stateManager];
-    [v7 contentFrame];
-    [v6 updateContentFrame:?];
+    stateManager2 = [(QLPreviewCollection *)self stateManager];
+    [frameCopy contentFrame];
+    [stateManager2 updateContentFrame:?];
   }
 }
 
-- (void)expandContentOfPreviewItemViewController:(id)a3 unarchivedItemsURL:(id)a4
+- (void)expandContentOfPreviewItemViewController:(id)controller unarchivedItemsURL:(id)l
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 context];
-  v9 = [v8 item];
+  lCopy = l;
+  controllerCopy = controller;
+  context = [controllerCopy context];
+  item = [context item];
 
-  v10 = [v7 presentingDelegate];
+  presentingDelegate = [controllerCopy presentingDelegate];
 
-  v11 = [v10 itemPresenterViewController];
-  v12 = [(QLPreviewCollection *)self currentPreviewItemViewController];
+  itemPresenterViewController = [presentingDelegate itemPresenterViewController];
+  currentPreviewItemViewController = [(QLPreviewCollection *)self currentPreviewItemViewController];
 
-  if (v11 == v12)
+  if (itemPresenterViewController == currentPreviewItemViewController)
   {
-    v13 = [(QLPreviewItemStore *)self->_itemStore indexOfPreviewItem:v9];
-    v14 = [v6 startAccessingSecurityScopedResource];
+    v13 = [(QLPreviewItemStore *)self->_itemStore indexOfPreviewItem:item];
+    startAccessingSecurityScopedResource = [lCopy startAccessingSecurityScopedResource];
     v22 = 0;
-    v15 = [MEMORY[0x277CC6438] wrapperWithURL:v6 readonly:1 error:&v22];
+    v15 = [MEMORY[0x277CC6438] wrapperWithURL:lCopy readonly:1 error:&v22];
     v16 = v22;
     if (v16)
     {
@@ -3342,7 +3342,7 @@ void __85__QLPreviewCollection_previewItemViewController_wantsToSetRemoteEdgePan
         _os_log_impl(&dword_23A714000, v18, OS_LOG_TYPE_ERROR, "Could not expand content of item at index: %lu. Error: %@ #PreviewCollection", buf, 0x16u);
       }
 
-      if (!v14)
+      if (!startAccessingSecurityScopedResource)
       {
         goto LABEL_9;
       }
@@ -3350,48 +3350,48 @@ void __85__QLPreviewCollection_previewItemViewController_wantsToSetRemoteEdgePan
 
     else
     {
-      v20 = [(QLPreviewCollection *)self stateManager];
-      v21 = [v9 uuid];
-      [v20 expandContentOfItemAtIndex:v13 withUUID:v21 unarchivedItemsURLWrapper:v15];
+      stateManager = [(QLPreviewCollection *)self stateManager];
+      uuid = [item uuid];
+      [stateManager expandContentOfItemAtIndex:v13 withUUID:uuid unarchivedItemsURLWrapper:v15];
 
-      if (!v14)
+      if (!startAccessingSecurityScopedResource)
       {
         goto LABEL_9;
       }
     }
 
-    [v6 stopAccessingSecurityScopedResource];
+    [lCopy stopAccessingSecurityScopedResource];
 LABEL_9:
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)previewItemViewControllerDidEditCopyOfPreviewItem:(id)a3 editedCopy:(id)a4 completionHandler:(id)a5
+- (void)previewItemViewControllerDidEditCopyOfPreviewItem:(id)item editedCopy:(id)copy completionHandler:(id)handler
 {
-  v8 = a5;
-  if (!v8)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v8 = &__block_literal_global_21;
+    handlerCopy = &__block_literal_global_21;
   }
 
-  v15 = v8;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(QLPreviewCollection *)self stateManager];
+  v15 = handlerCopy;
+  copyCopy = copy;
+  itemCopy = item;
+  stateManager = [(QLPreviewCollection *)self stateManager];
   itemStore = self->_itemStore;
-  v13 = [v10 context];
+  context = [itemCopy context];
 
-  v14 = [v13 item];
-  [v11 updatePreviewItemAtIndex:-[QLPreviewItemStore indexOfPreviewItem:](itemStore editedCopy:"indexOfPreviewItem:" completionHandler:{v14), v9, v15}];
+  item = [context item];
+  [stateManager updatePreviewItemAtIndex:-[QLPreviewItemStore indexOfPreviewItem:](itemStore editedCopy:"indexOfPreviewItem:" completionHandler:{item), copyCopy, v15}];
 }
 
-- (void)previewItemViewControllerDidAcquireLock:(id)a3
+- (void)previewItemViewControllerDidAcquireLock:(id)lock
 {
   itemStore = self->_itemStore;
-  v5 = [a3 context];
-  v6 = [v5 item];
-  v7 = [(QLPreviewItemStore *)itemStore indexOfPreviewItem:v6];
+  context = [lock context];
+  item = [context item];
+  v7 = [(QLPreviewItemStore *)itemStore indexOfPreviewItem:item];
   currentItemIndex = self->_currentItemIndex;
 
   if (v7 == currentItemIndex)
@@ -3402,67 +3402,67 @@ LABEL_9:
   }
 }
 
-- (void)previewItemViewControllerDidHandOverLock:(id)a3
+- (void)previewItemViewControllerDidHandOverLock:(id)lock
 {
   [(QLPreviewCollection *)self setCurrentItemViewControllerIsPerformingFocusedAction:0];
 
   [(QLPreviewCollection *)self _updateEnableChangingPageUsingGestures];
 }
 
-- (void)previewItemViewController:(id)a3 wantsToUpdateStateRestorationWithUserInfo:(id)a4
+- (void)previewItemViewController:(id)controller wantsToUpdateStateRestorationWithUserInfo:(id)info
 {
-  v5 = a4;
-  v6 = [(QLPreviewCollection *)self stateManager];
-  [v6 updateStateRestorationWithUserInfo:v5];
+  infoCopy = info;
+  stateManager = [(QLPreviewCollection *)self stateManager];
+  [stateManager updateStateRestorationWithUserInfo:infoCopy];
 }
 
-- (void)previewItemViewController:(id)a3 wantsToUpdatePreviewItemDisplayState:(id)a4
+- (void)previewItemViewController:(id)controller wantsToUpdatePreviewItemDisplayState:(id)state
 {
-  v6 = a4;
-  v7 = [a3 context];
-  v10 = [v7 item];
+  stateCopy = state;
+  context = [controller context];
+  item = [context item];
 
-  v8 = [(QLPreviewItemStore *)self->_itemStore indexOfPreviewItem:v10];
-  v9 = [(QLPreviewCollection *)self stateManager];
-  [v9 setPreviewItemDisplayState:v6 onItemAtIndex:v8];
+  v8 = [(QLPreviewItemStore *)self->_itemStore indexOfPreviewItem:item];
+  stateManager = [(QLPreviewCollection *)self stateManager];
+  [stateManager setPreviewItemDisplayState:stateCopy onItemAtIndex:v8];
 }
 
-- (void)previewItemDisplayState:(id)a3 wasAppliedToItemAtIndex:(unint64_t)a4
+- (void)previewItemDisplayState:(id)state wasAppliedToItemAtIndex:(unint64_t)index
 {
-  v5 = a3;
-  v6 = [(QLPreviewCollection *)self pageViewController];
-  v7 = [v6 currentPage];
+  stateCopy = state;
+  pageViewController = [(QLPreviewCollection *)self pageViewController];
+  currentPage = [pageViewController currentPage];
 
-  [v7 updatePreviewItemDisplayState:v5];
+  [currentPage updatePreviewItemDisplayState:stateCopy];
 }
 
-- (void)previewItemViewControllerWantsToDismissQuickLook:(id)a3
+- (void)previewItemViewControllerWantsToDismissQuickLook:(id)look
 {
-  v3 = [(QLPreviewCollection *)self stateManager];
-  [v3 triggerQuickLookDismissal];
+  stateManager = [(QLPreviewCollection *)self stateManager];
+  [stateManager triggerQuickLookDismissal];
 }
 
-- (void)previewItemViewControllerDidChangeCurrentPreviewController:(id)a3
+- (void)previewItemViewControllerDidChangeCurrentPreviewController:(id)controller
 {
-  if ([(QLPreviewCollection *)self _itemViewControllerIsCurrentlyPresentedItemViewController:a3])
+  if ([(QLPreviewCollection *)self _itemViewControllerIsCurrentlyPresentedItemViewController:controller])
   {
 
     [(QLPreviewCollection *)self updateCurrentPreviewConfiguration];
   }
 }
 
-- (void)previewItemViewController:(id)a3 wantsToForwardMessageToHost:(id)a4 completionHandler:(id)a5
+- (void)previewItemViewController:(id)controller wantsToForwardMessageToHost:(id)host completionHandler:(id)handler
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(QLPreviewCollection *)self _itemViewControllerIsCurrentlyPresentedItemViewController:v8])
+  controllerCopy = controller;
+  hostCopy = host;
+  handlerCopy = handler;
+  if ([(QLPreviewCollection *)self _itemViewControllerIsCurrentlyPresentedItemViewController:controllerCopy])
   {
-    v11 = [v8 context];
-    v12 = [v11 item];
+    context = [controllerCopy context];
+    item = [context item];
 
-    v13 = [(QLPreviewItemStore *)self->_itemStore indexOfPreviewItem:v12];
+    v13 = [(QLPreviewItemStore *)self->_itemStore indexOfPreviewItem:item];
     v14 = MEMORY[0x277D43EF8];
     v15 = *MEMORY[0x277D43EF8];
     if (!*MEMORY[0x277D43EF8])
@@ -3474,21 +3474,21 @@ LABEL_9:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       v16 = v15;
-      v17 = [v12 uuid];
+      uuid = [item uuid];
       v25 = 138412802;
-      v26 = v9;
+      v26 = hostCopy;
       v27 = 2048;
       v28 = v13;
       v29 = 2112;
-      v30 = v17;
+      v30 = uuid;
       _os_log_impl(&dword_23A714000, v16, OS_LOG_TYPE_INFO, "Forwarding message %@ to item at index: %lu UUID: %@ #PreviewCollection", &v25, 0x20u);
     }
 
-    v18 = [(QLPreviewCollection *)self stateManager];
-    v19 = [v12 uuid];
-    [v18 forwardMessage:v9 toItemAtIndex:v13 withUUID:v19 completionHandler:v10];
+    stateManager = [(QLPreviewCollection *)self stateManager];
+    uuid2 = [item uuid];
+    [stateManager forwardMessage:hostCopy toItemAtIndex:v13 withUUID:uuid2 completionHandler:handlerCopy];
 
-    v10 = v18;
+    handlerCopy = stateManager;
   }
 
   else
@@ -3504,55 +3504,55 @@ LABEL_9:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       v22 = v21;
-      v23 = [(QLPreviewCollection *)self currentPreviewItemViewController];
+      currentPreviewItemViewController = [(QLPreviewCollection *)self currentPreviewItemViewController];
       v25 = 138412546;
-      v26 = v8;
+      v26 = controllerCopy;
       v27 = 2112;
-      v28 = v23;
+      v28 = currentPreviewItemViewController;
       _os_log_impl(&dword_23A714000, v22, OS_LOG_TYPE_ERROR, "Could not forward message to host because preview controller (%@) is not the current preview controller (%@) #PreviewCollection", &v25, 0x16u);
     }
 
-    v12 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D43FD0] code:0 userInfo:0];
-    (*(v10 + 2))(v10, 0, v12);
+    item = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D43FD0] code:0 userInfo:0];
+    (*(handlerCopy + 2))(handlerCopy, 0, item);
   }
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)itemPresenterViewControllerShouldForceAutodownloadFile:(id)a3
+- (BOOL)itemPresenterViewControllerShouldForceAutodownloadFile:(id)file
 {
-  v4 = a3;
-  v5 = [(QLPreviewCollection *)self currentPreviewItemViewController];
+  fileCopy = file;
+  currentPreviewItemViewController = [(QLPreviewCollection *)self currentPreviewItemViewController];
 
-  return v5 == v4 && self->_appearanceActions != 0;
+  return currentPreviewItemViewController == fileCopy && self->_appearanceActions != 0;
 }
 
-- (void)setCurrentItemViewControllerIsPerformingFocusedAction:(BOOL)a3
+- (void)setCurrentItemViewControllerIsPerformingFocusedAction:(BOOL)action
 {
-  self->_currentItemViewControllerIsPerformingFocusedAction = a3;
+  self->_currentItemViewControllerIsPerformingFocusedAction = action;
   [(QLPreviewCollection *)self _updateCanChangeCurrentPage];
 
   [(QLPreviewCollection *)self _updateCanDismissWithGesture];
 }
 
-- (void)setIsEditing:(BOOL)a3
+- (void)setIsEditing:(BOOL)editing
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_isEditing = a3;
+  obj->_isEditing = editing;
   [(QLPreviewCollection *)obj _updateCanChangeCurrentPage];
   [(QLPreviewCollection *)obj _updateCanDismissWithGesture];
   objc_sync_exit(obj);
 }
 
-- (void)setIsTransitioningPage:(BOOL)a3
+- (void)setIsTransitioningPage:(BOOL)page
 {
-  v3 = a3;
+  pageCopy = page;
   obj = self;
   objc_sync_enter(obj);
-  if (obj->_isTransitioningPage != v3)
+  if (obj->_isTransitioningPage != pageCopy)
   {
-    obj->_isTransitioningPage = v3;
+    obj->_isTransitioningPage = pageCopy;
     [(QLPreviewCollection *)obj _updateCanChangeCurrentPage];
   }
 
@@ -3561,27 +3561,27 @@ LABEL_9:
 
 - (void)_updateCanChangeCurrentPage
 {
-  v3 = [(QLPreviewCollection *)self stateManager];
+  stateManager = [(QLPreviewCollection *)self stateManager];
   v4 = !self->_isEditing && !self->_isTransitioningPage;
-  v5 = v3;
-  [v3 setCanChangeCurrentPage:v4];
+  v5 = stateManager;
+  [stateManager setCanChangeCurrentPage:v4];
 }
 
 - (void)_updateCanDismissWithGesture
 {
-  v3 = [(QLPreviewCollection *)self currentPreviewItemViewController];
-  v4 = [v3 canSwipeToDismiss];
+  currentPreviewItemViewController = [(QLPreviewCollection *)self currentPreviewItemViewController];
+  canSwipeToDismiss = [currentPreviewItemViewController canSwipeToDismiss];
 
-  v5 = [(QLPreviewCollection *)self currentPreviewItemViewController];
-  v6 = [v5 canPinchToDismiss];
+  currentPreviewItemViewController2 = [(QLPreviewCollection *)self currentPreviewItemViewController];
+  canPinchToDismiss = [currentPreviewItemViewController2 canPinchToDismiss];
 
-  v7 = [(QLPreviewCollection *)self stateManager];
+  stateManager = [(QLPreviewCollection *)self stateManager];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(QLPreviewCollection *)self stateManager];
-    [v9 setCanDismissWithGesture:(v4 | v6) & ~self->_isEditing & 1];
+    stateManager2 = [(QLPreviewCollection *)self stateManager];
+    [stateManager2 setCanDismissWithGesture:(canSwipeToDismiss | canPinchToDismiss) & ~self->_isEditing & 1];
   }
 }
 
@@ -3590,18 +3590,18 @@ LABEL_9:
   v3 = !self->_isEditing && !self->_currentItemViewControllerIsPerformingFocusedAction;
   [(UISwipeGestureRecognizer *)self->_pageSwipeGesture setEnabled:v3];
   [(UIPanGestureRecognizer *)self->_pagePanGesture setEnabled:v3];
-  v5 = [(QLPreviewCollection *)self pageViewController];
-  v4 = [v5 scrollView];
-  [v4 setScrollEnabled:v3];
+  pageViewController = [(QLPreviewCollection *)self pageViewController];
+  scrollView = [pageViewController scrollView];
+  [scrollView setScrollEnabled:v3];
 }
 
-- (id)_sandboxExtensionForEditedFileAtURL:(id)a3
+- (id)_sandboxExtensionForEditedFileAtURL:(id)l
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 path];
-  v5 = [v4 stringByDeletingLastPathComponent];
-  [v5 fileSystemRepresentation];
+  lCopy = l;
+  path = [lCopy path];
+  stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
+  [stringByDeletingLastPathComponent fileSystemRepresentation];
 
   v6 = *MEMORY[0x277D861C0];
   v7 = sandbox_extension_issue_file();
@@ -3623,7 +3623,7 @@ LABEL_9:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v13 = 138412290;
-      v14 = v3;
+      v14 = lCopy;
       _os_log_impl(&dword_23A714000, v10, OS_LOG_TYPE_ERROR, "QLPreviewCollection could not provide a sandbox extension for file at URL: %@ #PreviewCollection", &v13, 0xCu);
     }
 
@@ -3635,12 +3635,12 @@ LABEL_9:
   return v8;
 }
 
-- (BOOL)_itemViewControllerIsCurrentlyPresentedItemViewController:(id)a3
+- (BOOL)_itemViewControllerIsCurrentlyPresentedItemViewController:(id)controller
 {
-  v4 = [a3 presentingDelegate];
-  v5 = [v4 itemPresenterViewController];
-  v6 = [(QLPreviewCollection *)self currentPreviewItemViewController];
-  LOBYTE(self) = v5 == v6;
+  presentingDelegate = [controller presentingDelegate];
+  itemPresenterViewController = [presentingDelegate itemPresenterViewController];
+  currentPreviewItemViewController = [(QLPreviewCollection *)self currentPreviewItemViewController];
+  LOBYTE(self) = itemPresenterViewController == currentPreviewItemViewController;
 
   return self;
 }

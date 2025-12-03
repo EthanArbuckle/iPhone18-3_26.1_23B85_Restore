@@ -1,14 +1,14 @@
 @interface AVCaptureSynchronizedMetadataObjectData
-- (id)_initWithMetadataObjectCollection:(id)a3;
-- (void)addSynchronizedData:(id)a3;
+- (id)_initWithMetadataObjectCollection:(id)collection;
+- (void)addSynchronizedData:(id)data;
 - (void)dealloc;
 @end
 
 @implementation AVCaptureSynchronizedMetadataObjectData
 
-- (id)_initWithMetadataObjectCollection:(id)a3
+- (id)_initWithMetadataObjectCollection:(id)collection
 {
-  if (![a3 metadataObjects])
+  if (![collection metadataObjects])
   {
     v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
 
@@ -21,9 +21,9 @@
     return 0;
   }
 
-  if (a3)
+  if (collection)
   {
-    [a3 time];
+    [collection time];
   }
 
   else
@@ -40,8 +40,8 @@
     v6[2] = v7;
     if (v7)
     {
-      *(v6[2] + 16) = [a3 handledMetadataObjectTypes];
-      *(v6[2] + 8) = [a3 metadataObjects];
+      *(v6[2] + 16) = [collection handledMetadataObjectTypes];
+      *(v6[2] + 8) = [collection metadataObjects];
       return v6;
     }
 
@@ -63,7 +63,7 @@
   [(AVCaptureSynchronizedData *)&v4 dealloc];
 }
 
-- (void)addSynchronizedData:(id)a3
+- (void)addSynchronizedData:(id)data
 {
   memset(&v22[1], 0, sizeof(CMTime));
   if (self)
@@ -72,9 +72,9 @@
   }
 
   memset(v22, 0, 24);
-  if (a3)
+  if (data)
   {
-    [a3 timestamp];
+    [data timestamp];
   }
 
   if (v22[1].flags & 1) != 0 && (v22[0].flags)
@@ -88,7 +88,7 @@
     }
   }
 
-  v5 = -[NSSet setByAddingObjectsFromSet:](self->_internal->handledMetadataObjectTypes, "setByAddingObjectsFromSet:", [a3 handledMetadataObjectTypes]);
+  v5 = -[NSSet setByAddingObjectsFromSet:](self->_internal->handledMetadataObjectTypes, "setByAddingObjectsFromSet:", [data handledMetadataObjectTypes]);
 
   self->_internal->handledMetadataObjectTypes = v5;
   v6 = [MEMORY[0x1E695DF70] arrayWithArray:self->_internal->metadataObjects];
@@ -96,8 +96,8 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = [a3 metadataObjects];
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v15 count:16];
+  metadataObjects = [data metadataObjects];
+  v8 = [metadataObjects countByEnumeratingWithState:&v16 objects:v15 count:16];
   if (v8)
   {
     v9 = v8;
@@ -108,7 +108,7 @@
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(metadataObjects);
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
@@ -129,7 +129,7 @@
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v15 count:16];
+      v9 = [metadataObjects countByEnumeratingWithState:&v16 objects:v15 count:16];
     }
 
     while (v9);

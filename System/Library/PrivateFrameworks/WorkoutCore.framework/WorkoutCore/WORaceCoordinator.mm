@@ -1,14 +1,14 @@
 @interface WORaceCoordinator
 - (NSString)routeTitle;
 - (WORaceCoordinator)init;
-- (WORaceCoordinator)initWithConfiguration:(id)a3 builder:(id)a4 healthStore:(id)a5;
+- (WORaceCoordinator)initWithConfiguration:(id)configuration builder:(id)builder healthStore:(id)store;
 - (WORaceRouteDelegate)routeDelegate;
 - (void)activate;
-- (void)queryForPointsWithTimestampAnchor:(double)a3 numberOfPoints:(int64_t)a4 completion:(id)a5;
+- (void)queryForPointsWithTimestampAnchor:(double)anchor numberOfPoints:(int64_t)points completion:(id)completion;
 - (void)recoverRoutePoints;
-- (void)setRouteDelegate:(id)a3;
-- (void)setRouteTitle:(id)a3;
-- (void)updateWithElapsedTime:(double)a3;
+- (void)setRouteDelegate:(id)delegate;
+- (void)setRouteTitle:(id)title;
+- (void)updateWithElapsedTime:(double)time;
 @end
 
 @implementation WORaceCoordinator
@@ -25,7 +25,7 @@
   return v5;
 }
 
-- (void)setRouteTitle:(id)a3
+- (void)setRouteTitle:(id)title
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
@@ -46,44 +46,44 @@
   return v5;
 }
 
-- (void)setRouteDelegate:(id)a3
+- (void)setRouteDelegate:(id)delegate
 {
   v5 = OBJC_IVAR___WORaceCoordinator_routeDelegate;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
+  *(self + v5) = delegate;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
 
-- (WORaceCoordinator)initWithConfiguration:(id)a3 builder:(id)a4 healthStore:(id)a5
+- (WORaceCoordinator)initWithConfiguration:(id)configuration builder:(id)builder healthStore:(id)store
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = specialized RaceCoordinator.init(configuration:builder:healthStore:)(v7, v8, v9);
+  configurationCopy = configuration;
+  builderCopy = builder;
+  storeCopy = store;
+  v10 = specialized RaceCoordinator.init(configuration:builder:healthStore:)(configurationCopy, builderCopy, storeCopy);
 
   return v10;
 }
 
 - (void)activate
 {
-  v2 = self;
+  selfCopy = self;
   RaceCoordinator.activate()();
 }
 
-- (void)updateWithElapsedTime:(double)a3
+- (void)updateWithElapsedTime:(double)time
 {
   v4 = *(self + OBJC_IVAR___WORaceCoordinator_raceLocationProvider);
-  v6 = self;
-  RaceLocationProvider.updateWithElapsedTime(_:)(a3);
-  v5 = *(*(v6 + OBJC_IVAR___WORaceCoordinator_racePositionProvider) + OBJC_IVAR___WORacePositionProvider_metadataDelegate);
-  MetadataSavingDelegate.updateWithElapsedTime(_:)(a3);
+  selfCopy = self;
+  RaceLocationProvider.updateWithElapsedTime(_:)(time);
+  v5 = *(*(selfCopy + OBJC_IVAR___WORaceCoordinator_racePositionProvider) + OBJC_IVAR___WORacePositionProvider_metadataDelegate);
+  MetadataSavingDelegate.updateWithElapsedTime(_:)(time);
 }
 
-- (void)queryForPointsWithTimestampAnchor:(double)a3 numberOfPoints:(int64_t)a4 completion:(id)a5
+- (void)queryForPointsWithTimestampAnchor:(double)anchor numberOfPoints:(int64_t)points completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   if (v8)
   {
     v9 = swift_allocObject();
@@ -96,8 +96,8 @@
     v9 = 0;
   }
 
-  v10 = self;
-  RaceCoordinator.queryForPoints(timestampAnchor:numberOfPoints:completion:)(a4, v8, v9, a3);
+  selfCopy = self;
+  RaceCoordinator.queryForPoints(timestampAnchor:numberOfPoints:completion:)(points, v8, v9, anchor);
   outlined consume of (@escaping @callee_guaranteed (@guaranteed [CLRoutePoint]) -> ())?(v8);
 }
 
@@ -111,7 +111,7 @@
   v7 = swift_allocObject();
   swift_unknownObjectWeakInit();
   v8 = *(v5 + 16);
-  v9 = self;
+  selfCopy = self;
 
   v8(self + v6, 0, closure #1 in RaceCoordinator.recoverRoutePoints()partial apply, v7, v4, v5, -1.0);
 }

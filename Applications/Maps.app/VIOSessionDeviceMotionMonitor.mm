@@ -1,16 +1,16 @@
 @interface VIOSessionDeviceMotionMonitor
 + (BOOL)isAvailable;
-- (VIOSessionDeviceMotionMonitor)initWithStateManager:(id)a3 platformController:(id)a4;
+- (VIOSessionDeviceMotionMonitor)initWithStateManager:(id)manager platformController:(id)controller;
 - (void)dealloc;
-- (void)session:(id)a3 didChangeState:(unint64_t)a4;
+- (void)session:(id)session didChangeState:(unint64_t)state;
 - (void)startMonitoringDeviceMotion;
 @end
 
 @implementation VIOSessionDeviceMotionMonitor
 
-- (void)session:(id)a3 didChangeState:(unint64_t)a4
+- (void)session:(id)session didChangeState:(unint64_t)state
 {
-  if (a4 == 1)
+  if (state == 1)
   {
 
     [(VIOSessionDeviceMotionMonitor *)self startMonitoringDeviceMotion];
@@ -18,8 +18,8 @@
 
   else
   {
-    v5 = [(VIOSessionDeviceMotionMonitor *)self motionActivityManager];
-    [v5 stopActivityUpdates];
+    motionActivityManager = [(VIOSessionDeviceMotionMonitor *)self motionActivityManager];
+    [motionActivityManager stopActivityUpdates];
   }
 }
 
@@ -58,14 +58,14 @@
   if ([objc_opt_class() isAvailable])
   {
     objc_initWeak(location, self);
-    v3 = [(VIOSessionDeviceMotionMonitor *)self motionActivityManager];
+    motionActivityManager = [(VIOSessionDeviceMotionMonitor *)self motionActivityManager];
     v4 = +[NSOperationQueue mainQueue];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100F9A550;
     v9[3] = &unk_10165F8B0;
     objc_copyWeak(&v10, location);
-    [v3 startActivityUpdatesToQueue:v4 withHandler:v9];
+    [motionActivityManager startActivityUpdatesToQueue:v4 withHandler:v9];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(location);
@@ -80,26 +80,26 @@
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
     *buf = 134349314;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
     v11 = v5;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Disabling %@", buf, 0x16u);
   }
 
   [(CMMotionActivityManager *)self->_motionActivityManager stopActivityUpdates];
-  v6 = [(VIOSessionMonitor *)self session];
-  [v6 _removeObserver:self];
+  session = [(VIOSessionMonitor *)self session];
+  [session _removeObserver:self];
 
   v7.receiver = self;
   v7.super_class = VIOSessionDeviceMotionMonitor;
   [(VIOSessionDeviceMotionMonitor *)&v7 dealloc];
 }
 
-- (VIOSessionDeviceMotionMonitor)initWithStateManager:(id)a3 platformController:(id)a4
+- (VIOSessionDeviceMotionMonitor)initWithStateManager:(id)manager platformController:(id)controller
 {
   v14.receiver = self;
   v14.super_class = VIOSessionDeviceMotionMonitor;
-  v4 = [(VIOSessionMonitor *)&v14 initWithStateManager:a3 platformController:a4];
+  v4 = [(VIOSessionMonitor *)&v14 initWithStateManager:manager platformController:controller];
   if (v4)
   {
     v5 = sub_100F9A6B4();
@@ -118,13 +118,13 @@
     motionActivityManager = v4->_motionActivityManager;
     v4->_motionActivityManager = v8;
 
-    v10 = [(VIOSessionMonitor *)v4 session];
-    [v10 _addObserver:v4];
+    session = [(VIOSessionMonitor *)v4 session];
+    [session _addObserver:v4];
 
-    v11 = [(VIOSessionMonitor *)v4 session];
-    v12 = [v11 state];
+    session2 = [(VIOSessionMonitor *)v4 session];
+    state = [session2 state];
 
-    if (v12 == 1)
+    if (state == 1)
     {
       [(VIOSessionDeviceMotionMonitor *)v4 startMonitoringDeviceMotion];
     }

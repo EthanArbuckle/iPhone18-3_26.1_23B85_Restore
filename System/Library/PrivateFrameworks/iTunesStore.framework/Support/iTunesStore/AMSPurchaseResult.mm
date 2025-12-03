@@ -1,28 +1,28 @@
 @interface AMSPurchaseResult
-- (id)newSSPurchaseResponseWithSSPurchase:(id)a3;
+- (id)newSSPurchaseResponseWithSSPurchase:(id)purchase;
 @end
 
 @implementation AMSPurchaseResult
 
-- (id)newSSPurchaseResponseWithSSPurchase:(id)a3
+- (id)newSSPurchaseResponseWithSSPurchase:(id)purchase
 {
-  v4 = a3;
+  purchaseCopy = purchase;
   v5 = objc_alloc_init(SSPurchaseResponse);
-  [v5 setPurchase:v4];
+  [v5 setPurchase:purchaseCopy];
 
-  v6 = [(AMSPurchaseResult *)self error];
-  [v5 setError:v6];
+  error = [(AMSPurchaseResult *)self error];
+  [v5 setError:error];
 
-  v7 = [(AMSPurchaseResult *)self responseDictionary];
-  v8 = [NSPropertyListSerialization dataWithPropertyList:v7 format:100 options:0 error:0];
+  responseDictionary = [(AMSPurchaseResult *)self responseDictionary];
+  v8 = [NSPropertyListSerialization dataWithPropertyList:responseDictionary format:100 options:0 error:0];
 
   v9 = [SSURLConnectionResponse alloc];
-  v10 = [(AMSPurchaseResult *)self URLResponse];
+  uRLResponse = [(AMSPurchaseResult *)self URLResponse];
   objc_opt_class();
   v11 = 0;
   if (objc_opt_isKindOfClass())
   {
-    v11 = v10;
+    v11 = uRLResponse;
   }
 
   v12 = [v9 initWithURLResponse:v11 bodyData:v8];

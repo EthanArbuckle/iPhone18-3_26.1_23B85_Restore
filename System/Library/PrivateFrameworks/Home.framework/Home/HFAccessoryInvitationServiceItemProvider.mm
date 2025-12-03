@@ -1,43 +1,43 @@
 @interface HFAccessoryInvitationServiceItemProvider
-- (HFAccessoryInvitationServiceItemProvider)initWithHome:(id)a3 serviceTypes:(id)a4;
-- (HFAccessoryInvitationServiceItemProvider)initWithHome:(id)a3 user:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HFAccessoryInvitationServiceItemProvider)initWithHome:(id)home serviceTypes:(id)types;
+- (HFAccessoryInvitationServiceItemProvider)initWithHome:(id)home user:(id)user;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)filter;
 - (id)invalidationReasons;
 @end
 
 @implementation HFAccessoryInvitationServiceItemProvider
 
-- (HFAccessoryInvitationServiceItemProvider)initWithHome:(id)a3 serviceTypes:(id)a4
+- (HFAccessoryInvitationServiceItemProvider)initWithHome:(id)home serviceTypes:(id)types
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithHome_user_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HFAccessoryInvitationServiceItemProvider.m" lineNumber:26 description:{@"%s is unavailable; use %@ instead", "-[HFAccessoryInvitationServiceItemProvider initWithHome:serviceTypes:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAccessoryInvitationServiceItemProvider.m" lineNumber:26 description:{@"%s is unavailable; use %@ instead", "-[HFAccessoryInvitationServiceItemProvider initWithHome:serviceTypes:]", v7}];
 
   return 0;
 }
 
-- (HFAccessoryInvitationServiceItemProvider)initWithHome:(id)a3 user:(id)a4
+- (HFAccessoryInvitationServiceItemProvider)initWithHome:(id)home user:(id)user
 {
-  v7 = a4;
+  userCopy = user;
   v11.receiver = self;
   v11.super_class = HFAccessoryInvitationServiceItemProvider;
-  v8 = [(HFServiceItemProvider *)&v11 initWithHome:a3 serviceTypes:0];
+  v8 = [(HFServiceItemProvider *)&v11 initWithHome:home serviceTypes:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_user, a4);
+    objc_storeStrong(&v8->_user, user);
   }
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFServiceItemProvider *)self home];
-  v6 = [(HFAccessoryInvitationServiceItemProvider *)self user];
-  v7 = [v4 initWithHome:v5 user:v6];
+  home = [(HFServiceItemProvider *)self home];
+  user = [(HFAccessoryInvitationServiceItemProvider *)self user];
+  v7 = [v4 initWithHome:home user:user];
 
   return v7;
 }
@@ -46,19 +46,19 @@
 {
   v18.receiver = self;
   v18.super_class = HFAccessoryInvitationServiceItemProvider;
-  v3 = [(HFServiceItemProvider *)&v18 filter];
-  v4 = [(HFAccessoryInvitationServiceItemProvider *)self user];
-  v5 = [v4 pendingAccessoryInvitations];
-  v6 = [v5 na_map:&__block_literal_global_196];
+  filter = [(HFServiceItemProvider *)&v18 filter];
+  user = [(HFAccessoryInvitationServiceItemProvider *)self user];
+  pendingAccessoryInvitations = [user pendingAccessoryInvitations];
+  v6 = [pendingAccessoryInvitations na_map:&__block_literal_global_196];
 
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __50__HFAccessoryInvitationServiceItemProvider_filter__block_invoke_2;
   v15 = &unk_277E00518;
   v16 = v6;
-  v17 = v3;
+  v17 = filter;
   v7 = v6;
-  v8 = v3;
+  v8 = filter;
   v9 = _Block_copy(&v12);
   v10 = [v9 copy];
 
@@ -118,8 +118,8 @@ uint64_t __50__HFAccessoryInvitationServiceItemProvider_filter__block_invoke_2(u
 {
   v5.receiver = self;
   v5.super_class = HFAccessoryInvitationServiceItemProvider;
-  v2 = [(HFServiceItemProvider *)&v5 invalidationReasons];
-  v3 = [v2 setByAddingObject:@"pendingAccessories"];
+  invalidationReasons = [(HFServiceItemProvider *)&v5 invalidationReasons];
+  v3 = [invalidationReasons setByAddingObject:@"pendingAccessories"];
 
   return v3;
 }

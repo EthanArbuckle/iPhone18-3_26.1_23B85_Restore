@@ -3,21 +3,21 @@
 - (CGSize)maxImageSize;
 - (CGSize)preferredSize;
 - (CGSize)size;
-- (CPUIGridButtonLayout)initWithSize:(CGSize)a3 style:(unint64_t)a4 imageSize:(CGSize)a5;
+- (CPUIGridButtonLayout)initWithSize:(CGSize)size style:(unint64_t)style imageSize:(CGSize)imageSize;
 - (UIEdgeInsets)insets;
 - (double)itemSpacing;
-- (id)fontForTraitCollection:(id)a3;
+- (id)fontForTraitCollection:(id)collection;
 - (unint64_t)maxRowCount;
 @end
 
 @implementation CPUIGridButtonLayout
 
-- (CPUIGridButtonLayout)initWithSize:(CGSize)a3 style:(unint64_t)a4 imageSize:(CGSize)a5
+- (CPUIGridButtonLayout)initWithSize:(CGSize)size style:(unint64_t)style imageSize:(CGSize)imageSize
 {
-  height = a5.height;
-  width = a5.width;
-  v8 = a3.height;
-  v9 = a3.width;
+  height = imageSize.height;
+  width = imageSize.width;
+  v8 = size.height;
+  v9 = size.width;
   v15.receiver = self;
   v15.super_class = CPUIGridButtonLayout;
   v10 = [(CPUIGridButtonLayout *)&v15 init];
@@ -26,7 +26,7 @@
   {
     v10->_size.width = v9;
     v10->_size.height = v8;
-    v10->_style = a4;
+    v10->_style = style;
     v10->_maxImageSize.width = width;
     v10->_maxImageSize.height = height;
     if (v9 <= 400.0)
@@ -71,15 +71,15 @@
 {
   if ([(CPUIGridButtonLayout *)self style]== 2)
   {
-    v3 = [(CPUIGridButtonLayout *)self isCompact];
+    isCompact = [(CPUIGridButtonLayout *)self isCompact];
     v4 = 50.0;
-    if (!v3)
+    if (!isCompact)
     {
       v4 = 60.0;
     }
 
     v5 = 64.0;
-    if (v3)
+    if (isCompact)
     {
       v5 = 52.0;
     }
@@ -96,27 +96,27 @@
   return result;
 }
 
-- (id)fontForTraitCollection:(id)a3
+- (id)fontForTraitCollection:(id)collection
 {
   v4 = MEMORY[0x277D74300];
-  v5 = a3;
-  v6 = [(CPUIGridButtonLayout *)self isCompact];
+  collectionCopy = collection;
+  isCompact = [(CPUIGridButtonLayout *)self isCompact];
   v7 = MEMORY[0x277D76940];
-  if (!v6)
+  if (!isCompact)
   {
     v7 = MEMORY[0x277D76938];
   }
 
-  v8 = [v4 preferredFontForTextStyle:*v7 compatibleWithTraitCollection:v5];
+  v8 = [v4 preferredFontForTextStyle:*v7 compatibleWithTraitCollection:collectionCopy];
 
   return v8;
 }
 
 - (double)itemSpacing
 {
-  v2 = [(CPUIGridButtonLayout *)self isCompact];
+  isCompact = [(CPUIGridButtonLayout *)self isCompact];
   result = 4.0;
-  if (v2)
+  if (isCompact)
   {
     return 0.0;
   }

@@ -1,48 +1,48 @@
 @interface PLGraphNode
-+ (BOOL)_cleanupDanglingReferencesToDeletedObjectIDs:(id)a3 referenceRelationshipKeys:(id)a4 targetEntityName:(id)a5 inManagedObjectContext:(id)a6;
++ (BOOL)_cleanupDanglingReferencesToDeletedObjectIDs:(id)ds referenceRelationshipKeys:(id)keys targetEntityName:(id)name inManagedObjectContext:(id)context;
 + (id)_actingObjectRelationshipNames;
-+ (id)_actingRelationshipNameForEntity:(id)a3;
-+ (id)_cachedEdgesOfNode:(id)a3 inDirection:(unint64_t)a4 cachedToken:(id *)a5 cachedEdges:(id *)a6;
-+ (id)_cachedFetchEdgesOfNode:(id)a3 inDirection:(unint64_t)a4 cachedToken:(id *)a5 cachedEdges:(id *)a6;
++ (id)_actingRelationshipNameForEntity:(id)entity;
++ (id)_cachedEdgesOfNode:(id)node inDirection:(unint64_t)direction cachedToken:(id *)token cachedEdges:(id *)edges;
++ (id)_cachedFetchEdgesOfNode:(id)node inDirection:(unint64_t)direction cachedToken:(id *)token cachedEdges:(id *)edges;
 + (id)_edgeRelationshipNames;
-+ (id)_entityNameFromDanglingObjectRelationshipName:(id)a3;
-+ (id)_fetchNodeForActingObject:(id)a3;
-+ (id)_relationshipNameForActingEntityName:(id)a3;
-+ (id)actingObjectIDsPendingCleanupInContext:(id)a3;
-+ (id)fetchEdgesOfNode:(id)a3 direction:(unint64_t)a4;
-+ (id)fetchNodeWithExternalIdentifier:(int64_t)a3 inManagedObjectContext:(id)a4;
-+ (id)fetchNodeWithUUID:(id)a3 inManagedObjectContext:(id)a4;
-+ (id)fetchNodesWithExternalIdentifiers:(id)a3 inManagedObjectContext:(id)a4;
-+ (id)fetchObjectIDsForNodesWithExternalIdentifiers:(id)a3 inManagedObjectContext:(id)a4;
-+ (id)insertActorNodeWithActingObject:(id)a3;
-+ (id)insertGraphNodeInContext:(id)a3 withPrimaryLabel:(id)a4;
-+ (id)nodeForActingObject:(id)a3 createIfMissing:(BOOL)a4;
-+ (id)nodesForActingObjectIDs:(id)a3 createIfMissing:(BOOL)a4 inContext:(id)a5;
-+ (id)predicateToExcludeActorNodesInContext:(id)a3;
-+ (void)_cleanupDanglingEdgeReferencesToDeletedNodesInManagedObjectContext:(id)a3;
-+ (void)cleanupDanglingNodeReferencesToDeletedActorsInContext:(id)a3;
-+ (void)registerDeletedNodeActorForDanglingNodeCleanup:(id)a3;
++ (id)_entityNameFromDanglingObjectRelationshipName:(id)name;
++ (id)_fetchNodeForActingObject:(id)object;
++ (id)_relationshipNameForActingEntityName:(id)name;
++ (id)actingObjectIDsPendingCleanupInContext:(id)context;
++ (id)fetchEdgesOfNode:(id)node direction:(unint64_t)direction;
++ (id)fetchNodeWithExternalIdentifier:(int64_t)identifier inManagedObjectContext:(id)context;
++ (id)fetchNodeWithUUID:(id)d inManagedObjectContext:(id)context;
++ (id)fetchNodesWithExternalIdentifiers:(id)identifiers inManagedObjectContext:(id)context;
++ (id)fetchObjectIDsForNodesWithExternalIdentifiers:(id)identifiers inManagedObjectContext:(id)context;
++ (id)insertActorNodeWithActingObject:(id)object;
++ (id)insertGraphNodeInContext:(id)context withPrimaryLabel:(id)label;
++ (id)nodeForActingObject:(id)object createIfMissing:(BOOL)missing;
++ (id)nodesForActingObjectIDs:(id)ds createIfMissing:(BOOL)missing inContext:(id)context;
++ (id)predicateToExcludeActorNodesInContext:(id)context;
++ (void)_cleanupDanglingEdgeReferencesToDeletedNodesInManagedObjectContext:(id)context;
++ (void)cleanupDanglingNodeReferencesToDeletedActorsInContext:(id)context;
++ (void)registerDeletedNodeActorForDanglingNodeCleanup:(id)cleanup;
 - (BOOL)hasChangesOrHasEdgeChanges;
 - (BOOL)isEligibleForSearchIndexing;
 - (BOOL)shouldUpdatePersistence;
-- (BOOL)validateForInsert:(id *)a3;
-- (BOOL)validateForUpdate:(id *)a3;
+- (BOOL)validateForInsert:(id *)insert;
+- (BOOL)validateForUpdate:(id *)update;
 - (Class)nodeContainerClass;
 - (PLGraphNodeActor)actingObject;
-- (id)_assignmentForLabel:(id)a3 createIfMissing:(BOOL)a4;
+- (id)_assignmentForLabel:(id)label createIfMissing:(BOOL)missing;
 - (id)edgesIn;
 - (id)edgesOut;
 - (id)searchIdentifier;
-- (id)valueWithCode:(int)a3 createIfMissing:(BOOL)a4;
+- (id)valueWithCode:(int)code createIfMissing:(BOOL)missing;
 - (int)primaryLabelCode;
 - (int64_t)_actingObjectCount;
 - (void)_registerDeletedNodeForDanglingEdgeCleanup;
-- (void)addValue:(id)a3;
+- (void)addValue:(id)value;
 - (void)awakeFromInsert;
 - (void)didSave;
 - (void)incrementEdgeDeletionCounter;
 - (void)prepareForDeletion;
-- (void)removeValue:(id)a3;
+- (void)removeValue:(id)value;
 - (void)willSave;
 @end
 
@@ -50,70 +50,70 @@
 
 - (BOOL)isEligibleForSearchIndexing
 {
-  v2 = [(PLGraphNode *)self primaryLabel];
-  v3 = [v2 code] == 1100;
+  primaryLabel = [(PLGraphNode *)self primaryLabel];
+  v3 = [primaryLabel code] == 1100;
 
   return v3;
 }
 
 - (id)searchIdentifier
 {
-  v3 = [(PLGraphNode *)self primaryLabel];
-  v4 = [v3 code];
+  primaryLabel = [(PLGraphNode *)self primaryLabel];
+  code = [primaryLabel code];
 
-  if (v4 == 1100)
+  if (code == 1100)
   {
     v5 = [(PLGraphNodeContainer *)PLSearchEntity newNodeContainerWithNode:self];
-    v6 = [v5 encodedIdentifierString];
+    encodedIdentifierString = [v5 encodedIdentifierString];
   }
 
   else
   {
-    v6 = [(PLGraphNode *)self uuid];
+    encodedIdentifierString = [(PLGraphNode *)self uuid];
   }
 
-  return v6;
+  return encodedIdentifierString;
 }
 
-- (void)removeValue:(id)a3
+- (void)removeValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   [(PLGraphNode *)self willChangeValueForKey:@"values"];
   v5 = [(PLGraphNode *)self mutableSetValueForKey:@"values"];
-  [v5 removeObject:v4];
+  [v5 removeObject:valueCopy];
 
   [(PLGraphNode *)self didChangeValueForKey:@"values"];
 }
 
-- (void)addValue:(id)a3
+- (void)addValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   [(PLGraphNode *)self willChangeValueForKey:@"values"];
   v5 = [(PLGraphNode *)self mutableSetValueForKey:@"values"];
-  [v5 addObject:v4];
+  [v5 addObject:valueCopy];
 
   [(PLGraphNode *)self didChangeValueForKey:@"values"];
 }
 
-- (id)valueWithCode:(int)a3 createIfMissing:(BOOL)a4
+- (id)valueWithCode:(int)code createIfMissing:(BOOL)missing
 {
-  v4 = a4;
-  v5 = *&a3;
+  missingCopy = missing;
+  v5 = *&code;
   v25 = *MEMORY[0x1E69E9840];
   if ([(PLGraphNode *)self hasFaultForRelationshipNamed:@"values"])
   {
-    v7 = [(PLGraphNode *)self values];
+    values = [(PLGraphNode *)self values];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __45__PLGraphNode_valueWithCode_createIfMissing___block_invoke;
     v22[3] = &__block_descriptor_36_e56_B24__0__NSManagedObject_PLGraphValue__8__NSDictionary_16l;
     v23 = v5;
     v8 = [MEMORY[0x1E696AE18] predicateWithBlock:v22];
-    v9 = [v7 filteredSetUsingPredicate:v8];
+    values2 = [values filteredSetUsingPredicate:v8];
 
-    v10 = [v9 anyObject];
+    anyObject = [values2 anyObject];
 LABEL_13:
-    v11 = v10;
+    v11 = anyObject;
   }
 
   else
@@ -122,8 +122,8 @@ LABEL_13:
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = [(PLGraphNode *)self values];
-    v11 = [v9 countByEnumeratingWithState:&v18 objects:v24 count:16];
+    values2 = [(PLGraphNode *)self values];
+    v11 = [values2 countByEnumeratingWithState:&v18 objects:v24 count:16];
     if (v11)
     {
       v12 = *v19;
@@ -133,18 +133,18 @@ LABEL_13:
         {
           if (*v19 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(values2);
           }
 
           v14 = *(*(&v18 + 1) + 8 * i);
           if ([v14 nameCode] == v5)
           {
-            v10 = v14;
+            anyObject = v14;
             goto LABEL_13;
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v18 objects:v24 count:16];
+        v11 = [values2 countByEnumeratingWithState:&v18 objects:v24 count:16];
         if (v11)
         {
           continue;
@@ -155,11 +155,11 @@ LABEL_13:
     }
   }
 
-  if (!v11 && v4)
+  if (!v11 && missingCopy)
   {
     v15 = +[PLGraphNodeValue entityName];
-    v16 = [(PLGraphNode *)self managedObjectContext];
-    v11 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(v15, v16, 0);
+    managedObjectContext = [(PLGraphNode *)self managedObjectContext];
+    v11 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(v15, managedObjectContext, 0);
 
     [v11 setNameCode:v5];
     [(PLGraphNode *)self addValue:v11];
@@ -171,47 +171,47 @@ LABEL_13:
 - (void)incrementEdgeDeletionCounter
 {
   v3 = [(PLGraphNode *)self valueForKey:@"edgeDeletionCounter"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  v5 = [MEMORY[0x1E696AD98] numberWithInt:(v4 + 1)];
+  v5 = [MEMORY[0x1E696AD98] numberWithInt:(integerValue + 1)];
   [(PLGraphNode *)self setValue:v5 forKey:@"edgeDeletionCounter"];
 }
 
 - (PLGraphNodeActor)actingObject
 {
-  v3 = [(PLGraphNode *)self actingAsset];
+  actingAsset = [(PLGraphNode *)self actingAsset];
 
-  if (v3)
+  if (actingAsset)
   {
-    v4 = [(PLGraphNode *)self actingAsset];
+    actingAsset2 = [(PLGraphNode *)self actingAsset];
   }
 
   else
   {
-    v5 = [(PLGraphNode *)self actingMoment];
+    actingMoment = [(PLGraphNode *)self actingMoment];
 
-    if (v5)
+    if (actingMoment)
     {
-      v4 = [(PLGraphNode *)self actingMoment];
+      actingAsset2 = [(PLGraphNode *)self actingMoment];
     }
 
     else
     {
-      v6 = [(PLGraphNode *)self actingPerson];
+      actingPerson = [(PLGraphNode *)self actingPerson];
 
-      if (v6)
+      if (actingPerson)
       {
-        v4 = [(PLGraphNode *)self actingPerson];
+        actingAsset2 = [(PLGraphNode *)self actingPerson];
       }
 
       else
       {
-        v4 = 0;
+        actingAsset2 = 0;
       }
     }
   }
 
-  return v4;
+  return actingAsset2;
 }
 
 - (id)edgesOut
@@ -259,26 +259,26 @@ LABEL_13:
   [(PLGraphNode *)self didAccessValueForKey:@"primaryLabelCode"];
   if (v3)
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v5 = [(PLGraphNode *)self primaryLabel];
-    v4 = [v5 code];
+    primaryLabel = [(PLGraphNode *)self primaryLabel];
+    integerValue = [primaryLabel code];
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (BOOL)shouldUpdatePersistence
 {
-  v2 = [(PLGraphNode *)self managedObjectContext];
-  v3 = [v2 pathManager];
+  managedObjectContext = [(PLGraphNode *)self managedObjectContext];
+  pathManager = [managedObjectContext pathManager];
 
-  if (v3)
+  if (pathManager)
   {
-    if ([v3 isDCIM])
+    if ([pathManager isDCIM])
     {
       v4 = 1;
     }
@@ -303,16 +303,16 @@ LABEL_13:
   v6.super_class = PLGraphNode;
   [(PLGraphNode *)&v6 prepareForDeletion];
   [(objc_class *)[(PLGraphNode *)self nodeContainerClass] prepareForDeletionWithNode:self];
-  v3 = [(PLGraphNode *)self primaryLabel];
-  [v3 handleAddOrRemoveOfBitsetTrackedObject:self isAdd:0];
+  primaryLabel = [(PLGraphNode *)self primaryLabel];
+  [primaryLabel handleAddOrRemoveOfBitsetTrackedObject:self isAdd:0];
 
-  v4 = [(PLGraphNode *)self additionalLabels];
+  additionalLabels = [(PLGraphNode *)self additionalLabels];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __33__PLGraphNode_prepareForDeletion__block_invoke;
   v5[3] = &unk_1E75746E0;
   v5[4] = self;
-  [v4 enumerateObjectsUsingBlock:v5];
+  [additionalLabels enumerateObjectsUsingBlock:v5];
 
   if ((PLIsAssetsd() & 1) != 0 || MEMORY[0x19EAEE520]())
   {
@@ -336,15 +336,15 @@ LABEL_13:
   [(PLManagedObject *)&v8 willSave];
   if ([(PLGraphNode *)self isDeleted]&& ((PLIsAssetsd() & 1) != 0 || MEMORY[0x19EAEE520]()))
   {
-    v3 = [(PLGraphNode *)self managedObjectContext];
-    [PLGraphNode _cleanupDanglingEdgeReferencesToDeletedNodesInManagedObjectContext:v3];
+    managedObjectContext = [(PLGraphNode *)self managedObjectContext];
+    [PLGraphNode _cleanupDanglingEdgeReferencesToDeletedNodesInManagedObjectContext:managedObjectContext];
   }
 
   objc_opt_class();
-  v4 = [(PLGraphNode *)self managedObjectContext];
+  managedObjectContext2 = [(PLGraphNode *)self managedObjectContext];
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = managedObjectContext2;
   }
 
   else
@@ -364,16 +364,16 @@ LABEL_13:
   }
 }
 
-- (BOOL)validateForUpdate:(id *)a3
+- (BOOL)validateForUpdate:(id *)update
 {
   v10.receiver = self;
   v10.super_class = PLGraphNode;
   v5 = [(PLGraphNode *)&v10 validateForUpdate:?];
   if (v5)
   {
-    v6 = [(PLGraphNode *)self uuid];
+    uuid = [(PLGraphNode *)self uuid];
 
-    if (v6 && ([(PLGraphNode *)self primaryLabel], v7 = objc_claimAutoreleasedReturnValue(), v7, v7) && [(PLGraphNode *)self _hasAtMostOneActingObject]&& (![(PLGraphNode *)self _hasAtLeastOneActingObject]|| [(PLGraphNode *)self primaryLabelCode]== 2000))
+    if (uuid && ([(PLGraphNode *)self primaryLabel], v7 = objc_claimAutoreleasedReturnValue(), v7, v7) && [(PLGraphNode *)self _hasAtMostOneActingObject]&& (![(PLGraphNode *)self _hasAtLeastOneActingObject]|| [(PLGraphNode *)self primaryLabelCode]== 2000))
     {
       LOBYTE(v5) = 1;
     }
@@ -381,10 +381,10 @@ LABEL_13:
     else
     {
       v8 = PLErrorCreate();
-      if (a3)
+      if (update)
       {
         v8 = v8;
-        *a3 = v8;
+        *update = v8;
       }
 
       LOBYTE(v5) = 0;
@@ -394,16 +394,16 @@ LABEL_13:
   return v5;
 }
 
-- (BOOL)validateForInsert:(id *)a3
+- (BOOL)validateForInsert:(id *)insert
 {
   v11.receiver = self;
   v11.super_class = PLGraphNode;
   v5 = [(PLGraphNode *)&v11 validateForInsert:?];
   if (v5)
   {
-    v6 = [(PLGraphNode *)self uuid];
+    uuid = [(PLGraphNode *)self uuid];
 
-    if (v6 && -[PLGraphNode _hasAtMostOneActingObject](self, "_hasAtMostOneActingObject") && (!-[PLGraphNode _hasAtLeastOneActingObject](self, "_hasAtLeastOneActingObject") || (-[PLGraphNode primaryLabel](self, "primaryLabel"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 code], v7, v8 == 2000)))
+    if (uuid && -[PLGraphNode _hasAtMostOneActingObject](self, "_hasAtMostOneActingObject") && (!-[PLGraphNode _hasAtLeastOneActingObject](self, "_hasAtLeastOneActingObject") || (-[PLGraphNode primaryLabel](self, "primaryLabel"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 code], v7, v8 == 2000)))
     {
       LOBYTE(v5) = 1;
     }
@@ -411,10 +411,10 @@ LABEL_13:
     else
     {
       v9 = PLErrorCreate();
-      if (a3)
+      if (insert)
       {
         v9 = v9;
-        *a3 = v9;
+        *insert = v9;
       }
 
       LOBYTE(v5) = 0;
@@ -426,55 +426,55 @@ LABEL_13:
 
 - (void)awakeFromInsert
 {
-  v12 = [(PLGraphNode *)self managedObjectContext];
-  v4 = [v12 pl_graphCache];
-  if (!v4)
+  managedObjectContext = [(PLGraphNode *)self managedObjectContext];
+  pl_graphCache = [managedObjectContext pl_graphCache];
+  if (!pl_graphCache)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PLGraphNode.m" lineNumber:349 description:@"graphCache is required to insert Nodes"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLGraphNode.m" lineNumber:349 description:@"graphCache is required to insert Nodes"];
   }
 
-  v5 = [(PLGraphNode *)self managedObjectContext];
-  v6 = [v4 takeNextAvailableExternalIdentifierInContext:v5 forIdentifierEntity:0];
+  managedObjectContext2 = [(PLGraphNode *)self managedObjectContext];
+  v6 = [pl_graphCache takeNextAvailableExternalIdentifierInContext:managedObjectContext2 forIdentifierEntity:0];
 
   if (v6 == 0x8000000000000000)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PLGraphNode.m" lineNumber:353 description:{@"Failed to set initial values for inserted node, unable to determine next externalIdentifier."}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLGraphNode.m" lineNumber:353 description:{@"Failed to set initial values for inserted node, unable to determine next externalIdentifier."}];
   }
 
   v7 = [MEMORY[0x1E696AD98] numberWithLongLong:v6];
   [(PLManagedObject *)self pl_setValue:v7 forKey:@"externalIdentifier" valueDidChangeHandler:0];
 
-  v8 = [MEMORY[0x1E696AFB0] UUID];
-  v9 = [v8 UUIDString];
-  [(PLManagedObject *)self pl_setValue:v9 forKey:@"uuid" valueDidChangeHandler:0];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  [(PLManagedObject *)self pl_setValue:uUIDString forKey:@"uuid" valueDidChangeHandler:0];
 }
 
-- (id)_assignmentForLabel:(id)a3 createIfMissing:(BOOL)a4
+- (id)_assignmentForLabel:(id)label createIfMissing:(BOOL)missing
 {
-  v4 = a4;
-  v7 = a3;
-  if (!v7)
+  missingCopy = missing;
+  labelCopy = label;
+  if (!labelCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PLGraphNode.m" lineNumber:327 description:{@"Invalid parameter not satisfying: %@", @"label"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLGraphNode.m" lineNumber:327 description:{@"Invalid parameter not satisfying: %@", @"label"}];
   }
 
-  v8 = [(PLGraphNode *)self additionalLabelAssignments];
+  additionalLabelAssignments = [(PLGraphNode *)self additionalLabelAssignments];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __51__PLGraphNode__assignmentForLabel_createIfMissing___block_invoke;
   v15[3] = &unk_1E756EF60;
-  v9 = v7;
+  v9 = labelCopy;
   v16 = v9;
-  v10 = [v8 _pl_firstObjectPassingTest:v15];
+  v10 = [additionalLabelAssignments _pl_firstObjectPassingTest:v15];
 
-  if (!v10 && v4)
+  if (!v10 && missingCopy)
   {
     v11 = +[PLGraphNodeAdditionalLabelAssignment entityName];
-    v12 = [v9 managedObjectContext];
-    v10 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(v11, v12, 0);
+    managedObjectContext = [v9 managedObjectContext];
+    v10 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(v11, managedObjectContext, 0);
 
     [v10 setLabel:v9];
   }
@@ -493,29 +493,29 @@ uint64_t __51__PLGraphNode__assignmentForLabel_createIfMissing___block_invoke(ui
 
 - (int64_t)_actingObjectCount
 {
-  v3 = [(PLGraphNode *)self actingAsset];
+  actingAsset = [(PLGraphNode *)self actingAsset];
 
-  v4 = [(PLGraphNode *)self actingMoment];
+  actingMoment = [(PLGraphNode *)self actingMoment];
 
   v5 = 1;
-  if (v3)
+  if (actingAsset)
   {
     v5 = 2;
   }
 
-  if (v4)
+  if (actingMoment)
   {
     v6 = v5;
   }
 
   else
   {
-    v6 = v3 != 0;
+    v6 = actingAsset != 0;
   }
 
-  v7 = [(PLGraphNode *)self actingPerson];
+  actingPerson = [(PLGraphNode *)self actingPerson];
 
-  if (v7)
+  if (actingPerson)
   {
     return v6 + 1;
   }
@@ -528,72 +528,72 @@ uint64_t __51__PLGraphNode__assignmentForLabel_createIfMissing___block_invoke(ui
 
 - (void)_registerDeletedNodeForDanglingEdgeCleanup
 {
-  v4 = [(PLGraphNode *)self managedObjectContext];
+  managedObjectContext = [(PLGraphNode *)self managedObjectContext];
 
-  if (!v4)
+  if (!managedObjectContext)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PLGraphNode.m" lineNumber:142 description:{@"Invalid parameter not satisfying: %@", @"self.managedObjectContext != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLGraphNode.m" lineNumber:142 description:{@"Invalid parameter not satisfying: %@", @"self.managedObjectContext != nil"}];
   }
 
-  v10 = [(PLGraphNode *)self managedObjectContext];
-  v5 = [v10 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"pl_nodeIDsPendingEdgeCleanup"];
+  managedObjectContext2 = [(PLGraphNode *)self managedObjectContext];
+  userInfo = [managedObjectContext2 userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"pl_nodeIDsPendingEdgeCleanup"];
 
   if (!v6)
   {
     v6 = [MEMORY[0x1E695DFA8] set];
-    v7 = [v10 userInfo];
-    [v7 setObject:v6 forKeyedSubscript:@"pl_nodeIDsPendingEdgeCleanup"];
+    userInfo2 = [managedObjectContext2 userInfo];
+    [userInfo2 setObject:v6 forKeyedSubscript:@"pl_nodeIDsPendingEdgeCleanup"];
   }
 
-  v8 = [(PLGraphNode *)self objectID];
-  [v6 addObject:v8];
+  objectID = [(PLGraphNode *)self objectID];
+  [v6 addObject:objectID];
 }
 
-+ (id)insertActorNodeWithActingObject:(id)a3
++ (id)insertActorNodeWithActingObject:(id)object
 {
-  v5 = a3;
-  if (!v5)
+  objectCopy = object;
+  if (!objectCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"PLGraphNode.m" lineNumber:831 description:{@"Invalid parameter not satisfying: %@", @"actingObject"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLGraphNode.m" lineNumber:831 description:{@"Invalid parameter not satisfying: %@", @"actingObject"}];
   }
 
-  v6 = [v5 managedObjectContext];
-  v7 = [v6 pl_graphCache];
-  v8 = [v7 labelWithCode:2000 inContext:v6];
-  v9 = [PLGraphNode insertGraphNodeInContext:v6 withPrimaryLabel:v8];
-  v10 = [v5 entity];
-  v11 = [v10 name];
-  v12 = [a1 _relationshipNameForActingEntityName:v11];
+  managedObjectContext = [objectCopy managedObjectContext];
+  pl_graphCache = [managedObjectContext pl_graphCache];
+  v8 = [pl_graphCache labelWithCode:2000 inContext:managedObjectContext];
+  v9 = [PLGraphNode insertGraphNodeInContext:managedObjectContext withPrimaryLabel:v8];
+  entity = [objectCopy entity];
+  name = [entity name];
+  v12 = [self _relationshipNameForActingEntityName:name];
 
   [v9 willChangeValueForKey:v12];
-  [v9 setPrimitiveValue:v5 forKey:v12];
+  [v9 setPrimitiveValue:objectCopy forKey:v12];
   [v9 didChangeValueForKey:v12];
 
   return v9;
 }
 
-+ (id)actingObjectIDsPendingCleanupInContext:(id)a3
++ (id)actingObjectIDsPendingCleanupInContext:(id)context
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKeyedSubscript:@"pl_actingobjectIDsPendingNodeCleanup"];
+  userInfo = [context userInfo];
+  v4 = [userInfo objectForKeyedSubscript:@"pl_actingobjectIDsPendingNodeCleanup"];
 
   return v4;
 }
 
-+ (void)cleanupDanglingNodeReferencesToDeletedActorsInContext:(id)a3
++ (void)cleanupDanglingNodeReferencesToDeletedActorsInContext:(id)context
 {
-  v9 = a3;
-  v4 = [v9 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"pl_actingobjectIDsPendingNodeCleanup"];
+  contextCopy = context;
+  userInfo = [contextCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"pl_actingobjectIDsPendingNodeCleanup"];
 
   if ([v5 count])
   {
-    v6 = [a1 _actingObjectRelationshipNames];
+    _actingObjectRelationshipNames = [self _actingObjectRelationshipNames];
     v7 = +[PLGraphNode entityName];
-    v8 = [a1 _cleanupDanglingReferencesToDeletedObjectIDs:v5 referenceRelationshipKeys:v6 targetEntityName:v7 inManagedObjectContext:v9];
+    v8 = [self _cleanupDanglingReferencesToDeletedObjectIDs:v5 referenceRelationshipKeys:_actingObjectRelationshipNames targetEntityName:v7 inManagedObjectContext:contextCopy];
 
     if (v8)
     {
@@ -602,28 +602,28 @@ uint64_t __51__PLGraphNode__assignmentForLabel_createIfMissing___block_invoke(ui
   }
 }
 
-+ (id)nodesForActingObjectIDs:(id)a3 createIfMissing:(BOOL)a4 inContext:(id)a5
++ (id)nodesForActingObjectIDs:(id)ds createIfMissing:(BOOL)missing inContext:(id)context
 {
-  v6 = a4;
+  missingCopy = missing;
   v119 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (![v8 count])
+  dsCopy = ds;
+  contextCopy = context;
+  if (![dsCopy count])
   {
     v92 = 0;
     goto LABEL_61;
   }
 
-  v85 = a1;
-  v88 = v9;
-  v93 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v8, "count")}];
-  v91 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v8, "count")}];
-  v89 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v8, "count")}];
+  selfCopy = self;
+  v88 = contextCopy;
+  v93 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(dsCopy, "count")}];
+  v91 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(dsCopy, "count")}];
+  v89 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(dsCopy, "count")}];
   v108 = 0u;
   v109 = 0u;
   v110 = 0u;
   v111 = 0u;
-  v10 = v8;
+  v10 = dsCopy;
   v11 = [v10 countByEnumeratingWithState:&v108 objects:v118 count:16];
   if (v11)
   {
@@ -639,23 +639,23 @@ uint64_t __51__PLGraphNode__assignmentForLabel_createIfMissing___block_invoke(ui
         }
 
         v15 = *(*(&v108 + 1) + 8 * i);
-        v16 = [v15 entity];
+        entity = [v15 entity];
         v17 = +[PLManagedAsset entity];
-        v18 = [v16 isKindOfEntity:v17];
+        v18 = [entity isKindOfEntity:v17];
 
         v19 = v93;
         if ((v18 & 1) == 0)
         {
-          v20 = [v15 entity];
+          entity2 = [v15 entity];
           v21 = +[PLMoment entity];
-          v22 = [v20 isKindOfEntity:v21];
+          v22 = [entity2 isKindOfEntity:v21];
 
           v19 = v91;
           if ((v22 & 1) == 0)
           {
-            v23 = [v15 entity];
+            entity3 = [v15 entity];
             v24 = +[PLPerson entity];
-            v25 = [v23 isKindOfEntity:v24];
+            v25 = [entity3 isKindOfEntity:v24];
 
             v19 = v89;
             if (!v25)
@@ -682,7 +682,7 @@ uint64_t __51__PLGraphNode__assignmentForLabel_createIfMissing___block_invoke(ui
   }
 
   v28 = v91;
-  v9 = v88;
+  contextCopy = v88;
   v29 = v89;
   if ([v91 count])
   {
@@ -725,7 +725,7 @@ LABEL_58:
 
   v82 = v32;
   v83 = v26;
-  v84 = v8;
+  v84 = dsCopy;
   v92 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v10, "count")}];
   v103 = 0u;
   v104 = 0u;
@@ -750,19 +750,19 @@ LABEL_58:
       }
 
       v40 = *(*(&v103 + 1) + 8 * j);
-      v41 = [v40 actingObject];
-      v42 = [v41 objectID];
-      [v92 setObject:v40 forKeyedSubscript:v42];
+      actingObject = [v40 actingObject];
+      objectID = [actingObject objectID];
+      [v92 setObject:v40 forKeyedSubscript:objectID];
 
-      v43 = [v40 actingObject];
-      v44 = [v43 objectID];
-      v45 = [v44 entity];
+      actingObject2 = [v40 actingObject];
+      objectID2 = [actingObject2 objectID];
+      entity4 = [objectID2 entity];
       v46 = +[PLManagedAsset entity];
-      v47 = [v45 isKindOfEntity:v46];
+      v47 = [entity4 isKindOfEntity:v46];
 
-      v48 = [v40 actingObject];
-      v49 = [v48 objectID];
-      v50 = v49;
+      actingObject3 = [v40 actingObject];
+      objectID3 = [actingObject3 objectID];
+      objectID5 = objectID3;
       if (v47)
       {
         v51 = v93;
@@ -770,13 +770,13 @@ LABEL_58:
 
       else
       {
-        v52 = [v49 entity];
+        entity5 = [objectID3 entity];
         v53 = +[PLMoment entity];
-        v54 = [v52 isKindOfEntity:v53];
+        v54 = [entity5 isKindOfEntity:v53];
 
-        v48 = [v40 actingObject];
-        v55 = [v48 objectID];
-        v50 = v55;
+        actingObject3 = [v40 actingObject];
+        objectID4 = [actingObject3 objectID];
+        objectID5 = objectID4;
         if (v54)
         {
           v51 = v91;
@@ -784,22 +784,22 @@ LABEL_58:
 
         else
         {
-          v56 = [v55 entity];
+          entity6 = [objectID4 entity];
           v57 = +[PLPerson entity];
-          v58 = [v56 isKindOfEntity:v57];
+          v58 = [entity6 isKindOfEntity:v57];
 
           if (!v58)
           {
             continue;
           }
 
-          v48 = [v40 actingObject];
-          v50 = [v48 objectID];
+          actingObject3 = [v40 actingObject];
+          objectID5 = [actingObject3 objectID];
           v51 = v89;
         }
       }
 
-      [v51 removeObject:v50];
+      [v51 removeObject:objectID5];
     }
 
     v37 = [obj countByEnumeratingWithState:&v103 objects:v117 count:16];
@@ -808,7 +808,7 @@ LABEL_58:
   while (v37);
 LABEL_34:
 
-  if (v6)
+  if (missingCopy)
   {
     v101 = 0u;
     v102 = 0u;
@@ -836,9 +836,9 @@ LABEL_34:
           if ([v64 count])
           {
             v65 = objc_alloc_init(MEMORY[0x1E695D5E0]);
-            v66 = [v64 anyObject];
-            v67 = [v66 entity];
-            [v65 setEntity:v67];
+            anyObject = [v64 anyObject];
+            entity7 = [anyObject entity];
+            [v65 setEntity:entity7];
 
             v68 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", v64];
             [v65 setPredicate:v68];
@@ -864,8 +864,8 @@ LABEL_34:
     v95 = 0u;
     v71 = v70;
     v72 = [v71 countByEnumeratingWithState:&v94 objects:v114 count:16];
-    v8 = v84;
-    v9 = v88;
+    dsCopy = v84;
+    contextCopy = v88;
     if (v72)
     {
       v73 = v72;
@@ -883,7 +883,7 @@ LABEL_34:
           v77 = [v88 existingObjectWithID:v76 error:0];
           if (v77)
           {
-            v78 = [v85 insertActorNodeWithActingObject:v77];
+            v78 = [selfCopy insertActorNodeWithActingObject:v77];
             [v92 setObject:v78 forKeyedSubscript:v76];
           }
         }
@@ -902,8 +902,8 @@ LABEL_34:
   }
 
   v26 = v83;
-  v8 = v84;
-  v9 = v88;
+  dsCopy = v84;
+  contextCopy = v88;
   v29 = v89;
   v80 = v93;
   v28 = v91;
@@ -915,30 +915,30 @@ LABEL_61:
   return v92;
 }
 
-+ (id)nodeForActingObject:(id)a3 createIfMissing:(BOOL)a4
++ (id)nodeForActingObject:(id)object createIfMissing:(BOOL)missing
 {
-  v4 = a4;
-  v7 = a3;
-  if (!v7)
+  missingCopy = missing;
+  objectCopy = object;
+  if (!objectCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"PLGraphNode.m" lineNumber:644 description:{@"Invalid parameter not satisfying: %@", @"actingObject"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLGraphNode.m" lineNumber:644 description:{@"Invalid parameter not satisfying: %@", @"actingObject"}];
   }
 
-  v8 = [a1 _fetchNodeForActingObject:v7];
-  if (!v8 && v4)
+  v8 = [self _fetchNodeForActingObject:objectCopy];
+  if (!v8 && missingCopy)
   {
-    v8 = [a1 insertActorNodeWithActingObject:v7];
+    v8 = [self insertActorNodeWithActingObject:objectCopy];
   }
 
   return v8;
 }
 
-+ (id)_relationshipNameForActingEntityName:(id)a3
++ (id)_relationshipNameForActingEntityName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v6 = +[PLManagedAsset entityName];
-  v7 = [v5 isEqualToString:v6];
+  v7 = [nameCopy isEqualToString:v6];
 
   if (v7)
   {
@@ -948,7 +948,7 @@ LABEL_61:
   else
   {
     v9 = +[PLPerson entityName];
-    v10 = [v5 isEqualToString:v9];
+    v10 = [nameCopy isEqualToString:v9];
 
     if (v10)
     {
@@ -958,7 +958,7 @@ LABEL_61:
     else
     {
       v11 = +[PLMoment entityName];
-      v12 = [v5 isEqualToString:v11];
+      v12 = [nameCopy isEqualToString:v11];
 
       if (v12)
       {
@@ -967,8 +967,8 @@ LABEL_61:
 
       else
       {
-        v13 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v13 handleFailureInMethod:a2 object:a1 file:@"PLGraphNode.m" lineNumber:638 description:{@"Unsupported actor entity name: %@", v5}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PLGraphNode.m" lineNumber:638 description:{@"Unsupported actor entity name: %@", nameCopy}];
 
         v8 = 0;
       }
@@ -978,21 +978,21 @@ LABEL_61:
   return v8;
 }
 
-+ (id)fetchEdgesOfNode:(id)a3 direction:(unint64_t)a4
++ (id)fetchEdgesOfNode:(id)node direction:(unint64_t)direction
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!v7)
+  nodeCopy = node;
+  if (!nodeCopy)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:a1 file:@"PLGraphNode.m" lineNumber:597 description:{@"Invalid parameter not satisfying: %@", @"node"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLGraphNode.m" lineNumber:597 description:{@"Invalid parameter not satisfying: %@", @"node"}];
   }
 
   v8 = +[PLGraphEdge fetchRequest];
-  if (a4 == 2)
+  if (direction == 2)
   {
-    v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@ OR %K = %@", @"targetNode", v7, @"sourceNode", v7];
-    [v8 setPredicate:v14];
+    nodeCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@ OR %K = %@", @"targetNode", nodeCopy, @"sourceNode", nodeCopy];
+    [v8 setPredicate:nodeCopy];
 
     v26[0] = @"sourceNode";
     v26[1] = @"targetNode";
@@ -1003,10 +1003,10 @@ LABEL_61:
 
   else
   {
-    if (a4 == 1)
+    if (direction == 1)
     {
-      v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@", @"sourceNode", v7];
-      [v8 setPredicate:v12];
+      nodeCopy2 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@", @"sourceNode", nodeCopy];
+      [v8 setPredicate:nodeCopy2];
 
       v27 = @"sourceNode";
       v10 = MEMORY[0x1E695DEC8];
@@ -1015,13 +1015,13 @@ LABEL_61:
 
     else
     {
-      if (a4)
+      if (direction)
       {
         goto LABEL_11;
       }
 
-      v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@", @"targetNode", v7];
-      [v8 setPredicate:v9];
+      nodeCopy3 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@", @"targetNode", nodeCopy];
+      [v8 setPredicate:nodeCopy3];
 
       v28[0] = @"targetNode";
       v10 = MEMORY[0x1E695DEC8];
@@ -1035,9 +1035,9 @@ LABEL_61:
   [v8 setRelationshipKeyPathsForPrefetching:v15];
 
 LABEL_11:
-  v16 = [v7 managedObjectContext];
+  managedObjectContext = [nodeCopy managedObjectContext];
   v23 = 0;
-  v17 = [v16 executeFetchRequest:v8 error:&v23];
+  v17 = [managedObjectContext executeFetchRequest:v8 error:&v23];
   v18 = v23;
   if (v17)
   {
@@ -1060,11 +1060,11 @@ LABEL_11:
   return v19;
 }
 
-+ (id)predicateToExcludeActorNodesInContext:(id)a3
++ (id)predicateToExcludeActorNodesInContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 pl_graphCache];
-  v5 = [v4 labelWithCode:2000 inContext:v3];
+  contextCopy = context;
+  pl_graphCache = [contextCopy pl_graphCache];
+  v5 = [pl_graphCache labelWithCode:2000 inContext:contextCopy];
 
   if (v5)
   {
@@ -1079,43 +1079,43 @@ LABEL_11:
   return v6;
 }
 
-+ (void)registerDeletedNodeActorForDanglingNodeCleanup:(id)a3
++ (void)registerDeletedNodeActorForDanglingNodeCleanup:(id)cleanup
 {
-  v8 = a3;
-  v3 = [v8 managedObjectContext];
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"pl_actingobjectIDsPendingNodeCleanup"];
+  cleanupCopy = cleanup;
+  managedObjectContext = [cleanupCopy managedObjectContext];
+  userInfo = [managedObjectContext userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"pl_actingobjectIDsPendingNodeCleanup"];
 
   if (!v5)
   {
     v5 = [MEMORY[0x1E695DFA8] set];
-    v6 = [v3 userInfo];
-    [v6 setObject:v5 forKeyedSubscript:@"pl_actingobjectIDsPendingNodeCleanup"];
+    userInfo2 = [managedObjectContext userInfo];
+    [userInfo2 setObject:v5 forKeyedSubscript:@"pl_actingobjectIDsPendingNodeCleanup"];
   }
 
-  v7 = [v8 objectID];
-  [v5 addObject:v7];
+  objectID = [cleanupCopy objectID];
+  [v5 addObject:objectID];
 }
 
-+ (id)fetchNodeWithUUID:(id)a3 inManagedObjectContext:(id)a4
++ (id)fetchNodeWithUUID:(id)d inManagedObjectContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  contextCopy = context;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__63205;
   v20 = __Block_byref_object_dispose__63206;
   v21 = 0;
-  if (v6)
+  if (dCopy)
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __56__PLGraphNode_fetchNodeWithUUID_inManagedObjectContext___block_invoke;
     v11[3] = &unk_1E7576680;
-    v12 = v6;
-    v15 = a1;
-    v13 = v7;
+    v12 = dCopy;
+    selfCopy = self;
+    v13 = contextCopy;
     v14 = &v16;
     [v13 performBlockAndWait:v11];
 
@@ -1167,9 +1167,9 @@ void __56__PLGraphNode_fetchNodeWithUUID_inManagedObjectContext___block_invoke(u
   }
 }
 
-+ (id)fetchNodeWithExternalIdentifier:(int64_t)a3 inManagedObjectContext:(id)a4
++ (id)fetchNodeWithExternalIdentifier:(int64_t)identifier inManagedObjectContext:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -1180,9 +1180,9 @@ void __56__PLGraphNode_fetchNodeWithUUID_inManagedObjectContext___block_invoke(u
   v10[1] = 3221225472;
   v10[2] = __70__PLGraphNode_fetchNodeWithExternalIdentifier_inManagedObjectContext___block_invoke;
   v10[3] = &unk_1E7576590;
-  v13 = a3;
-  v14 = a1;
-  v7 = v6;
+  identifierCopy = identifier;
+  selfCopy = self;
+  v7 = contextCopy;
   v11 = v7;
   v12 = &v15;
   [v7 performBlockAndWait:v10];
@@ -1227,10 +1227,10 @@ void __70__PLGraphNode_fetchNodeWithExternalIdentifier_inManagedObjectContext___
   }
 }
 
-+ (id)fetchNodesWithExternalIdentifiers:(id)a3 inManagedObjectContext:(id)a4
++ (id)fetchNodesWithExternalIdentifiers:(id)identifiers inManagedObjectContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  contextCopy = context;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -1241,11 +1241,11 @@ void __70__PLGraphNode_fetchNodeWithExternalIdentifier_inManagedObjectContext___
   v12[1] = 3221225472;
   v12[2] = __72__PLGraphNode_fetchNodesWithExternalIdentifiers_inManagedObjectContext___block_invoke;
   v12[3] = &unk_1E7576680;
-  v8 = v6;
+  v8 = identifiersCopy;
   v15 = &v17;
-  v16 = a1;
+  selfCopy = self;
   v13 = v8;
-  v9 = v7;
+  v9 = contextCopy;
   v14 = v9;
   [v9 performBlockAndWait:v12];
   v10 = v18[5];
@@ -1284,10 +1284,10 @@ void __72__PLGraphNode_fetchNodesWithExternalIdentifiers_inManagedObjectContext_
   }
 }
 
-+ (id)fetchObjectIDsForNodesWithExternalIdentifiers:(id)a3 inManagedObjectContext:(id)a4
++ (id)fetchObjectIDsForNodesWithExternalIdentifiers:(id)identifiers inManagedObjectContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  contextCopy = context;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -1298,11 +1298,11 @@ void __72__PLGraphNode_fetchNodesWithExternalIdentifiers_inManagedObjectContext_
   v12[1] = 3221225472;
   v12[2] = __84__PLGraphNode_fetchObjectIDsForNodesWithExternalIdentifiers_inManagedObjectContext___block_invoke;
   v12[3] = &unk_1E7576680;
-  v8 = v6;
+  v8 = identifiersCopy;
   v15 = &v17;
-  v16 = a1;
+  selfCopy = self;
   v13 = v8;
-  v9 = v7;
+  v9 = contextCopy;
   v14 = v9;
   [v9 performBlockAndWait:v12];
   v10 = v18[5];
@@ -1342,32 +1342,32 @@ void __84__PLGraphNode_fetchObjectIDsForNodesWithExternalIdentifiers_inManagedOb
   }
 }
 
-+ (id)insertGraphNodeInContext:(id)a3 withPrimaryLabel:(id)a4
++ (id)insertGraphNodeInContext:(id)context withPrimaryLabel:(id)label
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  contextCopy = context;
+  labelCopy = label;
+  if (!contextCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:a1 file:@"PLGraphNode.m" lineNumber:470 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLGraphNode.m" lineNumber:470 description:{@"Invalid parameter not satisfying: %@", @"context"}];
   }
 
   v7 = +[PLGraphNode entityName];
-  v8 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(v7, v5, 0);
+  v8 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(v7, contextCopy, 0);
 
-  if (v6)
+  if (labelCopy)
   {
-    [v8 setPrimaryLabel:v6];
+    [v8 setPrimaryLabel:labelCopy];
   }
 
-  v9 = [v8 nodeContainerClass];
-  v10 = [v9 requiredNodeValueCodes];
+  nodeContainerClass = [v8 nodeContainerClass];
+  requiredNodeValueCodes = [nodeContainerClass requiredNodeValueCodes];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v11 = [requiredNodeValueCodes countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v11)
   {
     v12 = v11;
@@ -1379,23 +1379,23 @@ void __84__PLGraphNode_fetchObjectIDsForNodesWithExternalIdentifiers_inManagedOb
       {
         if (*v23 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(requiredNodeValueCodes);
         }
 
-        v15 = [v9 defaultValueForRequiredNodeValueCode:objc_msgSend(*(*(&v22 + 1) + 8 * v14) forNode:{"intValue"), v8}];
-        v16 = [v15 owningObject];
+        v15 = [nodeContainerClass defaultValueForRequiredNodeValueCode:objc_msgSend(*(*(&v22 + 1) + 8 * v14) forNode:{"intValue"), v8}];
+        owningObject = [v15 owningObject];
 
-        if (v16 != v8)
+        if (owningObject != v8)
         {
-          v17 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v17 handleFailureInMethod:a2 object:a1 file:@"PLGraphNode.m" lineNumber:483 description:{@"Invalid parameter not satisfying: %@", @"value.owningObject == node"}];
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLGraphNode.m" lineNumber:483 description:{@"Invalid parameter not satisfying: %@", @"value.owningObject == node"}];
         }
 
         ++v14;
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v12 = [requiredNodeValueCodes countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v12);
@@ -1404,41 +1404,41 @@ void __84__PLGraphNode_fetchObjectIDsForNodesWithExternalIdentifiers_inManagedOb
   return v8;
 }
 
-+ (id)_fetchNodeForActingObject:(id)a3
++ (id)_fetchNodeForActingObject:(id)object
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  objectCopy = object;
+  if (!objectCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:a1 file:@"PLGraphNode.m" lineNumber:306 description:{@"Invalid parameter not satisfying: %@", @"actingObject"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLGraphNode.m" lineNumber:306 description:{@"Invalid parameter not satisfying: %@", @"actingObject"}];
   }
 
-  v6 = [v5 managedObjectContext];
+  managedObjectContext = [objectCopy managedObjectContext];
 
-  if (!v6)
+  if (!managedObjectContext)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:a1 file:@"PLGraphNode.m" lineNumber:307 description:{@"Invalid parameter not satisfying: %@", @"actingObject.managedObjectContext"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLGraphNode.m" lineNumber:307 description:{@"Invalid parameter not satisfying: %@", @"actingObject.managedObjectContext"}];
   }
 
   v7 = +[PLGraphNode fetchRequest];
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [v5 entity];
-  v10 = [a1 _actingRelationshipNameForEntity:v9];
+  entity = [objectCopy entity];
+  v10 = [self _actingRelationshipNameForEntity:entity];
   v11 = [v8 stringWithFormat:@"%@", v10];
 
-  v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@", v11, v5];
-  [v7 setPredicate:v12];
+  objectCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@", v11, objectCopy];
+  [v7 setPredicate:objectCopy];
 
-  v13 = [v5 managedObjectContext];
+  managedObjectContext2 = [objectCopy managedObjectContext];
   v21 = 0;
-  v14 = [v13 executeFetchRequest:v7 error:&v21];
+  v14 = [managedObjectContext2 executeFetchRequest:v7 error:&v21];
   v15 = v21;
 
   if (v14)
   {
-    v16 = [v14 firstObject];
+    firstObject = [v14 firstObject];
   }
 
   else
@@ -1451,18 +1451,18 @@ void __84__PLGraphNode_fetchObjectIDsForNodesWithExternalIdentifiers_inManagedOb
       _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_ERROR, "Failed to fetch nodeForActingObject with error: %@", buf, 0xCu);
     }
 
-    v16 = 0;
+    firstObject = 0;
   }
 
-  return v16;
+  return firstObject;
 }
 
-+ (id)_actingRelationshipNameForEntity:(id)a3
++ (id)_actingRelationshipNameForEntity:(id)entity
 {
-  v5 = a3;
-  v6 = [v5 name];
+  entityCopy = entity;
+  name = [entityCopy name];
   v7 = +[PLManagedAsset entityName];
-  v8 = [v6 isEqualToString:v7];
+  v8 = [name isEqualToString:v7];
 
   if (v8)
   {
@@ -1471,9 +1471,9 @@ void __84__PLGraphNode_fetchObjectIDsForNodesWithExternalIdentifiers_inManagedOb
 
   else
   {
-    v10 = [v5 name];
+    name2 = [entityCopy name];
     v11 = +[PLPerson entityName];
-    v12 = [v10 isEqualToString:v11];
+    v12 = [name2 isEqualToString:v11];
 
     if (v12)
     {
@@ -1482,9 +1482,9 @@ void __84__PLGraphNode_fetchObjectIDsForNodesWithExternalIdentifiers_inManagedOb
 
     else
     {
-      v13 = [v5 name];
+      name3 = [entityCopy name];
       v14 = +[PLMoment entityName];
-      v15 = [v13 isEqualToString:v14];
+      v15 = [name3 isEqualToString:v14];
 
       if (v15)
       {
@@ -1493,8 +1493,8 @@ void __84__PLGraphNode_fetchObjectIDsForNodesWithExternalIdentifiers_inManagedOb
 
       else
       {
-        v16 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v16 handleFailureInMethod:a2 object:a1 file:@"PLGraphNode.m" lineNumber:300 description:{@"Unsupported actor entity type: %@", v5}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PLGraphNode.m" lineNumber:300 description:{@"Unsupported actor entity type: %@", entityCopy}];
 
         v9 = 0;
       }
@@ -1504,17 +1504,17 @@ void __84__PLGraphNode_fetchObjectIDsForNodesWithExternalIdentifiers_inManagedOb
   return v9;
 }
 
-+ (void)_cleanupDanglingEdgeReferencesToDeletedNodesInManagedObjectContext:(id)a3
++ (void)_cleanupDanglingEdgeReferencesToDeletedNodesInManagedObjectContext:(id)context
 {
-  v9 = a3;
-  v4 = [v9 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"pl_nodeIDsPendingEdgeCleanup"];
+  contextCopy = context;
+  userInfo = [contextCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"pl_nodeIDsPendingEdgeCleanup"];
 
   if ([v5 count])
   {
-    v6 = [a1 _edgeRelationshipNames];
+    _edgeRelationshipNames = [self _edgeRelationshipNames];
     v7 = +[PLGraphEdge entityName];
-    v8 = [a1 _cleanupDanglingReferencesToDeletedObjectIDs:v5 referenceRelationshipKeys:v6 targetEntityName:v7 inManagedObjectContext:v9];
+    v8 = [self _cleanupDanglingReferencesToDeletedObjectIDs:v5 referenceRelationshipKeys:_edgeRelationshipNames targetEntityName:v7 inManagedObjectContext:contextCopy];
 
     if (v8)
     {
@@ -1523,25 +1523,25 @@ void __84__PLGraphNode_fetchObjectIDsForNodesWithExternalIdentifiers_inManagedOb
   }
 }
 
-+ (BOOL)_cleanupDanglingReferencesToDeletedObjectIDs:(id)a3 referenceRelationshipKeys:(id)a4 targetEntityName:(id)a5 inManagedObjectContext:(id)a6
++ (BOOL)_cleanupDanglingReferencesToDeletedObjectIDs:(id)ds referenceRelationshipKeys:(id)keys targetEntityName:(id)name inManagedObjectContext:(id)context
 {
   v71 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v10 count])
+  dsCopy = ds;
+  keysCopy = keys;
+  nameCopy = name;
+  contextCopy = context;
+  if ([dsCopy count])
   {
-    v52 = v12;
-    v53 = v13;
-    v56 = v10;
-    v55 = [MEMORY[0x1E695DF70] array];
+    v52 = nameCopy;
+    v53 = contextCopy;
+    v56 = dsCopy;
+    array = [MEMORY[0x1E695DF70] array];
     v63 = 0u;
     v64 = 0u;
     v65 = 0u;
     v66 = 0u;
-    v51 = v11;
-    v14 = v11;
+    v51 = keysCopy;
+    v14 = keysCopy;
     v15 = [v14 countByEnumeratingWithState:&v63 objects:v70 count:16];
     if (v15)
     {
@@ -1562,12 +1562,12 @@ void __84__PLGraphNode_fetchObjectIDsForNodesWithExternalIdentifiers_inManagedOb
           v62[2] = __126__PLGraphNode__cleanupDanglingReferencesToDeletedObjectIDs_referenceRelationshipKeys_targetEntityName_inManagedObjectContext___block_invoke;
           v62[3] = &unk_1E756EF38;
           v62[4] = v19;
-          v62[5] = a1;
-          v20 = [v10 _pl_filter:v62];
+          v62[5] = self;
+          v20 = [dsCopy _pl_filter:v62];
           if ([v20 count])
           {
             v21 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", v19, v20];
-            [v55 addObject:v21];
+            [array addObject:v21];
           }
         }
 
@@ -1577,14 +1577,14 @@ void __84__PLGraphNode_fetchObjectIDsForNodesWithExternalIdentifiers_inManagedOb
       while (v16);
     }
 
-    v12 = v52;
+    nameCopy = v52;
     v22 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:v52];
-    v23 = [MEMORY[0x1E696AB28] orPredicateWithSubpredicates:v55];
+    v23 = [MEMORY[0x1E696AB28] orPredicateWithSubpredicates:array];
     [v22 setPredicate:v23];
 
     [v22 setFetchBatchSize:100];
     v61 = 0;
-    v13 = v53;
+    contextCopy = v53;
     v24 = [v53 executeFetchRequest:v22 error:&v61];
     v25 = v61;
     v26 = v24 != 0;
@@ -1615,40 +1615,40 @@ void __84__PLGraphNode_fetchObjectIDsForNodesWithExternalIdentifiers_inManagedOb
             }
 
             v32 = *(*(&v57 + 1) + 8 * j);
-            v33 = [v32 entity];
+            entity = [v32 entity];
             v34 = +[PLGraphNode entity];
-            v35 = [v33 isKindOfEntity:v34];
+            v35 = [entity isKindOfEntity:v34];
 
             if (v35)
             {
-              [v13 deleteObject:v32];
+              [contextCopy deleteObject:v32];
               continue;
             }
 
-            v36 = [v32 entity];
+            entity2 = [v32 entity];
             v37 = +[PLGraphEdge entity];
-            v38 = [v36 isKindOfEntity:v37];
+            v38 = [entity2 isKindOfEntity:v37];
 
             if (v38)
             {
               v39 = v32;
-              v40 = [v39 sourceNode];
-              v41 = [v40 objectID];
-              if ([v10 containsObject:v41])
+              sourceNode = [v39 sourceNode];
+              objectID = [sourceNode objectID];
+              if ([dsCopy containsObject:objectID])
               {
 
                 goto LABEL_23;
               }
 
-              v42 = [v39 targetNode];
-              v43 = [v42 objectID];
-              v44 = [v10 containsObject:v43];
+              targetNode = [v39 targetNode];
+              objectID2 = [targetNode objectID];
+              v44 = [dsCopy containsObject:objectID2];
 
-              v13 = v53;
+              contextCopy = v53;
               if (v44)
               {
 LABEL_23:
-                [v13 deleteObject:v39];
+                [contextCopy deleteObject:v39];
               }
 
               v27 = v54;
@@ -1659,8 +1659,8 @@ LABEL_23:
           v29 = [v27 countByEnumeratingWithState:&v57 objects:v69 count:16];
           if (!v29)
           {
-            v11 = v51;
-            v12 = v52;
+            keysCopy = v51;
+            nameCopy = v52;
             v22 = v50;
             v26 = v49;
             v25 = v47;
@@ -1683,8 +1683,8 @@ LABEL_23:
       }
     }
 
-    v10 = v56;
-    v11 = v51;
+    dsCopy = v56;
+    keysCopy = v51;
 LABEL_32:
   }
 
@@ -1710,48 +1710,48 @@ uint64_t __126__PLGraphNode__cleanupDanglingReferencesToDeletedObjectIDs_referen
   return v8;
 }
 
-+ (id)_entityNameFromDanglingObjectRelationshipName:(id)a3
++ (id)_entityNameFromDanglingObjectRelationshipName:(id)name
 {
-  v5 = a3;
-  if (!v5)
+  nameCopy = name;
+  if (!nameCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"PLGraphNode.m" lineNumber:196 description:{@"Invalid parameter not satisfying: %@", @"relationshipName"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLGraphNode.m" lineNumber:196 description:{@"Invalid parameter not satisfying: %@", @"relationshipName"}];
   }
 
-  if ([v5 isEqualToString:@"actingAsset"])
+  if ([nameCopy isEqualToString:@"actingAsset"])
   {
     v6 = PLManagedAsset;
 LABEL_12:
-    v7 = [(__objc2_class *)v6 entityName];
+    entityName = [(__objc2_class *)v6 entityName];
     goto LABEL_13;
   }
 
-  if ([v5 isEqualToString:@"actingPerson"])
+  if ([nameCopy isEqualToString:@"actingPerson"])
   {
     v6 = PLPerson;
     goto LABEL_12;
   }
 
-  if ([v5 isEqualToString:@"actingMoment"])
+  if ([nameCopy isEqualToString:@"actingMoment"])
   {
     v6 = PLMoment;
     goto LABEL_12;
   }
 
-  if ([v5 isEqualToString:@"sourceNode"] || objc_msgSend(v5, "isEqualToString:", @"targetNode"))
+  if ([nameCopy isEqualToString:@"sourceNode"] || objc_msgSend(nameCopy, "isEqualToString:", @"targetNode"))
   {
     v6 = PLGraphNode;
     goto LABEL_12;
   }
 
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v9 handleFailureInMethod:a2 object:a1 file:@"PLGraphNode.m" lineNumber:216 description:{@"unsupported relationshipName: %@", v5}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLGraphNode.m" lineNumber:216 description:{@"unsupported relationshipName: %@", nameCopy}];
 
-  v7 = 0;
+  entityName = 0;
 LABEL_13:
 
-  return v7;
+  return entityName;
 }
 
 + (id)_edgeRelationshipNames
@@ -1775,58 +1775,58 @@ LABEL_13:
   return v2;
 }
 
-+ (id)_cachedFetchEdgesOfNode:(id)a3 inDirection:(unint64_t)a4 cachedToken:(id *)a5 cachedEdges:(id *)a6
++ (id)_cachedFetchEdgesOfNode:(id)node inDirection:(unint64_t)direction cachedToken:(id *)token cachedEdges:(id *)edges
 {
-  v11 = a3;
-  if (!a5)
+  nodeCopy = node;
+  if (!token)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:a1 file:@"PLGraphNode.m" lineNumber:114 description:{@"Invalid parameter not satisfying: %@", @"inOutCachedGenerationToken"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLGraphNode.m" lineNumber:114 description:{@"Invalid parameter not satisfying: %@", @"inOutCachedGenerationToken"}];
 
-    if (a6)
+    if (edges)
     {
       goto LABEL_3;
     }
 
 LABEL_13:
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:a1 file:@"PLGraphNode.m" lineNumber:115 description:{@"Invalid parameter not satisfying: %@", @"inOutCachedEdges"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLGraphNode.m" lineNumber:115 description:{@"Invalid parameter not satisfying: %@", @"inOutCachedEdges"}];
 
     goto LABEL_3;
   }
 
-  if (!a6)
+  if (!edges)
   {
     goto LABEL_13;
   }
 
 LABEL_3:
-  v12 = [v11 managedObjectContext];
-  v13 = [a1 _cachedEdgesOfNode:v11 inDirection:a4 cachedToken:a5 cachedEdges:a6];
+  managedObjectContext = [nodeCopy managedObjectContext];
+  v13 = [self _cachedEdgesOfNode:nodeCopy inDirection:direction cachedToken:token cachedEdges:edges];
   if (!v13)
   {
-    v13 = [objc_opt_class() fetchEdgesOfNode:v11 direction:a4];
+    v13 = [objc_opt_class() fetchEdgesOfNode:nodeCopy direction:direction];
     if (v13)
     {
-      v15 = [v12 queryGenerationToken];
+      queryGenerationToken = [managedObjectContext queryGenerationToken];
 
-      if (v15)
+      if (queryGenerationToken)
       {
-        v16 = *a6;
-        if (!*a6)
+        v16 = *edges;
+        if (!*edges)
         {
           v17 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:3];
-          v18 = *a6;
-          *a6 = v17;
+          v18 = *edges;
+          *edges = v17;
 
-          v19 = [v12 queryGenerationToken];
-          v20 = *a5;
-          *a5 = v19;
+          queryGenerationToken2 = [managedObjectContext queryGenerationToken];
+          v20 = *token;
+          *token = queryGenerationToken2;
 
-          v16 = *a6;
+          v16 = *edges;
         }
 
-        v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+        v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:direction];
         [v16 setObject:v13 forKey:v21];
       }
     }
@@ -1835,57 +1835,57 @@ LABEL_3:
   return v13;
 }
 
-+ (id)_cachedEdgesOfNode:(id)a3 inDirection:(unint64_t)a4 cachedToken:(id *)a5 cachedEdges:(id *)a6
++ (id)_cachedEdgesOfNode:(id)node inDirection:(unint64_t)direction cachedToken:(id *)token cachedEdges:(id *)edges
 {
   v52 = *MEMORY[0x1E69E9840];
-  v43 = a3;
-  if (!a5)
+  nodeCopy = node;
+  if (!token)
   {
-    v39 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v39 handleFailureInMethod:a2 object:a1 file:@"PLGraphNode.m" lineNumber:67 description:{@"Invalid parameter not satisfying: %@", @"inOutCachedGenerationToken"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLGraphNode.m" lineNumber:67 description:{@"Invalid parameter not satisfying: %@", @"inOutCachedGenerationToken"}];
 
-    if (a6)
+    if (edges)
     {
       goto LABEL_3;
     }
 
 LABEL_28:
-    v40 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v40 handleFailureInMethod:a2 object:a1 file:@"PLGraphNode.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"inOutCachedEdges"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLGraphNode.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"inOutCachedEdges"}];
 
     goto LABEL_3;
   }
 
-  if (!a6)
+  if (!edges)
   {
     goto LABEL_28;
   }
 
 LABEL_3:
-  v41 = [v43 managedObjectContext];
-  v11 = *a6;
-  if (*a6)
+  managedObjectContext = [nodeCopy managedObjectContext];
+  v11 = *edges;
+  if (*edges)
   {
-    v12 = *a5;
-    if (*a5)
+    v12 = *token;
+    if (*token)
     {
-      v13 = [v41 queryGenerationToken];
-      v14 = [v12 isEqual:v13];
+      queryGenerationToken = [managedObjectContext queryGenerationToken];
+      v14 = [v12 isEqual:queryGenerationToken];
 
-      v11 = *a6;
+      v11 = *edges;
       if ((v14 & 1) == 0)
       {
-        *a6 = 0;
+        *edges = 0;
 
-        v15 = *a5;
-        *a5 = 0;
+        v15 = *token;
+        *token = 0;
 
-        v11 = *a6;
+        v11 = *edges;
       }
     }
   }
 
-  v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:direction];
   v17 = [v11 objectForKey:v16];
 
   if (v17)
@@ -1895,14 +1895,14 @@ LABEL_3:
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
-    obj = [v41 insertedObjects];
+    obj = [managedObjectContext insertedObjects];
     v19 = [obj countByEnumeratingWithState:&v47 objects:v51 count:16];
     if (v19)
     {
       v20 = v19;
       v21 = *v48;
-      v44 = a4 - 1;
-      v45 = a4 & 0xFFFFFFFFFFFFFFFDLL;
+      v44 = direction - 1;
+      v45 = direction & 0xFFFFFFFFFFFFFFFDLL;
       v42 = v18;
       do
       {
@@ -1914,8 +1914,8 @@ LABEL_3:
           }
 
           v23 = *(*(&v47 + 1) + 8 * i);
-          v24 = [v23 entity];
-          v25 = [v24 isKindOfEntity:v18];
+          entity = [v23 entity];
+          v25 = [entity isKindOfEntity:v18];
 
           if (v25)
           {
@@ -1924,10 +1924,10 @@ LABEL_3:
             v28 = v27;
             if (!v45)
             {
-              v29 = [v27 targetNode];
-              v30 = [v29 objectID];
-              v31 = [v43 objectID];
-              v32 = [v30 isEqual:v31];
+              targetNode = [v27 targetNode];
+              objectID = [targetNode objectID];
+              objectID2 = [nodeCopy objectID];
+              v32 = [objectID isEqual:objectID2];
 
               v18 = v42;
               if (v32)
@@ -1938,10 +1938,10 @@ LABEL_3:
 
             if (v44 <= 1)
             {
-              v33 = [v28 sourceNode];
-              v34 = [v33 objectID];
-              v35 = [v43 objectID];
-              v36 = [v34 isEqual:v35];
+              sourceNode = [v28 sourceNode];
+              objectID3 = [sourceNode objectID];
+              objectID4 = [nodeCopy objectID];
+              v36 = [objectID3 isEqual:objectID4];
 
               v18 = v42;
               if (v36)

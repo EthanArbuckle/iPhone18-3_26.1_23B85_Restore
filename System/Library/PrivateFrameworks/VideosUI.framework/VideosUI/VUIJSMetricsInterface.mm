@@ -1,50 +1,50 @@
 @interface VUIJSMetricsInterface
-- (VUIJSMetricsInterface)initWithAppContext:(id)a3;
-- (void)campaignAttributionForUrl:(id)a3 :(id)a4;
-- (void)recordLogEvent:(id)a3;
+- (VUIJSMetricsInterface)initWithAppContext:(id)context;
+- (void)campaignAttributionForUrl:(id)url :(id)a4;
+- (void)recordLogEvent:(id)event;
 @end
 
 @implementation VUIJSMetricsInterface
 
-- (VUIJSMetricsInterface)initWithAppContext:(id)a3
+- (VUIJSMetricsInterface)initWithAppContext:(id)context
 {
   v4.receiver = self;
   v4.super_class = VUIJSMetricsInterface;
-  return [(VUIJSObject *)&v4 initWithAppContext:a3];
+  return [(VUIJSObject *)&v4 initWithAppContext:context];
 }
 
-- (void)recordLogEvent:(id)a3
+- (void)recordLogEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = +[VUIMetricsController sharedInstance];
-  [v4 recordLog:v3];
+  [v4 recordLog:eventCopy];
 }
 
-- (void)campaignAttributionForUrl:(id)a3 :(id)a4
+- (void)campaignAttributionForUrl:(id)url :(id)a4
 {
-  v6 = a3;
+  urlCopy = url;
   v7 = a4;
-  v8 = [MEMORY[0x1E695DFF8] URLWithString:v6];
-  v9 = [MEMORY[0x1E696AFB0] UUID];
-  v10 = [v9 UUIDString];
+  v8 = [MEMORY[0x1E695DFF8] URLWithString:urlCopy];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  [(VUIJSObject *)self setJSValue:v7 forProperty:v10];
-  v11 = [(VUIJSObject *)self appContext];
-  objc_initWeak(&location, v11);
+  [(VUIJSObject *)self setJSValue:v7 forProperty:uUIDString];
+  appContext = [(VUIJSObject *)self appContext];
+  objc_initWeak(&location, appContext);
 
   objc_initWeak(&from, self);
-  v12 = [MEMORY[0x1E698C7D8] vui_defaultBag];
-  v13 = [objc_alloc(MEMORY[0x1E698C820]) initWithURL:v8 bag:v12];
-  v14 = [v13 perform];
+  vui_defaultBag = [MEMORY[0x1E698C7D8] vui_defaultBag];
+  v13 = [objc_alloc(MEMORY[0x1E698C820]) initWithURL:v8 bag:vui_defaultBag];
+  perform = [v13 perform];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __52__VUIJSMetricsInterface_campaignAttributionForUrl::__block_invoke;
   v17[3] = &unk_1E87379C8;
   objc_copyWeak(&v19, &location);
   objc_copyWeak(&v20, &from);
-  v15 = v10;
+  v15 = uUIDString;
   v18 = v15;
-  v16 = [v14 thenWithBlock:v17];
+  v16 = [perform thenWithBlock:v17];
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(&v19);

@@ -1,52 +1,52 @@
 @interface SBToAppsWorkspaceTransaction
-+ (BOOL)canInterruptTransaction:(id)a3 forTransitionRequest:(id)a4;
++ (BOOL)canInterruptTransaction:(id)transaction forTransitionRequest:(id)request;
 - (BOOL)_beginAnimation;
 - (BOOL)_canBeInterrupted;
-- (BOOL)_isGoingToHomeScreenForTransitionRequest:(id)a3;
-- (BOOL)_shouldFailForChildTransaction:(id)a3;
+- (BOOL)_isGoingToHomeScreenForTransitionRequest:(id)request;
+- (BOOL)_shouldFailForChildTransaction:(id)transaction;
 - (BOOL)_shouldResignActiveForAnimation;
 - (BOOL)isGoingToCoverSheet;
 - (BOOL)isGoingToLauncher;
 - (BOOL)isGoingToMainSwitcher;
 - (BOOL)shouldPerformToAppStateCleanupOnCompletion;
-- (BOOL)shouldWatchdog:(id *)a3;
-- (BOOL)transaction:(id)a3 shouldKeepSceneForeground:(id)a4 withReason:(id *)a5;
+- (BOOL)shouldWatchdog:(id *)watchdog;
+- (BOOL)transaction:(id)transaction shouldKeepSceneForeground:(id)foreground withReason:(id *)reason;
 - (NSSet)allLayoutTransactions;
 - (NSSet)allTransitionRequests;
-- (SBToAppsWorkspaceTransaction)initWithTransitionRequest:(id)a3;
+- (SBToAppsWorkspaceTransaction)initWithTransitionRequest:(id)request;
 - (id)_customizedDescriptionProperties;
 - (id)_homeScreenAppearanceController;
 - (id)_iconManager;
-- (id)createSceneEntityForHandle:(id)a3;
+- (id)createSceneEntityForHandle:(id)handle;
 - (int64_t)_isGoingToHomeScreenInMainDisplayWindowScene;
 - (void)_acquireResignActiveAssertion;
 - (void)_beginAnimationIfNecessary;
 - (void)_captureApplicationState;
 - (void)_checkForAnimationCompletion;
-- (void)_childTransactionDidComplete:(id)a3;
+- (void)_childTransactionDidComplete:(id)complete;
 - (void)_clearAnimation;
 - (void)_completeCurrentTransition;
 - (void)_configureAnimation;
-- (void)_delayTransitionCompletionForRequester:(id)a3;
+- (void)_delayTransitionCompletionForRequester:(id)requester;
 - (void)_didComplete;
-- (void)_didInterruptWithReason:(id)a3;
-- (void)_fireAndClearResultBlockIfNecessaryForFailure:(BOOL)a3;
-- (void)_logForInterruptAttemptReason:(id)a3;
+- (void)_didInterruptWithReason:(id)reason;
+- (void)_fireAndClearResultBlockIfNecessaryForFailure:(BOOL)failure;
+- (void)_logForInterruptAttemptReason:(id)reason;
 - (void)_noteAnimationFinished;
-- (void)_stopDelayingTransitionCompletionForRequester:(id)a3;
+- (void)_stopDelayingTransitionCompletionForRequester:(id)requester;
 - (void)_willBegin;
-- (void)_willFailWithReason:(id)a3;
-- (void)_willInterruptWithReason:(id)a3;
+- (void)_willFailWithReason:(id)reason;
+- (void)_willInterruptWithReason:(id)reason;
 - (void)activateApplications;
-- (void)animationController:(id)a3 willBeginAnimation:(BOOL)a4;
-- (void)animationControllerDidFinishAnimation:(id)a3;
-- (void)animationControllerDidRevealApplication:(id)a3;
+- (void)animationController:(id)controller willBeginAnimation:(BOOL)animation;
+- (void)animationControllerDidFinishAnimation:(id)animation;
+- (void)animationControllerDidRevealApplication:(id)application;
 - (void)dealloc;
 - (void)performToAppStateCleanup;
-- (void)synchronizedTransactionReadyToCommit:(id)a3;
-- (void)transaction:(id)a3 didEndLayoutTransitionWithContinuation:(id)a4;
-- (void)transaction:(id)a3 performTransitionWithCompletion:(id)a4;
-- (void)transactionWillBeginLayoutTransition:(id)a3;
+- (void)synchronizedTransactionReadyToCommit:(id)commit;
+- (void)transaction:(id)transaction didEndLayoutTransitionWithContinuation:(id)continuation;
+- (void)transaction:(id)transaction performTransitionWithCompletion:(id)completion;
+- (void)transactionWillBeginLayoutTransition:(id)transition;
 @end
 
 @implementation SBToAppsWorkspaceTransaction
@@ -54,12 +54,12 @@
 - (void)_willBegin
 {
   v58 = *MEMORY[0x277D85DE8];
-  v46 = [(SBWorkspaceTransitionRequest *)self->super.super._transitionRequest applicationContext];
+  applicationContext = [(SBWorkspaceTransitionRequest *)self->super.super._transitionRequest applicationContext];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v3 = self;
+  selfCopy = self;
   obj = [(SBToAppsWorkspaceTransaction *)self toApplicationSceneEntities];
   v4 = [obj countByEnumeratingWithState:&v49 objects:v57 count:16];
   if (v4)
@@ -76,35 +76,35 @@
         }
 
         v8 = *(*(&v49 + 1) + 8 * i);
-        v9 = [v8 application];
-        v10 = [SBApp privacyPreflightController];
-        v11 = [v9 info];
-        v12 = [v11 applicationIdentity];
-        v13 = [v10 requiresPreflightForApplication:v12];
+        application = [v8 application];
+        privacyPreflightController = [SBApp privacyPreflightController];
+        info = [application info];
+        applicationIdentity = [info applicationIdentity];
+        v13 = [privacyPreflightController requiresPreflightForApplication:applicationIdentity];
 
-        v14 = [v9 processState];
+        processState = [application processState];
 
-        if (!v14 && (v13 & 1) == 0)
+        if (!processState && (v13 & 1) == 0)
         {
-          v15 = [v8 sceneHandle];
-          v16 = [v15 _createProcessExecutionContextFromContext:v46 entity:v8];
+          sceneHandle = [v8 sceneHandle];
+          bundleIdentifier = [sceneHandle _createProcessExecutionContextFromContext:applicationContext entity:v8];
 
-          if (v16)
+          if (bundleIdentifier)
           {
-            v17 = [(SBWorkspaceTransitionRequest *)v3->super.super._transitionRequest displayConfiguration];
-            v18 = [v9 _prepareInitializationContextIfNecessaryForLaunchOnDisplayConfiguration:v17];
+            displayConfiguration = [(SBWorkspaceTransitionRequest *)selfCopy->super.super._transitionRequest displayConfiguration];
+            v18 = [application _prepareInitializationContextIfNecessaryForLaunchOnDisplayConfiguration:displayConfiguration];
 
-            v19 = [MEMORY[0x277D0AAC0] sharedInstance];
-            [v19 launchProcessWithContext:v16];
+            mEMORY[0x277D0AAC0] = [MEMORY[0x277D0AAC0] sharedInstance];
+            [mEMORY[0x277D0AAC0] launchProcessWithContext:bundleIdentifier];
           }
 
           goto LABEL_13;
         }
 
-        if (v13 && [(SBToAppsWorkspaceTransaction *)v3 isAuditHistoryEnabled])
+        if (v13 && [(SBToAppsWorkspaceTransaction *)selfCopy isAuditHistoryEnabled])
         {
-          v16 = [v9 bundleIdentifier];
-          [(SBToAppsWorkspaceTransaction *)v3 _addAuditHistoryItem:@"%@ requires preflight. Skipping prelaunch.", v16];
+          bundleIdentifier = [application bundleIdentifier];
+          [(SBToAppsWorkspaceTransaction *)selfCopy _addAuditHistoryItem:@"%@ requires preflight. Skipping prelaunch.", bundleIdentifier];
 LABEL_13:
         }
       }
@@ -115,16 +115,16 @@ LABEL_13:
     while (v5);
   }
 
-  v20 = [(SBWorkspaceTransaction *)v3 transitionRequest];
-  v21 = [v20 isCrossingDisplays];
+  transitionRequest = [(SBWorkspaceTransaction *)selfCopy transitionRequest];
+  isCrossingDisplays = [transitionRequest isCrossingDisplays];
 
-  if (v21)
+  if (isCrossingDisplays)
   {
-    v22 = [(SBToAppsWorkspaceTransaction *)v3 fromApplicationSceneEntities];
-    v23 = [v22 valueForKey:@"displayItemRepresentation"];
+    fromApplicationSceneEntities = [(SBToAppsWorkspaceTransaction *)selfCopy fromApplicationSceneEntities];
+    v23 = [fromApplicationSceneEntities valueForKey:@"displayItemRepresentation"];
 
-    v24 = [(SBToAppsWorkspaceTransaction *)v3 toApplicationSceneEntities];
-    v25 = [v24 valueForKey:@"displayItemRepresentation"];
+    toApplicationSceneEntities = [(SBToAppsWorkspaceTransaction *)selfCopy toApplicationSceneEntities];
+    v25 = [toApplicationSceneEntities valueForKey:@"displayItemRepresentation"];
 
     v26 = [v25 mutableCopy];
     [v26 minusSet:v23];
@@ -141,61 +141,61 @@ LABEL_13:
       }
     }
 
-    v28 = [(SBWorkspaceTransaction *)v3 windowScene];
-    v29 = [v28 switcherController];
+    windowScene = [(SBWorkspaceTransaction *)selfCopy windowScene];
+    switcherController = [windowScene switcherController];
 
-    v30 = [(SBWorkspaceTransaction *)v3 transitionRequest];
-    v31 = [v30 applicationContext];
-    v32 = [v31 layoutState];
-    v33 = [v32 appLayout];
+    transitionRequest2 = [(SBWorkspaceTransaction *)selfCopy transitionRequest];
+    applicationContext2 = [transitionRequest2 applicationContext];
+    layoutState = [applicationContext2 layoutState];
+    appLayout = [layoutState appLayout];
 
     v34 = +[SBApplicationController sharedInstance];
-    v35 = [SBSwitcherCoordinatedLayoutStateTransitionContext coordinatedLayoutStateTransitionContextForMovingDisplayItems:v26 toSwitcherController:v29 toAppLayout:v33 withApplicationController:v34];
-    coordinatedLayoutStateTransitionContext = v3->_coordinatedLayoutStateTransitionContext;
-    v3->_coordinatedLayoutStateTransitionContext = v35;
+    v35 = [SBSwitcherCoordinatedLayoutStateTransitionContext coordinatedLayoutStateTransitionContextForMovingDisplayItems:v26 toSwitcherController:switcherController toAppLayout:appLayout withApplicationController:v34];
+    coordinatedLayoutStateTransitionContext = selfCopy->_coordinatedLayoutStateTransitionContext;
+    selfCopy->_coordinatedLayoutStateTransitionContext = v35;
   }
 
-  if (v3->_coordinatedLayoutStateTransitionContext)
+  if (selfCopy->_coordinatedLayoutStateTransitionContext)
   {
-    v37 = [(SBWorkspaceTransaction *)v3 windowScene];
-    v38 = [v37 switcherController];
+    windowScene2 = [(SBWorkspaceTransaction *)selfCopy windowScene];
+    switcherController2 = [windowScene2 switcherController];
 
-    v39 = [v38 switcherCoordinator];
-    [v39 prepareForCoordinatedLayoutStateTransitionWithContext:v3->_coordinatedLayoutStateTransitionContext];
+    switcherCoordinator = [switcherController2 switcherCoordinator];
+    [switcherCoordinator prepareForCoordinatedLayoutStateTransitionWithContext:selfCopy->_coordinatedLayoutStateTransitionContext];
   }
 
-  v48.receiver = v3;
+  v48.receiver = selfCopy;
   v48.super_class = SBToAppsWorkspaceTransaction;
   [(SBToAppsWorkspaceTransaction *)&v48 _willBegin];
-  v40 = [(SBWorkspaceTransaction *)v3 transitionRequest];
-  v41 = [v40 workspace];
+  transitionRequest3 = [(SBWorkspaceTransaction *)selfCopy transitionRequest];
+  workspace = [transitionRequest3 workspace];
 
-  if ([(SBToAppsWorkspaceTransaction *)v3 isGoingToLauncher])
+  if ([(SBToAppsWorkspaceTransaction *)selfCopy isGoingToLauncher])
   {
-    v42 = [v41 transientOverlayPresentationManager];
-    v43 = [v42 hasActivePresentation];
+    transientOverlayPresentationManager = [workspace transientOverlayPresentationManager];
+    hasActivePresentation = [transientOverlayPresentationManager hasActivePresentation];
 
-    if ((v43 & 1) == 0)
+    if ((hasActivePresentation & 1) == 0)
     {
-      if (!v3->_gestureInitiated)
+      if (!selfCopy->_gestureInitiated)
       {
         v44 = +[SBWallpaperController sharedInstance];
         [v44 activateOrientationSource:2];
       }
 
-      v45 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v45 postNotificationName:*MEMORY[0x277D67A68] object:v3 userInfo:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter postNotificationName:*MEMORY[0x277D67A68] object:selfCopy userInfo:0];
     }
   }
 }
 
 - (BOOL)isGoingToLauncher
 {
-  v2 = self;
-  v3 = [(SBWorkspaceTransaction *)self transitionRequest];
-  LOBYTE(v2) = [(SBToAppsWorkspaceTransaction *)v2 _isGoingToHomeScreenForTransitionRequest:v3];
+  selfCopy = self;
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+  LOBYTE(selfCopy) = [(SBToAppsWorkspaceTransaction *)selfCopy _isGoingToHomeScreenForTransitionRequest:transitionRequest];
 
-  return v2;
+  return selfCopy;
 }
 
 - (NSSet)allLayoutTransactions
@@ -216,46 +216,46 @@ LABEL_13:
     v20[14] = v3;
     self->_applicationStateNeedsCapture = 0;
     self->_underLockScreenInForeground = 0;
-    v7 = [(SBWorkspaceTransaction *)self transitionRequest];
-    self->_gestureInitiated = [v7 source] == 11;
+    transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+    self->_gestureInitiated = [transitionRequest source] == 11;
 
     self->_preactivationForegroundRunningApplicationCount = 0;
-    v8 = [(SBToAppsWorkspaceTransaction *)self toApplicationSceneEntities];
+    toApplicationSceneEntities = [(SBToAppsWorkspaceTransaction *)self toApplicationSceneEntities];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __56__SBToAppsWorkspaceTransaction__captureApplicationState__block_invoke;
     v20[3] = &unk_2783BAE80;
     v20[4] = self;
-    [v8 enumerateObjectsUsingBlock:v20];
+    [toApplicationSceneEntities enumerateObjectsUsingBlock:v20];
 
     self->_toAndFromApplicationsDiffer = 0;
-    v9 = [(SBToAppsWorkspaceTransaction *)self fromApplicationSceneEntities];
-    v10 = [(SBToAppsWorkspaceTransaction *)self toApplicationSceneEntities];
-    v11 = [v10 count];
-    if ([v9 count] == v11)
+    fromApplicationSceneEntities = [(SBToAppsWorkspaceTransaction *)self fromApplicationSceneEntities];
+    toApplicationSceneEntities2 = [(SBToAppsWorkspaceTransaction *)self toApplicationSceneEntities];
+    v11 = [toApplicationSceneEntities2 count];
+    if ([fromApplicationSceneEntities count] == v11)
     {
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __56__SBToAppsWorkspaceTransaction__captureApplicationState__block_invoke_2;
       v17[3] = &unk_2783BAEA8;
-      v12 = v10;
+      v12 = toApplicationSceneEntities2;
       v18 = v12;
-      v19 = self;
-      [v9 enumerateObjectsUsingBlock:v17];
+      selfCopy = self;
+      [fromApplicationSceneEntities enumerateObjectsUsingBlock:v17];
       if (self->_toAndFromApplicationsDiffer || [v12 count] != 1)
       {
-        v15 = 0;
+        sceneIfExists = 0;
       }
 
       else
       {
-        v13 = [v12 anyObject];
-        v14 = [v13 sceneHandle];
-        v15 = [v14 sceneIfExists];
+        anyObject = [v12 anyObject];
+        sceneHandle = [anyObject sceneHandle];
+        sceneIfExists = [sceneHandle sceneIfExists];
       }
 
-      v16 = [v15 uiSettings];
-      self->_touchCancellationDisabled = [v16 deviceOrientationEventsEnabled];
+      uiSettings = [sceneIfExists uiSettings];
+      self->_touchCancellationDisabled = [uiSettings deviceOrientationEventsEnabled];
     }
 
     else
@@ -290,8 +290,8 @@ void __56__SBToAppsWorkspaceTransaction__captureApplicationState__block_invoke(u
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v3 = [(SBToAppsWorkspaceTransaction *)self allLayoutTransactions];
-  v4 = [v3 countByEnumeratingWithState:&v19 objects:v24 count:16];
+  allLayoutTransactions = [(SBToAppsWorkspaceTransaction *)self allLayoutTransactions];
+  v4 = [allLayoutTransactions countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v4)
   {
     v5 = v4;
@@ -303,7 +303,7 @@ void __56__SBToAppsWorkspaceTransaction__captureApplicationState__block_invoke(u
       {
         if (*v20 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allLayoutTransactions);
         }
 
         v8 = [(SBToAppsWorkspaceTransaction *)self _milestoneForLayoutTransaction:*(*(&v19 + 1) + 8 * v7)];
@@ -313,21 +313,21 @@ void __56__SBToAppsWorkspaceTransaction__captureApplicationState__block_invoke(u
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v19 objects:v24 count:16];
+      v5 = [allLayoutTransactions countByEnumeratingWithState:&v19 objects:v24 count:16];
     }
 
     while (v5);
   }
 
-  v9 = [(SBToAppsWorkspaceTransaction *)self layoutTransaction];
-  [(SBToAppsWorkspaceTransaction *)self addChildTransaction:v9];
+  layoutTransaction = [(SBToAppsWorkspaceTransaction *)self layoutTransaction];
+  [(SBToAppsWorkspaceTransaction *)self addChildTransaction:layoutTransaction];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v10 = [(SBToAppsWorkspaceTransaction *)self ancillaryLayoutTransactions];
-  v11 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
+  ancillaryLayoutTransactions = [(SBToAppsWorkspaceTransaction *)self ancillaryLayoutTransactions];
+  v11 = [ancillaryLayoutTransactions countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v11)
   {
     v12 = v11;
@@ -339,14 +339,14 @@ void __56__SBToAppsWorkspaceTransaction__captureApplicationState__block_invoke(u
       {
         if (*v16 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(ancillaryLayoutTransactions);
         }
 
         [(SBToAppsWorkspaceTransaction *)self addChildTransaction:*(*(&v15 + 1) + 8 * v14++)];
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
+      v12 = [ancillaryLayoutTransactions countByEnumeratingWithState:&v15 objects:v23 count:16];
     }
 
     while (v12);
@@ -355,20 +355,20 @@ void __56__SBToAppsWorkspaceTransaction__captureApplicationState__block_invoke(u
 
 - (id)_iconManager
 {
-  v2 = [(SBWorkspaceTransaction *)self windowScene];
-  v3 = [v2 homeScreenController];
+  windowScene = [(SBWorkspaceTransaction *)self windowScene];
+  homeScreenController = [windowScene homeScreenController];
 
-  v4 = [v3 iconManager];
+  iconManager = [homeScreenController iconManager];
 
-  return v4;
+  return iconManager;
 }
 
 - (void)_configureAnimation
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [(SBSceneLayoutWorkspaceTransaction *)self->_layoutTransaction transitionContext];
+  transitionContext = [(SBSceneLayoutWorkspaceTransaction *)self->_layoutTransaction transitionContext];
   [(SBToAppsWorkspaceTransaction *)self _clearAnimation];
-  if ([v3 animationDisabled])
+  if ([transitionContext animationDisabled])
   {
     if (![(SBToAppsWorkspaceTransaction *)self isAuditHistoryEnabled])
     {
@@ -380,9 +380,9 @@ void __56__SBToAppsWorkspaceTransaction__captureApplicationState__block_invoke(u
 
   else
   {
-    v5 = [(SBToAppsWorkspaceTransaction *)self _setupAnimation];
+    _setupAnimation = [(SBToAppsWorkspaceTransaction *)self _setupAnimation];
     animationController = self->_animationController;
-    self->_animationController = v5;
+    self->_animationController = _setupAnimation;
 
     if (![(SBToAppsWorkspaceTransaction *)self isAuditHistoryEnabled])
     {
@@ -406,13 +406,13 @@ LABEL_9:
   if (!self->_dismissedOverlays)
   {
     self->_dismissedOverlays = 1;
-    v8 = [(SBWorkspaceTransaction *)self windowScene];
+    windowScene = [(SBWorkspaceTransaction *)self windowScene];
     if (self->_shouldSerialDismissOverlays)
     {
-      v9 = [(SBToAppsWorkspaceTransaction *)self _serialOverlayPreDismissalOptions];
-      if ([SBDismissOverlaysAnimationController willDismissOverlaysForDismissOptions:v9 windowScene:v8])
+      _serialOverlayPreDismissalOptions = [(SBToAppsWorkspaceTransaction *)self _serialOverlayPreDismissalOptions];
+      if ([SBDismissOverlaysAnimationController willDismissOverlaysForDismissOptions:_serialOverlayPreDismissalOptions windowScene:windowScene])
       {
-        v10 = [[SBDismissOverlaysAnimationController alloc] initWithTransitionContextProvider:self->super.super._transitionRequest options:v9];
+        v10 = [[SBDismissOverlaysAnimationController alloc] initWithTransitionContextProvider:self->super.super._transitionRequest options:_serialOverlayPreDismissalOptions];
         p_super = &v10->super;
         v12 = self->_animationController;
         if (v12)
@@ -427,11 +427,11 @@ LABEL_9:
 
     else
     {
-      v9 = 0;
+      _serialOverlayPreDismissalOptions = 0;
     }
 
-    v14 = [(SBToAppsWorkspaceTransaction *)self _concurrentOverlayDismissalOptions]& ~v9;
-    if (v14 && [SBDismissOverlaysAnimationController willDismissOverlaysForDismissOptions:v14 windowScene:v8])
+    v14 = [(SBToAppsWorkspaceTransaction *)self _concurrentOverlayDismissalOptions]& ~_serialOverlayPreDismissalOptions;
+    if (v14 && [SBDismissOverlaysAnimationController willDismissOverlaysForDismissOptions:v14 windowScene:windowScene])
     {
       v15 = [[SBDismissOverlaysAnimationController alloc] initWithTransitionContextProvider:self->super.super._transitionRequest options:v14];
       v16 = self->_animationController;
@@ -451,8 +451,8 @@ LABEL_9:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v17 = [(SBToAppsWorkspaceTransaction *)self allLayoutTransactions];
-  v18 = [v17 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  allLayoutTransactions = [(SBToAppsWorkspaceTransaction *)self allLayoutTransactions];
+  v18 = [allLayoutTransactions countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v18)
   {
     v19 = v18;
@@ -463,13 +463,13 @@ LABEL_9:
       {
         if (*v24 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(allLayoutTransactions);
         }
 
         [(SBUIAnimationController *)self->_animationController delayCleanupUntilTransactionFinishes:*(*(&v23 + 1) + 8 * i)];
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v19 = [allLayoutTransactions countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v19);
@@ -485,8 +485,8 @@ LABEL_9:
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v3 = [(SBToAppsWorkspaceTransaction *)self allLayoutTransactions];
-    v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    allLayoutTransactions = [(SBToAppsWorkspaceTransaction *)self allLayoutTransactions];
+    v4 = [allLayoutTransactions countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v4)
     {
       v5 = v4;
@@ -498,14 +498,14 @@ LABEL_9:
         {
           if (*v10 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(allLayoutTransactions);
           }
 
           [(SBUIAnimationController *)self->_animationController stopDelayingCleanupForTransaction:*(*(&v9 + 1) + 8 * v7++)];
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v5 = [allLayoutTransactions countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v5);
@@ -545,10 +545,10 @@ LABEL_9:
 
 - (BOOL)_shouldResignActiveForAnimation
 {
-  v3 = [(SBSceneLayoutWorkspaceTransaction *)self->_layoutTransaction transitionContext];
-  v4 = [v3 animationDisabled];
+  transitionContext = [(SBSceneLayoutWorkspaceTransaction *)self->_layoutTransaction transitionContext];
+  animationDisabled = [transitionContext animationDisabled];
 
-  if (v4)
+  if (animationDisabled)
   {
     return 0;
   }
@@ -561,13 +561,13 @@ LABEL_9:
 - (BOOL)isGoingToMainSwitcher
 {
   v3 = objc_opt_class();
-  v4 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v5 = [v4 applicationContext];
-  v6 = [v5 layoutState];
-  v7 = SBSafeCast(v3, v6);
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+  applicationContext = [transitionRequest applicationContext];
+  layoutState = [applicationContext layoutState];
+  v7 = SBSafeCast(v3, layoutState);
 
-  LOBYTE(v4) = [v7 unlockedEnvironmentMode] == 2;
-  return v4;
+  LOBYTE(transitionRequest) = [v7 unlockedEnvironmentMode] == 2;
+  return transitionRequest;
 }
 
 - (int64_t)_isGoingToHomeScreenInMainDisplayWindowScene
@@ -577,8 +577,8 @@ LABEL_9:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(SBToAppsWorkspaceTransaction *)self allTransitionRequests];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allTransitionRequests = [(SBToAppsWorkspaceTransaction *)self allTransitionRequests];
+  v4 = [allTransitionRequests countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -589,12 +589,12 @@ LABEL_9:
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allTransitionRequests);
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
-        v9 = [v8 displayIdentity];
-        if ([v9 isMainDisplay])
+        displayIdentity = [v8 displayIdentity];
+        if ([displayIdentity isMainDisplay])
         {
 
 LABEL_13:
@@ -603,16 +603,16 @@ LABEL_13:
           goto LABEL_14;
         }
 
-        v10 = [v8 displayIdentity];
-        v11 = [v10 isContinuityDisplay];
+        displayIdentity2 = [v8 displayIdentity];
+        isContinuityDisplay = [displayIdentity2 isContinuityDisplay];
 
-        if (v11)
+        if (isContinuityDisplay)
         {
           goto LABEL_13;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [allTransitionRequests countByEnumeratingWithState:&v14 objects:v18 count:16];
       v12 = 0x7FFFFFFFFFFFFFFFLL;
       if (v5)
       {
@@ -770,8 +770,8 @@ uint64_t __54__SBToAppsWorkspaceTransaction__noteAnimationFinished__block_invoke
   [(SBToAppsWorkspaceTransaction *)self _fireAndClearResultBlockIfNecessaryForFailure:1];
   [(SBToAppsWorkspaceTransaction *)self _clearAnimation];
   [(UIApplicationSceneDeactivationAssertion *)self->_resignActiveAssertion relinquish];
-  v3 = [(SBToAppsWorkspaceTransaction *)self floatingDockBehaviorAssertion];
-  [v3 invalidate];
+  floatingDockBehaviorAssertion = [(SBToAppsWorkspaceTransaction *)self floatingDockBehaviorAssertion];
+  [floatingDockBehaviorAssertion invalidate];
 
   v4.receiver = self;
   v4.super_class = SBToAppsWorkspaceTransaction;
@@ -780,94 +780,94 @@ uint64_t __54__SBToAppsWorkspaceTransaction__noteAnimationFinished__block_invoke
 
 - (void)performToAppStateCleanup
 {
-  v15 = [(SBToAppsWorkspaceTransaction *)self _homeScreenAppearanceController];
-  v3 = [(SBWorkspaceTransaction *)self transitionRequest];
-  if ([v3 source] == 8)
+  _homeScreenAppearanceController = [(SBToAppsWorkspaceTransaction *)self _homeScreenAppearanceController];
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+  if ([transitionRequest source] == 8)
   {
-    v4 = [(SBWorkspaceTransaction *)self transitionRequest];
-    v5 = [v4 applicationContext];
-    v6 = [v5 retainsSiri];
+    transitionRequest2 = [(SBWorkspaceTransaction *)self transitionRequest];
+    applicationContext = [transitionRequest2 applicationContext];
+    retainsSiri = [applicationContext retainsSiri];
 
-    if (v6)
+    if (retainsSiri)
     {
       goto LABEL_5;
     }
 
-    v3 = +[SBAssistantController sharedInstance];
-    [v3 dismissAssistantViewInEverySceneIfNecessaryWithAnimation:0];
+    transitionRequest = +[SBAssistantController sharedInstance];
+    [transitionRequest dismissAssistantViewInEverySceneIfNecessaryWithAnimation:0];
   }
 
 LABEL_5:
-  v7 = [(SBToAppsWorkspaceTransaction *)self _isGoingToHomeScreenInMainDisplayWindowScene];
-  if (v7)
+  _isGoingToHomeScreenInMainDisplayWindowScene = [(SBToAppsWorkspaceTransaction *)self _isGoingToHomeScreenInMainDisplayWindowScene];
+  if (_isGoingToHomeScreenInMainDisplayWindowScene)
   {
-    if (v7 == 1)
+    if (_isGoingToHomeScreenInMainDisplayWindowScene == 1)
     {
-      [v15 beginRequiringContentForReason:@"SBUIHomeScreenActiveContentRequirementReason"];
-      v8 = [(SBToAppsWorkspaceTransaction *)self shouldAnimateOrientationChangeOnCompletion];
+      [_homeScreenAppearanceController beginRequiringContentForReason:@"SBUIHomeScreenActiveContentRequirementReason"];
+      shouldAnimateOrientationChangeOnCompletion = [(SBToAppsWorkspaceTransaction *)self shouldAnimateOrientationChangeOnCompletion];
       if ([(SBWorkspaceTransaction *)self isMainDisplayTransaction])
       {
         v9 = SBApp;
-        v10 = [(SBToAppsWorkspaceTransaction *)self _transitionContext];
-        v11 = [v10 layoutState];
-        [v9 updateNativeOrientationWithOrientation:objc_msgSend(v11 updateMirroredDisplays:"interfaceOrientation") animated:1 logMessage:{v8, @"ToApps -performToAppStateCleanup"}];
+        _transitionContext = [(SBToAppsWorkspaceTransaction *)self _transitionContext];
+        layoutState = [_transitionContext layoutState];
+        [v9 updateNativeOrientationWithOrientation:objc_msgSend(layoutState updateMirroredDisplays:"interfaceOrientation") animated:1 logMessage:{shouldAnimateOrientationChangeOnCompletion, @"ToApps -performToAppStateCleanup"}];
       }
 
-      v12 = [(SBToAppsWorkspaceTransaction *)self _iconManager];
-      v13 = [v12 iconToReveal];
+      _iconManager = [(SBToAppsWorkspaceTransaction *)self _iconManager];
+      iconToReveal = [_iconManager iconToReveal];
 
-      if (v13)
+      if (iconToReveal)
       {
-        [v12 tryScrollToIconToRevealAnimated:1];
+        [_iconManager tryScrollToIconToRevealAnimated:1];
       }
     }
   }
 
   else
   {
-    [v15 endRequiringContentForReason:@"SBUIHomeScreenActiveContentRequirementReason"];
+    [_homeScreenAppearanceController endRequiringContentForReason:@"SBUIHomeScreenActiveContentRequirementReason"];
   }
 
-  v14 = [(SBToAppsWorkspaceTransaction *)self floatingDockBehaviorAssertion];
-  [v14 invalidate];
+  floatingDockBehaviorAssertion = [(SBToAppsWorkspaceTransaction *)self floatingDockBehaviorAssertion];
+  [floatingDockBehaviorAssertion invalidate];
 
   [(SBToAppsWorkspaceTransaction *)self setFloatingDockBehaviorAssertion:0];
 }
 
 - (id)_homeScreenAppearanceController
 {
-  v2 = [(SBWorkspaceTransaction *)self windowScene];
-  v3 = [v2 homeScreenController];
+  windowScene = [(SBWorkspaceTransaction *)self windowScene];
+  homeScreenController = [windowScene homeScreenController];
 
-  return v3;
+  return homeScreenController;
 }
 
 - (void)_didComplete
 {
   v44 = *MEMORY[0x277D85DE8];
   [(SBToAppsWorkspaceTransaction *)self _relinquishResignActiveAssertion];
-  v3 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v4 = [v3 workspace];
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+  workspace = [transitionRequest workspace];
 
-  if (-[SBToAppsWorkspaceTransaction isGoingToLauncher](self, "isGoingToLauncher") && ([v4 transientOverlayPresentationManager], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "hasActivePresentation"), v5, (v6 & 1) == 0))
+  if (-[SBToAppsWorkspaceTransaction isGoingToLauncher](self, "isGoingToLauncher") && ([workspace transientOverlayPresentationManager], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "hasActivePresentation"), v5, (v6 & 1) == 0))
   {
     v8 = +[SBPasscodeController sharedInstance];
     [v8 checkPasscodeCompliance];
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 postNotificationName:*MEMORY[0x277D67A60] object:self userInfo:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:*MEMORY[0x277D67A60] object:self userInfo:0];
 
     pid_hibernate();
   }
 
   else
   {
-    v7 = [MEMORY[0x277D66210] sharedInstance];
-    [v7 dismissAppIconForceTouchControllers:0];
+    mEMORY[0x277D66210] = [MEMORY[0x277D66210] sharedInstance];
+    [mEMORY[0x277D66210] dismissAppIconForceTouchControllers:0];
   }
 
-  v10 = +[SBSetupManager sharedInstance];
-  if (([v10 isInSetupMode] & 1) == 0)
+  switcherController = +[SBSetupManager sharedInstance];
+  if (([switcherController isInSetupMode] & 1) == 0)
   {
 LABEL_14:
 
@@ -875,55 +875,55 @@ LABEL_14:
   }
 
   v11 = +[SBSetupManager sharedInstance];
-  v12 = [v11 updateInSetupMode];
+  updateInSetupMode = [v11 updateInSetupMode];
 
-  if (v12)
+  if (updateInSetupMode)
   {
     v13 = +[SBSetupManager sharedInstance];
-    v14 = [v13 isInSetupModeReadyToExit];
+    isInSetupModeReadyToExit = [v13 isInSetupModeReadyToExit];
 
-    if ((v14 & 1) == 0)
+    if ((isInSetupModeReadyToExit & 1) == 0)
     {
-      v15 = [(SBWorkspaceTransaction *)self windowScene];
-      v10 = [v15 switcherController];
+      windowScene = [(SBWorkspaceTransaction *)self windowScene];
+      switcherController = [windowScene switcherController];
 
-      v16 = [v10 layoutState];
-      v17 = [v16 elementWithRole:1];
+      layoutState = [switcherController layoutState];
+      v17 = [layoutState elementWithRole:1];
 
-      v18 = [v17 workspaceEntity];
-      v19 = [v18 deviceApplicationSceneEntity];
-      v20 = [v19 sceneHandle];
+      workspaceEntity = [v17 workspaceEntity];
+      deviceApplicationSceneEntity = [workspaceEntity deviceApplicationSceneEntity];
+      sceneHandle = [deviceApplicationSceneEntity sceneHandle];
 
-      v21 = [(SBWorkspaceTransaction *)self transitionRequest];
-      v22 = [v21 workspace];
+      transitionRequest2 = [(SBWorkspaceTransaction *)self transitionRequest];
+      workspace2 = [transitionRequest2 workspace];
 
-      v23 = [v22 transientOverlayPresentationManager];
-      v24 = [v23 hasActivePresentation];
+      transientOverlayPresentationManager = [workspace2 transientOverlayPresentationManager];
+      hasActivePresentation = [transientOverlayPresentationManager hasActivePresentation];
 
-      if ((v24 & 1) == 0)
+      if ((hasActivePresentation & 1) == 0)
       {
-        v25 = [v20 application];
-        v26 = [v25 info];
-        v27 = [v26 isLaunchableDuringSetup];
+        application = [sceneHandle application];
+        info = [application info];
+        isLaunchableDuringSetup = [info isLaunchableDuringSetup];
 
-        if ((v27 & 1) == 0)
+        if ((isLaunchableDuringSetup & 1) == 0)
         {
           v28 = SBLogCommon();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
           {
-            v29 = [v20 sceneIdentifier];
+            sceneIdentifier = [sceneHandle sceneIdentifier];
             *buf = 138412802;
-            v39 = self;
+            selfCopy = self;
             v40 = 1024;
             v41 = 0;
             v42 = 2112;
-            v43 = v29;
+            v43 = sceneIdentifier;
             _os_log_impl(&dword_21ED4E000, v28, OS_LOG_TYPE_DEFAULT, "Activating setup because in setup mode at end of transaction %@. hasActiveTransientOverlayPresentation = %{BOOL}u activeApplicationSceneHandle = %@. Forcibly launching setup.", buf, 0x1Cu);
           }
 
           v30 = +[SBApplicationController sharedInstance];
-          v31 = [v30 setupApplication];
-          SBWorkspaceActivateApplication(v31);
+          setupApplication = [v30 setupApplication];
+          SBWorkspaceActivateApplication(setupApplication);
         }
       }
 
@@ -932,8 +932,8 @@ LABEL_14:
   }
 
 LABEL_15:
-  v32 = [(SBToAppsWorkspaceTransaction *)self toApplicationSceneEntities];
-  v33 = [v32 bs_containsObjectPassingTest:&__block_literal_global_350];
+  toApplicationSceneEntities = [(SBToAppsWorkspaceTransaction *)self toApplicationSceneEntities];
+  v33 = [toApplicationSceneEntities bs_containsObjectPassingTest:&__block_literal_global_350];
 
   if (v33)
   {
@@ -945,11 +945,11 @@ LABEL_15:
   [(SBMainWorkspaceTransaction *)&v37 _didComplete];
   if (self->_coordinatedLayoutStateTransitionContext)
   {
-    v34 = [(SBWorkspaceTransaction *)self windowScene];
-    v35 = [v34 switcherController];
+    windowScene2 = [(SBWorkspaceTransaction *)self windowScene];
+    switcherController2 = [windowScene2 switcherController];
 
-    v36 = [v35 switcherCoordinator];
-    [v36 cleanUpAfterCoordinatedLayoutStateTransitionWithContext:self->_coordinatedLayoutStateTransitionContext];
+    switcherCoordinator = [switcherController2 switcherCoordinator];
+    [switcherCoordinator cleanUpAfterCoordinatedLayoutStateTransitionWithContext:self->_coordinatedLayoutStateTransitionContext];
   }
 }
 
@@ -983,14 +983,14 @@ void __56__SBToAppsWorkspaceTransaction__captureApplicationState__block_invoke_2
 - (BOOL)isGoingToCoverSheet
 {
   v3 = +[SBLockScreenManager sharedInstance];
-  v4 = [v3 isUILocked];
+  isUILocked = [v3 isUILocked];
 
-  v5 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v6 = [v5 transientOverlayContext];
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+  transientOverlayContext = [transitionRequest transientOverlayContext];
 
-  if (v6)
+  if (transientOverlayContext)
   {
-    v7 = [v6 transitionType] == 1;
+    v7 = [transientOverlayContext transitionType] == 1;
   }
 
   else
@@ -998,33 +998,33 @@ void __56__SBToAppsWorkspaceTransaction__captureApplicationState__block_invoke_2
     v7 = 0;
   }
 
-  return v4 & v7;
+  return isUILocked & v7;
 }
 
-- (SBToAppsWorkspaceTransaction)initWithTransitionRequest:(id)a3
+- (SBToAppsWorkspaceTransaction)initWithTransitionRequest:(id)request
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 applicationContext];
-  if (!v5)
+  requestCopy = request;
+  applicationContext = [requestCopy applicationContext];
+  if (!applicationContext)
   {
     [SBToAppsWorkspaceTransaction initWithTransitionRequest:];
   }
 
-  if ([v5 isBackground])
+  if ([applicationContext isBackground])
   {
     [SBToAppsWorkspaceTransaction initWithTransitionRequest:];
   }
 
-  v6 = [v4 copyMainWorkspaceTransitionRequest];
-  v7 = [SBMainWorkspaceTransitionRequest ancillaryTransitionRequestsForTransitionRequest:v6];
+  copyMainWorkspaceTransitionRequest = [requestCopy copyMainWorkspaceTransitionRequest];
+  v7 = [SBMainWorkspaceTransitionRequest ancillaryTransitionRequestsForTransitionRequest:copyMainWorkspaceTransitionRequest];
 
   if ([v7 count])
   {
-    if (([v4 isFinalized] & 1) == 0)
+    if (([requestCopy isFinalized] & 1) == 0)
     {
-      [v4 setCrossingDisplays:1];
-      [v4 finalize];
+      [requestCopy setCrossingDisplays:1];
+      [requestCopy finalize];
     }
 
     v29 = 0u;
@@ -1060,14 +1060,14 @@ void __56__SBToAppsWorkspaceTransaction__captureApplicationState__block_invoke_2
 
   v26.receiver = self;
   v26.super_class = SBToAppsWorkspaceTransaction;
-  v14 = [(SBMainWorkspaceTransaction *)&v26 initWithTransitionRequest:v4];
+  v14 = [(SBMainWorkspaceTransaction *)&v26 initWithTransitionRequest:requestCopy];
   if (v14)
   {
     v15 = objc_alloc_init(MEMORY[0x277CBEB58]);
     layoutTransitionCompletions = v14->_layoutTransitionCompletions;
     v14->_layoutTransitionCompletions = v15;
 
-    v17 = [[SBSceneLayoutWorkspaceTransaction alloc] initWithTransitionRequest:v4 delegate:v14];
+    v17 = [[SBSceneLayoutWorkspaceTransaction alloc] initWithTransitionRequest:requestCopy delegate:v14];
     layoutTransaction = v14->_layoutTransaction;
     v14->_layoutTransaction = v17;
 
@@ -1105,32 +1105,32 @@ SBSceneLayoutWorkspaceTransaction *__58__SBToAppsWorkspaceTransaction_initWithTr
 
 - (BOOL)shouldPerformToAppStateCleanupOnCompletion
 {
-  v3 = [(SBToAppsWorkspaceTransaction *)self toApplicationSceneEntities];
-  if ([v3 count])
+  toApplicationSceneEntities = [(SBToAppsWorkspaceTransaction *)self toApplicationSceneEntities];
+  if ([toApplicationSceneEntities count])
   {
-    v4 = 1;
+    isGoingToLauncher = 1;
   }
 
   else
   {
-    v4 = [(SBToAppsWorkspaceTransaction *)self isGoingToLauncher];
+    isGoingToLauncher = [(SBToAppsWorkspaceTransaction *)self isGoingToLauncher];
   }
 
-  return v4;
+  return isGoingToLauncher;
 }
 
-- (BOOL)_isGoingToHomeScreenForTransitionRequest:(id)a3
+- (BOOL)_isGoingToHomeScreenForTransitionRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_opt_class();
-  v6 = [v4 applicationContext];
+  applicationContext = [requestCopy applicationContext];
 
-  v7 = [v6 layoutState];
-  v8 = SBSafeCast(v5, v7);
+  layoutState = [applicationContext layoutState];
+  v8 = SBSafeCast(v5, layoutState);
 
-  v9 = [v8 unlockedEnvironmentMode];
+  unlockedEnvironmentMode = [v8 unlockedEnvironmentMode];
   IsValid = SBPeekConfigurationIsValid([v8 peekConfiguration]);
-  if (v9 != 1 && !IsValid)
+  if (unlockedEnvironmentMode != 1 && !IsValid)
   {
     LOBYTE(v12) = 0;
   }
@@ -1149,40 +1149,40 @@ SBSceneLayoutWorkspaceTransaction *__58__SBToAppsWorkspaceTransaction_initWithTr
   if (!resignActiveAssertion)
   {
     v4 = +[SBSceneManagerCoordinator sharedInstance];
-    v5 = [v4 sceneDeactivationManager];
-    v6 = [v5 newAssertionWithReason:5];
+    sceneDeactivationManager = [v4 sceneDeactivationManager];
+    v6 = [sceneDeactivationManager newAssertionWithReason:5];
     v7 = self->_resignActiveAssertion;
     self->_resignActiveAssertion = v6;
 
     resignActiveAssertion = self->_resignActiveAssertion;
   }
 
-  v9 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v8 = [v9 displayIdentity];
-  [(UIApplicationSceneDeactivationAssertion *)resignActiveAssertion sb_acquireForDisplayIdentity:v8];
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+  displayIdentity = [transitionRequest displayIdentity];
+  [(UIApplicationSceneDeactivationAssertion *)resignActiveAssertion sb_acquireForDisplayIdentity:displayIdentity];
 }
 
-- (void)_delayTransitionCompletionForRequester:(id)a3
+- (void)_delayTransitionCompletionForRequester:(id)requester
 {
-  v4 = a3;
+  requesterCopy = requester;
   completionDelayRequesters = self->_completionDelayRequesters;
-  v8 = v4;
+  v8 = requesterCopy;
   if (!completionDelayRequesters)
   {
     v6 = objc_alloc_init(MEMORY[0x277CCA940]);
     v7 = self->_completionDelayRequesters;
     self->_completionDelayRequesters = v6;
 
-    v4 = v8;
+    requesterCopy = v8;
     completionDelayRequesters = self->_completionDelayRequesters;
   }
 
-  [(NSCountedSet *)completionDelayRequesters addObject:v4];
+  [(NSCountedSet *)completionDelayRequesters addObject:requesterCopy];
 }
 
-- (void)_stopDelayingTransitionCompletionForRequester:(id)a3
+- (void)_stopDelayingTransitionCompletionForRequester:(id)requester
 {
-  [(NSCountedSet *)self->_completionDelayRequesters removeObject:a3];
+  [(NSCountedSet *)self->_completionDelayRequesters removeObject:requester];
   if (![(NSCountedSet *)self->_completionDelayRequesters count])
   {
     completionDelayRequesters = self->_completionDelayRequesters;
@@ -1200,16 +1200,16 @@ uint64_t __47__SBToAppsWorkspaceTransaction__beginAnimation__block_invoke_2(uint
   return [v2 _checkForAnimationCompletion];
 }
 
-- (void)_logForInterruptAttemptReason:(id)a3
+- (void)_logForInterruptAttemptReason:(id)reason
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = SBLogCommon();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_INFO);
 
   if (v6)
   {
-    v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v4 arguments:&v12];
+    v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:reasonCopy arguments:&v12];
     if ([(SBToAppsWorkspaceTransaction *)self isAuditHistoryEnabled])
     {
       [(SBToAppsWorkspaceTransaction *)self _addAuditHistoryItem:@"%@", v7];
@@ -1225,24 +1225,24 @@ uint64_t __47__SBToAppsWorkspaceTransaction__beginAnimation__block_invoke_2(uint
   }
 }
 
-+ (BOOL)canInterruptTransaction:(id)a3 forTransitionRequest:(id)a4
++ (BOOL)canInterruptTransaction:(id)transaction forTransitionRequest:(id)request
 {
   v83 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  transactionCopy = transaction;
+  requestCopy = request;
   v7 = objc_opt_class();
-  v8 = SBSafeCast(v7, v6);
-  v9 = [v8 copyMainWorkspaceTransitionRequest];
-  if (![v5 isInterrupted])
+  v8 = SBSafeCast(v7, requestCopy);
+  copyMainWorkspaceTransitionRequest = [v8 copyMainWorkspaceTransitionRequest];
+  if (![transactionCopy isInterrupted])
   {
-    v12 = [v9 applicationContext];
-    v13 = [v12 isBackground];
+    applicationContext = [copyMainWorkspaceTransitionRequest applicationContext];
+    isBackground = [applicationContext isBackground];
 
-    if (v13)
+    if (isBackground)
     {
       v14 = objc_opt_class();
       v11 = NSStringFromClass(v14);
-      [v5 _logForInterruptAttemptReason:{@"<%@:%p> not interruptible because:  request is for background activation", v11, v5}];
+      [transactionCopy _logForInterruptAttemptReason:{@"<%@:%p> not interruptible because:  request is for background activation", v11, transactionCopy}];
       goto LABEL_15;
     }
 
@@ -1250,13 +1250,13 @@ uint64_t __47__SBToAppsWorkspaceTransaction__beginAnimation__block_invoke_2(uint
     if ([v15 isInSetupMode])
     {
       v16 = +[SBSetupManager sharedInstance];
-      v17 = [v16 isInSetupModeReadyToExit];
+      isInSetupModeReadyToExit = [v16 isInSetupModeReadyToExit];
 
-      if ((v17 & 1) == 0)
+      if ((isInSetupModeReadyToExit & 1) == 0)
       {
         v18 = objc_opt_class();
         v11 = NSStringFromClass(v18);
-        [v5 _logForInterruptAttemptReason:{@"<%@:%p> not interruptible because: we are in setup mode", v11, v5}];
+        [transactionCopy _logForInterruptAttemptReason:{@"<%@:%p> not interruptible because: we are in setup mode", v11, transactionCopy}];
         goto LABEL_15;
       }
     }
@@ -1265,47 +1265,47 @@ uint64_t __47__SBToAppsWorkspaceTransaction__beginAnimation__block_invoke_2(uint
     {
     }
 
-    v19 = [v5 transitionRequest];
-    v20 = [v19 source];
+    transitionRequest = [transactionCopy transitionRequest];
+    source = [transitionRequest source];
 
-    if (v20 == 31)
+    if (source == 31)
     {
       v21 = objc_opt_class();
       v11 = NSStringFromClass(v21);
-      [v5 _logForInterruptAttemptReason:{@"<%@:%p> not interruptible because: we are in a startup transition", v11, v5}];
+      [transactionCopy _logForInterruptAttemptReason:{@"<%@:%p> not interruptible because: we are in a startup transition", v11, transactionCopy}];
       goto LABEL_15;
     }
 
-    if ([v9 source] == 44)
+    if ([copyMainWorkspaceTransitionRequest source] == 44)
     {
       v22 = objc_opt_class();
       v11 = NSStringFromClass(v22);
-      [v5 _logForInterruptAttemptReason:{@"<%@:%p> not interruptible because: transitions from app clip placeholders must be pended", v11, v5}];
+      [transactionCopy _logForInterruptAttemptReason:{@"<%@:%p> not interruptible because: transitions from app clip placeholders must be pended", v11, transactionCopy}];
       goto LABEL_15;
     }
 
-    v23 = [v5 transitionRequest];
-    v24 = [v23 source];
+    transitionRequest2 = [transactionCopy transitionRequest];
+    source2 = [transitionRequest2 source];
 
-    if (v24 == 45)
+    if (source2 == 45)
     {
       v25 = objc_opt_class();
       v11 = NSStringFromClass(v25);
-      [v5 _logForInterruptAttemptReason:{@"<%@:%p> not interruptible because: view morph animations are not interruptible", v11, v5}];
+      [transactionCopy _logForInterruptAttemptReason:{@"<%@:%p> not interruptible because: view morph animations are not interruptible", v11, transactionCopy}];
       goto LABEL_15;
     }
 
-    v28 = [v5 animationController];
-    v29 = v28;
-    if (v5 && v28)
+    animationController = [transactionCopy animationController];
+    v29 = animationController;
+    if (transactionCopy && animationController)
     {
-      if (([v28 isInterruptible] & 1) == 0)
+      if (([animationController isInterruptible] & 1) == 0)
       {
         v34 = objc_opt_class();
         v35 = NSStringFromClass(v34);
         v36 = objc_opt_class();
         v37 = NSStringFromClass(v36);
-        [v5 _logForInterruptAttemptReason:{@"<%@:%p> not interruptible because:  transaction animation isn't interruptible : animationController=<%@:%p>", v35, v5, v37, v29}];
+        [transactionCopy _logForInterruptAttemptReason:{@"<%@:%p> not interruptible because:  transaction animation isn't interruptible : animationController=<%@:%p>", v35, transactionCopy, v37, v29}];
 
         goto LABEL_43;
       }
@@ -1327,7 +1327,7 @@ uint64_t __47__SBToAppsWorkspaceTransaction__beginAnimation__block_invoke_2(uint
         {
           v51 = objc_opt_class();
           v52 = NSStringFromClass(v51);
-          [v5 _logForInterruptAttemptReason:{@"<%@:%p> not interruptible because:  transaction animation isnt switcher animation and doesn't have switcher animation as a child", v52, v5}];
+          [transactionCopy _logForInterruptAttemptReason:{@"<%@:%p> not interruptible because:  transaction animation isnt switcher animation and doesn't have switcher animation as a child", v52, transactionCopy}];
 
           _Block_object_dispose(&v78, 8);
           goto LABEL_43;
@@ -1337,11 +1337,11 @@ uint64_t __47__SBToAppsWorkspaceTransaction__beginAnimation__block_invoke_2(uint
       }
     }
 
-    if (v9 && [v9 source] == 14)
+    if (copyMainWorkspaceTransitionRequest && [copyMainWorkspaceTransitionRequest source] == 14)
     {
       v30 = objc_opt_class();
       v31 = NSStringFromClass(v30);
-      [v5 _logForInterruptAttemptReason:{@"<%@:%p> not interruptible because:  rotation", v31, v5}];
+      [transactionCopy _logForInterruptAttemptReason:{@"<%@:%p> not interruptible because:  rotation", v31, transactionCopy}];
 
 LABEL_43:
       v26 = 0;
@@ -1350,11 +1350,11 @@ LABEL_44:
       goto LABEL_16;
     }
 
-    if ([v9 source] == 75)
+    if ([copyMainWorkspaceTransitionRequest source] == 75)
     {
       v32 = objc_opt_class();
       v33 = NSStringFromClass(v32);
-      [v5 _logForInterruptAttemptReason:{@"<%@:%p> not interruptible because:  cannot interrupt for Non Interactive Scene Resize update requests", v33, v5}];
+      [transactionCopy _logForInterruptAttemptReason:{@"<%@:%p> not interruptible because:  cannot interrupt for Non Interactive Scene Resize update requests", v33, transactionCopy}];
 
       goto LABEL_43;
     }
@@ -1363,8 +1363,8 @@ LABEL_44:
     v76 = 0u;
     v73 = 0u;
     v74 = 0u;
-    v38 = [v5 _childWorkspaceTransactions];
-    v39 = [v38 countByEnumeratingWithState:&v73 objects:v82 count:16];
+    _childWorkspaceTransactions = [transactionCopy _childWorkspaceTransactions];
+    v39 = [_childWorkspaceTransactions countByEnumeratingWithState:&v73 objects:v82 count:16];
     if (v39)
     {
       v40 = *v74;
@@ -1374,27 +1374,27 @@ LABEL_44:
         {
           if (*v74 != v40)
           {
-            objc_enumerationMutation(v38);
+            objc_enumerationMutation(_childWorkspaceTransactions);
           }
 
           v42 = *(*(&v73 + 1) + 8 * i);
-          if (([v42 canInterruptForTransitionRequest:v6] & 1) == 0)
+          if (([v42 canInterruptForTransitionRequest:requestCopy] & 1) == 0)
           {
             v45 = objc_opt_class();
             v46 = NSStringFromClass(v45);
             v47 = objc_opt_class();
             v48 = NSStringFromClass(v47);
-            [v5 _logForInterruptAttemptReason:{@"<%@:%p> NOT Interruptible due to child transaction not being interruptible: <%@:%p>", v46, v5, v48, v42}];
+            [transactionCopy _logForInterruptAttemptReason:{@"<%@:%p> NOT Interruptible due to child transaction not being interruptible: <%@:%p>", v46, transactionCopy, v48, v42}];
 
             v49 = objc_opt_class();
             v50 = NSStringFromClass(v49);
-            [v5 _logForInterruptAttemptReason:{@"<%@:%p> not interruptible because:  children aren't interruptible", v50, v5}];
+            [transactionCopy _logForInterruptAttemptReason:{@"<%@:%p> not interruptible because:  children aren't interruptible", v50, transactionCopy}];
 
             goto LABEL_43;
           }
         }
 
-        v39 = [v38 countByEnumeratingWithState:&v73 objects:v82 count:16];
+        v39 = [_childWorkspaceTransactions countByEnumeratingWithState:&v73 objects:v82 count:16];
         if (v39)
         {
           continue;
@@ -1404,38 +1404,38 @@ LABEL_44:
       }
     }
 
-    if ([v9 source] == 27)
+    if ([copyMainWorkspaceTransitionRequest source] == 27)
     {
       v43 = objc_opt_class();
       v44 = NSStringFromClass(v43);
-      [v5 _logForInterruptAttemptReason:{@"<%@:%p> not interruptible because:  cannot interrupt for drag and drop requests", v44, v5}];
+      [transactionCopy _logForInterruptAttemptReason:{@"<%@:%p> not interruptible because:  cannot interrupt for drag and drop requests", v44, transactionCopy}];
 
       goto LABEL_43;
     }
 
-    if ([v9 source] == 48)
+    if ([copyMainWorkspaceTransitionRequest source] == 48)
     {
       v53 = objc_opt_class();
       v54 = NSStringFromClass(v53);
-      [v5 _logForInterruptAttemptReason:{@"<%@:%p> not interruptible because:  cannot interrupt for InCall scene update requests", v54, v5}];
+      [transactionCopy _logForInterruptAttemptReason:{@"<%@:%p> not interruptible because:  cannot interrupt for InCall scene update requests", v54, transactionCopy}];
 
       goto LABEL_43;
     }
 
-    v55 = [v5 transitionRequest];
-    v56 = [v55 applicationContext];
+    transitionRequest3 = [transactionCopy transitionRequest];
+    applicationContext2 = [transitionRequest3 applicationContext];
 
-    v72 = [v56 previousLayoutState];
-    v71 = [v56 layoutState];
-    if ([v72 unlockedEnvironmentMode] == 3 && objc_msgSend(v71, "unlockedEnvironmentMode") == 1)
+    previousLayoutState = [applicationContext2 previousLayoutState];
+    layoutState = [applicationContext2 layoutState];
+    if ([previousLayoutState unlockedEnvironmentMode] == 3 && objc_msgSend(layoutState, "unlockedEnvironmentMode") == 1)
     {
-      v57 = [v9 applicationContext];
-      v58 = [v57 layoutState];
-      if ([v58 unlockedEnvironmentMode] == 2)
+      applicationContext3 = [copyMainWorkspaceTransitionRequest applicationContext];
+      layoutState2 = [applicationContext3 layoutState];
+      if ([layoutState2 unlockedEnvironmentMode] == 2)
       {
         v59 = objc_opt_class();
         v60 = NSStringFromClass(v59);
-        [v5 _logForInterruptAttemptReason:{@"<%@:%p> not interruptible because:  zoom down animation cannot be interrupted by home -> switcher transition", v60, v5}];
+        [transactionCopy _logForInterruptAttemptReason:{@"<%@:%p> not interruptible because:  zoom down animation cannot be interrupted by home -> switcher transition", v60, transactionCopy}];
 
 LABEL_52:
         v26 = 0;
@@ -1445,31 +1445,31 @@ LABEL_59:
       }
     }
 
-    v61 = [v9 transientOverlayContext];
+    transientOverlayContext = [copyMainWorkspaceTransitionRequest transientOverlayContext];
 
-    if (v61)
+    if (transientOverlayContext)
     {
       v62 = objc_opt_class();
-      v57 = NSStringFromClass(v62);
-      [v5 _logForInterruptAttemptReason:{@"<%@:%p> not interruptible because: The transition request contains a transient overlay context ", v57, v5}];
+      applicationContext3 = NSStringFromClass(v62);
+      [transactionCopy _logForInterruptAttemptReason:{@"<%@:%p> not interruptible because: The transition request contains a transient overlay context ", applicationContext3, transactionCopy}];
       goto LABEL_52;
     }
 
-    v63 = [v9 workspace];
-    v57 = [v63 transactionForTransitionRequest:v9];
+    workspace = [copyMainWorkspaceTransitionRequest workspace];
+    applicationContext3 = [workspace transactionForTransitionRequest:copyMainWorkspaceTransitionRequest];
 
     v64 = objc_opt_class();
-    v65 = SBSafeCast(v64, v57);
+    v65 = SBSafeCast(v64, applicationContext3);
     v66 = v65;
     if (v65)
     {
-      v67 = [v65 _setupAnimation];
+      _setupAnimation = [v65 _setupAnimation];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v68 = objc_opt_class();
         v69 = NSStringFromClass(v68);
-        [v5 _logForInterruptAttemptReason:{@"<%@:%p> interruptible because:  next request is switcher-controllable", v69, v5}];
+        [transactionCopy _logForInterruptAttemptReason:{@"<%@:%p> interruptible because:  next request is switcher-controllable", v69, transactionCopy}];
 
         v26 = 1;
 LABEL_58:
@@ -1479,15 +1479,15 @@ LABEL_58:
     }
 
     v70 = objc_opt_class();
-    v67 = NSStringFromClass(v70);
-    [v5 _logForInterruptAttemptReason:{@"<%@:%p> not interruptible because:  other", v67, v5}];
+    _setupAnimation = NSStringFromClass(v70);
+    [transactionCopy _logForInterruptAttemptReason:{@"<%@:%p> not interruptible because:  other", _setupAnimation, transactionCopy}];
     v26 = 0;
     goto LABEL_58;
   }
 
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  [v5 _logForInterruptAttemptReason:{@"<%@:%p> not interruptible because:  already interrupted", v11, v5}];
+  [transactionCopy _logForInterruptAttemptReason:{@"<%@:%p> not interruptible because:  already interrupted", v11, transactionCopy}];
 LABEL_15:
 
   v26 = 0;
@@ -1515,15 +1515,15 @@ void __77__SBToAppsWorkspaceTransaction_canInterruptTransaction_forTransitionReq
   if ([v2 isInSetupMode])
   {
     v3 = +[SBSetupManager sharedInstance];
-    v4 = [v3 isInSetupModeReadyToExit];
+    isInSetupModeReadyToExit = [v3 isInSetupModeReadyToExit];
   }
 
   else
   {
-    v4 = 1;
+    isInSetupModeReadyToExit = 1;
   }
 
-  return v4;
+  return isInSetupModeReadyToExit;
 }
 
 void __44__SBToAppsWorkspaceTransaction__didComplete__block_invoke_2()
@@ -1532,15 +1532,15 @@ void __44__SBToAppsWorkspaceTransaction__didComplete__block_invoke_2()
   [v0 postLaunchCompleteNotificationForSetup];
 }
 
-- (void)_childTransactionDidComplete:(id)a3
+- (void)_childTransactionDidComplete:(id)complete
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (self->_appRepairTransaction != v4)
+  completeCopy = complete;
+  v5 = completeCopy;
+  if (self->_appRepairTransaction != completeCopy)
   {
-    v6 = [(SBToAppsWorkspaceTransaction *)self allLayoutTransactions];
-    v7 = [v6 containsObject:v5];
+    allLayoutTransactions = [(SBToAppsWorkspaceTransaction *)self allLayoutTransactions];
+    v7 = [allLayoutTransactions containsObject:v5];
 
     if (v7)
     {
@@ -1551,7 +1551,7 @@ void __44__SBToAppsWorkspaceTransaction__didComplete__block_invoke_2()
     goto LABEL_35;
   }
 
-  if (([(SBAppRepairTransaction *)v4 isFailed]& 1) != 0)
+  if (([(SBAppRepairTransaction *)completeCopy isFailed]& 1) != 0)
   {
     v9 = 0;
   }
@@ -1567,8 +1567,8 @@ void __44__SBToAppsWorkspaceTransaction__didComplete__block_invoke_2()
     [(SBToAppsWorkspaceTransaction *)self _addAuditHistoryItem:@"App repair completed. Success = %@.", v10];
   }
 
-  v11 = [(SBSceneLayoutWorkspaceTransaction *)self->_layoutTransaction transitionContext];
-  v12 = v11;
+  transitionContext = [(SBSceneLayoutWorkspaceTransaction *)self->_layoutTransaction transitionContext];
+  v12 = transitionContext;
   if ((v9 & 1) == 0)
   {
     v15 = [MEMORY[0x277CBEB58] set];
@@ -1576,8 +1576,8 @@ void __44__SBToAppsWorkspaceTransaction__didComplete__block_invoke_2()
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v16 = [(SBAppRepairTransaction *)self->_appRepairTransaction appInfos];
-    v17 = [v16 countByEnumeratingWithState:&v39 objects:v43 count:16];
+    appInfos = [(SBAppRepairTransaction *)self->_appRepairTransaction appInfos];
+    v17 = [appInfos countByEnumeratingWithState:&v39 objects:v43 count:16];
     if (v17)
     {
       v18 = v17;
@@ -1588,11 +1588,11 @@ void __44__SBToAppsWorkspaceTransaction__didComplete__block_invoke_2()
         {
           if (*v40 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(appInfos);
           }
 
-          v21 = [*(*(&v39 + 1) + 8 * i) bundleIdentifier];
-          v22 = [v12 applicationSceneEntityForBundleID:v21];
+          bundleIdentifier = [*(*(&v39 + 1) + 8 * i) bundleIdentifier];
+          v22 = [v12 applicationSceneEntityForBundleID:bundleIdentifier];
 
           if (v22)
           {
@@ -1600,23 +1600,23 @@ void __44__SBToAppsWorkspaceTransaction__didComplete__block_invoke_2()
           }
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v39 objects:v43 count:16];
+        v18 = [appInfos countByEnumeratingWithState:&v39 objects:v43 count:16];
       }
 
       while (v18);
     }
 
     v23 = objc_alloc_init(SBMainWorkspaceLayoutStateContingencyPlan);
-    v24 = [(SBSceneLayoutWorkspaceTransaction *)self->_layoutTransaction transitionContext];
-    v14 = [(SBMainWorkspaceLayoutStateContingencyPlan *)v23 transitionContextForLayoutContext:v24 failedEntities:v15];
+    transitionContext2 = [(SBSceneLayoutWorkspaceTransaction *)self->_layoutTransaction transitionContext];
+    v14 = [(SBMainWorkspaceLayoutStateContingencyPlan *)v23 transitionContextForLayoutContext:transitionContext2 failedEntities:v15];
 
-    v25 = [(SBAppRepairTransaction *)v5 error];
-    v26 = [v25 domain];
-    if ([v26 isEqualToString:*MEMORY[0x277CF0B40]])
+    error = [(SBAppRepairTransaction *)v5 error];
+    domain = [error domain];
+    if ([domain isEqualToString:*MEMORY[0x277CF0B40]])
     {
-      v27 = [v25 code];
+      code = [error code];
 
-      if (v27 == 1)
+      if (code == 1)
       {
         v28 = 0;
         goto LABEL_25;
@@ -1630,12 +1630,12 @@ void __44__SBToAppsWorkspaceTransaction__didComplete__block_invoke_2()
     v28 = 1;
 LABEL_25:
     [v14 setAnimationDisabled:v28];
-    if ([v15 count] && (objc_msgSend(v25, "userInfo"), v29 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v29, "objectForKeyedSubscript:", *MEMORY[0x277CF0B48]), v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_msgSend(v30, "isEqualToString:", @"appRepairRequiresNetwork"), v30, v29, v31))
+    if ([v15 count] && (objc_msgSend(error, "userInfo"), v29 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v29, "objectForKeyedSubscript:", *MEMORY[0x277CF0B48]), v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_msgSend(v30, "isEqualToString:", @"appRepairRequiresNetwork"), v30, v29, v31))
     {
       v32 = [SBVPPAppRequiresHealingAlertItem alloc];
-      v33 = [v15 anyObject];
-      v34 = [v33 application];
-      v13 = [(SBVPPAppRequiresHealingAlertItem *)v32 initWithApplication:v34];
+      anyObject = [v15 anyObject];
+      application = [anyObject application];
+      v13 = [(SBVPPAppRequiresHealingAlertItem *)v32 initWithApplication:application];
     }
 
     else
@@ -1646,7 +1646,7 @@ LABEL_25:
     goto LABEL_30;
   }
 
-  [v11 setAnimationDisabled:1];
+  [transitionContext setAnimationDisabled:1];
   v13 = 0;
   v14 = v12;
 LABEL_30:
@@ -1671,29 +1671,29 @@ LABEL_35:
   [(SBToAppsWorkspaceTransaction *)&v38 _childTransactionDidComplete:v5];
 }
 
-- (void)_willFailWithReason:(id)a3
+- (void)_willFailWithReason:(id)reason
 {
   v5.receiver = self;
   v5.super_class = SBToAppsWorkspaceTransaction;
-  v4 = a3;
-  [(SBToAppsWorkspaceTransaction *)&v5 _willFailWithReason:v4];
-  [(SBAppRepairTransaction *)self->_appRepairTransaction failWithReason:v4, v5.receiver, v5.super_class];
+  reasonCopy = reason;
+  [(SBToAppsWorkspaceTransaction *)&v5 _willFailWithReason:reasonCopy];
+  [(SBAppRepairTransaction *)self->_appRepairTransaction failWithReason:reasonCopy, v5.receiver, v5.super_class];
 }
 
-- (void)_willInterruptWithReason:(id)a3
+- (void)_willInterruptWithReason:(id)reason
 {
   v5.receiver = self;
   v5.super_class = SBToAppsWorkspaceTransaction;
-  v4 = a3;
-  [(SBToAppsWorkspaceTransaction *)&v5 _willInterruptWithReason:v4];
-  [(SBAppRepairTransaction *)self->_appRepairTransaction failWithReason:v4, v5.receiver, v5.super_class];
+  reasonCopy = reason;
+  [(SBToAppsWorkspaceTransaction *)&v5 _willInterruptWithReason:reasonCopy];
+  [(SBAppRepairTransaction *)self->_appRepairTransaction failWithReason:reasonCopy, v5.receiver, v5.super_class];
 
   [(SBToAppsWorkspaceTransaction *)self _delayTransitionCompletionForRequester:@"SBDelayForInterruptionReason"];
 }
 
-- (BOOL)_shouldFailForChildTransaction:(id)a3
+- (BOOL)_shouldFailForChildTransaction:(id)transaction
 {
-  if (self->_appRepairTransaction == a3)
+  if (self->_appRepairTransaction == transaction)
   {
     return 0;
   }
@@ -1705,11 +1705,11 @@ LABEL_35:
   return [(SBToAppsWorkspaceTransaction *)&v6 _shouldFailForChildTransaction:?];
 }
 
-- (void)_didInterruptWithReason:(id)a3
+- (void)_didInterruptWithReason:(id)reason
 {
   v4.receiver = self;
   v4.super_class = SBToAppsWorkspaceTransaction;
-  [(SBToAppsWorkspaceTransaction *)&v4 _didInterruptWithReason:a3];
+  [(SBToAppsWorkspaceTransaction *)&v4 _didInterruptWithReason:reason];
   [(SBToAppsWorkspaceTransaction *)self _fireAndClearResultBlockIfNecessaryForFailure:1];
   [(SBToAppsWorkspaceTransaction *)self _stopDelayingTransitionCompletionForRequester:@"SBDelayForInterruptionReason"];
 }
@@ -1719,24 +1719,24 @@ LABEL_35:
   v32 = *MEMORY[0x277D85DE8];
   v29.receiver = self;
   v29.super_class = SBToAppsWorkspaceTransaction;
-  v3 = [(SBWorkspaceTransaction *)&v29 _customizedDescriptionProperties];
-  if (!v3)
+  _customizedDescriptionProperties = [(SBWorkspaceTransaction *)&v29 _customizedDescriptionProperties];
+  if (!_customizedDescriptionProperties)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    _customizedDescriptionProperties = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  v4 = [(SBToAppsWorkspaceTransaction *)self toApplicationSceneEntities];
-  v5 = [v4 count];
+  toApplicationSceneEntities = [(SBToAppsWorkspaceTransaction *)self toApplicationSceneEntities];
+  v5 = [toApplicationSceneEntities count];
 
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v7 = [(SBToAppsWorkspaceTransaction *)self toApplicationSceneEntities];
-    v8 = [v7 countByEnumeratingWithState:&v25 objects:v31 count:16];
+    toApplicationSceneEntities2 = [(SBToAppsWorkspaceTransaction *)self toApplicationSceneEntities];
+    v8 = [toApplicationSceneEntities2 countByEnumeratingWithState:&v25 objects:v31 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1747,14 +1747,14 @@ LABEL_35:
         {
           if (*v26 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(toApplicationSceneEntities2);
           }
 
-          v12 = [*(*(&v25 + 1) + 8 * i) succinctDescription];
-          [(__CFString *)v6 addObject:v12];
+          succinctDescription = [*(*(&v25 + 1) + 8 * i) succinctDescription];
+          [(__CFString *)array addObject:succinctDescription];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v25 objects:v31 count:16];
+        v9 = [toApplicationSceneEntities2 countByEnumeratingWithState:&v25 objects:v31 count:16];
       }
 
       while (v9);
@@ -1763,17 +1763,17 @@ LABEL_35:
 
   else
   {
-    v6 = @"(SpringBoard)";
+    array = @"(SpringBoard)";
   }
 
-  [v3 setObject:v6 forKey:@"To Application Scene Entities"];
-  v13 = [MEMORY[0x277CBEB18] array];
+  [_customizedDescriptionProperties setObject:array forKey:@"To Application Scene Entities"];
+  array2 = [MEMORY[0x277CBEB18] array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v14 = [(SBToAppsWorkspaceTransaction *)self fromApplicationSceneEntities];
-  v15 = [v14 countByEnumeratingWithState:&v21 objects:v30 count:16];
+  fromApplicationSceneEntities = [(SBToAppsWorkspaceTransaction *)self fromApplicationSceneEntities];
+  v15 = [fromApplicationSceneEntities countByEnumeratingWithState:&v21 objects:v30 count:16];
   if (v15)
   {
     v16 = v15;
@@ -1784,34 +1784,34 @@ LABEL_35:
       {
         if (*v22 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(fromApplicationSceneEntities);
         }
 
-        v19 = [*(*(&v21 + 1) + 8 * j) succinctDescription];
-        [v13 addObject:v19];
+        succinctDescription2 = [*(*(&v21 + 1) + 8 * j) succinctDescription];
+        [array2 addObject:succinctDescription2];
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v21 objects:v30 count:16];
+      v16 = [fromApplicationSceneEntities countByEnumeratingWithState:&v21 objects:v30 count:16];
     }
 
     while (v16);
   }
 
-  if ([v13 count])
+  if ([array2 count])
   {
-    [v3 setObject:v13 forKey:@"From Application Scene Entities"];
+    [_customizedDescriptionProperties setObject:array2 forKey:@"From Application Scene Entities"];
   }
 
-  return v3;
+  return _customizedDescriptionProperties;
 }
 
-- (id)createSceneEntityForHandle:(id)a3
+- (id)createSceneEntityForHandle:(id)handle
 {
-  v3 = a3;
+  handleCopy = handle;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [[SBDeviceApplicationSceneEntity alloc] initWithApplicationSceneHandle:v3];
+    v4 = [[SBDeviceApplicationSceneEntity alloc] initWithApplicationSceneHandle:handleCopy];
   }
 
   else
@@ -1822,25 +1822,25 @@ LABEL_35:
   return v4;
 }
 
-- (void)transactionWillBeginLayoutTransition:(id)a3
+- (void)transactionWillBeginLayoutTransition:(id)transition
 {
-  v4 = a3;
-  if (![(NSSet *)self->_ancillaryLayoutTransactions containsObject:v4])
+  transitionCopy = transition;
+  if (![(NSSet *)self->_ancillaryLayoutTransactions containsObject:transitionCopy])
   {
     if ([(SBToAppsWorkspaceTransaction *)self isAuditHistoryEnabled])
     {
       [(SBToAppsWorkspaceTransaction *)self _addAuditHistoryItem:@"------ Will begin layout transition."];
     }
 
-    v5 = [v4 transitionContext];
-    v6 = [v5 previousLayoutState];
-    v7 = [v5 layoutState];
-    v8 = [v6 isEqual:v7];
+    transitionContext = [transitionCopy transitionContext];
+    previousLayoutState = [transitionContext previousLayoutState];
+    layoutState = [transitionContext layoutState];
+    v8 = [previousLayoutState isEqual:layoutState];
 
     if ((v8 & 1) == 0)
     {
-      v9 = [(SBToAppsWorkspaceTransaction *)self _iconManager];
-      [v9 setEditing:0];
+      _iconManager = [(SBToAppsWorkspaceTransaction *)self _iconManager];
+      [_iconManager setEditing:0];
     }
 
     if ([(SBToAppsWorkspaceTransaction *)self _shouldResignActiveForAnimation])
@@ -1853,31 +1853,31 @@ LABEL_35:
     v40 = &v39;
     v41 = 0x2020000000;
     v42 = 0;
-    v10 = [(SBToAppsWorkspaceTransaction *)self toApplicationSceneEntities];
+    toApplicationSceneEntities = [(SBToAppsWorkspaceTransaction *)self toApplicationSceneEntities];
     v38[0] = MEMORY[0x277D85DD0];
     v38[1] = 3221225472;
     v38[2] = __69__SBToAppsWorkspaceTransaction_transactionWillBeginLayoutTransition___block_invoke;
     v38[3] = &unk_2783A9D88;
     v38[4] = &v39;
-    [v10 enumerateObjectsUsingBlock:v38];
+    [toApplicationSceneEntities enumerateObjectsUsingBlock:v38];
 
     v11.n128_u64[0] = v40[3];
     v11.n128_f32[0] = v11.n128_f64[0];
     SBSetMinimumBrightnessLevel(1, v11, v12);
     v13 = objc_opt_class();
-    v14 = [v5 layoutState];
-    v15 = SBSafeCast(v13, v14);
+    layoutState2 = [transitionContext layoutState];
+    v15 = SBSafeCast(v13, layoutState2);
 
     v16 = objc_opt_class();
-    v17 = [v5 previousLayoutState];
-    v18 = SBSafeCast(v16, v17);
+    previousLayoutState2 = [transitionContext previousLayoutState];
+    v18 = SBSafeCast(v16, previousLayoutState2);
 
-    v19 = [v15 elements];
-    v20 = [v18 elements];
+    elements = [v15 elements];
+    elements2 = [v18 elements];
     v21 = BSEqualObjects();
-    v37 = v19;
-    v22 = [v15 unlockedEnvironmentMode];
-    if (v22 == [v18 unlockedEnvironmentMode])
+    v37 = elements;
+    unlockedEnvironmentMode = [v15 unlockedEnvironmentMode];
+    if (unlockedEnvironmentMode == [v18 unlockedEnvironmentMode])
     {
       v23 = v21;
     }
@@ -1887,8 +1887,8 @@ LABEL_35:
       v23 = 0;
     }
 
-    v24 = [(SBToAppsWorkspaceTransaction *)self toApplicationSceneEntities];
-    v25 = [v24 count];
+    toApplicationSceneEntities2 = [(SBToAppsWorkspaceTransaction *)self toApplicationSceneEntities];
+    v25 = [toApplicationSceneEntities2 count];
 
     if (v25 && !self->_underLockScreenInForeground && !self->_gestureInitiated && ((self->_touchCancellationDisabled | v23) & 1) == 0)
     {
@@ -1899,27 +1899,27 @@ LABEL_35:
     v27 = v37;
     if ([v15 unlockedEnvironmentMode] == 3 && objc_msgSend(v18, "unlockedEnvironmentMode") == 3)
     {
-      v28 = [v15 interfaceOrientation];
-      v29 = [v18 interfaceOrientation];
+      interfaceOrientation = [v15 interfaceOrientation];
+      interfaceOrientation2 = [v18 interfaceOrientation];
     }
 
     else
     {
-      v28 = [SBApp activeInterfaceOrientation];
-      v29 = [SBApp interfaceOrientationForCurrentDeviceOrientation:0];
+      interfaceOrientation = [SBApp activeInterfaceOrientation];
+      interfaceOrientation2 = [SBApp interfaceOrientationForCurrentDeviceOrientation:0];
     }
 
-    if (!(v21 & 1 | (v28 == v29)))
+    if (!(v21 & 1 | (interfaceOrientation == interfaceOrientation2)))
     {
-      v30 = [(SBToAppsWorkspaceTransaction *)self floatingDockBehaviorAssertion];
-      [v30 invalidate];
+      floatingDockBehaviorAssertion = [(SBToAppsWorkspaceTransaction *)self floatingDockBehaviorAssertion];
+      [floatingDockBehaviorAssertion invalidate];
 
-      v31 = [(SBWorkspaceTransaction *)self windowScene];
-      v32 = [v31 floatingDockController];
+      windowScene = [(SBWorkspaceTransaction *)self windowScene];
+      floatingDockController = [windowScene floatingDockController];
       v33 = [SBFloatingDockBehaviorAssertion alloc];
       v34 = objc_opt_class();
       v35 = NSStringFromClass(v34);
-      v36 = [(SBFloatingDockBehaviorAssertion *)v33 initWithFloatingDockController:v32 visibleProgress:1 animated:0 gesturePossible:10 atLevel:v35 reason:0 withCompletion:0.0];
+      v36 = [(SBFloatingDockBehaviorAssertion *)v33 initWithFloatingDockController:floatingDockController visibleProgress:1 animated:0 gesturePossible:10 atLevel:v35 reason:0 withCompletion:0.0];
 
       [(SBToAppsWorkspaceTransaction *)self setFloatingDockBehaviorAssertion:v36];
       v27 = v37;
@@ -1940,56 +1940,56 @@ void __69__SBToAppsWorkspaceTransaction_transactionWillBeginLayoutTransition___b
   *(*(*(a1 + 32) + 8) + 24) = fmax(v3, v5);
 }
 
-- (void)transaction:(id)a3 performTransitionWithCompletion:(id)a4
+- (void)transaction:(id)transaction performTransitionWithCompletion:(id)completion
 {
   v52 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  transactionCopy = transaction;
+  completionCopy = completion;
   if ([(SBToAppsWorkspaceTransaction *)self isAuditHistoryEnabled])
   {
     [(SBToAppsWorkspaceTransaction *)self _addAuditHistoryItem:@"Performing layout transition now."];
   }
 
-  v8 = [(NSSet *)self->_ancillaryLayoutTransactions containsObject:v6];
+  v8 = [(NSSet *)self->_ancillaryLayoutTransactions containsObject:transactionCopy];
   layoutTransitionCompletions = self->_layoutTransitionCompletions;
   if (v8)
   {
     if ([(NSMutableSet *)self->_layoutTransitionCompletions count])
     {
       v10 = self->_layoutTransitionCompletions;
-      v11 = [v7 copy];
+      transitionContext = [completionCopy copy];
       v12 = MEMORY[0x223D6F7F0]();
       [(NSMutableSet *)v10 addObject:v12];
 
       goto LABEL_35;
     }
 
-    v7[2](v7);
+    completionCopy[2](completionCopy);
     goto LABEL_36;
   }
 
-  v13 = [v7 copy];
+  v13 = [completionCopy copy];
   v14 = MEMORY[0x223D6F7F0]();
   [(NSMutableSet *)layoutTransitionCompletions addObject:v14];
 
-  v15 = [(SBToAppsWorkspaceTransaction *)self toApplicationSceneEntities];
-  v16 = [v15 count];
+  toApplicationSceneEntities = [(SBToAppsWorkspaceTransaction *)self toApplicationSceneEntities];
+  v16 = [toApplicationSceneEntities count];
 
   if (!v16)
   {
     goto LABEL_26;
   }
 
-  v43 = v7;
-  v44 = v6;
-  v17 = [(SBWorkspaceTransaction *)self windowScene];
-  v18 = [v17 sceneManager];
-  v19 = [(SBToAppsWorkspaceTransaction *)self toApplicationSceneEntities];
-  v20 = [v19 bs_map:&__block_literal_global_190_0];
+  v43 = completionCopy;
+  v44 = transactionCopy;
+  windowScene = [(SBWorkspaceTransaction *)self windowScene];
+  sceneManager = [windowScene sceneManager];
+  toApplicationSceneEntities2 = [(SBToAppsWorkspaceTransaction *)self toApplicationSceneEntities];
+  v20 = [toApplicationSceneEntities2 bs_map:&__block_literal_global_190_0];
 
-  v21 = [v17 switcherController];
-  v22 = [v21 windowManagementContext];
-  v23 = [v22 isChamoisOrFlexibleWindowing];
+  switcherController = [windowScene switcherController];
+  windowManagementContext = [switcherController windowManagementContext];
+  isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
 
   v49 = 0u;
   v50 = 0u;
@@ -2037,16 +2037,16 @@ void __69__SBToAppsWorkspaceTransaction_transactionWillBeginLayoutTransition___b
 
       v33 = v32;
 
-      [v33 setWantsEnhancedWindowingEnabled:v23];
-      v34 = [v31 sceneManager];
-      if (v34)
+      [v33 setWantsEnhancedWindowingEnabled:isChamoisOrFlexibleWindowing];
+      sceneManager2 = [v31 sceneManager];
+      if (sceneManager2)
       {
         if (BSEqualObjects())
         {
           goto LABEL_23;
         }
 
-        v35 = v34;
+        v35 = sceneManager2;
       }
 
       else
@@ -2056,10 +2056,10 @@ void __69__SBToAppsWorkspaceTransaction_transactionWillBeginLayoutTransition___b
           goto LABEL_23;
         }
 
-        v35 = v18;
+        v35 = sceneManager;
       }
 
-      [v35 transferOwnershipOfSceneWithIdentity:v28 toSceneManager:v18];
+      [v35 transferOwnershipOfSceneWithIdentity:v28 toSceneManager:sceneManager];
 LABEL_23:
     }
 
@@ -2069,35 +2069,35 @@ LABEL_23:
   while (v25);
 LABEL_25:
 
-  v7 = v43;
-  v6 = v44;
+  completionCopy = v43;
+  transactionCopy = v44;
 LABEL_26:
-  v11 = [v6 transitionContext];
+  transitionContext = [transactionCopy transitionContext];
   [(SBToAppsWorkspaceTransaction *)self _synchronizeWithSceneUpdates];
   [(SBToAppsWorkspaceTransaction *)self _configureAnimation];
   [(SBToAppsWorkspaceTransaction *)self _isGoingToHomeScreenInMainDisplayWindowScene];
   if (BSSettingFlagIsYes())
   {
-    v36 = [(SBToAppsWorkspaceTransaction *)self _homeScreenAppearanceController];
-    [v36 beginRequiringContentForReason:@"SBUIHomeScreenActiveContentRequirementReason"];
+    _homeScreenAppearanceController = [(SBToAppsWorkspaceTransaction *)self _homeScreenAppearanceController];
+    [_homeScreenAppearanceController beginRequiringContentForReason:@"SBUIHomeScreenActiveContentRequirementReason"];
   }
 
-  v37 = [v11 previousLayoutState];
-  v38 = [v11 layoutState];
-  v39 = [v37 isEqual:v38];
+  previousLayoutState = [transitionContext previousLayoutState];
+  layoutState = [transitionContext layoutState];
+  v39 = [previousLayoutState isEqual:layoutState];
 
   if (v39)
   {
-    v40 = [(SBToAppsWorkspaceTransaction *)self _beginAnimation];
-    v41 = [(SBToAppsWorkspaceTransaction *)self toApplicationSceneEntities];
+    _beginAnimation = [(SBToAppsWorkspaceTransaction *)self _beginAnimation];
+    toApplicationSceneEntities3 = [(SBToAppsWorkspaceTransaction *)self toApplicationSceneEntities];
     v46[0] = MEMORY[0x277D85DD0];
     v46[1] = 3221225472;
     v46[2] = __76__SBToAppsWorkspaceTransaction_transaction_performTransitionWithCompletion___block_invoke_2;
     v46[3] = &unk_2783BAE80;
     v46[4] = self;
-    [v41 enumerateObjectsUsingBlock:v46];
+    [toApplicationSceneEntities3 enumerateObjectsUsingBlock:v46];
 
-    if (!v40)
+    if (!_beginAnimation)
     {
       goto LABEL_35;
     }
@@ -2107,10 +2107,10 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  v42 = [v11 interfaceOrientation];
-  if (v42)
+  interfaceOrientation = [transitionContext interfaceOrientation];
+  if (interfaceOrientation)
   {
-    [SBApp noteInterfaceOrientationChanged:v42 duration:0 updateMirroredDisplays:@"ToApps performing transition" logMessage:0.0];
+    [SBApp noteInterfaceOrientationChanged:interfaceOrientation duration:0 updateMirroredDisplays:@"ToApps performing transition" logMessage:0.0];
   }
 
   if ([(SBToAppsWorkspaceTransaction *)self _beginAnimation])
@@ -2133,16 +2133,16 @@ id __76__SBToAppsWorkspaceTransaction_transaction_performTransitionWithCompletio
   return v5;
 }
 
-- (void)transaction:(id)a3 didEndLayoutTransitionWithContinuation:(id)a4
+- (void)transaction:(id)transaction didEndLayoutTransitionWithContinuation:(id)continuation
 {
   v55 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([(NSSet *)self->_ancillaryLayoutTransactions containsObject:v6])
+  transactionCopy = transaction;
+  continuationCopy = continuation;
+  if ([(NSSet *)self->_ancillaryLayoutTransactions containsObject:transactionCopy])
   {
-    if (v7)
+    if (continuationCopy)
     {
-      (v7[2])(v7, 0, 0);
+      (continuationCopy[2])(continuationCopy, 0, 0);
     }
   }
 
@@ -2154,8 +2154,8 @@ id __76__SBToAppsWorkspaceTransaction_transaction_performTransitionWithCompletio
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v9 = [v6 sceneUpdateTransactions];
-    v10 = [v9 countByEnumeratingWithState:&v49 objects:v54 count:16];
+    sceneUpdateTransactions = [transactionCopy sceneUpdateTransactions];
+    v10 = [sceneUpdateTransactions countByEnumeratingWithState:&v49 objects:v54 count:16];
     if (v10)
     {
       v11 = v10;
@@ -2166,7 +2166,7 @@ id __76__SBToAppsWorkspaceTransaction_transaction_performTransitionWithCompletio
         {
           if (*v50 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(sceneUpdateTransactions);
           }
 
           v14 = *(*(&v49 + 1) + 8 * i);
@@ -2177,7 +2177,7 @@ id __76__SBToAppsWorkspaceTransaction_transaction_performTransitionWithCompletio
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v49 objects:v54 count:16];
+        v11 = [sceneUpdateTransactions countByEnumeratingWithState:&v49 objects:v54 count:16];
       }
 
       while (v11);
@@ -2198,10 +2198,10 @@ id __76__SBToAppsWorkspaceTransaction_transaction_performTransitionWithCompletio
       [(SBToAppsWorkspaceTransaction *)self _addAuditHistoryItem:@"------ Layout transition completed!"];
     }
 
-    if ([v8 count] && (objc_msgSend(v6, "isInterrupted") & 1) == 0)
+    if ([v8 count] && (objc_msgSend(transactionCopy, "isInterrupted") & 1) == 0)
     {
-      v40 = v6;
-      v41 = v7;
+      v40 = transactionCopy;
+      v41 = continuationCopy;
       v44 = [MEMORY[0x277CBEB58] set];
       v43 = [MEMORY[0x277CBEB58] set];
       v42 = [MEMORY[0x277CBEB58] set];
@@ -2225,16 +2225,16 @@ id __76__SBToAppsWorkspaceTransaction_transaction_performTransitionWithCompletio
             }
 
             v21 = *(*(&v45 + 1) + 8 * j);
-            v22 = [v21 applicationSceneEntity];
-            [v44 addObject:v22];
+            applicationSceneEntity = [v21 applicationSceneEntity];
+            [v44 addObject:applicationSceneEntity];
 
-            v23 = [v21 process];
-            v24 = [v23 exitContext];
-            v25 = [v23 applicationInfo];
-            v26 = v25;
-            if (v24)
+            process = [v21 process];
+            exitContext = [process exitContext];
+            applicationInfo = [process applicationInfo];
+            v26 = applicationInfo;
+            if (exitContext)
             {
-              v27 = v25 == 0;
+              v27 = applicationInfo == 0;
             }
 
             else
@@ -2244,9 +2244,9 @@ id __76__SBToAppsWorkspaceTransaction_transaction_performTransitionWithCompletio
 
             if (!v27)
             {
-              v28 = [v24 exitReason];
+              exitReason = [exitContext exitReason];
               v29 = v43;
-              if ((v28 & 0x20) != 0 || (v28 & 1) != 0 && ([v24 terminationRequest], v30 = objc_claimAutoreleasedReturnValue(), v30, v29 = v42, !v30))
+              if ((exitReason & 0x20) != 0 || (exitReason & 1) != 0 && ([exitContext terminationRequest], v30 = objc_claimAutoreleasedReturnValue(), v30, v29 = v42, !v30))
               {
                 [v29 addObject:v26];
               }
@@ -2261,7 +2261,7 @@ id __76__SBToAppsWorkspaceTransaction_transaction_performTransitionWithCompletio
 
       if ([v43 count] && !-[SBAppRepairTransaction isComplete](self->_appRepairTransaction, "isComplete"))
       {
-        v6 = v40;
+        transactionCopy = v40;
         if (self->_appRepairTransaction)
         {
           [SBToAppsWorkspaceTransaction transaction:didEndLayoutTransitionWithContinuation:];
@@ -2283,12 +2283,12 @@ id __76__SBToAppsWorkspaceTransaction_transaction_performTransitionWithCompletio
 
       else
       {
-        v6 = v40;
+        transactionCopy = v40;
         if (self->_retriedAfterVoluntaryExit || ![v42 count])
         {
           v34 = objc_alloc_init(SBMainWorkspaceLayoutStateContingencyPlan);
-          v35 = [v40 transitionContext];
-          v33 = [(SBMainWorkspaceLayoutStateContingencyPlan *)v34 transitionContextForLayoutContext:v35 failedEntities:v44];
+          transitionContext = [v40 transitionContext];
+          v33 = [(SBMainWorkspaceLayoutStateContingencyPlan *)v34 transitionContextForLayoutContext:transitionContext failedEntities:v44];
         }
 
         else
@@ -2296,9 +2296,9 @@ id __76__SBToAppsWorkspaceTransaction_transaction_performTransitionWithCompletio
           self->_retriedAfterVoluntaryExit = 1;
           if ([(SBToAppsWorkspaceTransaction *)self isAuditHistoryEnabled])
           {
-            v31 = [v42 anyObject];
-            v32 = [v31 bundleIdentifier];
-            [(SBToAppsWorkspaceTransaction *)self _addAuditHistoryItem:@"Retrying after voluntary exit of %@", v32];
+            anyObject = [v42 anyObject];
+            bundleIdentifier = [anyObject bundleIdentifier];
+            [(SBToAppsWorkspaceTransaction *)self _addAuditHistoryItem:@"Retrying after voluntary exit of %@", bundleIdentifier];
           }
 
           v33 = +[(SBWorkspaceTransitionContext *)SBWorkspaceApplicationSceneTransitionContext];
@@ -2316,39 +2316,39 @@ id __76__SBToAppsWorkspaceTransaction_transaction_performTransitionWithCompletio
         }
       }
 
-      v7 = v41;
+      continuationCopy = v41;
     }
 
-    else if (v7)
+    else if (continuationCopy)
     {
-      (v7[2])(v7, 0, 0);
+      (continuationCopy[2])(continuationCopy, 0, 0);
     }
   }
 }
 
-- (BOOL)transaction:(id)a3 shouldKeepSceneForeground:(id)a4 withReason:(id *)a5
+- (BOOL)transaction:(id)transaction shouldKeepSceneForeground:(id)foreground withReason:(id *)reason
 {
-  v7 = a4;
-  v8 = [(SBToAppsWorkspaceTransaction *)self _transitionContext];
-  v9 = [v8 layoutState];
-  v10 = [v9 elements];
+  foregroundCopy = foreground;
+  _transitionContext = [(SBToAppsWorkspaceTransaction *)self _transitionContext];
+  layoutState = [_transitionContext layoutState];
+  elements = [layoutState elements];
 
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __81__SBToAppsWorkspaceTransaction_transaction_shouldKeepSceneForeground_withReason___block_invoke;
   v23[3] = &unk_2783AC4F8;
-  v11 = v7;
+  v11 = foregroundCopy;
   v24 = v11;
-  v12 = [v10 bs_containsObjectPassingTest:v23];
-  v13 = [(SBToAppsWorkspaceTransaction *)self _transitionContext];
-  v14 = [v13 applicationSceneEntities];
+  v12 = [elements bs_containsObjectPassingTest:v23];
+  _transitionContext2 = [(SBToAppsWorkspaceTransaction *)self _transitionContext];
+  applicationSceneEntities = [_transitionContext2 applicationSceneEntities];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __81__SBToAppsWorkspaceTransaction_transaction_shouldKeepSceneForeground_withReason___block_invoke_2;
   v21[3] = &unk_2783A9EA0;
   v15 = v11;
   v22 = v15;
-  v16 = [v14 bs_firstObjectPassingTest:v21];
+  v16 = [applicationSceneEntities bs_firstObjectPassingTest:v21];
 
   if (!v16)
   {
@@ -2369,8 +2369,8 @@ LABEL_5:
 
 LABEL_3:
   v17 = MEMORY[0x277CCACA8];
-  v18 = [v15 identifier];
-  *a5 = [v17 stringWithFormat:@"Keeping %@ foreground because it's part of the transition request", v18];
+  identifier = [v15 identifier];
+  *reason = [v17 stringWithFormat:@"Keeping %@ foreground because it's part of the transition request", identifier];
 
   v19 = 1;
 LABEL_6:
@@ -2396,31 +2396,31 @@ uint64_t __81__SBToAppsWorkspaceTransaction_transaction_shouldKeepSceneForegroun
   return v5;
 }
 
-- (BOOL)shouldWatchdog:(id *)a3
+- (BOOL)shouldWatchdog:(id *)watchdog
 {
   if (!self->_appRepairTransaction)
   {
-    v6 = &v15;
+    processInfo = &v15;
     v15 = 0;
     v16 = &v15;
     v17 = 0x3032000000;
     v18 = __Block_byref_object_copy__108;
     v19 = __Block_byref_object_dispose__108;
     v20 = 0;
-    v7 = [(SBToAppsWorkspaceTransaction *)self toApplicationSceneEntities];
+    toApplicationSceneEntities = [(SBToAppsWorkspaceTransaction *)self toApplicationSceneEntities];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __47__SBToAppsWorkspaceTransaction_shouldWatchdog___block_invoke;
     v14[3] = &unk_2783A9D88;
     v14[4] = &v15;
-    [v7 enumerateObjectsUsingBlock:v14];
+    [toApplicationSceneEntities enumerateObjectsUsingBlock:v14];
 
     v13.receiver = self;
     v13.super_class = SBToAppsWorkspaceTransaction;
-    if ([(SBToAppsWorkspaceTransaction *)&v13 shouldWatchdog:a3])
+    if ([(SBToAppsWorkspaceTransaction *)&v13 shouldWatchdog:watchdog])
     {
       v4 = v16[5] == 0;
-      if (!a3)
+      if (!watchdog)
       {
         goto LABEL_15;
       }
@@ -2429,7 +2429,7 @@ uint64_t __81__SBToAppsWorkspaceTransaction_transaction_shouldKeepSceneForegroun
     else
     {
       v4 = 0;
-      if (!a3)
+      if (!watchdog)
       {
 LABEL_15:
         _Block_object_dispose(&v15, 8);
@@ -2444,16 +2444,16 @@ LABEL_15:
       if (v8)
       {
         v9 = MEMORY[0x277CCACA8];
-        v10 = [v8 uniqueIdentifier];
-        v11 = v10;
-        if (!v10)
+        uniqueIdentifier = [v8 uniqueIdentifier];
+        processName = uniqueIdentifier;
+        if (!uniqueIdentifier)
         {
-          v6 = [MEMORY[0x277CCAC38] processInfo];
-          v11 = [v6 processName];
+          processInfo = [MEMORY[0x277CCAC38] processInfo];
+          processName = [processInfo processName];
         }
 
-        *a3 = [v9 stringWithFormat:@"%@ is being debugged", v11];
-        if (!v10)
+        *watchdog = [v9 stringWithFormat:@"%@ is being debugged", processName];
+        if (!uniqueIdentifier)
         {
         }
       }
@@ -2463,9 +2463,9 @@ LABEL_15:
   }
 
   v4 = 0;
-  if (a3)
+  if (watchdog)
   {
-    *a3 = @"performing app repair";
+    *watchdog = @"performing app repair";
   }
 
   return v4;
@@ -2490,52 +2490,52 @@ void __47__SBToAppsWorkspaceTransaction_shouldWatchdog___block_invoke(uint64_t a
   }
 }
 
-- (void)synchronizedTransactionReadyToCommit:(id)a3
+- (void)synchronizedTransactionReadyToCommit:(id)commit
 {
-  v7 = a3;
-  v4 = [(SBToAppsWorkspaceTransaction *)self allLayoutTransactions];
-  v5 = [v4 containsObject:v7];
+  commitCopy = commit;
+  allLayoutTransactions = [(SBToAppsWorkspaceTransaction *)self allLayoutTransactions];
+  v5 = [allLayoutTransactions containsObject:commitCopy];
 
   if (v5)
   {
-    [v7 performSynchronizedCommit];
-    v6 = [(SBToAppsWorkspaceTransaction *)self _milestoneForLayoutTransaction:v7];
+    [commitCopy performSynchronizedCommit];
+    v6 = [(SBToAppsWorkspaceTransaction *)self _milestoneForLayoutTransaction:commitCopy];
     [(SBToAppsWorkspaceTransaction *)self removeMilestone:v6];
   }
 }
 
-- (void)animationController:(id)a3 willBeginAnimation:(BOOL)a4
+- (void)animationController:(id)controller willBeginAnimation:(BOOL)animation
 {
-  v4 = a4;
-  v8 = a3;
+  animationCopy = animation;
+  controllerCopy = controller;
   if ([(SBToAppsWorkspaceTransaction *)self isAuditHistoryEnabled])
   {
-    v6 = [MEMORY[0x277CF0C00] descriptionForObject:v8];
+    v6 = [MEMORY[0x277CF0C00] descriptionForObject:controllerCopy];
     [(SBToAppsWorkspaceTransaction *)self _addAuditHistoryItem:@"Animation will begin: %@", v6];
   }
 
-  if (self->_animationController == v8)
+  if (self->_animationController == controllerCopy)
   {
-    [(SBToAppsWorkspaceTransaction *)self _animationWillBegin:v4];
+    [(SBToAppsWorkspaceTransaction *)self _animationWillBegin:animationCopy];
   }
 
   else if ([(SBToAppsWorkspaceTransaction *)self isAuditHistoryEnabled])
   {
-    v7 = [MEMORY[0x277CF0C00] descriptionForObject:v8];
+    v7 = [MEMORY[0x277CF0C00] descriptionForObject:controllerCopy];
     [(SBToAppsWorkspaceTransaction *)self _addAuditHistoryItem:@"!!!! Animation began that we weren't tracking: %@", v7];
   }
 }
 
-- (void)animationControllerDidFinishAnimation:(id)a3
+- (void)animationControllerDidFinishAnimation:(id)animation
 {
-  v6 = a3;
+  animationCopy = animation;
   if ([(SBToAppsWorkspaceTransaction *)self isAuditHistoryEnabled])
   {
-    v4 = [MEMORY[0x277CF0C00] descriptionForObject:v6];
+    v4 = [MEMORY[0x277CF0C00] descriptionForObject:animationCopy];
     [(SBToAppsWorkspaceTransaction *)self _addAuditHistoryItem:@"Animation did finish: %@", v4];
   }
 
-  if (self->_animationController == v6)
+  if (self->_animationController == animationCopy)
   {
     [(SBToAppsWorkspaceTransaction *)self _animationDidFinish];
     [(SBToAppsWorkspaceTransaction *)self _noteAnimationFinished];
@@ -2543,39 +2543,39 @@ void __47__SBToAppsWorkspaceTransaction_shouldWatchdog___block_invoke(uint64_t a
 
   else if ([(SBToAppsWorkspaceTransaction *)self isAuditHistoryEnabled])
   {
-    v5 = [MEMORY[0x277CF0C00] descriptionForObject:v6];
+    v5 = [MEMORY[0x277CF0C00] descriptionForObject:animationCopy];
     [(SBToAppsWorkspaceTransaction *)self _addAuditHistoryItem:@"!!!! Animation completed that we weren't tracking: %@", v5];
   }
 }
 
-- (void)animationControllerDidRevealApplication:(id)a3
+- (void)animationControllerDidRevealApplication:(id)application
 {
-  if (self->_animationController == a3)
+  if (self->_animationController == application)
   {
     [(SBToAppsWorkspaceTransaction *)self _animationDidRevealApplication];
   }
 }
 
-- (void)_fireAndClearResultBlockIfNecessaryForFailure:(BOOL)a3
+- (void)_fireAndClearResultBlockIfNecessaryForFailure:(BOOL)failure
 {
-  v3 = a3;
-  v6 = [(SBToAppsWorkspaceTransaction *)self _transitionContext];
-  if ([v6 needsToSendActivationResult])
+  failureCopy = failure;
+  _transitionContext = [(SBToAppsWorkspaceTransaction *)self _transitionContext];
+  if ([_transitionContext needsToSendActivationResult])
   {
-    if (v3)
+    if (failureCopy)
     {
       v5 = SBWTErrorCreate(self, 1, 0);
-      [v6 sendActivationResultError:v5];
+      [_transitionContext sendActivationResultError:v5];
     }
 
     else
     {
-      [v6 sendActivationResultError:0];
+      [_transitionContext sendActivationResultError:0];
     }
 
     if ([(SBToAppsWorkspaceTransaction *)self isAuditHistoryEnabled])
     {
-      [(SBToAppsWorkspaceTransaction *)self _addAuditHistoryItem:@"Sent activation result; success = %d", !v3];
+      [(SBToAppsWorkspaceTransaction *)self _addAuditHistoryItem:@"Sent activation result; success = %d", !failureCopy];
     }
   }
 }

@@ -1,29 +1,29 @@
 @interface HMMTRSystemCommissionerControllerParams
 + (id)logCategory;
-- (BOOL)_checkAndUpdateValidityPeriodOfV1Keypair:(id)a3 newKeyPair:(id *)a4;
-- (BOOL)_findFabricRecordInMTSKeyValueStoreMatchingKeyPair:(id)a3 ipk:(id *)a4 rootCert:(id *)a5 operationalKey:(id *)a6 operationalCert:(id *)a7;
-- (BOOL)fetchControllerParamsAllowingNew:(BOOL)a3 nocSigner:(id *)a4 controllerWrapper:(id *)a5;
-- (BOOL)v1KeypairIsEquivalentTo:(id)a3;
-- (HMMTRSystemCommissionerControllerParams)initWithQueue:(id)a3 controllerFactory:(id)a4;
-- (id)_buildControllerParams1WithV1Keypair:(id)a3;
-- (id)_buildControllerParams2WithV1Keypair:(id)a3;
+- (BOOL)_checkAndUpdateValidityPeriodOfV1Keypair:(id)keypair newKeyPair:(id *)pair;
+- (BOOL)_findFabricRecordInMTSKeyValueStoreMatchingKeyPair:(id)pair ipk:(id *)ipk rootCert:(id *)cert operationalKey:(id *)key operationalCert:(id *)operationalCert;
+- (BOOL)fetchControllerParamsAllowingNew:(BOOL)new nocSigner:(id *)signer controllerWrapper:(id *)wrapper;
+- (BOOL)v1KeypairIsEquivalentTo:(id)to;
+- (HMMTRSystemCommissionerControllerParams)initWithQueue:(id)queue controllerFactory:(id)factory;
+- (id)_buildControllerParams1WithV1Keypair:(id)keypair;
+- (id)_buildControllerParams2WithV1Keypair:(id)keypair;
 - (id)mtsKeyValueStore;
 - (id)storeV0MatterKeypair;
-- (id)storeV0MatterKeypairWithPrivateKey:(__SecKey *)a3;
-- (id)storeV1MatterKeypairWithPrivateKey:(__SecKey *)a3 operationalKey:(__SecKey *)a4 rootCert:(id)a5 operationalCert:(id)a6 ipk:(id)a7;
+- (id)storeV0MatterKeypairWithPrivateKey:(__SecKey *)key;
+- (id)storeV1MatterKeypairWithPrivateKey:(__SecKey *)key operationalKey:(__SecKey *)operationalKey rootCert:(id)cert operationalCert:(id)operationalCert ipk:(id)ipk;
 - (id)v0MatterKeypairFromKeychain;
 - (id)v1MatterKeypairFromKeychain;
 - (void)_buildV1KeyFromScratch;
-- (void)_buildV1KeyFromV0KeyAllowingNew:(BOOL)a3;
-- (void)_buildV1KeyWithPrivateKey:(__SecKey *)a3 operationalKey:(__SecKey *)a4 ipk:(id)a5 rootCert:(id)a6 operationalCert:(id)a7 updatingMTSKeyValueStore:(BOOL)a8;
-- (void)_buildV1KeyWithV0KeyPair:(id)a3;
+- (void)_buildV1KeyFromV0KeyAllowingNew:(BOOL)new;
+- (void)_buildV1KeyWithPrivateKey:(__SecKey *)key operationalKey:(__SecKey *)operationalKey ipk:(id)ipk rootCert:(id)cert operationalCert:(id)operationalCert updatingMTSKeyValueStore:(BOOL)store;
+- (void)_buildV1KeyWithV0KeyPair:(id)pair;
 - (void)_handleKeychainDataChanged;
-- (void)_obtainControllerWrapperWithV1KeyPair:(id)a3 startupParams:(id)a4;
-- (void)_startWithV1Keypair:(id)a3;
-- (void)_updateMTSKeyValueStore:(id)a3;
+- (void)_obtainControllerWrapperWithV1KeyPair:(id)pair startupParams:(id)params;
+- (void)_startWithV1Keypair:(id)keypair;
+- (void)_updateMTSKeyValueStore:(id)store;
 - (void)handleKeyPairDataChanged;
-- (void)issueOperationalCertificateForRequest:(id)a3 attestationInfo:(id)a4 controller:(id)a5 completion:(id)a6;
-- (void)setMTSStoredValue:(id)a3 forKey:(id)a4 error:(id *)a5;
+- (void)issueOperationalCertificateForRequest:(id)request attestationInfo:(id)info controller:(id)controller completion:(id)completion;
+- (void)setMTSStoredValue:(id)value forKey:(id)key error:(id *)error;
 @end
 
 @implementation HMMTRSystemCommissionerControllerParams
@@ -35,19 +35,19 @@
   return v2;
 }
 
-- (id)storeV1MatterKeypairWithPrivateKey:(__SecKey *)a3 operationalKey:(__SecKey *)a4 rootCert:(id)a5 operationalCert:(id)a6 ipk:(id)a7
+- (id)storeV1MatterKeypairWithPrivateKey:(__SecKey *)key operationalKey:(__SecKey *)operationalKey rootCert:(id)cert operationalCert:(id)operationalCert ipk:(id)ipk
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = [[HMMTRMatterKeypair alloc] initWithV1Account:@"CHIPPlugin.systemCommissioner.nodeopcerts.CA:1" privateKey:a3 operationalKey:a4 rootCert:v13 operationalCert:v12 ipk:v11];
+  ipkCopy = ipk;
+  operationalCertCopy = operationalCert;
+  certCopy = cert;
+  v14 = [[HMMTRMatterKeypair alloc] initWithV1Account:@"CHIPPlugin.systemCommissioner.nodeopcerts.CA:1" privateKey:key operationalKey:operationalKey rootCert:certCopy operationalCert:operationalCertCopy ipk:ipkCopy];
 
   return v14;
 }
 
-- (id)storeV0MatterKeypairWithPrivateKey:(__SecKey *)a3
+- (id)storeV0MatterKeypairWithPrivateKey:(__SecKey *)key
 {
-  v3 = [[HMMTRMatterKeypair alloc] initWithV0Account:@"CHIPPlugin.systemCommissioner.nodeopcerts.CA:0" privateKey:a3];
+  v3 = [[HMMTRMatterKeypair alloc] initWithV0Account:@"CHIPPlugin.systemCommissioner.nodeopcerts.CA:0" privateKey:key];
 
   return v3;
 }
@@ -73,23 +73,23 @@
   return v2;
 }
 
-- (void)setMTSStoredValue:(id)a3 forKey:(id)a4 error:(id *)a5
+- (void)setMTSStoredValue:(id)value forKey:(id)key error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(HMMTRSystemCommissionerControllerParams *)self mtsKeyValueStore];
-  [v10 setStoredValue:v9 forKey:v8 error:a5];
+  keyCopy = key;
+  valueCopy = value;
+  mtsKeyValueStore = [(HMMTRSystemCommissionerControllerParams *)self mtsKeyValueStore];
+  [mtsKeyValueStore setStoredValue:valueCopy forKey:keyCopy error:error];
 }
 
-- (BOOL)v1KeypairIsEquivalentTo:(id)a3
+- (BOOL)v1KeypairIsEquivalentTo:(id)to
 {
-  v4 = a3;
-  v5 = [(HMMTRSystemCommissionerControllerParams *)self v1keypair];
-  if ([v5 operationalKey])
+  toCopy = to;
+  v1keypair = [(HMMTRSystemCommissionerControllerParams *)self v1keypair];
+  if ([v1keypair operationalKey])
   {
     v6 = [HMMTRMatterKeypair alloc];
-    v7 = [(HMMTRSystemCommissionerControllerParams *)self v1keypair];
-    v8 = -[HMMTRMatterKeypair initWithPrivateKey:](v6, "initWithPrivateKey:", [v7 operationalKey]);
+    v1keypair2 = [(HMMTRSystemCommissionerControllerParams *)self v1keypair];
+    v8 = -[HMMTRMatterKeypair initWithPrivateKey:](v6, "initWithPrivateKey:", [v1keypair2 operationalKey]);
   }
 
   else
@@ -97,9 +97,9 @@
     v8 = 0;
   }
 
-  if ([v4 operationalKey])
+  if ([toCopy operationalKey])
   {
-    v9 = -[HMMTRMatterKeypair initWithPrivateKey:]([HMMTRMatterKeypair alloc], "initWithPrivateKey:", [v4 operationalKey]);
+    v9 = -[HMMTRMatterKeypair initWithPrivateKey:]([HMMTRMatterKeypair alloc], "initWithPrivateKey:", [toCopy operationalKey]);
   }
 
   else
@@ -107,32 +107,32 @@
     v9 = 0;
   }
 
-  v10 = [(HMMTRSystemCommissionerControllerParams *)self v1keypair];
-  v11 = [v10 serialize];
-  v12 = [v4 serialize];
-  if ([v11 isEqual:v12])
+  v1keypair3 = [(HMMTRSystemCommissionerControllerParams *)self v1keypair];
+  serialize = [v1keypair3 serialize];
+  serialize2 = [toCopy serialize];
+  if ([serialize isEqual:serialize2])
   {
-    v13 = [(HMMTRMatterKeypair *)v8 serialize];
-    v14 = [(HMMTRMatterKeypair *)v9 serialize];
-    if ([v13 isEqual:v14])
+    serialize3 = [(HMMTRMatterKeypair *)v8 serialize];
+    serialize4 = [(HMMTRMatterKeypair *)v9 serialize];
+    if ([serialize3 isEqual:serialize4])
     {
-      v29 = [(HMMTRSystemCommissionerControllerParams *)self v1keypair];
-      v15 = [v29 rootCert];
-      v27 = [v4 rootCert];
-      v28 = v15;
-      if ([v15 isEqual:v27])
+      v1keypair4 = [(HMMTRSystemCommissionerControllerParams *)self v1keypair];
+      rootCert = [v1keypair4 rootCert];
+      rootCert2 = [toCopy rootCert];
+      v28 = rootCert;
+      if ([rootCert isEqual:rootCert2])
       {
-        v26 = [(HMMTRSystemCommissionerControllerParams *)self v1keypair];
-        v16 = [v26 operationalCert];
-        v17 = [v4 operationalCert];
-        v25 = v16;
-        v18 = v16;
-        v19 = v17;
-        if ([v18 isEqual:v17])
+        v1keypair5 = [(HMMTRSystemCommissionerControllerParams *)self v1keypair];
+        operationalCert = [v1keypair5 operationalCert];
+        operationalCert2 = [toCopy operationalCert];
+        v25 = operationalCert;
+        v18 = operationalCert;
+        v19 = operationalCert2;
+        if ([v18 isEqual:operationalCert2])
         {
-          v24 = [(HMMTRSystemCommissionerControllerParams *)self v1keypair];
-          v23 = [v24 ipk];
-          v22 = [v4 ipk];
+          v1keypair6 = [(HMMTRSystemCommissionerControllerParams *)self v1keypair];
+          v23 = [v1keypair6 ipk];
+          v22 = [toCopy ipk];
           v20 = [v23 isEqual:v22];
         }
 
@@ -165,13 +165,13 @@
 - (void)_handleKeychainDataChanged
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(HMMTRSystemCommissionerControllerParams *)self v1MatterKeypairFromKeychain];
-  if (v3)
+  v1MatterKeypairFromKeychain = [(HMMTRSystemCommissionerControllerParams *)self v1MatterKeypairFromKeychain];
+  if (v1MatterKeypairFromKeychain)
   {
-    if ([(HMMTRSystemCommissionerControllerParams *)self v1KeypairIsEquivalentTo:v3])
+    if ([(HMMTRSystemCommissionerControllerParams *)self v1KeypairIsEquivalentTo:v1MatterKeypairFromKeychain])
     {
       v4 = objc_autoreleasePoolPush();
-      v5 = self;
+      selfCopy = self;
       v6 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
@@ -186,14 +186,14 @@
 
     else
     {
-      [(HMMTRSystemCommissionerControllerParams *)self _startWithV1Keypair:v3];
+      [(HMMTRSystemCommissionerControllerParams *)self _startWithV1Keypair:v1MatterKeypairFromKeychain];
     }
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy2 = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -204,25 +204,25 @@
     }
 
     objc_autoreleasePoolPop(v8);
-    v12 = [(HMMTRSystemCommissionerControllerParams *)v9 controllerWrapper];
-    [v12 remove];
+    controllerWrapper = [(HMMTRSystemCommissionerControllerParams *)selfCopy2 controllerWrapper];
+    [controllerWrapper remove];
 
-    [(HMMTRSystemCommissionerControllerParams *)v9 setControllerWrapper:0];
+    [(HMMTRSystemCommissionerControllerParams *)selfCopy2 setControllerWrapper:0];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_findFabricRecordInMTSKeyValueStoreMatchingKeyPair:(id)a3 ipk:(id *)a4 rootCert:(id *)a5 operationalKey:(id *)a6 operationalCert:(id *)a7
+- (BOOL)_findFabricRecordInMTSKeyValueStoreMatchingKeyPair:(id)pair ipk:(id *)ipk rootCert:(id *)cert operationalKey:(id *)key operationalCert:(id *)operationalCert
 {
   v183 = *MEMORY[0x277D85DE8];
-  v167 = a3;
-  v12 = [(HMMTRSystemCommissionerControllerParams *)self mtsKeyValueStore];
-  v13 = v12;
-  if (!v12)
+  pairCopy = pair;
+  mtsKeyValueStore = [(HMMTRSystemCommissionerControllerParams *)self mtsKeyValueStore];
+  v13 = mtsKeyValueStore;
+  if (!mtsKeyValueStore)
   {
     v117 = objc_autoreleasePoolPush();
-    v118 = self;
+    selfCopy = self;
     v119 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v119, OS_LOG_TYPE_ERROR))
     {
@@ -237,7 +237,7 @@
     goto LABEL_102;
   }
 
-  v14 = [v12 storedValueForKey:@"IPK"];
+  v14 = [mtsKeyValueStore storedValueForKey:@"IPK"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -253,18 +253,18 @@
 
   if (!v16)
   {
-    *a4 = 0;
+    *ipk = 0;
     goto LABEL_83;
   }
 
   v17 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v16 options:0];
-  *a4 = v17;
+  *ipk = v17;
 
-  if (!*a4)
+  if (!*ipk)
   {
 LABEL_83:
     v121 = objc_autoreleasePoolPush();
-    v122 = self;
+    selfCopy2 = self;
     v123 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v123, OS_LOG_TYPE_INFO))
     {
@@ -279,9 +279,9 @@ LABEL_83:
     goto LABEL_101;
   }
 
-  v141 = a5;
+  certCopy = cert;
   v18 = objc_autoreleasePoolPush();
-  v19 = self;
+  selfCopy3 = self;
   v20 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {
@@ -309,7 +309,7 @@ LABEL_83:
   if (!v24)
   {
     v125 = objc_autoreleasePoolPush();
-    v126 = v19;
+    v126 = selfCopy3;
     v127 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v127, OS_LOG_TYPE_INFO))
     {
@@ -324,12 +324,12 @@ LABEL_83:
     goto LABEL_100;
   }
 
-  v140 = a7;
+  operationalCertCopy = operationalCert;
   v25 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v24 options:0];
   if (!v25)
   {
     v129 = objc_autoreleasePoolPush();
-    v130 = v19;
+    v130 = selfCopy3;
     v131 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v131, OS_LOG_TYPE_ERROR))
     {
@@ -346,7 +346,7 @@ LABEL_83:
 
   v26 = [HMMTRTLVParser fabricIndicesFromTLV:v25];
   v27 = objc_autoreleasePoolPush();
-  v171 = v19;
+  v171 = selfCopy3;
   v28 = HMFGetOSLogHandle();
   v29 = v28;
   v142 = v26;
@@ -395,7 +395,7 @@ LABEL_83:
     goto LABEL_97;
   }
 
-  v136 = a6;
+  keyCopy = key;
   v137 = v25;
   v138 = v24;
   v139 = v16;
@@ -441,7 +441,7 @@ LABEL_83:
         {
           v40 = v39;
           v169 = [MEMORY[0x277CD5230] convertMatterCertificate:v39];
-          if ([MEMORY[0x277CD5230] keypair:v167 matchesCertificate:?])
+          if ([MEMORY[0x277CD5230] keypair:pairCopy matchesCertificate:?])
           {
             v41 = [MEMORY[0x277CCACA8] stringWithFormat:@"f/%x/o", objc_msgSend(v34, "unsignedIntValue")];
             v42 = [v13 storedValueForKey:v41];
@@ -488,8 +488,8 @@ LABEL_83:
                   if ([MEMORY[0x277CD5230] keypair:v164 matchesCertificate:?])
                   {
                     v50 = [objc_alloc(MEMORY[0x277CD5228]) initWithTLVBytes:v49];
-                    v51 = [v50 subject];
-                    v150 = [v51 fabricID];
+                    subject = [v50 subject];
+                    fabricID = [subject fabricID];
 
                     v52 = v50;
                     v152 = v50;
@@ -498,31 +498,31 @@ LABEL_83:
                       goto LABEL_45;
                     }
 
-                    v53 = [v50 notBefore];
+                    notBefore = [v50 notBefore];
 
                     context = objc_autoreleasePoolPush();
                     v144 = v171;
                     v54 = HMFGetOSLogHandle();
                     v55 = os_log_type_enabled(v54, OS_LOG_TYPE_INFO);
-                    if (v53 >= v151)
+                    if (notBefore >= v151)
                     {
                       v65 = v159;
                       if (v55)
                       {
                         v102 = HMFGetLogIdentifier();
-                        v103 = [v34 unsignedIntValue];
+                        unsignedIntValue = [v34 unsignedIntValue];
                         *buf = 138543874;
                         v178 = v102;
                         v179 = 2112;
-                        *v180 = v150;
+                        *v180 = fabricID;
                         *&v180[8] = 1024;
-                        LODWORD(v181) = v103;
+                        LODWORD(v181) = unsignedIntValue;
                         _os_log_impl(&dword_22AEAE000, v54, OS_LOG_TYPE_INFO, "%{public}@Redundant system commissioner NOC present in MatterSupport storage with fabricID %@, index: 0x%x", buf, 0x1Cu);
                       }
 
                       objc_autoreleasePoolPop(context);
                       v64 = v152;
-                      v63 = v150;
+                      v63 = fabricID;
                     }
 
                     else
@@ -530,20 +530,20 @@ LABEL_83:
                       if (v55)
                       {
                         v56 = HMFGetLogIdentifier();
-                        v57 = [v149 unsignedIntValue];
+                        unsignedIntValue2 = [v149 unsignedIntValue];
                         *buf = 138543874;
                         v178 = v56;
                         v179 = 2112;
                         *v180 = v154;
                         *&v180[8] = 1024;
-                        LODWORD(v181) = v57;
+                        LODWORD(v181) = unsignedIntValue2;
                         _os_log_impl(&dword_22AEAE000, v54, OS_LOG_TYPE_INFO, "%{public}@Redundant system commissioner NOC present in MatterSupport storage with fabricID %@, index: 0x%x", buf, 0x1Cu);
                       }
 
                       objc_autoreleasePoolPop(context);
                       v52 = v152;
 LABEL_45:
-                      v145 = v150;
+                      v145 = fabricID;
 
                       v155 = v34;
                       [v52 notBefore];
@@ -559,7 +559,7 @@ LABEL_45:
                       v146 = v60;
                       v151 = v59;
                       v41 = v58;
-                      v63 = v150;
+                      v63 = fabricID;
                       v64 = v152;
                       v149 = v155;
                       v154 = v145;
@@ -576,15 +576,15 @@ LABEL_45:
                     {
                       HMFGetLogIdentifier();
                       v99 = v153 = v41;
-                      v100 = [v34 unsignedIntValue];
-                      v101 = [v34 unsignedIntValue];
+                      unsignedIntValue3 = [v34 unsignedIntValue];
+                      unsignedIntValue4 = [v34 unsignedIntValue];
                       *buf = 138543874;
                       v178 = v99;
                       v179 = 1024;
-                      *v180 = v100;
+                      *v180 = unsignedIntValue3;
                       v13 = v165;
                       *&v180[4] = 1024;
-                      *&v180[6] = v101;
+                      *&v180[6] = unsignedIntValue4;
                       _os_log_impl(&dword_22AEAE000, v98, OS_LOG_TYPE_ERROR, "%{public}@f/%x/n doesn't match f/%x/o", buf, 0x18u);
 
                       v41 = v153;
@@ -606,11 +606,11 @@ LABEL_45:
                     v162 = v40;
                     v85 = v82;
                     v87 = v86 = v41;
-                    v88 = [v34 unsignedIntValue];
+                    unsignedIntValue5 = [v34 unsignedIntValue];
                     *buf = 138543618;
                     v178 = v87;
                     v179 = 1024;
-                    *v180 = v88;
+                    *v180 = unsignedIntValue5;
                     _os_log_impl(&dword_22AEAE000, v84, OS_LOG_TYPE_ERROR, "%{public}@No f/%x/n in storage", buf, 0x12u);
 
                     v41 = v86;
@@ -634,11 +634,11 @@ LABEL_45:
                   v163 = v40;
                   v92 = v89;
                   v94 = v93 = v41;
-                  v95 = [v34 unsignedIntValue];
+                  unsignedIntValue6 = [v34 unsignedIntValue];
                   *buf = 138543618;
                   v178 = v94;
                   v179 = 1024;
-                  *v180 = v95;
+                  *v180 = unsignedIntValue6;
                   _os_log_impl(&dword_22AEAE000, v91, OS_LOG_TYPE_ERROR, "%{public}@f/%x/o format mismatch", buf, 0x12u);
 
                   v41 = v93;
@@ -661,11 +661,11 @@ LABEL_45:
                 HMFGetLogIdentifier();
                 v161 = v40;
                 v80 = v79 = v41;
-                v81 = [v34 unsignedIntValue];
+                unsignedIntValue7 = [v34 unsignedIntValue];
                 *buf = 138543618;
                 v178 = v80;
                 v179 = 1024;
-                *v180 = v81;
+                *v180 = unsignedIntValue7;
                 _os_log_impl(&dword_22AEAE000, v78, OS_LOG_TYPE_ERROR, "%{public}@No f/%x/o in storage", buf, 0x12u);
 
                 v41 = v79;
@@ -686,11 +686,11 @@ LABEL_45:
             if (os_log_type_enabled(v73, OS_LOG_TYPE_INFO))
             {
               v74 = HMFGetLogIdentifier();
-              v75 = [v34 unsignedIntValue];
+              unsignedIntValue8 = [v34 unsignedIntValue];
               *buf = 138543618;
               v178 = v74;
               v179 = 1024;
-              *v180 = v75;
+              *v180 = unsignedIntValue8;
               _os_log_impl(&dword_22AEAE000, v73, OS_LOG_TYPE_INFO, "%{public}@Ignoring incompatible system commissioner fabric in MatterSupport storage with index: 0x%x", buf, 0x12u);
 
               v13 = v165;
@@ -710,11 +710,11 @@ LABEL_45:
       if (os_log_type_enabled(v68, OS_LOG_TYPE_ERROR))
       {
         v69 = HMFGetLogIdentifier();
-        v70 = [v34 unsignedIntValue];
+        unsignedIntValue9 = [v34 unsignedIntValue];
         *buf = 138543618;
         v178 = v69;
         v179 = 1024;
-        *v180 = v70;
+        *v180 = unsignedIntValue9;
         _os_log_impl(&dword_22AEAE000, v68, OS_LOG_TYPE_ERROR, "%{public}@f/%x/r isn't base 64 encoded", buf, 0x12u);
 
         v32 = v168;
@@ -753,12 +753,12 @@ LABEL_73:
     objc_autoreleasePoolPop(v104);
     v109 = v146;
     v110 = v146;
-    *v141 = v146;
+    *certCopy = v146;
     v111 = v147;
     v112 = v147;
-    *v140 = v147;
+    *operationalCertCopy = v147;
     v113 = v148;
-    *v136 = v113;
+    *keyCopy = v113;
     v114 = 1;
     v115 = v154;
     v116 = v149;
@@ -791,17 +791,17 @@ LABEL_102:
   return v114;
 }
 
-- (void)_updateMTSKeyValueStore:(id)a3
+- (void)_updateMTSKeyValueStore:(id)store
 {
   v58 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMMTRSystemCommissionerControllerParams *)self mtsKeyValueStore];
-  v6 = v5;
-  if (v5)
+  storeCopy = store;
+  mtsKeyValueStore = [(HMMTRSystemCommissionerControllerParams *)self mtsKeyValueStore];
+  v6 = mtsKeyValueStore;
+  if (mtsKeyValueStore)
   {
-    v40 = self;
-    v38 = v4;
-    [v5 storedValuesByKey];
+    selfCopy = self;
+    v38 = storeCopy;
+    [mtsKeyValueStore storedValuesByKey];
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
@@ -831,7 +831,7 @@ LABEL_102:
             if ((v13 & 1) == 0)
             {
               v15 = objc_autoreleasePoolPush();
-              v16 = v40;
+              v16 = selfCopy;
               v17 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
               {
@@ -885,7 +885,7 @@ LABEL_102:
           if ((v27 & 1) == 0)
           {
             v29 = objc_autoreleasePoolPush();
-            v30 = v40;
+            v30 = selfCopy;
             v31 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
             {
@@ -908,13 +908,13 @@ LABEL_102:
       while (v21);
     }
 
-    v4 = v38;
+    storeCopy = v38;
   }
 
   else
   {
     v33 = objc_autoreleasePoolPush();
-    v34 = self;
+    selfCopy2 = self;
     v35 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
     {
@@ -930,46 +930,46 @@ LABEL_102:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_obtainControllerWrapperWithV1KeyPair:(id)a3 startupParams:(id)a4
+- (void)_obtainControllerWrapperWithV1KeyPair:(id)pair startupParams:(id)params
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMMTRSystemCommissionerControllerParams *)self controllerWrapper];
-  [v8 remove];
+  pairCopy = pair;
+  paramsCopy = params;
+  controllerWrapper = [(HMMTRSystemCommissionerControllerParams *)self controllerWrapper];
+  [controllerWrapper remove];
 
-  [(HMMTRSystemCommissionerControllerParams *)self setV1keypair:v6];
-  v9 = [(HMMTRSystemCommissionerControllerParams *)self controllerFactory];
-  v10 = [v9 wrapperWithName:@"System Commissioner Controller" startupParams:v7 entityIdentifier:0];
+  [(HMMTRSystemCommissionerControllerParams *)self setV1keypair:pairCopy];
+  controllerFactory = [(HMMTRSystemCommissionerControllerParams *)self controllerFactory];
+  v10 = [controllerFactory wrapperWithName:@"System Commissioner Controller" startupParams:paramsCopy entityIdentifier:0];
   [(HMMTRSystemCommissionerControllerParams *)self setControllerWrapper:v10];
 
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v14 = HMFGetLogIdentifier();
-    v15 = [(HMMTRSystemCommissionerControllerParams *)v12 controllerWrapper];
-    v16 = [v7 fabricID];
+    controllerWrapper2 = [(HMMTRSystemCommissionerControllerParams *)selfCopy controllerWrapper];
+    fabricID = [paramsCopy fabricID];
     v36 = 138543874;
     v37 = v14;
     v38 = 2112;
-    v39 = v15;
+    v39 = controllerWrapper2;
     v40 = 2112;
-    v41 = v16;
+    v41 = fabricID;
     _os_log_impl(&dword_22AEAE000, v13, OS_LOG_TYPE_INFO, "%{public}@Obtained controller wrapper %@ for fabric ID %@", &v36, 0x20u);
   }
 
   objc_autoreleasePoolPop(v11);
   v17 = objc_autoreleasePoolPush();
-  v18 = v12;
+  v18 = selfCopy;
   v19 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
     v20 = HMFGetLogIdentifier();
     v21 = MEMORY[0x277CD5230];
-    v22 = [v7 rootCertificate];
-    v23 = [v21 shortDescriptionForX509Certificate:v22];
+    rootCertificate = [paramsCopy rootCertificate];
+    v23 = [v21 shortDescriptionForX509Certificate:rootCertificate];
     v36 = 138543618;
     v37 = v20;
     v38 = 2112;
@@ -979,8 +979,8 @@ LABEL_102:
 
   objc_autoreleasePoolPop(v17);
   v24 = MEMORY[0x277CD5230];
-  v25 = [v7 rootCertificate];
-  [v24 printX509Certificate:v25];
+  rootCertificate2 = [paramsCopy rootCertificate];
+  [v24 printX509Certificate:rootCertificate2];
 
   v26 = objc_autoreleasePoolPush();
   v27 = v18;
@@ -989,8 +989,8 @@ LABEL_102:
   {
     v29 = HMFGetLogIdentifier();
     v30 = MEMORY[0x277CD5230];
-    v31 = [v7 operationalCertificate];
-    v32 = [v30 shortDescriptionForX509Certificate:v31];
+    operationalCertificate = [paramsCopy operationalCertificate];
+    v32 = [v30 shortDescriptionForX509Certificate:operationalCertificate];
     v36 = 138543618;
     v37 = v29;
     v38 = 2112;
@@ -1000,41 +1000,41 @@ LABEL_102:
 
   objc_autoreleasePoolPop(v26);
   v33 = MEMORY[0x277CD5230];
-  v34 = [v7 operationalCertificate];
-  [v33 printX509Certificate:v34];
+  operationalCertificate2 = [paramsCopy operationalCertificate];
+  [v33 printX509Certificate:operationalCertificate2];
 
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_buildV1KeyWithPrivateKey:(__SecKey *)a3 operationalKey:(__SecKey *)a4 ipk:(id)a5 rootCert:(id)a6 operationalCert:(id)a7 updatingMTSKeyValueStore:(BOOL)a8
+- (void)_buildV1KeyWithPrivateKey:(__SecKey *)key operationalKey:(__SecKey *)operationalKey ipk:(id)ipk rootCert:(id)cert operationalCert:(id)operationalCert updatingMTSKeyValueStore:(BOOL)store
 {
-  v8 = a8;
+  storeCopy = store;
   v49 = *MEMORY[0x277D85DE8];
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(HMMTRSystemCommissionerControllerParams *)self storeV1MatterKeypairWithPrivateKey:a3 operationalKey:a4 rootCert:v15 operationalCert:v16 ipk:v14];
+  ipkCopy = ipk;
+  certCopy = cert;
+  operationalCertCopy = operationalCert;
+  v17 = [(HMMTRSystemCommissionerControllerParams *)self storeV1MatterKeypairWithPrivateKey:key operationalKey:operationalKey rootCert:certCopy operationalCert:operationalCertCopy ipk:ipkCopy];
   if (v17)
   {
-    v18 = [[HMMTRMatterKeypair alloc] initWithPrivateKey:a4];
+    v18 = [[HMMTRMatterKeypair alloc] initWithPrivateKey:operationalKey];
     if (v18)
     {
-      v19 = [[HMMTRControllerParameters alloc] initWithIPK:v14 operationalKeypair:v18 operationalCertificate:v16 intermediateCertificate:0 rootCertificate:v15];
+      v19 = [[HMMTRControllerParameters alloc] initWithIPK:ipkCopy operationalKeypair:v18 operationalCertificate:operationalCertCopy intermediateCertificate:0 rootCertificate:certCopy];
       v20 = v19;
       if (v19)
       {
         [(HMMTRControllerParameters *)v19 setVendorID:&unk_283EE8790];
-        if (v8)
+        if (storeCopy)
         {
-          v21 = [(HMMTRMatterKeypair *)v18 serialize];
-          if (v21)
+          serialize = [(HMMTRMatterKeypair *)v18 serialize];
+          if (serialize)
           {
             [(HMMTRSystemCommissionerControllerParams *)self setGeneratingKeyPair:1];
-            v22 = [(HMMTRSystemCommissionerControllerParams *)self controllerFactory];
-            v23 = [v22 stackStorageWithStartupParams:v20 operationalKeyPairTLV:v21];
+            controllerFactory = [(HMMTRSystemCommissionerControllerParams *)self controllerFactory];
+            v23 = [controllerFactory stackStorageWithStartupParams:v20 operationalKeyPairTLV:serialize];
 
             context = objc_autoreleasePoolPush();
-            v24 = self;
+            selfCopy = self;
             v25 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
             {
@@ -1048,15 +1048,15 @@ LABEL_102:
             }
 
             objc_autoreleasePoolPop(context);
-            [(HMMTRSystemCommissionerControllerParams *)v24 _updateMTSKeyValueStore:v23];
-            [(HMMTRSystemCommissionerControllerParams *)v24 _startWithV1Keypair:v17];
-            [(HMMTRSystemCommissionerControllerParams *)v24 setGeneratingKeyPair:0];
+            [(HMMTRSystemCommissionerControllerParams *)selfCopy _updateMTSKeyValueStore:v23];
+            [(HMMTRSystemCommissionerControllerParams *)selfCopy _startWithV1Keypair:v17];
+            [(HMMTRSystemCommissionerControllerParams *)selfCopy setGeneratingKeyPair:0];
           }
 
           else
           {
             v39 = objc_autoreleasePoolPush();
-            v40 = self;
+            selfCopy2 = self;
             v41 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
             {
@@ -1082,7 +1082,7 @@ LABEL_102:
       else
       {
         v35 = objc_autoreleasePoolPush();
-        v36 = self;
+        selfCopy3 = self;
         v37 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
         {
@@ -1099,7 +1099,7 @@ LABEL_102:
     else
     {
       v31 = objc_autoreleasePoolPush();
-      v32 = self;
+      selfCopy4 = self;
       v33 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
@@ -1116,7 +1116,7 @@ LABEL_102:
   else
   {
     v27 = objc_autoreleasePoolPush();
-    v28 = self;
+    selfCopy5 = self;
     v29 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
@@ -1132,13 +1132,13 @@ LABEL_102:
   v43 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_buildV1KeyWithV0KeyPair:(id)a3
+- (void)_buildV1KeyWithV0KeyPair:(id)pair
 {
   v59 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pairCopy = pair;
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{+[HMMTRUtilities randomNodeID](HMMTRUtilities, "randomNodeID")}];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -1156,7 +1156,7 @@ LABEL_102:
   {
     v11 = v10;
     v12 = objc_autoreleasePoolPush();
-    v13 = v7;
+    v13 = selfCopy;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -1178,11 +1178,11 @@ LABEL_102:
     v16 = [MEMORY[0x277CBEA90] dataWithBytes:bytes length:16];
     v17 = [v16 base64EncodedStringWithOptions:0];
     v51 = 0;
-    [(HMMTRSystemCommissionerControllerParams *)v7 setMTSStoredValue:v17 forKey:@"IPK" error:&v51];
+    [(HMMTRSystemCommissionerControllerParams *)selfCopy setMTSStoredValue:v17 forKey:@"IPK" error:&v51];
     v18 = v51;
 
     v19 = objc_autoreleasePoolPush();
-    v20 = v7;
+    v20 = selfCopy;
     v21 = HMFGetOSLogHandle();
     v22 = v21;
     if (v18)
@@ -1212,7 +1212,7 @@ LABEL_102:
 
       objc_autoreleasePoolPop(v19);
       v50 = 0;
-      v25 = [MEMORY[0x277CD5230] createRootCertificate:v4 issuerID:0 fabricID:v5 error:&v50];
+      v25 = [MEMORY[0x277CD5230] createRootCertificate:pairCopy issuerID:0 fabricID:v5 error:&v50];
       v18 = v50;
       if (v25)
       {
@@ -1233,17 +1233,17 @@ LABEL_102:
         }
 
         objc_autoreleasePoolPop(v27);
-        v31 = [[HMMTRMatterKeypair alloc] initUnassociated];
-        v32 = v31;
-        if (v31)
+        initUnassociated = [[HMMTRMatterKeypair alloc] initUnassociated];
+        v32 = initUnassociated;
+        if (initUnassociated)
         {
           v49 = v18;
-          v33 = [MEMORY[0x277CD5230] createOperationalCertificate:v4 signingCertificate:v25 operationalPublicKey:objc_msgSend(v31 fabricID:"publicKey") nodeID:v5 caseAuthenticatedTags:v26 error:{0, &v49}];
+          v33 = [MEMORY[0x277CD5230] createOperationalCertificate:pairCopy signingCertificate:v25 operationalPublicKey:objc_msgSend(initUnassociated fabricID:"publicKey") nodeID:v5 caseAuthenticatedTags:v26 error:{0, &v49}];
           v34 = v49;
 
           if (v33)
           {
-            -[HMMTRSystemCommissionerControllerParams _buildV1KeyWithPrivateKey:operationalKey:ipk:rootCert:operationalCert:updatingMTSKeyValueStore:](v28, "_buildV1KeyWithPrivateKey:operationalKey:ipk:rootCert:operationalCert:updatingMTSKeyValueStore:", [v4 privateKey], objc_msgSend(v32, "privateKey"), v16, v25, v33, 1);
+            -[HMMTRSystemCommissionerControllerParams _buildV1KeyWithPrivateKey:operationalKey:ipk:rootCert:operationalCert:updatingMTSKeyValueStore:](v28, "_buildV1KeyWithPrivateKey:operationalKey:ipk:rootCert:operationalCert:updatingMTSKeyValueStore:", [pairCopy privateKey], objc_msgSend(v32, "privateKey"), v16, v25, v33, 1);
           }
 
           else
@@ -1317,9 +1317,9 @@ LABEL_102:
 - (void)_buildV1KeyFromScratch
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(HMMTRSystemCommissionerControllerParams *)self storeV0MatterKeypair];
+  storeV0MatterKeypair = [(HMMTRSystemCommissionerControllerParams *)self storeV0MatterKeypair];
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -1327,21 +1327,21 @@ LABEL_102:
     v9 = 138543618;
     v10 = v7;
     v11 = 2112;
-    v12 = v3;
+    v12 = storeV0MatterKeypair;
     _os_log_impl(&dword_22AEAE000, v6, OS_LOG_TYPE_INFO, "%{public}@Using new key pair for system commissioner: %@", &v9, 0x16u);
   }
 
   objc_autoreleasePoolPop(v4);
-  [(HMMTRSystemCommissionerControllerParams *)v5 _buildV1KeyWithV0KeyPair:v3];
+  [(HMMTRSystemCommissionerControllerParams *)selfCopy _buildV1KeyWithV0KeyPair:storeV0MatterKeypair];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_buildV1KeyFromV0KeyAllowingNew:(BOOL)a3
+- (void)_buildV1KeyFromV0KeyAllowingNew:(BOOL)new
 {
   v51 = *MEMORY[0x277D85DE8];
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1352,20 +1352,20 @@ LABEL_102:
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMMTRSystemCommissionerControllerParams *)v6 v0MatterKeypairFromKeychain];
-  if (v9)
+  v0MatterKeypairFromKeychain = [(HMMTRSystemCommissionerControllerParams *)selfCopy v0MatterKeypairFromKeychain];
+  if (v0MatterKeypairFromKeychain)
   {
     v47 = 0;
     v48 = 0;
     v45 = 0;
     v46 = 0;
-    v10 = [(HMMTRSystemCommissionerControllerParams *)v6 _findFabricRecordInMTSKeyValueStoreMatchingKeyPair:v9 ipk:&v48 rootCert:&v47 operationalKey:&v46 operationalCert:&v45];
+    v10 = [(HMMTRSystemCommissionerControllerParams *)selfCopy _findFabricRecordInMTSKeyValueStoreMatchingKeyPair:v0MatterKeypairFromKeychain ipk:&v48 rootCert:&v47 operationalKey:&v46 operationalCert:&v45];
     v11 = v48;
     v12 = v47;
     v13 = v46;
     v14 = v45;
     v15 = objc_autoreleasePoolPush();
-    v16 = v6;
+    v16 = selfCopy;
     v17 = HMFGetOSLogHandle();
     v18 = os_log_type_enabled(v17, OS_LOG_TYPE_INFO);
     if (v10)
@@ -1380,7 +1380,7 @@ LABEL_102:
 
       objc_autoreleasePoolPop(v15);
       v44 = 0;
-      v20 = [HMMTRStorage checkAndUpdateExpiryOfCertificate:v12 keyPair:v9 newCertificate:&v44];
+      v20 = [HMMTRStorage checkAndUpdateExpiryOfCertificate:v12 keyPair:v0MatterKeypairFromKeychain newCertificate:&v44];
       v21 = v44;
       v43 = v11;
       if (v20)
@@ -1414,14 +1414,14 @@ LABEL_102:
       }
 
       objc_autoreleasePoolPop(v27);
-      v31 = [v9 privateKey];
-      v32 = [v13 privateKey];
-      v33 = v31;
+      privateKey = [v0MatterKeypairFromKeychain privateKey];
+      privateKey2 = [v13 privateKey];
+      v33 = privateKey;
       v11 = v43;
-      [(HMMTRSystemCommissionerControllerParams *)v28 _buildV1KeyWithPrivateKey:v33 operationalKey:v32 ipk:v43 rootCert:v12 operationalCert:v14 updatingMTSKeyValueStore:0];
+      [(HMMTRSystemCommissionerControllerParams *)v28 _buildV1KeyWithPrivateKey:v33 operationalKey:privateKey2 ipk:v43 rootCert:v12 operationalCert:v14 updatingMTSKeyValueStore:0];
     }
 
-    else if (a3)
+    else if (new)
     {
       if (v18)
       {
@@ -1432,7 +1432,7 @@ LABEL_102:
       }
 
       objc_autoreleasePoolPop(v15);
-      [(HMMTRSystemCommissionerControllerParams *)v16 _buildV1KeyWithV0KeyPair:v9];
+      [(HMMTRSystemCommissionerControllerParams *)v16 _buildV1KeyWithV0KeyPair:v0MatterKeypairFromKeychain];
     }
 
     else
@@ -1452,10 +1452,10 @@ LABEL_102:
   else
   {
     v34 = objc_autoreleasePoolPush();
-    v35 = v6;
+    v35 = selfCopy;
     v36 = HMFGetOSLogHandle();
     v37 = os_log_type_enabled(v36, OS_LOG_TYPE_INFO);
-    if (a3)
+    if (new)
     {
       if (v37)
       {
@@ -1486,13 +1486,13 @@ LABEL_102:
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_buildControllerParams2WithV1Keypair:(id)a3
+- (id)_buildControllerParams2WithV1Keypair:(id)keypair
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 operationalKey])
+  keypairCopy = keypair;
+  if ([keypairCopy operationalKey])
   {
-    v5 = -[HMMTRMatterKeypair initWithPrivateKey:]([HMMTRMatterKeypair alloc], "initWithPrivateKey:", [v4 operationalKey]);
+    v5 = -[HMMTRMatterKeypair initWithPrivateKey:]([HMMTRMatterKeypair alloc], "initWithPrivateKey:", [keypairCopy operationalKey]);
   }
 
   else
@@ -1503,39 +1503,39 @@ LABEL_102:
   v6 = dispatch_queue_create("HMMTRPerControllerStorage queue for System Commissioner fabric", 0);
   v7 = [[HMMTRSystemCommissionerPerControllerStorage alloc] initWithQueue:v6];
   v8 = [HMMTRControllerParameters alloc];
-  v9 = [MEMORY[0x277CCAD78] UUID];
-  v10 = [v4 ipk];
-  v11 = [v4 operationalCert];
-  v12 = [v4 rootCert];
-  v13 = [(HMMTRControllerParameters *)v8 initWithStorageDelegate:v7 storageDelegateQueue:v6 uniqueIdentifier:v9 ipk:v10 vendorID:&unk_283EE8790 operationalKeypair:v5 operationalCertificate:v11 intermediateCertificate:0 rootCertificate:v12];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v10 = [keypairCopy ipk];
+  operationalCert = [keypairCopy operationalCert];
+  rootCert = [keypairCopy rootCert];
+  v13 = [(HMMTRControllerParameters *)v8 initWithStorageDelegate:v7 storageDelegateQueue:v6 uniqueIdentifier:uUID ipk:v10 vendorID:&unk_283EE8790 operationalKeypair:v5 operationalCertificate:operationalCert intermediateCertificate:0 rootCertificate:rootCert];
 
   if (v13)
   {
     v14 = MEMORY[0x277CD5230];
-    v15 = [v4 operationalCert];
-    v16 = [v14 convertX509Certificate:v15];
+    operationalCert2 = [keypairCopy operationalCert];
+    v16 = [v14 convertX509Certificate:operationalCert2];
 
     v17 = [objc_alloc(MEMORY[0x277CD5228]) initWithTLVBytes:v16];
     v18 = v17;
     if (v17)
     {
-      v19 = [v17 subject];
-      v20 = [v19 fabricID];
-      [(HMMTRSystemCommissionerControllerParams *)self setCommissioningFabricID:v20];
+      subject = [v17 subject];
+      fabricID = [subject fabricID];
+      [(HMMTRSystemCommissionerControllerParams *)self setCommissioningFabricID:fabricID];
 
-      v21 = [v18 subject];
-      v22 = [v21 nodeID];
-      [(HMMTRSystemCommissionerControllerParams *)self setAdminNodeID:v22];
+      subject2 = [v18 subject];
+      nodeID = [subject2 nodeID];
+      [(HMMTRSystemCommissionerControllerParams *)self setAdminNodeID:nodeID];
 
       [(HMMTRControllerParameters *)v13 setOperationalCertificateIssuer:self];
-      v23 = [(HMMTRSystemCommissionerControllerParams *)self workQueue];
-      [(HMMTRControllerParameters *)v13 setOperationalCertificateIssuerQueue:v23];
+      workQueue = [(HMMTRSystemCommissionerControllerParams *)self workQueue];
+      [(HMMTRControllerParameters *)v13 setOperationalCertificateIssuerQueue:workQueue];
 
-      v24 = [(HMMTRSystemCommissionerControllerParams *)self certificationDeclarationCertificates];
-      [(HMMTRControllerParameters *)v13 setCertificationDeclarationCertificates:v24];
+      certificationDeclarationCertificates = [(HMMTRSystemCommissionerControllerParams *)self certificationDeclarationCertificates];
+      [(HMMTRControllerParameters *)v13 setCertificationDeclarationCertificates:certificationDeclarationCertificates];
 
-      v25 = [(HMMTRSystemCommissionerControllerParams *)self productAttestationAuthorityCertificates];
-      [(HMMTRControllerParameters *)v13 setProductAttestationAuthorityCertificates:v25];
+      productAttestationAuthorityCertificates = [(HMMTRSystemCommissionerControllerParams *)self productAttestationAuthorityCertificates];
+      [(HMMTRControllerParameters *)v13 setProductAttestationAuthorityCertificates:productAttestationAuthorityCertificates];
 
       v26 = v13;
     }
@@ -1543,7 +1543,7 @@ LABEL_102:
     else
     {
       v31 = objc_autoreleasePoolPush();
-      v32 = self;
+      selfCopy = self;
       v33 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
@@ -1564,7 +1564,7 @@ LABEL_102:
   else
   {
     v27 = objc_autoreleasePoolPush();
-    v28 = self;
+    selfCopy2 = self;
     v29 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
@@ -1583,13 +1583,13 @@ LABEL_102:
   return v26;
 }
 
-- (id)_buildControllerParams1WithV1Keypair:(id)a3
+- (id)_buildControllerParams1WithV1Keypair:(id)keypair
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 operationalKey])
+  keypairCopy = keypair;
+  if ([keypairCopy operationalKey])
   {
-    v5 = -[HMMTRMatterKeypair initWithPrivateKey:]([HMMTRMatterKeypair alloc], "initWithPrivateKey:", [v4 operationalKey]);
+    v5 = -[HMMTRMatterKeypair initWithPrivateKey:]([HMMTRMatterKeypair alloc], "initWithPrivateKey:", [keypairCopy operationalKey]);
   }
 
   else
@@ -1598,33 +1598,33 @@ LABEL_102:
   }
 
   v6 = [HMMTRControllerParameters alloc];
-  v7 = [v4 ipk];
-  v8 = [v4 operationalCert];
-  v9 = [v4 rootCert];
-  v10 = [(HMMTRControllerParameters *)v6 initWithIPK:v7 operationalKeypair:v5 operationalCertificate:v8 intermediateCertificate:0 rootCertificate:v9];
+  v7 = [keypairCopy ipk];
+  operationalCert = [keypairCopy operationalCert];
+  rootCert = [keypairCopy rootCert];
+  v10 = [(HMMTRControllerParameters *)v6 initWithIPK:v7 operationalKeypair:v5 operationalCertificate:operationalCert intermediateCertificate:0 rootCertificate:rootCert];
 
   if (v10)
   {
     v11 = MEMORY[0x277CD5230];
-    v12 = [v4 operationalCert];
-    v13 = [v11 convertX509Certificate:v12];
+    operationalCert2 = [keypairCopy operationalCert];
+    v13 = [v11 convertX509Certificate:operationalCert2];
 
     v14 = [objc_alloc(MEMORY[0x277CD5228]) initWithTLVBytes:v13];
     v15 = v14;
     if (v14)
     {
-      v16 = [v14 subject];
-      v17 = [v16 fabricID];
-      [(HMMTRSystemCommissionerControllerParams *)self setCommissioningFabricID:v17];
+      subject = [v14 subject];
+      fabricID = [subject fabricID];
+      [(HMMTRSystemCommissionerControllerParams *)self setCommissioningFabricID:fabricID];
 
-      v18 = [v15 subject];
-      v19 = [v18 nodeID];
-      [(HMMTRSystemCommissionerControllerParams *)self setAdminNodeID:v19];
+      subject2 = [v15 subject];
+      nodeID = [subject2 nodeID];
+      [(HMMTRSystemCommissionerControllerParams *)self setAdminNodeID:nodeID];
 
       [(HMMTRControllerParameters *)v10 setVendorID:&unk_283EE8790];
       [(HMMTRControllerParameters *)v10 setOperationalCertificateIssuer:self];
-      v20 = [(HMMTRSystemCommissionerControllerParams *)self workQueue];
-      [(HMMTRControllerParameters *)v10 setOperationalCertificateIssuerQueue:v20];
+      workQueue = [(HMMTRSystemCommissionerControllerParams *)self workQueue];
+      [(HMMTRControllerParameters *)v10 setOperationalCertificateIssuerQueue:workQueue];
 
       v21 = v10;
     }
@@ -1632,7 +1632,7 @@ LABEL_102:
     else
     {
       v26 = objc_autoreleasePoolPush();
-      v27 = self;
+      selfCopy = self;
       v28 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
@@ -1650,7 +1650,7 @@ LABEL_102:
   else
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy2 = self;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
@@ -1669,32 +1669,32 @@ LABEL_102:
   return v21;
 }
 
-- (void)_startWithV1Keypair:(id)a3
+- (void)_startWithV1Keypair:(id)keypair
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMMTRSystemCommissionerControllerParams *)self controllerFactory];
-  v6 = [v5 usesCommonStorage];
+  keypairCopy = keypair;
+  controllerFactory = [(HMMTRSystemCommissionerControllerParams *)self controllerFactory];
+  usesCommonStorage = [controllerFactory usesCommonStorage];
 
-  if (v6)
+  if (usesCommonStorage)
   {
-    [(HMMTRSystemCommissionerControllerParams *)self _buildControllerParams1WithV1Keypair:v4];
+    [(HMMTRSystemCommissionerControllerParams *)self _buildControllerParams1WithV1Keypair:keypairCopy];
   }
 
   else
   {
-    [(HMMTRSystemCommissionerControllerParams *)self _buildControllerParams2WithV1Keypair:v4];
+    [(HMMTRSystemCommissionerControllerParams *)self _buildControllerParams2WithV1Keypair:keypairCopy];
   }
   v7 = ;
   if (v7)
   {
-    [(HMMTRSystemCommissionerControllerParams *)self _obtainControllerWrapperWithV1KeyPair:v4 startupParams:v7];
+    [(HMMTRSystemCommissionerControllerParams *)self _obtainControllerWrapperWithV1KeyPair:keypairCopy startupParams:v7];
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -1710,19 +1710,19 @@ LABEL_102:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_checkAndUpdateValidityPeriodOfV1Keypair:(id)a3 newKeyPair:(id *)a4
+- (BOOL)_checkAndUpdateValidityPeriodOfV1Keypair:(id)keypair newKeyPair:(id *)pair
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 rootCert];
+  keypairCopy = keypair;
+  rootCert = [keypairCopy rootCert];
   v21 = 0;
-  v8 = [HMMTRStorage checkAndUpdateExpiryOfCertificate:v7 keyPair:v6 newCertificate:&v21];
+  v8 = [HMMTRStorage checkAndUpdateExpiryOfCertificate:rootCert keyPair:keypairCopy newCertificate:&v21];
   v9 = v21;
 
   if (v8)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -1733,13 +1733,13 @@ LABEL_102:
     }
 
     objc_autoreleasePoolPop(v10);
-    v14 = [v6 privateKey];
-    v15 = [v6 operationalKey];
-    v16 = [v6 operationalCert];
-    v17 = [v6 ipk];
-    *a4 = [(HMMTRSystemCommissionerControllerParams *)v11 storeV1MatterKeypairWithPrivateKey:v14 operationalKey:v15 rootCert:v9 operationalCert:v16 ipk:v17];
+    privateKey = [keypairCopy privateKey];
+    operationalKey = [keypairCopy operationalKey];
+    operationalCert = [keypairCopy operationalCert];
+    v17 = [keypairCopy ipk];
+    *pair = [(HMMTRSystemCommissionerControllerParams *)selfCopy storeV1MatterKeypairWithPrivateKey:privateKey operationalKey:operationalKey rootCert:v9 operationalCert:operationalCert ipk:v17];
 
-    v18 = *a4 != 0;
+    v18 = *pair != 0;
   }
 
   else
@@ -1751,27 +1751,27 @@ LABEL_102:
   return v18;
 }
 
-- (void)issueOperationalCertificateForRequest:(id)a3 attestationInfo:(id)a4 controller:(id)a5 completion:(id)a6
+- (void)issueOperationalCertificateForRequest:(id)request attestationInfo:(id)info controller:(id)controller completion:(id)completion
 {
   v64[2] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(HMMTRSystemCommissionerControllerParams *)self commissioneeNodeID];
+  requestCopy = request;
+  infoCopy = info;
+  controllerCopy = controller;
+  completionCopy = completion;
+  commissioneeNodeID = [(HMMTRSystemCommissionerControllerParams *)self commissioneeNodeID];
 
-  if (v14)
+  if (commissioneeNodeID)
   {
     v15 = MEMORY[0x277CD5230];
-    v16 = [v10 csr];
+    v16 = [requestCopy csr];
     v56 = 0;
     v17 = [v15 publicKeyFromCSR:v16 error:&v56];
     v18 = v56;
 
     if (v17)
     {
-      v52 = v11;
-      v53 = v10;
+      v52 = infoCopy;
+      v53 = requestCopy;
       v19 = *MEMORY[0x277CDC040];
       v20 = *MEMORY[0x277CDBFE0];
       v63[0] = *MEMORY[0x277CDC028];
@@ -1785,27 +1785,27 @@ LABEL_102:
       if (v22)
       {
         v23 = v22;
-        v24 = [(HMMTRSystemCommissionerControllerParams *)self v1keypair];
-        v25 = [v24 rootCert];
+        v1keypair = [(HMMTRSystemCommissionerControllerParams *)self v1keypair];
+        rootCert = [v1keypair rootCert];
 
         v26 = MEMORY[0x277CD5230];
         [(HMMTRSystemCommissionerControllerParams *)self v1keypair];
-        v27 = v50 = v12;
-        v28 = [(HMMTRSystemCommissionerControllerParams *)self commissioningFabricID];
+        v27 = v50 = controllerCopy;
+        commissioningFabricID = [(HMMTRSystemCommissionerControllerParams *)self commissioningFabricID];
         [(HMMTRSystemCommissionerControllerParams *)self commissioneeNodeID];
         v29 = v49 = v17;
         v54 = v18;
-        v30 = [v26 createOperationalCertificate:v27 signingCertificate:v25 operationalPublicKey:v23 fabricID:v28 nodeID:v29 caseAuthenticatedTags:0 error:&v54];
+        v30 = [v26 createOperationalCertificate:v27 signingCertificate:rootCert operationalPublicKey:v23 fabricID:commissioningFabricID nodeID:v29 caseAuthenticatedTags:0 error:&v54];
         v31 = v54;
 
-        v12 = v50;
+        controllerCopy = v50;
         v32 = objc_alloc(MEMORY[0x277CD5450]);
-        v33 = [(HMMTRSystemCommissionerControllerParams *)self adminNodeID];
-        v34 = [v32 initWithOperationalCertificate:v30 intermediateCertificate:0 rootCertificate:v25 adminSubject:v33];
+        adminNodeID = [(HMMTRSystemCommissionerControllerParams *)self adminNodeID];
+        v34 = [v32 initWithOperationalCertificate:v30 intermediateCertificate:0 rootCertificate:rootCert adminSubject:adminNodeID];
 
         v17 = v49;
         CFRelease(v23);
-        v13[2](v13, v34, 0);
+        completionCopy[2](completionCopy, v34, 0);
 
         v18 = v31;
       }
@@ -1813,7 +1813,7 @@ LABEL_102:
       else
       {
         v44 = objc_autoreleasePoolPush();
-        v45 = self;
+        selfCopy = self;
         v46 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
         {
@@ -1828,19 +1828,19 @@ LABEL_102:
         }
 
         objc_autoreleasePoolPop(v44);
-        (v13)[2](v13, 0, error);
+        (completionCopy)[2](completionCopy, 0, error);
       }
 
-      v11 = v52;
+      infoCopy = v52;
 
-      v10 = v53;
+      requestCopy = v53;
     }
 
     else
     {
-      v39 = v12;
+      v39 = controllerCopy;
       v40 = objc_autoreleasePoolPush();
-      v41 = self;
+      selfCopy2 = self;
       v42 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
       {
@@ -1853,15 +1853,15 @@ LABEL_102:
       }
 
       objc_autoreleasePoolPop(v40);
-      (v13)[2](v13, 0, v18);
-      v12 = v39;
+      (completionCopy)[2](completionCopy, 0, v18);
+      controllerCopy = v39;
     }
   }
 
   else
   {
     v35 = objc_autoreleasePoolPush();
-    v36 = self;
+    selfCopy3 = self;
     v37 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
     {
@@ -1873,7 +1873,7 @@ LABEL_102:
 
     objc_autoreleasePoolPop(v35);
     v18 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CD5120] code:6 userInfo:0];
-    (v13)[2](v13, 0, v18);
+    (completionCopy)[2](completionCopy, 0, v18);
   }
 
   v48 = *MEMORY[0x277D85DE8];
@@ -1883,7 +1883,7 @@ LABEL_102:
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1894,13 +1894,13 @@ LABEL_102:
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMMTRSystemCommissionerControllerParams *)v4 workQueue];
+  workQueue = [(HMMTRSystemCommissionerControllerParams *)selfCopy workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__HMMTRSystemCommissionerControllerParams_handleKeyPairDataChanged__block_invoke;
   block[3] = &unk_2786F0CA8;
-  block[4] = v4;
-  dispatch_async(v7, block);
+  block[4] = selfCopy;
+  dispatch_async(workQueue, block);
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -1934,7 +1934,7 @@ void __67__HMMTRSystemCommissionerControllerParams_handleKeyPairDataChanged__blo
   }
 }
 
-- (BOOL)fetchControllerParamsAllowingNew:(BOOL)a3 nocSigner:(id *)a4 controllerWrapper:(id *)a5
+- (BOOL)fetchControllerParamsAllowingNew:(BOOL)new nocSigner:(id *)signer controllerWrapper:(id *)wrapper
 {
   v20 = 0;
   v21 = &v20;
@@ -1948,22 +1948,22 @@ void __67__HMMTRSystemCommissionerControllerParams_handleKeyPairDataChanged__blo
   v17 = __Block_byref_object_copy__8108;
   v18 = __Block_byref_object_dispose__8109;
   v19 = 0;
-  v9 = [(HMMTRSystemCommissionerControllerParams *)self workQueue];
+  workQueue = [(HMMTRSystemCommissionerControllerParams *)self workQueue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __104__HMMTRSystemCommissionerControllerParams_fetchControllerParamsAllowingNew_nocSigner_controllerWrapper___block_invoke;
   v12[3] = &unk_2786EE898;
-  v13 = a3;
+  newCopy = new;
   v12[4] = self;
   v12[5] = &v20;
   v12[6] = &v14;
-  dispatch_sync(v9, v12);
+  dispatch_sync(workQueue, v12);
 
   v10 = v15[5];
   if (v10)
   {
-    *a4 = v21[5];
-    *a5 = v15[5];
+    *signer = v21[5];
+    *wrapper = v15[5];
   }
 
   _Block_object_dispose(&v14, 8);
@@ -2048,18 +2048,18 @@ void __104__HMMTRSystemCommissionerControllerParams_fetchControllerParamsAllowin
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (HMMTRSystemCommissionerControllerParams)initWithQueue:(id)a3 controllerFactory:(id)a4
+- (HMMTRSystemCommissionerControllerParams)initWithQueue:(id)queue controllerFactory:(id)factory
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  factoryCopy = factory;
   v12.receiver = self;
   v12.super_class = HMMTRSystemCommissionerControllerParams;
   v9 = [(HMMTRSystemCommissionerControllerParams *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_workQueue, a3);
-    objc_storeStrong(&v10->_controllerFactory, a4);
+    objc_storeStrong(&v9->_workQueue, queue);
+    objc_storeStrong(&v10->_controllerFactory, factory);
   }
 
   return v10;

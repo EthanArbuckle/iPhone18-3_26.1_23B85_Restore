@@ -1,17 +1,17 @@
 @interface ICTTMergeableStringSelection
 - (BOOL)hasTopoIDsThatCanChange;
-- (BOOL)isEqual:(id)a3;
-- (ICTTMergeableStringSelection)initWithArchive:(const void *)a3;
-- (ICTTMergeableStringSelection)initWithData:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (ICTTMergeableStringSelection)initWithArchive:(const void *)archive;
+- (ICTTMergeableStringSelection)initWithData:(id)data;
 - (ICTTMergeableStringSelection)locationOnlySelection;
 - (NSString)description;
 - (TopoID)minTopoID;
 - (id).cxx_construct;
 - (id)serialize;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
-- (void)saveToArchive:(void *)a3;
-- (void)updateTopoIDRange:(TopoIDRange *)a3 toNewRangeID:(TopoIDRange *)a4;
+- (void)saveToArchive:(void *)archive;
+- (void)updateTopoIDRange:(TopoIDRange *)range toNewRangeID:(TopoIDRange *)d;
 @end
 
 @implementation ICTTMergeableStringSelection
@@ -24,20 +24,20 @@
   return self;
 }
 
-- (void)updateTopoIDRange:(TopoIDRange *)a3 toNewRangeID:(TopoIDRange *)a4
+- (void)updateTopoIDRange:(TopoIDRange *)range toNewRangeID:(TopoIDRange *)d
 {
   begin = self->_selectionRanges.__begin_;
   end = self->_selectionRanges.__end_;
   while (begin != end)
   {
-    updated = updateTopoID(begin, a3, a4);
+    updated = updateTopoID(begin, range, d);
     v10 = v9;
     replicaID = begin->replicaID;
     begin->replicaID = updated;
 
     begin->clock = v10;
     v12 = begin + 1;
-    v13 = updateTopoID(v12, a3, a4);
+    v13 = updateTopoID(v12, range, d);
     v15 = v14;
     v16 = v12->replicaID;
     v12->replicaID = v13;
@@ -46,7 +46,7 @@
     begin = v12 + 1;
   }
 
-  v17 = a3->var0.replicaID;
+  v17 = range->var0.replicaID;
 }
 
 - (BOOL)hasTopoIDsThatCanChange
@@ -61,19 +61,19 @@
   while (1)
   {
     v4 = *begin;
-    v5 = [MEMORY[0x277CCAD78] CR_unserialized];
-    v6 = v5;
-    if (v4 == v5)
+    cR_unserialized = [MEMORY[0x277CCAD78] CR_unserialized];
+    v6 = cR_unserialized;
+    if (v4 == cR_unserialized)
     {
       break;
     }
 
     v7 = begin[2];
-    v8 = [MEMORY[0x277CCAD78] CR_unserialized];
+    cR_unserialized2 = [MEMORY[0x277CCAD78] CR_unserialized];
 
-    result = v7 == v8;
+    result = v7 == cR_unserialized2;
     begin += 4;
-    if (v7 == v8 || begin == end)
+    if (v7 == cR_unserialized2 || begin == end)
     {
       return result;
     }
@@ -140,23 +140,23 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 selectionRanges];
+    v5 = equalCopy;
+    selectionRanges = [v5 selectionRanges];
     begin = self->_selectionRanges.__begin_;
     end = self->_selectionRanges.__end_;
-    if (v6[1] - *v6 == end - begin)
+    if (selectionRanges[1] - *selectionRanges == end - begin)
     {
       if (end == begin)
       {
 LABEL_12:
-        v14 = [(ICTTMergeableStringSelection *)self selectionAffinity];
-        v15 = v14 == [v5 selectionAffinity];
+        selectionAffinity = [(ICTTMergeableStringSelection *)self selectionAffinity];
+        v15 = selectionAffinity == [v5 selectionAffinity];
 LABEL_15:
 
         goto LABEL_16;
@@ -175,8 +175,8 @@ LABEL_15:
 
       while (1)
       {
-        v11 = *v6;
-        v12 = *v6 + v9;
+        v11 = *selectionRanges;
+        v12 = *selectionRanges + v9;
         v13 = self->_selectionRanges.__begin_;
         if (*(v12 + 8) != *&v13[v9 + 8] || ![*v12 isEqual:*&v13[v9]] || *(v11 + v9 + 24) != *&v13[v9 + 24] || (objc_msgSend(*(v11 + v9 + 16), "isEqual:", *&v13[v9 + 16]) & 1) == 0)
         {
@@ -201,25 +201,25 @@ LABEL_16:
   return v15;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   objc_opt_class();
   v5 = ICDynamicCast();
   if (v5)
   {
-    v6 = [(ICTTMergeableStringSelection *)self minTopoID];
+    minTopoID = [(ICTTMergeableStringSelection *)self minTopoID];
     v8 = v7;
-    v10 = [v5 minTopoID];
+    minTopoID2 = [v5 minTopoID];
     v11 = v9;
-    if (v8 < v9 || v8 == v9 && [v6 TTCompare:v10] == -1)
+    if (v8 < v9 || v8 == v9 && [minTopoID TTCompare:minTopoID2] == -1)
     {
       v12 = -1;
     }
 
     else
     {
-      v12 = v8 > v11 || [v6 TTCompare:v10] == 1;
+      v12 = v8 > v11 || [minTopoID TTCompare:minTopoID2] == 1;
     }
   }
 
@@ -258,16 +258,16 @@ LABEL_16:
   return v6;
 }
 
-- (ICTTMergeableStringSelection)initWithData:(id)a3
+- (ICTTMergeableStringSelection)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   topotext::Selection::Selection(v10);
-  v5 = [v4 bytes];
-  v6 = ICTTBoundedCheckedCastNSUIntegerToUInt32([v4 length]);
-  if (google::protobuf::MessageLite::ParseFromArray(v10, v5, v6))
+  bytes = [dataCopy bytes];
+  v6 = ICTTBoundedCheckedCastNSUIntegerToUInt32([dataCopy length]);
+  if (google::protobuf::MessageLite::ParseFromArray(v10, bytes, v6))
   {
     self = [(ICTTMergeableStringSelection *)self initWithArchive:v10];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
@@ -278,28 +278,28 @@ LABEL_16:
       [ICTTMergeableStringSelection initWithData:v8];
     }
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
   topotext::Selection::~Selection(v10);
 
-  return v7;
+  return selfCopy;
 }
 
-- (ICTTMergeableStringSelection)initWithArchive:(const void *)a3
+- (ICTTMergeableStringSelection)initWithArchive:(const void *)archive
 {
   v4 = [(ICTTMergeableStringSelection *)self init];
   if (v4)
   {
-    v5 = *(a3 + 18);
+    v5 = *(archive + 18);
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v7 = *(a3 + 12);
+    v7 = *(archive + 12);
     if (v7)
     {
       for (i = 0; i != v7; ++i)
       {
         v9 = objc_alloc(MEMORY[0x277CCAD78]);
-        v10 = google::protobuf::internal::RepeatedPtrFieldBase::Get<google::protobuf::RepeatedPtrField<std::string>::TypeHandler>(a3 + 40, i);
+        v10 = google::protobuf::internal::RepeatedPtrFieldBase::Get<google::protobuf::RepeatedPtrField<std::string>::TypeHandler>(archive + 40, i);
         if (*(v10 + 23) >= 0)
         {
           v11 = v10;
@@ -319,7 +319,7 @@ LABEL_16:
     {
       for (j = 0; j != v5; ++j)
       {
-        v14 = google::protobuf::internal::RepeatedPtrFieldBase::Get<google::protobuf::RepeatedPtrField<topotext::Selection_Range>::TypeHandler>(a3 + 64, j);
+        v14 = google::protobuf::internal::RepeatedPtrFieldBase::Get<google::protobuf::RepeatedPtrField<topotext::Selection_Range>::TypeHandler>(archive + 64, j);
         v15 = *(v14 + 5);
         if (!v15)
         {
@@ -328,42 +328,42 @@ LABEL_16:
 
         v16 = [v6 objectAtIndexedSubscript:*(v15 + 40)];
         v17 = *(v15 + 44);
-        if ((*(google::protobuf::internal::RepeatedPtrFieldBase::Get<google::protobuf::RepeatedPtrField<topotext::Selection_Range>::TypeHandler>(a3 + 64, j) + 32) & 2) != 0)
+        if ((*(google::protobuf::internal::RepeatedPtrFieldBase::Get<google::protobuf::RepeatedPtrField<topotext::Selection_Range>::TypeHandler>(archive + 64, j) + 32) & 2) != 0)
         {
-          v20 = google::protobuf::internal::RepeatedPtrFieldBase::Get<google::protobuf::RepeatedPtrField<topotext::Selection_Range>::TypeHandler>(a3 + 64, j);
+          v20 = google::protobuf::internal::RepeatedPtrFieldBase::Get<google::protobuf::RepeatedPtrField<topotext::Selection_Range>::TypeHandler>(archive + 64, j);
           v21 = *(v20 + 6);
           if (!v21)
           {
             v21 = *(topotext::Selection_Range::default_instance(v20) + 48);
           }
 
-          v18 = [v6 objectAtIndexedSubscript:*(v21 + 40)];
+          tTZero = [v6 objectAtIndexedSubscript:*(v21 + 40)];
           v19 = *(v21 + 44);
         }
 
         else
         {
-          v18 = [MEMORY[0x277CCAD78] TTZero];
+          tTZero = [MEMORY[0x277CCAD78] TTZero];
           v19 = 0;
         }
 
         v22 = v16;
         v25 = v22;
         v26 = v17;
-        v23 = v18;
+        v23 = tTZero;
         v27 = v23;
         v28 = v19;
         std::vector<std::pair<TopoID,TopoID>>::push_back[abi:ne200100](&v4->_selectionRanges.__begin_, &v25);
       }
     }
 
-    [(ICTTMergeableStringSelection *)v4 setSelectionAffinity:*(a3 + 22) & ((*(a3 + 8) << 29) >> 31)];
+    [(ICTTMergeableStringSelection *)v4 setSelectionAffinity:*(archive + 22) & ((*(archive + 8) << 29) >> 31)];
   }
 
   return v4;
 }
 
-- (void)saveToArchive:(void *)a3
+- (void)saveToArchive:(void *)archive
 {
   v43 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -377,20 +377,20 @@ LABEL_16:
   begin = self->_selectionRanges.__begin_;
   for (i = self->_selectionRanges.__end_; begin != i; begin += 4)
   {
-    v10 = *(a3 + 19);
-    v11 = *(a3 + 18);
+    v10 = *(archive + 19);
+    v11 = *(archive + 18);
     if (v11 >= v10)
     {
-      if (v10 == *(a3 + 20))
+      if (v10 == *(archive + 20))
       {
-        google::protobuf::internal::RepeatedPtrFieldBase::Reserve(a3 + 64, v10 + 1);
+        google::protobuf::internal::RepeatedPtrFieldBase::Reserve(archive + 64, v10 + 1);
       }
 
       google::protobuf::internal::GenericTypeHandler<topotext::Selection_Range>::New();
     }
 
-    v12 = *(a3 + 8);
-    *(a3 + 18) = v11 + 1;
+    v12 = *(archive + 8);
+    *(archive + 18) = v11 + 1;
     v13 = *(v12 + 8 * v11);
     *(v13 + 32) |= 1u;
     v14 = *(v13 + 40);
@@ -459,20 +459,20 @@ LABEL_16:
         v27 = *(*(&v35 + 1) + 8 * j);
         v41 = 0uLL;
         v28 = [v27 getUUIDBytes:{&v41, v35}];
-        v29 = *(a3 + 13);
-        v30 = *(a3 + 12);
+        v29 = *(archive + 13);
+        v30 = *(archive + 12);
         if (v30 >= v29)
         {
-          if (v29 == *(a3 + 14))
+          if (v29 == *(archive + 14))
           {
-            v28 = google::protobuf::internal::RepeatedPtrFieldBase::Reserve(a3 + 40, v29 + 1);
+            v28 = google::protobuf::internal::RepeatedPtrFieldBase::Reserve(archive + 40, v29 + 1);
           }
 
           google::protobuf::internal::StringTypeHandlerBase::New(v28);
         }
 
-        v31 = *(a3 + 5);
-        *(a3 + 12) = v30 + 1;
+        v31 = *(archive + 5);
+        *(archive + 12) = v30 + 1;
         v32 = *(v31 + 8 * v30);
         if (*(v32 + 23) < 0)
         {
@@ -495,15 +495,15 @@ LABEL_16:
     while (v24);
   }
 
-  v33 = [(ICTTMergeableStringSelection *)self selectionAffinity];
-  v34 = v33;
-  if (!topotext::Selection_Affinity_IsValid(v33))
+  selectionAffinity = [(ICTTMergeableStringSelection *)self selectionAffinity];
+  v34 = selectionAffinity;
+  if (!topotext::Selection_Affinity_IsValid(selectionAffinity))
   {
     __assert_rtn("set_affinity", "topotext.pb.h", 4132, "::topotext::Selection_Affinity_IsValid(value)");
   }
 
-  *(a3 + 8) |= 4u;
-  *(a3 + 22) = v34;
+  *(archive + 8) |= 4u;
+  *(archive + 22) = v34;
 }
 
 uint64_t __46__ICTTMergeableStringSelection_saveToArchive___block_invoke(uint64_t a1, void *a2)
@@ -532,9 +532,9 @@ uint64_t __46__ICTTMergeableStringSelection_saveToArchive___block_invoke(uint64_
   topotext::Selection::Selection(v7);
   [(ICTTMergeableStringSelection *)self saveToArchive:v7];
   v3 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:topotext::Selection::ByteSize(v7)];
-  v4 = [v3 mutableBytes];
+  mutableBytes = [v3 mutableBytes];
   v5 = ICTTBoundedCheckedCastNSUIntegerToUInt32([v3 length]);
-  google::protobuf::MessageLite::SerializeToArray(v7, v4, v5);
+  google::protobuf::MessageLite::SerializeToArray(v7, mutableBytes, v5);
   topotext::Selection::~Selection(v7);
 
   return v3;
@@ -570,12 +570,12 @@ uint64_t __46__ICTTMergeableStringSelection_saveToArchive___block_invoke(uint64_
   begin = self->_selectionRanges.__begin_;
   for (i = self->_selectionRanges.__end_; begin != i; begin += 4)
   {
-    v6 = [*begin TTShortDescription];
-    [v3 appendFormat:@" %@:%d", v6, *(begin + 2)];
+    tTShortDescription = [*begin TTShortDescription];
+    [v3 appendFormat:@" %@:%d", tTShortDescription, *(begin + 2)];
 
     v7 = begin[2];
-    v8 = [MEMORY[0x277CCAD78] TTZero];
-    if ([v7 isEqual:v8])
+    tTZero = [MEMORY[0x277CCAD78] TTZero];
+    if ([v7 isEqual:tTZero])
     {
       v9 = *(begin + 6);
 
@@ -589,8 +589,8 @@ uint64_t __46__ICTTMergeableStringSelection_saveToArchive___block_invoke(uint64_
     {
     }
 
-    v10 = [begin[2] TTShortDescription];
-    [v3 appendFormat:@"-%@:%d", v10, *(begin + 6)];
+    tTShortDescription2 = [begin[2] TTShortDescription];
+    [v3 appendFormat:@"-%@:%d", tTShortDescription2, *(begin + 6)];
   }
 
   [v3 appendFormat:@">"];

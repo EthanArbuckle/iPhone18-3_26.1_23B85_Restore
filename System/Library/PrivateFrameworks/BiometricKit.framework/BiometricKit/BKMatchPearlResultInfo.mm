@@ -1,30 +1,30 @@
 @interface BKMatchPearlResultInfo
-- (BKMatchPearlResultInfo)initWithServerIdentity:(id)a3 details:(id)a4 device:(id)a5;
+- (BKMatchPearlResultInfo)initWithServerIdentity:(id)identity details:(id)details device:(id)device;
 @end
 
 @implementation BKMatchPearlResultInfo
 
-- (BKMatchPearlResultInfo)initWithServerIdentity:(id)a3 details:(id)a4 device:(id)a5
+- (BKMatchPearlResultInfo)initWithServerIdentity:(id)identity details:(id)details device:(id)device
 {
-  v8 = a4;
+  detailsCopy = details;
   v15.receiver = self;
   v15.super_class = BKMatchPearlResultInfo;
-  v9 = [(BKMatchResultInfo *)&v15 initWithServerIdentity:a3 details:v8 device:a5];
+  v9 = [(BKMatchResultInfo *)&v15 initWithServerIdentity:identity details:detailsCopy device:device];
   v10 = v9;
   if (v9)
   {
     v9->_feedback = 1;
     v9->_periocularMatchState = 0;
-    if (v8)
+    if (detailsCopy)
     {
-      v11 = [v8 objectForKeyedSubscript:@"BKMatchDetailFaceDetectFeedback"];
+      v11 = [detailsCopy objectForKeyedSubscript:@"BKMatchDetailFaceDetectFeedback"];
       v12 = v11;
       if (v11)
       {
         v10->_feedback = __faceDetectFeedback([v11 integerValue]);
       }
 
-      v13 = [v8 objectForKeyedSubscript:@"BKMatchDetailPOMatchState"];
+      v13 = [detailsCopy objectForKeyedSubscript:@"BKMatchDetailPOMatchState"];
 
       if (v13)
       {

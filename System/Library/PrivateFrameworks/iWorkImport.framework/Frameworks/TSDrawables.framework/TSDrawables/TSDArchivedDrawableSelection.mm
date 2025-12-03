@@ -1,17 +1,17 @@
 @interface TSDArchivedDrawableSelection
 - (NSString)description;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)saveToArchiver:(id)a3 intoMessage:(void *)a4;
-- (void)setSelection:(id)a3;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver intoMessage:(void *)message;
+- (void)setSelection:(id)selection;
 @end
 
 @implementation TSDArchivedDrawableSelection
 
-- (void)setSelection:(id)a3
+- (void)setSelection:(id)selection
 {
-  v6 = a3;
-  if (v6)
+  selectionCopy = selection;
+  if (selectionCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -29,34 +29,34 @@
 
   objc_msgSend_willModify(self, v4, v5);
   drawableSelection = self->_drawableSelection;
-  self->_drawableSelection = v6;
+  self->_drawableSelection = selectionCopy;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v10 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithDescriptor_(v10, v4, off_2812F5188[110]);
+  v5 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812F5188[110]);
 
   v6 = [TSDDrawableSelection alloc];
-  v8 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, v5, v10);
+  v8 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, v5, unarchiverCopy);
   objc_msgSend_setSelection_(self, v9, v8);
 }
 
-- (void)saveToArchiver:(id)a3 intoMessage:(void *)a4
+- (void)saveToArchiver:(id)archiver intoMessage:(void *)message
 {
-  v10 = a3;
+  archiverCopy = archiver;
   v8 = objc_msgSend_selection(self, v6, v7);
-  objc_msgSend_saveToArchive_archiver_(v8, v9, a4, v10);
+  objc_msgSend_saveToArchive_archiver_(v8, v9, message, archiverCopy);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v7 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithNewFunction_descriptor_(v7, v4, sub_2766BF374, off_2812F5188[110]);
+  v5 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_2766BF374, off_2812F5188[110]);
 
-  objc_msgSend_saveToArchiver_intoMessage_(self, v6, v7, v5);
+  objc_msgSend_saveToArchiver_intoMessage_(self, v6, archiverCopy, v5);
 }
 
 - (NSString)description

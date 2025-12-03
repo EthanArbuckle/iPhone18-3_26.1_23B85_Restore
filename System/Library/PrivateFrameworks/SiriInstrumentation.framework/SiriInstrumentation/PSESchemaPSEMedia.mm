@@ -1,27 +1,27 @@
 @interface PSESchemaPSEMedia
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PSESchemaPSEMedia)initWithDictionary:(id)a3;
-- (PSESchemaPSEMedia)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PSESchemaPSEMedia)initWithDictionary:(id)dictionary;
+- (PSESchemaPSEMedia)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasMediaContentDurationBucket:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasMediaContentDurationBucket:(BOOL)bucket;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PSESchemaPSEMedia
 
-- (PSESchemaPSEMedia)initWithDictionary:(id)a3
+- (PSESchemaPSEMedia)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = PSESchemaPSEMedia;
   v5 = [(PSESchemaPSEMedia *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"playDurationInSeconds"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"playDurationInSeconds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,14 +29,14 @@
       [(PSESchemaPSEMedia *)v5 setPlayDurationInSeconds:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"mediaContentDurationBucket"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"mediaContentDurationBucket"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PSESchemaPSEMedia setMediaContentDurationBucket:](v5, "setMediaContentDurationBucket:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"lastMediaUserFollowupAction"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"lastMediaUserFollowupAction"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,30 +50,30 @@
   return v5;
 }
 
-- (PSESchemaPSEMedia)initWithJSON:(id)a3
+- (PSESchemaPSEMedia)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PSESchemaPSEMedia *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PSESchemaPSEMedia *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PSESchemaPSEMedia *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -86,20 +86,20 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_lastMediaUserFollowupAction)
   {
-    v4 = [(PSESchemaPSEMedia *)self lastMediaUserFollowupAction];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    lastMediaUserFollowupAction = [(PSESchemaPSEMedia *)self lastMediaUserFollowupAction];
+    dictionaryRepresentation = [lastMediaUserFollowupAction dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"lastMediaUserFollowupAction"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"lastMediaUserFollowupAction"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"lastMediaUserFollowupAction"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"lastMediaUserFollowupAction"];
     }
   }
 
@@ -117,7 +117,7 @@
       v9 = off_1E78E14A0[v8];
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"mediaContentDurationBucket"];
+    [dictionary setObject:v9 forKeyedSubscript:@"mediaContentDurationBucket"];
     has = self->_has;
   }
 
@@ -126,12 +126,12 @@
     v10 = MEMORY[0x1E696AD98];
     [(PSESchemaPSEMedia *)self playDurationInSeconds];
     v11 = [v10 numberWithDouble:?];
-    [v3 setObject:v11 forKeyedSubscript:@"playDurationInSeconds"];
+    [dictionary setObject:v11 forKeyedSubscript:@"playDurationInSeconds"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -182,16 +182,16 @@
   return v12 ^ v8 ^ [(PSESchemaPSEMediaUserFollowupAction *)self->_lastMediaUserFollowupAction hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   has = self->_has;
-  v6 = v4[32];
+  v6 = equalCopy[32];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_14;
@@ -200,28 +200,28 @@
   if (*&has)
   {
     playDurationInSeconds = self->_playDurationInSeconds;
-    [v4 playDurationInSeconds];
+    [equalCopy playDurationInSeconds];
     if (playDurationInSeconds != v8)
     {
       goto LABEL_14;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v9 = (*&has >> 1) & 1;
   if (v9 == ((v6 >> 1) & 1))
   {
-    if (!v9 || (mediaContentDurationBucket = self->_mediaContentDurationBucket, mediaContentDurationBucket == [v4 mediaContentDurationBucket]))
+    if (!v9 || (mediaContentDurationBucket = self->_mediaContentDurationBucket, mediaContentDurationBucket == [equalCopy mediaContentDurationBucket]))
     {
-      v11 = [(PSESchemaPSEMedia *)self lastMediaUserFollowupAction];
-      v12 = [v4 lastMediaUserFollowupAction];
-      v13 = v12;
-      if ((v11 != 0) != (v12 == 0))
+      lastMediaUserFollowupAction = [(PSESchemaPSEMedia *)self lastMediaUserFollowupAction];
+      lastMediaUserFollowupAction2 = [equalCopy lastMediaUserFollowupAction];
+      v13 = lastMediaUserFollowupAction2;
+      if ((lastMediaUserFollowupAction != 0) != (lastMediaUserFollowupAction2 == 0))
       {
-        v14 = [(PSESchemaPSEMedia *)self lastMediaUserFollowupAction];
-        if (!v14)
+        lastMediaUserFollowupAction3 = [(PSESchemaPSEMedia *)self lastMediaUserFollowupAction];
+        if (!lastMediaUserFollowupAction3)
         {
 
 LABEL_17:
@@ -229,10 +229,10 @@ LABEL_17:
           goto LABEL_15;
         }
 
-        v15 = v14;
-        v16 = [(PSESchemaPSEMedia *)self lastMediaUserFollowupAction];
-        v17 = [v4 lastMediaUserFollowupAction];
-        v18 = [v16 isEqual:v17];
+        v15 = lastMediaUserFollowupAction3;
+        lastMediaUserFollowupAction4 = [(PSESchemaPSEMedia *)self lastMediaUserFollowupAction];
+        lastMediaUserFollowupAction5 = [equalCopy lastMediaUserFollowupAction];
+        v18 = [lastMediaUserFollowupAction4 isEqual:lastMediaUserFollowupAction5];
 
         if (v18)
         {
@@ -253,9 +253,9 @@ LABEL_15:
   return v19;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -268,21 +268,21 @@ LABEL_15:
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(PSESchemaPSEMedia *)self lastMediaUserFollowupAction];
+  lastMediaUserFollowupAction = [(PSESchemaPSEMedia *)self lastMediaUserFollowupAction];
 
-  v6 = v8;
-  if (v5)
+  v6 = toCopy;
+  if (lastMediaUserFollowupAction)
   {
-    v7 = [(PSESchemaPSEMedia *)self lastMediaUserFollowupAction];
+    lastMediaUserFollowupAction2 = [(PSESchemaPSEMedia *)self lastMediaUserFollowupAction];
     PBDataWriterWriteSubmessage();
 
-    v6 = v8;
+    v6 = toCopy;
   }
 }
 
-- (void)setHasMediaContentDurationBucket:(BOOL)a3
+- (void)setHasMediaContentDurationBucket:(BOOL)bucket
 {
-  if (a3)
+  if (bucket)
   {
     v3 = 2;
   }
@@ -295,17 +295,17 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = PSESchemaPSEMedia;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(PSESchemaPSEMedia *)self lastMediaUserFollowupAction:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(PSESchemaPSEMedia *)self deleteLastMediaUserFollowupAction];
   }

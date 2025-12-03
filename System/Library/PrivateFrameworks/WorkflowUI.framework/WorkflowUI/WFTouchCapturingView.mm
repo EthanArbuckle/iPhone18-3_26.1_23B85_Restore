@@ -1,17 +1,17 @@
 @interface WFTouchCapturingView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 @end
 
 @implementation WFTouchCapturingView
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  v5 = [(WFTouchCapturingView *)self touchCapturedHandler:a4];
+  v5 = [(WFTouchCapturingView *)self touchCapturedHandler:event];
 
   if (v5)
   {
-    v6 = [(WFTouchCapturingView *)self touchCapturedHandler];
-    v6[2]();
+    touchCapturedHandler = [(WFTouchCapturingView *)self touchCapturedHandler];
+    touchCapturedHandler[2]();
   }
 
   return 1;

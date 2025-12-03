@@ -1,16 +1,16 @@
 @interface SBHLibraryPodFolderControllerConfiguration
-- (SBHLibraryPodFolderControllerConfiguration)initWithConfiguration:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (SBHLibraryPodFolderControllerConfiguration)initWithConfiguration:(id)configuration;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 @end
 
 @implementation SBHLibraryPodFolderControllerConfiguration
 
-- (SBHLibraryPodFolderControllerConfiguration)initWithConfiguration:(id)a3
+- (SBHLibraryPodFolderControllerConfiguration)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v14.receiver = self;
   v14.super_class = SBHLibraryPodFolderControllerConfiguration;
-  v5 = [(SBFolderControllerConfiguration *)&v14 initWithConfiguration:v4];
+  v5 = [(SBFolderControllerConfiguration *)&v14 initWithConfiguration:configurationCopy];
   if (v5)
   {
     v6 = objc_opt_self();
@@ -18,31 +18,31 @@
 
     if (isKindOfClass)
     {
-      v8 = v4;
-      v9 = [v8 categoryMapProvider];
+      v8 = configurationCopy;
+      categoryMapProvider = [v8 categoryMapProvider];
       categoryMapProvider = v5->_categoryMapProvider;
-      v5->_categoryMapProvider = v9;
+      v5->_categoryMapProvider = categoryMapProvider;
 
-      v11 = [v8 categoriesFolder];
+      categoriesFolder = [v8 categoriesFolder];
 
       categoriesFolder = v5->_categoriesFolder;
-      v5->_categoriesFolder = v11;
+      v5->_categoriesFolder = categoriesFolder;
     }
   }
 
   return v5;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v10.receiver = self;
   v10.super_class = SBHLibraryPodFolderControllerConfiguration;
-  v4 = [(SBFolderControllerConfiguration *)&v10 descriptionBuilderWithMultilinePrefix:a3];
-  v5 = [(SBHLibraryPodFolderControllerConfiguration *)self categoryMapProvider];
-  v6 = [v4 appendObject:v5 withName:@"categoryMapProvider"];
+  v4 = [(SBFolderControllerConfiguration *)&v10 descriptionBuilderWithMultilinePrefix:prefix];
+  categoryMapProvider = [(SBHLibraryPodFolderControllerConfiguration *)self categoryMapProvider];
+  v6 = [v4 appendObject:categoryMapProvider withName:@"categoryMapProvider"];
 
-  v7 = [(SBHLibraryPodFolderControllerConfiguration *)self categoriesFolder];
-  v8 = [v4 appendObject:v7 withName:@"categoriesFolder"];
+  categoriesFolder = [(SBHLibraryPodFolderControllerConfiguration *)self categoriesFolder];
+  v8 = [v4 appendObject:categoriesFolder withName:@"categoriesFolder"];
 
   return v4;
 }

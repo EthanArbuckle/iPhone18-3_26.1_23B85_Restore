@@ -1,12 +1,12 @@
 @interface NSString
-+ (void)safari_reverseEnumerateComponents:(id)a3 usingBlock:(id)a4;
++ (void)safari_reverseEnumerateComponents:(id)components usingBlock:(id)block;
 - (BOOL)_webkit_looksLikeAbsoluteURL;
 - (NSString)safari_highLevelDomainFromHost;
 - (_NSRange)_webkit_rangeOfURLScheme;
 - (id)_webkit_stringByTrimmingWhitespace;
 - (id)safari_possibleTopLevelDomainCorrectionForUserTypedString;
 - (id)safari_stringByRemovingUnnecessaryCharactersFromUserTypedURLString;
-- (id)safari_topLevelDomainUsingCFFromComponents:(id)a3;
+- (id)safari_topLevelDomainUsingCFFromComponents:(id)components;
 @end
 
 @implementation NSString
@@ -100,18 +100,18 @@ LABEL_12:
   return v13;
 }
 
-+ (void)safari_reverseEnumerateComponents:(id)a3 usingBlock:(id)a4
++ (void)safari_reverseEnumerateComponents:(id)components usingBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  componentsCopy = components;
+  blockCopy = block;
   v19 = 0;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v14 = v5;
-  v7 = [v5 reverseObjectEnumerator];
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v20 count:16];
+  v14 = componentsCopy;
+  reverseObjectEnumerator = [componentsCopy reverseObjectEnumerator];
+  v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v15 objects:v20 count:16];
   if (v8)
   {
     v9 = 0;
@@ -123,7 +123,7 @@ LABEL_3:
     {
       if (*v16 != v11)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(reverseObjectEnumerator);
       }
 
       v13 = *(*(&v15 + 1) + 8 * v12);
@@ -138,7 +138,7 @@ LABEL_3:
       }
 
       [v10 insertString:v13 atIndex:0];
-      v6[2](v6, v10, v9, &v19);
+      blockCopy[2](blockCopy, v10, v9, &v19);
       if (v19)
       {
         break;
@@ -147,7 +147,7 @@ LABEL_3:
       ++v9;
       if (v8 == ++v12)
       {
-        v8 = [v7 countByEnumeratingWithState:&v15 objects:v20 count:16];
+        v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v15 objects:v20 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -164,9 +164,9 @@ LABEL_3:
   }
 }
 
-- (id)safari_topLevelDomainUsingCFFromComponents:(id)a3
+- (id)safari_topLevelDomainUsingCFFromComponents:(id)components
 {
-  v4 = a3;
+  componentsCopy = components;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -183,7 +183,7 @@ LABEL_3:
   v8[3] = &unk_100031CB0;
   v8[4] = &v9;
   v8[5] = &v15;
-  [objc_opt_class() safari_reverseEnumerateComponents:v4 usingBlock:v8];
+  [objc_opt_class() safari_reverseEnumerateComponents:componentsCopy usingBlock:v8];
   if (v16[3])
   {
     v5 = [v10[5] length];
@@ -192,19 +192,19 @@ LABEL_3:
       self = v10[5];
     }
 
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
   _Block_object_dispose(&v9, 8);
 
   _Block_object_dispose(&v15, 8);
 
-  return v6;
+  return selfCopy;
 }
 
 - (NSString)safari_highLevelDomainFromHost
@@ -213,22 +213,22 @@ LABEL_3:
   {
     if ([(NSString *)self _web_looksLikeIPAddress])
     {
-      v3 = self;
+      selfCopy = self;
     }
 
     else
     {
       v4 = [(NSString *)self componentsSeparatedByString:@"."];
-      v3 = [(NSString *)self safari_topLevelDomainUsingCFFromComponents:v4];
+      selfCopy = [(NSString *)self safari_topLevelDomainUsingCFFromComponents:v4];
     }
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (_NSRange)_webkit_rangeOfURLScheme
@@ -253,9 +253,9 @@ LABEL_3:
   if (!qword_100039358)
   {
     v8 = [NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+.-"];
-    v9 = [v8 invertedSet];
+    invertedSet = [v8 invertedSet];
     v10 = qword_100039358;
-    qword_100039358 = v9;
+    qword_100039358 = invertedSet;
   }
 
   v11 = [NSString rangeOfCharacterFromSet:"rangeOfCharacterFromSet:options:range:" options:? range:?];
@@ -275,8 +275,8 @@ LABEL_6:
 
 - (BOOL)_webkit_looksLikeAbsoluteURL
 {
-  v2 = [(NSString *)self _webkit_stringByTrimmingWhitespace];
-  v3 = [v2 _webkit_rangeOfURLScheme] != 0x7FFFFFFFFFFFFFFFLL;
+  _webkit_stringByTrimmingWhitespace = [(NSString *)self _webkit_stringByTrimmingWhitespace];
+  v3 = [_webkit_stringByTrimmingWhitespace _webkit_rangeOfURLScheme] != 0x7FFFFFFFFFFFFFFFLL;
 
   return v3;
 }

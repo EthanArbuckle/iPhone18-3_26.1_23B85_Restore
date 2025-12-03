@@ -1,9 +1,9 @@
 @interface MUPlaceAddStopActionRowItemViewModel
 - (BOOL)isHidden;
-- (MUPlaceAddStopActionRowItemViewModel)initWithSearchAlongRoute:(BOOL)a3 ETAProvider:(id)a4 detourInfo:(id)a5 canShowDetourTime:(BOOL)a6;
+- (MUPlaceAddStopActionRowItemViewModel)initWithSearchAlongRoute:(BOOL)route ETAProvider:(id)provider detourInfo:(id)info canShowDetourTime:(BOOL)time;
 - (id)leadingActionBarItem;
 - (id)titleText;
-- (void)ETAProviderUpdated:(id)a3;
+- (void)ETAProviderUpdated:(id)updated;
 @end
 
 @implementation MUPlaceAddStopActionRowItemViewModel
@@ -11,23 +11,23 @@
 - (id)leadingActionBarItem
 {
   v3 = [MUPlaceActionBarTypeDirections alloc];
-  v4 = [(MUActionRowItemViewModel *)self actionBarSymbolName];
-  v5 = v4;
-  if (!v4)
+  actionBarSymbolName = [(MUActionRowItemViewModel *)self actionBarSymbolName];
+  symbolName = actionBarSymbolName;
+  if (!actionBarSymbolName)
   {
-    v5 = [(MUPlaceAddStopActionRowItemViewModel *)self symbolName];
+    symbolName = [(MUPlaceAddStopActionRowItemViewModel *)self symbolName];
   }
 
-  v6 = [(MUPlaceAddStopActionRowItemViewModel *)self titleText];
-  v7 = [(MUPlaceActionBarTypeDirections *)v3 initWithModality:v5 eta:v6];
+  titleText = [(MUPlaceAddStopActionRowItemViewModel *)self titleText];
+  v7 = [(MUPlaceActionBarTypeDirections *)v3 initWithModality:symbolName eta:titleText];
 
-  if (!v4)
+  if (!actionBarSymbolName)
   {
   }
 
   v8 = [MUPlaceActionBarItem alloc];
-  v9 = [(MUPlaceAddStopActionRowItemViewModel *)self accessibilityIdentifier];
-  v10 = [(MUPlaceActionBarItem *)v8 initWithType:v7 axID:v9];
+  accessibilityIdentifier = [(MUPlaceAddStopActionRowItemViewModel *)self accessibilityIdentifier];
+  v10 = [(MUPlaceActionBarItem *)v8 initWithType:v7 axID:accessibilityIdentifier];
 
   objc_initWeak(&location, self);
   v12[0] = MEMORY[0x1E69E9820];
@@ -53,20 +53,20 @@ void __60__MUPlaceAddStopActionRowItemViewModel_leadingActionBarItem__block_invo
   }
 }
 
-- (void)ETAProviderUpdated:(id)a3
+- (void)ETAProviderUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   if (self->_etaTravelTime == 0.0)
   {
-    v7 = v4;
-    [v4 etaTravelTime];
-    v4 = v7;
+    v7 = updatedCopy;
+    [updatedCopy etaTravelTime];
+    updatedCopy = v7;
     if (v5 > 0.0)
     {
       [v7 etaTravelTime];
       self->_etaTravelTime = v6;
       [(MUActionRowItemViewModel *)self _notifyObserversDidUpdate];
-      v4 = v7;
+      updatedCopy = v7;
     }
   }
 }
@@ -105,28 +105,28 @@ void __60__MUPlaceAddStopActionRowItemViewModel_leadingActionBarItem__block_invo
   }
 }
 
-- (MUPlaceAddStopActionRowItemViewModel)initWithSearchAlongRoute:(BOOL)a3 ETAProvider:(id)a4 detourInfo:(id)a5 canShowDetourTime:(BOOL)a6
+- (MUPlaceAddStopActionRowItemViewModel)initWithSearchAlongRoute:(BOOL)route ETAProvider:(id)provider detourInfo:(id)info canShowDetourTime:(BOOL)time
 {
-  v9 = a3;
-  v11 = a4;
-  v12 = a5;
+  routeCopy = route;
+  providerCopy = provider;
+  infoCopy = info;
   v19.receiver = self;
   v19.super_class = MUPlaceAddStopActionRowItemViewModel;
   v13 = [(MUActionRowItemViewModel *)&v19 init];
   v14 = v13;
   if (v13)
   {
-    v13->_isSearchAlongRoute = v9;
-    objc_storeStrong(&v13->_etaProvider, a4);
-    objc_storeStrong(&v14->_detourInfo, a5);
-    v14->_canShowDetourTime = a6;
-    if (v11)
+    v13->_isSearchAlongRoute = routeCopy;
+    objc_storeStrong(&v13->_etaProvider, provider);
+    objc_storeStrong(&v14->_detourInfo, info);
+    v14->_canShowDetourTime = time;
+    if (providerCopy)
     {
-      if (!v12 && v9)
+      if (!infoCopy && routeCopy)
       {
-        v15 = [v11 isLikelyToReturnETA];
-        v14->_hiddenWhileWaitingForETA = v15 ^ 1;
-        if ((v15 & 1) == 0)
+        isLikelyToReturnETA = [providerCopy isLikelyToReturnETA];
+        v14->_hiddenWhileWaitingForETA = isLikelyToReturnETA ^ 1;
+        if ((isLikelyToReturnETA & 1) == 0)
         {
           v16 = MUGetPlaceCardLog();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))

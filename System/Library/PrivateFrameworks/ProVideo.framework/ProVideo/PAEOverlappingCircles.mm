@@ -1,9 +1,9 @@
 @interface PAEOverlappingCircles
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInfo:(id *)a4;
-- (BOOL)frameSetup:(id *)a3 hardware:(BOOL *)a4 software:(BOOL *)a5;
-- (PAEOverlappingCircles)initWithAPIManager:(id)a3;
-- (id)multiplyMatrix:(id)a3 byMatrix:(id)a4;
+- (BOOL)canThrowRenderOutput:(id)output withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup hardware:(BOOL *)hardware software:(BOOL *)software;
+- (PAEOverlappingCircles)initWithAPIManager:(id)manager;
+- (id)multiplyMatrix:(id)matrix byMatrix:(id)byMatrix;
 - (id)properties;
 - (void)dealloc;
 - (void)getTransformMatrix:(double *)(a3 forCenterX:centerY:angle:andOutputImage:;
@@ -11,11 +11,11 @@
 
 @implementation PAEOverlappingCircles
 
-- (PAEOverlappingCircles)initWithAPIManager:(id)a3
+- (PAEOverlappingCircles)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEOverlappingCircles;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (void)dealloc
@@ -53,32 +53,32 @@
   return v2 != 0;
 }
 
-- (id)multiplyMatrix:(id)a3 byMatrix:(id)a4
+- (id)multiplyMatrix:(id)matrix byMatrix:(id)byMatrix
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = [a3 matrix];
-  v6 = [a4 matrix];
+  matrix = [matrix matrix];
+  matrix2 = [byMatrix matrix];
   v7 = 0;
-  v8 = v5 + 96;
-  v9 = *v6;
-  v10 = v6[1];
-  v11 = v6[2];
-  v12 = v6[3];
-  v13 = v6[4];
-  v14 = v6[5];
-  v15 = v6[6];
-  v16 = v6[7];
-  v17 = v6[8];
-  v18 = v6[9];
-  v19 = v6[10];
-  v20 = v6[11];
-  v21 = v6[12];
-  v22 = v6[13];
-  v23 = v6[14];
-  v24 = v6[15];
+  v8 = matrix + 96;
+  v9 = *matrix2;
+  v10 = matrix2[1];
+  v11 = matrix2[2];
+  v12 = matrix2[3];
+  v13 = matrix2[4];
+  v14 = matrix2[5];
+  v15 = matrix2[6];
+  v16 = matrix2[7];
+  v17 = matrix2[8];
+  v18 = matrix2[9];
+  v19 = matrix2[10];
+  v20 = matrix2[11];
+  v21 = matrix2[12];
+  v22 = matrix2[13];
+  v23 = matrix2[14];
+  v24 = matrix2[15];
   do
   {
-    v25 = *(v5 + v7);
+    v25 = *(matrix + v7);
     v26 = *(v8 + v7 - 64);
     v27 = *(v8 + v7 - 32);
     v28 = *(v8 + v7);
@@ -123,33 +123,33 @@
   *a3 = [-[PAEOverlappingCircles multiplyMatrix:byMatrix:](self multiplyMatrix:-[PAEOverlappingCircles multiplyMatrix:byMatrix:](self byMatrix:{"multiplyMatrix:byMatrix:", objc_msgSend(a7, "inversePixelTransform"), -[FxMatrix44 initWithMatrix44Data:]([FxMatrix44 alloc], "initWithMatrix44Data:", v13)), -[FxMatrix44 initWithMatrix44Data:]([FxMatrix44 alloc], "initWithMatrix44Data:", v21)), "matrix"}];
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInfo:(id *)a4
+- (BOOL)canThrowRenderOutput:(id)output withInfo:(id *)info
 {
   v7 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   if (v7)
   {
-    [a3 bounds];
+    [output bounds];
     v9 = v8;
     v11 = v10;
     v59 = 80.0;
-    [v7 getFloatValue:&v59 fromParm:1 atFxTime:a4->var0.var1];
+    [v7 getFloatValue:&v59 fromParm:1 atFxTime:info->var0.var1];
     v58 = 1.0;
-    [v7 getFloatValue:&v58 fromParm:2 atFxTime:a4->var0.var1];
+    [v7 getFloatValue:&v58 fromParm:2 atFxTime:info->var0.var1];
     v12 = sqrt(v59 * v59 * 0.5);
     v58 = (v58 * 0.414213562 + 1.0) * v12 + (v58 * 0.414213562 + 1.0) * v12;
     v57 = 0.0;
-    [v7 getFloatValue:&v57 fromParm:6 atFxTime:a4->var0.var1];
+    [v7 getFloatValue:&v57 fromParm:6 atFxTime:info->var0.var1];
     v57 = -v57;
     v56 = 0.5;
     v55 = 0.5;
-    [v7 getXValue:&v56 YValue:&v55 fromParm:7 atFxTime:a4->var0.var1];
+    [v7 getXValue:&v56 YValue:&v55 fromParm:7 atFxTime:info->var0.var1];
     v13 = v9 * (0.5 - v56);
     v14 = v11 * (0.5 - v55);
     v53 = 0.0;
     v54 = 0.0;
     v51 = 0.0;
     v52 = 0.0;
-    [v7 getRedValue:&v54 greenValue:&v53 blueValue:&v52 alphaValue:&v51 fromParm:3 atFxTime:a4->var0.var1];
+    [v7 getRedValue:&v54 greenValue:&v53 blueValue:&v52 alphaValue:&v51 fromParm:3 atFxTime:info->var0.var1];
     v53 = v51 * v53;
     v54 = v51 * v54;
     v52 = v51 * v52;
@@ -157,7 +157,7 @@
     v50 = 0.0;
     v47 = 0.0;
     v48 = 0.0;
-    [v7 getRedValue:&v50 greenValue:&v49 blueValue:&v48 alphaValue:&v47 fromParm:4 atFxTime:a4->var0.var1];
+    [v7 getRedValue:&v50 greenValue:&v49 blueValue:&v48 alphaValue:&v47 fromParm:4 atFxTime:info->var0.var1];
     v49 = v47 * v49;
     v50 = v47 * v50;
     v48 = v47 * v48;
@@ -165,15 +165,15 @@
     v46 = 0.0;
     v43 = 0.0;
     v44 = 0.0;
-    [v7 getRedValue:&v46 greenValue:&v45 blueValue:&v44 alphaValue:&v43 fromParm:8 atFxTime:a4->var0.var1];
+    [v7 getRedValue:&v46 greenValue:&v45 blueValue:&v44 alphaValue:&v43 fromParm:8 atFxTime:info->var0.var1];
     v45 = v43 * v45;
     v46 = v43 * v46;
     v44 = v43 * v44;
     v42 = 1.0;
-    [v7 getFloatValue:&v42 fromParm:5 atFxTime:a4->var0.var1];
+    [v7 getFloatValue:&v42 fromParm:5 atFxTime:info->var0.var1];
     v42 = v42 * v42;
     v41 = 0;
-    [(PAEOverlappingCircles *)self getTransformMatrix:&v41 forCenterX:a3 centerY:v13 angle:v14 andOutputImage:v57];
+    [(PAEOverlappingCircles *)self getTransformMatrix:&v41 forCenterX:output centerY:v13 angle:v14 andOutputImage:v57];
     v15 = HGObject::operator new(0x1A0uLL);
     HgcOverlappingCircles::HgcOverlappingCircles(v15);
     v16 = v59;
@@ -209,7 +209,7 @@
     (*(*v15 + 96))(v15, 6, v35, v36, v37, v38);
     v40 = v15;
     (*(*v15 + 16))(v15);
-    [a3 setHeliumRef:&v40];
+    [output setHeliumRef:&v40];
     if (v40)
     {
       (*(*v40 + 24))(v40);
@@ -221,14 +221,14 @@
   return v7 != 0;
 }
 
-- (BOOL)frameSetup:(id *)a3 hardware:(BOOL *)a4 software:(BOOL *)a5
+- (BOOL)frameSetup:(id *)setup hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a5 = 0;
-  *a4 = 0;
-  v5 = *&a3->var2;
-  v7[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v5 = *&setup->var2;
+  v7[0] = *&setup->var0.var0;
   v7[1] = v5;
-  v7[2] = *&a3->var4;
+  v7[2] = *&setup->var4;
   [PAESharedDefaultBase overrideFrameSetupForRenderMode:"overrideFrameSetupForRenderMode:hardware:software:" hardware:v7 software:?];
   return 1;
 }

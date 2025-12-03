@@ -1,6 +1,6 @@
 @interface GCSystemGesturesState
 - (GCSystemGesturesState)init;
-- (GCSystemGesturesState)initWithEnabledSystemGestures:(id)a3 disabledSystemGestures:(id)a4 bundleIdentifier:(id)a5;
+- (GCSystemGesturesState)initWithEnabledSystemGestures:(id)gestures disabledSystemGestures:(id)systemGestures bundleIdentifier:(id)identifier;
 @end
 
 @implementation GCSystemGesturesState
@@ -14,20 +14,20 @@
   return v5;
 }
 
-- (GCSystemGesturesState)initWithEnabledSystemGestures:(id)a3 disabledSystemGestures:(id)a4 bundleIdentifier:(id)a5
+- (GCSystemGesturesState)initWithEnabledSystemGestures:(id)gestures disabledSystemGestures:(id)systemGestures bundleIdentifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  gesturesCopy = gestures;
+  systemGesturesCopy = systemGestures;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = GCSystemGesturesState;
   v12 = [(GCSystemGesturesState *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_disabledSystemGestureInputNames, a4);
-    objc_storeStrong(&v13->_enabledSystemGestureInputNames, a3);
-    objc_storeStrong(&v13->_bundleIdentifier, a5);
+    objc_storeStrong(&v12->_disabledSystemGestureInputNames, systemGestures);
+    objc_storeStrong(&v13->_enabledSystemGestureInputNames, gestures);
+    objc_storeStrong(&v13->_bundleIdentifier, identifier);
   }
 
   return v13;

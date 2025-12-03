@@ -1,23 +1,23 @@
 @interface FCAssetContentArchive
-- (BOOL)isEqual:(id)a3;
-- (FCAssetContentArchive)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FCAssetContentArchive)initWithCoder:(id)coder;
 - (id)description;
 - (id)manifest;
-- (id)unarchiveIntoContentContext:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)unarchiveIntoContentContext:(id)context;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FCAssetContentArchive
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if (v4)
+  if (equalCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -52,28 +52,28 @@
   [(FCDescription *)v3 addField:@"metadata" object:self->_asset];
   [(FCDescription *)v3 addField:@"remoteURL" object:self->_remoteURL];
   [(FCDescription *)v3 addField:@"filePath" value:self->_filePath];
-  v4 = [(FCDescription *)v3 descriptionString];
+  descriptionString = [(FCDescription *)v3 descriptionString];
 
-  return v4;
+  return descriptionString;
 }
 
-- (FCAssetContentArchive)initWithCoder:(id)a3
+- (FCAssetContentArchive)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = FCAssetContentArchive;
   v5 = [(FCAssetContentArchive *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"asset"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"asset"];
     asset = v5->_asset;
     v5->_asset = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"remoteURL"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"remoteURL"];
     remoteURL = v5->_remoteURL;
     v5->_remoteURL = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"filePath"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"filePath"];
     filePath = v5->_filePath;
     v5->_filePath = v10;
   }
@@ -81,22 +81,22 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   asset = self->_asset;
-  v5 = a3;
-  [v5 encodeObject:asset forKey:@"asset"];
-  [v5 encodeObject:self->_remoteURL forKey:@"remoteURL"];
-  [v5 encodeObject:self->_filePath forKey:@"filePath"];
+  coderCopy = coder;
+  [coderCopy encodeObject:asset forKey:@"asset"];
+  [coderCopy encodeObject:self->_remoteURL forKey:@"remoteURL"];
+  [coderCopy encodeObject:self->_filePath forKey:@"filePath"];
 }
 
-- (id)unarchiveIntoContentContext:(id)a3
+- (id)unarchiveIntoContentContext:(id)context
 {
-  v4 = [a3 assetManager];
+  assetManager = [context assetManager];
   asset = self->_asset;
   remoteURL = self->_remoteURL;
   v7 = [MEMORY[0x1E695DFF8] fileURLWithPath:self->_filePath];
-  v8 = [v4 importAsset:asset remoteURL:remoteURL fileURL:v7];
+  v8 = [assetManager importAsset:asset remoteURL:remoteURL fileURL:v7];
 
   v9 = [[FCContentUnarchiveResult alloc] initWithInterestToken:v8 storageSize:[(FCAssetContentArchive *)self storageSize]];
 

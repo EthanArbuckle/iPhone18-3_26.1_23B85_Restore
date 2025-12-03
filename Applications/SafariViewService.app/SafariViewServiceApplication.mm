@@ -1,12 +1,12 @@
 @interface SafariViewServiceApplication
 + (void)initialize;
 - (id)newSharedSiteMetadataManager;
-- (void)applicationDidFinishLaunching:(id)a3;
-- (void)buildMenuWithBuilder:(id)a3;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4;
-- (void)pressesChanged:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
+- (void)applicationDidFinishLaunching:(id)launching;
+- (void)buildMenuWithBuilder:(id)builder;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event;
+- (void)pressesChanged:(id)changed withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation SafariViewServiceApplication
@@ -15,7 +15,7 @@
 {
   v3 = objc_opt_self();
 
-  if (v3 == a1)
+  if (v3 == self)
   {
     v4 = +[NSUserDefaults standardUserDefaults];
     [v4 addSuiteNamed:@"com.apple.mobilesafari"];
@@ -25,7 +25,7 @@
   }
 }
 
-- (void)applicationDidFinishLaunching:(id)a3
+- (void)applicationDidFinishLaunching:(id)launching
 {
   [_SFSiteMetadataManager setSharedSiteMetadataManagerProvider:self];
   +[_SFReaderCustomProtocols registerReaderCustomProtocols];
@@ -45,59 +45,59 @@
   return v6;
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  self->_currentKeyboardModifierFlags = [v6 modifierFlags];
+  eventCopy = event;
+  beganCopy = began;
+  self->_currentKeyboardModifierFlags = [eventCopy modifierFlags];
   v8.receiver = self;
   v8.super_class = SafariViewServiceApplication;
-  [(SafariViewServiceApplication *)&v8 pressesBegan:v7 withEvent:v6];
+  [(SafariViewServiceApplication *)&v8 pressesBegan:beganCopy withEvent:eventCopy];
 }
 
-- (void)pressesChanged:(id)a3 withEvent:(id)a4
+- (void)pressesChanged:(id)changed withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  self->_currentKeyboardModifierFlags = [v6 modifierFlags];
+  eventCopy = event;
+  changedCopy = changed;
+  self->_currentKeyboardModifierFlags = [eventCopy modifierFlags];
   v8.receiver = self;
   v8.super_class = SafariViewServiceApplication;
-  [(SafariViewServiceApplication *)&v8 pressesChanged:v7 withEvent:v6];
+  [(SafariViewServiceApplication *)&v8 pressesChanged:changedCopy withEvent:eventCopy];
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  self->_currentKeyboardModifierFlags = [v6 modifierFlags];
+  eventCopy = event;
+  endedCopy = ended;
+  self->_currentKeyboardModifierFlags = [eventCopy modifierFlags];
   v8.receiver = self;
   v8.super_class = SafariViewServiceApplication;
-  [(SafariViewServiceApplication *)&v8 pressesEnded:v7 withEvent:v6];
+  [(SafariViewServiceApplication *)&v8 pressesEnded:endedCopy withEvent:eventCopy];
 }
 
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  self->_currentKeyboardModifierFlags = [v6 modifierFlags];
+  eventCopy = event;
+  cancelledCopy = cancelled;
+  self->_currentKeyboardModifierFlags = [eventCopy modifierFlags];
   v8.receiver = self;
   v8.super_class = SafariViewServiceApplication;
-  [(SafariViewServiceApplication *)&v8 pressesCancelled:v7 withEvent:v6];
+  [(SafariViewServiceApplication *)&v8 pressesCancelled:cancelledCopy withEvent:eventCopy];
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v8.receiver = self;
   v8.super_class = SafariViewServiceApplication;
-  [(SafariViewServiceApplication *)&v8 buildMenuWithBuilder:v4];
-  v5 = [v4 system];
+  [(SafariViewServiceApplication *)&v8 buildMenuWithBuilder:builderCopy];
+  system = [builderCopy system];
   v6 = +[UIMenuSystem mainSystem];
 
-  if (v5 == v6)
+  if (system == v6)
   {
     v7 = +[SFBrowserMenuProvider sharedProvider];
-    [v7 setMenusIfNecessaryForSafariViewServiceWithBuilder:v4];
+    [v7 setMenusIfNecessaryForSafariViewServiceWithBuilder:builderCopy];
   }
 }
 

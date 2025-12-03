@@ -1,8 +1,8 @@
 @interface FTRemoteRecentsContainerViewController
-- (FTRemoteRecentsContainerViewController)initWithCoder:(id)a3;
-- (FTRemoteRecentsContainerViewController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (FTRemoteRecentsContainerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (FTRemoteRecentsContainerViewController)initWithRootViewController:(id)a3;
+- (FTRemoteRecentsContainerViewController)initWithCoder:(id)coder;
+- (FTRemoteRecentsContainerViewController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (FTRemoteRecentsContainerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (FTRemoteRecentsContainerViewController)initWithRootViewController:(id)controller;
 - (void)viewDidLoad;
 @end
 
@@ -20,12 +20,12 @@
 
   v4.receiver = self;
   v4.super_class = type metadata accessor for RemoteRecentsContainerViewController();
-  v3 = self;
+  selfCopy = self;
   [(FTRemoteRecentsContainerViewController *)&v4 viewDidLoad];
   sub_100007864();
 }
 
-- (FTRemoteRecentsContainerViewController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (FTRemoteRecentsContainerViewController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -37,12 +37,12 @@
 
   v9.receiver = self;
   v9.super_class = type metadata accessor for RemoteRecentsContainerViewController();
-  v7 = [(FTRecentsContainerViewController *)&v9 initWithNavigationBarClass:a3 toolbarClass:a4];
+  v7 = [(FTRecentsContainerViewController *)&v9 initWithNavigationBarClass:class toolbarClass:toolbarClass];
 
   return v7;
 }
 
-- (FTRemoteRecentsContainerViewController)initWithRootViewController:(id)a3
+- (FTRemoteRecentsContainerViewController)initWithRootViewController:(id)controller
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -54,12 +54,12 @@
 
   v7.receiver = self;
   v7.super_class = type metadata accessor for RemoteRecentsContainerViewController();
-  v5 = [(FTRecentsContainerViewController *)&v7 initWithRootViewController:a3];
+  v5 = [(FTRecentsContainerViewController *)&v7 initWithRootViewController:controller];
 
   return v5;
 }
 
-- (FTRemoteRecentsContainerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (FTRemoteRecentsContainerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -69,26 +69,26 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    v7 = a4;
-    a3 = String._bridgeToObjectiveC()();
+    bundleCopy = bundle;
+    name = String._bridgeToObjectiveC()();
   }
 
   else
   {
-    v8 = a4;
+    bundleCopy2 = bundle;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for RemoteRecentsContainerViewController();
-  v9 = [(FTRecentsContainerViewController *)&v11 initWithNibName:a3 bundle:a4];
+  v9 = [(FTRecentsContainerViewController *)&v11 initWithNibName:name bundle:bundle];
 
   return v9;
 }
 
-- (FTRemoteRecentsContainerViewController)initWithCoder:(id)a3
+- (FTRemoteRecentsContainerViewController)initWithCoder:(id)coder
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -100,8 +100,8 @@
 
   v8.receiver = self;
   v8.super_class = type metadata accessor for RemoteRecentsContainerViewController();
-  v5 = a3;
-  v6 = [(FTRecentsContainerViewController *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(FTRecentsContainerViewController *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

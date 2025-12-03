@@ -1,23 +1,23 @@
 @interface SFMCommandRouter
 + (Class)handlerClass;
 + (Class)legacyHandlerClass;
-+ (id)chooseTargetWithDictionary:(id)a3 initBlock:(id)a4;
++ (id)chooseTargetWithDictionary:(id)dictionary initBlock:(id)block;
 - (SFMCommandRouter)init;
-- (SFMCommandRouter)initWithDictionary:(id)a3;
+- (SFMCommandRouter)initWithDictionary:(id)dictionary;
 @end
 
 @implementation SFMCommandRouter
 
-- (SFMCommandRouter)initWithDictionary:(id)a3
+- (SFMCommandRouter)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_opt_class();
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1700;
   v9[3] = &unk_C560;
-  v10 = v4;
-  v6 = v4;
+  v10 = dictionaryCopy;
+  v6 = dictionaryCopy;
   v7 = [v5 chooseTargetWithDictionary:v6 initBlock:v9];
 
   return v7;
@@ -32,8 +32,8 @@
 
 + (Class)handlerClass
 {
-  v2 = [a1 handlerClassName];
-  v3 = NSClassFromString(v2);
+  handlerClassName = [self handlerClassName];
+  v3 = NSClassFromString(handlerClassName);
 
   return v3;
 }
@@ -46,30 +46,30 @@
     [v3 load];
   }
 
-  v4 = [a1 legacyHandlerClassName];
-  v5 = NSClassFromString(v4);
+  legacyHandlerClassName = [self legacyHandlerClassName];
+  v5 = NSClassFromString(legacyHandlerClassName);
 
   return v5;
 }
 
-+ (id)chooseTargetWithDictionary:(id)a3 initBlock:(id)a4
++ (id)chooseTargetWithDictionary:(id)dictionary initBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  blockCopy = block;
   v8 = os_log_create("com.apple.siri.findmy", "plugin");
-  v9 = [a1 handlerClassName];
-  if (v9 && (v10 = v9, v11 = shouldUseLegacyPlugin(v6), v10, !v11))
+  handlerClassName = [self handlerClassName];
+  if (handlerClassName && (v10 = handlerClassName, v11 = shouldUseLegacyPlugin(dictionaryCopy), v10, !v11))
   {
     v15 = v8;
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [a1 commandName];
+      commandName = [self commandName];
       v19 = 138543362;
-      v20 = v16;
+      v20 = commandName;
       _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, "Using new plugin to service %{public}@ command.", &v19, 0xCu);
     }
 
-    v14 = [a1 handlerClass];
+    handlerClass = [self handlerClass];
   }
 
   else
@@ -77,16 +77,16 @@
     v12 = v8;
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [a1 commandName];
+      commandName2 = [self commandName];
       v19 = 138543362;
-      v20 = v13;
+      v20 = commandName2;
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "Using legacy plugin to service %{public}@ command.", &v19, 0xCu);
     }
 
-    v14 = [a1 legacyHandlerClass];
+    handlerClass = [self legacyHandlerClass];
   }
 
-  v17 = v7[2](v7, v14);
+  v17 = blockCopy[2](blockCopy, handlerClass);
 
   return v17;
 }

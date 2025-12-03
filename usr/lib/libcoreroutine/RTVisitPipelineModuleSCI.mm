@@ -1,43 +1,43 @@
 @interface RTVisitPipelineModuleSCI
-+ (BOOL)filterHint:(id)a3 sourceFilter:(id)a4 inverseFilter:(BOOL)a5;
-+ (id)FSMEventToString:(unint64_t)a3;
-+ (id)FSMStateToString:(unint64_t)a3;
-+ (id)LCFSMStateToString:(unint64_t)a3;
-- (BOOL)isDwellTimeSatisfiedForLocation:(id)a3;
-- (BOOL)isHint:(id)a3 withinDistance:(double)a4 location:(id)a5;
-- (BOOL)isHintConsistentWithLocation:(id)a3 hint:(id)a4;
-- (BOOL)isHintNearLocation:(id)a3;
-- (BOOL)isLastRegionHintNearLocation:(id)a3 hintSource:(int64_t)a4;
-- (BOOL)isTimeOutsideClusterSatisfiedForOutlierCount:(unint64_t)a3 location:(id)a4;
-- (BOOL)isValidLatestRegionHintSource:(int64_t)a3 date:(id)a4;
++ (BOOL)filterHint:(id)hint sourceFilter:(id)filter inverseFilter:(BOOL)inverseFilter;
++ (id)FSMEventToString:(unint64_t)string;
++ (id)FSMStateToString:(unint64_t)string;
++ (id)LCFSMStateToString:(unint64_t)string;
+- (BOOL)isDwellTimeSatisfiedForLocation:(id)location;
+- (BOOL)isHint:(id)hint withinDistance:(double)distance location:(id)location;
+- (BOOL)isHintConsistentWithLocation:(id)location hint:(id)hint;
+- (BOOL)isHintNearLocation:(id)location;
+- (BOOL)isLastRegionHintNearLocation:(id)location hintSource:(int64_t)source;
+- (BOOL)isTimeOutsideClusterSatisfiedForOutlierCount:(unint64_t)count location:(id)location;
+- (BOOL)isValidLatestRegionHintSource:(int64_t)source date:(id)date;
 - (BOOL)isVisitInFlight;
-- (RTVisitPipelineModuleSCI)initWithDefaultsManager:(id)a3 delayedLocationRequester:(id)a4 hintManager:(id)a5 queue:(id)a6 hyperParameter:(id)a7 useLowConfidence:(BOOL)a8;
+- (RTVisitPipelineModuleSCI)initWithDefaultsManager:(id)manager delayedLocationRequester:(id)requester hintManager:(id)hintManager queue:(id)queue hyperParameter:(id)parameter useLowConfidence:(BOOL)confidence;
 - (double)minStaticIntervalForSLVArrival;
 - (double)minStaticIntervalForSLVArrivalWithHint;
-- (double)requiredDwellTimeForLocation:(id)a3;
-- (double)requiredTimeOutsideClusterForOutlierCount:(unint64_t)a3 location:(id)a4;
-- (id)filterHints:(id)a3 existingHints:(id)a4;
-- (id)getHintConsistentWithLocation:(id)a3 sourceFilter:(id)a4 inverseFilter:(BOOL)a5;
-- (id)getHintWithinDistance:(double)a3 ofLocation:(id)a4 sourceFilter:(id)a5 inverseFilter:(BOOL)a6;
-- (id)getHintsNearLocation:(id)a3 withinDistance:(double)a4 sourceFilter:(id)a5 fromDate:(id)a6 limit:(unint64_t)a7;
-- (id)getLastHintUsingSourceFilter:(id)a3;
-- (id)handleFSM:(unint64_t)a3 point:(id)a4;
-- (id)hintsNearLocation:(id)a3;
-- (id)latestCachedHintOfSource:(int64_t)a3;
-- (id)process:(id)a3;
-- (id)relevantDateForHintSource:(int64_t)a3 date:(id)a4;
-- (id)retrieveNonLOIHintsNearLocation:(id)a3 withinDistance:(double)a4;
+- (double)requiredDwellTimeForLocation:(id)location;
+- (double)requiredTimeOutsideClusterForOutlierCount:(unint64_t)count location:(id)location;
+- (id)filterHints:(id)hints existingHints:(id)existingHints;
+- (id)getHintConsistentWithLocation:(id)location sourceFilter:(id)filter inverseFilter:(BOOL)inverseFilter;
+- (id)getHintWithinDistance:(double)distance ofLocation:(id)location sourceFilter:(id)filter inverseFilter:(BOOL)inverseFilter;
+- (id)getHintsNearLocation:(id)location withinDistance:(double)distance sourceFilter:(id)filter fromDate:(id)date limit:(unint64_t)limit;
+- (id)getLastHintUsingSourceFilter:(id)filter;
+- (id)handleFSM:(unint64_t)m point:(id)point;
+- (id)hintsNearLocation:(id)location;
+- (id)latestCachedHintOfSource:(int64_t)source;
+- (id)process:(id)process;
+- (id)relevantDateForHintSource:(int64_t)source date:(id)date;
+- (id)retrieveNonLOIHintsNearLocation:(id)location withinDistance:(double)distance;
 - (id)stateMachineConfidenceString;
-- (void)_onHintNotification:(id)a3;
-- (void)addToClusters:(id)a3;
-- (void)addVisitFromWorkingHypothesis:(int64_t)a3 confidence:(double)a4;
+- (void)_onHintNotification:(id)notification;
+- (void)addToClusters:(id)clusters;
+- (void)addVisitFromWorkingHypothesis:(int64_t)hypothesis confidence:(double)confidence;
 - (void)exitFromWorkingHypothesis;
-- (void)exitUntilNotInWorkingHypotheisWithBlock:(id)a3;
-- (void)onHintNotification:(id)a3;
-- (void)populateHintCacheNearLocation:(id)a3 withinDistance:(double)a4;
-- (void)processContextChangeWithSource:(int64_t)a3;
-- (void)processPoints:(id)a3;
-- (void)refreshCachedHintOfSource:(int64_t)a3;
+- (void)exitUntilNotInWorkingHypotheisWithBlock:(id)block;
+- (void)onHintNotification:(id)notification;
+- (void)populateHintCacheNearLocation:(id)location withinDistance:(double)distance;
+- (void)processContextChangeWithSource:(int64_t)source;
+- (void)processPoints:(id)points;
+- (void)refreshCachedHintOfSource:(int64_t)source;
 - (void)refreshLatestCompanionSyncVisitHintCache;
 - (void)refreshLatestGeofenceHintCache;
 - (void)refreshLatestSignificantRegionHintCache;
@@ -93,7 +93,7 @@
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         v9 = NSStringFromSelector(a2);
-        v10 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
+        stateMachineConfidenceString = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
         v12 = 138413058;
         v13 = v9;
         v14 = 2112;
@@ -101,7 +101,7 @@
         v16 = 2048;
         v17 = v7;
         v18 = 2112;
-        v19 = v10;
+        v19 = stateMachineConfidenceString;
         _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "%@, %@ overridden to %.1fs, %@", &v12, 0x2Au);
       }
     }
@@ -130,7 +130,7 @@
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         v9 = NSStringFromSelector(a2);
-        v10 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
+        stateMachineConfidenceString = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
         v12 = 138413058;
         v13 = v9;
         v14 = 2112;
@@ -138,7 +138,7 @@
         v16 = 2048;
         v17 = v7;
         v18 = 2112;
-        v19 = v10;
+        v19 = stateMachineConfidenceString;
         _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "%@, %@ overridden to %.1fs, %@", &v12, 0x2Au);
       }
     }
@@ -152,7 +152,7 @@
   return v7;
 }
 
-+ (id)FSMStateToString:(unint64_t)a3
++ (id)FSMStateToString:(unint64_t)string
 {
   v11 = *MEMORY[0x277D85DE8];
   if ([&unk_2845A1688 count] != 4)
@@ -168,12 +168,12 @@
     }
   }
 
-  v5 = [&unk_2845A1688 objectAtIndexedSubscript:a3];
+  v5 = [&unk_2845A1688 objectAtIndexedSubscript:string];
 
   return v5;
 }
 
-+ (id)LCFSMStateToString:(unint64_t)a3
++ (id)LCFSMStateToString:(unint64_t)string
 {
   v11 = *MEMORY[0x277D85DE8];
   if ([&unk_2845A16A0 count] != 2)
@@ -189,12 +189,12 @@
     }
   }
 
-  v5 = [&unk_2845A16A0 objectAtIndexedSubscript:a3];
+  v5 = [&unk_2845A16A0 objectAtIndexedSubscript:string];
 
   return v5;
 }
 
-+ (id)FSMEventToString:(unint64_t)a3
++ (id)FSMEventToString:(unint64_t)string
 {
   v11 = *MEMORY[0x277D85DE8];
   if ([&unk_2845A16B8 count] != 11)
@@ -210,20 +210,20 @@
     }
   }
 
-  v5 = [&unk_2845A16B8 objectAtIndexedSubscript:a3];
+  v5 = [&unk_2845A16B8 objectAtIndexedSubscript:string];
 
   return v5;
 }
 
-- (RTVisitPipelineModuleSCI)initWithDefaultsManager:(id)a3 delayedLocationRequester:(id)a4 hintManager:(id)a5 queue:(id)a6 hyperParameter:(id)a7 useLowConfidence:(BOOL)a8
+- (RTVisitPipelineModuleSCI)initWithDefaultsManager:(id)manager delayedLocationRequester:(id)requester hintManager:(id)hintManager queue:(id)queue hyperParameter:(id)parameter useLowConfidence:(BOOL)confidence
 {
-  v15 = a3;
-  v36 = a4;
-  v16 = a5;
-  v35 = a6;
-  v17 = a7;
-  v18 = v17;
-  if (!v15)
+  managerCopy = manager;
+  requesterCopy = requester;
+  hintManagerCopy = hintManager;
+  queueCopy = queue;
+  parameterCopy = parameter;
+  v18 = parameterCopy;
+  if (!managerCopy)
   {
     v32 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -238,7 +238,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v16)
+  if (!hintManagerCopy)
   {
     v32 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -251,7 +251,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (!v17)
+  if (!parameterCopy)
   {
     v32 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -263,21 +263,21 @@ LABEL_13:
 
 LABEL_14:
 
-    v31 = 0;
+    selfCopy = 0;
     goto LABEL_15;
   }
 
   v37.receiver = self;
   v37.super_class = RTVisitPipelineModuleSCI;
-  v19 = [(RTVisitPipelineModuleSCI *)&v37 init:v35];
+  v19 = [(RTVisitPipelineModuleSCI *)&v37 init:queueCopy];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_defaultsManager, a3);
-    objc_storeStrong(&v20->_delayedLocationRequester, a4);
-    objc_storeStrong(&v20->_hintManager, a5);
-    objc_storeStrong(&v20->_hyperParameter, a7);
-    v20->_useLowConfidence = a8;
+    objc_storeStrong(&v19->_defaultsManager, manager);
+    objc_storeStrong(&v20->_delayedLocationRequester, requester);
+    objc_storeStrong(&v20->_hintManager, hintManager);
+    objc_storeStrong(&v20->_hyperParameter, parameter);
+    v20->_useLowConfidence = confidence;
     v21 = objc_opt_new();
     clusters = v20->_clusters;
     v20->_clusters = v21;
@@ -291,12 +291,12 @@ LABEL_14:
     distanceCalculator = v20->_distanceCalculator;
     v20->_distanceCalculator = v24;
 
-    objc_storeStrong(&v20->_queue, a6);
+    objc_storeStrong(&v20->_queue, queue);
     *&v20->_latestGeofenceHintChecked = 0;
     v20->_latestCompanionSyncVisitHintChecked = 0;
-    v26 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
     requiredDwellTimeCacheDateToUpdate = v20->_requiredDwellTimeCacheDateToUpdate;
-    v20->_requiredDwellTimeCacheDateToUpdate = v26;
+    v20->_requiredDwellTimeCacheDateToUpdate = distantPast;
 
     [(RTVisitPipelineModuleSCI *)v20 minStaticIntervalForSLVArrival];
     v20->_requiredDwellTimeCache = v28;
@@ -308,10 +308,10 @@ LABEL_14:
   }
 
   self = v20;
-  v31 = self;
+  selfCopy = self;
 LABEL_15:
 
-  return v31;
+  return selfCopy;
 }
 
 - (void)shutdown
@@ -325,13 +325,13 @@ LABEL_15:
       v5 = NSStringFromSelector(a2);
       v6 = objc_opt_class();
       v7 = NSStringFromClass(v6);
-      v8 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
+      stateMachineConfidenceString = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
       v10 = 138412802;
       v11 = v5;
       v12 = 2112;
       v13 = v7;
       v14 = 2112;
-      v15 = v8;
+      v15 = stateMachineConfidenceString;
       _os_log_impl(&dword_2304B3000, v4, OS_LOG_TYPE_INFO, "%@, %@, %@", &v10, 0x20u);
     }
   }
@@ -352,13 +352,13 @@ LABEL_15:
       v9 = NSStringFromSelector(a2);
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
-      v12 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
+      stateMachineConfidenceString = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
       v13 = 138412802;
       v14 = v9;
       v15 = 2112;
       v16 = v11;
       v17 = 2112;
-      v18 = v12;
+      v18 = stateMachineConfidenceString;
       _os_log_debug_impl(&dword_2304B3000, v4, OS_LOG_TYPE_DEBUG, "%@, %@, %@", &v13, 0x20u);
     }
   }
@@ -368,14 +368,14 @@ LABEL_15:
   self->_workingHypothesis = v5;
 
   delayedLocationRequester = self->_delayedLocationRequester;
-  v8 = [MEMORY[0x277CBEAA8] distantPast];
-  [(RTDelayedLocationRequester *)delayedLocationRequester updateFireDate:v8];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  [(RTDelayedLocationRequester *)delayedLocationRequester updateFireDate:distantPast];
 }
 
 - (void)exitFromWorkingHypothesis
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = [(RTVisitSCIStayCluster *)self->_workingHypothesis numOfOutliers];
+  numOfOutliers = [(RTVisitSCIStayCluster *)self->_workingHypothesis numOfOutliers];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
@@ -383,13 +383,13 @@ LABEL_15:
     {
       v8 = NSStringFromSelector(a2);
       workingHypothesis = self->_workingHypothesis;
-      v10 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
+      stateMachineConfidenceString = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
       v12 = 138412803;
       v13 = v8;
       v14 = 2117;
       v15 = workingHypothesis;
       v16 = 2112;
-      v17 = v10;
+      v17 = stateMachineConfidenceString;
       _os_log_debug_impl(&dword_2304B3000, v5, OS_LOG_TYPE_DEBUG, "%@, exit from working hypothesis, %{sensitive}@, %@", &v12, 0x20u);
     }
   }
@@ -400,14 +400,14 @@ LABEL_15:
     [(RTVisitPipelineModuleSCI *)self processPoints:v6];
   }
 
-  if (v4 && v4 <= [(RTVisitSCIStayCluster *)self->_workingHypothesis numOfOutliers])
+  if (numOfOutliers && numOfOutliers <= [(RTVisitSCIStayCluster *)self->_workingHypothesis numOfOutliers])
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v11 = self->_workingHypothesis;
       v12 = 134218755;
-      v13 = v4;
+      v13 = numOfOutliers;
       v14 = 2117;
       v15 = v11;
       v16 = 2080;
@@ -419,14 +419,14 @@ LABEL_15:
   }
 }
 
-- (void)refreshCachedHintOfSource:(int64_t)a3
+- (void)refreshCachedHintOfSource:(int64_t)source
 {
   v16 = *MEMORY[0x277D85DE8];
-  if ((a3 - 9) > 1)
+  if ((source - 9) > 1)
   {
-    if ((a3 - 7) > 1)
+    if ((source - 7) > 1)
     {
-      if (a3 == 11)
+      if (source == 11)
       {
 
         [(RTVisitPipelineModuleSCI *)self refreshLatestCompanionSyncVisitHintCache];
@@ -438,14 +438,14 @@ LABEL_15:
         if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
         {
           v7 = NSStringFromSelector(a2);
-          v8 = [MEMORY[0x277D01120] hintSourceToString:a3];
-          v9 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
+          v8 = [MEMORY[0x277D01120] hintSourceToString:source];
+          stateMachineConfidenceString = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
           v10 = 138412802;
           v11 = v7;
           v12 = 2112;
           v13 = v8;
           v14 = 2112;
-          v15 = v9;
+          v15 = stateMachineConfidenceString;
           _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%@, no cache to refresh for hint source %@, %@", &v10, 0x20u);
         }
       }
@@ -465,10 +465,10 @@ LABEL_15:
   }
 }
 
-- (id)latestCachedHintOfSource:(int64_t)a3
+- (id)latestCachedHintOfSource:(int64_t)source
 {
   v19 = *MEMORY[0x277D85DE8];
-  if ((a3 - 9) <= 1)
+  if ((source - 9) <= 1)
   {
     latestSignificantRegionHint = self->_latestSignificantRegionHint;
 LABEL_7:
@@ -476,13 +476,13 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ((a3 - 7) <= 1)
+  if ((source - 7) <= 1)
   {
     latestSignificantRegionHint = self->_latestGeofenceHint;
     goto LABEL_7;
   }
 
-  if (a3 == 11)
+  if (source == 11)
   {
     latestSignificantRegionHint = self->_latestCompanionSyncVisitHint;
     goto LABEL_7;
@@ -494,14 +494,14 @@ LABEL_7:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = NSStringFromSelector(a2);
-      v11 = [MEMORY[0x277D01120] hintSourceToString:a3];
-      v12 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
+      v11 = [MEMORY[0x277D01120] hintSourceToString:source];
+      stateMachineConfidenceString = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
       v13 = 138412802;
       v14 = v10;
       v15 = 2112;
       v16 = v11;
       v17 = 2112;
-      v18 = v12;
+      v18 = stateMachineConfidenceString;
       _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "%@, no cache to retrieve for hint source %@, %@", &v13, 0x20u);
     }
   }
@@ -512,26 +512,26 @@ LABEL_8:
   return v6;
 }
 
-- (void)processContextChangeWithSource:(int64_t)a3
+- (void)processContextChangeWithSource:(int64_t)source
 {
   v56 = *MEMORY[0x277D85DE8];
-  if (a3 <= 0xB && ((1 << a3) & 0xA80) != 0)
+  if (source <= 0xB && ((1 << source) & 0xA80) != 0)
   {
-    v3 = self;
-    v4 = [(RTVisitSCIStayCluster *)self->_workingHypothesis numOfOutliers];
-    v5 = [(RTVisitPipelineModuleSCI *)v3 handleFSM:6 point:0];
+    selfCopy = self;
+    numOfOutliers = [(RTVisitSCIStayCluster *)self->_workingHypothesis numOfOutliers];
+    v5 = [(RTVisitPipelineModuleSCI *)selfCopy handleFSM:6 point:0];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v6 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
         v7 = NSStringFromSelector(a2);
-        v8 = [MEMORY[0x277D01120] hintSourceToString:a3];
+        v8 = [MEMORY[0x277D01120] hintSourceToString:source];
         v9 = v5;
-        workingHypothesis = v3->_workingHypothesis;
-        v11 = [objc_opt_class() FSMStateToString:v3->_fsmState];
-        v12 = [objc_opt_class() LCFSMStateToString:v3->_lcFSMState];
-        v13 = [(RTVisitPipelineModuleSCI *)v3 stateMachineConfidenceString];
+        workingHypothesis = selfCopy->_workingHypothesis;
+        v11 = [objc_opt_class() FSMStateToString:selfCopy->_fsmState];
+        v12 = [objc_opt_class() LCFSMStateToString:selfCopy->_lcFSMState];
+        stateMachineConfidenceString = [(RTVisitPipelineModuleSCI *)selfCopy stateMachineConfidenceString];
         *buf = 138413826;
         v43 = v7;
         v44 = 2112;
@@ -544,20 +544,20 @@ LABEL_8:
         v50 = 2112;
         v51 = v12;
         v52 = 2048;
-        v53 = v4;
+        v53 = numOfOutliers;
         v54 = 2112;
-        v55 = v13;
+        v55 = stateMachineConfidenceString;
         _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%@, entry hint of source, %@, detected. Will exit any existing hypothesis, %@, if not in visit HC FSM inState, %@, LC FSM inState, %@, number points left, %lu, %@", buf, 0x48u);
       }
     }
 
     if ([v5 count])
     {
-      v31 = v4;
-      v14 = a3;
-      [(RTVisitPipelineModuleSCI *)v3 refreshCachedHintOfSource:a3];
-      v35 = [(RTVisitPipelineModuleSCI *)v3 latestCachedHintOfSource:a3];
-      v15 = [MEMORY[0x277CBEB18] array];
+      v31 = numOfOutliers;
+      sourceCopy2 = source;
+      [(RTVisitPipelineModuleSCI *)selfCopy refreshCachedHintOfSource:source];
+      v35 = [(RTVisitPipelineModuleSCI *)selfCopy latestCachedHintOfSource:source];
+      array = [MEMORY[0x277CBEB18] array];
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
@@ -582,22 +582,22 @@ LABEL_8:
           }
 
           v20 = *(*(&v37 + 1) + 8 * i);
-          v21 = [v20 date];
-          if (![(RTVisitPipelineModuleSCI *)v3 isValidLatestRegionHintSource:v14 date:v21])
+          date = [v20 date];
+          if (![(RTVisitPipelineModuleSCI *)selfCopy isValidLatestRegionHintSource:sourceCopy2 date:date])
           {
 
 LABEL_20:
-            [v15 addObject:v20];
+            [array addObject:v20];
             continue;
           }
 
           [v20 date];
-          v23 = v22 = v3;
-          v24 = [(RTVisitSCIStayCluster *)v35 date];
-          v25 = [v23 isBeforeDate:v24];
+          v23 = v22 = selfCopy;
+          date2 = [(RTVisitSCIStayCluster *)v35 date];
+          v25 = [v23 isBeforeDate:date2];
 
-          v3 = v22;
-          v14 = a3;
+          selfCopy = v22;
+          sourceCopy2 = source;
 
           if (!v25)
           {
@@ -610,7 +610,7 @@ LABEL_20:
             if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
             {
               v27 = NSStringFromSelector(a2);
-              v28 = [(RTVisitPipelineModuleSCI *)v3 stateMachineConfidenceString];
+              stateMachineConfidenceString2 = [(RTVisitPipelineModuleSCI *)selfCopy stateMachineConfidenceString];
               *buf = 138413059;
               v43 = v27;
               v44 = 2117;
@@ -618,7 +618,7 @@ LABEL_20:
               v46 = 2117;
               v47 = v20;
               v48 = 2112;
-              v49 = v28;
+              v49 = stateMachineConfidenceString2;
               _os_log_debug_impl(&dword_2304B3000, v26, OS_LOG_TYPE_DEBUG, "%@, skipping irrelevant location. hint, %{sensitive}@, is after location, %{sensitive}@, %@", buf, 0x2Au);
             }
           }
@@ -629,22 +629,22 @@ LABEL_20:
         {
 LABEL_23:
 
-          [(RTVisitPipelineModuleSCI *)v3 processPoints:v15];
-          v4 = v31;
+          [(RTVisitPipelineModuleSCI *)selfCopy processPoints:array];
+          numOfOutliers = v31;
           v5 = v32;
           break;
         }
       }
     }
 
-    if (v4 && v4 <= [(RTVisitSCIStayCluster *)v3->_workingHypothesis numOfOutliers])
+    if (numOfOutliers && numOfOutliers <= [(RTVisitSCIStayCluster *)selfCopy->_workingHypothesis numOfOutliers])
     {
       v29 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
-        v30 = v3->_workingHypothesis;
+        v30 = selfCopy->_workingHypothesis;
         *buf = 134218755;
-        v43 = v4;
+        v43 = numOfOutliers;
         v44 = 2117;
         v45 = v30;
         v46 = 2080;
@@ -667,16 +667,16 @@ LABEL_23:
   }
 }
 
-- (void)exitUntilNotInWorkingHypotheisWithBlock:(id)a3
+- (void)exitUntilNotInWorkingHypotheisWithBlock:(id)block
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(RTVisitSCIStayCluster *)self->_workingHypothesis numOfOutliers];
+  blockCopy = block;
+  numOfOutliers = [(RTVisitSCIStayCluster *)self->_workingHypothesis numOfOutliers];
   if ([(RTVisitPipelineModuleSCI *)self isInWorkingHypothesis])
   {
     v7 = 0;
     v8 = @"with";
-    if (!v5)
+    if (!blockCopy)
     {
       v8 = @"without";
     }
@@ -685,7 +685,7 @@ LABEL_23:
     v9 = MEMORY[0x277D86220];
     while (1)
     {
-      if (v7 > v6)
+      if (v7 > numOfOutliers)
       {
         v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -698,7 +698,7 @@ LABEL_23:
         }
       }
 
-      if (v5 && (v5[2](v5) & 1) != 0)
+      if (blockCopy && (blockCopy[2](blockCopy) & 1) != 0)
       {
         break;
       }
@@ -735,7 +735,7 @@ LABEL_23:
   else
   {
 LABEL_16:
-    if (!v5)
+    if (!blockCopy)
     {
       if ([(RTVisitSCIStayCluster *)self->_workingHypothesis numOfOutliers])
       {
@@ -779,14 +779,14 @@ LABEL_16:
   }
 }
 
-- (void)addToClusters:(id)a3
+- (void)addToClusters:(id)clusters
 {
   v52 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 visit];
-  v6 = [v5 entry];
+  clustersCopy = clusters;
+  visit = [clustersCopy visit];
+  entry = [visit entry];
 
-  if (!v6)
+  if (!entry)
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -799,10 +799,10 @@ LABEL_16:
     }
   }
 
-  v8 = [v4 visit];
-  v9 = [v8 location];
+  visit2 = [clustersCopy visit];
+  location = [visit2 location];
 
-  if (!v9)
+  if (!location)
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -815,14 +815,14 @@ LABEL_16:
     }
   }
 
-  v11 = [v4 visit];
-  v12 = [v11 exit];
+  visit3 = [clustersCopy visit];
+  exit = [visit3 exit];
 
-  if (!v12)
+  if (!exit)
   {
-    v13 = [v4 points];
+    points = [clustersCopy points];
 
-    if (!v13)
+    if (!points)
     {
       v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -836,35 +836,35 @@ LABEL_16:
     }
   }
 
-  v15 = [v4 visit];
-  v16 = [v15 entry];
-  if (v16)
+  visit4 = [clustersCopy visit];
+  entry2 = [visit4 entry];
+  if (entry2)
   {
-    v17 = v16;
-    v18 = [v4 visit];
-    v19 = [v18 location];
+    v17 = entry2;
+    visit5 = [clustersCopy visit];
+    location2 = [visit5 location];
 
-    if (v19)
+    if (location2)
     {
-      v20 = [v4 visit];
-      v21 = [v20 exit];
-      if (v21)
+      visit6 = [clustersCopy visit];
+      exit2 = [visit6 exit];
+      if (exit2)
       {
 
 LABEL_20:
         if (-[NSMutableArray count](self->_clusters, "count") && (-[NSMutableArray lastObject](self->_clusters, "lastObject"), v23 = objc_claimAutoreleasedReturnValue(), [v23 visit], v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v24, "exit"), v25 = objc_claimAutoreleasedReturnValue(), v25, v24, v23, !v25))
         {
-          v38 = [(NSMutableArray *)self->_clusters lastObject];
-          v39 = [v38 visit];
-          v40 = [v39 entry];
-          v41 = [v4 visit];
-          v42 = [v41 entry];
-          v43 = [v40 isEqualToDate:v42];
+          lastObject = [(NSMutableArray *)self->_clusters lastObject];
+          visit7 = [lastObject visit];
+          entry3 = [visit7 entry];
+          visit8 = [clustersCopy visit];
+          entry4 = [visit8 entry];
+          v43 = [entry3 isEqualToDate:entry4];
 
           if (v43)
           {
 LABEL_31:
-            [(NSMutableArray *)self->_clusters addObject:v4];
+            [(NSMutableArray *)self->_clusters addObject:clustersCopy];
             goto LABEL_32;
           }
 
@@ -891,12 +891,12 @@ LABEL_31:
             goto LABEL_31;
           }
 
-          v26 = [(NSMutableArray *)self->_clusters lastObject];
-          v27 = [v26 visit];
-          v28 = [v27 exit];
-          v29 = [v4 visit];
-          v30 = [v29 entry];
-          v31 = [v28 isBeforeDate:v30];
+          lastObject2 = [(NSMutableArray *)self->_clusters lastObject];
+          visit9 = [lastObject2 visit];
+          exit3 = [visit9 exit];
+          visit10 = [clustersCopy visit];
+          entry5 = [visit10 entry];
+          v31 = [exit3 isBeforeDate:entry5];
 
           if (v31)
           {
@@ -906,16 +906,16 @@ LABEL_31:
           v32 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
           if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
           {
-            v33 = [(NSMutableArray *)self->_clusters lastObject];
-            v34 = [v33 visit];
-            v35 = [v34 exit];
-            v36 = [v4 visit];
-            v37 = [v36 entry];
+            lastObject3 = [(NSMutableArray *)self->_clusters lastObject];
+            visit11 = [lastObject3 visit];
+            exit4 = [visit11 exit];
+            visit12 = [clustersCopy visit];
+            entry6 = [visit12 entry];
             v44 = 138740739;
-            v45 = v35;
+            v45 = exit4;
             v46 = 2117;
             v48 = 2080;
-            v47 = v37;
+            v47 = entry6;
             v49 = "[RTVisitPipelineModuleSCI addToClusters:]";
             v50 = 1024;
             v51 = 336;
@@ -926,9 +926,9 @@ LABEL_31:
         goto LABEL_31;
       }
 
-      v22 = [v4 points];
+      points2 = [clustersCopy points];
 
-      if (v22)
+      if (points2)
       {
         goto LABEL_20;
       }
@@ -942,7 +942,7 @@ LABEL_31:
 LABEL_32:
 }
 
-- (void)addVisitFromWorkingHypothesis:(int64_t)a3 confidence:(double)a4
+- (void)addVisitFromWorkingHypothesis:(int64_t)hypothesis confidence:(double)confidence
 {
   v20 = *MEMORY[0x277D85DE8];
   if (![(RTVisitPipelineModuleSCI *)self isVisitInFlight])
@@ -958,21 +958,21 @@ LABEL_32:
     }
   }
 
-  v9 = [(RTVisitSCIStayCluster *)self->_workingHypothesis createVisit:a3 confidence:a4];
+  v9 = [(RTVisitSCIStayCluster *)self->_workingHypothesis createVisit:hypothesis confidence:confidence];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       v11 = NSStringFromSelector(a2);
-      v12 = [v9 visit];
-      v13 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
+      visit = [v9 visit];
+      stateMachineConfidenceString = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
       v14 = 138412803;
       v15 = v11;
       v16 = 2117;
-      v17 = v12;
+      v17 = visit;
       v18 = 2112;
-      v19 = v13;
+      v19 = stateMachineConfidenceString;
       _os_log_debug_impl(&dword_2304B3000, v10, OS_LOG_TYPE_DEBUG, "%@, detected visit, %{sensitive}@, %@", &v14, 0x20u);
     }
   }
@@ -980,40 +980,40 @@ LABEL_32:
   [(RTVisitPipelineModuleSCI *)self addToClusters:v9];
 }
 
-- (id)getHintsNearLocation:(id)a3 withinDistance:(double)a4 sourceFilter:(id)a5 fromDate:(id)a6 limit:(unint64_t)a7
+- (id)getHintsNearLocation:(id)location withinDistance:(double)distance sourceFilter:(id)filter fromDate:(id)date limit:(unint64_t)limit
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  if (!v15)
+  locationCopy = location;
+  filterCopy = filter;
+  dateCopy = date;
+  if (!dateCopy)
   {
-    v15 = [MEMORY[0x277CBEAA8] distantPast];
+    dateCopy = [MEMORY[0x277CBEAA8] distantPast];
   }
 
   v16 = objc_alloc(MEMORY[0x277D01310]);
-  v17 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+  v17 = [MEMORY[0x277CCABB0] numberWithDouble:distance];
   v18 = objc_alloc(MEMORY[0x277CCA970]);
-  v19 = [MEMORY[0x277CBEAA8] distantFuture];
-  v20 = [v18 initWithStartDate:v15 endDate:v19];
-  v21 = [v16 initWithReferenceLocation:v13 sourceFilter:v14 ascending:0 distance:v17 dateInterval:v20 limit:a7 batchSize:a7];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v20 = [v18 initWithStartDate:dateCopy endDate:distantFuture];
+  v21 = [v16 initWithReferenceLocation:locationCopy sourceFilter:filterCopy ascending:0 distance:v17 dateInterval:v20 limit:limit batchSize:limit];
 
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
   v34 = __Block_byref_object_copy__171;
   v35 = __Block_byref_object_dispose__171;
-  v36 = [MEMORY[0x277CBEB18] array];
-  v22 = [(RTHintManager *)self->_hintManager hintStore];
+  array = [MEMORY[0x277CBEB18] array];
+  hintStore = [(RTHintManager *)self->_hintManager hintStore];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __92__RTVisitPipelineModuleSCI_getHintsNearLocation_withinDistance_sourceFilter_fromDate_limit___block_invoke;
   v26[3] = &unk_2788D1AE0;
   v29 = &v31;
   v30 = a2;
-  v23 = v13;
+  v23 = locationCopy;
   v27 = v23;
-  v28 = self;
-  [v22 enumerateStoredHintsWithOptions:v21 usingBlock:v26];
+  selfCopy = self;
+  [hintStore enumerateStoredHintsWithOptions:v21 usingBlock:v26];
 
   v24 = v32[5];
   _Block_object_dispose(&v31, 8);
@@ -1058,15 +1058,15 @@ void __92__RTVisitPipelineModuleSCI_getHintsNearLocation_withinDistance_sourceFi
   }
 }
 
-- (BOOL)isHint:(id)a3 withinDistance:(double)a4 location:(id)a5
+- (BOOL)isHint:(id)hint withinDistance:(double)distance location:(id)location
 {
   v32 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  hintCopy = hint;
+  locationCopy = location;
   distanceCalculator = self->_distanceCalculator;
-  v12 = [v9 location];
+  location = [hintCopy location];
   v21 = 0;
-  [(RTDistanceCalculator *)distanceCalculator distanceFromLocation:v10 toLocation:v12 error:&v21];
+  [(RTDistanceCalculator *)distanceCalculator distanceFromLocation:locationCopy toLocation:location error:&v21];
   v14 = v13;
   v15 = v21;
 
@@ -1078,17 +1078,17 @@ void __92__RTVisitPipelineModuleSCI_getHintsNearLocation_withinDistance_sourceFi
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
         v17 = NSStringFromSelector(a2);
-        v18 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
+        stateMachineConfidenceString = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
         *buf = 138413315;
         v23 = v17;
         v24 = 2117;
-        v25 = v10;
+        v25 = locationCopy;
         v26 = 2117;
-        v27 = v9;
+        v27 = hintCopy;
         v28 = 2112;
         v29 = v15;
         v30 = 2112;
-        v31 = v18;
+        v31 = stateMachineConfidenceString;
         _os_log_impl(&dword_2304B3000, v16, OS_LOG_TYPE_INFO, "%@, While Computing distance between location, %{sensitive}@, and hint, %{sensitive}@, an error, %@ was observed, %@", buf, 0x34u);
       }
     }
@@ -1098,26 +1098,26 @@ void __92__RTVisitPipelineModuleSCI_getHintsNearLocation_withinDistance_sourceFi
 
   else
   {
-    v19 = v14 <= a4;
+    v19 = v14 <= distance;
   }
 
   return v19;
 }
 
-- (id)filterHints:(id)a3 existingHints:(id)a4
+- (id)filterHints:(id)hints existingHints:(id)existingHints
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v13 = v6;
-  if ([v7 count])
+  hintsCopy = hints;
+  existingHintsCopy = existingHints;
+  v13 = hintsCopy;
+  if ([existingHintsCopy count])
   {
-    v14 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    obj = v6;
+    obj = hintsCopy;
     v8 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v8)
     {
@@ -1143,10 +1143,10 @@ void __92__RTVisitPipelineModuleSCI_getHintsNearLocation_withinDistance_sourceFi
           v16[4] = self;
           v16[5] = v11;
           v16[6] = &v17;
-          [v7 enumerateObjectsUsingBlock:{v16, v13}];
+          [existingHintsCopy enumerateObjectsUsingBlock:{v16, v13}];
           if (*(v18 + 24) == 1)
           {
-            [v14 addObject:v11];
+            [array addObject:v11];
           }
 
           _Block_object_dispose(&v17, 8);
@@ -1161,10 +1161,10 @@ void __92__RTVisitPipelineModuleSCI_getHintsNearLocation_withinDistance_sourceFi
 
   else
   {
-    v14 = v6;
+    array = hintsCopy;
   }
 
-  return v14;
+  return array;
 }
 
 void __54__RTVisitPipelineModuleSCI_filterHints_existingHints___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -1187,17 +1187,17 @@ void __54__RTVisitPipelineModuleSCI_filterHints_existingHints___block_invoke(uin
   }
 }
 
-- (id)retrieveNonLOIHintsNearLocation:(id)a3 withinDistance:(double)a4
+- (id)retrieveNonLOIHintsNearLocation:(id)location withinDistance:(double)distance
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  locationCopy = location;
   v7 = [MEMORY[0x277CCABB0] numberWithInt:247];
-  v8 = [v6 date];
-  v9 = [(RTVisitPipelineModuleSCI *)self relevantDateForHintSource:1 date:v8];
+  date = [locationCopy date];
+  v9 = [(RTVisitPipelineModuleSCI *)self relevantDateForHintSource:1 date:date];
 
   v20 = v7;
-  v10 = [(RTVisitPipelineModuleSCI *)self getHintsNearLocation:v6 withinDistance:v7 sourceFilter:v9 fromDate:1000 limit:a4];
-  v11 = [MEMORY[0x277CBEB18] array];
+  v10 = [(RTVisitPipelineModuleSCI *)self getHintsNearLocation:locationCopy withinDistance:v7 sourceFilter:v9 fromDate:1000 limit:distance];
+  array = [MEMORY[0x277CBEB18] array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -1222,7 +1222,7 @@ void __54__RTVisitPipelineModuleSCI_filterHints_existingHints___block_invoke(uin
         if (((v15 >> ([v18 source] + 1)) & 1) == 0)
         {
           v15 |= 1 << ([v18 source] + 1);
-          [v11 addObject:v18];
+          [array addObject:v18];
         }
       }
 
@@ -1232,41 +1232,41 @@ void __54__RTVisitPipelineModuleSCI_filterHints_existingHints___block_invoke(uin
     while (v14);
   }
 
-  return v11;
+  return array;
 }
 
-- (void)populateHintCacheNearLocation:(id)a3 withinDistance:(double)a4
+- (void)populateHintCacheNearLocation:(id)location withinDistance:(double)distance
 {
   v39 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  locationCopy = location;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = NSStringFromSelector(a2);
-      [(RTDistanceCalculator *)self->_distanceCalculator distanceFromLocation:v7 toLocation:self->_hintCacheUpdateLocation error:0];
+      [(RTDistanceCalculator *)self->_distanceCalculator distanceFromLocation:locationCopy toLocation:self->_hintCacheUpdateLocation error:0];
       v11 = v10;
-      v12 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
+      stateMachineConfidenceString = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
       v29 = 138413315;
       v30 = v9;
       v31 = 2117;
-      v32 = v7;
+      v32 = locationCopy;
       v33 = 2048;
-      v34 = a4;
+      distanceCopy = distance;
       v35 = 2048;
       v36 = v11;
       v37 = 2112;
-      v38 = v12;
+      v38 = stateMachineConfidenceString;
       _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "%@, location, %{sensitive}@, distance, %.2f, distance to last cache update, %.2f, %@", &v29, 0x34u);
     }
   }
 
-  v13 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v14 = [MEMORY[0x277CCABB0] numberWithInt:8];
-  v15 = [(RTVisitPipelineModuleSCI *)self getHintsNearLocation:v7 withinDistance:v14 sourceFilter:0 fromDate:0 limit:a4];
+  v15 = [(RTVisitPipelineModuleSCI *)self getHintsNearLocation:locationCopy withinDistance:v14 sourceFilter:0 fromDate:0 limit:distance];
 
-  [v13 addObjectsFromArray:v15];
+  [array addObjectsFromArray:v15];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
@@ -1274,22 +1274,22 @@ void __54__RTVisitPipelineModuleSCI_filterHints_existingHints___block_invoke(uin
     {
       v17 = NSStringFromSelector(a2);
       v18 = [v15 count];
-      v19 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
+      stateMachineConfidenceString2 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
       v29 = 138412802;
       v30 = v17;
       v31 = 2048;
       v32 = v18;
       v33 = 2112;
-      v34 = *&v19;
+      distanceCopy = *&stateMachineConfidenceString2;
       _os_log_impl(&dword_2304B3000, v16, OS_LOG_TYPE_INFO, "%@, retrieved LOI hints, %lu, %@", &v29, 0x20u);
     }
   }
 
   if (!self->_useLowConfidence)
   {
-    v20 = [(RTVisitPipelineModuleSCI *)self retrieveNonLOIHintsNearLocation:v7 withinDistance:a4];
+    v20 = [(RTVisitPipelineModuleSCI *)self retrieveNonLOIHintsNearLocation:locationCopy withinDistance:distance];
     v21 = [(RTVisitPipelineModuleSCI *)self filterHints:v20 existingHints:v15];
-    [v13 addObjectsFromArray:v21];
+    [array addObjectsFromArray:v21];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -1298,34 +1298,34 @@ void __54__RTVisitPipelineModuleSCI_filterHints_existingHints___block_invoke(uin
       {
         v23 = NSStringFromSelector(a2);
         v24 = [v20 count];
-        v25 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
+        stateMachineConfidenceString3 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
         v29 = 138412802;
         v30 = v23;
         v31 = 2048;
         v32 = v24;
         v33 = 2112;
-        v34 = *&v25;
+        distanceCopy = *&stateMachineConfidenceString3;
         _os_log_impl(&dword_2304B3000, v22, OS_LOG_TYPE_INFO, "%@, retrieved NON-LOI hints, %lu, %@", &v29, 0x20u);
       }
     }
   }
 
-  v26 = [MEMORY[0x277CBEA60] arrayWithArray:v13];
+  v26 = [MEMORY[0x277CBEA60] arrayWithArray:array];
   hintCache = self->_hintCache;
   self->_hintCache = v26;
 
   hintCacheUpdateLocation = self->_hintCacheUpdateLocation;
-  self->_hintCacheUpdateLocation = v7;
+  self->_hintCacheUpdateLocation = locationCopy;
 }
 
-- (id)hintsNearLocation:(id)a3
+- (id)hintsNearLocation:(id)location
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  locationCopy = location;
   distanceCalculator = self->_distanceCalculator;
   hintCacheUpdateLocation = self->_hintCacheUpdateLocation;
   v19 = 0;
-  [(RTDistanceCalculator *)distanceCalculator distanceFromLocation:v5 toLocation:hintCacheUpdateLocation error:&v19];
+  [(RTDistanceCalculator *)distanceCalculator distanceFromLocation:locationCopy toLocation:hintCacheUpdateLocation error:&v19];
   v9 = v8;
   v10 = v19;
   if (v10)
@@ -1340,17 +1340,17 @@ void __54__RTVisitPipelineModuleSCI_filterHints_existingHints___block_invoke(uin
     {
       v12 = NSStringFromSelector(a2);
       v13 = self->_hintCacheUpdateLocation;
-      v14 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
+      stateMachineConfidenceString = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
       *buf = 138413315;
       v21 = v12;
       v22 = 2117;
-      v23 = v5;
+      v23 = locationCopy;
       v24 = 2117;
       v25 = v13;
       v26 = 2112;
       v27 = v10;
       v28 = 2112;
-      v29 = v14;
+      v29 = stateMachineConfidenceString;
       _os_log_impl(&dword_2304B3000, v11, OS_LOG_TYPE_INFO, "%@, While Computing distance between location, %{sensitive}@, and location, %{sensitive}@, an error, %@ was observed setting distance to 0, %@", buf, 0x34u);
     }
   }
@@ -1373,7 +1373,7 @@ LABEL_8:
   v16 = self->_hintCache;
   if (!v16)
   {
-    [(RTVisitPipelineModuleSCI *)self populateHintCacheNearLocation:v5 withinDistance:1500.0];
+    [(RTVisitPipelineModuleSCI *)self populateHintCacheNearLocation:locationCopy withinDistance:1500.0];
     v16 = self->_hintCache;
   }
 
@@ -1382,17 +1382,17 @@ LABEL_8:
   return v16;
 }
 
-+ (BOOL)filterHint:(id)a3 sourceFilter:(id)a4 inverseFilter:(BOOL)a5
++ (BOOL)filterHint:(id)hint sourceFilter:(id)filter inverseFilter:(BOOL)inverseFilter
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  hintCopy = hint;
+  filterCopy = filter;
+  v9 = filterCopy;
+  if (hintCopy)
   {
-    if (v8)
+    if (filterCopy)
     {
-      v10 = [v8 integerValue];
-      v11 = ((v10 & (1 << ([v7 source] + 1))) != 0) ^ a5;
+      integerValue = [filterCopy integerValue];
+      v11 = ((integerValue & (1 << ([hintCopy source] + 1))) != 0) ^ inverseFilter;
     }
 
     else
@@ -1423,18 +1423,18 @@ LABEL_8:
   return v11;
 }
 
-- (BOOL)isHintConsistentWithLocation:(id)a3 hint:(id)a4
+- (BOOL)isHintConsistentWithLocation:(id)location hint:(id)hint
 {
   v33 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v8)
+  locationCopy = location;
+  hintCopy = hint;
+  v9 = hintCopy;
+  if (hintCopy)
   {
     distanceCalculator = self->_distanceCalculator;
-    v11 = [v8 location];
+    location = [hintCopy location];
     v22 = 0;
-    v12 = [(RTDistanceCalculator *)distanceCalculator checkConsistencyBetweenLocation:v11 otherLocation:v7 error:&v22];
+    v12 = [(RTDistanceCalculator *)distanceCalculator checkConsistencyBetweenLocation:location otherLocation:locationCopy error:&v22];
     v13 = v22;
 
     if (v13 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1443,17 +1443,17 @@ LABEL_8:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
         v15 = NSStringFromSelector(a2);
-        v16 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
+        stateMachineConfidenceString = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
         *buf = 138413315;
         v24 = v15;
         v25 = 2117;
         v26 = v9;
         v27 = 2117;
-        v28 = v7;
+        v28 = locationCopy;
         v29 = 2112;
         v30 = v13;
         v31 = 2112;
-        v32 = v16;
+        v32 = stateMachineConfidenceString;
         _os_log_impl(&dword_2304B3000, v14, OS_LOG_TYPE_INFO, "%@, While processing hint, %{sensitive}@, near location, %{sensitive}@, an error, %@ was observed, %@", buf, 0x34u);
       }
     }
@@ -1474,17 +1474,17 @@ LABEL_8:
           v20 = @"NO";
         }
 
-        v21 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
+        stateMachineConfidenceString2 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
         *buf = 138413315;
         v24 = v19;
         v25 = 2117;
         v26 = v9;
         v27 = 2117;
-        v28 = v7;
+        v28 = locationCopy;
         v29 = 2112;
         v30 = v20;
         v31 = 2112;
-        v32 = v21;
+        v32 = stateMachineConfidenceString2;
         _os_log_debug_impl(&dword_2304B3000, v17, OS_LOG_TYPE_DEBUG, "%@, Processing hint, %{sensitive}@, near location, %{sensitive}@, consistent, %@, %@", buf, 0x34u);
       }
     }
@@ -1505,17 +1505,17 @@ LABEL_8:
   return v12;
 }
 
-- (id)getHintConsistentWithLocation:(id)a3 sourceFilter:(id)a4 inverseFilter:(BOOL)a5
+- (id)getHintConsistentWithLocation:(id)location sourceFilter:(id)filter inverseFilter:(BOOL)inverseFilter
 {
-  v5 = a5;
+  inverseFilterCopy = inverseFilter;
   v52 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  locationCopy = location;
+  filterCopy = filter;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v10 = [(RTVisitPipelineModuleSCI *)self hintsNearLocation:v8];
+  v10 = [(RTVisitPipelineModuleSCI *)self hintsNearLocation:locationCopy];
   v11 = [v10 countByEnumeratingWithState:&v37 objects:v51 count:16];
   if (v11)
   {
@@ -1523,9 +1523,9 @@ LABEL_8:
     v13 = 0;
     v14 = *v38;
     v15 = 1.79769313e308;
-    v35 = v5;
+    v35 = inverseFilterCopy;
     v33 = *v38;
-    v34 = v9;
+    v34 = filterCopy;
     do
     {
       for (i = 0; i != v12; ++i)
@@ -1536,15 +1536,15 @@ LABEL_8:
         }
 
         v17 = *(*(&v37 + 1) + 8 * i);
-        if ([objc_opt_class() filterHint:v17 sourceFilter:v9 inverseFilter:v5] && -[RTVisitPipelineModuleSCI isHintConsistentWithLocation:hint:](self, "isHintConsistentWithLocation:hint:", v8, v17))
+        if ([objc_opt_class() filterHint:v17 sourceFilter:filterCopy inverseFilter:inverseFilterCopy] && -[RTVisitPipelineModuleSCI isHintConsistentWithLocation:hint:](self, "isHintConsistentWithLocation:hint:", locationCopy, v17))
         {
           v18 = v13;
           v19 = v10;
           distanceCalculator = self->_distanceCalculator;
-          v21 = [v17 location];
+          location = [v17 location];
           v36 = 0;
-          v22 = v8;
-          [(RTDistanceCalculator *)distanceCalculator distanceFromLocation:v8 toLocation:v21 error:&v36];
+          v22 = locationCopy;
+          [(RTDistanceCalculator *)distanceCalculator distanceFromLocation:locationCopy toLocation:location error:&v36];
           v24 = v23;
           v25 = v36;
 
@@ -1554,7 +1554,7 @@ LABEL_8:
             if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
             {
               v32 = NSStringFromSelector(a2);
-              v27 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
+              stateMachineConfidenceString = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
               *buf = 138413315;
               v42 = v32;
               v43 = 2117;
@@ -1564,8 +1564,8 @@ LABEL_8:
               v47 = 2112;
               v48 = v25;
               v49 = 2112;
-              v50 = v27;
-              v28 = v27;
+              v50 = stateMachineConfidenceString;
+              v28 = stateMachineConfidenceString;
               _os_log_impl(&dword_2304B3000, v26, OS_LOG_TYPE_INFO, "%@, While processing hint, %{sensitive}@, near location, %{sensitive}@, an error, %@ was observed, %@", buf, 0x34u);
             }
           }
@@ -1582,9 +1582,9 @@ LABEL_8:
           v10 = v19;
           v14 = v33;
 
-          v8 = v22;
-          v5 = v35;
-          v9 = v34;
+          locationCopy = v22;
+          inverseFilterCopy = v35;
+          filterCopy = v34;
         }
       }
 
@@ -1602,17 +1602,17 @@ LABEL_8:
   return v13;
 }
 
-- (id)getHintWithinDistance:(double)a3 ofLocation:(id)a4 sourceFilter:(id)a5 inverseFilter:(BOOL)a6
+- (id)getHintWithinDistance:(double)distance ofLocation:(id)location sourceFilter:(id)filter inverseFilter:(BOOL)inverseFilter
 {
-  v6 = a6;
+  inverseFilterCopy = inverseFilter;
   v64 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
+  locationCopy = location;
+  filterCopy = filter;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  obj = [(RTVisitPipelineModuleSCI *)self hintsNearLocation:v10];
+  obj = [(RTVisitPipelineModuleSCI *)self hintsNearLocation:locationCopy];
   v12 = [obj countByEnumeratingWithState:&v47 objects:v63 count:16];
   if (v12)
   {
@@ -1622,7 +1622,7 @@ LABEL_8:
     v16 = 1.79769313e308;
     *&v13 = 138413571;
     v38 = v13;
-    v42 = v10;
+    v42 = locationCopy;
     do
     {
       v17 = 0;
@@ -1635,15 +1635,15 @@ LABEL_8:
         }
 
         v18 = *(*(&v47 + 1) + 8 * v17);
-        if ([objc_opt_class() filterHint:v18 sourceFilter:v11 inverseFilter:v6])
+        if ([objc_opt_class() filterHint:v18 sourceFilter:filterCopy inverseFilter:inverseFilterCopy])
         {
-          v19 = v11;
-          v20 = v6;
-          v21 = self;
+          v19 = filterCopy;
+          v20 = inverseFilterCopy;
+          selfCopy = self;
           distanceCalculator = self->_distanceCalculator;
-          v23 = [v18 location];
+          location = [v18 location];
           v46 = 0;
-          [(RTDistanceCalculator *)distanceCalculator distanceFromLocation:v10 toLocation:v23 error:&v46];
+          [(RTDistanceCalculator *)distanceCalculator distanceFromLocation:locationCopy toLocation:location error:&v46];
           v25 = v24;
           v26 = v46;
 
@@ -1653,7 +1653,7 @@ LABEL_8:
             if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
             {
               v28 = NSStringFromSelector(a2);
-              v29 = [(RTVisitPipelineModuleSCI *)v21 stateMachineConfidenceString];
+              stateMachineConfidenceString = [(RTVisitPipelineModuleSCI *)selfCopy stateMachineConfidenceString];
               *buf = 138413315;
               v52 = v28;
               v53 = 2117;
@@ -1661,12 +1661,12 @@ LABEL_8:
               v55 = 2117;
               v56 = v42;
               v57 = 2112;
-              v58 = *&v26;
+              distanceCopy = *&v26;
               v59 = 2112;
-              v60 = v29;
+              v60 = stateMachineConfidenceString;
               _os_log_impl(&dword_2304B3000, v27, OS_LOG_TYPE_INFO, "%@, While processing hint, %{sensitive}@, near location, %{sensitive}@, an error, %@ was observed, %@", buf, 0x34u);
 
-              v10 = v42;
+              locationCopy = v42;
             }
           }
 
@@ -1678,14 +1678,14 @@ LABEL_8:
               v32 = NSStringFromSelector(a2);
               v33 = v32;
               v34 = @"NO";
-              if (v25 < a3)
+              if (v25 < distance)
               {
                 v34 = @"YES";
               }
 
               v39 = v34;
               v40 = v32;
-              v35 = [(RTVisitPipelineModuleSCI *)v21 stateMachineConfidenceString];
+              stateMachineConfidenceString2 = [(RTVisitPipelineModuleSCI *)selfCopy stateMachineConfidenceString];
               *buf = v38;
               v52 = v33;
               v53 = 2117;
@@ -1693,20 +1693,20 @@ LABEL_8:
               v55 = 2117;
               v56 = v42;
               v57 = 2048;
-              v58 = a3;
+              distanceCopy = distance;
               v59 = 2112;
               v60 = v39;
-              v10 = v42;
+              locationCopy = v42;
               v61 = 2112;
-              v62 = v35;
+              v62 = stateMachineConfidenceString2;
               _os_log_debug_impl(&dword_2304B3000, v30, OS_LOG_TYPE_DEBUG, "%@, hint, %{sensitive}@, location, %{sensitive}@, distance %f, nearby, %@, %@", buf, 0x3Eu);
             }
           }
 
-          v6 = v20;
-          self = v21;
-          v11 = v19;
-          if (v25 < a3 && (!v43 || v16 > v25))
+          inverseFilterCopy = v20;
+          self = selfCopy;
+          filterCopy = v19;
+          if (v25 < distance && (!v43 || v16 > v25))
           {
             v31 = v18;
 
@@ -1736,17 +1736,17 @@ LABEL_8:
   return v43;
 }
 
-- (BOOL)isHintNearLocation:(id)a3
+- (BOOL)isHintNearLocation:(id)location
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  locationCopy = location;
   v6 = [MEMORY[0x277CCABB0] numberWithInt:8];
-  v7 = [(RTVisitPipelineModuleSCI *)self getHintConsistentWithLocation:v5 sourceFilter:v6 inverseFilter:0];
+  v7 = [(RTVisitPipelineModuleSCI *)self getHintConsistentWithLocation:locationCopy sourceFilter:v6 inverseFilter:0];
 
   if (!v7)
   {
     v12 = [MEMORY[0x277CCABB0] numberWithInt:8];
-    v9 = [(RTVisitPipelineModuleSCI *)self getHintWithinDistance:v5 ofLocation:v12 sourceFilter:0 inverseFilter:180.0];
+    v9 = [(RTVisitPipelineModuleSCI *)self getHintWithinDistance:locationCopy ofLocation:v12 sourceFilter:0 inverseFilter:180.0];
 
     if (v9)
     {
@@ -1760,15 +1760,15 @@ LABEL_8:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         v13 = NSStringFromSelector(a2);
-        v14 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
+        stateMachineConfidenceString = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
         v20 = 138413059;
         v21 = v13;
         v22 = 2117;
         v23 = v9;
         v24 = 2117;
-        v25 = v5;
+        v25 = locationCopy;
         v26 = 2112;
-        v27 = v14;
+        v27 = stateMachineConfidenceString;
         _os_log_impl(&dword_2304B3000, v10, OS_LOG_TYPE_INFO, "%@, LOI Hint, %{sensitive}@, detected near location, %{sensitive}@, but not consistent, %@", &v20, 0x2Au);
       }
     }
@@ -1776,7 +1776,7 @@ LABEL_8:
     else
     {
       v15 = [MEMORY[0x277CCABB0] numberWithInt:8];
-      v10 = [(RTVisitPipelineModuleSCI *)self getHintWithinDistance:v5 ofLocation:v15 sourceFilter:1 inverseFilter:180.0];
+      v10 = [(RTVisitPipelineModuleSCI *)self getHintWithinDistance:locationCopy ofLocation:v15 sourceFilter:1 inverseFilter:180.0];
 
       if (v10)
       {
@@ -1787,15 +1787,15 @@ LABEL_8:
           if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
           {
             v17 = NSStringFromSelector(a2);
-            v18 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
+            stateMachineConfidenceString2 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
             v20 = 138413059;
             v21 = v17;
             v22 = 2117;
             v23 = v10;
             v24 = 2117;
-            v25 = v5;
+            v25 = locationCopy;
             v26 = 2112;
-            v27 = v18;
+            v27 = stateMachineConfidenceString2;
             _os_log_impl(&dword_2304B3000, v16, OS_LOG_TYPE_INFO, "%@, Hint, %{sensitive}@, detected near location, %{sensitive}@, %@", &v20, 0x2Au);
           }
 
@@ -1824,15 +1824,15 @@ LABEL_17:
     }
 
     v10 = NSStringFromSelector(a2);
-    v11 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
+    stateMachineConfidenceString3 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
     v20 = 138413059;
     v21 = v10;
     v22 = 2117;
     v23 = v7;
     v24 = 2117;
-    v25 = v5;
+    v25 = locationCopy;
     v26 = 2112;
-    v27 = v11;
+    v27 = stateMachineConfidenceString3;
     _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "%@, LOI Hint, %{sensitive}@, detected near location, %{sensitive}@, %@", &v20, 0x2Au);
 
     goto LABEL_15;
@@ -1843,10 +1843,10 @@ LABEL_18:
   return v8;
 }
 
-- (id)handleFSM:(unint64_t)a3 point:(id)a4
+- (id)handleFSM:(unint64_t)m point:(id)point
 {
   v47 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  pointCopy = point;
   v8 = [objc_opt_class() FSMStateToString:self->_fsmState];
   v9 = [objc_opt_class() LCFSMStateToString:self->_lcFSMState];
   if (!self->_useLowConfidence)
@@ -1860,7 +1860,7 @@ LABEL_18:
     if (!lcFSMState)
     {
       v11 = 0;
-      if (a3 <= 0xA && ((1 << a3) & 0x510) != 0)
+      if (m <= 0xA && ((1 << m) & 0x510) != 0)
       {
         v11 = 1;
         self->_lcFSMState = 1;
@@ -1876,7 +1876,7 @@ LABEL_7:
   }
 
   v11 = 0;
-  if (a3 <= 7 && ((1 << a3) & 0xA8) != 0)
+  if (m <= 7 && ((1 << m) & 0xA8) != 0)
   {
     [(RTVisitPipelineModuleSCI *)self addVisitFromWorkingHypothesis:3 confidence:*MEMORY[0x277D01478]];
     self->_lcFSMState = 0;
@@ -1887,32 +1887,32 @@ LABEL_8:
   fsmState = self->_fsmState;
   if (fsmState - 2 < 2)
   {
-    if (a3 != 1)
+    if (m != 1)
     {
-      if (a3 == 2)
+      if (m == 2)
       {
-        if (!v7)
+        if (!pointCopy)
         {
           v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
           if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
           {
             *buf = 136315394;
-            v32 = "[RTVisitPipelineModuleSCI handleFSM:point:]";
+            mCopy = "[RTVisitPipelineModuleSCI handleFSM:point:]";
             v33 = 1024;
             LODWORD(v34) = 781;
             _os_log_error_impl(&dword_2304B3000, v18, OS_LOG_TYPE_ERROR, "point is nil (in %s:%d)", buf, 0x12u);
           }
         }
 
-        [(RTVisitSCIStayCluster *)self->_workingHypothesis addOutlier:v7];
+        [(RTVisitSCIStayCluster *)self->_workingHypothesis addOutlier:pointCopy];
         goto LABEL_34;
       }
 
       if (fsmState == 2)
       {
-        if (a3 - 5 >= 2 && a3 != 3)
+        if (m - 5 >= 2 && m != 3)
         {
-          if (a3 != 4)
+          if (m != 4)
           {
             goto LABEL_61;
           }
@@ -1926,25 +1926,25 @@ LABEL_8:
           v16 = 1;
           [(RTVisitPipelineModuleSCI *)self addVisitFromWorkingHypothesis:1 confidence:*MEMORY[0x277D01470]];
 LABEL_46:
-          v15 = 0;
+          outliers = 0;
           goto LABEL_63;
         }
       }
 
       else
       {
-        if (a3 != 3)
+        if (m != 3)
         {
-          if (a3 == 6)
+          if (m == 6)
           {
 LABEL_34:
-            v15 = 0;
+            outliers = 0;
 LABEL_60:
             v16 = 1;
             goto LABEL_63;
           }
 
-          if (a3 != 5)
+          if (m != 5)
           {
             goto LABEL_61;
           }
@@ -1956,20 +1956,20 @@ LABEL_60:
         }
       }
 
-      v15 = [(RTVisitSCIStayCluster *)self->_workingHypothesis outliers];
+      outliers = [(RTVisitSCIStayCluster *)self->_workingHypothesis outliers];
       [(RTVisitPipelineModuleSCI *)self resetWorkingHypothesis];
 LABEL_59:
       self->_fsmState = 0;
       goto LABEL_60;
     }
 
-    if (!v7)
+    if (!pointCopy)
     {
       v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         *buf = 136315394;
-        v32 = "[RTVisitPipelineModuleSCI handleFSM:point:]";
+        mCopy = "[RTVisitPipelineModuleSCI handleFSM:point:]";
         v33 = 1024;
         LODWORD(v34) = 785;
         _os_log_error_impl(&dword_2304B3000, v19, OS_LOG_TYPE_ERROR, "point is nil (in %s:%d)", buf, 0x12u);
@@ -1979,26 +1979,26 @@ LABEL_59:
     }
 
     v16 = 1;
-    [(RTVisitSCIStayCluster *)self->_workingHypothesis addNewPoint:v7 event:1 lcFSMState:self->_lcFSMState fsmState:fsmState];
+    [(RTVisitSCIStayCluster *)self->_workingHypothesis addNewPoint:pointCopy event:1 lcFSMState:self->_lcFSMState fsmState:fsmState];
     goto LABEL_46;
   }
 
   if (fsmState == 1)
   {
-    v15 = 0;
-    if (a3 > 6)
+    outliers = 0;
+    if (m > 6)
     {
 LABEL_62:
       v16 = v11;
       goto LABEL_63;
     }
 
-    if (((1 << a3) & 0x6C) == 0)
+    if (((1 << m) & 0x6C) == 0)
     {
       v16 = v11;
-      if (a3 == 1)
+      if (m == 1)
       {
-        if (v7)
+        if (pointCopy)
         {
           v23 = 1;
         }
@@ -2009,7 +2009,7 @@ LABEL_62:
           if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
           {
             *buf = 136315394;
-            v32 = "[RTVisitPipelineModuleSCI handleFSM:point:]";
+            mCopy = "[RTVisitPipelineModuleSCI handleFSM:point:]";
             v33 = 1024;
             LODWORD(v34) = 768;
             _os_log_error_impl(&dword_2304B3000, v27, OS_LOG_TYPE_ERROR, "point is nil (in %s:%d)", buf, 0x12u);
@@ -2019,8 +2019,8 @@ LABEL_62:
         }
 
         v16 = 1;
-        [(RTVisitSCIStayCluster *)self->_workingHypothesis addNewPoint:v7 event:1 lcFSMState:self->_lcFSMState fsmState:v23];
-        v15 = 0;
+        [(RTVisitSCIStayCluster *)self->_workingHypothesis addNewPoint:pointCopy event:1 lcFSMState:self->_lcFSMState fsmState:v23];
+        outliers = 0;
         self->_fsmState = 2;
       }
 
@@ -2028,14 +2028,14 @@ LABEL_62:
     }
 
     [(RTVisitPipelineModuleSCI *)self resetWorkingHypothesis];
-    v15 = 0;
+    outliers = 0;
     goto LABEL_59;
   }
 
   if (fsmState)
   {
 LABEL_61:
-    v15 = 0;
+    outliers = 0;
     goto LABEL_62;
   }
 
@@ -2045,7 +2045,7 @@ LABEL_61:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315394;
-      v32 = "[RTVisitPipelineModuleSCI handleFSM:point:]";
+      mCopy = "[RTVisitPipelineModuleSCI handleFSM:point:]";
       v33 = 1024;
       LODWORD(v34) = 743;
       _os_log_error_impl(&dword_2304B3000, v13, OS_LOG_TYPE_ERROR, "nonzero data points outside working hypothesis (in %s:%d)", buf, 0x12u);
@@ -2058,34 +2058,34 @@ LABEL_61:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315394;
-      v32 = "[RTVisitPipelineModuleSCI handleFSM:point:]";
+      mCopy = "[RTVisitPipelineModuleSCI handleFSM:point:]";
       v33 = 1024;
       LODWORD(v34) = 744;
       _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, "unexpected outliers outside working hypothesis (in %s:%d)", buf, 0x12u);
     }
   }
 
-  v15 = 0;
+  outliers = 0;
   v16 = 1;
-  if (a3 - 5 >= 2 && a3 != 3)
+  if (m - 5 >= 2 && m != 3)
   {
-    if (a3 == 9)
+    if (m == 9)
     {
-      if (!v7)
+      if (!pointCopy)
       {
         v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
           *buf = 136315394;
-          v32 = "[RTVisitPipelineModuleSCI handleFSM:point:]";
+          mCopy = "[RTVisitPipelineModuleSCI handleFSM:point:]";
           v33 = 1024;
           LODWORD(v34) = 750;
           _os_log_error_impl(&dword_2304B3000, v17, OS_LOG_TYPE_ERROR, "point is nil (in %s:%d)", buf, 0x12u);
         }
       }
 
-      [(RTVisitSCIStayCluster *)self->_workingHypothesis addNewPoint:v7 event:9 lcFSMState:self->_lcFSMState fsmState:self->_fsmState];
-      v15 = 0;
+      [(RTVisitSCIStayCluster *)self->_workingHypothesis addNewPoint:pointCopy event:9 lcFSMState:self->_lcFSMState fsmState:self->_fsmState];
+      outliers = 0;
       v16 = 1;
       self->_fsmState = 1;
       goto LABEL_63;
@@ -2101,13 +2101,13 @@ LABEL_63:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
       v30 = NSStringFromSelector(a2);
-      v29 = [objc_opt_class() FSMEventToString:a3];
+      v29 = [objc_opt_class() FSMEventToString:m];
       v24 = [objc_opt_class() FSMStateToString:self->_fsmState];
       v25 = [objc_opt_class() LCFSMStateToString:self->_lcFSMState];
-      v28 = [v15 count];
-      v26 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
+      v28 = [outliers count];
+      stateMachineConfidenceString = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
       *buf = 138414082;
-      v32 = v30;
+      mCopy = v30;
       v33 = 2112;
       v34 = v29;
       v35 = 2112;
@@ -2121,7 +2121,7 @@ LABEL_63:
       v43 = 2048;
       v44 = v28;
       v45 = 2112;
-      v46 = v26;
+      v46 = stateMachineConfidenceString;
       _os_log_debug_impl(&dword_2304B3000, v20, OS_LOG_TYPE_DEBUG, "%@, event, %@, HC FSM inState, %@, HC FSM outState, %@, LC FSM inState, %@, LC FSM outState, %@, points left, %lu, %@", buf, 0x52u);
     }
   }
@@ -2132,7 +2132,7 @@ LABEL_63:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218498;
-      v32 = a3;
+      mCopy = m;
       v33 = 2080;
       v34 = "[RTVisitPipelineModuleSCI handleFSM:point:]";
       v35 = 1024;
@@ -2141,14 +2141,14 @@ LABEL_63:
     }
   }
 
-  return v15;
+  return outliers;
 }
 
-- (void)processPoints:(id)a3
+- (void)processPoints:(id)points
 {
   v92 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (![v5 count])
+  pointsCopy = points;
+  if (![pointsCopy count])
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -2161,15 +2161,15 @@ LABEL_63:
     }
   }
 
-  if ([v5 count])
+  if ([pointsCopy count])
   {
-    v7 = [v5 count];
-    v8 = [(RTVisitSCIStayCluster *)self->_workingHypothesis numOfOutliers];
-    if ([v5 count])
+    v7 = [pointsCopy count];
+    numOfOutliers = [(RTVisitSCIStayCluster *)self->_workingHypothesis numOfOutliers];
+    if ([pointsCopy count])
     {
       aSelector = a2;
       v9 = 0;
-      v10 = (240 * (v8 + v7)) >> 1;
+      v10 = (240 * (numOfOutliers + v7)) >> 1;
       while (1)
       {
         v11 = objc_autoreleasePoolPush();
@@ -2186,28 +2186,28 @@ LABEL_63:
           }
         }
 
-        v13 = [v5 firstObject];
-        [v5 removeObjectAtIndex:0];
+        firstObject = [pointsCopy firstObject];
+        [pointsCopy removeObjectAtIndex:0];
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
         {
           v14 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
           {
             v54 = NSStringFromSelector(aSelector);
-            v55 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
+            stateMachineConfidenceString = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
             *buf = 138412803;
             v83 = v54;
             v84 = 2117;
-            v85 = *&v13;
+            v85 = *&firstObject;
             v86 = 2112;
-            v87 = *&v55;
+            v87 = *&stateMachineConfidenceString;
             _os_log_debug_impl(&dword_2304B3000, v14, OS_LOG_TYPE_DEBUG, "%@, processing point, %{sensitive}@, %@", buf, 0x20u);
           }
         }
 
-        v15 = [v13 date];
-        v16 = [(RTVisitSCIStayCluster *)self->_workingHypothesis lastProcessedSample];
-        v17 = [v15 isOnOrAfter:v16];
+        date = [firstObject date];
+        lastProcessedSample = [(RTVisitSCIStayCluster *)self->_workingHypothesis lastProcessedSample];
+        v17 = [date isOnOrAfter:lastProcessedSample];
 
         if ((v17 & 1) == 0)
         {
@@ -2222,11 +2222,11 @@ LABEL_63:
           }
         }
 
-        [v13 horizontalUncertainty];
+        [firstObject horizontalUncertainty];
         v20 = v19;
         [(RTVisitHyperParameter *)self->_hyperParameter maxHorizontalAccuracy];
         v21 = 0x277CBE000uLL;
-        if (v20 > v22 || ([v13 horizontalUncertainty], v23 < 0.0))
+        if (v20 > v22 || ([firstObject horizontalUncertainty], v23 < 0.0))
         {
           v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
           if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -2244,23 +2244,23 @@ LABEL_63:
           break;
         }
 
-        v34 = self;
+        selfCopy2 = self;
         v35 = 9;
 LABEL_32:
-        v36 = [(RTVisitPipelineModuleSCI *)v34 handleFSM:v35 point:v13];
+        v36 = [(RTVisitPipelineModuleSCI *)selfCopy2 handleFSM:v35 point:firstObject];
 LABEL_33:
 
         objc_autoreleasePoolPop(v11);
         ++v9;
-        if (![v5 count])
+        if (![pointsCopy count])
         {
           goto LABEL_64;
         }
       }
 
-      v25 = [v13 date];
-      v26 = [(RTVisitSCIStayCluster *)self->_workingHypothesis lastProcessedSample];
-      [v25 timeIntervalSinceDate:v26];
+      date2 = [firstObject date];
+      lastProcessedSample2 = [(RTVisitSCIStayCluster *)self->_workingHypothesis lastProcessedSample];
+      [date2 timeIntervalSinceDate:lastProcessedSample2];
       v28 = v27;
       [(RTVisitHyperParameter *)self->_hyperParameter maxGapInVisit];
       v30 = v29;
@@ -2268,32 +2268,32 @@ LABEL_33:
       if (v28 > v30)
       {
         v31 = [(RTVisitPipelineModuleSCI *)self handleFSM:3 point:0];
-        [v5 insertObject:v13 atIndex:0];
+        [pointsCopy insertObject:firstObject atIndex:0];
         v32 = v31;
 LABEL_28:
         if ([v32 count])
         {
-          [v31 addObjectsFromArray:v5];
+          [v31 addObjectsFromArray:pointsCopy];
           v33 = v31;
 
-          v5 = v33;
+          pointsCopy = v33;
         }
 
         goto LABEL_33;
       }
 
-      [v13 latitude];
-      [v13 longitude];
-      v37 = [(RTVisitSCIStayCluster *)self->_workingHypothesis centroid];
-      [v37 latitude];
-      v38 = [(RTVisitSCIStayCluster *)self->_workingHypothesis centroid];
-      [v38 longitude];
+      [firstObject latitude];
+      [firstObject longitude];
+      centroid = [(RTVisitSCIStayCluster *)self->_workingHypothesis centroid];
+      [centroid latitude];
+      centroid2 = [(RTVisitSCIStayCluster *)self->_workingHypothesis centroid];
+      [centroid2 longitude];
       RTCommonCalculateDistance();
       v40 = v39;
 
       workingHypothesis = self->_workingHypothesis;
-      v42 = [v13 date];
-      [(RTVisitSCIStayCluster *)workingHypothesis getRadiusForDate:v42];
+      date3 = [firstObject date];
+      [(RTVisitSCIStayCluster *)workingHypothesis getRadiusForDate:date3];
       v44 = v43;
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -2302,7 +2302,7 @@ LABEL_28:
         if (os_log_type_enabled(v45, OS_LOG_TYPE_DEBUG))
         {
           v56 = NSStringFromSelector(aSelector);
-          v57 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
+          stateMachineConfidenceString2 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
           *buf = 138413058;
           v83 = v56;
           v84 = 2048;
@@ -2310,7 +2310,7 @@ LABEL_28:
           v86 = 2048;
           v87 = v44;
           v88 = 2112;
-          v89 = v57;
+          v89 = stateMachineConfidenceString2;
           _os_log_debug_impl(&dword_2304B3000, v45, OS_LOG_TYPE_DEBUG, "%@, distance from working hypothesis, %.1fm, radius, %.1fm, %@", buf, 0x2Au);
 
           v21 = 0x277CBE000;
@@ -2319,29 +2319,29 @@ LABEL_28:
 
       if (v40 >= v44)
       {
-        v50 = [(RTVisitPipelineModuleSCI *)self handleFSM:2 point:v13];
-        v51 = [(RTVisitSCIStayCluster *)self->_workingHypothesis numOfOutliers];
-        v52 = v51;
-        if (self->_useLowConfidence && self->_lcFSMState == 1 && (v51 > 3 || v40 >= 300.0))
+        v50 = [(RTVisitPipelineModuleSCI *)self handleFSM:2 point:firstObject];
+        numOfOutliers2 = [(RTVisitSCIStayCluster *)self->_workingHypothesis numOfOutliers];
+        v52 = numOfOutliers2;
+        if (self->_useLowConfidence && self->_lcFSMState == 1 && (numOfOutliers2 > 3 || v40 >= 300.0))
         {
-          v53 = [(RTVisitPipelineModuleSCI *)self handleFSM:7 point:v13];
+          v53 = [(RTVisitPipelineModuleSCI *)self handleFSM:7 point:firstObject];
         }
 
-        if (![(RTVisitPipelineModuleSCI *)self isTimeOutsideClusterSatisfiedForOutlierCount:v52 location:v13])
+        if (![(RTVisitPipelineModuleSCI *)self isTimeOutsideClusterSatisfiedForOutlierCount:v52 location:firstObject])
         {
           goto LABEL_33;
         }
 
-        v32 = [(RTVisitPipelineModuleSCI *)self handleFSM:5 point:v13];
+        v32 = [(RTVisitPipelineModuleSCI *)self handleFSM:5 point:firstObject];
         v31 = v32;
         goto LABEL_28;
       }
 
-      v46 = [(RTVisitPipelineModuleSCI *)self handleFSM:1 point:v13];
+      v46 = [(RTVisitPipelineModuleSCI *)self handleFSM:1 point:firstObject];
       if (self->_useLowConfidence && !self->_lcFSMState && [(RTVisitSCIStayCluster *)self->_workingHypothesis numOfDataPoints]>= 2)
       {
-        v47 = [(RTVisitSCIStayCluster *)self->_workingHypothesis centroid];
-        v48 = [(RTVisitPipelineModuleSCI *)self isHintNearLocation:v47];
+        centroid3 = [(RTVisitSCIStayCluster *)self->_workingHypothesis centroid];
+        v48 = [(RTVisitPipelineModuleSCI *)self isHintNearLocation:centroid3];
 
         if (v48)
         {
@@ -2353,11 +2353,11 @@ LABEL_28:
           if (self->_fsmState != 3)
           {
 LABEL_56:
-            if (![(RTVisitPipelineModuleSCI *)self isDwellTimeSatisfiedForLocation:v13])
+            if (![(RTVisitPipelineModuleSCI *)self isDwellTimeSatisfiedForLocation:firstObject])
             {
-              v59 = [*(v21 + 2728) date];
-              v60 = [v13 date];
-              [v59 timeIntervalSinceDate:v60];
+              date4 = [*(v21 + 2728) date];
+              date5 = [firstObject date];
+              [date4 timeIntervalSinceDate:date5];
               v62 = v61;
               [(RTVisitPipelineModuleSCI *)self minStaticIntervalForSLVArrival];
               v64 = v63;
@@ -2365,16 +2365,16 @@ LABEL_56:
               if (v62 < v64)
               {
                 v65 = self->_workingHypothesis;
-                v66 = [v13 date];
-                [(RTVisitSCIStayCluster *)v65 dwellTimeIntervalWithDate:v66];
+                date6 = [firstObject date];
+                [(RTVisitSCIStayCluster *)v65 dwellTimeIntervalWithDate:date6];
                 v68 = v67;
 
-                [(RTVisitPipelineModuleSCI *)self requiredDwellTimeForLocation:v13];
+                [(RTVisitPipelineModuleSCI *)self requiredDwellTimeForLocation:firstObject];
                 v70 = v69;
                 v71 = v69 - v68;
                 v72 = *(v21 + 2728);
-                v73 = [v13 date];
-                v74 = [v72 dateWithTimeInterval:v73 sinceDate:v71];
+                date7 = [firstObject date];
+                v74 = [v72 dateWithTimeInterval:date7 sinceDate:v71];
 
                 if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
                 {
@@ -2382,8 +2382,8 @@ LABEL_56:
                   if (os_log_type_enabled(v75, OS_LOG_TYPE_INFO))
                   {
                     v80 = NSStringFromSelector(aSelector);
-                    v78 = [v74 stringFromDate];
-                    v79 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
+                    stringFromDate = [v74 stringFromDate];
+                    stateMachineConfidenceString3 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
                     *buf = 138413314;
                     v83 = v80;
                     v84 = 2048;
@@ -2391,9 +2391,9 @@ LABEL_56:
                     v86 = 2048;
                     v87 = v71;
                     v88 = 2112;
-                    v89 = v78;
+                    v89 = stringFromDate;
                     v90 = 2112;
-                    v91 = v79;
+                    v91 = stateMachineConfidenceString3;
                     _os_log_impl(&dword_2304B3000, v75, OS_LOG_TYPE_INFO, "%@, requiredDwellTime, %.2f, remainingDwellTime, %.2f, nextPotentialEntryDate, %@, %@", buf, 0x34u);
                   }
                 }
@@ -2404,7 +2404,7 @@ LABEL_56:
               goto LABEL_33;
             }
 
-            v34 = self;
+            selfCopy2 = self;
             v35 = 4;
             goto LABEL_32;
           }
@@ -2412,7 +2412,7 @@ LABEL_56:
           v49 = 10;
         }
 
-        v58 = [(RTVisitPipelineModuleSCI *)self handleFSM:v49 point:v13];
+        v58 = [(RTVisitPipelineModuleSCI *)self handleFSM:v49 point:firstObject];
       }
 
       if (self->_fsmState == 3)
@@ -2424,35 +2424,35 @@ LABEL_56:
     }
 
 LABEL_64:
-    v76 = [v5 lastObject];
+    lastObject = [pointsCopy lastObject];
     lastPointProcessed = self->_lastPointProcessed;
-    self->_lastPointProcessed = v76;
+    self->_lastPointProcessed = lastObject;
   }
 }
 
-- (double)requiredTimeOutsideClusterForOutlierCount:(unint64_t)a3 location:(id)a4
+- (double)requiredTimeOutsideClusterForOutlierCount:(unint64_t)count location:(id)location
 {
-  v6 = a4;
-  v7 = v6;
+  locationCopy = location;
+  v7 = locationCopy;
   v8 = 0.0;
-  if (a3 <= 0xF0)
+  if (count <= 0xF0)
   {
-    if (a3 < 4)
+    if (count < 4)
     {
       v12 = 0x7FEFFFFFFFFFFFFFLL;
     }
 
     else
     {
-      v9 = [v6 date];
-      if ([(RTVisitPipelineModuleSCI *)self isValidLatestRegionHintSource:8 date:v9]&& ![(RTVisitPipelineModuleSCI *)self isLastRegionHintNearLocation:v7 hintSource:8])
+      date = [locationCopy date];
+      if ([(RTVisitPipelineModuleSCI *)self isValidLatestRegionHintSource:8 date:date]&& ![(RTVisitPipelineModuleSCI *)self isLastRegionHintNearLocation:v7 hintSource:8])
       {
 
         goto LABEL_12;
       }
 
-      v10 = [v7 date];
-      if ([(RTVisitPipelineModuleSCI *)self isValidLatestRegionHintSource:10 date:v10])
+      date2 = [v7 date];
+      if ([(RTVisitPipelineModuleSCI *)self isValidLatestRegionHintSource:10 date:date2])
       {
         v11 = [(RTVisitPipelineModuleSCI *)self isLastRegionHintNearLocation:v7 hintSource:10];
 
@@ -2477,16 +2477,16 @@ LABEL_12:
   return v8;
 }
 
-- (BOOL)isTimeOutsideClusterSatisfiedForOutlierCount:(unint64_t)a3 location:(id)a4
+- (BOOL)isTimeOutsideClusterSatisfiedForOutlierCount:(unint64_t)count location:(id)location
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = [v7 date];
-  v9 = [(RTVisitSCIStayCluster *)self->_workingHypothesis potentialExit];
-  [v8 timeIntervalSinceDate:v9];
+  locationCopy = location;
+  date = [locationCopy date];
+  potentialExit = [(RTVisitSCIStayCluster *)self->_workingHypothesis potentialExit];
+  [date timeIntervalSinceDate:potentialExit];
   v11 = v10;
 
-  [(RTVisitPipelineModuleSCI *)self requiredTimeOutsideClusterForOutlierCount:a3 location:v7];
+  [(RTVisitPipelineModuleSCI *)self requiredTimeOutsideClusterForOutlierCount:count location:locationCopy];
   v13 = v12;
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -2505,7 +2505,7 @@ LABEL_12:
         v16 = @"YES";
       }
 
-      v17 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
+      stateMachineConfidenceString = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
       v19 = 138413314;
       v20 = v15;
       v21 = 2048;
@@ -2515,7 +2515,7 @@ LABEL_12:
       v25 = 2112;
       v26 = v16;
       v27 = 2112;
-      v28 = v17;
+      v28 = stateMachineConfidenceString;
       _os_log_impl(&dword_2304B3000, v14, OS_LOG_TYPE_INFO, "%@, requiredTimeOutsideCluster, %f, timeOutsideCluster, %f, satisified, %@, %@", &v19, 0x34u);
     }
   }
@@ -2523,13 +2523,13 @@ LABEL_12:
   return v11 >= v13;
 }
 
-- (double)requiredDwellTimeForLocation:(id)a3
+- (double)requiredDwellTimeForLocation:(id)location
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  locationCopy = location;
   requiredDwellTimeCacheDateToUpdate = self->_requiredDwellTimeCacheDateToUpdate;
-  v7 = [(NSDate *)v5 date];
-  LODWORD(requiredDwellTimeCacheDateToUpdate) = [(NSDate *)requiredDwellTimeCacheDateToUpdate isBeforeDate:v7];
+  date = [(NSDate *)locationCopy date];
+  LODWORD(requiredDwellTimeCacheDateToUpdate) = [(NSDate *)requiredDwellTimeCacheDateToUpdate isBeforeDate:date];
 
   if (requiredDwellTimeCacheDateToUpdate)
   {
@@ -2539,36 +2539,36 @@ LABEL_12:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         v9 = NSStringFromSelector(a2);
-        v10 = [(NSDate *)v5 date];
+        date2 = [(NSDate *)locationCopy date];
         v11 = self->_requiredDwellTimeCacheDateToUpdate;
-        v12 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
+        stateMachineConfidenceString = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
         v26 = 138413058;
         v27 = v9;
         v28 = 2112;
-        v29 = *&v10;
+        v29 = *&date2;
         v30 = 2112;
         v31 = v11;
         v32 = 2112;
-        v33 = v12;
+        v33 = stateMachineConfidenceString;
         _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "%@, recomputing dwell time, location date, %@, cache time to update, %@, %@", &v26, 0x2Au);
       }
     }
 
     v13 = MEMORY[0x277CBEAA8];
-    v14 = [(NSDate *)v5 date];
-    v15 = [v13 dateWithTimeInterval:v14 sinceDate:1.0];
+    date3 = [(NSDate *)locationCopy date];
+    v15 = [v13 dateWithTimeInterval:date3 sinceDate:1.0];
     v16 = self->_requiredDwellTimeCacheDateToUpdate;
     self->_requiredDwellTimeCacheDateToUpdate = v15;
 
     [(RTVisitPipelineModuleSCI *)self minStaticIntervalForSLVArrival];
     v18 = v17;
-    if ([(RTVisitPipelineModuleSCI *)self isHintNearLocation:v5])
+    if ([(RTVisitPipelineModuleSCI *)self isHintNearLocation:locationCopy])
     {
       [(RTVisitPipelineModuleSCI *)self minStaticIntervalForSLVArrivalWithHint];
       v18 = v19;
     }
 
-    if ([(RTVisitPipelineModuleSCI *)self isLastRegionHintNearLocation:v5 hintSource:9]|| [(RTVisitPipelineModuleSCI *)self isLastRegionHintNearLocation:v5 hintSource:7]|| [(RTVisitPipelineModuleSCI *)self isLastRegionHintNearLocation:v5 hintSource:11])
+    if ([(RTVisitPipelineModuleSCI *)self isLastRegionHintNearLocation:locationCopy hintSource:9]|| [(RTVisitPipelineModuleSCI *)self isLastRegionHintNearLocation:locationCopy hintSource:7]|| [(RTVisitPipelineModuleSCI *)self isLastRegionHintNearLocation:locationCopy hintSource:11])
     {
       v18 = 0.0;
     }
@@ -2583,15 +2583,15 @@ LABEL_12:
     {
       v21 = NSStringFromSelector(a2);
       requiredDwellTimeCache = self->_requiredDwellTimeCache;
-      v23 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
+      stateMachineConfidenceString2 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
       v26 = 138413059;
       v27 = v21;
       v28 = 2048;
       v29 = requiredDwellTimeCache;
       v30 = 2117;
-      v31 = v5;
+      v31 = locationCopy;
       v32 = 2112;
-      v33 = v23;
+      v33 = stateMachineConfidenceString2;
       _os_log_impl(&dword_2304B3000, v20, OS_LOG_TYPE_INFO, "%@, requiredDwellTime, %f, location, %{sensitive}@, %@", &v26, 0x2Au);
     }
   }
@@ -2601,70 +2601,70 @@ LABEL_12:
   return v24;
 }
 
-- (void)onHintNotification:(id)a3
+- (void)onHintNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__RTVisitPipelineModuleSCI_onHintNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = notificationCopy;
+  v6 = notificationCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_onHintNotification:(id)a3
+- (void)_onHintNotification:(id)notification
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  notificationCopy = notification;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v7 = NSStringFromSelector(a2);
-      v8 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
+      stateMachineConfidenceString = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
       v16 = 138412802;
       v17 = v7;
       v18 = 2112;
-      v19 = v5;
+      v19 = notificationCopy;
       v20 = 2112;
-      v21 = v8;
+      v21 = stateMachineConfidenceString;
       _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%@, received hint notification, %@, %@", &v16, 0x20u);
     }
   }
 
-  v9 = [v5 name];
+  name = [notificationCopy name];
   v10 = +[(RTNotification *)RTHintManagerNotificationDidUpdate];
-  v11 = [v9 isEqualToString:v10];
+  v11 = [name isEqualToString:v10];
 
   if (v11)
   {
     hintCache = self->_hintCache;
     self->_hintCache = 0;
 
-    v13 = [v5 hintSourcesUpdated];
-    v14 = [v13 integerValue];
+    hintSourcesUpdated = [notificationCopy hintSourcesUpdated];
+    integerValue = [hintSourcesUpdated integerValue];
 
-    if ((v14 & 0x300) != 0)
+    if ((integerValue & 0x300) != 0)
     {
       self->_latestGeofenceHintChecked = 0;
     }
 
-    if ((v14 & 0xC00) != 0)
+    if ((integerValue & 0xC00) != 0)
     {
       self->_latestSignificantRegionHintChecked = 0;
     }
 
-    if ((v14 & 0x100) != 0)
+    if ((integerValue & 0x100) != 0)
     {
       [(RTVisitPipelineModuleSCI *)self processContextChangeWithSource:7];
-      if ((v14 & 0x400) == 0)
+      if ((integerValue & 0x400) == 0)
       {
 LABEL_12:
-        if ((v14 & 0x1000) == 0)
+        if ((integerValue & 0x1000) == 0)
         {
           goto LABEL_20;
         }
@@ -2673,13 +2673,13 @@ LABEL_12:
       }
     }
 
-    else if ((v14 & 0x400) == 0)
+    else if ((integerValue & 0x400) == 0)
     {
       goto LABEL_12;
     }
 
     [(RTVisitPipelineModuleSCI *)self processContextChangeWithSource:9];
-    if ((v14 & 0x1000) != 0)
+    if ((integerValue & 0x1000) != 0)
     {
 LABEL_19:
       [(RTVisitPipelineModuleSCI *)self processContextChangeWithSource:11];
@@ -2693,7 +2693,7 @@ LABEL_19:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       v16 = 138412802;
-      v17 = v5;
+      v17 = notificationCopy;
       v18 = 2080;
       v19 = "[RTVisitPipelineModuleSCI _onHintNotification:]";
       v20 = 1024;
@@ -2705,29 +2705,29 @@ LABEL_19:
 LABEL_20:
 }
 
-- (BOOL)isDwellTimeSatisfiedForLocation:(id)a3
+- (BOOL)isDwellTimeSatisfiedForLocation:(id)location
 {
   workingHypothesis = self->_workingHypothesis;
-  v5 = a3;
-  v6 = [v5 date];
-  [(RTVisitSCIStayCluster *)workingHypothesis dwellTimeIntervalWithDate:v6];
+  locationCopy = location;
+  date = [locationCopy date];
+  [(RTVisitSCIStayCluster *)workingHypothesis dwellTimeIntervalWithDate:date];
   v8 = v7;
 
-  [(RTVisitPipelineModuleSCI *)self requiredDwellTimeForLocation:v5];
+  [(RTVisitPipelineModuleSCI *)self requiredDwellTimeForLocation:locationCopy];
   v10 = v9;
 
   return v8 >= v10;
 }
 
-- (id)getLastHintUsingSourceFilter:(id)a3
+- (id)getLastHintUsingSourceFilter:(id)filter
 {
-  v5 = a3;
+  filterCopy = filter;
   v6 = objc_alloc(MEMORY[0x277D01310]);
   v7 = objc_alloc(MEMORY[0x277CCA970]);
-  v8 = [MEMORY[0x277CBEAA8] distantPast];
-  v9 = [MEMORY[0x277CBEAA8] distantFuture];
-  v10 = [v7 initWithStartDate:v8 endDate:v9];
-  v11 = [v6 initWithReferenceLocation:0 sourceFilter:v5 ascending:0 distance:0 dateInterval:v10 limit:1 batchSize:1];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v10 = [v7 initWithStartDate:distantPast endDate:distantFuture];
+  v11 = [v6 initWithReferenceLocation:0 sourceFilter:filterCopy ascending:0 distance:0 dateInterval:v10 limit:1 batchSize:1];
 
   v21 = 0;
   v22 = &v21;
@@ -2735,17 +2735,17 @@ LABEL_20:
   v24 = __Block_byref_object_copy__171;
   v25 = __Block_byref_object_dispose__171;
   v26 = 0;
-  v12 = [(RTHintManager *)self->_hintManager hintStore];
+  hintStore = [(RTHintManager *)self->_hintManager hintStore];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __57__RTVisitPipelineModuleSCI_getLastHintUsingSourceFilter___block_invoke;
   v16[3] = &unk_2788D1AE0;
   v19 = &v21;
   v20 = a2;
-  v13 = v5;
+  v13 = filterCopy;
   v17 = v13;
-  v18 = self;
-  [v12 enumerateStoredHintsWithOptions:v11 usingBlock:v16];
+  selfCopy = self;
+  [hintStore enumerateStoredHintsWithOptions:v11 usingBlock:v16];
 
   v14 = v22[5];
   _Block_object_dispose(&v21, 8);
@@ -2805,13 +2805,13 @@ void __57__RTVisitPipelineModuleSCI_getLastHintUsingSourceFilter___block_invoke(
       {
         v8 = NSStringFromSelector(a2);
         v9 = self->_latestGeofenceHint;
-        v10 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
+        stateMachineConfidenceString = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
         v11 = 138412803;
         v12 = v8;
         v13 = 2117;
         v14 = v9;
         v15 = 2112;
-        v16 = v10;
+        v16 = stateMachineConfidenceString;
         _os_log_impl(&dword_2304B3000, v7, OS_LOG_TYPE_INFO, "%@, lastGeofenceHint, %{sensitive}@, %@", &v11, 0x20u);
       }
     }
@@ -2836,13 +2836,13 @@ void __57__RTVisitPipelineModuleSCI_getLastHintUsingSourceFilter___block_invoke(
       {
         v8 = NSStringFromSelector(a2);
         v9 = self->_latestCompanionSyncVisitHint;
-        v10 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
+        stateMachineConfidenceString = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
         v11 = 138412803;
         v12 = v8;
         v13 = 2117;
         v14 = v9;
         v15 = 2112;
-        v16 = v10;
+        v16 = stateMachineConfidenceString;
         _os_log_impl(&dword_2304B3000, v7, OS_LOG_TYPE_INFO, "%@, latestCompanionSyncVisitHint, %{sensitive}@, %@", &v11, 0x20u);
       }
     }
@@ -2867,23 +2867,23 @@ void __57__RTVisitPipelineModuleSCI_getLastHintUsingSourceFilter___block_invoke(
       {
         v8 = NSStringFromSelector(a2);
         v9 = self->_latestSignificantRegionHint;
-        v10 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
+        stateMachineConfidenceString = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
         v11 = 138412803;
         v12 = v8;
         v13 = 2117;
         v14 = v9;
         v15 = 2112;
-        v16 = v10;
+        v16 = stateMachineConfidenceString;
         _os_log_impl(&dword_2304B3000, v7, OS_LOG_TYPE_INFO, "%@, latestSignificantRegionHint, %{sensitive}@, %@", &v11, 0x20u);
       }
     }
   }
 }
 
-- (id)relevantDateForHintSource:(int64_t)a3 date:(id)a4
+- (id)relevantDateForHintSource:(int64_t)source date:(id)date
 {
-  v6 = a4;
-  if (a3 <= 0xB && ((1 << a3) & 0xA80) != 0)
+  dateCopy = date;
+  if (source <= 0xB && ((1 << source) & 0xA80) != 0)
   {
     v7 = MEMORY[0x277CBEAA8];
     [(RTVisitPipelineModuleSCI *)self minStaticIntervalForSLVArrival];
@@ -2891,7 +2891,7 @@ void __57__RTVisitPipelineModuleSCI_getLastHintUsingSourceFilter___block_invoke(
     v10 = v7;
   }
 
-  else if ((a3 & 0xFFFFFFFFFFFFFFFDLL) == 8)
+  else if ((source & 0xFFFFFFFFFFFFFFFDLL) == 8)
   {
     v10 = MEMORY[0x277CBEAA8];
     v9 = -240.0;
@@ -2900,7 +2900,7 @@ void __57__RTVisitPipelineModuleSCI_getLastHintUsingSourceFilter___block_invoke(
   else
   {
     v13 = MEMORY[0x277CBEAA8];
-    if (a3 == 1)
+    if (source == 1)
     {
       v9 = -43200.0;
     }
@@ -2914,35 +2914,35 @@ void __57__RTVisitPipelineModuleSCI_getLastHintUsingSourceFilter___block_invoke(
     v10 = v13;
   }
 
-  v11 = [v10 dateWithTimeInterval:v6 sinceDate:v9];
+  v11 = [v10 dateWithTimeInterval:dateCopy sinceDate:v9];
 
   return v11;
 }
 
-- (BOOL)isValidLatestRegionHintSource:(int64_t)a3 date:(id)a4
+- (BOOL)isValidLatestRegionHintSource:(int64_t)source date:(id)date
 {
-  v6 = a4;
-  [(RTVisitPipelineModuleSCI *)self refreshCachedHintOfSource:a3];
-  v7 = [(RTVisitPipelineModuleSCI *)self latestCachedHintOfSource:a3];
+  dateCopy = date;
+  [(RTVisitPipelineModuleSCI *)self refreshCachedHintOfSource:source];
+  v7 = [(RTVisitPipelineModuleSCI *)self latestCachedHintOfSource:source];
   v8 = v7;
-  if (!v7 || (v9 = (a3 - 7) < 5, [v7 source] != a3))
+  if (!v7 || (v9 = (source - 7) < 5, [v7 source] != source))
   {
     v9 = 0;
   }
 
-  v10 = [(RTVisitPipelineModuleSCI *)self relevantDateForHintSource:a3 date:v6];
-  v11 = [v8 date];
-  v12 = [v11 isBeforeDate:v10];
+  v10 = [(RTVisitPipelineModuleSCI *)self relevantDateForHintSource:source date:dateCopy];
+  date = [v8 date];
+  v12 = [date isBeforeDate:v10];
 
   return v9 & (v12 ^ 1);
 }
 
-- (BOOL)isLastRegionHintNearLocation:(id)a3 hintSource:(int64_t)a4
+- (BOOL)isLastRegionHintNearLocation:(id)location hintSource:(int64_t)source
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = v7;
-  if ((a4 - 7) >= 5)
+  locationCopy = location;
+  v8 = locationCopy;
+  if ((source - 7) >= 5)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -2955,20 +2955,20 @@ void __57__RTVisitPipelineModuleSCI_getLastHintUsingSourceFilter___block_invoke(
     goto LABEL_10;
   }
 
-  v9 = [v7 date];
+  date = [locationCopy date];
 
-  if (!v9)
+  if (!date)
   {
     LOBYTE(v11) = 0;
     goto LABEL_12;
   }
 
-  v10 = [v8 date];
-  v11 = [(RTVisitPipelineModuleSCI *)self isValidLatestRegionHintSource:a4 date:v10];
+  date2 = [v8 date];
+  v11 = [(RTVisitPipelineModuleSCI *)self isValidLatestRegionHintSource:source date:date2];
 
   if (v11)
   {
-    v12 = [(RTVisitPipelineModuleSCI *)self latestCachedHintOfSource:a4];
+    v12 = [(RTVisitPipelineModuleSCI *)self latestCachedHintOfSource:source];
     v11 = [(RTVisitPipelineModuleSCI *)self isHintConsistentWithLocation:v8 hint:v12];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -2976,7 +2976,7 @@ void __57__RTVisitPipelineModuleSCI_getLastHintUsingSourceFilter___block_invoke(
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
         v15 = NSStringFromSelector(a2);
-        v16 = [MEMORY[0x277D01120] hintSourceToString:a4];
+        v16 = [MEMORY[0x277D01120] hintSourceToString:source];
         if (v11)
         {
           v17 = @"YES";
@@ -2987,7 +2987,7 @@ void __57__RTVisitPipelineModuleSCI_getLastHintUsingSourceFilter___block_invoke(
           v17 = @"NO";
         }
 
-        v18 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
+        stateMachineConfidenceString = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
         v19 = 138413571;
         v20 = v15;
         v21 = 2117;
@@ -2999,7 +2999,7 @@ void __57__RTVisitPipelineModuleSCI_getLastHintUsingSourceFilter___block_invoke(
         v27 = 2112;
         v28 = v17;
         v29 = 2112;
-        v30 = v18;
+        v30 = stateMachineConfidenceString;
         _os_log_debug_impl(&dword_2304B3000, v13, OS_LOG_TYPE_DEBUG, "%@, location, %{sensitive}@, hintSource, %@, lastRegionHint, %{sensitive}@, consistent, %@, %@", &v19, 0x3Eu);
       }
     }
@@ -3012,11 +3012,11 @@ LABEL_12:
   return v11;
 }
 
-- (id)process:(id)a3
+- (id)process:(id)process
 {
   v86 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![v4 count])
+  processCopy = process;
+  if (![processCopy count])
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -3029,7 +3029,7 @@ LABEL_12:
     }
   }
 
-  if (![v4 count])
+  if (![processCopy count])
   {
     v44 = 0;
     goto LABEL_63;
@@ -3039,8 +3039,8 @@ LABEL_12:
   v75 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v63 = v4;
-  obj = v4;
+  v63 = processCopy;
+  obj = processCopy;
   v6 = [obj countByEnumeratingWithState:&v72 objects:v85 count:16];
   if (!v6)
   {
@@ -3069,7 +3069,7 @@ LABEL_12:
           v34 = NSStringFromSelector(a2);
           v35 = objc_opt_class();
           v36 = NSStringFromClass(v35);
-          v37 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
+          stateMachineConfidenceString = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
           *buf = 138413059;
           v78 = v34;
           v79 = 2112;
@@ -3077,17 +3077,17 @@ LABEL_12:
           v81 = 2117;
           v82 = v10;
           v83 = 2112;
-          v84 = v37;
+          v84 = stateMachineConfidenceString;
           _os_log_debug_impl(&dword_2304B3000, v11, OS_LOG_TYPE_DEBUG, "%@, %@ working on cluster, %{sensitive}@, %@", buf, 0x2Au);
         }
       }
 
-      v12 = [v10 points];
-      v13 = [v12 locations];
+      points = [v10 points];
+      locations = [points locations];
 
-      v14 = [v10 points];
+      points2 = [v10 points];
 
-      if (!v14)
+      if (!points2)
       {
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
         {
@@ -3098,11 +3098,11 @@ LABEL_12:
           }
 
           v30 = NSStringFromSelector(a2);
-          v31 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
+          stateMachineConfidenceString2 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
           *buf = 138412546;
           v78 = v30;
           v79 = 2112;
-          v80 = v31;
+          v80 = stateMachineConfidenceString2;
           v32 = v29;
           v33 = "%@, received forced exit signal, %@";
 LABEL_34:
@@ -3116,10 +3116,10 @@ LABEL_29:
         goto LABEL_30;
       }
 
-      v15 = [v13 firstObject];
-      v16 = [v15 date];
-      v17 = [(RTVisitSCIStayCluster *)self->_workingHypothesis lastProcessedSample];
-      v18 = [v16 isOnOrAfter:v17];
+      firstObject = [locations firstObject];
+      date = [firstObject date];
+      lastProcessedSample = [(RTVisitSCIStayCluster *)self->_workingHypothesis lastProcessedSample];
+      v18 = [date isOnOrAfter:lastProcessedSample];
 
       if ((v18 & 1) == 0)
       {
@@ -3134,10 +3134,10 @@ LABEL_29:
         }
       }
 
-      v20 = [v13 firstObject];
-      v21 = [v20 date];
-      v22 = [(RTVisitSCIStayCluster *)self->_workingHypothesis lastProcessedSample];
-      v23 = [v21 isOnOrAfter:v22];
+      firstObject2 = [locations firstObject];
+      date2 = [firstObject2 date];
+      lastProcessedSample2 = [(RTVisitSCIStayCluster *)self->_workingHypothesis lastProcessedSample];
+      v23 = [date2 isOnOrAfter:lastProcessedSample2];
 
       if (v23)
       {
@@ -3148,17 +3148,17 @@ LABEL_29:
         v71[4] = v10;
         v71[5] = self;
         [(RTVisitPipelineModuleSCI *)self exitUntilNotInWorkingHypotheisWithBlock:v71];
-        v24 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:v13 copyItems:0];
+        v24 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:locations copyItems:0];
         [(RTVisitPipelineModuleSCI *)self processPoints:v24];
 
-        v25 = [v10 visit];
-        v26 = [v25 exit];
-        if (v26)
+        visit = [v10 visit];
+        exit = [visit exit];
+        if (exit)
         {
-          v27 = v26;
-          v28 = [(RTVisitPipelineModuleSCI *)self isInWorkingHypothesis];
+          v27 = exit;
+          isInWorkingHypothesis = [(RTVisitPipelineModuleSCI *)self isInWorkingHypothesis];
 
-          if (!v28)
+          if (!isInWorkingHypothesis)
           {
             goto LABEL_30;
           }
@@ -3172,11 +3172,11 @@ LABEL_29:
             }
 
             v30 = NSStringFromSelector(a2);
-            v31 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
+            stateMachineConfidenceString2 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
             *buf = 138412546;
             v78 = v30;
             v79 = 2112;
-            v80 = v31;
+            v80 = stateMachineConfidenceString2;
             v32 = v29;
             v33 = "%@, in cluster is terminated and we are still in working hypothesis, %@";
             goto LABEL_34;
@@ -3203,11 +3203,11 @@ LABEL_36:
   {
     if ([(NSMutableArray *)self->_clusters count])
     {
-      v39 = [(NSMutableArray *)self->_clusters lastObject];
-      v40 = [v39 visit];
-      v41 = [v40 exit];
+      lastObject = [(NSMutableArray *)self->_clusters lastObject];
+      visit2 = [lastObject visit];
+      exit2 = [visit2 exit];
 
-      if (v41)
+      if (exit2)
       {
         v42 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
@@ -3227,14 +3227,14 @@ LABEL_36:
       if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
       {
         v60 = NSStringFromSelector(a2);
-        v61 = [(RTVisitSCIStayCluster *)self->_workingHypothesis numOfResiduePoints];
-        v62 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
+        numOfResiduePoints = [(RTVisitSCIStayCluster *)self->_workingHypothesis numOfResiduePoints];
+        stateMachineConfidenceString3 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
         *buf = 138412802;
         v78 = v60;
         v79 = 2048;
-        v80 = v61;
+        v80 = numOfResiduePoints;
         v81 = 2112;
-        v82 = v62;
+        v82 = stateMachineConfidenceString3;
         _os_log_debug_impl(&dword_2304B3000, v43, OS_LOG_TYPE_DEBUG, "%@, add partial visit to capture %lu in flight points, %@", buf, 0x20u);
       }
     }
@@ -3279,7 +3279,7 @@ LABEL_36:
               v54 = NSStringFromSelector(a2);
               v55 = objc_opt_class();
               v56 = NSStringFromClass(v55);
-              v57 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
+              stateMachineConfidenceString4 = [(RTVisitPipelineModuleSCI *)self stateMachineConfidenceString];
               *buf = 138413059;
               v78 = v54;
               v79 = 2112;
@@ -3287,8 +3287,8 @@ LABEL_36:
               v81 = 2117;
               v82 = v52;
               v83 = 2112;
-              v84 = v57;
-              v58 = v57;
+              v84 = stateMachineConfidenceString4;
+              v58 = stateMachineConfidenceString4;
               _os_log_debug_impl(&dword_2304B3000, v53, OS_LOG_TYPE_DEBUG, "%@, %@ adding to output clusters, %{sensitive}@, %@", buf, 0x2Au);
             }
           }
@@ -3304,7 +3304,7 @@ LABEL_36:
     }
   }
 
-  v4 = v63;
+  processCopy = v63;
 LABEL_63:
 
   return v44;

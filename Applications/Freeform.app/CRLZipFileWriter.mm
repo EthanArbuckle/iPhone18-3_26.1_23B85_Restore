@@ -1,21 +1,21 @@
 @interface CRLZipFileWriter
-+ (void)zipDirectoryAtURL:(id)a3 customDirectoryFilename:(id)a4 toURL:(id)a5 queue:(id)a6 progressHandler:(id)a7;
-+ (void)zipDirectoryAtURL:(id)a3 toURL:(id)a4 queue:(id)a5 completion:(id)a6;
-- (CRLZipFileWriter)initWithURL:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (CRLZipFileWriter)initWithZipFileArchive:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (id)prepareWriteChannelWithCloseCompletionHandler:(id)a3;
-- (void)copyEntriesFromZipFileWriter:(id)a3 readingFromURL:(id)a4 options:(unint64_t)a5 completionHandler:(id)a6;
-- (void)copyRemainingEntries:(id)a3 fromArchive:(id)a4 progress:(id)a5 completionHandler:(id)a6;
++ (void)zipDirectoryAtURL:(id)l customDirectoryFilename:(id)filename toURL:(id)rL queue:(id)queue progressHandler:(id)handler;
++ (void)zipDirectoryAtURL:(id)l toURL:(id)rL queue:(id)queue completion:(id)completion;
+- (CRLZipFileWriter)initWithURL:(id)l options:(unint64_t)options error:(id *)error;
+- (CRLZipFileWriter)initWithZipFileArchive:(id)archive options:(unint64_t)options error:(id *)error;
+- (id)prepareWriteChannelWithCloseCompletionHandler:(id)handler;
+- (void)copyEntriesFromZipFileWriter:(id)writer readingFromURL:(id)l options:(unint64_t)options completionHandler:(id)handler;
+- (void)copyRemainingEntries:(id)entries fromArchive:(id)archive progress:(id)progress completionHandler:(id)handler;
 @end
 
 @implementation CRLZipFileWriter
 
-- (CRLZipFileWriter)initWithURL:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (CRLZipFileWriter)initWithURL:(id)l options:(unint64_t)options error:(id *)error
 {
-  v8 = a3;
+  lCopy = l;
   v21.receiver = self;
   v21.super_class = CRLZipFileWriter;
-  v9 = [(CRLZipWriter *)&v21 initWithOptions:a4];
+  v9 = [(CRLZipWriter *)&v21 initWithOptions:options];
   if (v9)
   {
     objc_initWeak(&location, v9);
@@ -25,7 +25,7 @@
     v17 = sub_10052B438;
     v18 = &unk_10186CCE0;
     objc_copyWeak(&v19, &location);
-    v11 = [(CRLFileIOChannel *)v10 initForRandomWritingURL:v8 error:a5 cleanupHandler:&v15];
+    v11 = [(CRLFileIOChannel *)v10 initForRandomWritingURL:lCopy error:error cleanupHandler:&v15];
     writeChannel = v9->_writeChannel;
     v9->_writeChannel = v11;
 
@@ -48,10 +48,10 @@
   return v9;
 }
 
-- (CRLZipFileWriter)initWithZipFileArchive:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (CRLZipFileWriter)initWithZipFileArchive:(id)archive options:(unint64_t)options error:(id *)error
 {
-  v8 = a3;
-  v9 = [v8 URL];
+  archiveCopy = archive;
+  v9 = [archiveCopy URL];
   v38 = 0;
   v39 = &v38;
   v40 = 0x3032000000;
@@ -60,17 +60,17 @@
   v43 = 0;
   v37.receiver = self;
   v37.super_class = CRLZipFileWriter;
-  v10 = [(CRLZipWriter *)&v37 initWithOptions:a4];
+  v10 = [(CRLZipWriter *)&v37 initWithOptions:options];
   if (!v10)
   {
     v11 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_20;
     }
 
 LABEL_19:
-    *a5 = v39[5];
+    *error = v39[5];
     goto LABEL_20;
   }
 
@@ -80,8 +80,8 @@ LABEL_19:
   v35[3] = &unk_10186CD08;
   v11 = v10;
   v36 = v11;
-  [v8 enumerateEntriesUsingBlock:v35];
-  if ([v8 endOfLastEntry] <= 0)
+  [archiveCopy enumerateEntriesUsingBlock:v35];
+  if ([archiveCopy endOfLastEntry] <= 0)
   {
     v12 = +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -111,7 +111,7 @@ LABEL_19:
     [CRLAssertionHandler handleFailureInFunction:v15 file:v16 lineNumber:67 isFatal:0 description:"Unexpected offset"];
   }
 
-  -[CRLZipWriter setEntryInsertionOffset:](v11, "setEntryInsertionOffset:", [v8 endOfLastEntry]);
+  -[CRLZipWriter setEntryInsertionOffset:](v11, "setEntryInsertionOffset:", [archiveCopy endOfLastEntry]);
   objc_initWeak(&location, v11);
   v17 = [CRLFileIOChannel alloc];
   v18 = (v39 + 5);
@@ -132,7 +132,7 @@ LABEL_19:
     [(CRLRandomWriteChannel *)v21 setLowWater:-1];
     v22 = dispatch_semaphore_create(0);
     v23 = v11->_writeChannel;
-    v24 = [v8 endOfLastEntry];
+    endOfLastEntry = [archiveCopy endOfLastEntry];
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
     v28[2] = sub_10052BA84;
@@ -140,7 +140,7 @@ LABEL_19:
     v30 = &v38;
     v25 = v22;
     v29 = v25;
-    [(CRLRandomWriteChannel *)v23 truncateToLength:v24 completion:v28];
+    [(CRLRandomWriteChannel *)v23 truncateToLength:endOfLastEntry completion:v28];
     dispatch_semaphore_wait(v25, 0xFFFFFFFFFFFFFFFFLL);
   }
 
@@ -153,7 +153,7 @@ LABEL_19:
   objc_destroyWeak(&v32);
   objc_destroyWeak(&location);
 
-  if (a5)
+  if (error)
   {
     goto LABEL_19;
   }
@@ -165,15 +165,15 @@ LABEL_20:
   return v26;
 }
 
-- (void)copyEntriesFromZipFileWriter:(id)a3 readingFromURL:(id)a4 options:(unint64_t)a5 completionHandler:(id)a6
+- (void)copyEntriesFromZipFileWriter:(id)writer readingFromURL:(id)l options:(unint64_t)options completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if ([v10 isClosed])
+  writerCopy = writer;
+  lCopy = l;
+  handlerCopy = handler;
+  if ([writerCopy isClosed])
   {
     v29 = 0;
-    v13 = [[CRLZipFileArchive alloc] initWithWriter:v10 forReadingFromURL:v11 options:a5 error:&v29];
+    v13 = [[CRLZipFileArchive alloc] initWithWriter:writerCopy forReadingFromURL:lCopy options:options error:&v29];
     v14 = v29;
     v15 = v14;
     if (v13)
@@ -192,22 +192,22 @@ LABEL_20:
       [(CRLZipArchive *)v13 enumerateEntriesUsingBlock:v22];
       [v16 sortUsingComparator:&stru_10186CDF0];
       v17 = [NSProgress progressWithTotalUnitCount:v26[3]];
-      [(CRLZipFileWriter *)self copyRemainingEntries:v16 fromArchive:v13 progress:v17 completionHandler:v12];
+      [(CRLZipFileWriter *)self copyRemainingEntries:v16 fromArchive:v13 progress:v17 completionHandler:handlerCopy];
 
       _Block_object_dispose(&v25, 8);
     }
 
-    else if (v12)
+    else if (handlerCopy)
     {
       if (v14)
       {
-        v12[2](v12, v14);
+        handlerCopy[2](handlerCopy, v14);
       }
 
       else
       {
         v21 = [NSError crl_fileWriteUnknownErrorWithUserInfo:0];
-        v12[2](v12, v21);
+        handlerCopy[2](handlerCopy, v21);
       }
     }
 
@@ -240,42 +240,42 @@ LABEL_20:
   v20 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLUtility/Zip/CRLZipFileWriter.m"];
   [CRLAssertionHandler handleFailureInFunction:v19 file:v20 lineNumber:110 isFatal:0 description:"Closed writer must be closed."];
 
-  if (v12)
+  if (handlerCopy)
   {
     v15 = [NSError crl_fileWriteUnknownErrorWithUserInfo:0];
-    v12[2](v12, v15);
+    handlerCopy[2](handlerCopy, v15);
 LABEL_15:
   }
 }
 
-- (void)copyRemainingEntries:(id)a3 fromArchive:(id)a4 progress:(id)a5 completionHandler:(id)a6
+- (void)copyRemainingEntries:(id)entries fromArchive:(id)archive progress:(id)progress completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 firstObject];
-  if (v14)
+  entriesCopy = entries;
+  archiveCopy = archive;
+  progressCopy = progress;
+  handlerCopy = handler;
+  firstObject = [entriesCopy firstObject];
+  if (firstObject)
   {
-    [v10 removeObjectAtIndex:0];
-    v15 = [v11 streamReadChannelForEntry:v14];
+    [entriesCopy removeObjectAtIndex:0];
+    v15 = [archiveCopy streamReadChannelForEntry:firstObject];
     if (v15)
     {
-      v16 = [v14 name];
-      v17 = [v14 lastModificationDate];
-      v23 = [v14 size];
-      v22 = [v14 CRC];
+      name = [firstObject name];
+      lastModificationDate = [firstObject lastModificationDate];
+      v23 = [firstObject size];
+      v22 = [firstObject CRC];
       v24[0] = _NSConcreteStackBlock;
       v24[1] = 3221225472;
       v24[2] = sub_10052C310;
       v24[3] = &unk_10186CE58;
-      v30 = v13;
-      v25 = v12;
-      v26 = v14;
-      v27 = self;
-      v28 = v10;
-      v29 = v11;
-      [(CRLZipWriter *)self writeEntryWithName:v16 force32BitSize:0 lastModificationDate:v17 size:v23 CRC:v22 fromReadChannel:v15 completion:v24];
+      v30 = handlerCopy;
+      v25 = progressCopy;
+      v26 = firstObject;
+      selfCopy = self;
+      v28 = entriesCopy;
+      v29 = archiveCopy;
+      [(CRLZipWriter *)self writeEntryWithName:name force32BitSize:0 lastModificationDate:lastModificationDate size:v23 CRC:v22 fromReadChannel:v15 completion:v24];
 
       v18 = v30;
     }
@@ -309,30 +309,30 @@ LABEL_15:
       [CRLAssertionHandler handleFailureInFunction:v20 file:v21 lineNumber:154 isFatal:0 description:"invalid nil value for '%{public}s'", "channel"];
 
       v15 = 0;
-      if (!v13)
+      if (!handlerCopy)
       {
         goto LABEL_17;
       }
 
       v18 = [NSError crl_fileWriteUnknownErrorWithUserInfo:0];
-      (*(v13 + 2))(v13, v18);
+      (*(handlerCopy + 2))(handlerCopy, v18);
     }
 
 LABEL_17:
     goto LABEL_18;
   }
 
-  if (v13)
+  if (handlerCopy)
   {
-    (*(v13 + 2))(v13, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
 LABEL_18:
 }
 
-- (id)prepareWriteChannelWithCloseCompletionHandler:(id)a3
+- (id)prepareWriteChannelWithCloseCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (self->_writeChannelCompletionHandler)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -362,7 +362,7 @@ LABEL_18:
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:175 isFatal:0 description:"expected nil value for '%{public}s'", "_writeChannelCompletionHandler"];
   }
 
-  v8 = [v4 copy];
+  v8 = [handlerCopy copy];
   writeChannelCompletionHandler = self->_writeChannelCompletionHandler;
   self->_writeChannelCompletionHandler = v8;
 
@@ -403,28 +403,28 @@ LABEL_18:
   return writeChannel;
 }
 
-+ (void)zipDirectoryAtURL:(id)a3 toURL:(id)a4 queue:(id)a5 completion:(id)a6
++ (void)zipDirectoryAtURL:(id)l toURL:(id)rL queue:(id)queue completion:(id)completion
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10052C848;
   v11[3] = &unk_10186CF00;
-  v12 = a6;
-  v10 = v12;
-  [a1 zipDirectoryAtURL:a3 customDirectoryFilename:0 toURL:a4 queue:a5 progressHandler:v11];
+  completionCopy = completion;
+  v10 = completionCopy;
+  [self zipDirectoryAtURL:l customDirectoryFilename:0 toURL:rL queue:queue progressHandler:v11];
 }
 
-+ (void)zipDirectoryAtURL:(id)a3 customDirectoryFilename:(id)a4 toURL:(id)a5 queue:(id)a6 progressHandler:(id)a7
++ (void)zipDirectoryAtURL:(id)l customDirectoryFilename:(id)filename toURL:(id)rL queue:(id)queue progressHandler:(id)handler
 {
-  v11 = a3;
-  v77 = a4;
-  v12 = a5;
-  queue = a6;
-  v79 = a7;
-  v73 = v11;
-  if (!v11)
+  lCopy = l;
+  filenameCopy = filename;
+  rLCopy = rL;
+  queue = queue;
+  handlerCopy = handler;
+  v73 = lCopy;
+  if (!lCopy)
   {
-    v13 = v12;
+    v13 = rLCopy;
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
     {
@@ -451,11 +451,11 @@ LABEL_18:
     v16 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLUtility/Zip/CRLZipFileWriter.m"];
     [CRLAssertionHandler handleFailureInFunction:v15 file:v16 lineNumber:197 isFatal:0 description:"invalid nil value for '%{public}s'", "directoryURL"];
 
-    v12 = v13;
+    rLCopy = v13;
   }
 
-  v72 = v12;
-  if (!v12)
+  v72 = rLCopy;
+  if (!rLCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -513,7 +513,7 @@ LABEL_18:
     [CRLAssertionHandler handleFailureInFunction:v21 file:v22 lineNumber:199 isFatal:0 description:"invalid nil value for '%{public}s'", "queue"];
   }
 
-  if (!v79)
+  if (!handlerCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -553,7 +553,7 @@ LABEL_18:
     block[1] = 3221225472;
     block[2] = sub_10052D82C;
     block[3] = &unk_101839D68;
-    v108 = v79;
+    v108 = handlerCopy;
     v107 = v49;
     dispatch_async(queue, block);
 
@@ -561,24 +561,24 @@ LABEL_18:
     goto LABEL_86;
   }
 
-  v27 = [v11 path];
-  v28 = v27;
-  if (!v77)
+  path = [lCopy path];
+  v28 = path;
+  if (!filenameCopy)
   {
-    v29 = [v27 stringByDeletingLastPathComponent];
+    stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
 
-    v28 = v29;
+    v28 = stringByDeletingLastPathComponent;
   }
 
-  v30 = [v28 stringByStandardizingPath];
-  v70 = [v30 precomposedStringWithCanonicalMapping];
+  stringByStandardizingPath = [v28 stringByStandardizingPath];
+  precomposedStringWithCanonicalMapping = [stringByStandardizingPath precomposedStringWithCanonicalMapping];
 
-  v76 = [v70 length];
+  v76 = [precomposedStringWithCanonicalMapping length];
   v31 = +[NSFileManager defaultManager];
   v114[0] = NSURLIsDirectoryKey;
   v114[1] = NSURLFileSizeKey;
   v32 = [NSArray arrayWithObjects:v114 count:2];
-  v33 = [v31 enumeratorAtURL:v11 includingPropertiesForKeys:v32 options:0 errorHandler:0];
+  v33 = [v31 enumeratorAtURL:lCopy includingPropertiesForKeys:v32 options:0 errorHandler:0];
 
   v105[0] = 0;
   v105[1] = v105;
@@ -714,14 +714,14 @@ LABEL_69:
         }
 
         v54 = *(*(&v95 + 1) + 8 * i);
-        v55 = [v54 path];
-        v56 = [v55 stringByStandardizingPath];
-        v57 = [v56 precomposedStringWithCanonicalMapping];
+        path2 = [v54 path];
+        stringByStandardizingPath2 = [path2 stringByStandardizingPath];
+        precomposedStringWithCanonicalMapping2 = [stringByStandardizingPath2 precomposedStringWithCanonicalMapping];
 
-        v58 = [v57 substringFromIndex:v76 + 1];
-        if (v77)
+        v58 = [precomposedStringWithCanonicalMapping2 substringFromIndex:v76 + 1];
+        if (filenameCopy)
         {
-          v59 = [v77 stringByAppendingPathComponent:v58];
+          v59 = [filenameCopy stringByAppendingPathComponent:v58];
 
           v58 = v59;
         }
@@ -757,16 +757,16 @@ LABEL_69:
           v68 = 0;
         }
 
-        v69 = [v65 unsignedLongLongValue];
+        unsignedLongLongValue = [v65 unsignedLongLongValue];
         v87[0] = _NSConcreteStackBlock;
         v87[1] = 3221225472;
         v87[2] = sub_10052D8F8;
         v87[3] = &unk_10186D068;
         v89 = v105;
-        v88 = v79;
+        v88 = handlerCopy;
         v90 = buf;
         v91 = v81;
-        [(CRLZipWriter *)v78 writeEntryWithName:v58 force32BitSize:0 lastModificationDate:v68 size:v69 CRC:0 fromReadChannel:v62 writeHandler:v87];
+        [(CRLZipWriter *)v78 writeEntryWithName:v58 force32BitSize:0 lastModificationDate:v68 size:unsignedLongLongValue CRC:0 fromReadChannel:v62 writeHandler:v87];
       }
 
       v51 = [v75 countByEnumeratingWithState:&v95 objects:v110 count:16];
@@ -785,7 +785,7 @@ LABEL_85:
   v83[1] = 3221225472;
   v83[2] = sub_10052D9E8;
   v83[3] = &unk_10186D090;
-  v84 = v79;
+  v84 = handlerCopy;
   v85 = buf;
   v86 = v81;
   [(CRLZipWriter *)v78 closeWithQueue:queue completion:v83];
@@ -793,7 +793,7 @@ LABEL_85:
   _Block_object_dispose(buf, 8);
   _Block_object_dispose(v105, 8);
 
-  v50 = v70;
+  v50 = precomposedStringWithCanonicalMapping;
 LABEL_86:
 }
 

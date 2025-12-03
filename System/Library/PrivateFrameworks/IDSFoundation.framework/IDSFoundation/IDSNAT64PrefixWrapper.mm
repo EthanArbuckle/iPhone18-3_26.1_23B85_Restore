@@ -1,6 +1,6 @@
 @interface IDSNAT64PrefixWrapper
 - ($B0CAF2F970A52CDCEAEBD8ED9A40FEA0)prefix;
-- (void)setPrefix:(id)a3;
+- (void)setPrefix:(id)prefix;
 @end
 
 @implementation IDSNAT64PrefixWrapper
@@ -17,10 +17,10 @@
   return result;
 }
 
-- (void)setPrefix:(id)a3
+- (void)setPrefix:(id)prefix
 {
-  v3 = *&a3.var1[4];
-  v4 = *&a3.var0;
+  v3 = *&prefix.var1[4];
+  v4 = *&prefix.var0;
   v5 = (&self->super.isa + OBJC_IVAR___IDSNAT64PrefixWrapper_prefix);
   swift_beginAccess();
   *v5 = v4;

@@ -1,9 +1,9 @@
 @interface SKProductsRequest
 - (SKProductsRequest)init;
 - (SKProductsRequest)initWithProductIdentifiers:(NSSet *)productIdentifiers;
-- (void)_logEventWithPrimaryError:(id)a3 mappedError:(id)a4;
+- (void)_logEventWithPrimaryError:(id)error mappedError:(id)mappedError;
 - (void)_start;
-- (void)_startWithCompletionHandler:(id)a3;
+- (void)_startWithCompletionHandler:(id)handler;
 @end
 
 @implementation SKProductsRequest
@@ -122,25 +122,25 @@ void __27__SKProductsRequest__start__block_invoke_2(uint64_t a1)
   [WeakRetained _shutdownRequest];
 }
 
-- (void)_logEventWithPrimaryError:(id)a3 mappedError:(id)a4
+- (void)_logEventWithPrimaryError:(id)error mappedError:(id)mappedError
 {
-  v5 = a4;
-  v6 = a3;
+  mappedErrorCopy = mappedError;
+  errorCopy = error;
   v7 = objc_alloc_init(SKOneErrorEvent);
   [(SKBaseErrorEvent *)v7 setUserAction:5];
-  [(SKBaseErrorEvent *)v7 setPrimaryError:v6];
+  [(SKBaseErrorEvent *)v7 setPrimaryError:errorCopy];
 
-  [(SKBaseErrorEvent *)v7 setMappedError:v5];
+  [(SKBaseErrorEvent *)v7 setMappedError:mappedErrorCopy];
   [SKAnalyticsManager sendEvent:v7];
 }
 
-- (void)_startWithCompletionHandler:(id)a3
+- (void)_startWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   *(v5 + 24) = self;
-  v6 = self;
+  selfCopy = self;
 
   sub_1B251DDF8(&unk_1B2581E88, v5);
 }

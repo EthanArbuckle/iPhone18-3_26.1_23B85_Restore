@@ -1,10 +1,10 @@
 @interface PDDashboardAppRegisterState
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5;
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database;
 - (NSString)description;
 - (PDDashboardAppRegisterState)init;
-- (PDDashboardAppRegisterState)initWithDatabaseRow:(id)a3;
+- (PDDashboardAppRegisterState)initWithDatabaseRow:(id)row;
 - (PDDatabaseValue)identityValue;
-- (void)bindTo:(id)a3;
+- (void)bindTo:(id)to;
 @end
 
 @implementation PDDashboardAppRegisterState
@@ -43,34 +43,34 @@
   return v7;
 }
 
-- (PDDashboardAppRegisterState)initWithDatabaseRow:(id)a3
+- (PDDashboardAppRegisterState)initWithDatabaseRow:(id)row
 {
-  v4 = a3;
-  v5 = sub_10016D778(v4, @"appIdentifier");
+  rowCopy = row;
+  v5 = sub_10016D778(rowCopy, @"appIdentifier");
   v6 = sub_100145108(self, v5);
 
   if (v6)
   {
-    v7 = sub_10016D778(v4, @"state");
+    v7 = sub_10016D778(rowCopy, @"state");
     v6->_state = [v7 integerValue];
   }
 
   return v6;
 }
 
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database
 {
-  v7 = a5;
-  v8 = v7;
-  if (a3)
+  databaseCopy = database;
+  v8 = databaseCopy;
+  if (version)
   {
     v9 = 1;
   }
 
-  else if (sub_1000B9298(v7, @"create table PDDashboardAppRegisterState(   appIdentifier text not null,    state integer not null)", 0, 0, 0) && sub_1000B9298(v8, @"create unique index PDDashboardAppRegisterState_appIdentifier on PDDashboardAppRegisterState (appIdentifier)", 0, 0, 0))
+  else if (sub_1000B9298(databaseCopy, @"create table PDDashboardAppRegisterState(   appIdentifier text not null,    state integer not null)", 0, 0, 0) && sub_1000B9298(v8, @"create unique index PDDashboardAppRegisterState_appIdentifier on PDDashboardAppRegisterState (appIdentifier)", 0, 0, 0))
   {
     v9 = 1;
-    *a4 = 1;
+    *finalVersion = 1;
   }
 
   else
@@ -91,7 +91,7 @@
   return self;
 }
 
-- (void)bindTo:(id)a3
+- (void)bindTo:(id)to
 {
   if (self)
   {
@@ -103,10 +103,10 @@
     appIdentifier = 0;
   }
 
-  v5 = a3;
-  sub_1000982FC(v5, appIdentifier, @"appIdentifier");
+  toCopy = to;
+  sub_1000982FC(toCopy, appIdentifier, @"appIdentifier");
   v6 = [NSNumber numberWithInteger:self->_state];
-  sub_1000982FC(v5, v6, @"state");
+  sub_1000982FC(toCopy, v6, @"state");
 }
 
 @end

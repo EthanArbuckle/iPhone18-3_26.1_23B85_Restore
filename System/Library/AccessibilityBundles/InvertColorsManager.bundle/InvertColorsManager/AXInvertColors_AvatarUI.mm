@@ -1,29 +1,29 @@
 @interface AXInvertColors_AvatarUI
-+ (void)installCategories:(id)a3;
-+ (void)performValidations:(id)a3;
++ (void)installCategories:(id)categories;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_AvatarUI
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVTAttributeValueView" hasInstanceMethod:@"imageLayer" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTAttributeValueView" hasInstanceMethod:@"transitionImageLayer" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTAttributeValueView" hasInstanceMethod:@"cleanupAfterTransition" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"AVTAttributeValueView" hasInstanceMethod:@"updateSelectedState:animated:" withFullSignature:{"v", "B", "B", 0}];
-  [v3 validateClass:@"AVTStickerRecentsOverlayView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"AVTStickerRecentsOverlayView" hasInstanceMethod:@"imageView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTStickerRecentsStickerCollectionViewCell" isKindOfClass:@"UIView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVTAttributeValueView" hasInstanceMethod:@"imageLayer" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTAttributeValueView" hasInstanceMethod:@"transitionImageLayer" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTAttributeValueView" hasInstanceMethod:@"cleanupAfterTransition" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"AVTAttributeValueView" hasInstanceMethod:@"updateSelectedState:animated:" withFullSignature:{"v", "B", "B", 0}];
+  [validationsCopy validateClass:@"AVTStickerRecentsOverlayView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"AVTStickerRecentsOverlayView" hasInstanceMethod:@"imageView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTStickerRecentsStickerCollectionViewCell" isKindOfClass:@"UIView"];
 }
 
-+ (void)installCategories:(id)a3
++ (void)installCategories:(id)categories
 {
-  v3 = a3;
-  [v3 installSafeCategory:@"AVTUIAnimatingImageViewInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"AVTAttributeValueViewInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"AVTStickerRecentsOverlayViewInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"AVTStickerRecentsStickerCollectionViewCellInvertColorsAccessibility" canInteractWithTargetClass:1];
+  categoriesCopy = categories;
+  [categoriesCopy installSafeCategory:@"AVTUIAnimatingImageViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"AVTAttributeValueViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"AVTStickerRecentsOverlayViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"AVTStickerRecentsStickerCollectionViewCellInvertColorsAccessibility" canInteractWithTargetClass:1];
 
   LocalCenter = CFNotificationCenterGetLocalCenter();
 

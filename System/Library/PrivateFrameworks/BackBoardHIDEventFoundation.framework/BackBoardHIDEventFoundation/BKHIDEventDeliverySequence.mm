@@ -1,28 +1,28 @@
 @interface BKHIDEventDeliverySequence
-- (BKHIDEventDeliverySequence)initWithProcessor:(id)a3 dispatcher:(id)a4 senderInfo:(id)a5 additionalContext:(id)a6 keyCommand:(id)a7 deliveryManager:(id)a8 resolutions:(id)a9 buffers:(id)a10;
+- (BKHIDEventDeliverySequence)initWithProcessor:(id)processor dispatcher:(id)dispatcher senderInfo:(id)info additionalContext:(id)context keyCommand:(id)command deliveryManager:(id)manager resolutions:(id)resolutions buffers:(id)self0;
 - (NSString)description;
 - (id)buffers;
 - (id)resolutions;
-- (void)_resolveDispatchTargetsToBuffers:(int)a3 repostFirstEvent:;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (void)_resolveDispatchTargetsToBuffers:(int)buffers repostFirstEvent:;
+- (void)appendDescriptionToFormatter:(id)formatter;
 - (void)dealloc;
-- (void)postEvent:(__IOHIDEvent *)a3 position:(int64_t)a4 additionalContext:(id)a5;
-- (void)postEvent:(__IOHIDEvent *)a3 position:(int64_t)a4 additionalContext:(id)a5 fromBuffer:(id)a6 toResolution:(id)a7;
-- (void)repostFirstEventToBufferedTargets:(id)a3;
+- (void)postEvent:(__IOHIDEvent *)event position:(int64_t)position additionalContext:(id)context;
+- (void)postEvent:(__IOHIDEvent *)event position:(int64_t)position additionalContext:(id)context fromBuffer:(id)buffer toResolution:(id)resolution;
+- (void)repostFirstEventToBufferedTargets:(id)targets;
 @end
 
 @implementation BKHIDEventDeliverySequence
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v4 = a3;
+  formatterCopy = formatter;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __59__BKHIDEventDeliverySequence_appendDescriptionToFormatter___block_invoke;
   v6[3] = &unk_2784F7270;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = formatterCopy;
+  selfCopy = self;
+  v5 = formatterCopy;
   [v5 appendProem:0 block:v6];
 }
 
@@ -71,10 +71,10 @@ id __59__BKHIDEventDeliverySequence_appendDescriptionToFormatter___block_invoke(
   return v2;
 }
 
-- (void)repostFirstEventToBufferedTargets:(id)a3
+- (void)repostFirstEventToBufferedTargets:(id)targets
 {
   v4 = MEMORY[0x277CBEB38];
-  v5 = a3;
+  targetsCopy = targets;
   v6 = objc_alloc_init(v4);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -83,7 +83,7 @@ id __59__BKHIDEventDeliverySequence_appendDescriptionToFormatter___block_invoke(
   v8[4] = self;
   v9 = v6;
   v7 = v6;
-  [v5 enumerateKeysAndObjectsUsingBlock:v8];
+  [targetsCopy enumerateKeysAndObjectsUsingBlock:v8];
 
   [(BKHIDEventDeliverySequence *)self _resolveDispatchTargetsToBuffers:v7 repostFirstEvent:1];
 }
@@ -99,17 +99,17 @@ void __64__BKHIDEventDeliverySequence_repostFirstEventToBufferedTargets___block_
   }
 }
 
-- (void)_resolveDispatchTargetsToBuffers:(int)a3 repostFirstEvent:
+- (void)_resolveDispatchTargetsToBuffers:(int)buffers repostFirstEvent:
 {
   v32 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  if (a1)
+  if (self)
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v6 = [*(a1 + 72) copy];
+    v6 = [*(self + 72) copy];
     v7 = [v6 countByEnumeratingWithState:&v21 objects:v31 count:16];
     if (v7)
     {
@@ -127,18 +127,18 @@ void __64__BKHIDEventDeliverySequence_repostFirstEventToBufferedTargets___block_
           }
 
           v12 = *(*(&v21 + 1) + 8 * i);
-          v13 = [v12 dispatchingTarget];
-          v14 = [v5 objectForKey:v13];
+          dispatchingTarget = [v12 dispatchingTarget];
+          v14 = [v5 objectForKey:dispatchingTarget];
 
           if (v14)
           {
-            [*(a1 + 72) removeObject:v12];
-            [*(a1 + 56) addObject:v14];
+            [*(self + 72) removeObject:v12];
+            [*(self + 56) addObject:v14];
             v15 = BKLogEventDelivery();
             if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
             {
               *buf = v20;
-              v26 = a1;
+              selfCopy2 = self;
               v27 = 2114;
               v28 = v12;
               v29 = 2048;
@@ -146,15 +146,15 @@ void __64__BKHIDEventDeliverySequence_repostFirstEventToBufferedTargets___block_
               _os_log_debug_impl(&dword_223CBE000, v15, OS_LOG_TYPE_DEBUG, "sq:%p %{public}@ is now buffering to buf:%p", buf, 0x20u);
             }
 
-            if (a3)
+            if (buffers)
             {
               v16 = BKLogEventDelivery();
               if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
               {
-                v17 = *(a1 + 96);
+                v17 = *(self + 96);
                 v18 = BKSHIDEventGetConciseDescription();
                 *buf = v20;
-                v26 = a1;
+                selfCopy2 = self;
                 v27 = 2114;
                 v28 = v18;
                 v29 = 2048;
@@ -162,8 +162,8 @@ void __64__BKHIDEventDeliverySequence_repostFirstEventToBufferedTargets___block_
                 _os_log_debug_impl(&dword_223CBE000, v16, OS_LOG_TYPE_DEBUG, "sq:%p repost [%{public}@] to buf:%p", buf, 0x20u);
               }
 
-              [v14 appendEvent:*(a1 + 96) sender:*(a1 + 8) sequence:a1 additionalContext:*(a1 + 104)];
-              [*(a1 + 64) addObject:v14];
+              [v14 appendEvent:*(self + 96) sender:*(self + 8) sequence:self additionalContext:*(self + 104)];
+              [*(self + 64) addObject:v14];
             }
           }
         }
@@ -178,18 +178,18 @@ void __64__BKHIDEventDeliverySequence_repostFirstEventToBufferedTargets___block_
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)postEvent:(__IOHIDEvent *)a3 position:(int64_t)a4 additionalContext:(id)a5 fromBuffer:(id)a6 toResolution:(id)a7
+- (void)postEvent:(__IOHIDEvent *)event position:(int64_t)position additionalContext:(id)context fromBuffer:(id)buffer toResolution:(id)resolution
 {
   v52 = *MEMORY[0x277D85DE8];
-  v36 = a5;
-  v11 = a6;
-  v33 = a7;
-  v38 = [v33 dispatchingTarget];
-  v32 = v11;
-  v12 = [(NSMutableSet *)self->_repostedToBuffers containsObject:v11];
+  contextCopy = context;
+  bufferCopy = buffer;
+  resolutionCopy = resolution;
+  dispatchingTarget = [resolutionCopy dispatchingTarget];
+  v32 = bufferCopy;
+  v12 = [(NSMutableSet *)self->_repostedToBuffers containsObject:bufferCopy];
   v13 = v12;
-  v35 = a4;
-  if (a4 <= 1 && (v12 & 1) != 0)
+  positionCopy = position;
+  if (position <= 1 && (v12 & 1) != 0)
   {
     goto LABEL_19;
   }
@@ -206,11 +206,11 @@ void __64__BKHIDEventDeliverySequence_repostFirstEventToBufferedTargets___block_
 LABEL_19:
     v18 = 0;
 LABEL_20:
-    if (([v18 isEqual:v33] & 1) == 0 && (v35 != 1 || (-[NSMutableSet containsObject:](self->_resolutionsWithIncompleteSequences, "containsObject:", v33) & 1) == 0))
+    if (([v18 isEqual:resolutionCopy] & 1) == 0 && (positionCopy != 1 || (-[NSMutableSet containsObject:](self->_resolutionsWithIncompleteSequences, "containsObject:", resolutionCopy) & 1) == 0))
     {
       if ([(NSMutableSet *)self->_buffersWithIncompleteSequences containsObject:v32])
       {
-        [(NSMutableSet *)self->_currentResolutions addObject:v33];
+        [(NSMutableSet *)self->_currentResolutions addObject:resolutionCopy];
       }
 
       v28 = BKLogEventDelivery();
@@ -218,17 +218,17 @@ LABEL_20:
       {
         v30 = BKSHIDEventGetConciseDescription();
         *buf = 134218754;
-        v44 = self;
+        selfCopy2 = self;
         v45 = 2048;
         v46 = v32;
         v47 = 2114;
         v48 = v30;
         v49 = 2114;
-        v50 = v33;
+        v50 = resolutionCopy;
         _os_log_debug_impl(&dword_223CBE000, v28, OS_LOG_TYPE_DEBUG, "sq:%p buf:%p post [%{public}@] to resolution:%{public}@", buf, 0x2Au);
       }
 
-      [(BKHIDBufferedEventProcessor *)self->_processor postEvent:a3 withContext:v36 toResolution:v33 fromSequence:self];
+      [(BKHIDBufferedEventProcessor *)self->_processor postEvent:event withContext:contextCopy toResolution:resolutionCopy fromSequence:self];
     }
 
     goto LABEL_28;
@@ -251,8 +251,8 @@ LABEL_20:
       }
 
       v22 = *(*(&v39 + 1) + 8 * i);
-      v23 = [v22 dispatchingTarget];
-      v24 = [v38 isEqual:v23];
+      dispatchingTarget2 = [v22 dispatchingTarget];
+      v24 = [dispatchingTarget isEqual:dispatchingTarget2];
 
       if (v24)
       {
@@ -261,21 +261,21 @@ LABEL_20:
         {
           v27 = BKSHIDEventGetConciseDescription();
           *buf = v31;
-          v44 = self;
+          selfCopy2 = self;
           v45 = 2048;
           v46 = v32;
           v47 = 2114;
           v48 = v27;
           v49 = 2114;
-          v50 = v33;
+          v50 = resolutionCopy;
           _os_log_debug_impl(&dword_223CBE000, v25, OS_LOG_TYPE_DEBUG, "sq:%p buf:%p unbuffer [%{public}@] to resolution:%{public}@", buf, 0x2Au);
         }
 
-        [(BKHIDBufferedEventProcessor *)self->_processor postEvent:a3 withContext:v36 toResolution:v22 fromSequence:self];
+        [(BKHIDBufferedEventProcessor *)self->_processor postEvent:event withContext:contextCopy toResolution:v22 fromSequence:self];
         v26 = v22;
 
         v20 = v34;
-        if (v35 == 3)
+        if (positionCopy == 3)
         {
           [(NSMutableSet *)self->_resolutionsWithIncompleteSequences removeObject:v26];
         }
@@ -299,10 +299,10 @@ LABEL_28:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)postEvent:(__IOHIDEvent *)a3 position:(int64_t)a4 additionalContext:(id)a5
+- (void)postEvent:(__IOHIDEvent *)event position:(int64_t)position additionalContext:(id)context
 {
   v54 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  contextCopy = context;
   if (self->_firstEvent)
   {
     firstAdditionalContext = [(BKHIDEventDeliveryManager *)self->_deliveryManager currentBuffersPerDispatchTarget];
@@ -312,7 +312,7 @@ LABEL_28:
   else
   {
     self->_firstEvent = IOHIDEventCreateCopy();
-    v10 = v8;
+    v10 = contextCopy;
     firstAdditionalContext = self->_firstAdditionalContext;
     self->_firstAdditionalContext = v10;
   }
@@ -324,7 +324,7 @@ LABEL_28:
   v45 = 0u;
   obj = self->_currentBuffers;
   v12 = [(NSMutableSet *)obj countByEnumeratingWithState:&v42 objects:v53 count:16];
-  v37 = v8;
+  v37 = contextCopy;
   if (v12)
   {
     v14 = v12;
@@ -341,31 +341,31 @@ LABEL_28:
         }
 
         v17 = *(*(&v42 + 1) + 8 * i);
-        v18 = [v17 dispatchTarget];
-        [v11 addObject:v18];
+        dispatchTarget = [v17 dispatchTarget];
+        [v11 addObject:dispatchTarget];
 
         v19 = BKLogEventDelivery();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
         {
           v20 = BKSHIDEventGetConciseDescription();
           *buf = v33;
-          v48 = self;
+          selfCopy2 = self;
           v49 = 2114;
           v50 = v20;
           v51 = 2048;
           v52 = v17;
           _os_log_debug_impl(&dword_223CBE000, v19, OS_LOG_TYPE_DEBUG, "sq:%p append [%{public}@] to buf:%p", buf, 0x20u);
 
-          v8 = v37;
+          contextCopy = v37;
         }
 
-        [v17 appendEvent:a3 sender:self->_senderInfo sequence:self additionalContext:v8];
-        if (a4 == 3)
+        [v17 appendEvent:event sender:self->_senderInfo sequence:self additionalContext:contextCopy];
+        if (position == 3)
         {
           [(NSMutableSet *)self->_buffersWithIncompleteSequences removeObject:v17];
         }
 
-        else if (a4 == 1)
+        else if (position == 1)
         {
           [(NSMutableSet *)self->_buffersWithIncompleteSequences addObject:v17];
         }
@@ -401,8 +401,8 @@ LABEL_28:
         }
 
         v27 = *(*(&v38 + 1) + 8 * j);
-        v28 = [v27 dispatchingTarget];
-        v29 = [v11 containsObject:v28];
+        dispatchingTarget = [v27 dispatchingTarget];
+        v29 = [v11 containsObject:dispatchingTarget];
 
         if ((v29 & 1) == 0)
         {
@@ -411,7 +411,7 @@ LABEL_28:
           {
             v31 = BKSHIDEventGetConciseDescription();
             *buf = v34;
-            v48 = self;
+            selfCopy2 = self;
             v49 = 2114;
             v50 = v31;
             v51 = 2114;
@@ -419,13 +419,13 @@ LABEL_28:
             _os_log_debug_impl(&dword_223CBE000, v30, OS_LOG_TYPE_DEBUG, "sq:%p post [%{public}@] to resolution:%{public}@", buf, 0x20u);
           }
 
-          [(BKHIDBufferedEventProcessor *)self->_processor postEvent:a3 withContext:v37 toResolution:v27 fromSequence:self];
-          if (a4 == 3)
+          [(BKHIDBufferedEventProcessor *)self->_processor postEvent:event withContext:v37 toResolution:v27 fromSequence:self];
+          if (position == 3)
           {
             [(NSMutableSet *)self->_resolutionsWithIncompleteSequences removeObject:v27];
           }
 
-          else if (a4 == 1)
+          else if (position == 1)
           {
             [(NSMutableSet *)self->_resolutionsWithIncompleteSequences addObject:v27];
           }
@@ -463,31 +463,31 @@ LABEL_28:
   [(BKHIDEventDeliverySequence *)&v4 dealloc];
 }
 
-- (BKHIDEventDeliverySequence)initWithProcessor:(id)a3 dispatcher:(id)a4 senderInfo:(id)a5 additionalContext:(id)a6 keyCommand:(id)a7 deliveryManager:(id)a8 resolutions:(id)a9 buffers:(id)a10
+- (BKHIDEventDeliverySequence)initWithProcessor:(id)processor dispatcher:(id)dispatcher senderInfo:(id)info additionalContext:(id)context keyCommand:(id)command deliveryManager:(id)manager resolutions:(id)resolutions buffers:(id)self0
 {
-  v37 = a3;
-  v36 = a4;
-  v35 = a5;
-  v34 = a6;
-  v33 = a7;
-  v17 = a8;
-  v18 = a9;
-  v19 = a10;
+  processorCopy = processor;
+  dispatcherCopy = dispatcher;
+  infoCopy = info;
+  contextCopy = context;
+  commandCopy = command;
+  managerCopy = manager;
+  resolutionsCopy = resolutions;
+  buffersCopy = buffers;
   v38.receiver = self;
   v38.super_class = BKHIDEventDeliverySequence;
   v20 = [(BKHIDEventDeliverySequence *)&v38 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_deliveryManager, a8);
-    objc_storeStrong(&v21->_dispatcher, a4);
-    objc_storeStrong(&v21->_processor, a3);
-    objc_storeStrong(&v21->_additionalContext, a6);
-    objc_storeStrong(&v21->_senderInfo, a5);
-    objc_storeStrong(&v21->_keyCommand, a7);
-    if (v19)
+    objc_storeStrong(&v20->_deliveryManager, manager);
+    objc_storeStrong(&v21->_dispatcher, dispatcher);
+    objc_storeStrong(&v21->_processor, processor);
+    objc_storeStrong(&v21->_additionalContext, context);
+    objc_storeStrong(&v21->_senderInfo, info);
+    objc_storeStrong(&v21->_keyCommand, command);
+    if (buffersCopy)
     {
-      v22 = [v19 mutableCopy];
+      v22 = [buffersCopy mutableCopy];
     }
 
     else
@@ -502,9 +502,9 @@ LABEL_28:
     buffersWithIncompleteSequences = v21->_buffersWithIncompleteSequences;
     v21->_buffersWithIncompleteSequences = v24;
 
-    if (v18)
+    if (resolutionsCopy)
     {
-      v26 = [v18 mutableCopy];
+      v26 = [resolutionsCopy mutableCopy];
     }
 
     else

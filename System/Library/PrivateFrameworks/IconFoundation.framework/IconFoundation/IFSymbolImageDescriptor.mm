@@ -1,6 +1,6 @@
 @interface IFSymbolImageDescriptor
 - (IFSymbolImageDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)digest;
 @end
 
@@ -19,8 +19,8 @@
     *(v2 + 24) = xmmword_1B9E3B5D0;
     *(v2 + 5) = 5;
     v4 = MEMORY[0x1E695DF58];
-    v5 = [MEMORY[0x1E695DF58] _deviceLanguage];
-    v6 = [v4 characterDirectionForLanguage:v5];
+    _deviceLanguage = [MEMORY[0x1E695DF58] _deviceLanguage];
+    v6 = [v4 characterDirectionForLanguage:_deviceLanguage];
 
     if (v6 == 2)
     {
@@ -31,7 +31,7 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(objc_opt_class());
   *(result + 1) = *&self->_pointSize;

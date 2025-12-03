@@ -1,10 +1,10 @@
 @interface CaptureMTLIOFileHandle
-- (BOOL)conformsToProtocol:(id)a3;
-- (CaptureMTLIOFileHandle)initWithBaseObject:(id)a3 captureContext:(GTTraceContext *)a4;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (CaptureMTLIOFileHandle)initWithBaseObject:(id)object captureContext:(GTTraceContext *)context;
 - (NSString)description;
 - (unint64_t)streamReference;
 - (void)dealloc;
-- (void)setLabel:(id)a3;
+- (void)setLabel:(id)label;
 - (void)touch;
 @end
 
@@ -36,10 +36,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLIOFileHandle *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLIOFileHandle *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -58,15 +58,15 @@
   [(CaptureMTLIOFileHandle *)&v13 dealloc];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v19 = 0u;
   v20 = 0u;
   v18 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v18);
-  [(MTLIOFileHandle *)self->_baseObject setLabel:v4];
+  [(MTLIOFileHandle *)self->_baseObject setLabel:labelCopy];
   v6 = v19;
   *(v19 + 8) = -15290;
   v7 = BYTE9(v20);
@@ -86,10 +86,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLIOFileHandle *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLIOFileHandle *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -97,16 +97,16 @@
     var0 = 0;
   }
 
-  v13 = [v4 UTF8String];
-  if (v13)
+  uTF8String = [labelCopy UTF8String];
+  if (uTF8String)
   {
-    v14 = [v4 UTF8String];
-    v15 = strlen([v4 UTF8String]);
-    LOBYTE(v13) = GTTraceEncoder_storeBytes(&v18, v14, v15 + 1);
+    uTF8String2 = [labelCopy UTF8String];
+    v15 = strlen([labelCopy UTF8String]);
+    LOBYTE(uTF8String) = GTTraceEncoder_storeBytes(&v18, uTF8String2, v15 + 1);
   }
 
   *v8 = var0;
-  v8[8] = v13;
+  v8[8] = uTF8String;
   *(v8 + 9) = 0;
   *(v8 + 3) = 0;
   s();
@@ -115,13 +115,13 @@
   *(v19 + 15) |= 8u;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   baseObject = self->_baseObject;
-  v4 = a3;
-  v5 = [(MTLIOFileHandle *)baseObject conformsToProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [(MTLIOFileHandle *)baseObject conformsToProtocol:protocolCopy];
 
-  if (&OBJC_PROTOCOL___CaptureMTLObject == v4)
+  if (&OBJC_PROTOCOL___CaptureMTLObject == protocolCopy)
   {
     return 1;
   }
@@ -176,19 +176,19 @@
   }
 }
 
-- (CaptureMTLIOFileHandle)initWithBaseObject:(id)a3 captureContext:(GTTraceContext *)a4
+- (CaptureMTLIOFileHandle)initWithBaseObject:(id)object captureContext:(GTTraceContext *)context
 {
-  v7 = a3;
+  objectCopy = object;
   v12.receiver = self;
   v12.super_class = CaptureMTLIOFileHandle;
   v8 = [(CaptureMTLIOFileHandle *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_baseObject, a3);
-    v9->_traceContext = a4;
-    v10 = DEVICEOBJECT(v7);
-    v9->_traceStream = GTTraceContext_openStream(a4, v10, v9);
+    objc_storeStrong(&v8->_baseObject, object);
+    v9->_traceContext = context;
+    v10 = DEVICEOBJECT(objectCopy);
+    v9->_traceStream = GTTraceContext_openStream(context, v10, v9);
   }
 
   return v9;

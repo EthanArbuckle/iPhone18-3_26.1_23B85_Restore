@@ -1,8 +1,8 @@
 @interface WFRemoteWebSheetViewController
-+ (id)requestViewControllerWithConnectionHandler:(id)a3;
++ (id)requestViewControllerWithConnectionHandler:(id)handler;
 - (WFRemoteWebSheetViewControllerDelegate)delegate;
 - (void)viewDidLoad;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)viewServiceDidTerminateWithError:(id)error;
 - (void)webSheetViewControllerContentDidFinishLoading;
 - (void)webSheetViewControllerContentDidStartLoading;
 - (void)webSheetViewControllerContentReadyForPresentation;
@@ -10,10 +10,10 @@
 
 @implementation WFRemoteWebSheetViewController
 
-+ (id)requestViewControllerWithConnectionHandler:(id)a3
++ (id)requestViewControllerWithConnectionHandler:(id)handler
 {
-  v3 = a3;
-  v4 = [objc_opt_class() requestViewController:@"WebSheetViewController" fromServiceWithBundleIdentifier:@"com.apple.NanoWebSheet" connectionHandler:v3];
+  handlerCopy = handler;
+  v4 = [objc_opt_class() requestViewController:@"WebSheetViewController" fromServiceWithBundleIdentifier:@"com.apple.NanoWebSheet" connectionHandler:handlerCopy];
 
   return v4;
 }
@@ -49,8 +49,8 @@
     _os_log_impl(&dword_273FB9000, v3, v4, "%s", &v7, 0xCu);
   }
 
-  v5 = [(WFRemoteWebSheetViewController *)self delegate];
-  [v5 remoteWebSheetViewController:self handleEvent:0 context:0];
+  delegate = [(WFRemoteWebSheetViewController *)self delegate];
+  [delegate remoteWebSheetViewController:self handleEvent:0 context:0];
 
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -67,8 +67,8 @@
     _os_log_impl(&dword_273FB9000, v3, v4, "%s", &v7, 0xCu);
   }
 
-  v5 = [(WFRemoteWebSheetViewController *)self delegate];
-  [v5 remoteWebSheetViewController:self handleEvent:1 context:0];
+  delegate = [(WFRemoteWebSheetViewController *)self delegate];
+  [delegate remoteWebSheetViewController:self handleEvent:1 context:0];
 
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -85,16 +85,16 @@
     _os_log_impl(&dword_273FB9000, v3, v4, "%s", &v7, 0xCu);
   }
 
-  v5 = [(WFRemoteWebSheetViewController *)self delegate];
-  [v5 remoteWebSheetViewController:self handleEvent:2 context:0];
+  delegate = [(WFRemoteWebSheetViewController *)self delegate];
+  [delegate remoteWebSheetViewController:self handleEvent:2 context:0];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = WFLogForCategory(0);
   v6 = OSLogForWFLogLevel(3uLL);
   if (WFCurrentLogLevel() >= 3 && v5 && os_log_type_enabled(v5, v6))
@@ -102,27 +102,27 @@
     v12 = 136315394;
     v13 = "[WFRemoteWebSheetViewController viewServiceDidTerminateWithError:]";
     v14 = 2112;
-    v15 = v4;
+    v15 = errorCopy;
     _os_log_impl(&dword_273FB9000, v5, v6, "%s: error %@", &v12, 0x16u);
   }
 
-  if (v4)
+  if (errorCopy)
   {
-    v7 = [v4 domain];
-    if ([v7 isEqualToString:*MEMORY[0x277D77620]])
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:*MEMORY[0x277D77620]])
     {
-      [v4 code];
+      [errorCopy code];
     }
   }
 
-  v8 = [(WFRemoteWebSheetViewController *)self delegate];
+  delegate = [(WFRemoteWebSheetViewController *)self delegate];
 
-  if (v8)
+  if (delegate)
   {
     v9 = objc_alloc_init(WFRemoteWebSheetViewControllerErrorContext);
-    [(WFRemoteWebSheetViewControllerErrorContext *)v9 setError:v4];
-    v10 = [(WFRemoteWebSheetViewController *)self delegate];
-    [v10 remoteWebSheetViewController:self handleEvent:3 context:v9];
+    [(WFRemoteWebSheetViewControllerErrorContext *)v9 setError:errorCopy];
+    delegate2 = [(WFRemoteWebSheetViewController *)self delegate];
+    [delegate2 remoteWebSheetViewController:self handleEvent:3 context:v9];
   }
 
   v11 = *MEMORY[0x277D85DE8];

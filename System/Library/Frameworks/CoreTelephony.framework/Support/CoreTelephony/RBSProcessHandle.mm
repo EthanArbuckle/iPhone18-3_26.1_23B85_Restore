@@ -32,8 +32,8 @@
 
 - (BOOL)ct_isLaunchAngel
 {
-  v2 = [(RBSProcessHandle *)self ct_processType];
-  v3 = [v2 isEqualToString:@"angel"];
+  ct_processType = [(RBSProcessHandle *)self ct_processType];
+  v3 = [ct_processType isEqualToString:@"angel"];
 
   return v3;
 }

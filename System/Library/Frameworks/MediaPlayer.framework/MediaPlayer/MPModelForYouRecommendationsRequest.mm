@@ -1,18 +1,18 @@
 @interface MPModelForYouRecommendationsRequest
 - (MPModelForYouRecommendationsRequest)init;
-- (MPModelForYouRecommendationsRequest)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)newOperationWithResponseHandler:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (MPModelForYouRecommendationsRequest)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)newOperationWithResponseHandler:(id)handler;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPModelForYouRecommendationsRequest
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = MPModelForYouRecommendationsRequest;
-  v4 = [(MPStoreModelRequest *)&v7 copyWithZone:a3];
+  v4 = [(MPStoreModelRequest *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -31,63 +31,63 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MPModelForYouRecommendationsRequest;
-  v4 = a3;
-  [(MPStoreModelRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_customForYouURL forKey:{@"customForYouURL", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_filteringPolicy forKey:@"MPModelStoreForYouRequestFilteringPolicy"];
-  [v4 encodeInteger:self->_requestEndpoint forKey:@"MPModelStoreForYouRequestEndpoint"];
-  [v4 encodeInteger:self->_mode forKey:@"MPModelStoreForYouRequestMode"];
-  [v4 encodeBool:self->_withRecentlyPlayed forKey:@"withRecentlyPlayed"];
-  [v4 encodeBool:self->_withSocial forKey:@"withSocial"];
-  [v4 encodeInteger:self->_types forKey:@"types"];
-  [v4 encodeBool:self->_withPlainEditorialNotes forKey:@"withPlainEditorialNotes"];
-  [v4 encodeInteger:self->_displayFilterKinds forKey:@"MPModelStoreForYouDisplayFilterKind"];
-  [v4 encodeBool:self->_refreshRequest forKey:@"refreshRequest"];
+  coderCopy = coder;
+  [(MPStoreModelRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_customForYouURL forKey:{@"customForYouURL", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_filteringPolicy forKey:@"MPModelStoreForYouRequestFilteringPolicy"];
+  [coderCopy encodeInteger:self->_requestEndpoint forKey:@"MPModelStoreForYouRequestEndpoint"];
+  [coderCopy encodeInteger:self->_mode forKey:@"MPModelStoreForYouRequestMode"];
+  [coderCopy encodeBool:self->_withRecentlyPlayed forKey:@"withRecentlyPlayed"];
+  [coderCopy encodeBool:self->_withSocial forKey:@"withSocial"];
+  [coderCopy encodeInteger:self->_types forKey:@"types"];
+  [coderCopy encodeBool:self->_withPlainEditorialNotes forKey:@"withPlainEditorialNotes"];
+  [coderCopy encodeInteger:self->_displayFilterKinds forKey:@"MPModelStoreForYouDisplayFilterKind"];
+  [coderCopy encodeBool:self->_refreshRequest forKey:@"refreshRequest"];
 }
 
-- (MPModelForYouRecommendationsRequest)initWithCoder:(id)a3
+- (MPModelForYouRecommendationsRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = MPModelForYouRecommendationsRequest;
-  v5 = [(MPStoreModelRequest *)&v9 initWithCoder:v4];
+  v5 = [(MPStoreModelRequest *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"customForYouURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"customForYouURL"];
     customForYouURL = v5->_customForYouURL;
     v5->_customForYouURL = v6;
 
-    v5->_filteringPolicy = [v4 decodeIntegerForKey:@"MPModelStoreForYouRequestFilteringPolicy"];
-    v5->_requestEndpoint = [v4 decodeIntegerForKey:@"MPModelStoreForYouRequestEndpoint"];
-    v5->_mode = [v4 decodeIntegerForKey:@"MPModelStoreForYouRequestMode"];
-    v5->_withRecentlyPlayed = [v4 decodeBoolForKey:@"withRecentlyPlayed"];
-    v5->_withSocial = [v4 decodeBoolForKey:@"withSocial"];
-    v5->_types = [v4 decodeIntegerForKey:@"types"];
-    v5->_withPlainEditorialNotes = [v4 decodeBoolForKey:@"withPlainEditorialNotes"];
-    v5->_displayFilterKinds = [v4 decodeIntegerForKey:@"MPModelStoreForYouDisplayFilterKind"];
-    v5->_refreshRequest = [v4 decodeBoolForKey:@"refreshRequest"];
+    v5->_filteringPolicy = [coderCopy decodeIntegerForKey:@"MPModelStoreForYouRequestFilteringPolicy"];
+    v5->_requestEndpoint = [coderCopy decodeIntegerForKey:@"MPModelStoreForYouRequestEndpoint"];
+    v5->_mode = [coderCopy decodeIntegerForKey:@"MPModelStoreForYouRequestMode"];
+    v5->_withRecentlyPlayed = [coderCopy decodeBoolForKey:@"withRecentlyPlayed"];
+    v5->_withSocial = [coderCopy decodeBoolForKey:@"withSocial"];
+    v5->_types = [coderCopy decodeIntegerForKey:@"types"];
+    v5->_withPlainEditorialNotes = [coderCopy decodeBoolForKey:@"withPlainEditorialNotes"];
+    v5->_displayFilterKinds = [coderCopy decodeIntegerForKey:@"MPModelStoreForYouDisplayFilterKind"];
+    v5->_refreshRequest = [coderCopy decodeBoolForKey:@"refreshRequest"];
   }
 
   return v5;
 }
 
-- (id)newOperationWithResponseHandler:(id)a3
+- (id)newOperationWithResponseHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(MPModelForYouRecommendationsRequest *)self requestEndpoint];
+  handlerCopy = handler;
+  requestEndpoint = [(MPModelForYouRecommendationsRequest *)self requestEndpoint];
   v6 = off_1E76724C8;
-  if (v5 != 1)
+  if (requestEndpoint != 1)
   {
     v6 = off_1E76724D0;
   }
 
   v7 = objc_alloc(*v6);
   v8 = [(MPModelForYouRecommendationsRequest *)self copy];
-  v9 = [v7 initWithRequest:v8 responseHandler:v4];
+  v9 = [v7 initWithRequest:v8 responseHandler:handlerCopy];
 
   return v9;
 }

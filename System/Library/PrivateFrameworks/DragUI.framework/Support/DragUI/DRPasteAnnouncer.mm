@@ -1,9 +1,9 @@
 @interface DRPasteAnnouncer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (DRPasteAnnouncer)init;
 - (void)announceDeniedPaste;
-- (void)announcePaste:(id)a3;
-- (void)setupWithAnnouncement:(id)a3 orMessage:(id)a4 reply:(id)a5;
+- (void)announcePaste:(id)paste;
+- (void)setupWithAnnouncement:(id)announcement orMessage:(id)message reply:(id)reply;
 @end
 
 @implementation DRPasteAnnouncer
@@ -46,32 +46,32 @@
   }
 }
 
-- (void)announcePaste:(id)a3
+- (void)announcePaste:(id)paste
 {
-  v4 = a3;
+  pasteCopy = paste;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  if ([_DRPasteAnnouncementViewController shouldCoalesce:v4])
+  if ([_DRPasteAnnouncementViewController shouldCoalesce:pasteCopy])
   {
     v5 = DRLogTarget();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = 138412290;
-      v7 = v4;
+      v7 = pasteCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Not displaying duplicate of announcement %@", &v6, 0xCu);
     }
   }
 
   else
   {
-    [(DRPasteAnnouncer *)self setupWithAnnouncement:v4 orMessage:0 reply:0];
+    [(DRPasteAnnouncer *)self setupWithAnnouncement:pasteCopy orMessage:0 reply:0];
   }
 }
 
-- (void)setupWithAnnouncement:(id)a3 orMessage:(id)a4 reply:(id)a5
+- (void)setupWithAnnouncement:(id)announcement orMessage:(id)message reply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  announcementCopy = announcement;
+  messageCopy = message;
+  replyCopy = reply;
   v10 = [BNBannerSource bannerSourceForDestination:0 forRequesterIdentifier:@"com.apple.DragUI.druid"];
   v31 = 0;
   v11 = [v10 layoutDescriptionWithError:&v31];
@@ -79,24 +79,24 @@
   if (v11)
   {
     v13 = [_DRPasteAnnouncementViewController alloc];
-    v29 = v7;
-    if (v8)
+    v29 = announcementCopy;
+    if (messageCopy)
     {
       v14 = [(_DRPasteAnnouncementViewController *)v13 initForDeniedPasteWithBannerSource:v10];
-      v15 = v8;
+      v15 = messageCopy;
     }
 
     else
     {
-      v14 = [(_DRPasteAnnouncementViewController *)v13 initWithAnnouncement:v7 reply:v9 bannerSource:v10];
-      if (v9)
+      v14 = [(_DRPasteAnnouncementViewController *)v13 initWithAnnouncement:announcementCopy reply:replyCopy bannerSource:v10];
+      if (replyCopy)
       {
-        [v7 localizedAuthorizationText];
+        [announcementCopy localizedAuthorizationText];
       }
 
       else
       {
-        [v7 localizedAnnouncementText];
+        [announcementCopy localizedAnnouncementText];
       }
       v15 = ;
     }
@@ -138,7 +138,7 @@
       sub_10002FB40(v16, v27);
     }
 
-    v7 = v29;
+    announcementCopy = v29;
   }
 
   else
@@ -153,19 +153,19 @@
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [v5 valueForEntitlement:DRPasteAnnouncementEntitlement];
+  connectionCopy = connection;
+  v6 = [connectionCopy valueForEntitlement:DRPasteAnnouncementEntitlement];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v6 BOOLValue])
   {
     v7 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___DRPasteAnnouncing];
-    [v5 setExportedInterface:v7];
+    [connectionCopy setExportedInterface:v7];
 
-    [v5 setExportedObject:self];
-    [v5 _setQueue:&_dispatch_main_q];
-    [v5 resume];
+    [connectionCopy setExportedObject:self];
+    [connectionCopy _setQueue:&_dispatch_main_q];
+    [connectionCopy resume];
     v8 = 1;
   }
 

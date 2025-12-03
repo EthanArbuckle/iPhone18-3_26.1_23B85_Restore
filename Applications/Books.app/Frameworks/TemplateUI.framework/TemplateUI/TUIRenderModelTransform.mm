@@ -1,28 +1,28 @@
 @interface TUIRenderModelTransform
-- (BOOL)isEqualToRenderModel:(id)a3;
+- (BOOL)isEqualToRenderModel:(id)model;
 - (CGAffineTransform)transform;
 - (CGPoint)center;
 - (CGRect)frame;
 - (CGSize)size;
 - (NSArray)debugContainedSubmodels;
 - (NSString)description;
-- (TUIRenderModelTransform)initWithSubmodel:(id)a3;
+- (TUIRenderModelTransform)initWithSubmodel:(id)submodel;
 - (UIEdgeInsets)outsets;
-- (id)computeContainerUpdateCurrent:(id)a3 from:(id)a4 tracker:(id)a5 flags:(unint64_t)a6;
-- (id)copyForFinalAppearanceWithFlags:(unint64_t)a3;
-- (id)copyForInitialAppearanceWithFlags:(unint64_t)a3;
-- (id)copyWithAlpha:(double)a3;
-- (id)copyWithAlpha:(double)a3 submodel:(id)a4;
-- (id)copyWithItemIndex:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)newCurrentContainerPlusInsertsWithCurrent:(id)a3 update:(id)a4;
-- (id)newToContainerPlusDeletesWithUpdate:(id)a3 interests:(id)a4;
+- (id)computeContainerUpdateCurrent:(id)current from:(id)from tracker:(id)tracker flags:(unint64_t)flags;
+- (id)copyForFinalAppearanceWithFlags:(unint64_t)flags;
+- (id)copyForInitialAppearanceWithFlags:(unint64_t)flags;
+- (id)copyWithAlpha:(double)alpha;
+- (id)copyWithAlpha:(double)alpha submodel:(id)submodel;
+- (id)copyWithItemIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)newCurrentContainerPlusInsertsWithCurrent:(id)current update:(id)update;
+- (id)newToContainerPlusDeletesWithUpdate:(id)update interests:(id)interests;
 - (unint64_t)hash;
-- (void)appendReferencesToCollector:(id)a3 transform:(CGAffineTransform *)a4 query:(id)a5 liveTransformResolver:(id)a6;
-- (void)appendResourcesToCollector:(id)a3 transform:(CGAffineTransform *)a4;
-- (void)setCenter:(CGPoint)a3;
-- (void)setSize:(CGSize)a3;
-- (void)setTransform:(CGAffineTransform *)a3;
+- (void)appendReferencesToCollector:(id)collector transform:(CGAffineTransform *)transform query:(id)query liveTransformResolver:(id)resolver;
+- (void)appendResourcesToCollector:(id)collector transform:(CGAffineTransform *)transform;
+- (void)setCenter:(CGPoint)center;
+- (void)setSize:(CGSize)size;
+- (void)setTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation TUIRenderModelTransform
@@ -63,21 +63,21 @@
   return result;
 }
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
-  v5 = *&a3->c;
-  *&t1.a = *&a3->a;
+  v5 = *&transform->c;
+  *&t1.a = *&transform->a;
   *&t1.c = v5;
-  *&t1.tx = *&a3->tx;
+  *&t1.tx = *&transform->tx;
   v6 = *&self->_transform.c;
   *&v10.a = *&self->_transform.a;
   *&v10.c = v6;
   *&v10.tx = *&self->_transform.tx;
   if (!CGAffineTransformEqualToTransform(&t1, &v10))
   {
-    v7 = *&a3->a;
-    v8 = *&a3->tx;
-    *&self->_transform.c = *&a3->c;
+    v7 = *&transform->a;
+    v8 = *&transform->tx;
+    *&self->_transform.c = *&transform->c;
     *&self->_transform.tx = v8;
     *&self->_transform.a = v7;
     size = CGRectNull.size;
@@ -86,9 +86,9 @@
   }
 }
 
-- (TUIRenderModelTransform)initWithSubmodel:(id)a3
+- (TUIRenderModelTransform)initWithSubmodel:(id)submodel
 {
-  v5 = a3;
+  submodelCopy = submodel;
   v12.receiver = self;
   v12.super_class = TUIRenderModelTransform;
   v6 = [(TUIRenderModelTransform *)&v12 init];
@@ -98,7 +98,7 @@
     size = CGRectNull.size;
     v6->_frame.origin = CGRectNull.origin;
     v6->_frame.size = size;
-    objc_storeStrong(&v6->_submodel, a3);
+    objc_storeStrong(&v6->_submodel, submodel);
     v9 = *&CGAffineTransformIdentity.c;
     *&v7->_transform.a = *&CGAffineTransformIdentity.a;
     *&v7->_transform.c = v9;
@@ -128,11 +128,11 @@
   return v2;
 }
 
-- (id)copyWithItemIndex:(unint64_t)a3
+- (id)copyWithItemIndex:(unint64_t)index
 {
   if (self->_itemIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
-    self->_itemIndex = a3;
+    self->_itemIndex = index;
 
     return self;
   }
@@ -149,7 +149,7 @@
     zIndex = self->_zIndex;
     v5->_alpha = self->_alpha;
     v5->_zIndex = zIndex;
-    v5->_itemIndex = a3;
+    v5->_itemIndex = index;
     v9 = [(TUIAnimationGroupCollection *)self->_animationGroups copy];
     animationGroups = v5->_animationGroups;
     v5->_animationGroups = v9;
@@ -168,9 +168,9 @@
   }
 }
 
-- (id)copyWithAlpha:(double)a3
+- (id)copyWithAlpha:(double)alpha
 {
-  if (self->_alpha == a3)
+  if (self->_alpha == alpha)
   {
 
     return self;
@@ -186,7 +186,7 @@
     *&v5->_transform.a = v6;
     v5->_center = self->_center;
     zIndex = self->_zIndex;
-    v5->_alpha = a3;
+    v5->_alpha = alpha;
     v5->_zIndex = zIndex;
     v5->_itemIndex = 0x7FFFFFFFFFFFFFFFLL;
     v9 = [(TUIAnimationGroupCollection *)self->_animationGroups copy];
@@ -207,50 +207,50 @@
   }
 }
 
-- (id)copyWithAlpha:(double)a3 submodel:(id)a4
+- (id)copyWithAlpha:(double)alpha submodel:(id)submodel
 {
-  v6 = a4;
-  if (self->_alpha == a3 && ((submodel = self->_submodel, submodel == v6) || [(TUIRenderModel *)submodel isEqual:v6]))
+  submodelCopy = submodel;
+  if (self->_alpha == alpha && ((submodel = self->_submodel, submodel == submodelCopy) || [(TUIRenderModel *)submodel isEqual:submodelCopy]))
   {
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = [[TUIRenderModelTransform alloc] initWithSubmodel:v6];
+    selfCopy = [[TUIRenderModelTransform alloc] initWithSubmodel:submodelCopy];
     v9 = *&self->_transform.a;
     v10 = *&self->_transform.tx;
-    *&v8->_transform.c = *&self->_transform.c;
-    *&v8->_transform.tx = v10;
-    *&v8->_transform.a = v9;
-    v8->_center = self->_center;
+    *&selfCopy->_transform.c = *&self->_transform.c;
+    *&selfCopy->_transform.tx = v10;
+    *&selfCopy->_transform.a = v9;
+    selfCopy->_center = self->_center;
     zIndex = self->_zIndex;
-    v8->_alpha = a3;
-    v8->_zIndex = zIndex;
-    v8->_itemIndex = 0x7FFFFFFFFFFFFFFFLL;
+    selfCopy->_alpha = alpha;
+    selfCopy->_zIndex = zIndex;
+    selfCopy->_itemIndex = 0x7FFFFFFFFFFFFFFFLL;
     v12 = [(TUIAnimationGroupCollection *)self->_animationGroups copy];
-    animationGroups = v8->_animationGroups;
-    v8->_animationGroups = v12;
+    animationGroups = selfCopy->_animationGroups;
+    selfCopy->_animationGroups = v12;
 
     v14 = [(TUIAnimationGroupRenderModelCollection *)self->_animationRenderModels copy];
-    animationRenderModels = v8->_animationRenderModels;
-    v8->_animationRenderModels = v14;
+    animationRenderModels = selfCopy->_animationRenderModels;
+    selfCopy->_animationRenderModels = v14;
 
-    objc_storeStrong(&v8->_liveTransform, self->_liveTransform);
-    objc_storeStrong(&v8->_refId, self->_refId);
-    objc_storeStrong(&v8->_refInstance, self->_refInstance);
+    objc_storeStrong(&selfCopy->_liveTransform, self->_liveTransform);
+    objc_storeStrong(&selfCopy->_refId, self->_refId);
+    objc_storeStrong(&selfCopy->_refInstance, self->_refInstance);
     v16 = *&self->_outsets.bottom;
-    *&v8->_outsets.top = *&self->_outsets.top;
-    *&v8->_outsets.bottom = v16;
+    *&selfCopy->_outsets.top = *&self->_outsets.top;
+    *&selfCopy->_outsets.bottom = v16;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)setSize:(CGSize)a3
+- (void)setSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(TUIRenderModel *)self->_submodel size];
   if (width != v7 || height != v6)
   {
@@ -269,9 +269,9 @@
   return result;
 }
 
-- (void)appendResourcesToCollector:(id)a3 transform:(CGAffineTransform *)a4
+- (void)appendResourcesToCollector:(id)collector transform:(CGAffineTransform *)transform
 {
-  v6 = a3;
+  collectorCopy = collector;
   [(TUIRenderModelTransform *)self size];
   memset(&v14, 0, sizeof(v14));
   CGAffineTransformMakeTranslation(&v14, v7 * -0.5, v8 * -0.5);
@@ -287,24 +287,24 @@
   CGAffineTransformConcat(&v13, &v11, &t1);
   v14 = v13;
   t1 = v13;
-  v10 = *&a4->c;
-  *&v11.a = *&a4->a;
+  v10 = *&transform->c;
+  *&v11.a = *&transform->a;
   *&v11.c = v10;
-  *&v11.tx = *&a4->tx;
+  *&v11.tx = *&transform->tx;
   CGAffineTransformConcat(&v13, &t1, &v11);
   v14 = v13;
-  [(TUIRenderModel *)self->_submodel appendResourcesToCollector:v6 transform:&v13];
+  [(TUIRenderModel *)self->_submodel appendResourcesToCollector:collectorCopy transform:&v13];
 }
 
-- (void)appendReferencesToCollector:(id)a3 transform:(CGAffineTransform *)a4 query:(id)a5 liveTransformResolver:(id)a6
+- (void)appendReferencesToCollector:(id)collector transform:(CGAffineTransform *)transform query:(id)query liveTransformResolver:(id)resolver
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  collectorCopy = collector;
+  queryCopy = query;
+  resolverCopy = resolver;
   [(TUIRenderModelTransform *)self size];
   v14 = v13;
   v16 = v15;
-  if (v11 && (refId = self->_refId, refInstance = self->_refInstance, -[TUIRenderModelTransform identifier](self, "identifier"), v19 = objc_claimAutoreleasedReturnValue(), LODWORD(refId) = [v11 matchesRefId:refId refInstance:refInstance identifier:v19], v19, !refId))
+  if (queryCopy && (refId = self->_refId, refInstance = self->_refInstance, -[TUIRenderModelTransform identifier](self, "identifier"), v19 = objc_claimAutoreleasedReturnValue(), LODWORD(refId) = [queryCopy matchesRefId:refId refInstance:refInstance identifier:v19], v19, !refId))
   {
     memset(&v60, 0, sizeof(v60));
     CGAffineTransformMakeTranslation(&v60, v14 * -0.5, v16 * -0.5);
@@ -320,22 +320,22 @@
     CGAffineTransformConcat(&v59, &t2, &t1);
     v60 = v59;
     t1 = v59;
-    v31 = *&a4->c;
-    *&t2.a = *&a4->a;
+    v31 = *&transform->c;
+    *&t2.a = *&transform->a;
     *&t2.c = v31;
-    *&t2.tx = *&a4->tx;
+    *&t2.tx = *&transform->tx;
     CGAffineTransformConcat(&v59, &t1, &t2);
     v60 = v59;
-    [(TUIRenderModel *)self->_submodel appendReferencesToCollector:v10 transform:&v59 query:v11 liveTransformResolver:v12];
+    [(TUIRenderModel *)self->_submodel appendReferencesToCollector:collectorCopy transform:&v59 query:queryCopy liveTransformResolver:resolverCopy];
   }
 
   else
   {
-    v20 = [(TUIRenderModelTransform *)self liveTransform];
+    liveTransform = [(TUIRenderModelTransform *)self liveTransform];
 
-    if (v20)
+    if (liveTransform)
     {
-      v21 = [v12 liveLayoutAttributesForRenderModel:self];
+      v21 = [resolverCopy liveLayoutAttributesForRenderModel:self];
       [v21 center];
       v23 = v22;
       [v21 center];
@@ -365,10 +365,10 @@
     *&v59.a = v29;
     *&v59.c = v27;
     *&v59.tx = v28;
-    v32 = *&a4->c;
-    *&t1.a = *&a4->a;
+    v32 = *&transform->c;
+    *&t1.a = *&transform->a;
     *&t1.c = v32;
-    *&t1.tx = *&a4->tx;
+    *&t1.tx = *&transform->tx;
     CGAffineTransformConcat(&v60, &v59, &t1);
     v33 = *&self->_transform.c;
     *&v59.a = *&self->_transform.a;
@@ -407,19 +407,19 @@
     [(TUIRenderReferenceTransform *)v45 setTransform:&v60];
     [(TUIRenderReferenceTransform *)v45 setCenter:v41, v42];
     v46 = [TUIRenderReferenceIdentifier alloc];
-    v47 = [v11 UUID];
-    v48 = [v11 uid];
-    v49 = [(TUIRenderReferenceIdentifier *)v46 initWithUUID:v47 uid:v48 refId:self->_refId refInstance:self->_refInstance];
-    [v10 appendReference:v45 withIdentifier:v49];
+    uUID = [queryCopy UUID];
+    v48 = [queryCopy uid];
+    v49 = [(TUIRenderReferenceIdentifier *)v46 initWithUUID:uUID uid:v48 refId:self->_refId refInstance:self->_refInstance];
+    [collectorCopy appendReference:v45 withIdentifier:v49];
   }
 }
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
-  if (a3.x != self->_center.x || a3.y != self->_center.y)
+  if (center.x != self->_center.x || center.y != self->_center.y)
   {
-    x = a3.x;
-    y = a3.y;
+    x = center.x;
+    y = center.y;
     if (!CGRectIsNull(self->_frame))
     {
       v5.f64[0] = x;
@@ -432,21 +432,21 @@
   }
 }
 
-- (BOOL)isEqualToRenderModel:(id)a3
+- (BOOL)isEqualToRenderModel:(id)model
 {
-  v5 = a3;
-  if (v5)
+  modelCopy = model;
+  if (modelCopy)
   {
     v6 = objc_opt_class();
     if (v6 == objc_opt_class())
     {
-      v8 = v5;
+      v8 = modelCopy;
     }
 
     else
     {
       v7 = objc_opt_class();
-      v8 = TUIDynamicCast(v7, v5);
+      v8 = TUIDynamicCast(v7, modelCopy);
     }
 
     v10 = v8;
@@ -481,8 +481,8 @@
       goto LABEL_24;
     }
 
-    v17 = [(TUIRenderModelTransform *)self zIndex];
-    if (v17 != [v10 zIndex])
+    zIndex = [(TUIRenderModelTransform *)self zIndex];
+    if (zIndex != [v10 zIndex])
     {
       goto LABEL_23;
     }
@@ -495,46 +495,46 @@
       goto LABEL_23;
     }
 
-    v21 = [(TUIRenderModelTransform *)self itemIndex];
-    if (v21 != [v10 itemIndex])
+    itemIndex = [(TUIRenderModelTransform *)self itemIndex];
+    if (itemIndex != [v10 itemIndex])
     {
       goto LABEL_23;
     }
 
-    v22 = [(TUIRenderModelTransform *)self refId];
-    v23 = [v10 refId];
-    if (v22 != v23)
+    refId = [(TUIRenderModelTransform *)self refId];
+    refId2 = [v10 refId];
+    if (refId != refId2)
     {
-      v24 = [(TUIRenderModelTransform *)self refId];
-      v3 = [v10 refId];
-      if (![v24 isEqualToString:v3])
+      refId3 = [(TUIRenderModelTransform *)self refId];
+      refId4 = [v10 refId];
+      if (![refId3 isEqualToString:refId4])
       {
 
         v9 = 0;
         goto LABEL_32;
       }
 
-      v33 = v24;
+      v33 = refId3;
     }
 
-    v25 = [(TUIRenderModelTransform *)self refInstance];
-    v26 = [v10 refInstance];
-    v27 = v26;
-    if (v25 == v26)
+    refInstance = [(TUIRenderModelTransform *)self refInstance];
+    refInstance2 = [v10 refInstance];
+    v27 = refInstance2;
+    if (refInstance == refInstance2)
     {
 
-      if (v22 != v23)
+      if (refId != refId2)
       {
       }
     }
 
     else
     {
-      v28 = [(TUIRenderModelTransform *)self refInstance];
-      v29 = [v10 refInstance];
-      v35 = [v28 isEqualToString:v29];
+      refInstance3 = [(TUIRenderModelTransform *)self refInstance];
+      refInstance4 = [v10 refInstance];
+      v35 = [refInstance3 isEqualToString:refInstance4];
 
-      if (v22 != v23)
+      if (refId != refId2)
       {
       }
 
@@ -549,16 +549,16 @@ LABEL_24:
     }
 
     submodel = self->_submodel;
-    v22 = [v10 submodel];
-    if (submodel == v22)
+    refId = [v10 submodel];
+    if (submodel == refId)
     {
       v9 = 1;
       goto LABEL_34;
     }
 
     v32 = self->_submodel;
-    v23 = [v10 submodel];
-    v9 = [(TUIRenderModel *)v32 isEqualToRenderModel:v23];
+    refId2 = [v10 submodel];
+    v9 = [(TUIRenderModel *)v32 isEqualToRenderModel:refId2];
 LABEL_32:
 
 LABEL_34:
@@ -571,41 +571,41 @@ LABEL_25:
   return v9;
 }
 
-- (id)copyForInitialAppearanceWithFlags:(unint64_t)a3
+- (id)copyForInitialAppearanceWithFlags:(unint64_t)flags
 {
-  v5 = [(TUIRenderModel *)self->_submodel handlesAlphaForInitialAppearance];
-  if ((a3 & 1) != 0 || (alpha = 0.0, v5))
+  handlesAlphaForInitialAppearance = [(TUIRenderModel *)self->_submodel handlesAlphaForInitialAppearance];
+  if ((flags & 1) != 0 || (alpha = 0.0, handlesAlphaForInitialAppearance))
   {
     alpha = self->_alpha;
   }
 
-  v7 = [(TUIRenderModel *)self->_submodel copyForInitialAppearanceWithFlags:v5 ^ 1 | a3];
-  v8 = [(TUIRenderModelTransform *)self copyWithAlpha:v7 submodel:alpha];
+  flags = [(TUIRenderModel *)self->_submodel copyForInitialAppearanceWithFlags:handlesAlphaForInitialAppearance ^ 1 | flags];
+  v8 = [(TUIRenderModelTransform *)self copyWithAlpha:flags submodel:alpha];
 
   return v8;
 }
 
-- (id)copyForFinalAppearanceWithFlags:(unint64_t)a3
+- (id)copyForFinalAppearanceWithFlags:(unint64_t)flags
 {
-  v5 = [(TUIRenderModel *)self->_submodel handlesAlphaForFinalAppearance];
-  if ((a3 & 1) != 0 || (alpha = 0.0, v5))
+  handlesAlphaForFinalAppearance = [(TUIRenderModel *)self->_submodel handlesAlphaForFinalAppearance];
+  if ((flags & 1) != 0 || (alpha = 0.0, handlesAlphaForFinalAppearance))
   {
     alpha = self->_alpha;
   }
 
-  v7 = [(TUIRenderModel *)self->_submodel copyForFinalAppearanceWithFlags:v5 ^ 1 | a3];
-  v8 = [(TUIRenderModelTransform *)self copyWithAlpha:v7 submodel:alpha];
+  flags = [(TUIRenderModel *)self->_submodel copyForFinalAppearanceWithFlags:handlesAlphaForFinalAppearance ^ 1 | flags];
+  v8 = [(TUIRenderModelTransform *)self copyWithAlpha:flags submodel:alpha];
 
   return v8;
 }
 
-- (id)computeContainerUpdateCurrent:(id)a3 from:(id)a4 tracker:(id)a5 flags:(unint64_t)a6
+- (id)computeContainerUpdateCurrent:(id)current from:(id)from tracker:(id)tracker flags:(unint64_t)flags
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  currentCopy = current;
+  fromCopy = from;
+  trackerCopy = tracker;
   v13 = objc_opt_class();
-  v14 = [v11 submodel];
+  submodel = [fromCopy submodel];
   if (v13 != objc_opt_class())
   {
     v15 = 0;
@@ -619,9 +619,9 @@ LABEL_5:
   if (v16)
   {
     submodel = self->_submodel;
-    v14 = [v10 submodel];
-    v18 = [v11 submodel];
-    v15 = [(TUIRenderModel *)submodel computeContainerUpdateCurrent:v14 from:v18 tracker:v12 flags:a6];
+    submodel = [currentCopy submodel];
+    submodel2 = [fromCopy submodel];
+    v15 = [(TUIRenderModel *)submodel computeContainerUpdateCurrent:submodel from:submodel2 tracker:trackerCopy flags:flags];
 
     goto LABEL_5;
   }
@@ -632,32 +632,32 @@ LABEL_6:
   return v15;
 }
 
-- (id)newToContainerPlusDeletesWithUpdate:(id)a3 interests:(id)a4
+- (id)newToContainerPlusDeletesWithUpdate:(id)update interests:(id)interests
 {
-  v5 = [(TUIRenderModel *)self->_submodel newToContainerPlusDeletesWithUpdate:a3 interests:a4];
+  v5 = [(TUIRenderModel *)self->_submodel newToContainerPlusDeletesWithUpdate:update interests:interests];
   v6 = [(TUIRenderModelTransform *)self copyWithAlpha:v5 submodel:self->_alpha];
 
   return v6;
 }
 
-- (id)newCurrentContainerPlusInsertsWithCurrent:(id)a3 update:(id)a4
+- (id)newCurrentContainerPlusInsertsWithCurrent:(id)current update:(id)update
 {
   submodel = self->_submodel;
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 submodel];
-  v9 = [(TUIRenderModel *)submodel newCurrentContainerPlusInsertsWithCurrent:v8 update:v6];
+  updateCopy = update;
+  currentCopy = current;
+  submodel = [currentCopy submodel];
+  v9 = [(TUIRenderModel *)submodel newCurrentContainerPlusInsertsWithCurrent:submodel update:updateCopy];
 
-  [v7 alpha];
-  v10 = [v7 copyWithAlpha:v9 submodel:?];
+  [currentCopy alpha];
+  v10 = [currentCopy copyWithAlpha:v9 submodel:?];
 
   return v10;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(TUIRenderModelTransform *)self identifier];
-  v3 = TUIIdentifierHash(v2);
+  identifier = [(TUIRenderModelTransform *)self identifier];
+  v3 = TUIIdentifierHash(identifier);
 
   return v3;
 }
@@ -702,9 +702,9 @@ LABEL_6:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithSubmodel:", self->_submodel}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithSubmodel:", self->_submodel}];
   v5 = *&self->_transform.tx;
   v6 = *&self->_transform.a;
   *(v4 + 11) = *&self->_transform.c;

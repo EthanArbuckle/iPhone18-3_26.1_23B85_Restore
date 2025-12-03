@@ -1,41 +1,41 @@
 @interface ASParseRule
-- (ASParseRule)initWithMinimumNumber:(int)a3 maximumNumber:(int)a4 codePage:(int)a5 token:(int)a6 objectClass:(Class)a7 setterMethod:(SEL)a8 dataclass:(int64_t)a9 callbackDict:(id)a10 streamCallbackDict:(id)a11 subclassRuleSet:(id)a12;
+- (ASParseRule)initWithMinimumNumber:(int)number maximumNumber:(int)maximumNumber codePage:(int)page token:(int)token objectClass:(Class)class setterMethod:(SEL)method dataclass:(int64_t)dataclass callbackDict:(id)self0 streamCallbackDict:(id)self1 subclassRuleSet:(id)self2;
 - (SEL)setterMethod;
 @end
 
 @implementation ASParseRule
 
-- (ASParseRule)initWithMinimumNumber:(int)a3 maximumNumber:(int)a4 codePage:(int)a5 token:(int)a6 objectClass:(Class)a7 setterMethod:(SEL)a8 dataclass:(int64_t)a9 callbackDict:(id)a10 streamCallbackDict:(id)a11 subclassRuleSet:(id)a12
+- (ASParseRule)initWithMinimumNumber:(int)number maximumNumber:(int)maximumNumber codePage:(int)page token:(int)token objectClass:(Class)class setterMethod:(SEL)method dataclass:(int64_t)dataclass callbackDict:(id)self0 streamCallbackDict:(id)self1 subclassRuleSet:(id)self2
 {
-  v25 = a10;
-  v24 = a11;
-  v18 = a12;
+  dictCopy = dict;
+  callbackDictCopy = callbackDict;
+  setCopy = set;
   v26.receiver = self;
   v26.super_class = ASParseRule;
   v19 = [(ASParseRule *)&v26 init];
   v20 = v19;
   if (v19)
   {
-    v19->_minimumNumber = a3;
-    v19->_maximumNumber = a4;
-    v19->_codePage = a5;
-    v19->_token = a6;
-    v19->_objectClass = a7;
-    if (a8)
+    v19->_minimumNumber = number;
+    v19->_maximumNumber = maximumNumber;
+    v19->_codePage = page;
+    v19->_token = token;
+    v19->_objectClass = class;
+    if (method)
     {
-      v21 = a8;
+      methodCopy = method;
     }
 
     else
     {
-      v21 = 0;
+      methodCopy = 0;
     }
 
-    v19->_setterMethod = v21;
-    v19->_dataclass = a9;
-    objc_storeStrong(&v19->_callbackDict, a10);
-    objc_storeStrong(&v20->_streamCallbackDict, a11);
-    objc_storeStrong(&v20->_subclassRuleSet, a12);
+    v19->_setterMethod = methodCopy;
+    v19->_dataclass = dataclass;
+    objc_storeStrong(&v19->_callbackDict, dict);
+    objc_storeStrong(&v20->_streamCallbackDict, callbackDict);
+    objc_storeStrong(&v20->_subclassRuleSet, set);
   }
 
   return v20;

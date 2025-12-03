@@ -1,31 +1,31 @@
 @interface PXPhotoKitPersonMakeKeyPhotoActionPerformer
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6;
-+ (id)createPreviewActionWithTitle:(id)a3 image:(id)a4 handler:(id)a5;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group;
++ (id)createPreviewActionWithTitle:(id)title image:(id)image handler:(id)handler;
 - (void)performBackgroundTask;
 @end
 
 @implementation PXPhotoKitPersonMakeKeyPhotoActionPerformer
 
-+ (id)createPreviewActionWithTitle:(id)a3 image:(id)a4 handler:(id)a5
++ (id)createPreviewActionWithTitle:(id)title image:(id)image handler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   v8 = MEMORY[0x1E69DC628];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __90__PXPhotoKitPersonMakeKeyPhotoActionPerformer_createPreviewActionWithTitle_image_handler___block_invoke;
   v12[3] = &unk_1E7742C90;
-  v13 = v7;
-  v9 = v7;
-  v10 = [v8 actionWithTitle:a3 image:a4 identifier:0 handler:v12];
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = [v8 actionWithTitle:title image:image identifier:0 handler:v12];
 
   return v10;
 }
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group
 {
-  if (a3)
+  if (asset)
   {
-    v6 = a5 == 0;
+    v6 = person == 0;
   }
 
   else
@@ -39,18 +39,18 @@
 - (void)performBackgroundTask
 {
   v3 = [PXChangePersonKeyFaceAction alloc];
-  v4 = [(PXPhotoKitAssetActionPerformer *)self person];
-  v5 = [(PXPhotoKitAssetActionPerformer *)self assets];
-  v6 = [v5 firstObject];
-  v7 = [(PXChangePersonKeyFaceAction *)v3 initWithPerson:v4 asset:v6];
+  person = [(PXPhotoKitAssetActionPerformer *)self person];
+  assets = [(PXPhotoKitAssetActionPerformer *)self assets];
+  firstObject = [assets firstObject];
+  v7 = [(PXChangePersonKeyFaceAction *)v3 initWithPerson:person asset:firstObject];
 
-  v8 = [(PXActionPerformer *)self undoManager];
+  undoManager = [(PXActionPerformer *)self undoManager];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __68__PXPhotoKitPersonMakeKeyPhotoActionPerformer_performBackgroundTask__block_invoke;
   v9[3] = &unk_1E774C5C0;
   v9[4] = self;
-  [(PXAction *)v7 executeWithUndoManager:v8 completionHandler:v9];
+  [(PXAction *)v7 executeWithUndoManager:undoManager completionHandler:v9];
 }
 
 void __68__PXPhotoKitPersonMakeKeyPhotoActionPerformer_performBackgroundTask__block_invoke(uint64_t a1, uint64_t a2, void *a3)

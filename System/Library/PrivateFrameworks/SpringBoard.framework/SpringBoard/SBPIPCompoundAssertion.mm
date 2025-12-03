@@ -1,26 +1,26 @@
 @interface SBPIPCompoundAssertion
-- (SBPIPCompoundAssertion)initWithIdentifier:(id)a3 reason:(int64_t)a4;
-- (void)addAssertionForController:(id)a3 windowScene:(id)a4;
+- (SBPIPCompoundAssertion)initWithIdentifier:(id)identifier reason:(int64_t)reason;
+- (void)addAssertionForController:(id)controller windowScene:(id)scene;
 - (void)dealloc;
 - (void)invalidate;
-- (void)removeAssertionForController:(id)a3;
+- (void)removeAssertionForController:(id)controller;
 @end
 
 @implementation SBPIPCompoundAssertion
 
-- (SBPIPCompoundAssertion)initWithIdentifier:(id)a3 reason:(int64_t)a4
+- (SBPIPCompoundAssertion)initWithIdentifier:(id)identifier reason:(int64_t)reason
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = SBPIPCompoundAssertion;
   v7 = [(SBPIPCompoundAssertion *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [identifierCopy copy];
     identifier = v7->_identifier;
     v7->_identifier = v8;
 
-    v7->_reason = a4;
+    v7->_reason = reason;
   }
 
   return v7;
@@ -28,31 +28,31 @@
 
 - (void)dealloc
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBPIPCompoundAssertion.m" lineNumber:26 description:@"Deallocated with outstanding assertions"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBPIPCompoundAssertion.m" lineNumber:26 description:@"Deallocated with outstanding assertions"];
 }
 
-- (void)addAssertionForController:(id)a3 windowScene:(id)a4
+- (void)addAssertionForController:(id)controller windowScene:(id)scene
 {
-  v10 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  sceneCopy = scene;
   if (!self->_controllerToStashAssertionMap)
   {
-    v7 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     controllerToStashAssertionMap = self->_controllerToStashAssertionMap;
-    self->_controllerToStashAssertionMap = v7;
+    self->_controllerToStashAssertionMap = weakToStrongObjectsMapTable;
   }
 
-  v9 = [v10 acquireStashAssertionForWindowScene:v6 withReason:self->_reason identifier:self->_identifier];
-  [(NSMapTable *)self->_controllerToStashAssertionMap setObject:v9 forKey:v10];
+  v9 = [controllerCopy acquireStashAssertionForWindowScene:sceneCopy withReason:self->_reason identifier:self->_identifier];
+  [(NSMapTable *)self->_controllerToStashAssertionMap setObject:v9 forKey:controllerCopy];
 }
 
-- (void)removeAssertionForController:(id)a3
+- (void)removeAssertionForController:(id)controller
 {
   controllerToStashAssertionMap = self->_controllerToStashAssertionMap;
-  v6 = a3;
-  v8 = [(NSMapTable *)controllerToStashAssertionMap objectForKey:v6];
-  [(NSMapTable *)self->_controllerToStashAssertionMap removeObjectForKey:v6];
+  controllerCopy = controller;
+  v8 = [(NSMapTable *)controllerToStashAssertionMap objectForKey:controllerCopy];
+  [(NSMapTable *)self->_controllerToStashAssertionMap removeObjectForKey:controllerCopy];
 
   v7 = v8;
   if (!v8)
@@ -71,8 +71,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(NSMapTable *)self->_controllerToStashAssertionMap objectEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  objectEnumerator = [(NSMapTable *)self->_controllerToStashAssertionMap objectEnumerator];
+  v4 = [objectEnumerator countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -84,14 +84,14 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) invalidate];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [objectEnumerator countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);

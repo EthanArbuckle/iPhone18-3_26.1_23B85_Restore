@@ -1,23 +1,23 @@
 @interface VCCoreAudio_AudioUnitMockInstance
-- (BOOL)generateMutedTalkerNotification:(unsigned int)a3;
-- (BOOL)reallocAudioBuffer:(AudioBufferList *)a3 withFormat:(const AudioStreamBasicDescription *)a4;
+- (BOOL)generateMutedTalkerNotification:(unsigned int)notification;
+- (BOOL)reallocAudioBuffer:(AudioBufferList *)buffer withFormat:(const AudioStreamBasicDescription *)format;
 - (VCCoreAudio_AudioUnitMockInstance)init;
-- (int)getEnableIOWithScope:(unsigned int)a3 data:(const void *)a4 dataSize:(unsigned int *)a5;
-- (int)getIOBufferDurationWithScope:(unsigned int)a3 data:(const void *)a4 dataSize:(unsigned int *)a5;
-- (int)getInputCallbackWithScope:(unsigned int)a3 data:(const void *)a4 dataSize:(unsigned int *)a5;
-- (int)getMaximumMediadataByteSizeWithScope:(unsigned int)a3 data:(const void *)a4 dataSize:(unsigned int *)a5;
-- (int)getRenderCallbackWithScope:(unsigned int)a3 data:(const void *)a4 dataSize:(unsigned int *)a5;
-- (int)getStreamFormatWithScope:(unsigned int)a3 data:(const void *)a4 dataSize:(unsigned int *)a5;
-- (int)setEnableIOWithScope:(unsigned int)a3 data:(const void *)a4 dataSize:(unsigned int)a5;
-- (int)setIOBufferDurationWithScope:(unsigned int)a3 data:(const void *)a4 dataSize:(unsigned int)a5;
-- (int)setInputCallbackWithScope:(unsigned int)a3 data:(const void *)a4 dataSize:(unsigned int)a5;
-- (int)setMutedTalkerNotificiationHandlerWithScope:(unsigned int)a3 data:(const void *)a4 dataSize:(unsigned int)a5;
-- (int)setRenderCallbackWithScope:(unsigned int)a3 data:(const void *)a4 dataSize:(unsigned int)a5;
-- (int)setStreamFormatWithScope:(unsigned int)a3 data:(const void *)a4 dataSize:(unsigned int)a5;
-- (void)cleanUpAudioBuffer:(AudioBufferList *)a3;
+- (int)getEnableIOWithScope:(unsigned int)scope data:(const void *)data dataSize:(unsigned int *)size;
+- (int)getIOBufferDurationWithScope:(unsigned int)scope data:(const void *)data dataSize:(unsigned int *)size;
+- (int)getInputCallbackWithScope:(unsigned int)scope data:(const void *)data dataSize:(unsigned int *)size;
+- (int)getMaximumMediadataByteSizeWithScope:(unsigned int)scope data:(const void *)data dataSize:(unsigned int *)size;
+- (int)getRenderCallbackWithScope:(unsigned int)scope data:(const void *)data dataSize:(unsigned int *)size;
+- (int)getStreamFormatWithScope:(unsigned int)scope data:(const void *)data dataSize:(unsigned int *)size;
+- (int)setEnableIOWithScope:(unsigned int)scope data:(const void *)data dataSize:(unsigned int)size;
+- (int)setIOBufferDurationWithScope:(unsigned int)scope data:(const void *)data dataSize:(unsigned int)size;
+- (int)setInputCallbackWithScope:(unsigned int)scope data:(const void *)data dataSize:(unsigned int)size;
+- (int)setMutedTalkerNotificiationHandlerWithScope:(unsigned int)scope data:(const void *)data dataSize:(unsigned int)size;
+- (int)setRenderCallbackWithScope:(unsigned int)scope data:(const void *)data dataSize:(unsigned int)size;
+- (int)setStreamFormatWithScope:(unsigned int)scope data:(const void *)data dataSize:(unsigned int)size;
+- (void)cleanUpAudioBuffer:(AudioBufferList *)buffer;
 - (void)dealloc;
-- (void)runAudioCallbackWithSampleCount:(unsigned int)a3 timeGap:(double)a4;
-- (void)setupDefaultFormat:(AudioStreamBasicDescription *)a3;
+- (void)runAudioCallbackWithSampleCount:(unsigned int)count timeGap:(double)gap;
+- (void)setupDefaultFormat:(AudioStreamBasicDescription *)format;
 @end
 
 @implementation VCCoreAudio_AudioUnitMockInstance
@@ -68,25 +68,25 @@
   [(VCObject *)&v4 dealloc];
 }
 
-- (BOOL)reallocAudioBuffer:(AudioBufferList *)a3 withFormat:(const AudioStreamBasicDescription *)a4
+- (BOOL)reallocAudioBuffer:(AudioBufferList *)buffer withFormat:(const AudioStreamBasicDescription *)format
 {
   v18[1] = *MEMORY[0x1E69E9840];
   v18[0] = 0;
-  if (a3)
+  if (buffer)
   {
-    if (a4)
+    if (format)
     {
-      mFormatFlags = a4->mFormatFlags;
+      mFormatFlags = format->mFormatFlags;
       if ((mFormatFlags & 0x20) != 0)
       {
         if (mFormatFlags)
         {
-          v8 = 4 * vcvtad_u64_f64(a4->mSampleRate * self->_ioBufferDuration);
-          mChannelsPerFrame = a4->mChannelsPerFrame;
+          v8 = 4 * vcvtad_u64_f64(format->mSampleRate * self->_ioBufferDuration);
+          mChannelsPerFrame = format->mChannelsPerFrame;
           v10 = 16 * (mChannelsPerFrame - 1) + 24;
-          v11 = *a3;
+          v11 = *buffer;
           v18[0] = v11;
-          if (!v11 || (v11->mNumberBuffers < mChannelsPerFrame || v8 > v11->mBuffers[0].mDataByteSize) && ([(VCCoreAudio_AudioUnitMockInstance *)self cleanUpAudioBuffer:v18], *a3 = 0, (v11 = v18[0]) == 0))
+          if (!v11 || (v11->mNumberBuffers < mChannelsPerFrame || v8 > v11->mBuffers[0].mDataByteSize) && ([(VCCoreAudio_AudioUnitMockInstance *)self cleanUpAudioBuffer:v18], *buffer = 0, (v11 = v18[0]) == 0))
           {
             v11 = malloc_type_calloc(1uLL, v10 + v8 * mChannelsPerFrame, 0x10800404ACF7207uLL);
             v18[0] = v11;
@@ -96,10 +96,10 @@
               return v18[0] != 0;
             }
 
-            *a3 = v11;
+            *buffer = v11;
           }
 
-          v12 = a4->mChannelsPerFrame;
+          v12 = format->mChannelsPerFrame;
           v11->mNumberBuffers = v12;
           if (v12)
           {
@@ -148,30 +148,30 @@
   return v18[0] != 0;
 }
 
-- (void)cleanUpAudioBuffer:(AudioBufferList *)a3
+- (void)cleanUpAudioBuffer:(AudioBufferList *)buffer
 {
-  if (a3)
+  if (buffer)
   {
-    if (*a3)
+    if (*buffer)
     {
-      free(*a3);
-      *a3 = 0;
+      free(*buffer);
+      *buffer = 0;
     }
   }
 }
 
-- (void)setupDefaultFormat:(AudioStreamBasicDescription *)a3
+- (void)setupDefaultFormat:(AudioStreamBasicDescription *)format
 {
-  a3->mSampleRate = 24000.0;
-  *&a3->mFormatID = xmmword_1DBD453C0;
-  *&a3->mBytesPerFrame = xmmword_1DBD453D0;
+  format->mSampleRate = 24000.0;
+  *&format->mFormatID = xmmword_1DBD453C0;
+  *&format->mBytesPerFrame = xmmword_1DBD453D0;
 }
 
-- (void)runAudioCallbackWithSampleCount:(unsigned int)a3 timeGap:(double)a4
+- (void)runAudioCallbackWithSampleCount:(unsigned int)count timeGap:(double)gap
 {
   v16 = *MEMORY[0x1E69E9840];
-  self->_hostTime = self->_hostTime + a3 / self->_inputStreamFormat.mSampleRate + a4;
-  v5 = self->_inputSampleTime + round(self->_inputStreamFormat.mSampleRate * a4) + a3;
+  self->_hostTime = self->_hostTime + count / self->_inputStreamFormat.mSampleRate + gap;
+  v5 = self->_inputSampleTime + round(self->_inputStreamFormat.mSampleRate * gap) + count;
   self->_inputSampleTime = v5;
   v15 = 0;
   inputProc = self->_inputCallback.inputProc;
@@ -182,7 +182,7 @@
     v12 = 0u;
     v10 = v5;
     v11 = (self->_hostTime / self->_timebaseHostTimeConversionRatio);
-    (inputProc)(self->_inputCallback.inputProcRefCon, &v15, &v10, 0, *&a3, self->_inputBuffer);
+    (inputProc)(self->_inputCallback.inputProcRefCon, &v15, &v10, 0, *&count, self->_inputBuffer);
   }
 
   v7 = vcvtad_u64_f64(self->_renderStreamFormat.mSampleRate * self->_ioBufferDuration) << self->_forceWrongSpeakerIOBufferSize;
@@ -200,15 +200,15 @@
   }
 }
 
-- (int)setEnableIOWithScope:(unsigned int)a3 data:(const void *)a4 dataSize:(unsigned int)a5
+- (int)setEnableIOWithScope:(unsigned int)scope data:(const void *)data dataSize:(unsigned int)size
 {
   v5 = -1;
-  if (a4 && a5 == 4)
+  if (data && size == 4)
   {
-    v6 = *a4;
-    if (a3)
+    v6 = *data;
+    if (scope)
     {
-      if (a3 == 1)
+      if (scope == 1)
       {
         v7 = &OBJC_IVAR___VCCoreAudio_AudioUnitMockInstance__enableInputIO;
 LABEL_10:
@@ -217,7 +217,7 @@ LABEL_10:
         return v5;
       }
 
-      if (a3 != 2)
+      if (scope != 2)
       {
         return 0;
       }
@@ -235,96 +235,96 @@ LABEL_10:
   return v5;
 }
 
-- (int)getEnableIOWithScope:(unsigned int)a3 data:(const void *)a4 dataSize:(unsigned int *)a5
+- (int)getEnableIOWithScope:(unsigned int)scope data:(const void *)data dataSize:(unsigned int *)size
 {
   result = -1;
-  if (a4 && a5 && *a5 >= 4)
+  if (data && size && *size >= 4)
   {
-    *a5 = 4;
-    if (a3 > 2)
+    *size = 4;
+    if (scope > 2)
     {
       v7 = 0;
     }
 
     else
     {
-      v7 = *(&self->super.super.isa + *off_1E85F84C8[a3]);
+      v7 = *(&self->super.super.isa + *off_1E85F84C8[scope]);
     }
 
     result = 0;
-    *a5 = v7;
+    *size = v7;
   }
 
   return result;
 }
 
-- (int)setRenderCallbackWithScope:(unsigned int)a3 data:(const void *)a4 dataSize:(unsigned int)a5
+- (int)setRenderCallbackWithScope:(unsigned int)scope data:(const void *)data dataSize:(unsigned int)size
 {
   result = -1;
-  if (a4)
+  if (data)
   {
-    if (a5 == 16)
+    if (size == 16)
     {
       result = 0;
-      self->_renderCallback = *a4;
+      self->_renderCallback = *data;
     }
   }
 
   return result;
 }
 
-- (int)getRenderCallbackWithScope:(unsigned int)a3 data:(const void *)a4 dataSize:(unsigned int *)a5
+- (int)getRenderCallbackWithScope:(unsigned int)scope data:(const void *)data dataSize:(unsigned int *)size
 {
   result = -1;
-  if (a4 && a5 && *a5 >= 0x10)
+  if (data && size && *size >= 0x10)
   {
     result = 0;
-    *a5 = 16;
-    *a4 = self->_renderCallback;
+    *size = 16;
+    *data = self->_renderCallback;
   }
 
   return result;
 }
 
-- (int)setInputCallbackWithScope:(unsigned int)a3 data:(const void *)a4 dataSize:(unsigned int)a5
+- (int)setInputCallbackWithScope:(unsigned int)scope data:(const void *)data dataSize:(unsigned int)size
 {
   result = -1;
-  if (a4)
+  if (data)
   {
-    if (a5 == 16)
+    if (size == 16)
     {
       result = 0;
-      self->_inputCallback = *a4;
+      self->_inputCallback = *data;
     }
   }
 
   return result;
 }
 
-- (int)getInputCallbackWithScope:(unsigned int)a3 data:(const void *)a4 dataSize:(unsigned int *)a5
+- (int)getInputCallbackWithScope:(unsigned int)scope data:(const void *)data dataSize:(unsigned int *)size
 {
   result = -1;
-  if (a4 && a5 && *a5 >= 0x10)
+  if (data && size && *size >= 0x10)
   {
     result = 0;
-    *a5 = 16;
-    *a4 = self->_inputCallback;
+    *size = 16;
+    *data = self->_inputCallback;
   }
 
   return result;
 }
 
-- (int)setStreamFormatWithScope:(unsigned int)a3 data:(const void *)a4 dataSize:(unsigned int)a5
+- (int)setStreamFormatWithScope:(unsigned int)scope data:(const void *)data dataSize:(unsigned int)size
 {
   result = -1;
-  if (a4 && a5 == 40)
+  if (data && size == 40)
   {
     [(VCCoreAudio_AudioUnitMockInstance *)self setIsReconfiguring:1];
-    if (a3 == 1)
+    if (scope == 1)
     {
-      v12 = *(a4 + 4);
-      v13 = *(a4 + 1);
-      *&self->_renderStreamFormat.mSampleRate = *a4;
+      v12 = *(data + 4);
+      v13 = *(data + 1);
+      *&self->_renderStreamFormat.mSampleRate = *data;
       *&self->_renderStreamFormat.mBytesPerPacket = v13;
       *&self->_renderStreamFormat.mBitsPerChannel = v12;
       v14 = [(VCCoreAudio_AudioUnitMockInstance *)self reallocAudioBuffer:&self->_renderBuffer withFormat:?];
@@ -337,11 +337,11 @@ LABEL_10:
 
     else
     {
-      if (a3 == 2)
+      if (scope == 2)
       {
-        v9 = *(a4 + 4);
-        v10 = *(a4 + 1);
-        *&self->_inputStreamFormat.mSampleRate = *a4;
+        v9 = *(data + 4);
+        v10 = *(data + 1);
+        *&self->_inputStreamFormat.mSampleRate = *data;
         *&self->_inputStreamFormat.mBytesPerPacket = v10;
         *&self->_inputStreamFormat.mBitsPerChannel = v9;
         v11 = [(VCCoreAudio_AudioUnitMockInstance *)self reallocAudioBuffer:&self->_inputBuffer withFormat:?];
@@ -363,20 +363,20 @@ LABEL_10:
   return result;
 }
 
-- (int)getStreamFormatWithScope:(unsigned int)a3 data:(const void *)a4 dataSize:(unsigned int *)a5
+- (int)getStreamFormatWithScope:(unsigned int)scope data:(const void *)data dataSize:(unsigned int *)size
 {
   result = -1;
-  if (a4 && a5 && *a5 >= 0x28)
+  if (data && size && *size >= 0x28)
   {
-    *a5 = 40;
-    if (a3 == 2)
+    *size = 40;
+    if (scope == 2)
     {
       result = 0;
       v7 = 248;
       goto LABEL_8;
     }
 
-    if (a3 == 1)
+    if (scope == 1)
     {
       result = 0;
       v7 = 208;
@@ -384,26 +384,26 @@ LABEL_8:
       v8 = self + v7;
       v9 = *(v8 + 4);
       v10 = *(v8 + 1);
-      *a4 = *v8;
-      *(a4 + 1) = v10;
-      *(a4 + 4) = v9;
+      *data = *v8;
+      *(data + 1) = v10;
+      *(data + 4) = v9;
       return result;
     }
 
     result = 0;
-    *a5 = 0;
+    *size = 0;
   }
 
   return result;
 }
 
-- (int)setIOBufferDurationWithScope:(unsigned int)a3 data:(const void *)a4 dataSize:(unsigned int)a5
+- (int)setIOBufferDurationWithScope:(unsigned int)scope data:(const void *)data dataSize:(unsigned int)size
 {
   v9 = *MEMORY[0x1E69E9840];
   v5 = -1;
-  if (a4 && a5 == 4)
+  if (data && size == 4)
   {
-    self->_ioBufferDuration = *a4;
+    self->_ioBufferDuration = *data;
     [(VCCoreAudio_AudioUnitMockInstance *)self setIsReconfiguring:1];
     if ([(VCCoreAudio_AudioUnitMockInstance *)self reallocAudioBuffer:&self->_inputBuffer withFormat:&self->_inputStreamFormat])
     {
@@ -430,35 +430,35 @@ LABEL_6:
   return v5;
 }
 
-- (int)getIOBufferDurationWithScope:(unsigned int)a3 data:(const void *)a4 dataSize:(unsigned int *)a5
+- (int)getIOBufferDurationWithScope:(unsigned int)scope data:(const void *)data dataSize:(unsigned int *)size
 {
   result = -1;
-  if (a4 && a5 && *a5 >= 4)
+  if (data && size && *size >= 4)
   {
     result = 0;
-    *a5 = 4;
-    *a4 = self->_ioBufferDuration;
+    *size = 4;
+    *data = self->_ioBufferDuration;
   }
 
   return result;
 }
 
-- (int)getMaximumMediadataByteSizeWithScope:(unsigned int)a3 data:(const void *)a4 dataSize:(unsigned int *)a5
+- (int)getMaximumMediadataByteSizeWithScope:(unsigned int)scope data:(const void *)data dataSize:(unsigned int *)size
 {
   result = -1;
-  if (a4 && a5 && *a5 >= 4)
+  if (data && size && *size >= 4)
   {
     result = 0;
-    *a5 = 4;
-    *a4 = 0;
+    *size = 4;
+    *data = 0;
   }
 
   return result;
 }
 
-- (int)setMutedTalkerNotificiationHandlerWithScope:(unsigned int)a3 data:(const void *)a4 dataSize:(unsigned int)a5
+- (int)setMutedTalkerNotificiationHandlerWithScope:(unsigned int)scope data:(const void *)data dataSize:(unsigned int)size
 {
-  if (!a4 || a5 == 8)
+  if (!data || size == 8)
   {
     mutedSpeechActivityListener = self->_mutedSpeechActivityListener;
     if (mutedSpeechActivityListener)
@@ -467,8 +467,8 @@ LABEL_6:
       self->_mutedSpeechActivityListener = 0;
     }
 
-    v7 = *a4;
-    if (*a4)
+    v7 = *data;
+    if (*data)
     {
       v9 = _Block_copy(v7);
       LODWORD(v7) = 0;
@@ -484,12 +484,12 @@ LABEL_6:
   return v7;
 }
 
-- (BOOL)generateMutedTalkerNotification:(unsigned int)a3
+- (BOOL)generateMutedTalkerNotification:(unsigned int)notification
 {
   mutedSpeechActivityListener = self->_mutedSpeechActivityListener;
   if (mutedSpeechActivityListener)
   {
-    mutedSpeechActivityListener[2](self->_mutedSpeechActivityListener, *&a3);
+    mutedSpeechActivityListener[2](self->_mutedSpeechActivityListener, *&notification);
   }
 
   return mutedSpeechActivityListener != 0;

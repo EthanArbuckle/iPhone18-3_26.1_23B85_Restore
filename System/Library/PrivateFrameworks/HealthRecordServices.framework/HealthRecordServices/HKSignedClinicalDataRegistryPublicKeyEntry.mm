@@ -1,41 +1,41 @@
 @interface HKSignedClinicalDataRegistryPublicKeyEntry
-- (BOOL)isEqual:(id)a3;
-- (HKSignedClinicalDataRegistryPublicKeyEntry)initWithCoder:(id)a3;
-- (HKSignedClinicalDataRegistryPublicKeyEntry)initWithKeyID:(id)a3 added:(id)a4 removed:(id)a5 source:(id)a6 jwkData:(id)a7;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HKSignedClinicalDataRegistryPublicKeyEntry)initWithCoder:(id)coder;
+- (HKSignedClinicalDataRegistryPublicKeyEntry)initWithKeyID:(id)d added:(id)added removed:(id)removed source:(id)source jwkData:(id)data;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKSignedClinicalDataRegistryPublicKeyEntry
 
-- (HKSignedClinicalDataRegistryPublicKeyEntry)initWithKeyID:(id)a3 added:(id)a4 removed:(id)a5 source:(id)a6 jwkData:(id)a7
+- (HKSignedClinicalDataRegistryPublicKeyEntry)initWithKeyID:(id)d added:(id)added removed:(id)removed source:(id)source jwkData:(id)data
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dCopy = d;
+  addedCopy = added;
+  removedCopy = removed;
+  sourceCopy = source;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = HKSignedClinicalDataRegistryPublicKeyEntry;
   v17 = [(HKSignedClinicalDataRegistryPublicKeyEntry *)&v29 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [dCopy copy];
     kid = v17->_kid;
     v17->_kid = v18;
 
-    v20 = [v13 copy];
+    v20 = [addedCopy copy];
     added = v17->_added;
     v17->_added = v20;
 
-    v22 = [v14 copy];
+    v22 = [removedCopy copy];
     removed = v17->_removed;
     v17->_removed = v22;
 
-    v24 = [v15 copy];
+    v24 = [sourceCopy copy];
     source = v17->_source;
     v17->_source = v24;
 
-    v26 = [v16 copy];
+    v26 = [dataCopy copy];
     jwk = v17->_jwk;
     v17->_jwk = v26;
   }
@@ -43,13 +43,13 @@
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (self != v5)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (self != equalCopy)
   {
-    v7 = v5;
+    v7 = equalCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -86,67 +86,67 @@ LABEL_47:
     }
 
     added = self->_added;
-    v16 = [(HKSignedClinicalDataRegistryPublicKeyEntry *)v7 added];
-    if (added != v16)
+    added = [(HKSignedClinicalDataRegistryPublicKeyEntry *)v7 added];
+    if (added != added)
     {
-      v17 = [(HKSignedClinicalDataRegistryPublicKeyEntry *)v7 added];
-      if (!v17)
+      added2 = [(HKSignedClinicalDataRegistryPublicKeyEntry *)v7 added];
+      if (!added2)
       {
         goto LABEL_35;
       }
 
-      v54 = v17;
+      v54 = added2;
       v18 = self->_added;
-      v3 = [(HKSignedClinicalDataRegistryPublicKeyEntry *)v7 added];
-      if (([(NSDate *)v18 isEqual:v3]& 1) == 0)
+      added3 = [(HKSignedClinicalDataRegistryPublicKeyEntry *)v7 added];
+      if (([(NSDate *)v18 isEqual:added3]& 1) == 0)
       {
         goto LABEL_34;
       }
     }
 
     removed = self->_removed;
-    v20 = [(HKSignedClinicalDataRegistryPublicKeyEntry *)v7 removed];
+    removed = [(HKSignedClinicalDataRegistryPublicKeyEntry *)v7 removed];
     v53 = removed;
-    if (removed == v20)
+    if (removed == removed)
     {
       v52 = added;
-      v27 = v16;
+      v27 = added;
 LABEL_20:
       source = self->_source;
-      v29 = [(HKSignedClinicalDataRegistryPublicKeyEntry *)v7 source];
-      v30 = v29;
+      source = [(HKSignedClinicalDataRegistryPublicKeyEntry *)v7 source];
+      v30 = source;
       v49 = source;
-      v51 = v3;
-      if (source == v29)
+      v51 = added3;
+      if (source == source)
       {
-        v47 = v29;
-        v48 = v20;
-        v16 = v27;
+        v47 = source;
+        v48 = removed;
+        added = v27;
       }
 
       else
       {
-        v31 = [(HKSignedClinicalDataRegistryPublicKeyEntry *)v7 source];
-        if (!v31)
+        source2 = [(HKSignedClinicalDataRegistryPublicKeyEntry *)v7 source];
+        if (!source2)
         {
           v14 = 0;
-          v16 = v27;
+          added = v27;
           added = v52;
           goto LABEL_37;
         }
 
-        v45 = v31;
-        v48 = v20;
+        v45 = source2;
+        v48 = removed;
         v32 = self->_source;
-        v33 = [(HKSignedClinicalDataRegistryPublicKeyEntry *)v7 source];
+        source3 = [(HKSignedClinicalDataRegistryPublicKeyEntry *)v7 source];
         v34 = v32;
-        v35 = v33;
-        v16 = v27;
-        if (![(NSString *)v34 isEqualToString:v33])
+        v35 = source3;
+        added = v27;
+        if (![(NSString *)v34 isEqualToString:source3])
         {
 
           v14 = 0;
-          v20 = v48;
+          removed = v48;
           added = v52;
           v42 = v53;
           goto LABEL_41;
@@ -183,31 +183,31 @@ LABEL_20:
       {
 LABEL_39:
 
-        v20 = v48;
+        removed = v48;
         goto LABEL_40;
       }
 
-      v20 = v48;
+      removed = v48;
 LABEL_37:
 
 LABEL_40:
       v42 = v53;
 LABEL_41:
-      if (v42 != v20)
+      if (v42 != removed)
       {
       }
 
       goto LABEL_43;
     }
 
-    v21 = [(HKSignedClinicalDataRegistryPublicKeyEntry *)v7 removed];
-    if (!v21)
+    removed2 = [(HKSignedClinicalDataRegistryPublicKeyEntry *)v7 removed];
+    if (!removed2)
     {
-      v51 = v3;
+      v51 = added3;
       v14 = 0;
 LABEL_43:
 
-      if (added != v16)
+      if (added != added)
       {
       }
 
@@ -224,22 +224,22 @@ LABEL_48:
       goto LABEL_49;
     }
 
-    v50 = v21;
+    v50 = removed2;
     v52 = added;
-    v22 = v20;
+    v22 = removed;
     v23 = self->_removed;
-    v24 = [(HKSignedClinicalDataRegistryPublicKeyEntry *)v7 removed];
+    removed3 = [(HKSignedClinicalDataRegistryPublicKeyEntry *)v7 removed];
     v25 = v23;
-    v26 = v24;
-    if (([(NSDate *)v25 isEqual:v24]& 1) != 0)
+    v26 = removed3;
+    if (([(NSDate *)v25 isEqual:removed3]& 1) != 0)
     {
-      v27 = v16;
+      v27 = added;
       v46 = v26;
-      v20 = v22;
+      removed = v22;
       goto LABEL_20;
     }
 
-    if (added != v16)
+    if (added != added)
     {
 LABEL_34:
     }
@@ -256,48 +256,48 @@ LABEL_50:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   kid = self->_kid;
-  v5 = a3;
-  [v5 encodeObject:kid forKey:@"kid"];
-  [v5 encodeObject:self->_added forKey:@"added"];
-  [v5 encodeObject:self->_removed forKey:@"removed"];
-  [v5 encodeObject:self->_source forKey:@"source"];
-  [v5 encodeObject:self->_jwk forKey:@"jwk"];
+  coderCopy = coder;
+  [coderCopy encodeObject:kid forKey:@"kid"];
+  [coderCopy encodeObject:self->_added forKey:@"added"];
+  [coderCopy encodeObject:self->_removed forKey:@"removed"];
+  [coderCopy encodeObject:self->_source forKey:@"source"];
+  [coderCopy encodeObject:self->_jwk forKey:@"jwk"];
 }
 
-- (HKSignedClinicalDataRegistryPublicKeyEntry)initWithCoder:(id)a3
+- (HKSignedClinicalDataRegistryPublicKeyEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kid"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kid"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"added"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"added"];
     if (v6)
     {
-      v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"removed"];
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"source"];
-      v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"jwk"];
+      v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"removed"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"source"];
+      v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"jwk"];
       self = [(HKSignedClinicalDataRegistryPublicKeyEntry *)self initWithKeyID:v5 added:v6 removed:v7 source:v8 jwkData:v9];
 
-      v10 = self;
+      selfCopy = self;
     }
 
     else
     {
-      [v4 hrs_failWithCocoaValueNotFoundError];
-      v10 = 0;
+      [coderCopy hrs_failWithCocoaValueNotFoundError];
+      selfCopy = 0;
     }
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v10 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 @end

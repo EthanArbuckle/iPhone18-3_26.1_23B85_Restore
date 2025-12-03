@@ -2,14 +2,14 @@
 + (_TtC34SiriCrossDeviceArbitrationFeedback11GlobalsImpl)shared;
 - (BOOL)isInternalInstall;
 - (NSString)localDeviceAssistantIdentifier;
-- (void)setLocalDeviceAssistantIdentifier:(id)a3;
+- (void)setLocalDeviceAssistantIdentifier:(id)identifier;
 @end
 
 @implementation GlobalsImpl
 
-- (void)setLocalDeviceAssistantIdentifier:(id)a3
+- (void)setLocalDeviceAssistantIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = sub_266ABDA84();
     v6 = v5;
@@ -21,7 +21,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_266A6B150(v4, v6);
 }
 
@@ -50,7 +50,7 @@
 
 - (BOOL)isInternalInstall
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_266A844AC();
 
   return v3 & 1;

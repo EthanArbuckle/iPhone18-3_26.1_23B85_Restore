@@ -5,11 +5,11 @@
 - (BOOL)isAllowedToShowAddPhotoCallToAction;
 - (id)attributionNames;
 - (id)delegate;
-- (id)initWitBatchRequester:(id)a3 initialCount:(unint64_t)a4 batchCount:(unint64_t)a5 totalCount:(unint64_t)a6 albumCategory:(id)a7 delegate:(id)a8;
+- (id)initWitBatchRequester:(id)requester initialCount:(unint64_t)count batchCount:(unint64_t)batchCount totalCount:(unint64_t)totalCount albumCategory:(id)category delegate:(id)delegate;
 - (id)photoList;
-- (void)_failWithError:(id)a3 range:(_NSRange)a4;
-- (void)_performOnCallbackQueue:(id)a3;
-- (void)_processResult:(id)a3;
+- (void)_failWithError:(id)error range:(_NSRange)range;
+- (void)_performOnCallbackQueue:(id)queue;
+- (void)_processResult:(id)result;
 - (void)fetchNextBatchRequestIfNeeded;
 @end
 
@@ -24,7 +24,7 @@
 
 - (BOOL)isAllowedToShowAddPhotoCallToAction
 {
-  v3 = [(UGCPlaceDataPhotoListDataProvider *)self delegate];
+  delegate = [(UGCPlaceDataPhotoListDataProvider *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -41,8 +41,8 @@
   geo_isolate_sync();
   if ([v10[5] count])
   {
-    v5 = [(UGCPlaceDataPhotoListDataProvider *)self delegate];
-    v6 = [v5 photoViewerDataProviderRequestsMapItem:self];
+    delegate2 = [(UGCPlaceDataPhotoListDataProvider *)self delegate];
+    v6 = [delegate2 photoViewerDataProviderRequestsMapItem:self];
 
     v7 = [MKPOIEnrichmentAvailibility shouldShowAddPhotoButtonOnMorePhotosGalleryForMapItem:v6 usingAttributionsByProviderIds:v10[5]];
   }
@@ -79,17 +79,17 @@
   return v3;
 }
 
-- (void)_performOnCallbackQueue:(id)a3
+- (void)_performOnCallbackQueue:(id)queue
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  queueCopy = queue;
+  v4 = queueCopy;
+  if (queueCopy)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100B5DE04;
     block[3] = &unk_101661760;
-    v6 = v3;
+    v6 = queueCopy;
     dispatch_async(&_dispatch_main_q, block);
   }
 
@@ -100,11 +100,11 @@
   }
 }
 
-- (void)_failWithError:(id)a3 range:(_NSRange)a4
+- (void)_failWithError:(id)error range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
+  length = range.length;
+  location = range.location;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_serialQueue);
   self->_shouldLoadNextBatch = 0;
   v9[0] = _NSConcreteStackBlock;
@@ -112,16 +112,16 @@
   v9[2] = sub_100B5DEDC;
   v9[3] = &unk_10164C698;
   v9[4] = self;
-  v10 = v7;
+  v10 = errorCopy;
   v11 = location;
   v12 = length;
-  v8 = v7;
+  v8 = errorCopy;
   [(UGCPlaceDataPhotoListDataProvider *)self _performOnCallbackQueue:v9];
 }
 
-- (void)_processResult:(id)a3
+- (void)_processResult:(id)result
 {
-  v38 = a3;
+  resultCopy = result;
   dispatch_assert_queue_V2(self->_serialQueue);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -130,22 +130,22 @@
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
     v7 = [v6 photoViewerDataProviderRequestsMapItem:self];
-    v8 = [v7 name];
+    name = [v7 name];
   }
 
   else
   {
-    v8 = &stru_1016631F0;
+    name = &stru_1016631F0;
   }
 
-  v9 = [v38 photos];
-  v10 = v8;
-  v11 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v9, "count")}];
+  photos = [resultCopy photos];
+  v10 = name;
+  v11 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(photos, "count")}];
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v12 = v9;
+  v12 = photos;
   v13 = [v12 countByEnumeratingWithState:&v56 objects:&v61 count:16];
   if (v13)
   {
@@ -176,7 +176,7 @@
   v53 = &unk_101661A90;
   v18 = v17;
   v54 = v18;
-  v55 = self;
+  selfCopy = self;
   geo_isolate_sync();
   if (self->_isLoadingFirstBatch)
   {
@@ -208,7 +208,7 @@
   v45 = 3221225472;
   v46 = sub_100B5E660;
   v47 = &unk_101661600;
-  v48 = self;
+  selfCopy2 = self;
   v49 = &v61;
   geo_isolate_sync();
   v43 = 0u;
@@ -230,22 +230,22 @@
         }
 
         v29 = *(*(&v40 + 1) + 8 * j);
-        v30 = [v29 attribution];
-        v31 = [v30 providerID];
+        attribution = [v29 attribution];
+        providerID = [attribution providerID];
 
-        if ([v31 length])
+        if ([providerID length])
         {
-          v32 = [v29 attribution];
-          if (v32)
+          attribution2 = [v29 attribution];
+          if (attribution2)
           {
-            v33 = [v62[5] objectForKeyedSubscript:v31];
+            v33 = [v62[5] objectForKeyedSubscript:providerID];
             v34 = v33 == 0;
 
             if (v34)
             {
               v35 = v62[5];
-              v36 = [v29 attribution];
-              [v35 setObject:v36 forKey:v31];
+              attribution3 = [v29 attribution];
+              [v35 setObject:attribution3 forKey:providerID];
             }
           }
         }
@@ -305,8 +305,8 @@
   v10 = sub_100B5DB68;
   v11 = 0;
   geo_isolate_sync();
-  v2 = [v7[5] allValues];
-  v3 = sub_100021DB0(v2, &stru_10163AAC0);
+  allValues = [v7[5] allValues];
+  v3 = sub_100021DB0(allValues, &stru_10163AAC0);
 
   _Block_object_dispose(&v6, 8);
 
@@ -363,11 +363,11 @@
   return v3;
 }
 
-- (id)initWitBatchRequester:(id)a3 initialCount:(unint64_t)a4 batchCount:(unint64_t)a5 totalCount:(unint64_t)a6 albumCategory:(id)a7 delegate:(id)a8
+- (id)initWitBatchRequester:(id)requester initialCount:(unint64_t)count batchCount:(unint64_t)batchCount totalCount:(unint64_t)totalCount albumCategory:(id)category delegate:(id)delegate
 {
-  v15 = a3;
-  v16 = a7;
-  v17 = a8;
+  requesterCopy = requester;
+  categoryCopy = category;
+  delegateCopy = delegate;
   v31.receiver = self;
   v31.super_class = UGCPlaceDataPhotoListDataProvider;
   v18 = [(UGCPlaceDataPhotoListDataProvider *)&v31 init];
@@ -382,21 +382,21 @@
     photoList = v18->_photoList;
     v18->_photoList = v22;
 
-    objc_storeStrong(&v18->_batchRequester, a3);
+    objc_storeStrong(&v18->_batchRequester, requester);
     v18->_currentIndex = 0;
-    v18->_initialCount = a4;
-    v18->_batchCount = a5;
-    v18->_totalCount = a6;
+    v18->_initialCount = count;
+    v18->_batchCount = batchCount;
+    v18->_totalCount = totalCount;
     v18->_shouldLoadNextBatch = 1;
     v18->_isLoading = 0;
     v24 = objc_alloc_init(NSMutableDictionary);
     attributionsByVendorId = v18->_attributionsByVendorId;
     v18->_attributionsByVendorId = v24;
 
-    objc_storeWeak(&v18->_delegate, v17);
+    objc_storeWeak(&v18->_delegate, delegateCopy);
     v18->_isLoadingFirstBatch = 1;
     v18->_indexOfTappedPhoto = 0;
-    objc_storeStrong(&v18->_albumCategory, a7);
+    objc_storeStrong(&v18->_albumCategory, category);
     v26 = geo_isolater_create();
     attributionsByVendorIdIsolator = v18->_attributionsByVendorIdIsolator;
     v18->_attributionsByVendorIdIsolator = v26;

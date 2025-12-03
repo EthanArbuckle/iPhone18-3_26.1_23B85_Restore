@@ -1,36 +1,36 @@
 @interface DoAPSiriRemoteDevice
-- (DoAPSiriRemoteDevice)initWithCodecs:(id)a3 streamID:(unsigned __int16)a4;
+- (DoAPSiriRemoteDevice)initWithCodecs:(id)codecs streamID:(unsigned __int16)d;
 - (int)startStreaming;
-- (void)activateSiri:(int64_t)a3;
+- (void)activateSiri:(int64_t)siri;
 - (void)cancelSiri;
 - (void)clearState;
-- (void)doapAudioDidStop:(id)a3;
-- (void)doapAudioWillStart:(id)a3;
-- (void)handleAudioData:(char *)a3 dataLength:(int64_t)a4;
-- (void)handleEventIndicator:(unsigned __int8)a3 eventValue:(char *)a4;
+- (void)doapAudioDidStop:(id)stop;
+- (void)doapAudioWillStart:(id)start;
+- (void)handleAudioData:(char *)data dataLength:(int64_t)length;
+- (void)handleEventIndicator:(unsigned __int8)indicator eventValue:(char *)value;
 - (void)handleStartStreaming;
-- (void)handleStopStreaming:(unsigned __int8)a3;
-- (void)notifyObserver:(id)a3 didChangeStateFrom:(unint64_t)a4 to:(unint64_t)a5;
+- (void)handleStopStreaming:(unsigned __int8)streaming;
+- (void)notifyObserver:(id)observer didChangeStateFrom:(unint64_t)from to:(unint64_t)to;
 - (void)start;
 - (void)stop;
-- (void)waitForSiriAudioToStop:(id)a3;
+- (void)waitForSiriAudioToStop:(id)stop;
 @end
 
 @implementation DoAPSiriRemoteDevice
 
-- (DoAPSiriRemoteDevice)initWithCodecs:(id)a3 streamID:(unsigned __int16)a4
+- (DoAPSiriRemoteDevice)initWithCodecs:(id)codecs streamID:(unsigned __int16)d
 {
-  v4 = a4;
-  v7 = a3;
-  if (v4 == 1)
+  dCopy = d;
+  codecsCopy = codecs;
+  if (dCopy == 1)
   {
     v27.receiver = self;
     v27.super_class = DoAPSiriRemoteDevice;
-    v8 = [(DoAPDevice *)&v27 initWithCodecs:v7 streamID:1];
+    v8 = [(DoAPDevice *)&v27 initWithCodecs:codecsCopy streamID:1];
     v9 = v8;
     if (v8)
     {
-      objc_storeStrong(&v8->_codecs, a3);
+      objc_storeStrong(&v8->_codecs, codecs);
       v9->_vtEvent = 0;
       v9->_vtSource = 0;
       v10 = [[NSMutableArray alloc] initWithCapacity:200];
@@ -49,9 +49,9 @@
 
         if (v9->_doapAudioStart)
         {
-          v16 = [(DoAPDevice *)v9 allocQueue];
+          allocQueue = [(DoAPDevice *)v9 allocQueue];
           queue = v9->_queue;
-          v9->_queue = v16;
+          v9->_queue = allocQueue;
 
           v18 = v9->_queue;
           if (v18)
@@ -81,14 +81,14 @@
 
 LABEL_11:
     self = v9;
-    v23 = self;
+    selfCopy = self;
     goto LABEL_12;
   }
 
-  v23 = 0;
+  selfCopy = 0;
 LABEL_12:
 
-  return v23;
+  return selfCopy;
 }
 
 - (void)stop
@@ -100,23 +100,23 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Stop DoAPSiriRemoteDevice - Destroy DoAPAudioRelay", buf, 2u);
   }
 
-  v4 = [(DoAPSiriRemoteDevice *)self doapAudioStart];
-  dispatch_semaphore_signal(v4);
+  doapAudioStart = [(DoAPSiriRemoteDevice *)self doapAudioStart];
+  dispatch_semaphore_signal(doapAudioStart);
 
-  v5 = [(DoAPSiriRemoteDevice *)self doapAudioStop];
+  doapAudioStop = [(DoAPSiriRemoteDevice *)self doapAudioStop];
 
-  if (v5)
+  if (doapAudioStop)
   {
-    v6 = [(DoAPSiriRemoteDevice *)self doapAudioStop];
-    dispatch_semaphore_signal(v6);
+    doapAudioStop2 = [(DoAPSiriRemoteDevice *)self doapAudioStop];
+    dispatch_semaphore_signal(doapAudioStop2);
   }
 
-  v7 = [(DoAPSiriRemoteDevice *)self doapAudioRelay];
+  doapAudioRelay = [(DoAPSiriRemoteDevice *)self doapAudioRelay];
 
-  if (v7)
+  if (doapAudioRelay)
   {
-    v8 = [(DoAPSiriRemoteDevice *)self doapAudioRelay];
-    [v8 invalidate];
+    doapAudioRelay2 = [(DoAPSiriRemoteDevice *)self doapAudioRelay];
+    [doapAudioRelay2 invalidate];
 
     [(DoAPSiriRemoteDevice *)self setDoapAudioRelay:0];
   }
@@ -153,8 +153,8 @@ LABEL_12:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v4 = [(DoAPSiriRemoteDevice *)self codecs];
-  v5 = [v4 countByEnumeratingWithState:&v31 objects:v38 count:16];
+  codecs = [(DoAPSiriRemoteDevice *)self codecs];
+  v5 = [codecs countByEnumeratingWithState:&v31 objects:v38 count:16];
   if (v5)
   {
     v6 = v5;
@@ -165,7 +165,7 @@ LABEL_12:
       {
         if (*v32 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(codecs);
         }
 
         v9 = *(*(&v31 + 1) + 8 * i);
@@ -176,26 +176,26 @@ LABEL_12:
           {
             if (_os_feature_enabled_impl())
             {
-              v11 = [(DoAPDevice *)self peripheral];
-              v12 = [v11 identifier];
-              v13 = [v12 UUIDString];
-              v14 = [NSString stringWithFormat:@"%@_%@", v13, @"DoAP Siri"];
+              peripheral = [(DoAPDevice *)self peripheral];
+              identifier = [peripheral identifier];
+              uUIDString = [identifier UUIDString];
+              uUIDString2 = [NSString stringWithFormat:@"%@_%@", uUIDString, @"DoAP Siri"];
             }
 
             else
             {
-              v11 = [(DoAPDevice *)self peripheral];
-              v12 = [v11 identifier];
-              v14 = [v12 UUIDString];
+              peripheral = [(DoAPDevice *)self peripheral];
+              identifier = [peripheral identifier];
+              uUIDString2 = [identifier UUIDString];
             }
 
             v15 = +[DoAPAudioRelayHub instance];
             [v9 codec];
-            v16 = [v15 relayWithIdentifier:v14 deviceType:3 properties:0 codecType:v27];
+            v16 = [v15 relayWithIdentifier:uUIDString2 deviceType:3 properties:0 codecType:v27];
             [(DoAPSiriRemoteDevice *)self setDoapAudioRelay:v16];
 
-            v17 = [(DoAPSiriRemoteDevice *)self doapAudioRelay];
-            [v17 setDelegate:self];
+            doapAudioRelay = [(DoAPSiriRemoteDevice *)self doapAudioRelay];
+            [doapAudioRelay setDelegate:self];
 
             v18 = qword_1000DDBC8;
             if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
@@ -237,7 +237,7 @@ LABEL_12:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v31 objects:v38 count:16];
+      v6 = [codecs countByEnumeratingWithState:&v31 objects:v38 count:16];
       if (v6)
       {
         continue;
@@ -257,8 +257,8 @@ LABEL_12:
 {
   v5.receiver = self;
   v5.super_class = DoAPSiriRemoteDevice;
-  v3 = [(DoAPDevice *)&v5 startStreaming];
-  if (v3)
+  startStreaming = [(DoAPDevice *)&v5 startStreaming];
+  if (startStreaming)
   {
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
     {
@@ -272,37 +272,37 @@ LABEL_12:
     self->_vtSource = 3;
   }
 
-  return v3;
+  return startStreaming;
 }
 
 - (void)clearState
 {
   if ([(DoAPDevice *)self state]== 5)
   {
-    v3 = [(DoAPSiriRemoteDevice *)self doapAudioStart];
-    dispatch_semaphore_signal(v3);
+    doapAudioStart = [(DoAPSiriRemoteDevice *)self doapAudioStart];
+    dispatch_semaphore_signal(doapAudioStart);
   }
 
-  v4 = [(DoAPSiriRemoteDevice *)self doapAudioStop];
+  doapAudioStop = [(DoAPSiriRemoteDevice *)self doapAudioStop];
 
-  if (v4)
+  if (doapAudioStop)
   {
-    v5 = [(DoAPSiriRemoteDevice *)self doapAudioStop];
-    dispatch_semaphore_signal(v5);
+    doapAudioStop2 = [(DoAPSiriRemoteDevice *)self doapAudioStop];
+    dispatch_semaphore_signal(doapAudioStop2);
 
     [(DoAPSiriRemoteDevice *)self setDoapAudioStop:0];
   }
 
-  v6 = [(DoAPSiriRemoteDevice *)self audioBuffer];
+  audioBuffer = [(DoAPSiriRemoteDevice *)self audioBuffer];
 
-  if (v6)
+  if (audioBuffer)
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    v8 = [(DoAPSiriRemoteDevice *)v7 audioBuffer];
-    [v8 removeAllObjects];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    audioBuffer2 = [(DoAPSiriRemoteDevice *)selfCopy audioBuffer];
+    [audioBuffer2 removeAllObjects];
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
   }
 
   obj = self;
@@ -312,23 +312,23 @@ LABEL_12:
   objc_sync_exit(obj);
 }
 
-- (void)activateSiri:(int64_t)a3
+- (void)activateSiri:(int64_t)siri
 {
   v5 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(DoAPDevice *)self peripheral];
-    v8 = [v7 identifier];
-    v9 = [v8 UUIDString];
+    peripheral = [(DoAPDevice *)self peripheral];
+    identifier = [peripheral identifier];
+    uUIDString = [identifier UUIDString];
     *buf = 134218243;
-    v21 = a3;
+    siriCopy = siri;
     v22 = 2113;
-    v23 = v9;
+    v23 = uUIDString;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "DoAPSiri - activateSiri: Event %tu for ID %{private}@", buf, 0x16u);
   }
 
-  if ((a3 - 3) > 0xFFFFFFFFFFFFFFFDLL)
+  if ((siri - 3) > 0xFFFFFFFFFFFFFFFDLL)
   {
     [(DoAPDevice *)self setHighPriorityLink:1 burstTime:&off_1000C3D08];
     v17[0] = _NSConcreteStackBlock;
@@ -337,12 +337,12 @@ LABEL_12:
     v17[3] = &unk_1000BE3D8;
     v17[4] = self;
     v10 = objc_retainBlock(v17);
-    if (a3 == 2)
+    if (siri == 2)
     {
       mach_absolute_time();
-      v11 = [(DoAPDevice *)self peripheral];
-      v12 = [v11 identifier];
-      v13 = [v12 UUIDString];
+      peripheral2 = [(DoAPDevice *)self peripheral];
+      identifier2 = [peripheral2 identifier];
+      uUIDString2 = [identifier2 UUIDString];
       AFSiriActivationBluetoothDeviceVoice();
     }
 
@@ -350,9 +350,9 @@ LABEL_12:
     {
       v14 = [(DoAPDevice *)self state]!= 5;
       mach_absolute_time();
-      v11 = [(DoAPDevice *)self peripheral];
-      v12 = [v11 identifier];
-      v13 = [v12 UUIDString];
+      peripheral2 = [(DoAPDevice *)self peripheral];
+      identifier2 = [peripheral2 identifier];
+      uUIDString2 = [identifier2 UUIDString];
       v18[0] = AFSiriActivationUserInfoKey[0];
       v15 = [NSNumber numberWithBool:v14];
       v18[1] = AFSiriActivationUserInfoKey[9];
@@ -375,18 +375,18 @@ LABEL_12:
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(DoAPDevice *)self peripheral];
-    v6 = [v5 identifier];
-    v7 = [v6 UUIDString];
+    peripheral = [(DoAPDevice *)self peripheral];
+    identifier = [peripheral identifier];
+    uUIDString = [identifier UUIDString];
     *buf = 138412290;
-    v16 = v7;
+    v16 = uUIDString;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "DoAPSiri - Cancellation id %@", buf, 0xCu);
   }
 
   mach_absolute_time();
-  v8 = [(DoAPDevice *)self peripheral];
-  v9 = [v8 identifier];
-  v10 = [v9 UUIDString];
+  peripheral2 = [(DoAPDevice *)self peripheral];
+  identifier2 = [peripheral2 identifier];
+  uUIDString2 = [identifier2 UUIDString];
   v11 = AFSiriActivationUserInfoKey[9];
   v13[0] = AFSiriActivationUserInfoKey[0];
   v13[1] = v11;
@@ -406,40 +406,40 @@ LABEL_12:
   }
 }
 
-- (void)handleStopStreaming:(unsigned __int8)a3
+- (void)handleStopStreaming:(unsigned __int8)streaming
 {
-  v3 = a3;
+  streamingCopy = streaming;
   v5 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v7[0] = 67109120;
-    v7[1] = v3;
+    v7[1] = streamingCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "DoAPSiriRemoteDevice Received StopStreaming with error code%d", v7, 8u);
   }
 
   if ([(DoAPDevice *)self state]== 5)
   {
-    v6 = [(DoAPSiriRemoteDevice *)self doapAudioRelay];
-    [v6 cancelStream];
+    doapAudioRelay = [(DoAPSiriRemoteDevice *)self doapAudioRelay];
+    [doapAudioRelay cancelStream];
   }
 
   [(DoAPSiriRemoteDevice *)self clearState];
 }
 
-- (void)handleAudioData:(char *)a3 dataLength:(int64_t)a4
+- (void)handleAudioData:(char *)data dataLength:(int64_t)length
 {
-  if ([(DoAPDevice *)self state]<= 6 && a3 && a4 >= 1)
+  if ([(DoAPDevice *)self state]<= 6 && data && length >= 1)
   {
     v7 = +[NSDate date];
     [(DoAPSiriRemoteDevice *)self setLastAudioDate:v7];
 
-    v8 = [NSData dataWithBytes:a3 length:a4];
+    v8 = [NSData dataWithBytes:data length:length];
     if ([(DoAPDevice *)self state]== 5)
     {
-      v9 = [(DoAPSiriRemoteDevice *)self doapAudioRelay];
-      v10 = [v9 isHubConnected];
+      doapAudioRelay = [(DoAPSiriRemoteDevice *)self doapAudioRelay];
+      isHubConnected = [doapAudioRelay isHubConnected];
 
-      if (!v10)
+      if (!isHubConnected)
       {
         if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
         {
@@ -449,18 +449,18 @@ LABEL_12:
         goto LABEL_17;
       }
 
-      v11 = [(DoAPSiriRemoteDevice *)self doapAudioRelay];
-      [(DoAPSiriRemoteDevice *)v11 sendAudioFrame:v8];
+      selfCopy = [(DoAPSiriRemoteDevice *)self doapAudioRelay];
+      [(DoAPSiriRemoteDevice *)selfCopy sendAudioFrame:v8];
     }
 
     else
     {
       if (!self->_vtEvent && !self->_vtSource)
       {
-        v17 = [(DoAPDevice *)self state];
+        state = [(DoAPDevice *)self state];
         v18 = qword_1000DDBC8;
         v19 = os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT);
-        if (v17 == 2)
+        if (state == 2)
         {
           if (v19)
           {
@@ -487,37 +487,37 @@ LABEL_12:
         goto LABEL_17;
       }
 
-      v11 = self;
-      objc_sync_enter(v11);
-      v12 = [(DoAPSiriRemoteDevice *)v11 audioBuffer];
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      audioBuffer = [(DoAPSiriRemoteDevice *)selfCopy audioBuffer];
 
-      if (v12)
+      if (audioBuffer)
       {
-        v13 = [(DoAPSiriRemoteDevice *)v11 audioBuffer];
-        v14 = [v13 count];
+        audioBuffer2 = [(DoAPSiriRemoteDevice *)selfCopy audioBuffer];
+        v14 = [audioBuffer2 count];
 
         if (v14 >= 0xC8)
         {
-          v15 = [(DoAPSiriRemoteDevice *)v11 audioBuffer];
-          [v15 removeObjectAtIndex:0];
+          audioBuffer3 = [(DoAPSiriRemoteDevice *)selfCopy audioBuffer];
+          [audioBuffer3 removeObjectAtIndex:0];
         }
 
-        v16 = [(DoAPSiriRemoteDevice *)v11 audioBuffer];
-        [v16 addObject:v8];
+        audioBuffer4 = [(DoAPSiriRemoteDevice *)selfCopy audioBuffer];
+        [audioBuffer4 addObject:v8];
       }
 
-      objc_sync_exit(v11);
+      objc_sync_exit(selfCopy);
     }
 
 LABEL_17:
   }
 }
 
-- (void)handleEventIndicator:(unsigned __int8)a3 eventValue:(char *)a4
+- (void)handleEventIndicator:(unsigned __int8)indicator eventValue:(char *)value
 {
-  if (a3 > 2)
+  if (indicator > 2)
   {
-    switch(a3)
+    switch(indicator)
     {
       case 3u:
         v14 = qword_1000DDBC8;
@@ -527,38 +527,38 @@ LABEL_17:
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "DoAPSiri - DoAP Received StreamingEnd EventIndicator", &v38, 2u);
         }
 
-        v15 = [(DoAPSiriRemoteDevice *)self doapAudioStop];
+        doapAudioStop = [(DoAPSiriRemoteDevice *)self doapAudioStop];
 
-        if (v15)
+        if (doapAudioStop)
         {
-          v16 = [(DoAPSiriRemoteDevice *)self doapAudioStop];
-          dispatch_semaphore_signal(v16);
+          doapAudioStop2 = [(DoAPSiriRemoteDevice *)self doapAudioStop];
+          dispatch_semaphore_signal(doapAudioStop2);
         }
 
-        v17 = [(DoAPSiriRemoteDevice *)self audioBuffer];
+        audioBuffer = [(DoAPSiriRemoteDevice *)self audioBuffer];
 
-        if (v17)
+        if (audioBuffer)
         {
-          v18 = self;
-          objc_sync_enter(v18);
-          v19 = [(DoAPSiriRemoteDevice *)v18 audioBuffer];
-          [v19 removeAllObjects];
+          selfCopy = self;
+          objc_sync_enter(selfCopy);
+          audioBuffer2 = [(DoAPSiriRemoteDevice *)selfCopy audioBuffer];
+          [audioBuffer2 removeAllObjects];
 
-          objc_sync_exit(v18);
+          objc_sync_exit(selfCopy);
         }
 
         if ([(DoAPDevice *)self state]== 5)
         {
           [(DoAPSiriRemoteDevice *)self setDoapAudioStop:0];
-          v20 = [(DoAPSiriRemoteDevice *)self doapAudioStart];
-          dispatch_semaphore_signal(v20);
+          doapAudioStart = [(DoAPSiriRemoteDevice *)self doapAudioStart];
+          dispatch_semaphore_signal(doapAudioStart);
         }
 
-        v21 = self;
-        objc_sync_enter(v21);
-        [(DoAPSiriRemoteDevice *)v21 clearEvent];
-        [(DoAPDevice *)v21 doapStateSet:2];
-        objc_sync_exit(v21);
+        selfCopy2 = self;
+        objc_sync_enter(selfCopy2);
+        [(DoAPSiriRemoteDevice *)selfCopy2 clearEvent];
+        [(DoAPDevice *)selfCopy2 doapStateSet:2];
+        objc_sync_exit(selfCopy2);
 
         break;
       case 5u:
@@ -575,29 +575,29 @@ LABEL_17:
         v6 = qword_1000DDBC8;
         if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
         {
-          v7 = *a4;
+          v7 = *value;
           v38 = 67109120;
           LODWORD(v39[0]) = v7;
           _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "DoAPSiri - Doap Received PTT/HTT Button Event (value = %d)", &v38, 8u);
         }
 
-        if ([(DoAPDevice *)self state]== 2 && *a4 == 1)
+        if ([(DoAPDevice *)self state]== 2 && *value == 1)
         {
           self->_vtEvent = 6;
           self->_vtSource = 4;
           mach_absolute_time();
-          v8 = [(DoAPDevice *)self peripheral];
-          v9 = [v8 identifier];
-          v10 = [v9 UUIDString];
+          peripheral = [(DoAPDevice *)self peripheral];
+          identifier = [peripheral identifier];
+          uUIDString = [identifier UUIDString];
           AFSiriActivationBluetoothDeviceButtonPress();
         }
 
-        else if ([(DoAPDevice *)self state]== 2 && *a4 == 2)
+        else if ([(DoAPDevice *)self state]== 2 && *value == 2)
         {
           mach_absolute_time();
-          v27 = [(DoAPDevice *)self peripheral];
-          v28 = [v27 identifier];
-          v29 = [v28 UUIDString];
+          peripheral2 = [(DoAPDevice *)self peripheral];
+          identifier2 = [peripheral2 identifier];
+          uUIDString2 = [identifier2 UUIDString];
           AFSiriActivationBluetoothDeviceButtonRelease();
         }
 
@@ -618,22 +618,22 @@ LABEL_17:
     return;
   }
 
-  if (a3 == 1)
+  if (indicator == 1)
   {
-    v23 = self;
-    objc_sync_enter(v23);
-    if ([(DoAPDevice *)v23 state]!= 2 && [(DoAPDevice *)v23 state]!= 5)
+    selfCopy3 = self;
+    objc_sync_enter(selfCopy3);
+    if ([(DoAPDevice *)selfCopy3 state]!= 2 && [(DoAPDevice *)selfCopy3 state]!= 5)
     {
 LABEL_56:
-      objc_sync_exit(v23);
+      objc_sync_exit(selfCopy3);
 
       return;
     }
 
-    v24 = *a4;
+    v24 = *value;
     if (v24 == 1)
     {
-      if ([(DoAPDevice *)v23 state]== 2)
+      if ([(DoAPDevice *)selfCopy3 state]== 2)
       {
         v25 = qword_1000DDBC8;
         if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
@@ -649,18 +649,18 @@ LABEL_56:
         }
 
 LABEL_53:
-        if ([(DoAPDevice *)v23 state]== 2)
+        if ([(DoAPDevice *)selfCopy3 state]== 2)
         {
-          [(DoAPDevice *)v23 doapStateSet:3];
+          [(DoAPDevice *)selfCopy3 doapStateSet:3];
         }
 
-        v23->_vtEvent = 1;
-        v23->_vtSource = *a4;
-        [(DoAPSiriRemoteDevice *)v23 activateSiri:v26];
+        selfCopy3->_vtEvent = 1;
+        selfCopy3->_vtSource = *value;
+        [(DoAPSiriRemoteDevice *)selfCopy3 activateSiri:v26];
         goto LABEL_56;
       }
 
-      v24 = *a4;
+      v24 = *value;
     }
 
     v31 = qword_1000DDBC8;
@@ -669,7 +669,7 @@ LABEL_53:
     {
       if (v32)
       {
-        v34 = [(DoAPDevice *)v23 doapStateNameFor:[(DoAPDevice *)v23 state]];
+        v34 = [(DoAPDevice *)selfCopy3 doapStateNameFor:[(DoAPDevice *)selfCopy3 state]];
         v38 = 67109378;
         LODWORD(v39[0]) = 1;
         WORD2(v39[0]) = 2114;
@@ -682,7 +682,7 @@ LABEL_53:
 
     if (v32)
     {
-      v33 = [(DoAPDevice *)v23 doapStateNameFor:[(DoAPDevice *)v23 state]];
+      v33 = [(DoAPDevice *)selfCopy3 doapStateNameFor:[(DoAPDevice *)selfCopy3 state]];
       v38 = 138543362;
       *&v39[0] = v33;
       _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "DoAPSiri - handleEventIndicator: SiriActivation by DoubleTap while %{public}@", &v38, 0xCu);
@@ -692,7 +692,7 @@ LABEL_53:
     goto LABEL_53;
   }
 
-  if (a3 != 2)
+  if (indicator != 2)
   {
 LABEL_37:
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
@@ -712,7 +712,7 @@ LABEL_37:
 
   if ([(DoAPDevice *)self state]>= 2 && self->_vtEvent == 1 && self->_vtSource != 3)
   {
-    v12 = *a4;
+    v12 = *value;
     v13 = qword_1000DDBC8;
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
     {
@@ -722,19 +722,19 @@ LABEL_37:
     }
 
     mach_absolute_time();
-    v35 = [(DoAPDevice *)self peripheral];
-    v36 = [v35 identifier];
-    v37 = [v36 UUIDString];
+    peripheral3 = [(DoAPDevice *)self peripheral];
+    identifier3 = [peripheral3 identifier];
+    uUIDString3 = [identifier3 UUIDString];
     AFSiriActivationHearstBoron();
   }
 }
 
-- (void)doapAudioWillStart:(id)a3
+- (void)doapAudioWillStart:(id)start
 {
-  v4 = a3;
-  v5 = [(DoAPDevice *)self state];
+  startCopy = start;
+  state = [(DoAPDevice *)self state];
   v6 = qword_1000DDBC8;
-  if (v5 < 7)
+  if (state < 7)
   {
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
     {
@@ -748,7 +748,7 @@ LABEL_37:
     v8[2] = sub_10005B2A0;
     v8[3] = &unk_1000BD770;
     v8[4] = self;
-    v9 = v4;
+    v9 = startCopy;
     dispatch_async(queue, v8);
   }
 
@@ -758,12 +758,12 @@ LABEL_37:
   }
 }
 
-- (void)waitForSiriAudioToStop:(id)a3
+- (void)waitForSiriAudioToStop:(id)stop
 {
-  v4 = a3;
-  v5 = [(DoAPDevice *)self state];
+  stopCopy = stop;
+  state = [(DoAPDevice *)self state];
   v6 = qword_1000DDBC8;
-  if (v5 < 7)
+  if (state < 7)
   {
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
     {
@@ -771,23 +771,23 @@ LABEL_37:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "DoAPSiri waitForSiriAudioToStop", buf, 2u);
     }
 
-    v7 = [(DoAPSiriRemoteDevice *)self lastAudioDate];
-    [v7 timeIntervalSinceNow];
+    lastAudioDate = [(DoAPSiriRemoteDevice *)self lastAudioDate];
+    [lastAudioDate timeIntervalSinceNow];
     v9 = fabs(v8) < 0.5;
 
     if (v9)
     {
-      v10 = [(DoAPSiriRemoteDevice *)self doapAudioStop];
+      doapAudioStop = [(DoAPSiriRemoteDevice *)self doapAudioStop];
 
-      if (v10)
+      if (doapAudioStop)
       {
-        v11 = [(DoAPSiriRemoteDevice *)self lastAudioDate];
-        [v11 timeIntervalSinceNow];
+        lastAudioDate2 = [(DoAPSiriRemoteDevice *)self lastAudioDate];
+        [lastAudioDate2 timeIntervalSinceNow];
         v13 = v12;
 
-        v14 = [(DoAPSiriRemoteDevice *)self doapAudioStop];
+        doapAudioStop2 = [(DoAPSiriRemoteDevice *)self doapAudioStop];
         v15 = dispatch_time(0, 1000000 * vcvtpd_s64_f64((v13 + 0.5) * 1000.0));
-        v16 = dispatch_semaphore_wait(v14, v15);
+        v16 = dispatch_semaphore_wait(doapAudioStop2, v15);
 
         v17 = qword_1000DDBC8;
         v18 = os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT);
@@ -796,8 +796,8 @@ LABEL_37:
           if (v18)
           {
             v19 = v17;
-            v20 = [(DoAPSiriRemoteDevice *)self lastAudioDate];
-            [v20 timeIntervalSinceNow];
+            lastAudioDate3 = [(DoAPSiriRemoteDevice *)self lastAudioDate];
+            [lastAudioDate3 timeIntervalSinceNow];
             *buf = 134217984;
             v46 = fabs(v21) * 1000.0;
             _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "DoAPSiri - Received Siri audio data %f ms ago.", buf, 0xCu);
@@ -809,7 +809,7 @@ LABEL_37:
           v41[2] = sub_10005BE3C;
           v41[3] = &unk_1000BD770;
           v41[4] = self;
-          v42 = v4;
+          v42 = stopCopy;
           dispatch_async(queue, v41);
         }
 
@@ -824,7 +824,7 @@ LABEL_37:
           [(DoAPSiriRemoteDevice *)self setDoapAudioStop:0];
           if ([(DoAPDevice *)self state]< 7)
           {
-            (*(v4 + 2))(v4, 0);
+            (*(stopCopy + 2))(stopCopy, 0);
           }
 
           else
@@ -837,15 +837,15 @@ LABEL_37:
             }
           }
 
-          v38 = [(DoAPSiriRemoteDevice *)self doapAudioStart];
-          dispatch_semaphore_signal(v38);
+          doapAudioStart = [(DoAPSiriRemoteDevice *)self doapAudioStart];
+          dispatch_semaphore_signal(doapAudioStart);
 
-          v39 = self;
-          objc_sync_enter(v39);
-          v40 = [(DoAPSiriRemoteDevice *)v39 audioBuffer];
-          [v40 removeAllObjects];
+          selfCopy = self;
+          objc_sync_enter(selfCopy);
+          audioBuffer = [(DoAPSiriRemoteDevice *)selfCopy audioBuffer];
+          [audioBuffer removeAllObjects];
 
-          objc_sync_exit(v39);
+          objc_sync_exit(selfCopy);
         }
       }
 
@@ -861,16 +861,16 @@ LABEL_37:
         v32 = [NSDictionary dictionaryWithObjects:&v44 forKeys:&v43 count:1];
         v33 = [NSError errorWithDomain:NSMachErrorDomain code:-536870165 userInfo:v32];
 
-        (*(v4 + 2))(v4, v33);
-        v34 = [(DoAPSiriRemoteDevice *)self doapAudioStart];
-        dispatch_semaphore_signal(v34);
+        (*(stopCopy + 2))(stopCopy, v33);
+        doapAudioStart2 = [(DoAPSiriRemoteDevice *)self doapAudioStart];
+        dispatch_semaphore_signal(doapAudioStart2);
 
-        v35 = self;
-        objc_sync_enter(v35);
-        v36 = [(DoAPSiriRemoteDevice *)v35 audioBuffer];
-        [v36 removeAllObjects];
+        selfCopy2 = self;
+        objc_sync_enter(selfCopy2);
+        audioBuffer2 = [(DoAPSiriRemoteDevice *)selfCopy2 audioBuffer];
+        [audioBuffer2 removeAllObjects];
 
-        objc_sync_exit(v35);
+        objc_sync_exit(selfCopy2);
       }
     }
 
@@ -880,35 +880,35 @@ LABEL_37:
       if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
       {
         v24 = v23;
-        v25 = [(DoAPSiriRemoteDevice *)self lastAudioDate];
-        [v25 timeIntervalSinceNow];
+        lastAudioDate4 = [(DoAPSiriRemoteDevice *)self lastAudioDate];
+        [lastAudioDate4 timeIntervalSinceNow];
         *buf = 134217984;
         v46 = fabs(v26) * 1000.0;
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "DoAPSiri - Have not received audio data for %f ms. Stop Siri session.", buf, 0xCu);
       }
 
       [(DoAPSiriRemoteDevice *)self setDoapAudioStop:0];
-      (*(v4 + 2))(v4, 0);
-      v27 = [(DoAPSiriRemoteDevice *)self doapAudioStart];
-      dispatch_semaphore_signal(v27);
+      (*(stopCopy + 2))(stopCopy, 0);
+      doapAudioStart3 = [(DoAPSiriRemoteDevice *)self doapAudioStart];
+      dispatch_semaphore_signal(doapAudioStart3);
 
-      v28 = [(DoAPSiriRemoteDevice *)self audioBuffer];
+      audioBuffer3 = [(DoAPSiriRemoteDevice *)self audioBuffer];
 
-      if (v28)
+      if (audioBuffer3)
       {
-        v29 = self;
-        objc_sync_enter(v29);
-        v30 = [(DoAPSiriRemoteDevice *)v29 audioBuffer];
-        [v30 removeAllObjects];
+        selfCopy3 = self;
+        objc_sync_enter(selfCopy3);
+        audioBuffer4 = [(DoAPSiriRemoteDevice *)selfCopy3 audioBuffer];
+        [audioBuffer4 removeAllObjects];
 
-        objc_sync_exit(v29);
+        objc_sync_exit(selfCopy3);
       }
 
-      v31 = self;
-      objc_sync_enter(v31);
-      [(DoAPSiriRemoteDevice *)v31 clearEvent];
-      [(DoAPDevice *)v31 doapStateSet:2];
-      objc_sync_exit(v31);
+      selfCopy4 = self;
+      objc_sync_enter(selfCopy4);
+      [(DoAPSiriRemoteDevice *)selfCopy4 clearEvent];
+      [(DoAPDevice *)selfCopy4 doapStateSet:2];
+      objc_sync_exit(selfCopy4);
     }
   }
 
@@ -918,12 +918,12 @@ LABEL_37:
   }
 }
 
-- (void)doapAudioDidStop:(id)a3
+- (void)doapAudioDidStop:(id)stop
 {
-  v4 = a3;
-  v5 = [(DoAPDevice *)self state];
+  stopCopy = stop;
+  state = [(DoAPDevice *)self state];
   v6 = qword_1000DDBC8;
-  if (v5 < 7)
+  if (state < 7)
   {
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
     {
@@ -937,7 +937,7 @@ LABEL_37:
     v8[2] = sub_10005BF64;
     v8[3] = &unk_1000BD770;
     v8[4] = self;
-    v9 = v4;
+    v9 = stopCopy;
     dispatch_async(queue, v8);
   }
 
@@ -947,19 +947,19 @@ LABEL_37:
   }
 }
 
-- (void)notifyObserver:(id)a3 didChangeStateFrom:(unint64_t)a4 to:(unint64_t)a5
+- (void)notifyObserver:(id)observer didChangeStateFrom:(unint64_t)from to:(unint64_t)to
 {
-  v8 = a3;
-  v9 = v8;
-  if (a4 != a5 && self->_notifyObserver == v8)
+  observerCopy = observer;
+  v9 = observerCopy;
+  if (from != to && self->_notifyObserver == observerCopy)
   {
-    self->_siriState = a5;
+    self->_siriState = to;
     v10 = qword_1000DDBC8;
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
     {
       siriState = self->_siriState;
       v12[0] = 67109376;
-      v12[1] = a4;
+      v12[1] = from;
       v13 = 1024;
       v14 = siriState;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "DoAPSiri - SiriState changed 0x%0X -> 0x%0X", v12, 0xEu);

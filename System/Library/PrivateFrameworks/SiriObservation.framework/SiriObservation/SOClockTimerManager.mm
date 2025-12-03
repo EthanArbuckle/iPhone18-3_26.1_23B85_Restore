@@ -1,25 +1,25 @@
 @interface SOClockTimerManager
 + (void)warmUp;
 - (SOClockTimerManager)init;
-- (SOClockTimerManager)initWithInstanceContext:(id)a3;
+- (SOClockTimerManager)initWithInstanceContext:(id)context;
 - (id)_registeredObservations;
-- (id)addTimer:(id)a3;
-- (id)dismissTimerWithIdentifier:(id)a3;
-- (id)removeTimer:(id)a3;
+- (id)addTimer:(id)timer;
+- (id)dismissTimerWithIdentifier:(id)identifier;
+- (id)removeTimer:(id)timer;
 - (id)timers;
-- (id)updateTimer:(id)a3;
-- (void)addHandler:(id)a3 forEvent:(int64_t)a4;
+- (id)updateTimer:(id)timer;
+- (void)addHandler:(id)handler forEvent:(int64_t)event;
 - (void)checkIn;
 - (void)dealloc;
-- (void)removeHandlerForEvent:(int64_t)a3;
+- (void)removeHandlerForEvent:(int64_t)event;
 @end
 
 @implementation SOClockTimerManager
 
-- (id)dismissTimerWithIdentifier:(id)a3
+- (id)dismissTimerWithIdentifier:(id)identifier
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
@@ -35,7 +35,7 @@
 
   else
   {
-    v7 = [(MTTimerManager *)mtTimerManager dismissTimerWithIdentifier:v4];
+    v7 = [(MTTimerManager *)mtTimerManager dismissTimerWithIdentifier:identifierCopy];
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -43,10 +43,10 @@
   return v7;
 }
 
-- (id)removeTimer:(id)a3
+- (id)removeTimer:(id)timer
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  timerCopy = timer;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
@@ -62,7 +62,7 @@
 
   else
   {
-    v7 = [(MTTimerManager *)mtTimerManager removeTimer:v4];
+    v7 = [(MTTimerManager *)mtTimerManager removeTimer:timerCopy];
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -70,10 +70,10 @@
   return v7;
 }
 
-- (id)updateTimer:(id)a3
+- (id)updateTimer:(id)timer
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  timerCopy = timer;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
@@ -89,7 +89,7 @@
 
   else
   {
-    v7 = [(MTTimerManager *)mtTimerManager updateTimer:v4];
+    v7 = [(MTTimerManager *)mtTimerManager updateTimer:timerCopy];
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -97,10 +97,10 @@
   return v7;
 }
 
-- (id)addTimer:(id)a3
+- (id)addTimer:(id)timer
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  timerCopy = timer;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
@@ -116,7 +116,7 @@
 
   else
   {
-    v7 = [(MTTimerManager *)mtTimerManager addTimer:v4];
+    v7 = [(MTTimerManager *)mtTimerManager addTimer:timerCopy];
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -154,7 +154,7 @@
   return mtTimerManager;
 }
 
-- (void)removeHandlerForEvent:(int64_t)a3
+- (void)removeHandlerForEvent:(int64_t)event
 {
   v16 = *MEMORY[0x277D85DE8];
   v4 = AFClockTimerManagerEventGetName();
@@ -170,26 +170,26 @@
 
   if (([MEMORY[0x277CEF2A8] isTimerAlarmCoordinationEnabled] & 1) == 0)
   {
-    v6 = [(SOClockTimerManager *)self _registeredObservations];
-    v7 = [v6 objectForKey:v4];
+    _registeredObservations = [(SOClockTimerManager *)self _registeredObservations];
+    v7 = [_registeredObservations objectForKey:v4];
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    v9 = v8;
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    v9 = defaultCenter;
     if (v7)
     {
-      [v8 removeObserver:v7];
-      v10 = [(SOClockTimerManager *)self _registeredObservations];
-      [v10 removeObjectForKey:v4];
+      [defaultCenter removeObserver:v7];
+      _registeredObservations2 = [(SOClockTimerManager *)self _registeredObservations];
+      [_registeredObservations2 removeObjectForKey:v4];
     }
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addHandler:(id)a3 forEvent:(int64_t)a4
+- (void)addHandler:(id)handler forEvent:(int64_t)event
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  handlerCopy = handler;
   v7 = AFClockTimerManagerEventGetName();
   v8 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
@@ -205,30 +205,30 @@
   v20[1] = 3221225472;
   v20[2] = __43__SOClockTimerManager_addHandler_forEvent___block_invoke;
   v20[3] = &unk_279C3D690;
-  v9 = v6;
+  v9 = handlerCopy;
   v21 = v9;
   v10 = MEMORY[0x26D61D070](v20);
   if (([MEMORY[0x277CEF2A8] isTimerAlarmCoordinationEnabled] & 1) == 0)
   {
-    v11 = [(SOClockTimerManager *)self _registeredObservations];
-    v12 = [v11 objectForKey:v7];
+    _registeredObservations = [(SOClockTimerManager *)self _registeredObservations];
+    v12 = [_registeredObservations objectForKey:v7];
 
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    v14 = v13;
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    v14 = defaultCenter;
     if (v12)
     {
-      [v13 removeObserver:v12];
+      [defaultCenter removeObserver:v12];
     }
 
-    if ((a4 - 1) <= 7)
+    if ((event - 1) <= 7)
     {
-      v15 = (*off_279C3D6D0[a4 - 1])();
+      v15 = (*off_279C3D6D0[event - 1])();
       if (v15)
       {
         v16 = v15;
         v17 = [v14 addObserverForName:v15 object:self->_mtTimerManager queue:0 usingBlock:v10];
-        v18 = [(SOClockTimerManager *)self _registeredObservations];
-        [v18 setObject:v17 forKey:v7];
+        _registeredObservations2 = [(SOClockTimerManager *)self _registeredObservations];
+        [_registeredObservations2 setObject:v17 forKey:v7];
       }
     }
   }
@@ -295,15 +295,15 @@ void __43__SOClockTimerManager_addHandler_forEvent___block_invoke(uint64_t a1, v
 {
   if (([MEMORY[0x277CEF2A8] isTimerAlarmCoordinationEnabled] & 1) == 0 && self->_mtTimerManager)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    v4 = [(SOClockTimerManager *)self _registeredObservations];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    _registeredObservations = [(SOClockTimerManager *)self _registeredObservations];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __30__SOClockTimerManager_dealloc__block_invoke;
     v9[3] = &unk_279C3D668;
-    v10 = v3;
-    v5 = v3;
-    [v4 enumerateKeysAndObjectsUsingBlock:v9];
+    v10 = defaultCenter;
+    v5 = defaultCenter;
+    [_registeredObservations enumerateKeysAndObjectsUsingBlock:v9];
 
     mtTimerManager = self->_mtTimerManager;
     self->_mtTimerManager = 0;
@@ -318,10 +318,10 @@ void __43__SOClockTimerManager_addHandler_forEvent___block_invoke(uint64_t a1, v
   [(SOClockTimerManager *)&v8 dealloc];
 }
 
-- (SOClockTimerManager)initWithInstanceContext:(id)a3
+- (SOClockTimerManager)initWithInstanceContext:(id)context
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v18.receiver = self;
   v18.super_class = SOClockTimerManager;
   v5 = [(SOClockTimerManager *)&v18 init];
@@ -330,18 +330,18 @@ void __43__SOClockTimerManager_addHandler_forEvent___block_invoke(uint64_t a1, v
     goto LABEL_11;
   }
 
-  if (v4)
+  if (contextCopy)
   {
-    v6 = v4;
+    defaultContext = contextCopy;
   }
 
   else
   {
-    v6 = [MEMORY[0x277CEF2C8] defaultContext];
+    defaultContext = [MEMORY[0x277CEF2C8] defaultContext];
   }
 
   instanceContext = v5->_instanceContext;
-  v5->_instanceContext = v6;
+  v5->_instanceContext = defaultContext;
 
   v8 = MEMORY[0x277CEF098];
   v9 = *MEMORY[0x277CEF098];
@@ -350,7 +350,7 @@ void __43__SOClockTimerManager_addHandler_forEvent___block_invoke(uint64_t a1, v
     *buf = 136315394;
     v20 = "[SOClockTimerManager initWithInstanceContext:]";
     v21 = 2112;
-    v22 = v4;
+    v22 = contextCopy;
     _os_log_impl(&dword_26858F000, v9, OS_LOG_TYPE_INFO, "%s instanceContext = %@", buf, 0x16u);
   }
 
@@ -398,8 +398,8 @@ LABEL_12:
 
 - (SOClockTimerManager)init
 {
-  v3 = [MEMORY[0x277CEF2C8] defaultContext];
-  v4 = [(SOClockTimerManager *)self initWithInstanceContext:v3];
+  defaultContext = [MEMORY[0x277CEF2C8] defaultContext];
+  v4 = [(SOClockTimerManager *)self initWithInstanceContext:defaultContext];
 
   return v4;
 }

@@ -1,28 +1,28 @@
 @interface PSUICloudBackupCellularSwitchSpecifier
 - (BOOL)shouldShowCloudBackupCarrier;
-- (PSUICloudBackupCellularSwitchSpecifier)initWithAppleAccountStore:(id)a3 backupManagerWrapper:(id)a4;
+- (PSUICloudBackupCellularSwitchSpecifier)initWithAppleAccountStore:(id)store backupManagerWrapper:(id)wrapper;
 - (id)cloudBackupGroupSpecifier;
 - (id)usagePolicy;
-- (void)setUsagePolicy:(id)a3;
+- (void)setUsagePolicy:(id)policy;
 @end
 
 @implementation PSUICloudBackupCellularSwitchSpecifier
 
-- (PSUICloudBackupCellularSwitchSpecifier)initWithAppleAccountStore:(id)a3 backupManagerWrapper:(id)a4
+- (PSUICloudBackupCellularSwitchSpecifier)initWithAppleAccountStore:(id)store backupManagerWrapper:(id)wrapper
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  wrapperCopy = wrapper;
   v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:@"CLOUD_BACKUP_CELLULAR" value:&stru_287733598 table:@"Cellular"];
-  v11 = [MEMORY[0x277D4D860] sharedInstance];
+  mEMORY[0x277D4D860] = [MEMORY[0x277D4D860] sharedInstance];
   v14.receiver = self;
   v14.super_class = PSUICloudBackupCellularSwitchSpecifier;
-  v12 = [(PSAppDataUsagePolicySwitchSpecifier *)&v14 initWithBundleID:@"com.apple.preferences.settings.cellular.per-app_usage.cache.cloudBackup" displayName:v10 statisticsCache:v11];
+  v12 = [(PSAppDataUsagePolicySwitchSpecifier *)&v14 initWithBundleID:@"com.apple.preferences.settings.cellular.per-app_usage.cache.cloudBackup" displayName:v10 statisticsCache:mEMORY[0x277D4D860]];
 
   if (v12)
   {
-    objc_storeStrong(&v12->_accountStore, a3);
-    objc_storeStrong(&v12->_backupManagerWrapper, a4);
+    objc_storeStrong(&v12->_accountStore, store);
+    objc_storeStrong(&v12->_backupManagerWrapper, wrapper);
   }
 
   return v12;
@@ -32,31 +32,31 @@
 {
   v13 = *MEMORY[0x277D85DE8];
   backupManagerWrapper = self->_backupManagerWrapper;
-  v4 = [(PSUICloudBackupCellularSwitchSpecifier *)self appleAccount];
+  appleAccount = [(PSUICloudBackupCellularSwitchSpecifier *)self appleAccount];
   v10 = 0;
-  v5 = [(PSUIMBManagerWrapper *)backupManagerWrapper backupOnCellularSupportWithAccount:v4 error:&v10];
+  v5 = [(PSUIMBManagerWrapper *)backupManagerWrapper backupOnCellularSupportWithAccount:appleAccount error:&v10];
   v6 = v10;
 
   if (v6)
   {
-    v7 = [(PSUICloudBackupCellularSwitchSpecifier *)self getLogger];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    getLogger = [(PSUICloudBackupCellularSwitchSpecifier *)self getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v12 = v6;
-      _os_log_error_impl(&dword_2658DE000, v7, OS_LOG_TYPE_ERROR, "Failed to fetch BackupOnCellularSupport: %@", buf, 0xCu);
+      _os_log_error_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_ERROR, "Failed to fetch BackupOnCellularSupport: %@", buf, 0xCu);
     }
 
-    LOBYTE(v7) = 0;
+    LOBYTE(getLogger) = 0;
   }
 
   else
   {
-    v7 = ((v5 >> 1) & 1);
+    getLogger = ((v5 >> 1) & 1);
   }
 
   v8 = *MEMORY[0x277D85DE8];
-  return v7;
+  return getLogger;
 }
 
 - (id)cloudBackupGroupSpecifier
@@ -77,11 +77,11 @@
   v11 = 0;
   v4 = [(PSUIMBManagerWrapper *)backupManagerWrapper isBackupOnCellularEnabledWithError:&v11];
   v5 = v11;
-  v6 = [(PSUICloudBackupCellularSwitchSpecifier *)self getLogger];
-  v7 = v6;
+  getLogger = [(PSUICloudBackupCellularSwitchSpecifier *)self getLogger];
+  v7 = getLogger;
   if (v5)
   {
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v13 = v5;
@@ -89,7 +89,7 @@
     }
   }
 
-  else if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  else if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
     LODWORD(v13) = v4;
@@ -103,61 +103,61 @@
   return v8;
 }
 
-- (void)setUsagePolicy:(id)a3
+- (void)setUsagePolicy:(id)policy
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PSUICloudBackupCellularSwitchSpecifier *)self getLogger];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  policyCopy = policy;
+  getLogger = [(PSUICloudBackupCellularSwitchSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v4;
-    _os_log_impl(&dword_2658DE000, v5, OS_LOG_TYPE_DEFAULT, "Setting BackupOnCellularEnabled: %@", buf, 0xCu);
+    v16 = policyCopy;
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Setting BackupOnCellularEnabled: %@", buf, 0xCu);
   }
 
   backupManagerWrapper = self->_backupManagerWrapper;
   v14 = 0;
-  v7 = -[PSUIMBManagerWrapper setBackupOnCellularEnabled:error:](backupManagerWrapper, "setBackupOnCellularEnabled:error:", [v4 BOOLValue], &v14);
+  v7 = -[PSUIMBManagerWrapper setBackupOnCellularEnabled:error:](backupManagerWrapper, "setBackupOnCellularEnabled:error:", [policyCopy BOOLValue], &v14);
   v8 = v14;
-  v9 = [(PSUICloudBackupCellularSwitchSpecifier *)self getLogger];
-  v10 = v9;
+  getLogger2 = [(PSUICloudBackupCellularSwitchSpecifier *)self getLogger];
+  delegate2 = getLogger2;
   if (v7)
   {
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v16 = v4;
-      _os_log_impl(&dword_2658DE000, v10, OS_LOG_TYPE_DEFAULT, "setBackupOnCellularEnabled succeeded: %@", buf, 0xCu);
+      v16 = policyCopy;
+      _os_log_impl(&dword_2658DE000, delegate2, OS_LOG_TYPE_DEFAULT, "setBackupOnCellularEnabled succeeded: %@", buf, 0xCu);
     }
   }
 
   else
   {
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v16 = v4;
+      v16 = policyCopy;
       v17 = 2112;
       v18 = v8;
-      _os_log_error_impl(&dword_2658DE000, v10, OS_LOG_TYPE_ERROR, "setBackupOnCellularEnabled failed: %@: %@", buf, 0x16u);
+      _os_log_error_impl(&dword_2658DE000, delegate2, OS_LOG_TYPE_ERROR, "setBackupOnCellularEnabled failed: %@: %@", buf, 0x16u);
     }
 
-    v11 = [(PSAppCellularUsageSpecifier *)self delegate];
+    delegate = [(PSAppCellularUsageSpecifier *)self delegate];
     v12 = objc_opt_respondsToSelector();
 
     if (v12)
     {
-      v10 = [(PSAppCellularUsageSpecifier *)self delegate];
-      [v10 didFailToSetPolicyForSpecifier:self];
+      delegate2 = [(PSAppCellularUsageSpecifier *)self delegate];
+      [delegate2 didFailToSetPolicyForSpecifier:self];
     }
 
     else
     {
-      v10 = [(PSUICloudBackupCellularSwitchSpecifier *)self getLogger];
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+      delegate2 = [(PSUICloudBackupCellularSwitchSpecifier *)self getLogger];
+      if (os_log_type_enabled(delegate2, OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
-        _os_log_error_impl(&dword_2658DE000, v10, OS_LOG_TYPE_ERROR, "Delegate does not respond to didFailToSetPolicyForSpecifier:", buf, 2u);
+        _os_log_error_impl(&dword_2658DE000, delegate2, OS_LOG_TYPE_ERROR, "Delegate does not respond to didFailToSetPolicyForSpecifier:", buf, 2u);
       }
     }
   }

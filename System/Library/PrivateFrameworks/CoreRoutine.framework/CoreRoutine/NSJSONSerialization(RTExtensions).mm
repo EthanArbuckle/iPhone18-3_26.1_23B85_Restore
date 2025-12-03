@@ -16,8 +16,8 @@
     if (v7)
     {
       v19[0] = *MEMORY[0x1E696A578];
-      v8 = [MEMORY[0x1E696AAE8] mainBundle];
-      v9 = [v8 localizedStringForKey:@"NSJSONSerialization failed" value:&stru_1F3DD00E8 table:0];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      v9 = [mainBundle localizedStringForKey:@"NSJSONSerialization failed" value:&stru_1F3DD00E8 table:0];
       v19[1] = *MEMORY[0x1E696AA08];
       v20[0] = v9;
       v20[1] = v7;
@@ -28,24 +28,24 @@
         *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.routined.NSJSONSerializationRTExtensions" code:0 userInfo:v10];
       }
 
-      v11 = [MEMORY[0x1E696AEC0] string];
+      string = [MEMORY[0x1E696AEC0] string];
     }
 
     else
     {
-      v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v6 encoding:4];
+      string = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v6 encoding:4];
     }
   }
 
   else
   {
     v21[0] = *MEMORY[0x1E696A578];
-    v12 = [MEMORY[0x1E696AAE8] mainBundle];
-    v13 = [v12 localizedStringForKey:@"Invalid dictionary for JSON serialization" value:&stru_1F3DD00E8 table:0];
+    mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+    v13 = [mainBundle2 localizedStringForKey:@"Invalid dictionary for JSON serialization" value:&stru_1F3DD00E8 table:0];
     v22[0] = v13;
     v21[1] = *MEMORY[0x1E696A598];
-    v14 = [MEMORY[0x1E696AAE8] mainBundle];
-    v15 = [v14 localizedStringForKey:@"Refer to NSJSONSerialization spec for valid dictionaries" value:&stru_1F3DD00E8 table:0];
+    mainBundle3 = [MEMORY[0x1E696AAE8] mainBundle];
+    v15 = [mainBundle3 localizedStringForKey:@"Refer to NSJSONSerialization spec for valid dictionaries" value:&stru_1F3DD00E8 table:0];
     v22[1] = v15;
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:2];
 
@@ -54,12 +54,12 @@
       *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.routined.NSJSONSerializationRTExtensions" code:0 userInfo:v7];
     }
 
-    v11 = [MEMORY[0x1E696AEC0] string];
+    string = [MEMORY[0x1E696AEC0] string];
   }
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v11;
+  return string;
 }
 
 @end

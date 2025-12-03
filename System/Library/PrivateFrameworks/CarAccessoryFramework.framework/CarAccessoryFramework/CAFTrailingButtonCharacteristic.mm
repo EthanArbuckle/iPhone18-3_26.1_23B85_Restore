@@ -3,14 +3,14 @@
 + (void)load;
 - (CAFTrailingButton)trailingButtonValue;
 - (id)formattedValue;
-- (void)setTrailingButtonValue:(id)a3;
+- (void)setTrailingButtonValue:(id)value;
 @end
 
 @implementation CAFTrailingButtonCharacteristic
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFTrailingButtonCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -18,22 +18,22 @@
 - (CAFTrailingButton)trailingButtonValue
 {
   v3 = [CAFTrailingButton alloc];
-  v4 = [(CAFDictionaryCharacteristic *)self dictionaryValue];
-  v5 = [(CAFTrailingButton *)v3 initWithDictionary:v4];
+  dictionaryValue = [(CAFDictionaryCharacteristic *)self dictionaryValue];
+  v5 = [(CAFTrailingButton *)v3 initWithDictionary:dictionaryValue];
 
   return v5;
 }
 
-- (void)setTrailingButtonValue:(id)a3
+- (void)setTrailingButtonValue:(id)value
 {
-  v4 = [a3 dictionaryRepresentation];
-  [(CAFDictionaryCharacteristic *)self setDictionaryValue:v4];
+  dictionaryRepresentation = [value dictionaryRepresentation];
+  [(CAFDictionaryCharacteristic *)self setDictionaryValue:dictionaryRepresentation];
 }
 
 - (id)formattedValue
 {
-  v2 = [(CAFTrailingButtonCharacteristic *)self trailingButtonValue];
-  v3 = [v2 description];
+  trailingButtonValue = [(CAFTrailingButtonCharacteristic *)self trailingButtonValue];
+  v3 = [trailingButtonValue description];
 
   return v3;
 }

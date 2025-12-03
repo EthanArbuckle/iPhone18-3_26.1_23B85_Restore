@@ -1,70 +1,70 @@
 @interface STSTapToProvisionResult
-+ (id)fromOR:(id)a3;
-+ (id)nameFromRid:(id)a3;
-- (STSTapToProvisionResult)initWithProvisionDataBlob:(id)a3 casdCertificate:(id)a4 networkName:(id)a5;
++ (id)fromOR:(id)r;
++ (id)nameFromRid:(id)rid;
+- (STSTapToProvisionResult)initWithProvisionDataBlob:(id)blob casdCertificate:(id)certificate networkName:(id)name;
 @end
 
 @implementation STSTapToProvisionResult
 
-- (STSTapToProvisionResult)initWithProvisionDataBlob:(id)a3 casdCertificate:(id)a4 networkName:(id)a5
+- (STSTapToProvisionResult)initWithProvisionDataBlob:(id)blob casdCertificate:(id)certificate networkName:(id)name
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  blobCopy = blob;
+  certificateCopy = certificate;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = STSTapToProvisionResult;
   v12 = [(STSTapToProvisionResult *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_provisionDataBlob, a3);
-    objc_storeStrong(&v13->_casdCertificate, a4);
-    objc_storeStrong(&v13->_networkName, a5);
+    objc_storeStrong(&v12->_provisionDataBlob, blob);
+    objc_storeStrong(&v13->_casdCertificate, certificate);
+    objc_storeStrong(&v13->_networkName, name);
   }
 
   return v13;
 }
 
-+ (id)fromOR:(id)a3
++ (id)fromOR:(id)r
 {
-  v4 = a3;
+  rCopy = r;
   v5 = [STSTapToProvisionResult alloc];
-  v6 = [v4 provisionDataBlob];
-  v7 = [v4 casdCertificate];
-  v8 = [v4 rid];
+  provisionDataBlob = [rCopy provisionDataBlob];
+  casdCertificate = [rCopy casdCertificate];
+  v8 = [rCopy rid];
 
-  v9 = [a1 nameFromRid:v8];
-  v10 = [(STSTapToProvisionResult *)v5 initWithProvisionDataBlob:v6 casdCertificate:v7 networkName:v9];
+  v9 = [self nameFromRid:v8];
+  v10 = [(STSTapToProvisionResult *)v5 initWithProvisionDataBlob:provisionDataBlob casdCertificate:casdCertificate networkName:v9];
 
   return v10;
 }
 
-+ (id)nameFromRid:(id)a3
++ (id)nameFromRid:(id)rid
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"A000000003"])
+  ridCopy = rid;
+  if ([ridCopy isEqualToString:@"A000000003"])
   {
     v4 = @"STSNetworkNameVisa";
   }
 
-  else if ([v3 isEqualToString:@"A000000004"])
+  else if ([ridCopy isEqualToString:@"A000000004"])
   {
     v4 = @"STSNetworkNameMastercard";
   }
 
-  else if ([v3 isEqualToString:@"A000000025"])
+  else if ([ridCopy isEqualToString:@"A000000025"])
   {
     v4 = @"STSNetworkNameAmex";
   }
 
-  else if ([v3 isEqualToString:@"A000000152"])
+  else if ([ridCopy isEqualToString:@"A000000152"])
   {
     v4 = @"STSNetworkNameDiscover";
   }
 
   else
   {
-    sub_265398190(OS_LOG_TYPE_ERROR, 0, "+[STSTapToProvisionResult nameFromRid:]", 71, @"Unknown RID %@", v5, v6, v7, v3);
+    sub_265398190(OS_LOG_TYPE_ERROR, 0, "+[STSTapToProvisionResult nameFromRid:]", 71, @"Unknown RID %@", v5, v6, v7, ridCopy);
     v4 = @"STSNetworkNameUnknown";
   }
 

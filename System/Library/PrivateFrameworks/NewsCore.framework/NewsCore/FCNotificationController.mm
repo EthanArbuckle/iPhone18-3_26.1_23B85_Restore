@@ -1,19 +1,19 @@
 @interface FCNotificationController
-- (BOOL)refreshNotificationsForChannelIDs:(id)a3 paidChannelIDs:(id)a4;
-- (BOOL)refreshNotificationsForTopicIDs:(id)a3 withTopicGroupingID:(id)a4 fromChannelID:(id)a5;
-- (BOOL)registerNotificationsForChannelID:(id)a3 isPaid:(BOOL)a4;
-- (BOOL)registerNotificationsForTopicIDs:(id)a3 withTopicGroupingID:(id)a4 fromChannelID:(id)a5;
-- (BOOL)unregisterNotificationsForChannelID:(id)a3;
-- (BOOL)unregisterNotificationsForTopicIDs:(id)a3 withTopicGroupingID:(id)a4 fromChannelID:(id)a5;
+- (BOOL)refreshNotificationsForChannelIDs:(id)ds paidChannelIDs:(id)iDs;
+- (BOOL)refreshNotificationsForTopicIDs:(id)ds withTopicGroupingID:(id)d fromChannelID:(id)iD;
+- (BOOL)registerNotificationsForChannelID:(id)d isPaid:(BOOL)paid;
+- (BOOL)registerNotificationsForTopicIDs:(id)ds withTopicGroupingID:(id)d fromChannelID:(id)iD;
+- (BOOL)unregisterNotificationsForChannelID:(id)d;
+- (BOOL)unregisterNotificationsForTopicIDs:(id)ds withTopicGroupingID:(id)d fromChannelID:(id)iD;
 - (FCNotificationController)init;
-- (FCNotificationController)initWithUserInfo:(id)a3 commandQueue:(id)a4 configurationManager:(id)a5 publisherNotificationsAllowed:(BOOL)a6 appleNewsNotificationsAllowed:(BOOL)a7;
-- (id)appendBreakingNewsIfNeededToChannelIDs:(id)a3;
+- (FCNotificationController)initWithUserInfo:(id)info commandQueue:(id)queue configurationManager:(id)manager publisherNotificationsAllowed:(BOOL)allowed appleNewsNotificationsAllowed:(BOOL)notificationsAllowed;
+- (id)appendBreakingNewsIfNeededToChannelIDs:(id)ds;
 - (void)dealloc;
 - (void)refreshNotificationsFromAppleNews;
-- (void)setEndOfAudioTrackNotificationsEnabled:(BOOL)a3;
-- (void)setNewIssueNotificationsEnabled:(BOOL)a3;
-- (void)setSportsTopicNotificationsEnabled:(BOOL)a3;
-- (void)userInfoDidChangeNotificationsUserID:(id)a3;
+- (void)setEndOfAudioTrackNotificationsEnabled:(BOOL)enabled;
+- (void)setNewIssueNotificationsEnabled:(BOOL)enabled;
+- (void)setSportsTopicNotificationsEnabled:(BOOL)enabled;
+- (void)userInfoDidChangeNotificationsUserID:(id)d;
 @end
 
 @implementation FCNotificationController
@@ -44,13 +44,13 @@
   objc_exception_throw(v6);
 }
 
-- (FCNotificationController)initWithUserInfo:(id)a3 commandQueue:(id)a4 configurationManager:(id)a5 publisherNotificationsAllowed:(BOOL)a6 appleNewsNotificationsAllowed:(BOOL)a7
+- (FCNotificationController)initWithUserInfo:(id)info commandQueue:(id)queue configurationManager:(id)manager publisherNotificationsAllowed:(BOOL)allowed appleNewsNotificationsAllowed:(BOOL)notificationsAllowed
 {
   v32 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  if (!v14 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  infoCopy = info;
+  queueCopy = queue;
+  managerCopy = manager;
+  if (!queueCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v22 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "commandQueue"];
     *buf = 136315906;
@@ -70,16 +70,16 @@
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_userInfo, a3);
-    v18 = [v13 notificationsUserID];
+    objc_storeStrong(&v16->_userInfo, info);
+    notificationsUserID = [infoCopy notificationsUserID];
     notificationsUserID = v17->_notificationsUserID;
-    v17->_notificationsUserID = v18;
+    v17->_notificationsUserID = notificationsUserID;
 
-    objc_storeStrong(&v17->_commandQueue, a4);
-    objc_storeStrong(&v17->_configurationManager, a5);
-    v17->_publisherNotificationsAllowed = a6;
-    v17->_appleNewsNotificationsAllowed = a7;
-    [v13 addObserver:v17];
+    objc_storeStrong(&v17->_commandQueue, queue);
+    objc_storeStrong(&v17->_configurationManager, manager);
+    v17->_publisherNotificationsAllowed = allowed;
+    v17->_appleNewsNotificationsAllowed = notificationsAllowed;
+    [infoCopy addObserver:v17];
   }
 
   v20 = *MEMORY[0x1E69E9840];
@@ -88,8 +88,8 @@
 
 - (void)dealloc
 {
-  v3 = [(FCNotificationController *)self userInfo];
-  [v3 removeObserver:self];
+  userInfo = [(FCNotificationController *)self userInfo];
+  [userInfo removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = FCNotificationController;
@@ -119,13 +119,13 @@ void __66__FCNotificationController__registerDeviceToken_deviceDigestMode___bloc
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)registerNotificationsForChannelID:(id)a3 isPaid:(BOOL)a4
+- (BOOL)registerNotificationsForChannelID:(id)d isPaid:(BOOL)paid
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dCopy = d;
   if ([(FCNotificationController *)self publisherNotificationsAllowed])
   {
-    if (!v6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+    if (!dCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v24 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "channelID"];
       *buf = 136315906;
@@ -140,23 +140,23 @@ void __66__FCNotificationController__registerDeviceToken_deviceDigestMode___bloc
     }
 
     v7 = +[FCAppleAccount sharedAccount];
-    v8 = [v7 contentStoreFrontID];
+    contentStoreFrontID = [v7 contentStoreFrontID];
 
-    if (v6 && ([(FCNotificationController *)self deviceToken], (v9 = objc_claimAutoreleasedReturnValue()) != 0) && (v10 = v9, [(FCNotificationController *)self notificationsUserID], v11 = objc_claimAutoreleasedReturnValue(), v11, v10, v11))
+    if (dCopy && ([(FCNotificationController *)self deviceToken], (v9 = objc_claimAutoreleasedReturnValue()) != 0) && (v10 = v9, [(FCNotificationController *)self notificationsUserID], v11 = objc_claimAutoreleasedReturnValue(), v11, v10, v11))
     {
       v12 = +[FCNetworkReachability sharedNetworkReachability];
       if ([v12 isCloudKitReachable])
       {
-        if (a4)
+        if (paid)
         {
-          v34 = v6;
+          v34 = dCopy;
           v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v34 count:1];
           v14 = 0;
         }
 
         else
         {
-          v35 = v6;
+          v35 = dCopy;
           v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v35 count:1];
           v13 = 0;
         }
@@ -164,13 +164,13 @@ void __66__FCNotificationController__registerDeviceToken_deviceDigestMode___bloc
         v16 = [(FCNotificationController *)self appendBreakingNewsIfNeededToChannelIDs:v14];
 
         v17 = [FCModifyNotificationsForChannelsCommand alloc];
-        v18 = [(FCNotificationController *)self notificationsUserID];
-        v19 = [(FCNotificationController *)self deviceToken];
+        notificationsUserID = [(FCNotificationController *)self notificationsUserID];
+        deviceToken = [(FCNotificationController *)self deviceToken];
         LODWORD(v25) = [(FCNotificationController *)self deviceDigestMode];
-        v20 = [(FCModifyNotificationsForChannelsCommand *)v17 initWithChannelIDsToAdd:v16 paidChannelIDsToAdd:v13 channelIDsToRemove:0 userID:v18 deviceToken:v19 storefrontID:v8 deviceDigestMode:v25];
+        v20 = [(FCModifyNotificationsForChannelsCommand *)v17 initWithChannelIDsToAdd:v16 paidChannelIDsToAdd:v13 channelIDsToRemove:0 userID:notificationsUserID deviceToken:deviceToken storefrontID:contentStoreFrontID deviceDigestMode:v25];
 
-        v21 = [(FCNotificationController *)self commandQueue];
-        [v21 addCommand:v20];
+        commandQueue = [(FCNotificationController *)self commandQueue];
+        [commandQueue addCommand:v20];
 
         v15 = 1;
       }
@@ -181,9 +181,9 @@ void __66__FCNotificationController__registerDeviceToken_deviceDigestMode___bloc
         v26[1] = 3221225472;
         v26[2] = __69__FCNotificationController_registerNotificationsForChannelID_isPaid___block_invoke_29;
         v26[3] = &unk_1E7C382E8;
-        v27 = v6;
-        v28 = self;
-        v29 = v8;
+        v27 = dCopy;
+        selfCopy = self;
+        v29 = contentStoreFrontID;
         v15 = __69__FCNotificationController_registerNotificationsForChannelID_isPaid___block_invoke_29(v26);
 
         v16 = v27;
@@ -196,9 +196,9 @@ void __66__FCNotificationController__registerDeviceToken_deviceDigestMode___bloc
       v30[1] = 3221225472;
       v30[2] = __69__FCNotificationController_registerNotificationsForChannelID_isPaid___block_invoke_28;
       v30[3] = &unk_1E7C382E8;
-      v31 = v6;
-      v32 = self;
-      v33 = v8;
+      v31 = dCopy;
+      selfCopy2 = self;
+      v33 = contentStoreFrontID;
       v15 = __69__FCNotificationController_registerNotificationsForChannelID_isPaid___block_invoke_28(v30);
 
       v12 = v31;
@@ -268,13 +268,13 @@ uint64_t __69__FCNotificationController_registerNotificationsForChannelID_isPaid
   return 0;
 }
 
-- (BOOL)unregisterNotificationsForChannelID:(id)a3
+- (BOOL)unregisterNotificationsForChannelID:(id)d
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   if ([(FCNotificationController *)self publisherNotificationsAllowed])
   {
-    if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+    if (!dCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v21 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "channelID"];
       *buf = 136315906;
@@ -289,26 +289,26 @@ uint64_t __69__FCNotificationController_registerNotificationsForChannelID_isPaid
     }
 
     v5 = +[FCAppleAccount sharedAccount];
-    v6 = [v5 contentStoreFrontID];
+    contentStoreFrontID = [v5 contentStoreFrontID];
 
-    if (v4 && ([(FCNotificationController *)self deviceToken], (v7 = objc_claimAutoreleasedReturnValue()) != 0) && (v8 = v7, [(FCNotificationController *)self notificationsUserID], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9))
+    if (dCopy && ([(FCNotificationController *)self deviceToken], (v7 = objc_claimAutoreleasedReturnValue()) != 0) && (v8 = v7, [(FCNotificationController *)self notificationsUserID], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9))
     {
       v10 = +[FCNetworkReachability sharedNetworkReachability];
       if ([v10 isCloudKitReachable])
       {
-        v31 = v4;
+        v31 = dCopy;
         v11 = 1;
         v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v31 count:1];
         v13 = [(FCNotificationController *)self appendBreakingNewsIfNeededToChannelIDs:v12];
 
         v14 = [FCModifyNotificationsForChannelsCommand alloc];
-        v15 = [(FCNotificationController *)self notificationsUserID];
-        v16 = [(FCNotificationController *)self deviceToken];
+        notificationsUserID = [(FCNotificationController *)self notificationsUserID];
+        deviceToken = [(FCNotificationController *)self deviceToken];
         LODWORD(v22) = [(FCNotificationController *)self deviceDigestMode];
-        v17 = [(FCModifyNotificationsForChannelsCommand *)v14 initWithChannelIDsToAdd:0 paidChannelIDsToAdd:0 channelIDsToRemove:v13 userID:v15 deviceToken:v16 storefrontID:v6 deviceDigestMode:v22];
+        v17 = [(FCModifyNotificationsForChannelsCommand *)v14 initWithChannelIDsToAdd:0 paidChannelIDsToAdd:0 channelIDsToRemove:v13 userID:notificationsUserID deviceToken:deviceToken storefrontID:contentStoreFrontID deviceDigestMode:v22];
 
-        v18 = [(FCNotificationController *)self commandQueue];
-        [v18 addCommand:v17];
+        commandQueue = [(FCNotificationController *)self commandQueue];
+        [commandQueue addCommand:v17];
       }
 
       else
@@ -317,9 +317,9 @@ uint64_t __69__FCNotificationController_registerNotificationsForChannelID_isPaid
         v23[1] = 3221225472;
         v23[2] = __64__FCNotificationController_unregisterNotificationsForChannelID___block_invoke_35;
         v23[3] = &unk_1E7C382E8;
-        v24 = v4;
-        v25 = self;
-        v26 = v6;
+        v24 = dCopy;
+        selfCopy = self;
+        v26 = contentStoreFrontID;
         v11 = __64__FCNotificationController_unregisterNotificationsForChannelID___block_invoke_35(v23);
 
         v13 = v24;
@@ -332,9 +332,9 @@ uint64_t __69__FCNotificationController_registerNotificationsForChannelID_isPaid
       v27[1] = 3221225472;
       v27[2] = __64__FCNotificationController_unregisterNotificationsForChannelID___block_invoke_34;
       v27[3] = &unk_1E7C382E8;
-      v28 = v4;
-      v29 = self;
-      v30 = v6;
+      v28 = dCopy;
+      selfCopy2 = self;
+      v30 = contentStoreFrontID;
       v11 = __64__FCNotificationController_unregisterNotificationsForChannelID___block_invoke_34(v27);
 
       v10 = v28;
@@ -404,29 +404,29 @@ uint64_t __64__FCNotificationController_unregisterNotificationsForChannelID___bl
   return 0;
 }
 
-- (BOOL)refreshNotificationsForChannelIDs:(id)a3 paidChannelIDs:(id)a4
+- (BOOL)refreshNotificationsForChannelIDs:(id)ds paidChannelIDs:(id)iDs
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  iDsCopy = iDs;
   if ([(FCNotificationController *)self publisherNotificationsAllowed])
   {
     v8 = +[FCAppleAccount sharedAccount];
-    v9 = [v8 contentStoreFrontID];
+    contentStoreFrontID = [v8 contentStoreFrontID];
 
-    v10 = [(FCNotificationController *)self deviceToken];
-    if (v10 && (v11 = v10, [(FCNotificationController *)self notificationsUserID], v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v12))
+    deviceToken = [(FCNotificationController *)self deviceToken];
+    if (deviceToken && (v11 = deviceToken, [(FCNotificationController *)self notificationsUserID], v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v12))
     {
       v13 = +[FCNetworkReachability sharedNetworkReachability];
       if ([v13 isCloudKitReachable])
       {
-        v14 = [(FCNotificationController *)self appendBreakingNewsIfNeededToChannelIDs:v6];
+        v14 = [(FCNotificationController *)self appendBreakingNewsIfNeededToChannelIDs:dsCopy];
         v15 = [FCRefreshNotificationsForChannelsCommand alloc];
-        v16 = [(FCNotificationController *)self notificationsUserID];
-        v17 = [(FCNotificationController *)self deviceToken];
-        v18 = [(FCRefreshNotificationsForChannelsCommand *)v15 initWithChannelIDs:v14 paidChannelIDs:v7 userID:v16 deviceToken:v17 storefrontID:v9 deviceDigestMode:[(FCNotificationController *)self deviceDigestMode]];
+        notificationsUserID = [(FCNotificationController *)self notificationsUserID];
+        deviceToken2 = [(FCNotificationController *)self deviceToken];
+        v18 = [(FCRefreshNotificationsForChannelsCommand *)v15 initWithChannelIDs:v14 paidChannelIDs:iDsCopy userID:notificationsUserID deviceToken:deviceToken2 storefrontID:contentStoreFrontID deviceDigestMode:[(FCNotificationController *)self deviceDigestMode]];
 
-        v19 = [(FCNotificationController *)self commandQueue];
-        [v19 addCommand:v18];
+        commandQueue = [(FCNotificationController *)self commandQueue];
+        [commandQueue addCommand:v18];
 
         v20 = 1;
       }
@@ -437,10 +437,10 @@ uint64_t __64__FCNotificationController_unregisterNotificationsForChannelID___bl
         v22[1] = 3221225472;
         v22[2] = __77__FCNotificationController_refreshNotificationsForChannelIDs_paidChannelIDs___block_invoke_38;
         v22[3] = &unk_1E7C44E98;
-        v23 = v6;
-        v24 = v7;
-        v25 = self;
-        v26 = v9;
+        v23 = dsCopy;
+        v24 = iDsCopy;
+        selfCopy = self;
+        v26 = contentStoreFrontID;
         v20 = __77__FCNotificationController_refreshNotificationsForChannelIDs_paidChannelIDs___block_invoke_38(v22);
       }
     }
@@ -451,10 +451,10 @@ uint64_t __64__FCNotificationController_unregisterNotificationsForChannelID___bl
       v27[1] = 3221225472;
       v27[2] = __77__FCNotificationController_refreshNotificationsForChannelIDs_paidChannelIDs___block_invoke_2;
       v27[3] = &unk_1E7C44E98;
-      v28 = v6;
-      v29 = v7;
-      v30 = self;
-      v31 = v9;
+      v28 = dsCopy;
+      v29 = iDsCopy;
+      selfCopy2 = self;
+      v31 = contentStoreFrontID;
       v20 = __77__FCNotificationController_refreshNotificationsForChannelIDs_paidChannelIDs___block_invoke_2(v27);
 
       v13 = v28;
@@ -529,13 +529,13 @@ uint64_t __77__FCNotificationController_refreshNotificationsForChannelIDs_paidCh
   return 0;
 }
 
-- (BOOL)registerNotificationsForTopicIDs:(id)a3 withTopicGroupingID:(id)a4 fromChannelID:(id)a5
+- (BOOL)registerNotificationsForTopicIDs:(id)ds withTopicGroupingID:(id)d fromChannelID:(id)iD
 {
   v45 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  dsCopy = ds;
+  dCopy = d;
+  iDCopy = iD;
+  if (!iDCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v25 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "channelID"];
     *buf = 136315906;
@@ -550,21 +550,21 @@ uint64_t __77__FCNotificationController_refreshNotificationsForChannelIDs_paidCh
   }
 
   v11 = +[FCAppleAccount sharedAccount];
-  v12 = [v11 contentStoreFrontID];
+  contentStoreFrontID = [v11 contentStoreFrontID];
 
-  if (v10 && ([(FCNotificationController *)self deviceToken], (v13 = objc_claimAutoreleasedReturnValue()) != 0) && (v14 = v13, [(FCNotificationController *)self notificationsUserID], v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v15))
+  if (iDCopy && ([(FCNotificationController *)self deviceToken], (v13 = objc_claimAutoreleasedReturnValue()) != 0) && (v14 = v13, [(FCNotificationController *)self notificationsUserID], v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v15))
   {
     v16 = +[FCNetworkReachability sharedNetworkReachability];
     if ([v16 isCloudKitReachable])
     {
       v17 = [FCModifyNotificationsForTopicsCommand alloc];
-      v18 = [(FCNotificationController *)self notificationsUserID];
-      v19 = [(FCNotificationController *)self deviceToken];
+      notificationsUserID = [(FCNotificationController *)self notificationsUserID];
+      deviceToken = [(FCNotificationController *)self deviceToken];
       LODWORD(v26) = [(FCNotificationController *)self deviceDigestMode];
-      v20 = [(FCModifyNotificationsForTopicsCommand *)v17 initWithTopicIDsToAdd:v8 topicIDsToRemove:0 withTopicGroupingID:v9 fromChannelID:v10 userID:v18 deviceToken:v19 storefrontID:v12 deviceDigestMode:v26];
+      v20 = [(FCModifyNotificationsForTopicsCommand *)v17 initWithTopicIDsToAdd:dsCopy topicIDsToRemove:0 withTopicGroupingID:dCopy fromChannelID:iDCopy userID:notificationsUserID deviceToken:deviceToken storefrontID:contentStoreFrontID deviceDigestMode:v26];
 
-      v21 = [(FCNotificationController *)self commandQueue];
-      [v21 addCommand:v20];
+      commandQueue = [(FCNotificationController *)self commandQueue];
+      [commandQueue addCommand:v20];
 
       v22 = 1;
     }
@@ -575,10 +575,10 @@ uint64_t __77__FCNotificationController_refreshNotificationsForChannelIDs_paidCh
       v27[1] = 3221225472;
       v27[2] = __95__FCNotificationController_registerNotificationsForTopicIDs_withTopicGroupingID_fromChannelID___block_invoke_40;
       v27[3] = &unk_1E7C44E98;
-      v28 = v8;
-      v29 = v10;
-      v30 = self;
-      v31 = v12;
+      v28 = dsCopy;
+      v29 = iDCopy;
+      selfCopy = self;
+      v31 = contentStoreFrontID;
       v22 = __95__FCNotificationController_registerNotificationsForTopicIDs_withTopicGroupingID_fromChannelID___block_invoke_40(v27);
 
       v20 = v28;
@@ -591,10 +591,10 @@ uint64_t __77__FCNotificationController_refreshNotificationsForChannelIDs_paidCh
     v32[1] = 3221225472;
     v32[2] = __95__FCNotificationController_registerNotificationsForTopicIDs_withTopicGroupingID_fromChannelID___block_invoke;
     v32[3] = &unk_1E7C44E98;
-    v33 = v8;
-    v34 = v10;
-    v35 = self;
-    v36 = v12;
+    v33 = dsCopy;
+    v34 = iDCopy;
+    selfCopy2 = self;
+    v36 = contentStoreFrontID;
     v22 = __95__FCNotificationController_registerNotificationsForTopicIDs_withTopicGroupingID_fromChannelID___block_invoke(v32);
 
     v16 = v33;
@@ -664,13 +664,13 @@ uint64_t __95__FCNotificationController_registerNotificationsForTopicIDs_withTop
   return 0;
 }
 
-- (BOOL)unregisterNotificationsForTopicIDs:(id)a3 withTopicGroupingID:(id)a4 fromChannelID:(id)a5
+- (BOOL)unregisterNotificationsForTopicIDs:(id)ds withTopicGroupingID:(id)d fromChannelID:(id)iD
 {
   v45 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  dsCopy = ds;
+  dCopy = d;
+  iDCopy = iD;
+  if (!iDCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v25 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "channelID"];
     *buf = 136315906;
@@ -685,21 +685,21 @@ uint64_t __95__FCNotificationController_registerNotificationsForTopicIDs_withTop
   }
 
   v11 = +[FCAppleAccount sharedAccount];
-  v12 = [v11 contentStoreFrontID];
+  contentStoreFrontID = [v11 contentStoreFrontID];
 
-  if (v10 && ([(FCNotificationController *)self deviceToken], (v13 = objc_claimAutoreleasedReturnValue()) != 0) && (v14 = v13, [(FCNotificationController *)self notificationsUserID], v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v15))
+  if (iDCopy && ([(FCNotificationController *)self deviceToken], (v13 = objc_claimAutoreleasedReturnValue()) != 0) && (v14 = v13, [(FCNotificationController *)self notificationsUserID], v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v15))
   {
     v16 = +[FCNetworkReachability sharedNetworkReachability];
     if ([v16 isCloudKitReachable])
     {
       v17 = [FCModifyNotificationsForTopicsCommand alloc];
-      v18 = [(FCNotificationController *)self notificationsUserID];
-      v19 = [(FCNotificationController *)self deviceToken];
+      notificationsUserID = [(FCNotificationController *)self notificationsUserID];
+      deviceToken = [(FCNotificationController *)self deviceToken];
       LODWORD(v26) = [(FCNotificationController *)self deviceDigestMode];
-      v20 = [(FCModifyNotificationsForTopicsCommand *)v17 initWithTopicIDsToAdd:0 topicIDsToRemove:v8 withTopicGroupingID:v9 fromChannelID:v10 userID:v18 deviceToken:v19 storefrontID:v12 deviceDigestMode:v26];
+      v20 = [(FCModifyNotificationsForTopicsCommand *)v17 initWithTopicIDsToAdd:0 topicIDsToRemove:dsCopy withTopicGroupingID:dCopy fromChannelID:iDCopy userID:notificationsUserID deviceToken:deviceToken storefrontID:contentStoreFrontID deviceDigestMode:v26];
 
-      v21 = [(FCNotificationController *)self commandQueue];
-      [v21 addCommand:v20];
+      commandQueue = [(FCNotificationController *)self commandQueue];
+      [commandQueue addCommand:v20];
 
       v22 = 1;
     }
@@ -710,10 +710,10 @@ uint64_t __95__FCNotificationController_registerNotificationsForTopicIDs_withTop
       v27[1] = 3221225472;
       v27[2] = __97__FCNotificationController_unregisterNotificationsForTopicIDs_withTopicGroupingID_fromChannelID___block_invoke_42;
       v27[3] = &unk_1E7C44E98;
-      v28 = v8;
-      v29 = v10;
-      v30 = self;
-      v31 = v12;
+      v28 = dsCopy;
+      v29 = iDCopy;
+      selfCopy = self;
+      v31 = contentStoreFrontID;
       v22 = __97__FCNotificationController_unregisterNotificationsForTopicIDs_withTopicGroupingID_fromChannelID___block_invoke_42(v27);
 
       v20 = v28;
@@ -726,10 +726,10 @@ uint64_t __95__FCNotificationController_registerNotificationsForTopicIDs_withTop
     v32[1] = 3221225472;
     v32[2] = __97__FCNotificationController_unregisterNotificationsForTopicIDs_withTopicGroupingID_fromChannelID___block_invoke;
     v32[3] = &unk_1E7C44E98;
-    v33 = v8;
-    v34 = v10;
-    v35 = self;
-    v36 = v12;
+    v33 = dsCopy;
+    v34 = iDCopy;
+    selfCopy2 = self;
+    v36 = contentStoreFrontID;
     v22 = __97__FCNotificationController_unregisterNotificationsForTopicIDs_withTopicGroupingID_fromChannelID___block_invoke(v32);
 
     v16 = v33;
@@ -799,28 +799,28 @@ uint64_t __97__FCNotificationController_unregisterNotificationsForTopicIDs_withT
   return 0;
 }
 
-- (BOOL)refreshNotificationsForTopicIDs:(id)a3 withTopicGroupingID:(id)a4 fromChannelID:(id)a5
+- (BOOL)refreshNotificationsForTopicIDs:(id)ds withTopicGroupingID:(id)d fromChannelID:(id)iD
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  dCopy = d;
+  iDCopy = iD;
   v11 = +[FCAppleAccount sharedAccount];
-  v12 = [v11 contentStoreFrontID];
+  contentStoreFrontID = [v11 contentStoreFrontID];
 
-  v13 = [(FCNotificationController *)self deviceToken];
-  if (v13 && (v14 = v13, [(FCNotificationController *)self notificationsUserID], v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v15))
+  deviceToken = [(FCNotificationController *)self deviceToken];
+  if (deviceToken && (v14 = deviceToken, [(FCNotificationController *)self notificationsUserID], v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v15))
   {
     v16 = +[FCNetworkReachability sharedNetworkReachability];
     if ([v16 isCloudKitReachable])
     {
       v17 = [FCRefreshNotificationsForTopicsCommand alloc];
-      v18 = [(FCNotificationController *)self notificationsUserID];
-      v19 = [(FCNotificationController *)self deviceToken];
+      notificationsUserID = [(FCNotificationController *)self notificationsUserID];
+      deviceToken2 = [(FCNotificationController *)self deviceToken];
       LODWORD(v24) = [(FCNotificationController *)self deviceDigestMode];
-      v20 = [(FCRefreshNotificationsForTopicsCommand *)v17 initWithTopicsIDs:v8 withTopicGroupingID:v9 fromChannelID:v10 userID:v18 deviceToken:v19 storefrontID:v12 deviceDigestMode:v24];
+      v20 = [(FCRefreshNotificationsForTopicsCommand *)v17 initWithTopicsIDs:dsCopy withTopicGroupingID:dCopy fromChannelID:iDCopy userID:notificationsUserID deviceToken:deviceToken2 storefrontID:contentStoreFrontID deviceDigestMode:v24];
 
-      v21 = [(FCNotificationController *)self commandQueue];
-      [v21 addCommand:v20];
+      commandQueue = [(FCNotificationController *)self commandQueue];
+      [commandQueue addCommand:v20];
 
       v22 = 1;
     }
@@ -831,11 +831,11 @@ uint64_t __97__FCNotificationController_unregisterNotificationsForTopicIDs_withT
       v25[1] = 3221225472;
       v25[2] = __94__FCNotificationController_refreshNotificationsForTopicIDs_withTopicGroupingID_fromChannelID___block_invoke_43;
       v25[3] = &unk_1E7C47DD8;
-      v26 = v8;
-      v27 = v9;
-      v28 = v10;
-      v29 = self;
-      v30 = v12;
+      v26 = dsCopy;
+      v27 = dCopy;
+      v28 = iDCopy;
+      selfCopy = self;
+      v30 = contentStoreFrontID;
       v22 = __94__FCNotificationController_refreshNotificationsForTopicIDs_withTopicGroupingID_fromChannelID___block_invoke_43(v25);
     }
   }
@@ -846,11 +846,11 @@ uint64_t __97__FCNotificationController_unregisterNotificationsForTopicIDs_withT
     v31[1] = 3221225472;
     v31[2] = __94__FCNotificationController_refreshNotificationsForTopicIDs_withTopicGroupingID_fromChannelID___block_invoke;
     v31[3] = &unk_1E7C47DD8;
-    v32 = v8;
-    v33 = v9;
-    v34 = v10;
-    v35 = self;
-    v36 = v12;
+    v32 = dsCopy;
+    v33 = dCopy;
+    v34 = iDCopy;
+    selfCopy2 = self;
+    v36 = contentStoreFrontID;
     v22 = __94__FCNotificationController_refreshNotificationsForTopicIDs_withTopicGroupingID_fromChannelID___block_invoke(v31);
 
     v16 = v32;
@@ -925,14 +925,14 @@ uint64_t __94__FCNotificationController_refreshNotificationsForTopicIDs_withTopi
   return 0;
 }
 
-- (void)setNewIssueNotificationsEnabled:(BOOL)a3
+- (void)setNewIssueNotificationsEnabled:(BOOL)enabled
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __60__FCNotificationController_setNewIssueNotificationsEnabled___block_invoke;
   v3[3] = &unk_1E7C47E00;
   v3[4] = self;
-  v4 = a3;
+  enabledCopy = enabled;
   dispatch_async(MEMORY[0x1E69E96A0], v3);
 }
 
@@ -942,14 +942,14 @@ void __60__FCNotificationController_setNewIssueNotificationsEnabled___block_invo
   [v2 setNewIssueNotificationsEnabled:*(a1 + 40)];
 }
 
-- (void)setEndOfAudioTrackNotificationsEnabled:(BOOL)a3
+- (void)setEndOfAudioTrackNotificationsEnabled:(BOOL)enabled
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __67__FCNotificationController_setEndOfAudioTrackNotificationsEnabled___block_invoke;
   v3[3] = &unk_1E7C47E00;
   v3[4] = self;
-  v4 = a3;
+  enabledCopy = enabled;
   dispatch_async(MEMORY[0x1E69E96A0], v3);
 }
 
@@ -959,14 +959,14 @@ void __67__FCNotificationController_setEndOfAudioTrackNotificationsEnabled___blo
   [v2 setEndOfAudioTrackNotificationsEnabled:*(a1 + 40)];
 }
 
-- (void)setSportsTopicNotificationsEnabled:(BOOL)a3
+- (void)setSportsTopicNotificationsEnabled:(BOOL)enabled
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __63__FCNotificationController_setSportsTopicNotificationsEnabled___block_invoke;
   v3[3] = &unk_1E7C47E00;
   v3[4] = self;
-  v4 = a3;
+  enabledCopy = enabled;
   dispatch_async(MEMORY[0x1E69E96A0], v3);
 }
 
@@ -992,13 +992,13 @@ void __63__FCNotificationController_setSportsTopicNotificationsEnabled___block_i
   if ([(FCNotificationController *)self appleNewsNotificationsAllowed])
   {
     objc_initWeak(&location, self);
-    v3 = [(FCNotificationController *)self userInfo];
+    userInfo = [(FCNotificationController *)self userInfo];
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __61__FCNotificationController_refreshNotificationsFromAppleNews__block_invoke_2;
     v4[3] = &unk_1E7C3C090;
     objc_copyWeak(&v5, &location);
-    [v3 syncWithCompletion:v4];
+    [userInfo syncWithCompletion:v4];
 
     objc_destroyWeak(&v5);
     objc_destroyWeak(&location);
@@ -1028,26 +1028,26 @@ void __61__FCNotificationController_refreshNotificationsFromAppleNews__block_inv
   }
 }
 
-- (id)appendBreakingNewsIfNeededToChannelIDs:(id)a3
+- (id)appendBreakingNewsIfNeededToChannelIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(FCNotificationController *)self configurationManager];
-  v6 = [v5 configuration];
+  dsCopy = ds;
+  configurationManager = [(FCNotificationController *)self configurationManager];
+  configuration = [configurationManager configuration];
 
-  v7 = [v6 topStoriesConfig];
-  v8 = [v7 channelID];
+  topStoriesConfig = [configuration topStoriesConfig];
+  channelID = [topStoriesConfig channelID];
 
-  v9 = [v6 breakingNewsChannelID];
-  v10 = v4;
-  if ([v9 length])
+  breakingNewsChannelID = [configuration breakingNewsChannelID];
+  v10 = dsCopy;
+  if ([breakingNewsChannelID length])
   {
-    v10 = v4;
-    if ([v8 length])
+    v10 = dsCopy;
+    if ([channelID length])
     {
-      v10 = v4;
-      if ([v4 containsObject:v8])
+      v10 = dsCopy;
+      if ([dsCopy containsObject:channelID])
       {
-        v10 = [v4 arrayByAddingObject:v9];
+        v10 = [dsCopy arrayByAddingObject:breakingNewsChannelID];
       }
     }
   }
@@ -1055,21 +1055,21 @@ void __61__FCNotificationController_refreshNotificationsFromAppleNews__block_inv
   return v10;
 }
 
-- (void)userInfoDidChangeNotificationsUserID:(id)a3
+- (void)userInfoDidChangeNotificationsUserID:(id)d
 {
-  v8 = [a3 notificationsUserID];
-  v4 = [(FCNotificationController *)self notificationsUserID];
-  v5 = [v4 isEqualToString:v8];
+  notificationsUserID = [d notificationsUserID];
+  notificationsUserID2 = [(FCNotificationController *)self notificationsUserID];
+  v5 = [notificationsUserID2 isEqualToString:notificationsUserID];
 
   if ((v5 & 1) == 0)
   {
-    [(FCNotificationController *)self setNotificationsUserID:v8];
-    v6 = [(FCNotificationController *)self deviceToken];
+    [(FCNotificationController *)self setNotificationsUserID:notificationsUserID];
+    deviceToken = [(FCNotificationController *)self deviceToken];
 
-    if (v6)
+    if (deviceToken)
     {
-      v7 = [(FCNotificationController *)self deviceToken];
-      [(FCNotificationController *)self _registerDeviceToken:v7 deviceDigestMode:[(FCNotificationController *)self deviceDigestMode]];
+      deviceToken2 = [(FCNotificationController *)self deviceToken];
+      [(FCNotificationController *)self _registerDeviceToken:deviceToken2 deviceDigestMode:[(FCNotificationController *)self deviceDigestMode]];
     }
   }
 }

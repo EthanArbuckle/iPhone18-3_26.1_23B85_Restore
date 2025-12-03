@@ -1,15 +1,15 @@
 @interface BKScrubberHoverController
 - (BKScrubberControl)scrubber;
-- (BKScrubberHoverController)initWithScrubber:(id)a3;
+- (BKScrubberHoverController)initWithScrubber:(id)scrubber;
 - (int64_t)gestureHoverState;
-- (void)onHover:(id)a3;
+- (void)onHover:(id)hover;
 @end
 
 @implementation BKScrubberHoverController
 
-- (BKScrubberHoverController)initWithScrubber:(id)a3
+- (BKScrubberHoverController)initWithScrubber:(id)scrubber
 {
-  v4 = a3;
+  scrubberCopy = scrubber;
   v10.receiver = self;
   v10.super_class = BKScrubberHoverController;
   v5 = [(BKScrubberHoverController *)&v10 init];
@@ -19,21 +19,21 @@
     gesture = v5->_gesture;
     v5->_gesture = v6;
 
-    v8 = [v4 window];
-    [v8 addGestureRecognizer:v5->_gesture];
+    window = [scrubberCopy window];
+    [window addGestureRecognizer:v5->_gesture];
 
-    objc_storeWeak(&v5->_scrubber, v4);
+    objc_storeWeak(&v5->_scrubber, scrubberCopy);
   }
 
   return v5;
 }
 
-- (void)onHover:(id)a3
+- (void)onHover:(id)hover
 {
-  v4 = a3;
-  v5 = [(BKScrubberHoverController *)self gesture];
+  hoverCopy = hover;
+  gesture = [(BKScrubberHoverController *)self gesture];
 
-  if (v5 == v4)
+  if (gesture == hoverCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_scrubber);
     [WeakRetained updateHoverState];
@@ -42,16 +42,16 @@
 
 - (int64_t)gestureHoverState
 {
-  v3 = [(BKScrubberHoverController *)self gesture];
-  if ([v3 state] - 1 > &dword_0 + 1)
+  gesture = [(BKScrubberHoverController *)self gesture];
+  if ([gesture state] - 1 > &dword_0 + 1)
   {
     v7 = 0;
   }
 
   else
   {
-    v4 = [v3 view];
-    if (v4 && ([v3 locationInView:v4], v6 = v5, objc_msgSend(v4, "bounds"), v6 >= CGRectGetMaxY(v23) + -100.0))
+    view = [gesture view];
+    if (view && ([gesture locationInView:view], v6 = v5, objc_msgSend(view, "bounds"), v6 >= CGRectGetMaxY(v23) + -100.0))
     {
       WeakRetained = objc_loadWeakRetained(&self->_scrubber);
       [WeakRetained bounds];
@@ -60,7 +60,7 @@
       v14 = v13;
       v16 = v15;
       v17 = objc_loadWeakRetained(&self->_scrubber);
-      [v3 locationInView:v17];
+      [gesture locationInView:v17];
       v22.x = v18;
       v22.y = v19;
       v24.origin.x = v10;

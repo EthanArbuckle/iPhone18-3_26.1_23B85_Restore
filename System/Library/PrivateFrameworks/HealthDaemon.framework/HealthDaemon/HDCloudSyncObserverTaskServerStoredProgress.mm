@@ -1,6 +1,6 @@
 @interface HDCloudSyncObserverTaskServerStoredProgress
 - (HDCloudSyncObserverTaskServerStoredProgress)init;
-- (HDCloudSyncObserverTaskServerStoredProgress)initWithProgress:(id)a3;
+- (HDCloudSyncObserverTaskServerStoredProgress)initWithProgress:(id)progress;
 - (void)invalidate;
 @end
 
@@ -16,16 +16,16 @@
   return 0;
 }
 
-- (HDCloudSyncObserverTaskServerStoredProgress)initWithProgress:(id)a3
+- (HDCloudSyncObserverTaskServerStoredProgress)initWithProgress:(id)progress
 {
-  v5 = a3;
+  progressCopy = progress;
   v10.receiver = self;
   v10.super_class = HDCloudSyncObserverTaskServerStoredProgress;
   v6 = [(HDCloudSyncObserverTaskServerStoredProgress *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_progress, a3);
+    objc_storeStrong(&v6->_progress, progress);
     invalidationBlock = v7->_invalidationBlock;
     v7->_invalidationBlock = 0;
   }
@@ -35,12 +35,12 @@
 
 - (void)invalidate
 {
-  v3 = [(HDCloudSyncObserverTaskServerStoredProgress *)self invalidationBlock];
+  invalidationBlock = [(HDCloudSyncObserverTaskServerStoredProgress *)self invalidationBlock];
 
-  if (v3)
+  if (invalidationBlock)
   {
-    v4 = [(HDCloudSyncObserverTaskServerStoredProgress *)self invalidationBlock];
-    v4[2]();
+    invalidationBlock2 = [(HDCloudSyncObserverTaskServerStoredProgress *)self invalidationBlock];
+    invalidationBlock2[2]();
   }
 }
 

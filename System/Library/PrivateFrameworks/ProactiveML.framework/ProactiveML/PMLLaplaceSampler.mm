@@ -1,6 +1,6 @@
 @interface PMLLaplaceSampler
-- (PMLLaplaceSampler)initWithMagnitude:(float)a3;
-- (PMLLaplaceSampler)initWithMagnitude:(float)a3 seed:(unint64_t)a4;
+- (PMLLaplaceSampler)initWithMagnitude:(float)magnitude;
+- (PMLLaplaceSampler)initWithMagnitude:(float)magnitude seed:(unint64_t)seed;
 - (float)sample;
 @end
 
@@ -22,7 +22,7 @@
   return log(fabs(v7) * -2.0 + 1.0) * (v3 - v6) * magnitude;
 }
 
-- (PMLLaplaceSampler)initWithMagnitude:(float)a3
+- (PMLLaplaceSampler)initWithMagnitude:(float)magnitude
 {
   v7.receiver = self;
   v7.super_class = PMLLaplaceSampler;
@@ -31,13 +31,13 @@
   if (v4)
   {
     arc4random_buf(&v4->_rng, 0x10uLL);
-    v5->_magnitude = a3;
+    v5->_magnitude = magnitude;
   }
 
   return v5;
 }
 
-- (PMLLaplaceSampler)initWithMagnitude:(float)a3 seed:(unint64_t)a4
+- (PMLLaplaceSampler)initWithMagnitude:(float)magnitude seed:(unint64_t)seed
 {
   v7.receiver = self;
   v7.super_class = PMLLaplaceSampler;
@@ -45,7 +45,7 @@
   if (v5)
   {
     _PASRngSeed64();
-    v5->_magnitude = a3;
+    v5->_magnitude = magnitude;
   }
 
   return v5;

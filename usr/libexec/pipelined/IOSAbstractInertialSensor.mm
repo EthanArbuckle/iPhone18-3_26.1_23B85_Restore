@@ -1,7 +1,7 @@
 @interface IOSAbstractInertialSensor
 - (BOOL)sensorPresent;
 - (IOSAbstractInertialSensor)init;
-- (IOSAbstractInertialSensor)initWithMotionManager:(id)a3 andHandler:(id)a4 andType:(int)a5 andRate:(double)a6;
+- (IOSAbstractInertialSensor)initWithMotionManager:(id)manager andHandler:(id)handler andType:(int)type andRate:(double)rate;
 - (void)start;
 - (void)stop;
 @end
@@ -28,18 +28,18 @@
   return 0;
 }
 
-- (IOSAbstractInertialSensor)initWithMotionManager:(id)a3 andHandler:(id)a4 andType:(int)a5 andRate:(double)a6
+- (IOSAbstractInertialSensor)initWithMotionManager:(id)manager andHandler:(id)handler andType:(int)type andRate:(double)rate
 {
-  v9 = a3;
-  v10 = a4;
+  managerCopy = manager;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = IOSAbstractInertialSensor;
   v11 = [(IOSAbstractInertialSensor *)&v14 init];
   if (v11)
   {
     v12 = v11;
-    objc_storeStrong(&v11->_motionManager, a3);
-    objc_storeStrong(&v12->_motionEventProcessor, a4);
+    objc_storeStrong(&v11->_motionManager, manager);
+    objc_storeStrong(&v12->_motionEventProcessor, handler);
     operator new();
   }
 

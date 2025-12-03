@@ -1,25 +1,25 @@
 @interface AMSUIWebVerifyCredentialsAction
-+ (id)_authenticationTypeFromStringedType:(id)a3;
-+ (int64_t)_serviceTypeFromType:(int64_t)a3;
-- (AMSUIWebVerifyCredentialsAction)initWithJSObject:(id)a3 context:(id)a4;
++ (id)_authenticationTypeFromStringedType:(id)type;
++ (int64_t)_serviceTypeFromType:(int64_t)type;
+- (AMSUIWebVerifyCredentialsAction)initWithJSObject:(id)object context:(id)context;
 - (id)runAction;
 @end
 
 @implementation AMSUIWebVerifyCredentialsAction
 
-- (AMSUIWebVerifyCredentialsAction)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebVerifyCredentialsAction)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
+  objectCopy = object;
   v53.receiver = self;
   v53.super_class = AMSUIWebVerifyCredentialsAction;
-  v52 = a4;
-  v7 = [(AMSUIWebAction *)&v53 initWithJSObject:v6 context:?];
+  contextCopy = context;
+  v7 = [(AMSUIWebAction *)&v53 initWithJSObject:objectCopy context:?];
   if (!v7)
   {
     goto LABEL_44;
   }
 
-  v8 = [v6 objectForKeyedSubscript:@"account"];
+  v8 = [objectCopy objectForKeyedSubscript:@"account"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -31,7 +31,7 @@
     v9 = 0;
   }
 
-  v10 = [v52 iTunesAccountFromJSAccount:v9];
+  v10 = [contextCopy iTunesAccountFromJSAccount:v9];
   account = v7->_account;
   v7->_account = v10;
 
@@ -39,10 +39,10 @@
   if (!v12 || [(ACAccount *)v12 ams_isLocalAccount])
   {
     v13 = MEMORY[0x1E6959A48];
-    v14 = [(AMSUIWebAction *)v7 context];
-    v15 = [v14 clientInfo];
-    v16 = [v15 accountMediaType];
-    v17 = [v13 ams_sharedAccountStoreForMediaType:v16];
+    context = [(AMSUIWebAction *)v7 context];
+    clientInfo = [context clientInfo];
+    accountMediaType = [clientInfo accountMediaType];
+    v17 = [v13 ams_sharedAccountStoreForMediaType:accountMediaType];
 
     v18 = [v17 accountTypeWithAccountTypeIdentifier:*MEMORY[0x1E6959930]];
     v19 = [objc_alloc(MEMORY[0x1E6959A28]) initWithAccountType:v18];
@@ -67,11 +67,11 @@
     {
       v24 = v9;
       v25 = [v9 objectForKeyedSubscript:@"DSID"];
-      v26 = [v25 longLongValue];
+      longLongValue = [v25 longLongValue];
 
-      if (v26)
+      if (longLongValue)
       {
-        v27 = [MEMORY[0x1E696AD98] numberWithLongLong:v26];
+        v27 = [MEMORY[0x1E696AD98] numberWithLongLong:longLongValue];
         [(ACAccount *)v7->_account ams_setDSID:v27];
 
 LABEL_15:
@@ -103,7 +103,7 @@ LABEL_15:
   }
 
 LABEL_19:
-  v30 = [v6 objectForKeyedSubscript:@"authenticationType"];
+  v30 = [objectCopy objectForKeyedSubscript:@"authenticationType"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -118,7 +118,7 @@ LABEL_19:
   authenticationType = v7->_authenticationType;
   v7->_authenticationType = v31;
 
-  v33 = [v6 objectForKeyedSubscript:@"buttonText"];
+  v33 = [objectCopy objectForKeyedSubscript:@"buttonText"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -133,10 +133,10 @@ LABEL_19:
   buttonText = v7->_buttonText;
   v7->_buttonText = v34;
 
-  v36 = [v6 objectForKeyedSubscript:@"ephemeral"];
+  v36 = [objectCopy objectForKeyedSubscript:@"ephemeral"];
   if (objc_opt_respondsToSelector())
   {
-    v37 = [v6 objectForKeyedSubscript:@"ephemeral"];
+    v37 = [objectCopy objectForKeyedSubscript:@"ephemeral"];
     v7->_ephemeral = [v37 BOOLValue];
   }
 
@@ -145,7 +145,7 @@ LABEL_19:
     v7->_ephemeral = 0;
   }
 
-  v38 = [v6 objectForKeyedSubscript:@"serviceIdentifier"];
+  v38 = [objectCopy objectForKeyedSubscript:@"serviceIdentifier"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -160,10 +160,10 @@ LABEL_19:
   serviceIdentifier = v7->_serviceIdentifier;
   v7->_serviceIdentifier = v39;
 
-  v41 = [v6 objectForKeyedSubscript:@"serviceType"];
+  v41 = [objectCopy objectForKeyedSubscript:@"serviceType"];
   if (objc_opt_respondsToSelector())
   {
-    v42 = [v6 objectForKeyedSubscript:@"serviceType"];
+    v42 = [objectCopy objectForKeyedSubscript:@"serviceType"];
     v7->_serviceType = [v42 longLongValue];
   }
 
@@ -172,7 +172,7 @@ LABEL_19:
     v7->_serviceType = 0;
   }
 
-  v43 = [v6 objectForKeyedSubscript:@"subtitle"];
+  v43 = [objectCopy objectForKeyedSubscript:@"subtitle"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -187,7 +187,7 @@ LABEL_19:
   subtitle = v7->_subtitle;
   v7->_subtitle = v44;
 
-  v46 = [v6 objectForKeyedSubscript:@"title"];
+  v46 = [objectCopy objectForKeyedSubscript:@"title"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -202,10 +202,10 @@ LABEL_19:
   title = v7->_title;
   v7->_title = v47;
 
-  v49 = [v6 objectForKeyedSubscript:@"usernameEditable"];
+  v49 = [objectCopy objectForKeyedSubscript:@"usernameEditable"];
   if (objc_opt_respondsToSelector())
   {
-    v50 = [v6 objectForKeyedSubscript:@"usernameEditable"];
+    v50 = [objectCopy objectForKeyedSubscript:@"usernameEditable"];
     v7->_usernameEditable = [v50 BOOLValue];
   }
 
@@ -223,19 +223,19 @@ LABEL_44:
   v37 = *MEMORY[0x1E69E9840];
   v30.receiver = self;
   v30.super_class = AMSUIWebVerifyCredentialsAction;
-  v3 = [(AMSUIWebAction *)&v30 runAction];
-  v4 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v4)
+  runAction = [(AMSUIWebAction *)&v30 runAction];
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v4 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = AMSLogKey();
-    v8 = [(AMSUIWebVerifyCredentialsAction *)self account];
+    account = [(AMSUIWebVerifyCredentialsAction *)self account];
     v9 = AMSHashIfNeeded();
     *buf = 138543874;
     v32 = v6;
@@ -243,51 +243,51 @@ LABEL_44:
     v34 = v7;
     v35 = 2114;
     v36 = v9;
-    _os_log_impl(&dword_1BB036000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Running AuthKit action for account: %{public}@", buf, 0x20u);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Running AuthKit action for account: %{public}@", buf, 0x20u);
   }
 
   v10 = objc_alloc_init(MEMORY[0x1E698C7B0]);
-  v11 = [(AMSUIWebVerifyCredentialsAction *)self buttonText];
-  [v10 setDefaultButtonString:v11];
+  buttonText = [(AMSUIWebVerifyCredentialsAction *)self buttonText];
+  [v10 setDefaultButtonString:buttonText];
 
   [v10 setEphemeral:{-[AMSUIWebVerifyCredentialsAction ephemeral](self, "ephemeral")}];
-  v12 = [(AMSUIWebVerifyCredentialsAction *)self title];
-  [v10 setPromptTitle:v12];
+  title = [(AMSUIWebVerifyCredentialsAction *)self title];
+  [v10 setPromptTitle:title];
 
-  v13 = [(AMSUIWebVerifyCredentialsAction *)self subtitle];
-  [v10 setReason:v13];
+  subtitle = [(AMSUIWebVerifyCredentialsAction *)self subtitle];
+  [v10 setReason:subtitle];
 
   [v10 setServiceType:{objc_msgSend(objc_opt_class(), "_serviceTypeFromType:", -[AMSUIWebVerifyCredentialsAction serviceType](self, "serviceType"))}];
-  v14 = [(AMSUIWebVerifyCredentialsAction *)self serviceIdentifier];
-  [v10 setServiceIdentifier:v14];
+  serviceIdentifier = [(AMSUIWebVerifyCredentialsAction *)self serviceIdentifier];
+  [v10 setServiceIdentifier:serviceIdentifier];
 
   v15 = objc_opt_class();
-  v16 = [(AMSUIWebVerifyCredentialsAction *)self authenticationType];
-  v17 = [v15 _authenticationTypeFromStringedType:v16];
+  authenticationType = [(AMSUIWebVerifyCredentialsAction *)self authenticationType];
+  v17 = [v15 _authenticationTypeFromStringedType:authenticationType];
 
-  v18 = [(AMSUIWebVerifyCredentialsAction *)self authenticationType];
+  authenticationType2 = [(AMSUIWebVerifyCredentialsAction *)self authenticationType];
 
-  if (v18)
+  if (authenticationType2)
   {
-    v19 = [v17 unsignedIntegerValue];
+    unsignedIntegerValue = [v17 unsignedIntegerValue];
   }
 
   else
   {
-    v19 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  [v10 setAuthenticationType:v19];
-  v20 = [(AMSUIWebAction *)self context];
-  v21 = [v20 flowController];
-  v22 = [v21 currentContainer];
+  [v10 setAuthenticationType:unsignedIntegerValue];
+  context = [(AMSUIWebAction *)self context];
+  flowController = [context flowController];
+  currentContainer = [flowController currentContainer];
 
   v23 = [AMSUIAuthKitUpdateTask alloc];
-  v24 = [(AMSUIWebVerifyCredentialsAction *)self account];
-  v25 = [(AMSUIAuthKitUpdateTask *)v23 initWithAccount:v24 presentingViewController:v22 options:v10];
+  account2 = [(AMSUIWebVerifyCredentialsAction *)self account];
+  v25 = [(AMSUIAuthKitUpdateTask *)v23 initWithAccount:account2 presentingViewController:currentContainer options:v10];
 
-  v26 = [(AMSAuthKitUpdateTask *)v25 performAuthKitUpdate];
-  v27 = [v26 thenWithBlock:&__block_literal_global_35];
+  performAuthKitUpdate = [(AMSAuthKitUpdateTask *)v25 performAuthKitUpdate];
+  v27 = [performAuthKitUpdate thenWithBlock:&__block_literal_global_35];
 
   v28 = *MEMORY[0x1E69E9840];
 
@@ -305,26 +305,26 @@ id __44__AMSUIWebVerifyCredentialsAction_runAction__block_invoke(uint64_t a1, vo
   return v4;
 }
 
-+ (int64_t)_serviceTypeFromType:(int64_t)a3
++ (int64_t)_serviceTypeFromType:(int64_t)type
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!type)
   {
 LABEL_9:
     result = 2;
     goto LABEL_10;
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
-    v5 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v5)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v5 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v6 = [v5 OSLogObject];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v7 = objc_opt_class();
       v8 = AMSLogKey();
@@ -333,8 +333,8 @@ LABEL_9:
       v12 = 2114;
       v13 = v8;
       v14 = 2048;
-      v15 = a3;
-      _os_log_impl(&dword_1BB036000, v6, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Defaulting to STORE service type. (%ld)", &v10, 0x20u);
+      typeCopy = type;
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Defaulting to STORE service type. (%ld)", &v10, 0x20u);
     }
 
     goto LABEL_9;
@@ -346,9 +346,9 @@ LABEL_10:
   return result;
 }
 
-+ (id)_authenticationTypeFromStringedType:(id)a3
++ (id)_authenticationTypeFromStringedType:(id)type
 {
-  if (a3)
+  if (type)
   {
     v4 = [&unk_1F394AA58 objectForKeyedSubscript:?];
   }

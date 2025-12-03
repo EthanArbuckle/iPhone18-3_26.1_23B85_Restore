@@ -1,19 +1,19 @@
 @interface STProcessBlueprintChanges
-+ (BOOL)_cleanupDeletedUserBlueprintsWithContext:(id)a3 error:(id *)a4;
-+ (BOOL)_cleanupDuplicateBlueprintConfigurationsWithContext:(id)a3 error:(id *)a4;
-+ (BOOL)_cleanupDuplicateRestrictionsBlueprintsWithContext:(id)a3 user:(id)a4 error:(id *)a5;
-+ (BOOL)_migrateBlueprintsToVersion2CategoriesWithContext:(id)a3 user:(id)a4 error:(id *)a5;
-+ (id)_requestFromBlueprints:(id)a3 forUser:(id)a4 error:(id *)a5;
-+ (void)_postShareMyLocationNotificationForOldAllowFindMyFriendsModification:(id)a3 newAllowFindMyFriendsModification:(id)a4;
-+ (void)processBlueprintsChangesWithPersistenceController:(id)a3 completionHandler:(id)a4;
++ (BOOL)_cleanupDeletedUserBlueprintsWithContext:(id)context error:(id *)error;
++ (BOOL)_cleanupDuplicateBlueprintConfigurationsWithContext:(id)context error:(id *)error;
++ (BOOL)_cleanupDuplicateRestrictionsBlueprintsWithContext:(id)context user:(id)user error:(id *)error;
++ (BOOL)_migrateBlueprintsToVersion2CategoriesWithContext:(id)context user:(id)user error:(id *)error;
++ (id)_requestFromBlueprints:(id)blueprints forUser:(id)user error:(id *)error;
++ (void)_postShareMyLocationNotificationForOldAllowFindMyFriendsModification:(id)modification newAllowFindMyFriendsModification:(id)friendsModification;
++ (void)processBlueprintsChangesWithPersistenceController:(id)controller completionHandler:(id)handler;
 @end
 
 @implementation STProcessBlueprintChanges
 
-+ (void)processBlueprintsChangesWithPersistenceController:(id)a3 completionHandler:(id)a4
++ (void)processBlueprintsChangesWithPersistenceController:(id)controller completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  handlerCopy = handler;
   v8 = _os_activity_create(&_mh_execute_header, "STProcessBlueprintChangesOperation start", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -29,28 +29,28 @@
   v12[1] = 3221225472;
   v12[2] = sub_100058D44;
   v12[3] = &unk_1001A4798;
-  v10 = v7;
+  v10 = handlerCopy;
   v14 = v10;
-  v15 = a1;
-  v11 = v6;
+  selfCopy = self;
+  v11 = controllerCopy;
   v13 = v11;
   [v11 performBackgroundTask:v12];
 
   os_activity_scope_leave(&state);
 }
 
-+ (BOOL)_cleanupDuplicateBlueprintConfigurationsWithContext:(id)a3 error:(id *)a4
++ (BOOL)_cleanupDuplicateBlueprintConfigurationsWithContext:(id)context error:(id *)error
 {
-  v5 = a3;
+  contextCopy = context;
   v6 = +[STBlueprint fetchRequest];
-  v7 = [NSPredicate predicateWithFormat:@"(%K == %@) OR (%K == %@) OR (%K == %@)", @"type", STBlueprintTypeRestrictions, @"type", STBlueprintTypeAlwaysAllowedApps, @"type", STBlueprintTypeDowntime];
-  [v6 setPredicate:v7];
+  sTBlueprintTypeDowntime = [NSPredicate predicateWithFormat:@"(%K == %@) OR (%K == %@) OR (%K == %@)", @"type", STBlueprintTypeRestrictions, @"type", STBlueprintTypeAlwaysAllowedApps, @"type", STBlueprintTypeDowntime];
+  [v6 setPredicate:sTBlueprintTypeDowntime];
 
   v46 = @"configurations";
   v8 = [NSArray arrayWithObjects:&v46 count:1];
   [v6 setRelationshipKeyPathsForPrefetching:v8];
 
-  v9 = [v6 execute:a4];
+  v9 = [v6 execute:error];
   if (v9)
   {
     v27 = v6;
@@ -88,8 +88,8 @@
         v34 = 0u;
         v35 = 0u;
         v36 = 0u;
-        v14 = [v12 configurations];
-        v15 = [v14 sortedArrayUsingDescriptors:v29];
+        configurations = [v12 configurations];
+        v15 = [configurations sortedArrayUsingDescriptors:v29];
 
         v16 = [v15 countByEnumeratingWithState:&v33 objects:v43 count:16];
         if (v16)
@@ -107,18 +107,18 @@
               }
 
               v20 = *(*(&v33 + 1) + 8 * v19);
-              v21 = [v20 type];
-              if (!v21 || ([v20 payloadPlist], v22 = objc_claimAutoreleasedReturnValue(), v22, !v22))
+              type = [v20 type];
+              if (!type || ([v20 payloadPlist], v22 = objc_claimAutoreleasedReturnValue(), v22, !v22))
               {
-                [v5 deleteObject:v20];
+                [contextCopy deleteObject:v20];
 LABEL_19:
                 [v12 setIsDirty:1];
                 goto LABEL_20;
               }
 
-              if ([v13 containsObject:v21])
+              if ([v13 containsObject:type])
               {
-                [v5 deleteObject:v20];
+                [contextCopy deleteObject:v20];
                 v23 = +[STLog blueprint];
                 if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
                 {
@@ -130,7 +130,7 @@ LABEL_19:
                 goto LABEL_19;
               }
 
-              [v13 addObject:v21];
+              [v13 addObject:type];
 LABEL_20:
 
               v19 = v19 + 1;
@@ -163,7 +163,7 @@ LABEL_26:
   v29 = +[STLog blueprint];
   if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
   {
-    sub_10011A59C(a4);
+    sub_10011A59C(error);
   }
 
 LABEL_29:
@@ -171,11 +171,11 @@ LABEL_29:
   return v9 != 0;
 }
 
-+ (BOOL)_cleanupDeletedUserBlueprintsWithContext:(id)a3 error:(id *)a4
++ (BOOL)_cleanupDeletedUserBlueprintsWithContext:(id)context error:(id *)error
 {
-  v5 = a3;
+  contextCopy = context;
   v16 = +[STBlueprint fetchRequestMatchingOrphanedBlueprints];
-  v6 = [v16 execute:a4];
+  v6 = [v16 execute:error];
   v7 = v6;
   if (v6)
   {
@@ -206,7 +206,7 @@ LABEL_29:
             _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Deleting blueprint with no user %@", buf, 0xCu);
           }
 
-          [v5 deleteObject:v12];
+          [contextCopy deleteObject:v12];
         }
 
         v9 = [v7 countByEnumeratingWithState:&v17 objects:v23 count:16];
@@ -221,30 +221,30 @@ LABEL_29:
     v14 = +[STLog blueprint];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      sub_10011A604(a4);
+      sub_10011A604(error);
     }
   }
 
   return v7 != 0;
 }
 
-+ (BOOL)_cleanupDuplicateRestrictionsBlueprintsWithContext:(id)a3 user:(id)a4 error:(id *)a5
++ (BOOL)_cleanupDuplicateRestrictionsBlueprintsWithContext:(id)context user:(id)user error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 dsid];
+  contextCopy = context;
+  userCopy = user;
+  dsid = [userCopy dsid];
   v10 = STBlueprintTypeRestrictions;
-  v11 = [v8 managingOrganization];
-  v12 = [STBlueprint fetchRequestMatchingBlueprintsForUserWithDSID:v9 ofType:v10 fromOrganization:v11];
+  managingOrganization = [userCopy managingOrganization];
+  v12 = [STBlueprint fetchRequestMatchingBlueprintsForUserWithDSID:dsid ofType:v10 fromOrganization:managingOrganization];
 
-  v13 = [v12 execute:a5];
+  v13 = [v12 execute:error];
   v14 = v13;
   if (!v13)
   {
     v15 = +[STLog blueprint];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      sub_10011A604(a5);
+      sub_10011A604(error);
     }
 
     goto LABEL_15;
@@ -262,7 +262,7 @@ LABEL_29:
     {
       v17 = v16;
       v24 = v12;
-      v25 = v8;
+      v25 = userCopy;
       v18 = *v27;
       do
       {
@@ -277,15 +277,15 @@ LABEL_29:
           v21 = +[STLog blueprint];
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
           {
-            v22 = [v20 type];
+            type = [v20 type];
             *buf = 138412546;
             v31 = v20;
             v32 = 2114;
-            v33 = v22;
+            v33 = type;
             _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Deleting duplicated blueprint %@ of type %{public}@", buf, 0x16u);
           }
 
-          [v7 deleteObject:v20];
+          [contextCopy deleteObject:v20];
         }
 
         v17 = [v15 countByEnumeratingWithState:&v26 objects:v34 count:16];
@@ -293,7 +293,7 @@ LABEL_29:
 
       while (v17);
       v12 = v24;
-      v8 = v25;
+      userCopy = v25;
     }
 
 LABEL_15:
@@ -302,18 +302,18 @@ LABEL_15:
   return v14 != 0;
 }
 
-+ (BOOL)_migrateBlueprintsToVersion2CategoriesWithContext:(id)a3 user:(id)a4 error:(id *)a5
++ (BOOL)_migrateBlueprintsToVersion2CategoriesWithContext:(id)context user:(id)user error:(id *)error
 {
-  v6 = [STBlueprint fetchRequest:a3];
-  v7 = [NSPredicate predicateWithFormat:@"(%K == %@) OR (%K == %@)", @"type", STBlueprintTypeUsageLimit, @"type", STBlueprintTypeDowntime];
-  [v6 setPredicate:v7];
+  v6 = [STBlueprint fetchRequest:context];
+  sTBlueprintTypeDowntime = [NSPredicate predicateWithFormat:@"(%K == %@) OR (%K == %@)", @"type", STBlueprintTypeUsageLimit, @"type", STBlueprintTypeDowntime];
+  [v6 setPredicate:sTBlueprintTypeDowntime];
 
   v30[0] = @"configurations";
   v30[1] = @"usageLimit";
   v8 = [NSArray arrayWithObjects:v30 count:2];
   [v6 setRelationshipKeyPathsForPrefetching:v8];
 
-  v9 = [v6 execute:a5];
+  v9 = [v6 execute:error];
   v10 = v9;
   if (v9)
   {
@@ -339,12 +339,12 @@ LABEL_15:
           v16 = +[STLog blueprint];
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
-            v17 = [v15 identifier];
-            v18 = [v15 type];
+            identifier = [v15 identifier];
+            type = [v15 type];
             *buf = 138543618;
-            v26 = v17;
+            v26 = identifier;
             v27 = 2114;
-            v28 = v18;
+            v28 = type;
             _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Performing category migration while processing blueprint: %{public}@ with type: %{public}@", buf, 0x16u);
           }
 
@@ -363,19 +363,19 @@ LABEL_15:
     v19 = +[STLog blueprint];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
     {
-      sub_10011A66C(a5);
+      sub_10011A66C(error);
     }
   }
 
   return v10 != 0;
 }
 
-+ (id)_requestFromBlueprints:(id)a3 forUser:(id)a4 error:(id *)a5
++ (id)_requestFromBlueprints:(id)blueprints forUser:(id)user error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  blueprintsCopy = blueprints;
+  userCopy = user;
   v9 = objc_opt_new();
-  v10 = [v8 unmodeledManagingOrganizationSettings];
+  unmodeledManagingOrganizationSettings = [userCopy unmodeledManagingOrganizationSettings];
   v11 = +[NSUserDefaults standardUserDefaults];
   v49 = [v11 objectForKey:@"allowFindMyFriendsModification"];
 
@@ -384,7 +384,7 @@ LABEL_15:
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v12 = v7;
+  v12 = blueprintsCopy;
   v64 = [v12 countByEnumeratingWithState:&v65 objects:v75 count:16];
   if (v64)
   {
@@ -397,9 +397,9 @@ LABEL_15:
     v13 = STBlueprintConfigurationTypeSystemICloud;
     v61 = v12;
     v52 = v9;
-    v53 = v8;
-    v50 = a5;
-    v51 = v10;
+    v53 = userCopy;
+    errorCopy = error;
+    v51 = unmodeledManagingOrganizationSettings;
 LABEL_3:
     v14 = 0;
     while (1)
@@ -410,25 +410,25 @@ LABEL_3:
       }
 
       v15 = *(*(&v65 + 1) + 8 * v14);
-      v16 = [v15 type];
-      if (![v16 isEqualToString:v62])
+      type = [v15 type];
+      if (![type isEqualToString:v62])
       {
         break;
       }
 
       if ([v15 limitEnabled])
       {
-        v17 = [v10 allLimitsEnabled];
+        allLimitsEnabled = [unmodeledManagingOrganizationSettings allLimitsEnabled];
 LABEL_10:
-        v18 = v17;
+        v18 = allLimitsEnabled;
         goto LABEL_12;
       }
 
       v18 = 0;
 LABEL_12:
 
-      v19 = [v15 users];
-      if (![v19 containsObject:v8])
+      users = [v15 users];
+      if (![users containsObject:userCopy])
       {
         goto LABEL_48;
       }
@@ -437,15 +437,15 @@ LABEL_12:
       {
 
 LABEL_17:
-        if ([a1 _shouldInstallBlueprint:v15])
+        if ([self _shouldInstallBlueprint:v15])
         {
-          v22 = [v15 type];
+          type2 = [v15 type];
           v12 = v61;
-          if ([v22 isEqualToString:v58])
+          if ([type2 isEqualToString:v58])
           {
-            v23 = [v10 passcode];
+            passcode = [unmodeledManagingOrganizationSettings passcode];
 
-            if (!v23)
+            if (!passcode)
             {
               goto LABEL_49;
             }
@@ -455,8 +455,8 @@ LABEL_17:
           {
           }
 
-          v24 = [v15 type];
-          v25 = [v24 isEqualToString:v57];
+          type3 = [v15 type];
+          v25 = [type3 isEqualToString:v57];
 
           if (v25)
           {
@@ -466,8 +466,8 @@ LABEL_17:
             v71 = 0u;
             v72 = 0u;
             v56 = v26;
-            v27 = [v26 configurations];
-            v28 = [v27 countByEnumeratingWithState:&v69 objects:v76 count:16];
+            configurations = [v26 configurations];
+            v28 = [configurations countByEnumeratingWithState:&v69 objects:v76 count:16];
             if (v28)
             {
               v29 = v28;
@@ -478,12 +478,12 @@ LABEL_27:
               {
                 if (*v70 != v30)
                 {
-                  objc_enumerationMutation(v27);
+                  objc_enumerationMutation(configurations);
                 }
 
                 v32 = *(*(&v69 + 1) + 8 * v31);
-                v33 = [v32 type];
-                v34 = [v33 isEqualToString:v13];
+                type4 = [v32 type];
+                v34 = [type4 isEqualToString:v13];
 
                 if (v34)
                 {
@@ -492,18 +492,18 @@ LABEL_27:
 
                 if (v29 == ++v31)
                 {
-                  v29 = [v27 countByEnumeratingWithState:&v69 objects:v76 count:16];
+                  v29 = [configurations countByEnumeratingWithState:&v69 objects:v76 count:16];
                   if (v29)
                   {
                     goto LABEL_27;
                   }
 
                   v54 = 0;
-                  v35 = v27;
+                  v35 = configurations;
                   v9 = v52;
-                  v8 = v53;
-                  a5 = v50;
-                  v10 = v51;
+                  userCopy = v53;
+                  error = errorCopy;
+                  unmodeledManagingOrganizationSettings = v51;
                   v12 = v61;
                   goto LABEL_44;
                 }
@@ -515,23 +515,23 @@ LABEL_27:
               {
                 v54 = 0;
                 v9 = v52;
-                v8 = v53;
-                a5 = v50;
-                v10 = v51;
+                userCopy = v53;
+                error = errorCopy;
+                unmodeledManagingOrganizationSettings = v51;
                 v12 = v61;
                 goto LABEL_45;
               }
 
-              v36 = [v35 cemConfiguration];
+              cemConfiguration = [v35 cemConfiguration];
               objc_opt_class();
-              a5 = v50;
-              v10 = v51;
+              error = errorCopy;
+              unmodeledManagingOrganizationSettings = v51;
               v12 = v61;
               if (objc_opt_isKindOfClass())
               {
-                v37 = [v36 payloadAllowFindMyFriendsModification];
-                v38 = v37;
-                if (!v37 || (v39 = [v37 BOOLValue], v40 = &__kCFBooleanFalse, v39))
+                payloadAllowFindMyFriendsModification = [cemConfiguration payloadAllowFindMyFriendsModification];
+                v38 = payloadAllowFindMyFriendsModification;
+                if (!payloadAllowFindMyFriendsModification || (v39 = [payloadAllowFindMyFriendsModification BOOLValue], v40 = &__kCFBooleanFalse, v39))
                 {
                   v40 = 0;
                 }
@@ -545,13 +545,13 @@ LABEL_27:
               }
 
               v9 = v52;
-              v8 = v53;
+              userCopy = v53;
             }
 
             else
             {
               v54 = 0;
-              v35 = v27;
+              v35 = configurations;
             }
 
 LABEL_44:
@@ -560,7 +560,7 @@ LABEL_45:
             [v55 addWebContentFilterPoliciesFrom:v56];
           }
 
-          v41 = [v15 declarationsWithError:a5];
+          v41 = [v15 declarationsWithError:error];
           if (!v41)
           {
             v42 = 0;
@@ -569,7 +569,7 @@ LABEL_45:
             goto LABEL_57;
           }
 
-          v19 = v41;
+          users = v41;
           [v9 addObjectsFromArray:v41];
           goto LABEL_48;
         }
@@ -577,17 +577,17 @@ LABEL_45:
         goto LABEL_21;
       }
 
-      v20 = [v15 type];
-      if (([v20 isEqualToString:v59] & 1) == 0)
+      type5 = [v15 type];
+      if (([type5 isEqualToString:v59] & 1) == 0)
       {
 
 LABEL_48:
         goto LABEL_49;
       }
 
-      v21 = [v15 activeOverride];
+      activeOverride = [v15 activeOverride];
 
-      if (v21)
+      if (activeOverride)
       {
         goto LABEL_17;
       }
@@ -607,22 +607,22 @@ LABEL_49:
       }
     }
 
-    v17 = [v15 enabled];
+    allLimitsEnabled = [v15 enabled];
     goto LABEL_10;
   }
 
   v54 = 0;
 LABEL_54:
 
-  v45 = [v55 applyWebContentFilter];
-  v46 = [v8 effectivePasscode];
-  v47 = [v46 length];
+  applyWebContentFilter = [v55 applyWebContentFilter];
+  effectivePasscode = [userCopy effectivePasscode];
+  v47 = [effectivePasscode length];
 
-  +[ManagedSettingsApplicator applySafariSettingsRestrictions:](_TtC15ScreenTimeAgent25ManagedSettingsApplicator, "applySafariSettingsRestrictions:", +[ManagedSettingsApplicator shouldRestrictSafariSettingsWithIsPasscodeSet:isUserManaged:isWebContentFilterEnabled:](_TtC15ScreenTimeAgent25ManagedSettingsApplicator, "shouldRestrictSafariSettingsWithIsPasscodeSet:isUserManaged:isWebContentFilterEnabled:", v47 != 0, [v8 isManaged], v45));
+  +[ManagedSettingsApplicator applySafariSettingsRestrictions:](_TtC15ScreenTimeAgent25ManagedSettingsApplicator, "applySafariSettingsRestrictions:", +[ManagedSettingsApplicator shouldRestrictSafariSettingsWithIsPasscodeSet:isUserManaged:isWebContentFilterEnabled:](_TtC15ScreenTimeAgent25ManagedSettingsApplicator, "shouldRestrictSafariSettingsWithIsPasscodeSet:isUserManaged:isWebContentFilterEnabled:", v47 != 0, [userCopy isManaged], applyWebContentFilter));
   v44 = v49;
   if (v47)
   {
-    [a1 _postShareMyLocationNotificationForOldAllowFindMyFriendsModification:v49 newAllowFindMyFriendsModification:v54];
+    [self _postShareMyLocationNotificationForOldAllowFindMyFriendsModification:v49 newAllowFindMyFriendsModification:v54];
   }
 
   v73[0] = @"Declarations";
@@ -634,21 +634,21 @@ LABEL_54:
   v74[2] = @"-";
   v74[3] = @"-";
   v43 = [NSDictionary dictionaryWithObjects:v74 forKeys:v73 count:4, v49];
-  v42 = [(STRemoteManagementRequest *)STSetRequest requestForPayload:v43 error:a5];
+  v42 = [(STRemoteManagementRequest *)STSetRequest requestForPayload:v43 error:error];
 LABEL_57:
 
   return v42;
 }
 
-+ (void)_postShareMyLocationNotificationForOldAllowFindMyFriendsModification:(id)a3 newAllowFindMyFriendsModification:(id)a4
++ (void)_postShareMyLocationNotificationForOldAllowFindMyFriendsModification:(id)modification newAllowFindMyFriendsModification:(id)friendsModification
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  modificationCopy = modification;
+  friendsModificationCopy = friendsModification;
+  v7 = friendsModificationCopy;
+  if (modificationCopy)
   {
-    v8 = [v5 BOOLValue];
-    if (!v7 && (v8 & 1) == 0)
+    bOOLValue = [modificationCopy BOOLValue];
+    if (!v7 && (bOOLValue & 1) == 0)
     {
       v9 = +[STLog blueprint];
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -670,7 +670,7 @@ LABEL_12:
     }
   }
 
-  else if (v6 && ([v6 BOOLValue] & 1) == 0)
+  else if (friendsModificationCopy && ([friendsModificationCopy BOOLValue] & 1) == 0)
   {
     v15 = +[STLog blueprint];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))

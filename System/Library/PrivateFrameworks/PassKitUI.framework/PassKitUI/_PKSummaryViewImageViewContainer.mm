@@ -1,31 +1,31 @@
 @interface _PKSummaryViewImageViewContainer
-- (_PKSummaryViewImageViewContainer)initWithFrame:(CGRect)a3;
+- (_PKSummaryViewImageViewContainer)initWithFrame:(CGRect)frame;
 - (id)createView;
 - (void)layoutSubviews;
 @end
 
 @implementation _PKSummaryViewImageViewContainer
 
-- (_PKSummaryViewImageViewContainer)initWithFrame:(CGRect)a3
+- (_PKSummaryViewImageViewContainer)initWithFrame:(CGRect)frame
 {
   v18.receiver = self;
   v18.super_class = _PKSummaryViewImageViewContainer;
-  v3 = [(_PKSummaryViewSubviewContainer *)&v18 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_PKSummaryViewSubviewContainer *)&v18 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(_PKSummaryViewSubviewContainer *)v3 view];
-    v6 = [v5 layer];
+    view = [(_PKSummaryViewSubviewContainer *)v3 view];
+    layer = [view layer];
 
-    [v6 setCornerCurve:*MEMORY[0x1E69796E8]];
-    [v6 setCornerRadius:6.0];
-    [v6 setMasksToBounds:1];
+    [layer setCornerCurve:*MEMORY[0x1E69796E8]];
+    [layer setCornerRadius:6.0];
+    [layer setMasksToBounds:1];
     v7 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
     imageView = v4->_imageView;
     v4->_imageView = v7;
 
-    v9 = [(_PKSummaryViewSubviewContainer *)v4 view];
-    [v9 addSubview:v4->_imageView];
+    view2 = [(_PKSummaryViewSubviewContainer *)v4 view];
+    [view2 addSubview:v4->_imageView];
 
     v10 = objc_alloc_init(MEMORY[0x1E69DD250]);
     badgeView = v4->_badgeView;
@@ -33,16 +33,16 @@
 
     [(UIView *)v4->_badgeView setClipsToBounds:1];
     v12 = v4->_badgeView;
-    v13 = [MEMORY[0x1E69DC888] redColor];
-    [(UIView *)v12 setBackgroundColor:v13];
+    redColor = [MEMORY[0x1E69DC888] redColor];
+    [(UIView *)v12 setBackgroundColor:redColor];
 
     [(UIView *)v4->_badgeView setAlpha:0.0];
-    v14 = [(UIView *)v4->_badgeView layer];
-    [v14 setCornerRadius:4.5];
+    layer2 = [(UIView *)v4->_badgeView layer];
+    [layer2 setCornerRadius:4.5];
 
-    v15 = [(UIView *)v4->_badgeView layer];
+    layer3 = [(UIView *)v4->_badgeView layer];
     CATransform3DMakeScale(&v17, 0.6, 0.6, 1.0);
-    [v15 setTransform:&v17];
+    [layer3 setTransform:&v17];
 
     [(_PKSummaryViewImageViewContainer *)v4 addSubview:v4->_badgeView];
   }
@@ -55,8 +55,8 @@
   v18.receiver = self;
   v18.super_class = _PKSummaryViewImageViewContainer;
   [(_PKSummaryViewSubviewContainer *)&v18 layoutSubviews];
-  v3 = [(_PKSummaryViewImageViewContainer *)self backgroundView];
-  [v3 bounds];
+  backgroundView = [(_PKSummaryViewImageViewContainer *)self backgroundView];
+  [backgroundView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;

@@ -1,26 +1,26 @@
 @interface NLWorkoutAlertRingCompletion
-+ (id)ringCompletionAlertWithCompletedRing:(int64_t)a3 activitySummary:(id)a4;
-- (id)localizedProgressDescriptionWithUnitStyle:(unint64_t)a3 formattingManager:(id)a4;
-- (id)spokenDescriptionWithFormattingManager:(id)a3;
-- (id)spokenUserDataWithFormattingManager:(id)a3;
-- (unint64_t)optimalUnitStyleFittingWidth:(double)a3 withFont:(id)a4 formattingManager:(id)a5;
++ (id)ringCompletionAlertWithCompletedRing:(int64_t)ring activitySummary:(id)summary;
+- (id)localizedProgressDescriptionWithUnitStyle:(unint64_t)style formattingManager:(id)manager;
+- (id)spokenDescriptionWithFormattingManager:(id)manager;
+- (id)spokenUserDataWithFormattingManager:(id)manager;
+- (unint64_t)optimalUnitStyleFittingWidth:(double)width withFont:(id)font formattingManager:(id)manager;
 @end
 
 @implementation NLWorkoutAlertRingCompletion
 
-+ (id)ringCompletionAlertWithCompletedRing:(int64_t)a3 activitySummary:(id)a4
++ (id)ringCompletionAlertWithCompletedRing:(int64_t)ring activitySummary:(id)summary
 {
-  v11 = a1;
+  selfCopy = self;
   v10 = a2;
-  v9 = a3;
+  ringCopy = ring;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, summary);
   v7 = objc_alloc_init(NLWorkoutAlertRingCompletion);
-  v5 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   [(NLWorkoutAlert *)v7 setEventDate:?];
-  MEMORY[0x277D82BD8](v5);
+  MEMORY[0x277D82BD8](date);
   [(NLWorkoutAlert *)v7 setType:4];
-  [(NLWorkoutAlertRingCompletion *)v7 setCompletedRing:v9];
+  [(NLWorkoutAlertRingCompletion *)v7 setCompletedRing:ringCopy];
   [(NLWorkoutAlertRingCompletion *)v7 setActivitySummary:location];
   v6 = MEMORY[0x277D82BE0](v7);
   objc_storeStrong(&v7, 0);
@@ -29,33 +29,33 @@
   return v6;
 }
 
-- (unint64_t)optimalUnitStyleFittingWidth:(double)a3 withFont:(id)a4 formattingManager:(id)a5
+- (unint64_t)optimalUnitStyleFittingWidth:(double)width withFont:(id)font formattingManager:(id)manager
 {
   location[3] = self;
   location[2] = a2;
-  location[1] = *&a3;
+  location[1] = *&width;
   location[0] = 0;
-  objc_storeStrong(location, a4);
+  objc_storeStrong(location, font);
   v7 = 0;
-  objc_storeStrong(&v7, a5);
+  objc_storeStrong(&v7, manager);
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
   return 0;
 }
 
-- (id)localizedProgressDescriptionWithUnitStyle:(unint64_t)a3 formattingManager:(id)a4
+- (id)localizedProgressDescriptionWithUnitStyle:(unint64_t)style formattingManager:(id)manager
 {
   v33[3] = *MEMORY[0x277D85DE8];
-  v31 = self;
+  selfCopy = self;
   location[2] = a2;
-  location[1] = a3;
+  location[1] = style;
   location[0] = 0;
-  objc_storeStrong(location, a4);
+  objc_storeStrong(location, manager);
   v29 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v22 = [(NLWorkoutAlertRingCompletion *)v31 completedRing];
-  if (v22)
+  completedRing = [(NLWorkoutAlertRingCompletion *)selfCopy completedRing];
+  if (completedRing)
   {
-    if (v22 == 1)
+    if (completedRing == 1)
     {
       v15 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v14 = [v15 localizedStringForKey:@"ACTIVITY_RING_COMPLETION_LINE_1_EXERCISE" value:? table:?];
@@ -122,16 +122,16 @@
   return v5;
 }
 
-- (id)spokenDescriptionWithFormattingManager:(id)a3
+- (id)spokenDescriptionWithFormattingManager:(id)manager
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7 = [(NLWorkoutAlertRingCompletion *)v9 completedRing];
-  if (v7)
+  objc_storeStrong(location, manager);
+  completedRing = [(NLWorkoutAlertRingCompletion *)selfCopy completedRing];
+  if (completedRing)
   {
-    if (v7 == 1)
+    if (completedRing == 1)
     {
       v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v10 = [v6 localizedStringForKey:@"EXERCISE_RING_COMPLETION_SPOKEN" value:&stru_28225A4E8 table:@"Localizable"];
@@ -157,10 +157,10 @@
   return v3;
 }
 
-- (id)spokenUserDataWithFormattingManager:(id)a3
+- (id)spokenUserDataWithFormattingManager:(id)manager
 {
-  v4 = a3;
-  v5 = self;
+  managerCopy = manager;
+  selfCopy = self;
   specialized NLWorkoutAlertRingCompletion.spokenUserData(with:)();
 
   v6.super.isa = Dictionary._bridgeToObjectiveC()().super.isa;

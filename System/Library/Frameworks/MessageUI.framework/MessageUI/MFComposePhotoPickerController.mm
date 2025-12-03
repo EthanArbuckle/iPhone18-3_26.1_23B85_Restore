@@ -1,13 +1,13 @@
 @interface MFComposePhotoPickerController
-- (MFComposePhotoPickerController)initWithPreselectedAssetIdentifiers:(id)a3;
+- (MFComposePhotoPickerController)initWithPreselectedAssetIdentifiers:(id)identifiers;
 - (MFComposePhotoPickerControllerDelegate)delegate;
-- (double)preferredHeightForTraitCollection:(id)a3;
-- (id)_loadAssetForPickerResult:(id)a3 completionHandler:(id)a4;
-- (void)_loadAssetForPickerResult:(id)a3;
-- (void)_photoPickerItemForAssetIdentifier:(id)a3 assetURL:(id)a4 contentType:(id)a5 completionHandler:(id)a6;
-- (void)_removeAssetWithIdentifier:(id)a3;
+- (double)preferredHeightForTraitCollection:(id)collection;
+- (id)_loadAssetForPickerResult:(id)result completionHandler:(id)handler;
+- (void)_loadAssetForPickerResult:(id)result;
+- (void)_photoPickerItemForAssetIdentifier:(id)identifier assetURL:(id)l contentType:(id)type completionHandler:(id)handler;
+- (void)_removeAssetWithIdentifier:(id)identifier;
 - (void)_setupPickerViewController;
-- (void)picker:(id)a3 didFinishPicking:(id)a4;
+- (void)picker:(id)picker didFinishPicking:(id)picking;
 @end
 
 @implementation MFComposePhotoPickerController
@@ -19,16 +19,16 @@ void ___ef_log_MFComposePhotoPickerController_block_invoke()
   _ef_log_MFComposePhotoPickerController_log = v0;
 }
 
-- (MFComposePhotoPickerController)initWithPreselectedAssetIdentifiers:(id)a3
+- (MFComposePhotoPickerController)initWithPreselectedAssetIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v15.receiver = self;
   v15.super_class = MFComposePhotoPickerController;
   v5 = [(MFComposePhotoPickerController *)&v15 init];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFA8];
-    v7 = [v4 ef_compactMap:&__block_literal_global_15];
+    v7 = [identifiersCopy ef_compactMap:&__block_literal_global_15];
     v8 = [v6 setWithSet:v7];
     existingAssets = v5->_existingAssets;
     v5->_existingAssets = v8;
@@ -73,14 +73,14 @@ id __70__MFComposePhotoPickerController_initWithPreselectedAssetIdentifiers___bl
   v4 = v3;
   _Block_object_dispose(&v19, 8);
   v5 = [v3 alloc];
-  v6 = [MEMORY[0x1E69789A8] sharedPhotoLibrary];
-  v7 = [v5 initWithPhotoLibrary:v6];
+  mEMORY[0x1E69789A8] = [MEMORY[0x1E69789A8] sharedPhotoLibrary];
+  v7 = [v5 initWithPhotoLibrary:mEMORY[0x1E69789A8]];
 
   [v7 setSelection:2];
   [v7 setSelectionLimit:0];
-  v8 = [(MFComposePhotoPickerController *)self existingAssets];
-  v9 = [v8 allObjects];
-  [v7 setPreselectedAssetIdentifiers:v9];
+  existingAssets = [(MFComposePhotoPickerController *)self existingAssets];
+  allObjects = [existingAssets allObjects];
+  [v7 setPreselectedAssetIdentifiers:allObjects];
 
   [v7 setPreferredAssetRepresentationMode:2];
   [v7 _setDisabledPrivateCapabilities:64];
@@ -109,32 +109,32 @@ id __70__MFComposePhotoPickerController_initWithPreselectedAssetIdentifiers___bl
   [(PHPickerViewController *)self->_pickerViewController setDelegate:self];
 }
 
-- (void)picker:(id)a3 didFinishPicking:(id)a4
+- (void)picker:(id)picker didFinishPicking:(id)picking
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  pickingCopy = picking;
   v6 = MEMORY[0x1E695DFD8];
-  v7 = [v5 ef_compactMap:&__block_literal_global_22];
+  v7 = [pickingCopy ef_compactMap:&__block_literal_global_22];
   v21 = [v6 setWithArray:v7];
 
-  v8 = [(MFComposePhotoPickerController *)self existingAssets];
-  v22 = [v21 differenceFromSet:v8];
+  existingAssets = [(MFComposePhotoPickerController *)self existingAssets];
+  v22 = [v21 differenceFromSet:existingAssets];
 
-  v20 = [(MFComposePhotoPickerController *)self delegate];
+  delegate = [(MFComposePhotoPickerController *)self delegate];
   if (([v22 hasChanges] & 1) == 0)
   {
-    v9 = [(MFComposePhotoPickerController *)self progressManager];
-    [v9 cancelEverything];
+    progressManager = [(MFComposePhotoPickerController *)self progressManager];
+    [progressManager cancelEverything];
 
-    [v20 photoPickerControllerDidCancel:self];
+    [delegate photoPickerControllerDidCancel:self];
   }
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v10 = [v22 removals];
-  v11 = [v10 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  removals = [v22 removals];
+  v11 = [removals countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v11)
   {
     v12 = *v29;
@@ -145,14 +145,14 @@ id __70__MFComposePhotoPickerController_initWithPreselectedAssetIdentifiers___bl
       {
         if (*v29 != v12)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(removals);
         }
 
         [(MFComposePhotoPickerController *)self _removeAssetWithIdentifier:*(*(&v28 + 1) + 8 * v13++)];
       }
 
       while (v11 != v13);
-      v11 = [v10 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      v11 = [removals countByEnumeratingWithState:&v28 objects:v33 count:16];
     }
 
     while (v11);
@@ -162,8 +162,8 @@ id __70__MFComposePhotoPickerController_initWithPreselectedAssetIdentifiers___bl
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v14 = [v22 insertions];
-  v15 = [v14 countByEnumeratingWithState:&v24 objects:v32 count:16];
+  insertions = [v22 insertions];
+  v15 = [insertions countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v15)
   {
     v16 = *v25;
@@ -174,7 +174,7 @@ id __70__MFComposePhotoPickerController_initWithPreselectedAssetIdentifiers___bl
       {
         if (*v25 != v16)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(insertions);
         }
 
         v18 = *(*(&v24 + 1) + 8 * v17);
@@ -183,7 +183,7 @@ id __70__MFComposePhotoPickerController_initWithPreselectedAssetIdentifiers___bl
         v23[2] = __58__MFComposePhotoPickerController_picker_didFinishPicking___block_invoke_2;
         v23[3] = &unk_1E806CE80;
         v23[4] = v18;
-        v19 = [v5 ef_firstObjectPassingTest:v23];
+        v19 = [pickingCopy ef_firstObjectPassingTest:v23];
         if (v19)
         {
           [(MFComposePhotoPickerController *)self _loadAssetForPickerResult:v19];
@@ -193,7 +193,7 @@ id __70__MFComposePhotoPickerController_initWithPreselectedAssetIdentifiers___bl
       }
 
       while (v15 != v17);
-      v15 = [v14 countByEnumeratingWithState:&v24 objects:v32 count:16];
+      v15 = [insertions countByEnumeratingWithState:&v24 objects:v32 count:16];
     }
 
     while (v15);
@@ -215,11 +215,11 @@ uint64_t __58__MFComposePhotoPickerController_picker_didFinishPicking___block_in
   return v4;
 }
 
-- (double)preferredHeightForTraitCollection:(id)a3
+- (double)preferredHeightForTraitCollection:(id)collection
 {
-  v3 = [a3 verticalSizeClass];
+  verticalSizeClass = [collection verticalSizeClass];
   result = 300.0;
-  if (v3 == 1)
+  if (verticalSizeClass == 1)
   {
     return 160.0;
   }
@@ -227,66 +227,66 @@ uint64_t __58__MFComposePhotoPickerController_picker_didFinishPicking___block_in
   return result;
 }
 
-- (void)_removeAssetWithIdentifier:(id)a3
+- (void)_removeAssetWithIdentifier:(id)identifier
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = _ef_log_MFComposePhotoPickerController();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v13 = v4;
+    v13 = identifierCopy;
     _os_log_impl(&dword_1BE819000, v5, OS_LOG_TYPE_DEFAULT, "Remove asset with identifier %{public}@", buf, 0xCu);
   }
 
-  v6 = [(MFComposePhotoPickerController *)self existingAssets];
-  [v6 removeObject:v4];
+  existingAssets = [(MFComposePhotoPickerController *)self existingAssets];
+  [existingAssets removeObject:identifierCopy];
 
-  v7 = [(MFComposePhotoPickerController *)self progressManager];
-  [v7 cancelProgressFor:v4];
+  progressManager = [(MFComposePhotoPickerController *)self progressManager];
+  [progressManager cancelProgressFor:identifierCopy];
 
-  v8 = [(MFComposePhotoPickerController *)self pickerViewController];
-  v11 = v4;
+  pickerViewController = [(MFComposePhotoPickerController *)self pickerViewController];
+  v11 = identifierCopy;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v11 count:1];
-  [v8 _stopActivityIndicatorsForAssetsWithIdentifiers:v9];
+  [pickerViewController _stopActivityIndicatorsForAssetsWithIdentifiers:v9];
 
-  v10 = [(MFComposePhotoPickerController *)self delegate];
-  [v10 photoPickerController:self didRemoveAsset:v4];
+  delegate = [(MFComposePhotoPickerController *)self delegate];
+  [delegate photoPickerController:self didRemoveAsset:identifierCopy];
 }
 
-- (void)_loadAssetForPickerResult:(id)a3
+- (void)_loadAssetForPickerResult:(id)result
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 assetIdentifier];
+  resultCopy = result;
+  assetIdentifier = [resultCopy assetIdentifier];
   v6 = _ef_log_MFComposePhotoPickerController();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v4 itemProvider];
-    v8 = [v7 registeredContentTypes];
+    itemProvider = [resultCopy itemProvider];
+    registeredContentTypes = [itemProvider registeredContentTypes];
     *buf = 138543618;
-    v19 = v5;
+    v19 = assetIdentifier;
     v20 = 2114;
-    v21 = v8;
+    v21 = registeredContentTypes;
     _os_log_impl(&dword_1BE819000, v6, OS_LOG_TYPE_DEFAULT, "Adding asset with identifier: %{public}@, registeredContentTypes: %{public}@", buf, 0x16u);
   }
 
-  v9 = [(MFComposePhotoPickerController *)self pickerViewController];
-  v17 = v5;
+  pickerViewController = [(MFComposePhotoPickerController *)self pickerViewController];
+  v17 = assetIdentifier;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v17 count:1];
-  [v9 _startActivityIndicatorsForAssetsWithIdentifiers:v10];
+  [pickerViewController _startActivityIndicatorsForAssetsWithIdentifiers:v10];
 
-  v11 = [(MFComposePhotoPickerController *)self assetLoadingQueue];
+  assetLoadingQueue = [(MFComposePhotoPickerController *)self assetLoadingQueue];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __60__MFComposePhotoPickerController__loadAssetForPickerResult___block_invoke;
   v14[3] = &unk_1E806CC80;
   v14[4] = self;
-  v15 = v4;
-  v16 = v5;
-  v12 = v5;
-  v13 = v4;
-  dispatch_async(v11, v14);
+  v15 = resultCopy;
+  v16 = assetIdentifier;
+  v12 = assetIdentifier;
+  v13 = resultCopy;
+  dispatch_async(assetLoadingQueue, v14);
 }
 
 void __60__MFComposePhotoPickerController__loadAssetForPickerResult___block_invoke(uint64_t a1)
@@ -395,33 +395,33 @@ void __60__MFComposePhotoPickerController__loadAssetForPickerResult___block_invo
   }
 }
 
-- (id)_loadAssetForPickerResult:(id)a3 completionHandler:(id)a4
+- (id)_loadAssetForPickerResult:(id)result completionHandler:(id)handler
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 itemProvider];
-  v9 = [v6 assetIdentifier];
-  if (!v8)
+  resultCopy = result;
+  handlerCopy = handler;
+  itemProvider = [resultCopy itemProvider];
+  assetIdentifier = [resultCopy assetIdentifier];
+  if (!itemProvider)
   {
-    v10 = _ef_log_MFComposePhotoPickerController();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    registeredContentTypes = _ef_log_MFComposePhotoPickerController();
+    if (os_log_type_enabled(registeredContentTypes, OS_LOG_TYPE_ERROR))
     {
-      [MFComposePhotoPickerController _loadAssetForPickerResult:v9 completionHandler:v10];
+      [MFComposePhotoPickerController _loadAssetForPickerResult:assetIdentifier completionHandler:registeredContentTypes];
     }
 
     goto LABEL_11;
   }
 
-  v10 = [v8 registeredContentTypes];
-  v11 = [MFComposePhotoPickerItem bestTypeToLoadFrom:v10];
+  registeredContentTypes = [itemProvider registeredContentTypes];
+  v11 = [MFComposePhotoPickerItem bestTypeToLoadFrom:registeredContentTypes];
   v12 = _ef_log_MFComposePhotoPickerController();
   v13 = v12;
   if (!v11)
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [MFComposePhotoPickerController _loadAssetForPickerResult:v9 completionHandler:?];
+      [MFComposePhotoPickerController _loadAssetForPickerResult:assetIdentifier completionHandler:?];
     }
 
 LABEL_11:
@@ -432,11 +432,11 @@ LABEL_11:
   v14 = v12;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v11 identifier];
+    identifier = [v11 identifier];
     *buf = 138543618;
-    v25 = v9;
+    v25 = assetIdentifier;
     v26 = 2114;
-    v27 = v15;
+    v27 = identifier;
     _os_log_impl(&dword_1BE819000, v14, OS_LOG_TYPE_DEFAULT, "Loading representation for assetIdentifier: %{public}@ with type: %{public}@", buf, 0x16u);
   }
 
@@ -446,11 +446,11 @@ LABEL_11:
   v19[2] = __78__MFComposePhotoPickerController__loadAssetForPickerResult_completionHandler___block_invoke;
   v19[3] = &unk_1E806CED0;
   objc_copyWeak(&v23, buf);
-  v20 = v9;
+  v20 = assetIdentifier;
   v16 = v11;
   v21 = v16;
-  v22 = v7;
-  v17 = [v8 loadFileRepresentationForContentType:v16 openInPlace:0 completionHandler:v19];
+  v22 = handlerCopy;
+  v17 = [itemProvider loadFileRepresentationForContentType:v16 openInPlace:0 completionHandler:v19];
 
   objc_destroyWeak(&v23);
   objc_destroyWeak(buf);
@@ -501,43 +501,43 @@ void __78__MFComposePhotoPickerController__loadAssetForPickerResult_completionHa
   }
 }
 
-- (void)_photoPickerItemForAssetIdentifier:(id)a3 assetURL:(id)a4 contentType:(id)a5 completionHandler:(id)a6
+- (void)_photoPickerItemForAssetIdentifier:(id)identifier assetURL:(id)l contentType:(id)type completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if ([v11 conformsToType:*MEMORY[0x1E6982E30]])
+  identifierCopy = identifier;
+  lCopy = l;
+  typeCopy = type;
+  handlerCopy = handler;
+  if ([typeCopy conformsToType:*MEMORY[0x1E6982E30]])
   {
     v26 = 0;
     v13 = *MEMORY[0x1E695DAA0];
     v25 = 0;
-    v14 = [v10 getResourceValue:&v26 forKey:v13 error:&v25];
+    v14 = [lCopy getResourceValue:&v26 forKey:v13 error:&v25];
     v15 = v26;
     v16 = v25;
     if (v14)
     {
       if (([(MFComposePhotoPickerItem *)v15 conformsToType:*MEMORY[0x1E6982E58]]& 1) != 0 || ([(MFComposePhotoPickerItem *)v15 conformsToType:*MEMORY[0x1E6982F28]]& 1) != 0 || [(MFComposePhotoPickerItem *)v15 conformsToType:*MEMORY[0x1E6982DE8]])
       {
-        v17 = [[MFComposePhotoPickerItem alloc] initWithAssetIdentifier:v9 assetURL:v10 assetData:0 contentType:v11];
-        v12[2](v12, v17);
+        v17 = [[MFComposePhotoPickerItem alloc] initWithAssetIdentifier:identifierCopy assetURL:lCopy assetData:0 contentType:typeCopy];
+        handlerCopy[2](handlerCopy, v17);
       }
 
       else
       {
-        v17 = [MEMORY[0x1E69AD6B0] dataWithContentsOfURL:v10];
-        v19 = [MEMORY[0x1E696AC08] defaultManager];
-        [v19 removeItemAtURL:v10 error:0];
+        v17 = [MEMORY[0x1E69AD6B0] dataWithContentsOfURL:lCopy];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+        [defaultManager removeItemAtURL:lCopy error:0];
 
-        v20 = [(MFComposePhotoPickerItem *)v15 identifier];
+        identifier = [(MFComposePhotoPickerItem *)v15 identifier];
         v21[0] = MEMORY[0x1E69E9820];
         v21[1] = 3221225472;
         v21[2] = __108__MFComposePhotoPickerController__photoPickerItemForAssetIdentifier_assetURL_contentType_completionHandler___block_invoke;
         v21[3] = &unk_1E806CEF8;
-        v22 = v9;
-        v24 = v12;
+        v22 = identifierCopy;
+        v24 = handlerCopy;
         v23 = v15;
-        [MFMediaExporter jpegRepresentationForImageData:v17 inputContentType:v20 completion:v21];
+        [MFMediaExporter jpegRepresentationForImageData:v17 inputContentType:identifier completion:v21];
       }
     }
 
@@ -546,17 +546,17 @@ void __78__MFComposePhotoPickerController__loadAssetForPickerResult_completionHa
       v18 = _ef_log_MFComposePhotoPickerController();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        [MFComposePhotoPickerController _photoPickerItemForAssetIdentifier:v10 assetURL:v18 contentType:? completionHandler:?];
+        [MFComposePhotoPickerController _photoPickerItemForAssetIdentifier:lCopy assetURL:v18 contentType:? completionHandler:?];
       }
 
-      v12[2](v12, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
   else
   {
-    v15 = [[MFComposePhotoPickerItem alloc] initWithAssetIdentifier:v9 assetURL:v10 assetData:0 contentType:v11];
-    v12[2](v12, v15);
+    v15 = [[MFComposePhotoPickerItem alloc] initWithAssetIdentifier:identifierCopy assetURL:lCopy assetData:0 contentType:typeCopy];
+    handlerCopy[2](handlerCopy, v15);
   }
 }
 

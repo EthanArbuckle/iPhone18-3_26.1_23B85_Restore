@@ -1,26 +1,26 @@
 @interface SESKeyACLChainVerifier
-+ (id)findDesignatedKey:(void *)a3 error:;
-+ (id)performChainAuthIfNeededForACL:(id)a3 operation:(id)a4 auth:(id)a5 seHandle:(id)a6 seid:(id)a7 error:(id *)a8;
++ (id)findDesignatedKey:(void *)key error:;
++ (id)performChainAuthIfNeededForACL:(id)l operation:(id)operation auth:(id)auth seHandle:(id)handle seid:(id)seid error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation SESKeyACLChainVerifier
 
-+ (id)performChainAuthIfNeededForACL:(id)a3 operation:(id)a4 auth:(id)a5 seHandle:(id)a6 seid:(id)a7 error:(id *)a8
++ (id)performChainAuthIfNeededForACL:(id)l operation:(id)operation auth:(id)auth seHandle:(id)handle seid:(id)seid error:(id *)error
 {
   v78 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = [MEMORY[0x1E69666D0] recordFromData:v13];
-  v19 = [v18 propertyList];
+  lCopy = l;
+  operationCopy = operation;
+  authCopy = auth;
+  handleCopy = handle;
+  seidCopy = seid;
+  v18 = [MEMORY[0x1E69666D0] recordFromData:lCopy];
+  propertyList = [v18 propertyList];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v20 = [v19 objectForKeyedSubscript:v14];
+    v20 = [propertyList objectForKeyedSubscript:operationCopy];
     v21 = [v20 objectForKeyedSubscript:@"ckref"];
 
     if (!v21)
@@ -28,11 +28,11 @@
       v24 = SESDefaultLogObject();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
       {
-        v42 = [v13 base64];
+        base64 = [lCopy base64];
         *buf = 138412546;
-        *&buf[4] = v14;
+        *&buf[4] = operationCopy;
         v76 = 2112;
-        v77 = v42;
+        v77 = base64;
         _os_log_impl(&dword_1C7B9A000, v24, OS_LOG_TYPE_DEBUG, "Constraints for operation %@ doesn't require ckref in ACL %@", buf, 0x16u);
       }
 
@@ -50,22 +50,22 @@
       v43 = SESDefaultLogObject();
       if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
       {
-        [v13 base64];
-        v70 = v17;
-        v44 = v16;
-        v46 = v45 = v15;
+        [lCopy base64];
+        v70 = seidCopy;
+        v44 = handleCopy;
+        v46 = v45 = authCopy;
         *buf = 138412290;
         *&buf[4] = v46;
         _os_log_impl(&dword_1C7B9A000, v43, OS_LOG_TYPE_ERROR, "ACL was %@", buf, 0xCu);
 
-        v15 = v45;
-        v16 = v44;
-        v17 = v70;
+        authCopy = v45;
+        handleCopy = v44;
+        seidCopy = v70;
       }
 
-      if (a8)
+      if (error)
       {
-        *a8 = SESEnsureError();
+        *error = SESEnsureError();
       }
 
       notify_post("com.apple.private.seservice.designatedkeynotfound");
@@ -77,18 +77,18 @@
     v69 = v25;
     if (!v25)
     {
-      if (a8)
+      if (error)
       {
         SESDefaultLogObject();
-        v47 = v17;
-        v48 = v16;
-        v50 = v49 = v15;
+        v47 = seidCopy;
+        v48 = handleCopy;
+        v50 = v49 = authCopy;
         v51 = *MEMORY[0x1E69E5148];
-        *a8 = SESCreateAndLogError();
+        *error = SESCreateAndLogError();
 
-        v15 = v49;
-        v16 = v48;
-        v17 = v47;
+        authCopy = v49;
+        handleCopy = v48;
+        seidCopy = v47;
       }
 
       v24 = 0;
@@ -102,7 +102,7 @@
     v24 = *buf;
     if (!v27 || *buf)
     {
-      if (!a8)
+      if (!error)
       {
         v37 = 0;
 LABEL_38:
@@ -118,22 +118,22 @@ LABEL_41:
       v67 = SESDefaultLogObject();
       v52 = *MEMORY[0x1E69E5148];
       SESCreateAndLogError();
-      *a8 = v37 = 0;
+      *error = v37 = 0;
       v53 = v67;
     }
 
     else
     {
       v64 = v21;
-      v65 = v15;
+      v65 = authCopy;
       v28 = v27;
       SecAccessControlSetConstraints();
       v73 = 0;
       v68 = v28;
-      v29 = [v26 evaluateAccessControl:v28 aksOperation:v14 options:0 error:&v73];
+      v29 = [v26 evaluateAccessControl:v28 aksOperation:operationCopy options:0 error:&v73];
       v24 = v73;
-      v30 = [v24 userInfo];
-      v31 = [v30 objectForKeyedSubscript:*MEMORY[0x1E696EE38]];
+      userInfo = [v24 userInfo];
+      v31 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696EE38]];
 
       v66 = v31;
       if ([v24 code]== -1026)
@@ -143,15 +143,15 @@ LABEL_41:
         {
 
           v72 = 0;
-          v15 = v65;
-          v32 = [PTClassicMicro sign:v31 designatedKey:v71 extAuth:v65 seHandle:v16 seid:v17 error:&v72];
+          authCopy = v65;
+          v32 = [PTClassicMicro sign:v31 designatedKey:v71 extAuth:v65 seHandle:handleCopy seid:seidCopy error:&v72];
           v33 = v72;
           v34 = v32;
           v24 = v33;
           if (!v34 || v33)
           {
             v21 = v64;
-            if (!a8)
+            if (!error)
             {
               v37 = 0;
               v53 = v66;
@@ -164,7 +164,7 @@ LABEL_41:
             v59 = SESCreateAndLogError();
             v39 = v57;
             v37 = 0;
-            *a8 = v59;
+            *error = v59;
           }
 
           else
@@ -188,15 +188,15 @@ LABEL_36:
         }
       }
 
-      v15 = v65;
-      if (a8)
+      authCopy = v65;
+      if (error)
       {
         v54 = SESDefaultLogObject();
         v55 = *MEMORY[0x1E69E5148];
         v56 = SESCreateAndLogError();
         v34 = v54;
         v37 = 0;
-        *a8 = v56;
+        *error = v56;
         v53 = v31;
         v21 = v64;
         goto LABEL_36;
@@ -213,12 +213,12 @@ LABEL_37:
     goto LABEL_38;
   }
 
-  if (a8)
+  if (error)
   {
     v40 = SESDefaultLogObject();
     v41 = *MEMORY[0x1E69E5148];
-    v62 = [v13 asHexString];
-    *a8 = SESCreateAndLogError();
+    asHexString = [lCopy asHexString];
+    *error = SESCreateAndLogError();
   }
 
   v37 = 0;
@@ -229,13 +229,13 @@ LABEL_42:
   return v37;
 }
 
-+ (id)findDesignatedKey:(void *)a3 error:
++ (id)findDesignatedKey:(void *)key error:
 {
   v40 = *MEMORY[0x1E69E9840];
   v4 = a2;
   objc_opt_self();
-  v5 = [v4 ses_sha256];
-  v6 = [v5 subdataWithRange:{0, 16}];
+  ses_sha256 = [v4 ses_sha256];
+  v6 = [ses_sha256 subdataWithRange:{0, 16}];
 
   v36 = 0;
   v7 = SESKeyGetDesignatedKeys();
@@ -243,11 +243,11 @@ LABEL_42:
   v9 = v8;
   if (v8)
   {
-    if (a3)
+    if (key)
     {
       v10 = v8;
       v11 = 0;
-      *a3 = v9;
+      *key = v9;
     }
 
     else
@@ -269,7 +269,7 @@ LABEL_42:
     {
       v25 = v12;
       v26 = v7;
-      v27 = a3;
+      keyCopy = key;
       v28 = v6;
       v29 = v4;
       v32 = 0u;
@@ -310,12 +310,12 @@ LABEL_42:
       v6 = v28;
       v4 = v29;
       v7 = v26;
-      if (v27)
+      if (keyCopy)
       {
         v20 = SESDefaultLogObject();
         v21 = *MEMORY[0x1E69E5148];
-        v24 = [v25 asHexString];
-        *v27 = SESCreateAndLogError();
+        asHexString = [v25 asHexString];
+        *keyCopy = SESCreateAndLogError();
       }
     }
   }

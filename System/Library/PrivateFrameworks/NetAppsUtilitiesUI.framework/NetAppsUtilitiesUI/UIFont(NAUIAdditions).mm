@@ -8,8 +8,8 @@
 + (id)naui_ultraLightMonospacedFontOfSize:()NAUIAdditions
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  UIFontForLanguage = CTFontCreateUIFontForLanguage(kCTFontMenuTitleFontType|0x80, a1, 0);
-  v2 = [(__CTFont *)UIFontForLanguage fontDescriptor];
+  UIFontForLanguage = CTFontCreateUIFontForLanguage(kCTFontMenuTitleFontType|0x80, self, 0);
+  fontDescriptor = [(__CTFont *)UIFontForLanguage fontDescriptor];
   v17 = *MEMORY[0x277D74338];
   v4 = *MEMORY[0x277D74388];
   v14[0] = *MEMORY[0x277D74398];
@@ -28,7 +28,7 @@
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:2];
   v18[0] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
-  v9 = [v2 fontDescriptorByAddingAttributes:v8];
+  v9 = [fontDescriptor fontDescriptorByAddingAttributes:v8];
 
   v10 = [MEMORY[0x277D74300] fontWithDescriptor:v9 size:0.0];
 
@@ -37,15 +37,15 @@
 
 - (NAUITextStyleDescriptor)naui_dynamicFontTextStyleDescriptor
 {
-  v2 = [a1 fontDescriptor];
-  v3 = [v2 fontAttributes];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277D74378]];
+  fontDescriptor = [self fontDescriptor];
+  fontAttributes = [fontDescriptor fontAttributes];
+  v4 = [fontAttributes objectForKeyedSubscript:*MEMORY[0x277D74378]];
 
   if (v4)
   {
     v5 = [NAUITextStyleDescriptor alloc];
-    v6 = [a1 fontDescriptor];
-    v7 = -[NAUITextStyleDescriptor initWithTextStyle:symbolicTraits:allowsAccessibilitySizes:allowsSmallSizes:](v5, "initWithTextStyle:symbolicTraits:allowsAccessibilitySizes:allowsSmallSizes:", v4, [v6 symbolicTraits], 1, 1);
+    fontDescriptor2 = [self fontDescriptor];
+    v7 = -[NAUITextStyleDescriptor initWithTextStyle:symbolicTraits:allowsAccessibilitySizes:allowsSmallSizes:](v5, "initWithTextStyle:symbolicTraits:allowsAccessibilitySizes:allowsSmallSizes:", v4, [fontDescriptor2 symbolicTraits], 1, 1);
   }
 
   else

@@ -1,12 +1,12 @@
 @interface PXCMMEngineDrivenLayout
 + (id)_additionalTileKinds;
-- (BOOL)_getAdditionalTileIdentifierForEditorial:(PXTileIdentifier *)a3 group:(unint64_t *)a4 layoutGeometryKind:(int64_t)a5 indexPath:(PXSimpleIndexPath *)a6;
-- (BOOL)_getAdditionalTileIdentifierForGrid:(PXTileIdentifier *)a3 group:(unint64_t *)a4 layoutGeometryKind:(int64_t)a5 indexPath:(PXSimpleIndexPath *)a6;
-- (BOOL)_getAssetStatusTileIdentifier:(PXTileIdentifier *)a3 outGeometry:(PXTileGeometry *)a4 group:(unint64_t *)a5 userData:(id *)a6 forContentTileGeometry:(const PXTileGeometry *)a7 indexPath:(PXSimpleIndexPath *)a8;
-- (BOOL)_getDuplicateTileIdentifier:(PXTileIdentifier *)a3 outGeometry:(PXTileGeometry *)a4 group:(unint64_t *)a5 userData:(id *)a6 forContentTileGeometry:(const PXTileGeometry *)a7 indexPath:(PXSimpleIndexPath *)a8;
-- (BOOL)getAdditionalAccessoryTileIdentifier:(PXTileIdentifier *)a3 outGeometry:(PXTileGeometry *)a4 group:(unint64_t *)a5 userData:(id *)a6 forTileKind:(unint64_t)a7 contentTileGeometry:(const PXTileGeometry *)a8 indexPath:(PXSimpleIndexPath *)a9;
-- (BOOL)getAdditionalTileIdentifier:(PXTileIdentifier *)a3 group:(unint64_t *)a4 layoutGeometryKind:(unint64_t)a5 indexPath:(PXSimpleIndexPath *)a6;
-- (BOOL)getGeometry:(PXTileGeometry *)a3 group:(unint64_t *)a4 userData:(id *)a5 forTileWithIdentifier:(PXTileIdentifier *)a6;
+- (BOOL)_getAdditionalTileIdentifierForEditorial:(PXTileIdentifier *)editorial group:(unint64_t *)group layoutGeometryKind:(int64_t)kind indexPath:(PXSimpleIndexPath *)path;
+- (BOOL)_getAdditionalTileIdentifierForGrid:(PXTileIdentifier *)grid group:(unint64_t *)group layoutGeometryKind:(int64_t)kind indexPath:(PXSimpleIndexPath *)path;
+- (BOOL)_getAssetStatusTileIdentifier:(PXTileIdentifier *)identifier outGeometry:(PXTileGeometry *)geometry group:(unint64_t *)group userData:(id *)data forContentTileGeometry:(const PXTileGeometry *)tileGeometry indexPath:(PXSimpleIndexPath *)path;
+- (BOOL)_getDuplicateTileIdentifier:(PXTileIdentifier *)identifier outGeometry:(PXTileGeometry *)geometry group:(unint64_t *)group userData:(id *)data forContentTileGeometry:(const PXTileGeometry *)tileGeometry indexPath:(PXSimpleIndexPath *)path;
+- (BOOL)getAdditionalAccessoryTileIdentifier:(PXTileIdentifier *)identifier outGeometry:(PXTileGeometry *)geometry group:(unint64_t *)group userData:(id *)data forTileKind:(unint64_t)kind contentTileGeometry:(const PXTileGeometry *)tileGeometry indexPath:(PXSimpleIndexPath *)path;
+- (BOOL)getAdditionalTileIdentifier:(PXTileIdentifier *)identifier group:(unint64_t *)group layoutGeometryKind:(unint64_t)kind indexPath:(PXSimpleIndexPath *)path;
+- (BOOL)getGeometry:(PXTileGeometry *)geometry group:(unint64_t *)group userData:(id *)data forTileWithIdentifier:(PXTileIdentifier *)identifier;
 - (BOOL)headerViewIsVisible;
 - (CGRect)_bannerFrame;
 - (CGRect)_headerFrame;
@@ -15,30 +15,30 @@
 - (CGRect)_statusFooterFrame;
 - (CGRect)contentBounds;
 - (CGSize)_preferredSelectionBadgeSize;
-- (PXCMMEngineDrivenLayout)initWithDataSource:(id)a3;
-- (PXCMMEngineDrivenLayout)initWithLayoutEngineSnapshot:(id)a3;
-- (PXCMMEngineDrivenLayout)initWithLayoutEngineSnapshot:(id)a3 configuration:(id)a4;
-- (PXTileIdentifier)_identifierForUniqueTileWithKind:(SEL)a3;
+- (PXCMMEngineDrivenLayout)initWithDataSource:(id)source;
+- (PXCMMEngineDrivenLayout)initWithLayoutEngineSnapshot:(id)snapshot;
+- (PXCMMEngineDrivenLayout)initWithLayoutEngineSnapshot:(id)snapshot configuration:(id)configuration;
+- (PXTileIdentifier)_identifierForUniqueTileWithKind:(SEL)kind;
 - (PXTileIdentifier)_placeholderTileIdentifier;
 - (UIEdgeInsets)reviewSafeAreaInsets;
-- (double)zPositionOffsetForKind:(unint64_t)a3;
-- (unint64_t)_editorialGeneratorGeometryKindForTileKind:(unint64_t)a3;
-- (unint64_t)_generatorGeometryKindForTileKind:(unint64_t)a3;
-- (unint64_t)_gridGeneratorGeometryKindForTileKind:(unint64_t)a3;
+- (double)zPositionOffsetForKind:(unint64_t)kind;
+- (unint64_t)_editorialGeneratorGeometryKindForTileKind:(unint64_t)kind;
+- (unint64_t)_generatorGeometryKindForTileKind:(unint64_t)kind;
+- (unint64_t)_gridGeneratorGeometryKindForTileKind:(unint64_t)kind;
 - (void)_invalidateAssetStatusBadgeTiles;
 - (void)_invalidateBanner;
 - (void)_invalidateHeader;
 - (void)_invalidateSectionHeaders;
 - (void)_invalidateStatusFooter;
-- (void)adjustGeometry:(PXTileGeometry *)a3 forAdditionalTileWithKind:(unint64_t)a4 indexPath:(PXSimpleIndexPath *)a5;
-- (void)enumerateTilesInRect:(CGRect)a3 withOptions:(id)a4 usingBlock:(id)a5;
-- (void)setFooterBottomInset:(double)a3;
-- (void)setHasFloatingBanner:(BOOL)a3;
-- (void)setHasFloatingSectionHeaders:(BOOL)a3;
-- (void)setHeaderFooterSideInset:(double)a3;
-- (void)setHeaderTopInset:(double)a3;
-- (void)setPlaceholderMode:(int64_t)a3;
-- (void)setVisibleOrigin:(CGPoint)a3;
+- (void)adjustGeometry:(PXTileGeometry *)geometry forAdditionalTileWithKind:(unint64_t)kind indexPath:(PXSimpleIndexPath *)path;
+- (void)enumerateTilesInRect:(CGRect)rect withOptions:(id)options usingBlock:(id)block;
+- (void)setFooterBottomInset:(double)inset;
+- (void)setHasFloatingBanner:(BOOL)banner;
+- (void)setHasFloatingSectionHeaders:(BOOL)headers;
+- (void)setHeaderFooterSideInset:(double)inset;
+- (void)setHeaderTopInset:(double)inset;
+- (void)setPlaceholderMode:(int64_t)mode;
+- (void)setVisibleOrigin:(CGPoint)origin;
 @end
 
 @implementation PXCMMEngineDrivenLayout
@@ -56,14 +56,14 @@
   return result;
 }
 
-- (void)adjustGeometry:(PXTileGeometry *)a3 forAdditionalTileWithKind:(unint64_t)a4 indexPath:(PXSimpleIndexPath *)a5
+- (void)adjustGeometry:(PXTileGeometry *)geometry forAdditionalTileWithKind:(unint64_t)kind indexPath:(PXSimpleIndexPath *)path
 {
-  v9 = [(PXCMMEngineDrivenLayout *)self layoutType];
-  if ((v9 - 2) >= 3)
+  layoutType = [(PXCMMEngineDrivenLayout *)self layoutType];
+  if ((layoutType - 2) >= 3)
   {
-    if (v9 == 1)
+    if (layoutType == 1)
     {
-      if (a4 != 1)
+      if (kind != 1)
       {
         return;
       }
@@ -71,19 +71,19 @@
       goto LABEL_5;
     }
 
-    if (v9)
+    if (layoutType)
     {
       return;
     }
   }
 
-  if (a4 != 2)
+  if (kind != 2)
   {
     return;
   }
 
 LABEL_5:
-  y = a3->frame.origin.y;
+  y = geometry->frame.origin.y;
   if ([(PXCMMEngineDrivenLayout *)self hasFloatingSectionHeaders])
   {
     [(PXTilingLayout *)self contentInset];
@@ -91,19 +91,19 @@ LABEL_5:
     [(PXTilingLayout *)self visibleOrigin];
     if (v12 + v13 > y)
     {
-      a3->zPosition = 40.0;
+      geometry->zPosition = 40.0;
       [(PXTilingLayout *)self contentInset];
       v15 = v14;
       [(PXTilingLayout *)self visibleOrigin];
       v17 = v15 + v16 - y;
-      a3->center.y = a3->center.y + v17;
-      a3->frame.origin.y = a3->frame.origin.y + v17;
-      v18 = [MEMORY[0x1E696AC88] px_indexPathForItem:0 inSection:a5->section + 1 withKind:a4];
-      v19 = [(PXEngineDrivenAssetsTilingLayout *)self layoutSnapshot];
-      v20 = v19;
-      if (v19)
+      geometry->center.y = geometry->center.y + v17;
+      geometry->frame.origin.y = geometry->frame.origin.y + v17;
+      v18 = [MEMORY[0x1E696AC88] px_indexPathForItem:0 inSection:path->section + 1 withKind:kind];
+      layoutSnapshot = [(PXEngineDrivenAssetsTilingLayout *)self layoutSnapshot];
+      v20 = layoutSnapshot;
+      if (layoutSnapshot)
       {
-        [v19 geometryForItem:v18];
+        [layoutSnapshot geometryForItem:v18];
       }
 
       [(PXTilingLayout *)self coordinateSpaceIdentifier];
@@ -112,37 +112,37 @@ LABEL_5:
   }
 }
 
-- (BOOL)_getAdditionalTileIdentifierForEditorial:(PXTileIdentifier *)a3 group:(unint64_t *)a4 layoutGeometryKind:(int64_t)a5 indexPath:(PXSimpleIndexPath *)a6
+- (BOOL)_getAdditionalTileIdentifierForEditorial:(PXTileIdentifier *)editorial group:(unint64_t *)group layoutGeometryKind:(int64_t)kind indexPath:(PXSimpleIndexPath *)path
 {
-  if (a5 != 1)
+  if (kind != 1)
   {
     PXAssertGetLog();
   }
 
-  v6 = *&a6->dataSourceIdentifier;
-  v7 = *&a6->item;
-  *&a3->length = xmmword_1A5380DB0;
-  *&a3->index[1] = v6;
-  *&a3->index[3] = v7;
-  *&a3->index[5] = 0u;
-  *&a3->index[7] = 0u;
-  a3->index[9] = 0;
-  *a4 = 42;
+  v6 = *&path->dataSourceIdentifier;
+  v7 = *&path->item;
+  *&editorial->length = xmmword_1A5380DB0;
+  *&editorial->index[1] = v6;
+  *&editorial->index[3] = v7;
+  *&editorial->index[5] = 0u;
+  *&editorial->index[7] = 0u;
+  editorial->index[9] = 0;
+  *group = 42;
   return 1;
 }
 
-- (BOOL)_getAdditionalTileIdentifierForGrid:(PXTileIdentifier *)a3 group:(unint64_t *)a4 layoutGeometryKind:(int64_t)a5 indexPath:(PXSimpleIndexPath *)a6
+- (BOOL)_getAdditionalTileIdentifierForGrid:(PXTileIdentifier *)grid group:(unint64_t *)group layoutGeometryKind:(int64_t)kind indexPath:(PXSimpleIndexPath *)path
 {
   v11 = *MEMORY[0x1E69E9840];
   v6 = 8439962;
-  if (a5 == 1)
+  if (kind == 1)
   {
     v7 = 0;
   }
 
   else
   {
-    if (a5 != 2)
+    if (kind != 2)
     {
       PXAssertGetLog();
     }
@@ -151,36 +151,36 @@ LABEL_5:
     v7 = 42;
   }
 
-  v8 = *&a6->dataSourceIdentifier;
-  v9 = *&a6->item;
-  a3->length = 5;
-  a3->index[0] = v6;
-  *&a3->index[1] = v8;
-  *&a3->index[3] = v9;
-  *&a3->index[5] = 0u;
-  *&a3->index[7] = 0u;
-  a3->index[9] = 0;
-  *a4 = v7;
+  v8 = *&path->dataSourceIdentifier;
+  v9 = *&path->item;
+  grid->length = 5;
+  grid->index[0] = v6;
+  *&grid->index[1] = v8;
+  *&grid->index[3] = v9;
+  *&grid->index[5] = 0u;
+  *&grid->index[7] = 0u;
+  grid->index[9] = 0;
+  *group = v7;
   return 1;
 }
 
-- (BOOL)getAdditionalTileIdentifier:(PXTileIdentifier *)a3 group:(unint64_t *)a4 layoutGeometryKind:(unint64_t)a5 indexPath:(PXSimpleIndexPath *)a6
+- (BOOL)getAdditionalTileIdentifier:(PXTileIdentifier *)identifier group:(unint64_t *)group layoutGeometryKind:(unint64_t)kind indexPath:(PXSimpleIndexPath *)path
 {
-  v11 = [(PXCMMEngineDrivenLayout *)self layoutType];
-  if ((v11 - 2) < 3 || v11 == 0)
+  layoutType = [(PXCMMEngineDrivenLayout *)self layoutType];
+  if ((layoutType - 2) < 3 || layoutType == 0)
   {
-    v13 = *&a6->item;
-    v16 = *&a6->dataSourceIdentifier;
+    v13 = *&path->item;
+    v16 = *&path->dataSourceIdentifier;
     v17 = v13;
-    return [(PXCMMEngineDrivenLayout *)self _getAdditionalTileIdentifierForGrid:a3 group:a4 layoutGeometryKind:a5 indexPath:&v16];
+    return [(PXCMMEngineDrivenLayout *)self _getAdditionalTileIdentifierForGrid:identifier group:group layoutGeometryKind:kind indexPath:&v16];
   }
 
-  else if (v11 == 1)
+  else if (layoutType == 1)
   {
-    v15 = *&a6->item;
-    v16 = *&a6->dataSourceIdentifier;
+    v15 = *&path->item;
+    v16 = *&path->dataSourceIdentifier;
     v17 = v15;
-    return [(PXCMMEngineDrivenLayout *)self _getAdditionalTileIdentifierForEditorial:a3 group:a4 layoutGeometryKind:a5 indexPath:&v16];
+    return [(PXCMMEngineDrivenLayout *)self _getAdditionalTileIdentifierForEditorial:identifier group:group layoutGeometryKind:kind indexPath:&v16];
   }
 
   else
@@ -189,14 +189,14 @@ LABEL_5:
   }
 }
 
-- (double)zPositionOffsetForKind:(unint64_t)a3
+- (double)zPositionOffsetForKind:(unint64_t)kind
 {
-  if (a3 == 8439952)
+  if (kind == 8439952)
   {
     return 35.0;
   }
 
-  if (a3 == 8439964)
+  if (kind == 8439964)
   {
     return 30.0;
   }
@@ -209,9 +209,9 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)_getAssetStatusTileIdentifier:(PXTileIdentifier *)a3 outGeometry:(PXTileGeometry *)a4 group:(unint64_t *)a5 userData:(id *)a6 forContentTileGeometry:(const PXTileGeometry *)a7 indexPath:(PXSimpleIndexPath *)a8
+- (BOOL)_getAssetStatusTileIdentifier:(PXTileIdentifier *)identifier outGeometry:(PXTileGeometry *)geometry group:(unint64_t *)group userData:(id *)data forContentTileGeometry:(const PXTileGeometry *)tileGeometry indexPath:(PXSimpleIndexPath *)path
 {
-  if (a7->hidden)
+  if (tileGeometry->hidden)
   {
     return 0;
   }
@@ -222,25 +222,25 @@ LABEL_5:
   v28 = v10;
   v29 = v8;
   v30 = v9;
-  v19 = [(PXEngineDrivenAssetsTilingLayout *)self delegate];
-  v20 = *&a8->item;
-  v24[0] = *&a8->dataSourceIdentifier;
+  delegate = [(PXEngineDrivenAssetsTilingLayout *)self delegate];
+  v20 = *&path->item;
+  v24[0] = *&path->dataSourceIdentifier;
   v24[1] = v20;
-  v21 = [v19 engineDrivenLayout:self shouldShowStatusBadgeAtIndexPath:v24];
+  v21 = [delegate engineDrivenLayout:self shouldShowStatusBadgeAtIndexPath:v24];
 
   if (v21)
   {
-    v22 = *&a8->dataSourceIdentifier;
-    v23 = *&a8->item;
-    *&a3->length = xmmword_1A5380DC0;
-    *&a3->index[1] = v22;
-    *&a3->index[3] = v23;
-    *&a3->index[5] = 0u;
-    *&a3->index[7] = 0u;
-    a3->index[9] = 0;
+    v22 = *&path->dataSourceIdentifier;
+    v23 = *&path->item;
+    *&identifier->length = xmmword_1A5380DC0;
+    *&identifier->index[1] = v22;
+    *&identifier->index[3] = v23;
+    *&identifier->index[5] = 0u;
+    *&identifier->index[7] = 0u;
+    identifier->index[9] = 0;
     [(PXCMMEngineDrivenLayout *)self _preferredSelectionBadgeSize];
-    CGRectGetMaxX(a7->frame);
-    CGRectGetMaxY(a7->frame);
+    CGRectGetMaxX(tileGeometry->frame);
+    CGRectGetMaxY(tileGeometry->frame);
     [(PXTilingLayout *)self coordinateSpaceIdentifier];
     PXRectGetCenter();
   }
@@ -248,9 +248,9 @@ LABEL_5:
   return 0;
 }
 
-- (BOOL)_getDuplicateTileIdentifier:(PXTileIdentifier *)a3 outGeometry:(PXTileGeometry *)a4 group:(unint64_t *)a5 userData:(id *)a6 forContentTileGeometry:(const PXTileGeometry *)a7 indexPath:(PXSimpleIndexPath *)a8
+- (BOOL)_getDuplicateTileIdentifier:(PXTileIdentifier *)identifier outGeometry:(PXTileGeometry *)geometry group:(unint64_t *)group userData:(id *)data forContentTileGeometry:(const PXTileGeometry *)tileGeometry indexPath:(PXSimpleIndexPath *)path
 {
-  if (a7->hidden)
+  if (tileGeometry->hidden)
   {
     return 0;
   }
@@ -259,78 +259,78 @@ LABEL_5:
   v38 = v10;
   v39 = v8;
   v40 = v9;
-  v20 = [(PXEngineDrivenAssetsTilingLayout *)self delegate];
-  v21 = *&a8->item;
-  v36[0] = *&a8->dataSourceIdentifier;
+  delegate = [(PXEngineDrivenAssetsTilingLayout *)self delegate];
+  v21 = *&path->item;
+  v36[0] = *&path->dataSourceIdentifier;
   v36[1] = v21;
-  v22 = [v20 engineDrivenLayout:self shouldShowDimmingOverlayAtIndexPath:v36];
+  v22 = [delegate engineDrivenLayout:self shouldShowDimmingOverlayAtIndexPath:v36];
 
   if (!v22)
   {
     return 0;
   }
 
-  v23 = *&a8->dataSourceIdentifier;
-  v24 = *&a8->item;
-  *&a3->length = xmmword_1A5380DD0;
-  *&a3->index[1] = v23;
-  *&a3->index[3] = v24;
-  *&a3->index[5] = 0u;
-  *&a3->index[7] = 0u;
-  a3->index[9] = 0;
-  origin = a7->frame.origin;
-  size = a7->frame.size;
-  v27 = a7->size;
-  a4->center = a7->center;
-  a4->size = v27;
-  a4->frame.origin = origin;
-  a4->frame.size = size;
-  v28 = *&a7->transform.a;
-  v29 = *&a7->transform.c;
-  v30 = *&a7->alpha;
-  *&a4->transform.tx = *&a7->transform.tx;
-  *&a4->alpha = v30;
-  *&a4->transform.a = v28;
-  *&a4->transform.c = v29;
-  v31 = *&a7->hidden;
-  v32 = *&a7->contentSize.height;
-  v33 = *&a7->contentsRect.size.height;
-  *&a4->contentsRect.origin.y = *&a7->contentsRect.origin.y;
-  *&a4->contentsRect.size.height = v33;
-  *&a4->hidden = v31;
-  *&a4->contentSize.height = v32;
-  zPosition = a7->zPosition;
+  v23 = *&path->dataSourceIdentifier;
+  v24 = *&path->item;
+  *&identifier->length = xmmword_1A5380DD0;
+  *&identifier->index[1] = v23;
+  *&identifier->index[3] = v24;
+  *&identifier->index[5] = 0u;
+  *&identifier->index[7] = 0u;
+  identifier->index[9] = 0;
+  origin = tileGeometry->frame.origin;
+  size = tileGeometry->frame.size;
+  v27 = tileGeometry->size;
+  geometry->center = tileGeometry->center;
+  geometry->size = v27;
+  geometry->frame.origin = origin;
+  geometry->frame.size = size;
+  v28 = *&tileGeometry->transform.a;
+  v29 = *&tileGeometry->transform.c;
+  v30 = *&tileGeometry->alpha;
+  *&geometry->transform.tx = *&tileGeometry->transform.tx;
+  *&geometry->alpha = v30;
+  *&geometry->transform.a = v28;
+  *&geometry->transform.c = v29;
+  v31 = *&tileGeometry->hidden;
+  v32 = *&tileGeometry->contentSize.height;
+  v33 = *&tileGeometry->contentsRect.size.height;
+  *&geometry->contentsRect.origin.y = *&tileGeometry->contentsRect.origin.y;
+  *&geometry->contentsRect.size.height = v33;
+  *&geometry->hidden = v31;
+  *&geometry->contentSize.height = v32;
+  zPosition = tileGeometry->zPosition;
   [(PXCMMEngineDrivenLayout *)self zPositionOffsetForKind:8439952];
-  a4->zPosition = zPosition + v35;
-  if (a5)
+  geometry->zPosition = zPosition + v35;
+  if (group)
   {
-    *a5 = 0;
+    *group = 0;
   }
 
-  if (a6)
+  if (data)
   {
-    *a6 = 0;
+    *data = 0;
   }
 
   return 1;
 }
 
-- (BOOL)getAdditionalAccessoryTileIdentifier:(PXTileIdentifier *)a3 outGeometry:(PXTileGeometry *)a4 group:(unint64_t *)a5 userData:(id *)a6 forTileKind:(unint64_t)a7 contentTileGeometry:(const PXTileGeometry *)a8 indexPath:(PXSimpleIndexPath *)a9
+- (BOOL)getAdditionalAccessoryTileIdentifier:(PXTileIdentifier *)identifier outGeometry:(PXTileGeometry *)geometry group:(unint64_t *)group userData:(id *)data forTileKind:(unint64_t)kind contentTileGeometry:(const PXTileGeometry *)tileGeometry indexPath:(PXSimpleIndexPath *)path
 {
-  if (a7 == 8439964)
+  if (kind == 8439964)
   {
-    v11 = *&a9->item;
-    v12 = *&a9->dataSourceIdentifier;
+    v11 = *&path->item;
+    v12 = *&path->dataSourceIdentifier;
     v13 = v11;
-    return [(PXCMMEngineDrivenLayout *)self _getAssetStatusTileIdentifier:a3 outGeometry:a4 group:a5 userData:a6 forContentTileGeometry:a8 indexPath:&v12];
+    return [(PXCMMEngineDrivenLayout *)self _getAssetStatusTileIdentifier:identifier outGeometry:geometry group:group userData:data forContentTileGeometry:tileGeometry indexPath:&v12];
   }
 
-  else if (a7 == 8439952)
+  else if (kind == 8439952)
   {
-    v9 = *&a9->item;
-    v12 = *&a9->dataSourceIdentifier;
+    v9 = *&path->item;
+    v12 = *&path->dataSourceIdentifier;
     v13 = v9;
-    return [(PXCMMEngineDrivenLayout *)self _getDuplicateTileIdentifier:a3 outGeometry:a4 group:a5 userData:a6 forContentTileGeometry:a8 indexPath:&v12];
+    return [(PXCMMEngineDrivenLayout *)self _getDuplicateTileIdentifier:identifier outGeometry:geometry group:group userData:data forContentTileGeometry:tileGeometry indexPath:&v12];
   }
 
   else
@@ -347,10 +347,10 @@ LABEL_5:
   return result;
 }
 
-- (unint64_t)_editorialGeneratorGeometryKindForTileKind:(unint64_t)a3
+- (unint64_t)_editorialGeneratorGeometryKindForTileKind:(unint64_t)kind
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (a3 == 8439963)
+  if (kind == 8439963)
   {
     return 1;
   }
@@ -359,22 +359,22 @@ LABEL_5:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v6 = 134217984;
-    v7 = a3;
+    kindCopy = kind;
     _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_ERROR, "Unrecognized grid geometry tile kind: %lu", &v6, 0xCu);
   }
 
   return -1;
 }
 
-- (unint64_t)_gridGeneratorGeometryKindForTileKind:(unint64_t)a3
+- (unint64_t)_gridGeneratorGeometryKindForTileKind:(unint64_t)kind
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (a3 == 8439963)
+  if (kind == 8439963)
   {
     return 2;
   }
 
-  if (a3 == 8439962)
+  if (kind == 8439962)
   {
     return 1;
   }
@@ -383,26 +383,26 @@ LABEL_5:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v6 = 134217984;
-    v7 = a3;
+    kindCopy = kind;
     _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_ERROR, "Unrecognized grid geometry tile kind: %lu", &v6, 0xCu);
   }
 
   return -1;
 }
 
-- (unint64_t)_generatorGeometryKindForTileKind:(unint64_t)a3
+- (unint64_t)_generatorGeometryKindForTileKind:(unint64_t)kind
 {
-  v5 = [(PXCMMEngineDrivenLayout *)self layoutType];
-  if ((v5 - 2) < 3 || v5 == 0)
+  layoutType = [(PXCMMEngineDrivenLayout *)self layoutType];
+  if ((layoutType - 2) < 3 || layoutType == 0)
   {
 
-    return [(PXCMMEngineDrivenLayout *)self _gridGeneratorGeometryKindForTileKind:a3];
+    return [(PXCMMEngineDrivenLayout *)self _gridGeneratorGeometryKindForTileKind:kind];
   }
 
-  else if (v5 == 1)
+  else if (layoutType == 1)
   {
 
-    return [(PXCMMEngineDrivenLayout *)self _editorialGeneratorGeometryKindForTileKind:a3];
+    return [(PXCMMEngineDrivenLayout *)self _editorialGeneratorGeometryKindForTileKind:kind];
   }
 
   else
@@ -411,14 +411,14 @@ LABEL_5:
   }
 }
 
-- (void)enumerateTilesInRect:(CGRect)a3 withOptions:(id)a4 usingBlock:(id)a5
+- (void)enumerateTilesInRect:(CGRect)rect withOptions:(id)options usingBlock:(id)block
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
-  v12 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  optionsCopy = options;
+  blockCopy = block;
   v100 = 0;
   [(PXCMMEngineDrivenLayout *)self _headerFrame];
   v105.origin.x = v13;
@@ -469,7 +469,7 @@ LABEL_5:
   v63 = v82;
   if ([(PXCMMEngineDrivenLayout *)self getGeometry:&v88 group:&v87 userData:&v80 forTileWithIdentifier:&v62])
   {
-    v23 = v12[2];
+    v23 = blockCopy[2];
     v76 = v83;
     v77 = v84;
     v78 = v85;
@@ -488,7 +488,7 @@ LABEL_5:
     v63 = v89;
     v64 = v90;
     v65 = v91;
-    v23(v12, &v74, &v62, v87, v80, &v100);
+    v23(blockCopy, &v74, &v62, v87, v80, &v100);
   }
 
   if ((v100 & 1) == 0)
@@ -540,7 +540,7 @@ LABEL_5:
       v63 = v82;
       if ([(PXCMMEngineDrivenLayout *)self getGeometry:&v88 group:&v87 userData:&v61 forTileWithIdentifier:&v62])
       {
-        v34 = v12[2];
+        v34 = blockCopy[2];
         v76 = v83;
         v77 = v84;
         v78 = v85;
@@ -559,7 +559,7 @@ LABEL_5:
         v63 = v89;
         v64 = v90;
         v65 = v91;
-        v34(v12, &v74, &v62, v87, v61, &v100);
+        v34(blockCopy, &v74, &v62, v87, v61, &v100);
       }
     }
   }
@@ -612,7 +612,7 @@ LABEL_5:
       v63 = v82;
       if ([(PXCMMEngineDrivenLayout *)self getGeometry:&v88 group:&v87 userData:&v60 forTileWithIdentifier:&v62])
       {
-        v45 = v12[2];
+        v45 = blockCopy[2];
         v76 = v83;
         v77 = v84;
         v78 = v85;
@@ -631,15 +631,15 @@ LABEL_5:
         v63 = v89;
         v64 = v90;
         v65 = v91;
-        v45(v12, &v74, &v62, v87, v60, &v100);
+        v45(blockCopy, &v74, &v62, v87, v60, &v100);
       }
     }
   }
 
-  v46 = [(PXCMMEngineDrivenLayout *)self placeholderMode];
+  placeholderMode = [(PXCMMEngineDrivenLayout *)self placeholderMode];
   if ((v100 & 1) == 0)
   {
-    if (v46)
+    if (placeholderMode)
     {
       [(PXCMMEngineDrivenLayout *)self _placeholderFrame];
       v108.origin.x = v47;
@@ -687,7 +687,7 @@ LABEL_5:
         v63 = v82;
         if ([(PXCMMEngineDrivenLayout *)self getGeometry:&v88 group:&v87 userData:&v59 forTileWithIdentifier:&v62])
         {
-          v57 = v12[2];
+          v57 = blockCopy[2];
           v76 = v83;
           v77 = v84;
           v78 = v85;
@@ -706,7 +706,7 @@ LABEL_5:
           v63 = v89;
           v64 = v90;
           v65 = v91;
-          v57(v12, &v74, &v62, v87, v59, &v100);
+          v57(blockCopy, &v74, &v62, v87, v59, &v100);
         }
       }
     }
@@ -716,13 +716,13 @@ LABEL_5:
   {
     v58.receiver = self;
     v58.super_class = PXCMMEngineDrivenLayout;
-    [(PXEngineDrivenAssetsTilingLayout *)&v58 enumerateTilesInRect:v11 withOptions:v12 usingBlock:x, y, width, height];
+    [(PXEngineDrivenAssetsTilingLayout *)&v58 enumerateTilesInRect:optionsCopy withOptions:blockCopy usingBlock:x, y, width, height];
   }
 }
 
-- (BOOL)getGeometry:(PXTileGeometry *)a3 group:(unint64_t *)a4 userData:(id *)a5 forTileWithIdentifier:(PXTileIdentifier *)a6
+- (BOOL)getGeometry:(PXTileGeometry *)geometry group:(unint64_t *)group userData:(id *)data forTileWithIdentifier:(PXTileIdentifier *)identifier
 {
-  length = a6->length;
+  length = identifier->length;
   v12 = *(off_1E7722248 + 9);
   v67 = *(off_1E7722248 + 8);
   v68 = v12;
@@ -746,20 +746,20 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  v18 = a6->index[1];
+  v18 = identifier->index[1];
   if (v18 == 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_3;
   }
 
-  v23 = a6->index[0];
-  v24 = [objc_opt_class() _additionalTileKinds];
-  if ([v24 containsIndex:v23])
+  v23 = identifier->index[0];
+  _additionalTileKinds = [objc_opt_class() _additionalTileKinds];
+  if ([_additionalTileKinds containsIndex:v23])
   {
-    v25 = [(PXEngineDrivenAssetsTilingLayout *)self dataSource];
-    v26 = [v25 identifier];
+    dataSource = [(PXEngineDrivenAssetsTilingLayout *)self dataSource];
+    identifier = [dataSource identifier];
 
-    if (v18 == v26)
+    if (v18 == identifier)
     {
       if (v23 == 8439963)
       {
@@ -771,7 +771,7 @@ LABEL_5:
         v27 = 0;
       }
 
-      v28 = [(PXCMMEngineDrivenLayout *)self _generatorGeometryKindForTileKind:v23, a6->index[3], a6->index[4], a6->index[1], a6->index[2]];
+      v28 = [(PXCMMEngineDrivenLayout *)self _generatorGeometryKindForTileKind:v23, identifier->index[3], identifier->index[4], identifier->index[1], identifier->index[2]];
       v29 = [MEMORY[0x1E696AC88] px_indexPathForItem:v46 inSection:v47 withKind:v28];
       v58 = 0;
       v56 = 0u;
@@ -783,11 +783,11 @@ LABEL_5:
       v50 = 0u;
       v51 = 0u;
       v49 = 0u;
-      v30 = [(PXEngineDrivenAssetsTilingLayout *)self layoutSnapshot];
-      v31 = v30;
-      if (v30)
+      layoutSnapshot = [(PXEngineDrivenAssetsTilingLayout *)self layoutSnapshot];
+      v31 = layoutSnapshot;
+      if (layoutSnapshot)
       {
-        [v30 geometryForItem:v29];
+        [layoutSnapshot geometryForItem:v29];
       }
 
       else
@@ -811,7 +811,7 @@ LABEL_5:
         PXRectWithCenterAndSize();
       }
 
-      if (!a3)
+      if (!geometry)
       {
         goto LABEL_38;
       }
@@ -833,10 +833,10 @@ LABEL_5:
         goto LABEL_3;
       }
 
-      v34 = [(PXEngineDrivenAssetsTilingLayout *)self dataSource];
-      v35 = [v34 identifier];
+      dataSource2 = [(PXEngineDrivenAssetsTilingLayout *)self dataSource];
+      identifier2 = [dataSource2 identifier];
 
-      if (v18 != v35)
+      if (v18 != identifier2)
       {
         goto LABEL_3;
       }
@@ -850,10 +850,10 @@ LABEL_5:
       goto LABEL_31;
     }
 
-    v38 = [(PXEngineDrivenAssetsTilingLayout *)self dataSource];
-    v39 = [v38 identifier];
+    dataSource3 = [(PXEngineDrivenAssetsTilingLayout *)self dataSource];
+    identifier3 = [dataSource3 identifier];
 
-    if (v18 == v39)
+    if (v18 == identifier3)
     {
       if (self->_statusFooterHeight > 0.0)
       {
@@ -868,7 +868,7 @@ LABEL_30:
 LABEL_31:
       v27 = 0;
       v21 = 0;
-      if (!a3)
+      if (!geometry)
       {
         goto LABEL_38;
       }
@@ -879,23 +879,23 @@ LABEL_31:
 LABEL_3:
     v48.receiver = self;
     v48.super_class = PXCMMEngineDrivenLayout;
-    v19 = *&a6->index[5];
-    v51 = *&a6->index[3];
+    v19 = *&identifier->index[5];
+    v51 = *&identifier->index[3];
     v52 = v19;
-    v53 = *&a6->index[7];
-    *&v54 = a6->index[9];
-    v20 = *&a6->index[1];
-    v49 = *&a6->length;
+    v53 = *&identifier->index[7];
+    *&v54 = identifier->index[9];
+    v20 = *&identifier->index[1];
+    v49 = *&identifier->length;
     v50 = v20;
-    return [(PXEngineDrivenAssetsTilingLayout *)&v48 getGeometry:a3 group:a4 userData:a5 forTileWithIdentifier:&v49];
+    return [(PXEngineDrivenAssetsTilingLayout *)&v48 getGeometry:geometry group:group userData:data forTileWithIdentifier:&v49];
   }
 
   if (v23 == 8439980)
   {
-    v36 = [(PXEngineDrivenAssetsTilingLayout *)self dataSource];
-    v37 = [v36 identifier];
+    dataSource4 = [(PXEngineDrivenAssetsTilingLayout *)self dataSource];
+    identifier4 = [dataSource4 identifier];
 
-    if (v18 == v37)
+    if (v18 == identifier4)
     {
       if (self->_headerHeight > 0.0)
       {
@@ -914,10 +914,10 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v32 = [(PXEngineDrivenAssetsTilingLayout *)self dataSource];
-  v33 = [v32 identifier];
+  dataSource5 = [(PXEngineDrivenAssetsTilingLayout *)self dataSource];
+  identifier5 = [dataSource5 identifier];
 
-  if (v18 != v33)
+  if (v18 != identifier5)
   {
     goto LABEL_3;
   }
@@ -933,39 +933,39 @@ LABEL_3:
 
   v21 = 0;
   v27 = 41;
-  if (!a3)
+  if (!geometry)
   {
     goto LABEL_38;
   }
 
 LABEL_37:
   v40 = v68;
-  *&a3->hidden = v67;
-  *&a3->contentSize.height = v40;
+  *&geometry->hidden = v67;
+  *&geometry->contentSize.height = v40;
   v41 = v70;
-  *&a3->contentsRect.origin.y = v69;
-  *&a3->contentsRect.size.height = v41;
+  *&geometry->contentsRect.origin.y = v69;
+  *&geometry->contentsRect.size.height = v41;
   v42 = v64;
-  *&a3->transform.a = v63;
-  *&a3->transform.c = v42;
+  *&geometry->transform.a = v63;
+  *&geometry->transform.c = v42;
   v43 = v66;
-  *&a3->transform.tx = v65;
-  *&a3->alpha = v43;
+  *&geometry->transform.tx = v65;
+  *&geometry->alpha = v43;
   v44 = v60;
-  a3->frame.origin = v59;
-  a3->frame.size = v44;
+  geometry->frame.origin = v59;
+  geometry->frame.size = v44;
   v45 = v62;
-  a3->center = v61;
-  a3->size = v45;
+  geometry->center = v61;
+  geometry->size = v45;
 LABEL_38:
-  if (a4)
+  if (group)
   {
-    *a4 = v27;
+    *group = v27;
   }
 
-  if (a5)
+  if (data)
   {
-    *a5 = 0;
+    *data = 0;
   }
 
   return v21;
@@ -1032,11 +1032,11 @@ LABEL_38:
   {
     v7 = [(PXCMMEngineDrivenLayout *)self _generatorGeometryKindForTileKind:8439963];
     v8 = [MEMORY[0x1E696AC88] px_indexPathForItem:0 inSection:0 withKind:v7];
-    v9 = [(PXEngineDrivenAssetsTilingLayout *)self layoutSnapshot];
-    v10 = v9;
-    if (v9)
+    layoutSnapshot = [(PXEngineDrivenAssetsTilingLayout *)self layoutSnapshot];
+    v10 = layoutSnapshot;
+    if (layoutSnapshot)
     {
-      [v9 geometryForItem:v8];
+      [layoutSnapshot geometryForItem:v8];
     }
 
     PXRectWithCenterAndSize();
@@ -1055,13 +1055,13 @@ LABEL_38:
 
 - (PXTileIdentifier)_placeholderTileIdentifier
 {
-  v5 = [(PXCMMEngineDrivenLayout *)self placeholderMode];
-  if ((v5 - 1) >= 2)
+  placeholderMode = [(PXCMMEngineDrivenLayout *)self placeholderMode];
+  if ((placeholderMode - 1) >= 2)
   {
-    if (!v5)
+    if (!placeholderMode)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a3 object:self file:@"PXCMMEngineDrivenLayout.m" lineNumber:312 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a3 object:self file:@"PXCMMEngineDrivenLayout.m" lineNumber:312 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
@@ -1173,17 +1173,17 @@ LABEL_38:
   return result;
 }
 
-- (PXTileIdentifier)_identifierForUniqueTileWithKind:(SEL)a3
+- (PXTileIdentifier)_identifierForUniqueTileWithKind:(SEL)kind
 {
-  v6 = [(PXEngineDrivenAssetsTilingLayout *)self dataSource];
-  v7 = [v6 identifier];
+  dataSource = [(PXEngineDrivenAssetsTilingLayout *)self dataSource];
+  identifier = [dataSource identifier];
 
   retstr->index[9] = 0;
   *&retstr->index[5] = 0u;
   *&retstr->index[7] = 0u;
   retstr->length = 5;
   retstr->index[0] = a4;
-  retstr->index[1] = v7;
+  retstr->index[1] = identifier;
   retstr->index[2] = 0;
   retstr->index[3] = 0;
   retstr->index[4] = 0x7FFFFFFFFFFFFFFFLL;
@@ -1229,11 +1229,11 @@ LABEL_38:
   [(PXTilingLayout *)self invalidateLayoutWithContext:v3];
 }
 
-- (void)setHeaderFooterSideInset:(double)a3
+- (void)setHeaderFooterSideInset:(double)inset
 {
-  if (self->_headerFooterSideInset != a3)
+  if (self->_headerFooterSideInset != inset)
   {
-    self->_headerFooterSideInset = a3;
+    self->_headerFooterSideInset = inset;
     [(PXCMMEngineDrivenLayout *)self _invalidateHeader];
     [(PXCMMEngineDrivenLayout *)self _invalidateBanner];
 
@@ -1241,20 +1241,20 @@ LABEL_38:
   }
 }
 
-- (void)setFooterBottomInset:(double)a3
+- (void)setFooterBottomInset:(double)inset
 {
-  if (self->_footerBottomInset != a3)
+  if (self->_footerBottomInset != inset)
   {
-    self->_footerBottomInset = a3;
+    self->_footerBottomInset = inset;
     [(PXCMMEngineDrivenLayout *)self _invalidateStatusFooter];
   }
 }
 
-- (void)setHeaderTopInset:(double)a3
+- (void)setHeaderTopInset:(double)inset
 {
-  if (self->_headerTopInset != a3)
+  if (self->_headerTopInset != inset)
   {
-    self->_headerTopInset = a3;
+    self->_headerTopInset = inset;
     [(PXCMMEngineDrivenLayout *)self _invalidateHeader];
     [(PXCMMEngineDrivenLayout *)self _invalidateBanner];
 
@@ -1262,20 +1262,20 @@ LABEL_38:
   }
 }
 
-- (void)setHasFloatingSectionHeaders:(BOOL)a3
+- (void)setHasFloatingSectionHeaders:(BOOL)headers
 {
-  if (self->_hasFloatingSectionHeaders != a3)
+  if (self->_hasFloatingSectionHeaders != headers)
   {
-    self->_hasFloatingSectionHeaders = a3;
+    self->_hasFloatingSectionHeaders = headers;
     [(PXCMMEngineDrivenLayout *)self _invalidateSectionHeaders];
   }
 }
 
-- (void)setHasFloatingBanner:(BOOL)a3
+- (void)setHasFloatingBanner:(BOOL)banner
 {
-  if (self->_hasFloatingBanner != a3)
+  if (self->_hasFloatingBanner != banner)
   {
-    self->_hasFloatingBanner = a3;
+    self->_hasFloatingBanner = banner;
     [(PXCMMEngineDrivenLayout *)self _invalidateBanner];
   }
 }
@@ -1287,11 +1287,11 @@ LABEL_38:
   PXEdgeInsetsInsetRect();
 }
 
-- (void)setVisibleOrigin:(CGPoint)a3
+- (void)setVisibleOrigin:(CGPoint)origin
 {
   v4.receiver = self;
   v4.super_class = PXCMMEngineDrivenLayout;
-  [(PXTilingLayout *)&v4 setVisibleOrigin:a3.x, a3.y];
+  [(PXTilingLayout *)&v4 setVisibleOrigin:origin.x, origin.y];
   if ([(PXCMMEngineDrivenLayout *)self hasFloatingSectionHeaders])
   {
     [(PXCMMEngineDrivenLayout *)self _invalidateSectionHeaders];
@@ -1305,11 +1305,11 @@ LABEL_38:
 
 - (CGRect)contentBounds
 {
-  v3 = [(PXEngineDrivenAssetsTilingLayout *)self layoutSnapshot];
-  v4 = v3;
-  if (v3)
+  layoutSnapshot = [(PXEngineDrivenAssetsTilingLayout *)self layoutSnapshot];
+  v4 = layoutSnapshot;
+  if (layoutSnapshot)
   {
-    [v3 contentRect];
+    [layoutSnapshot contentRect];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -1346,11 +1346,11 @@ LABEL_38:
   return result;
 }
 
-- (void)setPlaceholderMode:(int64_t)a3
+- (void)setPlaceholderMode:(int64_t)mode
 {
-  if (self->_placeholderMode != a3)
+  if (self->_placeholderMode != mode)
   {
-    self->_placeholderMode = a3;
+    self->_placeholderMode = mode;
     v5 = objc_alloc_init(PXTilingLayoutInvalidationContext);
     [(PXTilingLayoutInvalidationContext *)v5 invalidateAllTiles];
     [(PXTilingLayoutInvalidationContext *)v5 invalidateContentBounds];
@@ -1358,20 +1358,20 @@ LABEL_38:
   }
 }
 
-- (PXCMMEngineDrivenLayout)initWithLayoutEngineSnapshot:(id)a3 configuration:(id)a4
+- (PXCMMEngineDrivenLayout)initWithLayoutEngineSnapshot:(id)snapshot configuration:(id)configuration
 {
-  v6 = a4;
+  configurationCopy = configuration;
   v18.receiver = self;
   v18.super_class = PXCMMEngineDrivenLayout;
-  v7 = [(PXEngineDrivenAssetsTilingLayout *)&v18 initWithLayoutEngineSnapshot:a3];
+  v7 = [(PXEngineDrivenAssetsTilingLayout *)&v18 initWithLayoutEngineSnapshot:snapshot];
   if (v7)
   {
-    v7->_layoutType = [v6 layoutType];
-    [v6 headerHeight];
+    v7->_layoutType = [configurationCopy layoutType];
+    [configurationCopy headerHeight];
     v7->_headerHeight = v8;
-    [v6 bannerHeight];
+    [configurationCopy bannerHeight];
     v7->_bannerHeight = v9;
-    [v6 statusFooterHeight];
+    [configurationCopy statusFooterHeight];
     v7->_statusFooterHeight = v10;
     v11 = objc_alloc_init(PXCMMAssetStatusBadgeTileUserData);
     copiedUserData = v7->__copiedUserData;
@@ -1383,30 +1383,30 @@ LABEL_38:
     v7->__failedUserData = v13;
 
     [(PXCMMAssetStatusBadgeTileUserData *)v7->__failedUserData setStatus:-1];
-    v15 = [MEMORY[0x1E696AD50] indexSet];
-    [v15 addIndex:8439952];
-    [v15 addIndex:8439964];
-    v16 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndexSet:v15];
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
+    [indexSet addIndex:8439952];
+    [indexSet addIndex:8439964];
+    v16 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndexSet:indexSet];
     [(PXAssetsTilingLayout *)v7 setAdditionalAccessoryTileKinds:v16];
   }
 
   return v7;
 }
 
-- (PXCMMEngineDrivenLayout)initWithDataSource:(id)a3
+- (PXCMMEngineDrivenLayout)initWithDataSource:(id)source
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXCMMEngineDrivenLayout.m" lineNumber:67 description:{@"%s is not available as initializer", "-[PXCMMEngineDrivenLayout initWithDataSource:]"}];
+  sourceCopy = source;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMEngineDrivenLayout.m" lineNumber:67 description:{@"%s is not available as initializer", "-[PXCMMEngineDrivenLayout initWithDataSource:]"}];
 
   abort();
 }
 
-- (PXCMMEngineDrivenLayout)initWithLayoutEngineSnapshot:(id)a3
+- (PXCMMEngineDrivenLayout)initWithLayoutEngineSnapshot:(id)snapshot
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXCMMEngineDrivenLayout.m" lineNumber:63 description:{@"%s is not available as initializer", "-[PXCMMEngineDrivenLayout initWithLayoutEngineSnapshot:]"}];
+  snapshotCopy = snapshot;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMEngineDrivenLayout.m" lineNumber:63 description:{@"%s is not available as initializer", "-[PXCMMEngineDrivenLayout initWithLayoutEngineSnapshot:]"}];
 
   abort();
 }

@@ -1,22 +1,22 @@
 @interface SCNMTLBufferAllocator
-- (SCNMTLBufferAllocator)initWithDevice:(id)a3 fixedSizeElement:(unint64_t)a4 buffersize:(unint64_t)a5 name:(id)a6;
+- (SCNMTLBufferAllocator)initWithDevice:(id)device fixedSizeElement:(unint64_t)element buffersize:(unint64_t)buffersize name:(id)name;
 - (id)_newSubBuffer;
-- (id)newSubBufferWithBytes:(const void *)a3 length:(unint64_t)a4 renderContext:(id)a5;
+- (id)newSubBufferWithBytes:(const void *)bytes length:(unint64_t)length renderContext:(id)context;
 - (void)dealloc;
 @end
 
 @implementation SCNMTLBufferAllocator
 
-- (SCNMTLBufferAllocator)initWithDevice:(id)a3 fixedSizeElement:(unint64_t)a4 buffersize:(unint64_t)a5 name:(id)a6
+- (SCNMTLBufferAllocator)initWithDevice:(id)device fixedSizeElement:(unint64_t)element buffersize:(unint64_t)buffersize name:(id)name
 {
   v15.receiver = self;
   v15.super_class = SCNMTLBufferAllocator;
   v10 = [(SCNMTLBufferAllocator *)&v15 init];
-  v10->_device = a3;
-  v11 = [a6 copy];
-  v12 = (a4 + 15) & 0xFFFFFFFFFFFFFFF0;
-  v13 = a5 / a4;
-  if (a4 > a5)
+  v10->_device = device;
+  v11 = [name copy];
+  v12 = (element + 15) & 0xFFFFFFFFFFFFFFF0;
+  v13 = buffersize / element;
+  if (element > buffersize)
   {
     v13 = 100;
   }
@@ -93,23 +93,23 @@ LABEL_13:
   return v11;
 }
 
-- (id)newSubBufferWithBytes:(const void *)a3 length:(unint64_t)a4 renderContext:(id)a5
+- (id)newSubBufferWithBytes:(const void *)bytes length:(unint64_t)length renderContext:(id)context
 {
   p_elementSize = &self->_elementSize;
-  if (self->_elementSize < a4)
+  if (self->_elementSize < length)
   {
     v10 = scn_default_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
     {
-      [SCNMTLBufferAllocator newSubBufferWithBytes:a4 length:p_elementSize renderContext:v10];
+      [SCNMTLBufferAllocator newSubBufferWithBytes:length length:p_elementSize renderContext:v10];
     }
   }
 
-  v11 = [(SCNMTLBufferAllocator *)self _newSubBuffer];
-  v12 = [(MTLDevice *)self->_device newBufferWithBytes:a3 length:a4 options:1];
-  [*-[SCNMTLRenderContext resourceBlitEncoder](a5) copyFromBuffer:v12 sourceOffset:0 toBuffer:objc_msgSend(v11 destinationOffset:"buffer") size:{objc_msgSend(v11, "offset"), a4}];
+  _newSubBuffer = [(SCNMTLBufferAllocator *)self _newSubBuffer];
+  v12 = [(MTLDevice *)self->_device newBufferWithBytes:bytes length:length options:1];
+  [*-[SCNMTLRenderContext resourceBlitEncoder](context) copyFromBuffer:v12 sourceOffset:0 toBuffer:objc_msgSend(_newSubBuffer destinationOffset:"buffer") size:{objc_msgSend(_newSubBuffer, "offset"), length}];
 
-  return v11;
+  return _newSubBuffer;
 }
 
 - (void)newSubBufferWithBytes:(int)a1 length:(uint64_t *)a2 renderContext:(os_log_t)log .cold.1(int a1, uint64_t *a2, os_log_t log)

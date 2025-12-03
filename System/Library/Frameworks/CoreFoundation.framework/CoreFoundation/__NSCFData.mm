@@ -1,7 +1,7 @@
 @interface __NSCFData
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (Class)classForCoder;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation __NSCFData
@@ -20,29 +20,29 @@
   return objc_opt_self();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
 
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  return _CFNonObjCEqual(self, a3) != 0;
+  return _CFNonObjCEqual(self, equal) != 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9 = *MEMORY[0x1E69E9840];
   if ((__CFDataMtbl(self) & 1) != 0 || !_CFExecutableLinkedOnOrAfter(6uLL))
   {
     v8.receiver = self;
     v8.super_class = __NSCFData;
-    result = [(__NSCFData *)&v8 copyWithZone:a3];
+    result = [(__NSCFData *)&v8 copyWithZone:zone];
     v7 = *MEMORY[0x1E69E9840];
   }
 

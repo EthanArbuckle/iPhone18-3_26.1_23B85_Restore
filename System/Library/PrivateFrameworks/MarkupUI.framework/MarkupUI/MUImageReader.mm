@@ -1,22 +1,22 @@
 @interface MUImageReader
-+ (BOOL)hasPrivateImageMetadata:(id)a3;
-+ (id)cleanImageMetadataFromData:(id)a3;
-+ (id)imageDescriptionFromSourceContent:(id)a3;
-- (BOOL)readAnnotationsFromArchivedModelData:(id)a3 toController:(id)a4;
-- (id)_readAnnotationsFromDataProvider:(CGDataProvider *)a3;
-- (id)_readBaseImageFromDataProvider:(CGDataProvider *)a3 providerSource:(id)a4 baseWasValid:(BOOL *)a5;
-- (id)_readDataFromTagAtPath:(id)a3 inMetadata:(CGImageMetadata *)a4;
-- (id)readArchivedModelDataFromImageData:(id)a3;
-- (id)readArchivedModelDataFromImageURL:(id)a3;
-- (id)readBaseImageFromData:(id)a3 baseWasValid:(BOOL *)a4;
-- (id)readBaseImageFromImageAtURL:(id)a3 baseWasValid:(BOOL *)a4;
++ (BOOL)hasPrivateImageMetadata:(id)metadata;
++ (id)cleanImageMetadataFromData:(id)data;
++ (id)imageDescriptionFromSourceContent:(id)content;
+- (BOOL)readAnnotationsFromArchivedModelData:(id)data toController:(id)controller;
+- (id)_readAnnotationsFromDataProvider:(CGDataProvider *)provider;
+- (id)_readBaseImageFromDataProvider:(CGDataProvider *)provider providerSource:(id)source baseWasValid:(BOOL *)valid;
+- (id)_readDataFromTagAtPath:(id)path inMetadata:(CGImageMetadata *)metadata;
+- (id)readArchivedModelDataFromImageData:(id)data;
+- (id)readArchivedModelDataFromImageURL:(id)l;
+- (id)readBaseImageFromData:(id)data baseWasValid:(BOOL *)valid;
+- (id)readBaseImageFromImageAtURL:(id)l baseWasValid:(BOOL *)valid;
 @end
 
 @implementation MUImageReader
 
-- (id)readArchivedModelDataFromImageData:(id)a3
+- (id)readArchivedModelDataFromImageData:(id)data
 {
-  v4 = CGDataProviderCreateWithCFData(a3);
+  v4 = CGDataProviderCreateWithCFData(data);
   if (v4)
   {
     v5 = v4;
@@ -32,9 +32,9 @@
   return v6;
 }
 
-- (id)readArchivedModelDataFromImageURL:(id)a3
+- (id)readArchivedModelDataFromImageURL:(id)l
 {
-  v4 = CGDataProviderCreateWithURL(a3);
+  v4 = CGDataProviderCreateWithURL(l);
   if (v4)
   {
     v5 = v4;
@@ -50,18 +50,18 @@
   return v6;
 }
 
-- (BOOL)readAnnotationsFromArchivedModelData:(id)a3 toController:(id)a4
+- (BOOL)readAnnotationsFromArchivedModelData:(id)data toController:(id)controller
 {
-  v5 = a3;
-  v6 = [a4 modelController];
-  v7 = [v6 populateFromArchivedPageModelControllers:v5];
+  dataCopy = data;
+  modelController = [controller modelController];
+  v7 = [modelController populateFromArchivedPageModelControllers:dataCopy];
 
   return v7;
 }
 
-- (id)_readAnnotationsFromDataProvider:(CGDataProvider *)a3
+- (id)_readAnnotationsFromDataProvider:(CGDataProvider *)provider
 {
-  v4 = CGImageSourceCreateWithDataProvider(a3, 0);
+  v4 = CGImageSourceCreateWithDataProvider(provider, 0);
   if (v4)
   {
     v5 = v4;
@@ -69,16 +69,16 @@
     if (v6)
     {
       v7 = v6;
-      v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:enc_model", kMetadataPrefixAnnotationKit];
-      v9 = [(MUImageReader *)self _readDataFromTagAtPath:v8 inMetadata:v7];
+      kMetadataPrefixAnnotationKit = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:enc_model", kMetadataPrefixAnnotationKit];
+      v9 = [(MUImageReader *)self _readDataFromTagAtPath:kMetadataPrefixAnnotationKit inMetadata:v7];
       v10 = +[MUPayloadEncryption sharedInstance];
       v11 = [v10 decryptData:v9];
 
       if (!v11)
       {
         NSLog(&cfstr_DidNotFindEncM.isa);
-        v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:model", kMetadataPrefixAnnotationKit];
-        v11 = [(MUImageReader *)self _readDataFromTagAtPath:v12 inMetadata:v7];
+        kMetadataPrefixAnnotationKit2 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:model", kMetadataPrefixAnnotationKit];
+        v11 = [(MUImageReader *)self _readDataFromTagAtPath:kMetadataPrefixAnnotationKit2 inMetadata:v7];
       }
 
       CFRelease(v7);
@@ -100,14 +100,14 @@
   return v11;
 }
 
-- (id)readBaseImageFromData:(id)a3 baseWasValid:(BOOL *)a4
+- (id)readBaseImageFromData:(id)data baseWasValid:(BOOL *)valid
 {
-  v6 = a3;
-  v7 = CGDataProviderCreateWithCFData(v6);
+  dataCopy = data;
+  v7 = CGDataProviderCreateWithCFData(dataCopy);
   if (v7)
   {
     v8 = v7;
-    v9 = [(MUImageReader *)self _readBaseImageFromDataProvider:v7 providerSource:v6 baseWasValid:a4];
+    v9 = [(MUImageReader *)self _readBaseImageFromDataProvider:v7 providerSource:dataCopy baseWasValid:valid];
     CFRelease(v8);
   }
 
@@ -119,14 +119,14 @@
   return v9;
 }
 
-- (id)readBaseImageFromImageAtURL:(id)a3 baseWasValid:(BOOL *)a4
+- (id)readBaseImageFromImageAtURL:(id)l baseWasValid:(BOOL *)valid
 {
-  v6 = a3;
-  v7 = CGDataProviderCreateWithURL(v6);
+  lCopy = l;
+  v7 = CGDataProviderCreateWithURL(lCopy);
   if (v7)
   {
     v8 = v7;
-    v9 = [(MUImageReader *)self _readBaseImageFromDataProvider:v7 providerSource:v6 baseWasValid:a4];
+    v9 = [(MUImageReader *)self _readBaseImageFromDataProvider:v7 providerSource:lCopy baseWasValid:valid];
     CFRelease(v8);
   }
 
@@ -138,10 +138,10 @@
   return v9;
 }
 
-- (id)_readBaseImageFromDataProvider:(CGDataProvider *)a3 providerSource:(id)a4 baseWasValid:(BOOL *)a5
+- (id)_readBaseImageFromDataProvider:(CGDataProvider *)provider providerSource:(id)source baseWasValid:(BOOL *)valid
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  v8 = CGImageSourceCreateWithDataProvider(a3, 0);
+  v8 = CGImageSourceCreateWithDataProvider(provider, 0);
   v9 = v8;
   if (v8)
   {
@@ -149,16 +149,16 @@
     if (v10)
     {
       v11 = v10;
-      v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:enc_base_image", kMetadataPrefixAnnotationKit];
-      v13 = [(MUImageReader *)self _readDataFromTagAtPath:v12 inMetadata:v11];
+      kMetadataPrefixAnnotationKit = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:enc_base_image", kMetadataPrefixAnnotationKit];
+      v13 = [(MUImageReader *)self _readDataFromTagAtPath:kMetadataPrefixAnnotationKit inMetadata:v11];
       v14 = +[MUPayloadEncryption sharedInstance];
       v15 = [v14 decryptData:v13];
 
       if (!v15)
       {
         NSLog(&cfstr_DidNotFindEncB.isa);
-        v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:base_image", kMetadataPrefixAnnotationKit];
-        v15 = [(MUImageReader *)self _readDataFromTagAtPath:v16 inMetadata:v11];
+        kMetadataPrefixAnnotationKit2 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:base_image", kMetadataPrefixAnnotationKit];
+        v15 = [(MUImageReader *)self _readDataFromTagAtPath:kMetadataPrefixAnnotationKit2 inMetadata:v11];
       }
 
       CFRelease(v11);
@@ -175,9 +175,9 @@
             CFRelease(ImageAtIndex);
             CFRelease(v18);
             NSLog(&cfstr_SFoundValidBas.isa, "[MUImageReader _readBaseImageFromDataProvider:providerSource:baseWasValid:]");
-            if (a5)
+            if (valid)
             {
-              *a5 = 1;
+              *valid = 1;
             }
 
             goto LABEL_23;
@@ -186,14 +186,14 @@
           CFRelease(v18);
         }
 
-        if (a5)
+        if (valid)
         {
-          *a5 = 0;
+          *valid = 0;
         }
 
-        v20 = [MEMORY[0x277CBEB28] data];
+        data = [MEMORY[0x277CBEB28] data];
         Type = CGImageSourceGetType(v9);
-        v22 = CGImageDestinationCreateWithData(v20, Type, 1uLL, 0);
+        v22 = CGImageDestinationCreateWithData(data, Type, 1uLL, 0);
         v23 = CGImageSourceCopyMetadataAtIndex(v9, 0, 0);
         if (v23)
         {
@@ -201,22 +201,22 @@
           NSLog(&cfstr_SBaseImageMeta.isa, "[MUImageReader _readBaseImageFromDataProvider:providerSource:baseWasValid:]");
           MutableCopy = CGImageMetadataCreateMutableCopy(v24);
           CGImageMetadataRegisterNamespaceForPrefix(MutableCopy, kMetadataNamespaceAnnotationKit, kMetadataPrefixAnnotationKit, 0);
-          v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:enc_model", kMetadataPrefixAnnotationKit];
-          CGImageMetadataRemoveTagWithPath(MutableCopy, 0, v26);
-          v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:model", kMetadataPrefixAnnotationKit];
+          kMetadataPrefixAnnotationKit3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:enc_model", kMetadataPrefixAnnotationKit];
+          CGImageMetadataRemoveTagWithPath(MutableCopy, 0, kMetadataPrefixAnnotationKit3);
+          kMetadataPrefixAnnotationKit4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:model", kMetadataPrefixAnnotationKit];
 
-          CGImageMetadataRemoveTagWithPath(MutableCopy, 0, v27);
-          v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:enc_base_image", kMetadataPrefixAnnotationKit];
+          CGImageMetadataRemoveTagWithPath(MutableCopy, 0, kMetadataPrefixAnnotationKit4);
+          kMetadataPrefixAnnotationKit5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:enc_base_image", kMetadataPrefixAnnotationKit];
 
-          CGImageMetadataRemoveTagWithPath(MutableCopy, 0, v28);
-          v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:base_image", kMetadataPrefixAnnotationKit];
+          CGImageMetadataRemoveTagWithPath(MutableCopy, 0, kMetadataPrefixAnnotationKit5);
+          kMetadataPrefixAnnotationKit6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:base_image", kMetadataPrefixAnnotationKit];
 
-          CGImageMetadataRemoveTagWithPath(MutableCopy, 0, v29);
+          CGImageMetadataRemoveTagWithPath(MutableCopy, 0, kMetadataPrefixAnnotationKit6);
           v34 = *MEMORY[0x277CD2D58];
           v35[0] = MutableCopy;
           v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:&v34 count:1];
           CGImageDestinationCopyImageSource(v22, v9, v30, 0);
-          v31 = v20;
+          v31 = data;
 
           if (MutableCopy)
           {
@@ -234,7 +234,7 @@
         else
         {
           NSLog(&cfstr_SBaseImageMeta_0.isa, "[MUImageReader _readBaseImageFromDataProvider:providerSource:baseWasValid:]");
-          v33 = CGDataProviderCopyData(a3);
+          v33 = CGDataProviderCopyData(provider);
 
           v15 = v33;
           if (!v22)
@@ -254,10 +254,10 @@ LABEL_23:
   }
 
   NSLog(&cfstr_SBaseImageDoes.isa, "[MUImageReader _readBaseImageFromDataProvider:providerSource:baseWasValid:]");
-  v15 = CGDataProviderCopyData(a3);
-  if (a5)
+  v15 = CGDataProviderCopyData(provider);
+  if (valid)
   {
-    *a5 = 0;
+    *valid = 0;
   }
 
   if (v9)
@@ -270,28 +270,28 @@ LABEL_24:
   return v15;
 }
 
-+ (BOOL)hasPrivateImageMetadata:(id)a3
++ (BOOL)hasPrivateImageMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  if ([(__CFData *)v4 length])
+  if ([(__CFData *)metadataCopy length])
   {
-    v5 = CGImageSourceCreateWithData(v4, 0);
+    v5 = CGImageSourceCreateWithData(metadataCopy, 0);
     v6 = v5;
     if (v5)
     {
       v7 = CGImageSourceCopyMetadataAtIndex(v5, 0, 0);
       if (v7)
       {
-        v8 = [a1 _privateImageMetadataDescriptors];
+        _privateImageMetadataDescriptors = [self _privateImageMetadataDescriptors];
         v12[0] = MEMORY[0x277D85DD0];
         v12[1] = 3221225472;
         v12[2] = __41__MUImageReader_hasPrivateImageMetadata___block_invoke;
         v12[3] = &unk_27986E218;
-        v9 = v8;
+        v9 = _privateImageMetadataDescriptors;
         v13 = v9;
         v14 = &v15;
         CGImageMetadataEnumerateTagsUsingBlock(v7, 0, 0, v12);
@@ -341,14 +341,14 @@ uint64_t __41__MUImageReader_hasPrivateImageMetadata___block_invoke(uint64_t a1,
   return v11;
 }
 
-+ (id)cleanImageMetadataFromData:(id)a3
++ (id)cleanImageMetadataFromData:(id)data
 {
   keys[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dataCopy = data;
+  v5 = dataCopy;
+  if (dataCopy)
   {
-    v6 = CGImageSourceCreateWithData(v4, 0);
+    v6 = CGImageSourceCreateWithData(dataCopy, 0);
     v7 = v5;
     if (v6)
     {
@@ -358,7 +358,7 @@ uint64_t __41__MUImageReader_hasPrivateImageMetadata___block_invoke(uint64_t a1,
       if (v9)
       {
         v10 = v9;
-        v11 = [a1 _privateImageMetadataDescriptors];
+        _privateImageMetadataDescriptors = [self _privateImageMetadataDescriptors];
         MutableCopy = CGImageMetadataCreateMutableCopy(v10);
         v7 = v5;
         if (MutableCopy)
@@ -374,15 +374,15 @@ uint64_t __41__MUImageReader_hasPrivateImageMetadata___block_invoke(uint64_t a1,
           v24 = &unk_27986E240;
           v26 = &v28;
           v27 = MutableCopy;
-          v25 = v11;
+          v25 = _privateImageMetadataDescriptors;
           CGImageMetadataEnumerateTagsUsingBlock(v10, 0, 0, &v21);
           v7 = v5;
           if (*(v29 + 24) == 1)
           {
-            v14 = [MEMORY[0x277CBEB28] data];
+            data = [MEMORY[0x277CBEB28] data];
             Type = CGImageSourceGetType(v8);
             Count = CGImageSourceGetCount(v8);
-            v17 = CGImageDestinationCreateWithData(v14, Type, Count, 0);
+            v17 = CGImageDestinationCreateWithData(data, Type, Count, 0);
             v7 = v5;
             if (v17)
             {
@@ -396,7 +396,7 @@ uint64_t __41__MUImageReader_hasPrivateImageMetadata___block_invoke(uint64_t a1,
                 v7 = v5;
                 if (CGImageDestinationCopyImageSource(v17, v8, v19, 0))
                 {
-                  v7 = v14;
+                  v7 = data;
                 }
 
                 CFRelease(v19);
@@ -455,9 +455,9 @@ uint64_t __44__MUImageReader_cleanImageMetadataFromData___block_invoke(uint64_t 
   return 1;
 }
 
-- (id)_readDataFromTagAtPath:(id)a3 inMetadata:(CGImageMetadata *)a4
+- (id)_readDataFromTagAtPath:(id)path inMetadata:(CGImageMetadata *)metadata
 {
-  v4 = CGImageMetadataCopyTagWithPath(a4, 0, a3);
+  v4 = CGImageMetadataCopyTagWithPath(metadata, 0, path);
   if (v4)
   {
     v5 = v4;
@@ -497,13 +497,13 @@ uint64_t __44__MUImageReader_cleanImageMetadataFromData___block_invoke(uint64_t 
   return v11;
 }
 
-+ (id)imageDescriptionFromSourceContent:(id)a3
++ (id)imageDescriptionFromSourceContent:(id)content
 {
-  v3 = a3;
+  contentCopy = content;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = CGDataProviderCreateWithURL(v3);
+    v4 = CGDataProviderCreateWithURL(contentCopy);
   }
 
   else
@@ -516,7 +516,7 @@ LABEL_13:
       goto LABEL_19;
     }
 
-    v4 = CGDataProviderCreateWithCFData(v3);
+    v4 = CGDataProviderCreateWithCFData(contentCopy);
   }
 
   v5 = v4;

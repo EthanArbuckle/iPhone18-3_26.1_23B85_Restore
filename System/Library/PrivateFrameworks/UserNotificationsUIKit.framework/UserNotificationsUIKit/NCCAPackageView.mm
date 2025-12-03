@@ -1,18 +1,18 @@
 @interface NCCAPackageView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (NCCAPackageView)initWithPackageNamed:(id)a3 inBundle:(id)a4;
-- (void)_setupPackageNamed:(id)a3 inBundle:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (NCCAPackageView)initWithPackageNamed:(id)named inBundle:(id)bundle;
+- (void)_setupPackageNamed:(id)named inBundle:(id)bundle;
 - (void)layoutSubviews;
-- (void)setScale:(double)a3;
-- (void)setStateName:(id)a3;
+- (void)setScale:(double)scale;
+- (void)setStateName:(id)name;
 @end
 
 @implementation NCCAPackageView
 
-- (NCCAPackageView)initWithPackageNamed:(id)a3 inBundle:(id)a4
+- (NCCAPackageView)initWithPackageNamed:(id)named inBundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  namedCopy = named;
+  bundleCopy = bundle;
   v13.receiver = self;
   v13.super_class = NCCAPackageView;
   v8 = [(NCCAPackageView *)&v13 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
@@ -26,24 +26,24 @@
 
     [(NCCAPackageView *)v9 addSubview:v9->_packageContentView];
     [(NCCAPackageView *)v9 setUserInteractionEnabled:0];
-    [(NCCAPackageView *)v9 _setupPackageNamed:v6 inBundle:v7];
+    [(NCCAPackageView *)v9 _setupPackageNamed:namedCopy inBundle:bundleCopy];
   }
 
   return v9;
 }
 
-- (void)setStateName:(id)a3
+- (void)setStateName:(id)name
 {
-  v5 = [(CALayer *)self->_packageLayer stateWithName:a3];
+  v5 = [(CALayer *)self->_packageLayer stateWithName:name];
   LODWORD(v4) = 1.0;
   [(CAStateController *)self->_stateController setState:v5 ofLayer:self->_packageLayer transitionSpeed:v4];
 }
 
-- (void)setScale:(double)a3
+- (void)setScale:(double)scale
 {
-  if (self->_scale != a3)
+  if (self->_scale != scale)
   {
-    self->_scale = a3;
+    self->_scale = scale;
     [(NCCAPackageView *)self setNeedsLayout];
   }
 }
@@ -62,11 +62,11 @@
   [(UIView *)v4 setTransform:&v5];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   scale = self->_scale;
-  [(CALayer *)self->_packageLayer bounds:a3.width];
+  [(CALayer *)self->_packageLayer bounds:fits.width];
   v5 = scale * CGRectGetHeight(v8);
   v6 = width;
   result.height = v5;
@@ -74,9 +74,9 @@
   return result;
 }
 
-- (void)_setupPackageNamed:(id)a3 inBundle:(id)a4
+- (void)_setupPackageNamed:(id)named inBundle:(id)bundle
 {
-  v5 = [a4 URLForResource:a3 withExtension:@"ca"];
+  v5 = [bundle URLForResource:named withExtension:@"ca"];
   v6 = *MEMORY[0x277CDA7F8];
   v19 = 0;
   v7 = [MEMORY[0x277CD9F28] packageWithContentsOfURL:v5 type:v6 options:0 error:&v19];
@@ -94,23 +94,23 @@
   }
 
   [(CALayer *)self->_packageLayer removeFromSuperlayer];
-  v11 = [(CAPackage *)self->_package rootLayer];
-  [(CALayer *)v11 setGeometryFlipped:[(CAPackage *)self->_package isGeometryFlipped]];
+  rootLayer = [(CAPackage *)self->_package rootLayer];
+  [(CALayer *)rootLayer setGeometryFlipped:[(CAPackage *)self->_package isGeometryFlipped]];
   if ([(NCCAPackageView *)self _shouldReverseLayoutDirection])
   {
     CGAffineTransformMakeScale(&v18, -1.0, 1.0);
-    [(CALayer *)v11 setAffineTransform:&v18];
+    [(CALayer *)rootLayer setAffineTransform:&v18];
   }
 
-  v12 = [(UIView *)self->_packageContentView layer];
-  [v12 addSublayer:v11];
+  layer = [(UIView *)self->_packageContentView layer];
+  [layer addSublayer:rootLayer];
 
   packageContentView = self->_packageContentView;
-  [(CALayer *)v11 bounds];
+  [(CALayer *)rootLayer bounds];
   [(UIView *)packageContentView setBounds:?];
   packageLayer = self->_packageLayer;
-  self->_packageLayer = v11;
-  v15 = v11;
+  self->_packageLayer = rootLayer;
+  v15 = rootLayer;
 
   v16 = [objc_alloc(MEMORY[0x277CD9FB8]) initWithLayer:v15];
   stateController = self->_stateController;

@@ -1,15 +1,15 @@
 @interface CADataTransformEngine
-- (BOOL)transformAndSubmitDNSMessageToCA:(id)a3 additionalInfo:(id)a4 timestamps:(id)a5;
-- (BOOL)transformAndSubmitDPSMessageToCA:(id)a3 additionalInfo:(id)a4 timestamps:(id)a5;
-- (BOOL)transformAndSubmitSWMessageToCA:(id)a3 additionalInfo:(id)a4 timestamps:(id)a5;
+- (BOOL)transformAndSubmitDNSMessageToCA:(id)a additionalInfo:(id)info timestamps:(id)timestamps;
+- (BOOL)transformAndSubmitDPSMessageToCA:(id)a additionalInfo:(id)info timestamps:(id)timestamps;
+- (BOOL)transformAndSubmitSWMessageToCA:(id)a additionalInfo:(id)info timestamps:(id)timestamps;
 - (CADataTransformEngine)init;
-- (double)computePercentage:(unint64_t)a3 denomenator:(unint64_t)a4;
-- (id)aggregateFailureSnapshot:(id)a3;
-- (id)getAggregateFailureSnapshotFromDPSR:(id)a3;
-- (unint64_t)compareValues:(unint64_t)a3 second:(unint64_t)a4;
-- (void)computeAggregateTxCompletionStatus:(id)a3 source:(id)a4;
-- (void)computeDPSRecoveryIndex:(id)a3 timestamps:(id)a4 andReply:(id)a5;
-- (void)findTxCompletionFailureWithMaxCount:(id)a3 andReply:(id)a4;
+- (double)computePercentage:(unint64_t)percentage denomenator:(unint64_t)denomenator;
+- (id)aggregateFailureSnapshot:(id)snapshot;
+- (id)getAggregateFailureSnapshotFromDPSR:(id)r;
+- (unint64_t)compareValues:(unint64_t)values second:(unint64_t)second;
+- (void)computeAggregateTxCompletionStatus:(id)status source:(id)source;
+- (void)computeDPSRecoveryIndex:(id)index timestamps:(id)timestamps andReply:(id)reply;
+- (void)findTxCompletionFailureWithMaxCount:(id)count andReply:(id)reply;
 @end
 
 @implementation CADataTransformEngine
@@ -51,28 +51,28 @@
   return v2;
 }
 
-- (void)computeAggregateTxCompletionStatus:(id)a3 source:(id)a4
+- (void)computeAggregateTxCompletionStatus:(id)status source:(id)source
 {
-  v5 = a4;
-  v6 = a3;
-  [v6 setSuccess:{objc_msgSend(v6, "success") + objc_msgSend(v5, "success")}];
-  [v6 setDropped:{objc_msgSend(v6, "dropped") + objc_msgSend(v5, "dropped")}];
-  [v6 setNoBuf:{objc_msgSend(v6, "noBuf") + objc_msgSend(v5, "noBuf")}];
-  [v6 setNoResources:{objc_msgSend(v6, "noResources") + objc_msgSend(v5, "noResources")}];
-  [v6 setNoAck:{objc_msgSend(v6, "noAck") + objc_msgSend(v5, "noAck")}];
-  [v6 setChipModeError:{objc_msgSend(v6, "chipModeError") + objc_msgSend(v5, "chipModeError")}];
-  [v6 setExpired:{objc_msgSend(v6, "expired") + objc_msgSend(v5, "expired")}];
-  [v6 setTxFailure:{objc_msgSend(v6, "txFailure") + objc_msgSend(v5, "txFailure")}];
-  [v6 setFirmwareFreePacket:{objc_msgSend(v6, "firmwareFreePacket") + objc_msgSend(v5, "firmwareFreePacket")}];
-  [v6 setMaxRetries:{objc_msgSend(v6, "maxRetries") + objc_msgSend(v5, "maxRetries")}];
-  LODWORD(a3) = [v5 forceLifetimeExp];
+  sourceCopy = source;
+  statusCopy = status;
+  [statusCopy setSuccess:{objc_msgSend(statusCopy, "success") + objc_msgSend(sourceCopy, "success")}];
+  [statusCopy setDropped:{objc_msgSend(statusCopy, "dropped") + objc_msgSend(sourceCopy, "dropped")}];
+  [statusCopy setNoBuf:{objc_msgSend(statusCopy, "noBuf") + objc_msgSend(sourceCopy, "noBuf")}];
+  [statusCopy setNoResources:{objc_msgSend(statusCopy, "noResources") + objc_msgSend(sourceCopy, "noResources")}];
+  [statusCopy setNoAck:{objc_msgSend(statusCopy, "noAck") + objc_msgSend(sourceCopy, "noAck")}];
+  [statusCopy setChipModeError:{objc_msgSend(statusCopy, "chipModeError") + objc_msgSend(sourceCopy, "chipModeError")}];
+  [statusCopy setExpired:{objc_msgSend(statusCopy, "expired") + objc_msgSend(sourceCopy, "expired")}];
+  [statusCopy setTxFailure:{objc_msgSend(statusCopy, "txFailure") + objc_msgSend(sourceCopy, "txFailure")}];
+  [statusCopy setFirmwareFreePacket:{objc_msgSend(statusCopy, "firmwareFreePacket") + objc_msgSend(sourceCopy, "firmwareFreePacket")}];
+  [statusCopy setMaxRetries:{objc_msgSend(statusCopy, "maxRetries") + objc_msgSend(sourceCopy, "maxRetries")}];
+  LODWORD(status) = [sourceCopy forceLifetimeExp];
 
-  [v6 setForceLifetimeExp:{objc_msgSend(v6, "forceLifetimeExp") + a3}];
+  [statusCopy setForceLifetimeExp:{objc_msgSend(statusCopy, "forceLifetimeExp") + status}];
 }
 
-- (id)aggregateFailureSnapshot:(id)a3
+- (id)aggregateFailureSnapshot:(id)snapshot
 {
-  v4 = a3;
+  snapshotCopy = snapshot;
   v5 = 0;
   v6 = 0;
   v7 = 0;
@@ -82,7 +82,7 @@
     {
       if (v5 == 2)
       {
-        v8 = [v4 txCompletionSnapshotVI];
+        txCompletionSnapshotVI = [snapshotCopy txCompletionSnapshotVI];
 
         v9 = WALogCategoryDefaultHandle();
         if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -95,14 +95,14 @@
         v15 = 1024;
         v16 = 134;
         v17 = 2112;
-        v18 = v8;
+        v18 = txCompletionSnapshotVI;
         v10 = v9;
         v11 = "%{public}s::%d:DPS: VI-Snapshot: %@\n";
       }
 
       else
       {
-        v8 = [v4 txCompletionSnapshotVO];
+        txCompletionSnapshotVI = [snapshotCopy txCompletionSnapshotVO];
 
         v9 = WALogCategoryDefaultHandle();
         if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -115,7 +115,7 @@
         v15 = 1024;
         v16 = 138;
         v17 = 2112;
-        v18 = v8;
+        v18 = txCompletionSnapshotVI;
         v10 = v9;
         v11 = "%{public}s::%d:DPS: VO-Snapshot: %@\n";
       }
@@ -123,7 +123,7 @@
 
     else if (v5)
     {
-      v8 = [v4 txCompletionSnapshotBK];
+      txCompletionSnapshotVI = [snapshotCopy txCompletionSnapshotBK];
 
       v9 = WALogCategoryDefaultHandle();
       if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -136,14 +136,14 @@
       v15 = 1024;
       v16 = 130;
       v17 = 2112;
-      v18 = v8;
+      v18 = txCompletionSnapshotVI;
       v10 = v9;
       v11 = "%{public}s::%d:DPS: BK-Snapshot: %@\n";
     }
 
     else
     {
-      v8 = [v4 txCompletionSnapshotBE];
+      txCompletionSnapshotVI = [snapshotCopy txCompletionSnapshotBE];
 
       v9 = WALogCategoryDefaultHandle();
       if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -156,25 +156,25 @@
       v15 = 1024;
       v16 = 126;
       v17 = 2112;
-      v18 = v8;
+      v18 = txCompletionSnapshotVI;
       v10 = v9;
       v11 = "%{public}s::%d:DPS: BE-Snapshot: %@\n";
     }
 
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, v11, buf, 0x1Cu);
 LABEL_14:
-    v7 = v8;
+    v7 = txCompletionSnapshotVI;
 
-    if (v8)
+    if (txCompletionSnapshotVI)
     {
       if (v6)
       {
-        [(CADataTransformEngine *)self computeAggregateTxCompletionStatus:v6 source:v8];
+        [(CADataTransformEngine *)self computeAggregateTxCompletionStatus:v6 source:txCompletionSnapshotVI];
       }
 
       else
       {
-        v6 = [v8 copy];
+        v6 = [txCompletionSnapshotVI copy];
       }
     }
 
@@ -186,17 +186,17 @@ LABEL_14:
   return v6;
 }
 
-- (id)getAggregateFailureSnapshotFromDPSR:(id)a3
+- (id)getAggregateFailureSnapshotFromDPSR:(id)r
 {
-  v4 = [(WAProtobufMessageSubmitter *)self instantiateAWDProtobufAndPopulateValues:a3];
+  v4 = [(WAProtobufMessageSubmitter *)self instantiateAWDProtobufAndPopulateValues:r];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 snapshot];
-    if (v6)
+    snapshot = [v4 snapshot];
+    if (snapshot)
     {
-      v7 = v6;
-      v8 = [(CADataTransformEngine *)self aggregateFailureSnapshot:v6];
+      v7 = snapshot;
+      v8 = [(CADataTransformEngine *)self aggregateFailureSnapshot:snapshot];
       goto LABEL_10;
     }
 
@@ -233,10 +233,10 @@ LABEL_10:
   return v8;
 }
 
-- (void)findTxCompletionFailureWithMaxCount:(id)a3 andReply:(id)a4
+- (void)findTxCompletionFailureWithMaxCount:(id)count andReply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
+  countCopy = count;
+  replyCopy = reply;
   v7 = +[NSMutableString string];
   v8 = +[NSMutableString string];
   v9 = 0;
@@ -249,12 +249,12 @@ LABEL_10:
       {
         if (i == 6)
         {
-          v12 = [v5 expired];
+          expired = [countCopy expired];
         }
 
         else
         {
-          v12 = [v5 txFailure];
+          expired = [countCopy txFailure];
         }
       }
 
@@ -263,13 +263,13 @@ LABEL_10:
         switch(i)
         {
           case 8:
-            v12 = [v5 firmwareFreePacket];
+            expired = [countCopy firmwareFreePacket];
             break;
           case 9:
-            v12 = [v5 maxRetries];
+            expired = [countCopy maxRetries];
             break;
           case 10:
-            v12 = [v5 forceLifetimeExp];
+            expired = [countCopy forceLifetimeExp];
             break;
           default:
             goto LABEL_28;
@@ -281,7 +281,7 @@ LABEL_10:
     {
       if (i == 1)
       {
-        v12 = [v5 dropped];
+        expired = [countCopy dropped];
       }
 
       else
@@ -291,29 +291,29 @@ LABEL_10:
           goto LABEL_28;
         }
 
-        v12 = [v5 noBuf];
+        expired = [countCopy noBuf];
       }
     }
 
     else if (i == 3)
     {
-      v12 = [v5 noResources];
+      expired = [countCopy noResources];
     }
 
     else if (i == 4)
     {
-      v12 = [v5 noAck];
+      expired = [countCopy noAck];
     }
 
     else
     {
-      v12 = [v5 chipModeError];
+      expired = [countCopy chipModeError];
     }
 
-    v13 = v10 >= v12;
-    if (v10 <= v12)
+    v13 = v10 >= expired;
+    if (v10 <= expired)
     {
-      v10 = v12;
+      v10 = expired;
     }
 
     if (!v13)
@@ -322,7 +322,7 @@ LABEL_10:
     }
 
     v14 = @"1";
-    if (!v12)
+    if (!expired)
     {
 LABEL_28:
       v14 = @"0";
@@ -358,50 +358,50 @@ LABEL_28:
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:txStatusString: %@", &v19, 0x1Cu);
   }
 
-  v6[2](v6, v9, v10, v8);
+  replyCopy[2](replyCopy, v9, v10, v8);
 }
 
-- (void)computeDPSRecoveryIndex:(id)a3 timestamps:(id)a4 andReply:(id)a5
+- (void)computeDPSRecoveryIndex:(id)index timestamps:(id)timestamps andReply:(id)reply
 {
-  v8 = a3;
-  v43 = a4;
-  v42 = a5;
-  v39 = self;
-  v9 = [(RecommendationPreferences *)self->_preferences dps_interrogation_sample_count];
-  v40 = [v8 dpsCounterSamplesCount];
-  if (v9)
+  indexCopy = index;
+  timestampsCopy = timestamps;
+  replyCopy = reply;
+  selfCopy = self;
+  dps_interrogation_sample_count = [(RecommendationPreferences *)self->_preferences dps_interrogation_sample_count];
+  dpsCounterSamplesCount = [indexCopy dpsCounterSamplesCount];
+  if (dps_interrogation_sample_count)
   {
     v10 = 0;
     v11 = 0;
     v12 = 0;
     v13 = 0;
-    v41 = v8;
-    v38 = v9;
+    v41 = indexCopy;
+    v38 = dps_interrogation_sample_count;
     while (1)
     {
       v14 = v11;
-      v11 = [v8 dpsCounterSampleAtIndex:v10];
+      v11 = [indexCopy dpsCounterSampleAtIndex:v10];
 
       if (!v11)
       {
         break;
       }
 
-      v15 = [v11 peerStats];
+      peerStats = [v11 peerStats];
 
-      if (!v15)
+      if (!peerStats)
       {
         v12 = 0;
         break;
       }
 
-      v12 = v15;
+      v12 = peerStats;
       v50 = 0u;
       v51 = 0u;
       v48 = 0u;
       v49 = 0u;
-      v16 = [v15 acCompletions];
-      v17 = [v16 countByEnumeratingWithState:&v48 objects:v53 count:16];
+      acCompletions = [peerStats acCompletions];
+      v17 = [acCompletions countByEnumeratingWithState:&v48 objects:v53 count:16];
       if (v17)
       {
         v18 = v17;
@@ -412,7 +412,7 @@ LABEL_28:
           {
             if (*v49 != v19)
             {
-              objc_enumerationMutation(v16);
+              objc_enumerationMutation(acCompletions);
             }
 
             v21 = *(*(&v48 + 1) + 8 * i);
@@ -424,7 +424,7 @@ LABEL_28:
             }
           }
 
-          v18 = [v16 countByEnumeratingWithState:&v48 objects:v53 count:16];
+          v18 = [acCompletions countByEnumeratingWithState:&v48 objects:v53 count:16];
           if (v18)
           {
             continue;
@@ -435,8 +435,8 @@ LABEL_28:
       }
 
       v10 = ++v13;
-      v9 = v38;
-      v8 = v41;
+      dps_interrogation_sample_count = v38;
+      indexCopy = v41;
       if (v38 <= v13)
       {
         goto LABEL_20;
@@ -452,21 +452,21 @@ LABEL_28:
   v12 = 0;
   v11 = 0;
 LABEL_20:
-  if (v40 <= v9)
+  if (dpsCounterSamplesCount <= dps_interrogation_sample_count)
   {
     v22 = 0;
     v23 = 0;
     v25 = 1;
 LABEL_38:
-    v24 = v43;
+    v24 = timestampsCopy;
     goto LABEL_42;
   }
 
-  v26 = [v8 dpsCounterSamples];
-  v27 = [v26 lastObject];
+  dpsCounterSamples = [indexCopy dpsCounterSamples];
+  lastObject = [dpsCounterSamples lastObject];
 
-  v24 = v43;
-  if (!v27)
+  v24 = timestampsCopy;
+  if (!lastObject)
   {
     v11 = 0;
     v22 = 0;
@@ -475,9 +475,9 @@ LABEL_38:
     goto LABEL_42;
   }
 
-  v28 = [v27 peerStats];
+  peerStats2 = [lastObject peerStats];
 
-  if (!v28)
+  if (!peerStats2)
   {
     v12 = 0;
     v22 = 0;
@@ -486,24 +486,24 @@ LABEL_38:
     goto LABEL_41;
   }
 
-  v29 = [v43 objectForKeyedSubscript:@"start"];
-  if (!v29 || (v30 = v29, [v43 objectForKeyedSubscript:@"end"], v31 = objc_claimAutoreleasedReturnValue(), v31, v30, !v31))
+  v29 = [timestampsCopy objectForKeyedSubscript:@"start"];
+  if (!v29 || (v30 = v29, [timestampsCopy objectForKeyedSubscript:@"end"], v31 = objc_claimAutoreleasedReturnValue(), v31, v30, !v31))
   {
     v22 = 0;
     v23 = 0;
     v25 = 1;
 LABEL_40:
-    v12 = v28;
+    v12 = peerStats2;
 LABEL_41:
-    v11 = v27;
+    v11 = lastObject;
     goto LABEL_42;
   }
 
-  v32 = [v43 objectForKeyedSubscript:@"start"];
-  v33 = [v43 objectForKeyedSubscript:@"end"];
-  v34 = [(CADataTransformEngine *)v39 computeDifferenceBetweenDates:v32 end:v33];
+  v32 = [timestampsCopy objectForKeyedSubscript:@"start"];
+  v33 = [timestampsCopy objectForKeyedSubscript:@"end"];
+  v34 = [(CADataTransformEngine *)selfCopy computeDifferenceBetweenDates:v32 end:v33];
 
-  if (v34 <= v9 || v34 > [(RecommendationPreferences *)v39->_preferences dps_report_sent_after])
+  if (v34 <= dps_interrogation_sample_count || v34 > [(RecommendationPreferences *)selfCopy->_preferences dps_report_sent_after])
   {
     v22 = 0;
     v23 = 0;
@@ -515,11 +515,11 @@ LABEL_41:
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v16 = [v28 acCompletions];
-  v22 = [v16 countByEnumeratingWithState:&v44 objects:v52 count:16];
+  acCompletions = [peerStats2 acCompletions];
+  v22 = [acCompletions countByEnumeratingWithState:&v44 objects:v52 count:16];
   if (v22)
   {
-    v41 = v8;
+    v41 = indexCopy;
     v35 = *v45;
     while (2)
     {
@@ -527,7 +527,7 @@ LABEL_41:
       {
         if (*v45 != v35)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(acCompletions);
         }
 
         v37 = *(*(&v44 + 1) + 8 * j);
@@ -539,7 +539,7 @@ LABEL_41:
         }
       }
 
-      v22 = [v16 countByEnumeratingWithState:&v44 objects:v52 count:16];
+      v22 = [acCompletions countByEnumeratingWithState:&v44 objects:v52 count:16];
       if (v22)
       {
         continue;
@@ -550,30 +550,30 @@ LABEL_41:
 
     v23 = 0;
 LABEL_44:
-    v12 = v28;
-    v11 = v27;
+    v12 = peerStats2;
+    v11 = lastObject;
 LABEL_17:
-    v8 = v41;
-    v24 = v43;
+    indexCopy = v41;
+    v24 = timestampsCopy;
   }
 
   else
   {
     v23 = 0;
-    v12 = v28;
-    v11 = v27;
+    v12 = peerStats2;
+    v11 = lastObject;
   }
 
   v25 = 1;
 LABEL_42:
-  v42[2](v42, v23, v22, v25);
+  replyCopy[2](replyCopy, v23, v22, v25);
 }
 
-- (unint64_t)compareValues:(unint64_t)a3 second:(unint64_t)a4
+- (unint64_t)compareValues:(unint64_t)values second:(unint64_t)second
 {
-  if (a4 <= a3)
+  if (second <= values)
   {
-    return a4 != a3;
+    return second != values;
   }
 
   else
@@ -582,11 +582,11 @@ LABEL_42:
   }
 }
 
-- (double)computePercentage:(unint64_t)a3 denomenator:(unint64_t)a4
+- (double)computePercentage:(unint64_t)percentage denomenator:(unint64_t)denomenator
 {
-  if (a4)
+  if (denomenator)
   {
-    return a3 / a4 * 100.0;
+    return percentage / denomenator * 100.0;
   }
 
   else
@@ -595,15 +595,15 @@ LABEL_42:
   }
 }
 
-- (BOOL)transformAndSubmitDPSMessageToCA:(id)a3 additionalInfo:(id)a4 timestamps:(id)a5
+- (BOOL)transformAndSubmitDPSMessageToCA:(id)a additionalInfo:(id)info timestamps:(id)timestamps
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  aCopy = a;
+  infoCopy = info;
+  timestampsCopy = timestamps;
   v10 = objc_autoreleasePoolPush();
-  v11 = v8;
-  v12 = v7;
-  v13 = v9;
+  v11 = infoCopy;
+  v12 = aCopy;
+  v13 = timestampsCopy;
   v14 = AnalyticsSendEventLazy();
   v15 = WALogCategoryDefaultHandle();
   v16 = v15;
@@ -639,15 +639,15 @@ LABEL_6:
   return v14;
 }
 
-- (BOOL)transformAndSubmitDNSMessageToCA:(id)a3 additionalInfo:(id)a4 timestamps:(id)a5
+- (BOOL)transformAndSubmitDNSMessageToCA:(id)a additionalInfo:(id)info timestamps:(id)timestamps
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  aCopy = a;
+  infoCopy = info;
+  timestampsCopy = timestamps;
   v10 = objc_autoreleasePoolPush();
-  v11 = v8;
-  v12 = v7;
-  v13 = v9;
+  v11 = infoCopy;
+  v12 = aCopy;
+  v13 = timestampsCopy;
   v14 = AnalyticsSendEventLazy();
   v15 = WALogCategoryDefaultHandle();
   v16 = v15;
@@ -683,14 +683,14 @@ LABEL_6:
   return v14;
 }
 
-- (BOOL)transformAndSubmitSWMessageToCA:(id)a3 additionalInfo:(id)a4 timestamps:(id)a5
+- (BOOL)transformAndSubmitSWMessageToCA:(id)a additionalInfo:(id)info timestamps:(id)timestamps
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  aCopy = a;
+  infoCopy = info;
+  timestampsCopy = timestamps;
   v10 = objc_autoreleasePoolPush();
-  v11 = v8;
-  v12 = v7;
+  v11 = infoCopy;
+  v12 = aCopy;
   v13 = AnalyticsSendEventLazy();
   v14 = WALogCategoryDefaultHandle();
   v15 = v14;

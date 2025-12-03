@@ -6,11 +6,11 @@
 
 - (CGPatternRef)safeEncodeUIColor:()SUAdditions forKey:
 {
-  v7 = [a3 CGColor];
-  if (!v7 || (result = CGColorGetPattern(v7)) == 0)
+  cGColor = [a3 CGColor];
+  if (!cGColor || (result = CGColorGetPattern(cGColor)) == 0)
   {
 
-    return [a1 encodeObject:a3 forKey:a4];
+    return [self encodeObject:a3 forKey:a4];
   }
 
   return result;

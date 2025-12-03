@@ -1,9 +1,9 @@
 @interface PETServiceMessageCompressor
-+ (id)decompress:(id)a3;
++ (id)decompress:(id)decompress;
 - (PETServiceMessageCompressor)init;
 - (void)_errorClose;
 - (void)_flushBuffer;
-- (void)addMessage:(id)a3;
+- (void)addMessage:(id)message;
 - (void)close;
 @end
 
@@ -24,8 +24,8 @@
 
       v4 = v3;
       v5 = 0x10000 - self->_stream.dst_size;
-      v6 = [(PETServiceMessageCompressor *)self compressedMessages];
-      [v6 appendBytes:-[NSMutableData bytes](self->_dstBuf length:{"bytes"), v5}];
+      compressedMessages = [(PETServiceMessageCompressor *)self compressedMessages];
+      [compressedMessages appendBytes:-[NSMutableData bytes](self->_dstBuf length:{"bytes"), v5}];
 
       if (v4 == COMPRESSION_STATUS_END)
       {
@@ -69,8 +69,8 @@
     while (compression_stream_process(&self->_stream, 0) != COMPRESSION_STATUS_ERROR)
     {
       v7 = 0x10000 - self->_stream.dst_size;
-      v8 = [(PETServiceMessageCompressor *)self compressedMessages];
-      [v8 appendBytes:-[NSMutableData bytes](self->_dstBuf length:{"bytes"), v7}];
+      compressedMessages = [(PETServiceMessageCompressor *)self compressedMessages];
+      [compressedMessages appendBytes:-[NSMutableData bytes](self->_dstBuf length:{"bytes"), v7}];
 
       self->_stream.dst_ptr = [(NSMutableData *)self->_dstBuf mutableBytes];
       self->_stream.dst_size = 0x10000;
@@ -92,15 +92,15 @@
 LABEL_8:
 }
 
-- (void)addMessage:(id)a3
+- (void)addMessage:(id)message
 {
   if (!self->_closed)
   {
-    v6 = [a3 data];
+    data = [message data];
     v5 = malloc_type_malloc(0xAuLL, 0x87224388uLL);
-    [v6 length];
+    [data length];
     [(NSMutableData *)self->_srcBuf appendBytes:v5 length:PBDataWriterWriteBareVarint()];
-    [(NSMutableData *)self->_srcBuf appendData:v6];
+    [(NSMutableData *)self->_srcBuf appendData:data];
     if ([(NSMutableData *)self->_srcBuf length]>= 0x10000)
     {
       [(PETServiceMessageCompressor *)self _flushBuffer];
@@ -153,15 +153,15 @@ LABEL_8:
   return v8;
 }
 
-+ (id)decompress:(id)a3
++ (id)decompress:(id)decompress
 {
-  v3 = a3;
+  decompressCopy = decompress;
   memset(&stream, 0, sizeof(stream));
   compression_stream_init(&stream, COMPRESSION_STREAM_DECODE, COMPRESSION_ZLIB);
   v4 = malloc_type_malloc(0x10000uLL, 0x2DEF6AABuLL);
   v5 = objc_opt_new();
-  stream.src_ptr = [v3 bytes];
-  stream.src_size = [v3 length];
+  stream.src_ptr = [decompressCopy bytes];
+  stream.src_size = [decompressCopy length];
   stream.dst_ptr = v4;
   stream.dst_size = 0x10000;
   while (1)

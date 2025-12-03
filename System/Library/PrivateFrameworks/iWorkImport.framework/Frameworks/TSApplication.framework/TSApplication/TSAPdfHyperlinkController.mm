@@ -1,14 +1,14 @@
 @interface TSAPdfHyperlinkController
-- (BOOL)ignoreUrl:(id)a3;
+- (BOOL)ignoreUrl:(id)url;
 - (CGRect)canvasRect;
 - (TSAPdfHyperlinkController)init;
-- (id)p_chopBezierIntoRects:(id)a3;
-- (id)p_hyperlinkRegionsForRep:(id)a3;
-- (void)addHyperlinkForRect:(CGRect)a3 withUrl:(id)a4;
-- (void)addHyperlinksForRep:(id)a3;
-- (void)commitHyperlinksToPDF:(CGContext *)a3 targetRect:(CGRect)a4;
-- (void)p_combineSimilarElements:(id)a3;
-- (void)p_commitDestinationToPDF:(id)a3 cgrect:(CGRect)a4 context:(CGContext *)a5;
+- (id)p_chopBezierIntoRects:(id)rects;
+- (id)p_hyperlinkRegionsForRep:(id)rep;
+- (void)addHyperlinkForRect:(CGRect)rect withUrl:(id)url;
+- (void)addHyperlinksForRep:(id)rep;
+- (void)commitHyperlinksToPDF:(CGContext *)f targetRect:(CGRect)rect;
+- (void)p_combineSimilarElements:(id)elements;
+- (void)p_commitDestinationToPDF:(id)f cgrect:(CGRect)cgrect context:(CGContext *)context;
 @end
 
 @implementation TSAPdfHyperlinkController
@@ -32,9 +32,9 @@
   return v2;
 }
 
-- (BOOL)ignoreUrl:(id)a3
+- (BOOL)ignoreUrl:(id)url
 {
-  v4 = objc_msgSend_absoluteString(a3, a2, a3, v3);
+  v4 = objc_msgSend_absoluteString(url, a2, url, v3);
   v5 = v4 == 0;
 
   return v5;
@@ -53,36 +53,36 @@
   return result;
 }
 
-- (void)addHyperlinkForRect:(CGRect)a3 withUrl:(id)a4
+- (void)addHyperlinkForRect:(CGRect)rect withUrl:(id)url
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v9 = MEMORY[0x277D81160];
-  v10 = a4;
+  urlCopy = url;
   v18 = objc_msgSend_bezierPathWithRect_(v9, v11, v12, v13, x, y, width, height);
-  v15 = objc_msgSend_hyperlinkRegionWithURL_bezierPath_(MEMORY[0x277D80298], v14, v10, v18);
+  v15 = objc_msgSend_hyperlinkRegionWithURL_bezierPath_(MEMORY[0x277D80298], v14, urlCopy, v18);
 
   objc_msgSend_addObject_(self->mHyperlinks, v16, v15, v17);
 }
 
-- (void)addHyperlinksForRep:(id)a3
+- (void)addHyperlinksForRep:(id)rep
 {
-  v10 = objc_msgSend_p_hyperlinkRegionsForRep_(self, a2, a3, v3);
+  v10 = objc_msgSend_p_hyperlinkRegionsForRep_(self, a2, rep, v3);
   if (objc_msgSend_count(v10, v5, v6, v7))
   {
     objc_msgSend_addObjectsFromArray_(self->mHyperlinks, v8, v10, v9);
   }
 }
 
-- (void)commitHyperlinksToPDF:(CGContext *)a3 targetRect:(CGRect)a4
+- (void)commitHyperlinksToPDF:(CGContext *)f targetRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
+  height = rect.size.height;
+  width = rect.size.width;
   v113 = *MEMORY[0x277D85DE8];
   v9 = MEMORY[0x277D81160];
-  objc_msgSend_canvasRect(self, a2, a3, v4);
+  objc_msgSend_canvasRect(self, a2, f, v4);
   v101 = objc_msgSend_bezierPathWithRect_(v9, v10, v11, v12);
   objc_msgSend_canvasRect(self, v13, v14, v15);
   v17 = v16;
@@ -141,12 +141,12 @@
             v115 = CGRectApplyAffineTransform(v114, &v110);
             if (v66)
             {
-              objc_msgSend_p_commitDestinationToPDF_cgrect_context_(self, v80, v44, a3, v115.origin.x, v115.origin.y, v115.size.width, v115.size.height);
+              objc_msgSend_p_commitDestinationToPDF_cgrect_context_(self, v80, v44, f, v115.origin.x, v115.origin.y, v115.size.width, v115.size.height);
             }
 
             else
             {
-              objc_msgSend_p_commitUrlToPDF_cgrect_context_(self, v80, v44, a3, v115.origin.x, v115.origin.y, v115.size.width, v115.size.height);
+              objc_msgSend_p_commitUrlToPDF_cgrect_context_(self, v80, v44, f, v115.origin.x, v115.origin.y, v115.size.width, v115.size.height);
             }
           }
         }
@@ -186,7 +186,7 @@
         objc_msgSend_point(v90, v84, v85, v86);
         pointa = vaddq_f64(*&v111.tx, vmlaq_n_f64(vmulq_n_f64(*&v111.c, v91), *&v111.a, v92));
         v96 = objc_msgSend_name(v90, v93, v94, v95);
-        CGPDFContextAddDestinationAtPoint(a3, v96, pointa);
+        CGPDFContextAddDestinationAtPoint(f, v96, pointa);
       }
 
       v87 = objc_msgSend_countByEnumeratingWithState_objects_count_(v81, v84, &v105, v112, 16);
@@ -198,11 +198,11 @@
   objc_msgSend_removeAllObjects(self->mDestinations, v97, v98, v99);
 }
 
-- (id)p_hyperlinkRegionsForRep:(id)a3
+- (id)p_hyperlinkRegionsForRep:(id)rep
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v7 = objc_msgSend_hyperlinkRegions(v3, v4, v5, v6);
+  repCopy = rep;
+  v7 = objc_msgSend_hyperlinkRegions(repCopy, v4, v5, v6);
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
@@ -222,7 +222,7 @@
         }
 
         v16 = objc_msgSend_bezierPath(*(*(&v29 + 1) + 8 * i), v10, v11, v12, v26, v27, v28);
-        v20 = objc_msgSend_layout(v3, v17, v18, v19);
+        v20 = objc_msgSend_layout(repCopy, v17, v18, v19);
         v24 = v20;
         if (v20)
         {
@@ -248,12 +248,12 @@
   return v7;
 }
 
-- (id)p_chopBezierIntoRects:(id)a3
+- (id)p_chopBezierIntoRects:(id)rects
 {
-  v3 = a3;
-  if (objc_msgSend_elementCount(v3, v4, v5, v6))
+  rectsCopy = rects;
+  if (objc_msgSend_elementCount(rectsCopy, v4, v5, v6))
   {
-    objc_msgSend_bounds(v3, v7, v8, v9);
+    objc_msgSend_bounds(rectsCopy, v7, v8, v9);
     v11 = v10;
     v13 = v12;
     v15 = v14;
@@ -263,7 +263,7 @@
     do
     {
       v25 = objc_msgSend_bezierPathWithRect_(MEMORY[0x277D81160], v20, v21, v22, v11, v13 + v24, v15, 5.0);
-      v28 = objc_msgSend_intersectBezierPath_(v3, v26, v25, v27);
+      v28 = objc_msgSend_intersectBezierPath_(rectsCopy, v26, v25, v27);
       if ((objc_msgSend_isEmpty(v28, v29, v30, v31) & 1) == 0)
       {
         v34 = objc_msgSend_arrayOfSubpathsWithEffectivelyEmptySubpathsRemoved_(v28, v32, 1, v33);
@@ -303,28 +303,28 @@
   return v23;
 }
 
-- (void)p_combineSimilarElements:(id)a3
+- (void)p_combineSimilarElements:(id)elements
 {
-  v46 = a3;
-  if (v46)
+  elementsCopy = elements;
+  if (elementsCopy)
   {
-    if (objc_msgSend_count(v46, v3, v4, v5))
+    if (objc_msgSend_count(elementsCopy, v3, v4, v5))
     {
-      v9 = objc_msgSend_count(v46, v6, v7, v8);
+      v9 = objc_msgSend_count(elementsCopy, v6, v7, v8);
       v12 = v9 - 1;
       if (v9 != 1)
       {
         v45 = 0.000000999999997;
         do
         {
-          v13 = objc_msgSend_objectAtIndex_(v46, v10, v12 - 1, v11, *&v45);
+          v13 = objc_msgSend_objectAtIndex_(elementsCopy, v10, v12 - 1, v11, *&v45);
           objc_msgSend_CGRectValue(v13, v14, v15, v16);
           v18 = v17;
           v20 = v19;
           v22 = v21;
           v24 = v23;
 
-          v27 = objc_msgSend_objectAtIndex_(v46, v25, v12, v26);
+          v27 = objc_msgSend_objectAtIndex_(elementsCopy, v25, v12, v26);
           objc_msgSend_CGRectValue(v27, v28, v29, v30);
           v32 = v31;
           v34 = v33;
@@ -336,9 +336,9 @@
             v39 = v20 + v24;
             if (v20 + v24 == v34 || (v39 = vabdd_f64(v39, v34), v39 < fabs(v34 * v45)))
             {
-              objc_msgSend_removeObjectAtIndex_(v46, v10, v12, v11, v39);
+              objc_msgSend_removeObjectAtIndex_(elementsCopy, v10, v12, v11, v39);
               v43 = objc_msgSend_valueWithCGRect_(MEMORY[0x277CCAE60], v40, v41, v42, v18, v20, v22, v24 + v38);
-              objc_msgSend_replaceObjectAtIndex_withObject_(v46, v44, v12 - 1, v43);
+              objc_msgSend_replaceObjectAtIndex_withObject_(elementsCopy, v44, v12 - 1, v43);
             }
           }
 
@@ -351,18 +351,18 @@
   }
 }
 
-- (void)p_commitDestinationToPDF:(id)a3 cgrect:(CGRect)a4 context:(CGContext *)a5
+- (void)p_commitDestinationToPDF:(id)f cgrect:(CGRect)cgrect context:(CGContext *)context
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = objc_msgSend_destinationFromUrl_(self, a2, a3, a5);
+  height = cgrect.size.height;
+  width = cgrect.size.width;
+  y = cgrect.origin.y;
+  x = cgrect.origin.x;
+  v10 = objc_msgSend_destinationFromUrl_(self, a2, f, context);
   v12.origin.x = x;
   v12.origin.y = y;
   v12.size.width = width;
   v12.size.height = height;
-  CGPDFContextSetDestinationForRect(a5, v10, v12);
+  CGPDFContextSetDestinationForRect(context, v10, v12);
 }
 
 @end

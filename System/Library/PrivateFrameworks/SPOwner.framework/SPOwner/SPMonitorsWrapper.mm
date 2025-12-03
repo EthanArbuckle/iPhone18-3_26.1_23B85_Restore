@@ -1,6 +1,6 @@
 @interface SPMonitorsWrapper
 - (BOOL)isNetworkUp;
-- (SPMonitorsWrapper)initWithBeaconManager:(id)a3 delegateQueue:(id)a4;
+- (SPMonitorsWrapper)initWithBeaconManager:(id)manager delegateQueue:(id)queue;
 - (SPMonitorsWrapperDelegate)delegate;
 - (int)_cpuType;
 - (void)pause;
@@ -11,20 +11,20 @@
 
 @implementation SPMonitorsWrapper
 
-- (SPMonitorsWrapper)initWithBeaconManager:(id)a3 delegateQueue:(id)a4
+- (SPMonitorsWrapper)initWithBeaconManager:(id)manager delegateQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = SPMonitorsWrapper;
   v8 = [(SPMonitorsWrapper *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    if (v7)
+    objc_storeWeak(&v8->_delegate, managerCopy);
+    if (queueCopy)
     {
-      v10 = v7;
+      v10 = queueCopy;
       delegateQueue = v9->_delegateQueue;
       v9->_delegateQueue = v10;
     }
@@ -69,10 +69,10 @@ void __29__SPMonitorsWrapper__cpuType__block_invoke()
 
 - (BOOL)isNetworkUp
 {
-  v2 = [(SPMonitorsWrapper *)self networkMonitor];
-  v3 = [v2 isNetworkUp];
+  networkMonitor = [(SPMonitorsWrapper *)self networkMonitor];
+  isNetworkUp = [networkMonitor isNetworkUp];
 
-  return v3;
+  return isNetworkUp;
 }
 
 - (void)start
@@ -81,13 +81,13 @@ void __29__SPMonitorsWrapper__cpuType__block_invoke()
   v3 = objc_alloc_init(SPNetworkMonitor);
   [(SPMonitorsWrapper *)self setNetworkMonitor:v3];
 
-  v4 = [(SPMonitorsWrapper *)self networkMonitor];
+  networkMonitor = [(SPMonitorsWrapper *)self networkMonitor];
   v5 = MEMORY[0x277D85DD0];
   v6 = 3221225472;
   v7 = __26__SPMonitorsWrapper_start__block_invoke;
   v8 = &unk_279B58EA0;
   objc_copyWeak(&v9, &location);
-  [v4 startMonitoringWithCallback:&v5];
+  [networkMonitor startMonitoringWithCallback:&v5];
 
   [(SPMonitorsWrapper *)self resume:v5];
   objc_destroyWeak(&v9);
@@ -103,8 +103,8 @@ void __26__SPMonitorsWrapper_start__block_invoke(uint64_t a1, uint64_t a2)
 
 - (void)stop
 {
-  v3 = [(SPMonitorsWrapper *)self networkMonitor];
-  [v3 stopMonitoring];
+  networkMonitor = [(SPMonitorsWrapper *)self networkMonitor];
+  [networkMonitor stopMonitoring];
 
   [(SPMonitorsWrapper *)self setNetworkMonitor:0];
 

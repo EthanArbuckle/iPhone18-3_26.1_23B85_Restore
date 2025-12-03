@@ -1,8 +1,8 @@
 @interface MSTrackListHeaderView
-- (CGSize)_sizeThatFitsLabel:(id)a3 size:(CGSize)a4 numberOfLines:(int64_t)a5;
-- (MSTrackListHeaderView)initWithFrame:(CGRect)a3;
+- (CGSize)_sizeThatFitsLabel:(id)label size:(CGSize)size numberOfLines:(int64_t)lines;
+- (MSTrackListHeaderView)initWithFrame:(CGRect)frame;
 - (id)_newGenericSmallFontLabel;
-- (void)_offerButtonAction:(id)a3;
+- (void)_offerButtonAction:(id)action;
 - (void)_performPurchaseAnimation;
 - (void)_reloadAlbumLabel;
 - (void)_reloadArtistLabel;
@@ -11,26 +11,26 @@
 - (void)_reloadItemCountLabel;
 - (void)_reloadOfferButton;
 - (void)_reloadReleaseDateLabel;
-- (void)_setShowingPurchaseConfirmation:(BOOL)a3;
+- (void)_setShowingPurchaseConfirmation:(BOOL)confirmation;
 - (void)_showPurchaseConfirmation;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)reloadView;
-- (void)setBackgroundColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
 - (void)sizeToFit;
 @end
 
 @implementation MSTrackListHeaderView
 
-- (MSTrackListHeaderView)initWithFrame:(CGRect)a3
+- (MSTrackListHeaderView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MSTrackListHeaderView;
-  v3 = [(MSTrackListHeaderView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MSTrackListHeaderView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:v3 selector:sel__purchasesChangedNotification_ name:*MEMORY[0x277D7FF58] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__purchasesChangedNotification_ name:*MEMORY[0x277D7FF58] object:0];
   }
 
   return v3;
@@ -38,8 +38,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D7FF58] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D7FF58] object:0];
 
   self->_artworkImage = 0;
   self->_item = 0;
@@ -270,7 +270,7 @@
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = MSTrackListHeaderView;
@@ -295,12 +295,12 @@
 
   else
   {
-    v11 = [(MSTrackListHeaderView *)self subviews];
+    subviews = [(MSTrackListHeaderView *)self subviews];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    v12 = [subviews countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v12)
     {
       v13 = v12;
@@ -312,7 +312,7 @@
         {
           if (*v19 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(subviews);
           }
 
           v16 = *(*(&v18 + 1) + 8 * i);
@@ -329,7 +329,7 @@
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v13 = [subviews countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v13);
@@ -344,7 +344,7 @@
   [(MSTrackListHeaderView *)self setFrame:v4, v6, v8, v10];
 }
 
-- (void)_offerButtonAction:(id)a3
+- (void)_offerButtonAction:(id)action
 {
   if (([(SUItemOfferButton *)self->_offerButton isShowingConfirmation]& 1) != 0 || ![(SUItemOfferButton *)self->_offerButton shouldShowConfirmation])
   {
@@ -396,8 +396,8 @@
 
 - (void)_reloadAlbumLabel
 {
-  v3 = [(SUItem *)self->_item unmodifiedTitle];
-  v4 = [v3 length];
+  unmodifiedTitle = [(SUItem *)self->_item unmodifiedTitle];
+  v4 = [unmodifiedTitle length];
   albumLabel = self->_albumLabel;
   if (v4)
   {
@@ -425,7 +425,7 @@
     self->_albumLabel = 0;
   }
 
-  [(UILabel *)albumLabel setText:v3];
+  [(UILabel *)albumLabel setText:unmodifiedTitle];
   v7 = self->_albumLabel;
 
   [(UILabel *)v7 sizeToFit];
@@ -433,8 +433,8 @@
 
 - (void)_reloadArtistLabel
 {
-  v3 = [(SUItem *)self->_item artistName];
-  v4 = [v3 length];
+  artistName = [(SUItem *)self->_item artistName];
+  v4 = [artistName length];
   artistLabel = self->_artistLabel;
   if (v4)
   {
@@ -457,7 +457,7 @@
     self->_artistLabel = 0;
   }
 
-  [(UILabel *)artistLabel setText:v3];
+  [(UILabel *)artistLabel setText:artistName];
   v6 = self->_artistLabel;
 
   [(UILabel *)v6 sizeToFit];
@@ -483,16 +483,16 @@
 
 - (void)_reloadDisclaimerLabel
 {
-  v3 = [(SUItem *)self->_item disclaimerString];
-  v4 = [v3 length];
+  disclaimerString = [(SUItem *)self->_item disclaimerString];
+  v4 = [disclaimerString length];
   disclaimerLabel = self->_disclaimerLabel;
   if (v4)
   {
     if (!disclaimerLabel)
     {
-      v6 = [(MSTrackListHeaderView *)self _newGenericSmallFontLabel];
-      self->_disclaimerLabel = v6;
-      -[UILabel setBackgroundColor:](v6, "setBackgroundColor:", [MEMORY[0x277D75348] clearColor]);
+      _newGenericSmallFontLabel = [(MSTrackListHeaderView *)self _newGenericSmallFontLabel];
+      self->_disclaimerLabel = _newGenericSmallFontLabel;
+      -[UILabel setBackgroundColor:](_newGenericSmallFontLabel, "setBackgroundColor:", [MEMORY[0x277D75348] clearColor]);
       [(UILabel *)self->_disclaimerLabel setNumberOfLines:0];
       [(MSTrackListHeaderView *)self addSubview:self->_disclaimerLabel];
       disclaimerLabel = self->_disclaimerLabel;
@@ -507,7 +507,7 @@
     self->_disclaimerLabel = 0;
   }
 
-  [(UILabel *)disclaimerLabel setText:v3];
+  [(UILabel *)disclaimerLabel setText:disclaimerString];
 }
 
 - (void)_reloadItemCountLabel
@@ -530,9 +530,9 @@
     itemCountLabel = self->_itemCountLabel;
     if (!itemCountLabel)
     {
-      v6 = [(MSTrackListHeaderView *)self _newGenericSmallFontLabel];
-      self->_itemCountLabel = v6;
-      [(MSTrackListHeaderView *)self addSubview:v6];
+      _newGenericSmallFontLabel = [(MSTrackListHeaderView *)self _newGenericSmallFontLabel];
+      self->_itemCountLabel = _newGenericSmallFontLabel;
+      [(MSTrackListHeaderView *)self addSubview:_newGenericSmallFontLabel];
       itemCountLabel = self->_itemCountLabel;
     }
   }
@@ -603,9 +603,9 @@
   {
     if (!releaseDateLabel)
     {
-      v7 = [(MSTrackListHeaderView *)self _newGenericSmallFontLabel];
-      self->_releaseDateLabel = v7;
-      [(MSTrackListHeaderView *)self insertSubview:v7 atIndex:0];
+      _newGenericSmallFontLabel = [(MSTrackListHeaderView *)self _newGenericSmallFontLabel];
+      self->_releaseDateLabel = _newGenericSmallFontLabel;
+      [(MSTrackListHeaderView *)self insertSubview:_newGenericSmallFontLabel atIndex:0];
     }
   }
 
@@ -633,7 +633,7 @@
   [(UILabel *)self->_releaseDateLabel sizeToFit];
 }
 
-- (void)_setShowingPurchaseConfirmation:(BOOL)a3
+- (void)_setShowingPurchaseConfirmation:(BOOL)confirmation
 {
   [objc_opt_class() defaultAnimationDuration];
   v7[0] = MEMORY[0x277D85DD0];
@@ -641,7 +641,7 @@
   v7[2] = __57__MSTrackListHeaderView__setShowingPurchaseConfirmation___block_invoke;
   v7[3] = &unk_279926B90;
   v7[4] = self;
-  v8 = a3;
+  confirmationCopy = confirmation;
   v7[5] = v5;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
@@ -672,36 +672,36 @@ void __57__MSTrackListHeaderView__setShowingPurchaseConfirmation___block_invoke_
 
 - (void)_showPurchaseConfirmation
 {
-  v3 = [(MSTrackListHeaderView *)self window];
+  window = [(MSTrackListHeaderView *)self window];
   v4 = objc_alloc(MEMORY[0x277D7FEB0]);
-  [v3 bounds];
+  [window bounds];
   v5 = [v4 initWithFrame:?];
   self->_touchCaptureView = v5;
   [(SUTouchCaptureView *)v5 addTarget:self action:sel__touchCaptureAction_ forControlEvents:1];
   -[SUTouchCaptureView setPassThroughViews:](self->_touchCaptureView, "setPassThroughViews:", [MEMORY[0x277CBEA60] arrayWithObjects:{self->_offerButton, 0}]);
-  [v3 addSubview:self->_touchCaptureView];
+  [window addSubview:self->_touchCaptureView];
 
   [(MSTrackListHeaderView *)self _setShowingPurchaseConfirmation:1];
 }
 
-- (CGSize)_sizeThatFitsLabel:(id)a3 size:(CGSize)a4 numberOfLines:(int64_t)a5
+- (CGSize)_sizeThatFitsLabel:(id)label size:(CGSize)size numberOfLines:(int64_t)lines
 {
-  height = a4.height;
-  width = a4.width;
-  if (a5 > 1)
+  height = size.height;
+  width = size.width;
+  if (lines > 1)
   {
-    [a3 setNumberOfLines:1];
-    [a3 sizeThatFits:{width, height}];
+    [label setNumberOfLines:1];
+    [label sizeThatFits:{width, height}];
     v13 = v12;
-    [a3 setNumberOfLines:0];
-    [a3 sizeThatFits:{width, height}];
+    [label setNumberOfLines:0];
+    [label sizeThatFits:{width, height}];
     v10 = v14;
     v16 = v15;
-    if ([a3 adjustsFontSizeToFitWidth])
+    if ([label adjustsFontSizeToFitWidth])
     {
-      [objc_msgSend(a3 "font")];
+      [objc_msgSend(label "font")];
       v18 = v17;
-      [a3 minimumScaleFactor];
+      [label minimumScaleFactor];
       *&v19 = v18 * v19;
       v20 = ceilf(*&v19);
       if (v16 > v13 + v13 && v18 > v20)
@@ -709,8 +709,8 @@ void __57__MSTrackListHeaderView__setShowingPurchaseConfirmation___block_invoke_
         do
         {
           v18 = v18 + -1.0;
-          [a3 setFont:{objc_msgSend(MEMORY[0x277D74300], "boldSystemFontOfSize:", v18)}];
-          [a3 sizeThatFits:{width, height}];
+          [label setFont:{objc_msgSend(MEMORY[0x277D74300], "boldSystemFontOfSize:", v18)}];
+          [label sizeThatFits:{width, height}];
         }
 
         while (v23 > v13 + v13 && v18 > v20);
@@ -719,20 +719,20 @@ void __57__MSTrackListHeaderView__setShowingPurchaseConfirmation___block_invoke_
       }
     }
 
-    if (v13 * a5 >= v16)
+    if (v13 * lines >= v16)
     {
       v8 = v16;
     }
 
     else
     {
-      v8 = v13 * a5;
+      v8 = v13 * lines;
     }
   }
 
   else
   {
-    [a3 sizeThatFits:{a4.width, a4.height}];
+    [label sizeThatFits:{size.width, size.height}];
     v10 = v9;
   }
 

@@ -1,83 +1,83 @@
 @interface FMDNSURLSession
 - (FMDURLSessionDelegate)delegate;
-- (id)dataTaskWithRequest:(id)a3;
-- (id)dataTaskWithRequest:(id)a3 completionHandler:(id)a4;
-- (id)downloadTaskWithRequest:(id)a3 completionHandler:(id)a4;
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4;
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
+- (id)dataTaskWithRequest:(id)request;
+- (id)dataTaskWithRequest:(id)request completionHandler:(id)handler;
+- (id)downloadTaskWithRequest:(id)request completionHandler:(id)handler;
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error;
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
 - (void)finishTasksAndInvalidate;
-- (void)getAllTasksWithCompletionHandler:(id)a3;
+- (void)getAllTasksWithCompletionHandler:(id)handler;
 - (void)invalidateAndCancel;
 @end
 
 @implementation FMDNSURLSession
 
-- (id)dataTaskWithRequest:(id)a3 completionHandler:(id)a4
+- (id)dataTaskWithRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FMDNSURLSession *)self session];
-  v9 = [v8 dataTaskWithRequest:v7 completionHandler:v6];
+  handlerCopy = handler;
+  requestCopy = request;
+  session = [(FMDNSURLSession *)self session];
+  v9 = [session dataTaskWithRequest:requestCopy completionHandler:handlerCopy];
 
   return v9;
 }
 
-- (id)dataTaskWithRequest:(id)a3
+- (id)dataTaskWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(FMDNSURLSession *)self session];
-  v6 = [v5 dataTaskWithRequest:v4];
+  requestCopy = request;
+  session = [(FMDNSURLSession *)self session];
+  v6 = [session dataTaskWithRequest:requestCopy];
 
   return v6;
 }
 
-- (id)downloadTaskWithRequest:(id)a3 completionHandler:(id)a4
+- (id)downloadTaskWithRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FMDNSURLSession *)self session];
-  v9 = [v8 downloadTaskWithRequest:v7 completionHandler:v6];
+  handlerCopy = handler;
+  requestCopy = request;
+  session = [(FMDNSURLSession *)self session];
+  v9 = [session downloadTaskWithRequest:requestCopy completionHandler:handlerCopy];
 
   return v9;
 }
 
-- (void)getAllTasksWithCompletionHandler:(id)a3
+- (void)getAllTasksWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(FMDNSURLSession *)self session];
-  [v5 getAllTasksWithCompletionHandler:v4];
+  handlerCopy = handler;
+  session = [(FMDNSURLSession *)self session];
+  [session getAllTasksWithCompletionHandler:handlerCopy];
 }
 
 - (void)finishTasksAndInvalidate
 {
-  v2 = [(FMDNSURLSession *)self session];
-  [v2 finishTasksAndInvalidate];
+  session = [(FMDNSURLSession *)self session];
+  [session finishTasksAndInvalidate];
 }
 
 - (void)invalidateAndCancel
 {
-  v2 = [(FMDNSURLSession *)self session];
-  [v2 invalidateAndCancel];
+  session = [(FMDNSURLSession *)self session];
+  [session invalidateAndCancel];
 }
 
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error
 {
-  v6 = a4;
-  v5 = [(FMDNSURLSession *)self delegate];
+  errorCopy = error;
+  delegate = [(FMDNSURLSession *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 URLSession:self didBecomeInvalidWithError:v6];
+    [delegate URLSession:self didBecomeInvalidWithError:errorCopy];
   }
 }
 
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v9 = a4;
-  v7 = a5;
-  v8 = [(FMDNSURLSession *)self delegate];
+  challengeCopy = challenge;
+  handlerCopy = handler;
+  delegate = [(FMDNSURLSession *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v8 URLSession:self didReceiveChallenge:v9 completionHandler:v7];
+    [delegate URLSession:self didReceiveChallenge:challengeCopy completionHandler:handlerCopy];
   }
 }
 

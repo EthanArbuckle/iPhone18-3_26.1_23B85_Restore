@@ -1,20 +1,20 @@
 @interface SBFTouchPassThroughWindow
-- (SBFTouchPassThroughWindow)initWithFrame:(CGRect)a3;
-- (SBFTouchPassThroughWindow)initWithWindowScene:(id)a3 role:(id)a4 debugName:(id)a5;
+- (SBFTouchPassThroughWindow)initWithFrame:(CGRect)frame;
+- (SBFTouchPassThroughWindow)initWithWindowScene:(id)scene role:(id)role debugName:(id)name;
 - (id)description;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation SBFTouchPassThroughWindow
 
-- (SBFTouchPassThroughWindow)initWithWindowScene:(id)a3 role:(id)a4 debugName:(id)a5
+- (SBFTouchPassThroughWindow)initWithWindowScene:(id)scene role:(id)role debugName:(id)name
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  sceneCopy = scene;
+  roleCopy = role;
+  nameCopy = name;
+  if (sceneCopy)
   {
-    [v9 screen];
+    [sceneCopy screen];
   }
 
   else
@@ -30,16 +30,16 @@
 
   v25.receiver = self;
   v25.super_class = SBFTouchPassThroughWindow;
-  v21 = [(SBFTouchPassThroughWindow *)&v25 _initWithFrame:v11 debugName:v9 windowScene:v14, v16, v18, v20];
+  v21 = [(SBFTouchPassThroughWindow *)&v25 _initWithFrame:nameCopy debugName:sceneCopy windowScene:v14, v16, v18, v20];
   if (v21)
   {
-    v22 = [objc_opt_class() touchPassThroughRootViewControllerClass];
-    if (([(objc_class *)v22 isSubclassOfClass:objc_opt_class()]& 1) != 0)
+    touchPassThroughRootViewControllerClass = [objc_opt_class() touchPassThroughRootViewControllerClass];
+    if (([(objc_class *)touchPassThroughRootViewControllerClass isSubclassOfClass:objc_opt_class()]& 1) != 0)
     {
-      if (!v10)
+      if (!roleCopy)
       {
 LABEL_8:
-        v23 = objc_alloc_init(v22);
+        v23 = objc_alloc_init(touchPassThroughRootViewControllerClass);
         [(SBFTouchPassThroughWindow *)v21 setRootViewController:v23];
 
         goto LABEL_9;
@@ -49,13 +49,13 @@ LABEL_8:
     else
     {
       [SBFTouchPassThroughWindow initWithWindowScene:a2 role:v21 debugName:?];
-      if (!v10)
+      if (!roleCopy)
       {
         goto LABEL_8;
       }
     }
 
-    [(SBFTouchPassThroughWindow *)v21 _setRoleHint:v10];
+    [(SBFTouchPassThroughWindow *)v21 _setRoleHint:roleCopy];
     goto LABEL_8;
   }
 
@@ -64,7 +64,7 @@ LABEL_9:
   return v21;
 }
 
-- (SBFTouchPassThroughWindow)initWithFrame:(CGRect)a3
+- (SBFTouchPassThroughWindow)initWithFrame:(CGRect)frame
 {
   v4 = MEMORY[0x1E695DF30];
   v5 = *MEMORY[0x1E695D920];
@@ -78,20 +78,20 @@ LABEL_9:
 - (id)description
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v4 = [(SBFTouchPassThroughWindow *)self _debugName];
-  v5 = [v3 appendObject:v4 withName:0];
+  _debugName = [(SBFTouchPassThroughWindow *)self _debugName];
+  v5 = [v3 appendObject:_debugName withName:0];
 
-  v6 = [v3 appendSuper];
-  v7 = [v3 build];
+  appendSuper = [v3 appendSuper];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = SBFTouchPassThroughWindow;
-  v5 = [(SBFTouchPassThroughWindow *)&v9 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(SBFTouchPassThroughWindow *)&v9 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {

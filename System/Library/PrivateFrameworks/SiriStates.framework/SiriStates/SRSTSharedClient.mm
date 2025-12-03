@@ -2,8 +2,8 @@
 - (SRSTSharedClient)init;
 - (SRSTSharedClientDelegate)delegate;
 - (SRSTSharedState)currentState;
-- (void)stateMachineWithClient:(id)a3 didReceiveEvent:(int64_t)a4;
-- (void)stateMachineWithClient:(id)a3 didTransitionToState:(id)a4;
+- (void)stateMachineWithClient:(id)client didReceiveEvent:(int64_t)event;
+- (void)stateMachineWithClient:(id)client didTransitionToState:(id)state;
 @end
 
 @implementation SRSTSharedClient
@@ -24,31 +24,31 @@
 - (SRSTSharedState)currentState
 {
   v3 = [SRSTSharedState alloc];
-  v4 = [(_SRSTSharedClient *)self->_underlyingObject currentState];
-  v5 = [(SRSTSharedState *)v3 initWithUnderlyingObject:v4];
+  currentState = [(_SRSTSharedClient *)self->_underlyingObject currentState];
+  v5 = [(SRSTSharedState *)v3 initWithUnderlyingObject:currentState];
 
   return v5;
 }
 
-- (void)stateMachineWithClient:(id)a3 didReceiveEvent:(int64_t)a4
+- (void)stateMachineWithClient:(id)client didReceiveEvent:(int64_t)event
 {
-  v6 = [(SRSTSharedClient *)self delegate];
+  delegate = [(SRSTSharedClient *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(SRSTSharedClient *)self delegate];
-    [v8 stateMachineWithClient:self didReceiveEvent:a4];
+    delegate2 = [(SRSTSharedClient *)self delegate];
+    [delegate2 stateMachineWithClient:self didReceiveEvent:event];
   }
 }
 
-- (void)stateMachineWithClient:(id)a3 didTransitionToState:(id)a4
+- (void)stateMachineWithClient:(id)client didTransitionToState:(id)state
 {
-  v5 = a4;
-  v7 = [(SRSTSharedClient *)self delegate];
-  v6 = [[SRSTSharedState alloc] initWithUnderlyingObject:v5];
+  stateCopy = state;
+  delegate = [(SRSTSharedClient *)self delegate];
+  v6 = [[SRSTSharedState alloc] initWithUnderlyingObject:stateCopy];
 
-  [v7 stateMachineWithClient:self didTransitionToState:v6];
+  [delegate stateMachineWithClient:self didTransitionToState:v6];
 }
 
 - (SRSTSharedClientDelegate)delegate

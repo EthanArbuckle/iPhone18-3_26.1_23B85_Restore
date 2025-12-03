@@ -1,10 +1,10 @@
 @interface ASVDeceleration
-- (ASVDeceleration)initWithVelocity:(float)a3 minEndDelta:(float)a4;
+- (ASVDeceleration)initWithVelocity:(float)velocity minEndDelta:(float)delta;
 @end
 
 @implementation ASVDeceleration
 
-- (ASVDeceleration)initWithVelocity:(float)a3 minEndDelta:(float)a4
+- (ASVDeceleration)initWithVelocity:(float)velocity minEndDelta:(float)delta
 {
   v10.receiver = self;
   v10.super_class = ASVDeceleration;
@@ -12,8 +12,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_velocity = a3;
-    v6->_minEndDelta = a4;
+    v6->_velocity = velocity;
+    v6->_minEndDelta = delta;
     v8 = CACurrentMediaTime();
     v7->_startTime = v8;
     v7->_currentTime = v8;

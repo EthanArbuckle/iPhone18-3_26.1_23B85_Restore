@@ -1,27 +1,27 @@
 @interface SSItemOfferDevice
-- (SSItemOfferDevice)initWithDeviceIdentifier:(int64_t)a3;
-- (SSItemOfferDevice)initWithOfferDeviceDicitionary:(id)a3;
+- (SSItemOfferDevice)initWithDeviceIdentifier:(int64_t)identifier;
+- (SSItemOfferDevice)initWithOfferDeviceDicitionary:(id)dicitionary;
 - (void)dealloc;
 @end
 
 @implementation SSItemOfferDevice
 
-- (SSItemOfferDevice)initWithDeviceIdentifier:(int64_t)a3
+- (SSItemOfferDevice)initWithDeviceIdentifier:(int64_t)identifier
 {
   v5.receiver = self;
   v5.super_class = SSItemOfferDevice;
   result = [(SSItemOfferDevice *)&v5 init];
   if (result)
   {
-    result->_deviceIdentifier = a3;
+    result->_deviceIdentifier = identifier;
   }
 
   return result;
 }
 
-- (SSItemOfferDevice)initWithOfferDeviceDicitionary:(id)a3
+- (SSItemOfferDevice)initWithOfferDeviceDicitionary:(id)dicitionary
 {
-  if (!a3)
+  if (!dicitionary)
   {
     [(SSItemOfferDevice *)a2 initWithOfferDeviceDicitionary:?];
   }
@@ -31,34 +31,34 @@
   v5 = [(SSItemOfferDevice *)&v21 init];
   if (v5)
   {
-    v6 = [a3 objectForKey:@"device-type-id"];
+    v6 = [dicitionary objectForKey:@"device-type-id"];
     if (objc_opt_respondsToSelector())
     {
       v5->_deviceIdentifier = [v6 intValue];
     }
 
-    v7 = [a3 objectForKey:@"minimum-product-version"];
+    v7 = [dicitionary objectForKey:@"minimum-product-version"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v5->_minimumProductVersion = v7;
     }
 
-    v8 = [a3 objectForKey:@"minimum-device-description"];
+    v8 = [dicitionary objectForKey:@"minimum-device-description"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v8 = 0;
     }
 
-    v9 = [a3 objectForKey:@"minimum-device-title"];
+    v9 = [dicitionary objectForKey:@"minimum-device-title"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v9 = 0;
     }
 
-    v10 = [a3 objectForKey:@"minimum-device-description-url"];
+    v10 = [dicitionary objectForKey:@"minimum-device-description-url"];
     objc_opt_class();
     v11 = 0;
     if (objc_opt_isKindOfClass())
@@ -66,7 +66,7 @@
       v11 = [MEMORY[0x1E695DFF8] URLWithString:v10];
     }
 
-    v12 = [a3 objectForKey:@"minimum-device-description-url-title"];
+    v12 = [dicitionary objectForKey:@"minimum-device-description-url-title"];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     if (v9 | v8)
@@ -79,21 +79,21 @@
       v5->_incompatibleDeviceError = [[SSItemOfferDeviceError alloc] _initWithMessage:v8 title:v9 URLTitle:v12 URL:v11];
     }
 
-    v14 = [a3 objectForKey:@"minimum-product-version-description"];
+    v14 = [dicitionary objectForKey:@"minimum-product-version-description"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v14 = 0;
     }
 
-    v15 = [a3 objectForKey:@"minimum-product-version-title"];
+    v15 = [dicitionary objectForKey:@"minimum-product-version-title"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v15 = 0;
     }
 
-    v16 = [a3 objectForKey:@"minimum-product-version-description-url"];
+    v16 = [dicitionary objectForKey:@"minimum-product-version-description-url"];
     objc_opt_class();
     v17 = 0;
     if (objc_opt_isKindOfClass())
@@ -101,7 +101,7 @@
       v17 = [MEMORY[0x1E695DFF8] URLWithString:v16];
     }
 
-    v18 = [a3 objectForKey:@"minimum-product-version-description-url-title"];
+    v18 = [dicitionary objectForKey:@"minimum-product-version-description-url-title"];
     objc_opt_class();
     v19 = objc_opt_isKindOfClass();
     if (v15 | v14)

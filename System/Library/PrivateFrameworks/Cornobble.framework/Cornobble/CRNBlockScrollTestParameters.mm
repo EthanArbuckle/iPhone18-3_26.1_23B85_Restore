@@ -1,28 +1,28 @@
 @interface CRNBlockScrollTestParameters
-- (CRNBlockScrollTestParameters)initWithTestName:(id)a3 withComposerBlock:(id)a4 completionHandler:(id)a5;
+- (CRNBlockScrollTestParameters)initWithTestName:(id)name withComposerBlock:(id)block completionHandler:(id)handler;
 - (RCPSyntheticEventStream)eventStream;
 - (id)composerBlock;
 @end
 
 @implementation CRNBlockScrollTestParameters
 
-- (CRNBlockScrollTestParameters)initWithTestName:(id)a3 withComposerBlock:(id)a4 completionHandler:(id)a5
+- (CRNBlockScrollTestParameters)initWithTestName:(id)name withComposerBlock:(id)block completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  blockCopy = block;
+  handlerCopy = handler;
   v19.receiver = self;
   v19.super_class = CRNBlockScrollTestParameters;
   v12 = [(CRNBlockScrollTestParameters *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_testName, a3);
-    v14 = MEMORY[0x24C1B6890](v10);
+    objc_storeStrong(&v12->_testName, name);
+    v14 = MEMORY[0x24C1B6890](blockCopy);
     composerBlock = v13->_composerBlock;
     v13->_composerBlock = v14;
 
-    v16 = MEMORY[0x24C1B6890](v11);
+    v16 = MEMORY[0x24C1B6890](handlerCopy);
     completionHandler = v13->_completionHandler;
     v13->_completionHandler = v16;
   }
@@ -52,8 +52,8 @@
 
     v4 = v3;
     _Block_object_dispose(&v9, 8);
-    v5 = [(CRNBlockScrollTestParameters *)self composerBlock];
-    v6 = [v3 eventStreamWithEventActions:v5];
+    composerBlock = [(CRNBlockScrollTestParameters *)self composerBlock];
+    v6 = [v3 eventStreamWithEventActions:composerBlock];
   }
 
   else

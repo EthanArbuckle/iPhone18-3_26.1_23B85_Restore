@@ -1,8 +1,8 @@
 @interface MessageListFetchHelper
 + (OS_os_log)log;
-- (BOOL)fetchMailboxesIsUserInitiated:(BOOL)a3;
-- (MessageListFetchHelper)initWithFetchController:(id)a3 mailboxes:(id)a4;
-- (void)setMailboxes:(id)a3;
+- (BOOL)fetchMailboxesIsUserInitiated:(BOOL)initiated;
+- (MessageListFetchHelper)initWithFetchController:(id)controller mailboxes:(id)mailboxes;
+- (void)setMailboxes:(id)mailboxes;
 @end
 
 @implementation MessageListFetchHelper
@@ -22,7 +22,7 @@ void __29__MessageListFetchHelper_log__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __29__MessageListFetchHelper_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_4 != -1)
   {
     dispatch_once(&log_onceToken_4, block);
@@ -33,29 +33,29 @@ void __29__MessageListFetchHelper_log__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (MessageListFetchHelper)initWithFetchController:(id)a3 mailboxes:(id)a4
+- (MessageListFetchHelper)initWithFetchController:(id)controller mailboxes:(id)mailboxes
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  mailboxesCopy = mailboxes;
   v12.receiver = self;
   v12.super_class = MessageListFetchHelper;
   v9 = [(MessageListFetchHelper *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    [(MessageListFetchHelper *)v9 setMailboxes:v8];
-    objc_storeStrong(&v10->_fetchController, a3);
+    [(MessageListFetchHelper *)v9 setMailboxes:mailboxesCopy];
+    objc_storeStrong(&v10->_fetchController, controller);
   }
 
   return v10;
 }
 
-- (void)setMailboxes:(id)a3
+- (void)setMailboxes:(id)mailboxes
 {
-  v8 = a3;
+  mailboxesCopy = mailboxes;
   if (![(NSArray *)self->_mailboxes isEqualToArray:?])
   {
-    v4 = [v8 ef_filter:&__block_literal_global_5];
+    v4 = [mailboxesCopy ef_filter:&__block_literal_global_5];
     mailboxes = self->_mailboxes;
     self->_mailboxes = v4;
     v6 = v4;
@@ -65,17 +65,17 @@ void __29__MessageListFetchHelper_log__block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)fetchMailboxesIsUserInitiated:(BOOL)a3
+- (BOOL)fetchMailboxesIsUserInitiated:(BOOL)initiated
 {
-  v3 = a3;
+  initiatedCopy = initiated;
   v23 = *MEMORY[0x277D85DE8];
   p_mailboxesNeedFetching = &self->_mailboxesNeedFetching;
-  if (!self->_mailboxesNeedFetching && !a3)
+  if (!self->_mailboxesNeedFetching && !initiated)
   {
-    v6 = +[MessageListFetchHelper log];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+    fetchController2 = +[MessageListFetchHelper log];
+    if (os_log_type_enabled(fetchController2, OS_LOG_TYPE_DEBUG))
     {
-      [(MessageListFetchHelper *)p_mailboxesNeedFetching fetchMailboxesIsUserInitiated:v6];
+      [(MessageListFetchHelper *)p_mailboxesNeedFetching fetchMailboxesIsUserInitiated:fetchController2];
     }
 
 LABEL_13:
@@ -84,16 +84,16 @@ LABEL_13:
   }
 
   self->_mailboxesNeedFetching = 0;
-  v7 = [(MessageListFetchHelper *)self mailboxes];
-  v8 = [v7 count];
+  mailboxes = [(MessageListFetchHelper *)self mailboxes];
+  v8 = [mailboxes count];
 
-  v6 = +[MessageListFetchHelper log];
-  v9 = os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG);
+  fetchController2 = +[MessageListFetchHelper log];
+  v9 = os_log_type_enabled(fetchController2, OS_LOG_TYPE_DEBUG);
   if (!v8)
   {
     if (v9)
     {
-      [MessageListFetchHelper fetchMailboxesIsUserInitiated:v6];
+      [MessageListFetchHelper fetchMailboxesIsUserInitiated:fetchController2];
     }
 
     goto LABEL_13;
@@ -101,27 +101,27 @@ LABEL_13:
 
   if (v9)
   {
-    v15 = [(MessageListFetchHelper *)self fetchController];
+    fetchController = [(MessageListFetchHelper *)self fetchController];
     mailboxesNeedFetching = self->_mailboxesNeedFetching;
     v17 = 134218496;
-    v18 = v15;
+    v18 = fetchController;
     v19 = 1024;
     v20 = mailboxesNeedFetching;
     v21 = 1024;
-    v22 = v3;
-    _os_log_debug_impl(&dword_214A5E000, v6, OS_LOG_TYPE_DEBUG, "Fetching (%p). _mailboxesNeedFetching: %{BOOL}d, userInitiated: %{BOOL}d", &v17, 0x18u);
+    v22 = initiatedCopy;
+    _os_log_debug_impl(&dword_214A5E000, fetchController2, OS_LOG_TYPE_DEBUG, "Fetching (%p). _mailboxesNeedFetching: %{BOOL}d, userInitiated: %{BOOL}d", &v17, 0x18u);
   }
 
   v10 = MEMORY[0x277D06BC0];
-  if (!v3)
+  if (!initiatedCopy)
   {
     v10 = MEMORY[0x277D06BB8];
   }
 
   v11 = *v10;
-  v6 = [(MessageListFetchHelper *)self fetchController];
-  v12 = [(MessageListFetchHelper *)self mailboxes];
-  [v6 performFetchOfType:v11 mailboxes:v12];
+  fetchController2 = [(MessageListFetchHelper *)self fetchController];
+  mailboxes2 = [(MessageListFetchHelper *)self mailboxes];
+  [fetchController2 performFetchOfType:v11 mailboxes:mailboxes2];
 
   v13 = 1;
 LABEL_14:

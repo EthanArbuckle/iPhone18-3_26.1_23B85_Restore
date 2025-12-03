@@ -1,23 +1,23 @@
 @interface WFOverlayImageActionUIKitUserInterface
-- (void)cancelPresentationWithCompletionHandler:(id)a3;
-- (void)finishWithFileRepresentations:(id)a3 error:(id)a4;
-- (void)showWithOverlayImage:(id)a3 images:(id)a4 completionHandler:(id)a5;
+- (void)cancelPresentationWithCompletionHandler:(id)handler;
+- (void)finishWithFileRepresentations:(id)representations error:(id)error;
+- (void)showWithOverlayImage:(id)image images:(id)images completionHandler:(id)handler;
 @end
 
 @implementation WFOverlayImageActionUIKitUserInterface
 
-- (void)cancelPresentationWithCompletionHandler:(id)a3
+- (void)cancelPresentationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __82__WFOverlayImageActionUIKitUserInterface_cancelPresentationWithCompletionHandler___block_invoke;
   v7[3] = &unk_278C375C8;
   v7[4] = self;
-  v8 = v4;
+  v8 = handlerCopy;
   v6.receiver = self;
   v6.super_class = WFOverlayImageActionUIKitUserInterface;
-  v5 = v4;
+  v5 = handlerCopy;
   [(WFEmbeddableActionUserInterface *)&v6 cancelPresentationWithCompletionHandler:v7];
 }
 
@@ -32,74 +32,74 @@ uint64_t __82__WFOverlayImageActionUIKitUserInterface_cancelPresentationWithComp
   return v4();
 }
 
-- (void)finishWithFileRepresentations:(id)a3 error:(id)a4
+- (void)finishWithFileRepresentations:(id)representations error:(id)error
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(WFOverlayImageActionUIKitUserInterface *)self completionHandler];
+  representationsCopy = representations;
+  errorCopy = error;
+  completionHandler = [(WFOverlayImageActionUIKitUserInterface *)self completionHandler];
 
-  if (v7)
+  if (completionHandler)
   {
-    v8 = [(WFOverlayImageActionUIKitUserInterface *)self completionHandler];
-    (v8)[2](v8, v9, v6);
+    completionHandler2 = [(WFOverlayImageActionUIKitUserInterface *)self completionHandler];
+    (completionHandler2)[2](completionHandler2, representationsCopy, errorCopy);
   }
 
   [(WFOverlayImageActionUIKitUserInterface *)self setCompletionHandler:0];
 }
 
-- (void)showWithOverlayImage:(id)a3 images:(id)a4 completionHandler:(id)a5
+- (void)showWithOverlayImage:(id)image images:(id)images completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  imageCopy = image;
+  imagesCopy = images;
+  handlerCopy = handler;
+  if (imageCopy)
   {
-    if (v10)
+    if (imagesCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"WFOverlayImageActionUIKitUserInterface.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"images"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFOverlayImageActionUIKitUserInterface.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"images"}];
 
-    if (v11)
+    if (handlerCopy)
     {
       goto LABEL_4;
     }
 
 LABEL_7:
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"WFOverlayImageActionUIKitUserInterface.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFOverlayImageActionUIKitUserInterface.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
     goto LABEL_4;
   }
 
-  v14 = [MEMORY[0x277CCA890] currentHandler];
-  [v14 handleFailureInMethod:a2 object:self file:@"WFOverlayImageActionUIKitUserInterface.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"image"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"WFOverlayImageActionUIKitUserInterface.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"image"}];
 
-  if (!v10)
+  if (!imagesCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  if (!v11)
+  if (!handlerCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_4:
-  [(WFOverlayImageActionUIKitUserInterface *)self setCompletionHandler:v11];
+  [(WFOverlayImageActionUIKitUserInterface *)self setCompletionHandler:handlerCopy];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __88__WFOverlayImageActionUIKitUserInterface_showWithOverlayImage_images_completionHandler___block_invoke;
   block[3] = &unk_278C37058;
-  v18 = v10;
-  v19 = v9;
-  v20 = self;
-  v12 = v9;
-  v13 = v10;
+  v18 = imagesCopy;
+  v19 = imageCopy;
+  selfCopy = self;
+  v12 = imageCopy;
+  v13 = imagesCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 

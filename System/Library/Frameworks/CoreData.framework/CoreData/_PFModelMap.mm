@@ -1,11 +1,11 @@
 @interface _PFModelMap
 + (id)ancillaryModelFactoryClasses;
-- (id)entitiesForContext:(uint64_t)a3 configuration:;
-- (void)addManagedObjectModel:(uint64_t)a1;
-- (void)ancillaryEntityWithName:(void *)a1;
+- (id)entitiesForContext:(uint64_t)context configuration:;
+- (void)addManagedObjectModel:(uint64_t)model;
+- (void)ancillaryEntityWithName:(void *)name;
 - (void)dealloc;
-- (void)entityForClassName:(void *)a3 inContext:;
-- (void)initWithClientModel:(void *)a1;
+- (void)entityForClassName:(void *)name inContext:;
+- (void)initWithClientModel:(void *)model;
 @end
 
 @implementation _PFModelMap
@@ -61,11 +61,11 @@
   [(_PFModelMap *)&v8 dealloc];
 }
 
-- (void)initWithClientModel:(void *)a1
+- (void)initWithClientModel:(void *)model
 {
-  v2 = a1;
+  modelCopy = model;
   v23 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (model)
   {
     if ([a2 _modelsReferenceIDOffset])
     {
@@ -73,20 +73,20 @@
       objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"Illegal attempt to register a client managed object model with a non-zero offset (%ld).\n%@", objc_msgSend(a2, "_modelsReferenceIDOffset"), a2), 0}]);
     }
 
-    v21.receiver = v2;
+    v21.receiver = modelCopy;
     v21.super_class = _PFModelMap;
-    v2 = objc_msgSendSuper2(&v21, sel_init);
-    if (v2)
+    modelCopy = objc_msgSendSuper2(&v21, sel_init);
+    if (modelCopy)
     {
       v4 = objc_autoreleasePoolPush();
-      v2[1] = a2;
+      modelCopy[1] = a2;
       v5 = [objc_msgSend(a2 "entitiesByName")];
-      v2[5] = v5;
-      v2[6] = v5;
+      modelCopy[5] = v5;
+      modelCopy[6] = v5;
       v6 = [+[_PFModelMap ancillaryModelFactoryClasses](_PFModelMap "ancillaryModelFactoryClasses")];
       v7 = malloc_type_malloc(8 * [v6 count] + 8, 0x100004000313F17uLL);
-      v2[8] = v7;
-      *v7 = v2[6];
+      modelCopy[8] = v7;
+      *v7 = modelCopy[6];
       v19 = 0u;
       v20 = 0u;
       v17 = 0u;
@@ -109,9 +109,9 @@
             }
 
             v10 = v13 + 1;
-            v14 = [*(*(&v17 + 1) + 8 * v12) ancillaryEntityCount];
-            *(v2[8] + 8 * v13 + 8) = v14;
-            v2[6] += v14;
+            ancillaryEntityCount = [*(*(&v17 + 1) + 8 * v12) ancillaryEntityCount];
+            *(modelCopy[8] + 8 * v13 + 8) = ancillaryEntityCount;
+            modelCopy[6] += ancillaryEntityCount;
             ++v12;
             ++v13;
           }
@@ -123,23 +123,23 @@
         while (v9);
       }
 
-      [(_PFModelMap *)v2 addManagedObjectModel:a2];
+      [(_PFModelMap *)modelCopy addManagedObjectModel:a2];
       objc_autoreleasePoolPop(v4);
     }
   }
 
   v15 = *MEMORY[0x1E69E9840];
-  return v2;
+  return modelCopy;
 }
 
-- (void)addManagedObjectModel:(uint64_t)a1
+- (void)addManagedObjectModel:(uint64_t)model
 {
   v43 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (model)
   {
-    if (!*(a1 + 32))
+    if (!*(model + 32))
     {
-      *(a1 + 32) = PF_CALLOC_OBJECT_ARRAY(*(a1 + 48));
+      *(model + 32) = PF_CALLOC_OBJECT_ARRAY(*(model + 48));
     }
 
     context = objc_autoreleasePoolPush();
@@ -147,7 +147,7 @@
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v4 = *(a1 + 24);
+    v4 = *(model + 24);
     v5 = [v4 countByEnumeratingWithState:&v37 objects:v42 count:16];
     if (!v5)
     {
@@ -166,8 +166,8 @@
         }
 
         v9 = *(*(&v37 + 1) + 8 * i);
-        v10 = [v9 _modelsReferenceIDOffset];
-        if (v10 == [a2 _modelsReferenceIDOffset])
+        _modelsReferenceIDOffset = [v9 _modelsReferenceIDOffset];
+        if (_modelsReferenceIDOffset == [a2 _modelsReferenceIDOffset])
         {
           v11 = [objc_msgSend(v9 "entities")];
           if (v11 != [objc_msgSend(a2 "entities")])
@@ -195,7 +195,7 @@
     if (v7)
     {
 LABEL_16:
-      v12 = *(a1 + 16);
+      v12 = *(model + 16);
       if (v12)
       {
         v13 = [v12 mutableCopy];
@@ -207,7 +207,7 @@ LABEL_16:
       }
 
       v14 = v13;
-      v15 = *(a1 + 56);
+      v15 = *(model + 56);
       if (v15)
       {
         v16 = [v15 mutableCopy];
@@ -219,7 +219,7 @@ LABEL_16:
       }
 
       v17 = v16;
-      v18 = *(a1 + 24);
+      v18 = *(model + 24);
       if (v18)
       {
         v19 = [v18 mutableCopy];
@@ -250,13 +250,13 @@ LABEL_16:
             }
 
             v24 = *(*(&v33 + 1) + 8 * j);
-            v25 = _PFModelMapSlotForEntity(a1, v24);
+            v25 = _PFModelMapSlotForEntity(model, v24);
             [v17 setObject:v24 forKey:_PFModelMapPathForEntity(v24)];
-            v26 = *(*(a1 + 32) + 8 * v25);
+            v26 = *(*(model + 32) + 8 * v25);
             if (v26 != v24)
             {
 
-              *(*(a1 + 32) + 8 * v25) = v24;
+              *(*(model + 32) + 8 * v25) = v24;
             }
 
             [v14 addObject:v24];
@@ -268,10 +268,10 @@ LABEL_16:
         while (v21);
       }
 
-      *(a1 + 24) = [v20 copy];
-      *(a1 + 16) = v14;
+      *(model + 24) = [v20 copy];
+      *(model + 16) = v14;
 
-      *(a1 + 56) = [v17 copy];
+      *(model + 56) = [v17 copy];
     }
 
     objc_autoreleasePoolPop(context);
@@ -280,28 +280,28 @@ LABEL_16:
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)ancillaryEntityWithName:(void *)a1
+- (void)ancillaryEntityWithName:(void *)name
 {
-  if (!a1)
+  if (!name)
   {
     return 0;
   }
 
-  v3 = a1[5];
-  if (v3 >= a1[6])
+  v3 = name[5];
+  if (v3 >= name[6])
   {
     return 0;
   }
 
   while (1)
   {
-    v5 = *(a1[4] + 8 * v3);
+    v5 = *(name[4] + 8 * v3);
     if ([objc_msgSend(v5 "name")])
     {
       break;
     }
 
-    if (++v3 >= a1[6])
+    if (++v3 >= name[6])
     {
       return 0;
     }
@@ -310,21 +310,21 @@ LABEL_16:
   return v5;
 }
 
-- (void)entityForClassName:(void *)a3 inContext:
+- (void)entityForClassName:(void *)name inContext:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v5 = [a3 _allowAncillaryEntities];
+  _allowAncillaryEntities = [name _allowAncillaryEntities];
   v6 = 40;
-  if (v5)
+  if (_allowAncillaryEntities)
   {
     v6 = 48;
   }
 
-  v7 = *(a1 + v6);
+  v7 = *(self + v6);
   if (!v7)
   {
     return 0;
@@ -332,11 +332,11 @@ LABEL_16:
 
   for (i = 0; i < v7; ++i)
   {
-    v9 = *(*(a1 + 32) + 8 * i);
-    v10 = [v9 managedObjectClassName];
-    if (v10 && [v10 isEqualToString:a2])
+    v9 = *(*(self + 32) + 8 * i);
+    managedObjectClassName = [v9 managedObjectClassName];
+    if (managedObjectClassName && [managedObjectClassName isEqualToString:a2])
     {
-      i = *(a1 + 48);
+      i = *(self + 48);
     }
 
     else
@@ -348,10 +348,10 @@ LABEL_16:
   return v9;
 }
 
-- (id)entitiesForContext:(uint64_t)a3 configuration:
+- (id)entitiesForContext:(uint64_t)context configuration:
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     v13 = 0;
 LABEL_15:
@@ -361,14 +361,14 @@ LABEL_15:
 
   if ([a2 _allowAncillaryEntities])
   {
-    if (a3)
+    if (context)
     {
       v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v18 = 0u;
       v19 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v6 = *(a1 + 24);
+      v6 = *(self + 24);
       v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v7)
       {
@@ -384,17 +384,17 @@ LABEL_15:
             }
 
             v11 = *(*(&v18 + 1) + 8 * i);
-            if (v11 == *(a1 + 8))
+            if (v11 == *(self + 8))
             {
-              v12 = [v11 entitiesForConfiguration:a3];
+              entities = [v11 entitiesForConfiguration:context];
             }
 
             else
             {
-              v12 = [v11 entities];
+              entities = [v11 entities];
             }
 
-            [v5 addObjectsFromArray:v12];
+            [v5 addObjectsFromArray:entities];
           }
 
           v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -408,12 +408,12 @@ LABEL_15:
       goto LABEL_15;
     }
 
-    v16 = *(a1 + 16);
+    v16 = *(self + 16);
   }
 
   else
   {
-    v16 = [*(a1 + 8) entitiesForConfiguration:a3];
+    v16 = [*(self + 8) entitiesForConfiguration:context];
   }
 
   v17 = *MEMORY[0x1E69E9840];

@@ -65,7 +65,7 @@
     v35 = v29 + (v30 - v29) * 0.5;
     v36 = v31 + (v32 - v31) * 0.5;
     v37 = log(fmin((v36 - MinY) / (v36 - v31), fmin((v35 - MinX) / (v35 - v29), fmin((MaxY - v36) / (v32 - v36), (MaxX - v35) / (v30 - v35)))));
-    v38 = [(CIDroste *)self _CIDroste];
+    _CIDroste = [(CIDroste *)self _CIDroste];
     v39 = *(MEMORY[0x1E695F040] + 8);
     v40 = *(MEMORY[0x1E695F040] + 16);
     v49 = *MEMORY[0x1E695F040];
@@ -83,7 +83,7 @@
     [(NSNumber *)self->inputRotation doubleValue];
     v61[3] = [CIVector vectorWithX:"vectorWithX:Y:" Y:?];
     v61[4] = [CIVector vectorWithX:v33 * 0.5 Y:v34 * 0.5];
-    v7 = [v38 applyWithExtent:v52 roiCallback:inputImage inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v61, 5), v49, v39, v40, v51}];
+    v7 = [_CIDroste applyWithExtent:v52 roiCallback:inputImage inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v61, 5), v49, v39, v40, v51}];
   }
 
   _Block_object_dispose(&v53, 8);

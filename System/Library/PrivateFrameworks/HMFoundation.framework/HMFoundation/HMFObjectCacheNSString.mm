@@ -1,16 +1,16 @@
 @interface HMFObjectCacheNSString
-+ (id)hmf_cachedInstanceForString:(id)a3;
-+ (id)hmf_setOfCachedInstancesForStrings:(id)a3;
++ (id)hmf_cachedInstanceForString:(id)string;
++ (id)hmf_setOfCachedInstancesForStrings:(id)strings;
 @end
 
 @implementation HMFObjectCacheNSString
 
-+ (id)hmf_cachedInstanceForString:(id)a3
++ (id)hmf_cachedInstanceForString:(id)string
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_autoreleasePoolPush();
-  if (!v3)
+  if (!stringCopy)
   {
     v8 = 0;
     goto LABEL_16;
@@ -29,7 +29,7 @@
       v19 = 138544130;
       v20 = v11;
       v21 = 2112;
-      v22 = v3;
+      v22 = stringCopy;
       v23 = 2112;
       v24 = v12;
       v25 = 2112;
@@ -41,7 +41,7 @@
     goto LABEL_15;
   }
 
-  if (([v3 conformsToProtocol:&unk_283ED34A0] & 1) == 0)
+  if (([stringCopy conformsToProtocol:&unk_283ED34A0] & 1) == 0)
   {
     v9 = objc_autoreleasePoolPush();
     v10 = HMFGetOSLogHandle();
@@ -51,7 +51,7 @@
       v19 = 138543874;
       v20 = v15;
       v21 = 2112;
-      v22 = v3;
+      v22 = stringCopy;
       v23 = 2112;
       v24 = objc_opt_class();
       v16 = v24;
@@ -61,7 +61,7 @@
 LABEL_15:
 
     objc_autoreleasePoolPop(v9);
-    v8 = v3;
+    v8 = stringCopy;
     goto LABEL_16;
   }
 
@@ -76,10 +76,10 @@ LABEL_15:
     v5 = qword_280AFC668;
   }
 
-  v8 = [v5 member:v3];
+  v8 = [v5 member:stringCopy];
   if (!v8)
   {
-    v8 = [v3 copy];
+    v8 = [stringCopy copy];
     [qword_280AFC668 addObject:v8];
   }
 
@@ -92,20 +92,20 @@ LABEL_16:
   return v8;
 }
 
-+ (id)hmf_setOfCachedInstancesForStrings:(id)a3
++ (id)hmf_setOfCachedInstancesForStrings:(id)strings
 {
-  if (a3)
+  if (strings)
   {
     v3 = MEMORY[0x277CBEB58];
-    v4 = a3;
-    v5 = [v3 setWithCapacity:{objc_msgSend(v4, "count")}];
+    stringsCopy = strings;
+    v5 = [v3 setWithCapacity:{objc_msgSend(stringsCopy, "count")}];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __80__HMFObjectCacheNSString_CollectionSupport__hmf_setOfCachedInstancesForStrings___block_invoke;
     v9[3] = &unk_2786E7DD8;
     v10 = v5;
     v6 = v5;
-    [v4 enumerateObjectsUsingBlock:v9];
+    [stringsCopy enumerateObjectsUsingBlock:v9];
 
     v7 = [v6 copy];
   }

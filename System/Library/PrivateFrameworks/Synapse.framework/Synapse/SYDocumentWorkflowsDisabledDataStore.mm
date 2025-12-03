@@ -1,7 +1,7 @@
 @interface SYDocumentWorkflowsDisabledDataStore
 + (id)_disabledRepositoryError;
-- (BOOL)saveUserActivity:(id)a3 forRelatedUniqueIdentifier:(id)a4 sourceBundleIdentifier:(id)a5 error:(id *)a6;
-- (id)fetchUserActivityWithRelatedUniqueIdentifier:(id)a3 error:(id *)a4;
+- (BOOL)saveUserActivity:(id)activity forRelatedUniqueIdentifier:(id)identifier sourceBundleIdentifier:(id)bundleIdentifier error:(id *)error;
+- (id)fetchUserActivityWithRelatedUniqueIdentifier:(id)identifier error:(id *)error;
 @end
 
 @implementation SYDocumentWorkflowsDisabledDataStore
@@ -32,21 +32,21 @@ void __64__SYDocumentWorkflowsDisabledDataStore__disabledRepositoryError__block_
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (id)fetchUserActivityWithRelatedUniqueIdentifier:(id)a3 error:(id *)a4
+- (id)fetchUserActivityWithRelatedUniqueIdentifier:(id)identifier error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [objc_opt_class() _disabledRepositoryError];
+    *error = [objc_opt_class() _disabledRepositoryError];
   }
 
   return 0;
 }
 
-- (BOOL)saveUserActivity:(id)a3 forRelatedUniqueIdentifier:(id)a4 sourceBundleIdentifier:(id)a5 error:(id *)a6
+- (BOOL)saveUserActivity:(id)activity forRelatedUniqueIdentifier:(id)identifier sourceBundleIdentifier:(id)bundleIdentifier error:(id *)error
 {
-  if (a6)
+  if (error)
   {
-    *a6 = [objc_opt_class() _disabledRepositoryError];
+    *error = [objc_opt_class() _disabledRepositoryError];
   }
 
   return 0;

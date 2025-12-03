@@ -20,26 +20,26 @@
 - (int64_t)numberOfRequestedOutputDeviceUIDs;
 - (int64_t)numberOfSuccessAtCompletion;
 - (int64_t)numberOfSuccessAtTimeout;
-- (void)setCommand:(int64_t)a3;
-- (void)setDetails:(id)a3;
-- (void)setDeviceInfo:(id)a3;
-- (void)setDiscoverOutputDevices:(id)a3;
-- (void)setNumberOfDiscoveredOutputDeviceUIDs:(int64_t)a3;
-- (void)setNumberOfEndpoints:(int64_t)a3;
-- (void)setNumberOfErrorsAtCompletion:(int64_t)a3;
-- (void)setNumberOfErrorsAtTimeout:(int64_t)a3;
-- (void)setNumberOfMissingOutputDeviceUIDs:(int64_t)a3;
-- (void)setNumberOfPendingAtTimeout:(int64_t)a3;
-- (void)setNumberOfRequestedOutputDeviceUIDs:(int64_t)a3;
-- (void)setNumberOfSuccessAtCompletion:(int64_t)a3;
-- (void)setNumberOfSuccessAtTimeout:(int64_t)a3;
-- (void)setRequestContainsLocalDeviceUID:(BOOL)a3;
-- (void)setRequestForCompanionOrigin:(BOOL)a3;
-- (void)setRequestForCurrentConfiguration:(BOOL)a3;
-- (void)setRequestForLocalOrigin:(BOOL)a3;
-- (void)setSendCommands:(id)a3;
-- (void)setTimeout:(double)a3;
-- (void)setTracked:(BOOL)a3;
+- (void)setCommand:(int64_t)command;
+- (void)setDetails:(id)details;
+- (void)setDeviceInfo:(id)info;
+- (void)setDiscoverOutputDevices:(id)devices;
+- (void)setNumberOfDiscoveredOutputDeviceUIDs:(int64_t)ds;
+- (void)setNumberOfEndpoints:(int64_t)endpoints;
+- (void)setNumberOfErrorsAtCompletion:(int64_t)completion;
+- (void)setNumberOfErrorsAtTimeout:(int64_t)timeout;
+- (void)setNumberOfMissingOutputDeviceUIDs:(int64_t)ds;
+- (void)setNumberOfPendingAtTimeout:(int64_t)timeout;
+- (void)setNumberOfRequestedOutputDeviceUIDs:(int64_t)ds;
+- (void)setNumberOfSuccessAtCompletion:(int64_t)completion;
+- (void)setNumberOfSuccessAtTimeout:(int64_t)timeout;
+- (void)setRequestContainsLocalDeviceUID:(BOOL)d;
+- (void)setRequestForCompanionOrigin:(BOOL)origin;
+- (void)setRequestForCurrentConfiguration:(BOOL)configuration;
+- (void)setRequestForLocalOrigin:(BOOL)origin;
+- (void)setSendCommands:(id)commands;
+- (void)setTimeout:(double)timeout;
+- (void)setTracked:(BOOL)tracked;
 @end
 
 @implementation MRDSendCommandToEndpointsWithOutputDevicesRequestAnalytics
@@ -51,13 +51,13 @@
   return *(self + v3);
 }
 
-- (void)setDetails:(id)a3
+- (void)setDetails:(id)details
 {
   v5 = OBJC_IVAR___MRDSendCommandToEndpointsWithOutputDevicesRequestAnalytics_details;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = details;
+  detailsCopy = details;
 }
 
 - (MRDeviceInfo)deviceInfo
@@ -67,13 +67,13 @@
   return *(self + v3);
 }
 
-- (void)setDeviceInfo:(id)a3
+- (void)setDeviceInfo:(id)info
 {
   v5 = OBJC_IVAR___MRDSendCommandToEndpointsWithOutputDevicesRequestAnalytics_deviceInfo;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = info;
+  infoCopy = info;
 }
 
 - (int64_t)command
@@ -83,11 +83,11 @@
   return *(self + v3);
 }
 
-- (void)setCommand:(int64_t)a3
+- (void)setCommand:(int64_t)command
 {
   v5 = OBJC_IVAR___MRDSendCommandToEndpointsWithOutputDevicesRequestAnalytics_command;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = command;
 }
 
 - (BOOL)requestContainsLocalDeviceUID
@@ -97,11 +97,11 @@
   return *(self + v3);
 }
 
-- (void)setRequestContainsLocalDeviceUID:(BOOL)a3
+- (void)setRequestContainsLocalDeviceUID:(BOOL)d
 {
   v5 = OBJC_IVAR___MRDSendCommandToEndpointsWithOutputDevicesRequestAnalytics_requestContainsLocalDeviceUID;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = d;
 }
 
 - (BOOL)requestForCurrentConfiguration
@@ -111,11 +111,11 @@
   return *(self + v3);
 }
 
-- (void)setRequestForCurrentConfiguration:(BOOL)a3
+- (void)setRequestForCurrentConfiguration:(BOOL)configuration
 {
   v5 = OBJC_IVAR___MRDSendCommandToEndpointsWithOutputDevicesRequestAnalytics_requestForCurrentConfiguration;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = configuration;
 }
 
 - (BOOL)requestForLocalOrigin
@@ -125,11 +125,11 @@
   return *(self + v3);
 }
 
-- (void)setRequestForLocalOrigin:(BOOL)a3
+- (void)setRequestForLocalOrigin:(BOOL)origin
 {
   v5 = OBJC_IVAR___MRDSendCommandToEndpointsWithOutputDevicesRequestAnalytics_requestForLocalOrigin;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = origin;
 }
 
 - (BOOL)requestForCompanionOrigin
@@ -139,11 +139,11 @@
   return *(self + v3);
 }
 
-- (void)setRequestForCompanionOrigin:(BOOL)a3
+- (void)setRequestForCompanionOrigin:(BOOL)origin
 {
   v5 = OBJC_IVAR___MRDSendCommandToEndpointsWithOutputDevicesRequestAnalytics_requestForCompanionOrigin;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = origin;
 }
 
 - (int64_t)numberOfRequestedOutputDeviceUIDs
@@ -153,11 +153,11 @@
   return *(self + v3);
 }
 
-- (void)setNumberOfRequestedOutputDeviceUIDs:(int64_t)a3
+- (void)setNumberOfRequestedOutputDeviceUIDs:(int64_t)ds
 {
   v5 = OBJC_IVAR___MRDSendCommandToEndpointsWithOutputDevicesRequestAnalytics_numberOfRequestedOutputDeviceUIDs;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = ds;
 }
 
 - (int64_t)numberOfDiscoveredOutputDeviceUIDs
@@ -167,11 +167,11 @@
   return *(self + v3);
 }
 
-- (void)setNumberOfDiscoveredOutputDeviceUIDs:(int64_t)a3
+- (void)setNumberOfDiscoveredOutputDeviceUIDs:(int64_t)ds
 {
   v5 = OBJC_IVAR___MRDSendCommandToEndpointsWithOutputDevicesRequestAnalytics_numberOfDiscoveredOutputDeviceUIDs;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = ds;
 }
 
 - (int64_t)numberOfMissingOutputDeviceUIDs
@@ -181,11 +181,11 @@
   return *(self + v3);
 }
 
-- (void)setNumberOfMissingOutputDeviceUIDs:(int64_t)a3
+- (void)setNumberOfMissingOutputDeviceUIDs:(int64_t)ds
 {
   v5 = OBJC_IVAR___MRDSendCommandToEndpointsWithOutputDevicesRequestAnalytics_numberOfMissingOutputDeviceUIDs;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = ds;
 }
 
 - (int64_t)numberOfEndpoints
@@ -195,11 +195,11 @@
   return *(self + v3);
 }
 
-- (void)setNumberOfEndpoints:(int64_t)a3
+- (void)setNumberOfEndpoints:(int64_t)endpoints
 {
   v5 = OBJC_IVAR___MRDSendCommandToEndpointsWithOutputDevicesRequestAnalytics_numberOfEndpoints;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = endpoints;
 }
 
 - (int64_t)numberOfPendingAtTimeout
@@ -209,11 +209,11 @@
   return *(self + v3);
 }
 
-- (void)setNumberOfPendingAtTimeout:(int64_t)a3
+- (void)setNumberOfPendingAtTimeout:(int64_t)timeout
 {
   v5 = OBJC_IVAR___MRDSendCommandToEndpointsWithOutputDevicesRequestAnalytics_numberOfPendingAtTimeout;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = timeout;
 }
 
 - (int64_t)numberOfErrorsAtTimeout
@@ -223,11 +223,11 @@
   return *(self + v3);
 }
 
-- (void)setNumberOfErrorsAtTimeout:(int64_t)a3
+- (void)setNumberOfErrorsAtTimeout:(int64_t)timeout
 {
   v5 = OBJC_IVAR___MRDSendCommandToEndpointsWithOutputDevicesRequestAnalytics_numberOfErrorsAtTimeout;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = timeout;
 }
 
 - (int64_t)numberOfErrorsAtCompletion
@@ -237,11 +237,11 @@
   return *(self + v3);
 }
 
-- (void)setNumberOfErrorsAtCompletion:(int64_t)a3
+- (void)setNumberOfErrorsAtCompletion:(int64_t)completion
 {
   v5 = OBJC_IVAR___MRDSendCommandToEndpointsWithOutputDevicesRequestAnalytics_numberOfErrorsAtCompletion;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = completion;
 }
 
 - (int64_t)numberOfSuccessAtTimeout
@@ -251,11 +251,11 @@
   return *(self + v3);
 }
 
-- (void)setNumberOfSuccessAtTimeout:(int64_t)a3
+- (void)setNumberOfSuccessAtTimeout:(int64_t)timeout
 {
   v5 = OBJC_IVAR___MRDSendCommandToEndpointsWithOutputDevicesRequestAnalytics_numberOfSuccessAtTimeout;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = timeout;
 }
 
 - (int64_t)numberOfSuccessAtCompletion
@@ -265,11 +265,11 @@
   return *(self + v3);
 }
 
-- (void)setNumberOfSuccessAtCompletion:(int64_t)a3
+- (void)setNumberOfSuccessAtCompletion:(int64_t)completion
 {
   v5 = OBJC_IVAR___MRDSendCommandToEndpointsWithOutputDevicesRequestAnalytics_numberOfSuccessAtCompletion;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = completion;
 }
 
 - (double)timeout
@@ -279,41 +279,41 @@
   return *(self + v3);
 }
 
-- (void)setTimeout:(double)a3
+- (void)setTimeout:(double)timeout
 {
   v5 = OBJC_IVAR___MRDSendCommandToEndpointsWithOutputDevicesRequestAnalytics_timeout;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = timeout;
 }
 
 - (MRDTimingEvent)discoverOutputDevices
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100354B1C();
 
   return v3;
 }
 
-- (void)setDiscoverOutputDevices:(id)a3
+- (void)setDiscoverOutputDevices:(id)devices
 {
   v4 = *(self + OBJC_IVAR___MRDSendCommandToEndpointsWithOutputDevicesRequestAnalytics____lazy_storage___discoverOutputDevices);
-  *(self + OBJC_IVAR___MRDSendCommandToEndpointsWithOutputDevicesRequestAnalytics____lazy_storage___discoverOutputDevices) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___MRDSendCommandToEndpointsWithOutputDevicesRequestAnalytics____lazy_storage___discoverOutputDevices) = devices;
+  devicesCopy = devices;
 }
 
 - (MRDTimingEvent)sendCommands
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100354BA4();
 
   return v3;
 }
 
-- (void)setSendCommands:(id)a3
+- (void)setSendCommands:(id)commands
 {
   v4 = *(self + OBJC_IVAR___MRDSendCommandToEndpointsWithOutputDevicesRequestAnalytics____lazy_storage___sendCommands);
-  *(self + OBJC_IVAR___MRDSendCommandToEndpointsWithOutputDevicesRequestAnalytics____lazy_storage___sendCommands) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___MRDSendCommandToEndpointsWithOutputDevicesRequestAnalytics____lazy_storage___sendCommands) = commands;
+  commandsCopy = commands;
 }
 
 - (BOOL)tracked
@@ -323,11 +323,11 @@
   return *(self + v3);
 }
 
-- (void)setTracked:(BOOL)a3
+- (void)setTracked:(BOOL)tracked
 {
   v5 = OBJC_IVAR___MRDSendCommandToEndpointsWithOutputDevicesRequestAnalytics_tracked;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = tracked;
 }
 
 - (MRDSendCommandToEndpointsWithOutputDevicesRequestAnalytics)init

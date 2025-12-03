@@ -1,18 +1,18 @@
 @interface MailStatusDataSource
-- (void)messageRepository:(id)a3 query:(id)a4 countDidChange:(int64_t)a5;
+- (void)messageRepository:(id)repository query:(id)query countDidChange:(int64_t)change;
 @end
 
 @implementation MailStatusDataSource
 
-- (void)messageRepository:(id)a3 query:(id)a4 countDidChange:(int64_t)a5
+- (void)messageRepository:(id)repository query:(id)query countDidChange:(int64_t)change
 {
-  _objc_retain(a3);
-  _objc_retain(a4);
+  _objc_retain(repository);
+  _objc_retain(query);
   _objc_retain(self);
-  sub_100023C9C(a3, a4, a5);
+  sub_100023C9C(repository, query, change);
   _objc_release(self);
-  _objc_release(a4);
-  _objc_release(a3);
+  _objc_release(query);
+  _objc_release(repository);
 }
 
 @end

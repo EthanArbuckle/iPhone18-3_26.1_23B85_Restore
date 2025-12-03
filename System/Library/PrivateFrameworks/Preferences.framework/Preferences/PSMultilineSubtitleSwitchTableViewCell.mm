@@ -1,26 +1,26 @@
 @interface PSMultilineSubtitleSwitchTableViewCell
 + (Class)alternativeCellClass;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation PSMultilineSubtitleSwitchTableViewCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(PSMultilineSubtitleSwitchTableViewCell *)self detailTextLabel];
-  [v5 setNumberOfLines:0];
+  specifierCopy = specifier;
+  detailTextLabel = [(PSMultilineSubtitleSwitchTableViewCell *)self detailTextLabel];
+  [detailTextLabel setNumberOfLines:0];
 
   v6.receiver = self;
   v6.super_class = PSMultilineSubtitleSwitchTableViewCell;
-  [(PSSubtitleSwitchTableCell *)&v6 refreshCellContentsWithSpecifier:v4];
+  [(PSSubtitleSwitchTableCell *)&v6 refreshCellContentsWithSpecifier:specifierCopy];
 
   [(PSMultilineSubtitleSwitchTableViewCell *)self setNeedsLayout];
 }
 
 + (Class)alternativeCellClass
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = objc_opt_class();
   }

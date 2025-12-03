@@ -1,46 +1,46 @@
 @interface SDHotspotManager
-- (BOOL)isNetworkHostAP:(__WiFiNetwork *)a3;
+- (BOOL)isNetworkHostAP:(__WiFiNetwork *)p;
 - (BOOL)isP2PAllowed;
 - (BOOL)isTethering;
 - (BOOL)isTetheringInUse;
 - (BOOL)netRBTetheringSupported;
-- (BOOL)setHotspotPassword:(id)a3;
+- (BOOL)setHotspotPassword:(id)password;
 - (BOOL)shouldTurnOffTethering;
 - (BOOL)takePowerAssertion;
 - (NSString)hotspotName;
 - (NSString)hotspotPassword;
-- (SDHotspotManager)initWithDelegate:(id)a3;
+- (SDHotspotManager)initWithDelegate:(id)delegate;
 - (SDHotspotManagerDelegate)delegate;
 - (id)_createDefaultPassword;
 - (id)hotspotChannel;
 - (void)addObservers;
 - (void)clearQueuedDiscoveryRequest;
 - (void)dealloc;
-- (void)debugInfoRequest:(id)a3;
+- (void)debugInfoRequest:(id)request;
 - (void)disableMISImmediately;
-- (void)firstUnlockStateChanged:(id)a3;
-- (void)handleHostAPChanged:(id)a3;
+- (void)firstUnlockStateChanged:(id)changed;
+- (void)handleHostAPChanged:(id)changed;
 - (void)handleSystemWakeChange;
 - (void)handleWiFiRestart;
 - (void)invalidateNetworkTimer;
-- (void)misStateChanged:(id)a3;
-- (void)networkTimerFired:(id)a3;
+- (void)misStateChanged:(id)changed;
+- (void)networkTimerFired:(id)fired;
 - (void)notifyHostAPActivated;
-- (void)notifyHostAPError:(id)a3;
+- (void)notifyHostAPError:(id)error;
 - (void)onqueue_captureTailspin;
 - (void)onqueue_cleanUpFailedNetworkBringUp;
-- (void)onqueue_handleHostAPChanged:(id)a3;
+- (void)onqueue_handleHostAPChanged:(id)changed;
 - (void)onqueue_handleSwitchConditionsChanged;
 - (void)onqueue_updateHostAPNetwork;
 - (void)onqueue_updateTetheringSupported;
-- (void)personalHotspotAllowedChanged:(id)a3;
-- (void)queueDiscoveryRequestWithCompletionHandler:(id)a3 modelID:(id)a4 productVersion:(id)a5 canConnectOn5GHz:(BOOL)a6;
+- (void)personalHotspotAllowedChanged:(id)changed;
+- (void)queueDiscoveryRequestWithCompletionHandler:(id)handler modelID:(id)d productVersion:(id)version canConnectOn5GHz:(BOOL)hz;
 - (void)releasePowerAssertion;
 - (void)removeObservers;
 - (void)restartNetworkTimer;
-- (void)setMaxConnectionsReached:(BOOL)a3;
-- (void)simStateChanged:(id)a3;
-- (void)startTetheringWithCompletionHandler:(id)a3 modelID:(id)a4 productVersion:(id)a5 canConnectOn5GHz:(BOOL)a6;
+- (void)setMaxConnectionsReached:(BOOL)reached;
+- (void)simStateChanged:(id)changed;
+- (void)startTetheringWithCompletionHandler:(id)handler modelID:(id)d productVersion:(id)version canConnectOn5GHz:(BOOL)hz;
 - (void)stopTethering;
 - (void)turnOffDiscovery;
 @end
@@ -63,16 +63,16 @@
   }
 }
 
-- (SDHotspotManager)initWithDelegate:(id)a3
+- (SDHotspotManager)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v19.receiver = self;
   v19.super_class = SDHotspotManager;
   v5 = [(SDHotspotManager *)&v19 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v6->_startedHostAP = 0;
     networkTimer = v6->_networkTimer;
     v6->_networkTimer = 0;
@@ -141,7 +141,7 @@
   [v3 removeObserver:self];
 }
 
-- (void)debugInfoRequest:(id)a3
+- (void)debugInfoRequest:(id)request
 {
   v23 = objc_opt_new();
   if ([(SDHotspotManager *)self netRBTetheringSupported])
@@ -172,9 +172,9 @@
   [v23 addObject:v8];
 
   v9 = +[SDStatusMonitor sharedMonitor];
-  v10 = [v9 wifiManager];
+  wifiManager = [v9 wifiManager];
 
-  if (v10)
+  if (wifiManager)
   {
     if (WiFiManagerClientIsTetheringSupported())
     {
@@ -203,8 +203,8 @@
     [v23 addObject:v14];
   }
 
-  v15 = [(SDHotspotManager *)self hostAPNetwork];
-  if (v15)
+  hostAPNetwork = [(SDHotspotManager *)self hostAPNetwork];
+  if (hostAPNetwork)
   {
     v16 = @"YES";
   }
@@ -238,7 +238,7 @@
   sub_100086F68(v22, v23);
 }
 
-- (void)firstUnlockStateChanged:(id)a3
+- (void)firstUnlockStateChanged:(id)changed
 {
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
@@ -249,7 +249,7 @@
   dispatch_async(workQueue, block);
 }
 
-- (void)simStateChanged:(id)a3
+- (void)simStateChanged:(id)changed
 {
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
@@ -260,7 +260,7 @@
   dispatch_async(workQueue, block);
 }
 
-- (void)personalHotspotAllowedChanged:(id)a3
+- (void)personalHotspotAllowedChanged:(id)changed
 {
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
@@ -292,7 +292,7 @@
 
 - (void)onqueue_updateTetheringSupported
 {
-  v3 = [(SDHotspotManager *)self isTetheringSupported];
+  isTetheringSupported = [(SDHotspotManager *)self isTetheringSupported];
   if (self->_cachedWiFiResult)
   {
     v4 = 1;
@@ -301,9 +301,9 @@
   else
   {
     v5 = +[SDStatusMonitor sharedMonitor];
-    v6 = [v5 wifiManager];
+    wifiManager = [v5 wifiManager];
 
-    if (v6)
+    if (wifiManager)
     {
       v4 = WiFiManagerClientIsTetheringSupported() != 0;
     }
@@ -327,20 +327,20 @@
   }
 
   v8 = +[SDStatusMonitor sharedMonitor];
-  v9 = [v8 deviceWasUnlockedOnce];
+  deviceWasUnlockedOnce = [v8 deviceWasUnlockedOnce];
 
   v10 = +[SDStatusMonitor sharedMonitor];
-  v11 = [v10 simStateReady];
+  simStateReady = [v10 simStateReady];
 
   v12 = +[SDStatusMonitor sharedMonitor];
-  v13 = [v12 personalHotspotAllowed];
+  personalHotspotAllowed = [v12 personalHotspotAllowed];
 
   v28 = 0;
   v14 = +[SDStatusMonitor sharedMonitor];
   [v14 cellularDataEnabled:&v28 airplaneMode:&v28 + 1];
 
   v15 = 0;
-  if ((v13 & v4) == 1 && (v7 & 1) == 0 && v9 && v11)
+  if ((personalHotspotAllowed & v4) == 1 && (v7 & 1) == 0 && deviceWasUnlockedOnce && simStateReady)
   {
     if ((v28 & 0x100) != 0)
     {
@@ -391,7 +391,7 @@
 
     v31 = 2112;
     v32 = v19;
-    if (v9)
+    if (deviceWasUnlockedOnce)
     {
       v21 = @"YES";
     }
@@ -402,7 +402,7 @@
     }
 
     v33 = 2112;
-    if (v11)
+    if (simStateReady)
     {
       v22 = @"YES";
     }
@@ -413,7 +413,7 @@
     }
 
     v34 = v20;
-    if (v13)
+    if (personalHotspotAllowed)
     {
       v23 = @"YES";
     }
@@ -452,7 +452,7 @@
   }
 
   [(SDHotspotManager *)self setTetheringSupported:v15 & 1];
-  if (v3 != [(SDHotspotManager *)self isTetheringSupported])
+  if (isTetheringSupported != [(SDHotspotManager *)self isTetheringSupported])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v26 = objc_opt_respondsToSelector();
@@ -473,9 +473,9 @@
 
   cf = 0;
   v5 = +[SDStatusMonitor sharedMonitor];
-  v6 = [v5 defaultWiFiDevice];
+  defaultWiFiDevice = [v5 defaultWiFiDevice];
 
-  if (v6)
+  if (defaultWiFiDevice)
   {
     if (WiFiDeviceClientCopyHostedNetworks())
     {
@@ -581,12 +581,12 @@
 - (BOOL)shouldTurnOffTethering
 {
   v3 = +[SDStatusMonitor sharedMonitor];
-  v4 = [v3 wifiManager];
+  wifiManager = [v3 wifiManager];
 
   v5 = tethering_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(SDMISManager *)self->_misManager connectedHosts];
+    connectedHosts = [(SDMISManager *)self->_misManager connectedHosts];
     if ([(SDMISManager *)self->_misManager hostIsOnlyUSBEthernet])
     {
       v7 = @"YES";
@@ -617,9 +617,9 @@
       v9 = @"NO";
     }
 
-    v10 = [(SDHotspotManager *)self hostAPNetwork];
+    hostAPNetwork = [(SDHotspotManager *)self hostAPNetwork];
     networkTimer = self->_networkTimer;
-    if (v10)
+    if (hostAPNetwork)
     {
       v12 = @"YES";
     }
@@ -630,13 +630,13 @@
     }
 
     v16[0] = 67110658;
-    v16[1] = v6;
+    v16[1] = connectedHosts;
     v17 = 2112;
     v18 = v7;
     v19 = 2112;
     v20 = v8;
     v21 = 2112;
-    v22 = v4;
+    v22 = wifiManager;
     v23 = 2112;
     v24 = v9;
     v25 = 2112;
@@ -652,15 +652,15 @@
   }
 
   v13 = 0;
-  if (self->_flippedHotspotSwitch && v4)
+  if (self->_flippedHotspotSwitch && wifiManager)
   {
     if (WiFiManagerClientGetMISDiscoveryState())
     {
       return 0;
     }
 
-    v15 = [(SDHotspotManager *)self hostAPNetwork];
-    if (v15)
+    hostAPNetwork2 = [(SDHotspotManager *)self hostAPNetwork];
+    if (hostAPNetwork2)
     {
       v13 = 0;
     }
@@ -685,18 +685,18 @@
 - (BOOL)isP2PAllowed
 {
   v2 = +[SDStatusMonitor sharedMonitor];
-  v3 = [v2 wifiManager];
+  wifiManager = [v2 wifiManager];
 
-  return v3 && WiFiManagerClientIsP2PAllowed() != 0;
+  return wifiManager && WiFiManagerClientIsP2PAllowed() != 0;
 }
 
 - (BOOL)isTetheringInUse
 {
   cf = 0;
   v3 = +[SDStatusMonitor sharedMonitor];
-  v4 = [v3 defaultWiFiDevice];
+  defaultWiFiDevice = [v3 defaultWiFiDevice];
 
-  if (v4)
+  if (defaultWiFiDevice)
   {
     v5 = WiFiDeviceClientCopyHostedNetworks();
     if (v5 == 5)
@@ -778,33 +778,33 @@ LABEL_21:
   return v12;
 }
 
-- (void)startTetheringWithCompletionHandler:(id)a3 modelID:(id)a4 productVersion:(id)a5 canConnectOn5GHz:(BOOL)a6
+- (void)startTetheringWithCompletionHandler:(id)handler modelID:(id)d productVersion:(id)version canConnectOn5GHz:(BOOL)hz
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  handlerCopy = handler;
+  dCopy = d;
+  versionCopy = version;
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001C92A8;
   block[3] = &unk_1008D3488;
   block[4] = self;
-  v18 = v11;
-  v19 = v12;
-  v20 = v10;
-  v21 = a6;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = dCopy;
+  v19 = versionCopy;
+  v20 = handlerCopy;
+  hzCopy = hz;
+  v14 = versionCopy;
+  v15 = dCopy;
+  v16 = handlerCopy;
   dispatch_async(workQueue, block);
 }
 
 - (void)stopTethering
 {
   v3 = +[SDStatusMonitor sharedMonitor];
-  v4 = [v3 wifiManager];
+  wifiManager = [v3 wifiManager];
 
-  if (v4)
+  if (wifiManager)
   {
     *keys = *&off_1008D34A8;
     v8[0] = kCFBooleanFalse;
@@ -846,9 +846,9 @@ LABEL_21:
 - (void)disableMISImmediately
 {
   v3 = +[SDStatusMonitor sharedMonitor];
-  v4 = [v3 wifiManager];
+  wifiManager = [v3 wifiManager];
 
-  if (v4)
+  if (wifiManager)
   {
     v5 = tethering_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -893,9 +893,9 @@ LABEL_21:
   [(SDHotspotManager *)self notifyHostAPError:v4];
 
   v5 = +[SDStatusMonitor sharedMonitor];
-  v6 = [v5 wifiManager];
+  wifiManager = [v5 wifiManager];
 
-  if (v6)
+  if (wifiManager)
   {
     *keys = *&off_1008D34A8;
     v10[0] = kCFBooleanFalse;
@@ -933,7 +933,7 @@ LABEL_21:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)networkTimerFired:(id)a3
+- (void)networkTimerFired:(id)fired
 {
   v4 = tethering_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -987,15 +987,15 @@ LABEL_21:
     v21 = v4;
     v7 = [v4 components:2097404 fromDate:v6];
 
-    v8 = [v7 year];
-    v9 = [v7 month];
+    year = [v7 year];
+    month = [v7 month];
     v10 = [v7 day];
-    v11 = [v7 hour];
-    v12 = [v7 minute];
-    v13 = [v7 second];
-    v14 = [v7 timeZone];
-    v15 = [v14 abbreviation];
-    v16 = [NSString stringWithFormat:@"%02ld-%02ld-%02ld_%02ld:%02ld:%02ld_%@", v8, v9, v10, v11, v12, v13, v15];
+    hour = [v7 hour];
+    minute = [v7 minute];
+    second = [v7 second];
+    timeZone = [v7 timeZone];
+    abbreviation = [timeZone abbreviation];
+    v16 = [NSString stringWithFormat:@"%02ld-%02ld-%02ld_%02ld:%02ld:%02ld_%@", year, month, v10, hour, minute, second, abbreviation];
 
     v17 = [NSString stringWithFormat:@"/var/tmp/InstantHotspot_%@.tailspin", v16];
     v18 = +[NSFileManager defaultManager];
@@ -1014,11 +1014,11 @@ LABEL_21:
 
 - (NSString)hotspotName
 {
-  v3 = [(SDHotspotManager *)self hostAPNetwork];
+  hostAPNetwork = [(SDHotspotManager *)self hostAPNetwork];
 
-  if (v3)
+  if (hostAPNetwork)
   {
-    v4 = [(SDHotspotManager *)self hostAPNetwork];
+    hostAPNetwork2 = [(SDHotspotManager *)self hostAPNetwork];
     v5 = WiFiNetworkGetSSID();
   }
 
@@ -1030,13 +1030,13 @@ LABEL_21:
   return v5;
 }
 
-- (BOOL)setHotspotPassword:(id)a3
+- (BOOL)setHotspotPassword:(id)password
 {
-  v3 = a3;
+  passwordCopy = password;
   v4 = +[SDStatusMonitor sharedMonitor];
-  v5 = [v4 wifiManager];
+  wifiManager = [v4 wifiManager];
 
-  if (v5)
+  if (wifiManager)
   {
     v6 = tethering_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1045,10 +1045,10 @@ LABEL_21:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Setting new password", v8, 2u);
     }
 
-    LOBYTE(v5) = WiFiManagerClientSetMisPassword() == 1;
+    LOBYTE(wifiManager) = WiFiManagerClientSetMisPassword() == 1;
   }
 
-  return v5;
+  return wifiManager;
 }
 
 - (id)_createDefaultPassword
@@ -1096,22 +1096,22 @@ LABEL_8:
 - (NSString)hotspotPassword
 {
   v3 = +[SDStatusMonitor sharedMonitor];
-  v4 = [v3 wifiManager];
+  wifiManager = [v3 wifiManager];
 
-  if (v4)
+  if (wifiManager)
   {
-    v4 = WiFiManagerClientCopyMisPassword();
-    if (![(__CFString *)v4 length])
+    wifiManager = WiFiManagerClientCopyMisPassword();
+    if (![(__CFString *)wifiManager length])
     {
-      v5 = [(SDHotspotManager *)self _createDefaultPassword];
+      _createDefaultPassword = [(SDHotspotManager *)self _createDefaultPassword];
 
-      v4 = v5;
+      wifiManager = _createDefaultPassword;
     }
   }
 
-  if (v4)
+  if (wifiManager)
   {
-    v6 = v4;
+    v6 = wifiManager;
   }
 
   else
@@ -1126,11 +1126,11 @@ LABEL_8:
 
 - (id)hotspotChannel
 {
-  v3 = [(SDHotspotManager *)self hostAPNetwork];
+  hostAPNetwork = [(SDHotspotManager *)self hostAPNetwork];
 
-  if (v3)
+  if (hostAPNetwork)
   {
-    v4 = [(SDHotspotManager *)self hostAPNetwork];
+    hostAPNetwork2 = [(SDHotspotManager *)self hostAPNetwork];
     v5 = WiFiNetworkGetChannel();
   }
 
@@ -1142,18 +1142,18 @@ LABEL_8:
   return v5;
 }
 
-- (void)setMaxConnectionsReached:(BOOL)a3
+- (void)setMaxConnectionsReached:(BOOL)reached
 {
-  self->_maxConnectionsReached = a3;
+  self->_maxConnectionsReached = reached;
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 postNotificationName:@"SDHotspotManagerConnectionStateChanged" object:0];
 }
 
-- (void)queueDiscoveryRequestWithCompletionHandler:(id)a3 modelID:(id)a4 productVersion:(id)a5 canConnectOn5GHz:(BOOL)a6
+- (void)queueDiscoveryRequestWithCompletionHandler:(id)handler modelID:(id)d productVersion:(id)version canConnectOn5GHz:(BOOL)hz
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  handlerCopy = handler;
+  dCopy = d;
+  versionCopy = version;
   if (self->_queuedDiscoveryRequest)
   {
     v13 = tethering_log();
@@ -1186,18 +1186,18 @@ LABEL_8:
   }
 
   self->_queuedDiscoveryRequest = 1;
-  v19 = objc_retainBlock(v10);
+  v19 = objc_retainBlock(handlerCopy);
   queuedHandler = self->_queuedHandler;
   self->_queuedHandler = v19;
 
   v21 = self->_queuedModelID;
-  self->_queuedModelID = v11;
-  v22 = v11;
+  self->_queuedModelID = dCopy;
+  v22 = dCopy;
 
   v23 = self->_queuedProductVersion;
-  self->_queuedProductVersion = v12;
+  self->_queuedProductVersion = versionCopy;
 
-  self->_queuedCanConnectOn5GHz = a6;
+  self->_queuedCanConnectOn5GHz = hz;
 }
 
 - (void)clearQueuedDiscoveryRequest
@@ -1238,10 +1238,10 @@ LABEL_8:
         }
 
         v8 = *(*(&v12 + 1) + 8 * v7);
-        v9 = [(SDHotspotManager *)self hotspotName];
-        v10 = [(SDHotspotManager *)self hotspotPassword];
-        v11 = [(SDHotspotManager *)self hotspotChannel];
-        (*(v8 + 16))(v8, v9, v10, v11, 0);
+        hotspotName = [(SDHotspotManager *)self hotspotName];
+        hotspotPassword = [(SDHotspotManager *)self hotspotPassword];
+        hotspotChannel = [(SDHotspotManager *)self hotspotChannel];
+        (*(v8 + 16))(v8, hotspotName, hotspotPassword, hotspotChannel, 0);
 
         v7 = v7 + 1;
       }
@@ -1256,9 +1256,9 @@ LABEL_8:
   [(NSMutableArray *)self->_handlers removeAllObjects];
 }
 
-- (void)notifyHostAPError:(id)a3
+- (void)notifyHostAPError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -1293,7 +1293,7 @@ LABEL_8:
   [(NSMutableArray *)self->_handlers removeAllObjects];
 }
 
-- (void)misStateChanged:(id)a3
+- (void)misStateChanged:(id)changed
 {
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
@@ -1304,7 +1304,7 @@ LABEL_8:
   dispatch_async(workQueue, block);
 }
 
-- (BOOL)isNetworkHostAP:(__WiFiNetwork *)a3
+- (BOOL)isNetworkHostAP:(__WiFiNetwork *)p
 {
   v3 = WiFiNetworkGetProperty();
   v4 = v3;
@@ -1321,29 +1321,29 @@ LABEL_8:
   return v5;
 }
 
-- (void)handleHostAPChanged:(id)a3
+- (void)handleHostAPChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   workQueue = self->_workQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001CAFD0;
   v7[3] = &unk_1008CE028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changedCopy;
+  v6 = changedCopy;
   dispatch_async(workQueue, v7);
 }
 
-- (void)onqueue_handleHostAPChanged:(id)a3
+- (void)onqueue_handleHostAPChanged:(id)changed
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"HostAPEventData"];
+  userInfo = [changed userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"HostAPEventData"];
 
   v6 = [v5 objectForKeyedSubscript:@"HostApEnabled"];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
     [(SDHotspotManager *)self onqueue_updateHostAPNetwork];
     [(SDHotspotManager *)self invalidateNetworkTimer];
@@ -1361,16 +1361,16 @@ LABEL_8:
     }
 
     v9 = [v5 objectForKeyedSubscript:@"HostApDisableHotspotAdvertise"];
-    v10 = [v9 BOOLValue];
+    bOOLValue2 = [v9 BOOLValue];
 
-    [(SDHotspotManager *)self setMaxConnectionsReached:v10];
+    [(SDHotspotManager *)self setMaxConnectionsReached:bOOLValue2];
     [(SDHotspotManager *)self notifyHostAPActivated];
     v11 = tethering_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(SDHotspotManager *)self isP2PAllowed];
+      isP2PAllowed = [(SDHotspotManager *)self isP2PAllowed];
       v13 = @"NO";
-      if (v12)
+      if (isP2PAllowed)
       {
         v13 = @"YES";
       }

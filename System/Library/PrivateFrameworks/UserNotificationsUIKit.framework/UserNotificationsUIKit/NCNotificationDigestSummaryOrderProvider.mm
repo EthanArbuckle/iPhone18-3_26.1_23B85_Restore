@@ -1,66 +1,66 @@
 @interface NCNotificationDigestSummaryOrderProvider
 - (id)atxUUID;
-- (void)atxLogSummaryPlatterExpandedIsUpcoming:(BOOL)a3;
-- (void)atxLogSummaryPlatterShownIsUpcoming:(BOOL)a3;
-- (void)generateDigestForATXUserNotificationArrays:(id)a3 withCompletionBlock:(id)a4;
+- (void)atxLogSummaryPlatterExpandedIsUpcoming:(BOOL)upcoming;
+- (void)atxLogSummaryPlatterShownIsUpcoming:(BOOL)upcoming;
+- (void)generateDigestForATXUserNotificationArrays:(id)arrays withCompletionBlock:(id)block;
 @end
 
 @implementation NCNotificationDigestSummaryOrderProvider
 
 - (id)atxUUID
 {
-  v2 = [(NCNotificationDigestSummaryOrderProvider *)self userNotificationDigest];
-  v3 = [v2 uuid];
+  userNotificationDigest = [(NCNotificationDigestSummaryOrderProvider *)self userNotificationDigest];
+  uuid = [userNotificationDigest uuid];
 
-  return v3;
+  return uuid;
 }
 
-- (void)atxLogSummaryPlatterShownIsUpcoming:(BOOL)a3
+- (void)atxLogSummaryPlatterShownIsUpcoming:(BOOL)upcoming
 {
-  v3 = [(NCNotificationDigestSummaryOrderProvider *)self userNotificationDigest];
-  [v3 logCollapsedPreview];
+  userNotificationDigest = [(NCNotificationDigestSummaryOrderProvider *)self userNotificationDigest];
+  [userNotificationDigest logCollapsedPreview];
 }
 
-- (void)atxLogSummaryPlatterExpandedIsUpcoming:(BOOL)a3
+- (void)atxLogSummaryPlatterExpandedIsUpcoming:(BOOL)upcoming
 {
-  v3 = a3;
-  v4 = [(NCNotificationDigestSummaryOrderProvider *)self userNotificationDigest];
-  v5 = v4;
-  if (v3)
+  upcomingCopy = upcoming;
+  userNotificationDigest = [(NCNotificationDigestSummaryOrderProvider *)self userNotificationDigest];
+  v5 = userNotificationDigest;
+  if (upcomingCopy)
   {
-    [v4 logUpcomingView];
+    [userNotificationDigest logUpcomingView];
   }
 
   else
   {
-    [v4 logScheduledView];
+    [userNotificationDigest logScheduledView];
   }
 }
 
-- (void)generateDigestForATXUserNotificationArrays:(id)a3 withCompletionBlock:(id)a4
+- (void)generateDigestForATXUserNotificationArrays:(id)arrays withCompletionBlock:(id)block
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  arraysCopy = arrays;
+  blockCopy = block;
   v8 = *MEMORY[0x277D77DD0];
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [(NCNotificationSummaryOrderProvider *)self summaryHeading];
+    summaryHeading = [(NCNotificationSummaryOrderProvider *)self summaryHeading];
     *buf = 138543362;
-    v16 = v10;
+    v16 = summaryHeading;
     _os_log_impl(&dword_21E77E000, v9, OS_LOG_TYPE_DEFAULT, "Generating new notification digest for %{public}@", buf, 0xCu);
   }
 
-  v11 = [objc_opt_class() atxDigestGeneratorClient];
+  atxDigestGeneratorClient = [objc_opt_class() atxDigestGeneratorClient];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __107__NCNotificationDigestSummaryOrderProvider_generateDigestForATXUserNotificationArrays_withCompletionBlock___block_invoke;
   v13[3] = &unk_278370B80;
   v13[4] = self;
-  v14 = v7;
-  v12 = v7;
-  [v11 generateDigestForNotificationArrays:v6 reply:v13];
+  v14 = blockCopy;
+  v12 = blockCopy;
+  [atxDigestGeneratorClient generateDigestForNotificationArrays:arraysCopy reply:v13];
 }
 
 void __107__NCNotificationDigestSummaryOrderProvider_generateDigestForATXUserNotificationArrays_withCompletionBlock___block_invoke(uint64_t a1, void *a2, void *a3)

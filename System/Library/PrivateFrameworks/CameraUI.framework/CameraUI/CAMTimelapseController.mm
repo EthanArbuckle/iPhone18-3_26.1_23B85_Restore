@@ -1,44 +1,44 @@
 @interface CAMTimelapseController
-+ (__IOSurface)_newVideoPreviewSurfaceForTimelapseState:(id)a3;
-+ (id)createPlaceholderResultForTimelapseState:(id)a3;
++ (__IOSurface)_newVideoPreviewSurfaceForTimelapseState:(id)state;
++ (id)createPlaceholderResultForTimelapseState:(id)state;
 - (BOOL)_canCapturePhoto;
 - (BOOL)_enqueueCaptureRequest;
-- (BOOL)startCapturingWithCaptureDevice:(int64_t)a3 captureSession:(unsigned __int16)a4;
-- (BOOL)stopCapturingWithReasons:(int64_t)a3;
+- (BOOL)startCapturingWithCaptureDevice:(int64_t)device captureSession:(unsigned __int16)session;
+- (BOOL)stopCapturingWithReasons:(int64_t)reasons;
 - (CAMCaptureGraphConfiguration)_graphConfigurationForCurrentState;
-- (CAMTimelapseController)initWithCaptureController:(id)a3 locationController:(id)a4 motionController:(id)a5 persistenceController:(id)a6 storageController:(id)a7 librarySelectionController:(id)a8 nebulaDaemonProxyManager:(id)a9;
+- (CAMTimelapseController)initWithCaptureController:(id)controller locationController:(id)locationController motionController:(id)motionController persistenceController:(id)persistenceController storageController:(id)storageController librarySelectionController:(id)selectionController nebulaDaemonProxyManager:(id)manager;
 - (CAMTimelapseControllerDelegate)delegate;
 - (NSDate)captureStartTime;
-- (id)_createThumbnailImageFromPlaceholderResult:(id)a3;
+- (id)_createThumbnailImageFromPlaceholderResult:(id)result;
 - (id)_stillImageCaptureRequestWithCurrentSettings;
-- (void)_applicationDidEnterBackground:(id)a3;
+- (void)_applicationDidEnterBackground:(id)background;
 - (void)_captureTimerFired;
 - (void)_notifyInsufficientDiskSpaceForContinuingCapture;
-- (void)_notifyInsufficientDiskSpaceForStartingCaptureWithNeededBytes:(int64_t)a3 availableBytes:(int64_t)a4;
-- (void)_prepareForTimelapseCaptureSetModeAndDevice:(BOOL)a3;
-- (void)_previewStarted:(id)a3;
-- (void)_reserveDiskSpaceForTimelapseUUID:(id)a3 preferHEVC:(BOOL)a4 withCompletionBlock:(id)a5;
+- (void)_notifyInsufficientDiskSpaceForStartingCaptureWithNeededBytes:(int64_t)bytes availableBytes:(int64_t)availableBytes;
+- (void)_prepareForTimelapseCaptureSetModeAndDevice:(BOOL)device;
+- (void)_previewStarted:(id)started;
+- (void)_reserveDiskSpaceForTimelapseUUID:(id)d preferHEVC:(BOOL)c withCompletionBlock:(id)block;
 - (void)_resetIgnoringTimerCallbacksWaitingForCaptureResponse;
 - (void)_restoreCaptureStateFromDisk;
-- (void)_saveStateToDisk:(id)a3;
-- (void)_sessionRuntimeErrored:(id)a3;
-- (void)_setBackendRecoveryNeeded:(BOOL)a3;
-- (void)_setNewCaptureStateForCaptureDevice:(int64_t)a3 captureSession:(unsigned __int16)a4;
-- (void)_setPreviewStarted:(BOOL)a3;
+- (void)_saveStateToDisk:(id)disk;
+- (void)_sessionRuntimeErrored:(id)errored;
+- (void)_setBackendRecoveryNeeded:(BOOL)needed;
+- (void)_setNewCaptureStateForCaptureDevice:(int64_t)device captureSession:(unsigned __int16)session;
+- (void)_setPreviewStarted:(BOOL)started;
 - (void)_startCaptureTimer;
-- (void)_startCapturingWithCaptureDevice:(int64_t)a3 captureSession:(unsigned __int16)a4;
-- (void)_stopCapturingWithReasons:(int64_t)a3;
+- (void)_startCapturingWithCaptureDevice:(int64_t)device captureSession:(unsigned __int16)session;
+- (void)_stopCapturingWithReasons:(int64_t)reasons;
 - (void)_teardownCaptureTimer;
 - (void)_triggerBackendCrashRecoveryIfNeeded;
 - (void)_updateFocusAndExposureForStartCapturing;
-- (void)_updateFocusLensPosition:(float)a3 forTimelapseUUID:(id)a4 forceUpdate:(BOOL)a5;
+- (void)_updateFocusLensPosition:(float)position forTimelapseUUID:(id)d forceUpdate:(BOOL)update;
 - (void)_updateLocationIfNecessary;
 - (void)dealloc;
-- (void)forceStopTimelapseCaptureWithReasons:(int64_t)a3;
+- (void)forceStopTimelapseCaptureWithReasons:(int64_t)reasons;
 - (void)restoreConfiguration;
-- (void)setLastFocusResult:(id)a3;
-- (void)stillImageRequestDidCompleteStillImageCapture:(id)a3 withResponse:(id)a4 error:(id)a5;
-- (void)stillImageRequestDidCompleteStillImageLocalPersistence:(id)a3 withResponse:(id)a4 error:(id)a5;
+- (void)setLastFocusResult:(id)result;
+- (void)stillImageRequestDidCompleteStillImageCapture:(id)capture withResponse:(id)response error:(id)error;
+- (void)stillImageRequestDidCompleteStillImageLocalPersistence:(id)persistence withResponse:(id)response error:(id)error;
 @end
 
 @implementation CAMTimelapseController
@@ -51,16 +51,16 @@
     v3 = os_log_create("com.apple.camera", "Nebula");
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(CAMTimelapseState *)self->__state timelapseUUID];
+      timelapseUUID = [(CAMTimelapseState *)self->__state timelapseUUID];
       v7 = 138543362;
-      v8 = v4;
+      v8 = timelapseUUID;
       _os_log_impl(&dword_1A3640000, v3, OS_LOG_TYPE_DEFAULT, "Resuming timelapse capture for %{public}@", &v7, 0xCu);
     }
 
     [(CAMTimelapseController *)self _prepareForTimelapseCaptureSetModeAndDevice:1];
-    v5 = [(CAMTimelapseController *)self _nebulaDaemonProxyManager];
-    v6 = [(CAMTimelapseState *)self->__state timelapseUUID];
-    [v5 resumeTimelapseWithUUID:v6];
+    _nebulaDaemonProxyManager = [(CAMTimelapseController *)self _nebulaDaemonProxyManager];
+    timelapseUUID2 = [(CAMTimelapseState *)self->__state timelapseUUID];
+    [_nebulaDaemonProxyManager resumeTimelapseWithUUID:timelapseUUID2];
   }
 
   [(CAMTimelapseController *)self _setBackendRecoveryNeeded:1];
@@ -70,9 +70,9 @@
 {
   if ([(CAMTimelapseController *)self _backendRecoveryNeeded]&& [(CAMTimelapseController *)self _previewStarted])
   {
-    v3 = [(CAMTimelapseController *)self isCapturing];
-    v4 = [(CAMTimelapseController *)self _nebulaDaemonProxyManager];
-    [v4 performCrashRecoveryIfNeededForceEndLastTimelapseSession:!v3];
+    isCapturing = [(CAMTimelapseController *)self isCapturing];
+    _nebulaDaemonProxyManager = [(CAMTimelapseController *)self _nebulaDaemonProxyManager];
+    [_nebulaDaemonProxyManager performCrashRecoveryIfNeededForceEndLastTimelapseSession:!isCapturing];
     [(CAMTimelapseController *)self _setBackendRecoveryNeeded:0];
   }
 }
@@ -90,28 +90,28 @@
   }
 }
 
-- (CAMTimelapseController)initWithCaptureController:(id)a3 locationController:(id)a4 motionController:(id)a5 persistenceController:(id)a6 storageController:(id)a7 librarySelectionController:(id)a8 nebulaDaemonProxyManager:(id)a9
+- (CAMTimelapseController)initWithCaptureController:(id)controller locationController:(id)locationController motionController:(id)motionController persistenceController:(id)persistenceController storageController:(id)storageController librarySelectionController:(id)selectionController nebulaDaemonProxyManager:(id)manager
 {
-  v32 = a3;
-  v31 = a4;
-  v30 = a5;
-  v29 = a6;
-  v28 = a7;
-  v16 = a8;
-  v17 = a9;
+  controllerCopy = controller;
+  locationControllerCopy = locationController;
+  motionControllerCopy = motionController;
+  persistenceControllerCopy = persistenceController;
+  storageControllerCopy = storageController;
+  selectionControllerCopy = selectionController;
+  managerCopy = manager;
   v33.receiver = self;
   v33.super_class = CAMTimelapseController;
   v18 = [(CAMTimelapseController *)&v33 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->__captureController, a3);
-    objc_storeStrong(&v19->__locationController, a4);
-    objc_storeStrong(&v19->__motionController, a5);
-    objc_storeStrong(&v19->__storageController, a7);
-    objc_storeStrong(&v19->__persistenceController, a6);
-    objc_storeStrong(&v19->__librarySelectionController, a8);
-    objc_storeStrong(&v19->__nebulaDaemonProxyManager, a9);
+    objc_storeStrong(&v18->__captureController, controller);
+    objc_storeStrong(&v19->__locationController, locationController);
+    objc_storeStrong(&v19->__motionController, motionController);
+    objc_storeStrong(&v19->__storageController, storageController);
+    objc_storeStrong(&v19->__persistenceController, persistenceController);
+    objc_storeStrong(&v19->__librarySelectionController, selectionController);
+    objc_storeStrong(&v19->__nebulaDaemonProxyManager, manager);
     [(CAMNebulaDaemonProxyManager *)v19->__nebulaDaemonProxyManager setTimelapseClientDelegate:v19];
     v20 = objc_alloc_init(MEMORY[0x1E696AB50]);
     inFlightTimelapseUUIDs = v19->__inFlightTimelapseUUIDs;
@@ -122,12 +122,12 @@
     v19->__pendingCompletedStates = v22;
 
     v19->__greenTeaLogger = ct_green_tea_logger_create();
-    v24 = [(CUCaptureController *)v19->__captureController videoPreviewLayer];
-    v25 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v25 addObserver:v19 selector:sel__deviceStarted_ name:*MEMORY[0x1E69868F0] object:0];
-    [v25 addObserver:v19 selector:sel__sessionStarted_ name:*MEMORY[0x1E6986A90] object:0];
-    [v25 addObserver:v19 selector:sel__sessionRuntimeErrored_ name:*MEMORY[0x1E6986B20] object:0];
-    [v25 addObserver:v19 selector:sel__previewStarted_ name:*MEMORY[0x1E6986B70] object:v24];
+    videoPreviewLayer = [(CUCaptureController *)v19->__captureController videoPreviewLayer];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v19 selector:sel__deviceStarted_ name:*MEMORY[0x1E69868F0] object:0];
+    [defaultCenter addObserver:v19 selector:sel__sessionStarted_ name:*MEMORY[0x1E6986A90] object:0];
+    [defaultCenter addObserver:v19 selector:sel__sessionRuntimeErrored_ name:*MEMORY[0x1E6986B20] object:0];
+    [defaultCenter addObserver:v19 selector:sel__previewStarted_ name:*MEMORY[0x1E6986B70] object:videoPreviewLayer];
     v26 = +[CAMPriorityNotificationCenter defaultCenter];
     [v26 addObserver:v19 selector:sel__applicationDidEnterBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
     [v26 addObserver:v19 selector:sel__applicationWillEnterForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
@@ -139,8 +139,8 @@
 - (void)dealloc
 {
   ct_green_tea_logger_destroy();
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4 = +[CAMPriorityNotificationCenter defaultCenter];
   [v4 removeObserver:self];
@@ -151,21 +151,21 @@
   [(CAMTimelapseController *)&v5 dealloc];
 }
 
-- (void)_setBackendRecoveryNeeded:(BOOL)a3
+- (void)_setBackendRecoveryNeeded:(BOOL)needed
 {
-  if (self->__backendRecoveryNeeded != a3)
+  if (self->__backendRecoveryNeeded != needed)
   {
-    self->__backendRecoveryNeeded = a3;
+    self->__backendRecoveryNeeded = needed;
     [(CAMTimelapseController *)self _triggerBackendCrashRecoveryIfNeeded];
   }
 }
 
-- (void)_setPreviewStarted:(BOOL)a3
+- (void)_setPreviewStarted:(BOOL)started
 {
-  if (self->__previewStarted != a3)
+  if (self->__previewStarted != started)
   {
-    self->__previewStarted = a3;
-    if (!a3)
+    self->__previewStarted = started;
+    if (!started)
     {
       [(CAMTimelapseController *)self _setFocusAndExposureAdjusted:0];
     }
@@ -174,31 +174,31 @@
   }
 }
 
-- (void)_prepareForTimelapseCaptureSetModeAndDevice:(BOOL)a3
+- (void)_prepareForTimelapseCaptureSetModeAndDevice:(BOOL)device
 {
-  v3 = a3;
-  v9 = [(CAMTimelapseController *)self _nebulaDaemonProxyManager];
-  [v9 ensureConnectionToDaemon];
-  v5 = [(CAMTimelapseController *)self _captureController];
-  if (v3)
+  deviceCopy = device;
+  _nebulaDaemonProxyManager = [(CAMTimelapseController *)self _nebulaDaemonProxyManager];
+  [_nebulaDaemonProxyManager ensureConnectionToDaemon];
+  _captureController = [(CAMTimelapseController *)self _captureController];
+  if (deviceCopy)
   {
-    v6 = [(CAMTimelapseController *)self _graphConfigurationForCurrentState];
-    [v5 changeToGraphConfiguration:v6 zoomFactor:0 minimumExecutionTime:1.0 outputToExternalStorage:0.0];
+    _graphConfigurationForCurrentState = [(CAMTimelapseController *)self _graphConfigurationForCurrentState];
+    [_captureController changeToGraphConfiguration:_graphConfigurationForCurrentState zoomFactor:0 minimumExecutionTime:1.0 outputToExternalStorage:0.0];
   }
 
-  v7 = [(CAMTimelapseController *)self _graphConfigurationForCurrentState];
-  v8 = [v7 devicePosition];
+  _graphConfigurationForCurrentState2 = [(CAMTimelapseController *)self _graphConfigurationForCurrentState];
+  devicePosition = [_graphConfigurationForCurrentState2 devicePosition];
 
-  [v5 setCapturingTimelapse:1 forDevicePosition:v8];
+  [_captureController setCapturingTimelapse:1 forDevicePosition:devicePosition];
   [(CAMTimelapseController *)self _updateFocusAndExposureForStartCapturing];
   [(CAMTimelapseController *)self _startCaptureTimer];
 }
 
-- (BOOL)startCapturingWithCaptureDevice:(int64_t)a3 captureSession:(unsigned __int16)a4
+- (BOOL)startCapturingWithCaptureDevice:(int64_t)device captureSession:(unsigned __int16)session
 {
-  v4 = a4;
-  v7 = [(CAMTimelapseController *)self isCapturing];
-  if (v7)
+  sessionCopy = session;
+  isCapturing = [(CAMTimelapseController *)self isCapturing];
+  if (isCapturing)
   {
     v8 = os_log_create("com.apple.camera", "Nebula");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -207,34 +207,34 @@
       _os_log_impl(&dword_1A3640000, v8, OS_LOG_TYPE_DEFAULT, "Error: trying to start timelapse capture when already in progress", v12, 2u);
     }
 
-    v9 = [(CAMTimelapseState *)self->__state captureOrientation];
+    captureOrientation = [(CAMTimelapseState *)self->__state captureOrientation];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained timelapseController:self startedWithCaptureOrientation:v9];
+    [WeakRetained timelapseController:self startedWithCaptureOrientation:captureOrientation];
   }
 
   else
   {
-    [(CAMTimelapseController *)self _startCapturingWithCaptureDevice:a3 captureSession:v4];
+    [(CAMTimelapseController *)self _startCapturingWithCaptureDevice:device captureSession:sessionCopy];
   }
 
-  return !v7;
+  return !isCapturing;
 }
 
-- (BOOL)stopCapturingWithReasons:(int64_t)a3
+- (BOOL)stopCapturingWithReasons:(int64_t)reasons
 {
   v11 = *MEMORY[0x1E69E9840];
   v5 = os_log_create("com.apple.camera", "Nebula");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134217984;
-    v10 = a3;
+    reasonsCopy = reasons;
     _os_log_impl(&dword_1A3640000, v5, OS_LOG_TYPE_DEFAULT, "Stopping timelapse capture with reasons %ld", &v9, 0xCu);
   }
 
-  v6 = [(CAMTimelapseController *)self isCapturing];
-  if (v6)
+  isCapturing = [(CAMTimelapseController *)self isCapturing];
+  if (isCapturing)
   {
-    [(CAMTimelapseController *)self _stopCapturingWithReasons:a3];
+    [(CAMTimelapseController *)self _stopCapturingWithReasons:reasons];
   }
 
   else
@@ -247,24 +247,24 @@
     }
   }
 
-  return v6;
+  return isCapturing;
 }
 
-- (void)_startCapturingWithCaptureDevice:(int64_t)a3 captureSession:(unsigned __int16)a4
+- (void)_startCapturingWithCaptureDevice:(int64_t)device captureSession:(unsigned __int16)session
 {
-  [(CAMTimelapseController *)self _setNewCaptureStateForCaptureDevice:a3 captureSession:a4];
-  v5 = [(CAMTimelapseState *)self->__state timelapseUUID];
-  v6 = [(CAMTimelapseController *)self _state];
-  v7 = [v6 preferHEVC];
+  [(CAMTimelapseController *)self _setNewCaptureStateForCaptureDevice:device captureSession:session];
+  timelapseUUID = [(CAMTimelapseState *)self->__state timelapseUUID];
+  _state = [(CAMTimelapseController *)self _state];
+  preferHEVC = [_state preferHEVC];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __74__CAMTimelapseController__startCapturingWithCaptureDevice_captureSession___block_invoke;
   v9[3] = &unk_1E76FC650;
   v9[4] = self;
-  v10 = v5;
-  v8 = v5;
-  [(CAMTimelapseController *)self _reserveDiskSpaceForTimelapseUUID:v8 preferHEVC:v7 withCompletionBlock:v9];
+  v10 = timelapseUUID;
+  v8 = timelapseUUID;
+  [(CAMTimelapseController *)self _reserveDiskSpaceForTimelapseUUID:v8 preferHEVC:preferHEVC withCompletionBlock:v9];
 }
 
 void __74__CAMTimelapseController__startCapturingWithCaptureDevice_captureSession___block_invoke(uint64_t a1, char a2, char a3)
@@ -314,30 +314,30 @@ void __74__CAMTimelapseController__startCapturingWithCaptureDevice_captureSessio
   }
 }
 
-- (void)_stopCapturingWithReasons:(int64_t)a3
+- (void)_stopCapturingWithReasons:(int64_t)reasons
 {
   v47 = *MEMORY[0x1E69E9840];
   v5 = os_log_create("com.apple.camera", "Nebula");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(CAMTimelapseState *)self->__state timelapseUUID];
+    timelapseUUID = [(CAMTimelapseState *)self->__state timelapseUUID];
     *buf = 138543618;
-    v44 = v6;
+    v44 = timelapseUUID;
     v45 = 2048;
-    v46 = a3;
+    reasonsCopy = reasons;
     _os_log_impl(&dword_1A3640000, v5, OS_LOG_TYPE_DEFAULT, "Stopping timelapse capture for %{public}@, reason %ld", buf, 0x16u);
   }
 
   [(CAMTimelapseController *)self _teardownCaptureTimer];
   state = self->__state;
-  v8 = [MEMORY[0x1E695DF00] date];
-  [(CAMTimelapseState *)state addStopReasons:a3 stopTime:v8];
+  date = [MEMORY[0x1E695DF00] date];
+  [(CAMTimelapseState *)state addStopReasons:reasons stopTime:date];
 
-  v9 = [(CAMTimelapseState *)self->__state timelapseUUID];
-  v40 = v9;
-  if ([(NSCountedSet *)self->__inFlightTimelapseUUIDs countForObject:v9])
+  timelapseUUID2 = [(CAMTimelapseState *)self->__state timelapseUUID];
+  v40 = timelapseUUID2;
+  if ([(NSCountedSet *)self->__inFlightTimelapseUUIDs countForObject:timelapseUUID2])
   {
-    if ([v9 length])
+    if ([timelapseUUID2 length])
     {
       [(NSMutableSet *)self->__pendingCompletedStates addObject:self->__state];
     }
@@ -350,58 +350,58 @@ void __74__CAMTimelapseController__startCapturingWithCaptureDevice_captureSessio
 
   Current = CFAbsoluteTimeGetCurrent();
   v11 = MEMORY[0x1E695DFF8];
-  v12 = [(CAMTimelapseState *)self->__state timelapseUUID];
-  v13 = [CAMPersistenceController uniqueIncomingPathForAssetWithUUID:v12 captureTime:@"MDATA" extension:Current];
+  timelapseUUID3 = [(CAMTimelapseState *)self->__state timelapseUUID];
+  v13 = [CAMPersistenceController uniqueIncomingPathForAssetWithUUID:timelapseUUID3 captureTime:@"MDATA" extension:Current];
   v38 = [v11 fileURLWithPath:v13];
 
-  v14 = [(CAMTimelapseController *)self _persistenceController];
-  v39 = [(CAMTimelapseController *)self _librarySelectionController];
-  v15 = [v39 sharedLibraryMode];
-  v16 = [(CAMTimelapseController *)self _librarySelectionController];
-  v17 = [v16 acquiredSignalResults];
-  v18 = [v17 identitiesInProximity];
-  v19 = CAMLibrarySelectionIdentityContactIdentifiersForIdentities(v18);
-  v20 = [(CAMTimelapseController *)self _librarySelectionController];
-  v21 = [v20 librarySelectionDiagnostics];
-  LODWORD(v15) = [v14 writePrivateMetadataFileToURL:v38 withPrivateClientMetadata:0 sharedLibraryMode:v15 contactIDsInProximity:v19 sharedLibraryDiagnostics:v21];
+  _persistenceController = [(CAMTimelapseController *)self _persistenceController];
+  _librarySelectionController = [(CAMTimelapseController *)self _librarySelectionController];
+  sharedLibraryMode = [_librarySelectionController sharedLibraryMode];
+  _librarySelectionController2 = [(CAMTimelapseController *)self _librarySelectionController];
+  acquiredSignalResults = [_librarySelectionController2 acquiredSignalResults];
+  identitiesInProximity = [acquiredSignalResults identitiesInProximity];
+  v19 = CAMLibrarySelectionIdentityContactIdentifiersForIdentities(identitiesInProximity);
+  _librarySelectionController3 = [(CAMTimelapseController *)self _librarySelectionController];
+  librarySelectionDiagnostics = [_librarySelectionController3 librarySelectionDiagnostics];
+  LODWORD(sharedLibraryMode) = [_persistenceController writePrivateMetadataFileToURL:v38 withPrivateClientMetadata:0 sharedLibraryMode:sharedLibraryMode contactIDsInProximity:v19 sharedLibraryDiagnostics:librarySelectionDiagnostics];
 
-  if (v15)
+  if (sharedLibraryMode)
   {
     [(CAMTimelapseState *)self->__state setLocalPrivateMetadataFileURL:v38];
   }
 
   [(CAMTimelapseController *)self _saveStateToDisk:self->__state];
-  v22 = [(CAMTimelapseController *)self _nebulaDaemonProxyManager];
-  v23 = [(CAMTimelapseState *)self->__state timelapseUUID];
-  [v22 updateTimelapseWithUUID:v23];
+  _nebulaDaemonProxyManager = [(CAMTimelapseController *)self _nebulaDaemonProxyManager];
+  timelapseUUID4 = [(CAMTimelapseState *)self->__state timelapseUUID];
+  [_nebulaDaemonProxyManager updateTimelapseWithUUID:timelapseUUID4];
 
-  v24 = [(CAMTimelapseState *)self->__state timelapseUUID];
-  [v22 stopTimelapseWithUUID:v24];
+  timelapseUUID5 = [(CAMTimelapseState *)self->__state timelapseUUID];
+  [_nebulaDaemonProxyManager stopTimelapseWithUUID:timelapseUUID5];
 
   if ([(CAMTimelapseState *)self->__state allFramesWritten])
   {
-    [v22 closeConnectionToDaemon];
+    [_nebulaDaemonProxyManager closeConnectionToDaemon];
   }
 
-  v25 = [(CAMTimelapseState *)self->__state nextFrameIndex];
-  v26 = [(CAMTimelapseState *)self->__state sessionIdentifier];
-  v27 = [(CAMTimelapseState *)self->__state timelapseUUID];
+  nextFrameIndex = [(CAMTimelapseState *)self->__state nextFrameIndex];
+  sessionIdentifier = [(CAMTimelapseState *)self->__state sessionIdentifier];
+  timelapseUUID6 = [(CAMTimelapseState *)self->__state timelapseUUID];
   v28 = self->__state;
   v29 = self->__state;
   self->__state = 0;
 
   [(CAMTimelapseController *)self _invalidateCachedGraphConfiguration];
   [(CAMTimelapseController *)self _setShouldUpdateFocusAndExposureWhenContrastDetectionCompletes:0];
-  v30 = [(CAMTimelapseController *)self _captureController];
-  v31 = [(CAMTimelapseState *)v28 captureDevice];
+  _captureController = [(CAMTimelapseController *)self _captureController];
+  captureDevice = [(CAMTimelapseState *)v28 captureDevice];
   v32 = 0;
-  if ((v31 - 1) <= 0xA)
+  if ((captureDevice - 1) <= 0xA)
   {
-    v32 = qword_1A3A6A3B0[v31 - 1];
+    v32 = qword_1A3A6A3B0[captureDevice - 1];
   }
 
-  [v30 setCapturingTimelapse:0 forDevicePosition:v32];
-  if (v25 < 1)
+  [_captureController setCapturingTimelapse:0 forDevicePosition:v32];
+  if (nextFrameIndex < 1)
   {
     v35 = 0;
     v33 = 0;
@@ -412,7 +412,7 @@ void __74__CAMTimelapseController__startCapturingWithCaptureDevice_captureSessio
     v33 = [objc_opt_class() createPlaceholderResultForTimelapseState:v28];
     if (v33)
     {
-      v34 = [(CAMTimelapseController *)self _persistenceController];
+      _persistenceController2 = [(CAMTimelapseController *)self _persistenceController];
       v41[0] = MEMORY[0x1E69E9820];
       v41[1] = 3221225472;
       v41[2] = __52__CAMTimelapseController__stopCapturingWithReasons___block_invoke;
@@ -420,7 +420,7 @@ void __74__CAMTimelapseController__startCapturingWithCaptureDevice_captureSessio
       v41[4] = self;
       v33 = v33;
       v42 = v33;
-      [v34 persistPlaceholderTimelapseVideoWithResult:v33 completionHandler:v41];
+      [_persistenceController2 persistPlaceholderTimelapseVideoWithResult:v33 completionHandler:v41];
       v35 = [(CAMTimelapseController *)self _createThumbnailImageFromPlaceholderResult:v33];
     }
 
@@ -431,7 +431,7 @@ void __74__CAMTimelapseController__startCapturingWithCaptureDevice_captureSessio
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained timelapseController:self generatedPlaceholderResult:v33 withThumbnailImage:v35 forAssetUUID:v27 inCaptureSession:v26];
+  [WeakRetained timelapseController:self generatedPlaceholderResult:v33 withThumbnailImage:v35 forAssetUUID:timelapseUUID6 inCaptureSession:sessionIdentifier];
 
   v37 = objc_loadWeakRetained(&self->_delegate);
   [v37 timelapseControllerStopped:self];
@@ -451,18 +451,18 @@ void __52__CAMTimelapseController__stopCapturingWithReasons___block_invoke_2(voi
   [WeakRetained timelapseController:a1[4] persistedPlaceholderResult:a1[5] error:a1[6]];
 }
 
-- (void)_setNewCaptureStateForCaptureDevice:(int64_t)a3 captureSession:(unsigned __int16)a4
+- (void)_setNewCaptureStateForCaptureDevice:(int64_t)device captureSession:(unsigned __int16)session
 {
-  v18 = a4;
-  v6 = [(CAMTimelapseController *)self _motionController];
-  v7 = [v6 captureOrientation];
-  v8 = [(CAMTimelapseController *)self _captureController];
+  sessionCopy = session;
+  _motionController = [(CAMTimelapseController *)self _motionController];
+  captureOrientation = [_motionController captureOrientation];
+  _captureController = [(CAMTimelapseController *)self _captureController];
   v9 = +[CAMUserPreferences preferences];
   v10 = [v9 videoEncodingBehaviorForConfiguration:0 mode:5 desiredProResVideoMode:0 outputToExternalStorage:0 frontRearSimultaneousVideoEnabled:0];
   v11 = 0;
-  if ((a3 - 1) <= 0xA)
+  if ((device - 1) <= 0xA)
   {
-    v11 = qword_1A3A6A3B0[a3 - 1];
+    v11 = qword_1A3A6A3B0[device - 1];
   }
 
   v12 = v10 == 1;
@@ -472,20 +472,20 @@ void __52__CAMTimelapseController__stopCapturingWithReasons___block_invoke_2(voi
   self->__state = v14;
 
   v16 = self->__state;
-  v17 = [MEMORY[0x1E695DF00] date];
-  [(CAMTimelapseState *)v16 setStartTime:v17];
+  date = [MEMORY[0x1E695DF00] date];
+  [(CAMTimelapseState *)v16 setStartTime:date];
 
-  [(CAMTimelapseState *)self->__state setCaptureOrientation:v7];
+  [(CAMTimelapseState *)self->__state setCaptureOrientation:captureOrientation];
   [(CAMTimelapseState *)self->__state setCaptureMirrored:v13];
-  [(CAMTimelapseState *)self->__state setCaptureDevice:a3];
-  [(CAMTimelapseState *)self->__state setSessionIdentifier:v18];
+  [(CAMTimelapseState *)self->__state setCaptureDevice:device];
+  [(CAMTimelapseState *)self->__state setSessionIdentifier:sessionCopy];
   [(CAMTimelapseState *)self->__state setPreferHEVC:v12];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __77__CAMTimelapseController__setNewCaptureStateForCaptureDevice_captureSession___block_invoke;
   v19[3] = &unk_1E76FC6A0;
   v19[4] = self;
-  [v8 queryTimelapseDimensionsWithCompletionBlock:v19];
+  [_captureController queryTimelapseDimensionsWithCompletionBlock:v19];
   [(CAMTimelapseController *)self _invalidateCachedGraphConfiguration];
 }
 
@@ -496,15 +496,15 @@ void __52__CAMTimelapseController__stopCapturingWithReasons___block_invoke_2(voi
   {
     if (!self->__graphConfigurationForCurrentState)
     {
-      v4 = [(CAMTimelapseState *)state captureDevice];
+      captureDevice = [(CAMTimelapseState *)state captureDevice];
       v5 = +[CAMUserPreferences preferences];
-      v6 = [v5 photoEncodingBehavior];
+      photoEncodingBehavior = [v5 photoEncodingBehavior];
       v7 = [v5 videoEncodingBehaviorForConfiguration:0 mode:5 desiredProResVideoMode:0 outputToExternalStorage:0 frontRearSimultaneousVideoEnabled:0];
       v8 = +[CAMCaptureCapabilities capabilities];
       v9 = v8;
       v10 = 0;
-      v11 = v4 - 1;
-      if ((v4 - 1) <= 0xA)
+      v11 = captureDevice - 1;
+      if ((captureDevice - 1) <= 0xA)
       {
         v10 = qword_1A3A6A3B0[v11];
       }
@@ -530,7 +530,7 @@ void __52__CAMTimelapseController__stopCapturingWithReasons___block_invoke_2(voi
       BYTE1(v21) = v14;
       LOBYTE(v21) = 0;
       LOBYTE(v20) = 0;
-      v16 = -[CAMCaptureGraphConfiguration initWithCaptureMode:captureDevice:macroMode:videoConfiguration:audioConfiguration:mixAudioWithOthers:windNoiseRemovalEnabled:previewConfiguration:previewSampleBufferVideoFormat:previewFilters:videoThumbnailOutputConfiguration:photoEncodingBehavior:videoEncodingBehavior:enableAutoFPSVideo:videoHDRSuspended:aspectRatioCrop:photoQualityPrioritization:captureMirrored:enableRAWCaptureIfSupported:semanticStyleSupport:previewSemanticStyle:smartStyles:enableContentAwareDistortionCorrection:enableResponsiveShutter:suspendLivePhotoCapture:videoStabilizationStrength:maximumPhotoResolution:colorSpace:videoBinned:enableDepthSuggestion:enableZoomPIP:customLensGroup:trueVideoEnabled:prefersHDR10BitVideo:frontRearSimultaneousVideoEnabled:videoDynamicAspectRatio:smartFramingFieldOfView:]([CAMCaptureGraphConfiguration alloc], "initWithCaptureMode:captureDevice:macroMode:videoConfiguration:audioConfiguration:mixAudioWithOthers:windNoiseRemovalEnabled:previewConfiguration:previewSampleBufferVideoFormat:previewFilters:videoThumbnailOutputConfiguration:photoEncodingBehavior:videoEncodingBehavior:enableAutoFPSVideo:videoHDRSuspended:aspectRatioCrop:photoQualityPrioritization:captureMirrored:enableRAWCaptureIfSupported:semanticStyleSupport:previewSemanticStyle:smartStyles:enableContentAwareDistortionCorrection:enableResponsiveShutter:suspendLivePhotoCapture:videoStabilizationStrength:maximumPhotoResolution:colorSpace:videoBinned:enableDepthSuggestion:enableZoomPIP:customLensGroup:trueVideoEnabled:prefersHDR10BitVideo:frontRearSimultaneousVideoEnabled:videoDynamicAspectRatio:smartFramingFieldOfView:", 5, v4, 0, 0, 0, 0, v20, 1, 0, 0, 0, v6, v7, v21, 0, v12, v22, 0, 0, 0, v23, 0, 0, [v5 colorSpaceForMode:5 videoConfiguration:0 videoEncodingBehavior:v7 device:v4 preferredProResColorSpace:{objc_msgSend(v5, "explicitProResColorSpace")}], v24, 0, v25, 0, 0);
+      v16 = -[CAMCaptureGraphConfiguration initWithCaptureMode:captureDevice:macroMode:videoConfiguration:audioConfiguration:mixAudioWithOthers:windNoiseRemovalEnabled:previewConfiguration:previewSampleBufferVideoFormat:previewFilters:videoThumbnailOutputConfiguration:photoEncodingBehavior:videoEncodingBehavior:enableAutoFPSVideo:videoHDRSuspended:aspectRatioCrop:photoQualityPrioritization:captureMirrored:enableRAWCaptureIfSupported:semanticStyleSupport:previewSemanticStyle:smartStyles:enableContentAwareDistortionCorrection:enableResponsiveShutter:suspendLivePhotoCapture:videoStabilizationStrength:maximumPhotoResolution:colorSpace:videoBinned:enableDepthSuggestion:enableZoomPIP:customLensGroup:trueVideoEnabled:prefersHDR10BitVideo:frontRearSimultaneousVideoEnabled:videoDynamicAspectRatio:smartFramingFieldOfView:]([CAMCaptureGraphConfiguration alloc], "initWithCaptureMode:captureDevice:macroMode:videoConfiguration:audioConfiguration:mixAudioWithOthers:windNoiseRemovalEnabled:previewConfiguration:previewSampleBufferVideoFormat:previewFilters:videoThumbnailOutputConfiguration:photoEncodingBehavior:videoEncodingBehavior:enableAutoFPSVideo:videoHDRSuspended:aspectRatioCrop:photoQualityPrioritization:captureMirrored:enableRAWCaptureIfSupported:semanticStyleSupport:previewSemanticStyle:smartStyles:enableContentAwareDistortionCorrection:enableResponsiveShutter:suspendLivePhotoCapture:videoStabilizationStrength:maximumPhotoResolution:colorSpace:videoBinned:enableDepthSuggestion:enableZoomPIP:customLensGroup:trueVideoEnabled:prefersHDR10BitVideo:frontRearSimultaneousVideoEnabled:videoDynamicAspectRatio:smartFramingFieldOfView:", 5, captureDevice, 0, 0, 0, 0, v20, 1, 0, 0, 0, photoEncodingBehavior, v7, v21, 0, v12, v22, 0, 0, 0, v23, 0, 0, [v5 colorSpaceForMode:5 videoConfiguration:0 videoEncodingBehavior:v7 device:captureDevice preferredProResColorSpace:{objc_msgSend(v5, "explicitProResColorSpace")}], v24, 0, v25, 0, 0);
       graphConfigurationForCurrentState = self->__graphConfigurationForCurrentState;
       self->__graphConfigurationForCurrentState = v16;
     }
@@ -549,31 +549,31 @@ void __52__CAMTimelapseController__stopCapturingWithReasons___block_invoke_2(voi
 - (void)_restoreCaptureStateFromDisk
 {
   v5 = [CAMTimelapseDiskUtilities readSortedStatesFromDiskMergeSecondaryState:1];
-  v3 = [v5 lastObject];
-  v4 = v3;
-  if (v3 && [v3 canContinueCapture])
+  lastObject = [v5 lastObject];
+  v4 = lastObject;
+  if (lastObject && [lastObject canContinueCapture])
   {
     objc_storeStrong(&self->__state, v4);
     [(CAMTimelapseController *)self _invalidateCachedGraphConfiguration];
   }
 }
 
-- (void)_reserveDiskSpaceForTimelapseUUID:(id)a3 preferHEVC:(BOOL)a4 withCompletionBlock:(id)a5
+- (void)_reserveDiskSpaceForTimelapseUUID:(id)d preferHEVC:(BOOL)c withCompletionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(CAMTimelapseController *)self _captureController];
+  dCopy = d;
+  blockCopy = block;
+  _captureController = [(CAMTimelapseController *)self _captureController];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __91__CAMTimelapseController__reserveDiskSpaceForTimelapseUUID_preferHEVC_withCompletionBlock___block_invoke;
   v13[3] = &unk_1E76FC6C8;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
+  v14 = dCopy;
+  v15 = blockCopy;
+  cCopy = c;
   v13[4] = self;
-  v11 = v8;
-  v12 = v9;
-  [v10 queryTimelapseDimensionsWithCompletionBlock:v13];
+  v11 = dCopy;
+  v12 = blockCopy;
+  [_captureController queryTimelapseDimensionsWithCompletionBlock:v13];
 }
 
 uint64_t __91__CAMTimelapseController__reserveDiskSpaceForTimelapseUUID_preferHEVC_withCompletionBlock___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5)
@@ -657,15 +657,15 @@ uint64_t __91__CAMTimelapseController__reserveDiskSpaceForTimelapseUUID_preferHE
 {
   if ([(CAMTimelapseController *)self isCapturing])
   {
-    v3 = [(CAMTimelapseState *)self->__state startTime];
+    startTime = [(CAMTimelapseState *)self->__state startTime];
   }
 
   else
   {
-    v3 = 0;
+    startTime = 0;
   }
 
-  return v3;
+  return startTime;
 }
 
 - (void)_startCaptureTimer
@@ -680,12 +680,12 @@ uint64_t __91__CAMTimelapseController__reserveDiskSpaceForTimelapseUUID_preferHE
   v4 = v3;
   if (v3 <= 0.0)
   {
-    v8 = os_log_create("com.apple.camera", "Nebula");
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    startTime = os_log_create("com.apple.camera", "Nebula");
+    if (os_log_type_enabled(startTime, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
       v19 = v4;
-      _os_log_impl(&dword_1A3640000, v8, OS_LOG_TYPE_DEFAULT, "Error: invalid captureTimeInterval: %f", buf, 0xCu);
+      _os_log_impl(&dword_1A3640000, startTime, OS_LOG_TYPE_DEFAULT, "Error: invalid captureTimeInterval: %f", buf, 0xCu);
     }
   }
 
@@ -696,8 +696,8 @@ uint64_t __91__CAMTimelapseController__reserveDiskSpaceForTimelapseUUID_preferHE
     [v5 timelapseFirstShotDelay];
     v7 = v6;
 
-    v8 = [(CAMTimelapseState *)self->__state startTime];
-    v9 = [v8 dateByAddingTimeInterval:v7];
+    startTime = [(CAMTimelapseState *)self->__state startTime];
+    v9 = [startTime dateByAddingTimeInterval:v7];
     [v9 timeIntervalSinceNow];
     v11 = v10;
     if (v10 <= 0.0)
@@ -772,8 +772,8 @@ LABEL_5:
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   [(CAMTimelapseController *)self _updateLocationIfNecessary];
-  v3 = [(CAMTimelapseState *)self->__state timelapseUUID];
-  v4 = [CAMTimelapseDiskUtilities readSecondaryStateForTimelapseUUID:v3];
+  timelapseUUID = [(CAMTimelapseState *)self->__state timelapseUUID];
+  v4 = [CAMTimelapseDiskUtilities readSecondaryStateForTimelapseUUID:timelapseUUID];
 
   [(CAMTimelapseState *)self->__state mergeSecondaryState:v4];
   if ([(CAMTimelapseState *)self->__state canContinueCapture])
@@ -801,9 +801,9 @@ LABEL_5:
         _os_log_impl(&dword_1A3640000, v13, OS_LOG_TYPE_DEFAULT, "Skipping capture because capture controller not ready!", v17, 2u);
       }
 
-      v14 = [(CAMTimelapseController *)self _storageController];
-      v15 = [(CAMTimelapseController *)self _graphConfigurationForCurrentState];
-      v16 = [v14 hasDiskSpaceToAllowCaptureWithConfiguration:v15 allowPurging:1];
+      _storageController = [(CAMTimelapseController *)self _storageController];
+      _graphConfigurationForCurrentState = [(CAMTimelapseController *)self _graphConfigurationForCurrentState];
+      v16 = [_storageController hasDiskSpaceToAllowCaptureWithConfiguration:_graphConfigurationForCurrentState allowPurging:1];
 
       if ((v16 & 1) == 0)
       {
@@ -821,36 +821,36 @@ LABEL_5:
 
 - (BOOL)_canCapturePhoto
 {
-  v3 = [(CAMTimelapseController *)self _captureController];
-  v4 = [v3 isInterrupted];
-  v5 = [v3 isCaptureAvailable];
-  v6 = [(CAMTimelapseController *)self _isFocusAndExposureAdjusted];
-  v7 = [(CAMTimelapseController *)self _storageController];
-  v8 = [(CAMTimelapseController *)self _graphConfigurationForCurrentState];
-  v9 = [v7 hasDiskSpaceToAllowCaptureWithConfiguration:v8 allowPurging:1];
+  _captureController = [(CAMTimelapseController *)self _captureController];
+  isInterrupted = [_captureController isInterrupted];
+  isCaptureAvailable = [_captureController isCaptureAvailable];
+  _isFocusAndExposureAdjusted = [(CAMTimelapseController *)self _isFocusAndExposureAdjusted];
+  _storageController = [(CAMTimelapseController *)self _storageController];
+  _graphConfigurationForCurrentState = [(CAMTimelapseController *)self _graphConfigurationForCurrentState];
+  v9 = [_storageController hasDiskSpaceToAllowCaptureWithConfiguration:_graphConfigurationForCurrentState allowPurging:1];
 
-  return (v4 ^ 1) & v5 & v6 & v9;
+  return (isInterrupted ^ 1) & isCaptureAvailable & _isFocusAndExposureAdjusted & v9;
 }
 
 - (BOOL)_enqueueCaptureRequest
 {
-  v3 = [(CAMTimelapseState *)self->__state timelapseUUID];
-  if ([v3 length])
+  timelapseUUID = [(CAMTimelapseState *)self->__state timelapseUUID];
+  if ([timelapseUUID length])
   {
-    v4 = [(CAMTimelapseController *)self _stillImageCaptureRequestWithCurrentSettings];
-    [v4 setTimelapseIdentifier:v3];
-    [(NSCountedSet *)self->__inFlightTimelapseUUIDs addObject:v3];
-    v5 = [(CAMTimelapseController *)self _captureController];
+    _stillImageCaptureRequestWithCurrentSettings = [(CAMTimelapseController *)self _stillImageCaptureRequestWithCurrentSettings];
+    [_stillImageCaptureRequestWithCurrentSettings setTimelapseIdentifier:timelapseUUID];
+    [(NSCountedSet *)self->__inFlightTimelapseUUIDs addObject:timelapseUUID];
+    _captureController = [(CAMTimelapseController *)self _captureController];
     v15 = 0;
-    v6 = [v5 captureStillImageWithRequest:v4 error:&v15];
+    v6 = [_captureController captureStillImageWithRequest:_stillImageCaptureRequestWithCurrentSettings error:&v15];
   }
 
   else
   {
-    v4 = os_log_create("com.apple.camera", "Nebula");
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+    _stillImageCaptureRequestWithCurrentSettings = os_log_create("com.apple.camera", "Nebula");
+    if (os_log_type_enabled(_stillImageCaptureRequestWithCurrentSettings, OS_LOG_TYPE_ERROR))
     {
-      [(CAMTimelapseController *)v4 _enqueueCaptureRequest:v7];
+      [(CAMTimelapseController *)_stillImageCaptureRequestWithCurrentSettings _enqueueCaptureRequest:v7];
     }
 
     v6 = 0;
@@ -861,15 +861,15 @@ LABEL_5:
 
 - (id)_stillImageCaptureRequestWithCurrentSettings
 {
-  v3 = [(CAMTimelapseState *)self->__state captureOrientation];
-  v4 = [(CAMTimelapseState *)self->__state captureDevice];
+  captureOrientation = [(CAMTimelapseState *)self->__state captureOrientation];
+  captureDevice = [(CAMTimelapseState *)self->__state captureDevice];
   v5 = +[CAMUserPreferences preferences];
-  v6 = [(CAMTimelapseState *)self->__state filePathForNextFrameIndex];
-  v7 = [MEMORY[0x1E695DFF8] fileURLWithPath:v6];
+  filePathForNextFrameIndex = [(CAMTimelapseState *)self->__state filePathForNextFrameIndex];
+  v7 = [MEMORY[0x1E695DFF8] fileURLWithPath:filePathForNextFrameIndex];
   v8 = +[CAMCaptureCapabilities capabilities];
   v9 = v8;
-  v10 = v4 - 1;
-  if ((v4 - 1) > 0xA)
+  v10 = captureDevice - 1;
+  if ((captureDevice - 1) > 0xA)
   {
     v11 = 0;
   }
@@ -885,7 +885,7 @@ LABEL_5:
   [(CAMMutableStillImageCaptureRequest *)v13 setDelegate:self];
   [(CAMMutableStillImageCaptureRequest *)v13 setPersistenceOptions:1];
   [(CAMMutableStillImageCaptureRequest *)v13 setLocalDestinationURL:v7];
-  [(CAMMutableStillImageCaptureRequest *)v13 setCaptureOrientation:v3];
+  [(CAMMutableStillImageCaptureRequest *)v13 setCaptureOrientation:captureOrientation];
   if (v10 > 0xA)
   {
     v14 = 0;
@@ -897,7 +897,7 @@ LABEL_5:
   }
 
   -[CAMMutableStillImageCaptureRequest setCaptureMirrored:](v13, "setCaptureMirrored:", [v5 mirrorCameraCapturesForDevicePosition:v14 mode:5]);
-  [(CAMMutableStillImageCaptureRequest *)v13 setCaptureDevice:v4];
+  [(CAMMutableStillImageCaptureRequest *)v13 setCaptureDevice:captureDevice];
   [(CAMMutableStillImageCaptureRequest *)v13 setFlashMode:0];
   [(CAMMutableStillImageCaptureRequest *)v13 setHdrMode:0];
   [(CAMMutableStillImageCaptureRequest *)v13 setIrisMode:0];
@@ -907,38 +907,38 @@ LABEL_5:
   [(CAMMutableStillImageCaptureRequest *)v13 setStillDuringVideo:0];
   [(CAMMutableStillImageCaptureRequest *)v13 setWantsSemanticSceneFilter:0];
   [(CAMMutableStillImageCaptureRequest *)v13 setPhotoEncodingBehavior:0];
-  v15 = [(CAMTimelapseController *)self _locationController];
-  v16 = [v15 currentLocation];
-  if (v16)
+  _locationController = [(CAMTimelapseController *)self _locationController];
+  currentLocation = [_locationController currentLocation];
+  if (currentLocation)
   {
-    [(CAMMutableStillImageCaptureRequest *)v13 setLocation:v16];
+    [(CAMMutableStillImageCaptureRequest *)v13 setLocation:currentLocation];
   }
 
   if ([v5 sharedLibraryEnabled])
   {
-    v17 = [(CAMTimelapseController *)self _librarySelectionController];
-    -[CAMMutableStillImageCaptureRequest setSharedLibraryMode:](v13, "setSharedLibraryMode:", [v17 sharedLibraryMode]);
+    _librarySelectionController = [(CAMTimelapseController *)self _librarySelectionController];
+    -[CAMMutableStillImageCaptureRequest setSharedLibraryMode:](v13, "setSharedLibraryMode:", [_librarySelectionController sharedLibraryMode]);
 
     v18 = +[CAMCaptureCapabilities capabilities];
-    v19 = [v18 isInternalInstall];
+    isInternalInstall = [v18 isInternalInstall];
 
-    if (v19)
+    if (isInternalInstall)
     {
-      v20 = [(CAMTimelapseController *)self _librarySelectionController];
-      v21 = [v20 librarySelectionDiagnostics];
-      [(CAMMutableStillImageCaptureRequest *)v13 setSharedLibraryDiagnostics:v21];
+      _librarySelectionController2 = [(CAMTimelapseController *)self _librarySelectionController];
+      librarySelectionDiagnostics = [_librarySelectionController2 librarySelectionDiagnostics];
+      [(CAMMutableStillImageCaptureRequest *)v13 setSharedLibraryDiagnostics:librarySelectionDiagnostics];
     }
 
     v22 = +[CAMCaptureCapabilities capabilities];
-    v23 = [v22 peopleProximityPersistenceSupported];
+    peopleProximityPersistenceSupported = [v22 peopleProximityPersistenceSupported];
 
-    if (v23)
+    if (peopleProximityPersistenceSupported)
     {
-      v24 = [(CAMTimelapseController *)self _librarySelectionController];
-      v25 = [v24 acquiredSignalResults];
+      _librarySelectionController3 = [(CAMTimelapseController *)self _librarySelectionController];
+      acquiredSignalResults = [_librarySelectionController3 acquiredSignalResults];
 
-      v26 = [v25 identitiesInProximity];
-      v27 = CAMLibrarySelectionIdentityContactIdentifiersForIdentities(v26);
+      identitiesInProximity = [acquiredSignalResults identitiesInProximity];
+      v27 = CAMLibrarySelectionIdentityContactIdentifiersForIdentities(identitiesInProximity);
       [(CAMMutableStillImageCaptureRequest *)v13 setContactIDsInProximity:v27];
     }
   }
@@ -946,39 +946,39 @@ LABEL_5:
   return v13;
 }
 
-- (void)setLastFocusResult:(id)a3
+- (void)setLastFocusResult:(id)result
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_lastFocusResult != v4)
+  resultCopy = result;
+  v5 = resultCopy;
+  if (self->_lastFocusResult != resultCopy)
   {
-    self->_lastFocusResult = v4;
-    v6 = v4;
-    v4 = [(CAMTimelapseController *)self _shouldUpdateFocusAndExposureWhenContrastDetectionCompletes];
+    self->_lastFocusResult = resultCopy;
+    v6 = resultCopy;
+    resultCopy = [(CAMTimelapseController *)self _shouldUpdateFocusAndExposureWhenContrastDetectionCompletes];
     v5 = v6;
-    if (v4)
+    if (resultCopy)
     {
       [(CAMTimelapseController *)self _setShouldUpdateFocusAndExposureWhenContrastDetectionCompletes:0];
-      v4 = [(CAMTimelapseController *)self _updateFocusAndExposureForStartCapturing];
+      resultCopy = [(CAMTimelapseController *)self _updateFocusAndExposureForStartCapturing];
       v5 = v6;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](resultCopy, v5);
 }
 
 - (void)_updateFocusAndExposureForStartCapturing
 {
   v27 = *MEMORY[0x1E69E9840];
   [(CAMTimelapseController *)self _setFocusAndExposureAdjusted:0];
-  v3 = [(CAMTimelapseController *)self lastFocusResult];
-  if (![v3 isPerformingContrastDetection])
+  lastFocusResult = [(CAMTimelapseController *)self lastFocusResult];
+  if (![lastFocusResult isPerformingContrastDetection])
   {
-    v4 = [(CAMTimelapseController *)self _captureController];
+    _captureController = [(CAMTimelapseController *)self _captureController];
     [(CAMTimelapseState *)self->__state focusLensPosition];
     v6 = v5;
-    v7 = [(CAMTimelapseState *)self->__state timelapseUUID];
-    v8 = [v7 copy];
+    timelapseUUID = [(CAMTimelapseState *)self->__state timelapseUUID];
+    v8 = [timelapseUUID copy];
 
     +[CUCaptureController focusLensPositionCurrentSentinel];
     v10 = v6 == v9;
@@ -1019,7 +1019,7 @@ LABEL_8:
     v21 = v18;
     v23 = v10;
     *&v19 = v6;
-    [v4 lockFocusAtLensPosition:v20 completionBlock:v19];
+    [_captureController lockFocusAtLensPosition:v20 completionBlock:v19];
 
     objc_destroyWeak(&v22);
     objc_destroyWeak(&location);
@@ -1050,12 +1050,12 @@ void __66__CAMTimelapseController__updateFocusAndExposureForStartCapturing__bloc
   [v6 _updateFocusLensPosition:*(a1 + 32) forTimelapseUUID:*(a1 + 48) forceUpdate:v7];
 }
 
-- (void)_updateFocusLensPosition:(float)a3 forTimelapseUUID:(id)a4 forceUpdate:(BOOL)a5
+- (void)_updateFocusLensPosition:(float)position forTimelapseUUID:(id)d forceUpdate:(BOOL)update
 {
   state = self->__state;
-  v8 = a4;
-  v9 = [(CAMTimelapseState *)state timelapseUUID];
-  v10 = [v9 isEqualToString:v8];
+  dCopy = d;
+  timelapseUUID = [(CAMTimelapseState *)state timelapseUUID];
+  v10 = [timelapseUUID isEqualToString:dCopy];
 
   if (v10)
   {
@@ -1065,33 +1065,33 @@ void __66__CAMTimelapseController__updateFocusAndExposureForStartCapturing__bloc
     if (v13 == v12)
     {
       [(CAMTimelapseState *)self->__state focusLensPosition];
-      if (*&v14 != a3)
+      if (*&v14 != position)
       {
-        *&v14 = a3;
+        *&v14 = position;
         [(CAMTimelapseState *)self->__state setFocusLensPosition:v14];
         [(CAMTimelapseController *)self _saveStateToDisk:self->__state];
-        v16 = [(CAMTimelapseController *)self _nebulaDaemonProxyManager];
-        v15 = [(CAMTimelapseState *)self->__state timelapseUUID];
-        [v16 updateTimelapseWithUUID:v15];
+        _nebulaDaemonProxyManager = [(CAMTimelapseController *)self _nebulaDaemonProxyManager];
+        timelapseUUID2 = [(CAMTimelapseState *)self->__state timelapseUUID];
+        [_nebulaDaemonProxyManager updateTimelapseWithUUID:timelapseUUID2];
       }
     }
   }
 }
 
-- (void)_saveStateToDisk:(id)a3
+- (void)_saveStateToDisk:(id)disk
 {
-  v4 = a3;
-  v5 = [v4 timelapseUUID];
-  if ([v5 length])
+  diskCopy = disk;
+  timelapseUUID = [diskCopy timelapseUUID];
+  if ([timelapseUUID length])
   {
-    if ([v4 canContinueCapture])
+    if ([diskCopy canContinueCapture])
     {
-      v6 = [CAMTimelapseDiskUtilities readSecondaryStateForTimelapseUUID:v5];
-      [v4 mergeSecondaryState:v6];
-      v7 = [v4 canContinueCapture];
+      v6 = [CAMTimelapseDiskUtilities readSecondaryStateForTimelapseUUID:timelapseUUID];
+      [diskCopy mergeSecondaryState:v6];
+      canContinueCapture = [diskCopy canContinueCapture];
 
-      [CAMTimelapseDiskUtilities writeStateToDisk:v4 createDirectoryIfNeeded:1];
-      if ((v7 & 1) == 0)
+      [CAMTimelapseDiskUtilities writeStateToDisk:diskCopy createDirectoryIfNeeded:1];
+      if ((canContinueCapture & 1) == 0)
       {
         [(CAMTimelapseController *)self _stopCapturingWithReasons:0];
       }
@@ -1099,7 +1099,7 @@ void __66__CAMTimelapseController__updateFocusAndExposureForStartCapturing__bloc
 
     else
     {
-      [CAMTimelapseDiskUtilities writeStateToDisk:v4 createDirectoryIfNeeded:1];
+      [CAMTimelapseDiskUtilities writeStateToDisk:diskCopy createDirectoryIfNeeded:1];
     }
   }
 
@@ -1114,11 +1114,11 @@ void __66__CAMTimelapseController__updateFocusAndExposureForStartCapturing__bloc
   }
 }
 
-- (void)stillImageRequestDidCompleteStillImageCapture:(id)a3 withResponse:(id)a4 error:(id)a5
+- (void)stillImageRequestDidCompleteStillImageCapture:(id)capture withResponse:(id)response error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  captureCopy = capture;
+  responseCopy = response;
+  errorCopy = error;
   if (self->__ignoringTimerCallbacksWaitingForCaptureResponse)
   {
     self->__ignoringTimerCallbacksWaitingForCaptureResponse = 0;
@@ -1127,10 +1127,10 @@ void __66__CAMTimelapseController__updateFocusAndExposureForStartCapturing__bloc
   v11 = os_log_create("com.apple.camera", "Nebula");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    [CAMTimelapseController stillImageRequestDidCompleteStillImageCapture:v10 withResponse:v11 error:?];
+    [CAMTimelapseController stillImageRequestDidCompleteStillImageCapture:errorCopy withResponse:v11 error:?];
   }
 
-  if (!v10)
+  if (!errorCopy)
   {
     v37 = 0;
     v38 = &v37;
@@ -1138,8 +1138,8 @@ void __66__CAMTimelapseController__updateFocusAndExposureForStartCapturing__bloc
     v40 = __Block_byref_object_copy__16;
     v41 = __Block_byref_object_dispose__16;
     v42 = 0;
-    v12 = [v8 timelapseIdentifier];
-    if ([v12 length] && (-[CAMTimelapseState timelapseUUID](self->__state, "timelapseUUID"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v12, "isEqualToString:", v13), v13, v14))
+    timelapseIdentifier = [captureCopy timelapseIdentifier];
+    if ([timelapseIdentifier length] && (-[CAMTimelapseState timelapseUUID](self->__state, "timelapseUUID"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(timelapseIdentifier, "isEqualToString:", v13), v13, v14))
     {
       v15 = v38;
       v16 = self->__state;
@@ -1154,7 +1154,7 @@ void __66__CAMTimelapseController__updateFocusAndExposureForStartCapturing__bloc
       v32 = 3221225472;
       v33 = __91__CAMTimelapseController_stillImageRequestDidCompleteStillImageCapture_withResponse_error___block_invoke;
       v34 = &unk_1E76FC718;
-      v35 = v12;
+      v35 = timelapseIdentifier;
       v36 = &v37;
       [(NSMutableSet *)pendingCompletedStates enumerateObjectsUsingBlock:&v31];
       v17 = v35;
@@ -1163,31 +1163,31 @@ void __66__CAMTimelapseController__updateFocusAndExposureForStartCapturing__bloc
     v19 = v38[5];
     if (v19)
     {
-      v20 = [v19 incrementFrameIndex];
+      incrementFrameIndex = [v19 incrementFrameIndex];
       v21 = v38;
-      if (v20 && v38[5] == self->__state)
+      if (incrementFrameIndex && v38[5] == self->__state)
       {
-        v22 = [(CAMTimelapseController *)self _state];
-        [v22 captureTimeInterval];
+        _state = [(CAMTimelapseController *)self _state];
+        [_state captureTimeInterval];
         v24 = v23;
 
-        v25 = [(CAMTimelapseController *)self _captureController];
+        _captureController = [(CAMTimelapseController *)self _captureController];
         v26 = 1.0 / v24;
         *&v26 = 1.0 / v24;
-        [v25 changeToTimelapseCaptureRate:v26];
+        [_captureController changeToTimelapseCaptureRate:v26];
 
         [(CAMTimelapseController *)self _startCaptureTimer];
         v21 = v38;
       }
 
       v27 = v21[5];
-      v28 = [MEMORY[0x1E695DF00] date];
-      [v27 setLastFrameResponseTime:v28];
+      date = [MEMORY[0x1E695DF00] date];
+      [v27 setLastFrameResponseTime:date];
 
       [(CAMTimelapseController *)self _saveStateToDisk:v38[5]];
-      v29 = [(CAMTimelapseController *)self _nebulaDaemonProxyManager];
-      v30 = [v38[5] timelapseUUID];
-      [v29 updateTimelapseWithUUID:v30];
+      _nebulaDaemonProxyManager = [(CAMTimelapseController *)self _nebulaDaemonProxyManager];
+      timelapseUUID = [v38[5] timelapseUUID];
+      [_nebulaDaemonProxyManager updateTimelapseWithUUID:timelapseUUID];
     }
 
     _Block_object_dispose(&v37, 8);
@@ -1207,24 +1207,24 @@ void __91__CAMTimelapseController_stillImageRequestDidCompleteStillImageCapture_
   }
 }
 
-- (void)stillImageRequestDidCompleteStillImageLocalPersistence:(id)a3 withResponse:(id)a4 error:(id)a5
+- (void)stillImageRequestDidCompleteStillImageLocalPersistence:(id)persistence withResponse:(id)response error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  persistenceCopy = persistence;
+  responseCopy = response;
+  errorCopy = error;
   v11 = os_log_create("com.apple.camera", "Nebula");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    [CAMTimelapseController stillImageRequestDidCompleteStillImageLocalPersistence:v10 withResponse:v11 error:?];
+    [CAMTimelapseController stillImageRequestDidCompleteStillImageLocalPersistence:errorCopy withResponse:v11 error:?];
   }
 
-  v12 = [v8 timelapseIdentifier];
-  if ([v12 length])
+  timelapseIdentifier = [persistenceCopy timelapseIdentifier];
+  if ([timelapseIdentifier length])
   {
-    [(NSCountedSet *)self->__inFlightTimelapseUUIDs removeObject:v12];
-    v13 = [(CAMTimelapseController *)self _nebulaDaemonProxyManager];
-    [v13 finishCaptureForTimelapseWithUUID:v12];
-    if (![(NSCountedSet *)self->__inFlightTimelapseUUIDs countForObject:v12])
+    [(NSCountedSet *)self->__inFlightTimelapseUUIDs removeObject:timelapseIdentifier];
+    _nebulaDaemonProxyManager = [(CAMTimelapseController *)self _nebulaDaemonProxyManager];
+    [_nebulaDaemonProxyManager finishCaptureForTimelapseWithUUID:timelapseIdentifier];
+    if (![(NSCountedSet *)self->__inFlightTimelapseUUIDs countForObject:timelapseIdentifier])
     {
       v26 = 0;
       v27 = &v26;
@@ -1237,7 +1237,7 @@ void __91__CAMTimelapseController_stillImageRequestDidCompleteStillImageCapture_
       v21 = 3221225472;
       v22 = __100__CAMTimelapseController_stillImageRequestDidCompleteStillImageLocalPersistence_withResponse_error___block_invoke;
       v23 = &unk_1E76FC718;
-      v24 = v12;
+      v24 = timelapseIdentifier;
       v25 = &v26;
       [(NSMutableSet *)pendingCompletedStates enumerateObjectsUsingBlock:&v20];
       v15 = v27[5];
@@ -1245,11 +1245,11 @@ void __91__CAMTimelapseController_stillImageRequestDidCompleteStillImageCapture_
       {
         [v15 setAllFramesWritten:{1, v20, v21, v22, v23}];
         [(CAMTimelapseController *)self _saveStateToDisk:v27[5]];
-        v16 = [(CAMTimelapseController *)self _nebulaDaemonProxyManager];
-        v17 = [v27[5] timelapseUUID];
-        [v16 updateTimelapseWithUUID:v17];
+        _nebulaDaemonProxyManager2 = [(CAMTimelapseController *)self _nebulaDaemonProxyManager];
+        timelapseUUID = [v27[5] timelapseUUID];
+        [_nebulaDaemonProxyManager2 updateTimelapseWithUUID:timelapseUUID];
 
-        [v16 closeConnectionToDaemon];
+        [_nebulaDaemonProxyManager2 closeConnectionToDaemon];
         [(NSMutableSet *)self->__pendingCompletedStates removeObject:v27[5]];
       }
 
@@ -1258,8 +1258,8 @@ void __91__CAMTimelapseController_stillImageRequestDidCompleteStillImageCapture_
   }
 
   v18 = [(CAMTimelapseController *)self _storageController:v20];
-  v19 = [(CAMTimelapseController *)self _graphConfigurationForCurrentState];
-  [v18 hasDiskSpaceToAllowCaptureWithConfiguration:v19 allowPurging:1];
+  _graphConfigurationForCurrentState = [(CAMTimelapseController *)self _graphConfigurationForCurrentState];
+  [v18 hasDiskSpaceToAllowCaptureWithConfiguration:_graphConfigurationForCurrentState allowPurging:1];
 }
 
 void __100__CAMTimelapseController_stillImageRequestDidCompleteStillImageLocalPersistence_withResponse_error___block_invoke(uint64_t a1, void *a2, _BYTE *a3)
@@ -1275,14 +1275,14 @@ void __100__CAMTimelapseController_stillImageRequestDidCompleteStillImageLocalPe
   }
 }
 
-- (id)_createThumbnailImageFromPlaceholderResult:(id)a3
+- (id)_createThumbnailImageFromPlaceholderResult:(id)result
 {
-  if ([a3 previewImageSurface] && (v3 = PLCreateImageFromPreviewImageSurface()) != 0)
+  if ([result previewImageSurface] && (v3 = PLCreateImageFromPreviewImageSurface()) != 0)
   {
     v4 = v3;
     v5 = MEMORY[0x1E69DCAB8];
-    v6 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v6 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v7 = [v5 imageWithCGImage:v4 scale:0 orientation:?];
 
     CFRelease(v4);
@@ -1296,20 +1296,20 @@ void __100__CAMTimelapseController_stillImageRequestDidCompleteStillImageLocalPe
   return v7;
 }
 
-+ (id)createPlaceholderResultForTimelapseState:(id)a3
++ (id)createPlaceholderResultForTimelapseState:(id)state
 {
-  v4 = a3;
-  v5 = [a1 _newVideoPreviewSurfaceForTimelapseState:v4];
+  stateCopy = state;
+  v5 = [self _newVideoPreviewSurfaceForTimelapseState:stateCopy];
   if (v5)
   {
     v6 = v5;
-    v7 = [v4 timelapseUUID];
-    v8 = [v4 startTime];
-    v9 = [v4 captureOrientation];
-    v10 = v9;
-    v11 = [v4 captureDevice];
-    [v4 nominalIntermediateFrameSize];
-    if (v9 > 4)
+    timelapseUUID = [stateCopy timelapseUUID];
+    startTime = [stateCopy startTime];
+    captureOrientation = [stateCopy captureOrientation];
+    v10 = captureOrientation;
+    captureDevice = [stateCopy captureDevice];
+    [stateCopy nominalIntermediateFrameSize];
+    if (captureOrientation > 4)
     {
       v14 = *MEMORY[0x1E695F060];
       v15 = *(MEMORY[0x1E695F060] + 8);
@@ -1318,7 +1318,7 @@ void __100__CAMTimelapseController_stillImageRequestDidCompleteStillImageLocalPe
     else
     {
       v14 = v12;
-      if (((1 << v9) & 0x19) != 0)
+      if (((1 << captureOrientation) & 0x19) != 0)
       {
         v15 = v13;
       }
@@ -1330,17 +1330,17 @@ void __100__CAMTimelapseController_stillImageRequestDidCompleteStillImageLocalPe
       }
     }
 
-    v17 = [v4 startTime];
-    v18 = [v4 stopTime];
-    if (!v18)
+    startTime2 = [stateCopy startTime];
+    stopTime = [stateCopy stopTime];
+    if (!stopTime)
     {
-      v18 = [MEMORY[0x1E695DF00] date];
+      stopTime = [MEMORY[0x1E695DF00] date];
     }
 
-    [v18 timeIntervalSinceDate:v17];
+    [stopTime timeIntervalSinceDate:startTime2];
     v20 = v19;
-    v21 = [v4 localPrivateMetadataFileURL];
-    v16 = -[CAMTimelapsePlaceholderResult initWithAssetUUID:captureSession:creationDate:captureOrientation:captureDevice:videoDimensions:duration:previewImageSurface:localPrivateMetadataFileURL:]([CAMTimelapsePlaceholderResult alloc], "initWithAssetUUID:captureSession:creationDate:captureOrientation:captureDevice:videoDimensions:duration:previewImageSurface:localPrivateMetadataFileURL:", v7, [v4 sessionIdentifier], v8, v10, v11, v6, v14, v15, v20, v21);
+    localPrivateMetadataFileURL = [stateCopy localPrivateMetadataFileURL];
+    v16 = -[CAMTimelapsePlaceholderResult initWithAssetUUID:captureSession:creationDate:captureOrientation:captureDevice:videoDimensions:duration:previewImageSurface:localPrivateMetadataFileURL:]([CAMTimelapsePlaceholderResult alloc], "initWithAssetUUID:captureSession:creationDate:captureOrientation:captureDevice:videoDimensions:duration:previewImageSurface:localPrivateMetadataFileURL:", timelapseUUID, [stateCopy sessionIdentifier], startTime, v10, captureDevice, v6, v14, v15, v20, localPrivateMetadataFileURL);
     CFRelease(v6);
   }
 
@@ -1352,17 +1352,17 @@ void __100__CAMTimelapseController_stillImageRequestDidCompleteStillImageLocalPe
   return v16;
 }
 
-+ (__IOSurface)_newVideoPreviewSurfaceForTimelapseState:(id)a3
++ (__IOSurface)_newVideoPreviewSurfaceForTimelapseState:(id)state
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  stateCopy = state;
   v4 = [CAMTimelapseDiskUtilities fileNameForImageFrameIndex:0];
-  v5 = [v3 timelapseUUID];
-  v6 = [CAMTimelapseDiskUtilities directoryPathForTimelapseUUID:v5];
+  timelapseUUID = [stateCopy timelapseUUID];
+  v6 = [CAMTimelapseDiskUtilities directoryPathForTimelapseUUID:timelapseUUID];
 
   v7 = [v6 stringByAppendingPathComponent:v4];
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
-  v9 = [v8 fileExistsAtPath:v7];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v9 = [defaultManager fileExistsAtPath:v7];
 
   if ((v9 & 1) == 0)
   {
@@ -1374,9 +1374,9 @@ LABEL_14:
       goto LABEL_17;
     }
 
-    v22 = [v3 timelapseUUID];
+    timelapseUUID2 = [stateCopy timelapseUUID];
     v24 = 138543362;
-    v25 = v22;
+    v25 = timelapseUUID2;
     _os_log_impl(&dword_1A3640000, v10, OS_LOG_TYPE_DEFAULT, "First frame not found for timelapse %{public}@", &v24, 0xCu);
 LABEL_13:
 
@@ -1386,19 +1386,19 @@ LABEL_13:
   v10 = [CAMTimelapseJPEGReader newDataFromFilePath:v7];
   if (!v10)
   {
-    v22 = os_log_create("com.apple.camera", "Nebula");
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+    timelapseUUID2 = os_log_create("com.apple.camera", "Nebula");
+    if (os_log_type_enabled(timelapseUUID2, OS_LOG_TYPE_ERROR))
     {
-      [(CAMTimelapseController *)v3 _newVideoPreviewSurfaceForTimelapseState:v22];
+      [(CAMTimelapseController *)stateCopy _newVideoPreviewSurfaceForTimelapseState:timelapseUUID2];
     }
 
     goto LABEL_13;
   }
 
-  v11 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v11 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v13 = v12;
-  [v11 bounds];
+  [mainScreen bounds];
   v16 = v15 * v13;
   if (v14 * v13 >= v16)
   {
@@ -1406,7 +1406,7 @@ LABEL_13:
   }
 
   v17 = vcvtpd_s64_f64(v16);
-  [v3 nominalIntermediateFrameSize];
+  [stateCopy nominalIntermediateFrameSize];
   v18 = [CAMTimelapseJPEGReader createPixelBufferFromData:v10 applyTransform:1 maxPixelSize:v17 useBGRA:1 cleanApertureSize:?];
   if (v18)
   {
@@ -1430,10 +1430,10 @@ LABEL_17:
   return v21;
 }
 
-- (void)_sessionRuntimeErrored:(id)a3
+- (void)_sessionRuntimeErrored:(id)errored
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x1E6986AA0]];
+  userInfo = [errored userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x1E6986AA0]];
 
   if (v5)
   {
@@ -1442,7 +1442,7 @@ LABEL_17:
   }
 }
 
-- (void)_previewStarted:(id)a3
+- (void)_previewStarted:(id)started
 {
   [(CAMTimelapseController *)self _setPreviewStarted:1];
   if ([(CAMTimelapseController *)self isCapturing])
@@ -1452,11 +1452,11 @@ LABEL_17:
   }
 }
 
-- (void)_notifyInsufficientDiskSpaceForStartingCaptureWithNeededBytes:(int64_t)a3 availableBytes:(int64_t)a4
+- (void)_notifyInsufficientDiskSpaceForStartingCaptureWithNeededBytes:(int64_t)bytes availableBytes:(int64_t)availableBytes
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v5 = a3 / 0x100000;
-  v6 = a4 / 0x100000;
+  v5 = bytes / 0x100000;
+  v6 = availableBytes / 0x100000;
   v7 = CAMLocalizedFrameworkString(@"TIMELAPSE_INSUFFICIENT_DISK_SPACE_TO_START_TITLE", 0);
   v8 = MEMORY[0x1E696AEC0];
   v9 = CAMLocalizedFrameworkString(@"TIMELAPSE_INSUFFICIENT_DISK_SPACE_TO_START_MESSAGE_FORMAT_NEEDEDMB_AVAILABLEMB", 0);
@@ -1467,8 +1467,8 @@ LABEL_17:
   v14[0] = v7;
   v14[1] = v10;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2];
-  v12 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v12 postNotificationName:@"CAMTimelapseLowDiskSpaceNotification" object:self userInfo:v11];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"CAMTimelapseLowDiskSpaceNotification" object:self userInfo:v11];
 }
 
 - (void)_notifyInsufficientDiskSpaceForContinuingCapture
@@ -1481,11 +1481,11 @@ LABEL_17:
   v8[0] = v3;
   v8[1] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:v7 count:2];
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 postNotificationName:@"CAMTimelapseLowDiskSpaceNotification" object:self userInfo:v5];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"CAMTimelapseLowDiskSpaceNotification" object:self userInfo:v5];
 }
 
-- (void)_applicationDidEnterBackground:(id)a3
+- (void)_applicationDidEnterBackground:(id)background
 {
   [(CAMTimelapseController *)self _setPreviewStarted:0];
   if ([(CAMTimelapseController *)self isCapturing])
@@ -1500,34 +1500,34 @@ LABEL_17:
   state = self->__state;
   if (state)
   {
-    v4 = [(CAMTimelapseState *)state startLocation];
-    if (!v4)
+    startLocation = [(CAMTimelapseState *)state startLocation];
+    if (!startLocation)
     {
-      v5 = [(CAMTimelapseController *)self _locationController];
-      v9 = [v5 currentLocation];
-      if (v9)
+      _locationController = [(CAMTimelapseController *)self _locationController];
+      currentLocation = [_locationController currentLocation];
+      if (currentLocation)
       {
-        [(CAMTimelapseState *)self->__state setStartLocation:v9];
+        [(CAMTimelapseState *)self->__state setStartLocation:currentLocation];
         [(CAMTimelapseController *)self _saveStateToDisk:self->__state];
-        v6 = [(CAMTimelapseController *)self _nebulaDaemonProxyManager];
-        v7 = [(CAMTimelapseState *)self->__state timelapseUUID];
-        [v6 updateTimelapseWithUUID:v7];
+        _nebulaDaemonProxyManager = [(CAMTimelapseController *)self _nebulaDaemonProxyManager];
+        timelapseUUID = [(CAMTimelapseState *)self->__state timelapseUUID];
+        [_nebulaDaemonProxyManager updateTimelapseWithUUID:timelapseUUID];
 
-        v8 = [(CAMTimelapseController *)self _captureController];
-        [v8 notifyTimelapseControllerFinishedUpdatingWithLocation];
+        _captureController = [(CAMTimelapseController *)self _captureController];
+        [_captureController notifyTimelapseControllerFinishedUpdatingWithLocation];
       }
 
-      v4 = v9;
+      startLocation = currentLocation;
     }
   }
 }
 
-- (void)forceStopTimelapseCaptureWithReasons:(int64_t)a3
+- (void)forceStopTimelapseCaptureWithReasons:(int64_t)reasons
 {
   if ([(CAMTimelapseController *)self isCapturing])
   {
 
-    [(CAMTimelapseController *)self stopCapturingWithReasons:a3];
+    [(CAMTimelapseController *)self stopCapturingWithReasons:reasons];
   }
 }
 

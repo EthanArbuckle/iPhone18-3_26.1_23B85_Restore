@@ -1,18 +1,18 @@
 @interface NENetworkAgentRegistrationFileHandle
 - (BOOL)isRegisteredHandle;
-- (NENetworkAgentRegistrationFileHandle)initWithNetworkAgentRegistration:(id)a3 sessionType:(id)a4 configurationIdentifier:(id)a5 agentUUID:(id)a6 name:(id)a7;
+- (NENetworkAgentRegistrationFileHandle)initWithNetworkAgentRegistration:(id)registration sessionType:(id)type configurationIdentifier:(id)identifier agentUUID:(id)d name:(id)name;
 - (id)description;
 - (id)dictionary;
-- (id)initFromDictionary:(id)a3;
+- (id)initFromDictionary:(id)dictionary;
 @end
 
 @implementation NENetworkAgentRegistrationFileHandle
 
 - (BOOL)isRegisteredHandle
 {
-  v3 = [(NEFileHandle *)self handle];
-  v4 = v3;
-  if (!v3 || (v5 = [v3 fileDescriptor], v5 < 0))
+  handle = [(NEFileHandle *)self handle];
+  v4 = handle;
+  if (!handle || (v5 = [handle fileDescriptor], v5 < 0))
   {
     v7 = 0;
   }
@@ -23,12 +23,12 @@
     v13 = 20;
     v7 = 1;
     v8 = malloc_type_calloc(0x14uLL, 1uLL, 0x100004077774924uLL);
-    v9 = [(NENetworkAgentRegistrationFileHandle *)self agentUUID];
-    [v9 getUUIDBytes:v8];
+    agentUUID = [(NENetworkAgentRegistrationFileHandle *)self agentUUID];
+    [agentUUID getUUIDBytes:v8];
 
-    LODWORD(v9) = getsockopt(v6, 2, 23, v8, &v13);
+    LODWORD(agentUUID) = getsockopt(v6, 2, 23, v8, &v13);
     free(v8);
-    if (v9)
+    if (agentUUID)
     {
       v11 = 4;
       v12 = 0;
@@ -42,15 +42,15 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(NEFileHandle *)self handle];
-  v5 = [v4 fileDescriptor];
-  v6 = [(NENetworkAgentRegistrationFileHandle *)self configurationIdentifier];
-  v7 = [v6 UUIDString];
-  v8 = [(NENetworkAgentRegistrationFileHandle *)self agentUUID];
-  v9 = [v8 UUIDString];
-  v10 = [(NENetworkAgentRegistrationFileHandle *)self sessionType];
-  v11 = [(NENetworkAgentRegistrationFileHandle *)self name];
-  v12 = [v3 stringWithFormat:@"Network Agent Registration socket (%d) %@ %@ %@ %@ agent flags %#llx", v5, v7, v9, v10, v11, -[NENetworkAgentRegistrationFileHandle agentFlags](self, "agentFlags")];
+  handle = [(NEFileHandle *)self handle];
+  fileDescriptor = [handle fileDescriptor];
+  configurationIdentifier = [(NENetworkAgentRegistrationFileHandle *)self configurationIdentifier];
+  uUIDString = [configurationIdentifier UUIDString];
+  agentUUID = [(NENetworkAgentRegistrationFileHandle *)self agentUUID];
+  uUIDString2 = [agentUUID UUIDString];
+  sessionType = [(NENetworkAgentRegistrationFileHandle *)self sessionType];
+  name = [(NENetworkAgentRegistrationFileHandle *)self name];
+  v12 = [v3 stringWithFormat:@"Network Agent Registration socket (%d) %@ %@ %@ %@ agent flags %#llx", fileDescriptor, uUIDString, uUIDString2, sessionType, name, -[NENetworkAgentRegistrationFileHandle agentFlags](self, "agentFlags")];
 
   return v12;
 }
@@ -64,44 +64,44 @@
   v13 = 0;
   v11.receiver = self;
   v11.super_class = NENetworkAgentRegistrationFileHandle;
-  v3 = [(NEFileHandle *)&v11 dictionary];
-  v4 = [(NENetworkAgentRegistrationFileHandle *)self sessionType];
-  xpc_dictionary_set_uint64(v3, "session-type", [v4 unsignedLongLongValue]);
+  dictionary = [(NEFileHandle *)&v11 dictionary];
+  sessionType = [(NENetworkAgentRegistrationFileHandle *)self sessionType];
+  xpc_dictionary_set_uint64(dictionary, "session-type", [sessionType unsignedLongLongValue]);
 
-  v5 = [(NENetworkAgentRegistrationFileHandle *)self configurationIdentifier];
-  [v5 getUUIDBytes:uuid];
+  configurationIdentifier = [(NENetworkAgentRegistrationFileHandle *)self configurationIdentifier];
+  [configurationIdentifier getUUIDBytes:uuid];
 
-  xpc_dictionary_set_uuid(v3, "configuration-identifier", uuid);
-  v6 = [(NENetworkAgentRegistrationFileHandle *)self agentUUID];
-  [v6 getUUIDBytes:v12];
+  xpc_dictionary_set_uuid(dictionary, "configuration-identifier", uuid);
+  agentUUID = [(NENetworkAgentRegistrationFileHandle *)self agentUUID];
+  [agentUUID getUUIDBytes:v12];
 
-  xpc_dictionary_set_uuid(v3, "agent-uuid", v12);
-  xpc_dictionary_set_uint64(v3, "agent-flags", [(NENetworkAgentRegistrationFileHandle *)self agentFlags]);
-  v7 = [(NENetworkAgentRegistrationFileHandle *)self name];
+  xpc_dictionary_set_uuid(dictionary, "agent-uuid", v12);
+  xpc_dictionary_set_uint64(dictionary, "agent-flags", [(NENetworkAgentRegistrationFileHandle *)self agentFlags]);
+  name = [(NENetworkAgentRegistrationFileHandle *)self name];
 
-  if (v7)
+  if (name)
   {
-    v8 = [(NENetworkAgentRegistrationFileHandle *)self name];
-    xpc_dictionary_set_string(v3, "agent-name", [v8 UTF8String]);
+    name2 = [(NENetworkAgentRegistrationFileHandle *)self name];
+    xpc_dictionary_set_string(dictionary, "agent-name", [name2 UTF8String]);
   }
 
   v9 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = NENetworkAgentRegistrationFileHandle;
-  v5 = [(NEFileHandle *)&v19 initFromDictionary:v4];
+  v5 = [(NEFileHandle *)&v19 initFromDictionary:dictionaryCopy];
   if (v5)
   {
-    uint64 = xpc_dictionary_get_uint64(v4, "session-type");
-    uuid = xpc_dictionary_get_uuid(v4, "configuration-identifier");
-    v8 = xpc_dictionary_get_uuid(v4, "agent-uuid");
-    string = xpc_dictionary_get_string(v4, "agent-name");
+    uint64 = xpc_dictionary_get_uint64(dictionaryCopy, "session-type");
+    uuid = xpc_dictionary_get_uuid(dictionaryCopy, "configuration-identifier");
+    v8 = xpc_dictionary_get_uuid(dictionaryCopy, "agent-uuid");
+    string = xpc_dictionary_get_string(dictionaryCopy, "agent-name");
     v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:uint64];
     v11 = v5[3];
     v5[3] = v10;
@@ -114,7 +114,7 @@
     v15 = v5[5];
     v5[5] = v14;
 
-    v5[7] = xpc_dictionary_get_uint64(v4, "agent-flags");
+    v5[7] = xpc_dictionary_get_uint64(dictionaryCopy, "agent-flags");
     if (string)
     {
       v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:string];
@@ -126,31 +126,31 @@
   return v5;
 }
 
-- (NENetworkAgentRegistrationFileHandle)initWithNetworkAgentRegistration:(id)a3 sessionType:(id)a4 configurationIdentifier:(id)a5 agentUUID:(id)a6 name:(id)a7
+- (NENetworkAgentRegistrationFileHandle)initWithNetworkAgentRegistration:(id)registration sessionType:(id)type configurationIdentifier:(id)identifier agentUUID:(id)d name:(id)name
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [a3 dupRegistrationFileDescriptor];
-  if ((v17 & 0x80000000) != 0)
+  typeCopy = type;
+  identifierCopy = identifier;
+  dCopy = d;
+  nameCopy = name;
+  dupRegistrationFileDescriptor = [registration dupRegistrationFileDescriptor];
+  if ((dupRegistrationFileDescriptor & 0x80000000) != 0)
   {
-    v21 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v18 = v17;
+    v18 = dupRegistrationFileDescriptor;
     v23.receiver = self;
     v23.super_class = NENetworkAgentRegistrationFileHandle;
-    v19 = [(NEFileHandle *)&v23 initWithFileDescriptor:v17 launchOwnerWhenReadable:1];
+    v19 = [(NEFileHandle *)&v23 initWithFileDescriptor:dupRegistrationFileDescriptor launchOwnerWhenReadable:1];
     p_isa = &v19->super.super.isa;
     if (v19)
     {
-      objc_storeStrong(&v19->_sessionType, a4);
-      objc_storeStrong(p_isa + 4, a5);
-      objc_storeStrong(p_isa + 5, a6);
-      objc_storeStrong(p_isa + 6, a7);
+      objc_storeStrong(&v19->_sessionType, type);
+      objc_storeStrong(p_isa + 4, identifier);
+      objc_storeStrong(p_isa + 5, d);
+      objc_storeStrong(p_isa + 6, name);
     }
 
     else
@@ -159,10 +159,10 @@
     }
 
     self = p_isa;
-    v21 = self;
+    selfCopy = self;
   }
 
-  return v21;
+  return selfCopy;
 }
 
 @end

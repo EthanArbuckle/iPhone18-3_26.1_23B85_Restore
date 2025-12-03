@@ -2,7 +2,7 @@
 - (BOOL)accessibilityActivate;
 - (NSString)accessibilityLabel;
 - (NSString)accessibilityValue;
-- (_TtC6FindMy19FMSettingSwitchView)initWithFrame:(CGRect)a3;
+- (_TtC6FindMy19FMSettingSwitchView)initWithFrame:(CGRect)frame;
 - (void)subtitleLabelSelected;
 - (void)switchChanged;
 @end
@@ -19,11 +19,11 @@
 - (NSString)accessibilityLabel
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC6FindMy19FMSettingSwitchView_titleLabel);
-  v3 = self;
-  v4 = [v2 text];
-  if (v4)
+  selfCopy = self;
+  text = [v2 text];
+  if (text)
   {
-    v5 = v4;
+    v5 = text;
     static String._unconditionallyBridgeFromObjectiveC(_:)();
 
     v6 = String._bridgeToObjectiveC()();
@@ -40,7 +40,7 @@
 
 - (BOOL)accessibilityActivate
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10014B978();
 
   return v3 & 1;
@@ -48,7 +48,7 @@
 
 - (void)switchChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_10014C838();
 }
 
@@ -65,7 +65,7 @@
   }
 }
 
-- (_TtC6FindMy19FMSettingSwitchView)initWithFrame:(CGRect)a3
+- (_TtC6FindMy19FMSettingSwitchView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

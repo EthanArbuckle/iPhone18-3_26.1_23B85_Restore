@@ -1,16 +1,16 @@
 @interface PFCloudKitHistoryAnalyzer
-+ (BOOL)isPrivateContextName:(id)a3;
-+ (BOOL)isPrivateTransaction:(id)a3;
-+ (BOOL)isPrivateTransactionAuthor:(id)a3;
-- (BOOL)processTransaction:(id)a3 withContext:(id)a4 error:(id *)a5;
-- (PFCloudKitHistoryAnalyzer)initWithOptions:(id)a3 managedObjectContext:(id)a4;
-- (id)instantiateNewAnalyzerContextForChangesInStore:(id)a3;
++ (BOOL)isPrivateContextName:(id)name;
++ (BOOL)isPrivateTransaction:(id)transaction;
++ (BOOL)isPrivateTransactionAuthor:(id)author;
+- (BOOL)processTransaction:(id)transaction withContext:(id)context error:(id *)error;
+- (PFCloudKitHistoryAnalyzer)initWithOptions:(id)options managedObjectContext:(id)context;
+- (id)instantiateNewAnalyzerContextForChangesInStore:(id)store;
 - (void)dealloc;
 @end
 
 @implementation PFCloudKitHistoryAnalyzer
 
-- (PFCloudKitHistoryAnalyzer)initWithOptions:(id)a3 managedObjectContext:(id)a4
+- (PFCloudKitHistoryAnalyzer)initWithOptions:(id)options managedObjectContext:(id)context
 {
   v16 = *MEMORY[0x1E69E9840];
   objc_opt_class();
@@ -36,10 +36,10 @@
 
   v13.receiver = self;
   v13.super_class = PFCloudKitHistoryAnalyzer;
-  v9 = [(PFHistoryAnalyzer *)&v13 initWithOptions:a3];
+  v9 = [(PFHistoryAnalyzer *)&v13 initWithOptions:options];
   if (v9)
   {
-    v9->_managedObjectContext = a4;
+    v9->_managedObjectContext = context;
   }
 
   v10 = *MEMORY[0x1E69E9840];
@@ -54,7 +54,7 @@
   [(PFHistoryAnalyzer *)&v3 dealloc];
 }
 
-- (id)instantiateNewAnalyzerContextForChangesInStore:(id)a3
+- (id)instantiateNewAnalyzerContextForChangesInStore:(id)store
 {
   v5 = [PFCloudKitHistoryAnalyzerContext alloc];
   if (self)
@@ -69,14 +69,14 @@
 
   managedObjectContext = self->_managedObjectContext;
 
-  return [(PFCloudKitHistoryAnalyzerContext *)v5 initWithOptions:options managedObjectContext:managedObjectContext store:a3];
+  return [(PFCloudKitHistoryAnalyzerContext *)v5 initWithOptions:options managedObjectContext:managedObjectContext store:store];
 }
 
-- (BOOL)processTransaction:(id)a3 withContext:(id)a4 error:(id *)a5
+- (BOOL)processTransaction:(id)transaction withContext:(id)context error:(id *)error
 {
   v28[1] = *MEMORY[0x1E69E9840];
   v22 = 0;
-  if (+[PFCloudKitHistoryAnalyzer isPrivateTransaction:](PFCloudKitHistoryAnalyzer, "isPrivateTransaction:") && ([objc_msgSend(a3 "author")] & 1) == 0 && (objc_msgSend(objc_msgSend(a3, "contextName"), "isEqualToString:", @"NSCloudKitMirroringDelegate.import") & 1) == 0 && !objc_msgSend(objc_msgSend(a3, "author"), "isEqualToString:", @"NSCloudKitMirroringDelegate.reset"))
+  if (+[PFCloudKitHistoryAnalyzer isPrivateTransaction:](PFCloudKitHistoryAnalyzer, "isPrivateTransaction:") && ([objc_msgSend(transaction "author")] & 1) == 0 && (objc_msgSend(objc_msgSend(transaction, "contextName"), "isEqualToString:", @"NSCloudKitMirroringDelegate.import") & 1) == 0 && !objc_msgSend(objc_msgSend(transaction, "author"), "isEqualToString:", @"NSCloudKitMirroringDelegate.reset"))
   {
     goto LABEL_14;
   }
@@ -85,16 +85,16 @@
   {
     v21.receiver = self;
     v21.super_class = PFCloudKitHistoryAnalyzer;
-    if (![(PFHistoryAnalyzer *)&v21 processTransaction:a3 withContext:a4 error:&v22])
+    if (![(PFHistoryAnalyzer *)&v21 processTransaction:transaction withContext:context error:&v22])
     {
       v12 = v22;
       if (v22)
       {
 LABEL_11:
-        if (a5)
+        if (error)
         {
           LOBYTE(v13) = 0;
-          *a5 = v12;
+          *error = v12;
           goto LABEL_28;
         }
 
@@ -108,15 +108,15 @@ LABEL_21:
 
 LABEL_14:
     lastProcessedToken = self->_lastProcessedToken;
-    if (lastProcessedToken == [a3 token])
+    if (lastProcessedToken == [transaction token])
     {
-      if ([a3 token])
+      if ([transaction token])
       {
         LogStream = _PFLogGetLogStream(17);
         if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v24 = a3;
+          transactionCopy2 = transaction;
           _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: fault: Transaction appears to have been processed twice: %@\n", buf, 0xCu);
         }
 
@@ -124,7 +124,7 @@ LABEL_14:
         if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
         {
           *buf = 138412290;
-          v24 = a3;
+          transactionCopy2 = transaction;
           _os_log_fault_impl(&dword_18565F000, v18, OS_LOG_TYPE_FAULT, "CoreData: Transaction appears to have been processed twice: %@", buf, 0xCu);
         }
       }
@@ -133,7 +133,7 @@ LABEL_14:
     else
     {
 
-      self->_lastProcessedToken = [a3 token];
+      self->_lastProcessedToken = [transaction token];
     }
 
     LOBYTE(v13) = 1;
@@ -155,7 +155,7 @@ LABEL_17:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
     *buf = 136315394;
-    v24 = "/Library/Caches/com.apple.xbs/Sources/Persistence/PFCloudKitHistoryAnalyzer.m";
+    transactionCopy2 = "/Library/Caches/com.apple.xbs/Sources/Persistence/PFCloudKitHistoryAnalyzer.m";
     v25 = 1024;
     v26 = 101;
     _os_log_error_impl(&dword_18565F000, v15, OS_LOG_TYPE_ERROR, "CoreData: fault: Illegal attempt to return an error without one in %s:%d\n", buf, 0x12u);
@@ -166,7 +166,7 @@ LABEL_17:
   if (v13)
   {
     *buf = 136315394;
-    v24 = "/Library/Caches/com.apple.xbs/Sources/Persistence/PFCloudKitHistoryAnalyzer.m";
+    transactionCopy2 = "/Library/Caches/com.apple.xbs/Sources/Persistence/PFCloudKitHistoryAnalyzer.m";
     v25 = 1024;
     v26 = 101;
     _os_log_fault_impl(&dword_18565F000, v16, OS_LOG_TYPE_FAULT, "CoreData: Illegal attempt to return an error without one in %s:%d", buf, 0x12u);
@@ -178,36 +178,36 @@ LABEL_28:
   return v13;
 }
 
-+ (BOOL)isPrivateTransaction:(id)a3
++ (BOOL)isPrivateTransaction:(id)transaction
 {
-  if (+[PFCloudKitHistoryAnalyzer isPrivateTransactionAuthor:](PFCloudKitHistoryAnalyzer, "isPrivateTransactionAuthor:", [a3 author]))
+  if (+[PFCloudKitHistoryAnalyzer isPrivateTransactionAuthor:](PFCloudKitHistoryAnalyzer, "isPrivateTransactionAuthor:", [transaction author]))
   {
     return 1;
   }
 
-  v5 = [a3 contextName];
+  contextName = [transaction contextName];
 
-  return [PFCloudKitHistoryAnalyzer isPrivateContextName:v5];
+  return [PFCloudKitHistoryAnalyzer isPrivateContextName:contextName];
 }
 
-+ (BOOL)isPrivateTransactionAuthor:(id)a3
++ (BOOL)isPrivateTransactionAuthor:(id)author
 {
-  if ([a3 isEqualToString:@"NSCloudKitMirroringDelegate.export"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"NSCloudKitMirroringDelegate.import") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"NSCloudKitMirroringDelegate.reset") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"NSCloudKitMirroringDelegate.migration") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"NSCloudKitMirroringDelegate.setup"))
+  if ([author isEqualToString:@"NSCloudKitMirroringDelegate.export"] & 1) != 0 || (objc_msgSend(author, "isEqualToString:", @"NSCloudKitMirroringDelegate.import") & 1) != 0 || (objc_msgSend(author, "isEqualToString:", @"NSCloudKitMirroringDelegate.reset") & 1) != 0 || (objc_msgSend(author, "isEqualToString:", @"NSCloudKitMirroringDelegate.migration") & 1) != 0 || (objc_msgSend(author, "isEqualToString:", @"NSCloudKitMirroringDelegate.setup"))
   {
     return 1;
   }
 
-  return [a3 isEqualToString:@"NSCloudKitMirroringDelegate.event"];
+  return [author isEqualToString:@"NSCloudKitMirroringDelegate.event"];
 }
 
-+ (BOOL)isPrivateContextName:(id)a3
++ (BOOL)isPrivateContextName:(id)name
 {
-  if ([a3 isEqualToString:@"NSCloudKitMirroringDelegate.export"])
+  if ([name isEqualToString:@"NSCloudKitMirroringDelegate.export"])
   {
     return 1;
   }
 
-  return [a3 isEqualToString:@"NSCloudKitMirroringDelegate.import"];
+  return [name isEqualToString:@"NSCloudKitMirroringDelegate.import"];
 }
 
 @end

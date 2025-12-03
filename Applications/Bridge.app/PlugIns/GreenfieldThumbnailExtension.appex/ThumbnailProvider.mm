@@ -1,7 +1,7 @@
 @interface ThumbnailProvider
 - (ThumbnailProvider)init;
-- (id)_queue_createPreviewImageDataWithImage:(id)a3;
-- (void)provideThumbnailForFileRequest:(id)a3 completionHandler:(id)a4;
+- (id)_queue_createPreviewImageDataWithImage:(id)image;
+- (void)provideThumbnailForFileRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation ThumbnailProvider
@@ -21,25 +21,25 @@
   return v2;
 }
 
-- (void)provideThumbnailForFileRequest:(id)a3 completionHandler:(id)a4
+- (void)provideThumbnailForFileRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [a3 fileURL];
+  handlerCopy = handler;
+  fileURL = [request fileURL];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100000DFC;
   v9[3] = &unk_100004168;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
-  [NTKGreenfieldUtilities generateFacePreviewImageFromUrl:v7 completionBlock:v9];
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  [NTKGreenfieldUtilities generateFacePreviewImageFromUrl:fileURL completionBlock:v9];
 }
 
-- (id)_queue_createPreviewImageDataWithImage:(id)a3
+- (id)_queue_createPreviewImageDataWithImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   dispatch_assert_queue_V2(self->_queue);
-  [v4 size];
+  [imageCopy size];
   v6 = v5;
   v8 = v7;
   v9 = v5 + 100.0;
@@ -49,12 +49,12 @@
   v15[1] = 3221225472;
   v15[2] = sub_1000012EC;
   v15[3] = &unk_100004190;
-  v16 = v4;
+  v16 = imageCopy;
   v17 = v9;
   v18 = v10;
   v19 = v6;
   v20 = v8;
-  v12 = v4;
+  v12 = imageCopy;
   v13 = [v11 PNGDataWithActions:v15];
 
   return v13;

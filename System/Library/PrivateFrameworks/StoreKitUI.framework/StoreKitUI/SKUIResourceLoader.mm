@@ -1,25 +1,25 @@
 @interface SKUIResourceLoader
-- (BOOL)loadResourceWithRequest:(id)a3 reason:(int64_t)a4;
-- (BOOL)trySetReason:(int64_t)a3 forRequestWithIdentifier:(unint64_t)a4;
+- (BOOL)loadResourceWithRequest:(id)request reason:(int64_t)reason;
+- (BOOL)trySetReason:(int64_t)reason forRequestWithIdentifier:(unint64_t)identifier;
 - (NSOperationQueue)delegateQueue;
 - (NSString)description;
 - (SKUIResourceLoader)init;
-- (SKUIResourceLoader)initWithClientContext:(id)a3;
-- (SKUIResourceLoader)initWithOperationQueue:(id)a3 clientContext:(id)a4;
+- (SKUIResourceLoader)initWithClientContext:(id)context;
+- (SKUIResourceLoader)initWithOperationQueue:(id)queue clientContext:(id)context;
 - (SKUIResourceLoaderDelegate)delegate;
-- (id)cachedResourceForRequestIdentifier:(unint64_t)a3;
+- (id)cachedResourceForRequestIdentifier:(unint64_t)identifier;
 - (int64_t)_qualityOfService;
-- (int64_t)_queuePriorityForLoadReason:(int64_t)a3;
-- (void)_finishLoadForRequest:(id)a3 withResource:(id)a4;
+- (int64_t)_queuePriorityForLoadReason:(int64_t)reason;
+- (void)_finishLoadForRequest:(id)request withResource:(id)resource;
 - (void)_reprioritizeOperations;
 - (void)_sendDidBeginLoadingIfNecessary;
 - (void)_sendDidIdleIfNecessary;
-- (void)_sendDidLoadAllForReason:(int64_t)a3;
-- (void)_updateLoadReason:(int64_t)a3 forOperation:(id)a4;
-- (void)addResource:(id)a3 forRequestIdentifier:(unint64_t)a4;
-- (void)cache:(id)a3 willEvictObject:(id)a4;
+- (void)_sendDidLoadAllForReason:(int64_t)reason;
+- (void)_updateLoadReason:(int64_t)reason forOperation:(id)operation;
+- (void)addResource:(id)resource forRequestIdentifier:(unint64_t)identifier;
+- (void)cache:(id)cache willEvictObject:(id)object;
 - (void)cancelAllRequests;
-- (void)cancelRequestWithIdentifier:(unint64_t)a3;
+- (void)cancelRequestWithIdentifier:(unint64_t)identifier;
 - (void)dealloc;
 - (void)description;
 - (void)enterBackground;
@@ -28,19 +28,19 @@
 
 @implementation SKUIResourceLoader
 
-- (SKUIResourceLoader)initWithClientContext:(id)a3
+- (SKUIResourceLoader)initWithClientContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 resourceLoadQueue];
-  v6 = [(SKUIResourceLoader *)self initWithOperationQueue:v5 clientContext:v4];
+  contextCopy = context;
+  resourceLoadQueue = [contextCopy resourceLoadQueue];
+  v6 = [(SKUIResourceLoader *)self initWithOperationQueue:resourceLoadQueue clientContext:contextCopy];
 
   return v6;
 }
 
-- (SKUIResourceLoader)initWithOperationQueue:(id)a3 clientContext:(id)a4
+- (SKUIResourceLoader)initWithOperationQueue:(id)queue clientContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -59,10 +59,10 @@
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_clientContext, a4);
-    if (v7)
+    objc_storeStrong(&v17->_clientContext, context);
+    if (queueCopy)
     {
-      objc_storeStrong(&v18->_operationQueue, a3);
+      objc_storeStrong(&v18->_operationQueue, queue);
     }
 
     else
@@ -115,8 +115,8 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(SKUIResourceLoader *)self name];
-  v7 = [(SKUIResourceLoader *)self operationQueue];
+  name = [(SKUIResourceLoader *)self name];
+  operationQueue = [(SKUIResourceLoader *)self operationQueue];
   inBackground = self->_inBackground;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
@@ -137,35 +137,35 @@
   v11 = SKUIResourceLoadCountMapGet(self->_requestCountMap, 1);
   v12 = SKUIResourceLoadCountMapGet(self->_requestCountMap, 0);
   v13 = [v10 stringWithFormat:@"{onScreen: %ld, cacheAhead: %ld, cacheFarAhead: %ld}", v11, v12, SKUIResourceLoadCountMapGet(self->_requestCountMap, -1)];
-  v14 = [v3 stringWithFormat:@"<%@:%p name = %@; operationQueue = %@; inBackground = %@; loadCounts = %@>", v5, self, v6, v7, v9, v13];;
+  v14 = [v3 stringWithFormat:@"<%@:%p name = %@; operationQueue = %@; inBackground = %@; loadCounts = %@>", v5, self, name, operationQueue, v9, v13];;
 
   return v14;
 }
 
-- (void)addResource:(id)a3 forRequestIdentifier:(unint64_t)a4
+- (void)addResource:(id)resource forRequestIdentifier:(unint64_t)identifier
 {
   v6 = MEMORY[0x277CCABB0];
-  v7 = a3;
-  v10 = [[v6 alloc] initWithUnsignedInteger:a4];
+  resourceCopy = resource;
+  v10 = [[v6 alloc] initWithUnsignedInteger:identifier];
   resourcesByRequestID = self->_resourcesByRequestID;
-  v9 = [[_SKUIResourceCacheValue alloc] initWithResource:v7 requestCacheKey:0];
+  v9 = [[_SKUIResourceCacheValue alloc] initWithResource:resourceCopy requestCacheKey:0];
 
   [(NSCache *)resourcesByRequestID setObject:v9 forKey:v10];
 }
 
-- (id)cachedResourceForRequestIdentifier:(unint64_t)a3
+- (id)cachedResourceForRequestIdentifier:(unint64_t)identifier
 {
-  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:a3];
+  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:identifier];
   v5 = [(NSCache *)self->_resourcesByRequestID objectForKey:v4];
-  v6 = [v5 resource];
+  resource = [v5 resource];
 
-  return v6;
+  return resource;
 }
 
 - (void)cancelAllRequests
 {
-  v3 = [(NSMutableDictionary *)self->_operationsByRequestID allValues];
-  [v3 makeObjectsPerformSelector:sel_cancel];
+  allValues = [(NSMutableDictionary *)self->_operationsByRequestID allValues];
+  [allValues makeObjectsPerformSelector:sel_cancel];
 
   [(NSMutableDictionary *)self->_operationsByRequestID removeAllObjects];
   if (SKUIResourceLoadCountMapClear(self->_requestCountMap, 1))
@@ -185,19 +185,19 @@
   }
 }
 
-- (void)cancelRequestWithIdentifier:(unint64_t)a3
+- (void)cancelRequestWithIdentifier:(unint64_t)identifier
 {
-  v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:a3];
+  v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:identifier];
   v4 = [(NSMutableDictionary *)self->_operationsByRequestID objectForKey:?];
   v5 = v4;
   if (v4)
   {
     [v4 cancel];
     [(NSMutableDictionary *)self->_operationsByRequestID removeObjectForKey:v7];
-    v6 = [v5 _loadReason];
-    if (!SKUIResourceLoadCountMapDecrement(self->_requestCountMap, v6))
+    _loadReason = [v5 _loadReason];
+    if (!SKUIResourceLoadCountMapDecrement(self->_requestCountMap, _loadReason))
     {
-      [(SKUIResourceLoader *)self _sendDidLoadAllForReason:v6];
+      [(SKUIResourceLoader *)self _sendDidLoadAllForReason:_loadReason];
     }
   }
 }
@@ -225,58 +225,58 @@
   delegateQueue = self->_delegateQueue;
   if (delegateQueue)
   {
-    v3 = delegateQueue;
+    mainQueue = delegateQueue;
   }
 
   else
   {
-    v3 = [MEMORY[0x277CCABD8] mainQueue];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
   }
 
-  return v3;
+  return mainQueue;
 }
 
-- (BOOL)loadResourceWithRequest:(id)a3 reason:(int64_t)a4
+- (BOOL)loadResourceWithRequest:(id)request reason:(int64_t)reason
 {
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:{objc_msgSend(v6, "requestIdentifier")}];
+  requestCopy = request;
+  v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:{objc_msgSend(requestCopy, "requestIdentifier")}];
   v8 = [(NSMutableDictionary *)self->_operationsByRequestID objectForKey:v7];
   if (v8)
   {
-    v9 = [(SKUIResourceLoader *)self _queuePriorityForLoadReason:a4];
+    v9 = [(SKUIResourceLoader *)self _queuePriorityForLoadReason:reason];
     if (v9 > [v8 queuePriority])
     {
-      [(SKUIResourceLoader *)self _updateLoadReason:a4 forOperation:v8];
+      [(SKUIResourceLoader *)self _updateLoadReason:reason forOperation:v8];
       [v8 setQueuePriority:v9];
     }
   }
 
   else
   {
-    v10 = [v6 newLoadOperation];
-    [v10 setClientContext:self->_clientContext];
-    [v10 _setLoadReason:a4];
-    [v10 setQualityOfService:{-[SKUIResourceLoader _qualityOfService](self, "_qualityOfService")}];
-    [v10 setQueuePriority:{-[SKUIResourceLoader _queuePriorityForLoadReason:](self, "_queuePriorityForLoadReason:", a4)}];
+    newLoadOperation = [requestCopy newLoadOperation];
+    [newLoadOperation setClientContext:self->_clientContext];
+    [newLoadOperation _setLoadReason:reason];
+    [newLoadOperation setQualityOfService:{-[SKUIResourceLoader _qualityOfService](self, "_qualityOfService")}];
+    [newLoadOperation setQueuePriority:{-[SKUIResourceLoader _queuePriorityForLoadReason:](self, "_queuePriorityForLoadReason:", reason)}];
     objc_initWeak(&location, self);
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __53__SKUIResourceLoader_loadResourceWithRequest_reason___block_invoke;
     v14[3] = &unk_2781FB798;
     objc_copyWeak(&v16, &location);
-    v11 = v6;
+    v11 = requestCopy;
     v15 = v11;
-    [v10 setOutputBlock:v14];
+    [newLoadOperation setOutputBlock:v14];
     [(SKUIResourceLoader *)self _sendDidBeginLoadingIfNecessary];
-    v12 = [v11 cacheKey];
-    if (v12)
+    cacheKey = [v11 cacheKey];
+    if (cacheKey)
     {
-      [(NSMapTable *)self->_requestsByCacheKey setObject:v7 forKey:v12];
+      [(NSMapTable *)self->_requestsByCacheKey setObject:v7 forKey:cacheKey];
     }
 
-    [(NSMutableDictionary *)self->_operationsByRequestID setObject:v10 forKey:v7];
-    [(NSOperationQueue *)self->_operationQueue addOperation:v10];
-    SKUIResourceLoadCountMapIncrement(self->_requestCountMap, a4);
+    [(NSMutableDictionary *)self->_operationsByRequestID setObject:newLoadOperation forKey:v7];
+    [(NSOperationQueue *)self->_operationQueue addOperation:newLoadOperation];
+    SKUIResourceLoadCountMapIncrement(self->_requestCountMap, reason);
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
@@ -310,47 +310,47 @@ void __53__SKUIResourceLoader_loadResourceWithRequest_reason___block_invoke_2(ui
   [WeakRetained _finishLoadForRequest:*(a1 + 32) withResource:*(a1 + 40)];
 }
 
-- (BOOL)trySetReason:(int64_t)a3 forRequestWithIdentifier:(unint64_t)a4
+- (BOOL)trySetReason:(int64_t)reason forRequestWithIdentifier:(unint64_t)identifier
 {
-  v6 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:a4];
+  v6 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:identifier];
   v7 = [(NSMutableDictionary *)self->_operationsByRequestID objectForKey:v6];
   if (v7)
   {
-    [(SKUIResourceLoader *)self _updateLoadReason:a3 forOperation:v7];
-    [v7 setQueuePriority:{-[SKUIResourceLoader _queuePriorityForLoadReason:](self, "_queuePriorityForLoadReason:", a3)}];
+    [(SKUIResourceLoader *)self _updateLoadReason:reason forOperation:v7];
+    [v7 setQueuePriority:{-[SKUIResourceLoader _queuePriorityForLoadReason:](self, "_queuePriorityForLoadReason:", reason)}];
   }
 
   return v7 != 0;
 }
 
-- (void)cache:(id)a3 willEvictObject:(id)a4
+- (void)cache:(id)cache willEvictObject:(id)object
 {
-  v8 = a4;
-  v5 = [v8 requestCacheKey];
+  objectCopy = object;
+  requestCacheKey = [objectCopy requestCacheKey];
 
-  if (v5)
+  if (requestCacheKey)
   {
     requestsByCacheKey = self->_requestsByCacheKey;
-    v7 = [v8 requestCacheKey];
-    [(NSMapTable *)requestsByCacheKey removeObjectForKey:v7];
+    requestCacheKey2 = [objectCopy requestCacheKey];
+    [(NSMapTable *)requestsByCacheKey removeObjectForKey:requestCacheKey2];
   }
 }
 
-- (int64_t)_queuePriorityForLoadReason:(int64_t)a3
+- (int64_t)_queuePriorityForLoadReason:(int64_t)reason
 {
   v3 = 4;
-  if ((a3 + 1) < 3)
+  if ((reason + 1) < 3)
   {
-    v3 = 4 * (a3 + 1);
+    v3 = 4 * (reason + 1);
   }
 
   v4 = -8;
-  if (!a3)
+  if (!reason)
   {
     v4 = -4;
   }
 
-  if (a3 == 1)
+  if (reason == 1)
   {
     v4 = 0;
   }
@@ -379,15 +379,15 @@ void __53__SKUIResourceLoader_loadResourceWithRequest_reason___block_invoke_2(ui
   }
 }
 
-- (void)_updateLoadReason:(int64_t)a3 forOperation:(id)a4
+- (void)_updateLoadReason:(int64_t)reason forOperation:(id)operation
 {
-  v8 = a4;
-  v6 = [v8 _loadReason];
-  if (v6 != a3)
+  operationCopy = operation;
+  _loadReason = [operationCopy _loadReason];
+  if (_loadReason != reason)
   {
-    v7 = v6;
-    [v8 _setLoadReason:a3];
-    SKUIResourceLoadCountMapIncrement(self->_requestCountMap, a3);
+    v7 = _loadReason;
+    [operationCopy _setLoadReason:reason];
+    SKUIResourceLoadCountMapIncrement(self->_requestCountMap, reason);
     if (!SKUIResourceLoadCountMapDecrement(self->_requestCountMap, v7))
     {
       [(SKUIResourceLoader *)self _sendDidLoadAllForReason:v7];
@@ -414,40 +414,40 @@ void __45__SKUIResourceLoader__reprioritizeOperations__block_invoke(uint64_t a1,
   [v5 setQualityOfService:{objc_msgSend(*(a1 + 32), "_qualityOfService")}];
 }
 
-- (void)_finishLoadForRequest:(id)a3 withResource:(id)a4
+- (void)_finishLoadForRequest:(id)request withResource:(id)resource
 {
-  v15 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:{objc_msgSend(v15, "requestIdentifier")}];
+  requestCopy = request;
+  resourceCopy = resource;
+  v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:{objc_msgSend(requestCopy, "requestIdentifier")}];
   v8 = [(NSMutableDictionary *)self->_operationsByRequestID objectForKey:v7];
-  v9 = [v8 _loadReason];
+  _loadReason = [v8 _loadReason];
   [(NSMutableDictionary *)self->_operationsByRequestID removeObjectForKey:v7];
-  if (v6)
+  if (resourceCopy)
   {
-    if ([v15 cachesInMemory])
+    if ([requestCopy cachesInMemory])
     {
       resourcesByRequestID = self->_resourcesByRequestID;
       v11 = [_SKUIResourceCacheValue alloc];
-      v12 = [v15 cacheKey];
-      v13 = [(_SKUIResourceCacheValue *)v11 initWithResource:v6 requestCacheKey:v12];
+      cacheKey = [requestCopy cacheKey];
+      v13 = [(_SKUIResourceCacheValue *)v11 initWithResource:resourceCopy requestCacheKey:cacheKey];
       [(NSCache *)resourcesByRequestID setObject:v13 forKey:v7];
     }
 
-    [v15 finishWithResource:v6];
+    [requestCopy finishWithResource:resourceCopy];
   }
 
   else
   {
-    v14 = [v15 cacheKey];
-    if (v14)
+    cacheKey2 = [requestCopy cacheKey];
+    if (cacheKey2)
     {
-      [(NSMapTable *)self->_requestsByCacheKey removeObjectForKey:v14];
+      [(NSMapTable *)self->_requestsByCacheKey removeObjectForKey:cacheKey2];
     }
   }
 
-  if (!SKUIResourceLoadCountMapDecrement(self->_requestCountMap, v9))
+  if (!SKUIResourceLoadCountMapDecrement(self->_requestCountMap, _loadReason))
   {
-    [(SKUIResourceLoader *)self _sendDidLoadAllForReason:v9];
+    [(SKUIResourceLoader *)self _sendDidLoadAllForReason:_loadReason];
   }
 
   [(SKUIResourceLoader *)self _sendDidIdleIfNecessary];
@@ -457,8 +457,8 @@ void __45__SKUIResourceLoader__reprioritizeOperations__block_invoke(uint64_t a1,
 {
   if ([(SKUIResourceLoader *)self isIdle])
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 postNotificationName:@"SKUIResourceLoaderDidBeginLoadingNotification" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SKUIResourceLoaderDidBeginLoadingNotification" object:self];
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v5 = objc_opt_respondsToSelector();
@@ -475,8 +475,8 @@ void __45__SKUIResourceLoader__reprioritizeOperations__block_invoke(uint64_t a1,
 {
   if ([(SKUIResourceLoader *)self isIdle])
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 postNotificationName:@"SKUIResourceLoaderDidIdleNotification" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SKUIResourceLoaderDidIdleNotification" object:self];
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v5 = objc_opt_respondsToSelector();
@@ -489,15 +489,15 @@ void __45__SKUIResourceLoader__reprioritizeOperations__block_invoke(uint64_t a1,
   }
 }
 
-- (void)_sendDidLoadAllForReason:(int64_t)a3
+- (void)_sendDidLoadAllForReason:(int64_t)reason
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v10 = @"SKUIResourceLoaderLoadReasonUserInfoKey";
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:reason];
   v11[0] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-  [v5 postNotificationName:@"SKUIResourceLoaderDidLoadAllForReasonNotification" object:self userInfo:v7];
+  [defaultCenter postNotificationName:@"SKUIResourceLoaderDidLoadAllForReasonNotification" object:self userInfo:v7];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   LOBYTE(v6) = objc_opt_respondsToSelector();
@@ -505,7 +505,7 @@ void __45__SKUIResourceLoader__reprioritizeOperations__block_invoke(uint64_t a1,
   if (v6)
   {
     v9 = objc_loadWeakRetained(&self->_delegate);
-    [v9 resourceLoader:self didLoadAllForReason:a3];
+    [v9 resourceLoader:self didLoadAllForReason:reason];
   }
 }
 

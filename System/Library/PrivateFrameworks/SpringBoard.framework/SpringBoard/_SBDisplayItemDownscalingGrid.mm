@@ -1,16 +1,16 @@
 @interface _SBDisplayItemDownscalingGrid
-- (CGSize)nearestGridSizeForSize:(CGSize)a3 countOnStage:(unint64_t)a4;
+- (CGSize)nearestGridSizeForSize:(CGSize)size countOnStage:(unint64_t)stage;
 @end
 
 @implementation _SBDisplayItemDownscalingGrid
 
-- (CGSize)nearestGridSizeForSize:(CGSize)a3 countOnStage:(unint64_t)a4
+- (CGSize)nearestGridSizeForSize:(CGSize)size countOnStage:(unint64_t)stage
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v10.receiver = self;
   v10.super_class = _SBDisplayItemDownscalingGrid;
-  [(_SBDisplayItemSingleSizeGrid *)&v10 nearestGridSizeForSize:a4 countOnStage:?];
+  [(_SBDisplayItemSingleSizeGrid *)&v10 nearestGridSizeForSize:stage countOnStage:?];
   if (v7 > height || v6 > width)
   {
     v9 = height / v7;

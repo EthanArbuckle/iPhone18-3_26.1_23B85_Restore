@@ -1,33 +1,33 @@
 @interface CKDefaultSceneOverlayPresentationContext
 - (CGRect)anchorRect;
 - (CKChatInputController)inputController;
-- (CKDefaultSceneOverlayPresentationContext)initWithChatInputController:(id)a3 initialTraitCollection:(id)a4;
+- (CKDefaultSceneOverlayPresentationContext)initWithChatInputController:(id)controller initialTraitCollection:(id)collection;
 - (UIView)anchorView;
 - (id)_determineViewToPortal;
 - (void)_endSendMenuPresentation;
 - (void)appCardDidAppearInPopover;
-- (void)didChangePopoverMetrics:(id)a3;
+- (void)didChangePopoverMetrics:(id)metrics;
 - (void)willDismissSendMenuPresentation;
 - (void)willPresentAppCard;
 @end
 
 @implementation CKDefaultSceneOverlayPresentationContext
 
-- (CKDefaultSceneOverlayPresentationContext)initWithChatInputController:(id)a3 initialTraitCollection:(id)a4
+- (CKDefaultSceneOverlayPresentationContext)initWithChatInputController:(id)controller initialTraitCollection:(id)collection
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  collectionCopy = collection;
   v13.receiver = self;
   v13.super_class = CKDefaultSceneOverlayPresentationContext;
   v8 = [(CKDefaultSceneOverlayPresentationContext *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_inputController, v6);
-    v9->_presentationStyle = [v6 determineSendMenuPresentationStyleCompatibleWithTraitCollection:v7];
-    v10 = [(CKDefaultSceneOverlayPresentationContext *)v9 _determineViewToPortal];
+    objc_storeWeak(&v8->_inputController, controllerCopy);
+    v9->_presentationStyle = [controllerCopy determineSendMenuPresentationStyleCompatibleWithTraitCollection:collectionCopy];
+    _determineViewToPortal = [(CKDefaultSceneOverlayPresentationContext *)v9 _determineViewToPortal];
     viewToPortal = v9->_viewToPortal;
-    v9->_viewToPortal = v10;
+    v9->_viewToPortal = _determineViewToPortal;
   }
 
   return v9;
@@ -35,19 +35,19 @@
 
 - (UIView)anchorView
 {
-  v2 = [(CKDefaultSceneOverlayPresentationContext *)self inputController];
-  v3 = [v2 entryView];
-  v4 = [v3 sendMenuSourceView];
+  inputController = [(CKDefaultSceneOverlayPresentationContext *)self inputController];
+  entryView = [inputController entryView];
+  sendMenuSourceView = [entryView sendMenuSourceView];
 
-  return v4;
+  return sendMenuSourceView;
 }
 
 - (CGRect)anchorRect
 {
-  v2 = [(CKDefaultSceneOverlayPresentationContext *)self inputController];
-  v3 = [v2 entryView];
-  v4 = [v3 sendMenuSourceView];
-  [v4 bounds];
+  inputController = [(CKDefaultSceneOverlayPresentationContext *)self inputController];
+  entryView = [inputController entryView];
+  sendMenuSourceView = [entryView sendMenuSourceView];
+  [sendMenuSourceView bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -66,23 +66,23 @@
 
 - (id)_determineViewToPortal
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isPopoverSendMenuEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isPopoverSendMenuEnabled = [mEMORY[0x1E69A8070] isPopoverSendMenuEnabled];
 
-  if ((v4 & 1) != 0 || self->_presentationStyle)
+  if ((isPopoverSendMenuEnabled & 1) != 0 || self->_presentationStyle)
   {
-    v5 = 0;
+    superview = 0;
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_inputController);
-    v8 = [WeakRetained entryView];
-    v9 = [v8 sendMenuSourceView];
-    v5 = [v9 superview];
+    entryView = [WeakRetained entryView];
+    sendMenuSourceView = [entryView sendMenuSourceView];
+    superview = [sendMenuSourceView superview];
   }
 
-  return v5;
+  return superview;
 }
 
 - (void)willDismissSendMenuPresentation
@@ -96,36 +96,36 @@
 - (void)_endSendMenuPresentation
 {
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v2 = [WeakRetained entryView];
-  [v2 endSendMenuPresentation];
+  entryView = [WeakRetained entryView];
+  [entryView endSendMenuPresentation];
 }
 
-- (void)didChangePopoverMetrics:(id)a3
+- (void)didChangePopoverMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v5 = [WeakRetained entryView];
-  [v5 sendMenuPopoverMetricsDidChange:v4];
+  entryView = [WeakRetained entryView];
+  [entryView sendMenuPopoverMetricsDidChange:metricsCopy];
 }
 
 - (void)appCardDidAppearInPopover
 {
-  v3 = [(CKDefaultSceneOverlayPresentationContext *)self inputController];
-  v2 = [v3 entryView];
-  [v2 beginSendMenuPopoverPresentation];
+  inputController = [(CKDefaultSceneOverlayPresentationContext *)self inputController];
+  entryView = [inputController entryView];
+  [entryView beginSendMenuPopoverPresentation];
 }
 
 - (void)willPresentAppCard
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isPopoverSendMenuEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isPopoverSendMenuEnabled = [mEMORY[0x1E69A8070] isPopoverSendMenuEnabled];
 
-  if (v4)
+  if (isPopoverSendMenuEnabled)
   {
-    v5 = [MEMORY[0x1E69DC938] currentDevice];
-    v6 = [v5 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    presentationStyle = v6 & 0xFFFFFFFFFFFFFFFBLL;
+    presentationStyle = userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL;
   }
 
   else

@@ -1,20 +1,20 @@
 @interface NavigationButtonBar.ItemWrapperView
 - (CGSize)intrinsicContentSize;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (UIEdgeInsets)hitTestInsets;
-- (_TtCC5UIKit19NavigationButtonBar15ItemWrapperView)initWithCoder:(id)a3;
-- (_TtCC5UIKit19NavigationButtonBar15ItemWrapperView)initWithFrame:(CGRect)a3;
-- (void)setHitTestInsets:(UIEdgeInsets)a3;
+- (_TtCC5UIKit19NavigationButtonBar15ItemWrapperView)initWithCoder:(id)coder;
+- (_TtCC5UIKit19NavigationButtonBar15ItemWrapperView)initWithFrame:(CGRect)frame;
+- (void)setHitTestInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation NavigationButtonBar.ItemWrapperView
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = self;
-  sub_18907E048(width, height, a4, a5);
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
+  sub_18907E048(width, height, priority, fittingPriority);
   v11 = v10;
   v13 = v12;
 
@@ -25,7 +25,7 @@
   return result;
 }
 
-- (_TtCC5UIKit19NavigationButtonBar15ItemWrapperView)initWithCoder:(id)a3
+- (_TtCC5UIKit19NavigationButtonBar15ItemWrapperView)initWithCoder:(id)coder
 {
   result = sub_18A4A8398();
   __break(1u);
@@ -35,12 +35,12 @@
 - (CGSize)intrinsicContentSize
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtCC5UIKit19NavigationButtonBar15ItemWrapperView_tamicAdaptorView);
-  v3 = self;
+  selfCopy = self;
   [v2 updateForAvailableSize];
   v4 = v2;
   if (!v2)
   {
-    v4 = *(&v3->super.super.super.isa + OBJC_IVAR____TtCC5UIKit19NavigationButtonBar15ItemWrapperView_contentView);
+    v4 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtCC5UIKit19NavigationButtonBar15ItemWrapperView_contentView);
   }
 
   v5 = v2;
@@ -67,25 +67,25 @@
   return result;
 }
 
-- (void)setHitTestInsets:(UIEdgeInsets)a3
+- (void)setHitTestInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   ObjectType = swift_getObjectType();
   v12.receiver = self;
   v12.super_class = ObjectType;
-  v9 = self;
+  selfCopy = self;
   [(UIView *)&v12 setHitTestInsets:top, left, bottom, right];
-  v10 = *(&v9->super.super.super.isa + OBJC_IVAR____TtCC5UIKit19NavigationButtonBar15ItemWrapperView_contentView);
-  v11.receiver = v9;
+  v10 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtCC5UIKit19NavigationButtonBar15ItemWrapperView_contentView);
+  v11.receiver = selfCopy;
   v11.super_class = ObjectType;
   [(UIView *)&v11 hitTestInsets];
   [v10 setHitTestInsets_];
 }
 
-- (_TtCC5UIKit19NavigationButtonBar15ItemWrapperView)initWithFrame:(CGRect)a3
+- (_TtCC5UIKit19NavigationButtonBar15ItemWrapperView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

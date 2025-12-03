@@ -1,6 +1,6 @@
 @interface EventMonitorEvent
 - (EventMonitorEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation EventMonitorEvent
@@ -18,9 +18,9 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 2) = self->_pollInterval;
   *(result + 24) = self->_shouldKeepDaemonAlive;
   return result;

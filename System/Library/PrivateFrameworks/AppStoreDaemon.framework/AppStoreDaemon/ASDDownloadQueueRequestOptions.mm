@@ -1,45 +1,45 @@
 @interface ASDDownloadQueueRequestOptions
-- (ASDDownloadQueueRequestOptions)initWithCoder:(id)a3;
-- (ASDDownloadQueueRequestOptions)initWithManifest:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ASDDownloadQueueRequestOptions)initWithCoder:(id)coder;
+- (ASDDownloadQueueRequestOptions)initWithManifest:(id)manifest;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation ASDDownloadQueueRequestOptions
 
-- (ASDDownloadQueueRequestOptions)initWithManifest:(id)a3
+- (ASDDownloadQueueRequestOptions)initWithManifest:(id)manifest
 {
-  v5 = a3;
+  manifestCopy = manifest;
   v9.receiver = self;
   v9.super_class = ASDDownloadQueueRequestOptions;
   v6 = [(ASDDownloadQueueRequestOptions *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_manifest, a3);
+    objc_storeStrong(&v6->_manifest, manifest);
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[ASDDownloadQueueRequestOptions allocWithZone:](ASDDownloadQueueRequestOptions init];
-  v6 = [(ASDJobManifest *)self->_manifest copyWithZone:a3];
+  v6 = [(ASDJobManifest *)self->_manifest copyWithZone:zone];
   manifest = v5->_manifest;
   v5->_manifest = v6;
 
   return v5;
 }
 
-- (ASDDownloadQueueRequestOptions)initWithCoder:(id)a3
+- (ASDDownloadQueueRequestOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = ASDDownloadQueueRequestOptions;
-  v5 = [(ASDRequestOptions *)&v9 initWithCoder:v4];
+  v5 = [(ASDRequestOptions *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"manifest"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"manifest"];
     manifest = v5->_manifest;
     v5->_manifest = v6;
   }

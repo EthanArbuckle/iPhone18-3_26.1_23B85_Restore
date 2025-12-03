@@ -1,21 +1,21 @@
 @interface EKReminderFetchRequestToken
-- (EKReminderFetchRequestToken)initWithReminderStore:(id)a3;
+- (EKReminderFetchRequestToken)initWithReminderStore:(id)store;
 - (EKReminderStore)reminderStore;
 - (void)cancel;
 @end
 
 @implementation EKReminderFetchRequestToken
 
-- (EKReminderFetchRequestToken)initWithReminderStore:(id)a3
+- (EKReminderFetchRequestToken)initWithReminderStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v8.receiver = self;
   v8.super_class = EKReminderFetchRequestToken;
   v5 = [(EKReminderFetchRequestToken *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_reminderStore, v4);
+    objc_storeWeak(&v5->_reminderStore, storeCopy);
   }
 
   return v6;
@@ -23,8 +23,8 @@
 
 - (void)cancel
 {
-  v4 = [(EKReminderFetchRequestToken *)self reminderStore];
-  v3 = [v4 completionBlockForFetchRequestToken:self remove:1];
+  reminderStore = [(EKReminderFetchRequestToken *)self reminderStore];
+  v3 = [reminderStore completionBlockForFetchRequestToken:self remove:1];
 }
 
 - (EKReminderStore)reminderStore

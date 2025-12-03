@@ -9,22 +9,22 @@
 {
   v19.receiver = self;
   v19.super_class = ATXProactiveSuggestioniOSPartialIntentUIFeedbackQuery;
-  v3 = [(ATXProactiveSuggestionUIFeedbackQuery *)&v19 uiFeedbackPublisherChain];
+  uiFeedbackPublisherChain = [(ATXProactiveSuggestionUIFeedbackQuery *)&v19 uiFeedbackPublisherChain];
   v4 = BiomeLibrary();
   v5 = [v4 App];
-  v6 = [v5 InFocus];
-  v7 = [(ATXProactiveSuggestionUIFeedbackQuery *)self startDateForResults];
-  v8 = [v6 atx_publisherFromStartDate:v7];
+  inFocus = [v5 InFocus];
+  startDateForResults = [(ATXProactiveSuggestionUIFeedbackQuery *)self startDateForResults];
+  v8 = [inFocus atx_publisherFromStartDate:startDateForResults];
 
   v9 = BiomeLibrary();
   v10 = [v9 App];
-  v11 = [v10 Intent];
-  v12 = [(ATXProactiveSuggestionUIFeedbackQuery *)self startDateForResults];
-  v13 = [v11 atx_publisherFromStartDate:v12];
+  intent = [v10 Intent];
+  startDateForResults2 = [(ATXProactiveSuggestionUIFeedbackQuery *)self startDateForResults];
+  v13 = [intent atx_publisherFromStartDate:startDateForResults2];
 
-  if (!v3 || !v8 || !v13)
+  if (!uiFeedbackPublisherChain || !v8 || !v13)
   {
-    if (v3)
+    if (uiFeedbackPublisherChain)
     {
       if (v8)
       {
@@ -46,7 +46,7 @@ LABEL_7:
         if (v13)
         {
 LABEL_8:
-          v15 = 0;
+          partialIntentUIFeedbackPublisher = 0;
           goto LABEL_19;
         }
 
@@ -57,7 +57,7 @@ LABEL_15:
           [ATXProactiveSuggestioniOSPartialIntentUIFeedbackQuery uiFeedbackPublisherChain];
         }
 
-        v15 = 0;
+        partialIntentUIFeedbackPublisher = 0;
         goto LABEL_18;
       }
     }
@@ -76,13 +76,13 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v14 = [[ATXProactiveSuggestionPartialIntentHandlingPublisher alloc] initWithUIFeedbackPublisher:v3 appLaunchPublisher:v8 intentPublisher:v13];
-  v15 = [(ATXProactiveSuggestionPartialIntentHandlingPublisher *)v14 partialIntentUIFeedbackPublisher];
+  v14 = [[ATXProactiveSuggestionPartialIntentHandlingPublisher alloc] initWithUIFeedbackPublisher:uiFeedbackPublisherChain appLaunchPublisher:v8 intentPublisher:v13];
+  partialIntentUIFeedbackPublisher = [(ATXProactiveSuggestionPartialIntentHandlingPublisher *)v14 partialIntentUIFeedbackPublisher];
 LABEL_18:
 
 LABEL_19:
 
-  return v15;
+  return partialIntentUIFeedbackPublisher;
 }
 
 - (void)uiFeedbackPublisherChain

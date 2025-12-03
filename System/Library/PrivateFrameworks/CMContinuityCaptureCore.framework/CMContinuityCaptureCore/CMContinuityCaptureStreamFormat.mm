@@ -1,28 +1,28 @@
 @interface CMContinuityCaptureStreamFormat
-- (CMContinuityCaptureStreamFormat)initWithCoder:(id)a3;
-- (CMContinuityCaptureStreamFormat)initWithDictionaryRepresentation:(id)a3;
-- (CMContinuityCaptureStreamFormat)initWithName:(id)a3 width:(unint64_t)a4 height:(unint64_t)a5 pixelFormat:(unsigned int)a6 minFrameRate:(unsigned int)a7 maxFrameRate:(unsigned int)a8 entity:(int64_t)a9 minimumSupportedVersion:(id *)a10;
+- (CMContinuityCaptureStreamFormat)initWithCoder:(id)coder;
+- (CMContinuityCaptureStreamFormat)initWithDictionaryRepresentation:(id)representation;
+- (CMContinuityCaptureStreamFormat)initWithName:(id)name width:(unint64_t)width height:(unint64_t)height pixelFormat:(unsigned int)format minFrameRate:(unsigned int)rate maxFrameRate:(unsigned int)frameRate entity:(int64_t)entity minimumSupportedVersion:(id *)self0;
 - (NSString)debugDescription;
 - (NSString)description;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMContinuityCaptureStreamFormat
 
-- (CMContinuityCaptureStreamFormat)initWithCoder:(id)a3
+- (CMContinuityCaptureStreamFormat)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v15 = [v3 decodeInt64ForKey:@"entity"];
-  v5 = [v3 decodeInt64ForKey:@"width"];
-  v6 = [v3 decodeInt64ForKey:@"height"];
-  v7 = [v3 decodeInt32ForKey:@"pixelFormat"];
-  v8 = [v3 decodeInt32ForKey:@"minFrameRate"];
-  v9 = [v3 decodeInt32ForKey:@"maxFrameRate"];
-  v10 = [v3 decodeInt64ForKey:@"minimumSupportedVersionMajor"];
-  v11 = [v3 decodeInt64ForKey:@"minimumSupportedVersionMinor"];
-  v12 = [v3 decodeInt64ForKey:@"minimumSupportedVersionPatch"];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v15 = [coderCopy decodeInt64ForKey:@"entity"];
+  v5 = [coderCopy decodeInt64ForKey:@"width"];
+  v6 = [coderCopy decodeInt64ForKey:@"height"];
+  v7 = [coderCopy decodeInt32ForKey:@"pixelFormat"];
+  v8 = [coderCopy decodeInt32ForKey:@"minFrameRate"];
+  v9 = [coderCopy decodeInt32ForKey:@"maxFrameRate"];
+  v10 = [coderCopy decodeInt64ForKey:@"minimumSupportedVersionMajor"];
+  v11 = [coderCopy decodeInt64ForKey:@"minimumSupportedVersionMinor"];
+  v12 = [coderCopy decodeInt64ForKey:@"minimumSupportedVersionPatch"];
 
   v17[0] = v10;
   v17[1] = v11;
@@ -32,10 +32,10 @@
   return v13;
 }
 
-- (CMContinuityCaptureStreamFormat)initWithDictionaryRepresentation:(id)a3
+- (CMContinuityCaptureStreamFormat)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"name"];
+  representationCopy = representation;
+  v5 = [representationCopy objectForKeyedSubscript:@"name"];
   if (!v5)
   {
     v7 = CMContinuityCaptureLog(2);
@@ -47,7 +47,7 @@
     goto LABEL_27;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"entity"];
+  v6 = [representationCopy objectForKeyedSubscript:@"entity"];
   if (!v6)
   {
     v7 = CMContinuityCaptureLog(2);
@@ -60,50 +60,50 @@
   }
 
   v7 = v6;
-  v8 = [v6 integerValue];
-  v9 = [v4 objectForKeyedSubscript:@"width"];
+  integerValue = [v6 integerValue];
+  v9 = [representationCopy objectForKeyedSubscript:@"width"];
   if (!v9)
   {
     [CMContinuityCaptureStreamFormat initWithDictionaryRepresentation:];
 LABEL_27:
-    v13 = 0;
+    selfCopy2 = 0;
     goto LABEL_15;
   }
 
   v10 = v9;
-  v11 = [v9 integerValue];
-  v12 = [v4 objectForKeyedSubscript:@"height"];
-  v13 = v12;
+  integerValue2 = [v9 integerValue];
+  v12 = [representationCopy objectForKeyedSubscript:@"height"];
+  selfCopy2 = v12;
   if (!v12)
   {
     [CMContinuityCaptureStreamFormat initWithDictionaryRepresentation:v10];
     goto LABEL_15;
   }
 
-  v14 = [(CMContinuityCaptureStreamFormat *)v12 integerValue];
-  v15 = [v4 objectForKeyedSubscript:@"pixelFormat"];
+  integerValue3 = [(CMContinuityCaptureStreamFormat *)v12 integerValue];
+  v15 = [representationCopy objectForKeyedSubscript:@"pixelFormat"];
   if (!v15)
   {
-    [(CMContinuityCaptureStreamFormat *)v13 initWithDictionaryRepresentation:v10];
+    [(CMContinuityCaptureStreamFormat *)selfCopy2 initWithDictionaryRepresentation:v10];
     goto LABEL_27;
   }
 
   v16 = v15;
-  v40 = v14;
-  v39 = [v15 intValue];
-  v17 = [v4 objectForKeyedSubscript:@"minFrameRate"];
+  v40 = integerValue3;
+  intValue = [v15 intValue];
+  v17 = [representationCopy objectForKeyedSubscript:@"minFrameRate"];
   if (!v17)
   {
-    [(CMContinuityCaptureStreamFormat *)v16 initWithDictionaryRepresentation:v13, v10];
+    [(CMContinuityCaptureStreamFormat *)v16 initWithDictionaryRepresentation:selfCopy2, v10];
     goto LABEL_27;
   }
 
   v18 = v17;
-  v34 = v8;
-  v35 = v11;
-  v41 = v13;
-  v19 = [v17 intValue];
-  v20 = [v4 objectForKeyedSubscript:@"maxFrameRate"];
+  v34 = integerValue;
+  v35 = integerValue2;
+  v41 = selfCopy2;
+  intValue2 = [v17 intValue];
+  v20 = [representationCopy objectForKeyedSubscript:@"maxFrameRate"];
   if (!v20)
   {
     v30 = CMContinuityCaptureLog(2);
@@ -119,19 +119,19 @@ LABEL_27:
   v36 = v10;
   v37 = v7;
   v38 = v5;
-  v22 = [v20 intValue];
-  v23 = [v4 objectForKeyedSubscript:@"minimumSupportedVersionMajor"];
+  intValue3 = [v20 intValue];
+  v23 = [representationCopy objectForKeyedSubscript:@"minimumSupportedVersionMajor"];
 
   if (!v23)
   {
-    v28 = 0;
+    intValue4 = 0;
     v25 = 1;
     goto LABEL_13;
   }
 
-  v24 = [v4 objectForKeyedSubscript:@"minimumSupportedVersionMajor"];
+  v24 = [representationCopy objectForKeyedSubscript:@"minimumSupportedVersionMajor"];
   LODWORD(v25) = [v24 intValue];
-  v26 = [v4 objectForKeyedSubscript:@"minimumSupportedVersionMinor"];
+  v26 = [representationCopy objectForKeyedSubscript:@"minimumSupportedVersionMinor"];
 
   if (!v26)
   {
@@ -141,13 +141,13 @@ LABEL_27:
       [CMContinuityCaptureStreamFormat initWithDictionaryRepresentation:];
     }
 
-    v13 = 0;
+    selfCopy2 = 0;
     goto LABEL_34;
   }
 
-  v33 = self;
+  selfCopy = self;
   LODWORD(v23) = [v26 intValue];
-  v27 = [v4 objectForKeyedSubscript:@"minimumSupportedVersionPatch"];
+  v27 = [representationCopy objectForKeyedSubscript:@"minimumSupportedVersionPatch"];
 
   if (!v27)
   {
@@ -157,8 +157,8 @@ LABEL_27:
       [CMContinuityCaptureStreamFormat initWithDictionaryRepresentation:];
     }
 
-    v13 = 0;
-    self = v33;
+    selfCopy2 = 0;
+    self = selfCopy;
 LABEL_34:
     v5 = v38;
     goto LABEL_14;
@@ -166,22 +166,22 @@ LABEL_34:
 
   v25 = v25;
   v23 = v23;
-  v28 = [v27 intValue];
+  intValue4 = [v27 intValue];
 
-  self = v33;
+  self = selfCopy;
 LABEL_13:
   v42[0] = v25;
   v42[1] = v23;
-  v42[2] = v28;
+  v42[2] = intValue4;
   v5 = v38;
-  self = [(CMContinuityCaptureStreamFormat *)self initWithName:v38 width:v35 height:v40 pixelFormat:v39 minFrameRate:v19 maxFrameRate:v22 entity:v34 minimumSupportedVersion:v42];
+  self = [(CMContinuityCaptureStreamFormat *)self initWithName:v38 width:v35 height:v40 pixelFormat:intValue minFrameRate:intValue2 maxFrameRate:intValue3 entity:v34 minimumSupportedVersion:v42];
 
-  v13 = self;
+  selfCopy2 = self;
 LABEL_14:
   v7 = v37;
 LABEL_15:
 
-  return v13;
+  return selfCopy2;
 }
 
 - (id)dictionaryRepresentation
@@ -246,26 +246,26 @@ LABEL_15:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(CMContinuityCaptureStreamFormat *)self name];
-  [v5 encodeObject:v4 forKey:@"name"];
+  coderCopy = coder;
+  name = [(CMContinuityCaptureStreamFormat *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  [v5 encodeInt64:-[CMContinuityCaptureStreamFormat entity](self forKey:{"entity"), @"entity"}];
-  [v5 encodeInt64:-[CMContinuityCaptureStreamFormat width](self forKey:{"width"), @"width"}];
-  [v5 encodeInt64:-[CMContinuityCaptureStreamFormat height](self forKey:{"height"), @"height"}];
-  [v5 encodeInt32:-[CMContinuityCaptureStreamFormat pixelFormat](self forKey:{"pixelFormat"), @"pixelFormat"}];
-  [v5 encodeInt32:-[CMContinuityCaptureStreamFormat minFrameRate](self forKey:{"minFrameRate"), @"minFrameRate"}];
-  [v5 encodeInt32:-[CMContinuityCaptureStreamFormat maxFrameRate](self forKey:{"maxFrameRate"), @"maxFrameRate"}];
-  [v5 encodeInt64:self->_minimumSupportedVersion.major forKey:@"minimumSupportedVersionMajor"];
-  [v5 encodeInt64:self->_minimumSupportedVersion.minor forKey:@"minimumSupportedVersionMinor"];
-  [v5 encodeInt64:self->_minimumSupportedVersion.patch forKey:@"minimumSupportedVersionPatch"];
+  [coderCopy encodeInt64:-[CMContinuityCaptureStreamFormat entity](self forKey:{"entity"), @"entity"}];
+  [coderCopy encodeInt64:-[CMContinuityCaptureStreamFormat width](self forKey:{"width"), @"width"}];
+  [coderCopy encodeInt64:-[CMContinuityCaptureStreamFormat height](self forKey:{"height"), @"height"}];
+  [coderCopy encodeInt32:-[CMContinuityCaptureStreamFormat pixelFormat](self forKey:{"pixelFormat"), @"pixelFormat"}];
+  [coderCopy encodeInt32:-[CMContinuityCaptureStreamFormat minFrameRate](self forKey:{"minFrameRate"), @"minFrameRate"}];
+  [coderCopy encodeInt32:-[CMContinuityCaptureStreamFormat maxFrameRate](self forKey:{"maxFrameRate"), @"maxFrameRate"}];
+  [coderCopy encodeInt64:self->_minimumSupportedVersion.major forKey:@"minimumSupportedVersionMajor"];
+  [coderCopy encodeInt64:self->_minimumSupportedVersion.minor forKey:@"minimumSupportedVersionMinor"];
+  [coderCopy encodeInt64:self->_minimumSupportedVersion.patch forKey:@"minimumSupportedVersionPatch"];
 }
 
-- (CMContinuityCaptureStreamFormat)initWithName:(id)a3 width:(unint64_t)a4 height:(unint64_t)a5 pixelFormat:(unsigned int)a6 minFrameRate:(unsigned int)a7 maxFrameRate:(unsigned int)a8 entity:(int64_t)a9 minimumSupportedVersion:(id *)a10
+- (CMContinuityCaptureStreamFormat)initWithName:(id)name width:(unint64_t)width height:(unint64_t)height pixelFormat:(unsigned int)format minFrameRate:(unsigned int)rate maxFrameRate:(unsigned int)frameRate entity:(int64_t)entity minimumSupportedVersion:(id *)self0
 {
-  v17 = a3;
+  nameCopy = name;
   v35.receiver = self;
   v35.super_class = CMContinuityCaptureStreamFormat;
   v18 = [(CMContinuityCaptureStreamFormat *)&v35 init];
@@ -273,20 +273,20 @@ LABEL_15:
   formatDescriptionOut = 0;
   if (v18)
   {
-    v18->_entity = a9;
-    objc_storeStrong(&v18->_name, a3);
-    v19->_width = a4;
-    v19->_height = a5;
-    v19->_pixelFormat = a6;
-    v19->_minFrameRate = a7;
-    v19->_maxFrameRate = a8;
-    v20 = *&a10->var0;
-    v19->_minimumSupportedVersion.patch = a10->var2;
+    v18->_entity = entity;
+    objc_storeStrong(&v18->_name, name);
+    v19->_width = width;
+    v19->_height = height;
+    v19->_pixelFormat = format;
+    v19->_minFrameRate = rate;
+    v19->_maxFrameRate = frameRate;
+    v20 = *&version->var0;
+    v19->_minimumSupportedVersion.patch = version->var2;
     *&v19->_minimumSupportedVersion.major = v20;
     name = v19->_name;
     v32 = *MEMORY[0x277CC0310];
-    v33 = name;
-    v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
+    nameCopy2 = name;
+    v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&nameCopy2 forKeys:&v32 count:1];
     v23 = CMVideoFormatDescriptionCreate(0, v19->_pixelFormat, v19->_width, v19->_height, v22, &formatDescriptionOut);
     if (v23 || !formatDescriptionOut)
     {

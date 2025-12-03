@@ -1,25 +1,25 @@
 @interface AuthTokenHttpRequest
-+ (id)_urlRequestForBaseURL:(id)a3 params:(id)a4;
-+ (id)urlRequestForBaseURL:(id)a3 clientID:(id)a4 secret:(id)a5 redirectURI:(id)a6 authCode:(id)a7;
++ (id)_urlRequestForBaseURL:(id)l params:(id)params;
++ (id)urlRequestForBaseURL:(id)l clientID:(id)d secret:(id)secret redirectURI:(id)i authCode:(id)code;
 @end
 
 @implementation AuthTokenHttpRequest
 
-+ (id)_urlRequestForBaseURL:(id)a3 params:(id)a4
++ (id)_urlRequestForBaseURL:(id)l params:(id)params
 {
-  v5 = a4;
-  v6 = a3;
+  paramsCopy = params;
+  lCopy = l;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000015A0;
   v12[3] = &unk_100010348;
-  v13 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v5, "count")}];
+  v13 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(paramsCopy, "count")}];
   v7 = v13;
-  [v5 enumerateKeysAndObjectsUsingBlock:v12];
+  [paramsCopy enumerateKeysAndObjectsUsingBlock:v12];
 
   [v7 sortUsingSelector:"caseInsensitiveCompare:"];
   v8 = [v7 componentsJoinedByString:@"&"];
-  v9 = [NSMutableURLRequest requestWithURL:v6];
+  v9 = [NSMutableURLRequest requestWithURL:lCopy];
 
   v10 = [v8 dataUsingEncoding:4];
   [v9 setHTTPBody:v10];
@@ -31,26 +31,26 @@
   return v9;
 }
 
-+ (id)urlRequestForBaseURL:(id)a3 clientID:(id)a4 secret:(id)a5 redirectURI:(id)a6 authCode:(id)a7
++ (id)urlRequestForBaseURL:(id)l clientID:(id)d secret:(id)secret redirectURI:(id)i authCode:(id)code
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
-  v15 = a6;
-  v16 = a4;
+  lCopy = l;
+  secretCopy = secret;
+  codeCopy = code;
+  iCopy = i;
+  dCopy = d;
   v17 = objc_alloc_init(NSMutableDictionary);
-  [v17 setObject:v14 forKeyedSubscript:@"code"];
+  [v17 setObject:codeCopy forKeyedSubscript:@"code"];
 
   [v17 setObject:@"authorization_code" forKeyedSubscript:@"grant_type"];
-  [v17 setObject:v15 forKeyedSubscript:@"redirect_uri"];
+  [v17 setObject:iCopy forKeyedSubscript:@"redirect_uri"];
 
-  [v17 setObject:v16 forKeyedSubscript:@"client_id"];
-  if (v13)
+  [v17 setObject:dCopy forKeyedSubscript:@"client_id"];
+  if (secretCopy)
   {
-    [v17 setObject:v13 forKeyedSubscript:@"client_secret"];
+    [v17 setObject:secretCopy forKeyedSubscript:@"client_secret"];
   }
 
-  v18 = [a1 _urlRequestForBaseURL:v12 params:v17];
+  v18 = [self _urlRequestForBaseURL:lCopy params:v17];
 
   return v18;
 }

@@ -1,5 +1,5 @@
 @interface EventSummaryData
-+ (id)eventSummaryDataFromEKEvent:(id)a3;
++ (id)eventSummaryDataFromEKEvent:(id)event;
 - (EventSummaryData)init;
 @end
 
@@ -20,19 +20,19 @@
   return result;
 }
 
-+ (id)eventSummaryDataFromEKEvent:(id)a3
++ (id)eventSummaryDataFromEKEvent:(id)event
 {
-  v3 = a3;
-  if (v3)
+  eventCopy = event;
+  if (eventCopy)
   {
     v4 = objc_opt_new();
-    v5 = [v3 startDate];
-    [v4 setStartDate:v5];
+    startDate = [eventCopy startDate];
+    [v4 setStartDate:startDate];
 
-    v6 = [v3 endDate];
-    [v4 setEndDate:v6];
+    endDate = [eventCopy endDate];
+    [v4 setEndDate:endDate];
 
-    if ([v3 isAllDay])
+    if ([eventCopy isAllDay])
     {
       [v4 setIsAllDay:1];
     }
@@ -41,24 +41,24 @@
     {
       v7 = +[NSTimeZone calendarTimeZone];
       v8 = [NSCalendar CalGregorianCalendarForTimeZone:v7];
-      [v4 setIsAllDay:{objc_msgSend(v3, "isMultiDayTimedEventInCalendar:", v8)}];
+      [v4 setIsAllDay:{objc_msgSend(eventCopy, "isMultiDayTimedEventInCalendar:", v8)}];
     }
 
-    if ([v3 isIntegrationEvent])
+    if ([eventCopy isIntegrationEvent])
     {
-      v9 = CUIKIntegrationEventBackgroundColor();
-      [v4 setColor:v9];
+      calendar = CUIKIntegrationEventBackgroundColor();
+      [v4 setColor:calendar];
     }
 
     else
     {
-      v9 = [v3 calendar];
-      v10 = [v9 displayColor];
-      [v4 setColor:v10];
+      calendar = [eventCopy calendar];
+      displayColor = [calendar displayColor];
+      [v4 setColor:displayColor];
     }
 
-    v11 = [v3 eventOccurrenceID];
-    [v4 setEventIdentifier:v11];
+    eventOccurrenceID = [eventCopy eventOccurrenceID];
+    [v4 setEventIdentifier:eventOccurrenceID];
   }
 
   else

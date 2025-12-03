@@ -1,26 +1,26 @@
 @interface _WDTwoPartDateTimeManualEntryItem
-- (_WDTwoPartDateTimeManualEntryItem)initWithMaximumDate:(id)a3;
+- (_WDTwoPartDateTimeManualEntryItem)initWithMaximumDate:(id)date;
 - (id)tableViewCells;
-- (void)_datePickerDidChange:(id)a3;
-- (void)_generateValue:(id)a3;
-- (void)_saveDisambiguatedDate:(id)a3;
+- (void)_datePickerDidChange:(id)change;
+- (void)_generateValue:(id)value;
+- (void)_saveDisambiguatedDate:(id)date;
 - (void)_setupTableViewCells;
-- (void)_timePickerDidChange:(id)a3;
-- (void)setValue:(id)a3;
+- (void)_timePickerDidChange:(id)change;
+- (void)setValue:(id)value;
 @end
 
 @implementation _WDTwoPartDateTimeManualEntryItem
 
-- (_WDTwoPartDateTimeManualEntryItem)initWithMaximumDate:(id)a3
+- (_WDTwoPartDateTimeManualEntryItem)initWithMaximumDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   v9.receiver = self;
   v9.super_class = _WDTwoPartDateTimeManualEntryItem;
   v6 = [(_WDTwoPartDateTimeManualEntryItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_maximumDate, a3);
+    objc_storeStrong(&v6->_maximumDate, date);
     [(_WDTwoPartDateTimeManualEntryItem *)v7 _setupTableViewCells];
   }
 
@@ -52,11 +52,11 @@
   timeTableViewCell = self->_timeTableViewCell;
   self->_timeTableViewCell = v9;
 
-  v11 = [(HXUIInlineDatePickerTableViewCell *)self->_dateTableViewCell datePicker];
-  [v11 addTarget:self action:sel__datePickerDidChange_ forControlEvents:4096];
+  datePicker = [(HXUIInlineDatePickerTableViewCell *)self->_dateTableViewCell datePicker];
+  [datePicker addTarget:self action:sel__datePickerDidChange_ forControlEvents:4096];
 
-  v12 = [(HXUIInlineDatePickerTableViewCell *)self->_timeTableViewCell datePicker];
-  [v12 addTarget:self action:sel__timePickerDidChange_ forControlEvents:4096];
+  datePicker2 = [(HXUIInlineDatePickerTableViewCell *)self->_timeTableViewCell datePicker];
+  [datePicker2 addTarget:self action:sel__timePickerDidChange_ forControlEvents:4096];
 
   v13 = self->_dateTableViewCell;
   v14 = HKUIJoinStringsForAutomationIdentifier();
@@ -66,16 +66,16 @@
   v16 = HKUIJoinStringsForAutomationIdentifier();
   [(HXUIInlineDatePickerTableViewCell *)v15 setAccessibilityIdentifier:v16];
 
-  v17 = [(HXUIInlineDatePickerTableViewCell *)self->_timeTableViewCell datePicker];
-  [(_WDTwoPartDateTimeManualEntryItem *)self _timePickerDidChange:v17];
+  datePicker3 = [(HXUIInlineDatePickerTableViewCell *)self->_timeTableViewCell datePicker];
+  [(_WDTwoPartDateTimeManualEntryItem *)self _timePickerDidChange:datePicker3];
 
-  v18 = [(HXUIInlineDatePickerTableViewCell *)self->_dateTableViewCell datePicker];
-  [(_WDTwoPartDateTimeManualEntryItem *)self _datePickerDidChange:v18];
+  datePicker4 = [(HXUIInlineDatePickerTableViewCell *)self->_dateTableViewCell datePicker];
+  [(_WDTwoPartDateTimeManualEntryItem *)self _datePickerDidChange:datePicker4];
 }
 
-- (void)_datePickerDidChange:(id)a3
+- (void)_datePickerDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
@@ -87,30 +87,30 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_saveDisambiguatedDate:(id)a3
+- (void)_saveDisambiguatedDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   if (self->_maximumDate)
   {
     v5 = HKUIObjectMin();
 
-    v4 = v5;
+    dateCopy = v5;
   }
 
   chosenDate = self->_chosenDate;
-  self->_chosenDate = v4;
-  v7 = v4;
+  self->_chosenDate = dateCopy;
+  v7 = dateCopy;
 
   v8 = self->_chosenDate;
-  v9 = [(HXUIInlineDatePickerTableViewCell *)self->_timeTableViewCell datePicker];
-  [v9 setDate:v8];
+  datePicker = [(HXUIInlineDatePickerTableViewCell *)self->_timeTableViewCell datePicker];
+  [datePicker setDate:v8];
 
   [(_WDTwoPartDateTimeManualEntryItem *)self _updateCellLabels];
 }
 
-- (void)_timePickerDidChange:(id)a3
+- (void)_timePickerDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
@@ -122,19 +122,19 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_generateValue:(id)a3
+- (void)_generateValue:(id)value
 {
   timeTableViewCell = self->_timeTableViewCell;
-  v5 = a3;
-  v6 = [(HXUIInlineDatePickerTableViewCell *)timeTableViewCell datePicker];
-  v14 = [v6 date];
+  valueCopy = value;
+  datePicker = [(HXUIInlineDatePickerTableViewCell *)timeTableViewCell datePicker];
+  date = [datePicker date];
 
-  v7 = [(HXUIInlineDatePickerTableViewCell *)self->_dateTableViewCell datePicker];
-  v8 = [v7 date];
+  datePicker2 = [(HXUIInlineDatePickerTableViewCell *)self->_dateTableViewCell datePicker];
+  date2 = [datePicker2 date];
 
-  v9 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v10 = [v9 components:30 fromDate:v8];
-  v11 = [v9 components:96 fromDate:v14];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v10 = [currentCalendar components:30 fromDate:date2];
+  v11 = [currentCalendar components:96 fromDate:date];
   v12 = objc_alloc_init(MEMORY[0x1E695DF10]);
   [v12 setEra:{objc_msgSend(v10, "era")}];
   [v12 setYear:{objc_msgSend(v10, "year")}];
@@ -142,24 +142,24 @@
   [v12 setDay:{objc_msgSend(v10, "day")}];
   [v12 setHour:{objc_msgSend(v11, "hour")}];
   [v12 setMinute:{objc_msgSend(v11, "minute")}];
-  v13 = [v9 timeZone];
-  [v12 setTimeZone:v13];
+  timeZone = [currentCalendar timeZone];
+  [v12 setTimeZone:timeZone];
 
-  [(WDAddDataManualEntryItem *)self _disambiguateDateComponents:v12 withCompletion:v5];
+  [(WDAddDataManualEntryItem *)self _disambiguateDateComponents:v12 withCompletion:valueCopy];
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v7 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    objc_storeStrong(&self->_chosenDate, a3);
-    v5 = [(HXUIInlineDatePickerTableViewCell *)self->_timeTableViewCell datePicker];
-    [v5 setDate:v7];
+    objc_storeStrong(&self->_chosenDate, value);
+    datePicker = [(HXUIInlineDatePickerTableViewCell *)self->_timeTableViewCell datePicker];
+    [datePicker setDate:valueCopy];
 
-    v6 = [(HXUIInlineDatePickerTableViewCell *)self->_dateTableViewCell datePicker];
-    [v6 setDate:v7];
+    datePicker2 = [(HXUIInlineDatePickerTableViewCell *)self->_dateTableViewCell datePicker];
+    [datePicker2 setDate:valueCopy];
 
     [(_WDTwoPartDateTimeManualEntryItem *)self _updateCellLabels];
   }

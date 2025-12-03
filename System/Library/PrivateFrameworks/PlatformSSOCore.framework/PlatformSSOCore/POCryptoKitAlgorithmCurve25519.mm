@@ -1,10 +1,10 @@
 @interface POCryptoKitAlgorithmCurve25519
-- (BOOL)verifyKey:(__SecKey *)a3;
-- (BOOL)verifySignature:(id)a3 onData:(id)a4 usingCertificateString:(id)a5;
-- (BOOL)verifySignature:(id)a3 onData:(id)a4 usingKey:(__SecKey *)a5;
+- (BOOL)verifyKey:(__SecKey *)key;
+- (BOOL)verifySignature:(id)signature onData:(id)data usingCertificateString:(id)string;
+- (BOOL)verifySignature:(id)signature onData:(id)data usingKey:(__SecKey *)key;
 - (_TtC15PlatformSSOCore30POCryptoKitAlgorithmCurve25519)init;
-- (_TtC15PlatformSSOCore30POCryptoKitAlgorithmCurve25519)initWithSecKeyAlgorithm:(const __CFString *)a3 algorithmName:(id)a4 alg:(id)a5;
-- (id)signData:(id)a3 usingKey:(__SecKey *)a4 error:(id *)a5;
+- (_TtC15PlatformSSOCore30POCryptoKitAlgorithmCurve25519)initWithSecKeyAlgorithm:(const __CFString *)algorithm algorithmName:(id)name alg:(id)alg;
+- (id)signData:(id)data usingKey:(__SecKey *)key error:(id *)error;
 @end
 
 @implementation POCryptoKitAlgorithmCurve25519
@@ -21,19 +21,19 @@
   return v6;
 }
 
-- (id)signData:(id)a3 usingKey:(__SecKey *)a4 error:(id *)a5
+- (id)signData:(id)data usingKey:(__SecKey *)key error:(id *)error
 {
   v7 = sub_25E9415B8();
   v8 = *(v7 - 8);
   v9 = *(v8 + 64);
   MEMORY[0x28223BE20](v7);
   v11 = v23 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v12 = a3;
-  v13 = a4;
+  dataCopy = data;
+  keyCopy = key;
   v14 = sub_25E941478();
   v16 = v15;
 
-  v17 = v13;
+  v17 = keyCopy;
   sub_25E941598();
   v23[1] = v14;
   v23[2] = v16;
@@ -49,31 +49,31 @@
   return v21;
 }
 
-- (BOOL)verifySignature:(id)a3 onData:(id)a4 usingKey:(__SecKey *)a5
+- (BOOL)verifySignature:(id)signature onData:(id)data usingKey:(__SecKey *)key
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
+  signatureCopy = signature;
+  dataCopy = data;
+  keyCopy = key;
+  selfCopy = self;
   v12 = sub_25E941478();
   v14 = v13;
 
   v15 = sub_25E941478();
   v17 = v16;
 
-  LOBYTE(v9) = _s15PlatformSSOCore30POCryptoKitAlgorithmCurve25519C15verifySignature_2on5usingSb10Foundation4DataV_AISo9SecKeyRefatF_0(v12, v14, v15, v17, v10);
+  LOBYTE(dataCopy) = _s15PlatformSSOCore30POCryptoKitAlgorithmCurve25519C15verifySignature_2on5usingSb10Foundation4DataV_AISo9SecKeyRefatF_0(v12, v14, v15, v17, keyCopy);
   sub_25E91471C(v15, v17);
   sub_25E91471C(v12, v14);
 
-  return v9 & 1;
+  return dataCopy & 1;
 }
 
-- (BOOL)verifySignature:(id)a3 onData:(id)a4 usingCertificateString:(id)a5
+- (BOOL)verifySignature:(id)signature onData:(id)data usingCertificateString:(id)string
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
+  signatureCopy = signature;
+  dataCopy = data;
+  stringCopy = string;
+  selfCopy = self;
   v12 = sub_25E941478();
   v14 = v13;
 
@@ -81,24 +81,24 @@
   v17 = v16;
 
   sub_25E941848();
-  LOBYTE(v9) = _s15PlatformSSOCore30POCryptoKitAlgorithmCurve25519C15verifySignature_2on22usingCertificateStringSb10Foundation4DataV_AISStF_0(v12, v14, v15, v17);
+  LOBYTE(dataCopy) = _s15PlatformSSOCore30POCryptoKitAlgorithmCurve25519C15verifySignature_2on22usingCertificateStringSb10Foundation4DataV_AISStF_0(v12, v14, v15, v17);
 
   sub_25E91471C(v15, v17);
   sub_25E91471C(v12, v14);
 
-  return v9 & 1;
+  return dataCopy & 1;
 }
 
-- (BOOL)verifyKey:(__SecKey *)a3
+- (BOOL)verifyKey:(__SecKey *)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = _s15PlatformSSOCore30POCryptoKitAlgorithmCurve25519C9verifyKeyySbSo03SecH3RefaF_0(v4);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = _s15PlatformSSOCore30POCryptoKitAlgorithmCurve25519C9verifyKeyySbSo03SecH3RefaF_0(keyCopy);
 
   return v6 & 1;
 }
 
-- (_TtC15PlatformSSOCore30POCryptoKitAlgorithmCurve25519)initWithSecKeyAlgorithm:(const __CFString *)a3 algorithmName:(id)a4 alg:(id)a5
+- (_TtC15PlatformSSOCore30POCryptoKitAlgorithmCurve25519)initWithSecKeyAlgorithm:(const __CFString *)algorithm algorithmName:(id)name alg:(id)alg
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

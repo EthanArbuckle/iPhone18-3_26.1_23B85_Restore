@@ -1,25 +1,25 @@
 @interface BLHLSSegment
-- (BLHLSSegment)initWithURL:(id)a3 duration:(double)a4 map:(id)a5 key:(id)a6;
+- (BLHLSSegment)initWithURL:(id)l duration:(double)duration map:(id)map key:(id)key;
 - (id)description;
 @end
 
 @implementation BLHLSSegment
 
-- (BLHLSSegment)initWithURL:(id)a3 duration:(double)a4 map:(id)a5 key:(id)a6
+- (BLHLSSegment)initWithURL:(id)l duration:(double)duration map:(id)map key:(id)key
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  lCopy = l;
+  mapCopy = map;
+  keyCopy = key;
   v17.receiver = self;
   v17.super_class = BLHLSSegment;
   v14 = [(BLHLSSegment *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_url, a3);
-    v15->_duration = a4;
-    objc_storeStrong(&v15->_map, a5);
-    objc_storeStrong(&v15->_key, a6);
+    objc_storeStrong(&v14->_url, l);
+    v15->_duration = duration;
+    objc_storeStrong(&v15->_map, map);
+    objc_storeStrong(&v15->_key, key);
   }
 
   return v15;

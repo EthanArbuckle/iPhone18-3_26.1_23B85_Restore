@@ -1,22 +1,22 @@
 @interface WLKBasicEpisodeMetadata
-+ (id)episodesWithDictionaries:(id)a3 context:(id)a4;
-- (WLKBasicEpisodeMetadata)initWithDictionary:(id)a3 context:(id)a4;
-- (WLKBasicEpisodeMetadata)initWithDictionary:(id)a3 context:(id)a4 playablesDict:(id)a5 playablesId:(id)a6 seasonsDict:(id)a7;
++ (id)episodesWithDictionaries:(id)dictionaries context:(id)context;
+- (WLKBasicEpisodeMetadata)initWithDictionary:(id)dictionary context:(id)context;
+- (WLKBasicEpisodeMetadata)initWithDictionary:(id)dictionary context:(id)context playablesDict:(id)dict playablesId:(id)id seasonsDict:(id)seasonsDict;
 @end
 
 @implementation WLKBasicEpisodeMetadata
 
-+ (id)episodesWithDictionaries:(id)a3 context:(id)a4
++ (id)episodesWithDictionaries:(id)dictionaries context:(id)context
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dictionariesCopy = dictionaries;
+  contextCopy = context;
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = v6;
+  v9 = dictionariesCopy;
   v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
@@ -35,8 +35,8 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v15 = [a1 alloc];
-          v16 = [v15 initWithDictionary:v14 context:{v7, v19}];
+          v15 = [self alloc];
+          v16 = [v15 initWithDictionary:v14 context:{contextCopy, v19}];
           [v8 addObject:v16];
         }
       }
@@ -52,61 +52,61 @@
   return v8;
 }
 
-- (WLKBasicEpisodeMetadata)initWithDictionary:(id)a3 context:(id)a4
+- (WLKBasicEpisodeMetadata)initWithDictionary:(id)dictionary context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  contextCopy = context;
   v37.receiver = self;
   v37.super_class = WLKBasicEpisodeMetadata;
-  v8 = [(WLKBasicContentMetadata *)&v37 initWithDictionary:v6];
+  v8 = [(WLKBasicContentMetadata *)&v37 initWithDictionary:dictionaryCopy];
   if (v8)
   {
-    v9 = [v6 wlk_stringForKey:@"showTitle"];
+    v9 = [dictionaryCopy wlk_stringForKey:@"showTitle"];
     v10 = [v9 copy];
     showTitle = v8->_showTitle;
     v8->_showTitle = v10;
 
-    v12 = [v6 wlk_stringForKey:@"showId"];
+    v12 = [dictionaryCopy wlk_stringForKey:@"showId"];
     v13 = [v12 copy];
     canonicalShowID = v8->_canonicalShowID;
     v8->_canonicalShowID = v13;
 
-    v15 = [v6 wlk_stringForKey:@"seasonId"];
+    v15 = [dictionaryCopy wlk_stringForKey:@"seasonId"];
     v16 = [v15 copy];
     canonicalSeasonID = v8->_canonicalSeasonID;
     v8->_canonicalSeasonID = v16;
 
-    v18 = [v6 wlk_numberForKey:@"seasonNumber"];
+    v18 = [dictionaryCopy wlk_numberForKey:@"seasonNumber"];
     seasonNumber = v8->_seasonNumber;
     v8->_seasonNumber = v18;
 
-    v20 = [v6 wlk_numberForKey:@"episodeNumber"];
+    v20 = [dictionaryCopy wlk_numberForKey:@"episodeNumber"];
     episodeNumber = v8->_episodeNumber;
     v8->_episodeNumber = v20;
 
-    v22 = [v6 wlk_stringForKey:@"seasonTitle"];
+    v22 = [dictionaryCopy wlk_stringForKey:@"seasonTitle"];
     seasonTitle = v8->_seasonTitle;
     v8->_seasonTitle = v22;
 
-    v24 = [v6 wlk_numberForKey:@"duration"];
+    v24 = [dictionaryCopy wlk_numberForKey:@"duration"];
     [v24 doubleValue];
     v8->_duration = v25;
 
-    v26 = [v6 wlk_dateFromMillisecondsSince1970ForKey:@"releaseDate"];
+    v26 = [dictionaryCopy wlk_dateFromMillisecondsSince1970ForKey:@"releaseDate"];
     releaseDate = v8->_releaseDate;
     v8->_releaseDate = v26;
 
-    v28 = [v6 wlk_artworkVariantListingForKey:@"showImages"];
+    v28 = [dictionaryCopy wlk_artworkVariantListingForKey:@"showImages"];
     showImages = v8->_showImages;
     v8->_showImages = v28;
 
-    v30 = [v6 wlk_artworkVariantListingForKey:@"seasonImages"];
+    v30 = [dictionaryCopy wlk_artworkVariantListingForKey:@"seasonImages"];
     seasonImages = v8->_seasonImages;
     v8->_seasonImages = v30;
 
     v32 = [WLKPlayable alloc];
-    v33 = [v6 wlk_dictionaryForKey:@"playable"];
-    v34 = [(WLKPlayable *)v32 initWithDictionary:v33 context:v7];
+    v33 = [dictionaryCopy wlk_dictionaryForKey:@"playable"];
+    v34 = [(WLKPlayable *)v32 initWithDictionary:v33 context:contextCopy];
     playable = v8->_playable;
     v8->_playable = v34;
   }
@@ -114,60 +114,60 @@
   return v8;
 }
 
-- (WLKBasicEpisodeMetadata)initWithDictionary:(id)a3 context:(id)a4 playablesDict:(id)a5 playablesId:(id)a6 seasonsDict:(id)a7
+- (WLKBasicEpisodeMetadata)initWithDictionary:(id)dictionary context:(id)context playablesDict:(id)dict playablesId:(id)id seasonsDict:(id)seasonsDict
 {
   v61 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dictionaryCopy = dictionary;
+  contextCopy = context;
+  dictCopy = dict;
+  idCopy = id;
+  seasonsDictCopy = seasonsDict;
   v59.receiver = self;
   v59.super_class = WLKBasicEpisodeMetadata;
-  v17 = [(WLKBasicContentMetadata *)&v59 initWithDictionary:v12];
+  v17 = [(WLKBasicContentMetadata *)&v59 initWithDictionary:dictionaryCopy];
   if (v17)
   {
-    v18 = [v12 wlk_stringForKey:@"showTitle"];
+    v18 = [dictionaryCopy wlk_stringForKey:@"showTitle"];
     v19 = [v18 copy];
     showTitle = v17->_showTitle;
     v17->_showTitle = v19;
 
-    v21 = [v12 wlk_stringForKey:@"showId"];
+    v21 = [dictionaryCopy wlk_stringForKey:@"showId"];
     v22 = [v21 copy];
     canonicalShowID = v17->_canonicalShowID;
     v17->_canonicalShowID = v22;
 
-    v24 = [v12 wlk_stringForKey:@"seasonId"];
+    v24 = [dictionaryCopy wlk_stringForKey:@"seasonId"];
     v25 = [v24 copy];
     canonicalSeasonID = v17->_canonicalSeasonID;
     v17->_canonicalSeasonID = v25;
 
-    v27 = [v12 wlk_numberForKey:@"seasonNumber"];
+    v27 = [dictionaryCopy wlk_numberForKey:@"seasonNumber"];
     seasonNumber = v17->_seasonNumber;
     v17->_seasonNumber = v27;
 
-    v29 = [v12 wlk_numberForKey:@"episodeNumber"];
+    v29 = [dictionaryCopy wlk_numberForKey:@"episodeNumber"];
     episodeNumber = v17->_episodeNumber;
     v17->_episodeNumber = v29;
 
-    v31 = [v12 wlk_stringForKey:@"seasonTitle"];
+    v31 = [dictionaryCopy wlk_stringForKey:@"seasonTitle"];
     seasonTitle = v17->_seasonTitle;
     v17->_seasonTitle = v31;
 
-    v33 = [v12 wlk_numberForKey:@"duration"];
+    v33 = [dictionaryCopy wlk_numberForKey:@"duration"];
     [v33 doubleValue];
     v17->_duration = v34;
 
-    v35 = [v12 wlk_dateFromMillisecondsSince1970ForKey:@"releaseDate"];
+    v35 = [dictionaryCopy wlk_dateFromMillisecondsSince1970ForKey:@"releaseDate"];
     releaseDate = v17->_releaseDate;
     v17->_releaseDate = v35;
 
-    v37 = [v12 wlk_artworkVariantListingForKey:@"images"];
+    v37 = [dictionaryCopy wlk_artworkVariantListingForKey:@"images"];
     showImages = v17->_showImages;
     v17->_showImages = v37;
 
-    v53 = v16;
-    v39 = [v16 wlk_artworkVariantListingForKey:@"images"];
+    v53 = seasonsDictCopy;
+    v39 = [seasonsDictCopy wlk_artworkVariantListingForKey:@"images"];
     seasonImages = v17->_seasonImages;
     v17->_seasonImages = v39;
 
@@ -175,14 +175,14 @@
     v58 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v54 = v15;
-    v41 = v15;
+    v54 = idCopy;
+    v41 = idCopy;
     v42 = [v41 countByEnumeratingWithState:&v55 objects:v60 count:16];
     if (v42)
     {
       v43 = v42;
       v44 = *v56;
-      v52 = v13;
+      v52 = contextCopy;
       while (2)
       {
         for (i = 0; i != v43; ++i)
@@ -193,11 +193,11 @@
           }
 
           v46 = [*(*(&v55 + 1) + 8 * i) wlk_stringForKey:@"playableId"];
-          v47 = [v14 wlk_dictionaryForKey:v46];
+          v47 = [dictCopy wlk_dictionaryForKey:v46];
 
           if (v47)
           {
-            v13 = v52;
+            contextCopy = v52;
             v48 = [[WLKPlayable alloc] initWithDictionary:v47 context:v52];
             playable = v17->_playable;
             v17->_playable = v48;
@@ -207,7 +207,7 @@
         }
 
         v43 = [v41 countByEnumeratingWithState:&v55 objects:v60 count:16];
-        v13 = v52;
+        contextCopy = v52;
         if (v43)
         {
           continue;
@@ -219,8 +219,8 @@
 
 LABEL_12:
 
-    v16 = v53;
-    v15 = v54;
+    seasonsDictCopy = v53;
+    idCopy = v54;
   }
 
   v50 = *MEMORY[0x277D85DE8];

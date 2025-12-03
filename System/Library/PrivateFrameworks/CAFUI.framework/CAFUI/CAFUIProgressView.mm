@@ -1,11 +1,11 @@
 @interface CAFUIProgressView
-- (_TtC5CAFUI17CAFUIProgressView)initWithCoder:(id)a3;
-- (_TtC5CAFUI17CAFUIProgressView)initWithFrame:(CGRect)a3;
+- (_TtC5CAFUI17CAFUIProgressView)initWithCoder:(id)coder;
+- (_TtC5CAFUI17CAFUIProgressView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation CAFUIProgressView
 
-- (_TtC5CAFUI17CAFUIProgressView)initWithCoder:(id)a3
+- (_TtC5CAFUI17CAFUIProgressView)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC5CAFUI17CAFUIProgressView_cancellable;
   *v3 = 0u;
@@ -16,7 +16,7 @@
   return result;
 }
 
-- (_TtC5CAFUI17CAFUIProgressView)initWithFrame:(CGRect)a3
+- (_TtC5CAFUI17CAFUIProgressView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

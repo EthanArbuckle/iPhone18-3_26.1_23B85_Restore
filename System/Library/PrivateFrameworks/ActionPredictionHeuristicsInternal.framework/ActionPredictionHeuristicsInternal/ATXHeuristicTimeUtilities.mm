@@ -1,22 +1,22 @@
 @interface ATXHeuristicTimeUtilities
-+ (double)timestampByOffsettingDays:(double)a3 dayOffset:(int64_t)a4;
-+ (double)timestampByOffsettingStartOfTodayByNumberOfDays:(int64_t)a3;
-+ (double)timestampWithHour:(unint64_t)a3 minute:(unint64_t)a4 atDayOfTimestamp:(double)a5;
-+ (id)enabledAlarmsFromTS:(double)a3 toTS:(double)a4 environment:(id)a5;
-+ (id)usualAlarmTimeOfDayDataSourceWithEnvironment:(id)a3;
++ (double)timestampByOffsettingDays:(double)days dayOffset:(int64_t)offset;
++ (double)timestampByOffsettingStartOfTodayByNumberOfDays:(int64_t)days;
++ (double)timestampWithHour:(unint64_t)hour minute:(unint64_t)minute atDayOfTimestamp:(double)timestamp;
++ (id)enabledAlarmsFromTS:(double)s toTS:(double)tS environment:(id)environment;
++ (id)usualAlarmTimeOfDayDataSourceWithEnvironment:(id)environment;
 @end
 
 @implementation ATXHeuristicTimeUtilities
 
-+ (double)timestampByOffsettingStartOfTodayByNumberOfDays:(int64_t)a3
++ (double)timestampByOffsettingStartOfTodayByNumberOfDays:(int64_t)days
 {
-  v4 = [MEMORY[0x277CBEA80] currentCalendar];
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v6 = [v4 startOfDayForDate:v5];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  date = [MEMORY[0x277CBEAA8] date];
+  v6 = [currentCalendar startOfDayForDate:date];
 
-  if (a3)
+  if (days)
   {
-    v7 = [v4 dateByAddingUnit:16 value:a3 toDate:v6 options:0];
+    v7 = [currentCalendar dateByAddingUnit:16 value:days toDate:v6 options:0];
     [v7 timeIntervalSinceReferenceDate];
     v9 = v8;
   }
@@ -30,34 +30,34 @@
   return v9;
 }
 
-+ (double)timestampWithHour:(unint64_t)a3 minute:(unint64_t)a4 atDayOfTimestamp:(double)a5
++ (double)timestampWithHour:(unint64_t)hour minute:(unint64_t)minute atDayOfTimestamp:(double)timestamp
 {
-  v8 = [MEMORY[0x277CBEA80] currentCalendar];
-  v9 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceReferenceDate:a5];
-  v10 = [v8 dateBySettingHour:a3 minute:a4 second:0 ofDate:v9 options:0];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v9 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceReferenceDate:timestamp];
+  v10 = [currentCalendar dateBySettingHour:hour minute:minute second:0 ofDate:v9 options:0];
   [v10 timeIntervalSinceReferenceDate];
   v12 = v11;
 
   return v12;
 }
 
-+ (double)timestampByOffsettingDays:(double)a3 dayOffset:(int64_t)a4
++ (double)timestampByOffsettingDays:(double)days dayOffset:(int64_t)offset
 {
-  v5 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceReferenceDate:a3];
-  v6 = [MEMORY[0x277CBEA80] currentCalendar];
-  v7 = [v6 dateByAddingUnit:16 value:a4 toDate:v5 options:0];
+  v5 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceReferenceDate:days];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v7 = [currentCalendar dateByAddingUnit:16 value:offset toDate:v5 options:0];
   [v7 timeIntervalSinceReferenceDate];
   v9 = v8;
 
   return v9;
 }
 
-+ (id)usualAlarmTimeOfDayDataSourceWithEnvironment:(id)a3
++ (id)usualAlarmTimeOfDayDataSourceWithEnvironment:(id)environment
 {
-  v3 = a3;
+  environmentCopy = environment;
   v4 = [ATXSetAlarmTimeOfDayDataSource alloc];
-  v5 = [v3 heuristicDevice];
-  v6 = [(ATXSetAlarmTimeOfDayDataSource *)v4 initWithDevice:v5];
+  heuristicDevice = [environmentCopy heuristicDevice];
+  v6 = [(ATXSetAlarmTimeOfDayDataSource *)v4 initWithDevice:heuristicDevice];
 
   v17 = 0;
   v18 = &v17;
@@ -115,12 +115,12 @@ void __74__ATXHeuristicTimeUtilities_usualAlarmTimeOfDayDataSourceWithEnvironmen
   *(v9 + 40) = v6;
 }
 
-+ (id)enabledAlarmsFromTS:(double)a3 toTS:(double)a4 environment:(id)a5
++ (id)enabledAlarmsFromTS:(double)s toTS:(double)tS environment:(id)environment
 {
-  v7 = a5;
+  environmentCopy = environment;
   v8 = [ATXAlarmsDataSource alloc];
-  v9 = [v7 heuristicDevice];
-  v10 = [(ATXAlarmsDataSource *)v8 initWithDevice:v9];
+  heuristicDevice = [environmentCopy heuristicDevice];
+  v10 = [(ATXAlarmsDataSource *)v8 initWithDevice:heuristicDevice];
 
   v23 = 0;
   v24 = &v23;
@@ -134,8 +134,8 @@ void __74__ATXHeuristicTimeUtilities_usualAlarmTimeOfDayDataSourceWithEnvironmen
   v20 = __Block_byref_object_copy__16;
   v21 = __Block_byref_object_dispose__16;
   v22 = 0;
-  v11 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceReferenceDate:a3];
-  v12 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceReferenceDate:a4];
+  v11 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceReferenceDate:s];
+  v12 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceReferenceDate:tS];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __66__ATXHeuristicTimeUtilities_enabledAlarmsFromTS_toTS_environment___block_invoke;

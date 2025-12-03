@@ -1,36 +1,36 @@
 @interface HKWorkoutTrainingLoadCollectionQuery
-+ (void)configureClientInterface:(id)a3;
-- (HKWorkoutTrainingLoadCollectionQuery)initWithPredicate:(id)a3 options:(int64_t)a4 anchorDate:(id)a5 intervalComponents:(id)a6 completionHandler:(id)a7;
-- (void)client_deliverTrainingLoadCollection:(id)a3 forQuery:(id)a4;
-- (void)queue_deliverError:(id)a3;
-- (void)queue_populateConfiguration:(id)a3;
-- (void)queue_queryDidDeactivate:(id)a3;
++ (void)configureClientInterface:(id)interface;
+- (HKWorkoutTrainingLoadCollectionQuery)initWithPredicate:(id)predicate options:(int64_t)options anchorDate:(id)date intervalComponents:(id)components completionHandler:(id)handler;
+- (void)client_deliverTrainingLoadCollection:(id)collection forQuery:(id)query;
+- (void)queue_deliverError:(id)error;
+- (void)queue_populateConfiguration:(id)configuration;
+- (void)queue_queryDidDeactivate:(id)deactivate;
 - (void)queue_validate;
 @end
 
 @implementation HKWorkoutTrainingLoadCollectionQuery
 
-- (HKWorkoutTrainingLoadCollectionQuery)initWithPredicate:(id)a3 options:(int64_t)a4 anchorDate:(id)a5 intervalComponents:(id)a6 completionHandler:(id)a7
+- (HKWorkoutTrainingLoadCollectionQuery)initWithPredicate:(id)predicate options:(int64_t)options anchorDate:(id)date intervalComponents:(id)components completionHandler:(id)handler
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  dateCopy = date;
+  componentsCopy = components;
+  handlerCopy = handler;
   v24.receiver = self;
   v24.super_class = HKWorkoutTrainingLoadCollectionQuery;
-  v15 = [(HKQuery *)&v24 _initWithObjectType:0 predicate:a3];
+  v15 = [(HKQuery *)&v24 _initWithObjectType:0 predicate:predicate];
   v16 = v15;
   if (v15)
   {
-    v15->_options = a4;
-    v17 = [v12 copy];
+    v15->_options = options;
+    v17 = [dateCopy copy];
     anchorDate = v16->_anchorDate;
     v16->_anchorDate = v17;
 
-    v19 = [v13 copy];
+    v19 = [componentsCopy copy];
     intervalComponents = v16->_intervalComponents;
     v16->_intervalComponents = v19;
 
-    v21 = [v14 copy];
+    v21 = [handlerCopy copy];
     completionHandler = v16->_completionHandler;
     v16->_completionHandler = v21;
   }
@@ -38,31 +38,31 @@
   return v16;
 }
 
-+ (void)configureClientInterface:(id)a3
++ (void)configureClientInterface:(id)interface
 {
-  v4 = a3;
-  v6.receiver = a1;
+  interfaceCopy = interface;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___HKWorkoutTrainingLoadCollectionQuery;
-  objc_msgSendSuper2(&v6, sel_configureClientInterface_, v4);
-  v5 = [v4 hk_setArrayOfClass:objc_opt_class() forSelector:sel_client_deliverTrainingLoadCollection_forQuery_ argumentIndex:0 ofReply:0];
+  objc_msgSendSuper2(&v6, sel_configureClientInterface_, interfaceCopy);
+  v5 = [interfaceCopy hk_setArrayOfClass:objc_opt_class() forSelector:sel_client_deliverTrainingLoadCollection_forQuery_ argumentIndex:0 ofReply:0];
 }
 
-- (void)queue_populateConfiguration:(id)a3
+- (void)queue_populateConfiguration:(id)configuration
 {
   v5.receiver = self;
   v5.super_class = HKWorkoutTrainingLoadCollectionQuery;
-  v4 = a3;
-  [(HKQuery *)&v5 queue_populateConfiguration:v4];
-  [v4 setOptions:{self->_options, v5.receiver, v5.super_class}];
-  [v4 setAnchorDate:self->_anchorDate];
-  [v4 setIntervalComponents:self->_intervalComponents];
+  configurationCopy = configuration;
+  [(HKQuery *)&v5 queue_populateConfiguration:configurationCopy];
+  [configurationCopy setOptions:{self->_options, v5.receiver, v5.super_class}];
+  [configurationCopy setAnchorDate:self->_anchorDate];
+  [configurationCopy setIntervalComponents:self->_intervalComponents];
 }
 
-- (void)queue_queryDidDeactivate:(id)a3
+- (void)queue_queryDidDeactivate:(id)deactivate
 {
   v5.receiver = self;
   v5.super_class = HKWorkoutTrainingLoadCollectionQuery;
-  [(HKQuery *)&v5 queue_queryDidDeactivate:a3];
+  [(HKQuery *)&v5 queue_queryDidDeactivate:deactivate];
   completionHandler = self->_completionHandler;
   self->_completionHandler = 0;
 }
@@ -74,39 +74,39 @@
   [(HKQuery *)&v2 queue_validate];
 }
 
-- (void)queue_deliverError:(id)a3
+- (void)queue_deliverError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = _Block_copy(self->_completionHandler);
   if (v5)
   {
-    v6 = [(HKQuery *)self clientQueue];
+    clientQueue = [(HKQuery *)self clientQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __59__HKWorkoutTrainingLoadCollectionQuery_queue_deliverError___block_invoke;
     block[3] = &unk_1E7376618;
     v9 = v5;
     block[4] = self;
-    v8 = v4;
-    dispatch_async(v6, block);
+    v8 = errorCopy;
+    dispatch_async(clientQueue, block);
   }
 }
 
-- (void)client_deliverTrainingLoadCollection:(id)a3 forQuery:(id)a4
+- (void)client_deliverTrainingLoadCollection:(id)collection forQuery:(id)query
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HKQuery *)self queue];
+  collectionCopy = collection;
+  queryCopy = query;
+  queue = [(HKQuery *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __86__HKWorkoutTrainingLoadCollectionQuery_client_deliverTrainingLoadCollection_forQuery___block_invoke;
   block[3] = &unk_1E7376640;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = queryCopy;
+  v13 = collectionCopy;
+  v9 = collectionCopy;
+  v10 = queryCopy;
+  dispatch_async(queue, block);
 }
 
 void __86__HKWorkoutTrainingLoadCollectionQuery_client_deliverTrainingLoadCollection_forQuery___block_invoke(uint64_t a1)

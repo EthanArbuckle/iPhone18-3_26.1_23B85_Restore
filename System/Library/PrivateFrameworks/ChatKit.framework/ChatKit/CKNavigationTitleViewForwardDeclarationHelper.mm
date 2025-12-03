@@ -1,25 +1,25 @@
 @interface CKNavigationTitleViewForwardDeclarationHelper
-+ (void)configureNavigationItemForInteractivePop:(id)a3;
-+ (void)configureTitleViewForGlassDisplayLayer:(id)a3;
++ (void)configureNavigationItemForInteractivePop:(id)pop;
++ (void)configureTitleViewForGlassDisplayLayer:(id)layer;
 @end
 
 @implementation CKNavigationTitleViewForwardDeclarationHelper
 
-+ (void)configureTitleViewForGlassDisplayLayer:(id)a3
++ (void)configureTitleViewForGlassDisplayLayer:(id)layer
 {
-  v3 = a3;
+  layerCopy = layer;
   if (objc_opt_respondsToSelector())
   {
-    [v3 setDisplayLayer:1];
+    [layerCopy setDisplayLayer:1];
   }
 }
 
-+ (void)configureNavigationItemForInteractivePop:(id)a3
++ (void)configureNavigationItemForInteractivePop:(id)pop
 {
-  v3 = a3;
+  popCopy = pop;
   if (objc_opt_respondsToSelector())
   {
-    [v3 _setAllowsInteractivePopWhenBackButtonHidden:1];
+    [popCopy _setAllowsInteractivePopWhenBackButtonHidden:1];
   }
 }
 

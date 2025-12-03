@@ -1,22 +1,22 @@
 @interface DBSDeviceDisplayZoomAnimationView
 - (CGSize)intrinsicContentSize;
 - (CGSize)preferredSize;
-- (DBSDeviceDisplayZoomAnimationView)initWithDisplayZoomOption:(unint64_t)a3;
+- (DBSDeviceDisplayZoomAnimationView)initWithDisplayZoomOption:(unint64_t)option;
 - (void)_configureView;
-- (void)_setPackage:(id)a3;
-- (void)_startAnimationForLayer:(id)a3;
-- (void)_stepAnimamtionForLayer:(id)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)setPackage:(id)a3;
-- (void)setScale:(double)a3;
+- (void)_setPackage:(id)package;
+- (void)_startAnimationForLayer:(id)layer;
+- (void)_stepAnimamtionForLayer:(id)layer;
+- (void)drawRect:(CGRect)rect;
+- (void)setPackage:(id)package;
+- (void)setScale:(double)scale;
 - (void)startAnimation;
 - (void)stopAnimation;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation DBSDeviceDisplayZoomAnimationView
 
-- (DBSDeviceDisplayZoomAnimationView)initWithDisplayZoomOption:(unint64_t)a3
+- (DBSDeviceDisplayZoomAnimationView)initWithDisplayZoomOption:(unint64_t)option
 {
   v11.receiver = self;
   v11.super_class = DBSDeviceDisplayZoomAnimationView;
@@ -25,17 +25,17 @@
   if (v4)
   {
     [(DBSDeviceDisplayZoomAnimationView *)v4 setUserInteractionEnabled:0];
-    v6 = [MEMORY[0x277D75348] clearColor];
-    [(DBSDeviceDisplayZoomAnimationView *)v5 setBackgroundColor:v6];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(DBSDeviceDisplayZoomAnimationView *)v5 setBackgroundColor:clearColor];
 
-    v5->_displayZoomOption = a3;
+    v5->_displayZoomOption = option;
     v5->_duration = 3.0;
     if (DBSReverseZoomEnabled())
     {
-      v7 = [MEMORY[0x277D75418] currentDevice];
-      v8 = [v7 sf_isiPad];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      sf_isiPad = [currentDevice sf_isiPad];
       v9 = 1.0;
-      if (v8)
+      if (sf_isiPad)
       {
         v9 = 0.5;
       }
@@ -57,67 +57,67 @@
 - (void)_configureView
 {
   v3 = MEMORY[0x277CD9F28];
-  v4 = [(DBSDeviceDisplayZoomAnimationView *)self displayZoomOption];
-  v9 = [(DBSDeviceDisplayZoomAnimationView *)self traitCollection];
-  v5 = [v9 userInterfaceStyle];
-  v6 = [(DBSDeviceDisplayZoomAnimationView *)self traitCollection];
-  v7 = DBSAnimationPackageURLForDisplayZoomOptionAndUserInterfaceStyle(v4, v5, [v6 layoutDirection]);
+  displayZoomOption = [(DBSDeviceDisplayZoomAnimationView *)self displayZoomOption];
+  traitCollection = [(DBSDeviceDisplayZoomAnimationView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
+  traitCollection2 = [(DBSDeviceDisplayZoomAnimationView *)self traitCollection];
+  v7 = DBSAnimationPackageURLForDisplayZoomOptionAndUserInterfaceStyle(displayZoomOption, userInterfaceStyle, [traitCollection2 layoutDirection]);
   v8 = [v3 packageWithContentsOfURL:v7 type:*MEMORY[0x277CDA7F8] options:0 error:0];
   [(DBSDeviceDisplayZoomAnimationView *)self setPackage:v8];
 }
 
-- (void)setPackage:(id)a3
+- (void)setPackage:(id)package
 {
-  v5 = a3;
-  if (self->_package != v5)
+  packageCopy = package;
+  if (self->_package != packageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_package, a3);
+    v6 = packageCopy;
+    objc_storeStrong(&self->_package, package);
     [(DBSDeviceDisplayZoomAnimationView *)self _setPackage:v6];
-    v5 = v6;
+    packageCopy = v6;
   }
 }
 
-- (void)_setPackage:(id)a3
+- (void)_setPackage:(id)package
 {
-  v4 = a3;
-  v5 = [(DBSDeviceDisplayZoomAnimationView *)self packageLayer];
-  [v5 removeFromSuperlayer];
+  packageCopy = package;
+  packageLayer = [(DBSDeviceDisplayZoomAnimationView *)self packageLayer];
+  [packageLayer removeFromSuperlayer];
 
-  v9 = [v4 rootLayer];
-  v6 = [v4 isGeometryFlipped];
+  rootLayer = [packageCopy rootLayer];
+  isGeometryFlipped = [packageCopy isGeometryFlipped];
 
-  [v9 setGeometryFlipped:v6];
-  [v9 setContentsGravity:*MEMORY[0x277CDA710]];
-  [v9 setMasksToBounds:1];
-  [v9 setFillMode:*MEMORY[0x277CDA228]];
-  v7 = [(DBSDeviceDisplayZoomAnimationView *)self layer];
-  [v7 setShouldRasterize:1];
+  [rootLayer setGeometryFlipped:isGeometryFlipped];
+  [rootLayer setContentsGravity:*MEMORY[0x277CDA710]];
+  [rootLayer setMasksToBounds:1];
+  [rootLayer setFillMode:*MEMORY[0x277CDA228]];
+  layer = [(DBSDeviceDisplayZoomAnimationView *)self layer];
+  [layer setShouldRasterize:1];
 
-  v8 = [(DBSDeviceDisplayZoomAnimationView *)self layer];
-  [v8 addSublayer:v9];
+  layer2 = [(DBSDeviceDisplayZoomAnimationView *)self layer];
+  [layer2 addSublayer:rootLayer];
 
-  [(DBSDeviceDisplayZoomAnimationView *)self setPackageLayer:v9];
+  [(DBSDeviceDisplayZoomAnimationView *)self setPackageLayer:rootLayer];
   [(DBSDeviceDisplayZoomAnimationView *)self invalidateIntrinsicContentSize];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v4 = [(DBSDeviceDisplayZoomAnimationView *)self packageLayer];
+  packageLayer = [(DBSDeviceDisplayZoomAnimationView *)self packageLayer];
   UIRectGetCenter();
-  [v4 setPosition:?];
+  [packageLayer setPosition:?];
 
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  [v5 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v7 = v6;
 
   scale = self->_scale;
-  v9 = [(DBSDeviceDisplayZoomAnimationView *)self packageLayer];
-  v10 = [(DBSDeviceDisplayZoomAnimationView *)self packageLayer];
-  v11 = v10;
-  if (v10)
+  packageLayer2 = [(DBSDeviceDisplayZoomAnimationView *)self packageLayer];
+  packageLayer3 = [(DBSDeviceDisplayZoomAnimationView *)self packageLayer];
+  v11 = packageLayer3;
+  if (packageLayer3)
   {
-    [v10 contentsTransform];
+    [packageLayer3 contentsTransform];
   }
 
   else
@@ -132,26 +132,26 @@
   }
 
   CGAffineTransformScale(&v14, &v13, 1.0 / v12 * scale, 1.0 / v12 * scale);
-  [v9 setAffineTransform:&v14];
+  [packageLayer2 setAffineTransform:&v14];
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(DBSDeviceDisplayZoomAnimationView *)self packageLayer];
-  [v3 bounds];
+  packageLayer = [(DBSDeviceDisplayZoomAnimationView *)self packageLayer];
+  [packageLayer bounds];
   v20 = v5;
   v21 = v4;
 
-  v6 = [MEMORY[0x277D759A0] mainScreen];
-  [v6 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v8 = v7;
 
   scale = self->_scale;
-  v10 = [(DBSDeviceDisplayZoomAnimationView *)self packageLayer];
-  v11 = v10;
-  if (v10)
+  packageLayer2 = [(DBSDeviceDisplayZoomAnimationView *)self packageLayer];
+  v11 = packageLayer2;
+  if (packageLayer2)
   {
-    [v10 contentsTransform];
+    [packageLayer2 contentsTransform];
   }
 
   else
@@ -177,24 +177,24 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v12.receiver = self;
   v12.super_class = DBSDeviceDisplayZoomAnimationView;
-  [(DBSDeviceDisplayZoomAnimationView *)&v12 traitCollectionDidChange:a3];
-  v4 = [(DBSDeviceDisplayZoomAnimationView *)self isAnimating];
+  [(DBSDeviceDisplayZoomAnimationView *)&v12 traitCollectionDidChange:change];
+  isAnimating = [(DBSDeviceDisplayZoomAnimationView *)self isAnimating];
   [(DBSDeviceDisplayZoomAnimationView *)self stopAnimation];
   v5 = MEMORY[0x277CD9F28];
-  v6 = [(DBSDeviceDisplayZoomAnimationView *)self displayZoomOption];
-  v7 = [(DBSDeviceDisplayZoomAnimationView *)self traitCollection];
-  v8 = [v7 userInterfaceStyle];
-  v9 = [(DBSDeviceDisplayZoomAnimationView *)self traitCollection];
-  v10 = DBSAnimationPackageURLForDisplayZoomOptionAndUserInterfaceStyle(v6, v8, [v9 layoutDirection]);
+  displayZoomOption = [(DBSDeviceDisplayZoomAnimationView *)self displayZoomOption];
+  traitCollection = [(DBSDeviceDisplayZoomAnimationView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
+  traitCollection2 = [(DBSDeviceDisplayZoomAnimationView *)self traitCollection];
+  v10 = DBSAnimationPackageURLForDisplayZoomOptionAndUserInterfaceStyle(displayZoomOption, userInterfaceStyle, [traitCollection2 layoutDirection]);
   v11 = [v5 packageWithContentsOfURL:v10 type:*MEMORY[0x277CDA7F8] options:0 error:0];
   [(DBSDeviceDisplayZoomAnimationView *)self setPackage:v11];
 
   [(DBSDeviceDisplayZoomAnimationView *)self setNeedsDisplay];
-  if (v4)
+  if (isAnimating)
   {
     [(DBSDeviceDisplayZoomAnimationView *)self startAnimation];
   }
@@ -202,30 +202,30 @@
 
 - (void)startAnimation
 {
-  v3 = [(DBSDeviceDisplayZoomAnimationView *)self layer];
-  [v3 setShouldRasterize:0];
+  layer = [(DBSDeviceDisplayZoomAnimationView *)self layer];
+  [layer setShouldRasterize:0];
 
-  v4 = [(DBSDeviceDisplayZoomAnimationView *)self packageLayer];
-  [(DBSDeviceDisplayZoomAnimationView *)self _startAnimationForLayer:v4];
+  packageLayer = [(DBSDeviceDisplayZoomAnimationView *)self packageLayer];
+  [(DBSDeviceDisplayZoomAnimationView *)self _startAnimationForLayer:packageLayer];
 
   [(DBSDeviceDisplayZoomAnimationView *)self setAnimating:1];
 }
 
 - (void)stopAnimation
 {
-  v3 = [(DBSDeviceDisplayZoomAnimationView *)self layer];
-  [v3 setShouldRasterize:1];
+  layer = [(DBSDeviceDisplayZoomAnimationView *)self layer];
+  [layer setShouldRasterize:1];
 
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self];
-  v4 = [(DBSDeviceDisplayZoomAnimationView *)self stateController];
+  stateController = [(DBSDeviceDisplayZoomAnimationView *)self stateController];
 
-  if (v4)
+  if (stateController)
   {
-    v5 = [(DBSDeviceDisplayZoomAnimationView *)self stateController];
-    [v5 cancelTimers];
+    stateController2 = [(DBSDeviceDisplayZoomAnimationView *)self stateController];
+    [stateController2 cancelTimers];
 
-    v6 = [(DBSDeviceDisplayZoomAnimationView *)self stateController];
-    v7 = [v6 removeAllStateChanges];
+    stateController3 = [(DBSDeviceDisplayZoomAnimationView *)self stateController];
+    removeAllStateChanges = [stateController3 removeAllStateChanges];
 
     [(DBSDeviceDisplayZoomAnimationView *)self setStateController:0];
   }
@@ -235,20 +235,20 @@
 
 - (CGSize)preferredSize
 {
-  v3 = [(DBSDeviceDisplayZoomAnimationView *)self packageLayer];
-  [v3 bounds];
+  packageLayer = [(DBSDeviceDisplayZoomAnimationView *)self packageLayer];
+  [packageLayer bounds];
   v19 = v5;
   v20 = v4;
 
-  v6 = [MEMORY[0x277D759A0] mainScreen];
-  [v6 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v8 = v7;
 
-  v9 = [(DBSDeviceDisplayZoomAnimationView *)self packageLayer];
-  v10 = v9;
-  if (v9)
+  packageLayer2 = [(DBSDeviceDisplayZoomAnimationView *)self packageLayer];
+  v10 = packageLayer2;
+  if (packageLayer2)
   {
-    [v9 contentsTransform];
+    [packageLayer2 contentsTransform];
   }
 
   else
@@ -274,54 +274,54 @@
   return result;
 }
 
-- (void)setScale:(double)a3
+- (void)setScale:(double)scale
 {
-  if (self->_scale != a3)
+  if (self->_scale != scale)
   {
-    self->_scale = a3;
+    self->_scale = scale;
     [(DBSDeviceDisplayZoomAnimationView *)self setNeedsLayout];
   }
 }
 
-- (void)_startAnimationForLayer:(id)a3
+- (void)_startAnimationForLayer:(id)layer
 {
   v4 = MEMORY[0x277CD9FB8];
-  v8 = a3;
-  v5 = [[v4 alloc] initWithLayer:v8];
+  layerCopy = layer;
+  v5 = [[v4 alloc] initWithLayer:layerCopy];
   [(DBSDeviceDisplayZoomAnimationView *)self setStateController:v5];
 
   [(DBSDeviceDisplayZoomAnimationView *)self setState:0];
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self];
-  v6 = [(DBSDeviceDisplayZoomAnimationView *)self stateController];
+  stateController = [(DBSDeviceDisplayZoomAnimationView *)self stateController];
   LODWORD(v7) = 1.0;
-  [v6 setInitialStatesOfLayer:v8 transitionSpeed:v7];
+  [stateController setInitialStatesOfLayer:layerCopy transitionSpeed:v7];
 
-  [(DBSDeviceDisplayZoomAnimationView *)self _stepAnimamtionForLayer:v8];
+  [(DBSDeviceDisplayZoomAnimationView *)self _stepAnimamtionForLayer:layerCopy];
 }
 
-- (void)_stepAnimamtionForLayer:(id)a3
+- (void)_stepAnimamtionForLayer:(id)layer
 {
-  v12 = a3;
-  v4 = [(DBSDeviceDisplayZoomAnimationView *)self state];
-  if (v4 <= 3 && (v5 = off_278459970[v4], -[DBSDeviceDisplayZoomAnimationView setState:](self, "setState:", qword_22105F428[v4]), [v12 stateWithName:v5], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  layerCopy = layer;
+  state = [(DBSDeviceDisplayZoomAnimationView *)self state];
+  if (state <= 3 && (v5 = off_278459970[state], -[DBSDeviceDisplayZoomAnimationView setState:](self, "setState:", qword_22105F428[state]), [layerCopy stateWithName:v5], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v7 = v6;
-    v8 = [(DBSDeviceDisplayZoomAnimationView *)self stateController];
+    stateController = [(DBSDeviceDisplayZoomAnimationView *)self stateController];
     LODWORD(v9) = 1.0;
-    [v8 setState:v7 ofLayer:v12 transitionSpeed:v9];
+    [stateController setState:v7 ofLayer:layerCopy transitionSpeed:v9];
 
     [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self];
     [(DBSDeviceDisplayZoomAnimationView *)self duration];
-    [(DBSDeviceDisplayZoomAnimationView *)self performSelector:sel__stepAnimamtionForLayer_ withObject:v12 afterDelay:v10];
+    [(DBSDeviceDisplayZoomAnimationView *)self performSelector:sel__stepAnimamtionForLayer_ withObject:layerCopy afterDelay:v10];
   }
 
   else
   {
-    v11 = [(DBSDeviceDisplayZoomAnimationView *)self stateController];
-    [v11 setInitialStatesOfLayer:v12];
+    stateController2 = [(DBSDeviceDisplayZoomAnimationView *)self stateController];
+    [stateController2 setInitialStatesOfLayer:layerCopy];
 
     [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self];
-    [(DBSDeviceDisplayZoomAnimationView *)self performSelector:sel__stepAnimamtionForLayer_ withObject:v12 afterDelay:0.5];
+    [(DBSDeviceDisplayZoomAnimationView *)self performSelector:sel__stepAnimamtionForLayer_ withObject:layerCopy afterDelay:0.5];
   }
 }
 

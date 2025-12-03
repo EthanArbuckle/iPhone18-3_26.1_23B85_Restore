@@ -1,19 +1,19 @@
 @interface PKUserNotificationAgent
-+ (__CFUserNotification)presentNotificationWithParameters:(id)a3 flags:(unint64_t)a4 responseHandler:(id)a5;
++ (__CFUserNotification)presentNotificationWithParameters:(id)parameters flags:(unint64_t)flags responseHandler:(id)handler;
 @end
 
 @implementation PKUserNotificationAgent
 
-+ (__CFUserNotification)presentNotificationWithParameters:(id)a3 flags:(unint64_t)a4 responseHandler:(id)a5
++ (__CFUserNotification)presentNotificationWithParameters:(id)parameters flags:(unint64_t)flags responseHandler:(id)handler
 {
-  v7 = a5;
-  v8 = CFUserNotificationCreate(*MEMORY[0x1E695E480], 0.0, a4, 0, a3);
+  handlerCopy = handler;
+  v8 = CFUserNotificationCreate(*MEMORY[0x1E695E480], 0.0, flags, 0, parameters);
   v9 = _Queue();
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __83__PKUserNotificationAgent_presentNotificationWithParameters_flags_responseHandler___block_invoke;
   v13[3] = &unk_1E79C8958;
-  v14 = v7;
+  v14 = handlerCopy;
   v15 = v8;
   v10 = v13;
   block[0] = MEMORY[0x1E69E9820];
@@ -21,7 +21,7 @@
   block[2] = __dispatch_async_ar_block_invoke_21;
   block[3] = &unk_1E79C4428;
   v17 = v10;
-  v11 = v7;
+  v11 = handlerCopy;
   dispatch_async(v9, block);
 
   return v8;

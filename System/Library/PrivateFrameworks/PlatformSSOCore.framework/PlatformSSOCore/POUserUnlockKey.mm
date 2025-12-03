@@ -1,17 +1,17 @@
 @interface POUserUnlockKey
-+ (BOOL)createUnlockKeyWithPublicKey:(__SecKey *)a3 userName:(id)a4 returningCertificate:(__SecCertificate *)a5 hash:(id *)a6 encryptedData:(id *)a7;
-+ (BOOL)unlockKey:(id)a3 privateKey:(__SecKey *)a4 returningKey:(__SecKey *)a5;
-+ (__SecCertificate)selfSignedCertWithPrivateKey:(__SecKey *)a3 subjectName:(id)a4;
++ (BOOL)createUnlockKeyWithPublicKey:(__SecKey *)key userName:(id)name returningCertificate:(__SecCertificate *)certificate hash:(id *)hash encryptedData:(id *)data;
++ (BOOL)unlockKey:(id)key privateKey:(__SecKey *)privateKey returningKey:(__SecKey *)returningKey;
++ (__SecCertificate)selfSignedCertWithPrivateKey:(__SecKey *)key subjectName:(id)name;
 @end
 
 @implementation POUserUnlockKey
 
-+ (BOOL)createUnlockKeyWithPublicKey:(__SecKey *)a3 userName:(id)a4 returningCertificate:(__SecCertificate *)a5 hash:(id *)a6 encryptedData:(id *)a7
++ (BOOL)createUnlockKeyWithPublicKey:(__SecKey *)key userName:(id)name returningCertificate:(__SecCertificate *)certificate hash:(id *)hash encryptedData:(id *)data
 {
-  v12 = a4;
-  *a5 = 0;
-  *a6 = 0;
-  *a7 = 0;
+  nameCopy = name;
+  *certificate = 0;
+  *hash = 0;
+  *data = 0;
   v13 = [POSecKeyHelper createSEPEncryptionKeyForAlgorithm:0x2870A9198 shared:1 preboot:0];
   if (v13)
   {
@@ -20,7 +20,7 @@
     if (v15)
     {
       error = 0;
-      v16 = SecKeyCreateEncryptedData(a3, *MEMORY[0x277CDC338], v15, &error);
+      v16 = SecKeyCreateEncryptedData(key, *MEMORY[0x277CDC338], v15, &error);
       v17 = v16;
       if (error || !v16)
       {
@@ -35,15 +35,15 @@
 
       else
       {
-        v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"Platform SSO - %@", v12];
-        v19 = [a1 selfSignedCertWithPrivateKey:v14 subjectName:v18];
+        nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Platform SSO - %@", nameCopy];
+        v19 = [self selfSignedCertWithPrivateKey:v14 subjectName:nameCopy];
         CFRelease(v14);
         v20 = v19 != 0;
         if (v19)
         {
-          *a6 = SecCertificateCopyPublicKeySHA1Digest();
-          *a5 = v19;
-          *a7 = [(__CFData *)v17 base64EncodedStringWithOptions:0];
+          *hash = SecCertificateCopyPublicKeySHA1Digest();
+          *certificate = v19;
+          *data = [(__CFData *)v17 base64EncodedStringWithOptions:0];
         }
 
         else
@@ -119,15 +119,15 @@ id __97__POUserUnlockKey_createUnlockKeyWithPublicKey_userName_returningCertific
   return v0;
 }
 
-+ (BOOL)unlockKey:(id)a3 privateKey:(__SecKey *)a4 returningKey:(__SecKey *)a5
++ (BOOL)unlockKey:(id)key privateKey:(__SecKey *)privateKey returningKey:(__SecKey *)returningKey
 {
-  *a5 = 0;
+  *returningKey = 0;
   v7 = MEMORY[0x277CBEA90];
-  v8 = a3;
-  v9 = [[v7 alloc] initWithBase64EncodedString:v8 options:0];
+  keyCopy = key;
+  v9 = [[v7 alloc] initWithBase64EncodedString:keyCopy options:0];
 
   error = 0;
-  v10 = SecKeyCreateDecryptedData(a4, *MEMORY[0x277CDC338], v9, &error);
+  v10 = SecKeyCreateDecryptedData(privateKey, *MEMORY[0x277CDC338], v9, &error);
   v11 = v10;
   if (error || !v10)
   {
@@ -149,7 +149,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *a5 = v12;
+  *returningKey = v12;
   v13 = 1;
 LABEL_8:
 
@@ -182,13 +182,13 @@ id __53__POUserUnlockKey_unlockKey_privateKey_returningKey___block_invoke_27()
   return v0;
 }
 
-+ (__SecCertificate)selfSignedCertWithPrivateKey:(__SecKey *)a3 subjectName:(id)a4
++ (__SecCertificate)selfSignedCertWithPrivateKey:(__SecKey *)key subjectName:(id)name
 {
   v26[3] = *MEMORY[0x277D85DE8];
   v24[0] = *MEMORY[0x277CDC448];
-  v24[1] = a4;
+  v24[1] = name;
   v4 = MEMORY[0x277CBEA60];
-  v5 = a4;
+  nameCopy = name;
   v6 = [v4 arrayWithObjects:v24 count:2];
   v25 = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:&v25 count:1];

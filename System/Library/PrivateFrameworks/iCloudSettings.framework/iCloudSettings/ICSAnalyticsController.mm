@@ -1,18 +1,18 @@
 @interface ICSAnalyticsController
 - (_TtC14iCloudSettings22ICSAnalyticsController)init;
-- (_TtC14iCloudSettings22ICSAnalyticsController)initWithAccount:(id)a3;
-- (void)sendBackupToggleEventWithActionType:(int64_t)a3;
-- (void)sendDriveCellularToggleEventWithActionType:(int64_t)a3 enabled:(BOOL)a4;
-- (void)sendDriveUnlimitedCellularToggleEventWithActionType:(int64_t)a3 enabled:(BOOL)a4;
-- (void)sendToggleEventForDataclassID:(id)a3 actionType:(int64_t)a4 enabled:(BOOL)a5;
+- (_TtC14iCloudSettings22ICSAnalyticsController)initWithAccount:(id)account;
+- (void)sendBackupToggleEventWithActionType:(int64_t)type;
+- (void)sendDriveCellularToggleEventWithActionType:(int64_t)type enabled:(BOOL)enabled;
+- (void)sendDriveUnlimitedCellularToggleEventWithActionType:(int64_t)type enabled:(BOOL)enabled;
+- (void)sendToggleEventForDataclassID:(id)d actionType:(int64_t)type enabled:(BOOL)enabled;
 @end
 
 @implementation ICSAnalyticsController
 
-- (_TtC14iCloudSettings22ICSAnalyticsController)initWithAccount:(id)a3
+- (_TtC14iCloudSettings22ICSAnalyticsController)initWithAccount:(id)account
 {
-  v4 = a3;
-  v5 = sub_275935F68(a3);
+  accountCopy = account;
+  v5 = sub_275935F68(account);
 
   return v5;
 }
@@ -24,30 +24,30 @@
   return result;
 }
 
-- (void)sendToggleEventForDataclassID:(id)a3 actionType:(int64_t)a4 enabled:(BOOL)a5
+- (void)sendToggleEventForDataclassID:(id)d actionType:(int64_t)type enabled:(BOOL)enabled
 {
   v8 = sub_2759BA298();
   v10 = v9;
-  v11 = self;
-  ICSAnalyticsController.sendToggleEvent(for:actionType:enabled:)(v8, v10, a4, a5);
+  selfCopy = self;
+  ICSAnalyticsController.sendToggleEvent(for:actionType:enabled:)(v8, v10, type, enabled);
 }
 
-- (void)sendBackupToggleEventWithActionType:(int64_t)a3
+- (void)sendBackupToggleEventWithActionType:(int64_t)type
 {
-  v4 = self;
-  ICSAnalyticsController.sendBackupToggleEvent(actionType:)(a3);
+  selfCopy = self;
+  ICSAnalyticsController.sendBackupToggleEvent(actionType:)(type);
 }
 
-- (void)sendDriveCellularToggleEventWithActionType:(int64_t)a3 enabled:(BOOL)a4
+- (void)sendDriveCellularToggleEventWithActionType:(int64_t)type enabled:(BOOL)enabled
 {
-  v6 = self;
-  ICSAnalyticsController.sendDriveCellularToggleEvent(actionType:enabled:)(a3, a4);
+  selfCopy = self;
+  ICSAnalyticsController.sendDriveCellularToggleEvent(actionType:enabled:)(type, enabled);
 }
 
-- (void)sendDriveUnlimitedCellularToggleEventWithActionType:(int64_t)a3 enabled:(BOOL)a4
+- (void)sendDriveUnlimitedCellularToggleEventWithActionType:(int64_t)type enabled:(BOOL)enabled
 {
-  v6 = self;
-  ICSAnalyticsController.sendDriveUnlimitedCellularToggleEvent(actionType:enabled:)(a3, a4);
+  selfCopy = self;
+  ICSAnalyticsController.sendDriveUnlimitedCellularToggleEvent(actionType:enabled:)(type, enabled);
 }
 
 @end

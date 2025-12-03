@@ -1,21 +1,21 @@
 @interface ATXIntentSuggestionRequest
-- (ATXIntentSuggestionRequest)initWithCoder:(id)a3;
-- (ATXIntentSuggestionRequest)initWithProto:(id)a3;
-- (ATXIntentSuggestionRequest)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ATXIntentSuggestionRequest)initWithCoder:(id)coder;
+- (ATXIntentSuggestionRequest)initWithProto:(id)proto;
+- (ATXIntentSuggestionRequest)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (id)encodeAsProto;
 - (id)proto;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)proto;
 @end
 
 @implementation ATXIntentSuggestionRequest
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -24,12 +24,12 @@
   {
     v16.receiver = self;
     v16.super_class = ATXIntentSuggestionRequest;
-    if ([(ATXSuggestionRequest *)&v16 isEqual:v4])
+    if ([(ATXSuggestionRequest *)&v16 isEqual:equalCopy])
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v5 = v4;
+        v5 = equalCopy;
         v6 = self->_limit;
         v7 = v6;
         if (v6 == v5->_limit)
@@ -100,56 +100,56 @@ LABEL_19:
   return [(NSNumber *)self->_limit hash]- v5 + 32 * v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXIntentSuggestionRequest *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  encodeAsProto = [(ATXIntentSuggestionRequest *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"protobufData"];
 }
 
-- (ATXIntentSuggestionRequest)initWithCoder:(id)a3
+- (ATXIntentSuggestionRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
 
   v6 = [(ATXIntentSuggestionRequest *)self initWithProtoData:v5];
   return v6;
 }
 
-- (ATXIntentSuggestionRequest)initWithProtoData:(id)a3
+- (ATXIntentSuggestionRequest)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBRequestForIntentSuggestions alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBRequestForIntentSuggestions alloc] initWithData:dataCopy];
 
     self = [(ATXIntentSuggestionRequest *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXIntentSuggestionRequest *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXIntentSuggestionRequest *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXIntentSuggestionRequest)initWithProto:(id)a3
+- (ATXIntentSuggestionRequest)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_8:
-    v16 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
@@ -165,18 +165,18 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v5 = v4;
+  v5 = protoCopy;
   v6 = [ATXSuggestionRequest alloc];
-  v7 = [v5 base];
-  v8 = [(ATXSuggestionRequest *)v6 initWithProto:v7];
+  base = [v5 base];
+  v8 = [(ATXSuggestionRequest *)v6 initWithProto:base];
 
-  v18 = [(ATXSuggestionRequest *)v8 requestUUID];
-  v9 = [(ATXSuggestionRequest *)v8 originatorId];
-  v10 = [(ATXSuggestionRequest *)v8 consumerSubType];
-  v11 = [v5 bundleIds];
-  v12 = [v5 intentClassNames];
-  v13 = [v5 hasLimit];
-  if (v13)
+  requestUUID = [(ATXSuggestionRequest *)v8 requestUUID];
+  originatorId = [(ATXSuggestionRequest *)v8 originatorId];
+  consumerSubType = [(ATXSuggestionRequest *)v8 consumerSubType];
+  bundleIds = [v5 bundleIds];
+  intentClassNames = [v5 intentClassNames];
+  hasLimit = [v5 hasLimit];
+  if (hasLimit)
   {
     v14 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v5, "limit")}];
   }
@@ -187,15 +187,15 @@ LABEL_8:
   }
 
   [(ATXSuggestionRequest *)v8 timeout];
-  self = [(ATXIntentSuggestionRequest *)self initWithUUID:v18 originatorId:v9 consumerSubType:v10 bundleIds:v11 intentClassNames:v12 limit:v14 timeout:?];
-  if (v13)
+  self = [(ATXIntentSuggestionRequest *)self initWithUUID:requestUUID originatorId:originatorId consumerSubType:consumerSubType bundleIds:bundleIds intentClassNames:intentClassNames limit:v14 timeout:?];
+  if (hasLimit)
   {
   }
 
-  v16 = self;
+  selfCopy = self;
 LABEL_13:
 
-  return v16;
+  return selfCopy;
 }
 
 - (id)proto
@@ -204,11 +204,11 @@ LABEL_13:
   v3 = objc_opt_new();
   v27.receiver = self;
   v27.super_class = ATXIntentSuggestionRequest;
-  v4 = [(ATXSuggestionRequest *)&v27 proto];
+  proto = [(ATXSuggestionRequest *)&v27 proto];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v3 setBase:v4];
+    [v3 setBase:proto];
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;

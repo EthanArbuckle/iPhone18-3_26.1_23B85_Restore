@@ -3,10 +3,10 @@
 - (NSArray)recentItems;
 - (SearchHomeRecentCellDelegate)delegate;
 - (id)deletionBlock;
-- (void)configureUsing:(id)a3 delegate:(id)a4 deletionBlock:(id)a5;
+- (void)configureUsing:(id)using delegate:(id)delegate deletionBlock:(id)block;
 - (void)layoutSubviews;
-- (void)setDeletionBlock:(id)a3;
-- (void)setRecentItems:(id)a3;
+- (void)setDeletionBlock:(id)block;
+- (void)setRecentItems:(id)items;
 @end
 
 @implementation SearchHomeRecentCell
@@ -27,7 +27,7 @@
   return v2.super.isa;
 }
 
-- (void)setRecentItems:(id)a3
+- (void)setRecentItems:(id)items
 {
   type metadata accessor for HistoryEntryRecentsItemWrapper(0);
   *(self + OBJC_IVAR____TtC4Maps20SearchHomeRecentCell_recentItems) = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -62,9 +62,9 @@
   return v3;
 }
 
-- (void)setDeletionBlock:(id)a3
+- (void)setDeletionBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   if (v4)
   {
     v5 = v4;
@@ -83,13 +83,13 @@
   v9 = *(self + OBJC_IVAR____TtC4Maps20SearchHomeRecentCell_deletionBlock + 8);
   *v7 = v6;
   v7[1] = v4;
-  v10 = self;
+  selfCopy = self;
   sub_1000D3B90(v8, v9);
 }
 
-- (void)configureUsing:(id)a3 delegate:(id)a4 deletionBlock:(id)a5
+- (void)configureUsing:(id)using delegate:(id)delegate deletionBlock:(id)block
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(block);
   type metadata accessor for HistoryEntryRecentsItemWrapper(0);
   v8 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   if (v7)
@@ -105,15 +105,15 @@
   }
 
   swift_unknownObjectRetain();
-  v10 = self;
-  sub_1004845F8(v8, a4, v7, v9);
+  selfCopy = self;
+  sub_1004845F8(v8, delegate, v7, v9);
   sub_1000D3B90(v7, v9);
   swift_unknownObjectRelease();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004848E4();
 }
 

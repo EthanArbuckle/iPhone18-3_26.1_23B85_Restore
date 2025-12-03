@@ -1,22 +1,22 @@
 @interface CESRAudioSamplingConfigManager
 + (id)sharedManager;
-- (BOOL)shouldSampleFromConfigForProductType:(int64_t)a3 language:(id)a4;
-- (CESRAudioSamplingConfigManager)initWithAudioSamplingConfigDict:(id)a3;
-- (id)_createConfigFromProductType:(int64_t)a3;
+- (BOOL)shouldSampleFromConfigForProductType:(int64_t)type language:(id)language;
+- (CESRAudioSamplingConfigManager)initWithAudioSamplingConfigDict:(id)dict;
+- (id)_createConfigFromProductType:(int64_t)type;
 - (void)loadConfigs;
 @end
 
 @implementation CESRAudioSamplingConfigManager
 
-- (BOOL)shouldSampleFromConfigForProductType:(int64_t)a3 language:(id)a4
+- (BOOL)shouldSampleFromConfigForProductType:(int64_t)type language:(id)language
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (v6)
+  languageCopy = language;
+  if (languageCopy)
   {
-    v7 = v6;
+    v7 = languageCopy;
     audioSamplingConfigDict = self->_audioSamplingConfigDict;
-    v9 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v9 = [MEMORY[0x277CCABB0] numberWithInteger:type];
     v10 = [(NSMutableDictionary *)audioSamplingConfigDict objectForKey:v9];
 
     if (v10)
@@ -96,12 +96,12 @@
   return v18;
 }
 
-- (id)_createConfigFromProductType:(int64_t)a3
+- (id)_createConfigFromProductType:(int64_t)type
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (type)
   {
-    if (a3 != 1)
+    if (type != 1)
     {
       v10 = 0;
       goto LABEL_16;
@@ -189,25 +189,25 @@ LABEL_16:
   while ((v5 & 1) != 0);
 }
 
-- (CESRAudioSamplingConfigManager)initWithAudioSamplingConfigDict:(id)a3
+- (CESRAudioSamplingConfigManager)initWithAudioSamplingConfigDict:(id)dict
 {
-  v5 = a3;
+  dictCopy = dict;
   v11.receiver = self;
   v11.super_class = CESRAudioSamplingConfigManager;
   v6 = [(CESRAudioSamplingConfigManager *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    if (v5)
+    if (dictCopy)
     {
-      objc_storeStrong(&v6->_audioSamplingConfigDict, a3);
+      objc_storeStrong(&v6->_audioSamplingConfigDict, dict);
     }
 
     else
     {
-      v8 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       audioSamplingConfigDict = v7->_audioSamplingConfigDict;
-      v7->_audioSamplingConfigDict = v8;
+      v7->_audioSamplingConfigDict = dictionary;
 
       [(CESRAudioSamplingConfigManager *)v7 loadConfigs];
     }

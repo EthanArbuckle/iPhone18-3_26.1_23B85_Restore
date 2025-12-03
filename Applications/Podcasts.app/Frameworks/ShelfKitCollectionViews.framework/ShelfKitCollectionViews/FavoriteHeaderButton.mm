@@ -2,14 +2,14 @@
 - (NSString)accessibilityIdentifier;
 - (NSString)accessibilityLabel;
 - (NSString)accessibilityValue;
-- (_TtC23ShelfKitCollectionViews20FavoriteHeaderButton)initWithCoder:(id)a3;
+- (_TtC23ShelfKitCollectionViews20FavoriteHeaderButton)initWithCoder:(id)coder;
 - (void)primaryActionTriggered;
-- (void)willMoveToSuperview:(id)a3;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation FavoriteHeaderButton
 
-- (_TtC23ShelfKitCollectionViews20FavoriteHeaderButton)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews20FavoriteHeaderButton)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC23ShelfKitCollectionViews20FavoriteHeaderButton_tipRequestID;
   *v3 = 0;
@@ -22,15 +22,15 @@
 
 - (void)primaryActionTriggered
 {
-  v2 = self;
+  selfCopy = self;
   sub_AC7BC();
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
-  v5 = a3;
-  v6 = self;
-  sub_AD50C(a3);
+  superviewCopy = superview;
+  selfCopy = self;
+  sub_AD50C(superview);
 }
 
 - (NSString)accessibilityIdentifier
@@ -42,13 +42,13 @@
 
 - (NSString)accessibilityLabel
 {
-  v2 = [objc_opt_self() mainBundle];
+  mainBundle = [objc_opt_self() mainBundle];
   v6._countAndFlagsBits = 0xE000000000000000;
   v8._object = 0x8000000000339250;
   v8._countAndFlagsBits = 0xD00000000000001CLL;
   v9.value._countAndFlagsBits = 0;
   v9.value._object = 0;
-  v3.super.isa = v2;
+  v3.super.isa = mainBundle;
   v10._countAndFlagsBits = 0;
   v10._object = 0xE000000000000000;
   sub_301AB8(v8, v9, v3, v10, v6);
@@ -60,7 +60,7 @@
 
 - (NSString)accessibilityValue
 {
-  v2 = self;
+  selfCopy = self;
   sub_AD7E4();
   v4 = v3;
 

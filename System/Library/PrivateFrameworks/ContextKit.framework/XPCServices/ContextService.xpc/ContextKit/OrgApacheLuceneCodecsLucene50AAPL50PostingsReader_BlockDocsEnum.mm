@@ -1,29 +1,29 @@
 @interface OrgApacheLuceneCodecsLucene50AAPL50PostingsReader_BlockDocsEnum
-- (BOOL)canReuseWithOrgApacheLuceneStoreIndexInput:(id)a3 withOrgApacheLuceneIndexFieldInfo:(id)a4;
-- (id)resetWithOrgApacheLuceneCodecsLucene50AAPL50PostingsFormatReadOnly_IntBlockTermState:(id)a3 withInt:(int)a4;
+- (BOOL)canReuseWithOrgApacheLuceneStoreIndexInput:(id)input withOrgApacheLuceneIndexFieldInfo:(id)info;
+- (id)resetWithOrgApacheLuceneCodecsLucene50AAPL50PostingsFormatReadOnly_IntBlockTermState:(id)state withInt:(int)int;
 - (int)nextDoc;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneCodecsLucene50AAPL50PostingsReader_BlockDocsEnum
 
-- (BOOL)canReuseWithOrgApacheLuceneStoreIndexInput:(id)a3 withOrgApacheLuceneIndexFieldInfo:(id)a4
+- (BOOL)canReuseWithOrgApacheLuceneStoreIndexInput:(id)input withOrgApacheLuceneIndexFieldInfo:(id)info
 {
-  if (self->startDocIn_ == a3)
+  if (self->startDocIn_ == input)
   {
-    if (!a4)
+    if (!info)
     {
       goto LABEL_13;
     }
 
     indexHasFreq = self->indexHasFreq_;
-    v7 = [a4 getIndexOptions];
-    if (!v7)
+    getIndexOptions = [info getIndexOptions];
+    if (!getIndexOptions)
     {
       goto LABEL_13;
     }
 
-    v8 = v7;
+    v8 = getIndexOptions;
     if ((atomic_load_explicit(OrgApacheLuceneIndexIndexOptionsEnum__initialized, memory_order_acquire) & 1) == 0)
     {
       sub_100015608();
@@ -35,14 +35,14 @@
     }
 
     indexHasPos = self->indexHasPos_;
-    v10 = [a4 getIndexOptions];
-    if (!v10)
+    getIndexOptions2 = [info getIndexOptions];
+    if (!getIndexOptions2)
     {
 LABEL_13:
       JreThrowNullPointerException();
     }
 
-    v11 = v10;
+    v11 = getIndexOptions2;
     if ((atomic_load_explicit(OrgApacheLuceneIndexIndexOptionsEnum__initialized, memory_order_acquire) & 1) == 0)
     {
       sub_100015608();
@@ -51,31 +51,31 @@ LABEL_13:
     if (indexHasPos == [v11 compareToWithId:qword_100557388] >= 0)
     {
       indexHasPayloads = self->indexHasPayloads_;
-      return indexHasPayloads == [a4 hasPayloads];
+      return indexHasPayloads == [info hasPayloads];
     }
   }
 
   return 0;
 }
 
-- (id)resetWithOrgApacheLuceneCodecsLucene50AAPL50PostingsFormatReadOnly_IntBlockTermState:(id)a3 withInt:(int)a4
+- (id)resetWithOrgApacheLuceneCodecsLucene50AAPL50PostingsFormatReadOnly_IntBlockTermState:(id)state withInt:(int)int
 {
-  if (!a3)
+  if (!state)
   {
     goto LABEL_13;
   }
 
-  v6 = *(a3 + 4);
+  v6 = *(state + 4);
   self->docFreq_ = v6;
   if (self->indexHasFreq_)
   {
-    v6 = *(a3 + 3);
+    v6 = *(state + 3);
   }
 
   self->totalTermFreq_ = v6;
-  self->docTermStartFP_ = *(a3 + 7);
-  self->skipOffset_ = *(a3 + 10);
-  self->singletonDocID_ = *(a3 + 24);
+  self->docTermStartFP_ = *(state + 7);
+  self->skipOffset_ = *(state + 10);
+  self->singletonDocID_ = *(state + 24);
   if (self->docFreq_ >= 2)
   {
     docIn = self->docIn_;
@@ -91,7 +91,7 @@ LABEL_13:
 
 LABEL_9:
   self->doc_ = -1;
-  v9 = OrgApacheLuceneIndexPostingsEnum_featureRequestedWithInt_withShort_(a4, 8);
+  v9 = OrgApacheLuceneIndexPostingsEnum_featureRequestedWithInt_withShort_(int, 8);
   self->needsFreq_ = v9;
   if (!self->indexHasFreq_ || !v9)
   {

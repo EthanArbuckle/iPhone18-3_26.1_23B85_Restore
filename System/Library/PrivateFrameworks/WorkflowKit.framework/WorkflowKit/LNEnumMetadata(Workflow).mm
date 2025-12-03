@@ -9,7 +9,7 @@
 - (id)wf_contentItemWithAppBundleIdentifier:()Workflow enumCaseIdentifier:
 {
   v6 = a4;
-  v7 = [a1 wf_contentItemClassWithAppBundleIdentifier:a3];
+  v7 = [self wf_contentItemClassWithAppBundleIdentifier:a3];
   v8 = [[WFLinkEnumerationCase alloc] initWithIdentifier:v6];
 
   v9 = [v7 itemWithObject:v8];
@@ -24,8 +24,8 @@
   v7 = NSStringFromClass(a4);
   v34[0] = v7;
   v34[1] = v6;
-  v8 = [a1 identifier];
-  v34[2] = v8;
+  identifier = [self identifier];
+  v34[2] = identifier;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:3];
 
   v10 = [v9 componentsJoinedByString:@"_"];
@@ -54,13 +54,13 @@ LABEL_3:
   aBlock[3] = &__block_descriptor_40_e14_B32__0_8_16_24lu32l8;
   aBlock[4] = a4;
   v16 = _Block_copy(aBlock);
-  v17 = a1;
+  selfCopy = self;
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __82__LNEnumMetadata_Workflow__wf_contentItemClassWithAppBundleIdentifier_superclass___block_invoke_2;
   v31[3] = &unk_1E837F738;
-  v32 = v17;
-  v18 = v17;
+  v32 = selfCopy;
+  v18 = selfCopy;
   v19 = _Block_copy(v31);
   v16[2](v16, v15, sel_enumMetadata, v19);
 
@@ -74,8 +74,8 @@ LABEL_3:
   v16[2](v16, v15, sel_appBundleIdentifier, v21);
 
   v22 = MEMORY[0x1E69AC800];
-  v23 = [v18 identifier];
-  [v22 wf_addDescriptionMethodsToClass:v15 withEntityType:v23 appBundleIdentifier:v20];
+  identifier2 = [v18 identifier];
+  [v22 wf_addDescriptionMethodsToClass:v15 withEntityType:identifier2 appBundleIdentifier:v20];
 
   objc_registerClassPair(v15);
   os_unfair_lock_unlock(&classRegistrationLock_72596);
@@ -92,11 +92,11 @@ LABEL_6:
   v5 = a3;
   if (!v5)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"LNEnumMetadata+Workflow.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"appBundleIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNEnumMetadata+Workflow.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"appBundleIdentifier"}];
   }
 
-  v6 = [a1 wf_contentItemClassWithAppBundleIdentifier:v5 superclass:objc_opt_class()];
+  v6 = [self wf_contentItemClassWithAppBundleIdentifier:v5 superclass:objc_opt_class()];
 
   return v6;
 }

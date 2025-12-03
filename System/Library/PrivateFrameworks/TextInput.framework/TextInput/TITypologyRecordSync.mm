@@ -1,27 +1,27 @@
 @interface TITypologyRecordSync
-- (TITypologyRecordSync)initWithCoder:(id)a3;
+- (TITypologyRecordSync)initWithCoder:(id)coder;
 - (id)shortDescription;
 - (id)textSummary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)removeContextFromKeyboardState;
-- (void)replaceDocumentState:(id)a3;
+- (void)replaceDocumentState:(id)state;
 @end
 
 @implementation TITypologyRecordSync
 
-- (void)replaceDocumentState:(id)a3
+- (void)replaceDocumentState:(id)state
 {
-  v4 = a3;
-  v5 = [(TITypologyRecordSync *)self keyboardState];
-  [v5 setDocumentState:v4];
+  stateCopy = state;
+  keyboardState = [(TITypologyRecordSync *)self keyboardState];
+  [keyboardState setDocumentState:stateCopy];
 }
 
 - (id)shortDescription
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(TITypologyRecordSync *)self keyboardState];
-  v4 = [v3 documentState];
-  v5 = [v2 stringWithFormat:@"SYNC TO %@", v4];
+  keyboardState = [(TITypologyRecordSync *)self keyboardState];
+  documentState = [keyboardState documentState];
+  v5 = [v2 stringWithFormat:@"SYNC TO %@", documentState];
 
   return v5;
 }
@@ -29,42 +29,42 @@
 - (id)textSummary
 {
   v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@"\n<context"];
-  v4 = [(TITypologyRecordSync *)self keyboardState];
-  v5 = [v4 documentState];
-  v6 = [v5 contextBeforeInput];
+  keyboardState = [(TITypologyRecordSync *)self keyboardState];
+  documentState = [keyboardState documentState];
+  contextBeforeInput = [documentState contextBeforeInput];
 
-  if (v6)
+  if (contextBeforeInput)
   {
-    v7 = [(TITypologyRecordSync *)self keyboardState];
-    v8 = [v7 documentState];
-    v9 = [v8 contextBeforeInput];
-    v10 = __35__TITypologyRecordSync_textSummary__block_invoke(v9);
+    keyboardState2 = [(TITypologyRecordSync *)self keyboardState];
+    documentState2 = [keyboardState2 documentState];
+    contextBeforeInput2 = [documentState2 contextBeforeInput];
+    v10 = __35__TITypologyRecordSync_textSummary__block_invoke(contextBeforeInput2);
     [v3 appendFormat:@" before=%@", v10];
   }
 
-  v11 = [(TITypologyRecordSync *)self keyboardState];
-  v12 = [v11 documentState];
-  v13 = [v12 selectedText];
+  keyboardState3 = [(TITypologyRecordSync *)self keyboardState];
+  documentState3 = [keyboardState3 documentState];
+  selectedText = [documentState3 selectedText];
 
-  if (v13)
+  if (selectedText)
   {
-    v14 = [(TITypologyRecordSync *)self keyboardState];
-    v15 = [v14 documentState];
-    v16 = [v15 selectedText];
-    v17 = __35__TITypologyRecordSync_textSummary__block_invoke(v16);
+    keyboardState4 = [(TITypologyRecordSync *)self keyboardState];
+    documentState4 = [keyboardState4 documentState];
+    selectedText2 = [documentState4 selectedText];
+    v17 = __35__TITypologyRecordSync_textSummary__block_invoke(selectedText2);
     [v3 appendFormat:@" selected=%@", v17];
   }
 
-  v18 = [(TITypologyRecordSync *)self keyboardState];
-  v19 = [v18 documentState];
-  v20 = [v19 contextAfterInput];
+  keyboardState5 = [(TITypologyRecordSync *)self keyboardState];
+  documentState5 = [keyboardState5 documentState];
+  contextAfterInput = [documentState5 contextAfterInput];
 
-  if (v20)
+  if (contextAfterInput)
   {
-    v21 = [(TITypologyRecordSync *)self keyboardState];
-    v22 = [v21 documentState];
-    v23 = [v22 contextAfterInput];
-    v24 = __35__TITypologyRecordSync_textSummary__block_invoke(v23);
+    keyboardState6 = [(TITypologyRecordSync *)self keyboardState];
+    documentState6 = [keyboardState6 documentState];
+    contextAfterInput2 = [documentState6 contextAfterInput];
+    v24 = __35__TITypologyRecordSync_textSummary__block_invoke(contextAfterInput2);
     [v3 appendFormat:@" after=%@", v24];
   }
 
@@ -85,36 +85,36 @@ id __35__TITypologyRecordSync_textSummary__block_invoke(void *a1)
 
 - (void)removeContextFromKeyboardState
 {
-  v3 = [(TITypologyRecordSync *)self keyboardState];
-  v4 = [v3 copy];
+  keyboardState = [(TITypologyRecordSync *)self keyboardState];
+  v4 = [keyboardState copy];
 
   [v4 setInputContextHistory:0];
   [(TITypologyRecordSync *)self setKeyboardState:v4];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = TITypologyRecordSync;
-  v4 = a3;
-  [(TITypologyRecord *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_keyboardState forKey:{@"keyboardState", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_keyboardConfig forKey:@"keyboardConfig"];
+  coderCopy = coder;
+  [(TITypologyRecord *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_keyboardState forKey:{@"keyboardState", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_keyboardConfig forKey:@"keyboardConfig"];
 }
 
-- (TITypologyRecordSync)initWithCoder:(id)a3
+- (TITypologyRecordSync)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = TITypologyRecordSync;
-  v5 = [(TITypologyRecord *)&v11 initWithCoder:v4];
+  v5 = [(TITypologyRecord *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"keyboardState"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"keyboardState"];
     keyboardState = v5->_keyboardState;
     v5->_keyboardState = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"keyboardConfig"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"keyboardConfig"];
     keyboardConfig = v5->_keyboardConfig;
     v5->_keyboardConfig = v8;
   }

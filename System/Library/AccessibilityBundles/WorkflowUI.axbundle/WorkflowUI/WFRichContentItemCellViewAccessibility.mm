@@ -1,16 +1,16 @@
 @interface WFRichContentItemCellViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation WFRichContentItemCellViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WFRichContentItemCellView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WFRichContentItemCellView" hasInstanceMethod:@"subtitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WFRichContentItemCellView" hasInstanceMethod:@"altLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WFRichContentItemCellView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WFRichContentItemCellView" hasInstanceMethod:@"subtitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WFRichContentItemCellView" hasInstanceMethod:@"altLabel" withFullSignature:{"@", 0}];
 }
 
 - (unint64_t)accessibilityTraits

@@ -4,7 +4,7 @@
 - (id)createDefaultOperationConfiguration;
 - (uint64_t)applyToOperation:(uint64_t)result;
 - (void)dealloc;
-- (void)setOperationConfiguration:(id)a3;
+- (void)setOperationConfiguration:(id)configuration;
 @end
 
 @implementation NSCloudKitMirroringRequestOptions
@@ -48,26 +48,26 @@
   return v2;
 }
 
-- (void)setOperationConfiguration:(id)a3
+- (void)setOperationConfiguration:(id)configuration
 {
   operationConfiguration = self->_operationConfiguration;
-  if (operationConfiguration != a3)
+  if (operationConfiguration != configuration)
   {
 
     self->_operationConfiguration = 0;
   }
 
-  if (a3)
+  if (configuration)
   {
-    v6 = a3;
+    configurationCopy = configuration;
   }
 
   else
   {
-    v6 = [(NSCloudKitMirroringRequestOptions *)self createDefaultOperationConfiguration];
+    configurationCopy = [(NSCloudKitMirroringRequestOptions *)self createDefaultOperationConfiguration];
   }
 
-  self->_operationConfiguration = v6;
+  self->_operationConfiguration = configurationCopy;
 }
 
 - (uint64_t)applyToOperation:(uint64_t)result

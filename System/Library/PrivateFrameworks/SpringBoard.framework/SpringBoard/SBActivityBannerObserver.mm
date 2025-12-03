@@ -1,33 +1,33 @@
 @interface SBActivityBannerObserver
-- (BOOL)_isActivityOngoing:(id)a3;
-- (BOOL)_isBundleIdentifierSuppressed:(id)a3;
-- (BOOL)_shouldShowSystemApertureUIForActivityItem:(id)a3;
-- (BOOL)_shouldSuppressPresentationForActivityIdentifier:(id)a3;
-- (BOOL)shouldHandleActivityItem:(id)a3;
-- (BOOL)shouldHandleRedisplayOfActivityItem:(id)a3;
+- (BOOL)_isActivityOngoing:(id)ongoing;
+- (BOOL)_isBundleIdentifierSuppressed:(id)suppressed;
+- (BOOL)_shouldShowSystemApertureUIForActivityItem:(id)item;
+- (BOOL)_shouldSuppressPresentationForActivityIdentifier:(id)identifier;
+- (BOOL)shouldHandleActivityItem:(id)item;
+- (BOOL)shouldHandleRedisplayOfActivityItem:(id)item;
 - (SBActivityBannerObserver)init;
-- (id)_createActivityBannerViewControllerForItem:(id)a3 payloadIdentifier:(id)a4;
-- (void)_addPresentable:(id)a3 forActivityIdentifier:(id)a4;
-- (void)_dismissBannerWithActivityIdentifier:(id)a3 forceDismissal:(BOOL)a4;
-- (void)_handleActivityAlert:(id)a3 present:(BOOL)a4;
-- (void)_handleProminentActivityAlert:(id)a3 prominent:(BOOL)a4;
-- (void)_postBannerWithActivityIdentifier:(id)a3 payloadIdentifier:(id)a4 prominent:(BOOL)a5 completion:(id)a6;
-- (void)_postBannerWithAlert:(id)a3;
-- (void)_processZStackParticipantSettings:(id)a3;
-- (void)_removePresentable:(id)a3 forActivityIdentifier:(id)a4;
-- (void)_stopAlertingForActivityIdentifier:(id)a3;
-- (void)activityBannerDidDisappear:(id)a3 activityIdentifier:(id)a4;
-- (void)activityBannerWantsToBeDismissed:(id)a3 activityIdentifier:(id)a4;
-- (void)activityDidDismiss:(id)a3;
-- (void)activityDidStart:(id)a3;
-- (void)activityEnvironmentChanged:(int64_t)a3;
-- (void)activityForBundleId:(id)a3 shouldPreventFromRevoke:(BOOL)a4;
-- (void)activityProminenceChanged:(BOOL)a3 item:(id)a4;
+- (id)_createActivityBannerViewControllerForItem:(id)item payloadIdentifier:(id)identifier;
+- (void)_addPresentable:(id)presentable forActivityIdentifier:(id)identifier;
+- (void)_dismissBannerWithActivityIdentifier:(id)identifier forceDismissal:(BOOL)dismissal;
+- (void)_handleActivityAlert:(id)alert present:(BOOL)present;
+- (void)_handleProminentActivityAlert:(id)alert prominent:(BOOL)prominent;
+- (void)_postBannerWithActivityIdentifier:(id)identifier payloadIdentifier:(id)payloadIdentifier prominent:(BOOL)prominent completion:(id)completion;
+- (void)_postBannerWithAlert:(id)alert;
+- (void)_processZStackParticipantSettings:(id)settings;
+- (void)_removePresentable:(id)presentable forActivityIdentifier:(id)identifier;
+- (void)_stopAlertingForActivityIdentifier:(id)identifier;
+- (void)activityBannerDidDisappear:(id)disappear activityIdentifier:(id)identifier;
+- (void)activityBannerWantsToBeDismissed:(id)dismissed activityIdentifier:(id)identifier;
+- (void)activityDidDismiss:(id)dismiss;
+- (void)activityDidStart:(id)start;
+- (void)activityEnvironmentChanged:(int64_t)changed;
+- (void)activityForBundleId:(id)id shouldPreventFromRevoke:(BOOL)revoke;
+- (void)activityProminenceChanged:(BOOL)changed item:(id)item;
 - (void)dealloc;
-- (void)dismissAlert:(id)a3;
-- (void)presentAlert:(id)a3;
-- (void)presentFallbackAlert:(id)a3;
-- (void)redisplayActivity:(id)a3;
+- (void)dismissAlert:(id)alert;
+- (void)presentAlert:(id)alert;
+- (void)presentFallbackAlert:(id)alert;
+- (void)redisplayActivity:(id)activity;
 @end
 
 @implementation SBActivityBannerObserver
@@ -59,10 +59,10 @@
     bannerAuthority = v2->_bannerAuthority;
     v2->_bannerAuthority = v11;
 
-    v13 = [SBApp bannerManager];
+    bannerManager = [SBApp bannerManager];
     v14 = v2->_bannerAuthority;
     v15 = +[SBActivityBannerViewController requesterIdentifier];
-    [v13 registerAuthority:v14 forRequesterIdentifier:v15];
+    [bannerManager registerAuthority:v14 forRequesterIdentifier:v15];
 
     v2->_activityEnvironment = 0;
   }
@@ -95,19 +95,19 @@
   [(SBActivityBannerObserver *)&v9 dealloc];
 }
 
-- (void)activityDidStart:(id)a3
+- (void)activityDidStart:(id)start
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  [(NSMutableDictionary *)self->_itemByActivityIdentifier setObject:v4 forKey:v5];
+  startCopy = start;
+  identifier = [startCopy identifier];
+  [(NSMutableDictionary *)self->_itemByActivityIdentifier setObject:startCopy forKey:identifier];
 }
 
-- (void)activityDidDismiss:(id)a3
+- (void)activityDidDismiss:(id)dismiss
 {
-  v9 = [a3 identifier];
-  [(SBActivityBannerObserver *)self _dismissBannerWithActivityIdentifier:v9 forceDismissal:1];
-  [(NSMutableDictionary *)self->_itemByActivityIdentifier removeObjectForKey:v9];
-  v4 = [(NSMutableDictionary *)self->_ongoingActivityBannerPresentableByActivityIdentifier objectForKey:v9];
+  identifier = [dismiss identifier];
+  [(SBActivityBannerObserver *)self _dismissBannerWithActivityIdentifier:identifier forceDismissal:1];
+  [(NSMutableDictionary *)self->_itemByActivityIdentifier removeObjectForKey:identifier];
+  v4 = [(NSMutableDictionary *)self->_ongoingActivityBannerPresentableByActivityIdentifier objectForKey:identifier];
   v5 = objc_opt_class();
   v6 = v4;
   if (v5)
@@ -135,23 +135,23 @@
     [v8 invalidate];
   }
 
-  [(NSMutableDictionary *)self->_ongoingActivityBannerPresentableByActivityIdentifier removeObjectForKey:v9];
+  [(NSMutableDictionary *)self->_ongoingActivityBannerPresentableByActivityIdentifier removeObjectForKey:identifier];
 }
 
-- (void)activityForBundleId:(id)a3 shouldPreventFromRevoke:(BOOL)a4
+- (void)activityForBundleId:(id)id shouldPreventFromRevoke:(BOOL)revoke
 {
-  v4 = a4;
+  revokeCopy = revoke;
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  idCopy = id;
   revokePreventionActivityBundleIdToActivityIdentifiers = self->_revokePreventionActivityBundleIdToActivityIdentifiers;
-  if (!v4)
+  if (!revokeCopy)
   {
-    v13 = [(NSMutableDictionary *)revokePreventionActivityBundleIdToActivityIdentifiers objectForKey:v6];
+    v13 = [(NSMutableDictionary *)revokePreventionActivityBundleIdToActivityIdentifiers objectForKey:idCopy];
     v12 = [v13 copy];
 
     if (v12)
     {
-      [(NSMutableDictionary *)self->_revokePreventionActivityBundleIdToActivityIdentifiers removeObjectForKey:v6];
+      [(NSMutableDictionary *)self->_revokePreventionActivityBundleIdToActivityIdentifiers removeObjectForKey:idCopy];
       v21 = 0u;
       v22 = 0u;
       v19 = 0u;
@@ -195,28 +195,28 @@
     revokePreventionActivityBundleIdToActivityIdentifiers = self->_revokePreventionActivityBundleIdToActivityIdentifiers;
   }
 
-  v10 = [(NSMutableDictionary *)revokePreventionActivityBundleIdToActivityIdentifiers objectForKey:v6];
+  v10 = [(NSMutableDictionary *)revokePreventionActivityBundleIdToActivityIdentifiers objectForKey:idCopy];
 
   if (!v10)
   {
     v11 = self->_revokePreventionActivityBundleIdToActivityIdentifiers;
     v12 = objc_opt_new();
-    [(NSMutableDictionary *)v11 setObject:v12 forKey:v6];
+    [(NSMutableDictionary *)v11 setObject:v12 forKey:idCopy];
 LABEL_15:
   }
 }
 
-- (BOOL)shouldHandleRedisplayOfActivityItem:(id)a3
+- (BOOL)shouldHandleRedisplayOfActivityItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v4 descriptor];
-  v7 = [v6 presentationOptions];
+  itemCopy = item;
+  identifier = [itemCopy identifier];
+  descriptor = [itemCopy descriptor];
+  presentationOptions = [descriptor presentationOptions];
 
-  LODWORD(v6) = [(SBActivityBannerObserver *)self shouldHandleActivityItem:v4];
-  if (v6 && !-[SBActivityBannerObserver _shouldSuppressPresentationForActivityIdentifier:](self, "_shouldSuppressPresentationForActivityIdentifier:", v5) && (([v7 isActionButtonInitiated] & 1) != 0 || objc_msgSend(v7, "shouldShowSystemAperture")))
+  LODWORD(descriptor) = [(SBActivityBannerObserver *)self shouldHandleActivityItem:itemCopy];
+  if (descriptor && !-[SBActivityBannerObserver _shouldSuppressPresentationForActivityIdentifier:](self, "_shouldSuppressPresentationForActivityIdentifier:", identifier) && (([presentationOptions isActionButtonInitiated] & 1) != 0 || objc_msgSend(presentationOptions, "shouldShowSystemAperture")))
   {
-    v10 = [(NSMutableDictionary *)self->_ongoingActivityBannerPresentableByActivityIdentifier objectForKey:v5];
+    v10 = [(NSMutableDictionary *)self->_ongoingActivityBannerPresentableByActivityIdentifier objectForKey:identifier];
     v8 = v10 != 0;
   }
 
@@ -228,12 +228,12 @@ LABEL_15:
   return v8;
 }
 
-- (void)redisplayActivity:(id)a3
+- (void)redisplayActivity:(id)activity
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [(NSMutableDictionary *)self->_bannerPresentableByActivityIdentifier objectForKey:v5];
+  activityCopy = activity;
+  identifier = [activityCopy identifier];
+  v6 = [(NSMutableDictionary *)self->_bannerPresentableByActivityIdentifier objectForKey:identifier];
 
   if (v6)
   {
@@ -241,15 +241,15 @@ LABEL_15:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v27 = v5;
+      v27 = identifier;
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] Already showing a banner", buf, 0xCu);
     }
   }
 
   else
   {
-    v7 = [(NSMutableDictionary *)self->_ongoingActivityBannerPresentableByActivityIdentifier objectForKey:v5];
-    v8 = [SBApp bannerManager];
+    v7 = [(NSMutableDictionary *)self->_ongoingActivityBannerPresentableByActivityIdentifier objectForKey:identifier];
+    bannerManager = [SBApp bannerManager];
     v9 = *MEMORY[0x277D68070];
     v24[0] = *MEMORY[0x277D68088];
     v24[1] = v9;
@@ -257,7 +257,7 @@ LABEL_15:
     v25[1] = &unk_283371FA8;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:2];
     v23 = 0;
-    v11 = [v8 postPresentable:v7 withOptions:1 userInfo:v10 error:&v23];
+    v11 = [bannerManager postPresentable:v7 withOptions:1 userInfo:v10 error:&v23];
     v12 = v23;
 
     v13 = SBLogActivity();
@@ -267,7 +267,7 @@ LABEL_15:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v27 = v5;
+        v27 = identifier;
         _os_log_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] posted activity banner successfully", buf, 0xCu);
       }
 
@@ -275,9 +275,9 @@ LABEL_15:
       v20[1] = 3221225472;
       v20[2] = __46__SBActivityBannerObserver_redisplayActivity___block_invoke;
       v20[3] = &unk_2783B47B0;
-      v15 = v5;
+      v15 = identifier;
       v21 = v15;
-      v22 = v4;
+      v22 = activityCopy;
       [(SBActivityBannerObserver *)self _sendAnalyticsEventWithPayloadBuilder:v20];
       v16 = objc_opt_class();
       v17 = v7;
@@ -330,45 +330,45 @@ id __46__SBActivityBannerObserver_redisplayActivity___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (BOOL)shouldHandleActivityItem:(id)a3
+- (BOOL)shouldHandleActivityItem:(id)item
 {
-  if (!a3)
+  if (!item)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [v4 descriptor];
-  v6 = [v5 presentationOptions];
-  v7 = [v6 destinations];
-  v8 = [v7 bs_containsObjectPassingTest:&__block_literal_global_364];
+  itemCopy = item;
+  descriptor = [itemCopy descriptor];
+  presentationOptions = [descriptor presentationOptions];
+  destinations = [presentationOptions destinations];
+  v8 = [destinations bs_containsObjectPassingTest:&__block_literal_global_364];
 
-  LODWORD(self) = [(SBActivityBannerObserver *)self _shouldShowSystemApertureUIForActivityItem:v4];
+  LODWORD(self) = [(SBActivityBannerObserver *)self _shouldShowSystemApertureUIForActivityItem:itemCopy];
   if (self)
   {
-    v9 = [v6 destinations];
-    v8 |= [v9 bs_containsObjectPassingTest:&__block_literal_global_27_2];
+    destinations2 = [presentationOptions destinations];
+    v8 |= [destinations2 bs_containsObjectPassingTest:&__block_literal_global_27_2];
   }
 
   v10 = +[SBLiveActivityDomain rootSettings];
-  v11 = [v10 disableActivityAlertsAsBanners];
+  disableActivityAlertsAsBanners = [v10 disableActivityAlertsAsBanners];
 
-  v12 = (v11 ^ 1) & v8;
+  v12 = (disableActivityAlertsAsBanners ^ 1) & v8;
   return v12;
 }
 
-- (void)presentAlert:(id)a3
+- (void)presentAlert:(id)alert
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  alertCopy = alert;
   if (SBUIIsSystemApertureEnabled())
   {
     [SBActivityBannerObserver presentAlert:a2];
   }
 
-  if ([v5 canPresentInEnvironment:self->_activityEnvironment alertType:1])
+  if ([alertCopy canPresentInEnvironment:self->_activityEnvironment alertType:1])
   {
-    [(SBActivityBannerObserver *)self _handleActivityAlert:v5 present:1];
+    [(SBActivityBannerObserver *)self _handleActivityAlert:alertCopy present:1];
   }
 
   else
@@ -376,47 +376,47 @@ id __46__SBActivityBannerObserver_redisplayActivity___block_invoke(uint64_t a1)
     v6 = SBLogActivity();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v5 item];
-      v8 = [v7 identifier];
+      item = [alertCopy item];
+      identifier = [item identifier];
       v9 = 138543362;
-      v10 = v8;
+      v10 = identifier;
       _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] Not presenting activity alert because activity environment is ambient or lock screen is visible", &v9, 0xCu);
     }
   }
 }
 
-- (void)dismissAlert:(id)a3
+- (void)dismissAlert:(id)alert
 {
-  v5 = a3;
+  alertCopy = alert;
   if (SBUIIsSystemApertureEnabled())
   {
     [SBActivityBannerObserver dismissAlert:a2];
   }
 
-  [(SBActivityBannerObserver *)self _handleActivityAlert:v5 present:0];
+  [(SBActivityBannerObserver *)self _handleActivityAlert:alertCopy present:0];
 }
 
-- (void)activityProminenceChanged:(BOOL)a3 item:(id)a4
+- (void)activityProminenceChanged:(BOOL)changed item:(id)item
 {
-  v4 = a3;
-  v6 = [a4 identifier];
-  [(SBActivityBannerObserver *)self _handleProminentActivityAlert:v6 prominent:v4];
+  changedCopy = changed;
+  identifier = [item identifier];
+  [(SBActivityBannerObserver *)self _handleProminentActivityAlert:identifier prominent:changedCopy];
 }
 
-- (void)activityEnvironmentChanged:(int64_t)a3
+- (void)activityEnvironmentChanged:(int64_t)changed
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (self->_activityEnvironment != a3)
+  if (self->_activityEnvironment != changed)
   {
-    self->_activityEnvironment = a3;
-    if (a3 == 1)
+    self->_activityEnvironment = changed;
+    if (changed == 1)
     {
       v12 = 0u;
       v13 = 0u;
       v10 = 0u;
       v11 = 0u;
-      v4 = [(NSMutableDictionary *)self->_itemByActivityIdentifier allValues];
-      v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      allValues = [(NSMutableDictionary *)self->_itemByActivityIdentifier allValues];
+      v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v5)
       {
         v6 = v5;
@@ -428,17 +428,17 @@ id __46__SBActivityBannerObserver_redisplayActivity___block_invoke(uint64_t a1)
           {
             if (*v11 != v7)
             {
-              objc_enumerationMutation(v4);
+              objc_enumerationMutation(allValues);
             }
 
-            v9 = [*(*(&v10 + 1) + 8 * v8) identifier];
-            [(SBActivityBannerObserver *)self _dismissBannerWithActivityIdentifier:v9];
+            identifier = [*(*(&v10 + 1) + 8 * v8) identifier];
+            [(SBActivityBannerObserver *)self _dismissBannerWithActivityIdentifier:identifier];
 
             ++v8;
           }
 
           while (v6 != v8);
-          v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+          v6 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
         }
 
         while (v6);
@@ -447,130 +447,130 @@ id __46__SBActivityBannerObserver_redisplayActivity___block_invoke(uint64_t a1)
   }
 }
 
-- (void)presentFallbackAlert:(id)a3
+- (void)presentFallbackAlert:(id)alert
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  alertCopy = alert;
   v5 = SBLogActivity();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 item];
-    v7 = [v6 identifier];
+    item = [alertCopy item];
+    identifier = [item identifier];
     v8 = 138543362;
-    v9 = v7;
+    v9 = identifier;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] posting banner as fallback alert", &v8, 0xCu);
   }
 
-  [(SBActivityBannerObserver *)self _postBannerWithAlert:v4];
+  [(SBActivityBannerObserver *)self _postBannerWithAlert:alertCopy];
 }
 
-- (BOOL)_isActivityOngoing:(id)a3
+- (BOOL)_isActivityOngoing:(id)ongoing
 {
-  v4 = a3;
+  ongoingCopy = ongoing;
   BSDispatchQueueAssertMain();
-  v5 = [(NSMutableDictionary *)self->_itemByActivityIdentifier objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_itemByActivityIdentifier objectForKey:ongoingCopy];
 
   return v5 != 0;
 }
 
-- (BOOL)_isBundleIdentifierSuppressed:(id)a3
+- (BOOL)_isBundleIdentifierSuppressed:(id)suppressed
 {
   v3 = SBApp;
-  v4 = a3;
-  v5 = [v3 windowSceneManager];
-  v6 = [v5 activeDisplayWindowScene];
+  suppressedCopy = suppressed;
+  windowSceneManager = [v3 windowSceneManager];
+  activeDisplayWindowScene = [windowSceneManager activeDisplayWindowScene];
 
-  v7 = [v6 zStackResolver];
-  v8 = [v7 settingsOfParticipantWithIdentifier:29];
-  v9 = [v8 associatedBundleIdentifiersToSuppressInSystemAperture];
-  v10 = [v9 containsObject:v4];
+  zStackResolver = [activeDisplayWindowScene zStackResolver];
+  v8 = [zStackResolver settingsOfParticipantWithIdentifier:29];
+  associatedBundleIdentifiersToSuppressInSystemAperture = [v8 associatedBundleIdentifiersToSuppressInSystemAperture];
+  v10 = [associatedBundleIdentifiersToSuppressInSystemAperture containsObject:suppressedCopy];
 
   return v10;
 }
 
-- (BOOL)_shouldSuppressPresentationForActivityIdentifier:(id)a3
+- (BOOL)_shouldSuppressPresentationForActivityIdentifier:(id)identifier
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(SBActivityBannerObserver *)self _isActivityOngoing:v4])
+  identifierCopy = identifier;
+  if ([(SBActivityBannerObserver *)self _isActivityOngoing:identifierCopy])
   {
-    v5 = [(NSMutableDictionary *)self->_itemByActivityIdentifier objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_itemByActivityIdentifier objectForKey:identifierCopy];
     v6 = v5;
     if (v5)
     {
-      v7 = [v5 descriptor];
-      v8 = [v7 presentationOptions];
-      v9 = [v8 shouldSuppressAlertContentOnLockScreen];
+      descriptor = [v5 descriptor];
+      presentationOptions = [descriptor presentationOptions];
+      shouldSuppressAlertContentOnLockScreen = [presentationOptions shouldSuppressAlertContentOnLockScreen];
 
-      v10 = [v6 descriptor];
-      v11 = [v10 presentationOptions];
-      v12 = [v11 destinations];
-      v13 = [v12 bs_containsObjectPassingTest:&__block_literal_global_40_5];
+      descriptor2 = [v6 descriptor];
+      presentationOptions2 = [descriptor2 presentationOptions];
+      destinations = [presentationOptions2 destinations];
+      v13 = [destinations bs_containsObjectPassingTest:&__block_literal_global_40_5];
     }
 
     else
     {
       v13 = 0;
-      v9 = 1;
+      shouldSuppressAlertContentOnLockScreen = 1;
     }
 
     v15 = +[SBControlCenterCoordinator sharedInstance];
-    v16 = [v15 isVisible];
+    isVisible = [v15 isVisible];
 
     v17 = +[SBCoverSheetPresentationManager sharedInstance];
-    v18 = [v17 isVisible] & (v16 ^ 1);
+    v18 = [v17 isVisible] & (isVisible ^ 1);
 
-    if (v18 == 1 && ((v9 | v13) & 1) != 0)
+    if (v18 == 1 && ((shouldSuppressAlertContentOnLockScreen | v13) & 1) != 0)
     {
-      v19 = SBLogActivity();
+      descriptor3 = SBLogActivity();
       LOBYTE(v14) = 1;
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(descriptor3, OS_LOG_TYPE_DEFAULT))
       {
         v31 = 138544386;
-        v32 = v4;
+        v32 = identifierCopy;
         v33 = 1024;
-        v34 = v9;
+        v34 = shouldSuppressAlertContentOnLockScreen;
         v35 = 1024;
         v36 = 1;
         v37 = 1024;
         v38 = v13;
         v39 = 1024;
-        v40 = v16 & 1;
-        _os_log_impl(&dword_21ED4E000, v19, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] Not handling activity banner prominence update; allowAlertsOnCoverSheet: %{BOOL}u, isCoverSheetVisible: %{BOOL}u, hasLockScreenPlatter: %{BOOL}u, controlCenterVisible: %{BOOL}u", &v31, 0x24u);
+        v40 = isVisible & 1;
+        _os_log_impl(&dword_21ED4E000, descriptor3, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] Not handling activity banner prominence update; allowAlertsOnCoverSheet: %{BOOL}u, isCoverSheetVisible: %{BOOL}u, hasLockScreenPlatter: %{BOOL}u, controlCenterVisible: %{BOOL}u", &v31, 0x24u);
       }
     }
 
     else
     {
-      v19 = [v6 descriptor];
-      v20 = [v19 presentationOptions];
-      v21 = [v20 destinations];
-      v22 = [v21 bs_containsObjectPassingTest:&__block_literal_global_45_2];
+      descriptor3 = [v6 descriptor];
+      presentationOptions3 = [descriptor3 presentationOptions];
+      destinations2 = [presentationOptions3 destinations];
+      v22 = [destinations2 bs_containsObjectPassingTest:&__block_literal_global_45_2];
 
-      v23 = [v20 destinations];
-      v24 = [v23 bs_containsObjectPassingTest:&__block_literal_global_47_2];
+      destinations3 = [presentationOptions3 destinations];
+      v24 = [destinations3 bs_containsObjectPassingTest:&__block_literal_global_47_2];
 
       v25 = +[SBLockScreenManager sharedInstance];
-      v26 = [v25 coverSheetViewController];
+      coverSheetViewController = [v25 coverSheetViewController];
 
-      if (v22 && v24 && ([v26 isLockScreenShowingDefaultContent] & v18 & 1) != 0)
+      if (v22 && v24 && ([coverSheetViewController isLockScreenShowingDefaultContent] & v18 & 1) != 0)
       {
         LOBYTE(v14) = 1;
       }
 
       else
       {
-        v27 = [v6 descriptor];
-        v28 = [v27 platterTargetBundleIdentifier];
+        descriptor4 = [v6 descriptor];
+        platterTargetBundleIdentifier = [descriptor4 platterTargetBundleIdentifier];
 
-        v14 = [(SBActivityBannerObserver *)self _isBundleIdentifierSuppressed:v28];
+        v14 = [(SBActivityBannerObserver *)self _isBundleIdentifierSuppressed:platterTargetBundleIdentifier];
         if (v14)
         {
           v29 = SBLogActivity();
           if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
           {
             v31 = 138543362;
-            v32 = v4;
+            v32 = identifierCopy;
             _os_log_impl(&dword_21ED4E000, v29, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] Not handling activity prominence update because activity bundle identifier is suppressed by existing content on display", &v31, 0xCu);
           }
         }
@@ -584,7 +584,7 @@ id __46__SBActivityBannerObserver_redisplayActivity___block_invoke(uint64_t a1)
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v31 = 138543362;
-      v32 = v4;
+      v32 = identifierCopy;
       _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] activity has ended, not handling prominence update", &v31, 0xCu);
     }
 
@@ -594,25 +594,25 @@ id __46__SBActivityBannerObserver_redisplayActivity___block_invoke(uint64_t a1)
   return v14;
 }
 
-- (void)_handleProminentActivityAlert:(id)a3 prominent:(BOOL)a4
+- (void)_handleProminentActivityAlert:(id)alert prominent:(BOOL)prominent
 {
-  v4 = a4;
+  prominentCopy = prominent;
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  alertCopy = alert;
   BSDispatchQueueAssertMain();
-  if (![(SBActivityBannerObserver *)self _shouldSuppressPresentationForActivityIdentifier:v6])
+  if (![(SBActivityBannerObserver *)self _shouldSuppressPresentationForActivityIdentifier:alertCopy])
   {
     v7 = SBLogActivity();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543618;
-      v10 = v6;
+      v10 = alertCopy;
       v11 = 1024;
-      v12 = v4;
+      v12 = prominentCopy;
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] handling activity prominence: %d", &v9, 0x12u);
     }
 
-    if (v4)
+    if (prominentCopy)
     {
       if (self->_activityEnvironment == 1)
       {
@@ -625,31 +625,31 @@ id __46__SBActivityBannerObserver_redisplayActivity___block_invoke(uint64_t a1)
 
       else
       {
-        [(SBActivityBannerObserver *)self _postBannerWithActivityIdentifier:v6 payloadIdentifier:0 prominent:1 completion:0];
+        [(SBActivityBannerObserver *)self _postBannerWithActivityIdentifier:alertCopy payloadIdentifier:0 prominent:1 completion:0];
       }
     }
 
     else
     {
-      [(SBActivityBannerObserver *)self _dismissBannerWithActivityIdentifier:v6 forceDismissal:1];
+      [(SBActivityBannerObserver *)self _dismissBannerWithActivityIdentifier:alertCopy forceDismissal:1];
     }
   }
 }
 
-- (void)_handleActivityAlert:(id)a3 present:(BOOL)a4
+- (void)_handleActivityAlert:(id)alert present:(BOOL)present
 {
-  v4 = a4;
+  presentCopy = present;
   v12 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  alertCopy = alert;
   BSDispatchQueueAssertMain();
-  v7 = [v6 item];
-  v8 = [v7 identifier];
+  item = [alertCopy item];
+  identifier = [item identifier];
 
-  if (v4)
+  if (presentCopy)
   {
-    if ([(SBActivityBannerObserver *)self _isActivityOngoing:v8])
+    if ([(SBActivityBannerObserver *)self _isActivityOngoing:identifier])
     {
-      [(SBActivityBannerObserver *)self _postBannerWithAlert:v6];
+      [(SBActivityBannerObserver *)self _postBannerWithAlert:alertCopy];
     }
 
     else
@@ -658,7 +658,7 @@ id __46__SBActivityBannerObserver_redisplayActivity___block_invoke(uint64_t a1)
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v10 = 138543362;
-        v11 = v8;
+        v11 = identifier;
         _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] activity has ended, not handling alert update", &v10, 0xCu);
       }
     }
@@ -666,27 +666,27 @@ id __46__SBActivityBannerObserver_redisplayActivity___block_invoke(uint64_t a1)
 
   else
   {
-    [(SBActivityBannerObserver *)self _dismissBannerWithActivityIdentifier:v8];
+    [(SBActivityBannerObserver *)self _dismissBannerWithActivityIdentifier:identifier];
   }
 }
 
-- (void)_postBannerWithAlert:(id)a3
+- (void)_postBannerWithAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   BSDispatchQueueAssertMain();
-  v5 = [v4 item];
-  v6 = [v5 identifier];
+  item = [alertCopy item];
+  identifier = [item identifier];
 
-  v7 = [v4 payloadIdentifier];
+  payloadIdentifier = [alertCopy payloadIdentifier];
   objc_initWeak(&location, self);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __49__SBActivityBannerObserver__postBannerWithAlert___block_invoke;
   v9[3] = &unk_2783C0750;
   objc_copyWeak(&v11, &location);
-  v8 = v4;
+  v8 = alertCopy;
   v10 = v8;
-  [(SBActivityBannerObserver *)self _postBannerWithActivityIdentifier:v6 payloadIdentifier:v7 prominent:0 completion:v9];
+  [(SBActivityBannerObserver *)self _postBannerWithActivityIdentifier:identifier payloadIdentifier:payloadIdentifier prominent:0 completion:v9];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -704,36 +704,36 @@ void __49__SBActivityBannerObserver__postBannerWithAlert___block_invoke(uint64_t
   }
 }
 
-- (id)_createActivityBannerViewControllerForItem:(id)a3 payloadIdentifier:(id)a4
+- (id)_createActivityBannerViewControllerForItem:(id)item payloadIdentifier:(id)identifier
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (![(SBActivityBannerObserver *)self _shouldShowSystemApertureUIForActivityItem:v6])
+  itemCopy = item;
+  identifierCopy = identifier;
+  if (![(SBActivityBannerObserver *)self _shouldShowSystemApertureUIForActivityItem:itemCopy])
   {
 LABEL_12:
-    v19 = [v6 descriptor];
-    v20 = [v19 alertSceneTargetBundleIdentifiers];
+    descriptor = [itemCopy descriptor];
+    alertSceneTargetBundleIdentifiers = [descriptor alertSceneTargetBundleIdentifiers];
     v21 = [objc_alloc(MEMORY[0x277CB98A8]) initWithDestination:1];
-    v22 = [v20 objectForKey:v21];
-    v23 = [v19 contentType];
+    v22 = [alertSceneTargetBundleIdentifiers objectForKey:v21];
+    contentType = [descriptor contentType];
     if (v22)
     {
-      v24 = v22;
+      platterTargetBundleIdentifier = v22;
     }
 
-    else if (v23)
+    else if (contentType)
     {
-      v24 = [v19 platterTargetBundleIdentifier];
+      platterTargetBundleIdentifier = [descriptor platterTargetBundleIdentifier];
     }
 
     else
     {
-      v24 = @"com.apple.chrono.WidgetRenderer-Activities";
+      platterTargetBundleIdentifier = @"com.apple.chrono.WidgetRenderer-Activities";
     }
 
-    v25 = v24;
-    v18 = [(SBActivityViewController *)[SBActivityBannerViewController alloc] initWithActivityItem:v6 sceneType:1 payloadID:v7 targetBundleIdentifier:v24];
+    v25 = platterTargetBundleIdentifier;
+    v18 = [(SBActivityViewController *)[SBActivityBannerViewController alloc] initWithActivityItem:itemCopy sceneType:1 payloadID:identifierCopy targetBundleIdentifier:platterTargetBundleIdentifier];
 
     goto LABEL_18;
   }
@@ -742,11 +742,11 @@ LABEL_12:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = [v6 descriptor];
-  v9 = [v8 presentationOptions];
-  v10 = [v9 destinations];
+  descriptor2 = [itemCopy descriptor];
+  presentationOptions = [descriptor2 presentationOptions];
+  destinations = [presentationOptions destinations];
 
-  v11 = [v10 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  v11 = [destinations countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (!v11)
   {
 
@@ -763,7 +763,7 @@ LABEL_12:
     {
       if (*v28 != v15)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(destinations);
       }
 
       v17 = *(*(&v27 + 1) + 8 * i);
@@ -771,7 +771,7 @@ LABEL_12:
       v13 |= [v17 destination] == 1;
     }
 
-    v12 = [v10 countByEnumeratingWithState:&v27 objects:v31 count:16];
+    v12 = [destinations countByEnumeratingWithState:&v27 objects:v31 count:16];
   }
 
   while (v12);
@@ -781,30 +781,30 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v18 = [[SBActivitySystemApertureBannerViewController alloc] initWithActivityItem:v6];
+  v18 = [[SBActivitySystemApertureBannerViewController alloc] initWithActivityItem:itemCopy];
 LABEL_18:
 
   return v18;
 }
 
-- (void)_postBannerWithActivityIdentifier:(id)a3 payloadIdentifier:(id)a4 prominent:(BOOL)a5 completion:(id)a6
+- (void)_postBannerWithActivityIdentifier:(id)identifier payloadIdentifier:(id)payloadIdentifier prominent:(BOOL)prominent completion:(id)completion
 {
-  v7 = a5;
+  prominentCopy = prominent;
   v32 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  identifierCopy = identifier;
+  payloadIdentifierCopy = payloadIdentifier;
+  completionCopy = completion;
   BSDispatchQueueAssertMain();
-  v13 = [(NSMutableDictionary *)self->_itemByActivityIdentifier objectForKey:v10];
-  v14 = [v13 descriptor];
-  if (v14)
+  v13 = [(NSMutableDictionary *)self->_itemByActivityIdentifier objectForKey:identifierCopy];
+  descriptor = [v13 descriptor];
+  if (descriptor)
   {
-    if (v7)
+    if (prominentCopy)
     {
-      [(NSMutableSet *)self->_prominentAlertPresentingActivities addObject:v10];
+      [(NSMutableSet *)self->_prominentAlertPresentingActivities addObject:identifierCopy];
     }
 
-    v15 = [(NSMutableDictionary *)self->_bannerPresentableByActivityIdentifier objectForKey:v10];
+    v15 = [(NSMutableDictionary *)self->_bannerPresentableByActivityIdentifier objectForKey:identifierCopy];
 
     if (v15)
     {
@@ -812,15 +812,15 @@ LABEL_18:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v31 = v10;
+        v31 = identifierCopy;
         _os_log_impl(&dword_21ED4E000, v16, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] Already showing a banner", buf, 0xCu);
       }
     }
 
     else
     {
-      [(SBActivityBannerObserver *)self _dismissBannerWithActivityIdentifier:v10];
-      v18 = [(NSMutableDictionary *)self->_ongoingActivityBannerPresentableByActivityIdentifier objectForKey:v10];
+      [(SBActivityBannerObserver *)self _dismissBannerWithActivityIdentifier:identifierCopy];
+      v18 = [(NSMutableDictionary *)self->_ongoingActivityBannerPresentableByActivityIdentifier objectForKey:identifierCopy];
       v19 = objc_opt_class();
       v20 = v18;
       if (v19)
@@ -851,18 +851,18 @@ LABEL_18:
 
       else
       {
-        v23 = [(SBActivityBannerObserver *)self _createActivityBannerViewControllerForItem:v13 payloadIdentifier:v11];
+        v23 = [(SBActivityBannerObserver *)self _createActivityBannerViewControllerForItem:v13 payloadIdentifier:payloadIdentifierCopy];
         [v23 setBannerDelegate:self];
         v24[0] = MEMORY[0x277D85DD0];
         v24[1] = 3221225472;
         v24[2] = __101__SBActivityBannerObserver__postBannerWithActivityIdentifier_payloadIdentifier_prominent_completion___block_invoke;
         v24[3] = &unk_2783C0778;
-        v25 = v10;
-        v26 = self;
+        v25 = identifierCopy;
+        selfCopy = self;
         v22 = v23;
         v27 = v22;
-        v29 = v12;
-        v28 = v14;
+        v29 = completionCopy;
+        v28 = descriptor;
         [v22 ensureContent:MEMORY[0x277D85CD0] queue:v24 completion:1.79769313e308];
       }
     }
@@ -876,10 +876,10 @@ LABEL_18:
     [SBActivityBannerObserver _postBannerWithActivityIdentifier:payloadIdentifier:prominent:completion:];
   }
 
-  if (v12)
+  if (completionCopy)
   {
     v16 = [MEMORY[0x277CCA9B8] errorWithDomain:@"SBActivityBannerObserverErrorDomain" code:1 userInfo:0];
-    (*(v12 + 2))(v12, v16);
+    (*(completionCopy + 2))(completionCopy, v16);
 LABEL_20:
   }
 }
@@ -1026,62 +1026,62 @@ id __101__SBActivityBannerObserver__postBannerWithActivityIdentifier_payloadIden
   return v4;
 }
 
-- (void)_dismissBannerWithActivityIdentifier:(id)a3 forceDismissal:(BOOL)a4
+- (void)_dismissBannerWithActivityIdentifier:(id)identifier forceDismissal:(BOOL)dismissal
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  identifierCopy = identifier;
   BSDispatchQueueAssertMain();
-  v7 = [(NSMutableDictionary *)self->_bannerPresentableByActivityIdentifier objectForKey:v6];
+  v7 = [(NSMutableDictionary *)self->_bannerPresentableByActivityIdentifier objectForKey:identifierCopy];
   if (v7)
   {
-    v8 = [(NSMutableDictionary *)self->_itemByActivityIdentifier objectForKey:v6];
-    v9 = [v8 descriptor];
-    v10 = [v9 platterTargetBundleIdentifier];
+    v8 = [(NSMutableDictionary *)self->_itemByActivityIdentifier objectForKey:identifierCopy];
+    descriptor = [v8 descriptor];
+    platterTargetBundleIdentifier = [descriptor platterTargetBundleIdentifier];
 
-    if (v10 && ([(NSMutableDictionary *)self->_revokePreventionActivityBundleIdToActivityIdentifiers objectForKey:v10], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (platterTargetBundleIdentifier && ([(NSMutableDictionary *)self->_revokePreventionActivityBundleIdToActivityIdentifiers objectForKey:platterTargetBundleIdentifier], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v12 = v11;
-      if (([v11 containsObject:v6]& 1) == 0)
+      if (([v11 containsObject:identifierCopy]& 1) == 0)
       {
-        [v12 addObject:v6];
+        [v12 addObject:identifierCopy];
       }
 
       v13 = SBLogActivity();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v24 = v6;
+        v24 = identifierCopy;
         _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] Revoke prevention, not dismissing it", buf, 0xCu);
       }
     }
 
     else
     {
-      if ([(NSMutableSet *)self->_prominentAlertPresentingActivities containsObject:v6])
+      if ([(NSMutableSet *)self->_prominentAlertPresentingActivities containsObject:identifierCopy])
       {
-        if (!a4)
+        if (!dismissal)
         {
           v12 = SBLogActivity();
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            v24 = v6;
+            v24 = identifierCopy;
             _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] Showing alert prominently, not dismissing it", buf, 0xCu);
           }
 
           goto LABEL_18;
         }
 
-        [(NSMutableSet *)self->_prominentAlertPresentingActivities removeObject:v6];
+        [(NSMutableSet *)self->_prominentAlertPresentingActivities removeObject:identifierCopy];
       }
 
-      v14 = [SBApp bannerManager];
+      bannerManager = [SBApp bannerManager];
       v15 = [MEMORY[0x277CF0AC0] uniqueIdentificationForPresentable:v7];
       v21 = *MEMORY[0x277D68068];
       v22 = MEMORY[0x277CBEC38];
       v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
       v20 = 0;
-      v17 = [v14 revokePresentablesWithIdentification:v15 reason:@"_SBActivityBannerRevocationReasonDismissed" options:0 userInfo:v16 error:&v20];
+      v17 = [bannerManager revokePresentablesWithIdentification:v15 reason:@"_SBActivityBannerRevocationReasonDismissed" options:0 userInfo:v16 error:&v20];
       v12 = v20;
 
       v18 = SBLogActivity();
@@ -1097,24 +1097,24 @@ id __101__SBActivityBannerObserver__postBannerWithActivityIdentifier_payloadIden
       else if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v24 = v6;
+        v24 = identifierCopy;
         _os_log_impl(&dword_21ED4E000, v19, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] dismissed the alert successfully", buf, 0xCu);
       }
 
-      [(SBActivityBannerObserver *)self _stopAlertingForActivityIdentifier:v6];
+      [(SBActivityBannerObserver *)self _stopAlertingForActivityIdentifier:identifierCopy];
     }
 
 LABEL_18:
   }
 }
 
-- (void)_stopAlertingForActivityIdentifier:(id)a3
+- (void)_stopAlertingForActivityIdentifier:(id)identifier
 {
   activeAlert = self->_activeAlert;
-  v5 = a3;
-  v6 = [(SBActivityAlert *)activeAlert item];
-  v7 = [v6 identifier];
-  v8 = [v7 isEqualToString:v5];
+  identifierCopy = identifier;
+  item = [(SBActivityAlert *)activeAlert item];
+  identifier = [item identifier];
+  v8 = [identifier isEqualToString:identifierCopy];
 
   if (v8)
   {
@@ -1124,131 +1124,131 @@ LABEL_18:
   }
 }
 
-- (void)_addPresentable:(id)a3 forActivityIdentifier:(id)a4
+- (void)_addPresentable:(id)presentable forActivityIdentifier:(id)identifier
 {
-  v15 = a4;
+  identifierCopy = identifier;
   bannerPresentableByActivityIdentifier = self->_bannerPresentableByActivityIdentifier;
-  v7 = a3;
-  [(NSMutableDictionary *)bannerPresentableByActivityIdentifier setObject:v7 forKey:v15];
-  v8 = [v7 _sbWindowScene];
+  presentableCopy = presentable;
+  [(NSMutableDictionary *)bannerPresentableByActivityIdentifier setObject:presentableCopy forKey:identifierCopy];
+  _sbWindowScene = [presentableCopy _sbWindowScene];
 
-  if (v8)
+  if (_sbWindowScene)
   {
     activityIdentifiersPerScene = self->_activityIdentifiersPerScene;
     if (!activityIdentifiersPerScene)
     {
-      v10 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+      weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
       v11 = self->_activityIdentifiersPerScene;
-      self->_activityIdentifiersPerScene = v10;
+      self->_activityIdentifiersPerScene = weakToStrongObjectsMapTable;
 
       activityIdentifiersPerScene = self->_activityIdentifiersPerScene;
     }
 
-    v12 = [(NSMapTable *)activityIdentifiersPerScene objectForKey:v8];
+    v12 = [(NSMapTable *)activityIdentifiersPerScene objectForKey:_sbWindowScene];
     if (!v12)
     {
       v12 = [MEMORY[0x277CBEB58] set];
-      [(NSMapTable *)self->_activityIdentifiersPerScene setObject:v12 forKey:v8];
+      [(NSMapTable *)self->_activityIdentifiersPerScene setObject:v12 forKey:_sbWindowScene];
     }
 
     if (![v12 count])
     {
-      v13 = [v8 zStackResolver];
-      v14 = [v13 addObserver:self ofParticipantWithIdentifier:29];
+      zStackResolver = [_sbWindowScene zStackResolver];
+      v14 = [zStackResolver addObserver:self ofParticipantWithIdentifier:29];
     }
 
-    [v12 addObject:v15];
+    [v12 addObject:identifierCopy];
   }
 }
 
-- (void)_removePresentable:(id)a3 forActivityIdentifier:(id)a4
+- (void)_removePresentable:(id)presentable forActivityIdentifier:(id)identifier
 {
-  v11 = a4;
+  identifierCopy = identifier;
   bannerPresentableByActivityIdentifier = self->_bannerPresentableByActivityIdentifier;
-  v7 = a3;
-  [(NSMutableDictionary *)bannerPresentableByActivityIdentifier removeObjectForKey:v11];
-  [(NSMutableSet *)self->_prominentAlertPresentingActivities removeObject:v11];
-  v8 = [v7 _sbWindowScene];
+  presentableCopy = presentable;
+  [(NSMutableDictionary *)bannerPresentableByActivityIdentifier removeObjectForKey:identifierCopy];
+  [(NSMutableSet *)self->_prominentAlertPresentingActivities removeObject:identifierCopy];
+  _sbWindowScene = [presentableCopy _sbWindowScene];
 
-  if (v8)
+  if (_sbWindowScene)
   {
-    v9 = [(NSMapTable *)self->_activityIdentifiersPerScene objectForKey:v8];
-    if ([v9 containsObject:v11])
+    v9 = [(NSMapTable *)self->_activityIdentifiersPerScene objectForKey:_sbWindowScene];
+    if ([v9 containsObject:identifierCopy])
     {
-      [v9 removeObject:v11];
+      [v9 removeObject:identifierCopy];
       if (![v9 count])
       {
-        v10 = [v8 zStackResolver];
-        [v10 removeObserver:self ofParticipantWithIdentifier:29];
+        zStackResolver = [_sbWindowScene zStackResolver];
+        [zStackResolver removeObserver:self ofParticipantWithIdentifier:29];
       }
     }
   }
 }
 
-- (BOOL)_shouldShowSystemApertureUIForActivityItem:(id)a3
+- (BOOL)_shouldShowSystemApertureUIForActivityItem:(id)item
 {
-  v3 = [a3 descriptor];
-  v4 = [v3 presentationOptions];
-  v5 = [v4 isActionButtonInitiated];
+  descriptor = [item descriptor];
+  presentationOptions = [descriptor presentationOptions];
+  isActionButtonInitiated = [presentationOptions isActionButtonInitiated];
 
-  v6 = [v3 presentationOptions];
+  presentationOptions2 = [descriptor presentationOptions];
   v7 = objc_opt_respondsToSelector();
 
   if ((v7 & 1) == 0)
   {
-    if (!v5)
+    if (!isActionButtonInitiated)
     {
       goto LABEL_6;
     }
 
 LABEL_5:
-    v5 = SBSIsSystemApertureAvailable() ^ 1;
+    isActionButtonInitiated = SBSIsSystemApertureAvailable() ^ 1;
     goto LABEL_6;
   }
 
-  v8 = [v3 presentationOptions];
-  v9 = [v8 shouldShowSystemAperture];
+  presentationOptions3 = [descriptor presentationOptions];
+  shouldShowSystemAperture = [presentationOptions3 shouldShowSystemAperture];
 
-  if ((v9 | v5))
+  if ((shouldShowSystemAperture | isActionButtonInitiated))
   {
     goto LABEL_5;
   }
 
-  LOBYTE(v5) = 0;
+  LOBYTE(isActionButtonInitiated) = 0;
 LABEL_6:
 
-  return v5;
+  return isActionButtonInitiated;
 }
 
-- (void)activityBannerDidDisappear:(id)a3 activityIdentifier:(id)a4
+- (void)activityBannerDidDisappear:(id)disappear activityIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  identifierCopy = identifier;
+  disappearCopy = disappear;
   BSDispatchQueueAssertMain();
   v8 = SBLogActivity();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = v6;
+    v10 = identifierCopy;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] Activity banner dismissed", &v9, 0xCu);
   }
 
-  [(SBActivityBannerObserver *)self _removePresentable:v7 forActivityIdentifier:v6];
+  [(SBActivityBannerObserver *)self _removePresentable:disappearCopy forActivityIdentifier:identifierCopy];
 }
 
-- (void)activityBannerWantsToBeDismissed:(id)a3 activityIdentifier:(id)a4
+- (void)activityBannerWantsToBeDismissed:(id)dismissed activityIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   if ([(SBActivityBannerObserver *)self _isActivityOngoing:?])
   {
-    [(SBActivityBannerObserver *)self _dismissBannerWithActivityIdentifier:v5];
+    [(SBActivityBannerObserver *)self _dismissBannerWithActivityIdentifier:identifierCopy];
   }
 }
 
-- (void)_processZStackParticipantSettings:(id)a3
+- (void)_processZStackParticipantSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   objc_initWeak(&location, self);
   itemByActivityIdentifier = self->_itemByActivityIdentifier;
   v6[0] = MEMORY[0x277D85DD0];

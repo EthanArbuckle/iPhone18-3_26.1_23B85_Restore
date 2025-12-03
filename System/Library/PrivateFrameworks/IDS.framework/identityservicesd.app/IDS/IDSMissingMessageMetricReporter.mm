@@ -1,27 +1,27 @@
 @interface IDSMissingMessageMetricReporter
-+ (void)sendMetric:(id)a3;
++ (void)sendMetric:(id)metric;
 @end
 
 @implementation IDSMissingMessageMetricReporter
 
-+ (void)sendMetric:(id)a3
++ (void)sendMetric:(id)metric
 {
-  v3 = a3;
-  if ([v3 shouldReportMetric])
+  metricCopy = metric;
+  if ([metricCopy shouldReportMetric])
   {
     v4 = [IDSServerMessage alloc];
-    v5 = [v3 payload];
-    v6 = [v3 command];
-    v7 = [(IDSServerMessage *)v4 initWithPayload:v5 command:v6];
+    payload = [metricCopy payload];
+    command = [metricCopy command];
+    v7 = [(IDSServerMessage *)v4 initWithPayload:payload command:command];
 
     v8 = +[IDSDeliveryController sharedInstance];
-    v9 = [v3 service];
+    service = [metricCopy service];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_1003DBF6C;
     v10[3] = &unk_100BD9D10;
-    v11 = v3;
-    [v8 sendIDSMessage:v7 service:0 topic:v9 completionBlock:v10];
+    v11 = metricCopy;
+    [v8 sendIDSMessage:v7 service:0 topic:service completionBlock:v10];
   }
 }
 

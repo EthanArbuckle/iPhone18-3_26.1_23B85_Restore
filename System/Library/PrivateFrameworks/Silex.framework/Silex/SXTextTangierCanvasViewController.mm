@@ -1,13 +1,13 @@
 @interface SXTextTangierCanvasViewController
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)interactionShouldBegin:(id)a3 atPoint:(CGPoint)a4;
-- (id)actionForHyperlink:(id)a3 inRep:(id)a4 gesture:(id)a5;
-- (id)targetForAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)interactionShouldBegin:(id)begin atPoint:(CGPoint)point;
+- (id)actionForHyperlink:(id)hyperlink inRep:(id)rep gesture:(id)gesture;
+- (id)targetForAction:(SEL)action withSender:(id)sender;
 - (int64_t)overrideUserInterfaceStyle;
 - (void)dealloc;
-- (void)interactionDidEnd:(id)a3;
+- (void)interactionDidEnd:(id)end;
 - (void)loadView;
-- (void)selectAll:(id)a3;
+- (void)selectAll:(id)all;
 @end
 
 @implementation SXTextTangierCanvasViewController
@@ -18,31 +18,31 @@
   [(SXTextTangierCanvasViewController *)self setView:v3];
 }
 
-- (id)actionForHyperlink:(id)a3 inRep:(id)a4 gesture:(id)a5
+- (id)actionForHyperlink:(id)hyperlink inRep:(id)rep gesture:(id)gesture
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  hyperlinkCopy = hyperlink;
+  repCopy = rep;
+  gestureCopy = gesture;
   objc_opt_class();
-  v11 = [(TSWPiOSCanvasViewController *)self interactiveCanvasController];
+  interactiveCanvasController = [(TSWPiOSCanvasViewController *)self interactiveCanvasController];
   v12 = TSUDynamicCast();
 
-  v13 = [v12 delegate];
+  delegate = [v12 delegate];
   v14 = TSUProtocolCast();
 
-  [v10 unscaledLocationForICC:v12];
+  [gestureCopy unscaledLocationForICC:v12];
   v16 = v15;
   v18 = v17;
-  v19 = [v10 gestureKind];
+  gestureKind = [gestureCopy gestureKind];
   v20 = *MEMORY[0x1E69D5758];
-  v21 = v19 == *MEMORY[0x1E69D5758];
+  v21 = gestureKind == *MEMORY[0x1E69D5758];
 
-  if (([v10 isDone] & 1) != 0 || v19 == v20 && objc_msgSend(v10, "gestureState") == 1)
+  if (([gestureCopy isDone] & 1) != 0 || gestureKind == v20 && objc_msgSend(gestureCopy, "gestureState") == 1)
   {
-    v22 = [v10 gestureKind];
+    gestureKind2 = [gestureCopy gestureKind];
     v23 = *MEMORY[0x1E69D5750];
 
-    if (v22 == v23)
+    if (gestureKind2 == v23)
     {
       v24 = &__block_literal_global_292;
     }
@@ -54,9 +54,9 @@
       v27[2] = __70__SXTextTangierCanvasViewController_actionForHyperlink_inRep_gesture___block_invoke_3;
       v27[3] = &unk_1E8500128;
       v28 = v14;
-      v29 = v9;
+      v29 = repCopy;
       v30 = v12;
-      v31 = v8;
+      v31 = hyperlinkCopy;
       v32 = v16;
       v33 = v18;
       v34 = v21;
@@ -69,9 +69,9 @@
     v24 = &__block_literal_global_28;
   }
 
-  v25 = [MEMORY[0x1E69D56E0] hyperlinkActionWithHyperlink:v8 inRep:v9 action:v24];
+  v25 = [MEMORY[0x1E69D56E0] hyperlinkActionWithHyperlink:hyperlinkCopy inRep:repCopy action:v24];
   [v25 setPerformImmediately:1];
-  if ([v10 gestureState] == 2)
+  if ([gestureCopy gestureState] == 2)
   {
 
     v25 = 0;
@@ -104,14 +104,14 @@ void __70__SXTextTangierCanvasViewController_actionForHyperlink_inRep_gesture___
   [v9 endUISession];
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  if (sel_delete_ != a3 && (sel_selectAll_ != a3 || [(SXTextTangierCanvasViewController *)self selectAllEnabled]&& [(SXTextTangierCanvasViewController *)self selectionEnabled]))
+  senderCopy = sender;
+  if (sel_delete_ != action && (sel_selectAll_ != action || [(SXTextTangierCanvasViewController *)self selectAllEnabled]&& [(SXTextTangierCanvasViewController *)self selectionEnabled]))
   {
     v9.receiver = self;
     v9.super_class = SXTextTangierCanvasViewController;
-    v7 = [(TSDiOSCanvasViewController *)&v9 canPerformAction:a3 withSender:v6];
+    v7 = [(TSDiOSCanvasViewController *)&v9 canPerformAction:action withSender:senderCopy];
   }
 
   else
@@ -122,25 +122,25 @@ void __70__SXTextTangierCanvasViewController_actionForHyperlink_inRep_gesture___
   return v7;
 }
 
-- (void)selectAll:(id)a3
+- (void)selectAll:(id)all
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  allCopy = all;
   if ([(SXTextTangierCanvasViewController *)self selectionEnabled]&& [(SXTextTangierCanvasViewController *)self selectAllEnabled])
   {
-    v5 = [(TSWPiOSCanvasViewController *)self interactiveCanvasController];
-    v6 = [v5 infosToDisplay];
+    interactiveCanvasController = [(TSWPiOSCanvasViewController *)self interactiveCanvasController];
+    infosToDisplay = [interactiveCanvasController infosToDisplay];
 
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v7 = v6;
+    v7 = infosToDisplay;
     v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v8)
     {
       v9 = v8;
-      v21 = v4;
+      v21 = allCopy;
       v10 = *v23;
       while (2)
       {
@@ -152,9 +152,9 @@ void __70__SXTextTangierCanvasViewController_actionForHyperlink_inRep_gesture___
           }
 
           v12 = *(*(&v22 + 1) + 8 * i);
-          v13 = [v12 storage];
-          v14 = [v13 flowName];
-          v15 = [v14 isEqualToString:@"body"];
+          storage = [v12 storage];
+          flowName = [storage flowName];
+          v15 = [flowName isEqualToString:@"body"];
 
           if (v15)
           {
@@ -174,7 +174,7 @@ void __70__SXTextTangierCanvasViewController_actionForHyperlink_inRep_gesture___
 
       v16 = 0;
 LABEL_13:
-      v4 = v21;
+      allCopy = v21;
     }
 
     else
@@ -182,25 +182,25 @@ LABEL_13:
       v16 = 0;
     }
 
-    v17 = [(TSWPiOSCanvasViewController *)self interactiveCanvasController];
-    v18 = [v17 beginEditingRepForInfo:v16];
+    interactiveCanvasController2 = [(TSWPiOSCanvasViewController *)self interactiveCanvasController];
+    v18 = [interactiveCanvasController2 beginEditingRepForInfo:v16];
 
-    v19 = [(TSWPiOSCanvasViewController *)self interactiveCanvasController];
-    v20 = [v19 textInputResponder];
-    [v20 selectAll:v4];
+    interactiveCanvasController3 = [(TSWPiOSCanvasViewController *)self interactiveCanvasController];
+    textInputResponder = [interactiveCanvasController3 textInputResponder];
+    [textInputResponder selectAll:allCopy];
   }
 }
 
-- (BOOL)interactionShouldBegin:(id)a3 atPoint:(CGPoint)a4
+- (BOOL)interactionShouldBegin:(id)begin atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = [(TSWPiOSCanvasViewController *)self interactiveCanvasController];
-  v9 = [v8 delegate];
+  y = point.y;
+  x = point.x;
+  beginCopy = begin;
+  interactiveCanvasController = [(TSWPiOSCanvasViewController *)self interactiveCanvasController];
+  delegate = [interactiveCanvasController delegate];
   v10 = TSUProtocolCast();
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && (-[TSWPiOSCanvasViewController interactiveCanvasController](self, "interactiveCanvasController"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v10 interactiveCanvasController:v11 shouldBeginInteraction:v7 atPoint:{x, y}], v11, !v12))
+  if ((objc_opt_respondsToSelector() & 1) != 0 && (-[TSWPiOSCanvasViewController interactiveCanvasController](self, "interactiveCanvasController"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v10 interactiveCanvasController:v11 shouldBeginInteraction:beginCopy atPoint:{x, y}], v11, !v12))
   {
     v13 = 0;
   }
@@ -213,7 +213,7 @@ LABEL_13:
     {
       v15.receiver = self;
       v15.super_class = SXTextTangierCanvasViewController;
-      v13 = [(TSWPiOSCanvasViewController *)&v15 interactionShouldBegin:v7 atPoint:x, y];
+      v13 = [(TSWPiOSCanvasViewController *)&v15 interactionShouldBegin:beginCopy atPoint:x, y];
     }
 
     else
@@ -225,25 +225,25 @@ LABEL_13:
   return v13;
 }
 
-- (void)interactionDidEnd:(id)a3
+- (void)interactionDidEnd:(id)end
 {
-  v4 = [(TSWPiOSCanvasViewController *)self interactiveCanvasController];
-  v3 = [v4 textInputResponder];
-  [v3 resignFirstResponder];
+  interactiveCanvasController = [(TSWPiOSCanvasViewController *)self interactiveCanvasController];
+  textInputResponder = [interactiveCanvasController textInputResponder];
+  [textInputResponder resignFirstResponder];
 }
 
-- (id)targetForAction:(SEL)a3 withSender:(id)a4
+- (id)targetForAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  if (NSSelectorFromString(&cfstr_Accessibilitys.isa) == a3 || NSSelectorFromString(&cfstr_Accessibilityp.isa) == a3)
+  senderCopy = sender;
+  if (NSSelectorFromString(&cfstr_Accessibilitys.isa) == action || NSSelectorFromString(&cfstr_Accessibilityp.isa) == action)
   {
-    v8 = [(TSWPiOSCanvasViewController *)self interactiveCanvasController];
-    v9 = [v8 textInputResponder];
+    interactiveCanvasController = [(TSWPiOSCanvasViewController *)self interactiveCanvasController];
+    textInputResponder = [interactiveCanvasController textInputResponder];
 
-    v7 = [v9 targetForAction:a3 withSender:v6];
+    v7 = [textInputResponder targetForAction:action withSender:senderCopy];
   }
 
-  else if (NSSelectorFromString(&cfstr_Delete.isa) == a3)
+  else if (NSSelectorFromString(&cfstr_Delete.isa) == action)
   {
     v7 = 0;
   }
@@ -252,7 +252,7 @@ LABEL_13:
   {
     v11.receiver = self;
     v11.super_class = SXTextTangierCanvasViewController;
-    v7 = [(SXTextTangierCanvasViewController *)&v11 targetForAction:a3 withSender:v6];
+    v7 = [(SXTextTangierCanvasViewController *)&v11 targetForAction:action withSender:senderCopy];
   }
 
   return v7;
@@ -268,13 +268,13 @@ LABEL_13:
 
 - (int64_t)overrideUserInterfaceStyle
 {
-  v2 = [(SXTextTangierCanvasViewController *)self view];
-  v3 = [v2 window];
-  v4 = [v3 screen];
-  v5 = [v4 traitCollection];
-  v6 = [v5 userInterfaceStyle];
+  view = [(SXTextTangierCanvasViewController *)self view];
+  window = [view window];
+  screen = [window screen];
+  traitCollection = [screen traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  return v6;
+  return userInterfaceStyle;
 }
 
 @end

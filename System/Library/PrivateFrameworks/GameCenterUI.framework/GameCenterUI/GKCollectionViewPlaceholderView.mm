@@ -1,5 +1,5 @@
 @interface GKCollectionViewPlaceholderView
-- (GKCollectionViewPlaceholderView)initWithFrame:(CGRect)a3;
+- (GKCollectionViewPlaceholderView)initWithFrame:(CGRect)frame;
 - (SEL)noContentButtonAction;
 - (void)buttonPressed;
 - (void)dealloc;
@@ -9,28 +9,28 @@
 - (void)didExitErrorState;
 - (void)didExitLoadingState;
 - (void)didExitNoContentState;
-- (void)setAlignment:(int64_t)a3;
-- (void)setLoadingState:(id)a3;
-- (void)setNoContentButtonAction:(SEL)a3;
+- (void)setAlignment:(int64_t)alignment;
+- (void)setLoadingState:(id)state;
+- (void)setNoContentButtonAction:(SEL)action;
 - (void)updateConstraints;
 @end
 
 @implementation GKCollectionViewPlaceholderView
 
-- (GKCollectionViewPlaceholderView)initWithFrame:(CGRect)a3
+- (GKCollectionViewPlaceholderView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v28.receiver = self;
   v28.super_class = GKCollectionViewPlaceholderView;
   v7 = [(GKCollectionViewPlaceholderView *)&v28 initWithFrame:?];
   if (v7)
   {
-    v8 = [MEMORY[0x277D0C868] sharedPalette];
-    v9 = [v8 viewBackgroundColor];
-    [(GKCollectionViewPlaceholderView *)v7 setBackgroundColor:v9];
+    mEMORY[0x277D0C868] = [MEMORY[0x277D0C868] sharedPalette];
+    viewBackgroundColor = [mEMORY[0x277D0C868] viewBackgroundColor];
+    [(GKCollectionViewPlaceholderView *)v7 setBackgroundColor:viewBackgroundColor];
 
     v10 = objc_alloc_init(GKPlaceholderContentStateMachine);
     loadingMachine = v7->_loadingMachine;
@@ -50,8 +50,8 @@
     v17 = GKGetLocalizedStringFromTableInBundle();
     [(GKCollectionViewPlaceholderView *)v7 setErrorMessage:v17];
 
-    v18 = [GKPlaceholderView placeholderViewWithTitle:v7->_noContentTitle message:v7->_noContentTitle frame:x, y, width, height];
-    [(GKCollectionViewPlaceholderView *)v7 setPlaceholderView:v18];
+    height = [GKPlaceholderView placeholderViewWithTitle:v7->_noContentTitle message:v7->_noContentTitle frame:x, y, width, height];
+    [(GKCollectionViewPlaceholderView *)v7 setPlaceholderView:height];
 
     v26[0] = 0;
     v26[1] = v26;
@@ -75,9 +75,9 @@
     [v19 addSubview:v19[71]];
     [v19[62] setAlpha:0.0];
     [v19[71] setActivityIndicatorViewStyle:101];
-    v22 = [MEMORY[0x277D0C868] sharedPalette];
-    v23 = [v22 activityIndicatorColor];
-    [v19[71] setColor:v23];
+    mEMORY[0x277D0C868]2 = [MEMORY[0x277D0C868] sharedPalette];
+    activityIndicatorColor = [mEMORY[0x277D0C868]2 activityIndicatorColor];
+    [v19[71] setColor:activityIndicatorColor];
 
     [v19[71] setAlpha:0.0];
     [v19 addSubview:v19[62]];
@@ -109,11 +109,11 @@
   }
 }
 
-- (void)setAlignment:(int64_t)a3
+- (void)setAlignment:(int64_t)alignment
 {
-  if (self->_alignment != a3)
+  if (self->_alignment != alignment)
   {
-    self->_alignment = a3;
+    self->_alignment = alignment;
     [(GKCollectionViewPlaceholderView *)self setNeedsUpdateConstraints];
   }
 }
@@ -123,10 +123,10 @@
   v16.receiver = self;
   v16.super_class = GKCollectionViewPlaceholderView;
   [(GKCollectionViewPlaceholderView *)&v16 updateConstraints];
-  v3 = [(GKCollectionViewPlaceholderView *)self cachedConstraints];
-  if (v3)
+  cachedConstraints = [(GKCollectionViewPlaceholderView *)self cachedConstraints];
+  if (cachedConstraints)
   {
-    [(GKCollectionViewPlaceholderView *)self removeConstraints:v3];
+    [(GKCollectionViewPlaceholderView *)self removeConstraints:cachedConstraints];
   }
 
   v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:32];
@@ -168,20 +168,20 @@ LABEL_7:
   [(GKCollectionViewPlaceholderView *)self addConstraints:v4];
 }
 
-- (void)setLoadingState:(id)a3
+- (void)setLoadingState:(id)state
 {
   loadingMachine = self->_loadingMachine;
-  v5 = a3;
+  stateCopy = state;
   [(_GKStateMachine *)loadingMachine setCurrentState:@"Initial"];
-  [(_GKStateMachine *)self->_loadingMachine setCurrentState:v5];
+  [(_GKStateMachine *)self->_loadingMachine setCurrentState:stateCopy];
 }
 
 - (void)delayedShowLoadingIndicator
 {
-  v3 = [(_GKStateMachine *)self->_loadingMachine currentState];
+  currentState = [(_GKStateMachine *)self->_loadingMachine currentState];
 
   loadingIndicatorView = self->_loadingIndicatorView;
-  if (v3 == @"LoadingState")
+  if (currentState == @"LoadingState")
   {
     [(UIActivityIndicatorView *)loadingIndicatorView startAnimating];
     v5[0] = MEMORY[0x277D85DD0];
@@ -268,19 +268,19 @@ LABEL_7:
   }
 }
 
-- (void)setNoContentButtonAction:(SEL)a3
+- (void)setNoContentButtonAction:(SEL)action
 {
-  if (a3)
+  if (action)
   {
-    v3 = a3;
+    actionCopy = action;
   }
 
   else
   {
-    v3 = 0;
+    actionCopy = 0;
   }
 
-  self->_noContentButtonAction = v3;
+  self->_noContentButtonAction = actionCopy;
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface FCPuzzleFetchOperation
 - (FCPuzzleFetchOperation)init;
-- (FCPuzzleFetchOperation)initWithPuzzleIDs:(id)a3 puzzleTypeController:(id)a4 puzzleRecordSource:(id)a5 assetManager:(id)a6 configurationManager:(id)a7 delegate:(id)a8;
+- (FCPuzzleFetchOperation)initWithPuzzleIDs:(id)ds puzzleTypeController:(id)controller puzzleRecordSource:(id)source assetManager:(id)manager configurationManager:(id)configurationManager delegate:(id)delegate;
 - (FCPuzzleFetchOperationDelegate)delegate;
 - (id)completeFetchOperation;
-- (id)determineAppropriateFetchStepsWithCompletion:(id)a3;
-- (id)fetchConfigWithCompletion:(id)a3;
-- (id)fetchPuzzleRecordsWithCompletion:(id)a3;
-- (void)customizeChildOperation:(id)a3 forFetchStep:(SEL)a4;
+- (id)determineAppropriateFetchStepsWithCompletion:(id)completion;
+- (id)fetchConfigWithCompletion:(id)completion;
+- (id)fetchPuzzleRecordsWithCompletion:(id)completion;
+- (void)customizeChildOperation:(id)operation forFetchStep:(SEL)step;
 @end
 
 @implementation FCPuzzleFetchOperation
@@ -37,60 +37,60 @@
   objc_exception_throw(v6);
 }
 
-- (FCPuzzleFetchOperation)initWithPuzzleIDs:(id)a3 puzzleTypeController:(id)a4 puzzleRecordSource:(id)a5 assetManager:(id)a6 configurationManager:(id)a7 delegate:(id)a8
+- (FCPuzzleFetchOperation)initWithPuzzleIDs:(id)ds puzzleTypeController:(id)controller puzzleRecordSource:(id)source assetManager:(id)manager configurationManager:(id)configurationManager delegate:(id)delegate
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v23 = a6;
-  v22 = a7;
-  v18 = a8;
+  dsCopy = ds;
+  controllerCopy = controller;
+  sourceCopy = source;
+  managerCopy = manager;
+  configurationManagerCopy = configurationManager;
+  delegateCopy = delegate;
   v24.receiver = self;
   v24.super_class = FCPuzzleFetchOperation;
   v19 = [(FCMultiStepFetchOperation *)&v24 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_puzzleIDs, a3);
-    objc_storeStrong(&v20->_puzzleTypeController, a4);
-    objc_storeStrong(&v20->_puzzleRecordSource, a5);
-    objc_storeStrong(&v20->_assetManager, a6);
-    objc_storeStrong(&v20->_configurationManager, a7);
-    objc_storeWeak(&v20->_delegate, v18);
+    objc_storeStrong(&v19->_puzzleIDs, ds);
+    objc_storeStrong(&v20->_puzzleTypeController, controller);
+    objc_storeStrong(&v20->_puzzleRecordSource, source);
+    objc_storeStrong(&v20->_assetManager, manager);
+    objc_storeStrong(&v20->_configurationManager, configurationManager);
+    objc_storeWeak(&v20->_delegate, delegateCopy);
     [(FCMultiStepFetchOperation *)v20 addFetchStep:sel_determineAppropriateFetchStepsWithCompletion_];
   }
 
   return v20;
 }
 
-- (id)determineAppropriateFetchStepsWithCompletion:(id)a3
+- (id)determineAppropriateFetchStepsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(FCPuzzleFetchOperation *)self configuration];
+  completionCopy = completion;
+  configuration = [(FCPuzzleFetchOperation *)self configuration];
 
-  if (!v5)
+  if (!configuration)
   {
     [(FCMultiStepFetchOperation *)self addNonCriticalFetchStep:sel_fetchConfigWithCompletion_];
   }
 
   [(FCMultiStepFetchOperation *)self addFetchStep:sel_fetchPuzzleRecordsWithCompletion_];
-  v4[2](v4, 0);
+  completionCopy[2](completionCopy, 0);
 
   return 0;
 }
 
-- (id)fetchConfigWithCompletion:(id)a3
+- (id)fetchConfigWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(FCPuzzleFetchOperation *)self configurationManager];
+  completionCopy = completion;
+  configurationManager = [(FCPuzzleFetchOperation *)self configurationManager];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __52__FCPuzzleFetchOperation_fetchConfigWithCompletion___block_invoke;
   v8[3] = &unk_1E7C3B248;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
-  FCCoreConfigurationFetch(v5, v8);
+  v9 = completionCopy;
+  v6 = completionCopy;
+  FCCoreConfigurationFetch(configurationManager, v8);
 
   return 0;
 }
@@ -118,26 +118,26 @@ void __52__FCPuzzleFetchOperation_fetchConfigWithCompletion___block_invoke(uint6
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)customizeChildOperation:(id)a3 forFetchStep:(SEL)a4
+- (void)customizeChildOperation:(id)operation forFetchStep:(SEL)step
 {
-  v6 = a3;
+  operationCopy = operation;
   v7.receiver = self;
   v7.super_class = FCPuzzleFetchOperation;
-  [(FCMultiStepFetchOperation *)&v7 customizeChildOperation:v6 forFetchStep:a4];
-  if (sel_fetchPuzzleRecordsWithCompletion_ == a4 && [(FCPuzzleFetchOperation *)self overrideTargetsCachePolicy])
+  [(FCMultiStepFetchOperation *)&v7 customizeChildOperation:operationCopy forFetchStep:step];
+  if (sel_fetchPuzzleRecordsWithCompletion_ == step && [(FCPuzzleFetchOperation *)self overrideTargetsCachePolicy])
   {
-    [v6 setCachePolicy:{-[FCPuzzleFetchOperation targetsCachePolicy](self, "targetsCachePolicy")}];
+    [operationCopy setCachePolicy:{-[FCPuzzleFetchOperation targetsCachePolicy](self, "targetsCachePolicy")}];
     [(FCPuzzleFetchOperation *)self targetsMaximumCachedAge];
-    [v6 setMaximumCachedAge:?];
+    [operationCopy setMaximumCachedAge:?];
   }
 }
 
-- (id)fetchPuzzleRecordsWithCompletion:(id)a3
+- (id)fetchPuzzleRecordsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(FCPuzzleFetchOperation *)self puzzleRecordSource];
-  v6 = [(FCPuzzleFetchOperation *)self puzzleIDs];
-  v7 = [v5 fetchOperationForRecordsWithIDs:v6];
+  completionCopy = completion;
+  puzzleRecordSource = [(FCPuzzleFetchOperation *)self puzzleRecordSource];
+  puzzleIDs = [(FCPuzzleFetchOperation *)self puzzleIDs];
+  v7 = [puzzleRecordSource fetchOperationForRecordsWithIDs:puzzleIDs];
 
   [v7 setCachePolicy:{-[FCFetchOperation cachePolicy](self, "cachePolicy")}];
   [(FCFetchOperation *)self maximumCachedAge];
@@ -147,8 +147,8 @@ void __52__FCPuzzleFetchOperation_fetchConfigWithCompletion___block_invoke(uint6
   v10[2] = __59__FCPuzzleFetchOperation_fetchPuzzleRecordsWithCompletion___block_invoke;
   v10[3] = &unk_1E7C37B98;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = completionCopy;
+  v8 = completionCopy;
   [v7 setFetchCompletionBlock:v10];
 
   return v7;
@@ -259,28 +259,28 @@ uint64_t __59__FCPuzzleFetchOperation_fetchPuzzleRecordsWithCompletion___block_i
 
 - (id)completeFetchOperation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(FCPuzzleFetchOperation *)self configuration];
-  v5 = [v4 puzzlesConfig];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  configuration = [(FCPuzzleFetchOperation *)self configuration];
+  puzzlesConfig = [configuration puzzlesConfig];
 
-  v6 = [v5 difficultyDescriptions];
-  v7 = [(FCPuzzleFetchOperation *)self heldPuzzleRecords];
+  difficultyDescriptions = [puzzlesConfig difficultyDescriptions];
+  heldPuzzleRecords = [(FCPuzzleFetchOperation *)self heldPuzzleRecords];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __48__FCPuzzleFetchOperation_completeFetchOperation__block_invoke;
   v14[3] = &unk_1E7C3BAC0;
   v14[4] = self;
-  v15 = v6;
-  v8 = v3;
+  v15 = difficultyDescriptions;
+  v8 = dictionary;
   v16 = v8;
-  v9 = v6;
-  [v7 enumerateRecordsAndInterestTokensWithBlock:v14];
+  v9 = difficultyDescriptions;
+  [heldPuzzleRecords enumerateRecordsAndInterestTokensWithBlock:v14];
 
-  v10 = [(FCPuzzleFetchOperation *)self delegate];
-  if (v10)
+  delegate = [(FCPuzzleFetchOperation *)self delegate];
+  if (delegate)
   {
-    v11 = [v8 allValues];
-    [v10 puzzleFetchOperation:self didFetchPuzzles:v11];
+    allValues = [v8 allValues];
+    [delegate puzzleFetchOperation:self didFetchPuzzles:allValues];
   }
 
   v12 = v8;

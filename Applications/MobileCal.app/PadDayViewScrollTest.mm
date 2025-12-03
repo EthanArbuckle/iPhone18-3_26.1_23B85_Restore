@@ -7,25 +7,25 @@
 
 - (void)navigateToScrollView
 {
-  v8 = [(ApplicationTest *)self extractInitialDateOption];
-  v3 = [(ApplicationTest *)self model];
-  [v3 setSelectedDate:v8];
+  extractInitialDateOption = [(ApplicationTest *)self extractInitialDateOption];
+  model = [(ApplicationTest *)self model];
+  [model setSelectedDate:extractInitialDateOption];
 
-  v4 = [(ApplicationTest *)self application];
-  v5 = [v4 rootNavigationController];
-  v6 = [v5 resetToDayView];
+  application = [(ApplicationTest *)self application];
+  rootNavigationController = [application rootNavigationController];
+  resetToDayView = [rootNavigationController resetToDayView];
   controller = self->_controller;
-  self->_controller = v6;
+  self->_controller = resetToDayView;
 
-  [(DayViewController *)self->_controller selectDate:v8 animated:0];
+  [(DayViewController *)self->_controller selectDate:extractInitialDateOption animated:0];
 }
 
 - (id)scrollView
 {
-  v2 = [(DayViewController *)self->_controller dayView];
-  v3 = [v2 horizontalScrollView];
+  dayView = [(DayViewController *)self->_controller dayView];
+  horizontalScrollView = [dayView horizontalScrollView];
 
-  return v3;
+  return horizontalScrollView;
 }
 
 @end

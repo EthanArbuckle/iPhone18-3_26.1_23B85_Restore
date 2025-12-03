@@ -1,12 +1,12 @@
 @interface CalendarAppRemoval
-- (void)removeAppWithReply:(id)a3;
+- (void)removeAppWithReply:(id)reply;
 @end
 
 @implementation CalendarAppRemoval
 
-- (void)removeAppWithReply:(id)a3
+- (void)removeAppWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   NSLog(@"CALENDAR APP REMOVAL: removing prefs");
   v4 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.mobilecal"];
   [v4 removeObjectForKey:@"LastViewType"];
@@ -16,7 +16,7 @@
   [v4 removeObjectForKey:@"ShowListView"];
   [v4 removeObjectForKey:@"ShowMonthDividedListView"];
   [v4 synchronize];
-  v3[2](v3, 0);
+  replyCopy[2](replyCopy, 0);
 }
 
 @end

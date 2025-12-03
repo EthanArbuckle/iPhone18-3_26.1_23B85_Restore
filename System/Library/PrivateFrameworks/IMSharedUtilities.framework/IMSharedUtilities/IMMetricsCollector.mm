@@ -1,42 +1,42 @@
 @interface IMMetricsCollector
-+ (id)_IMServiceNameToSentMessageEventType:(id)a3;
++ (id)_IMServiceNameToSentMessageEventType:(id)type;
 + (id)sharedInstance;
-+ (id)stringForFZErrorType:(unsigned int)a3;
-- (BOOL)trackAction:(id)a3 extensionBundleID:(id)a4 isNotification:(BOOL)a5;
-- (BOOL)trackEvent:(id)a3;
-- (BOOL)trackEvent:(id)a3 withCount:(id)a4;
-- (BOOL)trackEvent:(id)a3 withDictionary:(id)a4;
-- (BOOL)trackEvent:(id)a3 withStatistic:(id)a4;
++ (id)stringForFZErrorType:(unsigned int)type;
+- (BOOL)trackAction:(id)action extensionBundleID:(id)d isNotification:(BOOL)notification;
+- (BOOL)trackEvent:(id)event;
+- (BOOL)trackEvent:(id)event withCount:(id)count;
+- (BOOL)trackEvent:(id)event withDictionary:(id)dictionary;
+- (BOOL)trackEvent:(id)event withStatistic:(id)statistic;
 - (IMMetricsCollector)init;
-- (id)_stringForDeleteMessagesType:(unint64_t)a3;
-- (id)_stringForSpamType:(unint64_t)a3;
-- (id)_stringForiMessageJunkType:(unint64_t)a3;
-- (unint64_t)keepMessagesSourceTypeForDays:(int64_t)a3;
+- (id)_stringForDeleteMessagesType:(unint64_t)type;
+- (id)_stringForSpamType:(unint64_t)type;
+- (id)_stringForiMessageJunkType:(unint64_t)type;
+- (unint64_t)keepMessagesSourceTypeForDays:(int64_t)days;
 - (void)_ADClientAddValueForScalarKeyApiInit;
 - (void)_ADClientPushValueForDistributionKeyApiInit;
 - (void)_ADClientSetValueForScalarKeyApiInit;
-- (void)_trackEvent:(id)a3;
-- (void)_trackEvent:(id)a3 withCount:(id)a4;
-- (void)_trackEvent:(id)a3 withDictionary:(id)a4;
-- (void)_trackEvent:(id)a3 withStatistic:(id)a4;
-- (void)_trackTranscodeFailureWithReason:(unint64_t)a3 messageType:(unint64_t)a4 sourceFile:(id)a5 sizeLimits:(id)a6 isSticker:(BOOL)a7 lowQualityModeEnabled:(BOOL)a8;
-- (void)_trackTranscodeWithReason:(unint64_t)a3 messageType:(unint64_t)a4 sourceFile:(id)a5 highQualityFile:(id)a6 lowQualityFile:(id)a7 sizeLimits:(id)a8 isSticker:(BOOL)a9 transcoded:(BOOL)a10 lowQualityModeEnabled:(BOOL)a11;
-- (void)autoBugCaptureWithSubType:(id)a3 errorPayload:(id)a4;
+- (void)_trackEvent:(id)event;
+- (void)_trackEvent:(id)event withCount:(id)count;
+- (void)_trackEvent:(id)event withDictionary:(id)dictionary;
+- (void)_trackEvent:(id)event withStatistic:(id)statistic;
+- (void)_trackTranscodeFailureWithReason:(unint64_t)reason messageType:(unint64_t)type sourceFile:(id)file sizeLimits:(id)limits isSticker:(BOOL)sticker lowQualityModeEnabled:(BOOL)enabled;
+- (void)_trackTranscodeWithReason:(unint64_t)reason messageType:(unint64_t)type sourceFile:(id)file highQualityFile:(id)qualityFile lowQualityFile:(id)lowQualityFile sizeLimits:(id)limits isSticker:(BOOL)sticker transcoded:(BOOL)self0 lowQualityModeEnabled:(BOOL)self1;
+- (void)autoBugCaptureWithSubType:(id)type errorPayload:(id)payload;
 - (void)dealloc;
-- (void)forceAutoBugCaptureWithSubType:(id)a3 errorPayload:(id)a4;
-- (void)forceAutoBugCaptureWithSubType:(id)a3 errorPayload:(id)a4 type:(id)a5 context:(id)a6 metadata:(id)a7;
-- (void)metricAttachmentValidation:(BOOL)a3 attachmentSize:(id)a4 operationalErrorDomain:(id)a5 operationalErrorCode:(id)a6 validationErrorDomain:(id)a7 validationErrorCode:(id)a8;
-- (void)trackAttachmentDownloadFailedWithFileSize:(id)a3 reason:(int64_t)a4 context:(id)a5;
-- (void)trackAttachmentDownloadSuccess:(id)a3 context:(id)a4;
-- (void)trackAttachmentRenderingAttempt:(BOOL)a3 failureReason:(id)a4;
-- (void)trackDeleteMessages:(id)a3 sourceType:(unint64_t)a4;
-- (void)trackMMSTranscodeWithReason:(unint64_t)a3 sourceFile:(id)a4 highQualityFile:(id)a5 lowQualityFile:(id)a6 sizeLimits:(id)a7 transcoded:(BOOL)a8 lowQualityModeEnabled:(BOOL)a9;
-- (void)trackMessagesWithoutChatsWithContext:(id)a3;
-- (void)trackRCSTranscodeWithReason:(unint64_t)a3 sourceFile:(id)a4 highQualityFile:(id)a5 lowQualityFile:(id)a6 sizeLimits:(id)a7 isSticker:(BOOL)a8 transcoded:(BOOL)a9 lowQualityModeEnabled:(BOOL)a10;
-- (void)trackSentMessageEventOfType:(id)a3 subtype:(id)a4 originalServiceName:(id)a5 messageSize:(unint64_t)a6 sendDuration:(id)a7 receiverType:(id)a8 receiverGroupType:(id)a9 wasSuccessful:(BOOL)a10 sourceHandle:(id)a11 destinationHandle:(id)a12 error:(id)a13;
-- (void)trackSpamEvent:(unint64_t)a3 withDictionary:(id)a4;
-- (void)trackiMessageJunkEvent:(unint64_t)a3 withDictionary:(id)a4;
-- (void)trackiMessageTranscodeWithReason:(unint64_t)a3 sourceFile:(id)a4 highQualityFile:(id)a5 lowQualityFile:(id)a6 sizeLimits:(id)a7 isSticker:(BOOL)a8 transcoded:(BOOL)a9 lowQualityModeEnabled:(BOOL)a10;
+- (void)forceAutoBugCaptureWithSubType:(id)type errorPayload:(id)payload;
+- (void)forceAutoBugCaptureWithSubType:(id)type errorPayload:(id)payload type:(id)a5 context:(id)context metadata:(id)metadata;
+- (void)metricAttachmentValidation:(BOOL)validation attachmentSize:(id)size operationalErrorDomain:(id)domain operationalErrorCode:(id)code validationErrorDomain:(id)errorDomain validationErrorCode:(id)errorCode;
+- (void)trackAttachmentDownloadFailedWithFileSize:(id)size reason:(int64_t)reason context:(id)context;
+- (void)trackAttachmentDownloadSuccess:(id)success context:(id)context;
+- (void)trackAttachmentRenderingAttempt:(BOOL)attempt failureReason:(id)reason;
+- (void)trackDeleteMessages:(id)messages sourceType:(unint64_t)type;
+- (void)trackMMSTranscodeWithReason:(unint64_t)reason sourceFile:(id)file highQualityFile:(id)qualityFile lowQualityFile:(id)lowQualityFile sizeLimits:(id)limits transcoded:(BOOL)transcoded lowQualityModeEnabled:(BOOL)enabled;
+- (void)trackMessagesWithoutChatsWithContext:(id)context;
+- (void)trackRCSTranscodeWithReason:(unint64_t)reason sourceFile:(id)file highQualityFile:(id)qualityFile lowQualityFile:(id)lowQualityFile sizeLimits:(id)limits isSticker:(BOOL)sticker transcoded:(BOOL)transcoded lowQualityModeEnabled:(BOOL)self0;
+- (void)trackSentMessageEventOfType:(id)type subtype:(id)subtype originalServiceName:(id)name messageSize:(unint64_t)size sendDuration:(id)duration receiverType:(id)receiverType receiverGroupType:(id)groupType wasSuccessful:(BOOL)self0 sourceHandle:(id)self1 destinationHandle:(id)self2 error:(id)self3;
+- (void)trackSpamEvent:(unint64_t)event withDictionary:(id)dictionary;
+- (void)trackiMessageJunkEvent:(unint64_t)event withDictionary:(id)dictionary;
+- (void)trackiMessageTranscodeWithReason:(unint64_t)reason sourceFile:(id)file highQualityFile:(id)qualityFile lowQualityFile:(id)lowQualityFile sizeLimits:(id)limits isSticker:(BOOL)sticker transcoded:(BOOL)transcoded lowQualityModeEnabled:(BOOL)self0;
 @end
 
 @implementation IMMetricsCollector
@@ -80,45 +80,45 @@
   return v2;
 }
 
-- (void)trackiMessageTranscodeWithReason:(unint64_t)a3 sourceFile:(id)a4 highQualityFile:(id)a5 lowQualityFile:(id)a6 sizeLimits:(id)a7 isSticker:(BOOL)a8 transcoded:(BOOL)a9 lowQualityModeEnabled:(BOOL)a10
+- (void)trackiMessageTranscodeWithReason:(unint64_t)reason sourceFile:(id)file highQualityFile:(id)qualityFile lowQualityFile:(id)lowQualityFile sizeLimits:(id)limits isSticker:(BOOL)sticker transcoded:(BOOL)transcoded lowQualityModeEnabled:(BOOL)self0
 {
-  *(&v10 + 1) = __PAIR16__(a10, a9);
-  LOBYTE(v10) = a8;
-  [IMMetricsCollector _trackTranscodeWithReason:"_trackTranscodeWithReason:messageType:sourceFile:highQualityFile:lowQualityFile:sizeLimits:isSticker:transcoded:lowQualityModeEnabled:" messageType:a3 sourceFile:1 highQualityFile:a4 lowQualityFile:a5 sizeLimits:a6 isSticker:a7 transcoded:v10 lowQualityModeEnabled:?];
+  *(&v10 + 1) = __PAIR16__(enabled, transcoded);
+  LOBYTE(v10) = sticker;
+  [IMMetricsCollector _trackTranscodeWithReason:"_trackTranscodeWithReason:messageType:sourceFile:highQualityFile:lowQualityFile:sizeLimits:isSticker:transcoded:lowQualityModeEnabled:" messageType:reason sourceFile:1 highQualityFile:file lowQualityFile:qualityFile sizeLimits:lowQualityFile isSticker:limits transcoded:v10 lowQualityModeEnabled:?];
 }
 
-- (void)trackMMSTranscodeWithReason:(unint64_t)a3 sourceFile:(id)a4 highQualityFile:(id)a5 lowQualityFile:(id)a6 sizeLimits:(id)a7 transcoded:(BOOL)a8 lowQualityModeEnabled:(BOOL)a9
+- (void)trackMMSTranscodeWithReason:(unint64_t)reason sourceFile:(id)file highQualityFile:(id)qualityFile lowQualityFile:(id)lowQualityFile sizeLimits:(id)limits transcoded:(BOOL)transcoded lowQualityModeEnabled:(BOOL)enabled
 {
-  BYTE2(v9) = a9;
-  BYTE1(v9) = a8;
+  BYTE2(v9) = enabled;
+  BYTE1(v9) = transcoded;
   LOBYTE(v9) = 0;
-  [IMMetricsCollector _trackTranscodeWithReason:"_trackTranscodeWithReason:messageType:sourceFile:highQualityFile:lowQualityFile:sizeLimits:isSticker:transcoded:lowQualityModeEnabled:" messageType:a3 sourceFile:2 highQualityFile:a4 lowQualityFile:a5 sizeLimits:a6 isSticker:a7 transcoded:v9 lowQualityModeEnabled:?];
+  [IMMetricsCollector _trackTranscodeWithReason:"_trackTranscodeWithReason:messageType:sourceFile:highQualityFile:lowQualityFile:sizeLimits:isSticker:transcoded:lowQualityModeEnabled:" messageType:reason sourceFile:2 highQualityFile:file lowQualityFile:qualityFile sizeLimits:lowQualityFile isSticker:limits transcoded:v9 lowQualityModeEnabled:?];
 }
 
-- (void)trackRCSTranscodeWithReason:(unint64_t)a3 sourceFile:(id)a4 highQualityFile:(id)a5 lowQualityFile:(id)a6 sizeLimits:(id)a7 isSticker:(BOOL)a8 transcoded:(BOOL)a9 lowQualityModeEnabled:(BOOL)a10
+- (void)trackRCSTranscodeWithReason:(unint64_t)reason sourceFile:(id)file highQualityFile:(id)qualityFile lowQualityFile:(id)lowQualityFile sizeLimits:(id)limits isSticker:(BOOL)sticker transcoded:(BOOL)transcoded lowQualityModeEnabled:(BOOL)self0
 {
-  *(&v10 + 1) = __PAIR16__(a10, a9);
-  LOBYTE(v10) = a8;
-  [IMMetricsCollector _trackTranscodeWithReason:"_trackTranscodeWithReason:messageType:sourceFile:highQualityFile:lowQualityFile:sizeLimits:isSticker:transcoded:lowQualityModeEnabled:" messageType:a3 sourceFile:3 highQualityFile:a4 lowQualityFile:a5 sizeLimits:a6 isSticker:a7 transcoded:v10 lowQualityModeEnabled:?];
+  *(&v10 + 1) = __PAIR16__(enabled, transcoded);
+  LOBYTE(v10) = sticker;
+  [IMMetricsCollector _trackTranscodeWithReason:"_trackTranscodeWithReason:messageType:sourceFile:highQualityFile:lowQualityFile:sizeLimits:isSticker:transcoded:lowQualityModeEnabled:" messageType:reason sourceFile:3 highQualityFile:file lowQualityFile:qualityFile sizeLimits:lowQualityFile isSticker:limits transcoded:v10 lowQualityModeEnabled:?];
 }
 
-- (void)_trackTranscodeWithReason:(unint64_t)a3 messageType:(unint64_t)a4 sourceFile:(id)a5 highQualityFile:(id)a6 lowQualityFile:(id)a7 sizeLimits:(id)a8 isSticker:(BOOL)a9 transcoded:(BOOL)a10 lowQualityModeEnabled:(BOOL)a11
+- (void)_trackTranscodeWithReason:(unint64_t)reason messageType:(unint64_t)type sourceFile:(id)file highQualityFile:(id)qualityFile lowQualityFile:(id)lowQualityFile sizeLimits:(id)limits isSticker:(BOOL)sticker transcoded:(BOOL)self0 lowQualityModeEnabled:(BOOL)self1
 {
-  v61 = a5;
-  v16 = a6;
-  v17 = a7;
-  v57 = a8;
-  v18 = [MEMORY[0x1E695DF90] dictionary];
+  fileCopy = file;
+  qualityFileCopy = qualityFile;
+  lowQualityFileCopy = lowQualityFile;
+  limitsCopy = limits;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v19 = *MEMORY[0x1E695DB50];
   v20 = *MEMORY[0x1E695DAA0];
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:{*MEMORY[0x1E695DB50], *MEMORY[0x1E695DAA0], 0}];
-  if (v61)
+  if (fileCopy)
   {
-    v22 = [v61 resourceValuesForKeys:v21 error:0];
-    if (v16)
+    v22 = [fileCopy resourceValuesForKeys:v21 error:0];
+    if (qualityFileCopy)
     {
 LABEL_3:
-      v60 = [v16 resourceValuesForKeys:v21 error:0];
+      v60 = [qualityFileCopy resourceValuesForKeys:v21 error:0];
       goto LABEL_6;
     }
   }
@@ -126,7 +126,7 @@ LABEL_3:
   else
   {
     v22 = MEMORY[0x1E695E0F8];
-    if (v16)
+    if (qualityFileCopy)
     {
       goto LABEL_3;
     }
@@ -134,12 +134,12 @@ LABEL_3:
 
   v60 = MEMORY[0x1E695E0F8];
 LABEL_6:
-  v58 = v17;
-  v59 = v16;
+  v58 = lowQualityFileCopy;
+  v59 = qualityFileCopy;
   v56 = v21;
-  if (v17)
+  if (lowQualityFileCopy)
   {
-    v23 = [v17 resourceValuesForKeys:v21 error:0];
+    v23 = [lowQualityFileCopy resourceValuesForKeys:v21 error:0];
   }
 
   else
@@ -147,11 +147,11 @@ LABEL_6:
     v23 = MEMORY[0x1E695E0F8];
   }
 
-  v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  [v18 setObject:v24 forKey:@"message_type"];
+  v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
+  [dictionary setObject:v24 forKey:@"message_type"];
 
-  v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  [v18 setObject:v25 forKey:@"transcode_reason"];
+  v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:reason];
+  [dictionary setObject:v25 forKey:@"transcode_reason"];
 
   v26 = [v22 objectForKey:v20];
   v62 = [v60 objectForKey:v20];
@@ -161,7 +161,7 @@ LABEL_6:
   v29 = [v60 objectForKey:v19];
   v53 = v23;
   v30 = [v23 objectForKey:v19];
-  if (a9)
+  if (sticker)
   {
     v31 = 3;
   }
@@ -171,31 +171,31 @@ LABEL_6:
     v31 = 0;
   }
 
-  v32 = [v26 identifier];
-  v33 = [v32 length];
+  identifier = [v26 identifier];
+  v33 = [identifier length];
 
   if (!v33)
   {
-    v35 = v57;
+    v35 = limitsCopy;
     v34 = v62;
     goto LABEL_26;
   }
 
   v34 = v62;
-  if (a9)
+  if (sticker)
   {
     v31 = 3;
   }
 
   else
   {
-    v36 = [v26 identifier];
-    if (!IMUTTypeIsImage(v36))
+    identifier2 = [v26 identifier];
+    if (!IMUTTypeIsImage(identifier2))
     {
-      v37 = [v26 identifier];
-      IsSupportedAnimatedImage = IMUTTypeIsSupportedAnimatedImage(v37);
+      identifier3 = [v26 identifier];
+      IsSupportedAnimatedImage = IMUTTypeIsSupportedAnimatedImage(identifier3);
 
-      v35 = v57;
+      v35 = limitsCopy;
       if (IsSupportedAnimatedImage)
       {
         v31 = 1;
@@ -203,8 +203,8 @@ LABEL_6:
 
       else
       {
-        v39 = [v26 identifier];
-        IsMovie = IMUTTypeIsMovie(v39);
+        identifier4 = [v26 identifier];
+        IsMovie = IMUTTypeIsMovie(identifier4);
 
         if (IsMovie)
         {
@@ -224,49 +224,49 @@ LABEL_6:
     v31 = 1;
   }
 
-  v35 = v57;
+  v35 = limitsCopy;
 LABEL_25:
-  v41 = [v26 identifier];
-  [v18 setObject:v41 forKey:@"original_uttype"];
+  identifier5 = [v26 identifier];
+  [dictionary setObject:identifier5 forKey:@"original_uttype"];
 
 LABEL_26:
   v42 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v31];
-  [v18 setObject:v42 forKey:@"attachment_type"];
+  [dictionary setObject:v42 forKey:@"attachment_type"];
 
-  v43 = [v34 identifier];
-  v44 = [v43 length];
+  identifier6 = [v34 identifier];
+  v44 = [identifier6 length];
 
   if (v44)
   {
-    v45 = [v34 identifier];
-    [v18 setObject:v45 forKey:@"high_quality_uttype"];
+    identifier7 = [v34 identifier];
+    [dictionary setObject:identifier7 forKey:@"high_quality_uttype"];
   }
 
-  v46 = [v27 identifier];
-  v47 = [v46 length];
+  identifier8 = [v27 identifier];
+  v47 = [identifier8 length];
 
   if (v47)
   {
-    v48 = [v27 identifier];
-    [v18 setObject:v48 forKey:@"low_quality_uttype"];
+    identifier9 = [v27 identifier];
+    [dictionary setObject:identifier9 forKey:@"low_quality_uttype"];
   }
 
   if (v28)
   {
-    [v18 setObject:v28 forKey:@"original_size"];
+    [dictionary setObject:v28 forKey:@"original_size"];
   }
 
   if (v29)
   {
-    [v18 setObject:v29 forKey:@"high_quality_size_result"];
+    [dictionary setObject:v29 forKey:@"high_quality_size_result"];
   }
 
   if (v30)
   {
-    [v18 setObject:v30 forKey:@"low_quality_size_result"];
+    [dictionary setObject:v30 forKey:@"low_quality_size_result"];
   }
 
-  v49 = [v35 firstObject];
+  firstObject = [v35 firstObject];
   if ([v35 count] < 2)
   {
     v50 = 0;
@@ -277,39 +277,39 @@ LABEL_26:
     v50 = [v35 objectAtIndex:1];
   }
 
-  if (v49)
+  if (firstObject)
   {
-    [v18 setObject:v49 forKey:@"high_quality_size_limit"];
+    [dictionary setObject:firstObject forKey:@"high_quality_size_limit"];
   }
 
   if (v50)
   {
-    [v18 setObject:v50 forKey:@"low_quality_size_limit"];
+    [dictionary setObject:v50 forKey:@"low_quality_size_limit"];
   }
 
-  v51 = [MEMORY[0x1E696AD98] numberWithBool:a11];
-  [v18 setObject:v51 forKey:@"low_quality_mode_enabled"];
+  v51 = [MEMORY[0x1E696AD98] numberWithBool:enabled];
+  [dictionary setObject:v51 forKey:@"low_quality_mode_enabled"];
 
-  v52 = [MEMORY[0x1E696AD98] numberWithBool:a10];
-  [v18 setObject:v52 forKey:@"was_transcoded"];
+  v52 = [MEMORY[0x1E696AD98] numberWithBool:transcoded];
+  [dictionary setObject:v52 forKey:@"was_transcoded"];
 
-  [(IMMetricsCollector *)self trackEvent:@"com.apple.Messages.IMMetricsCollectorEventTranscodeAttachmentAttempt" withDictionary:v18];
+  [(IMMetricsCollector *)self trackEvent:@"com.apple.Messages.IMMetricsCollectorEventTranscodeAttachmentAttempt" withDictionary:dictionary];
 }
 
-- (void)_trackTranscodeFailureWithReason:(unint64_t)a3 messageType:(unint64_t)a4 sourceFile:(id)a5 sizeLimits:(id)a6 isSticker:(BOOL)a7 lowQualityModeEnabled:(BOOL)a8
+- (void)_trackTranscodeFailureWithReason:(unint64_t)reason messageType:(unint64_t)type sourceFile:(id)file sizeLimits:(id)limits isSticker:(BOOL)sticker lowQualityModeEnabled:(BOOL)enabled
 {
-  v35 = a8;
-  v8 = a7;
-  v38 = a5;
-  v12 = a6;
-  v13 = [MEMORY[0x1E695DF90] dictionary];
+  enabledCopy = enabled;
+  stickerCopy = sticker;
+  fileCopy = file;
+  limitsCopy = limits;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v14 = *MEMORY[0x1E695DB50];
   v15 = *MEMORY[0x1E695DAA0];
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:{*MEMORY[0x1E695DB50], *MEMORY[0x1E695DAA0], 0}];
   v36 = v16;
-  if (v38)
+  if (fileCopy)
   {
-    v17 = [v38 resourceValuesForKeys:v16 error:0];
+    v17 = [fileCopy resourceValuesForKeys:v16 error:0];
   }
 
   else
@@ -317,15 +317,15 @@ LABEL_26:
     v17 = MEMORY[0x1E695E0F8];
   }
 
-  v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  [v13 setObject:v18 forKey:@"message_type"];
+  v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
+  [dictionary setObject:v18 forKey:@"message_type"];
 
-  v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  [v13 setObject:v19 forKey:@"transcode_reason"];
+  v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:reason];
+  [dictionary setObject:v19 forKey:@"transcode_reason"];
 
   v20 = [v17 objectForKey:v15];
   v21 = [v17 objectForKey:v14];
-  if (v8)
+  if (stickerCopy)
   {
     v22 = 3;
   }
@@ -335,32 +335,32 @@ LABEL_26:
     v22 = 0;
   }
 
-  v23 = [v20 identifier];
-  v24 = [v23 length];
+  identifier = [v20 identifier];
+  v24 = [identifier length];
 
   if (v24)
   {
-    if (v8)
+    if (stickerCopy)
     {
       v22 = 3;
     }
 
     else
     {
-      v25 = [v20 identifier];
-      if (IMUTTypeIsImage(v25))
+      identifier2 = [v20 identifier];
+      if (IMUTTypeIsImage(identifier2))
       {
       }
 
       else
       {
-        v26 = [v20 identifier];
-        IsSupportedAnimatedImage = IMUTTypeIsSupportedAnimatedImage(v26);
+        identifier3 = [v20 identifier];
+        IsSupportedAnimatedImage = IMUTTypeIsSupportedAnimatedImage(identifier3);
 
         if (!IsSupportedAnimatedImage)
         {
-          v28 = [v20 identifier];
-          IsMovie = IMUTTypeIsMovie(v28);
+          identifier4 = [v20 identifier];
+          IsMovie = IMUTTypeIsMovie(identifier4);
 
           if (IsMovie)
           {
@@ -380,23 +380,23 @@ LABEL_26:
     }
 
 LABEL_17:
-    v30 = [v20 identifier];
-    [v13 setObject:v30 forKey:@"original_uttype"];
+    identifier5 = [v20 identifier];
+    [dictionary setObject:identifier5 forKey:@"original_uttype"];
   }
 
   v31 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v22];
-  [v13 setObject:v31 forKey:@"attachment_type"];
+  [dictionary setObject:v31 forKey:@"attachment_type"];
 
   if (v21)
   {
-    [v13 setObject:v21 forKey:@"original_size"];
+    [dictionary setObject:v21 forKey:@"original_size"];
   }
 
-  v32 = [v12 firstObject];
-  if ([v12 count] < 2)
+  firstObject = [limitsCopy firstObject];
+  if ([limitsCopy count] < 2)
   {
     v33 = 0;
-    if (!v32)
+    if (!firstObject)
     {
       goto LABEL_25;
     }
@@ -404,37 +404,37 @@ LABEL_17:
     goto LABEL_24;
   }
 
-  v33 = [v12 objectAtIndex:1];
-  if (v32)
+  v33 = [limitsCopy objectAtIndex:1];
+  if (firstObject)
   {
 LABEL_24:
-    [v13 setObject:v32 forKey:@"high_quality_size_limit"];
+    [dictionary setObject:firstObject forKey:@"high_quality_size_limit"];
   }
 
 LABEL_25:
   if (v33)
   {
-    [v13 setObject:v33 forKey:@"low_quality_size_limit"];
+    [dictionary setObject:v33 forKey:@"low_quality_size_limit"];
   }
 
-  v34 = [MEMORY[0x1E696AD98] numberWithBool:v35];
-  [v13 setObject:v34 forKey:@"low_quality_mode_enabled"];
+  v34 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
+  [dictionary setObject:v34 forKey:@"low_quality_mode_enabled"];
 
-  [(IMMetricsCollector *)self trackEvent:@"com.apple.Messages.IMMetricsCollectorEventTranscodeAttachmentFailure" withDictionary:v13];
+  [(IMMetricsCollector *)self trackEvent:@"com.apple.Messages.IMMetricsCollectorEventTranscodeAttachmentFailure" withDictionary:dictionary];
 }
 
-- (void)trackAttachmentDownloadSuccess:(id)a3 context:(id)a4
+- (void)trackAttachmentDownloadSuccess:(id)success context:(id)context
 {
-  v15 = a3;
+  successCopy = success;
   v6 = MEMORY[0x1E695DF90];
-  v7 = a4;
-  v8 = [v6 dictionary];
+  contextCopy = context;
+  dictionary = [v6 dictionary];
   v9 = *MEMORY[0x1E695DB50];
   v10 = *MEMORY[0x1E695DAA0];
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:{*MEMORY[0x1E695DB50], *MEMORY[0x1E695DAA0], 0}];
-  if (v15)
+  if (successCopy)
   {
-    v12 = [v15 resourceValuesForKeys:v11 error:0];
+    v12 = [successCopy resourceValuesForKeys:v11 error:0];
   }
 
   else
@@ -442,46 +442,46 @@ LABEL_25:
     v12 = MEMORY[0x1E695E0F8];
   }
 
-  [v8 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"was_downloaded"];
+  [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"was_downloaded"];
   v13 = [v12 objectForKey:v10];
   v14 = [v12 objectForKey:v9];
-  [v7 _setValuesOnMetricsDictionary:v8 withFileSize:v14 sourceType:v13];
+  [contextCopy _setValuesOnMetricsDictionary:dictionary withFileSize:v14 sourceType:v13];
 
-  [(IMMetricsCollector *)self trackEvent:@"com.apple.Messages.IMMetricsCollectorEventDownloadAttachmentAttempt" withDictionary:v8];
+  [(IMMetricsCollector *)self trackEvent:@"com.apple.Messages.IMMetricsCollectorEventDownloadAttachmentAttempt" withDictionary:dictionary];
 }
 
-- (void)trackAttachmentDownloadFailedWithFileSize:(id)a3 reason:(int64_t)a4 context:(id)a5
+- (void)trackAttachmentDownloadFailedWithFileSize:(id)size reason:(int64_t)reason context:(id)context
 {
   v8 = MEMORY[0x1E695DF90];
-  v9 = a5;
-  v10 = a3;
-  v12 = [v8 dictionary];
-  [v12 setObject:MEMORY[0x1E695E110] forKeyedSubscript:@"was_downloaded"];
-  v11 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  [v12 setObject:v11 forKeyedSubscript:@"failure_reason"];
+  contextCopy = context;
+  sizeCopy = size;
+  dictionary = [v8 dictionary];
+  [dictionary setObject:MEMORY[0x1E695E110] forKeyedSubscript:@"was_downloaded"];
+  v11 = [MEMORY[0x1E696AD98] numberWithInteger:reason];
+  [dictionary setObject:v11 forKeyedSubscript:@"failure_reason"];
 
-  [v9 _setValuesOnMetricsDictionary:v12 withFileSize:v10 sourceType:0];
-  [(IMMetricsCollector *)self trackEvent:@"com.apple.Messages.IMMetricsCollectorEventDownloadAttachmentAttempt" withDictionary:v12];
+  [contextCopy _setValuesOnMetricsDictionary:dictionary withFileSize:sizeCopy sourceType:0];
+  [(IMMetricsCollector *)self trackEvent:@"com.apple.Messages.IMMetricsCollectorEventDownloadAttachmentAttempt" withDictionary:dictionary];
 }
 
-- (void)trackAttachmentRenderingAttempt:(BOOL)a3 failureReason:(id)a4
+- (void)trackAttachmentRenderingAttempt:(BOOL)attempt failureReason:(id)reason
 {
-  v4 = a3;
-  v10 = a4;
-  v6 = [MEMORY[0x1E695DF90] dictionary];
-  v7 = v6;
-  if (v4)
+  attemptCopy = attempt;
+  reasonCopy = reason;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v7 = dictionary;
+  if (attemptCopy)
   {
-    [v6 setObject:MEMORY[0x1E695E118] forKey:@"IsRenderingSuccessful"];
+    [dictionary setObject:MEMORY[0x1E695E118] forKey:@"IsRenderingSuccessful"];
     v8 = &stru_1F1BB91F0;
     v9 = v7;
   }
 
   else
   {
-    [v6 setObject:MEMORY[0x1E695E110] forKey:@"IsRenderingSuccessful"];
+    [dictionary setObject:MEMORY[0x1E695E110] forKey:@"IsRenderingSuccessful"];
     v9 = v7;
-    v8 = v10;
+    v8 = reasonCopy;
   }
 
   [v9 setObject:v8 forKey:@"RenderingFailureReasons"];
@@ -527,10 +527,10 @@ LABEL_25:
   return off_1ED8C9958;
 }
 
-- (void)_trackEvent:(id)a3
+- (void)_trackEvent:(id)event
 {
   v6 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (event)
   {
     if (qword_1ED8C99B0 != -1)
     {
@@ -539,7 +539,7 @@ LABEL_25:
 
     if (off_1ED8C99B8)
     {
-      off_1ED8C99B8(a3, 1);
+      off_1ED8C99B8(event, 1);
     }
 
     else if (IMOSLoggingEnabled())
@@ -556,7 +556,7 @@ LABEL_25:
   }
 }
 
-- (BOOL)trackEvent:(id)a3
+- (BOOL)trackEvent:(id)event
 {
   v11 = *MEMORY[0x1E69E9840];
   if (IMOSLoggingEnabled())
@@ -565,7 +565,7 @@ LABEL_25:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v10 = a3;
+      eventCopy = event;
       _os_log_impl(&dword_1A85E5000, v5, OS_LOG_TYPE_INFO, "trackEvent %@", buf, 0xCu);
     }
   }
@@ -576,15 +576,15 @@ LABEL_25:
   v8[2] = sub_1A86ED2C8;
   v8[3] = &unk_1E782AE58;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = event;
   dispatch_async(metricsQueue, v8);
   return 1;
 }
 
-- (void)_trackEvent:(id)a3 withStatistic:(id)a4
+- (void)_trackEvent:(id)event withStatistic:(id)statistic
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  if (a3 && a4)
+  if (event && statistic)
   {
     if (qword_1ED8C98B0 != -1)
     {
@@ -594,8 +594,8 @@ LABEL_25:
     v6 = off_1ED8C98B8;
     if (off_1ED8C98B8)
     {
-      [a4 doubleValue];
-      v6(a3);
+      [statistic doubleValue];
+      v6(event);
     }
 
     else if (IMOSLoggingEnabled())
@@ -609,13 +609,13 @@ LABEL_25:
     }
 
     v9 = @"statistic";
-    v10[0] = a4;
+    v10[0] = statistic;
     [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
     AnalyticsSendEvent();
   }
 }
 
-- (BOOL)trackEvent:(id)a3 withStatistic:(id)a4
+- (BOOL)trackEvent:(id)event withStatistic:(id)statistic
 {
   v17 = *MEMORY[0x1E69E9840];
   if (IMOSLoggingEnabled())
@@ -624,14 +624,14 @@ LABEL_25:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v14 = a3;
+      eventCopy2 = event;
       v15 = 2112;
-      v16 = a4;
+      statisticCopy = statistic;
       _os_log_impl(&dword_1A85E5000, v7, OS_LOG_TYPE_INFO, "trackEvent %@ withStatistic %@", buf, 0x16u);
     }
   }
 
-  if (a4 && ![a4 isEqualToNumber:{objc_msgSend(MEMORY[0x1E696AB90], "notANumber")}])
+  if (statistic && ![statistic isEqualToNumber:{objc_msgSend(MEMORY[0x1E696AB90], "notANumber")}])
   {
     metricsQueue = self->_metricsQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -639,8 +639,8 @@ LABEL_25:
     block[2] = sub_1A86ED690;
     block[3] = &unk_1E782AE80;
     block[4] = self;
-    block[5] = a3;
-    block[6] = a4;
+    block[5] = event;
+    block[6] = statistic;
     dispatch_async(metricsQueue, block);
     LOBYTE(v8) = 1;
   }
@@ -655,7 +655,7 @@ LABEL_25:
       if (v8)
       {
         *buf = 138412290;
-        v14 = a3;
+        eventCopy2 = event;
         _os_log_impl(&dword_1A85E5000, v9, OS_LOG_TYPE_INFO, "IMMetricsCollector Nil statistic passed in for event %@", buf, 0xCu);
         LOBYTE(v8) = 0;
       }
@@ -665,10 +665,10 @@ LABEL_25:
   return v8;
 }
 
-- (void)_trackEvent:(id)a3 withCount:(id)a4
+- (void)_trackEvent:(id)event withCount:(id)count
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  if (a3 && a4)
+  if (event && count)
   {
     if (qword_1ED8C9950 != -1)
     {
@@ -677,7 +677,7 @@ LABEL_25:
 
     if (off_1ED8C9958)
     {
-      (off_1ED8C9958)(a3, [a4 integerValue]);
+      (off_1ED8C9958)(event, [count integerValue]);
     }
 
     else if (IMOSLoggingEnabled())
@@ -691,28 +691,28 @@ LABEL_25:
     }
 
     v8 = @"count";
-    v9[0] = a4;
+    v9[0] = count;
     [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
     AnalyticsSendEvent();
   }
 }
 
-- (BOOL)trackAction:(id)a3 extensionBundleID:(id)a4 isNotification:(BOOL)a5
+- (BOOL)trackAction:(id)action extensionBundleID:(id)d isNotification:(BOOL)notification
 {
-  v5 = a5;
+  notificationCopy = notification;
   v12[3] = *MEMORY[0x1E69E9840];
-  v9 = [a4 length];
+  v9 = [d length];
   if (v9)
   {
-    v9 = [a3 length];
+    v9 = [action length];
     if (v9)
     {
       v11[0] = @"bundleID";
       v11[1] = @"action";
-      v12[0] = a4;
-      v12[1] = a3;
+      v12[0] = d;
+      v12[1] = action;
       v11[2] = @"isNotification";
-      v12[2] = [MEMORY[0x1E696AD98] numberWithBool:v5];
+      v12[2] = [MEMORY[0x1E696AD98] numberWithBool:notificationCopy];
       -[IMMetricsCollector _trackEvent:withDictionary:](self, "_trackEvent:withDictionary:", @"com.apple.Messages.IMMetricsCollectorMessageExtensionAction", [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:3]);
       LOBYTE(v9) = 1;
     }
@@ -721,18 +721,18 @@ LABEL_25:
   return v9;
 }
 
-- (void)_trackEvent:(id)a3 withDictionary:(id)a4
+- (void)_trackEvent:(id)event withDictionary:(id)dictionary
 {
-  if (a3)
+  if (event)
   {
-    if (a4)
+    if (dictionary)
     {
       AnalyticsSendEvent();
     }
   }
 }
 
-- (BOOL)trackEvent:(id)a3 withCount:(id)a4
+- (BOOL)trackEvent:(id)event withCount:(id)count
 {
   v16 = *MEMORY[0x1E69E9840];
   if (IMOSLoggingEnabled())
@@ -741,14 +741,14 @@ LABEL_25:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v13 = a3;
+      eventCopy2 = event;
       v14 = 2112;
-      v15 = a4;
+      countCopy = count;
       _os_log_impl(&dword_1A85E5000, v7, OS_LOG_TYPE_INFO, "trackEvent %@ with count %@", buf, 0x16u);
     }
   }
 
-  if (a4)
+  if (count)
   {
     metricsQueue = self->_metricsQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -756,8 +756,8 @@ LABEL_25:
     block[2] = sub_1A86EDC40;
     block[3] = &unk_1E782AE80;
     block[4] = self;
-    block[5] = a3;
-    block[6] = a4;
+    block[5] = event;
+    block[6] = count;
     dispatch_async(metricsQueue, block);
   }
 
@@ -767,15 +767,15 @@ LABEL_25:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v13 = a3;
+      eventCopy2 = event;
       _os_log_impl(&dword_1A85E5000, v9, OS_LOG_TYPE_INFO, "IMMetricsCollector Nil count passed in for event %@", buf, 0xCu);
     }
   }
 
-  return a4 != 0;
+  return count != 0;
 }
 
-- (BOOL)trackEvent:(id)a3 withDictionary:(id)a4
+- (BOOL)trackEvent:(id)event withDictionary:(id)dictionary
 {
   v16 = *MEMORY[0x1E69E9840];
   if (IMOSLoggingEnabled())
@@ -784,14 +784,14 @@ LABEL_25:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v13 = a3;
+      eventCopy2 = event;
       v14 = 2112;
-      v15 = a4;
+      dictionaryCopy = dictionary;
       _os_log_impl(&dword_1A85E5000, v7, OS_LOG_TYPE_INFO, "trackEvent %@ with dictionary %@", buf, 0x16u);
     }
   }
 
-  if (a4)
+  if (dictionary)
   {
     metricsQueue = self->_metricsQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -799,8 +799,8 @@ LABEL_25:
     block[2] = sub_1A86EDE04;
     block[3] = &unk_1E782AE80;
     block[4] = self;
-    block[5] = a3;
-    block[6] = a4;
+    block[5] = event;
+    block[6] = dictionary;
     dispatch_async(metricsQueue, block);
   }
 
@@ -810,15 +810,15 @@ LABEL_25:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v13 = a3;
+      eventCopy2 = event;
       _os_log_impl(&dword_1A85E5000, v9, OS_LOG_TYPE_INFO, "IMMetricsCollector Nil dictionary passed in for event %@", buf, 0xCu);
     }
   }
 
-  return a4 != 0;
+  return dictionary != 0;
 }
 
-- (void)autoBugCaptureWithSubType:(id)a3 errorPayload:(id)a4
+- (void)autoBugCaptureWithSubType:(id)type errorPayload:(id)payload
 {
   if (IMOSLoggingEnabled())
   {
@@ -831,10 +831,10 @@ LABEL_25:
   }
 }
 
-- (void)forceAutoBugCaptureWithSubType:(id)a3 errorPayload:(id)a4
+- (void)forceAutoBugCaptureWithSubType:(id)type errorPayload:(id)payload
 {
-  v6 = [a4 userInfo];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x1E696A278]];
+  userInfo = [payload userInfo];
+  v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696A278]];
   if (![(__CFString *)v7 length])
   {
     v7 = @"No context";
@@ -846,20 +846,20 @@ LABEL_25:
   }
 
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [a4 domain];
-  [v8 stringWithFormat:@"%@-%@-%@", v9, objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", objc_msgSend(a4, "code")), v7];
+  domain = [payload domain];
+  [v8 stringWithFormat:@"%@-%@-%@", domain, objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", objc_msgSend(payload, "code")), v7];
 
   MEMORY[0x1EEE66B58](self, sel_forceAutoBugCaptureWithSubType_errorPayload_type_context_);
 }
 
-- (void)forceAutoBugCaptureWithSubType:(id)a3 errorPayload:(id)a4 type:(id)a5 context:(id)a6 metadata:(id)a7
+- (void)forceAutoBugCaptureWithSubType:(id)type errorPayload:(id)payload type:(id)a5 context:(id)context metadata:(id)metadata
 {
   v28 = *MEMORY[0x1E69E9840];
   if (![objc_msgSend(objc_msgSend(MEMORY[0x1E696AE30] "processInfo")] && objc_msgSend(objc_msgSend(MEMORY[0x1E69A60F0], "sharedInstance"), "isInternalInstall"))
   {
     v13 = [objc_msgSend(MEMORY[0x1E699BE90] "sharedInstance")];
     v14 = MEMORY[0x1E696AD98];
-    v15 = [MEMORY[0x1E69A61A8] sharedInstance];
+    mEMORY[0x1E69A61A8] = [MEMORY[0x1E69A61A8] sharedInstance];
     if (v13)
     {
       v16 = 2;
@@ -870,9 +870,9 @@ LABEL_25:
       v16 = 3;
     }
 
-    v25 = [v14 numberWithInt:{objc_msgSend(v15, "linkQualityValueForInterfaceType:", v16)}];
-    v17 = [a4 userInfo];
-    v18 = [v17 objectForKey:*MEMORY[0x1E696AA08]];
+    v25 = [v14 numberWithInt:{objc_msgSend(mEMORY[0x1E69A61A8], "linkQualityValueForInterfaceType:", v16)}];
+    userInfo = [payload userInfo];
+    v18 = [userInfo objectForKey:*MEMORY[0x1E696AA08]];
     if (qword_1EB30B748 != -1)
     {
       sub_1A88C5D18();
@@ -881,10 +881,10 @@ LABEL_25:
     v19 = off_1EB30B740;
     if (off_1EB30B740)
     {
-      v24 = [a4 domain];
-      v23 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a4, "code")}];
-      v20 = [v18 domain];
-      v19(a3, v24, v23, v20, [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v18, "code")}], v25);
+      domain = [payload domain];
+      v23 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(payload, "code")}];
+      domain2 = [v18 domain];
+      v19(type, domain, v23, domain2, [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v18, "code")}], v25);
     }
 
     if (self->_diagnosticReporter)
@@ -896,10 +896,10 @@ LABEL_25:
       block[3] = &unk_1E782AED0;
       block[4] = self;
       block[5] = a5;
-      block[6] = a3;
-      block[7] = a6;
-      block[8] = a4;
-      block[9] = a7;
+      block[6] = type;
+      block[7] = context;
+      block[8] = payload;
+      block[9] = metadata;
       dispatch_async(metricsQueue, block);
     }
 
@@ -915,9 +915,9 @@ LABEL_25:
   }
 }
 
-- (void)metricAttachmentValidation:(BOOL)a3 attachmentSize:(id)a4 operationalErrorDomain:(id)a5 operationalErrorCode:(id)a6 validationErrorDomain:(id)a7 validationErrorCode:(id)a8
+- (void)metricAttachmentValidation:(BOOL)validation attachmentSize:(id)size operationalErrorDomain:(id)domain operationalErrorCode:(id)code validationErrorDomain:(id)errorDomain validationErrorCode:(id)errorCode
 {
-  v13 = a3;
+  validationCopy = validation;
   v14 = [objc_msgSend(MEMORY[0x1E699BE90] "sharedInstance")];
   if (v14)
   {
@@ -950,7 +950,7 @@ LABEL_25:
     v20 = off_1EB30B750;
     v18 = [MEMORY[0x1E696AD98] numberWithInt:v17];
 
-    v20(v13, a4, a5, a6, a7, a8, v16, v18);
+    v20(validationCopy, size, domain, code, errorDomain, errorCode, v16, v18);
   }
 
   else if (IMOSLoggingEnabled())
@@ -964,29 +964,29 @@ LABEL_25:
   }
 }
 
-- (void)trackSentMessageEventOfType:(id)a3 subtype:(id)a4 originalServiceName:(id)a5 messageSize:(unint64_t)a6 sendDuration:(id)a7 receiverType:(id)a8 receiverGroupType:(id)a9 wasSuccessful:(BOOL)a10 sourceHandle:(id)a11 destinationHandle:(id)a12 error:(id)a13
+- (void)trackSentMessageEventOfType:(id)type subtype:(id)subtype originalServiceName:(id)name messageSize:(unint64_t)size sendDuration:(id)duration receiverType:(id)receiverType receiverGroupType:(id)groupType wasSuccessful:(BOOL)self0 sourceHandle:(id)self1 destinationHandle:(id)self2 error:(id)self3
 {
   v46 = *MEMORY[0x1E69E9840];
-  if (a7)
+  if (duration)
   {
-    if ([a7 compare:&unk_1F1BFAAF0] == -1)
+    if ([duration compare:&unk_1F1BFAAF0] == -1)
     {
-      v15 = &unk_1F1BFAAF0;
+      durationCopy = &unk_1F1BFAAF0;
     }
 
     else
     {
-      v15 = a7;
+      durationCopy = duration;
     }
   }
 
   else
   {
-    v15 = 0;
+    durationCopy = 0;
   }
 
-  v36 = v15;
-  if (a12)
+  v36 = durationCopy;
+  if (destinationHandle)
   {
     v16 = [objc_msgSend(MEMORY[0x1E69A51E8] "sharedInstance")];
   }
@@ -996,14 +996,14 @@ LABEL_25:
     v16 = 0;
   }
 
-  if (a11 && (v17 = -[CTXPCContexts subscriptions](-[IMCTSubscriptionUtilities ctActiveContexts](+[IMCTSubscriptionUtilities sharedInstance](IMCTSubscriptionUtilities, "sharedInstance"), "ctActiveContexts"), "subscriptions"), v39 = 0u, v40 = 0u, v41 = 0u, v42 = 0u, (v18 = [v17 countByEnumeratingWithState:&v39 objects:v45 count:16]) != 0))
+  if (handle && (v17 = -[CTXPCContexts subscriptions](-[IMCTSubscriptionUtilities ctActiveContexts](+[IMCTSubscriptionUtilities sharedInstance](IMCTSubscriptionUtilities, "sharedInstance"), "ctActiveContexts"), "subscriptions"), v39 = 0u, v40 = 0u, v41 = 0u, v42 = 0u, (v18 = [v17 countByEnumeratingWithState:&v39 objects:v45 count:16]) != 0))
   {
     v19 = v18;
     v20 = *v40;
     v32 = v16;
     while (2)
     {
-      v21 = self;
+      selfCopy = self;
       for (i = 0; i != v19; ++i)
       {
         if (*v40 != v20)
@@ -1012,18 +1012,18 @@ LABEL_25:
         }
 
         v23 = *(*(&v39 + 1) + 8 * i);
-        if ([objc_msgSend(v23 "phoneNumber")] && objc_msgSend(MEMORY[0x1E69A51E8], "isPhoneNumber:equivalentToExistingPhoneNumber:", objc_msgSend(v23, "phoneNumber"), a11))
+        if ([objc_msgSend(v23 "phoneNumber")] && objc_msgSend(MEMORY[0x1E69A51E8], "isPhoneNumber:equivalentToExistingPhoneNumber:", objc_msgSend(v23, "phoneNumber"), handle))
         {
-          v24 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v23, "slotID") == 0}];
-          self = v21;
+          null3 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v23, "slotID") == 0}];
+          self = selfCopy;
           v16 = v32;
           goto LABEL_22;
         }
       }
 
       v19 = [v17 countByEnumeratingWithState:&v39 objects:v45 count:16];
-      v24 = 0;
-      self = v21;
+      null3 = 0;
+      self = selfCopy;
       v16 = v32;
       if (v19)
       {
@@ -1036,149 +1036,149 @@ LABEL_25:
 
   else
   {
-    v24 = 0;
+    null3 = 0;
   }
 
 LABEL_22:
-  if (a5)
+  if (name)
   {
-    v25 = [IMMetricsCollector _IMServiceNameToSentMessageEventType:?];
+    null = [IMMetricsCollector _IMServiceNameToSentMessageEventType:?];
   }
 
   else
   {
-    v25 = 0;
+    null = 0;
   }
 
   v43[0] = @"type";
-  v26 = a3;
-  if (!a3)
+  typeCopy = type;
+  if (!type)
   {
-    v26 = [MEMORY[0x1E695DFB0] null];
+    typeCopy = [MEMORY[0x1E695DFB0] null];
   }
 
-  v44[0] = v26;
+  v44[0] = typeCopy;
   v43[1] = @"subtype";
-  v27 = a4;
-  if (!a4)
+  subtypeCopy = subtype;
+  if (!subtype)
   {
-    v27 = [MEMORY[0x1E695DFB0] null];
+    subtypeCopy = [MEMORY[0x1E695DFB0] null];
   }
 
-  v44[1] = v27;
+  v44[1] = subtypeCopy;
   v43[2] = @"original_type";
-  if (!v25)
+  if (!null)
   {
-    v25 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v44[2] = v25;
+  v44[2] = null;
   v43[3] = @"message_size";
-  v44[3] = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a6];
+  v44[3] = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:size];
   v43[4] = @"send_duration";
-  v28 = v36;
+  null2 = v36;
   if (!v36)
   {
-    v28 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29 = a9;
-  v44[4] = v28;
+  groupTypeCopy = groupType;
+  v44[4] = null2;
   v43[5] = @"receiver_type";
-  v30 = a8;
-  if (!a8)
+  receiverTypeCopy = receiverType;
+  if (!receiverType)
   {
-    v30 = [MEMORY[0x1E695DFB0] null];
+    receiverTypeCopy = [MEMORY[0x1E695DFB0] null];
   }
 
-  v31 = a13;
-  v44[5] = v30;
+  errorCopy = error;
+  v44[5] = receiverTypeCopy;
   v43[6] = @"receiver_group_type";
-  if (!a9)
+  if (!groupType)
   {
-    v29 = [MEMORY[0x1E695DFB0] null];
+    groupTypeCopy = [MEMORY[0x1E695DFB0] null];
   }
 
-  v44[6] = v29;
+  v44[6] = groupTypeCopy;
   v43[7] = @"was_successful";
-  v44[7] = [MEMORY[0x1E696AD98] numberWithBool:a10];
+  v44[7] = [MEMORY[0x1E696AD98] numberWithBool:successful];
   v43[8] = @"error_cause";
-  if (!a13)
+  if (!error)
   {
-    v31 = [MEMORY[0x1E695DFB0] null];
+    errorCopy = [MEMORY[0x1E695DFB0] null];
   }
 
-  v44[8] = v31;
+  v44[8] = errorCopy;
   v43[9] = @"is_emergency";
   v44[9] = [MEMORY[0x1E696AD98] numberWithBool:v16];
   v43[10] = @"is_partially_active_sim";
-  if (!v24)
+  if (!null3)
   {
-    v24 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v44[10] = v24;
+  v44[10] = null3;
   -[IMMetricsCollector trackEvent:withDictionary:](self, "trackEvent:withDictionary:", @"com.apple.Messages.IMMetricsCollectorEventSentMessage", [MEMORY[0x1E695DF20] dictionaryWithObjects:v44 forKeys:v43 count:11]);
 }
 
-+ (id)_IMServiceNameToSentMessageEventType:(id)a3
++ (id)_IMServiceNameToSentMessageEventType:(id)type
 {
-  if ([a3 isEqualToString:IMServiceNameSatelliteSMS])
+  if ([type isEqualToString:IMServiceNameSatelliteSMS])
   {
     return @"SMSOverSatellite";
   }
 
   else
   {
-    return a3;
+    return type;
   }
 }
 
-+ (id)stringForFZErrorType:(unsigned int)a3
++ (id)stringForFZErrorType:(unsigned int)type
 {
-  if (a3 > 0x2C)
+  if (type > 0x2C)
   {
     return @"???";
   }
 
   else
   {
-    return off_1E782AF18[a3];
+    return off_1E782AF18[type];
   }
 }
 
-- (void)trackSpamEvent:(unint64_t)a3 withDictionary:(id)a4
+- (void)trackSpamEvent:(unint64_t)event withDictionary:(id)dictionary
 {
-  v6 = [(IMMetricsCollector *)self _stringForSpamType:a3];
+  v6 = [(IMMetricsCollector *)self _stringForSpamType:event];
   if (v6)
   {
     v7 = [MEMORY[0x1E695DF90] dictionaryWithObject:v6 forKey:@"type"];
     v8 = v7;
-    if (a4)
+    if (dictionary)
     {
-      [v7 addEntriesFromDictionary:a4];
+      [v7 addEntriesFromDictionary:dictionary];
     }
 
     [(IMMetricsCollector *)self trackEvent:@"com.apple.Messages.IMMetricsCollectorEventInternationalSpam" withDictionary:v8];
   }
 }
 
-- (id)_stringForSpamType:(unint64_t)a3
+- (id)_stringForSpamType:(unint64_t)type
 {
-  if (a3 - 1 > 0x1F)
+  if (type - 1 > 0x1F)
   {
     return 0;
   }
 
   else
   {
-    return off_1E782B080[a3 - 1];
+    return off_1E782B080[type - 1];
   }
 }
 
-- (void)trackiMessageJunkEvent:(unint64_t)a3 withDictionary:(id)a4
+- (void)trackiMessageJunkEvent:(unint64_t)event withDictionary:(id)dictionary
 {
-  v6 = [(IMMetricsCollector *)self _stringForiMessageJunkType:a3];
+  v6 = [(IMMetricsCollector *)self _stringForiMessageJunkType:event];
   if (v6)
   {
     v7 = [MEMORY[0x1E695DF90] dictionaryWithObject:v6 forKey:@"type"];
@@ -1188,34 +1188,34 @@ LABEL_22:
     v8[3] = &unk_1E782AEF8;
     v8[4] = self;
     v8[5] = v7;
-    [a4 enumerateKeysAndObjectsUsingBlock:v8];
+    [dictionary enumerateKeysAndObjectsUsingBlock:v8];
     [(IMMetricsCollector *)self trackEvent:@"com.apple.Messages.IMMetricsCollectorEventOscar" withDictionary:v7];
   }
 }
 
-- (id)_stringForiMessageJunkType:(unint64_t)a3
+- (id)_stringForiMessageJunkType:(unint64_t)type
 {
-  if (a3 - 1 > 0xF)
+  if (type - 1 > 0xF)
   {
     return 0;
   }
 
   else
   {
-    return off_1E782B180[a3 - 1];
+    return off_1E782B180[type - 1];
   }
 }
 
-- (void)trackDeleteMessages:(id)a3 sourceType:(unint64_t)a4
+- (void)trackDeleteMessages:(id)messages sourceType:(unint64_t)type
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v7 = [a3 isEqualToNumber:&unk_1F1BFAAF0];
-  if (a4 && (v7 & 1) == 0)
+  v7 = [messages isEqualToNumber:&unk_1F1BFAAF0];
+  if (type && (v7 & 1) == 0)
   {
     v14[0] = @"source_type";
     v14[1] = @"count_messages";
-    v15[0] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-    v15[1] = a3;
+    v15[0] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
+    v15[1] = messages;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:2];
     if (IMOSLoggingEnabled())
     {
@@ -1223,9 +1223,9 @@ LABEL_22:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         v10 = 138412546;
-        v11 = a3;
+        messagesCopy = messages;
         v12 = 2112;
-        v13 = [(IMMetricsCollector *)self _stringForDeleteMessagesType:a4];
+        v13 = [(IMMetricsCollector *)self _stringForDeleteMessagesType:type];
         _os_log_impl(&dword_1A85E5000, v9, OS_LOG_TYPE_INFO, "Delete Messages Metrics | Delete %@ messages from %@", &v10, 0x16u);
       }
     }
@@ -1234,15 +1234,15 @@ LABEL_22:
   }
 }
 
-- (unint64_t)keepMessagesSourceTypeForDays:(int64_t)a3
+- (unint64_t)keepMessagesSourceTypeForDays:(int64_t)days
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (a3 == 30)
+  if (days == 30)
   {
     return 2;
   }
 
-  if (a3 == 365)
+  if (days == 365)
   {
     return 3;
   }
@@ -1253,7 +1253,7 @@ LABEL_22:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = 134217984;
-      v7 = a3;
+      daysCopy = days;
       _os_log_impl(&dword_1A85E5000, v5, OS_LOG_TYPE_INFO, "Delete Messages Metrics | unknown type of keep messages days: %lld", &v6, 0xCu);
     }
   }
@@ -1261,24 +1261,24 @@ LABEL_22:
   return 0;
 }
 
-- (id)_stringForDeleteMessagesType:(unint64_t)a3
+- (id)_stringForDeleteMessagesType:(unint64_t)type
 {
-  if (a3 - 1 > 5)
+  if (type - 1 > 5)
   {
     return 0;
   }
 
   else
   {
-    return off_1E782B200[a3 - 1];
+    return off_1E782B200[type - 1];
   }
 }
 
-- (void)trackMessagesWithoutChatsWithContext:(id)a3
+- (void)trackMessagesWithoutChatsWithContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A8757FB8(v4);
+  contextCopy = context;
+  selfCopy = self;
+  sub_1A8757FB8(contextCopy);
 }
 
 @end

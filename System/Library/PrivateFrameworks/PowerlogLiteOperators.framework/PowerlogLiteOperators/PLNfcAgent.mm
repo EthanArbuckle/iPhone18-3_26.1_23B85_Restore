@@ -8,16 +8,16 @@
 + (id)entryEventIntervalDefinitionAccessoryPower;
 + (id)entryEventIntervalDefinitionPower;
 + (id)entryEventIntervalDefinitions;
-+ (id)parseLPEMFromData:(id)a3;
++ (id)parseLPEMFromData:(id)data;
 + (void)load;
 - (PLNfcAgent)init;
 - (unsigned)getNFCHarwareState;
-- (void)fieldChangedWithEntry:(id)a3;
+- (void)fieldChangedWithEntry:(id)entry;
 - (void)initOperatorDependancies;
 - (void)initTaskOperatorDependancies;
 - (void)logEventForwardLPEM;
-- (void)retrieveAndLogNfcAccessoryPowerCountersWithRetry:(BOOL)a3;
-- (void)retrieveAndLogNfcPowerCountersWithRetry:(BOOL)a3;
+- (void)retrieveAndLogNfcAccessoryPowerCountersWithRetry:(BOOL)retry;
+- (void)retrieveAndLogNfcPowerCountersWithRetry:(BOOL)retry;
 - (void)setUpNfcPowerCounterRetrieval;
 - (void)setupLPEMCounter;
 - (void)setupNfcAccessoryPowerCounterRetrieval;
@@ -47,7 +47,7 @@ void __38__PLNfcAgent_initOperatorDependancies__block_invoke_172(uint64_t a1, ui
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLNfcAgent;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -56,20 +56,20 @@ void __38__PLNfcAgent_initOperatorDependancies__block_invoke_172(uint64_t a1, ui
 {
   v12[5] = *MEMORY[0x277D85DE8];
   v11[0] = @"Card";
-  v3 = [a1 entryEventForwardDefinitionCard];
-  v12[0] = v3;
+  entryEventForwardDefinitionCard = [self entryEventForwardDefinitionCard];
+  v12[0] = entryEventForwardDefinitionCard;
   v11[1] = @"Field";
-  v4 = [a1 entryEventForwardDefinitionField];
-  v12[1] = v4;
+  entryEventForwardDefinitionField = [self entryEventForwardDefinitionField];
+  v12[1] = entryEventForwardDefinitionField;
   v11[2] = @"Transaction";
-  v5 = [a1 entryEventForwardDefinitionTransaction];
-  v12[2] = v5;
+  entryEventForwardDefinitionTransaction = [self entryEventForwardDefinitionTransaction];
+  v12[2] = entryEventForwardDefinitionTransaction;
   v11[3] = @"TSMCommunication";
-  v6 = [a1 entryEventForwardDefinitionTSMCommunication];
-  v12[3] = v6;
+  entryEventForwardDefinitionTSMCommunication = [self entryEventForwardDefinitionTSMCommunication];
+  v12[3] = entryEventForwardDefinitionTSMCommunication;
   v11[4] = @"LPEM";
-  v7 = [a1 entryEventForwardDefinitionLPEM];
-  v12[4] = v7;
+  entryEventForwardDefinitionLPEM = [self entryEventForwardDefinitionLPEM];
+  v12[4] = entryEventForwardDefinitionLPEM;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:5];
 
   v9 = *MEMORY[0x277D85DE8];
@@ -87,9 +87,9 @@ void __38__PLNfcAgent_initOperatorDependancies__block_invoke_172(uint64_t a1, ui
   v14[0] = v2;
   v13[1] = *MEMORY[0x277D3F540];
   v9 = @"AuthorizedStatus";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_BoolFormat];
-  v10 = v4;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198] commonTypeDict_BoolFormat];
+  v10 = commonTypeDict_BoolFormat;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v10 forKeys:&v9 count:1];
   v14[1] = v5;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
@@ -112,9 +112,9 @@ void __38__PLNfcAgent_initOperatorDependancies__block_invoke_172(uint64_t a1, ui
   v15[0] = v3;
   v14[1] = *MEMORY[0x277D3F540];
   v10 = @"State";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_BoolFormat];
-  v11 = v5;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198] commonTypeDict_BoolFormat];
+  v11 = commonTypeDict_BoolFormat;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   v15[1] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
@@ -134,9 +134,9 @@ void __38__PLNfcAgent_initOperatorDependancies__block_invoke_172(uint64_t a1, ui
   v14[0] = v2;
   v13[1] = *MEMORY[0x277D3F540];
   v9 = @"Status";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_BoolFormat];
-  v10 = v4;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198] commonTypeDict_BoolFormat];
+  v10 = commonTypeDict_BoolFormat;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v10 forKeys:&v9 count:1];
   v14[1] = v5;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
@@ -156,9 +156,9 @@ void __38__PLNfcAgent_initOperatorDependancies__block_invoke_172(uint64_t a1, ui
   v14[0] = v2;
   v13[1] = *MEMORY[0x277D3F540];
   v9 = @"Status";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_BoolFormat];
-  v10 = v4;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198] commonTypeDict_BoolFormat];
+  v10 = commonTypeDict_BoolFormat;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v10 forKeys:&v9 count:1];
   v14[1] = v5;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
@@ -183,45 +183,45 @@ void __38__PLNfcAgent_initOperatorDependancies__block_invoke_172(uint64_t a1, ui
     v33[0] = v27;
     v32[1] = *MEMORY[0x277D3F540];
     v28[0] = @"BTCC";
-    v26 = [MEMORY[0x277D3F198] sharedInstance];
-    v25 = [v26 commonTypeDict_IntegerFormat];
-    v29[0] = v25;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+    v29[0] = commonTypeDict_IntegerFormat;
     v28[1] = @"BTCT";
-    v24 = [MEMORY[0x277D3F198] sharedInstance];
-    v23 = [v24 commonTypeDict_IntegerFormat];
-    v29[1] = v23;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+    v29[1] = commonTypeDict_IntegerFormat2;
     v28[2] = @"SRSC";
-    v22 = [MEMORY[0x277D3F198] sharedInstance];
-    v21 = [v22 commonTypeDict_IntegerFormat];
-    v29[2] = v21;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+    v29[2] = commonTypeDict_IntegerFormat3;
     v28[3] = @"SRST";
-    v20 = [MEMORY[0x277D3F198] sharedInstance];
-    v19 = [v20 commonTypeDict_IntegerFormat];
-    v29[3] = v19;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+    v29[3] = commonTypeDict_IntegerFormat4;
     v28[4] = @"SRUC";
-    v18 = [MEMORY[0x277D3F198] sharedInstance];
-    v17 = [v18 commonTypeDict_IntegerFormat];
-    v29[4] = v17;
+    mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+    v29[4] = commonTypeDict_IntegerFormat5;
     v28[5] = @"SRLC";
-    v16 = [MEMORY[0x277D3F198] sharedInstance];
-    v15 = [v16 commonTypeDict_IntegerFormat];
-    v29[5] = v15;
+    mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+    v29[5] = commonTypeDict_IntegerFormat6;
     v28[6] = @"SERESET";
-    v3 = [MEMORY[0x277D3F198] sharedInstance];
-    v4 = [v3 commonTypeDict_IntegerFormat];
-    v29[6] = v4;
+    mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+    v29[6] = commonTypeDict_IntegerFormat7;
     v28[7] = @"ROLL";
-    v5 = [MEMORY[0x277D3F198] sharedInstance];
-    v6 = [v5 commonTypeDict_IntegerFormat];
-    v29[7] = v6;
+    mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+    v29[7] = commonTypeDict_IntegerFormat8;
     v28[8] = @"BTENTRY";
-    v7 = [MEMORY[0x277D3F198] sharedInstance];
-    v8 = [v7 commonTypeDict_IntegerFormat];
-    v29[8] = v8;
+    mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat9 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+    v29[8] = commonTypeDict_IntegerFormat9;
     v28[9] = @"BTEXIT";
-    v9 = [MEMORY[0x277D3F198] sharedInstance];
-    v10 = [v9 commonTypeDict_IntegerFormat];
-    v29[9] = v10;
+    mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat10 = [mEMORY[0x277D3F198]10 commonTypeDict_IntegerFormat];
+    v29[9] = commonTypeDict_IntegerFormat10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:10];
     v33[1] = v11;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:v32 count:2];
@@ -266,53 +266,53 @@ void __38__PLNfcAgent_initOperatorDependancies__block_invoke_172(uint64_t a1, ui
   v37[0] = v31;
   v36[1] = *MEMORY[0x277D3F540];
   v32[0] = @"idleTime";
-  v30 = [MEMORY[0x277D3F198] sharedInstance];
-  v29 = [v30 commonTypeDict_IntegerFormat];
-  v33[0] = v29;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v33[0] = commonTypeDict_IntegerFormat;
   v32[1] = @"rfTime";
-  v28 = [MEMORY[0x277D3F198] sharedInstance];
-  v27 = [v28 commonTypeDict_IntegerFormat];
-  v33[1] = v27;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v33[1] = commonTypeDict_IntegerFormat2;
   v32[2] = @"sleepTime";
-  v26 = [MEMORY[0x277D3F198] sharedInstance];
-  v25 = [v26 commonTypeDict_IntegerFormat];
-  v33[2] = v25;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v33[2] = commonTypeDict_IntegerFormat3;
   v32[3] = @"SEUptime";
-  v24 = [MEMORY[0x277D3F198] sharedInstance];
-  v23 = [v24 commonTypeDict_IntegerFormat];
-  v33[3] = v23;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v33[3] = commonTypeDict_IntegerFormat4;
   v32[4] = @"lpcdFalseDetectCount";
-  v22 = [MEMORY[0x277D3F198] sharedInstance];
-  v21 = [v22 commonTypeDict_IntegerFormat];
-  v33[4] = v21;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v33[4] = commonTypeDict_IntegerFormat5;
   v32[5] = @"falseDetect";
-  v20 = [MEMORY[0x277D3F198] sharedInstance];
-  v19 = [v20 commonTypeDict_IntegerFormat];
-  v33[5] = v19;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v33[5] = commonTypeDict_IntegerFormat6;
   v32[6] = @"timestampEnd";
-  v18 = [MEMORY[0x277D3F198] sharedInstance];
-  v17 = [v18 commonTypeDict_DateFormat];
-  v33[6] = v17;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]7 commonTypeDict_DateFormat];
+  v33[6] = commonTypeDict_DateFormat;
   v32[7] = @"expressUpTime";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v15 = [v16 commonTypeDict_IntegerFormat];
-  v33[7] = v15;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+  v33[7] = commonTypeDict_IntegerFormat7;
   v32[8] = @"fieldDetectUpTime";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v33[8] = v4;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+  v33[8] = commonTypeDict_IntegerFormat8;
   v32[9] = @"uiccUpCounter";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v33[9] = v6;
+  mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat9 = [mEMORY[0x277D3F198]10 commonTypeDict_IntegerFormat];
+  v33[9] = commonTypeDict_IntegerFormat9;
   v32[10] = @"jcopUpCounter";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_IntegerFormat];
-  v33[10] = v8;
+  mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat10 = [mEMORY[0x277D3F198]11 commonTypeDict_IntegerFormat];
+  v33[10] = commonTypeDict_IntegerFormat10;
   v32[11] = @"mboxStatus";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_IntegerFormat];
-  v33[11] = v10;
+  mEMORY[0x277D3F198]12 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat11 = [mEMORY[0x277D3F198]12 commonTypeDict_IntegerFormat];
+  v33[11] = commonTypeDict_IntegerFormat11;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:v32 count:12];
   v37[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:v36 count:2];
@@ -334,41 +334,41 @@ void __38__PLNfcAgent_initOperatorDependancies__block_invoke_172(uint64_t a1, ui
     v30[0] = v24;
     v29[1] = *MEMORY[0x277D3F540];
     v25[0] = @"idleTime";
-    v23 = [MEMORY[0x277D3F198] sharedInstance];
-    v22 = [v23 commonTypeDict_IntegerFormat];
-    v26[0] = v22;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+    v26[0] = commonTypeDict_IntegerFormat;
     v25[1] = @"rfTime";
-    v21 = [MEMORY[0x277D3F198] sharedInstance];
-    v20 = [v21 commonTypeDict_IntegerFormat];
-    v26[1] = v20;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+    v26[1] = commonTypeDict_IntegerFormat2;
     v25[2] = @"sleepTime";
-    v19 = [MEMORY[0x277D3F198] sharedInstance];
-    v18 = [v19 commonTypeDict_IntegerFormat];
-    v26[2] = v18;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+    v26[2] = commonTypeDict_IntegerFormat3;
     v25[3] = @"SEUptime";
-    v17 = [MEMORY[0x277D3F198] sharedInstance];
-    v16 = [v17 commonTypeDict_IntegerFormat];
-    v26[3] = v16;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+    v26[3] = commonTypeDict_IntegerFormat4;
     v25[4] = @"lpcdFalseDetectCount";
-    v15 = [MEMORY[0x277D3F198] sharedInstance];
-    v14 = [v15 commonTypeDict_IntegerFormat];
-    v26[4] = v14;
+    mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+    v26[4] = commonTypeDict_IntegerFormat5;
     v25[5] = @"falseDetect";
-    v2 = [MEMORY[0x277D3F198] sharedInstance];
-    v3 = [v2 commonTypeDict_IntegerFormat];
-    v26[5] = v3;
+    mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+    v26[5] = commonTypeDict_IntegerFormat6;
     v25[6] = @"vGpioFalseDetectCount";
-    v4 = [MEMORY[0x277D3F198] sharedInstance];
-    v5 = [v4 commonTypeDict_IntegerFormat];
-    v26[6] = v5;
+    mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+    v26[6] = commonTypeDict_IntegerFormat7;
     v25[7] = @"vGpioFalseDetectCountWithTags";
-    v6 = [MEMORY[0x277D3F198] sharedInstance];
-    v7 = [v6 commonTypeDict_IntegerFormat];
-    v26[7] = v7;
+    mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+    v26[7] = commonTypeDict_IntegerFormat8;
     v25[8] = @"timestampEnd";
-    v8 = [MEMORY[0x277D3F198] sharedInstance];
-    v9 = [v8 commonTypeDict_DateFormat];
-    v26[8] = v9;
+    mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_DateFormat = [mEMORY[0x277D3F198]9 commonTypeDict_DateFormat];
+    v26[8] = commonTypeDict_DateFormat;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:9];
     v30[1] = v10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:2];
@@ -391,15 +391,15 @@ void __38__PLNfcAgent_initOperatorDependancies__block_invoke_172(uint64_t a1, ui
     v5.receiver = self;
     v5.super_class = PLNfcAgent;
     self = [(PLAgent *)&v5 init];
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)initOperatorDependancies
@@ -521,13 +521,13 @@ void __38__PLNfcAgent_initOperatorDependancies__block_invoke_182(uint64_t a1, ui
     self->_nfcConnectionRetryCount = 0;
     v3 = objc_alloc(MEMORY[0x277D3F250]);
     v4 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:300.0];
-    v5 = [(PLOperator *)self workQueue];
+    workQueue = [(PLOperator *)self workQueue];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __30__PLNfcAgent_setupLPEMCounter__block_invoke;
     v8[3] = &unk_278259C40;
     v8[4] = self;
-    v6 = [v3 initWithFireDate:v4 withInterval:1 withTolerance:0 repeats:v5 withUserInfo:v8 withQueue:300.0 withBlock:0.0];
+    v6 = [v3 initWithFireDate:v4 withInterval:1 withTolerance:0 repeats:workQueue withUserInfo:v8 withQueue:300.0 withBlock:0.0];
     nfcConnectionRetryTimer = self->_nfcConnectionRetryTimer;
     self->_nfcConnectionRetryTimer = v6;
   }
@@ -571,9 +571,9 @@ uint64_t __30__PLNfcAgent_setupLPEMCounter__block_invoke(uint64_t a1)
 - (void)setUpNfcPowerCounterRetrieval
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D2C840] sharedHardwareManager];
+  mEMORY[0x277D2C840] = [MEMORY[0x277D2C840] sharedHardwareManager];
   v17 = 0;
-  v4 = [v3 queryHardwareSupport:&v17];
+  v4 = [mEMORY[0x277D2C840] queryHardwareSupport:&v17];
   v5 = v17;
 
   if (v4 == 4)
@@ -591,9 +591,9 @@ uint64_t __30__PLNfcAgent_setupLPEMCounter__block_invoke(uint64_t a1)
 
   else
   {
-    v8 = [MEMORY[0x277D2C840] sharedHardwareManager];
+    mEMORY[0x277D2C840]2 = [MEMORY[0x277D2C840] sharedHardwareManager];
     v16 = v5;
-    v6 = [v8 getPowerCounters:&v16];
+    v6 = [mEMORY[0x277D2C840]2 getPowerCounters:&v16];
     v7 = v16;
 
     v9 = PLLogNfc();
@@ -606,15 +606,15 @@ uint64_t __30__PLNfcAgent_setupLPEMCounter__block_invoke(uint64_t a1)
       _os_log_debug_impl(&dword_21A4C6000, v9, OS_LOG_TYPE_DEBUG, "Initial NFC power counters: %@, error: %@", buf, 0x16u);
     }
 
-    v10 = [MEMORY[0x277CBEAA8] monotonicDate];
-    [(PLNfcAgent *)self setLastPowerCountersLogTime:v10];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+    [(PLNfcAgent *)self setLastPowerCountersLogTime:monotonicDate];
 
     v11 = PLLogNfc();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      v14 = [(PLNfcAgent *)self lastPowerCountersLogTime];
+      lastPowerCountersLogTime = [(PLNfcAgent *)self lastPowerCountersLogTime];
       *buf = 138412290;
-      v19 = v14;
+      v19 = lastPowerCountersLogTime;
       _os_log_debug_impl(&dword_21A4C6000, v11, OS_LOG_TYPE_DEBUG, "NFC power logging start time: %@", buf, 0xCu);
     }
 
@@ -635,9 +635,9 @@ uint64_t __30__PLNfcAgent_setupLPEMCounter__block_invoke(uint64_t a1)
   v18 = *MEMORY[0x277D85DE8];
   if ([MEMORY[0x277D3F208] hasCapability:7])
   {
-    v3 = [MEMORY[0x277D2C8B0] sharedHardwareManager];
+    mEMORY[0x277D2C8B0] = [MEMORY[0x277D2C8B0] sharedHardwareManager];
     v13 = 0;
-    v4 = [v3 getPowerCounters:&v13];
+    v4 = [mEMORY[0x277D2C8B0] getPowerCounters:&v13];
     v5 = v13;
 
     v6 = PLLogNfc();
@@ -652,15 +652,15 @@ uint64_t __30__PLNfcAgent_setupLPEMCounter__block_invoke(uint64_t a1)
 
     if (!v5)
     {
-      v7 = [MEMORY[0x277CBEAA8] monotonicDate];
-      [(PLNfcAgent *)self setLastAccessoryPowerCountersLogTime:v7];
+      monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+      [(PLNfcAgent *)self setLastAccessoryPowerCountersLogTime:monotonicDate];
 
       v8 = PLLogNfc();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
-        v11 = [(PLNfcAgent *)self lastAccessoryPowerCountersLogTime];
+        lastAccessoryPowerCountersLogTime = [(PLNfcAgent *)self lastAccessoryPowerCountersLogTime];
         *buf = 138412290;
-        v15 = v11;
+        v15 = lastAccessoryPowerCountersLogTime;
         _os_log_debug_impl(&dword_21A4C6000, v8, OS_LOG_TYPE_DEBUG, "NFC accessory power logging start time: %@", buf, 0xCu);
       }
 
@@ -677,13 +677,13 @@ uint64_t __30__PLNfcAgent_setupLPEMCounter__block_invoke(uint64_t a1)
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)retrieveAndLogNfcPowerCountersWithRetry:(BOOL)a3
+- (void)retrieveAndLogNfcPowerCountersWithRetry:(BOOL)retry
 {
-  v3 = a3;
+  retryCopy = retry;
   v32 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277D2C840] sharedHardwareManager];
+  mEMORY[0x277D2C840] = [MEMORY[0x277D2C840] sharedHardwareManager];
   v27 = 0;
-  v6 = [v5 getPowerCounters:&v27];
+  v6 = [mEMORY[0x277D2C840] getPowerCounters:&v27];
   v7 = v27;
   if (v7)
   {
@@ -709,7 +709,7 @@ uint64_t __30__PLNfcAgent_setupLPEMCounter__block_invoke(uint64_t a1)
     }
 
     v26 = 0;
-    v11 = [v5 queryHardwareSupport:&v26];
+    v11 = [mEMORY[0x277D2C840] queryHardwareSupport:&v26];
     v12 = v26;
     if (v11 == 4)
     {
@@ -722,7 +722,7 @@ uint64_t __30__PLNfcAgent_setupLPEMCounter__block_invoke(uint64_t a1)
       }
     }
 
-    else if (v3)
+    else if (retryCopy)
     {
       v22 = PLLogNfc();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -733,13 +733,13 @@ uint64_t __30__PLNfcAgent_setupLPEMCounter__block_invoke(uint64_t a1)
       }
 
       v23 = dispatch_time(0, 30000000000);
-      v24 = [(PLOperator *)self workQueue];
+      workQueue = [(PLOperator *)self workQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __54__PLNfcAgent_retrieveAndLogNfcPowerCountersWithRetry___block_invoke;
       block[3] = &unk_2782591D0;
       block[4] = self;
-      dispatch_after(v23, v24, block);
+      dispatch_after(v23, workQueue, block);
     }
   }
 
@@ -754,22 +754,22 @@ uint64_t __30__PLNfcAgent_setupLPEMCounter__block_invoke(uint64_t a1)
       _os_log_debug_impl(&dword_21A4C6000, v15, OS_LOG_TYPE_DEBUG, "Received valid NFC power counters: %@", buf, 0xCu);
     }
 
-    v17 = [MEMORY[0x277CBEAA8] monotonicDate];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
     v18 = PLLogNfc();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v29 = v17;
+      v29 = monotonicDate;
       _os_log_debug_impl(&dword_21A4C6000, v18, OS_LOG_TYPE_DEBUG, "NFC power logging end time: %@", buf, 0xCu);
     }
 
     v19 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v14 withRawData:v6];
-    v20 = [(PLNfcAgent *)self lastPowerCountersLogTime];
-    [v19 setEntryDate:v20];
+    lastPowerCountersLogTime = [(PLNfcAgent *)self lastPowerCountersLogTime];
+    [v19 setEntryDate:lastPowerCountersLogTime];
 
-    [v19 setObject:v17 forKeyedSubscript:@"timestampEnd"];
+    [v19 setObject:monotonicDate forKeyedSubscript:@"timestampEnd"];
     [(PLOperator *)self logEntry:v19];
-    [(PLNfcAgent *)self setLastPowerCountersLogTime:v17];
+    [(PLNfcAgent *)self setLastPowerCountersLogTime:monotonicDate];
 
     v12 = 0;
   }
@@ -777,13 +777,13 @@ uint64_t __30__PLNfcAgent_setupLPEMCounter__block_invoke(uint64_t a1)
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)retrieveAndLogNfcAccessoryPowerCountersWithRetry:(BOOL)a3
+- (void)retrieveAndLogNfcAccessoryPowerCountersWithRetry:(BOOL)retry
 {
-  v3 = a3;
+  retryCopy = retry;
   v27 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277D2C8B0] sharedHardwareManager];
+  mEMORY[0x277D2C8B0] = [MEMORY[0x277D2C8B0] sharedHardwareManager];
   v22 = 0;
-  v6 = [v5 getPowerCounters:&v22];
+  v6 = [mEMORY[0x277D2C8B0] getPowerCounters:&v22];
   v7 = v22;
   if (v7)
   {
@@ -807,7 +807,7 @@ uint64_t __30__PLNfcAgent_setupLPEMCounter__block_invoke(uint64_t a1)
       _os_log_debug_impl(&dword_21A4C6000, v9, OS_LOG_TYPE_DEBUG, "Accessory power counters not valid: %@, error: %@", buf, 0x16u);
     }
 
-    if (v3)
+    if (retryCopy)
     {
       v10 = PLLogNfc();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -817,13 +817,13 @@ uint64_t __30__PLNfcAgent_setupLPEMCounter__block_invoke(uint64_t a1)
       }
 
       v11 = dispatch_time(0, 30000000000);
-      v12 = [(PLOperator *)self workQueue];
+      workQueue = [(PLOperator *)self workQueue];
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __63__PLNfcAgent_retrieveAndLogNfcAccessoryPowerCountersWithRetry___block_invoke;
       v21[3] = &unk_2782591D0;
       v21[4] = self;
-      dispatch_after(v11, v12, v21);
+      dispatch_after(v11, workQueue, v21);
     }
   }
 
@@ -838,22 +838,22 @@ uint64_t __30__PLNfcAgent_setupLPEMCounter__block_invoke(uint64_t a1)
       _os_log_debug_impl(&dword_21A4C6000, v14, OS_LOG_TYPE_DEBUG, "Received valid NFC accessory power counters: %@", buf, 0xCu);
     }
 
-    v16 = [MEMORY[0x277CBEAA8] monotonicDate];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
     v17 = PLLogNfc();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v24 = v16;
+      v24 = monotonicDate;
       _os_log_debug_impl(&dword_21A4C6000, v17, OS_LOG_TYPE_DEBUG, "NFC accessory power logging end time: %@", buf, 0xCu);
     }
 
     v18 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v13 withRawData:v6];
-    v19 = [(PLNfcAgent *)self lastAccessoryPowerCountersLogTime];
-    [v18 setEntryDate:v19];
+    lastAccessoryPowerCountersLogTime = [(PLNfcAgent *)self lastAccessoryPowerCountersLogTime];
+    [v18 setEntryDate:lastAccessoryPowerCountersLogTime];
 
-    [v18 setObject:v16 forKeyedSubscript:@"timestampEnd"];
+    [v18 setObject:monotonicDate forKeyedSubscript:@"timestampEnd"];
     [(PLOperator *)self logEntry:v18];
-    [(PLNfcAgent *)self setLastAccessoryPowerCountersLogTime:v16];
+    [(PLNfcAgent *)self setLastAccessoryPowerCountersLogTime:monotonicDate];
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -862,9 +862,9 @@ uint64_t __30__PLNfcAgent_setupLPEMCounter__block_invoke(uint64_t a1)
 - (unsigned)getNFCHarwareState
 {
   v11 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D2C840] sharedHardwareManager];
+  mEMORY[0x277D2C840] = [MEMORY[0x277D2C840] sharedHardwareManager];
   v8 = 0;
-  v3 = [v2 queryHardwareSupport:&v8];
+  v3 = [mEMORY[0x277D2C840] queryHardwareSupport:&v8];
   v4 = v8;
 
   if (v4)
@@ -1151,31 +1151,31 @@ id __33__PLNfcAgent_logEventForwardLPEM__block_invoke_225(uint64_t a1)
   return v21;
 }
 
-- (void)fieldChangedWithEntry:(id)a3
+- (void)fieldChangedWithEntry:(id)entry
 {
-  v10 = a3;
-  v4 = [v10 objectForKeyedSubscript:@"State"];
-  v5 = [v4 BOOLValue];
+  entryCopy = entry;
+  v4 = [entryCopy objectForKeyedSubscript:@"State"];
+  bOOLValue = [v4 BOOLValue];
 
-  v6 = [MEMORY[0x277D3F0C0] sharedInstance];
+  mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
   v7 = 0.0;
-  if (v5)
+  if (bOOLValue)
   {
     [(PLNfcAgent *)self onPower];
     v7 = v8;
   }
 
-  v9 = [v10 entryDate];
-  [v6 createPowerEventForwardWithRootNodeID:16 withPower:v9 withStartDate:v7];
+  entryDate = [entryCopy entryDate];
+  [mEMORY[0x277D3F0C0] createPowerEventForwardWithRootNodeID:16 withPower:entryDate withStartDate:v7];
 
-  [(PLOperator *)self logEntry:v10];
+  [(PLOperator *)self logEntry:entryCopy];
 }
 
-+ (id)parseLPEMFromData:(id)a3
++ (id)parseLPEMFromData:(id)data
 {
   v20[10] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 length] < 0x10)
+  dataCopy = data;
+  if ([dataCopy length] < 0x10)
   {
     v5 = PLLogNfc();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1189,36 +1189,36 @@ id __33__PLNfcAgent_logEventForwardLPEM__block_invoke_225(uint64_t a1)
 
   else
   {
-    v4 = [v3 bytes];
+    bytes = [dataCopy bytes];
     v19[0] = @"BTCC";
-    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*v4];
+    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*bytes];
     v20[0] = v5;
     v19[1] = @"BTCT";
-    v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*(v4 + 1)];
+    v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*(bytes + 1)];
     v20[1] = v17;
     v19[2] = @"SRSC";
-    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v4[5]];
+    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:bytes[5]];
     v20[2] = v16;
     v19[3] = @"SRST";
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*(v4 + 6)];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*(bytes + 6)];
     v20[3] = v6;
     v19[4] = @"SRUC";
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v4[10]];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:bytes[10]];
     v20[4] = v7;
     v19[5] = @"SRLC";
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v4[11]];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:bytes[11]];
     v20[5] = v8;
     v19[6] = @"SERESET";
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v4[12]];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:bytes[12]];
     v20[6] = v9;
     v19[7] = @"ROLL";
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v4[13]];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:bytes[13]];
     v20[7] = v10;
     v19[8] = @"BTENTRY";
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v4[14]];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:bytes[14]];
     v20[8] = v11;
     v19[9] = @"BTEXIT";
-    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v4[15]];
+    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:bytes[15]];
     v20[9] = v12;
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:10];
   }

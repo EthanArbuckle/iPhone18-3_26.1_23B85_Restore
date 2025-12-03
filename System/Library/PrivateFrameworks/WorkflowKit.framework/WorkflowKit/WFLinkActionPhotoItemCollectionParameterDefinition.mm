@@ -1,46 +1,46 @@
 @interface WFLinkActionPhotoItemCollectionParameterDefinition
-- (WFLinkActionPhotoItemCollectionParameterDefinition)initWithParameterMetadata:(id)a3;
-- (id)linkValueFromParameterState:(id)a3;
-- (id)localizedTitleForLinkValue:(id)a3;
+- (WFLinkActionPhotoItemCollectionParameterDefinition)initWithParameterMetadata:(id)metadata;
+- (id)linkValueFromParameterState:(id)state;
+- (id)localizedTitleForLinkValue:(id)value;
 - (id)parameterDefinitionDictionary;
-- (id)parameterStateFromLinkValue:(id)a3;
-- (void)getLinkValueFromProcessedParameterValue:(id)a3 parameterState:(id)a4 permissionRequestor:(id)a5 runningFromToolKit:(BOOL)a6 action:(id)a7 parameterKey:(id)a8 completionHandler:(id)a9;
+- (id)parameterStateFromLinkValue:(id)value;
+- (void)getLinkValueFromProcessedParameterValue:(id)value parameterState:(id)state permissionRequestor:(id)requestor runningFromToolKit:(BOOL)kit action:(id)action parameterKey:(id)key completionHandler:(id)handler;
 @end
 
 @implementation WFLinkActionPhotoItemCollectionParameterDefinition
 
-- (id)parameterStateFromLinkValue:(id)a3
+- (id)parameterStateFromLinkValue:(id)value
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = [a3 value];
-  if (!v4)
+  value = [value value];
+  if (!value)
   {
 LABEL_12:
     v11 = 0;
     goto LABEL_13;
   }
 
-  v5 = [(WFLinkActionParameterDefinition *)self valueType];
-  v6 = [v5 objectIsMemberOfType:v4];
+  valueType = [(WFLinkActionParameterDefinition *)self valueType];
+  v6 = [valueType objectIsMemberOfType:value];
 
   if ((v6 & 1) == 0)
   {
     v12 = getWFAppIntentsLogObject();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = [(WFLinkActionParameterDefinition *)self valueType];
+      valueType2 = [(WFLinkActionParameterDefinition *)self valueType];
       v16 = 136315650;
       v17 = "[WFLinkActionPhotoItemCollectionParameterDefinition parameterStateFromLinkValue:]";
       v18 = 2114;
-      v19 = v4;
+      v19 = value;
       v20 = 2114;
-      v21 = v13;
+      v21 = valueType2;
     }
 
     goto LABEL_12;
   }
 
-  v7 = v4;
+  v7 = value;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
@@ -67,37 +67,37 @@ LABEL_13:
   return v11;
 }
 
-- (void)getLinkValueFromProcessedParameterValue:(id)a3 parameterState:(id)a4 permissionRequestor:(id)a5 runningFromToolKit:(BOOL)a6 action:(id)a7 parameterKey:(id)a8 completionHandler:(id)a9
+- (void)getLinkValueFromProcessedParameterValue:(id)value parameterState:(id)state permissionRequestor:(id)requestor runningFromToolKit:(BOOL)kit action:(id)action parameterKey:(id)key completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v21 = v14;
+  valueCopy = value;
+  stateCopy = state;
+  requestorCopy = requestor;
+  actionCopy = action;
+  keyCopy = key;
+  handlerCopy = handler;
+  v21 = valueCopy;
   if (v21 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v20 = [(WFLinkActionParameterDefinition *)self linkValueWithValue:v21];
-    v19[2](v19, v20, 0);
+    handlerCopy[2](handlerCopy, v20, 0);
   }
 
   else
   {
 
-    v19[2](v19, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0);
   }
 }
 
-- (id)linkValueFromParameterState:(id)a3
+- (id)linkValueFromParameterState:(id)state
 {
-  v4 = a3;
-  if (v4)
+  stateCopy = state;
+  if (stateCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = stateCopy;
     }
 
     else
@@ -112,12 +112,12 @@ LABEL_13:
   }
 
   v6 = v5;
-  v7 = [v6 value];
+  value = [v6 value];
 
-  if (v7)
+  if (value)
   {
-    v8 = [v6 value];
-    v9 = [(WFLinkActionParameterDefinition *)self linkValueWithValue:v8];
+    value2 = [v6 value];
+    v9 = [(WFLinkActionParameterDefinition *)self linkValueWithValue:value2];
   }
 
   else
@@ -128,25 +128,25 @@ LABEL_13:
   return v9;
 }
 
-- (id)localizedTitleForLinkValue:(id)a3
+- (id)localizedTitleForLinkValue:(id)value
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  valueCopy = value;
+  if (valueCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 items];
-    v5 = [v4 firstObject];
+    items = [valueCopy items];
+    firstObject = [items firstObject];
 
-    if (v5)
+    if (firstObject)
     {
-      v6 = [MEMORY[0x1E6996F50] sharedLibrary];
+      mEMORY[0x1E6996F50] = [MEMORY[0x1E6996F50] sharedLibrary];
       v19 = 0;
-      v7 = [v6 systemPhotoLibraryWithError:&v19];
+      v7 = [mEMORY[0x1E6996F50] systemPhotoLibraryWithError:&v19];
       v8 = v19;
 
       if (v7)
       {
-        v9 = [v7 librarySpecificFetchOptions];
+        librarySpecificFetchOptions = [v7 librarySpecificFetchOptions];
         v20 = 0;
         v21 = &v20;
         v22 = 0x2050000000;
@@ -165,46 +165,46 @@ LABEL_13:
 
         v11 = v10;
         _Block_object_dispose(&v20, 8);
-        v12 = [v5 identifier];
-        v24 = v12;
+        identifier = [firstObject identifier];
+        v24 = identifier;
         v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v24 count:1];
-        v14 = [v10 fetchAssetCollectionsWithLocalIdentifiers:v13 options:v9];
-        v15 = [v14 firstObject];
+        v14 = [v10 fetchAssetCollectionsWithLocalIdentifiers:v13 options:librarySpecificFetchOptions];
+        firstObject2 = [v14 firstObject];
 
-        v16 = [v15 localizedTitle];
+        localizedTitle = [firstObject2 localizedTitle];
       }
 
       else
       {
-        v9 = getWFGeneralLogObject();
-        if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+        librarySpecificFetchOptions = getWFGeneralLogObject();
+        if (os_log_type_enabled(librarySpecificFetchOptions, OS_LOG_TYPE_ERROR))
         {
           *buf = 136315394;
           *&buf[4] = "[WFLinkActionPhotoItemCollectionParameterDefinition localizedTitleForLinkValue:]";
           *&buf[12] = 2112;
           *&buf[14] = v8;
-          _os_log_impl(&dword_1CA256000, v9, OS_LOG_TYPE_ERROR, "%s Unable to get library: %@", buf, 0x16u);
+          _os_log_impl(&dword_1CA256000, librarySpecificFetchOptions, OS_LOG_TYPE_ERROR, "%s Unable to get library: %@", buf, 0x16u);
         }
 
-        v16 = 0;
+        localizedTitle = 0;
       }
     }
 
     else
     {
-      v16 = 0;
+      localizedTitle = 0;
     }
   }
 
   else
   {
 
-    v16 = 0;
+    localizedTitle = 0;
   }
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v16;
+  return localizedTitle;
 }
 
 - (id)parameterDefinitionDictionary
@@ -220,20 +220,20 @@ LABEL_13:
   [v6 setValue:v5 forKey:@"PhotoItemCollectionPickerFilter"];
   v11.receiver = self;
   v11.super_class = WFLinkActionPhotoItemCollectionParameterDefinition;
-  v8 = [(WFLinkActionParameterDefinition *)&v11 parameterDefinitionDictionary];
-  v9 = [v8 definitionByAddingEntriesInDictionary:v6];
+  parameterDefinitionDictionary = [(WFLinkActionParameterDefinition *)&v11 parameterDefinitionDictionary];
+  v9 = [parameterDefinitionDictionary definitionByAddingEntriesInDictionary:v6];
 
   return v9;
 }
 
-- (WFLinkActionPhotoItemCollectionParameterDefinition)initWithParameterMetadata:(id)a3
+- (WFLinkActionPhotoItemCollectionParameterDefinition)initWithParameterMetadata:(id)metadata
 {
   v4 = MEMORY[0x1E69AC720];
-  v5 = a3;
-  v6 = [v4 photoItemCollectionValueType];
+  metadataCopy = metadata;
+  photoItemCollectionValueType = [v4 photoItemCollectionValueType];
   v9.receiver = self;
   v9.super_class = WFLinkActionPhotoItemCollectionParameterDefinition;
-  v7 = [(WFLinkActionParameterDefinition *)&v9 initWithValueType:v6 parameterMetadata:v5];
+  v7 = [(WFLinkActionParameterDefinition *)&v9 initWithValueType:photoItemCollectionValueType parameterMetadata:metadataCopy];
 
   return v7;
 }

@@ -1,17 +1,17 @@
 @interface CalendarViewLayout
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
 - (_TtC8HealthUI18CalendarViewLayout)init;
-- (_TtC8HealthUI18CalendarViewLayout)initWithCoder:(id)a3;
-- (id)invalidationContextForBoundsChange:(CGRect)a3;
-- (id)layoutAttributesForDecorationViewOfKind:(id)a3 atIndexPath:(id)a4;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (void)invalidateLayoutWithContext:(id)a3;
+- (_TtC8HealthUI18CalendarViewLayout)initWithCoder:(id)coder;
+- (id)invalidationContextForBoundsChange:(CGRect)change;
+- (id)layoutAttributesForDecorationViewOfKind:(id)kind atIndexPath:(id)path;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (void)invalidateLayoutWithContext:(id)context;
 - (void)prepareLayout;
 @end
 
 @implementation CalendarViewLayout
 
-- (_TtC8HealthUI18CalendarViewLayout)initWithCoder:(id)a3
+- (_TtC8HealthUI18CalendarViewLayout)initWithCoder:(id)coder
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -36,16 +36,16 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_1C3CFD770();
 }
 
-- (id)invalidationContextForBoundsChange:(CGRect)a3
+- (id)invalidationContextForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
   sub_1C3D20374();
   sub_1C3D20364();
   sub_1C3D20314();
@@ -55,13 +55,13 @@
   }
 
   v8 = objc_allocWithZone(type metadata accessor for CalendarLayoutInvalidationContext());
-  v9 = self;
+  selfCopy = self;
   v10 = [v8 init];
-  v11 = [(CalendarViewLayout *)v9 collectionView];
-  if (v11)
+  collectionView = [(CalendarViewLayout *)selfCopy collectionView];
+  if (collectionView)
   {
-    v12 = v11;
-    [v11 bounds];
+    v12 = collectionView;
+    [collectionView bounds];
     v17.origin.x = x;
     v17.origin.y = y;
     v17.size.width = width;
@@ -77,7 +77,7 @@
   return v10;
 }
 
-- (void)invalidateLayoutWithContext:(id)a3
+- (void)invalidateLayoutWithContext:(id)context
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -87,17 +87,17 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  sub_1C3CFDE4C(v5);
+  contextCopy = context;
+  selfCopy = self;
+  sub_1C3CFDE4C(contextCopy);
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   sub_1C3D20374();
   sub_1C3D20364();
   sub_1C3D20314();
@@ -106,7 +106,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v8 = self;
+  selfCopy = self;
   v9 = sub_1C3CFE0B4(x, y, width, height);
 
   if (v9)
@@ -124,7 +124,7 @@
   return v10;
 }
 
-- (id)layoutAttributesForDecorationViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForDecorationViewOfKind:(id)kind atIndexPath:(id)path
 {
   v5 = sub_1C3D1E5B4();
   v6 = *(v5 - 8);
@@ -141,7 +141,7 @@
   v9 = sub_1C3D20104();
   v11 = v10;
   sub_1C3D1E564();
-  v12 = self;
+  selfCopy = self;
   v13 = sub_1C3CFE6B8(v9, v11, v8);
 
   (*(v6 + 8))(v8, v5);
@@ -149,7 +149,7 @@
   return v13;
 }
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
   sub_1C3D20374();
   sub_1C3D20364();

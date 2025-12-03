@@ -8,8 +8,8 @@
 
 - (id)scrcSplitBasedOnMultipleAttributesWithLimit:()SCRCAttributedStringExtras
 {
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [a1 length];
+  array = [MEMORY[0x277CBEB18] array];
+  v6 = [self length];
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -18,17 +18,17 @@
   v17 = 3221225472;
   v18 = __94__NSAttributedString_SCRCAttributedStringExtras__scrcSplitBasedOnMultipleAttributesWithLimit___block_invoke;
   v19 = &unk_279B716B0;
-  v20 = a1;
-  v7 = v5;
+  selfCopy = self;
+  v7 = array;
   v21 = v7;
   v22 = &v24;
   v23 = a3;
-  [a1 enumerateAttributesInRange:0 options:v6 usingBlock:{0, &v16}];
+  [self enumerateAttributesInRange:0 options:v6 usingBlock:{0, &v16}];
   if (v25[3] < v6 && [v7 count] == a3 - 1)
   {
     v8 = v25[3];
-    v9 = [a1 length];
-    v10 = [a1 attributedSubstringFromRange:{v8, v9 - v25[3]}];
+    v9 = [self length];
+    v10 = [self attributedSubstringFromRange:{v8, v9 - v25[3]}];
     v11 = v10;
     if (v10)
     {
@@ -48,8 +48,8 @@
 - (id)scrcSplitBasedOnAttribute:()SCRCAttributedStringExtras limit:
 {
   v6 = a3;
-  v7 = [MEMORY[0x277CBEB18] array];
-  v8 = [a1 length];
+  array = [MEMORY[0x277CBEB18] array];
+  v8 = [self length];
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -58,17 +58,17 @@
   v19 = 3221225472;
   v20 = __82__NSAttributedString_SCRCAttributedStringExtras__scrcSplitBasedOnAttribute_limit___block_invoke;
   v21 = &unk_279B716D8;
-  v22 = a1;
-  v9 = v7;
+  selfCopy = self;
+  v9 = array;
   v23 = v9;
   v24 = &v26;
   v25 = a4;
-  [a1 enumerateAttribute:v6 inRange:0 options:v8 usingBlock:{0, &v18}];
+  [self enumerateAttribute:v6 inRange:0 options:v8 usingBlock:{0, &v18}];
   if (v27[3] < v8 && [v9 count] == a4 - 1)
   {
     v10 = v27[3];
-    v11 = [a1 length];
-    v12 = [a1 attributedSubstringFromRange:{v10, v11 - v27[3]}];
+    v11 = [self length];
+    v12 = [self attributedSubstringFromRange:{v10, v11 - v27[3]}];
     v13 = v12;
     if (v12)
     {
@@ -90,13 +90,13 @@
 {
   v36 = *MEMORY[0x277D85DE8];
   v6 = a3;
-  v7 = [a1 length];
+  v7 = [self length];
   v8 = [objc_alloc(MEMORY[0x277CCAB58]) initWithIndex:0];
   [v8 addIndex:v7];
   if (v7 >= 2)
   {
     v23 = a4;
-    v24 = a1;
+    selfCopy = self;
     v9 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
     v10 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
     v31 = 0u;
@@ -120,8 +120,8 @@
           }
 
           v16 = *(*(&v31 + 1) + 8 * i);
-          v17 = [MEMORY[0x277CBEB68] null];
-          [v10 setObject:v17 forKeyedSubscript:v16];
+          null = [MEMORY[0x277CBEB68] null];
+          [v10 setObject:null forKeyedSubscript:v16];
 
           v18 = [MEMORY[0x277CCABB0] numberWithInteger:0x7FFFFFFFFFFFFFFFLL];
           [v9 setObject:v18 forKeyedSubscript:v16];
@@ -143,7 +143,7 @@
     v30 = v23;
     v19 = v9;
     v20 = v10;
-    [v24 enumerateAttributesInRange:0 options:v7 usingBlock:{0, v26}];
+    [selfCopy enumerateAttributesInRange:0 options:v7 usingBlock:{0, v26}];
 
     v6 = v25;
   }

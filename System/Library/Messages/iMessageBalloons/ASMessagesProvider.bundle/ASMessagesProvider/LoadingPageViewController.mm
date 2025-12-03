@@ -1,6 +1,6 @@
 @interface LoadingPageViewController
-- (_TtC18ASMessagesProvider25LoadingPageViewController)initWithCoder:(id)a3;
-- (_TtC18ASMessagesProvider25LoadingPageViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC18ASMessagesProvider25LoadingPageViewController)initWithCoder:(id)coder;
+- (_TtC18ASMessagesProvider25LoadingPageViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
@@ -8,7 +8,7 @@
 
 @implementation LoadingPageViewController
 
-- (_TtC18ASMessagesProvider25LoadingPageViewController)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider25LoadingPageViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider25LoadingPageViewController_contentViewController) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider25LoadingPageViewController_overlayViewController) = 0;
@@ -20,23 +20,23 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_673654();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_673870();
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = self;
-  v3 = [(LoadingPageViewController *)v2 traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  selfCopy = self;
+  traitCollection = [(LoadingPageViewController *)selfCopy traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4 == &dword_0 + 1)
+  if (userInterfaceIdiom == &dword_0 + 1)
   {
     return 30;
   }
@@ -47,7 +47,7 @@
   }
 }
 
-- (_TtC18ASMessagesProvider25LoadingPageViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18ASMessagesProvider25LoadingPageViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

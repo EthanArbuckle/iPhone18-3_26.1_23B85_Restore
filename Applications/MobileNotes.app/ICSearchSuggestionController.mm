@@ -1,33 +1,33 @@
 @interface ICSearchSuggestionController
 - (ICSearchSuggestionController)init;
-- (ICSearchSuggestionController)initWithParentView:(id)a3 delegate:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)showWithAnimated:(BOOL)a3 transitionCoordinator:(id)a4 searchBarFrame:(CGRect)a5;
-- (void)updateForSuggestions:(id)a3;
+- (ICSearchSuggestionController)initWithParentView:(id)view delegate:(id)delegate;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)showWithAnimated:(BOOL)animated transitionCoordinator:(id)coordinator searchBarFrame:(CGRect)frame;
+- (void)updateForSuggestions:(id)suggestions;
 @end
 
 @implementation ICSearchSuggestionController
 
-- (ICSearchSuggestionController)initWithParentView:(id)a3 delegate:(id)a4
+- (ICSearchSuggestionController)initWithParentView:(id)view delegate:(id)delegate
 {
-  v5 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  return sub_1002B0750(v5, a4);
+  return sub_1002B0750(viewCopy, delegate);
 }
 
-- (void)showWithAnimated:(BOOL)a3 transitionCoordinator:(id)a4 searchBarFrame:(CGRect)a5
+- (void)showWithAnimated:(BOOL)animated transitionCoordinator:(id)coordinator searchBarFrame:(CGRect)frame
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   swift_unknownObjectRetain();
-  v12 = self;
-  sub_1002B1444(a3, a4, x, y, width, height);
+  selfCopy = self;
+  sub_1002B1444(animated, coordinator, x, y, width, height);
   swift_unknownObjectRelease();
 }
 
-- (void)updateForSuggestions:(id)a3
+- (void)updateForSuggestions:(id)suggestions
 {
   v4 = sub_10015DA04(&qword_1006C2B00);
   v5 = *(v4 - 8);
@@ -35,7 +35,7 @@
   v7 = &v10 - v6;
   sub_1000054A4(0, &qword_1006C2B08);
   v8 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   sub_1002B1210(v8, 0);
 
   dispatch thunk of UICollectionViewDiffableDataSource.apply(_:animatingDifferences:completion:)();
@@ -49,16 +49,16 @@
   return result;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  sub_1002B1C8C(v10);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1002B1C8C(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 }

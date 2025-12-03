@@ -1,26 +1,26 @@
 @interface MTAppDelegate_iOS
-- (BOOL)application:(id)a3 continueUserActivity:(id)a4 restorationHandler:(id)a5;
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (BOOL)application:(id)a3 openURL:(id)a4 options:(id)a5;
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5;
-- (BOOL)application:(id)a3 willFinishLaunchingWithOptions:(id)a4;
-- (BOOL)canOpenURL:(id)a3;
+- (BOOL)application:(id)application continueUserActivity:(id)activity restorationHandler:(id)handler;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (BOOL)application:(id)application openURL:(id)l options:(id)options;
+- (BOOL)application:(id)application runTest:(id)test options:(id)options;
+- (BOOL)application:(id)application willFinishLaunchingWithOptions:(id)options;
+- (BOOL)canOpenURL:(id)l;
 - (UIViewController)rootViewController;
 - (id)_platformContentController;
-- (id)application:(id)a3 handlerForIntent:(id)a4;
-- (id)createWindowWithScene:(id)a3;
-- (unint64_t)application:(id)a3 supportedInterfaceOrientationsForWindow:(id)a4;
+- (id)application:(id)application handlerForIntent:(id)intent;
+- (id)createWindowWithScene:(id)scene;
+- (unint64_t)application:(id)application supportedInterfaceOrientationsForWindow:(id)window;
 - (void)_prewarmSingletons;
-- (void)application:(id)a3 handleEventsForBackgroundURLSession:(id)a4 completionHandler:(id)a5;
-- (void)application:(id)a3 handleStateRestorationWith:(id)a4;
-- (void)application:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5;
-- (void)applicationDidBecomeActive:(id)a3;
-- (void)applicationDidEnterBackground:(id)a3;
-- (void)applicationWillEnterForeground:(id)a3;
-- (void)applicationWillResignActive:(id)a3;
-- (void)applicationWillTerminate:(id)a3;
-- (void)openURL:(id)a3;
-- (void)performActionForShortcutItem:(id)a3 completionHandler:(id)a4;
+- (void)application:(id)application handleEventsForBackgroundURLSession:(id)session completionHandler:(id)handler;
+- (void)application:(id)application handleStateRestorationWith:(id)with;
+- (void)application:(id)application performActionForShortcutItem:(id)item completionHandler:(id)handler;
+- (void)applicationDidBecomeActive:(id)active;
+- (void)applicationDidEnterBackground:(id)background;
+- (void)applicationWillEnterForeground:(id)foreground;
+- (void)applicationWillResignActive:(id)active;
+- (void)applicationWillTerminate:(id)terminate;
+- (void)openURL:(id)l;
+- (void)performActionForShortcutItem:(id)item completionHandler:(id)handler;
 - (void)setupAfterBecomingActive;
 - (void)setupAfterBecomingFrontmost;
 - (void)setupAfterResigningFrontmost;
@@ -40,28 +40,28 @@
 
 - (void)willConnectScene
 {
-  v3 = [(MTAppDelegate_iOS *)self internalAppDelegate];
+  internalAppDelegate = [(MTAppDelegate_iOS *)self internalAppDelegate];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(MTAppDelegate_iOS *)self internalAppDelegate];
-    [v5 willConnectScene];
+    internalAppDelegate2 = [(MTAppDelegate_iOS *)self internalAppDelegate];
+    [internalAppDelegate2 willConnectScene];
     v6 = +[_TtC8Podcasts17AccessAppDelegate shared];
     v7 = [_TtC8Podcasts21PlatformAppController appControllerWithDelegate:v6];
     [(MTAppDelegate_Shared *)self setAppController:v7];
 
-    v8 = [(MTAppDelegate_iOS *)self _platformContentController];
-    v9 = [(MTAppDelegate_Shared *)self appController];
-    [v8 setMigrationPresenter:v9];
+    _platformContentController = [(MTAppDelegate_iOS *)self _platformContentController];
+    appController = [(MTAppDelegate_Shared *)self appController];
+    [_platformContentController setMigrationPresenter:appController];
 
-    v10 = [v5 window];
-    v11 = [v10 rootViewController];
-    [(MTAppDelegate_Shared *)self setMainWindowRootViewController:v11];
+    window = [internalAppDelegate2 window];
+    rootViewController = [window rootViewController];
+    [(MTAppDelegate_Shared *)self setMainWindowRootViewController:rootViewController];
 
-    v12 = [(MTAppDelegate_iOS *)self rootViewController];
-    [v12 becomeFirstResponder];
+    rootViewController2 = [(MTAppDelegate_iOS *)self rootViewController];
+    [rootViewController2 becomeFirstResponder];
 
     v13 = _MTLogCategoryLifecycle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -70,8 +70,8 @@
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Will kick off downloads restoration, if needed.", v15, 2u);
     }
 
-    v14 = [(MTAppDelegate_iOS *)self libraryDataProvider];
-    [v14 restorePreviouslyDownloadedEpisodes];
+    libraryDataProvider = [(MTAppDelegate_iOS *)self libraryDataProvider];
+    [libraryDataProvider restorePreviouslyDownloadedEpisodes];
   }
 }
 
@@ -92,29 +92,29 @@
 
 - (UIViewController)rootViewController
 {
-  v2 = [(MTAppDelegate_iOS *)self internalAppDelegate];
-  v3 = [v2 window];
-  v4 = [v3 rootViewController];
+  internalAppDelegate = [(MTAppDelegate_iOS *)self internalAppDelegate];
+  window = [internalAppDelegate window];
+  rootViewController = [window rootViewController];
 
-  if (!v4)
+  if (!rootViewController)
   {
-    v4 = objc_opt_new();
+    rootViewController = objc_opt_new();
   }
 
-  return v4;
+  return rootViewController;
 }
 
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5
+- (BOOL)application:(id)application runTest:(id)test options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MTAppDelegate_iOS *)self internalAppDelegate];
+  applicationCopy = application;
+  testCopy = test;
+  optionsCopy = options;
+  internalAppDelegate = [(MTAppDelegate_iOS *)self internalAppDelegate];
 
-  if (v11)
+  if (internalAppDelegate)
   {
-    v12 = [(MTAppDelegate_iOS *)self internalAppDelegate];
-    v13 = [v12 application:v8 runTest:v9 options:v10];
+    internalAppDelegate2 = [(MTAppDelegate_iOS *)self internalAppDelegate];
+    v13 = [internalAppDelegate2 application:applicationCopy runTest:testCopy options:optionsCopy];
   }
 
   else
@@ -125,19 +125,19 @@
   return v13;
 }
 
-- (BOOL)application:(id)a3 willFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application willFinishLaunchingWithOptions:(id)options
 {
-  v6 = a4;
-  v7 = a3;
+  optionsCopy = options;
+  applicationCopy = application;
   [(MTAppDelegate_iOS *)self _prewarmSingletons];
   v8 = _MTLogCategoryLifecycle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = +[MTReachability sharedInstance];
     *buf = 138543618;
-    v19 = v6;
+    v19 = optionsCopy;
     v20 = 1024;
-    v21 = [v9 isReachable];
+    isReachable = [v9 isReachable];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Received willFinishLaunchingWithOptions: %{public}@, isNetworkReachable: %hhd", buf, 0x12u);
   }
 
@@ -155,47 +155,47 @@
 
   v17.receiver = self;
   v17.super_class = MTAppDelegate_iOS;
-  [(MTAppDelegate_Shared *)&v17 application:v7 willFinishLaunchingWithOptions:v6];
-  v14 = [self->_internalAppDelegate application:v7 willFinishLaunchingWithOptions:v6];
+  [(MTAppDelegate_Shared *)&v17 application:applicationCopy willFinishLaunchingWithOptions:optionsCopy];
+  v14 = [self->_internalAppDelegate application:applicationCopy willFinishLaunchingWithOptions:optionsCopy];
 
-  v15 = [self->_internalAppDelegate libraryDataProvider];
-  [(MTAppDelegate_iOS *)self setLibraryDataProvider:v15];
+  libraryDataProvider = [self->_internalAppDelegate libraryDataProvider];
+  [(MTAppDelegate_iOS *)self setLibraryDataProvider:libraryDataProvider];
 
   return v14;
 }
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  applicationCopy = application;
+  optionsCopy = options;
   v8 = _MTLogCategoryLifecycle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = +[MTReachability sharedInstance];
     *buf = 138543618;
-    v19 = v7;
+    v19 = optionsCopy;
     v20 = 1024;
-    v21 = [v9 isReachable];
+    isReachable = [v9 isReachable];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Received didFinishLaunchingWithOptions: %{public}@, isNetworkReachable: %hhd", buf, 0x12u);
   }
 
   v17.receiver = self;
   v17.super_class = MTAppDelegate_iOS;
-  [(MTAppDelegate_Shared *)&v17 application:v6 didFinishLaunchingWithOptions:v7];
+  [(MTAppDelegate_Shared *)&v17 application:applicationCopy didFinishLaunchingWithOptions:optionsCopy];
   v10 = +[PFRestrictionsController shared];
   [v10 presentLaunchAlertIfNeeded];
 
   v11 = +[UMUserManager sharedManager];
-  v12 = [v11 isMultiUser];
+  isMultiUser = [v11 isMultiUser];
 
-  if (v12)
+  if (isMultiUser)
   {
     v13 = +[UMUserManager sharedManager];
     [v13 registerUserSwitchStakeHolder:self];
   }
 
-  v14 = [self->_internalAppDelegate application:v6 didFinishLaunchingWithOptions:v7];
-  v15 = [v7 valueForKey:UIApplicationLaunchOptionsShortcutItemKey];
+  v14 = [self->_internalAppDelegate application:applicationCopy didFinishLaunchingWithOptions:optionsCopy];
+  v15 = [optionsCopy valueForKey:UIApplicationLaunchOptionsShortcutItemKey];
   if (v15)
   {
     [(MTAppDelegate_iOS *)self performActionForShortcutItem:v15 completionHandler:0];
@@ -205,46 +205,46 @@
   return v14;
 }
 
-- (void)application:(id)a3 handleEventsForBackgroundURLSession:(id)a4 completionHandler:(id)a5
+- (void)application:(id)application handleEventsForBackgroundURLSession:(id)session completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  applicationCopy = application;
+  sessionCopy = session;
+  handlerCopy = handler;
   v11 = _MTLogCategoryLifecycle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v16 = v9;
+    v16 = sessionCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Received handleEventsForBackgroundURLSession, identifier %{public}@", buf, 0xCu);
   }
 
-  v12 = [(MTAppDelegate_iOS *)self libraryDataProvider];
-  v13 = [v12 handleEventsForBackgroundURLSessionWithIdentifier:v9 handler:v10];
+  libraryDataProvider = [(MTAppDelegate_iOS *)self libraryDataProvider];
+  v13 = [libraryDataProvider handleEventsForBackgroundURLSessionWithIdentifier:sessionCopy handler:handlerCopy];
 
   if ((v13 & 1) == 0)
   {
     v14.receiver = self;
     v14.super_class = MTAppDelegate_iOS;
-    [(MTAppDelegate_Shared *)&v14 application:v8 handleEventsForBackgroundURLSession:v9 completionHandler:v10];
+    [(MTAppDelegate_Shared *)&v14 application:applicationCopy handleEventsForBackgroundURLSession:sessionCopy completionHandler:handlerCopy];
   }
 }
 
-- (void)applicationDidBecomeActive:(id)a3
+- (void)applicationDidBecomeActive:(id)active
 {
-  v4 = a3;
+  activeCopy = active;
   v5 = _MTLogCategoryLifecycle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = +[MTReachability sharedInstance];
     *buf = 67109120;
-    v16 = [v6 isReachable];
+    isReachable = [v6 isReachable];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received applicationDidBecomeActive, isNetworkReachable: %hhd", buf, 8u);
   }
 
   v14.receiver = self;
   v14.super_class = MTAppDelegate_iOS;
-  [(MTAppDelegate_Shared *)&v14 applicationDidBecomeActive:v4];
-  v7 = [(MTAppDelegate_iOS *)self _platformContentController];
+  [(MTAppDelegate_Shared *)&v14 applicationDidBecomeActive:activeCopy];
+  _platformContentController = [(MTAppDelegate_iOS *)self _platformContentController];
   if ([(MTAppDelegate_iOS *)self optionDown])
   {
     v8 = +[MTWelcomeUtil shouldShowWelcome]^ 1;
@@ -255,11 +255,11 @@
     v8 = 0;
   }
 
-  if (([v7 isMigrationPossible] & 1) != 0 || v8)
+  if (([_platformContentController isMigrationPossible] & 1) != 0 || v8)
   {
     v10 = +[MTDB sharedInstance];
-    v11 = [v10 mainQueueContext];
-    v9 = [v11 countOfPodcasts] == 0;
+    mainQueueContext = [v10 mainQueueContext];
+    v9 = [mainQueueContext countOfPodcasts] == 0;
   }
 
   else
@@ -273,69 +273,69 @@
   v12[3] = &unk_1004D8748;
   v13 = v9;
   v12[4] = self;
-  [v7 performMigrationIfNecessaryWithOptionKeyDown:v8 :v12];
-  [self->_internalAppDelegate applicationDidBecomeActive:v4];
+  [_platformContentController performMigrationIfNecessaryWithOptionKeyDown:v8 :v12];
+  [self->_internalAppDelegate applicationDidBecomeActive:activeCopy];
 }
 
-- (void)applicationWillTerminate:(id)a3
+- (void)applicationWillTerminate:(id)terminate
 {
-  v4 = a3;
+  terminateCopy = terminate;
   v5 = _MTLogCategoryLifecycle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = +[MTReachability sharedInstance];
     *buf = 67109120;
-    v9 = [v6 isReachable];
+    isReachable = [v6 isReachable];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received applicationWillTerminate, isNetworkReachable: %hhd", buf, 8u);
   }
 
-  [self->_internalAppDelegate applicationWillTerminate:v4];
+  [self->_internalAppDelegate applicationWillTerminate:terminateCopy];
   v7.receiver = self;
   v7.super_class = MTAppDelegate_iOS;
-  [(MTAppDelegate_Shared *)&v7 applicationWillTerminate:v4];
+  [(MTAppDelegate_Shared *)&v7 applicationWillTerminate:terminateCopy];
 }
 
 - (void)switchToLibraryIfNowHasContent
 {
   v3 = +[MTDB sharedInstance];
-  v5 = [v3 mainQueueContext];
+  mainQueueContext = [v3 mainQueueContext];
 
-  if ([v5 countOfPodcasts])
+  if ([mainQueueContext countOfPodcasts])
   {
-    v4 = [(MTAppDelegate_Shared *)self appController];
-    [v4 selectMyPodcastsTab];
+    appController = [(MTAppDelegate_Shared *)self appController];
+    [appController selectMyPodcastsTab];
   }
 }
 
-- (void)applicationWillResignActive:(id)a3
+- (void)applicationWillResignActive:(id)active
 {
-  v4 = a3;
+  activeCopy = active;
   v5 = _MTLogCategoryLifecycle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = +[MTReachability sharedInstance];
     *buf = 67109120;
-    v10 = [v6 isReachable];
+    isReachable = [v6 isReachable];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received applicationWillResignActive, isNetworkReachable: %hhd", buf, 8u);
   }
 
   v8.receiver = self;
   v8.super_class = MTAppDelegate_iOS;
-  [(MTAppDelegate_Shared *)&v8 applicationWillResignActive:v4];
+  [(MTAppDelegate_Shared *)&v8 applicationWillResignActive:activeCopy];
 
   v7 = +[MTNotificationManager sharedInstance];
   [v7 processNotificationsWithReason:@"Application Resign"];
 }
 
-- (void)applicationDidEnterBackground:(id)a3
+- (void)applicationDidEnterBackground:(id)background
 {
-  v4 = a3;
+  backgroundCopy = background;
   v5 = _MTLogCategoryLifecycle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = +[MTReachability sharedInstance];
     *buf = 67109120;
-    v12 = [v6 isReachable];
+    isReachable = [v6 isReachable];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received applicationDidEnterBackground, isNetworkReachable: %hhd", buf, 8u);
   }
 
@@ -348,45 +348,45 @@
   v9 = +[MTAppShortcutManager sharedInstance];
   [v9 updateShortcutItems];
 
-  [self->_internalAppDelegate applicationDidEnterBackground:v4];
+  [self->_internalAppDelegate applicationDidEnterBackground:backgroundCopy];
   v10.receiver = self;
   v10.super_class = MTAppDelegate_iOS;
-  [(MTAppDelegate_Shared *)&v10 applicationDidEnterBackground:v4];
+  [(MTAppDelegate_Shared *)&v10 applicationDidEnterBackground:backgroundCopy];
 }
 
-- (void)applicationWillEnterForeground:(id)a3
+- (void)applicationWillEnterForeground:(id)foreground
 {
-  v4 = a3;
+  foregroundCopy = foreground;
   v5 = _MTLogCategoryLifecycle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = +[MTReachability sharedInstance];
     *buf = 67109120;
-    v9 = [v6 isReachable];
+    isReachable = [v6 isReachable];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received applicationWillEnterForeground, isNetworkReachable: %hhd", buf, 8u);
   }
 
   v7.receiver = self;
   v7.super_class = MTAppDelegate_iOS;
-  [(MTAppDelegate_Shared *)&v7 applicationWillEnterForeground:v4];
+  [(MTAppDelegate_Shared *)&v7 applicationWillEnterForeground:foregroundCopy];
 }
 
-- (BOOL)application:(id)a3 openURL:(id)a4 options:(id)a5
+- (BOOL)application:(id)application openURL:(id)l options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  applicationCopy = application;
+  lCopy = l;
+  optionsCopy = options;
   v11 = _MTLogCategoryLifecycle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v9 absoluteString];
+    absoluteString = [lCopy absoluteString];
     *buf = 138412290;
-    v18 = v12;
+    v18 = absoluteString;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Received openURL: url: %@", buf, 0xCu);
   }
 
   internalAppDelegate = self->_internalAppDelegate;
-  if (internalAppDelegate && [internalAppDelegate application:v8 openURL:v9 options:v10])
+  if (internalAppDelegate && [internalAppDelegate application:applicationCopy openURL:lCopy options:optionsCopy])
   {
     v14 = 1;
   }
@@ -395,17 +395,17 @@
   {
     v16.receiver = self;
     v16.super_class = MTAppDelegate_iOS;
-    v14 = [(MTAppDelegate_Shared *)&v16 application:v8 openURL:v9 options:v10];
+    v14 = [(MTAppDelegate_Shared *)&v16 application:applicationCopy openURL:lCopy options:optionsCopy];
   }
 
   return v14;
 }
 
-- (unint64_t)application:(id)a3 supportedInterfaceOrientationsForWindow:(id)a4
+- (unint64_t)application:(id)application supportedInterfaceOrientationsForWindow:(id)window
 {
-  v4 = a4;
+  windowCopy = window;
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 supportedInterfaceOrientationsForWindow:v4];
+  v6 = [v5 supportedInterfaceOrientationsForWindow:windowCopy];
 
   return v6;
 }
@@ -442,67 +442,67 @@
 - (void)willSwitchUser
 {
   v2 = +[MTPlayerController defaultInstance];
-  v3 = [v2 isPlayingLocally];
+  isPlayingLocally = [v2 isPlayingLocally];
 
-  if (v3)
+  if (isPlayingLocally)
   {
     v4 = +[MTPlayerController defaultInstance];
     [v4 pauseLocalPlayerWithInitiator:2];
   }
 }
 
-- (id)createWindowWithScene:(id)a3
+- (id)createWindowWithScene:(id)scene
 {
-  v3 = a3;
+  sceneCopy = scene;
   v4 = +[NSUserDefaults standardUserDefaults];
   [v4 registerDefaults:&off_100502528];
 
-  v5 = [_TtC8Podcasts11AppDelegate createWindowWithScene:v3];
+  v5 = [_TtC8Podcasts11AppDelegate createWindowWithScene:sceneCopy];
 
   return v5;
 }
 
-- (BOOL)canOpenURL:(id)a3
+- (BOOL)canOpenURL:(id)l
 {
-  v4 = a3;
-  v5 = [(MTAppDelegate_iOS *)self rootViewController];
-  v6 = [v5 mt_topViewController];
+  lCopy = l;
+  rootViewController = [(MTAppDelegate_iOS *)self rootViewController];
+  mt_topViewController = [rootViewController mt_topViewController];
 
-  v7 = [[MTURLPresentationController alloc] initWithURL:v4];
-  LOBYTE(v4) = [(MTURLPresentationController *)v7 canShowWithPresentingViewController:v6];
+  v7 = [[MTURLPresentationController alloc] initWithURL:lCopy];
+  LOBYTE(lCopy) = [(MTURLPresentationController *)v7 canShowWithPresentingViewController:mt_topViewController];
 
-  return v4;
+  return lCopy;
 }
 
-- (void)openURL:(id)a3
+- (void)openURL:(id)l
 {
-  v4 = a3;
-  v5 = [(MTAppDelegate_iOS *)self rootViewController];
-  v7 = [v5 mt_topViewController];
+  lCopy = l;
+  rootViewController = [(MTAppDelegate_iOS *)self rootViewController];
+  mt_topViewController = [rootViewController mt_topViewController];
 
-  v6 = [[MTURLPresentationController alloc] initWithURL:v4];
-  [(MTURLPresentationController *)v6 showWithPresentingViewController:v7];
+  v6 = [[MTURLPresentationController alloc] initWithURL:lCopy];
+  [(MTURLPresentationController *)v6 showWithPresentingViewController:mt_topViewController];
 }
 
-- (void)application:(id)a3 handleStateRestorationWith:(id)a4
+- (void)application:(id)application handleStateRestorationWith:(id)with
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(MTAppDelegate_iOS *)self internalAppDelegate];
+  applicationCopy = application;
+  withCopy = with;
+  internalAppDelegate = [(MTAppDelegate_iOS *)self internalAppDelegate];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v9 = [(MTAppDelegate_iOS *)self internalAppDelegate];
-    [v9 application:v10 openStateRestorationActivity:v6];
+    internalAppDelegate2 = [(MTAppDelegate_iOS *)self internalAppDelegate];
+    [internalAppDelegate2 application:applicationCopy openStateRestorationActivity:withCopy];
   }
 }
 
 - (void)startLibraryUpdate
 {
-  v3 = [(MTAppDelegate_Shared *)self updateQueue];
-  [v3 cancelAllOperations];
+  updateQueue = [(MTAppDelegate_Shared *)self updateQueue];
+  [updateQueue cancelAllOperations];
 
   v4 = +[MTMediaLibraryUpdater sharedInstance];
   [v4 startObservingMediaLibrary];
@@ -514,22 +514,22 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "library updater scheduled", buf, 2u);
   }
 
-  v6 = [(MTAppDelegate_Shared *)self updateQueue];
-  [v6 addOperationWithBlock:&stru_1004DD3C0];
+  updateQueue2 = [(MTAppDelegate_Shared *)self updateQueue];
+  [updateQueue2 addOperationWithBlock:&stru_1004DD3C0];
 
-  v7 = [(MTAppDelegate_Shared *)self updateQueue];
+  updateQueue3 = [(MTAppDelegate_Shared *)self updateQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100129E8C;
   v8[3] = &unk_1004D8358;
   v8[4] = self;
-  [v7 addOperationWithBlock:v8];
+  [updateQueue3 addOperationWithBlock:v8];
 }
 
-- (void)application:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5
+- (void)application:(id)application performActionForShortcutItem:(id)item completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
+  handlerCopy = handler;
+  itemCopy = item;
   v9 = _MTLogCategoryLifecycle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -537,26 +537,26 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Received performActionForShortcutItem", v10, 2u);
   }
 
-  [(MTAppDelegate_iOS *)self performActionForShortcutItem:v8 completionHandler:v7];
+  [(MTAppDelegate_iOS *)self performActionForShortcutItem:itemCopy completionHandler:handlerCopy];
 }
 
-- (void)performActionForShortcutItem:(id)a3 completionHandler:(id)a4
+- (void)performActionForShortcutItem:(id)item completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  itemCopy = item;
   v7 = +[MTAppShortcutManager sharedInstance];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10012A03C;
   v9[3] = &unk_1004D8838;
-  v10 = v5;
-  v8 = v5;
-  [v7 performActionForShortcutItem:v6 completionHandler:v9];
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  [v7 performActionForShortcutItem:itemCopy completionHandler:v9];
 }
 
-- (id)application:(id)a3 handlerForIntent:(id)a4
+- (id)application:(id)application handlerForIntent:(id)intent
 {
-  v4 = a4;
+  intentCopy = intent;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -573,16 +573,16 @@
   return v6;
 }
 
-- (BOOL)application:(id)a3 continueUserActivity:(id)a4 restorationHandler:(id)a5
+- (BOOL)application:(id)application continueUserActivity:(id)activity restorationHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  applicationCopy = application;
+  activityCopy = activity;
+  handlerCopy = handler;
   v13.receiver = self;
   v13.super_class = MTAppDelegate_iOS;
-  if ([(MTAppDelegate_Shared *)&v13 application:v8 continueUserActivity:v9 restorationHandler:v10])
+  if ([(MTAppDelegate_Shared *)&v13 application:applicationCopy continueUserActivity:activityCopy restorationHandler:handlerCopy])
   {
-    v11 = [self->_internalAppDelegate application:v8 continueUserActivity:v9 restorationHandler:v10];
+    v11 = [self->_internalAppDelegate application:applicationCopy continueUserActivity:activityCopy restorationHandler:handlerCopy];
   }
 
   else

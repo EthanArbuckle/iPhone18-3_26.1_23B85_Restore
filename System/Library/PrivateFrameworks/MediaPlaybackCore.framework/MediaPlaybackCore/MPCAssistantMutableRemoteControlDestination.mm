@@ -1,57 +1,57 @@
 @interface MPCAssistantMutableRemoteControlDestination
-- (void)setAppBundleID:(id)a3;
-- (void)setHashedOutputDeviceUIDs:(id)a3;
-- (void)setIsCompanion:(BOOL)a3;
-- (void)setIsLocal:(BOOL)a3;
-- (void)setOrigin:(void *)a3;
-- (void)setOriginatingDeviceControl:(BOOL)a3;
-- (void)setOriginatingOutputDeviceUID:(id)a3;
-- (void)setOutputDeviceUIDs:(id)a3;
-- (void)setOutputGroupID:(id)a3;
-- (void)setOutputGroups:(id)a3;
-- (void)setPlayerID:(id)a3;
-- (void)setSingleGroup:(BOOL)a3;
+- (void)setAppBundleID:(id)d;
+- (void)setHashedOutputDeviceUIDs:(id)ds;
+- (void)setIsCompanion:(BOOL)companion;
+- (void)setIsLocal:(BOOL)local;
+- (void)setOrigin:(void *)origin;
+- (void)setOriginatingDeviceControl:(BOOL)control;
+- (void)setOriginatingOutputDeviceUID:(id)d;
+- (void)setOutputDeviceUIDs:(id)ds;
+- (void)setOutputGroupID:(id)d;
+- (void)setOutputGroups:(id)groups;
+- (void)setPlayerID:(id)d;
+- (void)setSingleGroup:(BOOL)group;
 @end
 
 @implementation MPCAssistantMutableRemoteControlDestination
 
-- (void)setIsLocal:(BOOL)a3
+- (void)setIsLocal:(BOOL)local
 {
-  if (self->super._isLocal != a3)
+  if (self->super._isLocal != local)
   {
-    self->super._isLocal = a3;
+    self->super._isLocal = local;
   }
 }
 
-- (void)setIsCompanion:(BOOL)a3
+- (void)setIsCompanion:(BOOL)companion
 {
-  if (self->super._isCompanion != a3)
+  if (self->super._isCompanion != companion)
   {
-    self->super._isCompanion = a3;
+    self->super._isCompanion = companion;
   }
 }
 
-- (void)setOriginatingDeviceControl:(BOOL)a3
+- (void)setOriginatingDeviceControl:(BOOL)control
 {
-  if (self->super._originatingDeviceControl != a3)
+  if (self->super._originatingDeviceControl != control)
   {
-    self->super._originatingDeviceControl = a3;
+    self->super._originatingDeviceControl = control;
   }
 }
 
-- (void)setSingleGroup:(BOOL)a3
+- (void)setSingleGroup:(BOOL)group
 {
-  if (self->super._singleGroup != a3)
+  if (self->super._singleGroup != group)
   {
-    self->super._singleGroup = a3;
+    self->super._singleGroup = group;
   }
 }
 
-- (void)setOriginatingOutputDeviceUID:(id)a3
+- (void)setOriginatingOutputDeviceUID:(id)d
 {
-  if (self->super._originatingOutputDeviceUID != a3)
+  if (self->super._originatingOutputDeviceUID != d)
   {
-    v5 = [a3 copy];
+    v5 = [d copy];
     originatingOutputDeviceUID = self->super._originatingOutputDeviceUID;
     self->super._originatingOutputDeviceUID = v5;
 
@@ -59,11 +59,11 @@
   }
 }
 
-- (void)setOutputGroupID:(id)a3
+- (void)setOutputGroupID:(id)d
 {
-  if (self->super._outputGroupID != a3)
+  if (self->super._outputGroupID != d)
   {
-    v5 = [a3 copy];
+    v5 = [d copy];
     outputGroupID = self->super._outputGroupID;
     self->super._outputGroupID = v5;
 
@@ -71,11 +71,11 @@
   }
 }
 
-- (void)setOutputGroups:(id)a3
+- (void)setOutputGroups:(id)groups
 {
-  if (self->super._outputGroups != a3)
+  if (self->super._outputGroups != groups)
   {
-    v5 = [a3 copy];
+    v5 = [groups copy];
     outputGroups = self->super._outputGroups;
     self->super._outputGroups = v5;
 
@@ -83,11 +83,11 @@
   }
 }
 
-- (void)setHashedOutputDeviceUIDs:(id)a3
+- (void)setHashedOutputDeviceUIDs:(id)ds
 {
-  if (self->super._hashedOutputDeviceUIDs != a3)
+  if (self->super._hashedOutputDeviceUIDs != ds)
   {
-    v5 = [a3 copy];
+    v5 = [ds copy];
     hashedOutputDeviceUIDs = self->super._hashedOutputDeviceUIDs;
     self->super._hashedOutputDeviceUIDs = v5;
 
@@ -95,11 +95,11 @@
   }
 }
 
-- (void)setOutputDeviceUIDs:(id)a3
+- (void)setOutputDeviceUIDs:(id)ds
 {
-  if (self->super._outputDeviceUIDs != a3)
+  if (self->super._outputDeviceUIDs != ds)
   {
-    v5 = [a3 copy];
+    v5 = [ds copy];
     outputDeviceUIDs = self->super._outputDeviceUIDs;
     self->super._outputDeviceUIDs = v5;
 
@@ -107,19 +107,19 @@
   }
 }
 
-- (void)setOrigin:(void *)a3
+- (void)setOrigin:(void *)origin
 {
   origin = self->super._origin;
-  if (origin != a3)
+  if (origin != origin)
   {
     if (origin)
     {
       CFRelease(origin);
     }
 
-    if (a3)
+    if (origin)
     {
-      v6 = CFRetain(a3);
+      v6 = CFRetain(origin);
     }
 
     else
@@ -131,11 +131,11 @@
   }
 }
 
-- (void)setPlayerID:(id)a3
+- (void)setPlayerID:(id)d
 {
-  if (self->super._playerID != a3)
+  if (self->super._playerID != d)
   {
-    v5 = [a3 copy];
+    v5 = [d copy];
     playerID = self->super._playerID;
     self->super._playerID = v5;
 
@@ -143,11 +143,11 @@
   }
 }
 
-- (void)setAppBundleID:(id)a3
+- (void)setAppBundleID:(id)d
 {
-  if (self->super._appBundleID != a3)
+  if (self->super._appBundleID != d)
   {
-    v5 = [a3 copy];
+    v5 = [d copy];
     appBundleID = self->super._appBundleID;
     self->super._appBundleID = v5;
 

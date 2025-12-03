@@ -1,34 +1,34 @@
 @interface HDMHLoggingPatternEscalationsManager
-- (BOOL)_areEscalationsSnoozedWithCurrentDate:(id)a3 gregorianCalendar:(id)a4 featureSettings:(id)a5;
-- (BOOL)_areEscalationsSupportedAndNotSnoozedWithCurrentDate:(id)a3 gregorianCalendar:(id)a4 featureStatus:(id)a5;
-- (BOOL)promptedAssessment:(id *)a3 featureStatus:(id)a4 pendingStateOfMind:(id)a5 error:(id *)a6;
-- (HDMHLoggingPatternEscalationsManager)initWithProfile:(id)a3;
+- (BOOL)_areEscalationsSnoozedWithCurrentDate:(id)date gregorianCalendar:(id)calendar featureSettings:(id)settings;
+- (BOOL)_areEscalationsSupportedAndNotSnoozedWithCurrentDate:(id)date gregorianCalendar:(id)calendar featureStatus:(id)status;
+- (BOOL)promptedAssessment:(id *)assessment featureStatus:(id)status pendingStateOfMind:(id)mind error:(id *)error;
+- (HDMHLoggingPatternEscalationsManager)initWithProfile:(id)profile;
 - (HDProfile)profile;
 - (id)_currentDate;
 - (id)_currentGregorianCalendar;
-- (id)_lastEscalationAcknowledgmentDateWithFeatureSettings:(id)a3;
+- (id)_lastEscalationAcknowledgmentDateWithFeatureSettings:(id)settings;
 - (void)_notifyObserversForPromptedAssessmentUpdate;
 - (void)_startObserving;
 - (void)_stopObserving;
 - (void)dealloc;
-- (void)registerObserver:(id)a3;
-- (void)samplesAdded:(id)a3 anchor:(id)a4;
-- (void)samplesOfTypesWereRemoved:(id)a3 anchor:(id)a4;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)samplesAdded:(id)added anchor:(id)anchor;
+- (void)samplesOfTypesWereRemoved:(id)removed anchor:(id)anchor;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation HDMHLoggingPatternEscalationsManager
 
-- (HDMHLoggingPatternEscalationsManager)initWithProfile:(id)a3
+- (HDMHLoggingPatternEscalationsManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v13.receiver = self;
   v13.super_class = HDMHLoggingPatternEscalationsManager;
   v5 = [(HDMHLoggingPatternEscalationsManager *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = objc_alloc(MEMORY[0x277CCD738]);
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
@@ -52,13 +52,13 @@
   [(HDMHLoggingPatternEscalationsManager *)&v3 dealloc];
 }
 
-- (BOOL)promptedAssessment:(id *)a3 featureStatus:(id)a4 pendingStateOfMind:(id)a5 error:(id *)a6
+- (BOOL)promptedAssessment:(id *)assessment featureStatus:(id)status pendingStateOfMind:(id)mind error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = [(HDMHLoggingPatternEscalationsManager *)self _currentDate];
-  v13 = [(HDMHLoggingPatternEscalationsManager *)self _currentGregorianCalendar];
-  v14 = [(HDMHLoggingPatternEscalationsManager *)self _areEscalationsSupportedAndNotSnoozedWithCurrentDate:v12 gregorianCalendar:v13 featureStatus:v11];
+  mindCopy = mind;
+  statusCopy = status;
+  _currentDate = [(HDMHLoggingPatternEscalationsManager *)self _currentDate];
+  _currentGregorianCalendar = [(HDMHLoggingPatternEscalationsManager *)self _currentGregorianCalendar];
+  v14 = [(HDMHLoggingPatternEscalationsManager *)self _areEscalationsSupportedAndNotSnoozedWithCurrentDate:_currentDate gregorianCalendar:_currentGregorianCalendar featureStatus:statusCopy];
 
   if (v14)
   {
@@ -67,7 +67,7 @@
     v17 = [(HDMHLoggingPatternDetector *)v15 initWithProfile:WeakRetained];
 
     v27 = 0;
-    v18 = [(HDMHLoggingPatternDetector *)v17 isUnpleasantLoggingPatternDetectedWithCurrentDate:v12 gregorianCalendar:v13 pendingStateOfMind:v10 error:&v27];
+    v18 = [(HDMHLoggingPatternDetector *)v17 isUnpleasantLoggingPatternDetectedWithCurrentDate:_currentDate gregorianCalendar:_currentGregorianCalendar pendingStateOfMind:mindCopy error:&v27];
     v19 = v27;
     v20 = v18 != 0;
     if (v18)
@@ -79,12 +79,12 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      v21 = [objc_alloc(MEMORY[0x277D280A0]) initWithEligibilityStartDate:v12 reason:2];
+      v21 = [objc_alloc(MEMORY[0x277D280A0]) initWithEligibilityStartDate:_currentDate reason:2];
       v22 = v21;
-      if (a3)
+      if (assessment)
       {
         v23 = v21;
-        *a3 = v22;
+        *assessment = v22;
       }
     }
 
@@ -100,10 +100,10 @@ LABEL_14:
       v22 = v19;
       if (v22)
       {
-        if (a6)
+        if (error)
         {
           v25 = v22;
-          *a6 = v22;
+          *error = v22;
         }
 
         else
@@ -122,21 +122,21 @@ LABEL_15:
   return v20;
 }
 
-- (BOOL)_areEscalationsSupportedAndNotSnoozedWithCurrentDate:(id)a3 gregorianCalendar:(id)a4 featureStatus:(id)a5
+- (BOOL)_areEscalationsSupportedAndNotSnoozedWithCurrentDate:(id)date gregorianCalendar:(id)calendar featureStatus:(id)status
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  calendarCopy = calendar;
+  statusCopy = status;
   v11 = *MEMORY[0x277CCBEA0];
-  v12 = [v10 objectForKeyedSubscript:*MEMORY[0x277CCBEA0]];
-  v13 = [v12 areAllRequirementsSatisfied];
+  v12 = [statusCopy objectForKeyedSubscript:*MEMORY[0x277CCBEA0]];
+  areAllRequirementsSatisfied = [v12 areAllRequirementsSatisfied];
 
-  if (v13)
+  if (areAllRequirementsSatisfied)
   {
-    v14 = [v10 onboardingRecord];
-    v15 = [v14 featureSettings];
-    v16 = [(HDMHLoggingPatternEscalationsManager *)self _areEscalationsSnoozedWithCurrentDate:v8 gregorianCalendar:v9 featureSettings:v15];
+    onboardingRecord = [statusCopy onboardingRecord];
+    featureSettings = [onboardingRecord featureSettings];
+    v16 = [(HDMHLoggingPatternEscalationsManager *)self _areEscalationsSnoozedWithCurrentDate:dateCopy gregorianCalendar:calendarCopy featureSettings:featureSettings];
 
     v17 = !v16;
   }
@@ -151,12 +151,12 @@ LABEL_15:
       v19 = v18;
       v20 = objc_opt_class();
       v21 = v20;
-      v22 = [v10 objectForKeyedSubscript:v11];
-      v23 = [v22 unsatisfiedRequirementIdentifiersDescription];
+      v22 = [statusCopy objectForKeyedSubscript:v11];
+      unsatisfiedRequirementIdentifiersDescription = [v22 unsatisfiedRequirementIdentifiersDescription];
       v26 = 138543618;
       v27 = v20;
       v28 = 2114;
-      v29 = v23;
+      v29 = unsatisfiedRequirementIdentifiersDescription;
       _os_log_impl(&dword_258977000, v19, OS_LOG_TYPE_DEFAULT, "[%{public}@] Escalations not supported due to: %{public}@", &v26, 0x16u);
 
       v17 = 0;
@@ -167,17 +167,17 @@ LABEL_15:
   return v17;
 }
 
-- (BOOL)_areEscalationsSnoozedWithCurrentDate:(id)a3 gregorianCalendar:(id)a4 featureSettings:(id)a5
+- (BOOL)_areEscalationsSnoozedWithCurrentDate:(id)date gregorianCalendar:(id)calendar featureSettings:(id)settings
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HDMHLoggingPatternEscalationsManager *)self _lastEscalationAcknowledgmentDateWithFeatureSettings:a5];
+  dateCopy = date;
+  calendarCopy = calendar;
+  v10 = [(HDMHLoggingPatternEscalationsManager *)self _lastEscalationAcknowledgmentDateWithFeatureSettings:settings];
   if (v10)
   {
-    v11 = [v9 hk_startOfDateByAddingDays:*MEMORY[0x277D28048] toDate:v10];
-    if ([v10 hk_isBeforeDate:v8])
+    v11 = [calendarCopy hk_startOfDateByAddingDays:*MEMORY[0x277D28048] toDate:v10];
+    if ([v10 hk_isBeforeDate:dateCopy])
     {
-      v12 = [v11 hk_isAfterDate:v8];
+      v12 = [v11 hk_isAfterDate:dateCopy];
     }
 
     else
@@ -194,9 +194,9 @@ LABEL_15:
   return v12;
 }
 
-- (id)_lastEscalationAcknowledgmentDateWithFeatureSettings:(id)a3
+- (id)_lastEscalationAcknowledgmentDateWithFeatureSettings:(id)settings
 {
-  v3 = [a3 numberForKey:*MEMORY[0x277D27FE8]];
+  v3 = [settings numberForKey:*MEMORY[0x277D27FE8]];
   v4 = v3;
   if (v3)
   {
@@ -234,18 +234,18 @@ LABEL_15:
   unitTest_gregorianCalendar = self->_unitTest_gregorianCalendar;
   if (unitTest_gregorianCalendar)
   {
-    v3 = unitTest_gregorianCalendar;
+    hk_gregorianCalendarWithLocalTimeZone = unitTest_gregorianCalendar;
   }
 
   else
   {
-    v3 = [MEMORY[0x277CBEA80] hk_gregorianCalendarWithLocalTimeZone];
+    hk_gregorianCalendarWithLocalTimeZone = [MEMORY[0x277CBEA80] hk_gregorianCalendarWithLocalTimeZone];
   }
 
-  return v3;
+  return hk_gregorianCalendarWithLocalTimeZone;
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
   observers = self->_observers;
   v4[0] = MEMORY[0x277D85DD0];
@@ -253,18 +253,18 @@ LABEL_15:
   v4[2] = __57__HDMHLoggingPatternEscalationsManager_registerObserver___block_invoke;
   v4[3] = &unk_2798AAB58;
   v4[4] = self;
-  [(HKObserverSet *)observers registerObserver:a3 queue:0 runIfFirstObserver:v4];
+  [(HKObserverSet *)observers registerObserver:observer queue:0 runIfFirstObserver:v4];
 }
 
 - (void)_startObserving
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v3 = [WeakRetained dataManager];
-  v4 = [MEMORY[0x277CCD8D8] stateOfMindType];
-  [v3 addObserver:self forDataType:v4];
+  dataManager = [WeakRetained dataManager];
+  stateOfMindType = [MEMORY[0x277CCD8D8] stateOfMindType];
+  [dataManager addObserver:self forDataType:stateOfMindType];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
   observers = self->_observers;
   v4[0] = MEMORY[0x277D85DD0];
@@ -272,15 +272,15 @@ LABEL_15:
   v4[2] = __59__HDMHLoggingPatternEscalationsManager_unregisterObserver___block_invoke;
   v4[3] = &unk_2798AAB58;
   v4[4] = self;
-  [(HKObserverSet *)observers unregisterObserver:a3 runIfLastObserver:v4];
+  [(HKObserverSet *)observers unregisterObserver:observer runIfLastObserver:v4];
 }
 
 - (void)_stopObserving
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v3 = [WeakRetained dataManager];
-  v4 = [MEMORY[0x277CCD8D8] stateOfMindType];
-  [v3 removeObserver:self forDataType:v4];
+  dataManager = [WeakRetained dataManager];
+  stateOfMindType = [MEMORY[0x277CCD8D8] stateOfMindType];
+  [dataManager removeObserver:self forDataType:stateOfMindType];
 }
 
 - (void)_notifyObserversForPromptedAssessmentUpdate
@@ -294,7 +294,7 @@ LABEL_15:
   [(HKObserverSet *)observers notifyObservers:v3];
 }
 
-- (void)samplesAdded:(id)a3 anchor:(id)a4
+- (void)samplesAdded:(id)added anchor:(id)anchor
 {
   v10 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
@@ -312,7 +312,7 @@ LABEL_15:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)samplesOfTypesWereRemoved:(id)a3 anchor:(id)a4
+- (void)samplesOfTypesWereRemoved:(id)removed anchor:(id)anchor
 {
   v10 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();

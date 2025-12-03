@@ -3,21 +3,21 @@
 - (void)addGridlinesToScene;
 - (void)addLabelsToScene;
 - (void)addObjectsToScene;
-- (void)addPartsForEnumerator:(id)a3 styleIndex:(unint64_t)a4;
+- (void)addPartsForEnumerator:(id)enumerator styleIndex:(unint64_t)index;
 - (void)addSageBoundsToScene;
 @end
 
 @implementation TSCH3DChartStagedAxisScene
 
-- (void)addPartsForEnumerator:(id)a3 styleIndex:(unint64_t)a4
+- (void)addPartsForEnumerator:(id)enumerator styleIndex:(unint64_t)index
 {
-  v30 = a3;
-  if (v30)
+  enumeratorCopy = enumerator;
+  if (enumeratorCopy)
   {
     v10 = objc_msgSend_scene(self, v6, v7, v8, v9);
     v15 = objc_msgSend_chartInfo(self, v11, v12, v13, v14);
-    v20 = objc_msgSend_partWithEnumerator_chartInfo_styleIndex_(TSCH3DChartAxisLabelsSceneObject, v16, v17, v18, v19, v30, v15, a4);
-    v25 = objc_msgSend_kind(v30, v21, v22, v23, v24);
+    v20 = objc_msgSend_partWithEnumerator_chartInfo_styleIndex_(TSCH3DChartAxisLabelsSceneObject, v16, v17, v18, v19, enumeratorCopy, v15, index);
+    v25 = objc_msgSend_kind(enumeratorCopy, v21, v22, v23, v24);
     objc_msgSend_setPart_forType_(v10, v26, v27, v28, v29, v20, v25);
   }
 }

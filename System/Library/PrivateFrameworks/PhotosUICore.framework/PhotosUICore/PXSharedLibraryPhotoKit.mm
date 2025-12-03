@@ -3,34 +3,34 @@
 - (NSArray)participants;
 - (PXSharedLibraryParticipant)owner;
 - (PXSharedLibraryPhotoKit)init;
-- (PXSharedLibraryPhotoKit)initWithLibraryScope:(id)a3;
+- (PXSharedLibraryPhotoKit)initWithLibraryScope:(id)scope;
 - (PXSharedLibraryRule)rule;
 - (id)sourceLibraryInfo;
 - (void)_updateOwner;
 - (void)_updateParticipants;
-- (void)acceptInvitationWithRule:(id)a3 progress:(id)a4 completion:(id)a5;
-- (void)exitWithRetentionPolicy:(int64_t)a3 presentationEnvironment:(id)a4 progress:(id)a5 completion:(id)a6;
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3;
-- (void)previewInvitationWithRule:(id)a3 progress:(id)a4 completion:(id)a5;
-- (void)publishPreviewWithPresentationEnvironment:(id)a3 progress:(id)a4 completion:(id)a5;
-- (void)restoreDeclinedInvitationWithCompletion:(id)a3;
+- (void)acceptInvitationWithRule:(id)rule progress:(id)progress completion:(id)completion;
+- (void)exitWithRetentionPolicy:(int64_t)policy presentationEnvironment:(id)environment progress:(id)progress completion:(id)completion;
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue;
+- (void)previewInvitationWithRule:(id)rule progress:(id)progress completion:(id)completion;
+- (void)publishPreviewWithPresentationEnvironment:(id)environment progress:(id)progress completion:(id)completion;
+- (void)restoreDeclinedInvitationWithCompletion:(id)completion;
 @end
 
 @implementation PXSharedLibraryPhotoKit
 
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue
 {
-  v4 = [a3 changeDetailsForFetchResult:self->_participants];
+  v4 = [queue changeDetailsForFetchResult:self->_participants];
   if (v4)
   {
     v8 = v4;
-    v5 = [v4 fetchResultAfterChanges];
+    fetchResultAfterChanges = [v4 fetchResultAfterChanges];
     participants = self->_participants;
-    self->_participants = v5;
+    self->_participants = fetchResultAfterChanges;
 
     [(PXSharedLibraryPhotoKit *)self _updateOwner];
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 postNotificationName:@"PXSharedLibraryParticipantsDidChange" object:self userInfo:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"PXSharedLibraryParticipantsDidChange" object:self userInfo:0];
 
     v4 = v8;
   }
@@ -41,21 +41,21 @@
   v12[1] = *MEMORY[0x1E69E9840];
   if (!self->_participants)
   {
-    v3 = [(PHLibraryScope *)self->_libraryScope photoLibrary];
-    [v3 px_registerChangeObserver:self];
+    photoLibrary = [(PHLibraryScope *)self->_libraryScope photoLibrary];
+    [photoLibrary px_registerChangeObserver:self];
   }
 
-  v4 = [(PHLibraryScope *)self->_libraryScope photoLibrary];
-  v5 = [v4 librarySpecificFetchOptions];
+  photoLibrary2 = [(PHLibraryScope *)self->_libraryScope photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary2 librarySpecificFetchOptions];
 
   v6 = MEMORY[0x1E696AEB0];
   v7 = NSStringFromSelector(sel_isCurrentUser);
   v8 = [v6 sortDescriptorWithKey:v7 ascending:0];
   v12[0] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-  [v5 setSortDescriptors:v9];
+  [librarySpecificFetchOptions setSortDescriptors:v9];
 
-  v10 = [MEMORY[0x1E6978AC0] fetchParticipantsInShare:self->_libraryScope options:v5];
+  v10 = [MEMORY[0x1E6978AC0] fetchParticipantsInShare:self->_libraryScope options:librarySpecificFetchOptions];
   participants = self->_participants;
   self->_participants = v10;
 
@@ -88,32 +88,32 @@ void __39__PXSharedLibraryPhotoKit__updateOwner__block_invoke(uint64_t a1, void 
   }
 }
 
-- (void)exitWithRetentionPolicy:(int64_t)a3 presentationEnvironment:(id)a4 progress:(id)a5 completion:(id)a6
+- (void)exitWithRetentionPolicy:(int64_t)policy presentationEnvironment:(id)environment progress:(id)progress completion:(id)completion
 {
-  if (a3 == 2)
+  if (policy == 2)
   {
     v6 = 2;
   }
 
   else
   {
-    v6 = a3 == 1;
+    v6 = policy == 1;
   }
 
-  PXSharedLibraryExitLibraryScope(self->_libraryScope, v6, a5, a4, a6);
+  PXSharedLibraryExitLibraryScope(self->_libraryScope, v6, progress, environment, completion);
 }
 
-- (void)publishPreviewWithPresentationEnvironment:(id)a3 progress:(id)a4 completion:(id)a5
+- (void)publishPreviewWithPresentationEnvironment:(id)environment progress:(id)progress completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   libraryScope = self->_libraryScope;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __89__PXSharedLibraryPhotoKit_publishPreviewWithPresentationEnvironment_progress_completion___block_invoke;
   v11[3] = &unk_1E7747790;
-  v12 = v8;
-  v10 = v8;
-  PXSharedLibraryPublishPreviewLibraryScope(libraryScope, a4, a3, v11);
+  v12 = completionCopy;
+  v10 = completionCopy;
+  PXSharedLibraryPublishPreviewLibraryScope(libraryScope, progress, environment, v11);
 }
 
 void __89__PXSharedLibraryPhotoKit_publishPreviewWithPresentationEnvironment_progress_completion___block_invoke(uint64_t a1, void *a2)
@@ -131,16 +131,16 @@ void __89__PXSharedLibraryPhotoKit_publishPreviewWithPresentationEnvironment_pro
   }
 }
 
-- (void)restoreDeclinedInvitationWithCompletion:(id)a3
+- (void)restoreDeclinedInvitationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   libraryScope = self->_libraryScope;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__PXSharedLibraryPhotoKit_restoreDeclinedInvitationWithCompletion___block_invoke;
   v7[3] = &unk_1E7747790;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   PXSharedLibraryRestoreDeclinedLibraryScopeInvitation(libraryScope, v7);
 }
 
@@ -159,77 +159,77 @@ void __67__PXSharedLibraryPhotoKit_restoreDeclinedInvitationWithCompletion___blo
   }
 }
 
-- (void)acceptInvitationWithRule:(id)a3 progress:(id)a4 completion:(id)a5
+- (void)acceptInvitationWithRule:(id)rule progress:(id)progress completion:(id)completion
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
+  ruleCopy = rule;
+  progressCopy = progress;
+  completionCopy = completion;
   if ([(PXSharedLibraryPhotoKit *)self isInPreview])
   {
-    PXSharedLibraryAcceptLibraryScopeInvitationPreview(self->_libraryScope, v9);
+    PXSharedLibraryAcceptLibraryScopeInvitationPreview(self->_libraryScope, completionCopy);
   }
 
   else
   {
-    v10 = [v14 autoSharePolicy];
-    if (v10 == 2)
+    autoSharePolicy = [ruleCopy autoSharePolicy];
+    if (autoSharePolicy == 2)
     {
       v11 = 2;
     }
 
     else
     {
-      v11 = v10 == 1;
+      v11 = autoSharePolicy == 1;
     }
 
-    v12 = [v14 startDate];
-    v13 = [v14 personUUIDs];
-    PXSharedLibraryAcceptLibraryScopeInvitation(self->_libraryScope, v11, v12, v13, v8, v9);
+    startDate = [ruleCopy startDate];
+    personUUIDs = [ruleCopy personUUIDs];
+    PXSharedLibraryAcceptLibraryScopeInvitation(self->_libraryScope, v11, startDate, personUUIDs, progressCopy, completionCopy);
   }
 }
 
-- (void)previewInvitationWithRule:(id)a3 progress:(id)a4 completion:(id)a5
+- (void)previewInvitationWithRule:(id)rule progress:(id)progress completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 autoSharePolicy];
-  if (v11 == 2)
+  completionCopy = completion;
+  progressCopy = progress;
+  ruleCopy = rule;
+  autoSharePolicy = [ruleCopy autoSharePolicy];
+  if (autoSharePolicy == 2)
   {
     v12 = 2;
   }
 
   else
   {
-    v12 = v11 == 1;
+    v12 = autoSharePolicy == 1;
   }
 
-  v14 = [v10 startDate];
-  v13 = [v10 personUUIDs];
+  startDate = [ruleCopy startDate];
+  personUUIDs = [ruleCopy personUUIDs];
 
-  PXSharedLibraryPreviewLibraryScopeInvitation(self->_libraryScope, v12, v14, v13, v9, v8);
+  PXSharedLibraryPreviewLibraryScopeInvitation(self->_libraryScope, v12, startDate, personUUIDs, progressCopy, completionCopy);
 }
 
 - (id)sourceLibraryInfo
 {
   v3 = [PXSharedLibrarySourceLibraryInfoPhotoKit alloc];
-  v4 = [(PXSharedLibraryPhotoKit *)self libraryScope];
-  v5 = [v4 photoLibrary];
-  v6 = [(PXSharedLibrarySourceLibraryInfoPhotoKit *)v3 initWithPhotoLibrary:v5];
+  libraryScope = [(PXSharedLibraryPhotoKit *)self libraryScope];
+  photoLibrary = [libraryScope photoLibrary];
+  v6 = [(PXSharedLibrarySourceLibraryInfoPhotoKit *)v3 initWithPhotoLibrary:photoLibrary];
 
   return v6;
 }
 
 - ($F99D9A4FB75BC57F3386B8DC8EE08D7A)fetchItemCounts
 {
-  v4 = [(PXSharedLibraryPhotoKit *)self libraryScope];
-  v5 = [v4 photoLibrary];
-  v12 = [v5 librarySpecificFetchOptions];
+  libraryScope = [(PXSharedLibraryPhotoKit *)self libraryScope];
+  photoLibrary = [libraryScope photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
   v6 = [MEMORY[0x1E69BE540] predicateToIncludeSharedLibraryAssetsAllowingIndexingOnParticipationState:1];
-  [v12 setInternalPredicate:v6];
+  [librarySpecificFetchOptions setInternalPredicate:v6];
 
-  v7 = [MEMORY[0x1E6978630] fetchAssetsWithOptions:v12];
+  v7 = [MEMORY[0x1E6978630] fetchAssetsWithOptions:librarySpecificFetchOptions];
   *retstr = *off_1E7721F78;
   if ([v7 count])
   {
@@ -250,9 +250,9 @@ void __67__PXSharedLibraryPhotoKit_restoreDeclinedInvitationWithCompletion___blo
   if (!rule)
   {
     v4 = self->_libraryScope;
-    v5 = [(PHLibraryScope *)v4 autoSharePolicy];
-    v6 = v5 == 1;
-    if (v5 == 2)
+    autoSharePolicy = [(PHLibraryScope *)v4 autoSharePolicy];
+    v6 = autoSharePolicy == 1;
+    if (autoSharePolicy == 2)
     {
       v6 = 2;
     }
@@ -266,10 +266,10 @@ void __67__PXSharedLibraryPhotoKit_restoreDeclinedInvitationWithCompletion___blo
       v23 = __Block_byref_object_dispose__67163;
       v24 = 0;
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v8 = [(PHLibraryScope *)v4 photoLibrary];
-      v9 = [v8 librarySpecificFetchOptions];
+      photoLibrary = [(PHLibraryScope *)v4 photoLibrary];
+      librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-      v10 = [MEMORY[0x1E69788C0] fetchLibraryScopeRulesForLibraryScope:v4 options:v9];
+      v10 = [MEMORY[0x1E69788C0] fetchLibraryScopeRulesForLibraryScope:v4 options:librarySpecificFetchOptions];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = ___RuleForLibraryScope_block_invoke;
@@ -331,13 +331,13 @@ void __67__PXSharedLibraryPhotoKit_restoreDeclinedInvitationWithCompletion___blo
   return owner;
 }
 
-- (PXSharedLibraryPhotoKit)initWithLibraryScope:(id)a3
+- (PXSharedLibraryPhotoKit)initWithLibraryScope:(id)scope
 {
-  v6 = a3;
-  if (!v6)
+  scopeCopy = scope;
+  if (!scopeCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryPhotoKit.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"libraryScope"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryPhotoKit.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"libraryScope"}];
   }
 
   v11.receiver = self;
@@ -346,7 +346,7 @@ void __67__PXSharedLibraryPhotoKit_restoreDeclinedInvitationWithCompletion___blo
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_libraryScope, a3);
+    objc_storeStrong(&v7->_libraryScope, scope);
   }
 
   return v8;
@@ -354,8 +354,8 @@ void __67__PXSharedLibraryPhotoKit_restoreDeclinedInvitationWithCompletion___blo
 
 - (PXSharedLibraryPhotoKit)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryPhotoKit.m" lineNumber:42 description:{@"%s is not available as initializer", "-[PXSharedLibraryPhotoKit init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryPhotoKit.m" lineNumber:42 description:{@"%s is not available as initializer", "-[PXSharedLibraryPhotoKit init]"}];
 
   abort();
 }

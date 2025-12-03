@@ -1,12 +1,12 @@
 @interface CTXPCContextInfo
-+ (id)contextWithUUID:(id)a3 andAccountID:(id)a4 andSlot:(int64_t)a5;
-- (BOOL)isEqual:(id)a3;
-- (CTXPCContextInfo)initWithCoder:(id)a3;
-- (CTXPCContextInfo)initWithUUID:(id)a3 andAccountID:(id)a4 andSlot:(int64_t)a5;
++ (id)contextWithUUID:(id)d andAccountID:(id)iD andSlot:(int64_t)slot;
+- (BOOL)isEqual:(id)equal;
+- (CTXPCContextInfo)initWithCoder:(id)coder;
+- (CTXPCContextInfo)initWithUUID:(id)d andAccountID:(id)iD andSlot:(int64_t)slot;
 - (id)context;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTXPCContextInfo
@@ -14,33 +14,33 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTXPCContextInfo *)self uuid];
-  [v3 appendFormat:@", uuid=%@", v4];
+  uuid = [(CTXPCContextInfo *)self uuid];
+  [v3 appendFormat:@", uuid=%@", uuid];
 
-  v5 = [(CTXPCContextInfo *)self accountID];
-  [v3 appendFormat:@", accountID=%@", v5];
+  accountID = [(CTXPCContextInfo *)self accountID];
+  [v3 appendFormat:@", accountID=%@", accountID];
 
-  v6 = [(CTXPCContextInfo *)self slotID];
+  slotID = [(CTXPCContextInfo *)self slotID];
   v7 = "CTSubscriptionSlotUnknown";
-  if (v6 == 2)
+  if (slotID == 2)
   {
     v7 = "CTSubscriptionSlotTwo";
   }
 
-  if (v6 == 1)
+  if (slotID == 1)
   {
     v7 = "CTSubscriptionSlotOne";
   }
 
   [v3 appendFormat:@", slotID=%s", v7];
-  v8 = [(CTXPCContextInfo *)self labelID];
-  [v3 appendFormat:@", labelID=%@", v8];
+  labelID = [(CTXPCContextInfo *)self labelID];
+  [v3 appendFormat:@", labelID=%@", labelID];
 
-  v9 = [(CTXPCContextInfo *)self label];
-  [v3 appendFormat:@", label=%@", v9];
+  label = [(CTXPCContextInfo *)self label];
+  [v3 appendFormat:@", label=%@", label];
 
-  v10 = [(CTXPCContextInfo *)self phoneNumber];
-  [v3 appendFormat:@", phoneNumber=%@", v10];
+  phoneNumber = [(CTXPCContextInfo *)self phoneNumber];
+  [v3 appendFormat:@", phoneNumber=%@", phoneNumber];
 
   [v3 appendString:@">"];
 
@@ -54,37 +54,37 @@
   return v2;
 }
 
-- (CTXPCContextInfo)initWithUUID:(id)a3 andAccountID:(id)a4 andSlot:(int64_t)a5
+- (CTXPCContextInfo)initWithUUID:(id)d andAccountID:(id)iD andSlot:(int64_t)slot
 {
-  v9 = a3;
-  v10 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v14.receiver = self;
   v14.super_class = CTXPCContextInfo;
   v11 = [(CTXPCContextInfo *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_uuid, a3);
-    objc_storeStrong(&v12->_accountID, a4);
-    v12->_slotID = a5;
+    objc_storeStrong(&v11->_uuid, d);
+    objc_storeStrong(&v12->_accountID, iD);
+    v12->_slotID = slot;
   }
 
   return v12;
 }
 
-+ (id)contextWithUUID:(id)a3 andAccountID:(id)a4 andSlot:(int64_t)a5
++ (id)contextWithUUID:(id)d andAccountID:(id)iD andSlot:(int64_t)slot
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[CTXPCContextInfo alloc] initWithUUID:v8 andAccountID:v7 andSlot:a5];
+  iDCopy = iD;
+  dCopy = d;
+  v9 = [[CTXPCContextInfo alloc] initWithUUID:dCopy andAccountID:iDCopy andSlot:slot];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (v6 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
@@ -94,9 +94,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(CTXPCContextInfo *)self uuid];
-      v8 = [(CTXPCContextInfo *)v6 uuid];
-      if (![v7 isEqual:v8])
+      uuid = [(CTXPCContextInfo *)self uuid];
+      uuid2 = [(CTXPCContextInfo *)equalCopy uuid];
+      if (![uuid isEqual:uuid2])
       {
         v13 = 0;
 LABEL_54:
@@ -104,9 +104,9 @@ LABEL_54:
         goto LABEL_55;
       }
 
-      v9 = [(CTXPCContextInfo *)self accountID];
-      v10 = [(CTXPCContextInfo *)v6 accountID];
-      if (![v9 isEqual:v10] || (v11 = -[CTXPCContextInfo slotID](self, "slotID"), v11 != -[CTXPCContextInfo slotID](v6, "slotID")))
+      accountID = [(CTXPCContextInfo *)self accountID];
+      accountID2 = [(CTXPCContextInfo *)equalCopy accountID];
+      if (![accountID isEqual:accountID2] || (v11 = -[CTXPCContextInfo slotID](self, "slotID"), v11 != -[CTXPCContextInfo slotID](equalCopy, "slotID")))
       {
         v13 = 0;
 LABEL_53:
@@ -114,16 +114,16 @@ LABEL_53:
         goto LABEL_54;
       }
 
-      v12 = [(CTXPCContextInfo *)self labelID];
-      if (v12 && (-[CTXPCContextInfo labelID](self, "labelID"), v3 = objc_claimAutoreleasedReturnValue(), -[CTXPCContextInfo labelID](v6, "labelID"), v4 = objc_claimAutoreleasedReturnValue(), ([v3 isEqual:v4] & 1) != 0))
+      labelID = [(CTXPCContextInfo *)self labelID];
+      if (labelID && (-[CTXPCContextInfo labelID](self, "labelID"), v3 = objc_claimAutoreleasedReturnValue(), -[CTXPCContextInfo labelID](equalCopy, "labelID"), v4 = objc_claimAutoreleasedReturnValue(), ([v3 isEqual:v4] & 1) != 0))
       {
         v36 = 0;
       }
 
       else
       {
-        v14 = [(CTXPCContextInfo *)self labelID];
-        if (v14)
+        labelID2 = [(CTXPCContextInfo *)self labelID];
+        if (labelID2)
         {
           v13 = 0;
 LABEL_49:
@@ -131,13 +131,13 @@ LABEL_49:
           goto LABEL_50;
         }
 
-        v15 = [(CTXPCContextInfo *)v6 labelID];
-        if (v15)
+        labelID3 = [(CTXPCContextInfo *)equalCopy labelID];
+        if (labelID3)
         {
 
           v13 = 0;
 LABEL_50:
-          if (v12)
+          if (labelID)
           {
           }
 
@@ -147,40 +147,40 @@ LABEL_50:
         v36 = 1;
       }
 
-      v16 = [(CTXPCContextInfo *)self label];
-      v17 = v16;
-      if (v16)
+      label = [(CTXPCContextInfo *)self label];
+      v17 = label;
+      if (label)
       {
-        v33 = v12;
-        v18 = v16;
+        v33 = labelID;
+        v18 = label;
         v19 = v4;
-        v20 = [(CTXPCContextInfo *)self label];
-        [(CTXPCContextInfo *)v6 label];
-        v35 = v34 = v20;
-        if ([v20 isEqual:?])
+        label2 = [(CTXPCContextInfo *)self label];
+        [(CTXPCContextInfo *)equalCopy label];
+        v35 = v34 = label2;
+        if ([label2 isEqual:?])
         {
           v32 = v3;
           v31 = 0;
           v4 = v19;
           v17 = v18;
-          v12 = v33;
+          labelID = v33;
           goto LABEL_28;
         }
 
         v4 = v19;
         v17 = v18;
-        v12 = v33;
+        labelID = v33;
       }
 
-      v21 = [(CTXPCContextInfo *)self label];
-      if (v21)
+      label3 = [(CTXPCContextInfo *)self label];
+      if (label3)
       {
         v13 = 0;
         goto LABEL_41;
       }
 
-      v22 = [(CTXPCContextInfo *)v6 label];
-      if (v22)
+      label4 = [(CTXPCContextInfo *)equalCopy label];
+      if (label4)
       {
 
         v13 = 0;
@@ -190,15 +190,15 @@ LABEL_50:
       v32 = v3;
       v31 = 1;
 LABEL_28:
-      v23 = [(CTXPCContextInfo *)self phoneNumber];
-      v24 = v23;
-      if (v23)
+      phoneNumber = [(CTXPCContextInfo *)self phoneNumber];
+      v24 = phoneNumber;
+      if (phoneNumber)
       {
-        v29 = v23;
-        v25 = [(CTXPCContextInfo *)self phoneNumber];
-        [(CTXPCContextInfo *)v6 phoneNumber];
-        v30 = v33 = v25;
-        if ([v25 isEqual:?])
+        v29 = phoneNumber;
+        phoneNumber2 = [(CTXPCContextInfo *)self phoneNumber];
+        [(CTXPCContextInfo *)equalCopy phoneNumber];
+        v30 = v33 = phoneNumber2;
+        if ([phoneNumber2 isEqual:?])
         {
           v13 = 1;
           v24 = v29;
@@ -206,7 +206,7 @@ LABEL_35:
 
           if (v31)
           {
-            v21 = 0;
+            label3 = 0;
             v3 = v32;
             goto LABEL_41;
           }
@@ -218,8 +218,8 @@ LABEL_35:
         v24 = v29;
       }
 
-      v26 = [(CTXPCContextInfo *)self phoneNumber];
-      if (v26)
+      phoneNumber3 = [(CTXPCContextInfo *)self phoneNumber];
+      if (phoneNumber3)
       {
 
         v13 = 0;
@@ -231,8 +231,8 @@ LABEL_35:
 
       else
       {
-        v27 = [(CTXPCContextInfo *)v6 phoneNumber];
-        v13 = v27 == 0;
+        phoneNumber4 = [(CTXPCContextInfo *)equalCopy phoneNumber];
+        v13 = phoneNumber4 == 0;
 
         if (v24)
         {
@@ -243,7 +243,7 @@ LABEL_35:
       v3 = v32;
       if (v31)
       {
-        v21 = 0;
+        label3 = 0;
 LABEL_41:
 
         if (v17)
@@ -269,7 +269,7 @@ LABEL_45:
       }
 
 LABEL_48:
-      v14 = 0;
+      labelID2 = 0;
       goto LABEL_49;
     }
 
@@ -281,54 +281,54 @@ LABEL_55:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(CTXPCContextInfo *)self uuid];
-  v6 = [(CTXPCContextInfo *)self accountID];
-  v7 = [v4 initWithUUID:v5 andAccountID:v6 andSlot:{-[CTXPCContextInfo slotID](self, "slotID")}];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  uuid = [(CTXPCContextInfo *)self uuid];
+  accountID = [(CTXPCContextInfo *)self accountID];
+  v7 = [v4 initWithUUID:uuid andAccountID:accountID andSlot:{-[CTXPCContextInfo slotID](self, "slotID")}];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   uuid = self->_uuid;
-  v5 = a3;
-  [v5 encodeObject:uuid forKey:@"uuid"];
-  [v5 encodeObject:self->_accountID forKey:@"account_id"];
-  [v5 encodeInteger:self->_slotID forKey:@"slot_id"];
-  [v5 encodeObject:self->_labelID forKey:@"label_id"];
-  [v5 encodeObject:self->_label forKey:@"label"];
-  [v5 encodeObject:self->_phoneNumber forKey:@"phone_number"];
+  coderCopy = coder;
+  [coderCopy encodeObject:uuid forKey:@"uuid"];
+  [coderCopy encodeObject:self->_accountID forKey:@"account_id"];
+  [coderCopy encodeInteger:self->_slotID forKey:@"slot_id"];
+  [coderCopy encodeObject:self->_labelID forKey:@"label_id"];
+  [coderCopy encodeObject:self->_label forKey:@"label"];
+  [coderCopy encodeObject:self->_phoneNumber forKey:@"phone_number"];
 }
 
-- (CTXPCContextInfo)initWithCoder:(id)a3
+- (CTXPCContextInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = CTXPCContextInfo;
   v5 = [(CTXPCContextInfo *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
     uuid = v5->_uuid;
     v5->_uuid = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"account_id"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"account_id"];
     accountID = v5->_accountID;
     v5->_accountID = v8;
 
-    v5->_slotID = [v4 decodeIntegerForKey:@"slot_id"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"label_id"];
+    v5->_slotID = [coderCopy decodeIntegerForKey:@"slot_id"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"label_id"];
     labelID = v5->_labelID;
     v5->_labelID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"label"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"label"];
     label = v5->_label;
     v5->_label = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phone_number"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phone_number"];
     phoneNumber = v5->_phoneNumber;
     v5->_phoneNumber = v14;
   }

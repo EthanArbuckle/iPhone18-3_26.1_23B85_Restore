@@ -1,26 +1,26 @@
 @interface _DPEnhancedPrivacyAlgorithm
-+ (BOOL)isEnhancedPrivacyAlgorithm:(id)a3;
-+ (BOOL)isMetadataValid:(id)a3;
-+ (BOOL)verifyEnhancedDPParamsForKey:(id)a3 withMetadata:(id)a4;
-+ (id)allowedDataTypesForKey:(id)a3 withMetadata:(id)a4;
-+ (id)findMultipleDonationForKey:(id)a3 inRecords:(id)a4;
++ (BOOL)isEnhancedPrivacyAlgorithm:(id)algorithm;
++ (BOOL)isMetadataValid:(id)valid;
++ (BOOL)verifyEnhancedDPParamsForKey:(id)key withMetadata:(id)metadata;
++ (id)allowedDataTypesForKey:(id)key withMetadata:(id)metadata;
++ (id)findMultipleDonationForKey:(id)key inRecords:(id)records;
 @end
 
 @implementation _DPEnhancedPrivacyAlgorithm
 
-+ (id)allowedDataTypesForKey:(id)a3 withMetadata:(id)a4
++ (id)allowedDataTypesForKey:(id)key withMetadata:(id)metadata
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [a4 objectForKeyedSubscript:@"AllowedDataTypes"];
-  v8 = [_DPKeyNames keyPropertiesForKey:v6];
-  v9 = [v8 namespaceName];
-  if (v9)
+  keyCopy = key;
+  v7 = [metadata objectForKeyedSubscript:@"AllowedDataTypes"];
+  v8 = [_DPKeyNames keyPropertiesForKey:keyCopy];
+  namespaceName = [v8 namespaceName];
+  if (namespaceName)
   {
-    v10 = [_DPNamespaceParameters initParametersForNamespace:v9];
-    v11 = [v10 allowedDataTypes];
-    v12 = v11;
-    if (v11 && [v11 count])
+    v10 = [_DPNamespaceParameters initParametersForNamespace:namespaceName];
+    allowedDataTypes = [v10 allowedDataTypes];
+    v12 = allowedDataTypes;
+    if (allowedDataTypes && [allowedDataTypes count])
     {
       if (![v7 count])
       {
@@ -41,8 +41,8 @@
       if (v14)
       {
         v15 = MEMORY[0x277CBEA60];
-        v16 = [v7 allObjects];
-        v17 = [v15 arrayWithArray:v16];
+        allObjects = [v7 allObjects];
+        v17 = [v15 arrayWithArray:allObjects];
 
 LABEL_9:
         goto LABEL_13;
@@ -52,8 +52,8 @@ LABEL_9:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         v22 = NSStringFromSelector(a2);
-        v27 = [v7 allObjects];
-        v23 = [v27 componentsJoinedByString:{@", "}];
+        allObjects2 = [v7 allObjects];
+        v23 = [allObjects2 componentsJoinedByString:{@", "}];
         v24 = [v12 componentsJoinedByString:{@", "}];
         *buf = 138413314;
         v29 = v22;
@@ -62,9 +62,9 @@ LABEL_9:
         v32 = 2112;
         v33 = v24;
         v34 = 2112;
-        v35 = v9;
+        v35 = namespaceName;
         v36 = 2112;
-        v37 = v6;
+        v37 = keyCopy;
         _os_log_error_impl(&dword_22622D000, v18, OS_LOG_TYPE_ERROR, "%@: Recieved data types [%@] are not a subset of approved data types [%@] for namespace %@ with key %@", buf, 0x34u);
 
 LABEL_22:
@@ -80,9 +80,9 @@ LABEL_22:
         *buf = 138412802;
         v29 = v22;
         v30 = 2112;
-        v31 = v9;
+        v31 = namespaceName;
         v32 = 2112;
-        v33 = v6;
+        v33 = keyCopy;
         _os_log_error_impl(&dword_22622D000, v18, OS_LOG_TYPE_ERROR, "%@: No allowed list of data types found for namespace %@ with key %@", buf, 0x20u);
         goto LABEL_22;
       }
@@ -96,13 +96,13 @@ LABEL_22:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
     v25 = NSStringFromSelector(a2);
-    v26 = [v8 propertiesName];
+    propertiesName = [v8 propertiesName];
     *buf = 138412802;
     v29 = v25;
     v30 = 2112;
-    v31 = v6;
+    v31 = keyCopy;
     v32 = 2112;
-    v33 = v26;
+    v33 = propertiesName;
     _os_log_error_impl(&dword_22622D000, v10, OS_LOG_TYPE_ERROR, "%@: No namespace name found for key: %@ with property name: %@", buf, 0x20u);
   }
 
@@ -114,11 +114,11 @@ LABEL_13:
   return v17;
 }
 
-+ (BOOL)isEnhancedPrivacyAlgorithm:(id)a3
++ (BOOL)isEnhancedPrivacyAlgorithm:(id)algorithm
 {
-  if (a3)
+  if (algorithm)
   {
-    v4 = [a3 objectForKeyedSubscript:@"EnhancedDifferentialPrivacyParameters"];
+    v4 = [algorithm objectForKeyedSubscript:@"EnhancedDifferentialPrivacyParameters"];
     v5 = v4;
     if (v4)
     {
@@ -137,9 +137,9 @@ LABEL_13:
       }
 
       v8 = [v5 objectForKeyedSubscript:@"useEnhancedDifferentialPrivacyAlgorithm"];
-      v9 = [v8 BOOLValue];
+      bOOLValue = [v8 BOOLValue];
 
-      if (v9)
+      if (bOOLValue)
       {
         v10 = +[_DPLog framework];
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -163,11 +163,11 @@ LABEL_12:
   return 0;
 }
 
-+ (BOOL)isMetadataValid:(id)a3
++ (BOOL)isMetadataValid:(id)valid
 {
   v20[3] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  validCopy = valid;
+  if (validCopy)
   {
     v20[0] = @"EnhancedDifferentialPrivacyParameters";
     v20[1] = @"AllowedDataTypes";
@@ -192,7 +192,7 @@ LABEL_12:
           }
 
           v9 = *(*(&v15 + 1) + 8 * i);
-          v10 = [v3 objectForKeyedSubscript:{v9, v15}];
+          v10 = [validCopy objectForKeyedSubscript:{v9, v15}];
 
           if (!v10)
           {
@@ -230,12 +230,12 @@ LABEL_14:
   return v11;
 }
 
-+ (BOOL)verifyEnhancedDPParamsForKey:(id)a3 withMetadata:(id)a4
++ (BOOL)verifyEnhancedDPParamsForKey:(id)key withMetadata:(id)metadata
 {
   v54[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 objectForKeyedSubscript:@"EnhancedDifferentialPrivacyParameters"];
+  keyCopy = key;
+  metadataCopy = metadata;
+  v8 = [metadataCopy objectForKeyedSubscript:@"EnhancedDifferentialPrivacyParameters"];
   v54[0] = @"localDifferentialPrivacyBudget";
   v54[1] = @"cohortAggregateDifferentialPrivacyBudget";
   v54[2] = @"minCohortSize";
@@ -266,7 +266,7 @@ LABEL_14:
           v20 = +[_DPLog framework];
           if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
           {
-            [_DPEnhancedPrivacyAlgorithm verifyEnhancedDPParamsForKey:v6 withMetadata:v20];
+            [_DPEnhancedPrivacyAlgorithm verifyEnhancedDPParamsForKey:keyCopy withMetadata:v20];
           }
 
           v29 = 0;
@@ -285,10 +285,10 @@ LABEL_14:
     }
   }
 
-  v15 = [a1 allowedDataTypesForKey:v6 withMetadata:v7];
+  v15 = [self allowedDataTypesForKey:keyCopy withMetadata:metadataCopy];
   if (v15)
   {
-    v16 = [v7 objectForKeyedSubscript:@"EnhancedDifferentialPrivacyParameters"];
+    v16 = [metadataCopy objectForKeyedSubscript:@"EnhancedDifferentialPrivacyParameters"];
     v17 = [v16 objectForKeyedSubscript:@"localDifferentialPrivacyBudget"];
     [v17 floatValue];
     v19 = v18;
@@ -302,8 +302,8 @@ LABEL_14:
     if (v21)
     {
       v22 = v21;
-      v35 = v7;
-      v36 = v6;
+      v35 = metadataCopy;
+      v36 = keyCopy;
       v23 = 0;
       v24 = *v39;
       obj = v20;
@@ -360,8 +360,8 @@ LABEL_14:
 LABEL_26:
 
       v15 = v20;
-      v7 = v35;
-      v6 = v36;
+      metadataCopy = v35;
+      keyCopy = v36;
     }
 
     else
@@ -382,17 +382,17 @@ LABEL_29:
   return v29;
 }
 
-+ (id)findMultipleDonationForKey:(id)a3 inRecords:(id)a4
++ (id)findMultipleDonationForKey:(id)key inRecords:(id)records
 {
   v28 = *MEMORY[0x277D85DE8];
-  v22 = a3;
-  v5 = a4;
+  keyCopy = key;
+  recordsCopy = records;
   v6 = [MEMORY[0x277CBEC10] mutableCopy];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v5;
+  obj = recordsCopy;
   v7 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v7)
   {
@@ -408,16 +408,16 @@ LABEL_29:
         }
 
         v11 = *(*(&v23 + 1) + 8 * i);
-        v12 = [v11 metadata];
-        v13 = [v12 objectForKeyedSubscript:@"DonationID"];
+        metadata = [v11 metadata];
+        v13 = [metadata objectForKeyedSubscript:@"DonationID"];
         if (v13)
         {
-          v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", v22, v13];
+          v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", keyCopy, v13];
         }
 
         else
         {
-          v14 = v22;
+          v14 = keyCopy;
         }
 
         v15 = v14;

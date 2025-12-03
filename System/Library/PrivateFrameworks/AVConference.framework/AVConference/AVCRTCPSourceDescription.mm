@@ -1,12 +1,12 @@
 @interface AVCRTCPSourceDescription
-- (AVCRTCPSourceDescription)initWithRTCPPacket:(tagRTCPPACKET *)a3;
+- (AVCRTCPSourceDescription)initWithRTCPPacket:(tagRTCPPACKET *)packet;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation AVCRTCPSourceDescription
 
-- (AVCRTCPSourceDescription)initWithRTCPPacket:(tagRTCPPACKET *)a3
+- (AVCRTCPSourceDescription)initWithRTCPPacket:(tagRTCPPACKET *)packet
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -15,8 +15,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_type = a3->var1.var2.var1.var0;
-    v4->_text = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:&a3->var1.var5.var0.var1 + 2 length:a3->var1.var2.var1.var1 encoding:1];
+    v4->_type = packet->var1.var2.var1.var0;
+    v4->_text = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:&packet->var1.var5.var0.var1 + 2 length:packet->var1.var2.var1.var1 encoding:1];
   }
 
   return v5;

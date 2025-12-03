@@ -1,27 +1,27 @@
 @interface _DPRandomBitPositionGenerator
-+ (_DPRandomBitPositionGenerator)generatorWithDimensionality:(unint64_t)a3;
-- (_DPRandomBitPositionGenerator)initWithDimensionality:(unint64_t)a3;
++ (_DPRandomBitPositionGenerator)generatorWithDimensionality:(unint64_t)dimensionality;
+- (_DPRandomBitPositionGenerator)initWithDimensionality:(unint64_t)dimensionality;
 - (id)description;
 @end
 
 @implementation _DPRandomBitPositionGenerator
 
-- (_DPRandomBitPositionGenerator)initWithDimensionality:(unint64_t)a3
+- (_DPRandomBitPositionGenerator)initWithDimensionality:(unint64_t)dimensionality
 {
   v5.receiver = self;
   v5.super_class = _DPRandomBitPositionGenerator;
   result = [(_DPRandomBitPositionGenerator *)&v5 init];
   if (result)
   {
-    result->_m = a3;
+    result->_m = dimensionality;
   }
 
   return result;
 }
 
-+ (_DPRandomBitPositionGenerator)generatorWithDimensionality:(unint64_t)a3
++ (_DPRandomBitPositionGenerator)generatorWithDimensionality:(unint64_t)dimensionality
 {
-  v3 = [[a1 alloc] initWithDimensionality:a3];
+  v3 = [[self alloc] initWithDimensionality:dimensionality];
 
   return v3;
 }

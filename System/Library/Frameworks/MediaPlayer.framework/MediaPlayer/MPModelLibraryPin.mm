@@ -95,62 +95,62 @@ LABEL_6:
 
 + (void)__MPModelRelationshipLibraryPinSong__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelLibraryPin.m" lineNumber:47 description:@"Translator was missing mapping for MPModelRelationshipLibraryPinSong"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelLibraryPin.m" lineNumber:47 description:@"Translator was missing mapping for MPModelRelationshipLibraryPinSong"];
 }
 
 + (void)__MPModelRelationshipLibraryPinArtist__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelLibraryPin.m" lineNumber:46 description:@"Translator was missing mapping for MPModelRelationshipLibraryPinArtist"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelLibraryPin.m" lineNumber:46 description:@"Translator was missing mapping for MPModelRelationshipLibraryPinArtist"];
 }
 
 + (void)__MPModelRelationshipLibraryPinAlbum__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelLibraryPin.m" lineNumber:45 description:@"Translator was missing mapping for MPModelRelationshipLibraryPinAlbum"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelLibraryPin.m" lineNumber:45 description:@"Translator was missing mapping for MPModelRelationshipLibraryPinAlbum"];
 }
 
 + (void)__MPModelRelationshipLibraryPinPlaylist__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelLibraryPin.m" lineNumber:44 description:@"Translator was missing mapping for MPModelRelationshipLibraryPinPlaylist"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelLibraryPin.m" lineNumber:44 description:@"Translator was missing mapping for MPModelRelationshipLibraryPinPlaylist"];
 }
 
 + (void)__MPModelPropertyLibraryPinEntityPersistentID__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelLibraryPin.m" lineNumber:43 description:@"Translator was missing mapping for MPModelPropertyLibraryPinEntityPersistentID"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelLibraryPin.m" lineNumber:43 description:@"Translator was missing mapping for MPModelPropertyLibraryPinEntityPersistentID"];
 }
 
 + (void)__MPModelPropertyLibraryPinPersistentID__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelLibraryPin.m" lineNumber:42 description:@"Translator was missing mapping for MPModelPropertyLibraryPinPersistentID"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelLibraryPin.m" lineNumber:42 description:@"Translator was missing mapping for MPModelPropertyLibraryPinPersistentID"];
 }
 
 + (void)__MPModelPropertyLibraryPinEntityType__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelLibraryPin.m" lineNumber:41 description:@"Translator was missing mapping for MPModelPropertyLibraryPinEntityType"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelLibraryPin.m" lineNumber:41 description:@"Translator was missing mapping for MPModelPropertyLibraryPinEntityType"];
 }
 
 + (void)__MPModelPropertyLibraryPinDefaultAction__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelLibraryPin.m" lineNumber:40 description:@"Translator was missing mapping for MPModelPropertyLibraryPinDefaultAction"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelLibraryPin.m" lineNumber:40 description:@"Translator was missing mapping for MPModelPropertyLibraryPinDefaultAction"];
 }
 
 + (void)__MPModelPropertyLibraryPinPositionUUID__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelLibraryPin.m" lineNumber:39 description:@"Translator was missing mapping for MPModelPropertyLibraryPinPositionUUID"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelLibraryPin.m" lineNumber:39 description:@"Translator was missing mapping for MPModelPropertyLibraryPinPositionUUID"];
 }
 
 + (void)__MPModelPropertyLibraryPinPosition__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelLibraryPin.m" lineNumber:38 description:@"Translator was missing mapping for MPModelPropertyLibraryPinPosition"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelLibraryPin.m" lineNumber:38 description:@"Translator was missing mapping for MPModelPropertyLibraryPinPosition"];
 }
 
 @end

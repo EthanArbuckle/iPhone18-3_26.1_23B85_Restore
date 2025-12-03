@@ -1,7 +1,7 @@
 @interface _CRRecentsLibraryCloudStoresBuilder
 - (_CRRecentsLibraryCloudStoresBuilder)init;
 - (id)buildStores;
-- (void)addStoreForDomain:(id)a3 storeIdentifier:(id)a4;
+- (void)addStoreForDomain:(id)domain storeIdentifier:(id)identifier;
 @end
 
 @implementation _CRRecentsLibraryCloudStoresBuilder
@@ -23,10 +23,10 @@
   return v2;
 }
 
-- (void)addStoreForDomain:(id)a3 storeIdentifier:(id)a4
+- (void)addStoreForDomain:(id)domain storeIdentifier:(id)identifier
 {
   storeDescriptions = self->_storeDescriptions;
-  v5 = [CNPair pairWithFirst:a3 second:a4];
+  v5 = [CNPair pairWithFirst:domain second:identifier];
   [(NSMutableArray *)storeDescriptions addObject:v5];
 }
 
@@ -55,20 +55,20 @@
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        v11 = [v10 first];
-        v12 = [v10 second];
+        first = [v10 first];
+        second = [v10 second];
         v13 = +[CRLogging log];
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
           *buf = v17;
-          v23 = v11;
+          v23 = first;
           v24 = 2114;
-          v25 = v12;
+          v25 = second;
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Initializing KVS store (%{public}@: %{public}@)", buf, 0x16u);
         }
 
-        v14 = [[NSUbiquitousKeyValueStore alloc] _initWithStoreIdentifier:v12 usingEndToEndEncryption:1];
-        [v3 setObject:v14 forKeyedSubscript:v11];
+        v14 = [[NSUbiquitousKeyValueStore alloc] _initWithStoreIdentifier:second usingEndToEndEncryption:1];
+        [v3 setObject:v14 forKeyedSubscript:first];
       }
 
       v7 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v18 objects:v26 count:16];

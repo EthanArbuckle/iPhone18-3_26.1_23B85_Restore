@@ -1,8 +1,8 @@
 @interface MTRThermostatClusterAddThermostatSuggestionParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRThermostatClusterAddThermostatSuggestionParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -15,9 +15,9 @@
   v2 = [(MTRThermostatClusterAddThermostatSuggestionParams *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     presetHandle = v2->_presetHandle;
-    v2->_presetHandle = v3;
+    v2->_presetHandle = data;
 
     effectiveTime = v2->_effectiveTime;
     v2->_effectiveTime = 0;
@@ -35,23 +35,23 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRThermostatClusterAddThermostatSuggestionParams);
-  v5 = [(MTRThermostatClusterAddThermostatSuggestionParams *)self presetHandle];
-  [(MTRThermostatClusterAddThermostatSuggestionParams *)v4 setPresetHandle:v5];
+  presetHandle = [(MTRThermostatClusterAddThermostatSuggestionParams *)self presetHandle];
+  [(MTRThermostatClusterAddThermostatSuggestionParams *)v4 setPresetHandle:presetHandle];
 
-  v6 = [(MTRThermostatClusterAddThermostatSuggestionParams *)self effectiveTime];
-  [(MTRThermostatClusterAddThermostatSuggestionParams *)v4 setEffectiveTime:v6];
+  effectiveTime = [(MTRThermostatClusterAddThermostatSuggestionParams *)self effectiveTime];
+  [(MTRThermostatClusterAddThermostatSuggestionParams *)v4 setEffectiveTime:effectiveTime];
 
-  v7 = [(MTRThermostatClusterAddThermostatSuggestionParams *)self expirationInMinutes];
-  [(MTRThermostatClusterAddThermostatSuggestionParams *)v4 setExpirationInMinutes:v7];
+  expirationInMinutes = [(MTRThermostatClusterAddThermostatSuggestionParams *)self expirationInMinutes];
+  [(MTRThermostatClusterAddThermostatSuggestionParams *)v4 setExpirationInMinutes:expirationInMinutes];
 
-  v8 = [(MTRThermostatClusterAddThermostatSuggestionParams *)self timedInvokeTimeoutMs];
-  [(MTRThermostatClusterAddThermostatSuggestionParams *)v4 setTimedInvokeTimeoutMs:v8];
+  timedInvokeTimeoutMs = [(MTRThermostatClusterAddThermostatSuggestionParams *)self timedInvokeTimeoutMs];
+  [(MTRThermostatClusterAddThermostatSuggestionParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v9 = [(MTRThermostatClusterAddThermostatSuggestionParams *)self serverSideProcessingTimeout];
-  [(MTRThermostatClusterAddThermostatSuggestionParams *)v4 setServerSideProcessingTimeout:v9];
+  serverSideProcessingTimeout = [(MTRThermostatClusterAddThermostatSuggestionParams *)self serverSideProcessingTimeout];
+  [(MTRThermostatClusterAddThermostatSuggestionParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -67,31 +67,31 @@
   return v7;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v27 = 0;
-  v28 = 0;
+  unsignedShortValue = 0;
   v25 = 0uLL;
-  LOBYTE(v26) = 0;
+  LOBYTE(unsignedIntValue) = 0;
   v24[0] = 0;
   v24[1] = 0;
   v23 = v24;
-  v5 = [(MTRThermostatClusterAddThermostatSuggestionParams *)self presetHandle];
-  sub_238DB6950(v17, [v5 bytes], objc_msgSend(v5, "length"));
+  presetHandle = [(MTRThermostatClusterAddThermostatSuggestionParams *)self presetHandle];
+  sub_238DB6950(v17, [presetHandle bytes], objc_msgSend(presetHandle, "length"));
 
   v25 = v17[0];
-  v6 = [(MTRThermostatClusterAddThermostatSuggestionParams *)self effectiveTime];
+  effectiveTime = [(MTRThermostatClusterAddThermostatSuggestionParams *)self effectiveTime];
 
-  if (v6)
+  if (effectiveTime)
   {
-    v26 = 0;
+    unsignedIntValue = 0;
     v27 = 1;
-    v7 = [(MTRThermostatClusterAddThermostatSuggestionParams *)self effectiveTime];
-    v26 = [v7 unsignedIntValue];
+    effectiveTime2 = [(MTRThermostatClusterAddThermostatSuggestionParams *)self effectiveTime];
+    unsignedIntValue = [effectiveTime2 unsignedIntValue];
   }
 
-  v8 = [(MTRThermostatClusterAddThermostatSuggestionParams *)self expirationInMinutes];
-  v28 = [v8 unsignedShortValue];
+  expirationInMinutes = [(MTRThermostatClusterAddThermostatSuggestionParams *)self expirationInMinutes];
+  unsignedShortValue = [expirationInMinutes unsignedShortValue];
 
   sub_2393D9C18(0x62FuLL, 0, &v22);
   if (v22)
@@ -112,8 +112,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v22);
-      v9 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v22);
+      v9 = sub_2393C7114(reader, 21, 256);
       v12 = v16;
       v11 = v9;
     }
@@ -141,19 +141,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRThermostatClusterAddThermostatSuggestionParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -164,7 +164,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x5F4700000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

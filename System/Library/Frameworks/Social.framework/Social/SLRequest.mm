@@ -1,28 +1,28 @@
 @interface SLRequest
 + (SLRequest)requestForServiceType:(NSString *)serviceType requestMethod:(SLRequestMethod)requestMethod URL:(NSURL *)url parameters:(NSDictionary *)parameters;
 - (BOOL)_shouldAppendTencentWeiboParametersToRequest;
-- (BOOL)_shouldRetryAfterCount:(int)a3 delay:(float *)a4;
+- (BOOL)_shouldRetryAfterCount:(int)count delay:(float *)delay;
 - (BOOL)shouldIncludeParameterString;
 - (NSURLRequest)preparedURLRequest;
 - (SLRequest)init;
-- (SLRequest)initWithServiceType:(id)a3 URL:(id)a4 parameters:(id)a5 requestMethod:(int64_t)a6;
+- (SLRequest)initWithServiceType:(id)type URL:(id)l parameters:(id)parameters requestMethod:(int64_t)method;
 - (id)_HTTPMethodName;
 - (id)_allParameters;
 - (id)_commandName;
 - (id)_parameterString;
 - (id)_preparedURL;
-- (id)_urlEncodedString:(id)a3;
+- (id)_urlEncodedString:(id)string;
 - (id)completeMultiParts;
 - (id)dictionaryRepresentationForJSONSerialization;
 - (id)multiPartBodyData;
 - (id)multiPartBoundary;
-- (void)_addAuthenticationParameters:(id)a3;
+- (void)_addAuthenticationParameters:(id)parameters;
 - (void)addMultipartData:(NSData *)data withName:(NSString *)name type:(NSString *)type filename:(NSString *)filename;
-- (void)performJSONRequestWithHandler:(id)a3 retryCount:(int)a4;
+- (void)performJSONRequestWithHandler:(id)handler retryCount:(int)count;
 - (void)performRequestWithHandler:(SLRequestHandler)handler;
 - (void)setAccount:(ACAccount *)account;
-- (void)setMultiPartBoundary:(id)a3;
-- (void)setParameterValue:(id)a3 forKey:(id)a4;
+- (void)setMultiPartBoundary:(id)boundary;
+- (void)setParameterValue:(id)value forKey:(id)key;
 @end
 
 @implementation SLRequest
@@ -33,11 +33,11 @@
   objc_exception_throw(v2);
 }
 
-- (SLRequest)initWithServiceType:(id)a3 URL:(id)a4 parameters:(id)a5 requestMethod:(int64_t)a6
+- (SLRequest)initWithServiceType:(id)type URL:(id)l parameters:(id)parameters requestMethod:(int64_t)method
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = [SLService serviceForServiceType:a3];
+  lCopy = l;
+  parametersCopy = parameters;
+  v12 = [SLService serviceForServiceType:type];
   if (v12)
   {
     v23.receiver = self;
@@ -47,13 +47,13 @@
     if (v13)
     {
       objc_storeStrong(&v13->_service, v12);
-      v15 = [v10 copy];
+      v15 = [lCopy copy];
       url = v14->_url;
       v14->_url = v15;
 
-      if (v11)
+      if (parametersCopy)
       {
-        v17 = [v11 mutableCopy];
+        v17 = [parametersCopy mutableCopy];
       }
 
       else
@@ -64,22 +64,22 @@
       parameters = v14->_parameters;
       v14->_parameters = v17;
 
-      v14->_requestMethod = a6;
+      v14->_requestMethod = method;
       v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
       multiParts = v14->_multiParts;
       v14->_multiParts = v20;
     }
 
     self = v14;
-    v18 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
 + (SLRequest)requestForServiceType:(NSString *)serviceType requestMethod:(SLRequestMethod)requestMethod URL:(NSURL *)url parameters:(NSDictionary *)parameters
@@ -87,26 +87,26 @@
   v10 = parameters;
   v11 = url;
   v12 = serviceType;
-  v13 = [[a1 alloc] initWithServiceType:v12 URL:v11 parameters:v10 requestMethod:requestMethod];
+  v13 = [[self alloc] initWithServiceType:v12 URL:v11 parameters:v10 requestMethod:requestMethod];
 
   return v13;
 }
 
-- (void)setParameterValue:(id)a3 forKey:(id)a4
+- (void)setParameterValue:(id)value forKey:(id)key
 {
-  v7 = a3;
-  v6 = a4;
-  if (!v7 || !v6)
+  valueCopy = value;
+  keyCopy = key;
+  if (!valueCopy || !keyCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Parameter key or value cannot be nil"];
   }
 
-  [(NSMutableDictionary *)self->_parameters setObject:v7 forKey:v6];
+  [(NSMutableDictionary *)self->_parameters setObject:valueCopy forKey:keyCopy];
 }
 
-- (id)_urlEncodedString:(id)a3
+- (id)_urlEncodedString:(id)string
 {
-  v3 = CFURLCreateStringByAddingPercentEscapes(*MEMORY[0x1E695E480], a3, 0, @":/?#[]@!$&‚Äö√Ñ√¥()*+,;='", 0x8000100u);
+  v3 = CFURLCreateStringByAddingPercentEscapes(*MEMORY[0x1E695E480], string, 0, @":/?#[]@!$&‚Äö√Ñ√¥()*+,;='", 0x8000100u);
 
   return v3;
 }
@@ -130,11 +130,11 @@
   return v9;
 }
 
-- (void)setMultiPartBoundary:(id)a3
+- (void)setMultiPartBoundary:(id)boundary
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_multiPartBoundary, a3);
+  boundaryCopy = boundary;
+  objc_storeStrong(&self->_multiPartBoundary, boundary);
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
@@ -172,8 +172,8 @@
   v11 = type;
   v12 = name;
   v13 = data;
-  v14 = [(SLRequest *)self multiPartBoundary];
-  v15 = [SLRequestMultiPart multiPartWithName:v12 payload:v13 type:v11 multiPartBoundary:v14];
+  multiPartBoundary = [(SLRequest *)self multiPartBoundary];
+  v15 = [SLRequestMultiPart multiPartWithName:v12 payload:v13 type:v11 multiPartBoundary:multiPartBoundary];
 
   [v15 setFilename:v10];
   [(NSMutableArray *)self->_multiParts addObject:v15];
@@ -182,14 +182,14 @@
 - (id)multiPartBodyData
 {
   v39 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF88] data];
-  v28 = self;
-  v4 = [(SLRequest *)self _allParameters];
+  data = [MEMORY[0x1E695DF88] data];
+  selfCopy = self;
+  _allParameters = [(SLRequest *)self _allParameters];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v33 objects:v38 count:16];
+  v5 = [_allParameters countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v5)
   {
     v6 = v5;
@@ -200,36 +200,36 @@
       {
         if (*v34 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_allParameters);
         }
 
         v9 = *(*(&v33 + 1) + 8 * i);
-        v10 = [v4 objectForKey:v9];
+        v10 = [_allParameters objectForKey:v9];
         v11 = [v10 dataUsingEncoding:4];
-        v12 = [(SLRequest *)v28 multiPartBoundary];
-        v13 = [SLRequestMultiPart multiPartWithName:v9 payload:v11 type:0 multiPartBoundary:v12];
+        multiPartBoundary = [(SLRequest *)selfCopy multiPartBoundary];
+        v13 = [SLRequestMultiPart multiPartWithName:v9 payload:v11 type:0 multiPartBoundary:multiPartBoundary];
 
         if (v13)
         {
-          v14 = [v13 partData];
-          [v3 appendData:v14];
+          partData = [v13 partData];
+          [data appendData:partData];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v33 objects:v38 count:16];
+      v6 = [_allParameters countByEnumeratingWithState:&v33 objects:v38 count:16];
     }
 
     while (v6);
   }
 
-  v26 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v3 encoding:4];
+  v26 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:data encoding:4];
   _SLLog(v27, 6, @"Body before binaries: %@");
 
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v15 = v28->_multiParts;
+  v15 = selfCopy->_multiParts;
   v16 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v29 objects:v37 count:16, v26];
   if (v16)
   {
@@ -244,8 +244,8 @@
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v29 + 1) + 8 * j) partData];
-        [v3 appendData:v20];
+        partData2 = [*(*(&v29 + 1) + 8 * j) partData];
+        [data appendData:partData2];
       }
 
       v17 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v29 objects:v37 count:16];
@@ -255,25 +255,25 @@
   }
 
   v21 = MEMORY[0x1E696AEC0];
-  v22 = [(SLRequest *)v28 multiPartBoundary];
-  v23 = [v21 stringWithFormat:@"--%@--\r\n", v22];
+  multiPartBoundary2 = [(SLRequest *)selfCopy multiPartBoundary];
+  v23 = [v21 stringWithFormat:@"--%@--\r\n", multiPartBoundary2];
   v24 = [v23 dataUsingEncoding:4];
-  [v3 appendData:v24];
+  [data appendData:v24];
 
-  return v3;
+  return data;
 }
 
 - (id)completeMultiParts
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v15 = self;
-  v4 = [(SLRequest *)self _allParameters];
+  selfCopy = self;
+  _allParameters = [(SLRequest *)self _allParameters];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [_allParameters countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -284,25 +284,25 @@
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_allParameters);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v4 objectForKey:v9];
+        v10 = [_allParameters objectForKey:v9];
         v11 = [v10 dataUsingEncoding:4];
-        v12 = [(SLRequest *)v15 multiPartBoundary];
-        v13 = [SLRequestMultiPart multiPartWithName:v9 payload:v11 type:0 multiPartBoundary:v12];
+        multiPartBoundary = [(SLRequest *)selfCopy multiPartBoundary];
+        v13 = [SLRequestMultiPart multiPartWithName:v9 payload:v11 type:0 multiPartBoundary:multiPartBoundary];
 
         [v3 addObject:v13];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [_allParameters countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
   }
 
-  [v3 addObjectsFromArray:v15->_multiParts];
+  [v3 addObjectsFromArray:selfCopy->_multiParts];
 
   return v3;
 }
@@ -313,10 +313,10 @@
   v5 = v4;
   if (v4)
   {
-    v6 = [(ACAccount *)v4 accountType];
-    v7 = [v6 identifier];
-    v8 = [(SLService *)self->_service accountTypeIdentifier];
-    v9 = [v7 isEqualToString:v8];
+    accountType = [(ACAccount *)v4 accountType];
+    identifier = [accountType identifier];
+    accountTypeIdentifier = [(SLService *)self->_service accountTypeIdentifier];
+    v9 = [identifier isEqualToString:accountTypeIdentifier];
 
     if ((v9 & 1) == 0)
     {
@@ -345,40 +345,40 @@
 
 - (BOOL)_shouldAppendTencentWeiboParametersToRequest
 {
-  v2 = [(SLRequest *)self account];
-  v3 = [v2 accountType];
-  v4 = [v3 identifier];
-  v5 = [v4 isEqual:*MEMORY[0x1E6959900]];
+  account = [(SLRequest *)self account];
+  accountType = [account accountType];
+  identifier = [accountType identifier];
+  v5 = [identifier isEqual:*MEMORY[0x1E6959900]];
 
   return v5;
 }
 
-- (void)_addAuthenticationParameters:(id)a3
+- (void)_addAuthenticationParameters:(id)parameters
 {
   v37[7] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  parametersCopy = parameters;
   if ([(SLService *)self->_service authenticationStyle]== 1)
   {
-    v6 = [(SLRequest *)self account];
+    account = [(SLRequest *)self account];
 
-    if (v6)
+    if (account)
     {
-      v7 = [(SLRequest *)self account];
-      v8 = [v7 credential];
+      account2 = [(SLRequest *)self account];
+      credential = [account2 credential];
 
-      if (v8)
+      if (credential)
       {
-        v9 = [v8 credentialType];
-        v10 = [v9 isEqualToString:*MEMORY[0x1E6959958]];
+        credentialType = [credential credentialType];
+        v10 = [credentialType isEqualToString:*MEMORY[0x1E6959958]];
 
         if (v10)
         {
-          v11 = [v8 oauthToken];
+          oauthToken = [credential oauthToken];
 
-          if (v11)
+          if (oauthToken)
           {
-            v12 = [v8 oauthToken];
-            [v5 setObject:v12 forKey:@"access_token"];
+            oauthToken2 = [credential oauthToken];
+            [parametersCopy setObject:oauthToken2 forKey:@"access_token"];
           }
         }
       }
@@ -387,21 +387,21 @@
 
   if ([(SLRequest *)self _shouldAppendTencentWeiboParametersToRequest])
   {
-    v13 = [(SLRequest *)self account];
-    v14 = [v13 credential];
-    v15 = [v14 oauthToken];
-    if (v15)
+    account3 = [(SLRequest *)self account];
+    credential2 = [account3 credential];
+    oauthToken3 = [credential2 oauthToken];
+    if (oauthToken3)
     {
-      v16 = v15;
-      v17 = [(SLRequest *)self account];
-      v18 = [v17 credential];
-      v19 = [v18 oauthRefreshToken];
+      v16 = oauthToken3;
+      account4 = [(SLRequest *)self account];
+      credential3 = [account4 credential];
+      oauthRefreshToken = [credential3 oauthRefreshToken];
 
-      if (v19)
+      if (oauthRefreshToken)
       {
-        v20 = [(SLRequest *)self account];
-        v21 = [v20 credential];
-        v22 = [v21 credentialItemForKey:*MEMORY[0x1E6959A10]];
+        account5 = [(SLRequest *)self account];
+        credential4 = [account5 credential];
+        v22 = [credential4 credentialItemForKey:*MEMORY[0x1E6959A10]];
 
         if (v22)
         {
@@ -416,18 +416,18 @@
           v37[4] = v22;
           v36[4] = @"oauth_consumer_key";
           v36[5] = @"access_token";
-          v23 = [(SLRequest *)self account];
-          v24 = [v23 credential];
-          v25 = [v24 oauthToken];
-          v37[5] = v25;
+          account6 = [(SLRequest *)self account];
+          credential5 = [account6 credential];
+          oauthToken4 = [credential5 oauthToken];
+          v37[5] = oauthToken4;
           v36[6] = @"openid";
-          v26 = [(SLRequest *)self account];
-          v27 = [v26 credential];
-          v28 = [v27 oauthRefreshToken];
-          v37[6] = v28;
+          account7 = [(SLRequest *)self account];
+          credential6 = [account7 credential];
+          oauthRefreshToken2 = [credential6 oauthRefreshToken];
+          v37[6] = oauthRefreshToken2;
           v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:v36 count:7];
 
-          [v5 addEntriesFromDictionary:v29];
+          [parametersCopy addEntriesFromDictionary:v29];
         }
 
         else
@@ -443,12 +443,12 @@
     {
     }
 
-    v30 = [(SLRequest *)self account];
-    v31 = [v30 credential];
-    v32 = [v31 oauthToken];
-    v33 = [(SLRequest *)self account];
-    v34 = [v33 credential];
-    v35 = [v34 oauthRefreshToken];
+    account8 = [(SLRequest *)self account];
+    credential7 = [account8 credential];
+    oauthToken5 = [credential7 oauthToken];
+    account9 = [(SLRequest *)self account];
+    credential8 = [account9 credential];
+    oauthRefreshToken3 = [credential8 oauthRefreshToken];
     _SLLog(v3, 6, @"Missing oauthToken (%@) or oauthRefreshToken (%@)");
   }
 
@@ -458,7 +458,7 @@ LABEL_17:
 - (id)_parameterString
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = [(SLRequest *)self _allParameters];
+  _allParameters = [(SLRequest *)self _allParameters];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v37[0] = MEMORY[0x1E69E9820];
   v37[1] = 3221225472;
@@ -466,13 +466,13 @@ LABEL_17:
   v37[3] = &unk_1E8175950;
   v23 = v5;
   v38 = v23;
-  v39 = self;
+  selfCopy = self;
   v6 = MEMORY[0x1C6917BF0](v37);
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v7 = v4;
+  v7 = _allParameters;
   v8 = [v7 countByEnumeratingWithState:&v33 objects:v41 count:16];
   if (v8)
   {
@@ -598,13 +598,13 @@ void __29__SLRequest__parameterString__block_invoke(uint64_t a1, uint64_t a2, vo
     return 1;
   }
 
-  v4 = [(SLRequest *)self account];
-  if (v4)
+  account = [(SLRequest *)self account];
+  if (account)
   {
-    v5 = v4;
-    v6 = [(SLService *)self->_service authenticationStyle];
+    v5 = account;
+    authenticationStyle = [(SLService *)self->_service authenticationStyle];
 
-    if (v6 == 1)
+    if (authenticationStyle == 1)
     {
       return 1;
     }
@@ -618,9 +618,9 @@ void __29__SLRequest__parameterString__block_invoke(uint64_t a1, uint64_t a2, vo
   if ([(SLRequest *)self shouldIncludeParameterString])
   {
     v3 = MEMORY[0x1E696AEC0];
-    v4 = [(NSURL *)self->_url absoluteString];
-    v5 = [(SLRequest *)self _parameterString];
-    v6 = [v3 stringWithFormat:@"%@?%@", v4, v5];
+    absoluteString = [(NSURL *)self->_url absoluteString];
+    _parameterString = [(SLRequest *)self _parameterString];
+    v6 = [v3 stringWithFormat:@"%@?%@", absoluteString, _parameterString];
 
     v7 = [MEMORY[0x1E695DFF8] URLWithString:v6];
   }
@@ -649,11 +649,11 @@ void __29__SLRequest__parameterString__block_invoke(uint64_t a1, uint64_t a2, vo
 
 - (NSURLRequest)preparedURLRequest
 {
-  v3 = [(SLRequest *)self _preparedURL];
-  v4 = [MEMORY[0x1E696AD68] requestWithURL:v3];
+  _preparedURL = [(SLRequest *)self _preparedURL];
+  v4 = [MEMORY[0x1E696AD68] requestWithURL:_preparedURL];
   [v4 setNetworkServiceType:{-[SLRequest networkServiceType](self, "networkServiceType")}];
-  v5 = [(SLRequest *)self _HTTPMethodName];
-  [v4 setHTTPMethod:v5];
+  _HTTPMethodName = [(SLRequest *)self _HTTPMethodName];
+  [v4 setHTTPMethod:_HTTPMethodName];
 
   if ((self->_requestMethod | 2) != 3)
   {
@@ -674,8 +674,8 @@ void __29__SLRequest__parameterString__block_invoke(uint64_t a1, uint64_t a2, vo
 
   if (![(NSMutableArray *)self->_multiParts count])
   {
-    v16 = [(SLRequest *)self _parameterString];
-    v17 = [v16 dataUsingEncoding:4];
+    _parameterString = [(SLRequest *)self _parameterString];
+    v17 = [_parameterString dataUsingEncoding:4];
     [v4 setHTTPBody:v17];
 
 LABEL_8:
@@ -685,14 +685,14 @@ LABEL_8:
   }
 
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [(SLRequest *)self multiPartBoundary];
-  v9 = [v7 stringWithFormat:@"multipart/form-data boundary=%@", v8];;
+  multiPartBoundary = [(SLRequest *)self multiPartBoundary];
+  v9 = [v7 stringWithFormat:@"multipart/form-data boundary=%@", multiPartBoundary];;
 
   [v4 addValue:v9 forHTTPHeaderField:@"Content-Type"];
   v10 = [SLRequestBodyInputStream alloc];
-  v11 = [(SLRequest *)self completeMultiParts];
-  v12 = [(SLRequest *)self multiPartBoundary];
-  v13 = [(SLRequestBodyInputStream *)v10 initWithMultiParts:v11 multiPartBoundary:v12];
+  completeMultiParts = [(SLRequest *)self completeMultiParts];
+  multiPartBoundary2 = [(SLRequest *)self multiPartBoundary];
+  v13 = [(SLRequestBodyInputStream *)v10 initWithMultiParts:completeMultiParts multiPartBoundary:multiPartBoundary2];
 
   v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", -[SLRequestBodyInputStream totalBytes](v13, "totalBytes")];
   [v4 addValue:v14 forHTTPHeaderField:@"Content-Length"];
@@ -753,29 +753,29 @@ LABEL_19:
 - (id)dictionaryRepresentationForJSONSerialization
 {
   v3 = objc_opt_new();
-  v4 = [(SLRequest *)self _HTTPMethodName];
-  [v3 setObject:v4 forKeyedSubscript:@"method"];
+  _HTTPMethodName = [(SLRequest *)self _HTTPMethodName];
+  [v3 setObject:_HTTPMethodName forKeyedSubscript:@"method"];
 
-  v5 = [(SLRequest *)self _preparedURL];
-  v6 = [v5 query];
+  _preparedURL = [(SLRequest *)self _preparedURL];
+  query = [_preparedURL query];
 
-  v7 = [v5 relativePath];
-  if (v6)
+  relativePath = [_preparedURL relativePath];
+  if (query)
   {
-    v8 = [v5 query];
-    v9 = [v7 stringByAppendingString:v8];
+    query2 = [_preparedURL query];
+    v9 = [relativePath stringByAppendingString:query2];
     [v3 setObject:v9 forKeyedSubscript:@"relative_url"];
   }
 
   else
   {
-    [v3 setObject:v7 forKeyedSubscript:@"relative_url"];
+    [v3 setObject:relativePath forKeyedSubscript:@"relative_url"];
   }
 
   if (self->_requestMethod == 1)
   {
-    v10 = [(SLRequest *)self _parameterString];
-    [v3 setObject:v10 forKeyedSubscript:@"body"];
+    _parameterString = [(SLRequest *)self _parameterString];
+    [v3 setObject:_parameterString forKeyedSubscript:@"body"];
 
     if ([(NSMutableArray *)self->_multiParts count])
     {
@@ -807,11 +807,11 @@ void __57__SLRequest_dictionaryRepresentationForJSONSerialization__block_invoke(
 {
   v17[1] = *MEMORY[0x1E69E9840];
   v5 = handler;
-  v6 = [(SLRequest *)self preparedURLRequest];
-  v12 = [v6 URL];
+  preparedURLRequest = [(SLRequest *)self preparedURLRequest];
+  v12 = [preparedURLRequest URL];
   _SLLog(v3, 7, @"Prepared Request URL: %@");
 
-  if (v6)
+  if (preparedURLRequest)
   {
     v7 = [v5 copy];
     v8 = dispatch_queue_create("SLRequest performRequest queue", 0);
@@ -819,7 +819,7 @@ void __57__SLRequest_dictionaryRepresentationForJSONSerialization__block_invoke(
     block[1] = 3221225472;
     block[2] = __39__SLRequest_performRequestWithHandler___block_invoke;
     block[3] = &unk_1E81759A0;
-    v14 = v6;
+    v14 = preparedURLRequest;
     v15 = v7;
     v9 = v7;
     dispatch_async(v8, block);
@@ -884,35 +884,35 @@ void __39__SLRequest_performRequestWithHandler___block_invoke(uint64_t a1)
   (*(*(a1 + 40) + 16))();
 }
 
-- (BOOL)_shouldRetryAfterCount:(int)a3 delay:(float *)a4
+- (BOOL)_shouldRetryAfterCount:(int)count delay:(float *)delay
 {
-  if (a4)
+  if (delay)
   {
-    v4 = a3 * 5.0;
-    *a4 = v4;
+    v4 = count * 5.0;
+    *delay = v4;
   }
 
-  return a3 < 4;
+  return count < 4;
 }
 
 - (id)_commandName
 {
-  v2 = [(NSURL *)self->_url path];
-  v3 = [v2 lastPathComponent];
+  path = [(NSURL *)self->_url path];
+  lastPathComponent = [path lastPathComponent];
 
-  return v3;
+  return lastPathComponent;
 }
 
-- (void)performJSONRequestWithHandler:(id)a3 retryCount:(int)a4
+- (void)performJSONRequestWithHandler:(id)handler retryCount:(int)count
 {
-  v6 = [a3 copy];
+  v6 = [handler copy];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __54__SLRequest_performJSONRequestWithHandler_retryCount___block_invoke;
   v9[3] = &unk_1E81759C8;
   v9[4] = self;
   v10 = v6;
-  v11 = a4;
+  countCopy = count;
   v7 = v6;
   v8 = MEMORY[0x1C6917BF0](v9);
   [(SLRequest *)self performRequestWithHandler:v8];

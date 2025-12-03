@@ -1,44 +1,44 @@
 @interface _INPBIntentSlotVocabularyValue
-- (BOOL)isEqual:(id)a3;
-- (_INPBIntentSlotVocabularyValue)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBIntentSlotVocabularyValue)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addExamples:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setExamples:(id)a3;
-- (void)setPhrase:(id)a3;
-- (void)setPronunciation:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addExamples:(id)examples;
+- (void)encodeWithCoder:(id)coder;
+- (void)setExamples:(id)examples;
+- (void)setPhrase:(id)phrase;
+- (void)setPronunciation:(id)pronunciation;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBIntentSlotVocabularyValue
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_examples)
   {
-    v4 = [(_INPBIntentSlotVocabularyValue *)self examples];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"examples"];
+    examples = [(_INPBIntentSlotVocabularyValue *)self examples];
+    v5 = [examples copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"examples"];
   }
 
   if (self->_phrase)
   {
-    v6 = [(_INPBIntentSlotVocabularyValue *)self phrase];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"phrase"];
+    phrase = [(_INPBIntentSlotVocabularyValue *)self phrase];
+    v7 = [phrase copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"phrase"];
   }
 
   if (self->_pronunciation)
   {
-    v8 = [(_INPBIntentSlotVocabularyValue *)self pronunciation];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"pronunciation"];
+    pronunciation = [(_INPBIntentSlotVocabularyValue *)self pronunciation];
+    v9 = [pronunciation copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"pronunciation"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -48,28 +48,28 @@
   return v4 ^ [(NSString *)self->_pronunciation hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_INPBIntentSlotVocabularyValue *)self examples];
-  v6 = [v4 examples];
-  if ((v5 != 0) == (v6 == 0))
+  examples = [(_INPBIntentSlotVocabularyValue *)self examples];
+  examples2 = [equalCopy examples];
+  if ((examples != 0) == (examples2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(_INPBIntentSlotVocabularyValue *)self examples];
-  if (v7)
+  examples3 = [(_INPBIntentSlotVocabularyValue *)self examples];
+  if (examples3)
   {
-    v8 = v7;
-    v9 = [(_INPBIntentSlotVocabularyValue *)self examples];
-    v10 = [v4 examples];
-    v11 = [v9 isEqual:v10];
+    v8 = examples3;
+    examples4 = [(_INPBIntentSlotVocabularyValue *)self examples];
+    examples5 = [equalCopy examples];
+    v11 = [examples4 isEqual:examples5];
 
     if (!v11)
     {
@@ -81,20 +81,20 @@
   {
   }
 
-  v5 = [(_INPBIntentSlotVocabularyValue *)self phrase];
-  v6 = [v4 phrase];
-  if ((v5 != 0) == (v6 == 0))
+  examples = [(_INPBIntentSlotVocabularyValue *)self phrase];
+  examples2 = [equalCopy phrase];
+  if ((examples != 0) == (examples2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_INPBIntentSlotVocabularyValue *)self phrase];
-  if (v12)
+  phrase = [(_INPBIntentSlotVocabularyValue *)self phrase];
+  if (phrase)
   {
-    v13 = v12;
-    v14 = [(_INPBIntentSlotVocabularyValue *)self phrase];
-    v15 = [v4 phrase];
-    v16 = [v14 isEqual:v15];
+    v13 = phrase;
+    phrase2 = [(_INPBIntentSlotVocabularyValue *)self phrase];
+    phrase3 = [equalCopy phrase];
+    v16 = [phrase2 isEqual:phrase3];
 
     if (!v16)
     {
@@ -106,12 +106,12 @@
   {
   }
 
-  v5 = [(_INPBIntentSlotVocabularyValue *)self pronunciation];
-  v6 = [v4 pronunciation];
-  if ((v5 != 0) != (v6 == 0))
+  examples = [(_INPBIntentSlotVocabularyValue *)self pronunciation];
+  examples2 = [equalCopy pronunciation];
+  if ((examples != 0) != (examples2 == 0))
   {
-    v17 = [(_INPBIntentSlotVocabularyValue *)self pronunciation];
-    if (!v17)
+    pronunciation = [(_INPBIntentSlotVocabularyValue *)self pronunciation];
+    if (!pronunciation)
     {
 
 LABEL_20:
@@ -119,10 +119,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(_INPBIntentSlotVocabularyValue *)self pronunciation];
-    v20 = [v4 pronunciation];
-    v21 = [v19 isEqual:v20];
+    v18 = pronunciation;
+    pronunciation2 = [(_INPBIntentSlotVocabularyValue *)self pronunciation];
+    pronunciation3 = [equalCopy pronunciation];
+    v21 = [pronunciation2 isEqual:pronunciation3];
 
     if (v21)
     {
@@ -142,49 +142,49 @@ LABEL_18:
   return v22;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBIntentSlotVocabularyValue allocWithZone:](_INPBIntentSlotVocabularyValue init];
-  v6 = [(NSArray *)self->_examples copyWithZone:a3];
+  v6 = [(NSArray *)self->_examples copyWithZone:zone];
   [(_INPBIntentSlotVocabularyValue *)v5 setExamples:v6];
 
-  v7 = [(NSString *)self->_phrase copyWithZone:a3];
+  v7 = [(NSString *)self->_phrase copyWithZone:zone];
   [(_INPBIntentSlotVocabularyValue *)v5 setPhrase:v7];
 
-  v8 = [(NSString *)self->_pronunciation copyWithZone:a3];
+  v8 = [(NSString *)self->_pronunciation copyWithZone:zone];
   [(_INPBIntentSlotVocabularyValue *)v5 setPronunciation:v8];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBIntentSlotVocabularyValue *)self data];
+  coderCopy = coder;
+  data = [(_INPBIntentSlotVocabularyValue *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBIntentSlotVocabularyValue)initWithCoder:(id)a3
+- (_INPBIntentSlotVocabularyValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBIntentSlotVocabularyValue *)self initWithData:v6];
+    self = [(_INPBIntentSlotVocabularyValue *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -217,17 +217,17 @@ LABEL_18:
     while (v7);
   }
 
-  v11 = [(_INPBIntentSlotVocabularyValue *)self phrase];
+  phrase = [(_INPBIntentSlotVocabularyValue *)self phrase];
 
-  if (v11)
+  if (phrase)
   {
     phrase = self->_phrase;
     PBDataWriterWriteStringField();
   }
 
-  v13 = [(_INPBIntentSlotVocabularyValue *)self pronunciation];
+  pronunciation = [(_INPBIntentSlotVocabularyValue *)self pronunciation];
 
-  if (v13)
+  if (pronunciation)
   {
     pronunciation = self->_pronunciation;
     PBDataWriterWriteStringField();
@@ -236,45 +236,45 @@ LABEL_18:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setPronunciation:(id)a3
+- (void)setPronunciation:(id)pronunciation
 {
-  v4 = [a3 copy];
+  v4 = [pronunciation copy];
   pronunciation = self->_pronunciation;
   self->_pronunciation = v4;
 
   MEMORY[0x1EEE66BB8](v4, pronunciation);
 }
 
-- (void)setPhrase:(id)a3
+- (void)setPhrase:(id)phrase
 {
-  v4 = [a3 copy];
+  v4 = [phrase copy];
   phrase = self->_phrase;
   self->_phrase = v4;
 
   MEMORY[0x1EEE66BB8](v4, phrase);
 }
 
-- (void)addExamples:(id)a3
+- (void)addExamples:(id)examples
 {
-  v4 = a3;
+  examplesCopy = examples;
   examples = self->_examples;
-  v8 = v4;
+  v8 = examplesCopy;
   if (!examples)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_examples;
-    self->_examples = v6;
+    self->_examples = array;
 
-    v4 = v8;
+    examplesCopy = v8;
     examples = self->_examples;
   }
 
-  [(NSArray *)examples addObject:v4];
+  [(NSArray *)examples addObject:examplesCopy];
 }
 
-- (void)setExamples:(id)a3
+- (void)setExamples:(id)examples
 {
-  v4 = [a3 mutableCopy];
+  v4 = [examples mutableCopy];
   examples = self->_examples;
   self->_examples = v4;
 

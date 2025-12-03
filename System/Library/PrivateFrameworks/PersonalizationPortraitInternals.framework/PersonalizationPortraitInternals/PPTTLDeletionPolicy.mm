@@ -1,7 +1,7 @@
 @interface PPTTLDeletionPolicy
 + (id)defaultPolicy;
-- (BOOL)applyPolicyWithError:(id *)a3 shouldContinueBlock:(id)a4;
-- (PPTTLDeletionPolicy)initWithRules:(id)a3 namedEntityStore:(id)a4 topicStore:(id)a5 locationStore:(id)a6;
+- (BOOL)applyPolicyWithError:(id *)error shouldContinueBlock:(id)block;
+- (PPTTLDeletionPolicy)initWithRules:(id)rules namedEntityStore:(id)store topicStore:(id)topicStore locationStore:(id)locationStore;
 - (id)description;
 @end
 
@@ -14,10 +14,10 @@
   return v2;
 }
 
-- (BOOL)applyPolicyWithError:(id *)a3 shouldContinueBlock:(id)a4
+- (BOOL)applyPolicyWithError:(id *)error shouldContinueBlock:(id)block
 {
   v107 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  blockCopy = block;
   v96 = 0u;
   v97 = 0u;
   v98 = 0u;
@@ -38,8 +38,8 @@
   v87 = *v97;
   *&v8 = 138412546;
   v83 = v8;
-  v88 = v6;
-  v84 = a3;
+  v88 = blockCopy;
+  errorCopy = error;
   do
   {
     v11 = 0;
@@ -52,13 +52,13 @@
 
       v12 = *(*(&v96 + 1) + 8 * v11);
       context = objc_autoreleasePoolPush();
-      if (!v6[2](v6))
+      if (!blockCopy[2](blockCopy))
       {
         v27 = v9;
 LABEL_85:
         objc_autoreleasePoolPop(context);
         v9 = v27;
-        v79 = v84;
+        v79 = errorCopy;
         goto LABEL_86;
       }
 
@@ -70,19 +70,19 @@ LABEL_85:
         _os_log_impl(&dword_23224A000, v13, OS_LOG_TYPE_DEFAULT, "PPMaintenance: TTLBasedDonationCleanup: Performing Named Entity cleanup for rule: %@", buf, 0xCu);
       }
 
-      v14 = [v12 bundleIdentifier];
-      if (v14)
+      bundleIdentifier = [v12 bundleIdentifier];
+      if (bundleIdentifier)
       {
 
 LABEL_12:
-        v16 = [v12 bundleIdentifier];
-        v17 = [v12 groupIdentifier];
-        v18 = [v12 maxAgeSeconds];
-        [v18 doubleValue];
+        bundleIdentifier2 = [v12 bundleIdentifier];
+        groupIdentifier = [v12 groupIdentifier];
+        maxAgeSeconds = [v12 maxAgeSeconds];
+        [maxAgeSeconds doubleValue];
         v20 = v19;
         v94 = v9;
-        v21 = v16;
-        v22 = v17;
+        v21 = bundleIdentifier2;
+        v22 = groupIdentifier;
         if (self)
         {
           v23 = objc_opt_new();
@@ -103,7 +103,7 @@ LABEL_12:
               _os_log_error_impl(&dword_23224A000, v26, OS_LOG_TYPE_ERROR, "PPMaintenance failed to age-out named entity extractions from %@ with groupId %@: %@", buf, 0x20u);
             }
 
-            v6 = v88;
+            blockCopy = v88;
           }
         }
 
@@ -121,15 +121,15 @@ LABEL_12:
         goto LABEL_19;
       }
 
-      v15 = [v12 groupIdentifier];
+      groupIdentifier2 = [v12 groupIdentifier];
 
-      if (v15)
+      if (groupIdentifier2)
       {
         goto LABEL_12;
       }
 
-      v56 = [v12 maxAgeSeconds];
-      [v56 doubleValue];
+      maxAgeSeconds2 = [v12 maxAgeSeconds];
+      [maxAgeSeconds2 doubleValue];
       v95 = v9;
       if (self)
       {
@@ -170,7 +170,7 @@ LABEL_80:
       }
 
 LABEL_19:
-      if (!v6[2](v6))
+      if (!blockCopy[2](blockCopy))
       {
         v10 = 1;
         goto LABEL_85;
@@ -184,21 +184,21 @@ LABEL_19:
         _os_log_impl(&dword_23224A000, v28, OS_LOG_TYPE_DEFAULT, "PPMaintenance: TTLBasedDonationCleanup: Performing Topic cleanup for rule: %@", buf, 0xCu);
       }
 
-      v29 = [v12 bundleIdentifier];
-      if (v29)
+      bundleIdentifier3 = [v12 bundleIdentifier];
+      if (bundleIdentifier3)
       {
 
 LABEL_25:
-        v31 = [v12 bundleIdentifier];
-        v32 = [v12 groupIdentifier];
-        v33 = [v12 maxAgeSeconds];
-        [v33 doubleValue];
+        bundleIdentifier4 = [v12 bundleIdentifier];
+        groupIdentifier3 = [v12 groupIdentifier];
+        maxAgeSeconds3 = [v12 maxAgeSeconds];
+        [maxAgeSeconds3 doubleValue];
         v35 = v34;
         v92 = v27;
-        v36 = v31;
+        v36 = bundleIdentifier4;
         if (self)
         {
-          v37 = v32;
+          v37 = groupIdentifier3;
           v38 = objc_opt_new();
           v39 = [v38 dateByAddingTimeInterval:-v35];
 
@@ -223,7 +223,7 @@ LABEL_25:
         }
 
         v42 = v92;
-        v6 = v88;
+        blockCopy = v88;
         if (!v40)
         {
           goto LABEL_82;
@@ -232,15 +232,15 @@ LABEL_25:
         goto LABEL_32;
       }
 
-      v30 = [v12 groupIdentifier];
+      groupIdentifier4 = [v12 groupIdentifier];
 
-      if (v30)
+      if (groupIdentifier4)
       {
         goto LABEL_25;
       }
 
-      v64 = [v12 maxAgeSeconds];
-      [v64 doubleValue];
+      maxAgeSeconds4 = [v12 maxAgeSeconds];
+      [maxAgeSeconds4 doubleValue];
       v93 = v27;
       if (self)
       {
@@ -283,7 +283,7 @@ LABEL_84:
       }
 
 LABEL_32:
-      if (!v6[2](v6))
+      if (!blockCopy[2](blockCopy))
       {
         v10 = 1;
         goto LABEL_84;
@@ -297,32 +297,32 @@ LABEL_32:
         _os_log_impl(&dword_23224A000, v43, OS_LOG_TYPE_DEFAULT, "PPMaintenance: TTLBasedDonationCleanup: Performing Location cleanup for rule: %@", buf, 0xCu);
       }
 
-      v44 = [v12 bundleIdentifier];
-      if (v44)
+      bundleIdentifier5 = [v12 bundleIdentifier];
+      if (bundleIdentifier5)
       {
 
 LABEL_38:
-        v46 = [v12 bundleIdentifier];
-        v47 = [v12 groupIdentifier];
-        v48 = [v12 maxAgeSeconds];
-        [v48 doubleValue];
+        bundleIdentifier6 = [v12 bundleIdentifier];
+        groupIdentifier5 = [v12 groupIdentifier];
+        maxAgeSeconds5 = [v12 maxAgeSeconds];
+        [maxAgeSeconds5 doubleValue];
         v50 = v49;
         v90 = v42;
-        v51 = v46;
-        v52 = v47;
+        maxAgeSeconds6 = bundleIdentifier6;
+        v52 = groupIdentifier5;
         if (self)
         {
           v53 = objc_opt_new();
           v54 = [v53 dateByAddingTimeInterval:-v50];
 
-          v10 = [(PPLocalLocationStore *)self->_locationStore deleteAllLocationsFromSourcesWithBundleId:v51 groupId:v52 olderThan:v54 deletedCount:0 error:&v90];
+          v10 = [(PPLocalLocationStore *)self->_locationStore deleteAllLocationsFromSourcesWithBundleId:maxAgeSeconds6 groupId:v52 olderThan:v54 deletedCount:0 error:&v90];
           if (!v10)
           {
             v55 = pp_default_log_handle();
             if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412802;
-              v102 = v51;
+              v102 = maxAgeSeconds6;
               v103 = 2112;
               v104 = v52;
               v105 = 2112;
@@ -342,15 +342,15 @@ LABEL_38:
         goto LABEL_45;
       }
 
-      v45 = [v12 groupIdentifier];
+      groupIdentifier6 = [v12 groupIdentifier];
 
-      if (v45)
+      if (groupIdentifier6)
       {
         goto LABEL_38;
       }
 
-      v51 = [v12 maxAgeSeconds];
-      [v51 doubleValue];
+      maxAgeSeconds6 = [v12 maxAgeSeconds];
+      [maxAgeSeconds6 doubleValue];
       v91 = v42;
       if (self)
       {
@@ -390,7 +390,7 @@ LABEL_45:
 
     while (v86 != v11);
     v78 = [obj countByEnumeratingWithState:&v96 objects:v100 count:16];
-    v79 = v84;
+    v79 = errorCopy;
     v86 = v78;
   }
 
@@ -410,22 +410,22 @@ LABEL_89:
   return v10;
 }
 
-- (PPTTLDeletionPolicy)initWithRules:(id)a3 namedEntityStore:(id)a4 topicStore:(id)a5 locationStore:(id)a6
+- (PPTTLDeletionPolicy)initWithRules:(id)rules namedEntityStore:(id)store topicStore:(id)topicStore locationStore:(id)locationStore
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  rulesCopy = rules;
+  storeCopy = store;
+  topicStoreCopy = topicStore;
+  locationStoreCopy = locationStore;
   v18.receiver = self;
   v18.super_class = PPTTLDeletionPolicy;
   v15 = [(PPTTLDeletionPolicy *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_rules, a3);
-    objc_storeStrong(&v16->_namedEntityStore, a4);
-    objc_storeStrong(&v16->_topicStore, a5);
-    objc_storeStrong(&v16->_locationStore, a6);
+    objc_storeStrong(&v15->_rules, rules);
+    objc_storeStrong(&v16->_namedEntityStore, store);
+    objc_storeStrong(&v16->_topicStore, topicStore);
+    objc_storeStrong(&v16->_locationStore, locationStore);
   }
 
   return v16;

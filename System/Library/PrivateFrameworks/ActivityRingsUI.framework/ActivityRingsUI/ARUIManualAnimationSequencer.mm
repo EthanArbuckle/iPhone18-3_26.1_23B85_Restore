@@ -1,6 +1,6 @@
 @interface ARUIManualAnimationSequencer
 - (ARUIManualAnimationSequencer)init;
-- (void)performAfter:(double)a3 completion:(id)a4;
+- (void)performAfter:(double)after completion:(id)completion;
 - (void)tick;
 @end
 
@@ -47,13 +47,13 @@
   }
 }
 
-- (void)performAfter:(double)a3 completion:(id)a4
+- (void)performAfter:(double)after completion:(id)completion
 {
-  v6 = [a4 copy];
+  v6 = [completion copy];
   completion = self->_completion;
   self->_completion = v6;
 
-  self->_timeUntilCompletion = a3;
+  self->_timeUntilCompletion = after;
 }
 
 @end

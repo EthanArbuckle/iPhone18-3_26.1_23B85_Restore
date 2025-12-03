@@ -10,9 +10,9 @@
   v3 = [(CPSVibrantLabelAccessibility *)self safeValueForKey:@"_label"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 accessibilityLabel];
+  accessibilityLabel = [v4 accessibilityLabel];
 
-  return v5;
+  return accessibilityLabel;
 }
 
 @end

@@ -1,40 +1,40 @@
 @interface SBHIconLayoutHidingCompoundAssertion
 - (NSArray)icons;
-- (SBHIconLayoutHidingCompoundAssertion)initWithInvalidationHandler:(id)a3 icons:(id)a4 reason:(id)a5 options:(unint64_t)a6;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBHIconLayoutHidingCompoundAssertion)initWithInvalidationHandler:(id)handler icons:(id)icons reason:(id)reason options:(unint64_t)options;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)addAssertion:(id)a3 forChild:(id)a4;
-- (void)addAssertionFromChild:(id)a3;
-- (void)addIcon:(id)a3;
+- (void)addAssertion:(id)assertion forChild:(id)child;
+- (void)addAssertionFromChild:(id)child;
+- (void)addIcon:(id)icon;
 - (void)dealloc;
 - (void)invalidate;
-- (void)removeAndInvalidateAssertionsForChild:(id)a3;
-- (void)setOptions:(unint64_t)a3;
+- (void)removeAndInvalidateAssertionsForChild:(id)child;
+- (void)setOptions:(unint64_t)options;
 @end
 
 @implementation SBHIconLayoutHidingCompoundAssertion
 
-- (SBHIconLayoutHidingCompoundAssertion)initWithInvalidationHandler:(id)a3 icons:(id)a4 reason:(id)a5 options:(unint64_t)a6
+- (SBHIconLayoutHidingCompoundAssertion)initWithInvalidationHandler:(id)handler icons:(id)icons reason:(id)reason options:(unint64_t)options
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  handlerCopy = handler;
+  iconsCopy = icons;
+  reasonCopy = reason;
   v20.receiver = self;
   v20.super_class = SBHIconLayoutHidingCompoundAssertion;
   v14 = [(SBHIconLayoutHidingCompoundAssertion *)&v20 init];
   if (v14)
   {
-    v15 = [v12 mutableCopy];
+    v15 = [iconsCopy mutableCopy];
     icons = v14->_icons;
     v14->_icons = v15;
 
-    objc_storeStrong(&v14->_invalidationHandler, a3);
-    v17 = [v13 copy];
+    objc_storeStrong(&v14->_invalidationHandler, handler);
+    v17 = [reasonCopy copy];
     reason = v14->_reason;
     v14->_reason = v17;
 
-    v14->_options = a6;
+    v14->_options = options;
   }
 
   return v14;
@@ -43,53 +43,53 @@
 - (void)dealloc
 {
   v5 = *MEMORY[0x1E69E9840];
-  v2 = *a1;
+  v2 = *self;
   v3 = 138412290;
   v4 = v2;
   _os_log_fault_impl(&dword_1BEB18000, a2, OS_LOG_TYPE_FAULT, "SBHIconLayoutHidingCompoundAssertion deallocated but not invalidated! Reason: %@", &v3, 0xCu);
 }
 
-- (void)addAssertion:(id)a3 forChild:(id)a4
+- (void)addAssertion:(id)assertion forChild:(id)child
 {
-  v11 = a3;
-  v6 = a4;
+  assertionCopy = assertion;
+  childCopy = child;
   childAssertions = self->_childAssertions;
   if (!childAssertions)
   {
-    v8 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     v9 = self->_childAssertions;
-    self->_childAssertions = v8;
+    self->_childAssertions = weakToStrongObjectsMapTable;
 
     childAssertions = self->_childAssertions;
   }
 
-  v10 = [(NSMapTable *)childAssertions objectForKey:v6];
+  v10 = [(NSMapTable *)childAssertions objectForKey:childCopy];
   if (!v10)
   {
     v10 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    [(NSMapTable *)self->_childAssertions setObject:v10 forKey:v6];
+    [(NSMapTable *)self->_childAssertions setObject:v10 forKey:childCopy];
   }
 
-  [v10 addObject:v11];
+  [v10 addObject:assertionCopy];
 }
 
-- (void)addAssertionFromChild:(id)a3
+- (void)addAssertionFromChild:(id)child
 {
-  v7 = a3;
-  v4 = [(SBHIconLayoutHidingCompoundAssertion *)self icons];
-  v5 = [(SBHIconLayoutHidingCompoundAssertion *)self reason];
-  v6 = [v7 beginHidingIconsFromLayout:v4 reason:v5 options:{-[SBHIconLayoutHidingCompoundAssertion options](self, "options")}];
+  childCopy = child;
+  icons = [(SBHIconLayoutHidingCompoundAssertion *)self icons];
+  reason = [(SBHIconLayoutHidingCompoundAssertion *)self reason];
+  v6 = [childCopy beginHidingIconsFromLayout:icons reason:reason options:{-[SBHIconLayoutHidingCompoundAssertion options](self, "options")}];
   if (v6)
   {
-    [(SBHIconLayoutHidingCompoundAssertion *)self addAssertion:v6 forChild:v7];
+    [(SBHIconLayoutHidingCompoundAssertion *)self addAssertion:v6 forChild:childCopy];
   }
 }
 
-- (void)removeAndInvalidateAssertionsForChild:(id)a3
+- (void)removeAndInvalidateAssertionsForChild:(id)child
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_childAssertions objectForKey:v4];
+  childCopy = child;
+  v5 = [(NSMapTable *)self->_childAssertions objectForKey:childCopy];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -119,14 +119,14 @@
     while (v7);
   }
 
-  [(NSMapTable *)self->_childAssertions removeObjectForKey:v4];
+  [(NSMapTable *)self->_childAssertions removeObjectForKey:childCopy];
 }
 
-- (void)addIcon:(id)a3
+- (void)addIcon:(id)icon
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(NSMutableArray *)self->_icons addObject:v4];
+  iconCopy = icon;
+  [(NSMutableArray *)self->_icons addObject:iconCopy];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
@@ -167,7 +167,7 @@
                 objc_enumerationMutation(v10);
               }
 
-              [*(*(&v15 + 1) + 8 * v14++) addIcon:v4];
+              [*(*(&v15 + 1) + 8 * v14++) addIcon:iconCopy];
             }
 
             while (v12 != v14);
@@ -195,12 +195,12 @@
   return v2;
 }
 
-- (void)setOptions:(unint64_t)a3
+- (void)setOptions:(unint64_t)options
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (self->_options != a3)
+  if (self->_options != options)
   {
-    self->_options = a3;
+    self->_options = options;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
@@ -241,7 +241,7 @@
                   objc_enumerationMutation(v10);
                 }
 
-                [*(*(&v15 + 1) + 8 * v14++) setOptions:a3];
+                [*(*(&v15 + 1) + 8 * v14++) setOptions:options];
               }
 
               while (v12 != v14);
@@ -328,8 +328,8 @@
       while (v5);
     }
 
-    v13 = [(SBHIconLayoutHidingCompoundAssertion *)self invalidationHandler];
-    [v13 layoutHidingCompoundAssertionDidInvalidate:self];
+    invalidationHandler = [(SBHIconLayoutHidingCompoundAssertion *)self invalidationHandler];
+    [invalidationHandler layoutHidingCompoundAssertionDidInvalidate:self];
 
     [(SBHIconLayoutHidingCompoundAssertion *)self setInvalidated:1];
   }
@@ -337,32 +337,32 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBHIconLayoutHidingCompoundAssertion *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBHIconLayoutHidingCompoundAssertion *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBHIconLayoutHidingCompoundAssertion *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBHIconLayoutHidingCompoundAssertion *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBHIconLayoutHidingCompoundAssertion *)self succinctDescriptionBuilder];
-  v5 = [v4 appendObject:self->_childAssertions withName:@"childAssertions"];
-  v6 = [(SBHIconLayoutHidingCompoundAssertion *)self reason];
-  v7 = [v4 appendObject:v6 withName:@"reason"];
+  succinctDescriptionBuilder = [(SBHIconLayoutHidingCompoundAssertion *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendObject:self->_childAssertions withName:@"childAssertions"];
+  reason = [(SBHIconLayoutHidingCompoundAssertion *)self reason];
+  v7 = [succinctDescriptionBuilder appendObject:reason withName:@"reason"];
 
-  v8 = [v4 appendUnsignedInteger:-[SBHIconLayoutHidingCompoundAssertion options](self withName:"options") format:{@"options", 1}];
-  v9 = [(SBHIconLayoutHidingCompoundAssertion *)self invalidationHandler];
-  v10 = [v4 appendPointer:v9 withName:@"invalidationHandler"];
+  v8 = [succinctDescriptionBuilder appendUnsignedInteger:-[SBHIconLayoutHidingCompoundAssertion options](self withName:"options") format:{@"options", 1}];
+  invalidationHandler = [(SBHIconLayoutHidingCompoundAssertion *)self invalidationHandler];
+  v10 = [succinctDescriptionBuilder appendPointer:invalidationHandler withName:@"invalidationHandler"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 @end

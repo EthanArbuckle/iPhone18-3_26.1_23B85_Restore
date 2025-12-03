@@ -1,5 +1,5 @@
 @interface AVAsset
-- (BOOL)decodableVideoNamed:(id)a3 width:(double *)a4 height:(double *)a5;
+- (BOOL)decodableVideoNamed:(id)named width:(double *)width height:(double *)height;
 - (unsigned)videoOrientation;
 @end
 
@@ -89,9 +89,9 @@ void __45__AVAsset_VideoOrientation__videoOrientation__block_invoke(uint64_t a1,
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)decodableVideoNamed:(id)a3 width:(double *)a4 height:(double *)a5
+- (BOOL)decodableVideoNamed:(id)named width:(double *)width height:(double *)height
 {
-  v8 = a3;
+  namedCopy = named;
   v9 = dispatch_semaphore_create(0);
   v25 = 0;
   v26 = &v25;
@@ -114,9 +114,9 @@ void __45__AVAsset_VideoOrientation__videoOrientation__block_invoke(uint64_t a1,
   v16 = &v25;
   v17 = v23;
   v18 = v21;
-  v19 = a5;
-  v20 = a4;
-  v10 = v8;
+  heightCopy = height;
+  widthCopy = width;
+  v10 = namedCopy;
   v14 = v10;
   v11 = v9;
   v15 = v11;

@@ -1,19 +1,19 @@
 @interface SMInitiatorSessionInitializationRequest
-- (BOOL)isEqual:(id)a3;
-- (SMInitiatorSessionInitializationRequest)initWithSessionID:(id)a3 conversation:(id)a4 handler:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (SMInitiatorSessionInitializationRequest)initWithSessionID:(id)d conversation:(id)conversation handler:(id)handler;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation SMInitiatorSessionInitializationRequest
 
-- (SMInitiatorSessionInitializationRequest)initWithSessionID:(id)a3 conversation:(id)a4 handler:(id)a5
+- (SMInitiatorSessionInitializationRequest)initWithSessionID:(id)d conversation:(id)conversation handler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (!v9)
+  dCopy = d;
+  conversationCopy = conversation;
+  handlerCopy = handler;
+  v12 = handlerCopy;
+  if (!dCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -28,7 +28,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v10)
+  if (!conversationCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -41,7 +41,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (!v11)
+  if (!handlerCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -53,7 +53,7 @@ LABEL_13:
 
 LABEL_14:
 
-    v19 = 0;
+    selfCopy = 0;
     goto LABEL_15;
   }
 
@@ -63,57 +63,57 @@ LABEL_14:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_sessionID, a3);
-    objc_storeStrong(&v14->_conversation, a4);
+    objc_storeStrong(&v13->_sessionID, d);
+    objc_storeStrong(&v14->_conversation, conversation);
     v15 = _Block_copy(v12);
     handler = v14->_handler;
     v14->_handler = v15;
 
-    v17 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     startDate = v14->_startDate;
-    v14->_startDate = v17;
+    v14->_startDate = date;
   }
 
   self = v14;
-  v19 = self;
+  selfCopy = self;
 LABEL_15:
 
-  return v19;
+  return selfCopy;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SMInitiatorSessionInitializationRequest *)self sessionID];
-  v5 = [v4 UUIDString];
-  v6 = [(SMInitiatorSessionInitializationRequest *)self conversation];
-  v7 = [v6 receiverHandles];
-  v8 = [(SMInitiatorSessionInitializationRequest *)self startDate];
-  v9 = [v8 stringFromDate];
-  v10 = [MEMORY[0x277CBEAA8] date];
-  v11 = [(SMInitiatorSessionInitializationRequest *)self startDate];
-  [v10 timeIntervalSinceDate:v11];
-  v13 = [v3 stringWithFormat:@"sessionID, %@, handles, %@, startDate, %@, elapsed interval, %.2f", v5, v7, v9, v12];
+  sessionID = [(SMInitiatorSessionInitializationRequest *)self sessionID];
+  uUIDString = [sessionID UUIDString];
+  conversation = [(SMInitiatorSessionInitializationRequest *)self conversation];
+  receiverHandles = [conversation receiverHandles];
+  startDate = [(SMInitiatorSessionInitializationRequest *)self startDate];
+  stringFromDate = [startDate stringFromDate];
+  date = [MEMORY[0x277CBEAA8] date];
+  startDate2 = [(SMInitiatorSessionInitializationRequest *)self startDate];
+  [date timeIntervalSinceDate:startDate2];
+  v13 = [v3 stringWithFormat:@"sessionID, %@, handles, %@, startDate, %@, elapsed interval, %.2f", uUIDString, receiverHandles, stringFromDate, v12];
 
   return v13;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(SMInitiatorSessionInitializationRequest *)self sessionID];
-  v4 = [v3 hash];
-  v5 = [(SMInitiatorSessionInitializationRequest *)self conversation];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(SMInitiatorSessionInitializationRequest *)self startDate];
-  v8 = [v7 hash];
+  sessionID = [(SMInitiatorSessionInitializationRequest *)self sessionID];
+  v4 = [sessionID hash];
+  conversation = [(SMInitiatorSessionInitializationRequest *)self conversation];
+  v6 = [conversation hash] ^ v4;
+  startDate = [(SMInitiatorSessionInitializationRequest *)self startDate];
+  v8 = [startDate hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -123,46 +123,46 @@ LABEL_15:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
-      v8 = [(SMInitiatorSessionInitializationRequest *)self sessionID];
-      v9 = [(SMInitiatorSessionInitializationRequest *)v7 sessionID];
-      if (v8 != v9)
+      v7 = equalCopy;
+      sessionID = [(SMInitiatorSessionInitializationRequest *)self sessionID];
+      sessionID2 = [(SMInitiatorSessionInitializationRequest *)v7 sessionID];
+      if (sessionID != sessionID2)
       {
-        v3 = [(SMInitiatorSessionInitializationRequest *)self sessionID];
-        v4 = [(SMInitiatorSessionInitializationRequest *)v7 sessionID];
-        if (![v3 isEqual:v4])
+        sessionID3 = [(SMInitiatorSessionInitializationRequest *)self sessionID];
+        sessionID4 = [(SMInitiatorSessionInitializationRequest *)v7 sessionID];
+        if (![sessionID3 isEqual:sessionID4])
         {
           v10 = 0;
           goto LABEL_19;
         }
       }
 
-      v11 = [(SMInitiatorSessionInitializationRequest *)self conversation];
-      v12 = [(SMInitiatorSessionInitializationRequest *)v7 conversation];
-      v13 = v12;
-      if (v11 == v12)
+      conversation = [(SMInitiatorSessionInitializationRequest *)self conversation];
+      conversation2 = [(SMInitiatorSessionInitializationRequest *)v7 conversation];
+      v13 = conversation2;
+      if (conversation == conversation2)
       {
-        v28 = v12;
+        v28 = conversation2;
       }
 
       else
       {
-        v14 = [(SMInitiatorSessionInitializationRequest *)self conversation];
-        v27 = [(SMInitiatorSessionInitializationRequest *)v7 conversation];
-        if (![v14 isEqual:?])
+        conversation3 = [(SMInitiatorSessionInitializationRequest *)self conversation];
+        conversation4 = [(SMInitiatorSessionInitializationRequest *)v7 conversation];
+        if (![conversation3 isEqual:?])
         {
           v10 = 0;
           goto LABEL_17;
         }
 
-        v26 = v14;
+        v26 = conversation3;
         v28 = v13;
       }
 
-      v15 = [(SMInitiatorSessionInitializationRequest *)self startDate];
-      v16 = [(SMInitiatorSessionInitializationRequest *)v7 startDate];
-      v17 = v16;
-      if (v15 == v16)
+      startDate = [(SMInitiatorSessionInitializationRequest *)self startDate];
+      startDate2 = [(SMInitiatorSessionInitializationRequest *)v7 startDate];
+      v17 = startDate2;
+      if (startDate == startDate2)
       {
 
         v10 = 1;
@@ -171,29 +171,29 @@ LABEL_15:
       else
       {
         [(SMInitiatorSessionInitializationRequest *)self startDate];
-        v18 = v25 = v3;
+        v18 = v25 = sessionID3;
         [(SMInitiatorSessionInitializationRequest *)v7 startDate];
-        v24 = v11;
-        v19 = v4;
-        v20 = v9;
-        v22 = v21 = v8;
+        v24 = conversation;
+        v19 = sessionID4;
+        v20 = sessionID2;
+        v22 = v21 = sessionID;
         v10 = [v18 isEqual:v22];
 
-        v8 = v21;
-        v9 = v20;
-        v4 = v19;
-        v11 = v24;
+        sessionID = v21;
+        sessionID2 = v20;
+        sessionID4 = v19;
+        conversation = v24;
 
-        v3 = v25;
+        sessionID3 = v25;
       }
 
       v13 = v28;
-      v14 = v26;
-      if (v11 == v28)
+      conversation3 = v26;
+      if (conversation == v28)
       {
 LABEL_18:
 
-        if (v8 == v9)
+        if (sessionID == sessionID2)
         {
 LABEL_20:
 

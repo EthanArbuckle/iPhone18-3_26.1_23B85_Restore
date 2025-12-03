@@ -1,7 +1,7 @@
 @interface FCPersonalizationFunctionProvider
 - (FCPersonalizationFunctionProvider)init;
-- (FCPersonalizationFunctionProvider)initWithAppConfiguration:(id)a3;
-- (id)diversifyItems:(id)a3 limit:(unint64_t)a4 preselectedItems:(id)a5;
+- (FCPersonalizationFunctionProvider)initWithAppConfiguration:(id)configuration;
+- (id)diversifyItems:(id)items limit:(unint64_t)limit preselectedItems:(id)preselectedItems;
 @end
 
 @implementation FCPersonalizationFunctionProvider
@@ -32,11 +32,11 @@
   objc_exception_throw(v6);
 }
 
-- (FCPersonalizationFunctionProvider)initWithAppConfiguration:(id)a3
+- (FCPersonalizationFunctionProvider)initWithAppConfiguration:(id)configuration
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  configurationCopy = configuration;
+  if (!configurationCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "appConfiguration"];
     *buf = 136315906;
@@ -55,13 +55,13 @@
   v5 = [(FCPersonalizationFunctionProvider *)&v13 init];
   if (v5)
   {
-    [v4 articleDiversificationSimilarityExpectationStart];
+    [configurationCopy articleDiversificationSimilarityExpectationStart];
     v5->_articleDiversificationSimilarityExpectationStart = v6;
-    [v4 articleDiversificationSimilarityExpectationEnd];
+    [configurationCopy articleDiversificationSimilarityExpectationEnd];
     v5->_articleDiversificationSimilarityExpectationEnd = v7;
-    [v4 articleDiversificationUniquePublisherExpectationSlope];
+    [configurationCopy articleDiversificationUniquePublisherExpectationSlope];
     v5->_articleDiversificationUniquePublisherExpectationSlope = v8;
-    [v4 articleDiversificationUniquePublisherExpectationYIntercept];
+    [configurationCopy articleDiversificationUniquePublisherExpectationYIntercept];
     v5->_articleDiversificationUniquePublisherExpectationYIntercept = v9;
   }
 
@@ -69,10 +69,10 @@
   return v5;
 }
 
-- (id)diversifyItems:(id)a3 limit:(unint64_t)a4 preselectedItems:(id)a5
+- (id)diversifyItems:(id)items limit:(unint64_t)limit preselectedItems:(id)preselectedItems
 {
-  v8 = a5;
-  v9 = a3;
+  preselectedItemsCopy = preselectedItems;
+  itemsCopy = items;
   [(FCPersonalizationFunctionProvider *)self articleDiversificationSimilarityExpectationStart];
   v11 = v10;
   [(FCPersonalizationFunctionProvider *)self articleDiversificationSimilarityExpectationEnd];
@@ -80,7 +80,7 @@
   [(FCPersonalizationFunctionProvider *)self articleDiversificationUniquePublisherExpectationSlope];
   v15 = v14;
   [(FCPersonalizationFunctionProvider *)self articleDiversificationUniquePublisherExpectationYIntercept];
-  v17 = [FCPersonalizationUtilities diversifyItems:v9 withPreselectedItems:v8 limit:a4 similarityStartExpectation:v11 similarityEndExpectation:v13 publisherDiversificationSlope:v15 publisherDiversificationYIntercept:v16];
+  v17 = [FCPersonalizationUtilities diversifyItems:itemsCopy withPreselectedItems:preselectedItemsCopy limit:limit similarityStartExpectation:v11 similarityEndExpectation:v13 publisherDiversificationSlope:v15 publisherDiversificationYIntercept:v16];
 
   return v17;
 }

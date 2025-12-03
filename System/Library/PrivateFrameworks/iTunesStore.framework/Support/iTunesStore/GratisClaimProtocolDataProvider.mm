@@ -1,5 +1,5 @@
 @interface GratisClaimProtocolDataProvider
-- (BOOL)_runServerAuthenticationOperation:(id)a3 error:(id *)a4;
+- (BOOL)_runServerAuthenticationOperation:(id)operation error:(id *)error;
 - (void)dealloc;
 @end
 
@@ -12,25 +12,25 @@
   [(DaemonProtocolDataProvider *)&v3 dealloc];
 }
 
-- (BOOL)_runServerAuthenticationOperation:(id)a3 error:(id *)a4
+- (BOOL)_runServerAuthenticationOperation:(id)operation error:(id *)error
 {
   v23 = 0;
-  [a3 setPerformsButtonAction:0];
-  v7 = [(GratisClaimProtocolDataProvider *)self runSubOperation:a3 error:&v23];
-  v8 = [a3 redirectURL];
-  v9 = [a3 selectedButton];
-  if (v8)
+  [operation setPerformsButtonAction:0];
+  v7 = [(GratisClaimProtocolDataProvider *)self runSubOperation:operation error:&v23];
+  redirectURL = [operation redirectURL];
+  selectedButton = [operation selectedButton];
+  if (redirectURL)
   {
     goto LABEL_2;
   }
 
-  v18 = v9;
-  if ([v9 actionType] == 1 && (objc_msgSend(v18, "urlType") != 1 || objc_msgSend(objc_msgSend(v18, "subtarget"), "isEqualToString:", @"account.upToDateClaim")))
+  v18 = selectedButton;
+  if ([selectedButton actionType] == 1 && (objc_msgSend(v18, "urlType") != 1 || objc_msgSend(objc_msgSend(v18, "subtarget"), "isEqualToString:", @"account.upToDateClaim")))
   {
-    v19 = [v18 parameter];
-    if (v19)
+    parameter = [v18 parameter];
+    if (parameter)
     {
-      v8 = v19;
+      redirectURL = parameter;
 LABEL_2:
       v10 = +[SSLogConfig sharedDaemonConfig];
       if (!v10)
@@ -38,15 +38,15 @@ LABEL_2:
         v10 = +[SSLogConfig sharedConfig];
       }
 
-      v11 = [v10 shouldLog];
+      shouldLog = [v10 shouldLog];
       if ([v10 shouldLogToDisk])
       {
-        v12 = v11 | 2;
+        v12 = shouldLog | 2;
       }
 
       else
       {
-        v12 = v11;
+        v12 = shouldLog;
       }
 
       if (!os_log_type_enabled([v10 OSLogObject], OS_LOG_TYPE_INFO))
@@ -60,7 +60,7 @@ LABEL_2:
         v24 = 138412546;
         v25 = v13;
         v26 = 2112;
-        v27 = v8;
+        v27 = redirectURL;
         LODWORD(v22) = 22;
         v21 = &v24;
         v14 = _os_log_send_and_compose_impl();
@@ -74,21 +74,21 @@ LABEL_2:
         }
       }
 
-      -[GratisClaimProtocolDataProvider setAuthenticatedAccountDSID:](self, "setAuthenticatedAccountDSID:", [a3 authenticatedAccountDSID]);
-      [(GratisClaimProtocolDataProvider *)self setRedirectedClaimURL:v8];
+      -[GratisClaimProtocolDataProvider setAuthenticatedAccountDSID:](self, "setAuthenticatedAccountDSID:", [operation authenticatedAccountDSID]);
+      [(GratisClaimProtocolDataProvider *)self setRedirectedClaimURL:redirectURL];
       goto LABEL_13;
     }
   }
 
   if (v7)
   {
-    -[GratisClaimProtocolDataProvider setAuthenticatedAccountDSID:](self, "setAuthenticatedAccountDSID:", [a3 authenticatedAccountDSID]);
+    -[GratisClaimProtocolDataProvider setAuthenticatedAccountDSID:](self, "setAuthenticatedAccountDSID:", [operation authenticatedAccountDSID]);
     return v7;
   }
 
-  [v18 performDefaultActionForDialog:{objc_msgSend(a3, "dialog")}];
+  [v18 performDefaultActionForDialog:{objc_msgSend(operation, "dialog")}];
 LABEL_13:
-  if (a4)
+  if (error)
   {
     v17 = v7;
   }
@@ -100,7 +100,7 @@ LABEL_13:
 
   if ((v17 & 1) == 0)
   {
-    *a4 = v23;
+    *error = v23;
   }
 
   return v7;

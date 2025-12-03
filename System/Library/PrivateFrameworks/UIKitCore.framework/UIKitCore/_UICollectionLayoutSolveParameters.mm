@@ -1,13 +1,13 @@
 @interface _UICollectionLayoutSolveParameters
 + (id)parametersForFullResolve;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_UICollectionLayoutAuxillaryOffsets)invalidatedAuxillaryOffsets;
 - (_UICollectionLayoutSolveParameters)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)indexesForInvalidatedAuxillariesOfKind:(id *)a1;
-- (id)initWithInvalidatedIndexes:(double)a3 scrollOffset:(double)a4 visibleBounds:(double)a5;
-- (id)initWithInvalidatedIndexes:(void *)a3 invalidatedAuxillaryDict:(char)a4 isFullResolve:(double)a5 scrollOffset:(double)a6 visibleBounds:(double)a7;
-- (void)addAuxillaryIndex:(void *)a3 elementKind:;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)indexesForInvalidatedAuxillariesOfKind:(id *)kind;
+- (id)initWithInvalidatedIndexes:(double)indexes scrollOffset:(double)offset visibleBounds:(double)bounds;
+- (id)initWithInvalidatedIndexes:(void *)indexes invalidatedAuxillaryDict:(char)dict isFullResolve:(double)resolve scrollOffset:(double)offset visibleBounds:(double)bounds;
+- (void)addAuxillaryIndex:(void *)index elementKind:;
 @end
 
 @implementation _UICollectionLayoutSolveParameters
@@ -16,28 +16,28 @@
 {
   objc_opt_self();
   v0 = [_UICollectionLayoutSolveParameters alloc];
-  v1 = [MEMORY[0x1E696AD50] indexSet];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   v2 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v3 = [(_UICollectionLayoutSolveParameters *)v0 initWithInvalidatedIndexes:v1 invalidatedAuxillaryDict:v2 isFullResolve:1 scrollOffset:*MEMORY[0x1E695EFF8] visibleBounds:*(MEMORY[0x1E695EFF8] + 8), *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+  v3 = [(_UICollectionLayoutSolveParameters *)v0 initWithInvalidatedIndexes:indexSet invalidatedAuxillaryDict:v2 isFullResolve:1 scrollOffset:*MEMORY[0x1E695EFF8] visibleBounds:*(MEMORY[0x1E695EFF8] + 8), *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
 
   return v3;
 }
 
 - (_UICollectionLayoutSolveParameters)init
 {
-  v3 = [MEMORY[0x1E696AD50] indexSet];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v5 = [(_UICollectionLayoutSolveParameters *)self initWithInvalidatedIndexes:v3 invalidatedAuxillaryDict:v4 isFullResolve:0 scrollOffset:*MEMORY[0x1E695EFF8] visibleBounds:*(MEMORY[0x1E695EFF8] + 8), *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+  v5 = [(_UICollectionLayoutSolveParameters *)self initWithInvalidatedIndexes:indexSet invalidatedAuxillaryDict:v4 isFullResolve:0 scrollOffset:*MEMORY[0x1E695EFF8] visibleBounds:*(MEMORY[0x1E695EFF8] + 8), *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
 
   return v5;
 }
 
 - (_UICollectionLayoutAuxillaryOffsets)invalidatedAuxillaryOffsets
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    if ([a1[2] count])
+    if ([self[2] count])
     {
       v5 = 0;
       v6 = &v5;
@@ -45,45 +45,45 @@
       v8 = __Block_byref_object_copy__29;
       v9 = __Block_byref_object_dispose__29;
       v10 = objc_alloc_init(_UICollectionLayoutAuxillaryOffsets);
-      isa = v1[1].super.isa;
+      isa = selfCopy[1].super.isa;
       v4[0] = MEMORY[0x1E69E9820];
       v4[1] = 3221225472;
       v4[2] = __65___UICollectionLayoutSolveParameters_invalidatedAuxillaryOffsets__block_invoke;
       v4[3] = &unk_1E70FAD98;
       v4[4] = &v5;
       [(objc_class *)isa enumerateKeysAndObjectsUsingBlock:v4];
-      v1 = v6[5];
+      selfCopy = v6[5];
       _Block_object_dispose(&v5, 8);
     }
 
     else
     {
-      v1 = objc_alloc_init(_UICollectionLayoutAuxillaryOffsets);
+      selfCopy = objc_alloc_init(_UICollectionLayoutAuxillaryOffsets);
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (id)initWithInvalidatedIndexes:(void *)a3 invalidatedAuxillaryDict:(char)a4 isFullResolve:(double)a5 scrollOffset:(double)a6 visibleBounds:(double)a7
+- (id)initWithInvalidatedIndexes:(void *)indexes invalidatedAuxillaryDict:(char)dict isFullResolve:(double)resolve scrollOffset:(double)offset visibleBounds:(double)bounds
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v22.receiver = a1;
+  v22.receiver = self;
   v22.super_class = _UICollectionLayoutSolveParameters;
   v19 = objc_msgSendSuper2(&v22, sel_init);
   v20 = v19;
   if (v19)
   {
     objc_storeStrong(v19 + 1, a2);
-    objc_storeStrong(v20 + 2, a3);
-    *(v20 + 24) = a4;
-    *(v20 + 4) = a5;
-    *(v20 + 5) = a6;
-    *(v20 + 6) = a7;
+    objc_storeStrong(v20 + 2, indexes);
+    *(v20 + 24) = dict;
+    *(v20 + 4) = resolve;
+    *(v20 + 5) = offset;
+    *(v20 + 6) = bounds;
     *(v20 + 7) = a8;
     *(v20 + 8) = a9;
     *(v20 + 9) = a10;
@@ -92,63 +92,63 @@
   return v20;
 }
 
-- (id)initWithInvalidatedIndexes:(double)a3 scrollOffset:(double)a4 visibleBounds:(double)a5
+- (id)initWithInvalidatedIndexes:(double)indexes scrollOffset:(double)offset visibleBounds:(double)bounds
 {
-  v8 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v15 = [a2 mutableCopy];
     v16 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v8 = [(_UICollectionLayoutSolveParameters *)v8 initWithInvalidatedIndexes:v15 invalidatedAuxillaryDict:v16 isFullResolve:1 scrollOffset:a3 visibleBounds:a4, a5, a6, a7, a8];
+    selfCopy = [(_UICollectionLayoutSolveParameters *)selfCopy initWithInvalidatedIndexes:v15 invalidatedAuxillaryDict:v16 isFullResolve:1 scrollOffset:indexes visibleBounds:offset, bounds, a6, a7, a8];
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (id)indexesForInvalidatedAuxillariesOfKind:(id *)a1
+- (id)indexesForInvalidatedAuxillariesOfKind:(id *)kind
 {
-  v2 = a1;
-  if (a1)
+  kindCopy = kind;
+  if (kind)
   {
     if (![a2 length])
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:sel_indexesForInvalidatedAuxillariesOfKind_ object:v2 file:@"_UICollectionLayoutHelpers.m" lineNumber:1532 description:{@"Invalid parameter not satisfying: %@", @"kind.length"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_indexesForInvalidatedAuxillariesOfKind_ object:kindCopy file:@"_UICollectionLayoutHelpers.m" lineNumber:1532 description:{@"Invalid parameter not satisfying: %@", @"kind.length"}];
     }
 
-    v4 = [v2[2] objectForKeyedSubscript:a2];
+    v4 = [kindCopy[2] objectForKeyedSubscript:a2];
     v5 = v4;
     if (v4)
     {
-      v6 = v4;
+      indexSet = v4;
     }
 
     else
     {
-      v6 = [MEMORY[0x1E696AC90] indexSet];
+      indexSet = [MEMORY[0x1E696AC90] indexSet];
     }
 
-    v2 = v6;
+    kindCopy = indexSet;
   }
 
-  return v2;
+  return kindCopy;
 }
 
-- (void)addAuxillaryIndex:(void *)a3 elementKind:
+- (void)addAuxillaryIndex:(void *)index elementKind:
 {
-  if (a1)
+  if (self)
   {
-    if (![a3 length])
+    if (![index length])
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:sel_addAuxillaryIndex_elementKind_ object:a1 file:@"_UICollectionLayoutHelpers.m" lineNumber:1541 description:{@"Invalid parameter not satisfying: %@", @"elementKind.length"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_addAuxillaryIndex_elementKind_ object:self file:@"_UICollectionLayoutHelpers.m" lineNumber:1541 description:{@"Invalid parameter not satisfying: %@", @"elementKind.length"}];
     }
 
-    v6 = [*(a1 + 16) objectForKeyedSubscript:a3];
+    v6 = [*(self + 16) objectForKeyedSubscript:index];
     if (!v6)
     {
       v8 = objc_alloc_init(MEMORY[0x1E696AD50]);
-      [*(a1 + 16) setObject:v8 forKeyedSubscript:a3];
+      [*(self + 16) setObject:v8 forKeyedSubscript:index];
       v6 = v8;
     }
 
@@ -157,20 +157,20 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (a3)
+  if (equal)
   {
-    v4 = a3;
-    v5 = v4;
+    equalCopy = equal;
+    v5 = equalCopy;
     if (self)
     {
-      if (self->_isFullResolve != v4[24])
+      if (self->_isFullResolve != equalCopy[24])
       {
         goto LABEL_19;
       }
@@ -183,13 +183,13 @@
     {
       y = 0.0;
       x = 0.0;
-      if (v4[24])
+      if (equalCopy[24])
       {
         goto LABEL_19;
       }
     }
 
-    if (*(v4 + 4) == x && *(v4 + 5) == y)
+    if (*(equalCopy + 4) == x && *(equalCopy + 5) == y)
     {
       if (self)
       {
@@ -207,10 +207,10 @@
         v9 = 0.0;
       }
 
-      if (CGRectEqualToRect(*(v4 + 48), *&v9))
+      if (CGRectEqualToRect(*(equalCopy + 48), *&v9))
       {
-        v13 = [(_UILabelConfiguration *)&self->super.isa _content];
-        v14 = [v13 isEqualToIndexSet:v5[1]];
+        _content = [(_UILabelConfiguration *)&self->super.isa _content];
+        v14 = [_content isEqualToIndexSet:v5[1]];
 
         if (v14)
         {
@@ -230,7 +230,7 @@ LABEL_19:
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [_UICollectionLayoutSolveParameters alloc];
   v5 = [(NSMutableIndexSet *)self->_invalidatedIndexes mutableCopy];

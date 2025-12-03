@@ -10,23 +10,23 @@
 {
   v3 = objc_opt_new();
   [v3 setType:{-[BBBulletin clarity_dndEventType](self, "clarity_dndEventType")}];
-  v4 = [(BBBulletin *)self threadID];
-  [v3 setThreadIdentifier:v4];
+  threadID = [(BBBulletin *)self threadID];
+  [v3 setThreadIdentifier:threadID];
 
-  v5 = [(BBBulletin *)self clarity_contactHandle];
-  [v3 setSender:v5];
+  clarity_contactHandle = [(BBBulletin *)self clarity_contactHandle];
+  [v3 setSender:clarity_contactHandle];
 
-  v6 = [(BBBulletin *)self sectionID];
-  [v3 setIdentifier:v6];
+  sectionID = [(BBBulletin *)self sectionID];
+  [v3 setIdentifier:sectionID];
 
-  v7 = [(BBBulletin *)self communicationContext];
-  [v3 setNotifyAnyway:{objc_msgSend(v7, "notifyRecipientAnyway")}];
+  communicationContext = [(BBBulletin *)self communicationContext];
+  [v3 setNotifyAnyway:{objc_msgSend(communicationContext, "notifyRecipientAnyway")}];
 
-  v8 = [(BBBulletin *)self filterCriteria];
-  [v3 setFilterCriteria:v8];
+  filterCriteria = [(BBBulletin *)self filterCriteria];
+  [v3 setFilterCriteria:filterCriteria];
 
-  v9 = [(BBBulletin *)self sectionID];
-  [v3 setBundleIdentifier:v9];
+  sectionID2 = [(BBBulletin *)self sectionID];
+  [v3 setBundleIdentifier:sectionID2];
 
   if (([(BBBulletin *)self ignoresQuietMode]& 1) != 0 || [(BBBulletin *)self interruptionLevel]== 3)
   {
@@ -50,95 +50,95 @@ LABEL_5:
 
 - (unint64_t)clarity_dndEventType
 {
-  v3 = [(BBBulletin *)self contentType];
+  contentType = [(BBBulletin *)self contentType];
 
-  if (!v3)
+  if (!contentType)
   {
     return 0;
   }
 
-  v4 = [(BBBulletin *)self contentType];
-  v5 = [v4 isEqualToString:BBBulletinContentTypeMessagingDirect];
+  contentType2 = [(BBBulletin *)self contentType];
+  v5 = [contentType2 isEqualToString:BBBulletinContentTypeMessagingDirect];
 
   if (v5)
   {
     return 3;
   }
 
-  v7 = [(BBBulletin *)self contentType];
-  v8 = [v7 isEqualToString:BBBulletinContentTypeMessagingGroup];
+  contentType3 = [(BBBulletin *)self contentType];
+  v8 = [contentType3 isEqualToString:BBBulletinContentTypeMessagingGroup];
 
   if (v8)
   {
     return 4;
   }
 
-  v9 = [(BBBulletin *)self contentType];
-  if ([v9 isEqualToString:BBBulletinContentTypeVoicemail])
+  contentType4 = [(BBBulletin *)self contentType];
+  if ([contentType4 isEqualToString:BBBulletinContentTypeVoicemail])
   {
     goto LABEL_10;
   }
 
-  v10 = [(BBBulletin *)self contentType];
-  if ([v10 isEqualToString:BBBulletinContentTypeMissedCall])
+  contentType5 = [(BBBulletin *)self contentType];
+  if ([contentType5 isEqualToString:BBBulletinContentTypeMissedCall])
   {
 
 LABEL_10:
     return 2;
   }
 
-  v11 = [(BBBulletin *)self contentType];
-  v12 = [v11 isEqualToString:BBBulletinContentTypeCallOther];
+  contentType6 = [(BBBulletin *)self contentType];
+  v12 = [contentType6 isEqualToString:BBBulletinContentTypeCallOther];
 
   if (v12)
   {
     return 2;
   }
 
-  v13 = [(BBBulletin *)self contentType];
-  v14 = [v13 isEqualToString:BBBulletinContentTypeIncomingCall];
+  contentType7 = [(BBBulletin *)self contentType];
+  v14 = [contentType7 isEqualToString:BBBulletinContentTypeIncomingCall];
 
   return v14;
 }
 
 - (id)clarity_contactHandle
 {
-  v3 = [(BBBulletin *)self communicationContext];
+  communicationContext = [(BBBulletin *)self communicationContext];
 
-  if (v3)
+  if (communicationContext)
   {
-    v4 = [(BBBulletin *)self communicationContext];
-    v5 = [v4 sender];
+    communicationContext2 = [(BBBulletin *)self communicationContext];
+    sender = [communicationContext2 sender];
 
-    if (v5)
+    if (sender)
     {
-      v3 = objc_opt_new();
-      v6 = [v5 cnContactIdentifier];
-      [v3 setContactIdentifier:v6];
+      communicationContext = objc_opt_new();
+      cnContactIdentifier = [sender cnContactIdentifier];
+      [communicationContext setContactIdentifier:cnContactIdentifier];
 
-      v7 = [v5 handleType];
-      if (v7 == 1)
+      handleType = [sender handleType];
+      if (handleType == 1)
       {
         v8 = 1;
       }
 
       else
       {
-        v8 = 2 * (v7 == 2);
+        v8 = 2 * (handleType == 2);
       }
 
-      [v3 setType:v8];
-      v9 = [v5 handle];
-      [v3 setValue:v9];
+      [communicationContext setType:v8];
+      handle = [sender handle];
+      [communicationContext setValue:handle];
     }
 
     else
     {
-      v3 = 0;
+      communicationContext = 0;
     }
   }
 
-  return v3;
+  return communicationContext;
 }
 
 @end

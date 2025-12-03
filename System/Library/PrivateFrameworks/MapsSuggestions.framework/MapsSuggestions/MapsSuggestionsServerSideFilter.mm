@@ -1,5 +1,5 @@
 @interface MapsSuggestionsServerSideFilter
-- (BOOL)shouldKeepEntry:(id)a3;
+- (BOOL)shouldKeepEntry:(id)entry;
 - (MapsSuggestionsServerSideFilter)init;
 @end
 
@@ -42,14 +42,14 @@
   return v2;
 }
 
-- (BOOL)shouldKeepEntry:(id)a3
+- (BOOL)shouldKeepEntry:(id)entry
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  entryCopy = entry;
+  v5 = entryCopy;
+  if (entryCopy)
   {
-    switch([v4 type])
+    switch([entryCopy type])
     {
       case 0:
         v6 = 8;

@@ -1,26 +1,26 @@
 @interface EDWorksheet
 - (BOOL)hasMergedCells;
-- (BOOL)isColMerged:(unsigned int)a3;
-- (BOOL)isRowMerged:(unsigned int)a3;
+- (BOOL)isColMerged:(unsigned int)merged;
+- (BOOL)isRowMerged:(unsigned int)merged;
 - (double)defaultColumnWidth;
 - (id)conditionalFormattings;
 - (id)description;
 - (id)hyperlinks;
 - (id)maxCellReferencedInFormulas;
 - (id)mergedCells;
-- (id)mergedColRef:(unsigned int)a3;
-- (id)mergedRowRef:(unsigned int)a3;
+- (id)mergedColRef:(unsigned int)ref;
+- (id)mergedRowRef:(unsigned int)ref;
 - (id)pivotTables;
 - (id)rowBlocks;
 - (id)tables;
-- (void)setImplicitCellArea:(id)a3;
-- (void)setMergedColsRef:(id)a3 from:(unsigned int)a4 to:(unsigned int)a5;
-- (void)setMergedRowsRef:(id)a3 from:(unsigned int)a4 to:(unsigned int)a5;
-- (void)setPane:(id)a3;
+- (void)setImplicitCellArea:(id)area;
+- (void)setMergedColsRef:(id)ref from:(unsigned int)from to:(unsigned int)to;
+- (void)setMergedRowsRef:(id)ref from:(unsigned int)from to:(unsigned int)to;
+- (void)setPane:(id)pane;
 - (void)setup;
 - (void)teardown;
-- (void)updateMaxColumnOutlineLevelIfNeeded:(unint64_t)a3;
-- (void)updateMaxRowOutlineLevelIfNeeded:(unint64_t)a3;
+- (void)updateMaxColumnOutlineLevelIfNeeded:(unint64_t)needed;
+- (void)updateMaxRowOutlineLevelIfNeeded:(unint64_t)needed;
 @end
 
 @implementation EDWorksheet
@@ -28,9 +28,9 @@
 - (void)setup
 {
   v3 = [EDColumnInfoCollection alloc];
-  v4 = [(EDSheet *)self workbook];
-  v5 = [v4 resources];
-  v6 = [(EDColumnInfoCollection *)v3 initWithResources:v5 worksheet:self];
+  workbook = [(EDSheet *)self workbook];
+  resources = [workbook resources];
+  v6 = [(EDColumnInfoCollection *)v3 initWithResources:resources worksheet:self];
   mColumnInfos = self->mColumnInfos;
   self->mColumnInfos = v6;
 
@@ -83,8 +83,8 @@
     v5 = self->mMergedCells;
     self->mMergedCells = v4;
 
-    v6 = [(EDSheet *)self processors];
-    [v6 markObject:self processor:objc_opt_class()];
+    processors = [(EDSheet *)self processors];
+    [processors markObject:self processor:objc_opt_class()];
 
     mMergedCells = self->mMergedCells;
   }
@@ -94,9 +94,9 @@
 
 - (double)defaultColumnWidth
 {
-  v3 = [(EDSheet *)self isDisplayFormulas];
+  isDisplayFormulas = [(EDSheet *)self isDisplayFormulas];
   result = self->mDefaultColumnWidth;
-  if (v3)
+  if (isDisplayFormulas)
   {
     return result + result;
   }
@@ -195,8 +195,8 @@
     v5 = self->mTables;
     self->mTables = v4;
 
-    v6 = [(EDSheet *)self processors];
-    [v6 markObject:self processor:objc_opt_class()];
+    processors = [(EDSheet *)self processors];
+    [processors markObject:self processor:objc_opt_class()];
 
     mTables = self->mTables;
   }
@@ -213,8 +213,8 @@
     v5 = self->mPivotTables;
     self->mPivotTables = v4;
 
-    v6 = [(EDSheet *)self processors];
-    [v6 markObject:self processor:objc_opt_class()];
+    processors = [(EDSheet *)self processors];
+    [processors markObject:self processor:objc_opt_class()];
 
     mPivotTables = self->mPivotTables;
   }
@@ -237,14 +237,14 @@
   return mHyperlinks;
 }
 
-- (void)setPane:(id)a3
+- (void)setPane:(id)pane
 {
-  v5 = a3;
-  if (self->mPane != v5)
+  paneCopy = pane;
+  if (self->mPane != paneCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->mPane, a3);
-    v5 = v6;
+    v6 = paneCopy;
+    objc_storeStrong(&self->mPane, pane);
+    paneCopy = v6;
   }
 }
 
@@ -268,26 +268,26 @@
   return v2;
 }
 
-- (void)updateMaxRowOutlineLevelIfNeeded:(unint64_t)a3
+- (void)updateMaxRowOutlineLevelIfNeeded:(unint64_t)needed
 {
-  if (self->mMaxRowOutlineLevel < a3)
+  if (self->mMaxRowOutlineLevel < needed)
   {
-    self->mMaxRowOutlineLevel = a3;
+    self->mMaxRowOutlineLevel = needed;
   }
 }
 
-- (void)updateMaxColumnOutlineLevelIfNeeded:(unint64_t)a3
+- (void)updateMaxColumnOutlineLevelIfNeeded:(unint64_t)needed
 {
-  if (self->mMaxColumnOutlineLevel < a3)
+  if (self->mMaxColumnOutlineLevel < needed)
   {
-    self->mMaxColumnOutlineLevel = a3;
+    self->mMaxColumnOutlineLevel = needed;
   }
 }
 
-- (void)setMergedRowsRef:(id)a3 from:(unsigned int)a4 to:(unsigned int)a5
+- (void)setMergedRowsRef:(id)ref from:(unsigned int)from to:(unsigned int)to
 {
-  v6 = *&a4;
-  for (i = a3; v6 <= a5; v6 = (v6 + 1))
+  v6 = *&from;
+  for (i = ref; v6 <= to; v6 = (v6 + 1))
   {
     mMergedRows = self->mMergedRows;
     v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v6];
@@ -295,10 +295,10 @@
   }
 }
 
-- (void)setMergedColsRef:(id)a3 from:(unsigned int)a4 to:(unsigned int)a5
+- (void)setMergedColsRef:(id)ref from:(unsigned int)from to:(unsigned int)to
 {
-  v6 = *&a4;
-  for (i = a3; v6 <= a5; v6 = (v6 + 1))
+  v6 = *&from;
+  for (i = ref; v6 <= to; v6 = (v6 + 1))
   {
     mMergedCols = self->mMergedCols;
     v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v6];
@@ -306,52 +306,52 @@
   }
 }
 
-- (BOOL)isRowMerged:(unsigned int)a3
+- (BOOL)isRowMerged:(unsigned int)merged
 {
   mMergedRows = self->mMergedRows;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*&a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*&merged];
   v5 = [(NSMutableDictionary *)mMergedRows objectForKey:v4];
   LOBYTE(mMergedRows) = v5 != 0;
 
   return mMergedRows;
 }
 
-- (id)mergedRowRef:(unsigned int)a3
+- (id)mergedRowRef:(unsigned int)ref
 {
   mMergedRows = self->mMergedRows;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*&a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*&ref];
   v5 = [(NSMutableDictionary *)mMergedRows objectForKey:v4];
 
   return v5;
 }
 
-- (BOOL)isColMerged:(unsigned int)a3
+- (BOOL)isColMerged:(unsigned int)merged
 {
   mMergedCols = self->mMergedCols;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*&a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*&merged];
   v5 = [(NSMutableDictionary *)mMergedCols objectForKey:v4];
   LOBYTE(mMergedCols) = v5 != 0;
 
   return mMergedCols;
 }
 
-- (id)mergedColRef:(unsigned int)a3
+- (id)mergedColRef:(unsigned int)ref
 {
   mMergedCols = self->mMergedCols;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*&a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*&ref];
   v5 = [(NSMutableDictionary *)mMergedCols objectForKey:v4];
 
   return v5;
 }
 
-- (void)setImplicitCellArea:(id)a3
+- (void)setImplicitCellArea:(id)area
 {
-  v5 = a3;
-  if (self->mImplicitCellArea != v5)
+  areaCopy = area;
+  if (self->mImplicitCellArea != areaCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->mImplicitCellArea, a3);
-    v5 = v6;
+    v6 = areaCopy;
+    objc_storeStrong(&self->mImplicitCellArea, area);
+    areaCopy = v6;
   }
 }
 

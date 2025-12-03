@@ -1,12 +1,12 @@
 @interface SOProfile
-+ (id)stringWithAuthenticationMethod:(int64_t)a3;
-+ (id)stringWithProfileType:(int64_t)a3;
-+ (id)stringWithScreenLockedBehavior:(int64_t)a3;
-- (BOOL)matchesURL:(id)a3;
-- (SOProfile)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)stringWithAuthenticationMethod:(int64_t)method;
++ (id)stringWithProfileType:(int64_t)type;
++ (id)stringWithScreenLockedBehavior:(int64_t)behavior;
+- (BOOL)matchesURL:(id)l;
+- (SOProfile)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)preLoadURLData;
 @end
 
@@ -67,10 +67,10 @@
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)matchesURL:(id)a3
+- (BOOL)matchesURL:(id)l
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -95,9 +95,9 @@
 
         if (v11)
         {
-          v12 = [v4 lowercaseString];
-          v13 = [v10 lowercaseString];
-          v14 = [v12 hasPrefix:v13];
+          lowercaseString = [lCopy lowercaseString];
+          lowercaseString2 = [v10 lowercaseString];
+          v14 = [lowercaseString hasPrefix:lowercaseString2];
 
           if (v14)
           {
@@ -109,7 +109,7 @@
         {
           v15 = [(NSMutableDictionary *)self->_urlPredicates valueForKey:v10];
           v16 = v15;
-          if (v15 && ([v15 evaluateWithObject:v4] & 1) != 0)
+          if (v15 && ([v15 evaluateWithObject:lCopy] & 1) != 0)
           {
 
 LABEL_16:
@@ -136,49 +136,49 @@ LABEL_17:
   return v17;
 }
 
-+ (id)stringWithProfileType:(int64_t)a3
++ (id)stringWithProfileType:(int64_t)type
 {
-  if (a3 >= 3)
+  if (type >= 3)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<unknown: %d>", a3];
+    type = [MEMORY[0x1E696AEC0] stringWithFormat:@"<unknown: %d>", type];
   }
 
   else
   {
-    v4 = off_1E836CD98[a3];
+    type = off_1E836CD98[type];
   }
 
-  return v4;
+  return type;
 }
 
-+ (id)stringWithScreenLockedBehavior:(int64_t)a3
++ (id)stringWithScreenLockedBehavior:(int64_t)behavior
 {
-  if (a3 >= 3)
+  if (behavior >= 3)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<unknown: %d>", a3];
+    behavior = [MEMORY[0x1E696AEC0] stringWithFormat:@"<unknown: %d>", behavior];
   }
 
   else
   {
-    v4 = off_1E836CDB0[a3];
+    behavior = off_1E836CDB0[behavior];
   }
 
-  return v4;
+  return behavior;
 }
 
-+ (id)stringWithAuthenticationMethod:(int64_t)a3
++ (id)stringWithAuthenticationMethod:(int64_t)method
 {
-  if ((a3 - 1) >= 3)
+  if ((method - 1) >= 3)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<unknown: %d>", a3];
+    method = [MEMORY[0x1E696AEC0] stringWithFormat:@"<unknown: %d>", method];
   }
 
   else
   {
-    v4 = off_1E836CDC8[a3 - 1];
+    method = off_1E836CDC8[method - 1];
   }
 
-  return v4;
+  return method;
 }
 
 - (id)description
@@ -192,11 +192,11 @@ LABEL_17:
   v13 = vdupq_n_s64(@"<null>");
   v16 = vbslq_s8(vceqzq_s64(*&self->_URLPrefix), v13, *&self->_URLPrefix);
   v14[3] = @"BundleIdentifier";
-  v4 = [(SOProfile *)self extensionBundleIdentifier];
-  v5 = v4;
-  if (v4)
+  extensionBundleIdentifier = [(SOProfile *)self extensionBundleIdentifier];
+  v5 = extensionBundleIdentifier;
+  if (extensionBundleIdentifier)
   {
-    v6 = v4;
+    v6 = extensionBundleIdentifier;
   }
 
   else
@@ -222,9 +222,9 @@ LABEL_17:
   return v10;
 }
 
-- (SOProfile)initWithCoder:(id)a3
+- (SOProfile)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v42.receiver = self;
   v42.super_class = SOProfile;
   v5 = [(SOProfile *)&v42 init];
@@ -232,14 +232,14 @@ LABEL_17:
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_type);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     v5->_type = [v8 integerValue];
 
     v9 = MEMORY[0x1E695DFD8];
     v10 = objc_opt_class();
     v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
     v12 = NSStringFromSelector(sel_URLPrefix);
-    v13 = [v4 decodeObjectOfClasses:v11 forKey:v12];
+    v13 = [coderCopy decodeObjectOfClasses:v11 forKey:v12];
     URLPrefix = v5->_URLPrefix;
     v5->_URLPrefix = v13;
 
@@ -247,19 +247,19 @@ LABEL_17:
     v16 = objc_opt_class();
     v17 = [v15 setWithObjects:{v16, objc_opt_class(), 0}];
     v18 = NSStringFromSelector(sel_hosts);
-    v19 = [v4 decodeObjectOfClasses:v17 forKey:v18];
+    v19 = [coderCopy decodeObjectOfClasses:v17 forKey:v18];
     hosts = v5->_hosts;
     v5->_hosts = v19;
 
     v21 = objc_opt_class();
     v22 = NSStringFromSelector(sel_extensionBundleIdentifier);
-    v23 = [v4 decodeObjectOfClass:v21 forKey:v22];
+    v23 = [coderCopy decodeObjectOfClass:v21 forKey:v22];
     extensionBundleIdentifier = v5->_extensionBundleIdentifier;
     v5->_extensionBundleIdentifier = v23;
 
     v25 = objc_opt_class();
     v26 = NSStringFromSelector(sel_realm);
-    v27 = [v4 decodeObjectOfClass:v25 forKey:v26];
+    v27 = [coderCopy decodeObjectOfClass:v25 forKey:v26];
     realm = v5->_realm;
     v5->_realm = v27;
 
@@ -267,63 +267,63 @@ LABEL_17:
     v30 = objc_opt_class();
     v31 = [v29 setWithObjects:{v30, objc_opt_class(), 0}];
     v32 = NSStringFromSelector(sel_deniedBundleIdentifiers);
-    v33 = [v4 decodeObjectOfClasses:v31 forKey:v32];
+    v33 = [coderCopy decodeObjectOfClasses:v31 forKey:v32];
     deniedBundleIdentifiers = v5->_deniedBundleIdentifiers;
     v5->_deniedBundleIdentifiers = v33;
 
     v35 = objc_opt_class();
     v36 = NSStringFromSelector(sel_screenLockedBehavior);
-    v37 = [v4 decodeObjectOfClass:v35 forKey:v36];
+    v37 = [coderCopy decodeObjectOfClass:v35 forKey:v36];
     v5->_screenLockedBehavior = [v37 integerValue];
 
     v38 = objc_opt_class();
     v39 = NSStringFromSelector(sel_pssoAuthenticationMethod);
-    v40 = [v4 decodeObjectOfClass:v38 forKey:v39];
+    v40 = [coderCopy decodeObjectOfClass:v38 forKey:v39];
     v5->_pssoAuthenticationMethod = [v40 integerValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   type = self->_type;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithInteger:type];
   v8 = NSStringFromSelector(sel_type);
-  [v6 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:v7 forKey:v8];
 
   URLPrefix = self->_URLPrefix;
   v10 = NSStringFromSelector(sel_URLPrefix);
-  [v6 encodeObject:URLPrefix forKey:v10];
+  [coderCopy encodeObject:URLPrefix forKey:v10];
 
   hosts = self->_hosts;
   v12 = NSStringFromSelector(sel_hosts);
-  [v6 encodeObject:hosts forKey:v12];
+  [coderCopy encodeObject:hosts forKey:v12];
 
   extensionBundleIdentifier = self->_extensionBundleIdentifier;
   v14 = NSStringFromSelector(sel_extensionBundleIdentifier);
-  [v6 encodeObject:extensionBundleIdentifier forKey:v14];
+  [coderCopy encodeObject:extensionBundleIdentifier forKey:v14];
 
   realm = self->_realm;
   v16 = NSStringFromSelector(sel_realm);
-  [v6 encodeObject:realm forKey:v16];
+  [coderCopy encodeObject:realm forKey:v16];
 
   deniedBundleIdentifiers = self->_deniedBundleIdentifiers;
   v18 = NSStringFromSelector(sel_deniedBundleIdentifiers);
-  [v6 encodeObject:deniedBundleIdentifiers forKey:v18];
+  [coderCopy encodeObject:deniedBundleIdentifiers forKey:v18];
 
   v19 = [MEMORY[0x1E696AD98] numberWithInteger:self->_screenLockedBehavior];
   v20 = NSStringFromSelector(sel_screenLockedBehavior);
-  [v6 encodeObject:v19 forKey:v20];
+  [coderCopy encodeObject:v19 forKey:v20];
 
   v22 = [MEMORY[0x1E696AD98] numberWithInteger:self->_pssoAuthenticationMethod];
   v21 = NSStringFromSelector(sel_pssoAuthenticationMethod);
-  [v6 encodeObject:v22 forKey:v21];
+  [coderCopy encodeObject:v22 forKey:v21];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   v4[3] = self->_type;

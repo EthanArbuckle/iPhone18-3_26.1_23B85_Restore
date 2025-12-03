@@ -1,18 +1,18 @@
 @interface CatalogTipGalleryViewController
-- (_TtC9SeymourUI31CatalogTipGalleryViewController)initWithCoder:(id)a3;
-- (_TtC9SeymourUI31CatalogTipGalleryViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC9SeymourUI31CatalogTipGalleryViewController)initWithCoder:(id)coder;
+- (_TtC9SeymourUI31CatalogTipGalleryViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)dealloc;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CatalogTipGalleryViewController
 
-- (_TtC9SeymourUI31CatalogTipGalleryViewController)initWithCoder:(id)a3
+- (_TtC9SeymourUI31CatalogTipGalleryViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI31CatalogTipGalleryViewController_visibility) = 1;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI31CatalogTipGalleryViewController_resignActiveObserver) = 0;
@@ -25,56 +25,56 @@
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B764A38();
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = type metadata accessor for CatalogTipGalleryViewController();
   [(CatalogTipGalleryViewController *)&v3 dealloc];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B764078();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v9.receiver = self;
   v9.super_class = type metadata accessor for CatalogTipGalleryViewController();
   v4 = v9.receiver;
-  [(CatalogTipGalleryViewController *)&v9 viewWillAppear:v3];
-  v5 = [v4 navigationController];
-  if (v5)
+  [(CatalogTipGalleryViewController *)&v9 viewWillAppear:appearCopy];
+  navigationController = [v4 navigationController];
+  if (navigationController)
   {
-    v6 = v5;
-    v7 = [v5 navigationBar];
+    v6 = navigationController;
+    navigationBar = [navigationController navigationBar];
 
     v8 = [objc_allocWithZone(MEMORY[0x277D75348]) initWithRed:0.650980392 green:1.0 blue:0.0 alpha:1.0];
-    [v7 setTintColor_];
+    [navigationBar setTintColor_];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_20B7642B8(a3);
+  selfCopy = self;
+  sub_20B7642B8(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_20B764604(a3);
+  selfCopy = self;
+  sub_20B764604(disappear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v7.receiver = self;
   v7.super_class = type metadata accessor for CatalogTipGalleryViewController();
   v4 = v7.receiver;
-  [(CatalogTipGalleryViewController *)&v7 viewDidDisappear:v3];
+  [(CatalogTipGalleryViewController *)&v7 viewDidDisappear:disappearCopy];
   sub_20B766090(&qword_27C764CF8, v5, type metadata accessor for CatalogTipGalleryViewController);
   sub_20B766090(&qword_27C764D00, v6, type metadata accessor for CatalogTipGalleryViewController);
   sub_20C139374();
@@ -94,7 +94,7 @@
   sub_20B9D8614(v6, v7, v8, v9);
 }
 
-- (_TtC9SeymourUI31CatalogTipGalleryViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI31CatalogTipGalleryViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

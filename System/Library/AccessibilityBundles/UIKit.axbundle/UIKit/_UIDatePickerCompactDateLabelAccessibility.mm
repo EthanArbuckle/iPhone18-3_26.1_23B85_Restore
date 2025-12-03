@@ -1,19 +1,19 @@
 @interface _UIDatePickerCompactDateLabelAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (int64_t)_accessibilityExpandedStatus;
 @end
 
 @implementation _UIDatePickerCompactDateLabelAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v4 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"_UIDatePickerCompactDateLabel" hasInstanceMethod:@"textLabel" withFullSignature:{"@", 0}];
   [location[0] validateClass:@"_UIDatePickerIOSCompactView" hasInstanceVariable:@"_presentation" withType:"_UIDatePickerOverlayPresentation"];
   [location[0] validateClass:@"_UIDatePickerOverlayPresentation" hasInstanceMethod:@"activeMode" withFullSignature:{"q", 0}];
@@ -45,10 +45,10 @@
 - (id)accessibilityLabel
 {
   v3 = [(_UIDatePickerCompactDateLabelAccessibility *)self safeUIViewForKey:@"textLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
   MEMORY[0x29EDC9740](v3);
 
-  return v4;
+  return accessibilityLabel;
 }
 
 @end

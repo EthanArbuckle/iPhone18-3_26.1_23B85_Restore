@@ -1,7 +1,7 @@
 @interface MSCustomProtocolURLSchemeHandler
 + (MSCustomProtocolURLSchemeHandler)sharedHandler;
-- (void)webView:(id)a3 startURLSchemeTask:(id)a4;
-- (void)webView:(id)a3 stopURLSchemeTask:(id)a4;
+- (void)webView:(id)view startURLSchemeTask:(id)task;
+- (void)webView:(id)view stopURLSchemeTask:(id)task;
 @end
 
 @implementation MSCustomProtocolURLSchemeHandler
@@ -25,18 +25,18 @@ void __49__MSCustomProtocolURLSchemeHandler_sharedHandler__block_invoke()
   sharedHandler_handler = v0;
 }
 
-- (void)webView:(id)a3 startURLSchemeTask:(id)a4
+- (void)webView:(id)view startURLSchemeTask:(id)task
 {
-  v4 = a4;
-  v5 = [MEMORY[0x277CCAD30] sharedSession];
-  v6 = [v4 request];
+  taskCopy = task;
+  mEMORY[0x277CCAD30] = [MEMORY[0x277CCAD30] sharedSession];
+  request = [taskCopy request];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __63__MSCustomProtocolURLSchemeHandler_webView_startURLSchemeTask___block_invoke;
   v9[3] = &unk_27985B568;
-  v7 = v4;
+  v7 = taskCopy;
   v10 = v7;
-  v8 = [v5 dataTaskWithRequest:v6 completionHandler:v9];
+  v8 = [mEMORY[0x277CCAD30] dataTaskWithRequest:request completionHandler:v9];
 
   objc_setAssociatedObject(v7, taskKey, v8, 0x301);
   [v8 resume];
@@ -86,9 +86,9 @@ void __63__MSCustomProtocolURLSchemeHandler_webView_startURLSchemeTask___block_i
   }
 }
 
-- (void)webView:(id)a3 stopURLSchemeTask:(id)a4
+- (void)webView:(id)view stopURLSchemeTask:(id)task
 {
-  object = a4;
+  object = task;
   v4 = objc_getAssociatedObject(object, taskKey);
   objc_setAssociatedObject(object, taskKey, 0, 0x301);
   [v4 cancel];

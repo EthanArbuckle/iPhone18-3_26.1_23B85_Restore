@@ -1,44 +1,44 @@
 @interface STExtractionServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation STExtractionServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
-  v5 = [v4 processIdentifier];
-  v6 = proc_pidpath(v5, buffer, 0x1000u);
+  connectionCopy = connection;
+  processIdentifier = [connectionCopy processIdentifier];
+  v6 = proc_pidpath(processIdentifier, buffer, 0x1000u);
   if (v6 < 1)
   {
-    v9 = objc_claimAutoreleasedReturnValue([NSString stringWithFormat:@"Unknown Process Name (pid %d)", v5]);
+    v9 = objc_claimAutoreleasedReturnValue([NSString stringWithFormat:@"Unknown Process Name (pid %d)", processIdentifier]);
   }
 
   else
   {
     v7 = [[NSString alloc] initWithBytes:buffer length:v6 encoding:4];
     v8 = objc_claimAutoreleasedReturnValue([v7 lastPathComponent]);
-    v9 = objc_claimAutoreleasedReturnValue([NSString stringWithFormat:@"%@ (pid %d)", v8, v5]);
+    v9 = objc_claimAutoreleasedReturnValue([NSString stringWithFormat:@"%@ (pid %d)", v8, processIdentifier]);
   }
 
-  [v4 processIdentifier];
+  [connectionCopy processIdentifier];
   memset(buffer, 0, 32);
-  if (v4)
+  if (connectionCopy)
   {
-    [v4 auditToken];
+    [connectionCopy auditToken];
   }
 
-  v10 = objc_claimAutoreleasedReturnValue([v4 valueForEntitlement:@"com.apple.private.STRemoteExtractor.privileged"]);
+  v10 = objc_claimAutoreleasedReturnValue([connectionCopy valueForEntitlement:@"com.apple.private.STRemoteExtractor.privileged"]);
   if ([v10 BOOLValue])
   {
 
     goto LABEL_9;
   }
 
-  v11 = objc_claimAutoreleasedReturnValue([v4 valueForEntitlement:@"com.apple.private.STRemoteExtractor"]);
-  v12 = [v11 BOOLValue];
+  v11 = objc_claimAutoreleasedReturnValue([connectionCopy valueForEntitlement:@"com.apple.private.STRemoteExtractor"]);
+  bOOLValue = [v11 BOOLValue];
 
-  if (v12)
+  if (bOOLValue)
   {
 LABEL_9:
     v13 = sub_100000D08();
@@ -48,14 +48,14 @@ LABEL_9:
 LABEL_28:
 
       v20 = objc_claimAutoreleasedReturnValue([NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___STExtractionServiceProtocol]);
-      [v4 setExportedInterface:v20];
+      [connectionCopy setExportedInterface:v20];
 
-      v21 = [[STExtractionService alloc] initForClient:v9 connection:v4];
-      [v4 setExportedObject:v21];
+      v21 = [[STExtractionService alloc] initForClient:v9 connection:connectionCopy];
+      [connectionCopy setExportedObject:v21];
       v22 = objc_claimAutoreleasedReturnValue([NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___STExtractionOriginatorProtocol]);
-      [v4 setRemoteObjectInterface:v22];
+      [connectionCopy setRemoteObjectInterface:v22];
 
-      [v21 setXpcConnection:v4];
+      [v21 setXpcConnection:connectionCopy];
       v30[0] = _NSConcreteStackBlock;
       v30[1] = 3221225472;
       v30[2] = sub_100001424;
@@ -64,7 +64,7 @@ LABEL_28:
       v31 = v23;
       v24 = v21;
       v32 = v24;
-      [v4 setInterruptionHandler:v30];
+      [connectionCopy setInterruptionHandler:v30];
       v27[0] = _NSConcreteStackBlock;
       v27[1] = 3221225472;
       v27[2] = sub_100001504;
@@ -72,8 +72,8 @@ LABEL_28:
       v28 = v23;
       v29 = v24;
       v25 = v24;
-      [v4 setInvalidationHandler:v27];
-      [v4 resume];
+      [connectionCopy setInvalidationHandler:v27];
+      [connectionCopy resume];
 
       v19 = 1;
       goto LABEL_29;
@@ -132,7 +132,7 @@ LABEL_27:
     sub_100003690(v9, v18);
   }
 
-  [v4 invalidate];
+  [connectionCopy invalidate];
   v19 = 0;
 LABEL_29:
 

@@ -1,19 +1,19 @@
 @interface NotificationPolicy
 - (_TtC15HealthRecordsUI18NotificationPolicy)init;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
-- (void)userNotificationCenter:(id)a3 willPresentNotification:(id)a4 withCompletionHandler:(id)a5;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
+- (void)userNotificationCenter:(id)center willPresentNotification:(id)notification withCompletionHandler:(id)handler;
 @end
 
 @implementation NotificationPolicy
 
-- (void)userNotificationCenter:(id)a3 willPresentNotification:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center willPresentNotification:(id)notification withCompletionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   _Block_copy(v8);
   v9 = qword_1EC608EA8;
-  v10 = a3;
-  v11 = a4;
-  v13 = self;
+  centerCopy = center;
+  notificationCopy = notification;
+  selfCopy = self;
   if (v9 != -1)
   {
     swift_once();
@@ -34,15 +34,15 @@
   _Block_release(v8);
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
-  v10 = a3;
-  v11 = a4;
-  v12 = self;
-  sub_1D120826C(v11, sub_1D11D45A8, v9);
+  centerCopy = center;
+  responseCopy = response;
+  selfCopy = self;
+  sub_1D120826C(responseCopy, sub_1D11D45A8, v9);
 }
 
 - (_TtC15HealthRecordsUI18NotificationPolicy)init

@@ -1,14 +1,14 @@
 @interface HKMCUserCharacteristicsNotificationObserver
-- (HKMCUserCharacteristicsNotificationObserver)initWithQueue:(id)a3 completion:(id)a4;
+- (HKMCUserCharacteristicsNotificationObserver)initWithQueue:(id)queue completion:(id)completion;
 - (void)dealloc;
 @end
 
 @implementation HKMCUserCharacteristicsNotificationObserver
 
-- (HKMCUserCharacteristicsNotificationObserver)initWithQueue:(id)a3 completion:(id)a4
+- (HKMCUserCharacteristicsNotificationObserver)initWithQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   v13.receiver = self;
   v13.super_class = HKMCUserCharacteristicsNotificationObserver;
   v8 = [(HKMCUserCharacteristicsNotificationObserver *)&v13 init];
@@ -19,8 +19,8 @@
     handler[1] = 3221225472;
     handler[2] = __72__HKMCUserCharacteristicsNotificationObserver_initWithQueue_completion___block_invoke;
     handler[3] = &unk_2796D4910;
-    v12 = v7;
-    notify_register_dispatch(v9, &v8->_characteristicUpdateToken, v6, handler);
+    v12 = completionCopy;
+    notify_register_dispatch(v9, &v8->_characteristicUpdateToken, queueCopy, handler);
   }
 
   return v8;

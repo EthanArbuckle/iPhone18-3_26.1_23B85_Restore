@@ -1,14 +1,14 @@
 @interface QLDelegateProxy
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (id)firstDelegate;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (id)secondDelegate;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation QLDelegateProxy
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   WeakRetained = objc_loadWeakRetained(&self->_firstDelegate);
   if (objc_opt_respondsToSelector())
@@ -25,10 +25,10 @@
   return v5 & 1;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   WeakRetained = objc_loadWeakRetained(&self->_firstDelegate);
-  v6 = [WeakRetained methodSignatureForSelector:a3];
+  v6 = [WeakRetained methodSignatureForSelector:selector];
   v7 = v6;
   if (v6)
   {
@@ -38,27 +38,27 @@
   else
   {
     v9 = objc_loadWeakRetained(&self->_secondDelegate);
-    v8 = [v9 methodSignatureForSelector:a3];
+    v8 = [v9 methodSignatureForSelector:selector];
   }
 
   return v8;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v14 = a3;
+  invocationCopy = invocation;
   WeakRetained = objc_loadWeakRetained(&self->_firstDelegate);
   if (WeakRetained)
   {
     v5 = WeakRetained;
     v6 = objc_loadWeakRetained(&self->_firstDelegate);
-    [v14 selector];
+    [invocationCopy selector];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
       v8 = objc_loadWeakRetained(&self->_firstDelegate);
-      [v14 invokeWithTarget:v8];
+      [invocationCopy invokeWithTarget:v8];
     }
   }
 
@@ -67,13 +67,13 @@
   {
     v10 = v9;
     v11 = objc_loadWeakRetained(&self->_secondDelegate);
-    [v14 selector];
+    [invocationCopy selector];
     v12 = objc_opt_respondsToSelector();
 
     if (v12)
     {
       v13 = objc_loadWeakRetained(&self->_secondDelegate);
-      [v14 invokeWithTarget:v13];
+      [invocationCopy invokeWithTarget:v13];
     }
   }
 }

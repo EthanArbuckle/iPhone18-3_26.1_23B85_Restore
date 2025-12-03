@@ -1,26 +1,26 @@
 @interface PlayerTimeControl
 - (BOOL)accessibilityIsLiveContent;
-- (_TtC5Music17PlayerTimeControl)initWithFrame:(CGRect)a3;
+- (_TtC5Music17PlayerTimeControl)initWithFrame:(CGRect)frame;
 - (double)accessibilityElapsedDuration;
 - (double)accessibilityTotalDuration;
 - (double)alpha;
-- (void)accessibilityUpdateWithElapsedDuration:(double)a3;
+- (void)accessibilityUpdateWithElapsedDuration:(double)duration;
 - (void)didMoveToSuperview;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setAlpha:(double)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHidden:(BOOL)a3;
+- (void)setAlpha:(double)alpha;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHidden:(BOOL)hidden;
 - (void)tintColorDidChange;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PlayerTimeControl
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v4 = self;
-  sub_10030F3E0(a3);
+  selfCopy = self;
+  sub_10030F3E0(hidden);
 }
 
 - (double)alpha
@@ -31,25 +31,25 @@
   return result;
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
-  v4 = self;
-  sub_10030F574(a3);
+  selfCopy = self;
+  sub_10030F574(alpha);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10030F670();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for PlayerTimeControl();
-  v4 = a3;
+  changeCopy = change;
   v5 = v6.receiver;
-  [(PlayerTimeControl *)&v6 traitCollectionDidChange:v4];
+  [(PlayerTimeControl *)&v6 traitCollectionDidChange:changeCopy];
   sub_10031042C();
 }
 
@@ -59,15 +59,15 @@
   v5.super_class = type metadata accessor for PlayerTimeControl();
   v2 = v5.receiver;
   [(PlayerTimeControl *)&v5 didMoveToWindow];
-  v3 = [v2 window];
-  v4 = [v3 windowScene];
+  window = [v2 window];
+  windowScene = [window windowScene];
 
-  PlaybackTimeObserver.windowScene.setter(v4);
+  PlaybackTimeObserver.windowScene.setter(windowScene);
 }
 
 - (void)didMoveToSuperview
 {
-  v2 = self;
+  selfCopy = self;
   sub_10030F918();
 }
 
@@ -80,22 +80,22 @@
   sub_10030FBC0();
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = type metadata accessor for PlayerTimeControl();
   v11.receiver = self;
   v11.super_class = v5;
-  v6 = self;
-  v7 = [(PlayerTimeControl *)&v11 isEnabled];
-  v10.receiver = v6;
+  selfCopy = self;
+  isEnabled = [(PlayerTimeControl *)&v11 isEnabled];
+  v10.receiver = selfCopy;
   v10.super_class = v5;
-  [(PlayerTimeControl *)&v10 setEnabled:v3];
-  if (v7 != [(PlayerTimeControl *)v6 isEnabled])
+  [(PlayerTimeControl *)&v10 setEnabled:enabledCopy];
+  if (isEnabled != [(PlayerTimeControl *)selfCopy isEnabled])
   {
-    v8 = *(&v6->super.super.super.super.isa + OBJC_IVAR____TtC5Music17PlayerTimeControl_slider);
-    v9 = [(PlayerTimeControl *)v6 isEnabled];
-    (*((swift_isaMask & *v8) + 0x258))(v9);
+    v8 = *(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC5Music17PlayerTimeControl_slider);
+    isEnabled2 = [(PlayerTimeControl *)selfCopy isEnabled];
+    (*((swift_isaMask & *v8) + 0x258))(isEnabled2);
   }
 }
 
@@ -122,7 +122,7 @@
   {
     v6 = *(v3 + 96);
     v7 = *(v3 + 88);
-    v8 = self;
+    selfCopy = self;
     v11 = *(v3 + 72);
     v12 = *(v3 + 56);
     static Date.timeIntervalSinceReferenceDate.getter();
@@ -140,15 +140,15 @@
   return result;
 }
 
-- (void)accessibilityUpdateWithElapsedDuration:(double)a3
+- (void)accessibilityUpdateWithElapsedDuration:(double)duration
 {
   v3 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC5Music17PlayerTimeControl_timeDidChangeHandler);
   if (v3)
   {
     v5 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC5Music17PlayerTimeControl__tracking);
-    v6 = self;
+    selfCopy = self;
     sub_100030444(v3);
-    v3(v5, a3);
+    v3(v5, duration);
 
     sub_100020438(v3);
   }
@@ -161,7 +161,7 @@
   return (*(v2 + 104) != 2) & *(v2 + 104);
 }
 
-- (_TtC5Music17PlayerTimeControl)initWithFrame:(CGRect)a3
+- (_TtC5Music17PlayerTimeControl)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

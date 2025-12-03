@@ -1,10 +1,10 @@
 @interface PXPhotosDetailsCaptionHashtagsWidget
 - (BOOL)_fadeInEnabled;
 - (BOOL)_prefersFloatingInfoPanelLayout;
-- (BOOL)captionHashtagsEntryViewShouldBeginEditing:(id)a3;
+- (BOOL)captionHashtagsEntryViewShouldBeginEditing:(id)editing;
 - (BOOL)hasContentForCurrentInput;
 - (BOOL)wantsFocus;
-- (CGRect)_textEntryViewFrameForSize:(CGSize)a3;
+- (CGRect)_textEntryViewFrameForSize:(CGSize)size;
 - (CGSize)contentSize;
 - (CGSize)maxVisibleSizeInEditMode;
 - (PXPhotosDetailsCaptionHashtagsWidget)init;
@@ -14,27 +14,27 @@
 - (UIEdgeInsets)_textViewContainerInsets;
 - (UIView)contentView;
 - (double)currentContentHeight;
-- (double)preferredContentHeightForWidth:(double)a3;
-- (id)prepareForPhotoLibraryChange:(id)a3;
+- (double)preferredContentHeightForWidth:(double)width;
+- (id)prepareForPhotoLibraryChange:(id)change;
 - (void)_addSeparatorView;
 - (void)_applySpec;
 - (void)_configureFadeInAnimation;
-- (void)_configureTextViewVisibility:(BOOL)a3;
-- (void)_logCPAnalyticsEventsForCommittedCaption:(id)a3 numOfHashtags:(unint64_t)a4;
+- (void)_configureTextViewVisibility:(BOOL)visibility;
+- (void)_logCPAnalyticsEventsForCommittedCaption:(id)caption numOfHashtags:(unint64_t)hashtags;
 - (void)_removeSeparatorView;
-- (void)captionHashtagsEntryViewDidBeginEditing:(id)a3;
-- (void)captionHashtagsEntryViewDidEndEditing:(id)a3;
-- (void)captionHashtagsEntryViewPreferredHeightDidChange:(id)a3;
-- (void)captionHashtagsEntryViewRequestFocus:(id)a3;
+- (void)captionHashtagsEntryViewDidBeginEditing:(id)editing;
+- (void)captionHashtagsEntryViewDidEndEditing:(id)editing;
+- (void)captionHashtagsEntryViewPreferredHeightDidChange:(id)change;
+- (void)captionHashtagsEntryViewRequestFocus:(id)focus;
 - (void)contentViewDidDisappear;
 - (void)contentViewWillAppear;
-- (void)contentViewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)contentViewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 - (void)loadContentData;
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3 withPreparedInfo:(id)a4;
-- (void)requestExitEditWithChangesSavingMode:(int64_t)a3;
-- (void)setContext:(id)a3;
-- (void)setMaxVisibleSizeInEditMode:(CGSize)a3;
-- (void)setSpec:(id)a3;
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue withPreparedInfo:(id)info;
+- (void)requestExitEditWithChangesSavingMode:(int64_t)mode;
+- (void)setContext:(id)context;
+- (void)setMaxVisibleSizeInEditMode:(CGSize)mode;
+- (void)setSpec:(id)spec;
 - (void)unloadContentData;
 @end
 
@@ -86,9 +86,9 @@
   v9[1] = v5;
   objc_copyWeak(v9, &location);
   v6 = _Block_copy(aBlock);
-  v7 = [(PXPhotosDetailsCaptionHashtagsWidget *)self containerView];
+  containerView = [(PXPhotosDetailsCaptionHashtagsWidget *)self containerView];
 
-  if (v7)
+  if (containerView)
   {
     v6[2](v6);
   }
@@ -123,12 +123,12 @@ void __65__PXPhotosDetailsCaptionHashtagsWidget__configureFadeInAnimation__block
 
 - (void)_removeSeparatorView
 {
-  v3 = [(PXPhotosDetailsCaptionHashtagsWidget *)self separatorView];
+  separatorView = [(PXPhotosDetailsCaptionHashtagsWidget *)self separatorView];
 
-  if (v3)
+  if (separatorView)
   {
-    v4 = [(PXPhotosDetailsCaptionHashtagsWidget *)self separatorView];
-    [v4 removeFromSuperview];
+    separatorView2 = [(PXPhotosDetailsCaptionHashtagsWidget *)self separatorView];
+    [separatorView2 removeFromSuperview];
 
     [(PXPhotosDetailsCaptionHashtagsWidget *)self setSeparatorView:0];
   }
@@ -136,15 +136,15 @@ void __65__PXPhotosDetailsCaptionHashtagsWidget__configureFadeInAnimation__block
 
 - (void)_addSeparatorView
 {
-  v3 = [(PXPhotosDetailsCaptionHashtagsWidget *)self separatorView];
+  separatorView = [(PXPhotosDetailsCaptionHashtagsWidget *)self separatorView];
 
-  if (v3)
+  if (separatorView)
   {
     [(PXPhotosDetailsCaptionHashtagsWidget *)self _removeSeparatorView];
   }
 
-  v4 = [(PXPhotosDetailsCaptionHashtagsWidget *)self textViewContainer];
-  [v4 frame];
+  textViewContainer = [(PXPhotosDetailsCaptionHashtagsWidget *)self textViewContainer];
+  [textViewContainer frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -162,13 +162,13 @@ void __65__PXPhotosDetailsCaptionHashtagsWidget__configureFadeInAnimation__block
   v14 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{0.0, v13, CGRectGetWidth(v21), 1.0}];
   [(PXPhotosDetailsCaptionHashtagsWidget *)self setSeparatorView:v14];
 
-  v15 = [MEMORY[0x1E69DC888] separatorColor];
-  v16 = [v15 colorWithAlphaComponent:0.1];
-  v17 = [(PXPhotosDetailsCaptionHashtagsWidget *)self separatorView];
-  [v17 setBackgroundColor:v16];
+  separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+  v16 = [separatorColor colorWithAlphaComponent:0.1];
+  separatorView2 = [(PXPhotosDetailsCaptionHashtagsWidget *)self separatorView];
+  [separatorView2 setBackgroundColor:v16];
 
-  v18 = [(PXPhotosDetailsCaptionHashtagsWidget *)self textViewContainer];
-  [v18 addSubview:self->_separatorView];
+  textViewContainer2 = [(PXPhotosDetailsCaptionHashtagsWidget *)self textViewContainer];
+  [textViewContainer2 addSubview:self->_separatorView];
 }
 
 - (void)_applySpec
@@ -183,54 +183,54 @@ void __65__PXPhotosDetailsCaptionHashtagsWidget__configureFadeInAnimation__block
     [(PXPhotosDetailsCaptionHashtagsWidget *)self _addSeparatorView];
   }
 
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  v4 = [(PXPhotosDetailsCaptionHashtagsWidget *)self textEntryView];
-  v5 = [v4 uiTextView];
-  [v5 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  textEntryView = [(PXPhotosDetailsCaptionHashtagsWidget *)self textEntryView];
+  uiTextView = [textEntryView uiTextView];
+  [uiTextView setBackgroundColor:clearColor];
 
   if ([(PXPhotosDetailsCaptionHashtagsWidget *)self _prefersFloatingInfoPanelLayout])
   {
-    v6 = [(PXPhotosDetailsCaptionHashtagsWidget *)self textViewContainer];
-    v7 = [v6 layer];
-    [v7 setCornerRadius:8.0];
+    textViewContainer = [(PXPhotosDetailsCaptionHashtagsWidget *)self textViewContainer];
+    layer = [textViewContainer layer];
+    [layer setCornerRadius:8.0];
 
-    v8 = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
+    tertiarySystemFillColor = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
   }
 
   else
   {
-    v9 = [(PXPhotosDetailsCaptionHashtagsWidget *)self _prefersVisionOSInfoPanelLayout];
-    v10 = [(PXPhotosDetailsCaptionHashtagsWidget *)self textViewContainer];
-    v11 = [v10 layer];
-    v12 = v11;
-    if (v9)
+    _prefersVisionOSInfoPanelLayout = [(PXPhotosDetailsCaptionHashtagsWidget *)self _prefersVisionOSInfoPanelLayout];
+    textViewContainer2 = [(PXPhotosDetailsCaptionHashtagsWidget *)self textViewContainer];
+    layer2 = [textViewContainer2 layer];
+    v12 = layer2;
+    if (_prefersVisionOSInfoPanelLayout)
     {
-      [v11 setCornerRadius:16.0];
+      [layer2 setCornerRadius:16.0];
 
-      v13 = [(PXPhotosDetailsCaptionHashtagsWidget *)self textViewContainer];
-      v14 = [v13 layer];
-      [v14 setMasksToBounds:1];
+      textViewContainer3 = [(PXPhotosDetailsCaptionHashtagsWidget *)self textViewContainer];
+      layer3 = [textViewContainer3 layer];
+      [layer3 setMasksToBounds:1];
       goto LABEL_10;
     }
 
-    [v11 setCornerRadius:0.0];
+    [layer2 setCornerRadius:0.0];
 
-    v8 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    tertiarySystemFillColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
   }
 
-  v13 = v8;
-  v14 = [(PXPhotosDetailsCaptionHashtagsWidget *)self textViewContainer];
-  [v14 setBackgroundColor:v13];
+  textViewContainer3 = tertiarySystemFillColor;
+  layer3 = [(PXPhotosDetailsCaptionHashtagsWidget *)self textViewContainer];
+  [layer3 setBackgroundColor:textViewContainer3];
 LABEL_10:
 
-  v16 = [(PXPhotosDetailsCaptionHashtagsWidget *)self spec];
-  v15 = [(PXPhotosDetailsCaptionHashtagsWidget *)self textEntryView];
-  [v15 setSpec:v16];
+  spec = [(PXPhotosDetailsCaptionHashtagsWidget *)self spec];
+  textEntryView2 = [(PXPhotosDetailsCaptionHashtagsWidget *)self textEntryView];
+  [textEntryView2 setSpec:spec];
 }
 
-- (void)_configureTextViewVisibility:(BOOL)a3
+- (void)_configureTextViewVisibility:(BOOL)visibility
 {
-  if (a3)
+  if (visibility)
   {
     v4 = 1.0;
   }
@@ -240,21 +240,21 @@ LABEL_10:
     v4 = 0.0;
   }
 
-  v5 = [(PXPhotosDetailsCaptionHashtagsWidget *)self containerView];
-  [v5 setAlpha:v4];
+  containerView = [(PXPhotosDetailsCaptionHashtagsWidget *)self containerView];
+  [containerView setAlpha:v4];
 
-  v7 = [(PXPhotosDetailsCaptionHashtagsWidget *)self textEntryView];
-  v6 = [v7 uiTextView];
-  [v6 setAlpha:v4];
+  textEntryView = [(PXPhotosDetailsCaptionHashtagsWidget *)self textEntryView];
+  uiTextView = [textEntryView uiTextView];
+  [uiTextView setAlpha:v4];
 }
 
-- (void)_logCPAnalyticsEventsForCommittedCaption:(id)a3 numOfHashtags:(unint64_t)a4
+- (void)_logCPAnalyticsEventsForCommittedCaption:(id)caption numOfHashtags:(unint64_t)hashtags
 {
   v32[4] = *MEMORY[0x1E69E9840];
-  v6 = [a3 length];
-  v7 = [(PXPhotosDetailsCaptionHashtagsWidget *)self asset];
-  v8 = v7;
-  if (v6 && v7)
+  v6 = [caption length];
+  asset = [(PXPhotosDetailsCaptionHashtagsWidget *)self asset];
+  v8 = asset;
+  if (v6 && asset)
   {
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
@@ -269,8 +269,8 @@ LABEL_10:
     v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v6];
     v32[2] = v14;
     v31[3] = @"numOfHashtags";
-    [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-    v15 = v26 = a4;
+    [MEMORY[0x1E696AD98] numberWithUnsignedInteger:hashtags];
+    v15 = v26 = hashtags;
     v32[3] = v15;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:v31 count:4];
     [v11 sendEvent:@"com.apple.photos.CPAnalytics.oneUpCaptionEditExited" withPayload:v16];
@@ -301,21 +301,21 @@ LABEL_10:
   }
 }
 
-- (CGRect)_textEntryViewFrameForSize:(CGSize)a3
+- (CGRect)_textEntryViewFrameForSize:(CGSize)size
 {
   [(PXPhotosDetailsCaptionHashtagsWidget *)self _contentInsets];
-  v4 = [(PXPhotosDetailsCaptionHashtagsWidget *)self textViewContainer];
-  [v4 bounds];
+  textViewContainer = [(PXPhotosDetailsCaptionHashtagsWidget *)self textViewContainer];
+  [textViewContainer bounds];
 
   PXEdgeInsetsInsetRect();
 }
 
 - (BOOL)_prefersFloatingInfoPanelLayout
 {
-  v3 = [(PXPhotosDetailsCaptionHashtagsWidget *)self spec];
-  v4 = [v3 sizeClass];
+  spec = [(PXPhotosDetailsCaptionHashtagsWidget *)self spec];
+  sizeClass = [spec sizeClass];
 
-  if (v4 == 2)
+  if (sizeClass == 2)
   {
     return ![(PXPhotosDetailsCaptionHashtagsWidget *)self _prefersVisionOSInfoPanelLayout];
   }
@@ -328,16 +328,16 @@ LABEL_10:
 
 - (UIEdgeInsets)_contentInsets
 {
-  v3 = [(PXPhotosDetailsCaptionHashtagsWidget *)self spec];
-  [v3 contentGuideInsets];
+  spec = [(PXPhotosDetailsCaptionHashtagsWidget *)self spec];
+  [spec contentGuideInsets];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(PXPhotosDetailsCaptionHashtagsWidget *)self textEntryView];
-  [v8 textContainerInsets];
+  textEntryView = [(PXPhotosDetailsCaptionHashtagsWidget *)self textEntryView];
+  [textEntryView textContainerInsets];
   v10 = 14.0 - v9;
-  v11 = [(PXPhotosDetailsCaptionHashtagsWidget *)self textEntryView];
-  [v11 textContainerInsets];
+  textEntryView2 = [(PXPhotosDetailsCaptionHashtagsWidget *)self textEntryView];
+  [textEntryView2 textContainerInsets];
   v13 = 14.0 - v12;
 
   v14 = v10;
@@ -351,45 +351,45 @@ LABEL_10:
   return result;
 }
 
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3 withPreparedInfo:(id)a4
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue withPreparedInfo:(id)info
 {
-  v11 = a4;
-  v5 = [v11 objectForKeyedSubscript:@"new"];
+  infoCopy = info;
+  v5 = [infoCopy objectForKeyedSubscript:@"new"];
   if (v5)
   {
     [(PXPhotosDetailsCaptionHashtagsWidget *)self setAsset:v5];
-    v6 = [v11 objectForKeyedSubscript:@"description"];
-    v7 = [(PXPhotosDetailsCaptionHashtagsWidget *)self textEntryView];
-    v8 = [v7 originalText];
-    v9 = [v8 isEqualToString:v6];
+    v6 = [infoCopy objectForKeyedSubscript:@"description"];
+    textEntryView = [(PXPhotosDetailsCaptionHashtagsWidget *)self textEntryView];
+    originalText = [textEntryView originalText];
+    v9 = [originalText isEqualToString:v6];
 
     if ((v9 & 1) == 0)
     {
-      v10 = [(PXPhotosDetailsCaptionHashtagsWidget *)self textEntryView];
-      [v10 setOriginalText:v6];
+      textEntryView2 = [(PXPhotosDetailsCaptionHashtagsWidget *)self textEntryView];
+      [textEntryView2 setOriginalText:v6];
     }
   }
 }
 
-- (id)prepareForPhotoLibraryChange:(id)a3
+- (id)prepareForPhotoLibraryChange:(id)change
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXPhotosDetailsCaptionHashtagsWidget *)self asset];
-  v6 = [v4 changeDetailsForObject:v5];
+  changeCopy = change;
+  asset = [(PXPhotosDetailsCaptionHashtagsWidget *)self asset];
+  v6 = [changeCopy changeDetailsForObject:asset];
 
-  v7 = [v6 objectAfterChanges];
-  v8 = v7;
-  if (v7)
+  objectAfterChanges = [v6 objectAfterChanges];
+  v8 = objectAfterChanges;
+  if (objectAfterChanges)
   {
-    [v7 fetchPropertySetsIfNeeded];
-    v9 = [v8 descriptionProperties];
-    v10 = [v9 assetDescription];
-    v11 = v10;
+    [objectAfterChanges fetchPropertySetsIfNeeded];
+    descriptionProperties = [v8 descriptionProperties];
+    assetDescription = [descriptionProperties assetDescription];
+    v11 = assetDescription;
     v12 = &stru_1F1741150;
-    if (v10)
+    if (assetDescription)
     {
-      v12 = v10;
+      v12 = assetDescription;
     }
 
     v13 = v12;
@@ -409,21 +409,21 @@ LABEL_10:
   return v14;
 }
 
-- (void)captionHashtagsEntryViewRequestFocus:(id)a3
+- (void)captionHashtagsEntryViewRequestFocus:(id)focus
 {
-  v4 = [(PXPhotosDetailsCaptionHashtagsWidget *)self widgetDelegate];
-  [v4 widgetRequestFocus:self];
+  widgetDelegate = [(PXPhotosDetailsCaptionHashtagsWidget *)self widgetDelegate];
+  [widgetDelegate widgetRequestFocus:self];
 }
 
-- (void)captionHashtagsEntryViewDidEndEditing:(id)a3
+- (void)captionHashtagsEntryViewDidEndEditing:(id)editing
 {
-  v4 = [(PXPhotosDetailsCaptionHashtagsWidget *)self asset];
-  v5 = [v4 descriptionProperties];
-  v6 = [v5 assetDescription];
-  v7 = v6;
-  if (v6)
+  asset = [(PXPhotosDetailsCaptionHashtagsWidget *)self asset];
+  descriptionProperties = [asset descriptionProperties];
+  assetDescription = [descriptionProperties assetDescription];
+  v7 = assetDescription;
+  if (assetDescription)
   {
-    v8 = v6;
+    v8 = assetDescription;
   }
 
   else
@@ -433,12 +433,12 @@ LABEL_10:
 
   v9 = v8;
 
-  v10 = [(PXPhotosDetailsCaptionHashtagsWidget *)self textEntryView];
-  v11 = [v10 text];
-  v12 = v11;
-  if (v11)
+  textEntryView = [(PXPhotosDetailsCaptionHashtagsWidget *)self textEntryView];
+  text = [textEntryView text];
+  v12 = text;
+  if (text)
   {
-    v13 = v11;
+    v13 = text;
   }
 
   else
@@ -450,13 +450,13 @@ LABEL_10:
 
   if (([(__CFString *)v9 isEqualToString:v14]& 1) == 0)
   {
-    v15 = [(PXPhotosDetailsCaptionHashtagsWidget *)self exitEditChangesSavingMode];
-    if (v15)
+    exitEditChangesSavingMode = [(PXPhotosDetailsCaptionHashtagsWidget *)self exitEditChangesSavingMode];
+    if (exitEditChangesSavingMode)
     {
-      if (v15 == 1)
+      if (exitEditChangesSavingMode == 1)
       {
-        v16 = [(PXPhotosDetailsCaptionHashtagsWidget *)self textEntryView];
-        [v16 setOriginalText:v14];
+        textEntryView2 = [(PXPhotosDetailsCaptionHashtagsWidget *)self textEntryView];
+        [textEntryView2 setOriginalText:v14];
 
         v17 = dispatch_time(0, 200000000);
         v18 = dispatch_get_global_queue(25, 0);
@@ -464,7 +464,7 @@ LABEL_10:
         block[1] = 3221225472;
         block[2] = __78__PXPhotosDetailsCaptionHashtagsWidget_captionHashtagsEntryViewDidEndEditing___block_invoke;
         block[3] = &unk_1E774C620;
-        v31 = v4;
+        v31 = asset;
         v32 = v14;
         dispatch_after(v17, v18, block);
       }
@@ -472,34 +472,34 @@ LABEL_10:
 
     else
     {
-      v19 = [(PXPhotosDetailsCaptionHashtagsWidget *)self textEntryView];
-      [v19 resetToOriginalText];
+      textEntryView3 = [(PXPhotosDetailsCaptionHashtagsWidget *)self textEntryView];
+      [textEntryView3 resetToOriginalText];
     }
 
-    v20 = [(PXPhotosDetailsCaptionHashtagsWidget *)self textEntryView];
-    -[PXPhotosDetailsCaptionHashtagsWidget _logCPAnalyticsEventsForCommittedCaption:numOfHashtags:](self, "_logCPAnalyticsEventsForCommittedCaption:numOfHashtags:", v14, [v20 numberOfHashtagsInText]);
+    textEntryView4 = [(PXPhotosDetailsCaptionHashtagsWidget *)self textEntryView];
+    -[PXPhotosDetailsCaptionHashtagsWidget _logCPAnalyticsEventsForCommittedCaption:numOfHashtags:](self, "_logCPAnalyticsEventsForCommittedCaption:numOfHashtags:", v14, [textEntryView4 numberOfHashtagsInText]);
   }
 
   [(PXPhotosDetailsCaptionHashtagsWidget *)self setExitEditChangesSavingMode:1];
   self->_isInEditMode = 0;
-  v21 = [(PXPhotosDetailsCaptionHashtagsWidget *)self widgetEditingDelegate];
+  widgetEditingDelegate = [(PXPhotosDetailsCaptionHashtagsWidget *)self widgetEditingDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v21 widget:self didChangeEditingMode:0];
+    [widgetEditingDelegate widget:self didChangeEditingMode:0];
   }
 
-  v22 = [(PXPhotosDetailsCaptionHashtagsWidget *)self widgetDelegate];
+  widgetDelegate = [(PXPhotosDetailsCaptionHashtagsWidget *)self widgetDelegate];
   v24 = MEMORY[0x1E69E9820];
   v25 = 3221225472;
   v26 = __78__PXPhotosDetailsCaptionHashtagsWidget_captionHashtagsEntryViewDidEndEditing___block_invoke_214;
   v27 = &unk_1E774C620;
-  v23 = v22;
+  v23 = widgetDelegate;
   v28 = v23;
-  v29 = self;
+  selfCopy = self;
   [v23 widget:self animateChanges:&v24 withAnimationOptions:0];
   if (objc_opt_respondsToSelector())
   {
-    [v21 widgetEditorHeightDidChange:{self, v24, v25, v26, v27}];
+    [widgetEditingDelegate widgetEditorHeightDidChange:{self, v24, v25, v26, v27}];
   }
 }
 
@@ -537,48 +537,48 @@ void __78__PXPhotosDetailsCaptionHashtagsWidget_captionHashtagsEntryViewDidEndEd
   }
 }
 
-- (void)captionHashtagsEntryViewDidBeginEditing:(id)a3
+- (void)captionHashtagsEntryViewDidBeginEditing:(id)editing
 {
   self->_isInEditMode = 1;
-  v4 = [(PXPhotosDetailsCaptionHashtagsWidget *)self widgetEditingDelegate];
+  widgetEditingDelegate = [(PXPhotosDetailsCaptionHashtagsWidget *)self widgetEditingDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 widget:self didChangeEditingMode:1];
+    [widgetEditingDelegate widget:self didChangeEditingMode:1];
   }
 
-  v5 = [(PXPhotosDetailsCaptionHashtagsWidget *)self widgetDelegate];
+  widgetDelegate = [(PXPhotosDetailsCaptionHashtagsWidget *)self widgetDelegate];
   v7 = MEMORY[0x1E69E9820];
   v8 = 3221225472;
   v9 = __80__PXPhotosDetailsCaptionHashtagsWidget_captionHashtagsEntryViewDidBeginEditing___block_invoke;
   v10 = &unk_1E774C620;
-  v6 = v5;
+  v6 = widgetDelegate;
   v11 = v6;
-  v12 = self;
+  selfCopy = self;
   [v6 widget:self animateChanges:&v7 withAnimationOptions:0];
   if (objc_opt_respondsToSelector())
   {
-    [v4 widgetEditorHeightDidChange:{self, v7, v8, v9, v10}];
+    [widgetEditingDelegate widgetEditorHeightDidChange:{self, v7, v8, v9, v10}];
   }
 }
 
-- (BOOL)captionHashtagsEntryViewShouldBeginEditing:(id)a3
+- (BOOL)captionHashtagsEntryViewShouldBeginEditing:(id)editing
 {
-  v3 = [(PXPhotosDetailsCaptionHashtagsWidget *)self asset];
-  v4 = [v3 canPerformEditOperation:3];
+  asset = [(PXPhotosDetailsCaptionHashtagsWidget *)self asset];
+  v4 = [asset canPerformEditOperation:3];
 
   return v4;
 }
 
-- (void)captionHashtagsEntryViewPreferredHeightDidChange:(id)a3
+- (void)captionHashtagsEntryViewPreferredHeightDidChange:(id)change
 {
-  v4 = [(PXPhotosDetailsCaptionHashtagsWidget *)self widgetDelegate];
+  widgetDelegate = [(PXPhotosDetailsCaptionHashtagsWidget *)self widgetDelegate];
   v7 = MEMORY[0x1E69E9820];
   v8 = 3221225472;
   v9 = __89__PXPhotosDetailsCaptionHashtagsWidget_captionHashtagsEntryViewPreferredHeightDidChange___block_invoke;
   v10 = &unk_1E774C620;
-  v5 = v4;
+  v5 = widgetDelegate;
   v11 = v5;
-  v12 = self;
+  selfCopy = self;
   [v5 widget:self animateChanges:&v7 withAnimationOptions:0];
   v6 = [(PXPhotosDetailsCaptionHashtagsWidget *)self widgetEditingDelegate:v7];
   if (objc_opt_respondsToSelector())
@@ -587,36 +587,36 @@ void __78__PXPhotosDetailsCaptionHashtagsWidget_captionHashtagsEntryViewDidEndEd
   }
 }
 
-- (void)setMaxVisibleSizeInEditMode:(CGSize)a3
+- (void)setMaxVisibleSizeInEditMode:(CGSize)mode
 {
-  if (a3.width != self->_maxVisibleSizeInEditMode.width || a3.height != self->_maxVisibleSizeInEditMode.height)
+  if (mode.width != self->_maxVisibleSizeInEditMode.width || mode.height != self->_maxVisibleSizeInEditMode.height)
   {
-    self->_maxVisibleSizeInEditMode = a3;
+    self->_maxVisibleSizeInEditMode = mode;
     [(PXPhotosDetailsCaptionHashtagsWidget *)self _textEntryViewFrameForSize:?];
     v7 = v6;
-    v8 = [(PXPhotosDetailsCaptionHashtagsWidget *)self textEntryView];
-    [v8 setMaxHeightInEditMode:v7];
+    textEntryView = [(PXPhotosDetailsCaptionHashtagsWidget *)self textEntryView];
+    [textEntryView setMaxHeightInEditMode:v7];
   }
 }
 
 - (BOOL)wantsFocus
 {
-  v2 = [(PXPhotosDetailsCaptionHashtagsWidget *)self textEntryView];
-  v3 = [v2 isEditing];
+  textEntryView = [(PXPhotosDetailsCaptionHashtagsWidget *)self textEntryView];
+  isEditing = [textEntryView isEditing];
 
-  return v3;
+  return isEditing;
 }
 
-- (void)requestExitEditWithChangesSavingMode:(int64_t)a3
+- (void)requestExitEditWithChangesSavingMode:(int64_t)mode
 {
-  [(PXPhotosDetailsCaptionHashtagsWidget *)self setExitEditChangesSavingMode:a3];
-  v4 = [(PXPhotosDetailsCaptionHashtagsWidget *)self textEntryView];
-  [v4 exitEditing];
+  [(PXPhotosDetailsCaptionHashtagsWidget *)self setExitEditChangesSavingMode:mode];
+  textEntryView = [(PXPhotosDetailsCaptionHashtagsWidget *)self textEntryView];
+  [textEntryView exitEditing];
 }
 
-- (void)contentViewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)contentViewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  v5 = a4;
+  coordinatorCopy = coordinator;
   [(PXPhotosDetailsCaptionHashtagsWidget *)self _textViewContainerInsets];
   PXEdgeInsetsInsetRect();
 }
@@ -689,9 +689,9 @@ void __98__PXPhotosDetailsCaptionHashtagsWidget_contentViewWillTransitionToSize_
   }
 
   v3 = +[PXPhotosDetailsSettings sharedInstance];
-  v4 = [v3 captionWidgetEnableFadeInEffect];
+  captionWidgetEnableFadeInEffect = [v3 captionWidgetEnableFadeInEffect];
 
-  return v4;
+  return captionWidgetEnableFadeInEffect;
 }
 
 - (UIView)contentView
@@ -711,30 +711,30 @@ void __98__PXPhotosDetailsCaptionHashtagsWidget_contentViewWillTransitionToSize_
 
 - (void)unloadContentData
 {
-  v3 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-  [v3 px_unregisterChangeObserver:self];
+  px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+  [px_deprecated_appPhotoLibrary px_unregisterChangeObserver:self];
 }
 
 - (void)loadContentData
 {
-  v3 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-  [v3 px_registerChangeObserver:self];
+  px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+  [px_deprecated_appPhotoLibrary px_registerChangeObserver:self];
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
-  v5 = a3;
-  if (self->_context != v5)
+  contextCopy = context;
+  if (self->_context != contextCopy)
   {
-    objc_storeStrong(&self->_context, a3);
-    v6 = [(PXPhotosDetailsContext *)v5 firstAsset];
-    [(PXPhotosDetailsCaptionHashtagsWidget *)self setAsset:v6];
-    v7 = [v6 descriptionProperties];
-    v8 = [v7 assetDescription];
-    v9 = [(PXPhotosDetailsCaptionHashtagsWidget *)self textEntryView];
-    [v9 setOriginalText:v8];
+    objc_storeStrong(&self->_context, context);
+    firstAsset = [(PXPhotosDetailsContext *)contextCopy firstAsset];
+    [(PXPhotosDetailsCaptionHashtagsWidget *)self setAsset:firstAsset];
+    descriptionProperties = [firstAsset descriptionProperties];
+    assetDescription = [descriptionProperties assetDescription];
+    textEntryView = [(PXPhotosDetailsCaptionHashtagsWidget *)self textEntryView];
+    [textEntryView setOriginalText:assetDescription];
 
-    if (!v6)
+    if (!firstAsset)
     {
       v10 = PLOneUpGetLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -746,7 +746,7 @@ void __98__PXPhotosDetailsCaptionHashtagsWidget_contentViewWillTransitionToSize_
   }
 }
 
-- (double)preferredContentHeightForWidth:(double)a3
+- (double)preferredContentHeightForWidth:(double)width
 {
   [(PXPhotosDetailsCaptionHashtagsWidget *)self _contentInsets];
   v6 = v5;
@@ -754,9 +754,9 @@ void __98__PXPhotosDetailsCaptionHashtagsWidget_contentViewWillTransitionToSize_
   v10 = v9;
   v12 = v11;
   [(PXPhotosDetailsCaptionHashtagsWidget *)self _textViewContainerInsets];
-  v15 = fmax(a3 - (v14 + v8 + v12 + v13), 0.0);
-  v16 = [(PXPhotosDetailsCaptionHashtagsWidget *)self textEntryView];
-  [v16 preferredHeightForWidth:v15];
+  v15 = fmax(width - (v14 + v8 + v12 + v13), 0.0);
+  textEntryView = [(PXPhotosDetailsCaptionHashtagsWidget *)self textEntryView];
+  [textEntryView preferredHeightForWidth:v15];
   v18 = v17;
 
   return v10 + v6 + v18;
@@ -764,8 +764,8 @@ void __98__PXPhotosDetailsCaptionHashtagsWidget_contentViewWillTransitionToSize_
 
 - (double)currentContentHeight
 {
-  v2 = [(PXPhotosDetailsCaptionHashtagsWidget *)self contentView];
-  [v2 frame];
+  contentView = [(PXPhotosDetailsCaptionHashtagsWidget *)self contentView];
+  [contentView frame];
   Height = CGRectGetHeight(v5);
 
   return Height;
@@ -773,34 +773,34 @@ void __98__PXPhotosDetailsCaptionHashtagsWidget_contentViewWillTransitionToSize_
 
 - (BOOL)hasContentForCurrentInput
 {
-  v2 = [(PXPhotosDetailsCaptionHashtagsWidget *)self asset];
-  if ([v2 canPerformEditOperation:3])
+  asset = [(PXPhotosDetailsCaptionHashtagsWidget *)self asset];
+  if ([asset canPerformEditOperation:3])
   {
     v3 = 1;
   }
 
   else
   {
-    v4 = [v2 descriptionProperties];
-    v5 = [v4 assetDescription];
-    v3 = [v5 length] != 0;
+    descriptionProperties = [asset descriptionProperties];
+    assetDescription = [descriptionProperties assetDescription];
+    v3 = [assetDescription length] != 0;
   }
 
   return v3;
 }
 
-- (void)setSpec:(id)a3
+- (void)setSpec:(id)spec
 {
-  v5 = a3;
-  if (self->_spec != v5)
+  specCopy = spec;
+  if (self->_spec != specCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_spec, a3);
+    v7 = specCopy;
+    objc_storeStrong(&self->_spec, spec);
     [(PXPhotosDetailsCaptionHashtagsWidget *)self _applySpec];
-    v6 = [(PXPhotosDetailsCaptionHashtagsWidget *)self widgetDelegate];
-    [v6 widgetPreferredContentHeightForWidthDidChange:self];
+    widgetDelegate = [(PXPhotosDetailsCaptionHashtagsWidget *)self widgetDelegate];
+    [widgetDelegate widgetPreferredContentHeightForWidthDidChange:self];
 
-    v5 = v7;
+    specCopy = v7;
   }
 }
 

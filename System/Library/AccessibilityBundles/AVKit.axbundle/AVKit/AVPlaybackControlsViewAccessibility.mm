@@ -1,37 +1,37 @@
 @interface AVPlaybackControlsViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityViewIsVisible;
 - (BOOL)accessibilityElementsHidden;
 - (id)_accessibilityFullScreenViewController;
-- (id)_accessibilityNextResponderOfClass:(Class)a3;
+- (id)_accessibilityNextResponderOfClass:(Class)class;
 - (id)_accessibilityPlaybackControlsVisibilityController;
 - (id)_accessibilityPlayerViewController;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)setFullScreen:(BOOL)a3;
+- (void)setFullScreen:(BOOL)screen;
 @end
 
 @implementation AVPlaybackControlsViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVPlaybackControlsView" hasInstanceMethod:@"volumeButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVPlaybackControlsView" hasInstanceVariable:@"_scrubber" withType:"AVScrubber"];
-  [v3 validateClass:@"AVPlaybackControlsView" hasInstanceVariable:@"_volumeSlider" withType:"AVVolumeSlider"];
-  [v3 validateClass:@"AVPlaybackControlsView" hasInstanceVariable:@"_skipBackButton" withType:"AVButton"];
-  [v3 validateClass:@"AVPlaybackControlsView" hasInstanceVariable:@"_skipForwardButton" withType:"AVButton"];
-  [v3 validateClass:@"AVPlaybackControlsView" hasInstanceVariable:@"_mediaSelectionButton" withType:"AVButton"];
-  [v3 validateClass:@"AVPlaybackControlsView" hasInstanceVariable:@"_fullScreenButton" withType:"AVButton"];
-  [v3 validateClass:@"AVPlaybackControlsView" hasInstanceVariable:@"_standardPlayPauseButton" withType:"AVButton"];
-  [v3 validateClass:@"AVPlaybackControlsView" hasInstanceVariable:@"_pictureInPictureButton" withType:"AVButton"];
-  [v3 validateClass:@"AVPlaybackControlsView" hasInstanceVariable:@"_prominentPlayButton" withType:"AVButton"];
-  [v3 validateClass:@"AVPlaybackControlsView" hasInstanceVariable:@"_standardPlayPauseButton" withType:"AVButton"];
-  [v3 validateClass:@"AVPlaybackControlsView" hasInstanceVariable:@"_doneButton" withType:"AVButton"];
-  [v3 validateClass:@"AVPlaybackControlsView" hasInstanceMethod:@"hasVisibleSubview" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"AVButton" hasInstanceMethod:@"imageName" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVPlaybackControlsView" hasInstanceMethod:@"volumeButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVPlaybackControlsView" hasInstanceVariable:@"_scrubber" withType:"AVScrubber"];
+  [validationsCopy validateClass:@"AVPlaybackControlsView" hasInstanceVariable:@"_volumeSlider" withType:"AVVolumeSlider"];
+  [validationsCopy validateClass:@"AVPlaybackControlsView" hasInstanceVariable:@"_skipBackButton" withType:"AVButton"];
+  [validationsCopy validateClass:@"AVPlaybackControlsView" hasInstanceVariable:@"_skipForwardButton" withType:"AVButton"];
+  [validationsCopy validateClass:@"AVPlaybackControlsView" hasInstanceVariable:@"_mediaSelectionButton" withType:"AVButton"];
+  [validationsCopy validateClass:@"AVPlaybackControlsView" hasInstanceVariable:@"_fullScreenButton" withType:"AVButton"];
+  [validationsCopy validateClass:@"AVPlaybackControlsView" hasInstanceVariable:@"_standardPlayPauseButton" withType:"AVButton"];
+  [validationsCopy validateClass:@"AVPlaybackControlsView" hasInstanceVariable:@"_pictureInPictureButton" withType:"AVButton"];
+  [validationsCopy validateClass:@"AVPlaybackControlsView" hasInstanceVariable:@"_prominentPlayButton" withType:"AVButton"];
+  [validationsCopy validateClass:@"AVPlaybackControlsView" hasInstanceVariable:@"_standardPlayPauseButton" withType:"AVButton"];
+  [validationsCopy validateClass:@"AVPlaybackControlsView" hasInstanceVariable:@"_doneButton" withType:"AVButton"];
+  [validationsCopy validateClass:@"AVPlaybackControlsView" hasInstanceMethod:@"hasVisibleSubview" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"AVButton" hasInstanceMethod:@"imageName" withFullSignature:{"@", 0}];
 }
 
-- (id)_accessibilityNextResponderOfClass:(Class)a3
+- (id)_accessibilityNextResponderOfClass:(Class)class
 {
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
@@ -44,12 +44,12 @@
         break;
       }
 
-      v4 = [v3 nextResponder];
+      nextResponder = [v3 nextResponder];
 
-      v3 = v4;
+      v3 = nextResponder;
     }
 
-    while (v4);
+    while (nextResponder);
   }
 
   return v3;
@@ -84,8 +84,8 @@ uint64_t __77__AVPlaybackControlsViewAccessibility__accessibilityFullScreenViewC
   v3 = [(AVPlaybackControlsViewAccessibility *)self _accessibilityNextResponderOfClass:_accessibilityPlayerViewController_AVPlayerViewControllerClass];
   if (!v3)
   {
-    v4 = [(AVPlaybackControlsViewAccessibility *)self _accessibilityFullScreenViewController];
-    v5 = [v4 safeValueForKey:@"delegate"];
+    _accessibilityFullScreenViewController = [(AVPlaybackControlsViewAccessibility *)self _accessibilityFullScreenViewController];
+    v5 = [_accessibilityFullScreenViewController safeValueForKey:@"delegate"];
     v3 = __UIAccessibilitySafeClass();
   }
 
@@ -101,8 +101,8 @@ uint64_t __73__AVPlaybackControlsViewAccessibility__accessibilityPlayerViewContr
 
 - (id)_accessibilityPlaybackControlsVisibilityController
 {
-  v2 = [(AVPlaybackControlsViewAccessibility *)self _accessibilityPlayerViewController];
-  v3 = [v2 safeValueForKey:@"_playbackControlsVisibilityController"];
+  _accessibilityPlayerViewController = [(AVPlaybackControlsViewAccessibility *)self _accessibilityPlayerViewController];
+  v3 = [_accessibilityPlayerViewController safeValueForKey:@"_playbackControlsVisibilityController"];
   v4 = __UIAccessibilitySafeClass();
 
   return v4;
@@ -132,14 +132,14 @@ uint64_t __73__AVPlaybackControlsViewAccessibility__accessibilityPlayerViewContr
   return [(AVPlaybackControlsViewAccessibility *)&v4 accessibilityElementsHidden];
 }
 
-- (void)setFullScreen:(BOOL)a3
+- (void)setFullScreen:(BOOL)screen
 {
-  v3 = a3;
+  screenCopy = screen;
   v8.receiver = self;
   v8.super_class = AVPlaybackControlsViewAccessibility;
   [(AVPlaybackControlsViewAccessibility *)&v8 setFullScreen:?];
   v5 = [(AVPlaybackControlsViewAccessibility *)self safeValueForKey:@"_fullScreenButton"];
-  if (v3)
+  if (screenCopy)
   {
     v6 = @"exitfullscreen.button";
   }
@@ -169,14 +169,14 @@ uint64_t __73__AVPlaybackControlsViewAccessibility__accessibilityPlayerViewContr
   v7 = [(AVPlaybackControlsViewAccessibility *)self safeValueForKey:@"_skipBackButton"];
   v8 = MEMORY[0x29EDBA0F8];
   v9 = accessibilityLocalizedString(@"media.skip.backwards");
-  v10 = [v8 localizedStringWithFormat:v9, 0x402E000000000000];
-  [v7 setAccessibilityLabel:v10];
+  0x402E000000000000 = [v8 localizedStringWithFormat:v9, 0x402E000000000000];
+  [v7 setAccessibilityLabel:0x402E000000000000];
 
   v11 = [(AVPlaybackControlsViewAccessibility *)self safeValueForKey:@"_skipForwardButton"];
   v12 = MEMORY[0x29EDBA0F8];
   v13 = accessibilityLocalizedString(@"media.skip.forward");
-  v14 = [v12 localizedStringWithFormat:v13, 0x402E000000000000];
-  [v11 setAccessibilityLabel:v14];
+  0x402E0000000000002 = [v12 localizedStringWithFormat:v13, 0x402E000000000000];
+  [v11 setAccessibilityLabel:0x402E0000000000002];
 
   v15 = [(AVPlaybackControlsViewAccessibility *)self safeValueForKey:@"_mediaSelectionButton"];
   v16 = accessibilityLocalizedString(@"media.selection");

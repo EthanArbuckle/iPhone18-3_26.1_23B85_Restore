@@ -1,5 +1,5 @@
 @interface FigFlatToNSDictionaryWrapperKeyEnumerator
-- (FigFlatToNSDictionaryWrapperKeyEnumerator)initWithFlatDictionary:(OpaqueFigFlatDictionary *)a3;
+- (FigFlatToNSDictionaryWrapperKeyEnumerator)initWithFlatDictionary:(OpaqueFigFlatDictionary *)dictionary;
 - (id)allObjects;
 - (id)nextObject;
 - (void)dealloc;
@@ -7,9 +7,9 @@
 
 @implementation FigFlatToNSDictionaryWrapperKeyEnumerator
 
-- (FigFlatToNSDictionaryWrapperKeyEnumerator)initWithFlatDictionary:(OpaqueFigFlatDictionary *)a3
+- (FigFlatToNSDictionaryWrapperKeyEnumerator)initWithFlatDictionary:(OpaqueFigFlatDictionary *)dictionary
 {
-  if (!a3)
+  if (!dictionary)
   {
     return 0;
   }
@@ -19,12 +19,12 @@
   v4 = [(FigFlatToNSDictionaryWrapperKeyEnumerator *)&v11 init];
   if (v4)
   {
-    CountOfKeysWithValues = FigFlatDictionaryGetCountOfKeysWithValues(a3, v5);
+    CountOfKeysWithValues = FigFlatDictionaryGetCountOfKeysWithValues(dictionary, v5);
     v4->_keysCount = CountOfKeysWithValues;
     v7 = malloc_type_malloc(8 * CountOfKeysWithValues, 0x2004093837F09uLL);
     v4->_keys = v7;
     keysCount = v4->_keysCount;
-    if (FigFlatDictionaryGetKeysWithValues(a3, v7, &keysCount, v8) && v4->_keysCount == keysCount)
+    if (FigFlatDictionaryGetKeysWithValues(dictionary, v7, &keysCount, v8) && v4->_keysCount == keysCount)
     {
       v4->_counter = 0;
       return v4;
@@ -51,14 +51,14 @@
 
 - (id)allObjects
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   for (i = self->_counter; i < self->_keysCount; self->_counter = i)
   {
-    [v3 addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%s", FigFlatDictionaryKeyGetIdentifier(self->_keys[i]))}];
+    [array addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%s", FigFlatDictionaryKeyGetIdentifier(self->_keys[i]))}];
     i = self->_counter + 1;
   }
 
-  return v3;
+  return array;
 }
 
 - (id)nextObject

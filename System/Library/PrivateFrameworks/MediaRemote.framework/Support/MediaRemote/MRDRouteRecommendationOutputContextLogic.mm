@@ -1,24 +1,24 @@
 @interface MRDRouteRecommendationOutputContextLogic
-- (BOOL)localOutputContextHasDeviceOfType:(unsigned int)a3;
+- (BOOL)localOutputContextHasDeviceOfType:(unsigned int)type;
 - (id)_localOutputContextDeviceTypesCount;
 - (void)reloadOutputContextData;
 @end
 
 @implementation MRDRouteRecommendationOutputContextLogic
 
-- (BOOL)localOutputContextHasDeviceOfType:(unsigned int)a3
+- (BOOL)localOutputContextHasDeviceOfType:(unsigned int)type
 {
   v4 = +[MRAVLocalEndpoint sharedLocalEndpoint];
-  v5 = [v4 outputDevices];
+  outputDevices = [v4 outputDevices];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100144C00;
   v8[3] = &unk_1004BEBA0;
-  v9 = a3;
-  v6 = [v5 msv_firstWhere:v8];
-  LOBYTE(a3) = v6 != 0;
+  typeCopy = type;
+  v6 = [outputDevices msv_firstWhere:v8];
+  LOBYTE(type) = v6 != 0;
 
-  return a3;
+  return type;
 }
 
 - (void)reloadOutputContextData
@@ -28,9 +28,9 @@
   v22 = 0u;
   v23 = 0u;
   v3 = +[MRAVLocalEndpoint sharedLocalEndpoint];
-  v4 = [v3 outputDevices];
+  outputDevices = [v3 outputDevices];
 
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v26 count:16];
+  v5 = [outputDevices countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v5)
   {
     v6 = v5;
@@ -45,7 +45,7 @@
       {
         if (*v21 != v11)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(outputDevices);
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
@@ -90,7 +90,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v20 objects:v26 count:16];
+      v6 = [outputDevices countByEnumeratingWithState:&v20 objects:v26 count:16];
     }
 
     while (v6);

@@ -2,7 +2,7 @@
 + (SFOnboardingCoordinator)sharedCoordinator;
 - (SFOnboardingCoordinator)init;
 - (id)onboardingProvidersForStartPage;
-- (void)didComplete:(id)a3;
+- (void)didComplete:(id)complete;
 - (void)pauseStartPageOnboarding;
 @end
 
@@ -22,13 +22,13 @@
 
 - (void)pauseStartPageOnboarding
 {
-  v2 = self;
+  selfCopy = self;
   sub_18BC1EEC8();
 }
 
 - (id)onboardingProvidersForStartPage
 {
-  v2 = self;
+  selfCopy = self;
   SFOnboardingCoordinator.onboardingProvidersForStartPage()();
 
   type metadata accessor for SFStartPageOnboardingCell.Configuration();
@@ -37,12 +37,12 @@
   return v3;
 }
 
-- (void)didComplete:(id)a3
+- (void)didComplete:(id)complete
 {
   swift_getObjectType();
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_18BB7E150(a3);
+  selfCopy = self;
+  sub_18BB7E150(complete);
   swift_unknownObjectRelease();
 }
 

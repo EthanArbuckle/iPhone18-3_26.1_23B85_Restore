@@ -1,12 +1,12 @@
 @interface IdentityRemoteSceneController
-- (_TtC19ContactlessReaderUI29IdentityRemoteSceneController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC19ContactlessReaderUI29IdentityRemoteSceneController)initWithNibName:(id)name bundle:(id)bundle;
 @end
 
 @implementation IdentityRemoteSceneController
 
-- (_TtC19ContactlessReaderUI29IdentityRemoteSceneController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC19ContactlessReaderUI29IdentityRemoteSceneController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_2440D2FB0();
     v7 = v6;
@@ -18,8 +18,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return IdentityRemoteSceneController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return IdentityRemoteSceneController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
 @end

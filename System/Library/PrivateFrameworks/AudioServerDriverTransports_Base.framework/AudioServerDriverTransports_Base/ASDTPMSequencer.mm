@@ -1,37 +1,37 @@
 @interface ASDTPMSequencer
-+ (ASDTPMSequencer)pmSequencerWithPMDeviceConfig:(id)a3 withParent:(id)a4;
-+ (int64_t)compare:(id)a3 with:(id)a4 forPowerUp:(BOOL)a5;
++ (ASDTPMSequencer)pmSequencerWithPMDeviceConfig:(id)config withParent:(id)parent;
++ (int64_t)compare:(id)compare with:(id)with forPowerUp:(BOOL)up;
 - (ASDTAudioDevice)parentDevice;
 - (ASDTPMProtocol)parent;
-- (ASDTPMSequencer)initWithPMDeviceConfig:(id)a3 withParent:(id)a4;
-- (BOOL)addPMDevicesWithConfig:(id)a3;
-- (BOOL)doAddPMDeviceWithConfig:(id)a3;
-- (id)pmDeviceWithName:(id)a3;
-- (int)executeSequenceFromState:(int)a3 toState:(int)a4;
-- (int)executeSequenceToState:(int)a3;
-- (int)executeSequenceToState:(int)a3 fromState:(int)a4;
+- (ASDTPMSequencer)initWithPMDeviceConfig:(id)config withParent:(id)parent;
+- (BOOL)addPMDevicesWithConfig:(id)config;
+- (BOOL)doAddPMDeviceWithConfig:(id)config;
+- (id)pmDeviceWithName:(id)name;
+- (int)executeSequenceFromState:(int)state toState:(int)toState;
+- (int)executeSequenceToState:(int)state;
+- (int)executeSequenceToState:(int)state fromState:(int)fromState;
 - (int)powerState;
 - (void)sortPMDevices;
-- (void)updateQuiescentState:(int)a3;
+- (void)updateQuiescentState:(int)state;
 @end
 
 @implementation ASDTPMSequencer
 
-+ (ASDTPMSequencer)pmSequencerWithPMDeviceConfig:(id)a3 withParent:(id)a4
++ (ASDTPMSequencer)pmSequencerWithPMDeviceConfig:(id)config withParent:(id)parent
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[ASDTPMSequencer alloc] initWithPMDeviceConfig:v5 withParent:v6];
+  configCopy = config;
+  parentCopy = parent;
+  v7 = [[ASDTPMSequencer alloc] initWithPMDeviceConfig:configCopy withParent:parentCopy];
 
   return v7;
 }
 
-- (ASDTPMSequencer)initWithPMDeviceConfig:(id)a3 withParent:(id)a4
+- (ASDTPMSequencer)initWithPMDeviceConfig:(id)config withParent:(id)parent
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  configCopy = config;
+  parentCopy = parent;
+  if (!parentCopy)
   {
     goto LABEL_19;
   }
@@ -43,61 +43,61 @@
   if (v8)
   {
     [(ASDTPMSequencer *)v8 setQuiescentState:1767990132];
-    [(ASDTPMSequencer *)self setParent:v7];
+    [(ASDTPMSequencer *)self setParent:parentCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(ASDTPMSequencer *)self setParentDevice:v7];
+      [(ASDTPMSequencer *)self setParentDevice:parentCopy];
     }
 
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v10 = dispatch_queue_attr_make_with_qos_class(v9, QOS_CLASS_USER_INTERACTIVE, 0);
 
     v11 = MEMORY[0x277CCACA8];
-    v12 = [(ASDTPMSequencer *)self parent];
-    v13 = [v12 name];
-    v14 = [v11 stringWithFormat:@"%s.%@.serial", "com.apple.AudioServerDriverTransports", v13];
+    parent = [(ASDTPMSequencer *)self parent];
+    name = [parent name];
+    v14 = [v11 stringWithFormat:@"%s.%@.serial", "com.apple.AudioServerDriverTransports", name];
 
     v15 = v14;
     v16 = dispatch_queue_create([v14 UTF8String], v10);
     [(ASDTPMSequencer *)self setPmSerialQueue:v16];
 
-    v17 = [(ASDTPMSequencer *)self pmSerialQueue];
-    LODWORD(v16) = v17 == 0;
+    pmSerialQueue = [(ASDTPMSequencer *)self pmSerialQueue];
+    LODWORD(v16) = pmSerialQueue == 0;
 
     if (v16)
     {
       v20 = ASDTBaseLogType();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        v27 = [(ASDTPMSequencer *)self parent];
-        v28 = [v27 name];
-        [(ASDTPMSequencer *)v28 initWithPMDeviceConfig:buf withParent:v20, v27];
+        parent2 = [(ASDTPMSequencer *)self parent];
+        name2 = [parent2 name];
+        [(ASDTPMSequencer *)name2 initWithPMDeviceConfig:buf withParent:v20, parent2];
       }
     }
 
     else
     {
-      v18 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count") + 1}];
+      v18 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(configCopy, "count") + 1}];
       [(ASDTPMSequencer *)self setMutablePMDevicesPowerUp:v18];
 
-      v19 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count") + 1}];
+      v19 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(configCopy, "count") + 1}];
       [(ASDTPMSequencer *)self setMutablePMDevicesPowerDown:v19];
 
-      v20 = [ASDTPMDeviceProxy forPMDevice:v7];
-      v21 = [(ASDTPMSequencer *)self mutablePMDevicesPowerUp];
-      [v21 addObject:v20];
+      v20 = [ASDTPMDeviceProxy forPMDevice:parentCopy];
+      mutablePMDevicesPowerUp = [(ASDTPMSequencer *)self mutablePMDevicesPowerUp];
+      [mutablePMDevicesPowerUp addObject:v20];
 
-      v22 = [(ASDTPMSequencer *)self mutablePMDevicesPowerDown];
-      [v22 addObject:v20];
+      mutablePMDevicesPowerDown = [(ASDTPMSequencer *)self mutablePMDevicesPowerDown];
+      [mutablePMDevicesPowerDown addObject:v20];
 
-      if ([(ASDTPMSequencer *)self addPMDevicesWithConfig:v6])
+      if ([(ASDTPMSequencer *)self addPMDevicesWithConfig:configCopy])
       {
-        v23 = [(ASDTPMSequencer *)self pmDevicesPowerUp];
-        if ([v23 count])
+        pmDevicesPowerUp = [(ASDTPMSequencer *)self pmDevicesPowerUp];
+        if ([pmDevicesPowerUp count])
         {
-          v24 = [(ASDTPMSequencer *)self pmDevicesPowerDown];
-          v25 = [v24 count] == 0;
+          pmDevicesPowerDown = [(ASDTPMSequencer *)self pmDevicesPowerDown];
+          v25 = [pmDevicesPowerDown count] == 0;
 
           if (!v25)
           {
@@ -113,38 +113,38 @@
         v29 = ASDTBaseLogType();
         if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
         {
-          v30 = [v7 name];
-          [(ASDTPMSequencer *)v30 initWithPMDeviceConfig:buf withParent:v29];
+          name3 = [parentCopy name];
+          [(ASDTPMSequencer *)name3 initWithPMDeviceConfig:buf withParent:v29];
         }
       }
     }
 
 LABEL_19:
-    v26 = 0;
+    selfCopy = 0;
     goto LABEL_20;
   }
 
 LABEL_10:
   self = self;
-  v26 = self;
+  selfCopy = self;
 LABEL_20:
 
   v31 = *MEMORY[0x277D85DE8];
-  return v26;
+  return selfCopy;
 }
 
-- (BOOL)doAddPMDeviceWithConfig:(id)a3
+- (BOOL)doAddPMDeviceWithConfig:(id)config
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [ASDTPMDevice pmDeviceWithConfig:v4 forSequencer:self];
+  configCopy = config;
+  v5 = [ASDTPMDevice pmDeviceWithConfig:configCopy forSequencer:self];
   if (v5)
   {
-    v6 = [(ASDTPMSequencer *)self mutablePMDevicesPowerUp];
-    [v6 addObject:v5];
+    mutablePMDevicesPowerUp = [(ASDTPMSequencer *)self mutablePMDevicesPowerUp];
+    [mutablePMDevicesPowerUp addObject:v5];
 
-    v7 = [(ASDTPMSequencer *)self mutablePMDevicesPowerDown];
-    [v7 addObject:v5];
+    mutablePMDevicesPowerDown = [(ASDTPMSequencer *)self mutablePMDevicesPowerDown];
+    [mutablePMDevicesPowerDown addObject:v5];
   }
 
   else
@@ -152,12 +152,12 @@ LABEL_20:
     v8 = ASDTBaseLogType();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v11 = [(ASDTPMSequencer *)self parent];
-      v12 = [v11 name];
+      parent = [(ASDTPMSequencer *)self parent];
+      name = [parent name];
       v13 = 138412546;
-      v14 = v12;
+      v14 = name;
       v15 = 2112;
-      v16 = v4;
+      v16 = configCopy;
       _os_log_error_impl(&dword_241659000, v8, OS_LOG_TYPE_ERROR, "%@: Error creating PM device for dictionary: %@", &v13, 0x16u);
     }
   }
@@ -168,30 +168,30 @@ LABEL_20:
 
 - (void)sortPMDevices
 {
-  v5 = [(ASDTPMSequencer *)self mutablePMDevicesPowerUp];
-  [v5 sortUsingComparator:&__block_literal_global_6];
+  mutablePMDevicesPowerUp = [(ASDTPMSequencer *)self mutablePMDevicesPowerUp];
+  [mutablePMDevicesPowerUp sortUsingComparator:&__block_literal_global_6];
 
-  v6 = [(ASDTPMSequencer *)self mutablePMDevicesPowerDown];
-  [v6 sortUsingComparator:&__block_literal_global_9];
+  mutablePMDevicesPowerDown = [(ASDTPMSequencer *)self mutablePMDevicesPowerDown];
+  [mutablePMDevicesPowerDown sortUsingComparator:&__block_literal_global_9];
 
-  v7 = [(ASDTPMSequencer *)self mutablePMDevicesPowerUp];
-  v3 = [v7 copy];
+  mutablePMDevicesPowerUp2 = [(ASDTPMSequencer *)self mutablePMDevicesPowerUp];
+  v3 = [mutablePMDevicesPowerUp2 copy];
   [(ASDTPMSequencer *)self setPmDevicesPowerUp:v3];
 
-  v8 = [(ASDTPMSequencer *)self mutablePMDevicesPowerDown];
-  v4 = [v8 copy];
+  mutablePMDevicesPowerDown2 = [(ASDTPMSequencer *)self mutablePMDevicesPowerDown];
+  v4 = [mutablePMDevicesPowerDown2 copy];
   [(ASDTPMSequencer *)self setPmDevicesPowerDown:v4];
 }
 
-- (BOOL)addPMDevicesWithConfig:(id)a3
+- (BOOL)addPMDevicesWithConfig:(id)config
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  configCopy = config;
+  v5 = [configCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = *v12;
@@ -201,7 +201,7 @@ LABEL_20:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(configCopy);
         }
 
         if (![(ASDTPMSequencer *)self doAddPMDeviceWithConfig:*(*(&v11 + 1) + 8 * i), v11])
@@ -212,7 +212,7 @@ LABEL_20:
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [configCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;
@@ -230,24 +230,24 @@ LABEL_11:
   return v8;
 }
 
-+ (int64_t)compare:(id)a3 with:(id)a4 forPowerUp:(BOOL)a5
++ (int64_t)compare:(id)compare with:(id)with forPowerUp:(BOOL)up
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  if (v5)
+  upCopy = up;
+  compareCopy = compare;
+  withCopy = with;
+  if (upCopy)
   {
-    v9 = [v7 pmOrderPowerUp];
-    v10 = [v8 pmOrderPowerUp];
+    pmOrderPowerUp = [compareCopy pmOrderPowerUp];
+    pmOrderPowerUp2 = [withCopy pmOrderPowerUp];
   }
 
   else
   {
-    v10 = [v7 pmOrderPowerDown];
-    v9 = [v8 pmOrderPowerDown];
+    pmOrderPowerUp2 = [compareCopy pmOrderPowerDown];
+    pmOrderPowerUp = [withCopy pmOrderPowerDown];
   }
 
-  if (v9 >= v10)
+  if (pmOrderPowerUp >= pmOrderPowerUp2)
   {
     v11 = 0;
   }
@@ -257,7 +257,7 @@ LABEL_11:
     v11 = -1;
   }
 
-  if (v9 > v10)
+  if (pmOrderPowerUp > pmOrderPowerUp2)
   {
     v12 = 1;
   }
@@ -270,16 +270,16 @@ LABEL_11:
   return v12;
 }
 
-- (int)executeSequenceFromState:(int)a3 toState:(int)a4
+- (int)executeSequenceFromState:(int)state toState:(int)toState
 {
   v99 = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (toState)
   {
-    v6 = asdtPowerTransitionForStateChange(a3, a4);
+    v6 = asdtPowerTransitionForStateChange(state, toState);
     if (v6)
     {
       v7 = v6;
-      v46 = a3;
+      stateCopy = state;
       v60 = asdtPowerTransitionUpwards(v6);
       if (v60)
       {
@@ -291,13 +291,13 @@ LABEL_11:
         [(ASDTPMSequencer *)self pmDevicesPowerDown];
       }
       v8 = ;
-      v62 = [v8 objectEnumerator];
+      objectEnumerator = [v8 objectEnumerator];
 
       v67 = 0uLL;
       v68 = 0x10000;
       ASDTTime::machAbsoluteTime(v10, &v65);
       v47 = 0;
-      v12 = 0;
+      nextObject = 0;
       if (v7 - 32 >= 0x5F)
       {
         v13 = 32;
@@ -338,75 +338,75 @@ LABEL_11:
 
       v56 = v16;
       v57 = v15;
-      if (a4 - 32 >= 0x5F)
+      if (toState - 32 >= 0x5F)
       {
-        v17 = 32;
+        toStateCopy = 32;
       }
 
       else
       {
-        v17 = a4;
+        toStateCopy = toState;
       }
 
-      v18 = BYTE1(a4);
-      if (BYTE1(a4) - 32 >= 0x5F)
+      v18 = BYTE1(toState);
+      if (BYTE1(toState) - 32 >= 0x5F)
       {
         v18 = 32;
       }
 
       v54 = v18;
-      v55 = v17;
-      if (BYTE2(a4) - 32 >= 0x5F)
+      v55 = toStateCopy;
+      if (BYTE2(toState) - 32 >= 0x5F)
       {
         v19 = 32;
       }
 
       else
       {
-        v19 = BYTE2(a4);
+        v19 = BYTE2(toState);
       }
 
-      if ((a4 - 0x20000000) >> 24 >= 0x5F)
+      if ((toState - 0x20000000) >> 24 >= 0x5F)
       {
         v20 = 32;
       }
 
       else
       {
-        v20 = HIBYTE(a4);
+        v20 = HIBYTE(toState);
       }
 
       v52 = v20;
       v53 = v19;
-      v21 = v46;
-      if (v46 - 32 >= 0x5F)
+      v21 = stateCopy;
+      if (stateCopy - 32 >= 0x5F)
       {
         v21 = 32;
       }
 
       v51 = v21;
-      v22 = BYTE1(v46);
-      if (BYTE1(v46) - 32 >= 0x5F)
+      v22 = BYTE1(stateCopy);
+      if (BYTE1(stateCopy) - 32 >= 0x5F)
       {
         v22 = 32;
       }
 
       v50 = v22;
-      v23 = BYTE2(v46);
-      if (BYTE2(v46) - 32 >= 0x5F)
+      v23 = BYTE2(stateCopy);
+      if (BYTE2(stateCopy) - 32 >= 0x5F)
       {
         v23 = 32;
       }
 
       v49 = v23;
-      if ((v46 - 0x20000000) >> 24 >= 0x5F)
+      if ((stateCopy - 0x20000000) >> 24 >= 0x5F)
       {
         v24 = 32;
       }
 
       else
       {
-        v24 = HIBYTE(v46);
+        v24 = HIBYTE(stateCopy);
       }
 
       v48 = v24;
@@ -414,12 +414,12 @@ LABEL_11:
       v45 = v11;
       while (1)
       {
-        v25 = v12;
+        v25 = nextObject;
         while (1)
         {
-          v12 = [v62 nextObject];
+          nextObject = [objectEnumerator nextObject];
 
-          if (!v12)
+          if (!nextObject)
           {
             LODWORD(v9) = v47;
             goto LABEL_65;
@@ -427,14 +427,14 @@ LABEL_11:
 
           v67 = v65;
           v68 = v66;
-          v9 = [v12 asdtPowerStateChange:v7];
+          v9 = [nextObject asdtPowerStateChange:v7];
           ASDTTime::machAbsoluteTime(v9, buf);
           v65 = *buf;
           v66 = *&buf[16];
           if (!v9)
           {
-            v25 = v12;
-            if (([v12 asdtHandlesPowerTransition:v7] & 1) == 0)
+            v25 = nextObject;
+            if (([nextObject asdtHandlesPowerTransition:v7] & 1) == 0)
             {
               continue;
             }
@@ -443,27 +443,27 @@ LABEL_11:
           v26 = ASDTBaseLogType();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
           {
-            v27 = [(ASDTPMSequencer *)self parent];
-            v28 = [v27 name];
-            v29 = [v12 name];
+            parent = [(ASDTPMSequencer *)self parent];
+            name = [parent name];
+            name2 = [nextObject name];
             if (v60)
             {
-              v30 = [v12 pmOrderPowerUp];
+              pmOrderPowerUp = [nextObject pmOrderPowerUp];
             }
 
             else
             {
-              v30 = [v12 pmOrderPowerDown];
+              pmOrderPowerUp = [nextObject pmOrderPowerDown];
             }
 
-            v33 = v30;
+            v33 = pmOrderPowerUp;
             v63 = v65;
             v64 = v66;
             ASDTTime::operator-=(&v63, &v67, v31, v32);
             *buf = 138416898;
-            *&buf[4] = v28;
+            *&buf[4] = name;
             *&buf[12] = 2112;
-            *&buf[14] = v29;
+            *&buf[14] = name2;
             *&buf[22] = 1024;
             *v70 = v33;
             *&v70[4] = 1024;
@@ -501,7 +501,7 @@ LABEL_11:
             _os_log_impl(&dword_241659000, v26, OS_LOG_TYPE_DEFAULT, "%@: %@: Order: %u, State change '%c%c%c%c' to '%c%c%c%c' (transition '%c%c%c%c'): took %lluns, finished at %llu (%llu.%hu)", buf, 0x88u);
           }
 
-          v25 = v12;
+          v25 = nextObject;
           if (v9)
           {
             break;
@@ -511,13 +511,13 @@ LABEL_11:
         v34 = ASDTBaseLogType();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
         {
-          v35 = [(ASDTPMSequencer *)self parent];
-          v36 = [v35 name];
-          v37 = [v12 name];
-          v38 = v37;
+          parent2 = [(ASDTPMSequencer *)self parent];
+          name3 = [parent2 name];
+          name4 = [nextObject name];
+          v38 = name4;
           *buf = v45;
           v39 = v9 >> 24;
-          *&buf[4] = v36;
+          *&buf[4] = name3;
           if ((v9 - 0x20000000) >> 24 >= 0x5F)
           {
             v39 = 32;
@@ -550,7 +550,7 @@ LABEL_11:
           *v71 = 1024;
           *&v71[2] = v59;
           *v72 = 2112;
-          *&v72[2] = v37;
+          *&v72[2] = name4;
           v73 = 1024;
           v74 = v9;
           v75 = 1024;
@@ -564,7 +564,7 @@ LABEL_11:
           _os_log_error_impl(&dword_241659000, v34, OS_LOG_TYPE_ERROR, "%@: PM state transition '%c%c%c%c' failed for %@: %x '%c%c%c%c'", buf, 0x4Cu);
         }
 
-        if (!v46)
+        if (!stateCopy)
         {
           break;
         }
@@ -573,7 +573,7 @@ LABEL_11:
         if (v60)
         {
           v47 = v9;
-          if ([(ASDTPMSequencer *)self quiescentState]!= a4)
+          if ([(ASDTPMSequencer *)self quiescentState]!= toState)
           {
             break;
           }
@@ -598,21 +598,21 @@ LABEL_65:
   return v9;
 }
 
-- (int)executeSequenceToState:(int)a3
+- (int)executeSequenceToState:(int)state
 {
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v5 = [(ASDTPMSequencer *)self pmSerialQueue];
+  pmSerialQueue = [(ASDTPMSequencer *)self pmSerialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__ASDTPMSequencer_executeSequenceToState___block_invoke;
   block[3] = &unk_278CE6658;
   block[4] = self;
   block[5] = &v10;
-  v9 = a3;
-  dispatch_sync(v5, block);
+  stateCopy = state;
+  dispatch_sync(pmSerialQueue, block);
 
   v6 = *(v11 + 6);
   _Block_object_dispose(&v10, 8);
@@ -626,27 +626,27 @@ uint64_t __42__ASDTPMSequencer_executeSequenceToState___block_invoke(uint64_t a1
   return result;
 }
 
-- (int)executeSequenceToState:(int)a3 fromState:(int)a4
+- (int)executeSequenceToState:(int)state fromState:(int)fromState
 {
-  v6 = self;
+  selfCopy = self;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v7 = [(ASDTPMSequencer *)self pmSerialQueue];
+  pmSerialQueue = [(ASDTPMSequencer *)self pmSerialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__ASDTPMSequencer_executeSequenceToState_fromState___block_invoke;
   block[3] = &unk_278CE6680;
-  v10 = a4;
-  v11 = a3;
-  block[4] = v6;
+  fromStateCopy = fromState;
+  stateCopy = state;
+  block[4] = selfCopy;
   block[5] = &v12;
-  dispatch_sync(v7, block);
+  dispatch_sync(pmSerialQueue, block);
 
-  LODWORD(v6) = *(v13 + 6);
+  LODWORD(selfCopy) = *(v13 + 6);
   _Block_object_dispose(&v12, 8);
-  return v6;
+  return selfCopy;
 }
 
 uint64_t __52__ASDTPMSequencer_executeSequenceToState_fromState___block_invoke(uint64_t a1)
@@ -801,23 +801,23 @@ uint64_t __52__ASDTPMSequencer_executeSequenceToState_fromState___block_invoke(u
 
 - (int)powerState
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(ASDTPMSequencer *)self pmSerialQueue];
+  pmSerialQueue = [(ASDTPMSequencer *)self pmSerialQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __29__ASDTPMSequencer_powerState__block_invoke;
   v5[3] = &unk_278CE66A8;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(pmSerialQueue, v5);
 
-  LODWORD(v2) = *(v7 + 6);
+  LODWORD(selfCopy) = *(v7 + 6);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __29__ASDTPMSequencer_powerState__block_invoke(uint64_t a1)
@@ -826,28 +826,28 @@ void __29__ASDTPMSequencer_powerState__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = [v2 powerState];
 }
 
-- (void)updateQuiescentState:(int)a3
+- (void)updateQuiescentState:(int)state
 {
-  v5 = [(ASDTPMSequencer *)self pmSerialQueue];
+  pmSerialQueue = [(ASDTPMSequencer *)self pmSerialQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __40__ASDTPMSequencer_updateQuiescentState___block_invoke;
   v6[3] = &unk_278CE66D0;
   v6[4] = self;
-  v7 = a3;
-  dispatch_sync(v5, v6);
+  stateCopy = state;
+  dispatch_sync(pmSerialQueue, v6);
 }
 
-- (id)pmDeviceWithName:(id)a3
+- (id)pmDeviceWithName:(id)name
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(ASDTPMSequencer *)self pmDevicesPowerUp];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  pmDevicesPowerUp = [(ASDTPMSequencer *)self pmDevicesPowerUp];
+  v6 = [pmDevicesPowerUp countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -857,12 +857,12 @@ void __29__ASDTPMSequencer_powerState__block_invoke(uint64_t a1)
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(pmDevicesPowerUp);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 name];
-        v11 = [v10 isEqualToString:v4];
+        name = [v9 name];
+        v11 = [name isEqualToString:nameCopy];
 
         if (v11)
         {
@@ -871,7 +871,7 @@ void __29__ASDTPMSequencer_powerState__block_invoke(uint64_t a1)
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [pmDevicesPowerUp countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;

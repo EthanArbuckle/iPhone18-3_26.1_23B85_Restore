@@ -1,10 +1,10 @@
 @interface EMReceivingAccount
 - (ECEmailAddress)identityEmailAddress;
-- (EMReceivingAccount)initWithCoder:(id)a3;
-- (EMReceivingAccount)initWithObjectID:(id)a3 name:(id)a4 hostname:(id)a5 builder:(id)a6;
+- (EMReceivingAccount)initWithCoder:(id)coder;
+- (EMReceivingAccount)initWithObjectID:(id)d name:(id)name hostname:(id)hostname builder:(id)builder;
 - (id)_calculateIdentityEmailAddress;
-- (void)_commonInitName:(id)a3 hostname:(id)a4 builder:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (void)_commonInitName:(id)name hostname:(id)hostname builder:(id)builder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EMReceivingAccount
@@ -14,8 +14,8 @@
   v3 = EFAtomicObjectLoad();
   if (!v3)
   {
-    v4 = [(EMReceivingAccount *)self _calculateIdentityEmailAddress];
-    if (v4)
+    _calculateIdentityEmailAddress = [(EMReceivingAccount *)self _calculateIdentityEmailAddress];
+    if (_calculateIdentityEmailAddress)
     {
       v3 = EFAtomicObjectSetIfNil();
     }
@@ -32,24 +32,24 @@
 - (id)_calculateIdentityEmailAddress
 {
   v47 = *MEMORY[0x1E69E9840];
-  v37 = [(EMReceivingAccount *)self emailAddresses];
-  if ([v37 count] <= 1)
+  emailAddresses = [(EMReceivingAccount *)self emailAddresses];
+  if ([emailAddresses count] <= 1)
   {
-    v3 = [v37 firstObject];
+    firstObject = [emailAddresses firstObject];
     goto LABEL_39;
   }
 
-  v4 = [(EMReceivingAccount *)self hostname];
-  v41 = v4;
-  v32 = [v4 _lp_highLevelDomainFromHost];
-  v34 = [(EMReceivingAccount *)self username];
-  v5 = [v34 emailAddressValue];
-  v6 = [v5 localPart];
-  v7 = v6;
-  v8 = v34;
-  if (v6)
+  hostname = [(EMReceivingAccount *)self hostname];
+  v41 = hostname;
+  _lp_highLevelDomainFromHost = [hostname _lp_highLevelDomainFromHost];
+  username = [(EMReceivingAccount *)self username];
+  emailAddressValue = [username emailAddressValue];
+  localPart = [emailAddressValue localPart];
+  v7 = localPart;
+  v8 = username;
+  if (localPart)
   {
-    v8 = v6;
+    v8 = localPart;
   }
 
   v35 = v8;
@@ -58,7 +58,7 @@
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = v37;
+  obj = emailAddresses;
   v9 = [obj countByEnumeratingWithState:&v42 objects:v46 count:16];
   if (!v9)
   {
@@ -83,17 +83,17 @@
       }
 
       v13 = *(*(&v42 + 1) + 8 * v12);
-      if ([v5 isEqual:v13])
+      if ([emailAddressValue isEqual:v13])
       {
-        v3 = v13;
+        firstObject = v13;
 
         goto LABEL_38;
       }
 
       if (!v10)
       {
-        v14 = [v13 domain];
-        v15 = [v14 ef_caseInsensitiveIsEqualToString:v4];
+        domain = [v13 domain];
+        v15 = [domain ef_caseInsensitiveIsEqualToString:hostname];
 
         if (v15)
         {
@@ -113,12 +113,12 @@ LABEL_14:
           goto LABEL_16;
         }
 
-        v20 = [v13 localPart];
-        v21 = [v20 ef_caseInsensitiveIsEqualToString:v35];
+        localPart2 = [v13 localPart];
+        v21 = [localPart2 ef_caseInsensitiveIsEqualToString:v35];
 
         v22 = MEMORY[0x1E699B820];
-        v23 = [v13 domain];
-        LODWORD(v22) = [v22 domain:v4 isSubdomainOfDomain:v23];
+        domain2 = [v13 domain];
+        LODWORD(v22) = [v22 domain:hostname isSubdomainOfDomain:domain2];
 
         if (v22)
         {
@@ -147,8 +147,8 @@ LABEL_14:
             goto LABEL_31;
           }
 
-          v25 = [v13 highLevelDomain];
-          v26 = [v25 ef_caseInsensitiveIsEqualToString:v32];
+          highLevelDomain = [v13 highLevelDomain];
+          v26 = [highLevelDomain ef_caseInsensitiveIsEqualToString:_lp_highLevelDomainFromHost];
 
           if (!v26)
           {
@@ -182,7 +182,7 @@ LABEL_16:
 
 LABEL_17:
       ++v12;
-      v4 = v41;
+      hostname = v41;
     }
 
     while (v9 != v12);
@@ -202,7 +202,7 @@ LABEL_17:
   if (v40)
   {
 LABEL_49:
-    v3 = v29;
+    firstObject = v29;
   }
 
   else
@@ -232,7 +232,7 @@ LABEL_49:
     }
 
 LABEL_37:
-    v3 = [obj firstObject];
+    firstObject = [obj firstObject];
     v10 = 0;
     v40 = 0;
     v33 = 0;
@@ -245,60 +245,60 @@ LABEL_38:
 LABEL_39:
   v30 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return firstObject;
 }
 
-- (EMReceivingAccount)initWithObjectID:(id)a3 name:(id)a4 hostname:(id)a5 builder:(id)a6
+- (EMReceivingAccount)initWithObjectID:(id)d name:(id)name hostname:(id)hostname builder:(id)builder
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v14)
+  dCopy = d;
+  nameCopy = name;
+  hostnameCopy = hostname;
+  builderCopy = builder;
+  if (!builderCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"EMReceivingAccount.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"builderBlock"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EMReceivingAccount.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"builderBlock"}];
   }
 
   v19.receiver = self;
   v19.super_class = EMReceivingAccount;
-  v15 = [(EMObject *)&v19 initWithObjectID:v11];
+  v15 = [(EMObject *)&v19 initWithObjectID:dCopy];
   v16 = v15;
   if (v15)
   {
-    [(EMReceivingAccount *)v15 _commonInitName:v12 hostname:v13 builder:v14];
+    [(EMReceivingAccount *)v15 _commonInitName:nameCopy hostname:hostnameCopy builder:builderCopy];
   }
 
   return v16;
 }
 
-- (void)_commonInitName:(id)a3 hostname:(id)a4 builder:(id)a5
+- (void)_commonInitName:(id)name hostname:(id)hostname builder:(id)builder
 {
-  v12 = a3;
-  v9 = a4;
-  objc_storeStrong(&self->_name, a3);
-  v10 = a5;
+  nameCopy = name;
+  hostnameCopy = hostname;
+  objc_storeStrong(&self->_name, name);
+  builderCopy = builder;
   hostname = self->_hostname;
-  self->_hostname = v9;
+  self->_hostname = hostnameCopy;
 
-  v10[2](v10, self);
+  builderCopy[2](builderCopy, self);
 }
 
-- (EMReceivingAccount)initWithCoder:(id)a3
+- (EMReceivingAccount)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = EMReceivingAccount;
-  v5 = [(EMObject *)&v11 initWithCoder:v4];
+  v5 = [(EMObject *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_name"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_hostname"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_name"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_hostname"];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __36__EMReceivingAccount_initWithCoder___block_invoke;
     v9[3] = &unk_1E826F4B0;
-    v10 = v4;
+    v10 = coderCopy;
     [(EMReceivingAccount *)v5 _commonInitName:v6 hostname:v7 builder:v9];
   }
 
@@ -330,34 +330,34 @@ void __36__EMReceivingAccount_initWithCoder___block_invoke(uint64_t a1, void *a2
   [v11 setIsLocalAccount:{objc_msgSend(*(a1 + 32), "decodeBoolForKey:", @"EFPropertyKey_isLocalAccount"}];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = EMReceivingAccount;
-  [(EMObject *)&v11 encodeWithCoder:v4];
-  v5 = [(EMReceivingAccount *)self name];
-  [v4 encodeObject:v5 forKey:@"EFPropertyKey_name"];
+  [(EMObject *)&v11 encodeWithCoder:coderCopy];
+  name = [(EMReceivingAccount *)self name];
+  [coderCopy encodeObject:name forKey:@"EFPropertyKey_name"];
 
-  v6 = [(EMReceivingAccount *)self hostname];
-  [v4 encodeObject:v6 forKey:@"EFPropertyKey_hostname"];
+  hostname = [(EMReceivingAccount *)self hostname];
+  [coderCopy encodeObject:hostname forKey:@"EFPropertyKey_hostname"];
 
-  v7 = [(EMReceivingAccount *)self username];
-  [v4 encodeObject:v7 forKey:@"EFPropertyKey_username"];
+  username = [(EMReceivingAccount *)self username];
+  [coderCopy encodeObject:username forKey:@"EFPropertyKey_username"];
 
-  v8 = [(EMReceivingAccount *)self statisticsKind];
-  [v4 encodeObject:v8 forKey:@"EFPropertyKey_statisticsKind"];
+  statisticsKind = [(EMReceivingAccount *)self statisticsKind];
+  [coderCopy encodeObject:statisticsKind forKey:@"EFPropertyKey_statisticsKind"];
 
-  v9 = [(EMReceivingAccount *)self deliveryAccount];
-  [v4 encodeObject:v9 forKey:@"EFPropertyKey_deliveryAccount"];
+  deliveryAccount = [(EMReceivingAccount *)self deliveryAccount];
+  [coderCopy encodeObject:deliveryAccount forKey:@"EFPropertyKey_deliveryAccount"];
 
-  v10 = [(EMReceivingAccount *)self emailAddresses];
-  [v4 encodeObject:v10 forKey:@"EFPropertyKey_emailAddresses"];
+  emailAddresses = [(EMReceivingAccount *)self emailAddresses];
+  [coderCopy encodeObject:emailAddresses forKey:@"EFPropertyKey_emailAddresses"];
 
-  [v4 encodeBool:-[EMReceivingAccount sourceIsManaged](self forKey:{"sourceIsManaged"), @"EFPropertyKey_sourceIsManaged"}];
-  [v4 encodeBool:-[EMReceivingAccount shouldArchiveByDefault](self forKey:{"shouldArchiveByDefault"), @"EFPropertyKey_shouldArchiveByDefault"}];
-  [v4 encodeBool:-[EMReceivingAccount isPrimaryiCloudAccount](self forKey:{"isPrimaryiCloudAccount"), @"EFPropertyKey_primaryiCloudAccount"}];
-  [v4 encodeBool:-[EMReceivingAccount isLocalAccount](self forKey:{"isLocalAccount"), @"EFPropertyKey_isLocalAccount"}];
+  [coderCopy encodeBool:-[EMReceivingAccount sourceIsManaged](self forKey:{"sourceIsManaged"), @"EFPropertyKey_sourceIsManaged"}];
+  [coderCopy encodeBool:-[EMReceivingAccount shouldArchiveByDefault](self forKey:{"shouldArchiveByDefault"), @"EFPropertyKey_shouldArchiveByDefault"}];
+  [coderCopy encodeBool:-[EMReceivingAccount isPrimaryiCloudAccount](self forKey:{"isPrimaryiCloudAccount"), @"EFPropertyKey_primaryiCloudAccount"}];
+  [coderCopy encodeBool:-[EMReceivingAccount isLocalAccount](self forKey:{"isLocalAccount"), @"EFPropertyKey_isLocalAccount"}];
 }
 
 @end

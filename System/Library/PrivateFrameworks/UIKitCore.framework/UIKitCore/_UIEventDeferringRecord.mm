@@ -1,10 +1,10 @@
 @interface _UIEventDeferringRecord
 - (BOOL)needsRecreation;
 - (_UIEventDeferringRecord)init;
-- (id)_initWithDescriptor:(void *)a3 invalidationToken:(void *)a4 deferringToken:(uint64_t)a5 recordingManagerPointer:(void *)a6 recreationReasons:;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)_initWithDescriptor:(void *)descriptor invalidationToken:(void *)token deferringToken:(uint64_t)deferringToken recordingManagerPointer:(void *)pointer recreationReasons:;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (uint64_t)addRecreationReason:(uint64_t)result;
@@ -15,54 +15,54 @@
 
 - (void)recreationReasons
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1[1];
+    v2 = self[1];
     if (v2)
     {
-      a1 = [v2 copy];
+      self = [v2 copy];
     }
 
     else
     {
-      a1 = objc_opt_new();
+      self = objc_opt_new();
     }
 
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (BOOL)needsRecreation
 {
-  if (!a1 || !a1[1])
+  if (!self || !self[1])
   {
     return 0;
   }
 
-  v1 = [(_UIEventDeferringRecord *)a1 recreationReasons];
-  v2 = [v1 count] != 0;
+  recreationReasons = [(_UIEventDeferringRecord *)self recreationReasons];
+  v2 = [recreationReasons count] != 0;
 
   return v2;
 }
 
 - (_UIEventDeferringRecord)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"_UIEventDeferringRecord.m" lineNumber:56 description:{@"%s: init is not allowed on _UIEventDeferringRecord", "-[_UIEventDeferringRecord init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIEventDeferringRecord.m" lineNumber:56 description:{@"%s: init is not allowed on _UIEventDeferringRecord", "-[_UIEventDeferringRecord init]"}];
 
   return 0;
 }
 
-- (id)_initWithDescriptor:(void *)a3 invalidationToken:(void *)a4 deferringToken:(uint64_t)a5 recordingManagerPointer:(void *)a6 recreationReasons:
+- (id)_initWithDescriptor:(void *)descriptor invalidationToken:(void *)token deferringToken:(uint64_t)deferringToken recordingManagerPointer:(void *)pointer recreationReasons:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v17.receiver = a1;
+  v17.receiver = self;
   v17.super_class = _UIEventDeferringRecord;
   v11 = objc_msgSendSuper2(&v17, sel_init);
   if (v11)
@@ -71,10 +71,10 @@
     v13 = *(v11 + 2);
     *(v11 + 2) = v12;
 
-    objc_storeStrong(v11 + 3, a3);
-    objc_storeWeak(v11 + 4, a4);
-    *(v11 + 5) = a5;
-    v14 = [a6 mutableCopy];
+    objc_storeStrong(v11 + 3, descriptor);
+    objc_storeWeak(v11 + 4, token);
+    *(v11 + 5) = deferringToken;
+    v14 = [pointer mutableCopy];
     v15 = *(v11 + 1);
     *(v11 + 1) = v14;
   }
@@ -99,8 +99,8 @@
 
     if ([v4 containsObject:a2])
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:sel_addRecreationReason_ object:v3 file:@"_UIEventDeferringRecord.m" lineNumber:84 description:{@"%s: Invalid to mark a record as needing recreation for the same reason twice: %@", "-[_UIEventDeferringRecord addRecreationReason:]", v3}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_addRecreationReason_ object:v3 file:@"_UIEventDeferringRecord.m" lineNumber:84 description:{@"%s: Invalid to mark a record as needing recreation for the same reason twice: %@", "-[_UIEventDeferringRecord addRecreationReason:]", v3}];
     }
 
     v7 = *(v3 + 8);
@@ -113,10 +113,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(_UIEventDeferringRecord *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(_UIEventDeferringRecord *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -124,39 +124,39 @@
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
   v4 = [v3 appendBool:-[_UIEventDeferringRecord needsRecreation](self) withName:@"needsRecreation"];
   v5 = [v3 appendUnsignedInteger:-[NSMutableSet count](self->_recreationReasons withName:{"count"), @"recreationReasons.count"}];
-  v6 = [(_UIEventDeferringDescriptor *)self->_descriptor succinctDescription];
-  v7 = [v3 appendObject:v6 withName:@"descriptor"];
+  succinctDescription = [(_UIEventDeferringDescriptor *)self->_descriptor succinctDescription];
+  v7 = [v3 appendObject:succinctDescription withName:@"descriptor"];
 
   v8 = [v3 appendObject:self->_invalidationToken withName:@"invalidationToken"];
   WeakRetained = objc_loadWeakRetained(&self->_deferringToken);
-  v10 = [WeakRetained succinctDescription];
-  v11 = [v3 appendObject:v10 withName:@"deferringToken"];
+  succinctDescription2 = [WeakRetained succinctDescription];
+  v11 = [v3 appendObject:succinctDescription2 withName:@"deferringToken"];
 
   v12 = [v3 appendPointer:self->_recordingManagerPointer withName:@"recordingManagerPointer"];
 
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_UIEventDeferringRecord *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_UIEventDeferringRecord *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_UIEventDeferringRecord *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_UIEventDeferringRecord *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v5 = [MEMORY[0x1E698E680] builderWithObject:self];
-  [v5 setActiveMultilinePrefix:a3];
+  [v5 setActiveMultilinePrefix:prefix];
   v6 = [v5 appendBool:-[_UIEventDeferringRecord needsRecreation](self) withName:@"needsRecreation"];
   v7 = [v5 appendUnsignedInteger:-[NSMutableSet count](self->_recreationReasons withName:{"count"), @"recreationReasons.count"}];
   v12[0] = MEMORY[0x1E69E9820];
@@ -165,7 +165,7 @@
   v12[3] = &unk_1E70F35B8;
   v8 = v5;
   v13 = v8;
-  v14 = self;
+  selfCopy = self;
   v9 = [v8 modifyBody:v12];
   v10 = v8;
 

@@ -1,31 +1,31 @@
 @interface REUIElementIntentAction
 - (INIntent)intent;
-- (REUIElementIntentAction)initWithCoder:(id)a3;
+- (REUIElementIntentAction)initWithCoder:(id)coder;
 - (id)_newPerformer;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REUIElementIntentAction
 
 - (INIntent)intent
 {
-  v2 = [(REUIElementDonatedActionAction *)self properties];
-  v3 = [v2 intent];
+  properties = [(REUIElementDonatedActionAction *)self properties];
+  intent = [properties intent];
 
-  return v3;
+  return intent;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REUIElementDonatedActionAction *)self properties];
-  [v4 encodeObject:v5 forKey:@"properties"];
+  coderCopy = coder;
+  properties = [(REUIElementDonatedActionAction *)self properties];
+  [coderCopy encodeObject:properties forKey:@"properties"];
 }
 
-- (REUIElementIntentAction)initWithCoder:(id)a3
+- (REUIElementIntentAction)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"properties"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"properties"];
 
   v6 = [(REUIElementDonatedActionAction *)self initWithProperties:v5];
   return v6;

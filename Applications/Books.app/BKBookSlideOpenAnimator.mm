@@ -2,11 +2,11 @@
 - (double)duration;
 - (double)zoomedContentScale;
 - (void)_teardownContentViews;
-- (void)animateRevealWithCompletion:(id)a3;
-- (void)animateZoomWithCompletion:(id)a3;
+- (void)animateRevealWithCompletion:(id)completion;
+- (void)animateZoomWithCompletion:(id)completion;
 - (void)setupViewsForReveal;
 - (void)setupViewsForZoom;
-- (void)teardownViews:(BOOL)a3;
+- (void)teardownViews:(BOOL)views;
 @end
 
 @implementation BKBookSlideOpenAnimator
@@ -25,8 +25,8 @@
 {
   [(BKBookOpenAnimator *)self zoomedCoverFrame];
   Height = CGRectGetHeight(v7);
-  v4 = [(BKBookOpenAnimator *)self containerView];
-  [v4 bounds];
+  containerView = [(BKBookOpenAnimator *)self containerView];
+  [containerView bounds];
   v5 = Height / CGRectGetHeight(v8);
 
   return v5;
@@ -34,52 +34,52 @@
 
 - (void)_teardownContentViews
 {
-  v3 = [(BKBookSlideOpenAnimator *)self fullBookSnapshot];
-  [v3 removeFromSuperview];
+  fullBookSnapshot = [(BKBookSlideOpenAnimator *)self fullBookSnapshot];
+  [fullBookSnapshot removeFromSuperview];
 
   [(BKBookSlideOpenAnimator *)self setFullBookSnapshot:0];
-  v4 = [(BKBookSlideOpenAnimator *)self contentTintView];
-  [v4 removeFromSuperview];
+  contentTintView = [(BKBookSlideOpenAnimator *)self contentTintView];
+  [contentTintView removeFromSuperview];
 
   [(BKBookSlideOpenAnimator *)self setContentTintView:0];
-  v5 = [(BKBookSlideOpenAnimator *)self contentSnapshot];
-  [v5 removeFromSuperview];
+  contentSnapshot = [(BKBookSlideOpenAnimator *)self contentSnapshot];
+  [contentSnapshot removeFromSuperview];
 
   [(BKBookSlideOpenAnimator *)self setContentSnapshot:0];
-  v6 = [(BKBookSlideOpenAnimator *)self contentContainerView];
-  [v6 removeFromSuperview];
+  contentContainerView = [(BKBookSlideOpenAnimator *)self contentContainerView];
+  [contentContainerView removeFromSuperview];
 
   [(BKBookSlideOpenAnimator *)self setContentContainerView:0];
-  v7 = [(BKBookSlideOpenAnimator *)self contentClipView];
-  [v7 removeFromSuperview];
+  contentClipView = [(BKBookSlideOpenAnimator *)self contentClipView];
+  [contentClipView removeFromSuperview];
 
   [(BKBookSlideOpenAnimator *)self setContentClipView:0];
 }
 
-- (void)teardownViews:(BOOL)a3
+- (void)teardownViews:(BOOL)views
 {
-  v3 = a3;
+  viewsCopy = views;
   [(BKBookSlideOpenAnimator *)self _teardownContentViews];
   v5.receiver = self;
   v5.super_class = BKBookSlideOpenAnimator;
-  [(BKBookZoomRevealOpenAnimator *)&v5 teardownViews:v3];
+  [(BKBookZoomRevealOpenAnimator *)&v5 teardownViews:viewsCopy];
 }
 
 - (void)setupViewsForZoom
 {
   [(BKBookSlideOpenAnimator *)self _teardownContentViews];
-  v3 = [(BKBookOpenAnimator *)self bookContainerView];
-  [v3 setAlpha:0.0];
+  bookContainerView = [(BKBookOpenAnimator *)self bookContainerView];
+  [bookContainerView setAlpha:0.0];
 
-  v5 = [(BKBookOpenAnimator *)self containerView];
-  v4 = [(BKBookOpenAnimator *)self coverContainerView];
-  [v5 addSubview:v4];
+  containerView = [(BKBookOpenAnimator *)self containerView];
+  coverContainerView = [(BKBookOpenAnimator *)self coverContainerView];
+  [containerView addSubview:coverContainerView];
 }
 
-- (void)animateZoomWithCompletion:(id)a3
+- (void)animateZoomWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BKBookOpenAnimator *)self opening];
+  completionCopy = completion;
+  opening = [(BKBookOpenAnimator *)self opening];
   [(BKBookOpenAnimator *)self closedCoverFrame];
   v7 = v6;
   v9 = v8;
@@ -92,7 +92,7 @@
   v21 = v20;
   [(BKBookSlideOpenAnimator *)self zoomDuration];
   [(BKBookOpenAnimator *)self animateNavigationBarWithDuration:v22 * 0.5 delay:0.0];
-  if (v5)
+  if (opening)
   {
     v38 = v11;
     v39 = v13;
@@ -106,7 +106,7 @@
     v40 = 1.0;
     v11 = v19;
     v24 = v23;
-    v25 = [(BKBookOpenAnimator *)self fadeInCover];
+    fadeInCover = [(BKBookOpenAnimator *)self fadeInCover];
   }
 
   else
@@ -119,11 +119,11 @@
     v41 = 0.05;
     v21 = v13;
     v24 = v9;
-    v25 = [(BKBookOpenAnimator *)self fadeInCover];
+    fadeInCover = [(BKBookOpenAnimator *)self fadeInCover];
   }
 
   v26 = 0.0;
-  if ((v25 & v5) != 0)
+  if ((fadeInCover & opening) != 0)
   {
     v27 = 0.0;
   }
@@ -133,17 +133,17 @@
     v27 = 1.0;
   }
 
-  if (([(BKBookOpenAnimator *)self fadeInCover]& (v5 ^ 1)) == 0)
+  if (([(BKBookOpenAnimator *)self fadeInCover]& (opening ^ 1)) == 0)
   {
     v26 = 1.0;
   }
 
-  v28 = [(BKBookOpenAnimator *)self coverContainerView];
-  [v28 setAlpha:v27];
+  coverContainerView = [(BKBookOpenAnimator *)self coverContainerView];
+  [coverContainerView setAlpha:v27];
 
   [(BKBookOpenAnimator *)self moveCoverToFrame:v15, v17, v38, v39];
-  v29 = [(BKBookOpenAnimator *)self bookshelfTintView];
-  [v29 setAlpha:v41];
+  bookshelfTintView = [(BKBookOpenAnimator *)self bookshelfTintView];
+  [bookshelfTintView setAlpha:v41];
 
   [(BKBookOpenAnimator *)self setBookshelfAlpha:v40];
   [(BKBookSlideOpenAnimator *)self zoomDuration];
@@ -152,7 +152,7 @@
   [(BKBookOpenAnimator *)self minibarKeyFrameAnimationWithDuration:0 hide:v31 show:v32 completion:-1.0];
   [(BKBookSlideOpenAnimator *)self zoomDuration];
   v34 = v33;
-  v35 = [(BKBookZoomRevealOpenAnimator *)self zoomTimingFunction];
+  zoomTimingFunction = [(BKBookZoomRevealOpenAnimator *)self zoomTimingFunction];
   v45[0] = _NSConcreteStackBlock;
   v45[1] = 3221225472;
   v45[2] = sub_1000D56DC;
@@ -165,7 +165,7 @@
   *&v45[9] = v21;
   v45[10] = v43;
   *&v45[11] = v42;
-  [UIView animateWithDuration:v35 delay:0 timingFunction:v45 options:v4 animations:v34 completion:0.0];
+  [UIView animateWithDuration:zoomTimingFunction delay:0 timingFunction:v45 options:completionCopy animations:v34 completion:0.0];
 
   [(BKBookSlideOpenAnimator *)self zoomDuration];
   v44[0] = _NSConcreteStackBlock;
@@ -185,23 +185,23 @@
 
   [(BKBookOpenAnimator *)self rightToLeft];
   [(BKBookOpenAnimator *)self setBookshelfAlpha:0.0];
-  v62 = [(BKBookOpenAnimator *)self bookViewController];
-  v3 = [v62 transitionContentView];
-  if (!v3)
+  bookViewController = [(BKBookOpenAnimator *)self bookViewController];
+  transitionContentView = [bookViewController transitionContentView];
+  if (!transitionContentView)
   {
     sub_10078E3AC();
   }
 
-  v4 = [(BKBookOpenAnimator *)self containerView];
-  [v4 bounds];
+  containerView = [(BKBookOpenAnimator *)self containerView];
+  [containerView bounds];
 
   [(BKBookOpenAnimator *)self coverAspectRatio];
-  v5 = [(BKBookOpenAnimator *)self containerView];
-  [v3 frame];
+  containerView2 = [(BKBookOpenAnimator *)self containerView];
+  [transitionContentView frame];
   v7 = v6;
   v9 = v8;
-  v10 = [v62 view];
-  [v5 convertPoint:v10 fromView:{v7, v9}];
+  view = [bookViewController view];
+  [containerView2 convertPoint:view fromView:{v7, v9}];
 
   v11 = [UIView alloc];
   CGRectMakeWithOriginSize();
@@ -210,10 +210,10 @@
   self->_contentClipView = v12;
 
   [(UIView *)self->_contentClipView setClipsToBounds:1];
-  v14 = [(BKBookOpenAnimator *)self containerView];
-  v15 = [(BKBookSlideOpenAnimator *)self contentClipView];
-  v16 = [(BKBookOpenAnimator *)self bookshelfTintView];
-  [v14 insertSubview:v15 aboveSubview:v16];
+  containerView3 = [(BKBookOpenAnimator *)self containerView];
+  contentClipView = [(BKBookSlideOpenAnimator *)self contentClipView];
+  bookshelfTintView = [(BKBookOpenAnimator *)self bookshelfTintView];
+  [containerView3 insertSubview:contentClipView aboveSubview:bookshelfTintView];
 
   v17 = [UIView alloc];
   CGRectMakeWithOriginSize();
@@ -223,19 +223,19 @@
 
   [(UIView *)self->_contentClipView addSubview:self->_contentContainerView];
   v20 = self->_contentContainerView;
-  [v3 frame];
+  [transitionContentView frame];
   v22 = v21;
   v24 = v23;
   v26 = v25;
   v28 = v27;
-  v29 = [v3 superview];
-  [(UIView *)v20 convertRect:v29 fromView:v22, v24, v26, v28];
+  superview = [transitionContentView superview];
+  [(UIView *)v20 convertRect:superview fromView:v22, v24, v26, v28];
   v31 = v30;
   v33 = v32;
   v35 = v34;
   v37 = v36;
 
-  v38 = [v3 snapshotViewAfterScreenUpdates:0];
+  v38 = [transitionContentView snapshotViewAfterScreenUpdates:0];
   contentSnapshot = self->_contentSnapshot;
   self->_contentSnapshot = v38;
 
@@ -254,27 +254,27 @@
   [(UIView *)self->_contentTintView setAutoresizingMask:18];
   if (objc_opt_respondsToSelector())
   {
-    v44 = [v62 transitionContentBackgroundColor];
-    [(UIView *)self->_contentContainerView setBackgroundColor:v44];
+    transitionContentBackgroundColor = [bookViewController transitionContentBackgroundColor];
+    [(UIView *)self->_contentContainerView setBackgroundColor:transitionContentBackgroundColor];
   }
 
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v62 transitionContentViewIsFullBookView] & 1) == 0)
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([bookViewController transitionContentViewIsFullBookView] & 1) == 0)
   {
-    v45 = [v62 view];
-    v46 = [v45 snapshotViewAfterScreenUpdates:0];
+    view2 = [bookViewController view];
+    v46 = [view2 snapshotViewAfterScreenUpdates:0];
     fullBookSnapshot = self->_fullBookSnapshot;
     self->_fullBookSnapshot = v46;
 
-    v48 = [v62 view];
-    [v48 frame];
+    view3 = [bookViewController view];
+    [view3 frame];
     [(UIView *)self->_fullBookSnapshot setFrame:?];
 
-    v49 = [(BKBookOpenAnimator *)self containerView];
-    [v49 addSubview:self->_fullBookSnapshot];
+    containerView4 = [(BKBookOpenAnimator *)self containerView];
+    [containerView4 addSubview:self->_fullBookSnapshot];
 
-    v50 = [(BKBookOpenAnimator *)self opening];
+    opening = [(BKBookOpenAnimator *)self opening];
     v51 = 1.0;
-    if (v50)
+    if (opening)
     {
       v51 = 0.0;
     }
@@ -282,27 +282,27 @@
     [(UIView *)self->_fullBookSnapshot setAlpha:v51];
   }
 
-  v52 = [(BKBookOpenAnimator *)self bookContainerView];
-  [v52 setAlpha:0.0];
+  bookContainerView = [(BKBookOpenAnimator *)self bookContainerView];
+  [bookContainerView setAlpha:0.0];
 
-  v53 = [(BKBookOpenAnimator *)self containerView];
-  [v3 frame];
+  containerView5 = [(BKBookOpenAnimator *)self containerView];
+  [transitionContentView frame];
   v55 = v54;
   v57 = v56;
-  v58 = [v62 view];
-  v59 = [v58 superview];
-  [v53 convertPoint:v59 fromView:{v55, v57}];
+  view4 = [bookViewController view];
+  superview2 = [view4 superview];
+  [containerView5 convertPoint:superview2 fromView:{v55, v57}];
 
   CGRectMakeWithOriginSize();
   [(BKBookOpenAnimator *)self moveCoverToFrame:?];
-  v60 = [(BKBookOpenAnimator *)self containerView];
-  v61 = [(BKBookOpenAnimator *)self coverContainerView];
-  [v60 addSubview:v61];
+  containerView6 = [(BKBookOpenAnimator *)self containerView];
+  coverContainerView = [(BKBookOpenAnimator *)self coverContainerView];
+  [containerView6 addSubview:coverContainerView];
 }
 
-- (void)animateRevealWithCompletion:(id)a3
+- (void)animateRevealWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v125[0] = 0;
   v125[1] = v125;
   v125[2] = 0x2020000000;
@@ -318,15 +318,15 @@
   v121[2] = sub_1000D64C4;
   v121[3] = &unk_100A04DA8;
   v123 = v125;
-  v6 = v4;
+  v6 = completionCopy;
   v122 = v6;
   v7 = objc_retainBlock(v121);
-  v8 = [(BKBookOpenAnimator *)self opening];
-  v9 = [(BKBookOpenAnimator *)self rightToLeft];
+  opening = [(BKBookOpenAnimator *)self opening];
+  rightToLeft = [(BKBookOpenAnimator *)self rightToLeft];
   [(BKBookSlideOpenAnimator *)self zoomedContentScale];
   sx = v10;
-  v11 = [(BKBookOpenAnimator *)self coverContainerView];
-  [v11 frame];
+  coverContainerView = [(BKBookOpenAnimator *)self coverContainerView];
+  [coverContainerView frame];
   IMActionSafeRectForRect();
   v105 = v12;
   v14 = v13;
@@ -338,7 +338,7 @@
   v24 = v23;
   v25 = v19;
   v26 = v20;
-  if (v8)
+  if (opening)
   {
     v27 = v20;
   }
@@ -348,7 +348,7 @@
     v27 = v18;
   }
 
-  if (v8)
+  if (opening)
   {
     v28 = v24;
   }
@@ -360,7 +360,7 @@
   }
 
   v29 = v105;
-  if (v8)
+  if (opening)
   {
     v29 = v22;
   }
@@ -369,7 +369,7 @@
   v96 = v27;
   v93 = v29;
   v94 = v28;
-  if ((v8 & 1) == 0)
+  if ((opening & 1) == 0)
   {
     v18 = v26;
     v16 = v25;
@@ -386,7 +386,7 @@
   v99 = v32;
   [(UIView *)self->_contentContainerView frame];
   CGSizeScale();
-  if (v9)
+  if (rightToLeft)
   {
     v126.origin.x = v22;
     v126.origin.y = v24;
@@ -396,7 +396,7 @@
   }
 
   CGRectMakeWithOriginSize();
-  if (v8)
+  if (opening)
   {
     v38 = v34;
   }
@@ -407,7 +407,7 @@
   }
 
   v92 = v38;
-  if (v8)
+  if (opening)
   {
     v39 = v35;
   }
@@ -417,7 +417,7 @@
     v39 = v101;
   }
 
-  if (v8)
+  if (opening)
   {
     v40 = v36;
   }
@@ -427,7 +427,7 @@
     v40 = v99;
   }
 
-  if (v8)
+  if (opening)
   {
     v41 = v37;
   }
@@ -437,13 +437,13 @@
     v41 = v97;
   }
 
-  if (v8)
+  if (opening)
   {
     v34 = v103;
   }
 
   v104 = v34;
-  if (v8)
+  if (opening)
   {
     v42 = v101;
   }
@@ -453,7 +453,7 @@
     v42 = v35;
   }
 
-  if (v8)
+  if (opening)
   {
     v43 = v99;
   }
@@ -465,7 +465,7 @@
 
   v100 = v43;
   v102 = v42;
-  if (v8)
+  if (opening)
   {
     v44 = v97;
   }
@@ -481,7 +481,7 @@
   v48 = v47;
   CGRectMakeWithOriginSize();
   CGRectGetCenterNoRounding();
-  if (v8)
+  if (opening)
   {
     v51 = v49;
   }
@@ -491,7 +491,7 @@
     v51 = v46;
   }
 
-  if (v8)
+  if (opening)
   {
     v52 = v50;
   }
@@ -501,20 +501,20 @@
     v52 = v48;
   }
 
-  if (!v8)
+  if (!opening)
   {
     v46 = v49;
   }
 
   memset(&v120.c, 0, 32);
-  if (!v8)
+  if (!opening)
   {
     v48 = v50;
   }
 
   *&v120.a = 0uLL;
   CGAffineTransformMakeScale(&v120, sx, sx);
-  if (v8)
+  if (opening)
   {
     v119 = v120;
     v53 = &CGAffineTransformIdentity;
@@ -542,13 +542,13 @@
   [(BKBookSlideOpenAnimator *)self revealDuration];
   v57 = v56;
   v58 = 0.0;
-  if ((v8 & 1) == 0)
+  if ((opening & 1) == 0)
   {
     [(BKBookSlideOpenAnimator *)self accessoryFadeDuration];
     v58 = v59;
   }
 
-  v60 = [(BKBookZoomRevealOpenAnimator *)self revealTimingFunction];
+  revealTimingFunction = [(BKBookZoomRevealOpenAnimator *)self revealTimingFunction];
   v111[0] = _NSConcreteStackBlock;
   v111[1] = 3221225472;
   v111[2] = sub_1000D6500;
@@ -567,12 +567,12 @@
   v114 = v118;
   v113 = v117;
   v112 = v116;
-  [UIView animateWithDuration:v60 delay:0 timingFunction:v111 options:v7 animations:v57 completion:v58];
+  [UIView animateWithDuration:revealTimingFunction delay:0 timingFunction:v111 options:v7 animations:v57 completion:v58];
 
   fullBookSnapshot = self->_fullBookSnapshot;
   if (fullBookSnapshot)
   {
-    if (v8)
+    if (opening)
     {
       v62 = 0.0;
     }
@@ -582,7 +582,7 @@
       v62 = 1.0;
     }
 
-    if (v8)
+    if (opening)
     {
       v63 = 1.0;
     }
@@ -597,7 +597,7 @@
     [(BKBookSlideOpenAnimator *)self accessoryFadeDuration];
     v65 = v64;
     v66 = 0.0;
-    if (v8)
+    if (opening)
     {
       [(BKBookSlideOpenAnimator *)self revealDuration];
       v66 = v67;
@@ -612,7 +612,7 @@
     [UIView animateWithDuration:0 delay:v110 options:v7 animations:v65 completion:v66];
   }
 
-  if (v8)
+  if (opening)
   {
     v68 = 0.7;
   }
@@ -622,9 +622,9 @@
     v68 = 0.05;
   }
 
-  v69 = [(BKBookOpenAnimator *)self bookshelfTintView];
-  v70 = v69;
-  if (v8)
+  bookshelfTintView = [(BKBookOpenAnimator *)self bookshelfTintView];
+  v70 = bookshelfTintView;
+  if (opening)
   {
     v71 = 0.05;
   }
@@ -634,13 +634,13 @@
     v71 = 0.7;
   }
 
-  [v69 setAlpha:v71];
+  [bookshelfTintView setAlpha:v71];
 
   (v5[2])(v5);
   [(BKBookSlideOpenAnimator *)self revealDuration];
   v73 = v72;
   v74 = 0.0;
-  if ((v8 & 1) == 0)
+  if ((opening & 1) == 0)
   {
     [(BKBookSlideOpenAnimator *)self accessoryFadeDuration];
     v74 = v75;
@@ -653,7 +653,7 @@
   v109[4] = self;
   *&v109[5] = v68;
   [UIView animateWithDuration:0 delay:v109 options:v7 animations:v73 completion:v74];
-  if (v8)
+  if (opening)
   {
     v76 = 0.25;
   }
@@ -663,7 +663,7 @@
     v76 = 0.0;
   }
 
-  if (v8)
+  if (opening)
   {
     v77 = 0.0;
   }
@@ -678,7 +678,7 @@
   [(BKBookSlideOpenAnimator *)self contentTintFadeDuration];
   v79 = v78;
   v80 = 0.0;
-  if ((v8 & 1) == 0)
+  if ((opening & 1) == 0)
   {
     [(BKBookSlideOpenAnimator *)self revealDuration];
     v82 = v81;

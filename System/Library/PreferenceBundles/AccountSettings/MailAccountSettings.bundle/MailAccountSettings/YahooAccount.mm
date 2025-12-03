@@ -16,16 +16,16 @@
 
 + (id)userInfoForAccountTopLevelSpecifier
 {
-  v4 = [a1 hostname];
+  hostname = [self hostname];
 
-  if (!v4)
+  if (!hostname)
   {
     v8 = +[NSAssertionHandler currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"AccountPreferences_Yahoo.m" lineNumber:33 description:@"Expected all Yahoo! accounts to have a single hostname defined by the class"];
+    [v8 handleFailureInMethod:a2 object:self file:@"AccountPreferences_Yahoo.m" lineNumber:33 description:@"Expected all Yahoo! accounts to have a single hostname defined by the class"];
   }
 
-  v5 = NSStringFromClass(a1);
-  v6 = [NSDictionary dictionaryWithObjectsAndKeys:a1, @"class", v5, @"chosenType", 0];
+  v5 = NSStringFromClass(self);
+  v6 = [NSDictionary dictionaryWithObjectsAndKeys:self, @"class", v5, @"chosenType", 0];
 
   return v6;
 }
@@ -34,8 +34,8 @@
 {
   v6.receiver = self;
   v6.super_class = YahooAccount;
-  v2 = [(YahooAccount *)&v6 detailedSpecifiers];
-  v3 = [NSMutableArray arrayWithArray:v2];
+  detailedSpecifiers = [(YahooAccount *)&v6 detailedSpecifiers];
+  v3 = [NSMutableArray arrayWithArray:detailedSpecifiers];
 
   v4 = [v3 indexOfSpecifierWithID:MailAccountPassword];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)

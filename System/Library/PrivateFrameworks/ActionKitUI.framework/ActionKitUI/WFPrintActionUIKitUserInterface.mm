@@ -1,23 +1,23 @@
 @interface WFPrintActionUIKitUserInterface
-- (void)cancelPresentationWithCompletionHandler:(id)a3;
-- (void)finishWithError:(id)a3;
-- (void)showWithFile:(id)a3 completionHandler:(id)a4;
+- (void)cancelPresentationWithCompletionHandler:(id)handler;
+- (void)finishWithError:(id)error;
+- (void)showWithFile:(id)file completionHandler:(id)handler;
 @end
 
 @implementation WFPrintActionUIKitUserInterface
 
-- (void)cancelPresentationWithCompletionHandler:(id)a3
+- (void)cancelPresentationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __75__WFPrintActionUIKitUserInterface_cancelPresentationWithCompletionHandler___block_invoke;
   v7[3] = &unk_278C375C8;
   v7[4] = self;
-  v8 = v4;
+  v8 = handlerCopy;
   v6.receiver = self;
   v6.super_class = WFPrintActionUIKitUserInterface;
-  v5 = v4;
+  v5 = handlerCopy;
   [(WFActionUserInterface *)&v6 cancelPresentationWithCompletionHandler:v7];
 }
 
@@ -35,30 +35,30 @@ uint64_t __75__WFPrintActionUIKitUserInterface_cancelPresentationWithCompletionH
   return v5();
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v6 = a3;
-  v4 = [(WFPrintActionUIKitUserInterface *)self completionHandler];
+  errorCopy = error;
+  completionHandler = [(WFPrintActionUIKitUserInterface *)self completionHandler];
 
-  if (v4)
+  if (completionHandler)
   {
-    v5 = [(WFPrintActionUIKitUserInterface *)self completionHandler];
-    (v5)[2](v5, v6);
+    completionHandler2 = [(WFPrintActionUIKitUserInterface *)self completionHandler];
+    (completionHandler2)[2](completionHandler2, errorCopy);
   }
 
   [(WFPrintActionUIKitUserInterface *)self setCompletionHandler:0];
   [(WFPrintActionUIKitUserInterface *)self setPrintController:0];
 }
 
-- (void)showWithFile:(id)a3 completionHandler:(id)a4
+- (void)showWithFile:(id)file completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  fileCopy = file;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (!fileCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFPrintActionUIKitUserInterface.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"file"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFPrintActionUIKitUserInterface.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"file"}];
 
     if (v9)
     {
@@ -66,13 +66,13 @@ uint64_t __75__WFPrintActionUIKitUserInterface_cancelPresentationWithCompletionH
     }
 
 LABEL_5:
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"WFPrintActionUIKitUserInterface.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFPrintActionUIKitUserInterface.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!handlerCopy)
   {
     goto LABEL_5;
   }
@@ -84,8 +84,8 @@ LABEL_3:
   block[2] = __66__WFPrintActionUIKitUserInterface_showWithFile_completionHandler___block_invoke;
   block[3] = &unk_278C375A0;
   block[4] = self;
-  v14 = v7;
-  v10 = v7;
+  v14 = fileCopy;
+  v10 = fileCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 

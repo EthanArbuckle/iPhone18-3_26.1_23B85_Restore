@@ -1,16 +1,16 @@
 @interface EMMessageListChangeObserverHelper
-+ (void)collection:(id)a3 notifyChangeObserversAboutChangedItemIDs:(id)a4 extraInfo:(id)a5;
-+ (void)collection:(id)a3 notifyChangeObserversAboutChangedItemIDs:(id)a4 itemIDsWithCountChanges:(id)a5 itemIDsWithBrandIndicatorLocationChanges:(id)a6;
++ (void)collection:(id)collection notifyChangeObserversAboutChangedItemIDs:(id)ds extraInfo:(id)info;
++ (void)collection:(id)collection notifyChangeObserversAboutChangedItemIDs:(id)ds itemIDsWithCountChanges:(id)changes itemIDsWithBrandIndicatorLocationChanges:(id)locationChanges;
 @end
 
 @implementation EMMessageListChangeObserverHelper
 
-+ (void)collection:(id)a3 notifyChangeObserversAboutChangedItemIDs:(id)a4 extraInfo:(id)a5
++ (void)collection:(id)collection notifyChangeObserversAboutChangedItemIDs:(id)ds extraInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 objectForKeyedSubscript:@"changesByObjectID"];
+  collectionCopy = collection;
+  dsCopy = ds;
+  infoCopy = info;
+  v11 = [infoCopy objectForKeyedSubscript:@"changesByObjectID"];
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -31,10 +31,10 @@
   v21 = &v22;
   v12 = v11;
   v18 = v12;
-  v13 = v8;
+  v13 = collectionCopy;
   v19 = v13;
   [v13 enumerateObserversWithBlock:&v14];
-  [a1 collection:v13 notifyChangeObserversAboutChangedItemIDs:v9 itemIDsWithCountChanges:v29[5] itemIDsWithBrandIndicatorLocationChanges:{v23[5], v14, v15, v16, v17}];
+  [self collection:v13 notifyChangeObserversAboutChangedItemIDs:dsCopy itemIDsWithCountChanges:v29[5] itemIDsWithBrandIndicatorLocationChanges:{v23[5], v14, v15, v16, v17}];
 
   _Block_object_dispose(&v22, 8);
   _Block_object_dispose(&v28, 8);
@@ -108,45 +108,45 @@ void __99__EMMessageListChangeObserverHelper_collection_notifyChangeObserversAbo
   }
 }
 
-+ (void)collection:(id)a3 notifyChangeObserversAboutChangedItemIDs:(id)a4 itemIDsWithCountChanges:(id)a5 itemIDsWithBrandIndicatorLocationChanges:(id)a6
++ (void)collection:(id)collection notifyChangeObserversAboutChangedItemIDs:(id)ds itemIDsWithCountChanges:(id)changes itemIDsWithBrandIndicatorLocationChanges:(id)locationChanges
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v26 = a6;
+  collectionCopy = collection;
+  dsCopy = ds;
+  changesCopy = changes;
+  locationChangesCopy = locationChanges;
   if (objc_opt_respondsToSelector())
   {
-    v14 = [v11 itemIDSections];
-    v15 = [v14 getObject];
+    itemIDSections = [collectionCopy itemIDSections];
+    getObject = [itemIDSections getObject];
   }
 
   else
   {
-    v15 = MEMORY[0x1E695E0F8];
+    getObject = MEMORY[0x1E695E0F8];
   }
 
   v16 = MEMORY[0x1E695DFD8];
-  v17 = [v15 allKeys];
-  v18 = [v16 setWithArray:v17];
+  allKeys = [getObject allKeys];
+  v18 = [v16 setWithArray:allKeys];
 
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __154__EMMessageListChangeObserverHelper_collection_notifyChangeObserversAboutChangedItemIDs_itemIDsWithCountChanges_itemIDsWithBrandIndicatorLocationChanges___block_invoke;
   v27[3] = &unk_1E826E138;
-  v19 = v11;
+  v19 = collectionCopy;
   v28 = v19;
-  v20 = v15;
+  v20 = getObject;
   v29 = v20;
   v30 = v18;
-  v25 = v12;
-  v21 = v12;
+  v25 = dsCopy;
+  v21 = dsCopy;
   v31 = v21;
-  v22 = v13;
+  v22 = changesCopy;
   v32 = v22;
-  v23 = v26;
+  v23 = locationChangesCopy;
   v33 = v23;
   v34 = a2;
-  v35 = a1;
+  selfCopy = self;
   v24 = v18;
   [v19 enumerateObserversWithBlock:{v27, v25}];
 }

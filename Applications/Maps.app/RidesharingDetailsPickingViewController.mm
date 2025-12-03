@@ -5,20 +5,20 @@
 - (RidesharingCoordinator)coordinator;
 - (RidesharingDetailsPickingViewController)init;
 - (double)headerAndRouteFromToViewHeight;
-- (double)heightForLayout:(unint64_t)a3;
+- (double)heightForLayout:(unint64_t)layout;
 - (id)stackedViews;
 - (void)_openApp;
 - (void)_request;
 - (void)_requestRide;
 - (void)_selectPaymentType;
 - (void)_showExpirationAlert;
-- (void)_updateFromRequestRideStatus:(id)a3;
-- (void)headerViewButtonTapped:(id)a3 buttonType:(unint64_t)a4;
-- (void)requestRideStatusDidChange:(id)a3;
-- (void)setRequestingRide:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)_updateFromRequestRideStatus:(id)status;
+- (void)headerViewButtonTapped:(id)tapped buttonType:(unint64_t)type;
+- (void)requestRideStatusDidChange:(id)change;
+- (void)setRequestingRide:(BOOL)ride;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation RidesharingDetailsPickingViewController
@@ -35,15 +35,15 @@
   v3 = +[MKMapService sharedService];
   [v3 captureUserAction:6020 onTarget:1402 eventValue:0];
 
-  v4 = [(RidesharingDetailsPickingViewController *)self requestRideOptionProxy];
-  v5 = [v4 analyticsBookingSession];
-  [v5 endSessionOnView:2 state:4];
+  requestRideOptionProxy = [(RidesharingDetailsPickingViewController *)self requestRideOptionProxy];
+  analyticsBookingSession = [requestRideOptionProxy analyticsBookingSession];
+  [analyticsBookingSession endSessionOnView:2 state:4];
 
-  v9 = [(RidesharingDetailsPickingViewController *)self requestRideStatus];
-  v6 = [v9 application];
-  v7 = [(RidesharingDetailsPickingViewController *)self requestRideStatus];
-  v8 = [v7 userActivity];
-  [v6 openWithActivity:v8];
+  requestRideStatus = [(RidesharingDetailsPickingViewController *)self requestRideStatus];
+  application = [requestRideStatus application];
+  requestRideStatus2 = [(RidesharingDetailsPickingViewController *)self requestRideStatus];
+  userActivity = [requestRideStatus2 userActivity];
+  [application openWithActivity:userActivity];
 }
 
 - (void)_requestRide
@@ -52,33 +52,33 @@
   [v3 postNotificationName:@"RidesharingDidRequestRideNotificationKey" object:0];
 
   [(RidesharingDetailsPickingViewController *)self setRequestingRide:1];
-  v4 = [(RidesharingDetailsPickingViewController *)self requestRideStatus];
-  v5 = [v4 origin];
-  v6 = [v5 location];
+  requestRideStatus = [(RidesharingDetailsPickingViewController *)self requestRideStatus];
+  origin = [requestRideStatus origin];
+  location = [origin location];
   v7 = +[MKLocationManager sharedLocationManager];
-  v8 = [v7 lastLocation];
-  [v6 distanceFromLocation:v8];
+  lastLocation = [v7 lastLocation];
+  [location distanceFromLocation:lastLocation];
   v10 = v9;
-  v11 = [(RidesharingDetailsPickingViewController *)self requestRideOptionProxy];
-  v12 = [v11 analyticsBookingSession];
-  [v12 setDistanceToPickup:v10];
+  requestRideOptionProxy = [(RidesharingDetailsPickingViewController *)self requestRideOptionProxy];
+  analyticsBookingSession = [requestRideOptionProxy analyticsBookingSession];
+  [analyticsBookingSession setDistanceToPickup:v10];
 
   v13 = objc_alloc_init(NSDate);
-  v14 = [(RidesharingDetailsPickingViewController *)self requestRideOptionProxy];
-  v15 = [v14 analyticsBookingSession];
-  [v15 setBookingDate:v13];
+  requestRideOptionProxy2 = [(RidesharingDetailsPickingViewController *)self requestRideOptionProxy];
+  analyticsBookingSession2 = [requestRideOptionProxy2 analyticsBookingSession];
+  [analyticsBookingSession2 setBookingDate:v13];
 
-  v16 = [(RidesharingDetailsPickingViewController *)self requestRideStatus];
-  v17 = [v16 destination];
-  v18 = [v17 _geoMapItem];
+  requestRideStatus2 = [(RidesharingDetailsPickingViewController *)self requestRideStatus];
+  destination = [requestRideStatus2 destination];
+  _geoMapItem = [destination _geoMapItem];
 
-  v19 = [(RidesharingDetailsPickingViewController *)self requestRideStatus];
-  v20 = [v19 origin];
-  v21 = [v20 _geoMapItem];
+  requestRideStatus3 = [(RidesharingDetailsPickingViewController *)self requestRideStatus];
+  origin2 = [requestRideStatus3 origin];
+  _geoMapItem2 = [origin2 _geoMapItem];
 
-  if (v18)
+  if (_geoMapItem)
   {
-    if (v21)
+    if (_geoMapItem2)
     {
       goto LABEL_10;
     }
@@ -86,10 +86,10 @@
     goto LABEL_7;
   }
 
-  v22 = [(RidesharingDetailsPickingViewController *)self requestRideStatus];
-  v23 = [v22 destination];
-  v24 = [v23 location];
-  [v24 coordinate];
+  requestRideStatus4 = [(RidesharingDetailsPickingViewController *)self requestRideStatus];
+  destination2 = [requestRideStatus4 destination];
+  location2 = [destination2 location];
+  [location2 coordinate];
   v26 = v25;
   v28 = v27;
   v29 = GEOFindOrCreateLog();
@@ -100,15 +100,15 @@
   }
 
   v30 = [[GEOPlace alloc] initWithLatitude:v26 longitude:v28];
-  v18 = [GEOMapItemStorage mapItemStorageForPlace:v30];
+  _geoMapItem = [GEOMapItemStorage mapItemStorageForPlace:v30];
 
-  if (!v21)
+  if (!_geoMapItem2)
   {
 LABEL_7:
-    v31 = [(RidesharingDetailsPickingViewController *)self requestRideStatus];
-    v32 = [v31 origin];
-    v33 = [v32 location];
-    [v33 coordinate];
+    requestRideStatus5 = [(RidesharingDetailsPickingViewController *)self requestRideStatus];
+    origin3 = [requestRideStatus5 origin];
+    location3 = [origin3 location];
+    [location3 coordinate];
     v35 = v34;
     v37 = v36;
     v38 = GEOFindOrCreateLog();
@@ -119,37 +119,37 @@ LABEL_7:
     }
 
     v39 = [[GEOPlace alloc] initWithLatitude:v35 longitude:v37];
-    v21 = [GEOMapItemStorage mapItemStorageForPlace:v39];
+    _geoMapItem2 = [GEOMapItemStorage mapItemStorageForPlace:v39];
   }
 
 LABEL_10:
   v40 = +[MapsSuggestionsPredictor sharedPredictor];
-  [v40 captureActualTransportationMode:6 originMapItem:v21 destinationMapItem:v18];
+  [v40 captureActualTransportationMode:6 originMapItem:_geoMapItem2 destinationMapItem:_geoMapItem];
 
   objc_initWeak(buf, self);
-  v41 = [(RidesharingDetailsPickingViewController *)self requestRideOptionProxy];
+  requestRideOptionProxy3 = [(RidesharingDetailsPickingViewController *)self requestRideOptionProxy];
   v42[0] = _NSConcreteStackBlock;
   v42[1] = 3221225472;
   v42[2] = sub_1005A4088;
   v42[3] = &unk_101622938;
   objc_copyWeak(&v43, buf);
-  [v41 requestRideWithCompletion:v42];
+  [requestRideOptionProxy3 requestRideWithCompletion:v42];
 
   objc_destroyWeak(&v43);
   objc_destroyWeak(buf);
 }
 
-- (void)setRequestingRide:(BOOL)a3
+- (void)setRequestingRide:(BOOL)ride
 {
-  v3 = a3;
-  v5 = [(RidesharingDetailsPickingViewController *)self coordinator];
-  v6 = [v5 containerViewController];
-  [v6 setRequestingRide:v3];
+  rideCopy = ride;
+  coordinator = [(RidesharingDetailsPickingViewController *)self coordinator];
+  containerViewController = [coordinator containerViewController];
+  [containerViewController setRequestingRide:rideCopy];
 
-  [(ProminentActionButton *)self->_requestButton setSpinnerHidden:v3 ^ 1];
-  [(ProminentActionButton *)self->_requestButton setUserInteractionEnabled:v3 ^ 1];
-  v7 = [(ExtensionsPayView *)self->_payView changePaymentMethodButton];
-  [v7 setUserInteractionEnabled:v3 ^ 1];
+  [(ProminentActionButton *)self->_requestButton setSpinnerHidden:rideCopy ^ 1];
+  [(ProminentActionButton *)self->_requestButton setUserInteractionEnabled:rideCopy ^ 1];
+  changePaymentMethodButton = [(ExtensionsPayView *)self->_payView changePaymentMethodButton];
+  [changePaymentMethodButton setUserInteractionEnabled:rideCopy ^ 1];
 }
 
 - (void)_request
@@ -168,9 +168,9 @@ LABEL_10:
   v6 = v5;
   v8 = v7;
   v9 = +[MKLocationManager sharedLocationManager];
-  v10 = [v9 lastLocation];
+  lastLocation = [v9 lastLocation];
   v11 = [[CLLocation alloc] initWithLatitude:v6 longitude:v8];
-  [v10 distanceFromLocation:v11];
+  [lastLocation distanceFromLocation:v11];
   v13 = v12;
 
   GEOConfigGetDouble();
@@ -217,28 +217,28 @@ LABEL_10:
   v3 = +[MKMapService sharedService];
   [v3 captureUserAction:14006 onTarget:1402 eventValue:0];
 
-  v4 = [(RidesharingDetailsPickingViewController *)self requestRideStatus];
-  v5 = [(RidesharingDetailsPickingViewController *)self requestRideOptionProxy];
-  v8 = [RidesharingPaymentSelectionAlertController ridesharingPaymentSelectionAlertControllerWithRequestRideStatus:v4 requestRideOptionProxy:v5];
+  requestRideStatus = [(RidesharingDetailsPickingViewController *)self requestRideStatus];
+  requestRideOptionProxy = [(RidesharingDetailsPickingViewController *)self requestRideOptionProxy];
+  v8 = [RidesharingPaymentSelectionAlertController ridesharingPaymentSelectionAlertControllerWithRequestRideStatus:requestRideStatus requestRideOptionProxy:requestRideOptionProxy];
 
-  v6 = [(ExtensionsPayView *)self->_payView changePaymentMethodButton];
-  v7 = [v8 popoverPresentationController];
-  [v7 setSourceView:v6];
+  changePaymentMethodButton = [(ExtensionsPayView *)self->_payView changePaymentMethodButton];
+  popoverPresentationController = [v8 popoverPresentationController];
+  [popoverPresentationController setSourceView:changePaymentMethodButton];
 
   [(RidesharingDetailsPickingViewController *)self presentViewController:v8 animated:1 completion:0];
 }
 
-- (void)headerViewButtonTapped:(id)a3 buttonType:(unint64_t)a4
+- (void)headerViewButtonTapped:(id)tapped buttonType:(unint64_t)type
 {
-  v5 = [MKMapService sharedService:a3];
+  v5 = [MKMapService sharedService:tapped];
   [v5 captureUserAction:4 onTarget:1402 eventValue:0];
 
   if (!self->_finishedPickingDetails)
   {
     [(RidesharingDetailsPickingViewController *)self setRequestRideOptionProxy:0];
-    v6 = [(RidesharingDetailsPickingViewController *)self coordinator];
-    v7 = [v6 appCoordinator];
-    [v7 dismissRidesharingSessionAndReturnToRoutePlanning:1];
+    coordinator = [(RidesharingDetailsPickingViewController *)self coordinator];
+    appCoordinator = [coordinator appCoordinator];
+    [appCoordinator dismissRidesharingSessionAndReturnToRoutePlanning:1];
 
     self->_finishedPickingDetails = 1;
   }
@@ -248,61 +248,61 @@ LABEL_10:
 {
   if (!self->_finishedPickingDetails)
   {
-    v3 = [(RidesharingDetailsPickingViewController *)self coordinator];
-    v4 = [(RidesharingDetailsPickingViewController *)self requestRideStatus];
-    [v3 presentExpirationAlertControllerWithRequestRideStatus:v4];
+    coordinator = [(RidesharingDetailsPickingViewController *)self coordinator];
+    requestRideStatus = [(RidesharingDetailsPickingViewController *)self requestRideStatus];
+    [coordinator presentExpirationAlertControllerWithRequestRideStatus:requestRideStatus];
 
     self->_finishedPickingDetails = 1;
   }
 }
 
-- (void)requestRideStatusDidChange:(id)a3
+- (void)requestRideStatusDidChange:(id)change
 {
-  v4 = a3;
-  [(RidesharingDetailsPickingViewController *)self setRequestRideStatus:v4];
-  [(RidesharingDetailsPickingViewController *)self _updateFromRequestRideStatus:v4];
+  changeCopy = change;
+  [(RidesharingDetailsPickingViewController *)self setRequestRideStatus:changeCopy];
+  [(RidesharingDetailsPickingViewController *)self _updateFromRequestRideStatus:changeCopy];
 
-  v5 = [(ContaineeViewController *)self cardPresentationController];
-  v6 = [v5 containeeLayout];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  containeeLayout = [cardPresentationController containeeLayout];
 
-  if (v6 == 2)
+  if (containeeLayout == 2)
   {
-    v7 = [(ContaineeViewController *)self cardPresentationController];
-    [v7 updateHeightForCurrentLayout];
+    cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController2 updateHeightForCurrentLayout];
   }
 }
 
-- (void)_updateFromRequestRideStatus:(id)a3
+- (void)_updateFromRequestRideStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   [(RidesharingDetailsPickingViewController *)self loadViewIfNeeded];
-  if ([v4 requestRideStatusError])
+  if ([statusCopy requestRideStatusError])
   {
     v5 = [RidesharingErrorAlertProvider alloc];
-    v6 = [v4 application];
-    v7 = [v4 userActivity];
-    v8 = [(RidesharingErrorAlertProvider *)v5 _initWithCause:2 application:v6 activity:v7];
+    application = [statusCopy application];
+    userActivity = [statusCopy userActivity];
+    v8 = [(RidesharingErrorAlertProvider *)v5 _initWithCause:2 application:application activity:userActivity];
 
-    v9 = [(RidesharingDetailsPickingViewController *)self requestRideOptionProxy];
-    v10 = [v9 analyticsBookingSession];
-    v11 = [v8 title];
-    [v10 captureErrorMessage:v11];
+    requestRideOptionProxy = [(RidesharingDetailsPickingViewController *)self requestRideOptionProxy];
+    analyticsBookingSession = [requestRideOptionProxy analyticsBookingSession];
+    title = [v8 title];
+    [analyticsBookingSession captureErrorMessage:title];
 
-    v12 = [(RidesharingDetailsPickingViewController *)self coordinator];
-    [v12 viewController:self presentErrorAlertIfNeeded:v8];
+    coordinator = [(RidesharingDetailsPickingViewController *)self coordinator];
+    [coordinator viewController:self presentErrorAlertIfNeeded:v8];
   }
 
-  else if (-[RidesharingDetailsPickingViewController _isPresented](self, "_isPresented") && [v4 requestExpired])
+  else if (-[RidesharingDetailsPickingViewController _isPresented](self, "_isPresented") && [statusCopy requestExpired])
   {
     [(RidesharingDetailsPickingViewController *)self _showExpirationAlert];
   }
 
   else
   {
-    [ExtensionsViewComposer composeCustomHeaderView:self->_routeFromToView forRideBookingRequestRideStatus:v4];
-    [ExtensionsViewComposer composePrimaryDetailsView:self->_primaryDetailsView forRideBookingRequestRideStatus:v4];
-    v13 = [v4 loadingRequest];
-    if (v13)
+    [ExtensionsViewComposer composeCustomHeaderView:self->_routeFromToView forRideBookingRequestRideStatus:statusCopy];
+    [ExtensionsViewComposer composePrimaryDetailsView:self->_primaryDetailsView forRideBookingRequestRideStatus:statusCopy];
+    loadingRequest = [statusCopy loadingRequest];
+    if (loadingRequest)
     {
       v14 = 0.5;
     }
@@ -312,39 +312,39 @@ LABEL_10:
       v14 = 1.0;
     }
 
-    [(ProminentActionButton *)self->_requestButton setEnabled:v13 ^ 1];
+    [(ProminentActionButton *)self->_requestButton setEnabled:loadingRequest ^ 1];
     [(ProminentActionButton *)self->_requestButton setAlpha:v14];
     requestButton = self->_requestButton;
-    v16 = [v4 requestCommandTitle];
-    [(ProminentActionButton *)requestButton setTitle:v16 forState:0];
+    requestCommandTitle = [statusCopy requestCommandTitle];
+    [(ProminentActionButton *)requestButton setTitle:requestCommandTitle forState:0];
 
     primaryDetailsView = self->_primaryDetailsView;
     v21 = self->_requestButton;
     v18 = [NSArray arrayWithObjects:&v21 count:1];
     [(ExtensionsPrimaryDetailsView *)primaryDetailsView configureWithActionButtons:v18];
 
-    v19 = [v4 rideOption];
-    v20 = [v19 paymentMethods];
-    -[ExtensionsPayView setHidden:](self->_payView, "setHidden:", [v20 count] == 0);
+    rideOption = [statusCopy rideOption];
+    paymentMethods = [rideOption paymentMethods];
+    -[ExtensionsPayView setHidden:](self->_payView, "setHidden:", [paymentMethods count] == 0);
 
-    [ExtensionsViewComposer composeSecondaryDetailsView:self->_secondaryDetailsView forRideBookingRequestRideStatus:v4];
-    [ExtensionsViewComposer composePayView:self->_payView forRideBookingRequestRideStatus:v4];
-    [ExtensionsViewComposer composeOpenAppView:self->_openAppView forRideBookingRequestRideStatus:v4];
+    [ExtensionsViewComposer composeSecondaryDetailsView:self->_secondaryDetailsView forRideBookingRequestRideStatus:statusCopy];
+    [ExtensionsViewComposer composePayView:self->_payView forRideBookingRequestRideStatus:statusCopy];
+    [ExtensionsViewComposer composeOpenAppView:self->_openAppView forRideBookingRequestRideStatus:statusCopy];
   }
 }
 
 - (BOOL)_isPresented
 {
-  v3 = [(RidesharingDetailsPickingViewController *)self presentingViewController];
-  if (v3)
+  presentingViewController = [(RidesharingDetailsPickingViewController *)self presentingViewController];
+  if (presentingViewController)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(RidesharingDetailsPickingViewController *)self parentViewController];
-    v4 = v5 != 0;
+    parentViewController = [(RidesharingDetailsPickingViewController *)self parentViewController];
+    v4 = parentViewController != 0;
   }
 
   return v4;
@@ -363,16 +363,16 @@ LABEL_10:
   return v5 + v4;
 }
 
-- (double)heightForLayout:(unint64_t)a3
+- (double)heightForLayout:(unint64_t)layout
 {
-  if (a3 - 3 < 2)
+  if (layout - 3 < 2)
   {
-    v9 = [(ContaineeViewController *)self cardPresentationController];
-    [v9 availableHeight];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController availableHeight];
     v4 = v10;
   }
 
-  else if (a3 == 2)
+  else if (layout == 2)
   {
     [(RidesharingDetailsPickingViewController *)self headerAndRouteFromToViewHeight];
     v12 = v11;
@@ -383,10 +383,10 @@ LABEL_10:
   else
   {
     v4 = -1.0;
-    if (a3 == 1)
+    if (layout == 1)
     {
-      v5 = [(ContaineeViewController *)self cardPresentationController];
-      [v5 bottomSafeOffset];
+      cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+      [cardPresentationController2 bottomSafeOffset];
       v7 = v6;
       [(RidesharingDetailsPickingViewController *)self headerAndRouteFromToViewHeight];
       v4 = v8 + v7;
@@ -452,37 +452,37 @@ LABEL_10:
   return topBannerItems;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v9.receiver = self;
   v9.super_class = RidesharingDetailsPickingViewController;
   [(ContaineeViewController *)&v9 viewWillDisappear:?];
-  v5 = [(RidesharingDetailsPickingViewController *)self coordinator];
-  v6 = [v5 containerViewController];
-  [v6 updateForDismissingDetailsPickingAnimated:v3];
+  coordinator = [(RidesharingDetailsPickingViewController *)self coordinator];
+  containerViewController = [coordinator containerViewController];
+  [containerViewController updateForDismissingDetailsPickingAnimated:disappearCopy];
 
-  v7 = [(RidesharingDetailsPickingViewController *)self coordinator];
-  v8 = [v7 containerViewController];
-  [v8 setRequestingRide:0];
+  coordinator2 = [(RidesharingDetailsPickingViewController *)self coordinator];
+  containerViewController2 = [coordinator2 containerViewController];
+  [containerViewController2 setRequestingRide:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = RidesharingDetailsPickingViewController;
-  [(RidesharingDetailsPickingViewController *)&v10 viewDidAppear:a3];
-  v4 = [(RidesharingDetailsPickingViewController *)self coordinator];
-  v5 = [v4 containerViewController];
-  [v5 setNeedsUpdateForShowingDetailsPickingAnimated];
+  [(RidesharingDetailsPickingViewController *)&v10 viewDidAppear:appear];
+  coordinator = [(RidesharingDetailsPickingViewController *)self coordinator];
+  containerViewController = [coordinator containerViewController];
+  [containerViewController setNeedsUpdateForShowingDetailsPickingAnimated];
 
-  v6 = [(RidesharingDetailsPickingViewController *)self coordinator];
-  v7 = [v6 containerViewController];
-  [v7 setRequestingRide:0];
+  coordinator2 = [(RidesharingDetailsPickingViewController *)self coordinator];
+  containerViewController2 = [coordinator2 containerViewController];
+  [containerViewController2 setRequestingRide:0];
 
-  v8 = [(RidesharingDetailsPickingViewController *)self requestRideOptionProxy];
-  v9 = [v8 analyticsBookingSession];
-  [v9 captureView:2];
+  requestRideOptionProxy = [(RidesharingDetailsPickingViewController *)self requestRideOptionProxy];
+  analyticsBookingSession = [requestRideOptionProxy analyticsBookingSession];
+  [analyticsBookingSession captureView:2];
 }
 
 - (void)viewDidLoad
@@ -497,12 +497,12 @@ LABEL_10:
   [(ContainerHeaderView *)self->_containerHeaderView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(ContainerHeaderView *)self->_containerHeaderView setDelegate:self];
   [(ContainerHeaderView *)self->_containerHeaderView setHairLineAlpha:0.0];
-  v5 = [(ExtensionsStackViewController *)self headerView];
-  [v5 addSubview:self->_containerHeaderView];
+  headerView = [(ExtensionsStackViewController *)self headerView];
+  [headerView addSubview:self->_containerHeaderView];
 
   v6 = self->_containerHeaderView;
-  v7 = [(ExtensionsStackViewController *)self headerView];
-  v8 = [(ContainerHeaderView *)v6 _maps_constraintsForCenteringInView:v7];
+  headerView2 = [(ExtensionsStackViewController *)self headerView];
+  v8 = [(ContainerHeaderView *)v6 _maps_constraintsForCenteringInView:headerView2];
   [NSLayoutConstraint activateConstraints:v8];
 
   v9 = [[RouteOverviewFieldsView alloc] initWithDelegate:self waypointInfoProvider:0 editingMode:0];
@@ -529,18 +529,18 @@ LABEL_10:
   self->_requestButton = v16;
 
   [(ProminentActionButton *)self->_requestButton addTarget:self action:"_request" forControlEvents:0x2000];
-  v18 = [(RidesharingDetailsPickingViewController *)self theme];
-  v19 = [v18 keyColor];
-  [(ProminentActionButton *)self->_requestButton setTintColor:v19];
+  theme = [(RidesharingDetailsPickingViewController *)self theme];
+  keyColor = [theme keyColor];
+  [(ProminentActionButton *)self->_requestButton setTintColor:keyColor];
 
-  v20 = [(ProminentActionButton *)self->_requestButton titleLabel];
-  [v20 setLineBreakMode:0];
+  titleLabel = [(ProminentActionButton *)self->_requestButton titleLabel];
+  [titleLabel setLineBreakMode:0];
 
-  v21 = [(ProminentActionButton *)self->_requestButton titleLabel];
-  [v21 setNumberOfLines:0];
+  titleLabel2 = [(ProminentActionButton *)self->_requestButton titleLabel];
+  [titleLabel2 setNumberOfLines:0];
 
-  v22 = [(ProminentActionButton *)self->_requestButton titleLabel];
-  [v22 setTextAlignment:1];
+  titleLabel3 = [(ProminentActionButton *)self->_requestButton titleLabel];
+  [titleLabel3 setTextAlignment:1];
 
   v23 = self->_primaryDetailsView;
   v40 = self->_requestButton;
@@ -575,12 +575,12 @@ LABEL_10:
   v34[3] = &unk_101661B98;
   objc_copyWeak(&v35, &location);
   [(ExtensionsActionsFooterView *)self->_openAppView setDidTapOpenAppButton:v34];
-  v31 = [(RidesharingDetailsPickingViewController *)self requestRideStatus];
-  [(RidesharingDetailsPickingViewController *)self _updateFromRequestRideStatus:v31];
+  requestRideStatus = [(RidesharingDetailsPickingViewController *)self requestRideStatus];
+  [(RidesharingDetailsPickingViewController *)self _updateFromRequestRideStatus:requestRideStatus];
 
-  v32 = [(ExtensionsStackViewController *)self stackView];
-  v33 = [(RidesharingDetailsPickingViewController *)self stackedViews];
-  [v32 _maps_setArrangedSubviews:v33];
+  stackView = [(ExtensionsStackViewController *)self stackView];
+  stackedViews = [(RidesharingDetailsPickingViewController *)self stackedViews];
+  [stackView _maps_setArrangedSubviews:stackedViews];
 
   objc_destroyWeak(&v35);
   objc_destroyWeak(&v37);

@@ -1,31 +1,31 @@
 @interface CRLFill
 - (int64_t)fillType;
-- (void)applyToRenderable:(id)a3 withScale:(double)a4;
-- (void)paintRect:(CGRect)a3 inContext:(CGContext *)a4;
+- (void)applyToRenderable:(id)renderable withScale:(double)scale;
+- (void)paintRect:(CGRect)rect inContext:(CGContext *)context;
 @end
 
 @implementation CRLFill
 
-- (void)paintRect:(CGRect)a3 inContext:(CGContext *)a4
+- (void)paintRect:(CGRect)rect inContext:(CGContext *)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   Mutable = CGPathCreateMutable();
   v12.origin.x = x;
   v12.origin.y = y;
   v12.size.width = width;
   v12.size.height = height;
   CGPathAddRect(Mutable, 0, v12);
-  [(CRLFill *)self paintPath:Mutable inContext:a4];
+  [(CRLFill *)self paintPath:Mutable inContext:context];
 
   CGPathRelease(Mutable);
 }
 
-- (void)applyToRenderable:(id)a3 withScale:(double)a4
+- (void)applyToRenderable:(id)renderable withScale:(double)scale
 {
-  [CRLAssertionHandler _atomicIncrementAssertCount:a3];
+  [CRLAssertionHandler _atomicIncrementAssertCount:renderable];
   if (qword_101AD5A10 != -1)
   {
     sub_101362704();

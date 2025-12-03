@@ -1,47 +1,47 @@
 @interface MUPlaceExternalActionMenuHelper
-- (MUPlaceExternalActionMenuHelper)initWithExternalActionController:(id)a3 iconCache:(id)a4;
+- (MUPlaceExternalActionMenuHelper)initWithExternalActionController:(id)controller iconCache:(id)cache;
 - (NSString)actionName;
 - (NSString)symbolName;
-- (id)_buildMenuItemViewModelWithCachedImageForViewModel:(id)a3 isSingleProvider:(BOOL)a4;
-- (id)buildMenuElementsWithPresentationOptions:(id)a3;
-- (unint64_t)_imageVariantForViewModel:(id)a3 isSingleProvider:(BOOL)a4;
-- (void)_downloadImageWithURL:(id)a3 variant:(unint64_t)a4 uniqueIdentifier:(id)a5 completion:(id)a6;
-- (void)buildMenuItemViewModelsWithUpdateDelegate:(id)a3 completion:(id)a4;
+- (id)_buildMenuItemViewModelWithCachedImageForViewModel:(id)model isSingleProvider:(BOOL)provider;
+- (id)buildMenuElementsWithPresentationOptions:(id)options;
+- (unint64_t)_imageVariantForViewModel:(id)model isSingleProvider:(BOOL)provider;
+- (void)_downloadImageWithURL:(id)l variant:(unint64_t)variant uniqueIdentifier:(id)identifier completion:(id)completion;
+- (void)buildMenuItemViewModelsWithUpdateDelegate:(id)delegate completion:(id)completion;
 @end
 
 @implementation MUPlaceExternalActionMenuHelper
 
 - (NSString)symbolName
 {
-  v2 = [(MUGroupedExternalActionController *)self->_resolver externalAction];
-  v3 = [v2 symbolName];
+  externalAction = [(MUGroupedExternalActionController *)self->_resolver externalAction];
+  symbolName = [externalAction symbolName];
 
-  return v3;
+  return symbolName;
 }
 
 - (NSString)actionName
 {
-  v2 = [(MUGroupedExternalActionController *)self->_resolver externalAction];
-  v3 = [v2 actionName];
+  externalAction = [(MUGroupedExternalActionController *)self->_resolver externalAction];
+  actionName = [externalAction actionName];
 
-  return v3;
+  return actionName;
 }
 
-- (void)_downloadImageWithURL:(id)a3 variant:(unint64_t)a4 uniqueIdentifier:(id)a5 completion:(id)a6
+- (void)_downloadImageWithURL:(id)l variant:(unint64_t)variant uniqueIdentifier:(id)identifier completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [MEMORY[0x1E696F3B8] sharedInstance];
-  [v13 screenScale];
+  lCopy = l;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  mEMORY[0x1E696F3B8] = [MEMORY[0x1E696F3B8] sharedInstance];
+  [mEMORY[0x1E696F3B8] screenScale];
   v15 = v14;
 
   v16 = objc_alloc_init(MUAppLockupImageMetrics);
   [(MUAppLockupImageMetrics *)v16 setFrameSize:40.0, 40.0];
   [(MUAppLockupImageMetrics *)v16 setScale:v15];
-  [(MUAppLockupImageMetrics *)v16 setVariant:a4];
-  v17 = [[MUAppLockupImage alloc] initWithRemoteURL:v10 metrics:v16];
-  [(NSMutableDictionary *)self->_lockupImagesByIdentifiers setObject:v17 forKeyedSubscript:v11];
+  [(MUAppLockupImageMetrics *)v16 setVariant:variant];
+  v17 = [[MUAppLockupImage alloc] initWithRemoteURL:lCopy metrics:v16];
+  [(NSMutableDictionary *)self->_lockupImagesByIdentifiers setObject:v17 forKeyedSubscript:identifierCopy];
   objc_initWeak(&location, self);
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
@@ -50,9 +50,9 @@
   objc_copyWeak(&v25, &location);
   v18 = v17;
   v22 = v18;
-  v19 = v11;
+  v19 = identifierCopy;
   v23 = v19;
-  v20 = v12;
+  v20 = completionCopy;
   v24 = v20;
   [(MUAppLockupImage *)v18 loadImageWithCompletion:v21];
 
@@ -78,20 +78,20 @@ void __93__MUPlaceExternalActionMenuHelper__downloadImageWithURL_variant_uniqueI
   }
 }
 
-- (void)buildMenuItemViewModelsWithUpdateDelegate:(id)a3 completion:(id)a4
+- (void)buildMenuItemViewModelsWithUpdateDelegate:(id)delegate completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  completionCopy = completion;
   resolver = self->_resolver;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __88__MUPlaceExternalActionMenuHelper_buildMenuItemViewModelsWithUpdateDelegate_completion___block_invoke;
   v11[3] = &unk_1E82182D0;
-  v12 = v6;
-  v13 = v7;
+  v12 = delegateCopy;
+  v13 = completionCopy;
   v11[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = delegateCopy;
+  v10 = completionCopy;
   [(MUGroupedExternalActionController *)resolver fetchProviderLockupsWithCompletion:v11];
 }
 
@@ -381,14 +381,14 @@ LABEL_17:
   return v19;
 }
 
-- (unint64_t)_imageVariantForViewModel:(id)a3 isSingleProvider:(BOOL)a4
+- (unint64_t)_imageVariantForViewModel:(id)model isSingleProvider:(BOOL)provider
 {
-  if (!a4)
+  if (!provider)
   {
     return 1;
   }
 
-  if ([a3 linkType] == 1)
+  if ([model linkType] == 1)
   {
     return 2;
   }
@@ -396,47 +396,47 @@ LABEL_17:
   return 1;
 }
 
-- (id)_buildMenuItemViewModelWithCachedImageForViewModel:(id)a3 isSingleProvider:(BOOL)a4
+- (id)_buildMenuItemViewModelWithCachedImageForViewModel:(id)model isSingleProvider:(BOOL)provider
 {
-  v6 = a3;
-  v7 = [v6 artworkURL];
+  modelCopy = model;
+  artworkURL = [modelCopy artworkURL];
   iconCache = self->_iconCache;
-  v9 = [v6 uniqueIdentifier];
-  v10 = [(MUTimeExpirableLRUCache *)iconCache objectForKeyedSubscript:v9];
+  uniqueIdentifier = [modelCopy uniqueIdentifier];
+  v10 = [(MUTimeExpirableLRUCache *)iconCache objectForKeyedSubscript:uniqueIdentifier];
 
-  if (a4)
+  if (provider)
   {
     [(MUPlaceExternalActionMenuHelper *)self actionName];
   }
 
   else
   {
-    [v6 appShortName];
+    [modelCopy appShortName];
   }
   v11 = ;
-  if (!v7)
+  if (!artworkURL)
   {
-    v12 = [v6 fallbackSymbolName];
+    fallbackSymbolName = [modelCopy fallbackSymbolName];
 
-    if (v12)
+    if (fallbackSymbolName)
     {
       v13 = MEMORY[0x1E69DCAB8];
-      v14 = [v6 fallbackSymbolName];
-      v15 = [v13 _systemImageNamed:v14 variant:0];
+      fallbackSymbolName2 = [modelCopy fallbackSymbolName];
+      v15 = [v13 _systemImageNamed:fallbackSymbolName2 variant:0];
 
       v10 = v15;
     }
   }
 
-  v16 = [[MUVendorLinkMenuItemViewModel alloc] initWithTitle:v11 image:v10 vendorLinkViewModel:v6];
+  v16 = [[MUVendorLinkMenuItemViewModel alloc] initWithTitle:v11 image:v10 vendorLinkViewModel:modelCopy];
 
   return v16;
 }
 
-- (id)buildMenuElementsWithPresentationOptions:(id)a3
+- (id)buildMenuElementsWithPresentationOptions:(id)options
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  optionsCopy = options;
   objc_initWeak(&location, self);
   v5 = MEMORY[0x1E69DC928];
   v11[0] = MEMORY[0x1E69E9820];
@@ -444,7 +444,7 @@ LABEL_17:
   v11[2] = __76__MUPlaceExternalActionMenuHelper_buildMenuElementsWithPresentationOptions___block_invoke;
   v11[3] = &unk_1E8218230;
   objc_copyWeak(&v13, &location);
-  v6 = v4;
+  v6 = optionsCopy;
   v12 = v6;
   v7 = [v5 elementWithProvider:v11];
   v15[0] = v7;
@@ -537,18 +537,18 @@ id __76__MUPlaceExternalActionMenuHelper_buildMenuElementsWithPresentationOption
   return v6;
 }
 
-- (MUPlaceExternalActionMenuHelper)initWithExternalActionController:(id)a3 iconCache:(id)a4
+- (MUPlaceExternalActionMenuHelper)initWithExternalActionController:(id)controller iconCache:(id)cache
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  cacheCopy = cache;
   v12.receiver = self;
   v12.super_class = MUPlaceExternalActionMenuHelper;
   v9 = [(MUPlaceExternalActionMenuHelper *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_iconCache, a4);
-    objc_storeStrong(&v10->_resolver, a3);
+    objc_storeStrong(&v9->_iconCache, cache);
+    objc_storeStrong(&v10->_resolver, controller);
   }
 
   return v10;

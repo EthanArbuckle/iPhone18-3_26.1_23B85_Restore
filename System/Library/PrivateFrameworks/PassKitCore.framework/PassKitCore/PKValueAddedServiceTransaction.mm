@@ -1,8 +1,8 @@
 @interface PKValueAddedServiceTransaction
 - (PKValueAddedServiceTransaction)init;
-- (PKValueAddedServiceTransaction)initWithCoder:(id)a3;
+- (PKValueAddedServiceTransaction)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKValueAddedServiceTransaction
@@ -14,10 +14,10 @@
   v2 = [(PKValueAddedServiceTransaction *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
-    v4 = [v3 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v2->_identifier;
-    v2->_identifier = v4;
+    v2->_identifier = uUIDString;
   }
 
   return v2;
@@ -37,60 +37,60 @@
   return v15;
 }
 
-- (PKValueAddedServiceTransaction)initWithCoder:(id)a3
+- (PKValueAddedServiceTransaction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = PKValueAddedServiceTransaction;
   v5 = [(PKValueAddedServiceTransaction *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PKValueAddedServiceTransactionIdentifierKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PKValueAddedServiceTransactionIdentifierKey"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PKValueAddedServiceTransactionMerchantKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PKValueAddedServiceTransactionMerchantKey"];
     merchant = v5->_merchant;
     v5->_merchant = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PKValueAddedServiceTransactionMerchantURLKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PKValueAddedServiceTransactionMerchantURLKey"];
     merchantURL = v5->_merchantURL;
     v5->_merchantURL = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PKValueAddedServiceTransactionTerminalApplicationVersionKey"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PKValueAddedServiceTransactionTerminalApplicationVersionKey"];
     terminalApplicationVersion = v5->_terminalApplicationVersion;
     v5->_terminalApplicationVersion = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PKValueAddedServiceTransactionTerminalModeKey"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PKValueAddedServiceTransactionTerminalModeKey"];
     v5->_terminalMode = [v14 integerValue];
 
-    v5->_didSucceed = [v4 decodeBoolForKey:@"PKValueAddedServiceTransactionDidSucceedKey"];
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PKValueAddedServiceTransactionDateKey"];
+    v5->_didSucceed = [coderCopy decodeBoolForKey:@"PKValueAddedServiceTransactionDidSucceedKey"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PKValueAddedServiceTransactionDateKey"];
     transactionDate = v5->_transactionDate;
     v5->_transactionDate = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PKValueAddedServiceTransactionErrorKey"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PKValueAddedServiceTransactionErrorKey"];
     v5->_error = [v17 integerValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"PKValueAddedServiceTransactionIdentifierKey"];
-  [v5 encodeObject:self->_merchant forKey:@"PKValueAddedServiceTransactionMerchantKey"];
-  [v5 encodeObject:self->_merchantURL forKey:@"PKValueAddedServiceTransactionMerchantURLKey"];
-  [v5 encodeObject:self->_terminalApplicationVersion forKey:@"PKValueAddedServiceTransactionTerminalApplicationVersionKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"PKValueAddedServiceTransactionIdentifierKey"];
+  [coderCopy encodeObject:self->_merchant forKey:@"PKValueAddedServiceTransactionMerchantKey"];
+  [coderCopy encodeObject:self->_merchantURL forKey:@"PKValueAddedServiceTransactionMerchantURLKey"];
+  [coderCopy encodeObject:self->_terminalApplicationVersion forKey:@"PKValueAddedServiceTransactionTerminalApplicationVersionKey"];
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:self->_terminalMode];
-  [v5 encodeObject:v6 forKey:@"PKValueAddedServiceTransactionTerminalModeKey"];
+  [coderCopy encodeObject:v6 forKey:@"PKValueAddedServiceTransactionTerminalModeKey"];
 
-  [v5 encodeBool:self->_didSucceed forKey:@"PKValueAddedServiceTransactionDidSucceedKey"];
-  [v5 encodeObject:self->_transactionDate forKey:@"PKValueAddedServiceTransactionDateKey"];
+  [coderCopy encodeBool:self->_didSucceed forKey:@"PKValueAddedServiceTransactionDidSucceedKey"];
+  [coderCopy encodeObject:self->_transactionDate forKey:@"PKValueAddedServiceTransactionDateKey"];
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:self->_error];
-  [v5 encodeObject:v7 forKey:@"PKValueAddedServiceTransactionErrorKey"];
+  [coderCopy encodeObject:v7 forKey:@"PKValueAddedServiceTransactionErrorKey"];
 }
 
 @end

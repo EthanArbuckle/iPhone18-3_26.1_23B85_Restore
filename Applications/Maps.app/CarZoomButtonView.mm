@@ -1,14 +1,14 @@
 @interface CarZoomButtonView
-- (CarZoomButtonView)initWithVisiblePanButton:(BOOL)a3;
+- (CarZoomButtonView)initWithVisiblePanButton:(BOOL)button;
 - (CarZoomButtonViewDelegate)delegate;
 - (NSArray)focusOrderSubItems;
 - (id)_availableButtons;
-- (void)_panPressed:(id)a3;
-- (void)_zoomInPressed:(id)a3;
-- (void)_zoomOutPressed:(id)a3;
-- (void)setPanButtonVisible:(BOOL)a3;
-- (void)setZoomInEnabled:(BOOL)a3;
-- (void)setZoomOutEnabled:(BOOL)a3;
+- (void)_panPressed:(id)pressed;
+- (void)_zoomInPressed:(id)pressed;
+- (void)_zoomOutPressed:(id)pressed;
+- (void)setPanButtonVisible:(BOOL)visible;
+- (void)setZoomInEnabled:(BOOL)enabled;
+- (void)setZoomOutEnabled:(BOOL)enabled;
 @end
 
 @implementation CarZoomButtonView
@@ -34,9 +34,9 @@
     v4 = 2;
   }
 
-  v6 = [NSArray arrayWithObjects:p_panButton count:v4, v8, v9, panButton, v11, zoomOutButton];
+  zoomOutButton = [NSArray arrayWithObjects:p_panButton count:v4, v8, v9, panButton, v11, zoomOutButton];
 
-  return v6;
+  return zoomOutButton;
 }
 
 - (NSArray)focusOrderSubItems
@@ -46,8 +46,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(CarZoomButtonView *)self _availableButtons];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  _availableButtons = [(CarZoomButtonView *)self _availableButtons];
+  v5 = [_availableButtons countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -58,7 +58,7 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_availableButtons);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -68,7 +68,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [_availableButtons countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -84,16 +84,16 @@
   return WeakRetained;
 }
 
-- (void)setZoomOutEnabled:(BOOL)a3
+- (void)setZoomOutEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(CarFocusableImageButton *)self->_zoomOutButton isEnabled]!= a3)
+  enabledCopy = enabled;
+  if ([(CarFocusableImageButton *)self->_zoomOutButton isEnabled]!= enabled)
   {
     v5 = sub_100006E1C();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = @"disabled";
-      if (v3)
+      if (enabledCopy)
       {
         v6 = @"enabled";
       }
@@ -103,10 +103,10 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Setting zoom-out button %@", &v7, 0xCu);
     }
 
-    [(CarFocusableControl *)self->_zoomOutButton setEnabled:v3];
+    [(CarFocusableControl *)self->_zoomOutButton setEnabled:enabledCopy];
     if ([(CarFocusableImageButton *)self->_zoomOutButton isFocused])
     {
-      if (!v3)
+      if (!enabledCopy)
       {
         [(CarZoomButtonView *)self setNeedsFocusUpdate];
         [(CarZoomButtonView *)self updateFocusIfNeeded];
@@ -115,16 +115,16 @@
   }
 }
 
-- (void)setZoomInEnabled:(BOOL)a3
+- (void)setZoomInEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(CarFocusableImageButton *)self->_zoomInButton isEnabled]!= a3)
+  enabledCopy = enabled;
+  if ([(CarFocusableImageButton *)self->_zoomInButton isEnabled]!= enabled)
   {
     v5 = sub_100006E1C();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = @"disabled";
-      if (v3)
+      if (enabledCopy)
       {
         v6 = @"enabled";
       }
@@ -134,10 +134,10 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Setting zoom-in button %@", &v7, 0xCu);
     }
 
-    [(CarFocusableControl *)self->_zoomInButton setEnabled:v3];
+    [(CarFocusableControl *)self->_zoomInButton setEnabled:enabledCopy];
     if ([(CarFocusableImageButton *)self->_zoomInButton isFocused])
     {
-      if (!v3)
+      if (!enabledCopy)
       {
         [(CarZoomButtonView *)self setNeedsFocusUpdate];
         [(CarZoomButtonView *)self updateFocusIfNeeded];
@@ -146,68 +146,68 @@
   }
 }
 
-- (void)_zoomOutPressed:(id)a3
+- (void)_zoomOutPressed:(id)pressed
 {
-  v4 = [(CarZoomButtonView *)self delegate];
+  delegate = [(CarZoomButtonView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CarZoomButtonView *)self delegate];
-    [v6 zoomOutButtonPressed];
+    delegate2 = [(CarZoomButtonView *)self delegate];
+    [delegate2 zoomOutButtonPressed];
   }
 }
 
-- (void)_zoomInPressed:(id)a3
+- (void)_zoomInPressed:(id)pressed
 {
-  v4 = [(CarZoomButtonView *)self delegate];
+  delegate = [(CarZoomButtonView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CarZoomButtonView *)self delegate];
-    [v6 zoomInButtonPressed];
+    delegate2 = [(CarZoomButtonView *)self delegate];
+    [delegate2 zoomInButtonPressed];
   }
 }
 
-- (void)_panPressed:(id)a3
+- (void)_panPressed:(id)pressed
 {
-  v4 = [(CarZoomButtonView *)self delegate];
+  delegate = [(CarZoomButtonView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CarZoomButtonView *)self delegate];
-    [v6 panButtonPressed];
+    delegate2 = [(CarZoomButtonView *)self delegate];
+    [delegate2 panButtonPressed];
   }
 }
 
-- (void)setPanButtonVisible:(BOOL)a3
+- (void)setPanButtonVisible:(BOOL)visible
 {
-  if (self->_panButtonVisible != a3)
+  if (self->_panButtonVisible != visible)
   {
-    self->_panButtonVisible = a3;
-    v5 = [(CarZoomButtonView *)self _availableButtons];
-    [(CarMultiButtonView *)self setButtons:v5];
+    self->_panButtonVisible = visible;
+    _availableButtons = [(CarZoomButtonView *)self _availableButtons];
+    [(CarMultiButtonView *)self setButtons:_availableButtons];
   }
 }
 
-- (CarZoomButtonView)initWithVisiblePanButton:(BOOL)a3
+- (CarZoomButtonView)initWithVisiblePanButton:(BOOL)button
 {
-  v3 = a3;
+  buttonCopy = button;
   v36.receiver = self;
   v36.super_class = CarZoomButtonView;
   v4 = [(CarMultiButtonView *)&v36 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v5 = v4;
   if (v4)
   {
-    v4->_panButtonVisible = v3;
-    if (v3)
+    v4->_panButtonVisible = buttonCopy;
+    if (buttonCopy)
     {
       v6 = +[CarDisplayController sharedInstance];
-      v7 = [v6 chromeViewController];
-      v8 = [v7 traitCollection];
-      v9 = [UIImage imageNamed:@"CarPan" inBundle:0 compatibleWithTraitCollection:v8];
+      chromeViewController = [v6 chromeViewController];
+      traitCollection = [chromeViewController traitCollection];
+      v9 = [UIImage imageNamed:@"CarPan" inBundle:0 compatibleWithTraitCollection:traitCollection];
       v10 = [v9 imageWithRenderingMode:2];
 
       v11 = [[CarFocusableImageButton alloc] initWithImage:v10];
@@ -261,8 +261,8 @@
     [(CarFocusableImageButton *)v5->_zoomOutButton setAccessibilityUserInputLabels:v33];
 
     [(CarZoomButtonView *)v5 setAccessibilityIdentifier:@"CarZoomButtonView"];
-    v34 = [(CarZoomButtonView *)v5 _availableButtons];
-    [(CarMultiButtonView *)v5 setButtons:v34];
+    _availableButtons = [(CarZoomButtonView *)v5 _availableButtons];
+    [(CarMultiButtonView *)v5 setButtons:_availableButtons];
   }
 
   return v5;

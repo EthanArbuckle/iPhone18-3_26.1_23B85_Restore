@@ -1,27 +1,27 @@
 @interface EPPhoneMigrator
-+ (BOOL)_hasMigrationConsent:(id)a3;
-+ (id)newService:(id)a3;
-- (BOOL)getWatchMigrationCompletionStatusWithError:(id *)a3;
++ (BOOL)_hasMigrationConsent:(id)consent;
++ (id)newService:(id)service;
+- (BOOL)getWatchMigrationCompletionStatusWithError:(id *)error;
 - (EPKeymaster)keymaster;
-- (EPPhoneMigrator)initWithServiceRegistry:(id)a3;
-- (id)createMigrationReporterWithPairingID:(id)a3;
+- (EPPhoneMigrator)initWithServiceRegistry:(id)registry;
+- (id)createMigrationReporterWithPairingID:(id)d;
 - (id)registry;
-- (void)beginMigrationToDevice:(id)a3 progress:(id)a4 completion:(id)a5;
-- (void)beginRTCMigrationMetricCollection:(id)a3;
+- (void)beginMigrationToDevice:(id)device progress:(id)progress completion:(id)completion;
+- (void)beginRTCMigrationMetricCollection:(id)collection;
 - (void)clearPairingFlags;
-- (void)createMigrationReporterWithoutPairingIDWithCompletion:(id)a3;
-- (void)finishMigrationWithRoutingSlip:(id)a3;
-- (void)getMigrationPairingCharacteristicReadDataWithCompletion:(id)a3;
-- (void)getNonAltAccountMigratableDeviceIDsWithBlock:(id)a3;
-- (void)idsAccountPlusDeviceReceivedWithBTID:(id)a3;
+- (void)createMigrationReporterWithoutPairingIDWithCompletion:(id)completion;
+- (void)finishMigrationWithRoutingSlip:(id)slip;
+- (void)getMigrationPairingCharacteristicReadDataWithCompletion:(id)completion;
+- (void)getNonAltAccountMigratableDeviceIDsWithBlock:(id)block;
+- (void)idsAccountPlusDeviceReceivedWithBTID:(id)d;
 - (void)keyTimerTimeout;
-- (void)migrationCompletionRequestReceivedWithStatus:(unint64_t)a3;
-- (void)migrationMetricSessionIDReceivedWithID:(id)a3;
-- (void)notifyWhenIDSPairsWithBlock:(id)a3;
+- (void)migrationCompletionRequestReceivedWithStatus:(unint64_t)status;
+- (void)migrationMetricSessionIDReceivedWithID:(id)d;
+- (void)notifyWhenIDSPairsWithBlock:(id)block;
 - (void)phoneMigrationCommitted;
-- (void)removeNotifyWhenIDSPairsWithBlock:(id)a3;
-- (void)respondToChallengeWritesWithSuccess:(BOOL)a3;
-- (void)setMigrationConsent:(BOOL)a3 forDeviceID:(id)a4 completion:(id)a5;
+- (void)removeNotifyWhenIDSPairsWithBlock:(id)block;
+- (void)respondToChallengeWritesWithSuccess:(BOOL)success;
+- (void)setMigrationConsent:(BOOL)consent forDeviceID:(id)d completion:(id)completion;
 - (void)update;
 - (void)wipeCharacteristicHandlers;
 @end
@@ -36,8 +36,8 @@
   {
     if (!sharedKey)
     {
-      v5 = [(EPPhoneMigrator *)self keymaster];
-      v6 = [v5 newResourceWithDelegate:self];
+      keymaster = [(EPPhoneMigrator *)self keymaster];
+      v6 = [keymaster newResourceWithDelegate:self];
       v7 = self->_sharedKey;
       self->_sharedKey = v6;
 
@@ -48,21 +48,21 @@
     {
       if (!self->_oobKeyGenerator)
       {
-        v8 = [(EPPhoneMigrator *)self factory];
-        v9 = [v8 newKeyGeneratorWithDelegate:self];
+        factory = [(EPPhoneMigrator *)self factory];
+        v9 = [factory newKeyGeneratorWithDelegate:self];
         oobKeyGenerator = self->_oobKeyGenerator;
         self->_oobKeyGenerator = v9;
 
         [(EPServiceRegistry *)self->_serviceRegistry addService:self->_oobKeyGenerator];
       }
 
-      v11 = [(EPPhoneMigrator *)self oobKeyGenerator];
-      v12 = [v11 availability];
+      oobKeyGenerator = [(EPPhoneMigrator *)self oobKeyGenerator];
+      availability = [oobKeyGenerator availability];
 
-      if (v12 == 1)
+      if (availability == 1)
       {
-        v13 = [(EPPhoneMigrator *)self oobKeyGenerator];
-        v14 = [v13 key];
+        oobKeyGenerator2 = [(EPPhoneMigrator *)self oobKeyGenerator];
+        v14 = [oobKeyGenerator2 key];
 
         if (v14)
         {
@@ -88,14 +88,14 @@
             {
 LABEL_14:
               sub_100105930(v15, v14);
-              v19 = [(EPPhoneMigrator *)self currentChallenge];
-              sub_100105944(v15, v19);
+              currentChallenge = [(EPPhoneMigrator *)self currentChallenge];
+              sub_100105944(v15, currentChallenge);
             }
           }
 
           v20 = self->_sharedKey;
-          v21 = [v15 data];
-          v22 = [(EPKey *)v20 encryptPayload:v21];
+          data = [v15 data];
+          v22 = [(EPKey *)v20 encryptPayload:data];
 
           if (v22)
           {
@@ -190,7 +190,7 @@ LABEL_14:
     v37 = self->_bluetoothUUIDReceivedWithAccountAndDevice;
     v38 = [(NSMutableArray *)self->_idsAccountPlusDeviceBlocks copy];
     [(NSMutableArray *)self->_idsAccountPlusDeviceBlocks removeAllObjects];
-    v39 = [(EPPhoneMigrator *)self queue];
+    queue = [(EPPhoneMigrator *)self queue];
     v42[0] = _NSConcreteStackBlock;
     v42[1] = 3221225472;
     v42[2] = sub_1000DC8C4;
@@ -199,7 +199,7 @@ LABEL_14:
     v44 = v37;
     v40 = v37;
     v41 = v38;
-    dispatch_async(v39, v42);
+    dispatch_async(queue, v42);
   }
 }
 
@@ -239,10 +239,10 @@ LABEL_14:
   [(NSMutableArray *)self->_migrationReadResponseBlocks removeAllObjects];
 }
 
-+ (id)newService:(id)a3
++ (id)newService:(id)service
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithServiceRegistry:v4];
+  serviceCopy = service;
+  v5 = [[self alloc] initWithServiceRegistry:serviceCopy];
 
   return v5;
 }
@@ -263,15 +263,15 @@ LABEL_14:
   return [(EPServiceRegistry *)serviceRegistry serviceFromClass:v3];
 }
 
-- (EPPhoneMigrator)initWithServiceRegistry:(id)a3
+- (EPPhoneMigrator)initWithServiceRegistry:(id)registry
 {
-  v5 = a3;
-  objc_storeStrong(&self->_serviceRegistry, a3);
+  registryCopy = registry;
+  objc_storeStrong(&self->_serviceRegistry, registry);
   v6 = [(EPPhoneMigrator *)self init];
   if (v6)
   {
-    [v5 addService:v6];
-    v7 = [v5 instantiateServiceByClass:objc_opt_class()];
+    [registryCopy addService:v6];
+    v7 = [registryCopy instantiateServiceByClass:objc_opt_class()];
     v8 = [NSSet setWithObject:@"migrationSaga"];
     [NRPowerAssertionActivity addActivityGroup:v8];
 
@@ -288,10 +288,10 @@ LABEL_14:
   return v6;
 }
 
-- (void)getMigrationPairingCharacteristicReadDataWithCompletion:(id)a3
+- (void)getMigrationPairingCharacteristicReadDataWithCompletion:(id)completion
 {
   migrationReadResponseBlocks = self->_migrationReadResponseBlocks;
-  v5 = [a3 copy];
+  v5 = [completion copy];
   v6 = objc_retainBlock(v5);
   [(NSMutableArray *)migrationReadResponseBlocks addObject:v6];
 
@@ -300,29 +300,29 @@ LABEL_14:
 
 - (void)keyTimerTimeout
 {
-  v3 = [(EPPhoneMigrator *)self queue];
+  queue = [(EPPhoneMigrator *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000DBE4C;
   block[3] = &unk_100175660;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
-+ (BOOL)_hasMigrationConsent:(id)a3
++ (BOOL)_hasMigrationConsent:(id)consent
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:NRDevicePropertyMigrationConsent];
-  v5 = [v4 value];
+  consentCopy = consent;
+  v4 = [consentCopy objectForKeyedSubscript:NRDevicePropertyMigrationConsent];
+  value = [v4 value];
 
-  if ([v3 isAltAccount] && objc_msgSend(v5, "BOOLValue"))
+  if ([consentCopy isAltAccount] && objc_msgSend(value, "BOOLValue"))
   {
-    v6 = [v3 objectForKeyedSubscript:NRDevicePropertyMigrationConsentDate];
-    v7 = [v6 value];
+    v6 = [consentCopy objectForKeyedSubscript:NRDevicePropertyMigrationConsentDate];
+    value2 = [v6 value];
 
-    if (v7)
+    if (value2)
     {
-      [v7 timeIntervalSinceNow];
+      [value2 timeIntervalSinceNow];
       v9 = v8 >= -86400.0 && v8 <= 0.0;
     }
 
@@ -340,9 +340,9 @@ LABEL_14:
   return v9;
 }
 
-- (void)respondToChallengeWritesWithSuccess:(BOOL)a3
+- (void)respondToChallengeWritesWithSuccess:(BOOL)success
 {
-  v3 = a3;
+  successCopy = success;
   if (![(NSMutableArray *)self->_migrationChallengeResponseBlocks count])
   {
     return;
@@ -351,7 +351,7 @@ LABEL_14:
   v5 = sub_1000034AC();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
-  if (v3)
+  if (successCopy)
   {
     if (v6)
     {
@@ -413,21 +413,21 @@ LABEL_10:
   [(NSMutableArray *)self->_migrationChallengeResponseBlocks removeAllObjects];
 }
 
-- (void)setMigrationConsent:(BOOL)a3 forDeviceID:(id)a4 completion:(id)a5
+- (void)setMigrationConsent:(BOOL)consent forDeviceID:(id)d completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  completionCopy = completion;
   v10 = [(EPServiceRegistry *)self->_serviceRegistry serviceFromClass:objc_opt_class()];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000DC24C;
   v13[3] = &unk_100179860;
-  v17 = a3;
-  v15 = self;
-  v16 = v9;
-  v14 = v8;
-  v11 = v9;
-  v12 = v8;
+  consentCopy = consent;
+  selfCopy = self;
+  v16 = completionCopy;
+  v14 = dCopy;
+  v11 = completionCopy;
+  v12 = dCopy;
   [v10 grabRegistryWithWriteBlockAsync:v13];
 }
 
@@ -452,28 +452,28 @@ LABEL_10:
   *&self->_propertiesReceivedFlag = 0;
 }
 
-- (void)notifyWhenIDSPairsWithBlock:(id)a3
+- (void)notifyWhenIDSPairsWithBlock:(id)block
 {
   idsAccountPlusDeviceBlocks = self->_idsAccountPlusDeviceBlocks;
-  v5 = objc_retainBlock(a3);
+  v5 = objc_retainBlock(block);
   [(NSMutableArray *)idsAccountPlusDeviceBlocks addObject:v5];
 
   [(EPPhoneMigrator *)self update];
 }
 
-- (void)removeNotifyWhenIDSPairsWithBlock:(id)a3
+- (void)removeNotifyWhenIDSPairsWithBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
     idsAccountPlusDeviceBlocks = self->_idsAccountPlusDeviceBlocks;
-    v4 = objc_retainBlock(a3);
+    v4 = objc_retainBlock(block);
     [(NSMutableArray *)idsAccountPlusDeviceBlocks removeObject:v4];
   }
 }
 
-- (void)idsAccountPlusDeviceReceivedWithBTID:(id)a3
+- (void)idsAccountPlusDeviceReceivedWithBTID:(id)d
 {
-  objc_storeStrong(&self->_bluetoothUUIDReceivedWithAccountAndDevice, a3);
+  objc_storeStrong(&self->_bluetoothUUIDReceivedWithAccountAndDevice, d);
 
   [(EPPhoneMigrator *)self update];
 }
@@ -494,12 +494,12 @@ LABEL_10:
   }
 }
 
-- (void)beginMigrationToDevice:(id)a3 progress:(id)a4 completion:(id)a5
+- (void)beginMigrationToDevice:(id)device progress:(id)progress completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
+  deviceCopy = device;
+  progressCopy = progress;
+  completionCopy = completion;
+  v11 = completionCopy;
   if (!self->_powerAssertion)
   {
     self->_watchMigrationComplete = 0;
@@ -539,11 +539,11 @@ LABEL_10:
     migrationCompletionBlock = self->_migrationCompletionBlock;
     self->_migrationCompletionBlock = v27;
 
-    [(EPPhoneMigrator *)self beginRTCMigrationMetricCollection:v8];
+    [(EPPhoneMigrator *)self beginRTCMigrationMetricCollection:deviceCopy];
     v29 = [EPRoutingSlipEntry alloc];
     v30 = objc_opt_class();
     v39 = @"nrDeviceIdentifier";
-    v31 = [[EPSagaOperandUUID alloc] initWithUUID:v8];
+    v31 = [[EPSagaOperandUUID alloc] initWithUUID:deviceCopy];
     v40 = v31;
     v32 = [NSDictionary dictionaryWithObjects:&v40 forKeys:&v39 count:1];
     v33 = [(EPRoutingSlipEntry *)v29 initWithName:@"phoneMigration" transactionClass:v30 operands:v32];
@@ -551,7 +551,7 @@ LABEL_10:
     v34 = objc_opt_new();
     [v34 setRunningStatusCode:4];
     [v34 setOperationType:@"migration"];
-    [v34 setTargetPairingID:v8];
+    [v34 setTargetPairingID:deviceCopy];
     [v34 setEntry:v33];
     v36[0] = _NSConcreteStackBlock;
     v36[1] = 3221225472;
@@ -565,7 +565,7 @@ LABEL_10:
     goto LABEL_9;
   }
 
-  if (v10)
+  if (completionCopy)
   {
     v37 = NSLocalizedDescriptionKey;
     v38 = @"Migration attempt while migration already running.";
@@ -577,35 +577,35 @@ LABEL_9:
   }
 }
 
-- (void)beginRTCMigrationMetricCollection:(id)a3
+- (void)beginRTCMigrationMetricCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v5 = [(EPServiceRegistry *)self->_serviceRegistry serviceFromClass:objc_opt_class()];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000DCED0;
   v7[3] = &unk_100177F88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = collectionCopy;
+  v6 = collectionCopy;
   [v5 grabHistoryWithReadBlock:v7];
 }
 
-- (void)finishMigrationWithRoutingSlip:(id)a3
+- (void)finishMigrationWithRoutingSlip:(id)slip
 {
-  v4 = a3;
-  v5 = [v4 getLastFirstError];
+  slipCopy = slip;
+  getLastFirstError = [slipCopy getLastFirstError];
   v6 = [(EPServiceRegistry *)self->_serviceRegistry serviceFromClass:objc_opt_class()];
   v7 = [(EPServiceRegistry *)self->_serviceRegistry serviceFromClass:objc_opt_class()];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_1000DD0D4;
   v18[3] = &unk_1001798B0;
-  v8 = v5;
+  v8 = getLastFirstError;
   v19 = v8;
   v9 = v7;
   v20 = v9;
-  v10 = v4;
+  v10 = slipCopy;
   v21 = v10;
   [v6 grabHistoryWithReadBlock:v18];
   migrationCompletionBlock = self->_migrationCompletionBlock;
@@ -632,12 +632,12 @@ LABEL_9:
   self->_sharedKey = 0;
 }
 
-- (void)migrationCompletionRequestReceivedWithStatus:(unint64_t)a3
+- (void)migrationCompletionRequestReceivedWithStatus:(unint64_t)status
 {
   if (!self->_watchMigrationComplete)
   {
     self->_watchMigrationComplete = 1;
-    if (a3)
+    if (status)
     {
       v9 = NSLocalizedDescriptionKey;
       v10 = @"Watch migration failed on watch side";
@@ -658,13 +658,13 @@ LABEL_9:
   }
 }
 
-- (void)migrationMetricSessionIDReceivedWithID:(id)a3
+- (void)migrationMetricSessionIDReceivedWithID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
+  dCopy = d;
+  v5 = dCopy;
   if (!self->_watchMigrationComplete)
   {
-    if (v4)
+    if (dCopy)
     {
       v6 = [(EPServiceRegistry *)self->_serviceRegistry serviceFromClass:objc_opt_class()];
       [v6 setSessionIDFromRemoteDevice:v5];
@@ -692,32 +692,32 @@ LABEL_9:
 LABEL_5:
 }
 
-- (BOOL)getWatchMigrationCompletionStatusWithError:(id *)a3
+- (BOOL)getWatchMigrationCompletionStatusWithError:(id *)error
 {
-  if (a3)
+  if (error)
   {
-    *a3 = self->_watchMigrationCompleteError;
+    *error = self->_watchMigrationCompleteError;
   }
 
   return self->_watchMigrationComplete;
 }
 
-- (void)createMigrationReporterWithoutPairingIDWithCompletion:(id)a3
+- (void)createMigrationReporterWithoutPairingIDWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [(EPServiceRegistry *)self->_serviceRegistry serviceFromClass:objc_opt_class()];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000DD458;
   v7[3] = &unk_100176928;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [v5 grabRegistryWithReadBlock:v7];
 }
 
-- (id)createMigrationReporterWithPairingID:(id)a3
+- (id)createMigrationReporterWithPairingID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [(EPServiceRegistry *)self->_serviceRegistry optionalServiceFromClass:objc_opt_class()];
   if (!v5)
   {
@@ -725,22 +725,22 @@ LABEL_5:
     [(EPServiceRegistry *)self->_serviceRegistry addService:v5];
   }
 
-  [(NRRTCMigrationReporter *)v5 setCurrentMigrationID:v4];
+  [(NRRTCMigrationReporter *)v5 setCurrentMigrationID:dCopy];
 
   return v5;
 }
 
-- (void)getNonAltAccountMigratableDeviceIDsWithBlock:(id)a3
+- (void)getNonAltAccountMigratableDeviceIDsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(EPServiceRegistry *)self->_serviceRegistry serviceFromClass:objc_opt_class()];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000DD61C;
   v7[3] = &unk_1001768D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [v5 grabRegistryWithReadBlock:v7];
 }
 

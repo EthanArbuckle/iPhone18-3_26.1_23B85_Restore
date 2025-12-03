@@ -1,17 +1,17 @@
 @interface CMIColourConstancyCoreV1
-- (CMIColourConstancyCoreV1)initWithMetalContext:(id)a3;
+- (CMIColourConstancyCoreV1)initWithMetalContext:(id)context;
 - (int)finishProcessing;
-- (int)getCenterWeightedColourAccuracyConfidenceLevel:(float *)a3;
-- (int)prepareToProcessWithConfig:(id)a3 processingType:(unsigned int)a4;
+- (int)getCenterWeightedColourAccuracyConfidenceLevel:(float *)level;
+- (int)prepareToProcessWithConfig:(id)config processingType:(unsigned int)type;
 - (int)purgeResources;
-- (unint64_t)applyWithAmbientLumaTexture:(double)a3 ambientChromaTexture:(float)a4 flashLumaTexture:(float)a5 flashChromaTexture:(double)a6 ambientYUVOffsets:(double)a7 flashYUVOffsets:(double)a8 ambientLSCGainsTexture:(float)a9 flashLSCGainsTexture:(uint64_t)a10 ambientLSCMaxGain:(void *)a11 flashLSCMaxGain:(void *)a12 ambientWhitePoint:(void *)a13 flashWhitePoint:(void *)a14 strobeWhitePoint:(void *)a15 ambientIntegrationTime:(void *)a16 flashIntegrationTime:(float)a17 cropRect:(uint64_t)a18 LSCCropRect:(CMIColourConstancyLSCCropRect *)a19 fullSizeDimensions:(_DWORD *)a20 strobeCCM:(id)a21 outputColourAccuracyConfidenceTexture:(uint64_t)a22 outputLumaTexture:(id)a23 outputChromaTexture:(uint64_t)a24 outputLinearRGBTexture:(double)a25;
+- (unint64_t)applyWithAmbientLumaTexture:(double)texture ambientChromaTexture:(float)chromaTexture flashLumaTexture:(float)lumaTexture flashChromaTexture:(double)flashChromaTexture ambientYUVOffsets:(double)offsets flashYUVOffsets:(double)vOffsets ambientLSCGainsTexture:(float)gainsTexture flashLSCGainsTexture:(uint64_t)self0 ambientLSCMaxGain:(void *)self1 flashLSCMaxGain:(void *)self2 ambientWhitePoint:(void *)self3 flashWhitePoint:(void *)self4 strobeWhitePoint:(void *)self5 ambientIntegrationTime:(void *)self6 flashIntegrationTime:(float)self7 cropRect:(uint64_t)self8 LSCCropRect:(CMIColourConstancyLSCCropRect *)self9 fullSizeDimensions:(_DWORD *)dimensions strobeCCM:(id)m outputColourAccuracyConfidenceTexture:(uint64_t)confidenceTexture outputLumaTexture:(id)outputLumaTexture outputChromaTexture:(uint64_t)outputChromaTexture outputLinearRGBTexture:(double)bTexture;
 @end
 
 @implementation CMIColourConstancyCoreV1
 
-- (CMIColourConstancyCoreV1)initWithMetalContext:(id)a3
+- (CMIColourConstancyCoreV1)initWithMetalContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v26.receiver = self;
   v26.super_class = CMIColourConstancyCoreV1;
   v6 = [(CMIColourConstancyCoreV1 *)&v26 init];
@@ -24,13 +24,13 @@ LABEL_23:
     goto LABEL_12;
   }
 
-  if (!v5)
+  if (!contextCopy)
   {
     sub_116F8();
     goto LABEL_23;
   }
 
-  objc_storeStrong(&v6->_metalContext, a3);
+  objc_storeStrong(&v6->_metalContext, context);
   v8 = [objc_opt_new() initWithMetalContext:v7->_metalContext];
   registrationComponent = v7->_registrationComponent;
   v7->_registrationComponent = v8;
@@ -147,45 +147,45 @@ LABEL_12:
   return 0;
 }
 
-- (int)prepareToProcessWithConfig:(id)a3 processingType:(unsigned int)a4
+- (int)prepareToProcessWithConfig:(id)config processingType:(unsigned int)type
 {
-  v6 = a3;
-  if (!v6)
+  configCopy = config;
+  if (!configCopy)
   {
     sub_12190();
-    v8 = 0;
+    newTextureDescriptor = 0;
     v52 = 8;
     goto LABEL_48;
   }
 
-  objc_storeStrong(&self->_config, a3);
-  v7 = [(FigMetalContext *)self->_metalContext allocator];
-  v8 = [v7 newTextureDescriptor];
+  objc_storeStrong(&self->_config, config);
+  allocator = [(FigMetalContext *)self->_metalContext allocator];
+  newTextureDescriptor = [allocator newTextureDescriptor];
 
-  if (!v8)
+  if (!newTextureDescriptor)
   {
     sub_1211C();
     v52 = 7;
     goto LABEL_48;
   }
 
-  v9 = [v8 desc];
-  [v9 setTextureType:2];
+  desc = [newTextureDescriptor desc];
+  [desc setTextureType:2];
 
-  v10 = [(CMIColourConstancyCoreConfigurationV1 *)self->_config thumbnailWidth];
-  v11 = [v8 desc];
-  [v11 setWidth:v10];
+  thumbnailWidth = [(CMIColourConstancyCoreConfigurationV1 *)self->_config thumbnailWidth];
+  desc2 = [newTextureDescriptor desc];
+  [desc2 setWidth:thumbnailWidth];
 
-  v12 = [(CMIColourConstancyCoreConfigurationV1 *)self->_config thumbnailHeight];
-  v13 = [v8 desc];
-  [v13 setHeight:v12];
+  thumbnailHeight = [(CMIColourConstancyCoreConfigurationV1 *)self->_config thumbnailHeight];
+  desc3 = [newTextureDescriptor desc];
+  [desc3 setHeight:thumbnailHeight];
 
-  v14 = [v8 desc];
-  [v14 setPixelFormat:115];
+  desc4 = [newTextureDescriptor desc];
+  [desc4 setPixelFormat:115];
 
-  [v8 setLabel:0];
-  v15 = [(FigMetalContext *)self->_metalContext allocator];
-  v16 = [v15 newTextureWithDescriptor:v8];
+  [newTextureDescriptor setLabel:0];
+  allocator2 = [(FigMetalContext *)self->_metalContext allocator];
+  v16 = [allocator2 newTextureWithDescriptor:newTextureDescriptor];
   flashThumbnailRGBTexture = self->_flashThumbnailRGBTexture;
   self->_flashThumbnailRGBTexture = v16;
 
@@ -197,9 +197,9 @@ LABEL_38:
     goto LABEL_48;
   }
 
-  [v8 setLabel:0];
-  v18 = [(FigMetalContext *)self->_metalContext allocator];
-  v19 = [v18 newTextureWithDescriptor:v8];
+  [newTextureDescriptor setLabel:0];
+  allocator3 = [(FigMetalContext *)self->_metalContext allocator];
+  v19 = [allocator3 newTextureWithDescriptor:newTextureDescriptor];
   ambientSensorRegisteredThumbnailRGBATexture = self->_ambientSensorRegisteredThumbnailRGBATexture;
   self->_ambientSensorRegisteredThumbnailRGBATexture = v19;
 
@@ -209,9 +209,9 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  [v8 setLabel:0];
-  v21 = [(FigMetalContext *)self->_metalContext allocator];
-  v22 = [v21 newTextureWithDescriptor:v8];
+  [newTextureDescriptor setLabel:0];
+  allocator4 = [(FigMetalContext *)self->_metalContext allocator];
+  v22 = [allocator4 newTextureWithDescriptor:newTextureDescriptor];
   flashSensorThumbnailRGBATexture = self->_flashSensorThumbnailRGBATexture;
   self->_flashSensorThumbnailRGBATexture = v22;
 
@@ -221,9 +221,9 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  [v8 setLabel:0];
-  v24 = [(FigMetalContext *)self->_metalContext allocator];
-  v25 = [v24 newTextureWithDescriptor:v8];
+  [newTextureDescriptor setLabel:0];
+  allocator5 = [(FigMetalContext *)self->_metalContext allocator];
+  v25 = [allocator5 newTextureWithDescriptor:newTextureDescriptor];
   ambientScaledLSCThumbnailRGBTexture = self->_ambientScaledLSCThumbnailRGBTexture;
   self->_ambientScaledLSCThumbnailRGBTexture = v25;
 
@@ -233,9 +233,9 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  [v8 setLabel:0];
-  v27 = [(FigMetalContext *)self->_metalContext allocator];
-  v28 = [v27 newTextureWithDescriptor:v8];
+  [newTextureDescriptor setLabel:0];
+  allocator6 = [(FigMetalContext *)self->_metalContext allocator];
+  v28 = [allocator6 newTextureWithDescriptor:newTextureDescriptor];
   flashScaledLSCThumbnailRGBTexture = self->_flashScaledLSCThumbnailRGBTexture;
   self->_flashScaledLSCThumbnailRGBTexture = v28;
 
@@ -245,9 +245,9 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  [v8 setLabel:0];
-  v30 = [(FigMetalContext *)self->_metalContext allocator];
-  v31 = [v30 newTextureWithDescriptor:v8];
+  [newTextureDescriptor setLabel:0];
+  allocator7 = [(FigMetalContext *)self->_metalContext allocator];
+  v31 = [allocator7 newTextureWithDescriptor:newTextureDescriptor];
   strobeComponentThumbnailRGBATexture = self->_strobeComponentThumbnailRGBATexture;
   self->_strobeComponentThumbnailRGBATexture = v31;
 
@@ -257,9 +257,9 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  [v8 setLabel:0];
-  v33 = [(FigMetalContext *)self->_metalContext allocator];
-  v34 = [v33 newTextureWithDescriptor:v8];
+  [newTextureDescriptor setLabel:0];
+  allocator8 = [(FigMetalContext *)self->_metalContext allocator];
+  v34 = [allocator8 newTextureWithDescriptor:newTextureDescriptor];
   strobeCorrectedThumbnailRGBTexture = self->_strobeCorrectedThumbnailRGBTexture;
   self->_strobeCorrectedThumbnailRGBTexture = v34;
 
@@ -269,12 +269,12 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  v36 = [v8 desc];
-  [v36 setPixelFormat:125];
+  desc5 = [newTextureDescriptor desc];
+  [desc5 setPixelFormat:125];
 
-  [v8 setLabel:0];
-  v37 = [(FigMetalContext *)self->_metalContext allocator];
-  v38 = [v37 newTextureWithDescriptor:v8];
+  [newTextureDescriptor setLabel:0];
+  allocator9 = [(FigMetalContext *)self->_metalContext allocator];
+  v38 = [allocator9 newTextureWithDescriptor:newTextureDescriptor];
   strobeBalancedThumbnailRGBTexture = self->_strobeBalancedThumbnailRGBTexture;
   self->_strobeBalancedThumbnailRGBTexture = v38;
 
@@ -284,9 +284,9 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  [v8 setLabel:0];
-  v40 = [(FigMetalContext *)self->_metalContext allocator];
-  v41 = [v40 newTextureWithDescriptor:v8];
+  [newTextureDescriptor setLabel:0];
+  allocator10 = [(FigMetalContext *)self->_metalContext allocator];
+  v41 = [allocator10 newTextureWithDescriptor:newTextureDescriptor];
   strobeReconstructedBalancedThumbnailRGBTexture = self->_strobeReconstructedBalancedThumbnailRGBTexture;
   self->_strobeReconstructedBalancedThumbnailRGBTexture = v41;
 
@@ -296,12 +296,12 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  v43 = [v8 desc];
-  [v43 setPixelFormat:25];
+  desc6 = [newTextureDescriptor desc];
+  [desc6 setPixelFormat:25];
 
-  [v8 setLabel:0];
-  v44 = [(FigMetalContext *)self->_metalContext allocator];
-  v45 = [v44 newTextureWithDescriptor:v8];
+  [newTextureDescriptor setLabel:0];
+  allocator11 = [(FigMetalContext *)self->_metalContext allocator];
+  v45 = [allocator11 newTextureWithDescriptor:newTextureDescriptor];
   strobeBeamProfileGainRTexture = self->_strobeBeamProfileGainRTexture;
   self->_strobeBeamProfileGainRTexture = v45;
 
@@ -311,9 +311,9 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  [v8 setLabel:0];
-  v47 = [(FigMetalContext *)self->_metalContext allocator];
-  v48 = [v47 newTextureWithDescriptor:v8];
+  [newTextureDescriptor setLabel:0];
+  allocator12 = [(FigMetalContext *)self->_metalContext allocator];
+  v48 = [allocator12 newTextureWithDescriptor:newTextureDescriptor];
   strobeIlluminationConfidenceRTexture = self->_strobeIlluminationConfidenceRTexture;
   self->_strobeIlluminationConfidenceRTexture = v48;
 
@@ -324,8 +324,8 @@ LABEL_38:
   }
 
   sensorSpaceConversionComponent = self->_sensorSpaceConversionComponent;
-  v51 = [v6 sensorSpaceConversionConfig];
-  v52 = [(CMIColourConstancySensorSpaceConversionV1 *)sensorSpaceConversionComponent prepareToProcessWithConfig:v51];
+  sensorSpaceConversionConfig = [configCopy sensorSpaceConversionConfig];
+  v52 = [(CMIColourConstancySensorSpaceConversionV1 *)sensorSpaceConversionComponent prepareToProcessWithConfig:sensorSpaceConversionConfig];
 
   if (v52)
   {
@@ -342,8 +342,8 @@ LABEL_38:
   }
 
   strobeCorrectionComponent = self->_strobeCorrectionComponent;
-  v55 = [v6 strobeCorrectionConfig];
-  v52 = [(CMIColourConstancyStrobeCorrectionV1 *)strobeCorrectionComponent prepareToProcessWithConfig:v55];
+  strobeCorrectionConfig = [configCopy strobeCorrectionConfig];
+  v52 = [(CMIColourConstancyStrobeCorrectionV1 *)strobeCorrectionComponent prepareToProcessWithConfig:strobeCorrectionConfig];
 
   if (v52)
   {
@@ -352,8 +352,8 @@ LABEL_38:
   }
 
   whiteBalanceStrobeComponent = self->_whiteBalanceStrobeComponent;
-  v57 = [v6 whiteBalanceStrobeConfig];
-  v52 = [(CMIColourConstancyWhiteBalanceStrobeV1 *)whiteBalanceStrobeComponent prepareToProcessWithConfig:v57];
+  whiteBalanceStrobeConfig = [configCopy whiteBalanceStrobeConfig];
+  v52 = [(CMIColourConstancyWhiteBalanceStrobeV1 *)whiteBalanceStrobeComponent prepareToProcessWithConfig:whiteBalanceStrobeConfig];
 
   if (v52)
   {
@@ -362,8 +362,8 @@ LABEL_38:
   }
 
   toneCompressionComponent = self->_toneCompressionComponent;
-  v59 = [v6 toneCompressionConfig];
-  v52 = [(CMIColourConstancyToneCompressionV1 *)toneCompressionComponent prepareToProcessWithConfig:v59];
+  toneCompressionConfig = [configCopy toneCompressionConfig];
+  v52 = [(CMIColourConstancyToneCompressionV1 *)toneCompressionComponent prepareToProcessWithConfig:toneCompressionConfig];
 
   if (v52)
   {
@@ -372,8 +372,8 @@ LABEL_38:
   }
 
   colourAccuracyConfidenceComponent = self->_colourAccuracyConfidenceComponent;
-  v61 = [v6 colourAccuracyConfidenceConfig];
-  v52 = [(CMIColourConstancyConfidenceV1 *)colourAccuracyConfidenceComponent prepareToProcessWithConfig:v61];
+  colourAccuracyConfidenceConfig = [configCopy colourAccuracyConfidenceConfig];
+  v52 = [(CMIColourConstancyConfidenceV1 *)colourAccuracyConfidenceComponent prepareToProcessWithConfig:colourAccuracyConfidenceConfig];
 
   if (v52)
   {
@@ -382,8 +382,8 @@ LABEL_38:
   }
 
   styleTransferComponent = self->_styleTransferComponent;
-  v63 = [v6 styleTransferConfig];
-  v52 = [(CMIColourConstancyStyleTransferV1 *)styleTransferComponent prepareToProcessWithConfig:v63];
+  styleTransferConfig = [configCopy styleTransferConfig];
+  v52 = [(CMIColourConstancyStyleTransferV1 *)styleTransferComponent prepareToProcessWithConfig:styleTransferConfig];
 
   if (v52)
   {
@@ -409,8 +409,8 @@ LABEL_47:
     goto LABEL_47;
   }
 
-  v67 = [v6 clippingRecoveryConfig];
-  v52 = [(CMIColourConstancyClippingRecoveryV1 *)v66 prepareToProcessWithConfig:v67];
+  clippingRecoveryConfig = [configCopy clippingRecoveryConfig];
+  v52 = [(CMIColourConstancyClippingRecoveryV1 *)v66 prepareToProcessWithConfig:clippingRecoveryConfig];
 
   if (v52)
   {
@@ -425,29 +425,29 @@ LABEL_48:
 - (int)finishProcessing
 {
   [(FigMetalContext *)self->_metalContext waitForIdle];
-  v3 = [(CMIColourConstancyStyleTransferV1 *)self->_styleTransferComponent finishProcessing];
-  if (v3)
+  finishProcessing = [(CMIColourConstancyStyleTransferV1 *)self->_styleTransferComponent finishProcessing];
+  if (finishProcessing)
   {
     sub_12204();
   }
 
-  return v3;
+  return finishProcessing;
 }
 
-- (unint64_t)applyWithAmbientLumaTexture:(double)a3 ambientChromaTexture:(float)a4 flashLumaTexture:(float)a5 flashChromaTexture:(double)a6 ambientYUVOffsets:(double)a7 flashYUVOffsets:(double)a8 ambientLSCGainsTexture:(float)a9 flashLSCGainsTexture:(uint64_t)a10 ambientLSCMaxGain:(void *)a11 flashLSCMaxGain:(void *)a12 ambientWhitePoint:(void *)a13 flashWhitePoint:(void *)a14 strobeWhitePoint:(void *)a15 ambientIntegrationTime:(void *)a16 flashIntegrationTime:(float)a17 cropRect:(uint64_t)a18 LSCCropRect:(CMIColourConstancyLSCCropRect *)a19 fullSizeDimensions:(_DWORD *)a20 strobeCCM:(id)a21 outputColourAccuracyConfidenceTexture:(uint64_t)a22 outputLumaTexture:(id)a23 outputChromaTexture:(uint64_t)a24 outputLinearRGBTexture:(double)a25
+- (unint64_t)applyWithAmbientLumaTexture:(double)texture ambientChromaTexture:(float)chromaTexture flashLumaTexture:(float)lumaTexture flashChromaTexture:(double)flashChromaTexture ambientYUVOffsets:(double)offsets flashYUVOffsets:(double)vOffsets ambientLSCGainsTexture:(float)gainsTexture flashLSCGainsTexture:(uint64_t)self0 ambientLSCMaxGain:(void *)self1 flashLSCMaxGain:(void *)self2 ambientWhitePoint:(void *)self3 flashWhitePoint:(void *)self4 strobeWhitePoint:(void *)self5 ambientIntegrationTime:(void *)self6 flashIntegrationTime:(float)self7 cropRect:(uint64_t)self8 LSCCropRect:(CMIColourConstancyLSCCropRect *)self9 fullSizeDimensions:(_DWORD *)dimensions strobeCCM:(id)m outputColourAccuracyConfidenceTexture:(uint64_t)confidenceTexture outputLumaTexture:(id)outputLumaTexture outputChromaTexture:(uint64_t)outputChromaTexture outputLinearRGBTexture:(double)bTexture
 {
-  v41 = a11;
-  v42 = a12;
-  v43 = a13;
-  v44 = a14;
-  v95 = a15;
-  v94 = a16;
+  gainCopy = gain;
+  maxGainCopy = maxGain;
+  pointCopy = point;
+  whitePointCopy = whitePoint;
+  strobeWhitePointCopy = strobeWhitePoint;
+  timeCopy = time;
   v87 = a29;
   v93 = a30;
   v92 = a31;
   v91 = a32;
-  v45 = [*(a1 + 8) commandBuffer];
-  if (!v45)
+  commandBuffer = [*(self + 8) commandBuffer];
+  if (!commandBuffer)
   {
     sub_1289C(&v96);
     v79 = v96;
@@ -456,8 +456,8 @@ LABEL_31:
     goto LABEL_17;
   }
 
-  v46 = v45;
-  v47 = [*(a1 + 24) registerImage:v41 referenceLumaTexture:v43];
+  v46 = commandBuffer;
+  v47 = [*(self + 24) registerImage:gainCopy referenceLumaTexture:pointCopy];
   if (v47)
   {
     v79 = v47;
@@ -465,11 +465,11 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v49 = *(a1 + 32);
+  v49 = *(self + 32);
   if (v49)
   {
-    [*(a1 + 24) homography];
-    v50 = [v49 applyClippedRegionRecovery:v46 inputAmbientLumaTexture:v41 inputAmbientChromaTexture:v42 inoutFlashLumaTexture:v43 inoutFlashChromaTexture:v44 ambientToFlashRegistrationHomography:?];
+    [*(self + 24) homography];
+    v50 = [v49 applyClippedRegionRecovery:v46 inputAmbientLumaTexture:gainCopy inputAmbientChromaTexture:maxGainCopy inoutFlashLumaTexture:pointCopy inoutFlashChromaTexture:whitePointCopy ambientToFlashRegistrationHomography:?];
     if (v50)
     {
       v79 = v50;
@@ -478,14 +478,14 @@ LABEL_31:
     }
   }
 
-  v51 = *(a1 + 40);
-  v53 = *(a1 + 128);
-  v52 = *(a1 + 136);
-  v54 = *(a1 + 120);
-  v96 = *a20;
-  v97 = a20[4];
-  *&v48 = a5;
-  v55 = [v51 calculateScaledLSCGainsAndStrobeBeamProfile:v46 ambientLSCGainsTexture:v95 flashLSCGainsTexture:v94 cropRect:a18 LSCCropRect:a19 fullSizeDimensions:&v96 ambientLSCMaxGain:*&a21 flashLSCMaxGain:COERCE_DOUBLE(__PAIR64__(DWORD1(v96) outputAmbientScaledLSCGainsRGBTexture:LODWORD(a4))) outputFlashScaledLSCGainsRGBTexture:v48 outputStrobeBeamProfileGainRTexture:{v54, v52, v53}];
+  v51 = *(self + 40);
+  v53 = *(self + 128);
+  v52 = *(self + 136);
+  v54 = *(self + 120);
+  v96 = *dimensions;
+  v97 = dimensions[4];
+  *&v48 = lumaTexture;
+  v55 = [v51 calculateScaledLSCGainsAndStrobeBeamProfile:v46 ambientLSCGainsTexture:strobeWhitePointCopy flashLSCGainsTexture:timeCopy cropRect:rect LSCCropRect:cropRect fullSizeDimensions:&v96 ambientLSCMaxGain:*&m flashLSCMaxGain:COERCE_DOUBLE(__PAIR64__(DWORD1(v96) outputAmbientScaledLSCGainsRGBTexture:LODWORD(chromaTexture))) outputFlashScaledLSCGainsRGBTexture:v48 outputStrobeBeamProfileGainRTexture:{v54, v52, v53}];
   if (v55)
   {
     v79 = v55;
@@ -493,10 +493,10 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v56 = *(a1 + 40);
-  v57 = *(a1 + 120);
-  [*(a1 + 24) homography];
-  v61 = [v56 convertYUVtoRegisteredNormSensorSpaceThumbnail:v46 inputLumaTexture:v41 inputChromaTexture:v42 appliedScaledLSCGainsRGBTexture:v57 baseScaledLSCGainsRGBTexture:v57 yuvOffsets:a2 cropRect:v58 registrationHomography:v59 appliedWhitePoint:v60 integrationTimeScale:a6 outputWarpedSensorThumbnailRGBATexture:{COERCE_DOUBLE(__PAIR64__(HIDWORD(v60), a17 / fmaxf(a9, 0.00000011921))), a18, a19, *(a1 + 104)}];
+  v56 = *(self + 40);
+  v57 = *(self + 120);
+  [*(self + 24) homography];
+  v61 = [v56 convertYUVtoRegisteredNormSensorSpaceThumbnail:v46 inputLumaTexture:gainCopy inputChromaTexture:maxGainCopy appliedScaledLSCGainsRGBTexture:v57 baseScaledLSCGainsRGBTexture:v57 yuvOffsets:a2 cropRect:v58 registrationHomography:v59 appliedWhitePoint:v60 integrationTimeScale:flashChromaTexture outputWarpedSensorThumbnailRGBATexture:{COERCE_DOUBLE(__PAIR64__(HIDWORD(v60), integrationTime / fmaxf(gainsTexture, 0.00000011921))), rect, cropRect, *(self + 104)}];
   if (v61)
   {
     v79 = v61;
@@ -504,9 +504,9 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v63 = *(a1 + 96);
+  v63 = *(self + 96);
   LODWORD(v62) = 1.0;
-  v64 = [*(a1 + 40) convertYUVtoNormSensorSpaceThumbnail:v46 inputLumaTexture:v43 inputChromaTexture:v44 appliedScaledLSCGainsRGBTexture:*(a1 + 136) baseScaledLSCGainsRGBTexture:*(a1 + 120) yuvOffsets:a3 cropRect:a7 appliedWhitePoint:v62 integrationTimeScale:a18 outputBalancedThumbnailRGBATexture:a19 outputSensorThumbnailRGBATexture:{v63, *(a1 + 112)}];
+  v64 = [*(self + 40) convertYUVtoNormSensorSpaceThumbnail:v46 inputLumaTexture:pointCopy inputChromaTexture:whitePointCopy appliedScaledLSCGainsRGBTexture:*(self + 136) baseScaledLSCGainsRGBTexture:*(self + 120) yuvOffsets:texture cropRect:offsets appliedWhitePoint:v62 integrationTimeScale:rect outputBalancedThumbnailRGBATexture:cropRect outputSensorThumbnailRGBATexture:{v63, *(self + 112)}];
   if (v64)
   {
     v79 = v64;
@@ -514,7 +514,7 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v65 = [*(a1 + 48) encodeStrobeComponentCalculate:v46 flashSensorRGBATexture:*(a1 + 112) ambientSensorRGBATexture:*(a1 + 104) strobeWhitePoint:*(a1 + 144) outputStrobeComponentRGBATexture:a8];
+  v65 = [*(self + 48) encodeStrobeComponentCalculate:v46 flashSensorRGBATexture:*(self + 112) ambientSensorRGBATexture:*(self + 104) strobeWhitePoint:*(self + 144) outputStrobeComponentRGBATexture:vOffsets];
   if (v65)
   {
     v79 = v65;
@@ -522,7 +522,7 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v66 = [*(a1 + 56) applyStrobeCorrection:v46 strobeComponentRGBTexture:*(a1 + 144) strobeBeamProfileGainRTexture:*(a1 + 128) outputStrobeCorrectedRGBTexture:*(a1 + 152)];
+  v66 = [*(self + 56) applyStrobeCorrection:v46 strobeComponentRGBTexture:*(self + 144) strobeBeamProfileGainRTexture:*(self + 128) outputStrobeCorrectedRGBTexture:*(self + 152)];
   if (v66)
   {
     v79 = v66;
@@ -530,7 +530,7 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v67 = [*(a1 + 80) calculateStrobeIlluminationConfidence:v46 strobeComponentRGBTexture:*(a1 + 144) outputStrobeIlluminationConfidenceRTexture:*(a1 + 168)];
+  v67 = [*(self + 80) calculateStrobeIlluminationConfidence:v46 strobeComponentRGBTexture:*(self + 144) outputStrobeIlluminationConfidenceRTexture:*(self + 168)];
   if (v67)
   {
     v79 = v67;
@@ -538,7 +538,7 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v68 = [*(a1 + 64) applyWhiteBalanceAndFlashFusion:v46 strobeSensorRGBTexture:*(a1 + 152) flashBalancedRGBTexture:*(a1 + 96) strobeIlluminationConfidenceRTexture:*(a1 + 168) strobeWhitePoint:*(a1 + 160) outputStrobeBalancedRGBTexture:a8];
+  v68 = [*(self + 64) applyWhiteBalanceAndFlashFusion:v46 strobeSensorRGBTexture:*(self + 152) flashBalancedRGBTexture:*(self + 96) strobeIlluminationConfidenceRTexture:*(self + 168) strobeWhitePoint:*(self + 160) outputStrobeBalancedRGBTexture:vOffsets];
   if (v68)
   {
     v79 = v68;
@@ -546,7 +546,7 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v69 = [*(a1 + 72) calculateToneCompressionCurve:v46 strobeComponentRGBTexture:*(a1 + 160) strobeCCM:?];
+  v69 = [*(self + 72) calculateToneCompressionCurve:v46 strobeComponentRGBTexture:*(self + 160) strobeCCM:?];
   if (v69)
   {
     v79 = v69;
@@ -554,59 +554,59 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v83 = v41;
-  v84 = v42;
-  v70 = *(a1 + 136);
-  v72 = *(a1 + 88);
-  v71 = *(a1 + 96);
-  v73 = *(a1 + 160);
-  v74 = [*(a1 + 72) toneCompressionCurveTexture];
-  v75 = v44;
-  v76 = v74;
+  v83 = gainCopy;
+  v84 = maxGainCopy;
+  v70 = *(self + 136);
+  v72 = *(self + 88);
+  v71 = *(self + 96);
+  v73 = *(self + 160);
+  toneCompressionCurveTexture = [*(self + 72) toneCompressionCurveTexture];
+  v75 = whitePointCopy;
+  v76 = toneCompressionCurveTexture;
   v77 = v72;
   v78 = v75;
-  v79 = [v77 applyStyleTransferWithBufferClearing:v43 inputChromaTexture:a3 appliedScaledLSCGainsRGBTexture:a7 sourceRGBTexture:*&a23 targetRGBTexture:a25 toneCompressionCurveTexture:a27 inputYUVOffsets:a18 cropRect:a19 appliedWhitePoint:*(a1 + 176) strobeCCM:v93 outputReconstructedTargetRGBTexture:v92 outputLumaTexture:v91 outputChromaTexture:? outputLinearRGBTexture:?];
+  v79 = [v77 applyStyleTransferWithBufferClearing:pointCopy inputChromaTexture:texture appliedScaledLSCGainsRGBTexture:offsets sourceRGBTexture:*&outputLumaTexture targetRGBTexture:bTexture toneCompressionCurveTexture:a27 inputYUVOffsets:rect cropRect:cropRect appliedWhitePoint:*(self + 176) strobeCCM:v93 outputReconstructedTargetRGBTexture:v92 outputLumaTexture:v91 outputChromaTexture:? outputLinearRGBTexture:?];
 
   if (v79)
   {
     sub_1279C(v46);
-    v41 = v83;
-    v42 = v84;
-    v44 = v78;
+    gainCopy = v83;
+    maxGainCopy = v84;
+    whitePointCopy = v78;
     goto LABEL_31;
   }
 
-  v80 = [*(a1 + 8) commandBuffer];
+  commandBuffer2 = [*(self + 8) commandBuffer];
 
   v81 = v87;
-  v79 = [*(a1 + 80) calculateColourAccuracyConfidence:v80 strobeComponentRGBATexture:*(a1 + 144) strobeBalancedThumbnailRGBTexture:*(a1 + 160) strobeReconstructedBalancedThumbnailRGBTexture:*(a1 + 176) outputColourAccuracyConfidenceTexture:v87];
-  v41 = v83;
-  v42 = v84;
+  v79 = [*(self + 80) calculateColourAccuracyConfidence:commandBuffer2 strobeComponentRGBATexture:*(self + 144) strobeBalancedThumbnailRGBTexture:*(self + 160) strobeReconstructedBalancedThumbnailRGBTexture:*(self + 176) outputColourAccuracyConfidenceTexture:v87];
+  gainCopy = v83;
+  maxGainCopy = v84;
   if (v79)
   {
-    sub_1281C(v80);
+    sub_1281C(commandBuffer2);
   }
 
   else
   {
-    [*(a1 + 8) commit];
+    [*(self + 8) commit];
   }
 
-  v44 = v78;
+  whitePointCopy = v78;
 LABEL_17:
 
   return v79;
 }
 
-- (int)getCenterWeightedColourAccuracyConfidenceLevel:(float *)a3
+- (int)getCenterWeightedColourAccuracyConfidenceLevel:(float *)level
 {
-  if (a3)
+  if (level)
   {
-    v4 = [(CMIColourConstancyConfidenceV1 *)self->_colourAccuracyConfidenceComponent globalCenterWeightedConfidenceLevelBuffer];
-    v5 = [v4 contents];
+    globalCenterWeightedConfidenceLevelBuffer = [(CMIColourConstancyConfidenceV1 *)self->_colourAccuracyConfidenceComponent globalCenterWeightedConfidenceLevelBuffer];
+    contents = [globalCenterWeightedConfidenceLevelBuffer contents];
 
     result = 0;
-    *a3 = *v5;
+    *level = *contents;
   }
 
   else

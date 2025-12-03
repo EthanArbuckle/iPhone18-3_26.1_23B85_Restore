@@ -6,9 +6,9 @@
 
 - (CFIndex)_cfStreamError
 {
-  if (object_getClass(a1) == NSCFInputStream)
+  if (object_getClass(self) == NSCFInputStream)
   {
-    return CFReadStreamGetError(a1).domain;
+    return CFReadStreamGetError(self).domain;
   }
 
   else

@@ -1,29 +1,29 @@
 @interface ATXHeroAndClipDebugSampler
-- (ATXHeroAndClipDebugSampler)initWithSampleIndices:(id)a3;
-- (id)sampleEvents:(id)a3 numToSample:(unint64_t)a4;
+- (ATXHeroAndClipDebugSampler)initWithSampleIndices:(id)indices;
+- (id)sampleEvents:(id)events numToSample:(unint64_t)sample;
 @end
 
 @implementation ATXHeroAndClipDebugSampler
 
-- (ATXHeroAndClipDebugSampler)initWithSampleIndices:(id)a3
+- (ATXHeroAndClipDebugSampler)initWithSampleIndices:(id)indices
 {
-  v5 = a3;
+  indicesCopy = indices;
   v9.receiver = self;
   v9.super_class = ATXHeroAndClipDebugSampler;
   v6 = [(ATXHeroAndClipDebugSampler *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_indicesToSample, a3);
+    objc_storeStrong(&v6->_indicesToSample, indices);
   }
 
   return v7;
 }
 
-- (id)sampleEvents:(id)a3 numToSample:(unint64_t)a4
+- (id)sampleEvents:(id)events numToSample:(unint64_t)sample
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  eventsCopy = events;
   v7 = objc_opt_new();
   v19 = 0u;
   v20 = 0u;
@@ -45,10 +45,10 @@
           objc_enumerationMutation(v8);
         }
 
-        v14 = [*(*(&v19 + 1) + 8 * i) unsignedIntegerValue];
-        if (v14 < [v6 count] && v11 < a4)
+        unsignedIntegerValue = [*(*(&v19 + 1) + 8 * i) unsignedIntegerValue];
+        if (unsignedIntegerValue < [eventsCopy count] && v11 < sample)
         {
-          v16 = [v6 objectAtIndexedSubscript:v14];
+          v16 = [eventsCopy objectAtIndexedSubscript:unsignedIntegerValue];
           [v7 addObject:v16];
 
           ++v11;

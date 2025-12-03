@@ -1,7 +1,7 @@
 @interface RENotifierAudioUnit
 + (void)registerToAudioUnit;
-- (BOOL)allocateRenderResourcesAndReturnError:(id *)a3;
-- (RENotifierAudioUnit)initWithComponentDescription:(AudioComponentDescription *)a3 options:(unsigned int)a4 error:(id *)a5;
+- (BOOL)allocateRenderResourcesAndReturnError:(id *)error;
+- (RENotifierAudioUnit)initWithComponentDescription:(AudioComponentDescription *)description options:(unsigned int)options error:(id *)error;
 - (id)internalRenderBlock;
 - (void)deallocateRenderResources;
 @end
@@ -25,13 +25,13 @@ void __42__RENotifierAudioUnit_registerToAudioUnit__block_invoke()
   [v0 registerSubclass:v1 asComponentDescription:&v2 name:@"RE Notifier Audio Unit" version:1];
 }
 
-- (RENotifierAudioUnit)initWithComponentDescription:(AudioComponentDescription *)a3 options:(unsigned int)a4 error:(id *)a5
+- (RENotifierAudioUnit)initWithComponentDescription:(AudioComponentDescription *)description options:(unsigned int)options error:(id *)error
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v21 = *a3;
+  v21 = *description;
   v20.receiver = self;
   v20.super_class = RENotifierAudioUnit;
-  v5 = [(AUAudioUnit *)&v20 initWithComponentDescription:&v21 options:*&a4 error:a5];
+  v5 = [(AUAudioUnit *)&v20 initWithComponentDescription:&v21 options:*&options error:error];
   if (v5)
   {
     v6 = [objc_alloc(MEMORY[0x1E6958418]) initStandardFormatWithSampleRate:1 channels:48000.0];
@@ -63,31 +63,31 @@ void __42__RENotifierAudioUnit_registerToAudioUnit__block_invoke()
   return v5;
 }
 
-- (BOOL)allocateRenderResourcesAndReturnError:(id *)a3
+- (BOOL)allocateRenderResourcesAndReturnError:(id *)error
 {
   atomic_store(0, &self->_hasNotified);
-  v5 = [(RENotifierAudioUnit *)self didAllocate];
+  didAllocate = [(RENotifierAudioUnit *)self didAllocate];
 
-  if (v5)
+  if (didAllocate)
   {
-    v6 = [(RENotifierAudioUnit *)self didAllocate];
-    v6[2]();
+    didAllocate2 = [(RENotifierAudioUnit *)self didAllocate];
+    didAllocate2[2]();
   }
 
   [(AUAudioUnit *)self setRenderResourcesAllocated:1];
   v8.receiver = self;
   v8.super_class = RENotifierAudioUnit;
-  return [(AUAudioUnit *)&v8 allocateRenderResourcesAndReturnError:a3];
+  return [(AUAudioUnit *)&v8 allocateRenderResourcesAndReturnError:error];
 }
 
 - (void)deallocateRenderResources
 {
-  v3 = [(RENotifierAudioUnit *)self didDeallocate];
+  didDeallocate = [(RENotifierAudioUnit *)self didDeallocate];
 
-  if (v3)
+  if (didDeallocate)
   {
-    v4 = [(RENotifierAudioUnit *)self didDeallocate];
-    v4[2]();
+    didDeallocate2 = [(RENotifierAudioUnit *)self didDeallocate];
+    didDeallocate2[2]();
   }
 
   [(AUAudioUnit *)self setRenderResourcesAllocated:0];

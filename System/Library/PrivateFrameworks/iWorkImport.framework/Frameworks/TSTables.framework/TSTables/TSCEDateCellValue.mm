@@ -1,32 +1,32 @@
 @interface TSCEDateCellValue
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCellValue:(id)a3;
-- (TSCEDateCellValue)initWithArchive:(const void *)a3 locale:(id)a4;
-- (TSCEDateCellValue)initWithDate:(id)a3 locale:(id)a4;
-- (TSCEDateCellValue)initWithDateValue:(id)a3 locale:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCellValue:(id)value;
+- (TSCEDateCellValue)initWithArchive:(const void *)archive locale:(id)locale;
+- (TSCEDateCellValue)initWithDate:(id)date locale:(id)locale;
+- (TSCEDateCellValue)initWithDateValue:(id)value locale:(id)locale;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)displayString;
 - (id)format;
 - (id)tsceValue;
-- (int64_t)compareToCellValue:(id)a3;
-- (void)encodeToArchive:(void *)a3;
-- (void)setPopulatedCustomFormat:(id)a3;
+- (int64_t)compareToCellValue:(id)value;
+- (void)encodeToArchive:(void *)archive;
+- (void)setPopulatedCustomFormat:(id)format;
 @end
 
 @implementation TSCEDateCellValue
 
-- (TSCEDateCellValue)initWithDate:(id)a3 locale:(id)a4
+- (TSCEDateCellValue)initWithDate:(id)date locale:(id)locale
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  localeCopy = locale;
   v16.receiver = self;
   v16.super_class = TSCEDateCellValue;
-  v8 = [(TSCECellValue *)&v16 initWithLocale:v7];
+  v8 = [(TSCECellValue *)&v16 initWithLocale:localeCopy];
   v12 = v8;
   if (v8)
   {
     v8->super._valueType = 3;
-    v13 = objc_msgSend_dateValue_(TSCEDateValue, v9, v6, v10, v11);
+    v13 = objc_msgSend_dateValue_(TSCEDateValue, v9, dateCopy, v10, v11);
     dateValue = v12->_dateValue;
     v12->_dateValue = v13;
   }
@@ -34,21 +34,21 @@
   return v12;
 }
 
-- (TSCEDateCellValue)initWithDateValue:(id)a3 locale:(id)a4
+- (TSCEDateCellValue)initWithDateValue:(id)value locale:(id)locale
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  localeCopy = locale;
   v23.receiver = self;
   v23.super_class = TSCEDateCellValue;
-  v8 = [(TSCECellValue *)&v23 initWithLocale:v7];
+  v8 = [(TSCECellValue *)&v23 initWithLocale:localeCopy];
   v13 = v8;
   if (v8)
   {
     v8->super._valueType = 3;
-    v18 = objc_msgSend_date(v6, v9, v10, v11, v12);
-    if (v6)
+    v18 = objc_msgSend_date(valueCopy, v9, v10, v11, v12);
+    if (valueCopy)
     {
-      objc_msgSend_format(v6, v14, v15, v16, v17);
+      objc_msgSend_format(valueCopy, v14, v15, v16, v17);
     }
 
     else
@@ -64,7 +64,7 @@
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TSCEDateCellValue alloc];
   dateValue = self->_dateValue;
@@ -129,16 +129,16 @@
   return v10;
 }
 
-- (BOOL)isEqualToCellValue:(id)a3
+- (BOOL)isEqualToCellValue:(id)value
 {
-  v4 = a3;
-  if (objc_msgSend_valueType(v4, v5, v6, v7, v8) != 3)
+  valueCopy = value;
+  if (objc_msgSend_valueType(valueCopy, v5, v6, v7, v8) != 3)
   {
     isEqualToDate = 0;
     goto LABEL_12;
   }
 
-  v17 = objc_msgSend_dateValue(v4, v9, v10, v11, v12);
+  v17 = objc_msgSend_dateValue(valueCopy, v9, v10, v11, v12);
   dateValue = self->_dateValue;
   if (!dateValue)
   {
@@ -178,21 +178,21 @@ LABEL_12:
   return isEqualToDate;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v4.receiver = self;
   v4.super_class = TSCEDateCellValue;
-  return [(TSCECellValue *)&v4 isEqual:a3];
+  return [(TSCECellValue *)&v4 isEqual:equal];
 }
 
-- (int64_t)compareToCellValue:(id)a3
+- (int64_t)compareToCellValue:(id)value
 {
-  v8 = a3;
-  v9 = v8[8];
+  valueCopy = value;
+  v9 = valueCopy[8];
   v10 = 1;
   if (v9 <= 2)
   {
-    if (v8[8])
+    if (valueCopy[8])
     {
       v30 = v9 == 2;
     }
@@ -222,7 +222,7 @@ LABEL_12:
       {
         v11 = objc_msgSend_dateValue(self, v4, v5, v6, v7);
         v16 = objc_msgSend_asDate(v11, v12, v13, v14, v15);
-        v21 = objc_msgSend_dateValue(v8, v17, v18, v19, v20);
+        v21 = objc_msgSend_dateValue(valueCopy, v17, v18, v19, v20);
         v26 = objc_msgSend_asDate(v21, v22, v23, v24, v25);
         v10 = objc_msgSend_compare_(v16, v27, v26, v28, v29);
 
@@ -245,18 +245,18 @@ LABEL_12:
   return v10;
 }
 
-- (TSCEDateCellValue)initWithArchive:(const void *)a3 locale:(id)a4
+- (TSCEDateCellValue)initWithArchive:(const void *)archive locale:(id)locale
 {
   v24.receiver = self;
   v24.super_class = TSCEDateCellValue;
-  v5 = [(TSCECellValue *)&v24 initWithLocale:a4];
+  v5 = [(TSCECellValue *)&v24 initWithLocale:locale];
   v9 = v5;
   if (v5)
   {
     v5->super._valueType = 3;
-    if (*(a3 + 3))
+    if (*(archive + 3))
     {
-      objc_msgSend_formatFromArchive_(MEMORY[0x277D80680], v6, *(a3 + 3), v7, v8);
+      objc_msgSend_formatFromArchive_(MEMORY[0x277D80680], v6, *(archive + 3), v7, v8);
     }
 
     else
@@ -264,15 +264,15 @@ LABEL_12:
       objc_msgSend_formatFromArchive_(MEMORY[0x277D80680], v6, MEMORY[0x277D80740], v7, v8);
     }
     v10 = ;
-    v11 = *(a3 + 4);
+    v11 = *(archive + 4);
     if ((v11 & 8) != 0)
     {
-      v12 = *(a3 + 41);
+      v12 = *(archive + 41);
     }
 
     else if ((v11 & 4) != 0)
     {
-      v12 = *(a3 + 40) ^ 1;
+      v12 = *(archive + 40) ^ 1;
     }
 
     else
@@ -281,7 +281,7 @@ LABEL_12:
     }
 
     TSCEFormat::TSCEFormat(&v23, v10, v12 & 1);
-    v17 = objc_msgSend_dateWithTimeIntervalSinceReferenceDate_(MEMORY[0x277CBEAA8], v13, v14, v15, v16, *(a3 + 4));
+    v17 = objc_msgSend_dateWithTimeIntervalSinceReferenceDate_(MEMORY[0x277CBEAA8], v13, v14, v15, v16, *(archive + 4));
     v20 = objc_msgSend_dateValue_format_(TSCEDateValue, v18, v17, &v23, v19);
     dateValue = v9->_dateValue;
     v9->_dateValue = v20;
@@ -290,13 +290,13 @@ LABEL_12:
   return v9;
 }
 
-- (void)setPopulatedCustomFormat:(id)a3
+- (void)setPopulatedCustomFormat:(id)format
 {
-  v4 = a3;
-  v9 = v4;
-  if (v4)
+  formatCopy = format;
+  v9 = formatCopy;
+  if (formatCopy)
   {
-    v14 = v4;
+    v14 = formatCopy;
   }
 
   else
@@ -318,26 +318,26 @@ LABEL_12:
   }
 }
 
-- (void)encodeToArchive:(void *)a3
+- (void)encodeToArchive:(void *)archive
 {
-  v7 = objc_msgSend_asDate(self->_dateValue, a2, a3, v3, v4);
+  v7 = objc_msgSend_asDate(self->_dateValue, a2, archive, v3, v4);
   objc_msgSend_timeIntervalSinceReferenceDate(v7, v8, v9, v10, v11);
-  *(a3 + 4) |= 2u;
-  *(a3 + 4) = v12;
+  *(archive + 4) |= 2u;
+  *(archive + 4) = v12;
 
   v19 = objc_msgSend_format(self, v13, v14, v15, v16);
-  *(a3 + 4) |= 1u;
-  v20 = *(a3 + 3);
+  *(archive + 4) |= 1u;
+  v20 = *(archive + 3);
   if (!v20)
   {
-    v21 = *(a3 + 1);
+    v21 = *(archive + 1);
     if (v21)
     {
       v21 = *(v21 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v20 = MEMORY[0x223DA02D0](v21);
-    *(a3 + 3) = v20;
+    *(archive + 3) = v20;
   }
 
   objc_msgSend_encodeToArchive_archivingCustomFormats_(v19, v17, v20, 1, v18);
@@ -354,8 +354,8 @@ LABEL_12:
     v27 = 0;
   }
 
-  *(a3 + 4) |= 8u;
-  *(a3 + 41) = v27;
+  *(archive + 4) |= 8u;
+  *(archive + 41) = v27;
 }
 
 @end

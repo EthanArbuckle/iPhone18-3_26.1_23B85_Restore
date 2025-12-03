@@ -1,40 +1,40 @@
 @interface FABuyStorageHook
-- (BOOL)shouldMatchElement:(id)a3;
-- (BOOL)shouldMatchModel:(id)a3;
+- (BOOL)shouldMatchElement:(id)element;
+- (BOOL)shouldMatchModel:(id)model;
 - (RUIServerHookDelegate)delegate;
-- (void)_invokeBuyStorageWithServerAttributes:(id)a3 completion:(id)a4;
-- (void)processObjectModel:(id)a3 completion:(id)a4;
+- (void)_invokeBuyStorageWithServerAttributes:(id)attributes completion:(id)completion;
+- (void)processObjectModel:(id)model completion:(id)completion;
 @end
 
 @implementation FABuyStorageHook
 
-- (BOOL)shouldMatchElement:(id)a3
+- (BOOL)shouldMatchElement:(id)element
 {
-  v3 = [a3 name];
-  v4 = [v3 isEqualToString:@"family:buyStorage"];
+  name = [element name];
+  v4 = [name isEqualToString:@"family:buyStorage"];
 
   return v4;
 }
 
-- (BOOL)shouldMatchModel:(id)a3
+- (BOOL)shouldMatchModel:(id)model
 {
-  v3 = [a3 clientInfo];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277CEC988]];
+  clientInfo = [model clientInfo];
+  v4 = [clientInfo objectForKeyedSubscript:*MEMORY[0x277CEC988]];
   v5 = [v4 isEqualToString:@"family:buyStorage"];
 
   return v5;
 }
 
-- (void)processObjectModel:(id)a3 completion:(id)a4
+- (void)processObjectModel:(id)model completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 clientInfo];
-  [(FABuyStorageHook *)self _invokeBuyStorageWithServerAttributes:v7 completion:v6];
+  completionCopy = completion;
+  clientInfo = [model clientInfo];
+  [(FABuyStorageHook *)self _invokeBuyStorageWithServerAttributes:clientInfo completion:completionCopy];
 }
 
-- (void)_invokeBuyStorageWithServerAttributes:(id)a3 completion:(id)a4
+- (void)_invokeBuyStorageWithServerAttributes:(id)attributes completion:(id)completion
 {
-  v6 = a3;
+  attributesCopy = attributes;
   if (self->_loadingStorage)
   {
     v7 = _FALogSystem();
@@ -48,7 +48,7 @@
   else
   {
     self->_loadingStorage = 1;
-    v8 = _Block_copy(a4);
+    v8 = _Block_copy(completion);
     completion = self->_completion;
     self->_completion = v8;
 
@@ -64,12 +64,12 @@
 
       [(ICQUICloudStorageOffersManager *)self->_storageOffersManager setDelegate:self];
       [(ICQUICloudStorageOffersManager *)self->_storageOffersManager setShouldOfferFamilySharePlansOnly:1];
-      v13 = [v6 objectForKeyedSubscript:@"requiredStorageThreshold"];
+      v13 = [attributesCopy objectForKeyedSubscript:@"requiredStorageThreshold"];
       v14 = objc_opt_respondsToSelector();
 
       if (v14)
       {
-        v15 = [v6 objectForKeyedSubscript:@"requiredStorageThreshold"];
+        v15 = [attributesCopy objectForKeyedSubscript:@"requiredStorageThreshold"];
         -[ICQUICloudStorageOffersManager setRequiredStorageThreshold:](self->_storageOffersManager, "setRequiredStorageThreshold:", [v15 longLongValue]);
       }
 

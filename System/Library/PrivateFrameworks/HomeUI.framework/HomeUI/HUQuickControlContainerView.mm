@@ -1,75 +1,75 @@
 @interface HUQuickControlContainerView
 - (BOOL)_isDisambiguationButtonVisible;
 - (BOOL)_isPhoneCallStatusUpdateTimerActive;
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (BOOL)_shouldShowControlView;
-- (BOOL)_shouldShowDisambiguationButtonForUserActivities:(id)a3 disambiguationContext:(id)a4;
+- (BOOL)_shouldShowDisambiguationButtonForUserActivities:(id)activities disambiguationContext:(id)context;
 - (BOOL)_useCompactHeightLayout;
 - (CGAffineTransform)_controlHostTransform;
-- (CGAffineTransform)_controlHostTransformForPresentationProgress:(SEL)a3;
+- (CGAffineTransform)_controlHostTransformForPresentationProgress:(SEL)progress;
 - (CGAffineTransform)_disambiguationButtonHiddenTransform;
-- (CGAffineTransform)sourceViewTransformForPresentationProgress:(SEL)a3;
+- (CGAffineTransform)sourceViewTransformForPresentationProgress:(SEL)progress;
 - (CGPoint)_controlHostCenter;
-- (CGPoint)_controlHostCenterForPresentationProgress:(double)a3;
+- (CGPoint)_controlHostCenterForPresentationProgress:(double)progress;
 - (CGRect)presentedControlFrame;
 - (CGRect)sourceRect;
 - (CGSize)_presentedControlHostSize;
-- (HUQuickControlContainerView)initWithFrame:(CGRect)a3 delegate:(id)a4 sourceRect:(CGRect)a5;
+- (HUQuickControlContainerView)initWithFrame:(CGRect)frame delegate:(id)delegate sourceRect:(CGRect)rect;
 - (HUQuickControlContainerViewDelegate)delegate;
 - (double)_disambiguationButtonPreferredHeight;
-- (void)_configureCardViewLayoutGuideConstraints:(id)a3;
-- (void)_configureControlViewLayoutGuideConstraints:(id)a3;
-- (void)_configureDisambiguationButtonConstraints:(id)a3;
-- (void)_configureDisambiguationForActivities:(id)a3 disambiguationContext:(id)a4;
-- (void)_configureRegularHeightConstraints:(id)a3;
-- (void)_detailsButtonTapped:(id)a3;
-- (void)_disambiguationButtonTapped:(id)a3;
-- (void)_disambiguationButtonTouchDown:(id)a3;
-- (void)_disambiguationButtonTouchUp:(id)a3;
+- (void)_configureCardViewLayoutGuideConstraints:(id)constraints;
+- (void)_configureControlViewLayoutGuideConstraints:(id)constraints;
+- (void)_configureDisambiguationButtonConstraints:(id)constraints;
+- (void)_configureDisambiguationForActivities:(id)activities disambiguationContext:(id)context;
+- (void)_configureRegularHeightConstraints:(id)constraints;
+- (void)_detailsButtonTapped:(id)tapped;
+- (void)_disambiguationButtonTapped:(id)tapped;
+- (void)_disambiguationButtonTouchDown:(id)down;
+- (void)_disambiguationButtonTouchUp:(id)up;
 - (void)_invalidatePhoneCallStatusUpdateTimer;
 - (void)_startPhoneCallStatusUpdateTimer;
 - (void)_updateCompactControlBottomConstraint;
 - (void)_updateDetailsButtonVisibility;
-- (void)_updateDisambiguationButtonVisible:(BOOL)a3;
+- (void)_updateDisambiguationButtonVisible:(BOOL)visible;
 - (void)_updateLayoutMargins;
 - (void)dealloc;
-- (void)didUpdateActivities:(id)a3 forProxControlID:(id)a4 disambiguationContext:(id)a5;
+- (void)didUpdateActivities:(id)activities forProxControlID:(id)d disambiguationContext:(id)context;
 - (void)externalAnimationsEnded;
 - (void)hideAuxiliaryView;
 - (void)layoutMarginsDidChange;
 - (void)layoutSubviews;
-- (void)setActiveControlView:(id)a3;
-- (void)setChromeTransitionProgress:(double)a3;
-- (void)setEdgesForExtendedLayout:(unint64_t)a3;
-- (void)setShouldShowActiveControl:(BOOL)a3;
-- (void)setShouldShowDetailsButton:(BOOL)a3;
-- (void)setStandardViewportFromParentGuide:(id)a3;
-- (void)showAuxiliaryView:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setActiveControlView:(id)view;
+- (void)setChromeTransitionProgress:(double)progress;
+- (void)setEdgesForExtendedLayout:(unint64_t)layout;
+- (void)setShouldShowActiveControl:(BOOL)control;
+- (void)setShouldShowDetailsButton:(BOOL)button;
+- (void)setStandardViewportFromParentGuide:(id)guide;
+- (void)showAuxiliaryView:(id)view;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateConstraints;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation HUQuickControlContainerView
 
-- (HUQuickControlContainerView)initWithFrame:(CGRect)a3 delegate:(id)a4 sourceRect:(CGRect)a5
+- (HUQuickControlContainerView)initWithFrame:(CGRect)frame delegate:(id)delegate sourceRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = a3.size.height;
-  v10 = a3.size.width;
-  v11 = a3.origin.y;
-  v12 = a3.origin.x;
-  v14 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = frame.size.height;
+  v10 = frame.size.width;
+  v11 = frame.origin.y;
+  v12 = frame.origin.x;
+  delegateCopy = delegate;
   v54.receiver = self;
   v54.super_class = HUQuickControlContainerView;
   v15 = [(HUQuickControlContainerView *)&v54 initWithFrame:v12, v11, v10, v9];
   v16 = v15;
   if (v15)
   {
-    objc_storeWeak(&v15->_delegate, v14);
+    objc_storeWeak(&v15->_delegate, delegateCopy);
     v16->_sourceRect.origin.x = x;
     v16->_sourceRect.origin.y = y;
     v16->_sourceRect.size.width = width;
@@ -79,12 +79,12 @@
     if ([MEMORY[0x277D14CE8] isProxHandOffV2Config])
     {
       v16->_isExternallyAnimating = 1;
-      v17 = [MEMORY[0x277D14990] sharedInstance];
-      [v17 addObserver:v16];
+      mEMORY[0x277D14990] = [MEMORY[0x277D14990] sharedInstance];
+      [mEMORY[0x277D14990] addObserver:v16];
       v18 = objc_alloc(MEMORY[0x277D755E8]);
-      v19 = [v17 lastDisambiguationContext];
-      v20 = [v19 leadingImage];
-      v21 = [v18 initWithImage:v20];
+      lastDisambiguationContext = [mEMORY[0x277D14990] lastDisambiguationContext];
+      leadingImage = [lastDisambiguationContext leadingImage];
+      v21 = [v18 initWithImage:leadingImage];
       disambiguationButtonLeadingImageView = v16->_disambiguationButtonLeadingImageView;
       v16->_disambiguationButtonLeadingImageView = v21;
 
@@ -96,8 +96,8 @@
 
       [(PLPillControl *)v16->_disambiguationButton setTranslatesAutoresizingMaskIntoConstraints:0];
       v25 = v16->_disambiguationButton;
-      v26 = [MEMORY[0x277D75348] systemWhiteColor];
-      [(PLPillControl *)v25 setBackgroundColor:v26];
+      systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+      [(PLPillControl *)v25 setBackgroundColor:systemWhiteColor];
 
       [(PLPillControl *)v16->_disambiguationButton setAlpha:0.0];
       v27 = v16->_disambiguationButton;
@@ -113,68 +113,68 @@
     }
 
     v28 = [HUControlHostView alloc];
-    v29 = [(HUQuickControlContainerView *)v16 activeControlView];
-    v30 = [(HUControlHostView *)v28 initWithControlView:v29];
+    activeControlView = [(HUQuickControlContainerView *)v16 activeControlView];
+    v30 = [(HUControlHostView *)v28 initWithControlView:activeControlView];
     [(HUQuickControlContainerView *)v16 setControlHostView:v30];
 
-    v31 = [(HUQuickControlContainerView *)v16 controlHostView];
-    [v31 setTranslatesAutoresizingMaskIntoConstraints:0];
+    controlHostView = [(HUQuickControlContainerView *)v16 controlHostView];
+    [controlHostView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v32 = [(HUQuickControlContainerView *)v16 controlHostView];
-    [(HUQuickControlContainerView *)v16 addSubview:v32];
+    controlHostView2 = [(HUQuickControlContainerView *)v16 controlHostView];
+    [(HUQuickControlContainerView *)v16 addSubview:controlHostView2];
 
     v33 = [MEMORY[0x277D75220] buttonWithType:1];
     [(HUQuickControlContainerView *)v16 setDetailsButton:v33];
 
-    v34 = [(HUQuickControlContainerView *)v16 detailsButton];
+    detailsButton = [(HUQuickControlContainerView *)v16 detailsButton];
     v35 = HUImageNamed(@"card-settings");
-    [v34 setImage:v35 forState:0];
+    [detailsButton setImage:v35 forState:0];
 
-    v36 = [MEMORY[0x277D75348] systemGrayColor];
-    v37 = [(HUQuickControlContainerView *)v16 detailsButton];
-    [v37 setTintColor:v36];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    detailsButton2 = [(HUQuickControlContainerView *)v16 detailsButton];
+    [detailsButton2 setTintColor:systemGrayColor];
 
-    v38 = [(HUQuickControlContainerView *)v16 detailsButton];
-    [v38 setTranslatesAutoresizingMaskIntoConstraints:0];
+    detailsButton3 = [(HUQuickControlContainerView *)v16 detailsButton];
+    [detailsButton3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v39 = [(HUQuickControlContainerView *)v16 detailsButton];
-    [v39 setAlpha:1.0];
+    detailsButton4 = [(HUQuickControlContainerView *)v16 detailsButton];
+    [detailsButton4 setAlpha:1.0];
 
-    v40 = [(HUQuickControlContainerView *)v16 detailsButton];
-    [v40 addTarget:v16 action:sel__detailsButtonTapped_ forControlEvents:64];
+    detailsButton5 = [(HUQuickControlContainerView *)v16 detailsButton];
+    [detailsButton5 addTarget:v16 action:sel__detailsButtonTapped_ forControlEvents:64];
 
-    v41 = [(HUQuickControlContainerView *)v16 detailsButton];
-    [(HUQuickControlContainerView *)v16 addSubview:v41];
+    detailsButton6 = [(HUQuickControlContainerView *)v16 detailsButton];
+    [(HUQuickControlContainerView *)v16 addSubview:detailsButton6];
 
     v42 = objc_alloc_init(MEMORY[0x277D756D0]);
     [(HUQuickControlContainerView *)v16 setControlViewLayoutGuide:v42];
 
-    v43 = [(HUQuickControlContainerView *)v16 controlViewLayoutGuide];
-    [v43 setIdentifier:@"HUControlViewLayoutGuide"];
+    controlViewLayoutGuide = [(HUQuickControlContainerView *)v16 controlViewLayoutGuide];
+    [controlViewLayoutGuide setIdentifier:@"HUControlViewLayoutGuide"];
 
-    v44 = [(HUQuickControlContainerView *)v16 controlViewLayoutGuide];
-    [(HUQuickControlContainerView *)v16 addLayoutGuide:v44];
+    controlViewLayoutGuide2 = [(HUQuickControlContainerView *)v16 controlViewLayoutGuide];
+    [(HUQuickControlContainerView *)v16 addLayoutGuide:controlViewLayoutGuide2];
 
     v45 = objc_alloc_init(MEMORY[0x277D756D0]);
     [(HUQuickControlContainerView *)v16 setCardViewLayoutGuide:v45];
 
-    v46 = [(HUQuickControlContainerView *)v16 cardViewLayoutGuide];
-    [v46 setIdentifier:@"HUCardViewLayoutGuide"];
+    cardViewLayoutGuide = [(HUQuickControlContainerView *)v16 cardViewLayoutGuide];
+    [cardViewLayoutGuide setIdentifier:@"HUCardViewLayoutGuide"];
 
-    v47 = [(HUQuickControlContainerView *)v16 cardViewLayoutGuide];
-    [(HUQuickControlContainerView *)v16 addLayoutGuide:v47];
+    cardViewLayoutGuide2 = [(HUQuickControlContainerView *)v16 cardViewLayoutGuide];
+    [(HUQuickControlContainerView *)v16 addLayoutGuide:cardViewLayoutGuide2];
 
     v48 = objc_alloc_init(MEMORY[0x277D756D0]);
     [(HUQuickControlContainerView *)v16 setControlViewPreferredFrameLayoutGuide:v48];
 
-    v49 = [(HUQuickControlContainerView *)v16 controlViewPreferredFrameLayoutGuide];
-    [v49 setIdentifier:@"HUControlViewPreferredFrameLayoutGuide"];
+    controlViewPreferredFrameLayoutGuide = [(HUQuickControlContainerView *)v16 controlViewPreferredFrameLayoutGuide];
+    [controlViewPreferredFrameLayoutGuide setIdentifier:@"HUControlViewPreferredFrameLayoutGuide"];
 
-    v50 = [(HUQuickControlContainerView *)v16 controlViewPreferredFrameLayoutGuide];
-    [(HUQuickControlContainerView *)v16 addLayoutGuide:v50];
+    controlViewPreferredFrameLayoutGuide2 = [(HUQuickControlContainerView *)v16 controlViewPreferredFrameLayoutGuide];
+    [(HUQuickControlContainerView *)v16 addLayoutGuide:controlViewPreferredFrameLayoutGuide2];
 
-    v51 = [(HUQuickControlContainerView *)v16 layer];
-    [v51 setAllowsGroupBlending:0];
+    layer = [(HUQuickControlContainerView *)v16 layer];
+    [layer setAllowsGroupBlending:0];
 
     [(HUQuickControlContainerView *)v16 _updateLayoutMargins];
   }
@@ -199,19 +199,19 @@
   v8.receiver = self;
   v8.super_class = HUQuickControlContainerView;
   [(HUQuickControlContainerView *)&v8 layoutSubviews];
-  v3 = [(HUQuickControlContainerView *)self disambiguationButton];
-  v4 = [v3 layer];
-  [v4 setCornerRadius:8.0];
+  disambiguationButton = [(HUQuickControlContainerView *)self disambiguationButton];
+  layer = [disambiguationButton layer];
+  [layer setCornerRadius:8.0];
 
-  v5 = [(PLPillControl *)self->_disambiguationButton layer];
+  layer2 = [(PLPillControl *)self->_disambiguationButton layer];
   LODWORD(v6) = 1036831949;
-  [v5 setShadowOpacity:v6];
-  [v5 setShadowOffset:{0.0, 10.0}];
+  [layer2 setShadowOpacity:v6];
+  [layer2 setShadowOffset:{0.0, 10.0}];
   v7 = [MEMORY[0x277D75348] colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0];
-  [v5 setShadowColor:{objc_msgSend(v7, "CGColor")}];
+  [layer2 setShadowColor:{objc_msgSend(v7, "CGColor")}];
 
-  [v5 setShadowRadius:12.0];
-  [v5 setShadowPathIsBounds:1];
+  [layer2 setShadowRadius:12.0];
+  [layer2 setShadowPathIsBounds:1];
   if ([(HUQuickControlContainerView *)self isDisambiguationButtonAnimating])
   {
     [(HUQuickControlContainerView *)self frame];
@@ -219,23 +219,23 @@
   }
 }
 
-- (void)setEdgesForExtendedLayout:(unint64_t)a3
+- (void)setEdgesForExtendedLayout:(unint64_t)layout
 {
-  if (self->_edgesForExtendedLayout != a3)
+  if (self->_edgesForExtendedLayout != layout)
   {
-    self->_edgesForExtendedLayout = a3;
+    self->_edgesForExtendedLayout = layout;
     [(HUQuickControlContainerView *)self _updateLayoutMargins];
   }
 }
 
-- (void)setShouldShowActiveControl:(BOOL)a3
+- (void)setShouldShowActiveControl:(BOOL)control
 {
-  if (self->_shouldShowActiveControl != a3)
+  if (self->_shouldShowActiveControl != control)
   {
-    v4 = a3;
-    self->_shouldShowActiveControl = a3;
-    v6 = [(HUQuickControlContainerView *)self controlHostView];
-    [v6 setHidden:!v4];
+    controlCopy = control;
+    self->_shouldShowActiveControl = control;
+    controlHostView = [(HUQuickControlContainerView *)self controlHostView];
+    [controlHostView setHidden:!controlCopy];
 
     [(HUQuickControlContainerView *)self setNeedsUpdateConstraints];
 
@@ -250,53 +250,53 @@
     return 0;
   }
 
-  v3 = [(HUQuickControlContainerView *)self activeControlView];
-  v4 = v3 != 0;
+  activeControlView = [(HUQuickControlContainerView *)self activeControlView];
+  v4 = activeControlView != 0;
 
   return v4;
 }
 
-- (void)setActiveControlView:(id)a3
+- (void)setActiveControlView:(id)view
 {
-  v7 = a3;
-  v5 = [(HUQuickControlContainerView *)self activeControlView];
+  viewCopy = view;
+  activeControlView = [(HUQuickControlContainerView *)self activeControlView];
 
-  if (v5 != v7)
+  if (activeControlView != viewCopy)
   {
-    objc_storeStrong(&self->_activeControlView, a3);
-    v6 = [(HUQuickControlContainerView *)self controlHostView];
-    [v6 setControlView:v7];
+    objc_storeStrong(&self->_activeControlView, view);
+    controlHostView = [(HUQuickControlContainerView *)self controlHostView];
+    [controlHostView setControlView:viewCopy];
 
     [(HUQuickControlContainerView *)self setNeedsUpdateConstraints];
   }
 }
 
-- (void)setShouldShowDetailsButton:(BOOL)a3
+- (void)setShouldShowDetailsButton:(BOOL)button
 {
-  if (self->_shouldShowDetailsButton != a3)
+  if (self->_shouldShowDetailsButton != button)
   {
-    self->_shouldShowDetailsButton = a3;
+    self->_shouldShowDetailsButton = button;
     [(HUQuickControlContainerView *)self _updateDetailsButtonVisibility];
   }
 }
 
-- (void)setChromeTransitionProgress:(double)a3
+- (void)setChromeTransitionProgress:(double)progress
 {
-  self->_chromeTransitionProgress = a3;
-  v5 = [(HUQuickControlContainerView *)self summaryView];
-  [v5 setAlpha:a3];
+  self->_chromeTransitionProgress = progress;
+  summaryView = [(HUQuickControlContainerView *)self summaryView];
+  [summaryView setAlpha:progress];
 
-  v6 = [(HUQuickControlContainerView *)self auxiliaryHostView];
-  [v6 setAlpha:a3];
+  auxiliaryHostView = [(HUQuickControlContainerView *)self auxiliaryHostView];
+  [auxiliaryHostView setAlpha:progress];
 
-  [(HUQuickControlContainerView *)self setAlpha:a3];
+  [(HUQuickControlContainerView *)self setAlpha:progress];
 }
 
-- (void)setStandardViewportFromParentGuide:(id)a3
+- (void)setStandardViewportFromParentGuide:(id)guide
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_standardViewportFromParentGuide, a3);
+  guideCopy = guide;
+  objc_storeStrong(&self->_standardViewportFromParentGuide, guide);
   [(HUQuickControlContainerView *)self setNeedsUpdateConstraints];
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -308,37 +308,37 @@
   }
 }
 
-- (void)_detailsButtonTapped:(id)a3
+- (void)_detailsButtonTapped:(id)tapped
 {
   v10 = *MEMORY[0x277D85DE8];
   v4 = HFLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412546;
-    v7 = self;
+    selfCopy = self;
     v8 = 2080;
     v9 = "[HUQuickControlContainerView _detailsButtonTapped:]";
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "%@:%s User tapped details button", &v6, 0x16u);
   }
 
-  v5 = [(HUQuickControlContainerView *)self delegate];
-  [v5 detailsButtonPressedInContainerView:self];
+  delegate = [(HUQuickControlContainerView *)self delegate];
+  [delegate detailsButtonPressedInContainerView:self];
 }
 
-- (void)showAuxiliaryView:(id)a3
+- (void)showAuxiliaryView:(id)view
 {
-  v4 = a3;
-  v5 = [(HUQuickControlContainerView *)self auxiliaryHostView];
-  [v5 setAuxiliaryView:v4];
+  viewCopy = view;
+  auxiliaryHostView = [(HUQuickControlContainerView *)self auxiliaryHostView];
+  [auxiliaryHostView setAuxiliaryView:viewCopy];
 
   [(HUQuickControlContainerView *)self _updateCompactControlBottomConstraint];
 }
 
 - (void)hideAuxiliaryView
 {
-  v3 = [(HUQuickControlContainerView *)self buttonRowView];
-  v4 = [(HUQuickControlContainerView *)self auxiliaryHostView];
-  [v4 setAuxiliaryView:v3];
+  buttonRowView = [(HUQuickControlContainerView *)self buttonRowView];
+  auxiliaryHostView = [(HUQuickControlContainerView *)self auxiliaryHostView];
+  [auxiliaryHostView setAuxiliaryView:buttonRowView];
 
   [(HUQuickControlContainerView *)self _updateCompactControlBottomConstraint];
 }
@@ -359,13 +359,13 @@
           _os_log_impl(&dword_20CEB6000, v3, OS_LOG_TYPE_DEFAULT, "Disambiguation button external animations ended", v9, 2u);
         }
 
-        v4 = [(HUQuickControlContainerView *)self currentUserActivities];
-        v5 = [(HUQuickControlContainerView *)self currentDisambiguationContext];
-        [(HUQuickControlContainerView *)self _configureDisambiguationForActivities:v4 disambiguationContext:v5];
+        currentUserActivities = [(HUQuickControlContainerView *)self currentUserActivities];
+        currentDisambiguationContext = [(HUQuickControlContainerView *)self currentDisambiguationContext];
+        [(HUQuickControlContainerView *)self _configureDisambiguationForActivities:currentUserActivities disambiguationContext:currentDisambiguationContext];
 
-        v6 = [(HUQuickControlContainerView *)self currentUserActivities];
-        v7 = [(HUQuickControlContainerView *)self currentDisambiguationContext];
-        v8 = [(HUQuickControlContainerView *)self _shouldShowDisambiguationButtonForUserActivities:v6 disambiguationContext:v7];
+        currentUserActivities2 = [(HUQuickControlContainerView *)self currentUserActivities];
+        currentDisambiguationContext2 = [(HUQuickControlContainerView *)self currentDisambiguationContext];
+        v8 = [(HUQuickControlContainerView *)self _shouldShowDisambiguationButtonForUserActivities:currentUserActivities2 disambiguationContext:currentDisambiguationContext2];
 
         [(HUQuickControlContainerView *)self _updateDisambiguationButtonVisible:v8];
         [(HUQuickControlContainerView *)self setNeedsLayout];
@@ -400,14 +400,14 @@ void __61__HUQuickControlContainerView__updateDetailsButtonVisibility__block_inv
   [v3 setAlpha:v2];
 }
 
-- (void)_disambiguationButtonTapped:(id)a3
+- (void)_disambiguationButtonTapped:(id)tapped
 {
-  v4 = [MEMORY[0x277D14990] sharedInstance];
-  v5 = [(HUQuickControlContainerView *)self currentDisambiguationContext];
-  [v4 userTappedDisambiguationButtonForContext:v5];
+  mEMORY[0x277D14990] = [MEMORY[0x277D14990] sharedInstance];
+  currentDisambiguationContext = [(HUQuickControlContainerView *)self currentDisambiguationContext];
+  [mEMORY[0x277D14990] userTappedDisambiguationButtonForContext:currentDisambiguationContext];
 
-  v6 = [(HUQuickControlContainerView *)self disambiguationButton];
-  [v6 setHighlighted:1];
+  disambiguationButton = [(HUQuickControlContainerView *)self disambiguationButton];
+  [disambiguationButton setHighlighted:1];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -423,29 +423,29 @@ void __59__HUQuickControlContainerView__disambiguationButtonTapped___block_invok
   [v1 setHighlighted:0];
 }
 
-- (void)_disambiguationButtonTouchDown:(id)a3
+- (void)_disambiguationButtonTouchDown:(id)down
 {
-  v3 = [(HUQuickControlContainerView *)self disambiguationButton];
-  [v3 setHighlighted:1];
+  disambiguationButton = [(HUQuickControlContainerView *)self disambiguationButton];
+  [disambiguationButton setHighlighted:1];
 }
 
-- (void)_disambiguationButtonTouchUp:(id)a3
+- (void)_disambiguationButtonTouchUp:(id)up
 {
-  v3 = [(HUQuickControlContainerView *)self disambiguationButton];
-  [v3 setHighlighted:0];
+  disambiguationButton = [(HUQuickControlContainerView *)self disambiguationButton];
+  [disambiguationButton setHighlighted:0];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = HUQuickControlContainerView;
-  v4 = a3;
-  [(HUQuickControlContainerView *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(HUQuickControlContainerView *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(HUQuickControlContainerView *)self traitCollection:v8.receiver];
-  v6 = [v5 verticalSizeClass];
-  v7 = [v4 verticalSizeClass];
+  verticalSizeClass = [v5 verticalSizeClass];
+  verticalSizeClass2 = [changeCopy verticalSizeClass];
 
-  if (v6 != v7)
+  if (verticalSizeClass != verticalSizeClass2)
   {
     [(HUQuickControlContainerView *)self setNeedsUpdateConstraints];
     [(HUQuickControlContainerView *)self setNeedsLayout];
@@ -454,8 +454,8 @@ void __59__HUQuickControlContainerView__disambiguationButtonTapped___block_invok
 
 - (BOOL)_useCompactHeightLayout
 {
-  v2 = [(HUQuickControlContainerView *)self traitCollection];
-  v3 = [v2 verticalSizeClass] == 1;
+  traitCollection = [(HUQuickControlContainerView *)self traitCollection];
+  v3 = [traitCollection verticalSizeClass] == 1;
 
   return v3;
 }
@@ -469,8 +469,8 @@ void __59__HUQuickControlContainerView__disambiguationButtonTapped___block_invok
   v4 = v3;
   [(HUQuickControlContainerView *)self layoutMargins];
   v6 = v5;
-  v7 = [(HUQuickControlContainerView *)self controlHostView];
-  [v7 setLayoutMargins:{0.0, v4, 0.0, v6}];
+  controlHostView = [(HUQuickControlContainerView *)self controlHostView];
+  [controlHostView setLayoutMargins:{0.0, v4, 0.0, v6}];
 }
 
 - (void)_updateLayoutMargins
@@ -500,7 +500,7 @@ double __51__HUQuickControlContainerView__updateLayoutMargins__block_invoke(uint
   return result;
 }
 
-- (CGAffineTransform)_controlHostTransformForPresentationProgress:(SEL)a3
+- (CGAffineTransform)_controlHostTransformForPresentationProgress:(SEL)progress
 {
   result = [(HUQuickControlContainerView *)self _presentedControlHostSize];
   v10 = v9;
@@ -555,7 +555,7 @@ double __51__HUQuickControlContainerView__updateLayoutMargins__block_invoke(uint
   return result;
 }
 
-- (CGPoint)_controlHostCenterForPresentationProgress:(double)a3
+- (CGPoint)_controlHostCenterForPresentationProgress:(double)progress
 {
   [(HUQuickControlContainerView *)self sourceRect];
   UIRectGetCenter();
@@ -565,20 +565,20 @@ double __51__HUQuickControlContainerView__updateLayoutMargins__block_invoke(uint
   UIRectGetCenter();
   v10 = v9;
   v12 = v11;
-  v13 = [(HUQuickControlContainerView *)self superview];
-  v14 = [v13 window];
-  [v14 bounds];
+  superview = [(HUQuickControlContainerView *)self superview];
+  window = [superview window];
+  [window bounds];
   v16 = v15;
   v30 = v17;
 
   [(HUQuickControlContainerView *)self _presentedControlHostSize];
   v19 = v18;
   v21 = v20;
-  v22 = [MEMORY[0x277D75418] currentDevice];
-  v23 = [v22 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v24 = v19 * 0.5;
-  if (v23)
+  if (userInterfaceIdiom)
   {
     if (v10 >= v24)
     {
@@ -623,45 +623,45 @@ LABEL_13:
 
   v12 = v21 * 0.5;
 LABEL_14:
-  v28 = v6 + (v24 - v6) * a3;
-  v29 = v8 + (v12 - v8) * a3;
+  v28 = v6 + (v24 - v6) * progress;
+  v29 = v8 + (v12 - v8) * progress;
   result.y = v29;
   result.x = v28;
   return result;
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v4 = [a3 screen];
-  [v4 bounds];
+  screen = [window screen];
+  [screen bounds];
   v6 = HURoundToScreenScale(v5 * 0.78);
 
-  v7 = [(HUQuickControlContainerView *)self maxHeightConstraints];
+  maxHeightConstraints = [(HUQuickControlContainerView *)self maxHeightConstraints];
 
-  if (v7)
+  if (maxHeightConstraints)
   {
-    v8 = [(HUQuickControlContainerView *)self maxHeightConstraints];
+    maxHeightConstraints2 = [(HUQuickControlContainerView *)self maxHeightConstraints];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __48__HUQuickControlContainerView_willMoveToWindow___block_invoke;
     v18[3] = &__block_descriptor_40_e35_v32__0__NSLayoutConstraint_8Q16_B24l;
     *&v18[4] = v6;
-    [v8 enumerateObjectsUsingBlock:v18];
+    [maxHeightConstraints2 enumerateObjectsUsingBlock:v18];
   }
 
   else
   {
     v17 = [MEMORY[0x277CBEB18] arrayWithCapacity:2];
-    v9 = [(HUQuickControlContainerView *)self controlViewPreferredFrameLayoutGuide];
-    v10 = [v9 heightAnchor];
-    v11 = [v10 constraintLessThanOrEqualToConstant:v6];
+    controlViewPreferredFrameLayoutGuide = [(HUQuickControlContainerView *)self controlViewPreferredFrameLayoutGuide];
+    heightAnchor = [controlViewPreferredFrameLayoutGuide heightAnchor];
+    v11 = [heightAnchor constraintLessThanOrEqualToConstant:v6];
 
     LODWORD(v12) = 1144750080;
     [v11 setPriority:v12];
     [v17 addObject:v11];
-    v13 = [(HUQuickControlContainerView *)self controlHostView];
-    v14 = [v13 heightAnchor];
-    v15 = [v14 constraintLessThanOrEqualToConstant:v6];
+    controlHostView = [(HUQuickControlContainerView *)self controlHostView];
+    heightAnchor2 = [controlHostView heightAnchor];
+    v15 = [heightAnchor2 constraintLessThanOrEqualToConstant:v6];
 
     LODWORD(v16) = 1144750080;
     [v15 setPriority:v16];
@@ -674,19 +674,19 @@ LABEL_14:
 - (void)updateConstraints
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = [(HUQuickControlContainerView *)self contentConstraints];
+  contentConstraints = [(HUQuickControlContainerView *)self contentConstraints];
 
-  if (v4)
+  if (contentConstraints)
   {
     v5 = MEMORY[0x277CCAAD0];
-    v6 = [(HUQuickControlContainerView *)self contentConstraints];
-    [v5 deactivateConstraints:v6];
+    contentConstraints2 = [(HUQuickControlContainerView *)self contentConstraints];
+    [v5 deactivateConstraints:contentConstraints2];
   }
 
-  v7 = [MEMORY[0x277CBEB18] array];
-  [(HUQuickControlContainerView *)self _configureRegularHeightConstraints:v7];
-  [MEMORY[0x277CCAAD0] activateConstraints:v7];
-  [(HUQuickControlContainerView *)self setContentConstraints:v7];
+  array = [MEMORY[0x277CBEB18] array];
+  [(HUQuickControlContainerView *)self _configureRegularHeightConstraints:array];
+  [MEMORY[0x277CCAAD0] activateConstraints:array];
+  [(HUQuickControlContainerView *)self setContentConstraints:array];
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -694,7 +694,7 @@ LABEL_14:
     *buf = 138412546;
     v12 = v9;
     v13 = 2112;
-    v14 = v7;
+    v14 = array;
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "%@ Added and activated constraints = %@", buf, 0x16u);
   }
 
@@ -703,162 +703,162 @@ LABEL_14:
   [(HUQuickControlContainerView *)&v10 updateConstraints];
 }
 
-- (void)_configureRegularHeightConstraints:(id)a3
+- (void)_configureRegularHeightConstraints:(id)constraints
 {
   v66 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(HUQuickControlContainerView *)self controlViewPreferredFrameLayoutGuide];
-  v7 = [v6 centerYAnchor];
-  v8 = [(HUQuickControlContainerView *)self controlHostView];
-  v9 = [v8 centerYAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9];
-  [v5 addObject:v10];
+  constraintsCopy = constraints;
+  controlViewPreferredFrameLayoutGuide = [(HUQuickControlContainerView *)self controlViewPreferredFrameLayoutGuide];
+  centerYAnchor = [controlViewPreferredFrameLayoutGuide centerYAnchor];
+  controlHostView = [(HUQuickControlContainerView *)self controlHostView];
+  centerYAnchor2 = [controlHostView centerYAnchor];
+  v10 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+  [constraintsCopy addObject:v10];
 
-  v11 = [(HUQuickControlContainerView *)self controlHostView];
-  [v11 setRequiresWellDefinedSize:1];
+  controlHostView2 = [(HUQuickControlContainerView *)self controlHostView];
+  [controlHostView2 setRequiresWellDefinedSize:1];
 
-  v12 = [(HUQuickControlContainerView *)self heightAnchor];
-  v13 = [(HUQuickControlContainerView *)self standardViewportFromParentGuide];
-  v14 = [v13 heightAnchor];
-  v15 = [v12 constraintGreaterThanOrEqualToAnchor:v14];
+  heightAnchor = [(HUQuickControlContainerView *)self heightAnchor];
+  standardViewportFromParentGuide = [(HUQuickControlContainerView *)self standardViewportFromParentGuide];
+  heightAnchor2 = [standardViewportFromParentGuide heightAnchor];
+  v15 = [heightAnchor constraintGreaterThanOrEqualToAnchor:heightAnchor2];
 
-  [v5 addObject:v15];
+  [constraintsCopy addObject:v15];
   v16 = HFLogForCategory();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v17 = NSStringFromSelector(a2);
-    v18 = [(HUQuickControlContainerView *)self standardViewportFromParentGuide];
-    v19 = [v18 heightAnchor];
+    standardViewportFromParentGuide2 = [(HUQuickControlContainerView *)self standardViewportFromParentGuide];
+    heightAnchor3 = [standardViewportFromParentGuide2 heightAnchor];
     v60 = 138412802;
     v61 = v17;
     v62 = 2112;
     v63 = v15;
     v64 = 2112;
-    v65 = v19;
+    v65 = heightAnchor3;
     _os_log_impl(&dword_20CEB6000, v16, OS_LOG_TYPE_DEFAULT, "%@ totalHeightFromParent = %@, self.standardViewportFromParentGuide.heightAnchor = %@", &v60, 0x20u);
   }
 
-  v20 = [(HUQuickControlContainerView *)self controlHostView];
-  v21 = [v20 bottomAnchor];
-  v22 = [(HUQuickControlContainerView *)self detailsButton];
-  v23 = [v22 topAnchor];
-  v24 = [v21 constraintEqualToAnchor:v23 constant:-5.0];
-  [v5 addObject:v24];
+  controlHostView3 = [(HUQuickControlContainerView *)self controlHostView];
+  bottomAnchor = [controlHostView3 bottomAnchor];
+  detailsButton = [(HUQuickControlContainerView *)self detailsButton];
+  topAnchor = [detailsButton topAnchor];
+  v24 = [bottomAnchor constraintEqualToAnchor:topAnchor constant:-5.0];
+  [constraintsCopy addObject:v24];
 
-  v25 = [(HUQuickControlContainerView *)self detailsButton];
-  v26 = [v25 bottomAnchor];
-  v27 = [(HUQuickControlContainerView *)self bottomAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27 constant:-20.0];
-  [v5 addObject:v28];
+  detailsButton2 = [(HUQuickControlContainerView *)self detailsButton];
+  bottomAnchor2 = [detailsButton2 bottomAnchor];
+  bottomAnchor3 = [(HUQuickControlContainerView *)self bottomAnchor];
+  v28 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:-20.0];
+  [constraintsCopy addObject:v28];
 
-  v29 = [(HUQuickControlContainerView *)self controlHostView];
-  v30 = [v29 widthAnchor];
-  v31 = [(HUQuickControlContainerView *)self widthAnchor];
-  v32 = [v30 constraintEqualToAnchor:v31];
-  [v5 addObject:v32];
+  controlHostView4 = [(HUQuickControlContainerView *)self controlHostView];
+  widthAnchor = [controlHostView4 widthAnchor];
+  widthAnchor2 = [(HUQuickControlContainerView *)self widthAnchor];
+  v32 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
+  [constraintsCopy addObject:v32];
 
-  v33 = [(HUQuickControlContainerView *)self controlHostView];
-  v34 = [v33 centerXAnchor];
-  v35 = [(HUQuickControlContainerView *)self centerXAnchor];
-  v36 = [v34 constraintEqualToAnchor:v35];
-  [v5 addObject:v36];
+  controlHostView5 = [(HUQuickControlContainerView *)self controlHostView];
+  centerXAnchor = [controlHostView5 centerXAnchor];
+  centerXAnchor2 = [(HUQuickControlContainerView *)self centerXAnchor];
+  v36 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+  [constraintsCopy addObject:v36];
 
-  v37 = [(HUQuickControlContainerView *)self controlViewPreferredFrameLayoutGuide];
-  v38 = [v37 widthAnchor];
-  v39 = [(HUQuickControlContainerView *)self layoutMarginsGuide];
-  v40 = [v39 widthAnchor];
-  v41 = [v38 constraintEqualToAnchor:v40];
-  [v5 addObject:v41];
+  controlViewPreferredFrameLayoutGuide2 = [(HUQuickControlContainerView *)self controlViewPreferredFrameLayoutGuide];
+  widthAnchor3 = [controlViewPreferredFrameLayoutGuide2 widthAnchor];
+  layoutMarginsGuide = [(HUQuickControlContainerView *)self layoutMarginsGuide];
+  widthAnchor4 = [layoutMarginsGuide widthAnchor];
+  v41 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
+  [constraintsCopy addObject:v41];
 
-  v42 = [(HUQuickControlContainerView *)self controlViewPreferredFrameLayoutGuide];
-  v43 = [v42 centerXAnchor];
-  v44 = [(HUQuickControlContainerView *)self centerXAnchor];
-  v45 = [v43 constraintEqualToAnchor:v44];
-  [v5 addObject:v45];
+  controlViewPreferredFrameLayoutGuide3 = [(HUQuickControlContainerView *)self controlViewPreferredFrameLayoutGuide];
+  centerXAnchor3 = [controlViewPreferredFrameLayoutGuide3 centerXAnchor];
+  centerXAnchor4 = [(HUQuickControlContainerView *)self centerXAnchor];
+  v45 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
+  [constraintsCopy addObject:v45];
 
-  v46 = [(HUQuickControlContainerView *)self detailsButton];
-  v47 = [v46 trailingAnchor];
-  v48 = [(HUQuickControlContainerView *)self trailingAnchor];
-  v49 = [v47 constraintEqualToAnchor:v48 constant:-25.0];
-  [v5 addObject:v49];
+  detailsButton3 = [(HUQuickControlContainerView *)self detailsButton];
+  trailingAnchor = [detailsButton3 trailingAnchor];
+  trailingAnchor2 = [(HUQuickControlContainerView *)self trailingAnchor];
+  v49 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-25.0];
+  [constraintsCopy addObject:v49];
 
-  v50 = [(HUQuickControlContainerView *)self detailsButton];
-  v51 = [v50 widthAnchor];
-  v52 = [v51 constraintEqualToConstant:40.0];
-  [v5 addObject:v52];
+  detailsButton4 = [(HUQuickControlContainerView *)self detailsButton];
+  widthAnchor5 = [detailsButton4 widthAnchor];
+  v52 = [widthAnchor5 constraintEqualToConstant:40.0];
+  [constraintsCopy addObject:v52];
 
-  v53 = [(HUQuickControlContainerView *)self detailsButton];
-  v54 = [v53 heightAnchor];
-  v55 = [v54 constraintEqualToConstant:40.0];
-  [v5 addObject:v55];
+  detailsButton5 = [(HUQuickControlContainerView *)self detailsButton];
+  heightAnchor4 = [detailsButton5 heightAnchor];
+  v55 = [heightAnchor4 constraintEqualToConstant:40.0];
+  [constraintsCopy addObject:v55];
 
-  [(HUQuickControlContainerView *)self _configureControlViewLayoutGuideConstraints:v5];
-  [(HUQuickControlContainerView *)self _configureCardViewLayoutGuideConstraints:v5];
+  [(HUQuickControlContainerView *)self _configureControlViewLayoutGuideConstraints:constraintsCopy];
+  [(HUQuickControlContainerView *)self _configureCardViewLayoutGuideConstraints:constraintsCopy];
   if (([MEMORY[0x277D14CE8] isAMac] & 1) != 0 || !objc_msgSend(MEMORY[0x277D14CE8], "isProxHandOffV2Config"))
   {
-    v56 = [(HUQuickControlContainerView *)self controlHostView];
-    v57 = [v56 topAnchor];
-    v58 = [(HUQuickControlContainerView *)self topAnchor];
-    v59 = [v57 constraintEqualToAnchor:v58];
-    [v5 addObject:v59];
+    controlHostView6 = [(HUQuickControlContainerView *)self controlHostView];
+    topAnchor2 = [controlHostView6 topAnchor];
+    topAnchor3 = [(HUQuickControlContainerView *)self topAnchor];
+    v59 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
+    [constraintsCopy addObject:v59];
   }
 
   else
   {
-    [(HUQuickControlContainerView *)self _configureDisambiguationButtonConstraints:v5];
+    [(HUQuickControlContainerView *)self _configureDisambiguationButtonConstraints:constraintsCopy];
   }
 }
 
-- (void)_configureControlViewLayoutGuideConstraints:(id)a3
+- (void)_configureControlViewLayoutGuideConstraints:(id)constraints
 {
   v4 = MEMORY[0x277CCAAD0];
-  v5 = a3;
-  v8 = [(HUQuickControlContainerView *)self controlViewLayoutGuide];
-  v6 = [(HUQuickControlContainerView *)self controlHostView];
-  v7 = [v4 hu_constraintsSizingAnchorProvider:v8 toAnchorProvider:v6];
-  [v5 addObjectsFromArray:v7];
+  constraintsCopy = constraints;
+  controlViewLayoutGuide = [(HUQuickControlContainerView *)self controlViewLayoutGuide];
+  controlHostView = [(HUQuickControlContainerView *)self controlHostView];
+  v7 = [v4 hu_constraintsSizingAnchorProvider:controlViewLayoutGuide toAnchorProvider:controlHostView];
+  [constraintsCopy addObjectsFromArray:v7];
 }
 
-- (void)_configureCardViewLayoutGuideConstraints:(id)a3
+- (void)_configureCardViewLayoutGuideConstraints:(id)constraints
 {
   v4 = MEMORY[0x277CCAAD0];
-  v5 = a3;
-  v7 = [(HUQuickControlContainerView *)self cardViewLayoutGuide];
-  v6 = [v4 hu_constraintsSizingAnchorProvider:v7 toAnchorProvider:self];
-  [v5 addObjectsFromArray:v6];
+  constraintsCopy = constraints;
+  cardViewLayoutGuide = [(HUQuickControlContainerView *)self cardViewLayoutGuide];
+  v6 = [v4 hu_constraintsSizingAnchorProvider:cardViewLayoutGuide toAnchorProvider:self];
+  [constraintsCopy addObjectsFromArray:v6];
 }
 
 - (void)_updateCompactControlBottomConstraint
 {
-  v3 = [(HUQuickControlContainerView *)self compactControlBottomConstraint];
-  [v3 setActive:0];
+  compactControlBottomConstraint = [(HUQuickControlContainerView *)self compactControlBottomConstraint];
+  [compactControlBottomConstraint setActive:0];
 
   if ([(HUQuickControlContainerView *)self _useCompactHeightLayout]&& [(HUQuickControlContainerView *)self _shouldShowControlView])
   {
-    v4 = [(HUQuickControlContainerView *)self auxiliaryHostView];
-    v5 = [v4 auxiliaryView];
-    v6 = [v5 hasCenteredContent];
+    auxiliaryHostView = [(HUQuickControlContainerView *)self auxiliaryHostView];
+    auxiliaryView = [auxiliaryHostView auxiliaryView];
+    hasCenteredContent = [auxiliaryView hasCenteredContent];
 
-    v7 = [(HUQuickControlContainerView *)self controlHostView];
-    v8 = [v7 bottomAnchor];
-    if (v6)
+    controlHostView = [(HUQuickControlContainerView *)self controlHostView];
+    bottomAnchor = [controlHostView bottomAnchor];
+    if (hasCenteredContent)
     {
-      v9 = [(HUQuickControlContainerView *)self auxiliaryHostView];
-      v10 = [v9 topAnchor];
-      [v8 constraintEqualToAnchor:v10 constant:-20.0];
+      auxiliaryHostView2 = [(HUQuickControlContainerView *)self auxiliaryHostView];
+      topAnchor = [auxiliaryHostView2 topAnchor];
+      [bottomAnchor constraintEqualToAnchor:topAnchor constant:-20.0];
     }
 
     else
     {
-      v9 = [(HUQuickControlContainerView *)self layoutMarginsGuide];
-      v10 = [v9 bottomAnchor];
-      [v8 constraintEqualToAnchor:v10];
+      auxiliaryHostView2 = [(HUQuickControlContainerView *)self layoutMarginsGuide];
+      topAnchor = [auxiliaryHostView2 bottomAnchor];
+      [bottomAnchor constraintEqualToAnchor:topAnchor];
     }
     v11 = ;
     [(HUQuickControlContainerView *)self setCompactControlBottomConstraint:v11];
 
-    v12 = [(HUQuickControlContainerView *)self compactControlBottomConstraint];
-    [v12 setActive:1];
+    compactControlBottomConstraint2 = [(HUQuickControlContainerView *)self compactControlBottomConstraint];
+    [compactControlBottomConstraint2 setActive:1];
   }
 
   else
@@ -868,32 +868,32 @@ LABEL_14:
   }
 }
 
-- (void)_configureDisambiguationButtonConstraints:(id)a3
+- (void)_configureDisambiguationButtonConstraints:(id)constraints
 {
-  v4 = a3;
+  constraintsCopy = constraints;
   controlHostViewTopConstraintToView = self->_controlHostViewTopConstraintToView;
-  v30 = v4;
+  v30 = constraintsCopy;
   if (!controlHostViewTopConstraintToView)
   {
-    v6 = [(HUQuickControlContainerView *)self controlHostView];
-    v7 = [v6 topAnchor];
-    v8 = [(HUQuickControlContainerView *)self topAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8 constant:0.0];
+    controlHostView = [(HUQuickControlContainerView *)self controlHostView];
+    topAnchor = [controlHostView topAnchor];
+    topAnchor2 = [(HUQuickControlContainerView *)self topAnchor];
+    v9 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
     v10 = self->_controlHostViewTopConstraintToView;
     self->_controlHostViewTopConstraintToView = v9;
 
-    v4 = v30;
+    constraintsCopy = v30;
     controlHostViewTopConstraintToView = self->_controlHostViewTopConstraintToView;
   }
 
-  [v4 addObject:controlHostViewTopConstraintToView];
+  [constraintsCopy addObject:controlHostViewTopConstraintToView];
   disambiguationButtonTopConstraint = self->_disambiguationButtonTopConstraint;
   if (!disambiguationButtonTopConstraint)
   {
-    v12 = [(HUQuickControlContainerView *)self disambiguationButton];
-    v13 = [v12 topAnchor];
-    v14 = [(HUQuickControlContainerView *)self topAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14 constant:12.0];
+    disambiguationButton = [(HUQuickControlContainerView *)self disambiguationButton];
+    topAnchor3 = [disambiguationButton topAnchor];
+    topAnchor4 = [(HUQuickControlContainerView *)self topAnchor];
+    v15 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:12.0];
     v16 = self->_disambiguationButtonTopConstraint;
     self->_disambiguationButtonTopConstraint = v15;
 
@@ -904,9 +904,9 @@ LABEL_14:
   disambiguationButtonHeightConstraint = self->_disambiguationButtonHeightConstraint;
   if (!disambiguationButtonHeightConstraint)
   {
-    v18 = [(HUQuickControlContainerView *)self disambiguationButton];
-    v19 = [v18 heightAnchor];
-    v20 = [v19 constraintGreaterThanOrEqualToConstant:50.0];
+    disambiguationButton2 = [(HUQuickControlContainerView *)self disambiguationButton];
+    heightAnchor = [disambiguationButton2 heightAnchor];
+    v20 = [heightAnchor constraintGreaterThanOrEqualToConstant:50.0];
     v21 = self->_disambiguationButtonHeightConstraint;
     self->_disambiguationButtonHeightConstraint = v20;
 
@@ -914,16 +914,16 @@ LABEL_14:
   }
 
   [v30 addObject:disambiguationButtonHeightConstraint];
-  v22 = [(HUQuickControlContainerView *)self disambiguationButton];
-  v23 = [v22 leadingAnchor];
-  v24 = [(HUQuickControlContainerView *)self leadingAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24 constant:40.0];
+  disambiguationButton3 = [(HUQuickControlContainerView *)self disambiguationButton];
+  leadingAnchor = [disambiguationButton3 leadingAnchor];
+  leadingAnchor2 = [(HUQuickControlContainerView *)self leadingAnchor];
+  v25 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:40.0];
   [v30 addObject:v25];
 
-  v26 = [(HUQuickControlContainerView *)self disambiguationButton];
-  v27 = [v26 trailingAnchor];
-  v28 = [(HUQuickControlContainerView *)self trailingAnchor];
-  v29 = [v27 constraintEqualToAnchor:v28 constant:-40.0];
+  disambiguationButton4 = [(HUQuickControlContainerView *)self disambiguationButton];
+  trailingAnchor = [disambiguationButton4 trailingAnchor];
+  trailingAnchor2 = [(HUQuickControlContainerView *)self trailingAnchor];
+  v29 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-40.0];
   [v30 addObject:v29];
 }
 
@@ -946,8 +946,8 @@ LABEL_14:
 
 - (CGSize)_presentedControlHostSize
 {
-  v2 = [(HUQuickControlContainerView *)self cardViewLayoutGuide];
-  [v2 layoutFrame];
+  cardViewLayoutGuide = [(HUQuickControlContainerView *)self cardViewLayoutGuide];
+  [cardViewLayoutGuide layoutFrame];
   v4 = v3;
   v6 = v5;
 
@@ -958,7 +958,7 @@ LABEL_14:
   return result;
 }
 
-- (CGAffineTransform)sourceViewTransformForPresentationProgress:(SEL)a3
+- (CGAffineTransform)sourceViewTransformForPresentationProgress:(SEL)progress
 {
   [(HUQuickControlContainerView *)self updateConstraintsIfNeeded];
   [(HUQuickControlContainerView *)self layoutIfNeeded];
@@ -1004,10 +1004,10 @@ double __74__HUQuickControlContainerView_sourceViewTransformForPresentationProgr
   return v4;
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 hasPrefix:@"fillColor"] & 1) != 0 || (objc_msgSend(v4, "hasPrefix:", @"compositingFilter"))
+  keyCopy = key;
+  if ([keyCopy hasPrefix:@"fillColor"] & 1) != 0 || (objc_msgSend(keyCopy, "hasPrefix:", @"compositingFilter"))
   {
     v5 = 1;
   }
@@ -1016,31 +1016,31 @@ double __74__HUQuickControlContainerView_sourceViewTransformForPresentationProgr
   {
     v7.receiver = self;
     v7.super_class = HUQuickControlContainerView;
-    v5 = [(HUQuickControlContainerView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(HUQuickControlContainerView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;
 }
 
-- (void)_configureDisambiguationForActivities:(id)a3 disambiguationContext:(id)a4
+- (void)_configureDisambiguationForActivities:(id)activities disambiguationContext:(id)context
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  if ([(HUQuickControlContainerView *)self _shouldShowDisambiguationButtonForUserActivities:a3 disambiguationContext:v8])
+  contextCopy = context;
+  if ([(HUQuickControlContainerView *)self _shouldShowDisambiguationButtonForUserActivities:activities disambiguationContext:contextCopy])
   {
-    v9 = [v8 titleText];
-    v10 = [v8 subtitleText];
-    v11 = v10;
-    if (v9)
+    titleText = [contextCopy titleText];
+    subtitleText = [contextCopy subtitleText];
+    v11 = subtitleText;
+    if (titleText)
     {
-      v4 = [(HUQuickControlContainerView *)self disambiguationButtonPrimaryText];
-      if (([v9 isEqualToAttributedString:v4] & 1) == 0)
+      disambiguationButtonPrimaryText = [(HUQuickControlContainerView *)self disambiguationButtonPrimaryText];
+      if (([titleText isEqualToAttributedString:disambiguationButtonPrimaryText] & 1) == 0)
       {
 
 LABEL_15:
-        v4 = [MEMORY[0x277CBEB18] array];
-        v16 = [objc_alloc(MEMORY[0x277D3D308]) initWithAttributedText:v9 style:5];
-        [v4 addObject:v16];
+        disambiguationButtonPrimaryText = [MEMORY[0x277CBEB18] array];
+        v16 = [objc_alloc(MEMORY[0x277D3D308]) initWithAttributedText:titleText style:5];
+        [disambiguationButtonPrimaryText addObject:v16];
         if (v11)
         {
           v17 = [objc_alloc(MEMORY[0x277D3D308]) initWithText:v11 style:2];
@@ -1051,12 +1051,12 @@ LABEL_15:
           v17 = 0;
         }
 
-        [v4 na_safeAddObject:v17];
-        [(HUQuickControlContainerView *)self setDisambiguationButtonPrimaryText:v9];
+        [disambiguationButtonPrimaryText na_safeAddObject:v17];
+        [(HUQuickControlContainerView *)self setDisambiguationButtonPrimaryText:titleText];
         [(HUQuickControlContainerView *)self setDisambiguationButtonSecondaryText:v11];
-        v18 = [(HUQuickControlContainerView *)self disambiguationButton];
-        v19 = [v4 copy];
-        [v18 setCenterContentItems:v19 animated:1];
+        disambiguationButton = [(HUQuickControlContainerView *)self disambiguationButton];
+        v19 = [disambiguationButtonPrimaryText copy];
+        [disambiguationButton setCenterContentItems:v19 animated:1];
 
         goto LABEL_19;
       }
@@ -1069,35 +1069,35 @@ LABEL_19:
       }
     }
 
-    else if (!v10)
+    else if (!subtitleText)
     {
 LABEL_20:
       v20 = HFLogForCategory();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         v21 = NSStringFromSelector(a2);
-        v22 = [(HUQuickControlContainerView *)self disambiguationButton];
-        v23 = [v22 centerContentItems];
+        disambiguationButton2 = [(HUQuickControlContainerView *)self disambiguationButton];
+        centerContentItems = [disambiguationButton2 centerContentItems];
         v29 = 138412546;
         v30 = v21;
         v31 = 2112;
-        v32 = v23;
+        v32 = centerContentItems;
         _os_log_impl(&dword_20CEB6000, v20, OS_LOG_TYPE_DEFAULT, "%@  self.disambiguationButton.CenterContentItems = %@", &v29, 0x16u);
       }
 
-      v24 = [(HUQuickControlContainerView *)self disambiguationButtonLeadingImageView];
-      v25 = [v8 leadingImage];
-      [v24 setImage:v25];
+      disambiguationButtonLeadingImageView = [(HUQuickControlContainerView *)self disambiguationButtonLeadingImageView];
+      leadingImage = [contextCopy leadingImage];
+      [disambiguationButtonLeadingImageView setImage:leadingImage];
 
       v26 = HFLogForCategory();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
         v27 = NSStringFromSelector(a2);
-        v28 = [(HUQuickControlContainerView *)self disambiguationButtonLeadingImageView];
+        disambiguationButtonLeadingImageView2 = [(HUQuickControlContainerView *)self disambiguationButtonLeadingImageView];
         v29 = 138412546;
         v30 = v27;
         v31 = 2112;
-        v32 = v28;
+        v32 = disambiguationButtonLeadingImageView2;
         _os_log_impl(&dword_20CEB6000, v26, OS_LOG_TYPE_DEFAULT, "%@  self.disambiguationButtonLeadingImageView = %@", &v29, 0x16u);
       }
 
@@ -1114,10 +1114,10 @@ LABEL_20:
       goto LABEL_31;
     }
 
-    v14 = [(HUQuickControlContainerView *)self disambiguationButtonSecondaryText];
-    v15 = [v11 isEqualToString:v14];
+    disambiguationButtonSecondaryText = [(HUQuickControlContainerView *)self disambiguationButtonSecondaryText];
+    v15 = [v11 isEqualToString:disambiguationButtonSecondaryText];
 
-    if (v9)
+    if (titleText)
     {
     }
 
@@ -1129,11 +1129,11 @@ LABEL_20:
     goto LABEL_15;
   }
 
-  v12 = [(HUQuickControlContainerView *)self disambiguationButton];
-  [v12 setCenterContentItems:MEMORY[0x277CBEBF8]];
+  disambiguationButton3 = [(HUQuickControlContainerView *)self disambiguationButton];
+  [disambiguationButton3 setCenterContentItems:MEMORY[0x277CBEBF8]];
 
-  v13 = [(HUQuickControlContainerView *)self disambiguationButtonLeadingImageView];
-  [v13 setImage:0];
+  disambiguationButtonLeadingImageView3 = [(HUQuickControlContainerView *)self disambiguationButtonLeadingImageView];
+  [disambiguationButtonLeadingImageView3 setImage:0];
 
   if ([(HUQuickControlContainerView *)self _isPhoneCallStatusUpdateTimerActive]&& ![(HUQuickControlContainerView *)self hasActivePhoneCall])
   {
@@ -1143,15 +1143,15 @@ LABEL_20:
 LABEL_31:
 }
 
-- (BOOL)_shouldShowDisambiguationButtonForUserActivities:(id)a3 disambiguationContext:(id)a4
+- (BOOL)_shouldShowDisambiguationButtonForUserActivities:(id)activities disambiguationContext:(id)context
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 activity];
-  if (v7)
+  activitiesCopy = activities;
+  contextCopy = context;
+  activity = [contextCopy activity];
+  if (activity)
   {
-    v8 = [v6 interactionDirection] != 0;
+    v8 = [contextCopy interactionDirection] != 0;
   }
 
   else
@@ -1162,13 +1162,13 @@ LABEL_31:
   v9 = HFLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v6 activity];
+    activity2 = [contextCopy activity];
     v12 = 138412802;
-    v13 = v5;
+    v13 = activitiesCopy;
     v14 = 2112;
-    v15 = v10;
+    v15 = activity2;
     v16 = 2048;
-    v17 = [v6 interactionDirection];
+    interactionDirection = [contextCopy interactionDirection];
     _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "Activities = %@, disambiguationContext.activity = [%@] interactionDirection = [%ld]", &v12, 0x20u);
   }
 
@@ -1177,45 +1177,45 @@ LABEL_31:
 
 - (BOOL)_isDisambiguationButtonVisible
 {
-  v2 = [(HUQuickControlContainerView *)self disambiguationButton];
-  [v2 alpha];
+  disambiguationButton = [(HUQuickControlContainerView *)self disambiguationButton];
+  [disambiguationButton alpha];
   v4 = v3 > 0.0;
 
   return v4;
 }
 
-- (void)_updateDisambiguationButtonVisible:(BOOL)a3
+- (void)_updateDisambiguationButtonVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v24 = *MEMORY[0x277D85DE8];
-  v5 = [(HUQuickControlContainerView *)self _isDisambiguationButtonVisible];
+  _isDisambiguationButtonVisible = [(HUQuickControlContainerView *)self _isDisambiguationButtonVisible];
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(HUQuickControlContainerView *)self disambiguationButton];
+    disambiguationButton = [(HUQuickControlContainerView *)self disambiguationButton];
     *buf = 138412802;
-    v19 = v7;
+    v19 = disambiguationButton;
     v20 = 1024;
-    v21 = v5;
+    v21 = _isDisambiguationButtonVisible;
     v22 = 1024;
-    v23 = v3;
+    v23 = visibleCopy;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "Disambiguation button %@ current display mode %{BOOL}d, requested display mode %{BOOL}d", buf, 0x18u);
   }
 
-  if (v5 != v3)
+  if (_isDisambiguationButtonVisible != visibleCopy)
   {
-    v8 = [(HUQuickControlContainerView *)self isExternallyAnimating];
+    isExternallyAnimating = [(HUQuickControlContainerView *)self isExternallyAnimating];
     v9 = HFLogForCategory();
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-    if (v8)
+    if (isExternallyAnimating)
     {
       if (v10)
       {
-        v11 = [(HUQuickControlContainerView *)self disambiguationButton];
+        disambiguationButton2 = [(HUQuickControlContainerView *)self disambiguationButton];
         *buf = 138412546;
-        v19 = v11;
+        v19 = disambiguationButton2;
         v20 = 1024;
-        v21 = v5;
+        v21 = _isDisambiguationButtonVisible;
         _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "Disambiguation button %@ display updates paused for external animation (current display mode %{BOOL}d)", buf, 0x12u);
       }
     }
@@ -1237,7 +1237,7 @@ LABEL_31:
       v15[2] = __66__HUQuickControlContainerView__updateDisambiguationButtonVisible___block_invoke;
       v15[3] = &unk_277DBBCF0;
       objc_copyWeak(&v16, buf);
-      v17 = v3;
+      v17 = visibleCopy;
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __66__HUQuickControlContainerView__updateDisambiguationButtonVisible___block_invoke_69;
@@ -1355,10 +1355,10 @@ void __66__HUQuickControlContainerView__updateDisambiguationButtonVisible___bloc
 
 - (double)_disambiguationButtonPreferredHeight
 {
-  v3 = [(HUQuickControlContainerView *)self disambiguationButton];
-  v4 = [(HUQuickControlContainerView *)self disambiguationButton];
-  [v4 bounds];
-  [v3 sizeThatFits:{v5, 1.79769313e308}];
+  disambiguationButton = [(HUQuickControlContainerView *)self disambiguationButton];
+  disambiguationButton2 = [(HUQuickControlContainerView *)self disambiguationButton];
+  [disambiguationButton2 bounds];
+  [disambiguationButton sizeThatFits:{v5, 1.79769313e308}];
   v7 = v6;
 
   result = 50.0;
@@ -1387,20 +1387,20 @@ void __66__HUQuickControlContainerView__updateDisambiguationButtonVisible___bloc
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@ Starting Phone Call Status Update Timer", buf, 0xCu);
   }
 
-  v8 = [(HUQuickControlContainerView *)self phoneCallStatusUpdateTimer];
+  phoneCallStatusUpdateTimer = [(HUQuickControlContainerView *)self phoneCallStatusUpdateTimer];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __63__HUQuickControlContainerView__startPhoneCallStatusUpdateTimer__block_invoke;
   handler[3] = &unk_277DB90B8;
   objc_copyWeak(v12, &location);
   v12[1] = a2;
-  dispatch_source_set_event_handler(v8, handler);
+  dispatch_source_set_event_handler(phoneCallStatusUpdateTimer, handler);
 
-  v9 = [(HUQuickControlContainerView *)self phoneCallStatusUpdateTimer];
-  dispatch_source_set_timer(v9, v5, 0x3B9ACA00uLL, 0);
+  phoneCallStatusUpdateTimer2 = [(HUQuickControlContainerView *)self phoneCallStatusUpdateTimer];
+  dispatch_source_set_timer(phoneCallStatusUpdateTimer2, v5, 0x3B9ACA00uLL, 0);
 
-  v10 = [(HUQuickControlContainerView *)self phoneCallStatusUpdateTimer];
-  dispatch_resume(v10);
+  phoneCallStatusUpdateTimer3 = [(HUQuickControlContainerView *)self phoneCallStatusUpdateTimer];
+  dispatch_resume(phoneCallStatusUpdateTimer3);
 
   objc_destroyWeak(v12);
   objc_destroyWeak(&location);
@@ -1438,8 +1438,8 @@ void __63__HUQuickControlContainerView__startPhoneCallStatusUpdateTimer__block_i
 
   if ([(HUQuickControlContainerView *)self _isPhoneCallStatusUpdateTimerActive])
   {
-    v6 = [(HUQuickControlContainerView *)self phoneCallStatusUpdateTimer];
-    dispatch_source_cancel(v6);
+    phoneCallStatusUpdateTimer = [(HUQuickControlContainerView *)self phoneCallStatusUpdateTimer];
+    dispatch_source_cancel(phoneCallStatusUpdateTimer);
   }
 
   [(HUQuickControlContainerView *)self setPhoneCallStatusUpdateTimer:0];
@@ -1447,11 +1447,11 @@ void __63__HUQuickControlContainerView__startPhoneCallStatusUpdateTimer__block_i
 
 - (BOOL)_isPhoneCallStatusUpdateTimerActive
 {
-  v3 = [(HUQuickControlContainerView *)self phoneCallStatusUpdateTimer];
-  if (v3)
+  phoneCallStatusUpdateTimer = [(HUQuickControlContainerView *)self phoneCallStatusUpdateTimer];
+  if (phoneCallStatusUpdateTimer)
   {
-    v4 = [(HUQuickControlContainerView *)self phoneCallStatusUpdateTimer];
-    v5 = dispatch_source_testcancel(v4) == 0;
+    phoneCallStatusUpdateTimer2 = [(HUQuickControlContainerView *)self phoneCallStatusUpdateTimer];
+    v5 = dispatch_source_testcancel(phoneCallStatusUpdateTimer2) == 0;
   }
 
   else
@@ -1462,16 +1462,16 @@ void __63__HUQuickControlContainerView__startPhoneCallStatusUpdateTimer__block_i
   return v5;
 }
 
-- (void)didUpdateActivities:(id)a3 forProxControlID:(id)a4 disambiguationContext:(id)a5
+- (void)didUpdateActivities:(id)activities forProxControlID:(id)d disambiguationContext:(id)context
 {
   v31 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(HUQuickControlContainerView *)self currentDisambiguationContext];
-  v13 = [v12 activity];
-  v14 = [v11 activity];
-  v15 = [v13 isEqual:v14];
+  activitiesCopy = activities;
+  dCopy = d;
+  contextCopy = context;
+  currentDisambiguationContext = [(HUQuickControlContainerView *)self currentDisambiguationContext];
+  activity = [currentDisambiguationContext activity];
+  activity2 = [contextCopy activity];
+  v15 = [activity isEqual:activity2];
 
   v16 = HFLogForCategory();
   v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
@@ -1479,9 +1479,9 @@ void __63__HUQuickControlContainerView__startPhoneCallStatusUpdateTimer__block_i
   {
     if (v17)
     {
-      v18 = [v11 activity];
+      activity3 = [contextCopy activity];
       v23 = 138412290;
-      v24 = v18;
+      v24 = activity3;
       _os_log_impl(&dword_20CEB6000, v16, OS_LOG_TYPE_DEFAULT, "NOT Updating summary view for PCActivity = [%@]", &v23, 0xCu);
     }
   }
@@ -1494,19 +1494,19 @@ void __63__HUQuickControlContainerView__startPhoneCallStatusUpdateTimer__block_i
       v23 = 138413058;
       v24 = v19;
       v25 = 2112;
-      v26 = v9;
+      v26 = activitiesCopy;
       v27 = 2112;
-      v28 = v10;
+      v28 = dCopy;
       v29 = 2112;
-      v30 = v11;
+      v30 = contextCopy;
       _os_log_impl(&dword_20CEB6000, v16, OS_LOG_TYPE_DEFAULT, "%@ didUpdateActivities = %@ forProxControlID = %@ disambiguationContext = %@", &v23, 0x2Au);
     }
 
-    v20 = [v11 activity];
-    if (v20)
+    activity4 = [contextCopy activity];
+    if (activity4)
     {
-      v21 = [v11 activity];
-      -[HUQuickControlContainerView setHasActivePhoneCall:](self, "setHasActivePhoneCall:", [v21 pcactivityType] == 0);
+      activity5 = [contextCopy activity];
+      -[HUQuickControlContainerView setHasActivePhoneCall:](self, "setHasActivePhoneCall:", [activity5 pcactivityType] == 0);
     }
 
     else
@@ -1514,10 +1514,10 @@ void __63__HUQuickControlContainerView__startPhoneCallStatusUpdateTimer__block_i
       [(HUQuickControlContainerView *)self setHasActivePhoneCall:0];
     }
 
-    [(HUQuickControlContainerView *)self setCurrentDisambiguationContext:v11];
-    [(HUQuickControlContainerView *)self setCurrentUserActivities:v9];
-    [(HUQuickControlContainerView *)self _configureDisambiguationForActivities:v9 disambiguationContext:v11];
-    [(HUQuickControlContainerView *)self _updateDisambiguationButtonVisible:[(HUQuickControlContainerView *)self _shouldShowDisambiguationButtonForUserActivities:v9 disambiguationContext:v11]];
+    [(HUQuickControlContainerView *)self setCurrentDisambiguationContext:contextCopy];
+    [(HUQuickControlContainerView *)self setCurrentUserActivities:activitiesCopy];
+    [(HUQuickControlContainerView *)self _configureDisambiguationForActivities:activitiesCopy disambiguationContext:contextCopy];
+    [(HUQuickControlContainerView *)self _updateDisambiguationButtonVisible:[(HUQuickControlContainerView *)self _shouldShowDisambiguationButtonForUserActivities:activitiesCopy disambiguationContext:contextCopy]];
     v22 = HFLogForCategory();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {

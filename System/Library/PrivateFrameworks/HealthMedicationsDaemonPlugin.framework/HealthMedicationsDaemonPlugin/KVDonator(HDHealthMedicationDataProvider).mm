@@ -13,7 +13,7 @@
   v8[3] = &unk_2796CDE10;
   v9 = v6;
   v7 = v6;
-  [a1 donateWithOptions:a3 usingStream:v8];
+  [self donateWithOptions:a3 usingStream:v8];
 }
 
 @end

@@ -1,57 +1,57 @@
 @interface UIButtonConfigurationVisualProvider
-+ (id)visualProviderForButton:(id)a3;
-- ($F24F406B2B787EFB06265DBA3D28CBD5)baselineOffsetsAtSize:(CGSize)a3;
++ (id)visualProviderForButton:(id)button;
+- ($F24F406B2B787EFB06265DBA3D28CBD5)baselineOffsetsAtSize:(CGSize)size;
 - ($FAF8FB4E17ADDBD5CADBCA981CDA5A29)_debugLayoutData;
-- ($FAF8FB4E17ADDBD5CADBCA981CDA5A29)_layoutDataInBounds:(SEL)a3;
-- ($FAF8FB4E17ADDBD5CADBCA981CDA5A29)_layoutDataInBounds:(SEL)a3 forConfiguration:(CGRect)a4;
+- ($FAF8FB4E17ADDBD5CADBCA981CDA5A29)_layoutDataInBounds:(SEL)bounds;
+- ($FAF8FB4E17ADDBD5CADBCA981CDA5A29)_layoutDataInBounds:(SEL)bounds forConfiguration:(CGRect)configuration;
 - ($FAF8FB4E17ADDBD5CADBCA981CDA5A29)_layoutDataUpdatingIfNecessary;
-- (BOOL)_updateBackgroundViewWithConfiguration:(id)a3;
-- (BOOL)_updateImageViewWithConfiguration:(id)a3;
-- (BOOL)_updateIndicatorWithConfiguration:(id)a3;
-- (BOOL)_updateProgressIndicatorWithConfiguration:(id)a3;
-- (BOOL)_updateSubtitleLabelWithConfiguration:(id)a3;
-- (BOOL)_updateTitleLabelWithConfiguration:(id)a3;
+- (BOOL)_updateBackgroundViewWithConfiguration:(id)configuration;
+- (BOOL)_updateImageViewWithConfiguration:(id)configuration;
+- (BOOL)_updateIndicatorWithConfiguration:(id)configuration;
+- (BOOL)_updateProgressIndicatorWithConfiguration:(id)configuration;
+- (BOOL)_updateSubtitleLabelWithConfiguration:(id)configuration;
+- (BOOL)_updateTitleLabelWithConfiguration:(id)configuration;
 - (BOOL)hasBaseline;
 - (BOOL)hasMultilineText;
-- (CGPoint)menuAttachmentPointForConfiguration:(id)a3;
+- (CGPoint)menuAttachmentPointForConfiguration:(id)configuration;
 - (CGRect)_layoutBounds;
-- (CGRect)contentRectForBounds:(CGRect)a3;
-- (CGRect)imageRectForContentRect:(CGRect)a3;
-- (CGRect)titleRectForContentRect:(CGRect)a3;
-- (CGRect)visualBoundsWithCornerRadius:(double *)a3;
+- (CGRect)contentRectForBounds:(CGRect)bounds;
+- (CGRect)imageRectForContentRect:(CGRect)rect;
+- (CGRect)titleRectForContentRect:(CGRect)rect;
+- (CGRect)visualBoundsWithCornerRadius:(double *)radius;
 - (CGSize)intrinsicContentSize;
-- (CGSize)intrinsicSizeWithinSize:(CGSize)a3;
+- (CGSize)intrinsicSizeWithinSize:(CGSize)size;
 - (UIButtonConfigurationVisualProvider)init;
 - (UIEdgeInsets)alignmentRectInsets;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
 - (id)defaultFocusEffect;
 - (id)effectiveContentView;
-- (id)imageViewCreateIfNeeded:(BOOL)a3;
+- (id)imageViewCreateIfNeeded:(BOOL)needed;
 - (id)pointerEffectPreviewParameters;
-- (id)pointerEffectWithPreview:(id)a3;
-- (id)pointerShapeInContainer:(id)a3 proposal:(id)a4;
+- (id)pointerEffectWithPreview:(id)preview;
+- (id)pointerShapeInContainer:(id)container proposal:(id)proposal;
 - (id)preferredHoverEffect;
-- (id)subtitleViewCreateIfNeeded:(BOOL)a3;
-- (id)titleViewCreateIfNeeded:(BOOL)a3;
-- (void)_animateContentIfNeededWithBlock:(id)a3;
-- (void)_applyButtonValuesToConfiguration:(id)a3;
+- (id)subtitleViewCreateIfNeeded:(BOOL)needed;
+- (id)titleViewCreateIfNeeded:(BOOL)needed;
+- (void)_animateContentIfNeededWithBlock:(id)block;
+- (void)_applyButtonValuesToConfiguration:(id)configuration;
 - (void)_executeConfigurationUpdate;
 - (void)_layoutContent;
-- (void)_transitionContentIfNeededOn:(id)a3 WithBlock:(id)a4;
-- (void)alignmentRectInsetsHaveChangedForChildImageView:(id)a3;
+- (void)_transitionContentIfNeededOn:(id)on WithBlock:(id)block;
+- (void)alignmentRectInsetsHaveChangedForChildImageView:(id)view;
 - (void)applyConfiguration;
-- (void)automaticallyUpdateConfigurationIfNecessary:(id)a3;
-- (void)cleanupForVisualProvider:(id)a3;
-- (void)contextMenuInteraction:(id)a3 updateStyleForMenuWithConfiguration:(id)a4 style:(id)a5;
+- (void)automaticallyUpdateConfigurationIfNecessary:(id)necessary;
+- (void)cleanupForVisualProvider:(id)provider;
+- (void)contextMenuInteraction:(id)interaction updateStyleForMenuWithConfiguration:(id)configuration style:(id)style;
 - (void)dealloc;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)intrinsicContentSizeInvalidatedForChildView:(id)a3;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)intrinsicContentSizeInvalidatedForChildView:(id)view;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateBaselineInformationDependentOnBounds;
 - (void)updateConfigurationIfNecessary;
-- (void)updatedAppliedCornerRadius:(double)a3;
-- (void)updatedAppliedCornersAreContinuous:(BOOL)a3;
+- (void)updatedAppliedCornerRadius:(double)radius;
+- (void)updatedAppliedCornersAreContinuous:(BOOL)continuous;
 @end
 
 @implementation UIButtonConfigurationVisualProvider
@@ -87,8 +87,8 @@
   }
 
   [(UIButtonConfigurationVisualProvider *)self updatedAppliedCornersAreContinuous:v6];
-  v7 = [(UIView *)self->_button hoverStyle];
-  [v7 _invalidateAutomaticHoverShape];
+  hoverStyle = [(UIView *)self->_button hoverStyle];
+  [hoverStyle _invalidateAutomaticHoverShape];
 }
 
 - (void)_layoutContent
@@ -98,8 +98,8 @@
   v3 = 0.0;
   v6 = 0.0;
   v5 = 0.0;
-  v7 = [(UIButton *)self->_button _currentConfiguration];
-  [(UIButtonConfigurationVisualProvider *)self _updateBackgroundViewWithConfiguration:v7];
+  _currentConfiguration = [(UIButton *)self->_button _currentConfiguration];
+  [(UIButtonConfigurationVisualProvider *)self _updateBackgroundViewWithConfiguration:_currentConfiguration];
 
   v8 = dyld_program_sdk_at_least();
   backgroundView = self->_backgroundView;
@@ -122,50 +122,50 @@
 
 - ($FAF8FB4E17ADDBD5CADBCA981CDA5A29)_layoutDataUpdatingIfNecessary
 {
-  v3 = self;
+  selfCopy = self;
   if ((LOBYTE(self[1].var1.width) & 1) == 0)
   {
     [($FAF8FB4E17ADDBD5CADBCA981CDA5A29 *)self _layoutBounds];
-    self = [($FAF8FB4E17ADDBD5CADBCA981CDA5A29 *)v3 _layoutDataInBounds:?];
+    self = [($FAF8FB4E17ADDBD5CADBCA981CDA5A29 *)selfCopy _layoutDataInBounds:?];
     v5 = v25;
-    *&v3->var6.var1 = v26;
+    *&selfCopy->var6.var1 = v26;
     v6 = v28;
-    v3[1].var0.origin = v27;
-    v3[1].var0.size = v6;
+    selfCopy[1].var0.origin = v27;
+    selfCopy[1].var0.size = v6;
     v7 = v21;
-    *&v3->var4.origin.y = v22;
+    *&selfCopy->var4.origin.y = v22;
     v8 = v24;
-    *&v3->var4.size.height = v23;
-    *&v3->var5.origin.y = v8;
-    *&v3->var5.size.height = v5;
+    *&selfCopy->var4.size.height = v23;
+    *&selfCopy->var5.origin.y = v8;
+    *&selfCopy->var5.size.height = v5;
     v9 = v17;
-    *&v3->var2.origin.y = v18;
+    *&selfCopy->var2.origin.y = v18;
     v10 = v20;
-    *&v3->var2.size.height = v19;
-    *&v3->var3.origin.y = v10;
-    *&v3->var3.size.height = v7;
-    v3[1].var1.width = v29;
-    *&v3->var1.height = v9;
+    *&selfCopy->var2.size.height = v19;
+    *&selfCopy->var3.origin.y = v10;
+    *&selfCopy->var3.size.height = v7;
+    selfCopy[1].var1.width = v29;
+    *&selfCopy->var1.height = v9;
   }
 
-  v11 = *&v3->var6.var1;
-  size = v3[1].var0.size;
-  retstr->var5.size = v3[1].var0.origin;
+  v11 = *&selfCopy->var6.var1;
+  size = selfCopy[1].var0.size;
+  retstr->var5.size = selfCopy[1].var0.origin;
   retstr->var6 = size;
-  *&retstr->var7 = v3[1].var1.width;
-  v13 = *&v3->var4.origin.y;
-  v14 = *&v3->var5.origin.y;
-  retstr->var3.size = *&v3->var4.size.height;
+  *&retstr->var7 = selfCopy[1].var1.width;
+  v13 = *&selfCopy->var4.origin.y;
+  v14 = *&selfCopy->var5.origin.y;
+  retstr->var3.size = *&selfCopy->var4.size.height;
   retstr->var4.origin = v14;
-  retstr->var4.size = *&v3->var5.size.height;
+  retstr->var4.size = *&selfCopy->var5.size.height;
   retstr->var5.origin = v11;
-  v15 = *&v3->var2.origin.y;
-  v16 = *&v3->var3.origin.y;
-  retstr->var1 = *&v3->var2.size.height;
+  v15 = *&selfCopy->var2.origin.y;
+  v16 = *&selfCopy->var3.origin.y;
+  retstr->var1 = *&selfCopy->var2.size.height;
   retstr->var2.origin = v16;
-  retstr->var2.size = *&v3->var3.size.height;
+  retstr->var2.size = *&selfCopy->var3.size.height;
   retstr->var3.origin = v13;
-  retstr->var0.origin = *&v3->var1.height;
+  retstr->var0.origin = *&selfCopy->var1.height;
   retstr->var0.size = v15;
   return self;
 }
@@ -244,18 +244,18 @@ LABEL_6:
 - (BOOL)hasMultilineText
 {
   [(UIButtonConfigurationVisualProvider *)self updateConfigurationIfNecessary];
-  v3 = [(UIButton *)self->_button _currentConfiguration];
-  if ([v3 _hasMultilineTitle])
+  _currentConfiguration = [(UIButton *)self->_button _currentConfiguration];
+  if ([_currentConfiguration _hasMultilineTitle])
   {
-    v4 = 1;
+    _hasMultilineSubtitle = 1;
   }
 
   else
   {
-    v4 = [v3 _hasMultilineSubtitle];
+    _hasMultilineSubtitle = [_currentConfiguration _hasMultilineSubtitle];
   }
 
-  return v4;
+  return _hasMultilineSubtitle;
 }
 
 - (void)_executeConfigurationUpdate
@@ -263,23 +263,23 @@ LABEL_6:
   v3 = _UISetCurrentFallbackEnvironment(self->_button);
   memset(__src, 0, sizeof(__src));
   _UIBeginTrackingTraitUsage(self->_button, 0, __src);
-  v4 = [(UIButton *)self->_button _currentConfiguration];
-  if (v4)
+  _currentConfiguration = [(UIButton *)self->_button _currentConfiguration];
+  if (_currentConfiguration)
   {
-    [(UIButtonConfigurationVisualProvider *)self _applyButtonValuesToConfiguration:v4];
-    [(UIButtonConfigurationVisualProvider *)self automaticallyUpdateConfigurationIfNecessary:v4];
+    [(UIButtonConfigurationVisualProvider *)self _applyButtonValuesToConfiguration:_currentConfiguration];
+    [(UIButtonConfigurationVisualProvider *)self automaticallyUpdateConfigurationIfNecessary:_currentConfiguration];
   }
 
   button = self->_button;
-  v6 = [(UIButton *)button _configurationState];
-  [(UIButton *)button _updateConfigurationUsingState:v6];
+  _configurationState = [(UIButton *)button _configurationState];
+  [(UIButton *)button _updateConfigurationUsingState:_configurationState];
 
   [(UIButton *)self->_button updateConfiguration];
-  v7 = [(UIButton *)self->_button configurationUpdateHandler];
-  v8 = v7;
-  if (v7)
+  configurationUpdateHandler = [(UIButton *)self->_button configurationUpdateHandler];
+  v8 = configurationUpdateHandler;
+  if (configurationUpdateHandler)
   {
-    (*(v7 + 16))(v7, self->_button);
+    (*(configurationUpdateHandler + 16))(configurationUpdateHandler, self->_button);
   }
 
   [(UIButtonConfigurationVisualProvider *)self applyConfiguration];
@@ -307,8 +307,8 @@ LABEL_6:
   v2 = [(UIButtonConfigurationVisualProvider *)&v5 init];
   if (v2 && [objc_opt_class() wantsConfigurationUpdateForButtonShapes])
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    v2->_accessibilityButtonShapesChangedToken = [v3 _addObserver:v2 selector:sel__accessibilityButtonShapesChangedNotification_ name:@"UIAccessibilityButtonShapesEnabledStatusDidChangeNotification" object:0 options:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    v2->_accessibilityButtonShapesChangedToken = [defaultCenter _addObserver:v2 selector:sel__accessibilityButtonShapesChangedNotification_ name:@"UIAccessibilityButtonShapesEnabledStatusDidChangeNotification" object:0 options:0];
   }
 
   return v2;
@@ -316,11 +316,11 @@ LABEL_6:
 
 - (void)applyConfiguration
 {
-  v3 = [(UIButton *)self->_button _currentConfiguration];
-  if (v3)
+  _currentConfiguration = [(UIButton *)self->_button _currentConfiguration];
+  if (_currentConfiguration)
   {
-    v11 = v3;
-    v4 = [(UIButtonConfigurationVisualProvider *)self _updateImageViewWithConfiguration:v3];
+    v11 = _currentConfiguration;
+    v4 = [(UIButtonConfigurationVisualProvider *)self _updateImageViewWithConfiguration:_currentConfiguration];
     v5 = [(UIButtonConfigurationVisualProvider *)self _updateIndicatorWithConfiguration:v11];
     v6 = [(UIButtonConfigurationVisualProvider *)self _updateProgressIndicatorWithConfiguration:v11];
     v7 = [(UIButtonConfigurationVisualProvider *)self _updateTitleLabelWithConfiguration:v11];
@@ -333,10 +333,10 @@ LABEL_6:
       [(UIButton *)self->_button setNeedsLayout];
     }
 
-    v10 = [(UIView *)self->_button hoverStyle];
-    [v10 _invalidateAutomaticHoverEffect];
+    hoverStyle = [(UIView *)self->_button hoverStyle];
+    [hoverStyle _invalidateAutomaticHoverEffect];
 
-    v3 = v11;
+    _currentConfiguration = v11;
   }
 }
 
@@ -372,25 +372,25 @@ LABEL_6:
 - (BOOL)hasBaseline
 {
   [(UIButtonConfigurationVisualProvider *)self updateConfigurationIfNecessary];
-  v3 = [(UIButton *)self->_button _currentConfiguration];
-  v4 = [v3 image];
-  if (v4 || ([v3 showsActivityIndicator] & 1) != 0)
+  _currentConfiguration = [(UIButton *)self->_button _currentConfiguration];
+  image = [_currentConfiguration image];
+  if (image || ([_currentConfiguration showsActivityIndicator] & 1) != 0)
   {
     v5 = 1;
   }
 
   else
   {
-    v7 = [v3 attributedTitle];
-    if ([v7 length])
+    attributedTitle = [_currentConfiguration attributedTitle];
+    if ([attributedTitle length])
     {
       v5 = 1;
     }
 
     else
     {
-      v8 = [v3 attributedSubtitle];
-      v5 = [v8 length] != 0;
+      attributedSubtitle = [_currentConfiguration attributedSubtitle];
+      v5 = [attributedSubtitle length] != 0;
     }
   }
 
@@ -401,10 +401,10 @@ LABEL_6:
 {
   if (self->_vendsBaselineInformationToAutoLayout)
   {
-    v3 = [(UIView *)self->_button _layoutEngine];
-    if (v3)
+    _layoutEngine = [(UIView *)self->_button _layoutEngine];
+    if (_layoutEngine)
     {
-      [(UIButtonConfigurationVisualProvider *)self _layoutDataInBounds:[(UIView *)self->_button _nsis_compatibleBoundsInEngine:v3]];
+      [(UIButtonConfigurationVisualProvider *)self _layoutDataInBounds:[(UIView *)self->_button _nsis_compatibleBoundsInEngine:_layoutEngine]];
       v4 = v5;
       if (v5 != self->_previousFirstBaselineOffsetForAttributeLowering || (v4 = v6, v6 != self->_previousLastBaselineOffsetForAttributeLowering))
       {
@@ -414,7 +414,7 @@ LABEL_6:
   }
 }
 
-+ (id)visualProviderForButton:(id)a3
++ (id)visualProviderForButton:(id)button
 {
   v3 = objc_opt_new();
   v3[256] |= 1u;
@@ -422,7 +422,7 @@ LABEL_6:
   return v3;
 }
 
-- (void)cleanupForVisualProvider:(id)a3
+- (void)cleanupForVisualProvider:(id)provider
 {
   [(UIView *)self->_backgroundView removeFromSuperview];
   [(UIView *)self->_imageView removeFromSuperview];
@@ -432,29 +432,29 @@ LABEL_6:
   _unregisterAccessibilityNotifications(self);
 }
 
-- (void)updatedAppliedCornerRadius:(double)a3
+- (void)updatedAppliedCornerRadius:(double)radius
 {
   if (_UISolariumEnabled())
   {
-    v5 = [(UIView *)self->_button layer];
-    [v5 setCornerRadius:a3];
+    layer = [(UIView *)self->_button layer];
+    [layer setCornerRadius:radius];
   }
 }
 
-- (void)updatedAppliedCornersAreContinuous:(BOOL)a3
+- (void)updatedAppliedCornersAreContinuous:(BOOL)continuous
 {
   v3 = MEMORY[0x1E69796E8];
-  if (!a3)
+  if (!continuous)
   {
     v3 = MEMORY[0x1E69796E0];
   }
 
   v4 = *v3;
-  v5 = [(UIView *)self->_button layer];
-  [v5 setCornerCurve:v4];
+  layer = [(UIView *)self->_button layer];
+  [layer setCornerCurve:v4];
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -531,29 +531,29 @@ id __93__UIButtonConfigurationVisualProvider_contextMenuInteraction_configuratio
   return v4;
 }
 
-- (CGPoint)menuAttachmentPointForConfiguration:(id)a3
+- (CGPoint)menuAttachmentPointForConfiguration:(id)configuration
 {
   v3 = _UIControlMenuSupportTargetedPreviewOverViews(self->_button, self->_titleLabel, self->_imageView);
-  v4 = [v3 target];
-  v5 = [v4 container];
+  target = [v3 target];
+  container = [target container];
 
-  v6 = [v3 view];
-  [v6 bounds];
+  view = [v3 view];
+  [view bounds];
   v8 = v7;
   v10 = v9;
-  v11 = [v3 target];
-  [v11 center];
+  target2 = [v3 target];
+  [target2 center];
   v13 = round(v12 - v10 * 0.5);
   v15 = round(v14 - v8 * 0.5);
-  v16 = [v5 _window];
-  [v5 convertRect:v16 toView:{v15, v13, v8, v10}];
+  _window = [container _window];
+  [container convertRect:_window toView:{v15, v13, v8, v10}];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
 
-  v25 = [v5 _window];
-  v26 = _UIControlMenuAttachmentPointForRectInContainer(v25, v18, v20, v22, v24);
+  _window2 = [container _window];
+  v26 = _UIControlMenuAttachmentPointForRectInContainer(_window2, v18, v20, v22, v24);
   v28 = v27;
 
   v29 = v26;
@@ -563,33 +563,33 @@ id __93__UIButtonConfigurationVisualProvider_contextMenuInteraction_configuratio
   return result;
 }
 
-- (void)contextMenuInteraction:(id)a3 updateStyleForMenuWithConfiguration:(id)a4 style:(id)a5
+- (void)contextMenuInteraction:(id)interaction updateStyleForMenuWithConfiguration:(id)configuration style:(id)style
 {
-  if (a5)
+  if (style)
   {
     button = self->_button;
     titleLabel = self->_titleLabel;
     imageView = self->_imageView;
-    v10 = a5;
-    v11 = a4;
+    styleCopy = style;
+    configurationCopy = configuration;
     v16 = _UIControlMenuSupportTargetedPreviewOverViews(button, titleLabel, imageView);
-    [(UIButton *)self->_button menuAttachmentPointForConfiguration:v11];
+    [(UIButton *)self->_button menuAttachmentPointForConfiguration:configurationCopy];
     v13 = v12;
     v15 = v14;
 
-    _UIControlMenuSupportUpdateStyle(v10, self->_button, v16, v13, v15);
+    _UIControlMenuSupportUpdateStyle(styleCopy, self->_button, v16, v13, v15);
   }
 }
 
-- (CGRect)visualBoundsWithCornerRadius:(double *)a3
+- (CGRect)visualBoundsWithCornerRadius:(double *)radius
 {
   v5 = +[_UIPointerSettingsDomain rootSettings];
-  v6 = [v5 buttonSettings];
+  buttonSettings = [v5 buttonSettings];
 
-  v7 = [(UIButton *)self->_button _currentConfiguration];
-  if (![v7 _isRoundButton])
+  _currentConfiguration = [(UIButton *)self->_button _currentConfiguration];
+  if (![_currentConfiguration _isRoundButton])
   {
-    if ([v7 _hasObscuringBackground])
+    if ([_currentConfiguration _hasObscuringBackground])
     {
       [(UIView *)self->_backgroundView frame];
       v17 = v25;
@@ -600,7 +600,7 @@ id __93__UIButtonConfigurationVisualProvider_contextMenuInteraction_configuratio
       if (backgroundView)
       {
         currentlyAppliedCornerRadius = backgroundView->_currentlyAppliedCornerRadius;
-        if (!a3)
+        if (!radius)
         {
           goto LABEL_30;
         }
@@ -609,7 +609,7 @@ id __93__UIButtonConfigurationVisualProvider_contextMenuInteraction_configuratio
       else
       {
         currentlyAppliedCornerRadius = 0.0;
-        if (!a3)
+        if (!radius)
         {
           goto LABEL_30;
         }
@@ -622,21 +622,21 @@ id __93__UIButtonConfigurationVisualProvider_contextMenuInteraction_configuratio
     y = *(MEMORY[0x1E695F050] + 8);
     width = *(MEMORY[0x1E695F050] + 16);
     height = *(MEMORY[0x1E695F050] + 24);
-    if ([v7 showsActivityIndicator])
+    if ([_currentConfiguration showsActivityIndicator])
     {
       v34 = 16;
     }
 
     else
     {
-      v35 = [v7 _resolvedImage];
+      _resolvedImage = [_currentConfiguration _resolvedImage];
 
-      if (!v35)
+      if (!_resolvedImage)
       {
         v40 = 0;
 LABEL_15:
-        v41 = [v7 _resolvedTitle];
-        v42 = [v41 length];
+        _resolvedTitle = [_currentConfiguration _resolvedTitle];
+        v42 = [_resolvedTitle length];
         v43 = v42 != 0;
 
         if (v42)
@@ -657,8 +657,8 @@ LABEL_15:
           height = v92.size.height;
         }
 
-        v48 = [v7 _resolvedSubtitle];
-        v49 = [v48 length];
+        _resolvedSubtitle = [_currentConfiguration _resolvedSubtitle];
+        v49 = [_resolvedSubtitle length];
 
         if (v49)
         {
@@ -679,9 +679,9 @@ LABEL_15:
           v43 = 1;
         }
 
-        v54 = [v7 _resolvedIndicator];
+        _resolvedIndicator = [_currentConfiguration _resolvedIndicator];
 
-        if (v54)
+        if (_resolvedIndicator)
         {
           [(UIView *)self->_indicatorView frame];
           v101.origin.x = v55;
@@ -700,37 +700,37 @@ LABEL_15:
           v40 = 1;
         }
 
-        v59 = [(UIView *)self->_button effectiveUserInterfaceLayoutDirection];
+        effectiveUserInterfaceLayoutDirection = [(UIView *)self->_button effectiveUserInterfaceLayoutDirection];
         if ((v43 & v40) == 1)
         {
-          v60 = v59 == UIUserInterfaceLayoutDirectionRightToLeft;
-          [v6 mixedButtonOutsetLeading];
+          v60 = effectiveUserInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft;
+          [buttonSettings mixedButtonOutsetLeading];
           v88 = v61;
-          [v6 mixedButtonOutsetTrailing];
+          [buttonSettings mixedButtonOutsetTrailing];
           v63 = v62;
-          [v6 mixedButtonOutsetTop];
+          [buttonSettings mixedButtonOutsetTop];
           v65 = v64;
-          [v6 mixedButtonOutsetBottom];
+          [buttonSettings mixedButtonOutsetBottom];
           v67 = v66;
-          [v6 mixedButtonMinWidth];
+          [buttonSettings mixedButtonMinWidth];
           v69 = v68;
-          [v6 mixedButtonMinHeight];
+          [buttonSettings mixedButtonMinHeight];
         }
 
         else if (v40)
         {
-          v60 = v59 == UIUserInterfaceLayoutDirectionRightToLeft;
-          [v6 imageButtonOutsetLeading];
+          v60 = effectiveUserInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft;
+          [buttonSettings imageButtonOutsetLeading];
           v88 = v70;
-          [v6 imageButtonOutsetTrailing];
+          [buttonSettings imageButtonOutsetTrailing];
           v63 = v71;
-          [v6 imageButtonOutsetTop];
+          [buttonSettings imageButtonOutsetTop];
           v65 = v72;
-          [v6 imageButtonOutsetBottom];
+          [buttonSettings imageButtonOutsetBottom];
           v67 = v73;
-          [v6 imageButtonMinWidth];
+          [buttonSettings imageButtonMinWidth];
           v69 = v74;
-          [v6 imageButtonMinHeight];
+          [buttonSettings imageButtonMinHeight];
         }
 
         else
@@ -744,28 +744,28 @@ LABEL_28:
             v21 = v82;
             v23 = v83;
             currentlyAppliedCornerRadius = -1.0;
-            if (!a3)
+            if (!radius)
             {
               goto LABEL_30;
             }
 
 LABEL_29:
-            *a3 = currentlyAppliedCornerRadius;
+            *radius = currentlyAppliedCornerRadius;
             goto LABEL_30;
           }
 
-          v60 = v59 == UIUserInterfaceLayoutDirectionRightToLeft;
-          [v6 textButtonOutsetLeading];
+          v60 = effectiveUserInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft;
+          [buttonSettings textButtonOutsetLeading];
           v88 = v75;
-          [v6 textButtonOutsetTrailing];
+          [buttonSettings textButtonOutsetTrailing];
           v63 = v76;
-          [v6 textButtonOutsetTop];
+          [buttonSettings textButtonOutsetTop];
           v65 = v77;
-          [v6 textButtonOutsetBottom];
+          [buttonSettings textButtonOutsetBottom];
           v67 = v78;
-          [v6 textButtonMinWidth];
+          [buttonSettings textButtonMinWidth];
           v69 = v79;
-          [v6 textButtonMinHeight];
+          [buttonSettings textButtonMinHeight];
         }
 
         v80 = __outsetRectWithMinimumSize(v60, 0, x, y, width, height, v88, v63, v65, v67, v69);
@@ -793,23 +793,23 @@ LABEL_29:
     goto LABEL_15;
   }
 
-  v8 = [(UIView *)self->_button effectiveUserInterfaceLayoutDirection];
+  effectiveUserInterfaceLayoutDirection2 = [(UIView *)self->_button effectiveUserInterfaceLayoutDirection];
   v9 = 0.0;
-  if (([v7 _hasObscuringBackground] & 1) == 0)
+  if (([_currentConfiguration _hasObscuringBackground] & 1) == 0)
   {
-    [v6 roundButtonOutset];
+    [buttonSettings roundButtonOutset];
     v9 = v10;
   }
 
-  [v6 roundButtonMinSize];
+  [buttonSettings roundButtonMinSize];
   v12 = v11;
   [(UIView *)self->_button bounds];
-  v17 = __outsetRectWithMinimumSize(v8 == UIUserInterfaceLayoutDirectionRightToLeft, 1, v13, v14, v15, v16, v9, v9, v9, v9, v12);
+  v17 = __outsetRectWithMinimumSize(effectiveUserInterfaceLayoutDirection2 == UIUserInterfaceLayoutDirectionRightToLeft, 1, v13, v14, v15, v16, v9, v9, v9, v9, v12);
   v19 = v18;
   v21 = v20;
   v23 = v22;
   currentlyAppliedCornerRadius = v20 * 0.5;
-  if (a3)
+  if (radius)
   {
     goto LABEL_29;
   }
@@ -830,10 +830,10 @@ LABEL_30:
 - (id)pointerEffectPreviewParameters
 {
   v3 = objc_opt_new();
-  v4 = [(UIButton *)self->_button _currentConfiguration];
-  v5 = [v4 _hasObscuringBackground];
+  _currentConfiguration = [(UIButton *)self->_button _currentConfiguration];
+  _hasObscuringBackground = [_currentConfiguration _hasObscuringBackground];
 
-  if (v5)
+  if (_hasObscuringBackground)
   {
     v6 = [(_UISystemBackgroundView *)self->_backgroundView currentVisiblePathInContainerView:self->_button];
     [v3 setShadowPath:v6];
@@ -842,34 +842,34 @@ LABEL_30:
   return v3;
 }
 
-- (id)pointerEffectWithPreview:(id)a3
+- (id)pointerEffectWithPreview:(id)preview
 {
-  v4 = a3;
+  previewCopy = preview;
   v5 = objc_opt_class();
-  v6 = [(UIButton *)self->_button _currentConfiguration];
-  v7 = [v6 _hasObscuringBackground];
+  _currentConfiguration = [(UIButton *)self->_button _currentConfiguration];
+  _hasObscuringBackground = [_currentConfiguration _hasObscuringBackground];
 
-  if (v7)
+  if (_hasObscuringBackground)
   {
     v5 = objc_opt_class();
   }
 
-  v8 = [v5 effectWithPreview:v4];
+  v8 = [v5 effectWithPreview:previewCopy];
 
   return v8;
 }
 
-- (id)pointerShapeInContainer:(id)a3 proposal:(id)a4
+- (id)pointerShapeInContainer:(id)container proposal:(id)proposal
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v7 || ((*(v7 + 2))(v7), (v9 = objc_claimAutoreleasedReturnValue()) == 0))
+  containerCopy = container;
+  proposalCopy = proposal;
+  v8 = proposalCopy;
+  if (!proposalCopy || ((*(proposalCopy + 2))(proposalCopy), (v9 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v13 = 0.0;
     [(UIButtonConfigurationVisualProvider *)self visualBoundsWithCornerRadius:&v13];
     v10 = v13;
-    [(UIView *)self->_button convertRect:v6 toView:?];
+    [(UIView *)self->_button convertRect:containerCopy toView:?];
     if (v10 >= 0.0)
     {
       [UIPointerShape shapeWithRoundedRect:"shapeWithRoundedRect:cornerRadius:" cornerRadius:?];
@@ -889,10 +889,10 @@ LABEL_30:
 
 - (id)preferredHoverEffect
 {
-  v2 = [(UIButton *)self->_button _currentConfiguration];
-  v3 = [v2 _hasObscuringBackground];
+  _currentConfiguration = [(UIButton *)self->_button _currentConfiguration];
+  _hasObscuringBackground = [_currentConfiguration _hasObscuringBackground];
 
-  if (v3)
+  if (_hasObscuringBackground)
   {
     v4 = +[UIHoverLiftEffect effect];
   }
@@ -937,9 +937,9 @@ LABEL_30:
   return v6;
 }
 
-- (id)imageViewCreateIfNeeded:(BOOL)a3
+- (id)imageViewCreateIfNeeded:(BOOL)needed
 {
-  if (a3 && !self->_imageView)
+  if (needed && !self->_imageView)
   {
     v4 = objc_opt_new();
     imageView = self->_imageView;
@@ -951,9 +951,9 @@ LABEL_30:
   return v6;
 }
 
-- (id)titleViewCreateIfNeeded:(BOOL)a3
+- (id)titleViewCreateIfNeeded:(BOOL)needed
 {
-  if (a3 && !self->_titleLabel)
+  if (needed && !self->_titleLabel)
   {
     v4 = objc_opt_new();
     titleLabel = self->_titleLabel;
@@ -965,9 +965,9 @@ LABEL_30:
   return v6;
 }
 
-- (id)subtitleViewCreateIfNeeded:(BOOL)a3
+- (id)subtitleViewCreateIfNeeded:(BOOL)needed
 {
-  if (a3 && !self->_subtitleLabel)
+  if (needed && !self->_subtitleLabel)
   {
     v4 = objc_opt_new();
     subtitleLabel = self->_subtitleLabel;
@@ -979,7 +979,7 @@ LABEL_30:
   return v6;
 }
 
-- (CGRect)contentRectForBounds:(CGRect)a3
+- (CGRect)contentRectForBounds:(CGRect)bounds
 {
   v3 = *MEMORY[0x1E695F058];
   v4 = *(MEMORY[0x1E695F058] + 8);
@@ -992,7 +992,7 @@ LABEL_30:
   return result;
 }
 
-- (CGRect)imageRectForContentRect:(CGRect)a3
+- (CGRect)imageRectForContentRect:(CGRect)rect
 {
   v3 = *MEMORY[0x1E695F058];
   v4 = *(MEMORY[0x1E695F058] + 8);
@@ -1005,7 +1005,7 @@ LABEL_30:
   return result;
 }
 
-- (CGRect)titleRectForContentRect:(CGRect)a3
+- (CGRect)titleRectForContentRect:(CGRect)rect
 {
   v3 = *MEMORY[0x1E695F058];
   v4 = *(MEMORY[0x1E695F058] + 8);
@@ -1018,23 +1018,23 @@ LABEL_30:
   return result;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v5 = a3;
+  contextCopy = context;
   button = self->_button;
-  v11 = v5;
-  v7 = [v5 previouslyFocusedView];
-  v8 = v7;
-  if (button == v7)
+  v11 = contextCopy;
+  previouslyFocusedView = [contextCopy previouslyFocusedView];
+  v8 = previouslyFocusedView;
+  if (button == previouslyFocusedView)
   {
   }
 
   else
   {
     v9 = self->_button;
-    v10 = [v11 nextFocusedView];
+    nextFocusedView = [v11 nextFocusedView];
 
-    if (v9 != v10)
+    if (v9 != nextFocusedView)
     {
       goto LABEL_6;
     }
@@ -1044,10 +1044,10 @@ LABEL_30:
 LABEL_6:
 }
 
-- ($F24F406B2B787EFB06265DBA3D28CBD5)baselineOffsetsAtSize:(CGSize)a3
+- ($F24F406B2B787EFB06265DBA3D28CBD5)baselineOffsetsAtSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(UIButtonConfigurationVisualProvider *)self updateConfigurationIfNecessary];
   [(UIView *)self->_button bounds];
   v9 = width != 0.0 && width == v6 && height == v7;
@@ -1085,27 +1085,27 @@ LABEL_6:
   return result;
 }
 
-- (void)intrinsicContentSizeInvalidatedForChildView:(id)a3
+- (void)intrinsicContentSizeInvalidatedForChildView:(id)view
 {
   imageView = self->_imageView;
-  if (imageView == a3 && [(UIImageView *)imageView _hasBaseline])
+  if (imageView == view && [(UIImageView *)imageView _hasBaseline])
   {
 
     [(UIButtonConfigurationVisualProvider *)self updateBaselineInformationDependentOnBounds];
   }
 }
 
-- (void)alignmentRectInsetsHaveChangedForChildImageView:(id)a3
+- (void)alignmentRectInsetsHaveChangedForChildImageView:(id)view
 {
   imageView = self->_imageView;
-  if (imageView == a3 && [(UIImageView *)imageView _hasBaseline])
+  if (imageView == view && [(UIImageView *)imageView _hasBaseline])
   {
 
     [(UIButtonConfigurationVisualProvider *)self updateBaselineInformationDependentOnBounds];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   if ((dyld_program_sdk_at_least() & 1) == 0)
   {
@@ -1115,30 +1115,30 @@ LABEL_6:
   }
 }
 
-- (void)automaticallyUpdateConfigurationIfNecessary:(id)a3
+- (void)automaticallyUpdateConfigurationIfNecessary:(id)necessary
 {
-  v9 = a3;
-  v5 = [(UIButton *)self->_button automaticallyUpdatesConfiguration];
-  v6 = v9;
-  if (v5)
+  necessaryCopy = necessary;
+  automaticallyUpdatesConfiguration = [(UIButton *)self->_button automaticallyUpdatesConfiguration];
+  v6 = necessaryCopy;
+  if (automaticallyUpdatesConfiguration)
   {
-    v7 = [v9 _updateFromButton:self->_button];
+    v7 = [necessaryCopy _updateFromButton:self->_button];
     if (!v7)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"UIButtonConfigurationVisualProvider.m" lineNumber:778 description:{@"Updated configuration was nil for configuration: %@", v9}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIButtonConfigurationVisualProvider.m" lineNumber:778 description:{@"Updated configuration was nil for configuration: %@", necessaryCopy}];
     }
 
     [(UIButton *)self->_button _setCurrentConfiguration:v7];
 
-    v6 = v9;
+    v6 = necessaryCopy;
   }
 }
 
-- (CGSize)intrinsicSizeWithinSize:(CGSize)a3
+- (CGSize)intrinsicSizeWithinSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(UIButtonConfigurationVisualProvider *)self updateConfigurationIfNecessary];
   [(UIButtonConfigurationVisualProvider *)self _layoutDataInBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), width, height, 0, 0, 0, 0];
   v7 = 0.0;
@@ -1172,27 +1172,27 @@ LABEL_6:
   return self;
 }
 
-- ($FAF8FB4E17ADDBD5CADBCA981CDA5A29)_layoutDataInBounds:(SEL)a3
+- ($FAF8FB4E17ADDBD5CADBCA981CDA5A29)_layoutDataInBounds:(SEL)bounds
 {
   height = a4.size.height;
   width = a4.size.width;
   y = a4.origin.y;
   x = a4.origin.x;
   [(UIButtonConfigurationVisualProvider *)self updateConfigurationIfNecessary];
-  v10 = [(UIButton *)self->_button _currentConfiguration];
-  [(UIButtonConfigurationVisualProvider *)self _layoutDataInBounds:v10 forConfiguration:x, y, width, height];
+  _currentConfiguration = [(UIButton *)self->_button _currentConfiguration];
+  [(UIButtonConfigurationVisualProvider *)self _layoutDataInBounds:_currentConfiguration forConfiguration:x, y, width, height];
 
   return result;
 }
 
-- ($FAF8FB4E17ADDBD5CADBCA981CDA5A29)_layoutDataInBounds:(SEL)a3 forConfiguration:(CGRect)a4
+- ($FAF8FB4E17ADDBD5CADBCA981CDA5A29)_layoutDataInBounds:(SEL)bounds forConfiguration:(CGRect)configuration
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = configuration.size.height;
+  width = configuration.size.width;
+  y = configuration.origin.y;
+  x = configuration.origin.x;
   v371 = a5;
-  v11 = [(UIView *)self->_button effectiveUserInterfaceLayoutDirection];
+  effectiveUserInterfaceLayoutDirection = [(UIView *)self->_button effectiveUserInterfaceLayoutDirection];
   v379.origin.x = x;
   v379.origin.y = y;
   v379.size.width = width;
@@ -1249,22 +1249,22 @@ LABEL_6:
   }
 
   v303 = v12;
-  v345 = [v371 _hasMultilineTitle];
-  v354 = [v371 _hasMultilineSubtitle];
-  v14 = [v371 _resolvedImage];
+  _hasMultilineTitle = [v371 _hasMultilineTitle];
+  _hasMultilineSubtitle = [v371 _hasMultilineSubtitle];
+  _resolvedImage = [v371 _resolvedImage];
 
-  v15 = [v371 showsActivityIndicator];
-  v16 = (v14 != 0) | v15;
-  v17 = [v371 _resolvedIndicator];
+  showsActivityIndicator = [v371 showsActivityIndicator];
+  v16 = (_resolvedImage != 0) | showsActivityIndicator;
+  _resolvedIndicator = [v371 _resolvedIndicator];
 
-  v18 = [v371 _resolvedTitle];
-  v19 = [v371 _resolvedSubtitle];
-  v290 = v18;
-  v20 = [v18 length];
-  v289 = v19;
-  v328 = [v19 length];
+  _resolvedTitle = [v371 _resolvedTitle];
+  _resolvedSubtitle = [v371 _resolvedSubtitle];
+  v290 = _resolvedTitle;
+  v20 = [_resolvedTitle length];
+  v289 = _resolvedSubtitle;
+  v328 = [_resolvedSubtitle length];
   v304 = (v20 | v328) != 0;
-  v21 = [v371 imagePlacement];
+  imagePlacement = [v371 imagePlacement];
   v288 = v16;
   v283 = (v20 | v328) == 0;
   v295 = v16 ^ 1;
@@ -1295,9 +1295,9 @@ LABEL_6:
   }
 
   v28 = v371;
-  v294 = v21;
+  v294 = imagePlacement;
   v302 = v20;
-  if (v17)
+  if (_resolvedIndicator)
   {
     [v371 _resolvedIndicatorPadding];
     v28 = v371;
@@ -1316,10 +1316,10 @@ LABEL_6:
   v34 = v33;
   dx = v35;
   v37 = v36;
-  v38 = [v371 _hasOversizedTitle];
-  v39 = [v371 _hasOversizedSubtitle];
-  v40 = v39;
-  if ((v38 & 1) == 0 && !v39)
+  _hasOversizedTitle = [v371 _hasOversizedTitle];
+  _hasOversizedSubtitle = [v371 _hasOversizedSubtitle];
+  v40 = _hasOversizedSubtitle;
+  if ((_hasOversizedTitle & 1) == 0 && !_hasOversizedSubtitle)
   {
     v41 = v294;
     goto LABEL_82;
@@ -1339,7 +1339,7 @@ LABEL_6:
     v45 = 0.0;
     v46 = 0.0;
     v47 = 0.0;
-    if (v38)
+    if (_hasOversizedTitle)
     {
       v47 = [UILabel _insetsForAttributedString:v290 withDefaultFont:0 inView:self->_button];
       v46 = v48;
@@ -1358,7 +1358,7 @@ LABEL_6:
 
     v377 = -v47;
     v375 = -v51;
-    if (v11 == UIUserInterfaceLayoutDirectionRightToLeft)
+    if (effectiveUserInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft)
     {
       if (v44 <= v43)
       {
@@ -1409,7 +1409,7 @@ LABEL_6:
 
   else
   {
-    if (v38)
+    if (_hasOversizedTitle)
     {
       v57 = v290;
     }
@@ -1422,7 +1422,7 @@ LABEL_6:
     v377 = [UILabel _insetsForAttributedString:v57];
     v375 = -v59;
     v61 = -v60;
-    if (v11 == UIUserInterfaceLayoutDirectionRightToLeft)
+    if (effectiveUserInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft)
     {
       v376 = -v58;
       v374 = v61;
@@ -1481,7 +1481,7 @@ LABEL_64:
   }
 
   *v64 = 0.0;
-  if (v17)
+  if (_resolvedIndicator)
   {
     v372 = v374;
     v65 = &v374;
@@ -1538,14 +1538,14 @@ LABEL_82:
   v69 = MEMORY[0x1E695EFF8];
   v357 = v34;
   r2_16a = v37;
-  if (v15)
+  if (showsActivityIndicator)
   {
     v70 = *MEMORY[0x1E695F060];
     v342 = *(MEMORY[0x1E695F060] + 8);
     [(UIActivityIndicatorView *)self->_progressIndicatorView sizeThatFits:*MEMORY[0x1E695F060]];
     v72 = v71;
     v362 = v73;
-    if (!v17)
+    if (!_resolvedIndicator)
     {
       goto LABEL_85;
     }
@@ -1555,7 +1555,7 @@ LABEL_82:
 
   v70 = *MEMORY[0x1E695F060];
   v342 = *(MEMORY[0x1E695F060] + 8);
-  if (v14)
+  if (_resolvedImage)
   {
     imageView = self->_imageView;
     v87 = v23;
@@ -1579,7 +1579,7 @@ LABEL_82:
     [(UIView *)v96 alignmentRectForFrame:v97, v93, v95, v98];
     v72 = v99;
     v362 = v100;
-    if (!v17)
+    if (!_resolvedIndicator)
     {
       goto LABEL_85;
     }
@@ -1593,7 +1593,7 @@ LABEL_84:
 
   v362 = *(MEMORY[0x1E695F060] + 8);
   v72 = *MEMORY[0x1E695F060];
-  if (v17)
+  if (_resolvedIndicator)
   {
     goto LABEL_84;
   }
@@ -1609,7 +1609,7 @@ LABEL_85:
     v79 = v13;
   }
 
-  if (v17)
+  if (_resolvedIndicator)
   {
     v80 = v79 <= 0.0;
   }
@@ -1673,7 +1673,7 @@ LABEL_85:
       [(UILabel *)self->_titleLabel sizeThatFits:v85, 3.40282347e38];
       v105 = v106;
       v349 = v107;
-      if (!(v345 & 1 | !v303) && v106 >= v83)
+      if (!(_hasMultilineTitle & 1 | !v303) && v106 >= v83)
       {
         v105 = v83;
       }
@@ -1684,7 +1684,7 @@ LABEL_85:
     if (v328)
     {
       [(UILabel *)self->_subtitleLabel sizeThatFits:v85, 3.40282347e38];
-      if (!(v354 & 1 | !v303) && v109 >= v83)
+      if (!(_hasMultilineSubtitle & 1 | !v303) && v109 >= v83)
       {
         v109 = v83;
       }
@@ -1709,8 +1709,8 @@ LABEL_85:
     {
       if (v328)
       {
-        v112 = [v371 _resolvedTitleAlignment];
-        if (v112 == 2 || (v113 = 0.0, (v11 == UIUserInterfaceLayoutDirectionRightToLeft) != (v112 == 3)))
+        _resolvedTitleAlignment = [v371 _resolvedTitleAlignment];
+        if (_resolvedTitleAlignment == 2 || (v113 = 0.0, (effectiveUserInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft) != (_resolvedTitleAlignment == 3)))
         {
           UIFloorToViewScale(self->_button);
         }
@@ -1768,7 +1768,7 @@ LABEL_85:
 
     v120 = v101;
     v121 = 2;
-    if (v11 == UIUserInterfaceLayoutDirectionRightToLeft)
+    if (effectiveUserInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft)
     {
       v121 = 8;
     }
@@ -1935,9 +1935,9 @@ LABEL_85:
 
   v149 = r2_8 + v138;
   v150 = v371;
-  if (v17)
+  if (_resolvedIndicator)
   {
-    if (v11 == UIUserInterfaceLayoutDirectionRightToLeft)
+    if (effectiveUserInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft)
     {
       v151 = v307;
       v346 = v307 + v346;
@@ -2009,7 +2009,7 @@ LABEL_85:
 
   v358 = v132;
   r2_16b = v154;
-  if (v11 == UIUserInterfaceLayoutDirectionRightToLeft)
+  if (effectiveUserInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft)
   {
     v159 = v154;
   }
@@ -2083,7 +2083,7 @@ LABEL_85:
     v169 = r2_16b;
     v170 = v316;
     v171 = v305;
-    if (v17)
+    if (_resolvedIndicator)
     {
 LABEL_178:
       v403.origin.x = v160;
@@ -2155,7 +2155,7 @@ LABEL_178:
     v170 = v316;
     v171 = v305;
     v160 = v301;
-    if (v17)
+    if (_resolvedIndicator)
     {
       goto LABEL_178;
     }
@@ -2202,7 +2202,7 @@ LABEL_178:
 
     v171 = v305;
     v369 = v182 + v232;
-    if (v17)
+    if (_resolvedIndicator)
     {
       goto LABEL_178;
     }
@@ -2263,13 +2263,13 @@ LABEL_188:
   v189 = r2 + v159;
   v190 = v186 - (v169 + v358);
   v191 = v187 - (dx + v168);
-  v192 = [(UIControl *)self->_button contentHorizontalAlignment];
-  if (v192 == UIControlContentHorizontalAlignmentTrailing)
+  contentHorizontalAlignment = [(UIControl *)self->_button contentHorizontalAlignment];
+  if (contentHorizontalAlignment == UIControlContentHorizontalAlignmentTrailing)
   {
     v193 = v296;
     v194 = v316;
     v195 = v305;
-    if (v11 != UIUserInterfaceLayoutDirectionRightToLeft)
+    if (effectiveUserInterfaceLayoutDirection != UIUserInterfaceLayoutDirectionRightToLeft)
     {
       goto LABEL_209;
     }
@@ -2280,9 +2280,9 @@ LABEL_188:
   v193 = v296;
   v194 = v316;
   v195 = v305;
-  if (v192 == UIControlContentHorizontalAlignmentLeading)
+  if (contentHorizontalAlignment == UIControlContentHorizontalAlignmentLeading)
   {
-    if (v11 == UIUserInterfaceLayoutDirectionRightToLeft)
+    if (effectiveUserInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft)
     {
       goto LABEL_209;
     }
@@ -2290,9 +2290,9 @@ LABEL_188:
     goto LABEL_208;
   }
 
-  if ((v76 == 0) | v295 & 1 | (v192 != UIControlContentHorizontalAlignmentFill) | v283)
+  if ((v76 == 0) | v295 & 1 | (contentHorizontalAlignment != UIControlContentHorizontalAlignmentFill) | v283)
   {
-    if (v192 == UIControlContentHorizontalAlignmentRight)
+    if (contentHorizontalAlignment == UIControlContentHorizontalAlignmentRight)
     {
 LABEL_209:
       v415.origin.x = v189;
@@ -2308,7 +2308,7 @@ LABEL_209:
       goto LABEL_210;
     }
 
-    if (v192 != UIControlContentHorizontalAlignmentLeft)
+    if (contentHorizontalAlignment != UIControlContentHorizontalAlignmentLeft)
     {
       v454.origin.x = v189;
       v454.origin.y = v355 + v168;
@@ -2336,7 +2336,7 @@ LABEL_208:
     CGRectGetMinX(v414);
 LABEL_210:
     button = self->_button;
-    if (v11 == UIUserInterfaceLayoutDirectionRightToLeft)
+    if (effectiveUserInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft)
     {
       UICeilToViewScale(button);
     }
@@ -2372,7 +2372,7 @@ LABEL_210:
   v433.size.height = v296;
   CGRectGetMaxX(v433);
   v233 = self->_button;
-  if (v11 == UIUserInterfaceLayoutDirectionRightToLeft)
+  if (effectiveUserInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft)
   {
     UICeilToViewScale(v233);
     v359 = v234;
@@ -2390,8 +2390,8 @@ LABEL_210:
   v193 = v296;
   v195 = v305;
 LABEL_214:
-  v205 = [(UIControl *)self->_button contentVerticalAlignment];
-  v206 = v205;
+  contentVerticalAlignment = [(UIControl *)self->_button contentVerticalAlignment];
+  v206 = contentVerticalAlignment;
   if (v76)
   {
     v207 = 0;
@@ -2399,7 +2399,7 @@ LABEL_214:
 
   else
   {
-    v207 = v205 == UIControlContentVerticalAlignmentFill;
+    v207 = contentVerticalAlignment == UIControlContentVerticalAlignmentFill;
   }
 
   v208 = v207;
@@ -2434,14 +2434,14 @@ LABEL_214:
     UIFloorToViewScale(self->_button);
     v213 = v212;
     v196 = v302;
-    if (v17)
+    if (_resolvedIndicator)
     {
 LABEL_222:
       v214 = v285;
       v215 = v355 + v168;
       v216 = v190;
       v217 = v209;
-      if (v11 == UIUserInterfaceLayoutDirectionRightToLeft)
+      if (effectiveUserInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft)
       {
         MinX = CGRectGetMinX(*&v214);
         v421.origin.x = v301;
@@ -2517,7 +2517,7 @@ LABEL_222:
     v222 = v190;
     v209 = v191;
     v223 = v191;
-    if (v205 == UIControlContentVerticalAlignmentBottom)
+    if (contentVerticalAlignment == UIControlContentVerticalAlignmentBottom)
     {
       CGRectGetMaxY(*&v220);
       v429.origin.x = v301;
@@ -2527,7 +2527,7 @@ LABEL_222:
       CGRectGetMaxY(v429);
     }
 
-    else if (v205 == UIControlContentVerticalAlignmentTop)
+    else if (contentVerticalAlignment == UIControlContentVerticalAlignmentTop)
     {
       CGRectGetMinY(*&v220);
       v422.origin.x = v301;
@@ -2550,7 +2550,7 @@ LABEL_222:
     UIFloorToViewScale(self->_button);
     v211 = v236;
     v213 = v236;
-    if (v17)
+    if (_resolvedIndicator)
     {
       goto LABEL_222;
     }
@@ -2607,7 +2607,7 @@ LABEL_247:
   v240 = v239;
   v242 = v241;
   v243 = 0.0;
-  if ((v14 == 0) | v15 & 1)
+  if ((_resolvedImage == 0) | showsActivityIndicator & 1)
   {
     v244 = 0.0;
   }
@@ -2702,7 +2702,7 @@ LABEL_247:
     [v262 _baselineOffsetsAtSize:{v263, v260}];
     v265 = v264;
 
-    if (!v14)
+    if (!_resolvedImage)
     {
       goto LABEL_278;
     }
@@ -2712,9 +2712,9 @@ LABEL_247:
   {
     v265 = 0.0;
     v257 = 0.0;
-    if (!v14)
+    if (!_resolvedImage)
     {
-      if ((v15 & 1) == 0)
+      if ((showsActivityIndicator & 1) == 0)
       {
         v318 = 0.0;
         v361 = 0.0;
@@ -2725,14 +2725,14 @@ LABEL_247:
     }
   }
 
-  if ((v15 & 1) != 0 || [(UIImageView *)self->_imageView _hasBaseline]|| v283)
+  if ((showsActivityIndicator & 1) != 0 || [(UIImageView *)self->_imageView _hasBaseline]|| v283)
   {
     if ((v295 | v197))
     {
-      v266 = [(UIImageView *)self->_imageView _hasBaseline];
+      _hasBaseline = [(UIImageView *)self->_imageView _hasBaseline];
       v267 = 0.0;
       v268 = 0.0;
-      if (v266 && v197)
+      if (_hasBaseline && v197)
       {
         v440.origin.x = v360;
         v440.origin.y = v317;
@@ -2808,7 +2808,7 @@ LABEL_281:
   v450.size.width = v240;
   v450.size.height = v242;
   v267 = v244 + v270 - CGRectGetMaxY(v450);
-  if (v14)
+  if (_resolvedImage)
   {
 LABEL_282:
     v318 = v267;
@@ -2895,7 +2895,7 @@ LABEL_286:
   retstr->var5.size.height = v353;
   retstr->var6.var0 = v361;
   retstr->var6.var1 = v318;
-  if (v15)
+  if (showsActivityIndicator)
   {
     v278 = 8;
   }
@@ -2905,7 +2905,7 @@ LABEL_286:
     v278 = 0;
   }
 
-  if (v14)
+  if (_resolvedImage)
   {
     v279 = 3;
   }
@@ -2915,26 +2915,26 @@ LABEL_286:
     v279 = 1;
   }
 
-  *&retstr->var7 = v278 | v279 | (4 * (v17 != 0)) | (16 * (v196 != 0)) | (32 * (v328 != 0));
+  *&retstr->var7 = v278 | v279 | (4 * (_resolvedIndicator != 0)) | (16 * (v196 != 0)) | (32 * (v328 != 0));
 
   return result;
 }
 
-- (void)_applyButtonValuesToConfiguration:(id)a3
+- (void)_applyButtonValuesToConfiguration:(id)configuration
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UIControl *)self->_button state];
-  v6 = [(UIButton *)self->_button _attributedTitleForState:v5];
+  configurationCopy = configuration;
+  state = [(UIControl *)self->_button state];
+  v6 = [(UIButton *)self->_button _attributedTitleForState:state];
   if (v6)
   {
-    [v4 setAttributedTitle:v6];
+    [configurationCopy setAttributedTitle:v6];
   }
 
   else
   {
-    v7 = [(UIButton *)self->_button _titleForState:v5];
-    v8 = [(UIButton *)self->_button _titleColorForState:v5];
+    v7 = [(UIButton *)self->_button _titleForState:state];
+    v8 = [(UIButton *)self->_button _titleColorForState:state];
     v9 = v8;
     if (v7)
     {
@@ -2945,96 +2945,96 @@ LABEL_286:
         v16[0] = v9;
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
         v12 = [v10 initWithString:v7 attributes:v11];
-        [v4 setAttributedTitle:v12];
+        [configurationCopy setAttributedTitle:v12];
       }
 
       else
       {
-        [v4 setTitle:v7];
+        [configurationCopy setTitle:v7];
       }
     }
   }
 
-  v13 = [(UIButton *)self->_button _imageForState:v5 applyingConfiguration:0 usesImageForNormalState:0];
+  v13 = [(UIButton *)self->_button _imageForState:state applyingConfiguration:0 usesImageForNormalState:0];
   if (v13)
   {
-    [v4 setImage:v13];
+    [configurationCopy setImage:v13];
     if ([v13 isSymbolImage])
     {
-      v14 = [(UIButton *)self->_button _preferredConfigurationForState:v5 includeDefault:0];
+      v14 = [(UIButton *)self->_button _preferredConfigurationForState:state includeDefault:0];
       if (v14)
       {
-        [v4 setPreferredSymbolConfigurationForImage:v14];
+        [configurationCopy setPreferredSymbolConfigurationForImage:v14];
       }
     }
   }
 }
 
-- (void)_animateContentIfNeededWithBlock:(id)a3
+- (void)_animateContentIfNeededWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
+  blockCopy = block;
+  v5 = blockCopy;
   if ((*&self->_flags & 2) != 0)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __72__UIButtonConfigurationVisualProvider__animateContentIfNeededWithBlock___block_invoke;
     v6[3] = &unk_1E70F0F78;
-    v7 = v4;
+    v7 = blockCopy;
     [UIView animateWithDuration:v6 animations:0 completion:0.25];
   }
 
   else
   {
-    v4[2](v4);
+    blockCopy[2](blockCopy);
   }
 }
 
-- (void)_transitionContentIfNeededOn:(id)a3 WithBlock:(id)a4
+- (void)_transitionContentIfNeededOn:(id)on WithBlock:(id)block
 {
-  v6 = a4;
-  v7 = v6;
+  blockCopy = block;
+  v7 = blockCopy;
   if ((*&self->_flags & 2) != 0)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __78__UIButtonConfigurationVisualProvider__transitionContentIfNeededOn_WithBlock___block_invoke;
     v8[3] = &unk_1E70F0F78;
-    v9 = v6;
-    [UIView _transitionBackingOutermostLayerWithView:a3 duration:5242880 options:v8 animations:0 completion:0.25];
+    v9 = blockCopy;
+    [UIView _transitionBackingOutermostLayerWithView:on duration:5242880 options:v8 animations:0 completion:0.25];
   }
 
   else
   {
-    v6[2](v6);
+    blockCopy[2](blockCopy);
   }
 }
 
-- (BOOL)_updateImageViewWithConfiguration:(id)a3
+- (BOOL)_updateImageViewWithConfiguration:(id)configuration
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 _resolvedImage];
-  if (!v5)
+  configurationCopy = configuration;
+  _resolvedImage = [configurationCopy _resolvedImage];
+  if (!_resolvedImage)
   {
     LOBYTE(v12) = [(UIView *)self->_imageView _removeFromSuperviewIfNeeded];
     goto LABEL_21;
   }
 
-  v6 = [v4 _resolvedSymbolConfiguration];
-  v7 = [(UIView *)self->_imageView superview];
-  if (v7)
+  _resolvedSymbolConfiguration = [configurationCopy _resolvedSymbolConfiguration];
+  superview = [(UIView *)self->_imageView superview];
+  if (superview)
   {
-    v8 = [(UIImageView *)self->_imageView image];
-    v9 = v5;
-    v10 = v9;
-    if (v8 == v9)
+    image = [(UIImageView *)self->_imageView image];
+    v9 = _resolvedImage;
+    preferredSymbolConfiguration = v9;
+    if (image == v9)
     {
     }
 
     else
     {
-      if (!v8)
+      if (!image)
       {
         LOBYTE(v12) = 1;
 LABEL_17:
@@ -3042,7 +3042,7 @@ LABEL_17:
         goto LABEL_18;
       }
 
-      v11 = [v8 isEqual:v9];
+      v11 = [image isEqual:v9];
 
       if (!v11)
       {
@@ -3053,10 +3053,10 @@ LABEL_18:
       }
     }
 
-    v10 = [(UIImageView *)self->_imageView preferredSymbolConfiguration];
-    v13 = v6;
+    preferredSymbolConfiguration = [(UIImageView *)self->_imageView preferredSymbolConfiguration];
+    v13 = _resolvedSymbolConfiguration;
     v14 = v13;
-    if (v10 == v13)
+    if (preferredSymbolConfiguration == v13)
     {
       LOBYTE(v12) = 0;
     }
@@ -3064,9 +3064,9 @@ LABEL_18:
     else
     {
       LOBYTE(v12) = 1;
-      if (v13 && v10)
+      if (v13 && preferredSymbolConfiguration)
       {
-        v12 = [v10 isEqual:v13] ^ 1;
+        v12 = [preferredSymbolConfiguration isEqual:v13] ^ 1;
       }
     }
 
@@ -3104,18 +3104,18 @@ LABEL_19:
     }
   }
 
-  v16 = [(UIButtonConfigurationVisualProvider *)self effectiveContentView];
-  [v16 addSubview:self->_imageView];
+  effectiveContentView = [(UIButtonConfigurationVisualProvider *)self effectiveContentView];
+  [effectiveContentView addSubview:self->_imageView];
 
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __73__UIButtonConfigurationVisualProvider__updateImageViewWithConfiguration___block_invoke;
   v23[3] = &unk_1E70F6B40;
-  v24 = v4;
-  v25 = self;
-  v26 = v5;
-  v27 = v6;
-  v17 = v6;
+  v24 = configurationCopy;
+  selfCopy = self;
+  v26 = _resolvedImage;
+  v27 = _resolvedSymbolConfiguration;
+  v17 = _resolvedSymbolConfiguration;
   [(UIButtonConfigurationVisualProvider *)self _animateContentIfNeededWithBlock:v23];
 
 LABEL_21:
@@ -3161,12 +3161,12 @@ void __73__UIButtonConfigurationVisualProvider__updateImageViewWithConfiguration
   }
 }
 
-- (BOOL)_updateIndicatorWithConfiguration:(id)a3
+- (BOOL)_updateIndicatorWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 _resolvedIndicator];
+  configurationCopy = configuration;
+  _resolvedIndicator = [configurationCopy _resolvedIndicator];
   indicatorView = self->_indicatorView;
-  if (v5)
+  if (_resolvedIndicator)
   {
     if (!indicatorView)
     {
@@ -3175,20 +3175,20 @@ void __73__UIButtonConfigurationVisualProvider__updateImageViewWithConfiguration
       self->_indicatorView = v7;
     }
 
-    v9 = [(UIButtonConfigurationVisualProvider *)self effectiveContentView];
-    [v9 addSubview:self->_indicatorView];
+    effectiveContentView = [(UIButtonConfigurationVisualProvider *)self effectiveContentView];
+    [effectiveContentView addSubview:self->_indicatorView];
 
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __73__UIButtonConfigurationVisualProvider__updateIndicatorWithConfiguration___block_invoke;
     v14[3] = &unk_1E70F6228;
     v14[4] = self;
-    v10 = v5;
+    v10 = _resolvedIndicator;
     v15 = v10;
-    v16 = v4;
+    v16 = configurationCopy;
     [(UIButtonConfigurationVisualProvider *)self _animateContentIfNeededWithBlock:v14];
-    v11 = [(UIImageView *)self->_indicatorView image];
-    v12 = [v11 isEqual:v10] ^ 1;
+    image = [(UIImageView *)self->_indicatorView image];
+    v12 = [image isEqual:v10] ^ 1;
   }
 
   else
@@ -3209,10 +3209,10 @@ void __73__UIButtonConfigurationVisualProvider__updateIndicatorWithConfiguration
   [*(*(a1 + 32) + 8) setTintColor:v3];
 }
 
-- (BOOL)_updateProgressIndicatorWithConfiguration:(id)a3
+- (BOOL)_updateProgressIndicatorWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  if ([v4 showsActivityIndicator])
+  configurationCopy = configuration;
+  if ([configurationCopy showsActivityIndicator])
   {
     [(UIView *)self->_imageView removeFromSuperview];
     if (!self->_progressIndicatorView)
@@ -3222,30 +3222,30 @@ void __73__UIButtonConfigurationVisualProvider__updateIndicatorWithConfiguration
       self->_progressIndicatorView = v5;
     }
 
-    [v4 _resolvedActivityIndicatorSize];
+    [configurationCopy _resolvedActivityIndicatorSize];
     UIRoundToViewScale(self->_button);
     [(UIActivityIndicatorView *)self->_progressIndicatorView _setCustomWidth:?];
     [(UIActivityIndicatorView *)self->_progressIndicatorView startAnimating];
-    v7 = [(UIButtonConfigurationVisualProvider *)self effectiveContentView];
-    [v7 addSubview:self->_progressIndicatorView];
+    effectiveContentView = [(UIButtonConfigurationVisualProvider *)self effectiveContentView];
+    [effectiveContentView addSubview:self->_progressIndicatorView];
 
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __81__UIButtonConfigurationVisualProvider__updateProgressIndicatorWithConfiguration___block_invoke;
     v10[3] = &unk_1E70F35B8;
     v10[4] = self;
-    v11 = v4;
+    v11 = configurationCopy;
     [(UIButtonConfigurationVisualProvider *)self _animateContentIfNeededWithBlock:v10];
 
-    v8 = 1;
+    _removeFromSuperviewIfNeeded = 1;
   }
 
   else
   {
-    v8 = [(UIView *)self->_progressIndicatorView _removeFromSuperviewIfNeeded];
+    _removeFromSuperviewIfNeeded = [(UIView *)self->_progressIndicatorView _removeFromSuperviewIfNeeded];
   }
 
-  return v8;
+  return _removeFromSuperviewIfNeeded;
 }
 
 void __81__UIButtonConfigurationVisualProvider__updateProgressIndicatorWithConfiguration___block_invoke(uint64_t a1)
@@ -3254,12 +3254,12 @@ void __81__UIButtonConfigurationVisualProvider__updateProgressIndicatorWithConfi
   [*(*(a1 + 32) + 16) setColor:v2];
 }
 
-- (BOOL)_updateTitleLabelWithConfiguration:(id)a3
+- (BOOL)_updateTitleLabelWithConfiguration:(id)configuration
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 _resolvedTitle];
-  if (v5)
+  configurationCopy = configuration;
+  _resolvedTitle = [configurationCopy _resolvedTitle];
+  if (_resolvedTitle)
   {
     v19 = 0;
     v20 = &v19;
@@ -3293,8 +3293,8 @@ void __81__UIButtonConfigurationVisualProvider__updateProgressIndicatorWithConfi
       }
     }
 
-    v7 = [(UIButtonConfigurationVisualProvider *)self effectiveContentView];
-    [v7 addSubview:self->_titleLabel];
+    effectiveContentView = [(UIButtonConfigurationVisualProvider *)self effectiveContentView];
+    [effectiveContentView addSubview:self->_titleLabel];
 
     titleLabel = self->_titleLabel;
     v16[0] = MEMORY[0x1E69E9820];
@@ -3303,25 +3303,25 @@ void __81__UIButtonConfigurationVisualProvider__updateProgressIndicatorWithConfi
     v16[3] = &unk_1E70FB728;
     v18 = &v19;
     v16[4] = self;
-    v17 = v5;
+    v17 = _resolvedTitle;
     [(UIButtonConfigurationVisualProvider *)self _transitionContentIfNeededOn:titleLabel WithBlock:v16];
-    LODWORD(titleLabel) = [v4 _hasMultilineTitle];
+    LODWORD(titleLabel) = [configurationCopy _hasMultilineTitle];
     if ([(UILabel *)self->_titleLabel numberOfLines]!= (titleLabel ^ 1))
     {
       [(UILabel *)self->_titleLabel setNumberOfLines:?];
       *(v20 + 24) = 1;
     }
 
-    v9 = [(UILabel *)self->_titleLabel lineBreakMode];
-    if (v9 == [v4 titleLineBreakMode])
+    lineBreakMode = [(UILabel *)self->_titleLabel lineBreakMode];
+    if (lineBreakMode == [configurationCopy titleLineBreakMode])
     {
-      v10 = *(v20 + 24);
+      _removeFromSuperviewIfNeeded = *(v20 + 24);
     }
 
     else
     {
-      -[UILabel setLineBreakMode:](self->_titleLabel, "setLineBreakMode:", [v4 titleLineBreakMode]);
-      v10 = 1;
+      -[UILabel setLineBreakMode:](self->_titleLabel, "setLineBreakMode:", [configurationCopy titleLineBreakMode]);
+      _removeFromSuperviewIfNeeded = 1;
       *(v20 + 24) = 1;
     }
 
@@ -3330,10 +3330,10 @@ void __81__UIButtonConfigurationVisualProvider__updateProgressIndicatorWithConfi
 
   else
   {
-    v10 = [(UIView *)self->_titleLabel _removeFromSuperviewIfNeeded];
+    _removeFromSuperviewIfNeeded = [(UIView *)self->_titleLabel _removeFromSuperviewIfNeeded];
   }
 
-  return v10 & 1;
+  return _removeFromSuperviewIfNeeded & 1;
 }
 
 uint64_t __74__UIButtonConfigurationVisualProvider__updateTitleLabelWithConfiguration___block_invoke(void *a1)
@@ -3347,12 +3347,12 @@ uint64_t __74__UIButtonConfigurationVisualProvider__updateTitleLabelWithConfigur
   return [v4 setAttributedText:v3];
 }
 
-- (BOOL)_updateSubtitleLabelWithConfiguration:(id)a3
+- (BOOL)_updateSubtitleLabelWithConfiguration:(id)configuration
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 _resolvedSubtitle];
-  if (v5)
+  configurationCopy = configuration;
+  _resolvedSubtitle = [configurationCopy _resolvedSubtitle];
+  if (_resolvedSubtitle)
   {
     v21 = 0;
     v22 = &v21;
@@ -3393,8 +3393,8 @@ uint64_t __74__UIButtonConfigurationVisualProvider__updateTitleLabelWithConfigur
       }
     }
 
-    v7 = [(UIButtonConfigurationVisualProvider *)self effectiveContentView];
-    [v7 addSubview:self->_subtitleLabel];
+    effectiveContentView = [(UIButtonConfigurationVisualProvider *)self effectiveContentView];
+    [effectiveContentView addSubview:self->_subtitleLabel];
 
     v8 = self->_subtitleLabel;
     v18[0] = MEMORY[0x1E69E9820];
@@ -3403,25 +3403,25 @@ uint64_t __74__UIButtonConfigurationVisualProvider__updateTitleLabelWithConfigur
     v18[3] = &unk_1E70FB728;
     v20 = &v21;
     v18[4] = self;
-    v19 = v5;
+    v19 = _resolvedSubtitle;
     [(UIButtonConfigurationVisualProvider *)self _transitionContentIfNeededOn:v8 WithBlock:v18];
-    LODWORD(v8) = [v4 _hasMultilineTitle];
+    LODWORD(v8) = [configurationCopy _hasMultilineTitle];
     if ([(UILabel *)self->_subtitleLabel numberOfLines]!= (v8 ^ 1))
     {
       [(UILabel *)self->_subtitleLabel setNumberOfLines:?];
       *(v22 + 24) = 1;
     }
 
-    v9 = [(UILabel *)self->_subtitleLabel lineBreakMode];
-    if (v9 == [v4 subtitleLineBreakMode])
+    lineBreakMode = [(UILabel *)self->_subtitleLabel lineBreakMode];
+    if (lineBreakMode == [configurationCopy subtitleLineBreakMode])
     {
-      v10 = *(v22 + 24);
+      _removeFromSuperviewIfNeeded = *(v22 + 24);
     }
 
     else
     {
-      -[UILabel setLineBreakMode:](self->_subtitleLabel, "setLineBreakMode:", [v4 subtitleLineBreakMode]);
-      v10 = 1;
+      -[UILabel setLineBreakMode:](self->_subtitleLabel, "setLineBreakMode:", [configurationCopy subtitleLineBreakMode]);
+      _removeFromSuperviewIfNeeded = 1;
       *(v22 + 24) = 1;
     }
 
@@ -3430,10 +3430,10 @@ uint64_t __74__UIButtonConfigurationVisualProvider__updateTitleLabelWithConfigur
 
   else
   {
-    v10 = [(UIView *)self->_subtitleLabel _removeFromSuperviewIfNeeded];
+    _removeFromSuperviewIfNeeded = [(UIView *)self->_subtitleLabel _removeFromSuperviewIfNeeded];
   }
 
-  return v10 & 1;
+  return _removeFromSuperviewIfNeeded & 1;
 }
 
 uint64_t __77__UIButtonConfigurationVisualProvider__updateSubtitleLabelWithConfiguration___block_invoke(void *a1)
@@ -3447,42 +3447,42 @@ uint64_t __77__UIButtonConfigurationVisualProvider__updateSubtitleLabelWithConfi
   return [v4 setAttributedText:v3];
 }
 
-- (BOOL)_updateBackgroundViewWithConfiguration:(id)a3
+- (BOOL)_updateBackgroundViewWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 cornerStyle];
-  v6 = [v4 background];
-  if (!v6)
+  configurationCopy = configuration;
+  cornerStyle = [configurationCopy cornerStyle];
+  background = [configurationCopy background];
+  if (!background)
   {
     LOBYTE(v15) = 0;
     goto LABEL_35;
   }
 
-  v7 = v6;
-  if (v5 != -1)
+  v7 = background;
+  if (cornerStyle != -1)
   {
-    v8 = [v6 copy];
+    v8 = [background copy];
 
     v7 = v8;
   }
 
   if (_UISolariumEnabled())
   {
-    v9 = [(UIButtonConfigurationVisualProvider *)self effectiveContentView];
-    v10 = [v9 superview];
-    v11 = v10;
-    if (!v10 || v10 == self->_backgroundView)
+    effectiveContentView = [(UIButtonConfigurationVisualProvider *)self effectiveContentView];
+    superview = [effectiveContentView superview];
+    v11 = superview;
+    if (!superview || superview == self->_backgroundView)
     {
-      [v7 _setContentView:v9];
-      v12 = [v4 _resolvedMonochromaticTreatment];
-      if (v12 == -1)
+      [v7 _setContentView:effectiveContentView];
+      _resolvedMonochromaticTreatment = [configurationCopy _resolvedMonochromaticTreatment];
+      if (_resolvedMonochromaticTreatment == -1)
       {
         v13 = 0;
       }
 
       else
       {
-        v13 = v12;
+        v13 = _resolvedMonochromaticTreatment;
       }
 
       [(UIView *)self->_imageView _setMonochromaticTreatment:v13];
@@ -3492,17 +3492,17 @@ uint64_t __77__UIButtonConfigurationVisualProvider__updateSubtitleLabelWithConfi
       [(UIView *)self->_imageView _setEnableMonochromaticTreatment:v14];
       [(UIView *)self->_titleLabel _setEnableMonochromaticTreatment:v14];
       [(UIView *)self->_subtitleLabel _setEnableMonochromaticTreatment:v14];
-      v16 = [v4 _resolvedColorMaterialRenderingMode];
-      v17 = [(UIView *)self->_contentView traitOverrides];
+      _resolvedColorMaterialRenderingMode = [configurationCopy _resolvedColorMaterialRenderingMode];
+      traitOverrides = [(UIView *)self->_contentView traitOverrides];
       v18 = objc_opt_self();
-      if (v16 < 1)
+      if (_resolvedColorMaterialRenderingMode < 1)
       {
-        [v17 removeTrait:v18];
+        [traitOverrides removeTrait:v18];
       }
 
       else
       {
-        [v17 setNSIntegerValue:v16 forTrait:v18];
+        [traitOverrides setNSIntegerValue:_resolvedColorMaterialRenderingMode forTrait:v18];
       }
 
       [v7 _setContentViewIgnoresBackgroundInsets:1];
@@ -3511,20 +3511,20 @@ uint64_t __77__UIButtonConfigurationVisualProvider__updateSubtitleLabelWithConfi
 
   [v7 cornerRadius];
   v20 = v19;
-  v21 = [v4 cornerStyle];
-  if (v21 <= 1)
+  cornerStyle2 = [configurationCopy cornerStyle];
+  if (cornerStyle2 <= 1)
   {
-    if (!v21)
+    if (!cornerStyle2)
     {
       v32 = +[UIFontMetrics defaultMetrics];
-      v33 = [(UIView *)self->_button traitCollection];
-      [v32 scaledValueForValue:v33 compatibleWithTraitCollection:v20];
+      traitCollection = [(UIView *)self->_button traitCollection];
+      [v32 scaledValueForValue:traitCollection compatibleWithTraitCollection:v20];
       [v7 setCornerRadius:?];
 
       goto LABEL_31;
     }
 
-    if (v21 != 1)
+    if (cornerStyle2 != 1)
     {
       goto LABEL_31;
     }
@@ -3536,7 +3536,7 @@ LABEL_28:
     goto LABEL_30;
   }
 
-  switch(v21)
+  switch(cornerStyle2)
   {
     case 2:
       [(UIView *)self->_button bounds];
@@ -3557,19 +3557,19 @@ LABEL_31:
   backgroundView = self->_backgroundView;
   if (backgroundView)
   {
-    v27 = [(_UISystemBackgroundView *)backgroundView configuration];
-    v15 = [v27 _isEqualToInternalConfigurationLayoutOnly:v7] ^ 1;
+    configuration = [(_UISystemBackgroundView *)backgroundView configuration];
+    v15 = [configuration _isEqualToInternalConfigurationLayoutOnly:v7] ^ 1;
 
     v34 = MEMORY[0x1E69E9820];
     v35 = 3221225472;
     v36 = __78__UIButtonConfigurationVisualProvider__updateBackgroundViewWithConfiguration___block_invoke;
     v37 = &unk_1E70F35B8;
-    v38 = self;
+    selfCopy = self;
     v39 = v7;
     v28 = v7;
     [(UIButtonConfigurationVisualProvider *)self _animateContentIfNeededWithBlock:&v34];
 
-    [UIView performWithoutAnimation:&__block_literal_global_332, v34, v35, v36, v37, v38];
+    [UIView performWithoutAnimation:&__block_literal_global_332, v34, v35, v36, v37, selfCopy];
   }
 
   else

@@ -5,34 +5,34 @@
 - (TSPComponent)supportComponent;
 - (TSPComponent)viewStateComponent;
 - (TSPComponentManager)init;
-- (TSPComponentManager)initWithContext:(id)a3;
+- (TSPComponentManager)initWithContext:(id)context;
 - (TSPObjectContext)context;
-- (id)componentForRootObjectIdentifier:(int64_t)a3;
-- (id)componentForRootObjectOfLazyReference:(id)a3;
-- (id)componentForRootObjectOfLazyReferenceImpl:(id)a3;
-- (id)objectForIdentifier:(int64_t)a3;
+- (id)componentForRootObjectIdentifier:(int64_t)identifier;
+- (id)componentForRootObjectOfLazyReference:(id)reference;
+- (id)componentForRootObjectOfLazyReferenceImpl:(id)impl;
+- (id)objectForIdentifier:(int64_t)identifier;
 - (unint64_t)componentCount;
-- (void)cacheComponent:(id)a3 isDiscardingContent:(BOOL)a4;
-- (void)componentForRootObjectIdentifier:(int64_t)a3 queue:(id)a4 completion:(id)a5;
-- (void)componentForRootObjectOfLazyReference:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)continueCacheOperationUsingBlock:(id)a3;
+- (void)cacheComponent:(id)component isDiscardingContent:(BOOL)content;
+- (void)componentForRootObjectIdentifier:(int64_t)identifier queue:(id)queue completion:(id)completion;
+- (void)componentForRootObjectOfLazyReference:(id)reference queue:(id)queue completion:(id)completion;
+- (void)continueCacheOperationUsingBlock:(id)block;
 - (void)dealloc;
-- (void)didModifyFlushedComponent:(id)a3 forObject:(id)a4;
-- (void)dirtyAllComponentsForDocumentUpgradeInPackage:(unsigned __int8)a3;
-- (void)dirtyComponents:(id)a3;
+- (void)didModifyFlushedComponent:(id)component forObject:(id)object;
+- (void)dirtyAllComponentsForDocumentUpgradeInPackage:(unsigned __int8)package;
+- (void)dirtyComponents:(id)components;
 - (void)discardOrphanedComponents;
 - (void)endIgnoringCachedObjectEviction;
-- (void)enumerateComponents:(id)a3;
+- (void)enumerateComponents:(id)components;
 - (void)evictAllCachedObjects;
-- (void)flushComponent:(id)a3 isDiscardingContent:(BOOL)a4;
-- (void)loadComponent:(const void *)a3 package:(id)a4;
-- (void)loadFromPackage:(id)a3 metadata:(id)a4;
-- (void)performCacheOperationUsingBlock:(id)a3;
-- (void)retrieveOrCreateComponentForRootObject:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)setViewStateComponent:(id)a3;
+- (void)flushComponent:(id)component isDiscardingContent:(BOOL)content;
+- (void)loadComponent:(const void *)component package:(id)package;
+- (void)loadFromPackage:(id)package metadata:(id)metadata;
+- (void)performCacheOperationUsingBlock:(id)block;
+- (void)retrieveOrCreateComponentForRootObject:(id)object queue:(id)queue completion:(id)completion;
+- (void)setViewStateComponent:(id)component;
 - (void)suspendLoadingModifiedFlushedComponentsAndWait;
-- (void)traverseComponentTreeFromRoot:(id)a3 accessor:(id)a4;
-- (void)willModifyObject:(id)a3 options:(unint64_t)a4;
+- (void)traverseComponentTreeFromRoot:(id)root accessor:(id)accessor;
+- (void)willModifyObject:(id)object options:(unint64_t)options;
 @end
 
 @implementation TSPComponentManager
@@ -53,16 +53,16 @@
   objc_exception_throw(v13);
 }
 
-- (TSPComponentManager)initWithContext:(id)a3
+- (TSPComponentManager)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v29.receiver = self;
   v29.super_class = TSPComponentManager;
   v5 = [(TSPComponentManager *)&v29 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_context, v4);
+    objc_storeWeak(&v5->_context, contextCopy);
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(MEMORY[0x277D85CD8], DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create("TSPComponentManager.Components", v7);
     componentQueue = v6->_componentQueue;
@@ -137,12 +137,12 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)loadComponent:(const void *)a3 package:(id)a4
+- (void)loadComponent:(const void *)component package:(id)package
 {
-  v6 = a4;
-  v7 = *(a3 + 35);
-  v65 = v6;
-  v11 = objc_msgSend_packageIdentifier(v6, v8, v9);
+  packageCopy = package;
+  v7 = *(component + 35);
+  v65 = packageCopy;
+  v11 = objc_msgSend_packageIdentifier(packageCopy, v8, v9);
   v12 = 0x277CCA000;
   if (v11 != 1)
   {
@@ -176,22 +176,22 @@
   }
 
   v40 = objc_alloc(*(v12 + 3240));
-  if ((*(a3 + 4) & 2) != 0)
+  if ((*(component + 4) & 2) != 0)
   {
-    v42 = a3 + 272;
+    v42 = component + 272;
   }
 
   else
   {
-    v42 = a3 + 264;
+    v42 = component + 264;
   }
 
   v43 = objc_msgSend_tsp_initWithProtobufString_(v40, v41, *v42 & 0xFFFFFFFFFFFFFFFELL);
-  v45 = objc_msgSend_packageEntryInfoForComponentLocator_isStoredOutsideObjectArchive_(v65, v44, v43, *(a3 + 296));
+  v45 = objc_msgSend_packageEntryInfoForComponentLocator_isStoredOutsideObjectArchive_(v65, v44, v43, *(component + 296));
   v46 = [TSPComponent alloc];
   v49 = objc_msgSend_encodedLength(v45, v47, v48);
   v52 = objc_msgSend_lastModificationDate(v45, v50, v51);
-  ModificationDate = objc_msgSend_initWithDelegate_message_packageIdentifier_encodedLength_lastModificationDate_(v46, v53, self, a3, v11, v49, v52);
+  ModificationDate = objc_msgSend_initWithDelegate_message_packageIdentifier_encodedLength_lastModificationDate_(v46, v53, self, component, v11, v49, v52);
 
   if (!ModificationDate)
   {
@@ -210,11 +210,11 @@
   objc_msgSend_tsp_cacheComponent_(self->_componentCache, v57, ModificationDate);
 }
 
-- (void)loadFromPackage:(id)a3 metadata:(id)a4
+- (void)loadFromPackage:(id)package metadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
-  v10 = objc_msgSend_packageIdentifier(v6, v8, v9);
+  packageCopy = package;
+  metadataCopy = metadata;
+  v10 = objc_msgSend_packageIdentifier(packageCopy, v8, v9);
   v12 = v10;
   if (!v10)
   {
@@ -230,11 +230,11 @@
   v23[1] = 3221225472;
   v23[2] = sub_276AABCCC;
   v23[3] = &unk_27A6E6828;
-  v20 = v7;
+  v20 = metadataCopy;
   v27 = v12;
   v24 = v20;
-  v25 = self;
-  v21 = v6;
+  selfCopy = self;
+  v21 = packageCopy;
   v26 = v21;
   objc_msgSend_performCacheOperationUsingBlock_(self, v22, v23);
 }
@@ -305,17 +305,17 @@
   return v3;
 }
 
-- (void)setViewStateComponent:(id)a3
+- (void)setViewStateComponent:(id)component
 {
-  v4 = a3;
+  componentCopy = component;
   componentQueue = self->_componentQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_276AAC418;
   v7[3] = &unk_27A6E2898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = componentCopy;
+  v6 = componentCopy;
   dispatch_barrier_async(componentQueue, v7);
 }
 
@@ -338,11 +338,11 @@
   return v3;
 }
 
-- (void)enumerateComponents:(id)a3
+- (void)enumerateComponents:(id)components
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  componentsCopy = components;
+  v5 = componentsCopy;
+  if (componentsCopy)
   {
     componentQueue = self->_componentQueue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -350,26 +350,26 @@
     v7[2] = sub_276AAC5B0;
     v7[3] = &unk_27A6E4C58;
     v7[4] = self;
-    v8 = v4;
+    v8 = componentsCopy;
     dispatch_sync(componentQueue, v7);
   }
 }
 
-- (void)retrieveOrCreateComponentForRootObject:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)retrieveOrCreateComponentForRootObject:(id)object queue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8)
+  objectCopy = object;
+  queueCopy = queue;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (objectCopy)
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = sub_276AAC888;
     v14[3] = &unk_27A6E39F8;
     v14[4] = self;
-    v15 = v8;
-    v16 = v9;
+    v15 = objectCopy;
+    v16 = queueCopy;
     v17 = v11;
     objc_msgSend_performCacheOperationUsingBlock_(self, v12, v14);
 
@@ -382,31 +382,31 @@
     block[1] = 3221225472;
     block[2] = sub_276AAC874;
     block[3] = &unk_27A6E3480;
-    v19 = v10;
-    dispatch_async(v9, block);
+    v19 = completionCopy;
+    dispatch_async(queueCopy, block);
     v13 = v19;
   }
 }
 
-- (void)componentForRootObjectIdentifier:(int64_t)a3 queue:(id)a4 completion:(id)a5
+- (void)componentForRootObjectIdentifier:(int64_t)identifier queue:(id)queue completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  queueCopy = queue;
+  completionCopy = completion;
   componentQueue = self->_componentQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = sub_276AACC28;
   v13[3] = &unk_27A6E6850;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a3;
-  v11 = v9;
-  v12 = v8;
+  v14 = queueCopy;
+  v15 = completionCopy;
+  identifierCopy = identifier;
+  v11 = completionCopy;
+  v12 = queueCopy;
   dispatch_async(componentQueue, v13);
 }
 
-- (id)componentForRootObjectIdentifier:(int64_t)a3
+- (id)componentForRootObjectIdentifier:(int64_t)identifier
 {
   v7 = 0;
   v8 = &v7;
@@ -421,7 +421,7 @@
   block[3] = &unk_27A6E2C28;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = identifier;
   dispatch_sync(componentQueue, block);
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -429,12 +429,12 @@
   return v4;
 }
 
-- (id)componentForRootObjectOfLazyReferenceImpl:(id)a3
+- (id)componentForRootObjectOfLazyReferenceImpl:(id)impl
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v7 = objc_msgSend_tsp_identifier(v4, v5, v6);
-  v10 = objc_msgSend_component(v4, v8, v9);
+  implCopy = impl;
+  v7 = objc_msgSend_tsp_identifier(implCopy, v5, v6);
+  v10 = objc_msgSend_component(implCopy, v8, v9);
   v12 = v10;
   if (v10)
   {
@@ -453,7 +453,7 @@
     v42 = 0u;
     obj = self->_components;
     v18 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v16, &v41, v45, 16);
-    v39 = self;
+    selfCopy = self;
     if (v18)
     {
       v19 = *v42;
@@ -467,7 +467,7 @@ LABEL_6:
         }
 
         v21 = *(*(&v41 + 1) + 8 * v20);
-        v15 = objc_msgSend_externalReferenceInfoForObjectIdentifier_(v21, v17, v7, v39);
+        v15 = objc_msgSend_externalReferenceInfoForObjectIdentifier_(v21, v17, v7, selfCopy);
         if (v15)
         {
           break;
@@ -503,21 +503,21 @@ LABEL_6:
       v15 = 0;
     }
 
-    self = v39;
+    self = selfCopy;
     if (!v15)
     {
       goto LABEL_19;
     }
   }
 
-  v36 = objc_msgSend_tsp_objectForIdentifier_(self->_componentDictionary, v13, v15, v39);
+  v36 = objc_msgSend_tsp_objectForIdentifier_(self->_componentDictionary, v13, v15, selfCopy);
   if (v36)
   {
     goto LABEL_23;
   }
 
 LABEL_19:
-  if (objc_msgSend_ownershipMode(v4, v13, v14, v39))
+  if (objc_msgSend_ownershipMode(implCopy, v13, v14, selfCopy))
   {
 LABEL_20:
     v36 = 0;
@@ -538,9 +538,9 @@ LABEL_23:
   return v36;
 }
 
-- (id)componentForRootObjectOfLazyReference:(id)a3
+- (id)componentForRootObjectOfLazyReference:(id)reference
 {
-  v4 = a3;
+  referenceCopy = reference;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -552,10 +552,10 @@ LABEL_23:
   block[1] = 3221225472;
   block[2] = sub_276AAD258;
   block[3] = &unk_27A6E2C00;
-  v10 = v4;
+  v10 = referenceCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = referenceCopy;
   dispatch_sync(componentQueue, block);
   v7 = v13[5];
 
@@ -564,63 +564,63 @@ LABEL_23:
   return v7;
 }
 
-- (void)componentForRootObjectOfLazyReference:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)componentForRootObjectOfLazyReference:(id)reference queue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  referenceCopy = reference;
+  queueCopy = queue;
+  completionCopy = completion;
   componentQueue = self->_componentQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_276AAD38C;
   v15[3] = &unk_27A6E39F8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = referenceCopy;
+  v17 = queueCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = queueCopy;
+  v14 = referenceCopy;
   dispatch_barrier_async(componentQueue, v15);
 }
 
-- (void)willModifyObject:(id)a3 options:(unint64_t)a4
+- (void)willModifyObject:(id)object options:(unint64_t)options
 {
-  v6 = objc_msgSend_tsp_component(a3, a2, a3, a4);
+  v6 = objc_msgSend_tsp_component(object, a2, object, options);
   if (v6)
   {
-    v7 = a3;
+    objectCopy = object;
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = sub_276AAD554;
     v10[3] = &unk_27A6E2898;
     v11 = v6;
-    v12 = v7;
-    v8 = v7;
+    v12 = objectCopy;
+    v8 = objectCopy;
     objc_msgSend_performCacheOperationUsingBlock_(self, v9, v10);
   }
 }
 
-- (void)dirtyComponents:(id)a3
+- (void)dirtyComponents:(id)components
 {
-  v4 = a3;
+  componentsCopy = components;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_276AAD610;
   v7[3] = &unk_27A6E27F8;
-  v8 = v4;
-  v5 = v4;
+  v8 = componentsCopy;
+  v5 = componentsCopy;
   objc_msgSend_performCacheOperationUsingBlock_(self, v6, v7);
 }
 
-- (void)dirtyAllComponentsForDocumentUpgradeInPackage:(unsigned __int8)a3
+- (void)dirtyAllComponentsForDocumentUpgradeInPackage:(unsigned __int8)package
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = sub_276AAD7C8;
   v3[3] = &unk_27A6E2960;
   v3[4] = self;
-  v4 = a3;
+  packageCopy = package;
   objc_msgSend_performCacheOperationUsingBlock_(self, a2, v3);
 }
 
@@ -645,16 +645,16 @@ LABEL_23:
   objc_msgSend_performCacheOperationUsingBlock_(self, a2, v2);
 }
 
-- (void)traverseComponentTreeFromRoot:(id)a3 accessor:(id)a4
+- (void)traverseComponentTreeFromRoot:(id)root accessor:(id)accessor
 {
-  v6 = a3;
-  v26 = v6;
-  v7 = a4;
-  if (v7)
+  rootCopy = root;
+  v26 = rootCopy;
+  accessorCopy = accessor;
+  if (accessorCopy)
   {
     v8 = objc_alloc(MEMORY[0x277CCAA50]);
     v10 = objc_msgSend_initWithOptions_capacity_(v8, v9, 512, 0);
-    objc_msgSend_addObject_(v10, v11, v6);
+    objc_msgSend_addObject_(v10, v11, rootCopy);
     v25 = 0u;
     memset(v24, 0, sizeof(v24));
     sub_276AAF6B8(v24, &v26);
@@ -662,7 +662,7 @@ LABEL_23:
     v21 = &v20;
     v22 = 0x2020000000;
     v23[0] = 0;
-    v7[2](v7, v26, v23);
+    accessorCopy[2](accessorCopy, v26, v23);
     while ((v21[3] & 1) == 0)
     {
       if (!*(&v25 + 1))
@@ -686,7 +686,7 @@ LABEL_23:
       v14[3] = &unk_27A6E68C8;
       v14[4] = self;
       v15 = v10;
-      v16 = v7;
+      v16 = accessorCopy;
       v17 = &v20;
       v18 = v24;
       v19 = v12;
@@ -737,10 +737,10 @@ LABEL_23:
   return self;
 }
 
-- (void)continueCacheOperationUsingBlock:(id)a3
+- (void)continueCacheOperationUsingBlock:(id)block
 {
-  v12 = a3;
-  if (v12)
+  blockCopy = block;
+  if (blockCopy)
   {
     v4 = objc_opt_class();
     v7 = objc_msgSend_componentManagersPerformingCacheOperationOnCurrentThread(v4, v5, v6);
@@ -750,7 +750,7 @@ LABEL_23:
       objc_msgSend_addObject_(v7, v9, self);
     }
 
-    v12[2]();
+    blockCopy[2]();
     if ((v10 & 1) == 0)
     {
       objc_msgSend_removeObject_(v7, v11, self);
@@ -758,14 +758,14 @@ LABEL_23:
   }
 }
 
-- (void)performCacheOperationUsingBlock:(id)a3
+- (void)performCacheOperationUsingBlock:(id)block
 {
-  v6 = a3;
-  if (v6)
+  blockCopy = block;
+  if (blockCopy)
   {
     if (objc_msgSend_isPerformingCacheOperation(self, v4, v5))
     {
-      v6[2](v6);
+      blockCopy[2](blockCopy);
     }
 
     else
@@ -776,7 +776,7 @@ LABEL_23:
       v8[2] = sub_276AAE8B4;
       v8[3] = &unk_27A6E4C58;
       v8[4] = self;
-      v9 = v6;
+      v9 = blockCopy;
       dispatch_barrier_async(componentQueue, v8);
     }
   }
@@ -795,19 +795,19 @@ LABEL_23:
   }
 }
 
-- (id)objectForIdentifier:(int64_t)a3
+- (id)objectForIdentifier:(int64_t)identifier
 {
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  v6 = objc_msgSend_objectForIdentifier_(WeakRetained, v5, a3);
+  v6 = objc_msgSend_objectForIdentifier_(WeakRetained, v5, identifier);
 
   return v6;
 }
 
-- (void)cacheComponent:(id)a3 isDiscardingContent:(BOOL)a4
+- (void)cacheComponent:(id)component isDiscardingContent:(BOOL)content
 {
-  v4 = a4;
-  v8 = a3;
-  if (!v4)
+  contentCopy = content;
+  componentCopy = component;
+  if (!contentCopy)
   {
     goto LABEL_8;
   }
@@ -820,7 +820,7 @@ LABEL_23:
     if (v9 == 1)
     {
       v16 = objc_msgSend_identifier(v12, v13, v14);
-      if (v16 == objc_msgSend_identifier(v8, v17, v18))
+      if (v16 == objc_msgSend_identifier(componentCopy, v17, v18))
       {
         goto LABEL_5;
       }
@@ -829,7 +829,7 @@ LABEL_23:
     goto LABEL_7;
   }
 
-  if (v12 != v8)
+  if (v12 != componentCopy)
   {
 LABEL_7:
 
@@ -839,7 +839,7 @@ LABEL_8:
     v20[2] = sub_276AAEBF4;
     v20[3] = &unk_27A6E2898;
     v20[4] = self;
-    v21 = v8;
+    v21 = componentCopy;
     objc_msgSend_performCacheOperationUsingBlock_(self, v19, v20);
 
     goto LABEL_9;
@@ -850,26 +850,26 @@ LABEL_5:
 LABEL_9:
 }
 
-- (void)flushComponent:(id)a3 isDiscardingContent:(BOOL)a4
+- (void)flushComponent:(id)component isDiscardingContent:(BOOL)content
 {
-  v4 = a4;
-  v8 = a3;
-  if (!v4 || (objc_msgSend_tsp_currentComponent(self->_componentCache, v6, v7), v9 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend_identifier(v9, v10, v11), v15 = objc_msgSend_identifier(v8, v13, v14), v9, v12 != v15))
+  contentCopy = content;
+  componentCopy = component;
+  if (!contentCopy || (objc_msgSend_tsp_currentComponent(self->_componentCache, v6, v7), v9 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend_identifier(v9, v10, v11), v15 = objc_msgSend_identifier(componentCopy, v13, v14), v9, v12 != v15))
   {
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = sub_276AAED0C;
     v17[3] = &unk_27A6E2898;
     v17[4] = self;
-    v18 = v8;
+    v18 = componentCopy;
     objc_msgSend_performCacheOperationUsingBlock_(self, v16, v17);
   }
 }
 
-- (void)didModifyFlushedComponent:(id)a3 forObject:(id)a4
+- (void)didModifyFlushedComponent:(id)component forObject:(id)object
 {
-  v6 = a3;
-  v7 = a4;
+  componentCopy = component;
+  objectCopy = object;
   objc_copyWeak(&to, &self->_context);
   readFlushedComponentQueue = self->_readFlushedComponentQueue;
   v11[0] = MEMORY[0x277D85DD0];
@@ -877,10 +877,10 @@ LABEL_9:
   v11[2] = sub_276AAEE04;
   v11[3] = &unk_27A6E68F0;
   objc_copyWeak(&v14, &to);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = componentCopy;
+  v13 = objectCopy;
+  v9 = objectCopy;
+  v10 = componentCopy;
   dispatch_async(readFlushedComponentQueue, v11);
 
   objc_destroyWeak(&v14);

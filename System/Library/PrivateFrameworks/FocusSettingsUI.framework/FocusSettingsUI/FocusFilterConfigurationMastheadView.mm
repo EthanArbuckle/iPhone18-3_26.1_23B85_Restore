@@ -1,8 +1,8 @@
 @interface FocusFilterConfigurationMastheadView
 - (NSString)subtitle;
-- (_TtC15FocusSettingsUI36FocusFilterConfigurationMastheadView)initWithBundleIdentifier:(id)a3 title:(id)a4 subtitle:(id)a5;
-- (_TtC15FocusSettingsUI36FocusFilterConfigurationMastheadView)initWithCoder:(id)a3;
-- (_TtC15FocusSettingsUI36FocusFilterConfigurationMastheadView)initWithFrame:(CGRect)a3;
+- (_TtC15FocusSettingsUI36FocusFilterConfigurationMastheadView)initWithBundleIdentifier:(id)identifier title:(id)title subtitle:(id)subtitle;
+- (_TtC15FocusSettingsUI36FocusFilterConfigurationMastheadView)initWithCoder:(id)coder;
+- (_TtC15FocusSettingsUI36FocusFilterConfigurationMastheadView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation FocusFilterConfigurationMastheadView
@@ -23,13 +23,13 @@
   return v2;
 }
 
-- (_TtC15FocusSettingsUI36FocusFilterConfigurationMastheadView)initWithBundleIdentifier:(id)a3 title:(id)a4 subtitle:(id)a5
+- (_TtC15FocusSettingsUI36FocusFilterConfigurationMastheadView)initWithBundleIdentifier:(id)identifier title:(id)title subtitle:(id)subtitle
 {
   v6 = sub_24BAAA01C();
   v8 = v7;
   v9 = sub_24BAAA01C();
   v11 = v10;
-  if (a5)
+  if (subtitle)
   {
     v12 = sub_24BAAA01C();
     v14 = v13;
@@ -45,7 +45,7 @@
   return result;
 }
 
-- (_TtC15FocusSettingsUI36FocusFilterConfigurationMastheadView)initWithCoder:(id)a3
+- (_TtC15FocusSettingsUI36FocusFilterConfigurationMastheadView)initWithCoder:(id)coder
 {
   *(self + OBJC_IVAR____TtC15FocusSettingsUI36FocusFilterConfigurationMastheadView_rootView) = 0;
   result = sub_24BAAA6CC();
@@ -53,7 +53,7 @@
   return result;
 }
 
-- (_TtC15FocusSettingsUI36FocusFilterConfigurationMastheadView)initWithFrame:(CGRect)a3
+- (_TtC15FocusSettingsUI36FocusFilterConfigurationMastheadView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,31 +1,31 @@
 @interface ConfidenceEstimatorStats
-- (ConfidenceEstimatorStats)initWithModelID:(unsigned int)a3;
+- (ConfidenceEstimatorStats)initWithModelID:(unsigned int)d;
 - (void)dealloc;
 @end
 
 @implementation ConfidenceEstimatorStats
 
-- (ConfidenceEstimatorStats)initWithModelID:(unsigned int)a3
+- (ConfidenceEstimatorStats)initWithModelID:(unsigned int)d
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
+  dCopy = d;
   v7.receiver = self;
   v7.super_class = ConfidenceEstimatorStats;
-  v10 = [(ConfidenceEstimatorStats *)&v7 init];
-  if (v10)
+  selfCopy = [(ConfidenceEstimatorStats *)&v7 init];
+  if (selfCopy)
   {
     context = objc_autoreleasePoolPush();
-    v10->_edgeMappingConfidence = unk_1F599B9B8();
+    selfCopy->_edgeMappingConfidence = unk_1F599B9B8();
     v3 = (unk_1F599B9B8)(&__block_literal_global_723, &unk_1F59C9408);
-    v10->_edgeMappingStrength = v3;
+    selfCopy->_edgeMappingStrength = v3;
     v4 = [[CBHistogramBuilder2D alloc] initWithFirstDim:&unk_1F59C93F0 andSecondDim:&unk_1F59C9408];
-    v10->_outputsCE = v4;
-    v10->_modelID = v8;
+    selfCopy->_outputsCE = v4;
+    selfCopy->_modelID = dCopy;
     objc_autoreleasePoolPop(context);
   }
 
-  return v10;
+  return selfCopy;
 }
 
 id __44__ConfidenceEstimatorStats_initWithModelID___block_invoke(uint64_t a1, void *a2)
@@ -60,12 +60,12 @@ id __44__ConfidenceEstimatorStats_initWithModelID___block_invoke(uint64_t a1, vo
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   MEMORY[0x1E69E5920](self->_edgeMappingStrength);
-  MEMORY[0x1E69E5920](v5->_edgeMappingConfidence);
-  *&v2 = MEMORY[0x1E69E5920](v5->_outputsCE).n128_u64[0];
-  v3.receiver = v5;
+  MEMORY[0x1E69E5920](selfCopy->_edgeMappingConfidence);
+  *&v2 = MEMORY[0x1E69E5920](selfCopy->_outputsCE).n128_u64[0];
+  v3.receiver = selfCopy;
   v3.super_class = ConfidenceEstimatorStats;
   [(ConfidenceEstimatorStats *)&v3 dealloc];
 }

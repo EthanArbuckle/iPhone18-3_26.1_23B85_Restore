@@ -1,31 +1,31 @@
 @interface MTiTunesMediaStorefrontMappings
-+ (BOOL)isValidStorefrontCountryCode:(id)a3;
-+ (id)storefrontIdentifierFromCountryCode:(id)a3;
++ (BOOL)isValidStorefrontCountryCode:(id)code;
++ (id)storefrontIdentifierFromCountryCode:(id)code;
 @end
 
 @implementation MTiTunesMediaStorefrontMappings
 
-+ (id)storefrontIdentifierFromCountryCode:(id)a3
++ (id)storefrontIdentifierFromCountryCode:(id)code
 {
-  v3 = a3;
+  codeCopy = code;
   v4 = sub_100091DB8();
-  v5 = [v3 uppercaseString];
+  uppercaseString = [codeCopy uppercaseString];
 
-  v6 = [v4 objectForKeyedSubscript:v5];
+  v6 = [v4 objectForKeyedSubscript:uppercaseString];
 
   return v6;
 }
 
-+ (BOOL)isValidStorefrontCountryCode:(id)a3
++ (BOOL)isValidStorefrontCountryCode:(id)code
 {
-  v3 = a3;
+  codeCopy = code;
   v4 = sub_100091DB8();
-  v5 = [v3 uppercaseString];
+  uppercaseString = [codeCopy uppercaseString];
 
-  v6 = [v4 objectForKeyedSubscript:v5];
-  LOBYTE(v3) = v6 != 0;
+  v6 = [v4 objectForKeyedSubscript:uppercaseString];
+  LOBYTE(codeCopy) = v6 != 0;
 
-  return v3;
+  return codeCopy;
 }
 
 @end

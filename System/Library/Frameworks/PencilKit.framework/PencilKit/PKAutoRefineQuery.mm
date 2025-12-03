@@ -1,45 +1,45 @@
 @interface PKAutoRefineQuery
-- (PKAutoRefineQuery)initWithRecognitionSessionManager:(id)a3;
+- (PKAutoRefineQuery)initWithRecognitionSessionManager:(id)manager;
 - (void)dealloc;
 - (void)pause;
-- (void)queryDidUpdateResult:(id)a3;
+- (void)queryDidUpdateResult:(id)result;
 - (void)start;
 - (void)teardown;
 @end
 
 @implementation PKAutoRefineQuery
 
-- (PKAutoRefineQuery)initWithRecognitionSessionManager:(id)a3
+- (PKAutoRefineQuery)initWithRecognitionSessionManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = PKAutoRefineQuery;
-  v5 = [(PKQuery *)&v12 initWithRecognitionSessionManager:v4];
+  v5 = [(PKQuery *)&v12 initWithRecognitionSessionManager:managerCopy];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x1E6997B38]);
-    v7 = [(PKRecognitionSessionManager *)v4 session];
-    v8 = [v6 initWithRecognitionSession:v7];
+    session = [(PKRecognitionSessionManager *)managerCopy session];
+    v8 = [v6 initWithRecognitionSession:session];
     query = v5->_query;
     v5->_query = v8;
   }
 
-  v10 = [(PKAutoRefineQuery *)v5 query];
-  [v10 setDelegate:v5];
+  query = [(PKAutoRefineQuery *)v5 query];
+  [query setDelegate:v5];
 
   return v5;
 }
 
 - (void)start
 {
-  v2 = [(PKAutoRefineQuery *)self query];
-  [v2 start];
+  query = [(PKAutoRefineQuery *)self query];
+  [query start];
 }
 
 - (void)pause
 {
-  v2 = [(PKAutoRefineQuery *)self query];
-  [v2 pause];
+  query = [(PKAutoRefineQuery *)self query];
+  [query pause];
 }
 
 - (void)teardown
@@ -61,17 +61,17 @@
   [(PKAutoRefineQuery *)&v3 dealloc];
 }
 
-- (void)queryDidUpdateResult:(id)a3
+- (void)queryDidUpdateResult:(id)result
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultCopy = result;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_autoRefineDelegate);
     if (WeakRetained)
     {
-      v6 = [v4 autoRefinedItems];
-      v7 = [v6 copy];
+      autoRefinedItems = [resultCopy autoRefinedItems];
+      v7 = [autoRefinedItems copy];
 
       v16 = 0u;
       v17 = 0u;
@@ -93,8 +93,8 @@
             }
 
             v12 = *(*(&v14 + 1) + 8 * v11);
-            v13 = [(CHAutoRefineQuery *)self->_query lastProcessedStrokeProviderVersion];
-            [WeakRetained autoRefineQuery:self didUpdateWithQueryItem:v12 validProviderVersion:v13];
+            lastProcessedStrokeProviderVersion = [(CHAutoRefineQuery *)self->_query lastProcessedStrokeProviderVersion];
+            [WeakRetained autoRefineQuery:self didUpdateWithQueryItem:v12 validProviderVersion:lastProcessedStrokeProviderVersion];
 
             ++v11;
           }

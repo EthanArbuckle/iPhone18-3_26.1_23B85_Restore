@@ -1,99 +1,99 @@
 @interface WMTableStyle
-- (WMTableStyle)initWithWDTableProperties:(id)a3;
-- (void)addTableProperties:(id)a3;
+- (WMTableStyle)initWithWDTableProperties:(id)properties;
+- (void)addTableProperties:(id)properties;
 @end
 
 @implementation WMTableStyle
 
-- (WMTableStyle)initWithWDTableProperties:(id)a3
+- (WMTableStyle)initWithWDTableProperties:(id)properties
 {
-  v5 = a3;
+  propertiesCopy = properties;
   v10.receiver = self;
   v10.super_class = WMTableStyle;
   v6 = [(CMStyle *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->mWdTableProperties, a3);
-    [(WMTableStyle *)v7 addTableProperties:v5];
+    objc_storeStrong(&v6->mWdTableProperties, properties);
+    [(WMTableStyle *)v7 addTableProperties:propertiesCopy];
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)addTableProperties:(id)a3
+- (void)addTableProperties:(id)properties
 {
-  v14 = a3;
-  if (([v14 isTopBorderOverridden] & 1) != 0 || (objc_msgSend(v14, "isLeftBorderOverridden") & 1) != 0 || (objc_msgSend(v14, "isBottomBorderOverridden") & 1) != 0 || objc_msgSend(v14, "isRightBorderOverridden"))
+  propertiesCopy = properties;
+  if (([propertiesCopy isTopBorderOverridden] & 1) != 0 || (objc_msgSend(propertiesCopy, "isLeftBorderOverridden") & 1) != 0 || (objc_msgSend(propertiesCopy, "isBottomBorderOverridden") & 1) != 0 || objc_msgSend(propertiesCopy, "isRightBorderOverridden"))
   {
     v4 = objc_alloc_init(WMBordersProperty);
-    if ([v14 isTopBorderOverridden])
+    if ([propertiesCopy isTopBorderOverridden])
     {
-      v5 = [v14 topBorder];
-      [(WMBordersProperty *)v4 setBorder:v5 location:1];
+      topBorder = [propertiesCopy topBorder];
+      [(WMBordersProperty *)v4 setBorder:topBorder location:1];
     }
 
-    if ([v14 isLeftBorderOverridden])
+    if ([propertiesCopy isLeftBorderOverridden])
     {
-      v6 = [v14 leftBorder];
-      [(WMBordersProperty *)v4 setBorder:v6 location:2];
+      leftBorder = [propertiesCopy leftBorder];
+      [(WMBordersProperty *)v4 setBorder:leftBorder location:2];
     }
 
-    if ([v14 isBottomBorderOverridden])
+    if ([propertiesCopy isBottomBorderOverridden])
     {
-      v7 = [v14 bottomBorder];
-      [(WMBordersProperty *)v4 setBorder:v7 location:3];
+      bottomBorder = [propertiesCopy bottomBorder];
+      [(WMBordersProperty *)v4 setBorder:bottomBorder location:3];
     }
 
-    if ([v14 isRightBorderOverridden])
+    if ([propertiesCopy isRightBorderOverridden])
     {
-      v8 = [v14 rightBorder];
-      [(WMBordersProperty *)v4 setBorder:v8 location:4];
+      rightBorder = [propertiesCopy rightBorder];
+      [(WMBordersProperty *)v4 setBorder:rightBorder location:4];
     }
 
     [(CMBordersProperty *)v4 adjustValues];
     [(CMStyle *)self addProperty:v4 forKey:@"outsideBoders"];
   }
 
-  v9 = [v14 isInsideHorizontalBorderOverridden];
-  if (v9)
+  isInsideHorizontalBorderOverridden = [propertiesCopy isInsideHorizontalBorderOverridden];
+  if (isInsideHorizontalBorderOverridden)
   {
-    v10 = [v14 insideHorizontalBorder];
+    insideHorizontalBorder = [propertiesCopy insideHorizontalBorder];
   }
 
   else
   {
-    v10 = 0;
+    insideHorizontalBorder = 0;
   }
 
-  if ([v14 isInsideVerticalBorderOverridden])
+  if ([propertiesCopy isInsideVerticalBorderOverridden])
   {
-    v11 = [v14 insideVerticalBorder];
+    insideVerticalBorder = [propertiesCopy insideVerticalBorder];
   }
 
   else
   {
-    if (!v9)
+    if (!isInsideHorizontalBorderOverridden)
     {
       goto LABEL_26;
     }
 
-    v11 = 0;
+    insideVerticalBorder = 0;
   }
 
   v12 = objc_alloc_init(WMBordersProperty);
   v13 = v12;
-  if (v10)
+  if (insideHorizontalBorder)
   {
-    [(WMBordersProperty *)v12 setBorder:v10 location:1];
-    [(WMBordersProperty *)v13 setBorder:v10 location:3];
+    [(WMBordersProperty *)v12 setBorder:insideHorizontalBorder location:1];
+    [(WMBordersProperty *)v13 setBorder:insideHorizontalBorder location:3];
   }
 
-  if (v11)
+  if (insideVerticalBorder)
   {
-    [(WMBordersProperty *)v13 setBorder:v11 location:4];
-    [(WMBordersProperty *)v13 setBorder:v11 location:2];
+    [(WMBordersProperty *)v13 setBorder:insideVerticalBorder location:4];
+    [(WMBordersProperty *)v13 setBorder:insideVerticalBorder location:2];
   }
 
   [(CMBordersProperty *)v13 adjustValues];

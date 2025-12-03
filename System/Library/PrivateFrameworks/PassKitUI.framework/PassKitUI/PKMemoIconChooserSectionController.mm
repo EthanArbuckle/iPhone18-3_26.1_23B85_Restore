@@ -1,47 +1,47 @@
 @interface PKMemoIconChooserSectionController
-+ (double)_itemSizeForStyle:(unint64_t)a3;
-+ (unint64_t)suggestedStyleForAvailableWidth:(double)a3;
++ (double)_itemSizeForStyle:(unint64_t)style;
++ (unint64_t)suggestedStyleForAvailableWidth:(double)width;
 - (NSArray)identifiers;
-- (PKMemoIconChooserSectionController)initWithDelegate:(id)a3 mode:(unint64_t)a4 memo:(id)a5;
+- (PKMemoIconChooserSectionController)initWithDelegate:(id)delegate mode:(unint64_t)mode memo:(id)memo;
 - (double)_selectionPreviewBottomSpacing;
 - (double)_selectionPreviewTopSpacing;
-- (id)cellRegistrationForItem:(id)a3;
-- (id)contextMenuConfigurationForItem:(id)a3;
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4;
+- (id)cellRegistrationForItem:(id)item;
+- (id)contextMenuConfigurationForItem:(id)item;
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier;
 - (id)selectedMemo;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
-- (void)addMemo:(id)a3;
-- (void)cell:(id)a3 didUpdateText:(id)a4;
-- (void)configureSupplementaryRegistration:(id)a3 elementKind:(id)a4 sectionIdentifier:(id)a5;
-- (void)didSelectItem:(id)a3;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
+- (void)addMemo:(id)memo;
+- (void)cell:(id)cell didUpdateText:(id)text;
+- (void)configureSupplementaryRegistration:(id)registration elementKind:(id)kind sectionIdentifier:(id)identifier;
+- (void)didSelectItem:(id)item;
 - (void)reloadItems;
-- (void)setMemoSelection:(id)a3;
-- (void)setStyle:(unint64_t)a3;
+- (void)setMemoSelection:(id)selection;
+- (void)setStyle:(unint64_t)style;
 @end
 
 @implementation PKMemoIconChooserSectionController
 
-- (PKMemoIconChooserSectionController)initWithDelegate:(id)a3 mode:(unint64_t)a4 memo:(id)a5
+- (PKMemoIconChooserSectionController)initWithDelegate:(id)delegate mode:(unint64_t)mode memo:(id)memo
 {
   v46 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  delegateCopy = delegate;
+  memoCopy = memo;
   v43.receiver = self;
   v43.super_class = PKMemoIconChooserSectionController;
   v10 = [(PKMemoIconChooserSectionController *)&v43 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_delegate, v8);
-    v11->_mode = a4;
+    objc_storeWeak(&v10->_delegate, delegateCopy);
+    v11->_mode = mode;
     v11->_style = 1;
     v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
     items = v11->_items;
     v11->_items = v12;
 
-    if (a4 == 1)
+    if (mode == 1)
     {
-      v34 = v8;
+      v34 = delegateCopy;
       v37 = 0u;
       v38 = 0u;
       v35 = 0u;
@@ -75,17 +75,17 @@
         while (v25);
       }
 
-      v16 = [(NSMutableArray *)v11->_items firstObject];
-      v32 = [v16 memo];
-      [(PKMemoIconChooserSectionController *)v11 setMemoSelection:v32];
+      firstObject = [(NSMutableArray *)v11->_items firstObject];
+      memo = [firstObject memo];
+      [(PKMemoIconChooserSectionController *)v11 setMemoSelection:memo];
 
-      v8 = v34;
+      delegateCopy = v34;
       goto LABEL_20;
     }
 
-    if (!a4)
+    if (!mode)
     {
-      [(PKMemoIconChooserSectionController *)v11 setMemoSelection:v9];
+      [(PKMemoIconChooserSectionController *)v11 setMemoSelection:memoCopy];
       v14 = [[PKMemoItem alloc] initWithMemo:0 type:1];
       addNewItem = v11->_addNewItem;
       v11->_addNewItem = v14;
@@ -94,8 +94,8 @@
       v42 = 0u;
       v39 = 0u;
       v40 = 0u;
-      v16 = PKPeerPaymentRecurringPaymentMemoSuggestions();
-      v17 = [v16 countByEnumeratingWithState:&v39 objects:v45 count:16];
+      firstObject = PKPeerPaymentRecurringPaymentMemoSuggestions();
+      v17 = [firstObject countByEnumeratingWithState:&v39 objects:v45 count:16];
       if (v17)
       {
         v18 = v17;
@@ -106,7 +106,7 @@
           {
             if (*v40 != v19)
             {
-              objc_enumerationMutation(v16);
+              objc_enumerationMutation(firstObject);
             }
 
             v21 = v11->_items;
@@ -114,7 +114,7 @@
             [(NSMutableArray *)v21 addObject:v22];
           }
 
-          v18 = [v16 countByEnumeratingWithState:&v39 objects:v45 count:16];
+          v18 = [firstObject countByEnumeratingWithState:&v39 objects:v45 count:16];
         }
 
         while (v18);
@@ -182,12 +182,12 @@ LABEL_20:
   return v2;
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
-  v7 = v5;
+  v7 = identifierCopy;
   v8 = v7;
   if (v7 == @"chooser")
   {
@@ -218,9 +218,9 @@ LABEL_23:
   v12 = v8;
   if (v12 == @"selectionPresent" || (v13 = v12, v14 = [(__CFString *)v12 isEqualToString:@"selectionPresent"], v13, v14))
   {
-    v15 = [(PKMemoItem *)self->_selectionItem memo];
-    v16 = [v15 emoji];
-    if ([v16 length])
+    memo = [(PKMemoItem *)self->_selectionItem memo];
+    emoji = [memo emoji];
+    if ([emoji length])
     {
     }
 
@@ -246,9 +246,9 @@ LABEL_20:
   v17 = v13;
   if (v17 == @"selectionEmpty" || (v18 = v17, v19 = [(__CFString *)v17 isEqualToString:@"selectionEmpty"], v18, v19))
   {
-    v20 = [(PKMemoItem *)self->_selectionItem memo];
-    v21 = [v20 emoji];
-    v22 = [v21 length];
+    memo2 = [(PKMemoItem *)self->_selectionItem memo];
+    emoji2 = [memo2 emoji];
+    v22 = [emoji2 length];
 
     if (!v22)
     {
@@ -263,7 +263,7 @@ LABEL_7:
   return v6;
 }
 
-- (id)cellRegistrationForItem:(id)a3
+- (id)cellRegistrationForItem:(id)item
 {
   v4 = MEMORY[0x1E69DC800];
   v5 = objc_opt_class();
@@ -284,20 +284,20 @@ void __62__PKMemoIconChooserSectionController_cellRegistrationForItem___block_in
   [v6 setDelegate:*(a1 + 32)];
 }
 
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  v38 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6 == @"selectionPresent")
+  environmentCopy = environment;
+  identifierCopy = identifier;
+  v7 = identifierCopy;
+  if (identifierCopy == @"selectionPresent")
   {
     goto LABEL_4;
   }
 
-  if (v6)
+  if (identifierCopy)
   {
-    v8 = [(__CFString *)v6 isEqualToString:@"selectionPresent"];
+    v8 = [(__CFString *)identifierCopy isEqualToString:@"selectionPresent"];
 
     if (v8)
     {
@@ -353,7 +353,7 @@ LABEL_10:
   v18 = MEMORY[0x1E695DF70];
   v19 = v17;
   v20 = objc_alloc_init(v18);
-  v37 = self;
+  selfCopy = self;
   v39 = v20;
   if (v9 && !self->_mode)
   {
@@ -385,9 +385,9 @@ LABEL_10:
   [v32 setContentInsetsReference:1];
   if (v10)
   {
-    [(PKMemoIconChooserSectionController *)v37 _selectionPreviewTopSpacing];
+    [(PKMemoIconChooserSectionController *)selfCopy _selectionPreviewTopSpacing];
     v34 = v33;
-    [(PKMemoIconChooserSectionController *)v37 _selectionPreviewBottomSpacing];
+    [(PKMemoIconChooserSectionController *)selfCopy _selectionPreviewBottomSpacing];
     [v32 setContentInsets:{v34, 0.0, v35, 0.0}];
   }
 
@@ -400,33 +400,33 @@ LABEL_10:
   return v32;
 }
 
-- (void)configureSupplementaryRegistration:(id)a3 elementKind:(id)a4 sectionIdentifier:(id)a5
+- (void)configureSupplementaryRegistration:(id)registration elementKind:(id)kind sectionIdentifier:(id)identifier
 {
   v35[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v29 = a4;
-  v30 = a5;
-  v9 = v8;
-  v10 = [v9 backgroundConfiguration];
-  v11 = v10;
-  if (v10)
+  registrationCopy = registration;
+  kindCopy = kind;
+  identifierCopy = identifier;
+  v9 = registrationCopy;
+  backgroundConfiguration = [v9 backgroundConfiguration];
+  v11 = backgroundConfiguration;
+  if (backgroundConfiguration)
   {
-    v12 = v10;
+    defaultBackgroundConfiguration = backgroundConfiguration;
   }
 
   else
   {
-    v12 = [v9 defaultBackgroundConfiguration];
+    defaultBackgroundConfiguration = [v9 defaultBackgroundConfiguration];
   }
 
-  v13 = v12;
+  v13 = defaultBackgroundConfiguration;
 
   v14 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:4 weight:26.0];
   v15 = MEMORY[0x1E69DCAD8];
-  v16 = [MEMORY[0x1E69DC888] systemWhiteColor];
-  v35[0] = v16;
-  v17 = [MEMORY[0x1E69DC888] systemMidGrayColor];
-  v35[1] = v17;
+  systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
+  v35[0] = systemWhiteColor;
+  systemMidGrayColor = [MEMORY[0x1E69DC888] systemMidGrayColor];
+  v35[1] = systemMidGrayColor;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:2];
   v19 = [v15 configurationWithPaletteColors:v18];
   v20 = [v14 configurationByApplyingConfiguration:v19];
@@ -434,8 +434,8 @@ LABEL_10:
   v21 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"xmark.circle.fill" withConfiguration:v20];
   [v13 setImage:v21];
   [v13 setImageContentMode:4];
-  v22 = [MEMORY[0x1E69DC888] systemWhiteColor];
-  [v13 setStrokeColor:v22];
+  systemWhiteColor2 = [MEMORY[0x1E69DC888] systemWhiteColor];
+  [v13 setStrokeColor:systemWhiteColor2];
 
   [v13 setStrokeWidth:1.5];
   [v13 setCornerRadius:13.0];
@@ -479,41 +479,41 @@ void __103__PKMemoIconChooserSectionController_configureSupplementaryRegistratio
   }
 }
 
-- (void)didSelectItem:(id)a3
+- (void)didSelectItem:(id)item
 {
-  v12 = a3;
-  v4 = [v12 type];
-  if ((v4 - 2) >= 2)
+  itemCopy = item;
+  type = [itemCopy type];
+  if ((type - 2) >= 2)
   {
-    if (v4 != 1)
+    if (type != 1)
     {
-      if (v4)
+      if (type)
       {
         goto LABEL_9;
       }
 
-      v5 = [v12 memo];
-      [(PKMemoIconChooserSectionController *)self setMemoSelection:v5];
+      memo = [itemCopy memo];
+      [(PKMemoIconChooserSectionController *)self setMemoSelection:memo];
 
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      [(PKMemoItem *)WeakRetained didSelectItem:v12];
+      [(PKMemoItem *)WeakRetained didSelectItem:itemCopy];
       goto LABEL_8;
     }
 
     v7 = objc_loadWeakRetained(&self->_delegate);
-    [v7 didSelectItem:v12];
+    [v7 didSelectItem:itemCopy];
   }
 
-  v8 = [(PKMemoItem *)self->_selectionItem memo];
+  memo2 = [(PKMemoItem *)self->_selectionItem memo];
 
-  if (!v8)
+  if (!memo2)
   {
     goto LABEL_9;
   }
 
   v9 = [PKMemoItem alloc];
-  v10 = [(PKMemoItem *)self->_selectionItem memo];
-  WeakRetained = [(PKMemoItem *)v9 initWithMemo:v10 type:0];
+  memo3 = [(PKMemoItem *)self->_selectionItem memo];
+  WeakRetained = [(PKMemoItem *)v9 initWithMemo:memo3 type:0];
 
   v11 = objc_loadWeakRetained(&self->_delegate);
   [v11 selectCellForItem:WeakRetained];
@@ -522,25 +522,25 @@ LABEL_8:
 LABEL_9:
 }
 
-- (id)contextMenuConfigurationForItem:(id)a3
+- (id)contextMenuConfigurationForItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 memo];
-  v6 = v5;
+  itemCopy = item;
+  memo = [itemCopy memo];
+  v6 = memo;
   if (self->_mode)
   {
     goto LABEL_2;
   }
 
-  v9 = [v5 emoji];
-  if (![v9 length])
+  emoji = [memo emoji];
+  if (![emoji length])
   {
 
     goto LABEL_2;
   }
 
-  v10 = [v6 text];
-  v11 = [v10 length];
+  text = [v6 text];
+  v11 = [text length];
 
   if (v11)
   {
@@ -604,12 +604,12 @@ void __70__PKMemoIconChooserSectionController_contextMenuConfigurationForItem___
   }
 }
 
-- (void)cell:(id)a3 didUpdateText:(id)a4
+- (void)cell:(id)cell didUpdateText:(id)text
 {
-  v6 = a4;
-  v7 = a3;
+  textCopy = text;
+  cellCopy = cell;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained cell:v7 didUpdateText:v6];
+  [WeakRetained cell:cellCopy didUpdateText:textCopy];
 }
 
 - (double)_selectionPreviewTopSpacing
@@ -634,15 +634,15 @@ void __70__PKMemoIconChooserSectionController_contextMenuConfigurationForItem___
   return result;
 }
 
-+ (double)_itemSizeForStyle:(unint64_t)a3
++ (double)_itemSizeForStyle:(unint64_t)style
 {
   result = 68.0;
-  if (a3 == 1)
+  if (style == 1)
   {
     result = 73.0;
   }
 
-  if (a3 == 2)
+  if (style == 2)
   {
     return 81.0;
   }
@@ -650,16 +650,16 @@ void __70__PKMemoIconChooserSectionController_contextMenuConfigurationForItem___
   return result;
 }
 
-+ (unint64_t)suggestedStyleForAvailableWidth:(double)a3
++ (unint64_t)suggestedStyleForAvailableWidth:(double)width
 {
-  [a1 _minimumWidthForStyle:1];
-  if (v5 >= a3)
+  [self _minimumWidthForStyle:1];
+  if (v5 >= width)
   {
     return 0;
   }
 
-  [a1 _minimumWidthForStyle:2];
-  if (v6 >= a3)
+  [self _minimumWidthForStyle:2];
+  if (v6 >= width)
   {
     return 1;
   }
@@ -672,36 +672,36 @@ void __70__PKMemoIconChooserSectionController_contextMenuConfigurationForItem___
 
 - (id)selectedMemo
 {
-  v2 = [(PKMemoItem *)self->_selectionItem memo];
-  v3 = [v2 copy];
+  memo = [(PKMemoItem *)self->_selectionItem memo];
+  v3 = [memo copy];
 
   [v3 setText:0];
 
   return v3;
 }
 
-- (void)addMemo:(id)a3
+- (void)addMemo:(id)memo
 {
-  v4 = a3;
-  v6 = [[PKMemoItem alloc] initWithMemo:v4 type:0];
+  memoCopy = memo;
+  v6 = [[PKMemoItem alloc] initWithMemo:memoCopy type:0];
 
   [(NSMutableArray *)self->_items insertObject:v6 atIndex:0];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained reloadDataForSectionIdentifier:@"chooser" animated:1];
 }
 
-- (void)setMemoSelection:(id)a3
+- (void)setMemoSelection:(id)selection
 {
-  v4 = a3;
+  selectionCopy = selection;
   mode = self->_mode;
   if (mode == 1)
   {
-    v18 = v4;
-    v9 = [(PKMemoItem *)self->_selectionItem memo];
-    if (v9)
+    v18 = selectionCopy;
+    memo = [(PKMemoItem *)self->_selectionItem memo];
+    if (memo)
     {
-      v10 = v9;
-      [v9 setColor:{objc_msgSend(v18, "color")}];
+      v10 = memo;
+      [memo setColor:{objc_msgSend(v18, "color")}];
     }
 
     else
@@ -733,8 +733,8 @@ void __70__PKMemoIconChooserSectionController_contextMenuConfigurationForItem___
       goto LABEL_15;
     }
 
-    v18 = v4;
-    v6 = [(PKMemoItem *)self->_selectionItem memo];
+    v18 = selectionCopy;
+    memo2 = [(PKMemoItem *)self->_selectionItem memo];
     v7 = PKEqualObjects();
 
     v8 = self->_selectionItem;
@@ -751,7 +751,7 @@ void __70__PKMemoIconChooserSectionController_contextMenuConfigurationForItem___
       self->_selectionItem = v11;
     }
 
-    v4 = v18;
+    selectionCopy = v18;
     if (v7)
     {
       goto LABEL_15;
@@ -764,13 +764,13 @@ void __70__PKMemoIconChooserSectionController_contextMenuConfigurationForItem___
     [v10 reloadDataForSectionIdentifier:@"selectionEmpty" animated:0];
   }
 
-  v4 = v18;
+  selectionCopy = v18;
 LABEL_15:
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
-  self->_style = a3;
+  self->_style = style;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained invalidateLayout];
 }

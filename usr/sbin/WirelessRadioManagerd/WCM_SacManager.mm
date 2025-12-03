@@ -1,35 +1,35 @@
 @interface WCM_SacManager
 + (__TelephonyBasebandControllerHandle_tag)basebandController;
-- (BOOL)isEqualFreqList:(id)a3 List2:(id)a4;
-- (WCM_SacManager)initWithPlatformId:(unint64_t)a3;
-- (id)getInsertObjIndex:(id)a3 fromOther:(id)a4;
-- (id)getRemoveObjIndex:(id)a3 fromOther:(id)a4;
+- (BOOL)isEqualFreqList:(id)list List2:(id)list2;
+- (WCM_SacManager)initWithPlatformId:(unint64_t)id;
+- (id)getInsertObjIndex:(id)index fromOther:(id)other;
+- (id)getRemoveObjIndex:(id)index fromOther:(id)other;
 - (id)printPlistParam;
-- (unsigned)sacCreateRawFreqList:(id)a3 bufferSize:(unsigned int)a4 buffer:(__AppleBasebandVictimFreq *)a5;
-- (unsigned)sacGetPlatformPlistIdx:(int64_t)a3;
+- (unsigned)sacCreateRawFreqList:(id)list bufferSize:(unsigned int)size buffer:(__AppleBasebandVictimFreq *)buffer;
+- (unsigned)sacGetPlatformPlistIdx:(int64_t)idx;
 - (void)dealloc;
-- (void)freqAscendSort:(id)a3;
-- (void)frequencyToolGetJasperResult:(id)a3 generalSacResult:(id)a4 client:(int)a5;
-- (void)removeFreqFromArray:(id)a3 centerFreq:(unint64_t)a4 bandwidth:(unint64_t)a5;
-- (void)sacMergeFreqInterval:(id)a3;
-- (void)sacProcessCellularMeasFreqInfo:(id)a3 onSubId:(unsigned int)a4;
-- (void)sacProcessCellularPrimaryFreqInfo:(id)a3 onSubId:(unsigned int)a4;
-- (void)sacProcessCellularSecondaryFreqInfo:(id)a3 onSubId:(unsigned int)a4;
-- (void)sacProcessGnssFreqInfo:(id)a3;
-- (void)sacProcessWiFiFreqInfo:(id)a3;
+- (void)freqAscendSort:(id)sort;
+- (void)frequencyToolGetJasperResult:(id)result generalSacResult:(id)sacResult client:(int)client;
+- (void)removeFreqFromArray:(id)array centerFreq:(unint64_t)freq bandwidth:(unint64_t)bandwidth;
+- (void)sacMergeFreqInterval:(id)interval;
+- (void)sacProcessCellularMeasFreqInfo:(id)info onSubId:(unsigned int)id;
+- (void)sacProcessCellularPrimaryFreqInfo:(id)info onSubId:(unsigned int)id;
+- (void)sacProcessCellularSecondaryFreqInfo:(id)info onSubId:(unsigned int)id;
+- (void)sacProcessGnssFreqInfo:(id)info;
+- (void)sacProcessWiFiFreqInfo:(id)info;
 - (void)sacRemoveAllGnssFreq;
 - (void)sacRemoveAllWifiFreq;
-- (void)sacScreenAllFreq:(id)a3;
-- (void)sacScreenFreq:(id)a3 freqRangeObj:(id)a4;
-- (void)sacSetCellularSubActiveState:(BOOL)a3 onSubId:(unsigned int)a4;
-- (void)sacSortFreqByPriority:(id)a3;
-- (void)sacUpdateCellularDownlinkFreqInfo:(id)a3 onSubId:(unsigned int)a4;
-- (void)sacUpdateCellularHoppingFreqInfo:(id)a3 onSubId:(unsigned int)a4;
-- (void)sacUpdateCellularNeighborFreqInfo:(id)a3 onSubId:(unsigned int)a4;
-- (void)sacUpdateCellularRPLMNFreqInfo:(id)a3 onSubId:(unsigned int)a4;
-- (void)sacUpdateCellularSearchFreqInfo:(id)a3 onSubId:(unsigned int)a4;
-- (void)sacUpdateGnssFreqInfo:(id)a3 L5Freq:(id)a4;
-- (void)sacUpdateWiFiFreqInfo:(unint64_t)a3 Bandwidth:(unint64_t)a4;
+- (void)sacScreenAllFreq:(id)freq;
+- (void)sacScreenFreq:(id)freq freqRangeObj:(id)obj;
+- (void)sacSetCellularSubActiveState:(BOOL)state onSubId:(unsigned int)id;
+- (void)sacSortFreqByPriority:(id)priority;
+- (void)sacUpdateCellularDownlinkFreqInfo:(id)info onSubId:(unsigned int)id;
+- (void)sacUpdateCellularHoppingFreqInfo:(id)info onSubId:(unsigned int)id;
+- (void)sacUpdateCellularNeighborFreqInfo:(id)info onSubId:(unsigned int)id;
+- (void)sacUpdateCellularRPLMNFreqInfo:(id)info onSubId:(unsigned int)id;
+- (void)sacUpdateCellularSearchFreqInfo:(id)info onSubId:(unsigned int)id;
+- (void)sacUpdateGnssFreqInfo:(id)info L5Freq:(id)freq;
+- (void)sacUpdateWiFiFreqInfo:(unint64_t)info Bandwidth:(unint64_t)bandwidth;
 @end
 
 @implementation WCM_SacManager
@@ -39,22 +39,22 @@
   [WCM_Logging logLevel:2 message:@"SAC Coex Manager removed all GNSS frequency from SAC and local cache"];
   [(WCM_SacManager *)self sacReportGnssVictimFreqListOnTargetSac:1 action:0];
   [(WCM_SacManager *)self sacReportGnssVictimFreqListOnTargetSac:2 action:0];
-  v3 = [(WCM_SacManager *)self mGnssL1FreqList];
-  v4 = [v3 count];
+  mGnssL1FreqList = [(WCM_SacManager *)self mGnssL1FreqList];
+  v4 = [mGnssL1FreqList count];
 
   if (v4)
   {
-    v5 = [(WCM_SacManager *)self mGnssL1FreqList];
-    [v5 removeAllObjects];
+    mGnssL1FreqList2 = [(WCM_SacManager *)self mGnssL1FreqList];
+    [mGnssL1FreqList2 removeAllObjects];
   }
 
-  v6 = [(WCM_SacManager *)self mGnssL5FreqList];
-  v7 = [v6 count];
+  mGnssL5FreqList = [(WCM_SacManager *)self mGnssL5FreqList];
+  v7 = [mGnssL5FreqList count];
 
   if (v7)
   {
-    v8 = [(WCM_SacManager *)self mGnssL5FreqList];
-    [v8 removeAllObjects];
+    mGnssL5FreqList2 = [(WCM_SacManager *)self mGnssL5FreqList];
+    [mGnssL5FreqList2 removeAllObjects];
   }
 
   self->mGnssState = 0;
@@ -77,7 +77,7 @@
   return result;
 }
 
-- (WCM_SacManager)initWithPlatformId:(unint64_t)a3
+- (WCM_SacManager)initWithPlatformId:(unint64_t)id
 {
   v100.receiver = self;
   v100.super_class = WCM_SacManager;
@@ -95,11 +95,11 @@
 
   v8 = objc_alloc_init(SacCellularFreqInfoSet);
   v9 = objc_alloc_init(SacCellularFreqInfoSet);
-  v10 = [(WCM_SacManager *)v4 mCellularFreqSet];
-  [v10 addObject:v8];
+  mCellularFreqSet = [(WCM_SacManager *)v4 mCellularFreqSet];
+  [mCellularFreqSet addObject:v8];
 
-  v11 = [(WCM_SacManager *)v4 mCellularFreqSet];
-  [v11 addObject:v9];
+  mCellularFreqSet2 = [(WCM_SacManager *)v4 mCellularFreqSet];
+  [mCellularFreqSet2 addObject:v9];
 
   v12 = objc_alloc_init(NSMutableArray);
   [(WCM_SacManager *)v4 setMWifiFreqList:v12];
@@ -138,8 +138,8 @@
   if (v23)
   {
     [WCM_Logging logLevel:3 message:@"init SAC Configuration Plist File Found"];
-    v24 = [(WCM_SacManager *)v4 sacGetPlatformPlistIdx:a3];
-    +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 3, @"Config count = %lu, platformID=%llu, SAC plist index=%d", [v23 count], a3, v24);
+    v24 = [(WCM_SacManager *)v4 sacGetPlatformPlistIdx:id];
+    +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 3, @"Config count = %lu, platformID=%llu, SAC plist index=%d", [v23 count], id, v24);
     [WCM_Logging logLevel:3 message:@"SAC Configuration from plist: "];
     v25 = v24;
     v26 = [v23 objectAtIndex:v24];
@@ -295,8 +295,8 @@
       [WCM_Logging logLevel:3 message:@"SAC Configuration: freq_max[%d] = %llu (%lluMHz)", i, v94, v94 / 0xF4240];
       v95 = [[FreqRangeInfo alloc] initWithStartFreq:v93 EndFreq:v94];
       [(FreqRangeInfo *)v95 setPriority:i];
-      v96 = [(WCM_SacManager *)v4 mCellularFreqInclusionList];
-      [v96 addObject:v95];
+      mCellularFreqInclusionList = [(WCM_SacManager *)v4 mCellularFreqInclusionList];
+      [mCellularFreqInclusionList addObject:v95];
     }
 
     v4->mGnssState = 0;
@@ -320,8 +320,8 @@
   [v3 appendFormat:@"SAC Configuration: WiFi_enh = %d\n", self->mReportWiFiEnh];
   for (i = 0; i != 10; ++i)
   {
-    v5 = [(WCM_SacManager *)self mCellularFreqInclusionList];
-    v6 = [v5 objectAtIndex:i];
+    mCellularFreqInclusionList = [(WCM_SacManager *)self mCellularFreqInclusionList];
+    v6 = [mCellularFreqInclusionList objectAtIndex:i];
 
     [v3 appendFormat:@"SAC Configuration: freq_min[%d] = %llu (%lluMHz)\n", i, objc_msgSend(v6, "FreqStart"), objc_msgSend(v6, "FreqStart") / 0xF4240];
     [v3 appendFormat:@"SAC Configuration: freq_max[%d] = %llu (%lluMHz)\n", i, objc_msgSend(v6, "FreqEnd"), objc_msgSend(v6, "FreqEnd") / 0xF4240];
@@ -339,39 +339,39 @@
   return v3;
 }
 
-- (unsigned)sacGetPlatformPlistIdx:(int64_t)a3
+- (unsigned)sacGetPlatformPlistIdx:(int64_t)idx
 {
-  if (a3 <= 0x3B)
+  if (idx <= 0x3B)
   {
-    if (((1 << a3) & 0xF30000000000000) != 0)
+    if (((1 << idx) & 0xF30000000000000) != 0)
     {
       return 5;
     }
 
-    if (a3 == 21)
+    if (idx == 21)
     {
       return 1;
     }
 
-    if (a3 == 22)
+    if (idx == 22)
     {
       return 2;
     }
   }
 
-  if ((a3 - 154) <= 0x18)
+  if ((idx - 154) <= 0x18)
   {
-    if (((1 << (a3 + 102)) & 0x1540000) != 0)
+    if (((1 << (idx + 102)) & 0x1540000) != 0)
     {
       return 5;
     }
 
-    if (a3 == 154)
+    if (idx == 154)
     {
       return 3;
     }
 
-    if (a3 == 157)
+    if (idx == 157)
     {
       return 4;
     }
@@ -380,12 +380,12 @@
   return 0;
 }
 
-- (void)sacSetCellularSubActiveState:(BOOL)a3 onSubId:(unsigned int)a4
+- (void)sacSetCellularSubActiveState:(BOOL)state onSubId:(unsigned int)id
 {
-  if (a4 <= 1)
+  if (id <= 1)
   {
-    v4 = 1 << a4;
-    if (!a3)
+    v4 = 1 << id;
+    if (!state)
     {
       v4 = self->mActiveSubId_bitmap & ~v4;
     }
@@ -394,20 +394,20 @@
   }
 }
 
-- (BOOL)isEqualFreqList:(id)a3 List2:(id)a4
+- (BOOL)isEqualFreqList:(id)list List2:(id)list2
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 | v7)
+  listCopy = list;
+  list2Copy = list2;
+  v8 = list2Copy;
+  if (listCopy | list2Copy)
   {
     v9 = 0;
-    if (v6 && v7)
+    if (listCopy && list2Copy)
     {
-      v11 = [v6 count];
+      v11 = [listCopy count];
       if (v11 == [v8 count])
       {
-        v12 = [[NSMutableArray alloc] initWithArray:v6];
+        v12 = [[NSMutableArray alloc] initWithArray:listCopy];
         v13 = [[NSMutableArray alloc] initWithArray:v8];
         [(WCM_SacManager *)self freqAscendSort:v12];
         [(WCM_SacManager *)self freqAscendSort:v13];
@@ -453,13 +453,13 @@
   return v9;
 }
 
-- (void)freqAscendSort:(id)a3
+- (void)freqAscendSort:(id)sort
 {
-  v3 = a3;
-  if (v3)
+  sortCopy = sort;
+  if (sortCopy)
   {
-    v4 = v3;
-    if ([v3 count])
+    v4 = sortCopy;
+    if ([sortCopy count])
     {
       [v4 sortUsingComparator:&stru_10023ECC8];
     }
@@ -468,13 +468,13 @@
   _objc_release_x1();
 }
 
-- (void)sacSortFreqByPriority:(id)a3
+- (void)sacSortFreqByPriority:(id)priority
 {
-  v3 = a3;
-  if (v3)
+  priorityCopy = priority;
+  if (priorityCopy)
   {
-    v4 = v3;
-    if ([v3 count])
+    v4 = priorityCopy;
+    if ([priorityCopy count])
     {
       [v4 sortUsingComparator:&stru_10023ECE8];
     }
@@ -483,21 +483,21 @@
   _objc_release_x1();
 }
 
-- (id)getRemoveObjIndex:(id)a3 fromOther:(id)a4
+- (id)getRemoveObjIndex:(id)index fromOther:(id)other
 {
-  v5 = a3;
-  v6 = a4;
+  indexCopy = index;
+  otherCopy = other;
   v7 = objc_alloc_init(NSMutableIndexSet);
-  if (v5 && v6)
+  if (indexCopy && otherCopy)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = [v5 differenceFromArray:v6 withOptions:1 usingEquivalenceTest:&stru_10023ED28];
+    v9 = [indexCopy differenceFromArray:otherCopy withOptions:1 usingEquivalenceTest:&stru_10023ED28];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v10 = [v9 removals];
-    v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    removals = [v9 removals];
+    v11 = [removals countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v11)
     {
       v12 = v11;
@@ -508,13 +508,13 @@
         {
           if (*v17 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(removals);
           }
 
           [v7 addIndex:{objc_msgSend(*(*(&v16 + 1) + 8 * i), "index")}];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v12 = [removals countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v12);
@@ -526,21 +526,21 @@
   return v7;
 }
 
-- (id)getInsertObjIndex:(id)a3 fromOther:(id)a4
+- (id)getInsertObjIndex:(id)index fromOther:(id)other
 {
-  v5 = a3;
-  v6 = a4;
+  indexCopy = index;
+  otherCopy = other;
   v7 = objc_alloc_init(NSMutableIndexSet);
-  if (v5 && v6)
+  if (indexCopy && otherCopy)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = [v5 differenceFromArray:v6 withOptions:2 usingEquivalenceTest:&stru_10023ED48];
+    v9 = [indexCopy differenceFromArray:otherCopy withOptions:2 usingEquivalenceTest:&stru_10023ED48];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v10 = [v9 insertions];
-    v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    insertions = [v9 insertions];
+    v11 = [insertions countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v11)
     {
       v12 = v11;
@@ -551,13 +551,13 @@
         {
           if (*v17 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(insertions);
           }
 
           [v7 addIndex:{objc_msgSend(*(*(&v16 + 1) + 8 * i), "index")}];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v12 = [insertions countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v12);
@@ -569,13 +569,13 @@
   return v7;
 }
 
-- (void)sacMergeFreqInterval:(id)a3
+- (void)sacMergeFreqInterval:(id)interval
 {
-  v4 = a3;
-  if (v4)
+  intervalCopy = interval;
+  if (intervalCopy)
   {
-    v14 = v4;
-    if ([v4 count])
+    v14 = intervalCopy;
+    if ([intervalCopy count])
     {
       [(WCM_SacManager *)self freqAscendSort:v14];
       v5 = objc_alloc_init(NSMutableArray);
@@ -588,22 +588,22 @@
           v8 = [v14 objectAtIndex:v6];
           if ([v5 count])
           {
-            v9 = [v5 lastObject];
-            v10 = [v8 FreqStart];
-            if (v10 >= [v9 FreqEnd])
+            lastObject = [v5 lastObject];
+            freqStart = [v8 FreqStart];
+            if (freqStart >= [lastObject FreqEnd])
             {
               [v5 addObject:v8];
             }
 
             else
             {
-              v11 = [v8 FreqStart];
-              if (v11 < [v9 FreqEnd])
+              freqStart2 = [v8 FreqStart];
+              if (freqStart2 < [lastObject FreqEnd])
               {
-                v12 = [v8 FreqEnd];
-                if (v12 > [v9 FreqEnd])
+                freqEnd = [v8 FreqEnd];
+                if (freqEnd > [lastObject FreqEnd])
                 {
-                  [v9 setEndFreqOnly:{objc_msgSend(v8, "FreqEnd")}];
+                  [lastObject setEndFreqOnly:{objc_msgSend(v8, "FreqEnd")}];
                 }
               }
             }
@@ -628,16 +628,16 @@
   _objc_release_x1();
 }
 
-- (void)sacScreenFreq:(id)a3 freqRangeObj:(id)a4
+- (void)sacScreenFreq:(id)freq freqRangeObj:(id)obj
 {
-  v31 = a3;
-  v6 = a4;
-  if (v31)
+  freqCopy = freq;
+  objCopy = obj;
+  if (freqCopy)
   {
-    if (v6)
+    if (objCopy)
     {
-      v7 = [(WCM_SacManager *)self mCellularFreqInclusionList];
-      v8 = [v7 count];
+      mCellularFreqInclusionList = [(WCM_SacManager *)self mCellularFreqInclusionList];
+      v8 = [mCellularFreqInclusionList count];
 
       if (v8)
       {
@@ -645,57 +645,57 @@
         v10 = 1;
         do
         {
-          v11 = [(WCM_SacManager *)self mCellularFreqInclusionList];
-          v12 = [v11 objectAtIndex:v9];
+          mCellularFreqInclusionList2 = [(WCM_SacManager *)self mCellularFreqInclusionList];
+          v12 = [mCellularFreqInclusionList2 objectAtIndex:v9];
 
-          v13 = [v6 FreqEnd];
-          if (v13 > [v12 FreqStart])
+          freqEnd = [objCopy FreqEnd];
+          if (freqEnd > [v12 FreqStart])
           {
-            v14 = [v6 FreqStart];
-            if (v14 < [v12 FreqEnd])
+            freqStart = [objCopy FreqStart];
+            if (freqStart < [v12 FreqEnd])
             {
-              v15 = [v6 FreqStart];
-              if (v15 <= [v12 FreqStart])
+              freqStart2 = [objCopy FreqStart];
+              if (freqStart2 <= [v12 FreqStart])
               {
-                v16 = [v6 FreqEnd];
-                v17 = [v12 FreqEnd];
+                freqEnd2 = [objCopy FreqEnd];
+                freqEnd3 = [v12 FreqEnd];
                 v18 = v12;
                 v19 = v12;
-                if (v16 >= v17)
+                if (freqEnd2 >= freqEnd3)
                 {
                   goto LABEL_22;
                 }
               }
 
-              v20 = [v6 FreqStart];
-              if (v20 >= [v12 FreqStart])
+              freqStart3 = [objCopy FreqStart];
+              if (freqStart3 >= [v12 FreqStart])
               {
-                v21 = [v6 FreqEnd];
-                v22 = [v12 FreqEnd];
-                v18 = v6;
-                v19 = v6;
-                if (v21 <= v22)
+                freqEnd4 = [objCopy FreqEnd];
+                freqEnd5 = [v12 FreqEnd];
+                v18 = objCopy;
+                v19 = objCopy;
+                if (freqEnd4 <= freqEnd5)
                 {
                   goto LABEL_22;
                 }
               }
 
-              v23 = [v6 FreqStart];
-              v24 = [v12 FreqStart];
-              v18 = v6;
+              freqStart4 = [objCopy FreqStart];
+              freqStart5 = [v12 FreqStart];
+              v18 = objCopy;
               v19 = v12;
-              if (v23 >= v24 || (v25 = [v6 FreqEnd], v26 = objc_msgSend(v12, "FreqEnd"), v18 = v12, v19 = v6, v25 <= v26))
+              if (freqStart4 >= freqStart5 || (v25 = [objCopy FreqEnd], v26 = objc_msgSend(v12, "FreqEnd"), v18 = v12, v19 = objCopy, v25 <= v26))
               {
 LABEL_22:
-                v27 = [v18 FreqStart];
-                v28 = [v19 FreqEnd];
-                if (v27)
+                freqStart6 = [v18 FreqStart];
+                freqEnd6 = [v19 FreqEnd];
+                if (freqStart6)
                 {
-                  if (v28)
+                  if (freqEnd6)
                   {
-                    v29 = [[FreqRangeInfo alloc] initWithStartFreq:v27 EndFreq:v28];
+                    v29 = [[FreqRangeInfo alloc] initWithStartFreq:freqStart6 EndFreq:freqEnd6];
                     [(FreqRangeInfo *)v29 setPriority:v10 - 1];
-                    [v31 addObject:v29];
+                    [freqCopy addObject:v29];
                   }
                 }
               }
@@ -711,13 +711,13 @@ LABEL_22:
   }
 }
 
-- (void)sacScreenAllFreq:(id)a3
+- (void)sacScreenAllFreq:(id)freq
 {
-  v4 = a3;
-  if (v4)
+  freqCopy = freq;
+  if (freqCopy)
   {
-    v10 = v4;
-    if ([v4 count])
+    v10 = freqCopy;
+    if ([freqCopy count])
     {
       v5 = objc_alloc_init(NSMutableArray);
       if ([v10 count])
@@ -744,45 +744,45 @@ LABEL_22:
   _objc_release_x1();
 }
 
-- (void)sacUpdateCellularDownlinkFreqInfo:(id)a3 onSubId:(unsigned int)a4
+- (void)sacUpdateCellularDownlinkFreqInfo:(id)info onSubId:(unsigned int)id
 {
-  v6 = a3;
-  if (!v6 || a4 > 1)
+  infoCopy = info;
+  if (!infoCopy || id > 1)
   {
     goto LABEL_15;
   }
 
-  v20 = v6;
-  v7 = [(WCM_SacManager *)self mCellularFreqSet];
-  v8 = a4;
-  v9 = [v7 objectAtIndex:a4];
-  v10 = [v9 mCellularPccFreq];
+  v20 = infoCopy;
+  mCellularFreqSet = [(WCM_SacManager *)self mCellularFreqSet];
+  idCopy = id;
+  v9 = [mCellularFreqSet objectAtIndex:id];
+  mCellularPccFreq = [v9 mCellularPccFreq];
 
-  v11 = [(WCM_SacManager *)self mCellularFreqSet];
-  v12 = [v11 objectAtIndex:v8];
-  v13 = [v12 mCellularSccFreqList];
+  mCellularFreqSet2 = [(WCM_SacManager *)self mCellularFreqSet];
+  v12 = [mCellularFreqSet2 objectAtIndex:idCopy];
+  mCellularSccFreqList = [v12 mCellularSccFreqList];
 
-  if (!v10)
+  if (!mCellularPccFreq)
   {
-    v10 = objc_alloc_init(NSMutableArray);
-    if (v13)
+    mCellularPccFreq = objc_alloc_init(NSMutableArray);
+    if (mCellularSccFreqList)
     {
       goto LABEL_5;
     }
 
 LABEL_7:
-    v13 = objc_alloc_init(NSMutableArray);
+    mCellularSccFreqList = objc_alloc_init(NSMutableArray);
     goto LABEL_8;
   }
 
-  [v10 removeAllObjects];
-  if (!v13)
+  [mCellularPccFreq removeAllObjects];
+  if (!mCellularSccFreqList)
   {
     goto LABEL_7;
   }
 
 LABEL_5:
-  [v13 removeAllObjects];
+  [mCellularSccFreqList removeAllObjects];
 LABEL_8:
   +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 3, @"SAC update cellular downlink frequency, count=%lu", [v20 count]);
   if ([v20 count])
@@ -795,17 +795,17 @@ LABEL_8:
       v17 = [v20 objectAtIndex:v14];
       [(FreqRangeInfo *)v16 setFreqWithObj:v17];
 
-      v18 = [(FreqRangeInfo *)v16 logPrint];
-      [WCM_Logging logLevel:3 message:@"    SAC cellular dl_freq[%d] = %@", v15, v18];
+      logPrint = [(FreqRangeInfo *)v16 logPrint];
+      [WCM_Logging logLevel:3 message:@"    SAC cellular dl_freq[%d] = %@", v15, logPrint];
 
       if (v15)
       {
-        v19 = v13;
+        v19 = mCellularSccFreqList;
       }
 
       else
       {
-        v19 = v10;
+        v19 = mCellularPccFreq;
       }
 
       [v19 addObject:v16];
@@ -817,28 +817,28 @@ LABEL_8:
     while ([v20 count] > v14);
   }
 
-  v6 = v20;
+  infoCopy = v20;
 LABEL_15:
 }
 
-- (void)sacUpdateCellularHoppingFreqInfo:(id)a3 onSubId:(unsigned int)a4
+- (void)sacUpdateCellularHoppingFreqInfo:(id)info onSubId:(unsigned int)id
 {
-  v6 = a3;
-  if (v6 && a4 <= 1)
+  infoCopy = info;
+  if (infoCopy && id <= 1)
   {
-    v23 = v6;
-    v7 = [(WCM_SacManager *)self mCellularFreqSet];
-    v8 = [v7 objectAtIndex:a4];
-    v9 = [v8 mCellularHoppingFreq];
+    v23 = infoCopy;
+    mCellularFreqSet = [(WCM_SacManager *)self mCellularFreqSet];
+    v8 = [mCellularFreqSet objectAtIndex:id];
+    mCellularHoppingFreq = [v8 mCellularHoppingFreq];
 
-    if (v9)
+    if (mCellularHoppingFreq)
     {
-      [v9 removeAllObjects];
+      [mCellularHoppingFreq removeAllObjects];
     }
 
     else
     {
-      v9 = objc_alloc_init(NSMutableArray);
+      mCellularHoppingFreq = objc_alloc_init(NSMutableArray);
     }
 
     +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 3, @"SAC update cellular hopping frequency, count=%lu", [v23 count]);
@@ -852,21 +852,21 @@ LABEL_15:
       do
       {
         v15 = [v14 objectAtIndex:v10];
-        v16 = [v15 logPrint];
-        [WCM_Logging logLevel:3 message:@"    SAC cellular hopping_freq[%d] = %@", v11, v16];
+        logPrint = [v15 logPrint];
+        [WCM_Logging logLevel:3 message:@"    SAC cellular hopping_freq[%d] = %@", v11, logPrint];
 
-        v17 = [v15 centerFreq];
-        if (v13 > &v17[-([v15 bw] >> 1)])
+        centerFreq = [v15 centerFreq];
+        if (v13 > &centerFreq[-([v15 bw] >> 1)])
         {
-          v18 = [v15 centerFreq];
-          v13 = v18 - ([v15 bw] >> 1);
+          centerFreq2 = [v15 centerFreq];
+          v13 = centerFreq2 - ([v15 bw] >> 1);
         }
 
-        v19 = [v15 centerFreq];
-        if (v12 < &v19[[v15 bw] >> 1])
+        centerFreq3 = [v15 centerFreq];
+        if (v12 < &centerFreq3[[v15 bw] >> 1])
         {
-          v20 = [v15 centerFreq];
-          v12 = &v20[[v15 bw] >> 1];
+          centerFreq4 = [v15 centerFreq];
+          v12 = &centerFreq4[[v15 bw] >> 1];
         }
 
         v10 = (v11 + 1);
@@ -879,32 +879,32 @@ LABEL_15:
       if (v12 > v13)
       {
         v22 = [[FreqRangeInfo alloc] initWithStartFreq:v13 EndFreq:v12];
-        [v9 addObject:v22];
+        [mCellularHoppingFreq addObject:v22];
       }
     }
 
-    v6 = v23;
+    infoCopy = v23;
   }
 }
 
-- (void)sacUpdateCellularNeighborFreqInfo:(id)a3 onSubId:(unsigned int)a4
+- (void)sacUpdateCellularNeighborFreqInfo:(id)info onSubId:(unsigned int)id
 {
-  v6 = a3;
-  if (v6 && a4 <= 1)
+  infoCopy = info;
+  if (infoCopy && id <= 1)
   {
-    v15 = v6;
-    v7 = [(WCM_SacManager *)self mCellularFreqSet];
-    v8 = [v7 objectAtIndex:a4];
-    v9 = [v8 mCellularNeighborFreqList];
+    v15 = infoCopy;
+    mCellularFreqSet = [(WCM_SacManager *)self mCellularFreqSet];
+    v8 = [mCellularFreqSet objectAtIndex:id];
+    mCellularNeighborFreqList = [v8 mCellularNeighborFreqList];
 
-    if (v9)
+    if (mCellularNeighborFreqList)
     {
-      [v9 removeAllObjects];
+      [mCellularNeighborFreqList removeAllObjects];
     }
 
     else
     {
-      v9 = objc_alloc_init(NSMutableArray);
+      mCellularNeighborFreqList = objc_alloc_init(NSMutableArray);
     }
 
     +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 3, @"SAC update cellular neighbor frequency, count=%lu", [v15 count]);
@@ -918,10 +918,10 @@ LABEL_15:
         v13 = [v15 objectAtIndex:v10];
         [(FreqRangeInfo *)v12 setFreqWithObj:v13];
 
-        v14 = [(FreqRangeInfo *)v12 logPrint];
-        [WCM_Logging logLevel:3 message:@"    SAC cellular neighbor_freq[%d] = %@", v11, v14];
+        logPrint = [(FreqRangeInfo *)v12 logPrint];
+        [WCM_Logging logLevel:3 message:@"    SAC cellular neighbor_freq[%d] = %@", v11, logPrint];
 
-        [v9 addObject:v12];
+        [mCellularNeighborFreqList addObject:v12];
         v10 = (v11 + 1);
         v11 = v10;
       }
@@ -929,28 +929,28 @@ LABEL_15:
       while ([v15 count] > v10);
     }
 
-    v6 = v15;
+    infoCopy = v15;
   }
 }
 
-- (void)sacUpdateCellularSearchFreqInfo:(id)a3 onSubId:(unsigned int)a4
+- (void)sacUpdateCellularSearchFreqInfo:(id)info onSubId:(unsigned int)id
 {
-  v6 = a3;
-  if (v6 && a4 <= 1)
+  infoCopy = info;
+  if (infoCopy && id <= 1)
   {
-    v15 = v6;
-    v7 = [(WCM_SacManager *)self mCellularFreqSet];
-    v8 = [v7 objectAtIndex:a4];
-    v9 = [v8 mCellularSearchFreqList];
+    v15 = infoCopy;
+    mCellularFreqSet = [(WCM_SacManager *)self mCellularFreqSet];
+    v8 = [mCellularFreqSet objectAtIndex:id];
+    mCellularSearchFreqList = [v8 mCellularSearchFreqList];
 
-    if (v9)
+    if (mCellularSearchFreqList)
     {
-      [v9 removeAllObjects];
+      [mCellularSearchFreqList removeAllObjects];
     }
 
     else
     {
-      v9 = objc_alloc_init(NSMutableArray);
+      mCellularSearchFreqList = objc_alloc_init(NSMutableArray);
     }
 
     +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 3, @"SAC update cellular search frequency, count=%lu", [v15 count]);
@@ -964,10 +964,10 @@ LABEL_15:
         v13 = [v15 objectAtIndex:v10];
         [(FreqRangeInfo *)v12 setFreqWithObj:v13];
 
-        v14 = [(FreqRangeInfo *)v12 logPrint];
-        [WCM_Logging logLevel:3 message:@"    SAC cellular search_freq[%d] = %@", v11, v14];
+        logPrint = [(FreqRangeInfo *)v12 logPrint];
+        [WCM_Logging logLevel:3 message:@"    SAC cellular search_freq[%d] = %@", v11, logPrint];
 
-        [v9 addObject:v12];
+        [mCellularSearchFreqList addObject:v12];
         v10 = (v11 + 1);
         v11 = v10;
       }
@@ -975,28 +975,28 @@ LABEL_15:
       while ([v15 count] > v10);
     }
 
-    v6 = v15;
+    infoCopy = v15;
   }
 }
 
-- (void)sacUpdateCellularRPLMNFreqInfo:(id)a3 onSubId:(unsigned int)a4
+- (void)sacUpdateCellularRPLMNFreqInfo:(id)info onSubId:(unsigned int)id
 {
-  v6 = a3;
-  if (v6 && a4 <= 1)
+  infoCopy = info;
+  if (infoCopy && id <= 1)
   {
-    v15 = v6;
-    v7 = [(WCM_SacManager *)self mCellularFreqSet];
-    v8 = [v7 objectAtIndex:a4];
-    v9 = [v8 mCellularRPLMNFreqList];
+    v15 = infoCopy;
+    mCellularFreqSet = [(WCM_SacManager *)self mCellularFreqSet];
+    v8 = [mCellularFreqSet objectAtIndex:id];
+    mCellularRPLMNFreqList = [v8 mCellularRPLMNFreqList];
 
-    if (v9)
+    if (mCellularRPLMNFreqList)
     {
-      [v9 removeAllObjects];
+      [mCellularRPLMNFreqList removeAllObjects];
     }
 
     else
     {
-      v9 = objc_alloc_init(NSMutableArray);
+      mCellularRPLMNFreqList = objc_alloc_init(NSMutableArray);
     }
 
     +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 3, @"SAC update cellular RPLMN frequency, count=%lu", [v15 count]);
@@ -1010,10 +1010,10 @@ LABEL_15:
         v13 = [v15 objectAtIndex:v10];
         [(FreqRangeInfo *)v12 setFreqWithObj:v13];
 
-        v14 = [(FreqRangeInfo *)v12 logPrint];
-        [WCM_Logging logLevel:3 message:@"    SAC cellular rplmn_freq[%d] = %@", v11, v14];
+        logPrint = [(FreqRangeInfo *)v12 logPrint];
+        [WCM_Logging logLevel:3 message:@"    SAC cellular rplmn_freq[%d] = %@", v11, logPrint];
 
-        [v9 addObject:v12];
+        [mCellularRPLMNFreqList addObject:v12];
         v10 = (v11 + 1);
         v11 = v10;
       }
@@ -1021,24 +1021,24 @@ LABEL_15:
       while ([v15 count] > v10);
     }
 
-    v6 = v15;
+    infoCopy = v15;
   }
 }
 
-- (void)sacProcessCellularPrimaryFreqInfo:(id)a3 onSubId:(unsigned int)a4
+- (void)sacProcessCellularPrimaryFreqInfo:(id)info onSubId:(unsigned int)id
 {
-  v6 = a3;
-  if (v6 && a4 <= 1)
+  infoCopy = info;
+  if (infoCopy && id <= 1)
   {
-    v22 = v6;
-    v7 = [(WCM_SacManager *)self mCellularFreqSet];
-    v8 = a4;
-    v9 = [v7 objectAtIndex:a4];
-    v10 = [v9 mCellularPccFreq];
+    v22 = infoCopy;
+    mCellularFreqSet = [(WCM_SacManager *)self mCellularFreqSet];
+    idCopy = id;
+    v9 = [mCellularFreqSet objectAtIndex:id];
+    mCellularPccFreq = [v9 mCellularPccFreq];
 
-    v11 = [(WCM_SacManager *)self mCellularFreqSet];
-    v12 = [v11 objectAtIndex:v8];
-    v13 = [v12 mCellularHoppingFreq];
+    mCellularFreqSet2 = [(WCM_SacManager *)self mCellularFreqSet];
+    v12 = [mCellularFreqSet2 objectAtIndex:idCopy];
+    mCellularHoppingFreq = [v12 mCellularHoppingFreq];
 
     v14 = [[FreqRangeInfo alloc] initWithStartFreq:0 EndFreq:0];
     v15 = 48;
@@ -1048,7 +1048,7 @@ LABEL_15:
     }
 
     v16 = *(&self->super.isa + v15);
-    if (v13 && (v17 = [v13 count], v18 = v13, v17) || v10 && (v19 = objc_msgSend(v10, "count"), v18 = v10, v19))
+    if (mCellularHoppingFreq && (v17 = [mCellularHoppingFreq count], v18 = mCellularHoppingFreq, v17) || mCellularPccFreq && (v19 = objc_msgSend(mCellularPccFreq, "count"), v18 = mCellularPccFreq, v19))
     {
       v20 = [v18 objectAtIndex:0];
       [(FreqRangeInfo *)v14 setFreqWithObj:v20];
@@ -1063,19 +1063,19 @@ LABEL_15:
       [v22 addObjectsFromArray:v21];
     }
 
-    v6 = v22;
+    infoCopy = v22;
   }
 }
 
-- (void)sacProcessCellularSecondaryFreqInfo:(id)a3 onSubId:(unsigned int)a4
+- (void)sacProcessCellularSecondaryFreqInfo:(id)info onSubId:(unsigned int)id
 {
-  v6 = a3;
-  if (v6 && a4 <= 1)
+  infoCopy = info;
+  if (infoCopy && id <= 1)
   {
-    v31 = v6;
-    v7 = [(WCM_SacManager *)self mCellularFreqSet];
-    v8 = [v7 objectAtIndex:a4];
-    v9 = [v8 mCellularSccFreqList];
+    v31 = infoCopy;
+    mCellularFreqSet = [(WCM_SacManager *)self mCellularFreqSet];
+    v8 = [mCellularFreqSet objectAtIndex:id];
+    mCellularSccFreqList = [v8 mCellularSccFreqList];
 
     v10 = 56;
     if (!self->mGnssState)
@@ -1116,21 +1116,21 @@ LABEL_15:
     if (v15 < self->mMaxCellAggregateBw)
     {
       v19 = objc_alloc_init(NSMutableArray);
-      if ([v9 count])
+      if ([mCellularSccFreqList count])
       {
         v20 = 0;
         v21 = 1;
         do
         {
           v22 = objc_alloc_init(FreqRangeInfo);
-          v23 = [v9 objectAtIndex:v20];
+          v23 = [mCellularSccFreqList objectAtIndex:v20];
           [(FreqRangeInfo *)v22 setFreqWithObj:v23];
 
           [(FreqRangeInfo *)v22 applyBwLimitFromRight:v13];
           [v19 addObject:v22];
 
           v20 = v21;
-          v18 = [v9 count] > v21++;
+          v18 = [mCellularSccFreqList count] > v21++;
         }
 
         while (v18);
@@ -1171,28 +1171,28 @@ LABEL_15:
 LABEL_27:
     }
 
-    v6 = v31;
+    infoCopy = v31;
   }
 }
 
-- (void)sacProcessCellularMeasFreqInfo:(id)a3 onSubId:(unsigned int)a4
+- (void)sacProcessCellularMeasFreqInfo:(id)info onSubId:(unsigned int)id
 {
-  v6 = a3;
-  if (v6 && a4 <= 1)
+  infoCopy = info;
+  if (infoCopy && id <= 1)
   {
-    v41 = v6;
-    v7 = [(WCM_SacManager *)self mCellularFreqSet];
-    v8 = a4;
-    v9 = [v7 objectAtIndex:a4];
-    v10 = [v9 mCellularNeighborFreqList];
+    v41 = infoCopy;
+    mCellularFreqSet = [(WCM_SacManager *)self mCellularFreqSet];
+    idCopy = id;
+    v9 = [mCellularFreqSet objectAtIndex:id];
+    mCellularNeighborFreqList = [v9 mCellularNeighborFreqList];
 
-    v11 = [(WCM_SacManager *)self mCellularFreqSet];
-    v12 = [v11 objectAtIndex:v8];
-    v13 = [v12 mCellularSearchFreqList];
+    mCellularFreqSet2 = [(WCM_SacManager *)self mCellularFreqSet];
+    v12 = [mCellularFreqSet2 objectAtIndex:idCopy];
+    mCellularSearchFreqList = [v12 mCellularSearchFreqList];
 
-    v14 = [(WCM_SacManager *)self mCellularFreqSet];
-    v15 = [v14 objectAtIndex:v8];
-    v16 = [v15 mCellularRPLMNFreqList];
+    mCellularFreqSet3 = [(WCM_SacManager *)self mCellularFreqSet];
+    v15 = [mCellularFreqSet3 objectAtIndex:idCopy];
+    mCellularRPLMNFreqList = [v15 mCellularRPLMNFreqList];
 
     if (self->mMeasurementFreqIncluded)
     {
@@ -1221,58 +1221,58 @@ LABEL_27:
       if (v18 < self->mMaxCellAggregateBw)
       {
         v22 = objc_alloc_init(NSMutableArray);
-        if ([v10 count])
+        if ([mCellularNeighborFreqList count])
         {
           v23 = 0;
           v24 = 1;
           do
           {
-            v25 = [v10 objectAtIndex:v23];
+            v25 = [mCellularNeighborFreqList objectAtIndex:v23];
             v26 = objc_alloc_init(FreqRangeInfo);
             [(FreqRangeInfo *)v26 setFreqWithObj:v25];
             [(FreqRangeInfo *)v26 applyBwLimitFromCenter:5000000];
             [v22 addObject:v26];
 
             v23 = v24;
-            v21 = [v10 count] > v24++;
+            v21 = [mCellularNeighborFreqList count] > v24++;
           }
 
           while (v21);
         }
 
-        if ([v13 count])
+        if ([mCellularSearchFreqList count])
         {
           v27 = 0;
           v28 = 1;
           do
           {
-            v29 = [v13 objectAtIndex:v27];
+            v29 = [mCellularSearchFreqList objectAtIndex:v27];
             v30 = objc_alloc_init(FreqRangeInfo);
             [(FreqRangeInfo *)v30 setFreqWithObj:v29];
             [(FreqRangeInfo *)v30 applyBwLimitFromCenter:5000000];
             [v22 addObject:v30];
 
             v27 = v28;
-            v21 = [v13 count] > v28++;
+            v21 = [mCellularSearchFreqList count] > v28++;
           }
 
           while (v21);
         }
 
-        if ([v16 count])
+        if ([mCellularRPLMNFreqList count])
         {
           v31 = 0;
           v32 = 1;
           do
           {
-            v33 = [v16 objectAtIndex:v31];
+            v33 = [mCellularRPLMNFreqList objectAtIndex:v31];
             v34 = objc_alloc_init(FreqRangeInfo);
             [(FreqRangeInfo *)v34 setFreqWithObj:v33];
             [(FreqRangeInfo *)v34 applyBwLimitFromCenter:5000000];
             [v22 addObject:v34];
 
             v31 = v32;
-            v21 = [v16 count] > v32++;
+            v21 = [mCellularRPLMNFreqList count] > v32++;
           }
 
           while (v21);
@@ -1316,45 +1316,45 @@ LABEL_27:
       }
     }
 
-    v6 = v41;
+    infoCopy = v41;
   }
 }
 
-- (void)sacUpdateWiFiFreqInfo:(unint64_t)a3 Bandwidth:(unint64_t)a4
+- (void)sacUpdateWiFiFreqInfo:(unint64_t)info Bandwidth:(unint64_t)bandwidth
 {
-  v7 = [(WCM_SacManager *)self mWifiFreqList];
-  if (v7)
+  mWifiFreqList = [(WCM_SacManager *)self mWifiFreqList];
+  if (mWifiFreqList)
   {
-    v8 = v7;
-    v9 = [(WCM_SacManager *)self mWifiFreqList];
-    v10 = [v9 count];
+    v8 = mWifiFreqList;
+    mWifiFreqList2 = [(WCM_SacManager *)self mWifiFreqList];
+    v10 = [mWifiFreqList2 count];
 
     if (v10)
     {
-      v11 = [(WCM_SacManager *)self mWifiFreqList];
-      [v11 removeAllObjects];
+      mWifiFreqList3 = [(WCM_SacManager *)self mWifiFreqList];
+      [mWifiFreqList3 removeAllObjects];
     }
   }
 
-  v14 = [[FreqRangeInfo alloc] initWithFreq:a3 Bw:a4];
-  v12 = [(FreqRangeInfo *)v14 logPrint];
-  [WCM_Logging logLevel:3 message:@"SAC Update WiFi Freq:%@", v12];
+  v14 = [[FreqRangeInfo alloc] initWithFreq:info Bw:bandwidth];
+  logPrint = [(FreqRangeInfo *)v14 logPrint];
+  [WCM_Logging logLevel:3 message:@"SAC Update WiFi Freq:%@", logPrint];
 
-  if (a3 && a4)
+  if (info && bandwidth)
   {
-    v13 = [(WCM_SacManager *)self mWifiFreqList];
-    [v13 addObject:v14];
+    mWifiFreqList4 = [(WCM_SacManager *)self mWifiFreqList];
+    [mWifiFreqList4 addObject:v14];
   }
 }
 
-- (void)sacProcessWiFiFreqInfo:(id)a3
+- (void)sacProcessWiFiFreqInfo:(id)info
 {
-  v4 = a3;
-  if (v4)
+  infoCopy = info;
+  if (infoCopy)
   {
-    v8 = v4;
-    v5 = [(WCM_SacManager *)self mWifiFreqList];
-    v6 = [v5 objectAtIndex:0];
+    v8 = infoCopy;
+    mWifiFreqList = [(WCM_SacManager *)self mWifiFreqList];
+    v6 = [mWifiFreqList objectAtIndex:0];
 
     if ([v6 centerFreq] <= 0x94B6ADC0 && self->mReportWiFi2G || objc_msgSend(v6, "centerFreq") >= 0x12BCFB580 && objc_msgSend(v6, "centerFreq") < 0x162F216C0 && self->mReportWiFi5G || objc_msgSend(v6, "centerFreq") > 0x162F216BFLL && self->mReportWiFiEnh)
     {
@@ -1364,21 +1364,21 @@ LABEL_27:
       [v8 addObject:v7];
     }
 
-    v4 = v8;
+    infoCopy = v8;
   }
 }
 
-- (void)sacUpdateGnssFreqInfo:(id)a3 L5Freq:(id)a4
+- (void)sacUpdateGnssFreqInfo:(id)info L5Freq:(id)freq
 {
-  v20 = a3;
-  v6 = a4;
-  if (v20)
+  infoCopy = info;
+  freqCopy = freq;
+  if (infoCopy)
   {
-    v7 = [v20 count] != 0;
-    if (v6)
+    v7 = [infoCopy count] != 0;
+    if (freqCopy)
     {
 LABEL_3:
-      v8 = [v6 count] != 0;
+      v8 = [freqCopy count] != 0;
       goto LABEL_6;
     }
   }
@@ -1386,7 +1386,7 @@ LABEL_3:
   else
   {
     v7 = 0;
-    if (v6)
+    if (freqCopy)
     {
       goto LABEL_3;
     }
@@ -1394,11 +1394,11 @@ LABEL_3:
 
   v8 = 0;
 LABEL_6:
-  v9 = [(WCM_SacManager *)self mGnssL1FreqList];
-  [v9 removeAllObjects];
+  mGnssL1FreqList = [(WCM_SacManager *)self mGnssL1FreqList];
+  [mGnssL1FreqList removeAllObjects];
 
-  v10 = [(WCM_SacManager *)self mGnssL5FreqList];
-  [v10 removeAllObjects];
+  mGnssL5FreqList = [(WCM_SacManager *)self mGnssL5FreqList];
+  [mGnssL5FreqList removeAllObjects];
 
   if (!v7)
   {
@@ -1411,46 +1411,46 @@ LABEL_6:
     goto LABEL_13;
   }
 
-  if ([v20 count])
+  if ([infoCopy count])
   {
     v11 = 0;
     do
     {
-      v12 = [v20 objectAtIndex:v11];
-      v13 = [v12 logPrint];
-      [WCM_Logging logLevel:3 message:@"SAC receive update of GNSS L1 Freq[%d]:%@", v11, v13];
+      v12 = [infoCopy objectAtIndex:v11];
+      logPrint = [v12 logPrint];
+      [WCM_Logging logLevel:3 message:@"SAC receive update of GNSS L1 Freq[%d]:%@", v11, logPrint];
 
       ++v11;
     }
 
-    while ([v20 count] > v11);
+    while ([infoCopy count] > v11);
   }
 
-  v14 = [(WCM_SacManager *)self mGnssL1FreqList];
-  [v14 addObjectsFromArray:v20];
+  mGnssL1FreqList2 = [(WCM_SacManager *)self mGnssL1FreqList];
+  [mGnssL1FreqList2 addObjectsFromArray:infoCopy];
 
   v15 = 1;
   if (v8)
   {
 LABEL_13:
-    if ([v6 count])
+    if ([freqCopy count])
     {
       v16 = 0;
       do
       {
-        v17 = [v6 objectAtIndex:v16];
-        v18 = [v17 logPrint];
-        [WCM_Logging logLevel:3 message:@"SAC receive update of GNSS L5 Freq[%d]:%@", v16, v18];
+        v17 = [freqCopy objectAtIndex:v16];
+        logPrint2 = [v17 logPrint];
+        [WCM_Logging logLevel:3 message:@"SAC receive update of GNSS L5 Freq[%d]:%@", v16, logPrint2];
 
         ++v16;
       }
 
-      while ([v6 count] > v16);
+      while ([freqCopy count] > v16);
     }
 
     v15 |= 2u;
-    v19 = [(WCM_SacManager *)self mGnssL5FreqList];
-    [v19 addObjectsFromArray:v6];
+    mGnssL5FreqList2 = [(WCM_SacManager *)self mGnssL5FreqList];
+    [mGnssL5FreqList2 addObjectsFromArray:freqCopy];
   }
 
 LABEL_17:
@@ -1458,50 +1458,50 @@ LABEL_17:
   self->mGnssState = v15;
 }
 
-- (void)sacProcessGnssFreqInfo:(id)a3
+- (void)sacProcessGnssFreqInfo:(id)info
 {
-  v4 = a3;
-  if (v4)
+  infoCopy = info;
+  if (infoCopy)
   {
     if (self->mGnssState)
     {
-      if (!self->mReportGnssL1 || (v7 = v4, -[WCM_SacManager mGnssL1FreqList](self, "mGnssL1FreqList"), v5 = objc_claimAutoreleasedReturnValue(), [v7 addObjectsFromArray:v5], v5, v4 = v7, (self->mGnssState & 1) != 0))
+      if (!self->mReportGnssL1 || (v7 = infoCopy, -[WCM_SacManager mGnssL1FreqList](self, "mGnssL1FreqList"), v5 = objc_claimAutoreleasedReturnValue(), [v7 addObjectsFromArray:v5], v5, infoCopy = v7, (self->mGnssState & 1) != 0))
       {
         if (self->mReportGnssL5)
         {
-          v8 = v4;
-          v6 = [(WCM_SacManager *)self mGnssL5FreqList];
-          [v8 addObjectsFromArray:v6];
+          v8 = infoCopy;
+          mGnssL5FreqList = [(WCM_SacManager *)self mGnssL5FreqList];
+          [v8 addObjectsFromArray:mGnssL5FreqList];
 
-          v4 = v8;
+          infoCopy = v8;
         }
       }
     }
   }
 }
 
-- (unsigned)sacCreateRawFreqList:(id)a3 bufferSize:(unsigned int)a4 buffer:(__AppleBasebandVictimFreq *)a5
+- (unsigned)sacCreateRawFreqList:(id)list bufferSize:(unsigned int)size buffer:(__AppleBasebandVictimFreq *)buffer
 {
-  v7 = a3;
-  v8 = v7;
-  LODWORD(v9) = 0;
-  if (v7 && a5)
+  listCopy = list;
+  v8 = listCopy;
+  LODWORD(sizeCopy) = 0;
+  if (listCopy && buffer)
   {
-    v10 = [v7 count];
-    if (v10 >= a4)
+    v10 = [listCopy count];
+    if (v10 >= size)
     {
-      v9 = a4;
+      sizeCopy = size;
     }
 
     else
     {
-      v9 = v10;
+      sizeCopy = v10;
     }
 
-    if (v9)
+    if (sizeCopy)
     {
       v11 = 0;
-      p_var2 = &a5->var2;
+      p_var2 = &buffer->var2;
       do
       {
         v13 = [v8 objectAtIndex:v11];
@@ -1512,11 +1512,11 @@ LABEL_17:
         p_var2 += 4;
       }
 
-      while (v9 != v11);
+      while (sizeCopy != v11);
     }
   }
 
-  return v9;
+  return sizeCopy;
 }
 
 - (void)sacRemoveAllWifiFreq
@@ -1524,17 +1524,17 @@ LABEL_17:
   [WCM_Logging logLevel:2 message:@"SAC Coex Manager removed all Wifi frequency from SAC and local cache"];
   [(WCM_SacManager *)self sacReportWifiVictimFreqListOnTargetSac:1 action:0];
   [(WCM_SacManager *)self sacReportWifiVictimFreqListOnTargetSac:2 action:0];
-  v3 = [(WCM_SacManager *)self mWifiFreqList];
-  [v3 removeAllObjects];
+  mWifiFreqList = [(WCM_SacManager *)self mWifiFreqList];
+  [mWifiFreqList removeAllObjects];
 }
 
-- (void)removeFreqFromArray:(id)a3 centerFreq:(unint64_t)a4 bandwidth:(unint64_t)a5
+- (void)removeFreqFromArray:(id)array centerFreq:(unint64_t)freq bandwidth:(unint64_t)bandwidth
 {
-  v6 = a3;
-  if (v6)
+  arrayCopy = array;
+  if (arrayCopy)
   {
-    v13 = v6;
-    v7 = [v6 count];
+    v13 = arrayCopy;
+    v7 = [arrayCopy count];
     v8 = v13;
     if (v7)
     {
@@ -1543,7 +1543,7 @@ LABEL_17:
       while (1)
       {
         v11 = [v8 objectAtIndex:v9];
-        if ([v11 centerFreq] == a4)
+        if ([v11 centerFreq] == freq)
         {
           break;
         }
@@ -1566,63 +1566,63 @@ LABEL_8:
   _objc_release_x1();
 }
 
-- (void)frequencyToolGetJasperResult:(id)a3 generalSacResult:(id)a4 client:(int)a5
+- (void)frequencyToolGetJasperResult:(id)result generalSacResult:(id)sacResult client:(int)client
 {
-  v19 = a3;
-  v8 = a4;
-  if (v19 && v8)
+  resultCopy = result;
+  sacResultCopy = sacResult;
+  if (resultCopy && sacResultCopy)
   {
-    [v19 removeAllObjects];
-    [v8 removeAllObjects];
-    if (a5)
+    [resultCopy removeAllObjects];
+    [sacResultCopy removeAllObjects];
+    if (client)
     {
-      if (a5 == 2)
+      if (client == 2)
       {
-        v11 = [(WCM_SacManager *)self mCacheGnssReportedReducedList];
-        v12 = v19;
+        mCacheGnssReportedReducedList = [(WCM_SacManager *)self mCacheGnssReportedReducedList];
+        v12 = resultCopy;
       }
 
       else
       {
-        if (a5 == 1)
+        if (client == 1)
         {
-          v9 = [(WCM_SacManager *)self mCacheWifiReportedReducedList];
-          [v19 addObjectsFromArray:v9];
+          mCacheWifiReportedReducedList = [(WCM_SacManager *)self mCacheWifiReportedReducedList];
+          [resultCopy addObjectsFromArray:mCacheWifiReportedReducedList];
 
-          v10 = [(WCM_SacManager *)self mCacheWifiReportedFullList];
+          mCacheWifiReportedFullList = [(WCM_SacManager *)self mCacheWifiReportedFullList];
 LABEL_11:
-          v18 = v10;
-          [v8 addObjectsFromArray:v10];
+          v18 = mCacheWifiReportedFullList;
+          [sacResultCopy addObjectsFromArray:mCacheWifiReportedFullList];
 
           goto LABEL_12;
         }
 
-        v14 = [(WCM_SacManager *)self mCacheCellularReportedReducedList];
-        [v19 addObjectsFromArray:v14];
+        mCacheCellularReportedReducedList = [(WCM_SacManager *)self mCacheCellularReportedReducedList];
+        [resultCopy addObjectsFromArray:mCacheCellularReportedReducedList];
 
-        v15 = [(WCM_SacManager *)self mCacheWifiReportedReducedList];
-        [v19 addObjectsFromArray:v15];
+        mCacheWifiReportedReducedList2 = [(WCM_SacManager *)self mCacheWifiReportedReducedList];
+        [resultCopy addObjectsFromArray:mCacheWifiReportedReducedList2];
 
-        v16 = [(WCM_SacManager *)self mCacheGnssReportedReducedList];
-        [v19 addObjectsFromArray:v16];
+        mCacheGnssReportedReducedList2 = [(WCM_SacManager *)self mCacheGnssReportedReducedList];
+        [resultCopy addObjectsFromArray:mCacheGnssReportedReducedList2];
 
-        v17 = [(WCM_SacManager *)self mCacheCellularReportedFullList];
-        [v8 addObjectsFromArray:v17];
+        mCacheCellularReportedFullList = [(WCM_SacManager *)self mCacheCellularReportedFullList];
+        [sacResultCopy addObjectsFromArray:mCacheCellularReportedFullList];
 
-        v11 = [(WCM_SacManager *)self mCacheWifiReportedFullList];
-        v12 = v8;
+        mCacheGnssReportedReducedList = [(WCM_SacManager *)self mCacheWifiReportedFullList];
+        v12 = sacResultCopy;
       }
 
-      [v12 addObjectsFromArray:v11];
+      [v12 addObjectsFromArray:mCacheGnssReportedReducedList];
 
-      v10 = [(WCM_SacManager *)self mCacheGnssReportedFullList];
+      mCacheWifiReportedFullList = [(WCM_SacManager *)self mCacheGnssReportedFullList];
       goto LABEL_11;
     }
 
-    v13 = [(WCM_SacManager *)self mCacheCellularReportedReducedList];
-    [v19 addObjectsFromArray:v13];
+    mCacheCellularReportedReducedList2 = [(WCM_SacManager *)self mCacheCellularReportedReducedList];
+    [resultCopy addObjectsFromArray:mCacheCellularReportedReducedList2];
 
-    v10 = [(WCM_SacManager *)self mCacheCellularReportedFullList];
+    mCacheWifiReportedFullList = [(WCM_SacManager *)self mCacheCellularReportedFullList];
     goto LABEL_11;
   }
 

@@ -1,26 +1,26 @@
 @interface CACBannerView
-- (CACBannerView)initWithFrame:(CGRect)a3;
+- (CACBannerView)initWithFrame:(CGRect)frame;
 - (NSString)text;
-- (id)hitTest:(CGPoint)a3 forEvent:(__GSEvent *)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)setAttributedText:(id)a3;
-- (void)setSymbolImage:(id)a3;
-- (void)setText:(id)a3;
+- (id)hitTest:(CGPoint)test forEvent:(__GSEvent *)event;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)setAttributedText:(id)text;
+- (void)setSymbolImage:(id)image;
+- (void)setText:(id)text;
 @end
 
 @implementation CACBannerView
 
-- (CACBannerView)initWithFrame:(CGRect)a3
+- (CACBannerView)initWithFrame:(CGRect)frame
 {
   v131[20] = *MEMORY[0x277D85DE8];
   v130.receiver = self;
   v130.super_class = CACBannerView;
-  v3 = [(CACBannerView *)&v130 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CACBannerView *)&v130 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75128] sharedApplication];
-    v5 = [v4 preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v5);
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     v7 = MEMORY[0x277D76918];
     if (IsAccessibilityCategory)
@@ -30,9 +30,9 @@
 
     else
     {
-      v9 = [MEMORY[0x277D75520] defaultMetrics];
+      defaultMetrics = [MEMORY[0x277D75520] defaultMetrics];
       v10 = [MEMORY[0x277D74300] systemFontOfSize:14.0 weight:*MEMORY[0x277D74410]];
-      v8 = [v9 scaledFontForFont:v10];
+      v8 = [defaultMetrics scaledFontForFont:v10];
     }
 
     if (initWithFrame__onceToken != -1)
@@ -40,18 +40,18 @@
       [CACBannerView initWithFrame:];
     }
 
-    v11 = [initWithFrame__sSizingLabel font];
-    v12 = [v11 isEqual:v8];
+    font = [initWithFrame__sSizingLabel font];
+    v12 = [font isEqual:v8];
 
     if ((v12 & 1) == 0)
     {
       [initWithFrame__sSizingLabel setFont:v8];
     }
 
-    v13 = [(CACBannerView *)v3 traitCollection];
-    v14 = [v13 userInterfaceIdiom];
+    traitCollection = [(CACBannerView *)v3 traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (v14 == 3)
+    if (userInterfaceIdiom == 3)
     {
       v15 = 10.0;
     }
@@ -63,28 +63,28 @@
 
     v16 = objc_opt_new();
     [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v17 = [MEMORY[0x277D75348] clearColor];
-    [v16 setBackgroundColor:v17];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [v16 setBackgroundColor:clearColor];
 
     if ((_UISolariumEnabled() & 1) == 0)
     {
-      v18 = [MEMORY[0x277D75348] blackColor];
-      v19 = [v18 CGColor];
-      v20 = [v16 layer];
-      [v20 setShadowColor:v19];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      cGColor = [blackColor CGColor];
+      layer = [v16 layer];
+      [layer setShadowColor:cGColor];
 
-      v21 = [v16 layer];
-      [v21 setShadowOffset:{0.0, 5.0}];
+      layer2 = [v16 layer];
+      [layer2 setShadowOffset:{0.0, 5.0}];
 
-      v22 = [v16 layer];
+      layer3 = [v16 layer];
       LODWORD(v23) = 1045220557;
-      [v22 setShadowOpacity:v23];
+      [layer3 setShadowOpacity:v23];
 
-      v24 = [v16 layer];
-      [v24 setShadowRadius:10.0];
+      layer4 = [v16 layer];
+      [layer4 setShadowRadius:10.0];
 
-      v25 = [v16 layer];
-      [v25 setMasksToBounds:0];
+      layer5 = [v16 layer];
+      [layer5 setMasksToBounds:0];
     }
 
     [(CACBannerView *)v3 addSubview:v16];
@@ -93,12 +93,12 @@
     {
       v26 = objc_opt_new();
       [v26 setTranslatesAutoresizingMaskIntoConstraints:0];
-      v27 = [v26 layer];
-      [v27 setCornerRadius:v15];
+      layer6 = [v26 layer];
+      [layer6 setCornerRadius:v15];
 
       v28 = *MEMORY[0x277CDA138];
-      v29 = [v26 layer];
-      [v29 setCornerCurve:v28];
+      layer7 = [v26 layer];
+      [layer7 setCornerCurve:v28];
 
       [v26 vc_setWantsGlassAppearance:1];
       v30 = objc_opt_new();
@@ -112,15 +112,15 @@
       v31 = [MEMORY[0x277D75210] effectWithStyle:1200];
       v26 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:v31];
       [v26 setTranslatesAutoresizingMaskIntoConstraints:0];
-      v32 = [v26 layer];
-      [v32 setCornerRadius:v15];
+      layer8 = [v26 layer];
+      [layer8 setCornerRadius:v15];
 
       v33 = *MEMORY[0x277CDA138];
-      v34 = [v26 layer];
-      [v34 setCornerCurve:v33];
+      layer9 = [v26 layer];
+      [layer9 setCornerCurve:v33];
 
-      v35 = [v26 layer];
-      [v35 setMasksToBounds:1];
+      layer10 = [v26 layer];
+      [layer10 setMasksToBounds:1];
 
       [v16 addSubview:v26];
       v36 = objc_alloc(MEMORY[0x277D75D68]);
@@ -128,8 +128,8 @@
       v30 = [v36 initWithEffect:v37];
 
       [v30 setTranslatesAutoresizingMaskIntoConstraints:0];
-      v38 = [v26 contentView];
-      [v38 addSubview:v30];
+      contentView = [v26 contentView];
+      [contentView addSubview:v30];
     }
 
     v39 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -144,14 +144,14 @@
 
     else
     {
-      v40 = [v30 contentView];
-      [v40 addSubview:v39];
+      contentView2 = [v30 contentView];
+      [contentView2 addSubview:v39];
     }
 
     [(CACBannerView *)v3 setTextLabel:v39];
     v41 = [MEMORY[0x277D755D0] configurationWithTextStyle:*v7 scale:2];
-    v42 = [MEMORY[0x277D75520] defaultMetrics];
-    [v42 scaledValueForValue:16.0];
+    defaultMetrics2 = [MEMORY[0x277D75520] defaultMetrics];
+    [defaultMetrics2 scaledValueForValue:16.0];
     v44 = v43;
 
     v45 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:0];
@@ -168,113 +168,113 @@
 
     else
     {
-      v46 = [v30 contentView];
-      [v46 addSubview:v45];
+      contentView3 = [v30 contentView];
+      [contentView3 addSubview:v45];
     }
 
     [(CACBannerView *)v3 setAccessoryImageView:v45];
-    v47 = [v39 leadingAnchor];
+    leadingAnchor = [v39 leadingAnchor];
     [(CACBannerView *)v3 accessoryImageView];
     v49 = v48 = v39;
-    v50 = [v49 trailingAnchor];
-    [v47 constraintEqualToSystemSpacingAfterAnchor:v50 multiplier:1.0];
+    trailingAnchor = [v49 trailingAnchor];
+    [leadingAnchor constraintEqualToSystemSpacingAfterAnchor:trailingAnchor multiplier:1.0];
     v51 = v127 = v45;
     [(CACBannerView *)v3 setImageToTextConstraint:v51];
 
-    v52 = [(CACBannerView *)v3 imageToTextConstraint];
+    imageToTextConstraint = [(CACBannerView *)v3 imageToTextConstraint];
     LODWORD(v53) = 1144750080;
-    [v52 setPriority:v53];
+    [imageToTextConstraint setPriority:v53];
 
-    v54 = [v48 leadingAnchor];
-    v55 = [v30 leadingAnchor];
-    v56 = [v54 constraintEqualToAnchor:v55 constant:12.0];
+    leadingAnchor2 = [v48 leadingAnchor];
+    leadingAnchor3 = [v30 leadingAnchor];
+    v56 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3 constant:12.0];
     [(CACBannerView *)v3 setContainerToTextConstraint:v56];
 
-    v57 = [(CACBannerView *)v3 containerToTextConstraint];
+    containerToTextConstraint = [(CACBannerView *)v3 containerToTextConstraint];
     LODWORD(v58) = 1132068864;
-    [v57 setPriority:v58];
+    [containerToTextConstraint setPriority:v58];
 
     v101 = MEMORY[0x277CCAAD0];
-    v126 = [v16 topAnchor];
-    v125 = [(CACBannerView *)v3 topAnchor];
-    v124 = [v126 constraintEqualToAnchor:v125];
+    topAnchor = [v16 topAnchor];
+    topAnchor2 = [(CACBannerView *)v3 topAnchor];
+    v124 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v131[0] = v124;
-    v123 = [v16 bottomAnchor];
-    v122 = [(CACBannerView *)v3 bottomAnchor];
-    v121 = [v123 constraintEqualToAnchor:v122];
+    bottomAnchor = [v16 bottomAnchor];
+    bottomAnchor2 = [(CACBannerView *)v3 bottomAnchor];
+    v121 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v131[1] = v121;
-    v120 = [v16 centerXAnchor];
-    v119 = [(CACBannerView *)v3 centerXAnchor];
-    v118 = [v120 constraintEqualToAnchor:v119];
+    centerXAnchor = [v16 centerXAnchor];
+    centerXAnchor2 = [(CACBannerView *)v3 centerXAnchor];
+    v118 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v131[2] = v118;
-    v117 = [v16 widthAnchor];
-    v116 = [v117 constraintGreaterThanOrEqualToConstant:24.0];
+    widthAnchor = [v16 widthAnchor];
+    v116 = [widthAnchor constraintGreaterThanOrEqualToConstant:24.0];
     v131[3] = v116;
-    v115 = [v16 widthAnchor];
-    v114 = [v26 widthAnchor];
-    v113 = [v115 constraintEqualToAnchor:v114];
+    widthAnchor2 = [v16 widthAnchor];
+    widthAnchor3 = [v26 widthAnchor];
+    v113 = [widthAnchor2 constraintEqualToAnchor:widthAnchor3];
     v131[4] = v113;
-    v112 = [v16 heightAnchor];
-    v111 = [v26 heightAnchor];
-    v110 = [v112 constraintEqualToAnchor:v111];
+    heightAnchor = [v16 heightAnchor];
+    heightAnchor2 = [v26 heightAnchor];
+    v110 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     v131[5] = v110;
-    v109 = [v26 widthAnchor];
-    v108 = [(CACBannerView *)v3 widthAnchor];
-    v107 = [v109 constraintLessThanOrEqualToAnchor:v108];
+    widthAnchor4 = [v26 widthAnchor];
+    widthAnchor5 = [(CACBannerView *)v3 widthAnchor];
+    v107 = [widthAnchor4 constraintLessThanOrEqualToAnchor:widthAnchor5];
     v131[6] = v107;
-    v106 = [v26 topAnchor];
-    v105 = [v16 topAnchor];
-    v104 = [v106 constraintEqualToAnchor:v105];
+    topAnchor3 = [v26 topAnchor];
+    topAnchor4 = [v16 topAnchor];
+    v104 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v131[7] = v104;
-    v103 = [v26 leadingAnchor];
-    v102 = [v16 leadingAnchor];
-    v100 = [v103 constraintEqualToAnchor:v102];
+    leadingAnchor4 = [v26 leadingAnchor];
+    leadingAnchor5 = [v16 leadingAnchor];
+    v100 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
     v131[8] = v100;
-    v99 = [v26 trailingAnchor];
-    v98 = [v48 trailingAnchor];
-    v97 = [v99 constraintEqualToAnchor:v98 constant:12.0];
+    trailingAnchor2 = [v26 trailingAnchor];
+    trailingAnchor3 = [v48 trailingAnchor];
+    v97 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:12.0];
     v131[9] = v97;
-    v96 = [v30 topAnchor];
-    v95 = [v26 topAnchor];
-    v92 = [v96 constraintEqualToAnchor:v95];
+    topAnchor5 = [v30 topAnchor];
+    topAnchor6 = [v26 topAnchor];
+    v92 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
     v131[10] = v92;
-    v90 = [v30 leadingAnchor];
-    v88 = [v26 leadingAnchor];
-    v87 = [v90 constraintEqualToAnchor:v88];
+    leadingAnchor6 = [v30 leadingAnchor];
+    leadingAnchor7 = [v26 leadingAnchor];
+    v87 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
     v131[11] = v87;
-    v86 = [v30 bottomAnchor];
-    v85 = [v26 bottomAnchor];
-    v84 = [v86 constraintEqualToAnchor:v85];
+    bottomAnchor3 = [v30 bottomAnchor];
+    bottomAnchor4 = [v26 bottomAnchor];
+    v84 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v131[12] = v84;
-    v83 = [v30 trailingAnchor];
-    v82 = [v26 trailingAnchor];
-    v81 = [v83 constraintEqualToAnchor:v82];
+    trailingAnchor4 = [v30 trailingAnchor];
+    trailingAnchor5 = [v26 trailingAnchor];
+    v81 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
     v131[13] = v81;
-    v80 = [(CACBannerView *)v3 accessoryImageView];
-    v79 = [v80 centerYAnchor];
-    v78 = [v48 centerYAnchor];
-    v77 = [v79 constraintEqualToAnchor:v78];
+    accessoryImageView = [(CACBannerView *)v3 accessoryImageView];
+    centerYAnchor = [accessoryImageView centerYAnchor];
+    centerYAnchor2 = [v48 centerYAnchor];
+    v77 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v131[14] = v77;
-    v76 = [(CACBannerView *)v3 accessoryImageView];
-    v75 = [v76 leadingAnchor];
-    v74 = [v30 leadingAnchor];
-    v73 = [v75 constraintEqualToAnchor:v74 constant:12.0];
+    accessoryImageView2 = [(CACBannerView *)v3 accessoryImageView];
+    leadingAnchor8 = [accessoryImageView2 leadingAnchor];
+    leadingAnchor9 = [v30 leadingAnchor];
+    v73 = [leadingAnchor8 constraintEqualToAnchor:leadingAnchor9 constant:12.0];
     v131[15] = v73;
-    v72 = [(CACBannerView *)v3 accessoryImageView];
-    v71 = [v72 widthAnchor];
-    [v71 constraintEqualToConstant:v44];
+    accessoryImageView3 = [(CACBannerView *)v3 accessoryImageView];
+    widthAnchor6 = [accessoryImageView3 widthAnchor];
+    [widthAnchor6 constraintEqualToConstant:v44];
     v60 = v59 = v30;
     v131[16] = v60;
     v91 = v48;
-    v61 = [v48 topAnchor];
+    topAnchor7 = [v48 topAnchor];
     v94 = v59;
-    v62 = [v59 topAnchor];
-    v63 = [v61 constraintEqualToAnchor:v62 constant:12.0];
+    topAnchor8 = [v59 topAnchor];
+    v63 = [topAnchor7 constraintEqualToAnchor:topAnchor8 constant:12.0];
     v131[17] = v63;
-    v64 = [v59 bottomAnchor];
+    bottomAnchor5 = [v59 bottomAnchor];
     [v48 bottomAnchor];
     v65 = v93 = v16;
-    v66 = [v64 constraintEqualToAnchor:v65 constant:12.0];
+    v66 = [bottomAnchor5 constraintEqualToAnchor:v65 constant:12.0];
     v131[18] = v66;
     [(CACBannerView *)v3 containerToTextConstraint];
     v89 = v26;
@@ -300,56 +300,56 @@ uint64_t __31__CACBannerView_initWithFrame___block_invoke()
   return [v2 setText:@"a"];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(CACBannerView *)self baseView];
-  v9 = [v8 hitTest:v7 withEvent:{x, y}];
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  baseView = [(CACBannerView *)self baseView];
+  v9 = [baseView hitTest:eventCopy withEvent:{x, y}];
 
   return v9;
 }
 
-- (id)hitTest:(CGPoint)a3 forEvent:(__GSEvent *)a4
+- (id)hitTest:(CGPoint)test forEvent:(__GSEvent *)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = [(CACBannerView *)self baseView];
-  v8 = [v7 hitTest:a4 forEvent:{x, y}];
+  y = test.y;
+  x = test.x;
+  baseView = [(CACBannerView *)self baseView];
+  v8 = [baseView hitTest:event forEvent:{x, y}];
 
   return v8;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
-  v5 = [(CACBannerView *)self textLabel];
-  [v5 setText:v4];
+  textCopy = text;
+  textLabel = [(CACBannerView *)self textLabel];
+  [textLabel setText:textCopy];
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
-  v4 = a3;
-  v5 = [(CACBannerView *)self textLabel];
-  [v5 setAttributedText:v4];
+  textCopy = text;
+  textLabel = [(CACBannerView *)self textLabel];
+  [textLabel setAttributedText:textCopy];
 }
 
-- (void)setSymbolImage:(id)a3
+- (void)setSymbolImage:(id)image
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_symbolImage != v5)
+  imageCopy = image;
+  if (self->_symbolImage != imageCopy)
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    objc_storeStrong(&self->_symbolImage, a3);
-    v7 = [(CACBannerView *)v6 symbolImage];
-    if (v7)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_storeStrong(&self->_symbolImage, image);
+    symbolImage = [(CACBannerView *)selfCopy symbolImage];
+    if (symbolImage)
     {
       v8 = MEMORY[0x277D755B8];
-      v9 = [(CACBannerView *)v6 symbolImage];
-      v10 = [v8 _systemImageNamed:v9];
+      symbolImage2 = [(CACBannerView *)selfCopy symbolImage];
+      v10 = [v8 _systemImageNamed:symbolImage2];
     }
 
     else
@@ -357,51 +357,51 @@ uint64_t __31__CACBannerView_initWithFrame___block_invoke()
       v10 = 0;
     }
 
-    v11 = [(CACBannerView *)v6 accessoryImageView];
-    [v11 setImage:v10];
+    accessoryImageView = [(CACBannerView *)selfCopy accessoryImageView];
+    [accessoryImageView setImage:v10];
 
-    v12 = [(CACBannerView *)v6 accessoryImageView];
-    v13 = [v12 image];
+    accessoryImageView2 = [(CACBannerView *)selfCopy accessoryImageView];
+    image = [accessoryImageView2 image];
 
     v14 = MEMORY[0x277CCAAD0];
-    if (v13)
+    if (image)
     {
-      v15 = [(CACBannerView *)v6 containerToTextConstraint];
-      v24 = v15;
+      containerToTextConstraint = [(CACBannerView *)selfCopy containerToTextConstraint];
+      v24 = containerToTextConstraint;
       v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&v24 count:1];
       [v14 deactivateConstraints:v16];
 
       v17 = MEMORY[0x277CCAAD0];
-      v18 = [(CACBannerView *)v6 imageToTextConstraint];
-      v23 = v18;
+      imageToTextConstraint = [(CACBannerView *)selfCopy imageToTextConstraint];
+      v23 = imageToTextConstraint;
       v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v23 count:1];
       [v17 activateConstraints:v19];
     }
 
     else
     {
-      v20 = [(CACBannerView *)v6 imageToTextConstraint];
-      v26[0] = v20;
+      imageToTextConstraint2 = [(CACBannerView *)selfCopy imageToTextConstraint];
+      v26[0] = imageToTextConstraint2;
       v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:1];
       [v14 deactivateConstraints:v21];
 
       v22 = MEMORY[0x277CCAAD0];
-      v18 = [(CACBannerView *)v6 containerToTextConstraint];
-      v25 = v18;
+      imageToTextConstraint = [(CACBannerView *)selfCopy containerToTextConstraint];
+      v25 = imageToTextConstraint;
       v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v25 count:1];
       [v22 activateConstraints:v19];
     }
 
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
   }
 }
 
 - (NSString)text
 {
-  v2 = [(CACBannerView *)self textLabel];
-  v3 = [v2 text];
+  textLabel = [(CACBannerView *)self textLabel];
+  text = [textLabel text];
 
-  return v3;
+  return text;
 }
 
 @end

@@ -1,30 +1,30 @@
 @interface FAPushDetailResponse
-- (BOOL)_BOOLeanValueOfObject:(id)a3;
+- (BOOL)_BOOLeanValueOfObject:(id)object;
 - (BOOL)isSuccess;
 - (BOOL)showDetailsOption;
 - (BOOL)showMessage;
-- (FAPushDetailResponse)initWithDictionary:(id)a3;
-- (FAPushDetailResponse)initWithHTTPResponse:(id)a3 data:(id)a4;
+- (FAPushDetailResponse)initWithDictionary:(id)dictionary;
+- (FAPushDetailResponse)initWithHTTPResponse:(id)response data:(id)data;
 - (NSURL)launchURLFromServer;
 - (id)description;
 @end
 
 @implementation FAPushDetailResponse
 
-- (FAPushDetailResponse)initWithHTTPResponse:(id)a3 data:(id)a4
+- (FAPushDetailResponse)initWithHTTPResponse:(id)response data:(id)data
 {
-  v7 = a4;
+  dataCopy = data;
   v16.receiver = self;
   v16.super_class = FAPushDetailResponse;
-  v8 = [(FAPushDetailResponse *)&v16 initWithHTTPResponse:a3 data:v7 bodyIsPlist:0];
+  v8 = [(FAPushDetailResponse *)&v16 initWithHTTPResponse:response data:dataCopy bodyIsPlist:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_data, a4);
-    if (v7)
+    objc_storeStrong(&v8->_data, data);
+    if (dataCopy)
     {
       v15 = 0;
-      v10 = [NSJSONSerialization JSONObjectWithData:v7 options:0 error:&v15];
+      v10 = [NSJSONSerialization JSONObjectWithData:dataCopy options:0 error:&v15];
       v11 = v15;
       p_super = &v9->_response->super;
       v9->_response = v10;
@@ -72,20 +72,20 @@
 
 - (BOOL)showMessage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = [(NSDictionary *)self->_response objectForKeyedSubscript:@"show-message"];
-  LOBYTE(v2) = [(FAPushDetailResponse *)v2 _BOOLeanValueOfObject:v3];
+  LOBYTE(selfCopy) = [(FAPushDetailResponse *)selfCopy _BOOLeanValueOfObject:v3];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)showDetailsOption
 {
-  v2 = self;
+  selfCopy = self;
   v3 = [(NSDictionary *)self->_response objectForKeyedSubscript:@"show-details-option"];
-  LOBYTE(v2) = [(FAPushDetailResponse *)v2 _BOOLeanValueOfObject:v3];
+  LOBYTE(selfCopy) = [(FAPushDetailResponse *)selfCopy _BOOLeanValueOfObject:v3];
 
-  return v2;
+  return selfCopy;
 }
 
 - (NSURL)launchURLFromServer
@@ -94,8 +94,8 @@
   if (v2)
   {
     v3 = [NSURLComponents componentsWithString:v2];
-    v4 = [v3 scheme];
-    v5 = [&off_1000AB270 containsObject:v4];
+    scheme = [v3 scheme];
+    v5 = [&off_1000AB270 containsObject:scheme];
 
     if (v5)
     {
@@ -124,33 +124,33 @@
   return v4;
 }
 
-- (BOOL)_BOOLeanValueOfObject:(id)a3
+- (BOOL)_BOOLeanValueOfObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [objectCopy BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (FAPushDetailResponse)initWithDictionary:(id)a3
+- (FAPushDetailResponse)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = FAPushDetailResponse;
   v6 = [(FAPushDetailResponse *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_response, a3);
+    objc_storeStrong(&v6->_response, dictionary);
   }
 
   return v7;

@@ -1,13 +1,13 @@
 @interface _SVXRemoteExpressionParsingServiceProvider
-- (id)getWithAceHandler:(id)a3;
+- (id)getWithAceHandler:(id)handler;
 @end
 
 @implementation _SVXRemoteExpressionParsingServiceProvider
 
-- (id)getWithAceHandler:(id)a3
+- (id)getWithAceHandler:(id)handler
 {
-  v3 = a3;
-  v4 = [[_SVXRemoteExpressionParsingService alloc] initWithAceHandler:v3];
+  handlerCopy = handler;
+  v4 = [[_SVXRemoteExpressionParsingService alloc] initWithAceHandler:handlerCopy];
 
   return v4;
 }

@@ -1,24 +1,24 @@
 @interface _CUIThemeGradientRendition
-+ (NSArray)_nodesFromNodeList:(uint64_t)a1 count:(_DWORD *)a2 header:(uint64_t)a3;
-+ (void)_parseGradientInfoFromCSIHeader:(uint64_t)a3;
-- (id)_initWithCSIHeader:(const _csiheader *)a3 version:(unsigned int)a4;
++ (NSArray)_nodesFromNodeList:(uint64_t)list count:(_DWORD *)count header:(uint64_t)header;
++ (void)_parseGradientInfoFromCSIHeader:(uint64_t)header;
+- (id)_initWithCSIHeader:(const _csiheader *)header version:(unsigned int)version;
 - (void)dealloc;
 @end
 
 @implementation _CUIThemeGradientRendition
 
-+ (NSArray)_nodesFromNodeList:(uint64_t)a1 count:(_DWORD *)a2 header:(uint64_t)a3
++ (NSArray)_nodesFromNodeList:(uint64_t)list count:(_DWORD *)count header:(uint64_t)header
 {
   v5 = objc_opt_self();
-  if (a3)
+  if (header)
   {
     v6 = v5;
-    v7 = [[NSMutableArray alloc] initWithCapacity:a3];
-    for (i = (a2 + 8); ; i += 9)
+    v7 = [[NSMutableArray alloc] initWithCapacity:header];
+    for (i = (count + 8); ; i += 9)
     {
-      v9 = *a2;
+      v9 = *count;
       v10 = *(i - 8);
-      if (*a2 != v10)
+      if (*count != v10)
       {
         if (v9 == 1129270354 && v10 == 1129270340)
         {
@@ -99,7 +99,7 @@ LABEL_28:
 LABEL_29:
       [v7 addObject:v15];
 
-      if (!--a3)
+      if (!--header)
       {
 
         return v7;
@@ -110,19 +110,19 @@ LABEL_29:
   return +[NSArray array];
 }
 
-+ (void)_parseGradientInfoFromCSIHeader:(uint64_t)a3
++ (void)_parseGradientInfoFromCSIHeader:(uint64_t)header
 {
   objc_opt_self();
   a2[1] = 0.0;
   a2[2] = 0.0;
   *a2 = 0.0;
-  v35 = a1;
-  v11 = *(a1 + 172);
+  selfCopy = self;
+  v11 = *(self + 172);
   if (v11)
   {
     v12 = 0;
-    v33 = a1 + 176 + 4 * v11 + *(a1 + 168) + 4;
-    v34 = a1 + 176;
+    v33 = self + 176 + 4 * v11 + *(self + 168) + 4;
+    v34 = self + 176;
     v13 = 1;
     while ((v13 & 1) != 0)
     {
@@ -163,7 +163,7 @@ LABEL_29:
         [(CUIPSDGradientEvaluator *)v32 setBlendMode:*(v14 + 20)];
         v13 = 0;
         v12 = 1;
-        if (*(v35 + 172) > 1u)
+        if (*(selfCopy + 172) > 1u)
         {
           continue;
         }
@@ -172,23 +172,23 @@ LABEL_29:
       return;
     }
 
-    _CUILog(4, "Warning: Ignoring extra gradient data found in CSI", v5, v6, v7, v8, v9, v10, a3);
+    _CUILog(4, "Warning: Ignoring extra gradient data found in CSI", v5, v6, v7, v8, v9, v10, header);
   }
 }
 
-- (id)_initWithCSIHeader:(const _csiheader *)a3 version:(unsigned int)a4
+- (id)_initWithCSIHeader:(const _csiheader *)header version:(unsigned int)version
 {
   v15.receiver = self;
   v15.super_class = _CUIThemeGradientRendition;
-  v5 = [(CUIThemeRendition *)&v15 _initWithCSIHeader:a3 version:*&a4];
+  v5 = [(CUIThemeRendition *)&v15 _initWithCSIHeader:header version:*&version];
   v12 = 0;
   v13 = 0;
   v14 = 0;
-  [(_CUIThemeGradientRendition *)a3 _parseGradientInfoFromCSIHeader:v11];
+  [(_CUIThemeGradientRendition *)header _parseGradientInfoFromCSIHeader:v11];
   v6 = v14;
   if (v14)
   {
-    if ((*(a3 + 7) & 0xF) == 1)
+    if ((*(header + 7) & 0xF) == 1)
     {
       SRGB = _CUIColorSpaceGetSRGB();
     }

@@ -1,45 +1,45 @@
 @interface HUMediaServiceSettingsItemModule
-- (HUMediaServiceSettingsItemModule)initWithItemUpdater:(id)a3 home:(id)a4;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
+- (HUMediaServiceSettingsItemModule)initWithItemUpdater:(id)updater home:(id)home;
+- (id)buildSectionsWithDisplayedItems:(id)items;
 - (void)_createItemProviders;
-- (void)mediaServiceItemProviderDidUpdateServices:(id)a3;
+- (void)mediaServiceItemProviderDidUpdateServices:(id)services;
 - (void)registerForExternalUpdates;
 - (void)unregisterForExternalUpdates;
 @end
 
 @implementation HUMediaServiceSettingsItemModule
 
-- (HUMediaServiceSettingsItemModule)initWithItemUpdater:(id)a3 home:(id)a4
+- (HUMediaServiceSettingsItemModule)initWithItemUpdater:(id)updater home:(id)home
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  updaterCopy = updater;
+  homeCopy = home;
+  if (!homeCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"HUMediaServiceSettingsItemModule.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"home"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUMediaServiceSettingsItemModule.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"home"}];
   }
 
   v13.receiver = self;
   v13.super_class = HUMediaServiceSettingsItemModule;
-  v9 = [(HFItemModule *)&v13 initWithItemUpdater:v7];
+  v9 = [(HFItemModule *)&v13 initWithItemUpdater:updaterCopy];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_home, a4);
+    objc_storeStrong(&v9->_home, home);
     [(HUMediaServiceSettingsItemModule *)v10 _createItemProviders];
   }
 
   return v10;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_opt_new();
-  v6 = [(HUMediaServiceSettingsItemModule *)self mediaServiceItemProvider];
-  v7 = [v6 items];
-  v8 = [v7 count];
+  mediaServiceItemProvider = [(HUMediaServiceSettingsItemModule *)self mediaServiceItemProvider];
+  items = [mediaServiceItemProvider items];
+  v8 = [items count];
 
   if (v8)
   {
@@ -50,39 +50,39 @@
     v11 = _HULocalizedStringWithDefaultValue(@"HUMediaServiceSettingsFooterTitle", @"HUMediaServiceSettingsFooterTitle", 1);
     [v9 setFooterTitle:v11];
 
-    v12 = [(HFItemModule *)self allItems];
+    allItems = [(HFItemModule *)self allItems];
     v13 = MEMORY[0x277CBEB98];
-    v14 = [(HUMediaServiceSettingsItemModule *)self defaultAccountsItem];
-    v24[0] = v14;
+    defaultAccountsItem = [(HUMediaServiceSettingsItemModule *)self defaultAccountsItem];
+    v24[0] = defaultAccountsItem;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
     v16 = [v13 setWithArray:v15];
-    v17 = [v12 na_setByRemovingObjectsFromSet:v16];
-    v18 = [v17 allObjects];
-    [v9 setItems:v18];
+    v17 = [allItems na_setByRemovingObjectsFromSet:v16];
+    allObjects = [v17 allObjects];
+    [v9 setItems:allObjects];
 
-    v19 = [v9 items];
+    items2 = [v9 items];
     v20 = +[HUMediaServiceItemProvider itemComparator];
-    v21 = [v19 sortedArrayUsingComparator:v20];
+    v21 = [items2 sortedArrayUsingComparator:v20];
     [v9 setItems:v21];
 
     [v5 addObject:v9];
   }
 
-  v22 = [MEMORY[0x277D14778] filterSections:v5 toDisplayedItems:v4];
+  v22 = [MEMORY[0x277D14778] filterSections:v5 toDisplayedItems:itemsCopy];
 
   return v22;
 }
 
 - (void)registerForExternalUpdates
 {
-  v2 = [(HUMediaServiceSettingsItemModule *)self mediaServiceItemProvider];
-  [v2 registerForExternalUpdates];
+  mediaServiceItemProvider = [(HUMediaServiceSettingsItemModule *)self mediaServiceItemProvider];
+  [mediaServiceItemProvider registerForExternalUpdates];
 }
 
 - (void)unregisterForExternalUpdates
 {
-  v2 = [(HUMediaServiceSettingsItemModule *)self mediaServiceItemProvider];
-  [v2 unregisterForExternalUpdates];
+  mediaServiceItemProvider = [(HUMediaServiceSettingsItemModule *)self mediaServiceItemProvider];
+  [mediaServiceItemProvider unregisterForExternalUpdates];
 }
 
 - (void)_createItemProviders
@@ -95,12 +95,12 @@
   else
   {
     v3 = [HUMediaServiceItemProvider alloc];
-    v4 = [(HUMediaServiceSettingsItemModule *)self home];
-    v5 = [(HUMediaServiceItemProvider *)v3 initWithHome:v4 delegate:self];
+    home = [(HUMediaServiceSettingsItemModule *)self home];
+    v5 = [(HUMediaServiceItemProvider *)v3 initWithHome:home delegate:self];
     mediaServiceItemProvider = self->_mediaServiceItemProvider;
     self->_mediaServiceItemProvider = v5;
 
-    v7 = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
     objc_initWeak(&location, self);
     v8 = objc_alloc(MEMORY[0x277D14B38]);
     v19 = MEMORY[0x277D85DD0];
@@ -112,16 +112,16 @@
     defaultAccountsItem = self->_defaultAccountsItem;
     self->_defaultAccountsItem = v9;
 
-    v11 = [(HUMediaServiceSettingsItemModule *)self defaultAccountsItem];
-    [v7 addObject:v11];
+    defaultAccountsItem = [(HUMediaServiceSettingsItemModule *)self defaultAccountsItem];
+    [orderedSet addObject:defaultAccountsItem];
 
     v12 = objc_alloc(MEMORY[0x277D14B40]);
-    v13 = [v7 set];
+    v13 = [orderedSet set];
     v14 = [v12 initWithItems:v13];
 
     v15 = MEMORY[0x277CBEB98];
-    v16 = [(HUMediaServiceSettingsItemModule *)self mediaServiceItemProvider];
-    v17 = [v15 setWithObjects:{v16, v14, 0, v19, v20, v21, v22}];
+    mediaServiceItemProvider = [(HUMediaServiceSettingsItemModule *)self mediaServiceItemProvider];
+    v17 = [v15 setWithObjects:{mediaServiceItemProvider, v14, 0, v19, v20, v21, v22}];
     itemProviders = self->_itemProviders;
     self->_itemProviders = v17;
 
@@ -159,13 +159,13 @@ id __56__HUMediaServiceSettingsItemModule__createItemProviders__block_invoke(uin
   return v11;
 }
 
-- (void)mediaServiceItemProviderDidUpdateServices:(id)a3
+- (void)mediaServiceItemProviderDidUpdateServices:(id)services
 {
-  v9 = [(HFItemModule *)self itemUpdater];
+  itemUpdater = [(HFItemModule *)self itemUpdater];
   v5 = MEMORY[0x277D14788];
-  v6 = [(HUMediaServiceSettingsItemModule *)self itemProviders];
-  v7 = [v5 requestToReloadItemProviders:v6 senderSelector:a2];
-  v8 = [v9 performItemUpdateRequest:v7];
+  itemProviders = [(HUMediaServiceSettingsItemModule *)self itemProviders];
+  v7 = [v5 requestToReloadItemProviders:itemProviders senderSelector:a2];
+  v8 = [itemUpdater performItemUpdateRequest:v7];
 }
 
 @end

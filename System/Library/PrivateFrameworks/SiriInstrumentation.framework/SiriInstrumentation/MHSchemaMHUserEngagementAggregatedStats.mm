@@ -1,58 +1,58 @@
 @interface MHSchemaMHUserEngagementAggregatedStats
-- (BOOL)isEqual:(id)a3;
-- (MHSchemaMHUserEngagementAggregatedStats)initWithDictionary:(id)a3;
-- (MHSchemaMHUserEngagementAggregatedStats)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MHSchemaMHUserEngagementAggregatedStats)initWithDictionary:(id)dictionary;
+- (MHSchemaMHUserEngagementAggregatedStats)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIntendedRequestCount:(BOOL)a3;
-- (void)setHasIntendedRequestRatio:(BOOL)a3;
-- (void)setHasRequestCount:(BOOL)a3;
-- (void)setHasTriggeredMechanismRequestRatio:(BOOL)a3;
-- (void)setHasUnintendedRequestCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIntendedRequestCount:(BOOL)count;
+- (void)setHasIntendedRequestRatio:(BOOL)ratio;
+- (void)setHasRequestCount:(BOOL)count;
+- (void)setHasTriggeredMechanismRequestRatio:(BOOL)ratio;
+- (void)setHasUnintendedRequestCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MHSchemaMHUserEngagementAggregatedStats
 
-- (MHSchemaMHUserEngagementAggregatedStats)initWithDictionary:(id)a3
+- (MHSchemaMHUserEngagementAggregatedStats)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = MHSchemaMHUserEngagementAggregatedStats;
   v5 = [(MHSchemaMHUserEngagementAggregatedStats *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"mitigationType"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"mitigationType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHUserEngagementAggregatedStats setMitigationType:](v5, "setMitigationType:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"requestCount"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"requestCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHUserEngagementAggregatedStats setRequestCount:](v5, "setRequestCount:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"intendedRequestCount"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"intendedRequestCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHUserEngagementAggregatedStats setIntendedRequestCount:](v5, "setIntendedRequestCount:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"unintendedRequestCount"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"unintendedRequestCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHUserEngagementAggregatedStats setUnintendedRequestCount:](v5, "setUnintendedRequestCount:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"intendedRequestRatio"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"intendedRequestRatio"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -60,7 +60,7 @@
       [(MHSchemaMHUserEngagementAggregatedStats *)v5 setIntendedRequestRatio:?];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"triggeredMechanismRequestRatio"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"triggeredMechanismRequestRatio"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -68,7 +68,7 @@
       [(MHSchemaMHUserEngagementAggregatedStats *)v5 setTriggeredMechanismRequestRatio:?];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"modelVersion"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"modelVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -82,30 +82,30 @@
   return v5;
 }
 
-- (MHSchemaMHUserEngagementAggregatedStats)initWithJSON:(id)a3
+- (MHSchemaMHUserEngagementAggregatedStats)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MHSchemaMHUserEngagementAggregatedStats *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MHSchemaMHUserEngagementAggregatedStats *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MHSchemaMHUserEngagementAggregatedStats *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -118,12 +118,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[MHSchemaMHUserEngagementAggregatedStats intendedRequestCount](self, "intendedRequestCount")}];
-    [v3 setObject:v5 forKeyedSubscript:@"intendedRequestCount"];
+    [dictionary setObject:v5 forKeyedSubscript:@"intendedRequestCount"];
 
     has = self->_has;
     if ((has & 0x10) == 0)
@@ -146,7 +146,7 @@ LABEL_3:
   v6 = MEMORY[0x1E696AD98];
   [(MHSchemaMHUserEngagementAggregatedStats *)self intendedRequestRatio];
   v7 = [v6 numberWithDouble:?];
-  [v3 setObject:v7 forKeyedSubscript:@"intendedRequestRatio"];
+  [dictionary setObject:v7 forKeyedSubscript:@"intendedRequestRatio"];
 
   if ((*&self->_has & 1) == 0)
   {
@@ -165,20 +165,20 @@ LABEL_7:
     v9 = off_1E78D97F0[v8];
   }
 
-  [v3 setObject:v9 forKeyedSubscript:@"mitigationType"];
+  [dictionary setObject:v9 forKeyedSubscript:@"mitigationType"];
 LABEL_11:
   if (self->_modelVersion)
   {
-    v10 = [(MHSchemaMHUserEngagementAggregatedStats *)self modelVersion];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"modelVersion"];
+    modelVersion = [(MHSchemaMHUserEngagementAggregatedStats *)self modelVersion];
+    v11 = [modelVersion copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"modelVersion"];
   }
 
   v12 = self->_has;
   if ((v12 & 2) != 0)
   {
     v15 = [MEMORY[0x1E696AD98] numberWithInt:{-[MHSchemaMHUserEngagementAggregatedStats requestCount](self, "requestCount")}];
-    [v3 setObject:v15 forKeyedSubscript:@"requestCount"];
+    [dictionary setObject:v15 forKeyedSubscript:@"requestCount"];
 
     v12 = self->_has;
     if ((v12 & 0x20) == 0)
@@ -201,19 +201,19 @@ LABEL_15:
   v16 = MEMORY[0x1E696AD98];
   [(MHSchemaMHUserEngagementAggregatedStats *)self triggeredMechanismRequestRatio];
   v17 = [v16 numberWithDouble:?];
-  [v3 setObject:v17 forKeyedSubscript:@"triggeredMechanismRequestRatio"];
+  [dictionary setObject:v17 forKeyedSubscript:@"triggeredMechanismRequestRatio"];
 
   if ((*&self->_has & 8) != 0)
   {
 LABEL_16:
     v13 = [MEMORY[0x1E696AD98] numberWithInt:{-[MHSchemaMHUserEngagementAggregatedStats unintendedRequestCount](self, "unintendedRequestCount")}];
-    [v3 setObject:v13 forKeyedSubscript:@"unintendedRequestCount"];
+    [dictionary setObject:v13 forKeyedSubscript:@"unintendedRequestCount"];
   }
 
 LABEL_17:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -343,16 +343,16 @@ LABEL_15:
   return v9 ^ v8 ^ v10 ^ v11 ^ v15 ^ v16 ^ [(NSString *)self->_modelVersion hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_30;
   }
 
   has = self->_has;
-  v6 = v4[48];
+  v6 = equalCopy[48];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_30;
@@ -361,13 +361,13 @@ LABEL_15:
   if (*&has)
   {
     mitigationType = self->_mitigationType;
-    if (mitigationType != [v4 mitigationType])
+    if (mitigationType != [equalCopy mitigationType])
     {
       goto LABEL_30;
     }
 
     has = self->_has;
-    v6 = v4[48];
+    v6 = equalCopy[48];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -376,13 +376,13 @@ LABEL_15:
     if (v8)
     {
       requestCount = self->_requestCount;
-      if (requestCount != [v4 requestCount])
+      if (requestCount != [equalCopy requestCount])
       {
         goto LABEL_30;
       }
 
       has = self->_has;
-      v6 = v4[48];
+      v6 = equalCopy[48];
     }
 
     v10 = (*&has >> 2) & 1;
@@ -391,13 +391,13 @@ LABEL_15:
       if (v10)
       {
         intendedRequestCount = self->_intendedRequestCount;
-        if (intendedRequestCount != [v4 intendedRequestCount])
+        if (intendedRequestCount != [equalCopy intendedRequestCount])
         {
           goto LABEL_30;
         }
 
         has = self->_has;
-        v6 = v4[48];
+        v6 = equalCopy[48];
       }
 
       v12 = (*&has >> 3) & 1;
@@ -406,13 +406,13 @@ LABEL_15:
         if (v12)
         {
           unintendedRequestCount = self->_unintendedRequestCount;
-          if (unintendedRequestCount != [v4 unintendedRequestCount])
+          if (unintendedRequestCount != [equalCopy unintendedRequestCount])
           {
             goto LABEL_30;
           }
 
           has = self->_has;
-          v6 = v4[48];
+          v6 = equalCopy[48];
         }
 
         v14 = (*&has >> 4) & 1;
@@ -421,28 +421,28 @@ LABEL_15:
           if (v14)
           {
             intendedRequestRatio = self->_intendedRequestRatio;
-            [v4 intendedRequestRatio];
+            [equalCopy intendedRequestRatio];
             if (intendedRequestRatio != v16)
             {
               goto LABEL_30;
             }
 
             has = self->_has;
-            v6 = v4[48];
+            v6 = equalCopy[48];
           }
 
           v17 = (*&has >> 5) & 1;
           if (v17 == ((v6 >> 5) & 1))
           {
-            if (!v17 || (triggeredMechanismRequestRatio = self->_triggeredMechanismRequestRatio, [v4 triggeredMechanismRequestRatio], triggeredMechanismRequestRatio == v19))
+            if (!v17 || (triggeredMechanismRequestRatio = self->_triggeredMechanismRequestRatio, [equalCopy triggeredMechanismRequestRatio], triggeredMechanismRequestRatio == v19))
             {
-              v20 = [(MHSchemaMHUserEngagementAggregatedStats *)self modelVersion];
-              v21 = [v4 modelVersion];
-              v22 = v21;
-              if ((v20 != 0) != (v21 == 0))
+              modelVersion = [(MHSchemaMHUserEngagementAggregatedStats *)self modelVersion];
+              modelVersion2 = [equalCopy modelVersion];
+              v22 = modelVersion2;
+              if ((modelVersion != 0) != (modelVersion2 == 0))
               {
-                v23 = [(MHSchemaMHUserEngagementAggregatedStats *)self modelVersion];
-                if (!v23)
+                modelVersion3 = [(MHSchemaMHUserEngagementAggregatedStats *)self modelVersion];
+                if (!modelVersion3)
                 {
 
 LABEL_33:
@@ -450,10 +450,10 @@ LABEL_33:
                   goto LABEL_31;
                 }
 
-                v24 = v23;
-                v25 = [(MHSchemaMHUserEngagementAggregatedStats *)self modelVersion];
-                v26 = [v4 modelVersion];
-                v27 = [v25 isEqual:v26];
+                v24 = modelVersion3;
+                modelVersion4 = [(MHSchemaMHUserEngagementAggregatedStats *)self modelVersion];
+                modelVersion5 = [equalCopy modelVersion];
+                v27 = [modelVersion4 isEqual:modelVersion5];
 
                 if (v27)
                 {
@@ -478,9 +478,9 @@ LABEL_31:
   return v28;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -553,19 +553,19 @@ LABEL_7:
   }
 
 LABEL_8:
-  v5 = [(MHSchemaMHUserEngagementAggregatedStats *)self modelVersion];
+  modelVersion = [(MHSchemaMHUserEngagementAggregatedStats *)self modelVersion];
 
-  v6 = v7;
-  if (v5)
+  v6 = toCopy;
+  if (modelVersion)
   {
     PBDataWriterWriteStringField();
-    v6 = v7;
+    v6 = toCopy;
   }
 }
 
-- (void)setHasTriggeredMechanismRequestRatio:(BOOL)a3
+- (void)setHasTriggeredMechanismRequestRatio:(BOOL)ratio
 {
-  if (a3)
+  if (ratio)
   {
     v3 = 32;
   }
@@ -578,9 +578,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasIntendedRequestRatio:(BOOL)a3
+- (void)setHasIntendedRequestRatio:(BOOL)ratio
 {
-  if (a3)
+  if (ratio)
   {
     v3 = 16;
   }
@@ -593,9 +593,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasUnintendedRequestCount:(BOOL)a3
+- (void)setHasUnintendedRequestCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 8;
   }
@@ -608,9 +608,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasIntendedRequestCount:(BOOL)a3
+- (void)setHasIntendedRequestCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -623,9 +623,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasRequestCount:(BOOL)a3
+- (void)setHasRequestCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }

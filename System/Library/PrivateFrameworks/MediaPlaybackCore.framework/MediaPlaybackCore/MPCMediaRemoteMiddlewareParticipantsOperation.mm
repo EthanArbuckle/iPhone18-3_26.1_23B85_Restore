@@ -1,5 +1,5 @@
 @interface MPCMediaRemoteMiddlewareParticipantsOperation
-- (MPCMediaRemoteMiddlewareParticipantsOperation)initWithMiddleware:(id)a3;
+- (MPCMediaRemoteMiddlewareParticipantsOperation)initWithMiddleware:(id)middleware;
 - (id)timeoutDescription;
 - (void)execute;
 @end
@@ -61,38 +61,38 @@ void __56__MPCMediaRemoteMiddlewareParticipantsOperation_execute__block_invoke_2
 - (void)execute
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v3 = [(MPCMediaRemoteMiddlewareParticipantsOperation *)self middleware];
-  v4 = [v3 controller];
+  middleware = [(MPCMediaRemoteMiddlewareParticipantsOperation *)self middleware];
+  controller = [middleware controller];
 
-  if (v4)
+  if (controller)
   {
     v5 = _Block_copy(self->_invalidationHandler);
-    v6 = [(MPCMediaRemoteMiddlewareParticipantsOperation *)self middleware];
-    v7 = [v6 controller];
-    v8 = [v7 playbackQueueParticipants];
-    [(MPCMediaRemoteMiddlewareParticipantsOperation *)self setParticipantsFuture:v8];
+    middleware2 = [(MPCMediaRemoteMiddlewareParticipantsOperation *)self middleware];
+    controller2 = [middleware2 controller];
+    playbackQueueParticipants = [controller2 playbackQueueParticipants];
+    [(MPCMediaRemoteMiddlewareParticipantsOperation *)self setParticipantsFuture:playbackQueueParticipants];
 
-    v9 = [(MPCMediaRemoteMiddlewareParticipantsOperation *)self participantsFuture];
+    participantsFuture = [(MPCMediaRemoteMiddlewareParticipantsOperation *)self participantsFuture];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __56__MPCMediaRemoteMiddlewareParticipantsOperation_execute__block_invoke;
     v19[3] = &unk_1E8239528;
     v20 = v5;
     v10 = v5;
-    v11 = [v9 onInvalid:v19];
+    v11 = [participantsFuture onInvalid:v19];
 
     v21[0] = v11;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
     invalidationObservers = self->_invalidationObservers;
     self->_invalidationObservers = v12;
 
-    v14 = [(MPCMediaRemoteMiddlewareParticipantsOperation *)self participantsFuture];
+    participantsFuture2 = [(MPCMediaRemoteMiddlewareParticipantsOperation *)self participantsFuture];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __56__MPCMediaRemoteMiddlewareParticipantsOperation_execute__block_invoke_2;
     v18[3] = &unk_1E82387B0;
     v18[4] = self;
-    v15 = [v14 onSuccess:v18];
+    v15 = [participantsFuture2 onSuccess:v18];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __56__MPCMediaRemoteMiddlewareParticipantsOperation_execute__block_invoke_3;
@@ -111,8 +111,8 @@ void __56__MPCMediaRemoteMiddlewareParticipantsOperation_execute__block_invoke_2
 - (id)timeoutDescription
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(MPCMediaRemoteMiddlewareParticipantsOperation *)self participantsFuture];
-  v4 = [v2 stringWithFormat:@"participantsFuture=%@", v3];
+  participantsFuture = [(MPCMediaRemoteMiddlewareParticipantsOperation *)self participantsFuture];
+  v4 = [v2 stringWithFormat:@"participantsFuture=%@", participantsFuture];
 
   return v4;
 }
@@ -123,16 +123,16 @@ void __56__MPCMediaRemoteMiddlewareParticipantsOperation_execute__block_invoke_3
   [*(a1 + 32) finishWithError:v3];
 }
 
-- (MPCMediaRemoteMiddlewareParticipantsOperation)initWithMiddleware:(id)a3
+- (MPCMediaRemoteMiddlewareParticipantsOperation)initWithMiddleware:(id)middleware
 {
-  v5 = a3;
+  middlewareCopy = middleware;
   v9.receiver = self;
   v9.super_class = MPCMediaRemoteMiddlewareParticipantsOperation;
   v6 = [(MPAsyncOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_middleware, a3);
+    objc_storeStrong(&v6->_middleware, middleware);
   }
 
   return v7;

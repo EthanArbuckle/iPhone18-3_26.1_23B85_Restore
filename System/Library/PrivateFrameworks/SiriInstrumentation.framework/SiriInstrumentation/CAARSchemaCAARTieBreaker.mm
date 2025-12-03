@@ -1,29 +1,29 @@
 @interface CAARSchemaCAARTieBreaker
-- (BOOL)isEqual:(id)a3;
-- (CAARSchemaCAARTieBreaker)initWithDictionary:(id)a3;
-- (CAARSchemaCAARTieBreaker)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CAARSchemaCAARTieBreaker)initWithDictionary:(id)dictionary;
+- (CAARSchemaCAARTieBreaker)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addActionCandidateBoosts:(id)a3;
-- (void)setHasWasTieBreakerForcedSkipped:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addActionCandidateBoosts:(id)boosts;
+- (void)setHasWasTieBreakerForcedSkipped:(BOOL)skipped;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CAARSchemaCAARTieBreaker
 
-- (CAARSchemaCAARTieBreaker)initWithDictionary:(id)a3
+- (CAARSchemaCAARTieBreaker)initWithDictionary:(id)dictionary
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v25.receiver = self;
   v25.super_class = CAARSchemaCAARTieBreaker;
   v5 = [(CAARSchemaCAARTieBreaker *)&v25 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"tieBreakerName"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"tieBreakerName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -31,7 +31,7 @@
       [(CAARSchemaCAARTieBreaker *)v5 setTieBreakerName:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"actionCandidateBoosts"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"actionCandidateBoosts"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -77,14 +77,14 @@
       v6 = v20;
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"isTieBreakerSupported"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"isTieBreakerSupported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CAARSchemaCAARTieBreaker setIsTieBreakerSupported:](v5, "setIsTieBreakerSupported:", [v16 BOOLValue]);
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"wasTieBreakerForcedSkipped"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"wasTieBreakerForcedSkipped"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -97,30 +97,30 @@
   return v5;
 }
 
-- (CAARSchemaCAARTieBreaker)initWithJSON:(id)a3
+- (CAARSchemaCAARTieBreaker)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(CAARSchemaCAARTieBreaker *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(CAARSchemaCAARTieBreaker *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(CAARSchemaCAARTieBreaker *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -134,10 +134,10 @@
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_actionCandidateBoosts count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
@@ -157,16 +157,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -176,31 +176,31 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"actionCandidateBoosts"];
+    [dictionary setObject:array forKeyedSubscript:@"actionCandidateBoosts"];
   }
 
   if (*(&self->_wasTieBreakerForcedSkipped + 1))
   {
     v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[CAARSchemaCAARTieBreaker isTieBreakerSupported](self, "isTieBreakerSupported")}];
-    [v3 setObject:v12 forKeyedSubscript:@"isTieBreakerSupported"];
+    [dictionary setObject:v12 forKeyedSubscript:@"isTieBreakerSupported"];
   }
 
   if (self->_tieBreakerName)
   {
-    v13 = [(CAARSchemaCAARTieBreaker *)self tieBreakerName];
-    v14 = [v13 copy];
-    [v3 setObject:v14 forKeyedSubscript:@"tieBreakerName"];
+    tieBreakerName = [(CAARSchemaCAARTieBreaker *)self tieBreakerName];
+    v14 = [tieBreakerName copy];
+    [dictionary setObject:v14 forKeyedSubscript:@"tieBreakerName"];
   }
 
   if ((*(&self->_wasTieBreakerForcedSkipped + 1) & 2) != 0)
   {
     v15 = [MEMORY[0x1E696AD98] numberWithBool:{-[CAARSchemaCAARTieBreaker wasTieBreakerForcedSkipped](self, "wasTieBreakerForcedSkipped")}];
-    [v3 setObject:v15 forKeyedSubscript:@"wasTieBreakerForcedSkipped"];
+    [dictionary setObject:v15 forKeyedSubscript:@"wasTieBreakerForcedSkipped"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v17];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v17];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -231,28 +231,28 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(CAARSchemaCAARTieBreaker *)self tieBreakerName];
-  v6 = [v4 tieBreakerName];
-  if ((v5 != 0) == (v6 == 0))
+  tieBreakerName = [(CAARSchemaCAARTieBreaker *)self tieBreakerName];
+  tieBreakerName2 = [equalCopy tieBreakerName];
+  if ((tieBreakerName != 0) == (tieBreakerName2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(CAARSchemaCAARTieBreaker *)self tieBreakerName];
-  if (v7)
+  tieBreakerName3 = [(CAARSchemaCAARTieBreaker *)self tieBreakerName];
+  if (tieBreakerName3)
   {
-    v8 = v7;
-    v9 = [(CAARSchemaCAARTieBreaker *)self tieBreakerName];
-    v10 = [v4 tieBreakerName];
-    v11 = [v9 isEqual:v10];
+    v8 = tieBreakerName3;
+    tieBreakerName4 = [(CAARSchemaCAARTieBreaker *)self tieBreakerName];
+    tieBreakerName5 = [equalCopy tieBreakerName];
+    v11 = [tieBreakerName4 isEqual:tieBreakerName5];
 
     if (!v11)
     {
@@ -264,22 +264,22 @@ LABEL_3:
   {
   }
 
-  v5 = [(CAARSchemaCAARTieBreaker *)self actionCandidateBoosts];
-  v6 = [v4 actionCandidateBoosts];
-  if ((v5 != 0) == (v6 == 0))
+  tieBreakerName = [(CAARSchemaCAARTieBreaker *)self actionCandidateBoosts];
+  tieBreakerName2 = [equalCopy actionCandidateBoosts];
+  if ((tieBreakerName != 0) == (tieBreakerName2 == 0))
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = [(CAARSchemaCAARTieBreaker *)self actionCandidateBoosts];
-  if (v12)
+  actionCandidateBoosts = [(CAARSchemaCAARTieBreaker *)self actionCandidateBoosts];
+  if (actionCandidateBoosts)
   {
-    v13 = v12;
-    v14 = [(CAARSchemaCAARTieBreaker *)self actionCandidateBoosts];
-    v15 = [v4 actionCandidateBoosts];
-    v16 = [v14 isEqual:v15];
+    v13 = actionCandidateBoosts;
+    actionCandidateBoosts2 = [(CAARSchemaCAARTieBreaker *)self actionCandidateBoosts];
+    actionCandidateBoosts3 = [equalCopy actionCandidateBoosts];
+    v16 = [actionCandidateBoosts2 isEqual:actionCandidateBoosts3];
 
     if (!v16)
     {
@@ -292,25 +292,25 @@ LABEL_11:
   }
 
   v19 = *(&self->_wasTieBreakerForcedSkipped + 1);
-  v20 = v4[26];
+  v20 = equalCopy[26];
   if ((v19 & 1) == (v20 & 1))
   {
     if (v19)
     {
       isTieBreakerSupported = self->_isTieBreakerSupported;
-      if (isTieBreakerSupported != [v4 isTieBreakerSupported])
+      if (isTieBreakerSupported != [equalCopy isTieBreakerSupported])
       {
         goto LABEL_12;
       }
 
       v19 = *(&self->_wasTieBreakerForcedSkipped + 1);
-      v20 = v4[26];
+      v20 = equalCopy[26];
     }
 
     v22 = (v19 >> 1) & 1;
     if (v22 == ((v20 >> 1) & 1))
     {
-      if (!v22 || (wasTieBreakerForcedSkipped = self->_wasTieBreakerForcedSkipped, wasTieBreakerForcedSkipped == [v4 wasTieBreakerForcedSkipped]))
+      if (!v22 || (wasTieBreakerForcedSkipped = self->_wasTieBreakerForcedSkipped, wasTieBreakerForcedSkipped == [equalCopy wasTieBreakerForcedSkipped]))
       {
         v17 = 1;
         goto LABEL_13;
@@ -325,13 +325,13 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CAARSchemaCAARTieBreaker *)self tieBreakerName];
+  toCopy = to;
+  tieBreakerName = [(CAARSchemaCAARTieBreaker *)self tieBreakerName];
 
-  if (v5)
+  if (tieBreakerName)
   {
     PBDataWriterWriteStringField();
   }
@@ -377,9 +377,9 @@ LABEL_13:
   }
 }
 
-- (void)setHasWasTieBreakerForcedSkipped:(BOOL)a3
+- (void)setHasWasTieBreakerForcedSkipped:(BOOL)skipped
 {
-  if (a3)
+  if (skipped)
   {
     v3 = 2;
   }
@@ -392,32 +392,32 @@ LABEL_13:
   *(&self->_wasTieBreakerForcedSkipped + 1) = *(&self->_wasTieBreakerForcedSkipped + 1) & 0xFD | v3;
 }
 
-- (void)addActionCandidateBoosts:(id)a3
+- (void)addActionCandidateBoosts:(id)boosts
 {
-  v4 = a3;
+  boostsCopy = boosts;
   actionCandidateBoosts = self->_actionCandidateBoosts;
-  v8 = v4;
+  v8 = boostsCopy;
   if (!actionCandidateBoosts)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_actionCandidateBoosts;
-    self->_actionCandidateBoosts = v6;
+    self->_actionCandidateBoosts = array;
 
-    v4 = v8;
+    boostsCopy = v8;
     actionCandidateBoosts = self->_actionCandidateBoosts;
   }
 
-  [(NSArray *)actionCandidateBoosts addObject:v4];
+  [(NSArray *)actionCandidateBoosts addObject:boostsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = CAARSchemaCAARTieBreaker;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(CAARSchemaCAARTieBreaker *)self actionCandidateBoosts:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(CAARSchemaCAARTieBreaker *)self setActionCandidateBoosts:v7];
 

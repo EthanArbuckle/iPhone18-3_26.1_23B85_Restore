@@ -1,21 +1,21 @@
 @interface MFComposeRecipients
 + (NSArray)readableTypeIdentifiersForItemProvider;
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5;
-- (MFComposeRecipients)initWithRecipients:(id)a3;
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error;
+- (MFComposeRecipients)initWithRecipients:(id)recipients;
 @end
 
 @implementation MFComposeRecipients
 
-- (MFComposeRecipients)initWithRecipients:(id)a3
+- (MFComposeRecipients)initWithRecipients:(id)recipients
 {
-  v5 = a3;
+  recipientsCopy = recipients;
   v9.receiver = self;
   v9.super_class = MFComposeRecipients;
   v6 = [(MFComposeRecipients *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_recipients, a3);
+    objc_storeStrong(&v6->_recipients, recipients);
   }
 
   return v7;
@@ -23,45 +23,45 @@
 
 + (NSArray)readableTypeIdentifiersForItemProvider
 {
-  v2 = [MEMORY[0x1E696AEC0] readableTypeIdentifiersForItemProvider];
-  v3 = [MEMORY[0x1E695DFF8] readableTypeIdentifiersForItemProvider];
-  v4 = [v2 arrayByAddingObjectsFromArray:v3];
+  readableTypeIdentifiersForItemProvider = [MEMORY[0x1E696AEC0] readableTypeIdentifiersForItemProvider];
+  readableTypeIdentifiersForItemProvider2 = [MEMORY[0x1E695DFF8] readableTypeIdentifiersForItemProvider];
+  v4 = [readableTypeIdentifiersForItemProvider arrayByAddingObjectsFromArray:readableTypeIdentifiersForItemProvider2];
 
   return v4;
 }
 
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error
 {
-  v36 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DFF8] readableTypeIdentifiersForItemProvider];
-  LODWORD(a4) = [v8 containsObject:v7];
+  dataCopy = data;
+  identifierCopy = identifier;
+  readableTypeIdentifiersForItemProvider = [MEMORY[0x1E695DFF8] readableTypeIdentifiersForItemProvider];
+  LODWORD(identifier) = [readableTypeIdentifiersForItemProvider containsObject:identifierCopy];
 
-  if (a4)
+  if (identifier)
   {
     v38 = 0;
-    v9 = [MEMORY[0x1E695DFF8] objectWithItemProviderData:v36 typeIdentifier:v7 error:{&v38, a1}];
+    v9 = [MEMORY[0x1E695DFF8] objectWithItemProviderData:dataCopy typeIdentifier:identifierCopy error:{&v38, self}];
     v10 = v38;
     v11 = v9;
   }
 
   else
   {
-    v12 = [MEMORY[0x1E696AEC0] readableTypeIdentifiersForItemProvider];
-    v13 = [v12 containsObject:v7];
+    readableTypeIdentifiersForItemProvider2 = [MEMORY[0x1E696AEC0] readableTypeIdentifiersForItemProvider];
+    v13 = [readableTypeIdentifiersForItemProvider2 containsObject:identifierCopy];
 
     if (v13)
     {
       v37 = 0;
-      v14 = [MEMORY[0x1E696AEC0] objectWithItemProviderData:v36 typeIdentifier:v7 error:&v37];
+      v14 = [MEMORY[0x1E696AEC0] objectWithItemProviderData:dataCopy typeIdentifier:identifierCopy error:&v37];
       v10 = v37;
       v15 = [MEMORY[0x1E695DFF8] URLWithString:v14];
       v11 = v15;
       if (v14)
       {
-        v16 = [v15 scheme];
+        scheme = [v15 scheme];
 
-        if (v16)
+        if (scheme)
         {
           v17 = v14;
         }
@@ -69,8 +69,8 @@
         else
         {
           v18 = [v14 stringByReplacingOccurrencesOfString:@"\n" withString:{@", "}];
-          v19 = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
-          v20 = [v18 stringByAddingPercentEncodingWithAllowedCharacters:v19];
+          uRLQueryAllowedCharacterSet = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
+          v20 = [v18 stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
 
           v17 = [@"mailto:" stringByAppendingString:v20];
 
@@ -93,8 +93,8 @@
     }
   }
 
-  v22 = [v11 scheme];
-  v23 = [v22 caseInsensitiveCompare:*MEMORY[0x1E699A7C8]];
+  scheme2 = [v11 scheme];
+  v23 = [scheme2 caseInsensitiveCompare:*MEMORY[0x1E699A7C8]];
 
   if (v23)
   {
@@ -104,11 +104,11 @@
   else
   {
     v25 = [MEMORY[0x1E699AD10] componentsWithURL:v11];
-    v26 = [v25 toRecipients];
-    v27 = [v25 ccRecipients];
-    v28 = [v26 arrayByAddingObjectsFromArray:v27];
-    v29 = [v25 bccRecipients];
-    v30 = [v28 arrayByAddingObjectsFromArray:v29];
+    toRecipients = [v25 toRecipients];
+    ccRecipients = [v25 ccRecipients];
+    v28 = [toRecipients arrayByAddingObjectsFromArray:ccRecipients];
+    bccRecipients = [v25 bccRecipients];
+    v30 = [v28 arrayByAddingObjectsFromArray:bccRecipients];
 
     v31 = [v30 ef_map:&__block_literal_global_9];
     v24 = [[v35 alloc] initWithRecipients:v31];
@@ -119,10 +119,10 @@
     v10 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:0];
   }
 
-  if (a5 && v10)
+  if (error && v10)
   {
     v32 = v10;
-    *a5 = v10;
+    *error = v10;
   }
 
   return v24;

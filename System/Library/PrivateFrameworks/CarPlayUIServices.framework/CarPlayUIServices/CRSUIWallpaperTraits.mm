@@ -1,24 +1,24 @@
 @interface CRSUIWallpaperTraits
-- (CRSUIWallpaperTraits)initWithCoder:(id)a3;
-- (CRSUIWallpaperTraits)initWithSupportsDynamicAppearance:(BOOL)a3 supportsDashboardPlatterMaterials:(BOOL)a4 iconLabelsRequireBackground:(BOOL)a5 hideRoundedCorners:(BOOL)a6 black:(BOOL)a7;
+- (CRSUIWallpaperTraits)initWithCoder:(id)coder;
+- (CRSUIWallpaperTraits)initWithSupportsDynamicAppearance:(BOOL)appearance supportsDashboardPlatterMaterials:(BOOL)materials iconLabelsRequireBackground:(BOOL)background hideRoundedCorners:(BOOL)corners black:(BOOL)black;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRSUIWallpaperTraits
 
-- (CRSUIWallpaperTraits)initWithSupportsDynamicAppearance:(BOOL)a3 supportsDashboardPlatterMaterials:(BOOL)a4 iconLabelsRequireBackground:(BOOL)a5 hideRoundedCorners:(BOOL)a6 black:(BOOL)a7
+- (CRSUIWallpaperTraits)initWithSupportsDynamicAppearance:(BOOL)appearance supportsDashboardPlatterMaterials:(BOOL)materials iconLabelsRequireBackground:(BOOL)background hideRoundedCorners:(BOOL)corners black:(BOOL)black
 {
   v13.receiver = self;
   v13.super_class = CRSUIWallpaperTraits;
   result = [(CRSUIWallpaperTraits *)&v13 init];
   if (result)
   {
-    result->_supportsDynamicAppearance = a3;
-    result->_supportsDashboardPlatterMaterials = a4;
-    result->_iconLabelsRequireBackground = a5;
-    result->_hideRoundedCorners = a6;
-    result->_black = a7;
+    result->_supportsDynamicAppearance = appearance;
+    result->_supportsDashboardPlatterMaterials = materials;
+    result->_iconLabelsRequireBackground = background;
+    result->_hideRoundedCorners = corners;
+    result->_black = black;
   }
 
   return result;
@@ -32,29 +32,29 @@
   v6 = [v3 appendBool:-[CRSUIWallpaperTraits iconLabelsRequireBackground](self withName:{"iconLabelsRequireBackground"), @"iconLabelsRequireBackground"}];
   v7 = [v3 appendBool:-[CRSUIWallpaperTraits hideRoundedCorners](self withName:{"hideRoundedCorners"), @"hideRoundedCorners"}];
   v8 = [v3 appendBool:-[CRSUIWallpaperTraits isBlack](self withName:{"isBlack"), @"black"}];
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[CRSUIWallpaperTraits supportsDynamicAppearance](self forKey:{"supportsDynamicAppearance"), @"supportsDynamicAppearance"}];
-  [v4 encodeBool:-[CRSUIWallpaperTraits supportsDashboardPlatterMaterials](self forKey:{"supportsDashboardPlatterMaterials"), @"supportsDashboardPlatterMaterials"}];
-  [v4 encodeBool:-[CRSUIWallpaperTraits iconLabelsRequireBackground](self forKey:{"iconLabelsRequireBackground"), @"iconLabelsRequireBackground"}];
-  [v4 encodeBool:-[CRSUIWallpaperTraits hideRoundedCorners](self forKey:{"hideRoundedCorners"), @"hideRoundedCorners"}];
-  [v4 encodeBool:-[CRSUIWallpaperTraits isBlack](self forKey:{"isBlack"), @"black"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[CRSUIWallpaperTraits supportsDynamicAppearance](self forKey:{"supportsDynamicAppearance"), @"supportsDynamicAppearance"}];
+  [coderCopy encodeBool:-[CRSUIWallpaperTraits supportsDashboardPlatterMaterials](self forKey:{"supportsDashboardPlatterMaterials"), @"supportsDashboardPlatterMaterials"}];
+  [coderCopy encodeBool:-[CRSUIWallpaperTraits iconLabelsRequireBackground](self forKey:{"iconLabelsRequireBackground"), @"iconLabelsRequireBackground"}];
+  [coderCopy encodeBool:-[CRSUIWallpaperTraits hideRoundedCorners](self forKey:{"hideRoundedCorners"), @"hideRoundedCorners"}];
+  [coderCopy encodeBool:-[CRSUIWallpaperTraits isBlack](self forKey:{"isBlack"), @"black"}];
 }
 
-- (CRSUIWallpaperTraits)initWithCoder:(id)a3
+- (CRSUIWallpaperTraits)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeBoolForKey:@"supportsDynamicAppearance"];
-  v6 = [v4 decodeBoolForKey:@"supportsDashboardPlatterMaterials"];
-  v7 = [v4 decodeBoolForKey:@"iconLabelsRequireBackground"];
-  v8 = [v4 decodeBoolForKey:@"hideRoundedCorners"];
-  v9 = [v4 decodeBoolForKey:@"black"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeBoolForKey:@"supportsDynamicAppearance"];
+  v6 = [coderCopy decodeBoolForKey:@"supportsDashboardPlatterMaterials"];
+  v7 = [coderCopy decodeBoolForKey:@"iconLabelsRequireBackground"];
+  v8 = [coderCopy decodeBoolForKey:@"hideRoundedCorners"];
+  v9 = [coderCopy decodeBoolForKey:@"black"];
 
   return [(CRSUIWallpaperTraits *)self initWithSupportsDynamicAppearance:v5 supportsDashboardPlatterMaterials:v6 iconLabelsRequireBackground:v7 hideRoundedCorners:v8 black:v9];
 }

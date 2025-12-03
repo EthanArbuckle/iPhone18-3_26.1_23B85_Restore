@@ -1,10 +1,10 @@
 @interface HMDResidentReachabilityState
-- (BOOL)isEqual:(id)a3;
-- (HMDResidentReachabilityState)initWithCoder:(id)a3;
-- (HMDResidentReachabilityState)initWithResidentDeviceIdentifier:(id)a3 isReachable:(BOOL)a4;
+- (BOOL)isEqual:(id)equal;
+- (HMDResidentReachabilityState)initWithCoder:(id)coder;
+- (HMDResidentReachabilityState)initWithResidentDeviceIdentifier:(id)identifier isReachable:(BOOL)reachable;
 - (id)attributeDescriptions;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDResidentReachabilityState
@@ -13,8 +13,8 @@
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDResidentReachabilityState *)self residentDeviceIdentifier];
-  v5 = [v3 initWithName:@"Resident device identifier" value:v4];
+  residentDeviceIdentifier = [(HMDResidentReachabilityState *)self residentDeviceIdentifier];
+  v5 = [v3 initWithName:@"Resident device identifier" value:residentDeviceIdentifier];
   v12[0] = v5;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
   [(HMDResidentReachabilityState *)self isReachable];
@@ -28,51 +28,51 @@
   return v9;
 }
 
-- (HMDResidentReachabilityState)initWithCoder:(id)a3
+- (HMDResidentReachabilityState)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeBoolForKey:@"isReachable"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"residentDeviceIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeBoolForKey:@"isReachable"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"residentDeviceIdentifier"];
 
   if (v6)
   {
     self = [(HMDResidentReachabilityState *)self initWithResidentDeviceIdentifier:v6 isReachable:v5];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(HMDResidentReachabilityState *)self residentDeviceIdentifier];
-  [v5 encodeObject:v4 forKey:@"residentDeviceIdentifier"];
+  coderCopy = coder;
+  residentDeviceIdentifier = [(HMDResidentReachabilityState *)self residentDeviceIdentifier];
+  [coderCopy encodeObject:residentDeviceIdentifier forKey:@"residentDeviceIdentifier"];
 
-  [v5 encodeBool:-[HMDResidentReachabilityState isReachable](self forKey:{"isReachable"), @"isReachable"}];
+  [coderCopy encodeBool:-[HMDResidentReachabilityState isReachable](self forKey:{"isReachable"), @"isReachable"}];
 }
 
 - (unint64_t)hash
 {
-  v3 = [(HMDResidentReachabilityState *)self isReachable];
-  v4 = [(HMDResidentReachabilityState *)self residentDeviceIdentifier];
-  v5 = [v4 hash];
+  isReachable = [(HMDResidentReachabilityState *)self isReachable];
+  residentDeviceIdentifier = [(HMDResidentReachabilityState *)self residentDeviceIdentifier];
+  v5 = [residentDeviceIdentifier hash];
 
-  return v5 ^ v3;
+  return v5 ^ isReachable;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -83,12 +83,12 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMDResidentReachabilityState *)self residentDeviceIdentifier];
-    v8 = [v6 residentDeviceIdentifier];
-    if ([v7 isEqual:v8])
+    residentDeviceIdentifier = [(HMDResidentReachabilityState *)self residentDeviceIdentifier];
+    residentDeviceIdentifier2 = [v6 residentDeviceIdentifier];
+    if ([residentDeviceIdentifier isEqual:residentDeviceIdentifier2])
     {
-      v9 = [(HMDResidentReachabilityState *)self isReachable];
-      v10 = v9 ^ [v6 isReachable] ^ 1;
+      isReachable = [(HMDResidentReachabilityState *)self isReachable];
+      v10 = isReachable ^ [v6 isReachable] ^ 1;
     }
 
     else
@@ -105,19 +105,19 @@
   return v10;
 }
 
-- (HMDResidentReachabilityState)initWithResidentDeviceIdentifier:(id)a3 isReachable:(BOOL)a4
+- (HMDResidentReachabilityState)initWithResidentDeviceIdentifier:(id)identifier isReachable:(BOOL)reachable
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = HMDResidentReachabilityState;
   v7 = [(HMDResidentReachabilityState *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [identifierCopy copy];
     residentDeviceIdentifier = v7->_residentDeviceIdentifier;
     v7->_residentDeviceIdentifier = v8;
 
-    v7->_isReachable = a4;
+    v7->_isReachable = reachable;
   }
 
   return v7;

@@ -1,6 +1,6 @@
 @interface CanUseAppsCache
-+ (BOOL)makeVerdictFromRationaleCode:(int)a3;
-- (BOOL)hasEntryFor:(id)a3 state:(int64_t)a4 rationaleCode:(int *)a5;
++ (BOOL)makeVerdictFromRationaleCode:(int)code;
+- (BOOL)hasEntryFor:(id)for state:(int64_t)state rationaleCode:(int *)code;
 - (CanUseAppsCache)init;
 - (id)description;
 - (void)disable;
@@ -35,11 +35,11 @@
   return [MEMORY[0x277CCACA8] stringWithFormat:@"CFSM canUse cache: disabled=%s cache=%@", v2, self->cache];
 }
 
-- (BOOL)hasEntryFor:(id)a3 state:(int64_t)a4 rationaleCode:(int *)a5
+- (BOOL)hasEntryFor:(id)for state:(int64_t)state rationaleCode:(int *)code
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = v8;
+  forCopy = for;
+  v9 = forCopy;
   if (self->disabled)
   {
     v10 = rnfLogHandle;
@@ -58,8 +58,8 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v15 = [v8 length];
-  if (!a5 || !v15)
+  v15 = [forCopy length];
+  if (!code || !v15)
   {
     v23 = rnfLogHandle;
     if (os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_ERROR))
@@ -67,7 +67,7 @@ LABEL_12:
       *buf = 134218240;
       v28 = v9;
       v29 = 2048;
-      v30 = a5;
+      stateCopy2 = code;
       v11 = "CFSM canUse cache: wants non-nil args (appName/code): %p/%p";
       v12 = v23;
       v13 = OS_LOG_TYPE_ERROR;
@@ -80,31 +80,31 @@ LABEL_13:
     goto LABEL_20;
   }
 
-  v16 = [(CanUseAppsCache *)self _makeKeyFrom:v9 state:a4];
+  v16 = [(CanUseAppsCache *)self _makeKeyFrom:v9 state:state];
   v17 = [(NSMutableDictionary *)self->cache objectForKeyedSubscript:v16];
   v18 = v17;
   v19 = v17 != 0;
   if (v17)
   {
-    v20 = [v17 intValue];
-    *a5 = v20;
+    intValue = [v17 intValue];
+    *code = intValue;
     v21 = rnfLogHandle;
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
-      if ((v20 - 1) >= 7)
+      if ((intValue - 1) >= 7)
       {
-        v22 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(unknown: %i)", v20];
+        v22 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(unknown: %i)", intValue];
       }
 
       else
       {
-        v22 = off_27898D430[(v20 - 1)];
+        v22 = off_27898D430[(intValue - 1)];
       }
 
       *buf = 138412802;
       v28 = v9;
       v29 = 2048;
-      v30 = a4;
+      stateCopy2 = state;
       v31 = 2112;
       v32 = v22;
       _os_log_impl(&dword_23255B000, v21, OS_LOG_TYPE_DEBUG, "CFSM canUse cache: hit for (appName/state/code): %@/%ld/%@", buf, 0x20u);
@@ -119,7 +119,7 @@ LABEL_13:
       *buf = 138412546;
       v28 = v9;
       v29 = 2048;
-      v30 = a4;
+      stateCopy2 = state;
       _os_log_impl(&dword_23255B000, v24, OS_LOG_TYPE_DEBUG, "CFSM canUse cache: miss for (appName/state): %@/%ld", buf, 0x16u);
     }
   }
@@ -172,16 +172,16 @@ LABEL_20:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)makeVerdictFromRationaleCode:(int)a3
++ (BOOL)makeVerdictFromRationaleCode:(int)code
 {
   v9 = *MEMORY[0x277D85DE8];
-  if ((a3 - 1) >= 7)
+  if ((code - 1) >= 7)
   {
     v5 = rnfLogHandle;
     if (os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_ERROR))
     {
       v8[0] = 67109120;
-      v8[1] = a3;
+      v8[1] = code;
       _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_ERROR, "CFSM canUse cache, unexpected code: %d", v8, 8u);
     }
 
@@ -190,7 +190,7 @@ LABEL_20:
 
   else
   {
-    v3 = 0x61u >> (a3 - 1);
+    v3 = 0x61u >> (code - 1);
   }
 
   v6 = *MEMORY[0x277D85DE8];

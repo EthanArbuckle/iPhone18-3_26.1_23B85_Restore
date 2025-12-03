@@ -1,18 +1,18 @@
 @interface CLSNotificationBanner
-+ (void)showBannerWithTitle:(id)a3 message:(id)a4 completionHandler:(id)a5;
++ (void)showBannerWithTitle:(id)title message:(id)message completionHandler:(id)handler;
 @end
 
 @implementation CLSNotificationBanner
 
-+ (void)showBannerWithTitle:(id)a3 message:(id)a4 completionHandler:(id)a5
++ (void)showBannerWithTitle:(id)title message:(id)message completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  handlerCopy = handler;
+  messageCopy = message;
+  titleCopy = title;
   v10 = [CLSNotificationBannerView alloc];
-  v13 = objc_msgSend_initWithTitle_message_(v10, v11, v9, v8);
+  v13 = objc_msgSend_initWithTitle_message_(v10, v11, titleCopy, messageCopy);
 
-  objc_msgSend_showWithCompletionHandler_(v13, v12, v7);
+  objc_msgSend_showWithCompletionHandler_(v13, v12, handlerCopy);
 }
 
 @end

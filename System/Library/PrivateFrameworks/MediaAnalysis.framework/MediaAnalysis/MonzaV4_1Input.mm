@@ -1,16 +1,16 @@
 @interface MonzaV4_1Input
-- (BOOL)setInputImageWithCGImage:(CGImage *)a3 error:(id *)a4;
-- (BOOL)setInputImageWithURL:(id)a3 error:(id *)a4;
-- (MonzaV4_1Input)initWithInputImage:(__CVBuffer *)a3;
-- (MonzaV4_1Input)initWithInputImageAtURL:(id)a3 error:(id *)a4;
-- (MonzaV4_1Input)initWithInputImageFromCGImage:(CGImage *)a3 error:(id *)a4;
-- (id)featureValueForName:(id)a3;
+- (BOOL)setInputImageWithCGImage:(CGImage *)image error:(id *)error;
+- (BOOL)setInputImageWithURL:(id)l error:(id *)error;
+- (MonzaV4_1Input)initWithInputImage:(__CVBuffer *)image;
+- (MonzaV4_1Input)initWithInputImageAtURL:(id)l error:(id *)error;
+- (MonzaV4_1Input)initWithInputImageFromCGImage:(CGImage *)image error:(id *)error;
+- (id)featureValueForName:(id)name;
 - (void)dealloc;
 @end
 
 @implementation MonzaV4_1Input
 
-- (MonzaV4_1Input)initWithInputImage:(__CVBuffer *)a3
+- (MonzaV4_1Input)initWithInputImage:(__CVBuffer *)image
 {
   v7.receiver = self;
   v7.super_class = MonzaV4_1Input;
@@ -18,8 +18,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_inputImage = a3;
-    CVPixelBufferRetain(a3);
+    v4->_inputImage = image;
+    CVPixelBufferRetain(image);
   }
 
   return v5;
@@ -33,22 +33,22 @@
   [(MonzaV4_1Input *)&v3 dealloc];
 }
 
-- (MonzaV4_1Input)initWithInputImageFromCGImage:(CGImage *)a3 error:(id *)a4
+- (MonzaV4_1Input)initWithInputImageFromCGImage:(CGImage *)image error:(id *)error
 {
   if (!self)
   {
     return 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   v7 = objc_autoreleasePoolPush();
   v13 = 0;
-  v8 = [MEMORY[0x1E695FE60] featureValueWithCGImage:a3 pixelsWide:224 pixelsHigh:224 pixelFormatType:1111970369 options:0 error:&v13];
+  v8 = [MEMORY[0x1E695FE60] featureValueWithCGImage:image pixelsWide:224 pixelsHigh:224 pixelFormatType:1111970369 options:0 error:&v13];
   v9 = v13;
   if (v8)
   {
-    v6 = -[MonzaV4_1Input initWithInputImage:](v6, "initWithInputImage:", [v8 imageBufferValue]);
-    v10 = v6;
+    selfCopy = -[MonzaV4_1Input initWithInputImage:](selfCopy, "initWithInputImage:", [v8 imageBufferValue]);
+    v10 = selfCopy;
   }
 
   else
@@ -57,56 +57,56 @@
   }
 
   objc_autoreleasePoolPop(v7);
-  if (a4)
+  if (error)
   {
     v11 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   return v10;
 }
 
-- (MonzaV4_1Input)initWithInputImageAtURL:(id)a3 error:(id *)a4
+- (MonzaV4_1Input)initWithInputImageAtURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   if (self)
   {
     v7 = objc_autoreleasePoolPush();
     v13 = 0;
-    v8 = [MEMORY[0x1E695FE60] featureValueWithImageAtURL:v6 pixelsWide:224 pixelsHigh:224 pixelFormatType:1111970369 options:0 error:&v13];
+    v8 = [MEMORY[0x1E695FE60] featureValueWithImageAtURL:lCopy pixelsWide:224 pixelsHigh:224 pixelFormatType:1111970369 options:0 error:&v13];
     v9 = v13;
     if (v8)
     {
       self = -[MonzaV4_1Input initWithInputImage:](self, "initWithInputImage:", [v8 imageBufferValue]);
-      v10 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v10 = 0;
+      selfCopy = 0;
     }
 
     objc_autoreleasePoolPop(v7);
-    if (a4)
+    if (error)
     {
       v11 = v9;
-      *a4 = v9;
+      *error = v9;
     }
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (BOOL)setInputImageWithCGImage:(CGImage *)a3 error:(id *)a4
+- (BOOL)setInputImageWithCGImage:(CGImage *)image error:(id *)error
 {
   v7 = objc_autoreleasePoolPush();
   v12 = 0;
-  v8 = [MEMORY[0x1E695FE60] featureValueWithCGImage:a3 pixelsWide:224 pixelsHigh:224 pixelFormatType:1111970369 options:0 error:&v12];
+  v8 = [MEMORY[0x1E695FE60] featureValueWithCGImage:image pixelsWide:224 pixelsHigh:224 pixelFormatType:1111970369 options:0 error:&v12];
   v9 = v12;
   if (v8)
   {
@@ -116,21 +116,21 @@
   }
 
   objc_autoreleasePoolPop(v7);
-  if (a4)
+  if (error)
   {
     v10 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   return v8 != 0;
 }
 
-- (BOOL)setInputImageWithURL:(id)a3 error:(id *)a4
+- (BOOL)setInputImageWithURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v7 = objc_autoreleasePoolPush();
   v12 = 0;
-  v8 = [MEMORY[0x1E695FE60] featureValueWithImageAtURL:v6 pixelsWide:224 pixelsHigh:224 pixelFormatType:1111970369 options:0 error:&v12];
+  v8 = [MEMORY[0x1E695FE60] featureValueWithImageAtURL:lCopy pixelsWide:224 pixelsHigh:224 pixelFormatType:1111970369 options:0 error:&v12];
   v9 = v12;
   if (v8)
   {
@@ -140,18 +140,18 @@
   }
 
   objc_autoreleasePoolPop(v7);
-  if (a4)
+  if (error)
   {
     v10 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   return v8 != 0;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  if ([a3 isEqualToString:@"inputImage"])
+  if ([name isEqualToString:@"inputImage"])
   {
     v4 = [MEMORY[0x1E695FE60] featureValueWithPixelBuffer:{-[MonzaV4_1Input inputImage](self, "inputImage")}];
   }

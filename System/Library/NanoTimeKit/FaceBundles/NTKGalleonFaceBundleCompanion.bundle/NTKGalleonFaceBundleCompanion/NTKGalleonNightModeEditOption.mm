@@ -1,5 +1,5 @@
 @interface NTKGalleonNightModeEditOption
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 - (id)analyticsKey;
 - (id)localizedName;
@@ -7,16 +7,16 @@
 
 @implementation NTKGalleonNightModeEditOption
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 > 2)
+  if (value > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_278B9F000[a3];
+    return off_278B9F000[value];
   }
 }
 

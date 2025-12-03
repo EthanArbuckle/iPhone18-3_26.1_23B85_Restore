@@ -1,131 +1,131 @@
 @interface CRLSceneDelegate
-- (id)stateRestorationActivityForScene:(id)a3;
-- (void)didTapWelcomeContinueButton:(id)a3;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)scene:(id)a3 continueUserActivity:(id)a4;
-- (void)scene:(id)a3 didFailToContinueUserActivityWithType:(id)a4 error:(id)a5;
-- (void)scene:(id)a3 openURLContexts:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)sceneWillResignActive:(id)a3;
+- (id)stateRestorationActivityForScene:(id)scene;
+- (void)didTapWelcomeContinueButton:(id)button;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)scene:(id)scene continueUserActivity:(id)activity;
+- (void)scene:(id)scene didFailToContinueUserActivityWithType:(id)type error:(id)error;
+- (void)scene:(id)scene openURLContexts:(id)contexts;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)sceneWillResignActive:(id)active;
 - (void)setUserActivity:;
-- (void)setWindow:(id)a3;
-- (void)windowScene:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5;
-- (void)windowScene:(id)a3 userDidAcceptCloudKitShareWithMetadata:(id)a4;
+- (void)setWindow:(id)window;
+- (void)windowScene:(id)scene performActionForShortcutItem:(id)item completionHandler:(id)handler;
+- (void)windowScene:(id)scene userDidAcceptCloudKitShareWithMetadata:(id)metadata;
 @end
 
 @implementation CRLSceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = self;
-  sub_10004C6F8(v11, v8, v9);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_10004C6F8(sceneCopy, sessionCopy, optionsCopy);
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
   v4 = objc_opt_self();
-  v6 = a3;
-  v5 = [v4 defaultCenter];
+  foregroundCopy = foreground;
+  defaultCenter = [v4 defaultCenter];
   if (qword_1019F1F30 != -1)
   {
     swift_once();
   }
 
-  [v5 postNotificationName:qword_101AD7928 object:v6];
+  [defaultCenter postNotificationName:qword_101AD7928 object:foregroundCopy];
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
-  v5 = a3;
-  v4 = self;
-  sub_10007F8B4(v5);
+  activeCopy = active;
+  selfCopy = self;
+  sub_10007F8B4(activeCopy);
 }
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC8Freeform16CRLSceneDelegate_window);
-  *(&self->super.super.isa + OBJC_IVAR____TtC8Freeform16CRLSceneDelegate_window) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC8Freeform16CRLSceneDelegate_window) = window;
+  windowCopy = window;
 }
 
-- (void)scene:(id)a3 openURLContexts:(id)a4
+- (void)scene:(id)scene openURLContexts:(id)contexts
 {
   sub_100006370(0, &unk_1019FCBA0);
   sub_10000FDE0(&unk_101A15B40, &unk_1019FCBA0);
   v6 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = a3;
-  v7 = self;
+  sceneCopy = scene;
+  selfCopy = self;
   sub_100C2FDB4(v6);
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v5 = a3;
-  v4 = self;
+  disconnectCopy = disconnect;
+  selfCopy = self;
   sub_100C3018C();
 }
 
-- (void)sceneWillResignActive:(id)a3
+- (void)sceneWillResignActive:(id)active
 {
-  v5 = a3;
-  v4 = self;
-  sub_100C131E8(v5);
+  activeCopy = active;
+  selfCopy = self;
+  sub_100C131E8(activeCopy);
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
-  v5 = a3;
-  v4 = self;
-  sub_100C134E8(v5);
+  backgroundCopy = background;
+  selfCopy = self;
+  sub_100C134E8(backgroundCopy);
 }
 
-- (void)windowScene:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5
+- (void)windowScene:(id)scene performActionForShortcutItem:(id)item completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
-  v11 = a3;
-  v9 = a4;
-  v10 = self;
-  sub_100C30650(v9);
+  v8 = _Block_copy(handler);
+  sceneCopy = scene;
+  itemCopy = item;
+  selfCopy = self;
+  sub_100C30650(itemCopy);
   _Block_release(v8);
 }
 
-- (id)stateRestorationActivityForScene:(id)a3
+- (id)stateRestorationActivityForScene:(id)scene
 {
-  v4 = a3;
-  v5 = self;
+  sceneCopy = scene;
+  selfCopy = self;
   v6 = sub_100C30B90();
 
   return v6;
 }
 
-- (void)windowScene:(id)a3 userDidAcceptCloudKitShareWithMetadata:(id)a4
+- (void)windowScene:(id)scene userDidAcceptCloudKitShareWithMetadata:(id)metadata
 {
-  v6 = a4;
-  v5 = self;
-  sub_100C196F0(v6);
+  metadataCopy = metadata;
+  selfCopy = self;
+  sub_100C196F0(metadataCopy);
 }
 
-- (void)scene:(id)a3 continueUserActivity:(id)a4
+- (void)scene:(id)scene continueUserActivity:(id)activity
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = self;
-  sub_100C2E834(v6);
+  sceneCopy = scene;
+  activityCopy = activity;
+  selfCopy = self;
+  sub_100C2E834(activityCopy);
 }
 
-- (void)scene:(id)a3 didFailToContinueUserActivityWithType:(id)a4 error:(id)a5
+- (void)scene:(id)scene didFailToContinueUserActivityWithType:(id)type error:(id)error
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
   v9 = qword_1019F20A8;
-  v10 = a5;
+  errorCopy = error;
   if (v9 != -1)
   {
     swift_once();
@@ -154,11 +154,11 @@
   swift_arrayDestroy();
 }
 
-- (void)didTapWelcomeContinueButton:(id)a3
+- (void)didTapWelcomeContinueButton:(id)button
 {
-  if (a3)
+  if (button)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -167,7 +167,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_100C2AEA8();
@@ -175,17 +175,17 @@
   sub_10000CAAC(v6, &unk_1019F4D00);
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
-  sub_100C2DBA8(v4);
+  dismissCopy = dismiss;
+  selfCopy = self;
+  sub_100C2DBA8(dismissCopy);
 }
 
 - (void)setUserActivity:
 {
   v0 = objc_opt_self();
-  v1 = [v0 _atomicIncrementAssertCount];
+  _atomicIncrementAssertCount = [v0 _atomicIncrementAssertCount];
   v23 = [objc_allocWithZone(NSString) init];
   sub_100604538(_swiftEmptyArrayStorage, &v23);
   StaticString.description.getter();
@@ -194,7 +194,7 @@
   StaticString.description.getter();
   v3 = String._bridgeToObjectiveC()();
 
-  v4 = [v3 lastPathComponent];
+  lastPathComponent = [v3 lastPathComponent];
 
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
@@ -210,7 +210,7 @@
   *(inited + 16) = xmmword_10146CA70;
   *(inited + 56) = &type metadata for Int32;
   *(inited + 64) = &protocol witness table for Int32;
-  *(inited + 32) = v1;
+  *(inited + 32) = _atomicIncrementAssertCount;
   v10 = sub_100006370(0, &qword_1019F4D30);
   *(inited + 96) = v10;
   v11 = sub_10000FDE0(&qword_1019F52E0, &qword_1019F4D30);

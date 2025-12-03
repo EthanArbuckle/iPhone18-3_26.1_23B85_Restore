@@ -4,16 +4,16 @@
 - (id)_activeStoreDSIDs;
 - (id)_allStoreDSIDs;
 - (id)_cloudDSID;
-- (id)_storeDSIDsForMediaType:(id)a3 onlyIncludeActive:(BOOL)a4;
+- (id)_storeDSIDsForMediaType:(id)type onlyIncludeActive:(BOOL)active;
 - (id)effectiveNotificationEnvironmentPromise;
-- (void)_handleApproverNotification:(id)a3;
-- (void)_handleCloudNotificationPayload:(id)a3;
-- (void)_handleStoreNotificationPayload:(id)a3;
-- (void)_registerCloudPublicToken:(id)a3;
+- (void)_handleApproverNotification:(id)notification;
+- (void)_handleCloudNotificationPayload:(id)payload;
+- (void)_handleStoreNotificationPayload:(id)payload;
+- (void)_registerCloudPublicToken:(id)token;
 - (void)_startConnection;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
-- (void)handleLegacyStoreNotificationPayload:(id)a3;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
+- (void)handleLegacyStoreNotificationPayload:(id)payload;
 - (void)start;
 @end
 
@@ -33,9 +33,9 @@
 
 - (void)start
 {
-  v3 = [(RemoteNotificationHandler *)self apsQueue];
+  apsQueue = [(RemoteNotificationHandler *)self apsQueue];
 
-  if (!v3)
+  if (!apsQueue)
   {
     v4 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v5 = dispatch_queue_create("com.apple.AskPermission.RemoteNotificationHandler", v4);
@@ -75,13 +75,13 @@
   {
     v5 = [(RemoteNotificationHandler *)self bag];
     v6 = [v5 stringForKey:@"push-notifications/environment"];
-    v7 = [v6 valuePromise];
+    valuePromise = [v6 valuePromise];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100019710;
     v9[3] = &unk_100055578;
     v9[4] = self;
-    self = [v7 continueWithBlock:v9];
+    self = [valuePromise continueWithBlock:v9];
   }
 
 LABEL_8:
@@ -89,54 +89,54 @@ LABEL_8:
   return self;
 }
 
-- (void)handleLegacyStoreNotificationPayload:(id)a3
+- (void)handleLegacyStoreNotificationPayload:(id)payload
 {
-  v4 = a3;
-  v5 = [(RemoteNotificationHandler *)self apsQueue];
+  payloadCopy = payload;
+  apsQueue = [(RemoteNotificationHandler *)self apsQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100019A80;
   v7[3] = &unk_100054D70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = payloadCopy;
+  v6 = payloadCopy;
+  dispatch_async(apsQueue, v7);
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  v5 = a4;
+  tokenCopy = token;
   v6 = +[APLogConfig sharedDaemonConfig];
   if (!v6)
   {
     v6 = +[APLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
     v14 = objc_opt_class();
     v8 = v14;
-    _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: Received public token", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Received public token", buf, 0xCu);
   }
 
-  v9 = [(RemoteNotificationHandler *)self effectiveNotificationEnvironmentPromise];
+  effectiveNotificationEnvironmentPromise = [(RemoteNotificationHandler *)self effectiveNotificationEnvironmentPromise];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100019C08;
   v11[3] = &unk_1000555A0;
   v11[4] = self;
-  v12 = v5;
-  v10 = v5;
-  [v9 addFinishBlock:v11];
+  v12 = tokenCopy;
+  v10 = tokenCopy;
+  [effectiveNotificationEnvironmentPromise addFinishBlock:v11];
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v5 = a4;
-  v6 = [(RemoteNotificationHandler *)self apsQueue];
-  dispatch_assert_queue_V2(v6);
+  messageCopy = message;
+  apsQueue = [(RemoteNotificationHandler *)self apsQueue];
+  dispatch_assert_queue_V2(apsQueue);
 
   v7 = +[APLogConfig sharedDaemonConfig];
   if (!v7)
@@ -144,17 +144,17 @@ LABEL_8:
     v7 = +[APLogConfig sharedConfig];
   }
 
-  v8 = [v7 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v7 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     *v22 = 138543362;
     *&v22[4] = objc_opt_class();
     v9 = *&v22[4];
-    _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: Received APS notification", v22, 0xCu);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Received APS notification", v22, 0xCu);
   }
 
-  v10 = [v5 userInfo];
-  if (!v10)
+  userInfo = [messageCopy userInfo];
+  if (!userInfo)
   {
     v13 = +[APLogConfig sharedDaemonConfig];
     if (!v13)
@@ -162,30 +162,30 @@ LABEL_8:
       v13 = +[APLogConfig sharedConfig];
     }
 
-    v14 = [v13 OSLogObject];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v13 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v15 = objc_opt_class();
       *v22 = 138543362;
       *&v22[4] = v15;
       v16 = v15;
-      _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%{public}@: Notification doesn't contain payload", v22, 0xCu);
+      _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: Notification doesn't contain payload", v22, 0xCu);
     }
 
     goto LABEL_18;
   }
 
-  v11 = [v5 topic];
-  v12 = [v11 isEqualToString:@"com.icloud.askpermission"];
+  topic = [messageCopy topic];
+  v12 = [topic isEqualToString:@"com.icloud.askpermission"];
 
   if (!v12)
   {
-    v17 = [v5 topic];
-    v18 = [v17 isEqualToString:@"com.apple.askpermissiond"];
+    topic2 = [messageCopy topic];
+    v18 = [topic2 isEqualToString:@"com.apple.askpermissiond"];
 
     if (v18)
     {
-      [(RemoteNotificationHandler *)self _handleStoreNotificationPayload:v10];
+      [(RemoteNotificationHandler *)self _handleStoreNotificationPayload:userInfo];
       goto LABEL_19;
     }
 
@@ -195,17 +195,17 @@ LABEL_8:
       v13 = +[APLogConfig sharedConfig];
     }
 
-    v14 = [v13 OSLogObject];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v13 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v19 = objc_opt_class();
       v20 = v19;
-      v21 = [v5 topic];
+      topic3 = [messageCopy topic];
       *v22 = 138543618;
       *&v22[4] = v19;
       *&v22[12] = 2114;
-      *&v22[14] = v21;
-      _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%{public}@: Unsupported notification topic. Topic: %{public}@", v22, 0x16u);
+      *&v22[14] = topic3;
+      _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: Unsupported notification topic. Topic: %{public}@", v22, 0x16u);
     }
 
 LABEL_18:
@@ -213,7 +213,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  [(RemoteNotificationHandler *)self _handleCloudNotificationPayload:v10];
+  [(RemoteNotificationHandler *)self _handleCloudNotificationPayload:userInfo];
 LABEL_19:
 }
 
@@ -222,7 +222,7 @@ LABEL_19:
   v8[0] = @"com.icloud.askpermission";
   v8[1] = @"com.apple.askpermissiond";
   v3 = [NSArray arrayWithObjects:v8 count:2];
-  v4 = [(RemoteNotificationHandler *)self effectiveNotificationEnvironmentPromise];
+  effectiveNotificationEnvironmentPromise = [(RemoteNotificationHandler *)self effectiveNotificationEnvironmentPromise];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10001A0BC;
@@ -230,14 +230,14 @@ LABEL_19:
   v6[4] = self;
   v7 = v3;
   v5 = v3;
-  [v4 addFinishBlock:v6];
+  [effectiveNotificationEnvironmentPromise addFinishBlock:v6];
 }
 
-- (void)_handleCloudNotificationPayload:(id)a3
+- (void)_handleCloudNotificationPayload:(id)payload
 {
-  v4 = a3;
-  v5 = [(RemoteNotificationHandler *)self apsQueue];
-  dispatch_assert_queue_V2(v5);
+  payloadCopy = payload;
+  apsQueue = [(RemoteNotificationHandler *)self apsQueue];
+  dispatch_assert_queue_V2(apsQueue);
 
   v6 = +[APLogConfig sharedDaemonConfig];
   if (!v6)
@@ -245,19 +245,19 @@ LABEL_19:
     v6 = +[APLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
     v31 = objc_opt_class();
     v8 = v31;
-    _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: Checking cloud notification", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Checking cloud notification", buf, 0xCu);
   }
 
-  v9 = [(RemoteNotificationHandler *)self _cloudDSID];
-  if (v9)
+  _cloudDSID = [(RemoteNotificationHandler *)self _cloudDSID];
+  if (_cloudDSID)
   {
-    v10 = [v4 objectForKeyedSubscript:@"0"];
+    v10 = [payloadCopy objectForKeyedSubscript:@"0"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -269,43 +269,43 @@ LABEL_19:
       v11 = 0;
     }
 
-    if (v11 && ([v9 isEqualToNumber:v11] & 1) == 0)
+    if (v11 && ([_cloudDSID isEqualToNumber:v11] & 1) == 0)
     {
-      v12 = +[APLogConfig sharedDaemonConfig];
-      if (!v12)
+      oSLogObject4 = +[APLogConfig sharedDaemonConfig];
+      if (!oSLogObject4)
       {
-        v12 = +[APLogConfig sharedConfig];
+        oSLogObject4 = +[APLogConfig sharedConfig];
       }
 
-      v16 = [v12 OSLogObject];
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [oSLogObject4 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         v23 = objc_opt_class();
         *buf = 138543362;
         v31 = v23;
         v24 = v23;
-        _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "%{public}@: Payload request DSID doesn't match cloud DSID", buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: Payload request DSID doesn't match cloud DSID", buf, 0xCu);
       }
     }
 
     else
     {
-      v15 = [v4 objectForKeyedSubscript:@"8"];
+      v15 = [payloadCopy objectForKeyedSubscript:@"8"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = v15;
+        oSLogObject4 = v15;
       }
 
       else
       {
-        v12 = 0;
+        oSLogObject4 = 0;
       }
 
-      if (v12)
+      if (oSLogObject4)
       {
-        v16 = [v4 objectForKeyedSubscript:@"purchaseAuthorizationId"];
-        if (!v16)
+        oSLogObject2 = [payloadCopy objectForKeyedSubscript:@"purchaseAuthorizationId"];
+        if (!oSLogObject2)
         {
           v17 = +[APLogConfig sharedDaemonConfig];
           if (!v17)
@@ -313,8 +313,8 @@ LABEL_19:
             v17 = +[APLogConfig sharedConfig];
           }
 
-          v18 = [v17 OSLogObject];
-          if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+          oSLogObject3 = [v17 OSLogObject];
+          if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
           {
             v19 = objc_opt_class();
             *buf = 138543362;
@@ -323,34 +323,34 @@ LABEL_19:
           }
         }
 
-        v21 = [[FamilyRequestTask alloc] initWithDSID:v11];
-        v22 = [(FamilyRequestTask *)v21 perform];
+        v16OSLogObject = [[FamilyRequestTask alloc] initWithDSID:v11];
+        perform = [(FamilyRequestTask *)v16OSLogObject perform];
         v27[0] = _NSConcreteStackBlock;
         v27[1] = 3221225472;
         v27[2] = sub_10001A82C;
         v27[3] = &unk_1000555C8;
         v27[4] = self;
-        v28 = v12;
-        v29 = v4;
-        [v22 resultWithCompletion:v27];
+        v28 = oSLogObject4;
+        v29 = payloadCopy;
+        [perform resultWithCompletion:v27];
       }
 
       else
       {
-        v16 = +[APLogConfig sharedDaemonConfig];
-        if (!v16)
+        oSLogObject2 = +[APLogConfig sharedDaemonConfig];
+        if (!oSLogObject2)
         {
-          v16 = +[APLogConfig sharedConfig];
+          oSLogObject2 = +[APLogConfig sharedConfig];
         }
 
-        v21 = [v16 OSLogObject];
-        if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+        v16OSLogObject = [oSLogObject2 OSLogObject];
+        if (os_log_type_enabled(v16OSLogObject, OS_LOG_TYPE_ERROR))
         {
           v25 = objc_opt_class();
           *buf = 138543362;
           v31 = v25;
           v26 = v25;
-          _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "%{public}@: Payload doesn't contain request identifier", buf, 0xCu);
+          _os_log_impl(&_mh_execute_header, v16OSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Payload doesn't contain request identifier", buf, 0xCu);
         }
       }
     }
@@ -364,37 +364,37 @@ LABEL_19:
       v11 = +[APLogConfig sharedConfig];
     }
 
-    v12 = [v11 OSLogObject];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    oSLogObject4 = [v11 OSLogObject];
+    if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_ERROR))
     {
       v13 = objc_opt_class();
       *buf = 138543362;
       v31 = v13;
       v14 = v13;
-      _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%{public}@: No cloud account", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, oSLogObject4, OS_LOG_TYPE_ERROR, "%{public}@: No cloud account", buf, 0xCu);
     }
   }
 }
 
-- (void)_handleApproverNotification:(id)a3
+- (void)_handleApproverNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [[ApproverRemoteNotificationTask alloc] initWithPayload:v4];
+  notificationCopy = notification;
+  v5 = [[ApproverRemoteNotificationTask alloc] initWithPayload:notificationCopy];
 
-  v6 = [(ApproverRemoteNotificationTask *)v5 perform];
+  perform = [(ApproverRemoteNotificationTask *)v5 perform];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001AB80;
   v7[3] = &unk_100054F78;
   v7[4] = self;
-  [v6 addFinishBlock:v7];
+  [perform addFinishBlock:v7];
 }
 
-- (void)_handleStoreNotificationPayload:(id)a3
+- (void)_handleStoreNotificationPayload:(id)payload
 {
-  v4 = a3;
-  v5 = [(RemoteNotificationHandler *)self apsQueue];
-  dispatch_assert_queue_V2(v5);
+  payloadCopy = payload;
+  apsQueue = [(RemoteNotificationHandler *)self apsQueue];
+  dispatch_assert_queue_V2(apsQueue);
 
   v6 = +[APLogConfig sharedDaemonConfig];
   if (!v6)
@@ -402,19 +402,19 @@ LABEL_19:
     v6 = +[APLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
     v26 = objc_opt_class();
     v8 = v26;
-    _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: Checking store notification", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Checking store notification", buf, 0xCu);
   }
 
-  v9 = [(RemoteNotificationHandler *)self _activeStoreDSIDs];
-  if ([v9 count])
+  _activeStoreDSIDs = [(RemoteNotificationHandler *)self _activeStoreDSIDs];
+  if ([_activeStoreDSIDs count])
   {
-    v10 = [v4 objectForKeyedSubscript:@"0"];
+    v10 = [payloadCopy objectForKeyedSubscript:@"0"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -426,74 +426,74 @@ LABEL_19:
       v11 = 0;
     }
 
-    if (v11 && ([v9 containsObject:v11] & 1) == 0)
+    if (v11 && ([_activeStoreDSIDs containsObject:v11] & 1) == 0)
     {
-      v12 = +[APLogConfig sharedDaemonConfig];
-      if (!v12)
+      oSLogObject3 = +[APLogConfig sharedDaemonConfig];
+      if (!oSLogObject3)
       {
-        v12 = +[APLogConfig sharedConfig];
+        oSLogObject3 = +[APLogConfig sharedConfig];
       }
 
-      v16 = [v12 OSLogObject];
-      if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [oSLogObject3 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_29;
       }
 
       v18 = objc_opt_class();
-      v17 = v18;
-      v19 = [v11 stringValue];
+      perform = v18;
+      stringValue = [v11 stringValue];
       *buf = 138543618;
       v26 = v18;
       v27 = 2112;
-      v28 = v19;
-      _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "%{public}@: Payload request DSID doesn't match store DSIDs: %@", buf, 0x16u);
+      v28 = stringValue;
+      _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: Payload request DSID doesn't match store DSIDs: %@", buf, 0x16u);
     }
 
     else
     {
-      v15 = [v4 objectForKeyedSubscript:@"8"];
+      v15 = [payloadCopy objectForKeyedSubscript:@"8"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = v15;
+        oSLogObject3 = v15;
       }
 
       else
       {
-        v12 = 0;
+        oSLogObject3 = 0;
       }
 
-      if (v12)
+      if (oSLogObject3)
       {
-        v16 = [[FamilyRequestTask alloc] initWithDSID:v11];
-        v17 = [v16 perform];
+        oSLogObject2 = [[FamilyRequestTask alloc] initWithDSID:v11];
+        perform = [oSLogObject2 perform];
         v22[0] = _NSConcreteStackBlock;
         v22[1] = 3221225472;
         v22[2] = sub_10001B154;
         v22[3] = &unk_1000555F0;
         v22[4] = self;
-        v23 = v4;
+        v23 = payloadCopy;
         v24 = 0;
-        [v17 resultWithCompletion:v22];
+        [perform resultWithCompletion:v22];
       }
 
       else
       {
-        v16 = +[APLogConfig sharedDaemonConfig];
-        if (!v16)
+        oSLogObject2 = +[APLogConfig sharedDaemonConfig];
+        if (!oSLogObject2)
         {
-          v16 = +[APLogConfig sharedConfig];
+          oSLogObject2 = +[APLogConfig sharedConfig];
         }
 
-        v17 = [v16 OSLogObject];
-        if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+        perform = [oSLogObject2 OSLogObject];
+        if (os_log_type_enabled(perform, OS_LOG_TYPE_ERROR))
         {
           v20 = objc_opt_class();
           *buf = 138543362;
           v26 = v20;
           v21 = v20;
-          _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%{public}@: Payload doesn't contain request identifier", buf, 0xCu);
+          _os_log_impl(&_mh_execute_header, perform, OS_LOG_TYPE_ERROR, "%{public}@: Payload doesn't contain request identifier", buf, 0xCu);
         }
       }
     }
@@ -508,47 +508,47 @@ LABEL_29:
     v11 = +[APLogConfig sharedConfig];
   }
 
-  v12 = [v11 OSLogObject];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+  oSLogObject3 = [v11 OSLogObject];
+  if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
   {
     v13 = objc_opt_class();
     *buf = 138543362;
     v26 = v13;
     v14 = v13;
-    _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%{public}@: No store accounts", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@: No store accounts", buf, 0xCu);
   }
 
 LABEL_30:
 }
 
-- (void)_registerCloudPublicToken:(id)a3
+- (void)_registerCloudPublicToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v5 = +[APLogConfig sharedDaemonConfig];
   if (!v5)
   {
     v5 = +[APLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
     v18 = objc_opt_class();
     v7 = v18;
-    _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Registering cloud push token", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Registering cloud push token", buf, 0xCu);
   }
 
   v8 = +[ACAccountStore ams_sharedAccountStore];
-  v9 = [v8 ams_activeiCloudAccount];
-  if (v9)
+  ams_activeiCloudAccount = [v8 ams_activeiCloudAccount];
+  if (ams_activeiCloudAccount)
   {
-    v10 = [[FARegisterPushTokenRequest alloc] initWithPushToken:v4];
-    v11 = [v9 username];
-    [v10 setUsernameOrDSID:v11];
+    v10 = [[FARegisterPushTokenRequest alloc] initWithPushToken:tokenCopy];
+    username = [ams_activeiCloudAccount username];
+    [v10 setUsernameOrDSID:username];
 
-    v12 = [v9 ams_password];
-    [v10 setPasswordOrToken:v12];
+    ams_password = [ams_activeiCloudAccount ams_password];
+    [v10 setPasswordOrToken:ams_password];
 
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
@@ -566,14 +566,14 @@ LABEL_30:
       v10 = +[APLogConfig sharedConfig];
     }
 
-    v13 = [v10 OSLogObject];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v10 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v14 = objc_opt_class();
       *buf = 138543362;
       v18 = v14;
       v15 = v14;
-      _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "%{public}@: Could not register push token, no active iCloud account", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: Could not register push token, no active iCloud account", buf, 0xCu);
     }
   }
 }
@@ -581,10 +581,10 @@ LABEL_30:
 - (id)_cloudDSID
 {
   v2 = +[ACAccountStore ams_sharedAccountStore];
-  v3 = [v2 ams_activeiCloudAccount];
-  v4 = [v3 ams_DSID];
+  ams_activeiCloudAccount = [v2 ams_activeiCloudAccount];
+  ams_DSID = [ams_activeiCloudAccount ams_DSID];
 
-  return v4;
+  return ams_DSID;
 }
 
 - (id)_accountMediaTypes
@@ -603,13 +603,13 @@ LABEL_30:
     v3 = +[APLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
     v20 = objc_opt_class();
     v5 = v20;
-    _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Getting ACTIVE Store Accounts", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Getting ACTIVE Store Accounts", buf, 0xCu);
   }
 
   v6 = objc_alloc_init(NSMutableSet);
@@ -617,8 +617,8 @@ LABEL_30:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [(RemoteNotificationHandler *)self _accountMediaTypes];
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  _accountMediaTypes = [(RemoteNotificationHandler *)self _accountMediaTypes];
+  v8 = [_accountMediaTypes countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -629,14 +629,14 @@ LABEL_30:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(_accountMediaTypes);
         }
 
         v12 = [(RemoteNotificationHandler *)self _storeDSIDsForMediaType:*(*(&v14 + 1) + 8 * i) onlyIncludeActive:1];
         [v6 addObjectsFromArray:v12];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [_accountMediaTypes countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
@@ -653,13 +653,13 @@ LABEL_30:
     v3 = +[APLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
     v20 = objc_opt_class();
     v5 = v20;
-    _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Getting ALL Store Accounts", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Getting ALL Store Accounts", buf, 0xCu);
   }
 
   v6 = objc_alloc_init(NSMutableSet);
@@ -667,8 +667,8 @@ LABEL_30:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [(RemoteNotificationHandler *)self _accountMediaTypes];
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  _accountMediaTypes = [(RemoteNotificationHandler *)self _accountMediaTypes];
+  v8 = [_accountMediaTypes countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -679,14 +679,14 @@ LABEL_30:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(_accountMediaTypes);
         }
 
         v12 = [(RemoteNotificationHandler *)self _storeDSIDsForMediaType:*(*(&v14 + 1) + 8 * i) onlyIncludeActive:0];
         [v6 addObjectsFromArray:v12];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [_accountMediaTypes countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
@@ -695,20 +695,20 @@ LABEL_30:
   return v6;
 }
 
-- (id)_storeDSIDsForMediaType:(id)a3 onlyIncludeActive:(BOOL)a4
+- (id)_storeDSIDsForMediaType:(id)type onlyIncludeActive:(BOOL)active
 {
-  v31 = a4;
-  v4 = a3;
+  activeCopy = active;
+  typeCopy = type;
   v29 = objc_alloc_init(NSMutableArray);
-  v27 = v4;
-  v5 = [ACAccountStore ams_sharedAccountStoreForMediaType:v4];
-  v6 = [v5 ams_iTunesAccounts];
+  v27 = typeCopy;
+  v5 = [ACAccountStore ams_sharedAccountStoreForMediaType:typeCopy];
+  ams_iTunesAccounts = [v5 ams_iTunesAccounts];
 
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v7 = v6;
+  v7 = ams_iTunesAccounts;
   v8 = [v7 countByEnumeratingWithState:&v32 objects:v44 count:16];
   if (v8)
   {
@@ -728,24 +728,24 @@ LABEL_30:
         }
 
         v14 = *(*(&v32 + 1) + 8 * i);
-        v15 = [v14 ams_DSID];
+        ams_DSID = [v14 ams_DSID];
         if (os_variant_has_internal_content())
         {
-          v16 = [v12[256] sharedDaemonConfig];
-          if (!v16)
+          sharedDaemonConfig = [v12[256] sharedDaemonConfig];
+          if (!sharedDaemonConfig)
           {
-            v16 = [v12[256] sharedConfig];
+            sharedDaemonConfig = [v12[256] sharedConfig];
           }
 
-          v17 = [v16 OSLogObject];
-          if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+          oSLogObject = [sharedDaemonConfig OSLogObject];
+          if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
           {
             v18 = v12;
             v19 = v11;
             v20 = v7;
             v21 = objc_opt_class();
             v28 = v21;
-            v22 = [v14 isActive];
+            isActive = [v14 isActive];
             *buf = v26;
             v37 = v21;
             v7 = v20;
@@ -754,28 +754,28 @@ LABEL_30:
             v38 = 2112;
             v39 = v27;
             v40 = 2112;
-            v41 = v15;
+            v41 = ams_DSID;
             v42 = 1024;
-            v43 = v22;
-            _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%{public}@: Store: %@ - DSID: %@ - Active: %d", buf, 0x26u);
+            v43 = isActive;
+            _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Store: %@ - DSID: %@ - Active: %d", buf, 0x26u);
           }
         }
 
-        if (!v31)
+        if (!activeCopy)
         {
-          if (!v15)
+          if (!ams_DSID)
           {
             goto LABEL_21;
           }
 
 LABEL_20:
-          [v29 addObject:v15];
+          [v29 addObject:ams_DSID];
           goto LABEL_21;
         }
 
         if ([v14 isActive])
         {
-          v23 = v15 == 0;
+          v23 = ams_DSID == 0;
         }
 
         else

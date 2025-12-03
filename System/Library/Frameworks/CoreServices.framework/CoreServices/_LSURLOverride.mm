@@ -1,26 +1,26 @@
 @interface _LSURLOverride
-+ (id)booksStoreAuthorizationURL:(State *)a3;
-+ (id)fmfURL:(State *)a3;
-+ (id)fmipURL:(State *)a3;
-+ (id)iCloudEmailPrefsURL:(State *)a3;
-+ (id)iCloudFamilyURL:(State *)a3;
-+ (id)iCloudSchoolworkURL:(State *)a3;
-+ (id)iTunesStoreURL:(State *)a3;
-+ (id)keynoteLiveURL:(State *)a3;
-+ (id)keynoteLiveURL_noFragment:(State *)a3;
-+ (void)addOverrideBlock:(id)a3;
++ (id)booksStoreAuthorizationURL:(State *)l;
++ (id)fmfURL:(State *)l;
++ (id)fmipURL:(State *)l;
++ (id)iCloudEmailPrefsURL:(State *)l;
++ (id)iCloudFamilyURL:(State *)l;
++ (id)iCloudSchoolworkURL:(State *)l;
++ (id)iTunesStoreURL:(State *)l;
++ (id)keynoteLiveURL:(State *)l;
++ (id)keynoteLiveURL_noFragment:(State *)fragment;
++ (void)addOverrideBlock:(id)block;
 + (void)removeAllOverrideBlocks;
 + (void)resetPlatformFlag;
-- (_LSURLOverride)initWithOriginalURL:(id)a3 checkingForAvailableApplications:(BOOL)a4;
+- (_LSURLOverride)initWithOriginalURL:(id)l checkingForAvailableApplications:(BOOL)applications;
 @end
 
 @implementation _LSURLOverride
 
-- (_LSURLOverride)initWithOriginalURL:(id)a3 checkingForAvailableApplications:(BOOL)a4
+- (_LSURLOverride)initWithOriginalURL:(id)l checkingForAvailableApplications:(BOOL)applications
 {
-  v4 = a4;
+  applicationsCopy = applications;
   v74 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  lCopy = l;
   v53.receiver = self;
   v53.super_class = _LSURLOverride;
   v8 = [(_LSURLOverride *)&v53 init];
@@ -29,14 +29,14 @@
     goto LABEL_55;
   }
 
-  v9 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:v7 resolvingAgainstBaseURL:1];
+  v9 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:lCopy resolvingAgainstBaseURL:1];
   if (v9)
   {
-    LaunchServices::URLOverrides::State::State(&v48, v9, v4);
-    v10 = _os_feature_enabled_impl();
-    if (v10)
+    LaunchServices::URLOverrides::State::State(&v48, v9, applicationsCopy);
+    isInXCTestRigInsecure = _os_feature_enabled_impl();
+    if (isInXCTestRigInsecure)
     {
-      v11 = LaunchServices::URLOverrides::getLog(v10);
+      v11 = LaunchServices::URLOverrides::getLog(isInXCTestRigInsecure);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
         [_LSURLOverride initWithOriginalURL:checkingForAvailableApplications:];
@@ -50,10 +50,10 @@ LABEL_6:
 
     if (LaunchServices::URLOverrides::overrideBlocks)
     {
-      v10 = [__LSDefaultsGetSharedInstance() isInXCTestRigInsecure];
-      if (v10)
+      isInXCTestRigInsecure = [__LSDefaultsGetSharedInstance() isInXCTestRigInsecure];
+      if (isInXCTestRigInsecure)
       {
-        v46 = v4;
+        v46 = applicationsCopy;
         v56 = 0u;
         v57 = 0u;
         v54 = 0u;
@@ -90,7 +90,7 @@ LABEL_14:
             {
 LABEL_20:
 
-              v4 = v46;
+              applicationsCopy = v46;
               goto LABEL_21;
             }
 
@@ -99,7 +99,7 @@ LABEL_20:
         }
 
         v31 = LaunchServices::URLOverrides::getLog(v20);
-        v4 = v46;
+        applicationsCopy = v46;
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
         {
           v44 = MEMORY[0x1865D71B0](v19);
@@ -123,16 +123,16 @@ LABEL_40:
             *buf = 138478083;
             v71 = v12;
             v72 = 2113;
-            v73 = v7;
+            v73 = lCopy;
             _os_log_impl(&dword_18162D000, v34, OS_LOG_TYPE_DEFAULT, "URL %{private}@ overrides URL %{private}@", buf, 0x16u);
           }
 
-          objc_storeStrong(&v8->_originalURL, a3);
+          objc_storeStrong(&v8->_originalURL, l);
           v35 = [v12 copy];
           overrideURL = v8->_overrideURL;
           v8->_overrideURL = v35;
 
-          if (!v4)
+          if (!applicationsCopy)
           {
             goto LABEL_54;
           }
@@ -184,7 +184,7 @@ LABEL_52:
 LABEL_21:
     if ((v49 & 1) == 0 && (v50 & 1) == 0 && (v51 & 1) == 0)
     {
-      v11 = LaunchServices::URLOverrides::getLog(v10);
+      v11 = LaunchServices::URLOverrides::getLog(isInXCTestRigInsecure);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
         v43 = [v48 URL];
@@ -206,14 +206,14 @@ LABEL_21:
     v64 = sel_booksStoreAuthorizationURL_;
     if (v49)
     {
-      v23 = v4;
+      v23 = applicationsCopy;
 LABEL_27:
       v24 = v65;
       v25 = 7;
       goto LABEL_28;
     }
 
-    v23 = v4;
+    v23 = applicationsCopy;
     if (v50)
     {
       goto LABEL_27;
@@ -254,7 +254,7 @@ LABEL_28:
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
       {
         v29 = NSStringFromSelector(v26);
-        v4 = v23;
+        applicationsCopy = v23;
         v30 = [v48 URL];
         *v58 = 138478339;
         v59 = v29;
@@ -275,7 +275,7 @@ LABEL_30:
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
       {
         v28 = [v48 URL];
-        v4 = v23;
+        applicationsCopy = v23;
         [(_LSURLOverride *)v28 initWithOriginalURL:v58 checkingForAvailableApplications:v27];
         v12 = 0;
 LABEL_36:
@@ -286,7 +286,7 @@ LABEL_36:
       v12 = 0;
     }
 
-    v4 = v23;
+    applicationsCopy = v23;
     goto LABEL_36;
   }
 
@@ -294,7 +294,7 @@ LABEL_36:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138477827;
-    v71 = v7;
+    v71 = lCopy;
     _os_log_impl(&dword_18162D000, v13, OS_LOG_TYPE_DEFAULT, "URL %{private}@ could not be decomposed into its components. Cannot override.", buf, 0xCu);
   }
 
@@ -305,14 +305,14 @@ LABEL_56:
   return v14;
 }
 
-+ (void)addOverrideBlock:(id)a3
++ (void)addOverrideBlock:(id)block
 {
-  v9 = a3;
-  if (!v9)
+  blockCopy = block;
+  if (!blockCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[_LSURLOverride(Tests) addOverrideBlock:]"];
-    [v7 handleFailureInFunction:v8 file:@"LSURLOverride.mm" lineNumber:154 description:{@"Invalid parameter not satisfying: %@", @"block != nil"}];
+    [currentHandler handleFailureInFunction:v8 file:@"LSURLOverride.mm" lineNumber:154 description:{@"Invalid parameter not satisfying: %@", @"block != nil"}];
   }
 
   if ([__LSDefaultsGetSharedInstance() isInXCTestRigInsecure])
@@ -327,7 +327,7 @@ LABEL_56:
       v3 = LaunchServices::URLOverrides::overrideBlocks;
     }
 
-    v6 = MEMORY[0x1865D71B0](v9);
+    v6 = MEMORY[0x1865D71B0](blockCopy);
     [v3 addObject:v6];
   }
 }
@@ -350,29 +350,29 @@ LABEL_56:
   }
 }
 
-+ (id)fmfURL:(State *)a3
++ (id)fmfURL:(State *)l
 {
-  v4 = [a3->var0 host];
-  v5 = [v4 lowercaseString];
+  host = [l->var0 host];
+  lowercaseString = [host lowercaseString];
 
-  if ([v5 isEqualToString:@"fmfmail.icloud.com"])
+  if ([lowercaseString isEqualToString:@"fmfmail.icloud.com"])
   {
-    v6 = [a3->var0 path];
-    v7 = [a3->var0 query];
-    v8 = v7;
-    if (v6 && v7)
+    path = [l->var0 path];
+    query = [l->var0 query];
+    v8 = query;
+    if (path && query)
     {
-      v9 = [v6 mutableCopy];
+      v9 = [path mutableCopy];
       [v9 appendString:@"?"];
       [v9 appendString:v8];
       v10 = [v9 copy];
 
-      v6 = v10;
+      path = v10;
     }
 
-    if ([v6 hasPrefix:@"/"])
+    if ([path hasPrefix:@"/"])
     {
-      v11 = [a3->var0 copy];
+      v11 = [l->var0 copy];
       [v11 setScheme:@"fmf1"];
       v12 = [v11 URL];
     }
@@ -391,14 +391,14 @@ LABEL_56:
   return v12;
 }
 
-+ (id)fmipURL:(State *)a3
++ (id)fmipURL:(State *)l
 {
-  v4 = [a3->var0 host];
-  v5 = [v4 lowercaseString];
+  host = [l->var0 host];
+  lowercaseString = [host lowercaseString];
 
-  if ([v5 isEqualToString:@"fmipmail.icloud.com"])
+  if ([lowercaseString isEqualToString:@"fmipmail.icloud.com"])
   {
-    v6 = [a3->var0 copy];
+    v6 = [l->var0 copy];
     [v6 setScheme:@"fmip1"];
     v7 = [v6 URL];
   }
@@ -411,12 +411,12 @@ LABEL_56:
   return v7;
 }
 
-+ (id)iTunesStoreURL:(State *)a3
++ (id)iTunesStoreURL:(State *)l
 {
   v76 = *MEMORY[0x1E69E9840];
-  if (a3->var6)
+  if (l->var6)
   {
-    v3 = LaunchServices::URLOverrides::getLog(a1);
+    v3 = LaunchServices::URLOverrides::getLog(self);
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
     {
       +[_LSURLOverride(Functions) iTunesStoreURL:];
@@ -426,29 +426,29 @@ LABEL_56:
     goto LABEL_65;
   }
 
-  v58 = [a3->var0 scheme];
-  v5 = [a3->var0 host];
-  v6 = [v5 lowercaseString];
+  scheme = [l->var0 scheme];
+  host = [l->var0 host];
+  lowercaseString = [host lowercaseString];
 
-  v57 = v6;
-  v7 = [a3->var0 path];
-  v8 = [a3->var0 query];
-  v9 = v8;
+  v57 = lowercaseString;
+  path = [l->var0 path];
+  query = [l->var0 query];
+  v9 = query;
   v4 = 0;
-  if (!v58 || !v6 || !v7)
+  if (!scheme || !lowercaseString || !path)
   {
     goto LABEL_64;
   }
 
-  v50 = v8;
-  if (v8)
+  v50 = query;
+  if (query)
   {
-    v10 = [v7 mutableCopy];
+    v10 = [path mutableCopy];
     [v10 appendString:@"?"];
     [v10 appendString:v9];
     v11 = [v10 copy];
 
-    v7 = v11;
+    path = v11;
   }
 
   v12 = [objc_alloc(MEMORY[0x1E695DF20]) initWithContentsOfFile:@"/var/mobile/Library/Caches/com.apple.itunesstored/url-resolution.plist"];
@@ -500,9 +500,9 @@ LABEL_56:
       v53 = *(*(&v67 + 1) + 8 * v16);
       v17 = [v53 objectForKey:{@"scheme-mapping", v43}];
       v49 = v16;
-      v55 = [v17 objectForKey:v58];
+      v55 = [v17 objectForKey:scheme];
 
-      if (a3->var1)
+      if (l->var1)
       {
         v18 = objc_alloc_init(MEMORY[0x1E696AF20]);
         [v18 setScheme:v55];
@@ -569,12 +569,12 @@ LABEL_56:
                     }
 
                     v34 = [MEMORY[0x1E696AE70] regularExpressionWithPattern:*(*(&v59 + 1) + 8 * j) options:1 error:0];
-                    v37 = [v34 rangeOfFirstMatchInString:v7 options:0 range:{0, objc_msgSend(v7, "length")}] == 0x7FFFFFFFFFFFFFFFLL && v35 == 0;
+                    v37 = [v34 rangeOfFirstMatchInString:path options:0 range:{0, objc_msgSend(path, "length")}] == 0x7FFFFFFFFFFFFFFFLL && v35 == 0;
 
                     if (!v37)
                     {
 
-                      v39 = [a3->var0 copy];
+                      v39 = [l->var0 copy];
                       [v39 setScheme:v55];
                       v4 = [v39 URL];
 
@@ -623,7 +623,7 @@ LABEL_63:
   v9 = v50;
 LABEL_64:
 
-  v3 = v58;
+  v3 = scheme;
 LABEL_65:
 
   v41 = *MEMORY[0x1E69E9840];
@@ -631,20 +631,20 @@ LABEL_65:
   return v4;
 }
 
-+ (id)iCloudEmailPrefsURL:(State *)a3
++ (id)iCloudEmailPrefsURL:(State *)l
 {
   v49 = *MEMORY[0x1E69E9840];
-  if (a3->var3)
+  if (l->var3)
   {
-    v4 = [a3->var0 host];
-    v5 = [v4 lowercaseString];
+    host = [l->var0 host];
+    lowercaseString = [host lowercaseString];
 
-    if ([v5 isEqualToString:@"setup.icloud.com"])
+    if ([lowercaseString isEqualToString:@"setup.icloud.com"])
     {
-      v38 = [a3->var0 query];
-      if (v38 && (HasCaseInsensitivePrefix = LaunchServices::URLOverrides::State::pathHasCaseInsensitivePrefix(&a3->var0, &cfstr_EmailPrefs.isa)))
+      query = [l->var0 query];
+      if (query && (HasCaseInsensitivePrefix = LaunchServices::URLOverrides::State::pathHasCaseInsensitivePrefix(&l->var0, &cfstr_EmailPrefs.isa)))
       {
-        var6 = a3->var6;
+        var6 = l->var6;
         v8 = LaunchServices::URLOverrides::getLog(HasCaseInsensitivePrefix);
         v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
         if (var6)
@@ -654,20 +654,20 @@ LABEL_65:
             +[_LSURLOverride(Functions) iCloudEmailPrefsURL:];
           }
 
-          v10 = [a3->var0 path];
-          if ([(__CFString *)v10 hasPrefix:@"/"])
+          path = [l->var0 path];
+          if ([(__CFString *)path hasPrefix:@"/"])
           {
-            v11 = [(__CFString *)v10 substringWithRange:1, [(__CFString *)v10 length]- 1];
+            v11 = [(__CFString *)path substringWithRange:1, [(__CFString *)path length]- 1];
 
-            v10 = v11;
+            path = v11;
           }
 
-          v36 = v10;
-          if (v10 && [(__CFString *)v10 length])
+          v36 = path;
+          if (path && [(__CFString *)path length])
           {
             v12 = objc_alloc_init(MEMORY[0x1E696AF20]);
             [v12 setScheme:@"x-apple.systempreferences"];
-            if (LaunchServices::URLOverrides::State::pathHasCaseInsensitivePrefix(&a3->var0, &cfstr_EmailPrefsFami.isa))
+            if (LaunchServices::URLOverrides::State::pathHasCaseInsensitivePrefix(&l->var0, &cfstr_EmailPrefsFami.isa))
             {
               v13 = @"com.apple.preferences.FamilySharingPrefPane";
             }
@@ -678,9 +678,9 @@ LABEL_65:
             }
 
             [v12 setPath:v13];
-            v14 = [(__CFString *)v10 mutableCopy];
+            v14 = [(__CFString *)path mutableCopy];
             [v14 appendString:@"?"];
-            [v14 appendString:v38];
+            [v14 appendString:query];
             [v12 setQuery:v14];
             v15 = [v12 URL];
 
@@ -704,8 +704,8 @@ LABEL_43:
           v46 = 0u;
           v43 = 0u;
           v44 = 0u;
-          v16 = [a3->var0 queryItems];
-          v17 = [v16 countByEnumeratingWithState:&v43 objects:v48 count:16];
+          queryItems = [l->var0 queryItems];
+          v17 = [queryItems countByEnumeratingWithState:&v43 objects:v48 count:16];
           if (v17)
           {
             v18 = *v44;
@@ -715,11 +715,11 @@ LABEL_43:
               {
                 if (*v44 != v18)
                 {
-                  objc_enumerationMutation(v16);
+                  objc_enumerationMutation(queryItems);
                 }
 
-                v20 = [*(*(&v43 + 1) + 8 * i) name];
-                v21 = [v20 isEqualToString:@"path"];
+                name = [*(*(&v43 + 1) + 8 * i) name];
+                v21 = [name isEqualToString:@"path"];
 
                 if (v21)
                 {
@@ -728,8 +728,8 @@ LABEL_43:
                   v42 = 0u;
                   v39 = 0u;
                   v40 = 0u;
-                  v23 = [a3->var0 queryItems];
-                  v24 = [v23 countByEnumeratingWithState:&v39 objects:v47 count:16];
+                  queryItems2 = [l->var0 queryItems];
+                  v24 = [queryItems2 countByEnumeratingWithState:&v39 objects:v47 count:16];
                   if (v24)
                   {
                     v25 = *v40;
@@ -740,25 +740,25 @@ LABEL_43:
                       {
                         if (*v40 != v25)
                         {
-                          objc_enumerationMutation(v23);
+                          objc_enumerationMutation(queryItems2);
                         }
 
                         v27 = *(*(&v39 + 1) + 8 * j);
-                        v28 = [v27 name];
-                        v29 = [v28 lowercaseString];
-                        v30 = [v29 isEqual:@"path"];
+                        name2 = [v27 name];
+                        lowercaseString2 = [name2 lowercaseString];
+                        v30 = [lowercaseString2 isEqual:@"path"];
 
                         if (v30)
                         {
                           v31 = MEMORY[0x1E696AEC0];
-                          v32 = [v27 value];
-                          v36 = [v31 stringWithFormat:@"ICLOUD_SERVICE/%@", v32];
+                          value = [v27 value];
+                          v36 = [v31 stringWithFormat:@"ICLOUD_SERVICE/%@", value];
 
                           goto LABEL_42;
                         }
                       }
 
-                      v24 = [v23 countByEnumeratingWithState:&v39 objects:v47 count:16];
+                      v24 = [queryItems2 countByEnumeratingWithState:&v39 objects:v47 count:16];
                       if (v24)
                       {
                         continue;
@@ -782,7 +782,7 @@ LABEL_42:
                 }
               }
 
-              v17 = [v16 countByEnumeratingWithState:&v43 objects:v48 count:16];
+              v17 = [queryItems countByEnumeratingWithState:&v43 objects:v48 count:16];
               if (v17)
               {
                 continue;
@@ -793,7 +793,7 @@ LABEL_42:
           }
 
           v22 = objc_alloc(MEMORY[0x1E695DFF8]);
-          v37 = [@"settings-navigation://com.apple.Settings.AppleAccount?" stringByAppendingString:v38];
+          v37 = [@"settings-navigation://com.apple.Settings.AppleAccount?" stringByAppendingString:query];
           v15 = [v22 initWithString:?];
         }
       }
@@ -820,26 +820,26 @@ LABEL_42:
   return v15;
 }
 
-+ (id)keynoteLiveURL:(State *)a3
++ (id)keynoteLiveURL:(State *)l
 {
-  if (LaunchServices::URLOverrides::State::isNooverride(&a3->var0))
+  if (LaunchServices::URLOverrides::State::isNooverride(&l->var0))
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [a1 keynoteLiveURL_noFragment:a3];
+    v5 = [self keynoteLiveURL_noFragment:l];
   }
 
   return v5;
 }
 
-+ (id)keynoteLiveURL_noFragment:(State *)a3
++ (id)keynoteLiveURL_noFragment:(State *)fragment
 {
-  if (a3->var3 && a3->var5 && LaunchServices::URLOverrides::State::pathHasCaseInsensitivePrefix(&a3->var0, &cfstr_KeynoteLive.isa))
+  if (fragment->var3 && fragment->var5 && LaunchServices::URLOverrides::State::pathHasCaseInsensitivePrefix(&fragment->var0, &cfstr_KeynoteLive.isa))
   {
-    v4 = [a3->var0 copy];
+    v4 = [fragment->var0 copy];
     [v4 setScheme:@"com.apple.iwork.keynote-live"];
     v5 = +[LSApplicationWorkspace defaultWorkspace];
     v6 = [v4 URL];
@@ -852,8 +852,8 @@ LABEL_42:
 
     else
     {
-      v10 = [a3->var0 host];
-      v11 = [v10 caseInsensitiveCompare:@"www.icloud.com"];
+      host = [fragment->var0 host];
+      v11 = [host caseInsensitiveCompare:@"www.icloud.com"];
 
       if (v11)
       {
@@ -862,12 +862,12 @@ LABEL_42:
 
       else
       {
-        v12 = [a3->var0 path];
-        v13 = [v12 lastPathComponent];
+        path = [fragment->var0 path];
+        lastPathComponent = [path lastPathComponent];
 
         v14 = objc_alloc_init(MEMORY[0x1E696AF20]);
         [v14 setScheme:@"x-keynote-live"];
-        [v14 setHost:v13];
+        [v14 setHost:lastPathComponent];
         v8 = [v14 URL];
       }
     }
@@ -881,11 +881,11 @@ LABEL_42:
   return v8;
 }
 
-+ (id)iCloudFamilyURL:(State *)a3
++ (id)iCloudFamilyURL:(State *)l
 {
-  if (a3->var6)
+  if (l->var6)
   {
-    v3 = LaunchServices::URLOverrides::getLog(a1);
+    v3 = LaunchServices::URLOverrides::getLog(self);
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
     {
       +[_LSURLOverride(Functions) iCloudFamilyURL:];
@@ -896,15 +896,15 @@ LABEL_42:
 
   else
   {
-    v6 = [a3->var0 host];
-    v7 = [v6 lowercaseString];
+    host = [l->var0 host];
+    lowercaseString = [host lowercaseString];
 
-    if ([v7 isEqual:@"setup.icloud.com"])
+    if ([lowercaseString isEqual:@"setup.icloud.com"])
     {
-      v8 = [a3->var0 path];
-      if ([v8 isEqual:@"/family/messages"])
+      path = [l->var0 path];
+      if ([path isEqual:@"/family/messages"])
       {
-        v9 = [a3->var0 copy];
+        v9 = [l->var0 copy];
         [v9 setScheme:@"family"];
         [v9 setHost:@"messages"];
         [v9 setPath:0];
@@ -926,11 +926,11 @@ LABEL_42:
   return v4;
 }
 
-+ (id)iCloudSchoolworkURL:(State *)a3
++ (id)iCloudSchoolworkURL:(State *)l
 {
-  if (a3->var6)
+  if (l->var6)
   {
-    v3 = LaunchServices::URLOverrides::getLog(a1);
+    v3 = LaunchServices::URLOverrides::getLog(self);
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
     {
       +[_LSURLOverride(Functions) iCloudSchoolworkURL:];
@@ -939,9 +939,9 @@ LABEL_42:
     goto LABEL_15;
   }
 
-  if (!a3->var5)
+  if (!l->var5)
   {
-    v3 = LaunchServices::URLOverrides::getLog(a1);
+    v3 = LaunchServices::URLOverrides::getLog(self);
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
     {
       +[_LSURLOverride(Functions) iCloudSchoolworkURL:];
@@ -950,9 +950,9 @@ LABEL_42:
     goto LABEL_15;
   }
 
-  v5 = [a3->var0 fragment];
-  v6 = [v5 pathComponents];
-  v3 = [v6 mutableCopy];
+  fragment = [l->var0 fragment];
+  pathComponents = [fragment pathComponents];
+  v3 = [pathComponents mutableCopy];
 
   if (!v3 || (v7 = [v3 count], v7 <= 1))
   {
@@ -983,7 +983,7 @@ LABEL_15:
     goto LABEL_14;
   }
 
-  v14 = [a3->var0 copy];
+  v14 = [l->var0 copy];
   [v14 setScheme:@"schoolwork"];
   [v14 setHost:@"schoolwork"];
   [v3 replaceObjectAtIndex:0 withObject:&stru_1EEF65710];
@@ -998,18 +998,18 @@ LABEL_16:
   return v12;
 }
 
-+ (id)booksStoreAuthorizationURL:(State *)a3
++ (id)booksStoreAuthorizationURL:(State *)l
 {
-  if (a3->var6)
+  if (l->var6)
   {
-    if (a3->var4)
+    if (l->var4)
     {
-      v4 = [a3->var0 host];
-      v5 = [v4 isEqual:@"www.audible.com"];
+      host = [l->var0 host];
+      v5 = [host isEqual:@"www.audible.com"];
 
       if (v5)
       {
-        v6 = [a3->var0 copy];
+        v6 = [l->var0 copy];
         [v6 setScheme:@"ibooks"];
         v7 = [v6 URL];
 
@@ -1020,7 +1020,7 @@ LABEL_16:
 
   else
   {
-    v8 = LaunchServices::URLOverrides::getLog(a1);
+    v8 = LaunchServices::URLOverrides::getLog(self);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       +[_LSURLOverride(Functions) booksStoreAuthorizationURL:];

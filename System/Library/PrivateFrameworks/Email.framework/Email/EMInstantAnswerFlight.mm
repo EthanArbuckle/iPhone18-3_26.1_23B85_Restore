@@ -1,8 +1,8 @@
 @interface EMInstantAnswerFlight
-- (EMInstantAnswerFlight)initWithCSInstantAnswers:(id)a3;
-- (EMInstantAnswerFlight)initWithCoder:(id)a3;
+- (EMInstantAnswerFlight)initWithCSInstantAnswers:(id)answers;
+- (EMInstantAnswerFlight)initWithCoder:(id)coder;
 - (EMInstantAnswerFlight)initWithFakeData;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EMInstantAnswerFlight
@@ -30,44 +30,44 @@
   return v2;
 }
 
-- (EMInstantAnswerFlight)initWithCSInstantAnswers:(id)a3
+- (EMInstantAnswerFlight)initWithCSInstantAnswers:(id)answers
 {
-  v4 = a3;
+  answersCopy = answers;
   v28.receiver = self;
   v28.super_class = EMInstantAnswerFlight;
   v5 = [(EMInstantAnswerFlight *)&v28 init];
   if (v5)
   {
-    v6 = [v4 flightCheckInUrl];
+    flightCheckInUrl = [answersCopy flightCheckInUrl];
     checkInUrl = v5->_checkInUrl;
-    v5->_checkInUrl = v6;
+    v5->_checkInUrl = flightCheckInUrl;
 
-    v8 = [v4 flightDepartureDateComponents];
+    flightDepartureDateComponents = [answersCopy flightDepartureDateComponents];
     departureDateComponents = v5->_departureDateComponents;
-    v5->_departureDateComponents = v8;
+    v5->_departureDateComponents = flightDepartureDateComponents;
 
-    v10 = [v4 flightArrivalDateComponents];
+    flightArrivalDateComponents = [answersCopy flightArrivalDateComponents];
     arrivalDateComponents = v5->_arrivalDateComponents;
-    v5->_arrivalDateComponents = v10;
+    v5->_arrivalDateComponents = flightArrivalDateComponents;
 
-    v12 = [v4 flightDepartureTimeZone];
+    flightDepartureTimeZone = [answersCopy flightDepartureTimeZone];
     departureTimeZone = v5->_departureTimeZone;
-    v5->_departureTimeZone = v12;
+    v5->_departureTimeZone = flightDepartureTimeZone;
 
-    v14 = [v4 flightArrivalTimeZone];
+    flightArrivalTimeZone = [answersCopy flightArrivalTimeZone];
     arrivalTimeZone = v5->_arrivalTimeZone;
-    v5->_arrivalTimeZone = v14;
+    v5->_arrivalTimeZone = flightArrivalTimeZone;
 
-    v16 = [v4 flightArrivalAirportCode];
+    flightArrivalAirportCode = [answersCopy flightArrivalAirportCode];
     arrivalAirportCode = v5->_arrivalAirportCode;
-    v5->_arrivalAirportCode = v16;
+    v5->_arrivalAirportCode = flightArrivalAirportCode;
 
-    v18 = [v4 flightDepartureAirportCode];
+    flightDepartureAirportCode = [answersCopy flightDepartureAirportCode];
     departureAirportCode = v5->_departureAirportCode;
-    v5->_departureAirportCode = v18;
+    v5->_departureAirportCode = flightDepartureAirportCode;
 
     v5->_infoIsLive = 0;
-    v20 = [EMParsecInstantAnswers updatedFlightInformationForInstantAnswer:v4];
+    v20 = [EMParsecInstantAnswers updatedFlightInformationForInstantAnswer:answersCopy];
     if (v20)
     {
       if (!v5->_checkInUrl)
@@ -92,73 +92,73 @@
   return v5;
 }
 
-- (EMInstantAnswerFlight)initWithCoder:(id)a3
+- (EMInstantAnswerFlight)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = EMInstantAnswerFlight;
   v5 = [(EMInstantAnswerFlight *)&v21 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_checkInUrl"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_checkInUrl"];
     checkInUrl = v5->_checkInUrl;
     v5->_checkInUrl = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_departureDateComponents"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_departureDateComponents"];
     departureDateComponents = v5->_departureDateComponents;
     v5->_departureDateComponents = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_arrivalDateComponents"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_arrivalDateComponents"];
     arrivalDateComponents = v5->_arrivalDateComponents;
     v5->_arrivalDateComponents = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_departureTimeZone"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_departureTimeZone"];
     departureTimeZone = v5->_departureTimeZone;
     v5->_departureTimeZone = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_arrivalTimeZone"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_arrivalTimeZone"];
     arrivalTimeZone = v5->_arrivalTimeZone;
     v5->_arrivalTimeZone = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_arrivalAirportCode"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_arrivalAirportCode"];
     arrivalAirportCode = v5->_arrivalAirportCode;
     v5->_arrivalAirportCode = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_departureAirportCode"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_departureAirportCode"];
     departureAirportCode = v5->_departureAirportCode;
     v5->_departureAirportCode = v18;
 
-    v5->_infoIsLive = [v4 decodeBoolForKey:@"EFPropertyKey_infoIsLive"];
+    v5->_infoIsLive = [coderCopy decodeBoolForKey:@"EFPropertyKey_infoIsLive"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v11 = a3;
-  v4 = [(EMInstantAnswerFlight *)self checkInUrl];
-  [v11 encodeObject:v4 forKey:@"EFPropertyKey_checkInUrl"];
+  coderCopy = coder;
+  checkInUrl = [(EMInstantAnswerFlight *)self checkInUrl];
+  [coderCopy encodeObject:checkInUrl forKey:@"EFPropertyKey_checkInUrl"];
 
-  v5 = [(EMInstantAnswerFlight *)self departureDateComponents];
-  [v11 encodeObject:v5 forKey:@"EFPropertyKey_departureDateComponents"];
+  departureDateComponents = [(EMInstantAnswerFlight *)self departureDateComponents];
+  [coderCopy encodeObject:departureDateComponents forKey:@"EFPropertyKey_departureDateComponents"];
 
-  v6 = [(EMInstantAnswerFlight *)self arrivalDateComponents];
-  [v11 encodeObject:v6 forKey:@"EFPropertyKey_arrivalDateComponents"];
+  arrivalDateComponents = [(EMInstantAnswerFlight *)self arrivalDateComponents];
+  [coderCopy encodeObject:arrivalDateComponents forKey:@"EFPropertyKey_arrivalDateComponents"];
 
-  v7 = [(EMInstantAnswerFlight *)self departureTimeZone];
-  [v11 encodeObject:v7 forKey:@"EFPropertyKey_departureTimeZone"];
+  departureTimeZone = [(EMInstantAnswerFlight *)self departureTimeZone];
+  [coderCopy encodeObject:departureTimeZone forKey:@"EFPropertyKey_departureTimeZone"];
 
-  v8 = [(EMInstantAnswerFlight *)self arrivalTimeZone];
-  [v11 encodeObject:v8 forKey:@"EFPropertyKey_arrivalTimeZone"];
+  arrivalTimeZone = [(EMInstantAnswerFlight *)self arrivalTimeZone];
+  [coderCopy encodeObject:arrivalTimeZone forKey:@"EFPropertyKey_arrivalTimeZone"];
 
-  v9 = [(EMInstantAnswerFlight *)self arrivalAirportCode];
-  [v11 encodeObject:v9 forKey:@"EFPropertyKey_arrivalAirportCode"];
+  arrivalAirportCode = [(EMInstantAnswerFlight *)self arrivalAirportCode];
+  [coderCopy encodeObject:arrivalAirportCode forKey:@"EFPropertyKey_arrivalAirportCode"];
 
-  v10 = [(EMInstantAnswerFlight *)self departureAirportCode];
-  [v11 encodeObject:v10 forKey:@"EFPropertyKey_departureAirportCode"];
+  departureAirportCode = [(EMInstantAnswerFlight *)self departureAirportCode];
+  [coderCopy encodeObject:departureAirportCode forKey:@"EFPropertyKey_departureAirportCode"];
 
-  [v11 encodeBool:-[EMInstantAnswerFlight infoIsLive](self forKey:{"infoIsLive"), @"EFPropertyKey_infoIsLive"}];
+  [coderCopy encodeBool:-[EMInstantAnswerFlight infoIsLive](self forKey:{"infoIsLive"), @"EFPropertyKey_infoIsLive"}];
 }
 
 @end

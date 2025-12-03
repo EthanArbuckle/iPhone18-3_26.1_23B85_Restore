@@ -1,18 +1,18 @@
 @interface MTL4MeshRenderPipelineDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTL4MeshRenderPipelineDescriptor)init;
 - (MTL4StaticLinkingDescriptor)fragmentStaticLinkingDescriptor;
 - (MTL4StaticLinkingDescriptor)meshStaticLinkingDescriptor;
 - (MTL4StaticLinkingDescriptor)objectStaticLinkingDescriptor;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 - (void)reset;
-- (void)setFragmentStaticLinkingDescriptor:(id)a3;
-- (void)setMeshStaticLinkingDescriptor:(id)a3;
-- (void)setObjectStaticLinkingDescriptor:(id)a3;
-- (void)setRequiredThreadsPerMeshThreadgroup:(id *)a3;
-- (void)setRequiredThreadsPerObjectThreadgroup:(id *)a3;
+- (void)setFragmentStaticLinkingDescriptor:(id)descriptor;
+- (void)setMeshStaticLinkingDescriptor:(id)descriptor;
+- (void)setObjectStaticLinkingDescriptor:(id)descriptor;
+- (void)setRequiredThreadsPerMeshThreadgroup:(id *)threadgroup;
+- (void)setRequiredThreadsPerObjectThreadgroup:(id *)threadgroup;
 @end
 
 @implementation MTL4MeshRenderPipelineDescriptor
@@ -33,14 +33,14 @@
   [(MTL4PipelineDescriptor *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = MTL4MeshRenderPipelineDescriptor;
   v5 = [(MTL4PipelineDescriptor *)&v9 copyWithZone:?];
-  *(v5 + 10) = [(MTL4FunctionDescriptor *)self->_objectFunctionDescriptor copyWithZone:a3];
-  *(v5 + 11) = [(MTL4FunctionDescriptor *)self->_meshFunctionDescriptor copyWithZone:a3];
-  *(v5 + 12) = [(MTL4FunctionDescriptor *)self->_fragmentFunctionDescriptor copyWithZone:a3];
+  *(v5 + 10) = [(MTL4FunctionDescriptor *)self->_objectFunctionDescriptor copyWithZone:zone];
+  *(v5 + 11) = [(MTL4FunctionDescriptor *)self->_meshFunctionDescriptor copyWithZone:zone];
+  *(v5 + 12) = [(MTL4FunctionDescriptor *)self->_fragmentFunctionDescriptor copyWithZone:zone];
   *(v5 + 13) = self->_maxTotalThreadsPerObjectThreadgroup;
   *(v5 + 14) = self->_maxTotalThreadsPerMeshThreadgroup;
   v5[40] = self->_objectThreadgroupSizeIsMultipleOfThreadExecutionWidth;
@@ -53,10 +53,10 @@
   v5[42] = self->_rasterizationEnabled;
   *(v5 + 20) = self->_maxVertexAmplificationCount;
 
-  *(v5 + 21) = [(MTL4RenderPipelineColorAttachmentDescriptorArray *)self->_colorAttachments copyWithZone:a3];
-  *(v5 + 8) = [(MTL4StaticLinkingDescriptor *)self->_objectStaticLinkingDescriptor copyWithZone:a3];
-  *(v5 + 7) = [(MTL4StaticLinkingDescriptor *)self->_meshStaticLinkingDescriptor copyWithZone:a3];
-  *(v5 + 6) = [(MTL4StaticLinkingDescriptor *)self->_fragmentStaticLinkingDescriptor copyWithZone:a3];
+  *(v5 + 21) = [(MTL4RenderPipelineColorAttachmentDescriptorArray *)self->_colorAttachments copyWithZone:zone];
+  *(v5 + 8) = [(MTL4StaticLinkingDescriptor *)self->_objectStaticLinkingDescriptor copyWithZone:zone];
+  *(v5 + 7) = [(MTL4StaticLinkingDescriptor *)self->_meshStaticLinkingDescriptor copyWithZone:zone];
+  *(v5 + 6) = [(MTL4StaticLinkingDescriptor *)self->_fragmentStaticLinkingDescriptor copyWithZone:zone];
   v5[43] = self->_supportObjectBinaryLinking;
   v5[44] = self->_supportMeshBinaryLinking;
   v5[45] = self->_supportFragmentBinaryLinking;
@@ -72,9 +72,9 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v8) = 1;
     return v8;
@@ -83,40 +83,40 @@
   v18 = v3;
   v19 = v4;
   Class = object_getClass(self);
-  if (Class != object_getClass(a3))
+  if (Class != object_getClass(equal))
   {
     goto LABEL_3;
   }
 
   v17.receiver = self;
   v17.super_class = MTL4MeshRenderPipelineDescriptor;
-  v8 = [(MTL4PipelineDescriptor *)&v17 isEqual:a3];
+  v8 = [(MTL4PipelineDescriptor *)&v17 isEqual:equal];
   if (v8)
   {
     objectFunctionDescriptor = self->_objectFunctionDescriptor;
-    if (objectFunctionDescriptor == *(a3 + 10) || (v8 = [(MTL4FunctionDescriptor *)objectFunctionDescriptor isEqual:?]) != 0)
+    if (objectFunctionDescriptor == *(equal + 10) || (v8 = [(MTL4FunctionDescriptor *)objectFunctionDescriptor isEqual:?]) != 0)
     {
       fragmentFunctionDescriptor = self->_fragmentFunctionDescriptor;
-      if (fragmentFunctionDescriptor == *(a3 + 12) || (v8 = [(MTL4FunctionDescriptor *)fragmentFunctionDescriptor isEqual:?]) != 0)
+      if (fragmentFunctionDescriptor == *(equal + 12) || (v8 = [(MTL4FunctionDescriptor *)fragmentFunctionDescriptor isEqual:?]) != 0)
       {
         meshFunctionDescriptor = self->_meshFunctionDescriptor;
-        if (meshFunctionDescriptor == *(a3 + 11) || (v8 = [(MTL4FunctionDescriptor *)meshFunctionDescriptor isEqual:?]) != 0)
+        if (meshFunctionDescriptor == *(equal + 11) || (v8 = [(MTL4FunctionDescriptor *)meshFunctionDescriptor isEqual:?]) != 0)
         {
           colorAttachments = self->_colorAttachments;
-          if (colorAttachments == *(a3 + 21) || (v8 = [(MTL4RenderPipelineColorAttachmentDescriptorArray *)colorAttachments isEqual:?]) != 0)
+          if (colorAttachments == *(equal + 21) || (v8 = [(MTL4RenderPipelineColorAttachmentDescriptorArray *)colorAttachments isEqual:?]) != 0)
           {
             meshStaticLinkingDescriptor = self->_meshStaticLinkingDescriptor;
-            if (meshStaticLinkingDescriptor == *(a3 + 7) || (v8 = [(MTL4StaticLinkingDescriptor *)meshStaticLinkingDescriptor isEqual:?]) != 0)
+            if (meshStaticLinkingDescriptor == *(equal + 7) || (v8 = [(MTL4StaticLinkingDescriptor *)meshStaticLinkingDescriptor isEqual:?]) != 0)
             {
               objectStaticLinkingDescriptor = self->_objectStaticLinkingDescriptor;
-              if (objectStaticLinkingDescriptor == *(a3 + 8) || (v8 = [(MTL4StaticLinkingDescriptor *)objectStaticLinkingDescriptor isEqual:?]) != 0)
+              if (objectStaticLinkingDescriptor == *(equal + 8) || (v8 = [(MTL4StaticLinkingDescriptor *)objectStaticLinkingDescriptor isEqual:?]) != 0)
               {
                 fragmentStaticLinkingDescriptor = self->_fragmentStaticLinkingDescriptor;
-                if (fragmentStaticLinkingDescriptor == *(a3 + 6) || (v8 = [(MTL4StaticLinkingDescriptor *)fragmentStaticLinkingDescriptor isEqual:?]) != 0)
+                if (fragmentStaticLinkingDescriptor == *(equal + 6) || (v8 = [(MTL4StaticLinkingDescriptor *)fragmentStaticLinkingDescriptor isEqual:?]) != 0)
                 {
-                  if (*(a3 + 13) == self->_maxTotalThreadsPerObjectThreadgroup && *(a3 + 14) == self->_maxTotalThreadsPerMeshThreadgroup && *(a3 + 40) == self->_objectThreadgroupSizeIsMultipleOfThreadExecutionWidth && *(a3 + 41) == self->_meshThreadgroupSizeIsMultipleOfThreadExecutionWidth && *(a3 + 15) == self->_payloadMemoryLength && *(a3 + 16) == self->_maxTotalThreadgroupsPerMeshGrid && *(a3 + 17) == self->_rasterSampleCount && *(a3 + 18) == self->_alphaToCoverageState && *(a3 + 19) == self->_alphaToOneState && *(a3 + 42) == self->_rasterizationEnabled && *(a3 + 20) == self->_maxVertexAmplificationCount && *(a3 + 43) == self->_supportObjectBinaryLinking && *(a3 + 44) == self->_supportMeshBinaryLinking && *(a3 + 45) == self->_supportFragmentBinaryLinking && *(a3 + 22) == self->_colorAttachmentMappingState && *(a3 + 24) == self->_requiredThreadsPerObjectThreadgroup.width && *(a3 + 25) == self->_requiredThreadsPerObjectThreadgroup.height && *(a3 + 26) == self->_requiredThreadsPerObjectThreadgroup.depth && *(a3 + 27) == self->_requiredThreadsPerMeshThreadgroup.width && *(a3 + 28) == self->_requiredThreadsPerMeshThreadgroup.height && *(a3 + 29) == self->_requiredThreadsPerMeshThreadgroup.depth && *(a3 + 9) == self->_supportIndirectCommandBuffers)
+                  if (*(equal + 13) == self->_maxTotalThreadsPerObjectThreadgroup && *(equal + 14) == self->_maxTotalThreadsPerMeshThreadgroup && *(equal + 40) == self->_objectThreadgroupSizeIsMultipleOfThreadExecutionWidth && *(equal + 41) == self->_meshThreadgroupSizeIsMultipleOfThreadExecutionWidth && *(equal + 15) == self->_payloadMemoryLength && *(equal + 16) == self->_maxTotalThreadgroupsPerMeshGrid && *(equal + 17) == self->_rasterSampleCount && *(equal + 18) == self->_alphaToCoverageState && *(equal + 19) == self->_alphaToOneState && *(equal + 42) == self->_rasterizationEnabled && *(equal + 20) == self->_maxVertexAmplificationCount && *(equal + 43) == self->_supportObjectBinaryLinking && *(equal + 44) == self->_supportMeshBinaryLinking && *(equal + 45) == self->_supportFragmentBinaryLinking && *(equal + 22) == self->_colorAttachmentMappingState && *(equal + 24) == self->_requiredThreadsPerObjectThreadgroup.width && *(equal + 25) == self->_requiredThreadsPerObjectThreadgroup.height && *(equal + 26) == self->_requiredThreadsPerObjectThreadgroup.depth && *(equal + 27) == self->_requiredThreadsPerMeshThreadgroup.width && *(equal + 28) == self->_requiredThreadsPerMeshThreadgroup.height && *(equal + 29) == self->_requiredThreadsPerMeshThreadgroup.depth && *(equal + 9) == self->_supportIndirectCommandBuffers)
                   {
-                    LOBYTE(v8) = *(a3 + 23) == self->_colorSampleCount;
+                    LOBYTE(v8) = *(equal + 23) == self->_colorSampleCount;
                     return v8;
                   }
 
@@ -245,9 +245,9 @@ LABEL_3:
   return result;
 }
 
-- (void)setFragmentStaticLinkingDescriptor:(id)a3
+- (void)setFragmentStaticLinkingDescriptor:(id)descriptor
 {
-  if (a3)
+  if (descriptor)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -257,10 +257,10 @@ LABEL_3:
     }
   }
 
-  if (self->_fragmentStaticLinkingDescriptor != a3)
+  if (self->_fragmentStaticLinkingDescriptor != descriptor)
   {
     fragmentStaticLinkingDescriptor = self->_fragmentStaticLinkingDescriptor;
-    self->_fragmentStaticLinkingDescriptor = [a3 copy];
+    self->_fragmentStaticLinkingDescriptor = [descriptor copy];
   }
 }
 
@@ -287,9 +287,9 @@ LABEL_3:
   return result;
 }
 
-- (void)setMeshStaticLinkingDescriptor:(id)a3
+- (void)setMeshStaticLinkingDescriptor:(id)descriptor
 {
-  if (a3)
+  if (descriptor)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -299,10 +299,10 @@ LABEL_3:
     }
   }
 
-  if (self->_meshStaticLinkingDescriptor != a3)
+  if (self->_meshStaticLinkingDescriptor != descriptor)
   {
     meshStaticLinkingDescriptor = self->_meshStaticLinkingDescriptor;
-    self->_meshStaticLinkingDescriptor = [a3 copy];
+    self->_meshStaticLinkingDescriptor = [descriptor copy];
   }
 }
 
@@ -329,9 +329,9 @@ LABEL_3:
   return result;
 }
 
-- (void)setObjectStaticLinkingDescriptor:(id)a3
+- (void)setObjectStaticLinkingDescriptor:(id)descriptor
 {
-  if (a3)
+  if (descriptor)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -341,24 +341,24 @@ LABEL_3:
     }
   }
 
-  if (self->_objectStaticLinkingDescriptor != a3)
+  if (self->_objectStaticLinkingDescriptor != descriptor)
   {
     objectStaticLinkingDescriptor = self->_objectStaticLinkingDescriptor;
-    self->_objectStaticLinkingDescriptor = [a3 copy];
+    self->_objectStaticLinkingDescriptor = [descriptor copy];
   }
 }
 
-- (void)setRequiredThreadsPerObjectThreadgroup:(id *)a3
+- (void)setRequiredThreadsPerObjectThreadgroup:(id *)threadgroup
 {
-  var2 = a3->var2;
-  *&self->_requiredThreadsPerObjectThreadgroup.width = *&a3->var0;
+  var2 = threadgroup->var2;
+  *&self->_requiredThreadsPerObjectThreadgroup.width = *&threadgroup->var0;
   self->_requiredThreadsPerObjectThreadgroup.depth = var2;
 }
 
-- (void)setRequiredThreadsPerMeshThreadgroup:(id *)a3
+- (void)setRequiredThreadsPerMeshThreadgroup:(id *)threadgroup
 {
-  var2 = a3->var2;
-  *&self->_requiredThreadsPerMeshThreadgroup.width = *&a3->var0;
+  var2 = threadgroup->var2;
+  *&self->_requiredThreadsPerMeshThreadgroup.width = *&threadgroup->var0;
   self->_requiredThreadsPerMeshThreadgroup.depth = var2;
 }
 

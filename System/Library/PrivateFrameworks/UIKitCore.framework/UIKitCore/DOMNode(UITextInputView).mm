@@ -6,12 +6,12 @@
 
 - (id)textInputView
 {
-  v1 = [a1 ownerDocument];
-  v2 = [v1 webFrame];
-  v3 = [v2 webView];
-  v4 = [v3 _UIKitDelegate];
+  ownerDocument = [self ownerDocument];
+  webFrame = [ownerDocument webFrame];
+  webView = [webFrame webView];
+  _UIKitDelegate = [webView _UIKitDelegate];
 
-  return v4;
+  return _UIKitDelegate;
 }
 
 @end

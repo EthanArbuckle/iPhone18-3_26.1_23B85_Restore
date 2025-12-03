@@ -9,7 +9,7 @@
 - (BOOL)ck_isVeryDark
 {
   v2 = 0.0;
-  [a1 getHue:0 saturation:0 brightness:&v2 alpha:0];
+  [self getHue:0 saturation:0 brightness:&v2 alpha:0];
   return v2 <= 0.1;
 }
 
@@ -18,7 +18,7 @@
   v4 = 0.0;
   v2 = 0.0;
   v3 = 0.0;
-  [a1 getRed:&v4 green:&v3 blue:&v2 alpha:0];
+  [self getRed:&v4 green:&v3 blue:&v2 alpha:0];
   result = 0;
   if (v4 >= 0.95 && v3 >= 0.95)
   {
@@ -37,7 +37,7 @@
   v10 = 0.0;
   v8 = 0.0;
   v4 = a3;
-  [a1 getHue:&v13 saturation:&v12 brightness:&v11 alpha:0];
+  [self getHue:&v13 saturation:&v12 brightness:&v11 alpha:0];
   [v4 getHue:&v10 saturation:&v9 brightness:&v8 alpha:0];
 
   if (vabdd_f64(v12, v9) > 0.0399999991 || vabdd_f64(v11, v8) > 0.0399999991)

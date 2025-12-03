@@ -1,7 +1,7 @@
 @interface SBUISwitcherAnimationController
 - (BOOL)isInterruptible;
 - (SBSwitcherContentViewControlling)contentViewController;
-- (SBUISwitcherAnimationController)initWithWorkspaceTransitionRequest:(id)a3 contentViewController:(id)a4 childAnimationControllers:(id)a5 animationBlock:(id)a6;
+- (SBUISwitcherAnimationController)initWithWorkspaceTransitionRequest:(id)request contentViewController:(id)controller childAnimationControllers:(id)controllers animationBlock:(id)block;
 - (id)_layoutState;
 - (id)_previousLayoutState;
 - (id)_windowScene;
@@ -12,7 +12,7 @@
 - (void)_startAnimation;
 - (void)_updatePPTsForAnimationEnd;
 - (void)_updatePPTsForAnimationStart;
-- (void)animationControllerDidFinishAnimation:(id)a3;
+- (void)animationControllerDidFinishAnimation:(id)animation;
 @end
 
 @implementation SBUISwitcherAnimationController
@@ -20,9 +20,9 @@
 - (id)animationSettings
 {
   WeakRetained = objc_loadWeakRetained(&self->_contentViewController);
-  v3 = [WeakRetained defaultTransitionAnimationSettings];
+  defaultTransitionAnimationSettings = [WeakRetained defaultTransitionAnimationSettings];
 
-  return v3;
+  return defaultTransitionAnimationSettings;
 }
 
 - (void)_startAnimation
@@ -38,49 +38,49 @@
     [MEMORY[0x277D75D18] setAnimationsEnabled:1];
   }
 
-  v4 = [(SBUIWorkspaceAnimationController *)self workspaceTransitionRequest];
-  v5 = [(SBUISwitcherAnimationController *)self _layoutState];
-  v6 = [(SBUISwitcherAnimationController *)self _windowScene];
-  v7 = [v6 homeScreenController];
-  v8 = [v7 iconManager];
+  workspaceTransitionRequest = [(SBUIWorkspaceAnimationController *)self workspaceTransitionRequest];
+  _layoutState = [(SBUISwitcherAnimationController *)self _layoutState];
+  _windowScene = [(SBUISwitcherAnimationController *)self _windowScene];
+  homeScreenController = [_windowScene homeScreenController];
+  iconManager = [homeScreenController iconManager];
 
-  v9 = [v8 iconModel];
-  [v8 clearHighlightedIcon];
-  if ([v5 unlockedEnvironmentMode] == 1 && objc_msgSend(v4, "source") != 11)
+  iconModel = [iconManager iconModel];
+  [iconManager clearHighlightedIcon];
+  if ([_layoutState unlockedEnvironmentMode] == 1 && objc_msgSend(workspaceTransitionRequest, "source") != 11)
   {
-    v10 = [v4 applicationContext];
-    v11 = [v10 previousEntityForLayoutRole:1];
+    applicationContext = [workspaceTransitionRequest applicationContext];
+    v11 = [applicationContext previousEntityForLayoutRole:1];
 
     if ([v11 isApplicationSceneEntity])
     {
-      v12 = [v11 applicationSceneEntity];
-      v13 = [v12 application];
+      applicationSceneEntity = [v11 applicationSceneEntity];
+      application = [applicationSceneEntity application];
 
-      v14 = [v13 bundleIdentifier];
-      v15 = [v14 isEqualToString:@"com.apple.webapp"];
+      bundleIdentifier = [application bundleIdentifier];
+      v15 = [bundleIdentifier isEqualToString:@"com.apple.webapp"];
 
       if (v15)
       {
-        v24 = [v11 applicationSceneEntity];
-        [v24 sceneHandle];
-        v16 = v25 = v13;
-        v17 = [v16 sceneIdentifier];
-        v18 = [SBWebApplication _webClipIdentifierFromWebAppIdentifier:v17];
+        applicationSceneEntity2 = [v11 applicationSceneEntity];
+        [applicationSceneEntity2 sceneHandle];
+        v16 = v25 = application;
+        sceneIdentifier = [v16 sceneIdentifier];
+        bundleIdentifier2 = [SBWebApplication _webClipIdentifierFromWebAppIdentifier:sceneIdentifier];
 
-        v13 = v25;
-        [v9 leafIconForIdentifier:v18];
+        application = v25;
+        [iconModel leafIconForIdentifier:bundleIdentifier2];
       }
 
       else
       {
-        v18 = [v13 bundleIdentifier];
-        [v9 applicationIconForBundleIdentifier:v18];
+        bundleIdentifier2 = [application bundleIdentifier];
+        [iconModel applicationIconForBundleIdentifier:bundleIdentifier2];
       }
       v19 = ;
 
-      if (([v8 isDisplayingIcon:v19 queryOptions:2] & 1) == 0)
+      if (([iconManager isDisplayingIcon:v19 queryOptions:2] & 1) == 0)
       {
-        [v8 popToCurrentRootIconList];
+        [iconManager popToCurrentRootIconList];
       }
     }
   }
@@ -88,9 +88,9 @@
   [(SBUISwitcherAnimationController *)self _updatePPTsForAnimationStart];
   [(SBUISwitcherAnimationController *)self _addSignpostsAndBeginAnimationTrackingForAnimationStart];
   animationBlock = self->_animationBlock;
-  v21 = [(SBUIWorkspaceAnimationController *)self workspaceTransitionRequest];
-  v22 = [v21 applicationContext];
-  animationBlock[2](animationBlock, v22);
+  workspaceTransitionRequest2 = [(SBUIWorkspaceAnimationController *)self workspaceTransitionRequest];
+  applicationContext2 = [workspaceTransitionRequest2 applicationContext];
+  animationBlock[2](animationBlock, applicationContext2);
 
   v23 = self->_animationBlock;
   self->_animationBlock = 0;
@@ -100,11 +100,11 @@
 
 - (id)_layoutState
 {
-  v2 = [(SBUIWorkspaceAnimationController *)self workspaceTransitionRequest];
-  v3 = [v2 applicationContext];
-  v4 = [v3 layoutState];
+  workspaceTransitionRequest = [(SBUIWorkspaceAnimationController *)self workspaceTransitionRequest];
+  applicationContext = [workspaceTransitionRequest applicationContext];
+  layoutState = [applicationContext layoutState];
 
-  return v4;
+  return layoutState;
 }
 
 - (id)_windowScene
@@ -112,18 +112,18 @@
   WeakRetained = objc_loadWeakRetained(&self->_contentViewController);
   if (objc_opt_respondsToSelector())
   {
-    v4 = [WeakRetained _sbWindowScene];
+    _sbWindowScene = [WeakRetained _sbWindowScene];
   }
 
   else
   {
-    v5 = [SBApp windowSceneManager];
-    v6 = [(SBUIWorkspaceAnimationController *)self workspaceTransitionRequest];
-    v7 = [v6 displayIdentity];
-    v4 = [v5 windowSceneForDisplayIdentity:v7];
+    windowSceneManager = [SBApp windowSceneManager];
+    workspaceTransitionRequest = [(SBUIWorkspaceAnimationController *)self workspaceTransitionRequest];
+    displayIdentity = [workspaceTransitionRequest displayIdentity];
+    _sbWindowScene = [windowSceneManager windowSceneForDisplayIdentity:displayIdentity];
   }
 
-  return v4;
+  return _sbWindowScene;
 }
 
 - (void)_updatePPTsForAnimationStart
@@ -215,15 +215,15 @@
                     if (([v20 isRunningTest:@"AppSliderBringup"] & 1) != 0 || (objc_msgSend(*v2, "isRunningTest:", @"AppSliderBringupRotated") & 1) != 0 || (objc_msgSend(*v2, "isRunningTest:", @"AppSliderBringupOverApp") & 1) != 0 || (objc_msgSend(*v2, "isRunningTest:", @"AppSliderBringupOverAppRotated") & 1) != 0 || (objc_msgSend(*v2, "isRunningTest:", @"AppSliderBringupOverAppInScreenTime") & 1) != 0 || objc_msgSend(*v2, "isRunningTest:", @"AppSliderBringupOverAppInScreenTimeRotated"))
                     {
                       v21 = +[SBApplicationTestingManager sharedInstance];
-                      v22 = [v21 currentTestName];
+                      currentTestName = [v21 currentTestName];
 
                       v23 = *v2;
                       v31[0] = MEMORY[0x277D85DD0];
                       v31[1] = 3221225472;
                       v31[2] = __63__SBUISwitcherAnimationController__updatePPTsForAnimationStart__block_invoke_9;
                       v31[3] = &unk_2783A8C18;
-                      v32 = v22;
-                      v24 = v22;
+                      v32 = currentTestName;
+                      v24 = currentTestName;
                       [v23 installCACommitCompletionBlock:v31];
                       v25 = v32;
                     }
@@ -236,15 +236,15 @@
                       }
 
                       v26 = +[SBApplicationTestingManager sharedInstance];
-                      v27 = [v26 currentTestName];
+                      currentTestName2 = [v26 currentTestName];
 
                       v28 = *v2;
                       v29[0] = MEMORY[0x277D85DD0];
                       v29[1] = 3221225472;
                       v29[2] = __63__SBUISwitcherAnimationController__updatePPTsForAnimationStart__block_invoke_10;
                       v29[3] = &unk_2783A8C18;
-                      v30 = v27;
-                      v24 = v27;
+                      v30 = currentTestName2;
+                      v24 = currentTestName2;
                       [v28 installCACommitCompletionBlock:v29];
                       v25 = v30;
                     }
@@ -269,11 +269,11 @@
 
 - (void)_addSignpostsAndBeginAnimationTrackingForAnimationStart
 {
-  v3 = [(SBUISwitcherAnimationController *)self _layoutState];
-  v4 = [(SBUISwitcherAnimationController *)self _previousLayoutState];
-  if ([v4 unlockedEnvironmentMode] == 1)
+  _layoutState = [(SBUISwitcherAnimationController *)self _layoutState];
+  _previousLayoutState = [(SBUISwitcherAnimationController *)self _previousLayoutState];
+  if ([_previousLayoutState unlockedEnvironmentMode] == 1)
   {
-    if ([v3 unlockedEnvironmentMode] == 3)
+    if ([_layoutState unlockedEnvironmentMode] == 3)
     {
       v5 = SBLogTelemetrySignposts();
       if (os_signpost_enabled(v5))
@@ -287,7 +287,7 @@
 
     else
     {
-      if ([v3 unlockedEnvironmentMode] != 2)
+      if ([_layoutState unlockedEnvironmentMode] != 2)
       {
         goto LABEL_36;
       }
@@ -303,9 +303,9 @@
     }
   }
 
-  else if ([v4 unlockedEnvironmentMode] == 2)
+  else if ([_previousLayoutState unlockedEnvironmentMode] == 2)
   {
-    if ([v3 unlockedEnvironmentMode] == 3)
+    if ([_layoutState unlockedEnvironmentMode] == 3)
     {
       v5 = SBLogTelemetrySignposts();
       if (os_signpost_enabled(v5))
@@ -319,7 +319,7 @@
 
     else
     {
-      if ([v3 unlockedEnvironmentMode] != 1)
+      if ([_layoutState unlockedEnvironmentMode] != 1)
       {
         goto LABEL_36;
       }
@@ -337,12 +337,12 @@
 
   else
   {
-    if ([v4 unlockedEnvironmentMode] != 3)
+    if ([_previousLayoutState unlockedEnvironmentMode] != 3)
     {
       goto LABEL_36;
     }
 
-    if ([v3 unlockedEnvironmentMode] == 1)
+    if ([_layoutState unlockedEnvironmentMode] == 1)
     {
       v5 = SBLogTelemetrySignposts();
       if (os_signpost_enabled(v5))
@@ -354,7 +354,7 @@
       v6 = @"AppToHome";
     }
 
-    else if ([v3 unlockedEnvironmentMode] == 3)
+    else if ([_layoutState unlockedEnvironmentMode] == 3)
     {
       v5 = SBLogTelemetrySignposts();
       if (os_signpost_enabled(v5))
@@ -368,7 +368,7 @@
 
     else
     {
-      if ([v3 unlockedEnvironmentMode] != 2)
+      if ([_layoutState unlockedEnvironmentMode] != 2)
       {
         goto LABEL_36;
       }
@@ -396,8 +396,8 @@
   }
 
   v8 = [(__CFString *)v6 stringByAppendingString:v7];
-  v9 = [MEMORY[0x277CCAC38] processInfo];
-  v10 = [v9 beginActivityWithOptions:0x200000000000 reason:v8];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  v10 = [processInfo beginActivityWithOptions:0x200000000000 reason:v8];
   [(SBUISwitcherAnimationController *)self setActivityToken:v10];
 
 LABEL_36:
@@ -405,22 +405,22 @@ LABEL_36:
 
 - (id)_previousLayoutState
 {
-  v2 = [(SBUIWorkspaceAnimationController *)self workspaceTransitionRequest];
-  v3 = [v2 applicationContext];
-  v4 = [v3 previousLayoutState];
+  workspaceTransitionRequest = [(SBUIWorkspaceAnimationController *)self workspaceTransitionRequest];
+  applicationContext = [workspaceTransitionRequest applicationContext];
+  previousLayoutState = [applicationContext previousLayoutState];
 
-  return v4;
+  return previousLayoutState;
 }
 
 - (void)_addSignpostsAndEndAnimationTrackingForAnimationEnd
 {
-  v3 = [(SBUISwitcherAnimationController *)self _layoutState];
-  v4 = [(SBUISwitcherAnimationController *)self _previousLayoutState];
-  if ([v4 unlockedEnvironmentMode] == 1)
+  _layoutState = [(SBUISwitcherAnimationController *)self _layoutState];
+  _previousLayoutState = [(SBUISwitcherAnimationController *)self _previousLayoutState];
+  if ([_previousLayoutState unlockedEnvironmentMode] == 1)
   {
-    if ([v3 unlockedEnvironmentMode] != 3)
+    if ([_layoutState unlockedEnvironmentMode] != 3)
     {
-      if ([v3 unlockedEnvironmentMode] != 2)
+      if ([_layoutState unlockedEnvironmentMode] != 2)
       {
         goto LABEL_28;
       }
@@ -448,11 +448,11 @@ LABEL_26:
     }
   }
 
-  else if ([v4 unlockedEnvironmentMode] == 2)
+  else if ([_previousLayoutState unlockedEnvironmentMode] == 2)
   {
-    if ([v3 unlockedEnvironmentMode] != 3)
+    if ([_layoutState unlockedEnvironmentMode] != 3)
     {
-      if ([v3 unlockedEnvironmentMode] != 1)
+      if ([_layoutState unlockedEnvironmentMode] != 1)
       {
         goto LABEL_28;
       }
@@ -481,12 +481,12 @@ LABEL_26:
 
   else
   {
-    if ([v4 unlockedEnvironmentMode] != 3)
+    if ([_previousLayoutState unlockedEnvironmentMode] != 3)
     {
       goto LABEL_28;
     }
 
-    if ([v3 unlockedEnvironmentMode] == 1)
+    if ([_layoutState unlockedEnvironmentMode] == 1)
     {
       v5 = SBLogTelemetrySignposts();
       if (os_signpost_enabled(v5))
@@ -498,7 +498,7 @@ LABEL_26:
       goto LABEL_27;
     }
 
-    if ([v3 unlockedEnvironmentMode] == 3)
+    if ([_layoutState unlockedEnvironmentMode] == 3)
     {
       v5 = SBLogTelemetrySignposts();
       if (os_signpost_enabled(v5))
@@ -512,7 +512,7 @@ LABEL_26:
 
     else
     {
-      if ([v3 unlockedEnvironmentMode] != 2)
+      if ([_layoutState unlockedEnvironmentMode] != 2)
       {
         goto LABEL_28;
       }
@@ -532,15 +532,15 @@ LABEL_27:
 
   kdebug_trace();
 LABEL_28:
-  v8 = [(SBUISwitcherAnimationController *)self activityToken];
+  activityToken = [(SBUISwitcherAnimationController *)self activityToken];
 
-  if (v8)
+  if (activityToken)
   {
     if (([(SBUISwitcherAnimationController *)self isInterrupted]& 1) == 0)
     {
-      v9 = [MEMORY[0x277CCAC38] processInfo];
-      v10 = [(SBUISwitcherAnimationController *)self activityToken];
-      [v9 endActivity:v10];
+      processInfo = [MEMORY[0x277CCAC38] processInfo];
+      activityToken2 = [(SBUISwitcherAnimationController *)self activityToken];
+      [processInfo endActivity:activityToken2];
     }
 
     [(SBUISwitcherAnimationController *)self setActivityToken:0];
@@ -631,12 +631,12 @@ LABEL_5:
   if (([v5 isRunningTest:@"AppSliderBringup"] & 1) != 0 || (objc_msgSend(*v2, "isRunningTest:", @"AppSliderBringupRotated") & 1) != 0 || (objc_msgSend(*v2, "isRunningTest:", @"AppSliderBringupOverApp") & 1) != 0 || (objc_msgSend(*v2, "isRunningTest:", @"AppSliderBringupOverAppRotated") & 1) != 0 || (objc_msgSend(*v2, "isRunningTest:", @"AppSliderBringupOverAppInScreenTime") & 1) != 0 || objc_msgSend(*v2, "isRunningTest:", @"AppSliderBringupOverAppInScreenTimeRotated"))
   {
     v14 = +[SBApplicationTestingManager sharedInstance];
-    v19 = [v14 currentTestName];
+    currentTestName = [v14 currentTestName];
 
-    [*v2 finishedSubTest:@"AppSliderBringupAnimation" forTest:v19];
+    [*v2 finishedSubTest:@"AppSliderBringupAnimation" forTest:currentTestName];
     v15 = *v2;
 LABEL_24:
-    [v15 finishedTest:v19];
+    [v15 finishedTest:currentTestName];
 LABEL_25:
 
     return;
@@ -645,9 +645,9 @@ LABEL_25:
   if (([*v2 isRunningTest:@"AppSliderDismiss"] & 1) != 0 || objc_msgSend(*v2, "isRunningTest:", @"AppSliderDismissRotated"))
   {
     v16 = +[SBApplicationTestingManager sharedInstance];
-    v19 = [v16 currentTestName];
+    currentTestName = [v16 currentTestName];
 
-    [SBApp finishedSubTest:@"animation" forTest:v19];
+    [SBApp finishedSubTest:@"animation" forTest:currentTestName];
     v15 = SBApp;
     goto LABEL_24;
   }
@@ -655,10 +655,10 @@ LABEL_25:
   if (([*v2 isRunningTest:@"AppSliderDismissOverApp"] & 1) != 0 || (objc_msgSend(*v2, "isRunningTest:", @"AppSliderDismissOverAppRotated") & 1) != 0 || (objc_msgSend(*v2, "isRunningTest:", @"AppSliderDismissOverAppInScreenTime") & 1) != 0 || objc_msgSend(*v2, "isRunningTest:", @"AppSliderDismissOverAppInScreenTimeRotated"))
   {
     v17 = +[SBApplicationTestingManager sharedInstance];
-    v19 = [v17 currentTestName];
+    currentTestName = [v17 currentTestName];
 
-    [SBApp finishedSubTest:@"animation" forTest:v19];
-    [SBApp finishedTest:v19];
+    [SBApp finishedSubTest:@"animation" forTest:currentTestName];
+    [SBApp finishedTest:currentTestName];
     SBWorkspaceSuspendActiveDisplay();
     goto LABEL_25;
   }
@@ -678,24 +678,24 @@ LABEL_25:
 
   if (([(SBUISwitcherAnimationController *)self isInterrupted]& 1) == 0)
   {
-    v4 = [(SBUIWorkspaceAnimationController *)self workspaceTransitionRequest];
-    v5 = [(SBUISwitcherAnimationController *)self _layoutState];
-    v6 = [v5 unlockedEnvironmentMode];
-    v7 = [v5 unlockedEnvironmentMode];
-    v8 = [v4 source];
-    v9 = v6 == 1 && v8 == 15;
-    if (!v9 && v7 == 3)
+    workspaceTransitionRequest = [(SBUIWorkspaceAnimationController *)self workspaceTransitionRequest];
+    _layoutState = [(SBUISwitcherAnimationController *)self _layoutState];
+    unlockedEnvironmentMode = [_layoutState unlockedEnvironmentMode];
+    unlockedEnvironmentMode2 = [_layoutState unlockedEnvironmentMode];
+    source = [workspaceTransitionRequest source];
+    v9 = unlockedEnvironmentMode == 1 && source == 15;
+    if (!v9 && unlockedEnvironmentMode2 == 3)
     {
-      v10 = [(SBUISwitcherAnimationController *)self _windowScene];
-      v11 = [v10 homeScreenController];
-      v12 = [v11 iconManager];
-      [v12 presentHomeScreenIconsAnimated:0];
-      v13 = [(SBUISwitcherAnimationController *)self _previousLayoutState];
-      v14 = [v13 unlockedEnvironmentMode];
-      v15 = [v4 source];
-      if (([v11 isTodayOverlaySpotlightVisible] & 1) != 0 || v15 == 2 && v14 == 1 && objc_msgSend(v12, "isOverlayTodayViewVisible"))
+      _windowScene = [(SBUISwitcherAnimationController *)self _windowScene];
+      homeScreenController = [_windowScene homeScreenController];
+      iconManager = [homeScreenController iconManager];
+      [iconManager presentHomeScreenIconsAnimated:0];
+      _previousLayoutState = [(SBUISwitcherAnimationController *)self _previousLayoutState];
+      unlockedEnvironmentMode3 = [_previousLayoutState unlockedEnvironmentMode];
+      source2 = [workspaceTransitionRequest source];
+      if (([homeScreenController isTodayOverlaySpotlightVisible] & 1) != 0 || source2 == 2 && unlockedEnvironmentMode3 == 1 && objc_msgSend(iconManager, "isOverlayTodayViewVisible"))
       {
-        [v11 dismissTodayOverlayAnimated:0];
+        [homeScreenController dismissTodayOverlayAnimated:0];
       }
     }
   }
@@ -715,23 +715,23 @@ uint64_t __63__SBUISwitcherAnimationController__updatePPTsForAnimationStart__blo
   return [v3 startedSubTest:@"AppSliderBringupAnimation" forTest:v4];
 }
 
-- (SBUISwitcherAnimationController)initWithWorkspaceTransitionRequest:(id)a3 contentViewController:(id)a4 childAnimationControllers:(id)a5 animationBlock:(id)a6
+- (SBUISwitcherAnimationController)initWithWorkspaceTransitionRequest:(id)request contentViewController:(id)controller childAnimationControllers:(id)controllers animationBlock:(id)block
 {
   v32 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  requestCopy = request;
+  controllerCopy = controller;
+  controllersCopy = controllers;
+  blockCopy = block;
+  if (requestCopy)
   {
-    if (v12)
+    if (controllerCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_15:
     [SBUISwitcherAnimationController initWithWorkspaceTransitionRequest:a2 contentViewController:self childAnimationControllers:? animationBlock:?];
-    if (v14)
+    if (blockCopy)
     {
       goto LABEL_4;
     }
@@ -740,13 +740,13 @@ LABEL_15:
   }
 
   [SBUISwitcherAnimationController initWithWorkspaceTransitionRequest:a2 contentViewController:self childAnimationControllers:? animationBlock:?];
-  if (!v12)
+  if (!controllerCopy)
   {
     goto LABEL_15;
   }
 
 LABEL_3:
-  if (v14)
+  if (blockCopy)
   {
     goto LABEL_4;
   }
@@ -756,12 +756,12 @@ LABEL_16:
 LABEL_4:
   v30.receiver = self;
   v30.super_class = SBUISwitcherAnimationController;
-  v15 = [(SBUIWorkspaceAnimationController *)&v30 initWithWorkspaceTransitionRequest:v11];
+  v15 = [(SBUIWorkspaceAnimationController *)&v30 initWithWorkspaceTransitionRequest:requestCopy];
   v16 = v15;
   if (v15)
   {
-    objc_storeWeak(&v15->_contentViewController, v12);
-    v17 = MEMORY[0x223D6F7F0](v14);
+    objc_storeWeak(&v15->_contentViewController, controllerCopy);
+    v17 = MEMORY[0x223D6F7F0](blockCopy);
     animationBlock = v16->_animationBlock;
     v16->_animationBlock = v17;
 
@@ -770,7 +770,7 @@ LABEL_4:
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v19 = v13;
+    v19 = controllersCopy;
     v20 = [v19 countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v20)
     {
@@ -812,14 +812,14 @@ LABEL_4:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_contentViewController);
-  v4 = [WeakRetained canInterruptActiveTransition];
+  canInterruptActiveTransition = [WeakRetained canInterruptActiveTransition];
 
-  return v4;
+  return canInterruptActiveTransition;
 }
 
-- (void)animationControllerDidFinishAnimation:(id)a3
+- (void)animationControllerDidFinishAnimation:(id)animation
 {
-  if (self == a3)
+  if (self == animation)
   {
     [(SBUISwitcherAnimationController *)self _addSignpostsAndEndAnimationTrackingForAnimationEnd];
 

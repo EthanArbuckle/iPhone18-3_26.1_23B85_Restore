@@ -11,8 +11,8 @@
   [(WFDayOfWeekButton *)&v5 layoutSubviews];
   [(WFDayOfWeekButton *)self bounds];
   v3 = CGRectGetWidth(v6) * 0.5;
-  v4 = [(WFDayOfWeekButton *)self layer];
-  [v4 setCornerRadius:v3];
+  layer = [(WFDayOfWeekButton *)self layer];
+  [layer setCornerRadius:v3];
 }
 
 @end

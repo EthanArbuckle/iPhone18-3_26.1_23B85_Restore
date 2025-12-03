@@ -1,11 +1,11 @@
 @interface CUIKORFontUtils
 + (UIFont)defaultOccurrenceSecondaryTextFont;
-+ (double)_minimumPrimaryFontLineHeightUsingSmallText:(BOOL)a3 sizeClass:(int64_t)a4;
-+ (double)attributedStringMinimumLineHeightUsingSmallText:(BOOL)a3 sizeClass:(int64_t)a4;
-+ (double)minimumNaturalHeightForPrimaryTextUsingSmallText:(BOOL)a3 sizeClass:(int64_t)a4;
++ (double)_minimumPrimaryFontLineHeightUsingSmallText:(BOOL)text sizeClass:(int64_t)class;
++ (double)attributedStringMinimumLineHeightUsingSmallText:(BOOL)text sizeClass:(int64_t)class;
++ (double)minimumNaturalHeightForPrimaryTextUsingSmallText:(BOOL)text sizeClass:(int64_t)class;
 + (id)_primaryTextFontCache;
-+ (id)defaultOccurrencePrimaryTextFontForSizeClass:(int64_t)a3;
-+ (id)defaultOccurrenceSmallPrimaryTextFontForSizeClass:(int64_t)a3;
++ (id)defaultOccurrencePrimaryTextFontForSizeClass:(int64_t)class;
++ (id)defaultOccurrenceSmallPrimaryTextFontForSizeClass:(int64_t)class;
 @end
 
 @implementation CUIKORFontUtils
@@ -32,8 +32,8 @@ uint64_t __40__CUIKORFontUtils__primaryTextFontCache__block_invoke()
 + (UIFont)defaultOccurrenceSecondaryTextFont
 {
   v2 = [MEMORY[0x1E69DB878] cuik_preferredTightLeadingFontForTextStyle:*MEMORY[0x1E69DDD10]];
-  v3 = [v2 fontDescriptor];
-  [v3 pointSize];
+  fontDescriptor = [v2 fontDescriptor];
+  [fontDescriptor pointSize];
   v5 = v4;
 
   CUIKRoundToScreenScale(v5);
@@ -42,29 +42,29 @@ uint64_t __40__CUIKORFontUtils__primaryTextFontCache__block_invoke()
   return v6;
 }
 
-+ (id)defaultOccurrencePrimaryTextFontForSizeClass:(int64_t)a3
++ (id)defaultOccurrencePrimaryTextFontForSizeClass:(int64_t)class
 {
-  v4 = [a1 _primaryTextFontCache];
+  _primaryTextFontCache = [self _primaryTextFontCache];
   v5 = [MEMORY[0x1E69DB878] cuik_preferredTightLeadingBoldFontForTextStyle:*MEMORY[0x1E69DDD28]];
-  v6 = [v5 fontDescriptor];
-  [v6 pointSize];
+  fontDescriptor = [v5 fontDescriptor];
+  [fontDescriptor pointSize];
   v8 = v7;
 
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%zd.%f", a3, *&v8];
-  v10 = [v4 objectForKey:v9];
+  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%zd.%f", class, *&v8];
+  v10 = [_primaryTextFontCache objectForKey:v9];
   if (!v10)
   {
     CUIKRoundToScreenScale(v8);
     v10 = [v5 fontWithSize:?];
-    [v4 setObject:v10 forKey:v9];
+    [_primaryTextFontCache setObject:v10 forKey:v9];
   }
 
   return v10;
 }
 
-+ (id)defaultOccurrenceSmallPrimaryTextFontForSizeClass:(int64_t)a3
++ (id)defaultOccurrenceSmallPrimaryTextFontForSizeClass:(int64_t)class
 {
-  if (a3 == 2)
+  if (class == 2)
   {
     v3 = 13.0;
   }
@@ -75,7 +75,7 @@ uint64_t __40__CUIKORFontUtils__primaryTextFontCache__block_invoke()
   }
 
   v4 = MEMORY[0x1E69DDD28];
-  if (a3 != 2)
+  if (class != 2)
   {
     v4 = MEMORY[0x1E69DDD10];
   }
@@ -83,8 +83,8 @@ uint64_t __40__CUIKORFontUtils__primaryTextFontCache__block_invoke()
   v5 = *v4;
   v6 = v3 / v3;
   v7 = [MEMORY[0x1E69DB878] cuik_preferredTightLeadingBoldFontForTextStyle:v5];
-  v8 = [v7 fontDescriptor];
-  [v8 pointSize];
+  fontDescriptor = [v7 fontDescriptor];
+  [fontDescriptor pointSize];
   v10 = v9;
 
   CUIKRoundToScreenScale(v6 * v10);
@@ -93,9 +93,9 @@ uint64_t __40__CUIKORFontUtils__primaryTextFontCache__block_invoke()
   return v11;
 }
 
-+ (double)attributedStringMinimumLineHeightUsingSmallText:(BOOL)a3 sizeClass:(int64_t)a4
++ (double)attributedStringMinimumLineHeightUsingSmallText:(BOOL)text sizeClass:(int64_t)class
 {
-  if (a3)
+  if (text)
   {
     v4 = 8.0;
   }
@@ -105,7 +105,7 @@ uint64_t __40__CUIKORFontUtils__primaryTextFontCache__block_invoke()
     v4 = 9.0;
   }
 
-  [a1 _minimumPrimaryFontLineHeightUsingSmallText:? sizeClass:?];
+  [self _minimumPrimaryFontLineHeightUsingSmallText:? sizeClass:?];
   result = CUIKCeilToScreenScale(v5);
   if (v4 >= result)
   {
@@ -115,12 +115,12 @@ uint64_t __40__CUIKORFontUtils__primaryTextFontCache__block_invoke()
   return result;
 }
 
-+ (double)minimumNaturalHeightForPrimaryTextUsingSmallText:(BOOL)a3 sizeClass:(int64_t)a4
++ (double)minimumNaturalHeightForPrimaryTextUsingSmallText:(BOOL)text sizeClass:(int64_t)class
 {
-  v5 = a3;
-  [a1 _minimumPrimaryFontLineHeightUsingSmallText:? sizeClass:?];
+  textCopy = text;
+  [self _minimumPrimaryFontLineHeightUsingSmallText:? sizeClass:?];
   v8 = v7;
-  [a1 attributedStringMinimumLineHeightUsingSmallText:v5 sizeClass:a4];
+  [self attributedStringMinimumLineHeightUsingSmallText:textCopy sizeClass:class];
   if (v8 >= result)
   {
     return v8;
@@ -129,15 +129,15 @@ uint64_t __40__CUIKORFontUtils__primaryTextFontCache__block_invoke()
   return result;
 }
 
-+ (double)_minimumPrimaryFontLineHeightUsingSmallText:(BOOL)a3 sizeClass:(int64_t)a4
++ (double)_minimumPrimaryFontLineHeightUsingSmallText:(BOOL)text sizeClass:(int64_t)class
 {
-  v9 = a3;
-  CUIKMultiwindowAssert(a4 != 0, @"Unspecified size class", a3, a4, v4, v5, v6, v7, v15);
+  textCopy = text;
+  CUIKMultiwindowAssert(class != 0, @"Unspecified size class", text, class, v4, v5, v6, v7, v15);
   v10 = +[CUIKSemiConstantCache sharedInstance];
   v11 = v10;
-  if (v9)
+  if (textCopy)
   {
-    if (a4 == 1)
+    if (class == 1)
     {
       [v10 dayOccurrenceMinimumCachedLineHeightSmallCompact];
     }
@@ -148,7 +148,7 @@ uint64_t __40__CUIKORFontUtils__primaryTextFontCache__block_invoke()
     }
   }
 
-  else if (a4 == 1)
+  else if (class == 1)
   {
     [v10 dayOccurrenceMinimumCachedLineHeightCompact];
   }

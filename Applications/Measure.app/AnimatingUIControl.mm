@@ -1,28 +1,28 @@
 @interface AnimatingUIControl
-- (_TtC7Measure18AnimatingUIControl)initWithCoder:(id)a3;
-- (_TtC7Measure18AnimatingUIControl)initWithFrame:(CGRect)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (_TtC7Measure18AnimatingUIControl)initWithCoder:(id)coder;
+- (_TtC7Measure18AnimatingUIControl)initWithFrame:(CGRect)frame;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation AnimatingUIControl
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = type metadata accessor for AnimatingUIControl();
   v11.receiver = self;
   v11.super_class = v5;
-  v6 = self;
-  v7 = [(AnimatingUIControl *)&v11 isEnabled];
-  v10.receiver = v6;
+  selfCopy = self;
+  isEnabled = [(AnimatingUIControl *)&v11 isEnabled];
+  v10.receiver = selfCopy;
   v10.super_class = v5;
-  [(AnimatingUIControl *)&v10 setEnabled:v3];
-  if (v7 != [(AnimatingUIControl *)v6 isEnabled])
+  [(AnimatingUIControl *)&v10 setEnabled:enabledCopy];
+  if (isEnabled != [(AnimatingUIControl *)selfCopy isEnabled])
   {
-    v8 = [(AnimatingUIControl *)v6 isEnabled];
+    isEnabled2 = [(AnimatingUIControl *)selfCopy isEnabled];
     v9 = 0.5;
-    if (v8)
+    if (isEnabled2)
     {
       v9 = 1.0;
     }
@@ -31,29 +31,29 @@
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  sub_10007A8B8(a3);
+  selfCopy = self;
+  sub_10007A8B8(highlighted);
 }
 
-- (_TtC7Measure18AnimatingUIControl)initWithFrame:(CGRect)a3
+- (_TtC7Measure18AnimatingUIControl)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for AnimatingUIControl();
   return [(AnimatingUIControl *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC7Measure18AnimatingUIControl)initWithCoder:(id)a3
+- (_TtC7Measure18AnimatingUIControl)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for AnimatingUIControl();
-  v4 = a3;
-  v5 = [(AnimatingUIControl *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(AnimatingUIControl *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

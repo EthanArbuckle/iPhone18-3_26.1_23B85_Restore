@@ -1,9 +1,9 @@
 @interface EQKitEnvironmentInstance
 + (id)dataForDefaultEnvironment;
-+ (id)dataForEnvironment:(id)a3;
++ (id)dataForEnvironment:(id)environment;
 + (id)defaultEnvironment;
-+ (id)environmentFromData:(id)a3;
-- (EQKitEnvironmentInstance)initWithConfig:(id)a3;
++ (id)environmentFromData:(id)data;
+- (EQKitEnvironmentInstance)initWithConfig:(id)config;
 - (void)beginLayout;
 - (void)dealloc;
 - (void)endLayout;
@@ -11,12 +11,12 @@
 
 @implementation EQKitEnvironmentInstance
 
-+ (id)environmentFromData:(id)a3
++ (id)environmentFromData:(id)data
 {
   v12 = 0;
   v13 = 0;
   v4 = objc_opt_class();
-  v6 = objc_msgSend_propertyListWithData_options_format_error_(MEMORY[0x277CCAC58], v5, a3, 0, &v12, &v13);
+  v6 = objc_msgSend_propertyListWithData_options_format_error_(MEMORY[0x277CCAC58], v5, data, 0, &v12, &v13);
   v7 = sub_275C950F4(v4, v6);
   v8 = [EQKitEnvironmentInstance alloc];
   return objc_msgSend_initWithConfig_(v8, v9, v7, v10, v12, v13);
@@ -38,7 +38,7 @@
   block[1] = 3221225472;
   block[2] = sub_275CC95DC;
   block[3] = &unk_27A6779A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280A38B18 != -1)
   {
     dispatch_once(&qword_280A38B18, block);
@@ -47,16 +47,16 @@
   return qword_280A38B10;
 }
 
-+ (id)dataForEnvironment:(id)a3
++ (id)dataForEnvironment:(id)environment
 {
   v8 = 0;
-  v4 = objc_msgSend_newDictionaryForArchiving(a3, a2, a3, v3);
+  v4 = objc_msgSend_newDictionaryForArchiving(environment, a2, environment, v3);
   v6 = objc_msgSend_dataWithPropertyList_format_options_error_(MEMORY[0x277CCAC58], v5, v4, 100, 0, &v8);
 
   return v6;
 }
 
-- (EQKitEnvironmentInstance)initWithConfig:(id)a3
+- (EQKitEnvironmentInstance)initWithConfig:(id)config
 {
   v40.receiver = self;
   v40.super_class = EQKitEnvironmentInstance;
@@ -75,7 +75,7 @@
 
     v20 = objc_msgSend_pathForResource_ofType_(v10, v8, @"EQKitOperatorDictionary", @"plist");
     v23 = objc_msgSend_fileURLWithPath_(MEMORY[0x277CBEBC0], v21, v20, v22);
-    v7->mConfig = objc_msgSend_copy(a3, v24, v25, v26);
+    v7->mConfig = objc_msgSend_copy(config, v24, v25, v26);
     v7->mOperatorDictionary = sub_275CC79CC(v23);
     v27 = objc_opt_class();
     v30 = objc_msgSend_objectForKey_(v7->mConfig, v28, @"fonts", v29);

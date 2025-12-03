@@ -1,87 +1,87 @@
 @interface UIStatusBarItemView
-+ (id)createViewForItem:(id)a3 withData:(id)a4 actions:(int)a5 foregroundStyle:(id)a6;
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (UIStatusBarItemView)initWithItem:(id)a3 data:(id)a4 actions:(int)a5 style:(id)a6;
++ (id)createViewForItem:(id)item withData:(id)data actions:(int)actions foregroundStyle:(id)style;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (UIStatusBarItemView)initWithItem:(id)item data:(id)data actions:(int)actions style:(id)style;
 - (UIStatusBarLayoutManager)layoutManager;
-- (double)adjustFrameToNewSize:(double)a3;
-- (double)neededSizeForImageSet:(id)a3;
-- (double)setStatusBarData:(id)a3 actions:(int)a4;
+- (double)adjustFrameToNewSize:(double)size;
+- (double)neededSizeForImageSet:(id)set;
+- (double)setStatusBarData:(id)data actions:(int)actions;
 - (double)shadowPadding;
 - (double)standardPadding;
 - (double)updateContentsAndWidth;
-- (id)cachedImageWithText:(id)a3 truncatedWithEllipsesAtMaxWidth:(double)a4 letterSpacing:(double)a5;
+- (id)cachedImageWithText:(id)text truncatedWithEllipsesAtMaxWidth:(double)width letterSpacing:(double)spacing;
 - (id)description;
 - (id)foregroundView;
-- (id)imageFromImageContextClippedToWidth:(double)a3;
-- (id)imageWithShadowNamed:(id)a3;
-- (id)imageWithText:(id)a3 shouldCache:(BOOL)a4;
+- (id)imageFromImageContextClippedToWidth:(double)width;
+- (id)imageWithShadowNamed:(id)named;
+- (id)imageWithText:(id)text shouldCache:(BOOL)cache;
 - (id)textFont;
 - (int64_t)legibilityStyle;
 - (int64_t)textAlignment;
 - (void)_tintContentLayerIfNeeded;
 - (void)beginDisablingRasterization;
-- (void)beginImageContextWithMinimumWidth:(double)a3;
+- (void)beginImageContextWithMinimumWidth:(double)width;
 - (void)clearCachedTextImage;
 - (void)dealloc;
 - (void)endDisablingRasterization;
 - (void)endImageContext;
-- (void)setContentMode:(int64_t)a3;
-- (void)setLayerContentsImage:(id)a3;
-- (void)setVisible:(BOOL)a3 frame:(CGRect)a4 duration:(double)a5;
-- (void)setVisible:(BOOL)a3 settingAlpha:(BOOL)a4;
-- (void)willMoveToWindow:(id)a3;
+- (void)setContentMode:(int64_t)mode;
+- (void)setLayerContentsImage:(id)image;
+- (void)setVisible:(BOOL)visible frame:(CGRect)frame duration:(double)duration;
+- (void)setVisible:(BOOL)visible settingAlpha:(BOOL)alpha;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation UIStatusBarItemView
 
-+ (id)createViewForItem:(id)a3 withData:(id)a4 actions:(int)a5 foregroundStyle:(id)a6
++ (id)createViewForItem:(id)item withData:(id)data actions:(int)actions foregroundStyle:(id)style
 {
-  if (!a3)
+  if (!item)
   {
     return 0;
   }
 
-  v6 = *&a5;
-  v9 = a6;
-  v10 = a4;
-  v11 = a3;
-  v12 = [objc_alloc(objc_msgSend(v11 "viewClass"))];
+  v6 = *&actions;
+  styleCopy = style;
+  dataCopy = data;
+  itemCopy = item;
+  v12 = [objc_alloc(objc_msgSend(itemCopy "viewClass"))];
 
   return v12;
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7.receiver = self;
   v7.super_class = UIStatusBarItemView;
-  if ([(UIView *)&v7 _shouldAnimatePropertyWithKey:v4])
+  if ([(UIView *)&v7 _shouldAnimatePropertyWithKey:keyCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 isEqualToString:@"contents"];
+    v5 = [keyCopy isEqualToString:@"contents"];
   }
 
   return v5;
 }
 
-- (UIStatusBarItemView)initWithItem:(id)a3 data:(id)a4 actions:(int)a5 style:(id)a6
+- (UIStatusBarItemView)initWithItem:(id)item data:(id)data actions:(int)actions style:(id)style
 {
-  v7 = *&a5;
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  [v13 height];
+  v7 = *&actions;
+  itemCopy = item;
+  dataCopy = data;
+  styleCopy = style;
+  [styleCopy height];
   v15 = v14;
   v16 = *MEMORY[0x1E695F058];
   v17 = *(MEMORY[0x1E695F058] + 8);
   v18 = *(MEMORY[0x1E695F058] + 16);
   v19 = *(MEMORY[0x1E695F058] + 24);
-  v20 = [v13 usesVerticalLayout];
-  if (v20)
+  usesVerticalLayout = [styleCopy usesVerticalLayout];
+  if (usesVerticalLayout)
   {
     v21 = v15;
   }
@@ -91,7 +91,7 @@
     v21 = v18;
   }
 
-  if (v20)
+  if (usesVerticalLayout)
   {
     v22 = v19;
   }
@@ -105,18 +105,18 @@
   v24 = v23;
   if (v23)
   {
-    objc_storeStrong(&v23->_item, a3);
+    objc_storeStrong(&v23->_item, item);
     v24->_imageContext = 0;
-    [v13 scale];
+    [styleCopy scale];
     v24->_imageContextScale = v25;
-    objc_storeStrong(&v24->_foregroundStyle, a6);
-    [(UIStatusBarItemView *)v24 updateForNewStyle:v13];
-    v26 = [(UIView *)v24 layer];
-    [v26 setAllowsGroupOpacity:0];
+    objc_storeStrong(&v24->_foregroundStyle, style);
+    [(UIStatusBarItemView *)v24 updateForNewStyle:styleCopy];
+    layer = [(UIView *)v24 layer];
+    [layer setAllowsGroupOpacity:0];
 
     [(UIStatusBarItemView *)v24 setAllowsUpdates:1];
     [(UIView *)v24 setUserInteractionEnabled:[(UIStatusBarItemView *)v24 allowsUserInteraction]];
-    [(UIStatusBarItemView *)v24 updateForNewData:v12 actions:v7];
+    [(UIStatusBarItemView *)v24 updateForNewData:dataCopy actions:v7];
     [(UIStatusBarItemView *)v24 updateContentsAndWidth];
   }
 
@@ -138,30 +138,30 @@
 
 - (id)foregroundView
 {
-  v3 = [(UIView *)self superview];
+  superview = [(UIView *)self superview];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(UIView *)self superview];
+    superview2 = [(UIView *)self superview];
   }
 
   else
   {
-    v5 = 0;
+    superview2 = 0;
   }
 
-  return v5;
+  return superview2;
 }
 
-- (void)setVisible:(BOOL)a3 settingAlpha:(BOOL)a4
+- (void)setVisible:(BOOL)visible settingAlpha:(BOOL)alpha
 {
-  self->_visible = a3;
-  if (a4)
+  self->_visible = visible;
+  if (alpha)
   {
     v4 = 0.0;
-    if (a3)
+    if (visible)
     {
       v4 = 1.0;
     }
@@ -170,25 +170,25 @@
   }
 }
 
-- (void)setVisible:(BOOL)a3 frame:(CGRect)a4 duration:(double)a5
+- (void)setVisible:(BOOL)visible frame:(CGRect)frame duration:(double)duration
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a5 > 0.0 && +[UIView _isInAnimationBlockWithAnimationsEnabled];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v12 = duration > 0.0 && +[UIView _isInAnimationBlockWithAnimationsEnabled];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __49__UIStatusBarItemView_setVisible_frame_duration___block_invoke;
   v15[3] = &__block_descriptor_41_e24_v24__0___v___8___v__B_16l;
-  *&v15[4] = a5;
-  v16 = a3;
+  *&v15[4] = duration;
+  visibleCopy = visible;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __49__UIStatusBarItemView_setVisible_frame_duration___block_invoke_2;
   v13[3] = &unk_1E70F35E0;
   v13[4] = self;
-  v14 = a3;
+  visibleCopy2 = visible;
   [UIView conditionallyAnimate:v12 withAnimation:v15 layout:v13 completion:0];
   [(UIView *)self setFrame:x, y, width, height];
 }
@@ -205,12 +205,12 @@ uint64_t __49__UIStatusBarItemView_setVisible_frame_duration___block_invoke(uint
   return [UIView animateWithDuration:32 delay:a2 options:a3 animations:v3 * 0.666666667 completion:v4];
 }
 
-- (double)setStatusBarData:(id)a3 actions:(int)a4
+- (double)setStatusBarData:(id)data actions:(int)actions
 {
-  v4 = *&a4;
-  v6 = a3;
+  v4 = *&actions;
+  dataCopy = data;
   v7 = 0.0;
-  if ([(UIStatusBarItemView *)self allowsUpdates]&& [(UIStatusBarItemView *)self updateForNewData:v6 actions:v4])
+  if ([(UIStatusBarItemView *)self allowsUpdates]&& [(UIStatusBarItemView *)self updateForNewData:dataCopy actions:v4])
   {
     [(UIStatusBarItemView *)self updateContentsAndWidth];
     v7 = v8;
@@ -221,23 +221,23 @@ uint64_t __49__UIStatusBarItemView_setVisible_frame_duration___block_invoke(uint
 
 - (int64_t)legibilityStyle
 {
-  v2 = [(UIStatusBarItemView *)self foregroundStyle];
-  v3 = [v2 legibilityStyle];
+  foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+  legibilityStyle = [foregroundStyle legibilityStyle];
 
-  return v3;
+  return legibilityStyle;
 }
 
-- (void)setLayerContentsImage:(id)a3
+- (void)setLayerContentsImage:(id)image
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || ([v4 image], v6 = objc_claimAutoreleasedReturnValue(), v6, !v6))
+  imageCopy = image;
+  v5 = imageCopy;
+  if (!imageCopy || ([imageCopy image], v6 = objc_claimAutoreleasedReturnValue(), v6, !v6))
   {
-    v17 = [(UIView *)self layer];
-    [v17 setContents:0];
+    layer = [(UIView *)self layer];
+    [layer setContents:0];
 
-    v18 = [(UIView *)self layer];
-    [v18 setMask:0];
+    layer2 = [(UIView *)self layer];
+    [layer2 setMask:0];
 
     legibilityView = self->_legibilityView;
     if (legibilityView)
@@ -247,17 +247,17 @@ uint64_t __49__UIStatusBarItemView_setVisible_frame_duration___block_invoke(uint
       self->_legibilityView = 0;
     }
 
-    v15 = [(UIView *)self layer];
-    [v15 setContentsMultiplyColor:0];
+    layer3 = [(UIView *)self layer];
+    [layer3 setContentsMultiplyColor:0];
     goto LABEL_10;
   }
 
-  v7 = [(UIStatusBarItemView *)self legibilityStyle];
-  if (v7)
+  legibilityStyle = [(UIStatusBarItemView *)self legibilityStyle];
+  if (legibilityStyle)
   {
-    v8 = v7;
-    v9 = [(UIView *)self layer];
-    [v9 setContents:0];
+    v8 = legibilityStyle;
+    layer4 = [(UIView *)self layer];
+    [layer4 setContents:0];
 
     v10 = self->_legibilityView;
     if (!v10)
@@ -278,9 +278,9 @@ uint64_t __49__UIStatusBarItemView_setVisible_frame_duration___block_invoke(uint
       v10 = self->_legibilityView;
     }
 
-    v15 = [v5 image];
-    v16 = [v5 shadowImage];
-    [(_UILegibilityView *)v10 setImage:v15 shadowImage:v16];
+    layer3 = [v5 image];
+    shadowImage = [v5 shadowImage];
+    [(_UILegibilityView *)v10 setImage:layer3 shadowImage:shadowImage];
 
 LABEL_10:
     goto LABEL_11;
@@ -296,43 +296,43 @@ LABEL_10:
 
   if ([(UIStatusBarItemView *)self _shouldReverseLayoutDirection])
   {
-    v23 = [v5 image];
-    v24 = [v23 imageOrientation];
+    image = [v5 image];
+    imageOrientation = [image imageOrientation];
 
-    if (v24 == 4)
+    if (imageOrientation == 4)
     {
       memset(&v31, 0, sizeof(v31));
       CGAffineTransformMakeScale(&v31, -1.0, 1.0);
-      v25 = [(UIView *)self layer];
+      layer5 = [(UIView *)self layer];
       v30 = v31;
-      [v25 setAffineTransform:&v30];
+      [layer5 setAffineTransform:&v30];
     }
   }
 
-  v26 = [v5 image];
-  v27 = [v26 CGImage];
-  v28 = [(UIView *)self layer];
-  [v28 setContents:v27];
+  image2 = [v5 image];
+  cGImage = [image2 CGImage];
+  layer6 = [(UIView *)self layer];
+  [layer6 setContents:cGImage];
 
-  v29 = [v5 image];
-  [v29 scale];
+  image3 = [v5 image];
+  [image3 scale];
   [(UIView *)self setContentScaleFactor:?];
 
   [(UIStatusBarItemView *)self _tintContentLayerIfNeeded];
 LABEL_11:
 }
 
-- (double)adjustFrameToNewSize:(double)a3
+- (double)adjustFrameToNewSize:(double)size
 {
   [(UIView *)self frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(UIStatusBarItemView *)self foregroundStyle];
-  v14 = [v13 usesVerticalLayout];
+  foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+  usesVerticalLayout = [foregroundStyle usesVerticalLayout];
 
-  if (v14)
+  if (usesVerticalLayout)
   {
     v15 = v12;
   }
@@ -342,54 +342,54 @@ LABEL_11:
     v15 = v10;
   }
 
-  if (v15 == a3)
+  if (v15 == size)
   {
     return 0.0;
   }
 
-  v16 = a3 - v15;
-  if (v14)
+  v16 = size - v15;
+  if (usesVerticalLayout)
   {
-    v17 = v10;
+    sizeCopy = v10;
   }
 
   else
   {
-    v17 = a3;
+    sizeCopy = size;
   }
 
-  if (v14)
+  if (usesVerticalLayout)
   {
-    v18 = a3;
+    sizeCopy2 = size;
   }
 
   else
   {
-    v18 = v12;
+    sizeCopy2 = v12;
   }
 
-  [(UIView *)self setFrame:v6, v8, v17, v18];
+  [(UIView *)self setFrame:v6, v8, sizeCopy, sizeCopy2];
   return v16;
 }
 
-- (double)neededSizeForImageSet:(id)a3
+- (double)neededSizeForImageSet:(id)set
 {
-  v4 = a3;
-  v5 = v4;
+  setCopy = set;
+  v5 = setCopy;
   v6 = 0.0;
-  if (v4)
+  if (setCopy)
   {
-    v7 = [v4 image];
+    image = [setCopy image];
 
-    if (v7)
+    if (image)
     {
-      v8 = [v5 image];
-      [v8 size];
+      image2 = [v5 image];
+      [image2 size];
       v6 = v9;
       v11 = v10;
 
-      v12 = [(UIStatusBarItemView *)self foregroundStyle];
-      if ([v12 usesVerticalLayout])
+      foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+      if ([foregroundStyle usesVerticalLayout])
       {
         v6 = v11;
       }
@@ -403,50 +403,50 @@ LABEL_11:
 {
   if ([(UIStatusBarItemView *)self shouldTintContentImage])
   {
-    v6 = [(UIStatusBarItemView *)self foregroundStyle];
-    v3 = [v6 tintColor];
-    v4 = [v3 CGColor];
-    v5 = [(UIView *)self layer];
-    [v5 setContentsMultiplyColor:v4];
+    foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+    tintColor = [foregroundStyle tintColor];
+    cGColor = [tintColor CGColor];
+    layer = [(UIView *)self layer];
+    [layer setContentsMultiplyColor:cGColor];
   }
 
   else
   {
-    v6 = [(UIView *)self layer];
-    [v6 setContentsMultiplyColor:0];
+    foregroundStyle = [(UIView *)self layer];
+    [foregroundStyle setContentsMultiplyColor:0];
   }
 }
 
 - (double)updateContentsAndWidth
 {
-  v3 = [(UIStatusBarItemView *)self contentsImage];
-  if (v3)
+  contentsImage = [(UIStatusBarItemView *)self contentsImage];
+  if (contentsImage)
   {
-    [(UIStatusBarItemView *)self neededSizeForImageSet:v3];
+    [(UIStatusBarItemView *)self neededSizeForImageSet:contentsImage];
     [(UIStatusBarItemView *)self adjustFrameToNewSize:?];
     v5 = v4;
-    v6 = [v3 image];
+    image = [contentsImage image];
 
-    if (v6)
+    if (image)
     {
-      [(UIStatusBarItemView *)self setLayerContentsImage:v3];
+      [(UIStatusBarItemView *)self setLayerContentsImage:contentsImage];
     }
   }
 
   else
   {
-    v7 = [(UIStatusBarItemView *)self contentsIOSurface];
-    if (v7)
+    contentsIOSurface = [(UIStatusBarItemView *)self contentsIOSurface];
+    if (contentsIOSurface)
     {
-      v8 = v7;
+      v8 = contentsIOSurface;
       [(UIStatusBarItemView *)self setLayerContentsImage:0];
       [(UIView *)self _currentScreenScale];
       v10 = v9;
-      v11 = [(UIView *)self layer];
-      [v11 setContents:v8];
+      layer = [(UIView *)self layer];
+      [layer setContents:v8];
 
-      v12 = [(UIView *)self layer];
-      [v12 setContentsScale:v10];
+      layer2 = [(UIView *)self layer];
+      [layer2 setContentsScale:v10];
 
       [(UIStatusBarItemView *)self _tintContentLayerIfNeeded];
       -[UIStatusBarItemView adjustFrameToNewSize:](self, "adjustFrameToNewSize:", [v8 width] / v10);
@@ -464,34 +464,34 @@ LABEL_11:
   return v5;
 }
 
-- (void)setContentMode:(int64_t)a3
+- (void)setContentMode:(int64_t)mode
 {
   v5.receiver = self;
   v5.super_class = UIStatusBarItemView;
   [(UIView *)&v5 setContentMode:?];
-  [(UIView *)self->_legibilityView setContentMode:a3];
+  [(UIView *)self->_legibilityView setContentMode:mode];
 }
 
 - (id)textFont
 {
-  v3 = [(UIStatusBarItemView *)self foregroundStyle];
-  v4 = [v3 textFontForStyle:{-[UIStatusBarItemView textStyle](self, "textStyle")}];
+  foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+  v4 = [foregroundStyle textFontForStyle:{-[UIStatusBarItemView textStyle](self, "textStyle")}];
 
   return v4;
 }
 
 - (int64_t)textAlignment
 {
-  v2 = [(UIStatusBarItemView *)self foregroundStyle];
-  v3 = [v2 usesVerticalLayout];
+  foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+  usesVerticalLayout = [foregroundStyle usesVerticalLayout];
 
-  return v3;
+  return usesVerticalLayout;
 }
 
 - (double)standardPadding
 {
-  v2 = [(UIStatusBarItemView *)self foregroundStyle];
-  [v2 standardPadding];
+  foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+  [foregroundStyle standardPadding];
   v4 = v3;
 
   return v4;
@@ -499,18 +499,18 @@ LABEL_11:
 
 - (double)shadowPadding
 {
-  v2 = [(UIStatusBarItemView *)self foregroundStyle];
-  [v2 shadowPadding];
+  foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+  [foregroundStyle shadowPadding];
   v4 = v3;
 
   return v4;
 }
 
-- (void)beginImageContextWithMinimumWidth:(double)a3
+- (void)beginImageContextWithMinimumWidth:(double)width
 {
-  v4 = ceil(a3);
-  v5 = [(UIStatusBarItemView *)self foregroundStyle];
-  v6 = [v5 usesVerticalLayout];
+  v4 = ceil(width);
+  foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+  usesVerticalLayout = [foregroundStyle usesVerticalLayout];
 
   imageContext = self->_imageContext;
   if (!imageContext)
@@ -518,7 +518,7 @@ LABEL_11:
     goto LABEL_7;
   }
 
-  if (v6)
+  if (usesVerticalLayout)
   {
     Height = CGBitmapContextGetHeight(imageContext);
   }
@@ -541,11 +541,11 @@ LABEL_11:
 LABEL_7:
     if (v4 > 0.0)
     {
-      v9 = [(UIStatusBarItemView *)self foregroundStyle];
-      [v9 height];
+      foregroundStyle2 = [(UIStatusBarItemView *)self foregroundStyle];
+      [foregroundStyle2 height];
       v11 = v10;
 
-      if (v6)
+      if (usesVerticalLayout)
       {
         v12 = v11;
       }
@@ -555,7 +555,7 @@ LABEL_7:
         v12 = v4;
       }
 
-      if (v6)
+      if (usesVerticalLayout)
       {
         v13 = v4;
       }
@@ -598,22 +598,22 @@ LABEL_7:
   UIGraphicsPushContext(v18);
 }
 
-- (id)imageFromImageContextClippedToWidth:(double)a3
+- (id)imageFromImageContextClippedToWidth:(double)width
 {
   imageContext = self->_imageContext;
   if (imageContext && (Image = CGBitmapContextCreateImage(imageContext)) != 0)
   {
     v7 = Image;
-    v8 = [(UIStatusBarItemView *)self foregroundStyle];
-    if ([v8 usesVerticalLayout])
+    foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+    if ([foregroundStyle usesVerticalLayout])
     {
       Width = CGImageGetWidth(v7);
-      Height = self->_imageContextScale * a3;
+      Height = self->_imageContextScale * width;
     }
 
     else
     {
-      Width = self->_imageContextScale * a3;
+      Width = self->_imageContextScale * width;
       Height = CGImageGetHeight(v7);
     }
 
@@ -666,20 +666,20 @@ LABEL_7:
   }
 }
 
-- (id)imageWithText:(id)a3 shouldCache:(BOOL)a4
+- (id)imageWithText:(id)text shouldCache:(BOOL)cache
 {
-  v6 = a3;
-  if ([v6 length])
+  textCopy = text;
+  if ([textCopy length])
   {
-    v7 = [(UIStatusBarItemView *)self foregroundStyle];
-    v8 = [(UIStatusBarItemView *)self item];
-    v9 = [v8 type];
-    v10 = [(UIStatusBarItemView *)self textAlignment];
-    v11 = [(UIStatusBarItemView *)self textStyle];
-    v12 = [(UIStatusBarItemView *)self legibilityStyle];
+    foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+    item = [(UIStatusBarItemView *)self item];
+    type = [item type];
+    textAlignment = [(UIStatusBarItemView *)self textAlignment];
+    textStyle = [(UIStatusBarItemView *)self textStyle];
+    legibilityStyle = [(UIStatusBarItemView *)self legibilityStyle];
     [(UIStatusBarItemView *)self legibilityStrength];
-    LOBYTE(v16) = a4;
-    v14 = [v7 imageWithText:v6 ofItemType:v9 forWidth:2 lineBreakMode:v10 letterSpacing:v11 textAlignment:v12 style:1.79769313e308 withLegibilityStyle:0.0 legibilityStrength:v13 shouldCache:v16];
+    LOBYTE(v16) = cache;
+    v14 = [foregroundStyle imageWithText:textCopy ofItemType:type forWidth:2 lineBreakMode:textAlignment letterSpacing:textStyle textAlignment:legibilityStyle style:1.79769313e308 withLegibilityStyle:0.0 legibilityStrength:v13 shouldCache:v16];
   }
 
   else
@@ -690,16 +690,16 @@ LABEL_7:
   return v14;
 }
 
-- (id)cachedImageWithText:(id)a3 truncatedWithEllipsesAtMaxWidth:(double)a4 letterSpacing:(double)a5
+- (id)cachedImageWithText:(id)text truncatedWithEllipsesAtMaxWidth:(double)width letterSpacing:(double)spacing
 {
-  v8 = a3;
-  if (![v8 length])
+  textCopy = text;
+  if (![textCopy length])
   {
     v12 = 0;
     goto LABEL_10;
   }
 
-  if (![(NSString *)self->_lastGeneratedTextImageText isEqualToString:v8])
+  if (![(NSString *)self->_lastGeneratedTextImageText isEqualToString:textCopy])
   {
     goto LABEL_8;
   }
@@ -710,28 +710,28 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v10 = [(_UILegibilityImageSet *)lastGeneratedTextImage image];
-  [v10 size];
-  if (v11 > a4)
+  image = [(_UILegibilityImageSet *)lastGeneratedTextImage image];
+  [image size];
+  if (v11 > width)
   {
 
 LABEL_8:
-    v14 = [(UIStatusBarItemView *)self foregroundStyle];
-    v15 = [(UIStatusBarItemView *)self item];
-    v16 = [v15 type];
-    v17 = [(UIStatusBarItemView *)self textAlignment];
-    v18 = [(UIStatusBarItemView *)self textStyle];
-    v19 = [(UIStatusBarItemView *)self legibilityStyle];
+    foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+    item = [(UIStatusBarItemView *)self item];
+    type = [item type];
+    textAlignment = [(UIStatusBarItemView *)self textAlignment];
+    textStyle = [(UIStatusBarItemView *)self textStyle];
+    legibilityStyle = [(UIStatusBarItemView *)self legibilityStyle];
     [(UIStatusBarItemView *)self legibilityStrength];
-    v21 = [v14 imageWithText:v8 ofItemType:v16 forWidth:4 lineBreakMode:v17 letterSpacing:v18 textAlignment:v19 style:a4 withLegibilityStyle:a5 legibilityStrength:v20];
+    v21 = [foregroundStyle imageWithText:textCopy ofItemType:type forWidth:4 lineBreakMode:textAlignment letterSpacing:textStyle textAlignment:legibilityStyle style:width withLegibilityStyle:spacing legibilityStrength:v20];
     v22 = self->_lastGeneratedTextImage;
     self->_lastGeneratedTextImage = v21;
 
-    self->_lastGeneratedTextImageLetterSpacing = a5;
+    self->_lastGeneratedTextImageLetterSpacing = spacing;
     goto LABEL_9;
   }
 
-  v13 = vabdd_f64(self->_lastGeneratedTextImageLetterSpacing, a5);
+  v13 = vabdd_f64(self->_lastGeneratedTextImageLetterSpacing, spacing);
 
   if (v13 > 2.22044605e-16)
   {
@@ -756,40 +756,40 @@ LABEL_10:
   self->_lastGeneratedTextImageLetterSpacing = 0.0;
 }
 
-- (id)imageWithShadowNamed:(id)a3
+- (id)imageWithShadowNamed:(id)named
 {
-  v4 = a3;
-  v5 = [(UIStatusBarItemView *)self foregroundStyle];
-  v6 = [(UIStatusBarItemView *)self legibilityStyle];
+  namedCopy = named;
+  foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+  legibilityStyle = [(UIStatusBarItemView *)self legibilityStyle];
   [(UIStatusBarItemView *)self legibilityStrength];
-  v7 = [v5 imageNamed:v4 withLegibilityStyle:v6 legibilityStrength:?];
+  v7 = [foregroundStyle imageNamed:namedCopy withLegibilityStyle:legibilityStyle legibilityStrength:?];
 
   return v7;
 }
 
 - (void)beginDisablingRasterization
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:0x1EFB9C6F0 object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:0x1EFB9C6F0 object:self];
 }
 
 - (void)endDisablingRasterization
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:0x1EFB9C710 object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:0x1EFB9C710 object:self];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v4 = a3;
-  if (!v4)
+  windowCopy = window;
+  if (!windowCopy)
   {
     [(UIStatusBarItemView *)self endDisablingRasterization];
   }
 
   v5.receiver = self;
   v5.super_class = UIStatusBarItemView;
-  [(UIView *)&v5 willMoveToWindow:v4];
+  [(UIView *)&v5 willMoveToWindow:windowCopy];
 }
 
 - (id)description
@@ -797,8 +797,8 @@ LABEL_10:
   v8.receiver = self;
   v8.super_class = UIStatusBarItemView;
   v3 = [(UIView *)&v8 description];
-  v4 = [(UIStatusBarItemView *)self item];
-  v5 = [v4 description];
+  item = [(UIStatusBarItemView *)self item];
+  v5 = [item description];
   v6 = [v3 stringByAppendingFormat:@" [Item = %@]", v5];
 
   return v6;

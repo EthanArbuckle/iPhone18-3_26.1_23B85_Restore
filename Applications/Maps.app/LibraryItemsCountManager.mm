@@ -1,12 +1,12 @@
 @interface LibraryItemsCountManager
 + (_TtC4Maps24LibraryItemsCountManager)sharedManager;
 - (NSArray)storeSubscriptionTypes;
-- (void)collectionManager:(id)a3 contentDidChange:(id)a4;
-- (void)setLastFetchedCounts:(id)a3;
+- (void)collectionManager:(id)manager contentDidChange:(id)change;
+- (void)setLastFetchedCounts:(id)counts;
 - (void)setNeedsRefresh;
-- (void)setStoreSubscriptionTypes:(id)a3;
-- (void)storeDidChange:(id)a3;
-- (void)visitedPlacesCountsManager:(id)a3 didUpdateCount:(int64_t)a4;
+- (void)setStoreSubscriptionTypes:(id)types;
+- (void)storeDidChange:(id)change;
+- (void)visitedPlacesCountsManager:(id)manager didUpdateCount:(int64_t)count;
 @end
 
 @implementation LibraryItemsCountManager
@@ -23,11 +23,11 @@
   return v3;
 }
 
-- (void)setLastFetchedCounts:(id)a3
+- (void)setLastFetchedCounts:(id)counts
 {
   v4 = *(self + OBJC_IVAR____TtC4Maps24LibraryItemsCountManager_lastFetchedCounts);
-  *(self + OBJC_IVAR____TtC4Maps24LibraryItemsCountManager_lastFetchedCounts) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC4Maps24LibraryItemsCountManager_lastFetchedCounts) = counts;
+  countsCopy = counts;
 }
 
 - (void)setNeedsRefresh
@@ -44,12 +44,12 @@
     v7[2] = 0;
     v7[3] = 0;
     v7[4] = self;
-    v8 = self;
+    selfCopy = self;
     sub_10020AAE4(0, 0, v5, &unk_10120A670, v7);
   }
 }
 
-- (void)collectionManager:(id)a3 contentDidChange:(id)a4
+- (void)collectionManager:(id)manager contentDidChange:(id)change
 {
   v5 = sub_1000CE6B8(&unk_10190BA50);
   __chkstk_darwin(v5 - 8);
@@ -63,7 +63,7 @@
     v9[2] = 0;
     v9[3] = 0;
     v9[4] = self;
-    v10 = self;
+    selfCopy = self;
     sub_10020AAE4(0, 0, v7, &unk_10120A668, v9);
   }
 }
@@ -78,7 +78,7 @@
   return v2.super.isa;
 }
 
-- (void)setStoreSubscriptionTypes:(id)a3
+- (void)setStoreSubscriptionTypes:(id)types
 {
   sub_1000CE6B8(&qword_1019083F0);
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -87,7 +87,7 @@
   *(self + v5) = v4;
 }
 
-- (void)storeDidChange:(id)a3
+- (void)storeDidChange:(id)change
 {
   v4 = sub_1000CE6B8(&unk_10190BA50);
   __chkstk_darwin(v4 - 8);
@@ -101,16 +101,16 @@
     v8[2] = 0;
     v8[3] = 0;
     v8[4] = self;
-    v9 = self;
+    selfCopy = self;
     sub_10020AAE4(0, 0, v6, &unk_10120A658, v8);
   }
 }
 
-- (void)visitedPlacesCountsManager:(id)a3 didUpdateCount:(int64_t)a4
+- (void)visitedPlacesCountsManager:(id)manager didUpdateCount:(int64_t)count
 {
-  v6 = a3;
-  v7 = self;
-  sub_1004A93F4(a4);
+  managerCopy = manager;
+  selfCopy = self;
+  sub_1004A93F4(count);
 }
 
 @end

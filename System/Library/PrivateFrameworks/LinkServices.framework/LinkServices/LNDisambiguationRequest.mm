@@ -1,63 +1,63 @@
 @interface LNDisambiguationRequest
-- (LNDisambiguationRequest)initWithCoder:(id)a3;
-- (LNDisambiguationRequest)initWithIdentifier:(id)a3 parameterName:(id)a4 providedValues:(id)a5 dialog:(id)a6;
-- (void)encodeWithCoder:(id)a3;
-- (void)respondWithError:(id)a3;
-- (void)respondWithSelectedIndex:(int64_t)a3;
-- (void)respondWithSelectedItemIndex:(int64_t)a3;
-- (void)respondWithUpdates:(id)a3;
-- (void)responseWithSelectedIndex:(id)a3 value:(id)a4;
+- (LNDisambiguationRequest)initWithCoder:(id)coder;
+- (LNDisambiguationRequest)initWithIdentifier:(id)identifier parameterName:(id)name providedValues:(id)values dialog:(id)dialog;
+- (void)encodeWithCoder:(id)coder;
+- (void)respondWithError:(id)error;
+- (void)respondWithSelectedIndex:(int64_t)index;
+- (void)respondWithSelectedItemIndex:(int64_t)index;
+- (void)respondWithUpdates:(id)updates;
+- (void)responseWithSelectedIndex:(id)index value:(id)value;
 @end
 
 @implementation LNDisambiguationRequest
 
-- (LNDisambiguationRequest)initWithCoder:(id)a3
+- (LNDisambiguationRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parameterName"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parameterName"];
   v7 = MEMORY[0x1E695DFD8];
   v8 = objc_opt_class();
   v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"providedValues"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"providedValues"];
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dialog"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dialog"];
 
-  v12 = 0;
+  selfCopy = 0;
   if (v5 && v6 && v10)
   {
     self = [(LNDisambiguationRequest *)self initWithIdentifier:v5 parameterName:v6 providedValues:v10 dialog:v11];
-    v12 = self;
+    selfCopy = self;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNDisambiguationRequest *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(LNDisambiguationRequest *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(LNDisambiguationRequest *)self parameterName];
-  [v4 encodeObject:v6 forKey:@"parameterName"];
+  parameterName = [(LNDisambiguationRequest *)self parameterName];
+  [coderCopy encodeObject:parameterName forKey:@"parameterName"];
 
-  v7 = [(LNDisambiguationRequest *)self providedValues];
-  [v4 encodeObject:v7 forKey:@"providedValues"];
+  providedValues = [(LNDisambiguationRequest *)self providedValues];
+  [coderCopy encodeObject:providedValues forKey:@"providedValues"];
 
-  v8 = [(LNDisambiguationRequest *)self dialog];
-  [v4 encodeObject:v8 forKey:@"dialog"];
+  dialog = [(LNDisambiguationRequest *)self dialog];
+  [coderCopy encodeObject:dialog forKey:@"dialog"];
 }
 
-- (void)respondWithError:(id)a3
+- (void)respondWithError:(id)error
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   completionHandler = self->_completionHandler;
   if (completionHandler)
   {
-    v6 = [(LNRequest *)self responseContext];
-    v7 = [v4 errorWithResponseContext:v6];
+    responseContext = [(LNRequest *)self responseContext];
+    v7 = [errorCopy errorWithResponseContext:responseContext];
     completionHandler[2](completionHandler, 0, v7);
 
     v8 = self->_completionHandler;
@@ -70,27 +70,27 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = objc_opt_class();
-      v11 = [(LNDisambiguationRequest *)self identifier];
+      identifier = [(LNDisambiguationRequest *)self identifier];
       v13 = 138543618;
       v14 = v10;
       v15 = 2114;
-      v16 = v11;
+      v16 = identifier;
     }
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)respondWithUpdates:(id)a3
+- (void)respondWithUpdates:(id)updates
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  updatesCopy = updates;
   if (self->_completionHandler)
   {
     v5 = [LNDisambiguationResponse alloc];
-    v6 = [(LNDisambiguationRequest *)self identifier];
-    v7 = [(LNRequest *)self responseContext];
-    v8 = [(LNDisambiguationResponse *)v5 initWithIdentifier:v6 context:v7 selectedIndex:0 value:0 updates:v4];
+    identifier = [(LNDisambiguationRequest *)self identifier];
+    responseContext = [(LNRequest *)self responseContext];
+    v8 = [(LNDisambiguationResponse *)v5 initWithIdentifier:identifier context:responseContext selectedIndex:0 value:0 updates:updatesCopy];
 
     (*(self->_completionHandler + 2))();
     completionHandler = self->_completionHandler;
@@ -103,28 +103,28 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v10 = objc_opt_class();
-      v11 = [(LNDisambiguationRequest *)self identifier];
+      identifier2 = [(LNDisambiguationRequest *)self identifier];
       v13 = 138543618;
       v14 = v10;
       v15 = 2114;
-      v16 = v11;
+      v16 = identifier2;
     }
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)responseWithSelectedIndex:(id)a3 value:(id)a4
+- (void)responseWithSelectedIndex:(id)index value:(id)value
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  indexCopy = index;
+  valueCopy = value;
   if (self->_completionHandler)
   {
     v8 = [LNDisambiguationResponse alloc];
-    v9 = [(LNDisambiguationRequest *)self identifier];
-    v10 = [(LNRequest *)self responseContext];
-    v11 = [(LNDisambiguationResponse *)v8 initWithIdentifier:v9 context:v10 selectedIndex:v6 value:v7 updates:0];
+    identifier = [(LNDisambiguationRequest *)self identifier];
+    responseContext = [(LNRequest *)self responseContext];
+    v11 = [(LNDisambiguationResponse *)v8 initWithIdentifier:identifier context:responseContext selectedIndex:indexCopy value:valueCopy updates:0];
 
     (*(self->_completionHandler + 2))();
     completionHandler = self->_completionHandler;
@@ -137,41 +137,41 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v13 = objc_opt_class();
-      v14 = [(LNDisambiguationRequest *)self identifier];
+      identifier2 = [(LNDisambiguationRequest *)self identifier];
       v16 = 138543618;
       v17 = v13;
       v18 = 2114;
-      v19 = v14;
+      v19 = identifier2;
     }
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)respondWithSelectedIndex:(int64_t)a3
+- (void)respondWithSelectedIndex:(int64_t)index
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:index];
   [(LNDisambiguationRequest *)self responseWithSelectedIndex:v4 value:0];
 }
 
-- (LNDisambiguationRequest)initWithIdentifier:(id)a3 parameterName:(id)a4 providedValues:(id)a5 dialog:(id)a6
+- (LNDisambiguationRequest)initWithIdentifier:(id)identifier parameterName:(id)name providedValues:(id)values dialog:(id)dialog
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (v12)
+  identifierCopy = identifier;
+  nameCopy = name;
+  valuesCopy = values;
+  dialogCopy = dialog;
+  if (identifierCopy)
   {
-    if (v13)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"LNDisambiguationRequest.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"parameterName"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNDisambiguationRequest.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"parameterName"}];
 
-    if (v14)
+    if (valuesCopy)
     {
       goto LABEL_4;
     }
@@ -179,23 +179,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v23 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v23 handleFailureInMethod:a2 object:self file:@"LNDisambiguationRequest.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNDisambiguationRequest.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
 
-  if (!v13)
+  if (!nameCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v14)
+  if (valuesCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v25 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v25 handleFailureInMethod:a2 object:self file:@"LNDisambiguationRequest.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"providedValues"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"LNDisambiguationRequest.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"providedValues"}];
 
 LABEL_4:
   v26.receiver = self;
@@ -204,10 +204,10 @@ LABEL_4:
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_identifier, a3);
-    objc_storeStrong(&v17->_parameterName, a4);
-    objc_storeStrong(&v17->_providedValues, a5);
-    v18 = [v15 copy];
+    objc_storeStrong(&v16->_identifier, identifier);
+    objc_storeStrong(&v17->_parameterName, name);
+    objc_storeStrong(&v17->_providedValues, values);
+    v18 = [dialogCopy copy];
     dialog = v17->_dialog;
     v17->_dialog = v18;
 
@@ -220,10 +220,10 @@ LABEL_4:
   return v17;
 }
 
-- (void)respondWithSelectedItemIndex:(int64_t)a3
+- (void)respondWithSelectedItemIndex:(int64_t)index
 {
-  v5 = [(LNDisambiguationRequest *)self providedValues];
-  v6 = [v5 objectAtIndexedSubscript:a3];
+  providedValues = [(LNDisambiguationRequest *)self providedValues];
+  v6 = [providedValues objectAtIndexedSubscript:index];
 
   [(LNDisambiguationRequest *)self respondWithValue:v6];
 }

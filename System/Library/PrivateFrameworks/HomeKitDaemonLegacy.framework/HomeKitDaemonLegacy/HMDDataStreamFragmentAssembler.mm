@@ -1,17 +1,17 @@
 @interface HMDDataStreamFragmentAssembler
-- (BOOL)addFragmentChunk:(id)a3 error:(id *)a4;
-- (HMDDataStreamFragmentAssembler)initWithSequenceNumber:(id)a3 type:(id)a4;
+- (BOOL)addFragmentChunk:(id)chunk error:(id *)error;
+- (HMDDataStreamFragmentAssembler)initWithSequenceNumber:(id)number type:(id)type;
 - (id)attributeDescriptions;
 @end
 
 @implementation HMDDataStreamFragmentAssembler
 
-- (BOOL)addFragmentChunk:(id)a3 error:(id *)a4
+- (BOOL)addFragmentChunk:(id)chunk error:(id *)error
 {
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  chunkCopy = chunk;
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -19,17 +19,17 @@
     v42 = 138543618;
     v43 = v10;
     v44 = 2112;
-    v45 = v6;
+    v45 = chunkCopy;
     _os_log_impl(&dword_2531F8000, v9, OS_LOG_TYPE_DEBUG, "%{public}@Adding chunk: %@", &v42, 0x16u);
   }
 
   objc_autoreleasePoolPop(v7);
-  v11 = [(HMDDataStreamFragmentAssembler *)v8 assembledFragment];
+  assembledFragment = [(HMDDataStreamFragmentAssembler *)selfCopy assembledFragment];
 
-  if (v11)
+  if (assembledFragment)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = v8;
+    v13 = selfCopy;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -37,50 +37,50 @@
       v42 = 138543618;
       v43 = v15;
       v44 = 2112;
-      v45 = v6;
+      v45 = chunkCopy;
       _os_log_impl(&dword_2531F8000, v14, OS_LOG_TYPE_ERROR, "%{public}@Asked to add fragment chunk %@ but the last data chunk has already been received", &v42, 0x16u);
     }
 
     objc_autoreleasePoolPop(v12);
-    if (a4)
+    if (error)
     {
       v16 = MEMORY[0x277CCA9B8];
       v17 = 1;
 LABEL_18:
       [v16 errorWithDomain:@"HMDDataStreamFragmentAssemblerErrorDomain" code:v17 userInfo:0];
-      *a4 = v30 = 0;
+      *error = v30 = 0;
       goto LABEL_24;
     }
 
     goto LABEL_23;
   }
 
-  v18 = [(HMDDataStreamFragmentAssembler *)v8 currentChunkSequenceNumber];
-  v19 = [v18 unsignedLongLongValue];
+  currentChunkSequenceNumber = [(HMDDataStreamFragmentAssembler *)selfCopy currentChunkSequenceNumber];
+  unsignedLongLongValue = [currentChunkSequenceNumber unsignedLongLongValue];
 
-  v20 = [v6 sequenceNumber];
-  v21 = [v20 unsignedLongLongValue];
+  sequenceNumber = [chunkCopy sequenceNumber];
+  unsignedLongLongValue2 = [sequenceNumber unsignedLongLongValue];
 
-  if (v21 != v19 + 1)
+  if (unsignedLongLongValue2 != unsignedLongLongValue + 1)
   {
     v31 = objc_autoreleasePoolPush();
-    v32 = v8;
+    v32 = selfCopy;
     v33 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
       v34 = HMFGetLogIdentifier();
-      v35 = [(HMDDataStreamFragmentAssembler *)v32 currentChunkSequenceNumber];
+      currentChunkSequenceNumber2 = [(HMDDataStreamFragmentAssembler *)v32 currentChunkSequenceNumber];
       v42 = 138543874;
       v43 = v34;
       v44 = 2112;
-      v45 = v6;
+      v45 = chunkCopy;
       v46 = 2112;
-      v47 = v35;
+      v47 = currentChunkSequenceNumber2;
       _os_log_impl(&dword_2531F8000, v33, OS_LOG_TYPE_ERROR, "%{public}@Asked to add fragment chunk %@ with non-sequential sequence number compared to current stream data chunk sequence number %@", &v42, 0x20u);
     }
 
     objc_autoreleasePoolPop(v31);
-    if (a4)
+    if (error)
     {
       v16 = MEMORY[0x277CCA9B8];
       v17 = 2;
@@ -92,10 +92,10 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (v21 == -1 && ([v6 isLast] & 1) == 0)
+  if (unsignedLongLongValue2 == -1 && ([chunkCopy isLast] & 1) == 0)
   {
     v36 = objc_autoreleasePoolPush();
-    v37 = v8;
+    v37 = selfCopy;
     v38 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
     {
@@ -103,12 +103,12 @@ LABEL_23:
       v42 = 138543618;
       v43 = v39;
       v44 = 2112;
-      v45 = v6;
+      v45 = chunkCopy;
       _os_log_impl(&dword_2531F8000, v38, OS_LOG_TYPE_ERROR, "%{public}@Asked to add non-last fragment chunk with maximum allowed sequence number: %@", &v42, 0x16u);
     }
 
     objc_autoreleasePoolPop(v36);
-    if (a4)
+    if (error)
     {
       v16 = MEMORY[0x277CCA9B8];
       v17 = 3;
@@ -118,21 +118,21 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  v22 = [v6 sequenceNumber];
-  [(HMDDataStreamFragmentAssembler *)v8 setCurrentChunkSequenceNumber:v22];
+  sequenceNumber2 = [chunkCopy sequenceNumber];
+  [(HMDDataStreamFragmentAssembler *)selfCopy setCurrentChunkSequenceNumber:sequenceNumber2];
 
-  v23 = [(HMDDataStreamFragmentAssembler *)v8 data];
-  v24 = [v6 data];
-  [v23 appendData:v24];
+  data = [(HMDDataStreamFragmentAssembler *)selfCopy data];
+  data2 = [chunkCopy data];
+  [data appendData:data2];
 
-  if ([v6 isLast])
+  if ([chunkCopy isLast])
   {
     v25 = [HMDDataStreamFragment alloc];
-    v26 = [(HMDDataStreamFragmentAssembler *)v8 data];
-    v27 = [(HMDDataStreamFragmentAssembler *)v8 sequenceNumber];
-    v28 = [(HMDDataStreamFragmentAssembler *)v8 type];
-    v29 = [(HMDDataStreamFragment *)v25 initWithData:v26 sequenceNumber:v27 type:v28];
-    [(HMDDataStreamFragmentAssembler *)v8 setAssembledFragment:v29];
+    data3 = [(HMDDataStreamFragmentAssembler *)selfCopy data];
+    sequenceNumber3 = [(HMDDataStreamFragmentAssembler *)selfCopy sequenceNumber];
+    type = [(HMDDataStreamFragmentAssembler *)selfCopy type];
+    v29 = [(HMDDataStreamFragment *)v25 initWithData:data3 sequenceNumber:sequenceNumber3 type:type];
+    [(HMDDataStreamFragmentAssembler *)selfCopy setAssembledFragment:v29];
   }
 
   v30 = 1;
@@ -146,26 +146,26 @@ LABEL_24:
 {
   v23[5] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v22 = [(HMDDataStreamFragmentAssembler *)self sequenceNumber];
-  v21 = [v3 initWithName:@"Sequence Number" value:v22];
+  sequenceNumber = [(HMDDataStreamFragmentAssembler *)self sequenceNumber];
+  v21 = [v3 initWithName:@"Sequence Number" value:sequenceNumber];
   v23[0] = v21;
   v4 = objc_alloc(MEMORY[0x277D0F778]);
-  v5 = [(HMDDataStreamFragmentAssembler *)self type];
-  v6 = [v4 initWithName:@"Type" value:v5];
+  type = [(HMDDataStreamFragmentAssembler *)self type];
+  v6 = [v4 initWithName:@"Type" value:type];
   v23[1] = v6;
   v7 = objc_alloc(MEMORY[0x277D0F778]);
   v8 = MEMORY[0x277CCABB0];
-  v9 = [(HMDDataStreamFragmentAssembler *)self data];
-  v10 = [v8 numberWithUnsignedInteger:{objc_msgSend(v9, "length")}];
+  data = [(HMDDataStreamFragmentAssembler *)self data];
+  v10 = [v8 numberWithUnsignedInteger:{objc_msgSend(data, "length")}];
   v11 = [v7 initWithName:@"Data Length" value:v10];
   v23[2] = v11;
   v12 = objc_alloc(MEMORY[0x277D0F778]);
-  v13 = [(HMDDataStreamFragmentAssembler *)self currentChunkSequenceNumber];
-  v14 = [v12 initWithName:@"Current Chunk Sequence Number" value:v13];
+  currentChunkSequenceNumber = [(HMDDataStreamFragmentAssembler *)self currentChunkSequenceNumber];
+  v14 = [v12 initWithName:@"Current Chunk Sequence Number" value:currentChunkSequenceNumber];
   v23[3] = v14;
   v15 = objc_alloc(MEMORY[0x277D0F778]);
-  v16 = [(HMDDataStreamFragmentAssembler *)self assembledFragment];
-  v17 = [v15 initWithName:@"Assembled Fragment" value:v16];
+  assembledFragment = [(HMDDataStreamFragmentAssembler *)self assembledFragment];
+  v17 = [v15 initWithName:@"Assembled Fragment" value:assembledFragment];
   v23[4] = v17;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:5];
 
@@ -174,20 +174,20 @@ LABEL_24:
   return v18;
 }
 
-- (HMDDataStreamFragmentAssembler)initWithSequenceNumber:(id)a3 type:(id)a4
+- (HMDDataStreamFragmentAssembler)initWithSequenceNumber:(id)number type:(id)type
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  numberCopy = number;
+  typeCopy = type;
+  if (!numberCopy)
   {
     _HMFPreconditionFailure();
 LABEL_9:
     _HMFPreconditionFailure();
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = typeCopy;
+  if (!typeCopy)
   {
     goto LABEL_9;
   }
@@ -198,14 +198,14 @@ LABEL_9:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_sequenceNumber, a3);
+    objc_storeStrong(&v10->_sequenceNumber, number);
     v12 = [v9 copy];
     type = v11->_type;
     v11->_type = v12;
 
-    v14 = [MEMORY[0x277CBEB28] data];
+    data = [MEMORY[0x277CBEB28] data];
     data = v11->_data;
-    v11->_data = v14;
+    v11->_data = data;
 
     currentChunkSequenceNumber = v11->_currentChunkSequenceNumber;
     v11->_currentChunkSequenceNumber = &unk_2866279B8;
@@ -219,7 +219,7 @@ LABEL_9:
       *buf = 138543874;
       v25 = v20;
       v26 = 2112;
-      v27 = v7;
+      v27 = numberCopy;
       v28 = 2112;
       v29 = v9;
       _os_log_impl(&dword_2531F8000, v19, OS_LOG_TYPE_DEBUG, "%{public}@Initialized data chunk assembler with sequence number: %@ type: %@", buf, 0x20u);

@@ -1,28 +1,28 @@
 @interface TUAnimationSizeFunction
 - (CGSize)endValue;
-- (CGSize)solveForTime:(double)a3;
+- (CGSize)solveForTime:(double)time;
 - (CGSize)startValue;
-- (TUAnimationSizeFunction)initWithTimingFunction:(id)a3 startRect:(CGSize)a4 endRect:(CGSize)a5 speed:(double)a6;
+- (TUAnimationSizeFunction)initWithTimingFunction:(id)function startRect:(CGSize)rect endRect:(CGSize)endRect speed:(double)speed;
 - (void)_reloadFunctions;
 @end
 
 @implementation TUAnimationSizeFunction
 
-- (TUAnimationSizeFunction)initWithTimingFunction:(id)a3 startRect:(CGSize)a4 endRect:(CGSize)a5 speed:(double)a6
+- (TUAnimationSizeFunction)initWithTimingFunction:(id)function startRect:(CGSize)rect endRect:(CGSize)endRect speed:(double)speed
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a4.height;
-  v10 = a4.width;
-  v12 = a3;
+  height = endRect.height;
+  width = endRect.width;
+  v9 = rect.height;
+  v10 = rect.width;
+  functionCopy = function;
   v17.receiver = self;
   v17.super_class = TUAnimationSizeFunction;
   v13 = [(TUAnimationSizeFunction *)&v17 init];
   if (v13)
   {
-    if (v12)
+    if (functionCopy)
     {
-      v14 = v12;
+      v14 = functionCopy;
     }
 
     else
@@ -37,20 +37,20 @@
     v13->_startValue.height = v9;
     v13->_endValue.width = width;
     v13->_endValue.height = height;
-    v13->_speed = a6;
+    v13->_speed = speed;
     [(TUAnimationSizeFunction *)v13 _reloadFunctions];
   }
 
   return v13;
 }
 
-- (CGSize)solveForTime:(double)a3
+- (CGSize)solveForTime:(double)time
 {
-  v5 = [(TUAnimationSizeFunction *)self widthFunction];
-  [v5 solveForTime:a3];
+  widthFunction = [(TUAnimationSizeFunction *)self widthFunction];
+  [widthFunction solveForTime:time];
   v7 = v6;
-  v8 = [(TUAnimationSizeFunction *)self heightFunction];
-  [v8 solveForTime:a3];
+  heightFunction = [(TUAnimationSizeFunction *)self heightFunction];
+  [heightFunction solveForTime:time];
   v10 = v9;
 
   v11 = v7;

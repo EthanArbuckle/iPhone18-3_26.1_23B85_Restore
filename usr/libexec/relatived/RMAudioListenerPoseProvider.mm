@@ -1,32 +1,32 @@
 @interface RMAudioListenerPoseProvider
-- (RMAudioListenerPoseProvider)initWithConfiguration:(id)a3 receiverQueue:(id)a4;
-- (id)startProducingDataWithCallback:(id)a3;
+- (RMAudioListenerPoseProvider)initWithConfiguration:(id)configuration receiverQueue:(id)queue;
+- (id)startProducingDataWithCallback:(id)callback;
 - (void)stopProducingData;
 @end
 
 @implementation RMAudioListenerPoseProvider
 
-- (RMAudioListenerPoseProvider)initWithConfiguration:(id)a3 receiverQueue:(id)a4
+- (RMAudioListenerPoseProvider)initWithConfiguration:(id)configuration receiverQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = RMAudioListenerPoseProvider;
   v8 = [(RMAudioListenerPoseProvider *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(RMAudioListenerPoseProvider *)v8 setConfiguration:v6];
-    [(RMAudioListenerPoseProvider *)v9 setReceiverQueue:v7];
+    [(RMAudioListenerPoseProvider *)v8 setConfiguration:configurationCopy];
+    [(RMAudioListenerPoseProvider *)v9 setReceiverQueue:queueCopy];
     atomic_store(0, &v9->isRunning);
   }
 
   return v9;
 }
 
-- (id)startProducingDataWithCallback:(id)a3
+- (id)startProducingDataWithCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   if (qword_10002C0C8 != -1)
   {
     sub_100011FD8();
@@ -36,15 +36,15 @@
   if (os_log_type_enabled(qword_10002C0D0, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134283521;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "startProducingData: %{private}p", buf, 0xCu);
   }
 
-  v6 = [(RMAudioListenerPoseProvider *)self configuration];
-  v7 = [v6 tempestOptions];
+  configuration = [(RMAudioListenerPoseProvider *)self configuration];
+  tempestOptions = [configuration tempestOptions];
 
-  v8 = [(RMAudioListenerPoseProvider *)self configuration];
-  v9 = [v8 forceSessionRestart];
+  configuration2 = [(RMAudioListenerPoseProvider *)self configuration];
+  forceSessionRestart = [configuration2 forceSessionRestart];
 
   v10 = +[RMAudioListenerPoseEngine sharedInstance];
   v14[0] = _NSConcreteStackBlock;
@@ -52,9 +52,9 @@
   v14[2] = sub_1000037DC;
   v14[3] = &unk_100024AF0;
   v14[4] = self;
-  v15 = v4;
-  v11 = v4;
-  v12 = [v10 startProducingDataForObject:self tempestOptions:v7 forceSessionRestart:v9 callback:v14];
+  v15 = callbackCopy;
+  v11 = callbackCopy;
+  v12 = [v10 startProducingDataForObject:self tempestOptions:tempestOptions forceSessionRestart:forceSessionRestart callback:v14];
 
   if (!v12)
   {
@@ -75,7 +75,7 @@
   if (os_log_type_enabled(qword_10002C0D0, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 134283521;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "stopProducingData: %{private}p", &v5, 0xCu);
   }
 

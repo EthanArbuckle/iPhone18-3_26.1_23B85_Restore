@@ -1,17 +1,17 @@
 @interface MUPlaceRibbonItemViewModel
-+ (id)acceptsPaymentsViewForMapItem:(id)a3 contactlessPaymentsRibbonItem:(id)a4;
-+ (id)accoladesItemViewModelForMapItem:(id)a3;
-+ (id)amenityItemViewForMapItem:(id)a3 amenityItemConfiguration:(id)a4;
-+ (id)costItemViewForMapItem:(id)a3;
-+ (id)distanceFromCurrentLocationItemViewModelForDistanceString:(id)a3;
-+ (id)distanceFromCurrentLocationItemViewModelForMapItem:(id)a3 currentLocationCoordinate:(CLLocationCoordinate2D)a4;
-+ (id)factoidItemForFactoid:(id)a3;
-+ (id)guidesItemViewModelForMapItem:(id)a3;
-+ (id)hoursItemViewModelForMapItem:(id)a3;
-+ (id)ratingSubmissionStatusViewModelForRatingState:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)acceptsPaymentsViewForMapItem:(id)item contactlessPaymentsRibbonItem:(id)ribbonItem;
++ (id)accoladesItemViewModelForMapItem:(id)item;
++ (id)amenityItemViewForMapItem:(id)item amenityItemConfiguration:(id)configuration;
++ (id)costItemViewForMapItem:(id)item;
++ (id)distanceFromCurrentLocationItemViewModelForDistanceString:(id)string;
++ (id)distanceFromCurrentLocationItemViewModelForMapItem:(id)item currentLocationCoordinate:(CLLocationCoordinate2D)coordinate;
++ (id)factoidItemForFactoid:(id)factoid;
++ (id)guidesItemViewModelForMapItem:(id)item;
++ (id)hoursItemViewModelForMapItem:(id)item;
++ (id)ratingSubmissionStatusViewModelForRatingState:(int64_t)state;
+- (BOOL)isEqual:(id)equal;
 - (MUPlaceRibbonItemViewModelUpdateDelegate)updateDelegate;
-- (id)_attributedStringOrNilForTextProvider:(id)a3;
+- (id)_attributedStringOrNilForTextProvider:(id)provider;
 @end
 
 @implementation MUPlaceRibbonItemViewModel
@@ -23,11 +23,11 @@
   return WeakRetained;
 }
 
-- (id)_attributedStringOrNilForTextProvider:(id)a3
+- (id)_attributedStringOrNilForTextProvider:(id)provider
 {
-  if (a3)
+  if (provider)
   {
-    v4 = (*(a3 + 2))(a3, a2);
+    v4 = (*(provider + 2))(provider, a2);
   }
 
   else
@@ -38,45 +38,45 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v20 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(MUPlaceRibbonItemViewModel *)self titleStringProvider];
-    v8 = [(MUPlaceRibbonItemViewModel *)self _attributedStringOrNilForTextProvider:v7];
+    titleStringProvider = [(MUPlaceRibbonItemViewModel *)self titleStringProvider];
+    v8 = [(MUPlaceRibbonItemViewModel *)self _attributedStringOrNilForTextProvider:titleStringProvider];
 
-    v9 = [(MUPlaceRibbonItemViewModel *)v6 titleStringProvider];
-    v10 = [(MUPlaceRibbonItemViewModel *)self _attributedStringOrNilForTextProvider:v9];
+    titleStringProvider2 = [(MUPlaceRibbonItemViewModel *)v6 titleStringProvider];
+    v10 = [(MUPlaceRibbonItemViewModel *)self _attributedStringOrNilForTextProvider:titleStringProvider2];
 
-    v11 = [(MUPlaceRibbonItemViewModel *)self valueStringProvider];
-    v12 = [(MUPlaceRibbonItemViewModel *)self _attributedStringOrNilForTextProvider:v11];
+    valueStringProvider = [(MUPlaceRibbonItemViewModel *)self valueStringProvider];
+    v12 = [(MUPlaceRibbonItemViewModel *)self _attributedStringOrNilForTextProvider:valueStringProvider];
 
-    v13 = [(MUPlaceRibbonItemViewModel *)v6 valueStringProvider];
-    v14 = [(MUPlaceRibbonItemViewModel *)self _attributedStringOrNilForTextProvider:v13];
+    valueStringProvider2 = [(MUPlaceRibbonItemViewModel *)v6 valueStringProvider];
+    v14 = [(MUPlaceRibbonItemViewModel *)self _attributedStringOrNilForTextProvider:valueStringProvider2];
 
-    v15 = [(MUPlaceRibbonItemViewModel *)self updateDelegate];
-    v16 = [(MUPlaceRibbonItemViewModel *)v6 updateDelegate];
-    if (v15 == v16 && (v17 = -[MUPlaceRibbonItemViewModel isTappable](self, "isTappable"), v17 == -[MUPlaceRibbonItemViewModel isTappable](v6, "isTappable")) && (v8 == v10 || [v8 isEqual:v10]) && (v12 == v14 || objc_msgSend(v12, "isEqual:", v14)))
+    updateDelegate = [(MUPlaceRibbonItemViewModel *)self updateDelegate];
+    updateDelegate2 = [(MUPlaceRibbonItemViewModel *)v6 updateDelegate];
+    if (updateDelegate == updateDelegate2 && (v17 = -[MUPlaceRibbonItemViewModel isTappable](self, "isTappable"), v17 == -[MUPlaceRibbonItemViewModel isTappable](v6, "isTappable")) && (v8 == v10 || [v8 isEqual:v10]) && (v12 == v14 || objc_msgSend(v12, "isEqual:", v14)))
     {
-      v18 = [(MUPlaceRibbonItemViewModel *)self typeStringForAX];
-      v19 = [(MUPlaceRibbonItemViewModel *)v6 typeStringForAX];
-      v22 = v18;
-      if (v18 == v19)
+      typeStringForAX = [(MUPlaceRibbonItemViewModel *)self typeStringForAX];
+      typeStringForAX2 = [(MUPlaceRibbonItemViewModel *)v6 typeStringForAX];
+      v22 = typeStringForAX;
+      if (typeStringForAX == typeStringForAX2)
       {
         v20 = 1;
       }
 
       else
       {
-        v20 = [v18 isEqual:v19];
+        v20 = [typeStringForAX isEqual:typeStringForAX2];
       }
     }
 
@@ -94,29 +94,29 @@
   return v20;
 }
 
-+ (id)accoladesItemViewModelForMapItem:(id)a3
++ (id)accoladesItemViewModelForMapItem:(id)item
 {
-  v3 = a3;
-  if ([v3 _hasAnyAccolades])
+  itemCopy = item;
+  if ([itemCopy _hasAnyAccolades])
   {
-    v4 = [v3 _accolades];
-    v5 = [v4 firstObject];
+    _accolades = [itemCopy _accolades];
+    firstObject = [_accolades firstObject];
 
-    v6 = [MEMORY[0x1E696F3B8] sharedInstance];
-    [v6 screenScale];
+    mEMORY[0x1E696F3B8] = [MEMORY[0x1E696F3B8] sharedInstance];
+    [mEMORY[0x1E696F3B8] screenScale];
     v8 = v7;
 
     v9 = objc_alloc_init(MUPlaceRibbonItemViewModel);
     [(MUPlaceRibbonItemViewModel *)v9 setTypeStringForAX:@"Accolades"];
     v10 = _MULocalizedStringFromThisBundle(@"Accolades [Placecard]");
-    v11 = [v5 vendorName];
-    v12 = [v11 length];
+    vendorName = [firstObject vendorName];
+    v12 = [vendorName length];
 
     if (v12)
     {
-      v13 = [v5 vendorName];
+      vendorName2 = [firstObject vendorName];
 
-      v10 = v13;
+      v10 = vendorName2;
     }
 
     v14 = v10;
@@ -132,12 +132,12 @@
     v19[1] = 3221225472;
     v19[2] = __63__MUPlaceRibbonItemViewModel_accoladesItemViewModelForMapItem___block_invoke;
     v19[3] = &unk_1E8219AB8;
-    v20 = v5;
+    v20 = firstObject;
     v21 = v8;
-    v16 = v5;
+    v16 = firstObject;
     [(MUPlaceRibbonItemViewModel *)v9 setValueStringProvider:v19];
-    v17 = [v16 accoladeText];
-    [(MUPlaceRibbonItemViewModel *)v9 setPreferredAccessibilityValue:v17];
+    accoladeText = [v16 accoladeText];
+    [(MUPlaceRibbonItemViewModel *)v9 setPreferredAccessibilityValue:accoladeText];
   }
 
   else
@@ -225,9 +225,9 @@ id __63__MUPlaceRibbonItemViewModel_accoladesItemViewModelForMapItem___block_inv
   return v37;
 }
 
-+ (id)ratingSubmissionStatusViewModelForRatingState:(int64_t)a3
++ (id)ratingSubmissionStatusViewModelForRatingState:(int64_t)state
 {
-  if (a3 > 2)
+  if (state > 2)
   {
     v3 = &stru_1F44CA030;
     v4 = &stru_1F44CA030;
@@ -235,8 +235,8 @@ id __63__MUPlaceRibbonItemViewModel_accoladesItemViewModelForMapItem___block_inv
 
   else
   {
-    v3 = off_1E8219B00[a3];
-    v4 = off_1E8219B18[a3];
+    v3 = off_1E8219B00[state];
+    v4 = off_1E8219B18[state];
   }
 
   v5 = objc_alloc_init(MUPlaceRibbonItemViewModel);
@@ -352,9 +352,9 @@ id __76__MUPlaceRibbonItemViewModel_ratingSubmissionStatusViewModelForRatingStat
   return v54;
 }
 
-+ (id)distanceFromCurrentLocationItemViewModelForDistanceString:(id)a3
++ (id)distanceFromCurrentLocationItemViewModelForDistanceString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_alloc_init(MUPlaceRibbonItemViewModel);
   [(MUPlaceRibbonItemViewModel *)v4 setTypeStringForAX:@"Distance"];
   v5 = _MULocalizedStringFromThisBundle(@"Distance");
@@ -371,8 +371,8 @@ id __76__MUPlaceRibbonItemViewModel_ratingSubmissionStatusViewModelForRatingStat
   v10[1] = 3221225472;
   v10[2] = __88__MUPlaceRibbonItemViewModel_distanceFromCurrentLocationItemViewModelForDistanceString___block_invoke;
   v10[3] = &unk_1E8219A48;
-  v11 = v3;
-  v8 = v3;
+  v11 = stringCopy;
+  v8 = stringCopy;
   [(MUPlaceRibbonItemViewModel *)v4 setValueStringProvider:v10];
 
   return v4;
@@ -453,29 +453,29 @@ id __88__MUPlaceRibbonItemViewModel_distanceFromCurrentLocationItemViewModelForD
   return v43;
 }
 
-+ (id)distanceFromCurrentLocationItemViewModelForMapItem:(id)a3 currentLocationCoordinate:(CLLocationCoordinate2D)a4
++ (id)distanceFromCurrentLocationItemViewModelForMapItem:(id)item currentLocationCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v7 = a3;
-  v8 = [v7 _detourInfo];
-  if (v8)
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  itemCopy = item;
+  _detourInfo = [itemCopy _detourInfo];
+  if (_detourInfo)
   {
-    v9 = v8;
-    v10 = [v7 _detourInfo];
-    [v10 distanceToPlace];
+    v9 = _detourInfo;
+    _detourInfo2 = [itemCopy _detourInfo];
+    [_detourInfo2 distanceToPlace];
     v12 = v11;
 
     if (v12 > 0.0)
     {
-      v13 = [v7 _detourInfo];
-      [v13 distanceToPlace];
+      _detourInfo3 = [itemCopy _detourInfo];
+      [_detourInfo3 distanceToPlace];
       v15 = v14;
       goto LABEL_11;
     }
   }
 
-  [v7 _coordinate];
+  [itemCopy _coordinate];
   v17 = 0;
   if (fabs(v18) <= 180.0 && v16 >= -90.0 && v16 <= 90.0)
   {
@@ -483,12 +483,12 @@ id __88__MUPlaceRibbonItemViewModel_distanceFromCurrentLocationItemViewModelForD
     if (fabs(longitude) <= 180.0 && latitude >= -90.0 && latitude <= 90.0)
     {
       v19 = objc_alloc(MEMORY[0x1E6985C40]);
-      [v7 _coordinate];
+      [itemCopy _coordinate];
       v21 = v20;
-      [v7 _coordinate];
-      v13 = [v19 initWithLatitude:v21 longitude:?];
+      [itemCopy _coordinate];
+      _detourInfo3 = [v19 initWithLatitude:v21 longitude:?];
       v22 = [objc_alloc(MEMORY[0x1E6985C40]) initWithLatitude:latitude longitude:longitude];
-      [v13 distanceFromLocation:v22];
+      [_detourInfo3 distanceFromLocation:v22];
       v15 = v23;
 
 LABEL_11:
@@ -500,7 +500,7 @@ LABEL_11:
       else
       {
         v24 = [MEMORY[0x1E696AEC0] _mapkit_localizedDistanceStringWithMeters:v15 abbreviated:1];
-        v17 = [a1 distanceFromCurrentLocationItemViewModelForDistanceString:v24];
+        v17 = [self distanceFromCurrentLocationItemViewModelForDistanceString:v24];
       }
     }
   }
@@ -508,16 +508,16 @@ LABEL_11:
   return v17;
 }
 
-+ (id)factoidItemForFactoid:(id)a3
++ (id)factoidItemForFactoid:(id)factoid
 {
-  v3 = [MUFactoidViewModel viewModelForFactoid:a3];
-  v4 = [v3 titleString];
-  v5 = [v3 valueString];
-  if ([v4 length] && objc_msgSend(v5, "length"))
+  v3 = [MUFactoidViewModel viewModelForFactoid:factoid];
+  titleString = [v3 titleString];
+  valueString = [v3 valueString];
+  if ([titleString length] && objc_msgSend(valueString, "length"))
   {
     v6 = objc_alloc_init(MUPlaceRibbonItemViewModel);
     [(MUPlaceRibbonItemViewModel *)v6 setTypeStringForAX:@"Factoid"];
-    v7 = v4;
+    v7 = titleString;
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = ___defaultTitleAttributedStringForString_block_invoke;
@@ -531,7 +531,7 @@ LABEL_11:
     v10[2] = __52__MUPlaceRibbonItemViewModel_factoidItemForFactoid___block_invoke;
     v10[3] = &unk_1E8219A70;
     v11 = v3;
-    v12 = v5;
+    v12 = valueString;
     [(MUPlaceRibbonItemViewModel *)v6 setValueStringProvider:v10];
   }
 
@@ -648,25 +648,25 @@ id __52__MUPlaceRibbonItemViewModel_factoidItemForFactoid___block_invoke(uint64_
   return v49;
 }
 
-+ (id)acceptsPaymentsViewForMapItem:(id)a3 contactlessPaymentsRibbonItem:(id)a4
++ (id)acceptsPaymentsViewForMapItem:(id)item contactlessPaymentsRibbonItem:(id)ribbonItem
 {
   v41 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  itemCopy = item;
+  ribbonItemCopy = ribbonItem;
   if (!MapsFeature_IsEnabled_ApplePayEnhancementsEnabled())
   {
     goto LABEL_15;
   }
 
-  v7 = [v5 _amenities];
-  if (![v7 count])
+  _amenities = [itemCopy _amenities];
+  if (![_amenities count])
   {
 
     goto LABEL_15;
   }
 
-  v8 = [v6 indexesWithinAmenityComponent];
-  v9 = [v8 count];
+  indexesWithinAmenityComponent = [ribbonItemCopy indexesWithinAmenityComponent];
+  v9 = [indexesWithinAmenityComponent count];
 
   if (!v9)
   {
@@ -676,15 +676,15 @@ LABEL_15:
   }
 
   v10 = objc_alloc(MEMORY[0x1E695DF70]);
-  v11 = [v6 indexesWithinAmenityComponent];
-  v12 = [v10 initWithCapacity:{objc_msgSend(v11, "count")}];
+  indexesWithinAmenityComponent2 = [ribbonItemCopy indexesWithinAmenityComponent];
+  v12 = [v10 initWithCapacity:{objc_msgSend(indexesWithinAmenityComponent2, "count")}];
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v13 = [v6 indexesWithinAmenityComponent];
-  v14 = [v13 countByEnumeratingWithState:&v34 objects:v40 count:16];
+  indexesWithinAmenityComponent3 = [ribbonItemCopy indexesWithinAmenityComponent];
+  v14 = [indexesWithinAmenityComponent3 countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v14)
   {
     v15 = v14;
@@ -695,23 +695,23 @@ LABEL_15:
       {
         if (*v35 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(indexesWithinAmenityComponent3);
         }
 
-        v18 = [*(*(&v34 + 1) + 8 * i) unsignedIntegerValue];
-        v19 = [v5 _amenities];
-        v20 = [v19 count];
+        unsignedIntegerValue = [*(*(&v34 + 1) + 8 * i) unsignedIntegerValue];
+        _amenities2 = [itemCopy _amenities];
+        v20 = [_amenities2 count];
 
-        if (v18 < v20)
+        if (unsignedIntegerValue < v20)
         {
-          v21 = [v5 _amenities];
-          v22 = [v21 objectAtIndex:v18];
+          _amenities3 = [itemCopy _amenities];
+          v22 = [_amenities3 objectAtIndex:unsignedIntegerValue];
 
           [v12 addObject:v22];
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v34 objects:v40 count:16];
+      v15 = [indexesWithinAmenityComponent3 countByEnumeratingWithState:&v34 objects:v40 count:16];
     }
 
     while (v15);
@@ -719,13 +719,13 @@ LABEL_15:
 
   v23 = objc_alloc_init(MUPlaceRibbonItemViewModel);
   [(MUPlaceRibbonItemViewModel *)v23 setTypeStringForAX:@"AcceptsPayments"];
-  v24 = [v6 ribbonText];
+  ribbonText = [ribbonItemCopy ribbonText];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = ___defaultTitleAttributedStringForString_block_invoke;
   aBlock[3] = &unk_1E8219A48;
-  v39 = v24;
-  v25 = v24;
+  v39 = ribbonText;
+  v25 = ribbonText;
   v26 = _Block_copy(aBlock);
 
   [(MUPlaceRibbonItemViewModel *)v23 setTitleStringProvider:v26];
@@ -848,28 +848,28 @@ id __90__MUPlaceRibbonItemViewModel_acceptsPaymentsViewForMapItem_contactlessPay
   return v32;
 }
 
-+ (id)amenityItemViewForMapItem:(id)a3 amenityItemConfiguration:(id)a4
++ (id)amenityItemViewForMapItem:(id)item amenityItemConfiguration:(id)configuration
 {
   v65 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 _amenities];
-  v8 = [v7 count];
+  itemCopy = item;
+  configurationCopy = configuration;
+  _amenities = [itemCopy _amenities];
+  v8 = [_amenities count];
 
   if (v8)
   {
-    v9 = [v6 indexesWithinAmenityComponent];
+    indexesWithinAmenityComponent = [configurationCopy indexesWithinAmenityComponent];
 
-    v46 = v6;
-    if (v9)
+    v46 = configurationCopy;
+    if (indexesWithinAmenityComponent)
     {
       v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v57 = 0u;
       v58 = 0u;
       v59 = 0u;
       v60 = 0u;
-      v11 = [v6 indexesWithinAmenityComponent];
-      v12 = [v11 countByEnumeratingWithState:&v57 objects:v64 count:16];
+      indexesWithinAmenityComponent2 = [configurationCopy indexesWithinAmenityComponent];
+      v12 = [indexesWithinAmenityComponent2 countByEnumeratingWithState:&v57 objects:v64 count:16];
       if (v12)
       {
         v13 = v12;
@@ -880,34 +880,34 @@ id __90__MUPlaceRibbonItemViewModel_acceptsPaymentsViewForMapItem_contactlessPay
           {
             if (*v58 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(indexesWithinAmenityComponent2);
             }
 
-            v16 = [*(*(&v57 + 1) + 8 * i) unsignedIntegerValue];
-            v17 = [v5 _amenities];
-            v18 = [v17 count];
+            unsignedIntegerValue = [*(*(&v57 + 1) + 8 * i) unsignedIntegerValue];
+            _amenities2 = [itemCopy _amenities];
+            v18 = [_amenities2 count];
 
-            if (v16 < v18)
+            if (unsignedIntegerValue < v18)
             {
-              v19 = [v5 _amenities];
-              v20 = [v19 objectAtIndex:v16];
+              _amenities3 = [itemCopy _amenities];
+              v20 = [_amenities3 objectAtIndex:unsignedIntegerValue];
 
               [v10 addObject:v20];
             }
           }
 
-          v13 = [v11 countByEnumeratingWithState:&v57 objects:v64 count:16];
+          v13 = [indexesWithinAmenityComponent2 countByEnumeratingWithState:&v57 objects:v64 count:16];
         }
 
         while (v13);
       }
 
-      v21 = [v10 copy];
+      _amenities4 = [v10 copy];
     }
 
     else
     {
-      v21 = [v5 _amenities];
+      _amenities4 = [itemCopy _amenities];
     }
 
     v23 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -915,7 +915,7 @@ id __90__MUPlaceRibbonItemViewModel_acceptsPaymentsViewForMapItem_contactlessPay
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
-    obj = v21;
+    obj = _amenities4;
     v50 = [obj countByEnumeratingWithState:&v53 objects:v63 count:16];
     if (v50)
     {
@@ -932,14 +932,14 @@ LABEL_17:
         }
 
         v26 = *(*(&v53 + 1) + 8 * v25);
-        v27 = [v26 resolvedRibbonSymbolName];
-        if ([v27 length])
+        resolvedRibbonSymbolName = [v26 resolvedRibbonSymbolName];
+        if ([resolvedRibbonSymbolName length])
         {
           v28 = v23;
           v29 = MEMORY[0x1E69DCAB8];
           v30 = MEMORY[0x1E69DCAD8];
           v31 = MEMORY[0x1E69DB878];
-          v32 = v27;
+          v32 = resolvedRibbonSymbolName;
           v33 = [v31 preferredFontForTextStyle:v47];
           v34 = [v33 _mapkit_fontWithWeight:v24];
           v35 = [v30 configurationWithFont:v34 scale:1];
@@ -1004,7 +1004,7 @@ LABEL_17:
       v22 = 0;
     }
 
-    v6 = v46;
+    configurationCopy = v46;
   }
 
   else
@@ -1088,10 +1088,10 @@ id __81__MUPlaceRibbonItemViewModel_amenityItemViewForMapItem_amenityItemConfigu
   return v21;
 }
 
-+ (id)costItemViewForMapItem:(id)a3
++ (id)costItemViewForMapItem:(id)item
 {
-  v3 = a3;
-  if ([v3 _hasPriceRange] && (objc_msgSend(v3, "_geoMapItem"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "_maxScoreForPriceRange"), v4, v5))
+  itemCopy = item;
+  if ([itemCopy _hasPriceRange] && (objc_msgSend(itemCopy, "_geoMapItem"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "_maxScoreForPriceRange"), v4, v5))
   {
     v6 = objc_alloc_init(MUPlaceRibbonItemViewModel);
     [(MUPlaceRibbonItemViewModel *)v6 setTypeStringForAX:@"Cost"];
@@ -1104,18 +1104,18 @@ id __81__MUPlaceRibbonItemViewModel_amenityItemViewForMapItem_amenityItemConfigu
     v8 = _Block_copy(aBlock);
 
     [(MUPlaceRibbonItemViewModel *)v6 setTitleStringProvider:v8];
-    v9 = [MEMORY[0x1E695DF58] currentLocale];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __53__MUPlaceRibbonItemViewModel_costItemViewForMapItem___block_invoke;
     v15[3] = &unk_1E8219A70;
-    v10 = v3;
+    v10 = itemCopy;
     v16 = v10;
-    v11 = v9;
+    v11 = currentLocale;
     v17 = v11;
     [(MUPlaceRibbonItemViewModel *)v6 setValueStringProvider:v15];
-    v12 = [v10 _geoMapItem];
-    v13 = +[MUPlaceRibbonHelper costStringForValue:locale:](MUPlaceRibbonHelper, "costStringForValue:locale:", [v12 _priceRange], v11);
+    _geoMapItem = [v10 _geoMapItem];
+    v13 = +[MUPlaceRibbonHelper costStringForValue:locale:](MUPlaceRibbonHelper, "costStringForValue:locale:", [_geoMapItem _priceRange], v11);
     [(MUPlaceRibbonItemViewModel *)v6 setPreferredAccessibilityValue:v13];
   }
 
@@ -1229,23 +1229,23 @@ id __53__MUPlaceRibbonItemViewModel_costItemViewForMapItem___block_invoke(uint64
   return v45;
 }
 
-+ (id)hoursItemViewModelForMapItem:(id)a3
++ (id)hoursItemViewModelForMapItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 _businessHours];
+  itemCopy = item;
+  _businessHours = [itemCopy _businessHours];
 
-  if (v4)
+  if (_businessHours)
   {
-    v5 = [objc_alloc(MEMORY[0x1E696F468]) initWithMapItem:v3 localizedHoursStringOptions:1];
-    v6 = [MEMORY[0x1E69DC888] systemGreenColor];
-    [v5 updateHoursLabelColorWithDefaultLabelColor:v6];
+    v5 = [objc_alloc(MEMORY[0x1E696F468]) initWithMapItem:itemCopy localizedHoursStringOptions:1];
+    systemGreenColor = [MEMORY[0x1E69DC888] systemGreenColor];
+    [v5 updateHoursLabelColorWithDefaultLabelColor:systemGreenColor];
 
-    v7 = [v5 ribbonSummaryForOpeningState];
+    ribbonSummaryForOpeningState = [v5 ribbonSummaryForOpeningState];
     v8 = _MULocalizedStringFromThisBundle(@"Hours [Placecard]");
-    v4 = objc_alloc_init(MUPlaceRibbonItemViewModel);
-    [(MUPlaceRibbonItemViewModel *)v4 setType:2];
-    [(MUPlaceRibbonItemViewModel *)v4 setTappable:1];
-    [(MUPlaceRibbonItemViewModel *)v4 setTypeStringForAX:@"Hours"];
+    _businessHours = objc_alloc_init(MUPlaceRibbonItemViewModel);
+    [(MUPlaceRibbonItemViewModel *)_businessHours setType:2];
+    [(MUPlaceRibbonItemViewModel *)_businessHours setTappable:1];
+    [(MUPlaceRibbonItemViewModel *)_businessHours setTypeStringForAX:@"Hours"];
     v9 = v8;
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -1254,19 +1254,19 @@ id __53__MUPlaceRibbonItemViewModel_costItemViewForMapItem___block_invoke(uint64
     v18 = v9;
     v10 = _Block_copy(aBlock);
 
-    [(MUPlaceRibbonItemViewModel *)v4 setTitleStringProvider:v10];
+    [(MUPlaceRibbonItemViewModel *)_businessHours setTitleStringProvider:v10];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __59__MUPlaceRibbonItemViewModel_hoursItemViewModelForMapItem___block_invoke;
     v14[3] = &unk_1E8219A70;
-    v15 = v7;
+    v15 = ribbonSummaryForOpeningState;
     v16 = v5;
     v11 = v5;
-    v12 = v7;
-    [(MUPlaceRibbonItemViewModel *)v4 setValueStringProvider:v14];
+    v12 = ribbonSummaryForOpeningState;
+    [(MUPlaceRibbonItemViewModel *)_businessHours setValueStringProvider:v14];
   }
 
-  return v4;
+  return _businessHours;
 }
 
 id __59__MUPlaceRibbonItemViewModel_hoursItemViewModelForMapItem___block_invoke(uint64_t a1)
@@ -1293,18 +1293,18 @@ id __59__MUPlaceRibbonItemViewModel_hoursItemViewModelForMapItem___block_invoke(
   return v12;
 }
 
-+ (id)guidesItemViewModelForMapItem:(id)a3
++ (id)guidesItemViewModelForMapItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 _placeCollections];
-  v5 = [v4 count];
+  itemCopy = item;
+  _placeCollections = [itemCopy _placeCollections];
+  v5 = [_placeCollections count];
 
   if (v5)
   {
     v6 = _MULocalizedStringFromThisBundle(@"Guides [Placecard]");
     v7 = MEMORY[0x1E696AEC0];
-    v8 = [v3 _placeCollections];
-    v9 = [v7 stringWithFormat:@"%lu", objc_msgSend(v8, "count")];
+    _placeCollections2 = [itemCopy _placeCollections];
+    v9 = [v7 stringWithFormat:@"%lu", objc_msgSend(_placeCollections2, "count")];
 
     v10 = objc_alloc_init(MUPlaceRibbonItemViewModel);
     [(MUPlaceRibbonItemViewModel *)v10 setTypeStringForAX:@"Guides"];

@@ -1,17 +1,17 @@
 @interface SBEntityRemovalDeleteFloatingSwitcherModifier
-- (BOOL)_isIndexFromAppLayout:(unint64_t)a3;
-- (BOOL)_isIndexToAppLayout:(unint64_t)a3;
+- (BOOL)_isIndexFromAppLayout:(unint64_t)layout;
+- (BOOL)_isIndexToAppLayout:(unint64_t)layout;
 - (CGRect)containerViewBounds;
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (SBEntityRemovalDeleteFloatingSwitcherModifier)initWithTransitionID:(id)a3 fromAppLayout:(id)a4 toAppLayout:(id)a5 floatingConfiguration:(int64_t)a6;
-- (double)dimmingAlphaForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
-- (double)scaleForIndex:(unint64_t)a3;
-- (double)shadowOpacityForLayoutRole:(int64_t)a3 atIndex:(unint64_t)a4;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (SBEntityRemovalDeleteFloatingSwitcherModifier)initWithTransitionID:(id)d fromAppLayout:(id)layout toAppLayout:(id)appLayout floatingConfiguration:(int64_t)configuration;
+- (double)dimmingAlphaForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
+- (double)scaleForIndex:(unint64_t)index;
+- (double)shadowOpacityForLayoutRole:(int64_t)role atIndex:(unint64_t)index;
 - (id)_layoutSettings;
 - (id)_opacitySettings;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 - (id)topMostLayoutElements;
 - (id)transitionDidEnd;
 - (id)transitionWillBegin;
@@ -21,43 +21,43 @@
 
 @implementation SBEntityRemovalDeleteFloatingSwitcherModifier
 
-- (SBEntityRemovalDeleteFloatingSwitcherModifier)initWithTransitionID:(id)a3 fromAppLayout:(id)a4 toAppLayout:(id)a5 floatingConfiguration:(int64_t)a6
+- (SBEntityRemovalDeleteFloatingSwitcherModifier)initWithTransitionID:(id)d fromAppLayout:(id)layout toAppLayout:(id)appLayout floatingConfiguration:(int64_t)configuration
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (!v12)
+  dCopy = d;
+  layoutCopy = layout;
+  appLayoutCopy = appLayout;
+  if (!layoutCopy)
   {
     [SBEntityRemovalDeleteFloatingSwitcherModifier initWithTransitionID:a2 fromAppLayout:self toAppLayout:? floatingConfiguration:?];
   }
 
   v17.receiver = self;
   v17.super_class = SBEntityRemovalDeleteFloatingSwitcherModifier;
-  v14 = [(SBTransitionSwitcherModifier *)&v17 initWithTransitionID:v11];
+  v14 = [(SBTransitionSwitcherModifier *)&v17 initWithTransitionID:dCopy];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_fromAppLayout, a4);
-    objc_storeStrong(&v15->_toAppLayout, a5);
-    v15->_floatingConfiguration = a6;
+    objc_storeStrong(&v14->_fromAppLayout, layout);
+    objc_storeStrong(&v15->_toAppLayout, appLayout);
+    v15->_floatingConfiguration = configuration;
     v15->_blursFromAppLayout = 1;
   }
 
   return v15;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBChainableModifier *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBChainableModifier *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __87__SBEntityRemovalDeleteFloatingSwitcherModifier_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_2783A92D8;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;
@@ -77,9 +77,9 @@ id __87__SBEntityRemovalDeleteFloatingSwitcherModifier_descriptionBuilderWithMul
 {
   v6.receiver = self;
   v6.super_class = SBEntityRemovalDeleteFloatingSwitcherModifier;
-  v2 = [(SBTransitionSwitcherModifier *)&v6 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v6 transitionWillBegin];
   v3 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:2 updateMode:2];
-  v4 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v3 toResponse:v2];
+  v4 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v3 toResponse:transitionWillBegin];
 
   return v4;
 }
@@ -88,40 +88,40 @@ id __87__SBEntityRemovalDeleteFloatingSwitcherModifier_descriptionBuilderWithMul
 {
   v7.receiver = self;
   v7.super_class = SBEntityRemovalDeleteFloatingSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v7 transitionWillUpdate];
+  transitionWillUpdate = [(SBTransitionSwitcherModifier *)&v7 transitionWillUpdate];
   if (self->_blursFromAppLayout)
   {
     v4 = [[SBBlurItemContainerSwitcherEventResponse alloc] initWithAppLayout:self->_fromAppLayout shouldBlur:1 animationUpdateMode:3];
-    v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v4 toResponse:v3];
+    v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v4 toResponse:transitionWillUpdate];
 
-    v3 = v5;
+    transitionWillUpdate = v5;
   }
 
-  return v3;
+  return transitionWillUpdate;
 }
 
 - (id)transitionDidEnd
 {
   v7.receiver = self;
   v7.super_class = SBEntityRemovalDeleteFloatingSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v7 transitionDidEnd];
+  transitionDidEnd = [(SBTransitionSwitcherModifier *)&v7 transitionDidEnd];
   if (self->_blursFromAppLayout)
   {
     v4 = [[SBBlurItemContainerSwitcherEventResponse alloc] initWithAppLayout:self->_fromAppLayout shouldBlur:0 animationUpdateMode:2];
-    v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v4 toResponse:v3];
+    v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v4 toResponse:transitionDidEnd];
 
-    v3 = v5;
+    transitionDidEnd = v5;
   }
 
-  return v3;
+  return transitionDidEnd;
 }
 
 - (CGRect)containerViewBounds
 {
-  v3 = [(SBEntityRemovalDeleteFloatingSwitcherModifier *)self switcherInterfaceOrientation];
+  switcherInterfaceOrientation = [(SBEntityRemovalDeleteFloatingSwitcherModifier *)self switcherInterfaceOrientation];
   floatingConfiguration = self->_floatingConfiguration;
 
-  [(SBEntityRemovalDeleteFloatingSwitcherModifier *)self floatingApplicationFrameInInterfaceOrientation:v3 floatingConfiguration:floatingConfiguration];
+  [(SBEntityRemovalDeleteFloatingSwitcherModifier *)self floatingApplicationFrameInInterfaceOrientation:switcherInterfaceOrientation floatingConfiguration:floatingConfiguration];
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;
@@ -129,7 +129,7 @@ id __87__SBEntityRemovalDeleteFloatingSwitcherModifier_descriptionBuilderWithMul
   return result;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
   if ([(SBEntityRemovalDeleteFloatingSwitcherModifier *)self _isIndexFromAppLayout:?])
   {
@@ -140,7 +140,7 @@ id __87__SBEntityRemovalDeleteFloatingSwitcherModifier_descriptionBuilderWithMul
   {
     v9.receiver = self;
     v9.super_class = SBEntityRemovalDeleteFloatingSwitcherModifier;
-    [(SBEntityRemovalDeleteFloatingSwitcherModifier *)&v9 frameForIndex:a3];
+    [(SBEntityRemovalDeleteFloatingSwitcherModifier *)&v9 frameForIndex:index];
   }
 
   result.size.height = v8;
@@ -150,11 +150,11 @@ id __87__SBEntityRemovalDeleteFloatingSwitcherModifier_descriptionBuilderWithMul
   return result;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
   if (![(SBEntityRemovalDeleteFloatingSwitcherModifier *)self _isIndexFromAppLayout:?])
   {
-    if ([(SBEntityRemovalDeleteFloatingSwitcherModifier *)self _isIndexToAppLayout:a3]&& [(SBTransitionSwitcherModifier *)self transitionPhase]== 1)
+    if ([(SBEntityRemovalDeleteFloatingSwitcherModifier *)self _isIndexToAppLayout:index]&& [(SBTransitionSwitcherModifier *)self transitionPhase]== 1)
     {
       v5 = 1.0;
       if (SBReduceMotion())
@@ -167,7 +167,7 @@ id __87__SBEntityRemovalDeleteFloatingSwitcherModifier_descriptionBuilderWithMul
 
     else
     {
-      [(SBEntityRemovalDeleteFloatingSwitcherModifier *)&v11 scaleForIndex:a3, self, SBEntityRemovalDeleteFloatingSwitcherModifier, v12.receiver, v12.super_class];
+      [(SBEntityRemovalDeleteFloatingSwitcherModifier *)&v11 scaleForIndex:index, self, SBEntityRemovalDeleteFloatingSwitcherModifier, v12.receiver, v12.super_class];
     }
 
     return v9;
@@ -176,9 +176,9 @@ id __87__SBEntityRemovalDeleteFloatingSwitcherModifier_descriptionBuilderWithMul
   v5 = 1.0;
   if (!SBReduceMotion())
   {
-    v6 = [(SBEntityRemovalDeleteFloatingSwitcherModifier *)self entityRemovalSettings];
-    v7 = [v6 floatingDeleteIntentAnimationSettings];
-    [v7 toBeRemovedFinalScale];
+    entityRemovalSettings = [(SBEntityRemovalDeleteFloatingSwitcherModifier *)self entityRemovalSettings];
+    floatingDeleteIntentAnimationSettings = [entityRemovalSettings floatingDeleteIntentAnimationSettings];
+    [floatingDeleteIntentAnimationSettings toBeRemovedFinalScale];
     v5 = v8;
   }
 
@@ -189,8 +189,8 @@ id __87__SBEntityRemovalDeleteFloatingSwitcherModifier_descriptionBuilderWithMul
 {
   v7.receiver = self;
   v7.super_class = SBEntityRemovalDeleteFloatingSwitcherModifier;
-  v3 = [(SBEntityRemovalDeleteFloatingSwitcherModifier *)&v7 visibleAppLayouts];
-  v4 = [v3 setByAddingObject:self->_fromAppLayout];
+  visibleAppLayouts = [(SBEntityRemovalDeleteFloatingSwitcherModifier *)&v7 visibleAppLayouts];
+  v4 = [visibleAppLayouts setByAddingObject:self->_fromAppLayout];
 
   if (self->_toAppLayout)
   {
@@ -202,46 +202,46 @@ id __87__SBEntityRemovalDeleteFloatingSwitcherModifier_descriptionBuilderWithMul
   return v4;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v9.receiver = self;
   v9.super_class = SBEntityRemovalDeleteFloatingSwitcherModifier;
-  v4 = [(SBTransitionSwitcherModifier *)&v9 animationAttributesForLayoutElement:a3];
+  v4 = [(SBTransitionSwitcherModifier *)&v9 animationAttributesForLayoutElement:element];
   v5 = [v4 mutableCopy];
 
-  v6 = [(SBEntityRemovalDeleteFloatingSwitcherModifier *)self _layoutSettings];
-  [v5 setLayoutSettings:v6];
+  _layoutSettings = [(SBEntityRemovalDeleteFloatingSwitcherModifier *)self _layoutSettings];
+  [v5 setLayoutSettings:_layoutSettings];
 
-  v7 = [(SBEntityRemovalDeleteFloatingSwitcherModifier *)self _opacitySettings];
-  [v5 setOpacitySettings:v7];
+  _opacitySettings = [(SBEntityRemovalDeleteFloatingSwitcherModifier *)self _opacitySettings];
+  [v5 setOpacitySettings:_opacitySettings];
 
   return v5;
 }
 
 - (id)_layoutSettings
 {
-  v2 = [(SBEntityRemovalDeleteFloatingSwitcherModifier *)self entityRemovalSettings];
-  v3 = [v2 floatingDeleteIntentAnimationSettings];
-  v4 = [v3 toBeRemovedScaleAnimationSettings];
+  entityRemovalSettings = [(SBEntityRemovalDeleteFloatingSwitcherModifier *)self entityRemovalSettings];
+  floatingDeleteIntentAnimationSettings = [entityRemovalSettings floatingDeleteIntentAnimationSettings];
+  toBeRemovedScaleAnimationSettings = [floatingDeleteIntentAnimationSettings toBeRemovedScaleAnimationSettings];
 
-  return v4;
+  return toBeRemovedScaleAnimationSettings;
 }
 
 - (id)_opacitySettings
 {
-  v2 = [(SBEntityRemovalDeleteFloatingSwitcherModifier *)self entityRemovalSettings];
-  v3 = [v2 floatingDeleteIntentAnimationSettings];
-  v4 = [v3 toBeRemovedAlphaAnimationSettings];
+  entityRemovalSettings = [(SBEntityRemovalDeleteFloatingSwitcherModifier *)self entityRemovalSettings];
+  floatingDeleteIntentAnimationSettings = [entityRemovalSettings floatingDeleteIntentAnimationSettings];
+  toBeRemovedAlphaAnimationSettings = [floatingDeleteIntentAnimationSettings toBeRemovedAlphaAnimationSettings];
 
-  return v4;
+  return toBeRemovedAlphaAnimationSettings;
 }
 
 - (id)topMostLayoutElements
 {
   v8.receiver = self;
   v8.super_class = SBEntityRemovalDeleteFloatingSwitcherModifier;
-  v3 = [(SBEntityRemovalDeleteFloatingSwitcherModifier *)&v8 topMostLayoutElements];
-  v4 = [v3 sb_arrayByInsertingOrMovingObject:self->_fromAppLayout toIndex:0];
+  topMostLayoutElements = [(SBEntityRemovalDeleteFloatingSwitcherModifier *)&v8 topMostLayoutElements];
+  v4 = [topMostLayoutElements sb_arrayByInsertingOrMovingObject:self->_fromAppLayout toIndex:0];
 
   toAppLayout = self->_toAppLayout;
   if (toAppLayout)
@@ -254,25 +254,25 @@ id __87__SBEntityRemovalDeleteFloatingSwitcherModifier_descriptionBuilderWithMul
   return v4;
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  v8 = a4;
-  if ([(SBEntityRemovalDeleteFloatingSwitcherModifier *)self _isIndexFromAppLayout:a5])
+  layoutCopy = layout;
+  if ([(SBEntityRemovalDeleteFloatingSwitcherModifier *)self _isIndexFromAppLayout:index])
   {
-    v9 = [(SBEntityRemovalDeleteFloatingSwitcherModifier *)self entityRemovalSettings];
-    v10 = [v9 floatingDeleteIntentAnimationSettings];
-    [v10 toBeRemovedFinalAlpha];
+    entityRemovalSettings = [(SBEntityRemovalDeleteFloatingSwitcherModifier *)self entityRemovalSettings];
+    floatingDeleteIntentAnimationSettings = [entityRemovalSettings floatingDeleteIntentAnimationSettings];
+    [floatingDeleteIntentAnimationSettings toBeRemovedFinalAlpha];
     v12 = v11;
   }
 
   else
   {
     v12 = 1.0;
-    if (![(SBEntityRemovalDeleteFloatingSwitcherModifier *)self _isIndexToAppLayout:a5])
+    if (![(SBEntityRemovalDeleteFloatingSwitcherModifier *)self _isIndexToAppLayout:index])
     {
       v15.receiver = self;
       v15.super_class = SBEntityRemovalDeleteFloatingSwitcherModifier;
-      [(SBEntityRemovalDeleteFloatingSwitcherModifier *)&v15 opacityForLayoutRole:a3 inAppLayout:v8 atIndex:a5];
+      [(SBEntityRemovalDeleteFloatingSwitcherModifier *)&v15 opacityForLayoutRole:role inAppLayout:layoutCopy atIndex:index];
       v12 = v13;
     }
   }
@@ -280,58 +280,58 @@ id __87__SBEntityRemovalDeleteFloatingSwitcherModifier_descriptionBuilderWithMul
   return v12;
 }
 
-- (double)dimmingAlphaForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)dimmingAlphaForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
   v14.receiver = self;
   v14.super_class = SBEntityRemovalDeleteFloatingSwitcherModifier;
-  v6 = a4;
-  [(SBEntityRemovalDeleteFloatingSwitcherModifier *)&v14 dimmingAlphaForLayoutRole:a3 inAppLayout:v6];
+  layoutCopy = layout;
+  [(SBEntityRemovalDeleteFloatingSwitcherModifier *)&v14 dimmingAlphaForLayoutRole:role inAppLayout:layoutCopy];
   v8 = v7;
   toAppLayout = self->_toAppLayout;
 
-  if (toAppLayout == v6 && [(SBTransitionSwitcherModifier *)self transitionPhase:v14.receiver]== 1)
+  if (toAppLayout == layoutCopy && [(SBTransitionSwitcherModifier *)self transitionPhase:v14.receiver]== 1)
   {
-    v10 = [(SBEntityRemovalDeleteFloatingSwitcherModifier *)self switcherSettings];
-    v11 = [v10 floatingSwitcherSettings];
-    [v11 dimmingAlpha];
+    switcherSettings = [(SBEntityRemovalDeleteFloatingSwitcherModifier *)self switcherSettings];
+    floatingSwitcherSettings = [switcherSettings floatingSwitcherSettings];
+    [floatingSwitcherSettings dimmingAlpha];
     v8 = v12;
   }
 
   return v8;
 }
 
-- (double)shadowOpacityForLayoutRole:(int64_t)a3 atIndex:(unint64_t)a4
+- (double)shadowOpacityForLayoutRole:(int64_t)role atIndex:(unint64_t)index
 {
   v7 = 0.0;
-  if (![(SBEntityRemovalDeleteFloatingSwitcherModifier *)self _isIndexFromAppLayout:a4]&& (![(SBEntityRemovalDeleteFloatingSwitcherModifier *)self _isIndexToAppLayout:a4]|| [(SBTransitionSwitcherModifier *)self transitionPhase]!= 1))
+  if (![(SBEntityRemovalDeleteFloatingSwitcherModifier *)self _isIndexFromAppLayout:index]&& (![(SBEntityRemovalDeleteFloatingSwitcherModifier *)self _isIndexToAppLayout:index]|| [(SBTransitionSwitcherModifier *)self transitionPhase]!= 1))
   {
     v10.receiver = self;
     v10.super_class = SBEntityRemovalDeleteFloatingSwitcherModifier;
-    [(SBEntityRemovalDeleteFloatingSwitcherModifier *)&v10 shadowOpacityForLayoutRole:a3 atIndex:a4];
+    [(SBEntityRemovalDeleteFloatingSwitcherModifier *)&v10 shadowOpacityForLayoutRole:role atIndex:index];
     return v8;
   }
 
   return v7;
 }
 
-- (BOOL)_isIndexFromAppLayout:(unint64_t)a3
+- (BOOL)_isIndexFromAppLayout:(unint64_t)layout
 {
-  v4 = self;
-  v5 = [(SBEntityRemovalDeleteFloatingSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  selfCopy = self;
+  appLayouts = [(SBEntityRemovalDeleteFloatingSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:layout];
 
-  LOBYTE(v4) = [v6 isEqual:v4->_fromAppLayout];
-  return v4;
+  LOBYTE(selfCopy) = [v6 isEqual:selfCopy->_fromAppLayout];
+  return selfCopy;
 }
 
-- (BOOL)_isIndexToAppLayout:(unint64_t)a3
+- (BOOL)_isIndexToAppLayout:(unint64_t)layout
 {
-  v4 = self;
-  v5 = [(SBEntityRemovalDeleteFloatingSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  selfCopy = self;
+  appLayouts = [(SBEntityRemovalDeleteFloatingSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:layout];
 
-  LOBYTE(v4) = [v6 isEqual:v4->_toAppLayout];
-  return v4;
+  LOBYTE(selfCopy) = [v6 isEqual:selfCopy->_toAppLayout];
+  return selfCopy;
 }
 
 - (void)initWithTransitionID:(uint64_t)a1 fromAppLayout:(uint64_t)a2 toAppLayout:floatingConfiguration:.cold.1(uint64_t a1, uint64_t a2)

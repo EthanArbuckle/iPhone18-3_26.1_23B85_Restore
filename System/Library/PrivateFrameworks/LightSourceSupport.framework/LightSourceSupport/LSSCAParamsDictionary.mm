@@ -1,41 +1,41 @@
 @interface LSSCAParamsDictionary
 - ($C28CD4A45FD07A4F97CC9D5F91F25271)params;
-- (LSSCAParamsDictionary)initWithObjects:(const void *)a3 forKeys:(const void *)a4 count:(unint64_t)a5;
+- (LSSCAParamsDictionary)initWithObjects:(const void *)objects forKeys:(const void *)keys count:(unint64_t)count;
 - (id)keyEnumerator;
-- (id)objectForKey:(id)a3;
+- (id)objectForKey:(id)key;
 @end
 
 @implementation LSSCAParamsDictionary
 
-- (LSSCAParamsDictionary)initWithObjects:(const void *)a3 forKeys:(const void *)a4 count:(unint64_t)a5
+- (LSSCAParamsDictionary)initWithObjects:(const void *)objects forKeys:(const void *)keys count:(unint64_t)count
 {
   v6.receiver = self;
   v6.super_class = LSSCAParamsDictionary;
-  return [(LSSCAParamsDictionary *)&v6 init:a3];
+  return [(LSSCAParamsDictionary *)&v6 init:objects];
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  v6 = v4;
-  if (*MEMORY[0x277CDA9F0] == v4)
+  keyCopy = key;
+  v6 = keyCopy;
+  if (*MEMORY[0x277CDA9F0] == keyCopy)
   {
     p_params = &self->_params;
   }
 
-  else if (*MEMORY[0x277CDA9F8] == v4)
+  else if (*MEMORY[0x277CDA9F8] == keyCopy)
   {
     p_params = &self->_params.height;
   }
 
-  else if (*MEMORY[0x277CDAA08] == v4)
+  else if (*MEMORY[0x277CDAA08] == keyCopy)
   {
     p_params = &self->_params.spread;
   }
 
   else
   {
-    if (*MEMORY[0x277CDAA00] != v4)
+    if (*MEMORY[0x277CDAA00] != keyCopy)
     {
 
       v7 = 0;
@@ -64,11 +64,11 @@
   v8[2] = *MEMORY[0x277CDAA08];
   v8[3] = v3;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:4];
-  v5 = [v4 objectEnumerator];
+  objectEnumerator = [v4 objectEnumerator];
 
   v6 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return objectEnumerator;
 }
 
 - ($C28CD4A45FD07A4F97CC9D5F91F25271)params

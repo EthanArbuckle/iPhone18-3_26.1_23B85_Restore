@@ -1,7 +1,7 @@
 @interface SSCellularPlanCarrierAppsViewController
-- (SSCellularPlanCarrierAppsViewController)initWithCarrierApps:(id)a3 country:(id)a4;
+- (SSCellularPlanCarrierAppsViewController)initWithCarrierApps:(id)apps country:(id)country;
 - (TSSIMSetupFlowDelegate)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_userDidTapCancel;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -9,28 +9,28 @@
 
 @implementation SSCellularPlanCarrierAppsViewController
 
-- (SSCellularPlanCarrierAppsViewController)initWithCarrierApps:(id)a3 country:(id)a4
+- (SSCellularPlanCarrierAppsViewController)initWithCarrierApps:(id)apps country:(id)country
 {
-  v20 = a3;
+  appsCopy = apps;
   v6 = MEMORY[0x277CCACA8];
   v7 = MEMORY[0x277CCA8D8];
-  v8 = a4;
+  countryCopy = country;
   v9 = [v7 bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:@"SET_UP_ESIM_TITLE_%@" value:&stru_28753DF48 table:@"Localizable"];
-  v11 = [v6 stringWithFormat:v10, v8];
+  countryCopy = [v6 stringWithFormat:v10, countryCopy];
 
   v12 = MEMORY[0x277CCACA8];
   v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v14 = [v13 localizedStringForKey:@"SET_UP_ESIM_DETAIL_%@" value:&stru_28753DF48 table:@"Localizable"];
-  v15 = [v12 stringWithFormat:v14, v8];
+  countryCopy2 = [v12 stringWithFormat:v14, countryCopy];
 
   v21.receiver = self;
   v21.super_class = SSCellularPlanCarrierAppsViewController;
-  v16 = [(OBTableWelcomeController *)&v21 initWithTitle:v11 detailText:v15 symbolName:@"antenna.radiowaves.left.and.right" adoptTableViewScrollView:1];
+  v16 = [(OBTableWelcomeController *)&v21 initWithTitle:countryCopy detailText:countryCopy2 symbolName:@"antenna.radiowaves.left.and.right" adoptTableViewScrollView:1];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_carrierApps, a3);
+    objc_storeStrong(&v16->_carrierApps, apps);
   }
 
   return v17;
@@ -43,9 +43,9 @@
   [(TSOBTableWelcomeController *)&v23 viewDidLoad];
   if (!+[TSUtilities inBuddy])
   {
-    v6 = [(SSCellularPlanCarrierAppsViewController *)self navigationController];
-    v7 = [v6 viewControllers];
-    if ([v7 count] < 2)
+    navigationController = [(SSCellularPlanCarrierAppsViewController *)self navigationController];
+    viewControllers = [navigationController viewControllers];
+    if ([viewControllers count] < 2)
     {
     }
 
@@ -55,27 +55,27 @@
 
       if (v8)
       {
-        v3 = [(OBBaseWelcomeController *)self navigationItem];
-        v4 = v3;
+        navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+        v4 = navigationItem;
         v5 = 0;
         goto LABEL_7;
       }
     }
 
     v4 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel__userDidTapCancel];
-    v9 = [(OBBaseWelcomeController *)self navigationItem];
-    [v9 setLeftBarButtonItem:v4];
+    navigationItem2 = [(OBBaseWelcomeController *)self navigationItem];
+    [navigationItem2 setLeftBarButtonItem:v4];
 
     goto LABEL_10;
   }
 
   if (![TSUtilities isBackAllowed:self])
   {
-    v3 = [(OBBaseWelcomeController *)self navigationItem];
-    v4 = v3;
+    navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+    v4 = navigationItem;
     v5 = 1;
 LABEL_7:
-    [v3 setHidesBackButton:v5 animated:0];
+    [navigationItem setHidesBackButton:v5 animated:0];
 LABEL_10:
   }
 
@@ -83,42 +83,42 @@ LABEL_10:
   v11 = [v10 initWithFrame:2 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(OBTableWelcomeController *)self setTableView:v11];
 
-  v12 = [(OBTableWelcomeController *)self tableView];
-  [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v13 = [(OBTableWelcomeController *)self tableView];
-  [v13 setDirectionalLayoutMargins:{1.0, 1.0, 1.0, 1.0}];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 setDirectionalLayoutMargins:{1.0, 1.0, 1.0, 1.0}];
 
-  v14 = [(OBTableWelcomeController *)self tableView];
-  v15 = [MEMORY[0x277D75348] clearColor];
-  [v14 setBackgroundColor:v15];
+  tableView3 = [(OBTableWelcomeController *)self tableView];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [tableView3 setBackgroundColor:clearColor];
 
-  v16 = [(OBTableWelcomeController *)self tableView];
-  [v16 setDataSource:self];
+  tableView4 = [(OBTableWelcomeController *)self tableView];
+  [tableView4 setDataSource:self];
 
-  v17 = [(OBTableWelcomeController *)self tableView];
-  [v17 setDelegate:self];
+  tableView5 = [(OBTableWelcomeController *)self tableView];
+  [tableView5 setDelegate:self];
 
-  v18 = [(OBTableWelcomeController *)self tableView];
-  [v18 setScrollEnabled:1];
+  tableView6 = [(OBTableWelcomeController *)self tableView];
+  [tableView6 setScrollEnabled:1];
 
-  v19 = [(OBTableWelcomeController *)self tableView];
-  [v19 setAllowsSelection:0];
+  tableView7 = [(OBTableWelcomeController *)self tableView];
+  [tableView7 setAllowsSelection:0];
 
-  v20 = [(OBTableWelcomeController *)self tableView];
-  [v20 reloadData];
+  tableView8 = [(OBTableWelcomeController *)self tableView];
+  [tableView8 reloadData];
 
-  v21 = [(OBTableWelcomeController *)self tableView];
-  [v21 layoutIfNeeded];
+  tableView9 = [(OBTableWelcomeController *)self tableView];
+  [tableView9 layoutIfNeeded];
 
-  v22 = [(OBTableWelcomeController *)self tableView];
-  [v22 registerClass:objc_opt_class() forCellReuseIdentifier:@"AppCell"];
+  tableView10 = [(OBTableWelcomeController *)self tableView];
+  [tableView10 registerClass:objc_opt_class() forCellReuseIdentifier:@"AppCell"];
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(SSCellularPlanCarrierAppsViewController *)self view];
-  [v3 layoutIfNeeded];
+  view = [(SSCellularPlanCarrierAppsViewController *)self view];
+  [view layoutIfNeeded];
 
   v5.receiver = self;
   v5.super_class = SSCellularPlanCarrierAppsViewController;
@@ -128,11 +128,11 @@ LABEL_10:
   [(OBTableWelcomeController *)&v4 viewDidLayoutSubviews];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = [a4 row];
-  v8 = [v6 dequeueReusableCellWithIdentifier:@"AppCell"];
+  viewCopy = view;
+  v7 = [path row];
+  v8 = [viewCopy dequeueReusableCellWithIdentifier:@"AppCell"];
 
   if (!v8)
   {
@@ -147,8 +147,8 @@ LABEL_10:
 
 - (void)_userDidTapCancel
 {
-  v2 = [(SSCellularPlanCarrierAppsViewController *)self delegate];
-  [v2 userDidTapCancel];
+  delegate = [(SSCellularPlanCarrierAppsViewController *)self delegate];
+  [delegate userDidTapCancel];
 }
 
 - (TSSIMSetupFlowDelegate)delegate

@@ -1,25 +1,25 @@
 @interface ABPKImagePreProcessing
-- (ABPKImagePreProcessing)initWithPreProcessingParams:(id)a3;
-- (int)preprocessColorImage:(__CVBuffer *)a3 outputBuffer:(__CVBuffer *)a4;
-- (int)preprocessData:(__CVBuffer *)a3 outputBuffer:(__CVBuffer *)a4;
-- (int)preprocessGrayscaleImage:(__CVBuffer *)a3 outputBuffer:(__CVBuffer *)a4;
+- (ABPKImagePreProcessing)initWithPreProcessingParams:(id)params;
+- (int)preprocessColorImage:(__CVBuffer *)image outputBuffer:(__CVBuffer *)buffer;
+- (int)preprocessData:(__CVBuffer *)data outputBuffer:(__CVBuffer *)buffer;
+- (int)preprocessGrayscaleImage:(__CVBuffer *)image outputBuffer:(__CVBuffer *)buffer;
 - (void)dealloc;
 - (void)logProfilingDetails;
 @end
 
 @implementation ABPKImagePreProcessing
 
-- (ABPKImagePreProcessing)initWithPreProcessingParams:(id)a3
+- (ABPKImagePreProcessing)initWithPreProcessingParams:(id)params
 {
-  v4 = a3;
+  paramsCopy = params;
   v14.receiver = self;
   v14.super_class = ABPKImagePreProcessing;
   v5 = [(ABPKImagePreProcessing *)&v14 init];
   if (v5)
   {
-    v6 = [v4 paddingParams];
+    paddingParams = [paramsCopy paddingParams];
     paddingParameters = v5->_paddingParameters;
-    v5->_paddingParameters = v6;
+    v5->_paddingParameters = paddingParams;
 
     if (!v5->_paddingParameters)
     {
@@ -73,9 +73,9 @@ LABEL_14:
   [(ABPKImagePreProcessing *)&v4 dealloc];
 }
 
-- (int)preprocessData:(__CVBuffer *)a3 outputBuffer:(__CVBuffer *)a4
+- (int)preprocessData:(__CVBuffer *)data outputBuffer:(__CVBuffer *)buffer
 {
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(data);
   if (PixelFormatType <= 875704437)
   {
     if (PixelFormatType != 32 && PixelFormatType != 875704422)
@@ -97,19 +97,19 @@ LABEL_13:
     if (PixelFormatType == 1278226488)
     {
 
-      return [(ABPKImagePreProcessing *)self preprocessGrayscaleImage:a3 outputBuffer:a4];
+      return [(ABPKImagePreProcessing *)self preprocessGrayscaleImage:data outputBuffer:buffer];
     }
 
     goto LABEL_13;
   }
 
-  return [(ABPKImagePreProcessing *)self preprocessColorImage:a3 outputBuffer:a4];
+  return [(ABPKImagePreProcessing *)self preprocessColorImage:data outputBuffer:buffer];
 }
 
-- (int)preprocessGrayscaleImage:(__CVBuffer *)a3 outputBuffer:(__CVBuffer *)a4
+- (int)preprocessGrayscaleImage:(__CVBuffer *)image outputBuffer:(__CVBuffer *)buffer
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v27 = a4;
+  bufferCopy = buffer;
   v7 = __ABPKLogSharedInstance();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -130,10 +130,10 @@ LABEL_13:
 
   [(ABPKImagePreProcessing *)self _startScaleSignpost];
   *buf = 0;
-  v10 = [(ABPKPaddingParams *)self->_paddingParameters width];
-  v11 = [(ABPKPaddingParams *)self->_paddingParameters height];
+  width = [(ABPKPaddingParams *)self->_paddingParameters width];
+  height = [(ABPKPaddingParams *)self->_paddingParameters height];
   v12 = *MEMORY[0x277CBECE8];
-  if (CVPixelBufferCreate(*MEMORY[0x277CBECE8], v10, v11, 0x4C303038u, v8, buf))
+  if (CVPixelBufferCreate(*MEMORY[0x277CBECE8], width, height, 0x4C303038u, v8, buf))
   {
     v13 = __ABPKLogSharedInstance();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -145,7 +145,7 @@ LABEL_13:
     goto LABEL_9;
   }
 
-  v14 = VTPixelTransferSessionTransferImage(self->_vtPixelTransferSession, a3, *buf);
+  v14 = VTPixelTransferSessionTransferImage(self->_vtPixelTransferSession, image, *buf);
   [(ABPKImagePreProcessing *)self _endScaleSignpost];
   if (!v14)
   {
@@ -160,8 +160,8 @@ LABEL_13:
 
     [(ABPKImagePreProcessing *)self _startPaddingSignpost];
     *v25 = 0;
-    Width = CVPixelBufferGetWidth(a4);
-    Height = CVPixelBufferGetHeight(a4);
+    Width = CVPixelBufferGetWidth(buffer);
+    Height = CVPixelBufferGetHeight(buffer);
     if (CVPixelBufferCreate(v12, Width, Height, 0x4C303038u, v8, v25))
     {
       v21 = __ABPKLogSharedInstance();
@@ -189,7 +189,7 @@ LABEL_28:
 
         self->_startConvertGrayScaleToBGRA = CFAbsoluteTimeGetCurrent();
         [(ABPKImagePreProcessing *)self _startGrayToBGRASignpost];
-        if (!convertFormatGrayScaleToARGB_BGRA(*v25, &v27))
+        if (!convertFormatGrayScaleToARGB_BGRA(*v25, &bufferCopy))
         {
           [(ABPKImagePreProcessing *)self _endGrayToBGRASignpost];
           self->_timeConvertGrayScaleToBGRA = CFAbsoluteTimeGetCurrent() - self->_startConvertGrayScaleToBGRA;
@@ -238,13 +238,13 @@ LABEL_14:
   return v14;
 }
 
-- (int)preprocessColorImage:(__CVBuffer *)a3 outputBuffer:(__CVBuffer *)a4
+- (int)preprocessColorImage:(__CVBuffer *)image outputBuffer:(__CVBuffer *)buffer
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  v29 = a4;
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  bufferCopy = buffer;
+  Width = CVPixelBufferGetWidth(image);
+  Height = CVPixelBufferGetHeight(image);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(image);
   v9 = PixelFormatType;
   if (PixelFormatType > 875704437)
   {
@@ -276,7 +276,7 @@ LABEL_7:
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:&v30 count:1];
     if (v11)
     {
-      *v28 = a3;
+      *v28 = image;
       goto LABEL_9;
     }
 
@@ -323,7 +323,7 @@ LABEL_30:
 
     if ((v9 & 0x76777267) == 0x34323066)
     {
-      if (convertFormatYCbCrToBGRA(a3, v28))
+      if (convertFormatYCbCrToBGRA(image, v28))
       {
         v22 = __ABPKLogSharedInstance();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -341,7 +341,7 @@ LABEL_30:
 
     else
     {
-      if (changeChannelsARGB(a3, v28))
+      if (changeChannelsARGB(image, v28))
       {
         v22 = __ABPKLogSharedInstance();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -368,9 +368,9 @@ LABEL_9:
 
     [(ABPKImagePreProcessing *)self _startScaleSignpost];
     *buf = 0;
-    v14 = [(ABPKPaddingParams *)self->_paddingParameters width];
-    v15 = [(ABPKPaddingParams *)self->_paddingParameters height];
-    if (CVPixelBufferCreate(*MEMORY[0x277CBECE8], v14, v15, 0x42475241u, v12, buf))
+    width = [(ABPKPaddingParams *)self->_paddingParameters width];
+    height = [(ABPKPaddingParams *)self->_paddingParameters height];
+    if (CVPixelBufferCreate(*MEMORY[0x277CBECE8], width, height, 0x42475241u, v12, buf))
     {
       v16 = __ABPKLogSharedInstance();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -408,7 +408,7 @@ LABEL_14:
       }
 
       [(ABPKImagePreProcessing *)self _startPaddingSignpost];
-      if (!padImage(*buf, &v29, [(ABPKPaddingParams *)self->_paddingParameters offsetHeight], [(ABPKPaddingParams *)self->_paddingParameters offsetWidth]))
+      if (!padImage(*buf, &bufferCopy, [(ABPKPaddingParams *)self->_paddingParameters offsetHeight], [(ABPKPaddingParams *)self->_paddingParameters offsetWidth]))
       {
         [(ABPKImagePreProcessing *)self _endPaddingSignpost];
         self->_timePadding = CFAbsoluteTimeGetCurrent() - self->_startPadding;

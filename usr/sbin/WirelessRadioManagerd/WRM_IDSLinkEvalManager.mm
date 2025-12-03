@@ -1,48 +1,48 @@
 @interface WRM_IDSLinkEvalManager
 + (id)WRM_IDSLinkEvalManagerSingleton;
-+ (id)allocWithZone:(_NSZone *)a3;
-- (BOOL)canBTMeetIDSRequirement:(unint64_t)a3 :(int)a4 :(int)a5;
++ (id)allocWithZone:(_NSZone *)zone;
+- (BOOL)canBTMeetIDSRequirement:(unint64_t)requirement :(int)a4 :(int)a5;
 - (BOOL)canWiFiRadioMeetMinRequirements;
-- (BOOL)canWiFiRadioMeetTerminusRequirements:(id)a3;
-- (BOOL)canWiFiRadioMeetTerminusRequirementsForCompanionLink:(id)a3;
-- (BOOL)canWiFiTransportMeetIDSApplicationRequirements:(unint64_t)a3 :(int)a4 :(int)a5;
+- (BOOL)canWiFiRadioMeetTerminusRequirements:(id)requirements;
+- (BOOL)canWiFiRadioMeetTerminusRequirementsForCompanionLink:(id)link;
+- (BOOL)canWiFiTransportMeetIDSApplicationRequirements:(unint64_t)requirements :(int)a4 :(int)a5;
 - (BOOL)doesIRATClientSubscriptionContextExist;
 - (BOOL)isBTLinkQualityGood;
-- (BOOL)isPingPongAvoidanceTimerSatisfied:(id)a3;
-- (BOOL)isWiFiDataRateIndicatorGoodForIDS:(unint64_t)a3 :(int)a4;
+- (BOOL)isPingPongAvoidanceTimerSatisfied:(id)satisfied;
+- (BOOL)isWiFiDataRateIndicatorGoodForIDS:(unint64_t)s :(int)a4;
 - (BOOL)needWiFiLQM;
 - (WRM_IDSLinkEvalManager)init;
-- (id)getiRATClientFromList:(int)a3;
-- (id)getiRATProximityClientFromList:(int)a3;
+- (id)getiRATClientFromList:(int)list;
+- (id)getiRATProximityClientFromList:(int)list;
 - (unint64_t)getWiFiRssi;
-- (void)addProximityiRatClient:(id)a3;
-- (void)addiRatClient:(id)a3;
+- (void)addProximityiRatClient:(id)client;
+- (void)addiRatClient:(id)client;
 - (void)configureIDSMetricsReporting;
 - (void)dealloc;
-- (void)deleteProximityiRATClient:(int)a3;
+- (void)deleteProximityiRATClient:(int)client;
 - (void)evaluateBTWiFiLink;
 - (void)evaluateBTWiFiLinkForTerminus;
 - (void)evaluateBandwidth;
-- (void)handlaIDSMetrics:(id)a3;
-- (void)handleBTLQMEval:(id)a3;
+- (void)handlaIDSMetrics:(id)metrics;
+- (void)handleBTLQMEval:(id)eval;
 - (void)handleBTRegistered;
-- (void)handleControllerAvailability:(unint64_t)a3;
+- (void)handleControllerAvailability:(unint64_t)availability;
 - (void)handleIDSRegisterd;
-- (void)handleInternalMessage:(id)a3;
-- (void)handleLinkPrefSubscribe:(id)a3;
-- (void)handleSessionNotification:(id)a3;
-- (void)handleSubscribeStatusUpdate:(id)a3 :(BOOL)a4;
-- (void)handleTerminusLinkPrefSubscribe:(id)a3;
-- (void)handleTerminusSubscribeStatusUpdate:(id)a3;
+- (void)handleInternalMessage:(id)message;
+- (void)handleLinkPrefSubscribe:(id)subscribe;
+- (void)handleSessionNotification:(id)notification;
+- (void)handleSubscribeStatusUpdate:(id)update :(BOOL)a4;
+- (void)handleTerminusLinkPrefSubscribe:(id)subscribe;
+- (void)handleTerminusSubscribeStatusUpdate:(id)update;
 - (void)handleWiFiRegistered;
-- (void)handleWiFiStateChaneEvents:(id)a3;
-- (void)postBluetoothLQMScore:(BOOL)a3;
-- (void)removeProximityiRatClient:(id)a3;
-- (void)removeiRatClient:(id)a3;
-- (void)sendiRATRecommendationToWatch:(int)a3;
+- (void)handleWiFiStateChaneEvents:(id)events;
+- (void)postBluetoothLQMScore:(BOOL)score;
+- (void)removeProximityiRatClient:(id)client;
+- (void)removeiRatClient:(id)client;
+- (void)sendiRATRecommendationToWatch:(int)watch;
 - (void)updateBTLQMScore;
-- (void)updateControllerSession:(id)a3 ofId:(unint64_t)a4;
-- (void)updateControllerState:(id)a3;
+- (void)updateControllerSession:(id)session ofId:(unint64_t)id;
+- (void)updateControllerState:(id)state;
 @end
 
 @implementation WRM_IDSLinkEvalManager
@@ -53,7 +53,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000713B4;
   block[3] = &unk_10023DB28;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002B7E20 != -1)
   {
     dispatch_once(&qword_1002B7E20, block);
@@ -64,15 +64,15 @@
 
 - (BOOL)needWiFiLQM
 {
-  v2 = [(WRM_IDSLinkEvalManager *)self doesIRATClientSubscriptionContextExist];
+  doesIRATClientSubscriptionContextExist = [(WRM_IDSLinkEvalManager *)self doesIRATClientSubscriptionContextExist];
   v3 = "NO";
-  if (v2)
+  if (doesIRATClientSubscriptionContextExist)
   {
     v3 = "YES";
   }
 
   [WCM_Logging logLevel:27 message:@"%s: needWiFiLQM? %s ", "[WRM_IDSLinkEvalManager needWiFiLQM]", v3];
-  return v2;
+  return doesIRATClientSubscriptionContextExist;
 }
 
 - (BOOL)doesIRATClientSubscriptionContextExist
@@ -102,9 +102,9 @@
             objc_enumerationMutation(v5);
           }
 
-          v9 = [*(*(&v23 + 1) + 8 * i) getHandoverContexts];
-          +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 27, @"%s: iRAT client Context count:%d.", "-[WRM_IDSLinkEvalManager doesIRATClientSubscriptionContextExist]", [v9 count]);
-          if ([v9 count])
+          getHandoverContexts = [*(*(&v23 + 1) + 8 * i) getHandoverContexts];
+          +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 27, @"%s: iRAT client Context count:%d.", "-[WRM_IDSLinkEvalManager doesIRATClientSubscriptionContextExist]", [getHandoverContexts count]);
+          if ([getHandoverContexts count])
           {
             v16 = 1;
             miRATClientContexts = obj;
@@ -133,8 +133,8 @@
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v11 = [(WRM_IDSLinkEvalManager *)self miRATProximityClientContexts];
-      v12 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v19 objects:v27 count:16];
+      miRATProximityClientContexts = [(WRM_IDSLinkEvalManager *)self miRATProximityClientContexts];
+      v12 = [(NSMutableArray *)miRATProximityClientContexts countByEnumeratingWithState:&v19 objects:v27 count:16];
       if (v12)
       {
         v13 = *v20;
@@ -144,7 +144,7 @@
           {
             if (*v20 != v13)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(miRATProximityClientContexts);
             }
 
             v15 = *(*(&v19 + 1) + 8 * j);
@@ -155,7 +155,7 @@
             }
           }
 
-          v12 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v19 objects:v27 count:16];
+          v12 = [(NSMutableArray *)miRATProximityClientContexts countByEnumeratingWithState:&v19 objects:v27 count:16];
           if (v12)
           {
             continue;
@@ -183,10 +183,10 @@ LABEL_25:
   return v16;
 }
 
-- (void)handleInternalMessage:(id)a3
+- (void)handleInternalMessage:(id)message
 {
-  [WCM_Logging logLevel:27 message:@"%s: internalMsg: %@", "[WRM_IDSLinkEvalManager(privateFunctions) handleInternalMessage:]", a3];
-  uint64 = xpc_dictionary_get_uint64(a3, "kInternalMessageId");
+  [WCM_Logging logLevel:27 message:@"%s: internalMsg: %@", "[WRM_IDSLinkEvalManager(privateFunctions) handleInternalMessage:]", message];
+  uint64 = xpc_dictionary_get_uint64(message, "kInternalMessageId");
   if (uint64 == 1040)
   {
 LABEL_4:
@@ -207,72 +207,72 @@ LABEL_4:
   [(WRM_IDSLinkEvalManager *)self evaluateBTWiFiLink];
 }
 
-- (BOOL)canWiFiRadioMeetTerminusRequirementsForCompanionLink:(id)a3
+- (BOOL)canWiFiRadioMeetTerminusRequirementsForCompanionLink:(id)link
 {
   v5 = [+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager "WRM_HandoverManagerSingleton")];
-  v6 = [(WCM_WiFiController *)self->mWiFi wifiService];
-  v7 = [(WCM_WiFiService *)v6 isLSMWiFiQualityGood];
-  v24 = [(WRM_IDSP2PController *)self->mIDSP2PController isRemoteWiFiGood];
-  v8 = [(WCM_WiFiService *)v6 getRSSI];
-  v9 = [(WCM_WiFiService *)v6 getSNR];
-  v10 = [(WCM_WiFiService *)v6 isWiFiConnected];
-  v11 = [(WRM_IDSLinkEvalManager *)self canBTMeetTerminusRequirement];
-  v12 = [(WCM_WiFiService *)v6 getBadVideoCounter];
-  v13 = [(WCM_WiFiService *)v6 getGoodVideoCounter];
-  v14 = [objc_msgSend(a3 "mTerminusContext")];
-  v23 = v9;
-  v15 = v11;
+  wifiService = [(WCM_WiFiController *)self->mWiFi wifiService];
+  isLSMWiFiQualityGood = [(WCM_WiFiService *)wifiService isLSMWiFiQualityGood];
+  isRemoteWiFiGood = [(WRM_IDSP2PController *)self->mIDSP2PController isRemoteWiFiGood];
+  getRSSI = [(WCM_WiFiService *)wifiService getRSSI];
+  getSNR = [(WCM_WiFiService *)wifiService getSNR];
+  isWiFiConnected = [(WCM_WiFiService *)wifiService isWiFiConnected];
+  canBTMeetTerminusRequirement = [(WRM_IDSLinkEvalManager *)self canBTMeetTerminusRequirement];
+  getBadVideoCounter = [(WCM_WiFiService *)wifiService getBadVideoCounter];
+  getGoodVideoCounter = [(WCM_WiFiService *)wifiService getGoodVideoCounter];
+  v14 = [objc_msgSend(link "mTerminusContext")];
+  v23 = getSNR;
+  v15 = canBTMeetTerminusRequirement;
   if (!v14)
   {
-    if (v9 > [v5 idsMinWiFiSnrTh0])
+    if (getSNR > [v5 idsMinWiFiSnrTh0])
     {
-      v16 = [v5 idsMinWiFiRssiTh0];
+      idsMinWiFiRssiTh0 = [v5 idsMinWiFiRssiTh0];
       goto LABEL_6;
     }
 
 LABEL_12:
-    v17 = v7;
-    v19 = v8;
+    v17 = isLSMWiFiQualityGood;
+    v19 = getRSSI;
     v20 = 0;
     goto LABEL_13;
   }
 
-  if (v9 <= [v5 idsMinWiFiSnrTh1])
+  if (getSNR <= [v5 idsMinWiFiSnrTh1])
   {
     goto LABEL_12;
   }
 
-  v16 = [v5 idsMinWiFiRssiTh1];
+  idsMinWiFiRssiTh0 = [v5 idsMinWiFiRssiTh1];
 LABEL_6:
-  v17 = v7;
-  v18 = v13 >= v12 && v7;
-  v19 = v8;
-  v20 = v8 > v16 && v18;
+  v17 = isLSMWiFiQualityGood;
+  v18 = getGoodVideoCounter >= getBadVideoCounter && isLSMWiFiQualityGood;
+  v19 = getRSSI;
+  v20 = getRSSI > idsMinWiFiRssiTh0 && v18;
 LABEL_13:
-  v21 = v10 && v24 && (v20 || !v15);
-  [WCM_Logging logLevel:27 message:@"%s: RSSI %lld, SNR %lld isWifi available %d isAssociated %d, LSM Quality: %d, isCompanionWiFiGood: %d, infra WiFi good: %d, BT good: %d, badCounter: %d, goodCounter:%d, wifi entry criteria met: %d", "[WRM_IDSLinkEvalManager(privateFunctions) canWiFiRadioMeetTerminusRequirementsForCompanionLink:]", v19, v23, [(WCM_WiFiService *)v6 isWiFiPrimaryInterface], v10, v17, v24, v21, v15, v12, v13, v20];
+  v21 = isWiFiConnected && isRemoteWiFiGood && (v20 || !v15);
+  [WCM_Logging logLevel:27 message:@"%s: RSSI %lld, SNR %lld isWifi available %d isAssociated %d, LSM Quality: %d, isCompanionWiFiGood: %d, infra WiFi good: %d, BT good: %d, badCounter: %d, goodCounter:%d, wifi entry criteria met: %d", "[WRM_IDSLinkEvalManager(privateFunctions) canWiFiRadioMeetTerminusRequirementsForCompanionLink:]", v19, v23, [(WCM_WiFiService *)wifiService isWiFiPrimaryInterface], isWiFiConnected, v17, isRemoteWiFiGood, v21, v15, getBadVideoCounter, getGoodVideoCounter, v20];
   return v21;
 }
 
-- (BOOL)canWiFiRadioMeetTerminusRequirements:(id)a3
+- (BOOL)canWiFiRadioMeetTerminusRequirements:(id)requirements
 {
   v5 = [+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager "WRM_HandoverManagerSingleton")];
-  v6 = [(WCM_WiFiController *)self->mWiFi wifiService];
-  v7 = [(WCM_WiFiService *)v6 isLSMWiFiQualityGood];
-  v8 = [(WCM_WiFiService *)v6 getRSSI];
-  v9 = [(WCM_WiFiService *)v6 getSNR];
-  [(WCM_WiFiService *)v6 getAdjustedBeaconPer];
+  wifiService = [(WCM_WiFiController *)self->mWiFi wifiService];
+  isLSMWiFiQualityGood = [(WCM_WiFiService *)wifiService isLSMWiFiQualityGood];
+  getRSSI = [(WCM_WiFiService *)wifiService getRSSI];
+  getSNR = [(WCM_WiFiService *)wifiService getSNR];
+  [(WCM_WiFiService *)wifiService getAdjustedBeaconPer];
   v11 = v10;
-  v12 = [(WCM_WiFiService *)v6 isWiFiConnected];
-  v13 = [(WCM_WiFiService *)v6 isBeaconSchedValid];
-  if (v12)
+  isWiFiConnected = [(WCM_WiFiService *)wifiService isWiFiConnected];
+  isBeaconSchedValid = [(WCM_WiFiService *)wifiService isBeaconSchedValid];
+  if (isWiFiConnected)
   {
-    v14 = v13;
-    if (v9 > [v5 dataMinWifiSnrTh0] && v8 > objc_msgSend(v5, "dataMinWifiRssiTh0"))
+    v14 = isBeaconSchedValid;
+    if (getSNR > [v5 dataMinWifiSnrTh0] && getRSSI > objc_msgSend(v5, "dataMinWifiRssiTh0"))
     {
       if (v14)
       {
-        if (v11 * 100.0 <= [v5 dataMinWifiBeaconPerTh0] && v7)
+        if (v11 * 100.0 <= [v5 dataMinWifiBeaconPerTh0] && isLSMWiFiQualityGood)
         {
 LABEL_6:
           v15 = 1;
@@ -280,7 +280,7 @@ LABEL_6:
         }
       }
 
-      else if (v7)
+      else if (isLSMWiFiQualityGood)
       {
         goto LABEL_6;
       }
@@ -289,73 +289,73 @@ LABEL_6:
 
   v15 = 0;
 LABEL_9:
-  [WCM_Logging logLevel:27 message:@"%s: RSSI %lld, SNR %lld Beacon PER %llf isWifi available %d isAssociated %d, LSM Quality: %d, direct WiFi good:%d", "[WRM_IDSLinkEvalManager(privateFunctions) canWiFiRadioMeetTerminusRequirements:]", v8, v9, *&v11, [(WCM_WiFiService *)v6 isWiFiPrimaryInterface], v12, v7, v15];
-  v16 = [a3 mTerminusContext];
-  if (v12)
+  [WCM_Logging logLevel:27 message:@"%s: RSSI %lld, SNR %lld Beacon PER %llf isWifi available %d isAssociated %d, LSM Quality: %d, direct WiFi good:%d", "[WRM_IDSLinkEvalManager(privateFunctions) canWiFiRadioMeetTerminusRequirements:]", getRSSI, getSNR, *&v11, [(WCM_WiFiService *)wifiService isWiFiPrimaryInterface], isWiFiConnected, isLSMWiFiQualityGood, v15];
+  mTerminusContext = [requirements mTerminusContext];
+  if (isWiFiConnected)
   {
-    [v16 setWifiRSSI:v8];
-    [objc_msgSend(a3 "mTerminusContext")];
-    [objc_msgSend(a3 "mTerminusContext")];
-    [objc_msgSend(a3 "mTerminusContext")];
-    [objc_msgSend(a3 "mTerminusContext")];
-    [objc_msgSend(a3 "mTerminusContext")];
-    [objc_msgSend(a3 "mTerminusContext")];
-    [objc_msgSend(a3 "mTerminusContext")];
-    v17 = [(WCM_WiFiService *)v6 getTxLossRateVI];
+    [mTerminusContext setWifiRSSI:getRSSI];
+    [objc_msgSend(requirements "mTerminusContext")];
+    [objc_msgSend(requirements "mTerminusContext")];
+    [objc_msgSend(requirements "mTerminusContext")];
+    [objc_msgSend(requirements "mTerminusContext")];
+    [objc_msgSend(requirements "mTerminusContext")];
+    [objc_msgSend(requirements "mTerminusContext")];
+    [objc_msgSend(requirements "mTerminusContext")];
+    getTxLossRateVI = [(WCM_WiFiService *)wifiService getTxLossRateVI];
   }
 
   else
   {
-    [v16 setWifiRSSI:-600];
-    [objc_msgSend(a3 "mTerminusContext")];
-    [objc_msgSend(a3 "mTerminusContext")];
-    [objc_msgSend(a3 "mTerminusContext")];
-    [objc_msgSend(a3 "mTerminusContext")];
-    [objc_msgSend(a3 "mTerminusContext")];
-    [objc_msgSend(a3 "mTerminusContext")];
-    [objc_msgSend(a3 "mTerminusContext")];
-    v17 = 0;
+    [mTerminusContext setWifiRSSI:-600];
+    [objc_msgSend(requirements "mTerminusContext")];
+    [objc_msgSend(requirements "mTerminusContext")];
+    [objc_msgSend(requirements "mTerminusContext")];
+    [objc_msgSend(requirements "mTerminusContext")];
+    [objc_msgSend(requirements "mTerminusContext")];
+    [objc_msgSend(requirements "mTerminusContext")];
+    [objc_msgSend(requirements "mTerminusContext")];
+    getTxLossRateVI = 0;
   }
 
-  [objc_msgSend(a3 "mTerminusContext")];
+  [objc_msgSend(requirements "mTerminusContext")];
   return v15;
 }
 
 - (BOOL)canWiFiRadioMeetMinRequirements
 {
   v3 = [+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager "WRM_HandoverManagerSingleton")];
-  v4 = [(WCM_WiFiController *)self->mWiFi wifiService];
-  v5 = [(WCM_WiFiService *)v4 getRSSI];
-  v6 = [(WCM_WiFiService *)v4 getSNR];
-  v7 = [(WCM_WiFiService *)v4 isWiFiConnected];
-  if (v7)
+  wifiService = [(WCM_WiFiController *)self->mWiFi wifiService];
+  getRSSI = [(WCM_WiFiService *)wifiService getRSSI];
+  getSNR = [(WCM_WiFiService *)wifiService getSNR];
+  isWiFiConnected = [(WCM_WiFiService *)wifiService isWiFiConnected];
+  if (isWiFiConnected)
   {
-    LOBYTE(v7) = v6 > [v3 dataMinWifiSnrTh1] && v5 > objc_msgSend(v3, "dataMinWifiRssiTh1");
+    LOBYTE(isWiFiConnected) = getSNR > [v3 dataMinWifiSnrTh1] && getRSSI > objc_msgSend(v3, "dataMinWifiRssiTh1");
   }
 
-  return v7;
+  return isWiFiConnected;
 }
 
-- (BOOL)isWiFiDataRateIndicatorGoodForIDS:(unint64_t)a3 :(int)a4
+- (BOOL)isWiFiDataRateIndicatorGoodForIDS:(unint64_t)s :(int)a4
 {
-  v6 = [+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager WRM_HandoverManagerSingleton];
-  v7 = [(WCM_WiFiController *)self->mWiFi wifiService];
-  v8 = [(WCM_WiFiService *)v7 isQBSSLoadValid];
-  [(WCM_WiFiService *)v7 getCalculatedAvailableRxPhyBandwidth];
+  wRM_HandoverManagerSingleton = [+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager WRM_HandoverManagerSingleton];
+  wifiService = [(WCM_WiFiController *)self->mWiFi wifiService];
+  isQBSSLoadValid = [(WCM_WiFiService *)wifiService isQBSSLoadValid];
+  [(WCM_WiFiService *)wifiService getCalculatedAvailableRxPhyBandwidth];
   v10 = v9;
-  [(WCM_WiFiService *)v7 getCalculatedAvailableTxPhyBandwidth];
+  [(WCM_WiFiService *)wifiService getCalculatedAvailableTxPhyBandwidth];
   v12 = v11;
   v13 = v11;
   [WCM_Logging logLevel:27 message:@"WIFI Throughput Estimation, Calculated Rx PHY Rate: %.2f, Calculated TX Rate: %.2f", v10, v11];
-  if (v8)
+  if (isQBSSLoadValid)
   {
     LODWORD(v14) = 1151500288;
     *&v15 = v10;
-    [(WCM_WiFiService *)v7 getL3Bandwidth:v14];
+    [(WCM_WiFiService *)wifiService getL3Bandwidth:v14];
     v17 = v16;
     LODWORD(v18) = 1151500288;
     *&v19 = v12;
-    [(WCM_WiFiService *)v7 getL3Bandwidth:v18];
+    [(WCM_WiFiService *)wifiService getL3Bandwidth:v18];
     v12 = v20;
     v21 = "WIFI";
     if (a4 == 2)
@@ -369,25 +369,25 @@ LABEL_9:
       if (a4 == 1)
       {
         v12 = v12 + v12;
-        v22 = [v6 idsMinWiFiThroughputTh1];
-        return v12 >= v22;
+        idsMinWiFiThroughputTh1 = [wRM_HandoverManagerSingleton idsMinWiFiThroughputTh1];
+        return v12 >= idsMinWiFiThroughputTh1;
       }
 
-      if (v17 < [v6 idsMinWiFiThroughputTh1])
+      if (v17 < [wRM_HandoverManagerSingleton idsMinWiFiThroughputTh1])
       {
         return 0;
       }
 
-      v26 = [v6 idsMinWiFiThroughputTh1];
-      return v12 >= v26;
+      idsMinWiFiThroughputTh12 = [wRM_HandoverManagerSingleton idsMinWiFiThroughputTh1];
+      return v12 >= idsMinWiFiThroughputTh12;
     }
 
-    if (v17 >= [v6 idsMinWiFiThroughputTh0])
+    if (v17 >= [wRM_HandoverManagerSingleton idsMinWiFiThroughputTh0])
     {
       return 1;
     }
 
-    v25 = [v6 idsMinWiFiThroughputTh0];
+    idsMinWiFiThroughputTh0 = [wRM_HandoverManagerSingleton idsMinWiFiThroughputTh0];
   }
 
   else
@@ -403,33 +403,33 @@ LABEL_9:
     {
       if (a4 == 1)
       {
-        v22 = [v6 idsMinWiFiEffectivePhyRateTh1];
-        return v12 >= v22;
+        idsMinWiFiThroughputTh1 = [wRM_HandoverManagerSingleton idsMinWiFiEffectivePhyRateTh1];
+        return v12 >= idsMinWiFiThroughputTh1;
       }
 
-      if (v10 < [v6 idsMinWiFiEffectivePhyRateTh1])
+      if (v10 < [wRM_HandoverManagerSingleton idsMinWiFiEffectivePhyRateTh1])
       {
         return 0;
       }
 
-      v26 = [v6 idsMinWiFiEffectivePhyRateTh1];
-      return v12 >= v26;
+      idsMinWiFiThroughputTh12 = [wRM_HandoverManagerSingleton idsMinWiFiEffectivePhyRateTh1];
+      return v12 >= idsMinWiFiThroughputTh12;
     }
 
-    if (v10 >= [v6 idsMinWiFiEffectivePhyRateTh0])
+    if (v10 >= [wRM_HandoverManagerSingleton idsMinWiFiEffectivePhyRateTh0])
     {
       return 1;
     }
 
-    v25 = [v6 idsMinWiFiEffectivePhyRateTh0];
+    idsMinWiFiThroughputTh0 = [wRM_HandoverManagerSingleton idsMinWiFiEffectivePhyRateTh0];
   }
 
-  return v12 >= v25;
+  return v12 >= idsMinWiFiThroughputTh0;
 }
 
-- (BOOL)canWiFiTransportMeetIDSApplicationRequirements:(unint64_t)a3 :(int)a4 :(int)a5
+- (BOOL)canWiFiTransportMeetIDSApplicationRequirements:(unint64_t)requirements :(int)a4 :(int)a5
 {
-  v8 = [+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager WRM_HandoverManagerSingleton];
+  wRM_HandoverManagerSingleton = [+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager WRM_HandoverManagerSingleton];
   mIDSMetricsController = self->mIDSMetricsController;
   if (!mIDSMetricsController)
   {
@@ -437,71 +437,71 @@ LABEL_9:
   }
 
   v32 = a5;
-  v31 = v8;
-  v33 = [(WRM_IdsMetricsController *)mIDSMetricsController getRTT];
+  v31 = wRM_HandoverManagerSingleton;
+  getRTT = [(WRM_IdsMetricsController *)mIDSMetricsController getRTT];
   [(WRM_IdsMetricsController *)self->mIDSMetricsController getTxPer];
   v11 = v10 * 100.0;
-  v12 = [(WRM_IdsMetricsController *)self->mIDSMetricsController getTxPerValid];
+  getTxPerValid = [(WRM_IdsMetricsController *)self->mIDSMetricsController getTxPerValid];
   [(WRM_IdsMetricsController *)self->mIDSMetricsController getAnticipiatedTxPer];
   v14 = v13 * 100.0;
-  v15 = [(WRM_IdsMetricsController *)self->mIDSMetricsController getAnticipiatedTxPerValid];
+  getAnticipiatedTxPerValid = [(WRM_IdsMetricsController *)self->mIDSMetricsController getAnticipiatedTxPerValid];
   [(WRM_IdsMetricsController *)self->mIDSMetricsController getTxPerAnticipatedMovAvg];
   v17 = v16 * 100.0;
-  v18 = [(WRM_IdsMetricsController *)self->mIDSMetricsController getTxPerAnticipatedMovAvgValid];
-  v19 = [(WRM_IdsMetricsController *)self->mIDSMetricsController getAvgTxPDUSize];
-  v20 = [(WRM_IdsMetricsController *)self->mIDSMetricsController getAvgRxPDUSize];
+  getTxPerAnticipatedMovAvgValid = [(WRM_IdsMetricsController *)self->mIDSMetricsController getTxPerAnticipatedMovAvgValid];
+  getAvgTxPDUSize = [(WRM_IdsMetricsController *)self->mIDSMetricsController getAvgTxPDUSize];
+  getAvgRxPDUSize = [(WRM_IdsMetricsController *)self->mIDSMetricsController getAvgRxPDUSize];
   [(WRM_IdsMetricsController *)self->mIDSMetricsController evaluateDLThroughput];
   v22 = v21;
   [(WRM_IdsMetricsController *)self->mIDSMetricsController evaluateULThroughput];
   v24 = v23;
-  v25 = [(WRM_IdsMetricsController *)self->mIDSMetricsController getRTTMovAvg];
+  getRTTMovAvg = [(WRM_IdsMetricsController *)self->mIDSMetricsController getRTTMovAvg];
   [(WRM_IdsMetricsController *)self->mIDSMetricsController getTxPerMovAvg];
   v27 = v26 * 100.0;
-  v28 = [(WRM_IdsMetricsController *)self->mIDSMetricsController getAvgTxPDUSizeMovAvg];
-  v29 = [(WRM_IdsMetricsController *)self->mIDSMetricsController getAvgRxPDUSizeMovAvg];
-  [WCM_Logging logLevel:27 message:@"Ant PER: %.2f, Ant PER Valid: %d, Ant Mov PER: %.2f, Ant Mov PER Valid:%d", *&v14, v15, *&v17, v18];
-  [WCM_Logging logLevel:27 message:@"IDS Metrics, RTT: %d, M_avg RTT: %d, TX PER: %.2f, Tx PER Valid: %d, M_avg TX PER: %.2f, Rx Size: %d, MAvgRx Size: %d, DL Thr: %.2f, Tx Size: %d, MAvgTx Size: %d, UL Thr: %.2f", v33, v25, *&v11, v12, *&v27, v20, v29, v22, v19, v28, *&v24];
+  getAvgTxPDUSizeMovAvg = [(WRM_IdsMetricsController *)self->mIDSMetricsController getAvgTxPDUSizeMovAvg];
+  getAvgRxPDUSizeMovAvg = [(WRM_IdsMetricsController *)self->mIDSMetricsController getAvgRxPDUSizeMovAvg];
+  [WCM_Logging logLevel:27 message:@"Ant PER: %.2f, Ant PER Valid: %d, Ant Mov PER: %.2f, Ant Mov PER Valid:%d", *&v14, getAnticipiatedTxPerValid, *&v17, getTxPerAnticipatedMovAvgValid];
+  [WCM_Logging logLevel:27 message:@"IDS Metrics, RTT: %d, M_avg RTT: %d, TX PER: %.2f, Tx PER Valid: %d, M_avg TX PER: %.2f, Rx Size: %d, MAvgRx Size: %d, DL Thr: %.2f, Tx Size: %d, MAvgTx Size: %d, UL Thr: %.2f", getRTT, getRTTMovAvg, *&v11, getTxPerValid, *&v27, getAvgRxPDUSize, getAvgRxPDUSizeMovAvg, v22, getAvgTxPDUSize, getAvgTxPDUSizeMovAvg, *&v24];
   result = 1;
   if (a4 == 1 && v32 != 3 && v24 < 1000.0)
   {
-    return [v31 idsWiFiMinRttTh1] > v33 && (v14 < objc_msgSend(v31, "idsWiFiMinPerTh1") || !v15) && (v17 < objc_msgSend(v31, "idsMovAvgWiFiMinPerTh1") || !v18) && (v11 < objc_msgSend(v31, "idsAvgWiFiMinPerTh1") || !v12);
+    return [v31 idsWiFiMinRttTh1] > getRTT && (v14 < objc_msgSend(v31, "idsWiFiMinPerTh1") || !getAnticipiatedTxPerValid) && (v17 < objc_msgSend(v31, "idsMovAvgWiFiMinPerTh1") || !getTxPerAnticipatedMovAvgValid) && (v11 < objc_msgSend(v31, "idsAvgWiFiMinPerTh1") || !getTxPerValid);
   }
 
   return result;
 }
 
-- (BOOL)canBTMeetIDSRequirement:(unint64_t)a3 :(int)a4 :(int)a5
+- (BOOL)canBTMeetIDSRequirement:(unint64_t)requirement :(int)a4 :(int)a5
 {
-  v8 = [+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager WRM_HandoverManagerSingleton];
+  wRM_HandoverManagerSingleton = [+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager WRM_HandoverManagerSingleton];
   mIDSMetricsController = self->mIDSMetricsController;
   if (!mIDSMetricsController)
   {
     return 1;
   }
 
-  v10 = [(WRM_IdsMetricsController *)mIDSMetricsController getRTT];
+  getRTT = [(WRM_IdsMetricsController *)mIDSMetricsController getRTT];
   [(WRM_IdsMetricsController *)self->mIDSMetricsController getTxPer];
   v12 = v11 * 100.0;
-  v13 = [(WRM_IdsMetricsController *)self->mIDSMetricsController getTxPerValid];
-  v14 = [(WRM_IdsMetricsController *)self->mIDSMetricsController getAvgTxPDUSize];
-  v15 = [(WRM_IdsMetricsController *)self->mIDSMetricsController getAvgRxPDUSize];
+  getTxPerValid = [(WRM_IdsMetricsController *)self->mIDSMetricsController getTxPerValid];
+  getAvgTxPDUSize = [(WRM_IdsMetricsController *)self->mIDSMetricsController getAvgTxPDUSize];
+  getAvgRxPDUSize = [(WRM_IdsMetricsController *)self->mIDSMetricsController getAvgRxPDUSize];
   [(WRM_IdsMetricsController *)self->mIDSMetricsController evaluateDLThroughput];
   v17 = v16;
   [(WRM_IdsMetricsController *)self->mIDSMetricsController evaluateDLThroughput];
   v19 = v18;
-  v20 = [(WRM_IdsMetricsController *)self->mIDSMetricsController getRTTMovAvg];
+  getRTTMovAvg = [(WRM_IdsMetricsController *)self->mIDSMetricsController getRTTMovAvg];
   [(WRM_IdsMetricsController *)self->mIDSMetricsController getTxPerMovAvg];
-  [WCM_Logging logLevel:27 message:@"IDS Metrics, RTT: %d, M_avg RTT: %d, TX PER: %.2f, M_avg TX PER: %.2f, Tx PER Valid: %d, Rx Size: %d, MAvgRx Size: %d, DL Thr: %.2f, Tx Size: %d, MAvgTx Size: %d, UL Thr: %.2f", v10, v20, *&v12, v13, v21 * 100.0, v15, [(WRM_IdsMetricsController *)self->mIDSMetricsController getAvgRxPDUSizeMovAvg], v17, v14, [(WRM_IdsMetricsController *)self->mIDSMetricsController getAvgTxPDUSizeMovAvg], v19];
+  [WCM_Logging logLevel:27 message:@"IDS Metrics, RTT: %d, M_avg RTT: %d, TX PER: %.2f, M_avg TX PER: %.2f, Tx PER Valid: %d, Rx Size: %d, MAvgRx Size: %d, DL Thr: %.2f, Tx Size: %d, MAvgTx Size: %d, UL Thr: %.2f", getRTT, getRTTMovAvg, *&v12, getTxPerValid, v21 * 100.0, getAvgRxPDUSize, [(WRM_IdsMetricsController *)self->mIDSMetricsController getAvgRxPDUSizeMovAvg], v17, getAvgTxPDUSize, [(WRM_IdsMetricsController *)self->mIDSMetricsController getAvgTxPDUSizeMovAvg], v19];
   result = 1;
   if (a4 == 3 && a5 != 1)
   {
-    return [v8 idsBTMinRttTh1] > v10 && (v12 < objc_msgSend(v8, "idsBTMinPerTh1") || !v13);
+    return [wRM_HandoverManagerSingleton idsBTMinRttTh1] > getRTT && (v12 < objc_msgSend(wRM_HandoverManagerSingleton, "idsBTMinPerTh1") || !getTxPerValid);
   }
 
   return result;
 }
 
-- (void)handleBTLQMEval:(id)a3
+- (void)handleBTLQMEval:(id)eval
 {
   v4 = dispatch_time(0, 5000000000);
   mQueueTerminus = self->mQueueTerminus;
@@ -513,9 +513,9 @@ LABEL_9:
   dispatch_after(v4, mQueueTerminus, block);
 }
 
-- (void)handleSessionNotification:(id)a3
+- (void)handleSessionNotification:(id)notification
 {
-  uint64 = xpc_dictionary_get_uint64(a3, "kMessageId");
+  uint64 = xpc_dictionary_get_uint64(notification, "kMessageId");
   [WCM_Logging logLevel:27 message:@"%s:Recevied message: %lld", "[WRM_IDSLinkEvalManager(privateFunctions) handleSessionNotification:]", uint64];
   if (uint64 > 413)
   {
@@ -524,12 +524,12 @@ LABEL_9:
       if (uint64 == 600)
       {
 
-        [(WRM_IDSLinkEvalManager *)self handlaIDSMetrics:a3];
+        [(WRM_IDSLinkEvalManager *)self handlaIDSMetrics:notification];
       }
 
       else if (uint64 == 1000)
       {
-        value = xpc_dictionary_get_value(a3, "kMessageArgs");
+        value = xpc_dictionary_get_value(notification, "kMessageArgs");
 
         [(WRM_IDSLinkEvalManager *)self handleInternalMessage:value];
       }
@@ -538,13 +538,13 @@ LABEL_9:
     else if (uint64 == 414)
     {
 
-      [(WRM_IDSLinkEvalManager *)self handleTerminusSubscribeStatusUpdate:a3];
+      [(WRM_IDSLinkEvalManager *)self handleTerminusSubscribeStatusUpdate:notification];
     }
 
     else if (uint64 == 421)
     {
 
-      [(WRM_IDSLinkEvalManager *)self handleBTLQMEval:a3];
+      [(WRM_IDSLinkEvalManager *)self handleBTLQMEval:notification];
     }
   }
 
@@ -553,46 +553,46 @@ LABEL_9:
     if (uint64 == 403)
     {
 
-      [(WRM_IDSLinkEvalManager *)self handleSubscribeStatusUpdate:a3];
+      [(WRM_IDSLinkEvalManager *)self handleSubscribeStatusUpdate:notification];
     }
 
     else if (uint64 == 413)
     {
 
-      [(WRM_IDSLinkEvalManager *)self handleTerminusLinkPrefSubscribe:a3];
+      [(WRM_IDSLinkEvalManager *)self handleTerminusLinkPrefSubscribe:notification];
     }
   }
 
   else if (uint64 == 103)
   {
 
-    [(WRM_IDSLinkEvalManager *)self handleWiFiStateChaneEvents:a3];
+    [(WRM_IDSLinkEvalManager *)self handleWiFiStateChaneEvents:notification];
   }
 
   else if (uint64 == 402)
   {
 
-    [(WRM_IDSLinkEvalManager *)self handleLinkPrefSubscribe:a3];
+    [(WRM_IDSLinkEvalManager *)self handleLinkPrefSubscribe:notification];
   }
 }
 
-- (void)handleTerminusLinkPrefSubscribe:(id)a3
+- (void)handleTerminusLinkPrefSubscribe:(id)subscribe
 {
   mQueueTerminus = self->mQueueTerminus;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10006F68C;
   v4[3] = &unk_10023DC80;
-  v4[4] = a3;
+  v4[4] = subscribe;
   v4[5] = self;
   dispatch_async(mQueueTerminus, v4);
 }
 
-- (void)handleLinkPrefSubscribe:(id)a3
+- (void)handleLinkPrefSubscribe:(id)subscribe
 {
   [WCM_Logging logLevel:27 message:@"IDS Link Eval Manager: handleLinkPrefSubscribe."];
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
-  uint64 = xpc_dictionary_get_uint64(a3, "kClientType");
+  value = xpc_dictionary_get_value(subscribe, "kMessageArgs");
+  uint64 = xpc_dictionary_get_uint64(subscribe, "kClientType");
   v7 = [(WRM_IDSLinkEvalManager *)self getiRATClientFromList:uint64];
   if ((uint64 - 1) >= 0x15)
   {
@@ -615,7 +615,7 @@ LABEL_9:
   if (count)
   {
     v11 = count;
-    v20 = self;
+    selfCopy2 = self;
     [v7 removeAllMobilityContextsFromList];
     [WCM_Logging logLevel:24 message:@"Removing all contexts from iRAT client."];
     v12 = 0;
@@ -652,37 +652,37 @@ LABEL_9:
 
   if ([(WRM_IDSLinkEvalManager *)self doesIRATClientSubscriptionContextExist])
   {
-    v20 = self;
+    selfCopy2 = self;
     [v7 removeAllMobilityContextsFromList];
     [WCM_Logging logLevel:24 message:@"Removing all contexts from iRAT client."];
 LABEL_15:
-    [(WRM_IDSLinkEvalManager *)v20 evaluateBTWiFiLink];
+    [(WRM_IDSLinkEvalManager *)selfCopy2 evaluateBTWiFiLink];
     [WCM_Logging logLevel:27 message:@"Send IDS Notification at connection setup"];
-    mWiFi = v20->mWiFi;
-    v19 = [(WRM_IDSLinkEvalManager *)v20 needWiFiLQM];
+    mWiFi = selfCopy2->mWiFi;
+    needWiFiLQM = [(WRM_IDSLinkEvalManager *)selfCopy2 needWiFiLQM];
 
-    [(WCM_WiFiController *)mWiFi toggleWiFiLQMIfNeeded:v19];
+    [(WCM_WiFiController *)mWiFi toggleWiFiLQMIfNeeded:needWiFiLQM];
     return;
   }
 
   [WCM_Logging logLevel:27 message:@"Ignoring un-subscribe message from a client for which subscription does not exist"];
 }
 
-- (void)handleTerminusSubscribeStatusUpdate:(id)a3
+- (void)handleTerminusSubscribeStatusUpdate:(id)update
 {
   mQueueTerminus = self->mQueueTerminus;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10006FC14;
   v4[3] = &unk_10023DC80;
-  v4[4] = a3;
+  v4[4] = update;
   v4[5] = self;
   dispatch_async(mQueueTerminus, v4);
 }
 
-- (void)handleSubscribeStatusUpdate:(id)a3 :(BOOL)a4
+- (void)handleSubscribeStatusUpdate:(id)update :(BOOL)a4
 {
-  uint64 = xpc_dictionary_get_uint64(a3, "kClientType");
+  uint64 = xpc_dictionary_get_uint64(update, "kClientType");
   if ((uint64 - 1) >= 0x15)
   {
     v7 = "UNKNOWN_WRM_CLIENT_TYPE!!!";
@@ -698,13 +698,13 @@ LABEL_15:
   }
 
   [WCM_Logging logLevel:27 message:@"IDS Link Eval Mgr: Message received from client %d(%s)", uint64, v7];
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
+  value = xpc_dictionary_get_value(update, "kMessageArgs");
   xarray = xpc_dictionary_get_value(value, "kWRMApplicationTypeList");
   count = xpc_array_get_count(xarray);
   if (count)
   {
     v10 = count;
-    v29 = self;
+    selfCopy = self;
     v11 = 0;
     v12 = 0;
     v13 = 0;
@@ -751,7 +751,7 @@ LABEL_15:
       v18 = 2;
     }
 
-    self = v29;
+    self = selfCopy;
   }
 
   else
@@ -776,8 +776,8 @@ LABEL_15:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v21 = [(WRM_IDSLinkEvalManager *)self miRATProximityClientContexts];
-  v22 = [(NSMutableArray *)v21 countByEnumeratingWithState:&v31 objects:v35 count:16];
+  miRATProximityClientContexts = [(WRM_IDSLinkEvalManager *)self miRATProximityClientContexts];
+  v22 = [(NSMutableArray *)miRATProximityClientContexts countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v22)
   {
     v23 = v22;
@@ -788,14 +788,14 @@ LABEL_15:
       {
         if (*v32 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(miRATProximityClientContexts);
         }
 
         v26 = *(*(&v31 + 1) + 8 * i);
         if (v26 && [*(*(&v31 + 1) + 8 * i) mTerminusContext])
         {
           [objc_msgSend(v26 "mTerminusContext")];
-          v27 = [v26 mTerminusContext];
+          mTerminusContext = [v26 mTerminusContext];
           if ((v16 - 2) >= 2)
           {
             if (v16)
@@ -814,12 +814,12 @@ LABEL_15:
             v28 = 0;
           }
 
-          [v27 setMCurrentActiveLink:v28];
+          [mTerminusContext setMCurrentActiveLink:v28];
           [objc_msgSend(v26 "mTerminusContext")];
         }
       }
 
-      v23 = [(NSMutableArray *)v21 countByEnumeratingWithState:&v31 objects:v35 count:16];
+      v23 = [(NSMutableArray *)miRATProximityClientContexts countByEnumeratingWithState:&v31 objects:v35 count:16];
     }
 
     while (v23);
@@ -836,16 +836,16 @@ LABEL_15:
   [(WRM_IDSP2PController *)mIDSP2PController InitService];
 }
 
-- (void)handlaIDSMetrics:(id)a3
+- (void)handlaIDSMetrics:(id)metrics
 {
   mWiFi = self->mWiFi;
   if (mWiFi)
   {
-    v6 = [(WCM_WiFiController *)mWiFi wifiService];
-    if (v6)
+    wifiService = [(WCM_WiFiController *)mWiFi wifiService];
+    if (wifiService)
     {
-      v7 = v6;
-      [(WRM_IdsMetricsController *)self->mIDSMetricsController handlePeriodicIDSMetrics:a3];
+      v7 = wifiService;
+      [(WRM_IdsMetricsController *)self->mIDSMetricsController handlePeriodicIDSMetrics:metrics];
       if (![(WCM_WiFiService *)v7 isWiFiPrimaryInterface])
       {
 
@@ -866,7 +866,7 @@ LABEL_15:
   [WCM_Logging logLevel:27 message:v8];
 }
 
-- (void)sendiRATRecommendationToWatch:(int)a3
+- (void)sendiRATRecommendationToWatch:(int)watch
 {
   if ([objc_msgSend(+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager "WRM_HandoverManagerSingleton")])
   {
@@ -877,12 +877,12 @@ LABEL_15:
 
     mIDSP2PController = self->mIDSP2PController;
     v6 = @"WRM_IWLAN_NOT_INIT";
-    if (a3 == 1)
+    if (watch == 1)
     {
       v6 = @"WRM_IWLAN_WIFI";
     }
 
-    if (a3 == 3)
+    if (watch == 3)
     {
       v7 = @"WRM_IWLAN_BLUETOOTH";
     }
@@ -908,7 +908,7 @@ LABEL_15:
       v43 = 0u;
       v40 = 0u;
       v41 = 0u;
-      v34 = self;
+      selfCopy = self;
       obj = self->miRATClientContexts;
       v30 = [(NSMutableArray *)obj countByEnumeratingWithState:&v40 objects:v45 count:16];
       if (!v30)
@@ -928,14 +928,14 @@ LABEL_15:
           }
 
           v5 = *(*(&v40 + 1) + 8 * v4);
-          v6 = [v5 getMyClientType];
+          getMyClientType = [v5 getMyClientType];
           v7 = "ClientCommCenter";
-          if (v6 != 1)
+          if (getMyClientType != 1)
           {
-            if (v6 - 2 >= 0x14)
+            if (getMyClientType - 2 >= 0x14)
             {
               v7 = "UNKNOWN_WRM_CLIENT_TYPE!!!";
-              if (v6 == 22)
+              if (getMyClientType == 22)
               {
                 v7 = "ClientCoreMediaStreaming";
               }
@@ -943,25 +943,25 @@ LABEL_15:
 
             else
             {
-              v7 = off_10023F338[v6 - 2];
+              v7 = off_10023F338[getMyClientType - 2];
             }
           }
 
           v32 = v4;
           [WCM_Logging logLevel:27 message:@"<%s>Evaluate BT-WiFi Link: BEGIN.", v7];
           v31 = v5;
-          v8 = [v5 getHandoverContexts];
+          getHandoverContexts = [v5 getHandoverContexts];
           v36 = 0u;
           v37 = 0u;
           v38 = 0u;
           v39 = 0u;
-          v33 = v8;
-          v9 = [v8 countByEnumeratingWithState:&v36 objects:v44 count:16];
+          v33 = getHandoverContexts;
+          v9 = [getHandoverContexts countByEnumeratingWithState:&v36 objects:v44 count:16];
           if (v9)
           {
             v10 = v9;
             v35 = *v37;
-            if (v6 == 22)
+            if (getMyClientType == 22)
             {
               v11 = "ClientCoreMediaStreaming";
             }
@@ -971,7 +971,7 @@ LABEL_15:
               v11 = "UNKNOWN_WRM_CLIENT_TYPE!!!";
             }
 
-            v12 = v6 - 2;
+            v12 = getMyClientType - 2;
             do
             {
               for (i = 0; i != v10; i = i + 1)
@@ -982,9 +982,9 @@ LABEL_15:
                 }
 
                 v14 = *(*(&v36 + 1) + 8 * i);
-                v15 = [v14 getApplicationType];
-                v16 = [v14 getConnectedLinkType];
-                v17 = [v14 getRecommenedLinkType];
+                getApplicationType = [v14 getApplicationType];
+                getConnectedLinkType = [v14 getConnectedLinkType];
+                getRecommenedLinkType = [v14 getRecommenedLinkType];
                 if ([v14 getSubscriptionType] == 1)
                 {
                   [WCM_Logging logLevel:27 message:@"Do not evaluate, WiFi versus BT because subscription is for WiFi versus Cellular, %d", 0];
@@ -992,7 +992,7 @@ LABEL_15:
                 }
 
                 v18 = "ClientCommCenter";
-                if (v6 != 1)
+                if (getMyClientType != 1)
                 {
                   v18 = v11;
                   if (v12 <= 0x13)
@@ -1001,13 +1001,13 @@ LABEL_15:
                   }
                 }
 
-                if (v15)
+                if (getApplicationType)
                 {
                   v19 = "CT_VOICE";
-                  if (v15 != 1)
+                  if (getApplicationType != 1)
                   {
                     v19 = "UNKNOWN_APP!!!";
-                    if (v15 == 2)
+                    if (getApplicationType == 2)
                     {
                       v19 = "CT_Th_Call";
                     }
@@ -1020,12 +1020,12 @@ LABEL_15:
                 }
 
                 [WCM_Logging logLevel:27 message:@"<%s>{%s}Evaluate Link: BEGIN.", v18, v19];
-                if (v16 != 3)
+                if (getConnectedLinkType != 3)
                 {
                   goto LABEL_44;
                 }
 
-                if ([(WRM_IDSLinkEvalManager *)v34 canBTMeetIDSRequirement:v15])
+                if ([(WRM_IDSLinkEvalManager *)selfCopy canBTMeetIDSRequirement:getApplicationType])
                 {
                   [v14 getDeltaTimeSinceLastCellularRecommendation];
                   v21 = v20 * 1000.0;
@@ -1033,17 +1033,17 @@ LABEL_15:
                   if (v21 < 30000.0)
                   {
                     v22 = "UNKNOWN_APP!!!";
-                    if (v15 == 2)
+                    if (getApplicationType == 2)
                     {
                       v22 = "CT_Th_Call";
                     }
 
-                    if (v15 == 1)
+                    if (getApplicationType == 1)
                     {
                       v22 = "CT_VOICE";
                     }
 
-                    if (!v15)
+                    if (!getApplicationType)
                     {
                       v22 = "CT_DATA";
                     }
@@ -1061,7 +1061,7 @@ LABEL_44:
 
                 [WCM_Logging logLevel:27 message:@"Continue to evaluate WiFi link: BT link bad"];
 LABEL_45:
-                if ([(WRM_IDSLinkEvalManager *)v34 evaluateLink:v15]== 1)
+                if ([(WRM_IDSLinkEvalManager *)selfCopy evaluateLink:getApplicationType]== 1)
                 {
                   v23 = 1;
                 }
@@ -1079,13 +1079,13 @@ LABEL_45:
                 else
                 {
                   [v14 setLinkPreferenceNotificationRequired:1];
-                  [(WRM_IdsMetricsController *)v34->mIDSMetricsController resetIDSMetrics];
-                  [(WRM_IDSLinkEvalManager *)v34 sendiRATRecommendationToWatch:v23];
+                  [(WRM_IdsMetricsController *)selfCopy->mIDSMetricsController resetIDSMetrics];
+                  [(WRM_IDSLinkEvalManager *)selfCopy sendiRATRecommendationToWatch:v23];
                 }
 
                 [v14 setConnectedLinkType:v23];
                 v24 = "ClientCommCenter";
-                if (v6 != 1)
+                if (getMyClientType != 1)
                 {
                   v24 = v11;
                   if (v12 <= 0x13)
@@ -1094,13 +1094,13 @@ LABEL_45:
                   }
                 }
 
-                if (v15)
+                if (getApplicationType)
                 {
                   v25 = "CT_VOICE";
-                  if (v15 != 1)
+                  if (getApplicationType != 1)
                   {
                     v25 = "UNKNOWN_APP!!!";
-                    if (v15 == 2)
+                    if (getApplicationType == 2)
                     {
                       v25 = "CT_Th_Call";
                     }
@@ -1114,7 +1114,7 @@ LABEL_45:
 
                 [WCM_Logging logLevel:27 message:@"<%s>{%s}Evaluate BT-WIFI Link: END.", v24, v25];
                 v26 = "ClientCommCenter";
-                if (v6 != 1)
+                if (getMyClientType != 1)
                 {
                   v26 = v11;
                   if (v12 <= 0x13)
@@ -1162,25 +1162,25 @@ LABEL_45:
   v3 = [+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager "WRM_HandoverManagerSingleton")];
   if (v3)
   {
-    v4 = [v3 wifiService];
-    [v4 getEstimatedAvailableRxPhyBandwidth];
+    wifiService = [v3 wifiService];
+    [wifiService getEstimatedAvailableRxPhyBandwidth];
     v6 = v5;
-    [v4 getCalculatedAvailableRxPhyBandwidth];
+    [wifiService getCalculatedAvailableRxPhyBandwidth];
     v8 = v7;
-    [v4 getCalculatedAvailableTxPhyBandwidth];
+    [wifiService getCalculatedAvailableTxPhyBandwidth];
     v10 = v9;
     [WCM_Logging logLevel:27 message:@"WIFI Throughput Estimation, Estimated Rx PHY BW: %.2f, Calculated Rx PHY BW: %.2f, Calculated TX BW: %.2f", v6, v8, v9];
     LODWORD(v11) = 1151500288;
     *&v12 = v6;
-    [v4 getL3Bandwidth:v11 :v12];
+    [wifiService getL3Bandwidth:v11 :v12];
     v14 = v13;
     LODWORD(v15) = 1151500288;
     *&v16 = v8;
-    [v4 getL3Bandwidth:v15 :v16];
+    [wifiService getL3Bandwidth:v15 :v16];
     v18 = v17;
     LODWORD(v19) = 1151500288;
     *&v20 = v10;
-    [v4 getL3Bandwidth:v19 :v20];
+    [wifiService getL3Bandwidth:v19 :v20];
     [WCM_Logging logLevel:27 message:@"WIFI Throughput Estimation, Estimated L3 Rx PHY BW: %.2f, Calculated L3 Rx PHY BW: %.2f, Calculated L3 TX BW: %.2f", v14, v18, v21];
   }
 
@@ -1190,9 +1190,9 @@ LABEL_45:
   }
 }
 
-- (void)handleWiFiStateChaneEvents:(id)a3
+- (void)handleWiFiStateChaneEvents:(id)events
 {
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
+  value = xpc_dictionary_get_value(events, "kMessageArgs");
   [WCM_Logging logLevel:27 message:@"WRM IDS Link Eval Manager received WiFi link state change event"];
   if (value)
   {
@@ -1223,9 +1223,9 @@ LABEL_6:
       int64 = xpc_dictionary_get_int64(value, "kWRMM_WiFi_RSSI");
       v9 = xpc_dictionary_get_int64(value, "kWRMM_WiFi_SNR");
       [WCM_Logging logLevel:27 message:@"IDS Link Eval Mgr :Linkup event received"];
-      v10 = [(WCM_WiFiController *)self->mWiFi wifiService];
-      [(WCM_WiFiService *)v10 setRSSI:int64];
-      [(WCM_WiFiService *)v10 setSNR:v9];
+      wifiService = [(WCM_WiFiController *)self->mWiFi wifiService];
+      [(WCM_WiFiService *)wifiService setRSSI:int64];
+      [(WCM_WiFiService *)wifiService setSNR:v9];
       if (![v5 p2pAssistanceEnabled])
       {
         goto LABEL_13;
@@ -1246,7 +1246,7 @@ LABEL_6:
   [WCM_Logging logLevel:27 message:@"IDS Link Eval Manager:Empty message received"];
 }
 
-- (void)addProximityiRatClient:(id)a3
+- (void)addProximityiRatClient:(id)client
 {
   mQueueTerminus = self->mQueueTerminus;
   v4[0] = _NSConcreteStackBlock;
@@ -1254,30 +1254,30 @@ LABEL_6:
   v4[2] = sub_100070DB4;
   v4[3] = &unk_10023DC80;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = client;
   dispatch_async(mQueueTerminus, v4);
 }
 
-- (void)removeProximityiRatClient:(id)a3
+- (void)removeProximityiRatClient:(id)client
 {
-  if ([a3 queue])
+  if ([client queue])
   {
-    dispatch_release([a3 queue]);
+    dispatch_release([client queue]);
   }
 
-  [a3 setQueue:0];
-  if ([a3 mTerminusContext])
+  [client setQueue:0];
+  if ([client mTerminusContext])
   {
 
-    [a3 setMTerminusContext:0];
+    [client setMTerminusContext:0];
   }
 
-  v5 = [(WRM_IDSLinkEvalManager *)self miRATProximityClientContexts];
+  miRATProximityClientContexts = [(WRM_IDSLinkEvalManager *)self miRATProximityClientContexts];
 
-  [(NSMutableArray *)v5 removeObject:a3];
+  [(NSMutableArray *)miRATProximityClientContexts removeObject:client];
 }
 
-- (void)deleteProximityiRATClient:(int)a3
+- (void)deleteProximityiRATClient:(int)client
 {
   mQueueTerminus = self->mQueueTerminus;
   v4[0] = _NSConcreteStackBlock;
@@ -1285,57 +1285,57 @@ LABEL_6:
   v4[2] = sub_100070EF0;
   v4[3] = &unk_10023DBA0;
   v4[4] = self;
-  v5 = a3;
+  clientCopy = client;
   dispatch_async(mQueueTerminus, v4);
 }
 
-- (void)addiRatClient:(id)a3
+- (void)addiRatClient:(id)client
 {
   miRATClientContexts = self->miRATClientContexts;
   objc_sync_enter(miRATClientContexts);
-  [(NSMutableArray *)self->miRATClientContexts addObject:a3];
+  [(NSMutableArray *)self->miRATClientContexts addObject:client];
   [(WRM_IDSLinkEvalManager *)self existingContexts];
 
   objc_sync_exit(miRATClientContexts);
 }
 
-- (void)removeiRatClient:(id)a3
+- (void)removeiRatClient:(id)client
 {
   miRATClientContexts = self->miRATClientContexts;
   objc_sync_enter(miRATClientContexts);
   [(WRM_IDSLinkEvalManager *)self existingContexts];
-  [(NSMutableArray *)self->miRATClientContexts removeObject:a3];
+  [(NSMutableArray *)self->miRATClientContexts removeObject:client];
   [(WRM_IDSLinkEvalManager *)self existingContexts];
 
   objc_sync_exit(miRATClientContexts);
 }
 
-- (void)handleControllerAvailability:(unint64_t)a3
+- (void)handleControllerAvailability:(unint64_t)availability
 {
   if ([(WRM_IDSLinkEvalManager *)self enableiRATManager])
   {
-    if (a3 > 10)
+    if (availability > 10)
     {
-      if (a3 == 12)
+      if (availability == 12)
       {
 
         [(WRM_IDSLinkEvalManager *)self handleIDSToolRegisterd];
       }
 
-      else if (a3 == 11)
+      else if (availability == 11)
       {
 
         [(WRM_IDSLinkEvalManager *)self handleIDSRegisterd];
       }
     }
 
-    else if (a3 == 1)
+    else if (availability == 1)
     {
 
       [(WRM_IDSLinkEvalManager *)self handleWiFiRegistered];
     }
 
-    else if (a3 == 4)
+    else if (availability == 4)
     {
 
       [(WRM_IDSLinkEvalManager *)self handleBTRegistered];
@@ -1372,11 +1372,11 @@ LABEL_6:
   }
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  v3 = [a1 WRM_IDSLinkEvalManagerSingleton];
+  wRM_IDSLinkEvalManagerSingleton = [self WRM_IDSLinkEvalManagerSingleton];
 
-  return v3;
+  return wRM_IDSLinkEvalManagerSingleton;
 }
 
 - (WRM_IDSLinkEvalManager)init
@@ -1437,7 +1437,7 @@ LABEL_6:
   [(WRM_IDSLinkEvalManager *)&v6 dealloc];
 }
 
-- (void)updateControllerSession:(id)a3 ofId:(unint64_t)a4
+- (void)updateControllerSession:(id)session ofId:(unint64_t)id
 {
   mQueue = self->mQueue;
   block[0] = _NSConcreteStackBlock;
@@ -1445,12 +1445,12 @@ LABEL_6:
   block[2] = sub_100071724;
   block[3] = &unk_10023DFB8;
   block[5] = self;
-  block[6] = a4;
-  block[4] = a3;
+  block[6] = id;
+  block[4] = session;
   dispatch_async(mQueue, block);
 }
 
-- (void)updateControllerState:(id)a3
+- (void)updateControllerState:(id)state
 {
   mQueueTerminus = self->mQueueTerminus;
   v4[0] = _NSConcreteStackBlock;
@@ -1458,11 +1458,11 @@ LABEL_6:
   v4[2] = sub_100071BE4;
   v4[3] = &unk_10023DC80;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = state;
   dispatch_async(mQueueTerminus, v4);
 }
 
-- (id)getiRATClientFromList:(int)a3
+- (id)getiRATClientFromList:(int)list
 {
   miRATClientContexts = self->miRATClientContexts;
   objc_sync_enter(miRATClientContexts);
@@ -1485,12 +1485,12 @@ LABEL_6:
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        if ([v10 getMyClientType] == a3)
+        if ([v10 getMyClientType] == list)
         {
-          if ((a3 - 1) >= 0x15)
+          if ((list - 1) >= 0x15)
           {
             v11 = "UNKNOWN_WRM_CLIENT_TYPE!!!";
-            if (a3 == 22)
+            if (list == 22)
             {
               v11 = "ClientCoreMediaStreaming";
             }
@@ -1498,7 +1498,7 @@ LABEL_6:
 
           else
           {
-            v11 = off_10023F3D8[a3 - 1];
+            v11 = off_10023F3D8[list - 1];
           }
 
           [WCM_Logging logLevel:27 message:@"%s: Found valid irat context for %s", "[WRM_IDSLinkEvalManager getiRATClientFromList:]", v11];
@@ -1522,7 +1522,7 @@ LABEL_15:
   return v10;
 }
 
-- (id)getiRATProximityClientFromList:(int)a3
+- (id)getiRATProximityClientFromList:(int)list
 {
   miRATClientContexts = self->miRATClientContexts;
   objc_sync_enter(miRATClientContexts);
@@ -1530,8 +1530,8 @@ LABEL_15:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(WRM_IDSLinkEvalManager *)self miRATProximityClientContexts];
-  v7 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  miRATProximityClientContexts = [(WRM_IDSLinkEvalManager *)self miRATProximityClientContexts];
+  v7 = [(NSMutableArray *)miRATProximityClientContexts countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = *v14;
@@ -1541,16 +1541,16 @@ LABEL_15:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(miRATProximityClientContexts);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        if ([v10 getMyClientType] == a3)
+        if ([v10 getMyClientType] == list)
         {
-          if ((a3 - 1) >= 0x15)
+          if ((list - 1) >= 0x15)
           {
             v11 = "UNKNOWN_WRM_CLIENT_TYPE!!!";
-            if (a3 == 22)
+            if (list == 22)
             {
               v11 = "ClientCoreMediaStreaming";
             }
@@ -1558,7 +1558,7 @@ LABEL_15:
 
           else
           {
-            v11 = off_10023F3D8[a3 - 1];
+            v11 = off_10023F3D8[list - 1];
           }
 
           [WCM_Logging logLevel:27 message:@"%s: Found valid context for %s", "[WRM_IDSLinkEvalManager getiRATProximityClientFromList:]", v11];
@@ -1566,7 +1566,7 @@ LABEL_15:
         }
       }
 
-      v7 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [(NSMutableArray *)miRATProximityClientContexts countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;
@@ -1582,20 +1582,20 @@ LABEL_15:
   return v10;
 }
 
-- (BOOL)isPingPongAvoidanceTimerSatisfied:(id)a3
+- (BOOL)isPingPongAvoidanceTimerSatisfied:(id)satisfied
 {
   v4 = [+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager "WRM_HandoverManagerSingleton")];
-  [objc_msgSend(a3 "mTerminusContext")];
+  [objc_msgSend(satisfied "mTerminusContext")];
   v6 = v5;
-  v7 = [v4 dataBtStickinessTimeThreshMs];
+  dataBtStickinessTimeThreshMs = [v4 dataBtStickinessTimeThreshMs];
   v8 = v6 * 1000.0;
-  [WCM_Logging logLevel:27 message:@"delta time:%lf, effectiveBlockout time:%lld ", *&v8, v7];
-  if (v8 >= v7)
+  [WCM_Logging logLevel:27 message:@"delta time:%lf, effectiveBlockout time:%lld ", *&v8, dataBtStickinessTimeThreshMs];
+  if (v8 >= dataBtStickinessTimeThreshMs)
   {
-    [objc_msgSend(a3 "mTerminusContext")];
+    [objc_msgSend(satisfied "mTerminusContext")];
   }
 
-  return v8 >= v7;
+  return v8 >= dataBtStickinessTimeThreshMs;
 }
 
 - (void)updateBTLQMScore
@@ -1613,29 +1613,29 @@ LABEL_15:
     goto LABEL_8;
   }
 
-  v6 = [(WCM_BTController *)mBT getMovingAvgBTRssi];
-  v7 = [(WCM_BTController *)self->mBT isBTMetricsValid];
-  [WCM_Logging logLevel:27 message:@"btMetricsValid: %d btMovingAvg RSSI %llu", v7, v6];
-  if (!v6)
+  getMovingAvgBTRssi = [(WCM_BTController *)mBT getMovingAvgBTRssi];
+  isBTMetricsValid = [(WCM_BTController *)self->mBT isBTMetricsValid];
+  [WCM_Logging logLevel:27 message:@"btMetricsValid: %d btMovingAvg RSSI %llu", isBTMetricsValid, getMovingAvgBTRssi];
+  if (!getMovingAvgBTRssi)
   {
 LABEL_9:
     v8 = 1;
     goto LABEL_10;
   }
 
-  if (!v7)
+  if (!isBTMetricsValid)
   {
 LABEL_8:
     v8 = -1;
     goto LABEL_10;
   }
 
-  if (v6 >= [v4 dataMinBtRssiTh1])
+  if (getMovingAvgBTRssi >= [v4 dataMinBtRssiTh1])
   {
     goto LABEL_9;
   }
 
-  if (v6 >= [v4 dataMinBtRssiTh0])
+  if (getMovingAvgBTRssi >= [v4 dataMinBtRssiTh0])
   {
     v8 = 2;
   }
@@ -1649,11 +1649,11 @@ LABEL_10:
   self->mCurrentBTLQMScore = v8;
 }
 
-- (void)postBluetoothLQMScore:(BOOL)a3
+- (void)postBluetoothLQMScore:(BOOL)score
 {
-  v3 = a3;
+  scoreCopy = score;
   [WCM_Logging logLevel:27 message:@"postBluetoothLQMScore: mBtLQMUpdateNeeded %d", self->mBtLQMUpdateNeeded];
-  if (self->mBtLQMUpdateNeeded || v3)
+  if (self->mBtLQMUpdateNeeded || scoreCopy)
   {
     v5 = xpc_dictionary_create(0, 0, 0);
     if (v5)
@@ -1664,8 +1664,8 @@ LABEL_10:
       v15 = 0u;
       v12 = 0u;
       v13 = 0u;
-      v7 = [(WRM_IDSLinkEvalManager *)self miRATProximityClientContexts];
-      v8 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      miRATProximityClientContexts = [(WRM_IDSLinkEvalManager *)self miRATProximityClientContexts];
+      v8 = [(NSMutableArray *)miRATProximityClientContexts countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v8)
       {
         v9 = v8;
@@ -1677,7 +1677,7 @@ LABEL_10:
           {
             if (*v13 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(miRATProximityClientContexts);
             }
 
             [*(*(&v12 + 1) + 8 * v11) sendMessage:1309 withArgs:v6];
@@ -1686,7 +1686,7 @@ LABEL_10:
           }
 
           while (v9 != v11);
-          v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+          v9 = [(NSMutableArray *)miRATProximityClientContexts countByEnumeratingWithState:&v12 objects:v16 count:16];
         }
 
         while (v9);
@@ -1710,18 +1710,18 @@ LABEL_10:
 
 - (BOOL)isBTLinkQualityGood
 {
-  v2 = self;
-  v3 = [(WCM_BTController *)self->mBT getMovingAvgBTRssi];
-  LODWORD(v2) = [(WCM_BTController *)v2->mBT isBTMetricsValid];
+  selfCopy = self;
+  getMovingAvgBTRssi = [(WCM_BTController *)self->mBT getMovingAvgBTRssi];
+  LODWORD(selfCopy) = [(WCM_BTController *)selfCopy->mBT isBTMetricsValid];
   v4 = [+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager "WRM_HandoverManagerSingleton")];
-  return v2 && v3 < [v4 commCenterBTlpmThreasholdBTProximity];
+  return selfCopy && getMovingAvgBTRssi < [v4 commCenterBTlpmThreasholdBTProximity];
 }
 
 - (unint64_t)getWiFiRssi
 {
-  v2 = [(WCM_WiFiController *)self->mWiFi wifiService];
+  wifiService = [(WCM_WiFiController *)self->mWiFi wifiService];
 
-  return [(WCM_WiFiService *)v2 getRSSI];
+  return [(WCM_WiFiService *)wifiService getRSSI];
 }
 
 @end

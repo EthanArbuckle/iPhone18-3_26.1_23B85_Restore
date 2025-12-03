@@ -1,11 +1,11 @@
 @interface CKDOperationCallbackProxy
-- (CKDOperationCallbackProxy)initWithEndpoint:(id)a3;
+- (CKDOperationCallbackProxy)initWithEndpoint:(id)endpoint;
 - (Protocol)protocol;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (void)activate;
-- (void)addBarrierBlock:(id)a3;
+- (void)addBarrierBlock:(id)block;
 - (void)dealloc;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 - (void)invalidate;
 @end
 
@@ -85,61 +85,61 @@
   [(CKDOperationCallbackProxy *)&v4 dealloc];
 }
 
-- (CKDOperationCallbackProxy)initWithEndpoint:(id)a3
+- (CKDOperationCallbackProxy)initWithEndpoint:(id)endpoint
 {
-  v5 = a3;
+  endpointCopy = endpoint;
   v9.receiver = self;
   v9.super_class = CKDOperationCallbackProxy;
   v6 = [(CKDOperationCallbackProxy *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_endpoint, a3);
+    objc_storeStrong(&v6->_endpoint, endpoint);
   }
 
   return v7;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  v5 = objc_msgSend_protocol(self, a2, a3);
-  MethodDescription = protocol_getMethodDescription(v5, a3, 1, 1);
+  v5 = objc_msgSend_protocol(self, a2, selector);
+  MethodDescription = protocol_getMethodDescription(v5, selector, 1, 1);
 
   if (!MethodDescription.name || (objc_msgSend_signatureWithObjCTypes_(MEMORY[0x277CBEB08], v7, MethodDescription.types), (v8 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v10.receiver = self;
     v10.super_class = CKDOperationCallbackProxy;
-    v8 = [(CKDOperationCallbackProxy *)&v10 methodSignatureForSelector:a3];
+    v8 = [(CKDOperationCallbackProxy *)&v10 methodSignatureForSelector:selector];
   }
 
   return v8;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
-  objc_msgSend_retainArguments(v4, v5, v6);
+  invocationCopy = invocation;
+  objc_msgSend_retainArguments(invocationCopy, v5, v6);
   v9 = objc_msgSend_endpoint(self, v7, v8);
 
   if (v9)
   {
-    v12 = self;
-    objc_sync_enter(v12);
-    v15 = objc_msgSend_state(v12, v13, v14);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v15 = objc_msgSend_state(selfCopy, v13, v14);
     if (v15)
     {
       if (v15 == 1)
       {
         voucher_copy_without_importance();
         voucher_adopt();
-        v25 = objc_msgSend_connection(v12, v23, v24);
+        v25 = objc_msgSend_connection(selfCopy, v23, v24);
         v33 = MEMORY[0x277D85DD0];
         v34 = 3221225472;
         v35 = sub_22518DB58;
         v36 = &unk_278548128;
-        v26 = v4;
+        v26 = invocationCopy;
         v37 = v26;
-        v38 = v12;
+        v38 = selfCopy;
         v28 = objc_msgSend_remoteObjectProxyWithErrorHandler_(v25, v27, &v33);
         objc_msgSend_forwardInvocation_(v28, v29, v26, v33, v34, v35, v36);
       }
@@ -147,36 +147,36 @@
       else if (v15 == 2)
       {
         v17 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v16, *MEMORY[0x277CBC120], 1000, @"Not forwarding invocation, proxy has been invalidated");
-        v20 = objc_msgSend_protocol(v12, v18, v19);
-        objc_msgSend_CKInvokeAndNilOutReplyBlockWithError_forProtocol_(v4, v21, v17, v20);
+        v20 = objc_msgSend_protocol(selfCopy, v18, v19);
+        objc_msgSend_CKInvokeAndNilOutReplyBlockWithError_forProtocol_(invocationCopy, v21, v17, v20);
 LABEL_9:
       }
 
-      objc_sync_exit(v12);
+      objc_sync_exit(selfCopy);
       goto LABEL_11;
     }
 
     v17 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v16, *MEMORY[0x277CBC120], 1000, @"Not forwarding invocation, proxy has not been activated");
-    v20 = objc_msgSend_protocol(v12, v30, v31);
-    objc_msgSend_CKInvokeAndNilOutReplyBlockWithError_forProtocol_(v4, v32, v17, v20);
+    v20 = objc_msgSend_protocol(selfCopy, v30, v31);
+    objc_msgSend_CKInvokeAndNilOutReplyBlockWithError_forProtocol_(invocationCopy, v32, v17, v20);
     goto LABEL_9;
   }
 
-  v12 = objc_msgSend_protocol(self, v10, v11);
-  objc_msgSend_CKInvokeAndNilOutReplyBlockWithError_forProtocol_(v4, v22, 0, v12);
+  selfCopy = objc_msgSend_protocol(self, v10, v11);
+  objc_msgSend_CKInvokeAndNilOutReplyBlockWithError_forProtocol_(invocationCopy, v22, 0, selfCopy);
 LABEL_11:
 }
 
-- (void)addBarrierBlock:(id)a3
+- (void)addBarrierBlock:(id)block
 {
-  v12 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v7 = objc_msgSend_state(v4, v5, v6);
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = objc_msgSend_state(selfCopy, v5, v6);
   if (!v7)
   {
 LABEL_4:
-    v12[2]();
+    blockCopy[2]();
     goto LABEL_6;
   }
 
@@ -190,11 +190,11 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  v10 = objc_msgSend_connection(v4, v8, v9);
-  objc_msgSend_addBarrierBlock_(v10, v11, v12);
+  v10 = objc_msgSend_connection(selfCopy, v8, v9);
+  objc_msgSend_addBarrierBlock_(v10, v11, blockCopy);
 
 LABEL_6:
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 @end

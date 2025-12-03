@@ -7,15 +7,15 @@
 - (id)accessibilityLabel
 {
   v3 = [(MFModernAtomViewAccessibility *)self safeValueForKey:@"presentationOptions"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  if ((v4 & 0x10) != 0)
+  if ((integerValue & 0x10) != 0)
   {
     v5 = accessibilityLocalizedString(@"vip.sender");
     goto LABEL_5;
   }
 
-  if ((v4 & 1) == 0)
+  if ((integerValue & 1) == 0)
   {
     v5 = 0;
 LABEL_5:

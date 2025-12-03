@@ -1,38 +1,38 @@
 @interface MKGETCertificateRouter
-- (MKGETCertificateRouter)initWithSRP:(id)a3 certificate:(id)a4;
+- (MKGETCertificateRouter)initWithSRP:(id)p certificate:(id)certificate;
 - (MKGETCertificateRouterDelegate)delegate;
-- (void)server:(id)a3 didReceiveRequest:(id)a4 response:(id)a5;
+- (void)server:(id)server didReceiveRequest:(id)request response:(id)response;
 @end
 
 @implementation MKGETCertificateRouter
 
-- (MKGETCertificateRouter)initWithSRP:(id)a3 certificate:(id)a4
+- (MKGETCertificateRouter)initWithSRP:(id)p certificate:(id)certificate
 {
-  v6 = a3;
-  v7 = a4;
+  pCopy = p;
+  certificateCopy = certificate;
   v11.receiver = self;
   v11.super_class = MKGETCertificateRouter;
   v8 = [(MKGETCertificateRouter *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(MKGETCertificateRouter *)v8 setSrp:v6];
-    [(MKGETCertificateRouter *)v9 setCertificate:v7];
+    [(MKGETCertificateRouter *)v8 setSrp:pCopy];
+    [(MKGETCertificateRouter *)v9 setCertificate:certificateCopy];
   }
 
   return v9;
 }
 
-- (void)server:(id)a3 didReceiveRequest:(id)a4 response:(id)a5
+- (void)server:(id)server didReceiveRequest:(id)request response:(id)response
 {
-  v6 = a5;
-  v7 = [(MKSRPServer *)self->_srp sharedKey];
-  if (v7)
+  responseCopy = response;
+  sharedKey = [(MKSRPServer *)self->_srp sharedKey];
+  if (sharedKey)
   {
-    v8 = [(MKCertificate *)self->_certificate encodedCertificate];
-    v9 = [[MKCrypto alloc] initWithKey:v7];
-    v10 = [(MKCrypto *)v9 encryptData:v8];
-    [v6 setBody:v10];
+    encodedCertificate = [(MKCertificate *)self->_certificate encodedCertificate];
+    v9 = [[MKCrypto alloc] initWithKey:sharedKey];
+    v10 = [(MKCrypto *)v9 encryptData:encodedCertificate];
+    [responseCopy setBody:v10];
   }
 
   else

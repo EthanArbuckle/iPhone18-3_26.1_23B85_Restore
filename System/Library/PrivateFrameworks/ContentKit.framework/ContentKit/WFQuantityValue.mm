@@ -1,8 +1,8 @@
 @interface WFQuantityValue
-- (WFQuantityValue)initWithCoder:(id)a3;
-- (WFQuantityValue)initWithMagnitude:(id)a3 unitString:(id)a4;
+- (WFQuantityValue)initWithCoder:(id)coder;
+- (WFQuantityValue)initWithMagnitude:(id)magnitude unitString:(id)string;
 - (id)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFQuantityValue
@@ -10,53 +10,53 @@
 - (id)debugDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(WFQuantityValue *)self magnitude];
-  v5 = [(WFQuantityValue *)self unitString];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  magnitude = [(WFQuantityValue *)self magnitude];
+  unitString = [(WFQuantityValue *)self unitString];
+  v6 = [v3 stringWithFormat:@"%@ %@", magnitude, unitString];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFQuantityValue *)self magnitude];
-  [v4 encodeObject:v5 forKey:@"Magnitude"];
+  coderCopy = coder;
+  magnitude = [(WFQuantityValue *)self magnitude];
+  [coderCopy encodeObject:magnitude forKey:@"Magnitude"];
 
-  v6 = [(WFQuantityValue *)self unitString];
-  [v4 encodeObject:v6 forKey:@"Unit"];
+  unitString = [(WFQuantityValue *)self unitString];
+  [coderCopy encodeObject:unitString forKey:@"Unit"];
 }
 
-- (WFQuantityValue)initWithCoder:(id)a3
+- (WFQuantityValue)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Magnitude"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Unit"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Magnitude"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Unit"];
 
   if (v5)
   {
     self = [(WFQuantityValue *)self initWithMagnitude:v5 unitString:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  v8 = v7;
+  v8 = selfCopy;
 
   return v8;
 }
 
-- (WFQuantityValue)initWithMagnitude:(id)a3 unitString:(id)a4
+- (WFQuantityValue)initWithMagnitude:(id)magnitude unitString:(id)string
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  magnitudeCopy = magnitude;
+  stringCopy = string;
+  if (!magnitudeCopy)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"WFQuantityValue.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"magnitude"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFQuantityValue.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"magnitude"}];
   }
 
   v17.receiver = self;
@@ -65,8 +65,8 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_magnitude, a3);
-    v12 = [v9 copy];
+    objc_storeStrong(&v10->_magnitude, magnitude);
+    v12 = [stringCopy copy];
     unitString = v11->_unitString;
     v11->_unitString = v12;
 

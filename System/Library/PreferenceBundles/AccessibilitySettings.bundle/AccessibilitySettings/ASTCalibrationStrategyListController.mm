@@ -1,16 +1,16 @@
 @interface ASTCalibrationStrategyListController
-+ (id)nameForCalibrationStrategy:(int64_t)a3;
++ (id)nameForCalibrationStrategy:(int64_t)strategy;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (int64_t)_currentStrategy;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation ASTCalibrationStrategyListController
 
-+ (id)nameForCalibrationStrategy:(int64_t)a3
++ (id)nameForCalibrationStrategy:(int64_t)strategy
 {
-  if (!a3)
+  if (!strategy)
   {
     v4 = @"ON_DEVICE_EYE_TRACKING_SINGULAR_MATRIX";
 LABEL_5:
@@ -19,7 +19,7 @@ LABEL_5:
     return v5;
   }
 
-  if (a3 == 1)
+  if (strategy == 1)
   {
     v4 = @"ON_DEVICE_EYE_TRACKING_DUAL_MATRIX";
     goto LABEL_5;
@@ -62,34 +62,34 @@ LABEL_5:
 - (int64_t)_currentStrategy
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 assistiveTouchMouseOnDeviceEyeTrackingCalibrationStrategy];
+  assistiveTouchMouseOnDeviceEyeTrackingCalibrationStrategy = [v2 assistiveTouchMouseOnDeviceEyeTrackingCalibrationStrategy];
 
-  return v3;
+  return assistiveTouchMouseOnDeviceEyeTrackingCalibrationStrategy;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v10.receiver = self;
   v10.super_class = ASTCalibrationStrategyListController;
-  v6 = a4;
-  v7 = [(ASTCalibrationStrategyListController *)&v10 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(ASTCalibrationStrategyListController *)self _calibrationStrategyForIndexPath:v6, v10.receiver, v10.super_class];
+  pathCopy = path;
+  v7 = [(ASTCalibrationStrategyListController *)&v10 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(ASTCalibrationStrategyListController *)self _calibrationStrategyForIndexPath:pathCopy, v10.receiver, v10.super_class];
 
   [v7 setChecked:{v8 == -[ASTCalibrationStrategyListController _currentStrategy](self, "_currentStrategy")}];
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ASTCalibrationStrategyListController *)self _calibrationStrategyForIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(ASTCalibrationStrategyListController *)self _calibrationStrategyForIndexPath:pathCopy];
   v9 = +[AXSettings sharedInstance];
   [v9 setAssistiveTouchMouseOnDeviceEyeTrackingCalibrationStrategy:v8];
 
-  [(ASTCalibrationStrategyListController *)self updateTableCheckedSelection:v6];
-  [v7 deselectRowAtIndexPath:v6 animated:1];
+  [(ASTCalibrationStrategyListController *)self updateTableCheckedSelection:pathCopy];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 
   v10 = [(ASTCalibrationStrategyListController *)self specifierForID:@"CalibrationStrategyGroupID"];
   [(ASTCalibrationStrategyListController *)self reloadSpecifier:v10 animated:1];

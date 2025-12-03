@@ -1,12 +1,12 @@
 @interface SBExternalDisplayWindowSceneDelegate
 + (id)_individuallyManagedRoles;
-- (BOOL)_shouldManageParticipantWithRole:(id)a3;
+- (BOOL)_shouldManageParticipantWithRole:(id)role;
 - (SBExternalDisplayWindowSceneDelegate)init;
-- (id)_displayLayoutPublisherForConnectingWindowScene:(id)a3;
+- (id)_displayLayoutPublisherForConnectingWindowScene:(id)scene;
 - (id)_pipelineManager;
-- (void)_configureForConnectingWindowScene:(id)a3 windowSceneContext:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidDisconnect:(id)a3;
+- (void)_configureForConnectingWindowScene:(id)scene windowSceneContext:(id)context;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidDisconnect:(id)disconnect;
 @end
 
 @implementation SBExternalDisplayWindowSceneDelegate
@@ -86,9 +86,9 @@ void __65__SBExternalDisplayWindowSceneDelegate__individuallyManagedRoles__block
   return traitsExternalPipelineManager;
 }
 
-- (id)_displayLayoutPublisherForConnectingWindowScene:(id)a3
+- (id)_displayLayoutPublisherForConnectingWindowScene:(id)scene
 {
-  v5 = a3;
+  sceneCopy = scene;
   if (SBFIsShellSceneKitAvailable())
   {
     displayLayoutPublisher = self->_displayLayoutPublisher;
@@ -96,8 +96,8 @@ void __65__SBExternalDisplayWindowSceneDelegate__individuallyManagedRoles__block
     {
       v7 = objc_alloc_init(MEMORY[0x277D0AD30]);
       [v7 setDomainIdentifier:@"com.apple.frontboard"];
-      v8 = [v5 _sbDisplayConfiguration];
-      v9 = [v8 identity];
+      _sbDisplayConfiguration = [sceneCopy _sbDisplayConfiguration];
+      identity = [_sbDisplayConfiguration identity];
       v10 = SBExternalDisplayLayoutServiceInstanceIdentifierForDisplay();
       [v7 setInstanceIdentifier:v10];
 
@@ -114,63 +114,63 @@ void __65__SBExternalDisplayWindowSceneDelegate__individuallyManagedRoles__block
 
   else
   {
-    v14 = [v5 _FBSScene];
-    v15 = [v14 settings];
-    v16 = [v15 displayIdentity];
-    v17 = [v16 rootIdentity];
+    _FBSScene = [sceneCopy _FBSScene];
+    settings = [_FBSScene settings];
+    displayIdentity = [settings displayIdentity];
+    rootIdentity = [displayIdentity rootIdentity];
 
-    v13 = [SBApp layoutPublisherForPhysicalDisplay:v17];
+    v13 = [SBApp layoutPublisherForPhysicalDisplay:rootIdentity];
     if (!v13)
     {
-      [(SBExternalDisplayWindowSceneDelegate *)a2 _displayLayoutPublisherForConnectingWindowScene:v17];
+      [(SBExternalDisplayWindowSceneDelegate *)a2 _displayLayoutPublisherForConnectingWindowScene:rootIdentity];
     }
   }
 
   return v13;
 }
 
-- (BOOL)_shouldManageParticipantWithRole:(id)a3
+- (BOOL)_shouldManageParticipantWithRole:(id)role
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _individuallyManagedRoles];
-  v5 = [v4 containsObject:v3];
+  roleCopy = role;
+  _individuallyManagedRoles = [objc_opt_class() _individuallyManagedRoles];
+  v5 = [_individuallyManagedRoles containsObject:roleCopy];
 
   return v5 ^ 1;
 }
 
-- (void)_configureForConnectingWindowScene:(id)a3 windowSceneContext:(id)a4
+- (void)_configureForConnectingWindowScene:(id)scene windowSceneContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  sceneCopy = scene;
+  contextCopy = context;
   v75.receiver = self;
   v75.super_class = SBExternalDisplayWindowSceneDelegate;
-  [(SBAbstractWindowSceneDelegate *)&v75 _configureForConnectingWindowScene:v6 windowSceneContext:v7];
+  [(SBAbstractWindowSceneDelegate *)&v75 _configureForConnectingWindowScene:sceneCopy windowSceneContext:contextCopy];
   if (SBFIsShellSceneKitAvailable())
   {
-    v8 = [v6 _FBSScene];
-    v9 = [v8 SSKDisplayEndpoint];
+    _FBSScene = [sceneCopy _FBSScene];
+    sSKDisplayEndpoint = [_FBSScene SSKDisplayEndpoint];
 
-    [v9 setWantsControlOfDisplay:1];
+    [sSKDisplayEndpoint setWantsControlOfDisplay:1];
     v10 = +[SBDefaults localDefaults];
-    v11 = [v10 externalDisplayDefaults];
+    externalDisplayDefaults = [v10 externalDisplayDefaults];
 
     v71[0] = MEMORY[0x277D85DD0];
     v71[1] = 3221225472;
     v71[2] = __94__SBExternalDisplayWindowSceneDelegate__configureForConnectingWindowScene_windowSceneContext___block_invoke;
     v71[3] = &unk_2783A8ED8;
-    v72 = v6;
-    v73 = v11;
-    v74 = v9;
-    v12 = v9;
-    v13 = v11;
+    v72 = sceneCopy;
+    v73 = externalDisplayDefaults;
+    v74 = sSKDisplayEndpoint;
+    v12 = sSKDisplayEndpoint;
+    v13 = externalDisplayDefaults;
     v14 = [v13 observeDisplayModeSettingsOnQueue:MEMORY[0x277D85CD0] withBlock:v71];
     displayModeSettingsToken = self->_displayModeSettingsToken;
     self->_displayModeSettingsToken = v14;
   }
 
   v16 = +[SBHIDEventDispatchController sharedInstance];
-  v17 = [v6 _sbDisplayConfiguration];
-  v18 = [v16 configureDispatchRootsForChamoisDisplay:v17];
+  _sbDisplayConfiguration = [sceneCopy _sbDisplayConfiguration];
+  v18 = [v16 configureDispatchRootsForChamoisDisplay:_sbDisplayConfiguration];
   eventRoutingAssertion = self->_eventRoutingAssertion;
   self->_eventRoutingAssertion = v18;
 
@@ -179,81 +179,81 @@ void __65__SBExternalDisplayWindowSceneDelegate__individuallyManagedRoles__block
   self->_increasedMemoryLimitsTransaction = v20;
 
   v22 = [SBSystemPointerInteractionManager alloc];
-  v23 = [SBApp multiDisplayUserInteractionCoordinator];
-  v24 = [(SBSystemPointerInteractionManager *)v22 initWithMultiDisplayUserInteractionCoordinator:v23];
+  multiDisplayUserInteractionCoordinator = [SBApp multiDisplayUserInteractionCoordinator];
+  v24 = [(SBSystemPointerInteractionManager *)v22 initWithMultiDisplayUserInteractionCoordinator:multiDisplayUserInteractionCoordinator];
 
-  [v7 setSystemPointerInteractionManager:v24];
+  [contextCopy setSystemPointerInteractionManager:v24];
   v25 = [SBExternalDisplaySystemGestureManager alloc];
-  v26 = [v6 screen];
-  v27 = [v26 displayIdentity];
-  v28 = [(SBExternalDisplaySystemGestureManager *)v25 initWithDisplayIdentity:v27];
+  screen = [sceneCopy screen];
+  displayIdentity = [screen displayIdentity];
+  v28 = [(SBExternalDisplaySystemGestureManager *)v25 initWithDisplayIdentity:displayIdentity];
 
   [(SBSystemGestureManager *)v28 setSystemPointerInteractionDelegate:v24];
-  [v7 setSystemGestureManager:v28];
-  v70 = [[SBHomeAffordanceInteractionManager alloc] initWithWindowScene:v6];
-  [v7 setHomeAffordanceInteractionManager:?];
-  v69 = [[SBModalUIFluidDismissGestureManager alloc] initWithWindowScene:v6 systemGestureManager:v28];
-  [v7 setModalUIFluidDismissGestureManager:?];
+  [contextCopy setSystemGestureManager:v28];
+  v70 = [[SBHomeAffordanceInteractionManager alloc] initWithWindowScene:sceneCopy];
+  [contextCopy setHomeAffordanceInteractionManager:?];
+  v69 = [[SBModalUIFluidDismissGestureManager alloc] initWithWindowScene:sceneCopy systemGestureManager:v28];
+  [contextCopy setModalUIFluidDismissGestureManager:?];
   v68 = [[SBTransientUIInteractionManager alloc] initWithSystemGestureManager:v28];
-  [v7 setTransientUIInteractionManager:?];
-  v67 = [[SBRecordingIndicatorManager alloc] initWithWindowScene:v6];
-  [v7 setRecordingIndicatorManager:?];
-  v29 = [SBApp windowSceneManager];
-  v30 = [v29 embeddedDisplayWindowScene];
-  v31 = [v30 homeScreenController];
+  [contextCopy setTransientUIInteractionManager:?];
+  v67 = [[SBRecordingIndicatorManager alloc] initWithWindowScene:sceneCopy];
+  [contextCopy setRecordingIndicatorManager:?];
+  windowSceneManager = [SBApp windowSceneManager];
+  embeddedDisplayWindowScene = [windowSceneManager embeddedDisplayWindowScene];
+  homeScreenController = [embeddedDisplayWindowScene homeScreenController];
 
-  v32 = [v31 _iconController];
-  [v7 setIconController:v32];
-  [v7 setHomeScreenController:v31];
-  v66 = [v31 createFloatingDockControllerForWindowScene:v6];
-  [v7 setFloatingDockController:?];
-  v65 = [v31 createModalLibraryControllerForWindowScene:v6];
-  [v7 setModalLibraryController:?];
-  v33 = [v31 createStatusBarVisibiltyAssertionForWindowScene:v6];
+  _iconController = [homeScreenController _iconController];
+  [contextCopy setIconController:_iconController];
+  [contextCopy setHomeScreenController:homeScreenController];
+  v66 = [homeScreenController createFloatingDockControllerForWindowScene:sceneCopy];
+  [contextCopy setFloatingDockController:?];
+  v65 = [homeScreenController createModalLibraryControllerForWindowScene:sceneCopy];
+  [contextCopy setModalLibraryController:?];
+  v33 = [homeScreenController createStatusBarVisibiltyAssertionForWindowScene:sceneCopy];
   showStatusBarAssertion = self->_showStatusBarAssertion;
   self->_showStatusBarAssertion = v33;
 
   [(SBWindowSceneStatusBarSettingsAssertion *)self->_showStatusBarAssertion acquire];
-  v35 = [v6 statusBarManager];
-  [v35 updateHomeScreenStatusBarLegibility];
+  statusBarManager = [sceneCopy statusBarManager];
+  [statusBarManager updateHomeScreenStatusBarLegibility];
 
-  v64 = [[SBCommandTabController alloc] initWithWindowScene:v6 iconController:v32];
-  [v7 setCommandTabController:?];
-  v36 = [[SBExternalDisplayWallpaperController alloc] initWithWindowScene:v6 requiresTraitsParticipant:1];
+  v64 = [[SBCommandTabController alloc] initWithWindowScene:sceneCopy iconController:_iconController];
+  [contextCopy setCommandTabController:?];
+  v36 = [[SBExternalDisplayWallpaperController alloc] initWithWindowScene:sceneCopy requiresTraitsParticipant:1];
   wallpaperController = self->_wallpaperController;
   self->_wallpaperController = v36;
 
-  v38 = [[SBExternalDisplayCoverSheetController alloc] initWithWindowScene:v6];
+  v38 = [[SBExternalDisplayCoverSheetController alloc] initWithWindowScene:sceneCopy];
   coverSheetController = self->_coverSheetController;
   self->_coverSheetController = v38;
 
-  [v7 setUILockStateProvider:self->_coverSheetController];
+  [contextCopy setUILockStateProvider:self->_coverSheetController];
   v40 = objc_alloc_init(SBExternalChamoisUICommandValidator);
-  [v7 setCommandValidator:v40];
+  [contextCopy setCommandValidator:v40];
 
   v41 = +[SBWorkspace mainWorkspace];
-  v42 = [v41 transientOverlayPresentationManager];
-  [v42 windowSceneDidConnect:v6];
+  transientOverlayPresentationManager = [v41 transientOverlayPresentationManager];
+  [transientOverlayPresentationManager windowSceneDidConnect:sceneCopy];
 
   if (SBFIsControlCenterInChamoisExtendedAvailable())
   {
     v43 = [SBControlCenterController alloc];
     v44 = +[SBControlCenterCoordinator sharedInstance];
-    v45 = [(SBControlCenterController *)v43 initWithWindowScene:v6 controlCenterCoordinator:v44];
+    v45 = [(SBControlCenterController *)v43 initWithWindowScene:sceneCopy controlCenterCoordinator:v44];
 
-    [v7 setControlCenterController:v45];
+    [contextCopy setControlCenterController:v45];
   }
 
-  v46 = [v6 pictureInPictureManager];
-  [v46 windowSceneDidConnect:v6];
+  pictureInPictureManager = [sceneCopy pictureInPictureManager];
+  [pictureInPictureManager windowSceneDidConnect:sceneCopy];
 
   if (([MEMORY[0x277D244C8] inUserSessionLoginUI] & 1) == 0)
   {
     v47 = +[SBMainSwitcherControllerCoordinator sharedInstance];
-    [v47 windowSceneDidConnect:v6];
+    [v47 windowSceneDidConnect:sceneCopy];
 
-    v48 = [[SBSwitcherController alloc] initWithWindowScene:v6 debugName:@"ExternalDisplay"];
-    [v7 setSwitcherController:v48];
+    v48 = [[SBSwitcherController alloc] initWithWindowScene:sceneCopy debugName:@"ExternalDisplay"];
+    [contextCopy setSwitcherController:v48];
     v49 = +[SBMainSwitcherControllerCoordinator sharedInstance];
     [v49 beginCoordinatingSwitcherController:v48];
 
@@ -269,14 +269,14 @@ void __65__SBExternalDisplayWindowSceneDelegate__individuallyManagedRoles__block
         goto LABEL_11;
       }
 
-      v50 = [MEMORY[0x277D75418] currentDevice];
-      v51 = [v50 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if (v51 == 1)
+      if (userInterfaceIdiom == 1)
       {
 LABEL_11:
-        v52 = [v6 menuBarManager];
-        [v52 setMenuBarSceneProvider:v48];
+        menuBarManager = [sceneCopy menuBarManager];
+        [menuBarManager setMenuBarSceneProvider:v48];
       }
     }
 
@@ -284,25 +284,25 @@ LABEL_12:
   }
 
   v53 = [SBAlertLayoutPresentationVerifier alloc];
-  v54 = [v6 screen];
-  v55 = [(SBAlertLayoutPresentationVerifier *)v53 initWithScreen:v54];
+  screen2 = [sceneCopy screen];
+  v55 = [(SBAlertLayoutPresentationVerifier *)v53 initWithScreen:screen2];
 
   v56 = [SBSharedModalAlertItemPresenter alloc];
-  v57 = [SBApp lockOutController];
+  lockOutController = [SBApp lockOutController];
   v58 = +[SBReachabilityManager sharedInstance];
-  v59 = [(SBSharedModalAlertItemPresenter *)v56 initWithLockOutProvider:v57 systemGestureManager:v28 reachabilityManager:v58 alertLayoutPresentationVerifier:v55 windowScene:v6];
+  v59 = [(SBSharedModalAlertItemPresenter *)v56 initWithLockOutProvider:lockOutController systemGestureManager:v28 reachabilityManager:v58 alertLayoutPresentationVerifier:v55 windowScene:sceneCopy];
 
   v60 = +[SBAlertItemsController sharedInstance];
-  [v60 windowSceneDidConnect:v6 withSharedModalAlertItemPresenter:v59];
+  [v60 windowSceneDidConnect:sceneCopy withSharedModalAlertItemPresenter:v59];
 
   v61 = +[SBAppInteractionEventSourceManager sharedInstance];
-  [v61 windowSceneDidConnect:v6];
+  [v61 windowSceneDidConnect:sceneCopy];
 
-  v62 = [SBApp multiDisplayUserInteractionCoordinator];
-  [v62 windowSceneDidConnect:v6];
+  multiDisplayUserInteractionCoordinator2 = [SBApp multiDisplayUserInteractionCoordinator];
+  [multiDisplayUserInteractionCoordinator2 windowSceneDidConnect:sceneCopy];
 
-  v63 = [v6 statusBarManager];
-  [v63 windowSceneDidConnect:v6];
+  statusBarManager2 = [sceneCopy statusBarManager];
+  [statusBarManager2 windowSceneDidConnect:sceneCopy];
 }
 
 void __94__SBExternalDisplayWindowSceneDelegate__configureForConnectingWindowScene_windowSceneContext___block_invoke(id *a1)
@@ -326,28 +326,28 @@ void __94__SBExternalDisplayWindowSceneDelegate__configureForConnectingWindowSce
   }
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v10 role];
-  if (([v12 isEqualToString:@"SBWindowSceneSessionRoleExternalDisplay"] & 1) == 0)
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  role = [sessionCopy role];
+  if (([role isEqualToString:@"SBWindowSceneSessionRoleExternalDisplay"] & 1) == 0)
   {
     [SBExternalDisplayWindowSceneDelegate scene:a2 willConnectToSession:self options:?];
   }
 
   v13.receiver = self;
   v13.super_class = SBExternalDisplayWindowSceneDelegate;
-  [(SBAbstractWindowSceneDelegate *)&v13 scene:v9 willConnectToSession:v10 options:v11];
+  [(SBAbstractWindowSceneDelegate *)&v13 scene:sceneCopy willConnectToSession:sessionCopy options:optionsCopy];
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   [(BSDefaultObserver *)self->_displayModeSettingsToken invalidate];
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = disconnectCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -369,32 +369,32 @@ void __94__SBExternalDisplayWindowSceneDelegate__configureForConnectingWindowSce
   v8 = v7;
 
   v9 = +[SBMainWorkspace sharedInstanceIfExists];
-  v10 = [v9 keyboardFocusController];
+  keyboardFocusController = [v9 keyboardFocusController];
   v11 = MEMORY[0x277CCACA8];
   v12 = objc_opt_class();
   v13 = NSStringFromClass(v12);
-  v14 = [v8 screen];
-  v15 = [v14 displayIdentity];
-  v16 = [v11 stringWithFormat:@"%@ - %@", v13, v15];
-  v17 = [v10 suppressKeyboardFocusEvaluationForReason:v16];
+  screen = [v8 screen];
+  displayIdentity = [screen displayIdentity];
+  v16 = [v11 stringWithFormat:@"%@ - %@", v13, displayIdentity];
+  v17 = [keyboardFocusController suppressKeyboardFocusEvaluationForReason:v16];
 
   [v8 setInvalidating:1];
   v18 = +[SBMainSwitcherControllerCoordinator sharedInstance];
-  v19 = [v8 switcherController];
-  [v18 endCoordinatingSwitcherController:v19];
+  switcherController = [v8 switcherController];
+  [v18 endCoordinatingSwitcherController:switcherController];
 
   v20 = +[SBMainSwitcherControllerCoordinator sharedInstance];
   [v20 windowSceneDidDisconnect:v8];
 
-  v21 = [(SBAbstractWindowSceneDelegate *)self floatingDockController];
-  [v21 invalidate];
+  floatingDockController = [(SBAbstractWindowSceneDelegate *)self floatingDockController];
+  [floatingDockController invalidate];
 
   [(SBWindowSceneStatusBarSettingsAssertion *)self->_showStatusBarAssertion invalidate];
   showStatusBarAssertion = self->_showStatusBarAssertion;
   self->_showStatusBarAssertion = 0;
 
-  v23 = [(SBAbstractWindowSceneDelegate *)self modalLibraryController];
-  [v23 invalidate];
+  modalLibraryController = [(SBAbstractWindowSceneDelegate *)self modalLibraryController];
+  [modalLibraryController invalidate];
 
   [(BSInvalidatable *)self->_eventRoutingAssertion invalidate];
   eventRoutingAssertion = self->_eventRoutingAssertion;
@@ -403,8 +403,8 @@ void __94__SBExternalDisplayWindowSceneDelegate__configureForConnectingWindowSce
   increasedMemoryLimitsTransaction = self->_increasedMemoryLimitsTransaction;
   self->_increasedMemoryLimitsTransaction = 0;
 
-  v26 = [v8 systemGestureManager];
-  [v26 invalidate];
+  systemGestureManager = [v8 systemGestureManager];
+  [systemGestureManager invalidate];
 
   v27 = +[SBAlertItemsController sharedInstance];
   [v27 windowSceneDidDisconnect:v8];
@@ -412,8 +412,8 @@ void __94__SBExternalDisplayWindowSceneDelegate__configureForConnectingWindowSce
   v28 = +[SBAppInteractionEventSourceManager sharedInstance];
   [v28 windowSceneDidDisconnect:v8];
 
-  v29 = [SBApp multiDisplayUserInteractionCoordinator];
-  [v29 windowSceneDidDisconnect:v8];
+  multiDisplayUserInteractionCoordinator = [SBApp multiDisplayUserInteractionCoordinator];
+  [multiDisplayUserInteractionCoordinator windowSceneDidDisconnect:v8];
 
   [(SBExternalDisplayCoverSheetController *)self->_coverSheetController invalidate];
   coverSheetController = self->_coverSheetController;
@@ -423,8 +423,8 @@ void __94__SBExternalDisplayWindowSceneDelegate__configureForConnectingWindowSce
   displayLayoutPublisher = self->_displayLayoutPublisher;
   self->_displayLayoutPublisher = 0;
 
-  v32 = [v8 controlCenterController];
-  [v32 invalidate];
+  controlCenterController = [v8 controlCenterController];
+  [controlCenterController invalidate];
 
   v33.receiver = self;
   v33.super_class = SBExternalDisplayWindowSceneDelegate;

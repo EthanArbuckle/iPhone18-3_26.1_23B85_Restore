@@ -1,23 +1,23 @@
 @interface WFStartEndDateMigration
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4;
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version;
 - (void)migrateWorkflow;
 @end
 
 @implementation WFStartEndDateMigration
 
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version
 {
-  v5 = a3;
-  if (WFCompareBundleVersions(a4, @"128") == 3)
+  migrationCopy = migration;
+  if (WFCompareBundleVersions(version, @"128") == 3)
   {
-    if (WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.getstartdate", v5))
+    if (WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.getstartdate", migrationCopy))
     {
       HasActionsWithIdentifier = 1;
     }
 
     else
     {
-      HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.getenddate", v5);
+      HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.getenddate", migrationCopy);
     }
   }
 
@@ -53,17 +53,17 @@
         }
 
         v7 = *(*(&v16 + 1) + 8 * v6);
-        v8 = [(WFWorkflowMigration *)self actionIdentifierKey];
-        v9 = [v7 objectForKey:v8];
+        actionIdentifierKey = [(WFWorkflowMigration *)self actionIdentifierKey];
+        v9 = [v7 objectForKey:actionIdentifierKey];
 
         v10 = @"Start Date";
         if (([v9 isEqualToString:@"is.workflow.actions.getstartdate"] & 1) != 0 || (v10 = @"End Date", objc_msgSend(v9, "isEqualToString:", @"is.workflow.actions.getenddate")))
         {
-          v11 = [(WFWorkflowMigration *)self actionIdentifierKey];
-          [v7 setObject:@"is.workflow.actions.properties.calendarevents" forKeyedSubscript:v11];
+          actionIdentifierKey2 = [(WFWorkflowMigration *)self actionIdentifierKey];
+          [v7 setObject:@"is.workflow.actions.properties.calendarevents" forKeyedSubscript:actionIdentifierKey2];
 
-          v12 = [(WFWorkflowMigration *)self actionParametersKey];
-          v13 = [v7 objectForKey:v12];
+          actionParametersKey = [(WFWorkflowMigration *)self actionParametersKey];
+          v13 = [v7 objectForKey:actionParametersKey];
 
           [v13 setObject:v10 forKey:@"WFContentItemPropertyName"];
         }

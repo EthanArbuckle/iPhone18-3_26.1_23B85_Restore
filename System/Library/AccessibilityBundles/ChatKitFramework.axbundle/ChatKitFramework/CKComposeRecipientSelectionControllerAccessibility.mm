@@ -1,25 +1,25 @@
 @interface CKComposeRecipientSelectionControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)_layoutFromFieldShouldHide:(BOOL)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)_layoutFromFieldShouldHide:(BOOL)hide;
 @end
 
 @implementation CKComposeRecipientSelectionControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKComposeRecipientSelectionController" hasInstanceMethod:@"_layoutFromFieldShouldHide:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"CKComposeRecipientSelectionController" hasInstanceMethod:@"simSelectionFieldView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKSIMSelectionFieldView" hasInstanceMethod:@"contentStackView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKSIMSelectionFieldView" hasInstanceMethod:@"subscriptionSelectorButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKComposeRecipientSelectionController" hasInstanceMethod:@"_layoutFromFieldShouldHide:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"CKComposeRecipientSelectionController" hasInstanceMethod:@"simSelectionFieldView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKSIMSelectionFieldView" hasInstanceMethod:@"contentStackView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKSIMSelectionFieldView" hasInstanceMethod:@"subscriptionSelectorButton" withFullSignature:{"@", 0}];
 }
 
-- (void)_layoutFromFieldShouldHide:(BOOL)a3
+- (void)_layoutFromFieldShouldHide:(BOOL)hide
 {
   v10.receiver = self;
   v10.super_class = CKComposeRecipientSelectionControllerAccessibility;
   [(CKComposeRecipientSelectionControllerAccessibility *)&v10 _layoutFromFieldShouldHide:?];
-  if (!a3)
+  if (!hide)
   {
     v5 = [(CKComposeRecipientSelectionControllerAccessibility *)self safeValueForKeyPath:@"simSelectionFieldView.contentStackView"];
     [v5 setIsAccessibilityElement:1];

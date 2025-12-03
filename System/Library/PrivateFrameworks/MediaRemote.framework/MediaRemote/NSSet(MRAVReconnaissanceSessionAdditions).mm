@@ -12,7 +12,7 @@
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
-    [a1 allObjects];
+    [self allObjects];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;

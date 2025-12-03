@@ -1,24 +1,24 @@
 @interface SBHIconShareSheetActivityItemProvider
-- (SBHIconShareSheetActivityItemProvider)initWithIconManager:(id)a3 icon:(id)a4;
-- (id)activityViewControllerLinkMetadata:(id)a3;
+- (SBHIconShareSheetActivityItemProvider)initWithIconManager:(id)manager icon:(id)icon;
+- (id)activityViewControllerLinkMetadata:(id)metadata;
 @end
 
 @implementation SBHIconShareSheetActivityItemProvider
 
-- (SBHIconShareSheetActivityItemProvider)initWithIconManager:(id)a3 icon:(id)a4
+- (SBHIconShareSheetActivityItemProvider)initWithIconManager:(id)manager icon:(id)icon
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DEF0] data];
+  managerCopy = manager;
+  iconCopy = icon;
+  data = [MEMORY[0x1E695DEF0] data];
   v44.receiver = self;
   v44.super_class = SBHIconShareSheetActivityItemProvider;
-  v9 = [(UIActivityItemProvider *)&v44 initWithPlaceholderItem:v8];
+  v9 = [(UIActivityItemProvider *)&v44 initWithPlaceholderItem:data];
   if (v9)
   {
-    if (![v7 isLeafIcon] || (objc_msgSend(v7, "applicationBundleID"), (v10 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (![iconCopy isLeafIcon] || (objc_msgSend(iconCopy, "applicationBundleID"), (v10 = objc_claimAutoreleasedReturnValue()) == 0))
     {
       v20 = objc_opt_class();
-      v21 = v7;
+      v21 = iconCopy;
       if (v20)
       {
         if (objc_opt_isKindOfClass())
@@ -39,40 +39,40 @@
 
       v23 = v22;
 
-      v11 = [v23 webClip];
+      webClip = [v23 webClip];
 
-      v24 = [v11 pageURL];
+      pageURL = [webClip pageURL];
       itemURL = v9->_itemURL;
-      v9->_itemURL = v24;
+      v9->_itemURL = pageURL;
 
-      v26 = [v11 title];
+      title = [webClip title];
       itemName = v9->_itemName;
-      v9->_itemName = v26;
+      v9->_itemName = title;
       goto LABEL_16;
     }
 
-    v11 = v10;
+    webClip = v10;
     itemName = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v10 allowPlaceholder:1 error:0];
-    v13 = [(NSString *)itemName iTunesMetadata];
+    iTunesMetadata = [(NSString *)itemName iTunesMetadata];
     iTunesMetadata = v9->_iTunesMetadata;
-    v9->_iTunesMetadata = v13;
+    v9->_iTunesMetadata = iTunesMetadata;
 
-    v15 = [(LSiTunesMetadata *)v9->_iTunesMetadata distributorInfo];
-    v16 = [v15 shareURL];
+    distributorInfo = [(LSiTunesMetadata *)v9->_iTunesMetadata distributorInfo];
+    shareURL = [distributorInfo shareURL];
 
-    v17 = [(LSiTunesMetadata *)v9->_iTunesMetadata distributorInfo];
-    v18 = v17;
-    if (v16)
+    distributorInfo2 = [(LSiTunesMetadata *)v9->_iTunesMetadata distributorInfo];
+    v18 = distributorInfo2;
+    if (shareURL)
     {
-      v19 = [v17 shareURL];
+      shareURL2 = [distributorInfo2 shareURL];
     }
 
     else
     {
-      v27 = [v17 sourceURL];
+      sourceURL = [distributorInfo2 sourceURL];
 
       v28 = v9->_iTunesMetadata;
-      if (!v27)
+      if (!sourceURL)
       {
         v18 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[LSiTunesMetadata storeItemIdentifier](v28, "storeItemIdentifier")}];
         v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"https://apps.apple.com/app/id%@", v18];
@@ -84,28 +84,28 @@
       }
 
       v29 = MEMORY[0x1E696AF20];
-      v30 = [(LSiTunesMetadata *)v28 distributorInfo];
-      v31 = [v30 sourceURL];
-      v18 = [v29 componentsWithURL:v31 resolvingAgainstBaseURL:0];
+      distributorInfo3 = [(LSiTunesMetadata *)v28 distributorInfo];
+      sourceURL2 = [distributorInfo3 sourceURL];
+      v18 = [v29 componentsWithURL:sourceURL2 resolvingAgainstBaseURL:0];
 
       [v18 setPath:0];
-      v19 = [v18 URL];
+      shareURL2 = [v18 URL];
     }
 
     v32 = v9->_itemURL;
-    v9->_itemURL = v19;
+    v9->_itemURL = shareURL2;
 LABEL_15:
 
-    v33 = [(LSiTunesMetadata *)v9->_iTunesMetadata itemName];
+    itemName = [(LSiTunesMetadata *)v9->_iTunesMetadata itemName];
     v34 = v9->_itemName;
-    v9->_itemName = v33;
+    v9->_itemName = itemName;
 
 LABEL_16:
-    v35 = [v6 iconImageCache];
-    v36 = [v6 rootViewController];
-    v37 = [v36 traitCollection];
-    v38 = [MEMORY[0x1E69DD1B8] sbh_iconImageAppearanceFromTraitCollection:v37];
-    v39 = [v35 imageForIcon:v7 imageAppearance:v38 options:0];
+    iconImageCache = [managerCopy iconImageCache];
+    rootViewController = [managerCopy rootViewController];
+    traitCollection = [rootViewController traitCollection];
+    v38 = [MEMORY[0x1E69DD1B8] sbh_iconImageAppearanceFromTraitCollection:traitCollection];
+    v39 = [iconImageCache imageForIcon:iconCopy imageAppearance:v38 options:0];
     itemImage = v9->_itemImage;
     v9->_itemImage = v39;
   }
@@ -113,36 +113,36 @@ LABEL_16:
   return v9;
 }
 
-- (id)activityViewControllerLinkMetadata:(id)a3
+- (id)activityViewControllerLinkMetadata:(id)metadata
 {
   v4 = objc_alloc_init(MEMORY[0x1E696ECA0]);
-  v5 = [(SBHIconShareSheetActivityItemProvider *)self itemURL];
-  [v4 setOriginalURL:v5];
-  [v4 setURL:v5];
+  itemURL = [(SBHIconShareSheetActivityItemProvider *)self itemURL];
+  [v4 setOriginalURL:itemURL];
+  [v4 setURL:itemURL];
   v6 = objc_alloc_init(MEMORY[0x1E696ED50]);
-  v7 = [(SBHIconShareSheetActivityItemProvider *)self itemName];
-  [v6 setName:v7];
+  itemName = [(SBHIconShareSheetActivityItemProvider *)self itemName];
+  [v6 setName:itemName];
 
-  v8 = [(SBHIconShareSheetActivityItemProvider *)self iTunesMetadata];
-  v9 = v8;
-  if (v8)
+  iTunesMetadata = [(SBHIconShareSheetActivityItemProvider *)self iTunesMetadata];
+  v9 = iTunesMetadata;
+  if (iTunesMetadata)
   {
-    v10 = [v8 artistName];
-    [v6 setSubtitle:v10];
+    artistName = [iTunesMetadata artistName];
+    [v6 setSubtitle:artistName];
 
-    v11 = [v9 genre];
-    [v6 setGenre:v11];
+    genre = [v9 genre];
+    [v6 setGenre:genre];
   }
 
   else
   {
-    v11 = [v5 host];
-    [v6 setSubtitle:v11];
+    genre = [itemURL host];
+    [v6 setSubtitle:genre];
   }
 
   v12 = objc_alloc(MEMORY[0x1E696EC68]);
-  v13 = [(SBHIconShareSheetActivityItemProvider *)self itemImage];
-  v14 = UIImagePNGRepresentation(v13);
+  itemImage = [(SBHIconShareSheetActivityItemProvider *)self itemImage];
+  v14 = UIImagePNGRepresentation(itemImage);
   v15 = [v12 initWithData:v14 MIMEType:@"image/png"];
 
   [v6 setIcon:v15];

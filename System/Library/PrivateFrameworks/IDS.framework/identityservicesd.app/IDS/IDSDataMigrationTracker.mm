@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = sub_1004E83D0;
   block[3] = &unk_100BD75B8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100CBD660 != -1)
   {
     dispatch_once(&qword_100CBD660, block);
@@ -74,9 +74,9 @@
       v10[4] = self;
       v10[5] = &v11;
       dispatch_async(v6, v10);
-      v7 = [v12[5] promise];
+      promise = [v12[5] promise];
       v8 = self->_currentPromise;
-      self->_currentPromise = v7;
+      self->_currentPromise = promise;
 
       _Block_object_dispose(&v11, 8);
       currentPromise = self->_currentPromise;

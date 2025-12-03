@@ -1,6 +1,6 @@
 @interface IMDReparentingMonitor
 + (IMDReparentingMonitor)sharedMonitor;
-- (void)cloudkitStateEnabledReturnedWithNotification:(id)a3;
+- (void)cloudkitStateEnabledReturnedWithNotification:(id)notification;
 @end
 
 @implementation IMDReparentingMonitor
@@ -17,7 +17,7 @@
   return v3;
 }
 
-- (void)cloudkitStateEnabledReturnedWithNotification:(id)a3
+- (void)cloudkitStateEnabledReturnedWithNotification:(id)notification
 {
   v4 = sub_22B7DA688();
   v5 = *(v4 - 8);
@@ -25,7 +25,7 @@
   MEMORY[0x28223BE20](v4);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_22B7DA658();
-  v9 = self;
+  selfCopy = self;
   sub_22B706E74();
 
   (*(v5 + 8))(v8, v4);

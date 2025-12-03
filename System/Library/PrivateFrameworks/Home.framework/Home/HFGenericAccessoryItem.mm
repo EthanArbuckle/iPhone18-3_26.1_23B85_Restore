@@ -1,48 +1,48 @@
 @interface HFGenericAccessoryItem
-+ (id)itemWithAccessoryRepresentableObject:(id)a3 valueSource:(id)a4;
-- (HFGenericAccessoryItem)initWithAccessory:(id)a3 valueSource:(id)a4;
++ (id)itemWithAccessoryRepresentableObject:(id)object valueSource:(id)source;
+- (HFGenericAccessoryItem)initWithAccessory:(id)accessory valueSource:(id)source;
 - (HMHome)home;
 - (NSSet)services;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 - (id)accessories;
-- (id)copyWithValueSource:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithValueSource:(id)source;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)namingComponentForHomeKitObject;
-- (id)serviceLikeBuilderInHome:(id)a3;
+- (id)serviceLikeBuilderInHome:(id)home;
 @end
 
 @implementation HFGenericAccessoryItem
 
-- (HFGenericAccessoryItem)initWithAccessory:(id)a3 valueSource:(id)a4
+- (HFGenericAccessoryItem)initWithAccessory:(id)accessory valueSource:(id)source
 {
-  v7 = a3;
-  v8 = a4;
+  accessoryCopy = accessory;
+  sourceCopy = source;
   v12.receiver = self;
   v12.super_class = HFGenericAccessoryItem;
   v9 = [(HFGenericAccessoryItem *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_accessory, a3);
-    objc_storeStrong(&v10->_valueSource, a4);
+    objc_storeStrong(&v9->_accessory, accessory);
+    objc_storeStrong(&v10->_valueSource, source);
   }
 
   return v10;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  optionsCopy = options;
   v6 = [HFServiceLikeItemUpdateRequest alloc];
-  v7 = [(HFGenericAccessoryItem *)self accessory];
-  v8 = [(HFGenericAccessoryItem *)self valueSource];
+  accessory = [(HFGenericAccessoryItem *)self accessory];
+  valueSource = [(HFGenericAccessoryItem *)self valueSource];
   v9 = [MEMORY[0x277CBEB98] set];
-  v10 = [(HFServiceLikeItemUpdateRequest *)v6 initWithAccessory:v7 valueSource:v8 characteristics:v9];
+  v10 = [(HFServiceLikeItemUpdateRequest *)v6 initWithAccessory:accessory valueSource:valueSource characteristics:v9];
 
   if (v10)
   {
-    v11 = [(HFServiceLikeItemUpdateRequest *)v10 updateWithOptions:v5];
+    v11 = [(HFServiceLikeItemUpdateRequest *)v10 updateWithOptions:optionsCopy];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __54__HFGenericAccessoryItem__subclass_updateWithOptions___block_invoke;
@@ -57,13 +57,13 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       v18 = NSStringFromSelector(a2);
-      v19 = [(HFGenericAccessoryItem *)self accessory];
+      accessory2 = [(HFGenericAccessoryItem *)self accessory];
       *buf = 138412802;
-      v22 = self;
+      selfCopy = self;
       v23 = 2112;
       v24 = v18;
       v25 = 2112;
-      v26 = v19;
+      v26 = accessory2;
       _os_log_error_impl(&dword_20D9BF000, v13, OS_LOG_TYPE_ERROR, "%@:%@ Failed to create HFServiceLikeItemUpdateRequest. Accessory: %@ ", buf, 0x20u);
     }
 
@@ -138,20 +138,20 @@ id __54__HFGenericAccessoryItem__subclass_updateWithOptions___block_invoke(uint6
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(HFGenericAccessoryItem *)self valueSource];
-  v5 = [(HFGenericAccessoryItem *)self copyWithValueSource:v4];
+  valueSource = [(HFGenericAccessoryItem *)self valueSource];
+  v5 = [(HFGenericAccessoryItem *)self copyWithValueSource:valueSource];
 
   return v5;
 }
 
-- (id)copyWithValueSource:(id)a3
+- (id)copyWithValueSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v5 = [HFGenericAccessoryItem alloc];
-  v6 = [(HFGenericAccessoryItem *)self accessory];
-  v7 = [(HFGenericAccessoryItem *)v5 initWithAccessory:v6 valueSource:v4];
+  accessory = [(HFGenericAccessoryItem *)self accessory];
+  v7 = [(HFGenericAccessoryItem *)v5 initWithAccessory:accessory valueSource:sourceCopy];
 
   [(HFItem *)v7 copyLatestResultsFromItem:self];
   return v7;
@@ -159,17 +159,17 @@ id __54__HFGenericAccessoryItem__subclass_updateWithOptions___block_invoke(uint6
 
 - (HMHome)home
 {
-  v2 = [(HFGenericAccessoryItem *)self accessory];
-  v3 = [v2 home];
+  accessory = [(HFGenericAccessoryItem *)self accessory];
+  home = [accessory home];
 
-  return v3;
+  return home;
 }
 
 - (id)accessories
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(HFGenericAccessoryItem *)self accessory];
-  v4 = [v2 setWithObject:v3];
+  accessory = [(HFGenericAccessoryItem *)self accessory];
+  v4 = [v2 setWithObject:accessory];
 
   return v4;
 }
@@ -177,39 +177,39 @@ id __54__HFGenericAccessoryItem__subclass_updateWithOptions___block_invoke(uint6
 - (NSSet)services
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(HFGenericAccessoryItem *)self accessory];
-  v4 = [v3 services];
-  v5 = [v2 setWithArray:v4];
+  accessory = [(HFGenericAccessoryItem *)self accessory];
+  services = [accessory services];
+  v5 = [v2 setWithArray:services];
 
   return v5;
 }
 
-- (id)serviceLikeBuilderInHome:(id)a3
+- (id)serviceLikeBuilderInHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v5 = [HFAccessoryBuilder alloc];
-  v6 = [(HFGenericAccessoryItem *)self homeKitObject];
-  v7 = [(HFAccessoryBuilder *)v5 initWithExistingObject:v6 inHome:v4];
+  homeKitObject = [(HFGenericAccessoryItem *)self homeKitObject];
+  v7 = [(HFAccessoryBuilder *)v5 initWithExistingObject:homeKitObject inHome:homeCopy];
 
   return v7;
 }
 
 - (id)namingComponentForHomeKitObject
 {
-  v2 = [(HFGenericAccessoryItem *)self accessory];
-  v3 = [HFNamingComponents namingComponentFromAccessory:v2];
+  accessory = [(HFGenericAccessoryItem *)self accessory];
+  v3 = [HFNamingComponents namingComponentFromAccessory:accessory];
 
   return v3;
 }
 
-+ (id)itemWithAccessoryRepresentableObject:(id)a3 valueSource:(id)a4
++ (id)itemWithAccessoryRepresentableObject:(id)object valueSource:(id)source
 {
-  v6 = a4;
-  v7 = a3;
+  sourceCopy = source;
+  objectCopy = object;
   v8 = objc_opt_class();
-  v9 = [v7 hf_homeKitObject];
+  hf_homeKitObject = [objectCopy hf_homeKitObject];
 
-  v10 = v9;
+  v10 = hf_homeKitObject;
   if (v10)
   {
     if (objc_opt_isKindOfClass())
@@ -228,15 +228,15 @@ id __54__HFGenericAccessoryItem__subclass_updateWithOptions___block_invoke(uint6
       goto LABEL_8;
     }
 
-    v13 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v13 handleFailureInFunction:v14 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v8, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v14 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v8, objc_opt_class()}];
   }
 
   v12 = 0;
 LABEL_8:
 
-  v15 = [[a1 alloc] initWithAccessory:v12 valueSource:v6];
+  v15 = [[self alloc] initWithAccessory:v12 valueSource:sourceCopy];
 
   return v15;
 }

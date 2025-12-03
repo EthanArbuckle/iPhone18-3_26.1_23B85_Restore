@@ -1,26 +1,26 @@
 @interface RTTimerManager
-- (id)timerWithIdentifier:(id)a3 queue:(id)a4 handler:(id)a5;
-- (id)xpcTimerAlarmWithIdentifier:(id)a3 queue:(id)a4 handler:(id)a5;
+- (id)timerWithIdentifier:(id)identifier queue:(id)queue handler:(id)handler;
+- (id)xpcTimerAlarmWithIdentifier:(id)identifier queue:(id)queue handler:(id)handler;
 @end
 
 @implementation RTTimerManager
 
-- (id)timerWithIdentifier:(id)a3 queue:(id)a4 handler:(id)a5
+- (id)timerWithIdentifier:(id)identifier queue:(id)queue handler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[RTTimer alloc] initWithIdentifier:v9 queue:v8 handler:v7];
+  handlerCopy = handler;
+  queueCopy = queue;
+  identifierCopy = identifier;
+  v10 = [[RTTimer alloc] initWithIdentifier:identifierCopy queue:queueCopy handler:handlerCopy];
 
   return v10;
 }
 
-- (id)xpcTimerAlarmWithIdentifier:(id)a3 queue:(id)a4 handler:(id)a5
+- (id)xpcTimerAlarmWithIdentifier:(id)identifier queue:(id)queue handler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[RTXPCTimerAlarm alloc] initWithIdentifier:v9 queue:v8 handler:v7];
+  handlerCopy = handler;
+  queueCopy = queue;
+  identifierCopy = identifier;
+  v10 = [[RTXPCTimerAlarm alloc] initWithIdentifier:identifierCopy queue:queueCopy handler:handlerCopy];
 
   return v10;
 }

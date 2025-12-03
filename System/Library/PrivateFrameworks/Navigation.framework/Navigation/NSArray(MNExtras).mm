@@ -15,7 +15,7 @@
     v9[2] = __56__NSArray_MNExtras___navigation_firstObjectPassingTest___block_invoke;
     v9[3] = &unk_1E842FBB8;
     v10 = v4;
-    v6 = [a1 indexOfObjectPassingTest:v9];
+    v6 = [self indexOfObjectPassingTest:v9];
     if (v6 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v7 = 0;
@@ -23,7 +23,7 @@
 
     else
     {
-      v7 = [a1 objectAtIndexedSubscript:v6];
+      v7 = [self objectAtIndexedSubscript:v6];
     }
   }
 

@@ -1,40 +1,40 @@
 @interface ADCloudKitAccountStatusMirroredStore
 - (ADCloudKitAccountStatusMirroredStore)init;
-- (void)deleteUserData:(id)a3;
-- (void)fetchDeviceTypesForAllLanguages:(id)a3;
-- (void)fetchDeviceTypesForLanguage:(id)a3 completion:(id)a4;
-- (void)mergeDataWithModifiedRecords:(id)a3 deletedRecordIDs:(id)a4 containsAllChanges:(BOOL)a5 completion:(id)a6;
-- (void)synchronizeUsingActivity:(id)a3 completion:(id)a4;
-- (void)synchronizeWithCompletion:(id)a3;
+- (void)deleteUserData:(id)data;
+- (void)fetchDeviceTypesForAllLanguages:(id)languages;
+- (void)fetchDeviceTypesForLanguage:(id)language completion:(id)completion;
+- (void)mergeDataWithModifiedRecords:(id)records deletedRecordIDs:(id)ds containsAllChanges:(BOOL)changes completion:(id)completion;
+- (void)synchronizeUsingActivity:(id)activity completion:(id)completion;
+- (void)synchronizeWithCompletion:(id)completion;
 @end
 
 @implementation ADCloudKitAccountStatusMirroredStore
 
-- (void)synchronizeUsingActivity:(id)a3 completion:(id)a4
+- (void)synchronizeUsingActivity:(id)activity completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4, 1);
+    (*(completion + 2))(completion, 1);
   }
 }
 
-- (void)fetchDeviceTypesForAllLanguages:(id)a3
+- (void)fetchDeviceTypesForAllLanguages:(id)languages
 {
-  if (a3)
+  if (languages)
   {
-    (*(a3 + 2))(a3, 0, 0);
+    (*(languages + 2))(languages, 0, 0);
   }
 }
 
-- (void)fetchDeviceTypesForLanguage:(id)a3 completion:(id)a4
+- (void)fetchDeviceTypesForLanguage:(id)language completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4, 0);
+    (*(completion + 2))(completion, 0);
   }
 }
 
-- (void)deleteUserData:(id)a3
+- (void)deleteUserData:(id)data
 {
   v3 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -45,11 +45,11 @@
   }
 }
 
-- (void)mergeDataWithModifiedRecords:(id)a3 deletedRecordIDs:(id)a4 containsAllChanges:(BOOL)a5 completion:(id)a6
+- (void)mergeDataWithModifiedRecords:(id)records deletedRecordIDs:(id)ds containsAllChanges:(BOOL)changes completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a6;
+  recordsCopy = records;
+  dsCopy = ds;
+  completionCopy = completion;
   v11 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -58,36 +58,36 @@
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s No merging on mirrored container.", &v12, 0xCu);
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    v10[2](v10, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)synchronizeWithCompletion:(id)a3
+- (void)synchronizeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[AFPreferences sharedPreferences];
-  v6 = [v5 cloudSyncEnabled];
+  cloudSyncEnabled = [v5 cloudSyncEnabled];
 
-  if (self->_cloudSyncEnabled != v6)
+  if (self->_cloudSyncEnabled != cloudSyncEnabled)
   {
-    self->_cloudSyncEnabled = v6;
-    if (v6)
+    self->_cloudSyncEnabled = cloudSyncEnabled;
+    if (cloudSyncEnabled)
     {
       v7 = +[ADCloudKitManager sharedManager];
       v8[0] = _NSConcreteStackBlock;
       v8[1] = 3221225472;
       v8[2] = sub_10012FF44;
       v8[3] = &unk_10051D5D8;
-      v9 = v4;
+      v9 = completionCopy;
       [v7 saveCloudSyncEnabledRecord:1 mirror:1 completion:v8];
     }
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    (*(v4 + 2))(v4, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 }
 

@@ -26,16 +26,16 @@
 
 - (BOOL)isEnabled
 {
-  v2 = [(AMSUIAirplaneModeInquiry *)self radiosPreferences];
-  v3 = [v2 airplaneMode];
+  radiosPreferences = [(AMSUIAirplaneModeInquiry *)self radiosPreferences];
+  airplaneMode = [radiosPreferences airplaneMode];
 
-  return v3;
+  return airplaneMode;
 }
 
 - (void)airplaneModeChanged
 {
-  v3 = [(AMSUIAirplaneModeInquiry *)self delegate];
-  [v3 airplaneModeInquiryDidObserveChange:self];
+  delegate = [(AMSUIAirplaneModeInquiry *)self delegate];
+  [delegate airplaneModeInquiryDidObserveChange:self];
 }
 
 - (AMSUIAirplaneModeInquiryDelegate)delegate

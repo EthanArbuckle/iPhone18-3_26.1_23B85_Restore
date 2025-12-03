@@ -1,28 +1,28 @@
 @interface PRPosterLegibilitySettings
-+ (PRPosterLegibilitySettings)legibilitySettingsWithUILegibilitySettings:(id)a3;
-+ (id)legibilitySettingsForContentColor:(id)a3 contrast:(double)a4;
-+ (id)legibilitySettingsForStyle:(int64_t)a3 primaryColor:(id)a4 secondaryColor:(id)a5 shadowColor:(id)a6;
-+ (id)prLegibilitySettingsForPUILegibilitySettings:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToLegibilitySettings:(id)a3;
-- (PRPosterLegibilitySettings)initWithBSXPCCoder:(id)a3;
-- (PRPosterLegibilitySettings)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)legibilitySettingsByApplyingShadowRadiusMultiplier:(double)a3;
-- (id)legibilitySettingsByOverridingShadowAlpha:(double)a3;
++ (PRPosterLegibilitySettings)legibilitySettingsWithUILegibilitySettings:(id)settings;
++ (id)legibilitySettingsForContentColor:(id)color contrast:(double)contrast;
++ (id)legibilitySettingsForStyle:(int64_t)style primaryColor:(id)color secondaryColor:(id)secondaryColor shadowColor:(id)shadowColor;
++ (id)prLegibilitySettingsForPUILegibilitySettings:(id)settings;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToLegibilitySettings:(id)settings;
+- (PRPosterLegibilitySettings)initWithBSXPCCoder:(id)coder;
+- (PRPosterLegibilitySettings)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)legibilitySettingsByApplyingShadowRadiusMultiplier:(double)multiplier;
+- (id)legibilitySettingsByOverridingShadowAlpha:(double)alpha;
 @end
 
 @implementation PRPosterLegibilitySettings
 
-- (PRPosterLegibilitySettings)initWithCoder:(id)a3
+- (PRPosterLegibilitySettings)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PRPosterLegibilitySettings;
   v5 = [(PRPosterLegibilitySettings *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_underlyingLegibilitySettings"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_underlyingLegibilitySettings"];
     underlyingLegibilitySettings = v5->_underlyingLegibilitySettings;
     v5->_underlyingLegibilitySettings = v6;
   }
@@ -30,13 +30,13 @@
   return v5;
 }
 
-- (PRPosterLegibilitySettings)initWithBSXPCCoder:(id)a3
+- (PRPosterLegibilitySettings)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = PRPosterLegibilitySettings;
   v5 = [(PRPosterLegibilitySettings *)&v10 init];
-  if (v5 && ([v4 decodeObjectOfClass:objc_opt_class() forKey:@"_underlyingLegibilitySettings"], v6 = objc_claimAutoreleasedReturnValue(), underlyingLegibilitySettings = v5->_underlyingLegibilitySettings, v5->_underlyingLegibilitySettings = v6, underlyingLegibilitySettings, !v5->_underlyingLegibilitySettings))
+  if (v5 && ([coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_underlyingLegibilitySettings"], v6 = objc_claimAutoreleasedReturnValue(), underlyingLegibilitySettings = v5->_underlyingLegibilitySettings, v5->_underlyingLegibilitySettings = v6, underlyingLegibilitySettings, !v5->_underlyingLegibilitySettings))
   {
     v8 = 0;
   }
@@ -49,29 +49,29 @@
   return v8;
 }
 
-+ (id)legibilitySettingsForContentColor:(id)a3 contrast:(double)a4
++ (id)legibilitySettingsForContentColor:(id)color contrast:(double)contrast
 {
-  v5 = [MEMORY[0x1E69C5588] legibilitySettingsForContentColor:a3 contrast:a4];
-  v6 = [a1 prLegibilitySettingsForPUILegibilitySettings:v5];
+  v5 = [MEMORY[0x1E69C5588] legibilitySettingsForContentColor:color contrast:contrast];
+  v6 = [self prLegibilitySettingsForPUILegibilitySettings:v5];
 
   return v6;
 }
 
-+ (id)legibilitySettingsForStyle:(int64_t)a3 primaryColor:(id)a4 secondaryColor:(id)a5 shadowColor:(id)a6
++ (id)legibilitySettingsForStyle:(int64_t)style primaryColor:(id)color secondaryColor:(id)secondaryColor shadowColor:(id)shadowColor
 {
-  v7 = [MEMORY[0x1E69C5588] legibilitySettingsForStyle:a3 primaryColor:a4 secondaryColor:a5 shadowColor:a6];
-  v8 = [a1 prLegibilitySettingsForPUILegibilitySettings:v7];
+  v7 = [MEMORY[0x1E69C5588] legibilitySettingsForStyle:style primaryColor:color secondaryColor:secondaryColor shadowColor:shadowColor];
+  v8 = [self prLegibilitySettingsForPUILegibilitySettings:v7];
 
   return v8;
 }
 
-+ (id)prLegibilitySettingsForPUILegibilitySettings:(id)a3
++ (id)prLegibilitySettingsForPUILegibilitySettings:(id)settings
 {
-  v4 = a3;
-  if (v4)
+  settingsCopy = settings;
+  if (settingsCopy)
   {
     v5 = objc_alloc_init(PRPosterLegibilitySettings);
-    objc_storeStrong(&v5->_underlyingLegibilitySettings, a3);
+    objc_storeStrong(&v5->_underlyingLegibilitySettings, settings);
   }
 
   else
@@ -82,12 +82,12 @@
   return v5;
 }
 
-+ (PRPosterLegibilitySettings)legibilitySettingsWithUILegibilitySettings:(id)a3
++ (PRPosterLegibilitySettings)legibilitySettingsWithUILegibilitySettings:(id)settings
 {
-  if (a3)
+  if (settings)
   {
     v4 = [MEMORY[0x1E69C5588] legibilitySettingsWithUILegibilitySettings:?];
-    v5 = [a1 prLegibilitySettingsForPUILegibilitySettings:v4];
+    v5 = [self prLegibilitySettingsForPUILegibilitySettings:v4];
   }
 
   else
@@ -98,25 +98,25 @@
   return v5;
 }
 
-- (id)legibilitySettingsByApplyingShadowRadiusMultiplier:(double)a3
+- (id)legibilitySettingsByApplyingShadowRadiusMultiplier:(double)multiplier
 {
   v5 = objc_opt_class();
-  v6 = [(PUIPosterLegibilitySettings *)self->_underlyingLegibilitySettings legibilitySettingsByApplyingShadowRadiusMultiplier:a3];
+  v6 = [(PUIPosterLegibilitySettings *)self->_underlyingLegibilitySettings legibilitySettingsByApplyingShadowRadiusMultiplier:multiplier];
   v7 = [v5 prLegibilitySettingsForPUILegibilitySettings:v6];
 
   return v7;
 }
 
-- (id)legibilitySettingsByOverridingShadowAlpha:(double)a3
+- (id)legibilitySettingsByOverridingShadowAlpha:(double)alpha
 {
   v5 = objc_opt_class();
-  v6 = [(PUIPosterLegibilitySettings *)self->_underlyingLegibilitySettings legibilitySettingsByOverridingShadowAlpha:a3];
+  v6 = [(PUIPosterLegibilitySettings *)self->_underlyingLegibilitySettings legibilitySettingsByOverridingShadowAlpha:alpha];
   v7 = [v5 prLegibilitySettingsForPUILegibilitySettings:v6];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[PRPosterLegibilitySettings allocWithZone:?]];
   v5 = [(PUIPosterLegibilitySettings *)self->_underlyingLegibilitySettings copy];
@@ -126,16 +126,16 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_5;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v6 = 1;
     goto LABEL_7;
@@ -158,20 +158,20 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)isEqualToLegibilitySettings:(id)a3
+- (BOOL)isEqualToLegibilitySettings:(id)settings
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  settingsCopy = settings;
+  v5 = settingsCopy;
+  if (settingsCopy)
   {
-    if (self == v4)
+    if (self == settingsCopy)
     {
       v6 = 1;
     }
 
     else
     {
-      v6 = [(PUIPosterLegibilitySettings *)v4->_underlyingLegibilitySettings isEqual:self->_underlyingLegibilitySettings];
+      v6 = [(PUIPosterLegibilitySettings *)settingsCopy->_underlyingLegibilitySettings isEqual:self->_underlyingLegibilitySettings];
     }
   }
 

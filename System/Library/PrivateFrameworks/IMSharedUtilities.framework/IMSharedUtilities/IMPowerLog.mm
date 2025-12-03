@@ -1,11 +1,11 @@
 @interface IMPowerLog
 + (id)sharedInstance;
-- (void)logEvent:(id)a3 data:(id)a4;
-- (void)logMessageDelivered:(id)a3 deliveryDuration:(id)a4 messageProtocol:(id)a5;
-- (void)logMessageRead:(id)a3 messageProtocol:(id)a4;
-- (void)logMessageReceivedWithGUID:(id)a3 fromIdentifier:(id)a4 toIdentifier:(id)a5 conversationType:(unint64_t)a6 messageType:(unint64_t)a7 messageProtocol:(id)a8;
-- (void)logMessageSendFailureWithError:(id)a3;
-- (void)logMessageSentWithGUID:(id)a3 fromIdentifier:(id)a4 toIdentifier:(id)a5 conversationType:(unint64_t)a6 messageType:(unint64_t)a7 sendDuration:(id)a8 errorCode:(id)a9 messageProtocol:(id)a10;
+- (void)logEvent:(id)event data:(id)data;
+- (void)logMessageDelivered:(id)delivered deliveryDuration:(id)duration messageProtocol:(id)protocol;
+- (void)logMessageRead:(id)read messageProtocol:(id)protocol;
+- (void)logMessageReceivedWithGUID:(id)d fromIdentifier:(id)identifier toIdentifier:(id)toIdentifier conversationType:(unint64_t)type messageType:(unint64_t)messageType messageProtocol:(id)protocol;
+- (void)logMessageSendFailureWithError:(id)error;
+- (void)logMessageSentWithGUID:(id)d fromIdentifier:(id)identifier toIdentifier:(id)toIdentifier conversationType:(unint64_t)type messageType:(unint64_t)messageType sendDuration:(id)duration errorCode:(id)code messageProtocol:(id)self0;
 @end
 
 @implementation IMPowerLog
@@ -22,10 +22,10 @@
   return v3;
 }
 
-- (void)logEvent:(id)a3 data:(id)a4
+- (void)logEvent:(id)event data:(id)data
 {
-  v6 = a3;
-  v5 = a4;
+  eventCopy = event;
+  dataCopy = data;
   if (qword_1ED8CA478 != -1)
   {
     sub_1A88C0104();
@@ -33,61 +33,61 @@
 
   if (off_1ED8CA470)
   {
-    off_1ED8CA470(7, v6, v5, 0);
+    off_1ED8CA470(7, eventCopy, dataCopy, 0);
   }
 }
 
-- (void)logMessageSentWithGUID:(id)a3 fromIdentifier:(id)a4 toIdentifier:(id)a5 conversationType:(unint64_t)a6 messageType:(unint64_t)a7 sendDuration:(id)a8 errorCode:(id)a9 messageProtocol:(id)a10
+- (void)logMessageSentWithGUID:(id)d fromIdentifier:(id)identifier toIdentifier:(id)toIdentifier conversationType:(unint64_t)type messageType:(unint64_t)messageType sendDuration:(id)duration errorCode:(id)code messageProtocol:(id)self0
 {
   v36[8] = *MEMORY[0x1E69E9840];
-  v16 = @"nil";
-  if (a3)
+  toIdentifierCopy = @"nil";
+  if (d)
   {
-    v17 = a3;
+    dCopy = d;
   }
 
   else
   {
-    v17 = @"nil";
+    dCopy = @"nil";
   }
 
   v35[0] = @"MessageGUID";
   v35[1] = @"Source";
-  if (a4)
+  if (identifier)
   {
-    v18 = a4;
+    identifierCopy = identifier;
   }
 
   else
   {
-    v18 = @"nil";
+    identifierCopy = @"nil";
   }
 
-  v36[0] = v17;
-  v36[1] = v18;
-  if (a5)
+  v36[0] = dCopy;
+  v36[1] = identifierCopy;
+  if (toIdentifier)
   {
-    v16 = a5;
+    toIdentifierCopy = toIdentifier;
   }
 
-  v36[2] = v16;
+  v36[2] = toIdentifierCopy;
   v35[2] = @"Target";
   v35[3] = @"ConversationType";
   v19 = MEMORY[0x1E696AD98];
-  v20 = a10;
-  v21 = a9;
-  v22 = a8;
-  v23 = a5;
-  v24 = a4;
-  v25 = a3;
-  v26 = [v19 numberWithUnsignedInteger:a6];
+  protocolCopy = protocol;
+  codeCopy = code;
+  durationCopy = duration;
+  toIdentifierCopy2 = toIdentifier;
+  identifierCopy2 = identifier;
+  dCopy2 = d;
+  v26 = [v19 numberWithUnsignedInteger:type];
   v36[3] = v26;
   v35[4] = @"MessageType";
-  v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a7];
+  v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:messageType];
   v28 = v27;
-  if (v22)
+  if (durationCopy)
   {
-    v29 = v22;
+    v29 = durationCopy;
   }
 
   else
@@ -99,9 +99,9 @@
   v36[5] = v29;
   v35[5] = @"SendDuration";
   v35[6] = @"Error";
-  if (v21)
+  if (codeCopy)
   {
-    v30 = v21;
+    v30 = codeCopy;
   }
 
   else
@@ -111,9 +111,9 @@
 
   v35[7] = @"Protocol";
   v31 = @"Unknown";
-  if (v20)
+  if (protocolCopy)
   {
-    v31 = v20;
+    v31 = protocolCopy;
   }
 
   v36[6] = v30;
@@ -123,57 +123,57 @@
   [v34 logEvent:@"iMessageSent" data:v32];
 }
 
-- (void)logMessageReceivedWithGUID:(id)a3 fromIdentifier:(id)a4 toIdentifier:(id)a5 conversationType:(unint64_t)a6 messageType:(unint64_t)a7 messageProtocol:(id)a8
+- (void)logMessageReceivedWithGUID:(id)d fromIdentifier:(id)identifier toIdentifier:(id)toIdentifier conversationType:(unint64_t)type messageType:(unint64_t)messageType messageProtocol:(id)protocol
 {
   v28[6] = *MEMORY[0x1E69E9840];
-  v14 = @"nil";
-  if (a3)
+  toIdentifierCopy = @"nil";
+  if (d)
   {
-    v15 = a3;
+    dCopy = d;
   }
 
   else
   {
-    v15 = @"nil";
+    dCopy = @"nil";
   }
 
   v27[0] = @"MessageGUID";
   v27[1] = @"Source";
-  if (a4)
+  if (identifier)
   {
-    v16 = a4;
+    identifierCopy = identifier;
   }
 
   else
   {
-    v16 = @"nil";
+    identifierCopy = @"nil";
   }
 
-  v28[0] = v15;
-  v28[1] = v16;
-  if (a5)
+  v28[0] = dCopy;
+  v28[1] = identifierCopy;
+  if (toIdentifier)
   {
-    v14 = a5;
+    toIdentifierCopy = toIdentifier;
   }
 
-  v28[2] = v14;
+  v28[2] = toIdentifierCopy;
   v27[2] = @"Target";
   v27[3] = @"ConversationType";
   v17 = MEMORY[0x1E696AD98];
-  v18 = a8;
-  v19 = a5;
-  v20 = a4;
-  v21 = a3;
-  v22 = [v17 numberWithUnsignedInteger:a6];
+  protocolCopy = protocol;
+  toIdentifierCopy2 = toIdentifier;
+  identifierCopy2 = identifier;
+  dCopy2 = d;
+  v22 = [v17 numberWithUnsignedInteger:type];
   v28[3] = v22;
   v27[4] = @"MessageType";
-  v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a7];
+  v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:messageType];
   v24 = v23;
   v27[5] = @"Protocol";
   v25 = @"Unknown";
-  if (v18)
+  if (protocolCopy)
   {
-    v25 = v18;
+    v25 = protocolCopy;
   }
 
   v28[4] = v23;
@@ -183,56 +183,56 @@
   [(IMPowerLog *)self logEvent:@"iMessageReceived" data:v26];
 }
 
-- (void)logMessageDelivered:(id)a3 deliveryDuration:(id)a4 messageProtocol:(id)a5
+- (void)logMessageDelivered:(id)delivered deliveryDuration:(id)duration messageProtocol:(id)protocol
 {
   v14[3] = *MEMORY[0x1E69E9840];
   v13[0] = @"DeliveryDuration";
   v13[1] = @"MessageGUID";
-  v14[0] = a4;
-  v14[1] = a3;
+  v14[0] = duration;
+  v14[1] = delivered;
   v13[2] = @"Protocol";
-  v14[2] = a5;
+  v14[2] = protocol;
   v8 = MEMORY[0x1E695DF20];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  protocolCopy = protocol;
+  durationCopy = duration;
+  deliveredCopy = delivered;
   v12 = [v8 dictionaryWithObjects:v14 forKeys:v13 count:3];
 
   [(IMPowerLog *)self logEvent:@"iMessageDelivered Late Ack" data:v12];
 }
 
-- (void)logMessageRead:(id)a3 messageProtocol:(id)a4
+- (void)logMessageRead:(id)read messageProtocol:(id)protocol
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v10[0] = @"MessageGUID";
   v10[1] = @"Protocol";
-  v11[0] = a3;
-  v11[1] = a4;
+  v11[0] = read;
+  v11[1] = protocol;
   v6 = MEMORY[0x1E695DF20];
-  v7 = a4;
-  v8 = a3;
+  protocolCopy = protocol;
+  readCopy = read;
   v9 = [v6 dictionaryWithObjects:v11 forKeys:v10 count:2];
 
   [(IMPowerLog *)self logEvent:@"iMessageDelivered Late Ack" data:v9];
 }
 
-- (void)logMessageSendFailureWithError:(id)a3
+- (void)logMessageSendFailureWithError:(id)error
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (error)
   {
-    v4 = a3;
+    errorCopy = error;
   }
 
   else
   {
-    v4 = @"nil";
+    errorCopy = @"nil";
   }
 
   v8 = @"Error";
-  v9[0] = v4;
+  v9[0] = errorCopy;
   v5 = MEMORY[0x1E695DF20];
-  v6 = a3;
+  errorCopy2 = error;
   v7 = [v5 dictionaryWithObjects:v9 forKeys:&v8 count:1];
 
   [(IMPowerLog *)self logEvent:@"iMessageSent" data:v7];

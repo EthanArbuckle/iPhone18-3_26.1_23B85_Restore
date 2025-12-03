@@ -1,21 +1,21 @@
 @interface CRKInvalidateTransportOperation
-- (CRKInvalidateTransportOperation)initWithTransport:(id)a3;
+- (CRKInvalidateTransportOperation)initWithTransport:(id)transport;
 - (void)main;
-- (void)transportDidInvalidate:(id)a3;
+- (void)transportDidInvalidate:(id)invalidate;
 @end
 
 @implementation CRKInvalidateTransportOperation
 
-- (CRKInvalidateTransportOperation)initWithTransport:(id)a3
+- (CRKInvalidateTransportOperation)initWithTransport:(id)transport
 {
-  v5 = a3;
+  transportCopy = transport;
   v9.receiver = self;
   v9.super_class = CRKInvalidateTransportOperation;
   v6 = [(CRKInvalidateTransportOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_transport, a3);
+    objc_storeStrong(&v6->_transport, transport);
   }
 
   return v7;
@@ -41,7 +41,7 @@ void __39__CRKInvalidateTransportOperation_main__block_invoke(uint64_t a1)
   [v4 invalidate];
 }
 
-- (void)transportDidInvalidate:(id)a3
+- (void)transportDidInvalidate:(id)invalidate
 {
   if ([(CRKInvalidateTransportOperation *)self isExecuting])
   {

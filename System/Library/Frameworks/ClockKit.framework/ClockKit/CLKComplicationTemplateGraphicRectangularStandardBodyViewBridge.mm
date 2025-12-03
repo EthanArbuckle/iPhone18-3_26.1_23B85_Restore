@@ -1,29 +1,29 @@
 @interface CLKComplicationTemplateGraphicRectangularStandardBodyViewBridge
-- (id)serializableCopyWithImageProviders:(id)a3;
-- (id)viewDataKeyForSwiftUIViewKey:(id)a3;
-- (void)_enumerateTextProviderKeysWithBlock:(id)a3;
+- (id)serializableCopyWithImageProviders:(id)providers;
+- (id)viewDataKeyForSwiftUIViewKey:(id)key;
+- (void)_enumerateTextProviderKeysWithBlock:(id)block;
 @end
 
 @implementation CLKComplicationTemplateGraphicRectangularStandardBodyViewBridge
 
-- (void)_enumerateTextProviderKeysWithBlock:(id)a3
+- (void)_enumerateTextProviderKeysWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = 0;
-  v3[2](v3, @"headerTextProvider", 0, 1, &v4);
+  blockCopy[2](blockCopy, @"headerTextProvider", 0, 1, &v4);
   if ((v4 & 1) == 0)
   {
-    v3[2](v3, @"body1TextProvider", 0, 1, &v4);
+    blockCopy[2](blockCopy, @"body1TextProvider", 0, 1, &v4);
     if ((v4 & 1) == 0)
     {
-      v3[2](v3, @"body2TextProvider", 1, 1, &v4);
+      blockCopy[2](blockCopy, @"body2TextProvider", 1, 1, &v4);
     }
   }
 }
 
-- (id)viewDataKeyForSwiftUIViewKey:(id)a3
+- (id)viewDataKeyForSwiftUIViewKey:(id)key
 {
-  if ([a3 isEqualToString:@"headerLabel"])
+  if ([key isEqualToString:@"headerLabel"])
   {
     return @"headerLabelData";
   }
@@ -34,16 +34,16 @@
   }
 }
 
-- (id)serializableCopyWithImageProviders:(id)a3
+- (id)serializableCopyWithImageProviders:(id)providers
 {
-  v4 = a3;
+  providersCopy = providers;
   v5 = [CLKComplicationTemplateGraphicRectangularStandardBody alloc];
-  v6 = [v4 objectForKeyedSubscript:@"headerLabelData"];
+  v6 = [providersCopy objectForKeyedSubscript:@"headerLabelData"];
 
-  v7 = [(CLKComplicationTemplateGraphicRectangularStandardBodyViewBridge *)self headerTextProvider];
-  v8 = [(CLKComplicationTemplateGraphicRectangularStandardBodyViewBridge *)self body1TextProvider];
-  v9 = [(CLKComplicationTemplateGraphicRectangularStandardBodyViewBridge *)self body2TextProvider];
-  v10 = [(CLKComplicationTemplateGraphicRectangularStandardBody *)v5 initWithHeaderImageProvider:v6 headerTextProvider:v7 body1TextProvider:v8 body2TextProvider:v9];
+  headerTextProvider = [(CLKComplicationTemplateGraphicRectangularStandardBodyViewBridge *)self headerTextProvider];
+  body1TextProvider = [(CLKComplicationTemplateGraphicRectangularStandardBodyViewBridge *)self body1TextProvider];
+  body2TextProvider = [(CLKComplicationTemplateGraphicRectangularStandardBodyViewBridge *)self body2TextProvider];
+  v10 = [(CLKComplicationTemplateGraphicRectangularStandardBody *)v5 initWithHeaderImageProvider:v6 headerTextProvider:headerTextProvider body1TextProvider:body1TextProvider body2TextProvider:body2TextProvider];
 
   [(CLKComplicationTemplate *)v10 setSdkVersion:[(CLKComplicationTemplate *)self sdkVersion]];
 

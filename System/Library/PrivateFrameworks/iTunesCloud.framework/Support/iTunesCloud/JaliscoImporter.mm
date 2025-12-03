@@ -1,23 +1,23 @@
 @interface JaliscoImporter
 + (OS_os_log)logCategory;
 + (OS_os_log)oversizeLogCategory;
-- (BOOL)parser:(id)a3 shouldParseCode:(unsigned int)a4;
-- (JaliscoImporter)initWithConnection:(id)a3;
+- (BOOL)parser:(id)parser shouldParseCode:(unsigned int)code;
+- (JaliscoImporter)initWithConnection:(id)connection;
 - (NSString)description;
-- (void)_performNextItemsPageRequestWithCompletion:(id)a3;
-- (void)_processItemsPageResponse:(id)a3 withCompletion:(id)a4;
-- (void)importTracksUpToRevision:(unsigned int)a3 clientIdentity:(id)a4 withCompletionHandler:(id)a5;
-- (void)parser:(id)a3 didParseDataCode:(unsigned int)a4 bytes:(char *)a5 contentLength:(unsigned int)a6;
-- (void)parser:(id)a3 didStartContainerCode:(unsigned int)a4 contentLength:(unsigned int)a5;
+- (void)_performNextItemsPageRequestWithCompletion:(id)completion;
+- (void)_processItemsPageResponse:(id)response withCompletion:(id)completion;
+- (void)importTracksUpToRevision:(unsigned int)revision clientIdentity:(id)identity withCompletionHandler:(id)handler;
+- (void)parser:(id)parser didParseDataCode:(unsigned int)code bytes:(char *)bytes contentLength:(unsigned int)length;
+- (void)parser:(id)parser didStartContainerCode:(unsigned int)code contentLength:(unsigned int)length;
 @end
 
 @implementation JaliscoImporter
 
-- (void)parser:(id)a3 didParseDataCode:(unsigned int)a4 bytes:(char *)a5 contentLength:(unsigned int)a6
+- (void)parser:(id)parser didParseDataCode:(unsigned int)code bytes:(char *)bytes contentLength:(unsigned int)length
 {
-  if (a4 == 1836081511)
+  if (code == 1836081511)
   {
-    v8 = [[NSString alloc] initWithBytes:a5 length:a6 encoding:4];
+    v8 = [[NSString alloc] initWithBytes:bytes length:length encoding:4];
     currentPaginationToken = self->_currentPaginationToken;
     self->_currentPaginationToken = v8;
 
@@ -25,35 +25,35 @@
   }
 }
 
-- (void)parser:(id)a3 didStartContainerCode:(unsigned int)a4 contentLength:(unsigned int)a5
+- (void)parser:(id)parser didStartContainerCode:(unsigned int)code contentLength:(unsigned int)length
 {
-  if (a4 == 1836413554)
+  if (code == 1836413554)
   {
     self->_shouldRestart = 1;
   }
 }
 
-- (BOOL)parser:(id)a3 shouldParseCode:(unsigned int)a4
+- (BOOL)parser:(id)parser shouldParseCode:(unsigned int)code
 {
-  v4 = a4 == 1836081511 || a4 == 1836413554;
-  v5 = a4 == 1633968755 || v4;
+  v4 = code == 1836081511 || code == 1836413554;
+  v5 = code == 1633968755 || v4;
   return !self->_shouldRestart && v5;
 }
 
-- (void)_processItemsPageResponse:(id)a3 withCompletion:(id)a4
+- (void)_processItemsPageResponse:(id)response withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  completionCopy = completion;
   itemsFiles = self->_itemsFiles;
-  v9 = [v6 responseDataFileURL];
-  [(NSMutableArray *)itemsFiles addObject:v9];
+  responseDataFileURL = [responseCopy responseDataFileURL];
+  [(NSMutableArray *)itemsFiles addObject:responseDataFileURL];
 
   self->_shouldRestart = 0;
   currentPaginationToken = self->_currentPaginationToken;
   self->_currentPaginationToken = 0;
 
-  v11 = [v6 responseDataFileURL];
-  v12 = [NSInputStream inputStreamWithURL:v11];
+  responseDataFileURL2 = [responseCopy responseDataFileURL];
+  v12 = [NSInputStream inputStreamWithURL:responseDataFileURL2];
 
   v13 = [[DKDAAPParser alloc] initWithStream:v12];
   [v13 setDelegate:self];
@@ -65,7 +65,7 @@
     {
       restartCount = self->_restartCount;
       v23 = 138543618;
-      v24 = self;
+      selfCopy4 = self;
       v25 = 1024;
       LODWORD(v26) = restartCount;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ Server requested restart. restartCount=%u", &v23, 0x12u);
@@ -84,7 +84,7 @@
   if (self->_currentPaginationToken)
   {
 LABEL_6:
-    [(JaliscoImporter *)self _performNextItemsPageRequestWithCompletion:v7];
+    [(JaliscoImporter *)self _performNextItemsPageRequestWithCompletion:completionCopy];
     goto LABEL_7;
   }
 
@@ -92,22 +92,22 @@ LABEL_6:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     v23 = 138543362;
-    v24 = self;
+    selfCopy4 = self;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%{public}@ Fetched last batch of items - performing import", &v23, 0xCu);
   }
 
-  v19 = [(JaliscoImporter *)self updateLibraryFromRevision:self->_updateFromRevision toRevision:self->_updateToRevision withResponse:v6 clientIdentity:self->_clientIdentity itemsFiles:self->_itemsFiles];
+  v19 = [(JaliscoImporter *)self updateLibraryFromRevision:self->_updateFromRevision toRevision:self->_updateToRevision withResponse:responseCopy clientIdentity:self->_clientIdentity itemsFiles:self->_itemsFiles];
   v20 = os_log_create("com.apple.amp.itunescloudd", "Default");
   v21 = v20;
   if (v19)
   {
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      v22 = [v19 msv_description];
+      msv_description = [v19 msv_description];
       v23 = 138543618;
-      v24 = self;
+      selfCopy4 = self;
       v25 = 2114;
-      v26 = v22;
+      v26 = msv_description;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "%{public}@ Import completed error=%{public}@", &v23, 0x16u);
     }
   }
@@ -115,42 +115,42 @@ LABEL_6:
   else if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     v23 = 138543362;
-    v24 = self;
+    selfCopy4 = self;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%{public}@ Import completed", &v23, 0xCu);
   }
 
-  v7[2](v7, v19);
+  completionCopy[2](completionCopy, v19);
 LABEL_7:
 }
 
-- (void)_performNextItemsPageRequestWithCompletion:(id)a3
+- (void)_performNextItemsPageRequestWithCompletion:(id)completion
 {
-  v29 = a3;
+  completionCopy = completion;
   currentPageNumber = self->_currentPageNumber;
   self->_currentPageNumber = currentPageNumber + 1;
-  v5 = [NSString stringWithFormat:@"items_%u.daap", currentPageNumber];
+  currentPageNumber = [NSString stringWithFormat:@"items_%u.daap", currentPageNumber];
   v39[0] = self->_updateBaseDirectory;
-  v39[1] = v5;
-  v30 = v5;
+  v39[1] = currentPageNumber;
+  v30 = currentPageNumber;
   v6 = [NSArray arrayWithObjects:v39 count:2];
   v7 = [NSURL fileURLWithPathComponents:v6];
 
   if (self->_currentPaginationToken)
   {
-    v8 = 0;
+    purchaseTokens = 0;
   }
 
   else
   {
-    v8 = [(JaliscoImporter *)self purchaseTokens];
+    purchaseTokens = [(JaliscoImporter *)self purchaseTokens];
   }
 
-  v9 = [(JaliscoImporter *)self connection];
-  v10 = [v9 databaseID];
-  v11 = [(JaliscoImporter *)self metadataKeys];
-  v12 = [v11 componentsJoinedByString:{@", "}];
-  v13 = [(JaliscoImporter *)self queryFilter];
-  v14 = [ICItemsRequest requestWithDatabaseID:v10 metadataFilter:v12 queryFilter:v13 purchaseTokens:v8 includeHiddenItems:[(JaliscoImporter *)self includeHiddenItems] includePreorders:[(JaliscoImporter *)self includePreorders] paginationToken:self->_currentPaginationToken];
+  connection = [(JaliscoImporter *)self connection];
+  databaseID = [connection databaseID];
+  metadataKeys = [(JaliscoImporter *)self metadataKeys];
+  v12 = [metadataKeys componentsJoinedByString:{@", "}];
+  queryFilter = [(JaliscoImporter *)self queryFilter];
+  v14 = [ICItemsRequest requestWithDatabaseID:databaseID metadataFilter:v12 queryFilter:queryFilter purchaseTokens:purchaseTokens includeHiddenItems:[(JaliscoImporter *)self includeHiddenItems] includePreorders:[(JaliscoImporter *)self includePreorders] paginationToken:self->_currentPaginationToken];
 
   [v14 setResponseDataDestinationFileURL:v7];
   if ([(JaliscoImporter *)self includeFlavors])
@@ -228,11 +228,11 @@ LABEL_7:
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v34 = self;
+    selfCopy = self;
     v35 = 2114;
     v36 = v14;
     v37 = 2114;
-    v38 = v9;
+    v38 = connection;
     _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "%{public}@ Sending items request %{public}@ on connection %{public}@", buf, 0x20u);
   }
 
@@ -241,25 +241,25 @@ LABEL_7:
   v31[2] = sub_100054F98;
   v31[3] = &unk_1001DB368;
   v31[4] = self;
-  v32 = v29;
-  v28 = v29;
-  [v9 sendRequest:v14 withResponseHandler:v31];
+  v32 = completionCopy;
+  v28 = completionCopy;
+  [connection sendRequest:v14 withResponseHandler:v31];
 }
 
 - (NSString)description
 {
   v3 = objc_opt_class();
-  v4 = [(JaliscoImporter *)self configuration];
-  v5 = [v4 userIdentity];
-  v6 = [NSString stringWithFormat:@"<%@ %p [identity=%@, revision %u --> %u]>", v3, self, v5, self->_updateFromRevision, self->_updateToRevision];
+  configuration = [(JaliscoImporter *)self configuration];
+  userIdentity = [configuration userIdentity];
+  v6 = [NSString stringWithFormat:@"<%@ %p [identity=%@, revision %u --> %u]>", v3, self, userIdentity, self->_updateFromRevision, self->_updateToRevision];
 
   return v6;
 }
 
-- (void)importTracksUpToRevision:(unsigned int)a3 clientIdentity:(id)a4 withCompletionHandler:(id)a5
+- (void)importTracksUpToRevision:(unsigned int)revision clientIdentity:(id)identity withCompletionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  identityCopy = identity;
+  handlerCopy = handler;
   self->_shouldRestart = 0;
   currentPaginationToken = self->_currentPaginationToken;
   self->_currentPaginationToken = 0;
@@ -269,31 +269,31 @@ LABEL_7:
   v32[0] = v11;
   v32[1] = @"com.apple.MediaServices";
   v12 = +[NSUUID UUID];
-  v13 = [v12 UUIDString];
-  v32[2] = v13;
+  uUIDString = [v12 UUIDString];
+  v32[2] = uUIDString;
   v14 = [NSArray arrayWithObjects:v32 count:3];
   v15 = [NSString pathWithComponents:v14];
   updateBaseDirectory = self->_updateBaseDirectory;
   self->_updateBaseDirectory = v15;
 
-  self->_updateToRevision = a3;
+  self->_updateToRevision = revision;
   self->_updateFromRevision = [(JaliscoImporter *)self onDiskRevision];
   v17 = [NSMutableArray arrayWithCapacity:3];
   itemsFiles = self->_itemsFiles;
   self->_itemsFiles = v17;
 
   clientIdentity = self->_clientIdentity;
-  self->_clientIdentity = v8;
-  v20 = v8;
+  self->_clientIdentity = identityCopy;
+  v20 = identityCopy;
 
   v21 = os_log_create("com.apple.amp.itunescloudd", "Default");
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
     updateFromRevision = self->_updateFromRevision;
     *buf = 138543874;
-    v27 = self;
+    selfCopy = self;
     v28 = 1024;
-    v29 = a3;
+    revisionCopy = revision;
     v30 = 1024;
     v31 = updateFromRevision;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%{public}@ Importing tracks up to revision %u. onDiskRevision=%u", buf, 0x18u);
@@ -303,15 +303,15 @@ LABEL_7:
   v24[1] = 3221225472;
   v24[2] = sub_1000554CC;
   v24[3] = &unk_1001DD8F0;
-  v25 = v9;
-  v23 = v9;
+  v25 = handlerCopy;
+  v23 = handlerCopy;
   [(JaliscoImporter *)self _performNextItemsPageRequestWithCompletion:v24];
 }
 
-- (JaliscoImporter)initWithConnection:(id)a3
+- (JaliscoImporter)initWithConnection:(id)connection
 {
-  v6 = a3;
-  if (!v6)
+  connectionCopy = connection;
+  if (!connectionCopy)
   {
     v15 = +[NSAssertionHandler currentHandler];
     [v15 handleFailureInMethod:a2 object:self file:@"JaliscoImporter.m" lineNumber:58 description:{@"Invalid parameter not satisfying: %@", @"connection"}];
@@ -323,13 +323,13 @@ LABEL_7:
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_connection, a3);
-    v9 = [v6 configuration];
+    objc_storeStrong(&v7->_connection, connection);
+    configuration = [connectionCopy configuration];
     configuration = v8->_configuration;
-    v8->_configuration = v9;
+    v8->_configuration = configuration;
 
-    v11 = [v6 userIdentity];
-    v12 = [ML3MusicLibrary musicLibraryForUserAccount:v11];
+    userIdentity = [connectionCopy userIdentity];
+    v12 = [ML3MusicLibrary musicLibraryForUserAccount:userIdentity];
     musicLibrary = v8->_musicLibrary;
     v8->_musicLibrary = v12;
   }
@@ -346,7 +346,7 @@ LABEL_7:
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     v9 = NSStringFromSelector(a2);
-    [v6 handleFailureInMethod:a2 object:a1 file:@"JaliscoImporter.m" lineNumber:51 description:{@"Subclass %@ must implement -%@ defined in %@.", v8, v9, @"JaliscoImporter"}];
+    [v6 handleFailureInMethod:a2 object:self file:@"JaliscoImporter.m" lineNumber:51 description:{@"Subclass %@ must implement -%@ defined in %@.", v8, v9, @"JaliscoImporter"}];
   }
 
   return &_os_log_default;
@@ -361,7 +361,7 @@ LABEL_7:
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     v9 = NSStringFromSelector(a2);
-    [v6 handleFailureInMethod:a2 object:a1 file:@"JaliscoImporter.m" lineNumber:46 description:{@"Subclass %@ must implement -%@ defined in %@.", v8, v9, @"JaliscoImporter"}];
+    [v6 handleFailureInMethod:a2 object:self file:@"JaliscoImporter.m" lineNumber:46 description:{@"Subclass %@ must implement -%@ defined in %@.", v8, v9, @"JaliscoImporter"}];
   }
 
   return &_os_log_default;

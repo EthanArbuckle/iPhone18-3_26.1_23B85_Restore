@@ -1,68 +1,68 @@
 @interface AKBiometricRatchetUtility
 + (id)ratchetIdentifier;
-+ (id)resultForNonArmingFromError:(id)a3;
-+ (id)resultForSuccessfulArmingFromResponse:(id)a3;
-+ (id)stateFromLARatchetState:(id)a3;
-+ (unint64_t)armingMethodFromRatchetResult:(id)a3;
-+ (void)setRatchetIdentifier:(id)a3;
++ (id)resultForNonArmingFromError:(id)error;
++ (id)resultForSuccessfulArmingFromResponse:(id)response;
++ (id)stateFromLARatchetState:(id)state;
++ (unint64_t)armingMethodFromRatchetResult:(id)result;
++ (void)setRatchetIdentifier:(id)identifier;
 @end
 
 @implementation AKBiometricRatchetUtility
 
-+ (id)stateFromLARatchetState:(id)a3
++ (id)stateFromLARatchetState:(id)state
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, state);
   v26 = 0;
   v25 = 0.0;
-  v22 = [location[0] rawValue];
-  if (v22)
+  rawValue = [location[0] rawValue];
+  if (rawValue)
   {
-    if (v22 != 1)
+    if (rawValue != 1)
     {
-      switch(v22)
+      switch(rawValue)
       {
         case 2:
           v26 = 2;
-          v17 = [location[0] value];
+          value = [location[0] value];
           v18 = objc_opt_respondsToSelector();
-          MEMORY[0x1E69E5920](v17);
+          MEMORY[0x1E69E5920](value);
           if (v18)
           {
-            v16 = [location[0] value];
-            [v16 duration];
+            value2 = [location[0] value];
+            [value2 duration];
             v25 = v4;
-            MEMORY[0x1E69E5920](v16);
+            MEMORY[0x1E69E5920](value2);
           }
 
           break;
         case 3:
           v26 = 3;
-          v14 = [location[0] value];
+          value3 = [location[0] value];
           v15 = objc_opt_respondsToSelector();
-          MEMORY[0x1E69E5920](v14);
+          MEMORY[0x1E69E5920](value3);
           if (v15)
           {
-            v13 = [location[0] value];
-            [v13 duration];
+            value4 = [location[0] value];
+            [value4 duration];
             v25 = v5;
-            MEMORY[0x1E69E5920](v13);
+            MEMORY[0x1E69E5920](value4);
           }
 
           break;
         case 4:
           v26 = 4;
-          v11 = [location[0] value];
+          value5 = [location[0] value];
           v12 = objc_opt_respondsToSelector();
-          MEMORY[0x1E69E5920](v11);
+          MEMORY[0x1E69E5920](value5);
           if (v12)
           {
-            v10 = [location[0] value];
-            [v10 duration];
+            value6 = [location[0] value];
+            [value6 duration];
             v25 = v6;
-            MEMORY[0x1E69E5920](v10);
+            MEMORY[0x1E69E5920](value6);
           }
 
           break;
@@ -78,15 +78,15 @@
   }
 
   v26 = 1;
-  v20 = [location[0] value];
+  value7 = [location[0] value];
   v21 = objc_opt_respondsToSelector();
-  MEMORY[0x1E69E5920](v20);
+  MEMORY[0x1E69E5920](value7);
   if (v21)
   {
-    v19 = [location[0] value];
-    [v19 duration];
+    value8 = [location[0] value];
+    [value8 duration];
     v25 = v3;
-    MEMORY[0x1E69E5920](v19);
+    MEMORY[0x1E69E5920](value8);
   }
 
 LABEL_19:
@@ -101,12 +101,12 @@ LABEL_19:
   return v9;
 }
 
-+ (unint64_t)armingMethodFromRatchetResult:(id)a3
++ (unint64_t)armingMethodFromRatchetResult:(id)result
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, result);
   v4 = objc_opt_class();
   v5 = [location[0] objectForKeyedSubscript:&unk_1F07B5060];
   v10 = _AKSafeCast_20(v4, v5);
@@ -138,12 +138,12 @@ LABEL_19:
 
 + (id)ratchetIdentifier
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  v6 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v7 = [v6 objectForKey:@"AKBiometricRatchetIdentifierKey"];
-  MEMORY[0x1E69E5920](v6);
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v7 = [standardUserDefaults objectForKey:@"AKBiometricRatchetIdentifierKey"];
+  MEMORY[0x1E69E5920](standardUserDefaults);
   if (v7)
   {
     objc_storeStrong(location, v7);
@@ -151,9 +151,9 @@ LABEL_19:
 
   else
   {
-    v2 = [MEMORY[0x1E6985E20] bundleIdentifier];
+    bundleIdentifier = [MEMORY[0x1E6985E20] bundleIdentifier];
     v3 = location[0];
-    location[0] = v2;
+    location[0] = bundleIdentifier;
     MEMORY[0x1E69E5920](v3);
   }
 
@@ -164,13 +164,13 @@ LABEL_19:
   return v5;
 }
 
-+ (void)setRatchetIdentifier:(id)a3
++ (void)setRatchetIdentifier:(id)identifier
 {
   v7 = *MEMORY[0x1E69E9840];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, identifier);
   oslog = _AKLogSystem();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
@@ -186,13 +186,13 @@ LABEL_19:
   *MEMORY[0x1E69E9840];
 }
 
-+ (id)resultForSuccessfulArmingFromResponse:(id)a3
++ (id)resultForSuccessfulArmingFromResponse:(id)response
 {
   v14 = *MEMORY[0x1E69E9840];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v11 = [location[0] objectForKeyedSubscript:&unk_1F07B5090];
   v10 = _AKLogSystem();
   v9 = OS_LOG_TYPE_DEBUG;
@@ -217,16 +217,16 @@ LABEL_19:
   return v5;
 }
 
-+ (id)resultForNonArmingFromError:(id)a3
++ (id)resultForNonArmingFromError:(id)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8 = [location[0] userInfo];
-  v17 = [v8 objectForKeyedSubscript:*MEMORY[0x1E696EE48]];
-  MEMORY[0x1E69E5920](v8);
+  objc_storeStrong(location, error);
+  userInfo = [location[0] userInfo];
+  v17 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696EE48]];
+  MEMORY[0x1E69E5920](userInfo);
   v16 = _AKLogSystem();
   v15 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))

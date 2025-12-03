@@ -1,21 +1,21 @@
 @interface NSCloudKitMirroringFetchRecordsRequest
-- (BOOL)validateForUseWithStore:(id)a3 error:(id *)a4;
-- (NSCloudKitMirroringFetchRecordsRequest)initWithOptions:(id)a3 completionBlock:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)validateForUseWithStore:(id)store error:(id *)error;
+- (NSCloudKitMirroringFetchRecordsRequest)initWithOptions:(id)options completionBlock:(id)block;
+- (id)copyWithZone:(_NSZone *)zone;
 - (uint64_t)throwNotEditable:(uint64_t)result;
 - (void)dealloc;
-- (void)setEntityNameToAttributeNamesToFetch:(id)a3;
-- (void)setEntityNameToAttributesToFetch:(id)a3;
-- (void)setObjectIDsToFetch:(id)a3;
+- (void)setEntityNameToAttributeNamesToFetch:(id)fetch;
+- (void)setEntityNameToAttributesToFetch:(id)fetch;
+- (void)setObjectIDsToFetch:(id)fetch;
 @end
 
 @implementation NSCloudKitMirroringFetchRecordsRequest
 
-- (NSCloudKitMirroringFetchRecordsRequest)initWithOptions:(id)a3 completionBlock:(id)a4
+- (NSCloudKitMirroringFetchRecordsRequest)initWithOptions:(id)options completionBlock:(id)block
 {
   v6.receiver = self;
   v6.super_class = NSCloudKitMirroringFetchRecordsRequest;
-  v4 = [(NSCloudKitMirroringRequest *)&v6 initWithOptions:a3 completionBlock:a4];
+  v4 = [(NSCloudKitMirroringRequest *)&v6 initWithOptions:options completionBlock:block];
   if (v4)
   {
     v4->_objectIDsToFetch = objc_alloc_init(MEMORY[0x1E695DEC8]);
@@ -39,11 +39,11 @@
   [(NSCloudKitMirroringRequest *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = NSCloudKitMirroringFetchRecordsRequest;
-  v4 = [(NSCloudKitMirroringRequest *)&v6 copyWithZone:a3];
+  v4 = [(NSCloudKitMirroringRequest *)&v6 copyWithZone:zone];
   v4[10] = self->_objectIDsToFetch;
   v4[11] = self->_entityNameToAttributesToFetch;
   v4[12] = self->_entityNameToAttributeNamesToFetch;
@@ -52,15 +52,15 @@
   return v4;
 }
 
-- (void)setEntityNameToAttributesToFetch:(id)a3
+- (void)setEntityNameToAttributesToFetch:(id)fetch
 {
   if (self->_editable)
   {
     entityNameToAttributesToFetch = self->_entityNameToAttributesToFetch;
-    if (entityNameToAttributesToFetch != a3)
+    if (entityNameToAttributesToFetch != fetch)
     {
 
-      self->_entityNameToAttributesToFetch = [a3 copy];
+      self->_entityNameToAttributesToFetch = [fetch copy];
       if ([(NSDictionary *)self->_entityNameToAttributeNamesToFetch count])
       {
 
@@ -92,15 +92,15 @@
   return result;
 }
 
-- (void)setEntityNameToAttributeNamesToFetch:(id)a3
+- (void)setEntityNameToAttributeNamesToFetch:(id)fetch
 {
   if (self->_editable)
   {
     entityNameToAttributeNamesToFetch = self->_entityNameToAttributeNamesToFetch;
-    if (entityNameToAttributeNamesToFetch != a3)
+    if (entityNameToAttributeNamesToFetch != fetch)
     {
 
-      self->_entityNameToAttributeNamesToFetch = [a3 copy];
+      self->_entityNameToAttributeNamesToFetch = [fetch copy];
       if ([(NSDictionary *)self->_entityNameToAttributesToFetch count])
       {
 
@@ -116,15 +116,15 @@
   }
 }
 
-- (void)setObjectIDsToFetch:(id)a3
+- (void)setObjectIDsToFetch:(id)fetch
 {
   if (self->_editable)
   {
     objectIDsToFetch = self->_objectIDsToFetch;
-    if (objectIDsToFetch != a3)
+    if (objectIDsToFetch != fetch)
     {
 
-      self->_objectIDsToFetch = [a3 copy];
+      self->_objectIDsToFetch = [fetch copy];
     }
   }
 
@@ -135,20 +135,20 @@
   }
 }
 
-- (BOOL)validateForUseWithStore:(id)a3 error:(id *)a4
+- (BOOL)validateForUseWithStore:(id)store error:(id *)error
 {
   v30[1] = *MEMORY[0x1E69E9840];
   v24 = 0;
   v23.receiver = self;
   v23.super_class = NSCloudKitMirroringFetchRecordsRequest;
-  if (![(NSCloudKitMirroringRequest *)&v23 validateForUseWithStore:a3 error:&v24])
+  if (![(NSCloudKitMirroringRequest *)&v23 validateForUseWithStore:store error:&v24])
   {
     goto LABEL_10;
   }
 
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v9 = [objc_msgSend(a3 "persistentStoreCoordinator")];
+  v9 = [objc_msgSend(store "persistentStoreCoordinator")];
   if ([(NSDictionary *)self->_entityNameToAttributesToFetch count])
   {
     entityNameToAttributesToFetch = self->_entityNameToAttributesToFetch;
@@ -205,10 +205,10 @@ LABEL_7:
 LABEL_10:
   if (v24)
   {
-    if (a4)
+    if (error)
     {
       LOBYTE(v16) = 0;
-      *a4 = v24;
+      *error = v24;
       goto LABEL_20;
     }
 

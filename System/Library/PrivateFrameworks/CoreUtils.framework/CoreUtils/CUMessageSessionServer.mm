@@ -1,30 +1,30 @@
 @interface CUMessageSessionServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (CUMessageSessionServer)init;
-- (void)_connectionInvalidated:(id)a3;
+- (void)_connectionInvalidated:(id)invalidated;
 - (void)activate;
 - (void)invalidate;
 @end
 
 @implementation CUMessageSessionServer
 
-- (void)_connectionInvalidated:(id)a3
+- (void)_connectionInvalidated:(id)invalidated
 {
   dispatchQueue = self->_dispatchQueue;
-  v5 = a3;
+  invalidatedCopy = invalidated;
   dispatch_assert_queue_V2(dispatchQueue);
-  [v5 connectionInvalidated];
-  [(NSMutableSet *)self->_xpcConnections removeObject:v5];
+  [invalidatedCopy connectionInvalidated];
+  [(NSMutableSet *)self->_xpcConnections removeObject:invalidatedCopy];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a4;
+  connectionCopy = connection;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v7 = objc_alloc_init(CUMessageSessionXPCConnection);
   objc_storeStrong(&v7->_server, self);
   objc_storeStrong(&v7->_dispatchQueue, self->_dispatchQueue);
-  objc_storeStrong(&v7->_xpcCnx, a4);
+  objc_storeStrong(&v7->_xpcCnx, connection);
   xpcConnections = self->_xpcConnections;
   if (!xpcConnections)
   {
@@ -36,11 +36,11 @@
   }
 
   [(NSMutableSet *)xpcConnections addObject:v7];
-  [v6 _setQueue:self->_dispatchQueue];
+  [connectionCopy _setQueue:self->_dispatchQueue];
   v11 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F06AD200];
-  [v6 setExportedInterface:v11];
+  [connectionCopy setExportedInterface:v11];
 
-  [v6 setExportedObject:v7];
+  [connectionCopy setExportedObject:v7];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __61__CUMessageSessionServer_listener_shouldAcceptNewConnection___block_invoke;
@@ -48,15 +48,15 @@
   v20[4] = self;
   v12 = v7;
   v21 = v12;
-  [v6 setInvalidationHandler:v20];
+  [connectionCopy setInvalidationHandler:v20];
   v13 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F06ACBB8];
-  [v6 setRemoteObjectInterface:v13];
+  [connectionCopy setRemoteObjectInterface:v13];
 
-  [v6 resume];
+  [connectionCopy resume];
   if (gLogCategory_CUMessageSession <= 20 && (gLogCategory_CUMessageSession != -1 || _LogCategory_Initialize(&gLogCategory_CUMessageSession, 0x14u)))
   {
-    v14 = [v6 processIdentifier];
-    LogPrintF(&gLogCategory_CUMessageSession, "[CUMessageSessionServer listener:shouldAcceptNewConnection:]", 0x14u, "XPC connection started from %#{pid}\n", v15, v16, v17, v18, v14);
+    processIdentifier = [connectionCopy processIdentifier];
+    LogPrintF(&gLogCategory_CUMessageSession, "[CUMessageSessionServer listener:shouldAcceptNewConnection:]", 0x14u, "XPC connection started from %#{pid}\n", v15, v16, v17, v18, processIdentifier);
   }
 
   return 1;
@@ -143,9 +143,9 @@
 
   if (!self->_xpcListener)
   {
-    v7 = [MEMORY[0x1E696B0D8] anonymousListener];
+    anonymousListener = [MEMORY[0x1E696B0D8] anonymousListener];
     xpcListener = self->_xpcListener;
-    self->_xpcListener = v7;
+    self->_xpcListener = anonymousListener;
 
     [(NSXPCListener *)self->_xpcListener _setQueue:self->_dispatchQueue];
     [(NSXPCListener *)self->_xpcListener setDelegate:self];
@@ -154,12 +154,12 @@
     templateSession = self->_templateSession;
     self->_templateSession = v9;
 
-    v11 = [(NSXPCListener *)self->_xpcListener endpoint];
-    [(CUMessageSession *)self->_templateSession setListenerEndpoint:v11];
+    endpoint = [(NSXPCListener *)self->_xpcListener endpoint];
+    [(CUMessageSession *)self->_templateSession setListenerEndpoint:endpoint];
 
-    v12 = [(CUMessageSession *)self->_templateSession listenerEndpoint];
+    listenerEndpoint = [(CUMessageSession *)self->_templateSession listenerEndpoint];
 
-    if (!v12 && gLogCategory_CUMessageSession <= 90 && (gLogCategory_CUMessageSession != -1 || _LogCategory_Initialize(&gLogCategory_CUMessageSession, 0x5Au)))
+    if (!listenerEndpoint && gLogCategory_CUMessageSession <= 90 && (gLogCategory_CUMessageSession != -1 || _LogCategory_Initialize(&gLogCategory_CUMessageSession, 0x5Au)))
     {
 
       LogPrintF(&gLogCategory_CUMessageSession, "[CUMessageSessionServer activate]", 0x5Au, "### No XPC endpoint?\n", v13, v14, v15, v16, v19);

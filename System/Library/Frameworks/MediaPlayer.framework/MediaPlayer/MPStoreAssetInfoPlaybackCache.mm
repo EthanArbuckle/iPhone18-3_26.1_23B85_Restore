@@ -1,24 +1,24 @@
 @interface MPStoreAssetInfoPlaybackCache
 + (MPStoreAssetInfoPlaybackCache)sharedCache;
 - (id)_init;
-- (id)cachedResponseForRequest:(id)a3;
-- (void)addCachedResponse:(id)a3 forRequest:(id)a4;
-- (void)updateForPlaybackOfFileAsset:(id)a3 fromResponse:(id)a4;
-- (void)withSyncLock:(id)a3;
+- (id)cachedResponseForRequest:(id)request;
+- (void)addCachedResponse:(id)response forRequest:(id)request;
+- (void)updateForPlaybackOfFileAsset:(id)asset fromResponse:(id)response;
+- (void)withSyncLock:(id)lock;
 @end
 
 @implementation MPStoreAssetInfoPlaybackCache
 
-- (void)updateForPlaybackOfFileAsset:(id)a3 fromResponse:(id)a4
+- (void)updateForPlaybackOfFileAsset:(id)asset fromResponse:(id)response
 {
-  v5 = a3;
+  assetCopy = asset;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __75__MPStoreAssetInfoPlaybackCache_updateForPlaybackOfFileAsset_fromResponse___block_invoke;
   v7[3] = &unk_1E76823C0;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = assetCopy;
+  v6 = assetCopy;
   [(MPStoreAssetInfoPlaybackCache *)self withSyncLock:v7];
 }
 
@@ -94,9 +94,9 @@ void __75__MPStoreAssetInfoPlaybackCache_updateForPlaybackOfFileAsset_fromRespon
   }
 }
 
-- (id)cachedResponseForRequest:(id)a3
+- (id)cachedResponseForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -109,7 +109,7 @@ void __75__MPStoreAssetInfoPlaybackCache_updateForPlaybackOfFileAsset_fromRespon
   v8[3] = &unk_1E7681330;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = requestCopy;
   v9 = v5;
   [(MPStoreAssetInfoPlaybackCache *)self withSyncLock:v8];
   v6 = v12[5];
@@ -151,19 +151,19 @@ uint64_t __58__MPStoreAssetInfoPlaybackCache_cachedResponseForRequest___block_in
   return [v12 insertObject:v11 atIndex:0];
 }
 
-- (void)addCachedResponse:(id)a3 forRequest:(id)a4
+- (void)addCachedResponse:(id)response forRequest:(id)request
 {
-  v6 = a4;
-  v7 = [a3 copy];
+  requestCopy = request;
+  v7 = [response copy];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __62__MPStoreAssetInfoPlaybackCache_addCachedResponse_forRequest___block_invoke;
   v10[3] = &unk_1E76800A0;
   v10[4] = self;
-  v11 = v6;
+  v11 = requestCopy;
   v12 = v7;
   v8 = v7;
-  v9 = v6;
+  v9 = requestCopy;
   [(MPStoreAssetInfoPlaybackCache *)self withSyncLock:v10];
 }
 
@@ -192,11 +192,11 @@ void __62__MPStoreAssetInfoPlaybackCache_addCachedResponse_forRequest___block_in
   }
 }
 
-- (void)withSyncLock:(id)a3
+- (void)withSyncLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }

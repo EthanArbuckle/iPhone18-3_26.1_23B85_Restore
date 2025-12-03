@@ -1,8 +1,8 @@
 @interface Metric.MediaGroup.PreflightCheckLogEvent
 - (NSDictionary)coreAnalyticsEventDictionary;
 - (NSString)coreAnalyticsEventName;
-- (_TtCOO13HomeKitDaemon6Metric10MediaGroup22PreflightCheckLogEvent)initWithHomeUUID:(id)a3;
-- (_TtCOO13HomeKitDaemon6Metric10MediaGroup22PreflightCheckLogEvent)initWithStartTime:(double)a3 homeUUID:(id)a4;
+- (_TtCOO13HomeKitDaemon6Metric10MediaGroup22PreflightCheckLogEvent)initWithHomeUUID:(id)d;
+- (_TtCOO13HomeKitDaemon6Metric10MediaGroup22PreflightCheckLogEvent)initWithStartTime:(double)time homeUUID:(id)d;
 @end
 
 @implementation Metric.MediaGroup.PreflightCheckLogEvent
@@ -19,7 +19,7 @@
 
 - (NSDictionary)coreAnalyticsEventDictionary
 {
-  v2 = self;
+  selfCopy = self;
   sub_2297ECBCC();
 
   sub_22956540C();
@@ -28,7 +28,7 @@
   return v3;
 }
 
-- (_TtCOO13HomeKitDaemon6Metric10MediaGroup22PreflightCheckLogEvent)initWithHomeUUID:(id)a3
+- (_TtCOO13HomeKitDaemon6Metric10MediaGroup22PreflightCheckLogEvent)initWithHomeUUID:(id)d
 {
   v3 = sub_22A4DB7DC();
   v4 = *(*(v3 - 8) + 64);
@@ -39,7 +39,7 @@
   return result;
 }
 
-- (_TtCOO13HomeKitDaemon6Metric10MediaGroup22PreflightCheckLogEvent)initWithStartTime:(double)a3 homeUUID:(id)a4
+- (_TtCOO13HomeKitDaemon6Metric10MediaGroup22PreflightCheckLogEvent)initWithStartTime:(double)time homeUUID:(id)d
 {
   v4 = sub_22A4DB7DC();
   v5 = *(*(v4 - 8) + 64);

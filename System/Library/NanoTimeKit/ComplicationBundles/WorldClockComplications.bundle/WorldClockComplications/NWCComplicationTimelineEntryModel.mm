@@ -1,32 +1,32 @@
 @interface NWCComplicationTimelineEntryModel
-- (NWCComplicationTimelineEntryModel)initWithEntryDate:(id)a3;
-- (id)timelineEntryForComplicationFamily:(int64_t)a3;
+- (NWCComplicationTimelineEntryModel)initWithEntryDate:(id)date;
+- (id)timelineEntryForComplicationFamily:(int64_t)family;
 @end
 
 @implementation NWCComplicationTimelineEntryModel
 
-- (NWCComplicationTimelineEntryModel)initWithEntryDate:(id)a3
+- (NWCComplicationTimelineEntryModel)initWithEntryDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   v9.receiver = self;
   v9.super_class = NWCComplicationTimelineEntryModel;
   v6 = [(NWCComplicationTimelineEntryModel *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_entryDate, a3);
+    objc_storeStrong(&v6->_entryDate, date);
   }
 
   return v7;
 }
 
-- (id)timelineEntryForComplicationFamily:(int64_t)a3
+- (id)timelineEntryForComplicationFamily:(int64_t)family
 {
   v5 = objc_opt_new();
-  v6 = [(NWCComplicationTimelineEntryModel *)self entryDate];
-  [v5 setDate:v6];
+  entryDate = [(NWCComplicationTimelineEntryModel *)self entryDate];
+  [v5 setDate:entryDate];
 
-  v7 = [(NWCComplicationTimelineEntryModel *)self templateForComplicationFamily:a3];
+  v7 = [(NWCComplicationTimelineEntryModel *)self templateForComplicationFamily:family];
   [v5 setComplicationTemplate:v7];
 
   [v5 finalize];

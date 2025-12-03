@@ -2,8 +2,8 @@
 - (IDSConnectivityMonitor)init;
 - (double)timeConnected;
 - (double)timeDisconnected;
-- (void)checkConnectivityState:(id)a3;
-- (void)deliveryController:(id)a3 uniqueID:(id)a4 isConnected:(BOOL)a5;
+- (void)checkConnectivityState:(id)state;
+- (void)deliveryController:(id)controller uniqueID:(id)d isConnected:(BOOL)connected;
 - (void)sendMonitorMessage;
 @end
 
@@ -16,17 +16,17 @@
   return [(IDSConnectivityMonitor *)&v3 init];
 }
 
-- (void)checkConnectivityState:(id)a3
+- (void)checkConnectivityState:(id)state
 {
   v4 = +[IDSPairingManager sharedInstance];
-  v5 = [v4 pairedDeviceUUIDString];
+  pairedDeviceUUIDString = [v4 pairedDeviceUUIDString];
 
-  if (v5)
+  if (pairedDeviceUUIDString)
   {
     v6 = +[IDSUTunDeliveryController sharedInstance];
-    v7 = [v6 isConnected];
+    isConnected = [v6 isConnected];
 
-    if (v7)
+    if (isConnected)
     {
       [(IDSConnectivityMonitor *)self sendMonitorMessage];
     }
@@ -50,7 +50,7 @@
       v12 = +[IDSUTunDeliveryController sharedInstance];
       -[IDSConnectivityMonitorMetricProperties setTerminusRegistered:](v9, "setTerminusRegistered:", [v12 isTerminusRegistered]);
 
-      [(IDSConnectivityMonitorMetricProperties *)v9 setPairedDeviceCBUUIDString:v5];
+      [(IDSConnectivityMonitorMetricProperties *)v9 setPairedDeviceCBUUIDString:pairedDeviceUUIDString];
       [(IDSConnectivityMonitorMetricProperties *)v9 setSuccess:0];
       [(IDSConnectivityMonitor *)self timeConnected];
       [(IDSConnectivityMonitorMetricProperties *)v9 setTimeConnected:?];
@@ -93,23 +93,23 @@
   v15[2] = sub_10044727C;
   v15[3] = &unk_100BD8CD8;
   v16 = v3;
-  v17 = self;
+  selfCopy = self;
   v14 = v3;
   [v13 sendMessageWithSendParameters:v4 willSendBlock:0 completionBlock:v15];
 }
 
 - (double)timeConnected
 {
-  v3 = [(IDSConnectivityMonitor *)self lastConnection];
+  lastConnection = [(IDSConnectivityMonitor *)self lastConnection];
 
-  if (!v3)
+  if (!lastConnection)
   {
     return 0.0;
   }
 
   v4 = +[NSDate date];
-  v5 = [(IDSConnectivityMonitor *)self lastConnection];
-  [v4 timeIntervalSinceDate:v5];
+  lastConnection2 = [(IDSConnectivityMonitor *)self lastConnection];
+  [v4 timeIntervalSinceDate:lastConnection2];
   v7 = v6;
 
   return v7;
@@ -117,26 +117,26 @@
 
 - (double)timeDisconnected
 {
-  v3 = [(IDSConnectivityMonitor *)self lastDisconnection];
+  lastDisconnection = [(IDSConnectivityMonitor *)self lastDisconnection];
 
-  if (!v3)
+  if (!lastDisconnection)
   {
     return 0.0;
   }
 
   v4 = +[NSDate date];
-  v5 = [(IDSConnectivityMonitor *)self lastDisconnection];
-  [v4 timeIntervalSinceDate:v5];
+  lastDisconnection2 = [(IDSConnectivityMonitor *)self lastDisconnection];
+  [v4 timeIntervalSinceDate:lastDisconnection2];
   v7 = v6;
 
   return v7;
 }
 
-- (void)deliveryController:(id)a3 uniqueID:(id)a4 isConnected:(BOOL)a5
+- (void)deliveryController:(id)controller uniqueID:(id)d isConnected:(BOOL)connected
 {
-  v5 = a5;
-  v7 = [NSDate date:a3];
-  if (v5)
+  connectedCopy = connected;
+  v7 = [NSDate date:controller];
+  if (connectedCopy)
   {
     [(IDSConnectivityMonitor *)self setLastConnection:v7];
 

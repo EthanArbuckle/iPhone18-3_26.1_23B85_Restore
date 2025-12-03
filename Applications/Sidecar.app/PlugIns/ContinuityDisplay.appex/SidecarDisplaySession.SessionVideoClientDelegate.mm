@@ -1,80 +1,80 @@
 @interface SidecarDisplaySession.SessionVideoClientDelegate
-- (void)remoteVideoClient:(id)a3 remoteMediaDidStall:(BOOL)a4;
-- (void)remoteVideoClient:(id)a3 remoteScreenAttributesDidChange:(id)a4;
-- (void)remoteVideoClient:(id)a3 remoteVideoAttributesDidChange:(id)a4;
-- (void)remoteVideoClient:(id)a3 remoteVideoDidPause:(BOOL)a4;
-- (void)remoteVideoClient:(id)a3 videoDidDegrade:(BOOL)a4;
-- (void)remoteVideoClient:(id)a3 videoDidSuspend:(BOOL)a4;
-- (void)remoteVideoClientDidReceiveFirstFrame:(id)a3;
-- (void)remoteVideoClientDidReceiveLastFrame:(id)a3;
-- (void)remoteVideoServerDidDie:(id)a3;
+- (void)remoteVideoClient:(id)client remoteMediaDidStall:(BOOL)stall;
+- (void)remoteVideoClient:(id)client remoteScreenAttributesDidChange:(id)change;
+- (void)remoteVideoClient:(id)client remoteVideoAttributesDidChange:(id)change;
+- (void)remoteVideoClient:(id)client remoteVideoDidPause:(BOOL)pause;
+- (void)remoteVideoClient:(id)client videoDidDegrade:(BOOL)degrade;
+- (void)remoteVideoClient:(id)client videoDidSuspend:(BOOL)suspend;
+- (void)remoteVideoClientDidReceiveFirstFrame:(id)frame;
+- (void)remoteVideoClientDidReceiveLastFrame:(id)frame;
+- (void)remoteVideoServerDidDie:(id)die;
 @end
 
 @implementation SidecarDisplaySession.SessionVideoClientDelegate
 
-- (void)remoteVideoClientDidReceiveFirstFrame:(id)a3
+- (void)remoteVideoClientDidReceiveFirstFrame:(id)frame
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000176EC(v4);
+  frameCopy = frame;
+  selfCopy = self;
+  sub_1000176EC(frameCopy);
 }
 
-- (void)remoteVideoClient:(id)a3 remoteVideoDidPause:(BOOL)a4
+- (void)remoteVideoClient:(id)client remoteVideoDidPause:(BOOL)pause
 {
-  v6 = a3;
-  v7 = self;
-  sub_1000178BC(v6, a4);
+  clientCopy = client;
+  selfCopy = self;
+  sub_1000178BC(clientCopy, pause);
 }
 
-- (void)remoteVideoClient:(id)a3 remoteMediaDidStall:(BOOL)a4
+- (void)remoteVideoClient:(id)client remoteMediaDidStall:(BOOL)stall
 {
-  v6 = a3;
-  v7 = self;
-  sub_100017938(v6, a4);
+  clientCopy = client;
+  selfCopy = self;
+  sub_100017938(clientCopy, stall);
 }
 
-- (void)remoteVideoClient:(id)a3 videoDidDegrade:(BOOL)a4
+- (void)remoteVideoClient:(id)client videoDidDegrade:(BOOL)degrade
 {
-  v6 = a3;
-  v7 = self;
-  sub_1000179B4(v6, a4);
+  clientCopy = client;
+  selfCopy = self;
+  sub_1000179B4(clientCopy, degrade);
 }
 
-- (void)remoteVideoClient:(id)a3 videoDidSuspend:(BOOL)a4
+- (void)remoteVideoClient:(id)client videoDidSuspend:(BOOL)suspend
 {
-  v6 = a3;
-  v7 = self;
-  sub_100017A30(v6, a4);
+  clientCopy = client;
+  selfCopy = self;
+  sub_100017A30(clientCopy, suspend);
 }
 
-- (void)remoteVideoClientDidReceiveLastFrame:(id)a3
+- (void)remoteVideoClientDidReceiveLastFrame:(id)frame
 {
-  v4 = a3;
-  v5 = self;
-  sub_100017BB0(v4);
+  frameCopy = frame;
+  selfCopy = self;
+  sub_100017BB0(frameCopy);
 }
 
-- (void)remoteVideoServerDidDie:(id)a3
+- (void)remoteVideoServerDidDie:(id)die
 {
-  v4 = a3;
-  v5 = self;
-  sub_100017D04(v4);
+  dieCopy = die;
+  selfCopy = self;
+  sub_100017D04(dieCopy);
 }
 
-- (void)remoteVideoClient:(id)a3 remoteScreenAttributesDidChange:(id)a4
+- (void)remoteVideoClient:(id)client remoteScreenAttributesDidChange:(id)change
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100017F74(v6, v7);
+  clientCopy = client;
+  changeCopy = change;
+  selfCopy = self;
+  sub_100017F74(clientCopy, changeCopy);
 }
 
-- (void)remoteVideoClient:(id)a3 remoteVideoAttributesDidChange:(id)a4
+- (void)remoteVideoClient:(id)client remoteVideoAttributesDidChange:(id)change
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100017FFC(v6, v7);
+  clientCopy = client;
+  changeCopy = change;
+  selfCopy = self;
+  sub_100017FFC(clientCopy, changeCopy);
 }
 
 @end

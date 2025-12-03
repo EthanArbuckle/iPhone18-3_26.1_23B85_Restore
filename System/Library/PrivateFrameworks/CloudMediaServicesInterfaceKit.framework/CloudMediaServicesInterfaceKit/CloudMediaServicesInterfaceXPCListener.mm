@@ -1,23 +1,23 @@
 @interface CloudMediaServicesInterfaceXPCListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (CloudMediaServicesInterfaceProtocol)playbackCommandDelegate;
-- (CloudMediaServicesInterfaceXPCListener)initWithDelegate:(id)a3;
-- (void)getCloudExtensionConfigurationFor:(id)a3 homeUserID:(id)a4 endpointID:(id)a5 withCompletion:(id)a6;
-- (void)handleClientDisconnection:(id)a3;
+- (CloudMediaServicesInterfaceXPCListener)initWithDelegate:(id)delegate;
+- (void)getCloudExtensionConfigurationFor:(id)for homeUserID:(id)d endpointID:(id)iD withCompletion:(id)completion;
+- (void)handleClientDisconnection:(id)disconnection;
 - (void)pauseSample;
-- (void)playSample:(id)a3;
-- (void)sendPlaybackQueueToRemoteDestination:(id)a3 withCompletion:(id)a4;
-- (void)setOverrideURL:(id)a3;
-- (void)setServerEnvironment:(id)a3;
-- (void)stopAnalyticsWithIdentifier:(id)a3;
-- (void)submitAnalyticsForType:(id)a3 andIdentifier:(id)a4 eventType:(id)a5 atTime:(id)a6 withMetadata:(id)a7;
+- (void)playSample:(id)sample;
+- (void)sendPlaybackQueueToRemoteDestination:(id)destination withCompletion:(id)completion;
+- (void)setOverrideURL:(id)l;
+- (void)setServerEnvironment:(id)environment;
+- (void)stopAnalyticsWithIdentifier:(id)identifier;
+- (void)submitAnalyticsForType:(id)type andIdentifier:(id)identifier eventType:(id)eventType atTime:(id)time withMetadata:(id)metadata;
 @end
 
 @implementation CloudMediaServicesInterfaceXPCListener
 
-- (CloudMediaServicesInterfaceXPCListener)initWithDelegate:(id)a3
+- (CloudMediaServicesInterfaceXPCListener)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = CloudMediaServicesInterfaceXPCListener;
   v5 = [(CloudMediaServicesInterfaceXPCListener *)&v11 init];
@@ -28,7 +28,7 @@
     v5->_xpcListener = v6;
 
     [(NSXPCListener *)v5->_xpcListener setDelegate:v5];
-    objc_storeWeak(&v5->_playbackCommandDelegate, v4);
+    objc_storeWeak(&v5->_playbackCommandDelegate, delegateCopy);
     v8 = objc_opt_new();
     clients = v5->_clients;
     v5->_clients = v8;
@@ -39,31 +39,31 @@
   return v5;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 valueForEntitlement:@"com.apple.agora.client"];
-  v9 = [v8 BOOLValue];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = [connectionCopy valueForEntitlement:@"com.apple.agora.client"];
+  bOOLValue = [v8 BOOLValue];
 
-  if (v9)
+  if (bOOLValue)
   {
-    v10 = [CMSClient clientWithConnection:v7];
+    v10 = [CMSClient clientWithConnection:connectionCopy];
     v11 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2856B3778];
     v12 = [v11 classesForSelector:sel_sendPlaybackQueueWithUserActivityDictionary_forIntentID_toDestination_withIntentData_prepareQueue_withCompletion_ argumentIndex:3 ofReply:0];
     v13 = [v12 mutableCopy];
 
     [v13 addObject:objc_opt_class()];
     [v11 setClasses:v13 forSelector:sel_sendPlaybackQueueWithUserActivityDictionary_forIntentID_toDestination_withIntentData_prepareQueue_withCompletion_ argumentIndex:3 ofReply:0];
-    [v7 setExportedInterface:v11];
-    [v7 setExportedObject:self];
+    [connectionCopy setExportedInterface:v11];
+    [connectionCopy setExportedObject:self];
     objc_initWeak(&location, self);
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __77__CloudMediaServicesInterfaceXPCListener_listener_shouldAcceptNewConnection___block_invoke;
     v22[3] = &unk_278DDD288;
     objc_copyWeak(&v24, &location);
-    v14 = v7;
+    v14 = connectionCopy;
     v23 = v14;
     [v14 setInterruptionHandler:v22];
     v19[0] = MEMORY[0x277D85DD0];
@@ -74,12 +74,12 @@
     v15 = v14;
     v20 = v15;
     [v15 setInvalidationHandler:v19];
-    v16 = [(CloudMediaServicesInterfaceXPCListener *)self clients];
-    objc_sync_enter(v16);
-    v17 = [(CloudMediaServicesInterfaceXPCListener *)self clients];
-    [v17 addObject:v10];
+    clients = [(CloudMediaServicesInterfaceXPCListener *)self clients];
+    objc_sync_enter(clients);
+    clients2 = [(CloudMediaServicesInterfaceXPCListener *)self clients];
+    [clients2 addObject:v10];
 
-    objc_sync_exit(v16);
+    objc_sync_exit(clients);
     [v15 resume];
 
     objc_destroyWeak(&v21);
@@ -96,7 +96,7 @@
     }
   }
 
-  return v9;
+  return bOOLValue;
 }
 
 void __77__CloudMediaServicesInterfaceXPCListener_listener_shouldAcceptNewConnection___block_invoke(uint64_t a1)
@@ -125,27 +125,27 @@ void __77__CloudMediaServicesInterfaceXPCListener_listener_shouldAcceptNewConnec
   [WeakRetained handleClientDisconnection:*(a1 + 32)];
 }
 
-- (void)handleClientDisconnection:(id)a3
+- (void)handleClientDisconnection:(id)disconnection
 {
-  v4 = a3;
-  v5 = [(CloudMediaServicesInterfaceXPCListener *)self clients];
-  objc_sync_enter(v5);
-  v6 = [(CloudMediaServicesInterfaceXPCListener *)self clients];
+  disconnectionCopy = disconnection;
+  clients = [(CloudMediaServicesInterfaceXPCListener *)self clients];
+  objc_sync_enter(clients);
+  clients2 = [(CloudMediaServicesInterfaceXPCListener *)self clients];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __68__CloudMediaServicesInterfaceXPCListener_handleClientDisconnection___block_invoke;
   v10[3] = &unk_278DDD2B0;
-  v7 = v4;
+  v7 = disconnectionCopy;
   v11 = v7;
-  v8 = [v6 na_firstObjectPassingTest:v10];
+  v8 = [clients2 na_firstObjectPassingTest:v10];
 
   if (v8)
   {
-    v9 = [(CloudMediaServicesInterfaceXPCListener *)self clients];
-    [v9 removeObject:v8];
+    clients3 = [(CloudMediaServicesInterfaceXPCListener *)self clients];
+    [clients3 removeObject:v8];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(clients);
 }
 
 uint64_t __68__CloudMediaServicesInterfaceXPCListener_handleClientDisconnection___block_invoke(uint64_t a1, void *a2)
@@ -156,28 +156,28 @@ uint64_t __68__CloudMediaServicesInterfaceXPCListener_handleClientDisconnection_
   return v4;
 }
 
-- (void)playSample:(id)a3
+- (void)playSample:(id)sample
 {
-  v6 = a3;
+  sampleCopy = sample;
   WeakRetained = objc_loadWeakRetained(&self->_playbackCommandDelegate);
 
   if (WeakRetained)
   {
     v5 = objc_loadWeakRetained(&self->_playbackCommandDelegate);
-    [v5 playSample:v6];
+    [v5 playSample:sampleCopy];
   }
 }
 
-- (void)sendPlaybackQueueToRemoteDestination:(id)a3 withCompletion:(id)a4
+- (void)sendPlaybackQueueToRemoteDestination:(id)destination withCompletion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
+  destinationCopy = destination;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_playbackCommandDelegate);
 
   if (WeakRetained)
   {
     v8 = objc_loadWeakRetained(&self->_playbackCommandDelegate);
-    [v8 sendPlaybackQueueToRemoteDestination:v9 withCompletion:v6];
+    [v8 sendPlaybackQueueToRemoteDestination:destinationCopy withCompletion:completionCopy];
   }
 }
 
@@ -192,70 +192,70 @@ uint64_t __68__CloudMediaServicesInterfaceXPCListener_handleClientDisconnection_
   }
 }
 
-- (void)setServerEnvironment:(id)a3
+- (void)setServerEnvironment:(id)environment
 {
-  v6 = a3;
+  environmentCopy = environment;
   WeakRetained = objc_loadWeakRetained(&self->_playbackCommandDelegate);
 
   if (WeakRetained)
   {
     v5 = objc_loadWeakRetained(&self->_playbackCommandDelegate);
-    [v5 setServerEnvironment:v6];
+    [v5 setServerEnvironment:environmentCopy];
   }
 }
 
-- (void)setOverrideURL:(id)a3
+- (void)setOverrideURL:(id)l
 {
-  v6 = a3;
+  lCopy = l;
   WeakRetained = objc_loadWeakRetained(&self->_playbackCommandDelegate);
 
   if (WeakRetained)
   {
     v5 = objc_loadWeakRetained(&self->_playbackCommandDelegate);
-    [v5 setOverrideURL:v6];
+    [v5 setOverrideURL:lCopy];
   }
 }
 
-- (void)getCloudExtensionConfigurationFor:(id)a3 homeUserID:(id)a4 endpointID:(id)a5 withCompletion:(id)a6
+- (void)getCloudExtensionConfigurationFor:(id)for homeUserID:(id)d endpointID:(id)iD withCompletion:(id)completion
 {
-  v15 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  forCopy = for;
+  dCopy = d;
+  iDCopy = iD;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_playbackCommandDelegate);
 
   if (WeakRetained)
   {
     v14 = objc_loadWeakRetained(&self->_playbackCommandDelegate);
-    [v14 getCloudExtensionConfigurationFor:v15 homeUserID:v10 endpointID:v11 withCompletion:v12];
+    [v14 getCloudExtensionConfigurationFor:forCopy homeUserID:dCopy endpointID:iDCopy withCompletion:completionCopy];
   }
 }
 
-- (void)submitAnalyticsForType:(id)a3 andIdentifier:(id)a4 eventType:(id)a5 atTime:(id)a6 withMetadata:(id)a7
+- (void)submitAnalyticsForType:(id)type andIdentifier:(id)identifier eventType:(id)eventType atTime:(id)time withMetadata:(id)metadata
 {
-  v18 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  typeCopy = type;
+  identifierCopy = identifier;
+  eventTypeCopy = eventType;
+  timeCopy = time;
+  metadataCopy = metadata;
   WeakRetained = objc_loadWeakRetained(&self->_playbackCommandDelegate);
 
   if (WeakRetained)
   {
     v17 = objc_loadWeakRetained(&self->_playbackCommandDelegate);
-    [v17 submitAnalyticsForType:v18 andIdentifier:v12 eventType:v13 atTime:v14 withMetadata:v15];
+    [v17 submitAnalyticsForType:typeCopy andIdentifier:identifierCopy eventType:eventTypeCopy atTime:timeCopy withMetadata:metadataCopy];
   }
 }
 
-- (void)stopAnalyticsWithIdentifier:(id)a3
+- (void)stopAnalyticsWithIdentifier:(id)identifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_playbackCommandDelegate);
 
   if (WeakRetained)
   {
     v5 = objc_loadWeakRetained(&self->_playbackCommandDelegate);
-    [v5 stopAnalyticsWithIdentifier:v6];
+    [v5 stopAnalyticsWithIdentifier:identifierCopy];
   }
 }
 

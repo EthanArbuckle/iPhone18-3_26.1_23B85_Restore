@@ -1,21 +1,21 @@
 @interface JournalEntryCollectionViewCell
 - (BOOL)accessibilityActivate;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (NSArray)accessibilityCustomActions;
 - (NSArray)accessibilityUserInputLabels;
 - (NSString)accessibilityHint;
 - (NSString)accessibilityLabel;
 - (NSString)accessibilityValue;
 - (int64_t)focusItemDeferralMode;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
-- (void)focusAssetGrid:(id)a3;
-- (void)focusCell:(id)a3;
-- (void)setAccessibilityUserInputLabels:(id)a3;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
+- (void)focusAssetGrid:(id)grid;
+- (void)focusCell:(id)cell;
+- (void)setAccessibilityUserInputLabels:(id)labels;
 @end
 
 @implementation JournalEntryCollectionViewCell
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = sub_1000F24EC(&qword_100AF16C0);
   __chkstk_darwin(v4 - 8);
@@ -25,10 +25,10 @@
   __chkstk_darwin(v7);
   v10 = &v16 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UICellConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = self;
+  selfCopy = self;
   isa = UICellConfigurationState._bridgeToObjectiveC()().super.super.isa;
   v13 = type metadata accessor for JournalEntryCollectionViewCell();
-  v16.receiver = v11;
+  v16.receiver = selfCopy;
   v16.super_class = v13;
   [(JournalEntryCollectionViewCell *)&v16 _bridgedUpdateConfigurationUsingState:isa];
 
@@ -48,13 +48,13 @@
   v4 = *(v3 - 8);
   __chkstk_darwin(v3);
   v6 = &v10 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v7 = self;
-  v8 = [(JournalEntryCollectionViewCell *)v7 _bridgedConfigurationState];
+  selfCopy = self;
+  _bridgedConfigurationState = [(JournalEntryCollectionViewCell *)selfCopy _bridgedConfigurationState];
   static UICellConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
 
-  LOBYTE(v8) = UICellConfigurationState.isEditing.getter();
+  LOBYTE(_bridgedConfigurationState) = UICellConfigurationState.isEditing.getter();
   (*(v4 + 8))(v6, v3);
-  if (v8)
+  if (_bridgedConfigurationState)
   {
     return 2;
   }
@@ -67,7 +67,7 @@
 
 - (NSString)accessibilityLabel
 {
-  v2 = self;
+  selfCopy = self;
   sub_10060204C();
   v4 = v3;
 
@@ -86,7 +86,7 @@
 
 - (NSArray)accessibilityUserInputLabels
 {
-  v2 = self;
+  selfCopy = self;
   sub_100602354();
   v4 = v3;
 
@@ -103,18 +103,18 @@
   return v5.super.isa;
 }
 
-- (void)setAccessibilityUserInputLabels:(id)a3
+- (void)setAccessibilityUserInputLabels:(id)labels
 {
-  if (a3)
+  if (labels)
   {
     static Array._unconditionallyBridgeFromObjectiveC(_:)();
-    v4 = self;
+    selfCopy = self;
     v5.super.isa = Array._bridgeToObjectiveC()().super.isa;
   }
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
     v5.super.isa = 0;
   }
 
@@ -154,7 +154,7 @@
 
 - (BOOL)accessibilityActivate
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100602880();
 
   return v3 & 1;
@@ -165,10 +165,10 @@
   v9.receiver = self;
   v9.super_class = type metadata accessor for JournalEntryCollectionViewCell();
   v2 = v9.receiver;
-  v3 = [(JournalEntryCollectionViewCell *)&v9 accessibilityCustomActions];
-  if (v3)
+  accessibilityCustomActions = [(JournalEntryCollectionViewCell *)&v9 accessibilityCustomActions];
+  if (accessibilityCustomActions)
   {
-    v4 = v3;
+    v4 = accessibilityCustomActions;
     sub_1000065A8(0, &qword_100AD86C0);
     v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -188,11 +188,11 @@
   return v7.super.isa;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -201,26 +201,26 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v8 = sub_100602DD0(a3, v10);
+  v8 = sub_100602DD0(action, v10);
 
   sub_100004F84(v10, &qword_100AD13D0);
   return v8 & 1;
 }
 
-- (void)focusAssetGrid:(id)a3
+- (void)focusAssetGrid:(id)grid
 {
-  v4 = a3;
-  v5 = self;
+  gridCopy = grid;
+  selfCopy = self;
   sub_10060371C("Toggling focus preference to asset grid!", 1, "Focus preference toggled to asset grid.");
 }
 
-- (void)focusCell:(id)a3
+- (void)focusCell:(id)cell
 {
-  v4 = a3;
-  v5 = self;
+  cellCopy = cell;
+  selfCopy = self;
   sub_10060371C("Toggling focus preference to timeline cell!", 0, "Focus preference toggled to timeline cell.");
 }
 

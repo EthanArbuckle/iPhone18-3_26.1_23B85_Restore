@@ -2,31 +2,31 @@
 - (NSString)trustSubtitle;
 - (NSString)trustTitle;
 - (_CertInfoActionButton)actionButton;
-- (_CertInfoTrustSummaryHeaderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_CertInfoTrustSummaryHeaderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (double)rowHeight;
 - (id)_subtitleLabel;
 - (id)_titleLabel;
 - (id)_trustedLabel;
-- (void)_layoutSubviewsWithActionButtonSize:(CGSize)a3;
+- (void)_layoutSubviewsWithActionButtonSize:(CGSize)size;
 - (void)layoutSubviews;
-- (void)setExpired:(BOOL)a3;
-- (void)setTrustSubtitle:(id)a3;
-- (void)setTrustTitle:(id)a3;
+- (void)setExpired:(BOOL)expired;
+- (void)setTrustSubtitle:(id)subtitle;
+- (void)setTrustTitle:(id)title;
 @end
 
 @implementation _CertInfoTrustSummaryHeaderCell
 
-- (_CertInfoTrustSummaryHeaderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_CertInfoTrustSummaryHeaderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v15.receiver = self;
   v15.super_class = _CertInfoTrustSummaryHeaderCell;
-  v4 = [(_CertInfoTrustSummaryHeaderCell *)&v15 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(_CertInfoTrustSummaryHeaderCell *)&v15 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(_CertInfoTrustSummaryHeaderCell *)v4 imageView];
-    v7 = [MEMORY[0x277D759A0] mainScreen];
-    [v7 scale];
+    imageView = [(_CertInfoTrustSummaryHeaderCell *)v4 imageView];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v9 = v8;
 
     v10 = MEMORY[0x277D755B8];
@@ -34,8 +34,8 @@
     v12 = [v10 imageNamed:@"profile-icon" inBundle:v11];
     v13 = [v12 _applicationIconImageForFormat:2 precomposed:1 scale:v9];
 
-    [v6 setImage:v13];
-    [v6 sizeToFit];
+    [imageView setImage:v13];
+    [imageView sizeToFit];
     [(_CertInfoTrustSummaryHeaderCell *)v5 setAutoresizesSubviews:0];
   }
 
@@ -52,8 +52,8 @@
     self->_actionButton = v4;
 
     [(_CertInfoActionButton *)self->_actionButton setHidden:1];
-    v6 = [(_CertInfoTrustSummaryHeaderCell *)self contentView];
-    [v6 addSubview:self->_actionButton];
+    contentView = [(_CertInfoTrustSummaryHeaderCell *)self contentView];
+    [contentView addSubview:self->_actionButton];
 
     actionButton = self->_actionButton;
   }
@@ -61,44 +61,44 @@
   return actionButton;
 }
 
-- (void)setTrustTitle:(id)a3
+- (void)setTrustTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(_CertInfoTrustSummaryHeaderCell *)self _titleLabel];
-  [v5 setText:v4];
+  titleCopy = title;
+  _titleLabel = [(_CertInfoTrustSummaryHeaderCell *)self _titleLabel];
+  [_titleLabel setText:titleCopy];
 
-  [v5 sizeToFit];
+  [_titleLabel sizeToFit];
 }
 
 - (NSString)trustTitle
 {
-  v2 = [(_CertInfoTrustSummaryHeaderCell *)self _titleLabel];
-  v3 = [v2 text];
+  _titleLabel = [(_CertInfoTrustSummaryHeaderCell *)self _titleLabel];
+  text = [_titleLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setTrustSubtitle:(id)a3
+- (void)setTrustSubtitle:(id)subtitle
 {
-  v4 = a3;
-  v5 = [(_CertInfoTrustSummaryHeaderCell *)self _subtitleLabel];
-  [v5 setText:v4];
+  subtitleCopy = subtitle;
+  _subtitleLabel = [(_CertInfoTrustSummaryHeaderCell *)self _subtitleLabel];
+  [_subtitleLabel setText:subtitleCopy];
 
-  [v5 sizeToFit];
+  [_subtitleLabel sizeToFit];
 }
 
 - (NSString)trustSubtitle
 {
-  v2 = [(_CertInfoTrustSummaryHeaderCell *)self _subtitleLabel];
-  v3 = [v2 text];
+  _subtitleLabel = [(_CertInfoTrustSummaryHeaderCell *)self _subtitleLabel];
+  text = [_subtitleLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setExpired:(BOOL)a3
+- (void)setExpired:(BOOL)expired
 {
-  v5 = [(_CertInfoTrustSummaryHeaderCell *)self _subtitleLabel];
-  if (a3)
+  _subtitleLabel = [(_CertInfoTrustSummaryHeaderCell *)self _subtitleLabel];
+  if (expired)
   {
     [MEMORY[0x277D75348] redColor];
   }
@@ -108,13 +108,13 @@
     [MEMORY[0x277D75348] grayColor];
   }
   v4 = ;
-  [v5 setTextColor:v4];
+  [_subtitleLabel setTextColor:v4];
 }
 
 - (double)rowHeight
 {
-  v2 = [(_CertInfoTrustSummaryHeaderCell *)self imageView];
-  [v2 frame];
+  imageView = [(_CertInfoTrustSummaryHeaderCell *)self imageView];
+  [imageView frame];
   v4 = v3 + 5.0 + 6.0;
 
   return v4;
@@ -122,39 +122,39 @@
 
 - (void)layoutSubviews
 {
-  v3 = [(_CertInfoTrustSummaryHeaderCell *)self actionButton];
-  [v3 sizeThatFits:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
+  actionButton = [(_CertInfoTrustSummaryHeaderCell *)self actionButton];
+  [actionButton sizeThatFits:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
   v5 = v4;
   v7 = v6;
 
   [(_CertInfoTrustSummaryHeaderCell *)self _layoutSubviewsWithActionButtonSize:v5, v7];
 }
 
-- (void)_layoutSubviewsWithActionButtonSize:(CGSize)a3
+- (void)_layoutSubviewsWithActionButtonSize:(CGSize)size
 {
-  rect_24 = a3.height;
-  width = a3.width;
+  rect_24 = size.height;
+  width = size.width;
   v73.receiver = self;
   v73.super_class = _CertInfoTrustSummaryHeaderCell;
   [(_CertInfoTrustSummaryHeaderCell *)&v73 layoutSubviews];
-  v4 = [(_CertInfoTrustSummaryHeaderCell *)self imageView];
-  v5 = [(_CertInfoTrustSummaryHeaderCell *)self _trustedLabel];
-  v6 = [(_CertInfoTrustSummaryHeaderCell *)self contentView];
-  [v6 frame];
+  imageView = [(_CertInfoTrustSummaryHeaderCell *)self imageView];
+  _trustedLabel = [(_CertInfoTrustSummaryHeaderCell *)self _trustedLabel];
+  contentView = [(_CertInfoTrustSummaryHeaderCell *)self contentView];
+  [contentView frame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  [v4 frame];
+  [imageView frame];
   v16 = v15;
   v18 = v17;
-  [v5 frame];
+  [_trustedLabel frame];
   rect = v19;
   v71 = v20;
   v72 = v21;
   v70 = v22;
-  [v4 setFrame:{5.0, 5.0, v16, v18}];
+  [imageView setFrame:{5.0, 5.0, v16, v18}];
   v74.origin.x = 5.0;
   v74.origin.y = 5.0;
   v74.size.width = v16;
@@ -169,8 +169,8 @@
   v24 = v14;
   v75.size.height = v14;
   v25 = CGRectGetMaxX(v75) + -20.0;
-  v26 = [(_CertInfoTrustSummaryHeaderCell *)self _titleLabel];
-  [v26 frame];
+  _titleLabel = [(_CertInfoTrustSummaryHeaderCell *)self _titleLabel];
+  [_titleLabel frame];
   v28 = v27;
   v30 = v29;
   v76.origin.x = 5.0;
@@ -178,21 +178,21 @@
   v76.size.width = v16;
   v76.size.height = v18;
   MinY = CGRectGetMinY(v76);
-  v32 = [v26 text];
+  text = [_titleLabel text];
   v65 = v25;
-  if (v32)
+  if (text)
   {
-    v33 = [v26 font];
-    [v32 _legacy_sizeWithFont:v33 forWidth:objc_msgSend(v26 lineBreakMode:{"lineBreakMode"), v25 - v23}];
+    font = [_titleLabel font];
+    [text _legacy_sizeWithFont:font forWidth:objc_msgSend(_titleLabel lineBreakMode:{"lineBreakMode"), v25 - v23}];
     v28 = v34;
     v30 = v35;
   }
 
   rect_8 = v30;
   rect_16 = v28;
-  [v26 setFrame:{v23, MinY, v28, v30}];
-  v36 = [(_CertInfoTrustSummaryHeaderCell *)self actionButton];
-  if ([v36 isHidden])
+  [_titleLabel setFrame:{v23, MinY, v28, v30}];
+  actionButton = [(_CertInfoTrustSummaryHeaderCell *)self actionButton];
+  if ([actionButton isHidden])
   {
     v77.origin.x = 5.0;
     v77.origin.y = 5.0;
@@ -211,7 +211,7 @@
   else
   {
     v59 = MinY;
-    [v36 frame];
+    [actionButton frame];
     v79.origin.x = v62;
     v79.origin.y = v61;
     v79.size.width = v60;
@@ -222,7 +222,7 @@
     v80.size.width = v60;
     v80.size.height = v24;
     v42 = CGRectGetHeight(v80) + -6.0 - rect_24;
-    [v36 setFrame:{v41, v42, width, rect_24}];
+    [actionButton setFrame:{v41, v42, width, rect_24}];
     v81.origin.x = rect;
     v81.origin.y = v71;
     v81.size.width = v72;
@@ -268,10 +268,10 @@
     MinY = v59;
   }
 
-  [v5 setFrame:{v23, v40, v38, v39}];
-  v47 = [(_CertInfoTrustSummaryHeaderCell *)self _subtitleLabel];
+  [_trustedLabel setFrame:{v23, v40, v38, v39}];
+  _subtitleLabel = [(_CertInfoTrustSummaryHeaderCell *)self _subtitleLabel];
 
-  [v47 frame];
+  [_subtitleLabel frame];
   v49 = v48;
   v51 = v50;
   v87.origin.x = v23;
@@ -279,9 +279,9 @@
   v87.size.height = rect_8;
   v87.size.width = rect_16;
   v52 = CGRectGetMaxY(v87);
-  v53 = [v47 text];
+  text2 = [_subtitleLabel text];
 
-  if (v53)
+  if (text2)
   {
     v88.size.height = v39;
     v88.origin.x = v23;
@@ -293,13 +293,13 @@
     v89.size.width = v49;
     v89.size.height = v51;
     v55 = v54 - CGRectGetMinY(v89);
-    v56 = [v47 font];
-    [v53 _legacy_sizeWithFont:v56 constrainedToSize:objc_msgSend(v47 lineBreakMode:{"lineBreakMode"), v65 - v23, v55}];
+    font2 = [_subtitleLabel font];
+    [text2 _legacy_sizeWithFont:font2 constrainedToSize:objc_msgSend(_subtitleLabel lineBreakMode:{"lineBreakMode"), v65 - v23, v55}];
     v49 = v57;
     v51 = v58;
   }
 
-  [v47 setFrame:{v23, v52, v49, v51}];
+  [_subtitleLabel setFrame:{v23, v52, v49, v51}];
 }
 
 - (id)_titleLabel
@@ -319,8 +319,8 @@
     [(UILabel *)v7 setFont:v8];
 
     [(UILabel *)self->_titleLabel setNumberOfLines:1];
-    v9 = [(_CertInfoTrustSummaryHeaderCell *)self contentView];
-    [v9 addSubview:self->_titleLabel];
+    contentView = [(_CertInfoTrustSummaryHeaderCell *)self contentView];
+    [contentView addSubview:self->_titleLabel];
 
     titleLabel = self->_titleLabel;
   }
@@ -345,12 +345,12 @@
     [(UILabel *)v7 setFont:v8];
 
     v9 = self->_subtitleLabel;
-    v10 = [MEMORY[0x277D75348] grayColor];
-    [(UILabel *)v9 setTextColor:v10];
+    grayColor = [MEMORY[0x277D75348] grayColor];
+    [(UILabel *)v9 setTextColor:grayColor];
 
     [(UILabel *)self->_subtitleLabel setNumberOfLines:2];
-    v11 = [(_CertInfoTrustSummaryHeaderCell *)self contentView];
-    [v11 addSubview:self->_subtitleLabel];
+    contentView = [(_CertInfoTrustSummaryHeaderCell *)self contentView];
+    [contentView addSubview:self->_subtitleLabel];
 
     subtitleLabel = self->_subtitleLabel;
   }
@@ -368,8 +368,8 @@
     self->_trustedLabel = v4;
 
     [(_CertInfoGradientLabel *)self->_trustedLabel sizeToFit];
-    v6 = [(_CertInfoTrustSummaryHeaderCell *)self contentView];
-    [v6 addSubview:self->_trustedLabel];
+    contentView = [(_CertInfoTrustSummaryHeaderCell *)self contentView];
+    [contentView addSubview:self->_trustedLabel];
 
     trustedLabel = self->_trustedLabel;
   }

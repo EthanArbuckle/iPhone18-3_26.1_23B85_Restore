@@ -1,8 +1,8 @@
 @interface ECFormulaProcessor
-+ (id)formulaStringForEDFormula:(id)a3 edWorksheet:(id)a4 xlFormulaProcessor:(void *)a5;
++ (id)formulaStringForEDFormula:(id)formula edWorksheet:(id)worksheet xlFormulaProcessor:(void *)processor;
 - (ECFormulaProcessor)init;
 - (void)dealloc;
-- (void)setupWithWorkbook:(id)a3;
+- (void)setupWithWorkbook:(id)workbook;
 @end
 
 @implementation ECFormulaProcessor
@@ -75,53 +75,53 @@
   [(ECFormulaProcessor *)&v9 dealloc];
 }
 
-- (void)setupWithWorkbook:(id)a3
+- (void)setupWithWorkbook:(id)workbook
 {
-  v8 = a3;
-  v4 = [v8 resources];
-  v5 = [v4 names];
-  self->mXlNameTable = [EBNameTable createXlNameTableFromNamesCollection:v5 state:0];
+  workbookCopy = workbook;
+  resources = [workbookCopy resources];
+  names = [resources names];
+  self->mXlNameTable = [EBNameTable createXlNameTableFromNamesCollection:names state:0];
 
-  v6 = [v4 links];
-  self->mXlLinkTable = [EBLinkTable createXlLinkTableFromLinksCollection:v6 workbook:v8 state:0];
+  links = [resources links];
+  self->mXlLinkTable = [EBLinkTable createXlLinkTableFromLinksCollection:links workbook:workbookCopy state:0];
 
-  v7 = [v8 mappingContext];
-  self->mLassoSheetNames = [v7 mappedSheetNames];
+  mappingContext = [workbookCopy mappingContext];
+  self->mLassoSheetNames = [mappingContext mappedSheetNames];
 
-  self->mXlSheetNames = [(ECFormulaProcessor *)self sheetNamesFromWorkbook:v8];
-  self->mXlFormulaProcessorLasso = [(ECFormulaProcessor *)self setupWithWorkbook:v8 xlNameTable:self->mXlNameTable sheetNames:self->mLassoSheetNames xlLinkTable:self->mXlLinkTable lassoSyntax:1];
-  self->mXlFormulaProcessorXl = [(ECFormulaProcessor *)self setupWithWorkbook:v8 xlNameTable:self->mXlNameTable sheetNames:self->mXlSheetNames xlLinkTable:self->mXlLinkTable lassoSyntax:0];
+  self->mXlSheetNames = [(ECFormulaProcessor *)self sheetNamesFromWorkbook:workbookCopy];
+  self->mXlFormulaProcessorLasso = [(ECFormulaProcessor *)self setupWithWorkbook:workbookCopy xlNameTable:self->mXlNameTable sheetNames:self->mLassoSheetNames xlLinkTable:self->mXlLinkTable lassoSyntax:1];
+  self->mXlFormulaProcessorXl = [(ECFormulaProcessor *)self setupWithWorkbook:workbookCopy xlNameTable:self->mXlNameTable sheetNames:self->mXlSheetNames xlLinkTable:self->mXlLinkTable lassoSyntax:0];
 }
 
-+ (id)formulaStringForEDFormula:(id)a3 edWorksheet:(id)a4 xlFormulaProcessor:(void *)a5
++ (id)formulaStringForEDFormula:(id)formula edWorksheet:(id)worksheet xlFormulaProcessor:(void *)processor
 {
-  v7 = a3;
-  v8 = a4;
-  if (!a5)
+  formulaCopy = formula;
+  worksheetCopy = worksheet;
+  if (!processor)
   {
     goto LABEL_9;
   }
 
-  if ([v7 isSharedFormula] && (objc_msgSend(v7, "isBaseFormula") & 1) == 0)
+  if ([formulaCopy isSharedFormula] && (objc_msgSend(formulaCopy, "isBaseFormula") & 1) == 0)
   {
-    v11 = v7;
-    v9 = [v11 rowBaseOrOffset];
-    v10 = [v11 columnBaseOrOffset];
-    v12 = [v8 rowBlocks];
-    v7 = [v11 baseFormulaWithRowBlocks:v12];
+    v11 = formulaCopy;
+    rowBaseOrOffset = [v11 rowBaseOrOffset];
+    columnBaseOrOffset = [v11 columnBaseOrOffset];
+    rowBlocks = [worksheetCopy rowBlocks];
+    formulaCopy = [v11 baseFormulaWithRowBlocks:rowBlocks];
 
-    [v12 unlock];
+    [rowBlocks unlock];
   }
 
   else
   {
-    v9 = 0;
-    v10 = 0;
+    rowBaseOrOffset = 0;
+    columnBaseOrOffset = 0;
   }
 
-  v13 = [v7 xlPtgs];
-  v17.var0 = v13;
-  if (v13 && (v14 = XlFormulaProcessor::toString(a5, v13, v9, v10), clearXlPtgs(&v17), v14))
+  xlPtgs = [formulaCopy xlPtgs];
+  v17.var0 = xlPtgs;
+  if (xlPtgs && (v14 = XlFormulaProcessor::toString(processor, xlPtgs, rowBaseOrOffset, columnBaseOrOffset), clearXlPtgs(&v17), v14))
   {
     v15 = [MEMORY[0x277CCACA8] stringWithOcText:v14];
     (*(*v14 + 8))(v14);

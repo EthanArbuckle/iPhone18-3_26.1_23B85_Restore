@@ -2,18 +2,18 @@
 - (BOOL)shouldAllowHardwarePointingDevices;
 - (CGAffineTransform)rootWindowTransformForEmbeddedDisplay;
 - (SBMousePointerManager)init;
-- (id)requestPointerActivationForScene:(id)a3;
-- (id)setSystemPointerInteractionContextID:(unsigned int)a3 displayWithHardwareIdentifier:(id)a4;
-- (void)_notifyObserversPointingDeviceBecameAvailable:(BOOL)a3;
-- (void)_setPointerUIDWithConnectedDeviceCount:(unint64_t)a3;
+- (id)requestPointerActivationForScene:(id)scene;
+- (id)setSystemPointerInteractionContextID:(unsigned int)d displayWithHardwareIdentifier:(id)identifier;
+- (void)_notifyObserversPointingDeviceBecameAvailable:(BOOL)available;
+- (void)_setPointerUIDWithConnectedDeviceCount:(unint64_t)count;
 - (void)_updatePointerAssertionsAndScenes;
-- (void)_updateScenesForPointerWithHardwareAttached:(BOOL)a3;
-- (void)addObserver:(id)a3;
+- (void)_updateScenesForPointerWithHardwareAttached:(BOOL)attached;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)mousePointerDevicesDidChange:(id)a3;
-- (void)pointerClientController:(id)a3 sceneDidActivate:(id)a4;
-- (void)pointerClientController:(id)a3 sceneWillDeactivate:(id)a4;
-- (void)setRootWindowTransformForEmbeddedDisplay:(CGAffineTransform *)a3;
+- (void)mousePointerDevicesDidChange:(id)change;
+- (void)pointerClientController:(id)controller sceneDidActivate:(id)activate;
+- (void)pointerClientController:(id)controller sceneWillDeactivate:(id)deactivate;
+- (void)setRootWindowTransformForEmbeddedDisplay:(CGAffineTransform *)display;
 @end
 
 @implementation SBMousePointerManager
@@ -25,9 +25,9 @@
   v2 = [(SBMousePointerManager *)&v13 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CF0720] sharedInstance];
+    mEMORY[0x277CF0720] = [MEMORY[0x277CF0720] sharedInstance];
     mousePointerService = v2->_mousePointerService;
-    v2->_mousePointerService = v3;
+    v2->_mousePointerService = mEMORY[0x277CF0720];
 
     v5 = [(BKSMousePointerService *)v2->_mousePointerService addPointerDeviceObserver:v2];
     mousePointerDeviceObserverToken = v2->_mousePointerDeviceObserverToken;
@@ -66,22 +66,22 @@
   [(SBMousePointerManager *)&v6 dealloc];
 }
 
-- (id)setSystemPointerInteractionContextID:(unsigned int)a3 displayWithHardwareIdentifier:(id)a4
+- (id)setSystemPointerInteractionContextID:(unsigned int)d displayWithHardwareIdentifier:(id)identifier
 {
-  v4 = *&a3;
+  v4 = *&d;
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  identifierCopy = identifier;
   v7 = SBLogPointer();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v10[0] = 67109378;
     v10[1] = v4;
     v11 = 2114;
-    v12 = v6;
+    v12 = identifierCopy;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "Setting system pointer interaction contextID: 0x%x for displayUUID %{public}@", v10, 0x12u);
   }
 
-  v8 = [(PSPointerClientController *)self->_pointerClientController setSystemPointerInteractionContextID:v4 displayUUID:v6];
+  v8 = [(PSPointerClientController *)self->_pointerClientController setSystemPointerInteractionContextID:v4 displayUUID:identifierCopy];
   if (!v8)
   {
     [SBMousePointerManager setSystemPointerInteractionContextID:displayWithHardwareIdentifier:];
@@ -90,22 +90,22 @@
   return v8;
 }
 
-- (void)setRootWindowTransformForEmbeddedDisplay:(CGAffineTransform *)a3
+- (void)setRootWindowTransformForEmbeddedDisplay:(CGAffineTransform *)display
 {
   BSDispatchQueueAssertMain();
-  v5 = *&a3->c;
-  *&t1.a = *&a3->a;
+  v5 = *&display->c;
+  *&t1.a = *&display->a;
   *&t1.c = v5;
-  *&t1.tx = *&a3->tx;
+  *&t1.tx = *&display->tx;
   v6 = *&self->_rootWindowTransformForEmbeddedDisplay.c;
   *&v9.a = *&self->_rootWindowTransformForEmbeddedDisplay.a;
   *&v9.c = v6;
   *&v9.tx = *&self->_rootWindowTransformForEmbeddedDisplay.tx;
   if (!CGAffineTransformEqualToTransform(&t1, &v9))
   {
-    v7 = *&a3->a;
-    v8 = *&a3->tx;
-    *&self->_rootWindowTransformForEmbeddedDisplay.c = *&a3->c;
+    v7 = *&display->a;
+    v8 = *&display->tx;
+    *&self->_rootWindowTransformForEmbeddedDisplay.c = *&display->c;
     *&self->_rootWindowTransformForEmbeddedDisplay.tx = v8;
     *&self->_rootWindowTransformForEmbeddedDisplay.a = v7;
     [(SBMousePointerManager *)self _updatePointerAssertionsAndScenes];
@@ -114,40 +114,40 @@
 
 - (BOOL)shouldAllowHardwarePointingDevices
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  return (v3 & 0xFFFFFFFFFFFFFFFBLL) == 1 || _AXSAssistiveTouchEnabled() != 0;
+  return (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 || _AXSAssistiveTouchEnabled() != 0;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (id)requestPointerActivationForScene:(id)a3
+- (id)requestPointerActivationForScene:(id)scene
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 _sceneIdentifier];
+  sceneCopy = scene;
+  _sceneIdentifier = [sceneCopy _sceneIdentifier];
   v7 = SBLogPointer();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v33 = v6;
+    v33 = _sceneIdentifier;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "Requesting pointer for scene %{public}@", buf, 0xCu);
   }
 
@@ -163,21 +163,21 @@
   springBoardScenesToPointerAssertions = self->_springBoardScenesToPointerAssertions;
   if (!springBoardScenesToPointerAssertions)
   {
-    v11 = [MEMORY[0x277CCAB00] weakToWeakObjectsMapTable];
+    weakToWeakObjectsMapTable = [MEMORY[0x277CCAB00] weakToWeakObjectsMapTable];
     v12 = self->_springBoardScenesToPointerAssertions;
-    self->_springBoardScenesToPointerAssertions = v11;
+    self->_springBoardScenesToPointerAssertions = weakToWeakObjectsMapTable;
 
     springBoardScenesToPointerAssertions = self->_springBoardScenesToPointerAssertions;
   }
 
-  v13 = [(NSMapTable *)springBoardScenesToPointerAssertions objectForKey:v5];
+  v13 = [(NSMapTable *)springBoardScenesToPointerAssertions objectForKey:sceneCopy];
   if (v13)
   {
     [SBMousePointerManager requestPointerActivationForScene:];
   }
 
-  v14 = [v5 _sbDisplayConfiguration];
-  v15 = [v14 identity];
+  _sbDisplayConfiguration = [sceneCopy _sbDisplayConfiguration];
+  identity = [_sbDisplayConfiguration identity];
 
   objc_initWeak(buf, self);
   v16 = objc_alloc(MEMORY[0x277CF0CE8]);
@@ -186,15 +186,15 @@
   v24 = 3221225472;
   v25 = __58__SBMousePointerManager_requestPointerActivationForScene___block_invoke;
   v26 = &unk_2783B1A48;
-  v18 = v6;
+  v18 = _sceneIdentifier;
   v27 = v18;
   objc_copyWeak(v31, buf);
-  v19 = v5;
+  v19 = sceneCopy;
   v28 = v19;
-  v20 = v15;
+  v20 = identity;
   v31[1] = a2;
   v29 = v20;
-  v30 = self;
+  selfCopy = self;
   v21 = [v16 initWithIdentifier:@"com.apple.springboard.SBMousePointerManager" forReason:v18 queue:MEMORY[0x277D85CD0] invalidationBlock:&v23];
 
   [(NSMapTable *)self->_springBoardScenesToPointerAssertions setObject:v21 forKey:v19, v23, v24, v25, v26];
@@ -237,17 +237,17 @@ void __58__SBMousePointerManager_requestPointerActivationForScene___block_invoke
   }
 }
 
-- (void)mousePointerDevicesDidChange:(id)a3
+- (void)mousePointerDevicesDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__SBMousePointerManager_mousePointerDevicesDidChange___block_invoke;
   block[3] = &unk_2783A9CE8;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = changeCopy;
+  v5 = changeCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   objc_destroyWeak(&v8);
@@ -260,33 +260,33 @@ void __54__SBMousePointerManager_mousePointerDevicesDidChange___block_invoke(uin
   [WeakRetained _setPointerUIDWithConnectedDeviceCount:{objc_msgSend(*(a1 + 32), "count")}];
 }
 
-- (void)pointerClientController:(id)a3 sceneDidActivate:(id)a4
+- (void)pointerClientController:(id)controller sceneDidActivate:(id)activate
 {
-  v4 = a4;
-  v5 = [v4 settings];
-  v8 = [v5 sb_displayIdentityForSceneManagers];
+  activateCopy = activate;
+  settings = [activateCopy settings];
+  sb_displayIdentityForSceneManagers = [settings sb_displayIdentityForSceneManagers];
 
   v6 = +[SBSceneManagerCoordinator sharedInstance];
-  v7 = [v6 sceneManagerForDisplayIdentity:v8];
+  v7 = [v6 sceneManagerForDisplayIdentity:sb_displayIdentityForSceneManagers];
 
-  [v7 addPointerUISceneToPresentationBinder:v4];
+  [v7 addPointerUISceneToPresentationBinder:activateCopy];
 }
 
-- (void)pointerClientController:(id)a3 sceneWillDeactivate:(id)a4
+- (void)pointerClientController:(id)controller sceneWillDeactivate:(id)deactivate
 {
-  v4 = a4;
-  v5 = [v4 settings];
-  v8 = [v5 sb_displayIdentityForSceneManagers];
+  deactivateCopy = deactivate;
+  settings = [deactivateCopy settings];
+  sb_displayIdentityForSceneManagers = [settings sb_displayIdentityForSceneManagers];
 
   v6 = +[SBSceneManagerCoordinator sharedInstance];
-  v7 = [v6 sceneManagerForDisplayIdentity:v8];
+  v7 = [v6 sceneManagerForDisplayIdentity:sb_displayIdentityForSceneManagers];
 
-  [v7 removePointerUISceneFromPresentationBinder:v4];
+  [v7 removePointerUISceneFromPresentationBinder:deactivateCopy];
 }
 
-- (void)_notifyObserversPointingDeviceBecameAvailable:(BOOL)a3
+- (void)_notifyObserversPointingDeviceBecameAvailable:(BOOL)available
 {
-  v3 = a3;
+  availableCopy = available;
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
@@ -308,7 +308,7 @@ void __54__SBMousePointerManager_mousePointerDevicesDidChange___block_invoke(uin
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) mousePointerManager:self hardwarePointingDeviceAttachedDidChange:v3];
+        [*(*(&v10 + 1) + 8 * v9++) mousePointerManager:self hardwarePointingDeviceAttachedDidChange:availableCopy];
       }
 
       while (v7 != v9);
@@ -319,12 +319,12 @@ void __54__SBMousePointerManager_mousePointerDevicesDidChange___block_invoke(uin
   }
 }
 
-- (void)_setPointerUIDWithConnectedDeviceCount:(unint64_t)a3
+- (void)_setPointerUIDWithConnectedDeviceCount:(unint64_t)count
 {
   v8 = *MEMORY[0x277D85DE8];
-  if (self->_connectedPointingDevicesCount != a3)
+  if (self->_connectedPointingDevicesCount != count)
   {
-    self->_connectedPointingDevicesCount = a3;
+    self->_connectedPointingDevicesCount = count;
     [(SBMousePointerManager *)self _updatePointerAssertionsAndScenes];
     v4 = SBLogPointer();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -339,9 +339,9 @@ void __54__SBMousePointerManager_mousePointerDevicesDidChange___block_invoke(uin
 
 - (void)_updatePointerAssertionsAndScenes
 {
-  v3 = [(SBMousePointerManager *)self shouldAllowHardwarePointingDevices];
+  shouldAllowHardwarePointingDevices = [(SBMousePointerManager *)self shouldAllowHardwarePointingDevices];
   suppressEventsAssertion = self->_suppressEventsAssertion;
-  if (!v3)
+  if (!shouldAllowHardwarePointingDevices)
   {
     if (!suppressEventsAssertion)
     {
@@ -376,9 +376,9 @@ LABEL_10:
 
     else
     {
-      v10 = [(PSPointerClientController *)self->_pointerClientController acquireServiceKeepAliveAssertion];
+      acquireServiceKeepAliveAssertion = [(PSPointerClientController *)self->_pointerClientController acquireServiceKeepAliveAssertion];
       serviceKeepAliveAssertion = self->_serviceKeepAliveAssertion;
-      self->_serviceKeepAliveAssertion = v10;
+      self->_serviceKeepAliveAssertion = acquireServiceKeepAliveAssertion;
 
       v6 = 1;
       [(SBMousePointerManager *)self _notifyObserversPointingDeviceBecameAvailable:1];
@@ -416,9 +416,9 @@ void __58__SBMousePointerManager__updatePointerAssertionsAndScenes__block_invoke
   [WeakRetained _updateScenesForPointerWithHardwareAttached:*(a1 + 40)];
 }
 
-- (void)_updateScenesForPointerWithHardwareAttached:(BOOL)a3
+- (void)_updateScenesForPointerWithHardwareAttached:(BOOL)attached
 {
-  v3 = a3;
+  attachedCopy = attached;
   v31 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   v26 = 0u;
@@ -441,39 +441,39 @@ void __58__SBMousePointerManager__updatePointerAssertionsAndScenes__block_invoke
         }
 
         v10 = *(*(&v24 + 1) + 8 * i);
-        v11 = [v10 _sbDisplayConfiguration];
-        if (!v11)
+        _sbDisplayConfiguration = [v10 _sbDisplayConfiguration];
+        if (!_sbDisplayConfiguration)
         {
           [SBMousePointerManager _updateScenesForPointerWithHardwareAttached:];
         }
 
         v12 = SBLogPointer();
         v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG);
-        if (v3)
+        if (attachedCopy)
         {
           if (v13)
           {
-            v16 = [v10 _sceneIdentifier];
-            v17 = [v11 hardwareIdentifier];
+            _sceneIdentifier = [v10 _sceneIdentifier];
+            hardwareIdentifier = [_sbDisplayConfiguration hardwareIdentifier];
             systemClientController = self->_systemClientController;
             *buf = 138543874;
-            *&buf[4] = v16;
+            *&buf[4] = _sceneIdentifier;
             *&buf[12] = 2114;
-            *&buf[14] = v17;
+            *&buf[14] = hardwareIdentifier;
             *&buf[22] = 2048;
             *&buf[24] = systemClientController;
             _os_log_debug_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEBUG, "Activating pointer scenes for SB windowScene %{public}@ (%{public}@) - systemClientController: %p", buf, 0x20u);
           }
 
-          [(PSPointerSystemClientController *)self->_systemClientController prepareScenesForPointerForDisplayConfiguration:v11];
-          if ([v11 isMainDisplay] && (objc_opt_respondsToSelector() & 1) != 0)
+          [(PSPointerSystemClientController *)self->_systemClientController prepareScenesForPointerForDisplayConfiguration:_sbDisplayConfiguration];
+          if ([_sbDisplayConfiguration isMainDisplay] && (objc_opt_respondsToSelector() & 1) != 0)
           {
             v14 = self->_systemClientController;
             v15 = *&self->_rootWindowTransformForEmbeddedDisplay.c;
             *buf = *&self->_rootWindowTransformForEmbeddedDisplay.a;
             *&buf[16] = v15;
             v29 = *&self->_rootWindowTransformForEmbeddedDisplay.tx;
-            [(PSPointerSystemClientController *)v14 setRootWindowTransform:buf forDisplayConfiguration:v11];
+            [(PSPointerSystemClientController *)v14 setRootWindowTransform:buf forDisplayConfiguration:_sbDisplayConfiguration];
           }
         }
 
@@ -481,23 +481,23 @@ void __58__SBMousePointerManager__updatePointerAssertionsAndScenes__block_invoke
         {
           if (v13)
           {
-            v23 = [v10 _sceneIdentifier];
-            v19 = [v11 identity];
-            v20 = [v11 hardwareIdentifier];
+            _sceneIdentifier2 = [v10 _sceneIdentifier];
+            identity = [_sbDisplayConfiguration identity];
+            hardwareIdentifier2 = [_sbDisplayConfiguration hardwareIdentifier];
             v21 = self->_systemClientController;
             *buf = 138544130;
-            *&buf[4] = v23;
+            *&buf[4] = _sceneIdentifier2;
             *&buf[12] = 2112;
-            *&buf[14] = v19;
+            *&buf[14] = identity;
             *&buf[22] = 2114;
-            *&buf[24] = v20;
-            v22 = v20;
+            *&buf[24] = hardwareIdentifier2;
+            v22 = hardwareIdentifier2;
             LOWORD(v29) = 2048;
             *(&v29 + 2) = v21;
             _os_log_debug_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEBUG, "Invalidating pointer scenes for SB windowScene %{public}@ displayIdentity: %@ (%{public}@) - systemClientController: %p", buf, 0x2Au);
           }
 
-          [(PSPointerSystemClientController *)self->_systemClientController invalidateScenesForPointerForDisplayConfiguration:v11];
+          [(PSPointerSystemClientController *)self->_systemClientController invalidateScenesForPointerForDisplayConfiguration:_sbDisplayConfiguration];
         }
       }
 

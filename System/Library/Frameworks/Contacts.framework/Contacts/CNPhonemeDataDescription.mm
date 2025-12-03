@@ -1,20 +1,20 @@
 @interface CNPhonemeDataDescription
-- (BOOL)abPropertyID:(int *)a3;
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4;
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4;
+- (BOOL)abPropertyID:(int *)d;
+- (BOOL)isEqualForContact:(id)contact other:(id)other;
+- (void)decodeUsingCoder:(id)coder contact:(id)contact;
 @end
 
 @implementation CNPhonemeDataDescription
 
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4
+- (BOOL)isEqualForContact:(id)contact other:(id)other
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 phonemeData];
-  if (!v8)
+  contactCopy = contact;
+  otherCopy = other;
+  phonemeData = [contactCopy phonemeData];
+  if (!phonemeData)
   {
-    v4 = [v7 phonemeData];
-    if (!v4)
+    phonemeData2 = [otherCopy phonemeData];
+    if (!phonemeData2)
     {
       v11 = 1;
 LABEL_6:
@@ -23,11 +23,11 @@ LABEL_6:
     }
   }
 
-  v9 = [v6 phonemeData];
-  v10 = [v7 phonemeData];
-  v11 = [v9 isEqual:v10];
+  phonemeData3 = [contactCopy phonemeData];
+  phonemeData4 = [otherCopy phonemeData];
+  v11 = [phonemeData3 isEqual:phonemeData4];
 
-  if (!v8)
+  if (!phonemeData)
   {
     goto LABEL_6;
   }
@@ -37,25 +37,25 @@ LABEL_7:
   return v11;
 }
 
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4
+- (void)decodeUsingCoder:(id)coder contact:(id)contact
 {
-  v5 = a4;
-  v6 = a3;
-  v9 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"_phonemeData"];
+  contactCopy = contact;
+  coderCopy = coder;
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_phonemeData"];
 
   v7 = [v9 copy];
-  v8 = v5[43];
-  v5[43] = v7;
+  v8 = contactCopy[43];
+  contactCopy[43] = v7;
 }
 
-- (BOOL)abPropertyID:(int *)a3
+- (BOOL)abPropertyID:(int *)d
 {
-  if (a3)
+  if (d)
   {
-    *a3 = *MEMORY[0x1E698A560];
+    *d = *MEMORY[0x1E698A560];
   }
 
-  return a3 != 0;
+  return d != 0;
 }
 
 @end

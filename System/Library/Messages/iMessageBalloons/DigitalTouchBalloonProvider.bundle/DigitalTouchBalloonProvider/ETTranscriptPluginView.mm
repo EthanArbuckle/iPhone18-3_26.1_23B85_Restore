@@ -1,6 +1,6 @@
 @interface ETTranscriptPluginView
 - (ETTranscriptPluginView)init;
-- (void)trackInteractiveSubview:(id)a3;
+- (void)trackInteractiveSubview:(id)subview;
 @end
 
 @implementation ETTranscriptPluginView
@@ -21,22 +21,22 @@
   return v3;
 }
 
-- (void)trackInteractiveSubview:(id)a3
+- (void)trackInteractiveSubview:(id)subview
 {
-  v4 = a3;
+  subviewCopy = subview;
   interactiveViews = self->_interactiveViews;
-  v8 = v4;
+  v8 = subviewCopy;
   if (!interactiveViews)
   {
     v6 = +[NSMutableArray array];
     v7 = self->_interactiveViews;
     self->_interactiveViews = v6;
 
-    v4 = v8;
+    subviewCopy = v8;
     interactiveViews = self->_interactiveViews;
   }
 
-  [(NSMutableArray *)interactiveViews addObject:v4];
+  [(NSMutableArray *)interactiveViews addObject:subviewCopy];
 }
 
 @end

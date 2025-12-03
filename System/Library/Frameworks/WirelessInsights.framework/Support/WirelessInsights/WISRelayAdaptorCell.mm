@@ -1,37 +1,37 @@
 @interface WISRelayAdaptorCell
-- (WISRelayAdaptorCell)initWithMCC:(id)a3 mnc:(id)a4 rat:(id)a5 band:(id)a6 frequency:(id)a7;
+- (WISRelayAdaptorCell)initWithMCC:(id)c mnc:(id)mnc rat:(id)rat band:(id)band frequency:(id)frequency;
 @end
 
 @implementation WISRelayAdaptorCell
 
-- (WISRelayAdaptorCell)initWithMCC:(id)a3 mnc:(id)a4 rat:(id)a5 band:(id)a6 frequency:(id)a7
+- (WISRelayAdaptorCell)initWithMCC:(id)c mnc:(id)mnc rat:(id)rat band:(id)band frequency:(id)frequency
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  cCopy = c;
+  mncCopy = mnc;
+  ratCopy = rat;
+  bandCopy = band;
+  frequencyCopy = frequency;
   v28.receiver = self;
   v28.super_class = WISRelayAdaptorCell;
   v17 = [(WISRelayAdaptorCell *)&v28 init];
   mcc = v17->_mcc;
-  v17->_mcc = v12;
-  v19 = v12;
+  v17->_mcc = cCopy;
+  v19 = cCopy;
 
   mnc = v17->_mnc;
-  v17->_mnc = v13;
-  v21 = v13;
+  v17->_mnc = mncCopy;
+  v21 = mncCopy;
 
   rat = v17->_rat;
-  v17->_rat = v14;
-  v23 = v14;
+  v17->_rat = ratCopy;
+  v23 = ratCopy;
 
   band = v17->_band;
-  v17->_band = v15;
-  v25 = v15;
+  v17->_band = bandCopy;
+  v25 = bandCopy;
 
   frequency = v17->_frequency;
-  v17->_frequency = v16;
+  v17->_frequency = frequencyCopy;
 
   return v17;
 }

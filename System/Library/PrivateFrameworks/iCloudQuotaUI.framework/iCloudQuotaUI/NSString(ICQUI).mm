@@ -10,40 +10,40 @@
 
 - (uint64_t)icqui_isPhotosPath
 {
-  v1 = [a1 lastPathComponent];
-  v2 = [v1 isEqualToString:@"PHOTOS"];
+  lastPathComponent = [self lastPathComponent];
+  v2 = [lastPathComponent isEqualToString:@"PHOTOS"];
 
   return v2;
 }
 
 - (uint64_t)icqui_isCurrentDeviceBackupPath
 {
-  v1 = [a1 lastPathComponent];
-  v2 = [v1 isEqualToString:@"CURRENT_DEVICE_BACKUP"];
+  lastPathComponent = [self lastPathComponent];
+  v2 = [lastPathComponent isEqualToString:@"CURRENT_DEVICE_BACKUP"];
 
   return v2;
 }
 
 - (uint64_t)icqui_isLocalDeviceBackupPath
 {
-  v1 = [a1 lastPathComponent];
-  v2 = [v1 isEqualToString:@"LOCAL_BACKUP"];
+  lastPathComponent = [self lastPathComponent];
+  v2 = [lastPathComponent isEqualToString:@"LOCAL_BACKUP"];
 
   return v2;
 }
 
 - (uint64_t)icqui_isReviewLargeFilesPath
 {
-  v1 = [a1 lastPathComponent];
-  v2 = [v1 isEqualToString:@"REVIEW_LARGE_FILES"];
+  lastPathComponent = [self lastPathComponent];
+  v2 = [lastPathComponent isEqualToString:@"REVIEW_LARGE_FILES"];
 
   return v2;
 }
 
 - (uint64_t)icqui_isCFUSkipPath
 {
-  v1 = [a1 lastPathComponent];
-  v2 = [v1 isEqualToString:*MEMORY[0x277D7F278]];
+  lastPathComponent = [self lastPathComponent];
+  v2 = [lastPathComponent isEqualToString:*MEMORY[0x277D7F278]];
 
   return v2;
 }

@@ -1,65 +1,65 @@
 @interface CLKUICurvedLabel
 - (BOOL)_hasImage;
 - (BOOL)isTextTruncated;
-- (CGAffineTransform)_transformForLayoutLocation:(SEL)a3 usedWidth:(CGPoint)a4 distance:(double)a5 centerAngle:(double)a6 bounds:(double)a7;
+- (CGAffineTransform)_transformForLayoutLocation:(SEL)location usedWidth:(CGPoint)width distance:(double)distance centerAngle:(double)angle bounds:(double)bounds;
 - (CGAffineTransform)transformForImage;
-- (CGPoint)_offsetOfBoundingRect:(CGRect)a3 inRect:(CGRect)a4;
+- (CGPoint)_offsetOfBoundingRect:(CGRect)rect inRect:(CGRect)inRect;
 - (CGPoint)centerForImage;
 - (CGRect)_glyphsBoundingRect;
 - (CGRect)_imageBounds;
 - (CGRect)textBoundingRect;
 - (CGSize)imageViewOverrideSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CLKUICurvedLabel)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CLKUICurvedLabel)initWithFrame:(CGRect)frame;
 - (NSAttributedString)attributedText;
 - (NSString)text;
 - (UIEdgeInsets)opticalInsets;
 - (UIView)imageView;
-- (_NSRange)_drawableCharacterRange:(_NSRange *)a3;
+- (_NSRange)_drawableCharacterRange:(_NSRange *)range;
 - (__CTLine)_newLineFromDrawableTextStorage;
 - (double)_distance;
 - (double)_extraWidthForImage;
 - (double)_lastLineBaseline;
 - (double)maxLinearWidth;
-- (void)_enumerateTransforms:(BOOL)a3 callback:(id)a4;
-- (void)_setAttributedText:(id)a3;
-- (void)_transformForImage:(id)a3;
+- (void)_enumerateTransforms:(BOOL)transforms callback:(id)callback;
+- (void)_setAttributedText:(id)text;
+- (void)_transformForImage:(id)image;
 - (void)_updateMaxSize;
 - (void)_updateTextColor;
 - (void)_updateTracking;
 - (void)dealloc;
-- (void)drawTextInRect:(CGRect)a3;
-- (void)getTextCenter:(CGPoint *)a3 startAngle:(double *)a4 endAngle:(double *)a5;
+- (void)drawTextInRect:(CGRect)rect;
+- (void)getTextCenter:(CGPoint *)center startAngle:(double *)angle endAngle:(double *)endAngle;
 - (void)invalidateCachedSize;
 - (void)layoutSubviews;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setAlpha:(double)a3;
-- (void)setAnimationAlpha:(double)a3;
-- (void)setBaselineOffset:(double)a3;
-- (void)setCenterAngle:(double)a3;
-- (void)setCircleRadius:(double)a3;
-- (void)setFont:(id)a3;
-- (void)setImagePadding:(double)a3;
-- (void)setImagePlacement:(unint64_t)a3;
-- (void)setImageView:(id)a3;
-- (void)setImageView:(id)a3 placement:(unint64_t)a4 padding:(double)a5;
-- (void)setImageViewOverrideSize:(CGSize)a3;
-- (void)setInterior:(BOOL)a3;
-- (void)setMaxAngularWidth:(double)a3;
-- (void)setPath:(id)a3;
-- (void)setText:(id)a3;
-- (void)setTextColor:(id)a3;
-- (void)setTracking:(double)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setAlpha:(double)alpha;
+- (void)setAnimationAlpha:(double)alpha;
+- (void)setBaselineOffset:(double)offset;
+- (void)setCenterAngle:(double)angle;
+- (void)setCircleRadius:(double)radius;
+- (void)setFont:(id)font;
+- (void)setImagePadding:(double)padding;
+- (void)setImagePlacement:(unint64_t)placement;
+- (void)setImageView:(id)view;
+- (void)setImageView:(id)view placement:(unint64_t)placement padding:(double)padding;
+- (void)setImageViewOverrideSize:(CGSize)size;
+- (void)setInterior:(BOOL)interior;
+- (void)setMaxAngularWidth:(double)width;
+- (void)setPath:(id)path;
+- (void)setText:(id)text;
+- (void)setTextColor:(id)color;
+- (void)setTracking:(double)tracking;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation CLKUICurvedLabel
 
-- (CLKUICurvedLabel)initWithFrame:(CGRect)a3
+- (CLKUICurvedLabel)initWithFrame:(CGRect)frame
 {
   v17.receiver = self;
   v17.super_class = CLKUICurvedLabel;
-  v3 = [(CLKUICurvedLabel *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CLKUICurvedLabel *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -79,9 +79,9 @@
     v3->_textStorage = v8;
 
     [(NSTextStorage *)v3->_textStorage addLayoutManager:v3->_layoutManager];
-    v10 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
     textColor = v3->_textColor;
-    v3->_textColor = v10;
+    v3->_textColor = whiteColor;
 
     v3->_viewAlpha = 1.0;
     v3->_animationAlpha = 1.0;
@@ -119,11 +119,11 @@
   return result;
 }
 
-- (void)setInterior:(BOOL)a3
+- (void)setInterior:(BOOL)interior
 {
-  if (self->_interior != a3)
+  if (self->_interior != interior)
   {
-    self->_interior = a3;
+    self->_interior = interior;
     [(CLKUICurvedLabel *)self invalidateCachedSize];
     [(CLKUICurvedLabel *)self _updateTracking];
     [(CLKUICurvedLabel *)self setNeedsLayout];
@@ -132,11 +132,11 @@
   }
 }
 
-- (void)setCircleRadius:(double)a3
+- (void)setCircleRadius:(double)radius
 {
   if ((CLKFloatEqualsFloat() & 1) == 0)
   {
-    self->_circleRadius = a3;
+    self->_circleRadius = radius;
     [(CLKUICurvedLabel *)self invalidateCachedSize];
     [(CLKUICurvedLabel *)self _updateMaxSize];
     [(CLKUICurvedLabel *)self setNeedsLayout];
@@ -145,11 +145,11 @@
   }
 }
 
-- (void)setCenterAngle:(double)a3
+- (void)setCenterAngle:(double)angle
 {
   if ((CLKFloatEqualsFloat() & 1) == 0)
   {
-    self->_centerAngle = a3;
+    self->_centerAngle = angle;
     [(CLKUICurvedLabel *)self invalidateCachedSize];
     [(CLKUICurvedLabel *)self setNeedsLayout];
 
@@ -157,30 +157,30 @@
   }
 }
 
-- (void)setMaxAngularWidth:(double)a3
+- (void)setMaxAngularWidth:(double)width
 {
-  v3 = a3;
-  v5 = fmod(a3, 6.28318531);
-  if (v3 > 6.28318531)
+  widthCopy = width;
+  v5 = fmod(width, 6.28318531);
+  if (widthCopy > 6.28318531)
   {
-    v3 = v5;
+    widthCopy = v5;
   }
 
   if ((CLKFloatEqualsFloat() & 1) == 0)
   {
-    self->_maxAngularWidth = v3;
+    self->_maxAngularWidth = widthCopy;
 
     [(CLKUICurvedLabel *)self _updateMaxSize];
   }
 }
 
-- (void)setPath:(id)a3
+- (void)setPath:(id)path
 {
-  v5 = a3;
-  if (self->_path != v5)
+  pathCopy = path;
+  if (self->_path != pathCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_path, a3);
+    v6 = pathCopy;
+    objc_storeStrong(&self->_path, path);
     self->_usesPath = 1;
     [(CLKUICurvedPathGlyphLayoutProvider *)self->_pathGlyphLayoutProvider setPath:self->_path];
     [(CLKUICurvedLabel *)self invalidateCachedSize];
@@ -188,7 +188,7 @@
     [(CLKUICurvedLabel *)self _updateTracking];
     [(CLKUICurvedLabel *)self setNeedsLayout];
     [(CLKUICurvedLabel *)self setNeedsDisplay];
-    v5 = v6;
+    pathCopy = v6;
   }
 }
 
@@ -253,9 +253,9 @@
   {
     v7 = xmmword_1E4A0AB40;
     [(CLKUICurvedLabel *)self _drawableCharacterRange:&v7];
-    v4 = [MEMORY[0x1E696AD98] numberWithInt:v7 != 0x7FFFFFFFFFFFFFFFLL];
+    0x7FFFFFFFFFFFFFFFLL = [MEMORY[0x1E696AD98] numberWithInt:v7 != 0x7FFFFFFFFFFFFFFFLL];
     v5 = self->_isTextTruncated;
-    self->_isTextTruncated = v4;
+    self->_isTextTruncated = 0x7FFFFFFFFFFFFFFFLL;
 
     isTextTruncated = self->_isTextTruncated;
   }
@@ -263,12 +263,12 @@
   return [(NSNumber *)isTextTruncated BOOLValue];
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_textColor] & 1) == 0)
+  colorCopy = color;
+  if (([colorCopy isEqual:self->_textColor] & 1) == 0)
   {
-    objc_storeStrong(&self->_textColor, a3);
+    objc_storeStrong(&self->_textColor, color);
     [(CLKUICurvedLabel *)self _updateTextColor];
   }
 }
@@ -331,24 +331,24 @@ void __36__CLKUICurvedLabel__updateTextColor__block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   if ((CLKFloatEqualsFloat() & 1) == 0)
   {
-    self->_viewAlpha = a3;
+    self->_viewAlpha = alpha;
 
     [(CLKUICurvedLabel *)self _updateTextColor];
   }
 }
 
-- (void)setAnimationAlpha:(double)a3
+- (void)setAnimationAlpha:(double)alpha
 {
   if ((CLKFloatEqualsFloat() & 1) == 0)
   {
-    self->_animationAlpha = a3;
+    self->_animationAlpha = alpha;
     v5.receiver = self;
     v5.super_class = CLKUICurvedLabel;
-    [(CLKUICurvedLabel *)&v5 setAlpha:a3];
+    [(CLKUICurvedLabel *)&v5 setAlpha:alpha];
   }
 }
 
@@ -365,28 +365,28 @@ void __36__CLKUICurvedLabel__updateTextColor__block_invoke(uint64_t a1, void *a2
   return result;
 }
 
-- (void)_setAttributedText:(id)a3
+- (void)_setAttributedText:(id)text
 {
-  v4 = a3;
-  if (([v4 isEqualToAttributedString:self->_attributedStringUnmodified] & 1) == 0)
+  textCopy = text;
+  if (([textCopy isEqualToAttributedString:self->_attributedStringUnmodified] & 1) == 0)
   {
-    v5 = [v4 copy];
+    v5 = [textCopy copy];
     attributedStringUnmodified = self->_attributedStringUnmodified;
     self->_attributedStringUnmodified = v5;
 
-    if (!v4)
+    if (!textCopy)
     {
       goto LABEL_10;
     }
 
-    v7 = [v4 length];
+    v7 = [textCopy length];
     v8 = 0;
     v9 = 0;
     while (1)
     {
-      v10 = [v4 string];
-      v11 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-      v12 = [v10 rangeOfCharacterFromSet:v11 options:0 range:{v8, v7}];
+      string = [textCopy string];
+      newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+      v12 = [string rangeOfCharacterFromSet:newlineCharacterSet options:0 range:{v8, v7}];
       v14 = v13;
 
       if (v12 == 0x7FFFFFFFFFFFFFFFLL)
@@ -396,14 +396,14 @@ void __36__CLKUICurvedLabel__updateTextColor__block_invoke(uint64_t a1, void *a2
 
       if (!v9)
       {
-        v9 = [v4 mutableCopy];
+        v9 = [textCopy mutableCopy];
       }
 
-      v15 = [v9 mutableString];
-      [v15 replaceCharactersInRange:v12 withString:{v14, @" "}];
+      mutableString = [v9 mutableString];
+      [mutableString replaceCharactersInRange:v12 withString:{v14, @" "}];
 
       v8 = v12 + 1;
-      v7 = [v4 length] - v8;
+      v7 = [textCopy length] - v8;
     }
 
     if (v9)
@@ -415,7 +415,7 @@ void __36__CLKUICurvedLabel__updateTextColor__block_invoke(uint64_t a1, void *a2
     else
     {
 LABEL_10:
-      v16 = [v4 mutableCopy];
+      v16 = [textCopy mutableCopy];
       v17 = 0;
     }
 
@@ -538,19 +538,19 @@ LABEL_12:
   return v4;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (text)
   {
     v4 = MEMORY[0x1E696AAB0];
-    v5 = a3;
+    textCopy = text;
     v6 = [v4 alloc];
     font = self->_font;
     v10 = *MEMORY[0x1E69DB648];
     v11[0] = font;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-    v9 = [v6 initWithString:v5 attributes:v8];
+    v9 = [v6 initWithString:textCopy attributes:v8];
   }
 
   else
@@ -564,31 +564,31 @@ LABEL_12:
 
 - (NSString)text
 {
-  v2 = [(CLKUICurvedLabel *)self attributedText];
-  v3 = [v2 string];
+  attributedText = [(CLKUICurvedLabel *)self attributedText];
+  string = [attributedText string];
 
-  return v3;
+  return string;
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v6 = a3;
-  if (([v6 isEqual:self->_font] & 1) == 0)
+  fontCopy = font;
+  if (([fontCopy isEqual:self->_font] & 1) == 0)
   {
-    objc_storeStrong(&self->_font, a3);
+    objc_storeStrong(&self->_font, font);
     if (self->_storageIsNonAttributedText)
     {
-      v5 = [(CLKUICurvedLabel *)self text];
-      [(CLKUICurvedLabel *)self setText:v5];
+      text = [(CLKUICurvedLabel *)self text];
+      [(CLKUICurvedLabel *)self setText:text];
     }
   }
 }
 
-- (void)setTracking:(double)a3
+- (void)setTracking:(double)tracking
 {
   if ((CLKFloatEqualsFloat() & 1) == 0)
   {
-    self->_tracking = a3;
+    self->_tracking = tracking;
     [(CLKUICurvedLabel *)self _updateTracking];
     [(CLKUICurvedLabel *)self invalidateCachedSize];
     [(CLKUICurvedLabel *)self setNeedsLayout];
@@ -618,22 +618,22 @@ LABEL_12:
   }
 }
 
-- (void)setBaselineOffset:(double)a3
+- (void)setBaselineOffset:(double)offset
 {
   if ((CLKFloatEqualsFloat() & 1) == 0)
   {
-    self->_baselineOffset = a3;
+    self->_baselineOffset = offset;
     pathGlyphLayoutProvider = self->_pathGlyphLayoutProvider;
 
-    [(CLKUICurvedPathGlyphLayoutProvider *)pathGlyphLayoutProvider setBaselineOffset:a3];
+    [(CLKUICurvedPathGlyphLayoutProvider *)pathGlyphLayoutProvider setBaselineOffset:offset];
   }
 }
 
-- (void)setImagePlacement:(unint64_t)a3
+- (void)setImagePlacement:(unint64_t)placement
 {
-  if (self->_imagePlacement != a3)
+  if (self->_imagePlacement != placement)
   {
-    self->_imagePlacement = a3;
+    self->_imagePlacement = placement;
     [(CLKUICurvedLabel *)self invalidateCachedSize];
     [(CLKUICurvedLabel *)self setNeedsDisplay];
 
@@ -641,11 +641,11 @@ LABEL_12:
   }
 }
 
-- (void)setImagePadding:(double)a3
+- (void)setImagePadding:(double)padding
 {
   if ((CLKFloatEqualsFloat() & 1) == 0)
   {
-    self->_imagePadding = a3;
+    self->_imagePadding = padding;
     [(CLKUICurvedLabel *)self invalidateCachedSize];
     [(CLKUICurvedLabel *)self setNeedsDisplay];
 
@@ -653,9 +653,9 @@ LABEL_12:
   }
 }
 
-- (void)setImageView:(id)a3
+- (void)setImageView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_imageView);
 
   v5 = obj;
@@ -674,8 +674,8 @@ LABEL_12:
     if (obj)
     {
       v10 = objc_loadWeakRetained(&self->_imageView);
-      v11 = [v10 layer];
-      [v11 setAnchorPoint:{0.5, 1.0}];
+      layer = [v10 layer];
+      [layer setAnchorPoint:{0.5, 1.0}];
 
       v12 = objc_loadWeakRetained(&self->_imageView);
       [v12 sizeToFit];
@@ -703,11 +703,11 @@ LABEL_12:
   }
 }
 
-- (void)setImageViewOverrideSize:(CGSize)a3
+- (void)setImageViewOverrideSize:(CGSize)size
 {
-  if (self->_imageViewOverrideSize.width != a3.width || self->_imageViewOverrideSize.height != a3.height)
+  if (self->_imageViewOverrideSize.width != size.width || self->_imageViewOverrideSize.height != size.height)
   {
-    self->_imageViewOverrideSize = a3;
+    self->_imageViewOverrideSize = size;
     [(CLKUICurvedLabel *)self invalidateCachedSize];
     [(CLKUICurvedLabel *)self _updateMaxSize];
     [(CLKUICurvedLabel *)self setNeedsDisplay];
@@ -716,11 +716,11 @@ LABEL_12:
   }
 }
 
-- (void)setImageView:(id)a3 placement:(unint64_t)a4 padding:(double)a5
+- (void)setImageView:(id)view placement:(unint64_t)placement padding:(double)padding
 {
-  self->_imagePlacement = a4;
-  self->_imagePadding = a5;
-  [(CLKUICurvedLabel *)self setImageView:a3];
+  self->_imagePlacement = placement;
+  self->_imagePadding = padding;
+  [(CLKUICurvedLabel *)self setImageView:view];
 }
 
 - (BOOL)_hasImage
@@ -754,10 +754,10 @@ LABEL_12:
   v9.receiver = self;
   v9.super_class = CLKUICurvedLabel;
   [(CLKUICurvedLabel *)&v9 layoutSubviews];
-  v3 = [(CLKUICurvedLabel *)self _hasImage];
+  _hasImage = [(CLKUICurvedLabel *)self _hasImage];
   WeakRetained = objc_loadWeakRetained(&self->_imageView);
   v5 = WeakRetained;
-  if (v3)
+  if (_hasImage)
   {
     [WeakRetained setHidden:0];
 
@@ -768,11 +768,11 @@ LABEL_12:
     v8[4] = self;
     [(CLKUICurvedLabel *)self _transformForImage:v8];
     [(CLKUICurvedLabel *)self transformForImage];
-    v6 = [(CLKUICurvedLabel *)self imageView];
+    imageView = [(CLKUICurvedLabel *)self imageView];
     *v7 = *&v7[7];
     *&v7[2] = *&v7[9];
     *&v7[4] = *&v7[11];
-    [v6 setTransform:v7];
+    [imageView setTransform:v7];
   }
 
   else
@@ -794,13 +794,13 @@ void __34__CLKUICurvedLabel_layoutSubviews__block_invoke(uint64_t a1, double a2,
   [v14 setCenter:{a2 + v11 * a4, a3 + v13 * a5}];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   if (!self->_cachedSizeIsValid)
   {
-    [(CLKUICurvedLabel *)self _glyphsBoundingRect:a3.width];
-    v4 = [MEMORY[0x1E695B530] sharedRenderingContext];
-    v5 = [v4 device];
+    [(CLKUICurvedLabel *)self _glyphsBoundingRect:fits.width];
+    mEMORY[0x1E695B530] = [MEMORY[0x1E695B530] sharedRenderingContext];
+    device = [mEMORY[0x1E695B530] device];
 
     CLKCeilForDevice();
     v7 = v6;
@@ -817,22 +817,22 @@ void __34__CLKUICurvedLabel_layoutSubviews__block_invoke(uint64_t a1, double a2,
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v20.receiver = self;
   v20.super_class = CLKUICurvedLabel;
-  v4 = a3;
-  [(CLKUICurvedLabel *)&v20 traitCollectionDidChange:v4];
-  v5 = [(CLKUICurvedLabel *)self traitCollection];
-  v6 = [v5 legibilityWeight];
-  v7 = [v4 legibilityWeight];
+  changeCopy = change;
+  [(CLKUICurvedLabel *)&v20 traitCollectionDidChange:changeCopy];
+  traitCollection = [(CLKUICurvedLabel *)self traitCollection];
+  legibilityWeight = [traitCollection legibilityWeight];
+  legibilityWeight2 = [changeCopy legibilityWeight];
 
-  if (v6 != v7)
+  if (legibilityWeight != legibilityWeight2)
   {
     font = self->_font;
     if (font)
     {
-      v9 = [(UIFont *)font _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:v5];
+      v9 = [(UIFont *)font _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:traitCollection];
       [(CLKUICurvedLabel *)self setFont:v9];
     }
 
@@ -845,7 +845,7 @@ void __34__CLKUICurvedLabel_layoutSubviews__block_invoke(uint64_t a1, double a2,
       v15 = 3221225472;
       v16 = __45__CLKUICurvedLabel_traitCollectionDidChange___block_invoke;
       v17 = &unk_1E8762F70;
-      v18 = v5;
+      v18 = traitCollection;
       v19 = v10;
       v13 = v10;
       [(NSAttributedString *)attributedStringUnmodified enumerateAttributesInRange:0 options:v12 usingBlock:0x100000, &v14];
@@ -875,17 +875,17 @@ void __45__CLKUICurvedLabel_traitCollectionDidChange___block_invoke(uint64_t a1,
   }
 }
 
-- (void)drawTextInRect:(CGRect)a3
+- (void)drawTextInRect:(CGRect)rect
 {
   [(CLKUICurvedLabel *)self _glyphsBoundingRect];
   [CLKUICurvedLabel _offsetOfBoundingRect:"_offsetOfBoundingRect:inRect:" inRect:?];
   v5 = v4;
   v7 = v6;
-  v8 = [(CLKUICurvedLabel *)self _newLineFromDrawableTextStorage];
-  ImageBounds = CTLineGetImageBounds(v8, 0);
+  _newLineFromDrawableTextStorage = [(CLKUICurvedLabel *)self _newLineFromDrawableTextStorage];
+  ImageBounds = CTLineGetImageBounds(_newLineFromDrawableTextStorage, 0);
   x = ImageBounds.origin.x;
   y = ImageBounds.origin.y;
-  CFRelease(v8);
+  CFRelease(_newLineFromDrawableTextStorage);
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x3010000000;
@@ -976,7 +976,7 @@ void __35__CLKUICurvedLabel_drawTextInRect___block_invoke_2(uint64_t a1, uint64_
   return result;
 }
 
-- (_NSRange)_drawableCharacterRange:(_NSRange *)a3
+- (_NSRange)_drawableCharacterRange:(_NSRange *)range
 {
   v5 = [(NSLayoutManager *)self->_layoutManager glyphRangeForTextContainer:self->_textContainer];
   v7 = v6;
@@ -984,10 +984,10 @@ void __35__CLKUICurvedLabel_drawTextInRect___block_invoke_2(uint64_t a1, uint64_
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = v8 + 1;
-    if (a3)
+    if (range)
     {
-      a3->location = [(NSLayoutManager *)self->_layoutManager characterRangeForGlyphRange:v8 actualGlyphRange:v9, 0];
-      a3->length = v10;
+      range->location = [(NSLayoutManager *)self->_layoutManager characterRangeForGlyphRange:v8 actualGlyphRange:v9, 0];
+      range->length = v10;
     }
   }
 
@@ -1034,14 +1034,14 @@ void __35__CLKUICurvedLabel_drawTextInRect___block_invoke_2(uint64_t a1, uint64_
   return v11;
 }
 
-- (void)getTextCenter:(CGPoint *)a3 startAngle:(double *)a4 endAngle:(double *)a5
+- (void)getTextCenter:(CGPoint *)center startAngle:(double *)angle endAngle:(double *)endAngle
 {
   if ([(NSTextStorage *)self->_textStorage length]|| [(CLKUICurvedLabel *)self _hasImage])
   {
     [(CLKUICurvedLabel *)self _distance];
     v10 = v9;
     [(CLKUICurvedLabel *)self _glyphsBoundingRect];
-    if (a3)
+    if (center)
     {
       v15 = v11;
       v16 = v12;
@@ -1078,20 +1078,20 @@ void __35__CLKUICurvedLabel_drawTextInRect___block_invoke_2(uint64_t a1, uint64_
       v49.size.width = width;
       v49.size.height = height;
       MinY = CGRectGetMinY(v49);
-      a3->x = v45 + MidX - v47 * v34.__sinval;
-      a3->y = v27 + v46 + MinY - v47 * v34.__cosval;
+      center->x = v45 + MidX - v47 * v34.__sinval;
+      center->y = v27 + v46 + MinY - v47 * v34.__cosval;
     }
 
-    v36 = [(CLKUICurvedLabel *)self _newLineFromDrawableTextStorage];
-    v37 = v36;
+    _newLineFromDrawableTextStorage = [(CLKUICurvedLabel *)self _newLineFromDrawableTextStorage];
+    v37 = _newLineFromDrawableTextStorage;
     if (self->_hasMonospacedNumbers)
     {
-      TypographicBounds = CTLineGetTypographicBounds(v36, 0, 0, 0);
+      TypographicBounds = CTLineGetTypographicBounds(_newLineFromDrawableTextStorage, 0, 0, 0);
     }
 
     else
     {
-      ImageBounds = CTLineGetImageBounds(v36, 0);
+      ImageBounds = CTLineGetImageBounds(_newLineFromDrawableTextStorage, 0);
       TypographicBounds = CGRectGetWidth(ImageBounds);
     }
 
@@ -1116,7 +1116,7 @@ void __35__CLKUICurvedLabel_drawTextInRect___block_invoke_2(uint64_t a1, uint64_
       v42 = 1.57079633;
     }
 
-    if (a4)
+    if (angle)
     {
       v43 = 0.0;
       if (v10 != 0.0)
@@ -1124,10 +1124,10 @@ void __35__CLKUICurvedLabel_drawTextInRect___block_invoke_2(uint64_t a1, uint64_
         v43 = (v39 * -0.5 + 0.0) / v10 + self->_centerAngle;
       }
 
-      *a4 = v42 - v43;
+      *angle = v42 - v43;
     }
 
-    if (a5)
+    if (endAngle)
     {
       v44 = 0.0;
       if (v10 != 0.0)
@@ -1135,23 +1135,23 @@ void __35__CLKUICurvedLabel_drawTextInRect___block_invoke_2(uint64_t a1, uint64_
         v44 = (v39 + v39 * -0.5) / v10 + self->_centerAngle;
       }
 
-      *a5 = v42 - v44;
+      *endAngle = v42 - v44;
     }
   }
 }
 
-- (CGPoint)_offsetOfBoundingRect:(CGRect)a3 inRect:(CGRect)a4
+- (CGPoint)_offsetOfBoundingRect:(CGRect)rect inRect:(CGRect)inRect
 {
-  rect = a4.size.height;
-  width = a3.size.width;
-  v4 = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  height = a3.size.height;
-  v8 = a3.size.width;
-  v9 = a3.origin.y;
-  v10 = a3.origin.x;
-  v11 = CGRectGetWidth(a4);
+  rect = inRect.size.height;
+  width = rect.size.width;
+  v4 = inRect.size.width;
+  y = inRect.origin.y;
+  x = inRect.origin.x;
+  height = rect.size.height;
+  v8 = rect.size.width;
+  v9 = rect.origin.y;
+  v10 = rect.origin.x;
+  v11 = CGRectGetWidth(inRect);
   v19.origin.x = v10;
   v19.origin.y = v9;
   v19.size.width = v8;
@@ -1272,15 +1272,15 @@ void __39__CLKUICurvedLabel__glyphsBoundingRect__block_invoke_2(uint64_t a1, dou
   return result;
 }
 
-- (void)_transformForImage:(id)a3
+- (void)_transformForImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __39__CLKUICurvedLabel__transformForImage___block_invoke;
   v6[3] = &unk_1E8763038;
-  v7 = v4;
-  v5 = v4;
+  v7 = imageCopy;
+  v5 = imageCopy;
   [(CLKUICurvedLabel *)self _enumerateTransforms:1 callback:v6];
 }
 
@@ -1294,13 +1294,13 @@ uint64_t __39__CLKUICurvedLabel__transformForImage___block_invoke(uint64_t a1, d
   return v11(a4, a5, a6, a7);
 }
 
-- (void)_enumerateTransforms:(BOOL)a3 callback:(id)a4
+- (void)_enumerateTransforms:(BOOL)transforms callback:(id)callback
 {
-  v4 = a3;
-  v107 = a4;
-  v6 = [(CLKUICurvedLabel *)self _hasImage];
-  v7 = v6;
-  if (!v4 || v6)
+  transformsCopy = transforms;
+  callbackCopy = callback;
+  _hasImage = [(CLKUICurvedLabel *)self _hasImage];
+  v7 = _hasImage;
+  if (!transformsCopy || _hasImage)
   {
     [(CLKUICurvedLabel *)self bounds];
     v104 = v9;
@@ -1309,8 +1309,8 @@ uint64_t __39__CLKUICurvedLabel__transformForImage___block_invoke(uint64_t a1, d
     v12 = v11;
     [(CLKUICurvedLabel *)self _distance];
     v106 = v13;
-    v14 = [(CLKUICurvedLabel *)self _newLineFromDrawableTextStorage];
-    ImageBounds = CTLineGetImageBounds(v14, 0);
+    _newLineFromDrawableTextStorage = [(CLKUICurvedLabel *)self _newLineFromDrawableTextStorage];
+    ImageBounds = CTLineGetImageBounds(_newLineFromDrawableTextStorage, 0);
     x = ImageBounds.origin.x;
     y = ImageBounds.origin.y;
     width = ImageBounds.size.width;
@@ -1319,10 +1319,10 @@ uint64_t __39__CLKUICurvedLabel__transformForImage___block_invoke(uint64_t a1, d
     TypographicBounds = 0.0;
     if (self->_hasMonospacedNumbers)
     {
-      TypographicBounds = CTLineGetTypographicBounds(v14, 0, 0, 0);
+      TypographicBounds = CTLineGetTypographicBounds(_newLineFromDrawableTextStorage, 0, 0, 0);
     }
 
-    CFRelease(v14);
+    CFRelease(_newLineFromDrawableTextStorage);
     v95 = width;
     v96 = y;
     if (self->_hasMonospacedNumbers)
@@ -1379,7 +1379,7 @@ uint64_t __39__CLKUICurvedLabel__transformForImage___block_invoke(uint64_t a1, d
       [(CLKUICurvedPathGlyphLayoutProvider *)self->_pathGlyphLayoutProvider setUsedWidth:v20];
     }
 
-    if (v4 && v7)
+    if (transformsCopy && v7)
     {
       [(CLKUICurvedLabel *)self _imageBounds];
       v34 = v33;
@@ -1448,11 +1448,11 @@ uint64_t __39__CLKUICurvedLabel__transformForImage___block_invoke(uint64_t a1, d
       v90 = v34;
       v91 = v36;
       v146 = CGRectOffset(*(&v31 - 1), -MidX, -v44);
-      v92 = v107[2];
+      v92 = callbackCopy[2];
       v123 = v126;
       v124 = v127;
       v125 = v128;
-      v92(v107, 0, 0, &v123, MidX, v44, v146.origin.x, v146.origin.y, v146.size.width, v146.size.height);
+      v92(callbackCopy, 0, 0, &v123, MidX, v44, v146.origin.x, v146.origin.y, v146.size.width, v146.size.height);
     }
 
     else
@@ -1492,11 +1492,11 @@ uint64_t __39__CLKUICurvedLabel__transformForImage___block_invoke(uint64_t a1, d
         v137.size.height = v55;
         v137.size.width = rectb;
         v138 = CGRectOffset(v137, -v60, -v57);
-        v62 = v107[2];
+        v62 = callbackCopy[2];
         v123 = v126;
         v124 = v127;
         v125 = v128;
-        v62(v107, 0x7FFFFFFFFFFFFFFFLL, 0, &v123, v60, v57, v138.origin.x, v138.origin.y, v138.size.width, v138.size.height);
+        v62(callbackCopy, 0x7FFFFFFFFFFFFFFFLL, 0, &v123, v60, v57, v138.origin.x, v138.origin.y, v138.size.width, v138.size.height);
       }
 
       recta = v26 + v28;
@@ -1561,7 +1561,7 @@ uint64_t __39__CLKUICurvedLabel__transformForImage___block_invoke(uint64_t a1, d
           v71 = &v126 + 8;
         }
 
-        v109 = v107;
+        v109 = callbackCopy;
         v120 = v64;
         v121 = v67;
         [v68 enumerateRangesUsingBlock:v108];
@@ -1613,11 +1613,11 @@ uint64_t __39__CLKUICurvedLabel__transformForImage___block_invoke(uint64_t a1, d
         v143.size.width = v102;
         v143.size.height = v77;
         v144 = CGRectOffset(v143, -v82, -v79);
-        v84 = v107[2];
+        v84 = callbackCopy[2];
         v123 = v126;
         v124 = v127;
         v125 = v128;
-        v84(v107, 0x7FFFFFFFFFFFFFFFLL, 0, &v123, v82, v79, v144.origin.x, v144.origin.y, v144.size.width, v144.size.height);
+        v84(callbackCopy, 0x7FFFFFFFFFFFFFFFLL, 0, &v123, v82, v79, v144.origin.x, v144.origin.y, v144.size.width, v144.size.height);
       }
     }
   }
@@ -1711,23 +1711,23 @@ void __50__CLKUICurvedLabel__enumerateTransforms_callback___block_invoke(uint64_
   v35(MidX, v9, v45.origin.x, v45.origin.y, v45.size.width, v45.size.height);
 }
 
-- (CGAffineTransform)_transformForLayoutLocation:(SEL)a3 usedWidth:(CGPoint)a4 distance:(double)a5 centerAngle:(double)a6 bounds:(double)a7
+- (CGAffineTransform)_transformForLayoutLocation:(SEL)location usedWidth:(CGPoint)width distance:(double)distance centerAngle:(double)angle bounds:(double)bounds
 {
-  y = a4.y;
-  x = a4.x;
+  y = width.y;
+  x = width.x;
   if (self->_usesPath)
   {
     v12 = 1000;
-    [(CLKUICurvedPathGlyphLayoutProvider *)self->_pathGlyphLayoutProvider setLayoutLocation:a4.x, a4.y, a5, a6, a7];
+    [(CLKUICurvedPathGlyphLayoutProvider *)self->_pathGlyphLayoutProvider setLayoutLocation:width.x, width.y, distance, angle, bounds];
   }
 
   else
   {
     v12 = 992;
-    [(CLKUICurvedCircleGlyphLayoutProvider *)self->_circleGlyphLayoutProvider setCenterAngle:self->_centerAngle, a4.y, a5, a6, a7];
+    [(CLKUICurvedCircleGlyphLayoutProvider *)self->_circleGlyphLayoutProvider setCenterAngle:self->_centerAngle, width.y, distance, angle, bounds];
     [(CLKUICurvedCircleGlyphLayoutProvider *)self->_circleGlyphLayoutProvider setLayoutLocation:x, y];
-    [(CLKUICurvedCircleGlyphLayoutProvider *)self->_circleGlyphLayoutProvider setUsedWidth:a5];
-    [(CLKUICurvedCircleGlyphLayoutProvider *)self->_circleGlyphLayoutProvider setDistance:a6];
+    [(CLKUICurvedCircleGlyphLayoutProvider *)self->_circleGlyphLayoutProvider setUsedWidth:distance];
+    [(CLKUICurvedCircleGlyphLayoutProvider *)self->_circleGlyphLayoutProvider setDistance:angle];
     [(CLKUICurvedCircleGlyphLayoutProvider *)self->_circleGlyphLayoutProvider setBounds:a8.origin.x, a8.origin.y, a8.size.width, a8.size.height];
   }
 
@@ -1750,16 +1750,16 @@ void __50__CLKUICurvedLabel__enumerateTransforms_callback___block_invoke(uint64_
   return result;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == &kImageViewBoundsContext)
+  if (context == &kImageViewBoundsContext)
   {
     v7 = *MEMORY[0x1E696A500];
-    v8 = a5;
-    v9 = [v8 objectForKeyedSubscript:v7];
+    changeCopy = change;
+    v9 = [changeCopy objectForKeyedSubscript:v7];
     [v9 CGRectValue];
 
-    v10 = [v8 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+    v10 = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
 
     [v10 CGRectValue];
     if (!CLKFloatEqualsFloat() || (CLKFloatEqualsFloat() & 1) == 0)

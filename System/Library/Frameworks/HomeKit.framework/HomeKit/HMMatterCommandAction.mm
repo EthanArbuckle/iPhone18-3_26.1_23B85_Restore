@@ -1,17 +1,17 @@
 @interface HMMatterCommandAction
-+ (id)actionWithProtoBuf:(id)a3 home:(id)a4;
++ (id)actionWithProtoBuf:(id)buf home:(id)home;
 + (id)new;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HMMatterCommandAction)init;
-- (HMMatterCommandAction)initWithCoder:(id)a3;
-- (HMMatterCommandAction)initWithCommands:(id)a3 enforceExecutionOrder:(BOOL)a4 uuid:(id)a5;
-- (HMMatterCommandAction)initWithDictionary:(id)a3 home:(id)a4;
-- (HMMatterCommandAction)initWithUUID:(id)a3;
+- (HMMatterCommandAction)initWithCoder:(id)coder;
+- (HMMatterCommandAction)initWithCommands:(id)commands enforceExecutionOrder:(BOOL)order uuid:(id)uuid;
+- (HMMatterCommandAction)initWithDictionary:(id)dictionary home:(id)home;
+- (HMMatterCommandAction)initWithUUID:(id)d;
 - (id)_serializeForAdd;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)encodeAsProtoBuf;
-- (void)__configureWithContext:(id)a3 actionSet:(id)a4;
+- (void)__configureWithContext:(id)context actionSet:(id)set;
 @end
 
 @implementation HMMatterCommandAction
@@ -20,27 +20,27 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[HMMatterCommandAction enforceExecutionOrder](self, "enforceExecutionOrder")}];
-  v5 = [(HMMatterCommandAction *)self commands];
-  v6 = [v3 stringWithFormat:@"EnforceExecutionOrder: %@ Commands: %@", v4, v5];
+  commands = [(HMMatterCommandAction *)self commands];
+  v6 = [v3 stringWithFormat:@"EnforceExecutionOrder: %@ Commands: %@", v4, commands];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   os_unfair_lock_lock_with_options();
-  v5 = [HMMatterCommandAction allocWithZone:a3];
-  v6 = [(HMMatterCommandAction *)self commands];
-  v7 = [(HMMatterCommandAction *)v5 initWithMatterCommands:v6 enforceExecutionOrder:[(HMMatterCommandAction *)self enforceExecutionOrder]];
+  v5 = [HMMatterCommandAction allocWithZone:zone];
+  commands = [(HMMatterCommandAction *)self commands];
+  v7 = [(HMMatterCommandAction *)v5 initWithMatterCommands:commands enforceExecutionOrder:[(HMMatterCommandAction *)self enforceExecutionOrder]];
 
   os_unfair_lock_unlock(&self->_lock);
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v10) = 1;
   }
@@ -50,7 +50,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -61,12 +61,12 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMMatterCommandAction *)self commands];
-      v8 = [(HMMatterCommandAction *)v6 commands];
-      if ([v7 isEqualToArray:v8])
+      commands = [(HMMatterCommandAction *)self commands];
+      commands2 = [(HMMatterCommandAction *)v6 commands];
+      if ([commands isEqualToArray:commands2])
       {
-        v9 = [(HMMatterCommandAction *)self enforceExecutionOrder];
-        v10 = v9 ^ [(HMMatterCommandAction *)v6 enforceExecutionOrder]^ 1;
+        enforceExecutionOrder = [(HMMatterCommandAction *)self enforceExecutionOrder];
+        v10 = enforceExecutionOrder ^ [(HMMatterCommandAction *)v6 enforceExecutionOrder]^ 1;
       }
 
       else
@@ -84,27 +84,27 @@
   return v10;
 }
 
-- (HMMatterCommandAction)initWithCoder:(id)a3
+- (HMMatterCommandAction)initWithCoder:(id)coder
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v28.receiver = self;
   v28.super_class = HMMatterCommandAction;
-  v5 = [(HMAction *)&v28 initWithCoder:v4];
+  v5 = [(HMAction *)&v28 initWithCoder:coderCopy];
   if (!v5)
   {
     goto LABEL_4;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"home"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"home"];
   v7 = MEMORY[0x1E695DFD8];
   v8 = HMAllowedClassesForMatterCommand();
   v9 = [v7 setWithArray:v8];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"HMCommandKey"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"HMCommandKey"];
 
   if (v10)
   {
-    v11 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __39__HMMatterCommandAction_initWithCoder___block_invoke;
@@ -112,15 +112,15 @@
     v25 = v6;
     v12 = v5;
     v26 = v12;
-    v27 = v11;
-    v13 = v11;
+    v27 = array;
+    v13 = array;
     v14 = v6;
     [v10 hmf_enumerateWithAutoreleasePoolUsingBlock:v24];
     v15 = [v13 copy];
     commands = v12->_commands;
     v12->_commands = v15;
 
-    v12->_enforceExecutionOrder = [v4 decodeBoolForKey:@"HMEnforceExecutionOrderCodingKey"];
+    v12->_enforceExecutionOrder = [coderCopy decodeBoolForKey:@"HMEnforceExecutionOrderCodingKey"];
 LABEL_4:
     v17 = v5;
     goto LABEL_8;
@@ -180,9 +180,9 @@ void __39__HMMatterCommandAction_initWithCoder___block_invoke(uint64_t a1, void 
 {
   v22 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(HMPBMatterCommandAction);
-  v4 = [(HMAction *)self uuid];
-  v5 = [v4 hm_convertToData];
-  [(HMPBMatterCommandAction *)v3 setActionUUID:v5];
+  uuid = [(HMAction *)self uuid];
+  hm_convertToData = [uuid hm_convertToData];
+  [(HMPBMatterCommandAction *)v3 setActionUUID:hm_convertToData];
 
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   [(HMPBMatterCommandAction *)v3 setCommands:v6];
@@ -191,8 +191,8 @@ void __39__HMMatterCommandAction_initWithCoder___block_invoke(uint64_t a1, void 
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [(HMMatterCommandAction *)self commands];
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  commands = [(HMMatterCommandAction *)self commands];
+  v8 = [commands countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -203,18 +203,18 @@ void __39__HMMatterCommandAction_initWithCoder___block_invoke(uint64_t a1, void 
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(commands);
         }
 
-        v12 = [*(*(&v17 + 1) + 8 * i) encodeAsProtoBuf];
-        if (v12)
+        encodeAsProtoBuf = [*(*(&v17 + 1) + 8 * i) encodeAsProtoBuf];
+        if (encodeAsProtoBuf)
         {
-          v13 = [(HMPBMatterCommandAction *)v3 commands];
-          [v13 addObject:v12];
+          commands2 = [(HMPBMatterCommandAction *)v3 commands];
+          [commands2 addObject:encodeAsProtoBuf];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [commands countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v9);
@@ -236,11 +236,11 @@ void __39__HMMatterCommandAction_initWithCoder___block_invoke(uint64_t a1, void 
   {
     v11.receiver = self;
     v11.super_class = HMMatterCommandAction;
-    v3 = [(HMAction *)&v11 _serializeForAdd];
-    v4 = [v3 mutableCopy];
+    _serializeForAdd = [(HMAction *)&v11 _serializeForAdd];
+    v4 = [_serializeForAdd mutableCopy];
 
-    v5 = [(HMMatterCommandAction *)self commands];
-    v6 = [v5 na_map:&__block_literal_global_39045];
+    commands = [(HMMatterCommandAction *)self commands];
+    v6 = [commands na_map:&__block_literal_global_39045];
 
     v7 = [v6 copy];
     [v4 setObject:v7 forKeyedSubscript:@"HMCommandActionCommandsKey"];
@@ -259,23 +259,23 @@ void __39__HMMatterCommandAction_initWithCoder___block_invoke(uint64_t a1, void 
   return v9;
 }
 
-- (void)__configureWithContext:(id)a3 actionSet:(id)a4
+- (void)__configureWithContext:(id)context actionSet:(id)set
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  setCopy = set;
   v14.receiver = self;
   v14.super_class = HMMatterCommandAction;
-  [(HMAction *)&v14 __configureWithContext:v6 actionSet:v7];
-  v8 = [(HMMatterCommandAction *)self commands];
+  [(HMAction *)&v14 __configureWithContext:contextCopy actionSet:setCopy];
+  commands = [(HMMatterCommandAction *)self commands];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __58__HMMatterCommandAction___configureWithContext_actionSet___block_invoke;
   v11[3] = &unk_1E754B700;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 hmf_enumerateWithAutoreleasePoolUsingBlock:v11];
+  v12 = contextCopy;
+  v13 = setCopy;
+  v9 = setCopy;
+  v10 = contextCopy;
+  [commands hmf_enumerateWithAutoreleasePoolUsingBlock:v11];
 }
 
 void __58__HMMatterCommandAction___configureWithContext_actionSet___block_invoke(uint64_t a1, void *a2)
@@ -287,21 +287,21 @@ void __58__HMMatterCommandAction___configureWithContext_actionSet___block_invoke
   [v4 _configureWithContext:v2 home:v5];
 }
 
-- (HMMatterCommandAction)initWithDictionary:(id)a3 home:(id)a4
+- (HMMatterCommandAction)initWithDictionary:(id)dictionary home:(id)home
 {
   v52 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  homeCopy = home;
   v46.receiver = self;
   v46.super_class = HMMatterCommandAction;
-  v8 = [(HMAction *)&v46 initWithDictionary:v6 home:v7];
+  v8 = [(HMAction *)&v46 initWithDictionary:dictionaryCopy home:homeCopy];
   if (!v8)
   {
     goto LABEL_27;
   }
 
-  v9 = [MEMORY[0x1E695DF70] array];
-  [v6 hmf_arrayForKey:@"HMCommandActionCommandsKey"];
+  array = [MEMORY[0x1E695DF70] array];
+  [dictionaryCopy hmf_arrayForKey:@"HMCommandActionCommandsKey"];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
@@ -358,7 +358,7 @@ void __58__HMMatterCommandAction___configureWithContext_actionSet___block_invoke
         goto LABEL_24;
       }
 
-      v18 = [[HMMatterCommand alloc] initWithDictionary:v15 home:v7];
+      v18 = [[HMMatterCommand alloc] initWithDictionary:v15 home:homeCopy];
       if (!v18)
       {
         v33 = objc_autoreleasePoolPush();
@@ -382,7 +382,7 @@ LABEL_24:
       }
 
       v19 = v18;
-      [v9 addObject:v18];
+      [array addObject:v18];
     }
 
     v12 = [v10 countByEnumeratingWithState:&v42 objects:v51 count:16];
@@ -397,12 +397,12 @@ LABEL_24:
 
 LABEL_14:
 
-  v20 = [v9 copy];
+  v20 = [array copy];
   commands = v8->_commands;
   v8->_commands = v20;
 
   v41 = 0;
-  v22 = [v6 hmf_BOOLForKey:@"HMEnforceExecutionOrderKey" error:&v41];
+  v22 = [dictionaryCopy hmf_BOOLForKey:@"HMEnforceExecutionOrderKey" error:&v41];
   v23 = v41;
   v8->_enforceExecutionOrder = v22;
   if (!v23)
@@ -435,27 +435,27 @@ LABEL_28:
   return v37;
 }
 
-- (HMMatterCommandAction)initWithCommands:(id)a3 enforceExecutionOrder:(BOOL)a4 uuid:(id)a5
+- (HMMatterCommandAction)initWithCommands:(id)commands enforceExecutionOrder:(BOOL)order uuid:(id)uuid
 {
-  v9 = a3;
+  commandsCopy = commands;
   v13.receiver = self;
   v13.super_class = HMMatterCommandAction;
-  v10 = [(HMAction *)&v13 initWithUUID:a5];
+  v10 = [(HMAction *)&v13 initWithUUID:uuid];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_commands, a3);
-    v11->_enforceExecutionOrder = a4;
+    objc_storeStrong(&v10->_commands, commands);
+    v11->_enforceExecutionOrder = order;
   }
 
   return v11;
 }
 
-- (HMMatterCommandAction)initWithUUID:(id)a3
+- (HMMatterCommandAction)initWithUUID:(id)d
 {
   v4.receiver = self;
   v4.super_class = HMMatterCommandAction;
-  return [(HMAction *)&v4 initWithUUID:a3];
+  return [(HMAction *)&v4 initWithUUID:d];
 }
 
 - (HMMatterCommandAction)init
@@ -471,23 +471,23 @@ LABEL_28:
   objc_exception_throw(v7);
 }
 
-+ (id)actionWithProtoBuf:(id)a3 home:(id)a4
++ (id)actionWithProtoBuf:(id)buf home:(id)home
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  bufCopy = buf;
+  homeCopy = home;
   v7 = MEMORY[0x1E696AFB0];
-  v8 = [v5 actionUUID];
-  v27 = [v7 hmf_UUIDWithBytesAsData:v8];
+  actionUUID = [bufCopy actionUUID];
+  v27 = [v7 hmf_UUIDWithBytesAsData:actionUUID];
 
   v29 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v28 = v5;
-  v9 = [v5 commands];
-  v10 = [v9 countByEnumeratingWithState:&v30 objects:v38 count:16];
+  v28 = bufCopy;
+  commands = [bufCopy commands];
+  v10 = [commands countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v10)
   {
     v11 = v10;
@@ -499,11 +499,11 @@ LABEL_28:
       {
         if (*v31 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(commands);
         }
 
         v15 = *(*(&v30 + 1) + 8 * i);
-        v16 = [(__objc2_class *)v13[242] commandWithProtoBuf:v15 home:v6, v27];
+        v16 = [(__objc2_class *)v13[242] commandWithProtoBuf:v15 home:homeCopy, v27];
         if (v16)
         {
           [v29 addObject:v16];
@@ -517,14 +517,14 @@ LABEL_28:
           {
             HMFGetLogIdentifier();
             v19 = v12;
-            v21 = v20 = v6;
+            v21 = v20 = homeCopy;
             *buf = 138543618;
             v35 = v21;
             v36 = 2112;
             v37 = v15;
             _os_log_impl(&dword_19BB39000, v18, OS_LOG_TYPE_ERROR, "%{public}@Failed to create command with proto buf: %@", buf, 0x16u);
 
-            v6 = v20;
+            homeCopy = v20;
             v12 = v19;
             v13 = off_1E7545000;
           }
@@ -533,7 +533,7 @@ LABEL_28:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v30 objects:v38 count:16];
+      v11 = [commands countByEnumeratingWithState:&v30 objects:v38 count:16];
     }
 
     while (v11);

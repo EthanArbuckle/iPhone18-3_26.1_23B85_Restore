@@ -1,18 +1,18 @@
 @interface UberCollectionViewCell
-- (_TtC20ProductPageExtension22UberCollectionViewCell)initWithCoder:(id)a3;
-- (_TtC20ProductPageExtension22UberCollectionViewCell)initWithFrame:(CGRect)a3;
-- (void)applyLayoutAttributes:(id)a3;
+- (_TtC20ProductPageExtension22UberCollectionViewCell)initWithCoder:(id)coder;
+- (_TtC20ProductPageExtension22UberCollectionViewCell)initWithFrame:(CGRect)frame;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
 @end
 
 @implementation UberCollectionViewCell
 
-- (_TtC20ProductPageExtension22UberCollectionViewCell)initWithFrame:(CGRect)a3
+- (_TtC20ProductPageExtension22UberCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v9 = OBJC_IVAR____TtC20ProductPageExtension22UberCollectionViewCell_itemLayoutContext;
   v10 = sub_10076341C();
@@ -20,19 +20,19 @@
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension22UberCollectionViewCell_uberView) = 0;
   v18.receiver = self;
   v18.super_class = ObjectType;
-  v11 = [(UberCollectionViewCell *)&v18 initWithFrame:x, y, width, height];
+  height = [(UberCollectionViewCell *)&v18 initWithFrame:x, y, width, height];
   left = UIEdgeInsetsZero.left;
   bottom = UIEdgeInsetsZero.bottom;
   right = UIEdgeInsetsZero.right;
-  v15 = v11;
+  v15 = height;
   [(UberCollectionViewCell *)v15 setLayoutMargins:UIEdgeInsetsZero.top, left, bottom, right];
-  v16 = [(UberCollectionViewCell *)v15 contentView];
-  [v16 setLayoutMargins:{UIEdgeInsetsZero.top, left, bottom, right}];
+  contentView = [(UberCollectionViewCell *)v15 contentView];
+  [contentView setLayoutMargins:{UIEdgeInsetsZero.top, left, bottom, right}];
 
   return v15;
 }
 
-- (_TtC20ProductPageExtension22UberCollectionViewCell)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension22UberCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC20ProductPageExtension22UberCollectionViewCell_itemLayoutContext;
   v5 = sub_10076341C();
@@ -45,15 +45,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004FCC4C();
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  sub_1004FCD70(v4);
+  attributesCopy = attributes;
+  selfCopy = self;
+  sub_1004FCD70(attributesCopy);
 }
 
 @end

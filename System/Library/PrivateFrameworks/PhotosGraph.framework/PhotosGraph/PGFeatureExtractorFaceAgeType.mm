@@ -1,36 +1,36 @@
 @interface PGFeatureExtractorFaceAgeType
-- (id)_floatVectorForFaceAgeType:(unsigned __int16)a3;
-- (id)defaultFloatVectorWithError:(id *)a3;
+- (id)_floatVectorForFaceAgeType:(unsigned __int16)type;
+- (id)defaultFloatVectorWithError:(id *)error;
 - (id)featureNames;
-- (id)floatMatrixWithEntities:(id)a3 progressReporter:(id)a4 error:(id *)a5;
+- (id)floatMatrixWithEntities:(id)entities progressReporter:(id)reporter error:(id *)error;
 @end
 
 @implementation PGFeatureExtractorFaceAgeType
 
-- (id)_floatVectorForFaceAgeType:(unsigned __int16)a3
+- (id)_floatVectorForFaceAgeType:(unsigned __int16)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = [MEMORY[0x277D22C68] zerosOfCount:{-[PGFeatureExtractorFaceAgeType featureLength](self, "featureLength")}];
   v6 = v4;
-  if (v3 <= 5)
+  if (typeCopy <= 5)
   {
     LODWORD(v5) = 1.0;
-    [v4 setFloat:v3 atIndex:v5];
+    [v4 setFloat:typeCopy atIndex:v5];
   }
 
   return v6;
 }
 
-- (id)floatMatrixWithEntities:(id)a3 progressReporter:(id)a4 error:(id *)a5
+- (id)floatMatrixWithEntities:(id)entities progressReporter:(id)reporter error:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  entitiesCopy = entities;
   v7 = objc_alloc_init(MEMORY[0x277D22C60]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = v6;
+  v8 = entitiesCopy;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -60,7 +60,7 @@
   return v7;
 }
 
-- (id)defaultFloatVectorWithError:(id *)a3
+- (id)defaultFloatVectorWithError:(id *)error
 {
   v3 = [objc_alloc(MEMORY[0x277D22C40]) initWithArray:&unk_284485610];
 

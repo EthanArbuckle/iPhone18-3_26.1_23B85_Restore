@@ -1,20 +1,20 @@
 @interface ICASResultData
-- (ICASResultData)initWithResultType:(id)a3;
+- (ICASResultData)initWithResultType:(id)type;
 - (id)toDict;
 @end
 
 @implementation ICASResultData
 
-- (ICASResultData)initWithResultType:(id)a3
+- (ICASResultData)initWithResultType:(id)type
 {
-  v5 = a3;
+  typeCopy = type;
   v9.receiver = self;
   v9.super_class = ICASResultData;
   v6 = [(ICASResultData *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_resultType, a3);
+    objc_storeStrong(&v6->_resultType, type);
   }
 
   return v7;
@@ -24,19 +24,19 @@
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v9 = @"resultType";
-  v3 = [(ICASResultData *)self resultType];
-  if (v3)
+  resultType = [(ICASResultData *)self resultType];
+  if (resultType)
   {
-    v4 = [(ICASResultData *)self resultType];
+    resultType2 = [(ICASResultData *)self resultType];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    resultType2 = objc_opt_new();
   }
 
-  v5 = v4;
-  v10[0] = v4;
+  v5 = resultType2;
+  v10[0] = resultType2;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
   v7 = *MEMORY[0x277D85DE8];

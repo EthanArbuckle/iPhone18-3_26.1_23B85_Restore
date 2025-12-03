@@ -1,14 +1,14 @@
 @interface MTSchemaMTClientEventV2
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (MTSchemaMTASRStateUpdated)asrStateUpdated;
 - (MTSchemaMTAppBackgroundedTier1)appBackgrounded;
 - (MTSchemaMTAppNextButtonTappedTier1)appNextButtonTapped;
 - (MTSchemaMTAppTextBoxDismissedTier1)appTextBoxDismissed;
 - (MTSchemaMTAppTimedOutTier1)appTimedOut;
 - (MTSchemaMTBatchRequestContext)batchRequestContext;
-- (MTSchemaMTClientEventV2)initWithDictionary:(id)a3;
-- (MTSchemaMTClientEventV2)initWithJSON:(id)a3;
+- (MTSchemaMTClientEventV2)initWithDictionary:(id)dictionary;
+- (MTSchemaMTClientEventV2)initWithJSON:(id)n;
 - (MTSchemaMTFrameworkRequestResponseReceived)frameworkRequestResponseReceived;
 - (MTSchemaMTFrameworkRequestSent)frameworkRequestSent;
 - (MTSchemaMTInvocationContext)invocationContext;
@@ -20,7 +20,7 @@
 - (MTSchemaMTTranslationTTSPlayed)translationTTSPlayed;
 - (NSData)jsonData;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)qualifiedMessageName;
@@ -42,35 +42,35 @@
 - (void)deleteLanguageIdentificationCompleted;
 - (void)deleteLocalePairResolved;
 - (void)deleteTranslationTTSPlayed;
-- (void)setAppBackgrounded:(id)a3;
-- (void)setAppNextButtonTapped:(id)a3;
-- (void)setAppTextBoxDismissed:(id)a3;
-- (void)setAppTimedOut:(id)a3;
-- (void)setAsrStateUpdated:(id)a3;
-- (void)setBatchRequestContext:(id)a3;
-- (void)setFrameworkRequestResponseReceived:(id)a3;
-- (void)setFrameworkRequestSent:(id)a3;
-- (void)setInvocationContext:(id)a3;
-- (void)setInvocationStartedTier1:(id)a3;
-- (void)setLanguageDisambiguationUISelected:(id)a3;
-- (void)setLanguageDisambiguationUIShown:(id)a3;
-- (void)setLanguageIdentificationCompleted:(id)a3;
-- (void)setLocalePairResolved:(id)a3;
-- (void)setTranslationTTSPlayed:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setAppBackgrounded:(id)backgrounded;
+- (void)setAppNextButtonTapped:(id)tapped;
+- (void)setAppTextBoxDismissed:(id)dismissed;
+- (void)setAppTimedOut:(id)out;
+- (void)setAsrStateUpdated:(id)updated;
+- (void)setBatchRequestContext:(id)context;
+- (void)setFrameworkRequestResponseReceived:(id)received;
+- (void)setFrameworkRequestSent:(id)sent;
+- (void)setInvocationContext:(id)context;
+- (void)setInvocationStartedTier1:(id)tier1;
+- (void)setLanguageDisambiguationUISelected:(id)selected;
+- (void)setLanguageDisambiguationUIShown:(id)shown;
+- (void)setLanguageIdentificationCompleted:(id)completed;
+- (void)setLocalePairResolved:(id)resolved;
+- (void)setTranslationTTSPlayed:(id)played;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MTSchemaMTClientEventV2
 
-- (MTSchemaMTClientEventV2)initWithDictionary:(id)a3
+- (MTSchemaMTClientEventV2)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v50.receiver = self;
   v50.super_class = MTSchemaMTClientEventV2;
   v5 = [(MTSchemaMTClientEventV2 *)&v50 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -78,7 +78,7 @@
       [(MTSchemaMTClientEventV2 *)v5 setEventMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"batchRequestContext"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"batchRequestContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -86,7 +86,7 @@
       [(MTSchemaMTClientEventV2 *)v5 setBatchRequestContext:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"invocationContext"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"invocationContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -94,7 +94,7 @@
       [(MTSchemaMTClientEventV2 *)v5 setInvocationContext:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"asrStateUpdated"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"asrStateUpdated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -102,7 +102,7 @@
       [(MTSchemaMTClientEventV2 *)v5 setAsrStateUpdated:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"localePairResolved"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"localePairResolved"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -110,7 +110,7 @@
       [(MTSchemaMTClientEventV2 *)v5 setLocalePairResolved:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"invocationStartedTier1"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"invocationStartedTier1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -118,7 +118,7 @@
       [(MTSchemaMTClientEventV2 *)v5 setInvocationStartedTier1:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"appNextButtonTapped"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"appNextButtonTapped"];
     objc_opt_class();
     v49 = v18;
     if (objc_opt_isKindOfClass())
@@ -128,7 +128,7 @@
     }
 
     v48 = v6;
-    v20 = [v4 objectForKeyedSubscript:@"appTextBoxDismissed"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"appTextBoxDismissed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -138,7 +138,7 @@
 
     v42 = v20;
     v47 = v8;
-    v22 = [v4 objectForKeyedSubscript:@"appTimedOut"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"appTimedOut"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -147,7 +147,7 @@
     }
 
     v46 = v10;
-    v24 = [v4 objectForKeyedSubscript:@"frameworkRequestSent"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"frameworkRequestSent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -156,7 +156,7 @@
     }
 
     v45 = v12;
-    v26 = [v4 objectForKeyedSubscript:@"frameworkRequestResponseReceived"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"frameworkRequestResponseReceived"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -165,7 +165,7 @@
     }
 
     v44 = v14;
-    v28 = [v4 objectForKeyedSubscript:@"appBackgrounded"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"appBackgrounded"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -175,7 +175,7 @@
 
     v41 = v24;
     v43 = v16;
-    v30 = [v4 objectForKeyedSubscript:@"languageIdentificationCompleted"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"languageIdentificationCompleted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -184,7 +184,7 @@
     }
 
     v32 = v22;
-    v33 = [v4 objectForKeyedSubscript:@"languageDisambiguationUIShown"];
+    v33 = [dictionaryCopy objectForKeyedSubscript:@"languageDisambiguationUIShown"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -192,7 +192,7 @@
       [(MTSchemaMTClientEventV2 *)v5 setLanguageDisambiguationUIShown:v34];
     }
 
-    v35 = [v4 objectForKeyedSubscript:@"languageDisambiguationUISelected"];
+    v35 = [dictionaryCopy objectForKeyedSubscript:@"languageDisambiguationUISelected"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -200,7 +200,7 @@
       [(MTSchemaMTClientEventV2 *)v5 setLanguageDisambiguationUISelected:v36];
     }
 
-    v37 = [v4 objectForKeyedSubscript:@"translationTTSPlayed"];
+    v37 = [dictionaryCopy objectForKeyedSubscript:@"translationTTSPlayed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -214,30 +214,30 @@
   return v5;
 }
 
-- (MTSchemaMTClientEventV2)initWithJSON:(id)a3
+- (MTSchemaMTClientEventV2)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MTSchemaMTClientEventV2 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MTSchemaMTClientEventV2 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MTSchemaMTClientEventV2 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -250,266 +250,266 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_appBackgrounded)
   {
-    v4 = [(MTSchemaMTClientEventV2 *)self appBackgrounded];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    appBackgrounded = [(MTSchemaMTClientEventV2 *)self appBackgrounded];
+    dictionaryRepresentation = [appBackgrounded dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"appBackgrounded"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"appBackgrounded"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"appBackgrounded"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"appBackgrounded"];
     }
   }
 
   if (self->_appNextButtonTapped)
   {
-    v7 = [(MTSchemaMTClientEventV2 *)self appNextButtonTapped];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    appNextButtonTapped = [(MTSchemaMTClientEventV2 *)self appNextButtonTapped];
+    dictionaryRepresentation2 = [appNextButtonTapped dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"appNextButtonTapped"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"appNextButtonTapped"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"appNextButtonTapped"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"appNextButtonTapped"];
     }
   }
 
   if (self->_appTextBoxDismissed)
   {
-    v10 = [(MTSchemaMTClientEventV2 *)self appTextBoxDismissed];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    appTextBoxDismissed = [(MTSchemaMTClientEventV2 *)self appTextBoxDismissed];
+    dictionaryRepresentation3 = [appTextBoxDismissed dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"appTextBoxDismissed"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"appTextBoxDismissed"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"appTextBoxDismissed"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"appTextBoxDismissed"];
     }
   }
 
   if (self->_appTimedOut)
   {
-    v13 = [(MTSchemaMTClientEventV2 *)self appTimedOut];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    appTimedOut = [(MTSchemaMTClientEventV2 *)self appTimedOut];
+    dictionaryRepresentation4 = [appTimedOut dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"appTimedOut"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"appTimedOut"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"appTimedOut"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"appTimedOut"];
     }
   }
 
   if (self->_asrStateUpdated)
   {
-    v16 = [(MTSchemaMTClientEventV2 *)self asrStateUpdated];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    asrStateUpdated = [(MTSchemaMTClientEventV2 *)self asrStateUpdated];
+    dictionaryRepresentation5 = [asrStateUpdated dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"asrStateUpdated"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"asrStateUpdated"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"asrStateUpdated"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"asrStateUpdated"];
     }
   }
 
   if (self->_batchRequestContext)
   {
-    v19 = [(MTSchemaMTClientEventV2 *)self batchRequestContext];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    batchRequestContext = [(MTSchemaMTClientEventV2 *)self batchRequestContext];
+    dictionaryRepresentation6 = [batchRequestContext dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"batchRequestContext"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"batchRequestContext"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"batchRequestContext"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"batchRequestContext"];
     }
   }
 
   if (self->_eventMetadata)
   {
-    v22 = [(MTSchemaMTClientEventV2 *)self eventMetadata];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    eventMetadata = [(MTSchemaMTClientEventV2 *)self eventMetadata];
+    dictionaryRepresentation7 = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"eventMetadata"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"eventMetadata"];
     }
   }
 
   if (self->_frameworkRequestResponseReceived)
   {
-    v25 = [(MTSchemaMTClientEventV2 *)self frameworkRequestResponseReceived];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    frameworkRequestResponseReceived = [(MTSchemaMTClientEventV2 *)self frameworkRequestResponseReceived];
+    dictionaryRepresentation8 = [frameworkRequestResponseReceived dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"frameworkRequestResponseReceived"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"frameworkRequestResponseReceived"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"frameworkRequestResponseReceived"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"frameworkRequestResponseReceived"];
     }
   }
 
   if (self->_frameworkRequestSent)
   {
-    v28 = [(MTSchemaMTClientEventV2 *)self frameworkRequestSent];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    frameworkRequestSent = [(MTSchemaMTClientEventV2 *)self frameworkRequestSent];
+    dictionaryRepresentation9 = [frameworkRequestSent dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"frameworkRequestSent"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"frameworkRequestSent"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"frameworkRequestSent"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"frameworkRequestSent"];
     }
   }
 
   if (self->_invocationContext)
   {
-    v31 = [(MTSchemaMTClientEventV2 *)self invocationContext];
-    v32 = [v31 dictionaryRepresentation];
-    if (v32)
+    invocationContext = [(MTSchemaMTClientEventV2 *)self invocationContext];
+    dictionaryRepresentation10 = [invocationContext dictionaryRepresentation];
+    if (dictionaryRepresentation10)
     {
-      [v3 setObject:v32 forKeyedSubscript:@"invocationContext"];
+      [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"invocationContext"];
     }
 
     else
     {
-      v33 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v33 forKeyedSubscript:@"invocationContext"];
+      null10 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null10 forKeyedSubscript:@"invocationContext"];
     }
   }
 
   if (self->_invocationStartedTier1)
   {
-    v34 = [(MTSchemaMTClientEventV2 *)self invocationStartedTier1];
-    v35 = [v34 dictionaryRepresentation];
-    if (v35)
+    invocationStartedTier1 = [(MTSchemaMTClientEventV2 *)self invocationStartedTier1];
+    dictionaryRepresentation11 = [invocationStartedTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation11)
     {
-      [v3 setObject:v35 forKeyedSubscript:@"invocationStartedTier1"];
+      [dictionary setObject:dictionaryRepresentation11 forKeyedSubscript:@"invocationStartedTier1"];
     }
 
     else
     {
-      v36 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v36 forKeyedSubscript:@"invocationStartedTier1"];
+      null11 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null11 forKeyedSubscript:@"invocationStartedTier1"];
     }
   }
 
   if (self->_languageDisambiguationUISelected)
   {
-    v37 = [(MTSchemaMTClientEventV2 *)self languageDisambiguationUISelected];
-    v38 = [v37 dictionaryRepresentation];
-    if (v38)
+    languageDisambiguationUISelected = [(MTSchemaMTClientEventV2 *)self languageDisambiguationUISelected];
+    dictionaryRepresentation12 = [languageDisambiguationUISelected dictionaryRepresentation];
+    if (dictionaryRepresentation12)
     {
-      [v3 setObject:v38 forKeyedSubscript:@"languageDisambiguationUISelected"];
+      [dictionary setObject:dictionaryRepresentation12 forKeyedSubscript:@"languageDisambiguationUISelected"];
     }
 
     else
     {
-      v39 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v39 forKeyedSubscript:@"languageDisambiguationUISelected"];
+      null12 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null12 forKeyedSubscript:@"languageDisambiguationUISelected"];
     }
   }
 
   if (self->_languageDisambiguationUIShown)
   {
-    v40 = [(MTSchemaMTClientEventV2 *)self languageDisambiguationUIShown];
-    v41 = [v40 dictionaryRepresentation];
-    if (v41)
+    languageDisambiguationUIShown = [(MTSchemaMTClientEventV2 *)self languageDisambiguationUIShown];
+    dictionaryRepresentation13 = [languageDisambiguationUIShown dictionaryRepresentation];
+    if (dictionaryRepresentation13)
     {
-      [v3 setObject:v41 forKeyedSubscript:@"languageDisambiguationUIShown"];
+      [dictionary setObject:dictionaryRepresentation13 forKeyedSubscript:@"languageDisambiguationUIShown"];
     }
 
     else
     {
-      v42 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v42 forKeyedSubscript:@"languageDisambiguationUIShown"];
+      null13 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null13 forKeyedSubscript:@"languageDisambiguationUIShown"];
     }
   }
 
   if (self->_languageIdentificationCompleted)
   {
-    v43 = [(MTSchemaMTClientEventV2 *)self languageIdentificationCompleted];
-    v44 = [v43 dictionaryRepresentation];
-    if (v44)
+    languageIdentificationCompleted = [(MTSchemaMTClientEventV2 *)self languageIdentificationCompleted];
+    dictionaryRepresentation14 = [languageIdentificationCompleted dictionaryRepresentation];
+    if (dictionaryRepresentation14)
     {
-      [v3 setObject:v44 forKeyedSubscript:@"languageIdentificationCompleted"];
+      [dictionary setObject:dictionaryRepresentation14 forKeyedSubscript:@"languageIdentificationCompleted"];
     }
 
     else
     {
-      v45 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v45 forKeyedSubscript:@"languageIdentificationCompleted"];
+      null14 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null14 forKeyedSubscript:@"languageIdentificationCompleted"];
     }
   }
 
   if (self->_localePairResolved)
   {
-    v46 = [(MTSchemaMTClientEventV2 *)self localePairResolved];
-    v47 = [v46 dictionaryRepresentation];
-    if (v47)
+    localePairResolved = [(MTSchemaMTClientEventV2 *)self localePairResolved];
+    dictionaryRepresentation15 = [localePairResolved dictionaryRepresentation];
+    if (dictionaryRepresentation15)
     {
-      [v3 setObject:v47 forKeyedSubscript:@"localePairResolved"];
+      [dictionary setObject:dictionaryRepresentation15 forKeyedSubscript:@"localePairResolved"];
     }
 
     else
     {
-      v48 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v48 forKeyedSubscript:@"localePairResolved"];
+      null15 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null15 forKeyedSubscript:@"localePairResolved"];
     }
   }
 
   if (self->_translationTTSPlayed)
   {
-    v49 = [(MTSchemaMTClientEventV2 *)self translationTTSPlayed];
-    v50 = [v49 dictionaryRepresentation];
-    if (v50)
+    translationTTSPlayed = [(MTSchemaMTClientEventV2 *)self translationTTSPlayed];
+    dictionaryRepresentation16 = [translationTTSPlayed dictionaryRepresentation];
+    if (dictionaryRepresentation16)
     {
-      [v3 setObject:v50 forKeyedSubscript:@"translationTTSPlayed"];
+      [dictionary setObject:dictionaryRepresentation16 forKeyedSubscript:@"translationTTSPlayed"];
     }
 
     else
     {
-      v51 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v51 forKeyedSubscript:@"translationTTSPlayed"];
+      null16 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null16 forKeyedSubscript:@"translationTTSPlayed"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -532,34 +532,34 @@
   return v13 ^ v17 ^ [(MTSchemaMTTranslationTTSPlayed *)self->_translationTTSPlayed hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_83;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_83;
   }
 
-  v6 = [(MTSchemaMTClientEventV2 *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(MTSchemaMTClientEventV2 *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_82;
   }
 
-  v8 = [(MTSchemaMTClientEventV2 *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(MTSchemaMTClientEventV2 *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(MTSchemaMTClientEventV2 *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(MTSchemaMTClientEventV2 *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -571,20 +571,20 @@
   {
   }
 
-  v6 = [(MTSchemaMTClientEventV2 *)self batchRequestContext];
-  v7 = [v4 batchRequestContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(MTSchemaMTClientEventV2 *)self batchRequestContext];
+  eventMetadata2 = [equalCopy batchRequestContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_82;
   }
 
-  v13 = [(MTSchemaMTClientEventV2 *)self batchRequestContext];
-  if (v13)
+  batchRequestContext = [(MTSchemaMTClientEventV2 *)self batchRequestContext];
+  if (batchRequestContext)
   {
-    v14 = v13;
-    v15 = [(MTSchemaMTClientEventV2 *)self batchRequestContext];
-    v16 = [v4 batchRequestContext];
-    v17 = [v15 isEqual:v16];
+    v14 = batchRequestContext;
+    batchRequestContext2 = [(MTSchemaMTClientEventV2 *)self batchRequestContext];
+    batchRequestContext3 = [equalCopy batchRequestContext];
+    v17 = [batchRequestContext2 isEqual:batchRequestContext3];
 
     if (!v17)
     {
@@ -596,20 +596,20 @@
   {
   }
 
-  v6 = [(MTSchemaMTClientEventV2 *)self invocationContext];
-  v7 = [v4 invocationContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(MTSchemaMTClientEventV2 *)self invocationContext];
+  eventMetadata2 = [equalCopy invocationContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_82;
   }
 
-  v18 = [(MTSchemaMTClientEventV2 *)self invocationContext];
-  if (v18)
+  invocationContext = [(MTSchemaMTClientEventV2 *)self invocationContext];
+  if (invocationContext)
   {
-    v19 = v18;
-    v20 = [(MTSchemaMTClientEventV2 *)self invocationContext];
-    v21 = [v4 invocationContext];
-    v22 = [v20 isEqual:v21];
+    v19 = invocationContext;
+    invocationContext2 = [(MTSchemaMTClientEventV2 *)self invocationContext];
+    invocationContext3 = [equalCopy invocationContext];
+    v22 = [invocationContext2 isEqual:invocationContext3];
 
     if (!v22)
     {
@@ -621,20 +621,20 @@
   {
   }
 
-  v6 = [(MTSchemaMTClientEventV2 *)self asrStateUpdated];
-  v7 = [v4 asrStateUpdated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(MTSchemaMTClientEventV2 *)self asrStateUpdated];
+  eventMetadata2 = [equalCopy asrStateUpdated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_82;
   }
 
-  v23 = [(MTSchemaMTClientEventV2 *)self asrStateUpdated];
-  if (v23)
+  asrStateUpdated = [(MTSchemaMTClientEventV2 *)self asrStateUpdated];
+  if (asrStateUpdated)
   {
-    v24 = v23;
-    v25 = [(MTSchemaMTClientEventV2 *)self asrStateUpdated];
-    v26 = [v4 asrStateUpdated];
-    v27 = [v25 isEqual:v26];
+    v24 = asrStateUpdated;
+    asrStateUpdated2 = [(MTSchemaMTClientEventV2 *)self asrStateUpdated];
+    asrStateUpdated3 = [equalCopy asrStateUpdated];
+    v27 = [asrStateUpdated2 isEqual:asrStateUpdated3];
 
     if (!v27)
     {
@@ -646,20 +646,20 @@
   {
   }
 
-  v6 = [(MTSchemaMTClientEventV2 *)self localePairResolved];
-  v7 = [v4 localePairResolved];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(MTSchemaMTClientEventV2 *)self localePairResolved];
+  eventMetadata2 = [equalCopy localePairResolved];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_82;
   }
 
-  v28 = [(MTSchemaMTClientEventV2 *)self localePairResolved];
-  if (v28)
+  localePairResolved = [(MTSchemaMTClientEventV2 *)self localePairResolved];
+  if (localePairResolved)
   {
-    v29 = v28;
-    v30 = [(MTSchemaMTClientEventV2 *)self localePairResolved];
-    v31 = [v4 localePairResolved];
-    v32 = [v30 isEqual:v31];
+    v29 = localePairResolved;
+    localePairResolved2 = [(MTSchemaMTClientEventV2 *)self localePairResolved];
+    localePairResolved3 = [equalCopy localePairResolved];
+    v32 = [localePairResolved2 isEqual:localePairResolved3];
 
     if (!v32)
     {
@@ -671,20 +671,20 @@
   {
   }
 
-  v6 = [(MTSchemaMTClientEventV2 *)self invocationStartedTier1];
-  v7 = [v4 invocationStartedTier1];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(MTSchemaMTClientEventV2 *)self invocationStartedTier1];
+  eventMetadata2 = [equalCopy invocationStartedTier1];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_82;
   }
 
-  v33 = [(MTSchemaMTClientEventV2 *)self invocationStartedTier1];
-  if (v33)
+  invocationStartedTier1 = [(MTSchemaMTClientEventV2 *)self invocationStartedTier1];
+  if (invocationStartedTier1)
   {
-    v34 = v33;
-    v35 = [(MTSchemaMTClientEventV2 *)self invocationStartedTier1];
-    v36 = [v4 invocationStartedTier1];
-    v37 = [v35 isEqual:v36];
+    v34 = invocationStartedTier1;
+    invocationStartedTier12 = [(MTSchemaMTClientEventV2 *)self invocationStartedTier1];
+    invocationStartedTier13 = [equalCopy invocationStartedTier1];
+    v37 = [invocationStartedTier12 isEqual:invocationStartedTier13];
 
     if (!v37)
     {
@@ -696,20 +696,20 @@
   {
   }
 
-  v6 = [(MTSchemaMTClientEventV2 *)self appNextButtonTapped];
-  v7 = [v4 appNextButtonTapped];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(MTSchemaMTClientEventV2 *)self appNextButtonTapped];
+  eventMetadata2 = [equalCopy appNextButtonTapped];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_82;
   }
 
-  v38 = [(MTSchemaMTClientEventV2 *)self appNextButtonTapped];
-  if (v38)
+  appNextButtonTapped = [(MTSchemaMTClientEventV2 *)self appNextButtonTapped];
+  if (appNextButtonTapped)
   {
-    v39 = v38;
-    v40 = [(MTSchemaMTClientEventV2 *)self appNextButtonTapped];
-    v41 = [v4 appNextButtonTapped];
-    v42 = [v40 isEqual:v41];
+    v39 = appNextButtonTapped;
+    appNextButtonTapped2 = [(MTSchemaMTClientEventV2 *)self appNextButtonTapped];
+    appNextButtonTapped3 = [equalCopy appNextButtonTapped];
+    v42 = [appNextButtonTapped2 isEqual:appNextButtonTapped3];
 
     if (!v42)
     {
@@ -721,20 +721,20 @@
   {
   }
 
-  v6 = [(MTSchemaMTClientEventV2 *)self appTextBoxDismissed];
-  v7 = [v4 appTextBoxDismissed];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(MTSchemaMTClientEventV2 *)self appTextBoxDismissed];
+  eventMetadata2 = [equalCopy appTextBoxDismissed];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_82;
   }
 
-  v43 = [(MTSchemaMTClientEventV2 *)self appTextBoxDismissed];
-  if (v43)
+  appTextBoxDismissed = [(MTSchemaMTClientEventV2 *)self appTextBoxDismissed];
+  if (appTextBoxDismissed)
   {
-    v44 = v43;
-    v45 = [(MTSchemaMTClientEventV2 *)self appTextBoxDismissed];
-    v46 = [v4 appTextBoxDismissed];
-    v47 = [v45 isEqual:v46];
+    v44 = appTextBoxDismissed;
+    appTextBoxDismissed2 = [(MTSchemaMTClientEventV2 *)self appTextBoxDismissed];
+    appTextBoxDismissed3 = [equalCopy appTextBoxDismissed];
+    v47 = [appTextBoxDismissed2 isEqual:appTextBoxDismissed3];
 
     if (!v47)
     {
@@ -746,20 +746,20 @@
   {
   }
 
-  v6 = [(MTSchemaMTClientEventV2 *)self appTimedOut];
-  v7 = [v4 appTimedOut];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(MTSchemaMTClientEventV2 *)self appTimedOut];
+  eventMetadata2 = [equalCopy appTimedOut];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_82;
   }
 
-  v48 = [(MTSchemaMTClientEventV2 *)self appTimedOut];
-  if (v48)
+  appTimedOut = [(MTSchemaMTClientEventV2 *)self appTimedOut];
+  if (appTimedOut)
   {
-    v49 = v48;
-    v50 = [(MTSchemaMTClientEventV2 *)self appTimedOut];
-    v51 = [v4 appTimedOut];
-    v52 = [v50 isEqual:v51];
+    v49 = appTimedOut;
+    appTimedOut2 = [(MTSchemaMTClientEventV2 *)self appTimedOut];
+    appTimedOut3 = [equalCopy appTimedOut];
+    v52 = [appTimedOut2 isEqual:appTimedOut3];
 
     if (!v52)
     {
@@ -771,20 +771,20 @@
   {
   }
 
-  v6 = [(MTSchemaMTClientEventV2 *)self frameworkRequestSent];
-  v7 = [v4 frameworkRequestSent];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(MTSchemaMTClientEventV2 *)self frameworkRequestSent];
+  eventMetadata2 = [equalCopy frameworkRequestSent];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_82;
   }
 
-  v53 = [(MTSchemaMTClientEventV2 *)self frameworkRequestSent];
-  if (v53)
+  frameworkRequestSent = [(MTSchemaMTClientEventV2 *)self frameworkRequestSent];
+  if (frameworkRequestSent)
   {
-    v54 = v53;
-    v55 = [(MTSchemaMTClientEventV2 *)self frameworkRequestSent];
-    v56 = [v4 frameworkRequestSent];
-    v57 = [v55 isEqual:v56];
+    v54 = frameworkRequestSent;
+    frameworkRequestSent2 = [(MTSchemaMTClientEventV2 *)self frameworkRequestSent];
+    frameworkRequestSent3 = [equalCopy frameworkRequestSent];
+    v57 = [frameworkRequestSent2 isEqual:frameworkRequestSent3];
 
     if (!v57)
     {
@@ -796,20 +796,20 @@
   {
   }
 
-  v6 = [(MTSchemaMTClientEventV2 *)self frameworkRequestResponseReceived];
-  v7 = [v4 frameworkRequestResponseReceived];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(MTSchemaMTClientEventV2 *)self frameworkRequestResponseReceived];
+  eventMetadata2 = [equalCopy frameworkRequestResponseReceived];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_82;
   }
 
-  v58 = [(MTSchemaMTClientEventV2 *)self frameworkRequestResponseReceived];
-  if (v58)
+  frameworkRequestResponseReceived = [(MTSchemaMTClientEventV2 *)self frameworkRequestResponseReceived];
+  if (frameworkRequestResponseReceived)
   {
-    v59 = v58;
-    v60 = [(MTSchemaMTClientEventV2 *)self frameworkRequestResponseReceived];
-    v61 = [v4 frameworkRequestResponseReceived];
-    v62 = [v60 isEqual:v61];
+    v59 = frameworkRequestResponseReceived;
+    frameworkRequestResponseReceived2 = [(MTSchemaMTClientEventV2 *)self frameworkRequestResponseReceived];
+    frameworkRequestResponseReceived3 = [equalCopy frameworkRequestResponseReceived];
+    v62 = [frameworkRequestResponseReceived2 isEqual:frameworkRequestResponseReceived3];
 
     if (!v62)
     {
@@ -821,20 +821,20 @@
   {
   }
 
-  v6 = [(MTSchemaMTClientEventV2 *)self appBackgrounded];
-  v7 = [v4 appBackgrounded];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(MTSchemaMTClientEventV2 *)self appBackgrounded];
+  eventMetadata2 = [equalCopy appBackgrounded];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_82;
   }
 
-  v63 = [(MTSchemaMTClientEventV2 *)self appBackgrounded];
-  if (v63)
+  appBackgrounded = [(MTSchemaMTClientEventV2 *)self appBackgrounded];
+  if (appBackgrounded)
   {
-    v64 = v63;
-    v65 = [(MTSchemaMTClientEventV2 *)self appBackgrounded];
-    v66 = [v4 appBackgrounded];
-    v67 = [v65 isEqual:v66];
+    v64 = appBackgrounded;
+    appBackgrounded2 = [(MTSchemaMTClientEventV2 *)self appBackgrounded];
+    appBackgrounded3 = [equalCopy appBackgrounded];
+    v67 = [appBackgrounded2 isEqual:appBackgrounded3];
 
     if (!v67)
     {
@@ -846,20 +846,20 @@
   {
   }
 
-  v6 = [(MTSchemaMTClientEventV2 *)self languageIdentificationCompleted];
-  v7 = [v4 languageIdentificationCompleted];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(MTSchemaMTClientEventV2 *)self languageIdentificationCompleted];
+  eventMetadata2 = [equalCopy languageIdentificationCompleted];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_82;
   }
 
-  v68 = [(MTSchemaMTClientEventV2 *)self languageIdentificationCompleted];
-  if (v68)
+  languageIdentificationCompleted = [(MTSchemaMTClientEventV2 *)self languageIdentificationCompleted];
+  if (languageIdentificationCompleted)
   {
-    v69 = v68;
-    v70 = [(MTSchemaMTClientEventV2 *)self languageIdentificationCompleted];
-    v71 = [v4 languageIdentificationCompleted];
-    v72 = [v70 isEqual:v71];
+    v69 = languageIdentificationCompleted;
+    languageIdentificationCompleted2 = [(MTSchemaMTClientEventV2 *)self languageIdentificationCompleted];
+    languageIdentificationCompleted3 = [equalCopy languageIdentificationCompleted];
+    v72 = [languageIdentificationCompleted2 isEqual:languageIdentificationCompleted3];
 
     if (!v72)
     {
@@ -871,20 +871,20 @@
   {
   }
 
-  v6 = [(MTSchemaMTClientEventV2 *)self languageDisambiguationUIShown];
-  v7 = [v4 languageDisambiguationUIShown];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(MTSchemaMTClientEventV2 *)self languageDisambiguationUIShown];
+  eventMetadata2 = [equalCopy languageDisambiguationUIShown];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_82;
   }
 
-  v73 = [(MTSchemaMTClientEventV2 *)self languageDisambiguationUIShown];
-  if (v73)
+  languageDisambiguationUIShown = [(MTSchemaMTClientEventV2 *)self languageDisambiguationUIShown];
+  if (languageDisambiguationUIShown)
   {
-    v74 = v73;
-    v75 = [(MTSchemaMTClientEventV2 *)self languageDisambiguationUIShown];
-    v76 = [v4 languageDisambiguationUIShown];
-    v77 = [v75 isEqual:v76];
+    v74 = languageDisambiguationUIShown;
+    languageDisambiguationUIShown2 = [(MTSchemaMTClientEventV2 *)self languageDisambiguationUIShown];
+    languageDisambiguationUIShown3 = [equalCopy languageDisambiguationUIShown];
+    v77 = [languageDisambiguationUIShown2 isEqual:languageDisambiguationUIShown3];
 
     if (!v77)
     {
@@ -896,20 +896,20 @@
   {
   }
 
-  v6 = [(MTSchemaMTClientEventV2 *)self languageDisambiguationUISelected];
-  v7 = [v4 languageDisambiguationUISelected];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(MTSchemaMTClientEventV2 *)self languageDisambiguationUISelected];
+  eventMetadata2 = [equalCopy languageDisambiguationUISelected];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_82;
   }
 
-  v78 = [(MTSchemaMTClientEventV2 *)self languageDisambiguationUISelected];
-  if (v78)
+  languageDisambiguationUISelected = [(MTSchemaMTClientEventV2 *)self languageDisambiguationUISelected];
+  if (languageDisambiguationUISelected)
   {
-    v79 = v78;
-    v80 = [(MTSchemaMTClientEventV2 *)self languageDisambiguationUISelected];
-    v81 = [v4 languageDisambiguationUISelected];
-    v82 = [v80 isEqual:v81];
+    v79 = languageDisambiguationUISelected;
+    languageDisambiguationUISelected2 = [(MTSchemaMTClientEventV2 *)self languageDisambiguationUISelected];
+    languageDisambiguationUISelected3 = [equalCopy languageDisambiguationUISelected];
+    v82 = [languageDisambiguationUISelected2 isEqual:languageDisambiguationUISelected3];
 
     if (!v82)
     {
@@ -921,12 +921,12 @@
   {
   }
 
-  v6 = [(MTSchemaMTClientEventV2 *)self translationTTSPlayed];
-  v7 = [v4 translationTTSPlayed];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(MTSchemaMTClientEventV2 *)self translationTTSPlayed];
+  eventMetadata2 = [equalCopy translationTTSPlayed];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v83 = [(MTSchemaMTClientEventV2 *)self translationTTSPlayed];
-    if (!v83)
+    translationTTSPlayed = [(MTSchemaMTClientEventV2 *)self translationTTSPlayed];
+    if (!translationTTSPlayed)
     {
 
 LABEL_86:
@@ -934,10 +934,10 @@ LABEL_86:
       goto LABEL_84;
     }
 
-    v84 = v83;
-    v85 = [(MTSchemaMTClientEventV2 *)self translationTTSPlayed];
-    v86 = [v4 translationTTSPlayed];
-    v87 = [v85 isEqual:v86];
+    v84 = translationTTSPlayed;
+    translationTTSPlayed2 = [(MTSchemaMTClientEventV2 *)self translationTTSPlayed];
+    translationTTSPlayed3 = [equalCopy translationTTSPlayed];
+    v87 = [translationTTSPlayed2 isEqual:translationTTSPlayed3];
 
     if (v87)
     {
@@ -957,138 +957,138 @@ LABEL_84:
   return v88;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v37 = a3;
-  v4 = [(MTSchemaMTClientEventV2 *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(MTSchemaMTClientEventV2 *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(MTSchemaMTClientEventV2 *)self eventMetadata];
+    eventMetadata2 = [(MTSchemaMTClientEventV2 *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(MTSchemaMTClientEventV2 *)self batchRequestContext];
+  batchRequestContext = [(MTSchemaMTClientEventV2 *)self batchRequestContext];
 
-  if (v6)
+  if (batchRequestContext)
   {
-    v7 = [(MTSchemaMTClientEventV2 *)self batchRequestContext];
+    batchRequestContext2 = [(MTSchemaMTClientEventV2 *)self batchRequestContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(MTSchemaMTClientEventV2 *)self invocationContext];
+  invocationContext = [(MTSchemaMTClientEventV2 *)self invocationContext];
 
-  if (v8)
+  if (invocationContext)
   {
-    v9 = [(MTSchemaMTClientEventV2 *)self invocationContext];
+    invocationContext2 = [(MTSchemaMTClientEventV2 *)self invocationContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(MTSchemaMTClientEventV2 *)self asrStateUpdated];
+  asrStateUpdated = [(MTSchemaMTClientEventV2 *)self asrStateUpdated];
 
-  if (v10)
+  if (asrStateUpdated)
   {
-    v11 = [(MTSchemaMTClientEventV2 *)self asrStateUpdated];
+    asrStateUpdated2 = [(MTSchemaMTClientEventV2 *)self asrStateUpdated];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(MTSchemaMTClientEventV2 *)self localePairResolved];
+  localePairResolved = [(MTSchemaMTClientEventV2 *)self localePairResolved];
 
-  if (v12)
+  if (localePairResolved)
   {
-    v13 = [(MTSchemaMTClientEventV2 *)self localePairResolved];
+    localePairResolved2 = [(MTSchemaMTClientEventV2 *)self localePairResolved];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(MTSchemaMTClientEventV2 *)self invocationStartedTier1];
+  invocationStartedTier1 = [(MTSchemaMTClientEventV2 *)self invocationStartedTier1];
 
-  if (v14)
+  if (invocationStartedTier1)
   {
-    v15 = [(MTSchemaMTClientEventV2 *)self invocationStartedTier1];
+    invocationStartedTier12 = [(MTSchemaMTClientEventV2 *)self invocationStartedTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(MTSchemaMTClientEventV2 *)self appNextButtonTapped];
+  appNextButtonTapped = [(MTSchemaMTClientEventV2 *)self appNextButtonTapped];
 
-  if (v16)
+  if (appNextButtonTapped)
   {
-    v17 = [(MTSchemaMTClientEventV2 *)self appNextButtonTapped];
+    appNextButtonTapped2 = [(MTSchemaMTClientEventV2 *)self appNextButtonTapped];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(MTSchemaMTClientEventV2 *)self appTextBoxDismissed];
+  appTextBoxDismissed = [(MTSchemaMTClientEventV2 *)self appTextBoxDismissed];
 
-  if (v18)
+  if (appTextBoxDismissed)
   {
-    v19 = [(MTSchemaMTClientEventV2 *)self appTextBoxDismissed];
+    appTextBoxDismissed2 = [(MTSchemaMTClientEventV2 *)self appTextBoxDismissed];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(MTSchemaMTClientEventV2 *)self appTimedOut];
+  appTimedOut = [(MTSchemaMTClientEventV2 *)self appTimedOut];
 
-  if (v20)
+  if (appTimedOut)
   {
-    v21 = [(MTSchemaMTClientEventV2 *)self appTimedOut];
+    appTimedOut2 = [(MTSchemaMTClientEventV2 *)self appTimedOut];
     PBDataWriterWriteSubmessage();
   }
 
-  v22 = [(MTSchemaMTClientEventV2 *)self frameworkRequestSent];
+  frameworkRequestSent = [(MTSchemaMTClientEventV2 *)self frameworkRequestSent];
 
-  if (v22)
+  if (frameworkRequestSent)
   {
-    v23 = [(MTSchemaMTClientEventV2 *)self frameworkRequestSent];
+    frameworkRequestSent2 = [(MTSchemaMTClientEventV2 *)self frameworkRequestSent];
     PBDataWriterWriteSubmessage();
   }
 
-  v24 = [(MTSchemaMTClientEventV2 *)self frameworkRequestResponseReceived];
+  frameworkRequestResponseReceived = [(MTSchemaMTClientEventV2 *)self frameworkRequestResponseReceived];
 
-  if (v24)
+  if (frameworkRequestResponseReceived)
   {
-    v25 = [(MTSchemaMTClientEventV2 *)self frameworkRequestResponseReceived];
+    frameworkRequestResponseReceived2 = [(MTSchemaMTClientEventV2 *)self frameworkRequestResponseReceived];
     PBDataWriterWriteSubmessage();
   }
 
-  v26 = [(MTSchemaMTClientEventV2 *)self appBackgrounded];
+  appBackgrounded = [(MTSchemaMTClientEventV2 *)self appBackgrounded];
 
-  if (v26)
+  if (appBackgrounded)
   {
-    v27 = [(MTSchemaMTClientEventV2 *)self appBackgrounded];
+    appBackgrounded2 = [(MTSchemaMTClientEventV2 *)self appBackgrounded];
     PBDataWriterWriteSubmessage();
   }
 
-  v28 = [(MTSchemaMTClientEventV2 *)self languageIdentificationCompleted];
+  languageIdentificationCompleted = [(MTSchemaMTClientEventV2 *)self languageIdentificationCompleted];
 
-  if (v28)
+  if (languageIdentificationCompleted)
   {
-    v29 = [(MTSchemaMTClientEventV2 *)self languageIdentificationCompleted];
+    languageIdentificationCompleted2 = [(MTSchemaMTClientEventV2 *)self languageIdentificationCompleted];
     PBDataWriterWriteSubmessage();
   }
 
-  v30 = [(MTSchemaMTClientEventV2 *)self languageDisambiguationUIShown];
+  languageDisambiguationUIShown = [(MTSchemaMTClientEventV2 *)self languageDisambiguationUIShown];
 
-  if (v30)
+  if (languageDisambiguationUIShown)
   {
-    v31 = [(MTSchemaMTClientEventV2 *)self languageDisambiguationUIShown];
+    languageDisambiguationUIShown2 = [(MTSchemaMTClientEventV2 *)self languageDisambiguationUIShown];
     PBDataWriterWriteSubmessage();
   }
 
-  v32 = [(MTSchemaMTClientEventV2 *)self languageDisambiguationUISelected];
+  languageDisambiguationUISelected = [(MTSchemaMTClientEventV2 *)self languageDisambiguationUISelected];
 
-  if (v32)
+  if (languageDisambiguationUISelected)
   {
-    v33 = [(MTSchemaMTClientEventV2 *)self languageDisambiguationUISelected];
+    languageDisambiguationUISelected2 = [(MTSchemaMTClientEventV2 *)self languageDisambiguationUISelected];
     PBDataWriterWriteSubmessage();
   }
 
-  v34 = [(MTSchemaMTClientEventV2 *)self translationTTSPlayed];
+  translationTTSPlayed = [(MTSchemaMTClientEventV2 *)self translationTTSPlayed];
 
-  v35 = v37;
-  if (v34)
+  v35 = toCopy;
+  if (translationTTSPlayed)
   {
-    v36 = [(MTSchemaMTClientEventV2 *)self translationTTSPlayed];
+    translationTTSPlayed2 = [(MTSchemaMTClientEventV2 *)self translationTTSPlayed];
     PBDataWriterWriteSubmessage();
 
-    v35 = v37;
+    v35 = toCopy;
   }
 }
 
@@ -1117,9 +1117,9 @@ LABEL_84:
   return v3;
 }
 
-- (void)setTranslationTTSPlayed:(id)a3
+- (void)setTranslationTTSPlayed:(id)played
 {
-  v4 = a3;
+  playedCopy = played;
   batchRequestContext = self->_batchRequestContext;
   self->_batchRequestContext = 0;
 
@@ -1163,14 +1163,14 @@ LABEL_84:
   self->_languageDisambiguationUISelected = 0;
 
   v19 = 115;
-  if (!v4)
+  if (!playedCopy)
   {
     v19 = 0;
   }
 
   self->_whichEvent_Type = v19;
   translationTTSPlayed = self->_translationTTSPlayed;
-  self->_translationTTSPlayed = v4;
+  self->_translationTTSPlayed = playedCopy;
 }
 
 - (void)deleteLanguageDisambiguationUISelected
@@ -1198,9 +1198,9 @@ LABEL_84:
   return v3;
 }
 
-- (void)setLanguageDisambiguationUISelected:(id)a3
+- (void)setLanguageDisambiguationUISelected:(id)selected
 {
-  v4 = a3;
+  selectedCopy = selected;
   batchRequestContext = self->_batchRequestContext;
   self->_batchRequestContext = 0;
 
@@ -1244,14 +1244,14 @@ LABEL_84:
   self->_translationTTSPlayed = 0;
 
   v19 = 114;
-  if (!v4)
+  if (!selectedCopy)
   {
     v19 = 0;
   }
 
   self->_whichEvent_Type = v19;
   languageDisambiguationUISelected = self->_languageDisambiguationUISelected;
-  self->_languageDisambiguationUISelected = v4;
+  self->_languageDisambiguationUISelected = selectedCopy;
 }
 
 - (void)deleteLanguageDisambiguationUIShown
@@ -1279,9 +1279,9 @@ LABEL_84:
   return v3;
 }
 
-- (void)setLanguageDisambiguationUIShown:(id)a3
+- (void)setLanguageDisambiguationUIShown:(id)shown
 {
-  v4 = a3;
+  shownCopy = shown;
   batchRequestContext = self->_batchRequestContext;
   self->_batchRequestContext = 0;
 
@@ -1325,14 +1325,14 @@ LABEL_84:
   self->_translationTTSPlayed = 0;
 
   v19 = 113;
-  if (!v4)
+  if (!shownCopy)
   {
     v19 = 0;
   }
 
   self->_whichEvent_Type = v19;
   languageDisambiguationUIShown = self->_languageDisambiguationUIShown;
-  self->_languageDisambiguationUIShown = v4;
+  self->_languageDisambiguationUIShown = shownCopy;
 }
 
 - (void)deleteLanguageIdentificationCompleted
@@ -1360,9 +1360,9 @@ LABEL_84:
   return v3;
 }
 
-- (void)setLanguageIdentificationCompleted:(id)a3
+- (void)setLanguageIdentificationCompleted:(id)completed
 {
-  v4 = a3;
+  completedCopy = completed;
   batchRequestContext = self->_batchRequestContext;
   self->_batchRequestContext = 0;
 
@@ -1406,14 +1406,14 @@ LABEL_84:
   self->_translationTTSPlayed = 0;
 
   v19 = 112;
-  if (!v4)
+  if (!completedCopy)
   {
     v19 = 0;
   }
 
   self->_whichEvent_Type = v19;
   languageIdentificationCompleted = self->_languageIdentificationCompleted;
-  self->_languageIdentificationCompleted = v4;
+  self->_languageIdentificationCompleted = completedCopy;
 }
 
 - (void)deleteAppBackgrounded
@@ -1441,9 +1441,9 @@ LABEL_84:
   return v3;
 }
 
-- (void)setAppBackgrounded:(id)a3
+- (void)setAppBackgrounded:(id)backgrounded
 {
-  v4 = a3;
+  backgroundedCopy = backgrounded;
   batchRequestContext = self->_batchRequestContext;
   self->_batchRequestContext = 0;
 
@@ -1487,14 +1487,14 @@ LABEL_84:
   self->_translationTTSPlayed = 0;
 
   v19 = 111;
-  if (!v4)
+  if (!backgroundedCopy)
   {
     v19 = 0;
   }
 
   self->_whichEvent_Type = v19;
   appBackgrounded = self->_appBackgrounded;
-  self->_appBackgrounded = v4;
+  self->_appBackgrounded = backgroundedCopy;
 }
 
 - (void)deleteFrameworkRequestResponseReceived
@@ -1522,9 +1522,9 @@ LABEL_84:
   return v3;
 }
 
-- (void)setFrameworkRequestResponseReceived:(id)a3
+- (void)setFrameworkRequestResponseReceived:(id)received
 {
-  v4 = a3;
+  receivedCopy = received;
   batchRequestContext = self->_batchRequestContext;
   self->_batchRequestContext = 0;
 
@@ -1568,14 +1568,14 @@ LABEL_84:
   self->_translationTTSPlayed = 0;
 
   v19 = 110;
-  if (!v4)
+  if (!receivedCopy)
   {
     v19 = 0;
   }
 
   self->_whichEvent_Type = v19;
   frameworkRequestResponseReceived = self->_frameworkRequestResponseReceived;
-  self->_frameworkRequestResponseReceived = v4;
+  self->_frameworkRequestResponseReceived = receivedCopy;
 }
 
 - (void)deleteFrameworkRequestSent
@@ -1603,9 +1603,9 @@ LABEL_84:
   return v3;
 }
 
-- (void)setFrameworkRequestSent:(id)a3
+- (void)setFrameworkRequestSent:(id)sent
 {
-  v4 = a3;
+  sentCopy = sent;
   batchRequestContext = self->_batchRequestContext;
   self->_batchRequestContext = 0;
 
@@ -1649,14 +1649,14 @@ LABEL_84:
   self->_translationTTSPlayed = 0;
 
   v19 = 109;
-  if (!v4)
+  if (!sentCopy)
   {
     v19 = 0;
   }
 
   self->_whichEvent_Type = v19;
   frameworkRequestSent = self->_frameworkRequestSent;
-  self->_frameworkRequestSent = v4;
+  self->_frameworkRequestSent = sentCopy;
 }
 
 - (void)deleteAppTimedOut
@@ -1684,9 +1684,9 @@ LABEL_84:
   return v3;
 }
 
-- (void)setAppTimedOut:(id)a3
+- (void)setAppTimedOut:(id)out
 {
-  v4 = a3;
+  outCopy = out;
   batchRequestContext = self->_batchRequestContext;
   self->_batchRequestContext = 0;
 
@@ -1730,14 +1730,14 @@ LABEL_84:
   self->_translationTTSPlayed = 0;
 
   v19 = 108;
-  if (!v4)
+  if (!outCopy)
   {
     v19 = 0;
   }
 
   self->_whichEvent_Type = v19;
   appTimedOut = self->_appTimedOut;
-  self->_appTimedOut = v4;
+  self->_appTimedOut = outCopy;
 }
 
 - (void)deleteAppTextBoxDismissed
@@ -1765,9 +1765,9 @@ LABEL_84:
   return v3;
 }
 
-- (void)setAppTextBoxDismissed:(id)a3
+- (void)setAppTextBoxDismissed:(id)dismissed
 {
-  v4 = a3;
+  dismissedCopy = dismissed;
   batchRequestContext = self->_batchRequestContext;
   self->_batchRequestContext = 0;
 
@@ -1811,14 +1811,14 @@ LABEL_84:
   self->_translationTTSPlayed = 0;
 
   v19 = 107;
-  if (!v4)
+  if (!dismissedCopy)
   {
     v19 = 0;
   }
 
   self->_whichEvent_Type = v19;
   appTextBoxDismissed = self->_appTextBoxDismissed;
-  self->_appTextBoxDismissed = v4;
+  self->_appTextBoxDismissed = dismissedCopy;
 }
 
 - (void)deleteAppNextButtonTapped
@@ -1846,9 +1846,9 @@ LABEL_84:
   return v3;
 }
 
-- (void)setAppNextButtonTapped:(id)a3
+- (void)setAppNextButtonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   batchRequestContext = self->_batchRequestContext;
   self->_batchRequestContext = 0;
 
@@ -1892,14 +1892,14 @@ LABEL_84:
   self->_translationTTSPlayed = 0;
 
   v19 = 106;
-  if (!v4)
+  if (!tappedCopy)
   {
     v19 = 0;
   }
 
   self->_whichEvent_Type = v19;
   appNextButtonTapped = self->_appNextButtonTapped;
-  self->_appNextButtonTapped = v4;
+  self->_appNextButtonTapped = tappedCopy;
 }
 
 - (void)deleteInvocationStartedTier1
@@ -1927,9 +1927,9 @@ LABEL_84:
   return v3;
 }
 
-- (void)setInvocationStartedTier1:(id)a3
+- (void)setInvocationStartedTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   batchRequestContext = self->_batchRequestContext;
   self->_batchRequestContext = 0;
 
@@ -1973,14 +1973,14 @@ LABEL_84:
   self->_translationTTSPlayed = 0;
 
   v19 = 105;
-  if (!v4)
+  if (!tier1Copy)
   {
     v19 = 0;
   }
 
   self->_whichEvent_Type = v19;
   invocationStartedTier1 = self->_invocationStartedTier1;
-  self->_invocationStartedTier1 = v4;
+  self->_invocationStartedTier1 = tier1Copy;
 }
 
 - (void)deleteLocalePairResolved
@@ -2008,9 +2008,9 @@ LABEL_84:
   return v3;
 }
 
-- (void)setLocalePairResolved:(id)a3
+- (void)setLocalePairResolved:(id)resolved
 {
-  v4 = a3;
+  resolvedCopy = resolved;
   batchRequestContext = self->_batchRequestContext;
   self->_batchRequestContext = 0;
 
@@ -2054,14 +2054,14 @@ LABEL_84:
   self->_translationTTSPlayed = 0;
 
   v19 = 104;
-  if (!v4)
+  if (!resolvedCopy)
   {
     v19 = 0;
   }
 
   self->_whichEvent_Type = v19;
   localePairResolved = self->_localePairResolved;
-  self->_localePairResolved = v4;
+  self->_localePairResolved = resolvedCopy;
 }
 
 - (void)deleteAsrStateUpdated
@@ -2089,9 +2089,9 @@ LABEL_84:
   return v3;
 }
 
-- (void)setAsrStateUpdated:(id)a3
+- (void)setAsrStateUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   batchRequestContext = self->_batchRequestContext;
   self->_batchRequestContext = 0;
 
@@ -2135,14 +2135,14 @@ LABEL_84:
   self->_translationTTSPlayed = 0;
 
   v19 = 103;
-  if (!v4)
+  if (!updatedCopy)
   {
     v19 = 0;
   }
 
   self->_whichEvent_Type = v19;
   asrStateUpdated = self->_asrStateUpdated;
-  self->_asrStateUpdated = v4;
+  self->_asrStateUpdated = updatedCopy;
 }
 
 - (void)deleteInvocationContext
@@ -2170,9 +2170,9 @@ LABEL_84:
   return v3;
 }
 
-- (void)setInvocationContext:(id)a3
+- (void)setInvocationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   batchRequestContext = self->_batchRequestContext;
   self->_batchRequestContext = 0;
 
@@ -2216,14 +2216,14 @@ LABEL_84:
   self->_translationTTSPlayed = 0;
 
   v19 = 102;
-  if (!v4)
+  if (!contextCopy)
   {
     v19 = 0;
   }
 
   self->_whichEvent_Type = v19;
   invocationContext = self->_invocationContext;
-  self->_invocationContext = v4;
+  self->_invocationContext = contextCopy;
 }
 
 - (void)deleteBatchRequestContext
@@ -2251,9 +2251,9 @@ LABEL_84:
   return v3;
 }
 
-- (void)setBatchRequestContext:(id)a3
+- (void)setBatchRequestContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   invocationContext = self->_invocationContext;
   self->_invocationContext = 0;
 
@@ -2297,176 +2297,176 @@ LABEL_84:
   self->_translationTTSPlayed = 0;
 
   v19 = 101;
-  if (!v4)
+  if (!contextCopy)
   {
     v19 = 0;
   }
 
   self->_whichEvent_Type = v19;
   batchRequestContext = self->_batchRequestContext;
-  self->_batchRequestContext = v4;
+  self->_batchRequestContext = contextCopy;
 }
 
 - (id)qualifiedMessageName
 {
-  v2 = [(MTSchemaMTClientEventV2 *)self whichEvent_Type];
-  if (v2 - 101 > 0xE)
+  whichEvent_Type = [(MTSchemaMTClientEventV2 *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 0xE)
   {
     return @"com.apple.aiml.mi.mt.MTClientEventV2";
   }
 
   else
   {
-    return off_1E78D9C40[v2 - 101];
+    return off_1E78D9C40[whichEvent_Type - 101];
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v55.receiver = self;
   v55.super_class = MTSchemaMTClientEventV2;
-  v5 = [(SISchemaInstrumentationMessage *)&v55 applySensitiveConditionsPolicy:v4];
-  v6 = [(MTSchemaMTClientEventV2 *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v55 applySensitiveConditionsPolicy:policyCopy];
+  eventMetadata = [(MTSchemaMTClientEventV2 *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(MTSchemaMTClientEventV2 *)self deleteEventMetadata];
   }
 
-  v9 = [(MTSchemaMTClientEventV2 *)self batchRequestContext];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  batchRequestContext = [(MTSchemaMTClientEventV2 *)self batchRequestContext];
+  v10 = [batchRequestContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(MTSchemaMTClientEventV2 *)self deleteBatchRequestContext];
   }
 
-  v12 = [(MTSchemaMTClientEventV2 *)self invocationContext];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  invocationContext = [(MTSchemaMTClientEventV2 *)self invocationContext];
+  v13 = [invocationContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(MTSchemaMTClientEventV2 *)self deleteInvocationContext];
   }
 
-  v15 = [(MTSchemaMTClientEventV2 *)self asrStateUpdated];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  asrStateUpdated = [(MTSchemaMTClientEventV2 *)self asrStateUpdated];
+  v16 = [asrStateUpdated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(MTSchemaMTClientEventV2 *)self deleteAsrStateUpdated];
   }
 
-  v18 = [(MTSchemaMTClientEventV2 *)self localePairResolved];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  localePairResolved = [(MTSchemaMTClientEventV2 *)self localePairResolved];
+  v19 = [localePairResolved applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(MTSchemaMTClientEventV2 *)self deleteLocalePairResolved];
   }
 
-  v21 = [(MTSchemaMTClientEventV2 *)self invocationStartedTier1];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  invocationStartedTier1 = [(MTSchemaMTClientEventV2 *)self invocationStartedTier1];
+  v22 = [invocationStartedTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(MTSchemaMTClientEventV2 *)self deleteInvocationStartedTier1];
   }
 
-  v24 = [(MTSchemaMTClientEventV2 *)self appNextButtonTapped];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  appNextButtonTapped = [(MTSchemaMTClientEventV2 *)self appNextButtonTapped];
+  v25 = [appNextButtonTapped applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(MTSchemaMTClientEventV2 *)self deleteAppNextButtonTapped];
   }
 
-  v27 = [(MTSchemaMTClientEventV2 *)self appTextBoxDismissed];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  appTextBoxDismissed = [(MTSchemaMTClientEventV2 *)self appTextBoxDismissed];
+  v28 = [appTextBoxDismissed applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(MTSchemaMTClientEventV2 *)self deleteAppTextBoxDismissed];
   }
 
-  v30 = [(MTSchemaMTClientEventV2 *)self appTimedOut];
-  v31 = [v30 applySensitiveConditionsPolicy:v4];
-  v32 = [v31 suppressMessage];
+  appTimedOut = [(MTSchemaMTClientEventV2 *)self appTimedOut];
+  v31 = [appTimedOut applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage9 = [v31 suppressMessage];
 
-  if (v32)
+  if (suppressMessage9)
   {
     [(MTSchemaMTClientEventV2 *)self deleteAppTimedOut];
   }
 
-  v33 = [(MTSchemaMTClientEventV2 *)self frameworkRequestSent];
-  v34 = [v33 applySensitiveConditionsPolicy:v4];
-  v35 = [v34 suppressMessage];
+  frameworkRequestSent = [(MTSchemaMTClientEventV2 *)self frameworkRequestSent];
+  v34 = [frameworkRequestSent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage10 = [v34 suppressMessage];
 
-  if (v35)
+  if (suppressMessage10)
   {
     [(MTSchemaMTClientEventV2 *)self deleteFrameworkRequestSent];
   }
 
-  v36 = [(MTSchemaMTClientEventV2 *)self frameworkRequestResponseReceived];
-  v37 = [v36 applySensitiveConditionsPolicy:v4];
-  v38 = [v37 suppressMessage];
+  frameworkRequestResponseReceived = [(MTSchemaMTClientEventV2 *)self frameworkRequestResponseReceived];
+  v37 = [frameworkRequestResponseReceived applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage11 = [v37 suppressMessage];
 
-  if (v38)
+  if (suppressMessage11)
   {
     [(MTSchemaMTClientEventV2 *)self deleteFrameworkRequestResponseReceived];
   }
 
-  v39 = [(MTSchemaMTClientEventV2 *)self appBackgrounded];
-  v40 = [v39 applySensitiveConditionsPolicy:v4];
-  v41 = [v40 suppressMessage];
+  appBackgrounded = [(MTSchemaMTClientEventV2 *)self appBackgrounded];
+  v40 = [appBackgrounded applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage12 = [v40 suppressMessage];
 
-  if (v41)
+  if (suppressMessage12)
   {
     [(MTSchemaMTClientEventV2 *)self deleteAppBackgrounded];
   }
 
-  v42 = [(MTSchemaMTClientEventV2 *)self languageIdentificationCompleted];
-  v43 = [v42 applySensitiveConditionsPolicy:v4];
-  v44 = [v43 suppressMessage];
+  languageIdentificationCompleted = [(MTSchemaMTClientEventV2 *)self languageIdentificationCompleted];
+  v43 = [languageIdentificationCompleted applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage13 = [v43 suppressMessage];
 
-  if (v44)
+  if (suppressMessage13)
   {
     [(MTSchemaMTClientEventV2 *)self deleteLanguageIdentificationCompleted];
   }
 
-  v45 = [(MTSchemaMTClientEventV2 *)self languageDisambiguationUIShown];
-  v46 = [v45 applySensitiveConditionsPolicy:v4];
-  v47 = [v46 suppressMessage];
+  languageDisambiguationUIShown = [(MTSchemaMTClientEventV2 *)self languageDisambiguationUIShown];
+  v46 = [languageDisambiguationUIShown applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage14 = [v46 suppressMessage];
 
-  if (v47)
+  if (suppressMessage14)
   {
     [(MTSchemaMTClientEventV2 *)self deleteLanguageDisambiguationUIShown];
   }
 
-  v48 = [(MTSchemaMTClientEventV2 *)self languageDisambiguationUISelected];
-  v49 = [v48 applySensitiveConditionsPolicy:v4];
-  v50 = [v49 suppressMessage];
+  languageDisambiguationUISelected = [(MTSchemaMTClientEventV2 *)self languageDisambiguationUISelected];
+  v49 = [languageDisambiguationUISelected applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage15 = [v49 suppressMessage];
 
-  if (v50)
+  if (suppressMessage15)
   {
     [(MTSchemaMTClientEventV2 *)self deleteLanguageDisambiguationUISelected];
   }
 
-  v51 = [(MTSchemaMTClientEventV2 *)self translationTTSPlayed];
-  v52 = [v51 applySensitiveConditionsPolicy:v4];
-  v53 = [v52 suppressMessage];
+  translationTTSPlayed = [(MTSchemaMTClientEventV2 *)self translationTTSPlayed];
+  v52 = [translationTTSPlayed applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage16 = [v52 suppressMessage];
 
-  if (v53)
+  if (suppressMessage16)
   {
     [(MTSchemaMTClientEventV2 *)self deleteTranslationTTSPlayed];
   }
@@ -2484,65 +2484,65 @@ LABEL_84:
 
 - (id)getComponentId
 {
-  v2 = [(MTSchemaMTClientEventV2 *)self eventMetadata];
-  v3 = [v2 mtId];
+  eventMetadata = [(MTSchemaMTClientEventV2 *)self eventMetadata];
+  mtId = [eventMetadata mtId];
 
-  if (!v3)
+  if (!mtId)
   {
     goto LABEL_5;
   }
 
-  v4 = [v3 value];
-  if (!v4)
+  value = [mtId value];
+  if (!value)
   {
     goto LABEL_6;
   }
 
-  v5 = [v3 value];
-  v6 = [v5 length];
+  value2 = [mtId value];
+  v6 = [value2 length];
 
   if (v6)
   {
-    v4 = v3;
+    value = mtId;
   }
 
   else
   {
 LABEL_5:
-    v4 = 0;
+    value = 0;
   }
 
 LABEL_6:
 
-  return v4;
+  return value;
 }
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(MTSchemaMTClientEventV2 *)self whichEvent_Type];
-  if (v3 - 101 > 0xE)
+  whichEvent_Type = [(MTSchemaMTClientEventV2 *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 0xE)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.super.super.super.isa + *off_1E78E9FA8[v3 - 101]);
+    v4 = *(&self->super.super.super.super.isa + *off_1E78E9FA8[whichEvent_Type - 101]);
   }
 
   return v4;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 - 101 > 0xE)
+  if (tag - 101 > 0xE)
   {
     return 0;
   }
 
   else
   {
-    return off_1E78EA020[a3 - 101];
+    return off_1E78EA020[tag - 101];
   }
 }
 

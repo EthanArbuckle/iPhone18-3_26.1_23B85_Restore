@@ -1,20 +1,20 @@
 @interface XBApplicationDataStore
 + (id)sharedInstance;
-- (BOOL)_bundleIdentifierHasDeniedLaunchInterface:(id)a3;
+- (BOOL)_bundleIdentifierHasDeniedLaunchInterface:(id)interface;
 - (XBApplicationDataStore)init;
 - (id)_init;
-- (id)_loadCompatibilityInfoForBundleIdentifier:(id)a3;
-- (id)_storeForBundleIdentifier:(id)a3;
-- (id)loadManifestDataForBundleIdentifier:(id)a3;
-- (int64_t)_bundleIdentifierDeniedLaunchInterfaceCount:(id)a3;
-- (void)_addBundleIdentifierToLaunchInterfaceDenyList:(id)a3;
-- (void)_clearCompatibilityInfoForBundleIdentifier:(id)a3;
-- (void)_persistCompatibilityInfo:(id)a3 forBundleIdentifier:(id)a4;
-- (void)_removeBundleIdentifierFromLaunchInterfaceDenyList:(id)a3;
-- (void)beginAccessBlockForBundleIdentifier:(id)a3;
-- (void)clearManifestDataForBundleIdentifier:(id)a3;
-- (void)endAccessBlockForBundleIdentifier:(id)a3;
-- (void)persistManifestData:(id)a3 forBundleIdentifier:(id)a4;
+- (id)_loadCompatibilityInfoForBundleIdentifier:(id)identifier;
+- (id)_storeForBundleIdentifier:(id)identifier;
+- (id)loadManifestDataForBundleIdentifier:(id)identifier;
+- (int64_t)_bundleIdentifierDeniedLaunchInterfaceCount:(id)count;
+- (void)_addBundleIdentifierToLaunchInterfaceDenyList:(id)list;
+- (void)_clearCompatibilityInfoForBundleIdentifier:(id)identifier;
+- (void)_persistCompatibilityInfo:(id)info forBundleIdentifier:(id)identifier;
+- (void)_removeBundleIdentifierFromLaunchInterfaceDenyList:(id)list;
+- (void)beginAccessBlockForBundleIdentifier:(id)identifier;
+- (void)clearManifestDataForBundleIdentifier:(id)identifier;
+- (void)endAccessBlockForBundleIdentifier:(id)identifier;
+- (void)persistManifestData:(id)data forBundleIdentifier:(id)identifier;
 @end
 
 @implementation XBApplicationDataStore
@@ -40,8 +40,8 @@ uint64_t __40__XBApplicationDataStore_sharedInstance__block_invoke()
 
 - (XBApplicationDataStore)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"XBApplicationDataStore.m" lineNumber:39 description:@"init is not allowed"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"XBApplicationDataStore.m" lineNumber:39 description:@"init is not allowed"];
 
   return [(XBApplicationDataStore *)self _init];
 }
@@ -61,11 +61,11 @@ uint64_t __40__XBApplicationDataStore_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)_persistCompatibilityInfo:(id)a3 forBundleIdentifier:(id)a4
+- (void)_persistCompatibilityInfo:(id)info forBundleIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
-  v10 = v7;
+  infoCopy = info;
+  identifierCopy = identifier;
+  v10 = infoCopy;
   if (v10)
   {
     NSClassFromString(&cfstr_Xbapplicationl_0.isa);
@@ -75,63 +75,63 @@ uint64_t __40__XBApplicationDataStore_sharedInstance__block_invoke()
     }
   }
 
-  v9 = [(XBApplicationDataStore *)self _storeForBundleIdentifier:v8];
+  v9 = [(XBApplicationDataStore *)self _storeForBundleIdentifier:identifierCopy];
   [v9 setArchivedObject:v10 forKey:XBApplicationLaunchCompatibilityInfoPersistenceKey];
 }
 
-- (void)_clearCompatibilityInfoForBundleIdentifier:(id)a3
+- (void)_clearCompatibilityInfoForBundleIdentifier:(id)identifier
 {
-  v3 = [(XBApplicationDataStore *)self _storeForBundleIdentifier:a3];
+  v3 = [(XBApplicationDataStore *)self _storeForBundleIdentifier:identifier];
   [v3 setObject:0 forKey:XBApplicationLaunchCompatibilityInfoPersistenceKey];
 }
 
-- (id)_loadCompatibilityInfoForBundleIdentifier:(id)a3
+- (id)_loadCompatibilityInfoForBundleIdentifier:(id)identifier
 {
-  v3 = [(XBApplicationDataStore *)self _storeForBundleIdentifier:a3];
+  v3 = [(XBApplicationDataStore *)self _storeForBundleIdentifier:identifier];
   v4 = [v3 safeArchivedObjectForKey:XBApplicationLaunchCompatibilityInfoPersistenceKey ofType:objc_opt_class()];
 
   return v4;
 }
 
-- (BOOL)_bundleIdentifierHasDeniedLaunchInterface:(id)a3
+- (BOOL)_bundleIdentifierHasDeniedLaunchInterface:(id)interface
 {
-  v3 = [(XBApplicationDataStore *)self _loadCompatibilityInfoForBundleIdentifier:a3];
-  v4 = [v3 hasKnownBadLaunchImage];
+  v3 = [(XBApplicationDataStore *)self _loadCompatibilityInfoForBundleIdentifier:interface];
+  hasKnownBadLaunchImage = [v3 hasKnownBadLaunchImage];
 
-  return v4;
+  return hasKnownBadLaunchImage;
 }
 
-- (int64_t)_bundleIdentifierDeniedLaunchInterfaceCount:(id)a3
+- (int64_t)_bundleIdentifierDeniedLaunchInterfaceCount:(id)count
 {
-  v3 = [(XBApplicationDataStore *)self _loadCompatibilityInfoForBundleIdentifier:a3];
-  v4 = [v3 badLaunchImageCandidateCount];
+  v3 = [(XBApplicationDataStore *)self _loadCompatibilityInfoForBundleIdentifier:count];
+  badLaunchImageCandidateCount = [v3 badLaunchImageCandidateCount];
 
-  return v4;
+  return badLaunchImageCandidateCount;
 }
 
-- (void)_addBundleIdentifierToLaunchInterfaceDenyList:(id)a3
+- (void)_addBundleIdentifierToLaunchInterfaceDenyList:(id)list
 {
-  v4 = a3;
-  v5 = [(XBApplicationDataStore *)self _loadCompatibilityInfoForBundleIdentifier:v4];
+  listCopy = list;
+  v5 = [(XBApplicationDataStore *)self _loadCompatibilityInfoForBundleIdentifier:listCopy];
   [v5 setHasKnownBadLaunchImage:1];
-  [(XBApplicationDataStore *)self _persistCompatibilityInfo:v5 forBundleIdentifier:v4];
+  [(XBApplicationDataStore *)self _persistCompatibilityInfo:v5 forBundleIdentifier:listCopy];
 }
 
-- (void)_removeBundleIdentifierFromLaunchInterfaceDenyList:(id)a3
+- (void)_removeBundleIdentifierFromLaunchInterfaceDenyList:(id)list
 {
-  v5 = a3;
+  listCopy = list;
   v4 = [(XBApplicationDataStore *)self _loadCompatibilityInfoForBundleIdentifier:?];
   if ([v4 hasKnownBadLaunchImage])
   {
     [v4 setHasKnownBadLaunchImage:0];
     [v4 setBadLaunchImageCandidateCount:0];
-    [(XBApplicationDataStore *)self _persistCompatibilityInfo:v4 forBundleIdentifier:v5];
+    [(XBApplicationDataStore *)self _persistCompatibilityInfo:v4 forBundleIdentifier:listCopy];
   }
 }
 
-- (id)_storeForBundleIdentifier:(id)a3
+- (id)_storeForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -144,9 +144,9 @@ uint64_t __40__XBApplicationDataStore_sharedInstance__block_invoke()
   block[2] = __52__XBApplicationDataStore__storeForBundleIdentifier___block_invoke;
   block[3] = &unk_279CF9530;
   block[4] = self;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -195,11 +195,11 @@ void __52__XBApplicationDataStore__storeForBundleIdentifier___block_invoke(void 
   }
 }
 
-- (void)persistManifestData:(id)a3 forBundleIdentifier:(id)a4
+- (void)persistManifestData:(id)data forBundleIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
-  v10 = v7;
+  dataCopy = data;
+  identifierCopy = identifier;
+  v10 = dataCopy;
   if (v10)
   {
     NSClassFromString(&cfstr_Nsdata.isa);
@@ -209,35 +209,35 @@ void __52__XBApplicationDataStore__storeForBundleIdentifier___block_invoke(void 
     }
   }
 
-  v9 = [(XBApplicationDataStore *)self _storeForBundleIdentifier:v8];
+  v9 = [(XBApplicationDataStore *)self _storeForBundleIdentifier:identifierCopy];
   [v9 setObject:v10 forKey:@"XBApplicationSnapshotManifest"];
 }
 
-- (void)clearManifestDataForBundleIdentifier:(id)a3
+- (void)clearManifestDataForBundleIdentifier:(id)identifier
 {
-  v3 = [(XBApplicationDataStore *)self _storeForBundleIdentifier:a3];
+  v3 = [(XBApplicationDataStore *)self _storeForBundleIdentifier:identifier];
   [v3 removeObjectForKey:@"XBApplicationSnapshotManifest"];
 }
 
-- (id)loadManifestDataForBundleIdentifier:(id)a3
+- (id)loadManifestDataForBundleIdentifier:(id)identifier
 {
-  v3 = [(XBApplicationDataStore *)self _storeForBundleIdentifier:a3];
+  v3 = [(XBApplicationDataStore *)self _storeForBundleIdentifier:identifier];
   v4 = [v3 safeObjectForKey:@"XBApplicationSnapshotManifest" ofType:objc_opt_class()];
 
   return v4;
 }
 
-- (void)beginAccessBlockForBundleIdentifier:(id)a3
+- (void)beginAccessBlockForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62__XBApplicationDataStore_beginAccessBlockForBundleIdentifier___block_invoke;
   v7[3] = &unk_279CF9508;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -259,18 +259,18 @@ uint64_t __62__XBApplicationDataStore_beginAccessBlockForBundleIdentifier___bloc
   }
 }
 
-- (void)endAccessBlockForBundleIdentifier:(id)a3
+- (void)endAccessBlockForBundleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__XBApplicationDataStore_endAccessBlockForBundleIdentifier___block_invoke;
   block[3] = &unk_279CF9558;
   block[4] = self;
-  v9 = v5;
+  v9 = identifierCopy;
   v10 = a2;
-  v7 = v5;
+  v7 = identifierCopy;
   dispatch_sync(queue, block);
 }
 

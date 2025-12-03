@@ -6,12 +6,12 @@
 
 - (id)_ad_OTTRequestRepresentation
 {
-  v2 = [(SALCMShowChannel *)self channel];
-  v3 = [v2 ad_OTTModelRepresentation];
+  channel = [(SALCMShowChannel *)self channel];
+  ad_OTTModelRepresentation = [channel ad_OTTModelRepresentation];
 
-  if (v3)
+  if (ad_OTTModelRepresentation)
   {
-    v4 = [[STShowChannelRequest alloc] _initWithChannel:v3];
+    v4 = [[STShowChannelRequest alloc] _initWithChannel:ad_OTTModelRepresentation];
   }
 
   else

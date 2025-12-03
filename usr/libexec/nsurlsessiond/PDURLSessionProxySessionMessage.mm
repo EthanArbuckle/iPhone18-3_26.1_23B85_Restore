@@ -1,51 +1,51 @@
 @interface PDURLSessionProxySessionMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSequenceNumber:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSequenceNumber:(BOOL)number;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDURLSessionProxySessionMessage
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 4))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(PDURLSessionProxySessionMessage *)self setSessionIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(PDURLSessionProxySessionMessage *)self setUuidString:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 2) != 0)
   {
-    self->_sequenceNumber = *(v4 + 2);
+    self->_sequenceNumber = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 48);
+    v5 = *(fromCopy + 48);
   }
 
   if (v5)
   {
-    self->_idsPriority = *(v4 + 1);
+    self->_idsPriority = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(PDURLSessionProxySessionMessage *)self setLaunchUUID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 
@@ -77,16 +77,16 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ v6 ^ [(NSString *)self->_launchUUID hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   sessionIdentifier = self->_sessionIdentifier;
-  if (sessionIdentifier | *(v4 + 4))
+  if (sessionIdentifier | *(equalCopy + 4))
   {
     if (![(NSString *)sessionIdentifier isEqual:?])
     {
@@ -95,7 +95,7 @@ LABEL_3:
   }
 
   uuidString = self->_uuidString;
-  if (uuidString | *(v4 + 5))
+  if (uuidString | *(equalCopy + 5))
   {
     if (![(NSString *)uuidString isEqual:?])
     {
@@ -103,16 +103,16 @@ LABEL_3:
     }
   }
 
-  v7 = *(v4 + 48);
+  v7 = *(equalCopy + 48);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_sequenceNumber != *(v4 + 2))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_sequenceNumber != *(equalCopy + 2))
     {
       goto LABEL_18;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
 LABEL_18:
     v9 = 0;
@@ -121,19 +121,19 @@ LABEL_18:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_idsPriority != *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_idsPriority != *(equalCopy + 1))
     {
       goto LABEL_18;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
     goto LABEL_18;
   }
 
   launchUUID = self->_launchUUID;
-  if (launchUUID | *(v4 + 3))
+  if (launchUUID | *(equalCopy + 3))
   {
     v9 = [(NSString *)launchUUID isEqual:?];
   }
@@ -148,14 +148,14 @@ LABEL_19:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_sessionIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_sessionIdentifier copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
-  v8 = [(NSString *)self->_uuidString copyWithZone:a3];
+  v8 = [(NSString *)self->_uuidString copyWithZone:zone];
   v9 = v5[5];
   v5[5] = v8;
 
@@ -173,64 +173,64 @@ LABEL_19:
     *(v5 + 48) |= 1u;
   }
 
-  v11 = [(NSString *)self->_launchUUID copyWithZone:a3];
+  v11 = [(NSString *)self->_launchUUID copyWithZone:zone];
   v12 = v5[3];
   v5[3] = v11;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_sessionIdentifier)
   {
-    [v4 setSessionIdentifier:?];
-    v4 = v6;
+    [toCopy setSessionIdentifier:?];
+    toCopy = v6;
   }
 
   if (self->_uuidString)
   {
     [v6 setUuidString:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 2) = self->_sequenceNumber;
-    *(v4 + 48) |= 2u;
+    *(toCopy + 2) = self->_sequenceNumber;
+    *(toCopy + 48) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 1) = self->_idsPriority;
-    *(v4 + 48) |= 1u;
+    *(toCopy + 1) = self->_idsPriority;
+    *(toCopy + 48) |= 1u;
   }
 
   if (self->_launchUUID)
   {
     [v6 setLaunchUUID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_sessionIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_uuidString)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -238,7 +238,7 @@ LABEL_19:
   {
     sequenceNumber = self->_sequenceNumber;
     PBDataWriterWriteUint64Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -246,13 +246,13 @@ LABEL_19:
   {
     idsPriority = self->_idsPriority;
     PBDataWriterWriteInt64Field();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_launchUUID)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
@@ -301,15 +301,15 @@ LABEL_19:
   v7.receiver = self;
   v7.super_class = PDURLSessionProxySessionMessage;
   v3 = [(PDURLSessionProxySessionMessage *)&v7 description];
-  v4 = [(PDURLSessionProxySessionMessage *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDURLSessionProxySessionMessage *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (void)setHasSequenceNumber:(BOOL)a3
+- (void)setHasSequenceNumber:(BOOL)number
 {
-  if (a3)
+  if (number)
   {
     v3 = 2;
   }

@@ -1,41 +1,41 @@
 @interface RAPLayoutDownloader
-- (RAPLayoutDownloader)initWithLayoutOptions:(id)a3;
-- (id)_extractLayoutFormFromResponse:(id)a3;
+- (RAPLayoutDownloader)initWithLayoutOptions:(id)options;
+- (id)_extractLayoutFormFromResponse:(id)response;
 - (id)_generateRequestParams;
 - (int)_geoFormTypeForOptions;
 - (void)cancel;
-- (void)fetchLayoutConfig:(id)a3;
+- (void)fetchLayoutConfig:(id)config;
 @end
 
 @implementation RAPLayoutDownloader
 
 - (int)_geoFormTypeForOptions
 {
-  v2 = [(RAPLayoutOptions *)self->_options layoutType];
-  if (v2 > 5)
+  layoutType = [(RAPLayoutOptions *)self->_options layoutType];
+  if (layoutType > 5)
   {
     return 0;
   }
 
   else
   {
-    return dword_101215538[v2];
+    return dword_101215538[layoutType];
   }
 }
 
-- (id)_extractLayoutFormFromResponse:(id)a3
+- (id)_extractLayoutFormFromResponse:(id)response
 {
-  v4 = a3;
-  v5 = [(RAPLayoutDownloader *)self _geoFormTypeForOptions];
+  responseCopy = response;
+  _geoFormTypeForOptions = [(RAPLayoutDownloader *)self _geoFormTypeForOptions];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [v4 feedbackResult];
-  v7 = [v6 layoutConfigResult];
-  v8 = [v7 forms];
+  feedbackResult = [responseCopy feedbackResult];
+  layoutConfigResult = [feedbackResult layoutConfigResult];
+  forms = [layoutConfigResult forms];
 
-  v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v9 = [forms countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
     v10 = v9;
@@ -46,18 +46,18 @@
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(forms);
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
-        if ([v13 formType] == v5)
+        if ([v13 formType] == _geoFormTypeForOptions)
         {
           v14 = v13;
           goto LABEL_11;
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v10 = [forms countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v10)
       {
         continue;
@@ -73,15 +73,15 @@ LABEL_11:
   return v14;
 }
 
-- (void)fetchLayoutConfig:(id)a3
+- (void)fetchLayoutConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   BOOL = GEOConfigGetBOOL();
   v6 = BOOL;
   if (BOOL && ([RAPLayoutCache configForLayoutType:[(RAPLayoutOptions *)self->_options layoutType]], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v8 = v7;
-    v4[2](v4, v7, 0);
+    configCopy[2](configCopy, v7, 0);
   }
 
   else
@@ -91,10 +91,10 @@ LABEL_11:
       [(RAPLayoutDownloader *)self cancel];
     }
 
-    v9 = [(RAPLayoutDownloader *)self _generateRequestParams];
-    v10 = [(RAPLayoutOptions *)self->_options reportedMapItem];
-    v11 = [v10 _geoMapItem];
-    v12 = [MSPFeedbackSubmissionTicket ticketForFeedbackRequestParameters:v9 mapItem:v11 traits:self->_traits];
+    _generateRequestParams = [(RAPLayoutDownloader *)self _generateRequestParams];
+    reportedMapItem = [(RAPLayoutOptions *)self->_options reportedMapItem];
+    _geoMapItem = [reportedMapItem _geoMapItem];
+    v12 = [MSPFeedbackSubmissionTicket ticketForFeedbackRequestParameters:_generateRequestParams mapItem:_geoMapItem traits:self->_traits];
     ticket = self->_ticket;
     self->_ticket = v12;
 
@@ -106,7 +106,7 @@ LABEL_11:
     v15[3] = &unk_10162E4B8;
     objc_copyWeak(&v17, &location);
     v18 = v6;
-    v16 = v4;
+    v16 = configCopy;
     [(GEOMapServiceFeedbackReportTicket *)v14 submitWithHandler:v15 networkActivity:0];
 
     objc_destroyWeak(&v17);
@@ -117,8 +117,8 @@ LABEL_11:
 - (id)_generateRequestParams
 {
   v3 = objc_alloc_init(GEORPFeedbackRequestParameters);
-  v4 = [(RAPLayoutOptions *)self->_options initialLayoutParameters];
-  [v3 setLayoutConfigParameters:v4];
+  initialLayoutParameters = [(RAPLayoutOptions *)self->_options initialLayoutParameters];
+  [v3 setLayoutConfigParameters:initialLayoutParameters];
 
   return v3;
 }
@@ -134,20 +134,20 @@ LABEL_11:
   }
 }
 
-- (RAPLayoutDownloader)initWithLayoutOptions:(id)a3
+- (RAPLayoutDownloader)initWithLayoutOptions:(id)options
 {
-  v5 = a3;
+  optionsCopy = options;
   v11.receiver = self;
   v11.super_class = RAPLayoutDownloader;
   v6 = [(RAPLayoutDownloader *)&v11 init];
   if (v6)
   {
     v7 = +[MKMapService sharedService];
-    v8 = [v7 defaultTraits];
+    defaultTraits = [v7 defaultTraits];
     traits = v6->_traits;
-    v6->_traits = v8;
+    v6->_traits = defaultTraits;
 
-    objc_storeStrong(&v6->_options, a3);
+    objc_storeStrong(&v6->_options, options);
   }
 
   return v6;

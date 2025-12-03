@@ -1,11 +1,11 @@
 @interface BRCClientPrivilegesDescriptor
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
-- (BRCClientPrivilegesDescriptor)initWithAuditToken:(id *)a3;
-- (BRCClientPrivilegesDescriptor)initWithNonSandboxedAppWithAppLibraryIDs:(id)a3 bundleID:(id)a4 auditToken:(id *)a5;
+- (BRCClientPrivilegesDescriptor)initWithAuditToken:(id *)token;
+- (BRCClientPrivilegesDescriptor)initWithNonSandboxedAppWithAppLibraryIDs:(id)ds bundleID:(id)d auditToken:(id *)token;
 - (char)_computeCloudEnabledStatusWithoutLogOutStatus;
-- (char)cloudEnabledStatusWithHasSession:(BOOL)a3;
+- (char)cloudEnabledStatusWithHasSession:(BOOL)session;
 - (int)pid;
-- (void)_finishSetupWithClientContainerIDs:(id)a3;
+- (void)_finishSetupWithClientContainerIDs:(id)ds;
 - (void)updateCloudEnabledStatus;
 @end
 
@@ -41,13 +41,13 @@
     }
   }
 
-  v6 = [(BRCClientPrivilegesDescriptor *)self applicationIdentifier];
+  applicationIdentifier = [(BRCClientPrivilegesDescriptor *)self applicationIdentifier];
 
-  if (v6)
+  if (applicationIdentifier)
   {
-    v7 = [MEMORY[0x277D262A0] sharedConnection];
-    v8 = [(BRCClientPrivilegesDescriptor *)self applicationIdentifier];
-    v9 = [v7 isCloudSyncAllowed:v8];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    applicationIdentifier2 = [(BRCClientPrivilegesDescriptor *)self applicationIdentifier];
+    v9 = [mEMORY[0x277D262A0] isCloudSyncAllowed:applicationIdentifier2];
 
     if ((v9 & 1) == 0)
     {
@@ -80,19 +80,19 @@ LABEL_17:
 
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken
 {
-  v3 = self;
+  selfCopy = self;
   if ((self->var0[6] & 0x10000) == 0)
   {
     [BRCClientPrivilegesDescriptor auditToken];
   }
 
-  v5 = *&v3[2].var0[2];
-  *retstr->var0 = *&v3[1].var0[6];
+  v5 = *&selfCopy[2].var0[2];
+  *retstr->var0 = *&selfCopy[1].var0[6];
   *&retstr->var0[4] = v5;
   return self;
 }
 
-- (BRCClientPrivilegesDescriptor)initWithAuditToken:(id *)a3
+- (BRCClientPrivilegesDescriptor)initWithAuditToken:(id *)token
 {
   v19.receiver = self;
   v19.super_class = BRCClientPrivilegesDescriptor;
@@ -100,12 +100,12 @@ LABEL_17:
   v5 = v4;
   if (v4)
   {
-    v6 = *a3->var0;
-    *(v4 + 72) = *&a3->var0[4];
+    v6 = *token->var0;
+    *(v4 + 72) = *&token->var0[4];
     *(v4 + 56) = v6;
     v4[26] = 1;
-    v17 = *a3->var0;
-    v18 = *&a3->var0[4];
+    v17 = *token->var0;
+    v18 = *&token->var0[4];
     v7 = BRCopyEntitlementsForAuditToken();
     v8 = BREntitledApplicationIdentifier();
     v9 = *(v5 + 4);
@@ -171,10 +171,10 @@ LABEL_15:
   return v5;
 }
 
-- (BRCClientPrivilegesDescriptor)initWithNonSandboxedAppWithAppLibraryIDs:(id)a3 bundleID:(id)a4 auditToken:(id *)a5
+- (BRCClientPrivilegesDescriptor)initWithNonSandboxedAppWithAppLibraryIDs:(id)ds bundleID:(id)d auditToken:(id *)token
 {
-  v8 = a3;
-  v9 = a4;
+  dsCopy = ds;
+  dCopy = d;
   v10 = objc_opt_class();
   v11 = *&self->_auditToken.val[4];
   v21 = *self->_auditToken.val;
@@ -188,10 +188,10 @@ LABEL_15:
     if (v12)
     {
       v12->_isNonAppSandboxed = 1;
-      objc_storeStrong(&v12->_applicationIdentifier, a4);
+      objc_storeStrong(&v12->_applicationIdentifier, d);
       v13->_isAllowedToAccessAnyCloudService = 1;
-      v14 = *a5->var0;
-      *&v13->_auditToken.val[4] = *&a5->var0[4];
+      v14 = *token->var0;
+      *&v13->_auditToken.val[4] = *&token->var0[4];
       *v13->_auditToken.val = v14;
       v13->_hasAuditToken = 1;
       *&v13->_isProxyEntitled = 16843009;
@@ -199,14 +199,14 @@ LABEL_15:
       v15 = xpc_copy_entitlement_for_token();
       v16 = MEMORY[0x22AA4AB30]() == MEMORY[0x277D86448] && xpc_BOOL_get_value(v15);
       v13->_isBRCTL = v16;
-      [(BRCClientPrivilegesDescriptor *)v13 _finishSetupWithClientContainerIDs:v8];
+      [(BRCClientPrivilegesDescriptor *)v13 _finishSetupWithClientContainerIDs:dsCopy];
     }
   }
 
   else
   {
-    v17 = *&a5->var0[4];
-    v21 = *a5->var0;
+    v17 = *&token->var0[4];
+    v21 = *token->var0;
     v22 = v17;
     v13 = [(BRCClientPrivilegesDescriptor *)self initWithAuditToken:&v21];
   }
@@ -216,20 +216,20 @@ LABEL_15:
   return v18;
 }
 
-- (void)_finishSetupWithClientContainerIDs:(id)a3
+- (void)_finishSetupWithClientContainerIDs:(id)ds
 {
-  v4 = a3;
-  v15 = v4;
-  if (v4)
+  dsCopy = ds;
+  v15 = dsCopy;
+  if (dsCopy)
   {
-    v5 = [MEMORY[0x277CBEB98] setWithArray:v4];
+    v5 = [MEMORY[0x277CBEB98] setWithArray:dsCopy];
     appLibraryIDs = self->_appLibraryIDs;
     self->_appLibraryIDs = v5;
 
-    v4 = v15;
+    dsCopy = v15;
   }
 
-  if ([v4 count])
+  if ([dsCopy count])
   {
     v7 = [v15 objectAtIndexedSubscript:0];
     defaultAppLibraryID = self->_defaultAppLibraryID;
@@ -269,18 +269,18 @@ LABEL_10:
     self->_debugIdentifier = v12;
   }
 
-  v14 = self;
-  objc_sync_enter(v14);
-  v14->_cloudEnabledStatusWithoutLogOutStatus = [(BRCClientPrivilegesDescriptor *)v14 _computeCloudEnabledStatusWithoutLogOutStatus];
-  objc_sync_exit(v14);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_cloudEnabledStatusWithoutLogOutStatus = [(BRCClientPrivilegesDescriptor *)selfCopy _computeCloudEnabledStatusWithoutLogOutStatus];
+  objc_sync_exit(selfCopy);
 }
 
-- (char)cloudEnabledStatusWithHasSession:(BOOL)a3
+- (char)cloudEnabledStatusWithHasSession:(BOOL)session
 {
-  v3 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v3)
+  sessionCopy = session;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (sessionCopy)
   {
     v5 = 1;
   }
@@ -290,17 +290,17 @@ LABEL_10:
     v5 = -4;
   }
 
-  if (v4->_cloudEnabledStatusWithoutLogOutStatus == 1)
+  if (selfCopy->_cloudEnabledStatusWithoutLogOutStatus == 1)
   {
     cloudEnabledStatusWithoutLogOutStatus = v5;
   }
 
   else
   {
-    cloudEnabledStatusWithoutLogOutStatus = v4->_cloudEnabledStatusWithoutLogOutStatus;
+    cloudEnabledStatusWithoutLogOutStatus = selfCopy->_cloudEnabledStatusWithoutLogOutStatus;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return cloudEnabledStatusWithoutLogOutStatus;
 }

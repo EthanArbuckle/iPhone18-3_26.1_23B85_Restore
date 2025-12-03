@@ -1,13 +1,13 @@
 @interface GAXBKAccelerometerInterfaceAccessibility
-- (int64_t)processEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5;
+- (int64_t)processEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher;
 @end
 
 @implementation GAXBKAccelerometerInterfaceAccessibility
 
-- (int64_t)processEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5
+- (int64_t)processEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher
 {
-  v8 = a4;
-  v9 = a5;
+  senderCopy = sender;
+  dispatcherCopy = dispatcher;
   v10 = +[GAXBackboard sharedInstance];
   if ([v10 isActive] && !objc_msgSend(v10, "allowsMotion"))
   {
@@ -18,7 +18,7 @@
   {
     v13.receiver = self;
     v13.super_class = GAXBKAccelerometerInterfaceAccessibility;
-    v11 = [(GAXBKAccelerometerInterfaceAccessibility *)&v13 processEvent:a3 sender:v8 dispatcher:v9];
+    v11 = [(GAXBKAccelerometerInterfaceAccessibility *)&v13 processEvent:event sender:senderCopy dispatcher:dispatcherCopy];
   }
 
   return v11;

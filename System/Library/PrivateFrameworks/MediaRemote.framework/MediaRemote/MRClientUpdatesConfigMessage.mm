@@ -5,27 +5,27 @@
 - (BOOL)outputDeviceUpdates;
 - (BOOL)systemEndpointUpdates;
 - (BOOL)volumeUpdates;
-- (MRClientUpdatesConfigMessage)initWithUnderlyingCodableMessage:(id)a3 error:(id)a4;
+- (MRClientUpdatesConfigMessage)initWithUnderlyingCodableMessage:(id)message error:(id)error;
 @end
 
 @implementation MRClientUpdatesConfigMessage
 
-- (MRClientUpdatesConfigMessage)initWithUnderlyingCodableMessage:(id)a3 error:(id)a4
+- (MRClientUpdatesConfigMessage)initWithUnderlyingCodableMessage:(id)message error:(id)error
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  messageCopy = message;
   v20.receiver = self;
   v20.super_class = MRClientUpdatesConfigMessage;
-  v7 = [(MRProtocolMessage *)&v20 initWithUnderlyingCodableMessage:v6 error:a4];
+  v7 = [(MRProtocolMessage *)&v20 initWithUnderlyingCodableMessage:messageCopy error:error];
   if (v7)
   {
-    v8 = [v6 subscribedPlayerPaths];
-    v9 = [v8 count];
+    subscribedPlayerPaths = [messageCopy subscribedPlayerPaths];
+    v9 = [subscribedPlayerPaths count];
 
     if (v9)
     {
-      v10 = [v6 subscribedPlayerPaths];
-      v11 = [v10 mr_map:&__block_literal_global_0];
+      subscribedPlayerPaths2 = [messageCopy subscribedPlayerPaths];
+      v11 = [subscribedPlayerPaths2 mr_map:&__block_literal_global_0];
       subscribedPlayerPaths = v7->_subscribedPlayerPaths;
       v7->_subscribedPlayerPaths = v11;
     }
@@ -33,10 +33,10 @@
     else
     {
       v13 = [MRPlayerPath alloc];
-      v10 = +[MROrigin localOrigin];
+      subscribedPlayerPaths2 = +[MROrigin localOrigin];
       subscribedPlayerPaths = +[MRClient anyClient];
       v14 = +[MRPlayer anyPlayer];
-      v15 = [(MRPlayerPath *)v13 initWithOrigin:v10 client:subscribedPlayerPaths player:v14];
+      v15 = [(MRPlayerPath *)v13 initWithOrigin:subscribedPlayerPaths2 client:subscribedPlayerPaths player:v14];
       v21[0] = v15;
       v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
       v17 = v7->_subscribedPlayerPaths;
@@ -58,50 +58,50 @@ MRPlayerPath *__71__MRClientUpdatesConfigMessage_initWithUnderlyingCodableMessag
 
 - (BOOL)nowPlayingUpdates
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 nowPlayingUpdates];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  nowPlayingUpdates = [underlyingCodableMessage nowPlayingUpdates];
 
-  return v3;
+  return nowPlayingUpdates;
 }
 
 - (BOOL)artworkUpdates
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 artworkUpdates];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  artworkUpdates = [underlyingCodableMessage artworkUpdates];
 
-  return v3;
+  return artworkUpdates;
 }
 
 - (BOOL)volumeUpdates
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 volumeUpdates];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  volumeUpdates = [underlyingCodableMessage volumeUpdates];
 
-  return v3;
+  return volumeUpdates;
 }
 
 - (BOOL)keyboardUpdates
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 keyboardUpdates];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  keyboardUpdates = [underlyingCodableMessage keyboardUpdates];
 
-  return v3;
+  return keyboardUpdates;
 }
 
 - (BOOL)outputDeviceUpdates
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 outputDeviceUpdates];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  outputDeviceUpdates = [underlyingCodableMessage outputDeviceUpdates];
 
-  return v3;
+  return outputDeviceUpdates;
 }
 
 - (BOOL)systemEndpointUpdates
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 systemEndpointUpdates];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  systemEndpointUpdates = [underlyingCodableMessage systemEndpointUpdates];
 
-  return v3;
+  return systemEndpointUpdates;
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface PPNotification
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToNotification:(id)a3;
-- (PPNotification)initWithBundleId:(id)a3 title:(id)a4 subtitle:(id)a5 message:(id)a6 date:(id)a7;
-- (PPNotification)initWithCoder:(id)a3;
-- (PPNotification)initWithCurrentDateAndBundleId:(id)a3 title:(id)a4 subtitle:(id)a5 message:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToNotification:(id)notification;
+- (PPNotification)initWithBundleId:(id)id title:(id)title subtitle:(id)subtitle message:(id)message date:(id)date;
+- (PPNotification)initWithCoder:(id)coder;
+- (PPNotification)initWithCurrentDateAndBundleId:(id)id title:(id)title subtitle:(id)subtitle message:(id)message;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PPNotification
@@ -18,10 +18,10 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -29,24 +29,24 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PPNotification *)self isEqualToNotification:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PPNotification *)self isEqualToNotification:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToNotification:(id)a3
+- (BOOL)isEqualToNotification:(id)notification
 {
-  v4 = a3;
-  p_isa = &v4->super.isa;
-  if (v4 == self)
+  notificationCopy = notification;
+  p_isa = &notificationCopy->super.isa;
+  if (notificationCopy == self)
   {
     LOBYTE(v13) = 1;
   }
 
   else
   {
-    if (v4)
+    if (notificationCopy)
     {
       v6 = self->_bundleId;
       v7 = p_isa[1];
@@ -168,30 +168,30 @@ LABEL_31:
   return [(NSDate *)self->_date hash]- v6 + 32 * v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bundleId = self->_bundleId;
-  v5 = a3;
-  [v5 encodeObject:bundleId forKey:@"bid"];
-  [v5 encodeObject:self->_title forKey:@"tit"];
-  [v5 encodeObject:self->_subtitle forKey:@"sub"];
-  [v5 encodeObject:self->_message forKey:@"mes"];
-  [v5 encodeObject:self->_date forKey:@"date"];
+  coderCopy = coder;
+  [coderCopy encodeObject:bundleId forKey:@"bid"];
+  [coderCopy encodeObject:self->_title forKey:@"tit"];
+  [coderCopy encodeObject:self->_subtitle forKey:@"sub"];
+  [coderCopy encodeObject:self->_message forKey:@"mes"];
+  [coderCopy encodeObject:self->_date forKey:@"date"];
 }
 
-- (PPNotification)initWithCoder:(id)a3
+- (PPNotification)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bid"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tit"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sub"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mes"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bid"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tit"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sub"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mes"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
 
   if (v5 && v8 && v9)
   {
     self = [(PPNotification *)self initWithBundleId:v5 title:v6 subtitle:v7 message:v8 date:v9];
-    v10 = self;
+    selfCopy = self;
   }
 
   else
@@ -203,31 +203,31 @@ LABEL_31:
       _os_log_error_impl(&dword_1A7FD3000, v11, OS_LOG_TYPE_ERROR, "PPNotification:initWithCoder: decoded illegal nil property", v13, 2u);
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (PPNotification)initWithBundleId:(id)a3 title:(id)a4 subtitle:(id)a5 message:(id)a6 date:(id)a7
+- (PPNotification)initWithBundleId:(id)id title:(id)title subtitle:(id)subtitle message:(id)message date:(id)date
 {
-  v13 = a3;
-  v24 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v13)
+  idCopy = id;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  messageCopy = message;
+  dateCopy = date;
+  if (idCopy)
   {
-    if (v15)
+    if (messageCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PPNotification.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"message"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPNotification.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"message"}];
 
-    if (v16)
+    if (dateCopy)
     {
       goto LABEL_4;
     }
@@ -235,23 +235,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v20 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v20 handleFailureInMethod:a2 object:self file:@"PPNotification.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"bundleId"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PPNotification.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"bundleId"}];
 
-  if (!v15)
+  if (!messageCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v16)
+  if (dateCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v22 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v22 handleFailureInMethod:a2 object:self file:@"PPNotification.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"date"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PPNotification.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"date"}];
 
 LABEL_4:
   v25.receiver = self;
@@ -260,24 +260,24 @@ LABEL_4:
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_bundleId, a3);
-    objc_storeStrong(&v18->_title, a4);
-    objc_storeStrong(&v18->_subtitle, a5);
-    objc_storeStrong(&v18->_message, a6);
-    objc_storeStrong(&v18->_date, a7);
+    objc_storeStrong(&v17->_bundleId, id);
+    objc_storeStrong(&v18->_title, title);
+    objc_storeStrong(&v18->_subtitle, subtitle);
+    objc_storeStrong(&v18->_message, message);
+    objc_storeStrong(&v18->_date, date);
   }
 
   return v18;
 }
 
-- (PPNotification)initWithCurrentDateAndBundleId:(id)a3 title:(id)a4 subtitle:(id)a5 message:(id)a6
+- (PPNotification)initWithCurrentDateAndBundleId:(id)id title:(id)title subtitle:(id)subtitle message:(id)message
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  messageCopy = message;
+  subtitleCopy = subtitle;
+  titleCopy = title;
+  idCopy = id;
   v14 = objc_opt_new();
-  v15 = [(PPNotification *)self initWithBundleId:v13 title:v12 subtitle:v11 message:v10 date:v14];
+  v15 = [(PPNotification *)self initWithBundleId:idCopy title:titleCopy subtitle:subtitleCopy message:messageCopy date:v14];
 
   return v15;
 }

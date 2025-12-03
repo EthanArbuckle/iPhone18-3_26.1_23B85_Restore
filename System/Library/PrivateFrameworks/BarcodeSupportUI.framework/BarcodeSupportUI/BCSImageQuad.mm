@@ -1,7 +1,7 @@
 @interface BCSImageQuad
-- (BCSImageQuad)initWithTopLeft:(CGPoint)a3 topRight:(CGPoint)a4 bottomRight:(CGPoint)a5 bottomLeft:(CGPoint)a6;
-- (CGPoint)_denormalizePoint:(CGPoint)a3 inBounds:(CGRect)a4;
-- (CGPoint)_normalizePoint:(CGPoint)a3 inBounds:(CGRect)a4;
+- (BCSImageQuad)initWithTopLeft:(CGPoint)left topRight:(CGPoint)right bottomRight:(CGPoint)bottomRight bottomLeft:(CGPoint)bottomLeft;
+- (CGPoint)_denormalizePoint:(CGPoint)point inBounds:(CGRect)bounds;
+- (CGPoint)_normalizePoint:(CGPoint)point inBounds:(CGRect)bounds;
 - (CGPoint)bottomLeft;
 - (CGPoint)bottomRight;
 - (CGPoint)topLeft;
@@ -9,9 +9,9 @@
 - (CGRect)boundingBox;
 - (CGRect)bounds;
 - (CGSize)perspectiveCorrectedSize;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)adjustOrientationInImageSpace:(BOOL)a3;
+- (void)adjustOrientationInImageSpace:(BOOL)space;
 - (void)denormalize;
 - (void)flip;
 - (void)normalize;
@@ -19,16 +19,16 @@
 
 @implementation BCSImageQuad
 
-- (BCSImageQuad)initWithTopLeft:(CGPoint)a3 topRight:(CGPoint)a4 bottomRight:(CGPoint)a5 bottomLeft:(CGPoint)a6
+- (BCSImageQuad)initWithTopLeft:(CGPoint)left topRight:(CGPoint)right bottomRight:(CGPoint)bottomRight bottomLeft:(CGPoint)bottomLeft
 {
-  y = a6.y;
-  x = a6.x;
-  v8 = a5.y;
-  v9 = a5.x;
-  v10 = a4.y;
-  v11 = a4.x;
-  v12 = a3.y;
-  v13 = a3.x;
+  y = bottomLeft.y;
+  x = bottomLeft.x;
+  v8 = bottomRight.y;
+  v9 = bottomRight.x;
+  v10 = right.y;
+  v11 = right.x;
+  v12 = left.y;
+  v13 = left.x;
   v18.receiver = self;
   v18.super_class = BCSImageQuad;
   v14 = [(BCSImageQuad *)&v18 init];
@@ -170,19 +170,19 @@
   self->_bottomRight.y = v3 - self->_bottomRight.y;
 }
 
-- (CGPoint)_normalizePoint:(CGPoint)a3 inBounds:(CGRect)a4
+- (CGPoint)_normalizePoint:(CGPoint)point inBounds:(CGRect)bounds
 {
-  v4 = (a3.x - a4.origin.x) / a4.size.width;
-  v5 = (a3.y - a4.origin.y) / a4.size.height;
+  v4 = (point.x - bounds.origin.x) / bounds.size.width;
+  v5 = (point.y - bounds.origin.y) / bounds.size.height;
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGPoint)_denormalizePoint:(CGPoint)a3 inBounds:(CGRect)a4
+- (CGPoint)_denormalizePoint:(CGPoint)point inBounds:(CGRect)bounds
 {
-  v4 = a4.origin.x + a3.x * a4.size.width;
-  v5 = a4.origin.y + a3.y * a4.size.height;
+  v4 = bounds.origin.x + point.x * bounds.size.width;
+  v5 = bounds.origin.y + point.y * bounds.size.height;
   result.y = v5;
   result.x = v4;
   return result;
@@ -232,9 +232,9 @@
   return result;
 }
 
-- (void)adjustOrientationInImageSpace:(BOOL)a3
+- (void)adjustOrientationInImageSpace:(BOOL)space
 {
-  v3 = a3;
+  spaceCopy = space;
   v44[4] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCAE60];
   [(BCSImageQuad *)self topLeft];
@@ -272,7 +272,7 @@
   v26 = v25;
 
   v27 = v26 < v23;
-  if (v3)
+  if (spaceCopy)
   {
     v27 = v26 > v23;
     v28 = v17 <= v20;
@@ -341,7 +341,7 @@ uint64_t __46__BCSImageQuad_adjustOrientationInImageSpace___block_invoke(uint64_
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [BCSImageQuad alloc];
   [(BCSImageQuad *)self topLeft];

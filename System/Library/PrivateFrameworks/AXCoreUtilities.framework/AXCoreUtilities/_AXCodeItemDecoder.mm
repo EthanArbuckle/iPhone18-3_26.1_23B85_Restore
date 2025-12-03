@@ -1,42 +1,42 @@
 @interface _AXCodeItemDecoder
-- (id)decodedCodeItemsFromURL:(id)a3 decodingErrors:(id)a4;
+- (id)decodedCodeItemsFromURL:(id)l decodingErrors:(id)errors;
 @end
 
 @implementation _AXCodeItemDecoder
 
-- (id)decodedCodeItemsFromURL:(id)a3 decodingErrors:(id)a4
+- (id)decodedCodeItemsFromURL:(id)l decodingErrors:(id)errors
 {
   v79 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  errorsCopy = errors;
   v76 = 0;
-  v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:a3 options:0 error:&v76];
+  v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:l options:0 error:&v76];
   v7 = v76;
   if (v7)
   {
     v8 = v7;
     v9 = MEMORY[0x1E696ABC0];
-    v10 = [v7 ax_nonRedundantDescription];
-    v52 = v10;
+    ax_nonRedundantDescription = [v7 ax_nonRedundantDescription];
+    v52 = ax_nonRedundantDescription;
     v11 = @"Could not load ax bundle map: %@";
     v12 = v9;
 LABEL_3:
-    v13 = [v12 ax_errorWithDomain:@"AXLoader" description:{v11, v52}];
-    [v5 addObject:v13];
+    ax_nonRedundantDescription2 = [v12 ax_errorWithDomain:@"AXLoader" description:{v11, v52}];
+    [errorsCopy addObject:ax_nonRedundantDescription2];
 LABEL_6:
     v17 = 0;
     goto LABEL_7;
   }
 
   v75 = 0;
-  v10 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v6 options:0 error:&v75];
+  ax_nonRedundantDescription = [MEMORY[0x1E696ACB0] JSONObjectWithData:v6 options:0 error:&v75];
   v14 = v75;
   v8 = v14;
   if (v14)
   {
     v15 = MEMORY[0x1E696ABC0];
-    v13 = [v14 ax_nonRedundantDescription];
-    v16 = [v15 ax_errorWithDomain:@"AXLoader" description:{@"Could not decode ax bundle map JSON: %@", v13}];
-    [v5 addObject:v16];
+    ax_nonRedundantDescription2 = [v14 ax_nonRedundantDescription];
+    v16 = [v15 ax_errorWithDomain:@"AXLoader" description:{@"Could not decode ax bundle map JSON: %@", ax_nonRedundantDescription2}];
+    [errorsCopy addObject:v16];
 
     goto LABEL_6;
   }
@@ -50,7 +50,7 @@ LABEL_6:
     goto LABEL_3;
   }
 
-  v13 = [v10 objectForKey:@"items"];
+  ax_nonRedundantDescription2 = [ax_nonRedundantDescription objectForKey:@"items"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -59,17 +59,17 @@ LABEL_6:
     v72 = 0u;
     v73 = 0u;
     v74 = 0u;
-    obj = v13;
+    obj = ax_nonRedundantDescription2;
     v66 = [obj countByEnumeratingWithState:&v71 objects:v78 count:16];
     if (v66)
     {
       v56 = v6;
       v57 = v17;
-      v54 = v13;
-      v55 = v10;
+      v54 = ax_nonRedundantDescription2;
+      v55 = ax_nonRedundantDescription;
       v21 = *v72;
       v22 = obj;
-      v63 = v5;
+      v63 = errorsCopy;
       v61 = *v72;
       while (1)
       {
@@ -87,7 +87,7 @@ LABEL_6:
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
             v26 = [MEMORY[0x1E696ABC0] ax_errorWithDomain:@"AXLoader" description:@"Could not load bundle map item. expected NSDictionary"];
-            [v5 addObject:v26];
+            [errorsCopy addObject:v26];
             goto LABEL_61;
           }
 
@@ -106,7 +106,7 @@ LABEL_6:
               if ((objc_opt_isKindOfClass() & 1) == 0 || ![v29 length])
               {
                 v30 = [MEMORY[0x1E696ABC0] ax_errorWithDomain:@"AXLoader" description:@"Could not load bundle map item. target name is missing"];
-                [v5 addObject:v30];
+                [errorsCopy addObject:v30];
                 v48 = v62;
                 goto LABEL_58;
               }
@@ -124,7 +124,7 @@ LABEL_6:
                   v60 = v32;
                   if (objc_opt_isKindOfClass())
                   {
-                    v33 = [MEMORY[0x1E695DF90] dictionary];
+                    dictionary = [MEMORY[0x1E695DF90] dictionary];
                     v67 = 0u;
                     v68 = 0u;
                     v69 = 0u;
@@ -151,27 +151,27 @@ LABEL_6:
                           {
                             if ([v39 isEqualToString:_AXBundleMapPlatformKey_iOS])
                             {
-                              [v33 setObject:v29 forKeyedSubscript:_AXBundleMapPlatformKey_iOS];
+                              [dictionary setObject:v29 forKeyedSubscript:_AXBundleMapPlatformKey_iOS];
                             }
 
                             if ([v39 isEqualToString:_AXBundleMapPlatformKey_tvOS])
                             {
-                              [v33 setObject:v29 forKeyedSubscript:_AXBundleMapPlatformKey_tvOS];
+                              [dictionary setObject:v29 forKeyedSubscript:_AXBundleMapPlatformKey_tvOS];
                             }
 
                             if ([v39 isEqualToString:_AXBundleMapPlatformKey_watchOS])
                             {
-                              [v33 setObject:v29 forKeyedSubscript:_AXBundleMapPlatformKey_watchOS];
+                              [dictionary setObject:v29 forKeyedSubscript:_AXBundleMapPlatformKey_watchOS];
                             }
 
                             if ([v39 isEqualToString:_AXBundleMapPlatformKey_iosmac])
                             {
-                              [v33 setObject:v29 forKeyedSubscript:_AXBundleMapPlatformKey_iosmac];
+                              [dictionary setObject:v29 forKeyedSubscript:_AXBundleMapPlatformKey_iosmac];
                             }
 
                             if ([v39 isEqualToString:_AXBundleMapPlatformKey_macOS])
                             {
-                              [v33 setObject:v29 forKeyedSubscript:_AXBundleMapPlatformKey_macOS];
+                              [dictionary setObject:v29 forKeyedSubscript:_AXBundleMapPlatformKey_macOS];
                             }
                           }
 
@@ -198,7 +198,7 @@ LABEL_6:
                     if (v44 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                     {
                       v46 = [MEMORY[0x1E696ABC0] ax_errorWithDomain:@"AXLoader" description:{@"If loadOrder is specified, it must be a number"}];
-                      v5 = v63;
+                      errorsCopy = v63;
                       [v63 addObject:v46];
                     }
 
@@ -207,7 +207,7 @@ LABEL_6:
                       v65 = v30;
                       OrderForInfo = _loadOrderForInfo(v44, v59);
                       v46 = [v24 objectForKey:@"excludedProcesses"];
-                      v5 = v63;
+                      errorsCopy = v63;
                       if (v46 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                       {
                         v47 = [MEMORY[0x1E696ABC0] ax_errorWithDomain:@"AXLoader" description:@"excludedProcesses was not an array"];
@@ -216,7 +216,7 @@ LABEL_6:
 
                       else
                       {
-                        v47 = [[AXCodeItem alloc] initAccessibilityCodeItemWithPath:v43 targetType:v59 platformToTarget:v33 loadOrder:OrderForInfo];
+                        v47 = [[AXCodeItem alloc] initAccessibilityCodeItemWithPath:v43 targetType:v59 platformToTarget:dictionary loadOrder:OrderForInfo];
                         [v47 setExcludedProcesses:v46];
                         [v57 addObject:v47];
                       }
@@ -230,8 +230,8 @@ LABEL_6:
 
                   else
                   {
-                    v33 = [MEMORY[0x1E696ABC0] ax_errorWithDomain:@"AXLoader" description:{@"Could not load bundle map item named '%@'. supportedPlatforms expected to be an array", v29}];
-                    [v5 addObject:v33];
+                    dictionary = [MEMORY[0x1E696ABC0] ax_errorWithDomain:@"AXLoader" description:{@"Could not load bundle map item named '%@'. supportedPlatforms expected to be an array", v29}];
+                    [errorsCopy addObject:dictionary];
                   }
 
                   v48 = v62;
@@ -253,19 +253,19 @@ LABEL_59:
                 [MEMORY[0x1E696ABC0] ax_errorWithDomain:@"AXLoader" description:{@"Could not load bundle map item named '%@'. target type is missing", v29, v53}];
               }
               v49 = ;
-              [v5 addObject:v49];
+              [errorsCopy addObject:v49];
               v48 = v62;
               goto LABEL_57;
             }
 
             v29 = [MEMORY[0x1E696ABC0] ax_errorWithDomain:@"AXLoader" description:@"Could not load bundle map item. target expected to be NSDictionary"];
-            [v5 addObject:v29];
+            [errorsCopy addObject:v29];
             v48 = v27;
             goto LABEL_59;
           }
 
           v48 = [MEMORY[0x1E696ABC0] ax_errorWithDomain:@"AXLoader" description:@"Could not load bundle map item. name is missing"];
-          [v5 addObject:v48];
+          [errorsCopy addObject:v48];
 LABEL_60:
 
 LABEL_61:
@@ -279,8 +279,8 @@ LABEL_61:
         {
           v8 = 0;
           v6 = v56;
-          v13 = v54;
-          v10 = v55;
+          ax_nonRedundantDescription2 = v54;
+          ax_nonRedundantDescription = v55;
           v51 = v22;
           v17 = v57;
           goto LABEL_75;
@@ -294,7 +294,7 @@ LABEL_61:
   else
   {
     v51 = [MEMORY[0x1E696ABC0] ax_errorWithDomain:@"AXLoader" description:@"Could not load ax bundle map: Expected rootObject.items to be NSArray"];
-    [v5 addObject:v51];
+    [errorsCopy addObject:v51];
     v17 = 0;
   }
 

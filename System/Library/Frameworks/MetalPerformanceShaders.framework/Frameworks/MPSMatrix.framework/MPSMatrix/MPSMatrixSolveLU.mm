@@ -2,7 +2,7 @@
 - (MPSMatrixSolveLU)initWithDevice:(id)device transpose:(BOOL)transpose order:(NSUInteger)order numberOfRightHandSides:(NSUInteger)numberOfRightHandSides;
 - (void)dealloc;
 - (void)encodeToCommandBuffer:(id)commandBuffer sourceMatrix:(MPSMatrix *)sourceMatrix rightHandSideMatrix:(MPSMatrix *)rightHandSideMatrix pivotIndices:(MPSMatrix *)pivotIndices solutionMatrix:(MPSMatrix *)solutionMatrix;
-- (void)encodeToCommandEncoder:(id)a3 commandBuffer:(id)a4 sourceMatrix:(id)a5 rightHandSideMatrix:(id)a6 pivotIndices:(id)a7 solutionMatrix:(id)a8;
+- (void)encodeToCommandEncoder:(id)encoder commandBuffer:(id)buffer sourceMatrix:(id)matrix rightHandSideMatrix:(id)sideMatrix pivotIndices:(id)indices solutionMatrix:(id)solutionMatrix;
 @end
 
 @implementation MPSMatrixSolveLU
@@ -41,15 +41,15 @@
   return result;
 }
 
-- (void)encodeToCommandEncoder:(id)a3 commandBuffer:(id)a4 sourceMatrix:(id)a5 rightHandSideMatrix:(id)a6 pivotIndices:(id)a7 solutionMatrix:(id)a8
+- (void)encodeToCommandEncoder:(id)encoder commandBuffer:(id)buffer sourceMatrix:(id)matrix rightHandSideMatrix:(id)sideMatrix pivotIndices:(id)indices solutionMatrix:(id)solutionMatrix
 {
-  v9 = a7;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  if (objc_msgSend_options(self, a2, a3, a4, a5, a6, a7, a8))
+  indicesCopy = indices;
+  matrixCopy2 = matrix;
+  bufferCopy = buffer;
+  encoderCopy = encoder;
+  if (objc_msgSend_options(self, a2, encoder, buffer, matrix, sideMatrix, indices, solutionMatrix))
   {
-    isEqual = objc_msgSend_isEqual_(a6, v15, a8, v17, v18, v19, v20, v21);
+    isEqual = objc_msgSend_isEqual_(sideMatrix, v15, solutionMatrix, v17, v18, v19, v20, v21);
     v72 = isEqual;
     if (!self)
     {
@@ -62,7 +62,7 @@ LABEL_42:
         goto LABEL_44;
       }
 
-      v527 = v9;
+      v527 = indicesCopy;
       v73 = 1;
       goto LABEL_38;
     }
@@ -70,35 +70,35 @@ LABEL_42:
 
   else
   {
-    if (!v12 && MTLReportFailureTypeEnabled())
+    if (!bufferCopy && MTLReportFailureTypeEnabled())
     {
       v514 = objc_opt_class();
       v522 = NSStringFromClass(v514);
       MTLReportFailure();
     }
 
-    if (!v11 && MTLReportFailureTypeEnabled())
+    if (!matrixCopy2 && MTLReportFailureTypeEnabled())
     {
       v515 = objc_opt_class();
       v522 = NSStringFromClass(v515);
       MTLReportFailure();
     }
 
-    if (!a6 && MTLReportFailureTypeEnabled())
+    if (!sideMatrix && MTLReportFailureTypeEnabled())
     {
       v516 = objc_opt_class();
       v522 = NSStringFromClass(v516);
       MTLReportFailure();
     }
 
-    if (!v9 && MTLReportFailureTypeEnabled())
+    if (!indicesCopy && MTLReportFailureTypeEnabled())
     {
       v517 = objc_opt_class();
       v522 = NSStringFromClass(v517);
       MTLReportFailure();
     }
 
-    if (!a8 && MTLReportFailureTypeEnabled())
+    if (!solutionMatrix && MTLReportFailureTypeEnabled())
     {
       v518 = objc_opt_class();
       v522 = NSStringFromClass(v518);
@@ -142,76 +142,76 @@ LABEL_42:
       memset(v534, 0, sizeof(v534));
     }
 
-    objc_msgSend_rows(a8, v15, v16, v17, v18, v19, v20, v21, v522);
+    objc_msgSend_rows(solutionMatrix, v15, v16, v17, v18, v19, v20, v21, v522);
     objc_msgSend_resultMatrixOrigin(self, v74, v75, v76, v77, v78, v79, v80);
     v81 = self->_order + *v534;
-    if (v81 > objc_msgSend_rows(a8, v82, v83, v84, v85, v86, v87, v88) && MTLReportFailureTypeEnabled())
+    if (v81 > objc_msgSend_rows(solutionMatrix, v82, v83, v84, v85, v86, v87, v88) && MTLReportFailureTypeEnabled())
     {
       MTLReportFailure();
     }
 
     objc_msgSend_resultMatrixOrigin(self, v89, v90, v91, v92, v93, v94, v95);
-    objc_msgSend_columns(a8, v96, v97, v98, v99, v100, v101, v102);
+    objc_msgSend_columns(solutionMatrix, v96, v97, v98, v99, v100, v101, v102);
     objc_msgSend_resultMatrixOrigin(self, v103, v104, v105, v106, v107, v108, v109);
     v110 = self->_numberOfRightHandSides + *&v534[8];
-    if (v110 > objc_msgSend_columns(a8, v111, v112, v113, v114, v115, v116, v117) && MTLReportFailureTypeEnabled())
+    if (v110 > objc_msgSend_columns(solutionMatrix, v111, v112, v113, v114, v115, v116, v117) && MTLReportFailureTypeEnabled())
     {
       MTLReportFailure();
     }
 
     objc_msgSend_secondarySourceMatrixOrigin(self, v118, v119, v120, v121, v122, v123, v124);
-    objc_msgSend_rows(a6, v125, v126, v127, v128, v129, v130, v131);
+    objc_msgSend_rows(sideMatrix, v125, v126, v127, v128, v129, v130, v131);
     objc_msgSend_secondarySourceMatrixOrigin(self, v132, v133, v134, v135, v136, v137, v138);
     v139 = self->_order + *v534;
-    if (v139 > objc_msgSend_rows(a6, v140, v141, v142, v143, v144, v145, v146) && MTLReportFailureTypeEnabled())
+    if (v139 > objc_msgSend_rows(sideMatrix, v140, v141, v142, v143, v144, v145, v146) && MTLReportFailureTypeEnabled())
     {
       MTLReportFailure();
     }
 
     objc_msgSend_secondarySourceMatrixOrigin(self, v147, v148, v149, v150, v151, v152, v153);
-    objc_msgSend_columns(a6, v154, v155, v156, v157, v158, v159, v160);
+    objc_msgSend_columns(sideMatrix, v154, v155, v156, v157, v158, v159, v160);
     objc_msgSend_secondarySourceMatrixOrigin(self, v161, v162, v163, v164, v165, v166, v167);
     v168 = self->_numberOfRightHandSides + *&v534[8];
-    if (v168 > objc_msgSend_columns(a6, v169, v170, v171, v172, v173, v174, v175) && MTLReportFailureTypeEnabled())
+    if (v168 > objc_msgSend_columns(sideMatrix, v169, v170, v171, v172, v173, v174, v175) && MTLReportFailureTypeEnabled())
     {
       MTLReportFailure();
     }
 
-    if (objc_msgSend_dataType(v11, v176, v177, v178, v179, v180, v181, v182) == 268435488 && objc_msgSend_dataType(a6, v183, v184, v185, v186, v187, v188, v189) == 268435488)
+    if (objc_msgSend_dataType(matrixCopy2, v176, v177, v178, v179, v180, v181, v182) == 268435488 && objc_msgSend_dataType(sideMatrix, v183, v184, v185, v186, v187, v188, v189) == 268435488)
     {
-      objc_msgSend_dataType(a8, v183, v184, v185, v186, v187, v188, v189);
+      objc_msgSend_dataType(solutionMatrix, v183, v184, v185, v186, v187, v188, v189);
     }
 
-    if ((objc_msgSend_dataType(v11, v183, v184, v185, v186, v187, v188, v189) != 268435488 || objc_msgSend_dataType(a6, v190, v191, v192, v193, v194, v195, v196) != 268435488 || objc_msgSend_dataType(a8, v197, v198, v199, v200, v201, v202, v203) != 268435488) && MTLReportFailureTypeEnabled())
+    if ((objc_msgSend_dataType(matrixCopy2, v183, v184, v185, v186, v187, v188, v189) != 268435488 || objc_msgSend_dataType(sideMatrix, v190, v191, v192, v193, v194, v195, v196) != 268435488 || objc_msgSend_dataType(solutionMatrix, v197, v198, v199, v200, v201, v202, v203) != 268435488) && MTLReportFailureTypeEnabled())
     {
       MTLReportFailure();
     }
 
-    objc_msgSend_dataType(v9, v204, v205, v206, v207, v208, v209, v210);
-    if (objc_msgSend_dataType(v9, v211, v212, v213, v214, v215, v216, v217) != 32 && MTLReportFailureTypeEnabled())
+    objc_msgSend_dataType(indicesCopy, v204, v205, v206, v207, v208, v209, v210);
+    if (objc_msgSend_dataType(indicesCopy, v211, v212, v213, v214, v215, v216, v217) != 32 && MTLReportFailureTypeEnabled())
     {
       MTLReportFailure();
     }
 
     objc_msgSend_primarySourceMatrixOrigin(self, v218, v219, v220, v221, v222, v223, v224);
-    objc_msgSend_rows(v11, v225, v226, v227, v228, v229, v230, v231);
+    objc_msgSend_rows(matrixCopy2, v225, v226, v227, v228, v229, v230, v231);
     objc_msgSend_primarySourceMatrixOrigin(self, v232, v233, v234, v235, v236, v237, v238);
     v239 = self->_order + *v534;
-    if (v239 > objc_msgSend_rows(v11, v240, v241, v242, v243, v244, v245, v246) && MTLReportFailureTypeEnabled())
+    if (v239 > objc_msgSend_rows(matrixCopy2, v240, v241, v242, v243, v244, v245, v246) && MTLReportFailureTypeEnabled())
     {
       MTLReportFailure();
     }
 
     objc_msgSend_primarySourceMatrixOrigin(self, v247, v248, v249, v250, v251, v252, v253);
-    objc_msgSend_columns(v11, v254, v255, v256, v257, v258, v259, v260);
+    objc_msgSend_columns(matrixCopy2, v254, v255, v256, v257, v258, v259, v260);
     objc_msgSend_primarySourceMatrixOrigin(self, v261, v262, v263, v264, v265, v266, v267);
     v268 = self->_order + *&v534[8];
-    if (v268 > objc_msgSend_columns(v11, v269, v270, v271, v272, v273, v274, v275) && MTLReportFailureTypeEnabled())
+    if (v268 > objc_msgSend_columns(matrixCopy2, v269, v270, v271, v272, v273, v274, v275) && MTLReportFailureTypeEnabled())
     {
       MTLReportFailure();
     }
 
-    v72 = objc_msgSend_isEqual_(a6, v276, a8, v277, v278, v279, v280, v281);
+    v72 = objc_msgSend_isEqual_(sideMatrix, v276, solutionMatrix, v277, v278, v279, v280, v281);
   }
 
   objc_msgSend_secondarySourceMatrixOrigin(self, v65, v66, v67, v68, v69, v70, v71);
@@ -227,11 +227,11 @@ LABEL_42:
     }
   }
 
-  v527 = v9;
+  v527 = indicesCopy;
   v73 = 0;
 LABEL_38:
-  v526 = v12;
-  v528 = v13;
+  v526 = bufferCopy;
+  v528 = encoderCopy;
   v525 = objc_msgSend_order(self, v65, v66, v67, v68, v69, v70, v71);
   v311 = objc_msgSend_numberOfRightHandSides(self, v297, v298, v299, v300, v301, v302, v303);
   if (v73)
@@ -263,9 +263,9 @@ LABEL_38:
     v312 = v538;
   }
 
-  v337 = a6;
-  v338 = objc_msgSend_rowBytes(a6, v304, v305, v306, v307, v308, v309, v310);
-  v346 = objc_msgSend_rowBytes(a8, v339, v340, v341, v342, v343, v344, v345);
+  sideMatrixCopy = sideMatrix;
+  v338 = objc_msgSend_rowBytes(sideMatrix, v304, v305, v306, v307, v308, v309, v310);
+  v346 = objc_msgSend_rowBytes(solutionMatrix, v339, v340, v341, v342, v343, v344, v345);
   v347 = *(&self->super.super.super.isa + *MEMORY[0x277CD7350]);
   *v534 = v525;
   *&v534[4] = v311;
@@ -275,11 +275,11 @@ LABEL_38:
   *&v534[20] = v312;
   v535 = v338;
   v536 = v346;
-  v13 = v528;
-  v12 = v526;
-  sub_2399E4C74(v347, v528, v526, v337, a8, v534, v348, v349);
-  v9 = v527;
-  v11 = a5;
+  encoderCopy = v528;
+  bufferCopy = v526;
+  sub_2399E4C74(v347, v528, v526, sideMatrixCopy, solutionMatrix, v534, v348, v349);
+  indicesCopy = v527;
+  matrixCopy2 = matrix;
   if (v73)
   {
     goto LABEL_42;
@@ -310,54 +310,54 @@ LABEL_44:
   objc_msgSend_setPrimarySourceMatrixOrigin_(trsmU, v352, v534, v354, v355, v356, v357, v358);
   if (self->_transpose)
   {
-    objc_msgSend_encodeToCommandBuffer_encoder_sourceMatrix_rightHandSideMatrix_solutionMatrix_(self->_trsmL, v360, v12, v13, v11, a8, a8, v361);
-    objc_msgSend_encodeToCommandBuffer_encoder_sourceMatrix_rightHandSideMatrix_solutionMatrix_(self->_trsmU, v362, v12, v13, v11, a8, a8, v363);
+    objc_msgSend_encodeToCommandBuffer_encoder_sourceMatrix_rightHandSideMatrix_solutionMatrix_(self->_trsmL, v360, bufferCopy, encoderCopy, matrixCopy2, solutionMatrix, solutionMatrix, v361);
+    objc_msgSend_encodeToCommandBuffer_encoder_sourceMatrix_rightHandSideMatrix_solutionMatrix_(self->_trsmU, v362, bufferCopy, encoderCopy, matrixCopy2, solutionMatrix, solutionMatrix, v363);
     v364 = *(&self->super.super.super.isa + *MEMORY[0x277CD7370]);
     ComputeState = MPSLibrary::GetComputeState();
-    v366 = *(a8 + *MEMORY[0x277CD73A8]);
+    v366 = *(solutionMatrix + *MEMORY[0x277CD73A8]);
     v374 = objc_msgSend_order(self, v367, v368, v369, v370, v371, v372, v373);
-    objc_msgSend_setComputePipelineState_(v13, v375, ComputeState, v376, v377, v378, v379, v380);
+    objc_msgSend_setComputePipelineState_(encoderCopy, v375, ComputeState, v376, v377, v378, v379, v380);
     LODWORD(v540) = v374;
-    HIDWORD(v540) = objc_msgSend_columns(a8, v381, v382, v383, v384, v385, v386, v387);
-    LODWORD(v541) = objc_msgSend_rowBytes(a8, v388, v389, v390, v391, v392, v393, v394);
-    v402 = objc_msgSend_data(a8, v395, v396, v397, v398, v399, v400, v401);
-    objc_msgSend_setBuffer_offset_atIndex_(v13, v403, v402, v366, 0, v404, v405, v406);
-    v414 = objc_msgSend_data(v9, v407, v408, v409, v410, v411, v412, v413);
-    v422 = objc_msgSend_offset(v9, v415, v416, v417, v418, v419, v420, v421);
-    objc_msgSend_setBuffer_offset_atIndex_(v13, v423, v414, v422, 1, v424, v425, v426);
-    objc_msgSend_setBytes_length_atIndex_(v13, v427, &v540, 12, 2, v428, v429, v430);
+    HIDWORD(v540) = objc_msgSend_columns(solutionMatrix, v381, v382, v383, v384, v385, v386, v387);
+    LODWORD(v541) = objc_msgSend_rowBytes(solutionMatrix, v388, v389, v390, v391, v392, v393, v394);
+    v402 = objc_msgSend_data(solutionMatrix, v395, v396, v397, v398, v399, v400, v401);
+    objc_msgSend_setBuffer_offset_atIndex_(encoderCopy, v403, v402, v366, 0, v404, v405, v406);
+    v414 = objc_msgSend_data(indicesCopy, v407, v408, v409, v410, v411, v412, v413);
+    v422 = objc_msgSend_offset(indicesCopy, v415, v416, v417, v418, v419, v420, v421);
+    objc_msgSend_setBuffer_offset_atIndex_(encoderCopy, v423, v414, v422, 1, v424, v425, v426);
+    objc_msgSend_setBytes_length_atIndex_(encoderCopy, v427, &v540, 12, 2, v428, v429, v430);
     *v534 = (HIDWORD(v540) + 511) >> 9;
     *&v534[8] = vdupq_n_s64(1uLL);
     v543 = 512;
     v544 = *&v534[8];
-    objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(v13, v431, v534, &v543, v432, v433, v434, v435);
+    objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(encoderCopy, v431, v534, &v543, v432, v433, v434, v435);
   }
 
   else
   {
     v436 = *(&self->super.super.super.isa + *MEMORY[0x277CD7370]);
-    v437 = v12;
+    v437 = bufferCopy;
     v438 = MPSLibrary::GetComputeState();
-    v439 = *(a8 + *MEMORY[0x277CD73A8]);
-    v447 = v9;
+    v439 = *(solutionMatrix + *MEMORY[0x277CD73A8]);
+    v447 = indicesCopy;
     v448 = objc_msgSend_order(self, v440, v441, v442, v443, v444, v445, v446);
-    objc_msgSend_setComputePipelineState_(v13, v449, v438, v450, v451, v452, v453, v454);
+    objc_msgSend_setComputePipelineState_(encoderCopy, v449, v438, v450, v451, v452, v453, v454);
     LODWORD(v540) = v448;
-    HIDWORD(v540) = objc_msgSend_columns(a8, v455, v456, v457, v458, v459, v460, v461);
-    LODWORD(v541) = objc_msgSend_rowBytes(a8, v462, v463, v464, v465, v466, v467, v468);
-    v476 = objc_msgSend_data(a8, v469, v470, v471, v472, v473, v474, v475);
-    objc_msgSend_setBuffer_offset_atIndex_(v13, v477, v476, v439, 0, v478, v479, v480);
+    HIDWORD(v540) = objc_msgSend_columns(solutionMatrix, v455, v456, v457, v458, v459, v460, v461);
+    LODWORD(v541) = objc_msgSend_rowBytes(solutionMatrix, v462, v463, v464, v465, v466, v467, v468);
+    v476 = objc_msgSend_data(solutionMatrix, v469, v470, v471, v472, v473, v474, v475);
+    objc_msgSend_setBuffer_offset_atIndex_(encoderCopy, v477, v476, v439, 0, v478, v479, v480);
     v488 = objc_msgSend_data(v447, v481, v482, v483, v484, v485, v486, v487);
     v496 = objc_msgSend_offset(v447, v489, v490, v491, v492, v493, v494, v495);
-    objc_msgSend_setBuffer_offset_atIndex_(v13, v497, v488, v496, 1, v498, v499, v500);
-    objc_msgSend_setBytes_length_atIndex_(v13, v501, &v540, 12, 2, v502, v503, v504);
+    objc_msgSend_setBuffer_offset_atIndex_(encoderCopy, v497, v488, v496, 1, v498, v499, v500);
+    objc_msgSend_setBytes_length_atIndex_(encoderCopy, v501, &v540, 12, 2, v502, v503, v504);
     *v534 = (HIDWORD(v540) + 511) >> 9;
     *&v534[8] = vdupq_n_s64(1uLL);
     v543 = 512;
     v544 = *&v534[8];
-    objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(v13, v505, v534, &v543, v506, v507, v508, v509);
-    objc_msgSend_encodeToCommandBuffer_encoder_sourceMatrix_rightHandSideMatrix_solutionMatrix_(self->_trsmL, v510, v437, v13, a5, a8, a8, v511);
-    objc_msgSend_encodeToCommandBuffer_encoder_sourceMatrix_rightHandSideMatrix_solutionMatrix_(self->_trsmU, v512, v437, v13, a5, a8, a8, v513);
+    objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(encoderCopy, v505, v534, &v543, v506, v507, v508, v509);
+    objc_msgSend_encodeToCommandBuffer_encoder_sourceMatrix_rightHandSideMatrix_solutionMatrix_(self->_trsmL, v510, v437, encoderCopy, matrix, solutionMatrix, solutionMatrix, v511);
+    objc_msgSend_encodeToCommandBuffer_encoder_sourceMatrix_rightHandSideMatrix_solutionMatrix_(self->_trsmU, v512, v437, encoderCopy, matrix, solutionMatrix, solutionMatrix, v513);
   }
 }
 
@@ -519,7 +519,7 @@ LABEL_31:
     {
       objc_msgSend_secondarySourceMatrixOrigin(self, v64, v65, v66, v67, v68, v69, v70);
       objc_msgSend_resultMatrixOrigin(self, v287, v288, v289, v290, v291, v292, v293);
-      if (v614 == v611)
+      if (selfCopy2 == v611)
       {
         v294 = isEqual;
       }
@@ -577,7 +577,7 @@ LABEL_38:
     v616 = 0uLL;
     v617 = 0;
     v613 = 0;
-    v614 = 0;
+    selfCopy2 = 0;
     v615 = 0;
     v610 = 0;
     v611 = 0;
@@ -666,7 +666,7 @@ LABEL_49:
     v400 = objc_alloc(MEMORY[0x277CD7210]);
     v412 = objc_msgSend_initWithCommandBuffer_withDispatchType_(v400, v401, v11, 0, v402, v403, v404, v405);
     v613 = v412;
-    v614 = self;
+    selfCopy2 = self;
     if ((*(&self->super.super.super.isa + *MEMORY[0x277CD7378]) & 0x18) != 0)
     {
       v413 = *(&self->super.super.super.isa + *MEMORY[0x277CD7360]);
@@ -703,7 +703,7 @@ LABEL_49:
     v495 = objc_alloc(MEMORY[0x277CD7210]);
     v507 = objc_msgSend_initWithCommandBuffer_withDispatchType_(v495, v496, v11, 0, v497, v498, v499, v500);
     v613 = v507;
-    v614 = self;
+    selfCopy2 = self;
     if ((*(&self->super.super.super.isa + *MEMORY[0x277CD7378]) & 0x18) != 0)
     {
       v508 = *(&self->super.super.super.isa + *MEMORY[0x277CD7360]);

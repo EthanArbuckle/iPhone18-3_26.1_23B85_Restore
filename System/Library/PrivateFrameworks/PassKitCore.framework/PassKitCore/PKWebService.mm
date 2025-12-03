@@ -1,44 +1,44 @@
 @interface PKWebService
 + (id)_sharedCookieStorage;
-- (BOOL)_evaluateTrust:(__SecTrust *)a3;
+- (BOOL)_evaluateTrust:(__SecTrust *)trust;
 - (BOOL)canBypassTrustValidation;
 - (NSString)webServiceSessionMarker;
 - (NSURLSessionConfiguration)sessionConfiguration;
 - (PKTapToRadarDelegate)tapToRadarDelegate;
-- (PKWebService)initWithTapToRadarDelegate:(id)a3;
+- (PKWebService)initWithTapToRadarDelegate:(id)delegate;
 - (id)_accountStore;
-- (id)_urlRequestTaggedWithDiagnosticReasonHeader:(id)a3 forTaskID:(unint64_t)a4;
-- (id)_urlRequestTaggedWithWebServiceSessionMarkerHeader:(id)a3;
-- (id)_urlRequestWithCustomHeaders:(id)a3;
-- (id)dataTaskWithRequest:(id)a3 completionHandler:(id)a4;
-- (id)forbiddenErrorWithResponse:(id)a3;
-- (id)urlRequestTaggedWithUniqueRequestIdentifier:(id)a3;
+- (id)_urlRequestTaggedWithDiagnosticReasonHeader:(id)header forTaskID:(unint64_t)d;
+- (id)_urlRequestTaggedWithWebServiceSessionMarkerHeader:(id)header;
+- (id)_urlRequestWithCustomHeaders:(id)headers;
+- (id)dataTaskWithRequest:(id)request completionHandler:(id)handler;
+- (id)forbiddenErrorWithResponse:(id)response;
+- (id)urlRequestTaggedWithUniqueRequestIdentifier:(id)identifier;
 - (id)urlSession;
 - (unint64_t)nextTaskID;
-- (unint64_t)webServiceTaskIdentifierForTaskIdentifier:(int64_t)a3;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 willCacheResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4;
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7;
-- (void)URLSession:(id)a3 taskIsWaitingForConnectivity:(id)a4;
-- (void)_associateDiagnosticReasonsWithTaskID:(unint64_t)a3;
-- (void)_cleanUpDiagnosticReasonsForTaskID:(unint64_t)a3;
-- (void)addDiagnosticReason:(id)a3;
-- (void)diagnosticSessionWithReason:(id)a3 sessionHandler:(id)a4;
-- (void)handleAuthenticationFailureWithCompletionHandler:(id)a3;
-- (void)handleResponse:(id)a3 withError:(id)a4 data:(id)a5 task:(id)a6 completionHandler:(id)a7;
-- (void)handleWillPerformHTTPRedirectionWithResponse:(id)a3 originalRequest:(id)a4 redirectHandler:(id)a5;
+- (unint64_t)webServiceTaskIdentifierForTaskIdentifier:(int64_t)identifier;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session dataTask:(id)task willCacheResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error;
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
+- (void)URLSession:(id)session taskIsWaitingForConnectivity:(id)connectivity;
+- (void)_associateDiagnosticReasonsWithTaskID:(unint64_t)d;
+- (void)_cleanUpDiagnosticReasonsForTaskID:(unint64_t)d;
+- (void)addDiagnosticReason:(id)reason;
+- (void)diagnosticSessionWithReason:(id)reason sessionHandler:(id)handler;
+- (void)handleAuthenticationFailureWithCompletionHandler:(id)handler;
+- (void)handleResponse:(id)response withError:(id)error data:(id)data task:(id)task completionHandler:(id)handler;
+- (void)handleWillPerformHTTPRedirectionWithResponse:(id)response originalRequest:(id)request redirectHandler:(id)handler;
 - (void)invalidate;
-- (void)logRequest:(id)a3;
-- (void)logResponse:(id)a3 withData:(id)a4;
-- (void)performRequest:(id)a3 taskIdentifier:(unint64_t)a4 retries:(unint64_t)a5 authHandling:(BOOL)a6 cacheResponse:(BOOL)a7 completionHandler:(id)a8;
-- (void)processRetryRequest:(id)a3 responseData:(id)a4 orginalRequest:(id)a5 completion:(id)a6;
-- (void)refreshSessionWithConfiguration:(id)a3;
-- (void)removeDiagnosticReason:(id)a3;
+- (void)logRequest:(id)request;
+- (void)logResponse:(id)response withData:(id)data;
+- (void)performRequest:(id)request taskIdentifier:(unint64_t)identifier retries:(unint64_t)retries authHandling:(BOOL)handling cacheResponse:(BOOL)response completionHandler:(id)handler;
+- (void)processRetryRequest:(id)request responseData:(id)data orginalRequest:(id)orginalRequest completion:(id)completion;
+- (void)refreshSessionWithConfiguration:(id)configuration;
+- (void)removeDiagnosticReason:(id)reason;
 - (void)resetWebServiceSessionMarker;
-- (void)setUrlSession:(id)a3;
+- (void)setUrlSession:(id)session;
 @end
 
 @implementation PKWebService
@@ -48,10 +48,10 @@
   v23 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_stateLock);
   v3 = self->_webServiceSessionMarker;
-  v4 = [MEMORY[0x1E696AFB0] UUID];
-  v5 = [v4 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
   webServiceSessionMarker = self->_webServiceSessionMarker;
-  self->_webServiceSessionMarker = v5;
+  self->_webServiceSessionMarker = uUIDString;
 
   v7 = PKLogFacilityTypeGetObject([(PKWebService *)self logFacilityType]);
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -176,16 +176,16 @@ void __26__PKWebService_urlSession__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (PKWebService)initWithTapToRadarDelegate:(id)a3
+- (PKWebService)initWithTapToRadarDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v24.receiver = self;
   v24.super_class = PKWebService;
   v5 = [(PKWebService *)&v24 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_tapToRadarDelegate, v4);
+    objc_storeWeak(&v5->_tapToRadarDelegate, delegateCopy);
     v6->_taskIDCounter = 0;
     v6->_stateLock._os_unfair_lock_opaque = 0;
     v7 = dispatch_queue_create("com.apple.passd.urlsession", 0);
@@ -204,13 +204,13 @@ void __26__PKWebService_urlSession__block_invoke(uint64_t a1)
     tasksMetadata = v6->_tasksMetadata;
     v6->_tasksMetadata = v13;
 
-    v15 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     diagnosticReasonsByTaskID = v6->_diagnosticReasonsByTaskID;
-    v6->_diagnosticReasonsByTaskID = v15;
+    v6->_diagnosticReasonsByTaskID = dictionary;
 
-    v17 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     diagnosticReasons = v6->_diagnosticReasons;
-    v6->_diagnosticReasons = v17;
+    v6->_diagnosticReasons = array;
 
     v19 = dispatch_queue_create("com.apple.passkit.diagnosticReasonsQueue", 0);
     diagnosticReasonsQueue = v6->_diagnosticReasonsQueue;
@@ -226,15 +226,15 @@ void __26__PKWebService_urlSession__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)handleResponse:(id)a3 withError:(id)a4 data:(id)a5 task:(id)a6 completionHandler:(id)a7
+- (void)handleResponse:(id)response withError:(id)error data:(id)data task:(id)task completionHandler:(id)handler
 {
   v30[2] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  v15 = [v11 statusCode];
-  switch(v15)
+  responseCopy = response;
+  errorCopy = error;
+  dataCopy = data;
+  handlerCopy = handler;
+  statusCode = [responseCopy statusCode];
+  switch(statusCode)
   {
     case 403:
       v24 = PKLogFacilityTypeGetObject([(PKWebService *)self logFacilityType]);
@@ -244,12 +244,12 @@ void __26__PKWebService_urlSession__block_invoke(uint64_t a1)
         _os_log_impl(&dword_1AD337000, v24, OS_LOG_TYPE_DEFAULT, "Received Status Code 403.", v26, 2u);
       }
 
-      v25 = [(PKWebServiceResponse *)PKWebServiceForbiddenResponse responseWithData:v13];
+      v25 = [(PKWebServiceResponse *)PKWebServiceForbiddenResponse responseWithData:dataCopy];
       v20 = [(PKWebService *)self forbiddenErrorWithResponse:v25];
 
-      if (v14)
+      if (handlerCopy)
       {
-        v14[2](v14, v13, v11, v20);
+        handlerCopy[2](handlerCopy, dataCopy, responseCopy, v20);
       }
 
       break;
@@ -291,30 +291,30 @@ void __26__PKWebService_urlSession__block_invoke(uint64_t a1)
       v20 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKWebServiceErrorDomain" code:3 userInfo:v19];
 
 LABEL_10:
-      if (v14)
+      if (handlerCopy)
       {
-        v14[2](v14, v13, v11, v20);
+        handlerCopy[2](handlerCopy, dataCopy, responseCopy, v20);
       }
 
       break;
     default:
-      if (v14)
+      if (handlerCopy)
       {
-        v14[2](v14, v13, v11, v12);
+        handlerCopy[2](handlerCopy, dataCopy, responseCopy, errorCopy);
       }
 
-      v20 = v12;
+      v20 = errorCopy;
       break;
   }
 }
 
-- (void)processRetryRequest:(id)a3 responseData:(id)a4 orginalRequest:(id)a5 completion:(id)a6
+- (void)processRetryRequest:(id)request responseData:(id)data orginalRequest:(id)orginalRequest completion:(id)completion
 {
-  if (a6)
+  if (completion)
   {
-    v8 = a6;
-    v9 = [a3 copy];
-    (*(a6 + 2))(v8, v9);
+    completionCopy = completion;
+    v9 = [request copy];
+    (*(completion + 2))(completionCopy, v9);
   }
 }
 
@@ -335,59 +335,59 @@ LABEL_10:
   return v3;
 }
 
-- (void)handleWillPerformHTTPRedirectionWithResponse:(id)a3 originalRequest:(id)a4 redirectHandler:(id)a5
+- (void)handleWillPerformHTTPRedirectionWithResponse:(id)response originalRequest:(id)request redirectHandler:(id)handler
 {
-  if (a5)
+  if (handler)
   {
-    (*(a5 + 2))(a5, 1);
+    (*(handler + 2))(handler, 1);
   }
 }
 
-- (void)handleAuthenticationFailureWithCompletionHandler:(id)a3
+- (void)handleAuthenticationFailureWithCompletionHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    (*(a3 + 2))(a3, 2, 0);
+    (*(handler + 2))(handler, 2, 0);
   }
 }
 
 - (void)invalidate
 {
-  v2 = [(PKWebService *)self urlSession];
-  [v2 invalidateAndCancel];
+  urlSession = [(PKWebService *)self urlSession];
+  [urlSession invalidateAndCancel];
 }
 
 - (NSURLSessionConfiguration)sessionConfiguration
 {
-  v2 = [(PKWebService *)self urlSession];
-  v3 = [v2 configuration];
+  urlSession = [(PKWebService *)self urlSession];
+  configuration = [urlSession configuration];
 
-  return v3;
+  return configuration;
 }
 
-- (void)refreshSessionWithConfiguration:(id)a3
+- (void)refreshSessionWithConfiguration:(id)configuration
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = PKLogFacilityTypeGetObject([(PKWebService *)self logFacilityType]);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = configurationCopy;
     _os_log_impl(&dword_1AD337000, v5, OS_LOG_TYPE_DEFAULT, "Requested update to web service with configuration: %@", &v7, 0xCu);
   }
 
-  v6 = [MEMORY[0x1E695AC78] sessionWithConfiguration:v4 delegate:self delegateQueue:self->_delegateOperationQueue];
+  v6 = [MEMORY[0x1E695AC78] sessionWithConfiguration:configurationCopy delegate:self delegateQueue:self->_delegateOperationQueue];
   [(PKWebService *)self setUrlSession:v6];
 }
 
-- (void)performRequest:(id)a3 taskIdentifier:(unint64_t)a4 retries:(unint64_t)a5 authHandling:(BOOL)a6 cacheResponse:(BOOL)a7 completionHandler:(id)a8
+- (void)performRequest:(id)request taskIdentifier:(unint64_t)identifier retries:(unint64_t)retries authHandling:(BOOL)handling cacheResponse:(BOOL)response completionHandler:(id)handler
 {
-  v9 = a7;
-  v10 = a6;
-  v14 = a3;
-  v15 = a8;
-  if (!v14)
+  responseCopy = response;
+  handlingCopy = handling;
+  requestCopy = request;
+  handlerCopy = handler;
+  if (!requestCopy)
   {
     v28 = PKLogFacilityTypeGetObject([(PKWebService *)self logFacilityType]);
     if (!os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -401,39 +401,39 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v16 = [v14 URL];
+  v16 = [requestCopy URL];
 
   if (v16)
   {
-    v17 = [(PKWebService *)self _urlRequestTaggedWithWebServiceSessionMarkerHeader:v14];
+    v17 = [(PKWebService *)self _urlRequestTaggedWithWebServiceSessionMarkerHeader:requestCopy];
 
-    v18 = [(PKWebService *)self _urlRequestTaggedWithDiagnosticReasonHeader:v17 forTaskID:a4];
+    v18 = [(PKWebService *)self _urlRequestTaggedWithDiagnosticReasonHeader:v17 forTaskID:identifier];
 
     v19 = [(PKWebService *)self urlRequestTaggedWithUniqueRequestIdentifier:v18];
 
-    v14 = [(PKWebService *)self _urlRequestWithCustomHeaders:v19];
+    requestCopy = [(PKWebService *)self _urlRequestWithCustomHeaders:v19];
 
-    if (v14)
+    if (requestCopy)
     {
-      [(PKWebService *)self logRequest:v14];
-      v20 = [v14 HTTPBody];
-      v21 = [v20 copy];
+      [(PKWebService *)self logRequest:requestCopy];
+      hTTPBody = [requestCopy HTTPBody];
+      v21 = [hTTPBody copy];
 
-      v22 = [(PKWebService *)self urlSession];
-      v23 = [v22 dataTaskWithRequest:v14];
+      urlSession = [(PKWebService *)self urlSession];
+      v23 = [urlSession dataTaskWithRequest:requestCopy];
 
       if (v23)
       {
         v24 = objc_alloc_init(PKWebServiceRequestMetadata);
-        [(PKWebServiceRequestMetadata *)v24 setCacheResponse:v9];
-        [(PKWebServiceRequestMetadata *)v24 setRetries:a5];
+        [(PKWebServiceRequestMetadata *)v24 setCacheResponse:responseCopy];
+        [(PKWebServiceRequestMetadata *)v24 setRetries:retries];
         [(PKWebServiceRequestMetadata *)v24 setOriginalBody:v21];
-        [(PKWebServiceRequestMetadata *)v24 setAuthHandling:v10];
-        [(PKWebServiceRequestMetadata *)v24 setCompletion:v15];
+        [(PKWebServiceRequestMetadata *)v24 setAuthHandling:handlingCopy];
+        [(PKWebServiceRequestMetadata *)v24 setCompletion:handlerCopy];
         os_unfair_lock_lock(&self->_stateLock);
         v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v23, "taskIdentifier")}];
         webServiceTasks = self->_webServiceTasks;
-        v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+        v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:identifier];
         [(NSMutableDictionary *)webServiceTasks setObject:v27 forKey:v25];
 
         [(NSMutableDictionary *)self->_tasksMetadata setObject:v24 forKey:v25];
@@ -451,7 +451,7 @@ LABEL_10:
         }
 
         v33 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKWebServiceErrorDomain" code:0 userInfo:0];
-        (*(v15 + 2))(v15, 0, 0, v33);
+        (*(handlerCopy + 2))(handlerCopy, 0, 0, v33);
       }
     }
 
@@ -465,8 +465,8 @@ LABEL_10:
       }
 
       v21 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKWebServiceErrorDomain" code:0 userInfo:0];
-      (*(v15 + 2))(v15, 0, 0, v21);
-      v14 = 0;
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, v21);
+      requestCopy = 0;
     }
 
     goto LABEL_20;
@@ -484,34 +484,34 @@ LABEL_10:
 
 LABEL_11:
 
-  if (v15)
+  if (handlerCopy)
   {
     v21 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKWebServiceErrorDomain" code:0 userInfo:0];
-    (*(v15 + 2))(v15, 0, 0, v21);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v21);
 LABEL_20:
   }
 }
 
-- (unint64_t)webServiceTaskIdentifierForTaskIdentifier:(int64_t)a3
+- (unint64_t)webServiceTaskIdentifierForTaskIdentifier:(int64_t)identifier
 {
   os_unfair_lock_lock(&self->_stateLock);
   webServiceTasks = self->_webServiceTasks;
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:identifier];
   v7 = [(NSMutableDictionary *)webServiceTasks objectForKey:v6];
-  v8 = [v7 unsignedIntegerValue];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
   os_unfair_lock_unlock(&self->_stateLock);
-  return v8;
+  return unsignedIntegerValue;
 }
 
-- (id)dataTaskWithRequest:(id)a3 completionHandler:(id)a4
+- (id)dataTaskWithRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  requestCopy = request;
+  handlerCopy = handler;
+  if (requestCopy)
   {
-    v8 = [(PKWebService *)self urlSession];
-    v9 = [v8 dataTaskWithRequest:v6 completionHandler:v7];
+    urlSession = [(PKWebService *)self urlSession];
+    v9 = [urlSession dataTaskWithRequest:requestCopy completionHandler:handlerCopy];
   }
 
   else
@@ -524,7 +524,7 @@ LABEL_20:
     }
 
     v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKWebServiceErrorDomain" code:0 userInfo:0];
-    (*(v7 + 2))(v7, 0, 0, v11);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v11);
 
     v9 = 0;
   }
@@ -532,17 +532,17 @@ LABEL_20:
   return v9;
 }
 
-- (void)setUrlSession:(id)a3
+- (void)setUrlSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   sessionQueue = self->_sessionQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __30__PKWebService_setUrlSession___block_invoke;
   v7[3] = &unk_1E79C4DD8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = sessionCopy;
+  selfCopy = self;
+  v6 = sessionCopy;
   dispatch_sync(sessionQueue, v7);
 }
 
@@ -589,35 +589,35 @@ void __36__PKWebService__sharedCookieStorage__block_invoke_2()
   }
 }
 
-- (id)forbiddenErrorWithResponse:(id)a3
+- (id)forbiddenErrorWithResponse:(id)response
 {
-  v3 = a3;
-  v4 = [v3 localizedTitle];
-  v5 = [v3 localizedDescription];
+  responseCopy = response;
+  localizedTitle = [responseCopy localizedTitle];
+  localizedDescription = [responseCopy localizedDescription];
 
-  v6 = [MEMORY[0x1E695DF90] dictionary];
-  [v6 setObject:v4 forKeyedSubscript:*MEMORY[0x1E696A588]];
-  [v6 setObject:v5 forKeyedSubscript:*MEMORY[0x1E696A598]];
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ - %@", v4, v5];
-  [v6 setObject:v7 forKeyedSubscript:*MEMORY[0x1E696A578]];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:localizedTitle forKeyedSubscript:*MEMORY[0x1E696A588]];
+  [dictionary setObject:localizedDescription forKeyedSubscript:*MEMORY[0x1E696A598]];
+  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ - %@", localizedTitle, localizedDescription];
+  [dictionary setObject:v7 forKeyedSubscript:*MEMORY[0x1E696A578]];
 
   v8 = MEMORY[0x1E696ABC0];
-  v9 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v6];
+  v9 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:dictionary];
   v10 = [v8 errorWithDomain:@"PKWebServiceErrorDomain" code:2 userInfo:v9];
 
   return v10;
 }
 
-- (BOOL)_evaluateTrust:(__SecTrust *)a3
+- (BOOL)_evaluateTrust:(__SecTrust *)trust
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!trust)
   {
     return 0;
   }
 
   error = 0;
-  v4 = SecTrustEvaluateWithError(a3, &error);
+  v4 = SecTrustEvaluateWithError(trust, &error);
   if (!v4)
   {
     if (error)
@@ -652,36 +652,36 @@ void __36__PKWebService__sharedCookieStorage__block_invoke_2()
   return v4 || [(PKWebService *)self canBypassTrustValidation];
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
-  v13 = a5;
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(a4, "taskIdentifier")}];
+  dataCopy = data;
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(task, "taskIdentifier")}];
   os_unfair_lock_lock(&self->_stateLock);
   v8 = [(NSMutableDictionary *)self->_tasksMetadata objectForKey:v7];
   os_unfair_lock_unlock(&self->_stateLock);
-  v9 = [v8 responseData];
-  if (v9)
+  responseData = [v8 responseData];
+  if (responseData)
   {
-    v10 = v9;
-    v11 = [v9 mutableCopy];
-    [v11 appendData:v13];
+    v10 = responseData;
+    v11 = [responseData mutableCopy];
+    [v11 appendData:dataCopy];
     v12 = [v11 copy];
   }
 
   else
   {
-    v12 = v13;
+    v12 = dataCopy;
   }
 
   [v8 setResponseData:v12];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
   v93[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v7, "taskIdentifier")}];
+  taskCopy = task;
+  errorCopy = error;
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(taskCopy, "taskIdentifier")}];
   os_unfair_lock_lock(&self->_stateLock);
   v10 = [(NSMutableDictionary *)self->_webServiceTasks objectForKey:v9];
   LODWORD(v11) = [v10 unsignedIntValue];
@@ -689,60 +689,60 @@ void __36__PKWebService__sharedCookieStorage__block_invoke_2()
   v12 = [(NSMutableDictionary *)self->_tasksMetadata objectForKey:v9];
   [(NSMutableDictionary *)self->_tasksMetadata removeObjectForKey:v9];
   os_unfair_lock_unlock(&self->_stateLock);
-  v13 = [v12 responseData];
-  v14 = [v7 response];
-  v15 = [v12 completion];
-  if (v15)
+  responseData = [v12 responseData];
+  response = [taskCopy response];
+  completion = [v12 completion];
+  if (completion)
   {
     v11 = v11;
     objc_opt_class();
-    v59 = v13;
+    v59 = responseData;
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (v8)
+      if (errorCopy)
       {
-        v58 = v15;
-        v27 = v14;
+        v58 = completion;
+        v27 = response;
         v28 = v11;
         v29 = PKLogFacilityTypeGetObject([(PKWebService *)self logFacilityType]);
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
         {
-          v30 = [v8 localizedDescription];
-          v31 = [v7 description];
+          localizedDescription = [errorCopy localizedDescription];
+          v31 = [taskCopy description];
           *buf = 138412546;
-          v85 = v30;
+          v85 = localizedDescription;
           v86 = 2114;
           v87 = v31;
           _os_log_impl(&dword_1AD337000, v29, OS_LOG_TYPE_DEFAULT, "Error %@ returned from task: %{public}@", buf, 0x16u);
 
-          v13 = v59;
+          responseData = v59;
         }
 
         v11 = v28;
-        v14 = v27;
-        v15 = v58;
+        response = v27;
+        completion = v58;
       }
 
-      (v15)[2](v15, v13, v14, v8);
+      (completion)[2](completion, responseData, response, errorCopy);
       goto LABEL_44;
     }
 
-    v51 = v14;
+    v51 = response;
     v52 = v11;
-    v16 = v14;
-    [(PKWebService *)self logResponse:v16 withData:v13];
-    v56 = [v7 currentRequest];
-    v17 = [v16 statusCode];
+    v16 = response;
+    [(PKWebService *)self logResponse:v16 withData:responseData];
+    currentRequest = [taskCopy currentRequest];
+    statusCode = [v16 statusCode];
     v18 = +[PKWebService _sharedCookieStorage];
     [v18 _saveCookies];
 
     v19 = v16;
-    v20 = [v16 allHeaderFields];
-    [v20 objectForKeyedSubscript:@"X-Wallet-TapToRadar-Request"];
+    allHeaderFields = [v16 allHeaderFields];
+    [allHeaderFields objectForKeyedSubscript:@"X-Wallet-TapToRadar-Request"];
     v57 = v55 = v19;
     if (v57)
     {
-      v53 = v8;
+      v53 = errorCopy;
       v21 = PKLogFacilityTypeGetObject([(PKWebService *)self logFacilityType]);
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
@@ -754,7 +754,7 @@ void __36__PKWebService__sharedCookieStorage__block_invoke_2()
       v22 = objc_alloc_init(PKTapToRadarRequest);
       [(PKTapToRadarRequest *)v22 setReason:v57];
       [(PKTapToRadarRequest *)v22 setServerGenerated:1];
-      v23 = [v20 objectForKeyedSubscript:@"X-Wallet-TapToRadar-Request-RelatedRadar"];
+      v23 = [allHeaderFields objectForKeyedSubscript:@"X-Wallet-TapToRadar-Request-RelatedRadar"];
       if (v23)
       {
         [(PKTapToRadarRequest *)v22 setRelatedRadar:v23];
@@ -763,45 +763,45 @@ void __36__PKWebService__sharedCookieStorage__block_invoke_2()
       WeakRetained = objc_loadWeakRetained(&self->_tapToRadarDelegate);
       [WeakRetained displayTapToRadarAlertForRequest:v22 completion:0];
 
-      v8 = v53;
+      errorCopy = v53;
       v19 = v55;
-      v13 = v59;
+      responseData = v59;
     }
 
-    v50 = v20;
-    v49 = [v12 retries];
-    v48 = [v12 authHandling];
-    v47 = [v12 cacheResponse];
-    v54 = [v12 originalBody];
-    if (v17 == 504)
+    v50 = allHeaderFields;
+    retries = [v12 retries];
+    authHandling = [v12 authHandling];
+    cacheResponse = [v12 cacheResponse];
+    originalBody = [v12 originalBody];
+    if (statusCode == 504)
     {
       v37 = PKLogFacilityTypeGetObject([(PKWebService *)self logFacilityType]);
       v38 = os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT);
-      v14 = v51;
-      if (v49)
+      response = v51;
+      if (retries)
       {
         if (v38)
         {
           *buf = 134218240;
           v85 = 504;
           v86 = 2048;
-          v87 = v49;
+          v87 = retries;
           _os_log_impl(&dword_1AD337000, v37, OS_LOG_TYPE_DEFAULT, "Received Unexpected Error %ld (%tu retries remaining).", buf, 0x16u);
         }
 
-        v39 = [v56 mutableCopy];
-        [v39 setHTTPBody:v54];
+        v39 = [currentRequest mutableCopy];
+        [v39 setHTTPBody:originalBody];
         v60[0] = MEMORY[0x1E69E9820];
         v60[1] = 3221225472;
         v60[2] = __53__PKWebService_URLSession_task_didCompleteWithError___block_invoke_340;
         v60[3] = &unk_1E79D27E8;
         v60[4] = self;
         v62 = v52;
-        v63 = v49;
-        v64 = v48;
-        v65 = v47;
-        v61 = v15;
-        [(PKWebService *)self processRetryRequest:v39 responseData:v13 orginalRequest:v56 completion:v60];
+        v63 = retries;
+        v64 = authHandling;
+        v65 = cacheResponse;
+        v61 = completion;
+        [(PKWebService *)self processRetryRequest:v39 responseData:responseData orginalRequest:currentRequest completion:v60];
 
         v11 = v52;
         v19 = v55;
@@ -818,11 +818,11 @@ void __36__PKWebService__sharedCookieStorage__block_invoke_2()
 
     else
     {
-      v14 = v51;
-      if (v17 == 503)
+      response = v51;
+      if (statusCode == 503)
       {
-        v32 = [v19 allHeaderFields];
-        v33 = [v32 objectForKeyedSubscript:@"Retry-After"];
+        allHeaderFields2 = [v19 allHeaderFields];
+        v33 = [allHeaderFields2 objectForKeyedSubscript:@"Retry-After"];
 
         v46 = v33;
         if (!v33)
@@ -839,7 +839,7 @@ void __36__PKWebService__sharedCookieStorage__block_invoke_2()
           v86 = 2112;
           v87 = v46;
           v88 = 2048;
-          v89 = v49;
+          v89 = retries;
           v90 = 2048;
           v91 = v34;
           _os_log_impl(&dword_1AD337000, v35, OS_LOG_TYPE_DEFAULT, "Received %ld (Retry-After: %@) (%tu retries remaining) (retry-after in %lu seconds).", buf, 0x2Au);
@@ -847,8 +847,8 @@ void __36__PKWebService__sharedCookieStorage__block_invoke_2()
 
         if (v34)
         {
-          v36 = [v56 mutableCopy];
-          [v36 setHTTPBody:v54];
+          v36 = [currentRequest mutableCopy];
+          [v36 setHTTPBody:originalBody];
           v66[0] = MEMORY[0x1E69E9820];
           v66[1] = 3221225472;
           v66[2] = __53__PKWebService_URLSession_task_didCompleteWithError___block_invoke_339;
@@ -856,11 +856,11 @@ void __36__PKWebService__sharedCookieStorage__block_invoke_2()
           v66[4] = self;
           v68 = v34;
           v69 = v52;
-          v70 = v49;
-          v71 = v48;
-          v72 = v47;
-          v67 = v15;
-          [(PKWebService *)self processRetryRequest:v36 responseData:v13 orginalRequest:v56 completion:v66];
+          v70 = retries;
+          v71 = authHandling;
+          v72 = cacheResponse;
+          v67 = completion;
+          [(PKWebService *)self processRetryRequest:v36 responseData:responseData orginalRequest:currentRequest completion:v66];
 
           v19 = v55;
         }
@@ -877,13 +877,13 @@ LABEL_33:
           }
 
           v19 = v55;
-          [(PKWebService *)self handleResponse:v55 withError:v8 data:v13 task:v7 completionHandler:v15];
+          [(PKWebService *)self handleResponse:v55 withError:errorCopy data:responseData task:taskCopy completionHandler:completion];
         }
 
         goto LABEL_42;
       }
 
-      if (v17 == 401)
+      if (statusCode == 401)
       {
         v25 = PKLogFacilityTypeGetObject([(PKWebService *)self logFacilityType]);
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -898,30 +898,30 @@ LABEL_33:
           v73[1] = 3221225472;
           v73[2] = __53__PKWebService_URLSession_task_didCompleteWithError___block_invoke;
           v73[3] = &unk_1E79D2810;
-          v80 = v49;
+          v80 = retries;
           v73[4] = self;
-          v74 = v56;
+          v74 = currentRequest;
           v75 = v12;
-          v76 = v13;
+          v76 = responseData;
           v11 = v52;
           v81 = v52;
-          v82 = v48;
-          v83 = v47;
-          v79 = v15;
+          v82 = authHandling;
+          v83 = cacheResponse;
+          v79 = completion;
           v77 = v19;
-          v78 = v8;
+          v78 = errorCopy;
           [(PKWebService *)self handleAuthenticationFailureWithCompletionHandler:v73];
 
 LABEL_43:
 LABEL_44:
           os_unfair_lock_lock(&self->_stateLock);
           webServiceTasks = self->_webServiceTasks;
-          v45 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v7, "taskIdentifier")}];
+          v45 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(taskCopy, "taskIdentifier")}];
           [(NSMutableDictionary *)webServiceTasks removeObjectForKey:v45];
 
           os_unfair_lock_unlock(&self->_stateLock);
           [(PKWebService *)self _cleanUpDiagnosticReasonsForTaskID:v11];
-          v13 = v59;
+          responseData = v59;
           goto LABEL_45;
         }
 
@@ -931,7 +931,7 @@ LABEL_44:
         v42 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v93 forKeys:&v92 count:1];
 
         v43 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKWebServiceErrorDomain" code:1 userInfo:v42];
-        (v15)[2](v15, v59, v55, v43);
+        (completion)[2](completion, v59, v55, v43);
 
         v19 = v55;
 LABEL_42:
@@ -940,7 +940,7 @@ LABEL_42:
       }
     }
 
-    [(PKWebService *)self handleResponse:v19 withError:v8 data:v13 task:v7 completionHandler:v15];
+    [(PKWebService *)self handleResponse:v19 withError:errorCopy data:responseData task:taskCopy completionHandler:completion];
     goto LABEL_42;
   }
 
@@ -948,7 +948,7 @@ LABEL_42:
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v85 = v7;
+    v85 = taskCopy;
     _os_log_impl(&dword_1AD337000, v26, OS_LOG_TYPE_DEFAULT, "No completion for task %@", buf, 0xCu);
   }
 
@@ -1063,18 +1063,18 @@ void __53__PKWebService_URLSession_task_didCompleteWithError___block_invoke_339(
   dispatch_after(v4, v5, v8);
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 willCacheResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task willCacheResponse:(id)response completionHandler:(id)handler
 {
   v9 = MEMORY[0x1E696AD98];
-  v10 = a6;
-  v11 = a5;
-  v14 = [v9 numberWithUnsignedInteger:{objc_msgSend(a4, "taskIdentifier")}];
+  handlerCopy = handler;
+  responseCopy = response;
+  v14 = [v9 numberWithUnsignedInteger:{objc_msgSend(task, "taskIdentifier")}];
   os_unfair_lock_lock(&self->_stateLock);
   v12 = [(NSMutableDictionary *)self->_tasksMetadata objectForKey:v14];
   os_unfair_lock_unlock(&self->_stateLock);
   if ([v12 cacheResponse])
   {
-    v13 = v11;
+    v13 = responseCopy;
   }
 
   else
@@ -1082,16 +1082,16 @@ void __53__PKWebService_URLSession_task_didCompleteWithError___block_invoke_339(
     v13 = 0;
   }
 
-  (v10)[2](v10, v13);
+  (handlerCopy)[2](handlerCopy, v13);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  [(PKWebService *)self logResponse:v12 withData:0];
+  taskCopy = task;
+  redirectionCopy = redirection;
+  requestCopy = request;
+  handlerCopy = handler;
+  [(PKWebService *)self logResponse:redirectionCopy withData:0];
   v15 = PKLogFacilityTypeGetObject([(PKWebService *)self logFacilityType]);
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
@@ -1099,16 +1099,16 @@ void __53__PKWebService_URLSession_task_didCompleteWithError___block_invoke_339(
     _os_log_impl(&dword_1AD337000, v15, OS_LOG_TYPE_DEFAULT, "Performing redirection…", buf, 2u);
   }
 
-  v16 = [v11 originalRequest];
-  v17 = [v16 URL];
+  originalRequest = [taskCopy originalRequest];
+  v17 = [originalRequest URL];
 
-  v18 = [v13 URL];
-  v19 = [v17 scheme];
+  v18 = [requestCopy URL];
+  scheme = [v17 scheme];
   v44 = v18;
-  if ([v19 isEqual:@"https"])
+  if ([scheme isEqual:@"https"])
   {
-    v20 = [v18 scheme];
-    v21 = [v20 isEqual:v19];
+    scheme2 = [v18 scheme];
+    v21 = [scheme2 isEqual:scheme];
 
     if ((v21 & 1) == 0)
     {
@@ -1123,34 +1123,34 @@ void __53__PKWebService_URLSession_task_didCompleteWithError___block_invoke_339(
     }
   }
 
-  v22 = [v13 mutableCopy];
+  v22 = [requestCopy mutableCopy];
   if (!v22)
   {
 LABEL_10:
-    v14[2](v14, 0);
+    handlerCopy[2](handlerCopy, 0);
     goto LABEL_11;
   }
 
   v23 = v22;
-  v24 = [v11 originalRequest];
-  v25 = [v24 HTTPMethod];
-  [v23 setHTTPMethod:v25];
+  originalRequest2 = [taskCopy originalRequest];
+  hTTPMethod = [originalRequest2 HTTPMethod];
+  [v23 setHTTPMethod:hTTPMethod];
 
-  [v24 valueForHTTPHeaderField:@"Authorization"];
-  v26 = v43 = v11;
+  [originalRequest2 valueForHTTPHeaderField:@"Authorization"];
+  v26 = v43 = taskCopy;
   [v23 setValue:v26 forHTTPHeaderField:@"Authorization"];
 
-  v27 = [v24 HTTPBody];
-  [v23 setHTTPBody:v27];
+  hTTPBody = [originalRequest2 HTTPBody];
+  [v23 setHTTPBody:hTTPBody];
 
-  v28 = [MEMORY[0x1E695AC60] propertyForKey:@"overlayRequest" inRequest:v24];
+  v28 = [MEMORY[0x1E695AC60] propertyForKey:@"overlayRequest" inRequest:originalRequest2];
   v29 = MEMORY[0x1E696ACD0];
   v41 = v17;
-  v30 = v12;
+  v30 = redirectionCopy;
   v31 = objc_opt_class();
   [v28 data];
-  v42 = v13;
-  v33 = v32 = v14;
+  v42 = requestCopy;
+  v33 = v32 = handlerCopy;
   v34 = [v29 unarchivedObjectOfClass:v31 fromData:v33 error:0];
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -1161,20 +1161,20 @@ LABEL_10:
   v46 = v35;
   v47 = v34;
   v48 = v23;
-  v49 = self;
+  selfCopy = self;
   v50 = v32;
   v36 = v23;
   v37 = v34;
   v38 = _Block_copy(aBlock);
   v39 = v35;
-  v12 = v30;
+  redirectionCopy = v30;
   v17 = v41;
-  [(PKWebService *)self handleWillPerformHTTPRedirectionWithResponse:v39 originalRequest:v24 redirectHandler:v38];
+  [(PKWebService *)self handleWillPerformHTTPRedirectionWithResponse:v39 originalRequest:originalRequest2 redirectHandler:v38];
 
-  v14 = v32;
-  v13 = v42;
+  handlerCopy = v32;
+  requestCopy = v42;
 
-  v11 = v43;
+  taskCopy = v43;
 LABEL_11:
 }
 
@@ -1242,29 +1242,29 @@ void __88__PKWebService_URLSession_task_willPerformHTTPRedirection_newRequest_co
   (*(v5 + 16))(v5, v6);
 }
 
-- (void)URLSession:(id)a3 taskIsWaitingForConnectivity:(id)a4
+- (void)URLSession:(id)session taskIsWaitingForConnectivity:(id)connectivity
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  connectivityCopy = connectivity;
   v6 = PKLogFacilityTypeGetObject([(PKWebService *)self logFacilityType]);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 currentRequest];
-    v8 = [v7 URL];
-    v9 = [v8 absoluteString];
+    currentRequest = [connectivityCopy currentRequest];
+    v8 = [currentRequest URL];
+    absoluteString = [v8 absoluteString];
     v10 = 138412290;
-    v11 = v9;
+    v11 = absoluteString;
     _os_log_impl(&dword_1AD337000, v6, OS_LOG_TYPE_DEFAULT, "Task is waiting for connectivity URL: %@", &v10, 0xCu);
   }
 }
 
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(PKWebService *)self urlSession];
+  sessionCopy = session;
+  urlSession = [(PKWebService *)self urlSession];
 
-  if (v6 == v5)
+  if (urlSession == sessionCopy)
   {
     [(PKWebService *)self setUrlSession:0];
   }
@@ -1272,53 +1272,53 @@ void __88__PKWebService_URLSession_task_willPerformHTTPRedirection_newRequest_co
   v7 = PKLogFacilityTypeGetObject([(PKWebService *)self logFacilityType]);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v5 configuration];
-    v9 = [v8 identifier];
+    configuration = [sessionCopy configuration];
+    identifier = [configuration identifier];
     v10 = 138412290;
-    v11 = v9;
+    v11 = identifier;
     _os_log_impl(&dword_1AD337000, v7, OS_LOG_TYPE_DEFAULT, "Session did become invalid. Identifier: %@", &v10, 0xCu);
   }
 }
 
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v10 = a5;
-  v7 = [a4 protectionSpace];
-  v8 = [v7 authenticationMethod];
-  if ([v8 isEqualToString:*MEMORY[0x1E695AB80]])
+  handlerCopy = handler;
+  protectionSpace = [challenge protectionSpace];
+  authenticationMethod = [protectionSpace authenticationMethod];
+  if ([authenticationMethod isEqualToString:*MEMORY[0x1E695AB80]])
   {
-    if (-[PKWebService _evaluateTrust:](self, "_evaluateTrust:", [v7 serverTrust]))
+    if (-[PKWebService _evaluateTrust:](self, "_evaluateTrust:", [protectionSpace serverTrust]))
     {
-      v9 = [MEMORY[0x1E695AC48] credentialForTrust:{objc_msgSend(v7, "serverTrust")}];
-      v10[2](v10, 0, v9);
+      v9 = [MEMORY[0x1E695AC48] credentialForTrust:{objc_msgSend(protectionSpace, "serverTrust")}];
+      handlerCopy[2](handlerCopy, 0, v9);
     }
 
     else
     {
-      v10[2](v10, 2, 0);
+      handlerCopy[2](handlerCopy, 2, 0);
     }
   }
 
   else
   {
-    v10[2](v10, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
   }
 }
 
-- (id)_urlRequestTaggedWithWebServiceSessionMarkerHeader:(id)a3
+- (id)_urlRequestTaggedWithWebServiceSessionMarkerHeader:(id)header
 {
-  v4 = [a3 mutableCopy];
-  v5 = [(PKWebService *)self webServiceSessionMarker];
-  [v4 setValue:v5 forHTTPHeaderField:@"X-Apple-Web-Service-Session"];
+  v4 = [header mutableCopy];
+  webServiceSessionMarker = [(PKWebService *)self webServiceSessionMarker];
+  [v4 setValue:webServiceSessionMarker forHTTPHeaderField:@"X-Apple-Web-Service-Session"];
 
   v6 = [v4 copy];
 
   return v6;
 }
 
-- (id)urlRequestTaggedWithUniqueRequestIdentifier:(id)a3
+- (id)urlRequestTaggedWithUniqueRequestIdentifier:(id)identifier
 {
-  v3 = [a3 mutableCopy];
+  v3 = [identifier mutableCopy];
   v4 = PKRequestIDHeaderValue();
   if (v4)
   {
@@ -1330,9 +1330,9 @@ void __88__PKWebService_URLSession_task_willPerformHTTPRedirection_newRequest_co
   return v5;
 }
 
-- (id)_urlRequestWithCustomHeaders:(id)a3
+- (id)_urlRequestWithCustomHeaders:(id)headers
 {
-  v3 = [a3 mutableCopy];
+  v3 = [headers mutableCopy];
   v4 = PKGetCustomHeaders();
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -1346,30 +1346,30 @@ void __88__PKWebService_URLSession_task_willPerformHTTPRedirection_newRequest_co
   return v6;
 }
 
-- (void)diagnosticSessionWithReason:(id)a3 sessionHandler:(id)a4
+- (void)diagnosticSessionWithReason:(id)reason sessionHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    v6 = a4;
-    v7 = a3;
-    [(PKWebService *)self addDiagnosticReason:v7];
-    v6[2](v6, self);
+    handlerCopy = handler;
+    reasonCopy = reason;
+    [(PKWebService *)self addDiagnosticReason:reasonCopy];
+    handlerCopy[2](handlerCopy, self);
 
-    [(PKWebService *)self removeDiagnosticReason:v7];
+    [(PKWebService *)self removeDiagnosticReason:reasonCopy];
   }
 }
 
-- (void)addDiagnosticReason:(id)a3
+- (void)addDiagnosticReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   diagnosticReasonsQueue = self->_diagnosticReasonsQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __36__PKWebService_addDiagnosticReason___block_invoke;
   v7[3] = &unk_1E79C4DD8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = reasonCopy;
+  selfCopy = self;
+  v6 = reasonCopy;
   dispatch_sync(diagnosticReasonsQueue, v7);
 }
 
@@ -1384,17 +1384,17 @@ void __36__PKWebService_addDiagnosticReason___block_invoke(uint64_t a1)
   }
 }
 
-- (void)removeDiagnosticReason:(id)a3
+- (void)removeDiagnosticReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   diagnosticReasonsQueue = self->_diagnosticReasonsQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __39__PKWebService_removeDiagnosticReason___block_invoke;
   v7[3] = &unk_1E79C4DD8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = reasonCopy;
+  selfCopy = self;
+  v6 = reasonCopy;
   dispatch_sync(diagnosticReasonsQueue, v7);
 }
 
@@ -1408,7 +1408,7 @@ uint64_t __39__PKWebService_removeDiagnosticReason___block_invoke(uint64_t resul
   return result;
 }
 
-- (void)_associateDiagnosticReasonsWithTaskID:(unint64_t)a3
+- (void)_associateDiagnosticReasonsWithTaskID:(unint64_t)d
 {
   v10 = 0;
   v11 = &v10;
@@ -1427,7 +1427,7 @@ uint64_t __39__PKWebService_removeDiagnosticReason___block_invoke(uint64_t resul
   os_unfair_lock_lock(&self->_stateLock);
   diagnosticReasonsByTaskID = self->_diagnosticReasonsByTaskID;
   v7 = v11[5];
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
   [(NSMutableDictionary *)diagnosticReasonsByTaskID setObject:v7 forKey:v8];
 
   os_unfair_lock_unlock(&self->_stateLock);
@@ -1442,35 +1442,35 @@ void __54__PKWebService__associateDiagnosticReasonsWithTaskID___block_invoke(uin
   *(v3 + 40) = v2;
 }
 
-- (void)_cleanUpDiagnosticReasonsForTaskID:(unint64_t)a3
+- (void)_cleanUpDiagnosticReasonsForTaskID:(unint64_t)d
 {
   os_unfair_lock_lock(&self->_stateLock);
   diagnosticReasonsByTaskID = self->_diagnosticReasonsByTaskID;
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
   [(NSMutableDictionary *)diagnosticReasonsByTaskID removeObjectForKey:v6];
 
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (id)_urlRequestTaggedWithDiagnosticReasonHeader:(id)a3 forTaskID:(unint64_t)a4
+- (id)_urlRequestTaggedWithDiagnosticReasonHeader:(id)header forTaskID:(unint64_t)d
 {
-  v6 = a3;
+  headerCopy = header;
   os_unfair_lock_lock(&self->_stateLock);
   diagnosticReasonsByTaskID = self->_diagnosticReasonsByTaskID;
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
   v9 = [(NSMutableDictionary *)diagnosticReasonsByTaskID objectForKey:v8];
   v10 = [v9 mutableCopy];
 
   os_unfair_lock_unlock(&self->_stateLock);
   if ([v10 count])
   {
-    v11 = [v6 valueForHTTPHeaderField:@"X-Apple-Diagnostic-Reasons"];
+    v11 = [headerCopy valueForHTTPHeaderField:@"X-Apple-Diagnostic-Reasons"];
     if (v11)
     {
       [v10 addObject:v11];
     }
 
-    v12 = [v6 mutableCopy];
+    v12 = [headerCopy mutableCopy];
     v13 = [v10 componentsJoinedByString:{@", "}];
     [v12 setValue:v13 forHTTPHeaderField:@"X-Apple-Diagnostic-Reasons"];
     v14 = [v12 copy];
@@ -1478,42 +1478,42 @@ void __54__PKWebService__associateDiagnosticReasonsWithTaskID___block_invoke(uin
 
   else
   {
-    v14 = v6;
+    v14 = headerCopy;
   }
 
   return v14;
 }
 
-- (void)logRequest:(id)a3
+- (void)logRequest:(id)request
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   v5 = PKLogFacilityTypeGetObject([(PKWebService *)self logFacilityType]);
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
 
   if (v6)
   {
-    if (v4)
+    if (requestCopy)
     {
       v7 = objc_autoreleasePoolPush();
-      v8 = [v4 HTTPBody];
-      v9 = [v4 URL];
-      v10 = [v9 absoluteString];
+      hTTPBody = [requestCopy HTTPBody];
+      v9 = [requestCopy URL];
+      absoluteString = [v9 absoluteString];
 
-      PKTimeProfileBegin(0, v10);
-      v11 = [[PKWebServiceLoggableRequestBody alloc] initWithBody:v8 sensitiveKeys:self->_sensitiveKeys];
+      PKTimeProfileBegin(0, absoluteString);
+      v11 = [[PKWebServiceLoggableRequestBody alloc] initWithBody:hTTPBody sensitiveKeys:self->_sensitiveKeys];
       v12 = [PKWebServiceLoggableHeaders alloc];
-      v13 = [v4 allHTTPHeaderFields];
-      v14 = [(PKWebServiceLoggableHeaders *)v12 initWithHeaders:v13];
+      allHTTPHeaderFields = [requestCopy allHTTPHeaderFields];
+      v14 = [(PKWebServiceLoggableHeaders *)v12 initWithHeaders:allHTTPHeaderFields];
 
       v15 = PKLogFacilityTypeGetObject([(PKWebService *)self logFacilityType]);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [v4 HTTPMethod];
+        hTTPMethod = [requestCopy HTTPMethod];
         *buf = 138413058;
-        v33 = v16;
+        v33 = hTTPMethod;
         v34 = 2112;
-        v35 = v10;
+        v35 = absoluteString;
         v36 = 2112;
         v37 = v14;
         v38 = 2112;
@@ -1521,13 +1521,13 @@ void __54__PKWebService__associateDiagnosticReasonsWithTaskID___block_invoke(uin
         _os_log_impl(&dword_1AD337000, v15, OS_LOG_TYPE_DEFAULT, "Performing request:\n%@ %@\n%@\n\n%@\n", buf, 0x2Au);
       }
 
-      v17 = [MEMORY[0x1E695AC60] propertyForKey:@"encryptedCardDataKeys" inRequest:v4];
+      v17 = [MEMORY[0x1E695AC60] propertyForKey:@"encryptedCardDataKeys" inRequest:requestCopy];
       if (v17)
       {
-        v25 = v8;
+        v25 = hTTPBody;
         v26 = v7;
-        v18 = [MEMORY[0x1E696AD60] string];
-        [v18 appendString:@"Encrypted Card Data Keys: "];
+        string = [MEMORY[0x1E696AD60] string];
+        [string appendString:@"Encrypted Card Data Keys: "];
         v29 = 0u;
         v30 = 0u;
         v27 = 0u;
@@ -1547,7 +1547,7 @@ void __54__PKWebService__associateDiagnosticReasonsWithTaskID___block_invoke(uin
                 objc_enumerationMutation(v19);
               }
 
-              [v18 appendFormat:@"%@, ", *(*(&v27 + 1) + 8 * i)];
+              [string appendFormat:@"%@, ", *(*(&v27 + 1) + 8 * i)];
             }
 
             v21 = [v19 countByEnumeratingWithState:&v27 objects:v31 count:16];
@@ -1556,7 +1556,7 @@ void __54__PKWebService__associateDiagnosticReasonsWithTaskID___block_invoke(uin
           while (v21);
         }
 
-        v8 = v25;
+        hTTPBody = v25;
         v7 = v26;
       }
 
@@ -1575,32 +1575,32 @@ void __54__PKWebService__associateDiagnosticReasonsWithTaskID___block_invoke(uin
   }
 }
 
-- (void)logResponse:(id)a3 withData:(id)a4
+- (void)logResponse:(id)response withData:(id)data
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  dataCopy = data;
   v8 = PKLogFacilityTypeGetObject([(PKWebService *)self logFacilityType]);
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
 
   if (v9)
   {
-    v10 = [v6 URL];
-    v11 = [v10 absoluteString];
+    v10 = [responseCopy URL];
+    absoluteString = [v10 absoluteString];
 
-    v12 = PKTimeProfileEnd(0, v11, 0);
-    v13 = [[PKWebServiceLoggableRequestBody alloc] initWithBody:v7 sensitiveKeys:self->_sensitiveKeys];
+    v12 = PKTimeProfileEnd(0, absoluteString, 0);
+    v13 = [[PKWebServiceLoggableRequestBody alloc] initWithBody:dataCopy sensitiveKeys:self->_sensitiveKeys];
     v14 = [PKWebServiceLoggableHeaders alloc];
-    v15 = [v6 allHeaderFields];
-    v16 = [(PKWebServiceLoggableHeaders *)v14 initWithHeaders:v15];
+    allHeaderFields = [responseCopy allHeaderFields];
+    v16 = [(PKWebServiceLoggableHeaders *)v14 initWithHeaders:allHeaderFields];
 
     v17 = PKLogFacilityTypeGetObject([(PKWebService *)self logFacilityType]);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       v18 = 138413314;
-      v19 = v11;
+      v19 = absoluteString;
       v20 = 2048;
-      v21 = [v6 statusCode];
+      statusCode = [responseCopy statusCode];
       v22 = 2114;
       v23 = v12;
       v24 = 2112;

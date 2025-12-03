@@ -1,14 +1,14 @@
 @interface RealPaymentPolygonFetcher
-- (BOOL)paymentPolygonsAtLocation:(id)a3 completion:(id)a4;
+- (BOOL)paymentPolygonsAtLocation:(id)location completion:(id)completion;
 @end
 
 @implementation RealPaymentPolygonFetcher
 
-- (BOOL)paymentPolygonsAtLocation:(id)a3 completion:(id)a4
+- (BOOL)paymentPolygonsAtLocation:(id)location completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  locationCopy = location;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     v13 = sub_10003D020();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
@@ -42,7 +42,7 @@
     goto LABEL_12;
   }
 
-  if (!v5)
+  if (!locationCopy)
   {
     v15 = sub_10003D020();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
@@ -81,18 +81,18 @@ LABEL_13:
   }
 
   v7 = +[GEOMapService sharedService];
-  v19 = v5;
+  v19 = locationCopy;
   v8 = 1;
   v9 = [NSArray arrayWithObjects:&v19 count:1];
   v10 = +[GEOMapService sharedService];
-  v11 = [v10 defaultTraits];
-  v12 = [v7 ticketForNearbyTransitPaymentInfoForLocations:v9 traits:v11];
+  defaultTraits = [v10 defaultTraits];
+  v12 = [v7 ticketForNearbyTransitPaymentInfoForLocations:v9 traits:defaultTraits];
 
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1009A53E4;
   v17[3] = &unk_10165EB78;
-  v18 = v6;
+  v18 = completionCopy;
   [v12 submitWithHandler:v17 networkActivity:0];
 
 LABEL_14:

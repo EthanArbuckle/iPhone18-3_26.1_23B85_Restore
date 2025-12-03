@@ -1,21 +1,21 @@
 @interface HDWorkoutTrainingLoadCollectionQueryServer
 + (id)requiredEntitlements;
-- (HDWorkoutTrainingLoadCollectionQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
-- (id)_queue_fetchTrainingLoadCollectionWithError:(id *)a3;
+- (HDWorkoutTrainingLoadCollectionQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
+- (id)_queue_fetchTrainingLoadCollectionWithError:(id *)error;
 - (void)_queue_start;
 @end
 
 @implementation HDWorkoutTrainingLoadCollectionQueryServer
 
-- (HDWorkoutTrainingLoadCollectionQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDWorkoutTrainingLoadCollectionQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a4;
+  configurationCopy = configuration;
   v15.receiver = self;
   v15.super_class = HDWorkoutTrainingLoadCollectionQueryServer;
-  v11 = [(HDQueryServer *)&v15 initWithUUID:a3 configuration:v10 client:a5 delegate:a6];
+  v11 = [(HDQueryServer *)&v15 initWithUUID:d configuration:configurationCopy client:client delegate:delegate];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [configurationCopy copy];
     trainingLoadCollectionQueryServerConfiguration = v11->_trainingLoadCollectionQueryServerConfiguration;
     v11->_trainingLoadCollectionQueryServerConfiguration = v12;
   }
@@ -38,11 +38,11 @@
   v13.receiver = self;
   v13.super_class = HDWorkoutTrainingLoadCollectionQueryServer;
   [(HDQueryServer *)&v13 _queue_start];
-  v3 = [(HDQueryServer *)self queryUUID];
-  v4 = [(HDQueryServer *)self clientProxy];
-  v5 = [MEMORY[0x277CCD720] workoutType];
+  queryUUID = [(HDQueryServer *)self queryUUID];
+  clientProxy = [(HDQueryServer *)self clientProxy];
+  workoutType = [MEMORY[0x277CCD720] workoutType];
   v12 = 0;
-  v6 = [(HDQueryServer *)self authorizationStatusRecordForType:v5 error:&v12];
+  v6 = [(HDQueryServer *)self authorizationStatusRecordForType:workoutType error:&v12];
   v7 = v12;
 
   if (v6)
@@ -52,31 +52,31 @@
       v11 = 0;
       v8 = [(HDWorkoutTrainingLoadCollectionQueryServer *)self _queue_fetchTrainingLoadCollectionWithError:&v11];
       v9 = v11;
-      v10 = [(HDQueryServer *)self queryUUID];
+      queryUUID2 = [(HDQueryServer *)self queryUUID];
       if (v8 || !v9)
       {
-        [v4 client_deliverTrainingLoadCollection:v8 forQuery:v10];
+        [clientProxy client_deliverTrainingLoadCollection:v8 forQuery:queryUUID2];
       }
 
       else
       {
-        [v4 client_deliverError:v9 forQuery:v10];
+        [clientProxy client_deliverError:v9 forQuery:queryUUID2];
       }
     }
 
     else
     {
-      [v4 client_deliverTrainingLoadCollection:0 forQuery:v3];
+      [clientProxy client_deliverTrainingLoadCollection:0 forQuery:queryUUID];
     }
   }
 
   else
   {
-    [v4 client_deliverError:v7 forQuery:v3];
+    [clientProxy client_deliverError:v7 forQuery:queryUUID];
   }
 }
 
-- (id)_queue_fetchTrainingLoadCollectionWithError:(id *)a3
+- (id)_queue_fetchTrainingLoadCollectionWithError:(id *)error
 {
   v24 = 0;
   v25 = &v24;
@@ -90,13 +90,13 @@
   v21 = __Block_byref_object_copy__50;
   v22 = __Block_byref_object_dispose__50;
   v23 = 0;
-  v5 = [(_HKWorkoutTrainingLoadCollectionQueryServerConfiguration *)self->_trainingLoadCollectionQueryServerConfiguration options];
-  v6 = [(_HKWorkoutTrainingLoadCollectionQueryServerConfiguration *)self->_trainingLoadCollectionQueryServerConfiguration anchorDate];
-  v7 = [(_HKWorkoutTrainingLoadCollectionQueryServerConfiguration *)self->_trainingLoadCollectionQueryServerConfiguration intervalComponents];
+  options = [(_HKWorkoutTrainingLoadCollectionQueryServerConfiguration *)self->_trainingLoadCollectionQueryServerConfiguration options];
+  anchorDate = [(_HKWorkoutTrainingLoadCollectionQueryServerConfiguration *)self->_trainingLoadCollectionQueryServerConfiguration anchorDate];
+  intervalComponents = [(_HKWorkoutTrainingLoadCollectionQueryServerConfiguration *)self->_trainingLoadCollectionQueryServerConfiguration intervalComponents];
   v8 = [HDWorkoutTrainingLoadQueryHelper alloc];
-  v9 = [(HDQueryServer *)self filter];
-  v10 = [(HDQueryServer *)self profile];
-  v11 = [(HDWorkoutTrainingLoadQueryHelper *)v8 initWithFilter:v9 options:v5 anchorDate:v6 intervalComponents:v7 profile:v10];
+  filter = [(HDQueryServer *)self filter];
+  profile = [(HDQueryServer *)self profile];
+  v11 = [(HDWorkoutTrainingLoadQueryHelper *)v8 initWithFilter:filter options:options anchorDate:anchorDate intervalComponents:intervalComponents profile:profile];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -110,10 +110,10 @@
   v13 = v12;
   if (v12)
   {
-    if (a3)
+    if (error)
     {
       v14 = v12;
-      *a3 = v13;
+      *error = v13;
     }
 
     else

@@ -1,31 +1,31 @@
 @interface BWStillImageMultiCameraDoserNode
-- (BWStillImageMultiCameraDoserNode)initWithPortTypes:(id)a3;
+- (BWStillImageMultiCameraDoserNode)initWithPortTypes:(id)types;
 - (id)_outputForNodeInputIndex:(id *)result;
 - (uint64_t)_clearCaptureRequestState;
 - (uint64_t)_emitStashedObjectsIfReady;
-- (unint64_t)_configureCaptureRequestStateWithRequestedStillImageCaptureSettings:(void *)a3 resolvedStillImageCaptureSettings:;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (unint64_t)_configureCaptureRequestStateWithRequestedStillImageCaptureSettings:(void *)settings resolvedStillImageCaptureSettings:;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didReachEndOfDataForInput:(id)a3;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4;
-- (void)handleNodeError:(id)a3 forInput:(id)a4;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)didReachEndOfDataForInput:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input;
+- (void)handleNodeError:(id)error forInput:(id)input;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWStillImageMultiCameraDoserNode
 
-- (BWStillImageMultiCameraDoserNode)initWithPortTypes:(id)a3
+- (BWStillImageMultiCameraDoserNode)initWithPortTypes:(id)types
 {
   v13.receiver = self;
   v13.super_class = BWStillImageMultiCameraDoserNode;
   v4 = [(BWNode *)&v13 init];
   if (v4)
   {
-    v4->_portTypes = [a3 copy];
+    v4->_portTypes = [types copy];
     v4->_currentSettingsID = -1;
     v4->_inputIndicesForWhichDosingIsPerformed = objc_alloc_init(MEMORY[0x1E695DF70]);
     v4->_stashedObjectsByInputIndex = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if ([a3 count])
+    if ([types count])
     {
       v5 = 0;
       v6 = 0;
@@ -53,7 +53,7 @@
         v6 = v5;
       }
 
-      while ([a3 count] > v5);
+      while ([types count] > v5);
     }
   }
 
@@ -67,23 +67,23 @@
   [(BWNode *)&v3 dealloc];
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4
+- (void)didSelectFormat:(id)format forInput:(id)input
 {
-  v5 = -[BWStillImageMultiCameraDoserNode _outputForNodeInputIndex:](&self->super.super.isa, [a4 index]);
+  v5 = -[BWStillImageMultiCameraDoserNode _outputForNodeInputIndex:](&self->super.super.isa, [input index]);
 
-  [v5 setFormat:a3];
+  [v5 setFormat:format];
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
-  if ([(BWNode *)self allInputsHaveReachedState:1, a4, a5])
+  if ([(BWNode *)self allInputsHaveReachedState:1, format, input])
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [(BWNode *)self outputs];
-    v7 = [(NSArray *)v6 countByEnumeratingWithState:&v12 objects:v11 count:16];
+    outputs = [(BWNode *)self outputs];
+    v7 = [(NSArray *)outputs countByEnumeratingWithState:&v12 objects:v11 count:16];
     if (v7)
     {
       v8 = v7;
@@ -95,14 +95,14 @@
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(outputs);
           }
 
           [*(*(&v12 + 1) + 8 * v10++) makeConfiguredFormatLive];
         }
 
         while (v8 != v10);
-        v8 = [(NSArray *)v6 countByEnumeratingWithState:&v12 objects:v11 count:16];
+        v8 = [(NSArray *)outputs countByEnumeratingWithState:&v12 objects:v11 count:16];
       }
 
       while (v8);
@@ -110,7 +110,7 @@
   }
 }
 
-- (void)didReachEndOfDataForInput:(id)a3
+- (void)didReachEndOfDataForInput:(id)input
 {
   if ([(BWNode *)self allInputsHaveReachedState:0])
   {
@@ -118,8 +118,8 @@
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v4 = [(BWNode *)self outputs];
-    v5 = [(NSArray *)v4 countByEnumeratingWithState:&v10 objects:v9 count:16];
+    outputs = [(BWNode *)self outputs];
+    v5 = [(NSArray *)outputs countByEnumeratingWithState:&v10 objects:v9 count:16];
     if (v5)
     {
       v6 = v5;
@@ -131,14 +131,14 @@
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(outputs);
           }
 
           [*(*(&v10 + 1) + 8 * v8++) markEndOfLiveOutput];
         }
 
         while (v6 != v8);
-        v6 = [(NSArray *)v4 countByEnumeratingWithState:&v10 objects:v9 count:16];
+        v6 = [(NSArray *)outputs countByEnumeratingWithState:&v10 objects:v9 count:16];
       }
 
       while (v6);
@@ -146,43 +146,43 @@
   }
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  v7 = CMGetAttachment(a3, @"StillImageSettings", 0);
+  v7 = CMGetAttachment(buffer, @"StillImageSettings", 0);
   if ([v7 settingsID] != self->_currentSettingsID)
   {
-    v8 = CMGetAttachment(a3, @"BWStillImageCaptureSettings", 0);
+    v8 = CMGetAttachment(buffer, @"BWStillImageCaptureSettings", 0);
     [(BWStillImageMultiCameraDoserNode *)self _configureCaptureRequestStateWithRequestedStillImageCaptureSettings:v7 resolvedStillImageCaptureSettings:v8];
   }
 
-  if (-[NSMutableArray containsObject:](self->_inputIndicesForWhichDosingIsPerformed, "containsObject:", [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(a4, "index")}]))
+  if (-[NSMutableArray containsObject:](self->_inputIndicesForWhichDosingIsPerformed, "containsObject:", [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(input, "index")}]))
   {
-    [-[NSMutableArray objectAtIndexedSubscript:](self->_stashedObjectsByInputIndex objectAtIndexedSubscript:{objc_msgSend(a4, "index")), "addObject:", a3}];
+    [-[NSMutableArray objectAtIndexedSubscript:](self->_stashedObjectsByInputIndex objectAtIndexedSubscript:{objc_msgSend(input, "index")), "addObject:", buffer}];
 
     [(BWStillImageMultiCameraDoserNode *)self _emitStashedObjectsIfReady:v9];
   }
 
   else
   {
-    [(BWStillImageMultiCameraDoserNode *)a4 renderSampleBuffer:a3 forInput:?];
+    [(BWStillImageMultiCameraDoserNode *)input renderSampleBuffer:buffer forInput:?];
   }
 }
 
-- (void)handleNodeError:(id)a3 forInput:(id)a4
+- (void)handleNodeError:(id)error forInput:(id)input
 {
-  if ([objc_msgSend(objc_msgSend(a3 "stillImageSettings")] != self->_currentSettingsID)
+  if ([objc_msgSend(objc_msgSend(error "stillImageSettings")] != self->_currentSettingsID)
   {
-    [BWStillImageMultiCameraDoserNode handleNodeError:a3 forInput:self];
+    [BWStillImageMultiCameraDoserNode handleNodeError:error forInput:self];
   }
 
-  if (-[NSMutableArray containsObject:](self->_inputIndicesForWhichDosingIsPerformed, "containsObject:", [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(a4, "index")}]))
+  if (-[NSMutableArray containsObject:](self->_inputIndicesForWhichDosingIsPerformed, "containsObject:", [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(input, "index")}]))
   {
-    [(BWStillImageMultiCameraDoserNode *)self handleNodeError:a4 forInput:a3];
+    [(BWStillImageMultiCameraDoserNode *)self handleNodeError:input forInput:error];
   }
 
   else
   {
-    [(BWStillImageMultiCameraDoserNode *)a4 handleNodeError:a3 forInput:?];
+    [(BWStillImageMultiCameraDoserNode *)input handleNodeError:error forInput:?];
   }
 }
 
@@ -191,30 +191,30 @@
   if (result)
   {
     v3 = result;
-    v4 = [result outputs];
+    outputs = [result outputs];
     v5 = [v3 outputIndexForPortType:{objc_msgSend(v3[16], "objectAtIndexedSubscript:", a2)}];
 
-    return [v4 objectAtIndexedSubscript:v5];
+    return [outputs objectAtIndexedSubscript:v5];
   }
 
   return result;
 }
 
-- (unint64_t)_configureCaptureRequestStateWithRequestedStillImageCaptureSettings:(void *)a3 resolvedStillImageCaptureSettings:
+- (unint64_t)_configureCaptureRequestStateWithRequestedStillImageCaptureSettings:(void *)settings resolvedStillImageCaptureSettings:
 {
   if (result)
   {
     v5 = result;
     [(BWStillImageMultiCameraDoserNode *)result _clearCaptureRequestState];
     *(v5 + 136) = [a2 settingsID];
-    if ([objc_msgSend(a3 "captureStreamSettings")] >= 2)
+    if ([objc_msgSend(settings "captureStreamSettings")] >= 2)
     {
       v25 = 0u;
       v26 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v6 = [a3 captureStreamSettings];
-      v7 = [v6 countByEnumeratingWithState:&v23 objects:v22 count:16];
+      captureStreamSettings = [settings captureStreamSettings];
+      v7 = [captureStreamSettings countByEnumeratingWithState:&v23 objects:v22 count:16];
       if (v7)
       {
         v8 = v7;
@@ -225,30 +225,30 @@
           {
             if (*v24 != v9)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(captureStreamSettings);
             }
 
             v11 = *(*(&v23 + 1) + 8 * i);
-            v12 = [v11 hasValidFrames];
-            if (v12)
+            hasValidFrames = [v11 hasValidFrames];
+            if (hasValidFrames)
             {
-              v20 = [v11 portType];
-              if (!v20)
+              portType = [v11 portType];
+              if (!portType)
               {
                 return [(BWStillImageMultiCameraDoserNode *)v5 _clearCaptureRequestState];
               }
 
-              v21 = [*(v5 + 128) indexOfObject:v20];
+              v21 = [*(v5 + 128) indexOfObject:portType];
               if (v21 == 0x7FFFFFFFFFFFFFFFLL)
               {
                 return [(BWStillImageMultiCameraDoserNode *)v5 _clearCaptureRequestState];
               }
 
-              v12 = [*(v5 + 144) addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", v21)}];
+              hasValidFrames = [*(v5 + 144) addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", v21)}];
             }
           }
 
-          v8 = OUTLINED_FUNCTION_1_3(v12, v13, v14, v15, v16, v17, v18, v19, v22[0], v22[1], v22[2], v22[3], v22[4], v22[5], v22[6], v22[7], v22[8], v22[9], v22[10], v22[11], v22[12], v22[13], v22[14], v22[15], v23);
+          v8 = OUTLINED_FUNCTION_1_3(hasValidFrames, v13, v14, v15, v16, v17, v18, v19, v22[0], v22[1], v22[2], v22[3], v22[4], v22[5], v22[6], v22[7], v22[8], v22[9], v22[10], v22[11], v22[12], v22[13], v22[14], v22[15], v23);
           if (v8)
           {
             continue;
@@ -324,20 +324,20 @@ LABEL_10:
               objc_enumerationMutation(v29);
             }
 
-            v33 = [*(8 * v32) intValue];
-            v34 = [*(v8 + 152) objectAtIndexedSubscript:v33];
-            v35 = [v34 firstObject];
+            intValue = [*(8 * v32) intValue];
+            v34 = [*(v8 + 152) objectAtIndexedSubscript:intValue];
+            firstObject = [v34 firstObject];
             [v34 removeObjectAtIndex:0];
             v36 = [objc_msgSend(v8 "outputs")];
-            v37 = CFGetTypeID(v35);
+            v37 = CFGetTypeID(firstObject);
             if (CMSampleBufferGetTypeID() == v37)
             {
-              [v36 emitSampleBuffer:v35];
+              [v36 emitSampleBuffer:firstObject];
             }
 
             else
             {
-              [v36 emitNodeError:v35];
+              [v36 emitNodeError:firstObject];
             }
 
             ++v32;

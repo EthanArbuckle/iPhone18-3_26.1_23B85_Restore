@@ -1,21 +1,21 @@
 @interface _UIDocumentURLChangeObserver
 - (BOOL)isObserving;
-- (_UIDocumentURLChangeObserver)initWithFileURL:(id)a3;
+- (_UIDocumentURLChangeObserver)initWithFileURL:(id)l;
 - (void)presentedItemDidChange;
-- (void)presentedItemDidMoveToURL:(id)a3;
-- (void)startObservingWithChangeHandler:(id)a3;
+- (void)presentedItemDidMoveToURL:(id)l;
+- (void)startObservingWithChangeHandler:(id)handler;
 - (void)stopObserving;
 @end
 
 @implementation _UIDocumentURLChangeObserver
 
-- (_UIDocumentURLChangeObserver)initWithFileURL:(id)a3
+- (_UIDocumentURLChangeObserver)initWithFileURL:(id)l
 {
-  v6 = a3;
-  if (!v6)
+  lCopy = l;
+  if (!lCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"_UIDocumentURLChangeObserver.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"fileURL != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDocumentURLChangeObserver.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"fileURL != nil"}];
   }
 
   v13.receiver = self;
@@ -24,10 +24,10 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_presentedItemURL, a3);
-    v9 = [MEMORY[0x1E696ADC8] mainQueue];
+    objc_storeStrong(&v7->_presentedItemURL, l);
+    mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
     presentedItemOperationQueue = v8->_presentedItemOperationQueue;
-    v8->_presentedItemOperationQueue = v9;
+    v8->_presentedItemOperationQueue = mainQueue;
   }
 
   return v8;
@@ -35,28 +35,28 @@
 
 - (BOOL)isObserving
 {
-  v2 = [(_UIDocumentURLChangeObserver *)self changeHandler];
-  v3 = v2 != 0;
+  changeHandler = [(_UIDocumentURLChangeObserver *)self changeHandler];
+  v3 = changeHandler != 0;
 
   return v3;
 }
 
-- (void)startObservingWithChangeHandler:(id)a3
+- (void)startObservingWithChangeHandler:(id)handler
 {
-  v7 = a3;
-  if (!v7)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"_UIDocumentURLChangeObserver.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"changeHandler != NULL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDocumentURLChangeObserver.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"changeHandler != NULL"}];
   }
 
   if ([(_UIDocumentURLChangeObserver *)self isObserving])
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"_UIDocumentURLChangeObserver.m" lineNumber:43 description:@"Already observing."];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIDocumentURLChangeObserver.m" lineNumber:43 description:@"Already observing."];
   }
 
-  [(_UIDocumentURLChangeObserver *)self setChangeHandler:v7];
+  [(_UIDocumentURLChangeObserver *)self setChangeHandler:handlerCopy];
   [MEMORY[0x1E696ABF8] addFilePresenter:self];
 }
 
@@ -64,8 +64,8 @@
 {
   if (![(_UIDocumentURLChangeObserver *)self isObserving])
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"_UIDocumentURLChangeObserver.m" lineNumber:50 description:@"Not observing."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDocumentURLChangeObserver.m" lineNumber:50 description:@"Not observing."];
   }
 
   [MEMORY[0x1E696ABF8] removeFilePresenter:self];
@@ -75,24 +75,24 @@
 
 - (void)presentedItemDidChange
 {
-  v2 = [(_UIDocumentURLChangeObserver *)self changeHandler];
-  if (v2)
+  changeHandler = [(_UIDocumentURLChangeObserver *)self changeHandler];
+  if (changeHandler)
   {
-    v3 = v2;
-    v2[2](v2, 0);
-    v2 = v3;
+    v3 = changeHandler;
+    changeHandler[2](changeHandler, 0);
+    changeHandler = v3;
   }
 }
 
-- (void)presentedItemDidMoveToURL:(id)a3
+- (void)presentedItemDidMoveToURL:(id)l
 {
-  v7 = a3;
-  objc_storeStrong(&self->_presentedItemURL, a3);
-  v5 = [(_UIDocumentURLChangeObserver *)self changeHandler];
-  v6 = v5;
-  if (v5)
+  lCopy = l;
+  objc_storeStrong(&self->_presentedItemURL, l);
+  changeHandler = [(_UIDocumentURLChangeObserver *)self changeHandler];
+  v6 = changeHandler;
+  if (changeHandler)
   {
-    (*(v5 + 16))(v5, v7);
+    (*(changeHandler + 16))(changeHandler, lCopy);
   }
 }
 

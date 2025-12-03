@@ -1,30 +1,30 @@
 @interface SBFullScreenAlwaysLiveLiveContentOverlay
-- (SBFullScreenAlwaysLiveLiveContentOverlay)initWithSceneHandle:(id)a3 referenceSize:(CGSize)a4 containerOrientation:(int64_t)a5;
+- (SBFullScreenAlwaysLiveLiveContentOverlay)initWithSceneHandle:(id)handle referenceSize:(CGSize)size containerOrientation:(int64_t)orientation;
 - (SBSwitcherLiveContentOverlayDelegate)delegate;
 - (UIRectCornerRadii)cornerRadii;
 - (id)liveSceneIdentityToken;
 - (void)invalidate;
-- (void)sceneHandle:(id)a3 didUpdateSettingsWithDiff:(id)a4 previousSettings:(id)a5;
-- (void)setOcclusionState:(int64_t)a3 inSteadyState:(BOOL)a4;
-- (void)setUsesBrightSceneViewBackgroundMaterial:(BOOL)a3;
-- (void)setWantsEnhancedWindowingEnabled:(BOOL)a3;
+- (void)sceneHandle:(id)handle didUpdateSettingsWithDiff:(id)diff previousSettings:(id)settings;
+- (void)setOcclusionState:(int64_t)state inSteadyState:(BOOL)steadyState;
+- (void)setUsesBrightSceneViewBackgroundMaterial:(BOOL)material;
+- (void)setWantsEnhancedWindowingEnabled:(BOOL)enabled;
 @end
 
 @implementation SBFullScreenAlwaysLiveLiveContentOverlay
 
-- (SBFullScreenAlwaysLiveLiveContentOverlay)initWithSceneHandle:(id)a3 referenceSize:(CGSize)a4 containerOrientation:(int64_t)a5
+- (SBFullScreenAlwaysLiveLiveContentOverlay)initWithSceneHandle:(id)handle referenceSize:(CGSize)size containerOrientation:(int64_t)orientation
 {
-  height = a4.height;
-  width = a4.width;
-  v10 = a3;
+  height = size.height;
+  width = size.width;
+  handleCopy = handle;
   v23.receiver = self;
   v23.super_class = SBFullScreenAlwaysLiveLiveContentOverlay;
   v11 = [(SBFullScreenAlwaysLiveLiveContentOverlay *)&v23 init];
   v12 = v11;
   if (v11)
   {
-    v11->_containerOrientation = a5;
-    objc_storeStrong(&v11->_sceneHandle, a3);
+    v11->_containerOrientation = orientation;
+    objc_storeStrong(&v11->_sceneHandle, handle);
     if ([(SBDeviceApplicationSceneHandle *)v12->_sceneHandle _supportsMixedOrientation])
     {
       containerOrientation = v12->_containerOrientation;
@@ -35,24 +35,24 @@
       containerOrientation = [(SBDeviceApplicationSceneHandle *)v12->_sceneHandle currentInterfaceOrientation];
     }
 
-    v14 = [[SBDeviceApplicationSceneView alloc] initWithSceneHandle:v10 referenceSize:containerOrientation contentOrientation:a5 containerOrientation:v12 hostRequester:width, height];
+    height = [[SBDeviceApplicationSceneView alloc] initWithSceneHandle:handleCopy referenceSize:containerOrientation contentOrientation:orientation containerOrientation:v12 hostRequester:width, height];
     sceneView = v12->_sceneView;
-    v12->_sceneView = v14;
+    v12->_sceneView = height;
 
-    v16 = [(SBSceneView *)v12->_sceneView sceneHandle];
-    HaveTransparentBackground = SBApplicationMightHaveTransparentBackground(v16);
+    sceneHandle = [(SBSceneView *)v12->_sceneView sceneHandle];
+    HaveTransparentBackground = SBApplicationMightHaveTransparentBackground(sceneHandle);
 
     if (HaveTransparentBackground)
     {
-      v18 = [(SBSceneView *)v12->_sceneView backgroundView];
+      backgroundView = [(SBSceneView *)v12->_sceneView backgroundView];
       if (objc_opt_respondsToSelector())
       {
-        [v18 setFullscreen:1];
+        [backgroundView setFullscreen:1];
       }
 
       if (objc_opt_respondsToSelector())
       {
-        [v18 setTransformOptions:{objc_msgSend(v18, "transformOptions") | 2}];
+        [backgroundView setTransformOptions:{objc_msgSend(backgroundView, "transformOptions") | 2}];
       }
     }
 
@@ -64,7 +64,7 @@
     v12->_transformWrapperView = v20;
 
     [(BSUIOrientationTransformWrapperView *)v12->_transformWrapperView setContentOrientation:containerOrientation];
-    [(BSUIOrientationTransformWrapperView *)v12->_transformWrapperView setContainerOrientation:a5];
+    [(BSUIOrientationTransformWrapperView *)v12->_transformWrapperView setContainerOrientation:orientation];
     [(BSUIOrientationTransformWrapperView *)v12->_transformWrapperView addContentView:v12->_sceneView];
     [(SBDeviceApplicationSceneHandle *)v12->_sceneHandle addObserver:v12];
   }
@@ -81,11 +81,11 @@
   [(UIApplicationSceneSettingsDiffInspector *)sceneSettingsInspector removeAllObservers];
 }
 
-- (void)sceneHandle:(id)a3 didUpdateSettingsWithDiff:(id)a4 previousSettings:(id)a5
+- (void)sceneHandle:(id)handle didUpdateSettingsWithDiff:(id)diff previousSettings:(id)settings
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handleCopy = handle;
+  diffCopy = diff;
+  settingsCopy = settings;
   sceneSettingsInspector = self->_sceneSettingsInspector;
   if (!sceneSettingsInspector)
   {
@@ -107,7 +107,7 @@
     sceneSettingsInspector = self->_sceneSettingsInspector;
   }
 
-  [(UIApplicationSceneSettingsDiffInspector *)sceneSettingsInspector inspectDiff:v9 withContext:0];
+  [(UIApplicationSceneSettingsDiffInspector *)sceneSettingsInspector inspectDiff:diffCopy withContext:0];
 }
 
 void __99__SBFullScreenAlwaysLiveLiveContentOverlay_sceneHandle_didUpdateSettingsWithDiff_previousSettings___block_invoke(uint64_t a1)
@@ -121,56 +121,56 @@ void __99__SBFullScreenAlwaysLiveLiveContentOverlay_sceneHandle_didUpdateSetting
   }
 }
 
-- (void)setOcclusionState:(int64_t)a3 inSteadyState:(BOOL)a4
+- (void)setOcclusionState:(int64_t)state inSteadyState:(BOOL)steadyState
 {
-  IsOccluded = SBOcclusionStateIsOccluded(a3);
+  IsOccluded = SBOcclusionStateIsOccluded(state);
   sceneHandle = self->_sceneHandle;
 
   [(SBDeviceApplicationSceneHandle *)sceneHandle setOccluded:IsOccluded];
 }
 
-- (void)setUsesBrightSceneViewBackgroundMaterial:(BOOL)a3
+- (void)setUsesBrightSceneViewBackgroundMaterial:(BOOL)material
 {
-  v3 = a3;
-  v4 = [(SBSceneView *)self->_sceneView backgroundView];
+  materialCopy = material;
+  backgroundView = [(SBSceneView *)self->_sceneView backgroundView];
   if (objc_opt_respondsToSelector())
   {
-    [v4 setShouldUseBrightMaterial:v3];
+    [backgroundView setShouldUseBrightMaterial:materialCopy];
   }
 }
 
-- (void)setWantsEnhancedWindowingEnabled:(BOOL)a3
+- (void)setWantsEnhancedWindowingEnabled:(BOOL)enabled
 {
-  if (self->_wantsEnhancedWindowingEnabled != a3)
+  if (self->_wantsEnhancedWindowingEnabled != enabled)
   {
-    self->_wantsEnhancedWindowingEnabled = a3;
+    self->_wantsEnhancedWindowingEnabled = enabled;
     [(SBDeviceApplicationSceneHandle *)self->_sceneHandle setWantsEnhancedWindowingEnabled:?];
   }
 }
 
 - (id)liveSceneIdentityToken
 {
-  v2 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
-  if ([v2 isActive])
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
+  if ([sceneIfExists isActive])
   {
-    v3 = [v2 settings];
-    if ([v3 isForeground])
+    settings = [sceneIfExists settings];
+    if ([settings isForeground])
     {
-      v4 = [v2 identityToken];
+      identityToken = [sceneIfExists identityToken];
     }
 
     else
     {
-      v4 = 0;
+      identityToken = 0;
     }
   }
 
   else
   {
-    v4 = 0;
+    identityToken = 0;
   }
 
-  return v4;
+  return identityToken;
 }
 
 - (SBSwitcherLiveContentOverlayDelegate)delegate

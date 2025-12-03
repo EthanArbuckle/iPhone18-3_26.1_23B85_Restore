@@ -12,11 +12,11 @@
   [(CategorizationOptionViewAccessibility *)&v33 _accessibilityLoadAccessibilityInformation];
   objc_opt_class();
   v18 = __UIAccessibilityCastAsClass();
-  v2 = [v18 subviews];
-  v3 = [v2 firstObject];
+  subviews = [v18 subviews];
+  firstObject = [subviews firstObject];
 
-  v17 = v3;
-  [v3 subviews];
+  v17 = firstObject;
+  [firstObject subviews];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
@@ -40,7 +40,7 @@
         v6 = *(*(&v29 + 1) + 8 * v5);
         objc_opt_class();
         v24 = __UIAccessibilityCastAsClass();
-        v7 = [v24 subviews];
+        subviews2 = [v24 subviews];
         v8 = UIAXStringForAllChildren();
         [v6 setIsAccessibilityElement:1];
         v23 = v8;
@@ -50,7 +50,7 @@
         v28 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v9 = v7;
+        v9 = subviews2;
         v10 = [v9 countByEnumeratingWithState:&v25 objects:v34 count:16];
         if (v10)
         {
@@ -66,8 +66,8 @@
                 objc_enumerationMutation(v9);
               }
 
-              v14 = [*(*(&v25 + 1) + 8 * v13) accessibilityIdentifier];
-              v15 = [v14 isEqualToString:@"checkmark.circle.fill"];
+              accessibilityIdentifier = [*(*(&v25 + 1) + 8 * v13) accessibilityIdentifier];
+              v15 = [accessibilityIdentifier isEqualToString:@"checkmark.circle.fill"];
 
               if (v15)
               {

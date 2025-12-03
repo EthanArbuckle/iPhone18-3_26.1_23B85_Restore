@@ -1,9 +1,9 @@
 @interface TSDContentLocation
 + (id)contentLocation;
-+ (id)contentLocationInterpolatingFromLocation:(id)a3 toLocation:(id)a4 fraction:(double)a5;
-+ (id)contentLocationWithUnscaledPoint:(CGPoint)a3 viewScale:(double)a4;
++ (id)contentLocationInterpolatingFromLocation:(id)location toLocation:(id)toLocation fraction:(double)fraction;
++ (id)contentLocationWithUnscaledPoint:(CGPoint)point viewScale:(double)scale;
 - (CGPoint)unscaledPoint;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -16,34 +16,34 @@
   return v2;
 }
 
-+ (id)contentLocationWithUnscaledPoint:(CGPoint)a3 viewScale:(double)a4
++ (id)contentLocationWithUnscaledPoint:(CGPoint)point viewScale:(double)scale
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v7 = objc_alloc_init(TSDContentLocation);
   [(TSDContentLocation *)v7 setUnscaledPoint:x, y];
-  [(TSDContentLocation *)v7 setViewScale:a4];
+  [(TSDContentLocation *)v7 setViewScale:scale];
 
   return v7;
 }
 
-+ (id)contentLocationInterpolatingFromLocation:(id)a3 toLocation:(id)a4 fraction:(double)a5
++ (id)contentLocationInterpolatingFromLocation:(id)location toLocation:(id)toLocation fraction:(double)fraction
 {
   v8 = objc_alloc_init(TSDContentLocation);
-  [a3 unscaledPoint];
+  [location unscaledPoint];
   v10 = v9;
   v12 = v11;
-  [a4 unscaledPoint];
-  [(TSDContentLocation *)v8 setUnscaledPoint:TSDInterpolatePoints(v10, v12, v13, v14, a5)];
-  [a3 viewScale];
+  [toLocation unscaledPoint];
+  [(TSDContentLocation *)v8 setUnscaledPoint:TSDInterpolatePoints(v10, v12, v13, v14, fraction)];
+  [location viewScale];
   v16 = v15;
-  [a4 viewScale];
-  [(TSDContentLocation *)v8 setViewScale:TSDInterpolateFloats(v16, v17, a5)];
+  [toLocation viewScale];
+  [(TSDContentLocation *)v8 setViewScale:TSDInterpolateFloats(v16, v17, fraction)];
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[TSDContentLocation allocWithZone:?]];
   [(TSDContentLocation *)v4 setUnscaledPoint:self->_unscaledPoint.x, self->_unscaledPoint.y];

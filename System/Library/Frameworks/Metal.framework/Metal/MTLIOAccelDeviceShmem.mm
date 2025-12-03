@@ -1,11 +1,11 @@
 @interface MTLIOAccelDeviceShmem
-- (MTLIOAccelDeviceShmem)initWithDevice:(id)a3 shmemSize:(unsigned int)a4;
+- (MTLIOAccelDeviceShmem)initWithDevice:(id)device shmemSize:(unsigned int)size;
 - (void)dealloc;
 @end
 
 @implementation MTLIOAccelDeviceShmem
 
-- (MTLIOAccelDeviceShmem)initWithDevice:(id)a3 shmemSize:(unsigned int)a4
+- (MTLIOAccelDeviceShmem)initWithDevice:(id)device shmemSize:(unsigned int)size
 {
   v8.receiver = self;
   v8.super_class = MTLIOAccelDeviceShmem;
@@ -13,8 +13,8 @@
   v6 = v5;
   if (v5)
   {
-    v5->_device = a3;
-    [a3 sharedRef];
+    v5->_device = device;
+    [device sharedRef];
     if (IOAccelSharedCreateDeviceShmem())
     {
 

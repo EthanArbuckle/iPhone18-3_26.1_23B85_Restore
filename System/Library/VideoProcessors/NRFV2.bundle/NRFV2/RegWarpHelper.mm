@@ -1,16 +1,16 @@
 @interface RegWarpHelper
-+ (int)prewarmShaders:(id)a3;
-- (RegWarpHelper)initWithMetal:(id)a3;
-- (int)convertInput10BitPixBuf:(__CVBuffer *)a3 downsampledOutput8BitPixBuf:(__CVBuffer *)a4 mtlCommandBuffer:(id)a5;
-- (int)downsampleInputRGB:(id)a3 toLuma:(id)a4;
++ (int)prewarmShaders:(id)shaders;
+- (RegWarpHelper)initWithMetal:(id)metal;
+- (int)convertInput10BitPixBuf:(__CVBuffer *)buf downsampledOutput8BitPixBuf:(__CVBuffer *)pixBuf mtlCommandBuffer:(id)buffer;
+- (int)downsampleInputRGB:(id)b toLuma:(id)luma;
 @end
 
 @implementation RegWarpHelper
 
-- (RegWarpHelper)initWithMetal:(id)a3
+- (RegWarpHelper)initWithMetal:(id)metal
 {
-  v5 = a3;
-  if (!v5)
+  metalCopy = metal;
+  if (!metalCopy)
   {
     sub_295893CFC();
     goto LABEL_6;
@@ -23,11 +23,11 @@
   if (!v6)
   {
 LABEL_6:
-    v15 = 0;
+    selfCopy = 0;
     goto LABEL_7;
   }
 
-  objc_storeStrong(&v6->_metal, a3);
+  objc_storeStrong(&v6->_metal, metal);
   v10 = objc_msgSend_sharedInstance(RegWarpHelperShared, v7, v8, v9);
   v13 = objc_msgSend_getShaders_(v10, v11, self->_metal, v12);
   shaders = self->_shaders;
@@ -35,26 +35,26 @@ LABEL_6:
 
   if (self->_shaders)
   {
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
     sub_295893C4C(self, &v19);
-    v15 = v19;
+    selfCopy = v19;
   }
 
 LABEL_7:
-  v16 = v15;
+  v16 = selfCopy;
 
   return v16;
 }
 
-+ (int)prewarmShaders:(id)a3
++ (int)prewarmShaders:(id)shaders
 {
-  v3 = a3;
+  shadersCopy = shaders;
   v4 = [RegWarpHelper alloc];
-  v7 = objc_msgSend_initWithMetal_(v4, v5, v3, v6);
+  v7 = objc_msgSend_initWithMetal_(v4, v5, shadersCopy, v6);
 
   if (v7)
   {
@@ -69,12 +69,12 @@ LABEL_7:
   return v8;
 }
 
-- (int)convertInput10BitPixBuf:(__CVBuffer *)a3 downsampledOutput8BitPixBuf:(__CVBuffer *)a4 mtlCommandBuffer:(id)a5
+- (int)convertInput10BitPixBuf:(__CVBuffer *)buf downsampledOutput8BitPixBuf:(__CVBuffer *)pixBuf mtlCommandBuffer:(id)buffer
 {
-  v8 = a5;
+  bufferCopy = buffer;
   metal = self->_metal;
-  MetalLumaFormat = objc_msgSend_getMetalLumaFormat_(LumaChromaImage, v10, a3, v11);
-  v16 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(metal, v13, a3, MetalLumaFormat, 1, 0);
+  MetalLumaFormat = objc_msgSend_getMetalLumaFormat_(LumaChromaImage, v10, buf, v11);
+  v16 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(metal, v13, buf, MetalLumaFormat, 1, 0);
   if (!v16)
   {
     sub_295893F4C(v49);
@@ -84,8 +84,8 @@ LABEL_13:
   }
 
   v17 = self->_metal;
-  v18 = objc_msgSend_getMetalLumaFormat_(LumaChromaImage, v14, a4, v15);
-  v20 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(v17, v19, a4, v18, 2, 0);
+  v18 = objc_msgSend_getMetalLumaFormat_(LumaChromaImage, v14, pixBuf, v15);
+  v20 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(v17, v19, pixBuf, v18, 2, 0);
   if (!v20)
   {
     sub_295893EB0(v49);
@@ -105,7 +105,7 @@ LABEL_13:
     }
   }
 
-  v29 = objc_msgSend_computeCommandEncoder(v8, v25, v26, v27);
+  v29 = objc_msgSend_computeCommandEncoder(bufferCopy, v25, v26, v27);
   if (!v29)
   {
     sub_295893D60(v24, v49);
@@ -130,13 +130,13 @@ LABEL_8:
   return v45;
 }
 
-- (int)downsampleInputRGB:(id)a3 toLuma:(id)a4
+- (int)downsampleInputRGB:(id)b toLuma:(id)luma
 {
-  v6 = a3;
-  v7 = a4;
-  v11 = objc_msgSend_pixelFormat(v6, v8, v9, v10);
-  v15 = objc_msgSend_pixelFormat(v7, v12, v13, v14);
-  if (v11 != 70 && v11 != 115 || v15 != 10 && v15 != 25 || (v19 = objc_msgSend_width(v7, v16, v17, v18), objc_msgSend_width(v6, v20, v21, v22) != 2 * v19) || (v26 = objc_msgSend_height(v7, v23, v24, v25), objc_msgSend_height(v6, v27, v28, v29) != 2 * v26))
+  bCopy = b;
+  lumaCopy = luma;
+  v11 = objc_msgSend_pixelFormat(bCopy, v8, v9, v10);
+  v15 = objc_msgSend_pixelFormat(lumaCopy, v12, v13, v14);
+  if (v11 != 70 && v11 != 115 || v15 != 10 && v15 != 25 || (v19 = objc_msgSend_width(lumaCopy, v16, v17, v18), objc_msgSend_width(bCopy, v20, v21, v22) != 2 * v19) || (v26 = objc_msgSend_height(lumaCopy, v23, v24, v25), objc_msgSend_height(bCopy, v27, v28, v29) != 2 * v26))
   {
     v65 = 0;
     v64 = 0;
@@ -167,11 +167,11 @@ LABEL_15:
 
   v41 = v38;
   objc_msgSend_setComputePipelineState_(v38, v39, self->_shaders->_downsampleRGBToLuma, v40);
-  objc_msgSend_setTexture_atIndex_(v41, v42, v6, 0);
-  objc_msgSend_setTexture_atIndex_(v41, v43, v7, 1);
+  objc_msgSend_setTexture_atIndex_(v41, v42, bCopy, 0);
+  objc_msgSend_setTexture_atIndex_(v41, v43, lumaCopy, 1);
   objc_msgSend_setImageblockWidth_height_(v41, v44, 32, 32);
-  v63[0] = objc_msgSend_width(v7, v45, v46, v47);
-  v63[1] = objc_msgSend_height(v7, v48, v49, v50);
+  v63[0] = objc_msgSend_width(lumaCopy, v45, v46, v47);
+  v63[1] = objc_msgSend_height(lumaCopy, v48, v49, v50);
   v63[2] = 1;
   v61 = vdupq_n_s64(0x20uLL);
   v62 = 1;

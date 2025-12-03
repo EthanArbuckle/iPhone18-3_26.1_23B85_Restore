@@ -1,31 +1,31 @@
 @interface PHACurareShadowEvaluationEvaluationResult
-- (PHACurareShadowEvaluationEvaluationResult)initWithModelPath:(id)a3 isPositiveData:(BOOL)a4 numberOfTotalSamples:(id)a5 numberOfCorrectSamples:(id)a6 meanPredictionValue:(id)a7 stddevPredictionValue:(id)a8;
+- (PHACurareShadowEvaluationEvaluationResult)initWithModelPath:(id)path isPositiveData:(BOOL)data numberOfTotalSamples:(id)samples numberOfCorrectSamples:(id)correctSamples meanPredictionValue:(id)value stddevPredictionValue:(id)predictionValue;
 @end
 
 @implementation PHACurareShadowEvaluationEvaluationResult
 
-- (PHACurareShadowEvaluationEvaluationResult)initWithModelPath:(id)a3 isPositiveData:(BOOL)a4 numberOfTotalSamples:(id)a5 numberOfCorrectSamples:(id)a6 meanPredictionValue:(id)a7 stddevPredictionValue:(id)a8
+- (PHACurareShadowEvaluationEvaluationResult)initWithModelPath:(id)path isPositiveData:(BOOL)data numberOfTotalSamples:(id)samples numberOfCorrectSamples:(id)correctSamples meanPredictionValue:(id)value stddevPredictionValue:(id)predictionValue
 {
-  v14 = a3;
-  v23 = a5;
-  v22 = a6;
-  v21 = a7;
-  v15 = a8;
+  pathCopy = path;
+  samplesCopy = samples;
+  correctSamplesCopy = correctSamples;
+  valueCopy = value;
+  predictionValueCopy = predictionValue;
   v24.receiver = self;
   v24.super_class = PHACurareShadowEvaluationEvaluationResult;
   v16 = [(PHACurareShadowEvaluationEvaluationResult *)&v24 init];
   if (v16)
   {
-    v17 = [v14 lastPathComponent];
-    v18 = [v17 stringByDeletingPathExtension];
+    lastPathComponent = [pathCopy lastPathComponent];
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
     modelName = v16->_modelName;
-    v16->_modelName = v18;
+    v16->_modelName = stringByDeletingPathExtension;
 
-    v16->_isPositiveData = a4;
-    objc_storeStrong(&v16->_numberOfTotalSamples, a5);
-    objc_storeStrong(&v16->_numberOfCorrectSamples, a6);
-    objc_storeStrong(&v16->_meanPredictionValue, a7);
-    objc_storeStrong(&v16->_stddevPredictionValue, a8);
+    v16->_isPositiveData = data;
+    objc_storeStrong(&v16->_numberOfTotalSamples, samples);
+    objc_storeStrong(&v16->_numberOfCorrectSamples, correctSamples);
+    objc_storeStrong(&v16->_meanPredictionValue, value);
+    objc_storeStrong(&v16->_stddevPredictionValue, predictionValue);
   }
 
   return v16;

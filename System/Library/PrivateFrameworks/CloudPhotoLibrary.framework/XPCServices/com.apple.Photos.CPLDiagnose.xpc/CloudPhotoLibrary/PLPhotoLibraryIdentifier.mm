@@ -1,54 +1,54 @@
 @interface PLPhotoLibraryIdentifier
-- (PLPhotoLibraryIdentifier)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PLPhotoLibraryIdentifier)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PLPhotoLibraryIdentifier
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PLPhotoLibraryIdentifier *)self name];
-  [v4 encodeObject:v5 forKey:@"Name"];
+  coderCopy = coder;
+  name = [(PLPhotoLibraryIdentifier *)self name];
+  [coderCopy encodeObject:name forKey:@"Name"];
 
-  v6 = [(PLPhotoLibraryIdentifier *)self userDescription];
-  [v4 encodeObject:v6 forKey:@"UserDescription"];
+  userDescription = [(PLPhotoLibraryIdentifier *)self userDescription];
+  [coderCopy encodeObject:userDescription forKey:@"UserDescription"];
 
-  v7 = [(PLPhotoLibraryIdentifier *)self uuid];
-  [v4 encodeObject:v7 forKey:@"UUID"];
+  uuid = [(PLPhotoLibraryIdentifier *)self uuid];
+  [coderCopy encodeObject:uuid forKey:@"UUID"];
 
-  v8 = [(PLPhotoLibraryIdentifier *)self path];
-  [v4 encodeObject:v8 forKey:@"Path"];
+  path = [(PLPhotoLibraryIdentifier *)self path];
+  [coderCopy encodeObject:path forKey:@"Path"];
 
-  v9 = [(PLPhotoLibraryIdentifier *)self containerIdentifier];
-  [v4 encodeObject:v9 forKey:@"ContainerIdentifier"];
+  containerIdentifier = [(PLPhotoLibraryIdentifier *)self containerIdentifier];
+  [coderCopy encodeObject:containerIdentifier forKey:@"ContainerIdentifier"];
 }
 
-- (PLPhotoLibraryIdentifier)initWithCoder:(id)a3
+- (PLPhotoLibraryIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = PLPhotoLibraryIdentifier;
   v5 = [(PLPhotoLibraryIdentifier *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UserDescription"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UserDescription"];
     userDescription = v5->_userDescription;
     v5->_userDescription = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
     uuid = v5->_uuid;
     v5->_uuid = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Path"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Path"];
     path = v5->_path;
     v5->_path = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ContainerIdentifier"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ContainerIdentifier"];
     containerIdentifier = v5->_containerIdentifier;
     v5->_containerIdentifier = v14;
   }

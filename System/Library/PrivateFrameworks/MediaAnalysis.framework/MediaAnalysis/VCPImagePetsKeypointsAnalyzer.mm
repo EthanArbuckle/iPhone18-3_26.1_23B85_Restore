@@ -1,48 +1,48 @@
 @interface VCPImagePetsKeypointsAnalyzer
-- (VCPImagePetsKeypointsAnalyzer)initWithMaxNumRegions:(int)a3 forceCPU:(BOOL)a4 sharedModel:(BOOL)a5;
-- (int)analyzePixelBuffer:(__CVBuffer *)a3 flags:(unint64_t *)a4 petsDetections:(id)a5 results:(id *)a6 cancel:(id)a7;
-- (int)preferredInputFormat:(int *)a3 height:(int *)a4 format:(unsigned int *)a5;
+- (VCPImagePetsKeypointsAnalyzer)initWithMaxNumRegions:(int)regions forceCPU:(BOOL)u sharedModel:(BOOL)model;
+- (int)analyzePixelBuffer:(__CVBuffer *)buffer flags:(unint64_t *)flags petsDetections:(id)detections results:(id *)results cancel:(id)cancel;
+- (int)preferredInputFormat:(int *)format height:(int *)height format:(unsigned int *)a5;
 @end
 
 @implementation VCPImagePetsKeypointsAnalyzer
 
-- (VCPImagePetsKeypointsAnalyzer)initWithMaxNumRegions:(int)a3 forceCPU:(BOOL)a4 sharedModel:(BOOL)a5
+- (VCPImagePetsKeypointsAnalyzer)initWithMaxNumRegions:(int)regions forceCPU:(BOOL)u sharedModel:(BOOL)model
 {
-  v5 = a5;
-  v6 = a4;
+  modelCopy = model;
+  uCopy = u;
   v20.receiver = self;
   v20.super_class = VCPImagePetsKeypointsAnalyzer;
   v8 = [(VCPImagePetsKeypointsAnalyzer *)&v20 init];
   v9 = v8;
   if (v8)
   {
-    if (a3 >= 6)
+    if (regions >= 6)
     {
-      v10 = 6;
+      regionsCopy = 6;
     }
 
     else
     {
-      v10 = a3;
+      regionsCopy = regions;
     }
 
-    if (a3 <= 1)
+    if (regions <= 1)
     {
-      v10 = 1;
+      regionsCopy = 1;
     }
 
-    v8->_maxNumRegions = v10;
+    v8->_maxNumRegions = regionsCopy;
     v11 = [VCPCNNPetsDetectorV2 detector:6 forceCPU:0 sharedModel:0 revision:1];
     petsDetector = v9->_petsDetector;
     v9->_petsDetector = v11;
 
-    v13 = [[VCPCNNPetsKeypointsDetector alloc] initWithForceCPU:v6 sharedModel:v5];
+    v13 = [[VCPCNNPetsKeypointsDetector alloc] initWithForceCPU:uCopy sharedModel:modelCopy];
     petsKeypointsDetector = v9->_petsKeypointsDetector;
     v9->_petsKeypointsDetector = v13;
 
-    v15 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     results = v9->_results;
-    v9->_results = v15;
+    v9->_results = array;
 
     v9->_inputWidth = 576;
     v9->_inputHeight = 576;
@@ -71,16 +71,16 @@
   return v18;
 }
 
-- (int)preferredInputFormat:(int *)a3 height:(int *)a4 format:(unsigned int *)a5
+- (int)preferredInputFormat:(int *)format height:(int *)height format:(unsigned int *)a5
 {
   result = -50;
-  if (a3 && a4)
+  if (format && height)
   {
     if (a5)
     {
       result = 0;
-      *a3 = self->_inputWidth;
-      *a4 = self->_inputHeight;
+      *format = self->_inputWidth;
+      *height = self->_inputHeight;
       *a5 = 1111970369;
     }
   }
@@ -88,23 +88,23 @@
   return result;
 }
 
-- (int)analyzePixelBuffer:(__CVBuffer *)a3 flags:(unint64_t *)a4 petsDetections:(id)a5 results:(id *)a6 cancel:(id)a7
+- (int)analyzePixelBuffer:(__CVBuffer *)buffer flags:(unint64_t *)flags petsDetections:(id)detections results:(id *)results cancel:(id)cancel
 {
-  v101 = a6;
+  resultsCopy = results;
   v146 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v102 = v8;
-  v103 = a7;
-  v122 = [MEMORY[0x1E695DF70] array];
-  v104 = [MEMORY[0x1E695DF70] array];
+  detectionsCopy = detections;
+  v102 = detectionsCopy;
+  cancelCopy = cancel;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   [(NSMutableArray *)self->_results removeAllObjects];
-  if ([v8 count])
+  if ([detectionsCopy count])
   {
     v134 = 0u;
     v135 = 0u;
     v132 = 0u;
     v133 = 0u;
-    obj = v8;
+    obj = detectionsCopy;
     v9 = [obj countByEnumeratingWithState:&v132 objects:v145 count:16];
     if (v9)
     {
@@ -119,7 +119,7 @@
           }
 
           v11 = *(*(&v132 + 1) + 8 * i);
-          v12 = [v11 objectForKeyedSubscript:{@"attributes", v101}];
+          v12 = [v11 objectForKeyedSubscript:{@"attributes", resultsCopy}];
           v13 = [v12 objectForKeyedSubscript:@"petsBounds"];
 
           v14 = [v11 objectForKeyedSubscript:@"attributes"];
@@ -202,7 +202,7 @@
           v144[0] = v24;
           v144[1] = v15;
           v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v144 forKeys:v143 count:2];
-          [v122 addObject:v25];
+          [array addObject:v25];
         }
 
         v9 = [obj countByEnumeratingWithState:&v132 objects:v145 count:16];
@@ -214,7 +214,7 @@
 
   else
   {
-    v57 = [(VCPCNNPetsDetectorV2 *)self->_petsDetector petsDetection:a3 petsRegions:v122 petsFaceRegions:v104 cancel:v103];
+    v57 = [(VCPCNNPetsDetectorV2 *)self->_petsDetector petsDetection:buffer petsRegions:array petsFaceRegions:array2 cancel:cancelCopy];
     if (v57)
     {
       goto LABEL_77;
@@ -225,7 +225,7 @@
   v130 = 0u;
   v127 = 0u;
   v128 = 0u;
-  v105 = v122;
+  v105 = array;
   v107 = [v105 countByEnumeratingWithState:&v127 objects:v142 count:16];
   if (v107)
   {
@@ -241,7 +241,7 @@
         }
 
         v26 = *(*(&v127 + 1) + 8 * j);
-        v115 = [v26 objectForKeyedSubscript:{@"petsBounds", v101}];
+        v115 = [v26 objectForKeyedSubscript:{@"petsBounds", resultsCopy}];
         v149 = NSRectFromString(v115);
         v111 = v149.size.width;
         v112 = v149.origin.x;
@@ -342,8 +342,8 @@
         }
 
         [(VCPBoundingBox *)v40 setMaxY:v54];
-        v121 = [MEMORY[0x1E695DF70] array];
-        v57 = [(VCPCNNPetsKeypointsDetector *)self->_petsKeypointsDetector analyzeFrame:a3 withBox:v40 keypoints:?];
+        array3 = [MEMORY[0x1E695DF70] array];
+        v57 = [(VCPCNNPetsKeypointsDetector *)self->_petsKeypointsDetector analyzeFrame:buffer withBox:v40 keypoints:?];
         if (v57)
         {
 
@@ -351,7 +351,7 @@ LABEL_76:
           goto LABEL_77;
         }
 
-        v58 = [MEMORY[0x1E695DF70] array];
+        array4 = [MEMORY[0x1E695DF70] array];
         obja = [MEMORY[0x1E695DF90] dictionary];
         [(VCPBoundingBox *)v40 maxX];
         v60 = v59;
@@ -361,13 +361,13 @@ LABEL_76:
         v64 = v63;
         [(VCPBoundingBox *)v40 minY];
         v66 = v65;
-        if ([v121 count] == 25)
+        if ([array3 count] == 25)
         {
           v125 = 0u;
           v126 = 0u;
           v123 = 0u;
           v124 = 0u;
-          v67 = v121;
+          v67 = array3;
           v68 = [v67 countByEnumeratingWithState:&v123 objects:v141 count:16];
           if (v68)
           {
@@ -417,7 +417,7 @@ LABEL_76:
                 v92 = [MEMORY[0x1E696AD98] numberWithFloat:v91];
                 v140[2] = v92;
                 v93 = [MEMORY[0x1E695DEC8] arrayWithObjects:v140 count:3];
-                [v58 addObject:v93];
+                [array4 addObject:v93];
               }
 
               v68 = [v67 countByEnumeratingWithState:&v123 objects:v141 count:16];
@@ -430,7 +430,7 @@ LABEL_76:
             }
           }
 
-          [obja setObject:v58 forKeyedSubscript:@"petsKeypoints"];
+          [obja setObject:array4 forKeyedSubscript:@"petsKeypoints"];
           v151.size.height = v110;
           v151.origin.y = 1.0 - v109 - v110;
           v151.size.width = v111;
@@ -482,7 +482,7 @@ LABEL_67:
     v136 = @"PetsKeypointsResults";
     v137 = v99;
     [MEMORY[0x1E695DF20] dictionaryWithObjects:&v137 forKeys:&v136 count:1];
-    *v101 = v57 = 0;
+    *resultsCopy = v57 = 0;
   }
 
   else

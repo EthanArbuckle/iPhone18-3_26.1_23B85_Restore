@@ -1,22 +1,22 @@
 @interface ASDTFFeedbackSubmissionService
-- (BOOL)_verifyDataSourceIsReadyForSubmission:(id)a3 error:(id *)a4;
-- (BOOL)_verifyEmailIsValid:(id)a3;
-- (id)_serializeFeedbackForBundleId:(id)a3 withContentsOfDataSource:(id)a4 error:(id *)a5;
-- (void)submitFeedbackForBundleId:(id)a3 withContentsOfDataSource:(id)a4 completionHandler:(id)a5;
+- (BOOL)_verifyDataSourceIsReadyForSubmission:(id)submission error:(id *)error;
+- (BOOL)_verifyEmailIsValid:(id)valid;
+- (id)_serializeFeedbackForBundleId:(id)id withContentsOfDataSource:(id)source error:(id *)error;
+- (void)submitFeedbackForBundleId:(id)id withContentsOfDataSource:(id)source completionHandler:(id)handler;
 @end
 
 @implementation ASDTFFeedbackSubmissionService
 
-- (void)submitFeedbackForBundleId:(id)a3 withContentsOfDataSource:(id)a4 completionHandler:(id)a5
+- (void)submitFeedbackForBundleId:(id)id withContentsOfDataSource:(id)source completionHandler:(id)handler
 {
   v56 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [a4 copy];
+  idCopy = id;
+  handlerCopy = handler;
+  v10 = [source copy];
   v11 = AMSGenerateLogCorrelationKey();
   v12 = +[TFLogConfiguration defaultConfiguration];
-  v13 = [v12 generatedLogger];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+  generatedLogger = [v12 generatedLogger];
+  if (os_log_type_enabled(generatedLogger, OS_LOG_TYPE_DEFAULT))
   {
     v14 = objc_opt_class();
     v15 = v14;
@@ -26,10 +26,10 @@
     v50 = 2112;
     v51 = v11;
     v52 = 2112;
-    v53 = v8;
+    v53 = idCopy;
     v54 = 2112;
     v55 = v16;
-    _os_log_impl(&dword_26D2C7000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: [%@] submitFeedbackForBundleId bundleId=%@ dataSource=%@", buf, 0x2Au);
+    _os_log_impl(&dword_26D2C7000, generatedLogger, OS_LOG_TYPE_DEFAULT, "%{public}@: [%@] submitFeedbackForBundleId bundleId=%@ dataSource=%@", buf, 0x2Au);
   }
 
   v43 = 0;
@@ -39,13 +39,13 @@
   if (v17)
   {
     v42 = 0;
-    v20 = [(ASDTFFeedbackSubmissionService *)self _serializeFeedbackForBundleId:v8 withContentsOfDataSource:v10 error:&v42];
+    v20 = [(ASDTFFeedbackSubmissionService *)self _serializeFeedbackForBundleId:idCopy withContentsOfDataSource:v10 error:&v42];
     v21 = v42;
     v22 = v21;
     if (v20)
     {
-      v23 = [MEMORY[0x277CEC4C0] sharedInstance];
-      [v23 submitFeedback:v20 withCompletionHandler:v9];
+      mEMORY[0x277CEC4C0] = [MEMORY[0x277CEC4C0] sharedInstance];
+      [mEMORY[0x277CEC4C0] submitFeedback:v20 withCompletionHandler:handlerCopy];
     }
 
     else
@@ -62,23 +62,23 @@
       }
 
       v34 = +[TFLogConfiguration defaultConfiguration];
-      v35 = [v34 generatedLogger];
-      if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
+      generatedLogger2 = [v34 generatedLogger];
+      if (os_log_type_enabled(generatedLogger2, OS_LOG_TYPE_ERROR))
       {
         v36 = objc_opt_class();
         v41 = v36;
-        v37 = [v22 localizedDescription];
+        localizedDescription = [v22 localizedDescription];
         *buf = 138543874;
         v49 = v36;
         v50 = 2112;
         v51 = v11;
         v52 = 2112;
-        v53 = v37;
-        v38 = v37;
-        _os_log_impl(&dword_26D2C7000, v35, OS_LOG_TYPE_ERROR, "%{public}@: [%@] _serializeDataSource failed error=%@", buf, 0x20u);
+        v53 = localizedDescription;
+        v38 = localizedDescription;
+        _os_log_impl(&dword_26D2C7000, generatedLogger2, OS_LOG_TYPE_ERROR, "%{public}@: [%@] _serializeDataSource failed error=%@", buf, 0x20u);
       }
 
-      v9[2](v9, v22);
+      handlerCopy[2](handlerCopy, v22);
     }
   }
 
@@ -95,30 +95,30 @@
     }
 
     v27 = +[TFLogConfiguration defaultConfiguration];
-    v28 = [v27 generatedLogger];
-    if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
+    generatedLogger3 = [v27 generatedLogger];
+    if (os_log_type_enabled(generatedLogger3, OS_LOG_TYPE_ERROR))
     {
       v29 = objc_opt_class();
       v30 = v29;
-      v31 = [v19 localizedDescription];
+      localizedDescription2 = [v19 localizedDescription];
       *buf = 138543874;
       v49 = v29;
       v50 = 2112;
       v51 = v11;
       v52 = 2112;
-      v53 = v31;
-      _os_log_impl(&dword_26D2C7000, v28, OS_LOG_TYPE_ERROR, "%{public}@: [%@] _verifyDataSourceIsReadyForSubmission failed error=%@", buf, 0x20u);
+      v53 = localizedDescription2;
+      _os_log_impl(&dword_26D2C7000, generatedLogger3, OS_LOG_TYPE_ERROR, "%{public}@: [%@] _verifyDataSourceIsReadyForSubmission failed error=%@", buf, 0x20u);
     }
 
-    v9[2](v9, v19);
+    handlerCopy[2](handlerCopy, v19);
   }
 }
 
-- (BOOL)_verifyDataSourceIsReadyForSubmission:(id)a3 error:(id *)a4
+- (BOOL)_verifyDataSourceIsReadyForSubmission:(id)submission error:(id *)error
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 stringForIdentifier:@"a"];
+  submissionCopy = submission;
+  v7 = [submissionCopy stringForIdentifier:@"a"];
   v8 = [(ASDTFFeedbackSubmissionService *)self _verifyEmailIsValid:v7];
   if (v7 && !v8)
   {
@@ -131,11 +131,11 @@
     v13 = 302;
 LABEL_6:
     [v12 errorWithDomain:@"TFErrorDomain" code:v13 userInfo:v11];
-    *a4 = v15 = 0;
+    *error = v15 = 0;
     goto LABEL_17;
   }
 
-  if ([v6 isLoading])
+  if ([submissionCopy isLoading])
   {
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@: Data validation failed - Submitting data source that is still loading.", objc_opt_class()];
     v14 = MEMORY[0x277CCA9B8];
@@ -147,9 +147,9 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v9 = [v6 imageCollectionForIdentifer:@"c"];
-  v11 = [v6 stringForIdentifier:@"b"];
-  v16 = [v6 stringForIdentifier:@"d"];
+  v9 = [submissionCopy imageCollectionForIdentifer:@"c"];
+  v11 = [submissionCopy stringForIdentifier:@"b"];
+  v16 = [submissionCopy stringForIdentifier:@"d"];
   if (v9)
   {
     v17 = [v9 count] != 0;
@@ -194,24 +194,24 @@ LABEL_14:
     v24 = *MEMORY[0x277CCA068];
     v25 = v20;
     v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
-    *a4 = [v23 errorWithDomain:@"TFErrorDomain" code:303 userInfo:v21];
+    *error = [v23 errorWithDomain:@"TFErrorDomain" code:303 userInfo:v21];
   }
 
 LABEL_17:
   return v15;
 }
 
-- (BOOL)_verifyEmailIsValid:(id)a3
+- (BOOL)_verifyEmailIsValid:(id)valid
 {
-  if (!a3)
+  if (!valid)
   {
     return 1;
   }
 
   v3 = MEMORY[0x277CCA900];
-  v4 = a3;
-  v5 = [v3 whitespaceAndNewlineCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  validCopy = valid;
+  whitespaceAndNewlineCharacterSet = [v3 whitespaceAndNewlineCharacterSet];
+  v6 = [validCopy stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   if ([v6 length])
   {
@@ -227,22 +227,22 @@ LABEL_17:
   return v8;
 }
 
-- (id)_serializeFeedbackForBundleId:(id)a3 withContentsOfDataSource:(id)a4 error:(id *)a5
+- (id)_serializeFeedbackForBundleId:(id)id withContentsOfDataSource:(id)source error:(id *)error
 {
   v59[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  idCopy = id;
+  sourceCopy = source;
   v10 = objc_alloc_init(MEMORY[0x277CEC358]);
-  v42 = v8;
-  [v10 setBundleID:v8];
-  v46 = [MEMORY[0x277CBEAA8] date];
-  [v10 setTimestamp:{objc_msgSend(v46, "tf_posixTimestampInMilliseconds")}];
-  v45 = [v9 stringForIdentifier:@"a"];
-  v11 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v12 = [v45 stringByTrimmingCharactersInSet:v11];
+  v42 = idCopy;
+  [v10 setBundleID:idCopy];
+  date = [MEMORY[0x277CBEAA8] date];
+  [v10 setTimestamp:{objc_msgSend(date, "tf_posixTimestampInMilliseconds")}];
+  v45 = [sourceCopy stringForIdentifier:@"a"];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v12 = [v45 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
   [v10 setEmail:v12];
 
-  v13 = [v9 imageCollectionForIdentifer:@"c"];
+  v13 = [sourceCopy imageCollectionForIdentifer:@"c"];
   v14 = v13;
   if (!v13)
   {
@@ -272,7 +272,7 @@ LABEL_17:
     if (v20)
     {
       v21 = v20;
-      *a5 = v20;
+      *error = v20;
     }
 
     else
@@ -288,7 +288,7 @@ LABEL_17:
     }
 
 LABEL_9:
-    v44 = [v9 stringForIdentifier:@"b"];
+    v44 = [sourceCopy stringForIdentifier:@"b"];
     if (v44)
     {
       v22 = [v44 length];
@@ -300,7 +300,7 @@ LABEL_9:
         v57 = v43;
         v40 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v57 forKeys:&v56 count:1];
         [v23 errorWithDomain:@"TFErrorDomain" code:402 userInfo:v40];
-        *a5 = v17 = 0;
+        *error = v17 = 0;
 
         goto LABEL_17;
       }
@@ -308,43 +308,43 @@ LABEL_9:
       [v10 setComments:v44];
     }
 
-    v24 = [v9 stringForIdentifier:@"d"];
+    v24 = [sourceCopy stringForIdentifier:@"d"];
     [v10 setIncidentID:v24];
 
-    v43 = [v9 numberForIdentifier:@"i"];
+    v43 = [sourceCopy numberForIdentifier:@"i"];
     if (v43)
     {
       [v10 setAppUptime:{1000 * objc_msgSend(v43, "unsignedLongLongValue")}];
     }
 
-    v41 = [v9 stringForIdentifier:@"m"];
-    v39 = [v9 stringForIdentifier:@"n"];
-    v38 = [v9 stringForIdentifier:@"l"];
+    v41 = [sourceCopy stringForIdentifier:@"m"];
+    v39 = [sourceCopy stringForIdentifier:@"n"];
+    v38 = [sourceCopy stringForIdentifier:@"l"];
     [v10 setDeviceType:v41];
     [v10 setOsVersion:v39];
     [v10 setArchitecture:v38];
-    v37 = [v9 numberForIdentifier:@"o"];
-    v36 = [v9 numberForIdentifier:@"p"];
+    v37 = [sourceCopy numberForIdentifier:@"o"];
+    v36 = [sourceCopy numberForIdentifier:@"p"];
     [v10 setScreenWidth:{objc_msgSend(v37, "unsignedIntValue")}];
     [v10 setScreenHeight:{objc_msgSend(v36, "unsignedIntValue")}];
-    v35 = [v9 stringForIdentifier:@"w"];
-    v34 = [v9 stringForIdentifier:@"x"];
+    v35 = [sourceCopy stringForIdentifier:@"w"];
+    v34 = [sourceCopy stringForIdentifier:@"x"];
     [v10 setLocale:v35];
     [v10 setTimeZone:v34];
-    v33 = [v9 stringForIdentifier:@"t"];
-    v32 = [v9 stringForIdentifier:@"u"];
-    v25 = [v9 stringForIdentifier:@"v"];
+    v33 = [sourceCopy stringForIdentifier:@"t"];
+    v32 = [sourceCopy stringForIdentifier:@"u"];
+    v25 = [sourceCopy stringForIdentifier:@"v"];
     [v10 setCarrier:v33];
     [v10 setCellularNetworkType:v32];
     [v10 setNetworkConnectionType:v25];
-    v26 = [v9 numberForIdentifier:@"r"];
-    v27 = [v9 numberForIdentifier:@"s"];
+    v26 = [sourceCopy numberForIdentifier:@"r"];
+    v27 = [sourceCopy numberForIdentifier:@"s"];
     [v10 setDiskTotal:{objc_msgSend(v26, "unsignedLongLongValue")}];
     [v10 setDiskAvailable:{objc_msgSend(v27, "unsignedLongLongValue")}];
-    v28 = [v9 numberForIdentifier:@"q"];
+    v28 = [sourceCopy numberForIdentifier:@"q"];
     [v10 setBatteryPercentage:{objc_msgSend(v28, "unsignedIntValue")}];
-    v29 = [v9 stringForIdentifier:@"j"];
-    v30 = [v9 stringForIdentifier:@"k"];
+    v29 = [sourceCopy stringForIdentifier:@"j"];
+    v30 = [sourceCopy stringForIdentifier:@"k"];
     [v10 setPairedWatchModel:v29];
     [v10 setPairedWatchOSVersion:v30];
     v17 = v10;
@@ -358,7 +358,7 @@ LABEL_9:
   v59[0] = v44;
   v43 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v59 forKeys:&v58 count:1];
   [v16 errorWithDomain:@"TFErrorDomain" code:401 userInfo:v43];
-  *a5 = v17 = 0;
+  *error = v17 = 0;
 LABEL_17:
 
 LABEL_18:

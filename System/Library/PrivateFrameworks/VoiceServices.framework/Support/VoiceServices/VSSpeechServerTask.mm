@@ -2,44 +2,43 @@
 - (BOOL)isSpeaking;
 - (BOOL)shouldDeferDeviceTTS;
 - (BOOL)shouldRelyOnServerTTS;
-- (VSSpeechServerTask)init;
 - (VSSpeechServiceDelegate)delegate;
 - (_opaque_pthread_cond_t)timeoutCondition;
 - (_opaque_pthread_mutex_t)racingMutex;
 - (id)audioPowerProvider;
-- (id)eagerTaskHashForRequest:(id)a3;
-- (id)enqueueAudioData:(id)a3;
-- (id)handleDeviceSynthesis:(id)a3 timingInfo:(id)a4;
-- (id)handleServerResponse:(id)a3 timingInfo:(id)a4;
+- (id)eagerTaskHashForRequest:(id)request;
+- (id)enqueueAudioData:(id)data;
+- (id)handleDeviceSynthesis:(id)synthesis timingInfo:(id)info;
+- (id)handleServerResponse:(id)response timingInfo:(id)info;
 - (id)voiceKey;
 - (void)cancel;
 - (void)dealloc;
 - (void)fallbackToDeviceSynthesis;
 - (void)main;
-- (void)ospreyCore:(id)a3 didReceiveAudio:(id)a4 wordTimingInfo:(id)a5;
+- (void)ospreyCore:(id)core didReceiveAudio:(id)audio wordTimingInfo:(id)info;
 - (void)proceedWithServerTTS;
-- (void)proceedWithSpeechCache:(id)a3;
+- (void)proceedWithSpeechCache:(id)cache;
 - (void)reportFinish;
 - (void)reportInstrumentMetrics;
 - (void)reportSpeechStart;
 - (void)reportTimingInfo;
 - (void)resume;
-- (void)setObserverForWordTimings:(id)a3;
-- (void)setRacingMutex:(_opaque_pthread_mutex_t *)a3;
-- (void)setTimeoutCondition:(_opaque_pthread_cond_t *)a3;
+- (void)setObserverForWordTimings:(id)timings;
+- (void)setRacingMutex:(_opaque_pthread_mutex_t *)mutex;
+- (void)setTimeoutCondition:(_opaque_pthread_cond_t *)condition;
 - (void)speakRetryPhrase;
 - (void)suspend;
-- (void)writeAudioIfNeeded:(id)a3;
+- (void)writeAudioIfNeeded:(id)needed;
 @end
 
 @implementation VSSpeechServerTask
 
-- (void)setRacingMutex:(_opaque_pthread_mutex_t *)a3
+- (void)setRacingMutex:(_opaque_pthread_mutex_t *)mutex
 {
-  v3 = *&a3->__opaque[40];
-  v5 = *&a3->__sig;
-  v4 = *&a3->__opaque[8];
-  *&self->_racingMutex.__opaque[24] = *&a3->__opaque[24];
+  v3 = *&mutex->__opaque[40];
+  v5 = *&mutex->__sig;
+  v4 = *&mutex->__opaque[8];
+  *&self->_racingMutex.__opaque[24] = *&mutex->__opaque[24];
   *&self->_racingMutex.__opaque[40] = v3;
   *&self->_racingMutex.__sig = v5;
   *&self->_racingMutex.__opaque[8] = v4;
@@ -56,11 +55,11 @@
   return self;
 }
 
-- (void)setTimeoutCondition:(_opaque_pthread_cond_t *)a3
+- (void)setTimeoutCondition:(_opaque_pthread_cond_t *)condition
 {
-  v4 = *&a3->__opaque[8];
-  v3 = *&a3->__opaque[24];
-  *&self->_timeoutCondition.__sig = *&a3->__sig;
+  v4 = *&condition->__opaque[8];
+  v3 = *&condition->__opaque[24];
+  *&self->_timeoutCondition.__sig = *&condition->__sig;
   *&self->_timeoutCondition.__opaque[8] = v4;
   *&self->_timeoutCondition.__opaque[24] = v3;
 }
@@ -81,77 +80,77 @@
   return WeakRetained;
 }
 
-- (void)ospreyCore:(id)a3 didReceiveAudio:(id)a4 wordTimingInfo:(id)a5
+- (void)ospreyCore:(id)core didReceiveAudio:(id)audio wordTimingInfo:(id)info
 {
-  v21 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(VSSpeechServerTask *)self instrumentMetrics];
-  v11 = [v10 voiceAssetKey];
-  if (v11)
+  coreCopy = core;
+  audioCopy = audio;
+  infoCopy = info;
+  instrumentMetrics = [(VSSpeechServerTask *)self instrumentMetrics];
+  voiceAssetKey = [instrumentMetrics voiceAssetKey];
+  if (voiceAssetKey)
   {
-    v12 = v11;
+    voiceKey = voiceAssetKey;
   }
 
   else
   {
-    v13 = [v21 voice];
+    voice = [coreCopy voice];
 
-    if (!v13)
+    if (!voice)
     {
       goto LABEL_6;
     }
 
-    v10 = [v21 voice];
-    v12 = [v10 voiceKey];
-    v14 = [(VSSpeechServerTask *)self instrumentMetrics];
-    [v14 setVoiceAssetKey:v12];
+    instrumentMetrics = [coreCopy voice];
+    voiceKey = [instrumentMetrics voiceKey];
+    instrumentMetrics2 = [(VSSpeechServerTask *)self instrumentMetrics];
+    [instrumentMetrics2 setVoiceAssetKey:voiceKey];
   }
 
 LABEL_6:
-  v15 = [(VSSpeechServerTask *)self instrumentMetrics];
-  v16 = [v15 voiceResourceAssetKey];
-  if (v16)
+  instrumentMetrics3 = [(VSSpeechServerTask *)self instrumentMetrics];
+  voiceResourceAssetKey = [instrumentMetrics3 voiceResourceAssetKey];
+  if (voiceResourceAssetKey)
   {
-    v17 = v16;
+    v17 = voiceResourceAssetKey;
   }
 
   else
   {
-    v18 = [v21 voiceResource];
+    voiceResource = [coreCopy voiceResource];
 
-    if (!v18)
+    if (!voiceResource)
     {
       goto LABEL_11;
     }
 
-    v15 = [v21 voiceResource];
-    v17 = [v15 key];
-    v19 = [(VSSpeechServerTask *)self instrumentMetrics];
-    [v19 setVoiceResourceAssetKey:v17];
+    instrumentMetrics3 = [coreCopy voiceResource];
+    v17 = [instrumentMetrics3 key];
+    instrumentMetrics4 = [(VSSpeechServerTask *)self instrumentMetrics];
+    [instrumentMetrics4 setVoiceResourceAssetKey:v17];
   }
 
 LABEL_11:
-  v20 = [(VSSpeechServerTask *)self handleServerResponse:v8 timingInfo:v9];
+  v20 = [(VSSpeechServerTask *)self handleServerResponse:audioCopy timingInfo:infoCopy];
 }
 
 - (id)audioPowerProvider
 {
-  v2 = [(VSSpeechServerTask *)self playbackService];
-  v3 = [v2 audioPowerProvider];
+  playbackService = [(VSSpeechServerTask *)self playbackService];
+  audioPowerProvider = [playbackService audioPowerProvider];
 
-  return v3;
+  return audioPowerProvider;
 }
 
-- (void)writeAudioIfNeeded:(id)a3
+- (void)writeAudioIfNeeded:(id)needed
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  neededCopy = needed;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = 0;
-    v6 = v4;
+    v6 = neededCopy;
   }
 
   else
@@ -160,19 +159,19 @@ LABEL_11:
     v6 = 0;
     v7 = 0;
     v8 = 0;
-    v5 = v4;
+    v5 = neededCopy;
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       goto LABEL_5;
     }
   }
 
-  v9 = v4;
+  v9 = neededCopy;
   v7 = v5;
   v8 = v6;
 LABEL_5:
-  v10 = [(VSSpeechServerTask *)self speakTask];
-  if (v10)
+  speakTask = [(VSSpeechServerTask *)self speakTask];
+  if (speakTask)
   {
   }
 
@@ -184,8 +183,8 @@ LABEL_5:
   if (v8)
   {
     v11 = +[VSDiagnosticService defaultService];
-    v12 = [(VSSpeechServerTask *)self request];
-    [v11 dumpStreamAudio:v8 forRequest:v12];
+    request = [(VSSpeechServerTask *)self request];
+    [v11 dumpStreamAudio:v8 forRequest:request];
   }
 
   else
@@ -196,23 +195,23 @@ LABEL_5:
     }
 
     v11 = +[VSDiagnosticService defaultService];
-    v12 = [(VSSpeechServerTask *)self request];
-    [v11 dumpCompressedAudio:v7 forRequest:v12];
+    request = [(VSSpeechServerTask *)self request];
+    [v11 dumpCompressedAudio:v7 forRequest:request];
   }
 
 LABEL_13:
-  v13 = [(VSSpeechServerTask *)self request];
-  v14 = [v13 outputPath];
-  v15 = [v14 path];
+  request2 = [(VSSpeechServerTask *)self request];
+  outputPath = [request2 outputPath];
+  path = [outputPath path];
 
-  if (!v15)
+  if (!path)
   {
     goto LABEL_22;
   }
 
   if (v8)
   {
-    v16 = [v8 writeWaveToFilePath:v15];
+    v16 = [v8 writeWaveToFilePath:path];
   }
 
   else
@@ -223,14 +222,14 @@ LABEL_13:
       goto LABEL_19;
     }
 
-    v16 = [v7 writeToFilePath:v15];
+    v16 = [v7 writeToFilePath:path];
   }
 
   v17 = v16 ^ 1;
 LABEL_19:
-  v18 = [(VSSpeechServerTask *)self error];
+  error = [(VSSpeechServerTask *)self error];
 
-  if (!v18 && v17)
+  if (!error && v17)
   {
     v19 = MEMORY[0x277CCA9B8];
     v23 = *MEMORY[0x277CCA460];
@@ -249,18 +248,18 @@ LABEL_22:
 {
   v99[1] = *MEMORY[0x277D85DE8];
   shouldSpeak = self->_shouldSpeak;
-  v4 = [(VSSpeechServerTask *)self delegate];
+  delegate = [(VSSpeechServerTask *)self delegate];
   if (shouldSpeak)
   {
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(VSSpeechServerTask *)self delegate];
-      v7 = [(VSSpeechServerTask *)self request];
-      v8 = [(VSSpeechServerTask *)self isCancelled];
-      v9 = [(VSSpeechServerTask *)self error];
-      [v6 speechRequest:v7 didStopWithSuccess:v8 ^ 1u phonemesSpoken:&stru_2881CBD18 error:v9];
+      delegate2 = [(VSSpeechServerTask *)self delegate];
+      request = [(VSSpeechServerTask *)self request];
+      isCancelled = [(VSSpeechServerTask *)self isCancelled];
+      error = [(VSSpeechServerTask *)self error];
+      [delegate2 speechRequest:request didStopWithSuccess:isCancelled ^ 1u phonemesSpoken:&stru_2881CBD18 error:error];
 LABEL_6:
     }
   }
@@ -271,106 +270,106 @@ LABEL_6:
 
     if (v10)
     {
-      v6 = [(VSSpeechServerTask *)self delegate];
-      v7 = [(VSSpeechServerTask *)self request];
-      v9 = [(VSSpeechServerTask *)self instrumentMetrics];
-      v11 = [(VSSpeechServerTask *)self error];
-      [v6 synthesisRequest:v7 didFinishWithInstrumentMetrics:v9 error:v11];
+      delegate2 = [(VSSpeechServerTask *)self delegate];
+      request = [(VSSpeechServerTask *)self request];
+      error = [(VSSpeechServerTask *)self instrumentMetrics];
+      error2 = [(VSSpeechServerTask *)self error];
+      [delegate2 synthesisRequest:request didFinishWithInstrumentMetrics:error error:error2];
 
       goto LABEL_6;
     }
   }
 
-  v12 = [(VSSpeechServerTask *)self speakTask];
-  if (v12)
+  speakTask = [(VSSpeechServerTask *)self speakTask];
+  if (speakTask)
   {
-    v13 = v12;
-    v14 = [(VSSpeechServerTask *)self speakTask];
-    v15 = [v14 delegate];
+    v13 = speakTask;
+    speakTask2 = [(VSSpeechServerTask *)self speakTask];
+    delegate3 = [speakTask2 delegate];
     v16 = objc_opt_respondsToSelector();
 
     if (v16)
     {
-      v17 = [(VSSpeechServerTask *)self speakTask];
-      v18 = [v17 delegate];
-      v19 = [(VSSpeechServerTask *)self speakTask];
-      v20 = [v19 request];
-      v21 = [(VSSpeechServerTask *)self isCancelled];
-      v22 = [(VSSpeechServerTask *)self error];
-      [v18 speechRequest:v20 didStopWithSuccess:v21 ^ 1u phonemesSpoken:&stru_2881CBD18 error:v22];
+      speakTask3 = [(VSSpeechServerTask *)self speakTask];
+      delegate4 = [speakTask3 delegate];
+      speakTask4 = [(VSSpeechServerTask *)self speakTask];
+      request2 = [speakTask4 request];
+      isCancelled2 = [(VSSpeechServerTask *)self isCancelled];
+      error3 = [(VSSpeechServerTask *)self error];
+      [delegate4 speechRequest:request2 didStopWithSuccess:isCancelled2 ^ 1u phonemesSpoken:&stru_2881CBD18 error:error3];
     }
   }
 
-  v23 = [(VSSpeechServerTask *)self error];
-  if (!v23)
+  error4 = [(VSSpeechServerTask *)self error];
+  if (!error4)
   {
     goto LABEL_14;
   }
 
-  v24 = v23;
-  v25 = [(VSSpeechServerTask *)self error];
-  if ([v25 code] == 400)
+  v24 = error4;
+  error5 = [(VSSpeechServerTask *)self error];
+  if ([error5 code] == 400)
   {
 
 LABEL_14:
-    v28 = [(VSSpeechServerTask *)self speakTask];
-    if (v28)
+    speakTask5 = [(VSSpeechServerTask *)self speakTask];
+    if (speakTask5)
     {
-      v29 = 1;
+      isEagerCache = 1;
     }
 
     else
     {
-      v29 = [(VSSpeechServerTask *)self isEagerCache];
+      isEagerCache = [(VSSpeechServerTask *)self isEagerCache];
     }
 
-    v30 = [(VSSpeechServerTask *)self voiceKey];
+    voiceKey = [(VSSpeechServerTask *)self voiceKey];
     v31 = VSGetLogDefault();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
-      v84 = [(VSSpeechServerTask *)self instrumentMetrics];
-      v80 = [v84 requestCreatedTimestamp];
-      v32 = [(VSSpeechServerTask *)self isCancelled];
+      instrumentMetrics = [(VSSpeechServerTask *)self instrumentMetrics];
+      requestCreatedTimestamp = [instrumentMetrics requestCreatedTimestamp];
+      isCancelled3 = [(VSSpeechServerTask *)self isCancelled];
       v33 = @"Finished";
-      if (v32)
+      if (isCancelled3)
       {
         v33 = @"Cancelled";
       }
 
       v78 = v33;
-      v34 = [(VSSpeechServerTask *)self isSpeaking];
+      isSpeaking = [(VSSpeechServerTask *)self isSpeaking];
       v35 = @"synthesizing";
-      if (v34)
+      if (isSpeaking)
       {
         v35 = @"speaking";
       }
 
       v77 = v35;
-      v83 = [(VSSpeechServerTask *)self request];
-      v36 = [v83 logUtterance];
+      request3 = [(VSSpeechServerTask *)self request];
+      logUtterance = [request3 logUtterance];
       v37 = @"(null)";
-      if (v30)
+      if (voiceKey)
       {
-        v37 = v30;
+        v37 = voiceKey;
       }
 
       v88[0] = v37;
-      v86 = v36;
+      v86 = logUtterance;
       v87[0] = @"voice";
       v87[1] = @"is_eager";
-      v82 = [MEMORY[0x277CCABB0] numberWithBool:v29];
+      v82 = [MEMORY[0x277CCABB0] numberWithBool:isEagerCache];
       v88[1] = v82;
       v87[2] = @"is_one_shot";
       v38 = MEMORY[0x277CCABB0];
-      v81 = [(VSSpeechServerTask *)self instrumentMetrics];
-      v79 = [v81 isServerTTS];
-      v85 = v30;
-      if (v79)
+      instrumentMetrics2 = [(VSSpeechServerTask *)self instrumentMetrics];
+      isServerTTS = [instrumentMetrics2 isServerTTS];
+      v85 = voiceKey;
+      if (isServerTTS)
       {
-        v76 = [(VSSpeechServerTask *)self instrumentMetrics];
-        if ([v76 isSynthesisCached])
+        instrumentMetrics3 = [(VSSpeechServerTask *)self instrumentMetrics];
+        if ([instrumentMetrics3 isSynthesisCached])
         {
-          v39 = v29 ^ 1;
+          v39 = isEagerCache ^ 1;
         }
 
         else
@@ -388,22 +387,22 @@ LABEL_14:
       v88[2] = v40;
       v87[3] = @"is_time_out";
       v41 = MEMORY[0x277CCABB0];
-      v42 = [(VSSpeechServerTask *)self instrumentMetrics];
-      v43 = [v41 numberWithBool:{objc_msgSend(v42, "isServerTimeout")}];
+      instrumentMetrics4 = [(VSSpeechServerTask *)self instrumentMetrics];
+      v43 = [v41 numberWithBool:{objc_msgSend(instrumentMetrics4, "isServerTimeout")}];
       v88[3] = v43;
       v87[4] = @"is_device_tts";
       v44 = MEMORY[0x277CCABB0];
-      v45 = [(VSSpeechServerTask *)self instrumentMetrics];
-      v46 = [v44 numberWithInt:{objc_msgSend(v45, "isServerTTS") ^ 1}];
+      instrumentMetrics5 = [(VSSpeechServerTask *)self instrumentMetrics];
+      v46 = [v44 numberWithInt:{objc_msgSend(instrumentMetrics5, "isServerTTS") ^ 1}];
       v88[4] = v46;
       v87[5] = @"source_of_tts";
       v47 = MEMORY[0x277D79938];
-      v48 = [(VSSpeechServerTask *)self instrumentMetrics];
-      v49 = [v47 stringOfSourceOfTTS:{objc_msgSend(v48, "sourceOfTTS")}];
+      instrumentMetrics6 = [(VSSpeechServerTask *)self instrumentMetrics];
+      v49 = [v47 stringOfSourceOfTTS:{objc_msgSend(instrumentMetrics6, "sourceOfTTS")}];
       v88[5] = v49;
       v50 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v88 forKeys:v87 count:6];
       *buf = 134219010;
-      v90 = v80;
+      v90 = requestCreatedTimestamp;
       v91 = 2112;
       v92 = v78;
       v93 = 2112;
@@ -414,48 +413,48 @@ LABEL_14:
       v98 = v50;
       _os_log_impl(&dword_2727E4000, v31, OS_LOG_TYPE_DEFAULT, "Server task %llu: %@ %@ utterance: '%@', %{public}@", buf, 0x34u);
 
-      if (v79)
+      if (isServerTTS)
       {
       }
 
-      v30 = v85;
+      voiceKey = v85;
     }
 
-    v51 = [(VSSpeechServerTask *)self isCancelled];
-    v52 = [(VSSpeechServerTask *)self siriInstrumentation];
-    v53 = v52;
-    if (v51)
+    isCancelled4 = [(VSSpeechServerTask *)self isCancelled];
+    siriInstrumentation = [(VSSpeechServerTask *)self siriInstrumentation];
+    v53 = siriInstrumentation;
+    if (isCancelled4)
     {
-      [v52 instrumentSpeechCancelled];
+      [siriInstrumentation instrumentSpeechCancelled];
     }
 
     else
     {
-      v54 = [(VSSpeechServerTask *)self instrumentMetrics];
-      [v54 audioDuration];
+      instrumentMetrics7 = [(VSSpeechServerTask *)self instrumentMetrics];
+      [instrumentMetrics7 audioDuration];
       v56 = v55;
-      v57 = [(VSSpeechServerTask *)self instrumentMetrics];
-      [v57 ttsSynthesisLatency];
+      instrumentMetrics8 = [(VSSpeechServerTask *)self instrumentMetrics];
+      [instrumentMetrics8 ttsSynthesisLatency];
       v59 = v58;
-      v60 = [(VSSpeechServerTask *)self instrumentMetrics];
-      [v60 cappedRealTimeFactor];
+      instrumentMetrics9 = [(VSSpeechServerTask *)self instrumentMetrics];
+      [instrumentMetrics9 cappedRealTimeFactor];
       v62 = v61;
-      v63 = [(VSSpeechServerTask *)self instrumentMetrics];
-      v64 = [v63 promptCount];
-      v65 = [(VSSpeechServerTask *)self instrumentMetrics];
-      [v53 instrumentSpeechEndedWithAudioDuration:v64 synthesisLatency:objc_msgSend(v65 realTimeFactor:"errorCode") promptCount:v56 errorCode:{v59, v62}];
+      instrumentMetrics10 = [(VSSpeechServerTask *)self instrumentMetrics];
+      promptCount = [instrumentMetrics10 promptCount];
+      instrumentMetrics11 = [(VSSpeechServerTask *)self instrumentMetrics];
+      [v53 instrumentSpeechEndedWithAudioDuration:promptCount synthesisLatency:objc_msgSend(instrumentMetrics11 realTimeFactor:"errorCode") promptCount:v56 errorCode:{v59, v62}];
     }
 
     v66 = MEMORY[0x277D79918];
-    v67 = [(VSSpeechServerTask *)self instrumentMetrics];
-    [v66 reportInstrumentMetrics:v67];
+    instrumentMetrics12 = [(VSSpeechServerTask *)self instrumentMetrics];
+    [v66 reportInstrumentMetrics:instrumentMetrics12];
     goto LABEL_36;
   }
 
-  v26 = [(VSSpeechServerTask *)self error];
-  v27 = [v26 code];
+  error6 = [(VSSpeechServerTask *)self error];
+  code = [error6 code];
 
-  if (v27 == 501)
+  if (code == 501)
   {
     goto LABEL_14;
   }
@@ -463,23 +462,23 @@ LABEL_14:
   v69 = VSGetLogDefault();
   if (os_log_type_enabled(v69, OS_LOG_TYPE_ERROR))
   {
-    v73 = [(VSSpeechServerTask *)self instrumentMetrics];
-    v74 = [v73 requestCreatedTimestamp];
-    v75 = [(VSSpeechServerTask *)self error];
+    instrumentMetrics13 = [(VSSpeechServerTask *)self instrumentMetrics];
+    requestCreatedTimestamp2 = [instrumentMetrics13 requestCreatedTimestamp];
+    error7 = [(VSSpeechServerTask *)self error];
     *buf = 134218242;
-    v90 = v74;
+    v90 = requestCreatedTimestamp2;
     v91 = 2112;
-    v92 = v75;
+    v92 = error7;
     _os_log_error_impl(&dword_2727E4000, v69, OS_LOG_TYPE_ERROR, "Error in server task %llu, error: %@", buf, 0x16u);
   }
 
-  v30 = [(VSSpeechServerTask *)self siriInstrumentation];
+  voiceKey = [(VSSpeechServerTask *)self siriInstrumentation];
   v70 = MEMORY[0x277CCABB0];
-  v67 = [(VSSpeechServerTask *)self error];
-  v71 = [v70 numberWithInteger:{objc_msgSend(v67, "code")}];
+  instrumentMetrics12 = [(VSSpeechServerTask *)self error];
+  v71 = [v70 numberWithInteger:{objc_msgSend(instrumentMetrics12, "code")}];
   v99[0] = v71;
   v72 = [MEMORY[0x277CBEA60] arrayWithObjects:v99 count:1];
-  [(__CFString *)v30 instrumentSpeechFailedWithErrorCodes:v72];
+  [(__CFString *)voiceKey instrumentSpeechFailedWithErrorCodes:v72];
 
 LABEL_36:
   v68 = *MEMORY[0x277D85DE8];
@@ -487,37 +486,37 @@ LABEL_36:
 
 - (id)voiceKey
 {
-  v3 = [(VSSpeechServerTask *)self instrumentMetrics];
-  v4 = [v3 isServerTTS];
+  instrumentMetrics = [(VSSpeechServerTask *)self instrumentMetrics];
+  isServerTTS = [instrumentMetrics isServerTTS];
 
-  if ((v4 & 1) == 0)
+  if ((isServerTTS & 1) == 0)
   {
-    v7 = [(VSSpeechServerTask *)self synthesisCore];
-    v8 = [v7 selectedVoice];
-    v10 = [v8 voiceData];
-    v9 = [v10 descriptiveKey];
+    synthesisCore = [(VSSpeechServerTask *)self synthesisCore];
+    selectedVoice = [synthesisCore selectedVoice];
+    voiceData = [selectedVoice voiceData];
+    descriptiveKey = [voiceData descriptiveKey];
 
     goto LABEL_5;
   }
 
-  v5 = [(VSSpeechServerTask *)self instrumentMetrics];
-  v6 = [v5 sourceOfTTS];
+  instrumentMetrics2 = [(VSSpeechServerTask *)self instrumentMetrics];
+  sourceOfTTS = [instrumentMetrics2 sourceOfTTS];
 
-  if (v6 == 5)
+  if (sourceOfTTS == 5)
   {
-    v7 = [(VSSpeechServerTask *)self ospreyCore];
-    v8 = [v7 voice];
-    v9 = [v8 descriptiveKey];
+    synthesisCore = [(VSSpeechServerTask *)self ospreyCore];
+    selectedVoice = [synthesisCore voice];
+    descriptiveKey = [selectedVoice descriptiveKey];
 LABEL_5:
 
     goto LABEL_7;
   }
 
-  v7 = [(VSSpeechServerTask *)self instrumentMetrics];
-  v9 = [v7 voiceAssetKey];
+  synthesisCore = [(VSSpeechServerTask *)self instrumentMetrics];
+  descriptiveKey = [synthesisCore voiceAssetKey];
 LABEL_7:
 
-  return v9;
+  return descriptiveKey;
 }
 
 - (void)reportInstrumentMetrics
@@ -525,91 +524,91 @@ LABEL_7:
   v46 = *MEMORY[0x277D85DE8];
   if (self->_shouldSpeak)
   {
-    v3 = [(VSSpeechServerTask *)self delegate];
+    delegate = [(VSSpeechServerTask *)self delegate];
     v4 = objc_opt_respondsToSelector();
 
     if (v4)
     {
-      v5 = [(VSSpeechServerTask *)self delegate];
-      v6 = [(VSSpeechServerTask *)self request];
-      v7 = [(VSSpeechServerTask *)self instrumentMetrics];
-      [v5 speechRequest:v6 didReportInstrumentMetrics:v7];
+      delegate2 = [(VSSpeechServerTask *)self delegate];
+      request = [(VSSpeechServerTask *)self request];
+      instrumentMetrics = [(VSSpeechServerTask *)self instrumentMetrics];
+      [delegate2 speechRequest:request didReportInstrumentMetrics:instrumentMetrics];
     }
   }
 
-  v8 = [(VSSpeechServerTask *)self speakTask];
-  v9 = [v8 delegate];
+  speakTask = [(VSSpeechServerTask *)self speakTask];
+  delegate3 = [speakTask delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(VSSpeechServerTask *)self speakTask];
-    v12 = [v11 instrumentMetrics];
+    speakTask2 = [(VSSpeechServerTask *)self speakTask];
+    instrumentMetrics2 = [speakTask2 instrumentMetrics];
 
-    v13 = [(VSSpeechServerTask *)self instrumentMetrics];
-    v14 = [v13 voiceAssetKey];
-    [v12 setVoiceAssetKey:v14];
+    instrumentMetrics3 = [(VSSpeechServerTask *)self instrumentMetrics];
+    voiceAssetKey = [instrumentMetrics3 voiceAssetKey];
+    [instrumentMetrics2 setVoiceAssetKey:voiceAssetKey];
 
-    v15 = [(VSSpeechServerTask *)self instrumentMetrics];
-    v16 = [v15 voiceResourceAssetKey];
-    [v12 setVoiceResourceAssetKey:v16];
+    instrumentMetrics4 = [(VSSpeechServerTask *)self instrumentMetrics];
+    voiceResourceAssetKey = [instrumentMetrics4 voiceResourceAssetKey];
+    [instrumentMetrics2 setVoiceResourceAssetKey:voiceResourceAssetKey];
 
-    v17 = [(VSSpeechServerTask *)self instrumentMetrics];
-    v18 = [v17 utterance];
-    [v12 setUtterance:v18];
+    instrumentMetrics5 = [(VSSpeechServerTask *)self instrumentMetrics];
+    utterance = [instrumentMetrics5 utterance];
+    [instrumentMetrics2 setUtterance:utterance];
 
-    v19 = [(VSSpeechServerTask *)self instrumentMetrics];
-    [v12 setSynthesisBeginTimestamp:{objc_msgSend(v19, "synthesisBeginTimestamp")}];
+    instrumentMetrics6 = [(VSSpeechServerTask *)self instrumentMetrics];
+    [instrumentMetrics2 setSynthesisBeginTimestamp:{objc_msgSend(instrumentMetrics6, "synthesisBeginTimestamp")}];
 
-    v20 = [(VSSpeechServerTask *)self instrumentMetrics];
-    [v12 setSynthesisEndTimestamp:{objc_msgSend(v20, "synthesisEndTimestamp")}];
+    instrumentMetrics7 = [(VSSpeechServerTask *)self instrumentMetrics];
+    [instrumentMetrics2 setSynthesisEndTimestamp:{objc_msgSend(instrumentMetrics7, "synthesisEndTimestamp")}];
 
-    v21 = [(VSSpeechServerTask *)self instrumentMetrics];
-    [v12 setSpeechBeginTimestamp:{objc_msgSend(v21, "speechBeginTimestamp")}];
+    instrumentMetrics8 = [(VSSpeechServerTask *)self instrumentMetrics];
+    [instrumentMetrics2 setSpeechBeginTimestamp:{objc_msgSend(instrumentMetrics8, "speechBeginTimestamp")}];
 
-    v22 = [(VSSpeechServerTask *)self instrumentMetrics];
-    [v12 setSpeechEndTimestamp:{objc_msgSend(v22, "speechEndTimestamp")}];
+    instrumentMetrics9 = [(VSSpeechServerTask *)self instrumentMetrics];
+    [instrumentMetrics2 setSpeechEndTimestamp:{objc_msgSend(instrumentMetrics9, "speechEndTimestamp")}];
 
-    v23 = [(VSSpeechServerTask *)self instrumentMetrics];
-    [v12 setAudioStartTimestampDiffs:{objc_msgSend(v23, "audioStartTimestampDiffs")}];
+    instrumentMetrics10 = [(VSSpeechServerTask *)self instrumentMetrics];
+    [instrumentMetrics2 setAudioStartTimestampDiffs:{objc_msgSend(instrumentMetrics10, "audioStartTimestampDiffs")}];
 
-    v24 = [(VSSpeechServerTask *)self instrumentMetrics];
-    [v24 audioDuration];
-    [v12 setAudioDuration:?];
+    instrumentMetrics11 = [(VSSpeechServerTask *)self instrumentMetrics];
+    [instrumentMetrics11 audioDuration];
+    [instrumentMetrics2 setAudioDuration:?];
 
-    v25 = [v12 requestCreatedTimestamp];
-    v26 = [(VSSpeechServerTask *)self instrumentMetrics];
-    [v12 setEagerRequestCreatedTimestampDiffs:{v25 - objc_msgSend(v26, "requestCreatedTimestamp")}];
+    requestCreatedTimestamp = [instrumentMetrics2 requestCreatedTimestamp];
+    instrumentMetrics12 = [(VSSpeechServerTask *)self instrumentMetrics];
+    [instrumentMetrics2 setEagerRequestCreatedTimestampDiffs:{requestCreatedTimestamp - objc_msgSend(instrumentMetrics12, "requestCreatedTimestamp")}];
 
-    v27 = [(VSSpeechServerTask *)self instrumentMetrics];
-    [v12 setIsServerTimeout:{objc_msgSend(v27, "isServerTimeout")}];
+    instrumentMetrics13 = [(VSSpeechServerTask *)self instrumentMetrics];
+    [instrumentMetrics2 setIsServerTimeout:{objc_msgSend(instrumentMetrics13, "isServerTimeout")}];
 
-    v28 = [(VSSpeechServerTask *)self speakTask];
-    v29 = [v28 delegate];
-    v30 = [(VSSpeechServerTask *)self speakTask];
-    v31 = [v30 request];
-    v32 = [(VSSpeechServerTask *)self instrumentMetrics];
-    [v29 speechRequest:v31 didReportInstrumentMetrics:v32];
+    speakTask3 = [(VSSpeechServerTask *)self speakTask];
+    delegate4 = [speakTask3 delegate];
+    speakTask4 = [(VSSpeechServerTask *)self speakTask];
+    request2 = [speakTask4 request];
+    instrumentMetrics14 = [(VSSpeechServerTask *)self instrumentMetrics];
+    [delegate4 speechRequest:request2 didReportInstrumentMetrics:instrumentMetrics14];
   }
 
   v33 = VSGetLogDefault();
   if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
   {
-    v34 = [(VSSpeechServerTask *)self instrumentMetrics];
-    v35 = [v34 requestCreatedTimestamp];
-    v36 = [(VSSpeechServerTask *)self instrumentMetrics];
+    instrumentMetrics15 = [(VSSpeechServerTask *)self instrumentMetrics];
+    requestCreatedTimestamp2 = [instrumentMetrics15 requestCreatedTimestamp];
+    instrumentMetrics16 = [(VSSpeechServerTask *)self instrumentMetrics];
     v42 = 134218242;
-    v43 = v35;
+    v43 = requestCreatedTimestamp2;
     v44 = 2112;
-    v45 = v36;
+    v45 = instrumentMetrics16;
     _os_log_impl(&dword_2727E4000, v33, OS_LOG_TYPE_DEFAULT, "Server task %llu: Instrument metric: %@", &v42, 0x16u);
   }
 
   v37 = +[VSDiagnosticService defaultService];
-  v38 = [(VSSpeechServerTask *)self instrumentMetrics];
-  v39 = [v38 dictionaryMetrics];
-  v40 = [(VSSpeechServerTask *)self instrumentMetrics];
-  [v37 dumpInstrumentMetrics:v39 withTimestamp:{objc_msgSend(v40, "requestCreatedTimestamp")}];
+  instrumentMetrics17 = [(VSSpeechServerTask *)self instrumentMetrics];
+  dictionaryMetrics = [instrumentMetrics17 dictionaryMetrics];
+  instrumentMetrics18 = [(VSSpeechServerTask *)self instrumentMetrics];
+  [v37 dumpInstrumentMetrics:dictionaryMetrics withTimestamp:{objc_msgSend(instrumentMetrics18, "requestCreatedTimestamp")}];
 
   v41 = *MEMORY[0x277D85DE8];
 }
@@ -619,86 +618,86 @@ LABEL_7:
   v43 = *MEMORY[0x277D85DE8];
   if (self->_shouldSpeak)
   {
-    v3 = [(VSSpeechServerTask *)self delegate];
+    delegate = [(VSSpeechServerTask *)self delegate];
     v4 = objc_opt_respondsToSelector();
 
     if (v4)
     {
-      v5 = [(VSSpeechServerTask *)self delegate];
-      v6 = [(VSSpeechServerTask *)self request];
-      [v5 speechRequestDidStart:v6];
+      delegate2 = [(VSSpeechServerTask *)self delegate];
+      request = [(VSSpeechServerTask *)self request];
+      [delegate2 speechRequestDidStart:request];
     }
   }
 
-  v7 = [(VSSpeechServerTask *)self speakTask];
-  if (v7)
+  speakTask = [(VSSpeechServerTask *)self speakTask];
+  if (speakTask)
   {
-    v8 = v7;
-    v9 = [(VSSpeechServerTask *)self speakTask];
-    v10 = [v9 delegate];
+    v8 = speakTask;
+    speakTask2 = [(VSSpeechServerTask *)self speakTask];
+    delegate3 = [speakTask2 delegate];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
-      v12 = [(VSSpeechServerTask *)self speakTask];
-      v13 = [v12 delegate];
-      v14 = [(VSSpeechServerTask *)self speakTask];
-      v15 = [v14 request];
-      [v13 speechRequestDidStart:v15];
+      speakTask3 = [(VSSpeechServerTask *)self speakTask];
+      delegate4 = [speakTask3 delegate];
+      speakTask4 = [(VSSpeechServerTask *)self speakTask];
+      request2 = [speakTask4 request];
+      [delegate4 speechRequestDidStart:request2];
     }
   }
 
   if ([(VSSpeechServerTask *)self useServerResponse])
   {
-    v16 = [(VSSpeechServerTask *)self ospreyCore];
-    v17 = [v16 voice];
+    ospreyCore = [(VSSpeechServerTask *)self ospreyCore];
+    voice = [ospreyCore voice];
   }
 
   else
   {
-    v16 = [(VSSpeechServerTask *)self synthesisCore];
-    v18 = [v16 selectedVoice];
-    v17 = [v18 voiceData];
+    ospreyCore = [(VSSpeechServerTask *)self synthesisCore];
+    selectedVoice = [ospreyCore selectedVoice];
+    voice = [selectedVoice voiceData];
   }
 
   if ([(VSSpeechServerTask *)self useServerResponse])
   {
-    v19 = [(VSSpeechServerTask *)self ospreyCore];
-    [v19 voiceResource];
+    ospreyCore2 = [(VSSpeechServerTask *)self ospreyCore];
+    [ospreyCore2 voiceResource];
   }
 
   else
   {
-    v19 = [(VSSpeechServerTask *)self synthesisCore];
-    [v19 selectedVoiceResource];
+    ospreyCore2 = [(VSSpeechServerTask *)self synthesisCore];
+    [ospreyCore2 selectedVoiceResource];
   }
   v39 = ;
 
-  v20 = [(VSSpeechServerTask *)self siriInstrumentation];
-  v38 = [(VSSpeechServerTask *)self instrumentMetrics];
-  v35 = [v38 sourceOfTTS];
-  v37 = [(VSSpeechServerTask *)self instrumentMetrics];
-  [v37 timeToSpeakLatency];
+  siriInstrumentation = [(VSSpeechServerTask *)self siriInstrumentation];
+  instrumentMetrics = [(VSSpeechServerTask *)self instrumentMetrics];
+  sourceOfTTS = [instrumentMetrics sourceOfTTS];
+  instrumentMetrics2 = [(VSSpeechServerTask *)self instrumentMetrics];
+  [instrumentMetrics2 timeToSpeakLatency];
   v22 = v21;
-  v36 = [(VSSpeechServerTask *)self playbackService];
-  v23 = [v36 outputRouteInfo];
-  v24 = [v17 type];
-  v25 = [v17 footprint];
-  [v17 contentVersion];
-  v26 = v40 = v17;
-  v27 = [v26 unsignedIntegerValue];
-  v28 = [v39 contentVersion];
-  v29 = [v28 unsignedIntegerValue];
-  v30 = [(VSSpeechServerTask *)self request];
-  LOBYTE(v34) = [v30 shouldWhisper];
-  [v20 instrumentSpeechStartedWithSource:v35 customerPerceivedLatency:v23 audioOutputRoute:v24 voiceType:v25 voiceFootprint:v27 voiceVersion:v29 resourceVersion:v22 isWhisper:v34];
+  playbackService = [(VSSpeechServerTask *)self playbackService];
+  outputRouteInfo = [playbackService outputRouteInfo];
+  type = [voice type];
+  footprint = [voice footprint];
+  [voice contentVersion];
+  v26 = v40 = voice;
+  unsignedIntegerValue = [v26 unsignedIntegerValue];
+  contentVersion = [v39 contentVersion];
+  unsignedIntegerValue2 = [contentVersion unsignedIntegerValue];
+  request3 = [(VSSpeechServerTask *)self request];
+  LOBYTE(v34) = [request3 shouldWhisper];
+  [siriInstrumentation instrumentSpeechStartedWithSource:sourceOfTTS customerPerceivedLatency:outputRouteInfo audioOutputRoute:type voiceType:footprint voiceFootprint:unsignedIntegerValue voiceVersion:unsignedIntegerValue2 resourceVersion:v22 isWhisper:v34];
 
   v31 = VSGetLogDefault();
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
   {
-    v33 = [(VSSpeechServerTask *)self instrumentMetrics];
+    instrumentMetrics3 = [(VSSpeechServerTask *)self instrumentMetrics];
     *buf = 134217984;
-    v42 = [v33 requestCreatedTimestamp];
+    requestCreatedTimestamp = [instrumentMetrics3 requestCreatedTimestamp];
     _os_log_debug_impl(&dword_2727E4000, v31, OS_LOG_TYPE_DEBUG, "Server task %llu started speaking", buf, 0xCu);
   }
 
@@ -708,7 +707,7 @@ LABEL_7:
 - (void)reportTimingInfo
 {
   shouldSpeak = self->_shouldSpeak;
-  v4 = [(VSSpeechServerTask *)self delegate];
+  delegate = [(VSSpeechServerTask *)self delegate];
   if (shouldSpeak)
   {
     v5 = objc_opt_respondsToSelector();
@@ -718,10 +717,10 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v6 = [(VSSpeechServerTask *)self delegate];
-    v7 = [(VSSpeechServerTask *)self request];
-    v8 = [(VSSpeechServerTask *)self wordTimingInfo];
-    [v6 speechRequest:v7 didReceiveTimingInfo:v8];
+    delegate2 = [(VSSpeechServerTask *)self delegate];
+    request = [(VSSpeechServerTask *)self request];
+    wordTimingInfo = [(VSSpeechServerTask *)self wordTimingInfo];
+    [delegate2 speechRequest:request didReceiveTimingInfo:wordTimingInfo];
   }
 
   else
@@ -733,39 +732,39 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v6 = [(VSSpeechServerTask *)self delegate];
-    v7 = [(VSSpeechServerTask *)self request];
-    v8 = [(VSSpeechServerTask *)self wordTimingInfo];
-    [v6 synthesisRequest:v7 didReceiveTimingInfo:v8];
+    delegate2 = [(VSSpeechServerTask *)self delegate];
+    request = [(VSSpeechServerTask *)self request];
+    wordTimingInfo = [(VSSpeechServerTask *)self wordTimingInfo];
+    [delegate2 synthesisRequest:request didReceiveTimingInfo:wordTimingInfo];
   }
 
 LABEL_7:
-  v10 = [(VSSpeechServerTask *)self speakTask];
-  v11 = [v10 delegate];
+  speakTask = [(VSSpeechServerTask *)self speakTask];
+  delegate3 = [speakTask delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v17 = [(VSSpeechServerTask *)self speakTask];
-    v13 = [v17 delegate];
-    v14 = [(VSSpeechServerTask *)self speakTask];
-    v15 = [v14 request];
-    v16 = [(VSSpeechServerTask *)self wordTimingInfo];
-    [v13 speechRequest:v15 didReceiveTimingInfo:v16];
+    speakTask2 = [(VSSpeechServerTask *)self speakTask];
+    delegate4 = [speakTask2 delegate];
+    speakTask3 = [(VSSpeechServerTask *)self speakTask];
+    request2 = [speakTask3 request];
+    wordTimingInfo2 = [(VSSpeechServerTask *)self wordTimingInfo];
+    [delegate4 speechRequest:request2 didReceiveTimingInfo:wordTimingInfo2];
   }
 }
 
-- (void)setObserverForWordTimings:(id)a3
+- (void)setObserverForWordTimings:(id)timings
 {
-  v4 = a3;
+  timingsCopy = timings;
   objc_initWeak(&location, self);
-  v5 = [(VSSpeechServerTask *)self playbackService];
+  playbackService = [(VSSpeechServerTask *)self playbackService];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __48__VSSpeechServerTask_setObserverForWordTimings___block_invoke;
   v6[3] = &unk_279E4B9C0;
   objc_copyWeak(&v7, &location);
-  [v5 setBoundaryTimeObserverForTimingInfos:v4 usingBlock:v6];
+  [playbackService setBoundaryTimeObserverForTimingInfos:timingsCopy usingBlock:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -819,22 +818,22 @@ void __48__VSSpeechServerTask_setObserverForWordTimings___block_invoke(uint64_t 
     return 1;
   }
 
-  v3 = [(VSSpeechServerTask *)self speakTask];
-  v2 = v3 != 0;
+  speakTask = [(VSSpeechServerTask *)self speakTask];
+  v2 = speakTask != 0;
 
   return v2;
 }
 
 - (void)resume
 {
-  v3 = [(VSSpeechServerTask *)self playbackService];
-  v2 = [v3 start];
+  playbackService = [(VSSpeechServerTask *)self playbackService];
+  start = [playbackService start];
 }
 
 - (void)suspend
 {
-  v2 = [(VSSpeechServerTask *)self playbackService];
-  [v2 pause];
+  playbackService = [(VSSpeechServerTask *)self playbackService];
+  [playbackService pause];
 }
 
 - (void)cancel
@@ -857,14 +856,14 @@ void __48__VSSpeechServerTask_setObserverForWordTimings___block_invoke(uint64_t 
     [(VSSpeechServerTask *)self reportFinish];
   }
 
-  v4 = [(VSSpeechServerTask *)self playbackService];
-  [v4 stop];
+  playbackService = [(VSSpeechServerTask *)self playbackService];
+  [playbackService stop];
 
-  v5 = [(VSSpeechServerTask *)self synthesisCore];
-  [v5 cancel];
+  synthesisCore = [(VSSpeechServerTask *)self synthesisCore];
+  [synthesisCore cancel];
 
-  v6 = [(VSSpeechServerTask *)self ospreyCore];
-  [v6 cancel];
+  ospreyCore = [(VSSpeechServerTask *)self ospreyCore];
+  [ospreyCore cancel];
 
   pthread_cond_broadcast(&self->_timeoutCondition);
 }
@@ -873,50 +872,50 @@ void __48__VSSpeechServerTask_setObserverForWordTimings___block_invoke(uint64_t 
 {
   v55 = *MEMORY[0x277D85DE8];
   v3 = mach_absolute_time();
-  v4 = [(VSSpeechServerTask *)self instrumentMetrics];
-  [v4 setSynthesisBeginTimestamp:v3];
+  instrumentMetrics = [(VSSpeechServerTask *)self instrumentMetrics];
+  [instrumentMetrics setSynthesisBeginTimestamp:v3];
 
   kdebug_trace();
-  v5 = [MEMORY[0x277D79950] sharedManager];
-  v6 = [(VSSpeechServerTask *)self request];
-  v7 = [v6 languageCode];
-  v8 = [v5 selectVoiceResourceAssetForLanguage:v7];
+  mEMORY[0x277D79950] = [MEMORY[0x277D79950] sharedManager];
+  request = [(VSSpeechServerTask *)self request];
+  languageCode = [request languageCode];
+  v8 = [mEMORY[0x277D79950] selectVoiceResourceAssetForLanguage:languageCode];
 
-  v9 = [(VSSpeechServerTask *)self request];
-  v10 = [v9 voiceName];
-  v11 = [v10 length];
+  request2 = [(VSSpeechServerTask *)self request];
+  voiceName = [request2 voiceName];
+  v11 = [voiceName length];
 
   if (!v11)
   {
-    v12 = [(VSSpeechServerTask *)self request];
-    v13 = [v12 gender];
+    request3 = [(VSSpeechServerTask *)self request];
+    gender = [request3 gender];
 
-    if (!v13)
+    if (!gender)
     {
-      v14 = [v8 defaultVoiceGender];
-      v15 = [(VSSpeechServerTask *)self request];
-      [v15 setGender:v14];
+      defaultVoiceGender = [v8 defaultVoiceGender];
+      request4 = [(VSSpeechServerTask *)self request];
+      [request4 setGender:defaultVoiceGender];
     }
 
-    v16 = [(VSSpeechServerTask *)self request];
-    v17 = [v8 defaultVoiceNameForGender:{objc_msgSend(v16, "gender")}];
-    v18 = [(VSSpeechServerTask *)self request];
-    [v18 setVoiceName:v17];
+    request5 = [(VSSpeechServerTask *)self request];
+    v17 = [v8 defaultVoiceNameForGender:{objc_msgSend(request5, "gender")}];
+    request6 = [(VSSpeechServerTask *)self request];
+    [request6 setVoiceName:v17];
   }
 
   v19 = objc_opt_new();
-  v20 = [(VSSpeechServerTask *)self request];
-  v21 = [v20 text];
-  v22 = [(VSSpeechServerTask *)self request];
-  v23 = [v22 languageCode];
-  v24 = [(VSSpeechServerTask *)self request];
-  v25 = [v24 voiceName];
-  v26 = [v19 estimatedTTSWordTimingForText:v21 withLanguage:v23 voiceName:v25];
+  request7 = [(VSSpeechServerTask *)self request];
+  text = [request7 text];
+  request8 = [(VSSpeechServerTask *)self request];
+  languageCode2 = [request8 languageCode];
+  request9 = [(VSSpeechServerTask *)self request];
+  voiceName2 = [request9 voiceName];
+  v26 = [v19 estimatedTTSWordTimingForText:text withLanguage:languageCode2 voiceName:voiceName2];
   [(VSSpeechServerTask *)self setWordTimingInfo:v26];
 
-  v27 = [(VSSpeechServerTask *)self wordTimingInfo];
+  wordTimingInfo = [(VSSpeechServerTask *)self wordTimingInfo];
 
-  if (v27)
+  if (wordTimingInfo)
   {
     [(VSSpeechServerTask *)self reportTimingInfo];
   }
@@ -929,10 +928,10 @@ void __48__VSSpeechServerTask_setObserverForWordTimings___block_invoke(uint64_t 
   block[4] = self;
   dispatch_async(v28, block);
 
-  v29 = [(VSSpeechServerTask *)self request];
-  v30 = [v29 disableDeviceRacing];
+  request10 = [(VSSpeechServerTask *)self request];
+  disableDeviceRacing = [request10 disableDeviceRacing];
 
-  if (v30)
+  if (disableDeviceRacing)
   {
     v31 = VSGetLogDefault();
     if (!os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -947,8 +946,8 @@ void __48__VSSpeechServerTask_setObserverForWordTimings___block_invoke(uint64_t 
     goto LABEL_14;
   }
 
-  v35 = [(VSSpeechServerTask *)self instrumentMetrics];
-  [v35 setIsServerTTSRacing:1];
+  instrumentMetrics2 = [(VSSpeechServerTask *)self instrumentMetrics];
+  [instrumentMetrics2 setIsServerTTSRacing:1];
 
   v36 = VSGetLogDefault();
   if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
@@ -957,8 +956,8 @@ void __48__VSSpeechServerTask_setObserverForWordTimings___block_invoke(uint64_t 
     _os_log_impl(&dword_2727E4000, v36, OS_LOG_TYPE_DEFAULT, "Device TTS is racing with Server TTS", buf, 2u);
   }
 
-  v37 = [(VSSpeechServerTask *)self synthesisCore];
-  [v37 start];
+  synthesisCore = [(VSSpeechServerTask *)self synthesisCore];
+  [synthesisCore start];
 
   v31 = VSGetLogDefault();
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -975,13 +974,13 @@ LABEL_14:
 
 LABEL_15:
 
-  v39 = [(VSSpeechServerTask *)self shouldRelyOnServerTTS];
+  shouldRelyOnServerTTS = [(VSSpeechServerTask *)self shouldRelyOnServerTTS];
   if (([(VSSpeechServerTask *)self isCancelled]& 1) == 0)
   {
-    if (v39)
+    if (shouldRelyOnServerTTS)
     {
-      v40 = [(VSSpeechServerTask *)self ospreyCore];
-      [v40 waitUntilFinished];
+      ospreyCore = [(VSSpeechServerTask *)self ospreyCore];
+      [ospreyCore waitUntilFinished];
     }
 
     else
@@ -992,30 +991,30 @@ LABEL_15:
         goto LABEL_27;
       }
 
-      v40 = [(VSSpeechServerTask *)self ospreyCore];
+      ospreyCore = [(VSSpeechServerTask *)self ospreyCore];
       [(VSSpeechServerTask *)self deviceTTSWaitTime];
-      [v40 waitUntilFinishedIfAudioReceivedWithin:?];
+      [ospreyCore waitUntilFinishedIfAudioReceivedWithin:?];
     }
 
     if (([(VSSpeechServerTask *)self isCancelled]& 1) == 0)
     {
-      v42 = [(VSSpeechServerTask *)self ospreyCore];
-      v43 = [v42 error];
-      v44 = [v43 code];
+      ospreyCore2 = [(VSSpeechServerTask *)self ospreyCore];
+      error = [ospreyCore2 error];
+      code = [error code];
 
-      if (v44 != 603)
+      if (code != 603)
       {
-        v46 = [(VSSpeechServerTask *)self ospreyCore];
-        v47 = [v46 error];
-        if (v47)
+        ospreyCore3 = [(VSSpeechServerTask *)self ospreyCore];
+        error2 = [ospreyCore3 error];
+        if (error2)
         {
         }
 
         else
         {
-          v48 = [(VSSpeechServerTask *)self error];
-          v49 = [v48 domain];
-          v50 = [v49 isEqualToString:@"ServerTTSErrorDomain"];
+          error3 = [(VSSpeechServerTask *)self error];
+          domain = [error3 domain];
+          v50 = [domain isEqualToString:@"ServerTTSErrorDomain"];
 
           if (!v50)
           {
@@ -1027,8 +1026,8 @@ LABEL_15:
         goto LABEL_27;
       }
 
-      v45 = [(VSSpeechServerTask *)self instrumentMetrics];
-      [v45 setErrorCode:603];
+      instrumentMetrics3 = [(VSSpeechServerTask *)self instrumentMetrics];
+      [instrumentMetrics3 setErrorCode:603];
 
       [(VSSpeechServerTask *)self speakRetryPhrase];
     }
@@ -1045,44 +1044,44 @@ void __42__VSSpeechServerTask_proceedWithServerTTS__block_invoke(uint64_t a1)
   [v1 start];
 }
 
-- (void)proceedWithSpeechCache:(id)a3
+- (void)proceedWithSpeechCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   [(VSSpeechServerTask *)self setUseServerResponse:1];
-  v5 = [v4 voiceKey];
-  v6 = [(VSSpeechServerTask *)self instrumentMetrics];
-  [v6 setVoiceAssetKey:v5];
+  voiceKey = [cacheCopy voiceKey];
+  instrumentMetrics = [(VSSpeechServerTask *)self instrumentMetrics];
+  [instrumentMetrics setVoiceAssetKey:voiceKey];
 
-  v7 = [(VSSpeechServerTask *)self instrumentMetrics];
-  [v7 setIsCacheHitFromMemory:1];
+  instrumentMetrics2 = [(VSSpeechServerTask *)self instrumentMetrics];
+  [instrumentMetrics2 setIsCacheHitFromMemory:1];
 
-  v8 = [v4 timingInfos];
-  [(VSSpeechServerTask *)self setWordTimingInfo:v8];
+  timingInfos = [cacheCopy timingInfos];
+  [(VSSpeechServerTask *)self setWordTimingInfo:timingInfos];
 
   [(VSSpeechServerTask *)self reportTimingInfo];
-  v9 = [v4 audio];
-  v10 = [(VSSpeechServerTask *)self enqueueAudioData:v9];
+  audio = [cacheCopy audio];
+  v10 = [(VSSpeechServerTask *)self enqueueAudioData:audio];
 
-  v11 = [(VSSpeechServerTask *)self wordTimingInfo];
-  [(VSSpeechServerTask *)self setObserverForWordTimings:v11];
+  wordTimingInfo = [(VSSpeechServerTask *)self wordTimingInfo];
+  [(VSSpeechServerTask *)self setObserverForWordTimings:wordTimingInfo];
 
-  v12 = [v4 audio];
+  audio2 = [cacheCopy audio];
 
-  [(VSSpeechServerTask *)self setServerAudio:v12];
+  [(VSSpeechServerTask *)self setServerAudio:audio2];
 }
 
 - (void)main
 {
   kdebug_trace();
-  v3 = [(VSSpeechServerTask *)self serverTTSConfig];
-  v4 = [v3 experimentIdentifier];
-  v5 = [(VSSpeechServerTask *)self instrumentMetrics];
-  [v5 setExperimentIdentifier:v4];
+  serverTTSConfig = [(VSSpeechServerTask *)self serverTTSConfig];
+  experimentIdentifier = [serverTTSConfig experimentIdentifier];
+  instrumentMetrics = [(VSSpeechServerTask *)self instrumentMetrics];
+  [instrumentMetrics setExperimentIdentifier:experimentIdentifier];
 
-  v6 = [(VSSpeechServerTask *)self cachingService];
-  v7 = [(VSSpeechServerTask *)self request];
-  v8 = [v7 text];
-  v9 = [v6 popShortTermCacheForHash:v8];
+  cachingService = [(VSSpeechServerTask *)self cachingService];
+  request = [(VSSpeechServerTask *)self request];
+  text = [request text];
+  v9 = [cachingService popShortTermCacheForHash:text];
 
   if (v9)
   {
@@ -1093,16 +1092,16 @@ void __42__VSSpeechServerTask_proceedWithServerTTS__block_invoke(uint64_t a1)
       _os_log_impl(&dword_2727E4000, v10, OS_LOG_TYPE_INFO, "Inline server TTS is previously cached.", buf, 2u);
     }
 
-    v11 = [(VSSpeechServerTask *)self instrumentMetrics];
-    [v11 setSourceOfTTS:6];
+    instrumentMetrics2 = [(VSSpeechServerTask *)self instrumentMetrics];
+    [instrumentMetrics2 setSourceOfTTS:6];
   }
 
   else
   {
-    v12 = [(VSSpeechServerTask *)self cachingService];
-    v7 = [(VSSpeechServerTask *)self request];
-    v13 = [(VSSpeechServerTask *)self eagerTaskHashForRequest:v7];
-    v9 = [v12 popShortTermCacheForHash:v13];
+    cachingService2 = [(VSSpeechServerTask *)self cachingService];
+    request = [(VSSpeechServerTask *)self request];
+    v13 = [(VSSpeechServerTask *)self eagerTaskHashForRequest:request];
+    v9 = [cachingService2 popShortTermCacheForHash:v13];
 
     if (!v9)
     {
@@ -1126,63 +1125,63 @@ LABEL_10:
   [(VSSpeechServerTask *)self setReadyForEagerTask:0];
   if ([(VSSpeechServerTask *)self shouldSpeak]|| ([(VSSpeechServerTask *)self speakTask], v15 = objc_claimAutoreleasedReturnValue(), v15, v15))
   {
-    v16 = [(VSSpeechServerTask *)self playbackService];
-    [v16 flushAndStop];
+    playbackService = [(VSSpeechServerTask *)self playbackService];
+    [playbackService flushAndStop];
 
-    v17 = [(VSSpeechServerTask *)self error];
+    error = [(VSSpeechServerTask *)self error];
 
-    if (!v17)
+    if (!error)
     {
-      v18 = [(VSSpeechServerTask *)self playbackService];
-      v19 = [v18 error];
-      [(VSSpeechServerTask *)self setError:v19];
+      playbackService2 = [(VSSpeechServerTask *)self playbackService];
+      error2 = [playbackService2 error];
+      [(VSSpeechServerTask *)self setError:error2];
     }
 
-    v7 = mach_absolute_time();
-    v20 = [(VSSpeechServerTask *)self instrumentMetrics];
-    [v20 setSpeechEndTimestamp:v7];
+    request = mach_absolute_time();
+    instrumentMetrics3 = [(VSSpeechServerTask *)self instrumentMetrics];
+    [instrumentMetrics3 setSpeechEndTimestamp:request];
     goto LABEL_15;
   }
 
-  v20 = [(VSSpeechServerTask *)self request];
-  if (![v20 shouldCache] || !-[VSSpeechServerTask useServerResponse](self, "useServerResponse") || (-[VSSpeechServerTask isCancelled](self, "isCancelled") & 1) != 0)
+  instrumentMetrics3 = [(VSSpeechServerTask *)self request];
+  if (![instrumentMetrics3 shouldCache] || !-[VSSpeechServerTask useServerResponse](self, "useServerResponse") || (-[VSSpeechServerTask isCancelled](self, "isCancelled") & 1) != 0)
   {
 LABEL_15:
 
     goto LABEL_16;
   }
 
-  v7 = [(VSSpeechServerTask *)self error];
+  request = [(VSSpeechServerTask *)self error];
 
-  if (!v7)
+  if (!request)
   {
-    v20 = [(VSSpeechServerTask *)self cachingService];
-    v43 = [(VSSpeechServerTask *)self request];
-    v33 = [(VSSpeechServerTask *)self eagerTaskHashForRequest:v43];
-    v34 = [(VSSpeechServerTask *)self serverAudio];
-    v35 = [(VSSpeechServerTask *)self wordTimingInfo];
-    v42 = [(VSSpeechServerTask *)self instrumentMetrics];
-    v36 = [v42 voiceAssetKey];
-    v37 = [(VSSpeechServerTask *)self instrumentMetrics];
-    v7 = [v37 voiceResourceAssetKey];
-    [v20 enqueueShortTermCacheWithHash:v33 audio:v34 timingInfo:v35 voiceKey:v36 voiceResourceKey:v7 completion:0];
+    instrumentMetrics3 = [(VSSpeechServerTask *)self cachingService];
+    request2 = [(VSSpeechServerTask *)self request];
+    v33 = [(VSSpeechServerTask *)self eagerTaskHashForRequest:request2];
+    serverAudio = [(VSSpeechServerTask *)self serverAudio];
+    wordTimingInfo = [(VSSpeechServerTask *)self wordTimingInfo];
+    instrumentMetrics4 = [(VSSpeechServerTask *)self instrumentMetrics];
+    voiceAssetKey = [instrumentMetrics4 voiceAssetKey];
+    instrumentMetrics5 = [(VSSpeechServerTask *)self instrumentMetrics];
+    request = [instrumentMetrics5 voiceResourceAssetKey];
+    [instrumentMetrics3 enqueueShortTermCacheWithHash:v33 audio:serverAudio timingInfo:wordTimingInfo voiceKey:voiceAssetKey voiceResourceKey:request completion:0];
 
     goto LABEL_15;
   }
 
 LABEL_16:
-  v21 = [(VSSpeechServerTask *)self useServerResponse];
-  if (v21)
+  useServerResponse = [(VSSpeechServerTask *)self useServerResponse];
+  if (useServerResponse)
   {
-    v22 = [(VSSpeechServerTask *)self error];
-    if (!v22)
+    error3 = [(VSSpeechServerTask *)self error];
+    if (!error3)
     {
 LABEL_24:
       [(VSSpeechServerTask *)self reportInstrumentMetrics];
       goto LABEL_25;
     }
 
-    v7 = v22;
+    request = error3;
     if (![(VSSpeechServerTask *)self useDeviceSynthesis])
     {
 
@@ -1195,14 +1194,14 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v23 = [(VSSpeechServerTask *)self synthesisCore];
-  v24 = [v23 error];
+  synthesisCore = [(VSSpeechServerTask *)self synthesisCore];
+  error4 = [synthesisCore error];
 
-  if (v21)
+  if (useServerResponse)
   {
   }
 
-  if (!v24)
+  if (!error4)
   {
     goto LABEL_24;
   }
@@ -1213,11 +1212,11 @@ LABEL_25:
     goto LABEL_28;
   }
 
-  v25 = [(VSSpeechServerTask *)self error];
-  v26 = [(VSSpeechServerTask *)self ospreyCore];
-  v27 = [v26 error];
-  v28 = v27;
-  if (v25 == v27)
+  error5 = [(VSSpeechServerTask *)self error];
+  ospreyCore = [(VSSpeechServerTask *)self ospreyCore];
+  error6 = [ospreyCore error];
+  v28 = error6;
+  if (error5 == error6)
   {
 
 LABEL_36:
@@ -1230,9 +1229,9 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  v29 = [(VSSpeechServerTask *)self error];
-  v30 = [v29 domain];
-  v31 = [v30 isEqualToString:@"ServerTTSErrorDomain"];
+  error7 = [(VSSpeechServerTask *)self error];
+  domain = [error7 domain];
+  v31 = [domain isEqualToString:@"ServerTTSErrorDomain"];
 
   if (v31)
   {
@@ -1243,17 +1242,17 @@ LABEL_28:
   if (v9)
   {
 LABEL_29:
-    v32 = [v9 audio];
+    audio = [v9 audio];
 LABEL_39:
-    v38 = v32;
-    [(VSSpeechServerTask *)self writeAudioIfNeeded:v32];
+    synthesisCore2 = audio;
+    [(VSSpeechServerTask *)self writeAudioIfNeeded:audio];
     goto LABEL_40;
   }
 
 LABEL_37:
   if ([(VSSpeechServerTask *)self useServerResponse])
   {
-    v32 = [(VSSpeechServerTask *)self serverAudio];
+    audio = [(VSSpeechServerTask *)self serverAudio];
     goto LABEL_39;
   }
 
@@ -1262,18 +1261,18 @@ LABEL_37:
     goto LABEL_41;
   }
 
-  v38 = [(VSSpeechServerTask *)self synthesisCore];
-  v39 = [v38 streamAudio];
-  if (v39)
+  synthesisCore2 = [(VSSpeechServerTask *)self synthesisCore];
+  streamAudio = [synthesisCore2 streamAudio];
+  if (streamAudio)
   {
-    [(VSSpeechServerTask *)self writeAudioIfNeeded:v39];
+    [(VSSpeechServerTask *)self writeAudioIfNeeded:streamAudio];
   }
 
   else
   {
-    v40 = [(VSSpeechServerTask *)self synthesisCore];
-    v41 = [v40 compressedAudio];
-    [(VSSpeechServerTask *)self writeAudioIfNeeded:v41];
+    synthesisCore3 = [(VSSpeechServerTask *)self synthesisCore];
+    compressedAudio = [synthesisCore3 compressedAudio];
+    [(VSSpeechServerTask *)self writeAudioIfNeeded:compressedAudio];
   }
 
 LABEL_40:
@@ -1282,105 +1281,105 @@ LABEL_41:
   kdebug_trace();
 }
 
-- (id)eagerTaskHashForRequest:(id)a3
+- (id)eagerTaskHashForRequest:(id)request
 {
   v18 = MEMORY[0x277CCACA8];
-  v3 = a3;
-  v4 = [v3 languageCode];
-  v5 = [MEMORY[0x277CCABB0] numberWithLong:{objc_msgSend(v3, "gender")}];
-  v6 = [MEMORY[0x277CCABB0] numberWithLong:{objc_msgSend(v3, "voiceType")}];
-  v7 = [MEMORY[0x277CCABB0] numberWithLong:{objc_msgSend(v3, "footprint")}];
-  v8 = [v3 text];
+  requestCopy = request;
+  languageCode = [requestCopy languageCode];
+  v5 = [MEMORY[0x277CCABB0] numberWithLong:{objc_msgSend(requestCopy, "gender")}];
+  v6 = [MEMORY[0x277CCABB0] numberWithLong:{objc_msgSend(requestCopy, "voiceType")}];
+  v7 = [MEMORY[0x277CCABB0] numberWithLong:{objc_msgSend(requestCopy, "footprint")}];
+  text = [requestCopy text];
   v9 = MEMORY[0x277CCABB0];
-  [v3 rate];
+  [requestCopy rate];
   v10 = [v9 numberWithDouble:?];
   v11 = MEMORY[0x277CCABB0];
-  [v3 pitch];
+  [requestCopy pitch];
   v12 = [v11 numberWithDouble:?];
   v13 = MEMORY[0x277CCABB0];
-  [v3 volume];
+  [requestCopy volume];
   v14 = [v13 numberWithDouble:?];
-  v15 = [v3 contextInfo];
+  contextInfo = [requestCopy contextInfo];
 
-  v16 = [v18 stringWithFormat:@"EagerTTS:%@:%@:%@:%@:%@:%@:%@:%@:%@", v4, v5, v6, v7, v8, v10, v12, v14, v15];
+  v16 = [v18 stringWithFormat:@"EagerTTS:%@:%@:%@:%@:%@:%@:%@:%@:%@", languageCode, v5, v6, v7, text, v10, v12, v14, contextInfo];
 
   return v16;
 }
 
-- (id)enqueueAudioData:(id)a3
+- (id)enqueueAudioData:(id)data
 {
   v46[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   [(VSSpeechServerTask *)self setReadyForEagerTask:0];
-  v5 = [(VSSpeechServerTask *)self instrumentMetrics];
-  [v4 duration];
+  instrumentMetrics = [(VSSpeechServerTask *)self instrumentMetrics];
+  [dataCopy duration];
   v7 = v6;
-  [v5 audioDuration];
-  [v5 setAudioDuration:v7 + v8];
+  [instrumentMetrics audioDuration];
+  [instrumentMetrics setAudioDuration:v7 + v8];
 
   if (![(VSSpeechServerTask *)self shouldSpeak])
   {
-    v9 = [(VSSpeechServerTask *)self speakTask];
+    speakTask = [(VSSpeechServerTask *)self speakTask];
 
-    if (!v9)
+    if (!speakTask)
     {
-      v19 = [(VSSpeechServerTask *)self request];
-      v20 = [v19 shouldStreamAudioData];
+      request = [(VSSpeechServerTask *)self request];
+      shouldStreamAudioData = [request shouldStreamAudioData];
 
-      if (v20)
+      if (shouldStreamAudioData)
       {
-        v21 = [(VSSpeechServerTask *)self delegate];
-        v22 = [(VSSpeechServerTask *)self request];
-        [v21 synthesisRequest:v22 didGenerateAudioChunk:v4];
+        delegate = [(VSSpeechServerTask *)self delegate];
+        request2 = [(VSSpeechServerTask *)self request];
+        [delegate synthesisRequest:request2 didGenerateAudioChunk:dataCopy];
       }
 
       goto LABEL_10;
     }
   }
 
-  v10 = [(VSSpeechServerTask *)self playbackService];
+  playbackService = [(VSSpeechServerTask *)self playbackService];
 
-  if (v10)
+  if (playbackService)
   {
 LABEL_4:
-    v11 = [(VSSpeechServerTask *)self playbackService];
-    v12 = [v4 audioData];
-    v13 = [v4 packetCount];
-    v14 = [v4 packetDescriptions];
-    [v11 enqueue:v12 packetCount:v13 packetDescriptions:v14];
+    playbackService2 = [(VSSpeechServerTask *)self playbackService];
+    audioData = [dataCopy audioData];
+    packetCount = [dataCopy packetCount];
+    packetDescriptions = [dataCopy packetDescriptions];
+    [playbackService2 enqueue:audioData packetCount:packetCount packetDescriptions:packetDescriptions];
 
     if (![(VSSpeechServerTask *)self speechStartReported])
     {
       v15 = mach_absolute_time();
-      v16 = [(VSSpeechServerTask *)self instrumentMetrics];
-      [v16 setSpeechBeginTimestamp:v15];
+      instrumentMetrics2 = [(VSSpeechServerTask *)self instrumentMetrics];
+      [instrumentMetrics2 setSpeechBeginTimestamp:v15];
 
       [(VSSpeechServerTask *)self reportSpeechStart];
       [(VSSpeechServerTask *)self setSpeechStartReported:1];
     }
 
 LABEL_10:
-    v23 = 0;
+    start = 0;
     goto LABEL_11;
   }
 
   if (self->_shouldSpeak)
   {
-    v17 = [(VSSpeechServerTask *)self request];
-    v18 = [v17 audioSessionID];
+    request3 = [(VSSpeechServerTask *)self request];
+    audioSessionID = [request3 audioSessionID];
   }
 
   else
   {
-    v17 = [(VSSpeechServerTask *)self speakTask];
-    v26 = [v17 request];
-    v18 = [v26 audioSessionID];
+    request3 = [(VSSpeechServerTask *)self speakTask];
+    v17Request = [request3 request];
+    audioSessionID = [v17Request audioSessionID];
   }
 
   v27 = [VSAudioPlaybackService alloc];
-  if (v4)
+  if (dataCopy)
   {
-    [v4 asbd];
+    [dataCopy asbd];
   }
 
   else
@@ -1391,29 +1390,29 @@ LABEL_10:
   }
 
   v28 = [(VSSpeechServerTask *)self request:v42];
-  v29 = [v28 accessoryID];
-  v30 = [(VSAudioPlaybackService *)v27 initWithAudioSessionID:v18 asbd:&v42 useAVSBAR:v29 != 0];
+  accessoryID = [v28 accessoryID];
+  v30 = [(VSAudioPlaybackService *)v27 initWithAudioSessionID:audioSessionID asbd:&v42 useAVSBAR:accessoryID != 0];
   [(VSSpeechServerTask *)self setPlaybackService:v30];
 
-  v31 = [(VSSpeechServerTask *)self playbackService];
-  v32 = [v31 outputRouteInfo];
-  v33 = [v32 audioRouteName];
-  v34 = [(VSSpeechServerTask *)self instrumentMetrics];
-  [v34 setAudioOutputRoute:v33];
+  playbackService3 = [(VSSpeechServerTask *)self playbackService];
+  outputRouteInfo = [playbackService3 outputRouteInfo];
+  audioRouteName = [outputRouteInfo audioRouteName];
+  instrumentMetrics3 = [(VSSpeechServerTask *)self instrumentMetrics];
+  [instrumentMetrics3 setAudioOutputRoute:audioRouteName];
 
-  v35 = [(VSSpeechServerTask *)self playbackService];
+  playbackService4 = [(VSSpeechServerTask *)self playbackService];
 
-  if (v35)
+  if (playbackService4)
   {
     v36 = mach_absolute_time();
-    v37 = [(VSSpeechServerTask *)self playbackService];
-    v23 = [v37 start];
+    playbackService5 = [(VSSpeechServerTask *)self playbackService];
+    start = [playbackService5 start];
 
-    if (!v23)
+    if (!start)
     {
       v38 = mach_absolute_time() - v36;
-      v39 = [(VSSpeechServerTask *)self instrumentMetrics];
-      [v39 setAudioStartTimestampDiffs:v38];
+      instrumentMetrics4 = [(VSSpeechServerTask *)self instrumentMetrics];
+      [instrumentMetrics4 setAudioStartTimestampDiffs:v38];
 
       goto LABEL_4;
     }
@@ -1425,20 +1424,20 @@ LABEL_10:
     v45 = *MEMORY[0x277CCA450];
     v46[0] = @"Unable to create playback service";
     v41 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v46 forKeys:&v45 count:1];
-    v23 = [v40 errorWithDomain:@"VoiceServicesErrorDomain" code:450 userInfo:v41];
+    start = [v40 errorWithDomain:@"VoiceServicesErrorDomain" code:450 userInfo:v41];
   }
 
 LABEL_11:
 
   v24 = *MEMORY[0x277D85DE8];
 
-  return v23;
+  return start;
 }
 
-- (id)handleDeviceSynthesis:(id)a3 timingInfo:(id)a4
+- (id)handleDeviceSynthesis:(id)synthesis timingInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  synthesisCopy = synthesis;
+  infoCopy = info;
   pthread_mutex_lock(&self->_racingMutex);
   if ([(VSSpeechServerTask *)self useServerResponse])
   {
@@ -1454,16 +1453,16 @@ LABEL_5:
     goto LABEL_22;
   }
 
-  if (v6)
+  if (synthesisCopy)
   {
-    v10 = [(VSSpeechServerTask *)self instrumentMetrics];
-    v11 = [v10 synthesisEndTimestamp];
+    instrumentMetrics = [(VSSpeechServerTask *)self instrumentMetrics];
+    synthesisEndTimestamp = [instrumentMetrics synthesisEndTimestamp];
 
-    if (!v11)
+    if (!synthesisEndTimestamp)
     {
       v12 = mach_absolute_time();
-      v13 = [(VSSpeechServerTask *)self instrumentMetrics];
-      [v13 setSynthesisEndTimestamp:v12];
+      instrumentMetrics2 = [(VSSpeechServerTask *)self instrumentMetrics];
+      [instrumentMetrics2 setSynthesisEndTimestamp:v12];
 
       kdebug_trace();
     }
@@ -1478,9 +1477,9 @@ LABEL_5:
       _os_log_impl(&dword_2727E4000, v14, OS_LOG_TYPE_INFO, "Received audio from device synthesis, but it's deferred.", v29, 2u);
     }
 
-    if (v7)
+    if (infoCopy)
     {
-      [(VSSpeechServerTask *)self setDeferredTTSTimingInfo:v7];
+      [(VSSpeechServerTask *)self setDeferredTTSTimingInfo:infoCopy];
     }
 
     goto LABEL_5;
@@ -1496,32 +1495,32 @@ LABEL_5:
     }
 
     [(VSSpeechServerTask *)self setUseDeviceSynthesis:1];
-    v16 = [(VSSpeechServerTask *)self ospreyCore];
-    [v16 cancel];
+    ospreyCore = [(VSSpeechServerTask *)self ospreyCore];
+    [ospreyCore cancel];
 
-    v17 = [(VSSpeechServerTask *)self instrumentMetrics];
-    [v17 setIsServerTTS:0];
+    instrumentMetrics3 = [(VSSpeechServerTask *)self instrumentMetrics];
+    [instrumentMetrics3 setIsServerTTS:0];
 
-    v18 = [(VSSpeechServerTask *)self instrumentMetrics];
-    [v18 setSourceOfTTS:1];
+    instrumentMetrics4 = [(VSSpeechServerTask *)self instrumentMetrics];
+    [instrumentMetrics4 setSourceOfTTS:1];
   }
 
-  if (v6)
+  if (synthesisCopy)
   {
-    v19 = [(VSSpeechServerTask *)self synthesisCore];
-    v20 = [v19 selectedVoice];
-    v21 = [v20 key];
-    v22 = [(VSSpeechServerTask *)self instrumentMetrics];
-    [v22 setVoiceAssetKey:v21];
+    synthesisCore = [(VSSpeechServerTask *)self synthesisCore];
+    selectedVoice = [synthesisCore selectedVoice];
+    v21 = [selectedVoice key];
+    instrumentMetrics5 = [(VSSpeechServerTask *)self instrumentMetrics];
+    [instrumentMetrics5 setVoiceAssetKey:v21];
 
-    v23 = [(VSSpeechServerTask *)self synthesisCore];
-    v24 = [v23 selectedVoiceResource];
-    v25 = [v24 key];
-    v26 = [(VSSpeechServerTask *)self instrumentMetrics];
-    [v26 setVoiceResourceAssetKey:v25];
+    synthesisCore2 = [(VSSpeechServerTask *)self synthesisCore];
+    selectedVoiceResource = [synthesisCore2 selectedVoiceResource];
+    v25 = [selectedVoiceResource key];
+    instrumentMetrics6 = [(VSSpeechServerTask *)self instrumentMetrics];
+    [instrumentMetrics6 setVoiceResourceAssetKey:v25];
 
-    v9 = [(VSSpeechServerTask *)self enqueueAudioData:v6];
-    if (!v7)
+    v9 = [(VSSpeechServerTask *)self enqueueAudioData:synthesisCopy];
+    if (!infoCopy)
     {
       goto LABEL_22;
     }
@@ -1530,12 +1529,12 @@ LABEL_5:
   }
 
   v9 = 0;
-  if (v7)
+  if (infoCopy)
   {
 LABEL_21:
-    [(VSSpeechServerTask *)self setWordTimingInfo:v7];
-    v27 = [(VSSpeechServerTask *)self wordTimingInfo];
-    [(VSSpeechServerTask *)self setObserverForWordTimings:v27];
+    [(VSSpeechServerTask *)self setWordTimingInfo:infoCopy];
+    wordTimingInfo = [(VSSpeechServerTask *)self wordTimingInfo];
+    [(VSSpeechServerTask *)self setObserverForWordTimings:wordTimingInfo];
 
     [(VSSpeechServerTask *)self reportTimingInfo];
   }
@@ -1559,45 +1558,45 @@ LABEL_22:
 
 - (BOOL)shouldRelyOnServerTTS
 {
-  v3 = [(VSSpeechServerTask *)self request];
-  if ([v3 disableDeviceRacing])
+  request = [(VSSpeechServerTask *)self request];
+  if ([request disableDeviceRacing])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(VSSpeechServerTask *)self synthesisCore];
-    if ([v5 isCancelled])
+    synthesisCore = [(VSSpeechServerTask *)self synthesisCore];
+    if ([synthesisCore isCancelled])
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(VSSpeechServerTask *)self synthesisCore];
-      v7 = [v6 error];
-      if (v7)
+      synthesisCore2 = [(VSSpeechServerTask *)self synthesisCore];
+      error = [synthesisCore2 error];
+      if (error)
       {
         v4 = 1;
       }
 
       else
       {
-        v8 = [(VSSpeechServerTask *)self synthesisCore];
-        v9 = [v8 selectedVoice];
-        v10 = [v9 voiceData];
-        if ([v10 footprint] == 1)
+        synthesisCore3 = [(VSSpeechServerTask *)self synthesisCore];
+        selectedVoice = [synthesisCore3 selectedVoice];
+        voiceData = [selectedVoice voiceData];
+        if ([voiceData footprint] == 1)
         {
           v4 = 1;
         }
 
         else
         {
-          v14 = [(VSSpeechServerTask *)self synthesisCore];
-          v11 = [v14 selectedVoice];
-          v12 = [v11 voiceData];
-          v4 = [v12 type] == 4 && self->_isNeuralFallbackCondition;
+          synthesisCore4 = [(VSSpeechServerTask *)self synthesisCore];
+          selectedVoice2 = [synthesisCore4 selectedVoice];
+          voiceData2 = [selectedVoice2 voiceData];
+          v4 = [voiceData2 type] == 4 && self->_isNeuralFallbackCondition;
         }
       }
     }
@@ -1609,43 +1608,43 @@ LABEL_22:
 - (void)fallbackToDeviceSynthesis
 {
   v55 = *MEMORY[0x277D85DE8];
-  v3 = [(VSSpeechServerTask *)self error];
+  error = [(VSSpeechServerTask *)self error];
 
-  if (v3)
+  if (error)
   {
     v4 = VSGetLogDefault();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
-      v50 = [(VSSpeechServerTask *)self error];
-      v51 = [v50 localizedDescription];
+      error2 = [(VSSpeechServerTask *)self error];
+      localizedDescription = [error2 localizedDescription];
       *buf = 138412290;
-      v54 = v51;
+      v54 = localizedDescription;
       _os_log_error_impl(&dword_2727E4000, v4, OS_LOG_TYPE_ERROR, "Server network error: %@", buf, 0xCu);
     }
   }
 
-  v5 = [(VSSpeechServerTask *)self ospreyCore];
-  if (([v5 isCancelled] & 1) == 0)
+  ospreyCore = [(VSSpeechServerTask *)self ospreyCore];
+  if (([ospreyCore isCancelled] & 1) == 0)
   {
 
     goto LABEL_9;
   }
 
-  v6 = [(VSSpeechServerTask *)self ospreyCore];
-  v7 = [v6 error];
-  v8 = [v7 code];
+  ospreyCore2 = [(VSSpeechServerTask *)self ospreyCore];
+  error3 = [ospreyCore2 error];
+  code = [error3 code];
 
-  if (v8 == 602)
+  if (code == 602)
   {
 LABEL_9:
-    v9 = [(VSSpeechServerTask *)self instrumentMetrics];
-    [v9 setIsServerTimeout:1];
+    instrumentMetrics = [(VSSpeechServerTask *)self instrumentMetrics];
+    [instrumentMetrics setIsServerTimeout:1];
   }
 
-  v10 = [(VSSpeechServerTask *)self request];
-  v11 = [v10 disableDeviceRacing];
+  request = [(VSSpeechServerTask *)self request];
+  disableDeviceRacing = [request disableDeviceRacing];
 
-  if (v11)
+  if (disableDeviceRacing)
   {
     v12 = VSGetLogDefault();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -1654,30 +1653,30 @@ LABEL_9:
       _os_log_impl(&dword_2727E4000, v12, OS_LOG_TYPE_DEFAULT, "Start device synthesis fallback.", buf, 2u);
     }
 
-    v13 = [(VSSpeechServerTask *)self synthesisCore];
-    [v13 start];
+    synthesisCore = [(VSSpeechServerTask *)self synthesisCore];
+    [synthesisCore start];
   }
 
-  v14 = [(VSSpeechServerTask *)self synthesisCore];
-  v15 = [v14 error];
-  if (v15)
+  synthesisCore2 = [(VSSpeechServerTask *)self synthesisCore];
+  error4 = [synthesisCore2 error];
+  if (error4)
   {
 
     goto LABEL_35;
   }
 
-  v16 = [(VSSpeechServerTask *)self synthesisCore];
-  v17 = [v16 streamAudio];
-  if (v17)
+  synthesisCore3 = [(VSSpeechServerTask *)self synthesisCore];
+  streamAudio = [synthesisCore3 streamAudio];
+  if (streamAudio)
   {
   }
 
   else
   {
-    v18 = [(VSSpeechServerTask *)self synthesisCore];
-    v19 = [v18 compressedAudio];
+    synthesisCore4 = [(VSSpeechServerTask *)self synthesisCore];
+    compressedAudio = [synthesisCore4 compressedAudio];
 
-    if (!v19)
+    if (!compressedAudio)
     {
       goto LABEL_35;
     }
@@ -1691,72 +1690,72 @@ LABEL_9:
   }
 
   [(VSSpeechServerTask *)self setUseDeviceSynthesis:1];
-  v21 = [(VSSpeechServerTask *)self deferredTTSTimingInfo];
-  [(VSSpeechServerTask *)self setWordTimingInfo:v21];
+  deferredTTSTimingInfo = [(VSSpeechServerTask *)self deferredTTSTimingInfo];
+  [(VSSpeechServerTask *)self setWordTimingInfo:deferredTTSTimingInfo];
 
-  v22 = [(VSSpeechServerTask *)self instrumentMetrics];
-  [v22 setIsServerTTS:0];
+  instrumentMetrics2 = [(VSSpeechServerTask *)self instrumentMetrics];
+  [instrumentMetrics2 setIsServerTTS:0];
 
-  v23 = [(VSSpeechServerTask *)self instrumentMetrics];
-  [v23 setSourceOfTTS:1];
+  instrumentMetrics3 = [(VSSpeechServerTask *)self instrumentMetrics];
+  [instrumentMetrics3 setSourceOfTTS:1];
 
-  v24 = [(VSSpeechServerTask *)self synthesisCore];
-  v25 = [v24 selectedVoice];
-  v26 = [v25 key];
-  v27 = [(VSSpeechServerTask *)self instrumentMetrics];
-  [v27 setVoiceAssetKey:v26];
+  synthesisCore5 = [(VSSpeechServerTask *)self synthesisCore];
+  selectedVoice = [synthesisCore5 selectedVoice];
+  v26 = [selectedVoice key];
+  instrumentMetrics4 = [(VSSpeechServerTask *)self instrumentMetrics];
+  [instrumentMetrics4 setVoiceAssetKey:v26];
 
-  v28 = [(VSSpeechServerTask *)self synthesisCore];
-  v29 = [v28 selectedVoiceResource];
-  v30 = [v29 key];
-  v31 = [(VSSpeechServerTask *)self instrumentMetrics];
-  [v31 setVoiceResourceAssetKey:v30];
+  synthesisCore6 = [(VSSpeechServerTask *)self synthesisCore];
+  selectedVoiceResource = [synthesisCore6 selectedVoiceResource];
+  domain = [selectedVoiceResource key];
+  instrumentMetrics5 = [(VSSpeechServerTask *)self instrumentMetrics];
+  [instrumentMetrics5 setVoiceResourceAssetKey:domain];
 
-  v32 = [(VSSpeechServerTask *)self synthesisCore];
-  v33 = [v32 streamAudio];
+  synthesisCore7 = [(VSSpeechServerTask *)self synthesisCore];
+  streamAudio2 = [synthesisCore7 streamAudio];
 
-  v34 = [(VSSpeechServerTask *)self synthesisCore];
-  v35 = v34;
-  if (v33)
+  synthesisCore8 = [(VSSpeechServerTask *)self synthesisCore];
+  synthesisCore9 = synthesisCore8;
+  if (streamAudio2)
   {
-    v36 = [v34 streamAudio];
+    streamAudio3 = [synthesisCore8 streamAudio];
     v52[0] = MEMORY[0x277D85DD0];
     v52[1] = 3221225472;
     v52[2] = __47__VSSpeechServerTask_fallbackToDeviceSynthesis__block_invoke;
     v52[3] = &unk_279E4BB18;
     v52[4] = self;
-    [v36 enumerateAudioWithBlock:v52];
+    [streamAudio3 enumerateAudioWithBlock:v52];
 LABEL_25:
 
     goto LABEL_26;
   }
 
-  v37 = [v34 compressedAudio];
+  compressedAudio2 = [synthesisCore8 compressedAudio];
 
-  if (v37)
+  if (compressedAudio2)
   {
-    v35 = [(VSSpeechServerTask *)self synthesisCore];
-    v36 = [v35 compressedAudio];
-    v38 = [(VSSpeechServerTask *)self enqueueAudioData:v36];
+    synthesisCore9 = [(VSSpeechServerTask *)self synthesisCore];
+    streamAudio3 = [synthesisCore9 compressedAudio];
+    v38 = [(VSSpeechServerTask *)self enqueueAudioData:streamAudio3];
     goto LABEL_25;
   }
 
 LABEL_26:
-  v39 = [(VSSpeechServerTask *)self wordTimingInfo];
-  [(VSSpeechServerTask *)self setObserverForWordTimings:v39];
+  wordTimingInfo = [(VSSpeechServerTask *)self wordTimingInfo];
+  [(VSSpeechServerTask *)self setObserverForWordTimings:wordTimingInfo];
 
   [(VSSpeechServerTask *)self reportTimingInfo];
-  v40 = [(VSSpeechServerTask *)self ospreyCore];
-  v41 = [v40 error];
-  if (v41)
+  ospreyCore3 = [(VSSpeechServerTask *)self ospreyCore];
+  error5 = [ospreyCore3 error];
+  if (error5)
   {
   }
 
   else
   {
-    v42 = [(VSSpeechServerTask *)self error];
-    v30 = [v42 domain];
-    v43 = [v30 isEqualToString:@"ServerTTSErrorDomain"];
+    error6 = [(VSSpeechServerTask *)self error];
+    domain = [error6 domain];
+    v43 = [domain isEqualToString:@"ServerTTSErrorDomain"];
 
     if (!v43)
     {
@@ -1764,12 +1763,12 @@ LABEL_26:
     }
   }
 
-  v44 = [(VSSpeechServerTask *)self ospreyCore];
-  v45 = [v44 error];
-  if (v45)
+  ospreyCore4 = [(VSSpeechServerTask *)self ospreyCore];
+  error7 = [ospreyCore4 error];
+  if (error7)
   {
-    v30 = [(VSSpeechServerTask *)self ospreyCore];
-    [v30 error];
+    domain = [(VSSpeechServerTask *)self ospreyCore];
+    [domain error];
   }
 
   else
@@ -1777,14 +1776,14 @@ LABEL_26:
     [(VSSpeechServerTask *)self error];
   }
   v46 = ;
-  v47 = [v46 code];
-  v48 = [(VSSpeechServerTask *)self instrumentMetrics];
-  [v48 setErrorCode:v47];
+  code2 = [v46 code];
+  instrumentMetrics6 = [(VSSpeechServerTask *)self instrumentMetrics];
+  [instrumentMetrics6 setErrorCode:code2];
 
-  if (v45)
+  if (error7)
   {
 
-    v46 = v30;
+    v46 = domain;
   }
 
   [(VSSpeechServerTask *)self setError:0];
@@ -1840,29 +1839,29 @@ void __47__VSSpeechServerTask_fallbackToDeviceSynthesis__block_invoke(uint64_t a
 
   v4 = MEMORY[0x277D79940];
   v5 = *MEMORY[0x277D79A10];
-  v6 = [(VSSpeechServerTask *)self request];
-  v7 = [v6 languageCode];
-  v8 = [v4 localizedInterstitialStringForKey:v5 language:v7];
+  request = [(VSSpeechServerTask *)self request];
+  languageCode = [request languageCode];
+  v8 = [v4 localizedInterstitialStringForKey:v5 language:languageCode];
 
-  v9 = [(VSSpeechServerTask *)self request];
-  v10 = [v9 copy];
+  request2 = [(VSSpeechServerTask *)self request];
+  v10 = [request2 copy];
 
   v11 = MEMORY[0x277CCACA8];
-  v12 = [(VSSpeechServerTask *)self synthesisCore];
-  v13 = [v12 request];
-  v14 = [v13 utterance];
-  v15 = [v11 stringWithFormat:@"%@ %@", v8, v14];
+  synthesisCore = [(VSSpeechServerTask *)self synthesisCore];
+  request3 = [synthesisCore request];
+  utterance = [request3 utterance];
+  v15 = [v11 stringWithFormat:@"%@ %@", v8, utterance];
   [v10 setUtterance:v15];
 
   v16 = MEMORY[0x277CCACA8];
-  v17 = [(VSSpeechServerTask *)self synthesisCore];
-  v18 = [v17 request];
-  v19 = [v18 text];
-  v20 = [v16 stringWithFormat:@"%@ %@", v8, v19];
+  synthesisCore2 = [(VSSpeechServerTask *)self synthesisCore];
+  request4 = [synthesisCore2 request];
+  text = [request4 text];
+  v20 = [v16 stringWithFormat:@"%@ %@", v8, text];
   [v10 setText:v20];
 
-  v21 = [(VSSpeechServerTask *)self playbackService];
-  [v21 stop];
+  playbackService = [(VSSpeechServerTask *)self playbackService];
+  [playbackService stop];
 
   [(VSSpeechServerTask *)self setPlaybackService:0];
   [(VSSpeechServerTask *)self setUseServerResponse:0];
@@ -1872,25 +1871,25 @@ void __47__VSSpeechServerTask_fallbackToDeviceSynthesis__block_invoke(uint64_t a
   [(VSDeviceTTSCore *)v22 start];
 }
 
-- (id)handleServerResponse:(id)a3 timingInfo:(id)a4
+- (id)handleServerResponse:(id)response timingInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  infoCopy = info;
   pthread_mutex_lock(&self->_racingMutex);
   if ([(VSSpeechServerTask *)self useDeviceSynthesis])
   {
-    v8 = [(VSSpeechServerTask *)self synthesisCore];
-    v9 = [v8 selectedVoice];
-    v10 = [v9 voiceData];
-    v11 = [v10 footprint];
+    synthesisCore = [(VSSpeechServerTask *)self synthesisCore];
+    selectedVoice = [synthesisCore selectedVoice];
+    voiceData = [selectedVoice voiceData];
+    footprint = [voiceData footprint];
 
-    if (v11 != 1)
+    if (footprint != 1)
     {
-      v31 = VSGetLogDefault();
-      if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
+      synthesisCore3 = VSGetLogDefault();
+      if (os_log_type_enabled(synthesisCore3, OS_LOG_TYPE_INFO))
       {
         *v33 = 0;
-        _os_log_impl(&dword_2727E4000, v31, OS_LOG_TYPE_INFO, "Received device synthesis previously, ignore server TTS.", v33, 2u);
+        _os_log_impl(&dword_2727E4000, synthesisCore3, OS_LOG_TYPE_INFO, "Received device synthesis previously, ignore server TTS.", v33, 2u);
       }
 
       goto LABEL_16;
@@ -1907,59 +1906,59 @@ void __47__VSSpeechServerTask_fallbackToDeviceSynthesis__block_invoke(uint64_t a
     }
 
     [(VSSpeechServerTask *)self setUseServerResponse:1];
-    v13 = [(VSSpeechServerTask *)self instrumentMetrics];
-    [v13 setIsServerTTS:1];
+    instrumentMetrics = [(VSSpeechServerTask *)self instrumentMetrics];
+    [instrumentMetrics setIsServerTTS:1];
   }
 
   v14 = mach_absolute_time();
-  v15 = [(VSSpeechServerTask *)self instrumentMetrics];
-  [v15 setSynthesisEndTimestamp:v14];
+  instrumentMetrics2 = [(VSSpeechServerTask *)self instrumentMetrics];
+  [instrumentMetrics2 setSynthesisEndTimestamp:v14];
 
   kdebug_trace();
-  v16 = [(VSSpeechServerTask *)self ospreyCore];
-  v17 = [v16 voice];
-  v18 = [v17 voiceKey];
-  v19 = [(VSSpeechServerTask *)self instrumentMetrics];
-  [v19 setVoiceAssetKey:v18];
+  ospreyCore = [(VSSpeechServerTask *)self ospreyCore];
+  voice = [ospreyCore voice];
+  voiceKey = [voice voiceKey];
+  instrumentMetrics3 = [(VSSpeechServerTask *)self instrumentMetrics];
+  [instrumentMetrics3 setVoiceAssetKey:voiceKey];
 
-  v20 = [(VSSpeechServerTask *)self ospreyCore];
-  v21 = [v20 voiceResource];
-  v22 = [v21 key];
-  v23 = [(VSSpeechServerTask *)self instrumentMetrics];
-  [v23 setVoiceResourceAssetKey:v22];
+  ospreyCore2 = [(VSSpeechServerTask *)self ospreyCore];
+  voiceResource = [ospreyCore2 voiceResource];
+  v22 = [voiceResource key];
+  instrumentMetrics4 = [(VSSpeechServerTask *)self instrumentMetrics];
+  [instrumentMetrics4 setVoiceResourceAssetKey:v22];
 
-  v24 = [(VSSpeechServerTask *)self wordTimingInfo];
+  wordTimingInfo = [(VSSpeechServerTask *)self wordTimingInfo];
 
-  if (!v24)
+  if (!wordTimingInfo)
   {
-    [(VSSpeechServerTask *)self setWordTimingInfo:v7];
+    [(VSSpeechServerTask *)self setWordTimingInfo:infoCopy];
     [(VSSpeechServerTask *)self reportTimingInfo];
   }
 
-  v25 = [(VSSpeechServerTask *)self enqueueAudioData:v6];
-  v26 = [(VSSpeechServerTask *)self wordTimingInfo];
-  [(VSSpeechServerTask *)self setObserverForWordTimings:v26];
+  v25 = [(VSSpeechServerTask *)self enqueueAudioData:responseCopy];
+  wordTimingInfo2 = [(VSSpeechServerTask *)self wordTimingInfo];
+  [(VSSpeechServerTask *)self setObserverForWordTimings:wordTimingInfo2];
 
-  v27 = [(VSSpeechServerTask *)self serverAudio];
+  serverAudio = [(VSSpeechServerTask *)self serverAudio];
 
-  if (v27)
+  if (serverAudio)
   {
-    v28 = [(VSSpeechServerTask *)self serverAudio];
-    [v28 concatenateWithAudio:v6];
+    serverAudio2 = [(VSSpeechServerTask *)self serverAudio];
+    [serverAudio2 concatenateWithAudio:responseCopy];
   }
 
   else
   {
-    [(VSSpeechServerTask *)self setServerAudio:v6];
+    [(VSSpeechServerTask *)self setServerAudio:responseCopy];
   }
 
-  v29 = [(VSSpeechServerTask *)self synthesisCore];
-  v30 = [v29 isCancelled];
+  synthesisCore2 = [(VSSpeechServerTask *)self synthesisCore];
+  isCancelled = [synthesisCore2 isCancelled];
 
-  if ((v30 & 1) == 0)
+  if ((isCancelled & 1) == 0)
   {
-    v31 = [(VSSpeechServerTask *)self synthesisCore];
-    [v31 cancel];
+    synthesisCore3 = [(VSSpeechServerTask *)self synthesisCore];
+    [synthesisCore3 cancel];
 LABEL_16:
   }
 
@@ -1974,11 +1973,6 @@ LABEL_16:
   v3.receiver = self;
   v3.super_class = VSSpeechServerTask;
   [(VSSpeechServerTask *)&v3 dealloc];
-}
-
-- (VSSpeechServerTask)init
-  v2 = {;
-  objc_exception_throw(v2);
 }
 
 @end

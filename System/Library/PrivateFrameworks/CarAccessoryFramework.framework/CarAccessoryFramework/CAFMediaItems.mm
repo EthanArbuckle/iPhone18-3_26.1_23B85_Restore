@@ -1,65 +1,65 @@
 @interface CAFMediaItems
-+ (CAFMediaItems)mediaItemsWithArray:(id)a3;
-+ (CAFMediaItems)mediaItemsWithMediaItems:(id)a3;
-- (CAFMediaItems)initWithArray:(id)a3;
-- (CAFMediaItems)initWithMediaItems:(id)a3;
++ (CAFMediaItems)mediaItemsWithArray:(id)array;
++ (CAFMediaItems)mediaItemsWithMediaItems:(id)items;
+- (CAFMediaItems)initWithArray:(id)array;
+- (CAFMediaItems)initWithMediaItems:(id)items;
 - (NSArray)arrayRepresentation;
 - (NSString)formattedValue;
-- (id)objectAtIndex:(unint64_t)a3;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (id)objectAtIndex:(unint64_t)index;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 @end
 
 @implementation CAFMediaItems
 
-+ (CAFMediaItems)mediaItemsWithArray:(id)a3
++ (CAFMediaItems)mediaItemsWithArray:(id)array
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithArray:v4];
+  arrayCopy = array;
+  v5 = [[self alloc] initWithArray:arrayCopy];
 
   return v5;
 }
 
-+ (CAFMediaItems)mediaItemsWithMediaItems:(id)a3
++ (CAFMediaItems)mediaItemsWithMediaItems:(id)items
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithMediaItems:v4];
+  itemsCopy = items;
+  v5 = [[self alloc] initWithMediaItems:itemsCopy];
 
   return v5;
 }
 
-- (CAFMediaItems)initWithMediaItems:(id)a3
+- (CAFMediaItems)initWithMediaItems:(id)items
 {
-  v5 = a3;
+  itemsCopy = items;
   v9.receiver = self;
   v9.super_class = CAFMediaItems;
   v6 = [(CAFMediaItems *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mediaItems, a3);
+    objc_storeStrong(&v6->_mediaItems, items);
   }
 
   return v7;
 }
 
-- (CAFMediaItems)initWithArray:(id)a3
+- (CAFMediaItems)initWithArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v18.receiver = self;
   v18.super_class = CAFMediaItems;
   v5 = [(CAFMediaItems *)&v18 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v12 = MEMORY[0x277D85DD0];
     v13 = 3221225472;
     v14 = __31__CAFMediaItems_initWithArray___block_invoke;
     v15 = &unk_27890DA70;
-    v16 = v6;
+    v16 = array;
     v7 = v5;
     v17 = v7;
-    v8 = v6;
-    [v4 enumerateObjectsUsingBlock:&v12];
+    v8 = array;
+    [arrayCopy enumerateObjectsUsingBlock:&v12];
     v9 = [v8 copy];
     mediaItems = v7->_mediaItems;
     v7->_mediaItems = v9;
@@ -96,12 +96,12 @@ void __31__CAFMediaItems_initWithArray___block_invoke(uint64_t a1, void *a2)
 
 - (NSString)formattedValue
 {
-  v3 = [(CAFMediaItems *)self mediaItems];
-  if ([v3 count])
+  mediaItems = [(CAFMediaItems *)self mediaItems];
+  if ([mediaItems count])
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [(CAFMediaItems *)self mediaItems];
-    v6 = [v5 componentsJoinedByString:{@", "}];
+    mediaItems2 = [(CAFMediaItems *)self mediaItems];
+    v6 = [mediaItems2 componentsJoinedByString:{@", "}];
     v7 = [v4 stringWithFormat:@"[ %@ ]", v6];
   }
 
@@ -121,8 +121,8 @@ void __31__CAFMediaItems_initWithArray___block_invoke(uint64_t a1, void *a2)
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(CAFMediaItems *)self mediaItems];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  mediaItems = [(CAFMediaItems *)self mediaItems];
+  v5 = [mediaItems countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -133,14 +133,14 @@ void __31__CAFMediaItems_initWithArray___block_invoke(uint64_t a1, void *a2)
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(mediaItems);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
-        [v3 addObject:v9];
+        dictionaryRepresentation = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
+        [v3 addObject:dictionaryRepresentation];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [mediaItems countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -151,18 +151,18 @@ void __31__CAFMediaItems_initWithArray___block_invoke(uint64_t a1, void *a2)
   return v3;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
-  v4 = [(CAFMediaItems *)self mediaItems];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  mediaItems = [(CAFMediaItems *)self mediaItems];
+  v5 = [mediaItems objectAtIndexedSubscript:index];
 
   return v5;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  v8 = [(CAFMediaItems *)self mediaItems];
-  v9 = [v8 countByEnumeratingWithState:a3 objects:a4 count:a5];
+  mediaItems = [(CAFMediaItems *)self mediaItems];
+  v9 = [mediaItems countByEnumeratingWithState:state objects:objects count:count];
 
   return v9;
 }

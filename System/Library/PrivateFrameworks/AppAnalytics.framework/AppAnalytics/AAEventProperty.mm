@@ -1,15 +1,15 @@
 @interface AAEventProperty
 - (AAEventProperty)init;
-- (AAEventProperty)initWithDataType:(Class)a3 requirement:(int64_t)a4;
+- (AAEventProperty)initWithDataType:(Class)type requirement:(int64_t)requirement;
 @end
 
 @implementation AAEventProperty
 
-- (AAEventProperty)initWithDataType:(Class)a3 requirement:(int64_t)a4
+- (AAEventProperty)initWithDataType:(Class)type requirement:(int64_t)requirement
 {
   *(&self->super.isa + OBJC_IVAR___AAEventProperty_dataType) = swift_getObjCClassMetadata();
-  *(&self->super.isa + OBJC_IVAR___AAEventProperty_requirement) = a4;
-  v6 = [swift_getObjCClassFromMetadata() dataName];
+  *(&self->super.isa + OBJC_IVAR___AAEventProperty_requirement) = requirement;
+  dataName = [swift_getObjCClassFromMetadata() dataName];
   v7 = sub_1B6AB92E0();
   v9 = v8;
 

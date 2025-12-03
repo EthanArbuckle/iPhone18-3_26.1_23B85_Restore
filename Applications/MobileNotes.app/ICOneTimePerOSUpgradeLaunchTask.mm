@@ -10,14 +10,14 @@
 
 - (void)runLaunchTask
 {
-  v3 = [(ICOneTimePerOSUpgradeLaunchTask *)self lastRunOSVersion];
-  v4 = [(ICOneTimePerOSUpgradeLaunchTask *)self taskKey];
-  v5 = [NSString stringWithFormat:@"%@_AttemptCounter", v4];
+  lastRunOSVersion = [(ICOneTimePerOSUpgradeLaunchTask *)self lastRunOSVersion];
+  taskKey = [(ICOneTimePerOSUpgradeLaunchTask *)self taskKey];
+  v5 = [NSString stringWithFormat:@"%@_AttemptCounter", taskKey];
   v6 = +[NSUserDefaults standardUserDefaults];
   v7 = [v6 integerForKey:v5];
 
-  v8 = [(ICOneTimePerOSUpgradeLaunchTask *)self currentOSVersion];
-  if ([v8 isEqualToString:v3])
+  currentOSVersion = [(ICOneTimePerOSUpgradeLaunchTask *)self currentOSVersion];
+  if ([currentOSVersion isEqualToString:lastRunOSVersion])
   {
     v9 = os_log_create("com.apple.notes", "LaunchTask");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -25,11 +25,11 @@
       *buf = 138413058;
       v19 = objc_opt_class();
       v20 = 2112;
-      v21 = v3;
+      v21 = lastRunOSVersion;
       v22 = 2112;
-      v23 = v8;
+      v23 = currentOSVersion;
       v24 = 2112;
-      v25 = v4;
+      v25 = taskKey;
       v10 = "Already ran one time per upgrade launch task %@ (last=%@ current=%@, taskKey=%@)";
 LABEL_13:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, v10, buf, 0x2Au);
@@ -40,9 +40,9 @@ LABEL_13:
   }
 
   v11 = +[ICCloudConfiguration sharedConfiguration];
-  v12 = [v11 launchTaskMaxRetries];
+  launchTaskMaxRetries = [v11 launchTaskMaxRetries];
 
-  if (v7 >= v12)
+  if (v7 >= launchTaskMaxRetries)
   {
     v9 = os_log_create("com.apple.notes", "LaunchTask");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -50,7 +50,7 @@ LABEL_13:
       *buf = 134218754;
       v19 = v7;
       v20 = 2048;
-      v21 = v12;
+      v21 = launchTaskMaxRetries;
       v22 = 2112;
       v23 = v5;
       v24 = 2112;
@@ -74,20 +74,20 @@ LABEL_16:
     *buf = 134219010;
     v19 = v14;
     v20 = 2048;
-    v21 = v12;
+    v21 = launchTaskMaxRetries;
     v22 = 2112;
     v23 = objc_opt_class();
     v24 = 2112;
-    v25 = v3;
+    v25 = lastRunOSVersion;
     v26 = 2112;
-    v27 = v8;
+    v27 = currentOSVersion;
     _os_log_debug_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "Attempt %lu/%lu to run one time per upgrade launch task (%@) (last=%@ current=%@)", buf, 0x34u);
   }
 
-  v16 = [(ICOneTimePerOSUpgradeLaunchTask *)self runOneTimePerUpgradeLaunchTask];
+  runOneTimePerUpgradeLaunchTask = [(ICOneTimePerOSUpgradeLaunchTask *)self runOneTimePerUpgradeLaunchTask];
   v17 = os_log_create("com.apple.notes", "LaunchTask");
   v9 = v17;
-  if (!v16)
+  if (!runOneTimePerUpgradeLaunchTask)
   {
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -103,15 +103,15 @@ LABEL_16:
   }
 
   v9 = +[NSUserDefaults standardUserDefaults];
-  [v9 setObject:v8 forKey:v4];
+  [v9 setObject:currentOSVersion forKey:taskKey];
 LABEL_17:
 }
 
 - (NSString)lastRunOSVersion
 {
-  v2 = [(ICOneTimePerOSUpgradeLaunchTask *)self taskKey];
+  taskKey = [(ICOneTimePerOSUpgradeLaunchTask *)self taskKey];
   v3 = +[NSUserDefaults standardUserDefaults];
-  v4 = [v3 stringForKey:v2];
+  v4 = [v3 stringForKey:taskKey];
 
   return v4;
 }
@@ -138,8 +138,8 @@ LABEL_17:
 
 - (id)taskKey
 {
-  v2 = [(ICOneTimePerOSUpgradeLaunchTask *)self taskIdentifier];
-  v3 = [NSString stringWithFormat:@"OSVersionStringOfLastRun_%@", v2];
+  taskIdentifier = [(ICOneTimePerOSUpgradeLaunchTask *)self taskIdentifier];
+  v3 = [NSString stringWithFormat:@"OSVersionStringOfLastRun_%@", taskIdentifier];
 
   return v3;
 }

@@ -1,11 +1,11 @@
 @interface CKUnavailabilityIndicatorChatItem
 - (BOOL)displayNotifyAnywayButton;
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
 - (NSAttributedString)unavailableTitleLabelAttributedTextWhenDisplayingNotifyAnywayButton;
 - (NSAttributedString)unavailableTitleLabelAttributedTextWhenNotDisplayingNotifyAnywayButton;
 - (UIEdgeInsets)contentInsets;
-- (id)_unavailableTitleLabelAttributedTextWhenDisplayingNotifyAnywayButton:(BOOL)a3;
-- (id)layoutItemSpacingWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6 sizeOverride:(CGSize)a7;
+- (id)_unavailableTitleLabelAttributedTextWhenDisplayingNotifyAnywayButton:(BOOL)button;
+- (id)layoutItemSpacingWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems sizeOverride:(CGSize)override;
 - (id)loadTranscriptText;
 - (void)_loadUnavailableTitleLabelTextVariants;
 - (void)unloadTranscriptText;
@@ -15,10 +15,10 @@
 
 - (BOOL)displayNotifyAnywayButton
 {
-  v2 = [(CKUnavailabilityIndicatorChatItem *)self imUnavailabilityIndicatorChatItem];
-  v3 = [v2 displayNotifyAnywayButton];
+  imUnavailabilityIndicatorChatItem = [(CKUnavailabilityIndicatorChatItem *)self imUnavailabilityIndicatorChatItem];
+  displayNotifyAnywayButton = [imUnavailabilityIndicatorChatItem displayNotifyAnywayButton];
 
-  return v3;
+  return displayNotifyAnywayButton;
 }
 
 - (id)loadTranscriptText
@@ -76,14 +76,14 @@
   self->_unavailableTitleLabelAttributedTextWhenNotDisplayingNotifyAnywayButton = v5;
 }
 
-- (id)_unavailableTitleLabelAttributedTextWhenDisplayingNotifyAnywayButton:(BOOL)a3
+- (id)_unavailableTitleLabelAttributedTextWhenDisplayingNotifyAnywayButton:(BOOL)button
 {
-  v3 = a3;
+  buttonCopy = button;
   v5 = +[CKUIBehavior sharedBehaviors];
   v6 = v5;
-  if (v3)
+  if (buttonCopy)
   {
-    v7 = [v5 transcriptAvailabilityDeemphasizedFontAttributes];
+    transcriptAvailabilityDeemphasizedFontAttributes = [v5 transcriptAvailabilityDeemphasizedFontAttributes];
 
     v8 = +[CKUIBehavior sharedBehaviors];
     [v8 unavailabilityIndicatorDeemphasizedIcon];
@@ -91,26 +91,26 @@
 
   else
   {
-    v7 = [v5 transcriptAvailabilityFontAttributes];
+    transcriptAvailabilityDeemphasizedFontAttributes = [v5 transcriptAvailabilityFontAttributes];
 
     v8 = +[CKUIBehavior sharedBehaviors];
     [v8 unavailabilityIndicatorIcon];
   }
   v9 = ;
 
-  v10 = [(CKUnavailabilityIndicatorChatItem *)self imUnavailabilityIndicatorChatItem];
-  v11 = [v10 handle];
-  v12 = [v11 _displayNameWithAbbreviation];
+  imUnavailabilityIndicatorChatItem = [(CKUnavailabilityIndicatorChatItem *)self imUnavailabilityIndicatorChatItem];
+  handle = [imUnavailabilityIndicatorChatItem handle];
+  _displayNameWithAbbreviation = [handle _displayNameWithAbbreviation];
 
   v13 = MEMORY[0x1E696AEC0];
   v14 = CKFrameworkBundle();
   v15 = [v14 localizedStringForKey:@"UNAVAILABILITY_INDICATOR_TITLE_FORMAT" value:&stru_1F04268F8 table:@"ChatKit"];
-  v16 = [v13 stringWithFormat:v15, v12];
+  v16 = [v13 stringWithFormat:v15, _displayNameWithAbbreviation];
 
-  v17 = [MEMORY[0x1E69DC668] sharedApplication];
-  v18 = [v17 userInterfaceLayoutDirection];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-  if (v18 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v19 = @"\u200F";
   }
@@ -129,7 +129,7 @@
   v23 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v22];
   [v21 insertAttributedString:v23 atIndex:0];
 
-  [v21 addAttributes:v7 range:{0, objc_msgSend(v21, "length")}];
+  [v21 addAttributes:transcriptAvailabilityDeemphasizedFontAttributes range:{0, objc_msgSend(v21, "length")}];
 
   return v21;
 }
@@ -154,24 +154,24 @@
   return result;
 }
 
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v8 = +[CKUIBehavior sharedBehaviors];
   v9 = v8;
-  if (a4)
+  if (insets)
   {
     [v8 transcriptBoldTextAlignmentInsets];
-    a4->top = v10;
-    a4->left = v11;
-    a4->bottom = v12;
-    a4->right = v13;
+    insets->top = v10;
+    insets->left = v11;
+    insets->bottom = v12;
+    insets->right = v13;
   }
 
   v14 = +[CKTranscriptUnavailabilityIndicatorCell unavailableTitleLabel];
-  v15 = [(CKChatItem *)self transcriptText];
-  [v14 setAttributedText:v15];
+  transcriptText = [(CKChatItem *)self transcriptText];
+  [v14 setAttributedText:transcriptText];
 
   [v14 sizeThatFits:{width, height}];
   v17 = v16;
@@ -183,20 +183,20 @@
   return result;
 }
 
-- (id)layoutItemSpacingWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6 sizeOverride:(CGSize)a7
+- (id)layoutItemSpacingWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems sizeOverride:(CGSize)override
 {
   v32 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  if (a4 < 1)
+  environmentCopy = environment;
+  itemsCopy = items;
+  supplementryItemsCopy = supplementryItems;
+  if (index < 1)
   {
     v14 = 0;
   }
 
   else
   {
-    v14 = [v12 objectAtIndex:a4 - 1];
+    v14 = [itemsCopy objectAtIndex:index - 1];
   }
 
   v15 = +[CKUIBehavior sharedBehaviors];
@@ -216,17 +216,17 @@
     goto LABEL_28;
   }
 
-  v21 = [v14 layoutType];
-  if (v21 > 5)
+  layoutType = [v14 layoutType];
+  if (layoutType > 5)
   {
-    if (v21 <= 0x1B)
+    if (layoutType <= 0x1B)
     {
-      if (((1 << v21) & 0x840E740) != 0)
+      if (((1 << layoutType) & 0x840E740) != 0)
       {
         goto LABEL_8;
       }
 
-      if (v21 == 11)
+      if (layoutType == 11)
       {
         v27 = IMLogHandleForCategory();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -237,7 +237,7 @@
         goto LABEL_27;
       }
 
-      if (v21 == 12)
+      if (layoutType == 12)
       {
         v27 = IMLogHandleForCategory();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -262,9 +262,9 @@ LABEL_25:
     goto LABEL_27;
   }
 
-  if ((v21 - 2) >= 2)
+  if ((layoutType - 2) >= 2)
   {
-    if (v21 == 1 || v21 == 5)
+    if (layoutType == 1 || layoutType == 5)
     {
       goto LABEL_28;
     }

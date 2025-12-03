@@ -1,11 +1,11 @@
 @interface BKUIJindoPositioningGuideView
 - (double)_edgeDistanceHeightDifference;
 - (double)_squareLayoutOpenValue;
-- (id)_roundedRectMaskForMaskDistance:(double)a3 portalCenter:(CGPoint)a4 cornerRadius:(double)a5;
-- (void)_startAnimationWithDuration:(double)a3 completion:(id)a4;
-- (void)_updateChildrenValuesForDisplayTickProgress:(double)a3;
-- (void)_updateTargetValuesForAnimation:(int64_t)a3 animationCurve:(int64_t)a4;
-- (void)drawRect:(CGRect)a3;
+- (id)_roundedRectMaskForMaskDistance:(double)distance portalCenter:(CGPoint)center cornerRadius:(double)radius;
+- (void)_startAnimationWithDuration:(double)duration completion:(id)completion;
+- (void)_updateChildrenValuesForDisplayTickProgress:(double)progress;
+- (void)_updateTargetValuesForAnimation:(int64_t)animation animationCurve:(int64_t)curve;
+- (void)drawRect:(CGRect)rect;
 - (void)resetValuesToStart;
 @end
 
@@ -29,13 +29,13 @@
   [(BKUIJindoPositioningGuideView *)self setNeedsDisplay];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  [(BKUIPearlPositioningGuideView *)self portalCenter:a3.origin.x];
+  [(BKUIPearlPositioningGuideView *)self portalCenter:rect.origin.x];
   v5 = v4;
   v35 = v4;
   v7 = v6;
-  v40 = [MEMORY[0x277D75208] bezierPath];
+  bezierPath = [MEMORY[0x277D75208] bezierPath];
   [(BKUIPearlPositioningGuideView *)self edgeDistance];
   v9 = v8;
   [(BKUIPearlPositioningGuideView *)self cornerRadius];
@@ -49,62 +49,62 @@
   v39 = v16;
   v17 = v7;
   v34 = v7;
-  [v40 moveToPoint:{v38, v7 + v9 - v11 - v13 + v15}];
+  [bezierPath moveToPoint:{v38, v7 + v9 - v11 - v13 + v15}];
   v18 = v13 + v7 + v9 - v11 - v13 + v15;
-  [v40 addLineToPoint:{v38, v18}];
-  [v40 addArcWithCenter:1 radius:v38 - v11 startAngle:v18 endAngle:v11 clockwise:0.0];
+  [bezierPath addLineToPoint:{v38, v18}];
+  [bezierPath addArcWithCenter:1 radius:v38 - v11 startAngle:v18 endAngle:v11 clockwise:0.0];
   v19 = v17 + v9;
   v20 = v17 + v9 + v15;
   v37 = v38 - v11 - v13;
-  [v40 addLineToPoint:?];
+  [bezierPath addLineToPoint:?];
   v21 = v35 - v9;
   v22 = v35 - v9 + v11;
   v36 = v22 + v13;
-  [v40 moveToPoint:?];
-  [v40 addLineToPoint:{v22, v20}];
+  [bezierPath moveToPoint:?];
+  [bezierPath addLineToPoint:{v22, v20}];
   v23 = v19 - v11;
-  [v40 addArcWithCenter:1 radius:v22 startAngle:v23 + v15 endAngle:v11 clockwise:{1.57079633, 3.14159265}];
-  [v40 addLineToPoint:{v21, v23 - v13 + v15}];
+  [bezierPath addArcWithCenter:1 radius:v22 startAngle:v23 + v15 endAngle:v11 clockwise:{1.57079633, 3.14159265}];
+  [bezierPath addLineToPoint:{v21, v23 - v13 + v15}];
   v24 = v34 - v9;
   v25 = v34 - v9 + v11;
   v26 = v25 + v13 - v15;
-  [v40 moveToPoint:{v21, v26}];
+  [bezierPath moveToPoint:{v21, v26}];
   v27 = v25 - v15;
-  [v40 addLineToPoint:{v21, v27}];
-  [v40 addArcWithCenter:1 radius:v22 startAngle:v27 endAngle:v11 clockwise:{3.14159265, 4.71238898}];
-  [v40 addLineToPoint:{v36, v24 - v15}];
-  [v40 moveToPoint:{v37, v24 - v15}];
-  [v40 addLineToPoint:{v38 - v11, v24 - v15}];
-  [v40 addArcWithCenter:1 radius:v38 - v11 startAngle:v27 endAngle:v11 clockwise:{4.71238898, 0.0}];
-  [v40 addLineToPoint:{v38, v26}];
-  [v40 setLineCapStyle:1];
-  [v40 setLineWidth:v39 + 1.0];
+  [bezierPath addLineToPoint:{v21, v27}];
+  [bezierPath addArcWithCenter:1 radius:v22 startAngle:v27 endAngle:v11 clockwise:{3.14159265, 4.71238898}];
+  [bezierPath addLineToPoint:{v36, v24 - v15}];
+  [bezierPath moveToPoint:{v37, v24 - v15}];
+  [bezierPath addLineToPoint:{v38 - v11, v24 - v15}];
+  [bezierPath addArcWithCenter:1 radius:v38 - v11 startAngle:v27 endAngle:v11 clockwise:{4.71238898, 0.0}];
+  [bezierPath addLineToPoint:{v38, v26}];
+  [bezierPath setLineCapStyle:1];
+  [bezierPath setLineWidth:v39 + 1.0];
   v28 = MEMORY[0x277D75348];
   [(BKUIPearlPositioningGuideView *)self lineAlpha];
   v30 = [v28 colorWithWhite:0.0 alpha:v29 * 0.25];
   [v30 setStroke];
 
-  [v40 stroke];
-  [v40 setLineWidth:v39];
+  [bezierPath stroke];
+  [bezierPath setLineWidth:v39];
   v31 = MEMORY[0x277D75348];
   [(BKUIPearlPositioningGuideView *)self lineAlpha];
   v33 = [v31 colorWithWhite:1.0 alpha:v32];
   [v33 setStroke];
 
-  [v40 stroke];
+  [bezierPath stroke];
 }
 
 - (double)_squareLayoutOpenValue
 {
   v3 = +[BKUIDevice sharedInstance];
-  v4 = [v3 isZoomEnabled];
+  isZoomEnabled = [v3 isZoomEnabled];
 
-  if (v4)
+  if (isZoomEnabled)
   {
     v5 = +[BKUIDevice sharedInstance];
-    v6 = [v5 mainScreenClass];
+    mainScreenClass = [v5 mainScreenClass];
 
-    if (v6 == 39)
+    if (mainScreenClass == 39)
     {
       v7 = 45.0;
     }
@@ -141,18 +141,18 @@
 - (double)_edgeDistanceHeightDifference
 {
   v2 = +[BKUIDevice sharedInstance];
-  v3 = [v2 mainScreenClass];
+  mainScreenClass = [v2 mainScreenClass];
 
-  if (v3 != 31)
+  if (mainScreenClass != 31)
   {
     return 26.5;
   }
 
   v4 = +[BKUIDevice sharedInstance];
-  v5 = [v4 isZoomEnabled];
+  isZoomEnabled = [v4 isZoomEnabled];
 
   result = 30.0;
-  if (v5)
+  if (isZoomEnabled)
   {
     return 7.5;
   }
@@ -160,13 +160,13 @@
   return result;
 }
 
-- (void)_updateTargetValuesForAnimation:(int64_t)a3 animationCurve:(int64_t)a4
+- (void)_updateTargetValuesForAnimation:(int64_t)animation animationCurve:(int64_t)curve
 {
-  if (a3 >= 3)
+  if (animation >= 3)
   {
-    if (a3 == 3)
+    if (animation == 3)
     {
-      [(BKUIPearlPositioningGuideView *)self setTargetLineWidth:3, a4, 3.5];
+      [(BKUIPearlPositioningGuideView *)self setTargetLineWidth:3, curve, 3.5];
       [(BKUIPearlPositioningGuideView *)self ringRadius];
       v7 = v6;
       [(BKUIPearlPositioningGuideView *)self targetLineWidth];
@@ -193,37 +193,37 @@
     [(BKUIJindoPositioningGuideView *)self center];
     [(BKUIPearlPositioningGuideView *)self setTargetPortalCenter:?];
 
-    [(BKUIPearlPositioningGuideView *)self setAnimationCurve:a4];
+    [(BKUIPearlPositioningGuideView *)self setAnimationCurve:curve];
   }
 }
 
-- (void)_updateChildrenValuesForDisplayTickProgress:(double)a3
+- (void)_updateChildrenValuesForDisplayTickProgress:(double)progress
 {
   targetLineYposition = self->_targetLineYposition;
   [(BKUIJindoPositioningGuideView *)self lineYpositionDifference];
-  [(BKUIPearlPositioningGuideView *)self _updatedFloatWithTarget:targetLineYposition current:v6 start:self->_startLineYposition progress:a3];
+  [(BKUIPearlPositioningGuideView *)self _updatedFloatWithTarget:targetLineYposition current:v6 start:self->_startLineYposition progress:progress];
 
   [(BKUIJindoPositioningGuideView *)self setLineYpositionDifference:?];
 }
 
-- (id)_roundedRectMaskForMaskDistance:(double)a3 portalCenter:(CGPoint)a4 cornerRadius:(double)a5
+- (id)_roundedRectMaskForMaskDistance:(double)distance portalCenter:(CGPoint)center cornerRadius:(double)radius
 {
-  y = a4.y;
-  x = a4.x;
+  y = center.y;
+  x = center.x;
   [(BKUIJindoPositioningGuideView *)self bounds];
   v14 = [MEMORY[0x277D75208] bezierPathWithRect:{v10 + -1.0, v11 + -1.0, v12 + 2.0, v13 + 2.0}];
   [(BKUIJindoPositioningGuideView *)self lineYpositionDifference];
-  v16 = y - a3 - v15;
+  v16 = y - distance - v15;
   [(BKUIJindoPositioningGuideView *)self lineYpositionDifference];
-  v18 = [MEMORY[0x277D75208] _bezierPathWithArcRoundedRect:x - a3 cornerRadius:{v16, a3 + a3, v17 + v17 + a3 * 2.0, a5}];
+  v18 = [MEMORY[0x277D75208] _bezierPathWithArcRoundedRect:x - distance cornerRadius:{v16, distance + distance, v17 + v17 + distance * 2.0, radius}];
   [v14 appendPath:v18];
 
   return v14;
 }
 
-- (void)_startAnimationWithDuration:(double)a3 completion:(id)a4
+- (void)_startAnimationWithDuration:(double)duration completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if (([(BKUIJindoPositioningGuideView *)self isHidden]& 1) == 0 && !UIAccessibilityIsReduceMotionEnabled())
   {
     self->_startLineYposition = self->_lineYpositionDifference;
@@ -231,7 +231,7 @@
 
   v7.receiver = self;
   v7.super_class = BKUIJindoPositioningGuideView;
-  [(BKUIPearlPositioningGuideView *)&v7 _startAnimationWithDuration:v6 completion:a3];
+  [(BKUIPearlPositioningGuideView *)&v7 _startAnimationWithDuration:completionCopy completion:duration];
 }
 
 @end

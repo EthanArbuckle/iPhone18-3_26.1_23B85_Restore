@@ -1,32 +1,32 @@
 @interface PDFScannerResult
-- (BOOL)containsPoint:(CGPoint)a3;
-- (BOOL)containsPoint:(CGPoint)a3 onPageLayer:(id)a4;
+- (BOOL)containsPoint:(CGPoint)point;
+- (BOOL)containsPoint:(CGPoint)point onPageLayer:(id)layer;
 - (BOOL)hasActionsForResult;
-- (BOOL)pointIsOnButton:(CGPoint)a3;
-- (BOOL)pointIsOnButton:(CGPoint)a3 onPageLayer:(id)a4;
+- (BOOL)pointIsOnButton:(CGPoint)button;
+- (BOOL)pointIsOnButton:(CGPoint)button onPageLayer:(id)layer;
 - (CGRect)bounds;
-- (PDFScannerResult)initWithDDScannerResult:(id)a3 foundOnPage:(id)a4;
-- (double)displayScaleOnPageLayer:(id)a3;
-- (void)setButtonPressed:(BOOL)a3;
-- (void)setHighlightRef:(__DDHighlight *)a3;
+- (PDFScannerResult)initWithDDScannerResult:(id)result foundOnPage:(id)page;
+- (double)displayScaleOnPageLayer:(id)layer;
+- (void)setButtonPressed:(BOOL)pressed;
+- (void)setHighlightRef:(__DDHighlight *)ref;
 @end
 
 @implementation PDFScannerResult
 
-- (PDFScannerResult)initWithDDScannerResult:(id)a3 foundOnPage:(id)a4
+- (PDFScannerResult)initWithDDScannerResult:(id)result foundOnPage:(id)page
 {
   v46 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  resultCopy = result;
+  pageCopy = page;
   v44.receiver = self;
   v44.super_class = PDFScannerResult;
   v9 = [(PDFScannerResult *)&v44 init];
   if (v9)
   {
-    v10 = [v7 url];
+    v10 = [resultCopy url];
     v11 = PDFURLLooksSuspicious(v10);
 
-    if ((v11 & 1) != 0 || (v12 = [v7 urlificationRange], objc_msgSend(v8, "selectionForRange:", v12, v13), (v14 = objc_claimAutoreleasedReturnValue()) == 0))
+    if ((v11 & 1) != 0 || (v12 = [resultCopy urlificationRange], objc_msgSend(pageCopy, "selectionForRange:", v12, v13), (v14 = objc_claimAutoreleasedReturnValue()) == 0))
     {
       v37 = 0;
       goto LABEL_14;
@@ -37,10 +37,10 @@
     v17 = v9->_private;
     v9->_private = v16;
 
-    objc_storeStrong(&v9->_private->ddResult, a3);
-    objc_storeWeak(&v9->_private->page, v8);
+    objc_storeStrong(&v9->_private->ddResult, result);
+    objc_storeWeak(&v9->_private->page, pageCopy);
     v18 = v9->_private;
-    [v15 boundsForPage:v8];
+    [v15 boundsForPage:pageCopy];
     v18->bounds.origin.x = v19;
     v18->bounds.origin.y = v20;
     v18->bounds.size.width = v21;
@@ -51,12 +51,12 @@
     v24->rects = v23;
 
     v39 = v15;
-    v26 = [v15 selectionsByLine];
+    selectionsByLine = [v15 selectionsByLine];
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v27 = [v26 countByEnumeratingWithState:&v40 objects:v45 count:16];
+    v27 = [selectionsByLine countByEnumeratingWithState:&v40 objects:v45 count:16];
     if (v27)
     {
       v28 = v27;
@@ -68,10 +68,10 @@
         {
           if (*v41 != v29)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(selectionsByLine);
           }
 
-          [*(*(&v40 + 1) + 8 * v30) boundsForPage:v8];
+          [*(*(&v40 + 1) + 8 * v30) boundsForPage:pageCopy];
           v31 = v9->_private->rects;
           v32 = [MEMORY[0x1E696B098] PDFKitValueWithPDFRect:?];
           [(NSArray *)v31 addObject:v32];
@@ -80,18 +80,18 @@
         }
 
         while (v28 != v30);
-        v28 = [v26 countByEnumeratingWithState:&v40 objects:v45 count:16];
+        v28 = [selectionsByLine countByEnumeratingWithState:&v40 objects:v45 count:16];
       }
 
       while (v28);
     }
 
-    v33 = [v8 document];
-    v34 = [v33 documentAttributes];
-    v35 = [v34 objectForKey:@"CreationDate"];
+    document = [pageCopy document];
+    documentAttributes = [document documentAttributes];
+    v35 = [documentAttributes objectForKey:@"CreationDate"];
 
     [(DDScannerResult *)v9->_private->ddResult coreResult];
-    v36 = [MEMORY[0x1E695DFE8] localTimeZone];
+    localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
     v9->_private->resultIsPastDate = DDResultIsPastDate() != 0;
 
     v9->_private->hasRunActionsForResult = 0;
@@ -131,37 +131,37 @@ LABEL_14:
   return v2->hasActionsForResult;
 }
 
-- (void)setHighlightRef:(__DDHighlight *)a3
+- (void)setHighlightRef:(__DDHighlight *)ref
 {
   highlightRef = self->_private->highlightRef;
-  if (highlightRef != a3)
+  if (highlightRef != ref)
   {
     if (highlightRef)
     {
       CFRelease(highlightRef);
     }
 
-    if (a3)
+    if (ref)
     {
-      CFRetain(a3);
+      CFRetain(ref);
     }
 
-    self->_private->highlightRef = a3;
+    self->_private->highlightRef = ref;
   }
 }
 
-- (double)displayScaleOnPageLayer:(id)a3
+- (double)displayScaleOnPageLayer:(id)layer
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  layerCopy = layer;
+  v4 = layerCopy;
+  if (layerCopy)
   {
-    v5 = [v3 geometryInterface];
-    [v5 targetBackingScaleFactor];
+    geometryInterface = [layerCopy geometryInterface];
+    [geometryInterface targetBackingScaleFactor];
     BackingScaleFactor = v6;
     v8.n128_u64[0] = 0;
     v9.n128_u64[0] = 0;
-    [v5 convertRectToRootView:v4 fromPageLayer:{PDFRectMake(v8, v9, 1.0, 1.0)}];
+    [geometryInterface convertRectToRootView:v4 fromPageLayer:{PDFRectMake(v8, v9, 1.0, 1.0)}];
     v11 = floor(v10 * 0.75);
     if (BackingScaleFactor < v11)
     {
@@ -177,10 +177,10 @@ LABEL_14:
   return BackingScaleFactor;
 }
 
-- (BOOL)containsPoint:(CGPoint)a3
+- (BOOL)containsPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   WeakRetained = objc_loadWeakRetained(&self->_private->page);
   v7 = WeakRetained;
   if (self->_private->highlightRef)
@@ -200,30 +200,30 @@ LABEL_14:
 
   else
   {
-    v9 = [WeakRetained view];
-    v10 = [v7 document];
-    v11 = [v9 pageViewForPageAtIndex:{objc_msgSend(v10, "indexForPage:", v7)}];
-    v12 = [v11 layer];
+    view = [WeakRetained view];
+    document = [v7 document];
+    v11 = [view pageViewForPageAtIndex:{objc_msgSend(document, "indexForPage:", v7)}];
+    layer = [v11 layer];
 
-    v13 = [(PDFScannerResult *)self containsPoint:v12 onPageLayer:x, y];
+    v13 = [(PDFScannerResult *)self containsPoint:layer onPageLayer:x, y];
   }
 
   return v13;
 }
 
-- (BOOL)containsPoint:(CGPoint)a3 onPageLayer:(id)a4
+- (BOOL)containsPoint:(CGPoint)point onPageLayer:(id)layer
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = v7;
+  y = point.y;
+  x = point.x;
+  layerCopy = layer;
+  v8 = layerCopy;
   v9 = 0;
-  if (v7 && self->_private->highlightRef)
+  if (layerCopy && self->_private->highlightRef)
   {
-    v10 = [v7 geometryInterface];
+    geometryInterface = [layerCopy geometryInterface];
     v11.n128_u64[0] = 0;
     v12.n128_u64[0] = 0;
-    [v10 convertRectToRootView:v8 fromPageLayer:{PDFRectMake(v11, v12, 1.0, 1.0)}];
+    [geometryInterface convertRectToRootView:v8 fromPageLayer:{PDFRectMake(v11, v12, 1.0, 1.0)}];
     v14 = v13;
 
     v15 = PDFPointScale(x, y, v14);
@@ -273,10 +273,10 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)pointIsOnButton:(CGPoint)a3
+- (BOOL)pointIsOnButton:(CGPoint)button
 {
-  y = a3.y;
-  x = a3.x;
+  y = button.y;
+  x = button.x;
   WeakRetained = objc_loadWeakRetained(&self->_private->page);
   v7 = WeakRetained;
   if (self->_private->highlightRef)
@@ -296,33 +296,33 @@ LABEL_11:
 
   else
   {
-    v9 = [WeakRetained view];
-    v10 = [v7 document];
-    v11 = [v9 pageViewForPageAtIndex:{objc_msgSend(v10, "indexForPage:", v7)}];
-    v12 = [v11 layer];
+    view = [WeakRetained view];
+    document = [v7 document];
+    v11 = [view pageViewForPageAtIndex:{objc_msgSend(document, "indexForPage:", v7)}];
+    layer = [v11 layer];
 
-    v13 = [(PDFScannerResult *)self pointIsOnButton:v12 onPageLayer:x, y];
+    v13 = [(PDFScannerResult *)self pointIsOnButton:layer onPageLayer:x, y];
   }
 
   return v13;
 }
 
-- (BOOL)pointIsOnButton:(CGPoint)a3 onPageLayer:(id)a4
+- (BOOL)pointIsOnButton:(CGPoint)button onPageLayer:(id)layer
 {
-  if (a4)
+  if (layer)
   {
     if (self->_private->highlightRef)
     {
-      y = a3.y;
-      x = a3.x;
-      v7 = a4;
-      v8 = [v7 geometryInterface];
+      y = button.y;
+      x = button.x;
+      layerCopy = layer;
+      geometryInterface = [layerCopy geometryInterface];
       v9.n128_u64[0] = 0;
       v10.n128_u64[0] = 0;
-      [v8 convertRectToRootView:v7 fromPageLayer:{PDFRectMake(v9, v10, 1.0, 1.0)}];
+      [geometryInterface convertRectToRootView:layerCopy fromPageLayer:{PDFRectMake(v9, v10, 1.0, 1.0)}];
       v12 = v11;
 
-      [(PDFScannerResult *)self displayScaleOnPageLayer:v7];
+      [(PDFScannerResult *)self displayScaleOnPageLayer:layerCopy];
       v14 = v13;
 
       v15 = PDFPointScale(x, y, v12 / v14);
@@ -337,7 +337,7 @@ LABEL_11:
   return 0;
 }
 
-- (void)setButtonPressed:(BOOL)a3
+- (void)setButtonPressed:(BOOL)pressed
 {
   if (self->_private->highlightRef)
   {

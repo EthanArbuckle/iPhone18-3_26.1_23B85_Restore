@@ -2,7 +2,7 @@
 + (CKLinkIntentsManager)sharedManager;
 - (CKLinkIntentsManager)init;
 - (void)purgeDependencies;
-- (void)registerDependencyWithDetailsController:(id)a3;
+- (void)registerDependencyWithDetailsController:(id)controller;
 @end
 
 @implementation CKLinkIntentsManager
@@ -28,15 +28,15 @@
   return [(CKLinkIntentsManager *)&v4 init];
 }
 
-- (void)registerDependencyWithDetailsController:(id)a3
+- (void)registerDependencyWithDetailsController:(id)controller
 {
   sub_190D50490();
-  v4 = a3;
+  controllerCopy = controller;
   sub_190D50480();
   sub_190D58230();
-  *(swift_allocObject() + 16) = v4;
+  *(swift_allocObject() + 16) = controllerCopy;
   sub_190D2AD7C();
-  v5 = v4;
+  v5 = controllerCopy;
   sub_190D50470();
 
   sub_190D2ADC8(v6);

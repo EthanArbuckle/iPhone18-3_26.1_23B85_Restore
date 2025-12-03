@@ -13,8 +13,8 @@
   if (v7)
   {
     v8 = [MEMORY[0x277D058C8] newWithDictionaryRepresentation:v7 context:v5];
-    v9 = [v5 applicationIdentifierMapper];
-    v10 = [v9 applicationIdentifierForFileWithSourceApplicationIdentifier:v8];
+    applicationIdentifierMapper = [v5 applicationIdentifierMapper];
+    v10 = [applicationIdentifierMapper applicationIdentifierForFileWithSourceApplicationIdentifier:v8];
   }
 
   else
@@ -25,8 +25,8 @@
 
   v11 = [v6 bs_safeNumberForKey:@"enabledSetting"];
 
-  v12 = [v11 unsignedIntegerValue];
-  v13 = [objc_alloc(MEMORY[0x277D05998]) initWithApplicationIdentifier:v10 enabledSetting:v12];
+  unsignedIntegerValue = [v11 unsignedIntegerValue];
+  v13 = [objc_alloc(MEMORY[0x277D05998]) initWithApplicationIdentifier:v10 enabledSetting:unsignedIntegerValue];
 
   return v13;
 }
@@ -35,20 +35,20 @@
 {
   v16[3] = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [v4 destination];
-  if (!v5)
+  destination = [v4 destination];
+  if (!destination)
   {
-    v6 = [v4 applicationIdentifierMapper];
-    v7 = [a1 applicationIdentifier];
-    v8 = [v6 applicationIdentifierForSyncWithSourceApplicationIdentifier:v7];
+    applicationIdentifierMapper = [v4 applicationIdentifierMapper];
+    applicationIdentifier = [self applicationIdentifier];
+    v8 = [applicationIdentifierMapper applicationIdentifierForSyncWithSourceApplicationIdentifier:applicationIdentifier];
     goto LABEL_5;
   }
 
-  if (v5 == 1)
+  if (destination == 1)
   {
-    v6 = [v4 applicationIdentifierMapper];
-    v7 = [a1 applicationIdentifier];
-    v8 = [v6 applicationIdentifierForFileWithSourceApplicationIdentifier:v7];
+    applicationIdentifierMapper = [v4 applicationIdentifierMapper];
+    applicationIdentifier = [self applicationIdentifier];
+    v8 = [applicationIdentifierMapper applicationIdentifierForFileWithSourceApplicationIdentifier:applicationIdentifier];
 LABEL_5:
     v9 = v8;
 
@@ -63,7 +63,7 @@ LABEL_7:
   v10 = [v9 dictionaryRepresentationWithContext:v4];
   v16[1] = v10;
   v15[2] = @"enabledSetting";
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(a1, "enabledSetting")}];
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(self, "enabledSetting")}];
   v16[2] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:3];
 

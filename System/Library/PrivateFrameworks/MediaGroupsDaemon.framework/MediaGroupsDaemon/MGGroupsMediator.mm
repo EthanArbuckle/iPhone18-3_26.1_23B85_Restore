@@ -1,29 +1,29 @@
 @interface MGGroupsMediator
-- (MGGroupsMediator)initWithGroupsQueryAgent:(id)a3;
+- (MGGroupsMediator)initWithGroupsQueryAgent:(id)agent;
 - (MGGroupsQueryAgent)queryAgent;
 - (id)currentGroups;
 - (id)description;
-- (id)group:(id)a3 addMember:(id)a4;
-- (id)group:(id)a3 removeMember:(id)a4;
-- (id)group:(id)a3 renameTo:(id)a4;
+- (id)group:(id)group addMember:(id)member;
+- (id)group:(id)group removeMember:(id)member;
+- (id)group:(id)group renameTo:(id)to;
 - (id)groupsForUpdate_unsafe;
 - (id)groups_unsafe;
-- (id)startActivityWithName:(id)a3;
-- (void)_withLock:(id)a3;
-- (void)addGroup:(id)a3;
+- (id)startActivityWithName:(id)name;
+- (void)_withLock:(id)lock;
+- (void)addGroup:(id)group;
 - (void)dealloc;
-- (void)endActivity:(id)a3;
-- (void)removeGroup:(id)a3;
-- (void)removeGroup:(id)a3 ifExists_unsafe:(BOOL *)a4;
-- (void)removeGroupWithIdentifier:(id)a3;
-- (void)upsertGroup_unsafe:(id)a3;
+- (void)endActivity:(id)activity;
+- (void)removeGroup:(id)group;
+- (void)removeGroup:(id)group ifExists_unsafe:(BOOL *)exists_unsafe;
+- (void)removeGroupWithIdentifier:(id)identifier;
+- (void)upsertGroup_unsafe:(id)group_unsafe;
 @end
 
 @implementation MGGroupsMediator
 
-- (MGGroupsMediator)initWithGroupsQueryAgent:(id)a3
+- (MGGroupsMediator)initWithGroupsQueryAgent:(id)agent
 {
-  v4 = a3;
+  agentCopy = agent;
   v14.receiver = self;
   v14.super_class = MGGroupsMediator;
   v5 = [(MGGroupsMediator *)&v14 init];
@@ -35,7 +35,7 @@
     identifier = v6->_identifier;
     v6->_identifier = v7;
 
-    objc_storeWeak(&v6->_queryAgent, v4);
+    objc_storeWeak(&v6->_queryAgent, agentCopy);
     v9 = objc_alloc_init(MEMORY[0x277CBEA60]);
     activities = v6->_activities;
     v6->_activities = v9;
@@ -50,8 +50,8 @@
 
 - (void)dealloc
 {
-  v3 = [(MGGroupsMediator *)self queryAgent];
-  [v3 groupsMediatorRemoved:self];
+  queryAgent = [(MGGroupsMediator *)self queryAgent];
+  [queryAgent groupsMediatorRemoved:self];
 
   v4.receiver = self;
   v4.super_class = MGGroupsMediator;
@@ -66,15 +66,15 @@
   return groups;
 }
 
-- (void)upsertGroup_unsafe:(id)a3
+- (void)upsertGroup_unsafe:(id)group_unsafe
 {
-  v4 = a3;
+  group_unsafeCopy = group_unsafe;
   os_unfair_lock_assert_owner(&self->_lock);
-  v5 = [(MGGroupsMediator *)self groups_unsafe];
-  v6 = [v5 mutableCopy];
+  groups_unsafe = [(MGGroupsMediator *)self groups_unsafe];
+  v6 = [groups_unsafe mutableCopy];
 
-  v7 = [v4 identifier];
-  [(NSDictionary *)v6 setObject:v4 forKey:v7];
+  identifier = [group_unsafeCopy identifier];
+  [(NSDictionary *)v6 setObject:group_unsafeCopy forKey:identifier];
 
   groups = self->_groups;
   self->_groups = v6;
@@ -82,20 +82,20 @@
   [(MGGroupsMediator *)self setPendingChanges:1];
 }
 
-- (void)removeGroup:(id)a3 ifExists_unsafe:(BOOL *)a4
+- (void)removeGroup:(id)group ifExists_unsafe:(BOOL *)exists_unsafe
 {
-  v6 = a3;
+  groupCopy = group;
   os_unfair_lock_assert_owner(&self->_lock);
-  v11 = [(MGGroupsMediator *)self groups_unsafe];
-  v7 = [v6 identifier];
+  groups_unsafe = [(MGGroupsMediator *)self groups_unsafe];
+  identifier = [groupCopy identifier];
 
-  v8 = [v11 objectForKey:v7];
-  *a4 = v8 != 0;
+  v8 = [groups_unsafe objectForKey:identifier];
+  *exists_unsafe = v8 != 0;
 
   if (v8)
   {
-    v9 = [v11 mutableCopy];
-    [(NSDictionary *)v9 removeObjectForKey:v7];
+    v9 = [groups_unsafe mutableCopy];
+    [(NSDictionary *)v9 removeObjectForKey:identifier];
     groups = self->_groups;
     self->_groups = v9;
 
@@ -106,33 +106,33 @@
 - (id)groupsForUpdate_unsafe
 {
   os_unfair_lock_assert_owner(&self->_lock);
-  v3 = [(MGGroupsMediator *)self activities];
-  if ([v3 count])
+  activities = [(MGGroupsMediator *)self activities];
+  if ([activities count])
   {
   }
 
   else
   {
-    v4 = [(MGGroupsMediator *)self hasPendingChanges];
+    hasPendingChanges = [(MGGroupsMediator *)self hasPendingChanges];
 
-    if (v4)
+    if (hasPendingChanges)
     {
-      v5 = [(MGGroupsMediator *)self groups_unsafe];
+      groups_unsafe = [(MGGroupsMediator *)self groups_unsafe];
       goto LABEL_6;
     }
   }
 
-  v5 = 0;
+  groups_unsafe = 0;
 LABEL_6:
 
-  return v5;
+  return groups_unsafe;
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -165,7 +165,7 @@ LABEL_6:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MGGroupsMediator *)self identifier];
+  identifier = [(MGGroupsMediator *)self identifier];
   v7 = v14[3];
   if (*(v18 + 24))
   {
@@ -187,7 +187,7 @@ LABEL_6:
     v9 = @"no activities";
   }
 
-  v10 = [v3 stringWithFormat:@"<%@: %p, id=%@, groups=%p, %@ changes, %@>", v5, self, v6, v7, v8, v9];
+  v10 = [v3 stringWithFormat:@"<%@: %p, id=%@, groups=%p, %@ changes, %@>", v5, self, identifier, v7, v8, v9];
 
   _Block_object_dispose(&v13, 8);
   _Block_object_dispose(&v17, 8);
@@ -245,10 +245,10 @@ void __33__MGGroupsMediator_currentGroups__block_invoke(uint64_t a1)
   }
 }
 
-- (id)startActivityWithName:(id)a3
+- (id)startActivityWithName:(id)name
 {
-  v4 = a3;
-  v5 = [[MGGroupsActivity alloc] initWithName:v4];
+  nameCopy = name;
+  v5 = [[MGGroupsActivity alloc] initWithName:nameCopy];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -272,9 +272,9 @@ void __42__MGGroupsMediator_startActivityWithName___block_invoke(uint64_t a1)
   [v2 setActivities:v3];
 }
 
-- (void)endActivity:(id)a3
+- (void)endActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -286,14 +286,14 @@ void __42__MGGroupsMediator_startActivityWithName___block_invoke(uint64_t a1)
   v7[2] = __32__MGGroupsMediator_endActivity___block_invoke;
   v7[3] = &unk_27989EEA8;
   v7[4] = self;
-  v5 = v4;
+  v5 = activityCopy;
   v8 = v5;
   v9 = &v10;
   [(MGGroupsMediator *)self _withLock:v7];
   if (v11[5])
   {
-    v6 = [(MGGroupsMediator *)self queryAgent];
-    [v6 groupsMediator:self didUpdateGroups:v11[5]];
+    queryAgent = [(MGGroupsMediator *)self queryAgent];
+    [queryAgent groupsMediator:self didUpdateGroups:v11[5]];
   }
 
   _Block_object_dispose(&v10, 8);
@@ -321,9 +321,9 @@ uint64_t __32__MGGroupsMediator_endActivity___block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)addGroup:(id)a3
+- (void)addGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -335,14 +335,14 @@ uint64_t __32__MGGroupsMediator_endActivity___block_invoke(uint64_t a1)
   v7[2] = __29__MGGroupsMediator_addGroup___block_invoke;
   v7[3] = &unk_27989EEA8;
   v7[4] = self;
-  v5 = v4;
+  v5 = groupCopy;
   v8 = v5;
   v9 = &v10;
   [(MGGroupsMediator *)self _withLock:v7];
   if (v11[5])
   {
-    v6 = [(MGGroupsMediator *)self queryAgent];
-    [v6 groupsMediator:self didUpdateGroups:v11[5]];
+    queryAgent = [(MGGroupsMediator *)self queryAgent];
+    [queryAgent groupsMediator:self didUpdateGroups:v11[5]];
   }
 
   _Block_object_dispose(&v10, 8);
@@ -364,9 +364,9 @@ void __29__MGGroupsMediator_addGroup___block_invoke(uint64_t a1)
   }
 }
 
-- (void)removeGroup:(id)a3
+- (void)removeGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -378,14 +378,14 @@ void __29__MGGroupsMediator_addGroup___block_invoke(uint64_t a1)
   v7[2] = __32__MGGroupsMediator_removeGroup___block_invoke;
   v7[3] = &unk_27989EEA8;
   v7[4] = self;
-  v5 = v4;
+  v5 = groupCopy;
   v8 = v5;
   v9 = &v10;
   [(MGGroupsMediator *)self _withLock:v7];
   if (v11[5])
   {
-    v6 = [(MGGroupsMediator *)self queryAgent];
-    [v6 groupsMediator:self didUpdateGroups:v11[5]];
+    queryAgent = [(MGGroupsMediator *)self queryAgent];
+    [queryAgent groupsMediator:self didUpdateGroups:v11[5]];
   }
 
   _Block_object_dispose(&v10, 8);
@@ -409,16 +409,16 @@ void __32__MGGroupsMediator_removeGroup___block_invoke(uint64_t a1)
   }
 }
 
-- (id)group:(id)a3 renameTo:(id)a4
+- (id)group:(id)group renameTo:(id)to
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  toCopy = to;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
   v27 = __Block_byref_object_copy__0;
   v28 = __Block_byref_object_dispose__0;
-  v29 = v6;
+  v29 = groupCopy;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -433,14 +433,14 @@ void __32__MGGroupsMediator_removeGroup___block_invoke(uint64_t a1)
   v8 = v29;
   v14 = v8;
   v16 = &v24;
-  v9 = v7;
+  v9 = toCopy;
   v15 = v9;
   v17 = &v18;
   [(MGGroupsMediator *)self _withLock:v13];
   if (v19[5])
   {
-    v10 = [(MGGroupsMediator *)self queryAgent];
-    [v10 groupsMediator:self didUpdateGroups:v19[5]];
+    queryAgent = [(MGGroupsMediator *)self queryAgent];
+    [queryAgent groupsMediator:self didUpdateGroups:v19[5]];
   }
 
   v11 = v25[5];
@@ -487,16 +487,16 @@ void __35__MGGroupsMediator_group_renameTo___block_invoke(uint64_t a1)
   }
 }
 
-- (id)group:(id)a3 addMember:(id)a4
+- (id)group:(id)group addMember:(id)member
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  memberCopy = member;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
   v27 = __Block_byref_object_copy__0;
   v28 = __Block_byref_object_dispose__0;
-  v29 = v6;
+  v29 = groupCopy;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -510,15 +510,15 @@ void __35__MGGroupsMediator_group_renameTo___block_invoke(uint64_t a1)
   v13[4] = self;
   v8 = v29;
   v14 = v8;
-  v9 = v7;
+  v9 = memberCopy;
   v15 = v9;
   v16 = &v24;
   v17 = &v18;
   [(MGGroupsMediator *)self _withLock:v13];
   if (v19[5])
   {
-    v10 = [(MGGroupsMediator *)self queryAgent];
-    [v10 groupsMediator:self didUpdateGroups:v19[5]];
+    queryAgent = [(MGGroupsMediator *)self queryAgent];
+    [queryAgent groupsMediator:self didUpdateGroups:v19[5]];
   }
 
   v11 = v25[5];
@@ -570,16 +570,16 @@ void __36__MGGroupsMediator_group_addMember___block_invoke(uint64_t a1)
   }
 }
 
-- (id)group:(id)a3 removeMember:(id)a4
+- (id)group:(id)group removeMember:(id)member
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  memberCopy = member;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
   v27 = __Block_byref_object_copy__0;
   v28 = __Block_byref_object_dispose__0;
-  v29 = v6;
+  v29 = groupCopy;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -593,15 +593,15 @@ void __36__MGGroupsMediator_group_addMember___block_invoke(uint64_t a1)
   v13[4] = self;
   v8 = v29;
   v14 = v8;
-  v9 = v7;
+  v9 = memberCopy;
   v15 = v9;
   v16 = &v24;
   v17 = &v18;
   [(MGGroupsMediator *)self _withLock:v13];
   if (v19[5])
   {
-    v10 = [(MGGroupsMediator *)self queryAgent];
-    [v10 groupsMediator:self didUpdateGroups:v19[5]];
+    queryAgent = [(MGGroupsMediator *)self queryAgent];
+    [queryAgent groupsMediator:self didUpdateGroups:v19[5]];
   }
 
   v11 = v25[5];
@@ -654,9 +654,9 @@ void __39__MGGroupsMediator_group_removeMember___block_invoke(uint64_t a1)
   }
 }
 
-- (void)removeGroupWithIdentifier:(id)a3
+- (void)removeGroupWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -669,7 +669,7 @@ void __39__MGGroupsMediator_group_removeMember___block_invoke(uint64_t a1)
   v6[3] = &unk_27989EEF8;
   v8 = &v9;
   v6[4] = self;
-  v5 = v4;
+  v5 = identifierCopy;
   v7 = v5;
   [(MGGroupsMediator *)self _withLock:v6];
   [(MGGroupsMediator *)self removeGroup:v10[5]];

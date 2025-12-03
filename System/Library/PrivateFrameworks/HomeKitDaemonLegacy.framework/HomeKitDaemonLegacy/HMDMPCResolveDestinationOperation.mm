@@ -1,10 +1,10 @@
 @interface HMDMPCResolveDestinationOperation
 + (id)logCategory;
-- (HMDMPCResolveDestinationOperation)initWithHashedRouteIDs:(id)a3 mediaApplicationDestination:(int64_t)a4 mediaApplicationIdentifier:(id)a5 forceSingleGroup:(BOOL)a6 completion:(id)a7 remoteControlDestinationFactory:(id)a8;
+- (HMDMPCResolveDestinationOperation)initWithHashedRouteIDs:(id)ds mediaApplicationDestination:(int64_t)destination mediaApplicationIdentifier:(id)identifier forceSingleGroup:(BOOL)group completion:(id)completion remoteControlDestinationFactory:(id)factory;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (void)main;
-- (void)setCompletionBlock:(id)a3;
+- (void)setCompletionBlock:(id)block;
 @end
 
 @implementation HMDMPCResolveDestinationOperation
@@ -13,8 +13,8 @@
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDMPCResolveDestinationOperation *)self hashedRouteIDs];
-  v5 = [v3 initWithName:@"Hashed Route IDs" value:v4];
+  hashedRouteIDs = [(HMDMPCResolveDestinationOperation *)self hashedRouteIDs];
+  v5 = [v3 initWithName:@"Hashed Route IDs" value:hashedRouteIDs];
   v9[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
 
@@ -26,23 +26,23 @@
 - (NSString)shortDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [objc_opt_class() shortDescription];
-  v5 = [(HMDMPCResolveDestinationOperation *)self hashedRouteIDs];
-  v6 = [v3 stringWithFormat:@"%@ route IDs: %@", v4, v5];
+  shortDescription = [objc_opt_class() shortDescription];
+  hashedRouteIDs = [(HMDMPCResolveDestinationOperation *)self hashedRouteIDs];
+  v6 = [v3 stringWithFormat:@"%@ route IDs: %@", shortDescription, hashedRouteIDs];
 
   return v6;
 }
 
-- (void)setCompletionBlock:(id)a3
+- (void)setCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __56__HMDMPCResolveDestinationOperation_setCompletionBlock___block_invoke;
   aBlock[3] = &unk_279731EB8;
   objc_copyWeak(&v10, &location);
-  v5 = v4;
+  v5 = blockCopy;
   v9 = v5;
   v6 = _Block_copy(aBlock);
   v7.receiver = self;
@@ -79,38 +79,38 @@ void __56__HMDMPCResolveDestinationOperation_setCompletionBlock___block_invoke(u
 - (void)main
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDMPCResolveDestinationOperation *)self mediaApplicationDestination];
+  mediaApplicationDestination = [(HMDMPCResolveDestinationOperation *)self mediaApplicationDestination];
   if (!self)
   {
     v13 = 0;
     goto LABEL_15;
   }
 
-  if (!v3)
+  if (!mediaApplicationDestination)
   {
-    v14 = self;
+    selfCopy = self;
     goto LABEL_13;
   }
 
-  if (v3 != 2)
+  if (mediaApplicationDestination != 2)
   {
-    if (v3 == 1)
+    if (mediaApplicationDestination == 1)
     {
-      v4 = [(HMDMPCResolveDestinationOperation *)self remoteControlDestinationFactory];
-      v5 = [v4 nowPlayingApplicationDestination];
+      remoteControlDestinationFactory = [(HMDMPCResolveDestinationOperation *)self remoteControlDestinationFactory];
+      nowPlayingApplicationDestination = [remoteControlDestinationFactory nowPlayingApplicationDestination];
 LABEL_14:
-      v13 = v5;
+      v13 = nowPlayingApplicationDestination;
 
       goto LABEL_15;
     }
 
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy2 = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       v18 = HMFGetLogIdentifier();
-      v19 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HMDMPCResolveDestinationOperation mediaApplicationDestination](v16, "mediaApplicationDestination")}];
+      v19 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HMDMPCResolveDestinationOperation mediaApplicationDestination](selfCopy2, "mediaApplicationDestination")}];
       *buf = 138543618;
       v25 = v18;
       v26 = 2112;
@@ -119,41 +119,41 @@ LABEL_14:
     }
 
     objc_autoreleasePoolPop(v15);
-    v14 = v16;
+    selfCopy = selfCopy2;
 LABEL_13:
-    v4 = [(HMDMPCResolveDestinationOperation *)v14 remoteControlDestinationFactory];
-    v5 = [v4 systemMediaApplicationDestination];
+    remoteControlDestinationFactory = [(HMDMPCResolveDestinationOperation *)selfCopy remoteControlDestinationFactory];
+    nowPlayingApplicationDestination = [remoteControlDestinationFactory systemMediaApplicationDestination];
     goto LABEL_14;
   }
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy3 = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [(HMDMPCResolveDestinationOperation *)v7 mediaApplicationIdentifier];
+    mediaApplicationIdentifier = [(HMDMPCResolveDestinationOperation *)selfCopy3 mediaApplicationIdentifier];
     *buf = 138543618;
     v25 = v9;
     v26 = 2112;
-    v27 = v10;
+    v27 = mediaApplicationIdentifier;
     _os_log_impl(&dword_2531F8000, v8, OS_LOG_TYPE_DEBUG, "%{public}@Using custom media application destination for bundle identifier %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
   v11 = objc_alloc(MEMORY[0x277D27878]);
-  v12 = [(HMDMPCResolveDestinationOperation *)v7 mediaApplicationIdentifier];
-  v13 = [v11 initWithAppBundleID:v12];
+  mediaApplicationIdentifier2 = [(HMDMPCResolveDestinationOperation *)selfCopy3 mediaApplicationIdentifier];
+  v13 = [v11 initWithAppBundleID:mediaApplicationIdentifier2];
 
 LABEL_15:
-  v20 = [(HMDMPCResolveDestinationOperation *)self remoteControlDestinationFactory];
-  v21 = [(HMDMPCResolveDestinationOperation *)self hashedRouteIDs];
+  remoteControlDestinationFactory2 = [(HMDMPCResolveDestinationOperation *)self remoteControlDestinationFactory];
+  hashedRouteIDs = [(HMDMPCResolveDestinationOperation *)self hashedRouteIDs];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __41__HMDMPCResolveDestinationOperation_main__block_invoke;
   v23[3] = &unk_27972AC10;
   v23[4] = self;
-  [v20 resolveMPCDestination:v13 withHashedRouteIdentifiers:v21 audioRoutingInfo:0 completion:v23];
+  [remoteControlDestinationFactory2 resolveMPCDestination:v13 withHashedRouteIdentifiers:hashedRouteIDs audioRoutingInfo:0 completion:v23];
 
   v22 = *MEMORY[0x277D85DE8];
 }
@@ -217,27 +217,27 @@ void __41__HMDMPCResolveDestinationOperation_main__block_invoke(uint64_t a1, voi
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDMPCResolveDestinationOperation)initWithHashedRouteIDs:(id)a3 mediaApplicationDestination:(int64_t)a4 mediaApplicationIdentifier:(id)a5 forceSingleGroup:(BOOL)a6 completion:(id)a7 remoteControlDestinationFactory:(id)a8
+- (HMDMPCResolveDestinationOperation)initWithHashedRouteIDs:(id)ds mediaApplicationDestination:(int64_t)destination mediaApplicationIdentifier:(id)identifier forceSingleGroup:(BOOL)group completion:(id)completion remoteControlDestinationFactory:(id)factory
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
+  dsCopy = ds;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  factoryCopy = factory;
   v24.receiver = self;
   v24.super_class = HMDMPCResolveDestinationOperation;
   v19 = [(HMFOperation *)&v24 initWithTimeout:0.0];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_hashedRouteIDs, a3);
-    v21 = _Block_copy(v17);
+    objc_storeStrong(&v19->_hashedRouteIDs, ds);
+    v21 = _Block_copy(completionCopy);
     resolveDestinationCompletionBlock = v20->_resolveDestinationCompletionBlock;
     v20->_resolveDestinationCompletionBlock = v21;
 
-    v20->_mediaApplicationDestination = a4;
-    objc_storeStrong(&v20->_mediaApplicationIdentifier, a5);
-    v20->_forceSingleGroup = a6;
-    objc_storeStrong(&v20->_remoteControlDestinationFactory, a8);
+    v20->_mediaApplicationDestination = destination;
+    objc_storeStrong(&v20->_mediaApplicationIdentifier, identifier);
+    v20->_forceSingleGroup = group;
+    objc_storeStrong(&v20->_remoteControlDestinationFactory, factory);
     [(HMDMPCResolveDestinationOperation *)v20 setCompletionBlock:0];
   }
 

@@ -1,8 +1,8 @@
 @interface RAPSearchResultCategoryQuestion
 + (id)localizedHeaderText;
-- (BOOL)canDisplayMenuItemForQuestionCategory:(int64_t)a3;
-- (RAPSearchResultCategoryQuestion)initWithReport:(id)a3 parentQuestion:(id)a4 search:(id)a5;
-- (id)followUpQuestionForCategory:(int64_t)a3;
+- (BOOL)canDisplayMenuItemForQuestionCategory:(int64_t)category;
+- (RAPSearchResultCategoryQuestion)initWithReport:(id)report parentQuestion:(id)question search:(id)search;
+- (id)followUpQuestionForCategory:(int64_t)category;
 - (id)mainMenuQuestionCategories;
 - (id)selectedPlace;
 - (void)resetCachedMenuItems;
@@ -12,11 +12,11 @@
 
 - (id)selectedPlace
 {
-  v2 = [(RAPQuestion *)self parentQuestion];
+  parentQuestion = [(RAPQuestion *)self parentQuestion];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = parentQuestion;
   }
 
   else
@@ -26,12 +26,12 @@
 
   v4 = v3;
 
-  v5 = [v4 selectedValue];
+  selectedValue = [v4 selectedValue];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = selectedValue;
   }
 
   else
@@ -48,31 +48,31 @@
   return v9;
 }
 
-- (id)followUpQuestionForCategory:(int64_t)a3
+- (id)followUpQuestionForCategory:(int64_t)category
 {
-  switch(a3)
+  switch(category)
   {
     case 1:
       v12 = [RAPProblemNotListedQuestion alloc];
-      v8 = [(RAPQuestion *)self report];
+      report = [(RAPQuestion *)self report];
       v13 = +[NSBundle mainBundle];
       v14 = [v13 localizedStringForKey:@"Other [Report an Issue subcategory]" value:@"localized string not found" table:0];
-      v10 = [(RAPProblemNotListedQuestion *)v12 initWithReport:v8 parentQuestion:self localizedTitle:v14];
+      v10 = [(RAPProblemNotListedQuestion *)v12 initWithReport:report parentQuestion:self localizedTitle:v14];
 
       goto LABEL_10;
     case 9:
       v11 = [RAPPlaceClosureQuestion alloc];
-      v8 = [(RAPQuestion *)self report];
-      v10 = [(RAPQuestion *)v11 initWithReport:v8 parentQuestion:self];
+      report = [(RAPQuestion *)self report];
+      v10 = [(RAPQuestion *)v11 initWithReport:report parentQuestion:self];
 LABEL_10:
 
       goto LABEL_12;
     case 10:
-      v4 = [(RAPQuestion *)self parentQuestion];
+      parentQuestion = [(RAPQuestion *)self parentQuestion];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v5 = v4;
+        v5 = parentQuestion;
       }
 
       else
@@ -83,10 +83,10 @@ LABEL_10:
       v6 = v5;
 
       v7 = [RAPSearchResultIncorrectQuestion alloc];
-      v8 = [(RAPQuestion *)self report];
-      v9 = [v6 selectedValue];
+      report = [(RAPQuestion *)self report];
+      selectedValue = [v6 selectedValue];
 
-      v10 = -[RAPSearchResultIncorrectQuestion initWithReport:parentQuestion:searchResultsCount:](v7, "initWithReport:parentQuestion:searchResultsCount:", v8, self, [v9 searchResultsCount]);
+      v10 = -[RAPSearchResultIncorrectQuestion initWithReport:parentQuestion:searchResultsCount:](v7, "initWithReport:parentQuestion:searchResultsCount:", report, self, [selectedValue searchResultsCount]);
       goto LABEL_10;
   }
 
@@ -96,13 +96,13 @@ LABEL_12:
   return v10;
 }
 
-- (BOOL)canDisplayMenuItemForQuestionCategory:(int64_t)a3
+- (BOOL)canDisplayMenuItemForQuestionCategory:(int64_t)category
 {
-  v5 = [(RAPQuestion *)self parentQuestion];
+  parentQuestion = [(RAPQuestion *)self parentQuestion];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = parentQuestion;
   }
 
   else
@@ -112,31 +112,31 @@ LABEL_12:
 
   v7 = v6;
 
-  v8 = [v7 selectedValue];
+  selectedValue = [v7 selectedValue];
 
-  if (v8)
+  if (selectedValue)
   {
-    if (a3 == 9)
+    if (category == 9)
     {
-      v12 = [v7 selectedValue];
-      v13 = [v12 searchResultsCount];
+      selectedValue2 = [v7 selectedValue];
+      searchResultsCount = [selectedValue2 searchResultsCount];
 
-      v11 = v13 == 1;
+      v11 = searchResultsCount == 1;
     }
 
-    else if (a3 == 10)
+    else if (category == 10)
     {
-      v9 = [v7 selectedValue];
-      v10 = [v9 searchResultsCount];
+      selectedValue3 = [v7 selectedValue];
+      searchResultsCount2 = [selectedValue3 searchResultsCount];
 
-      v11 = v10 != 0;
+      v11 = searchResultsCount2 != 0;
     }
 
     else
     {
-      v14 = [(RAPSearchResultCategoryQuestion *)self mainMenuQuestionCategories];
-      v15 = [NSNumber numberWithInteger:a3];
-      v11 = [v14 containsObject:v15];
+      mainMenuQuestionCategories = [(RAPSearchResultCategoryQuestion *)self mainMenuQuestionCategories];
+      v15 = [NSNumber numberWithInteger:category];
+      v11 = [mainMenuQuestionCategories containsObject:v15];
     }
   }
 
@@ -168,18 +168,18 @@ LABEL_12:
   [(RAPMenuQuestion *)self resetMenu];
 }
 
-- (RAPSearchResultCategoryQuestion)initWithReport:(id)a3 parentQuestion:(id)a4 search:(id)a5
+- (RAPSearchResultCategoryQuestion)initWithReport:(id)report parentQuestion:(id)question search:(id)search
 {
-  v8 = a4;
-  v9 = a5;
+  questionCopy = question;
+  searchCopy = search;
   v13.receiver = self;
   v13.super_class = RAPSearchResultCategoryQuestion;
-  v10 = [(RAPQuestion *)&v13 initWithReport:a3 parentQuestion:v8];
+  v10 = [(RAPQuestion *)&v13 initWithReport:report parentQuestion:questionCopy];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_selectedValue, a5);
-    [v8 addObserver:v11 changeHandler:&stru_101623DE8];
+    objc_storeStrong(&v10->_selectedValue, search);
+    [questionCopy addObserver:v11 changeHandler:&stru_101623DE8];
   }
 
   return v11;

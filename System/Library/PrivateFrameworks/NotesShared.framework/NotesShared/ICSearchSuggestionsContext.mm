@@ -1,33 +1,33 @@
 @interface ICSearchSuggestionsContext
 - (BOOL)isEmpty;
 - (ICSearchSuggestionsContext)init;
-- (ICSearchSuggestionsContext)initWithSearchSuggestion:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)changeScopeOfToken:(id)a3 toScopeAtIndex:(unint64_t)a4;
-- (void)updateSearchSuggestion:(id)a3 interaction:(int64_t)a4;
-- (void)updateTypedString:(id)a3 tokens:(id)a4;
+- (ICSearchSuggestionsContext)initWithSearchSuggestion:(id)suggestion;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)changeScopeOfToken:(id)token toScopeAtIndex:(unint64_t)index;
+- (void)updateSearchSuggestion:(id)suggestion interaction:(int64_t)interaction;
+- (void)updateTypedString:(id)string tokens:(id)tokens;
 @end
 
 @implementation ICSearchSuggestionsContext
 
 - (ICSearchSuggestionsContext)init
 {
-  v3 = [MEMORY[0x277CC34D8] emptySuggestion];
-  v4 = [(ICSearchSuggestionsContext *)self initWithSearchSuggestion:v3];
+  emptySuggestion = [MEMORY[0x277CC34D8] emptySuggestion];
+  v4 = [(ICSearchSuggestionsContext *)self initWithSearchSuggestion:emptySuggestion];
 
   return v4;
 }
 
-- (ICSearchSuggestionsContext)initWithSearchSuggestion:(id)a3
+- (ICSearchSuggestionsContext)initWithSearchSuggestion:(id)suggestion
 {
-  v5 = a3;
+  suggestionCopy = suggestion;
   v9.receiver = self;
   v9.super_class = ICSearchSuggestionsContext;
   v6 = [(ICSearchSuggestionsContext *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_searchSuggestion, a3);
+    objc_storeStrong(&v6->_searchSuggestion, suggestion);
   }
 
   return v7;
@@ -35,57 +35,57 @@
 
 - (BOOL)isEmpty
 {
-  v3 = [(CSSuggestion *)self->_searchSuggestion suggestionTokens];
-  if ([v3 count])
+  suggestionTokens = [(CSSuggestion *)self->_searchSuggestion suggestionTokens];
+  if ([suggestionTokens count])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(CSSuggestion *)self->_searchSuggestion userQueryString];
-    v4 = [v5 length] == 0;
+    userQueryString = [(CSSuggestion *)self->_searchSuggestion userQueryString];
+    v4 = [userQueryString length] == 0;
   }
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [ICSearchSuggestionsContext allocWithZone:?];
-  v6 = [(ICSearchSuggestionsContext *)self searchSuggestion];
-  v7 = [v6 copyWithZone:a3];
+  searchSuggestion = [(ICSearchSuggestionsContext *)self searchSuggestion];
+  v7 = [searchSuggestion copyWithZone:zone];
   v8 = [(ICSearchSuggestionsContext *)v5 initWithSearchSuggestion:v7];
 
   return v8;
 }
 
-- (void)updateTypedString:(id)a3 tokens:(id)a4
+- (void)updateTypedString:(id)string tokens:(id)tokens
 {
-  v11 = a3;
-  v6 = a4;
-  if ([v11 length] || objc_msgSend(v6, "count"))
+  stringCopy = string;
+  tokensCopy = tokens;
+  if ([stringCopy length] || objc_msgSend(tokensCopy, "count"))
   {
     v7 = MEMORY[0x277CC34D8];
-    v8 = [(ICSearchSuggestionsContext *)self searchSuggestion];
-    v9 = [v6 ic_compactMap:&__block_literal_global_30];
-    v10 = [v7 updatedSuggestionWithCurrentSuggestion:v8 userString:v11 tokens:v9];
+    searchSuggestion = [(ICSearchSuggestionsContext *)self searchSuggestion];
+    v9 = [tokensCopy ic_compactMap:&__block_literal_global_30];
+    v10 = [v7 updatedSuggestionWithCurrentSuggestion:searchSuggestion userString:stringCopy tokens:v9];
     [(ICSearchSuggestionsContext *)self setSearchSuggestion:v10];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CC34D8] emptySuggestion];
-    [(ICSearchSuggestionsContext *)self setSearchSuggestion:v8];
+    searchSuggestion = [MEMORY[0x277CC34D8] emptySuggestion];
+    [(ICSearchSuggestionsContext *)self setSearchSuggestion:searchSuggestion];
   }
 }
 
-- (void)updateSearchSuggestion:(id)a3 interaction:(int64_t)a4
+- (void)updateSearchSuggestion:(id)suggestion interaction:(int64_t)interaction
 {
-  v6 = a3;
-  v7 = v6;
-  v13 = v6;
-  switch(a4)
+  suggestionCopy = suggestion;
+  v7 = suggestionCopy;
+  v13 = suggestionCopy;
+  switch(interaction)
   {
     case 2:
       v9 = MEMORY[0x277CC34D8];
@@ -100,7 +100,7 @@ LABEL_7:
       v8 = [v9 updatedSuggestionWithCurrentSuggestion:v10 interaction:v11];
       goto LABEL_8;
     case 0:
-      v8 = v6;
+      v8 = suggestionCopy;
 LABEL_8:
       v12 = v8;
       goto LABEL_10;
@@ -111,14 +111,14 @@ LABEL_10:
   [(ICSearchSuggestionsContext *)self setSearchSuggestion:v12];
 }
 
-- (void)changeScopeOfToken:(id)a3 toScopeAtIndex:(unint64_t)a4
+- (void)changeScopeOfToken:(id)token toScopeAtIndex:(unint64_t)index
 {
   v6 = MEMORY[0x277CC34D8];
-  v7 = a3;
-  v8 = [(ICSearchSuggestionsContext *)self searchSuggestion];
-  v9 = [v7 csToken];
+  tokenCopy = token;
+  searchSuggestion = [(ICSearchSuggestionsContext *)self searchSuggestion];
+  csToken = [tokenCopy csToken];
 
-  v10 = [v6 updatedSuggestionWithCurrentSuggestion:v8 token:v9 scopeSelection:a4];
+  v10 = [v6 updatedSuggestionWithCurrentSuggestion:searchSuggestion token:csToken scopeSelection:index];
 
   [(ICSearchSuggestionsContext *)self setSearchSuggestion:v10];
 }

@@ -1,58 +1,58 @@
 @interface HDHRHealthKitSyncManager
-- (HDHRHealthKitSyncManager)initWithProfile:(id)a3;
-- (void)triggerImmediateSyncWithReason:(id)a3 loggingCategory:(id)a4;
+- (HDHRHealthKitSyncManager)initWithProfile:(id)profile;
+- (void)triggerImmediateSyncWithReason:(id)reason loggingCategory:(id)category;
 @end
 
 @implementation HDHRHealthKitSyncManager
 
-- (HDHRHealthKitSyncManager)initWithProfile:(id)a3
+- (HDHRHealthKitSyncManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v8.receiver = self;
   v8.super_class = HDHRHealthKitSyncManager;
   v5 = [(HDHRHealthKitSyncManager *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
   }
 
   return v6;
 }
 
-- (void)triggerImmediateSyncWithReason:(id)a3 loggingCategory:(id)a4
+- (void)triggerImmediateSyncWithReason:(id)reason loggingCategory:(id)category
 {
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  categoryCopy = category;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v9 = [WeakRetained nanoSyncManager];
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@] %@", self, v6];
+  nanoSyncManager = [WeakRetained nanoSyncManager];
+  reasonCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@] %@", self, reasonCopy];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __75__HDHRHealthKitSyncManager_triggerImmediateSyncWithReason_loggingCategory___block_invoke;
   v24[3] = &unk_278660128;
-  v11 = v7;
+  v11 = categoryCopy;
   v25 = v11;
-  v26 = self;
-  v12 = v6;
+  selfCopy = self;
+  v12 = reasonCopy;
   v27 = v12;
-  [v9 syncHealthDataWithOptions:0 reason:v10 completion:v24];
+  [nanoSyncManager syncHealthDataWithOptions:0 reason:reasonCopy completion:v24];
 
   v13 = [objc_alloc(MEMORY[0x277CCD0C8]) initWithPush:1 pull:0 lite:1];
   v14 = [objc_alloc(MEMORY[0x277CCD140]) initWithChangesSyncRequest:v13];
   v15 = objc_loadWeakRetained(&self->_profile);
-  v16 = [v15 cloudSyncManager];
+  cloudSyncManager = [v15 cloudSyncManager];
   v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@] %@", self, v12];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __75__HDHRHealthKitSyncManager_triggerImmediateSyncWithReason_loggingCategory___block_invoke_301;
   v20[3] = &unk_278660128;
   v21 = v11;
-  v22 = self;
+  selfCopy2 = self;
   v23 = v12;
   v18 = v12;
   v19 = v11;
-  [v16 syncWithRequest:v14 reason:v17 completion:v20];
+  [cloudSyncManager syncWithRequest:v14 reason:v17 completion:v20];
 }
 
 void __75__HDHRHealthKitSyncManager_triggerImmediateSyncWithReason_loggingCategory___block_invoke(void *a1, int a2, void *a3)

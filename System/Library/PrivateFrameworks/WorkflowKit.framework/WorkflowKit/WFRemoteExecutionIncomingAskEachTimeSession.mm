@@ -1,9 +1,9 @@
 @interface WFRemoteExecutionIncomingAskEachTimeSession
 - (id)missingParameterError;
-- (void)finishWithError:(id)a3;
-- (void)handleIncomingProtobuf:(id)a3 currentlyActiveSessions:(id)a4 responseDestinations:(id)a5 responseOptions:(id)a6;
+- (void)finishWithError:(id)error;
+- (void)handleIncomingProtobuf:(id)protobuf currentlyActiveSessions:(id)sessions responseDestinations:(id)destinations responseOptions:(id)options;
 - (void)handleTimeout;
-- (void)sendResponse:(id)a3 destinations:(id)a4 options:(id)a5;
+- (void)sendResponse:(id)response destinations:(id)destinations options:(id)options;
 @end
 
 @implementation WFRemoteExecutionIncomingAskEachTimeSession
@@ -26,26 +26,26 @@
   return v6;
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v13 = a3;
+  errorCopy = error;
   [(WFRemoteExecutionSession *)self finish];
-  v4 = [(WFRemoteExecutionIncomingAskEachTimeSession *)self lastKnownDestinations];
-  if (v4)
+  lastKnownDestinations = [(WFRemoteExecutionIncomingAskEachTimeSession *)self lastKnownDestinations];
+  if (lastKnownDestinations)
   {
-    v5 = v4;
-    v6 = [(WFRemoteExecutionSession *)self request];
+    v5 = lastKnownDestinations;
+    request = [(WFRemoteExecutionSession *)self request];
 
-    if (v6)
+    if (request)
     {
       v7 = [WFRemoteExecutionAskEachTimeRequestResponse alloc];
-      v8 = [(WFRemoteExecutionSession *)self request];
-      v9 = [v8 identifier];
-      v10 = [(WFRemoteExecutionAskEachTimeRequestResponse *)v7 initWithOriginatingRequestIdentifier:v9 inputtedStates:0 error:v13];
+      request2 = [(WFRemoteExecutionSession *)self request];
+      identifier = [request2 identifier];
+      v10 = [(WFRemoteExecutionAskEachTimeRequestResponse *)v7 initWithOriginatingRequestIdentifier:identifier inputtedStates:0 error:errorCopy];
 
-      v11 = [(WFRemoteExecutionIncomingAskEachTimeSession *)self lastKnownDestinations];
-      v12 = [(WFRemoteExecutionIncomingAskEachTimeSession *)self lastKnownOptions];
-      [(WFRemoteExecutionIncomingAskEachTimeSession *)self sendResponse:v10 destinations:v11 options:v12];
+      lastKnownDestinations2 = [(WFRemoteExecutionIncomingAskEachTimeSession *)self lastKnownDestinations];
+      lastKnownOptions = [(WFRemoteExecutionIncomingAskEachTimeSession *)self lastKnownOptions];
+      [(WFRemoteExecutionIncomingAskEachTimeSession *)self sendResponse:v10 destinations:lastKnownDestinations2 options:lastKnownOptions];
     }
   }
 }
@@ -57,15 +57,15 @@
   [(WFRemoteExecutionSession *)self finish];
 }
 
-- (void)sendResponse:(id)a3 destinations:(id)a4 options:(id)a5
+- (void)sendResponse:(id)response destinations:(id)destinations options:(id)options
 {
   v37 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  responseCopy = response;
+  destinationsCopy = destinations;
+  optionsCopy = options;
+  if (responseCopy)
   {
-    if (v10)
+    if (destinationsCopy)
     {
       goto LABEL_3;
     }
@@ -73,37 +73,37 @@
 
   else
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionIncomingAskEachTimeSession.m" lineNumber:144 description:{@"Invalid parameter not satisfying: %@", @"response"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionIncomingAskEachTimeSession.m" lineNumber:144 description:{@"Invalid parameter not satisfying: %@", @"response"}];
 
-    if (v10)
+    if (destinationsCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v28 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v28 handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionIncomingAskEachTimeSession.m" lineNumber:145 description:{@"Invalid parameter not satisfying: %@", @"destinations"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionIncomingAskEachTimeSession.m" lineNumber:145 description:{@"Invalid parameter not satisfying: %@", @"destinations"}];
 
 LABEL_3:
-  [(WFRemoteExecutionIncomingAskEachTimeSession *)self setLastKnownDestinations:v10];
-  [(WFRemoteExecutionIncomingAskEachTimeSession *)self setLastKnownOptions:v11];
+  [(WFRemoteExecutionIncomingAskEachTimeSession *)self setLastKnownDestinations:destinationsCopy];
+  [(WFRemoteExecutionIncomingAskEachTimeSession *)self setLastKnownOptions:optionsCopy];
   v12 = objc_alloc_init(MEMORY[0x1E69C65C0]);
   v32 = 0;
-  v13 = [v9 writeTo:v12 error:&v32];
+  v13 = [responseCopy writeTo:v12 error:&v32];
   v14 = v32;
   v15 = v14;
   if (v13)
   {
     v29 = v14;
     v16 = objc_alloc(MEMORY[0x1E69A5388]);
-    v17 = [v12 immutableData];
-    v18 = [v16 initWithProtobufData:v17 type:6 isResponse:0];
+    immutableData = [v12 immutableData];
+    v18 = [v16 initWithProtobufData:immutableData type:6 isResponse:0];
 
-    v19 = [(WFRemoteExecutionSession *)self service];
+    service = [(WFRemoteExecutionSession *)self service];
     v30 = 0;
     v31 = 0;
-    v20 = [v19 sendProtobuf:v18 toDestinations:v10 priority:300 options:v11 identifier:&v31 error:&v30];
+    v20 = [service sendProtobuf:v18 toDestinations:destinationsCopy priority:300 options:optionsCopy identifier:&v31 error:&v30];
     v21 = v31;
     v22 = v30;
 
@@ -150,43 +150,43 @@ LABEL_3:
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleIncomingProtobuf:(id)a3 currentlyActiveSessions:(id)a4 responseDestinations:(id)a5 responseOptions:(id)a6
+- (void)handleIncomingProtobuf:(id)protobuf currentlyActiveSessions:(id)sessions responseDestinations:(id)destinations responseOptions:(id)options
 {
   v132 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11)
+  protobufCopy = protobuf;
+  sessionsCopy = sessions;
+  destinationsCopy = destinations;
+  optionsCopy = options;
+  if (!protobufCopy)
   {
-    v91 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v91 handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionIncomingAskEachTimeSession.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"protobuf"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionIncomingAskEachTimeSession.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"protobuf"}];
 
-    if (v13)
+    if (destinationsCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_69:
-    v92 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v92 handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionIncomingAskEachTimeSession.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"destinations"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionIncomingAskEachTimeSession.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"destinations"}];
 
     goto LABEL_3;
   }
 
-  if (!v13)
+  if (!destinationsCopy)
   {
     goto LABEL_69;
   }
 
 LABEL_3:
-  [(WFRemoteExecutionIncomingAskEachTimeSession *)self setLastKnownDestinations:v13];
-  [(WFRemoteExecutionIncomingAskEachTimeSession *)self setLastKnownOptions:v14];
+  [(WFRemoteExecutionIncomingAskEachTimeSession *)self setLastKnownDestinations:destinationsCopy];
+  [(WFRemoteExecutionIncomingAskEachTimeSession *)self setLastKnownOptions:optionsCopy];
   [(WFRemoteExecutionSession *)self setState:200];
   v15 = [WFRemoteExecutionAskEachTimeRequest alloc];
-  v16 = [v11 data];
+  data = [protobufCopy data];
   v120 = 0;
-  v17 = [(WFRemoteExecutionAskEachTimeRequest *)v15 initWithData:v16 error:&v120];
+  v17 = [(WFRemoteExecutionAskEachTimeRequest *)v15 initWithData:data error:&v120];
   v18 = v120;
 
   v101 = v17;
@@ -205,9 +205,9 @@ LABEL_3:
       }
 
       [(WFRemoteExecutionSession *)self setState:2];
-      v72 = [v11 data];
+      data2 = [protobufCopy data];
       v119 = 0;
-      v73 = [WFRemoteExecutionRequest identifierFromData:v72 error:&v119];
+      v73 = [WFRemoteExecutionRequest identifierFromData:data2 error:&v119];
       v74 = v119;
 
       v75 = getWFRemoteExecutionLogObject();
@@ -222,7 +222,7 @@ LABEL_3:
         }
 
         v77 = [[WFRemoteExecutionAskEachTimeRequestResponse alloc] initWithOriginatingRequestIdentifier:v73 inputtedStates:0 error:v18];
-        [(WFRemoteExecutionIncomingAskEachTimeSession *)self sendResponse:v77 destinations:v13 options:v14];
+        [(WFRemoteExecutionIncomingAskEachTimeSession *)self sendResponse:v77 destinations:destinationsCopy options:optionsCopy];
       }
 
       else
@@ -258,15 +258,15 @@ LABEL_3:
   }
 
   v94 = v18;
-  v95 = v14;
-  v96 = v13;
-  v97 = v12;
-  v98 = v11;
+  v95 = optionsCopy;
+  v96 = destinationsCopy;
+  v97 = sessionsCopy;
+  v98 = protobufCopy;
   v117 = 0u;
   v118 = 0u;
   v115 = 0u;
   v116 = 0u;
-  v19 = v12;
+  v19 = sessionsCopy;
   v20 = [v19 countByEnumeratingWithState:&v115 objects:v123 count:16];
   if (!v20)
   {
@@ -275,7 +275,7 @@ LABEL_3:
   }
 
   v21 = v20;
-  v93 = self;
+  selfCopy = self;
   v100 = 0;
   v22 = *v116;
   do
@@ -294,10 +294,10 @@ LABEL_3:
       {
         if (objc_opt_isKindOfClass())
         {
-          v27 = [v26 request];
-          v28 = [v27 identifier];
-          v29 = [v101 associatedRunRequestIdentifier];
-          v30 = [v28 isEqualToString:v29];
+          request = [v26 request];
+          identifier = [request identifier];
+          associatedRunRequestIdentifier = [v101 associatedRunRequestIdentifier];
+          v30 = [identifier isEqualToString:associatedRunRequestIdentifier];
 
           if (!v30)
           {
@@ -346,28 +346,28 @@ LABEL_17:
 LABEL_52:
     [(WFRemoteExecutionSession *)self setState:-420];
     [(WFRemoteExecutionSession *)self finish];
-    v12 = v97;
-    v11 = v98;
-    v14 = v95;
-    v13 = v96;
+    sessionsCopy = v97;
+    protobufCopy = v98;
+    optionsCopy = v95;
+    destinationsCopy = v96;
     goto LABEL_66;
   }
 
   [(WFRemoteExecutionSession *)self setRequest:v101];
   v35 = +[WFActionRegistry sharedRegistry];
-  v36 = [v101 actionIdentifier];
-  v37 = [v101 actionSerializedParameters];
-  v38 = [v35 createActionWithIdentifier:v36 serializedParameters:v37];
+  actionIdentifier = [v101 actionIdentifier];
+  actionSerializedParameters = [v101 actionSerializedParameters];
+  v38 = [v35 createActionWithIdentifier:actionIdentifier serializedParameters:actionSerializedParameters];
 
   [v38 initializeParametersIfNecessary];
   [v101 inflateParameterStatesWithAction:v38];
-  v39 = [v101 parameterKeys];
+  parameterKeys = [v101 parameterKeys];
   v40 = objc_alloc_init(MEMORY[0x1E695DFA0]);
   v111 = 0u;
   v112 = 0u;
   v113 = 0u;
   v114 = 0u;
-  v41 = v39;
+  v41 = parameterKeys;
   v42 = [v41 countByEnumeratingWithState:&v111 objects:v122 count:16];
   obj = v41;
   if (v42)
@@ -385,9 +385,9 @@ LABEL_52:
 
         v46 = *(*(&v111 + 1) + 8 * j);
         v47 = [v38 parameterForKey:v46];
-        v48 = [v101 possibleStatesByParameterKey];
-        v49 = [v48 allKeys];
-        v50 = [v49 containsObject:v46];
+        possibleStatesByParameterKey = [v101 possibleStatesByParameterKey];
+        allKeys = [possibleStatesByParameterKey allKeys];
+        v50 = [allKeys containsObject:v46];
 
         if (v50)
         {
@@ -395,8 +395,8 @@ LABEL_52:
           if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
           {
             v51 = v47;
-            v52 = [v101 possibleStatesByParameterKey];
-            v53 = [v52 objectForKey:v46];
+            possibleStatesByParameterKey2 = [v101 possibleStatesByParameterKey];
+            v53 = [possibleStatesByParameterKey2 objectForKey:v46];
             [v51 setPossibleStatesFromRemoteSource:v53];
           }
         }
@@ -406,30 +406,30 @@ LABEL_52:
           v78 = getWFRemoteExecutionLogObject();
           if (os_log_type_enabled(v78, OS_LOG_TYPE_ERROR))
           {
-            v79 = [v38 parameters];
+            parameters = [v38 parameters];
             *buf = 136315650;
             v125 = "[WFRemoteExecutionIncomingAskEachTimeSession handleIncomingProtobuf:currentlyActiveSessions:responseDestinations:responseOptions:]";
             v126 = 2114;
             v127 = v46;
             v128 = 2114;
-            v129 = v79;
+            v129 = parameters;
             _os_log_impl(&dword_1CA256000, v78, OS_LOG_TYPE_ERROR, "%s Ask Each Time request needs to resolve parameter (%{public}@) but the parameter is nil. action parameters: %{public}@", buf, 0x20u);
           }
 
-          [(WFRemoteExecutionSession *)v93 setState:1];
+          [(WFRemoteExecutionSession *)selfCopy setState:1];
           v80 = [WFRemoteExecutionAskEachTimeRequestResponse alloc];
-          v81 = [v101 identifier];
-          v82 = [(WFRemoteExecutionIncomingAskEachTimeSession *)v93 missingParameterError];
-          v83 = [(WFRemoteExecutionAskEachTimeRequestResponse *)v80 initWithOriginatingRequestIdentifier:v81 inputtedStates:0 error:v82];
+          identifier2 = [v101 identifier];
+          missingParameterError = [(WFRemoteExecutionIncomingAskEachTimeSession *)selfCopy missingParameterError];
+          v83 = [(WFRemoteExecutionAskEachTimeRequestResponse *)v80 initWithOriginatingRequestIdentifier:identifier2 inputtedStates:0 error:missingParameterError];
 
-          v14 = v95;
-          v13 = v96;
-          [(WFRemoteExecutionIncomingAskEachTimeSession *)v93 sendResponse:v83 destinations:v96 options:v95];
+          optionsCopy = v95;
+          destinationsCopy = v96;
+          [(WFRemoteExecutionIncomingAskEachTimeSession *)selfCopy sendResponse:v83 destinations:v96 options:v95];
 
-          v11 = v98;
+          protobufCopy = v98;
           v84 = obj;
           v56 = obj;
-          v12 = v97;
+          sessionsCopy = v97;
           v68 = v100;
           goto LABEL_65;
         }
@@ -448,9 +448,9 @@ LABEL_52:
     }
   }
 
-  [(WFRemoteExecutionSession *)v93 setState:201];
-  v54 = [v100 userInterface];
-  v55 = [v54 isRunningWithSiriUI];
+  [(WFRemoteExecutionSession *)selfCopy setState:201];
+  userInterface = [v100 userInterface];
+  isRunningWithSiriUI = [userInterface isRunningWithSiriUI];
 
   v109 = 0u;
   v110 = 0u;
@@ -472,22 +472,22 @@ LABEL_52:
         }
 
         v61 = *(*(&v107 + 1) + 8 * k);
-        v62 = [v100 parameterInputProvider];
-        LOBYTE(v61) = v55 | ~[v62 action:v38 canProvideInputForParameter:v61];
+        parameterInputProvider = [v100 parameterInputProvider];
+        LOBYTE(v61) = isRunningWithSiriUI | ~[parameterInputProvider action:v38 canProvideInputForParameter:v61];
 
         if (v61)
         {
           v85 = [WFRemoteExecutionAskEachTimeRequestResponse alloc];
-          v86 = [v101 identifier];
-          v87 = [MEMORY[0x1E696ABC0] userCancelledError];
-          v88 = [(WFRemoteExecutionAskEachTimeRequestResponse *)v85 initWithOriginatingRequestIdentifier:v86 inputtedStates:0 error:v87];
+          identifier3 = [v101 identifier];
+          userCancelledError = [MEMORY[0x1E696ABC0] userCancelledError];
+          v88 = [(WFRemoteExecutionAskEachTimeRequestResponse *)v85 initWithOriginatingRequestIdentifier:identifier3 inputtedStates:0 error:userCancelledError];
 
-          v14 = v95;
-          v13 = v96;
-          [(WFRemoteExecutionIncomingAskEachTimeSession *)v93 sendResponse:v88 destinations:v96 options:v95];
-          v89 = [MEMORY[0x1E696ABC0] wfUnsupportedUserInterfaceError];
+          optionsCopy = v95;
+          destinationsCopy = v96;
+          [(WFRemoteExecutionIncomingAskEachTimeSession *)selfCopy sendResponse:v88 destinations:v96 options:v95];
+          wfUnsupportedUserInterfaceError = [MEMORY[0x1E696ABC0] wfUnsupportedUserInterfaceError];
           v68 = v100;
-          [v100 finishWithError:v89];
+          [v100 finishWithError:wfUnsupportedUserInterfaceError];
 
           goto LABEL_64;
         }
@@ -503,13 +503,13 @@ LABEL_52:
     }
   }
 
-  v63 = [v100 parameterInputProvider];
-  v64 = [v101 parameterKeysAndStates];
-  v65 = v64;
+  parameterInputProvider2 = [v100 parameterInputProvider];
+  parameterKeysAndStates = [v101 parameterKeysAndStates];
+  v65 = parameterKeysAndStates;
   v66 = MEMORY[0x1E695E0F8];
-  if (v64)
+  if (parameterKeysAndStates)
   {
-    v67 = v64;
+    v67 = parameterKeysAndStates;
   }
 
   else
@@ -522,19 +522,19 @@ LABEL_52:
   v102[2] = __131__WFRemoteExecutionIncomingAskEachTimeSession_handleIncomingProtobuf_currentlyActiveSessions_responseDestinations_responseOptions___block_invoke;
   v102[3] = &unk_1E837B800;
   v103 = v101;
-  v104 = v93;
-  v13 = v96;
+  v104 = selfCopy;
+  destinationsCopy = v96;
   v105 = v96;
   v106 = v95;
-  [v63 action:v38 provideInputForParameters:v56 withDefaultStates:v67 prompts:v66 completionHandler:v102];
+  [parameterInputProvider2 action:v38 provideInputForParameters:v56 withDefaultStates:v67 prompts:v66 completionHandler:v102];
 
-  v14 = v95;
+  optionsCopy = v95;
   v68 = v100;
 
   v56 = v103;
 LABEL_64:
-  v12 = v97;
-  v11 = v98;
+  sessionsCopy = v97;
+  protobufCopy = v98;
   v84 = obj;
 LABEL_65:
 

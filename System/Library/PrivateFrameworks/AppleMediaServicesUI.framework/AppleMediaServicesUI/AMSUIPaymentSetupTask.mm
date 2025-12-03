@@ -1,17 +1,17 @@
 @interface AMSUIPaymentSetupTask
-- (AMSUIPaymentSetupTask)initWithReferrerIdentifier:(id)a3 presentingViewController:(id)a4;
+- (AMSUIPaymentSetupTask)initWithReferrerIdentifier:(id)identifier presentingViewController:(id)controller;
 - (id)_fetchPaymentSetupFeature;
 - (id)present;
-- (void)_presentPaymentSetupControllerWithPaymentSetupFeatures:(id)a3;
+- (void)_presentPaymentSetupControllerWithPaymentSetupFeatures:(id)features;
 - (void)paymentSetupViewControllerDidDismiss;
 @end
 
 @implementation AMSUIPaymentSetupTask
 
-- (AMSUIPaymentSetupTask)initWithReferrerIdentifier:(id)a3 presentingViewController:(id)a4
+- (AMSUIPaymentSetupTask)initWithReferrerIdentifier:(id)identifier presentingViewController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  controllerCopy = controller;
   v17.receiver = self;
   v17.super_class = AMSUIPaymentSetupTask;
   v9 = [(AMSTask *)&v17 init];
@@ -29,8 +29,8 @@
     setupControllerPromise = v9->_setupControllerPromise;
     v9->_setupControllerPromise = v14;
 
-    objc_storeStrong(&v9->_referrerIdentifier, a3);
-    objc_storeStrong(&v9->_viewController, a4);
+    objc_storeStrong(&v9->_referrerIdentifier, identifier);
+    objc_storeStrong(&v9->_viewController, controller);
   }
 
   return v9;
@@ -38,27 +38,27 @@
 
 - (id)present
 {
-  v3 = [(AMSUIPaymentSetupTask *)self _fetchPaymentSetupFeature];
+  _fetchPaymentSetupFeature = [(AMSUIPaymentSetupTask *)self _fetchPaymentSetupFeature];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __32__AMSUIPaymentSetupTask_present__block_invoke;
   v10[3] = &unk_1E7F255C8;
   v10[4] = self;
-  [v3 addFinishBlock:v10];
+  [_fetchPaymentSetupFeature addFinishBlock:v10];
   objc_initWeak(&location, self);
-  v4 = [(AMSUIPaymentSetupTask *)self setupControllerPromise];
+  setupControllerPromise = [(AMSUIPaymentSetupTask *)self setupControllerPromise];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __32__AMSUIPaymentSetupTask_present__block_invoke_10;
   v7[3] = &unk_1E7F255F0;
   objc_copyWeak(&v8, &location);
-  [v4 addFinishBlock:v7];
+  [setupControllerPromise addFinishBlock:v7];
 
-  v5 = [(AMSUIPaymentSetupTask *)self resultPromise];
+  resultPromise = [(AMSUIPaymentSetupTask *)self resultPromise];
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
 
-  return v5;
+  return resultPromise;
 }
 
 void __32__AMSUIPaymentSetupTask_present__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -208,37 +208,37 @@ uint64_t __32__AMSUIPaymentSetupTask_present__block_invoke_3(uint64_t a1)
 - (id)_fetchPaymentSetupFeature
 {
   v3 = objc_alloc(MEMORY[0x1E698CAB8]);
-  v4 = [(AMSUIPaymentSetupTask *)self referrerIdentifier];
-  v5 = [v3 initWithIdentifier:v4];
+  referrerIdentifier = [(AMSUIPaymentSetupTask *)self referrerIdentifier];
+  v5 = [v3 initWithIdentifier:referrerIdentifier];
 
-  v6 = [v5 performPaymentSetupFeatureLookup];
+  performPaymentSetupFeatureLookup = [v5 performPaymentSetupFeatureLookup];
 
-  return v6;
+  return performPaymentSetupFeatureLookup;
 }
 
-- (void)_presentPaymentSetupControllerWithPaymentSetupFeatures:(id)a3
+- (void)_presentPaymentSetupControllerWithPaymentSetupFeatures:(id)features
 {
   v27 = *MEMORY[0x1E69E9840];
   v4 = getPKPaymentSetupConfigurationClass[0];
-  v5 = a3;
+  featuresCopy = features;
   v6 = objc_alloc_init(v4());
-  v7 = [(AMSUIPaymentSetupTask *)self referrerIdentifier];
-  [v6 setReferrerIdentifier:v7];
+  referrerIdentifier = [(AMSUIPaymentSetupTask *)self referrerIdentifier];
+  [v6 setReferrerIdentifier:referrerIdentifier];
 
   v8 = objc_alloc_init(getPKPaymentSetupRequestClass[0]());
   [v8 setConfiguration:v6];
-  [v8 setPaymentSetupFeatures:v5];
+  [v8 setPaymentSetupFeatures:featuresCopy];
 
   if (v8)
   {
-    v9 = [MEMORY[0x1E698C968] sharedConfig];
-    if (!v9)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v9 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v10 = [v9 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v11 = objc_opt_class();
       v12 = AMSLogKey();
@@ -246,7 +246,7 @@ uint64_t __32__AMSUIPaymentSetupTask_present__block_invoke_3(uint64_t a1)
       v24 = v11;
       v25 = 2114;
       v26 = v12;
-      _os_log_impl(&dword_1BB036000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Preparing to display upsell view controller", buf, 0x16u);
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Preparing to display upsell view controller", buf, 0x16u);
     }
 
     v17 = MEMORY[0x1E69E9820];
@@ -254,7 +254,7 @@ uint64_t __32__AMSUIPaymentSetupTask_present__block_invoke_3(uint64_t a1)
     v19 = __80__AMSUIPaymentSetupTask__presentPaymentSetupControllerWithPaymentSetupFeatures___block_invoke;
     v20 = &unk_1E7F243C0;
     v21 = v8;
-    v22 = self;
+    selfCopy = self;
     dispatch_async(MEMORY[0x1E69E96A0], &v17);
     v13 = [(AMSUIPaymentSetupTask *)self setupControllerPromise:v17];
     [v13 addFinishBlock:&__block_literal_global_13];
@@ -262,9 +262,9 @@ uint64_t __32__AMSUIPaymentSetupTask_present__block_invoke_3(uint64_t a1)
 
   else
   {
-    v14 = [(AMSUIPaymentSetupTask *)self resultPromise];
+    resultPromise = [(AMSUIPaymentSetupTask *)self resultPromise];
     v15 = AMSError();
-    [v14 finishWithError:v15];
+    [resultPromise finishWithError:v15];
   }
 
   v16 = *MEMORY[0x1E69E9840];
@@ -331,8 +331,8 @@ void __80__AMSUIPaymentSetupTask__presentPaymentSetupControllerWithPaymentSetupF
 
 - (void)paymentSetupViewControllerDidDismiss
 {
-  v3 = [(AMSUIPaymentSetupTask *)self setupControllerPromise];
-  [v3 finishWithSuccess:-[AMSUIPaymentSetupTask _didSucceed](self error:{"_didSucceed"), 0}];
+  setupControllerPromise = [(AMSUIPaymentSetupTask *)self setupControllerPromise];
+  [setupControllerPromise finishWithSuccess:-[AMSUIPaymentSetupTask _didSucceed](self error:{"_didSucceed"), 0}];
 }
 
 @end

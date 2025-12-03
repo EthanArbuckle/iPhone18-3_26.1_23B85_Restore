@@ -1,12 +1,12 @@
 @interface PKPassFaceBadgeView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSDirectionalEdgeInsets)textPadding;
 - (PKPassFaceBadgeView)init;
 - (void)_maskAllCorners;
 - (void)layoutSubviews;
-- (void)setField:(id)a3;
-- (void)setFont:(id)a3;
-- (void)setTextPadding:(NSDirectionalEdgeInsets)a3;
+- (void)setField:(id)field;
+- (void)setFont:(id)font;
+- (void)setTextPadding:(NSDirectionalEdgeInsets)padding;
 @end
 
 @implementation PKPassFaceBadgeView
@@ -30,8 +30,8 @@
 
     [(UILabel *)v7->_body setNumberOfLines:1];
     v10 = v7->_body;
-    v11 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)v10 setBackgroundColor:v11];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)v10 setBackgroundColor:clearColor];
 
     v12 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v2, v3, v4, v5}];
     contentView = v7->_contentView;
@@ -47,12 +47,12 @@
 - (void)layoutSubviews
 {
   p_textPadding = &self->_textPadding;
-  v4 = [(PKPassFaceBadgeView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(PKPassFaceBadgeView *)self _shouldReverseLayoutDirection];
   top = p_textPadding->top;
   leading = p_textPadding->leading;
   bottom = p_textPadding->bottom;
   trailing = p_textPadding->trailing;
-  if (v4)
+  if (_shouldReverseLayoutDirection)
   {
     v9 = p_textPadding->trailing;
   }
@@ -74,9 +74,9 @@
   [(UILabel *)body setFrame:v17, v18, v14, v16];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UILabel *)self->_body sizeThatFits:a3.width, a3.height];
+  [(UILabel *)self->_body sizeThatFits:fits.width, fits.height];
   PKSizeCeilToPixel(v4, v5, v6);
   v8 = v7 + self->_textPadding.leading + self->_textPadding.trailing;
   v10 = v9 + self->_textPadding.top + self->_textPadding.bottom;
@@ -85,53 +85,53 @@
   return result;
 }
 
-- (void)setField:(id)a3
+- (void)setField:(id)field
 {
-  v7 = a3;
+  fieldCopy = field;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_field, a3);
+    objc_storeStrong(&self->_field, field);
     body = self->_body;
-    v6 = [v7 value];
-    [(UILabel *)body setText:v6];
+    value = [fieldCopy value];
+    [(UILabel *)body setText:value];
 
     [(PKPassFaceBadgeView *)self setNeedsLayout];
   }
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v6 = a3;
-  v4 = [(PKPassFaceBadgeView *)self font];
+  fontCopy = font;
+  font = [(PKPassFaceBadgeView *)self font];
   v5 = PKEqualObjects();
 
   if ((v5 & 1) == 0)
   {
-    [(UILabel *)self->_body setFont:v6];
+    [(UILabel *)self->_body setFont:fontCopy];
     [(PKPassFaceBadgeView *)self setNeedsLayout];
   }
 }
 
-- (void)setTextPadding:(NSDirectionalEdgeInsets)a3
+- (void)setTextPadding:(NSDirectionalEdgeInsets)padding
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.leading;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.trailing;
+  v3.f64[0] = padding.top;
+  v3.f64[1] = padding.leading;
+  v4.f64[0] = padding.bottom;
+  v4.f64[1] = padding.trailing;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_textPadding.top, v3), vceqq_f64(*&self->_textPadding.bottom, v4)))) & 1) == 0)
   {
-    self->_textPadding = a3;
+    self->_textPadding = padding;
     [(PKPassFaceBadgeView *)self setNeedsLayout];
   }
 }
 
 - (void)_maskAllCorners
 {
-  v2 = [(PKPassFaceBadgeView *)self layer];
-  [v2 setMaskedCorners:15];
-  [v2 setCornerCurve:*MEMORY[0x1E69796E8]];
-  [v2 setCornerRadius:5.0];
-  [v2 setMasksToBounds:1];
+  layer = [(PKPassFaceBadgeView *)self layer];
+  [layer setMaskedCorners:15];
+  [layer setCornerCurve:*MEMORY[0x1E69796E8]];
+  [layer setCornerRadius:5.0];
+  [layer setMasksToBounds:1];
 }
 
 - (NSDirectionalEdgeInsets)textPadding

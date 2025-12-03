@@ -1,15 +1,15 @@
 @interface AWDCountersStabilityS
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsNcpResetType:(id)a3;
+- (int)StringAsNcpResetType:(id)type;
 - (int)ncpResetType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsMtbfQualified:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsMtbfQualified:(BOOL)qualified;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCountersStabilityS
@@ -27,22 +27,22 @@
   }
 }
 
-- (int)StringAsNcpResetType:(id)a3
+- (int)StringAsNcpResetType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"E_NCP_RESET_CAUSE_ASSERT"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"E_NCP_RESET_CAUSE_ASSERT"])
   {
 
     return 1;
   }
 
-  else if ([v3 isEqualToString:@"E_NCP_RESET_CAUSE_HARD_FAULT"])
+  else if ([typeCopy isEqualToString:@"E_NCP_RESET_CAUSE_HARD_FAULT"])
   {
 
     return 2;
   }
 
-  else if ([v3 isEqualToString:@"E_NCP_RESET_CAUSE_STACK_OVERFLOW"])
+  else if ([typeCopy isEqualToString:@"E_NCP_RESET_CAUSE_STACK_OVERFLOW"])
   {
 
     return 3;
@@ -50,7 +50,7 @@
 
   else
   {
-    if ([v3 isEqualToString:@"E_NCP_RESET_CAUSE_OTHER"])
+    if ([typeCopy isEqualToString:@"E_NCP_RESET_CAUSE_OTHER"])
     {
       v5 = 4;
     }
@@ -64,9 +64,9 @@
   }
 }
 
-- (void)setHasIsMtbfQualified:(BOOL)a3
+- (void)setHasIsMtbfQualified:(BOOL)qualified
 {
-  if (a3)
+  if (qualified)
   {
     v3 = 2;
   }
@@ -84,8 +84,8 @@
   v7.receiver = self;
   v7.super_class = AWDCountersStabilityS;
   v3 = [(AWDCountersStabilityS *)&v7 description];
-  v4 = [(AWDCountersStabilityS *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(AWDCountersStabilityS *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -124,57 +124,57 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (*&self->_has)
   {
     ncpResetType = self->_ncpResetType;
     PBDataWriterWriteInt32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_ncpCrashReason)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     isMtbfQualified = self->_isMtbfQualified;
     PBDataWriterWriteBOOLField();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[4] = self->_ncpResetType;
-    *(v4 + 24) |= 1u;
+    toCopy[4] = self->_ncpResetType;
+    *(toCopy + 24) |= 1u;
   }
 
   if (self->_ncpCrashReason)
   {
-    v5 = v4;
-    [v4 setNcpCrashReason:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setNcpCrashReason:?];
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 20) = self->_isMtbfQualified;
-    *(v4 + 24) |= 2u;
+    *(toCopy + 20) = self->_isMtbfQualified;
+    *(toCopy + 24) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -182,7 +182,7 @@
     *(v5 + 24) |= 1u;
   }
 
-  v7 = [(NSString *)self->_ncpCrashReason copyWithZone:a3];
+  v7 = [(NSString *)self->_ncpCrashReason copyWithZone:zone];
   v8 = v6[1];
   v6[1] = v7;
 
@@ -195,31 +195,31 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
   has = self->_has;
-  v6 = *(v4 + 24);
+  v6 = *(equalCopy + 24);
   if (has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_ncpResetType != *(v4 + 4))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_ncpResetType != *(equalCopy + 4))
     {
       goto LABEL_12;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
     goto LABEL_12;
   }
 
   ncpCrashReason = self->_ncpCrashReason;
-  if (ncpCrashReason | *(v4 + 1))
+  if (ncpCrashReason | *(equalCopy + 1))
   {
     if (![(NSString *)ncpCrashReason isEqual:?])
     {
@@ -229,20 +229,20 @@
     has = self->_has;
   }
 
-  v8 = (*(v4 + 24) & 2) == 0;
+  v8 = (*(equalCopy + 24) & 2) == 0;
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 24) & 2) != 0)
+    if ((*(equalCopy + 24) & 2) != 0)
     {
       if (self->_isMtbfQualified)
       {
-        if ((*(v4 + 20) & 1) == 0)
+        if ((*(equalCopy + 20) & 1) == 0)
         {
           goto LABEL_12;
         }
       }
 
-      else if (*(v4 + 20))
+      else if (*(equalCopy + 20))
       {
         goto LABEL_12;
       }
@@ -285,25 +285,25 @@ LABEL_13:
   return v4 ^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 24))
+  fromCopy = from;
+  if (*(fromCopy + 24))
   {
-    self->_ncpResetType = *(v4 + 4);
+    self->_ncpResetType = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(AWDCountersStabilityS *)self setNcpCrashReason:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if ((*(v4 + 24) & 2) != 0)
+  if ((*(fromCopy + 24) & 2) != 0)
   {
-    self->_isMtbfQualified = *(v4 + 20);
+    self->_isMtbfQualified = *(fromCopy + 20);
     *&self->_has |= 2u;
   }
 }

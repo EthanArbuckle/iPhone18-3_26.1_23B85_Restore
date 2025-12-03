@@ -1,8 +1,8 @@
 @interface ACUIRemoteDeviceSettingsController
-- (ACUIRemoteDeviceSettingsController)initWithRemoteDevice:(id)a3;
+- (ACUIRemoteDeviceSettingsController)initWithRemoteDevice:(id)device;
 - (id)_keyToSync;
-- (void)_synchronizeDomain:(id)a3 forKey:(id)a4;
-- (void)_synchronizeDomain:(id)a3 forKeys:(id)a4;
+- (void)_synchronizeDomain:(id)domain forKey:(id)key;
+- (void)_synchronizeDomain:(id)domain forKeys:(id)keys;
 - (void)setDefaultPollIntervalIfNeeded;
 @end
 
@@ -10,44 +10,44 @@
 
 - (id)_keyToSync
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   return [NSSet setWithObjects:off_225C8[0], off_225C0[0], off_225D0, 0];
 }
 
-- (ACUIRemoteDeviceSettingsController)initWithRemoteDevice:(id)a3
+- (ACUIRemoteDeviceSettingsController)initWithRemoteDevice:(id)device
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v13;
-  v13 = 0;
+  objc_storeStrong(location, device);
+  v3 = selfCopy;
+  selfCopy = 0;
   v11.receiver = v3;
   v11.super_class = ACUIRemoteDeviceSettingsController;
-  v13 = [(ACUIRemoteDeviceSettingsController *)&v11 init];
-  objc_storeStrong(&v13, v13);
-  if (v13)
+  selfCopy = [(ACUIRemoteDeviceSettingsController *)&v11 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v4 = objc_opt_new();
-    manager = v13->_manager;
-    v13->_manager = v4;
+    manager = selfCopy->_manager;
+    selfCopy->_manager = v4;
 
     v6 = [NPSDomainAccessor alloc];
     v7 = [v6 initWithDomain:off_225B8[0] pairedDevice:location[0]];
-    domainAccessor = v13->_domainAccessor;
-    v13->_domainAccessor = v7;
+    domainAccessor = selfCopy->_domainAccessor;
+    selfCopy->_domainAccessor = v7;
   }
 
-  v10 = v13;
+  v10 = selfCopy;
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v10;
 }
 
 - (void)setDefaultPollIntervalIfNeeded
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3 = 0;
   [(ACUIRemoteDeviceSettingsController *)self _pollIntervalReturningExists:&v3];
@@ -61,19 +61,19 @@
     }
 
     objc_storeStrong(&oslog, 0);
-    [(ACUIRemoteDeviceSettingsController *)v5 setPollInterval:dword_225D8];
+    [(ACUIRemoteDeviceSettingsController *)selfCopy setPollInterval:dword_225D8];
   }
 }
 
-- (void)_synchronizeDomain:(id)a3 forKey:(id)a4
+- (void)_synchronizeDomain:(id)domain forKey:(id)key
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, domain);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  v6 = v10;
+  objc_storeStrong(&v8, key);
+  v6 = selfCopy;
   v5 = location[0];
   v7 = [NSSet setWithObject:v8];
   [(ACUIRemoteDeviceSettingsController *)v6 _synchronizeDomain:v5 forKeys:?];
@@ -82,23 +82,23 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_synchronizeDomain:(id)a3 forKeys:(id)a4
+- (void)_synchronizeDomain:(id)domain forKeys:(id)keys
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, domain);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
-  v11 = [(NPSDomainAccessor *)v14->_domainAccessor synchronize];
-  if (v11)
+  objc_storeStrong(&v12, keys);
+  synchronize = [(NPSDomainAccessor *)selfCopy->_domainAccessor synchronize];
+  if (synchronize)
   {
     oslog = _ACUILogSystem();
     type = OS_LOG_TYPE_ERROR;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
-      v4 = [(NPSDomainAccessor *)v14->_domainAccessor domain];
-      sub_266C(v17, "[ACUIRemoteDeviceSettingsController _synchronizeDomain:forKeys:]", 82, v4, off_225C8[0]);
+      domain = [(NPSDomainAccessor *)selfCopy->_domainAccessor domain];
+      sub_266C(v17, "[ACUIRemoteDeviceSettingsController _synchronizeDomain:forKeys:]", 82, domain, off_225C8[0]);
       _os_log_error_impl(&dword_0, oslog, type, "%s (%d) @Failed to synchronize domain: %{public}@ key: %{public}@", v17, 0x26u);
     }
 
@@ -124,10 +124,10 @@
     }
 
     objc_storeStrong(&v6, 0);
-    [(NPSManager *)v14->_manager synchronizeNanoDomain:location[0] keys:v12];
+    [(NPSManager *)selfCopy->_manager synchronizeNanoDomain:location[0] keys:v12];
   }
 
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&synchronize, 0);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
 }

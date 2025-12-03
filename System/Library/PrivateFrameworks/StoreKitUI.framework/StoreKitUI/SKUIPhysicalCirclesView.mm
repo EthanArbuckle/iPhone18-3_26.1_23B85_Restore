@@ -1,49 +1,49 @@
 @interface SKUIPhysicalCirclesView
 - (BOOL)_addNextMissingSpringJoint;
-- (CGPoint)_initialPositionForCircleIndex:(int64_t)a3 view:(id)a4;
+- (CGPoint)_initialPositionForCircleIndex:(int64_t)index view:(id)view;
 - (SKUIPhysicalCircleConstants)constants;
 - (SKUIPhysicalCirclesDataSource)dataSource;
 - (SKUIPhysicalCirclesDelegate)delegate;
-- (SKUIPhysicalCirclesView)initWithFrame:(CGRect)a3;
-- (id)_circleBodyWithView:(id)a3;
-- (id)addRepellorWithCenter:(CGPoint)a3 radius:(double)a4 bufferSize:(double)a5;
-- (id)circleViewAtIndex:(int64_t)a3;
-- (int64_t)_circleIndexForPoint:(CGPoint)a3;
-- (void)_addSpringForCircleBody:(id)a3;
+- (SKUIPhysicalCirclesView)initWithFrame:(CGRect)frame;
+- (id)_circleBodyWithView:(id)view;
+- (id)addRepellorWithCenter:(CGPoint)center radius:(double)radius bufferSize:(double)size;
+- (id)circleViewAtIndex:(int64_t)index;
+- (int64_t)_circleIndexForPoint:(CGPoint)point;
+- (void)_addSpringForCircleBody:(id)body;
 - (void)_calculateFrequencyScaling;
 - (void)_cancelStepTimers;
-- (void)_displayLinkTick:(id)a3;
-- (void)_loadCirclesWithStartIndex:(int64_t)a3 totalCount:(int64_t)a4;
-- (void)_longPressAction:(id)a3;
-- (void)_panGestureAction:(id)a3;
+- (void)_displayLinkTick:(id)tick;
+- (void)_loadCirclesWithStartIndex:(int64_t)index totalCount:(int64_t)count;
+- (void)_longPressAction:(id)action;
+- (void)_panGestureAction:(id)action;
 - (void)_reloadDidFinish;
-- (void)_removeCircleBodies:(id)a3;
-- (void)_startFluctuationForCircleView:(id)a3;
-- (void)_stopFluctuationForCircleView:(id)a3;
-- (void)_tapGestureAction:(id)a3;
-- (void)addCirclesWithCount:(int64_t)a3;
+- (void)_removeCircleBodies:(id)bodies;
+- (void)_startFluctuationForCircleView:(id)view;
+- (void)_stopFluctuationForCircleView:(id)view;
+- (void)_tapGestureAction:(id)action;
+- (void)addCirclesWithCount:(int64_t)count;
 - (void)dealloc;
 - (void)reloadData;
-- (void)removeAllCirclesAnimated:(BOOL)a3 completionBlock:(id)a4;
+- (void)removeAllCirclesAnimated:(BOOL)animated completionBlock:(id)block;
 - (void)removeAllRepellors;
-- (void)removeCircleAtIndex:(int64_t)a3 animated:(BOOL)a4 completionBlock:(id)a5;
-- (void)removeCirclesInIndexSet:(id)a3 animated:(BOOL)a4 completionBlock:(id)a5;
-- (void)removeCirclesInIndexSet:(id)a3 byAnimatingToPoint:(CGPoint)a4 delay:(double)a5 completionBlock:(id)a6;
-- (void)removeRepellor:(id)a3;
-- (void)setConstants:(SKUIPhysicalCircleConstants *)a3;
-- (void)setSize:(CGSize)a3 forCircleAtIndex:(int64_t)a4;
+- (void)removeCircleAtIndex:(int64_t)index animated:(BOOL)animated completionBlock:(id)block;
+- (void)removeCirclesInIndexSet:(id)set animated:(BOOL)animated completionBlock:(id)block;
+- (void)removeCirclesInIndexSet:(id)set byAnimatingToPoint:(CGPoint)point delay:(double)delay completionBlock:(id)block;
+- (void)removeRepellor:(id)repellor;
+- (void)setConstants:(SKUIPhysicalCircleConstants *)constants;
+- (void)setSize:(CGSize)size forCircleAtIndex:(int64_t)index;
 - (void)startPhysics;
 - (void)stopPhysics;
 @end
 
 @implementation SKUIPhysicalCirclesView
 
-- (SKUIPhysicalCirclesView)initWithFrame:(CGRect)a3
+- (SKUIPhysicalCirclesView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIPhysicalCirclesView initWithFrame:];
@@ -51,44 +51,44 @@
 
   v21.receiver = self;
   v21.super_class = SKUIPhysicalCirclesView;
-  v8 = [(SKUIPhysicalCirclesView *)&v21 initWithFrame:x, y, width, height];
-  if (v8)
+  height = [(SKUIPhysicalCirclesView *)&v21 initWithFrame:x, y, width, height];
+  if (height)
   {
     v9 = SKUIPhysicsKitFramework();
-    *(v8 + 70) = v9;
+    *(height + 70) = v9;
     v10 = objc_alloc_init(SKUIWeakLinkedClassForString(&cfstr_Pkphysicsworld.isa, v9));
-    v11 = *(v8 + 71);
-    *(v8 + 71) = v10;
+    v11 = *(height + 71);
+    *(height + 71) = v10;
 
-    [*(v8 + 71) setContactDelegate:v8];
-    [*(v8 + 71) setGravity:{0.0, 0.0}];
-    v12 = objc_alloc_init(SKUIWeakLinkedClassForString(&cfstr_Pkphysicsbody.isa, *(v8 + 70)));
-    v13 = *(v8 + 64);
-    *(v8 + 64) = v12;
+    [*(height + 71) setContactDelegate:height];
+    [*(height + 71) setGravity:{0.0, 0.0}];
+    v12 = objc_alloc_init(SKUIWeakLinkedClassForString(&cfstr_Pkphysicsbody.isa, *(height + 70)));
+    v13 = *(height + 64);
+    *(height + 64) = v12;
 
-    [*(v8 + 64) setPosition:{0.0, 0.0}];
-    [*(v8 + 71) addBody:*(v8 + 64)];
-    [*(v8 + 64) setDynamic:0];
-    *(v8 + 65) = 0x7FFFFFFFFFFFFFFFLL;
-    v14 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:v8 action:sel__longPressAction_];
-    v15 = *(v8 + 66);
-    *(v8 + 66) = v14;
+    [*(height + 64) setPosition:{0.0, 0.0}];
+    [*(height + 71) addBody:*(height + 64)];
+    [*(height + 64) setDynamic:0];
+    *(height + 65) = 0x7FFFFFFFFFFFFFFFLL;
+    v14 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:height action:sel__longPressAction_];
+    v15 = *(height + 66);
+    *(height + 66) = v14;
 
-    [v8 addGestureRecognizer:*(v8 + 66)];
-    v16 = [objc_alloc(MEMORY[0x277D757F8]) initWithTarget:v8 action:sel__panGestureAction_];
-    v17 = *(v8 + 69);
-    *(v8 + 69) = v16;
+    [height addGestureRecognizer:*(height + 66)];
+    v16 = [objc_alloc(MEMORY[0x277D757F8]) initWithTarget:height action:sel__panGestureAction_];
+    v17 = *(height + 69);
+    *(height + 69) = v16;
 
-    [v8 addGestureRecognizer:*(v8 + 69)];
-    v18 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:v8 action:sel__tapGestureAction_];
-    v19 = *(v8 + 73);
-    *(v8 + 73) = v18;
+    [height addGestureRecognizer:*(height + 69)];
+    v18 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:height action:sel__tapGestureAction_];
+    v19 = *(height + 73);
+    *(height + 73) = v18;
 
-    [v8 addGestureRecognizer:*(v8 + 73)];
-    [v8 setClipsToBounds:1];
+    [height addGestureRecognizer:*(height + 73)];
+    [height setClipsToBounds:1];
   }
 
-  return v8;
+  return height;
 }
 
 - (void)dealloc
@@ -111,7 +111,7 @@
   [(SKUIPhysicalCirclesView *)&v4 dealloc];
 }
 
-- (void)addCirclesWithCount:(int64_t)a3
+- (void)addCirclesWithCount:(int64_t)count
 {
   if (self->_circleLoadStepTimer)
   {
@@ -129,18 +129,18 @@
       self->_circleBodies = v6;
     }
 
-    [(SKUIPhysicalCirclesView *)self _loadCirclesWithStartIndex:v5 totalCount:v5 + a3];
+    [(SKUIPhysicalCirclesView *)self _loadCirclesWithStartIndex:v5 totalCount:v5 + count];
   }
 }
 
-- (id)addRepellorWithCenter:(CGPoint)a3 radius:(double)a4 bufferSize:(double)a5
+- (id)addRepellorWithCenter:(CGPoint)center radius:(double)radius bufferSize:(double)size
 {
-  y = a3.y;
-  x = a3.x;
+  y = center.y;
+  x = center.x;
   v10 = objc_alloc_init(SKUICircleRepellor);
-  [(SKUICircleRepellor *)v10 setBufferSize:a5];
+  [(SKUICircleRepellor *)v10 setBufferSize:size];
   [(SKUICircleRepellor *)v10 setCenter:x, y];
-  [(SKUICircleRepellor *)v10 setRadius:a4];
+  [(SKUICircleRepellor *)v10 setRadius:radius];
   v11 = [SKUIWeakLinkedClassForString(&cfstr_Pkphysicsbody.isa self->_physicsKitFramework)];
   [v11 setCategoryBitMask:1];
   [v11 setCollisionBitMask:1];
@@ -168,27 +168,27 @@
   return v10;
 }
 
-- (id)circleViewAtIndex:(int64_t)a3
+- (id)circleViewAtIndex:(int64_t)index
 {
-  if ([(NSMutableArray *)self->_circleBodies count]<= a3)
+  if ([(NSMutableArray *)self->_circleBodies count]<= index)
   {
-    v6 = 0;
+    representedObject = 0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->_circleBodies objectAtIndex:a3];
-    v6 = [v5 representedObject];
+    v5 = [(NSMutableArray *)self->_circleBodies objectAtIndex:index];
+    representedObject = [v5 representedObject];
   }
 
-  return v6;
+  return representedObject;
 }
 
 - (void)reloadData
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(SKUIPhysicalCirclesView *)self traitCollection];
-  v4 = [v3 horizontalSizeClass] == 2;
+  traitCollection = [(SKUIPhysicalCirclesView *)self traitCollection];
+  v4 = [traitCollection horizontalSizeClass] == 2;
 
   v5 = dbl_215F3FF00[v4];
   *&self->_maximumFrequencyDistance = qword_215F3FEF0[v4];
@@ -214,8 +214,8 @@
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
-        v12 = [v11 representedObject];
-        [v12 removeFromSuperview];
+        representedObject = [v11 representedObject];
+        [representedObject removeFromSuperview];
         [(PKPhysicsWorld *)self->_physicsWorld removeBody:v11];
       }
 
@@ -259,17 +259,17 @@ void __37__SKUIPhysicalCirclesView_reloadData__block_invoke(uint64_t a1)
   [WeakRetained _reloadDidFinish];
 }
 
-- (void)removeAllCirclesAnimated:(BOOL)a3 completionBlock:(id)a4
+- (void)removeAllCirclesAnimated:(BOOL)animated completionBlock:(id)block
 {
-  v4 = a3;
+  animatedCopy = animated;
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  blockCopy = block;
   [(SKUIPhysicalCirclesView *)self _cancelStepTimers];
   v7 = [(NSMutableArray *)self->_circleBodies count];
-  if (v4 && v7)
+  if (animatedCopy && v7)
   {
     v26 = v7;
-    v27 = v6;
+    v27 = blockCopy;
     v39 = 0u;
     v40 = 0u;
     v38 = 0u;
@@ -291,20 +291,20 @@ void __37__SKUIPhysicalCirclesView_reloadData__block_invoke(uint64_t a1)
           }
 
           v13 = *(*(&v37 + 1) + 8 * i);
-          v14 = [v13 representedObject];
+          representedObject = [v13 representedObject];
           v15 = MEMORY[0x277D75D18];
           v35[0] = MEMORY[0x277D85DD0];
           v35[1] = 3221225472;
           v35[2] = __68__SKUIPhysicalCirclesView_removeAllCirclesAnimated_completionBlock___block_invoke;
           v35[3] = &unk_2781F80F0;
-          v16 = v14;
+          v16 = representedObject;
           v36 = v16;
           v28[0] = MEMORY[0x277D85DD0];
           v28[1] = 3221225472;
           v28[2] = __68__SKUIPhysicalCirclesView_removeAllCirclesAnimated_completionBlock___block_invoke_2;
           v28[3] = &unk_2781FE858;
           v29 = v16;
-          v30 = self;
+          selfCopy = self;
           v31 = v13;
           v32 = v27;
           v33 = v10;
@@ -321,7 +321,7 @@ void __37__SKUIPhysicalCirclesView_reloadData__block_invoke(uint64_t a1)
 
     [(NSMutableArray *)self->_circleBodies removeAllObjects];
     self->_longPressCircleIndex = 0x7FFFFFFFFFFFFFFFLL;
-    v6 = v27;
+    blockCopy = v27;
   }
 
   else
@@ -346,8 +346,8 @@ void __37__SKUIPhysicalCirclesView_reloadData__block_invoke(uint64_t a1)
           }
 
           v23 = *(*(&v41 + 1) + 8 * j);
-          v24 = [v23 representedObject];
-          [v24 removeFromSuperview];
+          representedObject2 = [v23 representedObject];
+          [representedObject2 removeFromSuperview];
           [(PKPhysicsWorld *)self->_physicsWorld removeBody:v23];
         }
 
@@ -359,9 +359,9 @@ void __37__SKUIPhysicalCirclesView_reloadData__block_invoke(uint64_t a1)
 
     [(NSMutableArray *)self->_circleBodies removeAllObjects];
     self->_longPressCircleIndex = 0x7FFFFFFFFFFFFFFFLL;
-    if (v6)
+    if (blockCopy)
     {
-      (*(v6 + 2))(v6, 1);
+      (*(blockCopy + 2))(blockCopy, 1);
     }
   }
 }
@@ -424,21 +424,21 @@ uint64_t __68__SKUIPhysicalCirclesView_removeAllCirclesAnimated_completionBlock_
   }
 }
 
-- (void)removeCircleAtIndex:(int64_t)a3 animated:(BOOL)a4 completionBlock:(id)a5
+- (void)removeCircleAtIndex:(int64_t)index animated:(BOOL)animated completionBlock:(id)block
 {
-  v5 = a4;
+  animatedCopy = animated;
   v8 = MEMORY[0x277CCAA78];
-  v9 = a5;
-  v10 = [[v8 alloc] initWithIndex:a3];
-  [(SKUIPhysicalCirclesView *)self removeCirclesInIndexSet:v10 animated:v5 completionBlock:v9];
+  blockCopy = block;
+  v10 = [[v8 alloc] initWithIndex:index];
+  [(SKUIPhysicalCirclesView *)self removeCirclesInIndexSet:v10 animated:animatedCopy completionBlock:blockCopy];
 }
 
-- (void)removeCirclesInIndexSet:(id)a3 animated:(BOOL)a4 completionBlock:(id)a5
+- (void)removeCirclesInIndexSet:(id)set animated:(BOOL)animated completionBlock:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   longPressCircleIndex = self->_longPressCircleIndex;
-  v10 = a3;
-  if ([v10 containsIndex:longPressCircleIndex])
+  setCopy = set;
+  if ([setCopy containsIndex:longPressCircleIndex])
   {
     self->_longPressCircleIndex = 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -450,10 +450,10 @@ uint64_t __68__SKUIPhysicalCirclesView_removeAllCirclesAnimated_completionBlock_
   v19[3] = &unk_2781FA850;
   v12 = v11;
   v20 = v12;
-  v21 = self;
-  [v10 enumerateIndexesWithOptions:2 usingBlock:v19];
+  selfCopy = self;
+  [setCopy enumerateIndexesWithOptions:2 usingBlock:v19];
 
-  if (a4)
+  if (animated)
   {
     v13 = MEMORY[0x277D75D18];
     v17[0] = MEMORY[0x277D85DD0];
@@ -467,16 +467,16 @@ uint64_t __68__SKUIPhysicalCirclesView_removeAllCirclesAnimated_completionBlock_
     v14[3] = &unk_2781FE880;
     v14[4] = self;
     v15 = v18;
-    v16 = v8;
+    v16 = blockCopy;
     [v13 animateWithDuration:0x10000 delay:v17 options:v14 animations:0.2 completion:0.0];
   }
 
   else
   {
     [(SKUIPhysicalCirclesView *)self _removeCircleBodies:v12];
-    if (v8)
+    if (blockCopy)
     {
-      (*(v8 + 2))(v8, 1);
+      (*(blockCopy + 2))(blockCopy, 1);
     }
   }
 }
@@ -545,13 +545,13 @@ uint64_t __76__SKUIPhysicalCirclesView_removeCirclesInIndexSet_animated_completi
   return result;
 }
 
-- (void)removeCirclesInIndexSet:(id)a3 byAnimatingToPoint:(CGPoint)a4 delay:(double)a5 completionBlock:(id)a6
+- (void)removeCirclesInIndexSet:(id)set byAnimatingToPoint:(CGPoint)point delay:(double)delay completionBlock:(id)block
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   v51 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a6;
+  setCopy = set;
+  blockCopy = block;
   v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v47[0] = MEMORY[0x277D85DD0];
   v47[1] = 3221225472;
@@ -560,8 +560,8 @@ uint64_t __76__SKUIPhysicalCirclesView_removeCirclesInIndexSet_animated_completi
   v47[4] = self;
   v14 = v13;
   v48 = v14;
-  v35 = v11;
-  [v11 enumerateIndexesWithOptions:2 usingBlock:v47];
+  v35 = setCopy;
+  [setCopy enumerateIndexesWithOptions:2 usingBlock:v47];
   [MEMORY[0x277CD9FF0] begin];
   v15 = MEMORY[0x277CD9FF0];
   v44[0] = MEMORY[0x277D85DD0];
@@ -570,7 +570,7 @@ uint64_t __76__SKUIPhysicalCirclesView_removeCirclesInIndexSet_animated_completi
   v44[3] = &unk_2781F98F0;
   v16 = v14;
   v45 = v16;
-  v34 = v12;
+  v34 = blockCopy;
   v46 = v34;
   [v15 setCompletionBlock:v44];
   v42 = 0u;
@@ -593,13 +593,13 @@ uint64_t __76__SKUIPhysicalCirclesView_removeCirclesInIndexSet_animated_completi
           objc_enumerationMutation(obj);
         }
 
-        v18 = [*(*(&v40 + 1) + 8 * v17) layer];
+        layer = [*(*(&v40 + 1) + 8 * v17) layer];
         v19 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"position.x"];
         v20 = +[SKUISimpleAnimationFactory easeQuadOutTimingFunction];
         [v19 setTimingFunction:v20];
 
         v21 = MEMORY[0x277CCABB0];
-        [v18 position];
+        [layer position];
         v22 = [v21 numberWithDouble:?];
         [v19 setFromValue:v22];
 
@@ -611,7 +611,7 @@ uint64_t __76__SKUIPhysicalCirclesView_removeCirclesInIndexSet_animated_completi
         [v24 setTimingFunction:v25];
 
         v26 = MEMORY[0x277CCABB0];
-        [v18 position];
+        [layer position];
         v28 = [v26 numberWithDouble:v27];
         [v24 setFromValue:v28];
 
@@ -624,19 +624,19 @@ uint64_t __76__SKUIPhysicalCirclesView_removeCirclesInIndexSet_animated_completi
 
         [v30 setFromValue:&unk_2828D2D98];
         [v30 setToValue:&unk_2828D3040];
-        v32 = [MEMORY[0x277CD9E00] animation];
+        animation = [MEMORY[0x277CD9E00] animation];
         v49[0] = v19;
         v49[1] = v24;
         v49[2] = v30;
         v33 = [MEMORY[0x277CBEA60] arrayWithObjects:v49 count:3];
-        [v32 setAnimations:v33];
+        [animation setAnimations:v33];
 
-        [v32 setDuration:0.5];
-        [v32 setFillMode:v37];
-        [v32 setRemovedOnCompletion:0];
-        a5 = a5 + 0.075;
-        [v32 setBeginTime:a5 + CACurrentMediaTime()];
-        [v18 addAnimation:v32 forKey:@"groupAnimation"];
+        [animation setDuration:0.5];
+        [animation setFillMode:v37];
+        [animation setRemovedOnCompletion:0];
+        delay = delay + 0.075;
+        [animation setBeginTime:delay + CACurrentMediaTime()];
+        [layer addAnimation:animation forKey:@"groupAnimation"];
 
         ++v17;
       }
@@ -703,25 +703,25 @@ uint64_t __92__SKUIPhysicalCirclesView_removeCirclesInIndexSet_byAnimatingToPoin
   return result;
 }
 
-- (void)removeRepellor:(id)a3
+- (void)removeRepellor:(id)repellor
 {
-  v8 = a3;
+  repellorCopy = repellor;
   v4 = [(NSMutableArray *)self->_repellors indexOfObjectIdenticalTo:?];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = v4;
     physicsWorld = self->_physicsWorld;
-    v7 = [v8 physicsBody];
-    [(PKPhysicsWorld *)physicsWorld removeBody:v7];
+    physicsBody = [repellorCopy physicsBody];
+    [(PKPhysicsWorld *)physicsWorld removeBody:physicsBody];
 
     [(NSMutableArray *)self->_repellors removeObjectAtIndex:v5];
   }
 }
 
-- (void)setSize:(CGSize)a3 forCircleAtIndex:(int64_t)a4
+- (void)setSize:(CGSize)size forCircleAtIndex:(int64_t)index
 {
-  width = a3.width;
-  v7 = [(NSMutableArray *)self->_circleBodies objectAtIndex:a4, a3.width, a3.height];
+  width = size.width;
+  v7 = [(NSMutableArray *)self->_circleBodies objectAtIndex:index, size.width, size.height];
   v6 = SKUIWeakLinkedSymbolForString("PKGet_INV_PTM_RATIO", self->_physicsKitFramework);
   if (v6)
   {
@@ -744,8 +744,8 @@ uint64_t __92__SKUIPhysicalCirclesView_removeCirclesInIndexSet_byAnimatingToPoin
   self->_displayLink = v4;
 
   v6 = self->_displayLink;
-  v7 = [MEMORY[0x277CBEB88] mainRunLoop];
-  [(CADisplayLink *)v6 addToRunLoop:v7 forMode:*MEMORY[0x277CBE738]];
+  mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+  [(CADisplayLink *)v6 addToRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE738]];
 }
 
 - (void)stopPhysics
@@ -755,12 +755,12 @@ uint64_t __92__SKUIPhysicalCirclesView_removeCirclesInIndexSet_byAnimatingToPoin
   self->_displayLink = 0;
 }
 
-- (void)_longPressAction:(id)a3
+- (void)_longPressAction:(id)action
 {
-  v12 = a3;
-  v4 = [(SKUIPhysicalCirclesView *)self delegate];
-  v5 = [v12 state];
-  if ((v5 - 3) < 2)
+  actionCopy = action;
+  delegate = [(SKUIPhysicalCirclesView *)self delegate];
+  state = [actionCopy state];
+  if ((state - 3) < 2)
   {
     longPressCircleIndex = self->_longPressCircleIndex;
     self->_longPressCircleIndex = 0x7FFFFFFFFFFFFFFFLL;
@@ -771,20 +771,20 @@ uint64_t __92__SKUIPhysicalCirclesView_removeCirclesInIndexSet_byAnimatingToPoin
 
     v7 = [(NSMutableArray *)self->_circleBodies objectAtIndex:longPressCircleIndex];
     [v7 setDynamic:1];
-    v8 = [v7 representedObject];
-    [(SKUIPhysicalCirclesView *)self _stopFluctuationForCircleView:v8];
+    representedObject = [v7 representedObject];
+    [(SKUIPhysicalCirclesView *)self _stopFluctuationForCircleView:representedObject];
 
     if (objc_opt_respondsToSelector())
     {
-      [v4 circleView:self didEndLongPressForCircleAtIndex:longPressCircleIndex];
+      [delegate circleView:self didEndLongPressForCircleAtIndex:longPressCircleIndex];
     }
 
     goto LABEL_9;
   }
 
-  if (v5 == 1)
+  if (state == 1)
   {
-    [v12 locationInView:self];
+    [actionCopy locationInView:self];
     v9 = [(SKUIPhysicalCirclesView *)self _circleIndexForPoint:?];
     if (v9 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -792,12 +792,12 @@ uint64_t __92__SKUIPhysicalCirclesView_removeCirclesInIndexSet_byAnimatingToPoin
       self->_longPressCircleIndex = v9;
       v7 = [(NSMutableArray *)self->_circleBodies objectAtIndex:v9];
       [v7 setDynamic:0];
-      v11 = [v7 representedObject];
-      [(SKUIPhysicalCirclesView *)self _startFluctuationForCircleView:v11];
+      representedObject2 = [v7 representedObject];
+      [(SKUIPhysicalCirclesView *)self _startFluctuationForCircleView:representedObject2];
 
       if (objc_opt_respondsToSelector())
       {
-        [v4 circleView:self didBeginLongPressForCircleAtIndex:v10];
+        [delegate circleView:self didBeginLongPressForCircleAtIndex:v10];
       }
 
 LABEL_9:
@@ -807,13 +807,13 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)_panGestureAction:(id)a3
+- (void)_panGestureAction:(id)action
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 state] == 2)
+  actionCopy = action;
+  if ([actionCopy state] == 2)
   {
-    [v4 translationInView:self];
+    [actionCopy translationInView:self];
     v6 = v5;
     v8 = v7;
     v18 = 0u;
@@ -837,8 +837,8 @@ LABEL_10:
           }
 
           v15 = *(*(&v18 + 1) + 8 * i);
-          v16 = [v15 representedObject];
-          [v16 bounds];
+          representedObject = [v15 representedObject];
+          [representedObject bounds];
           [v15 applyForce:{v6 * self->_constants.translationForceMultiplier * (v17 / self->_constants.circleMinimumDiameter * 1.5), self->_constants.translationForceMultiplier * v13 * (v17 / self->_constants.circleMinimumDiameter * 1.5)}];
         }
 
@@ -848,29 +848,29 @@ LABEL_10:
       while (v11);
     }
 
-    [v4 setTranslation:self inView:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
+    [actionCopy setTranslation:self inView:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
   }
 }
 
-- (void)_tapGestureAction:(id)a3
+- (void)_tapGestureAction:(id)action
 {
-  v6 = a3;
-  v4 = [(SKUIPhysicalCirclesView *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v6 state] == 3)
+  actionCopy = action;
+  delegate = [(SKUIPhysicalCirclesView *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [actionCopy state] == 3)
   {
-    [v6 locationInView:self];
+    [actionCopy locationInView:self];
     v5 = [(SKUIPhysicalCirclesView *)self _circleIndexForPoint:?];
     if (v5 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v4 circleView:self didTapCircleAtIndex:v5];
+      [delegate circleView:self didTapCircleAtIndex:v5];
     }
   }
 }
 
-- (void)_displayLinkTick:(id)a3
+- (void)_displayLinkTick:(id)tick
 {
   v49 = *MEMORY[0x277D85DE8];
-  v33 = a3;
+  tickCopy = tick;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
@@ -880,7 +880,7 @@ LABEL_10:
   if (v37)
   {
     v35 = *v44;
-    v36 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v37; ++i)
@@ -894,21 +894,21 @@ LABEL_10:
         [v5 position];
         v7 = v6;
         v9 = v8;
-        v10 = [v5 representedObject];
+        representedObject = [v5 representedObject];
         [(SKUIPhysicalCirclesView *)self bounds];
         v12 = v11 - v9;
-        [v10 setCenter:{v7, v12}];
-        v13 = [v5 joints];
-        v14 = [v13 firstObject];
+        [representedObject setCenter:{v7, v12}];
+        joints = [v5 joints];
+        firstObject = [joints firstObject];
 
-        if (v14)
+        if (firstObject)
         {
-          [(PKPhysicsWorld *)self->_physicsWorld removeJoint:v14];
+          [(PKPhysicsWorld *)self->_physicsWorld removeJoint:firstObject];
           [(SKUIPhysicalCirclesView *)self _calculateFrequencyScaling];
           [(SKUIPhysicalCirclesView *)self _addSpringForCircleBody:v5];
         }
 
-        v38 = v14;
+        v38 = firstObject;
         v41 = 0u;
         v42 = 0u;
         v39 = 0u;
@@ -933,7 +933,7 @@ LABEL_10:
               v23 = v12 - v22;
               *&v21 = (v7 - v21) * (v7 - v21) + v23 * v23;
               v24 = sqrtf(*&v21);
-              [v10 bounds];
+              [representedObject bounds];
               v26 = v25 * 0.5;
               [v20 bufferSize];
               v28 = v27;
@@ -965,7 +965,7 @@ LABEL_10:
           while (v17);
         }
 
-        self = v36;
+        self = selfCopy;
       }
 
       v37 = [(NSMutableArray *)obj countByEnumeratingWithState:&v43 objects:v48 count:16];
@@ -975,7 +975,7 @@ LABEL_10:
   }
 
   physicsWorld = self->_physicsWorld;
-  [v33 duration];
+  [tickCopy duration];
   [(PKPhysicsWorld *)physicsWorld stepWithTime:8 velocityIterations:2 positionIterations:?];
 }
 
@@ -1002,8 +1002,8 @@ LABEL_10:
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [v8 joints];
-        v10 = [v9 count];
+        joints = [v8 joints];
+        v10 = [joints count];
 
         if (!v10)
         {
@@ -1030,13 +1030,13 @@ LABEL_11:
   return v11;
 }
 
-- (void)_addSpringForCircleBody:(id)a3
+- (void)_addSpringForCircleBody:(id)body
 {
-  v4 = a3;
+  bodyCopy = body;
   [(SKUIPhysicalCirclesView *)self bounds];
   v6 = v5 * 0.5;
   v8 = v7 * 0.5;
-  [v4 position];
+  [bodyCopy position];
   v10 = v9;
   v12 = v11;
   v18 = [SKUIWeakLinkedClassForString(&cfstr_Pkphysicsjoint.isa self->_physicsKitFramework)];
@@ -1102,13 +1102,13 @@ LABEL_11:
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
-        v11 = [v10 joints];
-        v12 = [v11 count];
+        joints = [v10 joints];
+        v12 = [joints count];
 
         if (v12)
         {
-          v13 = [v10 representedObject];
-          [v13 bounds];
+          representedObject = [v10 representedObject];
+          [representedObject bounds];
           v8 = v8 + v14;
           ++v6;
         }
@@ -1140,12 +1140,12 @@ LABEL_11:
   }
 }
 
-- (id)_circleBodyWithView:(id)a3
+- (id)_circleBodyWithView:(id)view
 {
-  v4 = a3;
-  [v4 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   v6 = v5;
-  [v4 center];
+  [viewCopy center];
   v8 = v7;
   v10 = v9;
   v11 = SKUIWeakLinkedClassForString(&cfstr_Pkphysicsbody.isa, self->_physicsKitFramework);
@@ -1159,14 +1159,14 @@ LABEL_11:
   [v13 setLinearDamping:self->_constants.circleLinearDamping];
   [(SKUIPhysicalCirclesView *)self bounds];
   [v13 setPosition:{v8, v14 - v10}];
-  [v13 setRepresentedObject:v4];
+  [v13 setRepresentedObject:viewCopy];
 
   [v13 setRestitution:0.0];
 
   return v13;
 }
 
-- (int64_t)_circleIndexForPoint:(CGPoint)a3
+- (int64_t)_circleIndexForPoint:(CGPoint)point
 {
   v8 = 0;
   v9 = &v8;
@@ -1177,7 +1177,7 @@ LABEL_11:
   v6[1] = 3221225472;
   v6[2] = __48__SKUIPhysicalCirclesView__circleIndexForPoint___block_invoke;
   v6[3] = &unk_2781FE8A8;
-  v7 = a3;
+  pointCopy = point;
   v6[4] = &v8;
   [(NSMutableArray *)circleBodies enumerateObjectsUsingBlock:v6];
   v4 = v9[3];
@@ -1196,47 +1196,47 @@ void __48__SKUIPhysicalCirclesView__circleIndexForPoint___block_invoke(uint64_t 
   }
 }
 
-- (CGPoint)_initialPositionForCircleIndex:(int64_t)a3 view:(id)a4
+- (CGPoint)_initialPositionForCircleIndex:(int64_t)index view:(id)view
 {
-  v6 = a4;
+  viewCopy = view;
   [(SKUIPhysicalCirclesView *)self bounds];
   v8 = v7;
   v10 = v9;
-  [v6 bounds];
+  [viewCopy bounds];
   v12 = v11;
   v14 = v13;
 
   self = (self + 424);
   cachedTraitCollection = self->super._cachedTraitCollection;
   v16 = rand();
-  v17 = v12 + *&self->super._constraintsExceptingSubviewAutoresizingConstraints + v12 * ((a3 / 2) >> 1) * 2.0;
+  v17 = v12 + *&self->super._constraintsExceptingSubviewAutoresizingConstraints + v12 * ((index / 2) >> 1) * 2.0;
   v18 = v8 + v17;
   *&v17 = v17;
   v19 = -*&v17;
-  if (a3)
+  if (index)
   {
     v19 = v18;
   }
 
   v20 = floorf(v19);
-  v21 = v10 * 0.5 + ((a3 + (a3 >> 63)) & 2) * v14 - v14;
+  v21 = v10 * 0.5 + ((index + (index >> 63)) & 2) * v14 - v14;
   v22 = v16 / 2147483650.0 * (*&cachedTraitCollection * 0.200000003) + 0.0 + roundf(v21);
   result.y = v22;
   result.x = v20;
   return result;
 }
 
-- (void)_loadCirclesWithStartIndex:(int64_t)a3 totalCount:(int64_t)a4
+- (void)_loadCirclesWithStartIndex:(int64_t)index totalCount:(int64_t)count
 {
-  if (a3 < a4)
+  if (index < count)
   {
-    v6 = a3;
+    indexCopy = index;
     do
     {
       WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-      v8 = [WeakRetained circlesView:self circleForIndex:v6];
+      v8 = [WeakRetained circlesView:self circleForIndex:indexCopy];
 
-      [(SKUIPhysicalCirclesView *)self _initialPositionForCircleIndex:v6 view:v8];
+      [(SKUIPhysicalCirclesView *)self _initialPositionForCircleIndex:indexCopy view:v8];
       [v8 setCenter:?];
       [v8 setUserInteractionEnabled:0];
       v9 = [(SKUIPhysicalCirclesView *)self _circleBodyWithView:v8];
@@ -1244,10 +1244,10 @@ void __48__SKUIPhysicalCirclesView__circleIndexForPoint___block_invoke(uint64_t 
       [(PKPhysicsWorld *)self->_physicsWorld addBody:v9];
       [(SKUIPhysicalCirclesView *)self addSubview:v8];
 
-      ++v6;
+      ++indexCopy;
     }
 
-    while (a4 != v6);
+    while (count != indexCopy);
   }
 
   v10 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, MEMORY[0x277D85CD0]);
@@ -1297,22 +1297,22 @@ uint64_t __65__SKUIPhysicalCirclesView__loadCirclesWithStartIndex_totalCount___b
     self->_circleLoadStepTimer = 0;
   }
 
-  v5 = [(SKUIPhysicalCirclesView *)self delegate];
+  delegate = [(SKUIPhysicalCirclesView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 circleViewReloadDidFinish:self];
+    [delegate circleViewReloadDidFinish:self];
   }
 }
 
-- (void)_removeCircleBodies:(id)a3
+- (void)_removeCircleBodies:(id)bodies
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  bodiesCopy = bodies;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [bodiesCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1323,32 +1323,32 @@ uint64_t __65__SKUIPhysicalCirclesView__loadCirclesWithStartIndex_totalCount___b
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(bodiesCopy);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        v10 = [v9 representedObject];
-        [v10 removeFromSuperview];
+        representedObject = [v9 representedObject];
+        [representedObject removeFromSuperview];
         [(PKPhysicsWorld *)self->_physicsWorld removeBody:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [bodiesCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_startFluctuationForCircleView:(id)a3
+- (void)_startFluctuationForCircleView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v4 = MEMORY[0x277D75D18];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __58__SKUIPhysicalCirclesView__startFluctuationForCircleView___block_invoke;
   v6[3] = &unk_2781F80F0;
-  v7 = v3;
-  v5 = v3;
+  v7 = viewCopy;
+  v5 = viewCopy;
   [v4 animateKeyframesWithDuration:8 delay:v6 options:0 animations:0.2 completion:0.0];
 }
 
@@ -1404,19 +1404,19 @@ uint64_t __58__SKUIPhysicalCirclesView__startFluctuationForCircleView___block_in
   return [v1 setTransform:v4];
 }
 
-- (void)_stopFluctuationForCircleView:(id)a3
+- (void)_stopFluctuationForCircleView:(id)view
 {
-  v3 = a3;
-  v4 = [v3 layer];
-  [v4 removeAllAnimations];
+  viewCopy = view;
+  layer = [viewCopy layer];
+  [layer removeAllAnimations];
 
   v5 = MEMORY[0x277D75D18];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__SKUIPhysicalCirclesView__stopFluctuationForCircleView___block_invoke;
   v7[3] = &unk_2781F80F0;
-  v8 = v3;
-  v6 = v3;
+  v8 = viewCopy;
+  v6 = viewCopy;
   [v5 animateWithDuration:v7 animations:0.2];
 }
 
@@ -1441,12 +1441,12 @@ uint64_t __57__SKUIPhysicalCirclesView__stopFluctuationForCircleView___block_inv
   return self;
 }
 
-- (void)setConstants:(SKUIPhysicalCircleConstants *)a3
+- (void)setConstants:(SKUIPhysicalCircleConstants *)constants
 {
-  v3 = *&a3->springDamping;
-  v5 = *&a3->circleDensity;
-  v4 = *&a3->circleMaximumDiameter;
-  *&self->_constants.springMaximumFrequency = *&a3->springMaximumFrequency;
+  v3 = *&constants->springDamping;
+  v5 = *&constants->circleDensity;
+  v4 = *&constants->circleMaximumDiameter;
+  *&self->_constants.springMaximumFrequency = *&constants->springMaximumFrequency;
   *&self->_constants.springDamping = v3;
   *&self->_constants.circleDensity = v5;
   *&self->_constants.circleMaximumDiameter = v4;

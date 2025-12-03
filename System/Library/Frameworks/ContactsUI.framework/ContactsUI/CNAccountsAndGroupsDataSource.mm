@@ -1,41 +1,41 @@
 @interface CNAccountsAndGroupsDataSource
 - (BOOL)hasChanges;
-- (BOOL)isFilterShowingItem:(id)a3;
+- (BOOL)isFilterShowingItem:(id)item;
 - (BOOL)isTrivial;
-- (BOOL)shouldShowAccount:(id)a3;
-- (CNAccountsAndGroupsDataSource)initWithStore:(id)a3;
+- (BOOL)shouldShowAccount:(id)account;
+- (CNAccountsAndGroupsDataSource)initWithStore:(id)store;
 - (NSArray)sections;
-- (id)allContactsForItem:(id)a3 keysToFetch:(id)a4;
-- (id)allContactsForMainItem:(id)a3 keysToFetch:(id)a4;
-- (id)containerIdentifierForItem:(id)a3;
-- (id)groupIdentifierForGroupItem:(id)a3;
+- (id)allContactsForItem:(id)item keysToFetch:(id)fetch;
+- (id)allContactsForMainItem:(id)item keysToFetch:(id)fetch;
+- (id)containerIdentifierForItem:(id)item;
+- (id)groupIdentifierForGroupItem:(id)item;
 - (id)multiSelectFilter;
-- (id)sectionForIdentifier:(id)a3;
-- (id)sectionIdentifierForItem:(id)a3;
-- (int64_t)contactCountForItem:(id)a3;
-- (int64_t)contactCountForMainItem:(id)a3;
+- (id)sectionForIdentifier:(id)identifier;
+- (id)sectionIdentifierForItem:(id)item;
+- (int64_t)contactCountForItem:(id)item;
+- (int64_t)contactCountForMainItem:(id)item;
 - (void)_applyFilter;
 - (void)_reloadSections;
-- (void)setFilter:(id)a3;
-- (void)setFilterForItem:(id)a3;
-- (void)setHidesSearchableSources:(BOOL)a3;
-- (void)setServerFilterForItem:(id)a3;
+- (void)setFilter:(id)filter;
+- (void)setFilterForItem:(id)item;
+- (void)setHidesSearchableSources:(BOOL)sources;
+- (void)setServerFilterForItem:(id)item;
 - (void)updateRootItemSelection;
 @end
 
 @implementation CNAccountsAndGroupsDataSource
 
-- (BOOL)isFilterShowingItem:(id)a3
+- (BOOL)isFilterShowingItem:(id)item
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 type];
+  itemCopy = item;
+  type = [itemCopy type];
   v6 = 0;
-  if (v5 <= 1)
+  if (type <= 1)
   {
-    if (v5)
+    if (type)
     {
-      if (v5 != 1)
+      if (type != 1)
       {
         goto LABEL_26;
       }
@@ -44,8 +44,8 @@
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v8 = [v4 childItems];
-      v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      childItems = [itemCopy childItems];
+      v9 = [childItems countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (!v9)
       {
 LABEL_16:
@@ -63,13 +63,13 @@ LABEL_10:
       {
         if (*v23 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(childItems);
         }
 
         v13 = *(*(&v22 + 1) + 8 * v12);
-        v14 = [(CNContactStoreFilter *)self->_filter containerIdentifiers];
-        v15 = [v13 identifier];
-        v16 = [v14 containsObject:v15];
+        containerIdentifiers = [(CNContactStoreFilter *)self->_filter containerIdentifiers];
+        identifier = [v13 identifier];
+        v16 = [containerIdentifiers containsObject:identifier];
 
         if (!v16)
         {
@@ -78,7 +78,7 @@ LABEL_10:
 
         if (v10 == ++v12)
         {
-          v10 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+          v10 = [childItems countByEnumeratingWithState:&v22 objects:v26 count:16];
           if (v10)
           {
             goto LABEL_10;
@@ -91,11 +91,11 @@ LABEL_10:
 
     else
     {
-      v8 = [(CNContactStoreFilter *)self->_filter containerIdentifiers];
-      if (!v8)
+      childItems = [(CNContactStoreFilter *)self->_filter containerIdentifiers];
+      if (!childItems)
       {
-        v20 = [(CNContactStoreFilter *)self->_filter groupIdentifiers];
-        v6 = v20 == 0;
+        groupIdentifiers = [(CNContactStoreFilter *)self->_filter groupIdentifiers];
+        v6 = groupIdentifiers == 0;
 
         goto LABEL_25;
       }
@@ -105,12 +105,12 @@ LABEL_10:
     goto LABEL_25;
   }
 
-  switch(v5)
+  switch(type)
   {
     case 2:
       filter = self->_filter;
 LABEL_19:
-      v7 = [(CNContactStoreFilter *)filter containerIdentifiers];
+      containerIdentifiers2 = [(CNContactStoreFilter *)filter containerIdentifiers];
       goto LABEL_20;
     case 3:
       filter = self->_serverFilter;
@@ -122,11 +122,11 @@ LABEL_19:
 
       goto LABEL_19;
     case 4:
-      v7 = [(CNContactStoreFilter *)self->_filter groupIdentifiers];
+      containerIdentifiers2 = [(CNContactStoreFilter *)self->_filter groupIdentifiers];
 LABEL_20:
-      v18 = v7;
-      v19 = [v4 identifier];
-      v6 = [v18 containsObject:v19];
+      v18 = containerIdentifiers2;
+      identifier2 = [itemCopy identifier];
+      v6 = [v18 containsObject:identifier2];
 
       break;
   }
@@ -136,19 +136,19 @@ LABEL_26:
   return v6;
 }
 
-- (int64_t)contactCountForMainItem:(id)a3
+- (int64_t)contactCountForMainItem:(id)item
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 type] == 1)
+  itemCopy = item;
+  if ([itemCopy type] == 1)
   {
     v5 = MEMORY[0x1E695CE48];
-    v6 = [v4 identifier];
-    v7 = [v5 predicateForContainersInAccountWithIdentifier:v6];
+    identifier = [itemCopy identifier];
+    v7 = [v5 predicateForContainersInAccountWithIdentifier:identifier];
 
-    v8 = [(CNAccountsAndGroupsDataSource *)self store];
+    store = [(CNAccountsAndGroupsDataSource *)self store];
     v37 = 0;
-    v9 = [v8 containersMatchingPredicate:v7 error:&v37];
+    v9 = [store containersMatchingPredicate:v7 error:&v37];
     v10 = v37;
 
     if (v9)
@@ -165,7 +165,7 @@ LABEL_26:
         v28 = v9;
         v29 = v10;
         v30 = v7;
-        v31 = v4;
+        v31 = itemCopy;
         v14 = 0;
         v15 = *v34;
         do
@@ -181,13 +181,13 @@ LABEL_26:
             v18 = objc_alloc(MEMORY[0x1E695CD78]);
             v19 = [v18 initWithKeysToFetch:MEMORY[0x1E695E0F0]];
             v20 = MEMORY[0x1E695CD58];
-            v21 = [v17 identifier];
-            v22 = [v20 predicateForContactsInContainerWithIdentifier:v21];
+            identifier2 = [v17 identifier];
+            v22 = [v20 predicateForContactsInContainerWithIdentifier:identifier2];
             [v19 setPredicate:v22];
 
-            v23 = [(CNAccountsAndGroupsDataSource *)self store];
+            store2 = [(CNAccountsAndGroupsDataSource *)self store];
             v32 = 0;
-            v24 = [v23 contactCountForFetchRequest:v19 error:&v32];
+            v24 = [store2 contactCountForFetchRequest:v19 error:&v32];
             v25 = v32;
 
             if (v24)
@@ -213,7 +213,7 @@ LABEL_26:
         }
 
         while (v13);
-        v4 = v31;
+        itemCopy = v31;
         v10 = v29;
         v7 = v30;
         v9 = v28;
@@ -227,7 +227,7 @@ LABEL_26:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v40 = v4;
+        v40 = itemCopy;
         v41 = 2112;
         v42 = v10;
         _os_log_impl(&dword_199A75000, v11, OS_LOG_TYPE_DEFAULT, "[CNAccountsAndGroupsDataSource] Error getting containers for item: %@ with error: %@", buf, 0x16u);
@@ -246,28 +246,28 @@ LABEL_21:
   return v14;
 }
 
-- (int64_t)contactCountForItem:(id)a3
+- (int64_t)contactCountForItem:(id)item
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![v4 type])
+  itemCopy = item;
+  if (![itemCopy type])
   {
     goto LABEL_9;
   }
 
-  if ([v4 type] == 1)
+  if ([itemCopy type] == 1)
   {
-    v5 = [(CNAccountsAndGroupsDataSource *)self contactCountForMainItem:v4];
+    integerValue = [(CNAccountsAndGroupsDataSource *)self contactCountForMainItem:itemCopy];
     goto LABEL_16;
   }
 
-  if ([v4 type] != 2)
+  if ([itemCopy type] != 2)
   {
-    if ([v4 type] == 4)
+    if ([itemCopy type] == 4)
     {
       v9 = MEMORY[0x1E695CD58];
-      v7 = [v4 identifier];
-      v8 = [v9 predicateForContactsInGroupWithIdentifier:v7];
+      identifier = [itemCopy identifier];
+      v8 = [v9 predicateForContactsInGroupWithIdentifier:identifier];
       goto LABEL_8;
     }
 
@@ -277,8 +277,8 @@ LABEL_9:
   }
 
   v6 = MEMORY[0x1E695CD58];
-  v7 = [v4 identifier];
-  v8 = [v6 predicateForContactsInContainerWithIdentifier:v7];
+  identifier = [itemCopy identifier];
+  v8 = [v6 predicateForContactsInContainerWithIdentifier:identifier];
 LABEL_8:
   v10 = v8;
 
@@ -286,14 +286,14 @@ LABEL_10:
   v11 = objc_alloc(MEMORY[0x1E695CD78]);
   v12 = [v11 initWithKeysToFetch:MEMORY[0x1E695E0F0]];
   [v12 setPredicate:v10];
-  v13 = [(CNAccountsAndGroupsDataSource *)self store];
+  store = [(CNAccountsAndGroupsDataSource *)self store];
   v18 = 0;
-  v14 = [v13 contactCountForFetchRequest:v12 error:&v18];
+  v14 = [store contactCountForFetchRequest:v12 error:&v18];
   v15 = v18;
 
   if (v14)
   {
-    v5 = [v14 integerValue];
+    integerValue = [v14 integerValue];
   }
 
   else
@@ -302,54 +302,54 @@ LABEL_10:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v20 = v4;
+      v20 = itemCopy;
       v21 = 2112;
       v22 = v15;
       _os_log_impl(&dword_199A75000, v16, OS_LOG_TYPE_DEFAULT, "[CNAccountsAndGroupsDataSource] Error getting contacts for item: %@ with error: %@", buf, 0x16u);
     }
 
-    v5 = 0;
+    integerValue = 0;
   }
 
 LABEL_16:
-  return v5;
+  return integerValue;
 }
 
-- (id)allContactsForItem:(id)a3 keysToFetch:(id)a4
+- (id)allContactsForItem:(id)item keysToFetch:(id)fetch
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 type])
+  itemCopy = item;
+  fetchCopy = fetch;
+  if ([itemCopy type])
   {
-    if ([v6 type] == 1)
+    if ([itemCopy type] == 1)
     {
-      v8 = [(CNAccountsAndGroupsDataSource *)self allContactsForMainItem:v6 keysToFetch:v7];
+      v8 = [(CNAccountsAndGroupsDataSource *)self allContactsForMainItem:itemCopy keysToFetch:fetchCopy];
       goto LABEL_20;
     }
 
-    if ([v6 type] == 2)
+    if ([itemCopy type] == 2)
     {
       v10 = MEMORY[0x1E695CD58];
-      v11 = [v6 identifier];
-      v12 = [v10 predicateForContactsInContainerWithIdentifier:v11];
+      identifier = [itemCopy identifier];
+      v12 = [v10 predicateForContactsInContainerWithIdentifier:identifier];
     }
 
     else
     {
-      if ([v6 type] != 4)
+      if ([itemCopy type] != 4)
       {
         goto LABEL_13;
       }
 
       v13 = MEMORY[0x1E695CD58];
-      v11 = [v6 identifier];
-      v12 = [v13 predicateForContactsInGroupWithIdentifier:v11];
+      identifier = [itemCopy identifier];
+      v12 = [v13 predicateForContactsInGroupWithIdentifier:identifier];
     }
 
-    v9 = v12;
+    predicateForAllContacts = v12;
 
-    if (v9)
+    if (predicateForAllContacts)
     {
       goto LABEL_11;
     }
@@ -357,13 +357,13 @@ LABEL_16:
 
   else
   {
-    v9 = [MEMORY[0x1E695CD58] predicateForAllContacts];
-    if (v9)
+    predicateForAllContacts = [MEMORY[0x1E695CD58] predicateForAllContacts];
+    if (predicateForAllContacts)
     {
 LABEL_11:
-      v14 = [(CNAccountsAndGroupsDataSource *)self store];
+      store = [(CNAccountsAndGroupsDataSource *)self store];
       v20 = 0;
-      v8 = [v14 unifiedContactsMatchingPredicate:v9 keysToFetch:v7 error:&v20];
+      v8 = [store unifiedContactsMatchingPredicate:predicateForAllContacts keysToFetch:fetchCopy error:&v20];
       v15 = v20;
 
       if (v8)
@@ -377,7 +377,7 @@ LABEL_11:
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v22 = v6;
+          v22 = itemCopy;
           v23 = 2112;
           v24 = v15;
           _os_log_impl(&dword_199A75000, v18, OS_LOG_TYPE_DEFAULT, "[CNAccountsAndGroupsDataSource] Error getting contacts for item: %@ with error: %@", buf, 0x16u);
@@ -393,7 +393,7 @@ LABEL_13:
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v22 = v6;
+    v22 = itemCopy;
     _os_log_impl(&dword_199A75000, v17, OS_LOG_TYPE_DEFAULT, "[CNAccountsAndGroupsDataSource] Error getting contacts for item: %@, unknown item type", buf, 0xCu);
   }
 
@@ -403,20 +403,20 @@ LABEL_20:
   return v8;
 }
 
-- (id)allContactsForMainItem:(id)a3 keysToFetch:(id)a4
+- (id)allContactsForMainItem:(id)item keysToFetch:(id)fetch
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 type] == 1)
+  itemCopy = item;
+  fetchCopy = fetch;
+  if ([itemCopy type] == 1)
   {
     v8 = MEMORY[0x1E695CE48];
-    v9 = [v6 identifier];
-    v10 = [v8 predicateForContainersInAccountWithIdentifier:v9];
+    identifier = [itemCopy identifier];
+    v10 = [v8 predicateForContainersInAccountWithIdentifier:identifier];
 
-    v11 = [(CNAccountsAndGroupsDataSource *)self store];
+    store = [(CNAccountsAndGroupsDataSource *)self store];
     v38 = 0;
-    v12 = [v11 containersMatchingPredicate:v10 error:&v38];
+    v12 = [store containersMatchingPredicate:v10 error:&v38];
     v13 = v38;
 
     if (v12)
@@ -434,7 +434,7 @@ LABEL_20:
         v28 = v12;
         v29 = v13;
         v30 = v10;
-        v31 = v6;
+        v31 = itemCopy;
         v17 = *v35;
         do
         {
@@ -447,12 +447,12 @@ LABEL_20:
             }
 
             v20 = MEMORY[0x1E695CD58];
-            v21 = [*(*(&v34 + 1) + 8 * i) identifier];
-            v22 = [v20 predicateForContactsInContainerWithIdentifier:v21];
+            identifier2 = [*(*(&v34 + 1) + 8 * i) identifier];
+            v22 = [v20 predicateForContactsInContainerWithIdentifier:identifier2];
 
-            v23 = [(CNAccountsAndGroupsDataSource *)self store];
+            store2 = [(CNAccountsAndGroupsDataSource *)self store];
             v33 = 0;
-            v24 = [v23 unifiedContactsMatchingPredicate:v22 keysToFetch:v7 error:&v33];
+            v24 = [store2 unifiedContactsMatchingPredicate:v22 keysToFetch:fetchCopy error:&v33];
             v25 = v33;
 
             if (v24)
@@ -479,7 +479,7 @@ LABEL_20:
         }
 
         while (v16);
-        v6 = v31;
+        itemCopy = v31;
         v13 = v29;
         v10 = v30;
         v12 = v28;
@@ -492,7 +492,7 @@ LABEL_20:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v41 = v6;
+        v41 = itemCopy;
         v42 = 2112;
         v43 = v13;
         _os_log_impl(&dword_199A75000, v14, OS_LOG_TYPE_DEFAULT, "[CNAccountsAndGroupsDataSource] Error getting containers for item: %@ with error: %@", buf, 0x16u);
@@ -510,17 +510,17 @@ LABEL_20:
   return v32;
 }
 
-- (id)sectionForIdentifier:(id)a3
+- (id)sectionForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CNAccountsAndGroupsDataSource *)self sections];
+  identifierCopy = identifier;
+  sections = [(CNAccountsAndGroupsDataSource *)self sections];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __54__CNAccountsAndGroupsDataSource_sectionForIdentifier___block_invoke;
   v9[3] = &unk_1E74E5A40;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 _cn_firstObjectPassingTest:v9];
+  v10 = identifierCopy;
+  v6 = identifierCopy;
+  v7 = [sections _cn_firstObjectPassingTest:v9];
 
   return v7;
 }
@@ -533,47 +533,47 @@ uint64_t __54__CNAccountsAndGroupsDataSource_sectionForIdentifier___block_invoke
   return v4;
 }
 
-- (id)sectionIdentifierForItem:(id)a3
+- (id)sectionIdentifierForItem:(id)item
 {
-  v4 = [(CNAccountsAndGroupsDataSource *)self containerIdentifierForItem:a3];
+  v4 = [(CNAccountsAndGroupsDataSource *)self containerIdentifierForItem:item];
   if (v4)
   {
-    v5 = [(CNAccountsAndGroupsDataSource *)self groupsAndContainersSaveManager];
-    v6 = [v5 accountForContainerIdentifier:v4];
+    groupsAndContainersSaveManager = [(CNAccountsAndGroupsDataSource *)self groupsAndContainersSaveManager];
+    v6 = [groupsAndContainersSaveManager accountForContainerIdentifier:v4];
 
     if (v6)
     {
-      v7 = [v6 identifier];
+      identifier = [v6 identifier];
     }
 
     else
     {
-      v7 = 0;
+      identifier = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    identifier = 0;
   }
 
-  return v7;
+  return identifier;
 }
 
-- (id)containerIdentifierForItem:(id)a3
+- (id)containerIdentifierForItem:(id)item
 {
-  v3 = a3;
-  if ([v3 type] == 4 || objc_msgSend(v3, "type") == 1)
+  itemCopy = item;
+  if ([itemCopy type] == 4 || objc_msgSend(itemCopy, "type") == 1)
   {
-    v4 = [v3 containerIdentifier];
+    containerIdentifier = [itemCopy containerIdentifier];
 LABEL_4:
-    v5 = v4;
+    v5 = containerIdentifier;
     goto LABEL_5;
   }
 
-  if ([v3 type] == 2)
+  if ([itemCopy type] == 2)
   {
-    v4 = [v3 identifier];
+    containerIdentifier = [itemCopy identifier];
     goto LABEL_4;
   }
 
@@ -583,20 +583,20 @@ LABEL_5:
   return v5;
 }
 
-- (id)groupIdentifierForGroupItem:(id)a3
+- (id)groupIdentifierForGroupItem:(id)item
 {
-  v3 = a3;
-  if ([v3 type] == 4)
+  itemCopy = item;
+  if ([itemCopy type] == 4)
   {
-    v4 = [v3 identifier];
+    identifier = [itemCopy identifier];
   }
 
   else
   {
-    v4 = 0;
+    identifier = 0;
   }
 
-  return v4;
+  return identifier;
 }
 
 - (void)updateRootItemSelection
@@ -606,8 +606,8 @@ LABEL_5:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(CNAccountsAndGroupsItem *)self->_rootItem childItems];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  childItems = [(CNAccountsAndGroupsItem *)self->_rootItem childItems];
+  v4 = [childItems countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -619,7 +619,7 @@ LABEL_5:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(childItems);
         }
 
         if (![*(*(&v9 + 1) + 8 * v7) isSelected])
@@ -632,7 +632,7 @@ LABEL_5:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [childItems countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v5)
       {
         continue;
@@ -653,17 +653,17 @@ LABEL_11:
 
 - (BOOL)isTrivial
 {
-  v2 = [(CNAccountsAndGroupsDataSource *)self store];
-  v3 = [v2 hasMultipleGroupsOrAccounts];
+  store = [(CNAccountsAndGroupsDataSource *)self store];
+  hasMultipleGroupsOrAccounts = [store hasMultipleGroupsOrAccounts];
 
-  return v3 ^ 1;
+  return hasMultipleGroupsOrAccounts ^ 1;
 }
 
-- (void)setHidesSearchableSources:(BOOL)a3
+- (void)setHidesSearchableSources:(BOOL)sources
 {
-  if (self->_hidesSearchableSources != a3)
+  if (self->_hidesSearchableSources != sources)
   {
-    self->_hidesSearchableSources = a3;
+    self->_hidesSearchableSources = sources;
     [(CNAccountsAndGroupsDataSource *)self reload];
   }
 }
@@ -680,11 +680,11 @@ LABEL_11:
   return sections;
 }
 
-- (void)setServerFilterForItem:(id)a3
+- (void)setServerFilterForItem:(id)item
 {
-  v4 = [a3 identifier];
-  v5 = v4;
-  if (v4)
+  identifier = [item identifier];
+  v5 = identifier;
+  if (identifier)
   {
     serverFilter = self->_serverFilter;
     v14 = v5;
@@ -698,12 +698,12 @@ LABEL_11:
       [(CNContactStoreFilter *)self->_serverFilter setContainerIdentifiers:v13];
 
       [(CNContactStoreFilter *)self->_serverFilter setGroupIdentifiers:0];
-      v4 = [(CNContactStoreFilter *)self->_serverFilter setIsServerFilter:1];
+      identifier = [(CNContactStoreFilter *)self->_serverFilter setIsServerFilter:1];
       v5 = v14;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](identifier, v5);
 }
 
 - (id)multiSelectFilter
@@ -729,12 +729,12 @@ LABEL_11:
   v7 = v5[2](v5, 4);
   [(CNContactStoreFilter *)self->_filter setGroupIdentifiers:v7];
 
-  v8 = [(CNContactStoreFilter *)self->_filter containerIdentifiers];
-  if (!v8)
+  containerIdentifiers = [(CNContactStoreFilter *)self->_filter containerIdentifiers];
+  if (!containerIdentifiers)
   {
-    v9 = [(CNContactStoreFilter *)self->_filter groupIdentifiers];
+    groupIdentifiers = [(CNContactStoreFilter *)self->_filter groupIdentifiers];
 
-    if (v9)
+    if (groupIdentifiers)
     {
       goto LABEL_6;
     }
@@ -742,8 +742,8 @@ LABEL_11:
     v12 = [MEMORY[0x1E695DFD8] set];
     [(CNContactStoreFilter *)self->_filter setGroupIdentifiers:v12];
 
-    v8 = [MEMORY[0x1E695DFD8] set];
-    [(CNContactStoreFilter *)self->_filter setContainerIdentifiers:v8];
+    containerIdentifiers = [MEMORY[0x1E695DFD8] set];
+    [(CNContactStoreFilter *)self->_filter setContainerIdentifiers:containerIdentifiers];
   }
 
 LABEL_6:
@@ -794,40 +794,40 @@ uint64_t __50__CNAccountsAndGroupsDataSource_multiSelectFilter__block_invoke_2(u
   return v4;
 }
 
-- (void)setFilterForItem:(id)a3
+- (void)setFilterForItem:(id)item
 {
-  v14 = a3;
+  itemCopy = item;
   v4 = objc_alloc_init(CNContactStoreFilter);
-  v5 = [v14 type];
-  if (v5 > 2)
+  type = [itemCopy type];
+  if (type > 2)
   {
-    if (v5 == 4)
+    if (type == 4)
     {
       v13 = MEMORY[0x1E695DFD8];
-      v7 = [v14 identifier];
-      v8 = [v13 setWithObject:v7];
+      identifier = [itemCopy identifier];
+      v8 = [v13 setWithObject:identifier];
       [(CNContactStoreFilter *)v4 setGroupIdentifiers:v8];
       goto LABEL_11;
     }
 
-    if (v5 == 3)
+    if (type == 3)
     {
-      [(CNAccountsAndGroupsDataSource *)self setServerFilterForItem:v14];
+      [(CNAccountsAndGroupsDataSource *)self setServerFilterForItem:itemCopy];
       goto LABEL_13;
     }
   }
 
-  else if (v5 == 1)
+  else if (type == 1)
   {
     v9 = *MEMORY[0x1E6996530];
-    v10 = [v14 childItems];
-    LOBYTE(v9) = (*(v9 + 16))(v9, v10);
+    childItems = [itemCopy childItems];
+    LOBYTE(v9) = (*(v9 + 16))(v9, childItems);
 
     if ((v9 & 1) == 0)
     {
       v11 = MEMORY[0x1E695DFD8];
-      v7 = [v14 childItems];
-      v8 = [v7 valueForKeyPath:@"identifier"];
+      identifier = [itemCopy childItems];
+      v8 = [identifier valueForKeyPath:@"identifier"];
       v12 = [v11 setWithArray:v8];
       [(CNContactStoreFilter *)v4 setContainerIdentifiers:v12];
 
@@ -835,11 +835,11 @@ uint64_t __50__CNAccountsAndGroupsDataSource_multiSelectFilter__block_invoke_2(u
     }
   }
 
-  else if (v5 == 2)
+  else if (type == 2)
   {
     v6 = MEMORY[0x1E695DFD8];
-    v7 = [v14 identifier];
-    v8 = [v6 setWithObject:v7];
+    identifier = [itemCopy identifier];
+    v8 = [v6 setWithObject:identifier];
     [(CNContactStoreFilter *)v4 setContainerIdentifiers:v8];
 LABEL_11:
   }
@@ -848,28 +848,28 @@ LABEL_11:
 LABEL_13:
 }
 
-- (void)setFilter:(id)a3
+- (void)setFilter:(id)filter
 {
-  v8 = a3;
+  filterCopy = filter;
   serverFilter = self->_serverFilter;
   self->_serverFilter = 0;
 
-  v5 = v8;
-  if (self->_filter != v8)
+  v5 = filterCopy;
+  if (self->_filter != filterCopy)
   {
-    v6 = [(CNContactStoreFilter *)v8 copy];
+    v6 = [(CNContactStoreFilter *)filterCopy copy];
     filter = self->_filter;
     self->_filter = v6;
 
-    v5 = v8;
+    v5 = filterCopy;
   }
 }
 
 - (void)_applyFilter
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(CNContactStoreFilter *)self->_filter groupIdentifiers];
-  if (v3)
+  groupIdentifiers = [(CNContactStoreFilter *)self->_filter groupIdentifiers];
+  if (groupIdentifiers)
   {
 
 LABEL_4:
@@ -896,30 +896,30 @@ LABEL_4:
         }
 
         v10 = *(*(&v20 + 1) + 8 * i);
-        v11 = [v10 type];
-        if (v11 == 4)
+        type = [v10 type];
+        if (type == 4)
         {
-          v17 = [(CNContactStoreFilter *)self->_filter groupIdentifiers];
-          v18 = [v10 identifier];
-          [v10 setSelected:objc_msgSend(v17 affectingChildren:{"containsObject:", v18), 0}];
+          groupIdentifiers2 = [(CNContactStoreFilter *)self->_filter groupIdentifiers];
+          identifier = [v10 identifier];
+          [v10 setSelected:objc_msgSend(groupIdentifiers2 affectingChildren:{"containsObject:", identifier), 0}];
 
           goto LABEL_14;
         }
 
-        if (v11 == 2)
+        if (type == 2)
         {
-          v12 = [(CNContactStoreFilter *)self->_filter containerIdentifiers];
-          v13 = [v10 identifier];
-          v14 = [v12 containsObject:v13];
+          containerIdentifiers = [(CNContactStoreFilter *)self->_filter containerIdentifiers];
+          identifier2 = [v10 identifier];
+          v14 = [containerIdentifiers containsObject:identifier2];
 
           [v10 setSelected:v14 affectingChildren:0];
-          v15 = [v10 parentItem];
-          v16 = [v15 type];
+          parentItem = [v10 parentItem];
+          type2 = [parentItem type];
 
-          if (v16 == 1)
+          if (type2 == 1)
           {
-            v17 = [v10 parentItem];
-            [v17 setSelected:v14 affectingChildren:0];
+            groupIdentifiers2 = [v10 parentItem];
+            [groupIdentifiers2 setSelected:v14 affectingChildren:0];
 LABEL_14:
 
             continue;
@@ -937,9 +937,9 @@ LABEL_17:
     }
   }
 
-  v4 = [(CNContactStoreFilter *)self->_filter containerIdentifiers];
+  containerIdentifiers2 = [(CNContactStoreFilter *)self->_filter containerIdentifiers];
 
-  if (v4)
+  if (containerIdentifiers2)
   {
     goto LABEL_4;
   }
@@ -949,16 +949,16 @@ LABEL_17:
   [(CNAccountsAndGroupsItem *)rootItem setSelected:1 affectingChildren:1];
 }
 
-- (BOOL)shouldShowAccount:(id)a3
+- (BOOL)shouldShowAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(CNAccountsAndGroupsDataSource *)self managedConfiguration];
-  v6 = [v5 deviceHasManagementRestrictions];
+  accountCopy = account;
+  managedConfiguration = [(CNAccountsAndGroupsDataSource *)self managedConfiguration];
+  deviceHasManagementRestrictions = [managedConfiguration deviceHasManagementRestrictions];
 
   v16 = 1;
-  if (v6)
+  if (deviceHasManagementRestrictions)
   {
-    if (v7 = *MEMORY[0x1E6996560], -[CNAccountsAndGroupsDataSource targetAccountExternalIdentifiers](self, "targetAccountExternalIdentifiers"), v8 = objc_claimAutoreleasedReturnValue(), v9 = (*(v7 + 16))(v7, v8), v8, (v9 & 1) == 0) && (-[CNAccountsAndGroupsDataSource targetAccountExternalIdentifiers](self, "targetAccountExternalIdentifiers"), v10 = objc_claimAutoreleasedReturnValue(), v20[0] = MEMORY[0x1E69E9820], v20[1] = 3221225472, v20[2] = __51__CNAccountsAndGroupsDataSource_shouldShowAccount___block_invoke, v20[3] = &unk_1E74E5B78, v20[4] = self, v21 = v4, v11 = [v10 _cn_any:v20], v10, v21, (v11) || (-[CNAccountsAndGroupsDataSource sourceAccountExternalIdentifiers](self, "sourceAccountExternalIdentifiers"), v12 = objc_claimAutoreleasedReturnValue(), v13 = (*(v7 + 16))(v7, v12), v12, (v13 & 1) == 0) && (-[CNAccountsAndGroupsDataSource sourceAccountExternalIdentifiers](self, "sourceAccountExternalIdentifiers"), v14 = objc_claimAutoreleasedReturnValue(), v18[0] = MEMORY[0x1E69E9820], v18[1] = 3221225472, v18[2] = __51__CNAccountsAndGroupsDataSource_shouldShowAccount___block_invoke_2, v18[3] = &unk_1E74E5B78, v18[4] = self, v19 = v4, v15 = objc_msgSend(v14, "_cn_any:", v18), v14, v19, (v15))
+    if (v7 = *MEMORY[0x1E6996560], -[CNAccountsAndGroupsDataSource targetAccountExternalIdentifiers](self, "targetAccountExternalIdentifiers"), v8 = objc_claimAutoreleasedReturnValue(), v9 = (*(v7 + 16))(v7, v8), v8, (v9 & 1) == 0) && (-[CNAccountsAndGroupsDataSource targetAccountExternalIdentifiers](self, "targetAccountExternalIdentifiers"), v10 = objc_claimAutoreleasedReturnValue(), v20[0] = MEMORY[0x1E69E9820], v20[1] = 3221225472, v20[2] = __51__CNAccountsAndGroupsDataSource_shouldShowAccount___block_invoke, v20[3] = &unk_1E74E5B78, v20[4] = self, v21 = accountCopy, v11 = [v10 _cn_any:v20], v10, v21, (v11) || (-[CNAccountsAndGroupsDataSource sourceAccountExternalIdentifiers](self, "sourceAccountExternalIdentifiers"), v12 = objc_claimAutoreleasedReturnValue(), v13 = (*(v7 + 16))(v7, v12), v12, (v13 & 1) == 0) && (-[CNAccountsAndGroupsDataSource sourceAccountExternalIdentifiers](self, "sourceAccountExternalIdentifiers"), v14 = objc_claimAutoreleasedReturnValue(), v18[0] = MEMORY[0x1E69E9820], v18[1] = 3221225472, v18[2] = __51__CNAccountsAndGroupsDataSource_shouldShowAccount___block_invoke_2, v18[3] = &unk_1E74E5B78, v18[4] = self, v19 = accountCopy, v15 = objc_msgSend(v14, "_cn_any:", v18), v14, v19, (v15))
     {
       v16 = 0;
     }
@@ -1005,7 +1005,7 @@ uint64_t __51__CNAccountsAndGroupsDataSource_shouldShowAccount___block_invoke_2(
   v77 = 0x3032000000;
   v78 = __Block_byref_object_copy__53056;
   v79 = __Block_byref_object_dispose__53057;
-  v80 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   [(CNAccountsAndGroupsItem *)self->_rootItem setContactCount:[(CNAccountsAndGroupsDataSource *)self contactCountForItem:self->_rootItem]];
   v53 = objc_alloc_init(CNAccountsAndGroupsSection);
   [(CNAccountsAndGroupsSection *)v53 setIsAllContactsGlobalSection:1];
@@ -1014,9 +1014,9 @@ uint64_t __51__CNAccountsAndGroupsDataSource_shouldShowAccount___block_invoke_2(
   [(CNAccountsAndGroupsSection *)v53 setItems:v3];
 
   [(CNAccountsAndGroupsSection *)v53 setIdentifier:@"CNAccountsAndGroupsSectionGlobal"];
-  v4 = [(CNAccountsAndGroupsDataSource *)self store];
+  store = [(CNAccountsAndGroupsDataSource *)self store];
   v74 = 0;
-  v52 = [v4 accountsMatchingPredicate:0 error:&v74];
+  v52 = [store accountsMatchingPredicate:0 error:&v74];
   v5 = v74;
 
   if (!v52)
@@ -1031,9 +1031,9 @@ uint64_t __51__CNAccountsAndGroupsDataSource_shouldShowAccount___block_invoke_2(
   }
 
   v50 = [MEMORY[0x1E695CE48] predicateForContainersWithType:1003];
-  v7 = [(CNAccountsAndGroupsDataSource *)self store];
+  store2 = [(CNAccountsAndGroupsDataSource *)self store];
   v73 = 0;
-  v56 = [v7 containersMatchingPredicate:v50 error:&v73];
+  v56 = [store2 containersMatchingPredicate:v50 error:&v73];
   v8 = v73;
 
   if (!v56)
@@ -1048,13 +1048,13 @@ uint64_t __51__CNAccountsAndGroupsDataSource_shouldShowAccount___block_invoke_2(
   }
 
   v49 = [MEMORY[0x1E695CE48] predicateForContainersWithType:1004];
-  v10 = [(CNAccountsAndGroupsDataSource *)self store];
+  store3 = [(CNAccountsAndGroupsDataSource *)self store];
   v72 = 0;
-  v11 = [v10 containersMatchingPredicate:v49 error:&v72];
+  v11 = [store3 containersMatchingPredicate:v49 error:&v72];
   v48 = v72;
-  v51 = [v11 firstObject];
+  firstObject = [v11 firstObject];
 
-  if (!v51 || ([MEMORY[0x1E69966E8] currentEnvironment], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "featureFlags"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isFeatureEnabled:", 19), v13, v12, (v14 & 1) == 0))
+  if (!firstObject || ([MEMORY[0x1E69966E8] currentEnvironment], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "featureFlags"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isFeatureEnabled:", 19), v13, v12, (v14 & 1) == 0))
   {
     v15 = CNUILogAccountsAndGroupsList();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -1065,14 +1065,14 @@ uint64_t __51__CNAccountsAndGroupsDataSource_shouldShowAccount___block_invoke_2(
     }
   }
 
-  if ([v52 count] || (v31 = objc_msgSend(v56, "count"), v51) || v31)
+  if ([v52 count] || (v31 = objc_msgSend(v56, "count"), firstObject) || v31)
   {
     *&v89 = 0;
     *(&v89 + 1) = &v89;
     v90 = 0x3032000000;
     v91 = __Block_byref_object_copy__53056;
     v92 = __Block_byref_object_dispose__53057;
-    v93 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __48__CNAccountsAndGroupsDataSource__reloadSections__block_invoke;
@@ -1105,12 +1105,12 @@ uint64_t __51__CNAccountsAndGroupsDataSource_shouldShowAccount___block_invoke_2(
           if ([(CNAccountsAndGroupsDataSource *)self shouldShowAccount:v21])
           {
             v22 = MEMORY[0x1E695CE48];
-            v23 = [v21 identifier];
-            v24 = [v22 predicateForContainersInAccountWithIdentifier:v23];
+            identifier = [v21 identifier];
+            v24 = [v22 predicateForContainersInAccountWithIdentifier:identifier];
 
-            v25 = [(CNAccountsAndGroupsDataSource *)self store];
+            store4 = [(CNAccountsAndGroupsDataSource *)self store];
             v66 = 0;
-            v26 = [v25 containersMatchingPredicate:v24 error:&v66];
+            v26 = [store4 containersMatchingPredicate:v24 error:&v66];
             v27 = v66;
 
             if ((*(v19 + 16))(v19, v26))
@@ -1132,8 +1132,8 @@ uint64_t __51__CNAccountsAndGroupsDataSource_shouldShowAccount___block_invoke_2(
             v65[3] = &unk_1E74E5B30;
             v65[4] = v21;
             v29 = _Block_copy(v65);
-            v30 = [v21 identifier];
-            v16[2](v16, v30, v29, v26);
+            identifier2 = [v21 identifier];
+            v16[2](v16, identifier2, v29, v26);
           }
 
           else
@@ -1174,8 +1174,8 @@ uint64_t __51__CNAccountsAndGroupsDataSource_shouldShowAccount___block_invoke_2(
           }
 
           v36 = *(*(&v61 + 1) + 8 * j);
-          v37 = [v36 identifier];
-          v38 = [@"ProviderContainer:" stringByAppendingString:v37];
+          identifier3 = [v36 identifier];
+          v38 = [@"ProviderContainer:" stringByAppendingString:identifier3];
 
           v60[0] = MEMORY[0x1E69E9820];
           v60[1] = 3221225472;
@@ -1194,19 +1194,19 @@ uint64_t __51__CNAccountsAndGroupsDataSource_shouldShowAccount___block_invoke_2(
       while (v33);
     }
 
-    if (v51)
+    if (firstObject)
     {
       v58[0] = MEMORY[0x1E69E9820];
       v58[1] = 3221225472;
       v58[2] = __48__CNAccountsAndGroupsDataSource__reloadSections__block_invoke_4;
       v58[3] = &unk_1E74E5B30;
-      v41 = v51;
+      v41 = firstObject;
       v59 = v41;
       v42 = _Block_copy(v58);
-      v43 = [v41 accountIdentifier];
+      accountIdentifier = [v41 accountIdentifier];
       v81 = v41;
       v44 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v81 count:1];
-      v16[2](v16, v43, v42, v44);
+      v16[2](v16, accountIdentifier, v42, v44);
     }
 
     [(CNAccountsAndGroupsItem *)self->_rootItem setChildItems:*(*(&v89 + 1) + 40)];
@@ -1680,24 +1680,24 @@ id __48__CNAccountsAndGroupsDataSource__reloadSections__block_invoke_87(uint64_t
 - (BOOL)hasChanges
 {
   v59 = *MEMORY[0x1E69E9840];
-  v3 = [(CNAccountsAndGroupsDataSource *)self sections];
-  v4 = [(CNAccountsAndGroupsDataSource *)self showAllSectionItem];
-  v5 = [v4 contactCount];
+  sections = [(CNAccountsAndGroupsDataSource *)self sections];
+  showAllSectionItem = [(CNAccountsAndGroupsDataSource *)self showAllSectionItem];
+  contactCount = [showAllSectionItem contactCount];
 
   [(CNAccountsAndGroupsDataSource *)self reload];
-  v6 = [(CNAccountsAndGroupsDataSource *)self sections];
-  v7 = [(CNAccountsAndGroupsDataSource *)self showAllSectionItem];
-  v8 = [v7 contactCount];
+  sections2 = [(CNAccountsAndGroupsDataSource *)self sections];
+  showAllSectionItem2 = [(CNAccountsAndGroupsDataSource *)self showAllSectionItem];
+  contactCount2 = [showAllSectionItem2 contactCount];
 
-  if (v5 == v8 && (v9 = [v3 count], v9 == objc_msgSend(v6, "count")))
+  if (contactCount == contactCount2 && (v9 = [sections count], v9 == objc_msgSend(sections2, "count")))
   {
-    v38 = v6;
-    v10 = [MEMORY[0x1E695DF90] dictionary];
+    v38 = sections2;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v11 = v3;
+    v11 = sections;
     v12 = [v11 countByEnumeratingWithState:&v52 objects:v58 count:16];
     if (v12)
     {
@@ -1713,8 +1713,8 @@ id __48__CNAccountsAndGroupsDataSource__reloadSections__block_invoke_87(uint64_t
           }
 
           v16 = *(*(&v52 + 1) + 8 * i);
-          v17 = [v16 identifier];
-          [v10 setObject:v16 forKeyedSubscript:v17];
+          identifier = [v16 identifier];
+          [dictionary setObject:v16 forKeyedSubscript:identifier];
         }
 
         v13 = [v11 countByEnumeratingWithState:&v52 objects:v58 count:16];
@@ -1727,9 +1727,9 @@ id __48__CNAccountsAndGroupsDataSource__reloadSections__block_invoke_87(uint64_t
     v50[1] = 3221225472;
     v50[2] = __43__CNAccountsAndGroupsDataSource_hasChanges__block_invoke;
     v50[3] = &unk_1E74E5A40;
-    v18 = v10;
+    v18 = dictionary;
     v51 = v18;
-    v6 = v38;
+    sections2 = v38;
     if ([v38 _cn_any:v50])
     {
       v19 = 1;
@@ -1738,8 +1738,8 @@ id __48__CNAccountsAndGroupsDataSource__reloadSections__block_invoke_87(uint64_t
     else
     {
       v36 = v18;
-      v37 = v3;
-      v20 = [MEMORY[0x1E695DF90] dictionary];
+      v37 = sections;
+      dictionary2 = [MEMORY[0x1E695DF90] dictionary];
       v46 = 0u;
       v47 = 0u;
       v48 = 0u;
@@ -1764,8 +1764,8 @@ id __48__CNAccountsAndGroupsDataSource__reloadSections__block_invoke_87(uint64_t
             v43 = 0u;
             v44 = 0u;
             v45 = 0u;
-            v26 = [v25 items];
-            v27 = [v26 countByEnumeratingWithState:&v42 objects:v56 count:16];
+            items = [v25 items];
+            v27 = [items countByEnumeratingWithState:&v42 objects:v56 count:16];
             if (v27)
             {
               v28 = v27;
@@ -1776,20 +1776,20 @@ id __48__CNAccountsAndGroupsDataSource__reloadSections__block_invoke_87(uint64_t
                 {
                   if (*v43 != v29)
                   {
-                    objc_enumerationMutation(v26);
+                    objc_enumerationMutation(items);
                   }
 
                   v31 = *(*(&v42 + 1) + 8 * k);
-                  v32 = [v31 identifier];
+                  identifier2 = [v31 identifier];
 
-                  if (v32)
+                  if (identifier2)
                   {
-                    v33 = [v31 identifier];
-                    [v20 setObject:v31 forKeyedSubscript:v33];
+                    identifier3 = [v31 identifier];
+                    [dictionary2 setObject:v31 forKeyedSubscript:identifier3];
                   }
                 }
 
-                v28 = [v26 countByEnumeratingWithState:&v42 objects:v56 count:16];
+                v28 = [items countByEnumeratingWithState:&v42 objects:v56 count:16];
               }
 
               while (v28);
@@ -1806,13 +1806,13 @@ id __48__CNAccountsAndGroupsDataSource__reloadSections__block_invoke_87(uint64_t
       v40[1] = 3221225472;
       v40[2] = __43__CNAccountsAndGroupsDataSource_hasChanges__block_invoke_2;
       v40[3] = &unk_1E74E5A40;
-      v41 = v20;
-      v34 = v20;
-      v6 = v38;
+      v41 = dictionary2;
+      v34 = dictionary2;
+      sections2 = v38;
       v19 = [v38 _cn_any:v40];
 
       v18 = v36;
-      v3 = v37;
+      sections = v37;
     }
   }
 
@@ -1895,15 +1895,15 @@ BOOL __43__CNAccountsAndGroupsDataSource_hasChanges__block_invoke_3(uint64_t a1,
   return v11;
 }
 
-- (CNAccountsAndGroupsDataSource)initWithStore:(id)a3
+- (CNAccountsAndGroupsDataSource)initWithStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v19.receiver = self;
   v19.super_class = CNAccountsAndGroupsDataSource;
   v5 = [(CNAccountsAndGroupsDataSource *)&v19 init];
   store = v5->_store;
-  v5->_store = v4;
-  v7 = v4;
+  v5->_store = storeCopy;
+  v7 = storeCopy;
 
   v8 = [[CNAccountsAndGroupsItem alloc] initWithType:0 nameProvider:0];
   rootItem = v5->_rootItem;
@@ -1913,12 +1913,12 @@ BOOL __43__CNAccountsAndGroupsDataSource_hasChanges__block_invoke_3(uint64_t a1,
   groupsAndContainersSaveManager = v5->_groupsAndContainersSaveManager;
   v5->_groupsAndContainersSaveManager = v10;
 
-  v12 = [MEMORY[0x1E696AAE8] mainBundle];
-  v13 = [v12 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
   v14 = objc_alloc(MEMORY[0x1E6996760]);
-  v15 = [MEMORY[0x1E6996768] sharedConnection];
-  v16 = [v14 initWithBundleIdentifier:v13 managedProfileConnection:v15];
+  mEMORY[0x1E6996768] = [MEMORY[0x1E6996768] sharedConnection];
+  v16 = [v14 initWithBundleIdentifier:bundleIdentifier managedProfileConnection:mEMORY[0x1E6996768]];
   managedConfiguration = v5->_managedConfiguration;
   v5->_managedConfiguration = v16;
 

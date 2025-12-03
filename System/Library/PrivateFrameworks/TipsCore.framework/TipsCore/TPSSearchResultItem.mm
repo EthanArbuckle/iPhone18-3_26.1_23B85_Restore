@@ -1,9 +1,9 @@
 @interface TPSSearchResultItem
 - (TPSSearchResultItem)init;
-- (TPSSearchResultItem)initWithIdentifier:(id)a3 collectionIdentifier:(id)a4;
+- (TPSSearchResultItem)initWithIdentifier:(id)identifier collectionIdentifier:(id)collectionIdentifier;
 - (double)relevance;
-- (void)encodeWithCoder:(id)a3;
-- (void)setRelevance:(double)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setRelevance:(double)relevance;
 @end
 
 @implementation TPSSearchResultItem
@@ -15,14 +15,14 @@
   return *(self + v3);
 }
 
-- (void)setRelevance:(double)a3
+- (void)setRelevance:(double)relevance
 {
   v5 = OBJC_IVAR___TPSSearchResultItem_relevance;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = relevance;
 }
 
-- (TPSSearchResultItem)initWithIdentifier:(id)a3 collectionIdentifier:(id)a4
+- (TPSSearchResultItem)initWithIdentifier:(id)identifier collectionIdentifier:(id)collectionIdentifier
 {
   ObjectType = swift_getObjectType();
   v6 = sub_1C014C230();
@@ -59,11 +59,11 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  SearchResult.Item.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  SearchResult.Item.encode(with:)(coderCopy);
 }
 
 @end

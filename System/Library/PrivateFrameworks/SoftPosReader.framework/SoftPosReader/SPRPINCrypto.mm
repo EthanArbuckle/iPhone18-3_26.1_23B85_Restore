@@ -1,20 +1,20 @@
 @interface SPRPINCrypto
-- (SPRPINCrypto)initWithAttestationData:(id)a3 casdCertificate:(id)a4 entropy:(id)a5 digitCodeMap:(char *)a6 error:(id *)a7;
-- (SPRPINCrypto)initWithPeerPublicKey:(__SecKey *)a3 entropy:(id)a4 digitCodeMap:(char *)a5;
+- (SPRPINCrypto)initWithAttestationData:(id)data casdCertificate:(id)certificate entropy:(id)entropy digitCodeMap:(char *)map error:(id *)error;
+- (SPRPINCrypto)initWithPeerPublicKey:(__SecKey *)key entropy:(id)entropy digitCodeMap:(char *)map;
 - (void)dealloc;
 @end
 
 @implementation SPRPINCrypto
 
-- (SPRPINCrypto)initWithPeerPublicKey:(__SecKey *)a3 entropy:(id)a4 digitCodeMap:(char *)a5
+- (SPRPINCrypto)initWithPeerPublicKey:(__SecKey *)key entropy:(id)entropy digitCodeMap:(char *)map
 {
-  v8 = a4;
+  entropyCopy = entropy;
   if (qword_2803D4030 != -1)
   {
     sub_26AA7E3E8();
   }
 
-  sub_26A957BC0(v8, a5);
+  sub_26A957BC0(entropyCopy, map);
   if (v9)
   {
     v14 = v9;
@@ -24,17 +24,17 @@
       sub_26AA7E3FC(v14, v15);
     }
 
-    v16 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    CFRetain(a3);
-    self->_peerPublicKey = a3;
-    v16 = self;
+    CFRetain(key);
+    self->_peerPublicKey = key;
+    selfCopy = self;
   }
 
-  return v16;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -44,7 +44,7 @@
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_26A93A000, v6, OS_LOG_TYPE_INFO, "%@.dealloc()", buf, 0xCu);
   }
 
@@ -67,11 +67,11 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (SPRPINCrypto)initWithAttestationData:(id)a3 casdCertificate:(id)a4 entropy:(id)a5 digitCodeMap:(char *)a6 error:(id *)a7
+- (SPRPINCrypto)initWithAttestationData:(id)data casdCertificate:(id)certificate entropy:(id)entropy digitCodeMap:(char *)map error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  dataCopy = data;
+  certificateCopy = certificate;
+  entropyCopy = entropy;
   v13 = sub_26AA7E7E4();
   v15 = v14;
 
@@ -81,7 +81,7 @@
   v19 = sub_26AA7E7E4();
   v21 = v20;
 
-  return sub_26A950908(v13, v15, v16, v18, v19, v21, a6);
+  return sub_26A950908(v13, v15, v16, v18, v19, v21, map);
 }
 
 @end

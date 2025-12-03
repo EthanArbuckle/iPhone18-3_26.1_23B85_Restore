@@ -1,13 +1,13 @@
 @interface PUPhotoBrowserOneUpPresentationAdaptor
 - (PUPhotoBrowserZoomTransitionDelegate)zoomTransitionDelegate;
-- (id)_photoTokenForAssetReference:(id)a3;
-- (id)oneUpPresentationHelper:(id)a3 currentImageForAssetReference:(id)a4;
-- (id)oneUpPresentationHelper:(id)a3 regionOfInterestForAssetReference:(id)a4 cropInsets:(UIEdgeInsets *)a5;
-- (void)_setPhotoTokensForHiddenAssetReferences:(id)a3;
-- (void)_setShouldDisableScroll:(BOOL)a3;
-- (void)oneUpPresentationHelper:(id)a3 scrollAssetReferenceToVisible:(id)a4;
-- (void)oneUpPresentationHelper:(id)a3 shouldHideAssetReferences:(id)a4;
-- (void)setZoomTransitionDelegate:(id)a3;
+- (id)_photoTokenForAssetReference:(id)reference;
+- (id)oneUpPresentationHelper:(id)helper currentImageForAssetReference:(id)reference;
+- (id)oneUpPresentationHelper:(id)helper regionOfInterestForAssetReference:(id)reference cropInsets:(UIEdgeInsets *)insets;
+- (void)_setPhotoTokensForHiddenAssetReferences:(id)references;
+- (void)_setShouldDisableScroll:(BOOL)scroll;
+- (void)oneUpPresentationHelper:(id)helper scrollAssetReferenceToVisible:(id)visible;
+- (void)oneUpPresentationHelper:(id)helper shouldHideAssetReferences:(id)references;
+- (void)setZoomTransitionDelegate:(id)delegate;
 @end
 
 @implementation PUPhotoBrowserOneUpPresentationAdaptor
@@ -19,23 +19,23 @@
   return WeakRetained;
 }
 
-- (void)oneUpPresentationHelper:(id)a3 scrollAssetReferenceToVisible:(id)a4
+- (void)oneUpPresentationHelper:(id)helper scrollAssetReferenceToVisible:(id)visible
 {
-  v6 = [(PUPhotoBrowserOneUpPresentationAdaptor *)self _photoTokenForAssetReference:a4];
-  v5 = [(PUPhotoBrowserOneUpPresentationAdaptor *)self zoomTransitionDelegate];
-  [v5 zoomTransition:0 getFrame:0 inCoordinateSpace:0 contentMode:0 cropInsets:0 forPhotoToken:v6 operation:2];
+  v6 = [(PUPhotoBrowserOneUpPresentationAdaptor *)self _photoTokenForAssetReference:visible];
+  zoomTransitionDelegate = [(PUPhotoBrowserOneUpPresentationAdaptor *)self zoomTransitionDelegate];
+  [zoomTransitionDelegate zoomTransition:0 getFrame:0 inCoordinateSpace:0 contentMode:0 cropInsets:0 forPhotoToken:v6 operation:2];
 }
 
-- (void)oneUpPresentationHelper:(id)a3 shouldHideAssetReferences:(id)a4
+- (void)oneUpPresentationHelper:(id)helper shouldHideAssetReferences:(id)references
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v5, "count")}];
+  referencesCopy = references;
+  v6 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(referencesCopy, "count")}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = v5;
+  v7 = referencesCopy;
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -70,10 +70,10 @@
   [(PUPhotoBrowserOneUpPresentationAdaptor *)self _setPhotoTokensForHiddenAssetReferences:v6];
 }
 
-- (id)oneUpPresentationHelper:(id)a3 currentImageForAssetReference:(id)a4
+- (id)oneUpPresentationHelper:(id)helper currentImageForAssetReference:(id)reference
 {
-  v6 = a3;
-  v7 = a4;
+  helperCopy = helper;
+  referenceCopy = reference;
   v8 = 0;
   v14 = 0;
   v15 = &v14;
@@ -83,14 +83,14 @@
   v19 = 0;
   if (self->_zoomTransitionDelegateFlags.respondsToTransitionImageForPhotoToken)
   {
-    v9 = [(PUPhotoBrowserOneUpPresentationAdaptor *)self _photoTokenForAssetReference:v7];
-    v10 = [(PUPhotoBrowserOneUpPresentationAdaptor *)self zoomTransitionDelegate];
+    v9 = [(PUPhotoBrowserOneUpPresentationAdaptor *)self _photoTokenForAssetReference:referenceCopy];
+    zoomTransitionDelegate = [(PUPhotoBrowserOneUpPresentationAdaptor *)self zoomTransitionDelegate];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __96__PUPhotoBrowserOneUpPresentationAdaptor_oneUpPresentationHelper_currentImageForAssetReference___block_invoke;
     v13[3] = &unk_1E7B7AA10;
     v13[4] = &v14;
-    [v10 zoomTransition:0 transitionImageForPhotoToken:v9 callback:v13];
+    [zoomTransitionDelegate zoomTransition:0 transitionImageForPhotoToken:v9 callback:v13];
 
     v8 = v15[5];
   }
@@ -101,23 +101,23 @@
   return v11;
 }
 
-- (id)oneUpPresentationHelper:(id)a3 regionOfInterestForAssetReference:(id)a4 cropInsets:(UIEdgeInsets *)a5
+- (id)oneUpPresentationHelper:(id)helper regionOfInterestForAssetReference:(id)reference cropInsets:(UIEdgeInsets *)insets
 {
-  v7 = a4;
+  referenceCopy = reference;
   v8 = *(MEMORY[0x1E695F050] + 16);
   v28.origin = *MEMORY[0x1E695F050];
   v28.size = v8;
   v27 = 0;
-  v9 = [(PUPhotoBrowserOneUpPresentationAdaptor *)self _photoTokenForAssetReference:v7];
-  v10 = [(PUPhotoBrowserOneUpPresentationAdaptor *)self zoomTransitionDelegate];
+  v9 = [(PUPhotoBrowserOneUpPresentationAdaptor *)self _photoTokenForAssetReference:referenceCopy];
+  zoomTransitionDelegate = [(PUPhotoBrowserOneUpPresentationAdaptor *)self zoomTransitionDelegate];
   v26 = 0;
-  [v10 zoomTransition:0 getFrame:&v28 inCoordinateSpace:&v26 contentMode:&v27 cropInsets:a5 forPhotoToken:v9 operation:0];
+  [zoomTransitionDelegate zoomTransition:0 getFrame:&v28 inCoordinateSpace:&v26 contentMode:&v27 cropInsets:insets forPhotoToken:v9 operation:0];
   v11 = v26;
 
   if (v27 == 1)
   {
-    v12 = [v7 asset];
-    [v12 aspectRatio];
+    asset = [referenceCopy asset];
+    [asset aspectRatio];
     v14 = v13;
 
     x = PURectWithAspectRatioFittingRect(v14, v28.origin.x, v28.origin.y, v28.size.width, v28.size.height);
@@ -166,52 +166,52 @@
   return v22;
 }
 
-- (void)_setShouldDisableScroll:(BOOL)a3
+- (void)_setShouldDisableScroll:(BOOL)scroll
 {
-  if (self->__shouldDisableScroll == a3)
+  if (self->__shouldDisableScroll == scroll)
   {
     return;
   }
 
-  v4 = a3;
-  self->__shouldDisableScroll = a3;
-  v6 = [(PUPhotoBrowserOneUpPresentationAdaptor *)self zoomTransitionDelegate];
-  if (v4)
+  scrollCopy = scroll;
+  self->__shouldDisableScroll = scroll;
+  zoomTransitionDelegate = [(PUPhotoBrowserOneUpPresentationAdaptor *)self zoomTransitionDelegate];
+  if (scrollCopy)
   {
     if (self->_zoomTransitionDelegateFlags.respondsToWillBeginForOperation)
     {
-      v7 = v6;
-      [v6 zoomTransition:0 willBeginForOperation:1 animated:1 interactive:1];
+      v7 = zoomTransitionDelegate;
+      [zoomTransitionDelegate zoomTransition:0 willBeginForOperation:1 animated:1 interactive:1];
 LABEL_7:
-      v6 = v7;
+      zoomTransitionDelegate = v7;
     }
   }
 
   else if (self->_zoomTransitionDelegateFlags.respondsToDidFinishForOperation)
   {
-    v7 = v6;
-    [v6 zoomTransition:0 didFinishForOperation:1 animated:1 interactive:1];
+    v7 = zoomTransitionDelegate;
+    [zoomTransitionDelegate zoomTransition:0 didFinishForOperation:1 animated:1 interactive:1];
     goto LABEL_7;
   }
 }
 
-- (void)_setPhotoTokensForHiddenAssetReferences:(id)a3
+- (void)_setPhotoTokensForHiddenAssetReferences:(id)references
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (self->__photoTokensForHiddenAssetReferences != v4 && ([(NSSet *)v4 isEqual:?]& 1) == 0)
+  referencesCopy = references;
+  v5 = referencesCopy;
+  if (self->__photoTokensForHiddenAssetReferences != referencesCopy && ([(NSSet *)referencesCopy isEqual:?]& 1) == 0)
   {
     v6 = self->__photoTokensForHiddenAssetReferences;
     v7 = [(NSSet *)v5 copy];
     photoTokensForHiddenAssetReferences = self->__photoTokensForHiddenAssetReferences;
     self->__photoTokensForHiddenAssetReferences = v7;
 
-    v9 = [(PUPhotoBrowserOneUpPresentationAdaptor *)self zoomTransitionDelegate];
-    v10 = v9;
+    zoomTransitionDelegate = [(PUPhotoBrowserOneUpPresentationAdaptor *)self zoomTransitionDelegate];
+    v10 = zoomTransitionDelegate;
     if (self->_zoomTransitionDelegateFlags.respondsToShouldHidePhotosTokens)
     {
-      [v9 zoomTransition:0 shouldHidePhotoTokens:v5];
+      [zoomTransitionDelegate zoomTransition:0 shouldHidePhotoTokens:v5];
     }
 
     else if (self->_zoomTransitionDelegateFlags.respondsToSetVisibilityForPhotoToken)
@@ -283,17 +283,17 @@ LABEL_7:
   }
 }
 
-- (id)_photoTokenForAssetReference:(id)a3
+- (id)_photoTokenForAssetReference:(id)reference
 {
-  v4 = a3;
-  v5 = [v4 asset];
-  v6 = [v4 assetCollection];
+  referenceCopy = reference;
+  asset = [referenceCopy asset];
+  assetCollection = [referenceCopy assetCollection];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v7 = [(PUPhotoBrowserOneUpPresentationAdaptor *)self zoomTransitionDelegate];
-    v8 = [v7 zoomTransition:0 photoTokenForPhoto:v5 inCollection:v6];
+    zoomTransitionDelegate = [(PUPhotoBrowserOneUpPresentationAdaptor *)self zoomTransitionDelegate];
+    v8 = [zoomTransitionDelegate zoomTransition:0 photoTokenForPhoto:asset inCollection:assetCollection];
   }
 
   else
@@ -304,15 +304,15 @@ LABEL_7:
   return v8;
 }
 
-- (void)setZoomTransitionDelegate:(id)a3
+- (void)setZoomTransitionDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_zoomTransitionDelegate);
 
   if (WeakRetained != obj)
   {
-    v5 = [(PUPhotoBrowserOneUpPresentationAdaptor *)self _photoTokensForHiddenAssetReferences];
-    v6 = [(PUPhotoBrowserOneUpPresentationAdaptor *)self _shouldDisableScroll];
+    _photoTokensForHiddenAssetReferences = [(PUPhotoBrowserOneUpPresentationAdaptor *)self _photoTokensForHiddenAssetReferences];
+    _shouldDisableScroll = [(PUPhotoBrowserOneUpPresentationAdaptor *)self _shouldDisableScroll];
     [(PUPhotoBrowserOneUpPresentationAdaptor *)self _setPhotoTokensForHiddenAssetReferences:0];
     [(PUPhotoBrowserOneUpPresentationAdaptor *)self _setShouldDisableScroll:0];
     objc_storeWeak(&self->_zoomTransitionDelegate, obj);
@@ -323,8 +323,8 @@ LABEL_7:
     self->_zoomTransitionDelegateFlags.respondsToDidFinishAnimationForOperation = objc_opt_respondsToSelector() & 1;
     self->_zoomTransitionDelegateFlags.respondsToShouldHidePhotosTokens = objc_opt_respondsToSelector() & 1;
     self->_zoomTransitionDelegateFlags.respondsToSetVisibilityForPhotoToken = objc_opt_respondsToSelector() & 1;
-    [(PUPhotoBrowserOneUpPresentationAdaptor *)self _setPhotoTokensForHiddenAssetReferences:v5];
-    [(PUPhotoBrowserOneUpPresentationAdaptor *)self _setShouldDisableScroll:v6];
+    [(PUPhotoBrowserOneUpPresentationAdaptor *)self _setPhotoTokensForHiddenAssetReferences:_photoTokensForHiddenAssetReferences];
+    [(PUPhotoBrowserOneUpPresentationAdaptor *)self _setShouldDisableScroll:_shouldDisableScroll];
   }
 }
 

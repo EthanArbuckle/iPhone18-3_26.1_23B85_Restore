@@ -1,22 +1,22 @@
 @interface KCellularActivatedBearerContexts
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addBearerContexts:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBearerContextCount:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addBearerContexts:(id)contexts;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasBearerContextCount:(BOOL)count;
+- (void)setHasSubsId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation KCellularActivatedBearerContexts
 
-- (void)setHasBearerContextCount:(BOOL)a3
+- (void)setHasBearerContextCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -29,27 +29,27 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addBearerContexts:(id)a3
+- (void)addBearerContexts:(id)contexts
 {
-  v4 = a3;
+  contextsCopy = contexts;
   bearerContexts = self->_bearerContexts;
-  v8 = v4;
+  v8 = contextsCopy;
   if (!bearerContexts)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_bearerContexts;
     self->_bearerContexts = v6;
 
-    v4 = v8;
+    contextsCopy = v8;
     bearerContexts = self->_bearerContexts;
   }
 
-  [(NSMutableArray *)bearerContexts addObject:v4];
+  [(NSMutableArray *)bearerContexts addObject:contextsCopy];
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 4;
   }
@@ -67,8 +67,8 @@
   v7.receiver = self;
   v7.super_class = KCellularActivatedBearerContexts;
   v3 = [(KCellularActivatedBearerContexts *)&v7 description];
-  v4 = [(KCellularActivatedBearerContexts *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(KCellularActivatedBearerContexts *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -113,8 +113,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -135,9 +135,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -188,31 +188,31 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 36) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 36) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 4) = self->_bearerContextCount;
-    *(v4 + 36) |= 2u;
+    *(toCopy + 4) = self->_bearerContextCount;
+    *(toCopy + 36) |= 2u;
   }
 
-  v10 = v4;
+  v10 = toCopy;
   if ([(KCellularActivatedBearerContexts *)self bearerContextsCount])
   {
     [v10 clearBearerContexts];
-    v6 = [(KCellularActivatedBearerContexts *)self bearerContextsCount];
-    if (v6)
+    bearerContextsCount = [(KCellularActivatedBearerContexts *)self bearerContextsCount];
+    if (bearerContextsCount)
     {
-      v7 = v6;
+      v7 = bearerContextsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(KCellularActivatedBearerContexts *)self bearerContextsAtIndex:i];
@@ -228,9 +228,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -265,7 +265,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * i) copyWithZone:{a3, v15}];
+        v13 = [*(*(&v15 + 1) + 8 * i) copyWithZone:{zone, v15}];
         [v6 addBearerContexts:v13];
       }
 
@@ -284,44 +284,44 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   has = self->_has;
-  v6 = *(v4 + 36);
+  v6 = *(equalCopy + 36);
   if (has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_19;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_bearerContextCount != *(v4 + 4))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_bearerContextCount != *(equalCopy + 4))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
     goto LABEL_19;
   }
 
   bearerContexts = self->_bearerContexts;
-  if (bearerContexts | *(v4 + 3))
+  if (bearerContexts | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)bearerContexts isEqual:?])
     {
@@ -333,10 +333,10 @@ LABEL_19:
     has = self->_has;
   }
 
-  v8 = (*(v4 + 36) & 4) == 0;
+  v8 = (*(equalCopy + 36) & 4) == 0;
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 36) & 4) == 0 || self->_subsId != *(v4 + 8))
+    if ((*(equalCopy + 36) & 4) == 0 || self->_subsId != *(equalCopy + 8))
     {
       goto LABEL_19;
     }
@@ -387,21 +387,21 @@ LABEL_6:
   return v4 ^ v3 ^ v6 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 36);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 36);
   if (v6)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v6 = *(v4 + 36);
+    v6 = *(fromCopy + 36);
   }
 
   if ((v6 & 2) != 0)
   {
-    self->_bearerContextCount = *(v4 + 4);
+    self->_bearerContextCount = *(fromCopy + 4);
     *&self->_has |= 2u;
   }
 
@@ -409,7 +409,7 @@ LABEL_6:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = *(v4 + 3);
+  v7 = *(fromCopy + 3);
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {

@@ -1,28 +1,28 @@
 @interface CloudBookmarkSyncMigrationConverter
-- (BOOL)cloudBookmarkSyncMigrationSaveHandler:(id)a3 shouldSaveBookmark:(id)a4;
-- (void)_didFinishSyncDownInOperationGroup:(id)a3;
+- (BOOL)cloudBookmarkSyncMigrationSaveHandler:(id)handler shouldSaveBookmark:(id)bookmark;
+- (void)_didFinishSyncDownInOperationGroup:(id)group;
 - (void)_didSaveLocalRecords;
 - (void)_finishSyncing;
-- (void)_generateAndSaveRecordsInOperationGroup:(id)a3;
-- (void)_migrationDidCompleteWithError:(id)a3;
-- (void)_performMergingSyncDownInOperationGroup:(id)a3;
-- (void)_performSyncDownInOperationGroup:(id)a3;
-- (void)_performSyncDownInOperationGroup:(id)a3 withRetryManager:(id)a4;
+- (void)_generateAndSaveRecordsInOperationGroup:(id)group;
+- (void)_migrationDidCompleteWithError:(id)error;
+- (void)_performMergingSyncDownInOperationGroup:(id)group;
+- (void)_performSyncDownInOperationGroup:(id)group;
+- (void)_performSyncDownInOperationGroup:(id)group withRetryManager:(id)manager;
 - (void)_prepareRecordsForMigration;
-- (void)_reparentAndSaveUnrootedBookmarksInOperationGroup:(id)a3;
-- (void)beginMigrationInOperationGroup:(id)a3 completionHandler:(id)a4;
-- (void)cloudBookmarkSyncMigrationSaveHandler:(id)a3 didMoveBookmark:(id)a4;
-- (void)cloudBookmarkSyncMigrationSyncDownHandler:(id)a3 didMoveBookmark:(id)a4;
+- (void)_reparentAndSaveUnrootedBookmarksInOperationGroup:(id)group;
+- (void)beginMigrationInOperationGroup:(id)group completionHandler:(id)handler;
+- (void)cloudBookmarkSyncMigrationSaveHandler:(id)handler didMoveBookmark:(id)bookmark;
+- (void)cloudBookmarkSyncMigrationSyncDownHandler:(id)handler didMoveBookmark:(id)bookmark;
 @end
 
 @implementation CloudBookmarkSyncMigrationConverter
 
-- (void)beginMigrationInOperationGroup:(id)a3 completionHandler:(id)a4
+- (void)beginMigrationInOperationGroup:(id)group completionHandler:(id)handler
 {
-  v5 = a3;
-  v8 = a4;
-  v6 = v5;
-  v7 = v8;
+  groupCopy = group;
+  handlerCopy = handler;
+  v6 = groupCopy;
+  v7 = handlerCopy;
   WBSDispatchAsyncToMainQueueWithAutoreleasePool();
 }
 
@@ -38,28 +38,28 @@
     }
 
     self->_hasSavedBookmarksLocally = 1;
-    v4 = [(CloudBookmarkDatabaseHandler *)self databaseRef];
-    v5 = [(CloudBookmarkDatabaseHandler *)self databaseAccessor];
-    v6 = [WBBookmarkDatabaseSyncData databaseSyncDataInDatabase:v4 databaseAccessor:v5];
+    databaseRef = [(CloudBookmarkDatabaseHandler *)self databaseRef];
+    databaseAccessor = [(CloudBookmarkDatabaseHandler *)self databaseAccessor];
+    v6 = [WBBookmarkDatabaseSyncData databaseSyncDataInDatabase:databaseRef databaseAccessor:databaseAccessor];
 
     [v6 setDidNotSaveRecordsAfterMigration:0];
-    v7 = [(CloudBookmarkDatabaseHandler *)self databaseRef];
-    v8 = [(CloudBookmarkDatabaseHandler *)self databaseAccessor];
-    [v6 writeToDatabase:v7 databaseAccessor:v8];
+    databaseRef2 = [(CloudBookmarkDatabaseHandler *)self databaseRef];
+    databaseAccessor2 = [(CloudBookmarkDatabaseHandler *)self databaseAccessor];
+    [v6 writeToDatabase:databaseRef2 databaseAccessor:databaseAccessor2];
   }
 }
 
 - (void)_prepareRecordsForMigration
 {
-  v3 = [(CloudBookmarkDatabaseHandler *)self databaseRef];
-  v4 = [(CloudBookmarkDatabaseHandler *)self databaseAccessor];
-  v5 = [v4 copyChangeTokenWithDatabase:v3];
+  databaseRef = [(CloudBookmarkDatabaseHandler *)self databaseRef];
+  databaseAccessor = [(CloudBookmarkDatabaseHandler *)self databaseAccessor];
+  v5 = [databaseAccessor copyChangeTokenWithDatabase:databaseRef];
   changeToken = self->_changeToken;
   self->_changeToken = v5;
 
   v7 = [CloudBookmarkSyncMigrationHierarchyConverter alloc];
-  v8 = [(CloudBookmarkDatabaseHandler *)self databaseAccessor];
-  v9 = [(CloudBookmarkSyncMigrationHierarchyConverter *)v7 initWithDatabase:v3 databaseAccessor:v8];
+  databaseAccessor2 = [(CloudBookmarkDatabaseHandler *)self databaseAccessor];
+  v9 = [(CloudBookmarkSyncMigrationHierarchyConverter *)v7 initWithDatabase:databaseRef databaseAccessor:databaseAccessor2];
 
   if ([(CloudBookmarkSyncMigrationHierarchyConverter *)v9 convertRecordsForMigration])
   {
@@ -67,9 +67,9 @@
   }
 }
 
-- (void)_migrationDidCompleteWithError:(id)a3
+- (void)_migrationDidCompleteWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = objc_retainBlock(self->_completionHandler);
   completionHandler = self->_completionHandler;
   self->_completionHandler = 0;
@@ -87,9 +87,9 @@
   self->_converter = 0;
 
   self->_isMigrating = 0;
-  v13 = v4;
+  v13 = errorCopy;
   v14 = v5;
-  v11 = v4;
+  v11 = errorCopy;
   v12 = v5;
   WBSDispatchAsyncToMainQueueWithAutoreleasePool();
 }
@@ -108,8 +108,8 @@
   [(CloudBookmarkPendingReferenceManager *)self->_pendingReferenceManager applyAllPendingReferencesWithUpdater:self];
   if (self->_changeToken)
   {
-    v4 = [(CloudBookmarkDatabaseHandler *)self databaseAccessor];
-    [v4 clearChangesWithChangeToken:self->_changeToken database:{-[CloudBookmarkDatabaseHandler databaseRef](self, "databaseRef")}];
+    databaseAccessor = [(CloudBookmarkDatabaseHandler *)self databaseAccessor];
+    [databaseAccessor clearChangesWithChangeToken:self->_changeToken database:{-[CloudBookmarkDatabaseHandler databaseRef](self, "databaseRef")}];
 
     changeToken = self->_changeToken;
     self->_changeToken = 0;
@@ -118,9 +118,9 @@
   [(CloudBookmarkSyncMigrationConverter *)self _migrationDidCompleteWithError:0];
 }
 
-- (void)_performMergingSyncDownInOperationGroup:(id)a3
+- (void)_performMergingSyncDownInOperationGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v5 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -134,36 +134,36 @@
   v8[2] = sub_1000714AC;
   v8[3] = &unk_100134B68;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = groupCopy;
+  v7 = groupCopy;
   [(CloudBookmarkSyncMigrationSyncDownHandler *)syncDownHandler beginSyncDownInOperationGroup:v7 keepingRecordsMarkedAsDeletedLocally:1 completionHandler:v8];
 }
 
-- (void)_generateAndSaveRecordsInOperationGroup:(id)a3
+- (void)_generateAndSaveRecordsInOperationGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   converter = self->_converter;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100071870;
   v7[3] = &unk_100134B90;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = groupCopy;
+  v6 = groupCopy;
   [(CloudBookmarkSyncMigrationFolderContentConverter *)converter beginFolderMigrationInOperationGroup:v6 completionHandler:v7];
 }
 
-- (void)_performSyncDownInOperationGroup:(id)a3
+- (void)_performSyncDownInOperationGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v5 = [[WBSCloudKitOperationRetryManager alloc] initWithLog:-[CloudTabGroupSyncCoordinator _bookmarksLog]_0()];
-  [(CloudBookmarkSyncMigrationConverter *)self _performSyncDownInOperationGroup:v4 withRetryManager:v5];
+  [(CloudBookmarkSyncMigrationConverter *)self _performSyncDownInOperationGroup:groupCopy withRetryManager:v5];
 }
 
-- (void)_performSyncDownInOperationGroup:(id)a3 withRetryManager:(id)a4
+- (void)_performSyncDownInOperationGroup:(id)group withRetryManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  managerCopy = manager;
   objc_initWeak(&location, self);
   v8 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -178,10 +178,10 @@
   v12[2] = sub_100071C28;
   v12[3] = &unk_100134BE0;
   v12[4] = self;
-  v10 = v7;
+  v10 = managerCopy;
   v13 = v10;
   objc_copyWeak(&v15, &location);
-  v11 = v6;
+  v11 = groupCopy;
   v14 = v11;
   [(CloudBookmarkSyncMigrationSyncDownHandler *)syncDownHandler beginSyncDownInOperationGroup:v11 completionHandler:v12];
 
@@ -189,12 +189,12 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_didFinishSyncDownInOperationGroup:(id)a3
+- (void)_didFinishSyncDownInOperationGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   if ([(CloudBookmarkMovedBookmarkManager *)self->_movedBookmarkManager hasUnverifiedMovedBookmarks])
   {
-    [(CloudBookmarkSyncMigrationConverter *)self _reparentAndSaveUnrootedBookmarksInOperationGroup:v4];
+    [(CloudBookmarkSyncMigrationConverter *)self _reparentAndSaveUnrootedBookmarksInOperationGroup:groupCopy];
   }
 
   else
@@ -203,9 +203,9 @@
   }
 }
 
-- (void)_reparentAndSaveUnrootedBookmarksInOperationGroup:(id)a3
+- (void)_reparentAndSaveUnrootedBookmarksInOperationGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v5 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -219,8 +219,8 @@
   v8 = v15;
   if ([v7 count])
   {
-    v9 = [v7 allObjects];
-    v10 = [v9 sortedArrayUsingSelector:"compare:"];
+    allObjects = [v7 allObjects];
+    v10 = [allObjects sortedArrayUsingSelector:"compare:"];
 
     saveReparentedBookmarksHandler = self->_saveReparentedBookmarksHandler;
     v13[0] = _NSConcreteStackBlock;
@@ -228,7 +228,7 @@
     v13[2] = sub_10007249C;
     v13[3] = &unk_100134B90;
     v13[4] = self;
-    v14 = v4;
+    v14 = groupCopy;
     [(CloudBookmarkSyncMigrationSaveReparentedBookmarksHandler *)saveReparentedBookmarksHandler beginSavingReparentedBookmarksInOperationGroup:v14 withRecordNames:v10 lastKnownPositionInRoot:v8 completionHandler:v13];
 
     v8 = v10;
@@ -247,13 +247,13 @@
   }
 }
 
-- (BOOL)cloudBookmarkSyncMigrationSaveHandler:(id)a3 shouldSaveBookmark:(id)a4
+- (BOOL)cloudBookmarkSyncMigrationSaveHandler:(id)handler shouldSaveBookmark:(id)bookmark
 {
-  if (self->_converter == a3)
+  if (self->_converter == handler)
   {
     movedBookmarkManager = self->_movedBookmarkManager;
-    v6 = [a4 recordName];
-    v4 = ![(CloudBookmarkMovedBookmarkManager *)movedBookmarkManager isDeletedRecordName:v6];
+    recordName = [bookmark recordName];
+    v4 = ![(CloudBookmarkMovedBookmarkManager *)movedBookmarkManager isDeletedRecordName:recordName];
   }
 
   else
@@ -264,18 +264,18 @@
   return v4;
 }
 
-- (void)cloudBookmarkSyncMigrationSaveHandler:(id)a3 didMoveBookmark:(id)a4
+- (void)cloudBookmarkSyncMigrationSaveHandler:(id)handler didMoveBookmark:(id)bookmark
 {
-  v5 = a4;
+  bookmarkCopy = bookmark;
   [(CloudBookmarkSyncMigrationConverter *)self _didSaveLocalRecords];
-  [(CloudBookmarkMovedBookmarkManager *)self->_movedBookmarkManager addMovedBookmark:v5];
+  [(CloudBookmarkMovedBookmarkManager *)self->_movedBookmarkManager addMovedBookmark:bookmarkCopy];
 }
 
-- (void)cloudBookmarkSyncMigrationSyncDownHandler:(id)a3 didMoveBookmark:(id)a4
+- (void)cloudBookmarkSyncMigrationSyncDownHandler:(id)handler didMoveBookmark:(id)bookmark
 {
-  v5 = a4;
+  bookmarkCopy = bookmark;
   [(CloudBookmarkSyncMigrationConverter *)self _didSaveLocalRecords];
-  [(CloudBookmarkMovedBookmarkManager *)self->_movedBookmarkManager addMovedBookmark:v5];
+  [(CloudBookmarkMovedBookmarkManager *)self->_movedBookmarkManager addMovedBookmark:bookmarkCopy];
 }
 
 @end

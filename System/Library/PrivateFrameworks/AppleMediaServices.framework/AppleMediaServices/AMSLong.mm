@@ -1,53 +1,53 @@
 @interface AMSLong
-+ (id)longWithLong:(int64_t)a3;
-- (AMSLong)initWithLong:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToLong:(id)a3;
++ (id)longWithLong:(int64_t)long;
+- (AMSLong)initWithLong:(int64_t)long;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToLong:(id)long;
 @end
 
 @implementation AMSLong
 
-- (AMSLong)initWithLong:(int64_t)a3
+- (AMSLong)initWithLong:(int64_t)long
 {
   v5.receiver = self;
   v5.super_class = AMSLong;
   result = [(AMSLong *)&v5 init];
   if (result)
   {
-    result->_value = a3;
+    result->_value = long;
   }
 
   return result;
 }
 
-+ (id)longWithLong:(int64_t)a3
++ (id)longWithLong:(int64_t)long
 {
-  v3 = [[a1 alloc] initWithLong:a3];
+  v3 = [[self alloc] initWithLong:long];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AMSLong *)self isEqualToLong:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AMSLong *)self isEqualToLong:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToLong:(id)a3
+- (BOOL)isEqualToLong:(id)long
 {
-  if (!a3)
+  if (!long)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(AMSLong *)self value];
-  v6 = [v4 value];
+  longCopy = long;
+  value = [(AMSLong *)self value];
+  value2 = [longCopy value];
 
-  return v5 == v6;
+  return value == value2;
 }
 
 @end

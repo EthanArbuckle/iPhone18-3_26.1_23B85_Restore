@@ -1,19 +1,19 @@
 @interface StorageRequest
 - (LACXPCClient)client;
-- (StorageRequest)initWithStorageDomain:(int64_t)a3 key:(int64_t)a4 acl:(id)a5 options:(id)a6 contextID:(id)a7 connection:(id)a8;
+- (StorageRequest)initWithStorageDomain:(int64_t)domain key:(int64_t)key acl:(id)acl options:(id)options contextID:(id)d connection:(id)connection;
 @end
 
 @implementation StorageRequest
 
-- (StorageRequest)initWithStorageDomain:(int64_t)a3 key:(int64_t)a4 acl:(id)a5 options:(id)a6 contextID:(id)a7 connection:(id)a8
+- (StorageRequest)initWithStorageDomain:(int64_t)domain key:(int64_t)key acl:(id)acl options:(id)options contextID:(id)d connection:(id)connection
 {
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  if (v17)
+  aclCopy = acl;
+  optionsCopy = options;
+  dCopy = d;
+  connectionCopy = connection;
+  if (connectionCopy)
   {
-    v18 = [[Caller alloc] initWithConnection:v17];
+    v18 = [[Caller alloc] initWithConnection:connectionCopy];
   }
 
   else
@@ -28,11 +28,11 @@
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_acl, a5);
-    objc_storeStrong(&v21->_contextID, a7);
-    v21->_domain = a3;
-    v21->_key = a4;
-    objc_storeStrong(&v21->_options, a6);
+    objc_storeStrong(&v20->_acl, acl);
+    objc_storeStrong(&v21->_contextID, d);
+    v21->_domain = domain;
+    v21->_key = key;
+    objc_storeStrong(&v21->_options, options);
   }
 
   return v21;
@@ -40,10 +40,10 @@
 
 - (LACXPCClient)client
 {
-  v2 = [(Request *)self caller];
-  v3 = [v2 clientInfo];
+  caller = [(Request *)self caller];
+  clientInfo = [caller clientInfo];
 
-  return v3;
+  return clientInfo;
 }
 
 @end

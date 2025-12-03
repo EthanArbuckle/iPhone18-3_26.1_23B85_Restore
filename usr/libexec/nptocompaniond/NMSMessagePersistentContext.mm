@@ -1,21 +1,21 @@
 @interface NMSMessagePersistentContext
-- (NMSMessagePersistentContext)initWithCoder:(id)a3;
+- (NMSMessagePersistentContext)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NMSMessagePersistentContext
 
-- (NMSMessagePersistentContext)initWithCoder:(id)a3
+- (NMSMessagePersistentContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = NMSMessagePersistentContext;
   v5 = [(NMSMessagePersistentContext *)&v16 init];
   if (v5)
   {
-    v5->_messageID = [v4 decodeIntegerForKey:@"m"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"i"];
+    v5->_messageID = [coderCopy decodeIntegerForKey:@"m"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"i"];
     idsIdentifier = v5->_idsIdentifier;
     v5->_idsIdentifier = v6;
 
@@ -25,38 +25,38 @@
     }
 
     v8 = qword_10009C640;
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"u"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"u"];
     userInfo = v5->_userInfo;
     v5->_userInfo = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"d"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"d"];
     date = v5->_date;
     v5->_date = v11;
 
-    v5->_fromRequest = [v4 decodeBoolForKey:@"r"];
-    v5->_fromFile = [v4 decodeBoolForKey:@"f"];
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"p"];
+    v5->_fromRequest = [coderCopy decodeBoolForKey:@"r"];
+    v5->_fromFile = [coderCopy decodeBoolForKey:@"f"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"p"];
     filePath = v5->_filePath;
     v5->_filePath = v13;
 
-    v5->_shouldUnlinkFile = [v4 decodeBoolForKey:@"l"];
+    v5->_shouldUnlinkFile = [coderCopy decodeBoolForKey:@"l"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   messageID = self->_messageID;
-  v5 = a3;
-  [v5 encodeInteger:messageID forKey:@"m"];
-  [v5 encodeObject:self->_idsIdentifier forKey:@"i"];
-  [v5 encodeObject:self->_userInfo forKey:@"u"];
-  [v5 encodeObject:self->_date forKey:@"d"];
-  [v5 encodeBool:self->_fromRequest forKey:@"r"];
-  [v5 encodeBool:self->_fromFile forKey:@"f"];
-  [v5 encodeObject:self->_filePath forKey:@"p"];
-  [v5 encodeBool:self->_shouldUnlinkFile forKey:@"l"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:messageID forKey:@"m"];
+  [coderCopy encodeObject:self->_idsIdentifier forKey:@"i"];
+  [coderCopy encodeObject:self->_userInfo forKey:@"u"];
+  [coderCopy encodeObject:self->_date forKey:@"d"];
+  [coderCopy encodeBool:self->_fromRequest forKey:@"r"];
+  [coderCopy encodeBool:self->_fromFile forKey:@"f"];
+  [coderCopy encodeObject:self->_filePath forKey:@"p"];
+  [coderCopy encodeBool:self->_shouldUnlinkFile forKey:@"l"];
 }
 
 - (id)description

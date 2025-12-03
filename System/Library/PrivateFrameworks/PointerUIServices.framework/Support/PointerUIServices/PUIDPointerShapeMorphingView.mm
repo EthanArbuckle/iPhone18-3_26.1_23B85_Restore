@@ -1,17 +1,17 @@
 @interface PUIDPointerShapeMorphingView
-- (PUIDPointerShapeMorphingView)initWithFrame:(CGRect)a3;
-- (void)_resetToStableStateWithPath:(id)a3;
+- (PUIDPointerShapeMorphingView)initWithFrame:(CGRect)frame;
+- (void)_resetToStableStateWithPath:(id)path;
 - (void)dealloc;
-- (void)setPath:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)setPath:(id)path animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation PUIDPointerShapeMorphingView
 
-- (PUIDPointerShapeMorphingView)initWithFrame:(CGRect)a3
+- (PUIDPointerShapeMorphingView)initWithFrame:(CGRect)frame
 {
   v40.receiver = self;
   v40.super_class = PUIDPointerShapeMorphingView;
-  v3 = [(PUIDPointerShapeMorphingView *)&v40 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUIDPointerShapeMorphingView *)&v40 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -31,46 +31,46 @@
     v13 = [CAFilter filterWithType:kCAFilterAlphaThreshold];
     v14 = [CAFilter filterWithType:kCAFilterGaussianBlur];
     [v14 setValue:&off_10004C5E0 forKey:kCAFilterInputRadius];
-    v15 = [(UIView *)v4->_filteredView layer];
+    layer = [(UIView *)v4->_filteredView layer];
     v41[0] = v14;
     v41[1] = v13;
     v16 = [NSArray arrayWithObjects:v41 count:2];
-    [v15 setFilters:v16];
+    [layer setFilters:v16];
 
-    v17 = [(UIView *)v4->_filteredView layer];
-    [v17 setValue:&__kCFBooleanFalse forKeyPath:@"filters.alphaThreshold.enabled"];
+    layer2 = [(UIView *)v4->_filteredView layer];
+    [layer2 setValue:&__kCFBooleanFalse forKeyPath:@"filters.alphaThreshold.enabled"];
 
     v18 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     containerView = v4->_containerView;
     v4->_containerView = v18;
 
-    v20 = [(UIView *)v4->_containerView layer];
-    [v20 setAllowsGroupBlending:0];
+    layer3 = [(UIView *)v4->_containerView layer];
+    [layer3 setAllowsGroupBlending:0];
 
     [(UIView *)v4->_filteredView addSubview:v4->_containerView];
-    v21 = [[PUIDShapeView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    height = [[PUIDShapeView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
     shapeView = v4->_shapeView;
-    v4->_shapeView = v21;
+    v4->_shapeView = height;
 
-    v23 = [(PUIDShapeView *)v4->_shapeView layer];
+    layer4 = [(PUIDShapeView *)v4->_shapeView layer];
     v24 = kCAFilterPlusL;
-    [v23 setCompositingFilter:kCAFilterPlusL];
+    [layer4 setCompositingFilter:kCAFilterPlusL];
 
     [(UIView *)v4->_containerView addSubview:v4->_shapeView];
     v25 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     animationContainerView = v4->_animationContainerView;
     v4->_animationContainerView = v25;
 
-    v27 = [(UIView *)v4->_animationContainerView layer];
-    [v27 setAllowsGroupBlending:0];
+    layer5 = [(UIView *)v4->_animationContainerView layer];
+    [layer5 setAllowsGroupBlending:0];
 
     [(UIView *)v4->_filteredView addSubview:v4->_animationContainerView];
-    v28 = [[PUIDShapeView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    height2 = [[PUIDShapeView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
     animationShapeView = v4->_animationShapeView;
-    v4->_animationShapeView = v28;
+    v4->_animationShapeView = height2;
 
-    v30 = [(PUIDShapeView *)v4->_animationShapeView layer];
-    [v30 setCompositingFilter:v24];
+    layer6 = [(PUIDShapeView *)v4->_animationShapeView layer];
+    [layer6 setCompositingFilter:v24];
 
     [(UIView *)v4->_animationContainerView addSubview:v4->_animationShapeView];
     v31 = [[UIView alloc] initWithFrame:{0.0, 0.0, 1.0, 1.0}];
@@ -79,20 +79,20 @@
 
     [(UIView *)v4->_animationCircleView _setCornerRadius:0.5];
     v33 = v4->_animationCircleView;
-    v34 = [(PUIDShapeView *)v4->_animationShapeView fillColor];
-    [(UIView *)v33 setBackgroundColor:v34];
+    fillColor = [(PUIDShapeView *)v4->_animationShapeView fillColor];
+    [(UIView *)v33 setBackgroundColor:fillColor];
 
     [(UIView *)v4->_animationCircleView setAlpha:0.0];
-    v35 = [(UIView *)v4->_animationCircleView layer];
-    [v35 setCompositingFilter:v24];
+    layer7 = [(UIView *)v4->_animationCircleView layer];
+    [layer7 setCompositingFilter:v24];
 
     [(UIView *)v4->_filteredView addSubview:v4->_animationCircleView];
     v36 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     animationSnapshotView = v4->_animationSnapshotView;
     v4->_animationSnapshotView = v36;
 
-    v38 = [(UIView *)v4->_animationSnapshotView layer];
-    [v38 setCompositingFilter:v24];
+    layer8 = [(UIView *)v4->_animationSnapshotView layer];
+    [layer8 setCompositingFilter:v24];
 
     [(UIView *)v4->_animationContainerView addSubview:v4->_animationSnapshotView];
     [(PUIDPointerShapeMorphingView *)v4 addSubview:v4->_filteredView];
@@ -109,16 +109,16 @@
   [(PUIDPointerShapeMorphingView *)&v3 dealloc];
 }
 
-- (void)setPath:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setPath:(id)path animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  animatedCopy = animated;
+  pathCopy = path;
+  completionCopy = completion;
   path = self->_path;
-  *&v176.size.width = v8;
-  if (path != v8 && ([(UIBezierPath *)path isEqual:v8]& 1) == 0)
+  *&v176.size.width = pathCopy;
+  if (path != pathCopy && ([(UIBezierPath *)path isEqual:pathCopy]& 1) == 0)
   {
-    v11 = [(UIBezierPath *)v8 copy];
+    v11 = [(UIBezierPath *)pathCopy copy];
     v12 = self->_path;
     self->_path = v11;
 
@@ -126,9 +126,9 @@
     v169 = (self->_animationGenerationID + 1);
     self->_animationGenerationID = v169;
     os_unfair_lock_unlock(&self->_lock);
-    if (v6)
+    if (animatedCopy)
     {
-      v159 = v9;
+      v159 = completionCopy;
       [(UIBezierPath *)self->_path bounds];
       v165 = v14;
       v167 = v13;
@@ -140,18 +140,18 @@
       {
         [(UIViewFloatAnimatableProperty *)animatableProperty presentationValue];
         v173 = v18;
-        v19 = [(PUIDShapeView *)self->_shapeView path];
-        [v19 bounds];
+        path = [(PUIDShapeView *)self->_shapeView path];
+        [path bounds];
         v21 = v20;
         v23 = v22;
         v25 = v24;
         v27 = v26;
-        v28 = [(PUIDShapeView *)self->_shapeView layer];
-        v29 = [v28 presentationLayer];
-        v30 = v29;
-        if (v29)
+        layer = [(PUIDShapeView *)self->_shapeView layer];
+        presentationLayer = [layer presentationLayer];
+        v30 = presentationLayer;
+        if (presentationLayer)
         {
-          [v29 affineTransform];
+          [presentationLayer affineTransform];
         }
 
         else
@@ -169,18 +169,18 @@
         val = v244.size.width;
         r1 = v244.size.height;
 
-        v42 = [(PUIDShapeView *)self->_animationShapeView path];
-        [v42 bounds];
+        path2 = [(PUIDShapeView *)self->_animationShapeView path];
+        [path2 bounds];
         v44 = v43;
         v46 = v45;
         v48 = v47;
         v50 = v49;
-        v51 = [(PUIDShapeView *)self->_animationShapeView layer];
-        v52 = [v51 presentationLayer];
-        v53 = v52;
-        if (v52)
+        layer2 = [(PUIDShapeView *)self->_animationShapeView layer];
+        presentationLayer2 = [layer2 presentationLayer];
+        v53 = presentationLayer2;
+        if (presentationLayer2)
         {
-          [v52 affineTransform];
+          [presentationLayer2 affineTransform];
         }
 
         else
@@ -198,9 +198,9 @@
         width = v246.size.width;
         height = v246.size.height;
 
-        v58 = [(UIView *)self->_animationCircleView layer];
-        v59 = [v58 presentationLayer];
-        [v59 frame];
+        layer3 = [(UIView *)self->_animationCircleView layer];
+        presentationLayer3 = [layer3 presentationLayer];
+        [presentationLayer3 frame];
         v61 = v60;
         v63 = v62;
         v65 = v64;
@@ -253,8 +253,8 @@
           v239[0] = kCASnapshotMode;
           v239[1] = kCASnapshotDisplayName;
           v172 = +[CADisplay mainDisplay];
-          v76 = [v172 name];
-          v240[1] = v76;
+          name = [v172 name];
+          v240[1] = name;
           v240[2] = v41;
           v239[2] = kCASnapshotDestination;
           v239[3] = kCASnapshotTransform;
@@ -262,13 +262,13 @@
           v77 = [NSValue valueWithCATransform3D:&v222];
           v240[3] = v77;
           v239[4] = kCASnapshotContextId;
-          v78 = [(PUIDPointerShapeMorphingView *)self layer];
-          v79 = [v78 context];
-          v80 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v79 contextId]);
+          layer4 = [(PUIDPointerShapeMorphingView *)self layer];
+          context = [layer4 context];
+          v80 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [context contextId]);
           v240[4] = v80;
           v239[5] = kCASnapshotLayerId;
-          v81 = [(UIView *)self->_filteredView layer];
-          v82 = [NSNumber numberWithUnsignedLongLong:v81];
+          layer5 = [(UIView *)self->_filteredView layer];
+          v82 = [NSNumber numberWithUnsignedLongLong:layer5];
           v240[5] = v82;
           v83 = [NSDictionary dictionaryWithObjects:v240 forKeys:v239 count:6];
 
@@ -282,8 +282,8 @@
 
       else
       {
-        v32 = [(PUIDShapeView *)self->_shapeView path];
-        [v32 bounds];
+        path3 = [(PUIDShapeView *)self->_shapeView path];
+        [path3 bounds];
         v34 = v33;
         v36 = v35;
         v38 = v37;
@@ -647,7 +647,7 @@
       v194 = v145;
       [UIView _createTransformerWithInputAnimatableProperties:v141 modelValueSetter:v197 presentationValueSetter:v185];
 
-      v146 = [(PUIDPointerSettings *)self->_settings customShapeMorphAnimationSettings];
+      customShapeMorphAnimationSettings = [(PUIDPointerSettings *)self->_settings customShapeMorphAnimationSettings];
       v183[0] = _NSConcreteStackBlock;
       v183[1] = 3221225472;
       v183[2] = sub_10001DECC;
@@ -662,7 +662,7 @@
       objc_copyWeak(v182, &v222);
       v182[1] = v169;
       v181 = v159;
-      [UIView _animateUsingSpringBehavior:v146 tracking:0 animations:v183 completion:&v176.size.height];
+      [UIView _animateUsingSpringBehavior:customShapeMorphAnimationSettings tracking:0 animations:v183 completion:&v176.size.height];
 
       objc_destroyWeak(v182);
       objc_destroyWeak(v196);
@@ -675,7 +675,7 @@
       objc_destroyWeak(&v213);
       objc_destroyWeak(&v222);
 
-      v9 = v159;
+      completionCopy = v159;
       goto LABEL_36;
     }
 
@@ -683,26 +683,26 @@
     v31 = self->_animatableProperty;
     self->_animatableProperty = 0;
 
-    [(PUIDPointerShapeMorphingView *)self _resetToStableStateWithPath:v8];
+    [(PUIDPointerShapeMorphingView *)self _resetToStableStateWithPath:pathCopy];
   }
 
-  if (v9)
+  if (completionCopy)
   {
-    (*(v9 + 2))(v9, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 
 LABEL_36:
 }
 
-- (void)_resetToStableStateWithPath:(id)a3
+- (void)_resetToStableStateWithPath:(id)path
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10001E05C;
   v4[3] = &unk_100048A28;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  pathCopy = path;
+  v3 = pathCopy;
   [UIView _performWithoutRetargetingAnimations:v4];
 }
 

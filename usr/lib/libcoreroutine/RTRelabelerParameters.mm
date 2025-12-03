@@ -1,13 +1,13 @@
 @interface RTRelabelerParameters
-- (RTRelabelerParameters)initWithBaseCount:(double)a3 clippingRadius:(double)a4 confidenceEqualityEpsilon:(double)a5 confidenceThreshold:(double)a6 contextCandidateAmountThreshold:(unint64_t)a7 contextDistanceThreshold:(double)a8 minimumConfidenceRatio:(double)a9 minimumNumberPOIs:(unint64_t)a10 passthroughThreshold:(double)a11 placeholderWeight:(double)a12 revGeoConfidence:(double)a13 sigma:(double)a14 weekThreshold:(unint64_t)a15;
-- (RTRelabelerParameters)initWithDefaultsManager:(id)a3;
+- (RTRelabelerParameters)initWithBaseCount:(double)count clippingRadius:(double)radius confidenceEqualityEpsilon:(double)epsilon confidenceThreshold:(double)threshold contextCandidateAmountThreshold:(unint64_t)amountThreshold contextDistanceThreshold:(double)distanceThreshold minimumConfidenceRatio:(double)ratio minimumNumberPOIs:(unint64_t)self0 passthroughThreshold:(double)self1 placeholderWeight:(double)self2 revGeoConfidence:(double)self3 sigma:(double)self4 weekThreshold:(unint64_t)self5;
+- (RTRelabelerParameters)initWithDefaultsManager:(id)manager;
 @end
 
 @implementation RTRelabelerParameters
 
-- (RTRelabelerParameters)initWithBaseCount:(double)a3 clippingRadius:(double)a4 confidenceEqualityEpsilon:(double)a5 confidenceThreshold:(double)a6 contextCandidateAmountThreshold:(unint64_t)a7 contextDistanceThreshold:(double)a8 minimumConfidenceRatio:(double)a9 minimumNumberPOIs:(unint64_t)a10 passthroughThreshold:(double)a11 placeholderWeight:(double)a12 revGeoConfidence:(double)a13 sigma:(double)a14 weekThreshold:(unint64_t)a15
+- (RTRelabelerParameters)initWithBaseCount:(double)count clippingRadius:(double)radius confidenceEqualityEpsilon:(double)epsilon confidenceThreshold:(double)threshold contextCandidateAmountThreshold:(unint64_t)amountThreshold contextDistanceThreshold:(double)distanceThreshold minimumConfidenceRatio:(double)ratio minimumNumberPOIs:(unint64_t)self0 passthroughThreshold:(double)self1 placeholderWeight:(double)self2 revGeoConfidence:(double)self3 sigma:(double)self4 weekThreshold:(unint64_t)self5
 {
-  if (a3 <= 0.0)
+  if (count <= 0.0)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -19,11 +19,11 @@
 
 LABEL_23:
 
-    v29 = 0;
+    selfCopy = 0;
     goto LABEL_24;
   }
 
-  if (a4 <= 0.0)
+  if (radius <= 0.0)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -62,7 +62,7 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  if (!a7)
+  if (!amountThreshold)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -75,7 +75,7 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  if (a8 <= 0.0)
+  if (distanceThreshold <= 0.0)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -88,7 +88,7 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  if (a9 < 0.0)
+  if (ratio < 0.0)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -103,7 +103,7 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (!a10)
+  if (!is)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -129,7 +129,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (a12 <= 1.0)
+  if (weight <= 1.0)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -155,7 +155,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (a14 <= 0.0)
+  if (sigma <= 0.0)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -168,7 +168,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (!a15)
+  if (!weekThreshold)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -181,8 +181,8 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  v31 = (a10 - 1);
-  if ((1.0 - a6) * a12 / (v31 + a12) > a6)
+  v31 = (is - 1);
+  if ((1.0 - threshold) * weight / (v31 + weight) > threshold)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -195,9 +195,9 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  v33 = log(v31 * a13);
-  v34 = v33 - log(a13 * -2.0 + 1.0);
-  if (a4 * a4 * 0.5 * pow(a14, -2.0) > v34)
+  v33 = log(v31 * confidence);
+  v34 = v33 - log(confidence * -2.0 + 1.0);
+  if (radius * radius * 0.5 * pow(sigma, -2.0) > v34)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -215,35 +215,35 @@ LABEL_22:
   v32 = [(RTRelabelerParameters *)&v35 init];
   if (v32)
   {
-    v32->_baseCount = a3;
-    v32->_clippingRadius = a4;
-    v32->_confidenceEqualityEpsilon = a5;
-    v32->_confidenceThreshold = a6;
-    v32->_contextCandidateAmountThreshold = a7;
-    v32->_contextDistanceThreshold = a8;
-    v32->_minimumConfidenceRatio = a9;
-    v32->_minimumNumberPOIs = a10;
-    v32->_passthroughThreshold = a11;
-    v32->_placeholderWeight = a12;
-    v32->_revGeoConfidence = a13;
-    v32->_sigma = a14;
-    v32->_weekThreshold = a15;
+    v32->_baseCount = count;
+    v32->_clippingRadius = radius;
+    v32->_confidenceEqualityEpsilon = epsilon;
+    v32->_confidenceThreshold = threshold;
+    v32->_contextCandidateAmountThreshold = amountThreshold;
+    v32->_contextDistanceThreshold = distanceThreshold;
+    v32->_minimumConfidenceRatio = ratio;
+    v32->_minimumNumberPOIs = is;
+    v32->_passthroughThreshold = passthroughThreshold;
+    v32->_placeholderWeight = weight;
+    v32->_revGeoConfidence = confidence;
+    v32->_sigma = sigma;
+    v32->_weekThreshold = weekThreshold;
   }
 
   self = v32;
-  v29 = self;
+  selfCopy = self;
 LABEL_24:
 
-  return v29;
+  return selfCopy;
 }
 
-- (RTRelabelerParameters)initWithDefaultsManager:(id)a3
+- (RTRelabelerParameters)initWithDefaultsManager:(id)manager
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  managerCopy = manager;
+  v5 = managerCopy;
+  if (managerCopy)
   {
-    v6 = [v4 objectForKey:@"RTDefaultsRelabelerBaseCount"];
+    v6 = [managerCopy objectForKey:@"RTDefaultsRelabelerBaseCount"];
     objc_opt_class();
     v7 = 0.5;
     if (objc_opt_isKindOfClass())
@@ -296,12 +296,12 @@ LABEL_24:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v43 = [v18 unsignedIntegerValue];
+      unsignedIntegerValue = [v18 unsignedIntegerValue];
     }
 
     else
     {
-      v43 = 5;
+      unsignedIntegerValue = 5;
     }
 
     v19 = [v5 objectForKey:@"RTDefaultsRelabelerContextDistanceThreshold"];
@@ -335,12 +335,12 @@ LABEL_24:
     v50 = v6;
     if (objc_opt_isKindOfClass())
     {
-      v42 = [v25 unsignedIntegerValue];
+      unsignedIntegerValue2 = [v25 unsignedIntegerValue];
     }
 
     else
     {
-      v42 = 6;
+      unsignedIntegerValue2 = 6;
     }
 
     v26 = [v5 objectForKey:@"RTDefaultsRelabelerPassthroughThreshold"];
@@ -399,17 +399,17 @@ LABEL_24:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v40 = [v39 unsignedIntegerValue];
+      unsignedIntegerValue3 = [v39 unsignedIntegerValue];
     }
 
     else
     {
-      v40 = 4838400;
+      unsignedIntegerValue3 = 4838400;
     }
 
-    self = [(RTRelabelerParameters *)self initWithBaseCount:v43 clippingRadius:v42 confidenceEqualityEpsilon:v40 confidenceThreshold:v7 contextCandidateAmountThreshold:v46 contextDistanceThreshold:v45 minimumConfidenceRatio:v17 minimumNumberPOIs:v21 passthroughThreshold:v24 placeholderWeight:v28 revGeoConfidence:v30 sigma:v35 weekThreshold:v38];
+    self = [(RTRelabelerParameters *)self initWithBaseCount:unsignedIntegerValue clippingRadius:unsignedIntegerValue2 confidenceEqualityEpsilon:unsignedIntegerValue3 confidenceThreshold:v7 contextCandidateAmountThreshold:v46 contextDistanceThreshold:v45 minimumConfidenceRatio:v17 minimumNumberPOIs:v21 passthroughThreshold:v24 placeholderWeight:v28 revGeoConfidence:v30 sigma:v35 weekThreshold:v38];
 
-    v12 = self;
+    selfCopy = self;
   }
 
   else
@@ -421,10 +421,10 @@ LABEL_24:
       _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: defaultsManager", buf, 2u);
     }
 
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 @end

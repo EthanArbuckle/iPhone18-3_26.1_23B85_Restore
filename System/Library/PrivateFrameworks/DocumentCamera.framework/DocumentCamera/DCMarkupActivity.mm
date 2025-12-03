@@ -1,31 +1,31 @@
 @interface DCMarkupActivity
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (UIView)fromView;
 - (UIViewController)presentingViewController;
 - (id)activityImage;
-- (id)initFromView:(id)a3 presentingViewController:(id)a4 frameBlock:(id)a5 completionBlock:(id)a6;
+- (id)initFromView:(id)view presentingViewController:(id)controller frameBlock:(id)block completionBlock:(id)completionBlock;
 - (void)performActivity;
-- (void)prepareWithActivityItems:(id)a3;
+- (void)prepareWithActivityItems:(id)items;
 @end
 
 @implementation DCMarkupActivity
 
-- (id)initFromView:(id)a3 presentingViewController:(id)a4 frameBlock:(id)a5 completionBlock:(id)a6
+- (id)initFromView:(id)view presentingViewController:(id)controller frameBlock:(id)block completionBlock:(id)completionBlock
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  viewCopy = view;
+  controllerCopy = controller;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
   v17.receiver = self;
   v17.super_class = DCMarkupActivity;
   v14 = [(UIActivity *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    [(DCMarkupActivity *)v14 setFromView:v10];
-    [(DCMarkupActivity *)v15 setPresentingViewController:v11];
-    [(DCMarkupActivity *)v15 setFrameBlock:v12];
-    [(DCMarkupActivity *)v15 setCompletionBlock:v13];
+    [(DCMarkupActivity *)v14 setFromView:viewCopy];
+    [(DCMarkupActivity *)v15 setPresentingViewController:controllerCopy];
+    [(DCMarkupActivity *)v15 setFrameBlock:blockCopy];
+    [(DCMarkupActivity *)v15 setCompletionBlock:completionBlockCopy];
     [(DCMarkupActivity *)v15 setInkStyle:0];
   }
 
@@ -59,9 +59,9 @@
   return v6;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
-  v3 = a3;
+  itemsCopy = items;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -71,7 +71,7 @@
   v6[2] = __48__DCMarkupActivity_canPerformWithActivityItems___block_invoke;
   v6[3] = &unk_278F938D8;
   v6[4] = &v7;
-  [v3 enumerateObjectsUsingBlock:v6];
+  [itemsCopy enumerateObjectsUsingBlock:v6];
   v4 = v8[3] == 1;
   _Block_object_dispose(&v7, 8);
 
@@ -92,9 +92,9 @@ void __48__DCMarkupActivity_canPerformWithActivityItems___block_invoke(uint64_t 
   *a4 = *(*(*(a1 + 32) + 8) + 24) > 1uLL;
 }
 
-- (void)prepareWithActivityItems:(id)a3
+- (void)prepareWithActivityItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   [(DCMarkupActivity *)self setDocumentInfo:0];
   [(DCMarkupActivity *)self setImageCache:0];
   v5[0] = MEMORY[0x277D85DD0];
@@ -102,7 +102,7 @@ void __48__DCMarkupActivity_canPerformWithActivityItems___block_invoke(uint64_t 
   v5[2] = __45__DCMarkupActivity_prepareWithActivityItems___block_invoke;
   v5[3] = &unk_278F93900;
   v5[4] = self;
-  [v4 enumerateObjectsUsingBlock:v5];
+  [itemsCopy enumerateObjectsUsingBlock:v5];
 }
 
 void __45__DCMarkupActivity_prepareWithActivityItems___block_invoke(uint64_t a1, void *a2, uint64_t a3, BOOL *a4)
@@ -126,14 +126,14 @@ void __45__DCMarkupActivity_prepareWithActivityItems___block_invoke(uint64_t a1,
 
 - (void)performActivity
 {
-  v3 = [(DCMarkupActivity *)self documentInfo];
-  v4 = [(DCMarkupActivity *)self imageCache];
-  v5 = [(DCMarkupActivity *)self fromView];
-  v6 = [(DCMarkupActivity *)self presentingViewController];
-  v7 = [(DCMarkupActivity *)self inkStyle];
-  v8 = [(DCMarkupActivity *)self frameBlock];
-  v9 = [(DCMarkupActivity *)self completionBlock];
-  [DCMarkupPresenter markupDocumentInfo:v3 imageCache:v4 fromView:v5 presentingViewController:v6 inkStyle:v7 frameBlock:v8 startPresentBlock:0 completionBlock:v9 dismissCompletionBlock:0];
+  documentInfo = [(DCMarkupActivity *)self documentInfo];
+  imageCache = [(DCMarkupActivity *)self imageCache];
+  fromView = [(DCMarkupActivity *)self fromView];
+  presentingViewController = [(DCMarkupActivity *)self presentingViewController];
+  inkStyle = [(DCMarkupActivity *)self inkStyle];
+  frameBlock = [(DCMarkupActivity *)self frameBlock];
+  completionBlock = [(DCMarkupActivity *)self completionBlock];
+  [DCMarkupPresenter markupDocumentInfo:documentInfo imageCache:imageCache fromView:fromView presentingViewController:presentingViewController inkStyle:inkStyle frameBlock:frameBlock startPresentBlock:0 completionBlock:completionBlock dismissCompletionBlock:0];
 
   [(DCMarkupActivity *)self setDocumentInfo:0];
 

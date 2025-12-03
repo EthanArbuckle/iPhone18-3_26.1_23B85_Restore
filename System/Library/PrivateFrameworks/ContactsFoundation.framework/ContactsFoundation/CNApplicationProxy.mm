@@ -1,11 +1,11 @@
 @interface CNApplicationProxy
 - (CNApplicationProxy)init;
-- (CNApplicationProxy)initWithBundleIdentifier:(id)a3 teamIdentifier:(id)a4 localizedName:(id)a5 activityTypes:(id)a6;
-- (CNApplicationProxy)initWithCoder:(id)a3;
-- (CNApplicationProxy)initWithLSApplicationProxy:(id)a3;
-- (CNApplicationProxy)initWithLSApplicationRecord:(id)a3;
+- (CNApplicationProxy)initWithBundleIdentifier:(id)identifier teamIdentifier:(id)teamIdentifier localizedName:(id)name activityTypes:(id)types;
+- (CNApplicationProxy)initWithCoder:(id)coder;
+- (CNApplicationProxy)initWithLSApplicationProxy:(id)proxy;
+- (CNApplicationProxy)initWithLSApplicationRecord:(id)record;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNApplicationProxy
@@ -16,88 +16,88 @@
   objc_exception_throw(v2);
 }
 
-- (CNApplicationProxy)initWithLSApplicationProxy:(id)a3
+- (CNApplicationProxy)initWithLSApplicationProxy:(id)proxy
 {
-  v4 = a3;
-  v5 = [v4 bundleIdentifier];
-  v6 = [v4 teamID];
-  v7 = [v4 localizedName];
-  v8 = [v4 activityTypes];
+  proxyCopy = proxy;
+  bundleIdentifier = [proxyCopy bundleIdentifier];
+  teamID = [proxyCopy teamID];
+  localizedName = [proxyCopy localizedName];
+  activityTypes = [proxyCopy activityTypes];
 
-  v9 = [(CNApplicationProxy *)self initWithBundleIdentifier:v5 teamIdentifier:v6 localizedName:v7 activityTypes:v8];
+  v9 = [(CNApplicationProxy *)self initWithBundleIdentifier:bundleIdentifier teamIdentifier:teamID localizedName:localizedName activityTypes:activityTypes];
   return v9;
 }
 
-- (CNApplicationProxy)initWithLSApplicationRecord:(id)a3
+- (CNApplicationProxy)initWithLSApplicationRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 bundleIdentifier];
-  v6 = [v4 teamIdentifier];
-  v7 = [v4 localizedName];
-  v8 = [v4 userActivityTypes];
+  recordCopy = record;
+  bundleIdentifier = [recordCopy bundleIdentifier];
+  teamIdentifier = [recordCopy teamIdentifier];
+  localizedName = [recordCopy localizedName];
+  userActivityTypes = [recordCopy userActivityTypes];
 
-  v9 = [v8 allObjects];
-  v10 = [(CNApplicationProxy *)self initWithBundleIdentifier:v5 teamIdentifier:v6 localizedName:v7 activityTypes:v9];
+  allObjects = [userActivityTypes allObjects];
+  v10 = [(CNApplicationProxy *)self initWithBundleIdentifier:bundleIdentifier teamIdentifier:teamIdentifier localizedName:localizedName activityTypes:allObjects];
 
   return v10;
 }
 
-- (CNApplicationProxy)initWithBundleIdentifier:(id)a3 teamIdentifier:(id)a4 localizedName:(id)a5 activityTypes:(id)a6
+- (CNApplicationProxy)initWithBundleIdentifier:(id)identifier teamIdentifier:(id)teamIdentifier localizedName:(id)name activityTypes:(id)types
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  teamIdentifierCopy = teamIdentifier;
+  nameCopy = name;
+  typesCopy = types;
   v27.receiver = self;
   v27.super_class = CNApplicationProxy;
   v14 = [(CNApplicationProxy *)&v27 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [identifierCopy copy];
     bundleIdentifier = v14->_bundleIdentifier;
     v14->_bundleIdentifier = v15;
 
-    v17 = [v11 copy];
+    v17 = [teamIdentifierCopy copy];
     teamIdentifier = v14->_teamIdentifier;
     v14->_teamIdentifier = v17;
 
     v19 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"\u200E"];
-    v20 = [v12 stringByTrimmingCharactersInSet:v19];
+    v20 = [nameCopy stringByTrimmingCharactersInSet:v19];
 
     v21 = [v20 copy];
     localizedName = v14->_localizedName;
     v14->_localizedName = v21;
 
-    v23 = [v13 copy];
+    v23 = [typesCopy copy];
     activityTypes = v14->_activityTypes;
     v14->_activityTypes = v23;
 
     v25 = v14;
-    v12 = v20;
+    nameCopy = v20;
   }
 
   return v14;
 }
 
-- (CNApplicationProxy)initWithCoder:(id)a3
+- (CNApplicationProxy)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = CNApplicationProxy;
   v5 = [(CNApplicationProxy *)&v23 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_bundleIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_bundleIdentifier"];
     v7 = [v6 copy];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_teamIdentifier"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_teamIdentifier"];
     v10 = [v9 copy];
     teamIdentifier = v5->_teamIdentifier;
     v5->_teamIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_localizedName"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_localizedName"];
     v13 = [v12 copy];
     localizedName = v5->_localizedName;
     v5->_localizedName = v13;
@@ -105,7 +105,7 @@
     v15 = MEMORY[0x1E695DFD8];
     v16 = objc_opt_class();
     v17 = [v15 setWithObjects:{v16, objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"_activityTypes"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"_activityTypes"];
     v19 = [v18 copy];
     activityTypes = v5->_activityTypes;
     v5->_activityTypes = v19;
@@ -116,38 +116,38 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bundleIdentifier = self->_bundleIdentifier;
-  v5 = a3;
-  [v5 encodeObject:bundleIdentifier forKey:@"_bundleIdentifier"];
-  [v5 encodeObject:self->_teamIdentifier forKey:@"_teamIdentifier"];
-  [v5 encodeObject:self->_localizedName forKey:@"_localizedName"];
-  [v5 encodeObject:self->_activityTypes forKey:@"_activityTypes"];
+  coderCopy = coder;
+  [coderCopy encodeObject:bundleIdentifier forKey:@"_bundleIdentifier"];
+  [coderCopy encodeObject:self->_teamIdentifier forKey:@"_teamIdentifier"];
+  [coderCopy encodeObject:self->_localizedName forKey:@"_localizedName"];
+  [coderCopy encodeObject:self->_activityTypes forKey:@"_activityTypes"];
 }
 
 - (id)description
 {
   v3 = [CNDescriptionBuilder descriptionBuilderWithObject:self];
   v4 = CNApplicationProxyApplicationIdentifierKey;
-  v5 = [(CNApplicationProxy *)self bundleIdentifier];
-  v6 = [v3 appendName:v4 object:v5];
+  bundleIdentifier = [(CNApplicationProxy *)self bundleIdentifier];
+  v6 = [v3 appendName:v4 object:bundleIdentifier];
 
   v7 = CNApplicationProxyTeamIdentifierKey;
-  v8 = [(CNApplicationProxy *)self teamIdentifier];
-  v9 = [v3 appendName:v7 object:v8];
+  teamIdentifier = [(CNApplicationProxy *)self teamIdentifier];
+  v9 = [v3 appendName:v7 object:teamIdentifier];
 
   v10 = CNApplicationProxyLocalizedNameKey;
-  v11 = [(CNApplicationProxy *)self localizedName];
-  v12 = [v3 appendName:v10 object:v11];
+  localizedName = [(CNApplicationProxy *)self localizedName];
+  v12 = [v3 appendName:v10 object:localizedName];
 
   v13 = CNApplicationProxyActivityTypesKey;
-  v14 = [(CNApplicationProxy *)self activityTypes];
-  v15 = [v3 appendName:v13 object:v14];
+  activityTypes = [(CNApplicationProxy *)self activityTypes];
+  v15 = [v3 appendName:v13 object:activityTypes];
 
-  v16 = [v3 build];
+  build = [v3 build];
 
-  return v16;
+  return build;
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface SESCAMPrivateUIScene
 - (NSString)magicString;
-- (_TtC30_SecureElementCredential_UIKit20SESCAMPrivateUIScene)initWithSession:(id)a3 connectionOptions:(id)a4;
-- (void)setMagicString:(id)a3;
+- (_TtC30_SecureElementCredential_UIKit20SESCAMPrivateUIScene)initWithSession:(id)session connectionOptions:(id)options;
+- (void)setMagicString:(id)string;
 @end
 
 @implementation SESCAMPrivateUIScene
@@ -18,7 +18,7 @@
   return v5;
 }
 
-- (void)setMagicString:(id)a3
+- (void)setMagicString:(id)string
 {
   v4 = sub_23B969574();
   v6 = v5;
@@ -29,7 +29,7 @@
   v7[1] = v6;
 }
 
-- (_TtC30_SecureElementCredential_UIKit20SESCAMPrivateUIScene)initWithSession:(id)a3 connectionOptions:(id)a4
+- (_TtC30_SecureElementCredential_UIKit20SESCAMPrivateUIScene)initWithSession:(id)session connectionOptions:(id)options
 {
   ObjectType = swift_getObjectType();
   v8 = (self + OBJC_IVAR____TtC30_SecureElementCredential_UIKit20SESCAMPrivateUIScene_magicString);
@@ -37,7 +37,7 @@
   v8[1] = 0xE000000000000000;
   v10.receiver = self;
   v10.super_class = ObjectType;
-  return [(SESCAMPrivateUIScene *)&v10 initWithSession:a3 connectionOptions:a4];
+  return [(SESCAMPrivateUIScene *)&v10 initWithSession:session connectionOptions:options];
 }
 
 @end

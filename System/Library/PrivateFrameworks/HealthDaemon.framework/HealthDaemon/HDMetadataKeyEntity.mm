@@ -1,17 +1,17 @@
 @interface HDMetadataKeyEntity
-+ (id)_entityForKey:(id)a3 database:(id)a4 error:(id *)a5;
-+ (id)_insertEntityWithKey:(id)a3 database:(id)a4 error:(id *)a5;
-+ (id)_keyForPersistentID:(id)a3 database:(id)a4;
-+ (id)entityForKey:(id)a3 healthDatabase:(id)a4 error:(id *)a5;
-+ (id)insertEntityWithKey:(id)a3 healthDatabase:(id)a4 error:(id *)a5;
++ (id)_entityForKey:(id)key database:(id)database error:(id *)error;
++ (id)_insertEntityWithKey:(id)key database:(id)database error:(id *)error;
++ (id)_keyForPersistentID:(id)d database:(id)database;
++ (id)entityForKey:(id)key healthDatabase:(id)database error:(id *)error;
++ (id)insertEntityWithKey:(id)key healthDatabase:(id)database error:(id *)error;
 @end
 
 @implementation HDMetadataKeyEntity
 
-+ (id)entityForKey:(id)a3 healthDatabase:(id)a4 error:(id *)a5
++ (id)entityForKey:(id)key healthDatabase:(id)database error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  keyCopy = key;
+  databaseCopy = database;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -23,10 +23,10 @@
   v13[2] = __57__HDMetadataKeyEntity_entityForKey_healthDatabase_error___block_invoke;
   v13[3] = &unk_2786169D8;
   v15 = &v17;
-  v16 = a1;
-  v10 = v8;
+  selfCopy = self;
+  v10 = keyCopy;
   v14 = v10;
-  [a1 performReadTransactionWithHealthDatabase:v9 error:a5 block:v13];
+  [self performReadTransactionWithHealthDatabase:databaseCopy error:error block:v13];
   v11 = v18[5];
 
   _Block_object_dispose(&v17, 8);
@@ -45,10 +45,10 @@ uint64_t __57__HDMetadataKeyEntity_entityForKey_healthDatabase_error___block_inv
   return 1;
 }
 
-+ (id)insertEntityWithKey:(id)a3 healthDatabase:(id)a4 error:(id *)a5
++ (id)insertEntityWithKey:(id)key healthDatabase:(id)database error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  keyCopy = key;
+  databaseCopy = database;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -60,10 +60,10 @@ uint64_t __57__HDMetadataKeyEntity_entityForKey_healthDatabase_error___block_inv
   v14[2] = __64__HDMetadataKeyEntity_insertEntityWithKey_healthDatabase_error___block_invoke;
   v14[3] = &unk_2786169D8;
   v16 = &v18;
-  v17 = a1;
-  v10 = v8;
+  selfCopy = self;
+  v10 = keyCopy;
   v15 = v10;
-  if ([a1 performWriteTransactionWithHealthDatabase:v9 error:a5 block:v14])
+  if ([self performWriteTransactionWithHealthDatabase:databaseCopy error:error block:v14])
   {
     v11 = v19[5];
   }
@@ -92,42 +92,42 @@ BOOL __64__HDMetadataKeyEntity_insertEntityWithKey_healthDatabase_error___block_
   return v9;
 }
 
-+ (id)_entityForKey:(id)a3 database:(id)a4 error:(id *)a5
++ (id)_entityForKey:(id)key database:(id)database error:(id *)error
 {
   v8 = MEMORY[0x277D10B18];
-  v9 = a4;
-  v10 = [v8 predicateWithProperty:@"key" equalToValue:a3];
-  v11 = [a1 anyInDatabase:v9 predicate:v10 error:a5];
+  databaseCopy = database;
+  v10 = [v8 predicateWithProperty:@"key" equalToValue:key];
+  v11 = [self anyInDatabase:databaseCopy predicate:v10 error:error];
 
   return v11;
 }
 
-+ (id)_insertEntityWithKey:(id)a3 database:(id)a4 error:(id *)a5
++ (id)_insertEntityWithKey:(id)key database:(id)database error:(id *)error
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  keyCopy = key;
   v18[0] = @"key";
   v9 = MEMORY[0x277CBEA60];
-  v10 = a4;
+  databaseCopy = database;
   v11 = [v9 arrayWithObjects:v18 count:1];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __59__HDMetadataKeyEntity__insertEntityWithKey_database_error___block_invoke;
   v16[3] = &unk_278614508;
-  v17 = v8;
-  v12 = v8;
-  v13 = [a1 insertOrReplaceEntity:1 database:v10 properties:v11 error:a5 bindingHandler:v16];
+  v17 = keyCopy;
+  v12 = keyCopy;
+  v13 = [self insertOrReplaceEntity:1 database:databaseCopy properties:v11 error:error bindingHandler:v16];
 
   v14 = *MEMORY[0x277D85DE8];
 
   return v13;
 }
 
-+ (id)_keyForPersistentID:(id)a3 database:(id)a4
++ (id)_keyForPersistentID:(id)d database:(id)database
 {
-  v5 = a4;
-  v6 = [(HDSQLiteEntity *)HDMetadataKeyEntity entityWithPersistentID:a3];
-  v7 = [v6 valueForProperty:@"key" database:v5];
+  databaseCopy = database;
+  v6 = [(HDSQLiteEntity *)HDMetadataKeyEntity entityWithPersistentID:d];
+  v7 = [v6 valueForProperty:@"key" database:databaseCopy];
 
   return v7;
 }

@@ -1,51 +1,51 @@
 @interface BKPageScrollerViewController
 - (BKImageResizerDelegate)imageResizerDelegate;
 - (BKPageScrollerThumbnailingDelegate)thumbnailingDelegate;
-- (BKPageScrollerViewController)initWithTransitionStyle:(int64_t)a3 navigationOrientation:(int64_t)a4 options:(id)a5;
-- (BOOL)gestureRecognizer:(id)a3 canBePreventedByGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BKPageScrollerViewController)initWithTransitionStyle:(int64_t)style navigationOrientation:(int64_t)orientation options:(id)options;
+- (BOOL)gestureRecognizer:(id)recognizer canBePreventedByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)isZoomedOut;
-- (CGRect)_frameForPageNumber:(unint64_t)a3;
+- (CGRect)_frameForPageNumber:(unint64_t)number;
 - (_NSRange)visiblePages;
 - (id)_allPageViews;
 - (id)contentView;
-- (id)viewForPageNumber:(int64_t)a3;
-- (id)viewForZoomingInScrollView:(id)a3;
+- (id)viewForPageNumber:(int64_t)number;
+- (id)viewForZoomingInScrollView:(id)view;
 - (void)_updatePageViewScrollStates;
 - (void)_updateSurroundingZoomScales;
-- (void)_visibleAreaChangedInScrollView:(id)a3;
-- (void)contentViewImage:(BOOL)a3 completion:(id)a4;
+- (void)_visibleAreaChangedInScrollView:(id)view;
+- (void)contentViewImage:(BOOL)image completion:(id)completion;
 - (void)dealloc;
-- (void)handleDoubleTap:(id)a3;
-- (void)handlePageChangeTap:(id)a3;
+- (void)handleDoubleTap:(id)tap;
+- (void)handlePageChangeTap:(id)tap;
 - (void)loadView;
-- (void)pagingScrollView:(id)a3 didRemoveView:(id)a4 atIndex:(int64_t)a5;
-- (void)pagingScrollView:(id)a3 viewDidAppear:(id)a4 atIndex:(int64_t)a5;
-- (void)pagingScrollView:(id)a3 viewDidDisappear:(id)a4 atIndex:(int64_t)a5;
+- (void)pagingScrollView:(id)view didRemoveView:(id)removeView atIndex:(int64_t)index;
+- (void)pagingScrollView:(id)view viewDidAppear:(id)appear atIndex:(int64_t)index;
+- (void)pagingScrollView:(id)view viewDidDisappear:(id)disappear atIndex:(int64_t)index;
 - (void)releaseViews;
-- (void)resetZoomScaleForScrollView:(id)a3;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillBeginZooming:(id)a3 withView:(id)a4;
-- (void)setPageCount:(int64_t)a3;
-- (void)setPageOffset:(int64_t)a3;
-- (void)toggleControls:(id)a3;
-- (void)turnToPageNumber:(int64_t)a3 animated:(BOOL)a4;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)zoomVisiblePageToFit:(BOOL)a3;
-- (void)zoomingScrollView:(id)a3 didSimulateZoomScale:(double)a4 onView:(id)a5;
+- (void)resetZoomScaleForScrollView:(id)view;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillBeginZooming:(id)zooming withView:(id)view;
+- (void)setPageCount:(int64_t)count;
+- (void)setPageOffset:(int64_t)offset;
+- (void)toggleControls:(id)controls;
+- (void)turnToPageNumber:(int64_t)number animated:(BOOL)animated;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)zoomVisiblePageToFit:(BOOL)fit;
+- (void)zoomingScrollView:(id)view didSimulateZoomScale:(double)scale onView:(id)onView;
 @end
 
 @implementation BKPageScrollerViewController
 
-- (BKPageScrollerViewController)initWithTransitionStyle:(int64_t)a3 navigationOrientation:(int64_t)a4 options:(id)a5
+- (BKPageScrollerViewController)initWithTransitionStyle:(int64_t)style navigationOrientation:(int64_t)orientation options:(id)options
 {
-  result = [(BKPageNavigationViewController *)self init:a3];
+  result = [(BKPageNavigationViewController *)self init:style];
   if (result)
   {
-    result->_navigationOrientation = a4;
+    result->_navigationOrientation = orientation;
     result->_maxZoomScale = 32.0;
     result->_maxResizeScale = 1.0;
     result->super._pageOffset = 0x7FFFFFFFFFFFFFFFLL;
@@ -68,8 +68,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(BKPageScrollerViewController *)self _allPageViews];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  _allPageViews = [(BKPageScrollerViewController *)self _allPageViews];
+  v4 = [_allPageViews countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -81,7 +81,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_allPageViews);
         }
 
         [*(*(&v9 + 1) + 8 * v7) teardown];
@@ -89,7 +89,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [_allPageViews countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -116,8 +116,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(BKPageScrollerViewController *)self navigationOrientation];
-  if (v11)
+  navigationOrientation = [(BKPageScrollerViewController *)self navigationOrientation];
+  if (navigationOrientation)
   {
     v6 = v6 + -20.0;
   }
@@ -127,7 +127,7 @@
     v4 = v4 + -20.0;
   }
 
-  if (v11)
+  if (navigationOrientation)
   {
     v10 = v10 + 40.0;
   }
@@ -175,70 +175,70 @@
   [(BKPageScrollerViewController *)self setView:v20];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = BKPageScrollerViewController;
-  [(BKPageScrollerViewController *)&v4 viewWillAppear:a3];
+  [(BKPageScrollerViewController *)&v4 viewWillAppear:appear];
   [(BKPagingScrollView *)self->_pageScroller layoutIfNeeded];
 }
 
 - (id)contentView
 {
-  v3 = [(BKPagingScrollView *)self->_pageScroller currentView];
-  v4 = [(BKPageScrollerViewController *)self _pageViewInZoomingScrollView:v3];
+  currentView = [(BKPagingScrollView *)self->_pageScroller currentView];
+  v4 = [(BKPageScrollerViewController *)self _pageViewInZoomingScrollView:currentView];
 
   return v4;
 }
 
-- (void)contentViewImage:(BOOL)a3 completion:(id)a4
+- (void)contentViewImage:(BOOL)image completion:(id)completion
 {
-  v11 = a4;
-  v6 = [(BKPagingScrollView *)self->_pageScroller currentView];
-  v7 = [(BKPageScrollerViewController *)self _pageViewInZoomingScrollView:v6];
-  if (!a3)
+  completionCopy = completion;
+  currentView = [(BKPagingScrollView *)self->_pageScroller currentView];
+  v7 = [(BKPageScrollerViewController *)self _pageViewInZoomingScrollView:currentView];
+  if (!image)
   {
-    [(BKPageScrollerViewController *)self resetZoomScaleForScrollView:v6];
+    [(BKPageScrollerViewController *)self resetZoomScaleForScrollView:currentView];
   }
 
-  v8 = [v7 im_snapshotInContext];
+  im_snapshotInContext = [v7 im_snapshotInContext];
 
-  v9 = objc_retainBlock(v11);
+  v9 = objc_retainBlock(completionCopy);
   v10 = v9;
   if (v9)
   {
-    (*(v9 + 2))(v9, v8);
+    (*(v9 + 2))(v9, im_snapshotInContext);
   }
 }
 
-- (void)setPageOffset:(int64_t)a3
+- (void)setPageOffset:(int64_t)offset
 {
   v5.receiver = self;
   v5.super_class = BKPageScrollerViewController;
   [(BKPageNavigationViewController *)&v5 setPageOffset:?];
-  [(BKPagingScrollView *)self->_pageScroller setPageOffset:a3];
+  [(BKPagingScrollView *)self->_pageScroller setPageOffset:offset];
 }
 
-- (void)setPageCount:(int64_t)a3
+- (void)setPageCount:(int64_t)count
 {
   v5.receiver = self;
   v5.super_class = BKPageScrollerViewController;
   [(BKPageNavigationViewController *)&v5 setPageCount:?];
-  [(BKPagingScrollView *)self->_pageScroller setPageCount:a3];
+  [(BKPagingScrollView *)self->_pageScroller setPageCount:count];
 }
 
 - (_NSRange)visiblePages
 {
-  v3 = [(BKPageNavigationViewController *)self pageOffset];
-  v4 = [(BKPageNavigationViewController *)self pageCount];
-  if (v3 + 1 < v4)
+  pageOffset = [(BKPageNavigationViewController *)self pageOffset];
+  pageCount = [(BKPageNavigationViewController *)self pageCount];
+  if (pageOffset + 1 < pageCount)
   {
-    v5 = v3 + 1;
+    v5 = pageOffset + 1;
   }
 
   else
   {
-    v5 = v4;
+    v5 = pageCount;
   }
 
   if (v5 <= 1)
@@ -257,15 +257,15 @@
   return result;
 }
 
-- (void)turnToPageNumber:(int64_t)a3 animated:(BOOL)a4
+- (void)turnToPageNumber:(int64_t)number animated:(BOOL)animated
 {
-  v4 = a3 - 1;
-  if (a3 >= 1)
+  v4 = number - 1;
+  if (number >= 1)
   {
-    v5 = a4;
-    if ([(BKPageNavigationViewController *)self pageCount]>= a3)
+    animatedCopy = animated;
+    if ([(BKPageNavigationViewController *)self pageCount]>= number)
     {
-      if ([(BKPageScrollerViewController *)self isVisible]&& v5)
+      if ([(BKPageScrollerViewController *)self isVisible]&& animatedCopy)
       {
         self->_animatingPageOffset = 1;
         v8 = +[AETestDriver shared];
@@ -278,7 +278,7 @@
         v12[2] = sub_66A5C;
         v12[3] = &unk_1E4548;
         v12[4] = self;
-        v12[5] = a3;
+        v12[5] = number;
         v10[0] = _NSConcreteStackBlock;
         v10[1] = 3221225472;
         v10[2] = sub_66A68;
@@ -300,23 +300,23 @@
 
 - (BOOL)isZoomedOut
 {
-  v2 = [(BKPageScrollerViewController *)self _currentZoomingScrollView];
-  [v2 zoomScale];
+  _currentZoomingScrollView = [(BKPageScrollerViewController *)self _currentZoomingScrollView];
+  [_currentZoomingScrollView zoomScale];
   v4 = v3;
-  [v2 minimumZoomScale];
+  [_currentZoomingScrollView minimumZoomScale];
   v6 = vabdd_f64(v4, v5) < 0.00999999978;
 
   return v6;
 }
 
-- (CGRect)_frameForPageNumber:(unint64_t)a3
+- (CGRect)_frameForPageNumber:(unint64_t)number
 {
   if (self->_pageScroller)
   {
     if ([(BKPageScrollerViewController *)self navigationOrientation])
     {
       [(BKPagingScrollView *)self->_pageScroller frame];
-      y = v5 * (a3 - 1) + 20.0;
+      y = v5 * (number - 1) + 20.0;
       [(BKPagingScrollView *)self->_pageScroller frame];
       width = v7;
       [(BKPagingScrollView *)self->_pageScroller frame];
@@ -326,17 +326,17 @@
 
     else
     {
-      v12 = [(BKViewController *)self layoutDirection];
+      layoutDirection = [(BKViewController *)self layoutDirection];
       [(BKPagingScrollView *)self->_pageScroller frame];
       v14 = v13;
-      if (v12 == 1)
+      if (layoutDirection == 1)
       {
-        v15 = [(BKPageNavigationViewController *)self pageCount]- a3;
+        v15 = [(BKPageNavigationViewController *)self pageCount]- number;
       }
 
       else
       {
-        v15 = (a3 - 1);
+        v15 = (number - 1);
       }
 
       x = v14 * v15 + 20.0;
@@ -365,7 +365,7 @@
   return result;
 }
 
-- (id)viewForPageNumber:(int64_t)a3
+- (id)viewForPageNumber:(int64_t)number
 {
   [(BKPageScrollerViewController *)self _frameForPageNumber:?];
   v6 = v5;
@@ -374,29 +374,29 @@
   v12 = v11;
   v13 = [[BKZoomingScrollView alloc] initWithFrame:v5, v7, v9, v11];
   v14 = [BKPageScrollerPageView alloc];
-  v15 = [(BKPageNavigationViewController *)self delegate];
-  v16 = [(BKPageScrollerViewController *)self thumbnailingDelegate];
-  v17 = [(BKPageScrollerViewController *)self imageResizerDelegate];
-  v18 = [(BKPageScrollerPageView *)v14 initWithFrame:a3 pageNumber:v15 navigationDelegate:v16 thumbnailingDelegate:v17 imageResizerDelegate:v6, v8, v10, v12];
+  delegate = [(BKPageNavigationViewController *)self delegate];
+  thumbnailingDelegate = [(BKPageScrollerViewController *)self thumbnailingDelegate];
+  imageResizerDelegate = [(BKPageScrollerViewController *)self imageResizerDelegate];
+  v18 = [(BKPageScrollerPageView *)v14 initWithFrame:number pageNumber:delegate navigationDelegate:thumbnailingDelegate thumbnailingDelegate:imageResizerDelegate imageResizerDelegate:v6, v8, v10, v12];
 
   [(BKPageScrollerPageView *)v18 sizeThatFits:v10, v12];
   [(BKPageScrollerPageView *)v18 setFrame:0.0, 0.0, v19, v20];
   [(BKPageScrollerPageView *)v18 setTag:128];
-  v21 = [(BKPageScrollerPageView *)v18 layer];
-  [v21 setShadowOffset:{0.0, 1.0}];
+  layer = [(BKPageScrollerPageView *)v18 layer];
+  [layer setShadowOffset:{0.0, 1.0}];
 
-  v22 = [(BKPageScrollerPageView *)v18 layer];
+  layer2 = [(BKPageScrollerPageView *)v18 layer];
   LODWORD(v23) = 1051931443;
-  [v22 setShadowOpacity:v23];
+  [layer2 setShadowOpacity:v23];
 
-  v24 = [(BKPageScrollerPageView *)v18 layer];
-  [v24 setShadowRadius:3.0];
+  layer3 = [(BKPageScrollerPageView *)v18 layer];
+  [layer3 setShadowRadius:3.0];
 
   [(BKPageScrollerPageView *)v18 bounds];
   v25 = [UIBezierPath bezierPathWithRect:?];
-  v26 = [v25 CGPath];
-  v27 = [(BKPageScrollerPageView *)v18 layer];
-  [v27 setShadowPath:v26];
+  cGPath = [v25 CGPath];
+  layer4 = [(BKPageScrollerPageView *)v18 layer];
+  [layer4 setShadowPath:cGPath];
 
   [(BKZoomingScrollView *)v13 setAutoresizingMask:18];
   [(BKZoomingScrollView *)v13 setShowsHorizontalScrollIndicator:0];
@@ -413,11 +413,11 @@
   [(BKZoomingScrollView *)v13 setClipsToBounds:1];
   [(BKPageScrollerPageView *)v18 bounds];
   [(BKZoomingScrollView *)v13 configureForImageSize:v28, v29];
-  v30 = [(BKPageScrollerViewController *)self _currentZoomingScrollView];
-  v31 = v30;
-  if (self->_maintainZoomScale && v30)
+  _currentZoomingScrollView = [(BKPageScrollerViewController *)self _currentZoomingScrollView];
+  v31 = _currentZoomingScrollView;
+  if (self->_maintainZoomScale && _currentZoomingScrollView)
   {
-    [v30 totalZoomScale];
+    [_currentZoomingScrollView totalZoomScale];
     [(BKZoomingScrollView *)v13 setTotalZoomScale:?];
   }
 
@@ -430,7 +430,7 @@
   return v13;
 }
 
-- (void)zoomVisiblePageToFit:(BOOL)a3
+- (void)zoomVisiblePageToFit:(BOOL)fit
 {
   v4 = [(BKPagingScrollView *)self->_pageScroller viewAtIndex:[(BKPageNavigationViewController *)self pageOffset]];
   self->_animatingZoomScale = 1;
@@ -448,9 +448,9 @@
   objc_destroyWeak(&location);
 }
 
-- (id)viewForZoomingInScrollView:(id)a3
+- (id)viewForZoomingInScrollView:(id)view
 {
-  if (self->_pageScroller == a3)
+  if (self->_pageScroller == view)
   {
     v5 = 0;
   }
@@ -463,106 +463,106 @@
   return v5;
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = [(BKPageNavigationViewController *)self delegate];
-  [v4 pageNavigationDidBeginInteracting:self];
+  delegate = [(BKPageNavigationViewController *)self delegate];
+  [delegate pageNavigationDidBeginInteracting:self];
 }
 
-- (void)scrollViewWillBeginZooming:(id)a3 withView:(id)a4
+- (void)scrollViewWillBeginZooming:(id)zooming withView:(id)view
 {
-  v5 = [(BKPageNavigationViewController *)self delegate:a3];
+  v5 = [(BKPageNavigationViewController *)self delegate:zooming];
   [v5 pageNavigationDidBeginInteracting:self];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
-    [(BKPageScrollerViewController *)self _visibleAreaChangedInScrollView:a3];
+    [(BKPageScrollerViewController *)self _visibleAreaChangedInScrollView:dragging];
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  [(BKPageScrollerViewController *)self _visibleAreaChangedInScrollView:a3];
+  [(BKPageScrollerViewController *)self _visibleAreaChangedInScrollView:decelerating];
   pageScroller = self->_pageScroller;
 
   [(BKPagingScrollView *)pageScroller updateCachedPages];
 }
 
-- (void)zoomingScrollView:(id)a3 didSimulateZoomScale:(double)a4 onView:(id)a5
+- (void)zoomingScrollView:(id)view didSimulateZoomScale:(double)scale onView:(id)onView
 {
-  v6 = a5;
-  [v6 bounds];
+  onViewCopy = onView;
+  [onViewCopy bounds];
   v7 = [UIBezierPath bezierPathWithRect:?];
-  v8 = [v7 CGPath];
-  v9 = [v6 layer];
-  [v9 setShadowPath:v8];
+  cGPath = [v7 CGPath];
+  layer = [onViewCopy layer];
+  [layer setShadowPath:cGPath];
 
-  v10 = [v6 layer];
-  [v10 setShadowOffset:{a4 * 0.0, a4}];
+  layer2 = [onViewCopy layer];
+  [layer2 setShadowOffset:{scale * 0.0, scale}];
 
-  v11 = [v6 layer];
+  layer3 = [onViewCopy layer];
 
-  [v11 setShadowRadius:a4 * 3.0];
+  [layer3 setShadowRadius:scale * 3.0];
 }
 
-- (void)pagingScrollView:(id)a3 didRemoveView:(id)a4 atIndex:(int64_t)a5
+- (void)pagingScrollView:(id)view didRemoveView:(id)removeView atIndex:(int64_t)index
 {
-  v5 = a4;
+  removeViewCopy = removeView;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v5 setDelegate:0];
+    [removeViewCopy setDelegate:0];
   }
 }
 
-- (void)pagingScrollView:(id)a3 viewDidAppear:(id)a4 atIndex:(int64_t)a5
+- (void)pagingScrollView:(id)view viewDidAppear:(id)appear atIndex:(int64_t)index
 {
-  self->super._pageOffset = [(BKPagingScrollView *)self->_pageScroller pageOffset:a3];
-  v7 = [(BKPageNavigationViewController *)self delegate];
-  [v7 pageNavigationDidChangeLocation:self];
+  self->super._pageOffset = [(BKPagingScrollView *)self->_pageScroller pageOffset:view];
+  delegate = [(BKPageNavigationViewController *)self delegate];
+  [delegate pageNavigationDidChangeLocation:self];
 
-  v8 = [(BKPageNavigationViewController *)self delegate];
-  v9 = [v8 existingContentViewControllerForPageNumber:a5 + 1];
+  delegate2 = [(BKPageNavigationViewController *)self delegate];
+  v9 = [delegate2 existingContentViewControllerForPageNumber:index + 1];
 
   [v9 beginAppearanceTransition:1 animated:0];
   [v9 endAppearanceTransition];
 }
 
-- (void)resetZoomScaleForScrollView:(id)a3
+- (void)resetZoomScaleForScrollView:(id)view
 {
-  v3 = a3;
-  [v3 minimumZoomScale];
-  [v3 setZoomScale:?];
+  viewCopy = view;
+  [viewCopy minimumZoomScale];
+  [viewCopy setZoomScale:?];
 }
 
-- (void)pagingScrollView:(id)a3 viewDidDisappear:(id)a4 atIndex:(int64_t)a5
+- (void)pagingScrollView:(id)view viewDidDisappear:(id)disappear atIndex:(int64_t)index
 {
-  v9 = a4;
+  disappearCopy = disappear;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && !self->_maintainZoomScale)
   {
-    [(BKPageScrollerViewController *)self performSelector:"resetZoomScaleForScrollView:" withObject:v9 afterDelay:0.0];
+    [(BKPageScrollerViewController *)self performSelector:"resetZoomScaleForScrollView:" withObject:disappearCopy afterDelay:0.0];
   }
 
-  v7 = [(BKPageNavigationViewController *)self delegate];
-  v8 = [v7 existingContentViewControllerForPageNumber:a5 + 1];
+  delegate = [(BKPageNavigationViewController *)self delegate];
+  v8 = [delegate existingContentViewControllerForPageNumber:index + 1];
 
   [v8 beginAppearanceTransition:0 animated:0];
   [v8 endAppearanceTransition];
 }
 
-- (void)handleDoubleTap:(id)a3
+- (void)handleDoubleTap:(id)tap
 {
-  v4 = a3;
-  v5 = [(BKPageNavigationViewController *)self delegate];
-  v6 = [v5 existingContentViewControllerForPageNumber:{-[BKPageNavigationViewController pageOffset](self, "pageOffset") + 1}];
+  tapCopy = tap;
+  delegate = [(BKPageNavigationViewController *)self delegate];
+  v6 = [delegate existingContentViewControllerForPageNumber:{-[BKPageNavigationViewController pageOffset](self, "pageOffset") + 1}];
 
   v7 = [(BKPagingScrollView *)self->_pageScroller viewAtIndex:[(BKPageNavigationViewController *)self pageOffset]];
-  v8 = [v6 view];
-  [v4 locationInView:v8];
+  view = [v6 view];
+  [tapCopy locationInView:view];
   v10 = v9;
 
   [v7 zoomScale];
@@ -570,8 +570,8 @@
   [v7 minimumZoomScale];
   if (v12 <= v13)
   {
-    v14 = [v6 view];
-    [v14 bounds];
+    view2 = [v6 view];
+    [view2 bounds];
     v16 = v15;
     v18 = v17;
     v20 = v19;
@@ -616,13 +616,13 @@
   }
 }
 
-- (void)handlePageChangeTap:(id)a3
+- (void)handlePageChangeTap:(id)tap
 {
   pageScroller = self->_pageScroller;
-  v5 = a3;
+  tapCopy = tap;
   v34 = [(BKPagingScrollView *)pageScroller viewAtIndex:[(BKPageNavigationViewController *)self pageOffset]];
-  v6 = [v5 view];
-  [v5 locationInView:v6];
+  view = [tapCopy view];
+  [tapCopy locationInView:view];
   v8 = v7;
 
   if (isPad())
@@ -650,10 +650,10 @@
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    [v6 bounds];
+    [view bounds];
     if (v8 <= CGRectGetMaxX(v36) - v9)
     {
-      [v6 bounds];
+      [view bounds];
       if (v8 < v9 + CGRectGetMinX(v38))
       {
         v39.origin.x = v11;
@@ -694,10 +694,10 @@ LABEL_13:
     }
   }
 
-  [v6 bounds];
+  [view bounds];
   if (v8 <= CGRectGetMaxX(v40) - v9)
   {
-    [v6 bounds];
+    [view bounds];
     if (v8 >= v9 + CGRectGetMinX(v41))
     {
       v29 = 0;
@@ -738,22 +738,22 @@ LABEL_25:
 LABEL_26:
 }
 
-- (void)toggleControls:(id)a3
+- (void)toggleControls:(id)controls
 {
-  v4 = [(BKPageNavigationViewController *)self delegate];
-  [v4 pageNavigationToggleControls:self];
+  delegate = [(BKPageNavigationViewController *)self delegate];
+  [delegate pageNavigationToggleControls:self];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  if (self->_pageChangeTapRecognizer != a3)
+  if (self->_pageChangeTapRecognizer != begin)
   {
     return 1;
   }
 
-  v4 = a3;
-  v5 = [v4 view];
-  [v4 locationInView:v5];
+  beginCopy = begin;
+  view = [beginCopy view];
+  [beginCopy locationInView:view];
   v7 = v6;
 
   if (isPad())
@@ -774,11 +774,11 @@ LABEL_26:
     v8 = 80.0;
   }
 
-  [v5 bounds];
+  [view bounds];
   v3 = 1;
   if (v7 < CGRectGetMaxX(v10) - v8)
   {
-    [v5 bounds];
+    [view bounds];
     if (v7 > v8 + CGRectGetMinX(v11))
     {
       v3 = 0;
@@ -788,11 +788,11 @@ LABEL_26:
   return v3;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  if (self->_pageChangeTapRecognizer == a3)
+  if (self->_pageChangeTapRecognizer == recognizer)
   {
-    return [a4 bk_isWKSyntheticTapGestureRecognizer];
+    return [gestureRecognizer bk_isWKSyntheticTapGestureRecognizer];
   }
 
   else
@@ -801,12 +801,12 @@ LABEL_26:
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 canBePreventedByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer canBePreventedByGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  if (self->_doubleTapRecognizer == a3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  gestureRecognizerCopy = gestureRecognizer;
+  if (self->_doubleTapRecognizer == recognizer && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v7 = v6;
+    v7 = gestureRecognizerCopy;
     if ([v7 numberOfTapsRequired] == &dword_0 + 2)
     {
       v8 = [v7 matchesTarget:+[UIView be_wkContentViewClass](UIView andAction:{"be_wkContentViewClass"), "_nonBlockingDoubleTapRecognized:"}] ^ 1;
@@ -826,9 +826,9 @@ LABEL_26:
   return v8;
 }
 
-- (void)_visibleAreaChangedInScrollView:(id)a3
+- (void)_visibleAreaChangedInScrollView:(id)view
 {
-  isKindOfClass = a3;
+  isKindOfClass = view;
   v5 = isKindOfClass;
   if (!self->_animatingZoomScale)
   {
@@ -863,10 +863,10 @@ LABEL_26:
 
             if (self->_maintainZoomScale)
             {
-              v6 = [(BKPageScrollerViewController *)self _currentZoomingScrollView];
+              _currentZoomingScrollView = [(BKPageScrollerViewController *)self _currentZoomingScrollView];
 
               v5 = v7;
-              if (v6 == v7)
+              if (_currentZoomingScrollView == v7)
               {
                 isKindOfClass = [(BKPageScrollerViewController *)self _updateSurroundingZoomScales];
                 v5 = v7;
@@ -896,8 +896,8 @@ LABEL_26:
     animatingPageOffset = self->_animatingPageOffset;
   }
 
-  v4 = [(BKPagingScrollView *)self->_pageScroller currentView];
-  v5 = [(BKPageScrollerViewController *)self _pageViewInZoomingScrollView:v4];
+  currentView = [(BKPagingScrollView *)self->_pageScroller currentView];
+  v5 = [(BKPageScrollerViewController *)self _pageViewInZoomingScrollView:currentView];
 
   if (animatingPageOffset)
   {
@@ -914,8 +914,8 @@ LABEL_26:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [(BKPagingScrollView *)self->_pageScroller surroundingViews];
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  surroundingViews = [(BKPagingScrollView *)self->_pageScroller surroundingViews];
+  v8 = [surroundingViews countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -936,14 +936,14 @@ LABEL_26:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(surroundingViews);
         }
 
         v13 = [(BKPageScrollerViewController *)self _pageViewInZoomingScrollView:*(*(&v14 + 1) + 8 * i)];
         [v13 setScrollState:v11];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [surroundingViews countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
@@ -957,8 +957,8 @@ LABEL_26:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BKPagingScrollView *)self->_pageScroller allViews];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allViews = [(BKPagingScrollView *)self->_pageScroller allViews];
+  v5 = [allViews countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -969,7 +969,7 @@ LABEL_26:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allViews);
         }
 
         v9 = [(BKPageScrollerViewController *)self _pageViewInZoomingScrollView:*(*(&v11 + 1) + 8 * i)];
@@ -979,7 +979,7 @@ LABEL_26:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [allViews countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -990,13 +990,13 @@ LABEL_26:
 
 - (void)_updateSurroundingZoomScales
 {
-  v3 = [(BKPageScrollerViewController *)self _currentZoomingScrollView];
+  _currentZoomingScrollView = [(BKPageScrollerViewController *)self _currentZoomingScrollView];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = [(BKPagingScrollView *)self->_pageScroller subviews];
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  subviews = [(BKPagingScrollView *)self->_pageScroller subviews];
+  v5 = [subviews countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1007,17 +1007,17 @@ LABEL_26:
       {
         if (*v21 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subviews);
         }
 
         v9 = *(*(&v20 + 1) + 8 * i);
-        if (v9 != v3)
+        if (v9 != _currentZoomingScrollView)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
             v10 = v9;
-            v11 = [v3 tag];
+            v11 = [_currentZoomingScrollView tag];
             LODWORD(v11) = v11 > [v10 tag];
             if (v11 == ([(BKViewController *)self layoutDirection]== &dword_0 + 1))
             {
@@ -1035,16 +1035,16 @@ LABEL_26:
               v16 = v14 + v15;
             }
 
-            [v3 contentOffset];
+            [_currentZoomingScrollView contentOffset];
             v19 = v18;
-            [v3 totalZoomScale];
+            [_currentZoomingScrollView totalZoomScale];
             [v10 setTotalZoomScale:?];
             [v10 setContentOffset:{v16, v19}];
           }
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v6 = [subviews countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v6);

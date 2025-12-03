@@ -1,8 +1,8 @@
 @interface LightweightTimer
-- (BOOL)cancel:(unint64_t)a3;
-- (LightweightTimer)initWithQueue:(id)a3 maxDelay:(double)a4 precision:(double)a5 callback:(id)a6;
+- (BOOL)cancel:(unint64_t)cancel;
+- (LightweightTimer)initWithQueue:(id)queue maxDelay:(double)delay precision:(double)precision callback:(id)callback;
 - (id)description;
-- (unint64_t)setRelativeTimer:(double)a3 context:(id)a4;
+- (unint64_t)setRelativeTimer:(double)timer context:(id)context;
 - (void)_handleTimerExpiry;
 - (void)dealloc;
 @end
@@ -21,7 +21,7 @@
     *buf = 134218242;
     v25 = *&v4;
     v26 = 2112;
-    v27 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEBUG, "_handleTimerExpiry  drainTo %lld %@", buf, 0x16u);
   }
 
@@ -62,8 +62,8 @@
 
             [(NSMutableArray *)entries[v8] removeObjectAtIndex:v10];
             callback = self->_callback;
-            v14 = [v11 userParam];
-            callback[2](callback, v14);
+            userParam = [v11 userParam];
+            callback[2](callback, userParam);
 
             v10 = 0;
           }
@@ -160,18 +160,18 @@ LABEL_12:
   [(LightweightTimer *)&v3 dealloc];
 }
 
-- (LightweightTimer)initWithQueue:(id)a3 maxDelay:(double)a4 precision:(double)a5 callback:(id)a6
+- (LightweightTimer)initWithQueue:(id)queue maxDelay:(double)delay precision:(double)precision callback:(id)callback
 {
-  v11 = a3;
-  v12 = a6;
+  queueCopy = queue;
+  callbackCopy = callback;
   v31.receiver = self;
   v31.super_class = LightweightTimer;
   v13 = [(LightweightTimer *)&v31 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_queue, a3);
-    v15 = _Block_copy(v12);
+    objc_storeStrong(&v13->_queue, queue);
+    v15 = _Block_copy(callbackCopy);
     callback = v14->_callback;
     v14->_callback = v15;
 
@@ -194,16 +194,16 @@ LABEL_12:
       v21 *= 2;
     }
 
-    while (v22 < a4);
+    while (v22 < delay);
     v23 = v22;
-    if (a5 <= 0.0)
+    if (precision <= 0.0)
     {
       v24 = 64.0;
     }
 
     else
     {
-      v24 = v23 / a5;
+      v24 = v23 / precision;
     }
 
     if (v24 > 64.0)
@@ -247,28 +247,28 @@ uint64_t __62__LightweightTimer_initWithQueue_maxDelay_precision_callback___bloc
   return result;
 }
 
-- (unint64_t)setRelativeTimer:(double)a3 context:(id)a4
+- (unint64_t)setRelativeTimer:(double)timer context:(id)context
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  contextCopy = context;
   v7 = otherLogHandle;
   if (os_log_type_enabled(otherLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v29 = 134218242;
-    v30 = a3;
+    timerCopy2 = timer;
     v31 = 2112;
-    v32 = *&v6;
+    timerCopy3 = *&contextCopy;
     _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_DEBUG, "setRelativeTimer %f %@", &v29, 0x16u);
   }
 
-  if (a3 < 0.0)
+  if (timer < 0.0)
   {
-    a3 = 0.0;
+    timer = 0.0;
   }
 
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   slotScaleFactor = self->_slotScaleFactor;
-  v10 = ((a3 + v8) * slotScaleFactor) + 1;
+  v10 = ((timer + v8) * slotScaleFactor) + 1;
   v11 = v10 - (v8 * slotScaleFactor);
   numSlots = self->_numSlots;
   if (v11 > numSlots)
@@ -278,9 +278,9 @@ uint64_t __62__LightweightTimer_initWithQueue_maxDelay_precision_callback___bloc
     {
       v14 = self->_numSlots / self->_slotScaleFactor;
       v29 = 134218240;
-      v30 = a3;
+      timerCopy2 = timer;
       v31 = 2048;
-      v32 = v14;
+      timerCopy3 = v14;
       _os_log_impl(&dword_23255B000, v13, OS_LOG_TYPE_ERROR, "Requested delay %f for lighweight time greater than configured, %f", &v29, 0x16u);
     }
 
@@ -292,18 +292,18 @@ uint64_t __62__LightweightTimer_initWithQueue_maxDelay_precision_callback___bloc
   entries = self->_entries;
   if (!self->_entries[v10 % numSlots])
   {
-    v17 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v18 = entries[v15];
-    entries[v15] = v17;
+    entries[v15] = array;
   }
 
   v19 = objc_alloc_init(LightweightTimerEntry);
-  [(LightweightTimerEntry *)v19 setUserParam:v6];
+  [(LightweightTimerEntry *)v19 setUserParam:contextCopy];
   ++self->_seqno;
   [(LightweightTimerEntry *)v19 setSeqNo:?];
   [(LightweightTimerEntry *)v19 setSlotNum:v10];
   [(NSMutableArray *)entries[v15] addObject:v19];
-  v20 = [(LightweightTimerEntry *)v19 seqNo];
+  seqNo = [(LightweightTimerEntry *)v19 seqNo];
   if (v10 < self->_timerExpiryTargetSlot)
   {
     self->_timerExpiryTargetSlot = v10;
@@ -315,21 +315,21 @@ uint64_t __62__LightweightTimer_initWithQueue_maxDelay_precision_callback___bloc
     if (os_log_type_enabled(otherLogHandle, OS_LOG_TYPE_DEBUG))
     {
       v29 = 134217984;
-      v30 = v21;
+      timerCopy2 = v21;
       _os_log_impl(&dword_23255B000, v24, OS_LOG_TYPE_DEBUG, "setRelativeTimer, setting internal timer to delay %f", &v29, 0xCu);
     }
   }
 
-  v25 = v10 | (v20 << 48);
+  v25 = v10 | (seqNo << 48);
   v26 = otherLogHandle;
   if (os_log_type_enabled(otherLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v29 = 134218498;
-    v30 = *&v25;
+    timerCopy2 = *&v25;
     v31 = 2048;
-    v32 = a3;
+    timerCopy3 = timer;
     v33 = 2112;
-    v34 = v6;
+    v34 = contextCopy;
     _os_log_impl(&dword_23255B000, v26, OS_LOG_TYPE_DEBUG, "LW Timers  return %lld from setRelativeTimer %f %@", &v29, 0x20u);
   }
 
@@ -337,19 +337,19 @@ uint64_t __62__LightweightTimer_initWithQueue_maxDelay_precision_callback___bloc
   return v25;
 }
 
-- (BOOL)cancel:(unint64_t)a3
+- (BOOL)cancel:(unint64_t)cancel
 {
   v38 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (cancel)
   {
-    v5 = a3 & 0xFFFFFFFFFFLL;
-    v6 = HIWORD(a3);
-    v7 = (a3 & 0xFFFFFFFFFFLL) % self->_numSlots;
+    v5 = cancel & 0xFFFFFFFFFFLL;
+    v6 = HIWORD(cancel);
+    v7 = (cancel & 0xFFFFFFFFFFLL) % self->_numSlots;
     v8 = otherLogHandle;
     if (os_log_type_enabled(otherLogHandle, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134218752;
-      *v37 = a3;
+      *v37 = cancel;
       *&v37[8] = 2048;
       *&v37[10] = v5;
       *&v37[18] = 2048;
@@ -459,7 +459,7 @@ LABEL_28:
       *buf = 67109888;
       *v37 = v18;
       *&v37[4] = 2048;
-      *&v37[6] = a3;
+      *&v37[6] = cancel;
       *&v37[14] = 2048;
       *&v37[16] = v5;
       *&v37[24] = 2048;

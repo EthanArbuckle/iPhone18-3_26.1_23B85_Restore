@@ -1,53 +1,53 @@
 @interface EKDayPreviewController
-- (BOOL)_eventOccursOnThisDay:(id)a3;
+- (BOOL)_eventOccursOnThisDay:(id)day;
 - (CGSize)preferredContentSize;
-- (EKDayPreviewController)initWithDate:(id)a3 event:(id)a4 overriddenEventStartDate:(id)a5 overriddenEventEndDate:(id)a6 model:(id)a7 overriddenDayViewHourScale:(double)a8 overriddenDayViewMinHourRange:(int64_t)a9;
+- (EKDayPreviewController)initWithDate:(id)date event:(id)event overriddenEventStartDate:(id)startDate overriddenEventEndDate:(id)endDate model:(id)model overriddenDayViewHourScale:(double)scale overriddenDayViewMinHourRange:(int64_t)range;
 - (UIViewController)hostingViewController;
 - (_NSRange)_displayedHoursRange;
 - (double)_dayViewHeight;
 - (id)_anchorEvent;
 - (id)_dateForFirstHourMarker;
-- (id)_eventsForStartDate:(id)a3 endDate:(id)a4;
-- (id)_hourMaskForEvents:(id)a3;
+- (id)_eventsForStartDate:(id)date endDate:(id)endDate;
+- (id)_hourMaskForEvents:(id)events;
 - (id)_selectedCalendars;
-- (id)dayView:(id)a3 eventsForStartDate:(id)a4 endDate:(id)a5;
+- (id)dayView:(id)view eventsForStartDate:(id)date endDate:(id)endDate;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_scrollDayViewToCorrectOffsetAnimated:(BOOL)a3;
+- (void)_scrollDayViewToCorrectOffsetAnimated:(BOOL)animated;
 - (void)_setNewVisibleHourLabels;
 - (void)_setupAutoLayout;
 - (void)_setupDayView;
-- (void)_updateIvarsWithDate:(id)a3 event:(id)a4 overriddenEventStartDate:(id)a5 overriddenEventEndDate:(id)a6;
+- (void)_updateIvarsWithDate:(id)date event:(id)event overriddenEventStartDate:(id)startDate overriddenEventEndDate:(id)endDate;
 - (void)loadView;
 - (void)reload;
-- (void)reloadWithNewDate:(id)a3 event:(id)a4 overriddenEventStartDate:(id)a5 overriddenEventEndDate:(id)a6;
+- (void)reloadWithNewDate:(id)date event:(id)event overriddenEventStartDate:(id)startDate overriddenEventEndDate:(id)endDate;
 - (void)toggleExpandedState;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation EKDayPreviewController
 
-- (EKDayPreviewController)initWithDate:(id)a3 event:(id)a4 overriddenEventStartDate:(id)a5 overriddenEventEndDate:(id)a6 model:(id)a7 overriddenDayViewHourScale:(double)a8 overriddenDayViewMinHourRange:(int64_t)a9
+- (EKDayPreviewController)initWithDate:(id)date event:(id)event overriddenEventStartDate:(id)startDate overriddenEventEndDate:(id)endDate model:(id)model overriddenDayViewHourScale:(double)scale overriddenDayViewMinHourRange:(int64_t)range
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
+  dateCopy = date;
+  eventCopy = event;
+  startDateCopy = startDate;
+  endDateCopy = endDate;
+  modelCopy = model;
   v29.receiver = self;
   v29.super_class = EKDayPreviewController;
   v21 = [(EKDayPreviewController *)&v29 init];
   v22 = v21;
   if (v21)
   {
-    [(EKDayPreviewController *)v21 _updateIvarsWithDate:v16 event:v17 overriddenEventStartDate:v18 overriddenEventEndDate:v19];
-    objc_storeStrong(&v22->_model, a7);
+    [(EKDayPreviewController *)v21 _updateIvarsWithDate:dateCopy event:eventCopy overriddenEventStartDate:startDateCopy overriddenEventEndDate:endDateCopy];
+    objc_storeStrong(&v22->_model, model);
     [(EKDayPreviewController *)v22 setRespectsSelectedCalendarsFilter:1];
     [(EKDayPreviewController *)v22 setStyle:0];
-    v22->_overriddenDayViewHourScale = a8;
-    v22->_overriddenDayViewMinHourRange = a9;
+    v22->_overriddenDayViewHourScale = scale;
+    v22->_overriddenDayViewMinHourRange = range;
     objc_initWeak(&location, v22);
     v30[0] = objc_opt_class();
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:1];
@@ -97,26 +97,26 @@ void __156__EKDayPreviewController_initWithDate_event_overriddenEventStartDate_o
   }
 }
 
-- (void)_updateIvarsWithDate:(id)a3 event:(id)a4 overriddenEventStartDate:(id)a5 overriddenEventEndDate:(id)a6
+- (void)_updateIvarsWithDate:(id)date event:(id)event overriddenEventStartDate:(id)startDate overriddenEventEndDate:(id)endDate
 {
-  v21 = a3;
-  v11 = a5;
-  v12 = a6;
-  objc_storeStrong(&self->_date, a3);
-  v13 = a4;
-  v14 = [v13 copy];
+  dateCopy = date;
+  startDateCopy = startDate;
+  endDateCopy = endDate;
+  objc_storeStrong(&self->_date, date);
+  eventCopy = event;
+  v14 = [eventCopy copy];
 
   objc_storeStrong(&self->_event, v14);
-  v15 = [(EKEvent *)self->_event startDate];
+  startDate = [(EKEvent *)self->_event startDate];
   originalEventStartDate = self->_originalEventStartDate;
-  self->_originalEventStartDate = v15;
+  self->_originalEventStartDate = startDate;
 
-  v17 = [(EKEvent *)self->_event endDateUnadjustedForLegacyClients];
+  endDateUnadjustedForLegacyClients = [(EKEvent *)self->_event endDateUnadjustedForLegacyClients];
   originalEventEndDate = self->_originalEventEndDate;
-  self->_originalEventEndDate = v17;
+  self->_originalEventEndDate = endDateUnadjustedForLegacyClients;
 
-  objc_storeStrong(&self->_overriddenEventStartDate, a5);
-  objc_storeStrong(&self->_overriddenEventEndDate, a6);
+  objc_storeStrong(&self->_overriddenEventStartDate, startDate);
+  objc_storeStrong(&self->_overriddenEventEndDate, endDate);
   overriddenEventStartDate = self->_overriddenEventStartDate;
   if (overriddenEventStartDate && self->_overriddenEventEndDate)
   {
@@ -158,11 +158,11 @@ void __156__EKDayPreviewController_initWithDate_event_overriddenEventStartDate_o
 
   if (self->_style == 1)
   {
-    v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-    v8 = [v7 traitCollection];
-    v9 = [v8 userInterfaceIdiom];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    traitCollection = [mainScreen traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (v9 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v10 = 2;
     }
@@ -178,7 +178,7 @@ void __156__EKDayPreviewController_initWithDate_event_overriddenEventStartDate_o
     v10 = 1;
   }
 
-  v11 = [MEMORY[0x1E69DC888] clearColor];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
   if ([(EKDayPreviewController *)self style]|| !MEMORY[0x1D38B98D0]())
   {
     v13 = 0;
@@ -186,15 +186,15 @@ void __156__EKDayPreviewController_initWithDate_event_overriddenEventStartDate_o
 
   else
   {
-    v12 = [MEMORY[0x1E69DC888] tableCellGroupedBackgroundColor];
+    tableCellGroupedBackgroundColor = [MEMORY[0x1E69DC888] tableCellGroupedBackgroundColor];
 
     v13 = 1;
-    v11 = v12;
+    clearColor = tableCellGroupedBackgroundColor;
   }
 
   v14 = [EKDayView alloc];
   LOBYTE(v47) = 1;
-  v15 = [(EKDayView *)v14 initWithFrame:v10 sizeClass:1 orientation:v6 displayDate:v11 backgroundColor:v13 opaque:0 scrollbarShowsInside:*MEMORY[0x1E695F058] isMiniPreviewInEventDetail:*(MEMORY[0x1E695F058] + 8) rightClickDelegate:*(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24), v47, 0];
+  v15 = [(EKDayView *)v14 initWithFrame:v10 sizeClass:1 orientation:v6 displayDate:clearColor backgroundColor:v13 opaque:0 scrollbarShowsInside:*MEMORY[0x1E695F058] isMiniPreviewInEventDetail:*(MEMORY[0x1E695F058] + 8) rightClickDelegate:*(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24), v47, 0];
   dayView = self->_dayView;
   self->_dayView = v15;
 
@@ -217,24 +217,24 @@ void __156__EKDayPreviewController_initWithDate_event_overriddenEventStartDate_o
   [(EKDayView *)self->_dayView setDelegate:self];
   if ([(EKDayPreviewController *)self style]== 2)
   {
-    v21 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    v22 = [(EKDayPreviewController *)self view];
-    [v22 setBackgroundColor:v21];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    view = [(EKDayPreviewController *)self view];
+    [view setBackgroundColor:systemBackgroundColor];
 
     [(EKDayView *)self->_dayView setOpaque:1];
-    v23 = [(EKDayPreviewController *)self view];
-    [v23 addSubview:self->_dayView];
+    view2 = [(EKDayPreviewController *)self view];
+    [view2 addSubview:self->_dayView];
   }
 
   else
   {
-    v24 = [(EKDayView *)self->_dayView dayContent];
-    [v24 setUsesSmallText:1];
+    dayContent = [(EKDayView *)self->_dayView dayContent];
+    [dayContent setUsesSmallText:1];
 
     [(EKDayView *)self->_dayView setUserInteractionEnabled:0];
     [(EKDayView *)self->_dayView setScrollAnimationDurationOverride:0.4];
-    v25 = [(EKDayView *)self->_dayView dayContent];
-    [v25 setOffscreenOccurrencePinningEnabled:0];
+    dayContent2 = [(EKDayView *)self->_dayView dayContent];
+    [dayContent2 setOffscreenOccurrencePinningEnabled:0];
 
     v26 = self->_dayView;
     if (MEMORY[0x1D38B98D0]())
@@ -257,11 +257,11 @@ void __156__EKDayPreviewController_initWithDate_event_overriddenEventStartDate_o
     }
 
     [(EKDayView *)v29 setBottomContentInset:v31];
-    v32 = [(EKDayView *)self->_dayView dayContent];
+    dayContent3 = [(EKDayView *)self->_dayView dayContent];
     MEMORY[0x1D38B98D0]();
-    [v32 setOccurrenceLayoutLeadingInset:0.0];
+    [dayContent3 setOccurrenceLayoutLeadingInset:0.0];
 
-    v33 = [(EKDayView *)self->_dayView dayContent];
+    dayContent4 = [(EKDayView *)self->_dayView dayContent];
     if (MEMORY[0x1D38B98D0]())
     {
       v34 = 8.0;
@@ -272,7 +272,7 @@ void __156__EKDayPreviewController_initWithDate_event_overriddenEventStartDate_o
       v34 = 0.0;
     }
 
-    [v33 setOccurrenceLayoutTrailingInset:v34];
+    [dayContent4 setOccurrenceLayoutTrailingInset:v34];
 
     if (MEMORY[0x1D38B98D0]())
     {
@@ -307,38 +307,38 @@ void __156__EKDayPreviewController_initWithDate_event_overriddenEventStartDate_o
     roundedView = self->_roundedView;
     self->_roundedView = v37;
 
-    v23 = [(UIView *)self->_roundedView layer];
-    v39 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-    [v23 setBackgroundColor:{objc_msgSend(v39, "CGColor")}];
+    view2 = [(UIView *)self->_roundedView layer];
+    secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    [view2 setBackgroundColor:{objc_msgSend(secondarySystemBackgroundColor, "CGColor")}];
 
-    [v23 setMasksToBounds:1];
+    [view2 setMasksToBounds:1];
     [(UIView *)self->_roundedView setTranslatesAutoresizingMaskIntoConstraints:0];
     if (![(EKDayPreviewController *)self style])
     {
-      [v23 setCornerRadius:5.0];
-      v40 = [MEMORY[0x1E69DC888] separatorColor];
-      [v23 setBorderColor:{objc_msgSend(v40, "CGColor")}];
+      [view2 setCornerRadius:5.0];
+      separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+      [view2 setBorderColor:{objc_msgSend(separatorColor, "CGColor")}];
 
-      v41 = [v23 setBorderWidth:1.0 / EKUIScaleFactor()];
+      v41 = [view2 setBorderWidth:1.0 / EKUIScaleFactor()];
       if (MEMORY[0x1D38B98D0](v41))
       {
-        v42 = [MEMORY[0x1E69DC888] quaternaryLabelColor];
-        [v23 setBorderColor:{objc_msgSend(v42, "CGColor")}];
+        quaternaryLabelColor = [MEMORY[0x1E69DC888] quaternaryLabelColor];
+        [view2 setBorderColor:{objc_msgSend(quaternaryLabelColor, "CGColor")}];
 
-        [v23 setCornerRadius:EKUITableViewCellCornerRadius()];
-        v43 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
-        v44 = [(EKDayPreviewController *)self view];
-        [v44 setBackgroundColor:v43];
+        [view2 setCornerRadius:EKUITableViewCellCornerRadius()];
+        systemGroupedBackgroundColor = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+        view3 = [(EKDayPreviewController *)self view];
+        [view3 setBackgroundColor:systemGroupedBackgroundColor];
 
         [(EKDayView *)self->_dayView setOpaque:1];
-        v45 = [MEMORY[0x1E69DC888] tableCellGroupedBackgroundColor];
-        [v23 setBackgroundColor:{objc_msgSend(v45, "CGColor")}];
+        tableCellGroupedBackgroundColor2 = [MEMORY[0x1E69DC888] tableCellGroupedBackgroundColor];
+        [view2 setBackgroundColor:{objc_msgSend(tableCellGroupedBackgroundColor2, "CGColor")}];
       }
     }
 
     [(UIView *)self->_roundedView addSubview:self->_dayView];
-    v46 = [(EKDayPreviewController *)self view];
-    [v46 addSubview:self->_roundedView];
+    view4 = [(EKDayPreviewController *)self view];
+    [view4 addSubview:self->_roundedView];
   }
 }
 
@@ -352,10 +352,10 @@ void __156__EKDayPreviewController_initWithDate_event_overriddenEventStartDate_o
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(EKDayPreviewController *)self navigationController];
-  v4 = [v3 viewControllers];
+  navigationController = [(EKDayPreviewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
 
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v18 count:16];
+  v5 = [viewControllers countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -367,7 +367,7 @@ void __156__EKDayPreviewController_initWithDate_event_overriddenEventStartDate_o
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(viewControllers);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
@@ -380,7 +380,7 @@ void __156__EKDayPreviewController_initWithDate_event_overriddenEventStartDate_o
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v18 count:16];
+      v6 = [viewControllers countByEnumeratingWithState:&v13 objects:v18 count:16];
     }
 
     while (v6);
@@ -391,17 +391,17 @@ void __156__EKDayPreviewController_initWithDate_event_overriddenEventStartDate_o
     v7 = 0;
   }
 
-  v12 = [v7 toolbarItems];
-  [(EKDayPreviewController *)self setToolbarItems:v12 animated:0];
+  toolbarItems = [v7 toolbarItems];
+  [(EKDayPreviewController *)self setToolbarItems:toolbarItems animated:0];
 
   [(EKDayPreviewController *)self _setupAutoLayout];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = EKDayPreviewController;
-  [(EKDayPreviewController *)&v6 viewWillAppear:a3];
+  [(EKDayPreviewController *)&v6 viewWillAppear:appear];
   if (!self->_event)
   {
     v4 = kEKUILogHandle;
@@ -426,9 +426,9 @@ void __156__EKDayPreviewController_initWithDate_event_overriddenEventStartDate_o
   [(EKDayPreviewController *)self _scrollDayViewToCorrectOffsetAnimated:0];
 }
 
-- (void)reloadWithNewDate:(id)a3 event:(id)a4 overriddenEventStartDate:(id)a5 overriddenEventEndDate:(id)a6
+- (void)reloadWithNewDate:(id)date event:(id)event overriddenEventStartDate:(id)startDate overriddenEventEndDate:(id)endDate
 {
-  [(EKDayPreviewController *)self _updateIvarsWithDate:a3 event:a4 overriddenEventStartDate:a5 overriddenEventEndDate:a6];
+  [(EKDayPreviewController *)self _updateIvarsWithDate:date event:event overriddenEventStartDate:startDate overriddenEventEndDate:endDate];
 
   [(EKDayPreviewController *)self reload];
 }
@@ -468,9 +468,9 @@ void __156__EKDayPreviewController_initWithDate_event_overriddenEventStartDate_o
   }
 
   [(EKDayPreviewController *)self _setNewVisibleHourLabels];
-  v7 = [(EKDayView *)self->_dayView window];
+  window = [(EKDayView *)self->_dayView window];
 
-  if (v7)
+  if (window)
   {
     [(EKDayPreviewController *)self _scrollDayViewToCorrectOffsetAnimated:0];
   }
@@ -498,44 +498,44 @@ void __156__EKDayPreviewController_initWithDate_event_overriddenEventStartDate_o
   if ([(EKDayPreviewController *)self style]== 2)
   {
     v61 = MEMORY[0x1E696ACD8];
-    v58 = [(EKDayView *)self->_dayView leadingAnchor];
-    v65 = [(EKDayPreviewController *)self view];
-    v3 = [v65 safeAreaLayoutGuide];
-    v67 = [v3 leadingAnchor];
-    v66 = [v58 constraintEqualToAnchor:v67];
+    leadingAnchor = [(EKDayView *)self->_dayView leadingAnchor];
+    view = [(EKDayPreviewController *)self view];
+    safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+    leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+    v66 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v76[0] = v66;
-    v63 = [(EKDayView *)self->_dayView trailingAnchor];
-    v64 = [(EKDayPreviewController *)self view];
-    v62 = [v64 safeAreaLayoutGuide];
-    v60 = [v62 trailingAnchor];
-    v59 = [v63 constraintEqualToAnchor:v60];
+    trailingAnchor = [(EKDayView *)self->_dayView trailingAnchor];
+    view2 = [(EKDayPreviewController *)self view];
+    safeAreaLayoutGuide2 = [view2 safeAreaLayoutGuide];
+    trailingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
+    v59 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v76[1] = v59;
-    v56 = [(EKDayView *)self->_dayView topAnchor];
-    v57 = [(EKDayPreviewController *)self view];
-    v4 = [v57 safeAreaLayoutGuide];
-    v5 = [v4 topAnchor];
-    v6 = [v56 constraintEqualToAnchor:v5];
+    topAnchor = [(EKDayView *)self->_dayView topAnchor];
+    view3 = [(EKDayPreviewController *)self view];
+    safeAreaLayoutGuide3 = [view3 safeAreaLayoutGuide];
+    topAnchor2 = [safeAreaLayoutGuide3 topAnchor];
+    v6 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v76[2] = v6;
-    v7 = [(EKDayView *)self->_dayView bottomAnchor];
-    v8 = [(EKDayPreviewController *)self view];
-    v9 = [v8 safeAreaLayoutGuide];
-    v10 = [v9 bottomAnchor];
-    v11 = [v7 constraintEqualToAnchor:v10];
+    bottomAnchor = [(EKDayView *)self->_dayView bottomAnchor];
+    view4 = [(EKDayPreviewController *)self view];
+    safeAreaLayoutGuide4 = [view4 safeAreaLayoutGuide];
+    bottomAnchor2 = [safeAreaLayoutGuide4 bottomAnchor];
+    v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v76[3] = v11;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v76 count:4];
     [v61 activateConstraints:v12];
 
-    v13 = v58;
-    v14 = v65;
+    v13 = leadingAnchor;
+    v14 = view;
   }
 
   else
   {
-    v15 = [(EKDayPreviewController *)self hostingViewController];
+    hostingViewController = [(EKDayPreviewController *)self hostingViewController];
     v16 = objc_opt_respondsToSelector();
 
-    v17 = [(EKDayPreviewController *)self hostingViewController];
-    v18 = v17;
+    hostingViewController2 = [(EKDayPreviewController *)self hostingViewController];
+    v18 = hostingViewController2;
     if (v16)
     {
       v19 = sel_tableView;
@@ -546,7 +546,7 @@ void __156__EKDayPreviewController_initWithDate_event_overriddenEventStartDate_o
       v19 = sel_view;
     }
 
-    [objc_msgSend(v17 performSelector:{v19), "layoutMargins"}];
+    [objc_msgSend(hostingViewController2 performSelector:{v19), "layoutMargins"}];
     v21 = v20;
     v23 = v22;
 
@@ -580,8 +580,8 @@ void __156__EKDayPreviewController_initWithDate_event_overriddenEventStartDate_o
       v26 = 1.0;
     }
 
-    v27 = [(EKDayPreviewController *)self style];
-    if (v27 == 1)
+    style = [(EKDayPreviewController *)self style];
+    if (style == 1)
     {
       v28 = 0.0;
     }
@@ -591,7 +591,7 @@ void __156__EKDayPreviewController_initWithDate_event_overriddenEventStartDate_o
       v28 = v24;
     }
 
-    if (v27 == 1)
+    if (style == 1)
     {
       v29 = 0.0;
     }
@@ -601,7 +601,7 @@ void __156__EKDayPreviewController_initWithDate_event_overriddenEventStartDate_o
       v29 = v25;
     }
 
-    if (v27 == 1)
+    if (style == 1)
     {
       v30 = 0.0;
     }
@@ -611,7 +611,7 @@ void __156__EKDayPreviewController_initWithDate_event_overriddenEventStartDate_o
       v30 = v26;
     }
 
-    if (v27 == 1)
+    if (style == 1)
     {
       v31 = -1.0;
     }
@@ -621,7 +621,7 @@ void __156__EKDayPreviewController_initWithDate_event_overriddenEventStartDate_o
       v31 = 0.0;
     }
 
-    if (v27 == 1)
+    if (style == 1)
     {
       v23 = 0.0;
       v32 = 0.0;
@@ -632,8 +632,8 @@ void __156__EKDayPreviewController_initWithDate_event_overriddenEventStartDate_o
       v32 = v21;
     }
 
-    v33 = [(EKDayPreviewController *)self style];
-    if (v33)
+    style2 = [(EKDayPreviewController *)self style];
+    if (style2)
     {
       v34 = v23;
     }
@@ -643,7 +643,7 @@ void __156__EKDayPreviewController_initWithDate_event_overriddenEventStartDate_o
       v34 = 0.0;
     }
 
-    if (v33)
+    if (style2)
     {
       v35 = v32;
     }
@@ -660,13 +660,13 @@ void __156__EKDayPreviewController_initWithDate_event_overriddenEventStartDate_o
       v38 = v36;
       v39 = [v37 numberWithDouble:v35];
       v40 = [MEMORY[0x1E696AD98] numberWithDouble:v34];
-      v41 = [(EKDayPreviewController *)self hostingViewController];
+      hostingViewController3 = [(EKDayPreviewController *)self hostingViewController];
       *buf = 138412802;
       v71 = v39;
       v72 = 2112;
       v73 = v40;
       v74 = 2112;
-      v75 = v41;
+      v75 = hostingViewController3;
       _os_log_impl(&dword_1D3400000, v38, OS_LOG_TYPE_DEBUG, "left %@ right %@ host %@", buf, 0x20u);
     }
 
@@ -706,79 +706,79 @@ void __156__EKDayPreviewController_initWithDate_event_overriddenEventStartDate_o
     [v53 activateConstraints:v54];
 
     v55 = MEMORY[0x1E696ACD8];
-    v3 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:|[_dayView]|" options:0 metrics:0 views:v13];
-    [v55 activateConstraints:v3];
+    safeAreaLayoutGuide = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:|[_dayView]|" options:0 metrics:0 views:v13];
+    [v55 activateConstraints:safeAreaLayoutGuide];
   }
 }
 
-- (id)dayView:(id)a3 eventsForStartDate:(id)a4 endDate:(id)a5
+- (id)dayView:(id)view eventsForStartDate:(id)date endDate:(id)endDate
 {
-  v7 = a5;
-  v8 = [a4 date];
-  v9 = [v7 date];
+  endDateCopy = endDate;
+  date = [date date];
+  date2 = [endDateCopy date];
 
-  v10 = [(EKDayPreviewController *)self _eventsForStartDate:v8 endDate:v9];
+  v10 = [(EKDayPreviewController *)self _eventsForStartDate:date endDate:date2];
 
   return v10;
 }
 
 - (id)_selectedCalendars
 {
-  v3 = [(EKEvent *)self->_event calendar];
-  v4 = [v3 source];
+  calendar = [(EKEvent *)self->_event calendar];
+  source = [calendar source];
 
-  if (([v4 isDelegate] & 1) == 0)
+  if (([source isDelegate] & 1) == 0)
   {
 
-    v4 = 0;
+    source = 0;
   }
 
   v5 = objc_alloc(MEMORY[0x1E69669B8]);
-  v6 = [(EKEvent *)self->_event eventStore];
-  v7 = [v5 initWithEventStore:v6 limitedToSource:v4 visibilityChangedCallback:0 queue:0];
+  eventStore = [(EKEvent *)self->_event eventStore];
+  v7 = [v5 initWithEventStore:eventStore limitedToSource:source visibilityChangedCallback:0 queue:0];
 
-  v8 = [v7 visibleCalendars];
+  visibleCalendars = [v7 visibleCalendars];
 
-  return v8;
+  return visibleCalendars;
 }
 
-- (id)_eventsForStartDate:(id)a3 endDate:(id)a4
+- (id)_eventsForStartDate:(id)date endDate:(id)endDate
 {
   v57 = *MEMORY[0x1E69E9840];
-  v44 = a3;
-  v43 = a4;
-  v45 = self;
+  dateCopy = date;
+  endDateCopy = endDate;
+  selfCopy = self;
   if ([(EKDayPreviewController *)self respectsSelectedCalendarsFilter])
   {
-    v41 = [(EKDayPreviewController *)self _selectedCalendars];
+    _selectedCalendars = [(EKDayPreviewController *)self _selectedCalendars];
   }
 
   else
   {
-    v41 = 0;
+    _selectedCalendars = 0;
   }
 
   model = self->_model;
   if (model)
   {
-    [(CUIKCalendarModel *)model setPreferredReloadStartDate:v44 endDate:v43];
-    v7 = [(CUIKCalendarModel *)self->_model occurrencesForStartDate:v44 endDate:v43 preSorted:0 waitForLoad:1];
-    v42 = [v7 occurrences];
+    [(CUIKCalendarModel *)model setPreferredReloadStartDate:dateCopy endDate:endDateCopy];
+    v7 = [(CUIKCalendarModel *)self->_model occurrencesForStartDate:dateCopy endDate:endDateCopy preSorted:0 waitForLoad:1];
+    occurrences = [v7 occurrences];
   }
 
   else
   {
-    v8 = [(EKEvent *)self->_event eventStore];
-    v7 = [v8 predicateForEventsWithStartDate:v44 endDate:v43 calendars:v41];
+    eventStore = [(EKEvent *)self->_event eventStore];
+    v7 = [eventStore predicateForEventsWithStartDate:dateCopy endDate:endDateCopy calendars:_selectedCalendars];
 
-    v9 = [(EKEvent *)v45->_event eventStore];
-    v42 = [v9 eventsMatchingPredicate:v7];
+    eventStore2 = [(EKEvent *)selfCopy->_event eventStore];
+    occurrences = [eventStore2 eventsMatchingPredicate:v7];
   }
 
-  v10 = [v42 mutableCopy];
+  v10 = [occurrences mutableCopy];
   v11 = v10;
-  v12 = v45;
-  if (v45->_hasOverriddenEventDates)
+  v12 = selfCopy;
+  if (selfCopy->_hasOverriddenEventDates)
   {
     if (v10)
     {
@@ -792,13 +792,13 @@ void __156__EKDayPreviewController_initWithDate_event_overriddenEventStartDate_o
       v50[1] = 3221225472;
       v50[2] = __54__EKDayPreviewController__eventsForStartDate_endDate___block_invoke;
       v50[3] = &unk_1E84400C8;
-      v50[4] = v45;
+      v50[4] = selfCopy;
       v50[5] = &v51;
       [v10 enumerateObjectsUsingBlock:v50];
       [v11 removeObject:*(v52 + 40)];
       _Block_object_dispose(&v51, 8);
 
-      v12 = v45;
+      v12 = selfCopy;
     }
 
     else
@@ -816,12 +816,12 @@ void __156__EKDayPreviewController_initWithDate_event_overriddenEventStartDate_o
   v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:0];
   v14 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:0];
   v15 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:0];
-  v16 = [(EKEvent *)v45->_event eventStore];
-  [v16 timeZone];
+  eventStore3 = [(EKEvent *)selfCopy->_event eventStore];
+  [eventStore3 timeZone];
 
-  [v44 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v18 = v17;
-  [v43 timeIntervalSinceReferenceDate];
+  [endDateCopy timeIntervalSinceReferenceDate];
   v20 = v19;
   v48 = 0u;
   v49 = 0u;
@@ -842,8 +842,8 @@ void __156__EKDayPreviewController_initWithDate_event_overriddenEventStartDate_o
         }
 
         v25 = *(*(&v46 + 1) + 8 * i);
-        v26 = [v25 startDate];
-        [v26 timeIntervalSinceReferenceDate];
+        startDate = [v25 startDate];
+        [startDate timeIntervalSinceReferenceDate];
         v28 = v27;
 
         if (v28 >= v18)
@@ -853,10 +853,10 @@ void __156__EKDayPreviewController_initWithDate_event_overriddenEventStartDate_o
             goto LABEL_31;
           }
 
-          v34 = [v25 isAllDay];
+          isAllDay = [v25 isAllDay];
           [v13 addObject:v25];
           v35 = v15;
-          if ((v34 & 1) == 0)
+          if ((isAllDay & 1) == 0)
           {
             goto LABEL_28;
           }
@@ -866,9 +866,9 @@ void __156__EKDayPreviewController_initWithDate_event_overriddenEventStartDate_o
         {
           [v25 duration];
           v30 = v29;
-          v31 = [v25 isAllDay];
+          isAllDay2 = [v25 isAllDay];
           v32 = v30;
-          if ((v31 & 1) == 0)
+          if ((isAllDay2 & 1) == 0)
           {
             if (v28 + v32 <= v18)
             {
@@ -896,9 +896,9 @@ LABEL_28:
           [v13 addObject:v25];
         }
 
-        v36 = [(EKDayPreviewController *)v45 hidesAllDayEvents];
+        hidesAllDayEvents = [(EKDayPreviewController *)selfCopy hidesAllDayEvents];
         v35 = v14;
-        if (!v36)
+        if (!hidesAllDayEvents)
         {
           goto LABEL_28;
         }
@@ -913,8 +913,8 @@ LABEL_28:
 LABEL_31:
 
   v37 = [v15 copy];
-  cachedTimedEvents = v45->_cachedTimedEvents;
-  v45->_cachedTimedEvents = v37;
+  cachedTimedEvents = selfCopy->_cachedTimedEvents;
+  selfCopy->_cachedTimedEvents = v37;
 
   v39 = [objc_alloc(MEMORY[0x1E6993448]) initWithOccurrences:v13 timedOccurrences:v15 allDayOccurrences:v14];
 
@@ -951,8 +951,8 @@ void __54__EKDayPreviewController__eventsForStartDate_endDate___block_invoke(uin
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(EKDayPreviewController *)self view];
-  IsCompactInViewHierarchy = EKUICurrentWidthSizeClassIsCompactInViewHierarchy(v2);
+  view = [(EKDayPreviewController *)self view];
+  IsCompactInViewHierarchy = EKUICurrentWidthSizeClassIsCompactInViewHierarchy(view);
 
   if (IsCompactInViewHierarchy)
   {
@@ -1011,28 +1011,28 @@ void __38__EKDayPreviewController__anchorEvent__block_invoke(uint64_t a1, void *
 {
   if ([(EKDayPreviewController *)self style])
   {
-    v3 = 0;
+    _displayedHoursRange = 0;
     v4 = 0x7FFFFFFFLL;
   }
 
   else
   {
-    v3 = [(EKDayPreviewController *)self _displayedHoursRange];
+    _displayedHoursRange = [(EKDayPreviewController *)self _displayedHoursRange];
     v4 = v5;
   }
 
   dayView = self->_dayView;
 
-  [(EKDayView *)dayView setHoursToRender:v3, v4];
+  [(EKDayView *)dayView setHoursToRender:_displayedHoursRange, v4];
 }
 
-- (void)_scrollDayViewToCorrectOffsetAnimated:(BOOL)a3
+- (void)_scrollDayViewToCorrectOffsetAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(EKDayPreviewController *)self _anchorEvent];
-  if (v5 && -[EKDayPreviewController _eventOccursOnThisDay:](self, "_eventOccursOnThisDay:", v5) && ([v5 isAllDay] & 1) == 0)
+  animatedCopy = animated;
+  _anchorEvent = [(EKDayPreviewController *)self _anchorEvent];
+  if (_anchorEvent && -[EKDayPreviewController _eventOccursOnThisDay:](self, "_eventOccursOnThisDay:", _anchorEvent) && ([_anchorEvent isAllDay] & 1) == 0)
   {
-    v15 = [(EKDayPreviewController *)self _dateForFirstHourMarker];
+    _dateForFirstHourMarker = [(EKDayPreviewController *)self _dateForFirstHourMarker];
     if (MEMORY[0x1D38B98D0]())
     {
       v16 = -0.0;
@@ -1055,7 +1055,7 @@ void __38__EKDayPreviewController__anchorEvent__block_invoke(uint64_t a1, void *
     v20[2] = __64__EKDayPreviewController__scrollDayViewToCorrectOffsetAnimated___block_invoke;
     v20[3] = &unk_1E843EC60;
     v20[4] = self;
-    [(EKDayView *)dayView scrollToDate:v15 offset:v3 animated:v20 whenFinished:v16];
+    [(EKDayView *)dayView scrollToDate:_dateForFirstHourMarker offset:animatedCopy animated:v20 whenFinished:v16];
   }
 
   else
@@ -1067,17 +1067,17 @@ void __38__EKDayPreviewController__anchorEvent__block_invoke(uint64_t a1, void *
     v19[2] = __64__EKDayPreviewController__scrollDayViewToCorrectOffsetAnimated___block_invoke_2;
     v19[3] = &unk_1E843EC60;
     v19[4] = self;
-    [(EKDayView *)v6 scrollToDate:date animated:v3 whenFinished:v19];
+    [(EKDayView *)v6 scrollToDate:date animated:animatedCopy whenFinished:v19];
   }
 
   if (![(EKDayPreviewController *)self style])
   {
     roundedView = self->_roundedView;
-    v9 = [(EKDayView *)self->_dayView verticalScrollView];
-    [v9 contentOffset];
+    verticalScrollView = [(EKDayView *)self->_dayView verticalScrollView];
+    [verticalScrollView contentOffset];
     v11 = v10;
-    v12 = [(EKDayView *)self->_dayView dayContent];
-    [(UIView *)roundedView convertPoint:v12 fromView:0.0, v11];
+    dayContent = [(EKDayView *)self->_dayView dayContent];
+    [(UIView *)roundedView convertPoint:dayContent fromView:0.0, v11];
     v14 = v13;
 
     [(EKDayView *)self->_dayView setAdditionalGridCurtainHeight:2.0 - v14];
@@ -1086,16 +1086,16 @@ void __38__EKDayPreviewController__anchorEvent__block_invoke(uint64_t a1, void *
   self->_requireScrollPositionCorrection = 0;
 }
 
-- (BOOL)_eventOccursOnThisDay:(id)a3
+- (BOOL)_eventOccursOnThisDay:(id)day
 {
-  v4 = a3;
-  v5 = [v4 startDate];
-  [v5 timeIntervalSinceReferenceDate];
+  dayCopy = day;
+  startDate = [dayCopy startDate];
+  [startDate timeIntervalSinceReferenceDate];
   v7 = v6;
 
-  v8 = [v4 endDateUnadjustedForLegacyClients];
+  endDateUnadjustedForLegacyClients = [dayCopy endDateUnadjustedForLegacyClients];
 
-  [v8 timeIntervalSinceReferenceDate];
+  [endDateUnadjustedForLegacyClients timeIntervalSinceReferenceDate];
   v10 = v9;
 
   [(EKDayView *)self->_dayView dayStart];
@@ -1116,26 +1116,26 @@ void __38__EKDayPreviewController__anchorEvent__block_invoke(uint64_t a1, void *
 {
   if ([(EKDayPreviewController *)self style]== 1)
   {
-    v3 = [(EKDayPreviewController *)self _displayedHoursRange];
+    _displayedHoursRange = [(EKDayPreviewController *)self _displayedHoursRange];
   }
 
   else
   {
-    v3 = [(EKDayView *)self->_dayView hoursToRender];
+    _displayedHoursRange = [(EKDayView *)self->_dayView hoursToRender];
   }
 
   v4 = MEMORY[0x1E695DF00];
   [(EKDayView *)self->_dayView dayStart];
   v5 = [v4 dateWithTimeIntervalSinceReferenceDate:?];
   v6 = CUIKCalendar();
-  v7 = [v5 dateByAddingHours:v3 inCalendar:v6];
+  v7 = [v5 dateByAddingHours:_displayedHoursRange inCalendar:v6];
 
   return v7;
 }
 
-- (id)_hourMaskForEvents:(id)a3
+- (id)_hourMaskForEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   v5 = 25;
   v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:25];
   v7 = MEMORY[0x1E695E110];
@@ -1161,7 +1161,7 @@ void __38__EKDayPreviewController__anchorEvent__block_invoke(uint64_t a1, void *
   v20 = v11;
   v12 = v10;
   v13 = v9;
-  [v4 enumerateObjectsUsingBlock:v17];
+  [eventsCopy enumerateObjectsUsingBlock:v17];
   v14 = v20;
   v15 = v11;
 
@@ -1258,8 +1258,8 @@ LABEL_6:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v8 = [v5 reverseObjectEnumerator];
-  v9 = [v8 countByEnumeratingWithState:&v28 objects:v39 count:16];
+  reverseObjectEnumerator = [v5 reverseObjectEnumerator];
+  v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v28 objects:v39 count:16];
   if (v9)
   {
     v10 = *v29;
@@ -1272,7 +1272,7 @@ LABEL_10:
     {
       if (*v29 != v10)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(reverseObjectEnumerator);
       }
 
       if (v11 != -1)
@@ -1294,7 +1294,7 @@ LABEL_10:
       --v13;
       if (v9 == v12)
       {
-        v9 = [v8 countByEnumeratingWithState:&v28 objects:v39 count:16];
+        v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v28 objects:v39 count:16];
         if (v9)
         {
           goto LABEL_10;
@@ -1312,7 +1312,7 @@ LABEL_10:
 
   v14 = *(*(&buf + 1) + 24);
   overriddenDayViewMinHourRange = self->_overriddenDayViewMinHourRange;
-  v16 = [(EKDayPreviewController *)self _shouldShowAllVisibleEvents];
+  _shouldShowAllVisibleEvents = [(EKDayPreviewController *)self _shouldShowAllVisibleEvents];
   v17 = v11 - v14 + 1;
   if (overriddenDayViewMinHourRange <= v17)
   {
@@ -1335,7 +1335,7 @@ LABEL_10:
     v19 = v18;
   }
 
-  if (v16)
+  if (_shouldShowAllVisibleEvents)
   {
     v20 = v18;
   }
@@ -1402,8 +1402,8 @@ uint64_t __46__EKDayPreviewController__displayedHoursRange__block_invoke(uint64_
 
 - (CGSize)preferredContentSize
 {
-  v3 = [(EKDayPreviewController *)self view];
-  [v3 sizeThatFits:{2147483650.0, 2147483650.0}];
+  view = [(EKDayPreviewController *)self view];
+  [view sizeThatFits:{2147483650.0, 2147483650.0}];
   v5 = v4;
 
   if (MEMORY[0x1D38B98D0]())
@@ -1445,8 +1445,8 @@ uint64_t __46__EKDayPreviewController__displayedHoursRange__block_invoke(uint64_
       _os_log_impl(&dword_1D3400000, v3, OS_LOG_TYPE_DEBUG, "User tapped to expand", buf, 2u);
     }
 
-    v4 = [(EKDayPreviewController *)self view];
-    [v4 setNeedsLayout];
+    view = [(EKDayPreviewController *)self view];
+    [view setNeedsLayout];
 
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;

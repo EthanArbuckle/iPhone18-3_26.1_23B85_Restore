@@ -1,28 +1,28 @@
 @interface ASUSQLiteDatabaseStoreSchema
-- (ASUSQLiteDatabaseStoreSchema)initWithConnection:(id)a3 schemaName:(id)a4 tableNames:(id)a5;
-- (BOOL)column:(id)a3 existsInTable:(id)a4;
-- (BOOL)migrateToVersion:(int64_t)a3 usingBlock:(id)a4;
-- (BOOL)tableExists:(id)a3;
+- (ASUSQLiteDatabaseStoreSchema)initWithConnection:(id)connection schemaName:(id)name tableNames:(id)names;
+- (BOOL)column:(id)column existsInTable:(id)table;
+- (BOOL)migrateToVersion:(int64_t)version usingBlock:(id)block;
+- (BOOL)tableExists:(id)exists;
 - (int64_t)currentSchemaVersion;
-- (uint64_t)_migrateToVersion:(void *)a3 usingMapping:(int)a4 isReattempt:;
+- (uint64_t)_migrateToVersion:(void *)version usingMapping:(int)mapping isReattempt:;
 @end
 
 @implementation ASUSQLiteDatabaseStoreSchema
 
-- (ASUSQLiteDatabaseStoreSchema)initWithConnection:(id)a3 schemaName:(id)a4 tableNames:(id)a5
+- (ASUSQLiteDatabaseStoreSchema)initWithConnection:(id)connection schemaName:(id)name tableNames:(id)names
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  connectionCopy = connection;
+  nameCopy = name;
+  namesCopy = names;
   v20.receiver = self;
   v20.super_class = ASUSQLiteDatabaseStoreSchema;
   v12 = [(ASUSQLiteDatabaseStoreSchema *)&v20 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_connection, a3);
-    objc_storeStrong(&v13->_schemaName, a4);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_connection, connection);
+    objc_storeStrong(&v13->_schemaName, name);
+    v14 = [namesCopy copy];
     tableNames = v13->_tableNames;
     v13->_tableNames = v14;
 
@@ -74,24 +74,24 @@ void __52__ASUSQLiteDatabaseStoreSchema_currentSchemaVersion__block_invoke(uint6
   *(*(*(a1 + 40) + 8) + 24) = v5;
 }
 
-- (BOOL)column:(id)a3 existsInTable:(id)a4
+- (BOOL)column:(id)column existsInTable:(id)table
 {
-  v6 = a3;
-  v7 = a4;
+  columnCopy = column;
+  tableCopy = table;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"PRAGMA table_info(%@)", v7];
+  tableCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"PRAGMA table_info(%@)", tableCopy];
   connection = self->_connection;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __53__ASUSQLiteDatabaseStoreSchema_column_existsInTable___block_invoke;
   v12[3] = &unk_278C97748;
   v14 = &v15;
-  v10 = v6;
+  v10 = columnCopy;
   v13 = v10;
-  [(ASUSQLiteConnection *)connection executeQuery:v8 withResults:v12];
+  [(ASUSQLiteConnection *)connection executeQuery:tableCopy withResults:v12];
   LOBYTE(connection) = *(v16 + 24);
 
   _Block_object_dispose(&v15, 8);
@@ -118,18 +118,18 @@ void __53__ASUSQLiteDatabaseStoreSchema_column_existsInTable___block_invoke_2(ui
   *a4 = v6;
 }
 
-- (BOOL)migrateToVersion:(int64_t)a3 usingBlock:(id)a4
+- (BOOL)migrateToVersion:(int64_t)version usingBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   connection = self->_connection;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __60__ASUSQLiteDatabaseStoreSchema_migrateToVersion_usingBlock___block_invoke;
   v10[3] = &unk_278C97798;
   v10[4] = self;
-  v11 = v6;
-  v12 = a3;
-  v8 = v6;
+  v11 = blockCopy;
+  versionCopy = version;
+  v8 = blockCopy;
   LOBYTE(self) = [(ASUSQLiteConnection *)connection performSavepoint:v10];
 
   return self;
@@ -169,22 +169,22 @@ void __60__ASUSQLiteDatabaseStoreSchema_migrateToVersion_usingBlock___block_invo
   [v4 bindInt64:*(a1 + 40) atPosition:2];
 }
 
-- (uint64_t)_migrateToVersion:(void *)a3 usingMapping:(int)a4 isReattempt:
+- (uint64_t)_migrateToVersion:(void *)version usingMapping:(int)mapping isReattempt:
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (a1)
+  versionCopy = version;
+  if (self)
   {
-    v8 = [a1 currentSchemaVersion];
-    if (v8 < a2)
+    currentSchemaVersion = [self currentSchemaVersion];
+    if (currentSchemaVersion < a2)
     {
       while (1)
       {
         v22 = 0;
         v23 = -1;
-        v7[2](v7, v8, &v23, &v22);
+        versionCopy[2](versionCopy, currentSchemaVersion, &v23, &v22);
         v9 = v23;
-        if (v23 <= v8 || v23 > a2)
+        if (v23 <= currentSchemaVersion || v23 > a2)
         {
           break;
         }
@@ -198,14 +198,14 @@ void __60__ASUSQLiteDatabaseStoreSchema_migrateToVersion_usingBlock___block_invo
           }
 
           *buf = 134218240;
-          v25 = v8;
+          v25 = currentSchemaVersion;
           v26 = 2048;
           v27 = v23;
           v15 = "No migration block provided to migrate schema version %lli -> %lli";
           goto LABEL_32;
         }
 
-        v11 = [a1 migrateToVersion:v23 usingBlock:?];
+        v11 = [self migrateToVersion:v23 usingBlock:?];
         v12 = ASULogHandleForCategory(1);
         v13 = v12;
         if ((v11 & 1) == 0)
@@ -216,7 +216,7 @@ void __60__ASUSQLiteDatabaseStoreSchema_migrateToVersion_usingBlock___block_invo
           }
 
           *buf = 134218240;
-          v25 = v8;
+          v25 = currentSchemaVersion;
           v26 = 2048;
           v27 = v23;
           v15 = "Database migration function failed for %lli => %lli";
@@ -226,14 +226,14 @@ void __60__ASUSQLiteDatabaseStoreSchema_migrateToVersion_usingBlock___block_invo
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218240;
-          v25 = v8;
+          v25 = currentSchemaVersion;
           v26 = 2048;
           v27 = v23;
           _os_log_impl(&dword_2400F8000, v13, OS_LOG_TYPE_DEFAULT, "Database migration function succeeded for %lli => %lli", buf, 0x16u);
         }
 
-        v8 = v23;
-        if (v8 >= a2)
+        currentSchemaVersion = v23;
+        if (currentSchemaVersion >= a2)
         {
           goto LABEL_21;
         }
@@ -251,7 +251,7 @@ void __60__ASUSQLiteDatabaseStoreSchema_migrateToVersion_usingBlock___block_invo
         *buf = 134218240;
         v25 = v23;
         v26 = 2048;
-        v27 = v8;
+        v27 = currentSchemaVersion;
         v15 = "Invalid version %lli provided; currentVersion: %lli";
 LABEL_32:
         _os_log_error_impl(&dword_2400F8000, v13, OS_LOG_TYPE_ERROR, v15, buf, 0x16u);
@@ -269,12 +269,12 @@ LABEL_20:
     }
 
 LABEL_21:
-    if (v8 == a2)
+    if (currentSchemaVersion == a2)
     {
-      a1 = 1;
+      self = 1;
     }
 
-    else if (a4)
+    else if (mapping)
     {
       v16 = ASULogHandleForCategory(1);
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -283,24 +283,24 @@ LABEL_21:
         _os_log_impl(&dword_2400F8000, v16, OS_LOG_TYPE_DEFAULT, "Not reattempting to reset schema", buf, 2u);
       }
 
-      a1 = 0;
+      self = 0;
     }
 
     else
     {
-      v17 = *(a1 + 8);
+      v17 = *(self + 8);
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __75__ASUSQLiteDatabaseStoreSchema__migrateToVersion_usingMapping_isReattempt___block_invoke;
       v20[3] = &unk_278C97F10;
-      v20[4] = a1;
-      v21 = v7;
-      a1 = [v17 performTransaction:v20 error:0];
+      v20[4] = self;
+      v21 = versionCopy;
+      self = [v17 performTransaction:v20 error:0];
     }
   }
 
   v18 = *MEMORY[0x277D85DE8];
-  return a1;
+  return self;
 }
 
 uint64_t __75__ASUSQLiteDatabaseStoreSchema__migrateToVersion_usingMapping_isReattempt___block_invoke(uint64_t a1)
@@ -385,9 +385,9 @@ LABEL_19:
   return result;
 }
 
-- (BOOL)tableExists:(id)a3
+- (BOOL)tableExists:(id)exists
 {
-  v4 = a3;
+  existsCopy = exists;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -397,7 +397,7 @@ LABEL_19:
   v8[1] = 3221225472;
   v8[2] = __44__ASUSQLiteDatabaseStoreSchema_tableExists___block_invoke;
   v8[3] = &unk_278C97930;
-  v6 = v4;
+  v6 = existsCopy;
   v9 = v6;
   v10 = &v11;
   [(ASUSQLiteConnection *)connection executeQuery:@"SELECT name FROM sqlite_master where name = ?" withResults:v8];

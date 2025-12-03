@@ -1,27 +1,27 @@
 @interface PKAccountInvitationOnboardingViewController
-- (PKAccountInvitationOnboardingViewController)initWithController:(id)a3;
-- (id)_listItemConfigWithTitle:(id)a3 body:(id)a4 image:(id)a5;
+- (PKAccountInvitationOnboardingViewController)initWithController:(id)controller;
+- (id)_listItemConfigWithTitle:(id)title body:(id)body image:(id)image;
 - (void)_beginReportingIfNecessary;
 - (void)_endReportingIfNecessary;
 - (void)_reportContinueTapped;
-- (void)explanationViewDidSelectContinue:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)explanationViewDidSelectContinue:(id)continue;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation PKAccountInvitationOnboardingViewController
 
-- (PKAccountInvitationOnboardingViewController)initWithController:(id)a3
+- (PKAccountInvitationOnboardingViewController)initWithController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = PKAccountInvitationOnboardingViewController;
-  v6 = -[PKExplanationViewController initWithContext:](&v9, sel_initWithContext_, [v5 context]);
+  v6 = -[PKExplanationViewController initWithContext:](&v9, sel_initWithContext_, [controllerCopy context]);
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_controller, a3);
+    objc_storeStrong(&v6->_controller, controller);
   }
 
   return v7;
@@ -33,14 +33,14 @@
   v20.receiver = self;
   v20.super_class = PKAccountInvitationOnboardingViewController;
   [(PKExplanationViewController *)&v20 viewDidLoad];
-  v3 = [(PKExplanationViewController *)self explanationView];
+  explanationView = [(PKExplanationViewController *)self explanationView];
   v4 = PKLocalizedFeatureString();
-  [v3 setTitleText:v4];
+  [explanationView setTitleText:v4];
 
   v5 = PKLocalizedFeatureString();
-  [v3 setBodyText:v5];
+  [explanationView setBodyText:v5];
 
-  [v3 setBodyViewPadding:24.0];
+  [explanationView setBodyViewPadding:24.0];
   v6 = [PKAccountInvitationOnboardingListView alloc];
   v19 = PKLocalizedFeatureString();
   v18 = PKLocalizedFeatureString();
@@ -56,87 +56,87 @@
   v21[2] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:3];
   v14 = [(PKAccountInvitationOnboardingListView *)v6 initWithConfigurations:v13];
-  [v3 setBodyView:v14];
+  [explanationView setBodyView:v14];
 
-  [v3 setShowPrivacyView:1];
+  [explanationView setShowPrivacyView:1];
   v15 = [MEMORY[0x1E69B7D50] pk_privacyLinkForContext:4];
   [(PKExplanationViewController *)self setPrivacyLinkController:v15];
 
-  v16 = [(PKAccountInvitationOnboardingViewController *)self view];
-  [v16 setAccessibilityIdentifier:*MEMORY[0x1E69B9450]];
+  view = [(PKAccountInvitationOnboardingViewController *)self view];
+  [view setAccessibilityIdentifier:*MEMORY[0x1E69B9450]];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = PKAccountInvitationOnboardingViewController;
-  [(PKAccountInvitationOnboardingViewController *)&v8 viewDidAppear:a3];
+  [(PKAccountInvitationOnboardingViewController *)&v8 viewDidAppear:appear];
   [(PKAccountInvitationOnboardingViewController *)self _beginReportingIfNecessary];
-  v4 = [(PKAccountInvitationController *)self->_controller applyController];
+  applyController = [(PKAccountInvitationController *)self->_controller applyController];
   v5 = *MEMORY[0x1E69BB6A0];
   v6 = *MEMORY[0x1E69BA1A0];
   v9 = *MEMORY[0x1E69BA680];
   v10[0] = *MEMORY[0x1E69BA818];
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
-  [v4 reportAnalyticsDictionaryForPage:0 subject:v5 pageTag:v6 additionalValues:v7];
+  [applyController reportAnalyticsDictionaryForPage:0 subject:v5 pageTag:v6 additionalValues:v7];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = PKAccountInvitationOnboardingViewController;
-  [(PKAccountInvitationOnboardingViewController *)&v8 viewDidDisappear:a3];
-  v4 = [(PKAccountInvitationController *)self->_controller applyController];
+  [(PKAccountInvitationOnboardingViewController *)&v8 viewDidDisappear:disappear];
+  applyController = [(PKAccountInvitationController *)self->_controller applyController];
   v5 = *MEMORY[0x1E69BB6A0];
   v6 = *MEMORY[0x1E69BA1A0];
   v9 = *MEMORY[0x1E69BA680];
   v10[0] = *MEMORY[0x1E69BA820];
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
-  [v4 reportAnalyticsDictionaryForPage:0 subject:v5 pageTag:v6 additionalValues:v7];
+  [applyController reportAnalyticsDictionaryForPage:0 subject:v5 pageTag:v6 additionalValues:v7];
 
   [(PKAccountInvitationOnboardingViewController *)self _endReportingIfNecessary];
 }
 
-- (id)_listItemConfigWithTitle:(id)a3 body:(id)a4 image:(id)a5
+- (id)_listItemConfigWithTitle:(id)title body:(id)body image:(id)image
 {
   v7 = MEMORY[0x1E69DCC28];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v7 cellConfiguration];
-  [v11 setText:v10];
+  imageCopy = image;
+  bodyCopy = body;
+  titleCopy = title;
+  cellConfiguration = [v7 cellConfiguration];
+  [cellConfiguration setText:titleCopy];
 
-  v12 = [v11 textProperties];
+  textProperties = [cellConfiguration textProperties];
   v13 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD40]];
-  [v12 setFont:v13];
+  [textProperties setFont:v13];
 
-  [v11 setSecondaryText:v9];
-  v14 = [v11 secondaryTextProperties];
+  [cellConfiguration setSecondaryText:bodyCopy];
+  secondaryTextProperties = [cellConfiguration secondaryTextProperties];
   v15 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD80]];
-  [v14 setFont:v15];
+  [secondaryTextProperties setFont:v15];
 
-  v16 = [v11 secondaryTextProperties];
-  v17 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v16 setColor:v17];
+  secondaryTextProperties2 = [cellConfiguration secondaryTextProperties];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [secondaryTextProperties2 setColor:secondaryLabelColor];
 
   v18 = MEMORY[0x1E69DCAB8];
   v19 = PKPassKitUIBundle();
-  v20 = [v18 imageNamed:v8 inBundle:v19 withConfiguration:0];
+  v20 = [v18 imageNamed:imageCopy inBundle:v19 withConfiguration:0];
 
-  [v11 setImage:v20];
-  v21 = [v11 imageProperties];
-  [v21 setReservedLayoutSize:{52.0, 53.0}];
+  [cellConfiguration setImage:v20];
+  imageProperties = [cellConfiguration imageProperties];
+  [imageProperties setReservedLayoutSize:{52.0, 53.0}];
 
-  [v11 setImageToTextPadding:20.0];
-  [v11 directionalLayoutMargins];
-  [v11 setDirectionalLayoutMargins:?];
+  [cellConfiguration setImageToTextPadding:20.0];
+  [cellConfiguration directionalLayoutMargins];
+  [cellConfiguration setDirectionalLayoutMargins:?];
 
-  return v11;
+  return cellConfiguration;
 }
 
-- (void)explanationViewDidSelectContinue:(id)a3
+- (void)explanationViewDidSelectContinue:(id)continue
 {
   [(PKExplanationViewController *)self showNavigationBarSpinner:1];
   [(PKAccountInvitationOnboardingViewController *)self _reportContinueTapped];

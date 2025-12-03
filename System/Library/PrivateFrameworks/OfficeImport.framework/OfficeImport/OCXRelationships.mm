@@ -1,23 +1,23 @@
 @interface OCXRelationships
-- (OCXRelationships)initWithPath:(id)a3;
-- (id)addRelationshipForKey:(id)a3 type:(id)a4 target:(id)a5;
-- (id)addRelationshipForKey:(id)a3 type:(id)a4 target:(id)a5 external:(BOOL)a6;
-- (id)idForKey:(id)a3;
-- (id)targetForKey:(id)a3;
-- (void)writeRelationshipsToFilename:(id)a3 stream:(id)a4;
+- (OCXRelationships)initWithPath:(id)path;
+- (id)addRelationshipForKey:(id)key type:(id)type target:(id)target;
+- (id)addRelationshipForKey:(id)key type:(id)type target:(id)target external:(BOOL)external;
+- (id)idForKey:(id)key;
+- (id)targetForKey:(id)key;
+- (void)writeRelationshipsToFilename:(id)filename stream:(id)stream;
 @end
 
 @implementation OCXRelationships
 
-- (OCXRelationships)initWithPath:(id)a3
+- (OCXRelationships)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v13.receiver = self;
   v13.super_class = OCXRelationships;
   v5 = [(OCXRelationships *)&v13 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [pathCopy copy];
     mPath = v5->mPath;
     v5->mPath = v6;
 
@@ -33,29 +33,29 @@
   return v5;
 }
 
-- (id)addRelationshipForKey:(id)a3 type:(id)a4 target:(id)a5
+- (id)addRelationshipForKey:(id)key type:(id)type target:(id)target
 {
-  v5 = [(OCXRelationships *)self addRelationshipForKey:a3 type:a4 target:a5 external:0];
+  v5 = [(OCXRelationships *)self addRelationshipForKey:key type:type target:target external:0];
 
   return v5;
 }
 
-- (id)addRelationshipForKey:(id)a3 type:(id)a4 target:(id)a5 external:(BOOL)a6
+- (id)addRelationshipForKey:(id)key type:(id)type target:(id)target external:(BOOL)external
 {
-  v25 = a6;
+  externalCopy = external;
   v33 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v26 = self;
-  v27 = v9;
-  if (v9)
+  keyCopy = key;
+  typeCopy = type;
+  targetCopy = target;
+  selfCopy = self;
+  v27 = keyCopy;
+  if (keyCopy)
   {
-    v12 = [(NSMutableDictionary *)self->mRelationshipMap objectForKey:v9];
+    v12 = [(NSMutableDictionary *)self->mRelationshipMap objectForKey:keyCopy];
     v13 = v12;
     if (v12)
     {
-      v14 = [v12 idString];
+      idString = [v12 idString];
 
       goto LABEL_19;
     }
@@ -82,15 +82,15 @@
           }
 
           v19 = *(*(&v28 + 1) + 8 * i);
-          v20 = [v19 type];
-          if ([v20 isEqualToString:v10])
+          type = [v19 type];
+          if ([type isEqualToString:typeCopy])
           {
-            v21 = [v19 target];
-            v22 = [v21 isEqualToString:v11];
+            target = [v19 target];
+            v22 = [target isEqualToString:targetCopy];
 
             if (v22)
             {
-              v14 = [v19 idString];
+              idString = [v19 idString];
 
               goto LABEL_19;
             }
@@ -108,45 +108,45 @@
     }
   }
 
-  ++v26->mNextId;
-  v23 = [[OCXRelationship alloc] initWithId:v26->mNextId type:v10 target:v11 external:v25];
-  [(NSMutableArray *)v26->mRelationships addObject:v23];
+  ++selfCopy->mNextId;
+  v23 = [[OCXRelationship alloc] initWithId:selfCopy->mNextId type:typeCopy target:targetCopy external:externalCopy];
+  [(NSMutableArray *)selfCopy->mRelationships addObject:v23];
   if (v27)
   {
-    [(NSMutableDictionary *)v26->mRelationshipMap setObject:v23 forKey:v27];
+    [(NSMutableDictionary *)selfCopy->mRelationshipMap setObject:v23 forKey:v27];
   }
 
-  v14 = [(OCXRelationship *)v23 idString];
+  idString = [(OCXRelationship *)v23 idString];
 
 LABEL_19:
 
-  return v14;
+  return idString;
 }
 
-- (id)idForKey:(id)a3
+- (id)idForKey:(id)key
 {
-  v3 = [(NSMutableDictionary *)self->mRelationshipMap objectForKey:a3];
-  v4 = [v3 idString];
+  v3 = [(NSMutableDictionary *)self->mRelationshipMap objectForKey:key];
+  idString = [v3 idString];
 
-  return v4;
+  return idString;
 }
 
-- (id)targetForKey:(id)a3
+- (id)targetForKey:(id)key
 {
-  v3 = [(NSMutableDictionary *)self->mRelationshipMap objectForKey:a3];
-  v4 = [v3 target];
+  v3 = [(NSMutableDictionary *)self->mRelationshipMap objectForKey:key];
+  target = [v3 target];
 
-  return v4;
+  return target;
 }
 
-- (void)writeRelationshipsToFilename:(id)a3 stream:(id)a4
+- (void)writeRelationshipsToFilename:(id)filename stream:(id)stream
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  filenameCopy = filename;
+  streamCopy = stream;
   if ([(NSMutableArray *)self->mRelationships count])
   {
-    v8 = [TCXmlStreamWriter newXmlStreamWriterWithZipEntryName:v6 outputStream:v7 isCompressed:1];
+    v8 = [TCXmlStreamWriter newXmlStreamWriterWithZipEntryName:filenameCopy outputStream:streamCopy isCompressed:1];
     [v8 setUp];
     [v8 startElement:@"Relationships" prefix:0 ns:"http://schemas.openxmlformats.org/package/2006/relationships"];
     v15 = 0u;

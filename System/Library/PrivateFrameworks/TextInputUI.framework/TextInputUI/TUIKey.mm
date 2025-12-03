@@ -1,17 +1,17 @@
 @interface TUIKey
-+ (id)keyFromKBTree:(id)a3;
-+ (id)keyFromKBTree:(id)a3 layoutType:(int64_t)a4 layoutShape:(int64_t)a5 multiplier:(double)a6;
-+ (int64_t)layoutTypeForKey:(id)a3;
++ (id)keyFromKBTree:(id)tree;
++ (id)keyFromKBTree:(id)tree layoutType:(int64_t)type layoutShape:(int64_t)shape multiplier:(double)multiplier;
++ (int64_t)layoutTypeForKey:(id)key;
 - (BOOL)isBaseKeyOnRight;
 - (CGRect)frame;
 - (CGRect)paddedFrame;
 - (NSString)adjustedPrimaryVariantDisplayStringForSpecialCases;
 - (id)description;
-- (id)stringFromLayoutType:(int64_t)a3;
-- (id)stringFromShape:(int64_t)a3;
-- (void)setKeyShape:(id)a3;
-- (void)updateVariantOrderForMultilineSelectorWithRowLimit:(unint64_t)a3;
-- (void)updateVariantOrderForSmallLayoutsWithKeyplaneWidth:(double)a3 keyStartingPosition:(unint64_t)a4 variantSelectorType:(int64_t)a5;
+- (id)stringFromLayoutType:(int64_t)type;
+- (id)stringFromShape:(int64_t)shape;
+- (void)setKeyShape:(id)shape;
+- (void)updateVariantOrderForMultilineSelectorWithRowLimit:(unint64_t)limit;
+- (void)updateVariantOrderForSmallLayoutsWithKeyplaneWidth:(double)width keyStartingPosition:(unint64_t)position variantSelectorType:(int64_t)type;
 @end
 
 @implementation TUIKey
@@ -24,52 +24,52 @@
   v6 = [(TUIKey *)self stringFromLayoutType:[(TUIKey *)self layoutType]];
   [(TUIKey *)self multiplier];
   v8 = v7;
-  v9 = [(TUIKey *)self displayString];
-  v10 = [v3 stringWithFormat:@"<%@: %p shape = %@; type = %@; multiplier = %0.2f; display = %@", v4, self, v5, v6, v8, v9];;
+  displayString = [(TUIKey *)self displayString];
+  v10 = [v3 stringWithFormat:@"<%@: %p shape = %@; type = %@; multiplier = %0.2f; display = %@", v4, self, v5, v6, v8, displayString];;
 
   return v10;
 }
 
-- (id)stringFromLayoutType:(int64_t)a3
+- (id)stringFromLayoutType:(int64_t)type
 {
-  if ((a3 - 2) > 4)
+  if ((type - 2) > 4)
   {
     return @"Unknown";
   }
 
   else
   {
-    return *(&off_1E72D76A8 + a3 - 2);
+    return *(&off_1E72D76A8 + type - 2);
   }
 }
 
-- (id)stringFromShape:(int64_t)a3
+- (id)stringFromShape:(int64_t)shape
 {
-  if (a3 > 2)
+  if (shape > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return *(&off_1E72D7690 + a3);
+    return *(&off_1E72D7690 + shape);
   }
 }
 
 - (NSString)adjustedPrimaryVariantDisplayStringForSpecialCases
 {
-  v3 = [(TUIKey *)self backingTree];
-  v4 = [v3 name];
-  v5 = [v4 isEqualToString:@"Apostrophe"];
+  backingTree = [(TUIKey *)self backingTree];
+  name = [backingTree name];
+  v5 = [name isEqualToString:@"Apostrophe"];
 
   if (v5)
   {
     return @"'";
   }
 
-  v7 = [(TUIKey *)self backingTree];
-  v8 = [v7 name];
-  v9 = [v8 isEqualToString:@"Quotation-Mark"];
+  backingTree2 = [(TUIKey *)self backingTree];
+  name2 = [backingTree2 name];
+  v9 = [name2 isEqualToString:@"Quotation-Mark"];
 
   if (v9)
   {
@@ -82,11 +82,11 @@
   }
 }
 
-- (void)updateVariantOrderForMultilineSelectorWithRowLimit:(unint64_t)a3
+- (void)updateVariantOrderForMultilineSelectorWithRowLimit:(unint64_t)limit
 {
   v17 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = [(TUIKey *)self arrangedVariantsArray];
-  v6 = [v5 count];
+  arrangedVariantsArray = [(TUIKey *)self arrangedVariantsArray];
+  v6 = [arrangedVariantsArray count];
 
   if (v6)
   {
@@ -95,20 +95,20 @@
     v9 = 1;
     do
     {
-      v10 = [(TUIKey *)self arrangedVariantsArray];
-      v11 = [v10 objectAtIndexedSubscript:v8];
+      arrangedVariantsArray2 = [(TUIKey *)self arrangedVariantsArray];
+      v11 = [arrangedVariantsArray2 objectAtIndexedSubscript:v8];
 
       if (v9)
       {
-        [v17 insertObject:v11 atIndex:v7 * a3];
-        v12 = v8 % a3;
-        v9 = v8 % a3 == 1 && v7 != 0;
+        [v17 insertObject:v11 atIndex:v7 * limit];
+        v12 = v8 % limit;
+        v9 = v8 % limit == 1 && v7 != 0;
       }
 
       else
       {
         [v17 addObject:v11];
-        v12 = v8 % a3;
+        v12 = v8 % limit;
         v9 = 1;
       }
 
@@ -128,8 +128,8 @@
       }
 
       ++v8;
-      v15 = [(TUIKey *)self arrangedVariantsArray];
-      v16 = [v15 count];
+      arrangedVariantsArray3 = [(TUIKey *)self arrangedVariantsArray];
+      v16 = [arrangedVariantsArray3 count];
     }
 
     while (v8 < v16);
@@ -138,15 +138,15 @@
   [(TUIKey *)self setArrangedVariantsArray:v17];
 }
 
-- (void)updateVariantOrderForSmallLayoutsWithKeyplaneWidth:(double)a3 keyStartingPosition:(unint64_t)a4 variantSelectorType:(int64_t)a5
+- (void)updateVariantOrderForSmallLayoutsWithKeyplaneWidth:(double)width keyStartingPosition:(unint64_t)position variantSelectorType:(int64_t)type
 {
   v54 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v9 = [(TUIKey *)self arrangedVariantsArray];
-  v10 = [v9 count];
+  arrangedVariantsArray = [(TUIKey *)self arrangedVariantsArray];
+  v10 = [arrangedVariantsArray count];
 
-  v11 = [(TUIKey *)self isBaseKeyOnRight];
-  v12 = v11;
-  if (a5 == 1)
+  isBaseKeyOnRight = [(TUIKey *)self isBaseKeyOnRight];
+  v12 = isBaseKeyOnRight;
+  if (type == 1)
   {
     v13 = 1.33333333;
   }
@@ -156,18 +156,18 @@
     v13 = 1.0;
   }
 
-  v14 = a4;
-  if (v11 && v10 < a4)
+  positionCopy = position;
+  if (isBaseKeyOnRight && v10 < position)
   {
     v15 = v10 - 1;
   }
 
   else
   {
-    v16 = v10 >= (a3 - v14 + 1.0) || v11;
+    v16 = v10 >= (width - positionCopy + 1.0) || isBaseKeyOnRight;
     if (v16 == 1)
     {
-      v15 = -(v13 - v14 * v13);
+      v15 = -(v13 - positionCopy * v13);
     }
 
     else
@@ -176,39 +176,39 @@
     }
   }
 
-  v17 = [(TUIKey *)self arrangedVariantsArray];
-  v18 = [(TUIKey *)self primaryVariant];
-  v19 = [v17 indexOfObject:v18];
+  arrangedVariantsArray2 = [(TUIKey *)self arrangedVariantsArray];
+  primaryVariant = [(TUIKey *)self primaryVariant];
+  v19 = [arrangedVariantsArray2 indexOfObject:primaryVariant];
 
   if (v19 == v15)
   {
     goto LABEL_59;
   }
 
-  v20 = [(TUIKey *)self arrangedVariantsArray];
-  v21 = [v20 count];
+  arrangedVariantsArray3 = [(TUIKey *)self arrangedVariantsArray];
+  v21 = [arrangedVariantsArray3 count];
 
   v22 = 0;
   if (v21)
   {
     v23 = 0;
-    v24 = v13 * a3;
+    v24 = v13 * width;
     v25 = 1;
     v26 = 0.0;
     do
     {
-      v27 = [(TUIKey *)self arrangedVariantsArray];
-      v28 = [v27 objectAtIndexedSubscript:v23];
+      arrangedVariantsArray4 = [(TUIKey *)self arrangedVariantsArray];
+      v28 = [arrangedVariantsArray4 objectAtIndexedSubscript:v23];
 
-      v29 = [v28 secondaryDisplayStrings];
-      if ([v29 count])
+      secondaryDisplayStrings = [v28 secondaryDisplayStrings];
+      if ([secondaryDisplayStrings count])
       {
         if ([v28 displayType] == 7)
         {
-          v30 = 0;
+          supportsSupplementalDisplayString = 0;
 LABEL_22:
 
-          if ((v30 & 1) == 0 && !v22)
+          if ((supportsSupplementalDisplayString & 1) == 0 && !v22)
           {
             v22 = v28;
           }
@@ -218,14 +218,14 @@ LABEL_22:
 
         if (![v28 displayType])
         {
-          v30 = [v28 supportsSupplementalDisplayString];
+          supportsSupplementalDisplayString = [v28 supportsSupplementalDisplayString];
           goto LABEL_22;
         }
       }
 
 LABEL_25:
-      v31 = v26 + v14;
-      if (v25 & 1 | (v26 + v14 >= v24))
+      v31 = v26 + positionCopy;
+      if (v25 & 1 | (v26 + positionCopy >= v24))
       {
         [v54 insertObject:v28 atIndex:{0, v31}];
       }
@@ -239,15 +239,15 @@ LABEL_25:
       v25 ^= 1u;
 
       ++v23;
-      v32 = [(TUIKey *)self arrangedVariantsArray];
-      v33 = [v32 count];
+      arrangedVariantsArray5 = [(TUIKey *)self arrangedVariantsArray];
+      v33 = [arrangedVariantsArray5 count];
     }
 
     while (v23 < v33);
   }
 
-  v34 = [(TUIKey *)self primaryVariant];
-  v35 = [v54 indexOfObject:v34];
+  primaryVariant2 = [(TUIKey *)self primaryVariant];
+  v35 = [v54 indexOfObject:primaryVariant2];
 
   if (v35 != v15)
   {
@@ -311,22 +311,22 @@ LABEL_25:
       }
     }
 
-    v44 = [(TUIKey *)self primaryVariant];
-    if ([v54 indexOfObject:v44])
+    primaryVariant3 = [(TUIKey *)self primaryVariant];
+    if ([v54 indexOfObject:primaryVariant3])
     {
-      v45 = [(TUIKey *)self primaryVariant];
-      v46 = [v54 indexOfObject:v45];
+      primaryVariant4 = [(TUIKey *)self primaryVariant];
+      v46 = [v54 indexOfObject:primaryVariant4];
 
       if (v46 == v15 || v15 >= v10)
       {
         goto LABEL_50;
       }
 
-      v47 = [(TUIKey *)self primaryVariant];
-      [v54 removeObject:v47];
+      primaryVariant5 = [(TUIKey *)self primaryVariant];
+      [v54 removeObject:primaryVariant5];
 
-      v44 = [(TUIKey *)self primaryVariant];
-      [v54 insertObject:v44 atIndex:v15];
+      primaryVariant3 = [(TUIKey *)self primaryVariant];
+      [v54 insertObject:primaryVariant3 atIndex:v15];
     }
   }
 
@@ -335,8 +335,8 @@ LABEL_50:
   if (v22)
   {
     v49 = [v54 indexOfObject:v22];
-    v50 = [(TUIKey *)self primaryVariant];
-    v51 = [v54 indexOfObject:v50];
+    primaryVariant6 = [(TUIKey *)self primaryVariant];
+    v51 = [v54 indexOfObject:primaryVariant6];
 
     v48 = v54;
     v52 = v49 - v51;
@@ -370,49 +370,49 @@ LABEL_59:
 
 - (BOOL)isBaseKeyOnRight
 {
-  v3 = [(UIKBTree *)self->_backingTree variantPopupBias];
+  variantPopupBias = [(UIKBTree *)self->_backingTree variantPopupBias];
 
-  if (v3)
+  if (variantPopupBias)
   {
-    v4 = [(UIKBTree *)self->_backingTree variantPopupBias];
-    if ([v4 isEqualToString:@"right"])
+    variantPopupBias2 = [(UIKBTree *)self->_backingTree variantPopupBias];
+    if ([variantPopupBias2 isEqualToString:@"right"])
     {
 LABEL_5:
 
       return 0;
     }
 
-    v5 = [(UIKBTree *)self->_backingTree variantPopupBias];
-    if ([v5 isEqualToString:@"fixed-right"])
+    variantPopupBias3 = [(UIKBTree *)self->_backingTree variantPopupBias];
+    if ([variantPopupBias3 isEqualToString:@"fixed-right"])
     {
 
       goto LABEL_5;
     }
 
-    v7 = [(UIKBTree *)self->_backingTree variantPopupBias];
-    v8 = [v7 isEqualToString:@"strictly-right"];
+    variantPopupBias4 = [(UIKBTree *)self->_backingTree variantPopupBias];
+    v8 = [variantPopupBias4 isEqualToString:@"strictly-right"];
 
     if (v8)
     {
       return 0;
     }
 
-    v9 = [(UIKBTree *)self->_backingTree variantPopupBias];
-    if ([v9 isEqualToString:@"left"])
+    variantPopupBias5 = [(UIKBTree *)self->_backingTree variantPopupBias];
+    if ([variantPopupBias5 isEqualToString:@"left"])
     {
       goto LABEL_11;
     }
 
-    v10 = [(UIKBTree *)self->_backingTree variantPopupBias];
-    if ([v10 isEqualToString:@"fixed-left"])
+    variantPopupBias6 = [(UIKBTree *)self->_backingTree variantPopupBias];
+    if ([variantPopupBias6 isEqualToString:@"fixed-left"])
     {
 
 LABEL_11:
       return 1;
     }
 
-    v11 = [(UIKBTree *)self->_backingTree variantPopupBias];
-    v12 = [v11 isEqualToString:@"strictly-left"];
+    variantPopupBias7 = [(UIKBTree *)self->_backingTree variantPopupBias];
+    v12 = [variantPopupBias7 isEqualToString:@"strictly-left"];
 
     if (v12)
     {
@@ -423,15 +423,15 @@ LABEL_11:
   return [(UIKBTree *)self->_backingTree dynamicDisplayCorner]== 4;
 }
 
-- (void)setKeyShape:(id)a3
+- (void)setKeyShape:(id)shape
 {
-  v6 = a3;
-  v4 = [(UIKBTree *)self->_backingTree shape];
-  v5 = [v6 isEqual:v4];
+  shapeCopy = shape;
+  shape = [(UIKBTree *)self->_backingTree shape];
+  v5 = [shapeCopy isEqual:shape];
 
   if ((v5 & 1) == 0)
   {
-    [(UIKBTree *)self->_backingTree setShape:v6];
+    [(UIKBTree *)self->_backingTree setShape:shapeCopy];
   }
 }
 
@@ -455,29 +455,29 @@ LABEL_11:
   return result;
 }
 
-+ (int64_t)layoutTypeForKey:(id)a3
++ (int64_t)layoutTypeForKey:(id)key
 {
-  v3 = a3;
-  v4 = [v3 displayType];
-  v5 = [v3 interactionType];
-  if (v4 <= 0x35)
+  keyCopy = key;
+  displayType = [keyCopy displayType];
+  interactionType = [keyCopy interactionType];
+  if (displayType <= 0x35)
   {
-    if (((1 << v4) & 0x38000304A4703CLL) != 0)
+    if (((1 << displayType) & 0x38000304A4703CLL) != 0)
     {
       v6 = 3;
       goto LABEL_4;
     }
 
-    if (v4 == 25)
+    if (displayType == 25)
     {
       v6 = 4;
       goto LABEL_4;
     }
 
-    if (v4 == 50)
+    if (displayType == 50)
     {
-      v8 = [v3 name];
-      v9 = [v8 containsString:@"Middle"];
+      name = [keyCopy name];
+      v9 = [name containsString:@"Middle"];
 
       v6 = v9;
       goto LABEL_4;
@@ -485,17 +485,17 @@ LABEL_11:
   }
 
   v10 = 4;
-  if (v5 != 15)
+  if (interactionType != 15)
   {
     v10 = 2;
   }
 
-  if (((1 << v5) & 0x26000026E70) != 0)
+  if (((1 << interactionType) & 0x26000026E70) != 0)
   {
     v10 = 3;
   }
 
-  if (v5 <= 0x29)
+  if (interactionType <= 0x29)
   {
     v6 = v10;
   }
@@ -510,33 +510,33 @@ LABEL_4:
   return v6;
 }
 
-+ (id)keyFromKBTree:(id)a3 layoutType:(int64_t)a4 layoutShape:(int64_t)a5 multiplier:(double)a6
++ (id)keyFromKBTree:(id)tree layoutType:(int64_t)type layoutShape:(int64_t)shape multiplier:(double)multiplier
 {
-  v9 = a3;
-  v10 = [TUIKey keyFromKBTree:v9];
-  [v10 setLayoutType:a4];
-  v11 = [v9 subtrees];
-  [v10 setArrangedVariantsArray:v11];
+  treeCopy = tree;
+  v10 = [TUIKey keyFromKBTree:treeCopy];
+  [v10 setLayoutType:type];
+  subtrees = [treeCopy subtrees];
+  [v10 setArrangedVariantsArray:subtrees];
 
   v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
   [v10 setFlickableSet:v12];
 
-  [v10 setLayoutShape:a5];
-  [v10 setMultiplier:a6];
-  [v10 setBackingTree:v9];
-  v13 = [v9 displayString];
+  [v10 setLayoutShape:shape];
+  [v10 setMultiplier:multiplier];
+  [v10 setBackingTree:treeCopy];
+  displayString = [treeCopy displayString];
 
-  [v10 setDisplayString:v13];
+  [v10 setDisplayString:displayString];
 
   return v10;
 }
 
-+ (id)keyFromKBTree:(id)a3
++ (id)keyFromKBTree:(id)tree
 {
-  v3 = a3;
+  treeCopy = tree;
   v4 = objc_alloc_init(TUIKey);
-  v5 = [v3 subtrees];
-  [(TUIKey *)v4 setArrangedVariantsArray:v5];
+  subtrees = [treeCopy subtrees];
+  [(TUIKey *)v4 setArrangedVariantsArray:subtrees];
 
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   [(TUIKey *)v4 setFlickableSet:v6];
@@ -544,10 +544,10 @@ LABEL_4:
   [(TUIKey *)v4 setLayoutType:-1];
   [(TUIKey *)v4 setLayoutShape:0];
   [(TUIKey *)v4 setMultiplier:0.0];
-  [(TUIKey *)v4 setBackingTree:v3];
-  v7 = [v3 displayString];
+  [(TUIKey *)v4 setBackingTree:treeCopy];
+  displayString = [treeCopy displayString];
 
-  [(TUIKey *)v4 setDisplayString:v7];
+  [(TUIKey *)v4 setDisplayString:displayString];
 
   return v4;
 }

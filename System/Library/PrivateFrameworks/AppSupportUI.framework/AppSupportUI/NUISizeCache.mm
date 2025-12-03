@@ -1,22 +1,22 @@
 @interface NUISizeCache
-- (BOOL)getSize:(CGSize *)a3 forTargetSize:(CGSize)a4 isSizeDependentOnPerpendicularAxis:(BOOL)a5;
+- (BOOL)getSize:(CGSize *)size forTargetSize:(CGSize)targetSize isSizeDependentOnPerpendicularAxis:(BOOL)axis;
 - (id).cxx_construct;
-- (id)initForAsynchronousAccess:(BOOL)a3;
+- (id)initForAsynchronousAccess:(BOOL)access;
 - (void)dealloc;
-- (void)insertSize:(CGSize)a3 forTargetSize:(CGSize)a4;
+- (void)insertSize:(CGSize)size forTargetSize:(CGSize)targetSize;
 - (void)invalidateCache;
 @end
 
 @implementation NUISizeCache
 
-- (id)initForAsynchronousAccess:(BOOL)a3
+- (id)initForAsynchronousAccess:(BOOL)access
 {
   v5.receiver = self;
   v5.super_class = NUISizeCache;
   result = [(NUISizeCache *)&v5 init];
   if (result)
   {
-    *(result + 32) = a3;
+    *(result + 32) = access;
   }
 
   return result;
@@ -41,16 +41,16 @@
   [(NUISizeCache *)&v3 dealloc];
 }
 
-- (BOOL)getSize:(CGSize *)a3 forTargetSize:(CGSize)a4 isSizeDependentOnPerpendicularAxis:(BOOL)a5
+- (BOOL)getSize:(CGSize *)size forTargetSize:(CGSize)targetSize isSizeDependentOnPerpendicularAxis:(BOOL)axis
 {
-  height = a4.height;
-  width = a4.width;
+  height = targetSize.height;
+  width = targetSize.width;
   if (self->_threadSafe)
   {
     objc_sync_enter(self);
     v14.width = width;
     v14.height = height;
-    size = nui_size_cache::find_size(&self->_sizeCache, v14, a5, a3);
+    size = nui_size_cache::find_size(&self->_sizeCache, v14, axis, size);
     objc_sync_exit(self);
     return size;
   }
@@ -59,16 +59,16 @@
   {
     p_sizeCache = &self->_sizeCache;
 
-    return nui_size_cache::find_size(p_sizeCache, a4, a5, a3);
+    return nui_size_cache::find_size(p_sizeCache, targetSize, axis, size);
   }
 }
 
-- (void)insertSize:(CGSize)a3 forTargetSize:(CGSize)a4
+- (void)insertSize:(CGSize)size forTargetSize:(CGSize)targetSize
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3.height;
-  v7 = a3.width;
+  height = targetSize.height;
+  width = targetSize.width;
+  v6 = size.height;
+  v7 = size.width;
   if (self->_threadSafe)
   {
     objc_sync_enter(self);
@@ -84,8 +84,8 @@
   else
   {
     p_sizeCache = &self->_sizeCache;
-    v10 = a4.width;
-    v11 = a4.height;
+    v10 = targetSize.width;
+    v11 = targetSize.height;
     v12 = v7;
     v13 = v6;
 

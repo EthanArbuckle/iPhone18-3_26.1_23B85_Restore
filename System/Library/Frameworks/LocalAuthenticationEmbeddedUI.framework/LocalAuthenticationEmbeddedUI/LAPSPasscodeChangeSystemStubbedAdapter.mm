@@ -2,9 +2,9 @@
 - (id)lastPasscodeChange;
 - (id)newPasscodeRequest;
 - (id)oldPasscodeRequest;
-- (void)changePasscode:(id)a3 to:(id)a4 completion:(id)a5;
-- (void)verifyNewPasscode:(id)a3 completion:(id)a4;
-- (void)verifyPasscode:(id)a3 completion:(id)a4;
+- (void)changePasscode:(id)passcode to:(id)to completion:(id)completion;
+- (void)verifyNewPasscode:(id)passcode completion:(id)completion;
+- (void)verifyPasscode:(id)passcode completion:(id)completion;
 @end
 
 @implementation LAPSPasscodeChangeSystemStubbedAdapter
@@ -65,19 +65,19 @@ id __60__LAPSPasscodeChangeSystemStubbedAdapter_newPasscodeRequest__block_invoke
   return v3;
 }
 
-- (void)verifyPasscode:(id)a3 completion:(id)a4
+- (void)verifyPasscode:(id)passcode completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  passcodeCopy = passcode;
+  completionCopy = completion;
   v7 = dispatch_time(0, 1000000000);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __68__LAPSPasscodeChangeSystemStubbedAdapter_verifyPasscode_completion___block_invoke;
   v10[3] = &unk_278A65A20;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = passcodeCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = passcodeCopy;
   dispatch_after(v7, MEMORY[0x277D85CD0], v10);
 }
 
@@ -101,19 +101,19 @@ void __68__LAPSPasscodeChangeSystemStubbedAdapter_verifyPasscode_completion___bl
   }
 }
 
-- (void)verifyNewPasscode:(id)a3 completion:(id)a4
+- (void)verifyNewPasscode:(id)passcode completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  passcodeCopy = passcode;
+  completionCopy = completion;
   v7 = dispatch_time(0, 1000000000);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __71__LAPSPasscodeChangeSystemStubbedAdapter_verifyNewPasscode_completion___block_invoke;
   v10[3] = &unk_278A65A20;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = passcodeCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = passcodeCopy;
   dispatch_after(v7, MEMORY[0x277D85CD0], v10);
 }
 
@@ -143,16 +143,16 @@ LABEL_7:
   (*(v5 + 16))(v5, v7);
 }
 
-- (void)changePasscode:(id)a3 to:(id)a4 completion:(id)a5
+- (void)changePasscode:(id)passcode to:(id)to completion:(id)completion
 {
-  v5 = a5;
+  completionCopy = completion;
   v6 = dispatch_time(0, 1000000000);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__LAPSPasscodeChangeSystemStubbedAdapter_changePasscode_to_completion___block_invoke;
   block[3] = &unk_278A65A48;
-  v9 = v5;
-  v7 = v5;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_after(v6, MEMORY[0x277D85CD0], block);
 }
 

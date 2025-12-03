@@ -1,41 +1,41 @@
 @interface STConfigurationChange
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToConfigurationChange:(id)a3;
-- (STConfigurationChange)initWithCoder:(id)a3;
-- (STConfigurationChange)initWithTargetUser:(id)a3 targetDevices:(id)a4 configuration:(id)a5 configurationType:(int64_t)a6 author:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToConfigurationChange:(id)change;
+- (STConfigurationChange)initWithCoder:(id)coder;
+- (STConfigurationChange)initWithTargetUser:(id)user targetDevices:(id)devices configuration:(id)configuration configurationType:(int64_t)type author:(id)author;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)matchingAny:(id)a3;
+- (id)matchingAny:(id)any;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STConfigurationChange
 
-- (STConfigurationChange)initWithTargetUser:(id)a3 targetDevices:(id)a4 configuration:(id)a5 configurationType:(int64_t)a6 author:(id)a7
+- (STConfigurationChange)initWithTargetUser:(id)user targetDevices:(id)devices configuration:(id)configuration configurationType:(int64_t)type author:(id)author
 {
   v25.receiver = self;
   v25.super_class = STConfigurationChange;
-  v11 = a7;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  authorCopy = author;
+  configurationCopy = configuration;
+  devicesCopy = devices;
+  userCopy = user;
   v15 = [(STConfigurationChange *)&v25 init];
-  v16 = [v14 copy];
+  v16 = [userCopy copy];
 
   targetUser = v15->_targetUser;
   v15->_targetUser = v16;
 
-  v18 = [v13 copy];
+  v18 = [devicesCopy copy];
   targetDevices = v15->_targetDevices;
   v15->_targetDevices = v18;
 
-  v20 = [v12 copy];
+  v20 = [configurationCopy copy];
   configuration = v15->_configuration;
   v15->_configuration = v20;
 
-  v15->_configurationType = a6;
-  v22 = [v11 copy];
+  v15->_configurationType = type;
+  v22 = [authorCopy copy];
 
   author = v15->_author;
   v15->_author = v22;
@@ -43,11 +43,11 @@
   return v15;
 }
 
-- (id)matchingAny:(id)a3
+- (id)matchingAny:(id)any
 {
-  v4 = a3;
+  anyCopy = any;
   v5 = [NSNumber numberWithInteger:[(STConfigurationChange *)self configurationType]];
-  v6 = [v4 containsObject:v5];
+  v6 = [anyCopy containsObject:v5];
 
   if (v6)
   {
@@ -59,8 +59,8 @@
     v8 = [NSError alloc];
     v9 = STErrorDomain;
     v13 = NSLocalizedDescriptionKey;
-    v14 = self;
-    v10 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
+    selfCopy = self;
+    v10 = [NSDictionary dictionaryWithObjects:&selfCopy forKeys:&v13 count:1];
     v11 = [v8 initWithDomain:v9 code:45 userInfo:v10];
     v7 = [STResult failure:v11];
   }
@@ -71,8 +71,8 @@
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(STConfigurationChange *)self targetUser];
-  v5 = [(STConfigurationChange *)self targetDevices];
+  targetUser = [(STConfigurationChange *)self targetUser];
+  targetDevices = [(STConfigurationChange *)self targetDevices];
   v6 = [(STConfigurationChange *)self configurationType]- 1;
   if (v6 > 5)
   {
@@ -84,26 +84,26 @@
     v7 = off_1001A3578[v6];
   }
 
-  v8 = [(STConfigurationChange *)self author];
-  v9 = [NSString stringWithFormat:@"<%@ { TargetUser: %@, TargetDevices: %@, Type: %@, Author: %@ }>", v3, v4, v5, v7, v8];
+  author = [(STConfigurationChange *)self author];
+  v9 = [NSString stringWithFormat:@"<%@ { TargetUser: %@, TargetDevices: %@, Type: %@, Author: %@ }>", v3, targetUser, targetDevices, v7, author];
 
   return v9;
 }
 
-- (STConfigurationChange)initWithCoder:(id)a3
+- (STConfigurationChange)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 decodeIntegerForKey:@"encodingVersion"] < 1)
+  coderCopy = coder;
+  if ([coderCopy decodeIntegerForKey:@"encodingVersion"] < 1)
   {
-    v20 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"targetUser"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"targetUser"];
     v5 = objc_opt_class();
     v6 = [NSSet setWithObjects:v5, objc_opt_class(), 0];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"targetDevices"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"targetDevices"];
     v30 = [NSSet setWithArray:v7];
 
     v29 = [NSSet alloc];
@@ -123,39 +123,39 @@
     v14 = objc_opt_class();
     v15 = objc_opt_class();
     v16 = [v29 initWithObjects:{v28, v27, v26, v25, v24, v23, v22, v8, v9, v10, v11, v12, v13, v14, v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"configuration"];
-    v18 = [v4 decodeIntegerForKey:@"configurationType"];
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"author"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"configuration"];
+    v18 = [coderCopy decodeIntegerForKey:@"configurationType"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"author"];
     self = [(STConfigurationChange *)self initWithTargetUser:v31 targetDevices:v30 configuration:v17 configurationType:v18 author:v19];
 
-    v20 = self;
+    selfCopy = self;
   }
 
-  return v20;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:+[STConfigurationChange encodingVersion](STConfigurationChange forKey:{"encodingVersion"), @"encodingVersion"}];
-  v5 = [(STConfigurationChange *)self targetUser];
-  [v4 encodeObject:v5 forKey:@"targetUser"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:+[STConfigurationChange encodingVersion](STConfigurationChange forKey:{"encodingVersion"), @"encodingVersion"}];
+  targetUser = [(STConfigurationChange *)self targetUser];
+  [coderCopy encodeObject:targetUser forKey:@"targetUser"];
 
-  v6 = [(STConfigurationChange *)self targetDevices];
-  v7 = [v6 allObjects];
-  [v4 encodeObject:v7 forKey:@"targetDevices"];
+  targetDevices = [(STConfigurationChange *)self targetDevices];
+  allObjects = [targetDevices allObjects];
+  [coderCopy encodeObject:allObjects forKey:@"targetDevices"];
 
-  v8 = [(STConfigurationChange *)self configuration];
-  [v4 encodeObject:v8 forKey:@"configuration"];
+  configuration = [(STConfigurationChange *)self configuration];
+  [coderCopy encodeObject:configuration forKey:@"configuration"];
 
-  [v4 encodeInteger:-[STConfigurationChange configurationType](self forKey:{"configurationType"), @"configurationType"}];
-  v9 = [(STConfigurationChange *)self author];
-  [v4 encodeObject:v9 forKey:@"author"];
+  [coderCopy encodeInteger:-[STConfigurationChange configurationType](self forKey:{"configurationType"), @"configurationType"}];
+  author = [(STConfigurationChange *)self author];
+  [coderCopy encodeObject:author forKey:@"author"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   targetUser = self->_targetUser;
   targetDevices = self->_targetDevices;
   configuration = self->_configuration;
@@ -165,10 +165,10 @@
   return [v4 initWithTargetUser:targetUser targetDevices:targetDevices configuration:configuration configurationType:configurationType author:author];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -178,7 +178,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(STConfigurationChange *)self isEqualToConfigurationChange:v4];
+      v5 = [(STConfigurationChange *)self isEqualToConfigurationChange:equalCopy];
     }
 
     else
@@ -190,31 +190,31 @@
   return v5;
 }
 
-- (BOOL)isEqualToConfigurationChange:(id)a3
+- (BOOL)isEqualToConfigurationChange:(id)change
 {
-  v4 = a3;
-  if (v4 == self)
+  changeCopy = change;
+  if (changeCopy == self)
   {
     v14 = 1;
   }
 
   else
   {
-    v5 = [(STConfigurationChange *)self targetUser];
-    v6 = [(STConfigurationChange *)v4 targetUser];
-    if ([v5 isEqualToUserID:v6])
+    targetUser = [(STConfigurationChange *)self targetUser];
+    targetUser2 = [(STConfigurationChange *)changeCopy targetUser];
+    if ([targetUser isEqualToUserID:targetUser2])
     {
-      v7 = [(STConfigurationChange *)self targetDevices];
-      v8 = [(STConfigurationChange *)v4 targetDevices];
-      if ([v7 isEqualToSet:v8])
+      targetDevices = [(STConfigurationChange *)self targetDevices];
+      targetDevices2 = [(STConfigurationChange *)changeCopy targetDevices];
+      if ([targetDevices isEqualToSet:targetDevices2])
       {
-        v9 = [(STConfigurationChange *)self configuration];
-        v10 = [(STConfigurationChange *)v4 configuration];
-        if ([v9 isEqual:v10] && (v11 = -[STConfigurationChange configurationType](self, "configurationType"), v11 == -[STConfigurationChange configurationType](v4, "configurationType")))
+        configuration = [(STConfigurationChange *)self configuration];
+        configuration2 = [(STConfigurationChange *)changeCopy configuration];
+        if ([configuration isEqual:configuration2] && (v11 = -[STConfigurationChange configurationType](self, "configurationType"), v11 == -[STConfigurationChange configurationType](changeCopy, "configurationType")))
         {
-          v12 = [(STConfigurationChange *)self author];
-          v13 = [(STConfigurationChange *)v4 author];
-          v14 = [v12 isEqualToUserID:v13];
+          author = [(STConfigurationChange *)self author];
+          author2 = [(STConfigurationChange *)changeCopy author];
+          v14 = [author isEqualToUserID:author2];
         }
 
         else
@@ -240,20 +240,20 @@
 
 - (unint64_t)hash
 {
-  v3 = [(STConfigurationChange *)self targetUser];
-  v4 = [v3 hash];
-  v5 = [(STConfigurationChange *)self configuration];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(STConfigurationChange *)self configurationType];
-  v8 = [(STConfigurationChange *)self author];
-  v9 = v6 ^ v7 ^ [v8 hash];
+  targetUser = [(STConfigurationChange *)self targetUser];
+  v4 = [targetUser hash];
+  configuration = [(STConfigurationChange *)self configuration];
+  v6 = [configuration hash] ^ v4;
+  configurationType = [(STConfigurationChange *)self configurationType];
+  author = [(STConfigurationChange *)self author];
+  v9 = v6 ^ configurationType ^ [author hash];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = [(STConfigurationChange *)self targetDevices];
-  v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  targetDevices = [(STConfigurationChange *)self targetDevices];
+  v11 = [targetDevices countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v11)
   {
     v12 = v11;
@@ -265,7 +265,7 @@
       {
         if (*v17 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(targetDevices);
         }
 
         v9 ^= [*(*(&v16 + 1) + 8 * v14) hash];
@@ -273,7 +273,7 @@
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v12 = [targetDevices countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v12);

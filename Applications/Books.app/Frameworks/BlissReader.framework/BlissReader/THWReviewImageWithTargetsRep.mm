@@ -1,45 +1,45 @@
 @interface THWReviewImageWithTargetsRep
 - (BOOL)p_areAllTargetsSelected;
-- (BOOL)p_drawerContainsPoint:(CGPoint)a3;
+- (BOOL)p_drawerContainsPoint:(CGPoint)point;
 - (CGPoint)anchorPoint;
-- (CGPoint)layerDragging:(id)a3 convertNaturalPointToBounds:(CGPoint)a4;
-- (CGPoint)layerDragging:(id)a3 naturalPositionWithGesture:(id)a4;
-- (CGPoint)layerDraggingBoundsLocationForICCWithGesture:(id)a3;
-- (THWReviewImageWithTargetsRep)initWithLayout:(id)a3 canvas:(id)a4;
-- (id)p_choiceAtIndex:(unint64_t)a3;
-- (id)p_filterAnimation:(id)a3 forLayer:(id)a4 key:(id)a5 forPlacardRep:(id)a6;
+- (CGPoint)layerDragging:(id)dragging convertNaturalPointToBounds:(CGPoint)bounds;
+- (CGPoint)layerDragging:(id)dragging naturalPositionWithGesture:(id)gesture;
+- (CGPoint)layerDraggingBoundsLocationForICCWithGesture:(id)gesture;
+- (THWReviewImageWithTargetsRep)initWithLayout:(id)layout canvas:(id)canvas;
+- (id)p_choiceAtIndex:(unint64_t)index;
+- (id)p_filterAnimation:(id)animation forLayer:(id)layer key:(id)key forPlacardRep:(id)rep;
 - (id)p_questionHost;
-- (id)p_repForTargetIndex:(unint64_t)a3;
-- (id)p_targetRepForPlacardRep:(id)a3;
-- (unint64_t)p_draggingPlacardIndexForRep:(id)a3;
-- (unint64_t)p_targetIndexNearPoint:(CGPoint)a3;
-- (void)addAdditionalChildLayersToArray:(id)a3;
+- (id)p_repForTargetIndex:(unint64_t)index;
+- (id)p_targetRepForPlacardRep:(id)rep;
+- (unint64_t)p_draggingPlacardIndexForRep:(id)rep;
+- (unint64_t)p_targetIndexNearPoint:(CGPoint)point;
+- (void)addAdditionalChildLayersToArray:(id)array;
 - (void)dealloc;
-- (void)layerDraggingDidBegin:(id)a3 withPosition:(CGPoint)a4;
-- (void)layerDraggingDidEnd:(id)a3 withPosition:(CGPoint)a4;
-- (void)layerDraggingDidMove:(id)a3 withPosition:(CGPoint)a4;
-- (void)p_addDropAnimationWithCompletion:(id)a3;
+- (void)layerDraggingDidBegin:(id)begin withPosition:(CGPoint)position;
+- (void)layerDraggingDidEnd:(id)end withPosition:(CGPoint)position;
+- (void)layerDraggingDidMove:(id)move withPosition:(CGPoint)position;
+- (void)p_addDropAnimationWithCompletion:(id)completion;
 - (void)p_addPickupAnimation;
-- (void)p_animatePlacardChanges:(id)a3 duration:(double)a4;
-- (void)p_didDragInsideDrawer:(BOOL)a3;
-- (void)p_setPanGRs:(BOOL)a3;
-- (void)p_updateDrawerStateForPoint:(CGPoint)a3;
-- (void)p_updateTargetStateForPoint:(CGPoint)a3;
-- (void)p_updateTargetsAndPlacardLayout:(BOOL)a3 animated:(BOOL)a4;
-- (void)reviewDragWillBeginForRep:(id)a3 withGesture:(id)a4;
+- (void)p_animatePlacardChanges:(id)changes duration:(double)duration;
+- (void)p_didDragInsideDrawer:(BOOL)drawer;
+- (void)p_setPanGRs:(BOOL)rs;
+- (void)p_updateDrawerStateForPoint:(CGPoint)point;
+- (void)p_updateTargetStateForPoint:(CGPoint)point;
+- (void)p_updateTargetsAndPlacardLayout:(BOOL)layout animated:(BOOL)animated;
+- (void)reviewDragWillBeginForRep:(id)rep withGesture:(id)gesture;
 - (void)reviewQuestionAnswerUpdated;
-- (void)reviewQuestionUpdateChoiceIndex:(unint64_t)a3 withState:(int)a4;
-- (void)setQuestionState:(int)a3;
+- (void)reviewQuestionUpdateChoiceIndex:(unint64_t)index withState:(int)state;
+- (void)setQuestionState:(int)state;
 - (void)updateChildrenFromLayout;
 @end
 
 @implementation THWReviewImageWithTargetsRep
 
-- (THWReviewImageWithTargetsRep)initWithLayout:(id)a3 canvas:(id)a4
+- (THWReviewImageWithTargetsRep)initWithLayout:(id)layout canvas:(id)canvas
 {
   v5.receiver = self;
   v5.super_class = THWReviewImageWithTargetsRep;
-  result = [(THWReviewImageWithTargetsRep *)&v5 initWithLayout:a3 canvas:a4];
+  result = [(THWReviewImageWithTargetsRep *)&v5 initWithLayout:layout canvas:canvas];
   if (result)
   {
     result->_pressedTargetIndex = 0x7FFFFFFFFFFFFFFFLL;
@@ -68,18 +68,18 @@
   }
 }
 
-- (void)p_updateTargetsAndPlacardLayout:(BOOL)a3 animated:(BOOL)a4
+- (void)p_updateTargetsAndPlacardLayout:(BOOL)layout animated:(BOOL)animated
 {
-  v24 = a4;
-  v21 = a3;
-  v5 = [(THWReviewImageWithTargetsRep *)self canvas];
-  v6 = [(THWReviewImageWithTargetsRep *)self layout];
-  v7 = [(THWReviewImageWithTargetsRep *)self p_questionHost];
+  animatedCopy = animated;
+  layoutCopy = layout;
+  canvas = [(THWReviewImageWithTargetsRep *)self canvas];
+  layout = [(THWReviewImageWithTargetsRep *)self layout];
+  p_questionHost = [(THWReviewImageWithTargetsRep *)self p_questionHost];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = [v6 placardLayouts];
+  obj = [layout placardLayouts];
   v8 = [obj countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v8)
   {
@@ -95,10 +95,10 @@
         }
 
         v12 = *(*(&v30 + 1) + 8 * i);
-        v13 = [v7 reviewQuestion:self targetForPlacard:{objc_msgSend(v12, "index")}];
+        v13 = [p_questionHost reviewQuestion:self targetForPlacard:{objc_msgSend(v12, "index")}];
         objc_opt_class();
-        [v5 repForLayout:v12];
-        [TSUDynamicCast() setArrowDirection:{objc_msgSend(v6, "placardArrowPlacementforTarget:", v13)}];
+        [canvas repForLayout:v12];
+        [TSUDynamicCast() setArrowDirection:{objc_msgSend(layout, "placardArrowPlacementforTarget:", v13)}];
       }
 
       v9 = [obj countByEnumeratingWithState:&v30 objects:v35 count:16];
@@ -107,16 +107,16 @@
     while (v9);
   }
 
-  if (v21)
+  if (layoutCopy)
   {
-    [v6 updatePlacardLayouts];
+    [layout updatePlacardLayouts];
   }
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obja = [v6 targetLayouts];
+  obja = [layout targetLayouts];
   v14 = [obja countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v14)
   {
@@ -132,10 +132,10 @@
         }
 
         v18 = *(*(&v26 + 1) + 8 * j);
-        v19 = [v7 reviewQuestion:self placardForTarget:{objc_msgSend(v18, "index")}] != 0x7FFFFFFFFFFFFFFFLL;
+        v19 = [p_questionHost reviewQuestion:self placardForTarget:{objc_msgSend(v18, "index")}] != 0x7FFFFFFFFFFFFFFFLL;
         objc_opt_class();
-        [v5 repForLayout:v18];
-        [TSUDynamicCast() setRadioState:(2 * v19) animated:v24];
+        [canvas repForLayout:v18];
+        [TSUDynamicCast() setRadioState:(2 * v19) animated:animatedCopy];
       }
 
       v15 = [obja countByEnumeratingWithState:&v26 objects:v34 count:16];
@@ -144,35 +144,35 @@
     while (v15);
   }
 
-  if (v24)
+  if (animatedCopy)
   {
     +[CATransaction begin];
-    v20 = [(THWReviewImageWithTargetsRep *)self interactiveCanvasController];
-    [v20 beginAnimations:@"position" context:0];
-    [v20 setAnimationDuration:0.3];
+    interactiveCanvasController = [(THWReviewImageWithTargetsRep *)self interactiveCanvasController];
+    [interactiveCanvasController beginAnimations:@"position" context:0];
+    [interactiveCanvasController setAnimationDuration:0.3];
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_1B0F6C;
     v25[3] = &unk_45E900;
     v25[4] = self;
-    [v20 setAnimationFilterBlock:v25];
-    [v20 layoutIfNeeded];
-    [v20 commitAnimations];
+    [interactiveCanvasController setAnimationFilterBlock:v25];
+    [interactiveCanvasController layoutIfNeeded];
+    [interactiveCanvasController commitAnimations];
     +[CATransaction commit];
   }
 }
 
-- (void)addAdditionalChildLayersToArray:(id)a3
+- (void)addAdditionalChildLayersToArray:(id)array
 {
   v3.receiver = self;
   v3.super_class = THWReviewImageWithTargetsRep;
-  [(THWReviewImageWithTargetsRep *)&v3 addAdditionalChildLayersToArray:a3];
+  [(THWReviewImageWithTargetsRep *)&v3 addAdditionalChildLayersToArray:array];
 }
 
-- (void)reviewQuestionUpdateChoiceIndex:(unint64_t)a3 withState:(int)a4
+- (void)reviewQuestionUpdateChoiceIndex:(unint64_t)index withState:(int)state
 {
-  v4 = *&a4;
-  v5 = [(THWReviewImageWithTargetsRep *)self p_repForTargetIndex:a3];
+  v4 = *&state;
+  v5 = [(THWReviewImageWithTargetsRep *)self p_repForTargetIndex:index];
 
   [v5 setChoiceState:v4];
 }
@@ -184,13 +184,13 @@
   [(THWReviewImageWithTargetsRep *)self p_updateTargetsAndPlacardLayout:1 animated:v3];
 }
 
-- (void)setQuestionState:(int)a3
+- (void)setQuestionState:(int)state
 {
-  if (self->_questionState != a3)
+  if (self->_questionState != state)
   {
-    if (a3 == 1)
+    if (state == 1)
     {
-      v5 = [(THWReviewImageWithTargetsRep *)self interactiveCanvasController];
+      interactiveCanvasController = [(THWReviewImageWithTargetsRep *)self interactiveCanvasController];
       v13 = 0u;
       v14 = 0u;
       v15 = 0u;
@@ -212,7 +212,7 @@
 
             v11 = *(*(&v13 + 1) + 8 * i);
             objc_opt_class();
-            [v5 repForLayout:v11];
+            [interactiveCanvasController repForLayout:v11];
             v12 = TSUDynamicCast();
             [v12 setRadioState:0];
             [v12 setChoiceState:0];
@@ -225,32 +225,32 @@
       }
     }
 
-    self->_questionState = a3;
+    self->_questionState = state;
     [-[THWReviewImageWithTargetsRep p_questionHost](self "p_questionHost")];
   }
 }
 
-- (void)reviewDragWillBeginForRep:(id)a3 withGesture:(id)a4
+- (void)reviewDragWillBeginForRep:(id)rep withGesture:(id)gesture
 {
-  if (a3)
+  if (rep)
   {
-    v4 = self;
+    selfCopy = self;
     if (!self->_layerDraggingController)
     {
       [(THWReviewImageWithTargetsRep *)self p_setPanGRs:0];
-      v7 = [objc_msgSend(a3 "interactiveCanvasController")];
-      v8 = a3;
-      v4->_draggingRep = v8;
-      [(TSDRep *)v8 pauseLayerUpdates];
-      [a4 naturalLocationForRep:v4->_draggingRep];
+      v7 = [objc_msgSend(rep "interactiveCanvasController")];
+      repCopy = rep;
+      selfCopy->_draggingRep = repCopy;
+      [(TSDRep *)repCopy pauseLayerUpdates];
+      [gesture naturalLocationForRep:selfCopy->_draggingRep];
       v10 = v9;
       v12 = v11;
-      [(TSDRep *)v4->_draggingRep naturalBounds];
-      v4->_anchorPoint.x = v10 / v13;
-      v4->_anchorPoint.y = v12 / v14;
-      v4->_layerDraggingController = -[THWLayerDraggingController initWithLayer:hostView:gesture:anchorPoint:delegate:]([THWLayerDraggingController alloc], "initWithLayer:hostView:gesture:anchorPoint:delegate:", v7, [-[THWReviewImageWithTargetsRep p_questionHost](v4 "p_questionHost")], a4, v4, v4->_anchorPoint.x, v4->_anchorPoint.y);
+      [(TSDRep *)selfCopy->_draggingRep naturalBounds];
+      selfCopy->_anchorPoint.x = v10 / v13;
+      selfCopy->_anchorPoint.y = v12 / v14;
+      selfCopy->_layerDraggingController = -[THWLayerDraggingController initWithLayer:hostView:gesture:anchorPoint:delegate:]([THWLayerDraggingController alloc], "initWithLayer:hostView:gesture:anchorPoint:delegate:", v7, [-[THWReviewImageWithTargetsRep p_questionHost](selfCopy "p_questionHost")], gesture, selfCopy, selfCopy->_anchorPoint.x, selfCopy->_anchorPoint.y);
       objc_opt_class();
-      [(THWReviewImageWithTargetsRep *)v4 draggingRep];
+      [(THWReviewImageWithTargetsRep *)selfCopy draggingRep];
       v15 = TSUDynamicCast();
       v16 = v15;
       if (v15)
@@ -259,19 +259,19 @@
         [objc_msgSend(v16 "layout")];
       }
 
-      [(THWReviewImageWithTargetsRep *)v4 p_animatePlacardChanges:v16 duration:0.3];
-      v17 = [(THWReviewImageWithTargetsRep *)v4 p_targetRepForPlacardRep:v16];
+      [(THWReviewImageWithTargetsRep *)selfCopy p_animatePlacardChanges:v16 duration:0.3];
+      v17 = [(THWReviewImageWithTargetsRep *)selfCopy p_targetRepForPlacardRep:v16];
       if ([v17 choiceState] == 2)
       {
-        v28 = a4;
-        v18 = [(THWReviewImageWithTargetsRep *)v4 interactiveCanvasController];
+        gestureCopy = gesture;
+        interactiveCanvasController = [(THWReviewImageWithTargetsRep *)selfCopy interactiveCanvasController];
         v19 = objc_alloc_init(NSMutableIndexSet);
         v29 = 0u;
         v30 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v27 = v4;
-        v20 = [-[THWReviewImageWithTargetsRep layout](v4 "layout")];
+        v27 = selfCopy;
+        v20 = [-[THWReviewImageWithTargetsRep layout](selfCopy "layout")];
         v21 = [v20 countByEnumeratingWithState:&v29 objects:v33 count:16];
         if (v21)
         {
@@ -288,7 +288,7 @@
 
               v25 = *(*(&v29 + 1) + 8 * i);
               objc_opt_class();
-              [v18 repForLayout:v25];
+              [interactiveCanvasController repForLayout:v25];
               v26 = TSUDynamicCast();
               if ([v26 choiceState] == 2)
               {
@@ -306,23 +306,23 @@
           while (v22);
         }
 
-        v4 = v27;
+        selfCopy = v27;
         [-[THWReviewImageWithTargetsRep p_questionHost](v27 "p_questionHost")];
 
-        a4 = v28;
+        gesture = gestureCopy;
       }
 
-      [(THWLayerDraggingController *)v4->_layerDraggingController handleGesture:a4];
+      [(THWLayerDraggingController *)selfCopy->_layerDraggingController handleGesture:gesture];
     }
   }
 }
 
-- (void)layerDraggingDidBegin:(id)a3 withPosition:(CGPoint)a4
+- (void)layerDraggingDidBegin:(id)begin withPosition:(CGPoint)position
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [(THWReviewImageWithTargetsRep *)self draggingPlacardIndex];
-  if (v7 != 0x7FFFFFFFFFFFFFFFLL)
+  y = position.y;
+  x = position.x;
+  draggingPlacardIndex = [(THWReviewImageWithTargetsRep *)self draggingPlacardIndex];
+  if (draggingPlacardIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = -[THWReviewImageWithTargetsRep p_repForTargetIndex:](self, "p_repForTargetIndex:", [-[THWReviewImageWithTargetsRep p_questionHost](self "p_questionHost")]);
     if (v8)
@@ -342,19 +342,19 @@
   [(THWReviewImageWithTargetsRep *)self p_addPickupAnimation];
 }
 
-- (void)layerDraggingDidMove:(id)a3 withPosition:(CGPoint)a4
+- (void)layerDraggingDidMove:(id)move withPosition:(CGPoint)position
 {
-  y = a4.y;
-  x = a4.x;
-  [(THWReviewImageWithTargetsRep *)self p_updateTargetStateForPoint:a3];
+  y = position.y;
+  x = position.x;
+  [(THWReviewImageWithTargetsRep *)self p_updateTargetStateForPoint:move];
 
   [(THWReviewImageWithTargetsRep *)self p_updateDrawerStateForPoint:x, y];
 }
 
-- (void)layerDraggingDidEnd:(id)a3 withPosition:(CGPoint)a4
+- (void)layerDraggingDidEnd:(id)end withPosition:(CGPoint)position
 {
-  y = a4.y;
-  x = a4.x;
+  y = position.y;
+  x = position.x;
   [(THWReviewImageWithTargetsRep *)self p_setPanGRs:1];
   +[CATransaction begin];
   [(THWReviewImageWithTargetsRep *)self p_updateTargetStateForPoint:x, y];
@@ -362,12 +362,12 @@
   [(THWReviewImageWithTargetsRep *)self draggingRep];
   v7 = TSUDynamicCast();
   v8 = [(THWReviewImageWithTargetsRep *)self p_targetIndexNearPoint:x, y];
-  v9 = [(THWReviewImageWithTargetsRep *)self draggingPlacardIndex];
-  v10 = v9;
-  if (v9 == 0x7FFFFFFFFFFFFFFFLL || v8 == 0x7FFFFFFFFFFFFFFFLL)
+  draggingPlacardIndex = [(THWReviewImageWithTargetsRep *)self draggingPlacardIndex];
+  v10 = draggingPlacardIndex;
+  if (draggingPlacardIndex == 0x7FFFFFFFFFFFFFFFLL || v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v12 = 0;
-    if (v9 != 0x7FFFFFFFFFFFFFFFLL && v8 == 0x7FFFFFFFFFFFFFFFLL)
+    if (draggingPlacardIndex != 0x7FFFFFFFFFFFFFFFLL && v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
       [(THWReviewImageWithTargetsRep *)self p_didDragInsideDrawer:0];
       v12 = 1;
@@ -398,7 +398,7 @@
   v25[2] = sub_1B1930;
   v25[3] = &unk_45AE00;
   v25[4] = self;
-  v13 = [(TSDRep *)self->_draggingRep interactiveCanvasController];
+  interactiveCanvasController = [(TSDRep *)self->_draggingRep interactiveCanvasController];
   [(THWReviewImageWithTargetsRep *)self p_animatePlacardChanges:v7 duration:0.3];
   if (v12)
   {
@@ -412,75 +412,75 @@
   [(THWReviewImageWithTargetsRep *)self layerDragging:layerDraggingController convertNaturalPointToBounds:?];
   v20 = v19;
   v22 = v21;
-  [v13 beginAnimations:@"position" context:0];
-  [v13 setAnimationDuration:0.3];
-  [v13 setAnimationCompletionBlock:v25];
+  [interactiveCanvasController beginAnimations:@"position" context:0];
+  [interactiveCanvasController setAnimationDuration:0.3];
+  [interactiveCanvasController setAnimationCompletionBlock:v25];
   [(CALayer *)[(THWLayerDraggingController *)self->_layerDraggingController layer] bounds];
   TSDCenterOfRect();
   [(CALayer *)[(THWLayerDraggingController *)self->_layerDraggingController layer] setPosition:v23, v24];
   [(CALayer *)[(THWLayerDraggingController *)self->_layerDraggingController wrapperLayer] setPosition:v20, v22];
-  [v13 commitAnimations];
+  [interactiveCanvasController commitAnimations];
   +[CATransaction commit];
 }
 
-- (CGPoint)layerDragging:(id)a3 naturalPositionWithGesture:(id)a4
+- (CGPoint)layerDragging:(id)dragging naturalPositionWithGesture:(id)gesture
 {
-  [a4 naturalLocationForRep:self];
+  [gesture naturalLocationForRep:self];
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGPoint)layerDragging:(id)a3 convertNaturalPointToBounds:(CGPoint)a4
+- (CGPoint)layerDragging:(id)dragging convertNaturalPointToBounds:(CGPoint)bounds
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = [(THWReviewImageWithTargetsRep *)self canvas];
+  y = bounds.y;
+  x = bounds.x;
+  canvas = [(THWReviewImageWithTargetsRep *)self canvas];
   [(THWReviewImageWithTargetsRep *)self convertNaturalPointToUnscaledCanvas:x, y];
-  [v8 convertUnscaledToBoundsPoint:?];
+  [canvas convertUnscaledToBoundsPoint:?];
   v10 = v9;
   v12 = v11;
-  v13 = [a3 hostView];
+  hostView = [dragging hostView];
   v14 = [-[THWReviewImageWithTargetsRep interactiveCanvasController](self "interactiveCanvasController")];
 
-  [v13 convertPoint:v14 fromView:{v10, v12}];
+  [hostView convertPoint:v14 fromView:{v10, v12}];
   result.y = v16;
   result.x = v15;
   return result;
 }
 
-- (CGPoint)layerDraggingBoundsLocationForICCWithGesture:(id)a3
+- (CGPoint)layerDraggingBoundsLocationForICCWithGesture:(id)gesture
 {
-  v4 = [(THWReviewImageWithTargetsRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWReviewImageWithTargetsRep *)self interactiveCanvasController];
 
-  [a3 boundsLocationForICC:v4];
+  [gesture boundsLocationForICC:interactiveCanvasController];
   result.y = v6;
   result.x = v5;
   return result;
 }
 
-- (id)p_choiceAtIndex:(unint64_t)a3
+- (id)p_choiceAtIndex:(unint64_t)index
 {
   v4 = [objc_msgSend(-[THWReviewImageWithTargetsRep layout](self "layout")];
-  if ([v4 count] <= a3)
+  if ([v4 count] <= index)
   {
     return 0;
   }
 
-  return [v4 objectAtIndex:a3];
+  return [v4 objectAtIndex:index];
 }
 
 - (id)p_questionHost
 {
-  v3 = [(THWReviewImageWithTargetsRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWReviewImageWithTargetsRep *)self interactiveCanvasController];
 
-  return [v3 ancestorRepOfRep:self orDelegateConformingToProtocol:&OBJC_PROTOCOL___THWReviewQuestionHosting];
+  return [interactiveCanvasController ancestorRepOfRep:self orDelegateConformingToProtocol:&OBJC_PROTOCOL___THWReviewQuestionHosting];
 }
 
-- (unint64_t)p_targetIndexNearPoint:(CGPoint)a3
+- (unint64_t)p_targetIndexNearPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if ([(THWReviewImageWithTargetsRep *)self p_drawerContainsPoint:?])
   {
     return 0x7FFFFFFFFFFFFFFFLL;
@@ -490,8 +490,8 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [-[THWReviewImageWithTargetsRep layout](self layout];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  layout = [-[THWReviewImageWithTargetsRep layout](self layout];
+  v7 = [layout countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (!v7)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
@@ -499,7 +499,7 @@
 
   v8 = v7;
   v9 = *v18;
-  v10 = 0x7FFFFFFFFFFFFFFFLL;
+  index = 0x7FFFFFFFFFFFFFFFLL;
   v11 = 1.79769313e308;
   do
   {
@@ -507,7 +507,7 @@
     {
       if (*v18 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(layout);
       }
 
       v13 = *(*(&v17 + 1) + 8 * i);
@@ -517,20 +517,20 @@
         v15 = v14;
         if (v14 <= 14400.0)
         {
-          v10 = [v13 index];
+          index = [v13 index];
           v11 = v15;
         }
       }
     }
 
-    v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    v8 = [layout countByEnumeratingWithState:&v17 objects:v21 count:16];
   }
 
   while (v8);
-  return v10;
+  return index;
 }
 
-- (id)p_repForTargetIndex:(unint64_t)a3
+- (id)p_repForTargetIndex:(unint64_t)index
 {
   objc_opt_class();
   [-[THWReviewImageWithTargetsRep interactiveCanvasController](self "interactiveCanvasController")];
@@ -538,9 +538,9 @@
   return TSUDynamicCast();
 }
 
-- (void)p_updateTargetStateForPoint:(CGPoint)a3
+- (void)p_updateTargetStateForPoint:(CGPoint)point
 {
-  v4 = [(THWReviewImageWithTargetsRep *)self p_targetIndexNearPoint:a3.x, a3.y];
+  v4 = [(THWReviewImageWithTargetsRep *)self p_targetIndexNearPoint:point.x, point.y];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -551,8 +551,8 @@
     v5 = [(THWReviewImageWithTargetsRep *)self p_repForTargetIndex:v4];
   }
 
-  v6 = [(THWReviewImageWithTargetsRep *)self pressedTargetIndex];
-  if (v6 == 0x7FFFFFFFFFFFFFFFLL)
+  pressedTargetIndex = [(THWReviewImageWithTargetsRep *)self pressedTargetIndex];
+  if (pressedTargetIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = 0;
     if (v5)
@@ -565,7 +565,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v7 = [(THWReviewImageWithTargetsRep *)self p_repForTargetIndex:v6];
+  v7 = [(THWReviewImageWithTargetsRep *)self p_repForTargetIndex:pressedTargetIndex];
   if (!v5)
   {
     goto LABEL_10;
@@ -597,14 +597,14 @@ LABEL_11:
   }
 }
 
-- (BOOL)p_drawerContainsPoint:(CGPoint)a3
+- (BOOL)p_drawerContainsPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(THWReviewImageWithTargetsRep *)self layout];
-  if (v5)
+  y = point.y;
+  x = point.x;
+  layout = [(THWReviewImageWithTargetsRep *)self layout];
+  if (layout)
   {
-    v6 = [v5 drawerFrame];
+    drawerFrame = [layout drawerFrame];
     v13.n128_u64[0] = v9.n128_u64[0];
     v14.n128_u64[0] = v10.n128_u64[0];
     v7 = v11.n128_u64[0];
@@ -616,19 +616,19 @@ LABEL_11:
     v13.n128_u64[0] = v7;
     v14.n128_u64[0] = v8;
 
-    LOBYTE(v5) = _TSDPointInRectInclusive(v6, v9, v10, v11, v12, v13, v14);
+    LOBYTE(layout) = _TSDPointInRectInclusive(drawerFrame, v9, v10, v11, v12, v13, v14);
   }
 
-  return v5;
+  return layout;
 }
 
-- (void)p_updateDrawerStateForPoint:(CGPoint)a3
+- (void)p_updateDrawerStateForPoint:(CGPoint)point
 {
-  v4 = [(THWReviewImageWithTargetsRep *)self p_drawerContainsPoint:a3.x, a3.y];
-  v5 = [(THWReviewImageWithTargetsRep *)self wasInDrawer];
+  v4 = [(THWReviewImageWithTargetsRep *)self p_drawerContainsPoint:point.x, point.y];
+  wasInDrawer = [(THWReviewImageWithTargetsRep *)self wasInDrawer];
   if (v4)
   {
-    if (v5)
+    if (wasInDrawer)
     {
       v4 = 1;
       goto LABEL_7;
@@ -637,7 +637,7 @@ LABEL_11:
     goto LABEL_5;
   }
 
-  if (v5)
+  if (wasInDrawer)
   {
 LABEL_5:
     [(THWReviewImageWithTargetsRep *)self p_didDragInsideDrawer:v4];
@@ -652,11 +652,11 @@ LABEL_7:
 
 - (void)p_addPickupAnimation
 {
-  v3 = [(THWLayerDraggingController *)self->_layerDraggingController layer];
-  v4 = [(TSDRep *)self->_draggingRep interactiveCanvasController];
-  if (v3)
+  layer = [(THWLayerDraggingController *)self->_layerDraggingController layer];
+  interactiveCanvasController = [(TSDRep *)self->_draggingRep interactiveCanvasController];
+  if (layer)
   {
-    v5 = v4 == 0;
+    v5 = interactiveCanvasController == 0;
   }
 
   else
@@ -666,8 +666,8 @@ LABEL_7:
 
   if (!v5)
   {
-    v6 = v4;
-    [(CALayer *)v3 bounds];
+    v6 = interactiveCanvasController;
+    [(CALayer *)layer bounds];
     v8 = v7;
     [v6 beginAnimations:@"scale" context:0];
     [v6 setAnimationDuration:0.15];
@@ -676,28 +676,28 @@ LABEL_7:
     v12[2] = sub_1B214C;
     v12[3] = &unk_45AE58;
     v12[4] = v6;
-    v12[5] = v3;
+    v12[5] = layer;
     [v6 setAnimationCompletionBlock:v12];
     CGAffineTransformMakeScale(&v11, 1.2, 1.2);
     v10 = v11;
-    [(CALayer *)v3 setAffineTransform:&v10];
+    [(CALayer *)layer setAffineTransform:&v10];
     [v6 commitAnimations];
     [v6 beginAnimations:@"position+opacity" context:0];
     [v6 setAnimationDuration:0.3];
-    [(CALayer *)v3 setPosition:v8 * 0.5, -14.0];
+    [(CALayer *)layer setPosition:v8 * 0.5, -14.0];
     LODWORD(v9) = 1061997773;
-    [(CALayer *)v3 setOpacity:v9];
+    [(CALayer *)layer setOpacity:v9];
     [v6 commitAnimations];
   }
 }
 
-- (void)p_addDropAnimationWithCompletion:(id)a3
+- (void)p_addDropAnimationWithCompletion:(id)completion
 {
-  v5 = [(THWLayerDraggingController *)self->_layerDraggingController layer];
-  v6 = [(TSDRep *)self->_draggingRep interactiveCanvasController];
-  if (v5)
+  layer = [(THWLayerDraggingController *)self->_layerDraggingController layer];
+  interactiveCanvasController = [(TSDRep *)self->_draggingRep interactiveCanvasController];
+  if (layer)
   {
-    v7 = v6 == 0;
+    v7 = interactiveCanvasController == 0;
   }
 
   else
@@ -707,27 +707,27 @@ LABEL_7:
 
   if (!v7)
   {
-    v8 = v6;
+    v8 = interactiveCanvasController;
     +[CATransaction begin];
     [v8 beginAnimations:@"scale+opacity" context:0];
     [v8 setAnimationDuration:0.15];
-    [v8 setAnimationCompletionBlock:a3];
+    [v8 setAnimationCompletionBlock:completion];
     v9 = *&CGAffineTransformIdentity.c;
     v11[0] = *&CGAffineTransformIdentity.a;
     v11[1] = v9;
     v11[2] = *&CGAffineTransformIdentity.tx;
-    [(CALayer *)v5 setAffineTransform:v11];
+    [(CALayer *)layer setAffineTransform:v11];
     LODWORD(v10) = 1.0;
-    [(CALayer *)v5 setOpacity:v10];
+    [(CALayer *)layer setOpacity:v10];
     [v8 commitAnimations];
     +[CATransaction commit];
   }
 }
 
-- (unint64_t)p_draggingPlacardIndexForRep:(id)a3
+- (unint64_t)p_draggingPlacardIndexForRep:(id)rep
 {
   objc_opt_class();
-  [a3 layout];
+  [rep layout];
   v4 = TSUDynamicCast();
   if (!v4)
   {
@@ -737,7 +737,7 @@ LABEL_7:
   return [v4 index];
 }
 
-- (id)p_targetRepForPlacardRep:(id)a3
+- (id)p_targetRepForPlacardRep:(id)rep
 {
   v4 = [-[THWReviewImageWithTargetsRep p_questionHost](self "p_questionHost")];
 
@@ -746,13 +746,13 @@ LABEL_7:
 
 - (BOOL)p_areAllTargetsSelected
 {
-  v3 = [(THWReviewImageWithTargetsRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWReviewImageWithTargetsRep *)self interactiveCanvasController];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [-[THWReviewImageWithTargetsRep layout](self layout];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  layout = [-[THWReviewImageWithTargetsRep layout](self layout];
+  v5 = [layout countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -764,12 +764,12 @@ LABEL_7:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(layout);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
         objc_opt_class();
-        [v3 repForLayout:v9];
+        [interactiveCanvasController repForLayout:v9];
         if ([TSUDynamicCast() radioState] != 2)
         {
           return 0;
@@ -779,7 +779,7 @@ LABEL_7:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [layout countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -792,14 +792,14 @@ LABEL_7:
   return 1;
 }
 
-- (id)p_filterAnimation:(id)a3 forLayer:(id)a4 key:(id)a5 forPlacardRep:(id)a6
+- (id)p_filterAnimation:(id)animation forLayer:(id)layer key:(id)key forPlacardRep:(id)rep
 {
-  v11 = [(THWReviewImageWithTargetsRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWReviewImageWithTargetsRep *)self interactiveCanvasController];
   v12 = +[NSNull null];
-  v13 = [v11 repForLayer:a4];
+  v13 = [interactiveCanvasController repForLayer:layer];
   if (!v13)
   {
-    v13 = [v11 repForLayer:{objc_msgSend(a4, "superlayer")}];
+    v13 = [interactiveCanvasController repForLayer:{objc_msgSend(layer, "superlayer")}];
   }
 
   objc_opt_class();
@@ -807,12 +807,12 @@ LABEL_7:
   objc_opt_class();
   [v13 parentRep];
   v15 = TSUDynamicCast();
-  if (![a5 isEqualToString:@"path"] || objc_msgSend(v14, "calloutLayer") != a4)
+  if (![key isEqualToString:@"path"] || objc_msgSend(v14, "calloutLayer") != layer)
   {
-    if (a6)
+    if (rep)
     {
       result = 0;
-      if (v14 == a6 || v15 == a6)
+      if (v14 == rep || v15 == rep)
       {
         return result;
       }
@@ -829,7 +829,7 @@ LABEL_7:
       return v12;
     }
 
-    if ([(THWLayerDraggingController *)layerDraggingController wrapperLayer]== a4)
+    if ([(THWLayerDraggingController *)layerDraggingController wrapperLayer]== layer)
     {
       return 0;
     }
@@ -837,37 +837,37 @@ LABEL_7:
     return v12;
   }
 
-  [a3 duration];
+  [animation duration];
 
   return [v14 calloutPathAnimationWithduration:?];
 }
 
-- (void)p_animatePlacardChanges:(id)a3 duration:(double)a4
+- (void)p_animatePlacardChanges:(id)changes duration:(double)duration
 {
-  v7 = [a3 interactiveCanvasController];
-  v8 = [v7 layerForRep:a3];
+  interactiveCanvasController = [changes interactiveCanvasController];
+  v8 = [interactiveCanvasController layerForRep:changes];
   +[CATransaction begin];
-  [v7 beginAnimations:@"placard-bounds" context:0];
-  v9 = [a3 contentTextRep];
-  if (v9)
+  [interactiveCanvasController beginAnimations:@"placard-bounds" context:0];
+  contentTextRep = [changes contentTextRep];
+  if (contentTextRep)
   {
-    v10 = v9;
+    v10 = contentTextRep;
     v11 = +[CATransition animation];
     [v11 setType:kCATransitionFade];
-    [v11 setDuration:a4];
+    [v11 setDuration:duration];
     [objc_msgSend(v10 "textLayer")];
   }
 
-  [v7 setAnimationDuration:a4];
+  [interactiveCanvasController setAnimationDuration:duration];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_1B27EC;
   v20[3] = &unk_45E928;
   v20[4] = self;
-  v20[5] = a3;
-  [v7 setAnimationFilterBlock:v20];
-  [v7 layoutIfNeeded];
-  [a3 updateLayerBoundsAndWPPosition];
+  v20[5] = changes;
+  [interactiveCanvasController setAnimationFilterBlock:v20];
+  [interactiveCanvasController layoutIfNeeded];
+  [changes updateLayerBoundsAndWPPosition];
   [v8 bounds];
   v13 = v12;
   v15 = v14;
@@ -876,17 +876,17 @@ LABEL_7:
   TSDCenterOfRect();
   [v8 setPosition:?];
   [(CALayer *)[(THWLayerDraggingController *)self->_layerDraggingController wrapperLayer] setBounds:v13, v15, v17, v19];
-  [v7 commitAnimations];
+  [interactiveCanvasController commitAnimations];
   +[CATransaction commit];
 }
 
-- (void)p_setPanGRs:(BOOL)a3
+- (void)p_setPanGRs:(BOOL)rs
 {
-  v3 = a3;
+  rsCopy = rs;
   v4 = [-[THWReviewImageWithTargetsRep interactiveCanvasController](self "interactiveCanvasController")];
   if (v4)
   {
-    v5 = v4;
+    superview = v4;
     do
     {
       objc_opt_class();
@@ -896,27 +896,27 @@ LABEL_7:
         [objc_msgSend(v6 "panGestureRecognizer")];
       }
 
-      v5 = [v5 superview];
+      superview = [superview superview];
     }
 
-    while (v5);
+    while (superview);
   }
 }
 
-- (void)p_didDragInsideDrawer:(BOOL)a3
+- (void)p_didDragInsideDrawer:(BOOL)drawer
 {
-  v3 = a3;
+  drawerCopy = drawer;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [-[THWReviewImageWithTargetsRep layout](self layout];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  layout = [-[THWReviewImageWithTargetsRep layout](self layout];
+  v6 = [layout countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
     v8 = *v16;
-    if (v3)
+    if (drawerCopy)
     {
       v9 = 0.5;
     }
@@ -933,7 +933,7 @@ LABEL_7:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(layout);
         }
 
         v11 = *(*(&v15 + 1) + 8 * v10);
@@ -951,7 +951,7 @@ LABEL_7:
       }
 
       while (v7 != v10);
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [layout countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);

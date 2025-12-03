@@ -11,10 +11,10 @@
   v2 = [(TSUUUIDLogContext *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAD78] UUID];
-    v4 = [v3 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     publicString = v2->_publicString;
-    v2->_publicString = v4;
+    v2->_publicString = uUIDString;
 
     privateString = v2->_privateString;
     v2->_privateString = &stru_28862C2A0;

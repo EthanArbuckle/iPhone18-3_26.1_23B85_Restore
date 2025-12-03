@@ -1,31 +1,31 @@
 @interface ICMusicKitTokensResponse
-- (BOOL)isEqual:(id)a3;
-- (ICMusicKitTokensResponse)initWithCoder:(id)a3;
-- (ICMusicKitTokensResponse)initWithDeveloperToken:(id)a3 userToken:(id)a4 userTokenFetchingError:(id)a5;
-- (id)_descriptionForDebugging:(BOOL)a3;
-- (id)_descriptionOfToken:(id)a3 forDebugging:(BOOL)a4;
+- (BOOL)isEqual:(id)equal;
+- (ICMusicKitTokensResponse)initWithCoder:(id)coder;
+- (ICMusicKitTokensResponse)initWithDeveloperToken:(id)token userToken:(id)userToken userTokenFetchingError:(id)error;
+- (id)_descriptionForDebugging:(BOOL)debugging;
+- (id)_descriptionOfToken:(id)token forDebugging:(BOOL)debugging;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICMusicKitTokensResponse
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   developerToken = self->_developerToken;
-  v5 = a3;
-  [v5 encodeObject:developerToken forKey:@"d"];
-  [v5 encodeObject:self->_userToken forKey:@"u"];
-  v6 = [(NSError *)self->_userTokenFetchingError msv_errorByRemovingUnsafeUserInfo];
-  [v5 encodeObject:v6 forKey:@"e"];
+  coderCopy = coder;
+  [coderCopy encodeObject:developerToken forKey:@"d"];
+  [coderCopy encodeObject:self->_userToken forKey:@"u"];
+  msv_errorByRemovingUnsafeUserInfo = [(NSError *)self->_userTokenFetchingError msv_errorByRemovingUnsafeUserInfo];
+  [coderCopy encodeObject:msv_errorByRemovingUnsafeUserInfo forKey:@"e"];
 }
 
-- (ICMusicKitTokensResponse)initWithCoder:(id)a3
+- (ICMusicKitTokensResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"d"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"u"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"e"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"d"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"u"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"e"];
   if (v5)
   {
     v8 = [(ICMusicKitTokensResponse *)self initWithDeveloperToken:v5 userToken:v6 userTokenFetchingError:v7];
@@ -41,7 +41,7 @@
     }
 
     v10 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"ICError" code:-7005 debugDescription:@"Failed to decode valid developer token while initializing instance of ICMusicKitTokensResponse from decoder."];
-    [v4 failWithError:v10];
+    [coderCopy failWithError:v10];
 
     v8 = 0;
   }
@@ -49,19 +49,19 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    if ([(ICMusicKitTokensResponse *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(ICMusicKitTokensResponse *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v5 = v4;
+      v5 = equalCopy;
       developerToken = v5->_developerToken;
       v7 = self->_developerToken;
       v8 = v7;
@@ -215,20 +215,20 @@ LABEL_18:
   return (v66 + v67) ^ __ROR8__(v66, 47) ^ v69 ^ __ROR8__(v66 + v67, 32) ^ v69 ^ __ROR8__(v67 ^ v68, 43);
 }
 
-- (id)_descriptionForDebugging:(BOOL)a3
+- (id)_descriptionForDebugging:(BOOL)debugging
 {
-  v3 = a3;
+  debuggingCopy = debugging;
   v5 = objc_alloc(MEMORY[0x1E696AD60]);
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
   v8 = [v5 initWithFormat:@"<%@: %p; {", v7, self];
 
-  v9 = [(ICMusicKitTokensResponse *)self _descriptionOfToken:self->_developerToken forDebugging:v3];
+  v9 = [(ICMusicKitTokensResponse *)self _descriptionOfToken:self->_developerToken forDebugging:debuggingCopy];
   [v8 appendFormat:@"\n    developerToken: %@, ", v9];
   userToken = self->_userToken;
   if (userToken)
   {
-    v11 = [(ICMusicKitTokensResponse *)self _descriptionOfToken:userToken forDebugging:v3];
+    v11 = [(ICMusicKitTokensResponse *)self _descriptionOfToken:userToken forDebugging:debuggingCopy];
     [v8 appendFormat:@"\n    userToken: %@, ", v11];
   }
 
@@ -242,14 +242,14 @@ LABEL_18:
   return v8;
 }
 
-- (id)_descriptionOfToken:(id)a3 forDebugging:(BOOL)a4
+- (id)_descriptionOfToken:(id)token forDebugging:(BOOL)debugging
 {
-  v5 = a3;
-  v6 = v5;
-  v7 = v5;
-  if (!a4)
+  tokenCopy = token;
+  v6 = tokenCopy;
+  v7 = tokenCopy;
+  if (!debugging)
   {
-    v8 = [v5 length];
+    v8 = [tokenCopy length];
     v7 = v6;
     if (v8 >= 0x15)
     {
@@ -263,25 +263,25 @@ LABEL_18:
   return v7;
 }
 
-- (ICMusicKitTokensResponse)initWithDeveloperToken:(id)a3 userToken:(id)a4 userTokenFetchingError:(id)a5
+- (ICMusicKitTokensResponse)initWithDeveloperToken:(id)token userToken:(id)userToken userTokenFetchingError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tokenCopy = token;
+  userTokenCopy = userToken;
+  errorCopy = error;
   v19.receiver = self;
   v19.super_class = ICMusicKitTokensResponse;
   v11 = [(ICMusicKitTokensResponse *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [tokenCopy copy];
     developerToken = v11->_developerToken;
     v11->_developerToken = v12;
 
-    v14 = [v9 copy];
+    v14 = [userTokenCopy copy];
     userToken = v11->_userToken;
     v11->_userToken = v14;
 
-    v16 = [v10 copy];
+    v16 = [errorCopy copy];
     userTokenFetchingError = v11->_userTokenFetchingError;
     v11->_userTokenFetchingError = v16;
   }

@@ -1,15 +1,15 @@
 @interface TransitDirectionsBoardingInfoStackView
-- (TransitDirectionsBoardingInfoStackView)initWithFrame:(CGRect)a3;
+- (TransitDirectionsBoardingInfoStackView)initWithFrame:(CGRect)frame;
 - (void)_axisDidChange;
-- (void)setAxis:(int64_t)a3;
+- (void)setAxis:(int64_t)axis;
 @end
 
 @implementation TransitDirectionsBoardingInfoStackView
 
 - (void)_axisDidChange
 {
-  v3 = [(TransitDirectionsBoardingInfoStackView *)self axis];
-  if (v3)
+  axis = [(TransitDirectionsBoardingInfoStackView *)self axis];
+  if (axis)
   {
     v4 = &OBJC_IVAR___TransitDirectionsBoardingInfoStackView__horizontalLayoutConstraints;
   }
@@ -19,7 +19,7 @@
     v4 = &OBJC_IVAR___TransitDirectionsBoardingInfoStackView__verticalLayoutConstraints;
   }
 
-  if (v3)
+  if (axis)
   {
     v5 = &OBJC_IVAR___TransitDirectionsBoardingInfoStackView__verticalLayoutConstraints;
   }
@@ -35,86 +35,86 @@
   [NSLayoutConstraint activateConstraints:v6];
 }
 
-- (void)setAxis:(int64_t)a3
+- (void)setAxis:(int64_t)axis
 {
-  if (self->_axis != a3)
+  if (self->_axis != axis)
   {
-    self->_axis = a3;
+    self->_axis = axis;
     [(TransitDirectionsBoardingInfoStackView *)self _axisDidChange];
   }
 }
 
-- (TransitDirectionsBoardingInfoStackView)initWithFrame:(CGRect)a3
+- (TransitDirectionsBoardingInfoStackView)initWithFrame:(CGRect)frame
 {
   v56.receiver = self;
   v56.super_class = TransitDirectionsBoardingInfoStackView;
-  v3 = [(TransitDirectionsBoardingInfoStackView *)&v56 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TransitDirectionsBoardingInfoStackView *)&v56 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(TransitDirectionsBoardingInfoStackView *)v3 topView];
-    v6 = [(TransitDirectionsBoardingInfoStackView *)v4 bottomView];
-    v52 = [v5 topAnchor];
-    v50 = [(TransitDirectionsBoardingInfoStackView *)v4 topAnchor];
-    v48 = [v52 constraintEqualToAnchor:v50];
+    topView = [(TransitDirectionsBoardingInfoStackView *)v3 topView];
+    bottomView = [(TransitDirectionsBoardingInfoStackView *)v4 bottomView];
+    topAnchor = [topView topAnchor];
+    topAnchor2 = [(TransitDirectionsBoardingInfoStackView *)v4 topAnchor];
+    v48 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v58[0] = v48;
-    v46 = [v5 leadingAnchor];
-    v44 = [(TransitDirectionsBoardingInfoStackView *)v4 leadingAnchor];
-    v42 = [v46 constraintEqualToAnchor:v44];
+    leadingAnchor = [topView leadingAnchor];
+    leadingAnchor2 = [(TransitDirectionsBoardingInfoStackView *)v4 leadingAnchor];
+    v42 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v58[1] = v42;
-    v55 = v5;
-    v40 = [v5 bottomAnchor];
-    v38 = [(TransitDirectionsBoardingInfoStackView *)v4 bottomAnchor];
-    v36 = [v40 constraintLessThanOrEqualToAnchor:v38];
+    v55 = topView;
+    bottomAnchor = [topView bottomAnchor];
+    bottomAnchor2 = [(TransitDirectionsBoardingInfoStackView *)v4 bottomAnchor];
+    v36 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
     v58[2] = v36;
-    v34 = [v6 topAnchor];
-    v32 = [(TransitDirectionsBoardingInfoStackView *)v4 topAnchor];
-    v30 = [v34 constraintEqualToAnchor:v32];
+    topAnchor3 = [bottomView topAnchor];
+    topAnchor4 = [(TransitDirectionsBoardingInfoStackView *)v4 topAnchor];
+    v30 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v58[3] = v30;
-    v7 = [v6 leadingAnchor];
-    v8 = [v5 trailingAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8 constant:6.0];
+    leadingAnchor3 = [bottomView leadingAnchor];
+    trailingAnchor = [topView trailingAnchor];
+    v9 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:6.0];
     v58[4] = v9;
-    v54 = v6;
-    v10 = [v6 trailingAnchor];
-    v11 = [(TransitDirectionsBoardingInfoStackView *)v4 trailingAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    v54 = bottomView;
+    trailingAnchor2 = [bottomView trailingAnchor];
+    trailingAnchor3 = [(TransitDirectionsBoardingInfoStackView *)v4 trailingAnchor];
+    v12 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
     v58[5] = v12;
-    v13 = [v6 bottomAnchor];
-    v14 = [(TransitDirectionsBoardingInfoStackView *)v4 bottomAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    bottomAnchor3 = [bottomView bottomAnchor];
+    bottomAnchor4 = [(TransitDirectionsBoardingInfoStackView *)v4 bottomAnchor];
+    v15 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v58[6] = v15;
     v16 = [NSArray arrayWithObjects:v58 count:7];
     horizontalLayoutConstraints = v4->_horizontalLayoutConstraints;
     v4->_horizontalLayoutConstraints = v16;
 
-    v53 = [v55 topAnchor];
-    v51 = [(TransitDirectionsBoardingInfoStackView *)v4 topAnchor];
-    v49 = [v53 constraintEqualToAnchor:v51];
+    topAnchor5 = [v55 topAnchor];
+    topAnchor6 = [(TransitDirectionsBoardingInfoStackView *)v4 topAnchor];
+    v49 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
     v57[0] = v49;
-    v47 = [v55 leadingAnchor];
-    v45 = [(TransitDirectionsBoardingInfoStackView *)v4 leadingAnchor];
-    v43 = [v47 constraintEqualToAnchor:v45];
+    leadingAnchor4 = [v55 leadingAnchor];
+    leadingAnchor5 = [(TransitDirectionsBoardingInfoStackView *)v4 leadingAnchor];
+    v43 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
     v57[1] = v43;
-    v41 = [v55 trailingAnchor];
-    v39 = [(TransitDirectionsBoardingInfoStackView *)v4 trailingAnchor];
-    v37 = [v41 constraintLessThanOrEqualToAnchor:v39];
+    trailingAnchor4 = [v55 trailingAnchor];
+    trailingAnchor5 = [(TransitDirectionsBoardingInfoStackView *)v4 trailingAnchor];
+    v37 = [trailingAnchor4 constraintLessThanOrEqualToAnchor:trailingAnchor5];
     v57[2] = v37;
-    v35 = [v54 topAnchor];
-    v33 = [v55 bottomAnchor];
-    v31 = [v35 constraintEqualToAnchor:v33];
+    topAnchor7 = [v54 topAnchor];
+    bottomAnchor5 = [v55 bottomAnchor];
+    v31 = [topAnchor7 constraintEqualToAnchor:bottomAnchor5];
     v57[3] = v31;
-    v18 = [v54 leadingAnchor];
-    v19 = [(TransitDirectionsBoardingInfoStackView *)v4 leadingAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    leadingAnchor6 = [v54 leadingAnchor];
+    leadingAnchor7 = [(TransitDirectionsBoardingInfoStackView *)v4 leadingAnchor];
+    v20 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
     v57[4] = v20;
-    v21 = [v54 trailingAnchor];
-    v22 = [(TransitDirectionsBoardingInfoStackView *)v4 trailingAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    trailingAnchor6 = [v54 trailingAnchor];
+    trailingAnchor7 = [(TransitDirectionsBoardingInfoStackView *)v4 trailingAnchor];
+    v23 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7];
     v57[5] = v23;
-    v24 = [v54 bottomAnchor];
-    v25 = [(TransitDirectionsBoardingInfoStackView *)v4 bottomAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    bottomAnchor6 = [v54 bottomAnchor];
+    bottomAnchor7 = [(TransitDirectionsBoardingInfoStackView *)v4 bottomAnchor];
+    v26 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7];
     v57[6] = v26;
     v27 = [NSArray arrayWithObjects:v57 count:7];
     verticalLayoutConstraints = v4->_verticalLayoutConstraints;

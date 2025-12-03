@@ -1,7 +1,7 @@
 @interface HROnboardingECG2PossibleResultsViewController
-- (HROnboardingECG2PossibleResultsViewController)initWithSample:(id)a3;
-- (id)_resultViewForSample:(id)a3 activeAlgorithmVersion:(int64_t)a4;
-- (id)initForOnboarding:(BOOL)a3 upgradingFromAlgorithmVersion:(int64_t)a4;
+- (HROnboardingECG2PossibleResultsViewController)initWithSample:(id)sample;
+- (id)_resultViewForSample:(id)sample activeAlgorithmVersion:(int64_t)version;
+- (id)initForOnboarding:(BOOL)onboarding upgradingFromAlgorithmVersion:(int64_t)version;
 - (void)_adjustDisclaimerLabelConstraints;
 - (void)_adjustStackedButtonViewLocationForViewContentHeight;
 - (void)_pauseResultViewVideos;
@@ -17,44 +17,44 @@
 - (void)_setUpTitle;
 - (void)_setUpTitleConstraints;
 - (void)_updateForCurrentSizeCategory;
-- (void)linkTextView:(id)a3 didTapOnLinkInRange:(_NSRange)a4;
+- (void)linkTextView:(id)view didTapOnLinkInRange:(_NSRange)range;
 - (void)setUpConstraints;
 - (void)setUpUI;
-- (void)stackedButtonView:(id)a3 didTapButtonAtIndex:(int64_t)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)stackedButtonView:(id)view didTapButtonAtIndex:(int64_t)index;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewControllerDidLeaveAdaptiveModal;
 - (void)viewControllerWillEnterAdaptiveModal;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation HROnboardingECG2PossibleResultsViewController
 
-- (HROnboardingECG2PossibleResultsViewController)initWithSample:(id)a3
+- (HROnboardingECG2PossibleResultsViewController)initWithSample:(id)sample
 {
-  v5 = a3;
+  sampleCopy = sample;
   v6 = [(HROnboardingECG2PossibleResultsViewController *)self initForOnboarding:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong((v6 + 1088), a3);
+    objc_storeStrong((v6 + 1088), sample);
   }
 
   return v7;
 }
 
-- (id)initForOnboarding:(BOOL)a3 upgradingFromAlgorithmVersion:(int64_t)a4
+- (id)initForOnboarding:(BOOL)onboarding upgradingFromAlgorithmVersion:(int64_t)version
 {
-  v4 = a3;
+  onboardingCopy = onboarding;
   v9.receiver = self;
   v9.super_class = HROnboardingECG2PossibleResultsViewController;
-  v5 = [(HROnboardingECG2PossibleResultsViewController *)&v9 initForOnboarding:a3 upgradingFromAlgorithmVersion:a4];
+  v5 = [(HROnboardingECG2PossibleResultsViewController *)&v9 initForOnboarding:onboarding upgradingFromAlgorithmVersion:version];
   v6 = v5;
   if (v5)
   {
-    v7 = !v4;
+    v7 = !onboardingCopy;
   }
 
   else
@@ -78,19 +78,19 @@
   [(HROnboardingECG2PossibleResultsViewController *)self _setStackedButtonViewAsFooterView];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = HROnboardingECG2PossibleResultsViewController;
-  [(HROnboardingECG2PossibleResultsViewController *)&v4 viewWillAppear:a3];
+  [(HROnboardingECG2PossibleResultsViewController *)&v4 viewWillAppear:appear];
   [(HROnboardingECG2PossibleResultsViewController *)self _playResultViewVideos];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = HROnboardingECG2PossibleResultsViewController;
-  [(HROnboardingECG2PossibleResultsViewController *)&v4 viewDidDisappear:a3];
+  [(HROnboardingECG2PossibleResultsViewController *)&v4 viewDidDisappear:disappear];
   [(HROnboardingECG2PossibleResultsViewController *)self _pauseResultViewVideos];
 }
 
@@ -102,18 +102,18 @@
   [(HROnboardingECG2PossibleResultsViewController *)self _adjustStackedButtonViewLocationForViewContentHeight];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = HROnboardingECG2PossibleResultsViewController;
-  [(HROnboardingECG2PossibleResultsViewController *)&v9 traitCollectionDidChange:v4];
-  if (v4)
+  [(HROnboardingECG2PossibleResultsViewController *)&v9 traitCollectionDidChange:changeCopy];
+  if (changeCopy)
   {
-    v5 = [(HROnboardingECG2PossibleResultsViewController *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
-    v7 = [v4 preferredContentSizeCategory];
-    v8 = [v6 isEqualToString:v7];
+    traitCollection = [(HROnboardingECG2PossibleResultsViewController *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+    v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
     if ((v8 & 1) == 0)
     {
@@ -130,27 +130,27 @@
   if (([(HROnboardingECG2PossibleResultsViewController *)self isOnboarding]& 1) != 0 || ([(HROnboardingECG2PossibleResultsViewController *)self electrocardiogram], v3 = objc_claimAutoreleasedReturnValue(), v3, !v3))
   {
     [(HROnboardingECG2PossibleResultsViewController *)self _setUpTitle];
-    v4 = [(HROnboardingECG2PossibleResultsViewController *)self titleLabel];
-    v5 = [v4 lastBaselineAnchor];
+    titleLabel = [(HROnboardingECG2PossibleResultsViewController *)self titleLabel];
+    lastBaselineAnchor = [titleLabel lastBaselineAnchor];
   }
 
   else
   {
-    v4 = [(HROnboardingECG2PossibleResultsViewController *)self contentView];
-    v5 = [v4 topAnchor];
+    titleLabel = [(HROnboardingECG2PossibleResultsViewController *)self contentView];
+    lastBaselineAnchor = [titleLabel topAnchor];
   }
 
-  v6 = v5;
-  [(HROnboardingECG2PossibleResultsViewController *)self setViewTopAnchor:v5];
+  v6 = lastBaselineAnchor;
+  [(HROnboardingECG2PossibleResultsViewController *)self setViewTopAnchor:lastBaselineAnchor];
 
-  v7 = [(HROnboardingECG2PossibleResultsViewController *)self electrocardiogram];
+  electrocardiogram = [(HROnboardingECG2PossibleResultsViewController *)self electrocardiogram];
 
-  if (v7)
+  if (electrocardiogram)
   {
     [(HROnboardingECG2PossibleResultsViewController *)self _setUpOnlyResultView];
-    v8 = [(HROnboardingECG2PossibleResultsViewController *)self onlyResultView];
-    v9 = [v8 title];
-    [(HROnboardingECG2PossibleResultsViewController *)self setTitle:v9];
+    onlyResultView = [(HROnboardingECG2PossibleResultsViewController *)self onlyResultView];
+    title = [onlyResultView title];
+    [(HROnboardingECG2PossibleResultsViewController *)self setTitle:title];
   }
 
   else
@@ -165,9 +165,9 @@
 
   else
   {
-    v10 = [(HROnboardingECG2PossibleResultsViewController *)self electrocardiogram];
+    electrocardiogram2 = [(HROnboardingECG2PossibleResultsViewController *)self electrocardiogram];
 
-    if (!v10)
+    if (!electrocardiogram2)
     {
       [(HROnboardingECG2PossibleResultsViewController *)self _setUpDisclaimerLabel];
     }
@@ -184,9 +184,9 @@
     [(HROnboardingECG2PossibleResultsViewController *)self _setUpTitleConstraints];
   }
 
-  v4 = [(HROnboardingECG2PossibleResultsViewController *)self electrocardiogram];
+  electrocardiogram = [(HROnboardingECG2PossibleResultsViewController *)self electrocardiogram];
 
-  if (v4)
+  if (electrocardiogram)
   {
     [(HROnboardingECG2PossibleResultsViewController *)self _setUpOnlyResultViewConstraints];
   }
@@ -202,22 +202,22 @@
 - (void)_updateForCurrentSizeCategory
 {
   [(HROnboardingECG2PossibleResultsViewController *)self _adjustDisclaimerLabelConstraints];
-  v3 = [(HROnboardingECG2PossibleResultsViewController *)self view];
-  [v3 setNeedsLayout];
+  view = [(HROnboardingECG2PossibleResultsViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (void)linkTextView:(id)a3 didTapOnLinkInRange:(_NSRange)a4
+- (void)linkTextView:(id)view didTapOnLinkInRange:(_NSRange)range
 {
-  v9 = a3;
-  v4 = [MEMORY[0x277CBEBD0] hk_heartRhythmDefaults];
-  v5 = [v4 hk_hfeModeEnabled];
+  viewCopy = view;
+  hk_heartRhythmDefaults = [MEMORY[0x277CBEBD0] hk_heartRhythmDefaults];
+  hk_hfeModeEnabled = [hk_heartRhythmDefaults hk_hfeModeEnabled];
 
-  if ((v5 & 1) == 0)
+  if ((hk_hfeModeEnabled & 1) == 0)
   {
-    v6 = [v9 URLIdentifier];
-    if ((v6 - 1) >= 2)
+    uRLIdentifier = [viewCopy URLIdentifier];
+    if ((uRLIdentifier - 1) >= 2)
     {
-      if (!v6)
+      if (!uRLIdentifier)
       {
         goto LABEL_7;
       }
@@ -227,22 +227,22 @@
 
     else
     {
-      v7 = NSURLFromHRLinkTextViewURLIdentifier([v9 URLIdentifier]);
+      v7 = NSURLFromHRLinkTextViewURLIdentifier([viewCopy URLIdentifier]);
     }
 
-    v8 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    [v8 openURL:v7 withOptions:0];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    [defaultWorkspace openURL:v7 withOptions:0];
   }
 
 LABEL_7:
 }
 
-- (void)stackedButtonView:(id)a3 didTapButtonAtIndex:(int64_t)a4
+- (void)stackedButtonView:(id)view didTapButtonAtIndex:(int64_t)index
 {
-  if (!a4)
+  if (!index)
   {
-    v5 = [(HROnboardingECG2PossibleResultsViewController *)self delegate];
-    [v5 stepForward];
+    delegate = [(HROnboardingECG2PossibleResultsViewController *)self delegate];
+    [delegate stepForward];
   }
 }
 
@@ -252,54 +252,54 @@ LABEL_7:
   [(HROnboardingECG2PossibleResultsViewController *)self setTitleLabel:v3];
 
   v4 = HRUIECGLocalizedString(@"ECG_ONBOARDING_3_TITLE");
-  v5 = [(HROnboardingECG2PossibleResultsViewController *)self titleLabel];
-  [v5 setText:v4];
+  titleLabel = [(HROnboardingECG2PossibleResultsViewController *)self titleLabel];
+  [titleLabel setText:v4];
 
   v6 = [MEMORY[0x277CCACA8] healthAccessibilityIdentifier:1 suffix:@"Onboarding.PageTitle"];
-  v7 = [(HROnboardingECG2PossibleResultsViewController *)self titleLabel];
-  [v7 setAccessibilityIdentifier:v6];
+  titleLabel2 = [(HROnboardingECG2PossibleResultsViewController *)self titleLabel];
+  [titleLabel2 setAccessibilityIdentifier:v6];
 
-  v8 = [(HROnboardingECG2PossibleResultsViewController *)self titleLabel];
-  [v8 setTextAlignment:4];
+  titleLabel3 = [(HROnboardingECG2PossibleResultsViewController *)self titleLabel];
+  [titleLabel3 setTextAlignment:4];
 
-  v9 = [(HROnboardingECG2PossibleResultsViewController *)self titleFont];
-  v10 = [(HROnboardingECG2PossibleResultsViewController *)self titleLabel];
-  [v10 setFont:v9];
+  titleFont = [(HROnboardingECG2PossibleResultsViewController *)self titleFont];
+  titleLabel4 = [(HROnboardingECG2PossibleResultsViewController *)self titleLabel];
+  [titleLabel4 setFont:titleFont];
 
-  v11 = [(HROnboardingECG2PossibleResultsViewController *)self titleLabel];
-  [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel5 = [(HROnboardingECG2PossibleResultsViewController *)self titleLabel];
+  [titleLabel5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v12 = [(HROnboardingECG2PossibleResultsViewController *)self titleLabel];
-  [v12 setNumberOfLines:0];
+  titleLabel6 = [(HROnboardingECG2PossibleResultsViewController *)self titleLabel];
+  [titleLabel6 setNumberOfLines:0];
 
-  v14 = [(HROnboardingECG2PossibleResultsViewController *)self contentView];
-  v13 = [(HROnboardingECG2PossibleResultsViewController *)self titleLabel];
-  [v14 addSubview:v13];
+  contentView = [(HROnboardingECG2PossibleResultsViewController *)self contentView];
+  titleLabel7 = [(HROnboardingECG2PossibleResultsViewController *)self titleLabel];
+  [contentView addSubview:titleLabel7];
 }
 
 - (void)_setUpTitleConstraints
 {
-  v3 = [(HROnboardingECG2PossibleResultsViewController *)self titleLabel];
-  v4 = [(HROnboardingECG2PossibleResultsViewController *)self contentView];
+  titleLabel = [(HROnboardingECG2PossibleResultsViewController *)self titleLabel];
+  contentView = [(HROnboardingECG2PossibleResultsViewController *)self contentView];
   HKHealthUIBuddyDirectionalEdgeInsets();
-  [v3 hrui_alignHorizontalConstraintsWithView:v4 insets:?];
+  [titleLabel hrui_alignHorizontalConstraintsWithView:contentView insets:?];
 
-  v9 = [(HROnboardingECG2PossibleResultsViewController *)self titleLabel];
-  v5 = [v9 topAnchor];
-  v6 = [(HROnboardingECG2PossibleResultsViewController *)self contentView];
-  v7 = [v6 topAnchor];
+  titleLabel2 = [(HROnboardingECG2PossibleResultsViewController *)self titleLabel];
+  topAnchor = [titleLabel2 topAnchor];
+  contentView2 = [(HROnboardingECG2PossibleResultsViewController *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
   [(HROnboardingECG2PossibleResultsViewController *)self contentTop];
-  v8 = [v5 constraintEqualToAnchor:v7 constant:?];
+  v8 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
   [v8 setActive:1];
 }
 
-- (id)_resultViewForSample:(id)a3 activeAlgorithmVersion:(int64_t)a4
+- (id)_resultViewForSample:(id)sample activeAlgorithmVersion:(int64_t)version
 {
-  v6 = a3;
-  v7 = [v6 privateClassification];
-  v8 = [v6 _algorithmVersion];
+  sampleCopy = sample;
+  privateClassification = [sampleCopy privateClassification];
+  _algorithmVersion = [sampleCopy _algorithmVersion];
 
-  v9 = [HRElectrocardiogramResultViewItem viewItemWithClassification:v7 sampleAlgorithmVersion:v8 forAlgorithmVersion:a4 upgradingFromAlgorithmVersion:*MEMORY[0x277CCDEA8] learnMoreDelegate:self];
+  v9 = [HRElectrocardiogramResultViewItem viewItemWithClassification:privateClassification sampleAlgorithmVersion:_algorithmVersion forAlgorithmVersion:version upgradingFromAlgorithmVersion:*MEMORY[0x277CCDEA8] learnMoreDelegate:self];
 
   if (v9)
   {
@@ -316,43 +316,43 @@ LABEL_7:
 
 - (void)_setUpOnlyResultView
 {
-  v3 = [(HROnboardingECG2PossibleResultsViewController *)self electrocardiogram];
-  v4 = [(HROnboardingECG2PossibleResultsViewController *)self _resultViewForSample:v3 activeAlgorithmVersion:2];
+  electrocardiogram = [(HROnboardingECG2PossibleResultsViewController *)self electrocardiogram];
+  v4 = [(HROnboardingECG2PossibleResultsViewController *)self _resultViewForSample:electrocardiogram activeAlgorithmVersion:2];
   [(HROnboardingECG2PossibleResultsViewController *)self setOnlyResultView:v4];
 
-  v5 = [(HROnboardingECG2PossibleResultsViewController *)self onlyResultView];
-  [v5 setHideNumberedTitle:1];
+  onlyResultView = [(HROnboardingECG2PossibleResultsViewController *)self onlyResultView];
+  [onlyResultView setHideNumberedTitle:1];
 
-  v6 = [(HROnboardingECG2PossibleResultsViewController *)self onlyResultView];
-  [v6 setShouldHideSeparatorLine:1];
+  onlyResultView2 = [(HROnboardingECG2PossibleResultsViewController *)self onlyResultView];
+  [onlyResultView2 setShouldHideSeparatorLine:1];
 
-  v7 = [(HROnboardingECG2PossibleResultsViewController *)self onlyResultView];
-  [v7 setAlwaysExpanded:1];
+  onlyResultView3 = [(HROnboardingECG2PossibleResultsViewController *)self onlyResultView];
+  [onlyResultView3 setAlwaysExpanded:1];
 
-  v8 = [(HROnboardingECG2PossibleResultsViewController *)self onlyResultView];
+  onlyResultView4 = [(HROnboardingECG2PossibleResultsViewController *)self onlyResultView];
 
-  if (v8)
+  if (onlyResultView4)
   {
-    v9 = [(HROnboardingECG2PossibleResultsViewController *)self contentView];
-    v10 = [(HROnboardingECG2PossibleResultsViewController *)self onlyResultView];
-    [v9 addSubview:v10];
+    contentView = [(HROnboardingECG2PossibleResultsViewController *)self contentView];
+    onlyResultView5 = [(HROnboardingECG2PossibleResultsViewController *)self onlyResultView];
+    [contentView addSubview:onlyResultView5];
   }
 
-  v11 = [(HROnboardingECG2PossibleResultsViewController *)self onlyResultView];
-  [(HROnboardingECG2PossibleResultsViewController *)self setBottomResultView:v11];
+  onlyResultView6 = [(HROnboardingECG2PossibleResultsViewController *)self onlyResultView];
+  [(HROnboardingECG2PossibleResultsViewController *)self setBottomResultView:onlyResultView6];
 }
 
 - (void)_setUpOnlyResultViewConstraints
 {
-  v3 = [(HROnboardingECG2PossibleResultsViewController *)self onlyResultView];
-  v4 = [(HROnboardingECG2PossibleResultsViewController *)self contentView];
+  onlyResultView = [(HROnboardingECG2PossibleResultsViewController *)self onlyResultView];
+  contentView = [(HROnboardingECG2PossibleResultsViewController *)self contentView];
   HKHealthUIBuddyDirectionalEdgeInsets();
-  [v3 hrui_alignHorizontalConstraintsWithView:v4 insets:?];
+  [onlyResultView hrui_alignHorizontalConstraintsWithView:contentView insets:?];
 
-  v8 = [(HROnboardingECG2PossibleResultsViewController *)self onlyResultView];
-  v5 = [v8 topAnchor];
-  v6 = [(HROnboardingECG2PossibleResultsViewController *)self viewTopAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  onlyResultView2 = [(HROnboardingECG2PossibleResultsViewController *)self onlyResultView];
+  topAnchor = [onlyResultView2 topAnchor];
+  viewTopAnchor = [(HROnboardingECG2PossibleResultsViewController *)self viewTopAnchor];
+  v7 = [topAnchor constraintEqualToAnchor:viewTopAnchor];
   [v7 setActive:1];
 }
 
@@ -362,123 +362,123 @@ LABEL_7:
   v3 = [HROnboardingElectrocardiogramResultView resultViewWithItem:v23];
   [(HROnboardingECG2PossibleResultsViewController *)self setSinusRhythmResultReview:v3];
 
-  v4 = [(HROnboardingECG2PossibleResultsViewController *)self contentView];
-  v5 = [(HROnboardingECG2PossibleResultsViewController *)self sinusRhythmResultReview];
-  [v4 addSubview:v5];
+  contentView = [(HROnboardingECG2PossibleResultsViewController *)self contentView];
+  sinusRhythmResultReview = [(HROnboardingECG2PossibleResultsViewController *)self sinusRhythmResultReview];
+  [contentView addSubview:sinusRhythmResultReview];
 
   v6 = [HRElectrocardiogramResultViewItem viewItemWithClassification:8 sampleAlgorithmVersion:0 forAlgorithmVersion:2 upgradingFromAlgorithmVersion:[(HROnboardingECG2PossibleResultsViewController *)self upgradingFromAlgorithmVersion] learnMoreDelegate:0];
   v7 = [HROnboardingElectrocardiogramResultView resultViewWithItem:v6];
   [(HROnboardingECG2PossibleResultsViewController *)self setAtrialFibrillationResultView:v7];
 
-  v8 = [(HROnboardingECG2PossibleResultsViewController *)self contentView];
-  v9 = [(HROnboardingECG2PossibleResultsViewController *)self atrialFibrillationResultView];
-  [v8 addSubview:v9];
+  contentView2 = [(HROnboardingECG2PossibleResultsViewController *)self contentView];
+  atrialFibrillationResultView = [(HROnboardingECG2PossibleResultsViewController *)self atrialFibrillationResultView];
+  [contentView2 addSubview:atrialFibrillationResultView];
 
   v10 = [HRElectrocardiogramResultViewItem viewItemWithClassification:6 sampleAlgorithmVersion:0 forAlgorithmVersion:2 upgradingFromAlgorithmVersion:[(HROnboardingECG2PossibleResultsViewController *)self upgradingFromAlgorithmVersion] learnMoreDelegate:0];
   v11 = [HROnboardingElectrocardiogramResultView resultViewWithItem:v10];
   [(HROnboardingECG2PossibleResultsViewController *)self setHighOrLowHeartRateResultView:v11];
 
-  v12 = [(HROnboardingECG2PossibleResultsViewController *)self contentView];
-  v13 = [(HROnboardingECG2PossibleResultsViewController *)self highOrLowHeartRateResultView];
-  [v12 addSubview:v13];
+  contentView3 = [(HROnboardingECG2PossibleResultsViewController *)self contentView];
+  highOrLowHeartRateResultView = [(HROnboardingECG2PossibleResultsViewController *)self highOrLowHeartRateResultView];
+  [contentView3 addSubview:highOrLowHeartRateResultView];
 
   v14 = [HRElectrocardiogramResultViewItem viewItemWithClassification:2 sampleAlgorithmVersion:0 forAlgorithmVersion:2 upgradingFromAlgorithmVersion:[(HROnboardingECG2PossibleResultsViewController *)self upgradingFromAlgorithmVersion] learnMoreDelegate:self];
   v15 = [HROnboardingElectrocardiogramResultView resultViewWithItem:v14];
   [(HROnboardingECG2PossibleResultsViewController *)self setInconclusiveResultView:v15];
 
-  v16 = [(HROnboardingECG2PossibleResultsViewController *)self contentView];
-  v17 = [(HROnboardingECG2PossibleResultsViewController *)self inconclusiveResultView];
-  [v16 addSubview:v17];
+  contentView4 = [(HROnboardingECG2PossibleResultsViewController *)self contentView];
+  inconclusiveResultView = [(HROnboardingECG2PossibleResultsViewController *)self inconclusiveResultView];
+  [contentView4 addSubview:inconclusiveResultView];
 
   v18 = [HRElectrocardiogramResultViewItem viewItemWithClassification:1 sampleAlgorithmVersion:0 forAlgorithmVersion:2 upgradingFromAlgorithmVersion:[(HROnboardingECG2PossibleResultsViewController *)self upgradingFromAlgorithmVersion] learnMoreDelegate:self];
   v19 = [HROnboardingElectrocardiogramResultView resultViewWithItem:v18];
   [(HROnboardingECG2PossibleResultsViewController *)self setPoorRecordingResultView:v19];
 
-  v20 = [(HROnboardingECG2PossibleResultsViewController *)self contentView];
-  v21 = [(HROnboardingECG2PossibleResultsViewController *)self poorRecordingResultView];
-  [v20 addSubview:v21];
+  contentView5 = [(HROnboardingECG2PossibleResultsViewController *)self contentView];
+  poorRecordingResultView = [(HROnboardingECG2PossibleResultsViewController *)self poorRecordingResultView];
+  [contentView5 addSubview:poorRecordingResultView];
 
-  v22 = [(HROnboardingECG2PossibleResultsViewController *)self poorRecordingResultView];
-  [(HROnboardingECG2PossibleResultsViewController *)self setBottomResultView:v22];
+  poorRecordingResultView2 = [(HROnboardingECG2PossibleResultsViewController *)self poorRecordingResultView];
+  [(HROnboardingECG2PossibleResultsViewController *)self setBottomResultView:poorRecordingResultView2];
 }
 
 - (void)_setUpAllResultViewConstraints
 {
-  v3 = [(HROnboardingECG2PossibleResultsViewController *)self sinusRhythmResultReview];
-  v4 = [(HROnboardingECG2PossibleResultsViewController *)self contentView];
+  sinusRhythmResultReview = [(HROnboardingECG2PossibleResultsViewController *)self sinusRhythmResultReview];
+  contentView = [(HROnboardingECG2PossibleResultsViewController *)self contentView];
   HKHealthUIBuddyDirectionalEdgeInsets();
-  [v3 hrui_alignHorizontalConstraintsWithView:v4 insets:?];
+  [sinusRhythmResultReview hrui_alignHorizontalConstraintsWithView:contentView insets:?];
 
-  v5 = [(HROnboardingECG2PossibleResultsViewController *)self sinusRhythmResultReview];
-  v6 = [v5 topAnchor];
-  v7 = [(HROnboardingECG2PossibleResultsViewController *)self viewTopAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  sinusRhythmResultReview2 = [(HROnboardingECG2PossibleResultsViewController *)self sinusRhythmResultReview];
+  topAnchor = [sinusRhythmResultReview2 topAnchor];
+  viewTopAnchor = [(HROnboardingECG2PossibleResultsViewController *)self viewTopAnchor];
+  v8 = [topAnchor constraintEqualToAnchor:viewTopAnchor];
   [v8 setActive:1];
 
-  v9 = [(HROnboardingECG2PossibleResultsViewController *)self atrialFibrillationResultView];
-  v10 = [(HROnboardingECG2PossibleResultsViewController *)self sinusRhythmResultReview];
-  [v9 hk_alignHorizontalConstraintsWithView:v10 margin:0.0];
+  atrialFibrillationResultView = [(HROnboardingECG2PossibleResultsViewController *)self atrialFibrillationResultView];
+  sinusRhythmResultReview3 = [(HROnboardingECG2PossibleResultsViewController *)self sinusRhythmResultReview];
+  [atrialFibrillationResultView hk_alignHorizontalConstraintsWithView:sinusRhythmResultReview3 margin:0.0];
 
-  v11 = [(HROnboardingECG2PossibleResultsViewController *)self atrialFibrillationResultView];
-  v12 = [v11 topAnchor];
-  v13 = [(HROnboardingECG2PossibleResultsViewController *)self sinusRhythmResultReview];
-  v14 = [v13 bottomAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14];
+  atrialFibrillationResultView2 = [(HROnboardingECG2PossibleResultsViewController *)self atrialFibrillationResultView];
+  topAnchor2 = [atrialFibrillationResultView2 topAnchor];
+  sinusRhythmResultReview4 = [(HROnboardingECG2PossibleResultsViewController *)self sinusRhythmResultReview];
+  bottomAnchor = [sinusRhythmResultReview4 bottomAnchor];
+  v15 = [topAnchor2 constraintEqualToAnchor:bottomAnchor];
   [v15 setActive:1];
 
-  v16 = [(HROnboardingECG2PossibleResultsViewController *)self highOrLowHeartRateResultView];
-  v17 = [(HROnboardingECG2PossibleResultsViewController *)self sinusRhythmResultReview];
-  [v16 hk_alignHorizontalConstraintsWithView:v17 margin:0.0];
+  highOrLowHeartRateResultView = [(HROnboardingECG2PossibleResultsViewController *)self highOrLowHeartRateResultView];
+  sinusRhythmResultReview5 = [(HROnboardingECG2PossibleResultsViewController *)self sinusRhythmResultReview];
+  [highOrLowHeartRateResultView hk_alignHorizontalConstraintsWithView:sinusRhythmResultReview5 margin:0.0];
 
-  v18 = [(HROnboardingECG2PossibleResultsViewController *)self highOrLowHeartRateResultView];
-  v19 = [v18 topAnchor];
-  v20 = [(HROnboardingECG2PossibleResultsViewController *)self atrialFibrillationResultView];
-  v21 = [v20 bottomAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21];
+  highOrLowHeartRateResultView2 = [(HROnboardingECG2PossibleResultsViewController *)self highOrLowHeartRateResultView];
+  topAnchor3 = [highOrLowHeartRateResultView2 topAnchor];
+  atrialFibrillationResultView3 = [(HROnboardingECG2PossibleResultsViewController *)self atrialFibrillationResultView];
+  bottomAnchor2 = [atrialFibrillationResultView3 bottomAnchor];
+  v22 = [topAnchor3 constraintEqualToAnchor:bottomAnchor2];
   [v22 setActive:1];
 
-  v23 = [(HROnboardingECG2PossibleResultsViewController *)self inconclusiveResultView];
-  v24 = [(HROnboardingECG2PossibleResultsViewController *)self sinusRhythmResultReview];
-  [v23 hk_alignHorizontalConstraintsWithView:v24 margin:0.0];
+  inconclusiveResultView = [(HROnboardingECG2PossibleResultsViewController *)self inconclusiveResultView];
+  sinusRhythmResultReview6 = [(HROnboardingECG2PossibleResultsViewController *)self sinusRhythmResultReview];
+  [inconclusiveResultView hk_alignHorizontalConstraintsWithView:sinusRhythmResultReview6 margin:0.0];
 
-  v25 = [(HROnboardingECG2PossibleResultsViewController *)self inconclusiveResultView];
-  v26 = [v25 topAnchor];
-  v27 = [(HROnboardingECG2PossibleResultsViewController *)self highOrLowHeartRateResultView];
-  v28 = [v27 bottomAnchor];
-  v29 = [v26 constraintEqualToAnchor:v28];
+  inconclusiveResultView2 = [(HROnboardingECG2PossibleResultsViewController *)self inconclusiveResultView];
+  topAnchor4 = [inconclusiveResultView2 topAnchor];
+  highOrLowHeartRateResultView3 = [(HROnboardingECG2PossibleResultsViewController *)self highOrLowHeartRateResultView];
+  bottomAnchor3 = [highOrLowHeartRateResultView3 bottomAnchor];
+  v29 = [topAnchor4 constraintEqualToAnchor:bottomAnchor3];
   [v29 setActive:1];
 
-  v30 = [(HROnboardingECG2PossibleResultsViewController *)self poorRecordingResultView];
-  v31 = [(HROnboardingECG2PossibleResultsViewController *)self sinusRhythmResultReview];
-  [v30 hk_alignHorizontalConstraintsWithView:v31 margin:0.0];
+  poorRecordingResultView = [(HROnboardingECG2PossibleResultsViewController *)self poorRecordingResultView];
+  sinusRhythmResultReview7 = [(HROnboardingECG2PossibleResultsViewController *)self sinusRhythmResultReview];
+  [poorRecordingResultView hk_alignHorizontalConstraintsWithView:sinusRhythmResultReview7 margin:0.0];
 
-  v36 = [(HROnboardingECG2PossibleResultsViewController *)self poorRecordingResultView];
-  v32 = [v36 topAnchor];
-  v33 = [(HROnboardingECG2PossibleResultsViewController *)self inconclusiveResultView];
-  v34 = [v33 bottomAnchor];
-  v35 = [v32 constraintEqualToAnchor:v34];
+  poorRecordingResultView2 = [(HROnboardingECG2PossibleResultsViewController *)self poorRecordingResultView];
+  topAnchor5 = [poorRecordingResultView2 topAnchor];
+  inconclusiveResultView3 = [(HROnboardingECG2PossibleResultsViewController *)self inconclusiveResultView];
+  bottomAnchor4 = [inconclusiveResultView3 bottomAnchor];
+  v35 = [topAnchor5 constraintEqualToAnchor:bottomAnchor4];
   [v35 setActive:1];
 }
 
 - (void)_setUpBottomResultViewConstraint
 {
-  v3 = [(HROnboardingECG2PossibleResultsViewController *)self bottomResultView];
-  if (v3)
+  bottomResultView = [(HROnboardingECG2PossibleResultsViewController *)self bottomResultView];
+  if (bottomResultView)
   {
-    v4 = v3;
-    v5 = [(HROnboardingECG2PossibleResultsViewController *)self contentViewBottomConstraint];
+    v4 = bottomResultView;
+    contentViewBottomConstraint = [(HROnboardingECG2PossibleResultsViewController *)self contentViewBottomConstraint];
 
-    if (!v5)
+    if (!contentViewBottomConstraint)
     {
-      v6 = [(HROnboardingECG2PossibleResultsViewController *)self contentView];
-      v7 = [v6 bottomAnchor];
-      v8 = [(HROnboardingECG2PossibleResultsViewController *)self bottomResultView];
-      v9 = [v8 bottomAnchor];
-      v10 = [v7 constraintEqualToAnchor:v9];
+      contentView = [(HROnboardingECG2PossibleResultsViewController *)self contentView];
+      bottomAnchor = [contentView bottomAnchor];
+      bottomResultView2 = [(HROnboardingECG2PossibleResultsViewController *)self bottomResultView];
+      bottomAnchor2 = [bottomResultView2 bottomAnchor];
+      v10 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       [(HROnboardingECG2PossibleResultsViewController *)self setContentViewBottomConstraint:v10];
 
-      v11 = [(HROnboardingECG2PossibleResultsViewController *)self contentViewBottomConstraint];
-      [v11 setActive:1];
+      contentViewBottomConstraint2 = [(HROnboardingECG2PossibleResultsViewController *)self contentViewBottomConstraint];
+      [contentViewBottomConstraint2 setActive:1];
     }
   }
 }
@@ -490,61 +490,61 @@ LABEL_7:
   [v15 setAdjustsFontForContentSizeCategory:1];
   [v15 setNumberOfLines:0];
   [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v3 = [(HROnboardingECG2PossibleResultsViewController *)self contentView];
-  [v3 addSubview:v15];
+  contentView = [(HROnboardingECG2PossibleResultsViewController *)self contentView];
+  [contentView addSubview:v15];
 
-  v4 = [(HROnboardingECG2PossibleResultsViewController *)self titleLabel];
-  [v15 hk_alignHorizontalConstraintsWithView:v4 margin:0.0];
+  titleLabel = [(HROnboardingECG2PossibleResultsViewController *)self titleLabel];
+  [v15 hk_alignHorizontalConstraintsWithView:titleLabel margin:0.0];
 
-  v5 = [v15 firstBaselineAnchor];
-  v6 = [(HROnboardingECG2PossibleResultsViewController *)self bottomResultView];
-  v7 = [v6 bottomAnchor];
-  v8 = [v5 constraintEqualToAnchor:v7];
+  firstBaselineAnchor = [v15 firstBaselineAnchor];
+  bottomResultView = [(HROnboardingECG2PossibleResultsViewController *)self bottomResultView];
+  bottomAnchor = [bottomResultView bottomAnchor];
+  v8 = [firstBaselineAnchor constraintEqualToAnchor:bottomAnchor];
   [(HROnboardingECG2PossibleResultsViewController *)self setDisclaimerLabelTopConstraint:v8];
 
-  v9 = [(HROnboardingECG2PossibleResultsViewController *)self disclaimerLabelTopConstraint];
-  [v9 setActive:1];
+  disclaimerLabelTopConstraint = [(HROnboardingECG2PossibleResultsViewController *)self disclaimerLabelTopConstraint];
+  [disclaimerLabelTopConstraint setActive:1];
 
-  v10 = [(HROnboardingECG2PossibleResultsViewController *)self contentView];
-  v11 = [v10 bottomAnchor];
-  v12 = [v15 bottomAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  contentView2 = [(HROnboardingECG2PossibleResultsViewController *)self contentView];
+  bottomAnchor2 = [contentView2 bottomAnchor];
+  bottomAnchor3 = [v15 bottomAnchor];
+  v13 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   [(HROnboardingECG2PossibleResultsViewController *)self setContentViewBottomConstraint:v13];
 
-  v14 = [(HROnboardingECG2PossibleResultsViewController *)self contentViewBottomConstraint];
-  [v14 setActive:1];
+  contentViewBottomConstraint = [(HROnboardingECG2PossibleResultsViewController *)self contentViewBottomConstraint];
+  [contentViewBottomConstraint setActive:1];
 
   [(HROnboardingECG2PossibleResultsViewController *)self _adjustDisclaimerLabelConstraints];
 }
 
 - (void)_adjustDisclaimerLabelConstraints
 {
-  v3 = [(HROnboardingECG2PossibleResultsViewController *)self disclaimerLabelTopConstraint];
+  disclaimerLabelTopConstraint = [(HROnboardingECG2PossibleResultsViewController *)self disclaimerLabelTopConstraint];
 
-  if (v3)
+  if (disclaimerLabelTopConstraint)
   {
     v4 = *MEMORY[0x277D769D0];
     v17 = [objc_alloc(MEMORY[0x277D75520]) initForTextStyle:*MEMORY[0x277D769D0]];
     [v17 scaledValueForValue:40.0];
     v6 = v5;
-    v7 = [(HROnboardingECG2PossibleResultsViewController *)self disclaimerLabelTopConstraint];
-    [v7 setConstant:v6];
+    disclaimerLabelTopConstraint2 = [(HROnboardingECG2PossibleResultsViewController *)self disclaimerLabelTopConstraint];
+    [disclaimerLabelTopConstraint2 setConstant:v6];
 
-    v8 = [(HROnboardingECG2PossibleResultsViewController *)self contentViewBottomConstraint];
-    [v8 setConstant:v6];
+    contentViewBottomConstraint = [(HROnboardingECG2PossibleResultsViewController *)self contentViewBottomConstraint];
+    [contentViewBottomConstraint setConstant:v6];
 
     v9 = MEMORY[0x277CCAB48];
     v10 = HRUIECGLocalizedString(@"ECG_ONBOARDING_3_FOOTER");
-    v11 = [MEMORY[0x277D75348] secondaryLabelColor];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
     v12 = HRUIECGLocalizedString(@"ECG_ONBOARDING_3_BOLD_FOOTER");
-    v13 = [v9 hrui_attributedStringForText:v10 style:v4 color:v11 boldText:v12];
+    v13 = [v9 hrui_attributedStringForText:v10 style:v4 color:secondaryLabelColor boldText:v12];
 
-    v14 = [(HROnboardingECG2PossibleResultsViewController *)self disclaimerLabel];
-    [v14 setAttributedText:v13];
+    disclaimerLabel = [(HROnboardingECG2PossibleResultsViewController *)self disclaimerLabel];
+    [disclaimerLabel setAttributedText:v13];
 
     v15 = [MEMORY[0x277CCACA8] healthAccessibilityIdentifier:1 suffix:@"ResultsYouMaySee.Note"];
-    v16 = [(HROnboardingECG2PossibleResultsViewController *)self disclaimerLabel];
-    [v16 setAccessibilityIdentifier:v15];
+    disclaimerLabel2 = [(HROnboardingECG2PossibleResultsViewController *)self disclaimerLabel];
+    [disclaimerLabel2 setAccessibilityIdentifier:v15];
   }
 }
 
@@ -560,31 +560,31 @@ LABEL_7:
   v8 = [HRStackedButtonView buddyStackedButtonViewWithTitles:v5 footerText:v6 boldFooterText:v7 delegate:self];
   [(HROnboardingECG2PossibleResultsViewController *)self setStackedButtonView:v8];
 
-  v9 = [(HROnboardingECG2PossibleResultsViewController *)self stackedButtonView];
-  [v9 setBlurHidden:1];
+  stackedButtonView = [(HROnboardingECG2PossibleResultsViewController *)self stackedButtonView];
+  [stackedButtonView setBlurHidden:1];
 
-  v10 = [(HROnboardingECG2PossibleResultsViewController *)self stackedButtonView];
-  [v10 setFixedBottomButtonSpacing:1];
+  stackedButtonView2 = [(HROnboardingECG2PossibleResultsViewController *)self stackedButtonView];
+  [stackedButtonView2 setFixedBottomButtonSpacing:1];
 
-  v11 = [(HROnboardingECG2PossibleResultsViewController *)self stackedButtonView];
-  [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+  stackedButtonView3 = [(HROnboardingECG2PossibleResultsViewController *)self stackedButtonView];
+  [stackedButtonView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 }
 
 - (void)_setStackedButtonViewAsFooterView
 {
   if ([(HROnboardingECG2PossibleResultsViewController *)self isOnboarding])
   {
-    v3 = [(HROnboardingECG2PossibleResultsViewController *)self stackedButtonView];
+    stackedButtonView = [(HROnboardingECG2PossibleResultsViewController *)self stackedButtonView];
 
-    if (v3)
+    if (stackedButtonView)
     {
-      v4 = [(HROnboardingECG2PossibleResultsViewController *)self stackedButtonView];
+      stackedButtonView2 = [(HROnboardingECG2PossibleResultsViewController *)self stackedButtonView];
       HKHealthUIBuddyDirectionalEdgeInsets();
-      [(HROnboardingECG2PossibleResultsViewController *)self setFooterView:v4 insets:?];
+      [(HROnboardingECG2PossibleResultsViewController *)self setFooterView:stackedButtonView2 insets:?];
 
-      v6 = [(HROnboardingECG2PossibleResultsViewController *)self stackedButtonView];
-      v5 = [(HROnboardingECG2PossibleResultsViewController *)self view];
-      [v6 alignBlurViewHorizontalConstraintsWithView:v5];
+      stackedButtonView3 = [(HROnboardingECG2PossibleResultsViewController *)self stackedButtonView];
+      view = [(HROnboardingECG2PossibleResultsViewController *)self view];
+      [stackedButtonView3 alignBlurViewHorizontalConstraintsWithView:view];
     }
   }
 }
@@ -594,72 +594,72 @@ LABEL_7:
   v45[1] = *MEMORY[0x277D85DE8];
   if ([(HROnboardingECG2PossibleResultsViewController *)self isOnboarding])
   {
-    v3 = [(HROnboardingECG2PossibleResultsViewController *)self stackedButtonView];
+    stackedButtonView = [(HROnboardingECG2PossibleResultsViewController *)self stackedButtonView];
 
-    if (v3)
+    if (stackedButtonView)
     {
-      v4 = [(HROnboardingECG2PossibleResultsViewController *)self view];
-      [v4 layoutIfNeeded];
+      view = [(HROnboardingECG2PossibleResultsViewController *)self view];
+      [view layoutIfNeeded];
 
-      v5 = [(HROnboardingECG2PossibleResultsViewController *)self view];
-      v6 = [(HROnboardingECG2PossibleResultsViewController *)self stackedButtonView];
-      v7 = [v6 buttons];
-      v8 = [v7 firstObject];
-      [v8 frame];
+      view2 = [(HROnboardingECG2PossibleResultsViewController *)self view];
+      stackedButtonView2 = [(HROnboardingECG2PossibleResultsViewController *)self stackedButtonView];
+      buttons = [stackedButtonView2 buttons];
+      firstObject = [buttons firstObject];
+      [firstObject frame];
       v10 = v9;
       v12 = v11;
       v14 = v13;
       v16 = v15;
-      v17 = [(HROnboardingECG2PossibleResultsViewController *)self stackedButtonView];
-      [v5 convertRect:v17 fromView:{v10, v12, v14, v16}];
+      stackedButtonView3 = [(HROnboardingECG2PossibleResultsViewController *)self stackedButtonView];
+      [view2 convertRect:stackedButtonView3 fromView:{v10, v12, v14, v16}];
       v19 = v18;
 
-      v20 = [(HROnboardingECG2PossibleResultsViewController *)self contentView];
-      [v20 frame];
+      contentView = [(HROnboardingECG2PossibleResultsViewController *)self contentView];
+      [contentView frame];
       v22 = v21;
-      v23 = [(HROnboardingECG2PossibleResultsViewController *)self view];
-      [v23 safeAreaInsets];
+      view3 = [(HROnboardingECG2PossibleResultsViewController *)self view];
+      [view3 safeAreaInsets];
       v25 = v19 - v24;
 
       if (v22 > v25)
       {
         [(HROnboardingECG2PossibleResultsViewController *)self removeFooterView];
-        v26 = [(HROnboardingECG2PossibleResultsViewController *)self contentView];
-        v27 = [(HROnboardingECG2PossibleResultsViewController *)self stackedButtonView];
-        [v26 addSubview:v27];
+        contentView2 = [(HROnboardingECG2PossibleResultsViewController *)self contentView];
+        stackedButtonView4 = [(HROnboardingECG2PossibleResultsViewController *)self stackedButtonView];
+        [contentView2 addSubview:stackedButtonView4];
 
-        v28 = [(HROnboardingECG2PossibleResultsViewController *)self stackedButtonView];
-        v29 = [(HROnboardingECG2PossibleResultsViewController *)self titleLabel];
-        [v28 hk_alignHorizontalConstraintsWithView:v29 margin:0.0];
+        stackedButtonView5 = [(HROnboardingECG2PossibleResultsViewController *)self stackedButtonView];
+        titleLabel = [(HROnboardingECG2PossibleResultsViewController *)self titleLabel];
+        [stackedButtonView5 hk_alignHorizontalConstraintsWithView:titleLabel margin:0.0];
 
-        v30 = [(HROnboardingECG2PossibleResultsViewController *)self stackedButtonView];
-        v31 = [v30 topAnchor];
-        v32 = [(HROnboardingECG2PossibleResultsViewController *)self bottomResultView];
-        v33 = [v32 bottomAnchor];
-        v34 = [v31 constraintEqualToAnchor:v33];
+        stackedButtonView6 = [(HROnboardingECG2PossibleResultsViewController *)self stackedButtonView];
+        topAnchor = [stackedButtonView6 topAnchor];
+        bottomResultView = [(HROnboardingECG2PossibleResultsViewController *)self bottomResultView];
+        bottomAnchor = [bottomResultView bottomAnchor];
+        v34 = [topAnchor constraintEqualToAnchor:bottomAnchor];
         [v34 setActive:1];
 
-        v35 = [(HROnboardingECG2PossibleResultsViewController *)self contentViewBottomConstraint];
+        contentViewBottomConstraint = [(HROnboardingECG2PossibleResultsViewController *)self contentViewBottomConstraint];
 
-        if (v35)
+        if (contentViewBottomConstraint)
         {
           v36 = MEMORY[0x277CCAAD0];
-          v37 = [(HROnboardingECG2PossibleResultsViewController *)self contentViewBottomConstraint];
-          v45[0] = v37;
+          contentViewBottomConstraint2 = [(HROnboardingECG2PossibleResultsViewController *)self contentViewBottomConstraint];
+          v45[0] = contentViewBottomConstraint2;
           v38 = [MEMORY[0x277CBEA60] arrayWithObjects:v45 count:1];
           [v36 deactivateConstraints:v38];
         }
 
         [(HROnboardingECG2PossibleResultsViewController *)self setContentViewBottomConstraint:0];
-        v39 = [(HROnboardingECG2PossibleResultsViewController *)self contentView];
-        v40 = [v39 bottomAnchor];
-        v41 = [(HROnboardingECG2PossibleResultsViewController *)self stackedButtonView];
-        v42 = [v41 bottomAnchor];
-        v43 = [v40 constraintEqualToAnchor:v42];
+        contentView3 = [(HROnboardingECG2PossibleResultsViewController *)self contentView];
+        bottomAnchor2 = [contentView3 bottomAnchor];
+        stackedButtonView7 = [(HROnboardingECG2PossibleResultsViewController *)self stackedButtonView];
+        bottomAnchor3 = [stackedButtonView7 bottomAnchor];
+        v43 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
         [(HROnboardingECG2PossibleResultsViewController *)self setContentViewBottomConstraint:v43];
 
-        v44 = [(HROnboardingECG2PossibleResultsViewController *)self contentViewBottomConstraint];
-        [v44 setActive:1];
+        contentViewBottomConstraint3 = [(HROnboardingECG2PossibleResultsViewController *)self contentViewBottomConstraint];
+        [contentViewBottomConstraint3 setActive:1];
       }
     }
   }
@@ -667,65 +667,65 @@ LABEL_7:
 
 - (void)_playResultViewVideos
 {
-  v3 = [MEMORY[0x277CB83F8] sharedInstance];
-  [v3 setCategory:*MEMORY[0x277CB8020] error:0];
+  mEMORY[0x277CB83F8] = [MEMORY[0x277CB83F8] sharedInstance];
+  [mEMORY[0x277CB83F8] setCategory:*MEMORY[0x277CB8020] error:0];
 
-  v4 = [(HROnboardingECG2PossibleResultsViewController *)self electrocardiogram];
+  electrocardiogram = [(HROnboardingECG2PossibleResultsViewController *)self electrocardiogram];
 
-  if (v4)
+  if (electrocardiogram)
   {
     [(HROnboardingECG2PossibleResultsViewController *)self bottomResultView];
   }
 
   else
   {
-    v5 = [(HROnboardingECG2PossibleResultsViewController *)self sinusRhythmResultReview];
-    v6 = [v5 playerView];
-    [v6 play];
+    sinusRhythmResultReview = [(HROnboardingECG2PossibleResultsViewController *)self sinusRhythmResultReview];
+    playerView = [sinusRhythmResultReview playerView];
+    [playerView play];
 
-    v7 = [(HROnboardingECG2PossibleResultsViewController *)self atrialFibrillationResultView];
-    v8 = [v7 playerView];
-    [v8 play];
+    atrialFibrillationResultView = [(HROnboardingECG2PossibleResultsViewController *)self atrialFibrillationResultView];
+    playerView2 = [atrialFibrillationResultView playerView];
+    [playerView2 play];
 
-    v9 = [(HROnboardingECG2PossibleResultsViewController *)self highOrLowHeartRateResultView];
-    v10 = [v9 playerView];
-    [v10 play];
+    highOrLowHeartRateResultView = [(HROnboardingECG2PossibleResultsViewController *)self highOrLowHeartRateResultView];
+    playerView3 = [highOrLowHeartRateResultView playerView];
+    [playerView3 play];
 
     [(HROnboardingECG2PossibleResultsViewController *)self inconclusiveResultView];
   }
   v12 = ;
-  v11 = [v12 playerView];
-  [v11 play];
+  playerView4 = [v12 playerView];
+  [playerView4 play];
 }
 
 - (void)_pauseResultViewVideos
 {
-  v3 = [(HROnboardingECG2PossibleResultsViewController *)self electrocardiogram];
+  electrocardiogram = [(HROnboardingECG2PossibleResultsViewController *)self electrocardiogram];
 
-  if (v3)
+  if (electrocardiogram)
   {
     [(HROnboardingECG2PossibleResultsViewController *)self bottomResultView];
   }
 
   else
   {
-    v4 = [(HROnboardingECG2PossibleResultsViewController *)self sinusRhythmResultReview];
-    v5 = [v4 playerView];
-    [v5 pause];
+    sinusRhythmResultReview = [(HROnboardingECG2PossibleResultsViewController *)self sinusRhythmResultReview];
+    playerView = [sinusRhythmResultReview playerView];
+    [playerView pause];
 
-    v6 = [(HROnboardingECG2PossibleResultsViewController *)self atrialFibrillationResultView];
-    v7 = [v6 playerView];
-    [v7 pause];
+    atrialFibrillationResultView = [(HROnboardingECG2PossibleResultsViewController *)self atrialFibrillationResultView];
+    playerView2 = [atrialFibrillationResultView playerView];
+    [playerView2 pause];
 
-    v8 = [(HROnboardingECG2PossibleResultsViewController *)self highOrLowHeartRateResultView];
-    v9 = [v8 playerView];
-    [v9 pause];
+    highOrLowHeartRateResultView = [(HROnboardingECG2PossibleResultsViewController *)self highOrLowHeartRateResultView];
+    playerView3 = [highOrLowHeartRateResultView playerView];
+    [playerView3 pause];
 
     [(HROnboardingECG2PossibleResultsViewController *)self inconclusiveResultView];
   }
   v11 = ;
-  v10 = [v11 playerView];
-  [v10 pause];
+  playerView4 = [v11 playerView];
+  [playerView4 pause];
 }
 
 - (void)viewControllerWillEnterAdaptiveModal
@@ -741,8 +741,8 @@ LABEL_7:
   v5 = [v4 actionWithHandler:&v8];
   v6 = [v3 initWithBarButtonSystemItem:0 primaryAction:{v5, v8, v9, v10, v11}];
 
-  v7 = [(HROnboardingECG2PossibleResultsViewController *)self navigationItem];
-  [v7 setLeftBarButtonItem:v6];
+  navigationItem = [(HROnboardingECG2PossibleResultsViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v6];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -756,8 +756,8 @@ void __85__HROnboardingECG2PossibleResultsViewController_viewControllerWillEnter
 
 - (void)viewControllerDidLeaveAdaptiveModal
 {
-  v2 = [(HROnboardingECG2PossibleResultsViewController *)self navigationItem];
-  [v2 setLeftBarButtonItem:0];
+  navigationItem = [(HROnboardingECG2PossibleResultsViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:0];
 }
 
 @end

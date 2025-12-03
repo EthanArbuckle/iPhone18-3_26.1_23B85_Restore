@@ -1,44 +1,44 @@
 @interface SBKUniversalPlaybackPositionStore
 - (BOOL)_timerIsStopped;
 - (SBKUniversalPlaybackPositionDataSource)dataSource;
-- (SBKUniversalPlaybackPositionStore)initWithDomain:(id)a3 dataSource:(id)a4 automaticSynchronizeOptions:(unint64_t)a5 accountIdentifier:(id)a6 isActive:(BOOL)a7;
-- (SBKUniversalPlaybackPositionStore)initWithInitialUpdateDelay:(double)a3;
+- (SBKUniversalPlaybackPositionStore)initWithDomain:(id)domain dataSource:(id)source automaticSynchronizeOptions:(unint64_t)options accountIdentifier:(id)identifier isActive:(BOOL)active;
+- (SBKUniversalPlaybackPositionStore)initWithInitialUpdateDelay:(double)delay;
 - (double)_effectiveAutorefreshRate;
 - (id)_accountForSyncing;
-- (void)_onQueueLoadBagContextWithCompletionHandler:(id)a3;
-- (void)_onQueueLoadRemoteDomainVersionWithCompletionBlock:(id)a3;
-- (void)_onQueuePullMetadataItemWithItemIdentifier:(id)a3 completionBlock:(id)a4;
-- (void)_onQueuePushMetadataItem:(id)a3 completionBlock:(id)a4;
+- (void)_onQueueLoadBagContextWithCompletionHandler:(id)handler;
+- (void)_onQueueLoadRemoteDomainVersionWithCompletionBlock:(id)block;
+- (void)_onQueuePullMetadataItemWithItemIdentifier:(id)identifier completionBlock:(id)block;
+- (void)_onQueuePushMetadataItem:(id)item completionBlock:(id)block;
 - (void)_onQueueResumeTimer;
 - (void)_onQueueRunNextPendingTaskBlock;
-- (void)_onQueueRunTaskWithName:(id)a3 taskCompletionHandler:(id)a4 runTaskBlock:(id)a5;
+- (void)_onQueueRunTaskWithName:(id)name taskCompletionHandler:(id)handler runTaskBlock:(id)block;
 - (void)_onQueueScheduleTimer;
 - (void)_onQueueStartNewTimer;
-- (void)_onQueueStartNewTimerWithTimeIntervalSinceNow:(double)a3;
+- (void)_onQueueStartNewTimerWithTimeIntervalSinceNow:(double)now;
 - (void)_onQueueStopTimer;
 - (void)_onQueueSuspendTimer;
-- (void)_onQueueSynchronizeImmediatelyWithCompletionHandler:(id)a3;
-- (void)_onQueueSynchronizeWithAutosynchronizeMask:(unint64_t)a3 withCompletionBlock:(id)a4;
+- (void)_onQueueSynchronizeImmediatelyWithCompletionHandler:(id)handler;
+- (void)_onQueueSynchronizeWithAutosynchronizeMask:(unint64_t)mask withCompletionBlock:(id)block;
 - (void)_onQueueUpdateTimerForActiveChanges;
 - (void)_onQueueUpdateTimerForAutomaticSyncOptionChanges;
-- (void)_timerFired:(id)a3;
-- (void)_updateAutorefreshRateSettingAndRestartTimer:(BOOL)a3;
+- (void)_timerFired:(id)fired;
+- (void)_updateAutorefreshRateSettingAndRestartTimer:(BOOL)timer;
 - (void)_updateForStoreAccountsChange;
-- (void)_updateSettingsFromLoadedBagContext:(id)a3;
+- (void)_updateSettingsFromLoadedBagContext:(id)context;
 - (void)becomeActive;
-- (void)checkForAvailabilityWithCompletionBlock:(id)a3;
+- (void)checkForAvailabilityWithCompletionBlock:(id)block;
 - (void)dealloc;
-- (void)loadBagContextWithCompletionBlock:(id)a3;
-- (void)loadRemoteDomainVersionWithCompletionBlock:(id)a3;
-- (void)pullMetadataItemWithItemIdentifier:(id)a3 completionBlock:(id)a4;
-- (void)pushMetadataItem:(id)a3 completionBlock:(id)a4;
+- (void)loadBagContextWithCompletionBlock:(id)block;
+- (void)loadRemoteDomainVersionWithCompletionBlock:(id)block;
+- (void)pullMetadataItemWithItemIdentifier:(id)identifier completionBlock:(id)block;
+- (void)pushMetadataItem:(id)item completionBlock:(id)block;
 - (void)resignActive;
-- (void)setAutomaticSynchronizeOptions:(unint64_t)a3;
-- (void)setAutomaticallySynchronizeLocalChangesOnResignActive:(BOOL)a3;
-- (void)setAutomaticallySynchronizeOnBecomeActive:(BOOL)a3;
-- (void)setHasLocalChangesToSync:(BOOL)a3;
-- (void)synchronizeImmediatelyWithCompletionBlock:(id)a3;
-- (void)synchronizeImmediatelyWithCompletionHandler:(id)a3;
+- (void)setAutomaticSynchronizeOptions:(unint64_t)options;
+- (void)setAutomaticallySynchronizeLocalChangesOnResignActive:(BOOL)active;
+- (void)setAutomaticallySynchronizeOnBecomeActive:(BOOL)active;
+- (void)setHasLocalChangesToSync:(BOOL)sync;
+- (void)synchronizeImmediatelyWithCompletionBlock:(id)block;
+- (void)synchronizeImmediatelyWithCompletionHandler:(id)handler;
 @end
 
 @implementation SBKUniversalPlaybackPositionStore
@@ -50,18 +50,18 @@
   return WeakRetained;
 }
 
-- (void)_onQueueStartNewTimerWithTimeIntervalSinceNow:(double)a3
+- (void)_onQueueStartNewTimerWithTimeIntervalSinceNow:(double)now
 {
   [(SBKUniversalPlaybackPositionStore *)self _onQueueStopTimer];
-  if (a3 >= 31536000.0)
+  if (now >= 31536000.0)
   {
-    v6 = [MEMORY[0x277CBEAA8] distantFuture];
-    [(SBKUniversalPlaybackPositionStore *)self setDateToFireNextTimer:v6];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+    [(SBKUniversalPlaybackPositionStore *)self setDateToFireNextTimer:distantFuture];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:a3];
+    v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:now];
     [(SBKUniversalPlaybackPositionStore *)self setDateToFireNextTimer:v5];
 
     [(SBKUniversalPlaybackPositionStore *)self _onQueueResumeTimer];
@@ -80,8 +80,8 @@
 
 - (void)_onQueueStopTimer
 {
-  v3 = [MEMORY[0x277CBEAA8] distantFuture];
-  [(SBKUniversalPlaybackPositionStore *)self setDateToFireNextTimer:v3];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  [(SBKUniversalPlaybackPositionStore *)self setDateToFireNextTimer:distantFuture];
 
   [(SBKUniversalPlaybackPositionStore *)self _onQueueSuspendTimer];
 }
@@ -119,8 +119,8 @@
   if (!self->_refreshTimerActive)
   {
     self->_refreshTimerActive = 1;
-    v3 = [(SBKUniversalPlaybackPositionStore *)self dateToFireNextTimer];
-    [v3 timeIntervalSinceNow];
+    dateToFireNextTimer = [(SBKUniversalPlaybackPositionStore *)self dateToFireNextTimer];
+    [dateToFireNextTimer timeIntervalSinceNow];
     v5 = v4;
 
     v6[0] = MEMORY[0x277D85DD0];
@@ -191,14 +191,14 @@ void __58__SBKUniversalPlaybackPositionStore__onQueueScheduleTimer__block_invoke
 
 - (BOOL)_timerIsStopped
 {
-  v2 = [(SBKUniversalPlaybackPositionStore *)self dateToFireNextTimer];
-  v3 = [MEMORY[0x277CBEAA8] distantFuture];
-  v4 = [v2 isEqualToDate:v3];
+  dateToFireNextTimer = [(SBKUniversalPlaybackPositionStore *)self dateToFireNextTimer];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v4 = [dateToFireNextTimer isEqualToDate:distantFuture];
 
   return v4;
 }
 
-- (void)_timerFired:(id)a3
+- (void)_timerFired:(id)fired
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -209,7 +209,7 @@ void __58__SBKUniversalPlaybackPositionStore__onQueueScheduleTimer__block_invoke
   dispatch_async(queue, block);
 }
 
-- (void)_updateAutorefreshRateSettingAndRestartTimer:(BOOL)a3
+- (void)_updateAutorefreshRateSettingAndRestartTimer:(BOOL)timer
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -217,7 +217,7 @@ void __58__SBKUniversalPlaybackPositionStore__onQueueScheduleTimer__block_invoke
   v4[2] = __82__SBKUniversalPlaybackPositionStore__updateAutorefreshRateSettingAndRestartTimer___block_invoke;
   v4[3] = &unk_279D22AF0;
   v4[4] = self;
-  v5 = a3;
+  timerCopy = timer;
   dispatch_sync(queue, v4);
 }
 
@@ -265,10 +265,10 @@ uint64_t __82__SBKUniversalPlaybackPositionStore__updateAutorefreshRateSettingAn
 
 - (void)_updateForStoreAccountsChange
 {
-  v3 = [(SBKUniversalPlaybackPositionStore *)self _accountForSyncing];
+  _accountForSyncing = [(SBKUniversalPlaybackPositionStore *)self _accountForSyncing];
 
   queue = self->_queue;
-  if (v3)
+  if (_accountForSyncing)
   {
     v5 = v8;
     v8[0] = MEMORY[0x277D85DD0];
@@ -290,16 +290,16 @@ uint64_t __82__SBKUniversalPlaybackPositionStore__updateAutorefreshRateSettingAn
   dispatch_async(queue, v5);
 }
 
-- (void)_onQueueLoadBagContextWithCompletionHandler:(id)a3
+- (void)_onQueueLoadBagContextWithCompletionHandler:(id)handler
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
   v38[2] = __81__SBKUniversalPlaybackPositionStore__onQueueLoadBagContextWithCompletionHandler___block_invoke;
   v38[3] = &unk_279D22B90;
   v38[4] = self;
-  v5 = v4;
+  v5 = handlerCopy;
   v39 = v5;
   v6 = MEMORY[0x26D6917A0](v38);
   accountIdentifier = self->_accountIdentifier;
@@ -324,13 +324,13 @@ uint64_t __82__SBKUniversalPlaybackPositionStore__updateAutorefreshRateSettingAn
       self->_bagLookupTask = v14;
 
       [(SBKAsynchronousTask *)self->_bagLookupTask addTaskCompletionBlock:v6];
-      v16 = self;
+      selfCopy = self;
       v17 = self->_bagLookupTask;
       v33[0] = MEMORY[0x277D85DD0];
       v33[1] = 3221225472;
       v33[2] = __81__SBKUniversalPlaybackPositionStore__onQueueLoadBagContextWithCompletionHandler___block_invoke_123;
       v33[3] = &unk_279D231C8;
-      v18 = v16;
+      v18 = selfCopy;
       v34 = v18;
       [(SBKAsynchronousTask *)v17 setExpirationHandler:v33];
       v19 = self->_bagLookupTask;
@@ -496,16 +496,16 @@ void __81__SBKUniversalPlaybackPositionStore__onQueueLoadBagContextWithCompletio
   v8[2](v8, v7, v6);
 }
 
-- (void)_updateSettingsFromLoadedBagContext:(id)a3
+- (void)_updateSettingsFromLoadedBagContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __73__SBKUniversalPlaybackPositionStore__updateSettingsFromLoadedBagContext___block_invoke;
   v6[3] = &unk_279D23150;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = contextCopy;
+  v5 = contextCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -522,16 +522,16 @@ uint64_t __73__SBKUniversalPlaybackPositionStore__updateSettingsFromLoadedBagCon
 
 - (id)_accountForSyncing
 {
-  v3 = [MEMORY[0x277D69A20] defaultStore];
-  v4 = [v3 accountWithUniqueIdentifier:self->_accountIdentifier];
+  defaultStore = [MEMORY[0x277D69A20] defaultStore];
+  v4 = [defaultStore accountWithUniqueIdentifier:self->_accountIdentifier];
 
   return v4;
 }
 
-- (void)_onQueuePullMetadataItemWithItemIdentifier:(id)a3 completionBlock:(id)a4
+- (void)_onQueuePullMetadataItemWithItemIdentifier:(id)identifier completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  blockCopy = block;
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x3032000000;
@@ -543,7 +543,7 @@ uint64_t __73__SBKUniversalPlaybackPositionStore__updateSettingsFromLoadedBagCon
   v15[2] = __96__SBKUniversalPlaybackPositionStore__onQueuePullMetadataItemWithItemIdentifier_completionBlock___block_invoke;
   v15[3] = &unk_279D22CF0;
   v17 = v18;
-  v8 = v7;
+  v8 = blockCopy;
   v16 = v8;
   v9 = MEMORY[0x26D6917A0](v15);
   v11[0] = MEMORY[0x277D85DD0];
@@ -551,9 +551,9 @@ uint64_t __73__SBKUniversalPlaybackPositionStore__updateSettingsFromLoadedBagCon
   v11[2] = __96__SBKUniversalPlaybackPositionStore__onQueuePullMetadataItemWithItemIdentifier_completionBlock___block_invoke_2;
   v11[3] = &unk_279D22D40;
   v14 = v18;
-  v10 = v6;
+  v10 = identifierCopy;
   v12 = v10;
-  v13 = self;
+  selfCopy = self;
   [(SBKUniversalPlaybackPositionStore *)self _onQueueRunTaskWithName:@"GET value" taskCompletionHandler:v9 runTaskBlock:v11];
 
   _Block_object_dispose(v18, 8);
@@ -606,10 +606,10 @@ void __96__SBKUniversalPlaybackPositionStore__onQueuePullMetadataItemWithItemIde
   [(SBKSimpleTransactionRequestHandler *)v13 scheduleTransaction:v15 finishedBlock:v17];
 }
 
-- (void)_onQueuePushMetadataItem:(id)a3 completionBlock:(id)a4
+- (void)_onQueuePushMetadataItem:(id)item completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  blockCopy = block;
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x3032000000;
@@ -621,7 +621,7 @@ void __96__SBKUniversalPlaybackPositionStore__onQueuePullMetadataItemWithItemIde
   v15[2] = __78__SBKUniversalPlaybackPositionStore__onQueuePushMetadataItem_completionBlock___block_invoke;
   v15[3] = &unk_279D22CF0;
   v17 = v18;
-  v8 = v7;
+  v8 = blockCopy;
   v16 = v8;
   v9 = MEMORY[0x26D6917A0](v15);
   v11[0] = MEMORY[0x277D85DD0];
@@ -629,9 +629,9 @@ void __96__SBKUniversalPlaybackPositionStore__onQueuePullMetadataItemWithItemIde
   v11[2] = __78__SBKUniversalPlaybackPositionStore__onQueuePushMetadataItem_completionBlock___block_invoke_2;
   v11[3] = &unk_279D22D40;
   v14 = v18;
-  v10 = v6;
+  v10 = itemCopy;
   v12 = v10;
-  v13 = self;
+  selfCopy = self;
   [(SBKUniversalPlaybackPositionStore *)self _onQueueRunTaskWithName:@"PUT value" taskCompletionHandler:v9 runTaskBlock:v11];
 
   _Block_object_dispose(v18, 8);
@@ -684,11 +684,11 @@ void __78__SBKUniversalPlaybackPositionStore__onQueuePushMetadataItem_completion
   [(SBKSimpleTransactionRequestHandler *)v13 scheduleTransaction:v15 finishedBlock:v17];
 }
 
-- (void)_onQueueSynchronizeImmediatelyWithCompletionHandler:(id)a3
+- (void)_onQueueSynchronizeImmediatelyWithCompletionHandler:(id)handler
 {
   if (self->_currentTask)
   {
-    v4 = a3;
+    handlerCopy2 = handler;
     v5 = os_log_create("com.apple.amp.StoreBookkeeper", "UPP");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -696,7 +696,7 @@ void __78__SBKUniversalPlaybackPositionStore__onQueuePushMetadataItem_completion
       _os_log_impl(&dword_26BC19000, v5, OS_LOG_TYPE_DEFAULT, "_onQueueSync - synchronize already in progress.  pending our completion block to be notified when it completes.", buf, 2u);
     }
 
-    [(SBKAsynchronousTask *)self->_currentTask addTaskCompletionBlock:v4];
+    [(SBKAsynchronousTask *)self->_currentTask addTaskCompletionBlock:handlerCopy2];
   }
 
   else
@@ -706,8 +706,8 @@ void __78__SBKUniversalPlaybackPositionStore__onQueuePushMetadataItem_completion
     v6[2] = __89__SBKUniversalPlaybackPositionStore__onQueueSynchronizeImmediatelyWithCompletionHandler___block_invoke;
     v6[3] = &unk_279D22CC8;
     v6[4] = self;
-    v4 = a3;
-    [(SBKUniversalPlaybackPositionStore *)self _onQueueRunTaskWithName:@"synchronize" taskCompletionHandler:v4 runTaskBlock:v6];
+    handlerCopy2 = handler;
+    [(SBKUniversalPlaybackPositionStore *)self _onQueueRunTaskWithName:@"synchronize" taskCompletionHandler:handlerCopy2 runTaskBlock:v6];
   }
 }
 
@@ -740,15 +740,15 @@ void __89__SBKUniversalPlaybackPositionStore__onQueueSynchronizeImmediatelyWithC
   [(SBKPlaybackPositionSyncRequestHandler *)v12 synchronizeWithCompletionHandler:v15];
 }
 
-- (void)_onQueueRunTaskWithName:(id)a3 taskCompletionHandler:(id)a4 runTaskBlock:(id)a5
+- (void)_onQueueRunTaskWithName:(id)name taskCompletionHandler:(id)handler runTaskBlock:(id)block
 {
   location[3] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SBKUniversalPlaybackPositionStore *)self _accountForSyncing];
+  nameCopy = name;
+  handlerCopy = handler;
+  blockCopy = block;
+  _accountForSyncing = [(SBKUniversalPlaybackPositionStore *)self _accountForSyncing];
 
-  if (v11)
+  if (_accountForSyncing)
   {
     if (self->_currentTask)
     {
@@ -759,9 +759,9 @@ void __89__SBKUniversalPlaybackPositionStore__onQueueSynchronizeImmediatelyWithC
       v35[2] = __96__SBKUniversalPlaybackPositionStore__onQueueRunTaskWithName_taskCompletionHandler_runTaskBlock___block_invoke_2;
       v35[3] = &unk_279D22C28;
       objc_copyWeak(&v39, location);
-      v36 = v8;
-      v37 = v9;
-      v38 = v10;
+      v36 = nameCopy;
+      v37 = handlerCopy;
+      v38 = blockCopy;
       v13 = MEMORY[0x26D6917A0](v35);
       [(NSMutableArray *)pendingTaskBlocks addObject:v13];
 
@@ -776,7 +776,7 @@ void __89__SBKUniversalPlaybackPositionStore__onQueueSynchronizeImmediatelyWithC
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         LODWORD(location[0]) = 138412290;
-        *(location + 4) = v8;
+        *(location + 4) = nameCopy;
         _os_log_impl(&dword_26BC19000, v18, OS_LOG_TYPE_DEFAULT, "_onQueueSync - beginning %@ operation...", location, 0xCu);
       }
 
@@ -786,14 +786,14 @@ void __89__SBKUniversalPlaybackPositionStore__onQueueSynchronizeImmediatelyWithC
       currentTask = self->_currentTask;
       self->_currentTask = v19;
 
-      [(SBKAsynchronousTask *)self->_currentTask addTaskCompletionBlock:v9];
-      v22 = self;
+      [(SBKAsynchronousTask *)self->_currentTask addTaskCompletionBlock:handlerCopy];
+      selfCopy = self;
       v23 = self->_currentTask;
       v33[0] = MEMORY[0x277D85DD0];
       v33[1] = 3221225472;
       v33[2] = __96__SBKUniversalPlaybackPositionStore__onQueueRunTaskWithName_taskCompletionHandler_runTaskBlock___block_invoke_93;
       v33[3] = &unk_279D231C8;
-      v24 = v22;
+      v24 = selfCopy;
       v34 = v24;
       [(SBKAsynchronousTask *)v23 setExpirationHandler:v33];
       v25 = *p_currentTask;
@@ -802,7 +802,7 @@ void __89__SBKUniversalPlaybackPositionStore__onQueueSynchronizeImmediatelyWithC
       v30[2] = __96__SBKUniversalPlaybackPositionStore__onQueueRunTaskWithName_taskCompletionHandler_runTaskBlock___block_invoke_2_94;
       v30[3] = &unk_279D23150;
       v31 = v24;
-      v32 = v8;
+      v32 = nameCopy;
       v26 = v24;
       [(SBKAsynchronousTask *)v25 setFinishedHandler:v30];
       v28[0] = MEMORY[0x277D85DD0];
@@ -810,7 +810,7 @@ void __89__SBKUniversalPlaybackPositionStore__onQueueSynchronizeImmediatelyWithC
       v28[2] = __96__SBKUniversalPlaybackPositionStore__onQueueRunTaskWithName_taskCompletionHandler_runTaskBlock___block_invoke_2_98;
       v28[3] = &unk_279D22B90;
       v28[4] = v26;
-      v29 = v10;
+      v29 = blockCopy;
       [(SBKUniversalPlaybackPositionStore *)v26 _onQueueLoadBagContextWithCompletionHandler:v28];
     }
   }
@@ -821,7 +821,7 @@ void __89__SBKUniversalPlaybackPositionStore__onQueueSynchronizeImmediatelyWithC
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(location[0]) = 138412290;
-      *(location + 4) = v8;
+      *(location + 4) = nameCopy;
       _os_log_impl(&dword_26BC19000, v14, OS_LOG_TYPE_DEFAULT, "_onQueueRunTaskWithName %@ - short circuiting. _accountForSyncing=nil", location, 0xCu);
     }
 
@@ -832,7 +832,7 @@ void __89__SBKUniversalPlaybackPositionStore__onQueueSynchronizeImmediatelyWithC
     block[2] = __96__SBKUniversalPlaybackPositionStore__onQueueRunTaskWithName_taskCompletionHandler_runTaskBlock___block_invoke;
     block[3] = &unk_279D23100;
     v41 = v15;
-    v42 = v9;
+    v42 = handlerCopy;
     v17 = v15;
     dispatch_async(v16, block);
   }
@@ -1018,21 +1018,21 @@ void __96__SBKUniversalPlaybackPositionStore__onQueueRunTaskWithName_taskComplet
 
 - (void)_onQueueRunNextPendingTaskBlock
 {
-  v3 = [(NSMutableArray *)self->_pendingTaskBlocks firstObject];
-  if (v3)
+  firstObject = [(NSMutableArray *)self->_pendingTaskBlocks firstObject];
+  if (firstObject)
   {
-    v4 = v3;
+    v4 = firstObject;
     [(NSMutableArray *)self->_pendingTaskBlocks removeObjectAtIndex:0];
     v4[2](v4);
-    v3 = v4;
+    firstObject = v4;
   }
 }
 
-- (void)_onQueueLoadRemoteDomainVersionWithCompletionBlock:(id)a3
+- (void)_onQueueLoadRemoteDomainVersionWithCompletionBlock:(id)block
 {
   v22 = *MEMORY[0x277D85DE8];
   lookupDomainVersionTask = self->_lookupDomainVersionTask;
-  v5 = a3;
+  blockCopy = block;
   v6 = os_log_create("com.apple.amp.StoreBookkeeper", "UPP");
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
   if (lookupDomainVersionTask)
@@ -1046,7 +1046,7 @@ void __96__SBKUniversalPlaybackPositionStore__onQueueRunTaskWithName_taskComplet
       _os_log_impl(&dword_26BC19000, v6, OS_LOG_TYPE_DEFAULT, "%s - %@ already in progress.  pending our completion block to be notified when it completes.", buf, 0x16u);
     }
 
-    [(SBKAsynchronousTask *)self->_lookupDomainVersionTask addTaskCompletionBlock:v5];
+    [(SBKAsynchronousTask *)self->_lookupDomainVersionTask addTaskCompletionBlock:blockCopy];
   }
 
   else
@@ -1064,25 +1064,25 @@ void __96__SBKUniversalPlaybackPositionStore__onQueueRunTaskWithName_taskComplet
     v9 = self->_lookupDomainVersionTask;
     self->_lookupDomainVersionTask = v8;
 
-    [(SBKAsynchronousTask *)self->_lookupDomainVersionTask addTaskCompletionBlock:v5];
-    v10 = self;
+    [(SBKAsynchronousTask *)self->_lookupDomainVersionTask addTaskCompletionBlock:blockCopy];
+    selfCopy = self;
     [(SBKAsynchronousTask *)self->_lookupDomainVersionTask setExpirationHandler:&__block_literal_global_71];
     v11 = self->_lookupDomainVersionTask;
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __88__SBKUniversalPlaybackPositionStore__onQueueLoadRemoteDomainVersionWithCompletionBlock___block_invoke_2;
     v14[3] = &unk_279D23050;
-    v15 = v10;
-    v16 = v10;
+    v15 = selfCopy;
+    v16 = selfCopy;
     v17 = @"domain version lookup";
-    v5 = v10;
+    blockCopy = selfCopy;
     [(SBKAsynchronousTask *)v11 setFinishedHandler:v14];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __88__SBKUniversalPlaybackPositionStore__onQueueLoadRemoteDomainVersionWithCompletionBlock___block_invoke_2_83;
     v13[3] = &unk_279D22C00;
-    v13[4] = v5;
-    [(SBKUniversalPlaybackPositionStore *)v5 _onQueueLoadBagContextWithCompletionHandler:v13];
+    v13[4] = blockCopy;
+    [(SBKUniversalPlaybackPositionStore *)blockCopy _onQueueLoadBagContextWithCompletionHandler:v13];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -1211,15 +1211,15 @@ void __88__SBKUniversalPlaybackPositionStore__onQueueLoadRemoteDomainVersionWith
   v8[2](v8, v7, v6);
 }
 
-- (void)_onQueueSynchronizeWithAutosynchronizeMask:(unint64_t)a3 withCompletionBlock:(id)a4
+- (void)_onQueueSynchronizeWithAutosynchronizeMask:(unint64_t)mask withCompletionBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __100__SBKUniversalPlaybackPositionStore__onQueueSynchronizeWithAutosynchronizeMask_withCompletionBlock___block_invoke;
   v7[3] = &unk_279D22B40;
-  v8 = v5;
-  v6 = v5;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(SBKUniversalPlaybackPositionStore *)self _onQueueSynchronizeImmediatelyWithCompletionHandler:v7];
 }
 
@@ -1234,11 +1234,11 @@ uint64_t __100__SBKUniversalPlaybackPositionStore__onQueueSynchronizeWithAutosyn
   return result;
 }
 
-- (void)loadBagContextWithCompletionBlock:(id)a3
+- (void)loadBagContextWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -1246,7 +1246,7 @@ uint64_t __100__SBKUniversalPlaybackPositionStore__onQueueSynchronizeWithAutosyn
     v7[2] = __71__SBKUniversalPlaybackPositionStore_loadBagContextWithCompletionBlock___block_invoke;
     v7[3] = &unk_279D23100;
     v7[4] = self;
-    v8 = v4;
+    v8 = blockCopy;
     dispatch_sync(queue, v7);
   }
 }
@@ -1275,11 +1275,11 @@ void __71__SBKUniversalPlaybackPositionStore_loadBagContextWithCompletionBlock__
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)loadRemoteDomainVersionWithCompletionBlock:(id)a3
+- (void)loadRemoteDomainVersionWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -1287,7 +1287,7 @@ void __71__SBKUniversalPlaybackPositionStore_loadBagContextWithCompletionBlock__
     v7[2] = __80__SBKUniversalPlaybackPositionStore_loadRemoteDomainVersionWithCompletionBlock___block_invoke;
     v7[3] = &unk_279D23100;
     v7[4] = self;
-    v8 = v4;
+    v8 = blockCopy;
     dispatch_sync(queue, v7);
   }
 }
@@ -1303,11 +1303,11 @@ void __80__SBKUniversalPlaybackPositionStore_loadRemoteDomainVersionWithCompleti
   [v1 _onQueueLoadRemoteDomainVersionWithCompletionBlock:v2];
 }
 
-- (void)checkForAvailabilityWithCompletionBlock:(id)a3
+- (void)checkForAvailabilityWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -1315,7 +1315,7 @@ void __80__SBKUniversalPlaybackPositionStore_loadRemoteDomainVersionWithCompleti
     v7[2] = __77__SBKUniversalPlaybackPositionStore_checkForAvailabilityWithCompletionBlock___block_invoke;
     v7[3] = &unk_279D23100;
     v7[4] = self;
-    v8 = v4;
+    v8 = blockCopy;
     dispatch_sync(queue, v7);
   }
 }
@@ -1350,15 +1350,15 @@ void __77__SBKUniversalPlaybackPositionStore_checkForAvailabilityWithCompletionB
   }
 }
 
-- (void)synchronizeImmediatelyWithCompletionBlock:(id)a3
+- (void)synchronizeImmediatelyWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __79__SBKUniversalPlaybackPositionStore_synchronizeImmediatelyWithCompletionBlock___block_invoke;
   v11[3] = &unk_279D22B40;
-  v12 = v4;
-  v5 = v4;
+  v12 = blockCopy;
+  v5 = blockCopy;
   v6 = MEMORY[0x26D6917A0](v11);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1382,60 +1382,60 @@ uint64_t __79__SBKUniversalPlaybackPositionStore_synchronizeImmediatelyWithCompl
   return result;
 }
 
-- (void)pullMetadataItemWithItemIdentifier:(id)a3 completionBlock:(id)a4
+- (void)pullMetadataItemWithItemIdentifier:(id)identifier completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  blockCopy = block;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __88__SBKUniversalPlaybackPositionStore_pullMetadataItemWithItemIdentifier_completionBlock___block_invoke;
   block[3] = &unk_279D22B18;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = identifierCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)pushMetadataItem:(id)a3 completionBlock:(id)a4
+- (void)pushMetadataItem:(id)item completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  blockCopy = block;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__SBKUniversalPlaybackPositionStore_pushMetadataItem_completionBlock___block_invoke;
   block[3] = &unk_279D22B18;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = itemCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = itemCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)synchronizeImmediatelyWithCompletionHandler:(id)a3
+- (void)synchronizeImmediatelyWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __81__SBKUniversalPlaybackPositionStore_synchronizeImmediatelyWithCompletionHandler___block_invoke;
   v7[3] = &unk_279D23100;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)setAutomaticallySynchronizeOnBecomeActive:(BOOL)a3
+- (void)setAutomaticallySynchronizeOnBecomeActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   v5 = [(SBKUniversalPlaybackPositionStore *)self automaticSynchronizeOptions]& 0xFFFFFFFFFFFFFFFDLL;
   v6 = 2;
-  if (!v3)
+  if (!activeCopy)
   {
     v6 = 0;
   }
@@ -1443,12 +1443,12 @@ uint64_t __79__SBKUniversalPlaybackPositionStore_synchronizeImmediatelyWithCompl
   [(SBKUniversalPlaybackPositionStore *)self setAutomaticSynchronizeOptions:v5 | v6];
 }
 
-- (void)setAutomaticallySynchronizeLocalChangesOnResignActive:(BOOL)a3
+- (void)setAutomaticallySynchronizeLocalChangesOnResignActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   v5 = [(SBKUniversalPlaybackPositionStore *)self automaticSynchronizeOptions]& 0xFFFFFFFFFFFFFFFBLL;
   v6 = 4;
-  if (!v3)
+  if (!activeCopy)
   {
     v6 = 0;
   }
@@ -1456,7 +1456,7 @@ uint64_t __79__SBKUniversalPlaybackPositionStore_synchronizeImmediatelyWithCompl
   [(SBKUniversalPlaybackPositionStore *)self setAutomaticSynchronizeOptions:v5 | v6];
 }
 
-- (void)setHasLocalChangesToSync:(BOOL)a3
+- (void)setHasLocalChangesToSync:(BOOL)sync
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1464,17 +1464,17 @@ uint64_t __79__SBKUniversalPlaybackPositionStore_synchronizeImmediatelyWithCompl
   v4[2] = __62__SBKUniversalPlaybackPositionStore_setHasLocalChangesToSync___block_invoke;
   v4[3] = &unk_279D22AF0;
   v4[4] = self;
-  v5 = a3;
+  syncCopy = sync;
   dispatch_sync(queue, v4);
 }
 
-- (void)setAutomaticSynchronizeOptions:(unint64_t)a3
+- (void)setAutomaticSynchronizeOptions:(unint64_t)options
 {
   automaticSynchronizeOptions = self->_automaticSynchronizeOptions;
-  if (automaticSynchronizeOptions != a3)
+  if (automaticSynchronizeOptions != options)
   {
-    self->_automaticSynchronizeOptions = a3;
-    if ((automaticSynchronizeOptions ^ a3))
+    self->_automaticSynchronizeOptions = options;
+    if ((automaticSynchronizeOptions ^ options))
     {
       [(SBKUniversalPlaybackPositionStore *)self _onQueueUpdateTimerForAutomaticSyncOptionChanges];
     }
@@ -1598,23 +1598,23 @@ uint64_t __49__SBKUniversalPlaybackPositionStore_becomeActive__block_invoke(uint
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self->_accountsObserver];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self->_accountsObserver];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self->_prefsObserver];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self->_prefsObserver];
 
-  v5 = [(SBKUniversalPlaybackPositionStore *)self bagLookupTask];
-  [v5 invalidate];
+  bagLookupTask = [(SBKUniversalPlaybackPositionStore *)self bagLookupTask];
+  [bagLookupTask invalidate];
 
-  v6 = [(SBKUniversalPlaybackPositionStore *)self currentTask];
-  [v6 invalidate];
+  currentTask = [(SBKUniversalPlaybackPositionStore *)self currentTask];
+  [currentTask invalidate];
 
-  v7 = [(SBKUniversalPlaybackPositionStore *)self lookupDomainVersionTask];
-  [v7 invalidate];
+  lookupDomainVersionTask = [(SBKUniversalPlaybackPositionStore *)self lookupDomainVersionTask];
+  [lookupDomainVersionTask invalidate];
 
-  v8 = [(SBKUniversalPlaybackPositionStore *)self timer];
-  [v8 invalidate];
+  timer = [(SBKUniversalPlaybackPositionStore *)self timer];
+  [timer invalidate];
 
   [(SBKUniversalPlaybackPositionStore *)self _onQueueSuspendTimer];
   v9.receiver = self;
@@ -1622,23 +1622,23 @@ uint64_t __49__SBKUniversalPlaybackPositionStore_becomeActive__block_invoke(uint
   [(SBKUniversalPlaybackPositionStore *)&v9 dealloc];
 }
 
-- (SBKUniversalPlaybackPositionStore)initWithInitialUpdateDelay:(double)a3
+- (SBKUniversalPlaybackPositionStore)initWithInitialUpdateDelay:(double)delay
 {
   v4 = [(SBKUniversalPlaybackPositionStore *)self init];
   v5 = v4;
   if (v4)
   {
-    if (a3 <= 0.0)
+    if (delay <= 0.0)
     {
-      v6 = 31536000.0;
+      delayCopy = 31536000.0;
     }
 
     else
     {
-      v6 = a3;
+      delayCopy = delay;
     }
 
-    v4->_initialAutosyncInterval = v6;
+    v4->_initialAutosyncInterval = delayCopy;
     v4->_automaticSynchronizeOptions = 6;
     [(SBKUniversalPlaybackPositionStore *)v4 _updateAutorefreshRateSettingAndRestartTimer:0];
     if (v5->_initialAutosyncInterval != 31536000.0)
@@ -1665,15 +1665,15 @@ uint64_t __64__SBKUniversalPlaybackPositionStore_initWithInitialUpdateDelay___bl
   return [v2 _onQueueStartNewTimerWithTimeIntervalSinceNow:v3];
 }
 
-- (SBKUniversalPlaybackPositionStore)initWithDomain:(id)a3 dataSource:(id)a4 automaticSynchronizeOptions:(unint64_t)a5 accountIdentifier:(id)a6 isActive:(BOOL)a7
+- (SBKUniversalPlaybackPositionStore)initWithDomain:(id)domain dataSource:(id)source automaticSynchronizeOptions:(unint64_t)options accountIdentifier:(id)identifier isActive:(BOOL)active
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  if (!v14)
+  domainCopy = domain;
+  sourceCopy = source;
+  identifierCopy = identifier;
+  if (!domainCopy)
   {
-    v32 = [MEMORY[0x277CCA890] currentHandler];
-    [v32 handleFailureInMethod:a2 object:self file:@"SBKUniversalPlaybackPositionStore.m" lineNumber:100 description:@"Invalid paramter.  no domain specified"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SBKUniversalPlaybackPositionStore.m" lineNumber:100 description:@"Invalid paramter.  no domain specified"];
   }
 
   v38.receiver = self;
@@ -1685,18 +1685,18 @@ uint64_t __64__SBKUniversalPlaybackPositionStore_initWithInitialUpdateDelay___bl
     v19 = *(v17 + 1);
     *(v17 + 1) = v18;
 
-    v17[16] = a7;
-    objc_storeStrong(v17 + 4, a3);
-    objc_storeWeak(v17 + 13, v15);
-    objc_storeStrong(v17 + 5, a6);
-    *(v17 + 6) = a5;
+    v17[16] = active;
+    objc_storeStrong(v17 + 4, domain);
+    objc_storeWeak(v17 + 13, sourceCopy);
+    objc_storeStrong(v17 + 5, identifier);
+    *(v17 + 6) = options;
     *(v17 + 56) = vdupq_n_s64(0x417E133800000000uLL);
-    v20 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v21 = *(v17 + 3);
-    *(v17 + 3) = v20;
+    *(v17 + 3) = array;
 
-    v22 = [MEMORY[0x277CBEAA8] distantFuture];
-    [v17 setDateToFireNextTimer:v22];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+    [v17 setDateToFireNextTimer:distantFuture];
 
     [v17 _updateAutorefreshRateSettingAndRestartTimer:0];
     if (v17[48])
@@ -1704,26 +1704,26 @@ uint64_t __64__SBKUniversalPlaybackPositionStore_initWithInitialUpdateDelay___bl
       [v17 _onQueueLoadBagContextWithCompletionHandler:0];
     }
 
-    v23 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     objc_initWeak(&location, v17);
-    v24 = [MEMORY[0x277CCABD8] mainQueue];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     v25 = *MEMORY[0x277D69D70];
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __118__SBKUniversalPlaybackPositionStore_initWithDomain_dataSource_automaticSynchronizeOptions_accountIdentifier_isActive___block_invoke;
     v35[3] = &unk_279D22AC0;
     objc_copyWeak(&v36, &location);
-    v26 = [v23 addObserverForName:v25 object:0 queue:v24 usingBlock:v35];
+    v26 = [defaultCenter addObserverForName:v25 object:0 queue:mainQueue usingBlock:v35];
     v27 = *(v17 + 11);
     *(v17 + 11) = v26;
 
-    v28 = [MEMORY[0x277CCABD8] mainQueue];
+    mainQueue2 = [MEMORY[0x277CCABD8] mainQueue];
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __118__SBKUniversalPlaybackPositionStore_initWithDomain_dataSource_automaticSynchronizeOptions_accountIdentifier_isActive___block_invoke_2;
     v33[3] = &unk_279D22AC0;
     objc_copyWeak(&v34, &location);
-    v29 = [v23 addObserverForName:@"SBKPreferencesDidChangeNotification" object:0 queue:v28 usingBlock:v33];
+    v29 = [defaultCenter addObserverForName:@"SBKPreferencesDidChangeNotification" object:0 queue:mainQueue2 usingBlock:v33];
     v30 = *(v17 + 12);
     *(v17 + 12) = v29;
 

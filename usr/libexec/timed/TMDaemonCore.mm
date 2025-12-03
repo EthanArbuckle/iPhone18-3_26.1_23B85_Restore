@@ -1,26 +1,26 @@
 @interface TMDaemonCore
-- (TMDaemonCore)initWithTimeZoneRules:(id)a3 monotonicClock:(id)a4 preferences:(id)a5 workloop:(id)a6;
+- (TMDaemonCore)initWithTimeZoneRules:(id)rules monotonicClock:(id)clock preferences:(id)preferences workloop:(id)workloop;
 - (TMTimeProvider)timeProvider;
 - (TMTimeZone)computedTimeZone;
-- (void)addPlugin:(id)a3;
-- (void)addTimeProvider:(id)a3 forKey:(id)a4;
+- (void)addPlugin:(id)plugin;
+- (void)addTimeProvider:(id)provider forKey:(id)key;
 - (void)checkActiveTimeSourceRequired;
 - (void)dealloc;
-- (void)executeCommand:(id)a3 withHandler:(id)a4;
+- (void)executeCommand:(id)command withHandler:(id)handler;
 - (void)handleShutdown;
 - (void)resetTime;
-- (void)resetTimeZone:(id)a3;
+- (void)resetTimeZone:(id)zone;
 - (void)rtcDidReset;
-- (void)setRequiresActiveBBTime:(BOOL)a3;
-- (void)setSourceAvailable:(id)a3;
-- (void)setSourceTime:(id)a3;
-- (void)setSourceTimeZone:(id)a3;
-- (void)setSourceUnavailable:(id)a3;
-- (void)setSystemTimeSet:(BOOL)a3;
+- (void)setRequiresActiveBBTime:(BOOL)time;
+- (void)setSourceAvailable:(id)available;
+- (void)setSourceTime:(id)time;
+- (void)setSourceTimeZone:(id)zone;
+- (void)setSourceUnavailable:(id)unavailable;
+- (void)setSystemTimeSet:(BOOL)set;
 - (void)testAndApplySystemTime;
-- (void)timeZoneManager:(id)a3 didComputeResult:(id)a4;
-- (void)timeZoneManager:(id)a3 didReset:(id)a4;
-- (void)timeZoneManager:(id)a3 shouldFetch:(id)a4;
+- (void)timeZoneManager:(id)manager didComputeResult:(id)result;
+- (void)timeZoneManager:(id)manager didReset:(id)reset;
+- (void)timeZoneManager:(id)manager shouldFetch:(id)fetch;
 @end
 
 @implementation TMDaemonCore
@@ -72,20 +72,20 @@
   }
 }
 
-- (TMDaemonCore)initWithTimeZoneRules:(id)a3 monotonicClock:(id)a4 preferences:(id)a5 workloop:(id)a6
+- (TMDaemonCore)initWithTimeZoneRules:(id)rules monotonicClock:(id)clock preferences:(id)preferences workloop:(id)workloop
 {
   v35.receiver = self;
   v35.super_class = TMDaemonCore;
   v10 = [(TMDaemonCore *)&v35 init];
   if (v10)
   {
-    *(v10 + 7) = a5;
+    *(v10 + 7) = preferences;
     *(v10 + 9) = objc_alloc_init(NSMutableArray);
     *(v10 + 11) = objc_alloc_init(NSMutableDictionary);
     [*(v10 + 7) settimeofdayThreshold];
     *(v10 + 8) = v12;
-    *(v10 + 21) = a6;
-    [v10 setClock:a4];
+    *(v10 + 21) = workloop;
+    [v10 setClock:clock];
     *(v10 + 16) = -[TMCache initWithPath:clock:]([TMCache alloc], "initWithPath:clock:", @"/var/db/timed/com.apple.timed.plist", [v10 clock]);
     v13 = (v10 + 128);
     *(v10 + 17) = objc_alloc_init(TMTimeSynthesizerMonitor);
@@ -113,12 +113,12 @@
       v16 = qword_100033218;
       if (os_log_type_enabled(qword_100033218, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [*v13 bootUUID];
-        v18 = [*v13 rtcResetCount];
+        bootUUID = [*v13 bootUUID];
+        rtcResetCount = [*v13 rtcResetCount];
         *buf = 138412546;
-        *&buf[4] = v17;
+        *&buf[4] = bootUUID;
         v37 = 1024;
-        v38 = v18;
+        v38 = rtcResetCount;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Boot UUID matches. Keeping RTC reset count. UUID:%@ Count:%u", buf, 0x12u);
       }
 
@@ -171,7 +171,7 @@
     [*(v10 + 7) RTCWakeUncertainty];
     [v28 inflateHistoricalDataBy:?];
     [v10 addTimeProvider:*(v10 + 2) forKey:@"Filtered"];
-    *(v10 + 1) = [[TMTimeZoneManager alloc] initWithRules:a3 delegate:v10];
+    *(v10 + 1) = [[TMTimeZoneManager alloc] initWithRules:rules delegate:v10];
     v29 = dispatch_source_create(&_dispatch_source_type_timer, 0, 1uLL, *(v10 + 21));
     *(v10 + 19) = v29;
     dispatch_source_set_timer(v29, 0xFFFFFFFFFFFFFFFFLL, 0, 0);
@@ -249,7 +249,7 @@
   [(TMDaemonCore *)&v3 dealloc];
 }
 
-- (void)addPlugin:(id)a3
+- (void)addPlugin:(id)plugin
 {
   plugins = self->_plugins;
   if (!plugins)
@@ -258,17 +258,17 @@
     self->_plugins = plugins;
   }
 
-  [(NSMutableSet *)plugins addObject:a3];
+  [(NSMutableSet *)plugins addObject:plugin];
 }
 
-- (void)setSystemTimeSet:(BOOL)a3
+- (void)setSystemTimeSet:(BOOL)set
 {
-  v3 = a3;
-  if (self->_systemTimeSet != a3)
+  setCopy = set;
+  if (self->_systemTimeSet != set)
   {
-    self->_systemTimeSet = a3;
+    self->_systemTimeSet = set;
     prefs = self->_prefs;
-    if (a3)
+    if (set)
     {
       [(TMPreferences *)prefs NTPSchedulingInterval];
     }
@@ -281,7 +281,7 @@
     [(TMBackgroundNtpSource *)self->_ntpSource setSchedulingInterval:?];
   }
 
-  if (v3)
+  if (setCopy)
   {
     v13 = 0u;
     v14 = 0u;
@@ -315,36 +315,36 @@
   }
 }
 
-- (void)setSourceTime:(id)a3
+- (void)setSourceTime:(id)time
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100009728;
   v3[3] = &unk_100028E18;
-  v3[4] = a3;
+  v3[4] = time;
   v3[5] = self;
   dispatch_async([(TMDaemonCore *)self workloop], v3);
 }
 
-- (void)setSourceTimeZone:(id)a3
+- (void)setSourceTimeZone:(id)zone
 {
   v5 = qword_100033218;
   if (os_log_type_enabled(qword_100033218, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v13 = [a3 objectForKey:@"TMTimeZone"];
+    v13 = [zone objectForKey:@"TMTimeZone"];
     v14 = 2112;
-    v15 = [a3 objectForKey:@"TMSource"];
+    v15 = [zone objectForKey:@"TMSource"];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received timezone %@ from %@\n", buf, 0x16u);
   }
 
   v6 = qword_100033220;
   if (os_log_type_enabled(qword_100033220, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [a3 objectForKeyedSubscript:@"TMSource"];
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"TMRtcTime", "doubleValue"}];
+    v7 = [zone objectForKeyedSubscript:@"TMSource"];
+    [objc_msgSend(zone objectForKeyedSubscript:{@"TMRtcTime", "doubleValue"}];
     v9 = v8;
-    v10 = [a3 objectForKeyedSubscript:@"TMTimeZone"];
+    v10 = [zone objectForKeyedSubscript:@"TMTimeZone"];
     *buf = 138413058;
     v13 = @"TZ";
     v14 = 2112;
@@ -357,20 +357,20 @@
   }
 
   AnalyticsSendEventLazy();
-  if ([objc_msgSend(a3 objectForKeyedSubscript:{@"TMSource", "isEqualToString:", @"Location"}])
+  if ([objc_msgSend(zone objectForKeyedSubscript:{@"TMSource", "isEqualToString:", @"Location"}])
   {
-    sub_100016860(a3);
+    sub_100016860(zone);
   }
 
-  v11 = [[TMTimeZone alloc] initWithDictionary:a3];
+  v11 = [[TMTimeZone alloc] initWithDictionary:zone];
   [(TMTimeZoneManager *)self->_timeZoneManager setSourceTimeZone:v11];
 }
 
-- (void)setRequiresActiveBBTime:(BOOL)a3
+- (void)setRequiresActiveBBTime:(BOOL)time
 {
   requiresActiveBBTime = self->_requiresActiveBBTime;
-  self->_requiresActiveBBTime = a3;
-  if (requiresActiveBBTime != a3)
+  self->_requiresActiveBBTime = time;
+  if (requiresActiveBBTime != time)
   {
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterPostNotification(DarwinNotifyCenter, @"TMBBTimeActiveNotification", 0, 0, 0);
@@ -388,14 +388,14 @@
   dispatch_async([(TMDaemonCore *)self workloop], block);
 }
 
-- (void)resetTimeZone:(id)a3
+- (void)resetTimeZone:(id)zone
 {
-  v5 = [a3 objectForKey:@"TMResetTimeZoneReason"];
+  v5 = [zone objectForKey:@"TMResetTimeZoneReason"];
   v6 = qword_100033220;
   if (os_log_type_enabled(qword_100033220, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [a3 objectForKeyedSubscript:@"TMSource"];
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"TMRtcTime", "doubleValue"}];
+    v7 = [zone objectForKeyedSubscript:@"TMSource"];
+    [objc_msgSend(zone objectForKeyedSubscript:{@"TMRtcTime", "doubleValue"}];
     *buf = 138413058;
     v10 = @"reset_tz";
     v11 = 2112;
@@ -408,7 +408,7 @@
   }
 
   AnalyticsSendEventLazy();
-  [(TMTimeZoneManager *)self->_timeZoneManager reset:v5, _NSConcreteStackBlock, 3221225472, sub_10000ADD0, &unk_100028F00, v5, a3];
+  [(TMTimeZoneManager *)self->_timeZoneManager reset:v5, _NSConcreteStackBlock, 3221225472, sub_10000ADD0, &unk_100028F00, v5, zone];
 }
 
 - (TMTimeZone)computedTimeZone
@@ -425,21 +425,21 @@
   return [(TMTimeZoneManager *)self->_timeZoneManager currentTimeZone];
 }
 
-- (void)addTimeProvider:(id)a3 forKey:(id)a4
+- (void)addTimeProvider:(id)provider forKey:(id)key
 {
-  if ([(NSMutableDictionary *)self->_timeProviders objectForKeyedSubscript:a4]&& os_log_type_enabled(qword_100033218, OS_LOG_TYPE_ERROR))
+  if ([(NSMutableDictionary *)self->_timeProviders objectForKeyedSubscript:key]&& os_log_type_enabled(qword_100033218, OS_LOG_TYPE_ERROR))
   {
     sub_100016964();
   }
 
-  [(NSMutableDictionary *)self->_timeProviders setObject:a3 forKeyedSubscript:a4];
+  [(NSMutableDictionary *)self->_timeProviders setObject:provider forKeyedSubscript:key];
 }
 
-- (void)executeCommand:(id)a3 withHandler:(id)a4
+- (void)executeCommand:(id)command withHandler:(id)handler
 {
-  v7 = [(TMMonotonicClock *)[(TMDaemonCore *)self clock] machTime];
-  v8 = sub_100013EE4(self, [a3 objectForKeyedSubscript:@"TMCommand"]);
-  if ([a3 objectForKeyedSubscript:@"TMRtcTime"] || !sub_100001C24())
+  machTime = [(TMMonotonicClock *)[(TMDaemonCore *)self clock] machTime];
+  v8 = sub_100013EE4(self, [command objectForKeyedSubscript:@"TMCommand"]);
+  if ([command objectForKeyedSubscript:@"TMRtcTime"] || !sub_100001C24())
   {
     v9 = 0;
   }
@@ -452,20 +452,20 @@
       if (os_log_type_enabled(qword_100033218, OS_LOG_TYPE_ERROR))
       {
         v16 = 138412290;
-        v17 = [a3 objectForKeyedSubscript:@"TMCommand"];
+        commandCopy = [command objectForKeyedSubscript:@"TMCommand"];
         sub_10000B140(&_mh_execute_header, v10, v13, "Command '%@' included mach time when not expected, forcing conversion", &v16);
       }
     }
 
-    v7 = [sub_100001C24() unsignedLongLongValue];
+    machTime = [sub_100001C24() unsignedLongLongValue];
     v8 = 1;
     v9 = 1;
   }
 
-  if ([a3 objectForKeyedSubscript:@"TMRtcTime"] && objc_msgSend(a3, "objectForKeyedSubscript:", @"TMMachTime") && (!objc_msgSend(objc_msgSend(a3, "objectForKeyedSubscript:", @"TMCommand"), "isEqualToString:", @"TMSetSourceTime") || (objc_msgSend(objc_msgSend(a3, "objectForKeyedSubscript:", @"TMSource"), "isEqualToString:", @"NTP") & 1) == 0) && (v11 = qword_100033218, os_log_type_enabled(qword_100033218, OS_LOG_TYPE_ERROR)))
+  if ([command objectForKeyedSubscript:@"TMRtcTime"] && objc_msgSend(command, "objectForKeyedSubscript:", @"TMMachTime") && (!objc_msgSend(objc_msgSend(command, "objectForKeyedSubscript:", @"TMCommand"), "isEqualToString:", @"TMSetSourceTime") || (objc_msgSend(objc_msgSend(command, "objectForKeyedSubscript:", @"TMSource"), "isEqualToString:", @"NTP") & 1) == 0) && (v11 = qword_100033218, os_log_type_enabled(qword_100033218, OS_LOG_TYPE_ERROR)))
   {
     v16 = 138412290;
-    v17 = a3;
+    commandCopy = command;
     sub_10000B140(&_mh_execute_header, v11, v12, "Command included both mach and RTC time: %@", &v16);
     if (v8)
     {
@@ -482,18 +482,18 @@ LABEL_14:
     v14[3] = &unk_100028C80;
     v15 = v9;
     v14[4] = self;
-    v14[5] = a3;
-    v14[6] = a4;
-    [(TMMonotonicClock *)[(TMDaemonCore *)self clock] montonicTimeForMachTime:v7 toQueue:[(TMDaemonCore *)self workloop] withCompletionHandler:v14];
+    v14[5] = command;
+    v14[6] = handler;
+    [(TMMonotonicClock *)[(TMDaemonCore *)self clock] montonicTimeForMachTime:machTime toQueue:[(TMDaemonCore *)self workloop] withCompletionHandler:v14];
     return;
   }
 
-  sub_1000141E0(self, a3, a4);
+  sub_1000141E0(self, command, handler);
 }
 
-- (void)setSourceAvailable:(id)a3
+- (void)setSourceAvailable:(id)available
 {
-  v5 = [a3 objectForKeyedSubscript:@"TMSource"];
+  v5 = [available objectForKeyedSubscript:@"TMSource"];
   if (sub_1000023E4())
   {
     sub_1000023FC();
@@ -502,8 +502,8 @@ LABEL_14:
 
   if (sub_1000023E4())
   {
-    [a3 objectForKeyedSubscript:@"TMSource"];
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"TMRtcTime", "doubleValue"}];
+    [available objectForKeyedSubscript:@"TMSource"];
+    [objc_msgSend(available objectForKeyedSubscript:{@"TMRtcTime", "doubleValue"}];
     sub_10000243C();
     sub_1000023FC();
     _os_log_impl(v11, v12, v13, v14, v15, 0x20u);
@@ -517,9 +517,9 @@ LABEL_14:
   [(TMTimeZoneManager *)self->_timeZoneManager setSourceAvailable:v5];
 }
 
-- (void)setSourceUnavailable:(id)a3
+- (void)setSourceUnavailable:(id)unavailable
 {
-  v5 = [a3 objectForKeyedSubscript:@"TMSource"];
+  v5 = [unavailable objectForKeyedSubscript:@"TMSource"];
   if (sub_1000023E4())
   {
     sub_1000023FC();
@@ -528,8 +528,8 @@ LABEL_14:
 
   if (sub_1000023E4())
   {
-    [a3 objectForKeyedSubscript:@"TMSource"];
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"TMRtcTime", "doubleValue"}];
+    [unavailable objectForKeyedSubscript:@"TMSource"];
+    [objc_msgSend(unavailable objectForKeyedSubscript:{@"TMRtcTime", "doubleValue"}];
     sub_10000243C();
     sub_1000023FC();
     _os_log_impl(v11, v12, v13, v14, v15, 0x20u);
@@ -543,34 +543,34 @@ LABEL_14:
   sub_100012F48(v16, v17, v18, v19, v20, v21, v22, v23);
 }
 
-- (void)timeZoneManager:(id)a3 didReset:(id)a4
+- (void)timeZoneManager:(id)manager didReset:(id)reset
 {
   sub_100002938(self);
-  sub_100012F48(self, "timeZoneWasReset:", a4, v6, v7, v8, v9, v10);
+  sub_100012F48(self, "timeZoneWasReset:", reset, v6, v7, v8, v9, v10);
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"AutomaticTimeZoneUpdateNeeded", 0, 0, 1u);
 
   sub_1000158A0(self);
 }
 
-- (void)timeZoneManager:(id)a3 didComputeResult:(id)a4
+- (void)timeZoneManager:(id)manager didComputeResult:(id)result
 {
   sub_100002880();
-  if (([a3 isEqual:*(v8 + 8)] & 1) == 0)
+  if (([manager isEqual:*(v8 + 8)] & 1) == 0)
   {
-    [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:v5 file:v4 lineNumber:@"TMDaemonCore.m" description:1738, @"Got unexpected callback from manager %@", a3];
+    [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:v5 file:v4 lineNumber:@"TMDaemonCore.m" description:1738, @"Got unexpected callback from manager %@", manager];
   }
 
-  [a4 olsonName];
+  [result olsonName];
   sub_100013DE4(v4);
 
   sub_100002938(v4);
 }
 
-- (void)timeZoneManager:(id)a3 shouldFetch:(id)a4
+- (void)timeZoneManager:(id)manager shouldFetch:(id)fetch
 {
   sub_100002938(self);
-  sub_100012F48(self, "fetch:", a4, v6, v7, v8, v9, v10);
+  sub_100012F48(self, "fetch:", fetch, v6, v7, v8, v9, v10);
 
   sub_1000158A0(self);
 }

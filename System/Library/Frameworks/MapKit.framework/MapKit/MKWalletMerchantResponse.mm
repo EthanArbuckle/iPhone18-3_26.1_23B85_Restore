@@ -1,7 +1,7 @@
 @interface MKWalletMerchantResponse
 - (MKMapItem)mapItem;
-- (MKWalletMerchantResponse)initWithGEOMapItem:(id)a3;
-- (MKWalletMerchantResponse)initWithMerchantLookupResult:(id)a3;
+- (MKWalletMerchantResponse)initWithGEOMapItem:(id)item;
+- (MKWalletMerchantResponse)initWithMerchantLookupResult:(id)result;
 - (MKWalletMerchantStylingInfo)placeStyling;
 - (MKWalletMerchantStylingInfo)walletCategoryStyling;
 - (NSString)heroImageProviderName;
@@ -11,7 +11,7 @@
 - (NSString)localizedWalletCategoryName;
 - (NSString)mapsCategoryIdentifier;
 - (NSString)walletCategoryIdentifier;
-- (id)bestHeroImageForSize:(CGSize)a3 allowSmaller:(BOOL)a4;
+- (id)bestHeroImageForSize:(CGSize)size allowSmaller:(BOOL)smaller;
 @end
 
 @implementation MKWalletMerchantResponse
@@ -22,42 +22,42 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 attribution];
-    v5 = [v4 providerName];
+    attribution = [v2 attribution];
+    providerName = [attribution providerName];
   }
 
   else
   {
-    v5 = 0;
+    providerName = 0;
   }
 
-  return v5;
+  return providerName;
 }
 
-- (id)bestHeroImageForSize:(CGSize)a3 allowSmaller:(BOOL)a4
+- (id)bestHeroImageForSize:(CGSize)size allowSmaller:(BOOL)smaller
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
+  smallerCopy = smaller;
+  height = size.height;
+  width = size.width;
   v8 = _MKBestWalletHeroPhotoForGEOMapItem(self->_mapItem);
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 bestPhotoForSize:v4 allowSmaller:{width, height}];
+    v10 = [v8 bestPhotoForSize:smallerCopy allowSmaller:{width, height}];
     v11 = [v10 url];
 
     if (v11)
     {
-      v12 = [v10 url];
+      height = [v10 url];
 
       goto LABEL_6;
     }
   }
 
-  v12 = [(GEOMapItem *)self->_mapItem _bestHeroBrandIconURLForSize:v4 allowSmaller:width, height];
+  height = [(GEOMapItem *)self->_mapItem _bestHeroBrandIconURLForSize:smallerCopy allowSmaller:width, height];
 LABEL_6:
 
-  return v12;
+  return height;
 }
 
 - (MKMapItem)mapItem
@@ -80,16 +80,16 @@ LABEL_6:
   mapItem = self->_mapItem;
   if (mapItem)
   {
-    v4 = [(GEOMapItem *)mapItem _walletCategoryIdentifier];
+    _walletCategoryIdentifier = [(GEOMapItem *)mapItem _walletCategoryIdentifier];
   }
 
   else
   {
-    v5 = [(GEOPDMerchantLookupResult *)self->_merchantLookupResult categoryInfo];
-    v4 = [v5 walletCategoryId];
+    categoryInfo = [(GEOPDMerchantLookupResult *)self->_merchantLookupResult categoryInfo];
+    _walletCategoryIdentifier = [categoryInfo walletCategoryId];
   }
 
-  return v4;
+  return _walletCategoryIdentifier;
 }
 
 - (NSString)mapsCategoryIdentifier
@@ -97,16 +97,16 @@ LABEL_6:
   mapItem = self->_mapItem;
   if (mapItem)
   {
-    v4 = [(GEOMapItem *)mapItem _walletMapsCategoryIdentifier];
+    _walletMapsCategoryIdentifier = [(GEOMapItem *)mapItem _walletMapsCategoryIdentifier];
   }
 
   else
   {
-    v5 = [(GEOPDMerchantLookupResult *)self->_merchantLookupResult categoryInfo];
-    v4 = [v5 mapsCategoryId];
+    categoryInfo = [(GEOPDMerchantLookupResult *)self->_merchantLookupResult categoryInfo];
+    _walletMapsCategoryIdentifier = [categoryInfo mapsCategoryId];
   }
 
-  return v4;
+  return _walletMapsCategoryIdentifier;
 }
 
 - (NSString)localizedWalletCategoryLanguage
@@ -138,17 +138,17 @@ LABEL_6:
   if (self->_mapItem)
   {
     v3 = [MKWalletMerchantStylingInfo alloc];
-    v4 = [(GEOMapItem *)self->_mapItem _walletCategoryStyling];
-    v5 = [(MKWalletMerchantStylingInfo *)v3 initWithStyleAttributes:v4];
+    _walletCategoryStyling = [(GEOMapItem *)self->_mapItem _walletCategoryStyling];
+    v5 = [(MKWalletMerchantStylingInfo *)v3 initWithStyleAttributes:_walletCategoryStyling];
   }
 
   else
   {
-    v6 = [(GEOPDMerchantLookupResult *)self->_merchantLookupResult categoryInfo];
-    v4 = [v6 walletCategoryId];
+    categoryInfo = [(GEOPDMerchantLookupResult *)self->_merchantLookupResult categoryInfo];
+    _walletCategoryStyling = [categoryInfo walletCategoryId];
 
     v7 = +[MKMapService sharedService];
-    v5 = [v7 stylingForWalletCategory:v4];
+    v5 = [v7 stylingForWalletCategory:_walletCategoryStyling];
   }
 
   return v5;
@@ -171,16 +171,16 @@ LABEL_6:
   mapItem = self->_mapItem;
   if (mapItem)
   {
-    v4 = [(GEOMapItem *)mapItem _walletPlaceLocalizedString];
+    _walletPlaceLocalizedString = [(GEOMapItem *)mapItem _walletPlaceLocalizedString];
   }
 
   else
   {
-    v5 = [(GEOPDMerchantLookupResult *)self->_merchantLookupResult categoryInfo];
-    v4 = [v5 mapsCategoryId];
+    categoryInfo = [(GEOPDMerchantLookupResult *)self->_merchantLookupResult categoryInfo];
+    _walletPlaceLocalizedString = [categoryInfo mapsCategoryId];
   }
 
-  return v4;
+  return _walletPlaceLocalizedString;
 }
 
 - (MKWalletMerchantStylingInfo)placeStyling
@@ -189,45 +189,45 @@ LABEL_6:
   v4 = [MKWalletMerchantStylingInfo alloc];
   if (mapItem)
   {
-    v5 = [(GEOMapItem *)self->_mapItem _walletPlaceStyling];
-    v6 = [(MKWalletMerchantStylingInfo *)v4 initWithStyleAttributes:v5];
+    _walletPlaceStyling = [(GEOMapItem *)self->_mapItem _walletPlaceStyling];
+    v6 = [(MKWalletMerchantStylingInfo *)v4 initWithStyleAttributes:_walletPlaceStyling];
   }
 
   else
   {
-    v5 = [(GEOPDMerchantLookupResult *)self->_merchantLookupResult categoryInfo];
-    v7 = [v5 mapsCategoryStyleAttributes];
-    v6 = [(MKWalletMerchantStylingInfo *)v4 initWithStyleAttributes:v7];
+    _walletPlaceStyling = [(GEOPDMerchantLookupResult *)self->_merchantLookupResult categoryInfo];
+    mapsCategoryStyleAttributes = [_walletPlaceStyling mapsCategoryStyleAttributes];
+    v6 = [(MKWalletMerchantStylingInfo *)v4 initWithStyleAttributes:mapsCategoryStyleAttributes];
   }
 
   return v6;
 }
 
-- (MKWalletMerchantResponse)initWithMerchantLookupResult:(id)a3
+- (MKWalletMerchantResponse)initWithMerchantLookupResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   v9.receiver = self;
   v9.super_class = MKWalletMerchantResponse;
   v6 = [(MKWalletMerchantResponse *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_merchantLookupResult, a3);
+    objc_storeStrong(&v6->_merchantLookupResult, result);
   }
 
   return v7;
 }
 
-- (MKWalletMerchantResponse)initWithGEOMapItem:(id)a3
+- (MKWalletMerchantResponse)initWithGEOMapItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = MKWalletMerchantResponse;
   v6 = [(MKWalletMerchantResponse *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mapItem, a3);
+    objc_storeStrong(&v6->_mapItem, item);
   }
 
   return v7;

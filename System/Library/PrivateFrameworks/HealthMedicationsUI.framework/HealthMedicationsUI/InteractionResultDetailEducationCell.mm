@@ -1,11 +1,11 @@
 @interface InteractionResultDetailEducationCell
-- (_TtC19HealthMedicationsUI36InteractionResultDetailEducationCell)initWithCoder:(id)a3;
+- (_TtC19HealthMedicationsUI36InteractionResultDetailEducationCell)initWithCoder:(id)coder;
 - (void)awakeFromNib;
 @end
 
 @implementation InteractionResultDetailEducationCell
 
-- (_TtC19HealthMedicationsUI36InteractionResultDetailEducationCell)initWithCoder:(id)a3
+- (_TtC19HealthMedicationsUI36InteractionResultDetailEducationCell)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC19HealthMedicationsUI36InteractionResultDetailEducationCell_item;
   *v3 = 0u;

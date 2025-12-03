@@ -1,24 +1,24 @@
 @interface PXStoryPacingController
 - ($98F545CD36100C1EB7458A589033337F)currentPacingDecision;
 - (PXStoryModel)model;
-- (PXStoryPacingController)initWithModel:(id)a3 timeSource:(id)a4 cueSource:(id)a5;
-- (PXStoryPacingController)initWithObservableModel:(id)a3;
+- (PXStoryPacingController)initWithModel:(id)model timeSource:(id)source cueSource:(id)cueSource;
+- (PXStoryPacingController)initWithObservableModel:(id)model;
 - (PXStoryPacingCueSource)cueSource;
-- (id)diagnosticTextForHUDType:(int64_t)a3;
-- (id)diagnosticTextForHUDType:(int64_t)a3 displaySize:(CGSize)a4;
+- (id)diagnosticTextForHUDType:(int64_t)type;
+- (id)diagnosticTextForHUDType:(int64_t)type displaySize:(CGSize)size;
 - (void)_handleTimelineDidChange;
 - (void)_invalidateCanChangePlaybackTime;
-- (void)_invalidateTargetEndTimeWithReason:(id)a3;
+- (void)_invalidateTargetEndTimeWithReason:(id)reason;
 - (void)_updateCanChangePlaybackTime;
 - (void)_updateTargetEndTime;
-- (void)collectTapToRadarDiagnosticsIntoContainer:(id)a3;
-- (void)configureUpdater:(id)a3;
-- (void)handleModelChange:(unint64_t)a3;
-- (void)setCanChangePlaybackTime:(BOOL)a3;
-- (void)setCurrentPacingDecision:(id *)a3;
-- (void)setIsActive:(BOOL)a3;
-- (void)setTargetEndTime:(id *)a3;
-- (void)timeSource:(id)a3 didIncrementByTime:(id *)a4;
+- (void)collectTapToRadarDiagnosticsIntoContainer:(id)container;
+- (void)configureUpdater:(id)updater;
+- (void)handleModelChange:(unint64_t)change;
+- (void)setCanChangePlaybackTime:(BOOL)time;
+- (void)setCurrentPacingDecision:(id *)decision;
+- (void)setIsActive:(BOOL)active;
+- (void)setTargetEndTime:(id *)time;
+- (void)timeSource:(id)source didIncrementByTime:(id *)time;
 @end
 
 @implementation PXStoryPacingController
@@ -64,33 +64,33 @@
   return WeakRetained;
 }
 
-- (void)collectTapToRadarDiagnosticsIntoContainer:(id)a3
+- (void)collectTapToRadarDiagnosticsIntoContainer:(id)container
 {
-  v4 = a3;
-  v6 = [(PXStoryPacingController *)self pacingDecisionHistory];
-  v5 = [v6 descriptionWithShortStyle:0];
-  [v4 addAttachmentWithText:v5 name:@"PacingDecisions"];
+  containerCopy = container;
+  pacingDecisionHistory = [(PXStoryPacingController *)self pacingDecisionHistory];
+  v5 = [pacingDecisionHistory descriptionWithShortStyle:0];
+  [containerCopy addAttachmentWithText:v5 name:@"PacingDecisions"];
 }
 
-- (id)diagnosticTextForHUDType:(int64_t)a3 displaySize:(CGSize)a4
+- (id)diagnosticTextForHUDType:(int64_t)type displaySize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v7 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v8 = [(PXStoryPacingController *)self cueSource];
-  v9 = v8;
-  if (v8)
+  cueSource = [(PXStoryPacingController *)self cueSource];
+  v9 = cueSource;
+  if (cueSource)
   {
-    v10 = [v8 audioCueSource];
-    v11 = [v10 isEmpty];
+    audioCueSource = [cueSource audioCueSource];
+    isEmpty = [audioCueSource isEmpty];
 
-    if ((v11 & 1) == 0)
+    if ((isEmpty & 1) == 0)
     {
       v38 = 0uLL;
       v39 = 0;
       [v9 currentTime];
-      v12 = [(PXStoryPacingController *)self pacingDecisionHistory];
-      v13 = v12;
+      pacingDecisionHistory = [(PXStoryPacingController *)self pacingDecisionHistory];
+      v13 = pacingDecisionHistory;
       v36 = 0u;
       v37 = 0u;
       v34 = 0u;
@@ -99,11 +99,11 @@
       v33 = 0u;
       v31 = 0u;
       memset(v30, 0, sizeof(v30));
-      if (v12)
+      if (pacingDecisionHistory)
       {
         v25 = v38;
         *&v26 = v39;
-        [v12 firstPacingDecisionAfterTime:&v25];
+        [pacingDecisionHistory firstPacingDecisionAfterTime:&v25];
         v14 = v36;
         if (v36 > 0xAu)
         {
@@ -147,10 +147,10 @@ LABEL_9:
           v20 = PXStoryTimeDescription(&v25);
           [v7 appendFormat:@"\n Overall Time Error: %@\n", v20];
 
-          v21 = [v13 onBarCount];
-          v22 = [v13 decisionCount];
+          onBarCount = [v13 onBarCount];
+          decisionCount = [v13 decisionCount];
           [v13 onBarPercentage];
-          [v7 appendFormat:@"Transitions on bars: %ld / %ld (%.0f%%)\n\n", v21, v22, v23];
+          [v7 appendFormat:@"Transitions on bars: %ld / %ld (%.0f%%)\n\n", onBarCount, decisionCount, v23];
 
           goto LABEL_16;
         }
@@ -172,7 +172,7 @@ LABEL_16:
   return v7;
 }
 
-- (void)handleModelChange:(unint64_t)a3
+- (void)handleModelChange:(unint64_t)change
 {
   v6.receiver = self;
   v6.super_class = PXStoryPacingController;
@@ -182,7 +182,7 @@ LABEL_16:
   v5[2] = __45__PXStoryPacingController_handleModelChange___block_invoke;
   v5[3] = &unk_1E7748690;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = change;
   [(PXStoryController *)self performChanges:v5];
 }
 
@@ -234,27 +234,27 @@ uint64_t __51__PXStoryPacingController__handleTimelineDidChange__block_invoke(ui
 
 - (void)_updateCanChangePlaybackTime
 {
-  v3 = [(PXStoryPacingController *)self model];
+  model = [(PXStoryPacingController *)self model];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __55__PXStoryPacingController__updateCanChangePlaybackTime__block_invoke;
   aBlock[3] = &unk_1E7748620;
   aBlock[4] = self;
-  v4 = v3;
+  v4 = model;
   v14 = v4;
   v5 = _Block_copy(aBlock);
-  v6 = [v4 readinessStatus];
-  v7 = v6 < 3;
-  v8 = v5[2](v5, v7 & (3u >> (v6 & 7)));
+  readinessStatus = [v4 readinessStatus];
+  v7 = readinessStatus < 3;
+  v8 = v5[2](v5, v7 & (3u >> (readinessStatus & 7)));
   [(PXStoryPacingController *)self setCanChangePlaybackTime:v5[2](v5, v7)];
-  v9 = [(PXStoryPacingController *)self model];
+  model2 = [(PXStoryPacingController *)self model];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __55__PXStoryPacingController__updateCanChangePlaybackTime__block_invoke_2;
   v11[3] = &__block_descriptor_33_e31_v16__0___PXStoryMutableModel__8l;
   v12 = v8;
-  v10 = [(PXStoryPacingController *)self modelChangeOrigin];
-  [v9 performChanges:v11 origin:v10];
+  modelChangeOrigin = [(PXStoryPacingController *)self modelChangeOrigin];
+  [model2 performChanges:v11 origin:modelChangeOrigin];
 }
 
 uint64_t __55__PXStoryPacingController__updateCanChangePlaybackTime__block_invoke(uint64_t a1, int a2)
@@ -355,25 +355,25 @@ LABEL_8:
 
 - (void)_invalidateCanChangePlaybackTime
 {
-  v2 = [(PXStoryController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateCanChangePlaybackTime];
+  updater = [(PXStoryController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateCanChangePlaybackTime];
 }
 
 - (void)_updateTargetEndTime
 {
-  v3 = [(PXStoryPacingController *)self model];
-  v4 = v3;
+  model = [(PXStoryPacingController *)self model];
+  v4 = model;
   memset(&v16, 0, sizeof(v16));
-  if (v3)
+  if (model)
   {
-    [v3 nominalPlaybackTime];
+    [model nominalPlaybackTime];
   }
 
-  v5 = [v4 timeline];
-  v6 = v5;
-  if (v5)
+  timeline = [v4 timeline];
+  v6 = timeline;
+  if (timeline)
   {
-    [v5 timeRange];
+    [timeline timeRange];
   }
 
   else
@@ -389,11 +389,11 @@ LABEL_8:
   lhs = v15;
   CMTimeSubtract(&v12, &lhs, &rhs);
   memset(&v11, 0, sizeof(v11));
-  v7 = [(PXStoryPacingController *)self cueSource];
-  v8 = v7;
-  if (v7)
+  cueSource = [(PXStoryPacingController *)self cueSource];
+  v8 = cueSource;
+  if (cueSource)
   {
-    [v7 currentTime];
+    [cueSource currentTime];
   }
 
   else
@@ -420,46 +420,46 @@ LABEL_8:
   [(PXStoryPacingController *)self setTargetEndTime:&lhs];
 }
 
-- (void)_invalidateTargetEndTimeWithReason:(id)a3
+- (void)_invalidateTargetEndTimeWithReason:(id)reason
 {
-  v4 = [a3 copy];
+  v4 = [reason copy];
   [(PXStoryPacingController *)self setTargetEndUpdateReason:v4];
 
-  v5 = [(PXStoryController *)self updater];
-  [v5 setNeedsUpdateOf:sel__updateTargetEndTime];
+  updater = [(PXStoryController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateTargetEndTime];
 }
 
-- (void)timeSource:(id)a3 didIncrementByTime:(id *)a4
+- (void)timeSource:(id)source didIncrementByTime:(id *)time
 {
   v107 = *MEMORY[0x1E69E9840];
-  v34 = a3;
-  v6 = [(PXStoryPacingController *)self model];
-  v7 = [v6 currentSegmentIdentifier];
+  sourceCopy = source;
+  model = [(PXStoryPacingController *)self model];
+  currentSegmentIdentifier = [model currentSegmentIdentifier];
   memset(&v91[1], 0, sizeof(CMTime));
-  if (v6)
+  if (model)
   {
-    [v6 timeIntoCurrentSegment];
+    [model timeIntoCurrentSegment];
   }
 
   v8 = +[PXStorySettings sharedInstance];
   v91[0] = v91[1];
   v89 = 0uLL;
   v90 = 0;
-  if (v6)
+  if (model)
   {
-    [v6 timeLeftInCurrentSegment];
+    [model timeLeftInCurrentSegment];
   }
 
   if ([(PXStoryPacingController *)self canChangePlaybackTime])
   {
-    v9 = [v6 timeline];
-    v33 = [(PXStoryPacingController *)self timelineVersion];
+    timeline = [model timeline];
+    timelineVersion = [(PXStoryPacingController *)self timelineVersion];
     *lhs = v91[0];
-    *rhs = *&a4->var0;
-    *&rhs[16] = a4->var3;
+    *rhs = *&time->var0;
+    *&rhs[16] = time->var3;
     CMTimeAdd(time2, lhs, rhs);
     v91[0] = *time2;
-    v10 = [(PXStoryPacingController *)self cueSource];
+    cueSource = [(PXStoryPacingController *)self cueSource];
     memset(v88, 0, sizeof(v88));
     v87 = 0u;
     v86 = 0u;
@@ -467,9 +467,9 @@ LABEL_8:
     v84 = 0u;
     memset(rhs, 0, sizeof(rhs));
     [(PXStoryPacingController *)self currentPacingDecision];
-    if (*rhs == v7)
+    if (*rhs == currentSegmentIdentifier)
     {
-      if (v10)
+      if (cueSource)
       {
         v104 = v87;
         v105 = v88[0];
@@ -488,7 +488,7 @@ LABEL_8:
         v94 = *&rhs[32];
         if (!PXStoryPacingDecisionEqualToPacingDecision(lhs, &PXStoryPacingDecisionNull))
         {
-          if ([v34 isRealTime])
+          if ([sourceCopy isRealTime])
           {
             if ([v8 adjustToWallClockTime])
             {
@@ -518,7 +518,7 @@ LABEL_8:
                   if (os_signpost_enabled(v12))
                   {
                     v30 = v14;
-                    v29 = [(PXStoryPacingController *)self logContext];
+                    logContext = [(PXStoryPacingController *)self logContext];
                     *lhs = *v42;
                     *&lhs[16] = *&v42[16];
                     v32 = PXStoryTimeDescription(lhs);
@@ -528,7 +528,7 @@ LABEL_8:
                     *&lhs[16] = *&v51[16];
                     v15 = PXStoryTimeDescription(lhs);
                     *lhs = 134218754;
-                    *&lhs[4] = v29;
+                    *&lhs[4] = logContext;
                     *&lhs[12] = 2114;
                     *&lhs[14] = v32;
                     *&lhs[22] = 2114;
@@ -560,9 +560,9 @@ LABEL_8:
 
     else
     {
-      if (v9)
+      if (timeline)
       {
-        [v9 timeRangeForSegmentWithIdentifier:v7];
+        [timeline timeRangeForSegmentWithIdentifier:currentSegmentIdentifier];
       }
 
       else
@@ -577,12 +577,12 @@ LABEL_8:
       v78 = *(&v82[1] + 1);
       v18 = CFAbsoluteTimeGetCurrent();
       v76 = v91[0];
-      v19 = [(PXStoryPacingController *)self timelineVersion];
+      timelineVersion2 = [(PXStoryPacingController *)self timelineVersion];
       v75 = 0;
       *&v74[3] = PXStoryTimeZero;
       memset(&rhs[8], 0, 48);
       *&rhs[56] = v79;
-      *rhs = v7;
+      *rhs = currentSegmentIdentifier;
       *&rhs[72] = v80;
       v84 = v77;
       *&v85[0] = v78;
@@ -590,7 +590,7 @@ LABEL_8:
       *(&v85[4] + 1) = v18;
       v86 = *&v76.value;
       *&v87 = v76.epoch;
-      *(&v87 + 1) = v19;
+      *(&v87 + 1) = timelineVersion2;
       LOBYTE(v88[0]) = 0;
       *(v88 + 1) = *v74;
       *(v88 + 12) = *(&PXStoryTimeZero + 1);
@@ -599,7 +599,7 @@ LABEL_8:
     *lhs = v91[0];
     *time2 = v84;
     *&time2[16] = *&v85[0];
-    if (CMTimeCompare(lhs, time2) >= 1 && ([v6 shouldPauseTransitions] & 1) == 0)
+    if (CMTimeCompare(lhs, time2) >= 1 && ([model shouldPauseTransitions] & 1) == 0)
     {
       memset(v51, 0, 24);
       *lhs = v91[0];
@@ -608,11 +608,11 @@ LABEL_8:
       CMTimeSubtract(v51, lhs, time2);
       *lhs = *v51;
       *&lhs[16] = *&v51[16];
-      v7 = [v9 identifierForSegmentWithOffset:lhs fromEndOfSegmentWithIdentifier:v7 timeIntoSegment:v91];
+      currentSegmentIdentifier = [timeline identifierForSegmentWithOffset:lhs fromEndOfSegmentWithIdentifier:currentSegmentIdentifier timeIntoSegment:v91];
     }
 
-    v20 = [v10 cuesVersion];
-    if (*rhs == v7 && *(&v85[2] + 1) == v20 && *(&v87 + 1) == v33)
+    cuesVersion = [cueSource cuesVersion];
+    if (*rhs == currentSegmentIdentifier && *(&v85[2] + 1) == cuesVersion && *(&v87 + 1) == timelineVersion)
     {
       *(&v88[1] + 4) = 0;
       *(v88 + 4) = PXStoryTimeZero;
@@ -623,9 +623,9 @@ LABEL_8:
       v72 = 0u;
       v73 = 0u;
       v71 = 0u;
-      if (v9)
+      if (timeline)
       {
-        [v9 timeRangeForSegmentWithIdentifier:v7];
+        [timeline timeRangeForSegmentWithIdentifier:currentSegmentIdentifier];
       }
 
       v67 = 0;
@@ -650,13 +650,13 @@ LABEL_8:
       *lhs = v71;
       *&lhs[16] = v72;
       v94 = v73;
-      [v9 enumerateClipsInTimeRange:lhs rect:v60 usingBlock:{*MEMORY[0x1E695F040], *(MEMORY[0x1E695F040] + 8), *(MEMORY[0x1E695F040] + 16), *(MEMORY[0x1E695F040] + 24)}];
+      [timeline enumerateClipsInTimeRange:lhs rect:v60 usingBlock:{*MEMORY[0x1E695F040], *(MEMORY[0x1E695F040] + 8), *(MEMORY[0x1E695F040] + 16), *(MEMORY[0x1E695F040] + 24)}];
       v58 = 0u;
       memset(v59, 0, sizeof(v59));
       memset(time2, 0, sizeof(time2));
-      if (v9)
+      if (timeline)
       {
-        [v9 infoForSegmentWithIdentifier:v7];
+        [timeline infoForSegmentWithIdentifier:currentSegmentIdentifier];
         v21 = v59[0];
       }
 
@@ -676,7 +676,7 @@ LABEL_8:
       v50 = *&v59[20];
       if (*(v68 + 24) == 1)
       {
-        v22 = [v9 clipWithIdentifier:v62[3]];
+        v22 = [timeline clipWithIdentifier:v62[3]];
         v94 = 0u;
         memset(lhs, 0, sizeof(lhs));
         *v42 = v71;
@@ -700,7 +700,7 @@ LABEL_8:
 
       if ([v8 useMusicCuesForPacing])
       {
-        v25 = v10;
+        v25 = cueSource;
       }
 
       else
@@ -708,8 +708,8 @@ LABEL_8:
         v25 = 0;
       }
 
-      v26 = [(PXStoryPacingController *)self timeSource];
-      v27 = [v26 isRealTime];
+      timeSource = [(PXStoryPacingController *)self timeSource];
+      isRealTime = [timeSource isRealTime];
       v45 = v54;
       v46 = v55;
       *v42 = *v51;
@@ -719,7 +719,7 @@ LABEL_8:
       v47 = v56;
       v48 = v91[0];
       v41 = v92;
-      PXStoryPacingControllerGeneratePacingDecision(v7, v42, &v48, &v41, v25, v33, v27, lhs);
+      PXStoryPacingControllerGeneratePacingDecision(currentSegmentIdentifier, v42, &v48, &v41, v25, timelineVersion, isRealTime, lhs);
       v87 = v104;
       v88[0] = v105;
       v88[1] = v106;
@@ -769,15 +769,15 @@ LABEL_8:
   }
 
   memset(time2, 0, 24);
-  if (v6)
+  if (model)
   {
-    [v6 elapsedTime];
+    [model elapsedTime];
   }
 
   *lhs = *time2;
   *&lhs[16] = *&time2[16];
-  *rhs = *&a4->var0;
-  *&rhs[16] = a4->var3;
+  *rhs = *&time->var0;
+  *&rhs[16] = time->var3;
   CMTimeAdd(v51, lhs, rhs);
   *time2 = *v51;
   *&time2[16] = *&v51[16];
@@ -787,12 +787,12 @@ LABEL_8:
   v35[3] = &__block_descriptor_112_e31_v16__0___PXStoryMutableModel__8l;
   v36 = *v51;
   v37 = *&v51[16];
-  v35[4] = v7;
+  v35[4] = currentSegmentIdentifier;
   v38 = v91[0];
   v40 = v90;
   v39 = v89;
-  v28 = [(PXStoryPacingController *)self modelChangeOrigin];
-  [v6 performChanges:v35 origin:v28];
+  modelChangeOrigin = [(PXStoryPacingController *)self modelChangeOrigin];
+  [model performChanges:v35 origin:modelChangeOrigin];
 }
 
 void *__57__PXStoryPacingController_timeSource_didIncrementByTime___block_invoke(void *result, uint64_t a2, uint64_t a3, uint64_t a4, void *a5)
@@ -833,22 +833,22 @@ void __57__PXStoryPacingController_timeSource_didIncrementByTime___block_invoke_
   [v3 setCurrentSegmentIdentifier:v4 timeIntoSegment:&v7 timeLeftInSegment:&v5 changeSource:0];
 }
 
-- (void)setTargetEndTime:(id *)a3
+- (void)setTargetEndTime:(id *)time
 {
   p_targetEndTime = &self->_targetEndTime;
-  time1 = *a3;
+  time1 = *time;
   time2 = self->_targetEndTime;
   if (CMTimeCompare(&time1, &time2))
   {
-    v6 = *&a3->var0;
-    p_targetEndTime->epoch = a3->var3;
+    v6 = *&time->var0;
+    p_targetEndTime->epoch = time->var3;
     *&p_targetEndTime->value = v6;
     memset(&v12, 0, sizeof(v12));
-    v7 = [(PXStoryPacingController *)self cueSource];
-    v8 = v7;
-    if (v7)
+    cueSource = [(PXStoryPacingController *)self cueSource];
+    v8 = cueSource;
+    if (cueSource)
     {
-      [v7 currentTime];
+      [cueSource currentTime];
     }
 
     else
@@ -856,39 +856,39 @@ void __57__PXStoryPacingController_timeSource_didIncrementByTime___block_invoke_
       memset(&v12, 0, sizeof(v12));
     }
 
-    v9 = [(PXStoryPacingController *)self pacingDecisionHistory];
-    time1 = *a3;
+    pacingDecisionHistory = [(PXStoryPacingController *)self pacingDecisionHistory];
+    time1 = *time;
     time2 = v12;
     CMTimeSubtract(&v11, &time1, &time2);
-    v10 = [(PXStoryPacingController *)self targetEndUpdateReason];
-    [v9 resetWithTargetDuration:&v11 reason:v10];
+    targetEndUpdateReason = [(PXStoryPacingController *)self targetEndUpdateReason];
+    [pacingDecisionHistory resetWithTargetDuration:&v11 reason:targetEndUpdateReason];
   }
 }
 
-- (void)setCurrentPacingDecision:(id *)a3
+- (void)setCurrentPacingDecision:(id *)decision
 {
   p_currentPacingDecision = &self->_currentPacingDecision;
-  v6 = *&a3->var10;
-  v52 = *&a3->var8.var3;
+  v6 = *&decision->var10;
+  v52 = *&decision->var8.var3;
   v53 = v6;
-  v54 = *&a3->var11.var1;
-  v7 = *&a3->var6.var0;
-  v48 = *&a3->var4.var1;
+  v54 = *&decision->var11.var1;
+  v7 = *&decision->var6.var0;
+  v48 = *&decision->var4.var1;
   v49 = v7;
-  v8 = *&a3->var8.var0;
-  v50 = *&a3->var6.var3;
+  v8 = *&decision->var8.var0;
+  v50 = *&decision->var6.var3;
   v51 = v8;
-  v9 = *&a3->var3.var0;
-  v44 = *&a3->var2.var1;
+  v9 = *&decision->var3.var0;
+  v44 = *&decision->var2.var1;
   v45 = v9;
-  v10 = *&a3->var4.var0.var1;
-  v46 = *&a3->var3.var3;
+  v10 = *&decision->var4.var0.var1;
+  v46 = *&decision->var3.var3;
   v47 = v10;
-  v11 = *&a3->var1.var0.var1;
-  v40 = *&a3->var0;
+  v11 = *&decision->var1.var0.var1;
+  v40 = *&decision->var0;
   v41 = v11;
-  v12 = *&a3->var1.var1.var3;
-  v42 = *&a3->var1.var1.var0;
+  v12 = *&decision->var1.var1.var3;
+  v42 = *&decision->var1.var1.var0;
   v43 = v12;
   v13 = *&self->_currentPacingDecision.transitionKind;
   v39[12] = *&self->_currentPacingDecision.startTimeIntoSegment.epoch;
@@ -914,86 +914,86 @@ void __57__PXStoryPacingController_timeSource_didIncrementByTime___block_invoke_
   v39[3] = v19;
   if (!PXStoryPacingDecisionEqualToPacingDecision(&v40, v39))
   {
-    v20 = *&a3->var0;
-    v21 = *&a3->var1.var1.var0;
-    *&p_currentPacingDecision->allowedTimeRange.start.timescale = *&a3->var1.var0.var1;
+    v20 = *&decision->var0;
+    v21 = *&decision->var1.var1.var0;
+    *&p_currentPacingDecision->allowedTimeRange.start.timescale = *&decision->var1.var0.var1;
     *&p_currentPacingDecision->allowedTimeRange.duration.value = v21;
     *&p_currentPacingDecision->segmentIdentifier = v20;
-    v22 = *&a3->var1.var1.var3;
-    v23 = *&a3->var2.var1;
-    v24 = *&a3->var3.var3;
-    *&p_currentPacingDecision->adjustedDuration.value = *&a3->var3.var0;
+    v22 = *&decision->var1.var1.var3;
+    v23 = *&decision->var2.var1;
+    v24 = *&decision->var3.var3;
+    *&p_currentPacingDecision->adjustedDuration.value = *&decision->var3.var0;
     *&p_currentPacingDecision->adjustedDuration.epoch = v24;
     *&p_currentPacingDecision->allowedTimeRange.duration.epoch = v22;
     *&p_currentPacingDecision->originalDuration.timescale = v23;
-    v25 = *&a3->var4.var0.var1;
-    v26 = *&a3->var4.var1;
-    v27 = *&a3->var6.var3;
-    *&p_currentPacingDecision->cueTime.value = *&a3->var6.var0;
+    v25 = *&decision->var4.var0.var1;
+    v26 = *&decision->var4.var1;
+    v27 = *&decision->var6.var3;
+    *&p_currentPacingDecision->cueTime.value = *&decision->var6.var0;
     *&p_currentPacingDecision->cueTime.epoch = v27;
     *&p_currentPacingDecision->cue.time.timescale = v25;
     *&p_currentPacingDecision->cue.rank = v26;
-    v28 = *&a3->var8.var0;
-    v29 = *&a3->var8.var3;
-    v30 = *&a3->var11.var1;
-    *&p_currentPacingDecision->transitionKind = *&a3->var10;
+    v28 = *&decision->var8.var0;
+    v29 = *&decision->var8.var3;
+    v30 = *&decision->var11.var1;
+    *&p_currentPacingDecision->transitionKind = *&decision->var10;
     *&p_currentPacingDecision->transitionCorrection.timescale = v30;
     *&p_currentPacingDecision->startTimeIntoSegment.value = v28;
     *&p_currentPacingDecision->startTimeIntoSegment.epoch = v29;
-    v31 = [(PXStoryPacingController *)self pacingDecisionHistory];
-    v32 = *&a3->var10;
-    v52 = *&a3->var8.var3;
+    pacingDecisionHistory = [(PXStoryPacingController *)self pacingDecisionHistory];
+    v32 = *&decision->var10;
+    v52 = *&decision->var8.var3;
     v53 = v32;
-    v54 = *&a3->var11.var1;
-    v33 = *&a3->var6.var0;
-    v48 = *&a3->var4.var1;
+    v54 = *&decision->var11.var1;
+    v33 = *&decision->var6.var0;
+    v48 = *&decision->var4.var1;
     v49 = v33;
-    v34 = *&a3->var8.var0;
-    v50 = *&a3->var6.var3;
+    v34 = *&decision->var8.var0;
+    v50 = *&decision->var6.var3;
     v51 = v34;
-    v35 = *&a3->var3.var0;
-    v44 = *&a3->var2.var1;
+    v35 = *&decision->var3.var0;
+    v44 = *&decision->var2.var1;
     v45 = v35;
-    v36 = *&a3->var4.var0.var1;
-    v46 = *&a3->var3.var3;
+    v36 = *&decision->var4.var0.var1;
+    v46 = *&decision->var3.var3;
     v47 = v36;
-    v37 = *&a3->var1.var0.var1;
-    v40 = *&a3->var0;
+    v37 = *&decision->var1.var0.var1;
+    v40 = *&decision->var0;
     v41 = v37;
-    v38 = *&a3->var1.var1.var3;
-    v42 = *&a3->var1.var1.var0;
+    v38 = *&decision->var1.var1.var3;
+    v42 = *&decision->var1.var1.var0;
     v43 = v38;
-    [v31 recordDecision:&v40];
+    [pacingDecisionHistory recordDecision:&v40];
   }
 }
 
-- (void)setCanChangePlaybackTime:(BOOL)a3
+- (void)setCanChangePlaybackTime:(BOOL)time
 {
-  if (self->_canChangePlaybackTime != a3)
+  if (self->_canChangePlaybackTime != time)
   {
-    self->_canChangePlaybackTime = a3;
+    self->_canChangePlaybackTime = time;
     [(PXStoryPacingController *)self _invalidateCurrentPacingDecision];
 
     [(PXStoryPacingController *)self _invalidateTargetEndTimeWithReason:@"Pacing Started/Stopped"];
   }
 }
 
-- (id)diagnosticTextForHUDType:(int64_t)a3
+- (id)diagnosticTextForHUDType:(int64_t)type
 {
   v5 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v6 = [(PXStoryPacingController *)self canChangePlaybackTime];
+  canChangePlaybackTime = [(PXStoryPacingController *)self canChangePlaybackTime];
   v7 = @"paused advancing time";
-  if (v6)
+  if (canChangePlaybackTime)
   {
     v7 = @"advancing time";
   }
 
   [v5 appendFormat:@"Pacing Status: %@\n", v7];
-  v8 = [(PXStoryPacingController *)self canChangePlaybackTime];
-  if (a3 == 14 && !v8)
+  canChangePlaybackTime2 = [(PXStoryPacingController *)self canChangePlaybackTime];
+  if (type == 14 && !canChangePlaybackTime2)
   {
-    v9 = [(PXStoryPacingController *)self reasonPreventingPlaybackTimeChange];
-    [v5 appendFormat:@"Paused Reason: %@\n", v9];
+    reasonPreventingPlaybackTimeChange = [(PXStoryPacingController *)self reasonPreventingPlaybackTimeChange];
+    [v5 appendFormat:@"Paused Reason: %@\n", reasonPreventingPlaybackTimeChange];
   }
 
   v10 = [v5 copy];
@@ -1001,50 +1001,50 @@ void __57__PXStoryPacingController_timeSource_didIncrementByTime___block_invoke_
   return v10;
 }
 
-- (void)setIsActive:(BOOL)a3
+- (void)setIsActive:(BOOL)active
 {
-  if (self->_isActive != a3)
+  if (self->_isActive != active)
   {
-    v4 = a3;
-    self->_isActive = a3;
-    v6 = [(PXStoryPacingController *)self timeSource];
-    [v6 setActive:v4];
+    activeCopy = active;
+    self->_isActive = active;
+    timeSource = [(PXStoryPacingController *)self timeSource];
+    [timeSource setActive:activeCopy];
 
     [(PXStoryPacingController *)self _invalidateCanChangePlaybackTime];
   }
 }
 
-- (void)configureUpdater:(id)a3
+- (void)configureUpdater:(id)updater
 {
   v4.receiver = self;
   v4.super_class = PXStoryPacingController;
-  v3 = a3;
-  [(PXStoryController *)&v4 configureUpdater:v3];
-  [v3 addUpdateSelector:{sel__updateCanChangePlaybackTime, v4.receiver, v4.super_class}];
-  [v3 addUpdateSelector:sel__updateTargetEndTime];
+  updaterCopy = updater;
+  [(PXStoryController *)&v4 configureUpdater:updaterCopy];
+  [updaterCopy addUpdateSelector:{sel__updateCanChangePlaybackTime, v4.receiver, v4.super_class}];
+  [updaterCopy addUpdateSelector:sel__updateTargetEndTime];
 }
 
-- (PXStoryPacingController)initWithModel:(id)a3 timeSource:(id)a4 cueSource:(id)a5
+- (PXStoryPacingController)initWithModel:(id)model timeSource:(id)source cueSource:(id)cueSource
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  modelCopy = model;
+  sourceCopy = source;
+  cueSourceCopy = cueSource;
   v26.receiver = self;
   v26.super_class = PXStoryPacingController;
-  v11 = [(PXStoryController *)&v26 initWithObservableModel:v8];
+  v11 = [(PXStoryController *)&v26 initWithObservableModel:modelCopy];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_model, v8);
+    objc_storeWeak(&v11->_model, modelCopy);
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __62__PXStoryPacingController_initWithModel_timeSource_cueSource___block_invoke;
     v24[3] = &unk_1E77485B0;
     v13 = v12;
     v25 = v13;
-    [v8 performChanges:v24];
-    objc_storeStrong(&v13->_timeSource, a4);
-    objc_storeWeak(&v13->_cueSource, v10);
+    [modelCopy performChanges:v24];
+    objc_storeStrong(&v13->_timeSource, source);
+    objc_storeWeak(&v13->_cueSource, cueSourceCopy);
     [(PXStoryPacingTimeSource *)v13->_timeSource setDelegate:v13];
     v14 = [_PXStoryPacingControllerChangeOrigin alloc];
     v15 = objc_alloc(MEMORY[0x1E696AEC0]);
@@ -1063,11 +1063,11 @@ void __57__PXStoryPacingController_timeSource_didIncrementByTime___block_invoke_
   return v12;
 }
 
-- (PXStoryPacingController)initWithObservableModel:(id)a3
+- (PXStoryPacingController)initWithObservableModel:(id)model
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXStoryPacingController.m" lineNumber:59 description:{@"%s is not available as initializer", "-[PXStoryPacingController initWithObservableModel:]"}];
+  modelCopy = model;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryPacingController.m" lineNumber:59 description:{@"%s is not available as initializer", "-[PXStoryPacingController initWithObservableModel:]"}];
 
   abort();
 }

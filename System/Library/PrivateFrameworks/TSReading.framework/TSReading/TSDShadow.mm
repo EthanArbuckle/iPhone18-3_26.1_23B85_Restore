@@ -1,44 +1,44 @@
 @interface TSDShadow
-+ (TSDShadow)shadowWithAngle:(double)a3 offset:(double)a4 radius:(double)a5 opacity:(double)a6 color:(CGColor *)a7 enabled:(BOOL)a8;
-+ (TSDShadow)shadowWithNSShadow:(id)a3;
-+ (id)contactShadowWithAngle:(double)a3 offset:(double)a4 radius:(double)a5 height:(double)a6 opacity:(double)a7 color:(CGColor *)a8 enabled:(BOOL)a9;
-+ (id)curvedShadowWithOffset:(double)a3 angle:(double)a4 radius:(double)a5 curve:(double)a6 opacity:(double)a7 color:(CGColor *)a8 enabled:(BOOL)a9;
++ (TSDShadow)shadowWithAngle:(double)angle offset:(double)offset radius:(double)radius opacity:(double)opacity color:(CGColor *)color enabled:(BOOL)enabled;
++ (TSDShadow)shadowWithNSShadow:(id)shadow;
++ (id)contactShadowWithAngle:(double)angle offset:(double)offset radius:(double)radius height:(double)height opacity:(double)opacity color:(CGColor *)color enabled:(BOOL)enabled;
++ (id)curvedShadowWithOffset:(double)offset angle:(double)angle radius:(double)radius curve:(double)curve opacity:(double)opacity color:(CGColor *)color enabled:(BOOL)enabled;
 + (id)mixableObjectClasses;
-+ (id)p_defaultShadowEnabled:(BOOL)a3;
-+ (void)bootstrapPresetsOfKind:(id)a3 inTheme:(id)a4 alternate:(int)a5;
-- (BOOL)differenceRequiresRebuilding:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CGImage)i_newEmptyImageWithSize:(CGSize)a3;
++ (id)p_defaultShadowEnabled:(BOOL)enabled;
++ (void)bootstrapPresetsOfKind:(id)kind inTheme:(id)theme alternate:(int)alternate;
+- (BOOL)differenceRequiresRebuilding:(id)rebuilding;
+- (BOOL)isEqual:(id)equal;
+- (CGImage)i_newEmptyImageWithSize:(CGSize)size;
 - (CGPoint)offsetDelta;
-- (CGRect)boundsForRep:(id)a3;
-- (CGRect)boundsInNaturalSpaceForRep:(id)a3;
-- (CGRect)shadowBoundsForRect:(CGRect)a3;
-- (CGRect)shadowBoundsForRect:(CGRect)a3 additionalAngle:(double)a4;
-- (CGRect)shadowBoundsForRect:(CGRect)a3 additionalTransform:(CGAffineTransform *)a4;
+- (CGRect)boundsForRep:(id)rep;
+- (CGRect)boundsInNaturalSpaceForRep:(id)rep;
+- (CGRect)shadowBoundsForRect:(CGRect)rect;
+- (CGRect)shadowBoundsForRect:(CGRect)rect additionalAngle:(double)angle;
+- (CGRect)shadowBoundsForRect:(CGRect)rect additionalTransform:(CGAffineTransform *)transform;
 - (TSUColor)TSUColor;
 - (id)NSShadow;
 - (id)description;
-- (id)i_initWithOpacity:(double)a3 color:(CGColor *)a4 enabled:(BOOL)a5;
-- (id)mixedBaseObjectWithObject:(id)a3;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
+- (id)i_initWithOpacity:(double)opacity color:(CGColor *)color enabled:(BOOL)enabled;
+- (id)mixedBaseObjectWithObject:(id)object;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
 - (id)mutableCopy;
-- (id)shadowByTransformingByTransform:(CGAffineTransform *)a3;
+- (id)shadowByTransformingByTransform:(CGAffineTransform *)transform;
 - (id)typeDescription;
-- (int64_t)mixingTypeWithObject:(id)a3;
-- (void)applyToContext:(CGContext *)a3 viewScale:(double)a4 flipped:(BOOL)a5 extraOffset:(CGSize)a6;
+- (int64_t)mixingTypeWithObject:(id)object;
+- (void)applyToContext:(CGContext *)context viewScale:(double)scale flipped:(BOOL)flipped extraOffset:(CGSize)offset;
 - (void)dealloc;
 @end
 
 @implementation TSDShadow
 
-+ (id)p_defaultShadowEnabled:(BOOL)a3
++ (id)p_defaultShadowEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   DeviceRGB = TSUCGColorCreateDeviceRGB();
   if (DeviceRGB)
   {
     v5 = DeviceRGB;
-    v6 = [[TSDDropShadow alloc] initWithAngle:DeviceRGB offset:v3 radius:315.0 opacity:5.0 color:1.0 enabled:1.0];
+    v6 = [[TSDDropShadow alloc] initWithAngle:DeviceRGB offset:enabledCopy radius:315.0 opacity:5.0 color:1.0 enabled:1.0];
     CGColorRelease(v5);
   }
 
@@ -50,42 +50,42 @@
   return v6;
 }
 
-+ (TSDShadow)shadowWithAngle:(double)a3 offset:(double)a4 radius:(double)a5 opacity:(double)a6 color:(CGColor *)a7 enabled:(BOOL)a8
++ (TSDShadow)shadowWithAngle:(double)angle offset:(double)offset radius:(double)radius opacity:(double)opacity color:(CGColor *)color enabled:(BOOL)enabled
 {
-  v8 = [[TSDDropShadow alloc] initWithAngle:a7 offset:a8 radius:a3 opacity:a4 color:a5 enabled:a6];
+  v8 = [[TSDDropShadow alloc] initWithAngle:color offset:enabled radius:angle opacity:offset color:radius enabled:opacity];
 
   return v8;
 }
 
-+ (id)contactShadowWithAngle:(double)a3 offset:(double)a4 radius:(double)a5 height:(double)a6 opacity:(double)a7 color:(CGColor *)a8 enabled:(BOOL)a9
++ (id)contactShadowWithAngle:(double)angle offset:(double)offset radius:(double)radius height:(double)height opacity:(double)opacity color:(CGColor *)color enabled:(BOOL)enabled
 {
-  v9 = [[TSDContactShadow alloc] initWithOffset:a8 height:a9 radius:a4 opacity:a6 color:a5 enabled:a7];
+  v9 = [[TSDContactShadow alloc] initWithOffset:color height:enabled radius:offset opacity:height color:radius enabled:opacity];
 
   return v9;
 }
 
-+ (TSDShadow)shadowWithNSShadow:(id)a3
++ (TSDShadow)shadowWithNSShadow:(id)shadow
 {
-  [a3 shadowOffset];
+  [shadow shadowOffset];
   v5 = v4;
   v7 = v6;
-  v8 = [a3 shadowColor];
+  shadowColor = [shadow shadowColor];
   v9 = -v7;
   v10 = TSDAngleFromDelta(v5, v9) * 57.2957795;
   v11 = TSDDistance(*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), v5, v9);
-  [a3 shadowBlurRadius];
+  [shadow shadowBlurRadius];
   v13 = v12;
-  [objc_msgSend(MEMORY[0x277D6C2A8] colorWithCGColor:{v8), "alphaComponent"}];
+  [objc_msgSend(MEMORY[0x277D6C2A8] colorWithCGColor:{shadowColor), "alphaComponent"}];
   v15 = v14;
-  CopyWithAlpha = CGColorCreateCopyWithAlpha(v8, 1.0);
+  CopyWithAlpha = CGColorCreateCopyWithAlpha(shadowColor, 1.0);
   v17 = [TSDShadow shadowWithAngle:CopyWithAlpha offset:1 radius:v10 opacity:v11 color:v13 enabled:v15];
   CGColorRelease(CopyWithAlpha);
   return v17;
 }
 
-+ (id)curvedShadowWithOffset:(double)a3 angle:(double)a4 radius:(double)a5 curve:(double)a6 opacity:(double)a7 color:(CGColor *)a8 enabled:(BOOL)a9
++ (id)curvedShadowWithOffset:(double)offset angle:(double)angle radius:(double)radius curve:(double)curve opacity:(double)opacity color:(CGColor *)color enabled:(BOOL)enabled
 {
-  v9 = [[TSDCurvedShadow alloc] initWithOffset:a8 angle:a9 radius:a3 curve:a4 opacity:a5 color:a6 enabled:a7];
+  v9 = [[TSDCurvedShadow alloc] initWithOffset:color angle:enabled radius:offset curve:angle opacity:radius color:curve enabled:opacity];
 
   return v9;
 }
@@ -105,9 +105,9 @@
   [(TSDShadow *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v18) = 1;
   }
@@ -115,13 +115,13 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (-[TSDShadow angle](self, "angle"), v6 = v5, [a3 angle], v6 == v7) && (-[TSDShadow offset](self, "offset"), v9 = v8, objc_msgSend(a3, "offset"), v9 == v10) && (-[TSDShadow radius](self, "radius"), v12 = v11, objc_msgSend(a3, "radius"), v12 == v13) && (-[TSDShadow opacity](self, "opacity"), v15 = v14, objc_msgSend(a3, "opacity"), v15 == v16) && (v17 = -[TSDShadow isEnabled](self, "isEnabled"), v17 == objc_msgSend(a3, "isEnabled")))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (-[TSDShadow angle](self, "angle"), v6 = v5, [equal angle], v6 == v7) && (-[TSDShadow offset](self, "offset"), v9 = v8, objc_msgSend(equal, "offset"), v9 == v10) && (-[TSDShadow radius](self, "radius"), v12 = v11, objc_msgSend(equal, "radius"), v12 == v13) && (-[TSDShadow opacity](self, "opacity"), v15 = v14, objc_msgSend(equal, "opacity"), v15 == v16) && (v17 = -[TSDShadow isEnabled](self, "isEnabled"), v17 == objc_msgSend(equal, "isEnabled")))
     {
-      v18 = CGColorEqualToColor(-[TSDShadow color](self, "color"), [a3 color]);
+      v18 = CGColorEqualToColor(-[TSDShadow color](self, "color"), [equal color]);
       if (v18)
       {
-        v19 = [(TSDShadow *)self shadowType];
-        LOBYTE(v18) = v19 == [a3 shadowType];
+        shadowType = [(TSDShadow *)self shadowType];
+        LOBYTE(v18) = shadowType == [equal shadowType];
       }
     }
 
@@ -154,15 +154,15 @@
 
 - (id)typeDescription
 {
-  v2 = [(TSDShadow *)self shadowType];
-  if (v2 > 3)
+  shadowType = [(TSDShadow *)self shadowType];
+  if (shadowType > 3)
   {
     return 0;
   }
 
   else
   {
-    return off_279D48AD8[v2];
+    return off_279D48AD8[shadowType];
   }
 }
 
@@ -184,22 +184,22 @@
 - (TSUColor)TSUColor
 {
   v2 = MEMORY[0x277D6C2A8];
-  v3 = [(TSDShadow *)self color];
+  color = [(TSDShadow *)self color];
 
-  return [v2 colorWithCGColor:v3];
+  return [v2 colorWithCGColor:color];
 }
 
-- (void)applyToContext:(CGContext *)a3 viewScale:(double)a4 flipped:(BOOL)a5 extraOffset:(CGSize)a6
+- (void)applyToContext:(CGContext *)context viewScale:(double)scale flipped:(BOOL)flipped extraOffset:(CGSize)offset
 {
-  height = a6.height;
-  width = a6.width;
-  v8 = a5;
+  height = offset.height;
+  width = offset.width;
+  flippedCopy = flipped;
   if ([(TSDShadow *)self isEnabled])
   {
     v29 = 0.0;
     v30 = 0.0;
     [(TSDShadow *)self angle];
-    if (v8)
+    if (flippedCopy)
     {
       v13 = v12;
     }
@@ -209,8 +209,8 @@
       v13 = -v12;
     }
 
-    IsCALayerContext = TSDCGContextIsCALayerContext(a3);
-    v15 = TSDCGContextAssociatedScreenScale(a3);
+    IsCALayerContext = TSDCGContextIsCALayerContext(context);
+    v15 = TSDCGContextAssociatedScreenScale(context);
     v16 = v15;
     if (IsCALayerContext)
     {
@@ -220,27 +220,27 @@
     }
 
     [(TSDShadow *)self radius];
-    v19 = v16 * (v18 * a4);
+    v19 = v16 * (v18 * scale);
     [(TSDShadow *)self offset];
-    TSDOriginRotate(&v29, v16 * (v20 * a4), v13 * 0.0174532925);
+    TSDOriginRotate(&v29, v16 * (v20 * scale), v13 * 0.0174532925);
     v31.width = width;
     v31.height = height;
-    v21 = CGContextConvertSizeToDeviceSpace(a3, v31);
+    v21 = CGContextConvertSizeToDeviceSpace(context, v31);
     v22 = v29 + v21.width;
     v23 = v21.height + v30;
-    v24 = [(TSDShadow *)self color];
+    color = [(TSDShadow *)self color];
     [(TSDShadow *)self opacity];
     v26 = v25;
     Alpha = CGColorGetAlpha([(TSDShadow *)self color]);
-    CopyWithAlpha = CGColorCreateCopyWithAlpha(v24, v26 * Alpha);
+    CopyWithAlpha = CGColorCreateCopyWithAlpha(color, v26 * Alpha);
     v32.width = v22;
     v32.height = v23;
-    CGContextSetShadowWithColor(a3, v32, v19, CopyWithAlpha);
+    CGContextSetShadowWithColor(context, v32, v19, CopyWithAlpha);
     CGColorRelease(CopyWithAlpha);
   }
 }
 
-- (CGRect)boundsInNaturalSpaceForRep:(id)a3
+- (CGRect)boundsInNaturalSpaceForRep:(id)rep
 {
   v3 = *MEMORY[0x277CBF3A0];
   v4 = *(MEMORY[0x277CBF3A0] + 8);
@@ -253,7 +253,7 @@
   return result;
 }
 
-- (CGRect)boundsForRep:(id)a3
+- (CGRect)boundsForRep:(id)rep
 {
   v3 = *MEMORY[0x277CBF3A0];
   v4 = *(MEMORY[0x277CBF3A0] + 8);
@@ -266,12 +266,12 @@
   return result;
 }
 
-- (CGRect)shadowBoundsForRect:(CGRect)a3 additionalTransform:(CGAffineTransform *)a4
+- (CGRect)shadowBoundsForRect:(CGRect)rect additionalTransform:(CGAffineTransform *)transform
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if ([(TSDShadow *)self isEnabled])
   {
     [(TSDShadow *)self radius];
@@ -288,10 +288,10 @@
     v16 = v30.size.width;
     v17 = v30.size.height;
     [(TSDShadow *)self offsetDelta];
-    v18 = *&a4->c;
-    v28[0] = *&a4->a;
+    v18 = *&transform->c;
+    v28[0] = *&transform->a;
     v28[1] = v18;
-    v28[2] = *&a4->tx;
+    v28[2] = *&transform->tx;
     v21 = TSDDeltaApplyAffineTransform(v28, v19, v20);
     v23 = v22;
     v31.origin.x = v14;
@@ -321,13 +321,13 @@
   return result;
 }
 
-- (CGRect)shadowBoundsForRect:(CGRect)a3
+- (CGRect)shadowBoundsForRect:(CGRect)rect
 {
   v3 = *(MEMORY[0x277CBF2C0] + 16);
   v8[0] = *MEMORY[0x277CBF2C0];
   v8[1] = v3;
   v8[2] = *(MEMORY[0x277CBF2C0] + 32);
-  [(TSDShadow *)self shadowBoundsForRect:v8 additionalTransform:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(TSDShadow *)self shadowBoundsForRect:v8 additionalTransform:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -335,13 +335,13 @@
   return result;
 }
 
-- (CGRect)shadowBoundsForRect:(CGRect)a3 additionalAngle:(double)a4
+- (CGRect)shadowBoundsForRect:(CGRect)rect additionalAngle:(double)angle
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  CGAffineTransformMakeRotation(&v13, a4 * 0.0174532925);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  CGAffineTransformMakeRotation(&v13, angle * 0.0174532925);
   [(TSDShadow *)self shadowBoundsForRect:&v13 additionalTransform:x, y, width, height];
   result.size.height = v12;
   result.size.width = v11;
@@ -350,23 +350,23 @@
   return result;
 }
 
-- (BOOL)differenceRequiresRebuilding:(id)a3
+- (BOOL)differenceRequiresRebuilding:(id)rebuilding
 {
   result = 1;
-  if (a3)
+  if (rebuilding)
   {
     [(TSDShadow *)self radius];
     v6 = v5;
-    [a3 radius];
+    [rebuilding radius];
     if (v6 == v7)
     {
       [(TSDShadow *)self opacity];
       v9 = v8;
-      [a3 opacity];
-      if (v9 == v10 && CGColorEqualToColor(-[TSDShadow color](self, "color"), [a3 color]))
+      [rebuilding opacity];
+      if (v9 == v10 && CGColorEqualToColor(-[TSDShadow color](self, "color"), [rebuilding color]))
       {
-        v11 = [(TSDShadow *)self isEnabled];
-        if (v11 == [a3 isEnabled])
+        isEnabled = [(TSDShadow *)self isEnabled];
+        if (isEnabled == [rebuilding isEnabled])
         {
           return 0;
         }
@@ -377,28 +377,28 @@
   return result;
 }
 
-+ (void)bootstrapPresetsOfKind:(id)a3 inTheme:(id)a4 alternate:(int)a5
++ (void)bootstrapPresetsOfKind:(id)kind inTheme:(id)theme alternate:(int)alternate
 {
-  if (([a3 isEqual:String] & 1) == 0)
+  if (([kind isEqual:String] & 1) == 0)
   {
-    v8 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSDShadow bootstrapPresetsOfKind:inTheme:alternate:]"];
-    [v8 handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDShadow.m"), 487, @"Attempt to bootstrap shadow presets for kind %@ in theme <%p>.", a3, a4}];
+    [currentHandler handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDShadow.m"), 487, @"Attempt to bootstrap shadow presets for kind %@ in theme <%p>.", kind, theme}];
   }
 
   v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:8];
-  v26 = a3;
-  if (a5 >= 7)
+  kindCopy = kind;
+  if (alternate >= 7)
   {
-    v12 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSDShadow bootstrapPresetsOfKind:inTheme:alternate:]"];
-    [v12 handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDShadow.m"), 507, @"invalid theme alternate value"}];
+    [currentHandler2 handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDShadow.m"), 507, @"invalid theme alternate value"}];
     v11 = 0;
   }
 
   else
   {
-    v11 = *(&off_279D48AF8 + a5);
+    v11 = *(&off_279D48AF8 + alternate);
   }
 
   v14 = 0;
@@ -439,7 +439,7 @@
 
   while (v14 != 8);
   v25 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:v10];
-  [a4 setPresets:v25 ofKind:v26];
+  [theme setPresets:v25 ofKind:kindCopy];
 }
 
 + (id)mixableObjectClasses
@@ -451,23 +451,23 @@
   return [MEMORY[0x277CBEA60] arrayWithObjects:v3 count:3];
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3
+- (int64_t)mixingTypeWithObject:(id)object
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDShadow mixingTypeWithObject:]"];
-  [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDShadow.m"), 591, @"Implement me in subclass!"}];
+  [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDShadow.m"), 591, @"Implement me in subclass!"}];
   return 1;
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
-  v4 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDShadow mixedObjectWithFraction:ofObject:]"];
-  [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDShadow.m"), 597, @"Implement me in subclass!"}];
+  [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDShadow.m"), 597, @"Implement me in subclass!"}];
   return 0;
 }
 
-- (id)mixedBaseObjectWithObject:(id)a3
+- (id)mixedBaseObjectWithObject:(id)object
 {
   if ([(TSDShadow *)self isEnabled])
   {
@@ -476,13 +476,13 @@
 
   else
   {
-    return a3;
+    return object;
   }
 }
 
-- (id)shadowByTransformingByTransform:(CGAffineTransform *)a3
+- (id)shadowByTransformingByTransform:(CGAffineTransform *)transform
 {
-  v4 = fmin(a3->a, a3->d);
+  v4 = fmin(transform->a, transform->d);
   v5 = [(TSDShadow *)self mutableCopy];
   [(TSDShadow *)self radius];
   [v5 setRadius:floor(v4 * v6)];
@@ -504,16 +504,16 @@
     [v3 setShadowOffset:{TSDMultiplyPointScalar(v8, -v9, v7)}];
     [(TSDShadow *)self radius];
     [v3 setShadowBlurRadius:?];
-    v10 = [(TSDShadow *)self color];
+    color = [(TSDShadow *)self color];
     [(TSDShadow *)self opacity];
     v12 = v11;
-    Alpha = CGColorGetAlpha(v10);
-    CopyWithAlpha = CGColorCreateCopyWithAlpha(v10, v12 * Alpha);
+    Alpha = CGColorGetAlpha(color);
+    CopyWithAlpha = CGColorCreateCopyWithAlpha(color, v12 * Alpha);
     if (!CopyWithAlpha)
     {
-      v15 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDShadow NSShadow]"];
-      [v15 handleFailureInFunction:v16 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDShadow.m"), 640, @"invalid nil value for '%s'", "color"}];
+      [currentHandler handleFailureInFunction:v16 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDShadow.m"), 640, @"invalid nil value for '%s'", "color"}];
     }
 
     [v3 setShadowColor:CopyWithAlpha];
@@ -528,13 +528,13 @@
   return v3;
 }
 
-- (id)i_initWithOpacity:(double)a3 color:(CGColor *)a4 enabled:(BOOL)a5
+- (id)i_initWithOpacity:(double)opacity color:(CGColor *)color enabled:(BOOL)enabled
 {
-  if (!a4)
+  if (!color)
   {
-    v9 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDShadow(Internal) i_initWithOpacity:color:enabled:]"];
-    [v9 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDShadow-Internal.m"), 21, @"invalid nil value for '%s'", "color"}];
+    [currentHandler handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDShadow-Internal.m"), 21, @"invalid nil value for '%s'", "color"}];
   }
 
   v16.receiver = self;
@@ -543,11 +543,11 @@
   v12 = v11;
   if (v11)
   {
-    [(TSDShadow *)v11 clampOpacity:a3];
+    [(TSDShadow *)v11 clampOpacity:opacity];
     v12->mOpacity = v13;
-    if (a4)
+    if (color)
     {
-      v14 = CGColorRetain(a4);
+      v14 = CGColorRetain(color);
     }
 
     else
@@ -556,15 +556,15 @@
     }
 
     v12->mColor = v14;
-    v12->mEnabled = a5;
+    v12->mEnabled = enabled;
   }
 
   return v12;
 }
 
-- (CGImage)i_newEmptyImageWithSize:(CGSize)a3
+- (CGImage)i_newEmptyImageWithSize:(CGSize)size
 {
-  v3 = TSDBitmapContextCreate(3, a3.width);
+  v3 = TSDBitmapContextCreate(3, size.width);
   Image = CGBitmapContextCreateImage(v3);
   CGContextRelease(v3);
   return Image;

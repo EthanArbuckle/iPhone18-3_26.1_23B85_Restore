@@ -1,34 +1,34 @@
 @interface TVStyleFactory
 + (void)_registerDefaultStyles;
 + (void)initialize;
-+ (void)registerStyle:(id)a3 withType:(int64_t)a4 inherited:(BOOL)a5;
++ (void)registerStyle:(id)style withType:(int64_t)type inherited:(BOOL)inherited;
 @end
 
 @implementation TVStyleFactory
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     +[TVStyleFactory _registerDefaultStyles];
   }
 }
 
-+ (void)registerStyle:(id)a3 withType:(int64_t)a4 inherited:(BOOL)a5
++ (void)registerStyle:(id)style withType:(int64_t)type inherited:(BOOL)inherited
 {
-  v5 = a5;
-  if ((a4 - 1) >= 8)
+  inheritedCopy = inherited;
+  if ((type - 1) >= 8)
   {
     v6 = 3;
   }
 
   else
   {
-    v6 = a4 - 1;
+    v6 = type - 1;
   }
 
-  [MEMORY[0x277D1B140] registerStyle:a3 aliasName:0 withType:v6 inherited:v5];
+  [MEMORY[0x277D1B140] registerStyle:style aliasName:0 withType:v6 inherited:inheritedCopy];
 }
 
 + (void)_registerDefaultStyles

@@ -1,20 +1,20 @@
 @interface MultiPlayerBackgroundView
-- (_TtC8VideosUI25MultiPlayerBackgroundView)initWithCoder:(id)a3;
+- (_TtC8VideosUI25MultiPlayerBackgroundView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation MultiPlayerBackgroundView
 
-- (_TtC8VideosUI25MultiPlayerBackgroundView)initWithCoder:(id)a3
+- (_TtC8VideosUI25MultiPlayerBackgroundView)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   sub_1E3D3165C();
   return 0;
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3D31700();
 }
 

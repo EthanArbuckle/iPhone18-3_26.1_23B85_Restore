@@ -8,8 +8,8 @@
 + (id)sublibraries
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [a1 Communication];
-  v6[0] = v2;
+  communication = [self Communication];
+  v6[0] = communication;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];

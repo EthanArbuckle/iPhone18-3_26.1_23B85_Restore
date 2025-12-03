@@ -1,11 +1,11 @@
 @interface AEAssessmentParticipantConfiguration
-+ (id)instanceFromIndividualConfiguration:(id)a3;
++ (id)instanceFromIndividualConfiguration:(id)configuration;
 - (AEAssessmentParticipantConfiguration)init;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)individualConfiguration;
-- (uint64_t)isEqualToConfiguration:(uint64_t)a1;
+- (uint64_t)isEqualToConfiguration:(uint64_t)configuration;
 - (unint64_t)hash;
 @end
 
@@ -27,7 +27,7 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[AEAssessmentParticipantConfiguration allocWithZone:?]];
   v4->_allowsNetworkAccess = self->_allowsNetworkAccess;
@@ -50,19 +50,19 @@
   return v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy)
   {
-    if (v4 == self)
+    if (equalCopy == self)
     {
       v6 = 1;
       goto LABEL_6;
     }
 
-    if ([(AEAssessmentParticipantConfiguration *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(AEAssessmentParticipantConfiguration *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v6 = [(AEAssessmentParticipantConfiguration *)self isEqualToConfiguration:v5];
       goto LABEL_6;
@@ -109,17 +109,17 @@ LABEL_6:
   return v3;
 }
 
-+ (id)instanceFromIndividualConfiguration:(id)a3
++ (id)instanceFromIndividualConfiguration:(id)configuration
 {
-  if (a3)
+  if (configuration)
   {
-    v3 = a3;
+    configurationCopy = configuration;
     v4 = objc_opt_new();
-    *(v4 + 8) = [v3 allowsNetworkAccess];
-    *(v4 + 9) = [v3 isRequired];
-    v5 = [v3 configurationInfo];
+    *(v4 + 8) = [configurationCopy allowsNetworkAccess];
+    *(v4 + 9) = [configurationCopy isRequired];
+    configurationInfo = [configurationCopy configurationInfo];
 
-    v6 = [v5 copy];
+    v6 = [configurationInfo copy];
     v7 = *(v4 + 16);
     *(v4 + 16) = v6;
   }
@@ -132,33 +132,33 @@ LABEL_6:
   return v4;
 }
 
-- (uint64_t)isEqualToConfiguration:(uint64_t)a1
+- (uint64_t)isEqualToConfiguration:(uint64_t)configuration
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (configuration)
   {
-    if (*(a1 + 8) == *(v3 + 8) && *(a1 + 9) == *(v3 + 9))
+    if (*(configuration + 8) == *(v3 + 8) && *(configuration + 9) == *(v3 + 9))
     {
-      v5 = *(a1 + 16);
+      v5 = *(configuration + 16);
       if (v5 | v4[2])
       {
-        a1 = [v5 isEqual:?];
+        configuration = [v5 isEqual:?];
       }
 
       else
       {
-        a1 = 1;
+        configuration = 1;
       }
     }
 
     else
     {
-      a1 = 0;
+      configuration = 0;
     }
   }
 
-  return a1;
+  return configuration;
 }
 
 @end

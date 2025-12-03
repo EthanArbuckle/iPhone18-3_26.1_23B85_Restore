@@ -1,14 +1,14 @@
 @interface ATXRingBuffer
-- (ATXRingBuffer)initWithMaxSize:(unint64_t)a3;
+- (ATXRingBuffer)initWithMaxSize:(unint64_t)size;
 - (id)toArray;
-- (void)addObject:(id)a3;
+- (void)addObject:(id)object;
 @end
 
 @implementation ATXRingBuffer
 
-- (ATXRingBuffer)initWithMaxSize:(unint64_t)a3
+- (ATXRingBuffer)initWithMaxSize:(unint64_t)size
 {
-  if (a3)
+  if (size)
   {
     v10.receiver = self;
     v10.super_class = ATXRingBuffer;
@@ -16,7 +16,7 @@
     v5 = v4;
     if (v4)
     {
-      v4->_maxSize = a3;
+      v4->_maxSize = size;
       v6 = objc_opt_new();
       bufferArray = v5->_bufferArray;
       v5->_bufferArray = v6;
@@ -25,33 +25,33 @@
     }
 
     self = v5;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
   bufferArray = self->_bufferArray;
-  v7 = a3;
+  objectCopy = object;
   v5 = [(NSMutableArray *)bufferArray count];
   v6 = self->_bufferArray;
   if (v5 >= self->_maxSize)
   {
-    [(NSMutableArray *)v6 setObject:v7 atIndexedSubscript:self->_readStartIndex];
+    [(NSMutableArray *)v6 setObject:objectCopy atIndexedSubscript:self->_readStartIndex];
 
     self->_readStartIndex = (self->_readStartIndex + 1) % self->_maxSize;
   }
 
   else
   {
-    [(NSMutableArray *)v6 addObject:v7];
+    [(NSMutableArray *)v6 addObject:objectCopy];
   }
 }
 

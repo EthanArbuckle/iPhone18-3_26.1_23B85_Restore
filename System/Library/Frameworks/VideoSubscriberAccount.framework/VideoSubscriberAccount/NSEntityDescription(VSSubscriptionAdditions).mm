@@ -11,8 +11,8 @@
 {
   v10 = a3;
   v6 = a4;
-  v7 = [a1 userInfo];
-  v8 = [v7 mutableCopy];
+  userInfo = [self userInfo];
+  v8 = [userInfo mutableCopy];
 
   if (!v8)
   {
@@ -34,19 +34,19 @@
     }
   }
 
-  [a1 setUserInfo:v8];
+  [self setUserInfo:v8];
 }
 
 - (id)vs_referenceValueAttribute
 {
-  v2 = [a1 userInfo];
-  v3 = [v2 objectForKey:@"VSReferenceValueAttributeUserInfoKey"];
+  userInfo = [self userInfo];
+  v3 = [userInfo objectForKey:@"VSReferenceValueAttributeUserInfoKey"];
 
   if (v3)
   {
     v4 = v3;
-    v5 = [a1 attributesByName];
-    v6 = [v5 objectForKey:v4];
+    attributesByName = [self attributesByName];
+    v6 = [attributesByName objectForKey:v4];
   }
 
   else
@@ -59,14 +59,14 @@
 
 - (void)vs_setReferenceValueAttribute:()VSSubscriptionAdditions
 {
-  v7 = [a3 name];
-  v4 = [a1 attributesByName];
-  v5 = [v4 allKeys];
-  v6 = [v5 containsObject:v7];
+  name = [a3 name];
+  attributesByName = [self attributesByName];
+  allKeys = [attributesByName allKeys];
+  v6 = [allKeys containsObject:name];
 
   if (v6)
   {
-    [a1 vs_setUserInfoValue:v7 forKey:@"VSReferenceValueAttributeUserInfoKey"];
+    [self vs_setUserInfoValue:name forKey:@"VSReferenceValueAttributeUserInfoKey"];
   }
 
   else
@@ -95,8 +95,8 @@
   [v10 vs_setPropertyListKey:@"PSSSExpirationDate"];
   [v10 setAttributeType:900];
   [v10 setOptional:0];
-  v11 = [MEMORY[0x277CBEAA8] distantFuture];
-  [v10 setDefaultValue:v11];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  [v10 setDefaultValue:distantFuture];
 
   v83 = v10;
   [v9 addObject:v10];
@@ -349,12 +349,12 @@
         }
 
         v56 = *(*(&v101 + 1) + 8 * j);
-        v57 = [v56 name];
+        name = [v56 name];
         v58 = objc_alloc_init(*(v7 + 2840));
         v59 = [objc_alloc(MEMORY[0x277CBE420]) initWithProperty:v56 collationType:0];
         [v58 addObject:v59];
 
-        v60 = [objc_alloc(MEMORY[0x277CBE418]) initWithName:v57 elements:v58];
+        v60 = [objc_alloc(MEMORY[0x277CBE418]) initWithName:name elements:v58];
         [v51 addObject:v60];
       }
 

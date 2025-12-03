@@ -1,5 +1,5 @@
 @interface ParmesanGalleryMaskableContentView
-- (_TtC30NTKParmesanFaceBundleCompanion34ParmesanGalleryMaskableContentView)initWithFrame:(CGRect)a3;
+- (_TtC30NTKParmesanFaceBundleCompanion34ParmesanGalleryMaskableContentView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -20,12 +20,12 @@
   }
 }
 
-- (_TtC30NTKParmesanFaceBundleCompanion34ParmesanGalleryMaskableContentView)initWithFrame:(CGRect)a3
+- (_TtC30NTKParmesanFaceBundleCompanion34ParmesanGalleryMaskableContentView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanion34ParmesanGalleryMaskableContentView_monochromeColorMatrix;
   *(&self->super.super.super.isa + v8) = NTKDefaultMonochromeColorMatrix();
   *(&self->super.super.super.isa + OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanion34ParmesanGalleryMaskableContentView_maskingLayer) = 0;

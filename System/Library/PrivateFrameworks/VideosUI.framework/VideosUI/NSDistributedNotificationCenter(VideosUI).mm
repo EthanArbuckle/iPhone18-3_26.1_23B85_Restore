@@ -26,7 +26,7 @@
   v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:getpid()];
   [v17 setObject:v15 forKeyedSubscript:@"sendingPID"];
 
-  [a1 postNotificationName:a3 object:a4 userInfo:v17 deliverImmediately:1];
+  [self postNotificationName:a3 object:a4 userInfo:v17 deliverImmediately:1];
   v16 = [a3 cStringUsingEncoding:4];
 
   notify_post(v16);

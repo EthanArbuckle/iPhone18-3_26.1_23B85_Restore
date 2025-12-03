@@ -2,25 +2,25 @@
 + (id)sharedHacks;
 - (BOOL)isGreenTea;
 - (BOOL)isJapanSKU;
-- (BOOL)sanitizedProfileSignerCertificateChainIsAllowedToInstallSupervisedRestrictionsOnUnsupervisedDevices:(id)a3;
-- (BOOL)sanitizedProfileSignerCertificateChainIsAllowedToInstallUnsupportedPayload:(id)a3;
-- (BOOL)sanitizedProfileSignerCertificateChainIsAllowedToWriteDefaults:(id)a3;
+- (BOOL)sanitizedProfileSignerCertificateChainIsAllowedToInstallSupervisedRestrictionsOnUnsupervisedDevices:(id)devices;
+- (BOOL)sanitizedProfileSignerCertificateChainIsAllowedToInstallUnsupportedPayload:(id)payload;
+- (BOOL)sanitizedProfileSignerCertificateChainIsAllowedToWriteDefaults:(id)defaults;
 - (id)_deviceRegionCode;
 - (id)_deviceSpecificDefaultSettings;
 - (id)_permittedGracePeriodNumbers;
-- (id)_selectLargestNumberFromSortedArray:(id)a3 equalToOrLessThanNumber:(id)a4;
+- (id)_selectLargestNumberFromSortedArray:(id)array equalToOrLessThanNumber:(id)number;
 - (id)permittedAutoLockNumbers;
-- (id)quantizedAutoLockInSeconds:(id)a3;
-- (id)quantizedGracePeriodInSeconds:(id)a3;
-- (void)_applyHeuristicsToEffectiveUserSettings:(id)a3;
-- (void)_applyHeuristicsToGranfatheredRestrictionPayloadKeys:(id)a3;
-- (void)_applyHeuristicsToRestrictions:(id)a3 forProfile:(id)a4 ignoresUnrestrictableApps:(BOOL)a5;
-- (void)_applyImpliedSettingsToSettingsDictionary:(id)a3 currentSettings:(id)a4 restrictions:(id)a5;
-- (void)_applyInternalDiagnosticEnforcementToSettings:(id)a3;
-- (void)_applyMandatorySettingsToEffectiveUserSettings:(id)a3;
-- (void)_sendChangeNotificationsBasedOnDefaultsAdditionByDomain:(id)a3;
-- (void)_sendChangeNotificationsBasedOnDefaultsRemovalByDomain:(id)a3;
-- (void)_setRequriesEncryptedBackupInLockdownWithEffectiveUserSettings:(id)a3;
+- (id)quantizedAutoLockInSeconds:(id)seconds;
+- (id)quantizedGracePeriodInSeconds:(id)seconds;
+- (void)_applyHeuristicsToEffectiveUserSettings:(id)settings;
+- (void)_applyHeuristicsToGranfatheredRestrictionPayloadKeys:(id)keys;
+- (void)_applyHeuristicsToRestrictions:(id)restrictions forProfile:(id)profile ignoresUnrestrictableApps:(BOOL)apps;
+- (void)_applyImpliedSettingsToSettingsDictionary:(id)dictionary currentSettings:(id)settings restrictions:(id)restrictions;
+- (void)_applyInternalDiagnosticEnforcementToSettings:(id)settings;
+- (void)_applyMandatorySettingsToEffectiveUserSettings:(id)settings;
+- (void)_sendChangeNotificationsBasedOnDefaultsAdditionByDomain:(id)domain;
+- (void)_sendChangeNotificationsBasedOnDefaultsRemovalByDomain:(id)domain;
+- (void)_setRequriesEncryptedBackupInLockdownWithEffectiveUserSettings:(id)settings;
 @end
 
 @implementation MCHacks
@@ -140,19 +140,19 @@ void __35__MCHacks_permittedAutoLockNumbers__block_invoke()
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_selectLargestNumberFromSortedArray:(id)a3 equalToOrLessThanNumber:(id)a4
+- (id)_selectLargestNumberFromSortedArray:(id)array equalToOrLessThanNumber:(id)number
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectAtIndex:0];
-  if (v6)
+  arrayCopy = array;
+  numberCopy = number;
+  v7 = [arrayCopy objectAtIndex:0];
+  if (numberCopy)
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = v5;
+    v8 = arrayCopy;
     v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
@@ -168,7 +168,7 @@ void __35__MCHacks_permittedAutoLockNumbers__block_invoke()
           }
 
           v13 = *(*(&v17 + 1) + 8 * i);
-          if ([v13 compare:{v6, v17}] != 1)
+          if ([v13 compare:{numberCopy, v17}] != 1)
           {
             v14 = v13;
 
@@ -188,256 +188,256 @@ void __35__MCHacks_permittedAutoLockNumbers__block_invoke()
   return v7;
 }
 
-- (id)quantizedGracePeriodInSeconds:(id)a3
+- (id)quantizedGracePeriodInSeconds:(id)seconds
 {
-  v4 = a3;
-  v5 = [(MCHacks *)self _permittedGracePeriodNumbers];
-  v6 = [(MCHacks *)self _selectLargestNumberFromSortedArray:v5 equalToOrLessThanNumber:v4];
+  secondsCopy = seconds;
+  _permittedGracePeriodNumbers = [(MCHacks *)self _permittedGracePeriodNumbers];
+  v6 = [(MCHacks *)self _selectLargestNumberFromSortedArray:_permittedGracePeriodNumbers equalToOrLessThanNumber:secondsCopy];
 
   return v6;
 }
 
-- (id)quantizedAutoLockInSeconds:(id)a3
+- (id)quantizedAutoLockInSeconds:(id)seconds
 {
-  v4 = a3;
-  v5 = [(MCHacks *)self permittedAutoLockNumbers];
-  v6 = [(MCHacks *)self _selectLargestNumberFromSortedArray:v5 equalToOrLessThanNumber:v4];
+  secondsCopy = seconds;
+  permittedAutoLockNumbers = [(MCHacks *)self permittedAutoLockNumbers];
+  v6 = [(MCHacks *)self _selectLargestNumberFromSortedArray:permittedAutoLockNumbers equalToOrLessThanNumber:secondsCopy];
 
   return v6;
 }
 
-- (void)_applyHeuristicsToRestrictions:(id)a3 forProfile:(id)a4 ignoresUnrestrictableApps:(BOOL)a5
+- (void)_applyHeuristicsToRestrictions:(id)restrictions forProfile:(id)profile ignoresUnrestrictableApps:(BOOL)apps
 {
-  v42 = a3;
-  v8 = a4;
-  v9 = [MCRestrictionManager unionValuesForFeature:@"blacklistedAppBundleIDs" withRestrictionsDictionary:v42];
-  v41 = [MCRestrictionManager unionValuesForFeature:@"blockedAppBundleIDs" withRestrictionsDictionary:v42];
+  restrictionsCopy = restrictions;
+  profileCopy = profile;
+  v9 = [MCRestrictionManager unionValuesForFeature:@"blacklistedAppBundleIDs" withRestrictionsDictionary:restrictionsCopy];
+  v41 = [MCRestrictionManager unionValuesForFeature:@"blockedAppBundleIDs" withRestrictionsDictionary:restrictionsCopy];
   if ([v9 count] || objc_msgSend(v41, "count"))
   {
-    v10 = self;
-    v11 = v8;
+    selfCopy = self;
+    v11 = profileCopy;
     v12 = v9;
     v13 = [MEMORY[0x1E695DFD8] setWithArray:v9];
     v14 = [MEMORY[0x1E695DFA8] setWithArray:v41];
     [v14 unionSet:v13];
-    if (!a5)
+    if (!apps)
     {
       v15 = MCUnrestrictableApps();
       [v14 minusSet:v15];
     }
 
-    v16 = [v14 allObjects];
-    v17 = [v16 copy];
-    [v42 MCSetUnionRestriction:@"blockedAppBundleIDs" values:v17];
+    allObjects = [v14 allObjects];
+    v17 = [allObjects copy];
+    [restrictionsCopy MCSetUnionRestriction:@"blockedAppBundleIDs" values:v17];
 
-    v18 = [v16 copy];
-    [v42 MCSetUnionRestriction:@"blacklistedAppBundleIDs" values:v18];
+    v18 = [allObjects copy];
+    [restrictionsCopy MCSetUnionRestriction:@"blacklistedAppBundleIDs" values:v18];
 
-    v8 = v11;
+    profileCopy = v11;
     v9 = v12;
-    self = v10;
+    self = selfCopy;
   }
 
-  v19 = [MCRestrictionManager intersectedValuesForFeature:@"appLockBundleIDs" withRestrictionsDictionary:v42];
-  if ([v19 count] && !a5)
+  v19 = [MCRestrictionManager intersectedValuesForFeature:@"appLockBundleIDs" withRestrictionsDictionary:restrictionsCopy];
+  if ([v19 count] && !apps)
   {
     v20 = [MEMORY[0x1E695DFA8] setWithArray:v19];
     v21 = MCUnrestrictableApps();
     [v20 unionSet:v21];
 
-    v22 = [v20 allObjects];
-    [v42 MCSetIntersectionRestriction:@"appLockBundleIDs" values:v22];
+    allObjects2 = [v20 allObjects];
+    [restrictionsCopy MCSetIntersectionRestriction:@"appLockBundleIDs" values:allObjects2];
   }
 
-  v23 = [v8 isEncrypted];
-  v24 = v42;
-  if (v23)
+  isEncrypted = [profileCopy isEncrypted];
+  v24 = restrictionsCopy;
+  if (isEncrypted)
   {
-    v25 = [v42 objectForKeyedSubscript:@"restrictedBool"];
+    v25 = [restrictionsCopy objectForKeyedSubscript:@"restrictedBool"];
     v26 = [v25 objectForKeyedSubscript:@"forceEncryptedBackup"];
     v27 = [v26 objectForKeyedSubscript:@"value"];
 
-    v24 = v42;
+    v24 = restrictionsCopy;
     if (!v27)
     {
-      [v42 MCSetBoolRestriction:@"forceEncryptedBackup" value:1];
-      v24 = v42;
+      [restrictionsCopy MCSetBoolRestriction:@"forceEncryptedBackup" value:1];
+      v24 = restrictionsCopy;
     }
   }
 
   if ([MCRestrictionManager restrictedBoolForFeature:@"allowCamera" withRestrictionsDictionary:v24]== 2)
   {
-    [v42 MCSetBoolRestriction:@"allowVideoConferencing" value:0];
+    [restrictionsCopy MCSetBoolRestriction:@"allowVideoConferencing" value:0];
   }
 
-  if ([MCRestrictionManager restrictedBoolForFeature:@"forceEncryptedBackup" withRestrictionsDictionary:v42]== 1)
+  if ([MCRestrictionManager restrictedBoolForFeature:@"forceEncryptedBackup" withRestrictionsDictionary:restrictionsCopy]== 1)
   {
-    [v42 MCSetBoolRestriction:@"cloudBackupPasswordRequired" value:1];
+    [restrictionsCopy MCSetBoolRestriction:@"cloudBackupPasswordRequired" value:1];
   }
 
-  if ([MCRestrictionManager restrictedBoolForFeature:@"allowGameCenter" withRestrictionsDictionary:v42]== 2)
+  if ([MCRestrictionManager restrictedBoolForFeature:@"allowGameCenter" withRestrictionsDictionary:restrictionsCopy]== 2)
   {
-    [v42 MCSetBoolRestriction:@"allowMultiplayerGaming" value:0];
+    [restrictionsCopy MCSetBoolRestriction:@"allowMultiplayerGaming" value:0];
   }
 
-  if ([MCRestrictionManager restrictedBoolForFeature:@"allowMultiplayerGaming" withRestrictionsDictionary:v42]== 2)
+  if ([MCRestrictionManager restrictedBoolForFeature:@"allowMultiplayerGaming" withRestrictionsDictionary:restrictionsCopy]== 2)
   {
-    [v42 MCSetValueRestriction:@"allowedGameCenterOtherPlayerTypes" value:&unk_1F1AA5848];
+    [restrictionsCopy MCSetValueRestriction:@"allowedGameCenterOtherPlayerTypes" value:&unk_1F1AA5848];
   }
 
-  if ([MCRestrictionManager restrictedBoolForFeature:@"allowiTunes" withRestrictionsDictionary:v42]== 2)
+  if ([MCRestrictionManager restrictedBoolForFeature:@"allowiTunes" withRestrictionsDictionary:restrictionsCopy]== 2)
   {
-    [v42 MCSetBoolRestriction:@"allowiTunesSocialPages" value:0];
+    [restrictionsCopy MCSetBoolRestriction:@"allowiTunesSocialPages" value:0];
   }
 
-  v28 = [MCPasscodeManager unlockScreenTypeForRestrictions:v42];
-  v29 = v42;
+  v28 = [MCPasscodeManager unlockScreenTypeForRestrictions:restrictionsCopy];
+  v29 = restrictionsCopy;
   if (v28)
   {
     v30 = v28;
-    v31 = [MCRestrictionManager valueForFeature:@"passcodeKeyboardComplexity" withRestrictionsDictionary:v42];
+    v31 = [MCRestrictionManager valueForFeature:@"passcodeKeyboardComplexity" withRestrictionsDictionary:restrictionsCopy];
     if ([v31 unsignedIntValue] < v30)
     {
       v32 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v30];
-      [v42 MCSetValueRestriction:@"passcodeKeyboardComplexity" value:v32];
+      [restrictionsCopy MCSetValueRestriction:@"passcodeKeyboardComplexity" value:v32];
     }
 
-    v29 = v42;
+    v29 = restrictionsCopy;
   }
 
   v33 = [MCRestrictionManager valueForFeature:@"maxGracePeriod" withRestrictionsDictionary:v29];
   if (v33)
   {
     v34 = [(MCHacks *)self quantizedGracePeriodInSeconds:v33];
-    [v42 MCSetValueRestriction:@"maxGracePeriod" value:v34];
+    [restrictionsCopy MCSetValueRestriction:@"maxGracePeriod" value:v34];
   }
 
-  v35 = [MCRestrictionManager valueForFeature:@"maxInactivity" withRestrictionsDictionary:v42];
+  v35 = [MCRestrictionManager valueForFeature:@"maxInactivity" withRestrictionsDictionary:restrictionsCopy];
   if (v35)
   {
     v36 = [(MCHacks *)self quantizedAutoLockInSeconds:v35];
-    [v42 MCSetValueRestriction:@"maxInactivity" value:v36];
+    [restrictionsCopy MCSetValueRestriction:@"maxInactivity" value:v36];
   }
 
-  v37 = [MCRestrictionManager valueForFeature:@"ratingApps" withRestrictionsDictionary:v42];
+  v37 = [MCRestrictionManager valueForFeature:@"ratingApps" withRestrictionsDictionary:restrictionsCopy];
   v38 = v37;
   if (v37 && [v37 intValue] <= 999)
   {
-    [v42 MCSetBoolRestriction:@"forceITunesStorePasswordEntry" value:1];
+    [restrictionsCopy MCSetBoolRestriction:@"forceITunesStorePasswordEntry" value:1];
   }
 
-  if ([MCRestrictionManager restrictedBoolForFeature:@"allowCloudDocumentSync" withRestrictionsDictionary:v42]== 2)
+  if ([MCRestrictionManager restrictedBoolForFeature:@"allowCloudDocumentSync" withRestrictionsDictionary:restrictionsCopy]== 2)
   {
-    [v42 MCSetBoolRestriction:@"allowManagedAppsCloudSync" value:0];
+    [restrictionsCopy MCSetBoolRestriction:@"allowManagedAppsCloudSync" value:0];
   }
 
-  if ([MCRestrictionManager restrictedBoolForFeature:@"allowDiagnosticSubmission" withRestrictionsDictionary:v42]== 2)
+  if ([MCRestrictionManager restrictedBoolForFeature:@"allowDiagnosticSubmission" withRestrictionsDictionary:restrictionsCopy]== 2)
   {
-    [v42 MCSetBoolRestriction:@"allowAppAnalytics" value:0];
-    [v42 MCSetBoolRestriction:@"allowHealthDataSubmission" value:0];
-    [v42 MCSetBoolRestriction:@"allowHealthDataSubmission2" value:0];
-    [v42 MCSetBoolRestriction:@"allowWheelchairDataSubmission" value:0];
-    [v42 MCSetBoolRestriction:@"allowHandWashingDataSubmission" value:0];
-    [v42 MCSetBoolRestriction:@"allowSafetyDataSubmission" value:0];
+    [restrictionsCopy MCSetBoolRestriction:@"allowAppAnalytics" value:0];
+    [restrictionsCopy MCSetBoolRestriction:@"allowHealthDataSubmission" value:0];
+    [restrictionsCopy MCSetBoolRestriction:@"allowHealthDataSubmission2" value:0];
+    [restrictionsCopy MCSetBoolRestriction:@"allowWheelchairDataSubmission" value:0];
+    [restrictionsCopy MCSetBoolRestriction:@"allowHandWashingDataSubmission" value:0];
+    [restrictionsCopy MCSetBoolRestriction:@"allowSafetyDataSubmission" value:0];
   }
 
-  if ([MCRestrictionManager restrictedBoolForFeature:@"allowPasscodeModification" withRestrictionsDictionary:v42]== 2)
+  if ([MCRestrictionManager restrictedBoolForFeature:@"allowPasscodeModification" withRestrictionsDictionary:restrictionsCopy]== 2)
   {
-    [v42 MCSetBoolRestriction:@"allowFingerprintModification" value:0];
+    [restrictionsCopy MCSetBoolRestriction:@"allowFingerprintModification" value:0];
   }
 
-  if ([MCRestrictionManager restrictedBoolForFeature:@"allowAppInstallation" withRestrictionsDictionary:v42]== 2)
+  if ([MCRestrictionManager restrictedBoolForFeature:@"allowAppInstallation" withRestrictionsDictionary:restrictionsCopy]== 2)
   {
-    [v42 MCSetBoolRestriction:@"allowUIAppInstallation" value:0];
-    [v42 MCSetBoolRestriction:@"allowMarketplaceAppInstallation" value:0];
-    [v42 MCSetBoolRestriction:@"allowWebDistributionAppInstallation" value:0];
+    [restrictionsCopy MCSetBoolRestriction:@"allowUIAppInstallation" value:0];
+    [restrictionsCopy MCSetBoolRestriction:@"allowMarketplaceAppInstallation" value:0];
+    [restrictionsCopy MCSetBoolRestriction:@"allowWebDistributionAppInstallation" value:0];
   }
 
-  if ([MCRestrictionManager restrictedBoolForFeature:@"allowScreenShot" withRestrictionsDictionary:v42]== 2)
+  if ([MCRestrictionManager restrictedBoolForFeature:@"allowScreenShot" withRestrictionsDictionary:restrictionsCopy]== 2)
   {
-    [v42 MCSetBoolRestriction:@"allowScreenRecording" value:0];
-    [v42 MCSetBoolRestriction:@"allowRemoteScreenObservation" value:0];
+    [restrictionsCopy MCSetBoolRestriction:@"allowScreenRecording" value:0];
+    [restrictionsCopy MCSetBoolRestriction:@"allowRemoteScreenObservation" value:0];
   }
 
-  if ([MCRestrictionManager restrictedBoolForFeature:@"allowRemoteScreenObservation" withRestrictionsDictionary:v42]== 2)
+  if ([MCRestrictionManager restrictedBoolForFeature:@"allowRemoteScreenObservation" withRestrictionsDictionary:restrictionsCopy]== 2)
   {
-    [v42 MCSetBoolRestriction:@"allowClassroomScreenObservation" value:0];
+    [restrictionsCopy MCSetBoolRestriction:@"allowClassroomScreenObservation" value:0];
   }
 
-  if ([MCRestrictionManager restrictedBoolForFeature:@"allowNews" withRestrictionsDictionary:v42]== 2)
+  if ([MCRestrictionManager restrictedBoolForFeature:@"allowNews" withRestrictionsDictionary:restrictionsCopy]== 2)
   {
-    [v42 MCSetBoolRestriction:@"allowNewsToday" value:0];
+    [restrictionsCopy MCSetBoolRestriction:@"allowNewsToday" value:0];
   }
 
-  if ([MCRestrictionManager restrictedBoolForFeature:@"allowAutoCorrection" withRestrictionsDictionary:v42]== 2)
+  if ([MCRestrictionManager restrictedBoolForFeature:@"allowAutoCorrection" withRestrictionsDictionary:restrictionsCopy]== 2)
   {
-    [v42 MCSetBoolRestriction:@"allowSmartPunctuation" value:0];
+    [restrictionsCopy MCSetBoolRestriction:@"allowSmartPunctuation" value:0];
   }
 
-  if ([MCRestrictionManager restrictedBoolForFeature:@"allowAppRemoval" withRestrictionsDictionary:v42]== 2)
+  if ([MCRestrictionManager restrictedBoolForFeature:@"allowAppRemoval" withRestrictionsDictionary:restrictionsCopy]== 2)
   {
-    [v42 MCSetBoolRestriction:@"allowSystemAppRemoval" value:0];
+    [restrictionsCopy MCSetBoolRestriction:@"allowSystemAppRemoval" value:0];
   }
 
-  if ([MCRestrictionManager restrictedBoolForFeature:@"forceClassroomUnpromptedScreenObservation" withRestrictionsDictionary:v42]== 1 || [MCRestrictionManager restrictedBoolForFeature:@"forceUnpromptedManagedClassroomScreenObservation" withRestrictionsDictionary:v42]== 1)
+  if ([MCRestrictionManager restrictedBoolForFeature:@"forceClassroomUnpromptedScreenObservation" withRestrictionsDictionary:restrictionsCopy]== 1 || [MCRestrictionManager restrictedBoolForFeature:@"forceUnpromptedManagedClassroomScreenObservation" withRestrictionsDictionary:restrictionsCopy]== 1)
   {
-    [v42 MCSetBoolRestriction:@"forceClassroomUnpromptedScreenObservation" value:1];
-    [v42 MCSetBoolRestriction:@"forceUnpromptedManagedClassroomScreenObservation" value:1];
+    [restrictionsCopy MCSetBoolRestriction:@"forceClassroomUnpromptedScreenObservation" value:1];
+    [restrictionsCopy MCSetBoolRestriction:@"forceUnpromptedManagedClassroomScreenObservation" value:1];
   }
 
-  if ([MCRestrictionManager restrictedBoolForFeature:@"allowPasswordSharing" withRestrictionsDictionary:v42]== 2)
+  if ([MCRestrictionManager restrictedBoolForFeature:@"allowPasswordSharing" withRestrictionsDictionary:restrictionsCopy]== 2)
   {
-    [v42 MCSetBoolRestriction:@"allowWiFiPasswordSharing" value:0];
+    [restrictionsCopy MCSetBoolRestriction:@"allowWiFiPasswordSharing" value:0];
   }
 
-  if ([MCRestrictionManager restrictedBoolForFeature:@"forceWiFiWhitelisting" withRestrictionsDictionary:v42]== 1 || [MCRestrictionManager restrictedBoolForFeature:@"forceWiFiToAllowedNetworksOnly" withRestrictionsDictionary:v42]== 1)
+  if ([MCRestrictionManager restrictedBoolForFeature:@"forceWiFiWhitelisting" withRestrictionsDictionary:restrictionsCopy]== 1 || [MCRestrictionManager restrictedBoolForFeature:@"forceWiFiToAllowedNetworksOnly" withRestrictionsDictionary:restrictionsCopy]== 1)
   {
-    [v42 MCSetBoolRestriction:@"forceWiFiWhitelisting" value:1];
-    [v42 MCSetBoolRestriction:@"forceWiFiToAllowedNetworksOnly" value:1];
+    [restrictionsCopy MCSetBoolRestriction:@"forceWiFiWhitelisting" value:1];
+    [restrictionsCopy MCSetBoolRestriction:@"forceWiFiToAllowedNetworksOnly" value:1];
   }
 
   if (_os_feature_enabled_impl())
   {
-    if (+[MCRestrictionManager restrictedBoolForFeature:withRestrictionsDictionary:](MCRestrictionManager, "restrictedBoolForFeature:withRestrictionsDictionary:", @"allowPasscodeModification", v42) == 2 || (+[MCRestrictionManager valueForFeature:withRestrictionsDictionary:](MCRestrictionManager, "valueForFeature:withRestrictionsDictionary:", @"pinHistory", v42), v39 = objc_claimAutoreleasedReturnValue(), v40 = [v39 unsignedIntValue], v39, v40))
+    if (+[MCRestrictionManager restrictedBoolForFeature:withRestrictionsDictionary:](MCRestrictionManager, "restrictedBoolForFeature:withRestrictionsDictionary:", @"allowPasscodeModification", restrictionsCopy) == 2 || (+[MCRestrictionManager valueForFeature:withRestrictionsDictionary:](MCRestrictionManager, "valueForFeature:withRestrictionsDictionary:", @"pinHistory", restrictionsCopy), v39 = objc_claimAutoreleasedReturnValue(), v40 = [v39 unsignedIntValue], v39, v40))
     {
-      [v42 MCSetBoolRestriction:@"allowPasscodeRecovery" value:0];
+      [restrictionsCopy MCSetBoolRestriction:@"allowPasscodeRecovery" value:0];
     }
   }
 
-  if ([MCRestrictionManager restrictedBoolForFeature:@"allowControlCenter" withRestrictionsDictionary:v42]== 2)
+  if ([MCRestrictionManager restrictedBoolForFeature:@"allowControlCenter" withRestrictionsDictionary:restrictionsCopy]== 2)
   {
-    [v42 MCSetBoolRestriction:@"allowControlCenterInApps" value:0];
+    [restrictionsCopy MCSetBoolRestriction:@"allowControlCenterInApps" value:0];
   }
 
-  if ([MCRestrictionManager restrictedBoolForFeature:@"allowSpotlight" withRestrictionsDictionary:v42]== 2)
+  if ([MCRestrictionManager restrictedBoolForFeature:@"allowSpotlight" withRestrictionsDictionary:restrictionsCopy]== 2)
   {
-    [v42 MCSetBoolRestriction:@"allowSpotlightNews" value:0];
-    [v42 MCSetBoolRestriction:@"allowSpotlightInternetResults" value:0];
+    [restrictionsCopy MCSetBoolRestriction:@"allowSpotlightNews" value:0];
+    [restrictionsCopy MCSetBoolRestriction:@"allowSpotlightInternetResults" value:0];
   }
 
-  if ([MCRestrictionManager restrictedBoolForFeature:@"allowDefaultBrowserModification" withRestrictionsDictionary:v42]== 2)
+  if ([MCRestrictionManager restrictedBoolForFeature:@"allowDefaultBrowserModification" withRestrictionsDictionary:restrictionsCopy]== 2)
   {
-    [v42 MCSetBoolRestriction:@"allowDefaultBrowserPrompting" value:0];
+    [restrictionsCopy MCSetBoolRestriction:@"allowDefaultBrowserPrompting" value:0];
   }
 }
 
-- (void)_applyImpliedSettingsToSettingsDictionary:(id)a3 currentSettings:(id)a4 restrictions:(id)a5
+- (void)_applyImpliedSettingsToSettingsDictionary:(id)dictionary currentSettings:(id)settings restrictions:(id)restrictions
 {
-  v27 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v27 objectForKey:@"restrictedBool"];
-  if (!v9)
+  dictionaryCopy = dictionary;
+  settingsCopy = settings;
+  restrictionsCopy = restrictions;
+  dictionary = [dictionaryCopy objectForKey:@"restrictedBool"];
+  if (!dictionary)
   {
-    v9 = [MEMORY[0x1E695DF90] dictionary];
-    [v27 setObject:v9 forKey:@"restrictedBool"];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionaryCopy setObject:dictionary forKey:@"restrictedBool"];
   }
 
-  v10 = [MCRestrictionManager BOOLSettingForFeature:@"allowCamera" withNewUserSetting:v27 currentSettings:v7];
+  v10 = [MCRestrictionManager BOOLSettingForFeature:@"allowCamera" withNewUserSetting:dictionaryCopy currentSettings:settingsCopy];
   if (v10 == 2)
   {
     v11 = @"allowVideoConferencing";
-    v12 = v9;
+    v12 = dictionary;
     v13 = 0;
   }
 
@@ -445,16 +445,16 @@ void __35__MCHacks_permittedAutoLockNumbers__block_invoke()
   {
     v14 = v10;
     v15 = MGCopyAnswer();
-    v16 = [v15 BOOLValue];
+    bOOLValue = [v15 BOOLValue];
 
-    if (v16)
+    if (bOOLValue)
     {
-      if ([MCRestrictionManager BOOLSettingForFeature:@"allowVideoConferencing" withNewUserSetting:v27 currentSettings:v7]!= 1)
+      if ([MCRestrictionManager BOOLSettingForFeature:@"allowVideoConferencing" withNewUserSetting:dictionaryCopy currentSettings:settingsCopy]!= 1)
       {
         goto LABEL_12;
       }
 
-      v12 = v9;
+      v12 = dictionary;
       v11 = @"allowCamera";
     }
 
@@ -466,7 +466,7 @@ void __35__MCHacks_permittedAutoLockNumbers__block_invoke()
       }
 
       v11 = @"allowVideoConferencing";
-      v12 = v9;
+      v12 = dictionary;
     }
 
     v13 = 1;
@@ -474,59 +474,59 @@ void __35__MCHacks_permittedAutoLockNumbers__block_invoke()
 
   MCFeatureSetBoolSetting(v12, v11, v13);
 LABEL_12:
-  if ([MCRestrictionManager BOOLSettingForFeature:@"allowiTunes" withNewUserSetting:v27 currentSettings:v7]== 2)
+  if ([MCRestrictionManager BOOLSettingForFeature:@"allowiTunes" withNewUserSetting:dictionaryCopy currentSettings:settingsCopy]== 2)
   {
     v17 = @"allowiTunesSocialPages";
-    v18 = v9;
+    v18 = dictionary;
     v19 = 0;
   }
 
   else
   {
-    if ([MCRestrictionManager BOOLSettingForFeature:@"allowiTunesSocialPages" withNewUserSetting:v27 currentSettings:v7]!= 1)
+    if ([MCRestrictionManager BOOLSettingForFeature:@"allowiTunesSocialPages" withNewUserSetting:dictionaryCopy currentSettings:settingsCopy]!= 1)
     {
       goto LABEL_17;
     }
 
-    v18 = v9;
+    v18 = dictionary;
     v17 = @"allowiTunes";
     v19 = 1;
   }
 
   MCFeatureSetBoolSetting(v18, v17, v19);
 LABEL_17:
-  if ([MCRestrictionManager BOOLSettingForFeature:@"allowGameCenter" withNewUserSetting:v27 currentSettings:v7]== 2)
+  if ([MCRestrictionManager BOOLSettingForFeature:@"allowGameCenter" withNewUserSetting:dictionaryCopy currentSettings:settingsCopy]== 2)
   {
     v20 = @"allowMultiplayerGaming";
-    v21 = v9;
+    v21 = dictionary;
     v22 = 0;
   }
 
   else
   {
-    if ([MCRestrictionManager BOOLSettingForFeature:@"allowMultiplayerGaming" withNewUserSetting:v27 currentSettings:v7]!= 1)
+    if ([MCRestrictionManager BOOLSettingForFeature:@"allowMultiplayerGaming" withNewUserSetting:dictionaryCopy currentSettings:settingsCopy]!= 1)
     {
       goto LABEL_22;
     }
 
-    v21 = v9;
+    v21 = dictionary;
     v20 = @"allowGameCenter";
     v22 = 1;
   }
 
   MCFeatureSetBoolSetting(v21, v20, v22);
 LABEL_22:
-  if ([MCRestrictionManager BOOLSettingForFeature:@"allowDiagnosticSubmission" withNewUserSetting:v27 currentSettings:v7]== 2)
+  if ([MCRestrictionManager BOOLSettingForFeature:@"allowDiagnosticSubmission" withNewUserSetting:dictionaryCopy currentSettings:settingsCopy]== 2)
   {
-    MCFeatureSetBoolSetting(v9, @"allowAppAnalytics", 0);
-    MCFeatureSetBoolSetting(v9, @"allowHealthDataSubmission", 0);
-    MCFeatureSetBoolSetting(v9, @"allowHealthDataSubmission2", 0);
-    MCFeatureSetBoolSetting(v9, @"allowWheelchairDataSubmission", 0);
-    MCFeatureSetBoolSetting(v9, @"allowHandWashingDataSubmission", 0);
-    MCFeatureSetBoolSetting(v9, @"allowSafetyDataSubmission", 0);
+    MCFeatureSetBoolSetting(dictionary, @"allowAppAnalytics", 0);
+    MCFeatureSetBoolSetting(dictionary, @"allowHealthDataSubmission", 0);
+    MCFeatureSetBoolSetting(dictionary, @"allowHealthDataSubmission2", 0);
+    MCFeatureSetBoolSetting(dictionary, @"allowWheelchairDataSubmission", 0);
+    MCFeatureSetBoolSetting(dictionary, @"allowHandWashingDataSubmission", 0);
+    MCFeatureSetBoolSetting(dictionary, @"allowSafetyDataSubmission", 0);
   }
 
-  v23 = [MCRestrictionManager BOOLSettingForFeature:@"allowNews" withNewUserSetting:v27 currentSettings:v7];
+  v23 = [MCRestrictionManager BOOLSettingForFeature:@"allowNews" withNewUserSetting:dictionaryCopy currentSettings:settingsCopy];
   if (v23 == 2)
   {
     v24 = 0;
@@ -537,25 +537,25 @@ LABEL_22:
   {
     v24 = 1;
 LABEL_28:
-    MCFeatureSetBoolSetting(v9, @"allowNewsToday", v24);
+    MCFeatureSetBoolSetting(dictionary, @"allowNewsToday", v24);
   }
 
-  v25 = [MCRestrictionManager valueForFeature:@"ratingApps" withRestrictionsDictionary:v8];
+  v25 = [MCRestrictionManager valueForFeature:@"ratingApps" withRestrictionsDictionary:restrictionsCopy];
   v26 = v25;
   if (!v25 || [v25 intValue] >= 1000)
   {
-    MCFeatureSetBoolSetting(v9, @"forceITunesStorePasswordEntry", 0);
+    MCFeatureSetBoolSetting(dictionary, @"forceITunesStorePasswordEntry", 0);
   }
 }
 
-- (void)_applyHeuristicsToEffectiveUserSettings:(id)a3
+- (void)_applyHeuristicsToEffectiveUserSettings:(id)settings
 {
-  v29 = a3;
-  v4 = [MCRestrictionManager valueSettingForFeature:@"maxGracePeriod" withUserSettingDictionary:v29];
+  settingsCopy = settings;
+  v4 = [MCRestrictionManager valueSettingForFeature:@"maxGracePeriod" withUserSettingDictionary:settingsCopy];
   if (v4)
   {
     self = [(MCHacks *)self quantizedGracePeriodInSeconds:v4];
-    v5 = [v29 objectForKeyedSubscript:@"restrictedValue"];
+    v5 = [settingsCopy objectForKeyedSubscript:@"restrictedValue"];
     v6 = [v5 objectForKeyedSubscript:@"maxGracePeriod"];
 
     if (v6)
@@ -568,24 +568,24 @@ LABEL_28:
     }
   }
 
-  v7 = [MCRestrictionManager BOOLSettingForFeature:@"allowNews" withUserSettingDictionary:v29];
+  v7 = [MCRestrictionManager BOOLSettingForFeature:@"allowNews" withUserSettingDictionary:settingsCopy];
   if (v7 != 2)
   {
-    self = [MCRestrictionManager unionValuesForFeature:@"blockedAppBundleIDs" withRestrictionsDictionary:v29];
+    self = [MCRestrictionManager unionValuesForFeature:@"blockedAppBundleIDs" withRestrictionsDictionary:settingsCopy];
     if (![(MCHacks *)self containsObject:@"com.apple.news"])
     {
       goto LABEL_14;
     }
   }
 
-  v8 = [MCRestrictionManager BOOLSettingForFeature:@"allowSpotlightNews" withUserSettingDictionary:v29];
+  v8 = [MCRestrictionManager BOOLSettingForFeature:@"allowSpotlightNews" withUserSettingDictionary:settingsCopy];
   if (v7 != 2)
   {
   }
 
   if (v8 == 2)
   {
-    v9 = [v29 objectForKeyedSubscript:@"restrictedBool"];
+    v9 = [settingsCopy objectForKeyedSubscript:@"restrictedBool"];
     self = [v9 MCMutableDeepCopy];
 
     if (!self)
@@ -594,7 +594,7 @@ LABEL_28:
     }
 
     MCFeatureSetBoolSetting(self, @"allowNewsToday", 0);
-    [v29 setObject:self forKeyedSubscript:@"restrictedBool"];
+    [settingsCopy setObject:self forKeyedSubscript:@"restrictedBool"];
 LABEL_14:
   }
 
@@ -602,171 +602,171 @@ LABEL_14:
   {
     MCLKLogoutSupportClass();
     v10 = objc_opt_new();
-    v11 = [v10 isCurrentUserAnonymous];
+    isCurrentUserAnonymous = [v10 isCurrentUserAnonymous];
 
-    if (v11)
+    if (isCurrentUserAnonymous)
     {
-      v12 = [v29 objectForKeyedSubscript:@"restrictedBool"];
-      v13 = [v12 MCMutableDeepCopy];
+      v12 = [settingsCopy objectForKeyedSubscript:@"restrictedBool"];
+      mCMutableDeepCopy = [v12 MCMutableDeepCopy];
 
-      if (!v13)
+      if (!mCMutableDeepCopy)
       {
-        v13 = [MEMORY[0x1E695DF90] dictionary];
+        mCMutableDeepCopy = [MEMORY[0x1E695DF90] dictionary];
       }
 
-      MCFeatureSetBoolSetting(v13, @"allowAccountModification", 0);
-      v14 = [v13 copy];
-      [v29 setObject:v14 forKeyedSubscript:@"restrictedBool"];
+      MCFeatureSetBoolSetting(mCMutableDeepCopy, @"allowAccountModification", 0);
+      v14 = [mCMutableDeepCopy copy];
+      [settingsCopy setObject:v14 forKeyedSubscript:@"restrictedBool"];
     }
   }
 
-  if ([MCRestrictionManager BOOLSettingForFeature:@"forceWiFiWhitelisting" withUserSettingDictionary:v29]== 1 || [MCRestrictionManager BOOLSettingForFeature:@"forceWiFiToAllowedNetworksOnly" withUserSettingDictionary:v29]== 1)
+  if ([MCRestrictionManager BOOLSettingForFeature:@"forceWiFiWhitelisting" withUserSettingDictionary:settingsCopy]== 1 || [MCRestrictionManager BOOLSettingForFeature:@"forceWiFiToAllowedNetworksOnly" withUserSettingDictionary:settingsCopy]== 1)
   {
-    v15 = [v29 objectForKeyedSubscript:@"restrictedBool"];
-    v16 = [v15 MCMutableDeepCopy];
+    v15 = [settingsCopy objectForKeyedSubscript:@"restrictedBool"];
+    mCMutableDeepCopy2 = [v15 MCMutableDeepCopy];
 
-    if (!v16)
+    if (!mCMutableDeepCopy2)
     {
-      v16 = [MEMORY[0x1E695DF90] dictionary];
+      mCMutableDeepCopy2 = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    MCFeatureSetBoolSetting(v16, @"forceWiFiWhitelisting", 1);
-    MCFeatureSetBoolSetting(v16, @"forceWiFiToAllowedNetworksOnly", 1);
-    [v29 setObject:v16 forKeyedSubscript:@"restrictedBool"];
+    MCFeatureSetBoolSetting(mCMutableDeepCopy2, @"forceWiFiWhitelisting", 1);
+    MCFeatureSetBoolSetting(mCMutableDeepCopy2, @"forceWiFiToAllowedNetworksOnly", 1);
+    [settingsCopy setObject:mCMutableDeepCopy2 forKeyedSubscript:@"restrictedBool"];
   }
 
-  if ([MCRestrictionManager BOOLSettingForFeature:@"allowLockdownMode" withUserSettingDictionary:v29]== 1)
+  if ([MCRestrictionManager BOOLSettingForFeature:@"allowLockdownMode" withUserSettingDictionary:settingsCopy]== 1)
   {
-    v17 = [v29 objectForKeyedSubscript:@"restrictedBool"];
-    v18 = [v17 MCMutableDeepCopy];
+    v17 = [settingsCopy objectForKeyedSubscript:@"restrictedBool"];
+    mCMutableDeepCopy3 = [v17 MCMutableDeepCopy];
 
-    if (!v18)
+    if (!mCMutableDeepCopy3)
     {
-      v18 = [MEMORY[0x1E695DF90] dictionary];
+      mCMutableDeepCopy3 = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    MCFeatureSetBoolSetting(v18, @"allowUSBRestrictedMode", 1);
-    MCFeatureSetBoolSetting(v18, @"allowUIConfigurationProfileInstallation", 0);
+    MCFeatureSetBoolSetting(mCMutableDeepCopy3, @"allowUSBRestrictedMode", 1);
+    MCFeatureSetBoolSetting(mCMutableDeepCopy3, @"allowUIConfigurationProfileInstallation", 0);
     if (_os_feature_enabled_impl())
     {
-      MCFeatureSetBoolSetting(v18, @"allowPasscodeRecovery", 0);
+      MCFeatureSetBoolSetting(mCMutableDeepCopy3, @"allowPasscodeRecovery", 0);
     }
 
-    [v29 setObject:v18 forKeyedSubscript:@"restrictedBool"];
+    [settingsCopy setObject:mCMutableDeepCopy3 forKeyedSubscript:@"restrictedBool"];
   }
 
   v19 = _os_feature_enabled_impl();
-  v20 = v29;
+  v20 = settingsCopy;
   if (v19)
   {
-    v21 = [MCRestrictionManager BOOLSettingForFeature:@"allowPasscodeModification" withUserSettingDictionary:v29];
-    v20 = v29;
+    v21 = [MCRestrictionManager BOOLSettingForFeature:@"allowPasscodeModification" withUserSettingDictionary:settingsCopy];
+    v20 = settingsCopy;
     if (v21 == 2)
     {
-      v22 = [MCRestrictionManager BOOLSettingForFeature:@"allowPasscodeRecovery" withUserSettingDictionary:v29];
-      v20 = v29;
+      v22 = [MCRestrictionManager BOOLSettingForFeature:@"allowPasscodeRecovery" withUserSettingDictionary:settingsCopy];
+      v20 = settingsCopy;
       if (v22 != 2)
       {
-        v23 = [v29 objectForKeyedSubscript:@"restrictedBool"];
-        v24 = [v23 MCMutableDeepCopy];
+        v23 = [settingsCopy objectForKeyedSubscript:@"restrictedBool"];
+        mCMutableDeepCopy4 = [v23 MCMutableDeepCopy];
 
-        if (!v24)
+        if (!mCMutableDeepCopy4)
         {
-          v24 = [MEMORY[0x1E695DF90] dictionary];
+          mCMutableDeepCopy4 = [MEMORY[0x1E695DF90] dictionary];
         }
 
-        MCFeatureSetBoolSetting(v24, @"allowPasscodeRecovery", 0);
-        [v29 setObject:v24 forKeyedSubscript:@"restrictedBool"];
+        MCFeatureSetBoolSetting(mCMutableDeepCopy4, @"allowPasscodeRecovery", 0);
+        [settingsCopy setObject:mCMutableDeepCopy4 forKeyedSubscript:@"restrictedBool"];
 
-        v20 = v29;
+        v20 = settingsCopy;
       }
     }
   }
 
   if ([MCRestrictionManager BOOLSettingForFeature:@"allowControlCenter" withUserSettingDictionary:v20]== 2)
   {
-    v25 = [v29 objectForKeyedSubscript:@"restrictedBool"];
-    v26 = [v25 MCMutableDeepCopy];
+    v25 = [settingsCopy objectForKeyedSubscript:@"restrictedBool"];
+    mCMutableDeepCopy5 = [v25 MCMutableDeepCopy];
 
-    if (!v26)
+    if (!mCMutableDeepCopy5)
     {
-      v26 = [MEMORY[0x1E695DF90] dictionary];
+      mCMutableDeepCopy5 = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    MCFeatureSetBoolSetting(v26, @"allowControlCenterInApps", 0);
-    [v29 setObject:v26 forKeyedSubscript:@"restrictedBool"];
+    MCFeatureSetBoolSetting(mCMutableDeepCopy5, @"allowControlCenterInApps", 0);
+    [settingsCopy setObject:mCMutableDeepCopy5 forKeyedSubscript:@"restrictedBool"];
   }
 
-  if ([MCRestrictionManager BOOLSettingForFeature:@"allowSpotlight" withUserSettingDictionary:v29]== 2)
+  if ([MCRestrictionManager BOOLSettingForFeature:@"allowSpotlight" withUserSettingDictionary:settingsCopy]== 2)
   {
-    v27 = [v29 objectForKeyedSubscript:@"restrictedBool"];
-    v28 = [v27 MCMutableDeepCopy];
+    v27 = [settingsCopy objectForKeyedSubscript:@"restrictedBool"];
+    mCMutableDeepCopy6 = [v27 MCMutableDeepCopy];
 
-    if (!v28)
+    if (!mCMutableDeepCopy6)
     {
-      v28 = [MEMORY[0x1E695DF90] dictionary];
+      mCMutableDeepCopy6 = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    MCFeatureSetBoolSetting(v28, @"allowSpotlightNews", 0);
-    MCFeatureSetBoolSetting(v28, @"allowSpotlightInternetResults", 0);
-    [v29 setObject:v28 forKeyedSubscript:@"restrictedBool"];
+    MCFeatureSetBoolSetting(mCMutableDeepCopy6, @"allowSpotlightNews", 0);
+    MCFeatureSetBoolSetting(mCMutableDeepCopy6, @"allowSpotlightInternetResults", 0);
+    [settingsCopy setObject:mCMutableDeepCopy6 forKeyedSubscript:@"restrictedBool"];
   }
 }
 
-- (void)_applyMandatorySettingsToEffectiveUserSettings:(id)a3
+- (void)_applyMandatorySettingsToEffectiveUserSettings:(id)settings
 {
-  v32 = a3;
+  settingsCopy = settings;
   [(MCHacks *)self _applyInternalDiagnosticEnforcementToSettings:?];
   if ([MEMORY[0x1E6999800] isSharediPad])
   {
-    v4 = [v32 objectForKeyedSubscript:@"union"];
-    v5 = [v4 MCMutableDeepCopy];
+    v4 = [settingsCopy objectForKeyedSubscript:@"union"];
+    mCMutableDeepCopy = [v4 MCMutableDeepCopy];
 
-    v6 = [v5 objectForKeyedSubscript:@"blockedAppBundleIDs"];
+    v6 = [mCMutableDeepCopy objectForKeyedSubscript:@"blockedAppBundleIDs"];
     v7 = [v6 objectForKeyedSubscript:@"values"];
     v8 = v7;
     if (v7)
     {
-      v9 = v7;
+      array = v7;
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
     }
 
-    v10 = v9;
+    v10 = array;
 
     v11 = [MEMORY[0x1E695DFA8] setWithArray:v10];
     v12 = MCAlwaysRestrictedAppsInEDUMode();
     [v11 unionSet:v12];
 
-    v13 = [v11 allObjects];
-    v14 = [v13 copy];
-    v15 = [v5 objectForKeyedSubscript:@"blockedAppBundleIDs"];
+    allObjects = [v11 allObjects];
+    v14 = [allObjects copy];
+    v15 = [mCMutableDeepCopy objectForKeyedSubscript:@"blockedAppBundleIDs"];
     [v15 setObject:v14 forKeyedSubscript:@"values"];
 
-    v16 = [v13 copy];
-    v17 = [v5 objectForKeyedSubscript:@"blacklistedAppBundleIDs"];
+    v16 = [allObjects copy];
+    v17 = [mCMutableDeepCopy objectForKeyedSubscript:@"blacklistedAppBundleIDs"];
     [v17 setObject:v16 forKeyedSubscript:@"values"];
 
-    [v32 setObject:v5 forKeyedSubscript:@"union"];
-    v18 = [v32 objectForKeyedSubscript:@"restrictedBool"];
-    v19 = [v18 MCMutableDeepCopy];
-    v20 = v19;
-    if (v19)
+    [settingsCopy setObject:mCMutableDeepCopy forKeyedSubscript:@"union"];
+    v18 = [settingsCopy objectForKeyedSubscript:@"restrictedBool"];
+    mCMutableDeepCopy2 = [v18 MCMutableDeepCopy];
+    v20 = mCMutableDeepCopy2;
+    if (mCMutableDeepCopy2)
     {
-      v21 = v19;
+      dictionary = mCMutableDeepCopy2;
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    v22 = v21;
+    v22 = dictionary;
 
-    [v32 setObject:v22 forKeyedSubscript:@"restrictedBool"];
+    [settingsCopy setObject:v22 forKeyedSubscript:@"restrictedBool"];
     MCFeatureSetBoolSetting(v22, @"allowProximitySetupToNewDevice", 0);
     MCFeatureSetBoolSetting(v22, @"allowEnablingRestrictions", 0);
     MCFeatureSetBoolSetting(v22, @"allowGameCenter", 0);
@@ -774,37 +774,37 @@ LABEL_14:
     MCFeatureSetBoolSetting(v22, @"allowAppsToBeLocked", 0);
   }
 
-  v23 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v24 = [v23 details];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  details = [mEMORY[0x1E69AD420] details];
 
-  v25 = [v24 objectForKeyedSubscript:*MEMORY[0x1E69996F8]];
+  v25 = [details objectForKeyedSubscript:*MEMORY[0x1E69996F8]];
   v26 = v25;
   if (v25 && ([v25 BOOLValue] & 1) == 0)
   {
-    v27 = [v32 objectForKeyedSubscript:@"restrictedBool"];
-    v28 = [v27 MCMutableDeepCopy];
-    v29 = v28;
-    if (v28)
+    v27 = [settingsCopy objectForKeyedSubscript:@"restrictedBool"];
+    mCMutableDeepCopy3 = [v27 MCMutableDeepCopy];
+    v29 = mCMutableDeepCopy3;
+    if (mCMutableDeepCopy3)
     {
-      v30 = v28;
+      dictionary2 = mCMutableDeepCopy3;
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    v31 = v30;
+    v31 = dictionary2;
 
-    [v32 setObject:v31 forKeyedSubscript:@"restrictedBool"];
+    [settingsCopy setObject:v31 forKeyedSubscript:@"restrictedBool"];
     MCFeatureSetBoolSetting(v31, @"allowHostPairing", 0);
   }
 }
 
-- (void)_applyHeuristicsToGranfatheredRestrictionPayloadKeys:(id)a3
+- (void)_applyHeuristicsToGranfatheredRestrictionPayloadKeys:(id)keys
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keysCopy = keys;
   if ([(MCHacks *)self isJapanSKU])
   {
     v5 = _MCLogObjects;
@@ -815,53 +815,53 @@ LABEL_14:
       _os_log_impl(&dword_1A795B000, v5, OS_LOG_TYPE_DEFAULT, "Japan SKU device: Add %@ to grandfathered restrictions", buf, 0xCu);
     }
 
-    v6 = [v4 objectForKeyedSubscript:@"restrictedBool"];
+    v6 = [keysCopy objectForKeyedSubscript:@"restrictedBool"];
     if (v6)
     {
       v7 = v6;
       v8 = [MEMORY[0x1E695DFA8] setWithArray:v6];
       [v8 addObject:@"allowSafari"];
-      v9 = [v8 allObjects];
+      allObjects = [v8 allObjects];
     }
 
     else
     {
       v11 = @"allowSafari";
-      v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v11 count:1];
+      allObjects = [MEMORY[0x1E695DEC8] arrayWithObjects:&v11 count:1];
     }
 
-    [v4 setObject:v9 forKeyedSubscript:@"restrictedBool"];
+    [keysCopy setObject:allObjects forKeyedSubscript:@"restrictedBool"];
   }
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_applyInternalDiagnosticEnforcementToSettings:(id)a3
+- (void)_applyInternalDiagnosticEnforcementToSettings:(id)settings
 {
-  v3 = a3;
+  settingsCopy = settings;
   if (os_variant_has_internal_ui())
   {
     keyExistsAndHasValidFormat = 0;
     AppBooleanValue = CFPreferencesGetAppBooleanValue(@"MCInternalOverrideDiagnosticEnforcement", *MEMORY[0x1E695E890], &keyExistsAndHasValidFormat);
     if (!keyExistsAndHasValidFormat || !AppBooleanValue)
     {
-      v5 = [v3 objectForKeyedSubscript:@"restrictedBool"];
-      v6 = [v5 MCMutableDeepCopy];
+      v5 = [settingsCopy objectForKeyedSubscript:@"restrictedBool"];
+      mCMutableDeepCopy = [v5 MCMutableDeepCopy];
 
-      if (!v6)
+      if (!mCMutableDeepCopy)
       {
-        v6 = [MEMORY[0x1E695DF90] dictionary];
+        mCMutableDeepCopy = [MEMORY[0x1E695DF90] dictionary];
       }
 
-      [v3 setObject:v6 forKeyedSubscript:@"restrictedBool"];
-      MCFeatureSetBoolSetting(v6, @"allowDiagnosticSubmission", 1);
+      [settingsCopy setObject:mCMutableDeepCopy forKeyedSubscript:@"restrictedBool"];
+      MCFeatureSetBoolSetting(mCMutableDeepCopy, @"allowDiagnosticSubmission", 1);
     }
   }
 }
 
-- (void)_setRequriesEncryptedBackupInLockdownWithEffectiveUserSettings:(id)a3
+- (void)_setRequriesEncryptedBackupInLockdownWithEffectiveUserSettings:(id)settings
 {
-  v3 = [MCRestrictionManager BOOLSettingForFeature:@"forceEncryptedBackup" withUserSettingDictionary:a3]== 1;
+  v3 = [MCRestrictionManager BOOLSettingForFeature:@"forceEncryptedBackup" withUserSettingDictionary:settings]== 1;
   v4 = MCLockdownOperationQueue();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1029,17 +1029,17 @@ LABEL_12:
   _deviceSpecificDefaultSettings_dict = v6;
 }
 
-- (void)_sendChangeNotificationsBasedOnDefaultsAdditionByDomain:(id)a3
+- (void)_sendChangeNotificationsBasedOnDefaultsAdditionByDomain:(id)domain
 {
-  v3 = [a3 objectForKey:@"com.apple.powerlogd"];
+  v3 = [domain objectForKey:@"com.apple.powerlogd"];
   v6 = [v3 objectForKey:@"FullMode"];
 
   if (v6)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
 
     v5 = v6;
-    if (v6 == v4)
+    if (v6 == null)
     {
 
       v5 = 0;
@@ -1050,9 +1050,9 @@ LABEL_12:
   }
 }
 
-- (void)_sendChangeNotificationsBasedOnDefaultsRemovalByDomain:(id)a3
+- (void)_sendChangeNotificationsBasedOnDefaultsRemovalByDomain:(id)domain
 {
-  v3 = [a3 objectForKey:@"com.apple.powerlogd"];
+  v3 = [domain objectForKey:@"com.apple.powerlogd"];
   v4 = [v3 containsObject:@"FullMode"];
 
   if (v4)
@@ -1062,10 +1062,10 @@ LABEL_12:
   }
 }
 
-- (BOOL)sanitizedProfileSignerCertificateChainIsAllowedToInstallUnsupportedPayload:(id)a3
+- (BOOL)sanitizedProfileSignerCertificateChainIsAllowedToInstallUnsupportedPayload:(id)payload
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  payloadCopy = payload;
   v4 = _MCLogObjects;
   if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
   {
@@ -1074,7 +1074,7 @@ LABEL_12:
   }
 
   v5 = objc_opt_new();
-  v6 = [v5 sanitizedProfileSignerCertificateChainIsAllowedToInstallUnsupportedPayload:v3];
+  v6 = [v5 sanitizedProfileSignerCertificateChainIsAllowedToInstallUnsupportedPayload:payloadCopy];
   v7 = _MCLogObjects;
   if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
   {
@@ -1087,10 +1087,10 @@ LABEL_12:
   return v6;
 }
 
-- (BOOL)sanitizedProfileSignerCertificateChainIsAllowedToWriteDefaults:(id)a3
+- (BOOL)sanitizedProfileSignerCertificateChainIsAllowedToWriteDefaults:(id)defaults
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  defaultsCopy = defaults;
   v4 = _MCLogObjects;
   if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
   {
@@ -1099,7 +1099,7 @@ LABEL_12:
   }
 
   v5 = objc_opt_new();
-  v6 = [v5 sanitizedProfileSignerCertificateChainIsAllowedToWriteDefaults:v3];
+  v6 = [v5 sanitizedProfileSignerCertificateChainIsAllowedToWriteDefaults:defaultsCopy];
   v7 = _MCLogObjects;
   if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
   {
@@ -1112,10 +1112,10 @@ LABEL_12:
   return v6;
 }
 
-- (BOOL)sanitizedProfileSignerCertificateChainIsAllowedToInstallSupervisedRestrictionsOnUnsupervisedDevices:(id)a3
+- (BOOL)sanitizedProfileSignerCertificateChainIsAllowedToInstallSupervisedRestrictionsOnUnsupervisedDevices:(id)devices
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  devicesCopy = devices;
   v4 = _MCLogObjects;
   if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
   {
@@ -1124,7 +1124,7 @@ LABEL_12:
   }
 
   v5 = objc_opt_new();
-  v6 = [v5 sanitizedProfileSignerCertificateChainIsAllowedToInstallSupervisedRestrictionsOnUnsupervisedDevices:v3];
+  v6 = [v5 sanitizedProfileSignerCertificateChainIsAllowedToInstallSupervisedRestrictionsOnUnsupervisedDevices:devicesCopy];
   v7 = _MCLogObjects;
   if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
   {

@@ -1,35 +1,35 @@
 @interface ImageFileLoader
-- (BOOL)canLoadImage:(id)a3 context:(id)a4;
-- (id)urlForImage:(id)a3 context:(id)a4;
-- (void)loadImage:(id)a3 context:(id)a4 completionHandler:(id)a5;
+- (BOOL)canLoadImage:(id)image context:(id)context;
+- (id)urlForImage:(id)image context:(id)context;
+- (void)loadImage:(id)image context:(id)context completionHandler:(id)handler;
 @end
 
 @implementation ImageFileLoader
 
-- (id)urlForImage:(id)a3 context:(id)a4
+- (id)urlForImage:(id)image context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 darkUrlValue];
-  v8 = [v6 hasDarkAppearance];
+  imageCopy = image;
+  contextCopy = context;
+  darkUrlValue = [imageCopy darkUrlValue];
+  hasDarkAppearance = [contextCopy hasDarkAppearance];
 
-  if (v8 && v7)
+  if (hasDarkAppearance && darkUrlValue)
   {
-    v9 = v7;
+    v9 = darkUrlValue;
   }
 
   else
   {
-    v10 = [v5 urlValue];
-    v11 = v10;
-    if (v10)
+    urlValue = [imageCopy urlValue];
+    v11 = urlValue;
+    if (urlValue)
     {
-      v12 = v10;
+      v12 = urlValue;
     }
 
     else
     {
-      v12 = v7;
+      v12 = darkUrlValue;
     }
 
     v9 = v12;
@@ -38,16 +38,16 @@
   return v9;
 }
 
-- (void)loadImage:(id)a3 context:(id)a4 completionHandler:(id)a5
+- (void)loadImage:(id)image context:(id)context completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 imageData];
+  imageCopy = image;
+  contextCopy = context;
+  handlerCopy = handler;
+  imageData = [imageCopy imageData];
 
-  if (v11)
+  if (imageData)
   {
-    v10[2](v10, v8, 0);
+    handlerCopy[2](handlerCopy, imageCopy, 0);
   }
 
   else
@@ -55,7 +55,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [(ImageFileLoader *)self urlForImage:v8 context:v9];
+      v12 = [(ImageFileLoader *)self urlForImage:imageCopy context:contextCopy];
     }
 
     else
@@ -69,8 +69,8 @@
     block[2] = __78__ImageFileLoader_SFImageResourceLoader__loadImage_context_completionHandler___block_invoke;
     block[3] = &unk_1E7ACDD00;
     v16 = v12;
-    v17 = v8;
-    v18 = v10;
+    v17 = imageCopy;
+    v18 = handlerCopy;
     v14 = v12;
     dispatch_async(v13, block);
   }
@@ -107,15 +107,15 @@ void __78__ImageFileLoader_SFImageResourceLoader__loadImage_context_completionHa
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)canLoadImage:(id)a3 context:(id)a4
+- (BOOL)canLoadImage:(id)image context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v6 source])
+  imageCopy = image;
+  contextCopy = context;
+  if (![imageCopy source])
   {
-    v9 = [v6 imageData];
+    imageData = [imageCopy imageData];
 
-    if (v9)
+    if (imageData)
     {
       v8 = 1;
       goto LABEL_5;
@@ -124,12 +124,12 @@ void __78__ImageFileLoader_SFImageResourceLoader__loadImage_context_completionHa
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [(ImageFileLoader *)self urlForImage:v6 context:v7];
+      v11 = [(ImageFileLoader *)self urlForImage:imageCopy context:contextCopy];
       if (v11)
       {
         v12 = v11;
-        v13 = [v11 scheme];
-        v8 = [v13 hasPrefix:@"file"];
+        scheme = [v11 scheme];
+        v8 = [scheme hasPrefix:@"file"];
 
         goto LABEL_5;
       }

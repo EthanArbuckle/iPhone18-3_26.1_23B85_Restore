@@ -1,52 +1,52 @@
 @interface SGM2SelfIdPatternMatched
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)key;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsNameClass:(id)a3;
-- (int)StringAsPatternType:(id)a3;
+- (int)StringAsNameClass:(id)class;
+- (int)StringAsPatternType:(id)type;
 - (int)nameClass;
 - (int)patternType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNameClass:(BOOL)a3;
-- (void)setHasNameTokens:(BOOL)a3;
-- (void)setHasPatternType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasNameClass:(BOOL)class;
+- (void)setHasNameTokens:(BOOL)tokens;
+- (void)setHasPatternType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SGM2SelfIdPatternMatched
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 1))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(SGM2SelfIdPatternMatched *)self setKey:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((*(v4 + 44) & 8) != 0)
+  if ((*(fromCopy + 44) & 8) != 0)
   {
-    self->_patternType = *(v4 + 10);
+    self->_patternType = *(fromCopy + 10);
     *&self->_has |= 8u;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(SGM2SelfIdPatternMatched *)self setPatternHash:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 4) != 0)
   {
-    self->_nameTokens = *(v4 + 6);
+    self->_nameTokens = *(fromCopy + 6);
     *&self->_has |= 4u;
-    v5 = *(v4 + 44);
+    v5 = *(fromCopy + 44);
     if ((v5 & 2) == 0)
     {
 LABEL_9:
@@ -59,17 +59,17 @@ LABEL_9:
     }
   }
 
-  else if ((*(v4 + 44) & 2) == 0)
+  else if ((*(fromCopy + 44) & 2) == 0)
   {
     goto LABEL_9;
   }
 
-  self->_nameClass = *(v4 + 5);
+  self->_nameClass = *(fromCopy + 5);
   *&self->_has |= 2u;
-  if (*(v4 + 44))
+  if (*(fromCopy + 44))
   {
 LABEL_10:
-    self->_messageIndex = *(v4 + 4);
+    self->_messageIndex = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
@@ -128,16 +128,16 @@ LABEL_7:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   key = self->_key;
-  if (key | *(v4 + 1))
+  if (key | *(equalCopy + 1))
   {
     if (![(NSString *)key isEqual:?])
     {
@@ -146,22 +146,22 @@ LABEL_7:
   }
 
   has = self->_has;
-  v7 = *(v4 + 44);
+  v7 = *(equalCopy + 44);
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 44) & 8) == 0 || self->_patternType != *(v4 + 10))
+    if ((*(equalCopy + 44) & 8) == 0 || self->_patternType != *(equalCopy + 10))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 44) & 8) != 0)
+  else if ((*(equalCopy + 44) & 8) != 0)
   {
     goto LABEL_26;
   }
 
   patternHash = self->_patternHash;
-  if (patternHash | *(v4 + 4))
+  if (patternHash | *(equalCopy + 4))
   {
     if (![(NSString *)patternHash isEqual:?])
     {
@@ -171,12 +171,12 @@ LABEL_26:
     }
 
     has = self->_has;
-    v7 = *(v4 + 44);
+    v7 = *(equalCopy + 44);
   }
 
   if ((has & 4) != 0)
   {
-    if ((v7 & 4) == 0 || self->_nameTokens != *(v4 + 6))
+    if ((v7 & 4) == 0 || self->_nameTokens != *(equalCopy + 6))
     {
       goto LABEL_26;
     }
@@ -189,7 +189,7 @@ LABEL_26:
 
   if ((has & 2) != 0)
   {
-    if ((v7 & 2) == 0 || self->_nameClass != *(v4 + 5))
+    if ((v7 & 2) == 0 || self->_nameClass != *(equalCopy + 5))
     {
       goto LABEL_26;
     }
@@ -203,7 +203,7 @@ LABEL_26:
   v9 = (v7 & 1) == 0;
   if (has)
   {
-    if ((v7 & 1) == 0 || self->_messageIndex != *(v4 + 4))
+    if ((v7 & 1) == 0 || self->_messageIndex != *(equalCopy + 4))
     {
       goto LABEL_26;
     }
@@ -216,10 +216,10 @@ LABEL_27:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_key copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_key copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -229,7 +229,7 @@ LABEL_27:
     *(v5 + 44) |= 8u;
   }
 
-  v8 = [(NSString *)self->_patternHash copyWithZone:a3];
+  v8 = [(NSString *)self->_patternHash copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
@@ -271,33 +271,33 @@ LABEL_6:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_key)
   {
-    [v4 setKey:?];
-    v4 = v6;
+    [toCopy setKey:?];
+    toCopy = v6;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    *(v4 + 10) = self->_patternType;
-    *(v4 + 44) |= 8u;
+    *(toCopy + 10) = self->_patternType;
+    *(toCopy + 44) |= 8u;
   }
 
   if (self->_patternHash)
   {
     [v6 setPatternHash:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 6) = self->_nameTokens;
-    *(v4 + 44) |= 4u;
+    *(toCopy + 6) = self->_nameTokens;
+    *(toCopy + 44) |= 4u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -316,39 +316,39 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  *(v4 + 5) = self->_nameClass;
-  *(v4 + 44) |= 2u;
+  *(toCopy + 5) = self->_nameClass;
+  *(toCopy + 44) |= 2u;
   if (*&self->_has)
   {
 LABEL_10:
-    *(v4 + 4) = self->_messageIndex;
-    *(v4 + 44) |= 1u;
+    *(toCopy + 4) = self->_messageIndex;
+    *(toCopy + 44) |= 1u;
   }
 
 LABEL_11:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_key)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if ((*&self->_has & 8) != 0)
   {
     patternType = self->_patternType;
     PBDataWriterWriteInt32Field();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_patternHash)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
@@ -356,7 +356,7 @@ LABEL_11:
   {
     nameTokens = self->_nameTokens;
     PBDataWriterWriteUint32Field();
-    v4 = v10;
+    toCopy = v10;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -377,13 +377,13 @@ LABEL_9:
 
   nameClass = self->_nameClass;
   PBDataWriterWriteInt32Field();
-  v4 = v10;
+  toCopy = v10;
   if (*&self->_has)
   {
 LABEL_10:
     messageIndex = self->_messageIndex;
     PBDataWriterWriteUint32Field();
-    v4 = v10;
+    toCopy = v10;
   }
 
 LABEL_11:
@@ -391,12 +391,12 @@ LABEL_11:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   key = self->_key;
   if (key)
   {
-    [v3 setObject:key forKey:@"key"];
+    [dictionary setObject:key forKey:@"key"];
   }
 
   if ((*&self->_has & 8) != 0)
@@ -486,26 +486,26 @@ LABEL_16:
   v8.receiver = self;
   v8.super_class = SGM2SelfIdPatternMatched;
   v4 = [(SGM2SelfIdPatternMatched *)&v8 description];
-  v5 = [(SGM2SelfIdPatternMatched *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SGM2SelfIdPatternMatched *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsNameClass:(id)a3
+- (int)StringAsNameClass:(id)class
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SGMSINameClassificationName"])
+  classCopy = class;
+  if ([classCopy isEqualToString:@"SGMSINameClassificationName"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SGMSINameClassificationNotName"])
+  else if ([classCopy isEqualToString:@"SGMSINameClassificationNotName"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SGMSINameClassificationMaybeName"])
+  else if ([classCopy isEqualToString:@"SGMSINameClassificationMaybeName"])
   {
     v4 = 2;
   }
@@ -518,9 +518,9 @@ LABEL_16:
   return v4;
 }
 
-- (void)setHasNameClass:(BOOL)a3
+- (void)setHasNameClass:(BOOL)class
 {
-  if (a3)
+  if (class)
   {
     v3 = 2;
   }
@@ -546,9 +546,9 @@ LABEL_16:
   }
 }
 
-- (void)setHasNameTokens:(BOOL)a3
+- (void)setHasNameTokens:(BOOL)tokens
 {
-  if (a3)
+  if (tokens)
   {
     v3 = 4;
   }
@@ -561,25 +561,25 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsPatternType:(id)a3
+- (int)StringAsPatternType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SGMSIPatternTypeSelfId"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"SGMSIPatternTypeSelfId"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"SGMSIPatternTypeSelfIdRequest"];
+    v4 = [typeCopy isEqualToString:@"SGMSIPatternTypeSelfIdRequest"];
   }
 
   return v4;
 }
 
-- (void)setHasPatternType:(BOOL)a3
+- (void)setHasPatternType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }

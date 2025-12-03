@@ -10,8 +10,8 @@
   storyboard = self->_storyboard;
   if (!storyboard)
   {
-    v4 = [(_EXViewControllerSceneConfiguration *)self storyboardName];
-    if (v4 && ([MEMORY[0x1E69DCFB8] storyboardWithName:v4 bundle:0], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+    storyboardName = [(_EXViewControllerSceneConfiguration *)self storyboardName];
+    if (storyboardName && ([MEMORY[0x1E69DCFB8] storyboardWithName:storyboardName bundle:0], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v6 = self->_storyboard;
       self->_storyboard = v5;
@@ -20,17 +20,17 @@
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
       v7 = self->_storyboard;
-      self->_storyboard = v8;
+      self->_storyboard = null;
     }
 
     storyboard = self->_storyboard;
   }
 
-  v9 = [MEMORY[0x1E695DFB0] null];
+  null2 = [MEMORY[0x1E695DFB0] null];
 
-  if (storyboard == v9)
+  if (storyboard == null2)
   {
     v10 = 0;
   }

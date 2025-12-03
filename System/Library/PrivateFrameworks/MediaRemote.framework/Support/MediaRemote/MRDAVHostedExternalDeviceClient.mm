@@ -1,31 +1,31 @@
 @interface MRDAVHostedExternalDeviceClient
 - (BOOL)hasAttemptedToConnect;
 - (BOOL)hasConnectionAttemptCompleted;
-- (MRDAVHostedExternalDeviceClient)initWithConnection:(id)a3;
+- (MRDAVHostedExternalDeviceClient)initWithConnection:(id)connection;
 - (NSArray)discoveryTokens;
 - (NSString)debugDescription;
-- (id)discoveryTokenForConfiguration:(id)a3;
+- (id)discoveryTokenForConfiguration:(id)configuration;
 - (unsigned)connectionState;
 - (void)_maybeWakeClient;
-- (void)_resumeConnectionWithState:(id)a3;
-- (void)connectionDidInvalidate:(id)a3;
-- (void)connectionDidResume:(id)a3;
+- (void)_resumeConnectionWithState:(id)state;
+- (void)connectionDidInvalidate:(id)invalidate;
+- (void)connectionDidResume:(id)resume;
 - (void)dealloc;
-- (void)discoveryOutputDevicesChanged:(id)a3 forConfiguration:(id)a4;
-- (void)hostedExternalDeviceDeviceInfoDidChange:(id)a3;
-- (void)hostedExternalDeviceDidAddOutputDevice:(id)a3;
-- (void)hostedExternalDeviceDidChangeOutputDevice:(id)a3;
-- (void)hostedExternalDeviceDidReceiveCustomData:(id)a3 withName:(id)a4;
-- (void)hostedExternalDeviceDidRemoveOutputDevice:(id)a3;
-- (void)hostedExternalDeviceEndpointDidChange:(id)a3;
-- (void)hostedExternalDeviceIsMutedDidChange:(BOOL)a3 forOutputDevice:(id)a4;
-- (void)hostedExternalDeviceVolumeCapabilitiesDidChange:(unsigned int)a3 forOutputDevice:(id)a4;
-- (void)hostedExternalDeviceVolumeDidChange:(float)a3 forOutputDevice:(id)a4;
-- (void)invalidateWithError:(id)a3;
-- (void)setConnectionState:(unsigned int)a3;
-- (void)setDiscoveryToken:(id)a3 forConfiguration:(id)a4;
-- (void)setHasAttemptedToConnect:(BOOL)a3;
-- (void)setHasConnectionAttemptCompleted:(BOOL)a3;
+- (void)discoveryOutputDevicesChanged:(id)changed forConfiguration:(id)configuration;
+- (void)hostedExternalDeviceDeviceInfoDidChange:(id)change;
+- (void)hostedExternalDeviceDidAddOutputDevice:(id)device;
+- (void)hostedExternalDeviceDidChangeOutputDevice:(id)device;
+- (void)hostedExternalDeviceDidReceiveCustomData:(id)data withName:(id)name;
+- (void)hostedExternalDeviceDidRemoveOutputDevice:(id)device;
+- (void)hostedExternalDeviceEndpointDidChange:(id)change;
+- (void)hostedExternalDeviceIsMutedDidChange:(BOOL)change forOutputDevice:(id)device;
+- (void)hostedExternalDeviceVolumeCapabilitiesDidChange:(unsigned int)change forOutputDevice:(id)device;
+- (void)hostedExternalDeviceVolumeDidChange:(float)change forOutputDevice:(id)device;
+- (void)invalidateWithError:(id)error;
+- (void)setConnectionState:(unsigned int)state;
+- (void)setDiscoveryToken:(id)token forConfiguration:(id)configuration;
+- (void)setHasAttemptedToConnect:(BOOL)connect;
+- (void)setHasConnectionAttemptCompleted:(BOOL)completed;
 @end
 
 @implementation MRDAVHostedExternalDeviceClient
@@ -55,16 +55,16 @@
   }
 }
 
-- (MRDAVHostedExternalDeviceClient)initWithConnection:(id)a3
+- (MRDAVHostedExternalDeviceClient)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v18.receiver = self;
   v18.super_class = MRDAVHostedExternalDeviceClient;
   v6 = [(MRDAVHostedExternalDeviceClient *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     v7->_registeredCallbacks = 0;
     v7->_notifications = 0;
     connection = v7->_connection;
@@ -85,7 +85,7 @@
     v11 = [MRXPCConnectionMonitor alloc];
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
-    v14 = [(MRXPCConnectionMonitor *)v11 initWithConnection:v5 label:v13];
+    v14 = [(MRXPCConnectionMonitor *)v11 initWithConnection:connectionCopy label:v13];
     connectionMonitor = v7->_connectionMonitor;
     v7->_connectionMonitor = v14;
 
@@ -106,18 +106,18 @@
   [(MRDAVHostedExternalDeviceClient *)&v5 dealloc];
 }
 
-- (void)invalidateWithError:(id)a3
+- (void)invalidateWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (self->_connection)
   {
     v5 = MRLogCategoryConnections();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v13 = self;
+      selfCopy = self;
       v14 = 2112;
-      v15 = v4;
+      v15 = errorCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[HostedExternalDeviceClient] %@ Invalidating with error %@", buf, 0x16u);
     }
 
@@ -137,12 +137,12 @@
 
 - (NSString)debugDescription
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [[NSMutableString alloc] initWithFormat:@"<%@ %p {\n", objc_opt_class(), v2];
-  [v3 appendFormat:@"  %@-%d\n", v2->_bundleIdentifier, -[NSXPCConnection processIdentifier](v2->_connection, "processIdentifier")];
-  hasAttemptedToConnect = v2->_hasAttemptedToConnect;
-  hasAttemptedToConnectDate = v2->_hasAttemptedToConnectDate;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy = [[NSMutableString alloc] initWithFormat:@"<%@ %p {\n", objc_opt_class(), selfCopy];
+  [selfCopy appendFormat:@"  %@-%d\n", selfCopy->_bundleIdentifier, -[NSXPCConnection processIdentifier](selfCopy->_connection, "processIdentifier")];
+  hasAttemptedToConnect = selfCopy->_hasAttemptedToConnect;
+  hasAttemptedToConnectDate = selfCopy->_hasAttemptedToConnectDate;
   [(NSDate *)hasAttemptedToConnectDate timeIntervalSinceNow];
   if (hasAttemptedToConnect)
   {
@@ -154,9 +154,9 @@
     v7 = @"NO";
   }
 
-  [v3 appendFormat:@"  hasConnected = %@ (%@ %lf seconds ago)\n", v7, hasAttemptedToConnectDate, -v6];
-  hasConnectionAttemptCompleted = v2->_hasConnectionAttemptCompleted;
-  hasConnectionAttemptCompletedDate = v2->_hasConnectionAttemptCompletedDate;
+  [selfCopy appendFormat:@"  hasConnected = %@ (%@ %lf seconds ago)\n", v7, hasAttemptedToConnectDate, -v6];
+  hasConnectionAttemptCompleted = selfCopy->_hasConnectionAttemptCompleted;
+  hasConnectionAttemptCompletedDate = selfCopy->_hasConnectionAttemptCompletedDate;
   [(NSDate *)hasConnectionAttemptCompletedDate timeIntervalSinceNow];
   if (hasConnectionAttemptCompleted)
   {
@@ -168,51 +168,51 @@
     v11 = @"NO";
   }
 
-  [v3 appendFormat:@"  hasConnectedCompleted = %@ (%@ %lf seconds ago)\n", v11, hasConnectionAttemptCompletedDate, -v10];
-  connectionState = v2->_connectionState;
+  [selfCopy appendFormat:@"  hasConnectedCompleted = %@ (%@ %lf seconds ago)\n", v11, hasConnectionAttemptCompletedDate, -v10];
+  connectionState = selfCopy->_connectionState;
   v13 = MRExternalDeviceConnectionStateCopyDescription();
-  connectionStateDate = v2->_connectionStateDate;
+  connectionStateDate = selfCopy->_connectionStateDate;
   [(NSDate *)connectionStateDate timeIntervalSinceNow];
-  [v3 appendFormat:@"  connectionState = %@ (%@ %lf seconds ago)\n", v13, connectionStateDate, -v15];
+  [selfCopy appendFormat:@"  connectionState = %@ (%@ %lf seconds ago)\n", v13, connectionStateDate, -v15];
 
-  if (v2->_registeredCallbacks)
+  if (selfCopy->_registeredCallbacks)
   {
     v16 = NSStringFromMRAVDistantExternalDeviceCallbackFlags();
-    [v3 appendFormat:@"  registeredCallbacks = %@\n", v16];
+    [selfCopy appendFormat:@"  registeredCallbacks = %@\n", v16];
   }
 
-  if (v2->_notifications)
+  if (selfCopy->_notifications)
   {
     v17 = NSStringFromMRAVDistantExternalDeviceNotificationFlags();
-    [v3 appendFormat:@"  registeredNotifications = %@\n", v17];
+    [selfCopy appendFormat:@"  registeredNotifications = %@\n", v17];
   }
 
-  if ([(NSArray *)v2->_subscribedPlayerPaths count])
+  if ([(NSArray *)selfCopy->_subscribedPlayerPaths count])
   {
-    subscribedPlayerPaths = v2->_subscribedPlayerPaths;
+    subscribedPlayerPaths = selfCopy->_subscribedPlayerPaths;
     v19 = MRCreateIndentedDebugDescriptionFromArray();
-    [v3 appendFormat:@"  subscribedPlayerPaths = %@", v19];
+    [selfCopy appendFormat:@"  subscribedPlayerPaths = %@", v19];
   }
 
-  if (v2->_pendingClientState)
+  if (selfCopy->_pendingClientState)
   {
     v20 = MRCreateIndentedDebugDescriptionFromObject();
-    [v3 appendFormat:@"  pendingClientState = %@", v20];
+    [selfCopy appendFormat:@"  pendingClientState = %@", v20];
   }
 
-  connectionMonitor = v2->_connectionMonitor;
+  connectionMonitor = selfCopy->_connectionMonitor;
   v22 = MRCreateIndentedDebugDescriptionFromObject();
-  [v3 appendFormat:@"  connectionMonitor = %@", v22];
+  [selfCopy appendFormat:@"  connectionMonitor = %@", v22];
 
-  [v3 appendFormat:@"}>\n"];
-  objc_sync_exit(v2);
+  [selfCopy appendFormat:@"}>\n"];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)hostedExternalDeviceDeviceInfoDidChange:(id)a3
+- (void)hostedExternalDeviceDeviceInfoDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   [(MRDAVHostedExternalDeviceClient *)self _maybeWakeClient];
   connectionMonitor = self->_connectionMonitor;
   v7[0] = _NSConcreteStackBlock;
@@ -220,15 +220,15 @@
   v7[2] = sub_10007C4D0;
   v7[3] = &unk_1004B89C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changeCopy;
+  v6 = changeCopy;
   [(MRXPCConnectionMonitor *)connectionMonitor canSendMessage:v7];
 }
 
-- (void)hostedExternalDeviceDidReceiveCustomData:(id)a3 withName:(id)a4
+- (void)hostedExternalDeviceDidReceiveCustomData:(id)data withName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  nameCopy = name;
   [(MRDAVHostedExternalDeviceClient *)self _maybeWakeClient];
   connectionMonitor = self->_connectionMonitor;
   v11[0] = _NSConcreteStackBlock;
@@ -236,16 +236,16 @@
   v11[2] = sub_10007C724;
   v11[3] = &unk_1004B6A98;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dataCopy;
+  v13 = nameCopy;
+  v9 = nameCopy;
+  v10 = dataCopy;
   [(MRXPCConnectionMonitor *)connectionMonitor canSendMessage:v11];
 }
 
-- (void)hostedExternalDeviceEndpointDidChange:(id)a3
+- (void)hostedExternalDeviceEndpointDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   [(MRDAVHostedExternalDeviceClient *)self _maybeWakeClient];
   connectionMonitor = self->_connectionMonitor;
   v7[0] = _NSConcreteStackBlock;
@@ -253,62 +253,62 @@
   v7[2] = sub_10007C91C;
   v7[3] = &unk_1004B89C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changeCopy;
+  v6 = changeCopy;
   [(MRXPCConnectionMonitor *)connectionMonitor canSendMessage:v7];
 }
 
-- (void)hostedExternalDeviceVolumeCapabilitiesDidChange:(unsigned int)a3 forOutputDevice:(id)a4
+- (void)hostedExternalDeviceVolumeCapabilitiesDidChange:(unsigned int)change forOutputDevice:(id)device
 {
-  v6 = a4;
+  deviceCopy = device;
   [(MRDAVHostedExternalDeviceClient *)self _maybeWakeClient];
   connectionMonitor = self->_connectionMonitor;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10007CB54;
   v9[3] = &unk_1004B89A0;
-  v11 = a3;
+  changeCopy = change;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = deviceCopy;
+  v8 = deviceCopy;
   [(MRXPCConnectionMonitor *)connectionMonitor canSendMessage:v9];
 }
 
-- (void)hostedExternalDeviceVolumeDidChange:(float)a3 forOutputDevice:(id)a4
+- (void)hostedExternalDeviceVolumeDidChange:(float)change forOutputDevice:(id)device
 {
-  v6 = a4;
+  deviceCopy = device;
   [(MRDAVHostedExternalDeviceClient *)self _maybeWakeClient];
   connectionMonitor = self->_connectionMonitor;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10007CE78;
   v9[3] = &unk_1004B89A0;
-  v11 = a3;
+  changeCopy = change;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = deviceCopy;
+  v8 = deviceCopy;
   [(MRXPCConnectionMonitor *)connectionMonitor canSendMessage:v9];
 }
 
-- (void)hostedExternalDeviceIsMutedDidChange:(BOOL)a3 forOutputDevice:(id)a4
+- (void)hostedExternalDeviceIsMutedDidChange:(BOOL)change forOutputDevice:(id)device
 {
-  v6 = a4;
+  deviceCopy = device;
   [(MRDAVHostedExternalDeviceClient *)self _maybeWakeClient];
   connectionMonitor = self->_connectionMonitor;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10007D188;
   v9[3] = &unk_1004B89F0;
-  v11 = a3;
+  changeCopy = change;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = deviceCopy;
+  v8 = deviceCopy;
   [(MRXPCConnectionMonitor *)connectionMonitor canSendMessage:v9];
 }
 
-- (void)hostedExternalDeviceDidAddOutputDevice:(id)a3
+- (void)hostedExternalDeviceDidAddOutputDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   [(MRDAVHostedExternalDeviceClient *)self _maybeWakeClient];
   connectionMonitor = self->_connectionMonitor;
   v7[0] = _NSConcreteStackBlock;
@@ -316,14 +316,14 @@
   v7[2] = sub_10007D48C;
   v7[3] = &unk_1004B89C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = deviceCopy;
+  v6 = deviceCopy;
   [(MRXPCConnectionMonitor *)connectionMonitor canSendMessage:v7];
 }
 
-- (void)hostedExternalDeviceDidChangeOutputDevice:(id)a3
+- (void)hostedExternalDeviceDidChangeOutputDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   [(MRDAVHostedExternalDeviceClient *)self _maybeWakeClient];
   connectionMonitor = self->_connectionMonitor;
   v7[0] = _NSConcreteStackBlock;
@@ -331,14 +331,14 @@
   v7[2] = sub_10007D714;
   v7[3] = &unk_1004B89C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = deviceCopy;
+  v6 = deviceCopy;
   [(MRXPCConnectionMonitor *)connectionMonitor canSendMessage:v7];
 }
 
-- (void)hostedExternalDeviceDidRemoveOutputDevice:(id)a3
+- (void)hostedExternalDeviceDidRemoveOutputDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   [(MRDAVHostedExternalDeviceClient *)self _maybeWakeClient];
   connectionMonitor = self->_connectionMonitor;
   v7[0] = _NSConcreteStackBlock;
@@ -346,15 +346,15 @@
   v7[2] = sub_10007D99C;
   v7[3] = &unk_1004B89C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = deviceCopy;
+  v6 = deviceCopy;
   [(MRXPCConnectionMonitor *)connectionMonitor canSendMessage:v7];
 }
 
-- (void)discoveryOutputDevicesChanged:(id)a3 forConfiguration:(id)a4
+- (void)discoveryOutputDevicesChanged:(id)changed forConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  configurationCopy = configuration;
   [(MRDAVHostedExternalDeviceClient *)self _maybeWakeClient];
   connectionMonitor = self->_connectionMonitor;
   v11[0] = _NSConcreteStackBlock;
@@ -362,18 +362,18 @@
   v11[2] = sub_10007DC48;
   v11[3] = &unk_1004B6A98;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = changedCopy;
+  v13 = configurationCopy;
+  v9 = configurationCopy;
+  v10 = changedCopy;
   [(MRXPCConnectionMonitor *)connectionMonitor canSendMessage:v11];
 }
 
-- (void)setHasAttemptedToConnect:(BOOL)a3
+- (void)setHasAttemptedToConnect:(BOOL)connect
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_hasAttemptedToConnect = a3;
+  obj->_hasAttemptedToConnect = connect;
   v4 = +[NSDate now];
   hasAttemptedToConnectDate = obj->_hasAttemptedToConnectDate;
   obj->_hasAttemptedToConnectDate = v4;
@@ -383,19 +383,19 @@
 
 - (BOOL)hasAttemptedToConnect
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  hasAttemptedToConnect = v2->_hasAttemptedToConnect;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  hasAttemptedToConnect = selfCopy->_hasAttemptedToConnect;
+  objc_sync_exit(selfCopy);
 
   return hasAttemptedToConnect;
 }
 
-- (void)setConnectionState:(unsigned int)a3
+- (void)setConnectionState:(unsigned int)state
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_connectionState = a3;
+  obj->_connectionState = state;
   v4 = +[NSDate now];
   connectionStateDate = obj->_connectionStateDate;
   obj->_connectionStateDate = v4;
@@ -405,19 +405,19 @@
 
 - (unsigned)connectionState
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  connectionState = v2->_connectionState;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  connectionState = selfCopy->_connectionState;
+  objc_sync_exit(selfCopy);
 
   return connectionState;
 }
 
-- (void)setHasConnectionAttemptCompleted:(BOOL)a3
+- (void)setHasConnectionAttemptCompleted:(BOOL)completed
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_hasConnectionAttemptCompleted = a3;
+  obj->_hasConnectionAttemptCompleted = completed;
   v4 = +[NSDate now];
   hasConnectionAttemptCompletedDate = obj->_hasConnectionAttemptCompletedDate;
   obj->_hasConnectionAttemptCompletedDate = v4;
@@ -427,69 +427,69 @@
 
 - (BOOL)hasConnectionAttemptCompleted
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  hasConnectionAttemptCompleted = v2->_hasConnectionAttemptCompleted;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  hasConnectionAttemptCompleted = selfCopy->_hasConnectionAttemptCompleted;
+  objc_sync_exit(selfCopy);
 
   return hasConnectionAttemptCompleted;
 }
 
-- (id)discoveryTokenForConfiguration:(id)a3
+- (id)discoveryTokenForConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_discoveryTokens objectForKeyedSubscript:v4];
-  objc_sync_exit(v5);
+  configurationCopy = configuration;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_discoveryTokens objectForKeyedSubscript:configurationCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (void)setDiscoveryToken:(id)a3 forConfiguration:(id)a4
+- (void)setDiscoveryToken:(id)token forConfiguration:(id)configuration
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = v13;
-  discoveryTokens = v7->_discoveryTokens;
+  tokenCopy = token;
+  configurationCopy = configuration;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = tokenCopy;
+  discoveryTokens = selfCopy->_discoveryTokens;
   if (!discoveryTokens)
   {
     v10 = objc_alloc_init(NSMutableDictionary);
-    v11 = v7->_discoveryTokens;
-    v7->_discoveryTokens = v10;
+    v11 = selfCopy->_discoveryTokens;
+    selfCopy->_discoveryTokens = v10;
 
-    discoveryTokens = v7->_discoveryTokens;
-    v8 = v13;
+    discoveryTokens = selfCopy->_discoveryTokens;
+    v8 = tokenCopy;
   }
 
-  [(NSMutableDictionary *)discoveryTokens setObject:v8 forKeyedSubscript:v6];
-  if (!v13)
+  [(NSMutableDictionary *)discoveryTokens setObject:v8 forKeyedSubscript:configurationCopy];
+  if (!tokenCopy)
   {
-    v12 = [(MRDAVHostedExternalDevicePendingClientState *)v7->_pendingClientState discoverySessionConfigurationsResults];
-    [v12 setObject:0 forKeyedSubscript:v6];
+    discoverySessionConfigurationsResults = [(MRDAVHostedExternalDevicePendingClientState *)selfCopy->_pendingClientState discoverySessionConfigurationsResults];
+    [discoverySessionConfigurationsResults setObject:0 forKeyedSubscript:configurationCopy];
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSArray)discoveryTokens
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->_discoveryTokens allValues];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allValues = [(NSMutableDictionary *)selfCopy->_discoveryTokens allValues];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return allValues;
 }
 
-- (void)connectionDidResume:(id)a3
+- (void)connectionDidResume:(id)resume
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = v4;
+  resumeCopy = resume;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = selfCopy;
   objc_sync_enter(v5);
   v6 = v5[13];
   v7 = v5[13];
@@ -501,69 +501,69 @@
   objc_sync_exit(v5);
 }
 
-- (void)connectionDidInvalidate:(id)a3
+- (void)connectionDidInvalidate:(id)invalidate
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
+  invalidateCopy = invalidate;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v5 = objc_alloc_init(MRDAVHostedExternalDevicePendingClientState);
-  pendingClientState = v4->_pendingClientState;
-  v4->_pendingClientState = v5;
+  pendingClientState = selfCopy->_pendingClientState;
+  selfCopy->_pendingClientState = v5;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_resumeConnectionWithState:(id)a3
+- (void)_resumeConnectionWithState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = MRLogCategoryConnections();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v88 = v4;
+    v88 = stateCopy;
     v89 = 2112;
-    v90 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[HostedExternalDeviceClient] Restoring state %@ for %@", buf, 0x16u);
   }
 
-  if ([v4 connectionState])
+  if ([stateCopy connectionState])
   {
-    v6 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-    v7 = [v4 connectionState];
-    v8 = [v4 connectionStateError];
-    [v6 hostedExternalDeviceConnectionStateDidChange:v7 withError:v8];
+    remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+    connectionState = [stateCopy connectionState];
+    connectionStateError = [stateCopy connectionStateError];
+    [remoteObjectProxy hostedExternalDeviceConnectionStateDidChange:connectionState withError:connectionStateError];
   }
 
-  v9 = [v4 deviceInfo];
+  deviceInfo = [stateCopy deviceInfo];
 
-  if (v9)
+  if (deviceInfo)
   {
-    v10 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-    v11 = [v4 deviceInfo];
-    [v10 hostedExternalDeviceDeviceInfoDidChange:v11];
+    remoteObjectProxy2 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+    deviceInfo2 = [stateCopy deviceInfo];
+    [remoteObjectProxy2 hostedExternalDeviceDeviceInfoDidChange:deviceInfo2];
   }
 
-  v12 = [v4 endpoint];
+  endpoint = [stateCopy endpoint];
 
-  if (v12)
+  if (endpoint)
   {
-    v13 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-    v14 = [v4 endpoint];
-    [v13 hostedExternalDeviceEndpointDidChange:v14];
+    remoteObjectProxy3 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+    endpoint2 = [stateCopy endpoint];
+    [remoteObjectProxy3 hostedExternalDeviceEndpointDidChange:endpoint2];
   }
 
-  v15 = [v4 outputDeviceModifications];
+  outputDeviceModifications = [stateCopy outputDeviceModifications];
 
-  if (v15)
+  if (outputDeviceModifications)
   {
     v82 = 0u;
     v83 = 0u;
     v80 = 0u;
     v81 = 0u;
-    v16 = [v4 outputDeviceModifications];
-    v17 = [v16 addedOutputDevices];
+    outputDeviceModifications2 = [stateCopy outputDeviceModifications];
+    addedOutputDevices = [outputDeviceModifications2 addedOutputDevices];
 
-    v18 = [v17 countByEnumeratingWithState:&v80 objects:v86 count:16];
+    v18 = [addedOutputDevices countByEnumeratingWithState:&v80 objects:v86 count:16];
     if (v18)
     {
       v19 = v18;
@@ -575,18 +575,18 @@
         {
           if (*v81 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(addedOutputDevices);
           }
 
           v22 = *(*(&v80 + 1) + 8 * v21);
-          v23 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-          [v23 hostedExternalDeviceDidAddOutputDevice:v22];
+          remoteObjectProxy4 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+          [remoteObjectProxy4 hostedExternalDeviceDidAddOutputDevice:v22];
 
           v21 = v21 + 1;
         }
 
         while (v19 != v21);
-        v19 = [v17 countByEnumeratingWithState:&v80 objects:v86 count:16];
+        v19 = [addedOutputDevices countByEnumeratingWithState:&v80 objects:v86 count:16];
       }
 
       while (v19);
@@ -596,10 +596,10 @@
     v79 = 0u;
     v76 = 0u;
     v77 = 0u;
-    v24 = [v4 outputDeviceModifications];
-    v25 = [v24 changedOutputDevices];
+    outputDeviceModifications3 = [stateCopy outputDeviceModifications];
+    changedOutputDevices = [outputDeviceModifications3 changedOutputDevices];
 
-    v26 = [v25 countByEnumeratingWithState:&v76 objects:v85 count:16];
+    v26 = [changedOutputDevices countByEnumeratingWithState:&v76 objects:v85 count:16];
     if (v26)
     {
       v27 = v26;
@@ -611,18 +611,18 @@
         {
           if (*v77 != v28)
           {
-            objc_enumerationMutation(v25);
+            objc_enumerationMutation(changedOutputDevices);
           }
 
           v30 = *(*(&v76 + 1) + 8 * v29);
-          v31 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-          [v31 hostedExternalDeviceDidChangeOutputDevice:v30];
+          remoteObjectProxy5 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+          [remoteObjectProxy5 hostedExternalDeviceDidChangeOutputDevice:v30];
 
           v29 = v29 + 1;
         }
 
         while (v27 != v29);
-        v27 = [v25 countByEnumeratingWithState:&v76 objects:v85 count:16];
+        v27 = [changedOutputDevices countByEnumeratingWithState:&v76 objects:v85 count:16];
       }
 
       while (v27);
@@ -632,10 +632,10 @@
     v75 = 0u;
     v72 = 0u;
     v73 = 0u;
-    v32 = [v4 outputDeviceModifications];
-    v33 = [v32 removedOutputDevices];
+    outputDeviceModifications4 = [stateCopy outputDeviceModifications];
+    removedOutputDevices = [outputDeviceModifications4 removedOutputDevices];
 
-    v34 = [v33 countByEnumeratingWithState:&v72 objects:v84 count:16];
+    v34 = [removedOutputDevices countByEnumeratingWithState:&v72 objects:v84 count:16];
     if (v34)
     {
       v35 = v34;
@@ -647,112 +647,112 @@
         {
           if (*v73 != v36)
           {
-            objc_enumerationMutation(v33);
+            objc_enumerationMutation(removedOutputDevices);
           }
 
           v38 = *(*(&v72 + 1) + 8 * v37);
-          v39 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-          [v39 hostedExternalDeviceDidRemoveOutputDevice:v38];
+          remoteObjectProxy6 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+          [remoteObjectProxy6 hostedExternalDeviceDidRemoveOutputDevice:v38];
 
           v37 = v37 + 1;
         }
 
         while (v35 != v37);
-        v35 = [v33 countByEnumeratingWithState:&v72 objects:v84 count:16];
+        v35 = [removedOutputDevices countByEnumeratingWithState:&v72 objects:v84 count:16];
       }
 
       while (v35);
     }
   }
 
-  v40 = [v4 discoverySessionConfigurationsResults];
+  discoverySessionConfigurationsResults = [stateCopy discoverySessionConfigurationsResults];
 
-  if (v40)
+  if (discoverySessionConfigurationsResults)
   {
-    v41 = [v4 discoverySessionConfigurationsResults];
+    discoverySessionConfigurationsResults2 = [stateCopy discoverySessionConfigurationsResults];
     v71[0] = _NSConcreteStackBlock;
     v71[1] = 3221225472;
     v71[2] = sub_10007EABC;
     v71[3] = &unk_1004B8A18;
     v71[4] = self;
-    [v41 enumerateKeysAndObjectsUsingBlock:v71];
+    [discoverySessionConfigurationsResults2 enumerateKeysAndObjectsUsingBlock:v71];
   }
 
-  v42 = [v4 outputDeviceVolumeCapabilities];
+  outputDeviceVolumeCapabilities = [stateCopy outputDeviceVolumeCapabilities];
 
-  if (v42)
+  if (outputDeviceVolumeCapabilities)
   {
-    v43 = [v4 outputDeviceVolumeCapabilities];
+    outputDeviceVolumeCapabilities2 = [stateCopy outputDeviceVolumeCapabilities];
     v68[0] = _NSConcreteStackBlock;
     v68[1] = 3221225472;
     v68[2] = sub_10007EB3C;
     v68[3] = &unk_1004B8A68;
-    v69 = v4;
-    v70 = self;
-    [v43 enumerateKeysAndObjectsUsingBlock:v68];
+    v69 = stateCopy;
+    selfCopy2 = self;
+    [outputDeviceVolumeCapabilities2 enumerateKeysAndObjectsUsingBlock:v68];
   }
 
-  v44 = [v4 volumeCapabilities];
+  volumeCapabilities = [stateCopy volumeCapabilities];
 
-  if (v44)
+  if (volumeCapabilities)
   {
-    v45 = [v4 volumeCapabilities];
-    v46 = [v45 unsignedIntValue];
+    volumeCapabilities2 = [stateCopy volumeCapabilities];
+    unsignedIntValue = [volumeCapabilities2 unsignedIntValue];
 
-    v47 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-    [v47 hostedExternalDeviceVolumeCapabilitiesDidChange:v46 forOutputDevice:0];
+    remoteObjectProxy7 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+    [remoteObjectProxy7 hostedExternalDeviceVolumeCapabilitiesDidChange:unsignedIntValue forOutputDevice:0];
   }
 
-  v48 = [v4 outputDeviceVolume];
+  outputDeviceVolume = [stateCopy outputDeviceVolume];
 
-  if (v48)
+  if (outputDeviceVolume)
   {
-    v49 = [v4 outputDeviceVolume];
+    outputDeviceVolume2 = [stateCopy outputDeviceVolume];
     v65[0] = _NSConcreteStackBlock;
     v65[1] = 3221225472;
     v65[2] = sub_10007EC8C;
     v65[3] = &unk_1004B8A68;
-    v66 = v4;
-    v67 = self;
-    [v49 enumerateKeysAndObjectsUsingBlock:v65];
+    v66 = stateCopy;
+    selfCopy3 = self;
+    [outputDeviceVolume2 enumerateKeysAndObjectsUsingBlock:v65];
   }
 
-  v50 = [v4 volume];
+  volume = [stateCopy volume];
 
-  if (v50)
+  if (volume)
   {
-    v51 = [v4 volume];
-    [v51 floatValue];
+    volume2 = [stateCopy volume];
+    [volume2 floatValue];
     v53 = v52;
 
-    v54 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+    remoteObjectProxy8 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
     LODWORD(v55) = v53;
-    [v54 hostedExternalDeviceVolumeDidChange:0 forOutputDevice:v55];
+    [remoteObjectProxy8 hostedExternalDeviceVolumeDidChange:0 forOutputDevice:v55];
   }
 
-  v56 = [v4 outputDeviceMute];
+  outputDeviceMute = [stateCopy outputDeviceMute];
 
-  if (v56)
+  if (outputDeviceMute)
   {
-    v57 = [v4 outputDeviceMute];
+    outputDeviceMute2 = [stateCopy outputDeviceMute];
     v62[0] = _NSConcreteStackBlock;
     v62[1] = 3221225472;
     v62[2] = sub_10007EDE4;
     v62[3] = &unk_1004B8A68;
-    v63 = v4;
-    v64 = self;
-    [v57 enumerateKeysAndObjectsUsingBlock:v62];
+    v63 = stateCopy;
+    selfCopy4 = self;
+    [outputDeviceMute2 enumerateKeysAndObjectsUsingBlock:v62];
   }
 
-  v58 = [v4 isMuted];
+  isMuted = [stateCopy isMuted];
 
-  if (v58)
+  if (isMuted)
   {
-    v59 = [v4 volume];
-    v60 = [v59 BOOLValue];
+    volume3 = [stateCopy volume];
+    bOOLValue = [volume3 BOOLValue];
 
-    v61 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-    [v61 hostedExternalDeviceIsMutedDidChange:v60 forOutputDevice:0];
+    remoteObjectProxy9 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+    [remoteObjectProxy9 hostedExternalDeviceIsMutedDidChange:bOOLValue forOutputDevice:0];
   }
 }
 

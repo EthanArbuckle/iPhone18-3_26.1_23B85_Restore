@@ -1,8 +1,8 @@
 @interface StorageShared
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4;
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription;
 - (void)dealloc;
-- (void)handleDeepLinkWithResourceDictionary:(id)a3;
-- (void)searchDidUpdate:(id)a3;
+- (void)handleDeepLinkWithResourceDictionary:(id)dictionary;
+- (void)searchDidUpdate:(id)update;
 - (void)startMonitoring;
 @end
 
@@ -12,7 +12,7 @@
 {
   ObjectType = swift_getObjectType();
   v4 = *(&self->super.isa + OBJC_IVAR____TtC17StorageSettingsUI13StorageShared_appProtectionSubscription);
-  v5 = self;
+  selfCopy = self;
   if (v4)
   {
     [v4 invalidate];
@@ -25,11 +25,11 @@
 
 - (void)startMonitoring
 {
-  v2 = self;
+  selfCopy = self;
   sub_28F58();
 }
 
-- (void)searchDidUpdate:(id)a3
+- (void)searchDidUpdate:(id)update
 {
   v4 = sub_147EC(&unk_B8240, &qword_88F50);
   v5 = *(*(v4 - 8) + 64);
@@ -40,18 +40,18 @@
   v11 = sub_81AB8();
   (*(*(v11 - 8) + 56))(v7, 1, 1, v11);
   sub_81A88();
-  v12 = self;
+  selfCopy = self;
   v13 = sub_81A78();
   v14 = swift_allocObject();
   v14[2] = v13;
   v14[3] = &protocol witness table for MainActor;
-  v14[4] = v12;
+  v14[4] = selfCopy;
   v14[5] = v8;
   v14[6] = v10;
   sub_68AE4(0, 0, v7, &unk_89398, v14);
 }
 
-- (void)handleDeepLinkWithResourceDictionary:(id)a3
+- (void)handleDeepLinkWithResourceDictionary:(id)dictionary
 {
   v4 = sub_147EC(&unk_B8240, &qword_88F50);
   v5 = *(*(v4 - 8) + 64);
@@ -61,17 +61,17 @@
   v9 = sub_81AB8();
   (*(*(v9 - 8) + 56))(v7, 1, 1, v9);
   sub_81A88();
-  v10 = self;
+  selfCopy = self;
   v11 = sub_81A78();
   v12 = swift_allocObject();
   v12[2] = v11;
   v12[3] = &protocol witness table for MainActor;
   v12[4] = v8;
-  v12[5] = v10;
+  v12[5] = selfCopy;
   sub_68AE4(0, 0, v7, &unk_89388, v12);
 }
 
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription
 {
   v5 = sub_147EC(&unk_B8240, &qword_88F50);
   v6 = *(*(v5 - 8) + 64);
@@ -80,12 +80,12 @@
   v9 = sub_81AB8();
   (*(*(v9 - 8) + 56))(v8, 1, 1, v9);
   sub_81A88();
-  v10 = self;
+  selfCopy = self;
   v11 = sub_81A78();
   v12 = swift_allocObject();
   v12[2] = v11;
   v12[3] = &protocol witness table for MainActor;
-  v12[4] = v10;
+  v12[4] = selfCopy;
   sub_68AE4(0, 0, v8, &unk_89378, v12);
 }
 

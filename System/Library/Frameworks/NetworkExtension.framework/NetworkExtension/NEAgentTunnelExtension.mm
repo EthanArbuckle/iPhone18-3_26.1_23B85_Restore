@@ -1,19 +1,19 @@
 @interface NEAgentTunnelExtension
 - (id)driverInterface;
 - (id)managerInterface;
-- (void)attachIPCWithCompletionHandler:(id)a3;
-- (void)connectWithParameters:(id)a3;
-- (void)extension:(id)a3 didRequestSocket:(BOOL)a4 interface:(id)a5 local:(id)a6 remote:(id)a7 effectivePID:(int)a8 completionHandler:(id)a9;
-- (void)extension:(id)a3 didSetTunnelConfiguration:(id)a4 completionHandler:(id)a5;
-- (void)extension:(id)a3 didStartWithError:(id)a4;
-- (void)extensionDidDetachIPC:(id)a3;
-- (void)handleAppsUninstalled:(id)a3;
-- (void)handleAppsUpdateBegins:(id)a3;
-- (void)handleAppsUpdateEnding:(id)a3;
-- (void)handleAppsUpdateEnds:(id)a3;
+- (void)attachIPCWithCompletionHandler:(id)handler;
+- (void)connectWithParameters:(id)parameters;
+- (void)extension:(id)extension didRequestSocket:(BOOL)socket interface:(id)interface local:(id)local remote:(id)remote effectivePID:(int)d completionHandler:(id)handler;
+- (void)extension:(id)extension didSetTunnelConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)extension:(id)extension didStartWithError:(id)error;
+- (void)extensionDidDetachIPC:(id)c;
+- (void)handleAppsUninstalled:(id)uninstalled;
+- (void)handleAppsUpdateBegins:(id)begins;
+- (void)handleAppsUpdateEnding:(id)ending;
+- (void)handleAppsUpdateEnds:(id)ends;
 - (void)handleCancel;
 - (void)sendExtensionFailed;
-- (void)sendStatus:(void *)a3 withDisconnectError:;
+- (void)sendStatus:(void *)status withDisconnectError:;
 @end
 
 @implementation NEAgentTunnelExtension
@@ -24,58 +24,58 @@
   [(NEAgentTunnelExtension *)self sendStatus:v3 withDisconnectError:?];
 }
 
-- (void)sendStatus:(void *)a3 withDisconnectError:
+- (void)sendStatus:(void *)status withDisconnectError:
 {
-  if (a1)
+  if (self)
   {
-    v5 = a3;
-    v6 = [a1 managerObjectFactory];
-    v7 = [v6 managerObject];
+    statusCopy = status;
+    managerObjectFactory = [self managerObjectFactory];
+    managerObject = [managerObjectFactory managerObject];
 
-    [v7 setStatus:a2 error:v5];
+    [managerObject setStatus:a2 error:statusCopy];
   }
 }
 
-- (void)extension:(id)a3 didRequestSocket:(BOOL)a4 interface:(id)a5 local:(id)a6 remote:(id)a7 effectivePID:(int)a8 completionHandler:(id)a9
+- (void)extension:(id)extension didRequestSocket:(BOOL)socket interface:(id)interface local:(id)local remote:(id)remote effectivePID:(int)d completionHandler:(id)handler
 {
-  v12 = a4;
+  socketCopy = socket;
   v32 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a9;
+  extensionCopy = extension;
+  interfaceCopy = interface;
+  localCopy = local;
+  remoteCopy = remote;
+  handlerCopy = handler;
   v19 = ne_log_obj();
   v20 = os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG);
-  if (v12)
+  if (socketCopy)
   {
     if (v20)
     {
       v28 = 138412290;
-      v29 = self;
+      selfCopy5 = self;
       _os_log_debug_impl(&dword_1BA83C000, v19, OS_LOG_TYPE_DEBUG, "%@: Getting IKE Socket", &v28, 0xCu);
     }
 
-    if (!v15 || !v16 || !v17)
+    if (!interfaceCopy || !localCopy || !remoteCopy)
     {
       v25 = ne_log_obj();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
         v28 = 138412290;
-        v29 = self;
+        selfCopy5 = self;
         v26 = "%@: Failed to get IKE Socket, null local/remote address or interface name";
         goto LABEL_21;
       }
 
 LABEL_18:
 
-      v18[2](v18, 0);
+      handlerCopy[2](handlerCopy, 0);
       goto LABEL_19;
     }
 
-    [v16 bytes];
-    [v17 bytes];
-    [v15 UTF8String];
+    [localCopy bytes];
+    [remoteCopy bytes];
+    [interfaceCopy UTF8String];
     IKESocket = NEHelperGetIKESocket();
   }
 
@@ -84,7 +84,7 @@ LABEL_18:
     if (v20)
     {
       v28 = 138412290;
-      v29 = self;
+      selfCopy5 = self;
       _os_log_debug_impl(&dword_1BA83C000, v19, OS_LOG_TYPE_DEBUG, "%@: Getting PFKey Socket", &v28, 0xCu);
     }
 
@@ -96,7 +96,7 @@ LABEL_18:
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
   {
     v28 = 138412546;
-    v29 = self;
+    selfCopy5 = self;
     v30 = 1024;
     v31 = v22;
     _os_log_debug_impl(&dword_1BA83C000, v23, OS_LOG_TYPE_DEBUG, "%@: NEHelper returned socket %d", &v28, 0x12u);
@@ -108,7 +108,7 @@ LABEL_18:
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
       v28 = 138412290;
-      v29 = self;
+      selfCopy5 = self;
       v26 = "%@: Failed to get socket";
 LABEL_21:
       _os_log_error_impl(&dword_1BA83C000, v25, OS_LOG_TYPE_ERROR, v26, &v28, 0xCu);
@@ -119,35 +119,35 @@ LABEL_21:
   }
 
   v24 = [objc_alloc(MEMORY[0x1E696AC00]) initWithFileDescriptor:v22 closeOnDealloc:1];
-  (v18)[2](v18, v24);
+  (handlerCopy)[2](handlerCopy, v24);
 
 LABEL_19:
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)extensionDidDetachIPC:(id)a3
+- (void)extensionDidDetachIPC:(id)c
 {
-  v3 = [(NEAgentExtension *)self managerObjectFactory];
-  v4 = [v3 managerObject];
+  managerObjectFactory = [(NEAgentExtension *)self managerObjectFactory];
+  managerObject = [managerObjectFactory managerObject];
 
-  [v4 handleIPCDetached];
+  [managerObject handleIPCDetached];
 }
 
-- (void)extension:(id)a3 didSetTunnelConfiguration:(id)a4 completionHandler:(id)a5
+- (void)extension:(id)extension didSetTunnelConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(NEAgentExtension *)self managerObjectFactory];
-  v10 = [v9 managerObject];
+  handlerCopy = handler;
+  configurationCopy = configuration;
+  managerObjectFactory = [(NEAgentExtension *)self managerObjectFactory];
+  managerObject = [managerObjectFactory managerObject];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __80__NEAgentTunnelExtension_extension_didSetTunnelConfiguration_completionHandler___block_invoke;
   v12[3] = &unk_1E7F0B628;
   v12[4] = self;
-  v13 = v7;
-  v11 = v7;
-  [v10 setTunnelNetworkSettings:v8 completionHandler:v12];
+  v13 = handlerCopy;
+  v11 = handlerCopy;
+  [managerObject setTunnelNetworkSettings:configurationCopy completionHandler:v12];
 }
 
 void __80__NEAgentTunnelExtension_extension_didSetTunnelConfiguration_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -187,37 +187,37 @@ void __80__NEAgentTunnelExtension_extension_didSetTunnelConfiguration_completion
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)extension:(id)a3 didStartWithError:(id)a4
+- (void)extension:(id)extension didStartWithError:(id)error
 {
-  if (a4)
+  if (error)
   {
     v4 = 0;
-    v5 = a4;
+    errorCopy = error;
   }
 
   else
   {
     v4 = 4;
-    v5 = 0;
+    errorCopy = 0;
   }
 
-  [(NEAgentTunnelExtension *)self sendStatus:v4 withDisconnectError:v5];
+  [(NEAgentTunnelExtension *)self sendStatus:v4 withDisconnectError:errorCopy];
 }
 
-- (void)attachIPCWithCompletionHandler:(id)a3
+- (void)attachIPCWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(NEAgentExtension *)self sessionContext];
-  [v5 establishIPCWithCompletionHandler:v4];
+  handlerCopy = handler;
+  sessionContext = [(NEAgentExtension *)self sessionContext];
+  [sessionContext establishIPCWithCompletionHandler:handlerCopy];
 }
 
-- (void)connectWithParameters:(id)a3
+- (void)connectWithParameters:(id)parameters
 {
-  v4 = a3;
-  v5 = [(NEAgentExtension *)self sessionContext];
-  if ([v4 count])
+  parametersCopy = parameters;
+  sessionContext = [(NEAgentExtension *)self sessionContext];
+  if ([parametersCopy count])
   {
-    v6 = v4;
+    v6 = parametersCopy;
   }
 
   else
@@ -230,7 +230,7 @@ void __80__NEAgentTunnelExtension_extension_didSetTunnelConfiguration_completion
   v7[2] = __48__NEAgentTunnelExtension_connectWithParameters___block_invoke;
   v7[3] = &unk_1E7F0B4A8;
   v7[4] = self;
-  [v5 startWithOptions:v6 completionHandler:v7];
+  [sessionContext startWithOptions:v6 completionHandler:v7];
 }
 
 void __48__NEAgentTunnelExtension_connectWithParameters___block_invoke(uint64_t a1, void *a2)
@@ -338,18 +338,18 @@ uint64_t __42__NEAgentTunnelExtension_managerInterface__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)handleAppsUpdateEnds:(id)a3
+- (void)handleAppsUpdateEnds:(id)ends
 {
-  v4 = a3;
-  v5 = [(NEAgentExtension *)self queue];
+  endsCopy = ends;
+  queue = [(NEAgentExtension *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__NEAgentTunnelExtension_handleAppsUpdateEnds___block_invoke;
   v7[3] = &unk_1E7F0A0E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = endsCopy;
+  v6 = endsCopy;
+  dispatch_async(queue, v7);
 }
 
 void __47__NEAgentTunnelExtension_handleAppsUpdateEnds___block_invoke(uint64_t a1)
@@ -386,18 +386,18 @@ void __47__NEAgentTunnelExtension_handleAppsUpdateEnds___block_invoke(uint64_t a
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleAppsUpdateEnding:(id)a3
+- (void)handleAppsUpdateEnding:(id)ending
 {
-  v4 = a3;
-  v5 = [(NEAgentExtension *)self queue];
+  endingCopy = ending;
+  queue = [(NEAgentExtension *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__NEAgentTunnelExtension_handleAppsUpdateEnding___block_invoke;
   v7[3] = &unk_1E7F0A0E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = endingCopy;
+  v6 = endingCopy;
+  dispatch_async(queue, v7);
 }
 
 void __49__NEAgentTunnelExtension_handleAppsUpdateEnding___block_invoke(uint64_t a1)
@@ -425,18 +425,18 @@ void __49__NEAgentTunnelExtension_handleAppsUpdateEnding___block_invoke(uint64_t
   }
 }
 
-- (void)handleAppsUpdateBegins:(id)a3
+- (void)handleAppsUpdateBegins:(id)begins
 {
-  v4 = a3;
-  v5 = [(NEAgentExtension *)self queue];
+  beginsCopy = begins;
+  queue = [(NEAgentExtension *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__NEAgentTunnelExtension_handleAppsUpdateBegins___block_invoke;
   v7[3] = &unk_1E7F0A0E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = beginsCopy;
+  v6 = beginsCopy;
+  dispatch_async(queue, v7);
 }
 
 void __49__NEAgentTunnelExtension_handleAppsUpdateBegins___block_invoke(uint64_t a1)
@@ -484,30 +484,30 @@ void __49__NEAgentTunnelExtension_handleAppsUpdateBegins___block_invoke(uint64_t
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleAppsUninstalled:(id)a3
+- (void)handleAppsUninstalled:(id)uninstalled
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NEAgentExtension *)self pluginType];
-  if (v5)
+  uninstalledCopy = uninstalled;
+  pluginType = [(NEAgentExtension *)self pluginType];
+  if (pluginType)
   {
-    v6 = v5;
-    v7 = [(NEAgentExtension *)self pluginType];
-    v8 = [v4 containsObject:v7];
+    v6 = pluginType;
+    pluginType2 = [(NEAgentExtension *)self pluginType];
+    v8 = [uninstalledCopy containsObject:pluginType2];
 
     if (v8)
     {
       v9 = ne_log_obj();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [(NEAgentExtension *)self pluginType];
+        pluginType3 = [(NEAgentExtension *)self pluginType];
         v13 = 138412290;
-        v14 = v10;
+        v14 = pluginType3;
         _os_log_impl(&dword_1BA83C000, v9, OS_LOG_TYPE_DEFAULT, "App for plugin type %@ has been uninstalled, stopping", &v13, 0xCu);
       }
 
-      v11 = [(NEAgentExtension *)self sessionContext];
-      [v11 stopWithReason:6];
+      sessionContext = [(NEAgentExtension *)self sessionContext];
+      [sessionContext stopWithReason:6];
     }
   }
 
@@ -521,8 +521,8 @@ void __49__NEAgentTunnelExtension_handleAppsUpdateBegins___block_invoke(uint64_t
     self->_cancelCalled = 1;
   }
 
-  v2 = [(NEAgentExtension *)self sessionContext];
-  [v2 stopWithReason:42];
+  sessionContext = [(NEAgentExtension *)self sessionContext];
+  [sessionContext stopWithReason:42];
 }
 
 @end

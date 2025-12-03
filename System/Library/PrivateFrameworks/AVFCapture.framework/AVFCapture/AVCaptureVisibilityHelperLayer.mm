@@ -1,19 +1,19 @@
 @interface AVCaptureVisibilityHelperLayer
-- (AVCaptureVisibilityHelperLayer)initWithDelegate:(id)a3;
+- (AVCaptureVisibilityHelperLayer)initWithDelegate:(id)delegate;
 - (void)dealloc;
-- (void)layerDidBecomeVisible:(BOOL)a3;
+- (void)layerDidBecomeVisible:(BOOL)visible;
 @end
 
 @implementation AVCaptureVisibilityHelperLayer
 
-- (AVCaptureVisibilityHelperLayer)initWithDelegate:(id)a3
+- (AVCaptureVisibilityHelperLayer)initWithDelegate:(id)delegate
 {
   v6.receiver = self;
   v6.super_class = AVCaptureVisibilityHelperLayer;
   v4 = [(AVCaptureVisibilityHelperLayer *)&v6 init];
   if (v4)
   {
-    v4->_delegate = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:a3];
+    v4->_delegate = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:delegate];
   }
 
   return v4;
@@ -26,14 +26,14 @@
   [(AVCaptureVisibilityHelperLayer *)&v3 dealloc];
 }
 
-- (void)layerDidBecomeVisible:(BOOL)a3
+- (void)layerDidBecomeVisible:(BOOL)visible
 {
-  v3 = a3;
-  v5 = [(AVWeakReference *)self->_delegate referencedObject];
-  if (v5)
+  visibleCopy = visible;
+  referencedObject = [(AVWeakReference *)self->_delegate referencedObject];
+  if (referencedObject)
   {
 
-    [v5 externalDisplayLayerObserver:self visibiltyChanged:v3];
+    [referencedObject externalDisplayLayerObserver:self visibiltyChanged:visibleCopy];
   }
 }
 

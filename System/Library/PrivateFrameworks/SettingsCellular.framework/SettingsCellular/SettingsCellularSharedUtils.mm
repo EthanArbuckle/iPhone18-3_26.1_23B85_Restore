@@ -1,8 +1,8 @@
 @interface SettingsCellularSharedUtils
-+ (id)createCTClientSerialQueue:(id)a3;
++ (id)createCTClientSerialQueue:(id)queue;
 + (id)sharedCTClientWorkloop;
-+ (id)usageSizeString:(double)a3;
-+ (void)logSpecifiers:(id)a3 origin:(id)a4;
++ (id)usageSizeString:(double)string;
++ (void)logSpecifiers:(id)specifiers origin:(id)origin;
 @end
 
 @implementation SettingsCellularSharedUtils
@@ -26,29 +26,29 @@ uint64_t __53__SettingsCellularSharedUtils_sharedCTClientWorkloop__block_invoke(
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)createCTClientSerialQueue:(id)a3
++ (id)createCTClientSerialQueue:(id)queue
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.preferences.coretelephony_client_%@_queue", a3];
-  v5 = [v4 UTF8String];
+  queue = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.preferences.coretelephony_client_%@_queue", queue];
+  uTF8String = [queue UTF8String];
   v6 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INTERACTIVE, 0);
-  v7 = [a1 sharedCTClientWorkloop];
-  v8 = dispatch_queue_create_with_target_V2(v5, v6, v7);
+  sharedCTClientWorkloop = [self sharedCTClientWorkloop];
+  v8 = dispatch_queue_create_with_target_V2(uTF8String, v6, sharedCTClientWorkloop);
 
   return v8;
 }
 
-+ (void)logSpecifiers:(id)a3 origin:(id)a4
++ (void)logSpecifiers:(id)specifiers origin:(id)origin
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  specifiersCopy = specifiers;
+  originCopy = origin;
   v7 = [Logger loggerWithCategory:@"Specifiers"];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v25 = v6;
+    v25 = originCopy;
     v26 = 2048;
-    v27 = [v5 count];
+    v27 = [specifiersCopy count];
     _os_log_impl(&dword_2658CA000, v7, OS_LOG_TYPE_DEFAULT, "%@ showing %zu specifiers", buf, 0x16u);
   }
 
@@ -56,7 +56,7 @@ uint64_t __53__SettingsCellularSharedUtils_sharedCTClientWorkloop__block_invoke(
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v5;
+  v8 = specifiersCopy;
   v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
@@ -78,11 +78,11 @@ uint64_t __53__SettingsCellularSharedUtils_sharedCTClientWorkloop__block_invoke(
         v15 = [Logger loggerWithCategory:@"Specifiers", v18, v19];
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
-          v16 = [v14 name];
+          name = [v14 name];
           *buf = v18;
-          v25 = v6;
+          v25 = originCopy;
           v26 = 2112;
-          v27 = v16;
+          v27 = name;
           _os_log_impl(&dword_2658CA000, v15, OS_LOG_TYPE_DEFAULT, "%@ showing specifier: %@", buf, 0x16u);
         }
 
@@ -99,7 +99,7 @@ uint64_t __53__SettingsCellularSharedUtils_sharedCTClientWorkloop__block_invoke(
   v17 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)usageSizeString:(double)a3
++ (id)usageSizeString:(double)string
 {
   if (qword_280F75D70 != -1)
   {
@@ -108,7 +108,7 @@ uint64_t __53__SettingsCellularSharedUtils_sharedCTClientWorkloop__block_invoke(
 
   v4 = qword_280F75D68;
 
-  return [v4 stringFromByteCount:a3];
+  return [v4 stringFromByteCount:string];
 }
 
 uint64_t __47__SettingsCellularSharedUtils_usageSizeString___block_invoke()

@@ -9,11 +9,11 @@
 - (NSString)displayName;
 - (NSString)itemKind;
 - (NSURL)productPageURL;
-- (SSLookupItem)initWithCoder:(id)a3;
-- (SSLookupItem)initWithLookupDictionary:(id)a3;
+- (SSLookupItem)initWithCoder:(id)coder;
+- (SSLookupItem)initWithLookupDictionary:(id)dictionary;
 - (float)userRating;
 - (float)userRatingForCurrentVersion;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)numberOfUserRatings;
 - (int64_t)numberOfUserRatingsForCurrentVersion;
 - (void)dealloc;
@@ -21,14 +21,14 @@
 
 @implementation SSLookupItem
 
-- (SSLookupItem)initWithLookupDictionary:(id)a3
+- (SSLookupItem)initWithLookupDictionary:(id)dictionary
 {
   v6.receiver = self;
   v6.super_class = SSLookupItem;
   v4 = [(SSLookupItem *)&v6 init];
   if (v4)
   {
-    v4->_dictionary = [a3 copy];
+    v4->_dictionary = [dictionary copy];
   }
 
   return v4;
@@ -58,7 +58,7 @@
 - (NSArray)artwork
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = [(NSDictionary *)self->_dictionary objectForKey:@"artwork"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -105,7 +105,7 @@ LABEL_7:
           if (v12)
           {
             v13 = v12;
-            [(NSArray *)v3 addObject:v12];
+            [(NSArray *)array addObject:v12];
           }
         }
 
@@ -119,7 +119,7 @@ LABEL_7:
     while (v8);
   }
 
-  return v3;
+  return array;
 }
 
 - (NSString)bundleIdentifier
@@ -259,7 +259,7 @@ LABEL_7:
 - (NSArray)offers
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = [(NSDictionary *)self->_dictionary objectForKey:@"offers"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -291,7 +291,7 @@ LABEL_7:
             if (v10)
             {
               v11 = v10;
-              [(NSArray *)v3 addObject:v10];
+              [(NSArray *)array addObject:v10];
             }
           }
 
@@ -306,7 +306,7 @@ LABEL_7:
     }
   }
 
-  return v3;
+  return array;
 }
 
 - (NSURL)productPageURL
@@ -369,21 +369,21 @@ LABEL_7:
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v4[1] = [(NSDictionary *)self->_dictionary copy];
   return v4;
 }
 
-- (SSLookupItem)initWithCoder:(id)a3
+- (SSLookupItem)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = SSLookupItem;
   v4 = [(SSLookupItem *)&v6 init];
   if (v4)
   {
-    v4->_dictionary = [objc_msgSend(a3 decodeObjectForKey:{@"SSEncodingDictionary", "copy"}];
+    v4->_dictionary = [objc_msgSend(coder decodeObjectForKey:{@"SSEncodingDictionary", "copy"}];
   }
 
   return v4;

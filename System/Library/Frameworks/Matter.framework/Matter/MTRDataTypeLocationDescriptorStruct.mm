@@ -1,6 +1,6 @@
 @interface MTRDataTypeLocationDescriptorStruct
 - (MTRDataTypeLocationDescriptorStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,17 +27,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDataTypeLocationDescriptorStruct);
-  v5 = [(MTRDataTypeLocationDescriptorStruct *)self locationName];
-  [(MTRDataTypeLocationDescriptorStruct *)v4 setLocationName:v5];
+  locationName = [(MTRDataTypeLocationDescriptorStruct *)self locationName];
+  [(MTRDataTypeLocationDescriptorStruct *)v4 setLocationName:locationName];
 
-  v6 = [(MTRDataTypeLocationDescriptorStruct *)self floorNumber];
-  [(MTRDataTypeLocationDescriptorStruct *)v4 setFloorNumber:v6];
+  floorNumber = [(MTRDataTypeLocationDescriptorStruct *)self floorNumber];
+  [(MTRDataTypeLocationDescriptorStruct *)v4 setFloorNumber:floorNumber];
 
-  v7 = [(MTRDataTypeLocationDescriptorStruct *)self areaType];
-  [(MTRDataTypeLocationDescriptorStruct *)v4 setAreaType:v7];
+  areaType = [(MTRDataTypeLocationDescriptorStruct *)self areaType];
+  [(MTRDataTypeLocationDescriptorStruct *)v4 setAreaType:areaType];
 
   return v4;
 }

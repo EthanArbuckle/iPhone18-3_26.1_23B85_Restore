@@ -1,32 +1,32 @@
 @interface TSDBezierNode
-+ (id)bezierNodeWithPoint:(CGPoint)a3;
-+ (id)bezierNodeWithPoint:(CGPoint)a3 inControlPoint:(CGPoint)a4 outControlPoint:(CGPoint)a5;
++ (id)bezierNodeWithPoint:(CGPoint)point;
++ (id)bezierNodeWithPoint:(CGPoint)point inControlPoint:(CGPoint)controlPoint outControlPoint:(CGPoint)outControlPoint;
 - (BOOL)isCollapsed;
-- (BOOL)underPoint:(CGPoint)a3 withTransform:(CGAffineTransform *)a4 andTolerance:(double)a5 returningType:(int64_t *)a6;
+- (BOOL)underPoint:(CGPoint)point withTransform:(CGAffineTransform *)transform andTolerance:(double)tolerance returningType:(int64_t *)type;
 - (CGPoint)inControlPoint;
 - (CGPoint)nodePoint;
 - (CGPoint)outControlPoint;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)reflectedStateString;
 - (id)typeString;
 - (void)balanceControlPoints;
 - (void)collapse;
-- (void)moveToPoint:(CGPoint)a3;
-- (void)setInControlPoint:(CGPoint)a3 reflect:(int)a4 constrain:(BOOL)a5;
-- (void)setInControlPointFromReflection:(CGPoint)a3 constrain:(BOOL)a4;
-- (void)setOutControlPoint:(CGPoint)a3 reflect:(int)a4 constrain:(BOOL)a5;
+- (void)moveToPoint:(CGPoint)point;
+- (void)setInControlPoint:(CGPoint)point reflect:(int)reflect constrain:(BOOL)constrain;
+- (void)setInControlPointFromReflection:(CGPoint)reflection constrain:(BOOL)constrain;
+- (void)setOutControlPoint:(CGPoint)point reflect:(int)reflect constrain:(BOOL)constrain;
 - (void)swapControlPoints;
-- (void)transformUsingAffineTransform:(CGAffineTransform *)a3;
+- (void)transformUsingAffineTransform:(CGAffineTransform *)transform;
 - (void)updateReflectedState;
 @end
 
 @implementation TSDBezierNode
 
-+ (id)bezierNodeWithPoint:(CGPoint)a3
++ (id)bezierNodeWithPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v5 = objc_alloc_init(TSDBezierNode);
   objc_msgSend_setNodePoint_(v5, v6, v7, x, y);
   objc_msgSend_setInControlPoint_(v5, v8, v9, x, y);
@@ -36,14 +36,14 @@
   return v5;
 }
 
-+ (id)bezierNodeWithPoint:(CGPoint)a3 inControlPoint:(CGPoint)a4 outControlPoint:(CGPoint)a5
++ (id)bezierNodeWithPoint:(CGPoint)point inControlPoint:(CGPoint)controlPoint outControlPoint:(CGPoint)outControlPoint
 {
-  y = a5.y;
-  x = a5.x;
-  v7 = a4.y;
-  v8 = a4.x;
-  v9 = a3.y;
-  v10 = a3.x;
+  y = outControlPoint.y;
+  x = outControlPoint.x;
+  v7 = controlPoint.y;
+  v8 = controlPoint.x;
+  v9 = point.y;
+  v10 = point.x;
   v11 = objc_alloc_init(TSDBezierNode);
   objc_msgSend_setNodePoint_(v11, v12, v13, v10, v9);
   objc_msgSend_setInControlPoint_(v11, v14, v15, v8, v7);
@@ -59,10 +59,10 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   objc_msgSend_nodePoint(self, v11, v12);
   objc_msgSend_setNodePoint_(v10, v13, v14);
@@ -110,10 +110,10 @@
   }
 }
 
-- (void)moveToPoint:(CGPoint)a3
+- (void)moveToPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   TSUSubtractPoints();
   TSUSubtractPoints();
   self->mNode.x = x;
@@ -126,11 +126,11 @@
   self->mOut.y = v9;
 }
 
-- (void)setInControlPoint:(CGPoint)a3 reflect:(int)a4 constrain:(BOOL)a5
+- (void)setInControlPoint:(CGPoint)point reflect:(int)reflect constrain:(BOOL)constrain
 {
-  v5 = a5;
+  constrainCopy = constrain;
   TSUSubtractPoints();
-  if (v5)
+  if (constrainCopy)
   {
     TSUShiftConstrainDelta();
   }
@@ -140,9 +140,9 @@
     TSUSubtractPoints();
     self->mIn.x = v8;
     self->mIn.y = v9;
-    if (a4)
+    if (reflect)
     {
-      if (a4 == 1)
+      if (reflect == 1)
       {
         TSUDistance();
         TSUDistance();
@@ -155,14 +155,14 @@
     }
   }
 
-  self->mReflectedState = a4;
+  self->mReflectedState = reflect;
 }
 
-- (void)setOutControlPoint:(CGPoint)a3 reflect:(int)a4 constrain:(BOOL)a5
+- (void)setOutControlPoint:(CGPoint)point reflect:(int)reflect constrain:(BOOL)constrain
 {
-  v5 = a5;
+  constrainCopy = constrain;
   TSUSubtractPoints();
-  if (v5)
+  if (constrainCopy)
   {
     TSUShiftConstrainDelta();
   }
@@ -172,9 +172,9 @@
     TSUSubtractPoints();
     self->mOut.x = v8;
     self->mOut.y = v9;
-    if (a4)
+    if (reflect)
     {
-      if (a4 == 1)
+      if (reflect == 1)
       {
         TSUDistance();
         TSUDistance();
@@ -187,14 +187,14 @@
     }
   }
 
-  self->mReflectedState = a4;
+  self->mReflectedState = reflect;
 }
 
-- (void)setInControlPointFromReflection:(CGPoint)a3 constrain:(BOOL)a4
+- (void)setInControlPointFromReflection:(CGPoint)reflection constrain:(BOOL)constrain
 {
-  v4 = a4;
+  constrainCopy = constrain;
   TSUSubtractPoints();
-  if (v4)
+  if (constrainCopy)
   {
     TSUShiftConstrainDelta();
   }
@@ -209,7 +209,7 @@
     if (v8 != 0.0)
     {
       TSUSubtractPoints();
-      if (v4)
+      if (constrainCopy)
       {
         TSUShiftConstrainDelta();
       }
@@ -283,17 +283,17 @@
   self->mOut = mIn;
 }
 
-- (void)transformUsingAffineTransform:(CGAffineTransform *)a3
+- (void)transformUsingAffineTransform:(CGAffineTransform *)transform
 {
-  self->mNode = vaddq_f64(*&a3->tx, vmlaq_n_f64(vmulq_n_f64(*&a3->c, self->mNode.y), *&a3->a, self->mNode.x));
-  self->mIn = vaddq_f64(*&a3->tx, vmlaq_n_f64(vmulq_n_f64(*&a3->c, self->mIn.y), *&a3->a, self->mIn.x));
-  self->mOut = vaddq_f64(*&a3->tx, vmlaq_n_f64(vmulq_n_f64(*&a3->c, self->mOut.y), *&a3->a, self->mOut.x));
+  self->mNode = vaddq_f64(*&transform->tx, vmlaq_n_f64(vmulq_n_f64(*&transform->c, self->mNode.y), *&transform->a, self->mNode.x));
+  self->mIn = vaddq_f64(*&transform->tx, vmlaq_n_f64(vmulq_n_f64(*&transform->c, self->mIn.y), *&transform->a, self->mIn.x));
+  self->mOut = vaddq_f64(*&transform->tx, vmlaq_n_f64(vmulq_n_f64(*&transform->c, self->mOut.y), *&transform->a, self->mOut.x));
 }
 
-- (BOOL)underPoint:(CGPoint)a3 withTransform:(CGAffineTransform *)a4 andTolerance:(double)a5 returningType:(int64_t *)a6
+- (BOOL)underPoint:(CGPoint)point withTransform:(CGAffineTransform *)transform andTolerance:(double)tolerance returningType:(int64_t *)type
 {
   TSUDistance();
-  if (v11 >= a5)
+  if (v11 >= tolerance)
   {
     isSelected = objc_msgSend_isSelected(self, v9, v10);
     if (!isSelected)
@@ -302,10 +302,10 @@
     }
 
     TSUDistance();
-    if (v14 >= a5)
+    if (v14 >= tolerance)
     {
       TSUDistance();
-      if (v15 >= a5)
+      if (v15 >= tolerance)
       {
         LOBYTE(isSelected) = 0;
         return isSelected;
@@ -325,9 +325,9 @@
     v12 = 0;
   }
 
-  if (a6)
+  if (type)
   {
-    *a6 = v12;
+    *type = v12;
   }
 
   LOBYTE(isSelected) = 1;

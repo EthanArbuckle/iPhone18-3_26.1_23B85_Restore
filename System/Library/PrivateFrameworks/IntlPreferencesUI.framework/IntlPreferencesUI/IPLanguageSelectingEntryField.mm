@@ -1,22 +1,22 @@
 @interface IPLanguageSelectingEntryField
 - (id)_additionalTextInputLocales;
 - (id)textInputMode;
-- (void)setLanguage:(id)a3;
+- (void)setLanguage:(id)language;
 @end
 
 @implementation IPLanguageSelectingEntryField
 
-- (void)setLanguage:(id)a3
+- (void)setLanguage:(id)language
 {
-  v6 = a3;
-  if ([v6 isEqualToString:@"no"])
+  languageCopy = language;
+  if ([languageCopy isEqualToString:@"no"])
   {
     v4 = @"nb";
   }
 
   else
   {
-    v4 = v6;
+    v4 = languageCopy;
   }
 
   language = self->_language;
@@ -27,8 +27,8 @@
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277CBEAF8];
-  v3 = [(IPLanguageSelectingEntryField *)self language];
-  v4 = [v2 localeWithLocaleIdentifier:v3];
+  language = [(IPLanguageSelectingEntryField *)self language];
+  v4 = [v2 localeWithLocaleIdentifier:language];
   v8[0] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
 
@@ -39,9 +39,9 @@
 
 - (id)textInputMode
 {
-  v3 = [MEMORY[0x277D75688] sharedInputModeController];
-  v4 = [(IPLanguageSelectingEntryField *)self language];
-  v5 = [v3 inputModeLastUsedForLanguage:v4];
+  mEMORY[0x277D75688] = [MEMORY[0x277D75688] sharedInputModeController];
+  language = [(IPLanguageSelectingEntryField *)self language];
+  v5 = [mEMORY[0x277D75688] inputModeLastUsedForLanguage:language];
 
   return v5;
 }

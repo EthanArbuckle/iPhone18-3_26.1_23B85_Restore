@@ -1,15 +1,15 @@
 @interface WFTakePhotoAction
 + (id)userInterfaceXPCInterface;
 - (id)disabledOnPlatforms;
-- (void)runAsynchronouslyWithInput:(id)a3;
-- (void)runWithRemoteUserInterface:(id)a3 input:(id)a4;
+- (void)runAsynchronouslyWithInput:(id)input;
+- (void)runWithRemoteUserInterface:(id)interface input:(id)input;
 @end
 
 @implementation WFTakePhotoAction
 
 + (id)userInterfaceXPCInterface
 {
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___WFTakePhotoAction;
   v2 = objc_msgSendSuper2(&v7, sel_userInterfaceXPCInterface);
   v3 = MEMORY[0x277CBEB98];
@@ -24,41 +24,41 @@
 {
   v5.receiver = self;
   v5.super_class = WFTakePhotoAction;
-  v2 = [(WFTakePhotoAction *)&v5 disabledOnPlatforms];
-  v3 = [v2 arrayByAddingObject:*MEMORY[0x277D7CC80]];
+  disabledOnPlatforms = [(WFTakePhotoAction *)&v5 disabledOnPlatforms];
+  v3 = [disabledOnPlatforms arrayByAddingObject:*MEMORY[0x277D7CC80]];
 
   return v3;
 }
 
-- (void)runWithRemoteUserInterface:(id)a3 input:(id)a4
+- (void)runWithRemoteUserInterface:(id)interface input:(id)input
 {
-  v5 = a3;
+  interfaceCopy = interface;
   v6 = [(WFTakePhotoAction *)self parameterValueForKey:@"WFCameraCaptureShowPreview" ofClass:objc_opt_class()];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
   v8 = [(WFTakePhotoAction *)self parameterValueForKey:@"WFPhotoCount" ofClass:objc_opt_class()];
-  v9 = [v8 unsignedIntegerValue];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
 
   v10 = [(WFTakePhotoAction *)self parameterValueForKey:@"WFCameraCaptureDevice" ofClass:objc_opt_class()];
-  v11 = [(WFTakePhotoAction *)self workflow];
-  v12 = [v11 hiddenFromLibraryAndSync];
+  workflow = [(WFTakePhotoAction *)self workflow];
+  hiddenFromLibraryAndSync = [workflow hiddenFromLibraryAndSync];
 
-  if (v12)
+  if (hiddenFromLibraryAndSync)
   {
-    v13 = [MEMORY[0x277D7C2F8] defaultDatabase];
-    v14 = [(WFTakePhotoAction *)self workflow];
-    v15 = [v14 workflowID];
-    v16 = [v13 configuredTriggersForWorkflowID:v15 error:0];
+    defaultDatabase = [MEMORY[0x277D7C2F8] defaultDatabase];
+    workflow2 = [(WFTakePhotoAction *)self workflow];
+    workflowID = [workflow2 workflowID];
+    workflow3 = [defaultDatabase configuredTriggersForWorkflowID:workflowID error:0];
 
-    v17 = [v16 firstObject];
-    v18 = [v17 trigger];
-    v19 = [v18 localizedDescriptionWithConfigurationSummary];
+    firstObject = [workflow3 firstObject];
+    trigger = [firstObject trigger];
+    localizedDescriptionWithConfigurationSummary = [trigger localizedDescriptionWithConfigurationSummary];
   }
 
   else
   {
-    v16 = [(WFTakePhotoAction *)self workflow];
-    v19 = [v16 name];
+    workflow3 = [(WFTakePhotoAction *)self workflow];
+    localizedDescriptionWithConfigurationSummary = [workflow3 name];
   }
 
   v20[0] = MEMORY[0x277D85DD0];
@@ -66,7 +66,7 @@
   v20[2] = __54__WFTakePhotoAction_runWithRemoteUserInterface_input___block_invoke;
   v20[3] = &unk_278C1A398;
   v20[4] = self;
-  [v5 showWithCameraPreview:v7 photoCount:v9 device:v10 shortcutAttribution:v19 completionHandler:v20];
+  [interfaceCopy showWithCameraPreview:bOOLValue photoCount:unsignedIntegerValue device:v10 shortcutAttribution:localizedDescriptionWithConfigurationSummary completionHandler:v20];
 }
 
 void __54__WFTakePhotoAction_runWithRemoteUserInterface_input___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -94,17 +94,17 @@ uint64_t __54__WFTakePhotoAction_runWithRemoteUserInterface_input___block_invoke
   return [v3 finishRunningWithError:v4];
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v5 = [(WFTakePhotoAction *)self parameterValueForKey:@"WFCameraCaptureShowPreview" ofClass:objc_opt_class()];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  v7 = [(WFTakePhotoAction *)self variableSource];
-  v8 = [v7 workflowStartDate];
+  variableSource = [(WFTakePhotoAction *)self variableSource];
+  workflowStartDate = [variableSource workflowStartDate];
 
-  v9 = [(WFTakePhotoAction *)self variableSource];
-  v10 = [v9 contentForPrivateVariableKey:@"WFTakePhotoActionConfirmed"];
+  variableSource2 = [(WFTakePhotoAction *)self variableSource];
+  v10 = [variableSource2 contentForPrivateVariableKey:@"WFTakePhotoActionConfirmed"];
 
   if (v10)
   {
@@ -127,37 +127,37 @@ uint64_t __54__WFTakePhotoAction_runWithRemoteUserInterface_input___block_invoke
 
   v12 = v11;
 
-  v13 = [v12 BOOLValue];
-  if (!((v8 == 0) | v13 & 1 | v6 & 1))
+  bOOLValue2 = [v12 BOOLValue];
+  if (!((workflowStartDate == 0) | bOOLValue2 & 1 | bOOLValue & 1))
   {
-    v14 = [MEMORY[0x277CBEA80] currentCalendar];
-    v15 = [v14 dateByAddingUnit:64 value:10 toDate:v8 options:0];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v15 = [currentCalendar dateByAddingUnit:64 value:10 toDate:workflowStartDate options:0];
 
-    v16 = [MEMORY[0x277CBEAA8] date];
-    v17 = [v16 compare:v15];
+    date = [MEMORY[0x277CBEAA8] date];
+    v17 = [date compare:v15];
 
     if (v17 == 1)
     {
-      v18 = [(WFTakePhotoAction *)self workflow];
-      if ([v18 hiddenFromLibraryAndSync])
+      workflow = [(WFTakePhotoAction *)self workflow];
+      if ([workflow hiddenFromLibraryAndSync])
       {
       }
 
       else
       {
-        v19 = [(WFTakePhotoAction *)self workflow];
-        v20 = [v19 name];
+        workflow2 = [(WFTakePhotoAction *)self workflow];
+        name = [workflow2 name];
 
-        if (v20)
+        if (name)
         {
           v21 = MEMORY[0x277CCACA8];
           v22 = WFLocalizedString(@"The shortcut “%@” wants to take a photo. Do you want to allow it?");
-          v23 = [v21 localizedStringWithFormat:v22, v20];
+          v23 = [v21 localizedStringWithFormat:v22, name];
 
 LABEL_15:
           v24 = [MEMORY[0x277CFC218] alertWithPreferredStyle:0];
-          v25 = [(WFTakePhotoAction *)self localizedName];
-          [v24 setTitle:v25];
+          localizedName = [(WFTakePhotoAction *)self localizedName];
+          [v24 setTitle:localizedName];
 
           [v24 setMessage:v23];
           v26 = MEMORY[0x277CFC220];
@@ -177,12 +177,12 @@ LABEL_15:
           v34[2] = __48__WFTakePhotoAction_runAsynchronouslyWithInput___block_invoke_2;
           v34[3] = &unk_278C21508;
           v34[4] = self;
-          v35 = v4;
+          v35 = inputCopy;
           v31 = [v29 buttonWithTitle:v30 style:0 preferred:1 handler:v34];
           [v24 addButton:v31];
 
-          v32 = [(WFTakePhotoAction *)self userInterface];
-          [v32 presentAlert:v24];
+          userInterface = [(WFTakePhotoAction *)self userInterface];
+          [userInterface presentAlert:v24];
 
           goto LABEL_16;
         }
@@ -195,7 +195,7 @@ LABEL_15:
 
   v33.receiver = self;
   v33.super_class = WFTakePhotoAction;
-  [(WFTakePhotoAction *)&v33 runAsynchronouslyWithInput:v4];
+  [(WFTakePhotoAction *)&v33 runAsynchronouslyWithInput:inputCopy];
 LABEL_16:
 }
 

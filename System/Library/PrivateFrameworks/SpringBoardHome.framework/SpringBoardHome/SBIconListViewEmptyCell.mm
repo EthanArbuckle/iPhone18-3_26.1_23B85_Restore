@@ -1,19 +1,19 @@
 @interface SBIconListViewEmptyCell
-- (SBIconListViewEmptyCell)initWithCellView:(id)a3;
+- (SBIconListViewEmptyCell)initWithCellView:(id)view;
 @end
 
 @implementation SBIconListViewEmptyCell
 
-- (SBIconListViewEmptyCell)initWithCellView:(id)a3
+- (SBIconListViewEmptyCell)initWithCellView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = SBIconListViewEmptyCell;
   v6 = [(SBIconListViewEmptyCell *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_cellView, a3);
+    objc_storeStrong(&v6->_cellView, view);
   }
 
   return v7;

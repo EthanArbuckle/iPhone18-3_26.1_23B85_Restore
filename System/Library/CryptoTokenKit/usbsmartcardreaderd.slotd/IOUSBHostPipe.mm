@@ -1,17 +1,17 @@
 @interface IOUSBHostPipe
-- (id)receive:(unint64_t)a3 timeout:(id)a4;
-- (unint64_t)send:(id)a3 timeout:(id)a4;
+- (id)receive:(unint64_t)receive timeout:(id)timeout;
+- (unint64_t)send:(id)send timeout:(id)timeout;
 @end
 
 @implementation IOUSBHostPipe
 
-- (unint64_t)send:(id)a3 timeout:(id)a4
+- (unint64_t)send:(id)send timeout:(id)timeout
 {
-  v6 = a4;
-  v7 = [NSMutableData dataWithData:a3];
-  if (v6)
+  timeoutCopy = timeout;
+  v7 = [NSMutableData dataWithData:send];
+  if (timeoutCopy)
   {
-    [v6 doubleValue];
+    [timeoutCopy doubleValue];
   }
 
   else
@@ -38,14 +38,14 @@
   return v12;
 }
 
-- (id)receive:(unint64_t)a3 timeout:(id)a4
+- (id)receive:(unint64_t)receive timeout:(id)timeout
 {
-  v6 = a4;
-  v7 = [(IOUSBHostPipe *)self endpointType];
-  v8 = [NSMutableData dataWithLength:a3];
-  if (v6)
+  timeoutCopy = timeout;
+  endpointType = [(IOUSBHostPipe *)self endpointType];
+  v8 = [NSMutableData dataWithLength:receive];
+  if (timeoutCopy)
   {
-    [v6 doubleValue];
+    [timeoutCopy doubleValue];
   }
 
   else
@@ -64,7 +64,7 @@
 
   else
   {
-    if (v7 != 3)
+    if (endpointType != 3)
     {
       v13 = sub_100001170();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))

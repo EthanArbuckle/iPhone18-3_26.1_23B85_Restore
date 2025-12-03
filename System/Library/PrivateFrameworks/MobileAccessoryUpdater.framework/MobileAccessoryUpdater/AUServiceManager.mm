@@ -8,10 +8,10 @@
 + (void)startService
 {
   v2 = objc_opt_new();
-  v3 = [MEMORY[0x277CCAE98] serviceListener];
-  [v3 setDelegate:v2];
+  serviceListener = [MEMORY[0x277CCAE98] serviceListener];
+  [serviceListener setDelegate:v2];
 
-  [v3 resume];
+  [serviceListener resume];
 }
 
 + (int)startServiceInSandbox

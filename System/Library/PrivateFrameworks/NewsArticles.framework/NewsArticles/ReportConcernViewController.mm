@@ -1,22 +1,22 @@
 @interface ReportConcernViewController
-- (_TtC12NewsArticles27ReportConcernViewController)initWithCoder:(id)a3;
-- (_TtC12NewsArticles27ReportConcernViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC12NewsArticles27ReportConcernViewController)initWithCoder:(id)coder;
+- (_TtC12NewsArticles27ReportConcernViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)dismissVC;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation ReportConcernViewController
 
-- (_TtC12NewsArticles27ReportConcernViewController)initWithCoder:(id)a3
+- (_TtC12NewsArticles27ReportConcernViewController)initWithCoder:(id)coder
 {
   result = sub_1D7D3160C();
   __break(1u);
   return result;
 }
 
-- (_TtC12NewsArticles27ReportConcernViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12NewsArticles27ReportConcernViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -25,30 +25,30 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7AAD108();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7AAD468();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
+  changeCopy = change;
   v5 = v7.receiver;
-  [(ReportConcernViewController *)&v7 traitCollectionDidChange:v4];
-  v6 = [v5 traitCollection];
+  [(ReportConcernViewController *)&v7 traitCollectionDidChange:changeCopy];
+  traitCollection = [v5 traitCollection];
   sub_1D7AADD58();
 }
 
 - (void)dismissVC
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7AAD868();
 }
 

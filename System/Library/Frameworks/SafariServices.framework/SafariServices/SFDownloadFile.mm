@@ -1,41 +1,41 @@
 @interface SFDownloadFile
-- (SFDownloadFile)initWithURL:(id)a3 bookmarkData:(id)a4;
+- (SFDownloadFile)initWithURL:(id)l bookmarkData:(id)data;
 - (SFDownloadFileDelegate)delegate;
-- (void)_resumeWithCurrentURL:(id)a3 previousURL:(id)a4;
+- (void)_resumeWithCurrentURL:(id)l previousURL:(id)rL;
 - (void)_startResuming;
 - (void)_suspend;
-- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)a3;
+- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)handler;
 - (void)dealloc;
 - (void)invalidate;
 - (void)presentedItemDidChange;
-- (void)presentedItemDidMoveToURL:(id)a3;
+- (void)presentedItemDidMoveToURL:(id)l;
 @end
 
 @implementation SFDownloadFile
 
-- (SFDownloadFile)initWithURL:(id)a3 bookmarkData:(id)a4
+- (SFDownloadFile)initWithURL:(id)l bookmarkData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  if (!(v6 | v7))
+  lCopy = l;
+  dataCopy = data;
+  if (!(lCopy | dataCopy))
   {
     v8 = 0;
-    v6 = 0;
+    lCopy = 0;
     goto LABEL_18;
   }
 
-  v8 = v7;
-  if (v6)
+  v8 = dataCopy;
+  if (lCopy)
   {
-    if (v7)
+    if (dataCopy)
     {
-      LOBYTE(v9) = 0;
+      LOBYTE(startAccessingSecurityScopedResource) = 0;
       goto LABEL_5;
     }
 
-    v9 = [v6 startAccessingSecurityScopedResource];
+    startAccessingSecurityScopedResource = [lCopy startAccessingSecurityScopedResource];
     v28 = 0;
-    v8 = [v6 bookmarkDataWithOptions:0 includingResourceValuesForKeys:0 relativeToURL:0 error:&v28];
+    v8 = [lCopy bookmarkDataWithOptions:0 includingResourceValuesForKeys:0 relativeToURL:0 error:&v28];
     v19 = v28;
     if (v19)
     {
@@ -44,20 +44,20 @@
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
         [SFDownloadFile initWithURL:v21 bookmarkData:v20];
-        if (!v9)
+        if (!startAccessingSecurityScopedResource)
         {
           goto LABEL_17;
         }
       }
 
-      else if (!v9)
+      else if (!startAccessingSecurityScopedResource)
       {
 LABEL_17:
 
         goto LABEL_18;
       }
 
-      [v6 stopAccessingSecurityScopedResource];
+      [lCopy stopAccessingSecurityScopedResource];
       goto LABEL_17;
     }
   }
@@ -66,7 +66,7 @@ LABEL_17:
   {
     LOBYTE(location) = 0;
     v29 = 0;
-    v6 = [objc_alloc(MEMORY[0x1E695DFF8]) initByResolvingBookmarkData:v7 options:0 relativeToURL:0 bookmarkDataIsStale:&location error:&v29];
+    lCopy = [objc_alloc(MEMORY[0x1E695DFF8]) initByResolvingBookmarkData:dataCopy options:0 relativeToURL:0 bookmarkDataIsStale:&location error:&v29];
     v17 = v29;
     if (v17 || location == 1)
     {
@@ -76,21 +76,21 @@ LABEL_17:
         [SFDownloadFile initWithURL:v18 bookmarkData:v17];
       }
 
-      [v6 stopAccessingSecurityScopedResource];
+      [lCopy stopAccessingSecurityScopedResource];
 
       goto LABEL_18;
     }
 
     getpid();
-    v23 = [v6 fileSystemRepresentation];
+    fileSystemRepresentation = [lCopy fileSystemRepresentation];
     if (sandbox_check())
     {
-      LOBYTE(v9) = [v6 startAccessingSecurityScopedResource];
+      LOBYTE(startAccessingSecurityScopedResource) = [lCopy startAccessingSecurityScopedResource];
     }
 
     else
     {
-      LOBYTE(v9) = 1;
+      LOBYTE(startAccessingSecurityScopedResource) = 1;
     }
   }
 
@@ -101,19 +101,19 @@ LABEL_5:
   if (!self)
   {
 LABEL_18:
-    v16 = 0;
+    selfCopy = 0;
     goto LABEL_19;
   }
 
   objc_initWeak(&location, self);
-  objc_storeStrong(&self->_URL, v6);
+  objc_storeStrong(&self->_URL, lCopy);
   objc_storeStrong(&self->_bookmarkData, v8);
-  self->_usingSecurityScopedURL = v9;
+  self->_usingSecurityScopedURL = startAccessingSecurityScopedResource;
   v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SFDownloadFile.%p", self];
-  v11 = [v10 UTF8String];
+  uTF8String = [v10 UTF8String];
   v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v13 = dispatch_queue_attr_make_with_qos_class(v12, QOS_CLASS_USER_INITIATED, 0);
-  v14 = dispatch_queue_create(v11, v13);
+  v14 = dispatch_queue_create(uTF8String, v13);
   queue = self->_queue;
   self->_queue = v14;
 
@@ -126,10 +126,10 @@ LABEL_18:
   self = self;
   objc_destroyWeak(&v25);
   objc_destroyWeak(&location);
-  v16 = self;
+  selfCopy = self;
 LABEL_19:
 
-  return v16;
+  return selfCopy;
 }
 
 void __43__SFDownloadFile_initWithURL_bookmarkData___block_invoke(uint64_t a1)
@@ -176,8 +176,8 @@ void __43__SFDownloadFile_initWithURL_bookmarkData___block_invoke(uint64_t a1)
       [MEMORY[0x1E696ABF8] removeFilePresenter:self];
     }
 
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 removeObserver:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self];
 
     self->_invalidated = 1;
     if (self->_usingSecurityScopedURL)
@@ -202,8 +202,8 @@ void __43__SFDownloadFile_initWithURL_bookmarkData___block_invoke(uint64_t a1)
     {
       self->_suspended = 1;
       v3 = MEMORY[0x1E696ABF8];
-      v4 = self;
-      [v3 removeFilePresenter:v4];
+      selfCopy = self;
+      [v3 removeFilePresenter:selfCopy];
     }
   }
 }
@@ -281,19 +281,19 @@ void __32__SFDownloadFile__startResuming__block_invoke_13(uint64_t a1)
   }
 }
 
-- (void)_resumeWithCurrentURL:(id)a3 previousURL:(id)a4
+- (void)_resumeWithCurrentURL:(id)l previousURL:(id)rL
 {
-  v10 = a3;
-  v7 = a4;
+  lCopy = l;
+  rLCopy = rL;
   if (!self->_invalidated && self->_hasPendingResume)
   {
     *&self->_suspended = 0;
-    objc_storeStrong(&self->_URL, a3);
+    objc_storeStrong(&self->_URL, l);
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     URL = self->_URL;
     if (URL)
     {
-      if (([(NSURL *)URL isEqual:v7]& 1) == 0)
+      if (([(NSURL *)URL isEqual:rLCopy]& 1) == 0)
       {
         [WeakRetained downloadFileDidChangeURL:self];
       }
@@ -311,9 +311,9 @@ void __32__SFDownloadFile__startResuming__block_invoke_13(uint64_t a1)
   }
 }
 
-- (void)presentedItemDidMoveToURL:(id)a3
+- (void)presentedItemDidMoveToURL:(id)l
 {
-  objc_storeStrong(&self->_URL, a3);
+  objc_storeStrong(&self->_URL, l);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained downloadFileDidChangeURL:self];
 }
@@ -324,13 +324,13 @@ void __32__SFDownloadFile__startResuming__block_invoke_13(uint64_t a1)
   [WeakRetained downloadFileContentsDidChange:self];
 }
 
-- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)a3
+- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained downloadFileWillBeDeleted:self];
 
-  v5[2](v5, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
 - (SFDownloadFileDelegate)delegate

@@ -1,6 +1,6 @@
 @interface BWRedEyeReductionControllerInput
 - (BOOL)requiresSensorInterfaceRawPropagation;
-- (void)addFrame:(opaqueCMSampleBuffer *)a3 faceObservations:(id)a4;
+- (void)addFrame:(opaqueCMSampleBuffer *)frame faceObservations:(id)observations;
 - (void)dealloc;
 @end
 
@@ -25,9 +25,9 @@
   [(BWStillImageProcessorControllerInput *)&v5 dealloc];
 }
 
-- (void)addFrame:(opaqueCMSampleBuffer *)a3 faceObservations:(id)a4
+- (void)addFrame:(opaqueCMSampleBuffer *)frame faceObservations:(id)observations
 {
-  if (!a3)
+  if (!frame)
   {
     FrameworkRadarComponent = FigCaptureGetFrameworkRadarComponent();
     os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -41,7 +41,7 @@ LABEL_12:
     return;
   }
 
-  if ([objc_msgSend(CMGetAttachment(a3 *off_1E798A3C8])
+  if ([objc_msgSend(CMGetAttachment(frame *off_1E798A3C8])
   {
     v7 = 64;
   }
@@ -56,11 +56,11 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  *(&self->super.super.isa + v7) = CFRetain(a3);
-  if (a4)
+  *(&self->super.super.isa + v7) = CFRetain(frame);
+  if (observations)
   {
 
-    self->_faceObservations = a4;
+    self->_faceObservations = observations;
   }
 
   [(BWRedEyeReductionControllerInputDelegate *)self->_inputDelegate didReceiveFrameForInput:self];
@@ -75,16 +75,16 @@ LABEL_12:
 
 - (BOOL)requiresSensorInterfaceRawPropagation
 {
-  v3 = [(BWStillImageCaptureSettings *)[(BWStillImageProcessorControllerInput *)self captureSettings] captureFlags];
+  captureFlags = [(BWStillImageCaptureSettings *)[(BWStillImageProcessorControllerInput *)self captureSettings] captureFlags];
   v4 = [(NSArray *)[(BWStillImageCaptureSettings *)[(BWStillImageProcessorControllerInput *)self captureSettings] captureStreamSettings] count];
-  v5 = [(BWStillImageCaptureSettings *)[(BWStillImageProcessorControllerInput *)self captureSettings] captureFlags];
-  v6 = (v5 & 0x200 | [(BWStillImageCaptureSettings *)[(BWStillImageProcessorControllerInput *)self captureSettings] captureFlags]& 4) == 0;
+  captureFlags2 = [(BWStillImageCaptureSettings *)[(BWStillImageProcessorControllerInput *)self captureSettings] captureFlags];
+  v6 = (captureFlags2 & 0x200 | [(BWStillImageCaptureSettings *)[(BWStillImageProcessorControllerInput *)self captureSettings] captureFlags]& 4) == 0;
   if (v4 != 1)
   {
     v6 = 0;
   }
 
-  return (v3 & 0x800) != 0 && v6;
+  return (captureFlags & 0x800) != 0 && v6;
 }
 
 @end

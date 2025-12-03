@@ -1,13 +1,13 @@
 @interface RPSessionAccessoryView
 - (CGSize)intrinsicContentSize;
-- (_TtC14ReplayKitAngel22RPSessionAccessoryView)initWithCoder:(id)a3;
-- (_TtC14ReplayKitAngel22RPSessionAccessoryView)initWithFrame:(CGRect)a3;
+- (_TtC14ReplayKitAngel22RPSessionAccessoryView)initWithCoder:(id)coder;
+- (_TtC14ReplayKitAngel22RPSessionAccessoryView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation RPSessionAccessoryView
 
-- (_TtC14ReplayKitAngel22RPSessionAccessoryView)initWithCoder:(id)a3
+- (_TtC14ReplayKitAngel22RPSessionAccessoryView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC14ReplayKitAngel22RPSessionAccessoryView_package) = 0;
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC14ReplayKitAngel22RPSessionAccessoryView_viewState);
@@ -22,13 +22,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100012F78();
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100013470();
   v5 = v4;
 
@@ -39,7 +39,7 @@
   return result;
 }
 
-- (_TtC14ReplayKitAngel22RPSessionAccessoryView)initWithFrame:(CGRect)a3
+- (_TtC14ReplayKitAngel22RPSessionAccessoryView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

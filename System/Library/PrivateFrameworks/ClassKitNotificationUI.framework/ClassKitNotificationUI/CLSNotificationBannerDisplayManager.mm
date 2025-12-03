@@ -1,6 +1,6 @@
 @interface CLSNotificationBannerDisplayManager
 + (id)shared;
-- (void)showBannerWithTitle:(id)a3 message:(id)a4;
+- (void)showBannerWithTitle:(id)title message:(id)message;
 @end
 
 @implementation CLSNotificationBannerDisplayManager
@@ -17,19 +17,19 @@
   return v3;
 }
 
-- (void)showBannerWithTitle:(id)a3 message:(id)a4
+- (void)showBannerWithTitle:(id)title message:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  messageCopy = message;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_24351CFEC;
   block[3] = &unk_278DBEED8;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = titleCopy;
+  v12 = messageCopy;
+  v8 = messageCopy;
+  v9 = titleCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 

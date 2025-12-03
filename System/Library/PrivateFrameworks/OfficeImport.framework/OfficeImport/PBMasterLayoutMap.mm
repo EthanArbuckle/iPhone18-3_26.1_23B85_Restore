@@ -1,12 +1,12 @@
 @interface PBMasterLayoutMap
 + (id)masterLayoutMap;
 - (PBMasterLayoutMap)init;
-- (id)masterInfoForMasterId:(int)a3;
-- (id)masterInfoForSlideHolder:(id)a3;
-- (id)slideLayoutForSlideHolder:(id)a3;
-- (int)masterIdForTitleId:(int)a3;
-- (void)setMasterId:(int)a3 forTitleId:(int)a4;
-- (void)setMasterInfo:(id)a3 forMasterId:(int)a4;
+- (id)masterInfoForMasterId:(int)id;
+- (id)masterInfoForSlideHolder:(id)holder;
+- (id)slideLayoutForSlideHolder:(id)holder;
+- (int)masterIdForTitleId:(int)id;
+- (void)setMasterId:(int)id forTitleId:(int)titleId;
+- (void)setMasterInfo:(id)info forMasterId:(int)id;
 @end
 
 @implementation PBMasterLayoutMap
@@ -37,46 +37,46 @@
   return v2;
 }
 
-- (void)setMasterInfo:(id)a3 forMasterId:(int)a4
+- (void)setMasterInfo:(id)info forMasterId:(int)id
 {
-  v8 = a3;
+  infoCopy = info;
   mMasterIdToMasterInfoMap = self->mMasterIdToMasterInfoMap;
-  v7 = [MEMORY[0x277CCABB0] numberWithLong:a4];
-  [(NSMutableDictionary *)mMasterIdToMasterInfoMap setObject:v8 forKey:v7];
+  v7 = [MEMORY[0x277CCABB0] numberWithLong:id];
+  [(NSMutableDictionary *)mMasterIdToMasterInfoMap setObject:infoCopy forKey:v7];
 }
 
-- (id)masterInfoForMasterId:(int)a3
+- (id)masterInfoForMasterId:(int)id
 {
   mMasterIdToMasterInfoMap = self->mMasterIdToMasterInfoMap;
-  v4 = [MEMORY[0x277CCABB0] numberWithLong:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithLong:id];
   v5 = [(NSMutableDictionary *)mMasterIdToMasterInfoMap objectForKey:v4];
 
   return v5;
 }
 
-- (void)setMasterId:(int)a3 forTitleId:(int)a4
+- (void)setMasterId:(int)id forTitleId:(int)titleId
 {
   mTitleIdToMasterIdMap = self->mTitleIdToMasterIdMap;
-  v7 = [MEMORY[0x277CCABB0] numberWithLong:a3];
-  v6 = [MEMORY[0x277CCABB0] numberWithLong:a4];
+  v7 = [MEMORY[0x277CCABB0] numberWithLong:id];
+  v6 = [MEMORY[0x277CCABB0] numberWithLong:titleId];
   [(NSMutableDictionary *)mTitleIdToMasterIdMap setObject:v7 forKey:v6];
 }
 
-- (int)masterIdForTitleId:(int)a3
+- (int)masterIdForTitleId:(int)id
 {
   mTitleIdToMasterIdMap = self->mTitleIdToMasterIdMap;
-  v4 = [MEMORY[0x277CCABB0] numberWithLong:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithLong:id];
   v5 = [(NSMutableDictionary *)mTitleIdToMasterIdMap objectForKey:v4];
-  v6 = [v5 intValue];
+  intValue = [v5 intValue];
 
-  return v6;
+  return intValue;
 }
 
-- (id)masterInfoForSlideHolder:(id)a3
+- (id)masterInfoForSlideHolder:(id)holder
 {
-  v4 = a3;
-  v5 = [v4 firstChildOfType:1007];
-  v6 = [v5 eshObject];
+  holderCopy = holder;
+  v5 = [holderCopy firstChildOfType:1007];
+  eshObject = [v5 eshObject];
   {
     v11 = [TCMessageException exceptionWithMessage:TCUnknownProblemMessage];
     objc_exception_throw(v11);
@@ -92,11 +92,11 @@
   return v9;
 }
 
-- (id)slideLayoutForSlideHolder:(id)a3
+- (id)slideLayoutForSlideHolder:(id)holder
 {
-  v4 = a3;
-  v5 = [(PBMasterLayoutMap *)self masterInfoForSlideHolder:v4];
-  v6 = [v5 slideLayoutForSlideHolder:v4];
+  holderCopy = holder;
+  v5 = [(PBMasterLayoutMap *)self masterInfoForSlideHolder:holderCopy];
+  v6 = [v5 slideLayoutForSlideHolder:holderCopy];
 
   return v6;
 }

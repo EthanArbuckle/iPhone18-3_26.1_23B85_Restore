@@ -1,49 +1,49 @@
 @interface VCPVideoEmbeddings
-- (VCPVideoEmbeddings)initWithEmbeddingType:(int64_t)a3 version:(id)a4;
-- (id)convertToFloat16:(id)a3;
-- (id)getEmbeddingsForRange:(id *)a3 useFP16:(BOOL)a4;
+- (VCPVideoEmbeddings)initWithEmbeddingType:(int64_t)type version:(id)version;
+- (id)convertToFloat16:(id)float16;
+- (id)getEmbeddingsForRange:(id *)range useFP16:(BOOL)p16;
 - (id)videoEmbeddingsFp16;
-- (int)addEmbeddings:(id)a3 startTime:(id *)a4 duration:(id *)a5;
+- (int)addEmbeddings:(id)embeddings startTime:(id *)time duration:(id *)duration;
 - (void)dealloc;
 @end
 
 @implementation VCPVideoEmbeddings
 
-- (VCPVideoEmbeddings)initWithEmbeddingType:(int64_t)a3 version:(id)a4
+- (VCPVideoEmbeddings)initWithEmbeddingType:(int64_t)type version:(id)version
 {
-  v7 = a4;
+  versionCopy = version;
   v16.receiver = self;
   v16.super_class = VCPVideoEmbeddings;
   v8 = [(VCPVideoEmbeddings *)&v16 init];
   v9 = v8;
   if (v8)
   {
-    v8->_embeddingType = a3;
+    v8->_embeddingType = type;
     v8->_embeddingSize = 0;
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     videoEmbeddings = v9->_videoEmbeddings;
-    v9->_videoEmbeddings = v10;
+    v9->_videoEmbeddings = array;
 
-    v12 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     summarizedEmbeddingIds = v9->_summarizedEmbeddingIds;
-    v9->_summarizedEmbeddingIds = v12;
+    v9->_summarizedEmbeddingIds = array2;
 
     v9->_averageEmbedding = 0;
     v9->_currentEmbedding = 0;
-    objc_storeStrong(&v9->_version, a4);
+    objc_storeStrong(&v9->_version, version);
     v14 = v9;
   }
 
   return v9;
 }
 
-- (int)addEmbeddings:(id)a3 startTime:(id *)a4 duration:(id *)a5
+- (int)addEmbeddings:(id)embeddings startTime:(id *)time duration:(id *)duration
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = v8;
+  embeddingsCopy = embeddings;
+  v9 = embeddingsCopy;
   embeddingSize = self->_embeddingSize;
-  if (!embeddingSize || embeddingSize == [v8 length] >> 2)
+  if (!embeddingSize || embeddingSize == [embeddingsCopy length] >> 2)
   {
     v11 = [v9 length];
     v12 = v11;
@@ -105,11 +105,11 @@
 LABEL_21:
     videoEmbeddings = self->_videoEmbeddings;
     v28[0] = @"start";
-    buf = *a4;
+    buf = *time;
     v21 = CMTimeCopyAsDictionary(&buf, 0);
     v29[0] = v21;
     v28[1] = @"duration";
-    buf = *a5;
+    buf = *duration;
     v22 = CMTimeCopyAsDictionary(&buf, 0);
     v29[1] = v22;
     v28[2] = @"attributes";
@@ -163,12 +163,12 @@ LABEL_22:
       break;
     }
 
-    v7 = [MEMORY[0x1E695DF90] dictionary];
-    [v7 setObject:v6 forKeyedSubscript:@"embeddings"];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:v6 forKeyedSubscript:@"embeddings"];
     version = self->_version;
     if (version)
     {
-      [v7 setObject:version forKeyedSubscript:v15];
+      [dictionary setObject:version forKeyedSubscript:v15];
     }
 
     v19[0] = @"start";
@@ -178,7 +178,7 @@ LABEL_22:
     v10 = [v3 objectForKeyedSubscript:@"duration"];
     v19[2] = @"attributes";
     v20[1] = v10;
-    v20[2] = v7;
+    v20[2] = dictionary;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:3];
     [v17 setObject:v11 atIndexedSubscript:v2];
 
@@ -217,9 +217,9 @@ LABEL_12:
   [(VCPVideoEmbeddings *)&v5 dealloc];
 }
 
-- (id)getEmbeddingsForRange:(id *)a3 useFP16:(BOOL)a4
+- (id)getEmbeddingsForRange:(id *)range useFP16:(BOOL)p16
 {
-  v26 = a4;
+  p16Copy = p16;
   v38 = *MEMORY[0x1E69E9840];
   bzero(self->_averageEmbedding, 4 * self->_embeddingSize);
   bzero(self->_currentEmbedding, 4 * self->_embeddingSize);
@@ -251,10 +251,10 @@ LABEL_23:
       v10 = *(*(&v33 + 1) + 8 * i);
       memset(&v32, 0, sizeof(v32));
       CMTimeRangeMakeFromDictionary(&v32, v10);
-      v11 = *&a3->var0.var3;
-      *&range.start.value = *&a3->var0.var0;
+      v11 = *&range->var0.var3;
+      *&range.start.value = *&range->var0.var0;
       *&range.start.epoch = v11;
-      *&range.duration.timescale = *&a3->var1.var1;
+      *&range.duration.timescale = *&range->var1.var1;
       memset(&v31, 0, sizeof(v31));
       otherRange = v32;
       CMTimeRangeGetIntersection(&v31, &range, &otherRange);
@@ -323,7 +323,7 @@ LABEL_23:
 
   [obja appendBytes:v20 length:4 * v19];
 LABEL_24:
-  if (v26)
+  if (p16Copy)
   {
     v23 = [(VCPVideoEmbeddings *)self convertToFloat16:obja];
     v24 = obja;
@@ -338,9 +338,9 @@ LABEL_24:
   return v23;
 }
 
-- (id)convertToFloat16:(id)a3
+- (id)convertToFloat16:(id)float16
 {
-  v4 = a3;
+  float16Copy = float16;
   embeddingSize = self->_embeddingSize;
   if (embeddingSize >> 62)
   {
@@ -389,7 +389,7 @@ LABEL_24:
   else
   {
     v13 = v10;
-    [v4 getBytes:v8 length:4 * embeddingSize];
+    [float16Copy getBytes:v8 length:4 * embeddingSize];
     v14 = self->_embeddingSize;
     if (v14)
     {

@@ -1,30 +1,30 @@
 @interface PALServer
-- (BOOL)canPruneEventsForConnection:(id)a3 withError:(id *)a4;
-- (BOOL)canWriteEvent:(id)a3 forConnection:(id)a4 withError:(id *)a5;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)logAccess:(id)a3 error:(id *)a4;
+- (BOOL)canPruneEventsForConnection:(id)connection withError:(id *)error;
+- (BOOL)canWriteEvent:(id)event forConnection:(id)connection withError:(id *)error;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)logAccess:(id)access error:(id *)error;
 - (BOOL)preflight;
-- (BOOL)runPreflightTask:(int64_t)a3 error:(id *)a4;
+- (BOOL)runPreflightTask:(int64_t)task error:(id *)error;
 - (NSArray)allStreams;
-- (PALServer)initWithListener:(id)a3 maxStoreSize:(unint64_t)a4;
-- (PALServer)initWithListener:(id)a3 paths:(id)a4 settings:(id)a5 maxStoreSize:(unint64_t)a6;
+- (PALServer)initWithListener:(id)listener maxStoreSize:(unint64_t)size;
+- (PALServer)initWithListener:(id)listener paths:(id)paths settings:(id)settings maxStoreSize:(unint64_t)size;
 - (PALServerDelegate)delegate;
-- (double)finalizeAllIncompleteAccessIntervalsSince:(double)a3;
-- (id)publisherForAllSince:(double)a3;
-- (id)streamFor:(Class)a3;
-- (void)_pruneEventsMatchingPredicate:(id)a3 withCancellationToken:(id)a4 completion:(id)a5;
-- (void)addSession:(id)a3;
-- (void)applicationDidUninstall:(id)a3;
+- (double)finalizeAllIncompleteAccessIntervalsSince:(double)since;
+- (id)publisherForAllSince:(double)since;
+- (id)streamFor:(Class)for;
+- (void)_pruneEventsMatchingPredicate:(id)predicate withCancellationToken:(id)token completion:(id)completion;
+- (void)addSession:(id)session;
+- (void)applicationDidUninstall:(id)uninstall;
 - (void)dealloc;
 - (void)disableLogging;
 - (void)enableLogging;
-- (void)exportToFileHandle:(id)a3 completion:(id)a4;
-- (void)gatherAndSendDailyAnalyticsWithCancellationToken:(id)a3 completion:(id)a4;
-- (void)observeAppUninstallsWithAppUninstallObserver:(id)a3;
-- (void)process:(id)a3 didUpdateFromPreviousState:(id)a4 toState:(id)a5;
-- (void)pruneEventsFromAccessor:(id)a3 withCancellationToken:(id)a4 completion:(id)a5;
-- (void)pruneEventsFromStartTime:(double)a3 toEndTime:(double)a4 withCancellationToken:(id)a5 completion:(id)a6;
-- (void)removeSession:(id)a3;
+- (void)exportToFileHandle:(id)handle completion:(id)completion;
+- (void)gatherAndSendDailyAnalyticsWithCancellationToken:(id)token completion:(id)completion;
+- (void)observeAppUninstallsWithAppUninstallObserver:(id)observer;
+- (void)process:(id)process didUpdateFromPreviousState:(id)state toState:(id)toState;
+- (void)pruneEventsFromAccessor:(id)accessor withCancellationToken:(id)token completion:(id)completion;
+- (void)pruneEventsFromStartTime:(double)time toEndTime:(double)endTime withCancellationToken:(id)token completion:(id)completion;
+- (void)removeSession:(id)session;
 - (void)updateProcessMonitorConfiguration;
 @end
 
@@ -118,8 +118,8 @@ LABEL_16:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v17 + 1) + 8 * v8) connection];
-        v10 = +[RBSProcessIdentifier identifierWithPid:](RBSProcessIdentifier, "identifierWithPid:", [v9 processIdentifier]);
+        connection = [*(*(&v17 + 1) + 8 * v8) connection];
+        v10 = +[RBSProcessIdentifier identifierWithPid:](RBSProcessIdentifier, "identifierWithPid:", [connection processIdentifier]);
 
         if (v10)
         {
@@ -143,7 +143,7 @@ LABEL_16:
   v14[2] = sub_100001854;
   v14[3] = &unk_100018B80;
   v15 = v3;
-  v16 = self;
+  selfCopy = self;
   v13 = v3;
   [(RBSProcessMonitor *)processMonitor updateConfiguration:v14];
 }
@@ -155,24 +155,24 @@ LABEL_16:
   return WeakRetained;
 }
 
-- (PALServer)initWithListener:(id)a3 maxStoreSize:(unint64_t)a4
+- (PALServer)initWithListener:(id)listener maxStoreSize:(unint64_t)size
 {
-  v6 = a3;
+  listenerCopy = listener;
   v7 = [PALPaths alloc];
   v8 = +[PALPaths defaultRootDirectory];
   v9 = [(PALPaths *)v7 initWithRootDirectory:v8];
 
   v10 = +[PALSettings sharedSettings];
-  v11 = [(PALServer *)self initWithListener:v6 paths:v9 settings:v10 maxStoreSize:a4];
+  v11 = [(PALServer *)self initWithListener:listenerCopy paths:v9 settings:v10 maxStoreSize:size];
 
   return v11;
 }
 
-- (PALServer)initWithListener:(id)a3 paths:(id)a4 settings:(id)a5 maxStoreSize:(unint64_t)a6
+- (PALServer)initWithListener:(id)listener paths:(id)paths settings:(id)settings maxStoreSize:(unint64_t)size
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  listenerCopy = listener;
+  pathsCopy = paths;
+  settingsCopy = settings;
   v42.receiver = self;
   v42.super_class = PALServer;
   v14 = [(PALServer *)&v42 init];
@@ -188,17 +188,17 @@ LABEL_16:
     serverQueue = v14->_serverQueue;
     v14->_serverQueue = v18;
 
-    [v11 _setQueue:v14->_serverQueue];
-    [v11 setDelegate:v14];
-    objc_storeStrong(&v14->_listener, a3);
-    objc_storeStrong(&v14->_paths, a4);
-    v20 = [(PALPaths *)v14->_paths biomeDirectory];
-    v21 = [BMStoreConfig newPrivateStreamDefaultConfigurationWithStoreBasePath:v20 protectionClass:2];
+    [listenerCopy _setQueue:v14->_serverQueue];
+    [listenerCopy setDelegate:v14];
+    objc_storeStrong(&v14->_listener, listener);
+    objc_storeStrong(&v14->_paths, paths);
+    biomeDirectory = [(PALPaths *)v14->_paths biomeDirectory];
+    v21 = [BMStoreConfig newPrivateStreamDefaultConfigurationWithStoreBasePath:biomeDirectory protectionClass:2];
     storeConfig = v14->_storeConfig;
     v14->_storeConfig = v21;
 
-    objc_storeStrong(&v14->_settings, a5);
-    v23 = [[BMPruningPolicy alloc] initPruneOnAccess:1 filterByAgeOnRead:0 maxAge:a6 >> 2 maxStreamSize:0.0];
+    objc_storeStrong(&v14->_settings, settings);
+    v23 = [[BMPruningPolicy alloc] initPruneOnAccess:1 filterByAgeOnRead:0 maxAge:size >> 2 maxStreamSize:0.0];
     [(BMStoreConfig *)v14->_storeConfig setPruningPolicy:v23];
     v24 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v25 = dispatch_queue_create("com.apple.privacyaccounting.sessions", v24);
@@ -235,51 +235,51 @@ LABEL_16:
   return v14;
 }
 
-- (void)observeAppUninstallsWithAppUninstallObserver:(id)a3
+- (void)observeAppUninstallsWithAppUninstallObserver:(id)observer
 {
-  objc_storeStrong(&self->_appUninstallObserver, a3);
-  v5 = a3;
-  [v5 setDelegate:self];
-  [v5 startObserving];
+  objc_storeStrong(&self->_appUninstallObserver, observer);
+  observerCopy = observer;
+  [observerCopy setDelegate:self];
+  [observerCopy startObserving];
 }
 
-- (BOOL)canWriteEvent:(id)a3 forConnection:(id)a4 withError:(id *)a5
+- (BOOL)canWriteEvent:(id)event forConnection:(id)connection withError:(id *)error
 {
-  v6 = sub_100001744(a4, @"com.apple.private.privacy.accounting.write");
+  v6 = sub_100001744(connection, @"com.apple.private.privacy.accounting.write");
   v7 = v6;
-  if (a5 && (v6 & 1) == 0)
+  if (error && (v6 & 1) == 0)
   {
     v10 = @"PAMissingEntitlement";
     v11 = @"com.apple.private.privacy.accounting.write";
     v8 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
-    *a5 = [NSError errorWithDomain:@"PAErrorDomain" code:9 userInfo:v8];
+    *error = [NSError errorWithDomain:@"PAErrorDomain" code:9 userInfo:v8];
   }
 
   return v7;
 }
 
-- (BOOL)canPruneEventsForConnection:(id)a3 withError:(id *)a4
+- (BOOL)canPruneEventsForConnection:(id)connection withError:(id *)error
 {
-  v5 = sub_100001744(a3, @"com.apple.private.privacy.accounting.prune");
+  v5 = sub_100001744(connection, @"com.apple.private.privacy.accounting.prune");
   v6 = v5;
-  if (a4 && (v5 & 1) == 0)
+  if (error && (v5 & 1) == 0)
   {
     v9 = @"PAMissingEntitlement";
     v10 = @"com.apple.private.privacy.accounting.prune";
     v7 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
-    *a4 = [NSError errorWithDomain:@"PAErrorDomain" code:9 userInfo:v7];
+    *error = [NSError errorWithDomain:@"PAErrorDomain" code:9 userInfo:v7];
   }
 
   return v6;
 }
 
-- (BOOL)runPreflightTask:(int64_t)a3 error:(id *)a4
+- (BOOL)runPreflightTask:(int64_t)task error:(id *)error
 {
-  v7 = [(PALServer *)self delegate];
+  delegate = [(PALServer *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(PALServer *)self delegate];
-    v9 = [v8 server:self shouldRunPreflightTask:a3];
+    delegate2 = [(PALServer *)self delegate];
+    v9 = [delegate2 server:self shouldRunPreflightTask:task];
 
     if (!v9)
     {
@@ -291,27 +291,27 @@ LABEL_16:
   {
   }
 
-  switch(a3)
+  switch(task)
   {
     case 2:
       log = self->_log;
       if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
       {
         v19 = log;
-        v20 = [(PALServer *)self settings];
-        [v20 lastPreflightCheck];
+        settings = [(PALServer *)self settings];
+        [settings lastPreflightCheck];
         v30 = 134217984;
         v31 = v21;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Finalizing incomplete access intervals; startTime=%f", &v30, 0xCu);
       }
 
-      v22 = [(PALServer *)self settings];
-      [v22 lastPreflightCheck];
+      settings2 = [(PALServer *)self settings];
+      [settings2 lastPreflightCheck];
       [(PALServer *)self finalizeAllIncompleteAccessIntervalsSince:?];
       v24 = v23;
 
-      v25 = [(PALServer *)self settings];
-      [v25 lastPreflightCheck];
+      settings3 = [(PALServer *)self settings];
+      [settings3 lastPreflightCheck];
       v27 = v26;
 
       if (v27 == v24)
@@ -327,8 +327,8 @@ LABEL_16:
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Updating last successful preflight check; timestamp=%f", &v30, 0xCu);
       }
 
-      v17 = [(PALServer *)self settings];
-      [v17 setLastPreflightCheck:v24];
+      settings4 = [(PALServer *)self settings];
+      [settings4 setLastPreflightCheck:v24];
       goto LABEL_20;
     case 1:
       v12 = self->_log;
@@ -344,8 +344,8 @@ LABEL_16:
       }
 
       settings = self->_settings;
-      v17 = [(PALPaths *)self->_paths settingsFile];
-      [(PALSettings *)settings migrateSettingsFromFile:v17];
+      settings4 = [(PALPaths *)self->_paths settingsFile];
+      [(PALSettings *)settings migrateSettingsFromFile:settings4];
 LABEL_20:
 
 LABEL_21:
@@ -359,22 +359,22 @@ LABEL_21:
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Creating storage directories", &v30, 2u);
       }
 
-      v10 = [(PALPaths *)self->_paths createDirectories:a4];
+      v10 = [(PALPaths *)self->_paths createDirectories:error];
       break;
   }
 
   return v10 & 1;
 }
 
-- (id)publisherForAllSince:(double)a3
+- (id)publisherForAllSince:(double)since
 {
   v5 = +[NSMutableArray array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(PALServer *)self allStreams];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allStreams = [(PALServer *)self allStreams];
+  v7 = [allStreams countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -385,14 +385,14 @@ LABEL_21:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allStreams);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) publisherFromStartTime:a3];
+        v11 = [*(*(&v14 + 1) + 8 * i) publisherFromStartTime:since];
         [v5 addObject:v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [allStreams countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -403,13 +403,13 @@ LABEL_21:
   return v12;
 }
 
-- (double)finalizeAllIncompleteAccessIntervalsSince:(double)a3
+- (double)finalizeAllIncompleteAccessIntervalsSince:(double)since
 {
   v5 = [(PALServer *)self publisherForAllSince:?];
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
-  v21 = a3;
+  sinceCopy = since;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -448,16 +448,16 @@ LABEL_21:
 - (void)enableLogging
 {
   [(PALSettings *)self->_settings setLoggingEnabled:1];
-  v3 = [(PALServer *)self enablementChangedNotificationName];
-  notify_post([v3 UTF8String]);
+  enablementChangedNotificationName = [(PALServer *)self enablementChangedNotificationName];
+  notify_post([enablementChangedNotificationName UTF8String]);
 
-  v4 = [(PALServer *)self delegate];
+  delegate = [(PALServer *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(PALServer *)self delegate];
-    [v6 server:self didSetLoggingEnabled:1];
+    delegate2 = [(PALServer *)self delegate];
+    [delegate2 server:self didSetLoggingEnabled:1];
   }
 
   v7 = [(PALServer *)self log];
@@ -507,13 +507,13 @@ LABEL_21:
         }
 
         v13 = *(*(&v22 + 1) + 8 * i);
-        v14 = [v13 queue];
+        queue = [v13 queue];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = sub_10000B7F0;
         block[3] = &unk_100018B30;
         block[4] = v13;
-        dispatch_async(v14, block);
+        dispatch_async(queue, block);
       }
 
       v10 = [(NSMutableSet *)v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -522,16 +522,16 @@ LABEL_21:
     while (v10);
   }
 
-  v15 = [(PALServer *)self enablementChangedNotificationName];
-  notify_post([v15 UTF8String]);
+  enablementChangedNotificationName = [(PALServer *)self enablementChangedNotificationName];
+  notify_post([enablementChangedNotificationName UTF8String]);
 
-  v16 = [(PALServer *)self delegate];
+  delegate = [(PALServer *)self delegate];
   v17 = objc_opt_respondsToSelector();
 
   if (v17)
   {
-    v18 = [(PALServer *)self delegate];
-    [v18 server:self didSetLoggingEnabled:0];
+    delegate2 = [(PALServer *)self delegate];
+    [delegate2 server:self didSetLoggingEnabled:0];
   }
 
   v19 = [(PALServer *)self log];
@@ -542,31 +542,31 @@ LABEL_21:
   }
 }
 
-- (id)streamFor:(Class)a3
+- (id)streamFor:(Class)for
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == for)
   {
     v6 = 40;
   }
 
-  else if (objc_opt_class() == a3)
+  else if (objc_opt_class() == for)
   {
     v6 = 48;
   }
 
-  else if (objc_opt_class() == a3)
+  else if (objc_opt_class() == for)
   {
     v6 = 56;
   }
 
-  else if (objc_opt_class() == a3)
+  else if (objc_opt_class() == for)
   {
     v6 = 64;
   }
 
   else
   {
-    if (objc_opt_class() != a3)
+    if (objc_opt_class() != for)
     {
       v5 = 0;
       goto LABEL_15;
@@ -579,7 +579,7 @@ LABEL_21:
   if (!v7)
   {
     v8 = [BMStoreStream alloc];
-    v9 = [(objc_class *)a3 valueForKey:@"eventStreamIdentifier"];
+    v9 = [(objc_class *)for valueForKey:@"eventStreamIdentifier"];
     v10 = [v8 initWithPrivateStreamIdentifier:v9 storeConfig:self->_storeConfig];
     v11 = *(&self->super.isa + v6);
     *(&self->super.isa + v6) = v10;
@@ -631,14 +631,14 @@ LABEL_15:
   return v11;
 }
 
-- (BOOL)logAccess:(id)a3 error:(id *)a4
+- (BOOL)logAccess:(id)access error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PALServer *)self delegate];
+  accessCopy = access;
+  delegate = [(PALServer *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(PALServer *)self delegate];
-    v9 = [v8 server:self shouldLogAccess:v6 error:a4];
+    delegate2 = [(PALServer *)self delegate];
+    v9 = [delegate2 server:self shouldLogAccess:accessCopy error:error];
 
     if (!v9)
     {
@@ -655,17 +655,17 @@ LABEL_15:
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
     {
       sub_10000D7B0();
-      if (a4)
+      if (error)
       {
         goto LABEL_12;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
 LABEL_12:
       [NSError errorWithDomain:@"PAErrorDomain" code:2 userInfo:0];
-      *a4 = v12 = 0;
+      *error = v12 = 0;
       goto LABEL_25;
     }
 
@@ -675,8 +675,8 @@ LABEL_24:
   }
 
   settings = self->_settings;
-  v11 = [v6 category];
-  LODWORD(settings) = [(PALSettings *)settings persistenceEnabledForCategory:v11];
+  category = [accessCopy category];
+  LODWORD(settings) = [(PALSettings *)settings persistenceEnabledForCategory:category];
 
   if (!settings)
   {
@@ -687,20 +687,20 @@ LABEL_9:
 
   if (![(PALSettings *)self->_settings assetIdentifiersPersistenceEnabled])
   {
-    if ([v6 kind] == 4)
+    if ([accessCopy kind] == 4)
     {
       goto LABEL_9;
     }
 
-    v13 = [v6 assetIdentifiers];
-    v14 = [v13 count];
+    assetIdentifiers = [accessCopy assetIdentifiers];
+    v14 = [assetIdentifiers count];
 
     if (v14)
     {
       v15 = +[NSSet set];
-      v16 = [v6 copyWithNewAssetIdentifiers:v15];
+      v16 = [accessCopy copyWithNewAssetIdentifiers:v15];
 
-      v6 = v16;
+      accessCopy = v16;
     }
   }
 
@@ -709,16 +709,16 @@ LABEL_9:
   v12 = v17 != 0;
   if (v17)
   {
-    v19 = [v17 source];
-    [v19 sendEvent:v6];
+    source = [v17 source];
+    [source sendEvent:accessCopy];
 
-    v20 = [(PALServer *)self delegate];
+    delegate3 = [(PALServer *)self delegate];
     v21 = objc_opt_respondsToSelector();
 
     if (v21)
     {
-      v22 = [(PALServer *)self delegate];
-      [v22 server:self didLogAccess:v6];
+      delegate4 = [(PALServer *)self delegate];
+      [delegate4 server:self didLogAccess:accessCopy];
     }
 
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_DEBUG))
@@ -727,27 +727,27 @@ LABEL_9:
     }
   }
 
-  else if (a4)
+  else if (error)
   {
-    *a4 = [NSError errorWithDomain:@"PAErrorDomain" code:6 userInfo:0];
+    *error = [NSError errorWithDomain:@"PAErrorDomain" code:6 userInfo:0];
   }
 
 LABEL_25:
   return v12;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [(PALServer *)self preflight];
-  if (v6)
+  connectionCopy = connection;
+  preflight = [(PALServer *)self preflight];
+  if (preflight)
   {
     v7 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___PASessionProtocol];
-    [v5 setExportedInterface:v7];
-    v8 = [[PALSession alloc] initWithServer:self targetQueue:self->_sessionsQueue connection:v5];
-    [v5 setExportedObject:v8];
+    [connectionCopy setExportedInterface:v7];
+    v8 = [[PALSession alloc] initWithServer:self targetQueue:self->_sessionsQueue connection:connectionCopy];
+    [connectionCopy setExportedObject:v8];
     [(PALServer *)self addSession:v8];
-    [v5 resume];
+    [connectionCopy resume];
   }
 
   else if (os_log_type_enabled(self->_log, OS_LOG_TYPE_DEBUG))
@@ -755,28 +755,28 @@ LABEL_25:
     sub_10000D880();
   }
 
-  return v6;
+  return preflight;
 }
 
-- (void)addSession:(id)a3
+- (void)addSession:(id)session
 {
-  [(NSMutableSet *)self->_sessions addObject:a3];
+  [(NSMutableSet *)self->_sessions addObject:session];
 
   [(PALServer *)self updateProcessMonitorConfiguration];
 }
 
-- (void)removeSession:(id)a3
+- (void)removeSession:(id)session
 {
-  [(NSMutableSet *)self->_sessions removeObject:a3];
+  [(NSMutableSet *)self->_sessions removeObject:session];
 
   [(PALServer *)self updateProcessMonitorConfiguration];
 }
 
-- (void)process:(id)a3 didUpdateFromPreviousState:(id)a4 toState:(id)a5
+- (void)process:(id)process didUpdateFromPreviousState:(id)state toState:(id)toState
 {
-  v8 = a3;
-  v9 = a5;
-  if ([a4 taskState] != 3 && objc_msgSend(v9, "taskState") == 3)
+  processCopy = process;
+  toStateCopy = toState;
+  if ([state taskState] != 3 && objc_msgSend(toStateCopy, "taskState") == 3)
   {
     objc_initWeak(&location, self);
     serverQueue = self->_serverQueue;
@@ -785,7 +785,7 @@ LABEL_25:
     block[2] = sub_10000BF6C;
     block[3] = &unk_100018BA8;
     objc_copyWeak(&v13, &location);
-    v12 = v8;
+    v12 = processCopy;
     dispatch_async(serverQueue, block);
 
     objc_destroyWeak(&v13);
@@ -793,12 +793,12 @@ LABEL_25:
   }
 }
 
-- (void)_pruneEventsMatchingPredicate:(id)a3 withCancellationToken:(id)a4 completion:(id)a5
+- (void)_pruneEventsMatchingPredicate:(id)predicate withCancellationToken:(id)token completion:(id)completion
 {
-  v39 = a3;
-  v38 = a4;
-  v35 = a5;
-  v37 = self;
+  predicateCopy = predicate;
+  tokenCopy = token;
+  completionCopy = completion;
+  selfCopy = self;
   dispatch_assert_queue_V2(self->_serverQueue);
   v34 = os_transaction_create();
   v36 = +[NSMutableArray array];
@@ -811,8 +811,8 @@ LABEL_25:
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v9 = [(PALServer *)self allStreams];
-  v10 = [v9 countByEnumeratingWithState:&v53 objects:v71 count:16];
+  allStreams = [(PALServer *)self allStreams];
+  v10 = [allStreams countByEnumeratingWithState:&v53 objects:v71 count:16];
   if (v10)
   {
     v12 = *v54;
@@ -824,7 +824,7 @@ LABEL_25:
       {
         if (*v54 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allStreams);
         }
 
         v14 = *(*(&v53 + 1) + 8 * i);
@@ -837,9 +837,9 @@ LABEL_25:
         v46[1] = 3221225472;
         v46[2] = sub_10000C870;
         v46[3] = &unk_100018BD0;
-        v47 = v38;
+        v47 = tokenCopy;
         v50 = v68;
-        v48 = v39;
+        v48 = predicateCopy;
         v49 = v8;
         v51 = &v57;
         v15 = [v14 pruneEventsWithError:&v52 predicateBlock:v46];
@@ -849,9 +849,9 @@ LABEL_25:
           v17 = [(PALServer *)self log];
           if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
           {
-            v18 = [v14 identifier];
+            identifier = [v14 identifier];
             *buf = v33;
-            v65 = v18;
+            v65 = identifier;
             v66 = 2114;
             v67 = v16;
             _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Pruning failed for stream %{public}@ with error: %{public}@", buf, 0x16u);
@@ -872,7 +872,7 @@ LABEL_25:
         _Block_object_dispose(v68, 8);
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v53 objects:v71 count:16];
+      v10 = [allStreams countByEnumeratingWithState:&v53 objects:v71 count:16];
       if (v10)
       {
         continue;
@@ -891,7 +891,7 @@ LABEL_15:
     *v68 = 67109378;
     *&v68[4] = v21;
     LOWORD(v69) = 2112;
-    *(&v69 + 2) = v39;
+    *(&v69 + 2) = predicateCopy;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "Pruned %d events matching predicate: %@", v68, 0x12u);
   }
 
@@ -904,7 +904,7 @@ LABEL_15:
   if (v23)
   {
     v24 = *v43;
-    v9 = &unk_100018708;
+    allStreams = &unk_100018708;
     do
     {
       for (j = 0; j != v23; j = j + 1)
@@ -915,14 +915,14 @@ LABEL_15:
         }
 
         v26 = *(*(&v42 + 1) + 8 * j);
-        v27 = [v26 queue];
+        queue = [v26 queue];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = sub_10000C9AC;
         block[3] = &unk_100018708;
         block[4] = v26;
         v41 = v8;
-        dispatch_async(v27, block);
+        dispatch_async(queue, block);
       }
 
       v23 = [(NSMutableSet *)v22 countByEnumeratingWithState:&v42 objects:v63 count:16];
@@ -931,13 +931,13 @@ LABEL_15:
     while (v23);
   }
 
-  WeakRetained = objc_loadWeakRetained(&v37->_delegate);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
   v29 = objc_opt_respondsToSelector();
 
   if (v29)
   {
-    v30 = objc_loadWeakRetained(&v37->_delegate);
-    [v30 serverDidPruneAccesses:v37];
+    v30 = objc_loadWeakRetained(&selfCopy->_delegate);
+    [v30 serverDidPruneAccesses:selfCopy];
   }
 
   v31 = [v36 count];
@@ -945,8 +945,8 @@ LABEL_15:
   {
     v61 = NSMultipleUnderlyingErrorsKey;
     v62 = v36;
-    v9 = [NSDictionary dictionaryWithObjects:&v62 forKeys:&v61 count:1];
-    v32 = [NSError errorWithDomain:@"PAErrorDomain" code:8 userInfo:v9];
+    allStreams = [NSDictionary dictionaryWithObjects:&v62 forKeys:&v61 count:1];
+    v32 = [NSError errorWithDomain:@"PAErrorDomain" code:8 userInfo:allStreams];
   }
 
   else
@@ -954,7 +954,7 @@ LABEL_15:
     v32 = 0;
   }
 
-  v35[2](v35, v32);
+  completionCopy[2](completionCopy, v32);
   if (v31)
   {
   }
@@ -962,44 +962,44 @@ LABEL_15:
   _Block_object_dispose(&v57, 8);
 }
 
-- (void)pruneEventsFromStartTime:(double)a3 toEndTime:(double)a4 withCancellationToken:(id)a5 completion:(id)a6
+- (void)pruneEventsFromStartTime:(double)time toEndTime:(double)endTime withCancellationToken:(id)token completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = [NSNumber numberWithDouble:a3];
+  completionCopy = completion;
+  tokenCopy = token;
+  v12 = [NSNumber numberWithDouble:time];
   v16[0] = v12;
-  v13 = [NSNumber numberWithDouble:a4];
+  v13 = [NSNumber numberWithDouble:endTime];
   v16[1] = v13;
   v14 = [NSArray arrayWithObjects:v16 count:2];
   v15 = [NSPredicate predicateWithFormat:@"timestamp BETWEEN %@", v14];
 
-  [(PALServer *)self _pruneEventsMatchingPredicate:v15 withCancellationToken:v11 completion:v10];
+  [(PALServer *)self _pruneEventsMatchingPredicate:v15 withCancellationToken:tokenCopy completion:completionCopy];
 }
 
-- (void)pruneEventsFromAccessor:(id)a3 withCancellationToken:(id)a4 completion:(id)a5
+- (void)pruneEventsFromAccessor:(id)accessor withCancellationToken:(id)token completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [NSPredicate predicateWithFormat:@"eventBody.accessor = %@", a3];
-  [(PALServer *)self _pruneEventsMatchingPredicate:v10 withCancellationToken:v9 completion:v8];
+  completionCopy = completion;
+  tokenCopy = token;
+  accessor = [NSPredicate predicateWithFormat:@"eventBody.accessor = %@", accessor];
+  [(PALServer *)self _pruneEventsMatchingPredicate:accessor withCancellationToken:tokenCopy completion:completionCopy];
 }
 
-- (void)applicationDidUninstall:(id)a3
+- (void)applicationDidUninstall:(id)uninstall
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10000CC2C;
   v4[3] = &unk_100018BF8;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(PALServer *)v5 pruneEventsFromAccessor:v3 withCancellationToken:0 completion:v4];
+  selfCopy = self;
+  uninstallCopy = uninstall;
+  v3 = uninstallCopy;
+  [(PALServer *)selfCopy pruneEventsFromAccessor:v3 withCancellationToken:0 completion:v4];
 }
 
-- (void)exportToFileHandle:(id)a3 completion:(id)a4
+- (void)exportToFileHandle:(id)handle completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  handleCopy = handle;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_serverQueue);
   v25[0] = 0;
   v25[1] = v25;
@@ -1024,23 +1024,23 @@ LABEL_15:
   v17[1] = 3221225472;
   v17[2] = sub_10000CEE4;
   v17[3] = &unk_100018C48;
-  v18 = v6;
-  v19 = self;
+  v18 = handleCopy;
+  selfCopy = self;
   v20 = v12;
-  v21 = v7;
+  v21 = completionCopy;
   v22 = v25;
   v14 = v12;
-  v15 = v7;
-  v16 = v6;
+  v15 = completionCopy;
+  v16 = handleCopy;
   dispatch_async(backgroundQueue, v17);
 
   _Block_object_dispose(v25, 8);
 }
 
-- (void)gatherAndSendDailyAnalyticsWithCancellationToken:(id)a3 completion:(id)a4
+- (void)gatherAndSendDailyAnalyticsWithCancellationToken:(id)token completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_serverQueue);
   if (AnalyticsIsEventUsed())
   {
@@ -1058,8 +1058,8 @@ LABEL_15:
     block[3] = &unk_100018C98;
     block[4] = self;
     v13 = v8;
-    v14 = v6;
-    v15 = v7;
+    v14 = tokenCopy;
+    v15 = completionCopy;
     v16 = v17;
     v10 = v8;
     dispatch_async(backgroundQueue, block);
@@ -1075,7 +1075,7 @@ LABEL_15:
       sub_10000DA40(log);
     }
 
-    (*(v7 + 2))(v7, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 }
 

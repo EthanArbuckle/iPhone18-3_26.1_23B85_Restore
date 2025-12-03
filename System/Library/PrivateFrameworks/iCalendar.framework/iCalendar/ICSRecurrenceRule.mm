@@ -1,35 +1,35 @@
 @interface ICSRecurrenceRule
-+ (id)recurrenceRuleFromICSCString:(const char *)a3 withTokenizer:(id)a4;
-+ (id)recurrenceRuleFromICSString:(id)a3;
-- (ICSRecurrenceRule)initWithCoder:(id)a3;
-- (ICSRecurrenceRule)initWithFrequency:(unint64_t)a3;
-- (id)occurrencesForStartDate:(id)a3 fromDate:(id)a4 toDate:(id)a5 inTimeZone:(id)a6;
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4;
-- (void)cleanUpForStartDate:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setParameterValue:(id)a3 forName:(id)a4;
++ (id)recurrenceRuleFromICSCString:(const char *)string withTokenizer:(id)tokenizer;
++ (id)recurrenceRuleFromICSString:(id)string;
+- (ICSRecurrenceRule)initWithCoder:(id)coder;
+- (ICSRecurrenceRule)initWithFrequency:(unint64_t)frequency;
+- (id)occurrencesForStartDate:(id)date fromDate:(id)fromDate toDate:(id)toDate inTimeZone:(id)zone;
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string;
+- (void)cleanUpForStartDate:(id)date;
+- (void)encodeWithCoder:(id)coder;
+- (void)setParameterValue:(id)value forName:(id)name;
 @end
 
 @implementation ICSRecurrenceRule
 
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string
 {
-  v63 = a4;
-  v6 = [MEMORY[0x277CBEB18] array];
+  stringCopy = string;
+  array = [MEMORY[0x277CBEB18] array];
   v7 = [(ICSRecurrenceRule *)self freq]- 1;
   if (v7 <= 6)
   {
-    [v6 addObject:off_27A64C198[v7]];
+    [array addObject:off_27A64C198[v7]];
   }
 
-  v8 = [(ICSRecurrenceRule *)self interval];
+  interval = [(ICSRecurrenceRule *)self interval];
 
-  if (v8)
+  if (interval)
   {
     v9 = MEMORY[0x277CCACA8];
-    v10 = [(ICSRecurrenceRule *)self interval];
-    v11 = [v9 stringWithFormat:@"INTERVAL=%ld", objc_msgSend(v10, "integerValue")];
-    [v6 addObject:v11];
+    interval2 = [(ICSRecurrenceRule *)self interval];
+    v11 = [v9 stringWithFormat:@"INTERVAL=%ld", objc_msgSend(interval2, "integerValue")];
+    [array addObject:v11];
   }
 
   v12 = [(ICSRecurrenceRule *)self count];
@@ -39,164 +39,164 @@
     v13 = MEMORY[0x277CCACA8];
     v14 = [(ICSRecurrenceRule *)self count];
     v15 = [v13 stringWithFormat:@"COUNT=%ld", objc_msgSend(v14, "integerValue")];
-    [v6 addObject:v15];
+    [array addObject:v15];
   }
 
-  v16 = [(ICSRecurrenceRule *)self until];
+  until = [(ICSRecurrenceRule *)self until];
 
-  if (v16)
+  if (until)
   {
     v17 = [[ICSStringWriter alloc] initWithString:@"UNTIL="];
-    v18 = [(ICSRecurrenceRule *)self until];
-    [v18 _ICSStringWithOptions:a3 appendingToString:v17];
+    until2 = [(ICSRecurrenceRule *)self until];
+    [until2 _ICSStringWithOptions:options appendingToString:v17];
 
-    v19 = [(ICSStringWriter *)v17 result];
-    [v6 addObject:v19];
+    result = [(ICSStringWriter *)v17 result];
+    [array addObject:result];
   }
 
-  v20 = [(ICSRecurrenceRule *)self bymonth];
+  bymonth = [(ICSRecurrenceRule *)self bymonth];
 
-  if (v20)
+  if (bymonth)
   {
     v21 = [[ICSStringWriter alloc] initWithString:@"BYMONTH="];
-    v22 = [(ICSRecurrenceRule *)self bymonth];
-    [v22 _ICSStringWithOptions:a3 appendingToString:v21];
+    bymonth2 = [(ICSRecurrenceRule *)self bymonth];
+    [bymonth2 _ICSStringWithOptions:options appendingToString:v21];
 
-    v23 = [(ICSStringWriter *)v21 result];
-    [v6 addObject:v23];
+    result2 = [(ICSStringWriter *)v21 result];
+    [array addObject:result2];
   }
 
-  v24 = [(ICSRecurrenceRule *)self byweekno];
+  byweekno = [(ICSRecurrenceRule *)self byweekno];
 
-  if (v24)
+  if (byweekno)
   {
     v25 = [[ICSStringWriter alloc] initWithString:@"BYWEEKNO="];
-    v26 = [(ICSRecurrenceRule *)self byweekno];
-    [v26 _ICSStringWithOptions:a3 appendingToString:v25];
+    byweekno2 = [(ICSRecurrenceRule *)self byweekno];
+    [byweekno2 _ICSStringWithOptions:options appendingToString:v25];
 
-    v27 = [(ICSStringWriter *)v25 result];
-    [v6 addObject:v27];
+    result3 = [(ICSStringWriter *)v25 result];
+    [array addObject:result3];
   }
 
-  v28 = [(ICSRecurrenceRule *)self bysetpos];
+  bysetpos = [(ICSRecurrenceRule *)self bysetpos];
 
-  if (v28)
+  if (bysetpos)
   {
     v29 = [[ICSStringWriter alloc] initWithString:@"BYSETPOS="];
-    v30 = [(ICSRecurrenceRule *)self bysetpos];
-    [v30 _ICSStringWithOptions:a3 appendingToString:v29];
+    bysetpos2 = [(ICSRecurrenceRule *)self bysetpos];
+    [bysetpos2 _ICSStringWithOptions:options appendingToString:v29];
 
-    v31 = [(ICSStringWriter *)v29 result];
-    [v6 addObject:v31];
+    result4 = [(ICSStringWriter *)v29 result];
+    [array addObject:result4];
   }
 
-  v32 = [(ICSRecurrenceRule *)self byyearday];
+  byyearday = [(ICSRecurrenceRule *)self byyearday];
 
-  if (v32)
+  if (byyearday)
   {
     v33 = [[ICSStringWriter alloc] initWithString:@"BYYEARDAY="];
-    v34 = [(ICSRecurrenceRule *)self byyearday];
-    [v34 _ICSStringWithOptions:a3 appendingToString:v33];
+    byyearday2 = [(ICSRecurrenceRule *)self byyearday];
+    [byyearday2 _ICSStringWithOptions:options appendingToString:v33];
 
-    v35 = [(ICSStringWriter *)v33 result];
-    [v6 addObject:v35];
+    result5 = [(ICSStringWriter *)v33 result];
+    [array addObject:result5];
   }
 
-  v36 = [(ICSRecurrenceRule *)self bymonthday];
+  bymonthday = [(ICSRecurrenceRule *)self bymonthday];
 
-  if (v36)
+  if (bymonthday)
   {
     v37 = [[ICSStringWriter alloc] initWithString:@"BYMONTHDAY="];
-    v38 = [(ICSRecurrenceRule *)self bymonthday];
-    [v38 _ICSStringWithOptions:a3 appendingToString:v37];
+    bymonthday2 = [(ICSRecurrenceRule *)self bymonthday];
+    [bymonthday2 _ICSStringWithOptions:options appendingToString:v37];
 
-    v39 = [(ICSStringWriter *)v37 result];
-    [v6 addObject:v39];
+    result6 = [(ICSStringWriter *)v37 result];
+    [array addObject:result6];
   }
 
-  v40 = [(ICSRecurrenceRule *)self byday];
+  byday = [(ICSRecurrenceRule *)self byday];
 
-  if (v40)
+  if (byday)
   {
     v41 = [[ICSStringWriter alloc] initWithString:@"BYDAY="];
-    v42 = [(ICSRecurrenceRule *)self byday];
-    [v42 _ICSStringWithOptions:a3 appendingToString:v41];
+    byday2 = [(ICSRecurrenceRule *)self byday];
+    [byday2 _ICSStringWithOptions:options appendingToString:v41];
 
-    v43 = [(ICSStringWriter *)v41 result];
-    [v6 addObject:v43];
+    result7 = [(ICSStringWriter *)v41 result];
+    [array addObject:result7];
   }
 
-  v44 = [(ICSRecurrenceRule *)self byhour];
+  byhour = [(ICSRecurrenceRule *)self byhour];
 
-  if (v44)
+  if (byhour)
   {
     v45 = [[ICSStringWriter alloc] initWithString:@"BYHOUR="];
-    v46 = [(ICSRecurrenceRule *)self byhour];
-    [v46 _ICSStringWithOptions:a3 appendingToString:v45];
+    byhour2 = [(ICSRecurrenceRule *)self byhour];
+    [byhour2 _ICSStringWithOptions:options appendingToString:v45];
 
-    v47 = [(ICSStringWriter *)v45 result];
-    [v6 addObject:v47];
+    result8 = [(ICSStringWriter *)v45 result];
+    [array addObject:result8];
   }
 
-  v48 = [(ICSRecurrenceRule *)self byminute];
+  byminute = [(ICSRecurrenceRule *)self byminute];
 
-  if (v48)
+  if (byminute)
   {
     v49 = [[ICSStringWriter alloc] initWithString:@"BYMINUTE="];
-    v50 = [(ICSRecurrenceRule *)self byminute];
-    [v50 _ICSStringWithOptions:a3 appendingToString:v49];
+    byminute2 = [(ICSRecurrenceRule *)self byminute];
+    [byminute2 _ICSStringWithOptions:options appendingToString:v49];
 
-    v51 = [(ICSStringWriter *)v49 result];
-    [v6 addObject:v51];
+    result9 = [(ICSStringWriter *)v49 result];
+    [array addObject:result9];
   }
 
-  v52 = [(ICSRecurrenceRule *)self bysecond];
+  bysecond = [(ICSRecurrenceRule *)self bysecond];
 
-  if (v52)
+  if (bysecond)
   {
     v53 = [[ICSStringWriter alloc] initWithString:@"BYSECOND="];
-    v54 = [(ICSRecurrenceRule *)self bysecond];
-    [v54 _ICSStringWithOptions:a3 appendingToString:v53];
+    bysecond2 = [(ICSRecurrenceRule *)self bysecond];
+    [bysecond2 _ICSStringWithOptions:options appendingToString:v53];
 
-    v55 = [(ICSStringWriter *)v53 result];
-    [v6 addObject:v55];
+    result10 = [(ICSStringWriter *)v53 result];
+    [array addObject:result10];
   }
 
-  v56 = [(ICSRecurrenceRule *)self wkst];
+  wkst = [(ICSRecurrenceRule *)self wkst];
 
-  if (v56)
+  if (wkst)
   {
     v57 = [[ICSStringWriter alloc] initWithString:@"WKST="];
-    v58 = [(ICSRecurrenceRule *)self wkst];
-    v59 = iCalendarRepresentationForCALDay([v58 integerValue]);
+    wkst2 = [(ICSRecurrenceRule *)self wkst];
+    v59 = iCalendarRepresentationForCALDay([wkst2 integerValue]);
     [(ICSStringWriter *)v57 appendString:v59];
 
-    v60 = [(ICSStringWriter *)v57 result];
-    [v6 addObject:v60];
+    result11 = [(ICSStringWriter *)v57 result];
+    [array addObject:result11];
   }
 
-  if ((a3 & 8) != 0)
+  if ((options & 8) != 0)
   {
-    v61 = [v6 sortedArrayUsingSelector:sel_compare_];
+    v61 = [array sortedArrayUsingSelector:sel_compare_];
     v62 = [v61 componentsJoinedByString:@""];;
-    [v63 appendString:v62];
+    [stringCopy appendString:v62];
   }
 
   else
   {
-    v61 = [v6 componentsJoinedByString:@""];;
-    [v63 appendString:v61];
+    v61 = [array componentsJoinedByString:@""];;
+    [stringCopy appendString:v61];
   }
 }
 
-+ (id)recurrenceRuleFromICSString:(id)a3
++ (id)recurrenceRuleFromICSString:(id)string
 {
-  v3 = [a3 UTF8String];
+  uTF8String = [string UTF8String];
 
-  return [ICSRecurrenceRule recurrenceRuleFromICSCString:v3 withTokenizer:0];
+  return [ICSRecurrenceRule recurrenceRuleFromICSCString:uTF8String withTokenizer:0];
 }
 
-- (ICSRecurrenceRule)initWithFrequency:(unint64_t)a3
+- (ICSRecurrenceRule)initWithFrequency:(unint64_t)frequency
 {
   v7.receiver = self;
   v7.super_class = ICSRecurrenceRule;
@@ -204,20 +204,20 @@
   v5 = v4;
   if (v4)
   {
-    [(ICSRecurrenceRule *)v4 setFreq:a3];
+    [(ICSRecurrenceRule *)v4 setFreq:frequency];
   }
 
   return v5;
 }
 
-- (void)setParameterValue:(id)a3 forName:(id)a4
+- (void)setParameterValue:(id)value forName:(id)name
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = v12;
-  v8 = v6;
+  valueCopy = value;
+  nameCopy = name;
+  v7 = valueCopy;
+  v8 = nameCopy;
   parameters = self->_parameters;
-  if (v12)
+  if (valueCopy)
   {
     if (!parameters)
     {
@@ -225,7 +225,7 @@
       v11 = self->_parameters;
       self->_parameters = v10;
 
-      v7 = v12;
+      v7 = valueCopy;
       parameters = self->_parameters;
     }
 
@@ -238,17 +238,17 @@
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   freq_low = LODWORD(self->_freq);
-  v5 = a3;
-  [v5 encodeInt:freq_low forKey:@"Frequency"];
-  [v5 encodeObject:self->_parameters forKey:@"Parameters"];
+  coderCopy = coder;
+  [coderCopy encodeInt:freq_low forKey:@"Frequency"];
+  [coderCopy encodeObject:self->_parameters forKey:@"Parameters"];
 }
 
-- (ICSRecurrenceRule)initWithCoder:(id)a3
+- (ICSRecurrenceRule)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = ICSRecurrenceRule;
   v5 = [(ICSRecurrenceRule *)&v9 init];
@@ -259,8 +259,8 @@
       [ICSRecurrenceRule initWithCoder:];
     }
 
-    v5->_freq = [v4 decodeIntForKey:@"Frequency"];
-    v6 = [v4 decodeObjectOfClasses:initWithCoder__parametersPermittedList forKey:@"Parameters"];
+    v5->_freq = [coderCopy decodeIntForKey:@"Frequency"];
+    v6 = [coderCopy decodeObjectOfClasses:initWithCoder__parametersPermittedList forKey:@"Parameters"];
     parameters = v5->_parameters;
     v5->_parameters = v6;
   }
@@ -284,49 +284,49 @@ void __35__ICSRecurrenceRule_initWithCoder___block_invoke()
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (id)occurrencesForStartDate:(id)a3 fromDate:(id)a4 toDate:(id)a5 inTimeZone:(id)a6
+- (id)occurrencesForStartDate:(id)date fromDate:(id)fromDate toDate:(id)toDate inTimeZone:(id)zone
 {
   v115 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dateCopy = date;
+  fromDateCopy = fromDate;
+  toDateCopy = toDate;
+  zoneCopy = zone;
   v14 = objc_alloc(MEMORY[0x277CBEA80]);
   v15 = *MEMORY[0x277CBE5C0];
   v16 = [v14 initWithCalendarIdentifier:*MEMORY[0x277CBE5C0]];
-  [v16 setTimeZone:v13];
-  v96 = v10;
-  v17 = [v10 components];
-  v18 = [v16 dateFromComponents:v17];
+  [v16 setTimeZone:zoneCopy];
+  v96 = dateCopy;
+  components = [dateCopy components];
+  v18 = [v16 dateFromComponents:components];
 
-  v19 = v11;
-  v20 = [v11 components];
-  v21 = [v16 dateFromComponents:v20];
+  v19 = fromDateCopy;
+  components2 = [fromDateCopy components];
+  v21 = [v16 dateFromComponents:components2];
   v95 = v18;
   v100 = [v18 laterDate:v21];
 
-  v22 = [v12 components];
+  components3 = [toDateCopy components];
   v101 = v16;
-  v23 = [v16 dateFromComponents:v22];
+  v23 = [v16 dateFromComponents:components3];
 
-  v24 = [(ICSRecurrenceRule *)self until];
+  until = [(ICSRecurrenceRule *)self until];
 
-  v99 = self;
-  if (v24)
+  selfCopy = self;
+  if (until)
   {
-    v25 = [(ICSRecurrenceRule *)self until];
+    until2 = [(ICSRecurrenceRule *)self until];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v27 = [objc_alloc(MEMORY[0x277CBEA80]) initWithCalendarIdentifier:v15];
+      until4 = [objc_alloc(MEMORY[0x277CBEA80]) initWithCalendarIdentifier:v15];
       v28 = [MEMORY[0x277CBEBB0] timeZoneWithName:@"UTC"];
-      [v27 setTimeZone:v28];
+      [until4 setTimeZone:v28];
 
-      v29 = [(ICSRecurrenceRule *)self until];
-      v30 = [v29 components];
-      v31 = [v27 dateFromComponents:v30];
+      until3 = [(ICSRecurrenceRule *)self until];
+      components4 = [until3 components];
+      v31 = [until4 dateFromComponents:components4];
       v32 = [v23 earlierDate:v31];
 
       v23 = v31;
@@ -334,72 +334,72 @@ void __35__ICSRecurrenceRule_initWithCoder___block_invoke()
 
     else
     {
-      v27 = [(ICSRecurrenceRule *)self until];
-      v29 = [v27 components];
-      v30 = [v16 dateFromComponents:v29];
-      v32 = [v23 earlierDate:v30];
+      until4 = [(ICSRecurrenceRule *)self until];
+      until3 = [until4 components];
+      components4 = [v16 dateFromComponents:until3];
+      v32 = [v23 earlierDate:components4];
     }
 
     v23 = v32;
   }
 
   v33 = v96;
-  v34 = v99;
-  v35 = [(ICSRecurrenceRule *)v99 interval];
-  if (v35)
+  v34 = selfCopy;
+  interval = [(ICSRecurrenceRule *)selfCopy interval];
+  if (interval)
   {
-    v36 = [(ICSRecurrenceRule *)v99 interval];
-    v98 = [v36 integerValue];
+    interval2 = [(ICSRecurrenceRule *)selfCopy interval];
+    integerValue = [interval2 integerValue];
 
-    v34 = v99;
+    v34 = selfCopy;
   }
 
   else
   {
-    v98 = 1;
+    integerValue = 1;
   }
 
   v37 = [(ICSRecurrenceRule *)v34 count];
-  v93 = v13;
-  v94 = v12;
+  v93 = zoneCopy;
+  v94 = toDateCopy;
   v103 = v23;
   if (v37)
   {
     v38 = [(ICSRecurrenceRule *)v34 count];
-    v104 = [v38 unsignedIntegerValue];
+    unsignedIntegerValue = [v38 unsignedIntegerValue];
   }
 
   else
   {
-    v104 = -1;
+    unsignedIntegerValue = -1;
   }
 
-  v39 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v40 = v100;
   v41 = v101;
   if ([(ICSRecurrenceRule *)v34 freq]== 7)
   {
-    v42 = [(ICSRecurrenceRule *)v34 bymonth];
-    v43 = [v42 count];
+    bymonth = [(ICSRecurrenceRule *)v34 bymonth];
+    v43 = [bymonth count];
 
     if (v43 == 1)
     {
-      v44 = [(ICSRecurrenceRule *)v34 bymonthday];
-      v45 = [v44 count];
+      bymonthday = [(ICSRecurrenceRule *)v34 bymonthday];
+      v45 = [bymonthday count];
 
       if (v45)
       {
         v46 = [v101 components:228 fromDate:v95];
-        v47 = [(ICSRecurrenceRule *)v34 bymonth];
-        v48 = [v47 objectAtIndex:0];
+        bymonth2 = [(ICSRecurrenceRule *)v34 bymonth];
+        v48 = [bymonth2 objectAtIndex:0];
         [v46 setMonth:{objc_msgSend(v48, "integerValue")}];
 
         v49 = v95;
-        v50 = [v46 year];
-        if ([v39 count] < v104)
+        year = [v46 year];
+        if ([array count] < unsignedIntegerValue)
         {
           v92 = v19;
-          v51 = v99;
+          v51 = selfCopy;
           while (1)
           {
             if ([v49 compare:v103] == 1)
@@ -407,30 +407,30 @@ void __35__ICSRecurrenceRule_initWithCoder___block_invoke()
               goto LABEL_52;
             }
 
-            v97 = v50;
-            v52 = [(ICSRecurrenceRule *)v51 byday];
-            v53 = [v52 count];
+            v97 = year;
+            byday = [(ICSRecurrenceRule *)v51 byday];
+            v53 = [byday count];
 
             if (!v53)
             {
               break;
             }
 
-            v54 = [(ICSRecurrenceRule *)v51 byday];
-            if ([v54 count] != 1)
+            byday2 = [(ICSRecurrenceRule *)v51 byday];
+            if ([byday2 count] != 1)
             {
               goto LABEL_49;
             }
 
             v55 = v33;
-            v56 = [(ICSRecurrenceRule *)v51 byday];
-            v57 = [v56 objectAtIndex:0];
-            v58 = [v57 number];
+            byday3 = [(ICSRecurrenceRule *)v51 byday];
+            v57 = [byday3 objectAtIndex:0];
+            number = [v57 number];
 
-            if (!v58)
+            if (!number)
             {
-              v64 = [(ICSRecurrenceRule *)v51 byday];
-              v54 = [v64 objectAtIndex:0];
+              byday4 = [(ICSRecurrenceRule *)v51 byday];
+              byday2 = [byday4 objectAtIndex:0];
 
               v107 = 0u;
               v108 = 0u;
@@ -456,18 +456,18 @@ void __35__ICSRecurrenceRule_initWithCoder___block_invoke()
                     [v46 setDay:{objc_msgSend(*(*(&v105 + 1) + 8 * i), "integerValue")}];
                     v49 = [v41 dateFromComponents:v46];
 
-                    if ([v39 count] < v104 && objc_msgSend(v49, "compare:", v40) != -1 && objc_msgSend(v49, "compare:", v103) != 1)
+                    if ([array count] < unsignedIntegerValue && objc_msgSend(v49, "compare:", v40) != -1 && objc_msgSend(v49, "compare:", v103) != 1)
                     {
-                      v70 = [v54 weekday];
+                      weekday = [byday2 weekday];
                       v71 = [v41 components:512 fromDate:v49];
-                      v72 = [v71 weekday];
+                      weekday2 = [v71 weekday];
 
-                      v73 = v70 == v72;
+                      v73 = weekday == weekday2;
                       v40 = v100;
                       v41 = v101;
                       if (v73)
                       {
-                        [v39 addObject:v49];
+                        [array addObject:v49];
                       }
                     }
                   }
@@ -486,12 +486,12 @@ void __35__ICSRecurrenceRule_initWithCoder___block_invoke()
             v19 = v92;
 LABEL_50:
             [v46 setDay:1];
-            v50 = v97 + v98;
-            [v46 setYear:v97 + v98];
+            year = v97 + integerValue;
+            [v46 setYear:v97 + integerValue];
             v74 = [v41 dateFromComponents:v46];
 
             v49 = v74;
-            if ([v39 count] >= v104)
+            if ([array count] >= unsignedIntegerValue)
             {
               goto LABEL_53;
             }
@@ -501,8 +501,8 @@ LABEL_50:
           v112 = 0u;
           v109 = 0u;
           v110 = 0u;
-          v54 = [(ICSRecurrenceRule *)v51 bymonthday];
-          v59 = [v54 countByEnumeratingWithState:&v109 objects:v114 count:16];
+          byday2 = [(ICSRecurrenceRule *)v51 bymonthday];
+          v59 = [byday2 countByEnumeratingWithState:&v109 objects:v114 count:16];
           if (v59)
           {
             v60 = v59;
@@ -514,26 +514,26 @@ LABEL_50:
                 v63 = v49;
                 if (*v110 != v61)
                 {
-                  objc_enumerationMutation(v54);
+                  objc_enumerationMutation(byday2);
                 }
 
                 [v46 setDay:{objc_msgSend(*(*(&v109 + 1) + 8 * j), "integerValue")}];
                 v49 = [v41 dateFromComponents:v46];
 
-                if ([v39 count] < v104 && objc_msgSend(v49, "compare:", v40) != -1 && objc_msgSend(v49, "compare:", v103) != 1)
+                if ([array count] < unsignedIntegerValue && objc_msgSend(v49, "compare:", v40) != -1 && objc_msgSend(v49, "compare:", v103) != 1)
                 {
-                  [v39 addObject:v49];
+                  [array addObject:v49];
                 }
               }
 
-              v60 = [v54 countByEnumeratingWithState:&v109 objects:v114 count:16];
+              v60 = [byday2 countByEnumeratingWithState:&v109 objects:v114 count:16];
             }
 
             while (v60);
 LABEL_48:
             v33 = v96;
             v19 = v92;
-            v51 = v99;
+            v51 = selfCopy;
           }
 
 LABEL_49:
@@ -548,50 +548,50 @@ LABEL_53:
 
       else
       {
-        v75 = [(ICSRecurrenceRule *)v34 byday];
-        if ([v75 count] == 1)
+        byday5 = [(ICSRecurrenceRule *)v34 byday];
+        if ([byday5 count] == 1)
         {
-          v76 = [(ICSRecurrenceRule *)v34 byday];
-          v77 = [v76 objectAtIndex:0];
-          v78 = [v77 number];
+          byday6 = [(ICSRecurrenceRule *)v34 byday];
+          v77 = [byday6 objectAtIndex:0];
+          number2 = [v77 number];
 
-          if (!v78)
+          if (!number2)
           {
             goto LABEL_66;
           }
 
-          v75 = [v101 components:228 fromDate:v95];
-          v79 = [(ICSRecurrenceRule *)v34 bymonth];
-          v80 = [v79 objectAtIndex:0];
-          [v75 setMonth:{objc_msgSend(v80, "integerValue")}];
+          byday5 = [v101 components:228 fromDate:v95];
+          bymonth3 = [(ICSRecurrenceRule *)v34 bymonth];
+          v80 = [bymonth3 objectAtIndex:0];
+          [byday5 setMonth:{objc_msgSend(v80, "integerValue")}];
 
-          v81 = [(ICSRecurrenceRule *)v34 byday];
-          v82 = [v81 objectAtIndex:0];
-          [v75 setWeekday:{objc_msgSend(v82, "weekday")}];
+          byday7 = [(ICSRecurrenceRule *)v34 byday];
+          v82 = [byday7 objectAtIndex:0];
+          [byday5 setWeekday:{objc_msgSend(v82, "weekday")}];
 
-          v83 = [(ICSRecurrenceRule *)v34 byday];
-          v84 = [v83 objectAtIndex:0];
-          v85 = [v84 number];
-          [v75 setWeekdayOrdinal:{objc_msgSend(v85, "integerValue")}];
+          byday8 = [(ICSRecurrenceRule *)v34 byday];
+          v84 = [byday8 objectAtIndex:0];
+          number3 = [v84 number];
+          [byday5 setWeekdayOrdinal:{objc_msgSend(number3, "integerValue")}];
 
-          v86 = [v101 dateFromComponents:v75];
-          v87 = [v75 year];
-          if ([v39 count] < v104)
+          v86 = [v101 dateFromComponents:byday5];
+          year2 = [byday5 year];
+          if ([array count] < unsignedIntegerValue)
           {
-            v88 = v87 + v98;
+            v88 = year2 + integerValue;
             while ([v86 compare:v103] != 1)
             {
               if ([v86 compare:v100] != -1)
               {
-                [v39 addObject:v86];
+                [array addObject:v86];
               }
 
-              [v75 setYear:v88];
-              v89 = [v101 dateFromComponents:v75];
+              [byday5 setYear:v88];
+              v89 = [v101 dateFromComponents:byday5];
 
-              v88 += v98;
+              v88 += integerValue;
               v86 = v89;
-              if ([v39 count] >= v104)
+              if ([array count] >= unsignedIntegerValue)
               {
                 goto LABEL_64;
               }
@@ -609,24 +609,24 @@ LABEL_66:
 
   v90 = *MEMORY[0x277D85DE8];
 
-  return v39;
+  return array;
 }
 
-+ (id)recurrenceRuleFromICSCString:(const char *)a3 withTokenizer:(id)a4
++ (id)recurrenceRuleFromICSCString:(const char *)string withTokenizer:(id)tokenizer
 {
-  v5 = a4;
+  tokenizerCopy = tokenizer;
   v6 = objc_alloc_init(ICSRecurrenceRule);
-  if (a3)
+  if (string)
   {
     v7 = 0x27A64B000uLL;
-    if (strncmp_s(a3, "FREQ=", 5uLL) || strlen(a3) <= 5)
+    if (strncmp_s(string, "FREQ=", 5uLL) || strlen(string) <= 5)
     {
-      [ICSLogger logAtLevel:3 forTokenizer:v5 message:@"Invalid RRULE %s", a3];
-      a3 = 0;
+      [ICSLogger logAtLevel:3 forTokenizer:tokenizerCopy message:@"Invalid RRULE %s", string];
+      string = 0;
       goto LABEL_5;
     }
 
-    v9 = strdup(a3);
+    v9 = strdup(string);
     i = v9 + 5;
     if (strncmp_s("YEARLY", v9 + 5, 6uLL))
     {
@@ -652,7 +652,7 @@ LABEL_66:
           {
             if (strncmp_s("SECONDLY", i, 8uLL))
             {
-              [ICSLogger logAtLevel:3 forTokenizer:v5 message:@"RRULE %s Unrecognized frequency %s", a3, i];
+              [ICSLogger logAtLevel:3 forTokenizer:tokenizerCopy message:@"RRULE %s Unrecognized frequency %s", string, i];
               goto LABEL_22;
             }
 
@@ -696,7 +696,7 @@ LABEL_22:
 LABEL_257:
                   free(v9);
                   v6 = v6;
-                  a3 = v6;
+                  string = v6;
                   goto LABEL_5;
                 }
 
@@ -723,7 +723,7 @@ LABEL_257:
                   goto LABEL_94;
                 }
 
-                [*(v7 + 1496) logAtLevel:3 forTokenizer:v5 message:{@"Invalid COUNT value in recurrence:%s", a3}];
+                [*(v7 + 1496) logAtLevel:3 forTokenizer:tokenizerCopy message:{@"Invalid COUNT value in recurrence:%s", string}];
               }
 
               if (strncmp_s("UNTIL=", i, 6uLL))
@@ -756,7 +756,7 @@ LABEL_94:
                 if (!strncmp_s("BYMONTH=", i, 8uLL))
                 {
                   v25 = i + 8;
-                  v16 = [MEMORY[0x277CBEB18] array];
+                  array = [MEMORY[0x277CBEB18] array];
 LABEL_81:
                   for (i = v25; ; ++i)
                   {
@@ -778,13 +778,13 @@ LABEL_81:
                       v27 = atoi(v25);
                       if ((v27 - 1) > 0xB)
                       {
-                        [*(v7 + 1496) logAtLevel:3 forTokenizer:v5 message:{@"RRULE %s Bad value in BYMONTH %d", a3, v27}];
+                        [*(v7 + 1496) logAtLevel:3 forTokenizer:tokenizerCopy message:{@"RRULE %s Bad value in BYMONTH %d", string, v27}];
                       }
 
                       else
                       {
                         v28 = [MEMORY[0x277CCABB0] numberWithInt:v27];
-                        [v16 addObject:v28];
+                        [array addObject:v28];
                       }
 
                       v25 = i + 1;
@@ -795,18 +795,18 @@ LABEL_81:
                   v36 = atoi(v25);
                   if ((v36 - 1) > 0xB)
                   {
-                    [*(v7 + 1496) logAtLevel:3 forTokenizer:v5 message:{@"RRULE %s Bad value in BYMONTH %d", a3, v36}];
+                    [*(v7 + 1496) logAtLevel:3 forTokenizer:tokenizerCopy message:{@"RRULE %s Bad value in BYMONTH %d", string, v36}];
                   }
 
                   else
                   {
                     v37 = [MEMORY[0x277CCABB0] numberWithInt:v36];
-                    [v16 addObject:v37];
+                    [array addObject:v37];
                   }
 
-                  if ([v16 count])
+                  if ([array count])
                   {
-                    [(ICSRecurrenceRule *)v6 setBymonth:v16];
+                    [(ICSRecurrenceRule *)v6 setBymonth:array];
                   }
 
                   goto LABEL_252;
@@ -815,7 +815,7 @@ LABEL_81:
                 if (!strncmp_s("BYYEARDAY=", i, 0xAuLL))
                 {
                   v31 = i + 10;
-                  v16 = [MEMORY[0x277CBEB18] array];
+                  array = [MEMORY[0x277CBEB18] array];
 LABEL_96:
                   for (i = v31; ; ++i)
                   {
@@ -848,12 +848,12 @@ LABEL_96:
                       if (v33 && v34 <= 0x16E)
                       {
                         v35 = [MEMORY[0x277CCABB0] numberWithInt:v33];
-                        [v16 addObject:v35];
+                        [array addObject:v35];
                       }
 
                       else
                       {
-                        [*(v7 + 1496) logAtLevel:3 forTokenizer:v5 message:{@"RRULE %s Bad value in BYYEARDAY %d", a3, v33}];
+                        [*(v7 + 1496) logAtLevel:3 forTokenizer:tokenizerCopy message:{@"RRULE %s Bad value in BYYEARDAY %d", string, v33}];
                       }
 
                       v31 = i + 1;
@@ -875,17 +875,17 @@ LABEL_96:
                   if (v43 && v44 <= 0x16E)
                   {
                     v45 = [MEMORY[0x277CCABB0] numberWithInt:v43];
-                    [v16 addObject:v45];
+                    [array addObject:v45];
                   }
 
                   else
                   {
-                    [*(v7 + 1496) logAtLevel:3 forTokenizer:v5 message:{@"RRULE %s Bad value in BYYEARDAY %d", a3, v43}];
+                    [*(v7 + 1496) logAtLevel:3 forTokenizer:tokenizerCopy message:{@"RRULE %s Bad value in BYYEARDAY %d", string, v43}];
                   }
 
-                  if ([v16 count])
+                  if ([array count])
                   {
-                    [(ICSRecurrenceRule *)v6 setByyearday:v16];
+                    [(ICSRecurrenceRule *)v6 setByyearday:array];
                   }
 
                   goto LABEL_252;
@@ -894,7 +894,7 @@ LABEL_96:
                 if (!strncmp_s("BYSETPOS=", i, 9uLL))
                 {
                   v38 = i + 9;
-                  v16 = [MEMORY[0x277CBEB18] array];
+                  array = [MEMORY[0x277CBEB18] array];
 LABEL_116:
                   for (i = v38; ; ++i)
                   {
@@ -927,12 +927,12 @@ LABEL_116:
                       if (v40 && v41 <= 0x16E)
                       {
                         v42 = [MEMORY[0x277CCABB0] numberWithInt:v40];
-                        [v16 addObject:v42];
+                        [array addObject:v42];
                       }
 
                       else
                       {
-                        [*(v7 + 1496) logAtLevel:3 forTokenizer:v5 message:{@"RRULE %s Bad value in BYSETPOS %d", a3, v40}];
+                        [*(v7 + 1496) logAtLevel:3 forTokenizer:tokenizerCopy message:{@"RRULE %s Bad value in BYSETPOS %d", string, v40}];
                       }
 
                       v38 = i + 1;
@@ -954,17 +954,17 @@ LABEL_116:
                   if (v51 && v52 <= 0x16E)
                   {
                     v53 = [MEMORY[0x277CCABB0] numberWithInt:v51];
-                    [v16 addObject:v53];
+                    [array addObject:v53];
                   }
 
                   else
                   {
-                    [*(v7 + 1496) logAtLevel:3 forTokenizer:v5 message:{@"RRULE %s Bad value in BYSETPOS %d", a3, v51}];
+                    [*(v7 + 1496) logAtLevel:3 forTokenizer:tokenizerCopy message:{@"RRULE %s Bad value in BYSETPOS %d", string, v51}];
                   }
 
-                  if ([v16 count])
+                  if ([array count])
                   {
-                    [(ICSRecurrenceRule *)v6 setBysetpos:v16];
+                    [(ICSRecurrenceRule *)v6 setBysetpos:array];
                   }
 
                   goto LABEL_252;
@@ -973,7 +973,7 @@ LABEL_116:
                 if (!strncmp_s("BYMONTHDAY=", i, 0xBuLL))
                 {
                   v46 = i + 11;
-                  v16 = [MEMORY[0x277CBEB18] array];
+                  array = [MEMORY[0x277CBEB18] array];
 LABEL_140:
                   for (i = v46; ; ++i)
                   {
@@ -1006,12 +1006,12 @@ LABEL_140:
                       if (v48 && v49 <= 0x1F)
                       {
                         v50 = [MEMORY[0x277CCABB0] numberWithInt:v48];
-                        [v16 addObject:v50];
+                        [array addObject:v50];
                       }
 
                       else
                       {
-                        [*(v7 + 1496) logAtLevel:3 forTokenizer:v5 message:{@"RRULE %s Bad value in BYMONTHDAY %d", a3, v48}];
+                        [*(v7 + 1496) logAtLevel:3 forTokenizer:tokenizerCopy message:{@"RRULE %s Bad value in BYMONTHDAY %d", string, v48}];
                       }
 
                       v46 = i + 1;
@@ -1033,17 +1033,17 @@ LABEL_140:
                   if (v59 && v60 <= 0x1F)
                   {
                     v61 = [MEMORY[0x277CCABB0] numberWithInt:v59];
-                    [v16 addObject:v61];
+                    [array addObject:v61];
                   }
 
                   else
                   {
-                    [*(v7 + 1496) logAtLevel:3 forTokenizer:v5 message:{@"RRULE %s Bad value in BYMONTHDAY %d", a3, v59}];
+                    [*(v7 + 1496) logAtLevel:3 forTokenizer:tokenizerCopy message:{@"RRULE %s Bad value in BYMONTHDAY %d", string, v59}];
                   }
 
-                  if ([v16 count])
+                  if ([array count])
                   {
-                    [(ICSRecurrenceRule *)v6 setBymonthday:v16];
+                    [(ICSRecurrenceRule *)v6 setBymonthday:array];
                   }
 
                   goto LABEL_252;
@@ -1052,7 +1052,7 @@ LABEL_140:
                 if (!strncmp_s("BYWEEKNO=", i, 9uLL))
                 {
                   v54 = i + 9;
-                  v16 = [MEMORY[0x277CBEB18] array];
+                  array = [MEMORY[0x277CBEB18] array];
 LABEL_164:
                   for (i = v54; ; ++i)
                   {
@@ -1085,12 +1085,12 @@ LABEL_164:
                       if (v56 && v57 <= 0x35)
                       {
                         v58 = [MEMORY[0x277CCABB0] numberWithInt:v56];
-                        [v16 addObject:v58];
+                        [array addObject:v58];
                       }
 
                       else
                       {
-                        [*(v7 + 1496) logAtLevel:3 forTokenizer:v5 message:{@"RRULE %s Bad value in BYWEEKNO %d", a3, v56}];
+                        [*(v7 + 1496) logAtLevel:3 forTokenizer:tokenizerCopy message:{@"RRULE %s Bad value in BYWEEKNO %d", string, v56}];
                       }
 
                       v54 = i + 1;
@@ -1112,17 +1112,17 @@ LABEL_164:
                   if (v67 && v68 <= 0x35)
                   {
                     v69 = [MEMORY[0x277CCABB0] numberWithInt:v67];
-                    [v16 addObject:v69];
+                    [array addObject:v69];
                   }
 
                   else
                   {
-                    [*(v7 + 1496) logAtLevel:3 forTokenizer:v5 message:{@"RRULE %s Bad value in BYWEEKNO %d", a3, v67}];
+                    [*(v7 + 1496) logAtLevel:3 forTokenizer:tokenizerCopy message:{@"RRULE %s Bad value in BYWEEKNO %d", string, v67}];
                   }
 
-                  if ([v16 count])
+                  if ([array count])
                   {
-                    [(ICSRecurrenceRule *)v6 setByweekno:v16];
+                    [(ICSRecurrenceRule *)v6 setByweekno:array];
                   }
 
                   goto LABEL_252;
@@ -1136,14 +1136,14 @@ LABEL_164:
                     {
                       if (strncmp_s("BYHOUR=", i, 7uLL))
                       {
-                        [*(v7 + 1496) logAtLevel:3 forTokenizer:v5 message:{@"Unrecognized value in RRULE %s, (%s)", a3, i}];
+                        [*(v7 + 1496) logAtLevel:3 forTokenizer:tokenizerCopy message:{@"Unrecognized value in RRULE %s, (%s)", string, i}];
 
                         v6 = 0;
                         goto LABEL_257;
                       }
 
                       v15 = i + 7;
-                      v16 = [MEMORY[0x277CBEB18] array];
+                      array = [MEMORY[0x277CBEB18] array];
 LABEL_45:
                       for (i = v15; ; ++i)
                       {
@@ -1165,13 +1165,13 @@ LABEL_45:
                           v18 = atoi(v15);
                           if (v18 > 0x17)
                           {
-                            [*(v7 + 1496) logAtLevel:3 forTokenizer:v5 message:{@"RRULE %s Bad value in BYHOUR %d", a3, v18}];
+                            [*(v7 + 1496) logAtLevel:3 forTokenizer:tokenizerCopy message:{@"RRULE %s Bad value in BYHOUR %d", string, v18}];
                           }
 
                           else
                           {
                             v19 = [MEMORY[0x277CCABB0] numberWithInt:v18];
-                            [v16 addObject:v19];
+                            [array addObject:v19];
                           }
 
                           v15 = i + 1;
@@ -1182,25 +1182,25 @@ LABEL_45:
                       v81 = atoi(v15);
                       if (v81 > 0x17)
                       {
-                        [*(v7 + 1496) logAtLevel:3 forTokenizer:v5 message:{@"RRULE %s Bad value in BYHOUR %d", a3, v81}];
+                        [*(v7 + 1496) logAtLevel:3 forTokenizer:tokenizerCopy message:{@"RRULE %s Bad value in BYHOUR %d", string, v81}];
                       }
 
                       else
                       {
                         v82 = [MEMORY[0x277CCABB0] numberWithInt:v81];
-                        [v16 addObject:v82];
+                        [array addObject:v82];
                       }
 
-                      if ([v16 count])
+                      if ([array count])
                       {
-                        [(ICSRecurrenceRule *)v6 setByhour:v16];
+                        [(ICSRecurrenceRule *)v6 setByhour:array];
                       }
                     }
 
                     else
                     {
                       v77 = i + 9;
-                      v16 = [MEMORY[0x277CBEB18] array];
+                      array = [MEMORY[0x277CBEB18] array];
 LABEL_221:
                       for (i = v77; ; ++i)
                       {
@@ -1222,13 +1222,13 @@ LABEL_221:
                           v79 = atoi(v77);
                           if (v79 > 0x3B)
                           {
-                            [*(v7 + 1496) logAtLevel:3 forTokenizer:v5 message:{@"RRULE %s Bad value in BYSECOND %d", a3, v79}];
+                            [*(v7 + 1496) logAtLevel:3 forTokenizer:tokenizerCopy message:{@"RRULE %s Bad value in BYSECOND %d", string, v79}];
                           }
 
                           else
                           {
                             v80 = [MEMORY[0x277CCABB0] numberWithInt:v79];
-                            [v16 addObject:v80];
+                            [array addObject:v80];
                           }
 
                           v77 = i + 1;
@@ -1239,18 +1239,18 @@ LABEL_221:
                       v85 = atoi(v77);
                       if (v85 > 0x3B)
                       {
-                        [*(v7 + 1496) logAtLevel:3 forTokenizer:v5 message:{@"RRULE %s Bad value in BYSECOND %d", a3, v85}];
+                        [*(v7 + 1496) logAtLevel:3 forTokenizer:tokenizerCopy message:{@"RRULE %s Bad value in BYSECOND %d", string, v85}];
                       }
 
                       else
                       {
                         v86 = [MEMORY[0x277CCABB0] numberWithInt:v85];
-                        [v16 addObject:v86];
+                        [array addObject:v86];
                       }
 
-                      if ([v16 count])
+                      if ([array count])
                       {
-                        [(ICSRecurrenceRule *)v6 setBysecond:v16];
+                        [(ICSRecurrenceRule *)v6 setBysecond:array];
                       }
                     }
                   }
@@ -1258,7 +1258,7 @@ LABEL_221:
                   else
                   {
                     v70 = i + 9;
-                    v16 = [MEMORY[0x277CBEB18] array];
+                    array = [MEMORY[0x277CBEB18] array];
 LABEL_208:
                     for (i = v70; ; ++i)
                     {
@@ -1280,13 +1280,13 @@ LABEL_208:
                         v72 = atoi(v70);
                         if (v72 > 0x3B)
                         {
-                          [*(v7 + 1496) logAtLevel:3 forTokenizer:v5 message:{@"RRULE %s Bad value in BYMINUTE %d", a3, v72}];
+                          [*(v7 + 1496) logAtLevel:3 forTokenizer:tokenizerCopy message:{@"RRULE %s Bad value in BYMINUTE %d", string, v72}];
                         }
 
                         else
                         {
                           v73 = [MEMORY[0x277CCABB0] numberWithInt:v72];
-                          [v16 addObject:v73];
+                          [array addObject:v73];
                         }
 
                         v70 = i + 1;
@@ -1297,18 +1297,18 @@ LABEL_208:
                     v83 = atoi(v70);
                     if (v83 > 0x3B)
                     {
-                      [*(v7 + 1496) logAtLevel:3 forTokenizer:v5 message:{@"RRULE %s Bad value in BYMINUTE %d", a3, v83}];
+                      [*(v7 + 1496) logAtLevel:3 forTokenizer:tokenizerCopy message:{@"RRULE %s Bad value in BYMINUTE %d", string, v83}];
                     }
 
                     else
                     {
                       v84 = [MEMORY[0x277CCABB0] numberWithInt:v83];
-                      [v16 addObject:v84];
+                      [array addObject:v84];
                     }
 
-                    if ([v16 count])
+                    if ([array count])
                     {
-                      [(ICSRecurrenceRule *)v6 setByminute:v16];
+                      [(ICSRecurrenceRule *)v6 setByminute:array];
                     }
                   }
 
@@ -1349,7 +1349,7 @@ LABEL_188:
 
                       else
                       {
-                        [*(v64 + 1496) logAtLevel:3 forTokenizer:v5 message:{@"RRULE %s Bad value in BYDAY  %s", a3, v62}];
+                        [*(v64 + 1496) logAtLevel:3 forTokenizer:tokenizerCopy message:{@"RRULE %s Bad value in BYDAY  %s", string, v62}];
                       }
 
                       v62 = i + 1;
@@ -1371,7 +1371,7 @@ LABEL_188:
 
                   else
                   {
-                    [ICSLogger logAtLevel:3 forTokenizer:v5 message:@"RRULE %s Bad value in BYDAY %s", a3, v62];
+                    [ICSLogger logAtLevel:3 forTokenizer:tokenizerCopy message:@"RRULE %s Bad value in BYDAY %s", string, v62];
                     v9 = v89;
                     v76 = v90;
                   }
@@ -1428,7 +1428,7 @@ LABEL_188:
                 goto LABEL_94;
               }
 
-              [*(v7 + 1496) logAtLevel:3 forTokenizer:v5 message:{@"RRULE %s Invalid INTERVAL value in recurrence:%s", a3, v23}];
+              [*(v7 + 1496) logAtLevel:3 forTokenizer:tokenizerCopy message:{@"RRULE %s Invalid INTERVAL value in recurrence:%s", string, v23}];
             }
           }
         }
@@ -1457,23 +1457,23 @@ LABEL_188:
 
 LABEL_5:
 
-  return a3;
+  return string;
 }
 
-- (void)cleanUpForStartDate:(id)a3
+- (void)cleanUpForStartDate:(id)date
 {
-  if (a3)
+  if (date)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v4 = [(ICSRecurrenceRule *)self until];
-      if (v4)
+      until = [(ICSRecurrenceRule *)self until];
+      if (until)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v5 = -[ICSDateValue initWithYear:month:day:]([ICSDateValue alloc], "initWithYear:month:day:", [v4 year], objc_msgSend(v4, "month"), objc_msgSend(v4, "day"));
+          v5 = -[ICSDateValue initWithYear:month:day:]([ICSDateValue alloc], "initWithYear:month:day:", [until year], objc_msgSend(until, "month"), objc_msgSend(until, "day"));
           [(ICSRecurrenceRule *)self setUntil:v5];
         }
       }

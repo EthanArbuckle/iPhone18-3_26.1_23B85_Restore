@@ -1,70 +1,70 @@
 @interface SBAssistantGestureManager
-+ (BOOL)shouldDismissSiriForGestureTranslation:(CGPoint)a3 velocity:(CGPoint)a4;
++ (BOOL)shouldDismissSiriForGestureTranslation:(CGPoint)translation velocity:(CGPoint)velocity;
 - (BOOL)_noNewTransientOverlaysPresented;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)gesturesImplyFullscreenContent;
-- (SBAssistantGestureManager)initWithAssistantWindow:(id)a3 gestureConfiguration:(id)a4 context:(id)a5;
+- (SBAssistantGestureManager)initWithAssistantWindow:(id)window gestureConfiguration:(id)configuration context:(id)context;
 - (SBAssistantGestureManagerDelegate)delegate;
 - (id)_assistantRootViewController;
 - (id)_createPanToDismissSiriGestureRecognizer;
 - (id)_createTapToDismissSiriGestureRecognizer;
-- (id)viewForSystemGestureRecognizer:(id)a3;
-- (int64_t)touchInterfaceOrientationForGestureRecognizer:(id)a3;
-- (void)_commonHandlerForSiriDismissalGesture:(id)a3;
+- (id)viewForSystemGestureRecognizer:(id)recognizer;
+- (int64_t)touchInterfaceOrientationForGestureRecognizer:(id)recognizer;
+- (void)_commonHandlerForSiriDismissalGesture:(id)gesture;
 - (void)_configureHomeGesture;
 - (void)_configurePanToDismissGestureDependencies;
-- (void)_didUpdateHomeGestureSharing:(BOOL)a3;
-- (void)_didUpdateSiriHomeAffordanceSuppression:(int64_t)a3;
-- (void)_didUpdateStatusBarActionGestureRecognizer:(id)a3;
-- (void)_didUpdateTouchesPassThroughToSpringBoard:(BOOL)a3;
-- (void)_handleBottomEdgeDismissGesture:(id)a3;
-- (void)_notifyInteractionWithGestureRecognizer:(id)a3;
-- (void)_pannedToDismissSiri:(id)a3;
+- (void)_didUpdateHomeGestureSharing:(BOOL)sharing;
+- (void)_didUpdateSiriHomeAffordanceSuppression:(int64_t)suppression;
+- (void)_didUpdateStatusBarActionGestureRecognizer:(id)recognizer;
+- (void)_didUpdateTouchesPassThroughToSpringBoard:(BOOL)board;
+- (void)_handleBottomEdgeDismissGesture:(id)gesture;
+- (void)_notifyInteractionWithGestureRecognizer:(id)recognizer;
+- (void)_pannedToDismissSiri:(id)siri;
 - (void)_prototypeSettingsChanged;
 - (void)_removeHomeGesture;
 - (void)_removeScreenEdgePanGestureRecognizerIfNecessary;
 - (void)_resetDismissalSystemGestures;
 - (void)_setupSystemDismissalGestures;
-- (void)_tappedToDismissSiri:(id)a3;
+- (void)_tappedToDismissSiri:(id)siri;
 - (void)_tearDownDismissalSystemGestures;
 - (void)_updateRootViewControllerDimsContentBelow;
 - (void)_updateRootViewControllerOwnsHomeGesture;
-- (void)_updateRootViewControllerShowsHomeAffordance:(BOOL)a3;
-- (void)_updateZStackParticipantWithReason:(id)a3;
-- (void)assistantGestureConfiguration:(id)a3 didUpdateHomeAffordanceSuppression:(int64_t)a4;
-- (void)assistantGestureConfiguration:(id)a3 didUpdateHomeGestureSharing:(BOOL)a4;
-- (void)assistantGestureConfiguration:(id)a3 didUpdateShouldDismissForSwipesOutsideContent:(BOOL)a4;
-- (void)assistantGestureConfiguration:(id)a3 didUpdateShouldDismissForTapsOutsideContent:(BOOL)a4;
-- (void)assistantGestureConfiguration:(id)a3 didUpdateShouldPassTouchesThroughToSpringBoard:(BOOL)a4;
-- (void)assistantGestureConfiguration:(id)a3 didUpdateShouldShowHomeAffordance:(BOOL)a4;
-- (void)assistantGestureConfiguration:(id)a3 didUpdateStatusBarActionGestureRecognizer:(id)a4;
-- (void)assistantSession:(id)a3 didChangePresentationInWindowScene:(id)a4;
+- (void)_updateRootViewControllerShowsHomeAffordance:(BOOL)affordance;
+- (void)_updateZStackParticipantWithReason:(id)reason;
+- (void)assistantGestureConfiguration:(id)configuration didUpdateHomeAffordanceSuppression:(int64_t)suppression;
+- (void)assistantGestureConfiguration:(id)configuration didUpdateHomeGestureSharing:(BOOL)sharing;
+- (void)assistantGestureConfiguration:(id)configuration didUpdateShouldDismissForSwipesOutsideContent:(BOOL)content;
+- (void)assistantGestureConfiguration:(id)configuration didUpdateShouldDismissForTapsOutsideContent:(BOOL)content;
+- (void)assistantGestureConfiguration:(id)configuration didUpdateShouldPassTouchesThroughToSpringBoard:(BOOL)board;
+- (void)assistantGestureConfiguration:(id)configuration didUpdateShouldShowHomeAffordance:(BOOL)affordance;
+- (void)assistantGestureConfiguration:(id)configuration didUpdateStatusBarActionGestureRecognizer:(id)recognizer;
+- (void)assistantSession:(id)session didChangePresentationInWindowScene:(id)scene;
 - (void)dealloc;
-- (void)homeGrabberViewDidReceiveClick:(id)a3;
-- (void)setTapToDismissSiriGestureRecognizer:(id)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
-- (void)zStackParticipant:(id)a3 updatePreferences:(id)a4;
-- (void)zStackParticipantDidChange:(id)a3;
+- (void)homeGrabberViewDidReceiveClick:(id)click;
+- (void)setTapToDismissSiriGestureRecognizer:(id)recognizer;
+- (void)settings:(id)settings changedValueForKey:(id)key;
+- (void)zStackParticipant:(id)participant updatePreferences:(id)preferences;
+- (void)zStackParticipantDidChange:(id)change;
 @end
 
 @implementation SBAssistantGestureManager
 
-- (SBAssistantGestureManager)initWithAssistantWindow:(id)a3 gestureConfiguration:(id)a4 context:(id)a5
+- (SBAssistantGestureManager)initWithAssistantWindow:(id)window gestureConfiguration:(id)configuration context:(id)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  windowCopy = window;
+  configurationCopy = configuration;
+  contextCopy = context;
   v17.receiver = self;
   v17.super_class = SBAssistantGestureManager;
   v12 = [(SBAssistantGestureManager *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_assistantWindow, a3);
-    objc_storeStrong(&v13->_gestureConfiguration, a4);
+    objc_storeStrong(&v12->_assistantWindow, window);
+    objc_storeStrong(&v13->_gestureConfiguration, configuration);
     [(SBAssistantGestureConfiguration *)v13->_gestureConfiguration addObserver:v13];
-    objc_storeStrong(&v13->_context, a5);
+    objc_storeStrong(&v13->_context, context);
     v14 = +[SBSystemAnimationDomain rootSettings];
     settings = v13->_settings;
     v13->_settings = v14;
@@ -88,48 +88,48 @@
   [(SBAssistantGestureManager *)&v3 dealloc];
 }
 
-+ (BOOL)shouldDismissSiriForGestureTranslation:(CGPoint)a3 velocity:(CGPoint)a4
++ (BOOL)shouldDismissSiriForGestureTranslation:(CGPoint)translation velocity:(CGPoint)velocity
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = hypot(a3.x, a3.y);
+  y = velocity.y;
+  x = velocity.x;
+  v6 = hypot(translation.x, translation.y);
   return hypot(x, y) > *&kSBAssistantBottomEdgeDismissVelocityThreshold || v6 > *&kSBAssistantBottomEdgeDismissTranslationThreshold;
 }
 
 - (BOOL)gesturesImplyFullscreenContent
 {
-  v3 = [(SBAssistantGestureManager *)self gestureConfiguration];
-  if ([v3 shouldDismissForTapsOutsideContent])
+  gestureConfiguration = [(SBAssistantGestureManager *)self gestureConfiguration];
+  if ([gestureConfiguration shouldDismissForTapsOutsideContent])
   {
-    v4 = 1;
+    shouldDismissForSwipesOutsideContent = 1;
   }
 
   else
   {
-    v5 = [(SBAssistantGestureManager *)self gestureConfiguration];
-    v4 = [v5 shouldDismissForSwipesOutsideContent];
+    gestureConfiguration2 = [(SBAssistantGestureManager *)self gestureConfiguration];
+    shouldDismissForSwipesOutsideContent = [gestureConfiguration2 shouldDismissForSwipesOutsideContent];
   }
 
-  return v4;
+  return shouldDismissForSwipesOutsideContent;
 }
 
 - (void)_setupSystemDismissalGestures
 {
   if (!self->_tapToDismissSiriGestureRecognizer)
   {
-    v3 = [(SBAssistantGestureManager *)self _createTapToDismissSiriGestureRecognizer];
-    [(SBAssistantGestureManager *)self setTapToDismissSiriGestureRecognizer:v3];
+    _createTapToDismissSiriGestureRecognizer = [(SBAssistantGestureManager *)self _createTapToDismissSiriGestureRecognizer];
+    [(SBAssistantGestureManager *)self setTapToDismissSiriGestureRecognizer:_createTapToDismissSiriGestureRecognizer];
   }
 
   if (!self->_panToDismissSiriGestureRecognizer)
   {
-    v4 = [(SBAssistantGestureManager *)self _createPanToDismissSiriGestureRecognizer];
+    _createPanToDismissSiriGestureRecognizer = [(SBAssistantGestureManager *)self _createPanToDismissSiriGestureRecognizer];
     panToDismissSiriGestureRecognizer = self->_panToDismissSiriGestureRecognizer;
-    self->_panToDismissSiriGestureRecognizer = v4;
+    self->_panToDismissSiriGestureRecognizer = _createPanToDismissSiriGestureRecognizer;
 
-    v6 = [(SBAssistantGestureManager *)self context];
-    v7 = [v6 systemGestureManager];
-    [v7 addGestureRecognizer:self->_panToDismissSiriGestureRecognizer withType:119];
+    context = [(SBAssistantGestureManager *)self context];
+    systemGestureManager = [context systemGestureManager];
+    [systemGestureManager addGestureRecognizer:self->_panToDismissSiriGestureRecognizer withType:119];
 
     [(SBAssistantGestureManager *)self _configurePanToDismissGestureDependencies];
   }
@@ -144,9 +144,9 @@
 
   if (self->_panToDismissSiriGestureRecognizer)
   {
-    v3 = [(SBAssistantGestureManager *)self context];
-    v4 = [v3 systemGestureManager];
-    [v4 removeGestureRecognizer:self->_panToDismissSiriGestureRecognizer];
+    context = [(SBAssistantGestureManager *)self context];
+    systemGestureManager = [context systemGestureManager];
+    [systemGestureManager removeGestureRecognizer:self->_panToDismissSiriGestureRecognizer];
 
     panToDismissSiriGestureRecognizer = self->_panToDismissSiriGestureRecognizer;
     self->_panToDismissSiriGestureRecognizer = 0;
@@ -155,16 +155,16 @@
 
 - (void)_resetDismissalSystemGestures
 {
-  v3 = [(SBAssistantGestureManager *)self tapToDismissSiriGestureRecognizer];
-  if (v3)
+  tapToDismissSiriGestureRecognizer = [(SBAssistantGestureManager *)self tapToDismissSiriGestureRecognizer];
+  if (tapToDismissSiriGestureRecognizer)
   {
   }
 
   else
   {
-    v4 = [(SBAssistantGestureManager *)self panToDismissSiriGestureRecognizer];
+    panToDismissSiriGestureRecognizer = [(SBAssistantGestureManager *)self panToDismissSiriGestureRecognizer];
 
-    if (!v4)
+    if (!panToDismissSiriGestureRecognizer)
     {
       return;
     }
@@ -175,18 +175,18 @@
   [(SBAssistantGestureManager *)self _setupSystemDismissalGestures];
 }
 
-- (void)setTapToDismissSiriGestureRecognizer:(id)a3
+- (void)setTapToDismissSiriGestureRecognizer:(id)recognizer
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  recognizerCopy = recognizer;
   tapToDismissSiriGestureRecognizer = self->_tapToDismissSiriGestureRecognizer;
-  if (tapToDismissSiriGestureRecognizer != v5)
+  if (tapToDismissSiriGestureRecognizer != recognizerCopy)
   {
     if (tapToDismissSiriGestureRecognizer)
     {
-      v7 = [(SBAssistantGestureManager *)self context];
-      v8 = [v7 systemGestureManager];
-      [v8 removeGestureRecognizer:self->_tapToDismissSiriGestureRecognizer];
+      context = [(SBAssistantGestureManager *)self context];
+      systemGestureManager = [context systemGestureManager];
+      [systemGestureManager removeGestureRecognizer:self->_tapToDismissSiriGestureRecognizer];
 
       v9 = self->_tapToDismissSiriGestureRecognizer;
       if (v9)
@@ -212,15 +212,15 @@
       }
     }
 
-    objc_storeStrong(&self->_tapToDismissSiriGestureRecognizer, a3);
+    objc_storeStrong(&self->_tapToDismissSiriGestureRecognizer, recognizer);
     v14 = self->_statusBarActionGestureRecognizer;
     self->_statusBarActionGestureRecognizer = 0;
 
-    if (v5)
+    if (recognizerCopy)
     {
-      v15 = [(SBAssistantGestureManager *)self context];
-      v16 = [v15 systemGestureManager];
-      [v16 addGestureRecognizer:v5 withType:117];
+      context2 = [(SBAssistantGestureManager *)self context];
+      systemGestureManager2 = [context2 systemGestureManager];
+      [systemGestureManager2 addGestureRecognizer:recognizerCopy withType:117];
     }
   }
 }
@@ -235,55 +235,55 @@
   [v3 setAllowedTouchTypes:&unk_28336E718];
   [v3 sbf_setPencilTouchesAllowed:self->_allowPencilTouches];
   [v3 setDelegate:self];
-  v4 = [(SBAssistantGestureManager *)self context];
-  v5 = [v4 controlCenterController];
-  [v5 _requirePresentGestureRecognizerToFailForGestureRecognizer:v3];
+  context = [(SBAssistantGestureManager *)self context];
+  controlCenterController = [context controlCenterController];
+  [controlCenterController _requirePresentGestureRecognizerToFailForGestureRecognizer:v3];
 
   return v3;
 }
 
 - (void)_configurePanToDismissGestureDependencies
 {
-  v3 = [(SBAssistantGestureManager *)self context];
-  v11 = [v3 systemGestureManager];
+  context = [(SBAssistantGestureManager *)self context];
+  systemGestureManager = [context systemGestureManager];
 
-  v4 = [(SBAssistantGestureManager *)self panToDismissSiriGestureRecognizer];
-  [v11 gestureRecognizerOfType:40 shouldBeRequiredToFailByGestureRecognizer:v4];
-  v5 = [(SBAssistantGestureManager *)self gestureConfiguration];
-  v6 = [v5 shouldShareHomeGesture];
+  panToDismissSiriGestureRecognizer = [(SBAssistantGestureManager *)self panToDismissSiriGestureRecognizer];
+  [systemGestureManager gestureRecognizerOfType:40 shouldBeRequiredToFailByGestureRecognizer:panToDismissSiriGestureRecognizer];
+  gestureConfiguration = [(SBAssistantGestureManager *)self gestureConfiguration];
+  shouldShareHomeGesture = [gestureConfiguration shouldShareHomeGesture];
 
-  if (v6)
+  if (shouldShareHomeGesture)
   {
-    [v11 gestureRecognizerOfType:3 shouldBeRequiredToFailByGestureRecognizer:v4];
-    [v11 gestureRecognizerOfType:1 shouldBeRequiredToFailByGestureRecognizer:v4];
+    [systemGestureManager gestureRecognizerOfType:3 shouldBeRequiredToFailByGestureRecognizer:panToDismissSiriGestureRecognizer];
+    [systemGestureManager gestureRecognizerOfType:1 shouldBeRequiredToFailByGestureRecognizer:panToDismissSiriGestureRecognizer];
   }
 
-  [v11 gestureRecognizerOfType:122 shouldRequireFailureOfGestureRecognizer:v4];
-  [v11 gestureRecognizerOfType:123 shouldRequireFailureOfGestureRecognizer:v4];
-  [v11 gestureRecognizerOfType:107 shouldRequireFailureOfGestureRecognizer:v4];
-  [v11 gestureRecognizerOfType:108 shouldRequireFailureOfGestureRecognizer:v4];
-  v7 = [(SBAssistantGestureManager *)self bottomEdgeDismissGestureRecognizer];
-  [v11 gestureRecognizerOfType:122 shouldRequireFailureOfGestureRecognizer:v7];
-  [v11 gestureRecognizerOfType:123 shouldRequireFailureOfGestureRecognizer:v7];
-  [v11 gestureRecognizerOfType:107 shouldRequireFailureOfGestureRecognizer:v7];
-  [v11 gestureRecognizerOfType:108 shouldRequireFailureOfGestureRecognizer:v7];
-  v8 = [(SBAssistantGestureManager *)self context];
-  v9 = [v8 switcherController];
-  v10 = [v9 homeGestureBottomEdgeRecognizer];
-  [v4 requireGestureRecognizerToFail:v10];
+  [systemGestureManager gestureRecognizerOfType:122 shouldRequireFailureOfGestureRecognizer:panToDismissSiriGestureRecognizer];
+  [systemGestureManager gestureRecognizerOfType:123 shouldRequireFailureOfGestureRecognizer:panToDismissSiriGestureRecognizer];
+  [systemGestureManager gestureRecognizerOfType:107 shouldRequireFailureOfGestureRecognizer:panToDismissSiriGestureRecognizer];
+  [systemGestureManager gestureRecognizerOfType:108 shouldRequireFailureOfGestureRecognizer:panToDismissSiriGestureRecognizer];
+  bottomEdgeDismissGestureRecognizer = [(SBAssistantGestureManager *)self bottomEdgeDismissGestureRecognizer];
+  [systemGestureManager gestureRecognizerOfType:122 shouldRequireFailureOfGestureRecognizer:bottomEdgeDismissGestureRecognizer];
+  [systemGestureManager gestureRecognizerOfType:123 shouldRequireFailureOfGestureRecognizer:bottomEdgeDismissGestureRecognizer];
+  [systemGestureManager gestureRecognizerOfType:107 shouldRequireFailureOfGestureRecognizer:bottomEdgeDismissGestureRecognizer];
+  [systemGestureManager gestureRecognizerOfType:108 shouldRequireFailureOfGestureRecognizer:bottomEdgeDismissGestureRecognizer];
+  context2 = [(SBAssistantGestureManager *)self context];
+  switcherController = [context2 switcherController];
+  homeGestureBottomEdgeRecognizer = [switcherController homeGestureBottomEdgeRecognizer];
+  [panToDismissSiriGestureRecognizer requireGestureRecognizerToFail:homeGestureBottomEdgeRecognizer];
 
-  if (v7)
+  if (bottomEdgeDismissGestureRecognizer)
   {
-    [v4 requireGestureRecognizerToFail:v7];
+    [panToDismissSiriGestureRecognizer requireGestureRecognizerToFail:bottomEdgeDismissGestureRecognizer];
   }
 }
 
-- (void)_pannedToDismissSiri:(id)a3
+- (void)_pannedToDismissSiri:(id)siri
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SBAssistantGestureManager *)self gestureConfiguration];
-  v6 = [v5 shouldDismissForSwipesOutsideContent];
+  siriCopy = siri;
+  gestureConfiguration = [(SBAssistantGestureManager *)self gestureConfiguration];
+  shouldDismissForSwipesOutsideContent = [gestureConfiguration shouldDismissForSwipesOutsideContent];
 
   v7 = SBLogSiri();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -291,7 +291,7 @@
     v8 = _SBFLoggingMethodProem();
     v9 = v8;
     v10 = @"SHOULDN'T";
-    if (v6)
+    if (shouldDismissForSwipesOutsideContent)
     {
       v10 = @"SHOULD";
     }
@@ -303,27 +303,27 @@
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ - Assistant %{public}@ dismiss for pans outside of content", &v18, 0x16u);
   }
 
-  v11 = [(SBAssistantGestureManager *)self context];
-  v12 = [v11 controlCenterController];
-  v13 = [v12 isPresented];
+  context = [(SBAssistantGestureManager *)self context];
+  controlCenterController = [context controlCenterController];
+  isPresented = [controlCenterController isPresented];
 
-  v14 = [(SBAssistantGestureManager *)self _noNewTransientOverlaysPresented];
-  if ((v13 & 1) == 0 && v14)
+  _noNewTransientOverlaysPresented = [(SBAssistantGestureManager *)self _noNewTransientOverlaysPresented];
+  if ((isPresented & 1) == 0 && _noNewTransientOverlaysPresented)
   {
-    if (v6 && [v4 state] == 1)
+    if (shouldDismissForSwipesOutsideContent && [siriCopy state] == 1)
     {
-      [(SBAssistantGestureManager *)self _commonHandlerForSiriDismissalGesture:v4];
+      [(SBAssistantGestureManager *)self _commonHandlerForSiriDismissalGesture:siriCopy];
     }
 
     else
     {
-      v15 = [(UIWindow *)self->_assistantWindow _sbWindowScene];
-      v16 = [v15 assistantController];
-      v17 = [v16 isSystemAssistantExperienceEnabled];
+      _sbWindowScene = [(UIWindow *)self->_assistantWindow _sbWindowScene];
+      assistantController = [_sbWindowScene assistantController];
+      isSystemAssistantExperienceEnabled = [assistantController isSystemAssistantExperienceEnabled];
 
-      if (v17)
+      if (isSystemAssistantExperienceEnabled)
       {
-        [(SBAssistantGestureManager *)self _notifyInteractionWithGestureRecognizer:v4];
+        [(SBAssistantGestureManager *)self _notifyInteractionWithGestureRecognizer:siriCopy];
       }
     }
   }
@@ -343,12 +343,12 @@
   return v3;
 }
 
-- (void)_tappedToDismissSiri:(id)a3
+- (void)_tappedToDismissSiri:(id)siri
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SBAssistantGestureManager *)self gestureConfiguration];
-  v6 = [v5 shouldDismissForTapsOutsideContent];
+  siriCopy = siri;
+  gestureConfiguration = [(SBAssistantGestureManager *)self gestureConfiguration];
+  shouldDismissForTapsOutsideContent = [gestureConfiguration shouldDismissForTapsOutsideContent];
 
   v7 = SBLogSiri();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -356,7 +356,7 @@
     v8 = _SBFLoggingMethodProem();
     v9 = v8;
     v10 = @"SHOULDN'T";
-    if (v6)
+    if (shouldDismissForTapsOutsideContent)
     {
       v10 = @"SHOULD";
     }
@@ -368,27 +368,27 @@
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ - Assistant %{public}@ dismiss for taps outside of content", &v18, 0x16u);
   }
 
-  v11 = [(SBAssistantGestureManager *)self context];
-  v12 = [v11 controlCenterController];
-  v13 = [v12 isPresented];
+  context = [(SBAssistantGestureManager *)self context];
+  controlCenterController = [context controlCenterController];
+  isPresented = [controlCenterController isPresented];
 
-  v14 = [(SBAssistantGestureManager *)self _noNewTransientOverlaysPresented];
-  if ((v13 & 1) == 0 && v14)
+  _noNewTransientOverlaysPresented = [(SBAssistantGestureManager *)self _noNewTransientOverlaysPresented];
+  if ((isPresented & 1) == 0 && _noNewTransientOverlaysPresented)
   {
-    if (v6)
+    if (shouldDismissForTapsOutsideContent)
     {
-      [(SBAssistantGestureManager *)self _commonHandlerForSiriDismissalGesture:v4];
+      [(SBAssistantGestureManager *)self _commonHandlerForSiriDismissalGesture:siriCopy];
     }
 
     else
     {
-      v15 = [(UIWindow *)self->_assistantWindow _sbWindowScene];
-      v16 = [v15 assistantController];
-      v17 = [v16 isSystemAssistantExperienceEnabled];
+      _sbWindowScene = [(UIWindow *)self->_assistantWindow _sbWindowScene];
+      assistantController = [_sbWindowScene assistantController];
+      isSystemAssistantExperienceEnabled = [assistantController isSystemAssistantExperienceEnabled];
 
-      if (v17)
+      if (isSystemAssistantExperienceEnabled)
       {
-        [(SBAssistantGestureManager *)self _notifyInteractionWithGestureRecognizer:v4];
+        [(SBAssistantGestureManager *)self _notifyInteractionWithGestureRecognizer:siriCopy];
       }
     }
   }
@@ -399,17 +399,17 @@
   v31[1] = *MEMORY[0x277D85DE8];
   if (SBHomeGestureEnabled())
   {
-    v3 = [(SBAssistantGestureManager *)self gestureConfiguration];
-    if ([v3 shouldShareHomeGesture])
+    gestureConfiguration = [(SBAssistantGestureManager *)self gestureConfiguration];
+    if ([gestureConfiguration shouldShareHomeGesture])
     {
-      v4 = [(SBAssistantGestureManager *)self bottomEdgeDismissGestureRecognizer];
+      bottomEdgeDismissGestureRecognizer = [(SBAssistantGestureManager *)self bottomEdgeDismissGestureRecognizer];
 
-      if (!v4)
+      if (!bottomEdgeDismissGestureRecognizer)
       {
-        v5 = [MEMORY[0x277CF0CA8] sharedInstance];
-        v6 = [v5 homeButtonType];
+        mEMORY[0x277CF0CA8] = [MEMORY[0x277CF0CA8] sharedInstance];
+        homeButtonType = [mEMORY[0x277CF0CA8] homeButtonType];
 
-        if (v6 == 2)
+        if (homeButtonType == 2)
         {
           v7 = 5;
         }
@@ -431,15 +431,15 @@
         [(UIScreenEdgePanGestureRecognizer *)self->_bottomEdgeDismissGestureRecognizer setEdges:4];
         [(UIScreenEdgePanGestureRecognizer *)self->_bottomEdgeDismissGestureRecognizer _setBottomEdgeAngleWindow:*&kSBAssistantBottomEdgeAngleWindow];
         v10 = self->_bottomEdgeDismissGestureRecognizer;
-        v11 = [(SBAssistantGestureManager *)self context];
-        v12 = [v11 switcherController];
-        v13 = [v12 homeGestureBottomEdgeRecognizer];
-        [(SBHomeGesturePanGestureRecognizer *)v10 requireGestureRecognizerToFail:v13];
+        context = [(SBAssistantGestureManager *)self context];
+        switcherController = [context switcherController];
+        homeGestureBottomEdgeRecognizer = [switcherController homeGestureBottomEdgeRecognizer];
+        [(SBHomeGesturePanGestureRecognizer *)v10 requireGestureRecognizerToFail:homeGestureBottomEdgeRecognizer];
 
         [(UIPanGestureRecognizer *)self->_panToDismissSiriGestureRecognizer requireGestureRecognizerToFail:self->_bottomEdgeDismissGestureRecognizer];
-        v14 = [(SBAssistantGestureManager *)self context];
-        v15 = [v14 systemGestureManager];
-        [v15 addGestureRecognizer:self->_bottomEdgeDismissGestureRecognizer withType:118];
+        context2 = [(SBAssistantGestureManager *)self context];
+        systemGestureManager = [context2 systemGestureManager];
+        [systemGestureManager addGestureRecognizer:self->_bottomEdgeDismissGestureRecognizer withType:118];
 
         [(SBAssistantGestureManager *)self _configurePanToDismissGestureDependencies];
         goto LABEL_13;
@@ -451,40 +451,40 @@
     }
   }
 
-  v16 = [(SBAssistantGestureManager *)self gestureConfiguration];
-  if ([v16 shouldShareHomeGesture])
+  gestureConfiguration2 = [(SBAssistantGestureManager *)self gestureConfiguration];
+  if ([gestureConfiguration2 shouldShareHomeGesture])
   {
   }
 
   else
   {
-    v17 = [(SBAssistantGestureManager *)self bottomEdgeDismissGestureRecognizer];
+    bottomEdgeDismissGestureRecognizer2 = [(SBAssistantGestureManager *)self bottomEdgeDismissGestureRecognizer];
 
-    if (v17)
+    if (bottomEdgeDismissGestureRecognizer2)
     {
       [(SBAssistantGestureManager *)self _removeScreenEdgePanGestureRecognizerIfNecessary];
     }
   }
 
 LABEL_13:
-  v18 = [(SBAssistantGestureManager *)self zStackParticipant];
+  zStackParticipant = [(SBAssistantGestureManager *)self zStackParticipant];
 
-  if (!v18)
+  if (!zStackParticipant)
   {
-    v19 = [(SBAssistantGestureManager *)self context];
-    v20 = [v19 zStackResolver];
-    v21 = [v20 acquireParticipantWithIdentifier:17 delegate:self];
+    context3 = [(SBAssistantGestureManager *)self context];
+    zStackResolver = [context3 zStackResolver];
+    v21 = [zStackResolver acquireParticipantWithIdentifier:17 delegate:self];
     [(SBAssistantGestureManager *)self setZStackParticipant:v21];
 
     v22 = [(SBZStackForegroundSceneOrderedPolicyAssistant *)[SBPhysicalButtonZStackPolicyAssistant alloc] initWithParticipant:self->_zStackParticipant];
     physicalButtonPolicyAssistant = self->_physicalButtonPolicyAssistant;
     self->_physicalButtonPolicyAssistant = v22;
 
-    v24 = [MEMORY[0x277D0AAD8] sharedInstance];
-    v25 = [(UIWindow *)self->_assistantWindow _sbWindowScene];
-    v26 = [v25 _FBSScene];
-    v27 = [v26 identityToken];
-    v28 = [v24 sceneFromIdentityToken:v27];
+    mEMORY[0x277D0AAD8] = [MEMORY[0x277D0AAD8] sharedInstance];
+    _sbWindowScene = [(UIWindow *)self->_assistantWindow _sbWindowScene];
+    _FBSScene = [_sbWindowScene _FBSScene];
+    identityToken = [_FBSScene identityToken];
+    v28 = [mEMORY[0x277D0AAD8] sceneFromIdentityToken:identityToken];
 
     if (v28)
     {
@@ -498,23 +498,23 @@ LABEL_13:
   [(SBAssistantGestureManager *)self _updateZStackParticipantWithReason:@"configuring home gesture"];
 }
 
-- (void)_handleBottomEdgeDismissGesture:(id)a3
+- (void)_handleBottomEdgeDismissGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(SBAssistantGestureManager *)self _assistantRootViewController];
-  v15 = [v5 view];
+  gestureCopy = gesture;
+  _assistantRootViewController = [(SBAssistantGestureManager *)self _assistantRootViewController];
+  view = [_assistantRootViewController view];
 
-  [v4 translationInView:v15];
+  [gestureCopy translationInView:view];
   v7 = v6;
   v9 = v8;
-  [v4 velocityInView:v15];
+  [gestureCopy velocityInView:view];
   v11 = v10;
   v13 = v12;
 
   if ([SBAssistantGestureManager shouldDismissSiriForGestureTranslation:v7 velocity:v9, v11, v13])
   {
-    v14 = [(SBAssistantGestureManager *)self delegate];
-    [v14 assistantGestureManagerDidRecognizeDismissGesture:self preferredDismissalOptions:0];
+    delegate = [(SBAssistantGestureManager *)self delegate];
+    [delegate assistantGestureManagerDidRecognizeDismissGesture:self preferredDismissalOptions:0];
   }
 }
 
@@ -523,8 +523,8 @@ LABEL_13:
   physicalButtonPolicyAssistant = self->_physicalButtonPolicyAssistant;
   self->_physicalButtonPolicyAssistant = 0;
 
-  v4 = [(SBAssistantGestureManager *)self zStackParticipant];
-  [v4 invalidate];
+  zStackParticipant = [(SBAssistantGestureManager *)self zStackParticipant];
+  [zStackParticipant invalidate];
 
   [(SBAssistantGestureManager *)self setZStackParticipant:0];
 
@@ -533,33 +533,33 @@ LABEL_13:
 
 - (void)_removeScreenEdgePanGestureRecognizerIfNecessary
 {
-  v3 = [(SBAssistantGestureManager *)self bottomEdgeDismissGestureRecognizer];
-  if (v3)
+  bottomEdgeDismissGestureRecognizer = [(SBAssistantGestureManager *)self bottomEdgeDismissGestureRecognizer];
+  if (bottomEdgeDismissGestureRecognizer)
   {
-    v6 = v3;
-    v4 = [(SBAssistantGestureManager *)self context];
-    v5 = [v4 systemGestureManager];
-    [v5 removeGestureRecognizer:v6];
+    v6 = bottomEdgeDismissGestureRecognizer;
+    context = [(SBAssistantGestureManager *)self context];
+    systemGestureManager = [context systemGestureManager];
+    [systemGestureManager removeGestureRecognizer:v6];
 
     [(SBAssistantGestureManager *)self setBottomEdgeDismissGestureRecognizer:0];
-    v3 = v6;
+    bottomEdgeDismissGestureRecognizer = v6;
   }
 }
 
-- (void)_commonHandlerForSiriDismissalGesture:(id)a3
+- (void)_commonHandlerForSiriDismissalGesture:(id)gesture
 {
-  v5 = a3;
-  v6 = [(SBAssistantGestureManager *)self _assistantRootViewController];
-  v7 = [v6 view];
+  gestureCopy = gesture;
+  _assistantRootViewController = [(SBAssistantGestureManager *)self _assistantRootViewController];
+  view = [_assistantRootViewController view];
   _UISystemGestureLocationInView();
   v9 = v8;
   v11 = v10;
 
   objc_initWeak(&location, self);
-  v12 = [(SBAssistantGestureManager *)self delegate];
-  objc_initWeak(&from, v12);
+  delegate = [(SBAssistantGestureManager *)self delegate];
+  objc_initWeak(&from, delegate);
 
-  v13 = [(SBAssistantGestureManager *)self gestureConfiguration];
+  gestureConfiguration = [(SBAssistantGestureManager *)self gestureConfiguration];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __67__SBAssistantGestureManager__commonHandlerForSiriDismissalGesture___block_invoke;
@@ -568,7 +568,7 @@ LABEL_13:
   v16[1] = a2;
   objc_copyWeak(&v15, &from);
   objc_copyWeak(v16, &location);
-  [v13 shouldDismissForGestureAtLocation:v14 completion:{v9, v11}];
+  [gestureConfiguration shouldDismissForGestureAtLocation:v14 completion:{v9, v11}];
 
   objc_destroyWeak(v16);
   objc_destroyWeak(&v15);
@@ -606,20 +606,20 @@ void __67__SBAssistantGestureManager__commonHandlerForSiriDismissalGesture___blo
   }
 }
 
-- (void)_notifyInteractionWithGestureRecognizer:(id)a3
+- (void)_notifyInteractionWithGestureRecognizer:(id)recognizer
 {
-  v11 = a3;
-  v4 = [(SBAssistantGestureManager *)self _assistantRootViewController];
-  v5 = [v4 view];
+  recognizerCopy = recognizer;
+  _assistantRootViewController = [(SBAssistantGestureManager *)self _assistantRootViewController];
+  view = [_assistantRootViewController view];
   _UISystemGestureLocationInView();
   v7 = v6;
   v9 = v8;
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v11 state] == 1)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [recognizerCopy state] == 1)
   {
-    v10 = [(SBAssistantGestureManager *)self gestureConfiguration];
-    [v10 notifyPanBeganAtPoint:{v7, v9}];
+    gestureConfiguration = [(SBAssistantGestureManager *)self gestureConfiguration];
+    [gestureConfiguration notifyPanBeganAtPoint:{v7, v9}];
   }
 
   else
@@ -630,8 +630,8 @@ void __67__SBAssistantGestureManager__commonHandlerForSiriDismissalGesture___blo
       goto LABEL_7;
     }
 
-    v10 = [(SBAssistantGestureManager *)self gestureConfiguration];
-    [v10 notifyTapAtPoint:{v7, v9}];
+    gestureConfiguration = [(SBAssistantGestureManager *)self gestureConfiguration];
+    [gestureConfiguration notifyTapAtPoint:{v7, v9}];
   }
 
 LABEL_7:
@@ -639,11 +639,11 @@ LABEL_7:
 
 - (void)_updateRootViewControllerOwnsHomeGesture
 {
-  v3 = [(SBAssistantGestureManager *)self zStackParticipant];
-  if ([v3 ownsHomeGesture])
+  zStackParticipant = [(SBAssistantGestureManager *)self zStackParticipant];
+  if ([zStackParticipant ownsHomeGesture])
   {
-    v4 = [(SBAssistantGestureManager *)self gestureConfiguration];
-    v5 = [v4 shouldShareHomeGesture] ^ 1;
+    gestureConfiguration = [(SBAssistantGestureManager *)self gestureConfiguration];
+    v5 = [gestureConfiguration shouldShareHomeGesture] ^ 1;
   }
 
   else
@@ -651,130 +651,130 @@ LABEL_7:
     v5 = 0;
   }
 
-  v6 = [(SBAssistantGestureManager *)self _assistantRootViewController];
-  [v6 setOwnsHomeGesture:v5];
+  _assistantRootViewController = [(SBAssistantGestureManager *)self _assistantRootViewController];
+  [_assistantRootViewController setOwnsHomeGesture:v5];
 }
 
-- (void)_updateRootViewControllerShowsHomeAffordance:(BOOL)a3
+- (void)_updateRootViewControllerShowsHomeAffordance:(BOOL)affordance
 {
-  v3 = a3;
-  v5 = [(SBAssistantGestureManager *)self zStackParticipant];
-  v6 = [v5 homeAffordanceDrawingSuppressed];
+  affordanceCopy = affordance;
+  zStackParticipant = [(SBAssistantGestureManager *)self zStackParticipant];
+  homeAffordanceDrawingSuppressed = [zStackParticipant homeAffordanceDrawingSuppressed];
 
-  v7 = [(SBAssistantGestureManager *)self _assistantRootViewController];
-  v8 = v7;
-  v9 = v3 & ~v6;
-  if ((v3 & ~v6) != 0)
+  _assistantRootViewController = [(SBAssistantGestureManager *)self _assistantRootViewController];
+  v8 = _assistantRootViewController;
+  v9 = affordanceCopy & ~homeAffordanceDrawingSuppressed;
+  if ((affordanceCopy & ~homeAffordanceDrawingSuppressed) != 0)
   {
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  [v7 setShowsHomeAffordance:v9];
+  [_assistantRootViewController setShowsHomeAffordance:v9];
 
-  v11 = [(SBAssistantGestureManager *)self _assistantRootViewController];
-  [v11 setHomeGrabberPointerClickDelegate:v10];
+  _assistantRootViewController2 = [(SBAssistantGestureManager *)self _assistantRootViewController];
+  [_assistantRootViewController2 setHomeGrabberPointerClickDelegate:selfCopy];
 }
 
 - (void)_updateRootViewControllerDimsContentBelow
 {
-  v3 = [(UIWindow *)self->_assistantWindow _sbWindowScene];
-  v8 = [v3 assistantController];
+  _sbWindowScene = [(UIWindow *)self->_assistantWindow _sbWindowScene];
+  assistantController = [_sbWindowScene assistantController];
 
-  if ([v8 isSystemAssistantExperienceEnabled])
+  if ([assistantController isSystemAssistantExperienceEnabled])
   {
-    v4 = [v8 presentationContext];
-    if ([v4 hasTextModality])
+    presentationContext = [assistantController presentationContext];
+    if ([presentationContext hasTextModality])
     {
-      v5 = [v8 presentationContext];
-      if ([v5 wantsDeemphasizedBackdrop])
+      presentationContext2 = [assistantController presentationContext];
+      if ([presentationContext2 wantsDeemphasizedBackdrop])
       {
-        v6 = [(SBFZStackParticipant *)self->_zStackParticipant participantBelowAllowsDimming];
+        participantBelowAllowsDimming = [(SBFZStackParticipant *)self->_zStackParticipant participantBelowAllowsDimming];
       }
 
       else
       {
-        v6 = 0;
+        participantBelowAllowsDimming = 0;
       }
     }
 
     else
     {
-      v6 = 0;
+      participantBelowAllowsDimming = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    participantBelowAllowsDimming = 0;
   }
 
-  v7 = [(SBAssistantGestureManager *)self _assistantRootViewController];
-  [v7 setDimsContentBelow:v6];
+  _assistantRootViewController = [(SBAssistantGestureManager *)self _assistantRootViewController];
+  [_assistantRootViewController setDimsContentBelow:participantBelowAllowsDimming];
 }
 
-- (void)_updateZStackParticipantWithReason:(id)a3
+- (void)_updateZStackParticipantWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(SBAssistantGestureManager *)self zStackParticipant];
-  [v5 setNeedsUpdatePreferencesWithReason:v4];
+  reasonCopy = reason;
+  zStackParticipant = [(SBAssistantGestureManager *)self zStackParticipant];
+  [zStackParticipant setNeedsUpdatePreferencesWithReason:reasonCopy];
 }
 
 - (BOOL)_noNewTransientOverlaysPresented
 {
-  v2 = self;
-  v3 = [(SBAssistantGestureManager *)self context];
-  v4 = [v3 transientOverlayPresenter];
-  v5 = [v4 topmostPresentedViewController];
+  selfCopy = self;
+  context = [(SBAssistantGestureManager *)self context];
+  transientOverlayPresenter = [context transientOverlayPresenter];
+  topmostPresentedViewController = [transientOverlayPresenter topmostPresentedViewController];
 
-  LOBYTE(v2) = v5 == v2->_topmostTransientViewControllerAtPresentation;
-  return v2;
+  LOBYTE(selfCopy) = topmostPresentedViewController == selfCopy->_topmostTransientViewControllerAtPresentation;
+  return selfCopy;
 }
 
 - (id)_assistantRootViewController
 {
-  v2 = [(SBAssistantGestureManager *)self assistantWindow];
-  v3 = [v2 assistantRootViewController];
+  assistantWindow = [(SBAssistantGestureManager *)self assistantWindow];
+  assistantRootViewController = [assistantWindow assistantRootViewController];
 
-  return v3;
+  return assistantRootViewController;
 }
 
-- (void)zStackParticipantDidChange:(id)a3
+- (void)zStackParticipantDidChange:(id)change
 {
   [(SBAssistantGestureManager *)self _updateRootViewControllerOwnsHomeGesture];
-  v4 = [(SBAssistantGestureManager *)self gestureConfiguration];
-  -[SBAssistantGestureManager _updateRootViewControllerShowsHomeAffordance:](self, "_updateRootViewControllerShowsHomeAffordance:", [v4 shouldShowHomeAffordance]);
+  gestureConfiguration = [(SBAssistantGestureManager *)self gestureConfiguration];
+  -[SBAssistantGestureManager _updateRootViewControllerShowsHomeAffordance:](self, "_updateRootViewControllerShowsHomeAffordance:", [gestureConfiguration shouldShowHomeAffordance]);
 
   [(SBAssistantGestureManager *)self _updateRootViewControllerDimsContentBelow];
 }
 
-- (void)zStackParticipant:(id)a3 updatePreferences:(id)a4
+- (void)zStackParticipant:(id)participant updatePreferences:(id)preferences
 {
-  v10 = a4;
-  v5 = [(SBAssistantGestureManager *)self gestureConfiguration];
-  v6 = [v5 shouldShareHomeGesture];
+  preferencesCopy = preferences;
+  gestureConfiguration = [(SBAssistantGestureManager *)self gestureConfiguration];
+  shouldShareHomeGesture = [gestureConfiguration shouldShareHomeGesture];
 
-  [v10 setActivationPolicyForParticipantsBelow:v6 ^ 1u];
-  [v10 setHomeAffordanceDrawingSuppression:{-[SBAssistantGestureManager homeAffordanceSuppression](self, "homeAffordanceSuppression")}];
-  [v10 setAllowsKeyboardArbiterToDetermineFocusTarget:1];
-  v7 = [(SBPhysicalButtonZStackPolicyAssistant *)self->_physicalButtonPolicyAssistant physicalButtonSceneTargets];
-  [v10 setPhysicalButtonSceneTargets:v7];
+  [preferencesCopy setActivationPolicyForParticipantsBelow:shouldShareHomeGesture ^ 1u];
+  [preferencesCopy setHomeAffordanceDrawingSuppression:{-[SBAssistantGestureManager homeAffordanceSuppression](self, "homeAffordanceSuppression")}];
+  [preferencesCopy setAllowsKeyboardArbiterToDetermineFocusTarget:1];
+  physicalButtonSceneTargets = [(SBPhysicalButtonZStackPolicyAssistant *)self->_physicalButtonPolicyAssistant physicalButtonSceneTargets];
+  [preferencesCopy setPhysicalButtonSceneTargets:physicalButtonSceneTargets];
 
-  v8 = [(SBPhysicalButtonZStackPolicyAssistant *)self->_physicalButtonPolicyAssistant captureButtonFullFidelityEventRequestingScenes];
-  [v10 setCaptureButtonFullFidelityEventRequestingScenes:v8];
+  captureButtonFullFidelityEventRequestingScenes = [(SBPhysicalButtonZStackPolicyAssistant *)self->_physicalButtonPolicyAssistant captureButtonFullFidelityEventRequestingScenes];
+  [preferencesCopy setCaptureButtonFullFidelityEventRequestingScenes:captureButtonFullFidelityEventRequestingScenes];
 
-  v9 = [(SBPhysicalButtonZStackPolicyAssistant *)self->_physicalButtonPolicyAssistant foregroundCaptureSceneTargets];
-  [v10 setForegroundCaptureSceneTargets:v9];
+  foregroundCaptureSceneTargets = [(SBPhysicalButtonZStackPolicyAssistant *)self->_physicalButtonPolicyAssistant foregroundCaptureSceneTargets];
+  [preferencesCopy setForegroundCaptureSceneTargets:foregroundCaptureSceneTargets];
 }
 
-- (void)homeGrabberViewDidReceiveClick:(id)a3
+- (void)homeGrabberViewDidReceiveClick:(id)click
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clickCopy = click;
   v5 = SBLogSiri();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -782,51 +782,51 @@ LABEL_7:
     v10 = 138543618;
     v11 = v6;
     v12 = 2112;
-    v13 = v4;
+    v13 = clickCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: %@", &v10, 0x16u);
   }
 
-  v7 = [(SBAssistantGestureManager *)self zStackParticipant];
-  v8 = [v7 ownsHomeGesture];
+  zStackParticipant = [(SBAssistantGestureManager *)self zStackParticipant];
+  ownsHomeGesture = [zStackParticipant ownsHomeGesture];
 
-  if (v8)
+  if (ownsHomeGesture)
   {
-    v9 = [(SBAssistantGestureManager *)self delegate];
-    [v9 assistantGestureManagerDidRecognizeDismissGesture:self preferredDismissalOptions:0];
+    delegate = [(SBAssistantGestureManager *)self delegate];
+    [delegate assistantGestureManagerDidRecognizeDismissGesture:self preferredDismissalOptions:0];
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBAssistantGestureManager *)self panToDismissSiriGestureRecognizer];
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  panToDismissSiriGestureRecognizer = [(SBAssistantGestureManager *)self panToDismissSiriGestureRecognizer];
 
-  if (v8 == v6)
+  if (panToDismissSiriGestureRecognizer == recognizerCopy)
   {
     v12 = 0;
   }
 
   else
   {
-    v9 = [(SBAssistantGestureManager *)self bottomEdgeDismissGestureRecognizer];
-    if (v9 == v6)
+    bottomEdgeDismissGestureRecognizer = [(SBAssistantGestureManager *)self bottomEdgeDismissGestureRecognizer];
+    if (bottomEdgeDismissGestureRecognizer == recognizerCopy)
     {
       v12 = 1;
     }
 
     else
     {
-      v10 = [(SBAssistantGestureManager *)self bottomEdgeDismissGestureRecognizer];
-      if (v10 == v7)
+      bottomEdgeDismissGestureRecognizer2 = [(SBAssistantGestureManager *)self bottomEdgeDismissGestureRecognizer];
+      if (bottomEdgeDismissGestureRecognizer2 == gestureRecognizerCopy)
       {
         v12 = 1;
       }
 
       else
       {
-        v11 = [(SBAssistantGestureManager *)self tapToDismissSiriGestureRecognizer];
-        v12 = v11 == v6;
+        tapToDismissSiriGestureRecognizer = [(SBAssistantGestureManager *)self tapToDismissSiriGestureRecognizer];
+        v12 = tapToDismissSiriGestureRecognizer == recognizerCopy;
       }
     }
   }
@@ -834,74 +834,74 @@ LABEL_7:
   return v12;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(SBAssistantGestureManager *)self bottomEdgeDismissGestureRecognizer];
+  beginCopy = begin;
+  bottomEdgeDismissGestureRecognizer = [(SBAssistantGestureManager *)self bottomEdgeDismissGestureRecognizer];
 
-  if (v5 == v4)
+  if (bottomEdgeDismissGestureRecognizer == beginCopy)
   {
-    v7 = [(SBAssistantGestureManager *)self zStackParticipant];
-    if ([v7 ownsHomeGesture])
+    zStackParticipant = [(SBAssistantGestureManager *)self zStackParticipant];
+    if ([zStackParticipant ownsHomeGesture])
     {
-      v8 = [(SBAssistantGestureManager *)self gestureConfiguration];
-      v6 = [v8 shouldShareHomeGesture];
+      gestureConfiguration = [(SBAssistantGestureManager *)self gestureConfiguration];
+      shouldShareHomeGesture = [gestureConfiguration shouldShareHomeGesture];
     }
 
     else
     {
-      v6 = 0;
+      shouldShareHomeGesture = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    shouldShareHomeGesture = 0;
   }
 
-  v9 = [(SBAssistantGestureManager *)self panToDismissSiriGestureRecognizer];
-  v10 = v9;
-  if (v9 == v4)
+  panToDismissSiriGestureRecognizer = [(SBAssistantGestureManager *)self panToDismissSiriGestureRecognizer];
+  v10 = panToDismissSiriGestureRecognizer;
+  if (panToDismissSiriGestureRecognizer == beginCopy)
   {
 
 LABEL_11:
-    v12 = [(SBAssistantGestureManager *)self zStackParticipant];
-    v6 = [v12 ownsHomeGesture];
+    zStackParticipant2 = [(SBAssistantGestureManager *)self zStackParticipant];
+    shouldShareHomeGesture = [zStackParticipant2 ownsHomeGesture];
 
     goto LABEL_12;
   }
 
-  v11 = [(SBAssistantGestureManager *)self tapToDismissSiriGestureRecognizer];
+  tapToDismissSiriGestureRecognizer = [(SBAssistantGestureManager *)self tapToDismissSiriGestureRecognizer];
 
-  if (v11 == v4)
+  if (tapToDismissSiriGestureRecognizer == beginCopy)
   {
     goto LABEL_11;
   }
 
 LABEL_12:
 
-  return v6;
+  return shouldShareHomeGesture;
 }
 
-- (id)viewForSystemGestureRecognizer:(id)a3
+- (id)viewForSystemGestureRecognizer:(id)recognizer
 {
-  v3 = [(SBAssistantGestureManager *)self _assistantRootViewController];
-  v4 = [v3 contentView];
+  _assistantRootViewController = [(SBAssistantGestureManager *)self _assistantRootViewController];
+  contentView = [_assistantRootViewController contentView];
 
-  return v4;
+  return contentView;
 }
 
-- (int64_t)touchInterfaceOrientationForGestureRecognizer:(id)a3
+- (int64_t)touchInterfaceOrientationForGestureRecognizer:(id)recognizer
 {
-  v3 = [(SBAssistantGestureManager *)self _assistantRootViewController];
-  v4 = [v3 interfaceOrientation];
+  _assistantRootViewController = [(SBAssistantGestureManager *)self _assistantRootViewController];
+  interfaceOrientation = [_assistantRootViewController interfaceOrientation];
 
-  return v4;
+  return interfaceOrientation;
 }
 
-- (void)assistantGestureConfiguration:(id)a3 didUpdateHomeGestureSharing:(BOOL)a4
+- (void)assistantGestureConfiguration:(id)configuration didUpdateHomeGestureSharing:(BOOL)sharing
 {
-  v4 = a4;
+  sharingCopy = sharing;
   v13 = *MEMORY[0x277D85DE8];
   v6 = SBLogSiri();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -915,19 +915,19 @@ LABEL_12:
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_INFO, "%{public}@: %{public}@", &v9, 0x16u);
   }
 
-  [(SBAssistantGestureManager *)self _didUpdateHomeGestureSharing:v4];
+  [(SBAssistantGestureManager *)self _didUpdateHomeGestureSharing:sharingCopy];
 }
 
-- (void)_didUpdateHomeGestureSharing:(BOOL)a3
+- (void)_didUpdateHomeGestureSharing:(BOOL)sharing
 {
   [(SBAssistantGestureManager *)self _updateZStackParticipantWithReason:@"Siri changed shareHomeGesture"];
 
   [(SBAssistantGestureManager *)self _resetDismissalSystemGestures];
 }
 
-- (void)assistantGestureConfiguration:(id)a3 didUpdateShouldDismissForTapsOutsideContent:(BOOL)a4
+- (void)assistantGestureConfiguration:(id)configuration didUpdateShouldDismissForTapsOutsideContent:(BOOL)content
 {
-  v4 = a4;
+  contentCopy = content;
   v13 = *MEMORY[0x277D85DE8];
   v6 = SBLogSiri();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -941,12 +941,12 @@ LABEL_12:
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_INFO, "%{public}@: %{public}@", &v9, 0x16u);
   }
 
-  [(SBAssistantGestureManager *)self _didUpdateShouldDismissForTapsOutsideContent:v4];
+  [(SBAssistantGestureManager *)self _didUpdateShouldDismissForTapsOutsideContent:contentCopy];
 }
 
-- (void)assistantGestureConfiguration:(id)a3 didUpdateShouldDismissForSwipesOutsideContent:(BOOL)a4
+- (void)assistantGestureConfiguration:(id)configuration didUpdateShouldDismissForSwipesOutsideContent:(BOOL)content
 {
-  v4 = a4;
+  contentCopy = content;
   v13 = *MEMORY[0x277D85DE8];
   v6 = SBLogSiri();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -960,12 +960,12 @@ LABEL_12:
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_INFO, "%{public}@: %{public}@", &v9, 0x16u);
   }
 
-  [(SBAssistantGestureManager *)self _didUpdateShouldDismissForSwipesOutsideContent:v4];
+  [(SBAssistantGestureManager *)self _didUpdateShouldDismissForSwipesOutsideContent:contentCopy];
 }
 
-- (void)assistantGestureConfiguration:(id)a3 didUpdateShouldPassTouchesThroughToSpringBoard:(BOOL)a4
+- (void)assistantGestureConfiguration:(id)configuration didUpdateShouldPassTouchesThroughToSpringBoard:(BOOL)board
 {
-  v4 = a4;
+  boardCopy = board;
   v13 = *MEMORY[0x277D85DE8];
   v6 = SBLogSiri();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -979,19 +979,19 @@ LABEL_12:
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_INFO, "%{public}@: %{public}@", &v9, 0x16u);
   }
 
-  [(SBAssistantGestureManager *)self _didUpdateTouchesPassThroughToSpringBoard:v4];
+  [(SBAssistantGestureManager *)self _didUpdateTouchesPassThroughToSpringBoard:boardCopy];
 }
 
-- (void)_didUpdateTouchesPassThroughToSpringBoard:(BOOL)a3
+- (void)_didUpdateTouchesPassThroughToSpringBoard:(BOOL)board
 {
-  v3 = a3;
-  v4 = [(SBAssistantGestureManager *)self assistantWindow];
-  [v4 setAllowsTouchPassThrough:v3];
+  boardCopy = board;
+  assistantWindow = [(SBAssistantGestureManager *)self assistantWindow];
+  [assistantWindow setAllowsTouchPassThrough:boardCopy];
 }
 
-- (void)assistantGestureConfiguration:(id)a3 didUpdateShouldShowHomeAffordance:(BOOL)a4
+- (void)assistantGestureConfiguration:(id)configuration didUpdateShouldShowHomeAffordance:(BOOL)affordance
 {
-  v4 = a4;
+  affordanceCopy = affordance;
   v13 = *MEMORY[0x277D85DE8];
   v6 = SBLogSiri();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -1005,17 +1005,17 @@ LABEL_12:
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_INFO, "%{public}@: %{public}@", &v9, 0x16u);
   }
 
-  [(SBAssistantGestureManager *)self _didUpdateSiriHomeAffordanceSuppression:v4];
+  [(SBAssistantGestureManager *)self _didUpdateSiriHomeAffordanceSuppression:affordanceCopy];
 }
 
-- (void)assistantGestureConfiguration:(id)a3 didUpdateHomeAffordanceSuppression:(int64_t)a4
+- (void)assistantGestureConfiguration:(id)configuration didUpdateHomeAffordanceSuppression:(int64_t)suppression
 {
   v13 = *MEMORY[0x277D85DE8];
   v6 = SBLogSiri();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = _SBFLoggingMethodProem();
-    v8 = [MEMORY[0x277CCACA8] stringWithSiriHomeAffordanceSuppression:a4];
+    v8 = [MEMORY[0x277CCACA8] stringWithSiriHomeAffordanceSuppression:suppression];
     v9 = 138543618;
     v10 = v7;
     v11 = 2114;
@@ -1023,15 +1023,15 @@ LABEL_12:
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_INFO, "%{public}@: %{public}@", &v9, 0x16u);
   }
 
-  [(SBAssistantGestureManager *)self _didUpdateSiriHomeAffordanceSuppression:a4];
+  [(SBAssistantGestureManager *)self _didUpdateSiriHomeAffordanceSuppression:suppression];
 }
 
-- (void)_didUpdateSiriHomeAffordanceSuppression:(int64_t)a3
+- (void)_didUpdateSiriHomeAffordanceSuppression:(int64_t)suppression
 {
-  if (a3 <= 2)
+  if (suppression <= 2)
   {
-    [(SBAssistantGestureManager *)self _didUpdateShouldShowHomeAffordance:(a3 & 1) == 0];
-    [(SBAssistantGestureManager *)self setHomeAffordanceSuppression:a3];
+    [(SBAssistantGestureManager *)self _didUpdateShouldShowHomeAffordance:(suppression & 1) == 0];
+    [(SBAssistantGestureManager *)self setHomeAffordanceSuppression:suppression];
   }
 
   [(SBAssistantGestureManager *)self _updateRootViewControllerOwnsHomeGesture];
@@ -1039,10 +1039,10 @@ LABEL_12:
   [(SBAssistantGestureManager *)self _updateZStackParticipantWithReason:@"siri updated home affordance suppression"];
 }
 
-- (void)assistantGestureConfiguration:(id)a3 didUpdateStatusBarActionGestureRecognizer:(id)a4
+- (void)assistantGestureConfiguration:(id)configuration didUpdateStatusBarActionGestureRecognizer:(id)recognizer
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  recognizerCopy = recognizer;
   v6 = SBLogSiri();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -1050,17 +1050,17 @@ LABEL_12:
     v8 = 138543618;
     v9 = v7;
     v10 = 2114;
-    v11 = v5;
+    v11 = recognizerCopy;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@", &v8, 0x16u);
   }
 
-  [(SBAssistantGestureManager *)self _didUpdateStatusBarActionGestureRecognizer:v5];
+  [(SBAssistantGestureManager *)self _didUpdateStatusBarActionGestureRecognizer:recognizerCopy];
 }
 
-- (void)_didUpdateStatusBarActionGestureRecognizer:(id)a3
+- (void)_didUpdateStatusBarActionGestureRecognizer:(id)recognizer
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  recognizerCopy = recognizer;
   tapToDismissSiriGestureRecognizer = self->_tapToDismissSiriGestureRecognizer;
   if (tapToDismissSiriGestureRecognizer)
   {
@@ -1088,10 +1088,10 @@ LABEL_12:
       tapToDismissSiriGestureRecognizer = self->_tapToDismissSiriGestureRecognizer;
     }
 
-    if (v5 && tapToDismissSiriGestureRecognizer)
+    if (recognizerCopy && tapToDismissSiriGestureRecognizer)
     {
-      [(UITapGestureRecognizer *)tapToDismissSiriGestureRecognizer requireGestureRecognizerToFail:v5];
-      objc_storeStrong(&self->_statusBarActionGestureRecognizer, a3);
+      [(UITapGestureRecognizer *)tapToDismissSiriGestureRecognizer requireGestureRecognizerToFail:recognizerCopy];
+      objc_storeStrong(&self->_statusBarActionGestureRecognizer, recognizer);
       v12 = SBLogSiri();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
@@ -1102,19 +1102,19 @@ LABEL_12:
         v17 = 2114;
         v18 = v14;
         v19 = 2114;
-        v20 = v5;
+        v20 = recognizerCopy;
         _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ - Added failure requirement for assistant.dismiss.tap gesture recognizer %{public}@ on %{public}@", &v15, 0x20u);
       }
     }
   }
 }
 
-- (void)assistantSession:(id)a3 didChangePresentationInWindowScene:(id)a4
+- (void)assistantSession:(id)session didChangePresentationInWindowScene:(id)scene
 {
-  v5 = [a3 presentationContext];
-  v6 = [v5 isAssistantPresented];
+  presentationContext = [session presentationContext];
+  isAssistantPresented = [presentationContext isAssistantPresented];
 
-  if (v6)
+  if (isAssistantPresented)
   {
     [(SBAssistantGestureManager *)self _setupSystemDismissalGestures];
     [(SBAssistantGestureManager *)self _configureHomeGesture];
@@ -1126,26 +1126,26 @@ LABEL_12:
     [(SBAssistantGestureManager *)self _removeHomeGesture];
   }
 
-  v7 = [(SBAssistantGestureManager *)self gestureConfiguration];
-  -[SBAssistantGestureManager _didUpdateTouchesPassThroughToSpringBoard:](self, "_didUpdateTouchesPassThroughToSpringBoard:", [v7 shouldPassTouchesThroughToSpringBoard]);
+  gestureConfiguration = [(SBAssistantGestureManager *)self gestureConfiguration];
+  -[SBAssistantGestureManager _didUpdateTouchesPassThroughToSpringBoard:](self, "_didUpdateTouchesPassThroughToSpringBoard:", [gestureConfiguration shouldPassTouchesThroughToSpringBoard]);
 
-  v8 = [(SBAssistantGestureManager *)self gestureConfiguration];
-  -[SBAssistantGestureManager _didUpdateSiriHomeAffordanceSuppression:](self, "_didUpdateSiriHomeAffordanceSuppression:", [v8 homeAffordanceSuppression]);
+  gestureConfiguration2 = [(SBAssistantGestureManager *)self gestureConfiguration];
+  -[SBAssistantGestureManager _didUpdateSiriHomeAffordanceSuppression:](self, "_didUpdateSiriHomeAffordanceSuppression:", [gestureConfiguration2 homeAffordanceSuppression]);
 
-  v9 = [(SBAssistantGestureManager *)self gestureConfiguration];
-  -[SBAssistantGestureManager _didUpdateHomeGestureSharing:](self, "_didUpdateHomeGestureSharing:", [v9 shouldShareHomeGesture]);
+  gestureConfiguration3 = [(SBAssistantGestureManager *)self gestureConfiguration];
+  -[SBAssistantGestureManager _didUpdateHomeGestureSharing:](self, "_didUpdateHomeGestureSharing:", [gestureConfiguration3 shouldShareHomeGesture]);
 
-  v10 = [(SBAssistantGestureManager *)self gestureConfiguration];
-  v11 = [v10 statusBarActionGestureRecognizer];
-  [(SBAssistantGestureManager *)self _didUpdateStatusBarActionGestureRecognizer:v11];
+  gestureConfiguration4 = [(SBAssistantGestureManager *)self gestureConfiguration];
+  statusBarActionGestureRecognizer = [gestureConfiguration4 statusBarActionGestureRecognizer];
+  [(SBAssistantGestureManager *)self _didUpdateStatusBarActionGestureRecognizer:statusBarActionGestureRecognizer];
 
   [(SBAssistantGestureManager *)self _updateRootViewControllerDimsContentBelow];
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  v5 = a4;
-  if (([v5 isEqualToString:@"assistantAnimationDuration"] & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"assistantDismissAnimationDurationOverApp"))
+  keyCopy = key;
+  if (([keyCopy isEqualToString:@"assistantAnimationDuration"] & 1) != 0 || objc_msgSend(keyCopy, "isEqualToString:", @"assistantDismissAnimationDurationOverApp"))
   {
     [(SBAssistantGestureManager *)self _prototypeSettingsChanged];
   }

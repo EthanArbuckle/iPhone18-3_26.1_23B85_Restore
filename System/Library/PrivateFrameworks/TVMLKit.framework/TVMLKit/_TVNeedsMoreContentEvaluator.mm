@@ -1,82 +1,82 @@
 @interface _TVNeedsMoreContentEvaluator
-- (_TVNeedsMoreContentEvaluator)initWithScrollView:(id)a3 axis:(int64_t)a4;
-- (void)evaluateForState:(int64_t)a3;
-- (void)setViewElement:(id)a3;
+- (_TVNeedsMoreContentEvaluator)initWithScrollView:(id)view axis:(int64_t)axis;
+- (void)evaluateForState:(int64_t)state;
+- (void)setViewElement:(id)element;
 @end
 
 @implementation _TVNeedsMoreContentEvaluator
 
-- (_TVNeedsMoreContentEvaluator)initWithScrollView:(id)a3 axis:(int64_t)a4
+- (_TVNeedsMoreContentEvaluator)initWithScrollView:(id)view axis:(int64_t)axis
 {
-  v7 = a3;
+  viewCopy = view;
   v11.receiver = self;
   v11.super_class = _TVNeedsMoreContentEvaluator;
   v8 = [(_TVNeedsMoreContentEvaluator *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_scrollView, a3);
-    v9->_axis = a4;
+    objc_storeStrong(&v8->_scrollView, view);
+    v9->_axis = axis;
   }
 
   return v9;
 }
 
-- (void)setViewElement:(id)a3
+- (void)setViewElement:(id)element
 {
-  objc_storeStrong(&self->_viewElement, a3);
-  v4 = [(_TVNeedsMoreContentEvaluator *)self viewElement];
-  v5 = [v4 attributes];
-  v7 = [v5 objectForKeyedSubscript:@"needsMoreThreshold"];
+  objc_storeStrong(&self->_viewElement, element);
+  viewElement = [(_TVNeedsMoreContentEvaluator *)self viewElement];
+  attributes = [viewElement attributes];
+  v7 = [attributes objectForKeyedSubscript:@"needsMoreThreshold"];
 
   [v7 doubleValue];
   [(_TVNeedsMoreContentEvaluator *)self setThreshold:fmax(v6, 1.0)];
 }
 
-- (void)evaluateForState:(int64_t)a3
+- (void)evaluateForState:(int64_t)state
 {
-  v5 = [(_TVNeedsMoreContentEvaluator *)self scrollView];
-  v42 = [v5 window];
+  scrollView = [(_TVNeedsMoreContentEvaluator *)self scrollView];
+  window = [scrollView window];
 
-  if (v42)
+  if (window)
   {
-    v6 = [(_TVNeedsMoreContentEvaluator *)self viewElement];
+    viewElement = [(_TVNeedsMoreContentEvaluator *)self viewElement];
 
-    if (v6)
+    if (viewElement)
     {
-      v7 = [(_TVNeedsMoreContentEvaluator *)self state];
-      if (a3 == 1 && !v7)
+      state = [(_TVNeedsMoreContentEvaluator *)self state];
+      if (state == 1 && !state)
       {
         [(_TVNeedsMoreContentEvaluator *)self setState:1];
         goto LABEL_6;
       }
 
-      v8 = [(_TVNeedsMoreContentEvaluator *)self state];
-      if (a3 == 2 && v8 == 1)
+      state2 = [(_TVNeedsMoreContentEvaluator *)self state];
+      if (state == 2 && state2 == 1)
       {
-        [v42 bounds];
+        [window bounds];
         v10 = v9;
         v12 = v11;
         v14 = v13;
         v16 = v15;
-        v17 = [(_TVNeedsMoreContentEvaluator *)self scrollView];
-        [v42 convertRect:v17 toView:{v10, v12, v14, v16}];
+        scrollView2 = [(_TVNeedsMoreContentEvaluator *)self scrollView];
+        [window convertRect:scrollView2 toView:{v10, v12, v14, v16}];
         v19 = v18;
         v21 = v20;
         v23 = v22;
         v25 = v24;
 
-        v26 = [(_TVNeedsMoreContentEvaluator *)self scrollView];
-        [v26 contentSize];
+        scrollView3 = [(_TVNeedsMoreContentEvaluator *)self scrollView];
+        [scrollView3 contentSize];
         v28 = v27;
         v30 = v29;
 
-        v31 = [(_TVNeedsMoreContentEvaluator *)self axis];
+        axis = [(_TVNeedsMoreContentEvaluator *)self axis];
         v32 = v19;
         v33 = v21;
         v34 = v23;
         v35 = v25;
-        if (v31 == 1)
+        if (axis == 1)
         {
           v36 = v28 - CGRectGetMaxX(*&v32);
           [(_TVNeedsMoreContentEvaluator *)self threshold];
@@ -97,9 +97,9 @@
         }
 
         [(_TVNeedsMoreContentEvaluator *)self setState:2];
-        v40 = [(_TVNeedsMoreContentEvaluator *)self viewElement];
-        v41 = [(_TVNeedsMoreContentEvaluator *)self scrollView];
-        [v40 tv_dispatchEvent:@"needsmore" canBubble:0 isCancelable:0 extraInfo:0 targetResponder:v41 completionBlock:0];
+        viewElement2 = [(_TVNeedsMoreContentEvaluator *)self viewElement];
+        scrollView4 = [(_TVNeedsMoreContentEvaluator *)self scrollView];
+        [viewElement2 tv_dispatchEvent:@"needsmore" canBubble:0 isCancelable:0 extraInfo:0 targetResponder:scrollView4 completionBlock:0];
       }
     }
   }

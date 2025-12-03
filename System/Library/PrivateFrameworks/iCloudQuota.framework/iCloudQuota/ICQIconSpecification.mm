@@ -1,37 +1,37 @@
 @interface ICQIconSpecification
-- (ICQIconSpecification)initWithCoder:(id)a3;
-- (ICQIconSpecification)initWithDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ICQIconSpecification)initWithCoder:(id)coder;
+- (ICQIconSpecification)initWithDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICQIconSpecification
 
-- (ICQIconSpecification)initWithDictionary:(id)a3
+- (ICQIconSpecification)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = ICQIconSpecification;
   v5 = [(ICQIconSpecification *)&v19 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"bundleId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"bundleId"];
     bundleID = v5->_bundleID;
     v5->_bundleID = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"assetId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"assetId"];
     assetID = v5->_assetID;
     v5->_assetID = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"sfSymbolId"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"sfSymbolId"];
     sfSymbolId = v5->_sfSymbolId;
     v5->_sfSymbolId = v10;
 
-    v12 = [v4 objectForKeyedSubscript:@"sfSymbolColor"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"sfSymbolColor"];
     sfSymbolColor = v5->_sfSymbolColor;
     v5->_sfSymbolColor = v12;
 
     v14 = [ICQImageURL alloc];
-    v15 = [v4 objectForKeyedSubscript:@"urls"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"urls"];
     v16 = [(ICQImageURL *)v14 initFromDictionary:v15];
     imageURL = v5->_imageURL;
     v5->_imageURL = v16;
@@ -40,50 +40,50 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ICQIconSpecification *)self bundleID];
-  [v4 encodeObject:v5 forKey:@"bundleId"];
+  coderCopy = coder;
+  bundleID = [(ICQIconSpecification *)self bundleID];
+  [coderCopy encodeObject:bundleID forKey:@"bundleId"];
 
-  v6 = [(ICQIconSpecification *)self assetID];
-  [v4 encodeObject:v6 forKey:@"assetId"];
+  assetID = [(ICQIconSpecification *)self assetID];
+  [coderCopy encodeObject:assetID forKey:@"assetId"];
 
-  v7 = [(ICQIconSpecification *)self imageURL];
-  [v4 encodeObject:v7 forKey:@"urls"];
+  imageURL = [(ICQIconSpecification *)self imageURL];
+  [coderCopy encodeObject:imageURL forKey:@"urls"];
 
-  v8 = [(ICQIconSpecification *)self sfSymbolId];
-  [v4 encodeObject:v8 forKey:@"sfSymbolId"];
+  sfSymbolId = [(ICQIconSpecification *)self sfSymbolId];
+  [coderCopy encodeObject:sfSymbolId forKey:@"sfSymbolId"];
 
-  v9 = [(ICQIconSpecification *)self sfSymbolColor];
-  [v4 encodeObject:v9 forKey:@"sfSymbolColor"];
+  sfSymbolColor = [(ICQIconSpecification *)self sfSymbolColor];
+  [coderCopy encodeObject:sfSymbolColor forKey:@"sfSymbolColor"];
 }
 
-- (ICQIconSpecification)initWithCoder:(id)a3
+- (ICQIconSpecification)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = ICQIconSpecification;
   v5 = [(ICQIconSpecification *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleId"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleId"];
     bundleID = v5->_bundleID;
     v5->_bundleID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetId"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetId"];
     assetID = v5->_assetID;
     v5->_assetID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"urls"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"urls"];
     imageURL = v5->_imageURL;
     v5->_imageURL = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sfSymbolId"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sfSymbolId"];
     sfSymbolId = v5->_sfSymbolId;
     v5->_sfSymbolId = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sfSymbolColor"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sfSymbolColor"];
     sfSymbolColor = v5->_sfSymbolColor;
     v5->_sfSymbolColor = v14;
   }

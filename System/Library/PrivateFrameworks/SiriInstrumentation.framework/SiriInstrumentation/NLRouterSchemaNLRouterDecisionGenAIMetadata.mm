@@ -1,49 +1,49 @@
 @interface NLRouterSchemaNLRouterDecisionGenAIMetadata
-- (BOOL)isEqual:(id)a3;
-- (NLRouterSchemaNLRouterDecisionGenAIMetadata)initWithDictionary:(id)a3;
-- (NLRouterSchemaNLRouterDecisionGenAIMetadata)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLRouterSchemaNLRouterDecisionGenAIMetadata)initWithDictionary:(id)dictionary;
+- (NLRouterSchemaNLRouterDecisionGenAIMetadata)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasCorrectionOutcome:(BOOL)a3;
-- (void)setHasGenAIAppIntent:(BOOL)a3;
-- (void)setHasRequestedGenAIAgent:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasCorrectionOutcome:(BOOL)outcome;
+- (void)setHasGenAIAppIntent:(BOOL)intent;
+- (void)setHasRequestedGenAIAgent:(BOOL)agent;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLRouterSchemaNLRouterDecisionGenAIMetadata
 
-- (NLRouterSchemaNLRouterDecisionGenAIMetadata)initWithDictionary:(id)a3
+- (NLRouterSchemaNLRouterDecisionGenAIMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = NLRouterSchemaNLRouterDecisionGenAIMetadata;
   v5 = [(NLRouterSchemaNLRouterDecisionGenAIMetadata *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isExplicit"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isExplicit"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NLRouterSchemaNLRouterDecisionGenAIMetadata setIsExplicit:](v5, "setIsExplicit:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"genAIAppIntent"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"genAIAppIntent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NLRouterSchemaNLRouterDecisionGenAIMetadata setGenAIAppIntent:](v5, "setGenAIAppIntent:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"correctionOutcome"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"correctionOutcome"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NLRouterSchemaNLRouterDecisionGenAIMetadata setCorrectionOutcome:](v5, "setCorrectionOutcome:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"requestedGenAIAgent"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"requestedGenAIAgent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,30 +56,30 @@
   return v5;
 }
 
-- (NLRouterSchemaNLRouterDecisionGenAIMetadata)initWithJSON:(id)a3
+- (NLRouterSchemaNLRouterDecisionGenAIMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLRouterSchemaNLRouterDecisionGenAIMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLRouterSchemaNLRouterDecisionGenAIMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLRouterSchemaNLRouterDecisionGenAIMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -92,18 +92,18 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v5 = [(NLRouterSchemaNLRouterDecisionGenAIMetadata *)self correctionOutcome];
+    correctionOutcome = [(NLRouterSchemaNLRouterDecisionGenAIMetadata *)self correctionOutcome];
     v6 = @"NLROUTERCORRECTIONOUTCOME_UNKNOWN";
-    if (v5 == 1)
+    if (correctionOutcome == 1)
     {
       v6 = @"NLROUTERCORRECTIONOUTCOME_NONE";
     }
 
-    if (v5 == 2)
+    if (correctionOutcome == 2)
     {
       v7 = @"NLROUTERCORRECTIONOUTCOME_UNDO";
     }
@@ -113,7 +113,7 @@
       v7 = v6;
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"correctionOutcome"];
+    [dictionary setObject:v7 forKeyedSubscript:@"correctionOutcome"];
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -125,7 +125,7 @@ LABEL_3:
 
 LABEL_16:
       v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[NLRouterSchemaNLRouterDecisionGenAIMetadata isExplicit](self, "isExplicit")}];
-      [v3 setObject:v10 forKeyedSubscript:@"isExplicit"];
+      [dictionary setObject:v10 forKeyedSubscript:@"isExplicit"];
 
       if ((*&self->_has & 8) == 0)
       {
@@ -144,7 +144,7 @@ LABEL_17:
         v12 = off_1E78DB628[v11];
       }
 
-      [v3 setObject:v12 forKeyedSubscript:@"requestedGenAIAgent"];
+      [dictionary setObject:v12 forKeyedSubscript:@"requestedGenAIAgent"];
       goto LABEL_21;
     }
   }
@@ -165,7 +165,7 @@ LABEL_17:
     v9 = off_1E78DB610[v8];
   }
 
-  [v3 setObject:v9 forKeyedSubscript:@"genAIAppIntent"];
+  [dictionary setObject:v9 forKeyedSubscript:@"genAIAppIntent"];
   has = self->_has;
   if (has)
   {
@@ -179,9 +179,9 @@ LABEL_4:
   }
 
 LABEL_21:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -238,16 +238,16 @@ LABEL_5:
   return v3 ^ v2 ^ v4 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_18;
@@ -256,13 +256,13 @@ LABEL_5:
   if (*&has)
   {
     isExplicit = self->_isExplicit;
-    if (isExplicit != [v4 isExplicit])
+    if (isExplicit != [equalCopy isExplicit])
     {
       goto LABEL_18;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -274,13 +274,13 @@ LABEL_5:
   if (v8)
   {
     genAIAppIntent = self->_genAIAppIntent;
-    if (genAIAppIntent != [v4 genAIAppIntent])
+    if (genAIAppIntent != [equalCopy genAIAppIntent])
     {
       goto LABEL_18;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -292,10 +292,10 @@ LABEL_5:
   if (v10)
   {
     correctionOutcome = self->_correctionOutcome;
-    if (correctionOutcome == [v4 correctionOutcome])
+    if (correctionOutcome == [equalCopy correctionOutcome])
     {
       has = self->_has;
-      v6 = v4[24];
+      v6 = equalCopy[24];
       goto LABEL_14;
     }
 
@@ -314,7 +314,7 @@ LABEL_14:
   if (v12)
   {
     requestedGenAIAgent = self->_requestedGenAIAgent;
-    if (requestedGenAIAgent != [v4 requestedGenAIAgent])
+    if (requestedGenAIAgent != [equalCopy requestedGenAIAgent])
     {
       goto LABEL_18;
     }
@@ -326,9 +326,9 @@ LABEL_19:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -375,9 +375,9 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)setHasRequestedGenAIAgent:(BOOL)a3
+- (void)setHasRequestedGenAIAgent:(BOOL)agent
 {
-  if (a3)
+  if (agent)
   {
     v3 = 8;
   }
@@ -390,9 +390,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasCorrectionOutcome:(BOOL)a3
+- (void)setHasCorrectionOutcome:(BOOL)outcome
 {
-  if (a3)
+  if (outcome)
   {
     v3 = 4;
   }
@@ -405,9 +405,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasGenAIAppIntent:(BOOL)a3
+- (void)setHasGenAIAppIntent:(BOOL)intent
 {
-  if (a3)
+  if (intent)
   {
     v3 = 2;
   }

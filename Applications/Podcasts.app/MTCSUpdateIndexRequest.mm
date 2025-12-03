@@ -1,33 +1,33 @@
 @interface MTCSUpdateIndexRequest
-- (MTCSUpdateIndexRequest)initWithReason:(id)a3 entityLoadingBlock:(id)a4 searchableIndex:(id)a5 completion:(id)a6;
+- (MTCSUpdateIndexRequest)initWithReason:(id)reason entityLoadingBlock:(id)block searchableIndex:(id)index completion:(id)completion;
 - (id)description;
 @end
 
 @implementation MTCSUpdateIndexRequest
 
-- (MTCSUpdateIndexRequest)initWithReason:(id)a3 entityLoadingBlock:(id)a4 searchableIndex:(id)a5 completion:(id)a6
+- (MTCSUpdateIndexRequest)initWithReason:(id)reason entityLoadingBlock:(id)block searchableIndex:(id)index completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  reasonCopy = reason;
+  blockCopy = block;
+  indexCopy = index;
+  completionCopy = completion;
   v24.receiver = self;
   v24.super_class = MTCSUpdateIndexRequest;
   v15 = [(MTCSUpdateIndexRequest *)&v24 init];
   if (v15)
   {
     v16 = +[NSUUID UUID];
-    v17 = [v16 UUIDString];
+    uUIDString = [v16 UUIDString];
     identifier = v15->_identifier;
-    v15->_identifier = v17;
+    v15->_identifier = uUIDString;
 
-    objc_storeStrong(&v15->_reason, a3);
-    v19 = objc_retainBlock(v12);
+    objc_storeStrong(&v15->_reason, reason);
+    v19 = objc_retainBlock(blockCopy);
     entityLoadingBlock = v15->_entityLoadingBlock;
     v15->_entityLoadingBlock = v19;
 
-    objc_storeStrong(&v15->_searchableIndex, a5);
-    v21 = objc_retainBlock(v14);
+    objc_storeStrong(&v15->_searchableIndex, index);
+    v21 = objc_retainBlock(completionCopy);
     completion = v15->_completion;
     v15->_completion = v21;
   }
@@ -37,8 +37,8 @@
 
 - (id)description
 {
-  v3 = [(MTCSUpdateIndexRequest *)self reason];
-  v4 = [NSString stringWithFormat:@"'%@', id = %@", v3, self->_identifier];
+  reason = [(MTCSUpdateIndexRequest *)self reason];
+  v4 = [NSString stringWithFormat:@"'%@', id = %@", reason, self->_identifier];
 
   return v4;
 }

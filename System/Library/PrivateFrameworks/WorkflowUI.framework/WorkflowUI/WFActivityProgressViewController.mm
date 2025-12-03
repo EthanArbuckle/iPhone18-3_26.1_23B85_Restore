@@ -1,6 +1,6 @@
 @interface WFActivityProgressViewController
-- (WFActivityProgressViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)setState:(unint64_t)a3;
+- (WFActivityProgressViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)setState:(unint64_t)state;
 - (void)viewDidLoad;
 @end
 
@@ -8,19 +8,19 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_2748577C4();
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
-  v4 = self;
-  sub_2748579B8(a3);
+  selfCopy = self;
+  sub_2748579B8(state);
 }
 
-- (WFActivityProgressViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (WFActivityProgressViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = _sSo32WFShortcutConcerningReportReasona10WorkflowUIE2idSSvg_0();
     v7 = v6;
@@ -32,8 +32,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_27485827C(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_27485827C(v5, v7, bundle);
 }
 
 @end

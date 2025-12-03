@@ -1,54 +1,54 @@
 @interface BRContainer
-+ (BOOL)canMoveFilesWithoutDownloadingFromContainer:(id)a3 toContainer:(id)a4;
-+ (BOOL)isDocumentScopePublicWithProperties:(id)a3 mangledID:(id)a4;
-+ (BOOL)versionOfBundle:(id)a3 changedFromVersion:(id)a4;
-+ (id)_URLForPlistOfMangledID:(id)a3;
-+ (id)_bundleIDVersionsWithProperties:(id)a3 mangledID:(id)a4;
-+ (id)_bundleIDsWithProperties:(id)a3;
-+ (id)_containerRepositoryURLForMangledID:(id)a3;
-+ (id)_documentsTypesWithProperties:(id)a3;
-+ (id)_exportedTypesWithProperties:(id)a3;
-+ (id)_iconGeneratorVersionWithProperties:(id)a3;
-+ (id)_iconMetadataWithProperties:(id)a3;
-+ (id)_iconURLsWithProperties:(id)a3 mangledID:(id)a4;
-+ (id)_importedTypesWithProperties:(id)a3;
-+ (id)_isDocumentScopePublicAsNumberWithProperties:(id)a3 mangledID:(id)a4;
-+ (id)_localizedNameWithProperties:(id)a3 mangledID:(id)a4 preferredLanguages:(id)a5;
-+ (id)_pathForIconName:(id)a3 mangledID:(id)a4;
-+ (id)_sanitizedContainerFallbackNameForMangledID:(id)a3;
++ (BOOL)canMoveFilesWithoutDownloadingFromContainer:(id)container toContainer:(id)toContainer;
++ (BOOL)isDocumentScopePublicWithProperties:(id)properties mangledID:(id)d;
++ (BOOL)versionOfBundle:(id)bundle changedFromVersion:(id)version;
++ (id)_URLForPlistOfMangledID:(id)d;
++ (id)_bundleIDVersionsWithProperties:(id)properties mangledID:(id)d;
++ (id)_bundleIDsWithProperties:(id)properties;
++ (id)_containerRepositoryURLForMangledID:(id)d;
++ (id)_documentsTypesWithProperties:(id)properties;
++ (id)_exportedTypesWithProperties:(id)properties;
++ (id)_iconGeneratorVersionWithProperties:(id)properties;
++ (id)_iconMetadataWithProperties:(id)properties;
++ (id)_iconURLsWithProperties:(id)properties mangledID:(id)d;
++ (id)_importedTypesWithProperties:(id)properties;
++ (id)_isDocumentScopePublicAsNumberWithProperties:(id)properties mangledID:(id)d;
++ (id)_localizedNameWithProperties:(id)properties mangledID:(id)d preferredLanguages:(id)languages;
++ (id)_pathForIconName:(id)name mangledID:(id)d;
++ (id)_sanitizedContainerFallbackNameForMangledID:(id)d;
 + (id)allContainersByContainerID;
-+ (id)bundleIdentifiersEnumeratorForProperties:(id)a3;
-+ (id)bundlePropertyEnumerator:(id)a3 valuesOfClass:(Class)a4 forProperties:(id)a5;
++ (id)bundleIdentifiersEnumeratorForProperties:(id)properties;
++ (id)bundlePropertyEnumerator:(id)enumerator valuesOfClass:(Class)class forProperties:(id)properties;
 + (id)classesForDecoding;
-+ (id)containerForItemAtURL:(id)a3 error:(id *)a4;
-+ (id)containerForMangledID:(id)a3;
-+ (id)containerInRepositoryURL:(id)a3 createIfMissing:(BOOL)a4 error:(id *)a5;
++ (id)containerForItemAtURL:(id)l error:(id *)error;
++ (id)containerForMangledID:(id)d;
++ (id)containerInRepositoryURL:(id)l createIfMissing:(BOOL)missing error:(id *)error;
 + (id)containersRepositoryURL;
 + (id)documentContainers;
-+ (id)documentsContainersInBackupHomeAtURL:(id)a3 error:(id *)a4;
++ (id)documentsContainersInBackupHomeAtURL:(id)l error:(id *)error;
 + (id)localizedNameForDefaultCloudDocsContainer;
 + (id)localizedNameForDesktopContainer;
 + (id)localizedNameForDocumentsContainer;
-+ (id)propertiesForMangledID:(id)a3 usingBundle:(__CFBundle *)a4 minimumBundleVersion:(id)a5 bundleIcons:(id *)a6;
-+ (void)_generateiOSIconsForMangledID:(id)a3 usingBundle:(__CFBundle *)a4 generatedIcons:(id)a5;
-+ (void)forceRefreshAllContainersWithCompletion:(id)a3;
-+ (void)forceRefreshContainers:(id)a3 completion:(id)a4;
++ (id)propertiesForMangledID:(id)d usingBundle:(__CFBundle *)bundle minimumBundleVersion:(id)version bundleIcons:(id *)icons;
++ (void)_generateiOSIconsForMangledID:(id)d usingBundle:(__CFBundle *)bundle generatedIcons:(id)icons;
++ (void)forceRefreshAllContainersWithCompletion:(id)completion;
++ (void)forceRefreshContainers:(id)containers completion:(id)completion;
 + (void)initialize;
 + (void)postContainerListUpdateNotification;
-+ (void)postContainerStatusChangeNotificationWithID:(id)a3 key:(id)a4 value:(id)a5;
++ (void)postContainerStatusChangeNotificationWithID:(id)d key:(id)key value:(id)value;
 + (void)unregisterCurrentProcessAsPriorityHint;
-- (BOOL)_updateMetadataOnDiskWithProperties:(id)a3;
-- (BOOL)containsExcludedDocumentsOnTheFSWithExcludedButPreservedFilename:(id)a3 excludedButPreservedExtensions:(id)a4 andStampUploadedAppWithXattr:(BOOL)a5;
-- (BOOL)deleteAllContentsOnClientAndServer:(BOOL)a3 error:(id *)a4;
-- (BOOL)hasIconWithName:(id)a3;
+- (BOOL)_updateMetadataOnDiskWithProperties:(id)properties;
+- (BOOL)containsExcludedDocumentsOnTheFSWithExcludedButPreservedFilename:(id)filename excludedButPreservedExtensions:(id)extensions andStampUploadedAppWithXattr:(BOOL)xattr;
+- (BOOL)deleteAllContentsOnClientAndServer:(BOOL)server error:(id *)error;
+- (BOOL)hasIconWithName:(id)name;
 - (BOOL)isDocumentScopePublic;
-- (BOOL)registerCurrentProcessAsPriorityHintWithError:(id *)a3;
-- (BOOL)updateMetadataWithExtractorProperties:(id)a3 iconPaths:(id)a4 bundleID:(id)a5;
-- (BOOL)updateMetadataWithRecordData:(id)a3 iconPaths:(id)a4;
-- (BRContainer)initWithCoder:(id)a3;
-- (BRContainer)initWithDocsOrDesktopContainerID:(id)a3;
-- (BRContainer)initWithMangledID:(id)a3;
-- (BRContainer)initWithMangledID:(id)a3 dataRepresentation:(id)a4;
+- (BOOL)registerCurrentProcessAsPriorityHintWithError:(id *)error;
+- (BOOL)updateMetadataWithExtractorProperties:(id)properties iconPaths:(id)paths bundleID:(id)d;
+- (BOOL)updateMetadataWithRecordData:(id)data iconPaths:(id)paths;
+- (BRContainer)initWithCoder:(id)coder;
+- (BRContainer)initWithDocsOrDesktopContainerID:(id)d;
+- (BRContainer)initWithMangledID:(id)d;
+- (BRContainer)initWithMangledID:(id)d dataRepresentation:(id)representation;
 - (NSDate)lastServerUpdate;
 - (NSSet)bundleIdentifiers;
 - (NSSet)documentsTypes;
@@ -59,10 +59,10 @@
 - (NSURL)trashURL;
 - (NSURL)url;
 - (id)_containerRepositoryURL;
-- (id)_imageDataForSize:(CGSize)a3 scale:(int64_t)a4 isiOSIcon:(BOOL *)a5 shouldTransformToAppIcon:(BOOL *)a6;
-- (id)_pathForIconName:(id)a3;
+- (id)_imageDataForSize:(CGSize)size scale:(int64_t)scale isiOSIcon:(BOOL *)icon shouldTransformToAppIcon:(BOOL *)appIcon;
+- (id)_pathForIconName:(id)name;
 - (id)_pathForPlist;
-- (id)bestFittingImageDataForSize:(CGSize)a3 shouldTransformToAppIcon:(BOOL *)a4;
+- (id)bestFittingImageDataForSize:(CGSize)size shouldTransformToAppIcon:(BOOL *)icon;
 - (id)bundleIDVersions;
 - (id)computedProperties;
 - (id)copyDataRepresentation;
@@ -71,27 +71,27 @@
 - (id)iconMetadata;
 - (id)iconURLs;
 - (id)imageRepresentationsAvailable;
-- (id)localizedNameWithPreferredLanguages:(id)a3;
+- (id)localizedNameWithPreferredLanguages:(id)languages;
 - (id)shortDescription;
-- (id)trashRestoreStringForURL:(id)a3;
-- (id)versionNumberForBundleIdentifier:(id)a3;
+- (id)trashRestoreStringForURL:(id)l;
+- (id)versionNumberForBundleIdentifier:(id)identifier;
 - (unsigned)currentStatus;
-- (void)_performWhileAccessingSecurityScopedContainer:(id)a3;
-- (void)_replaceDataRepresentationWithData:(id)a3;
-- (void)accessDataRepresentationInBlock:(id)a3;
-- (void)accessPropertiesInBlock:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)forceRefreshWithCompletion:(id)a3;
-- (void)setCurrentStatus:(unsigned int)a3;
-- (void)setLastServerUpdate:(id)a3;
-- (void)setUrlRoot:(id)a3;
+- (void)_performWhileAccessingSecurityScopedContainer:(id)container;
+- (void)_replaceDataRepresentationWithData:(id)data;
+- (void)accessDataRepresentationInBlock:(id)block;
+- (void)accessPropertiesInBlock:(id)block;
+- (void)encodeWithCoder:(id)coder;
+- (void)forceRefreshWithCompletion:(id)completion;
+- (void)setCurrentStatus:(unsigned int)status;
+- (void)setLastServerUpdate:(id)update;
+- (void)setUrlRoot:(id)root;
 @end
 
 @implementation BRContainer
 
 + (void)initialize
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___BRContainer;
   objc_msgSendSuper2(&v4, sel_initialize);
   v2 = BRContainerFormatVersionNumberValue;
@@ -122,51 +122,51 @@
 
 - (BOOL)isDocumentScopePublic
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  isDocumentScopePublicAsNumber = v2->_isDocumentScopePublicAsNumber;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isDocumentScopePublicAsNumber = selfCopy->_isDocumentScopePublicAsNumber;
   if (!isDocumentScopePublicAsNumber)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __36__BRContainer_isDocumentScopePublic__block_invoke;
     v6[3] = &unk_1E7A16530;
-    v6[4] = v2;
-    [(BRContainer *)v2 accessPropertiesInBlock:v6];
-    isDocumentScopePublicAsNumber = v2->_isDocumentScopePublicAsNumber;
+    v6[4] = selfCopy;
+    [(BRContainer *)selfCopy accessPropertiesInBlock:v6];
+    isDocumentScopePublicAsNumber = selfCopy->_isDocumentScopePublicAsNumber;
   }
 
-  v4 = [(NSNumber *)isDocumentScopePublicAsNumber BOOLValue];
-  objc_sync_exit(v2);
+  bOOLValue = [(NSNumber *)isDocumentScopePublicAsNumber BOOLValue];
+  objc_sync_exit(selfCopy);
 
-  return v4;
+  return bOOLValue;
 }
 
 - (NSString)localizedName
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  localizedName = v2->_localizedName;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  localizedName = selfCopy->_localizedName;
   if (!localizedName)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __28__BRContainer_localizedName__block_invoke;
     v6[3] = &unk_1E7A16530;
-    v6[4] = v2;
-    [(BRContainer *)v2 accessPropertiesInBlock:v6];
-    localizedName = v2->_localizedName;
+    v6[4] = selfCopy;
+    [(BRContainer *)selfCopy accessPropertiesInBlock:v6];
+    localizedName = selfCopy->_localizedName;
   }
 
   v4 = localizedName;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
-- (BRContainer)initWithMangledID:(id)a3
+- (BRContainer)initWithMangledID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v21.receiver = self;
   v21.super_class = BRContainer;
   v6 = [(BRContainer *)&v21 init];
@@ -177,7 +177,7 @@
       [BRContainer initWithMangledID:];
     }
 
-    objc_storeStrong(&v6->_mangledID, a3);
+    objc_storeStrong(&v6->_mangledID, d);
     v6->_shouldUsePurgeableData = 1;
     v7 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UNSPECIFIED, 0);
     v8 = containerWorkloop;
@@ -195,10 +195,10 @@
     observationSetupQueueForSecondaryConnection = v6->_observationSetupQueueForSecondaryConnection;
     v6->_observationSetupQueueForSecondaryConnection = v15;
 
-    v17 = [MEMORY[0x1E69DF068] sharedManager];
-    v18 = [v17 br_currentPersonaID];
+    mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+    br_currentPersonaID = [mEMORY[0x1E69DF068] br_currentPersonaID];
     personaID = v6->_personaID;
-    v6->_personaID = v18;
+    v6->_personaID = br_currentPersonaID;
   }
 
   return v6;
@@ -211,10 +211,10 @@ uint64_t __33__BRContainer_initWithMangledID___block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BRContainer)initWithDocsOrDesktopContainerID:(id)a3
+- (BRContainer)initWithDocsOrDesktopContainerID:(id)d
 {
-  v4 = a3;
-  v5 = [[BRMangledID alloc] initWithAppLibraryName:v4];
+  dCopy = d;
+  v5 = [[BRMangledID alloc] initWithAppLibraryName:dCopy];
 
   v6 = [(BRContainer *)self initWithMangledID:v5];
   v7 = v6;
@@ -229,21 +229,21 @@ uint64_t __33__BRContainer_initWithMangledID___block_invoke()
   return v7;
 }
 
-- (BRContainer)initWithMangledID:(id)a3 dataRepresentation:(id)a4
+- (BRContainer)initWithMangledID:(id)d dataRepresentation:(id)representation
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  dCopy = d;
+  representationCopy = representation;
+  if (!dCopy)
   {
     [BRContainer initWithMangledID:dataRepresentation:];
   }
 
-  v8 = [(BRContainer *)self initWithMangledID:v6];
+  v8 = [(BRContainer *)self initWithMangledID:dCopy];
   v9 = v8;
   if (v8)
   {
     v8->_shouldUsePurgeableData = 0;
-    if (!v7)
+    if (!representationCopy)
     {
       v10 = brc_bread_crumbs("[BRContainer initWithMangledID:dataRepresentation:]", 325);
       v11 = brc_default_log(1, 0);
@@ -253,7 +253,7 @@ uint64_t __33__BRContainer_initWithMangledID___block_invoke()
       }
     }
 
-    [(BRContainer *)v9 _replaceDataRepresentationWithData:v7];
+    [(BRContainer *)v9 _replaceDataRepresentationWithData:representationCopy];
   }
 
   return v9;
@@ -264,33 +264,33 @@ uint64_t __33__BRContainer_initWithMangledID___block_invoke()
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   mangledID = self->_mangledID;
-  v6 = [(BRContainer *)self shortDescription];
-  v7 = [v3 stringWithFormat:@"<%@: %p id:%@ %@>", v4, self, mangledID, v6];
+  shortDescription = [(BRContainer *)self shortDescription];
+  v7 = [v3 stringWithFormat:@"<%@: %p id:%@ %@>", v4, self, mangledID, shortDescription];
 
   return v7;
 }
 
-- (BRContainer)initWithCoder:(id)a3
+- (BRContainer)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   v6 = [[BRMangledID alloc] initWithAppLibraryName:v5];
   v7 = [(BRContainer *)self initWithMangledID:v6];
   if (v7)
   {
-    v7->_isCloudSyncTCCDisabled = [v4 decodeBoolForKey:@"BRContainerIsCloudSyncTCCDisabledKey"];
-    v7->_isInInitialState = [v4 decodeBoolForKey:@"BRContainerIsInInitialState"];
-    v7->_isInCloudDocsZone = [v4 decodeBoolForKey:@"BRContainerIsInCloudDocsZone"];
-    v8 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "decodeBoolForKey:", @"BRContainerIsDocumentScopePublic"}];
+    v7->_isCloudSyncTCCDisabled = [coderCopy decodeBoolForKey:@"BRContainerIsCloudSyncTCCDisabledKey"];
+    v7->_isInInitialState = [coderCopy decodeBoolForKey:@"BRContainerIsInInitialState"];
+    v7->_isInCloudDocsZone = [coderCopy decodeBoolForKey:@"BRContainerIsInCloudDocsZone"];
+    v8 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(coderCopy, "decodeBoolForKey:", @"BRContainerIsDocumentScopePublic"}];
     isDocumentScopePublicAsNumber = v7->_isDocumentScopePublicAsNumber;
     v7->_isDocumentScopePublicAsNumber = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BRContainerDataKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BRContainerDataKey"];
     dataRepresentation = v7->_dataRepresentation;
     v7->_dataRepresentation = v10;
 
-    v7->_shouldUsePurgeableData = [v4 decodeBoolForKey:@"BRContainerShouldUsePurgeableDataKey"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BRContainerPersonaID"];
+    v7->_shouldUsePurgeableData = [coderCopy decodeBoolForKey:@"BRContainerShouldUsePurgeableDataKey"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BRContainerPersonaID"];
     personaID = v7->_personaID;
     v7->_personaID = v12;
   }
@@ -298,66 +298,66 @@ uint64_t __33__BRContainer_initWithMangledID___block_invoke()
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BRMangledID *)self->_mangledID appLibraryOrZoneName];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  appLibraryOrZoneName = [(BRMangledID *)self->_mangledID appLibraryOrZoneName];
+  [coderCopy encodeObject:appLibraryOrZoneName forKey:@"identifier"];
 
-  [v4 encodeBool:self->_isCloudSyncTCCDisabled forKey:@"BRContainerIsCloudSyncTCCDisabledKey"];
-  [v4 encodeBool:self->_isInInitialState forKey:@"BRContainerIsInInitialState"];
-  [v4 encodeBool:self->_isInCloudDocsZone forKey:@"BRContainerIsInCloudDocsZone"];
-  [v4 encodeBool:-[BRContainer isDocumentScopePublic](self forKey:{"isDocumentScopePublic"), @"BRContainerIsDocumentScopePublic"}];
-  [v4 encodeObject:self->_personaID forKey:@"BRContainerPersonaID"];
+  [coderCopy encodeBool:self->_isCloudSyncTCCDisabled forKey:@"BRContainerIsCloudSyncTCCDisabledKey"];
+  [coderCopy encodeBool:self->_isInInitialState forKey:@"BRContainerIsInInitialState"];
+  [coderCopy encodeBool:self->_isInCloudDocsZone forKey:@"BRContainerIsInCloudDocsZone"];
+  [coderCopy encodeBool:-[BRContainer isDocumentScopePublic](self forKey:{"isDocumentScopePublic"), @"BRContainerIsDocumentScopePublic"}];
+  [coderCopy encodeObject:self->_personaID forKey:@"BRContainerPersonaID"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v4;
-    v7 = [v6 userInfo];
+    v6 = coderCopy;
+    userInfo = [v6 userInfo];
     NSClassFromString(@"BRCClientPrivilegesDescriptor");
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v6 userInfo];
+      userInfo2 = [v6 userInfo];
     }
 
     else
     {
-      v8 = 0;
+      userInfo2 = 0;
     }
 
-    if (([v8 hasAuditToken] & 1) == 0)
+    if (([userInfo2 hasAuditToken] & 1) == 0)
     {
       goto LABEL_12;
     }
 
-    if (v8)
+    if (userInfo2)
     {
-      [v8 auditToken];
+      [userInfo2 auditToken];
       goto LABEL_11;
     }
   }
 
   else
   {
-    v8 = 0;
+    userInfo2 = 0;
     if (![0 hasAuditToken])
     {
       goto LABEL_12;
     }
   }
 
-  v8 = 0;
+  userInfo2 = 0;
   v14 = 0u;
   v15 = 0u;
 LABEL_11:
   v9 = *MEMORY[0x1E69E9BD0];
-  v10 = [(BRContainer *)self _pathForPlist];
-  v11 = [v10 fileSystemRepresentation];
+  _pathForPlist = [(BRContainer *)self _pathForPlist];
+  fileSystemRepresentation = [_pathForPlist fileSystemRepresentation];
   LODWORD(v9) = sandbox_check_by_audit_token();
 
   if (!v9)
   {
-    [v4 encodeBool:1 forKey:{@"BRContainerShouldUsePurgeableDataKey", v11}];
+    [coderCopy encodeBool:1 forKey:{@"BRContainerShouldUsePurgeableDataKey", fileSystemRepresentation}];
     goto LABEL_13;
   }
 
@@ -366,7 +366,7 @@ LABEL_12:
   v12[1] = 3221225472;
   v12[2] = __31__BRContainer_encodeWithCoder___block_invoke;
   v12[3] = &unk_1E7A164B8;
-  v13 = v4;
+  v13 = coderCopy;
   [(BRContainer *)self accessDataRepresentationInBlock:v12];
 
 LABEL_13:
@@ -382,15 +382,15 @@ uint64_t __31__BRContainer_encodeWithCoder___block_invoke(uint64_t result, uint6
   return result;
 }
 
-- (void)accessPropertiesInBlock:(id)a3
+- (void)accessPropertiesInBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __39__BRContainer_accessPropertiesInBlock___block_invoke;
   v6[3] = &unk_1E7A164E0;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(BRContainer *)self accessDataRepresentationInBlock:v6];
 }
 
@@ -453,22 +453,22 @@ void __36__BRContainer_isDocumentScopePublic__block_invoke(uint64_t a1, void *a2
 
 - (id)bundleIDVersions
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  bundleIDVersions = v2->_bundleIDVersions;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  bundleIDVersions = selfCopy->_bundleIDVersions;
   if (!bundleIDVersions)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __31__BRContainer_bundleIDVersions__block_invoke;
     v6[3] = &unk_1E7A16530;
-    v6[4] = v2;
-    [(BRContainer *)v2 accessPropertiesInBlock:v6];
-    bundleIDVersions = v2->_bundleIDVersions;
+    v6[4] = selfCopy;
+    [(BRContainer *)selfCopy accessPropertiesInBlock:v6];
+    bundleIDVersions = selfCopy->_bundleIDVersions;
   }
 
   v4 = bundleIDVersions;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -486,22 +486,22 @@ void __31__BRContainer_bundleIDVersions__block_invoke(uint64_t a1, void *a2)
 
 - (NSSet)bundleIdentifiers
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  bundleIDs = v2->_bundleIDs;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  bundleIDs = selfCopy->_bundleIDs;
   if (!bundleIDs)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __32__BRContainer_bundleIdentifiers__block_invoke;
     v6[3] = &unk_1E7A16530;
-    v6[4] = v2;
-    [(BRContainer *)v2 accessPropertiesInBlock:v6];
-    bundleIDs = v2->_bundleIDs;
+    v6[4] = selfCopy;
+    [(BRContainer *)selfCopy accessPropertiesInBlock:v6];
+    bundleIDs = selfCopy->_bundleIDs;
   }
 
   v4 = bundleIDs;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -544,16 +544,16 @@ void __28__BRContainer_localizedName__block_invoke(uint64_t a1, void *a2)
   return v8;
 }
 
-- (id)localizedNameWithPreferredLanguages:(id)a3
+- (id)localizedNameWithPreferredLanguages:(id)languages
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(BRContainer *)self computedProperties];
-  v6 = [v5 mutableCopy];
+  languagesCopy = languages;
+  computedProperties = [(BRContainer *)self computedProperties];
+  v6 = [computedProperties mutableCopy];
 
   if (v6 || ([MEMORY[0x1E696ABC0] brc_errorInvalidParameter:@"purgeableData" value:0], (v8 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v7 = [objc_opt_class() _localizedNameWithProperties:v6 mangledID:self->_mangledID preferredLanguages:v4];
+    v7 = [objc_opt_class() _localizedNameWithProperties:v6 mangledID:self->_mangledID preferredLanguages:languagesCopy];
   }
 
   else
@@ -583,22 +583,22 @@ void __28__BRContainer_localizedName__block_invoke(uint64_t a1, void *a2)
 
 - (NSSet)documentsTypes
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  documentsTypes = v2->_documentsTypes;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  documentsTypes = selfCopy->_documentsTypes;
   if (!documentsTypes)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __29__BRContainer_documentsTypes__block_invoke;
     v6[3] = &unk_1E7A16530;
-    v6[4] = v2;
-    [(BRContainer *)v2 accessPropertiesInBlock:v6];
-    documentsTypes = v2->_documentsTypes;
+    v6[4] = selfCopy;
+    [(BRContainer *)selfCopy accessPropertiesInBlock:v6];
+    documentsTypes = selfCopy->_documentsTypes;
   }
 
   v4 = documentsTypes;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -616,22 +616,22 @@ void __29__BRContainer_documentsTypes__block_invoke(uint64_t a1, void *a2)
 
 - (NSSet)exportedTypes
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  exportedTypes = v2->_exportedTypes;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  exportedTypes = selfCopy->_exportedTypes;
   if (!exportedTypes)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __28__BRContainer_exportedTypes__block_invoke;
     v6[3] = &unk_1E7A16530;
-    v6[4] = v2;
-    [(BRContainer *)v2 accessPropertiesInBlock:v6];
-    exportedTypes = v2->_exportedTypes;
+    v6[4] = selfCopy;
+    [(BRContainer *)selfCopy accessPropertiesInBlock:v6];
+    exportedTypes = selfCopy->_exportedTypes;
   }
 
   v4 = exportedTypes;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -649,22 +649,22 @@ void __28__BRContainer_exportedTypes__block_invoke(uint64_t a1, void *a2)
 
 - (NSSet)importedTypes
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  importedTypes = v2->_importedTypes;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  importedTypes = selfCopy->_importedTypes;
   if (!importedTypes)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __28__BRContainer_importedTypes__block_invoke;
     v6[3] = &unk_1E7A16530;
-    v6[4] = v2;
-    [(BRContainer *)v2 accessPropertiesInBlock:v6];
-    importedTypes = v2->_importedTypes;
+    v6[4] = selfCopy;
+    [(BRContainer *)selfCopy accessPropertiesInBlock:v6];
+    importedTypes = selfCopy->_importedTypes;
   }
 
   v4 = importedTypes;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -682,22 +682,22 @@ void __28__BRContainer_importedTypes__block_invoke(uint64_t a1, void *a2)
 
 - (id)iconMetadata
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  iconMetadata = v2->_iconMetadata;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  iconMetadata = selfCopy->_iconMetadata;
   if (!iconMetadata)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __27__BRContainer_iconMetadata__block_invoke;
     v6[3] = &unk_1E7A16530;
-    v6[4] = v2;
-    [(BRContainer *)v2 accessPropertiesInBlock:v6];
-    iconMetadata = v2->_iconMetadata;
+    v6[4] = selfCopy;
+    [(BRContainer *)selfCopy accessPropertiesInBlock:v6];
+    iconMetadata = selfCopy->_iconMetadata;
   }
 
   v4 = iconMetadata;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -715,22 +715,22 @@ void __27__BRContainer_iconMetadata__block_invoke(uint64_t a1, void *a2)
 
 - (id)iconGeneratorVersion
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  iconGeneratorVersion = v2->_iconGeneratorVersion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  iconGeneratorVersion = selfCopy->_iconGeneratorVersion;
   if (!iconGeneratorVersion)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __35__BRContainer_iconGeneratorVersion__block_invoke;
     v6[3] = &unk_1E7A16530;
-    v6[4] = v2;
-    [(BRContainer *)v2 accessPropertiesInBlock:v6];
-    iconGeneratorVersion = v2->_iconGeneratorVersion;
+    v6[4] = selfCopy;
+    [(BRContainer *)selfCopy accessPropertiesInBlock:v6];
+    iconGeneratorVersion = selfCopy->_iconGeneratorVersion;
   }
 
   v4 = iconGeneratorVersion;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -748,44 +748,44 @@ void __35__BRContainer_iconGeneratorVersion__block_invoke(uint64_t a1, void *a2)
 
 - (id)imageRepresentationsAvailable
 {
-  v2 = [(BRContainer *)self iconMetadata];
-  v3 = [v2 allValues];
+  iconMetadata = [(BRContainer *)self iconMetadata];
+  allValues = [iconMetadata allValues];
 
-  return v3;
+  return allValues;
 }
 
-- (void)setUrlRoot:(id)a3
+- (void)setUrlRoot:(id)root
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(BRMangledID *)v4->_mangledID mangledIDString];
-  v6 = [v8 URLByAppendingPathComponent:v5 isDirectory:1];
-  url = v4->_url;
-  v4->_url = v6;
+  rootCopy = root;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  mangledIDString = [(BRMangledID *)selfCopy->_mangledID mangledIDString];
+  v6 = [rootCopy URLByAppendingPathComponent:mangledIDString isDirectory:1];
+  url = selfCopy->_url;
+  selfCopy->_url = v6;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSURL)url
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  url = v2->_url;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  url = selfCopy->_url;
   if (!url)
   {
-    personaID = v2->_personaID;
+    personaID = selfCopy->_personaID;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __18__BRContainer_url__block_invoke;
     v7[3] = &unk_1E7A14830;
-    v7[4] = v2;
+    v7[4] = selfCopy;
     BRPerformWithPersonaAndError(personaID, v7);
-    url = v2->_url;
+    url = selfCopy->_url;
   }
 
   v5 = url;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
@@ -802,10 +802,10 @@ void __18__BRContainer_url__block_invoke(uint64_t a1, uint64_t a2)
 
 - (NSURL)documentsURL
 {
-  v3 = [(BRMangledID *)self->_mangledID isCloudDocsMangledID];
+  isCloudDocsMangledID = [(BRMangledID *)self->_mangledID isCloudDocsMangledID];
   v4 = [(BRContainer *)self url];
   v5 = v4;
-  if (!v3)
+  if (!isCloudDocsMangledID)
   {
     v6 = [v4 URLByAppendingPathComponent:@"Documents" isDirectory:1];
 
@@ -822,25 +822,25 @@ void __18__BRContainer_url__block_invoke(uint64_t a1, uint64_t a2)
     [(BRMangledID *)self->_mangledID isDocumentsMangledID];
   }
 
-  v3 = [(BRContainer *)self documentsURL];
-  v4 = [v3 URLByAppendingPathComponent:@".Trash" isDirectory:1];
+  documentsURL = [(BRContainer *)self documentsURL];
+  v4 = [documentsURL URLByAppendingPathComponent:@".Trash" isDirectory:1];
 
   return v4;
 }
 
-- (id)trashRestoreStringForURL:(id)a3
+- (id)trashRestoreStringForURL:(id)l
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(BRContainer *)self documentsURL];
-  v6 = [v5 path];
+  lCopy = l;
+  documentsURL = [(BRContainer *)self documentsURL];
+  path = [documentsURL path];
 
-  if (v6)
+  if (path)
   {
-    v7 = [v4 path];
-    v8 = [v7 br_realpath];
-    v9 = [v6 br_realpath];
-    v10 = [v8 br_pathRelativeToPath:v9];
+    path2 = [lCopy path];
+    br_realpath = [path2 br_realpath];
+    br_realpath2 = [path br_realpath];
+    v10 = [br_realpath br_pathRelativeToPath:br_realpath2];
 
     if (v10)
     {
@@ -851,11 +851,11 @@ void __18__BRContainer_url__block_invoke(uint64_t a1, uint64_t a2)
     v12 = brc_default_log(1, 0);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v4 path];
+      path3 = [lCopy path];
       v19 = 138412802;
-      v20 = v13;
+      v20 = path3;
       v21 = 2112;
-      v22 = v6;
+      v22 = path;
       v23 = 2112;
       v24 = v11;
       v14 = "[WARNING] Can't find the put back relative URL of %@ to %@%@";
@@ -872,9 +872,9 @@ LABEL_7:
     v12 = brc_default_log(1, 0);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v4 path];
+      path3 = [lCopy path];
       v19 = 138412546;
-      v20 = v13;
+      v20 = path3;
       v21 = 2112;
       v22 = v11;
       v14 = "[WARNING] Can't find the put back relative URL of %@%@";
@@ -903,23 +903,23 @@ LABEL_9:
 + (id)allContainersByContainerID
 {
   v2 = +[BRContainerCache containerCache];
-  v3 = [v2 allContainersByID];
+  allContainersByID = [v2 allContainersByID];
 
-  return v3;
+  return allContainersByID;
 }
 
 + (id)documentContainers
 {
   v2 = +[BRContainerCache containerCache];
-  v3 = [v2 documentContainers];
+  documentContainers = [v2 documentContainers];
 
-  return v3;
+  return documentContainers;
 }
 
-- (id)_imageDataForSize:(CGSize)a3 scale:(int64_t)a4 isiOSIcon:(BOOL *)a5 shouldTransformToAppIcon:(BOOL *)a6
+- (id)_imageDataForSize:(CGSize)size scale:(int64_t)scale isiOSIcon:(BOOL *)icon shouldTransformToAppIcon:(BOOL *)appIcon
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v44 = *MEMORY[0x1E69E9840];
   memset(v31, 0, sizeof(v31));
   __brc_create_section(0, "[BRContainer _imageDataForSize:scale:isiOSIcon:shouldTransformToAppIcon:]", 741, 0, v31);
@@ -937,13 +937,13 @@ LABEL_9:
     v38 = 2048;
     v39 = height;
     v40 = 2048;
-    v41 = a4;
+    scaleCopy = scale;
     v42 = 2112;
     v43 = v11;
     _os_log_debug_impl(&dword_1AE2A9000, v12, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx requesting image for %@ (size:%.1fx%.1f@%ld)%@", buf, 0x3Eu);
   }
 
-  v13 = BRContainerIconNameForSizeAndScale(width, height, a4);
+  v13 = BRContainerIconNameForSizeAndScale(width, height, scale);
   if (v13)
   {
     v14 = [(BRContainer *)self _pathForIconName:v13];
@@ -973,30 +973,30 @@ LABEL_9:
     {
       v19 = [v13 hasSuffix:@"iOS"];
       v20 = v19;
-      if (a5)
+      if (icon)
       {
-        *a5 = v19;
+        *icon = v19;
         v21 = brc_bread_crumbs("[BRContainer _imageDataForSize:scale:isiOSIcon:shouldTransformToAppIcon:]", 767);
         v22 = brc_default_log(1, 0);
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
         {
-          [BRContainer _imageDataForSize:a5 scale:? isiOSIcon:? shouldTransformToAppIcon:?];
+          [BRContainer _imageDataForSize:icon scale:? isiOSIcon:? shouldTransformToAppIcon:?];
         }
       }
 
-      if (!a6)
+      if (!appIcon)
       {
         goto LABEL_26;
       }
 
-      v23 = [(BRContainer *)self iconGeneratorVersion];
-      *a6 = ([v23 longLongValue] < 1) & v20;
+      iconGeneratorVersion = [(BRContainer *)self iconGeneratorVersion];
+      *appIcon = ([iconGeneratorVersion longLongValue] < 1) & v20;
 
       v24 = brc_bread_crumbs("[BRContainer _imageDataForSize:scale:isiOSIcon:shouldTransformToAppIcon:]", 771);
       v25 = brc_default_log(1, 0);
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
       {
-        [BRContainer _imageDataForSize:a6 scale:? isiOSIcon:? shouldTransformToAppIcon:?];
+        [BRContainer _imageDataForSize:appIcon scale:? isiOSIcon:? shouldTransformToAppIcon:?];
       }
     }
 
@@ -1046,22 +1046,22 @@ LABEL_27:
   return v16;
 }
 
-+ (BOOL)canMoveFilesWithoutDownloadingFromContainer:(id)a3 toContainer:(id)a4
++ (BOOL)canMoveFilesWithoutDownloadingFromContainer:(id)container toContainer:(id)toContainer
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  containerCopy = container;
+  toContainerCopy = toContainer;
+  v7 = toContainerCopy;
+  if (!containerCopy)
   {
     goto LABEL_6;
   }
 
-  if (!v6)
+  if (!toContainerCopy)
   {
     goto LABEL_9;
   }
 
-  v8 = v5[23];
+  v8 = containerCopy[23];
   if (v8 | v7[23])
   {
     if (![v8 isEqualToString:?])
@@ -1070,11 +1070,11 @@ LABEL_27:
     }
   }
 
-  v9 = [v5 identifier];
-  v10 = [v7 identifier];
-  v11 = [v9 isEqualToString:v10];
+  identifier = [containerCopy identifier];
+  identifier2 = [v7 identifier];
+  v11 = [identifier isEqualToString:identifier2];
 
-  if (v11 & 1) != 0 || [v5 isInCloudDocsZone] && (objc_msgSend(v7, "isInCloudDocsZone"))
+  if (v11 & 1) != 0 || [containerCopy isInCloudDocsZone] && (objc_msgSend(v7, "isInCloudDocsZone"))
   {
 LABEL_6:
     v12 = 1;
@@ -1089,17 +1089,17 @@ LABEL_9:
   return v12;
 }
 
-- (void)forceRefreshWithCompletion:(id)a3
+- (void)forceRefreshWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   personaID = self->_personaID;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__BRContainer_forceRefreshWithCompletion___block_invoke;
   v7[3] = &unk_1E7A15590;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   BRPerformWithPersonaAndError(personaID, v7);
 }
 
@@ -1132,17 +1132,17 @@ void __42__BRContainer_forceRefreshWithCompletion___block_invoke(uint64_t a1, ui
   }
 }
 
-+ (void)forceRefreshAllContainersWithCompletion:(id)a3
++ (void)forceRefreshAllContainersWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [BRContainer allContainersBlockIfNeeded:1];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__BRContainer_forceRefreshAllContainersWithCompletion___block_invoke;
   v7[3] = &unk_1E7A148D0;
-  v8 = v4;
-  v6 = v4;
-  [a1 forceRefreshContainers:v5 completion:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [self forceRefreshContainers:v5 completion:v7];
 }
 
 void __55__BRContainer_forceRefreshAllContainersWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -1165,27 +1165,27 @@ void __55__BRContainer_forceRefreshAllContainersWithCompletion___block_invoke(ui
   }
 }
 
-+ (id)bundleIdentifiersEnumeratorForProperties:(id)a3
++ (id)bundleIdentifiersEnumeratorForProperties:(id)properties
 {
-  v3 = a3;
-  v4 = [[BRContainerBundleIdentifiersEnumerator alloc] initWithContainerPlist:v3];
+  propertiesCopy = properties;
+  v4 = [[BRContainerBundleIdentifiersEnumerator alloc] initWithContainerPlist:propertiesCopy];
 
   return v4;
 }
 
-+ (id)bundlePropertyEnumerator:(id)a3 valuesOfClass:(Class)a4 forProperties:(id)a5
++ (id)bundlePropertyEnumerator:(id)enumerator valuesOfClass:(Class)class forProperties:(id)properties
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [[BRContainerBundlePropertyEnumerator alloc] initWithContainerPlist:v7 propertyKey:v8 valuesOfClass:a4];
+  propertiesCopy = properties;
+  enumeratorCopy = enumerator;
+  v9 = [[BRContainerBundlePropertyEnumerator alloc] initWithContainerPlist:propertiesCopy propertyKey:enumeratorCopy valuesOfClass:class];
 
   return v9;
 }
 
-- (void)_replaceDataRepresentationWithData:(id)a3
+- (void)_replaceDataRepresentationWithData:(id)data
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dataCopy = data;
   memset(v27, 0, sizeof(v27));
   __brc_create_section(0, "[BRContainer _replaceDataRepresentationWithData:]", 884, 0, v27);
   v6 = brc_bread_crumbs("[BRContainer _replaceDataRepresentationWithData:]", 884);
@@ -1214,15 +1214,15 @@ void __55__BRContainer_forceRefreshAllContainersWithCompletion___block_invoke(ui
     _os_log_debug_impl(&dword_1AE2A9000, v7, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx Replace data for container %@. Use purgeable data [%s].%@", buf, 0x2Au);
   }
 
-  v8 = self;
-  objc_sync_enter(v8);
-  if (!v8->_shouldUsePurgeableData)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_shouldUsePurgeableData)
   {
-    objc_storeStrong(&v8->_dataRepresentation, a3);
-    if (v5)
+    objc_storeStrong(&selfCopy->_dataRepresentation, data);
+    if (dataCopy)
     {
       v26 = 0;
-      v9 = [MEMORY[0x1E696AE40] propertyListWithData:v5 options:2 format:0 error:&v26];
+      v9 = [MEMORY[0x1E696AE40] propertyListWithData:dataCopy options:2 format:0 error:&v26];
       v10 = v26;
 
       if (!v9)
@@ -1237,37 +1237,37 @@ void __55__BRContainer_forceRefreshAllContainersWithCompletion___block_invoke(ui
     }
   }
 
-  purgeableDataRepresentation = v8->_purgeableDataRepresentation;
-  v8->_purgeableDataRepresentation = 0;
+  purgeableDataRepresentation = selfCopy->_purgeableDataRepresentation;
+  selfCopy->_purgeableDataRepresentation = 0;
 
-  bundleIDs = v8->_bundleIDs;
-  v8->_bundleIDs = 0;
+  bundleIDs = selfCopy->_bundleIDs;
+  selfCopy->_bundleIDs = 0;
 
-  bundleIDVersions = v8->_bundleIDVersions;
-  v8->_bundleIDVersions = 0;
+  bundleIDVersions = selfCopy->_bundleIDVersions;
+  selfCopy->_bundleIDVersions = 0;
 
-  localizedName = v8->_localizedName;
-  v8->_localizedName = 0;
+  localizedName = selfCopy->_localizedName;
+  selfCopy->_localizedName = 0;
 
-  isDocumentScopePublicAsNumber = v8->_isDocumentScopePublicAsNumber;
-  v8->_isDocumentScopePublicAsNumber = 0;
+  isDocumentScopePublicAsNumber = selfCopy->_isDocumentScopePublicAsNumber;
+  selfCopy->_isDocumentScopePublicAsNumber = 0;
 
-  documentsTypes = v8->_documentsTypes;
-  v8->_documentsTypes = 0;
+  documentsTypes = selfCopy->_documentsTypes;
+  selfCopy->_documentsTypes = 0;
 
-  exportedTypes = v8->_exportedTypes;
-  v8->_exportedTypes = 0;
+  exportedTypes = selfCopy->_exportedTypes;
+  selfCopy->_exportedTypes = 0;
 
-  importedTypes = v8->_importedTypes;
-  v8->_importedTypes = 0;
+  importedTypes = selfCopy->_importedTypes;
+  selfCopy->_importedTypes = 0;
 
-  iconMetadata = v8->_iconMetadata;
-  v8->_iconMetadata = 0;
+  iconMetadata = selfCopy->_iconMetadata;
+  selfCopy->_iconMetadata = 0;
 
-  iconURLs = v8->_iconURLs;
-  v8->_iconURLs = 0;
+  iconURLs = selfCopy->_iconURLs;
+  selfCopy->_iconURLs = 0;
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
   if (+[BRContainerCache hasDaemonicParts])
   {
     +[BRContainer postContainerListUpdateNotification];
@@ -1316,13 +1316,13 @@ uint64_t __38__BRContainer__containerRepositoryURL__block_invoke(uint64_t result
   return result;
 }
 
-+ (id)_containerRepositoryURLForMangledID:(id)a3
++ (id)_containerRepositoryURLForMangledID:(id)d
 {
-  v4 = a3;
-  v5 = [a1 containersRepositoryURL];
-  v6 = [v4 appLibraryOrZoneName];
+  dCopy = d;
+  containersRepositoryURL = [self containersRepositoryURL];
+  appLibraryOrZoneName = [dCopy appLibraryOrZoneName];
 
-  v7 = [v5 URLByAppendingPathComponent:v6];
+  v7 = [containersRepositoryURL URLByAppendingPathComponent:appLibraryOrZoneName];
 
   return v7;
 }
@@ -1361,47 +1361,47 @@ void __28__BRContainer__pathForPlist__block_invoke(uint64_t a1, uint64_t a2)
   }
 }
 
-- (id)_pathForIconName:(id)a3
+- (id)_pathForIconName:(id)name
 {
-  v4 = a3;
-  v5 = [(BRContainer *)self _containerRepositoryURL];
-  v6 = [v4 stringByAppendingPathExtension:@"png"];
+  nameCopy = name;
+  _containerRepositoryURL = [(BRContainer *)self _containerRepositoryURL];
+  v6 = [nameCopy stringByAppendingPathExtension:@"png"];
 
-  v7 = [v5 URLByAppendingPathComponent:v6];
-  v8 = [v7 path];
+  v7 = [_containerRepositoryURL URLByAppendingPathComponent:v6];
+  path = [v7 path];
 
-  return v8;
+  return path;
 }
 
-+ (id)_pathForIconName:(id)a3 mangledID:(id)a4
++ (id)_pathForIconName:(id)name mangledID:(id)d
 {
-  v6 = a3;
-  v7 = [a1 _containerRepositoryURLForMangledID:a4];
-  v8 = [v6 stringByAppendingPathExtension:@"png"];
+  nameCopy = name;
+  v7 = [self _containerRepositoryURLForMangledID:d];
+  v8 = [nameCopy stringByAppendingPathExtension:@"png"];
 
   v9 = [v7 URLByAppendingPathComponent:v8];
-  v10 = [v9 path];
+  path = [v9 path];
 
-  return v10;
+  return path;
 }
 
-+ (id)_URLForPlistOfMangledID:(id)a3
++ (id)_URLForPlistOfMangledID:(id)d
 {
-  v3 = [BRContainer _containerRepositoryURLForMangledID:a3];
+  v3 = [BRContainer _containerRepositoryURLForMangledID:d];
   v4 = [v3 URLByAppendingPathExtension:@"plist"];
 
   return v4;
 }
 
-- (void)_performWhileAccessingSecurityScopedContainer:(id)a3
+- (void)_performWhileAccessingSecurityScopedContainer:(id)container
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  containerCopy = container;
   imageSandboxExtension = self->_imageSandboxExtension;
   if (!imageSandboxExtension)
   {
 LABEL_7:
-    v4[2](v4);
+    containerCopy[2](containerCopy);
     goto LABEL_8;
   }
 
@@ -1427,25 +1427,25 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v4[2](v4);
+  containerCopy[2](containerCopy);
   sandbox_extension_release();
 LABEL_8:
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_bundleIDsWithProperties:(id)a3
++ (id)_bundleIDsWithProperties:(id)properties
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  propertiesCopy = properties;
+  if (propertiesCopy)
   {
     v5 = [MEMORY[0x1E695DFA8] setWithCapacity:1];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [a1 bundleIdentifiersEnumeratorForProperties:{v4, 0}];
+    v6 = [self bundleIdentifiersEnumeratorForProperties:{propertiesCopy, 0}];
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
@@ -1480,27 +1480,27 @@ LABEL_8:
   return v5;
 }
 
-+ (id)_isDocumentScopePublicAsNumberWithProperties:(id)a3 mangledID:(id)a4
++ (id)_isDocumentScopePublicAsNumberWithProperties:(id)properties mangledID:(id)d
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isCloudDocsMangledID])
+  propertiesCopy = properties;
+  dCopy = d;
+  if ([dCopy isCloudDocsMangledID])
   {
     v8 = MEMORY[0x1E695E118];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v10 = [v9 persistentDomainForName:@"com.apple.bird"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v10 = [standardUserDefaults persistentDomainForName:@"com.apple.bird"];
 
-    v11 = [v7 appLibraryOrZoneName];
-    v12 = [v10 objectForKey:v11];
+    appLibraryOrZoneName = [dCopy appLibraryOrZoneName];
+    v12 = [v10 objectForKey:appLibraryOrZoneName];
     v13 = [v12 objectForKey:@"BRContainerIsDocumentScopePublic"];
-    v14 = [v13 BOOLValue];
+    bOOLValue = [v13 BOOLValue];
 
-    if (v14)
+    if (bOOLValue)
     {
       v8 = MEMORY[0x1E695E118];
     }
@@ -1511,7 +1511,7 @@ LABEL_8:
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v15 = [a1 bundlePropertyEnumerator:@"BRContainerIsDocumentScopePublic" valuesOfClass:objc_opt_class() forProperties:{v6, 0}];
+      v15 = [self bundlePropertyEnumerator:@"BRContainerIsDocumentScopePublic" valuesOfClass:objc_opt_class() forProperties:{propertiesCopy, 0}];
       v16 = [v15 countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v16)
       {
@@ -1562,18 +1562,18 @@ LABEL_16:
   return v8;
 }
 
-+ (id)_bundleIDVersionsWithProperties:(id)a3 mangledID:(id)a4
++ (id)_bundleIDVersionsWithProperties:(id)properties mangledID:(id)d
 {
   v42 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  propertiesCopy = properties;
+  if (propertiesCopy)
   {
-    v28 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v6 = [a1 bundleIdentifiersEnumeratorForProperties:v5];
+    v6 = [self bundleIdentifiersEnumeratorForProperties:propertiesCopy];
     v7 = [v6 countByEnumeratingWithState:&v29 objects:v41 count:16];
     if (!v7)
     {
@@ -1593,7 +1593,7 @@ LABEL_16:
         }
 
         v11 = *(*(&v29 + 1) + 8 * i);
-        v12 = [v5 objectForKeyedSubscript:{v11, v27}];
+        v12 = [propertiesCopy objectForKeyedSubscript:{v11, v27}];
         if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
           v13 = brc_bread_crumbs("+[BRContainer _bundleIDVersionsWithProperties:mangledID:]", 1039);
@@ -1632,12 +1632,12 @@ LABEL_16:
               v34[0] = v13;
               v34[1] = v14;
               v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:v33 count:2];
-              [v28 setObject:v15 forKeyedSubscript:v11];
+              [dictionary setObject:v15 forKeyedSubscript:v11];
             }
 
             else
             {
-              v20 = v5;
+              v20 = propertiesCopy;
               v21 = v6;
               v15 = brc_bread_crumbs("+[BRContainer _bundleIDVersionsWithProperties:mangledID:]", 1060);
               v22 = brc_default_log(1, 0);
@@ -1655,7 +1655,7 @@ LABEL_16:
               }
 
               v6 = v21;
-              v5 = v20;
+              propertiesCopy = v20;
               v9 = v27;
             }
           }
@@ -1692,35 +1692,35 @@ LABEL_24:
     }
   }
 
-  v28 = 0;
+  dictionary = 0;
 LABEL_26:
 
   v25 = *MEMORY[0x1E69E9840];
 
-  return v28;
+  return dictionary;
 }
 
-+ (id)_localizedNameWithProperties:(id)a3 mangledID:(id)a4 preferredLanguages:(id)a5
++ (id)_localizedNameWithProperties:(id)properties mangledID:(id)d preferredLanguages:(id)languages
 {
   v82 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isCloudDocsMangledID])
+  propertiesCopy = properties;
+  dCopy = d;
+  languagesCopy = languages;
+  if ([dCopy isCloudDocsMangledID])
   {
-    v11 = [objc_opt_class() localizedNameForDefaultCloudDocsContainer];
+    localizedNameForDefaultCloudDocsContainer = [objc_opt_class() localizedNameForDefaultCloudDocsContainer];
     goto LABEL_62;
   }
 
-  if ([v9 isDesktopMangledID])
+  if ([dCopy isDesktopMangledID])
   {
-    v11 = [objc_opt_class() localizedNameForDesktopContainer];
+    localizedNameForDefaultCloudDocsContainer = [objc_opt_class() localizedNameForDesktopContainer];
     goto LABEL_62;
   }
 
-  if ([v9 isDocumentsMangledID])
+  if ([dCopy isDocumentsMangledID])
   {
-    v11 = [objc_opt_class() localizedNameForDocumentsContainer];
+    localizedNameForDefaultCloudDocsContainer = [objc_opt_class() localizedNameForDocumentsContainer];
     goto LABEL_62;
   }
 
@@ -1728,7 +1728,7 @@ LABEL_26:
   v75 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v12 = [a1 bundleIdentifiersEnumeratorForProperties:v8];
+  v12 = [self bundleIdentifiersEnumeratorForProperties:propertiesCopy];
   v13 = [v12 countByEnumeratingWithState:&v72 objects:v81 count:16];
   if (!v13)
   {
@@ -1737,14 +1737,14 @@ LABEL_26:
   }
 
   v14 = v13;
-  v58 = a1;
-  v59 = v9;
+  selfCopy = self;
+  v59 = dCopy;
   v15 = 0;
   v16 = *v73;
   v17 = 0x1E696A000uLL;
   v64 = *v73;
-  v61 = v10;
-  v62 = v8;
+  v61 = languagesCopy;
+  v62 = propertiesCopy;
   v60 = v12;
   do
   {
@@ -1757,7 +1757,7 @@ LABEL_26:
         objc_enumerationMutation(v12);
       }
 
-      v19 = [v8 objectForKeyedSubscript:{*(*(&v72 + 1) + 8 * v18), v58}];
+      v19 = [propertiesCopy objectForKeyedSubscript:{*(*(&v72 + 1) + 8 * v18), selfCopy}];
       if (v19)
       {
         objc_opt_class();
@@ -1831,8 +1831,8 @@ LABEL_21:
           }
 
           v29 = MEMORY[0x1E696AAE8];
-          v30 = [v21 allKeys];
-          v31 = [v29 preferredLocalizationsFromArray:v30 forPreferences:v10];
+          allKeys = [v21 allKeys];
+          v31 = [v29 preferredLocalizationsFromArray:allKeys forPreferences:languagesCopy];
 
           v70 = 0u;
           v71 = 0u;
@@ -1864,9 +1864,9 @@ LABEL_21:
                     {
 
                       v15 = v37;
-                      v10 = v61;
-                      v8 = v62;
-                      v9 = v59;
+                      languagesCopy = v61;
+                      propertiesCopy = v62;
+                      dCopy = v59;
                       goto LABEL_63;
                     }
                   }
@@ -1897,8 +1897,8 @@ LABEL_21:
             while (v34);
           }
 
-          v10 = v61;
-          v8 = v62;
+          languagesCopy = v61;
+          propertiesCopy = v62;
           v12 = v60;
           v16 = v64;
           v14 = v65;
@@ -1981,14 +1981,14 @@ LABEL_53:
 
   while (v55);
 
-  a1 = v58;
-  v9 = v59;
+  self = selfCopy;
+  dCopy = v59;
   if (!v15)
   {
 LABEL_61:
-    v11 = [a1 _sanitizedContainerFallbackNameForMangledID:v9];
+    localizedNameForDefaultCloudDocsContainer = [self _sanitizedContainerFallbackNameForMangledID:dCopy];
 LABEL_62:
-    v15 = v11;
+    v15 = localizedNameForDefaultCloudDocsContainer;
   }
 
 LABEL_63:
@@ -1998,14 +1998,14 @@ LABEL_63:
   return v15;
 }
 
-+ (id)_sanitizedContainerFallbackNameForMangledID:(id)a3
++ (id)_sanitizedContainerFallbackNameForMangledID:(id)d
 {
-  v3 = a3;
-  v4 = [v3 aliasTargetContainerString];
-  v5 = [v4 br_pathExtension];
+  dCopy = d;
+  aliasTargetContainerString = [dCopy aliasTargetContainerString];
+  br_pathExtension = [aliasTargetContainerString br_pathExtension];
 
-  LODWORD(v4) = [v3 isPassbookMangledID];
-  if (v4)
+  LODWORD(aliasTargetContainerString) = [dCopy isPassbookMangledID];
+  if (aliasTargetContainerString)
   {
     v6 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v12 = _BRLocalizedStringWithFormat(@"PASSBOOK_APP", @"Localizable", v6, v7, v8, v9, v10, v11, v17);
@@ -2013,9 +2013,9 @@ LABEL_63:
 
   else
   {
-    if ([v5 length])
+    if ([br_pathExtension length])
     {
-      v13 = [v5 characterAtIndex:0];
+      v13 = [br_pathExtension characterAtIndex:0];
       if (v13 > 0x7F)
       {
         v14 = __maskrune(v13, 0x1000uLL);
@@ -2029,11 +2029,11 @@ LABEL_63:
       if (v14)
       {
         +[BRContainer _sanitizedContainerFallbackNameForMangledID:];
-        v5 = v18;
+        br_pathExtension = v18;
       }
 
-      v15 = v5;
-      v5 = v15;
+      v15 = br_pathExtension;
+      br_pathExtension = v15;
     }
 
     else
@@ -2047,18 +2047,18 @@ LABEL_63:
   return v12;
 }
 
-+ (id)_documentsTypesWithProperties:(id)a3
++ (id)_documentsTypesWithProperties:(id)properties
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  propertiesCopy = properties;
+  if (propertiesCopy)
   {
     v5 = [MEMORY[0x1E695DFA8] set];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [a1 bundlePropertyEnumerator:@"BRContainerDocumentTypes" valuesOfClass:objc_opt_class() forProperties:{v4, 0}];
+    v6 = [self bundlePropertyEnumerator:@"BRContainerDocumentTypes" valuesOfClass:objc_opt_class() forProperties:{propertiesCopy, 0}];
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -2103,18 +2103,18 @@ LABEL_63:
   return v11;
 }
 
-+ (id)_exportedTypesWithProperties:(id)a3
++ (id)_exportedTypesWithProperties:(id)properties
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  propertiesCopy = properties;
+  if (propertiesCopy)
   {
     v5 = [MEMORY[0x1E695DFA8] set];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [a1 bundlePropertyEnumerator:@"BRContainerExportedTypes" valuesOfClass:objc_opt_class() forProperties:{v4, 0}];
+    v6 = [self bundlePropertyEnumerator:@"BRContainerExportedTypes" valuesOfClass:objc_opt_class() forProperties:{propertiesCopy, 0}];
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -2159,18 +2159,18 @@ LABEL_63:
   return v11;
 }
 
-+ (id)_importedTypesWithProperties:(id)a3
++ (id)_importedTypesWithProperties:(id)properties
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  propertiesCopy = properties;
+  if (propertiesCopy)
   {
     v5 = [MEMORY[0x1E695DFA8] set];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [a1 bundlePropertyEnumerator:@"BRContainerImportedTypes" valuesOfClass:objc_opt_class() forProperties:{v4, 0}];
+    v6 = [self bundlePropertyEnumerator:@"BRContainerImportedTypes" valuesOfClass:objc_opt_class() forProperties:{propertiesCopy, 0}];
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -2215,21 +2215,21 @@ LABEL_63:
   return v11;
 }
 
-+ (id)_iconMetadataWithProperties:(id)a3
++ (id)_iconMetadataWithProperties:(id)properties
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"BRContainerIcons"];
+  propertiesCopy = properties;
+  dictionary = [propertiesCopy objectForKeyedSubscript:@"BRContainerIcons"];
 
-  if (v4)
+  if (dictionary)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v16 = v3;
-    obj = [v3 objectForKeyedSubscript:@"BRContainerIcons"];
+    v16 = propertiesCopy;
+    obj = [propertiesCopy objectForKeyedSubscript:@"BRContainerIcons"];
     v5 = [obj countByEnumeratingWithState:&v20 objects:v26 count:16];
     if (v5)
     {
@@ -2256,7 +2256,7 @@ LABEL_63:
           v12 = [MEMORY[0x1E696AD98] numberWithDouble:BRContainerIconScaleForName(v9)];
           v25[1] = v12;
           v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:2];
-          [v4 setObject:v13 forKeyedSubscript:v9];
+          [dictionary setObject:v13 forKeyedSubscript:v9];
         }
 
         v6 = [obj countByEnumeratingWithState:&v20 objects:v26 count:16];
@@ -2265,25 +2265,25 @@ LABEL_63:
       while (v6);
     }
 
-    v3 = v16;
+    propertiesCopy = v16;
   }
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return dictionary;
 }
 
-+ (id)_iconGeneratorVersionWithProperties:(id)a3
++ (id)_iconGeneratorVersionWithProperties:(id)properties
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  propertiesCopy = properties;
+  if (propertiesCopy)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = [a1 bundlePropertyEnumerator:@"BRContainerIconGeneratorVersionNumber" valuesOfClass:objc_opt_class() forProperties:{v4, 0}];
+    v5 = [self bundlePropertyEnumerator:@"BRContainerIconGeneratorVersionNumber" valuesOfClass:objc_opt_class() forProperties:{propertiesCopy, 0}];
     v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v6)
     {
@@ -2300,8 +2300,8 @@ LABEL_63:
           }
 
           v11 = *(*(&v16 + 1) + 8 * i);
-          v12 = [v11 longLongValue];
-          if (v12 > [v9 longLongValue])
+          longLongValue = [v11 longLongValue];
+          if (longLongValue > [v9 longLongValue])
           {
             v13 = v11;
 
@@ -2331,21 +2331,21 @@ LABEL_63:
   return v9;
 }
 
-+ (id)_iconURLsWithProperties:(id)a3 mangledID:(id)a4
++ (id)_iconURLsWithProperties:(id)properties mangledID:(id)d
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"BRContainerIcons"];
+  propertiesCopy = properties;
+  dCopy = d;
+  dictionary = [propertiesCopy objectForKeyedSubscript:@"BRContainerIcons"];
 
-  if (v8)
+  if (dictionary)
   {
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    obj = [v6 objectForKeyedSubscript:@"BRContainerIcons"];
+    obj = [propertiesCopy objectForKeyedSubscript:@"BRContainerIcons"];
     v9 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v9)
     {
@@ -2361,9 +2361,9 @@ LABEL_63:
           }
 
           v13 = *(*(&v19 + 1) + 8 * i);
-          v14 = [a1 _pathForIconName:v13 mangledID:v7];
+          v14 = [self _pathForIconName:v13 mangledID:dCopy];
           v15 = [MEMORY[0x1E695DFF8] fileURLWithPath:v14];
-          [v8 setObject:v15 forKeyedSubscript:v13];
+          [dictionary setObject:v15 forKeyedSubscript:v13];
         }
 
         v10 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -2375,7 +2375,7 @@ LABEL_63:
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return dictionary;
 }
 
 - (NSDate)lastServerUpdate
@@ -2515,7 +2515,7 @@ void __49__BRContainer_BRXcodeAdditions__lastServerUpdate__block_invoke_2(uint64
   if (v7)
   {
     -[BRContainer setCurrentStatus:](self, "setCurrentStatus:", [v7 unsignedIntegerValue]);
-    v8 = [v13[5] unsignedIntegerValue];
+    unsignedIntegerValue = [v13[5] unsignedIntegerValue];
   }
 
   else
@@ -2531,13 +2531,13 @@ void __49__BRContainer_BRXcodeAdditions__lastServerUpdate__block_invoke_2(uint64
     v10[4] = self;
     v10[5] = &block;
     dispatch_async_and_wait(containerWorkloop, v10);
-    v8 = *(p_block + 24);
+    unsignedIntegerValue = *(p_block + 24);
     _Block_object_dispose(&block, 8);
   }
 
   _Block_object_dispose(&v12, 8);
 
-  return v8;
+  return unsignedIntegerValue;
 }
 
 void __46__BRContainer_BRXcodeAdditions__currentStatus__block_invoke(uint64_t a1)
@@ -2592,23 +2592,23 @@ void __46__BRContainer_BRXcodeAdditions__currentStatus__block_invoke_2(uint64_t 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setLastServerUpdate:(id)a3
+- (void)setLastServerUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   [(BRContainer *)self willChangeValueForKey:@"lastServerUpdate"];
   v5 = containerWorkloop;
   v7 = MEMORY[0x1E69E9820];
   v8 = 3221225472;
   v9 = __61__BRContainer_BRXcodeInternalAdditions__setLastServerUpdate___block_invoke;
   v10 = &unk_1E7A14A08;
-  v11 = self;
-  v12 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v12 = updateCopy;
+  v6 = updateCopy;
   dispatch_async_and_wait(v5, &v7);
-  [(BRContainer *)self didChangeValueForKey:@"lastServerUpdate", v7, v8, v9, v10, v11];
+  [(BRContainer *)self didChangeValueForKey:@"lastServerUpdate", v7, v8, v9, v10, selfCopy];
 }
 
-- (void)setCurrentStatus:(unsigned int)a3
+- (void)setCurrentStatus:(unsigned int)status
 {
   [(BRContainer *)self willChangeValueForKey:@"currentStatus"];
   v5[0] = MEMORY[0x1E69E9820];
@@ -2616,16 +2616,16 @@ void __46__BRContainer_BRXcodeAdditions__currentStatus__block_invoke_2(uint64_t 
   v5[2] = __58__BRContainer_BRXcodeInternalAdditions__setCurrentStatus___block_invoke;
   v5[3] = &unk_1E7A165D0;
   v5[4] = self;
-  v6 = a3;
+  statusCopy = status;
   dispatch_async_and_wait(containerWorkloop, v5);
   [(BRContainer *)self didChangeValueForKey:@"currentStatus"];
 }
 
-+ (id)documentsContainersInBackupHomeAtURL:(id)a3 error:(id *)a4
++ (id)documentsContainersInBackupHomeAtURL:(id)l error:(id *)error
 {
   v45 = *MEMORY[0x1E69E9840];
-  v31 = a3;
-  v5 = [v31 URLByAppendingPathComponent:@"Library/Application Support/CloudDocs"];
+  lCopy = l;
+  v5 = [lCopy URLByAppendingPathComponent:@"Library/Application Support/CloudDocs"];
   v6 = [v5 URLByAppendingPathComponent:@"session/containers"];
 
   v32 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -2651,21 +2651,21 @@ void __46__BRContainer_BRXcodeAdditions__currentStatus__block_invoke_2(uint64_t 
         }
 
         v12 = *(*(&v34 + 1) + 8 * i);
-        v13 = [v12 pathExtension];
-        v14 = [v13 isEqualToString:@"plist"];
+        pathExtension = [v12 pathExtension];
+        v14 = [pathExtension isEqualToString:@"plist"];
 
         if (v14)
         {
           v33 = 0;
-          v15 = [a1 containerInRepositoryURL:v12 createIfMissing:0 error:&v33];
+          v15 = [self containerInRepositoryURL:v12 createIfMissing:0 error:&v33];
           v16 = v33;
           if (v15)
           {
             if ([v15 isDocumentScopePublic])
             {
-              v17 = [v15 documentsURL];
+              documentsURL = [v15 documentsURL];
 
-              if (v17)
+              if (documentsURL)
               {
                 [v32 addObject:v15];
               }
@@ -2675,14 +2675,14 @@ void __46__BRContainer_BRXcodeAdditions__currentStatus__block_invoke_2(uint64_t 
           else
           {
             v18 = v7;
-            v19 = a1;
+            selfCopy = self;
             v20 = brc_bread_crumbs("+[BRContainer(BRFinderAdditions) documentsContainersInBackupHomeAtURL:error:]", 1438);
             v21 = brc_default_log(0, 0);
             if (os_log_type_enabled(v21, 0x90u))
             {
-              v22 = [v12 path];
+              path = [v12 path];
               *buf = 138412802;
-              v39 = v22;
+              v39 = path;
               v40 = 2112;
               v41 = v16;
               v42 = 2112;
@@ -2690,7 +2690,7 @@ void __46__BRContainer_BRXcodeAdditions__currentStatus__block_invoke_2(uint64_t 
               _os_log_error_impl(&dword_1AE2A9000, v21, 0x90u, "[ERROR] can't extract container at %@: %@%@", buf, 0x20u);
             }
 
-            a1 = v19;
+            self = selfCopy;
             v7 = v18;
           }
         }
@@ -2702,13 +2702,13 @@ void __46__BRContainer_BRXcodeAdditions__currentStatus__block_invoke_2(uint64_t 
     while (v9);
   }
 
-  v23 = BRContainerIfDirectoryInHomeURLIsSynced(v31, @"Documents", @"com.apple.Documents");
+  v23 = BRContainerIfDirectoryInHomeURLIsSynced(lCopy, @"Documents", @"com.apple.Documents");
   if (v23)
   {
     [v32 addObject:v23];
   }
 
-  v24 = BRContainerIfDirectoryInHomeURLIsSynced(v31, @"Desktop", @"com.apple.Desktop");
+  v24 = BRContainerIfDirectoryInHomeURLIsSynced(lCopy, @"Desktop", @"com.apple.Desktop");
 
   if (v24)
   {
@@ -2724,16 +2724,16 @@ void __46__BRContainer_BRXcodeAdditions__currentStatus__block_invoke_2(uint64_t 
   return v32;
 }
 
-+ (id)containerInRepositoryURL:(id)a3 createIfMissing:(BOOL)a4 error:(id *)a5
++ (id)containerInRepositoryURL:(id)l createIfMissing:(BOOL)missing error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [v7 lastPathComponent];
-  v9 = [v8 brc_stringByDeletingPathExtension];
+  lCopy = l;
+  lastPathComponent = [lCopy lastPathComponent];
+  brc_stringByDeletingPathExtension = [lastPathComponent brc_stringByDeletingPathExtension];
 
-  v10 = [[BRMangledID alloc] initWithAppLibraryName:v9];
+  v10 = [[BRMangledID alloc] initWithAppLibraryName:brc_stringByDeletingPathExtension];
   v25 = 0;
-  v11 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v7 options:1 error:&v25];
+  v11 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:lCopy options:1 error:&v25];
   v12 = v25;
   v13 = v12;
   if (!v12)
@@ -2743,14 +2743,14 @@ void __46__BRContainer_BRXcodeAdditions__currentStatus__block_invoke_2(uint64_t 
 
   if ([v12 br_isCocoaErrorCode:260])
   {
-    if (a4)
+    if (missing)
     {
 LABEL_4:
       v14 = [[BRContainer alloc] initWithMangledID:v10 dataRepresentation:v11];
       goto LABEL_5;
     }
 
-    [BRContainer(BRFinderAdditions) containerInRepositoryURL:v9 createIfMissing:a5 error:?];
+    [BRContainer(BRFinderAdditions) containerInRepositoryURL:brc_stringByDeletingPathExtension createIfMissing:error error:?];
   }
 
   else
@@ -2759,11 +2759,11 @@ LABEL_4:
     v18 = brc_default_log(1, 0);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
-      v23 = [v7 path];
+      path = [lCopy path];
       *buf = 138413058;
       v27 = v10;
       v28 = 2112;
-      v29 = v23;
+      v29 = path;
       v30 = 2112;
       v31 = v13;
       v32 = 2112;
@@ -2780,7 +2780,7 @@ LABEL_4:
       *buf = 136315906;
       v27 = "+[BRContainer(BRFinderAdditions) containerInRepositoryURL:createIfMissing:error:]";
       v28 = 2080;
-      if (!a5)
+      if (!error)
       {
         v24 = "(ignored by caller)";
       }
@@ -2793,10 +2793,10 @@ LABEL_4:
       _os_log_error_impl(&dword_1AE2A9000, v21, 0x90u, "[ERROR] %s: %s error: %@%@", buf, 0x2Au);
     }
 
-    if (a5)
+    if (error)
     {
       v22 = v19;
-      *a5 = v19;
+      *error = v19;
     }
   }
 
@@ -2808,25 +2808,25 @@ LABEL_5:
   return v14;
 }
 
-+ (id)containerForItemAtURL:(id)a3 error:(id *)a4
++ (id)containerForItemAtURL:(id)l error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 br_cloudDocsContainer];
-  v7 = v6;
-  if (v6)
+  lCopy = l;
+  br_cloudDocsContainer = [lCopy br_cloudDocsContainer];
+  v7 = br_cloudDocsContainer;
+  if (br_cloudDocsContainer)
   {
-    v8 = v6;
+    v8 = br_cloudDocsContainer;
   }
 
-  else if (a4)
+  else if (error)
   {
-    *a4 = [MEMORY[0x1E696ABC0] brc_errorPathOutsideAnyCloudDocsAppLibraryAtURL:v5];
+    *error = [MEMORY[0x1E696ABC0] brc_errorPathOutsideAnyCloudDocsAppLibraryAtURL:lCopy];
   }
 
   return v7;
 }
 
-- (BOOL)deleteAllContentsOnClientAndServer:(BOOL)a3 error:(id *)a4
+- (BOOL)deleteAllContentsOnClientAndServer:(BOOL)server error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
   v22 = 0;
@@ -2847,7 +2847,7 @@ LABEL_5:
   v14[4] = self;
   v14[5] = &v16;
   v14[6] = &v22;
-  v15 = a3;
+  serverCopy = server;
   BRPerformWithPersonaAndError(personaID, v14);
   if (v23[3])
   {
@@ -2867,7 +2867,7 @@ LABEL_5:
         *buf = 136315906;
         v27 = "[BRContainer(BRFinderInternalAdditions) deleteAllContentsOnClientAndServer:error:]";
         v28 = 2080;
-        if (!a4)
+        if (!error)
         {
           v13 = "(ignored by caller)";
         }
@@ -2881,10 +2881,10 @@ LABEL_5:
       }
     }
 
-    if (a4)
+    if (error)
     {
       v10 = v7;
-      *a4 = v7;
+      *error = v7;
     }
 
     v6 = *(v23 + 24);
@@ -2958,18 +2958,18 @@ void __83__BRContainer_BRFinderInternalAdditions__deleteAllContentsOnClientAndSe
   }
 }
 
-- (BOOL)hasIconWithName:(id)a3
+- (BOOL)hasIconWithName:(id)name
 {
-  v4 = a3;
-  if (v4)
+  nameCopy = name;
+  if (nameCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [(BRContainer *)v5 iconMetadata];
-    v7 = [v6 objectForKeyedSubscript:v4];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    iconMetadata = [(BRContainer *)selfCopy iconMetadata];
+    v7 = [iconMetadata objectForKeyedSubscript:nameCopy];
     v8 = v7 != 0;
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -2982,22 +2982,22 @@ void __83__BRContainer_BRFinderInternalAdditions__deleteAllContentsOnClientAndSe
 
 - (id)iconURLs
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  iconURLs = v2->_iconURLs;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  iconURLs = selfCopy->_iconURLs;
   if (!iconURLs)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __44__BRContainer_BRInternalAdditions__iconURLs__block_invoke;
     v6[3] = &unk_1E7A16530;
-    v6[4] = v2;
-    [(BRContainer *)v2 accessPropertiesInBlock:v6];
-    iconURLs = v2->_iconURLs;
+    v6[4] = selfCopy;
+    [(BRContainer *)selfCopy accessPropertiesInBlock:v6];
+    iconURLs = selfCopy->_iconURLs;
   }
 
   v4 = iconURLs;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -3013,19 +3013,19 @@ void __44__BRContainer_BRInternalAdditions__iconURLs__block_invoke(uint64_t a1, 
   *(v6 + 80) = v5;
 }
 
-- (id)bestFittingImageDataForSize:(CGSize)a3 shouldTransformToAppIcon:(BOOL *)a4
+- (id)bestFittingImageDataForSize:(CGSize)size shouldTransformToAppIcon:(BOOL *)icon
 {
-  width = a3.width;
+  width = size.width;
   v26 = *MEMORY[0x1E69E9840];
-  v7 = [(BRContainer *)self imageDataForSize:1 scale:a4 shouldTransformToAppIcon:a3.width, a3.height];
+  v7 = [(BRContainer *)self imageDataForSize:1 scale:icon shouldTransformToAppIcon:size.width, size.height];
   if (!v7)
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v8 = [(BRContainer *)self imageRepresentationsAvailable];
-    v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    imageRepresentationsAvailable = [(BRContainer *)self imageRepresentationsAvailable];
+    v9 = [imageRepresentationsAvailable countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v9)
     {
       v10 = v9;
@@ -3036,7 +3036,7 @@ void __44__BRContainer_BRInternalAdditions__iconURLs__block_invoke(uint64_t a1, 
         {
           if (*v22 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(imageRepresentationsAvailable);
           }
 
           v13 = *(*(&v21 + 1) + 8 * i);
@@ -3045,16 +3045,16 @@ void __44__BRContainer_BRInternalAdditions__iconURLs__block_invoke(uint64_t a1, 
           [v14 getValue:&v19];
 
           v15 = [v13 objectForKey:@"scale"];
-          v16 = [v15 integerValue];
+          integerValue = [v15 integerValue];
 
-          if (v19 * v16 >= width)
+          if (v19 * integerValue >= width)
           {
-            v7 = [(BRContainer *)self imageDataForSize:v16 scale:a4 shouldTransformToAppIcon:v19, v20];
+            v7 = [(BRContainer *)self imageDataForSize:integerValue scale:icon shouldTransformToAppIcon:v19, v20];
             goto LABEL_12;
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v10 = [imageRepresentationsAvailable countByEnumeratingWithState:&v21 objects:v25 count:16];
         if (v10)
         {
           continue;
@@ -3103,28 +3103,28 @@ uint64_t __58__BRContainer_BRInternalAdditions__copyDataRepresentation__block_in
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)accessDataRepresentationInBlock:(id)a3
+- (void)accessDataRepresentationInBlock:(id)block
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (!v5->_shouldUsePurgeableData)
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_shouldUsePurgeableData)
   {
-    v9 = v5->_dataRepresentation;
+    v9 = selfCopy->_dataRepresentation;
     v8 = 0;
     v10 = 0;
     goto LABEL_21;
   }
 
-  purgeableDataRepresentation = v5->_purgeableDataRepresentation;
+  purgeableDataRepresentation = selfCopy->_purgeableDataRepresentation;
   if (!purgeableDataRepresentation)
   {
     v11 = 0;
 LABEL_8:
-    v5->_purgeableDataRepresentation = 0;
+    selfCopy->_purgeableDataRepresentation = 0;
 
-    v12 = [(BRContainer *)v5 _pathForPlist];
+    _pathForPlist = [(BRContainer *)selfCopy _pathForPlist];
     v13 = brc_bread_crumbs("[BRContainer(BRInternalAdditions) accessDataRepresentationInBlock:]", 1669);
     v14 = brc_default_log(1, 0);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -3132,13 +3132,13 @@ LABEL_8:
       [BRContainer(BRInternalAdditions) accessDataRepresentationInBlock:];
     }
 
-    if (v12)
+    if (_pathForPlist)
     {
       v21 = 0;
-      v15 = [MEMORY[0x1E696AE58] dataWithContentsOfFile:v12 options:8 error:&v21];
+      v15 = [MEMORY[0x1E696AE58] dataWithContentsOfFile:_pathForPlist options:8 error:&v21];
       v7 = v21;
-      v16 = v5->_purgeableDataRepresentation;
-      v5->_purgeableDataRepresentation = v15;
+      v16 = selfCopy->_purgeableDataRepresentation;
+      selfCopy->_purgeableDataRepresentation = v15;
     }
 
     else
@@ -3146,7 +3146,7 @@ LABEL_8:
       v7 = 0;
     }
 
-    if (!v5->_purgeableDataRepresentation && ([v7 br_isCocoaErrorCode:4] & 1) == 0 && (objc_msgSend(v7, "br_isCocoaErrorCode:", 260) & 1) == 0)
+    if (!selfCopy->_purgeableDataRepresentation && ([v7 br_isCocoaErrorCode:4] & 1) == 0 && (objc_msgSend(v7, "br_isCocoaErrorCode:", 260) & 1) == 0)
     {
       v17 = brc_bread_crumbs("[BRContainer(BRInternalAdditions) accessDataRepresentationInBlock:]", 1674);
       v18 = brc_default_log(1, 0);
@@ -3166,38 +3166,38 @@ LABEL_8:
 
   if (([(NSPurgeableData *)purgeableDataRepresentation beginContentAccess]& 1) == 0)
   {
-    v11 = v5->_purgeableDataRepresentation;
+    v11 = selfCopy->_purgeableDataRepresentation;
     goto LABEL_8;
   }
 
   v7 = 0;
   v8 = 0;
 LABEL_20:
-  v9 = v5->_purgeableDataRepresentation;
-  v10 = v5->_purgeableDataRepresentation;
+  v9 = selfCopy->_purgeableDataRepresentation;
+  v10 = selfCopy->_purgeableDataRepresentation;
 
 LABEL_21:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
-  if (v5->_shouldUsePurgeableData)
+  if (selfCopy->_shouldUsePurgeableData)
   {
     if (v8)
     {
-      [(BRContainer *)v5 _accessRebuiltPurgeableDataRepresentation:v9 inBlock:v4];
+      [(BRContainer *)selfCopy _accessRebuiltPurgeableDataRepresentation:v9 inBlock:blockCopy];
     }
 
     else
     {
-      [(BRContainer *)v5 _accessPurgeableDataRepresentation:v9 inBlock:v4];
+      [(BRContainer *)selfCopy _accessPurgeableDataRepresentation:v9 inBlock:blockCopy];
     }
   }
 
   else
   {
-    [(BRContainer *)v5 _accessDataRepresentation:v9 inBlock:v4];
+    [(BRContainer *)selfCopy _accessDataRepresentation:v9 inBlock:blockCopy];
   }
 
-  v19 = v5;
+  v19 = selfCopy;
   objc_sync_enter(v19);
   [(NSPurgeableData *)v10 endContentAccess];
   [(NSPurgeableData *)v10 discardContentIfPossible];
@@ -3211,12 +3211,12 @@ LABEL_21:
   v24 = *MEMORY[0x1E69E9840];
   [MEMORY[0x1E696AD60] stringWithString:@"apps:{"];
   v18 = v17 = self;
-  v3 = [(BRContainer *)self bundleIDVersions];
+  bundleIDVersions = [(BRContainer *)self bundleIDVersions];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v4 = [bundleIDVersions countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3228,19 +3228,19 @@ LABEL_21:
       {
         if (*v20 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(bundleIDVersions);
         }
 
         v9 = *(*(&v19 + 1) + 8 * i);
-        v10 = [v3 objectForKeyedSubscript:v9];
-        v11 = [v9 fp_obfuscatedDotSeparatedComponents];
+        v10 = [bundleIDVersions objectForKeyedSubscript:v9];
+        fp_obfuscatedDotSeparatedComponents = [v9 fp_obfuscatedDotSeparatedComponents];
         v12 = [v10 objectForKeyedSubscript:@"BRContainerVersionNumber"];
-        [v18 appendFormat:@"%s%@:%@", v7, v11, v12];
+        [v18 appendFormat:@"%s%@:%@", v7, fp_obfuscatedDotSeparatedComponents, v12];
 
         v7 = "; ";
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v5 = [bundleIDVersions countByEnumeratingWithState:&v19 objects:v23 count:16];
       v7 = "; ";
     }
 
@@ -3281,13 +3281,13 @@ LABEL_21:
   return v18;
 }
 
-+ (id)containerForMangledID:(id)a3
++ (id)containerForMangledID:(id)d
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  dCopy = d;
+  if (dCopy)
   {
-    v4 = [BRContainer _URLForPlistOfMangledID:v3];
+    v4 = [BRContainer _URLForPlistOfMangledID:dCopy];
     v5 = brc_bread_crumbs("+[BRContainer(BRInternalAdditions) containerForMangledID:]", 1750);
     v6 = brc_default_log(1, 0);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -3295,7 +3295,7 @@ LABEL_21:
       v10 = 138412802;
       v11 = v4;
       v12 = 2112;
-      v13 = v3;
+      v13 = dCopy;
       v14 = 2112;
       v15 = v5;
       _os_log_debug_impl(&dword_1AE2A9000, v6, OS_LOG_TYPE_DEBUG, "[DEBUG] Found plistURL: %@ for mangledID: %@%@", &v10, 0x20u);
@@ -3322,12 +3322,12 @@ LABEL_21:
   return v7;
 }
 
-+ (BOOL)versionOfBundle:(id)a3 changedFromVersion:(id)a4
++ (BOOL)versionOfBundle:(id)bundle changedFromVersion:(id)version
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  bundleCopy = bundle;
+  versionCopy = version;
+  if (!bundleCopy)
   {
     v8 = brc_bread_crumbs("+[BRContainer(BRInternalAdditions) versionOfBundle:changedFromVersion:]", 1767);
     v10 = brc_default_log(0, 0);
@@ -3339,14 +3339,14 @@ LABEL_21:
     goto LABEL_12;
   }
 
-  v7 = [v5 infoDictionary];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E695E500]];
+  infoDictionary = [bundleCopy infoDictionary];
+  v8 = [infoDictionary objectForKeyedSubscript:*MEMORY[0x1E695E500]];
 
-  v9 = [v5 bundleIdentifier];
-  v10 = v9;
+  bundleIdentifier = [bundleCopy bundleIdentifier];
+  v10 = bundleIdentifier;
   if (v8)
   {
-    v11 = v9 == 0;
+    v11 = bundleIdentifier == 0;
   }
 
   else
@@ -3383,15 +3383,15 @@ LABEL_12:
     v22 = 2112;
     v23 = v8;
     v24 = 2112;
-    v25 = v6;
+    v25 = versionCopy;
     v26 = 2112;
     v27 = v15;
     _os_log_debug_impl(&dword_1AE2A9000, v16, OS_LOG_TYPE_DEBUG, "[DEBUG] bundle %@ has version %@, minimum version is %@%@", &v20, 0x2Au);
   }
 
-  if (v6)
+  if (versionCopy)
   {
-    v14 = [v6 compare:v8 options:64] == -1;
+    v14 = [versionCopy compare:v8 options:64] == -1;
   }
 
   else
@@ -3405,26 +3405,26 @@ LABEL_18:
   return v14;
 }
 
-+ (BOOL)isDocumentScopePublicWithProperties:(id)a3 mangledID:(id)a4
++ (BOOL)isDocumentScopePublicWithProperties:(id)properties mangledID:(id)d
 {
-  v4 = [a1 _isDocumentScopePublicAsNumberWithProperties:a3 mangledID:a4];
-  v5 = [v4 BOOLValue];
+  v4 = [self _isDocumentScopePublicAsNumberWithProperties:properties mangledID:d];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-+ (void)forceRefreshContainers:(id)a3 completion:(id)a4
++ (void)forceRefreshContainers:(id)containers completion:(id)completion
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v20 = a4;
-  v6 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v5, "count")}];
+  containersCopy = containers;
+  completionCopy = completion;
+  v6 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(containersCopy, "count")}];
   v7 = dispatch_group_create();
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v8 = v5;
+  v8 = containersCopy;
   v9 = [v8 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v9)
   {
@@ -3470,8 +3470,8 @@ LABEL_18:
   block[2] = __70__BRContainer_BRInternalAdditions__forceRefreshContainers_completion___block_invoke_2;
   block[3] = &unk_1E7A16670;
   v22 = v6;
-  v23 = v20;
-  v17 = v20;
+  v23 = completionCopy;
+  v17 = completionCopy;
   v18 = v6;
   dispatch_group_notify(v7, v16, block);
 
@@ -3569,37 +3569,37 @@ void __71__BRContainer_BRInternalAdditions__postContainerListUpdateNotification_
   brc_notify_post([v1 UTF8String]);
 }
 
-+ (void)postContainerStatusChangeNotificationWithID:(id)a3 key:(id)a4 value:(id)a5
++ (void)postContainerStatusChangeNotificationWithID:(id)d key:(id)key value:(id)value
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  keyCopy = key;
+  valueCopy = value;
   v10 = brc_bread_crumbs("+[BRContainer(BRInternalAdditions) postContainerStatusChangeNotificationWithID:key:value:]", 1847);
   v11 = brc_default_log(1, 0);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413058;
-    *&buf[4] = v7;
+    *&buf[4] = dCopy;
     v19 = 2112;
-    v20 = v8;
+    v20 = keyCopy;
     v21 = 2112;
-    v22 = v9;
+    v22 = valueCopy;
     v23 = 2112;
     v24 = v10;
     _os_log_debug_impl(&dword_1AE2A9000, v11, OS_LOG_TYPE_DEBUG, "[DEBUG] broadcasting to framework clients container %@ change %@=%@%@", buf, 0x2Au);
   }
 
-  v12 = [MEMORY[0x1E696ABB0] defaultCenter];
-  if (v9)
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  if (valueCopy)
   {
-    v13 = [v7 appLibraryOrZoneName];
-    v16[1] = v8;
-    v17[0] = v13;
-    v17[1] = v9;
+    appLibraryOrZoneName = [dCopy appLibraryOrZoneName];
+    v16[1] = keyCopy;
+    v17[0] = appLibraryOrZoneName;
+    v17[1] = valueCopy;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:2];
 
-    [v12 postNotificationName:BRContainerDidChangeStatusDistributedNotification object:0 userInfo:v14];
+    [defaultCenter postNotificationName:BRContainerDidChangeStatusDistributedNotification object:0 userInfo:v14];
   }
 
   else
@@ -3611,16 +3611,16 @@ void __71__BRContainer_BRInternalAdditions__postContainerListUpdateNotification_
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_updateMetadataOnDiskWithProperties:(id)a3
+- (BOOL)_updateMetadataOnDiskWithProperties:(id)properties
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  propertiesCopy = properties;
   v19 = 0;
-  v5 = [MEMORY[0x1E696AE40] dataWithPropertyList:v4 format:200 options:0 error:&v19];
+  v5 = [MEMORY[0x1E696AE40] dataWithPropertyList:propertiesCopy format:200 options:0 error:&v19];
   v6 = v19;
   if (v6)
   {
-    v7 = brc_bread_crumbs("[BRContainer(BRInternalAdditions) _updateMetadataOnDiskWithProperties:]", 1868);
+    _pathForPlist = brc_bread_crumbs("[BRContainer(BRInternalAdditions) _updateMetadataOnDiskWithProperties:]", 1868);
     v8 = brc_default_log(1, 0);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
@@ -3630,7 +3630,7 @@ void __71__BRContainer_BRInternalAdditions__postContainerListUpdateNotification_
       v22 = 2112;
       v23 = v6;
       v24 = 2112;
-      v25 = v7;
+      v25 = _pathForPlist;
       _os_log_debug_impl(&dword_1AE2A9000, v8, OS_LOG_TYPE_DEBUG, "[DEBUG] failed plist serialization for container %@: %@%@", buf, 0x20u);
     }
 
@@ -3639,13 +3639,13 @@ void __71__BRContainer_BRInternalAdditions__postContainerListUpdateNotification_
 
   else
   {
-    v7 = [(BRContainer *)self _pathForPlist];
+    _pathForPlist = [(BRContainer *)self _pathForPlist];
     if ([(BRMangledID *)self->_mangledID isCloudDocsMangledID])
     {
       [BRContainer(BRInternalAdditions) _updateMetadataOnDiskWithProperties:];
     }
 
-    v9 = [v5 writeToFile:v7 atomically:1];
+    v9 = [v5 writeToFile:_pathForPlist atomically:1];
     if (v9)
     {
       v10 = brc_bread_crumbs("[BRContainer(BRInternalAdditions) _updateMetadataOnDiskWithProperties:]", 1886);
@@ -3654,11 +3654,11 @@ void __71__BRContainer_BRInternalAdditions__postContainerListUpdateNotification_
       {
         v17 = self->_mangledID;
         *buf = 138413570;
-        v21 = v4;
+        v21 = propertiesCopy;
         v22 = 2112;
         v23 = v17;
         v24 = 2112;
-        v25 = v7;
+        v25 = _pathForPlist;
         v26 = 2112;
         v27 = BRContainerFormatVersionNumberValue;
         v28 = 2112;
@@ -3681,7 +3681,7 @@ void __71__BRContainer_BRInternalAdditions__postContainerListUpdateNotification_
         *buf = 138412802;
         v21 = v18;
         v22 = 2112;
-        v23 = v7;
+        v23 = _pathForPlist;
         v24 = 2112;
         v25 = v12;
         _os_log_error_impl(&dword_1AE2A9000, v13, 0x90u, "[ERROR] can't write metadata for container %@ at '%@'%@", buf, 0x20u);
@@ -3693,22 +3693,22 @@ void __71__BRContainer_BRInternalAdditions__postContainerListUpdateNotification_
   return v9;
 }
 
-- (BOOL)updateMetadataWithExtractorProperties:(id)a3 iconPaths:(id)a4 bundleID:(id)a5
+- (BOOL)updateMetadataWithExtractorProperties:(id)properties iconPaths:(id)paths bundleID:(id)d
 {
   v138 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v103 = a4;
-  v8 = a5;
-  v105 = v7;
-  if (!v7)
+  propertiesCopy = properties;
+  pathsCopy = paths;
+  dCopy = d;
+  v105 = propertiesCopy;
+  if (!propertiesCopy)
   {
-    v89 = v8;
+    v89 = dCopy;
     [BRContainer(BRInternalAdditions) updateMetadataWithExtractorProperties:iconPaths:bundleID:];
-    v8 = v89;
+    dCopy = v89;
   }
 
-  v106 = v8;
-  if (!v8)
+  v106 = dCopy;
+  if (!dCopy)
   {
     [BRContainer(BRInternalAdditions) updateMetadataWithExtractorProperties:iconPaths:bundleID:];
   }
@@ -3731,10 +3731,10 @@ void __71__BRContainer_BRInternalAdditions__postContainerListUpdateNotification_
     _os_log_debug_impl(&dword_1AE2A9000, v10, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx Update metadata with extractor properties %@ for %@%@", v135, 0x2Au);
   }
 
-  v11 = [(BRContainer *)self _containerRepositoryURL];
-  v99 = [v11 path];
+  _containerRepositoryURL = [(BRContainer *)self _containerRepositoryURL];
+  path = [_containerRepositoryURL path];
 
-  v100 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   if ([v106 isEqualToString:@"com.apple.bird"])
   {
     v90 = brc_bread_crumbs("[BRContainer(BRInternalAdditions) updateMetadataWithExtractorProperties:iconPaths:bundleID:]", 1905);
@@ -3772,24 +3772,24 @@ void __71__BRContainer_BRInternalAdditions__postContainerListUpdateNotification_
     goto LABEL_100;
   }
 
-  if (v103)
+  if (pathsCopy)
   {
     v14 = [v13 objectForKeyedSubscript:@"BRContainerIcons"];
     if (v14)
     {
       v15 = [MEMORY[0x1E695DFA8] setWithArray:v14];
-      v16 = [v103 allKeys];
-      [v15 addObjectsFromArray:v16];
+      allKeys = [pathsCopy allKeys];
+      [v15 addObjectsFromArray:allKeys];
 
-      v17 = [v15 allObjects];
+      allObjects = [v15 allObjects];
     }
 
     else
     {
-      v17 = [v103 allKeys];
+      allObjects = [pathsCopy allKeys];
     }
 
-    [*(*&v135[8] + 40) setObject:v17 forKeyedSubscript:@"BRContainerIcons"];
+    [*(*&v135[8] + 40) setObject:allObjects forKeyedSubscript:@"BRContainerIcons"];
 
     v13 = *(*&v135[8] + 40);
   }
@@ -3800,12 +3800,12 @@ void __71__BRContainer_BRInternalAdditions__postContainerListUpdateNotification_
   {
     v19 = MEMORY[0x1E695DFD8];
     v20 = [*(*&v135[8] + 40) objectForKeyedSubscript:v106];
-    v21 = [v20 allKeys];
-    v22 = [v19 setWithArray:v21];
+    allKeys2 = [v20 allKeys];
+    v22 = [v19 setWithArray:allKeys2];
 
     v23 = MEMORY[0x1E695DFD8];
-    v24 = [v105 allKeys];
-    v95 = [v23 setWithArray:v24];
+    allKeys3 = [v105 allKeys];
+    v95 = [v23 setWithArray:allKeys3];
 
     if (([v22 isEqualToSet:v95] & 1) == 0)
     {
@@ -3917,7 +3917,7 @@ LABEL_77:
     v119 = 0u;
     v116 = 0u;
     v117 = 0u;
-    obj = v103;
+    obj = pathsCopy;
     v41 = [obj countByEnumeratingWithState:&v116 objects:v133 count:16];
     if (v41)
     {
@@ -4048,7 +4048,7 @@ LABEL_76:
 LABEL_78:
   [*(*&v135[8] + 40) setObject:v105 forKeyedSubscript:{v106, v94}];
   v113 = 0;
-  v60 = [v100 createDirectoryAtPath:v99 withIntermediateDirectories:1 attributes:0 error:&v113];
+  v60 = [defaultManager createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:&v113];
   v101 = v113;
   if ((v60 & 1) == 0)
   {
@@ -4057,7 +4057,7 @@ LABEL_78:
     if (os_log_type_enabled(v62, 0x90u))
     {
       *buf = 138412802;
-      v127 = v99;
+      v127 = path;
       v128 = 2112;
       v129 = v101;
       v130 = 2112;
@@ -4072,7 +4072,7 @@ LABEL_78:
     v112 = 0u;
     v109 = 0u;
     v110 = 0u;
-    v22 = v103;
+    v22 = pathsCopy;
     v63 = [v22 countByEnumeratingWithState:&v109 objects:v132 count:16];
     if (v63)
     {
@@ -4090,10 +4090,10 @@ LABEL_78:
           v67 = [v22 objectForKeyedSubscript:v66];
           v68 = [(BRContainer *)self _pathForIconName:v66];
           v69 = v67;
-          v70 = [v67 fileSystemRepresentation];
+          fileSystemRepresentation = [v67 fileSystemRepresentation];
           v71 = v68;
-          v72 = [v68 fileSystemRepresentation];
-          rename(v70, v72, v73);
+          fileSystemRepresentation2 = [v68 fileSystemRepresentation];
+          rename(fileSystemRepresentation, fileSystemRepresentation2, v73);
           if (v74 < 0)
           {
             v77 = *__error();
@@ -4144,14 +4144,14 @@ LABEL_78:
 
   v12 = 0;
 LABEL_100:
-  v80 = [v103 allValues];
-  v81 = [v80 firstObject];
-  v82 = [v81 stringByDeletingLastPathComponent];
+  allValues = [pathsCopy allValues];
+  firstObject = [allValues firstObject];
+  stringByDeletingLastPathComponent = [firstObject stringByDeletingLastPathComponent];
 
-  if (v82)
+  if (stringByDeletingLastPathComponent)
   {
     v108 = v101;
-    v83 = [v100 removeItemAtPath:v82 error:&v108];
+    v83 = [defaultManager removeItemAtPath:stringByDeletingLastPathComponent error:&v108];
     v84 = v108;
 
     if ((v83 & 1) == 0)
@@ -4161,7 +4161,7 @@ LABEL_100:
       if (os_log_type_enabled(v86, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
-        v127 = v99;
+        v127 = path;
         v128 = 2112;
         v129 = v84;
         v130 = 2112;
@@ -4269,13 +4269,13 @@ void __93__BRContainer_BRInternalAdditions__updateMetadataWithExtractorPropertie
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)updateMetadataWithRecordData:(id)a3 iconPaths:(id)a4
+- (BOOL)updateMetadataWithRecordData:(id)data iconPaths:(id)paths
 {
   v63 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v46 = v5;
-  if (!v5)
+  dataCopy = data;
+  pathsCopy = paths;
+  v46 = dataCopy;
+  if (!dataCopy)
   {
     [BRContainer(BRInternalAdditions) updateMetadataWithRecordData:iconPaths:];
   }
@@ -4296,22 +4296,22 @@ void __93__BRContainer_BRInternalAdditions__updateMetadataWithExtractorPropertie
     _os_log_debug_impl(&dword_1AE2A9000, v8, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx Update metadata with record data %@%@", buf, 0x20u);
   }
 
-  v9 = [(BRContainer *)self _containerRepositoryURL];
-  v47 = [v9 path];
+  _containerRepositoryURL = [(BRContainer *)self _containerRepositoryURL];
+  path = [_containerRepositoryURL path];
 
-  v10 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v54 = 0;
-  LOBYTE(v9) = [v10 createDirectoryAtPath:v47 withIntermediateDirectories:1 attributes:0 error:&v54];
-  v43 = v10;
+  LOBYTE(_containerRepositoryURL) = [defaultManager createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:&v54];
+  v43 = defaultManager;
   v45 = v54;
-  if ((v9 & 1) == 0)
+  if ((_containerRepositoryURL & 1) == 0)
   {
     v11 = brc_bread_crumbs("[BRContainer(BRInternalAdditions) updateMetadataWithRecordData:iconPaths:]", 2060);
     v12 = brc_default_log(0, 0);
     if (os_log_type_enabled(v12, 0x90u))
     {
       *buf = 138412802;
-      v57 = v47;
+      v57 = path;
       v58 = 2112;
       v59 = v45;
       v60 = 2112;
@@ -4324,7 +4324,7 @@ void __93__BRContainer_BRInternalAdditions__updateMetadataWithExtractorPropertie
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v13 = v6;
+  v13 = pathsCopy;
   v14 = [v13 countByEnumeratingWithState:&v50 objects:v62 count:16];
   if (v14)
   {
@@ -4342,10 +4342,10 @@ void __93__BRContainer_BRInternalAdditions__updateMetadataWithExtractorPropertie
         v18 = [v13 objectForKeyedSubscript:{v17, v43}];
         v19 = [(BRContainer *)self _pathForIconName:v17];
         v20 = v18;
-        v21 = [v18 fileSystemRepresentation];
+        fileSystemRepresentation = [v18 fileSystemRepresentation];
         v22 = v19;
-        v23 = [(BRMangledID *)v19 fileSystemRepresentation];
-        rename(v21, v23, v24);
+        fileSystemRepresentation2 = [(BRMangledID *)v19 fileSystemRepresentation];
+        rename(fileSystemRepresentation, fileSystemRepresentation2, v24);
         if (v25 < 0)
         {
           v28 = *__error();
@@ -4432,11 +4432,11 @@ void __93__BRContainer_BRInternalAdditions__updateMetadataWithExtractorPropertie
   return v37;
 }
 
-+ (void)_generateiOSIconsForMangledID:(id)a3 usingBundle:(__CFBundle *)a4 generatedIcons:(id)a5
++ (void)_generateiOSIconsForMangledID:(id)d usingBundle:(__CFBundle *)bundle generatedIcons:(id)icons
 {
   v150 = *MEMORY[0x1E69E9840];
-  v96 = a3;
-  v100 = a5;
+  dCopy = d;
+  iconsCopy = icons;
   memset(v134, 0, sizeof(v134));
   __brc_create_section(0, "+[BRContainer(BRInternalAdditions) _generateiOSIconsForMangledID:usingBundle:generatedIcons:]", 2186, 0, v134);
   v6 = brc_bread_crumbs("+[BRContainer(BRInternalAdditions) _generateiOSIconsForMangledID:usingBundle:generatedIcons:]", 2186);
@@ -4446,7 +4446,7 @@ void __93__BRContainer_BRInternalAdditions__updateMetadataWithExtractorPropertie
     [BRContainer(BRInternalAdditions) _generateiOSIconsForMangledID:v134 usingBundle:? generatedIcons:?];
   }
 
-  v97 = CFBundleGetInfoDictionary(a4);
+  v97 = CFBundleGetInfoDictionary(bundle);
   v8 = [v97 objectForKeyedSubscript:@"CFBundleIcons"];
   v9 = [v8 objectForKeyedSubscript:@"CFBundlePrimaryIcon"];
   v99 = [v9 objectForKeyedSubscript:@"CFBundleIconFiles"];
@@ -4470,12 +4470,12 @@ void __93__BRContainer_BRInternalAdditions__updateMetadataWithExtractorPropertie
     v99 = v10;
   }
 
-  v98 = [MEMORY[0x1E696AC08] defaultManager];
-  v11 = CFBundleCopyResourcesDirectoryURL(a4);
-  v113 = [(__CFURL *)v11 path];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v11 = CFBundleCopyResourcesDirectoryURL(bundle);
+  path = [(__CFURL *)v11 path];
 
   v133 = 0;
-  v12 = [v98 contentsOfDirectoryAtPath:v113 error:&v133];
+  v12 = [defaultManager contentsOfDirectoryAtPath:path error:&v133];
   v103 = v133;
   v116 = v12;
   if (![v12 count])
@@ -4485,7 +4485,7 @@ void __93__BRContainer_BRInternalAdditions__updateMetadataWithExtractorPropertie
     if (os_log_type_enabled(v88, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v136 = v113;
+      v136 = path;
       v137 = 2112;
       v138 = v103;
       v139 = 2112;
@@ -4534,8 +4534,8 @@ void __93__BRContainer_BRInternalAdditions__updateMetadataWithExtractorPropertie
   {
     v89 = brc_bread_crumbs("+[BRContainer(BRInternalAdditions) _generateiOSIconsForMangledID:usingBundle:generatedIcons:]", 2231);
     brc_default_log(1, 0);
-    v95 = v110 = v89;
-    if (os_log_type_enabled(v95, OS_LOG_TYPE_DEBUG))
+    path2 = v110 = v89;
+    if (os_log_type_enabled(path2, OS_LOG_TYPE_DEBUG))
     {
       +[BRContainer(BRInternalAdditions) _generateiOSIconsForMangledID:usingBundle:generatedIcons:];
     }
@@ -4569,7 +4569,7 @@ void __93__BRContainer_BRInternalAdditions__updateMetadataWithExtractorPropertie
 
       v23 = *(*(&v125 + 1) + 8 * v22);
       v24 = objc_autoreleasePoolPush();
-      v25 = [v113 stringByAppendingPathComponent:v23];
+      v25 = [path stringByAppendingPathComponent:v23];
       v26 = [MEMORY[0x1E695DFF8] fileURLWithPath:v25];
       v27 = v26;
       if (!v26)
@@ -4684,17 +4684,17 @@ LABEL_39:
 
   if ([v110 count])
   {
-    v42 = [a1 _containerRepositoryURLForMangledID:v96];
-    v95 = [v42 path];
+    v42 = [self _containerRepositoryURLForMangledID:dCopy];
+    path2 = [v42 path];
 
     v124 = v103;
-    v43 = [v98 createDirectoryAtPath:v95 withIntermediateDirectories:1 attributes:0 error:&v124];
+    v43 = [defaultManager createDirectoryAtPath:path2 withIntermediateDirectories:1 attributes:0 error:&v124];
     v44 = v124;
 
     if (v43)
     {
       v123 = v44;
-      v102 = [v98 brc_createTemporarySubdirectoryOfItem:v95 withTemplate:@".XXXXXX" error:&v123];
+      v102 = [defaultManager brc_createTemporarySubdirectoryOfItem:path2 withTemplate:@".XXXXXX" error:&v123];
       v45 = v123;
 
       if (v102)
@@ -4741,8 +4741,8 @@ LABEL_39:
               }
 
               v52 = [@"AppIconMask" stringByAppendingString:v49];
-              v53 = [MEMORY[0x1E696AAE8] mainBundle];
-              v54 = [v53 pathForResource:v52 ofType:@"png"];
+              mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+              v54 = [mainBundle pathForResource:v52 ofType:@"png"];
 
               v112 = [(objc_class *)getUIImageClass() imageWithContentsOfFile:v54];
               if (v112)
@@ -4755,8 +4755,8 @@ LABEL_39:
                 v60 = [v110 objectAtIndexedSubscript:v59 - (v59 == [v110 count])];
                 UIImageClass = getUIImageClass();
                 v62 = [v60 objectForKeyedSubscript:@"BRIconURL"];
-                v63 = [v62 path];
-                v64 = [(objc_class *)UIImageClass imageWithContentsOfFile:v63];
+                path3 = [v62 path];
+                v64 = [(objc_class *)UIImageClass imageWithContentsOfFile:path3];
 
                 if (!v64)
                 {
@@ -4798,8 +4798,8 @@ LABEL_39:
                 softLinkUIGraphicsBeginImageContextWithOptions(0, v55, v57, 1.0);
                 CurrentContext = softLinkUIGraphicsGetCurrentContext();
                 v68 = v112;
-                v69 = [v112 CGImage];
-                softLinkCGContextClipToMask(CurrentContext, v69, 0.0, 0.0, v55, v57);
+                cGImage = [v112 CGImage];
+                softLinkCGContextClipToMask(CurrentContext, cGImage, 0.0, 0.0, v55, v57);
                 [v64 drawInRect:{0.0, 0.0, v55, v57}];
                 v70 = softLinkUIGraphicsGetImageFromCurrentImageContext();
 
@@ -4829,7 +4829,7 @@ LABEL_39:
                       _os_log_debug_impl(&dword_1AE2A9000, v75, OS_LOG_TYPE_DEBUG, "[DEBUG] wrote icon data for '%@' to '%@'%@", buf, 0x20u);
                     }
 
-                    [v100 setObject:v73 forKeyedSubscript:v49];
+                    [iconsCopy setObject:v73 forKeyedSubscript:v49];
 LABEL_72:
 
                     v45 = v104;
@@ -4928,7 +4928,7 @@ LABEL_77:
       if (os_log_type_enabled(v93, 0x90u))
       {
         *buf = 138412802;
-        v136 = v95;
+        v136 = path2;
         v137 = 2112;
         v138 = v45;
         v139 = 2112;
@@ -4948,7 +4948,7 @@ LABEL_93:
       if (os_log_type_enabled(log, 0x90u))
       {
         *buf = 138412802;
-        v136 = v95;
+        v136 = path2;
         v137 = 2112;
         v138 = v44;
         v139 = 2112;
@@ -4962,7 +4962,7 @@ LABEL_93:
 
   else
   {
-    v95 = brc_bread_crumbs("+[BRContainer(BRInternalAdditions) _generateiOSIconsForMangledID:usingBundle:generatedIcons:]", 2295);
+    path2 = brc_bread_crumbs("+[BRContainer(BRInternalAdditions) _generateiOSIconsForMangledID:usingBundle:generatedIcons:]", 2295);
     v102 = brc_default_log(0, 0);
     if (os_log_type_enabled(v102, 0x90u))
     {
@@ -5035,14 +5035,14 @@ uint64_t __93__BRContainer_BRInternalAdditions___generateiOSIconsForMangledID_us
   return v11;
 }
 
-+ (id)propertiesForMangledID:(id)a3 usingBundle:(__CFBundle *)a4 minimumBundleVersion:(id)a5 bundleIcons:(id *)a6
++ (id)propertiesForMangledID:(id)d usingBundle:(__CFBundle *)bundle minimumBundleVersion:(id)version bundleIcons:(id *)icons
 {
   v101 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  if (a4)
+  dCopy = d;
+  versionCopy = version;
+  if (bundle)
   {
-    v12 = CFBundleGetInfoDictionary(a4);
+    v12 = CFBundleGetInfoDictionary(bundle);
     v13 = [v12 objectForKeyedSubscript:*MEMORY[0x1E695E500]];
     v82 = v12;
     v14 = [v12 objectForKeyedSubscript:*MEMORY[0x1E695E4F0]];
@@ -5077,7 +5077,7 @@ uint64_t __93__BRContainer_BRInternalAdditions___generateiOSIconsForMangledID_us
 
     else
     {
-      v79 = a1;
+      selfCopy = self;
       v20 = brc_bread_crumbs("+[BRContainer(BRInternalAdditions) propertiesForMangledID:usingBundle:minimumBundleVersion:bundleIcons:]", 2440);
       v21 = brc_default_log(1, 0);
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -5087,13 +5087,13 @@ uint64_t __93__BRContainer_BRInternalAdditions___generateiOSIconsForMangledID_us
         v95 = 2112;
         v96 = v13;
         v97 = 2112;
-        v98 = v11;
+        v98 = versionCopy;
         v99 = 2112;
         v100 = v20;
         _os_log_debug_impl(&dword_1AE2A9000, v21, OS_LOG_TYPE_DEBUG, "[DEBUG] bundle %@ has version %@, minimum version is %@%@", buf, 0x2Au);
       }
 
-      if (v11 && [v11 compare:v13 options:64] != -1)
+      if (versionCopy && [versionCopy compare:v13 options:64] != -1)
       {
         v19 = 0;
 LABEL_76:
@@ -5108,7 +5108,7 @@ LABEL_76:
         *buf = 138412802;
         *&buf[4] = v15;
         v95 = 2112;
-        v96 = v10;
+        v96 = dCopy;
         v97 = 2112;
         v98 = v23;
         _os_log_debug_impl(&dword_1AE2A9000, v24, OS_LOG_TYPE_DEBUG, "[DEBUG] metadata for %@ client of %@ is out of date%@", buf, 0x20u);
@@ -5152,11 +5152,11 @@ LABEL_76:
         }
       }
 
-      v30 = [v10 appLibraryOrZoneName];
+      appLibraryOrZoneName = [dCopy appLibraryOrZoneName];
       v76 = v29;
-      v31 = [v29 objectForKeyedSubscript:v30];
+      v31 = [v29 objectForKeyedSubscript:appLibraryOrZoneName];
 
-      v70 = a4;
+      bundleCopy = bundle;
       if (v31)
       {
         objc_opt_class();
@@ -5177,7 +5177,7 @@ LABEL_76:
 
       else
       {
-        v74 = a6;
+        iconsCopy = icons;
         v34 = *MEMORY[0x1E695E4F8];
         v93[0] = *MEMORY[0x1E695E120];
         v93[1] = v34;
@@ -5244,12 +5244,12 @@ LABEL_46:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0 || ![v32 length])
         {
-          v42 = [v79 _sanitizedContainerFallbackNameForMangledID:v10];
+          v42 = [selfCopy _sanitizedContainerFallbackNameForMangledID:dCopy];
 
           v32 = v42;
         }
 
-        a6 = v74;
+        icons = iconsCopy;
       }
 
       objc_opt_class();
@@ -5260,11 +5260,11 @@ LABEL_46:
         if (v33)
         {
           v72 = v31;
-          v75 = a6;
+          iconsCopy2 = icons;
           v67 = v15;
           v69 = v13;
-          v64 = v11;
-          v65 = v10;
+          v64 = versionCopy;
+          v65 = dCopy;
           context = objc_autoreleasePoolPush();
           *buf = v33;
           v43 = CFSetCreate(*MEMORY[0x1E695E4A8], buf, 1, MEMORY[0x1E695E9F8]);
@@ -5313,11 +5313,11 @@ LABEL_46:
           }
 
           objc_autoreleasePoolPop(context);
-          v11 = v64;
-          v10 = v65;
+          versionCopy = v64;
+          dCopy = v65;
           v13 = v69;
           v31 = v72;
-          a6 = v75;
+          icons = iconsCopy2;
         }
       }
 
@@ -5333,21 +5333,21 @@ LABEL_46:
       if (objc_opt_isKindOfClass())
       {
         [v19 setObject:v54 forKeyedSubscript:@"BRContainerIsDocumentScopePublic"];
-        v55 = [v54 BOOLValue];
-        if (a6)
+        bOOLValue = [v54 BOOLValue];
+        if (icons)
         {
-          if (v55)
+          if (bOOLValue)
           {
             v73 = v31;
             v56 = v15;
-            v57 = [MEMORY[0x1E695DF90] dictionary];
+            dictionary = [MEMORY[0x1E695DF90] dictionary];
             v58 = objc_autoreleasePoolPush();
-            [v79 _generateiOSIconsForMangledID:v10 usingBundle:v70 generatedIcons:v57];
+            [selfCopy _generateiOSIconsForMangledID:dCopy usingBundle:bundleCopy generatedIcons:dictionary];
             v59 = v58;
             v19 = v80;
             objc_autoreleasePoolPop(v59);
-            v60 = v57;
-            *a6 = v57;
+            v60 = dictionary;
+            *icons = dictionary;
             if ([v60 count])
             {
               [v80 setObject:BRContainerIconGeneratorVersionNumberValue forKeyedSubscript:@"BRContainerIconGeneratorVersionNumber"];
@@ -5381,18 +5381,18 @@ LABEL_77:
   return v19;
 }
 
-- (BOOL)containsExcludedDocumentsOnTheFSWithExcludedButPreservedFilename:(id)a3 excludedButPreservedExtensions:(id)a4 andStampUploadedAppWithXattr:(BOOL)a5
+- (BOOL)containsExcludedDocumentsOnTheFSWithExcludedButPreservedFilename:(id)filename excludedButPreservedExtensions:(id)extensions andStampUploadedAppWithXattr:(BOOL)xattr
 {
-  v42 = a5;
+  xattrCopy = xattr;
   v61[1] = *MEMORY[0x1E69E9840];
-  v41 = a3;
-  v43 = a4;
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [(BRContainer *)self documentsURL];
+  filenameCopy = filename;
+  extensionsCopy = extensions;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  documentsURL = [(BRContainer *)self documentsURL];
   v44 = *MEMORY[0x1E695DBD8];
   v61[0] = *MEMORY[0x1E695DBD8];
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v61 count:1];
-  v10 = [v7 enumeratorAtURL:v8 includingPropertiesForKeys:v9 options:2 errorHandler:0];
+  v10 = [defaultManager enumeratorAtURL:documentsURL includingPropertiesForKeys:v9 options:2 errorHandler:0];
 
   v52 = 0u;
   v53 = 0u;
@@ -5405,7 +5405,7 @@ LABEL_77:
     v13 = v12;
     v14 = *v51;
     v40 = *MEMORY[0x1E695DCD8];
-    v15 = v41;
+    v15 = filenameCopy;
     while (2)
     {
       for (i = 0; i != v13; ++i)
@@ -5423,11 +5423,11 @@ LABEL_77:
         v20 = v48;
         if (v18 && [v19 BOOLValue])
         {
-          if (v42)
+          if (xattrCopy)
           {
-            v21 = [v17 lastPathComponent];
-            v22 = [v21 br_pathExtension];
-            v23 = [v22 isEqualToString:@"app"];
+            lastPathComponent = [v17 lastPathComponent];
+            br_pathExtension = [lastPathComponent br_pathExtension];
+            v23 = [br_pathExtension isEqualToString:@"app"];
 
             if (v23)
             {
@@ -5442,8 +5442,8 @@ LABEL_77:
                 if ([v25 BOOLValue])
                 {
                   value = 7562617;
-                  v27 = [v17 path];
-                  v28 = setxattr([v27 fileSystemRepresentation], "com.apple.clouddocs.app-uploaded", &value, 4uLL, 0, 0);
+                  path = [v17 path];
+                  v28 = setxattr([path fileSystemRepresentation], "com.apple.clouddocs.app-uploaded", &value, 4uLL, 0, 0);
 
                   if (v28 < 0)
                   {
@@ -5452,9 +5452,9 @@ LABEL_77:
                     v30 = brc_default_log(0, 0);
                     if (os_log_type_enabled(v30, 0x90u))
                     {
-                      v33 = [v17 path];
+                      path2 = [v17 path];
                       *buf = 138412802;
-                      v55 = v33;
+                      v55 = path2;
                       v56 = 1024;
                       v57 = v29;
                       v58 = 2112;
@@ -5470,14 +5470,14 @@ LABEL_77:
               v20 = v26;
             }
 
-            v15 = v41;
+            v15 = filenameCopy;
           }
         }
 
         else
         {
-          v31 = [v17 path];
-          v32 = [v31 br_isExcludedButPreservedAtLogOutWithFilenames:v15 extensions:v43];
+          path3 = [v17 path];
+          v32 = [path3 br_isExcludedButPreservedAtLogOutWithFilenames:v15 extensions:extensionsCopy];
 
           if (v32)
           {
@@ -5511,7 +5511,7 @@ LABEL_77:
   else
   {
     v34 = 0;
-    v15 = v41;
+    v15 = filenameCopy;
   }
 
 LABEL_27:
@@ -5520,7 +5520,7 @@ LABEL_27:
   return v34;
 }
 
-- (BOOL)registerCurrentProcessAsPriorityHintWithError:(id *)a3
+- (BOOL)registerCurrentProcessAsPriorityHintWithError:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
   memset(v21, 0, sizeof(v21));
@@ -5530,38 +5530,38 @@ LABEL_27:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v14 = v21[0];
-    v15 = [(BRContainer *)self identifier];
+    identifier = [(BRContainer *)self identifier];
     *buf = 134218498;
     v23 = v14;
     v24 = 2112;
-    v25 = v15;
+    v25 = identifier;
     v26 = 2112;
     v27 = v5;
     _os_log_debug_impl(&dword_1AE2A9000, v6, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx registering current process as a priority hint for %@%@", buf, 0x20u);
   }
 
   v7 = +[BRDaemonConnection defaultConnection];
-  v8 = [v7 newSyncProxy];
+  newSyncProxy = [v7 newSyncProxy];
 
-  v9 = [(BRContainer *)self identifier];
+  identifier2 = [(BRContainer *)self identifier];
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
   v18 = __80__BRContainer_BRPriorityHinting__registerCurrentProcessAsPriorityHintWithError___block_invoke;
   v19 = &unk_1E7A16750;
-  v10 = v8;
+  v10 = newSyncProxy;
   v20 = v10;
-  [v10 getContainerURLForID:v9 reply:&v16];
+  [v10 getContainerURLForID:identifier2 reply:&v16];
 
-  v11 = [v10 error];
+  error = [v10 error];
 
-  if (a3 && v11)
+  if (error && error)
   {
-    *a3 = [v10 error];
+    *error = [v10 error];
   }
 
   __brc_leave_section(v21);
   v12 = *MEMORY[0x1E69E9840];
-  return v11 == 0;
+  return error == 0;
 }
 
 + (void)unregisterCurrentProcessAsPriorityHint
@@ -5570,14 +5570,14 @@ LABEL_27:
   [v2 invalidate];
 }
 
-- (id)versionNumberForBundleIdentifier:(id)a3
+- (id)versionNumberForBundleIdentifier:(id)identifier
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(BRContainer *)self bundleIDVersions];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    bundleIDVersions = [(BRContainer *)self bundleIDVersions];
+    v6 = [bundleIDVersions objectForKeyedSubscript:identifierCopy];
     v7 = [v6 objectForKeyedSubscript:@"BRContainerFormatVersionNumber"];
 
     if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -5602,8 +5602,8 @@ LABEL_15:
 
     else
     {
-      v8 = [v7 intValue];
-      if (v8 < [BRContainerFormatVersionNumberValue intValue])
+      intValue = [v7 intValue];
+      if (intValue < [BRContainerFormatVersionNumberValue intValue])
       {
         v9 = brc_bread_crumbs("[BRContainer(BRInternalAdditions) versionNumberForBundleIdentifier:]", 1572);
         v10 = brc_default_log(1, 0);
@@ -5614,7 +5614,7 @@ LABEL_15:
           v21 = 2112;
           v22 = BRContainerFormatVersionNumberValue;
           v23 = 2112;
-          v24 = v4;
+          v24 = identifierCopy;
           v25 = 2112;
           v26 = v9;
           _os_log_debug_impl(&dword_1AE2A9000, v10, OS_LOG_TYPE_DEBUG, "[DEBUG] overwriting old plist from version %@ to %@ for %@%@", &v19, 0x2Au);
@@ -5623,7 +5623,7 @@ LABEL_15:
         goto LABEL_15;
       }
 
-      v11 = [v5 objectForKeyedSubscript:v4];
+      v11 = [bundleIDVersions objectForKeyedSubscript:identifierCopy];
       v9 = [v11 objectForKeyedSubscript:@"BRContainerVersionNumber"];
 
       if (!v9 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))

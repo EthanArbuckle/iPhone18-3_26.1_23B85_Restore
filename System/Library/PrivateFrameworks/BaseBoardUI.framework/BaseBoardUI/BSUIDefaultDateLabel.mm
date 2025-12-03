@@ -1,28 +1,28 @@
 @interface BSUIDefaultDateLabel
 + (id)_currentCalendar;
-- (BOOL)isDateWithinEffectiveAllDayRange:(id)a3;
+- (BOOL)isDateWithinEffectiveAllDayRange:(id)range;
 - (BSUIDateLabelDelegate)delegate;
 - (BSUIDefaultDateLabel)init;
-- (id)_constructNonAllDayLabelStringWithDate:(char)a3 startTime:(int)a4 startIsToday:(int)a5 sameDayDates:(void *)a6 eventOngoing:(int)a7 withCurrentDate:(double)a8 forStartLabel:;
-- (id)_localDateForDate:(void *)a3 inTimeZone:;
+- (id)_constructNonAllDayLabelStringWithDate:(char)date startTime:(int)time startIsToday:(int)today sameDayDates:(void *)dates eventOngoing:(int)ongoing withCurrentDate:(double)currentDate forStartLabel:;
+- (id)_localDateForDate:(void *)date inTimeZone:;
 - (id)constructLabelString;
 - (void)_configureTimer;
 - (void)_forceUpdate;
 - (void)_invalidateTimer;
-- (void)_resetEffectiveAllDayState:(uint64_t)a1;
+- (void)_resetEffectiveAllDayState:(uint64_t)state;
 - (void)_resetModelProperties;
-- (void)_updateTimerFired:(id)a3;
+- (void)_updateTimerFired:(id)fired;
 - (void)dealloc;
 - (void)prepareForReuse;
-- (void)setAllDay:(BOOL)a3;
-- (void)setEndDate:(id)a3 withTimeZone:(id)a4;
-- (void)setIsTimestamp:(BOOL)a3;
-- (void)setStartDate:(id)a3 withTimeZone:(id)a4;
-- (void)setTimeZoneRelativeEndDate:(id)a3;
-- (void)setTimeZoneRelativeStartDate:(id)a3 absoluteStartDate:(id)a4;
+- (void)setAllDay:(BOOL)day;
+- (void)setEndDate:(id)date withTimeZone:(id)zone;
+- (void)setIsTimestamp:(BOOL)timestamp;
+- (void)setStartDate:(id)date withTimeZone:(id)zone;
+- (void)setTimeZoneRelativeEndDate:(id)date;
+- (void)setTimeZoneRelativeStartDate:(id)date absoluteStartDate:(id)startDate;
 - (void)stopCoalescingUpdates;
 - (void)update;
-- (void)updateTextIfNecessary:(uint64_t)a1;
+- (void)updateTextIfNecessary:(uint64_t)necessary;
 @end
 
 @implementation BSUIDefaultDateLabel
@@ -40,8 +40,8 @@
 
     v2->_allDay = 0;
     v2->_effectiveAllDay = 0;
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v2 selector:sel__forceUpdate name:*MEMORY[0x1E698E5B0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__forceUpdate name:*MEMORY[0x1E698E5B0] object:0];
   }
 
   return v2;
@@ -49,41 +49,41 @@
 
 - (void)_configureTimer
 {
-  if (a1)
+  if (self)
   {
     v2 = objc_opt_class();
     if (v2 == objc_opt_class())
     {
       v3 = &OBJC_IVAR___BSUIDefaultDateLabel__timeZoneRelativeStartDate;
-      [a1[110] timeIntervalSinceNow];
-      if (v4 <= 0.0 && (v3 = &OBJC_IVAR___BSUIDefaultDateLabel__timeZoneRelativeEndDate, [a1[101] timeIntervalSinceNow], v5 <= 0.0))
+      [self[110] timeIntervalSinceNow];
+      if (v4 <= 0.0 && (v3 = &OBJC_IVAR___BSUIDefaultDateLabel__timeZoneRelativeEndDate, [self[101] timeIntervalSinceNow], v5 <= 0.0))
       {
         v6 = 0;
       }
 
       else
       {
-        v6 = *(a1 + *v3);
+        v6 = *(self + *v3);
       }
 
-      if (![a1[106] isValid] || (objc_msgSend(a1[106], "fireDate"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isAfterDate:", v6), v7, v8))
+      if (![self[106] isValid] || (objc_msgSend(self[106], "fireDate"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isAfterDate:", v6), v7, v8))
       {
         if (v6)
         {
-          [a1[106] invalidate];
-          v9 = a1[106];
-          a1[106] = 0;
+          [self[106] invalidate];
+          v9 = self[106];
+          self[106] = 0;
 
-          v10 = [objc_alloc(MEMORY[0x1E695DFF0]) initWithFireDate:v6 interval:a1 target:sel__updateTimerFired_ selector:0 userInfo:0 repeats:0.0];
-          v11 = a1[106];
-          a1[106] = v10;
+          v10 = [objc_alloc(MEMORY[0x1E695DFF0]) initWithFireDate:v6 interval:self target:sel__updateTimerFired_ selector:0 userInfo:0 repeats:0.0];
+          v11 = self[106];
+          self[106] = v10;
 
           v15[0] = 0;
           v15[1] = v15;
           v15[2] = 0x3032000000;
           v15[3] = __Block_byref_object_copy__2;
           v15[4] = __Block_byref_object_dispose__2;
-          v16 = a1[106];
+          v16 = self[106];
           Main = CFRunLoopGetMain();
           v13 = *MEMORY[0x1E695E8E0];
           block[0] = MEMORY[0x1E69E9820];
@@ -222,28 +222,28 @@ LABEL_13:
 
 - (void)_resetModelProperties
 {
-  if (a1)
+  if (self)
   {
-    *(a1 + 856) = 0;
-    *(a1 + 841) = 0;
-    *(a1 + 842) = 0;
-    v2 = *(a1 + 880);
-    *(a1 + 880) = 0;
+    *(self + 856) = 0;
+    *(self + 841) = 0;
+    *(self + 842) = 0;
+    v2 = *(self + 880);
+    *(self + 880) = 0;
 
-    v3 = *(a1 + 808);
-    *(a1 + 808) = 0;
+    v3 = *(self + 808);
+    *(self + 808) = 0;
 
-    [BSUIDefaultDateLabel _resetEffectiveAllDayState:a1];
+    [BSUIDefaultDateLabel _resetEffectiveAllDayState:self];
   }
 }
 
 - (void)_invalidateTimer
 {
-  if (a1)
+  if (self)
   {
-    [*(a1 + 848) invalidate];
-    v2 = *(a1 + 848);
-    *(a1 + 848) = 0;
+    [*(self + 848) invalidate];
+    v2 = *(self + 848);
+    *(self + 848) = 0;
   }
 }
 
@@ -263,20 +263,20 @@ uint64_t __40__BSUIDefaultDateLabel__currentCalendar__block_invoke()
   [(BSUIDefaultDateLabel *)&v3 dealloc];
 }
 
-- (void)setAllDay:(BOOL)a3
+- (void)setAllDay:(BOOL)day
 {
-  if (self->_allDay != a3)
+  if (self->_allDay != day)
   {
-    self->_allDay = a3;
+    self->_allDay = day;
     [(BSUIDefaultDateLabel *)self update];
   }
 }
 
-- (void)setIsTimestamp:(BOOL)a3
+- (void)setIsTimestamp:(BOOL)timestamp
 {
-  if (self->_isTimestamp != a3)
+  if (self->_isTimestamp != timestamp)
   {
-    self->_isTimestamp = a3;
+    self->_isTimestamp = timestamp;
     [(BSUIDefaultDateLabel *)self update];
   }
 }
@@ -294,58 +294,58 @@ void __39__BSUIDefaultDateLabel__configureTimer__block_invoke(uint64_t a1)
   *(v3 + 40) = 0;
 }
 
-- (void)setTimeZoneRelativeStartDate:(id)a3 absoluteStartDate:(id)a4
+- (void)setTimeZoneRelativeStartDate:(id)date absoluteStartDate:(id)startDate
 {
-  v6 = a3;
+  dateCopy = date;
   if (![(NSDate *)self->_timeZoneRelativeStartDate isEqualToDate:?])
   {
-    objc_storeStrong(&self->_timeZoneRelativeStartDate, a3);
+    objc_storeStrong(&self->_timeZoneRelativeStartDate, date);
     [(BSUIDefaultDateLabel *)self update];
     [(BSUIDefaultDateLabel *)&self->super.super.super.super.isa _configureTimer];
   }
 }
 
-- (void)setTimeZoneRelativeEndDate:(id)a3
+- (void)setTimeZoneRelativeEndDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   if (![(NSDate *)self->_timeZoneRelativeEndDate isEqualToDate:?])
   {
-    objc_storeStrong(&self->_timeZoneRelativeEndDate, a3);
+    objc_storeStrong(&self->_timeZoneRelativeEndDate, date);
     [(BSUIDefaultDateLabel *)self update];
     [(BSUIDefaultDateLabel *)&self->super.super.super.super.isa _configureTimer];
   }
 }
 
-- (void)setStartDate:(id)a3 withTimeZone:(id)a4
+- (void)setStartDate:(id)date withTimeZone:(id)zone
 {
-  v9 = a3;
-  v6 = a4;
-  if (v6)
+  dateCopy = date;
+  zoneCopy = zone;
+  if (zoneCopy)
   {
-    v7 = [(BSUIDefaultDateLabel *)self _localDateForDate:v9 inTimeZone:v6];
+    v7 = [(BSUIDefaultDateLabel *)self _localDateForDate:dateCopy inTimeZone:zoneCopy];
   }
 
   else
   {
-    v7 = v9;
+    v7 = dateCopy;
   }
 
   v8 = v7;
-  [(BSUIDefaultDateLabel *)self setTimeZoneRelativeStartDate:v7 absoluteStartDate:v9];
+  [(BSUIDefaultDateLabel *)self setTimeZoneRelativeStartDate:v7 absoluteStartDate:dateCopy];
 }
 
-- (id)_localDateForDate:(void *)a3 inTimeZone:
+- (id)_localDateForDate:(void *)date inTimeZone:
 {
   v5 = a2;
-  v6 = a3;
+  dateCopy = date;
   v7 = 0;
-  if (a1 && v5)
+  if (self && v5)
   {
     v8 = +[BSUIDefaultDateLabel _currentCalendar];
-    [v8 setTimeZone:v6];
+    [v8 setTimeZone:dateCopy];
     v9 = [v8 components:254 fromDate:v5];
-    v10 = [MEMORY[0x1E695DFE8] systemTimeZone];
-    [v8 setTimeZone:v10];
+    systemTimeZone = [MEMORY[0x1E695DFE8] systemTimeZone];
+    [v8 setTimeZone:systemTimeZone];
 
     v11 = [v8 dateFromComponents:v9];
     v12 = v11;
@@ -365,53 +365,53 @@ void __39__BSUIDefaultDateLabel__configureTimer__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (void)setEndDate:(id)a3 withTimeZone:(id)a4
+- (void)setEndDate:(id)date withTimeZone:(id)zone
 {
-  v9 = a3;
-  v6 = a4;
-  if (v6)
+  dateCopy = date;
+  zoneCopy = zone;
+  if (zoneCopy)
   {
-    v7 = [(BSUIDefaultDateLabel *)self _localDateForDate:v9 inTimeZone:v6];
+    v7 = [(BSUIDefaultDateLabel *)self _localDateForDate:dateCopy inTimeZone:zoneCopy];
   }
 
   else
   {
-    v7 = v9;
+    v7 = dateCopy;
   }
 
   v8 = v7;
   [(BSUIDefaultDateLabel *)self setTimeZoneRelativeEndDate:v7];
 }
 
-- (void)_resetEffectiveAllDayState:(uint64_t)a1
+- (void)_resetEffectiveAllDayState:(uint64_t)state
 {
-  *(a1 + 840) = 0;
-  v2 = *(a1 + 816);
-  *(a1 + 816) = 0;
+  *(state + 840) = 0;
+  v2 = *(state + 816);
+  *(state + 816) = 0;
 
-  v3 = *(a1 + 832);
-  *(a1 + 832) = 0;
+  v3 = *(state + 832);
+  *(state + 832) = 0;
 
-  v4 = *(a1 + 824);
-  *(a1 + 824) = 0;
+  v4 = *(state + 824);
+  *(state + 824) = 0;
 }
 
-- (BOOL)isDateWithinEffectiveAllDayRange:(id)a3
+- (BOOL)isDateWithinEffectiveAllDayRange:(id)range
 {
-  v5 = a3;
+  rangeCopy = range;
   if (!self->_effectiveAllDayStartDate)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"BSUIDefaultDateLabel.m" lineNumber:284 description:@"Effective all-day start date was nil."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSUIDefaultDateLabel.m" lineNumber:284 description:@"Effective all-day start date was nil."];
   }
 
   if (!self->_effectiveAllDayEndDate)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"BSUIDefaultDateLabel.m" lineNumber:285 description:@"Effective all-day end date was nil."];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"BSUIDefaultDateLabel.m" lineNumber:285 description:@"Effective all-day end date was nil."];
   }
 
-  [v5 timeIntervalSinceReferenceDate];
+  [rangeCopy timeIntervalSinceReferenceDate];
   v7 = v6;
   [(NSDate *)self->_effectiveAllDayStartDate timeIntervalSinceReferenceDate];
   if (v7 >= v8)
@@ -428,20 +428,20 @@ void __39__BSUIDefaultDateLabel__configureTimer__block_invoke(uint64_t a1)
   return v9;
 }
 
-- (id)_constructNonAllDayLabelStringWithDate:(char)a3 startTime:(int)a4 startIsToday:(int)a5 sameDayDates:(void *)a6 eventOngoing:(int)a7 withCurrentDate:(double)a8 forStartLabel:
+- (id)_constructNonAllDayLabelStringWithDate:(char)date startTime:(int)time startIsToday:(int)today sameDayDates:(void *)dates eventOngoing:(int)ongoing withCurrentDate:(double)currentDate forStartLabel:
 {
   v15 = a2;
-  v16 = a6;
-  if (a1)
+  datesCopy = dates;
+  if (self)
   {
-    v17 = [MEMORY[0x1E698E670] sharedInstance];
-    v18 = [MEMORY[0x1E698E678] sharedInstance];
-    v19 = v18;
-    if ((a3 & 1) != 0 || a5)
+    mEMORY[0x1E698E670] = [MEMORY[0x1E698E670] sharedInstance];
+    mEMORY[0x1E698E678] = [MEMORY[0x1E698E678] sharedInstance];
+    v19 = mEMORY[0x1E698E678];
+    if ((date & 1) != 0 || today)
     {
-      if (a7)
+      if (ongoing)
       {
-        if (a5)
+        if (today)
         {
           v20 = +[NSBundle bs_baseBoardUIBundle];
           v21 = [v20 localizedStringForKey:@"NOW" value:&stru_1F1587660 table:&stru_1F1587660];
@@ -454,19 +454,19 @@ LABEL_36:
       else
       {
         [v15 timeIntervalSinceReferenceDate];
-        if (!a4)
+        if (!time)
         {
           v24 = v22;
           if (![v19 isTomorrow:?])
           {
             if ([v19 isWithinNextWeek:v24])
             {
-              [v17 formatDateAsAbbreviatedDayOfWeekWithTime:v15];
+              [mEMORY[0x1E698E670] formatDateAsAbbreviatedDayOfWeekWithTime:v15];
             }
 
             else
             {
-              [v17 formatDateAsShortDayMonthWithTimeStyle:v15];
+              [mEMORY[0x1E698E670] formatDateAsShortDayMonthWithTimeStyle:v15];
             }
             v23 = ;
             goto LABEL_29;
@@ -476,17 +476,17 @@ LABEL_36:
         }
       }
 
-      v23 = [v17 formatDateAsTimeStyle:v15];
+      v23 = [mEMORY[0x1E698E670] formatDateAsTimeStyle:v15];
     }
 
     else
     {
-      if ([v18 isTomorrow:a8])
+      if ([mEMORY[0x1E698E678] isTomorrow:currentDate])
       {
-        if (a7)
+        if (ongoing)
         {
 LABEL_17:
-          v23 = [v17 formatDateAsRelativeDateAndTimeStyle:v15];
+          v23 = [mEMORY[0x1E698E670] formatDateAsRelativeDateAndTimeStyle:v15];
           goto LABEL_29;
         }
 
@@ -495,9 +495,9 @@ LABEL_35:
         goto LABEL_36;
       }
 
-      if ([v19 isWithinNextWeek:a8])
+      if ([v19 isWithinNextWeek:currentDate])
       {
-        if ((a7 & 1) == 0)
+        if ((ongoing & 1) == 0)
         {
           goto LABEL_35;
         }
@@ -505,25 +505,25 @@ LABEL_35:
 
       else
       {
-        [v16 timeIntervalSinceReferenceDate];
-        if (v25 < a8)
+        [datesCopy timeIntervalSinceReferenceDate];
+        if (v25 < currentDate)
         {
-          if (a7)
+          if (ongoing)
           {
-            v23 = [v17 formatDateAsShortDayMonthWithTimeStyle:v15];
+            v23 = [mEMORY[0x1E698E670] formatDateAsShortDayMonthWithTimeStyle:v15];
             goto LABEL_29;
           }
 
           goto LABEL_35;
         }
 
-        if ([v19 isYesterday:a8])
+        if ([v19 isYesterday:currentDate])
         {
-          if (a7)
+          if (ongoing)
           {
-            if (*(a1 + 857) == 1)
+            if (*(self + 857) == 1)
             {
-              v23 = [v17 formatDateAsRelativeDateStyle:v15];
+              v23 = [mEMORY[0x1E698E670] formatDateAsRelativeDateStyle:v15];
               goto LABEL_29;
             }
 
@@ -533,24 +533,24 @@ LABEL_35:
           goto LABEL_35;
         }
 
-        if (![v19 isWithinPrevWeek:1 includeToday:a8])
+        if (![v19 isWithinPrevWeek:1 includeToday:currentDate])
         {
-          if (a7)
+          if (ongoing)
           {
-            v23 = [v17 formatDateAsDayMonthYearStyle:v15];
+            v23 = [mEMORY[0x1E698E670] formatDateAsDayMonthYearStyle:v15];
             goto LABEL_29;
           }
 
           goto LABEL_35;
         }
 
-        if (!a7)
+        if (!ongoing)
         {
           goto LABEL_35;
         }
       }
 
-      v23 = [v17 formatDateAsAbbreviatedDayOfWeekWithTime:v15];
+      v23 = [mEMORY[0x1E698E670] formatDateAsAbbreviatedDayOfWeekWithTime:v15];
     }
 
 LABEL_29:
@@ -599,28 +599,28 @@ LABEL_7:
   }
 
 LABEL_8:
-  v5 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v6 = +[BSUIDefaultDateLabel _currentCalendar];
-  v7 = [MEMORY[0x1E698E678] sharedInstance];
-  v43 = [MEMORY[0x1E698E670] sharedInstance];
+  mEMORY[0x1E698E678] = [MEMORY[0x1E698E678] sharedInstance];
+  mEMORY[0x1E698E670] = [MEMORY[0x1E698E670] sharedInstance];
   v8 = self->_labelType;
   if (!self->_effectiveAllDay)
   {
     p_timeZoneRelativeStartDate = &self->_timeZoneRelativeStartDate;
     [(NSDate *)self->_timeZoneRelativeStartDate timeIntervalSinceReferenceDate];
     v20 = v19;
-    v21 = [v7 isToday:?];
+    v21 = [mEMORY[0x1E698E678] isToday:?];
     if (self->_timeZoneRelativeStartDate && self->_timeZoneRelativeEndDate)
     {
       v22 = [v6 date:? isSameDayAsDate:?];
-      if ([v5 isAfterDate:*p_timeZoneRelativeStartDate])
+      if ([date isAfterDate:*p_timeZoneRelativeStartDate])
       {
-        v23 = [v5 isBeforeDate:self->_timeZoneRelativeEndDate];
+        v23 = [date isBeforeDate:self->_timeZoneRelativeEndDate];
 LABEL_25:
         if (v8 == 2)
         {
-          v24 = [(BSUIDefaultDateLabel *)self _constructNonAllDayLabelStringWithDate:v21 startTime:v22 startIsToday:v23 sameDayDates:v5 eventOngoing:1 withCurrentDate:v20 forStartLabel:?];
-          v15 = [(BSUIDefaultDateLabel *)self _constructNonAllDayLabelStringWithDate:v21 startTime:v22 startIsToday:v23 sameDayDates:v5 eventOngoing:0 withCurrentDate:v20 forStartLabel:?];
+          v24 = [(BSUIDefaultDateLabel *)self _constructNonAllDayLabelStringWithDate:v21 startTime:v22 startIsToday:v23 sameDayDates:date eventOngoing:1 withCurrentDate:v20 forStartLabel:?];
+          v15 = [(BSUIDefaultDateLabel *)self _constructNonAllDayLabelStringWithDate:v21 startTime:v22 startIsToday:v23 sameDayDates:date eventOngoing:0 withCurrentDate:v20 forStartLabel:?];
           v25 = MEMORY[0x1E696AEC0];
           v17 = +[NSBundle bs_baseBoardUIBundle];
           v26 = [(__CFString *)v17 localizedStringForKey:@"DATE_RANGE_FORMAT_NEW" value:&stru_1F1587660 table:&stru_1F1587660];
@@ -639,7 +639,7 @@ LABEL_25:
           v13 = *p_timeZoneRelativeStartDate;
           if (v13)
           {
-            v17 = [(BSUIDefaultDateLabel *)self _constructNonAllDayLabelStringWithDate:v13 startTime:v21 startIsToday:v22 sameDayDates:v23 eventOngoing:v5 withCurrentDate:v8 == 0 forStartLabel:v20];
+            v17 = [(BSUIDefaultDateLabel *)self _constructNonAllDayLabelStringWithDate:v13 startTime:v21 startIsToday:v22 sameDayDates:v23 eventOngoing:date withCurrentDate:v8 == 0 forStartLabel:v20];
           }
 
           else
@@ -679,12 +679,12 @@ LABEL_75:
   v10 = v9;
   [(NSDate *)self->_effectiveAllDayLastValidDate timeIntervalSinceReferenceDate];
   v12 = v11;
-  if (v8 - 1) > 1 || ([v7 isToday:v11] & 1) != 0 || (objc_msgSend(v6, "date:isSameDayAsDate:", self->_effectiveAllDayStartDate, self->_effectiveAllDayLastValidDate))
+  if (v8 - 1) > 1 || ([mEMORY[0x1E698E678] isToday:v11] & 1) != 0 || (objc_msgSend(v6, "date:isSameDayAsDate:", self->_effectiveAllDayStartDate, self->_effectiveAllDayLastValidDate))
   {
     v13 = 0;
   }
 
-  else if ([v7 isTomorrow:v12])
+  else if ([mEMORY[0x1E698E678] isTomorrow:v12])
   {
     v34 = +[NSBundle bs_baseBoardUIBundle];
     v13 = [v34 localizedStringForKey:@"TOMORROW" value:&stru_1F1587660 table:&stru_1F1587660];
@@ -692,23 +692,23 @@ LABEL_75:
 
   else
   {
-    v38 = [v7 isWithinNextWeek:v12];
+    v38 = [mEMORY[0x1E698E678] isWithinNextWeek:v12];
     effectiveAllDayLastValidDate = self->_effectiveAllDayLastValidDate;
     if (v38)
     {
-      [v43 formatDateAsDayOfWeek:effectiveAllDayLastValidDate];
+      [mEMORY[0x1E698E670] formatDateAsDayOfWeek:effectiveAllDayLastValidDate];
     }
 
     else
     {
-      [v43 formatDateAsAbbreviatedDayMonthStyle:effectiveAllDayLastValidDate];
+      [mEMORY[0x1E698E670] formatDateAsAbbreviatedDayMonthStyle:effectiveAllDayLastValidDate];
     }
     v13 = ;
   }
 
   if ((v8 | 2) == 2)
   {
-    if ([(BSUIDefaultDateLabel *)self isDateWithinEffectiveAllDayRange:v5])
+    if ([(BSUIDefaultDateLabel *)self isDateWithinEffectiveAllDayRange:date])
     {
       v14 = +[NSBundle bs_baseBoardUIBundle];
       v15 = [v14 localizedStringForKey:@"TODAY" value:&stru_1F1587660 table:&stru_1F1587660];
@@ -737,7 +737,7 @@ LABEL_72:
       goto LABEL_68;
     }
 
-    if ([v7 isTomorrow:v10])
+    if ([mEMORY[0x1E698E678] isTomorrow:v10])
     {
       v30 = +[NSBundle bs_baseBoardUIBundle];
       v15 = [v30 localizedStringForKey:@"TOMORROW" value:&stru_1F1587660 table:&stru_1F1587660];
@@ -759,10 +759,10 @@ LABEL_72:
       goto LABEL_68;
     }
 
-    [v5 timeIntervalSinceReferenceDate];
+    [date timeIntervalSinceReferenceDate];
     if (v10 <= v32)
     {
-      if ([v7 isYesterday:v12])
+      if ([mEMORY[0x1E698E678] isYesterday:v12])
       {
         v36 = +[NSBundle bs_baseBoardUIBundle];
         v15 = [v36 localizedStringForKey:@"YESTERDAY" value:&stru_1F1587660 table:&stru_1F1587660];
@@ -784,11 +784,11 @@ LABEL_72:
         goto LABEL_68;
       }
 
-      v40 = [v7 isWithinPrevWeek:1 includeToday:v12];
+      v40 = [mEMORY[0x1E698E678] isWithinPrevWeek:1 includeToday:v12];
       v41 = self->_effectiveAllDayLastValidDate;
       if (v40)
       {
-        v15 = [v43 formatDateAsDayOfWeek:v41];
+        v15 = [mEMORY[0x1E698E670] formatDateAsDayOfWeek:v41];
         if (v13)
         {
           v33 = MEMORY[0x1E696AEC0];
@@ -805,7 +805,7 @@ LABEL_72:
 
       else
       {
-        v15 = [v43 formatDateAsDayMonthYearStyle:v41];
+        v15 = [mEMORY[0x1E698E670] formatDateAsDayMonthYearStyle:v41];
         if (v13)
         {
           v33 = MEMORY[0x1E696AEC0];
@@ -823,7 +823,7 @@ LABEL_72:
 
     else
     {
-      v15 = [v43 formatDateAsAbbreviatedDayMonthStyle:self->_effectiveAllDayStartDate];
+      v15 = [mEMORY[0x1E698E670] formatDateAsAbbreviatedDayMonthStyle:self->_effectiveAllDayStartDate];
       if (v13)
       {
         v33 = MEMORY[0x1E696AEC0];
@@ -867,37 +867,37 @@ LABEL_77:
   return v17;
 }
 
-- (void)updateTextIfNecessary:(uint64_t)a1
+- (void)updateTextIfNecessary:(uint64_t)necessary
 {
-  if (a1)
+  if (necessary)
   {
-    if ((a2 & 1) != 0 || *(a1 + 841) != 1)
+    if ((a2 & 1) != 0 || *(necessary + 841) != 1)
     {
-      v7 = [a1 constructLabelString];
-      v3 = [a1 text];
-      v4 = [v7 isEqual:v3];
+      constructLabelString = [necessary constructLabelString];
+      text = [necessary text];
+      v4 = [constructLabelString isEqual:text];
 
       if ((v4 & 1) == 0)
       {
-        [a1 setText:v7];
-        [a1 setNeedsDisplay];
-        WeakRetained = objc_loadWeakRetained((a1 + 864));
+        [necessary setText:constructLabelString];
+        [necessary setNeedsDisplay];
+        WeakRetained = objc_loadWeakRetained((necessary + 864));
         v6 = WeakRetained;
         if (WeakRetained)
         {
-          [WeakRetained dateLabelDidChange:a1];
+          [WeakRetained dateLabelDidChange:necessary];
         }
       }
     }
 
     else
     {
-      *(a1 + 842) = 1;
+      *(necessary + 842) = 1;
     }
   }
 }
 
-- (void)_updateTimerFired:(id)a3
+- (void)_updateTimerFired:(id)fired
 {
   [(BSUIDefaultDateLabel *)self update];
   [(BSUIDefaultDateLabel *)self _invalidateTimer];

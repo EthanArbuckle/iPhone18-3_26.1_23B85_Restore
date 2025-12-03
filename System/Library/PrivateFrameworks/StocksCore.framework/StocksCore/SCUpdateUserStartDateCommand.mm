@@ -1,19 +1,19 @@
 @interface SCUpdateUserStartDateCommand
 - (SCUpdateUserStartDateCommand)init;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithZone:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithZone:(id)zone;
 @end
 
 @implementation SCUpdateUserStartDateCommand
 
-- (void)executeWithZone:(id)a3
+- (void)executeWithZone:(id)zone
 {
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_1DACB92F4();
   v7 = sub_1DACB92F4();
   v8 = swift_allocObject();
-  *(v8 + 16) = v5;
+  *(v8 + 16) = selfCopy;
   v11[4] = sub_1DAA74EC0;
   v11[5] = v8;
   v11[0] = MEMORY[0x1E69E9820];
@@ -21,18 +21,18 @@
   v11[2] = sub_1DAA74E58;
   v11[3] = &block_descriptor_18;
   v9 = _Block_copy(v11);
-  v10 = v5;
+  v10 = selfCopy;
 
-  [a3 createOrUpdateRecordWithName:v6 recordType:v7 modifyBlock:v9];
+  [zone createOrUpdateRecordWithName:v6 recordType:v7 modifyBlock:v9];
   _Block_release(v9);
   swift_unknownObjectRelease();
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1DABBCB98(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1DABBCB98(coderCopy);
 }
 
 - (SCUpdateUserStartDateCommand)init

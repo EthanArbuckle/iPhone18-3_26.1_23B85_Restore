@@ -1,40 +1,40 @@
 @interface AAUICustodianRecoveryApprovalController
-+ (id)approvalControllerWithPresenter:(id)a3 recoverySessionID:(id)a4 telemetryFlowID:(id)a5;
-- (id)_actionsForRecoveryCodeAlert:(id)a3 completion:(id)a4;
-- (void)_promptForRecoveryCodeWithCompletion:(id)a3;
-- (void)_sendAnalyticsEventWithSelectedOffer:(id)a3;
-- (void)_validateRecoveryCode:(id)a3 withCompletion:(id)a4;
++ (id)approvalControllerWithPresenter:(id)presenter recoverySessionID:(id)d telemetryFlowID:(id)iD;
+- (id)_actionsForRecoveryCodeAlert:(id)alert completion:(id)completion;
+- (void)_promptForRecoveryCodeWithCompletion:(id)completion;
+- (void)_sendAnalyticsEventWithSelectedOffer:(id)offer;
+- (void)_validateRecoveryCode:(id)code withCompletion:(id)completion;
 - (void)dealloc;
-- (void)validateRecoveryCodeWithCompletion:(id)a3;
+- (void)validateRecoveryCodeWithCompletion:(id)completion;
 @end
 
 @implementation AAUICustodianRecoveryApprovalController
 
-+ (id)approvalControllerWithPresenter:(id)a3 recoverySessionID:(id)a4 telemetryFlowID:(id)a5
++ (id)approvalControllerWithPresenter:(id)presenter recoverySessionID:(id)d telemetryFlowID:(id)iD
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  presenterCopy = presenter;
+  dCopy = d;
+  iDCopy = iD;
   v10 = _AAUILogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138412290;
-    v19 = v8;
+    v19 = dCopy;
     _os_log_impl(&dword_1C5355000, v10, OS_LOG_TYPE_DEFAULT, "Creating Custodian Recovery Approval Controller with Session ID: %@", &v18, 0xCu);
   }
 
   v11 = objc_alloc_init(objc_opt_class());
   v12 = v11[1];
-  v11[1] = v8;
-  v13 = v8;
+  v11[1] = dCopy;
+  v13 = dCopy;
 
   v14 = v11[2];
-  v11[2] = v9;
-  v15 = v9;
+  v11[2] = iDCopy;
+  v15 = iDCopy;
 
   v16 = v11[4];
-  v11[4] = v7;
+  v11[4] = presenterCopy;
 
   return v11;
 }
@@ -53,9 +53,9 @@
   [(AAUICustodianRecoveryApprovalController *)&v4 dealloc];
 }
 
-- (void)validateRecoveryCodeWithCompletion:(id)a3
+- (void)validateRecoveryCodeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _AAUILogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -67,8 +67,8 @@
   v7[1] = 3221225472;
   v7[2] = __78__AAUICustodianRecoveryApprovalController_validateRecoveryCodeWithCompletion___block_invoke;
   v7[3] = &unk_1E820B758;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(AAUICustodianRecoveryApprovalController *)self _promptForRecoveryCodeWithCompletion:v7];
 }
 
@@ -106,36 +106,36 @@ void __78__AAUICustodianRecoveryApprovalController_validateRecoveryCodeWithCompl
   v10();
 }
 
-- (void)_validateRecoveryCode:(id)a3 withCompletion:(id)a4
+- (void)_validateRecoveryCode:(id)code withCompletion:(id)completion
 {
   v6 = MEMORY[0x1E698B868];
-  v7 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  codeCopy = code;
   v10 = objc_alloc_init(v6);
   [v10 setRecoverySessionID:self->_recoverySessionID];
-  [v10 setRecoveryCode:v8];
+  [v10 setRecoveryCode:codeCopy];
 
   [v10 setTelemetryFlowID:self->_telemetryFlowID];
   v9 = objc_alloc_init(MEMORY[0x1E698B850]);
-  [v9 validateCustodianRecoveryCodeWithContext:v10 completion:v7];
+  [v9 validateCustodianRecoveryCodeWithContext:v10 completion:completionCopy];
 }
 
-- (void)_sendAnalyticsEventWithSelectedOffer:(id)a3
+- (void)_sendAnalyticsEventWithSelectedOffer:(id)offer
 {
   v3 = MEMORY[0x1E6985DB0];
   v4 = *MEMORY[0x1E698BA68];
   telemetryFlowID = self->_telemetryFlowID;
-  v6 = a3;
+  offerCopy = offer;
   v8 = [v3 analyticsEventWithName:v4 altDSID:0 flowID:telemetryFlowID];
-  [v8 setObject:v6 forKeyedSubscript:*MEMORY[0x1E6997820]];
+  [v8 setObject:offerCopy forKeyedSubscript:*MEMORY[0x1E6997820]];
 
-  v7 = [MEMORY[0x1E698B810] reporter];
-  [v7 sendEvent:v8];
+  reporter = [MEMORY[0x1E698B810] reporter];
+  [reporter sendEvent:v8];
 }
 
-- (void)_promptForRecoveryCodeWithCompletion:(id)a3
+- (void)_promptForRecoveryCodeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [MEMORY[0x1E6985DB0] analyticsEventWithName:@"com.apple.appleAccount.recoveryContactCodeEntryLanding" altDSID:0 flowID:self->_telemetryFlowID];
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v7 = objc_alloc_init(AAUICodeEntryContext);
@@ -156,7 +156,7 @@ void __78__AAUICustodianRecoveryApprovalController_validateRecoveryCodeWithCompl
   v24[2] = __80__AAUICustodianRecoveryApprovalController__promptForRecoveryCodeWithCompletion___block_invoke;
   v24[3] = &unk_1E820B780;
   v24[4] = self;
-  v14 = v4;
+  v14 = completionCopy;
   v25 = v14;
   [(AAUICodeEntryContext *)v7 setEscapeAction:v24];
   [v6 addObject:*MEMORY[0x1E6997848]];
@@ -178,13 +178,13 @@ void __78__AAUICustodianRecoveryApprovalController_validateRecoveryCodeWithCompl
   v16 = v15;
   [(AAUICodeEntryContext *)v7 setCodeEnteredAction:v20];
   [v6 addObject:*MEMORY[0x1E6997840]];
-  v17 = [v6 aaf_arrayAsCommaSeperatedString];
-  [v5 setObject:v17 forKeyedSubscript:*MEMORY[0x1E6997818]];
+  aaf_arrayAsCommaSeperatedString = [v6 aaf_arrayAsCommaSeperatedString];
+  [v5 setObject:aaf_arrayAsCommaSeperatedString forKeyedSubscript:*MEMORY[0x1E6997818]];
 
   v18 = [[AAUICodeEntryViewController alloc] initWithContext:v7];
   [(UIViewController *)self->_presenter presentViewController:v18 animated:1 completion:0];
-  v19 = [MEMORY[0x1E698B810] reporter];
-  [v19 sendEvent:v5];
+  reporter = [MEMORY[0x1E698B810] reporter];
+  [reporter sendEvent:v5];
 }
 
 void __80__AAUICustodianRecoveryApprovalController__promptForRecoveryCodeWithCompletion___block_invoke(uint64_t a1)
@@ -337,19 +337,19 @@ uint64_t __80__AAUICustodianRecoveryApprovalController__promptForRecoveryCodeWit
   return (*(*(a1 + 40) + 16))();
 }
 
-- (id)_actionsForRecoveryCodeAlert:(id)a3 completion:(id)a4
+- (id)_actionsForRecoveryCodeAlert:(id)alert completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  alertCopy = alert;
+  completionCopy = completion;
   v7 = objc_opt_new();
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __83__AAUICustodianRecoveryApprovalController__actionsForRecoveryCodeAlert_completion___block_invoke;
   v15[3] = &unk_1E820B820;
-  v8 = v6;
+  v8 = completionCopy;
   v16 = v8;
   [v7 setAk_cancelAction:v15];
-  objc_initWeak(&location, v5);
+  objc_initWeak(&location, alertCopy);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __83__AAUICustodianRecoveryApprovalController__actionsForRecoveryCodeAlert_completion___block_invoke_63;

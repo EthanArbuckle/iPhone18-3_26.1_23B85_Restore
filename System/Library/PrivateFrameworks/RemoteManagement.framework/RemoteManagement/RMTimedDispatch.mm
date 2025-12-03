@@ -1,31 +1,31 @@
 @interface RMTimedDispatch
-+ (id)timedDispatchAfterInterval:(double)a3 completionBlock:(id)a4;
-- (id)initAfterInterval:(double)a3 completionBlock:(id)a4;
++ (id)timedDispatchAfterInterval:(double)interval completionBlock:(id)block;
+- (id)initAfterInterval:(double)interval completionBlock:(id)block;
 - (void)cancel;
 @end
 
 @implementation RMTimedDispatch
 
-+ (id)timedDispatchAfterInterval:(double)a3 completionBlock:(id)a4
++ (id)timedDispatchAfterInterval:(double)interval completionBlock:(id)block
 {
-  v5 = a4;
-  v6 = [[RMTimedDispatch alloc] initAfterInterval:v5 completionBlock:a3];
+  blockCopy = block;
+  v6 = [[RMTimedDispatch alloc] initAfterInterval:blockCopy completionBlock:interval];
 
   return v6;
 }
 
-- (id)initAfterInterval:(double)a3 completionBlock:(id)a4
+- (id)initAfterInterval:(double)interval completionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v25.receiver = self;
   v25.super_class = RMTimedDispatch;
   v7 = [(RMTimedDispatch *)&v25 init];
   if (v7)
   {
-    v8 = [MEMORY[0x1E696AFB0] UUID];
-    v9 = [v8 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     timerID = v7->_timerID;
-    v7->_timerID = v9;
+    v7->_timerID = uUIDString;
 
     v7->_complete = 0;
     v19 = MEMORY[0x1E69E9820];
@@ -34,7 +34,7 @@
     v22 = &unk_1E87062E8;
     v11 = v7;
     v23 = v11;
-    v24 = v6;
+    v24 = blockCopy;
     v12 = dispatch_block_create(DISPATCH_BLOCK_INHERIT_QOS_CLASS, &v19);
     timerCompletionBlock = v11->_timerCompletionBlock;
     v11->_timerCompletionBlock = v12;
@@ -45,15 +45,15 @@
       [RMTimedDispatch initAfterInterval:v11 completionBlock:?];
     }
 
-    v15 = dispatch_time(0, (a3 * 1000000000.0));
+    v15 = dispatch_time(0, (interval * 1000000000.0));
     if (timedDispatchQueue_onceToken != -1)
     {
       [RMTimedDispatch initAfterInterval:completionBlock:];
     }
 
     v16 = timedDispatchQueue_queue;
-    v17 = [(RMTimedDispatch *)v11 timerCompletionBlock];
-    dispatch_after(v15, v16, v17);
+    timerCompletionBlock = [(RMTimedDispatch *)v11 timerCompletionBlock];
+    dispatch_after(v15, v16, timerCompletionBlock);
   }
 
   return v7;
@@ -90,7 +90,7 @@ void __53__RMTimedDispatch_initAfterInterval_completionBlock___block_invoke(uint
 - (void)cancel
 {
   v8 = *MEMORY[0x1E69E9840];
-  v1 = [a1 timerID];
+  timerID = [self timerID];
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0_6();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0xCu);

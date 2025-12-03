@@ -1,33 +1,33 @@
 @interface VKCElementCollection
-+ (id)collectionWithTitle:(id)a3 children:(id)a4 parent:(id)a5;
-+ (id)collectionWithTitle:(id)a3 elementInfoText:(id)a4 parent:(id)a5;
++ (id)collectionWithTitle:(id)title children:(id)children parent:(id)parent;
++ (id)collectionWithTitle:(id)title elementInfoText:(id)text parent:(id)parent;
 @end
 
 @implementation VKCElementCollection
 
-+ (id)collectionWithTitle:(id)a3 elementInfoText:(id)a4 parent:(id)a5
++ (id)collectionWithTitle:(id)title elementInfoText:(id)text parent:(id)parent
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a3;
-  v10 = [VKCElementInfo infoWithText:a4 parent:0];
+  parentCopy = parent;
+  titleCopy = title;
+  v10 = [VKCElementInfo infoWithText:text parent:0];
   v14[0] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  v12 = [a1 collectionWithTitle:v9 children:v11 parent:v8];
+  v12 = [self collectionWithTitle:titleCopy children:v11 parent:parentCopy];
 
   return v12;
 }
 
-+ (id)collectionWithTitle:(id)a3 children:(id)a4 parent:(id)a5
++ (id)collectionWithTitle:(id)title children:(id)children parent:(id)parent
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  parentCopy = parent;
+  childrenCopy = children;
+  titleCopy = title;
   v10 = objc_alloc_init(VKCElementCollection);
-  [(VKCElementCollection *)v10 setTitle:v9];
+  [(VKCElementCollection *)v10 setTitle:titleCopy];
 
-  [(VKCElementCollection *)v10 set_children:v8];
-  [(VKCBaseElement *)v10 setParent:v7];
+  [(VKCElementCollection *)v10 set_children:childrenCopy];
+  [(VKCBaseElement *)v10 setParent:parentCopy];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -35,7 +35,7 @@
   v13[3] = &unk_1E7BE6030;
   v11 = v10;
   v14 = v11;
-  [v8 enumerateObjectsUsingBlock:v13];
+  [childrenCopy enumerateObjectsUsingBlock:v13];
 
   return v11;
 }

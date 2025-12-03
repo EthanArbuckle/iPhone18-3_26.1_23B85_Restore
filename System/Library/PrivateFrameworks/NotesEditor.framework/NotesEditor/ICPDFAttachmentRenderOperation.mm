@@ -1,7 +1,7 @@
 @interface ICPDFAttachmentRenderOperation
 - (CGSize)size;
 - (ICAttachment)attachment;
-- (ICPDFAttachmentRenderOperation)initWithView:(id)a3;
+- (ICPDFAttachmentRenderOperation)initWithView:(id)view;
 - (ICPDFAttachmentView)view;
 - (id)generateImageForPrinting;
 - (void)main;
@@ -9,26 +9,26 @@
 
 @implementation ICPDFAttachmentRenderOperation
 
-- (ICPDFAttachmentRenderOperation)initWithView:(id)a3
+- (ICPDFAttachmentRenderOperation)initWithView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v14.receiver = self;
   v14.super_class = ICPDFAttachmentRenderOperation;
   v5 = [(ICPDFAttachmentRenderOperation *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    [(ICPDFAttachmentRenderOperation *)v5 setView:v4];
-    v7 = [(ICPDFAttachmentRenderOperation *)v6 view];
-    [v7 bounds];
+    [(ICPDFAttachmentRenderOperation *)v5 setView:viewCopy];
+    view = [(ICPDFAttachmentRenderOperation *)v6 view];
+    [view bounds];
     [(ICPDFAttachmentRenderOperation *)v6 setSize:v8, v9];
 
-    v10 = [v4 window];
-    v11 = [v10 screen];
+    window = [viewCopy window];
+    screen = [window screen];
 
-    if (v11)
+    if (screen)
     {
-      [v11 scale];
+      [screen scale];
     }
 
     else
@@ -44,24 +44,24 @@
 
 - (id)generateImageForPrinting
 {
-  v3 = [(ICPDFAttachmentRenderOperation *)self view];
-  v4 = [v3 attachment];
+  view = [(ICPDFAttachmentRenderOperation *)self view];
+  attachment = [view attachment];
 
-  v5 = [(ICPDFAttachmentRenderOperation *)self view];
-  if (v4)
+  view2 = [(ICPDFAttachmentRenderOperation *)self view];
+  if (attachment)
   {
     v17 = 0;
     v18 = &v17;
     v19 = 0x2020000000;
     v20 = 0;
-    v6 = [v4 managedObjectContext];
+    managedObjectContext = [attachment managedObjectContext];
     v11 = MEMORY[0x277D85DD0];
     v12 = 3221225472;
     v13 = __58__ICPDFAttachmentRenderOperation_generateImageForPrinting__block_invoke;
     v14 = &unk_2781ACF80;
     v16 = &v17;
-    v15 = v5;
-    [v6 performBlockAndWait:&v11];
+    v15 = view2;
+    [managedObjectContext performBlockAndWait:&v11];
 
     if (v18[3] && ([(ICPDFAttachmentRenderOperation *)self size:v11], v7 > 0.0))
     {
@@ -100,23 +100,23 @@ CGPDFPage *__58__ICPDFAttachmentRenderOperation_generateImageForPrinting__block_
 
 - (void)main
 {
-  v3 = [(ICPDFAttachmentRenderOperation *)self view];
-  v4 = [v3 attachment];
+  view = [(ICPDFAttachmentRenderOperation *)self view];
+  attachment = [view attachment];
 
-  if (v4)
+  if (attachment)
   {
     v17 = 0;
     v18 = &v17;
     v19 = 0x2020000000;
     v20 = 0;
-    v5 = [v4 managedObjectContext];
+    managedObjectContext = [attachment managedObjectContext];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __38__ICPDFAttachmentRenderOperation_main__block_invoke;
     v16[3] = &unk_2781AC1D0;
     v16[4] = self;
     v16[5] = &v17;
-    [v5 performBlockAndWait:v16];
+    [managedObjectContext performBlockAndWait:v16];
 
     v6 = TSUDeviceRGBColorSpace();
     v7 = v18[3];

@@ -2,9 +2,9 @@
 - (CRXCEyePrescription)calibrationValues;
 - (CRXCEyePrescription)displayValues;
 - (CRXCPrescriptionValues)init;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCalibrationValues:(id)a3;
-- (void)setDisplayValues:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCalibrationValues:(id)values;
+- (void)setDisplayValues:(id)values;
 @end
 
 @implementation CRXCPrescriptionValues
@@ -16,13 +16,13 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setDisplayValues:(id)a3
+- (void)setDisplayValues:(id)values
 {
   v5 = OBJC_IVAR___CRXCPrescriptionValues_displayValues;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = values;
+  valuesCopy = values;
 }
 
 - (CRXCEyePrescription)calibrationValues
@@ -32,20 +32,20 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setCalibrationValues:(id)a3
+- (void)setCalibrationValues:(id)values
 {
   v5 = OBJC_IVAR___CRXCPrescriptionValues_calibrationValues;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = values;
+  valuesCopy = values;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  CRXCPrescriptionValues.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  CRXCPrescriptionValues.encode(with:)(coderCopy);
 }
 
 - (CRXCPrescriptionValues)init

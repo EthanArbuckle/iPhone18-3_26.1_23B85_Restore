@@ -1,54 +1,54 @@
 @interface TSCH3DNSData2DDataBuffer
-+ (id)bufferWithCapacityDimension:(const void *)a3 data:(id)a4;
-+ (id)bufferWithCapacityDimension:(const void *)a3 mutableData:(id)a4;
++ (id)bufferWithCapacityDimension:(const void *)dimension data:(id)data;
++ (id)bufferWithCapacityDimension:(const void *)dimension mutableData:(id)data;
 - (NSData)NSData;
-- (TSCH3DNSData2DDataBuffer)initWithCapacityDimension:(const void *)a3;
-- (TSCH3DNSData2DDataBuffer)initWithCapacityDimension:(const void *)a3 data:(id)a4;
-- (TSCH3DNSData2DDataBuffer)initWithCapacityDimension:(const void *)a3 mutableData:(id)a4;
+- (TSCH3DNSData2DDataBuffer)initWithCapacityDimension:(const void *)dimension;
+- (TSCH3DNSData2DDataBuffer)initWithCapacityDimension:(const void *)dimension data:(id)data;
+- (TSCH3DNSData2DDataBuffer)initWithCapacityDimension:(const void *)dimension mutableData:(id)data;
 - (const)data;
 - (unint64_t)count;
 - (void)mutableData;
-- (void)resizeFillDimension:(const void *)a3;
+- (void)resizeFillDimension:(const void *)dimension;
 @end
 
 @implementation TSCH3DNSData2DDataBuffer
 
-+ (id)bufferWithCapacityDimension:(const void *)a3 mutableData:(id)a4
++ (id)bufferWithCapacityDimension:(const void *)dimension mutableData:(id)data
 {
-  v6 = a4;
-  v7 = [a1 alloc];
-  v12 = objc_msgSend_initWithCapacityDimension_mutableData_(v7, v8, v9, v10, v11, a3, v6);
+  dataCopy = data;
+  v7 = [self alloc];
+  v12 = objc_msgSend_initWithCapacityDimension_mutableData_(v7, v8, v9, v10, v11, dimension, dataCopy);
 
   return v12;
 }
 
-+ (id)bufferWithCapacityDimension:(const void *)a3 data:(id)a4
++ (id)bufferWithCapacityDimension:(const void *)dimension data:(id)data
 {
-  v6 = a4;
-  v7 = [a1 alloc];
-  v12 = objc_msgSend_initWithCapacityDimension_data_(v7, v8, v9, v10, v11, a3, v6);
+  dataCopy = data;
+  v7 = [self alloc];
+  v12 = objc_msgSend_initWithCapacityDimension_data_(v7, v8, v9, v10, v11, dimension, dataCopy);
 
   return v12;
 }
 
-- (TSCH3DNSData2DDataBuffer)initWithCapacityDimension:(const void *)a3 mutableData:(id)a4
+- (TSCH3DNSData2DDataBuffer)initWithCapacityDimension:(const void *)dimension mutableData:(id)data
 {
-  v7 = a4;
+  dataCopy = data;
   v41.receiver = self;
   v41.super_class = TSCH3DNSData2DDataBuffer;
-  v8 = [(TSCH3D2DDataBuffer *)&v41 initWithCapacityDimension:a3];
+  v8 = [(TSCH3D2DDataBuffer *)&v41 initWithCapacityDimension:dimension];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_mutableData, a4);
+    objc_storeStrong(&v8->_mutableData, data);
     v14 = objc_msgSend_length(v9->_mutableData, v10, v11, v12, v13);
-    if (v14 != sub_2761F9818(a3, 0x7FFFFFFFFFFFFFFFLL))
+    if (v14 != sub_2761F9818(dimension, 0x7FFFFFFFFFFFFFFFLL))
     {
       v19 = MEMORY[0x277D81150];
       v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, v16, v17, v18, "[TSCH3DNSData2DDataBuffer initWithCapacityDimension:mutableData:]");
       v25 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v21, v22, v23, v24, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DNSData2DDataBuffer.mm");
       v30 = objc_msgSend_length(v9->_mutableData, v26, v27, v28, v29);
-      v31 = sub_2761F9818(a3, 0x7FFFFFFFFFFFFFFFLL);
+      v31 = sub_2761F9818(dimension, 0x7FFFFFFFFFFFFFFFLL);
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v19, v32, v33, v34, v35, v20, v25, 32, 0, "mutable _mutableData size and _dimension byte size mismatch %lu, %lu", v30, v31);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v36, v37, v38, v39);
@@ -58,24 +58,24 @@
   return v9;
 }
 
-- (TSCH3DNSData2DDataBuffer)initWithCapacityDimension:(const void *)a3 data:(id)a4
+- (TSCH3DNSData2DDataBuffer)initWithCapacityDimension:(const void *)dimension data:(id)data
 {
-  v7 = a4;
+  dataCopy = data;
   v41.receiver = self;
   v41.super_class = TSCH3DNSData2DDataBuffer;
-  v8 = [(TSCH3D2DDataBuffer *)&v41 initWithCapacityDimension:a3];
+  v8 = [(TSCH3D2DDataBuffer *)&v41 initWithCapacityDimension:dimension];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_constData, a4);
+    objc_storeStrong(&v8->_constData, data);
     v14 = objc_msgSend_length(v9->_constData, v10, v11, v12, v13);
-    if (v14 < sub_2761F9818(a3, 0x7FFFFFFFFFFFFFFFLL))
+    if (v14 < sub_2761F9818(dimension, 0x7FFFFFFFFFFFFFFFLL))
     {
       v19 = MEMORY[0x277D81150];
       v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, v16, v17, v18, "[TSCH3DNSData2DDataBuffer initWithCapacityDimension:data:]");
       v25 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v21, v22, v23, v24, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DNSData2DDataBuffer.mm");
       v30 = objc_msgSend_length(v9->_constData, v26, v27, v28, v29);
-      v31 = sub_2761F9818(a3, 0x7FFFFFFFFFFFFFFFLL);
+      v31 = sub_2761F9818(dimension, 0x7FFFFFFFFFFFFFFFLL);
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v19, v32, v33, v34, v35, v20, v25, 45, 0, "mutable _constData size and _dimension byte size mismatch %lu, %lu", v30, v31);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v36, v37, v38, v39);
@@ -85,7 +85,7 @@
   return v9;
 }
 
-- (TSCH3DNSData2DDataBuffer)initWithCapacityDimension:(const void *)a3
+- (TSCH3DNSData2DDataBuffer)initWithCapacityDimension:(const void *)dimension
 {
   v14.receiver = self;
   v14.super_class = TSCH3DNSData2DDataBuffer;
@@ -93,7 +93,7 @@
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x277CBEB28]);
-    v6 = sub_2761F9818(a3, 0x7FFFFFFFFFFFFFFFLL);
+    v6 = sub_2761F9818(dimension, 0x7FFFFFFFFFFFFFFFLL);
     v11 = objc_msgSend_initWithLength_(v5, v7, v8, v9, v10, v6);
     mutableData = v4->_mutableData;
     v4->_mutableData = v11;
@@ -163,7 +163,7 @@
   return constData;
 }
 
-- (void)resizeFillDimension:(const void *)a3
+- (void)resizeFillDimension:(const void *)dimension
 {
   if (!self->_mutableData)
   {
@@ -176,10 +176,10 @@
   }
 
   p_dimension = &self->super._dimension;
-  self->super._dimension._size.var0.var0 = *a3;
-  self->super._dimension._size.var1.var0 = *(a3 + 1);
-  v24 = *(a3 + 1);
-  self->super._dimension._hasLevels = *(a3 + 16);
+  self->super._dimension._size.var0.var0 = *dimension;
+  self->super._dimension._size.var1.var0 = *(dimension + 1);
+  v24 = *(dimension + 1);
+  self->super._dimension._hasLevels = *(dimension + 16);
   self->super._dimension._components = v24;
   mutableData = self->_mutableData;
   sub_2761F9818(&p_dimension->_size, 0x7FFFFFFFFFFFFFFFLL);

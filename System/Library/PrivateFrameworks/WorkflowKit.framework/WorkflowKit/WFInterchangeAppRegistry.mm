@@ -1,25 +1,25 @@
 @interface WFInterchangeAppRegistry
-+ (id)bundleIdentifierForLegacyAppIdentifier:(id)a3;
-+ (id)legacyAppIdentifierForBundleIdentifier:(id)a3;
++ (id)bundleIdentifierForLegacyAppIdentifier:(id)identifier;
++ (id)legacyAppIdentifierForBundleIdentifier:(id)identifier;
 + (id)sharedRegistry;
 - (NSArray)allActions;
 - (NSArray)apps;
 - (NSDictionary)actions;
 - (NSDictionary)appsDictionary;
 - (WFInterchangeApp)currentApp;
-- (WFInterchangeAppRegistry)initWithBackgroundRefresh:(BOOL)a3;
-- (id)_appsWithIdentifiers:(id)a3;
-- (id)actionsWithIdentifiers:(id)a3;
-- (id)appWithBundleIdentifier:(id)a3;
-- (id)appWithIdentifier:(id)a3;
-- (id)appWithURLScheme:(id)a3;
-- (id)appsWithIdentifiers:(id)a3;
+- (WFInterchangeAppRegistry)initWithBackgroundRefresh:(BOOL)refresh;
+- (id)_appsWithIdentifiers:(id)identifiers;
+- (id)actionsWithIdentifiers:(id)identifiers;
+- (id)appWithBundleIdentifier:(id)identifier;
+- (id)appWithIdentifier:(id)identifier;
+- (id)appWithURLScheme:(id)scheme;
+- (id)appsWithIdentifiers:(id)identifiers;
 - (id)description;
-- (void)addInstallStatusObserver:(id)a3 forAppIdentifiers:(id)a4;
+- (void)addInstallStatusObserver:(id)observer forAppIdentifiers:(id)identifiers;
 - (void)dealloc;
 - (void)fillRegistry;
 - (void)refreshInstalledApps;
-- (void)removeInstallStatusObserver:(id)a3 forAppIdentifiers:(id)a4;
+- (void)removeInstallStatusObserver:(id)observer forAppIdentifiers:(id)identifiers;
 - (void)updateRegistry;
 @end
 
@@ -31,8 +31,8 @@
   v8.receiver = self;
   v8.super_class = WFInterchangeAppRegistry;
   v4 = [(WFInterchangeAppRegistry *)&v8 description];
-  v5 = [(WFInterchangeAppRegistry *)self apps];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  apps = [(WFInterchangeAppRegistry *)self apps];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, apps];
 
   return v6;
 }
@@ -144,19 +144,19 @@ void __48__WFInterchangeAppRegistry_refreshInstalledApps__block_invoke_3(uint64_
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeInstallStatusObserver:(id)a3 forAppIdentifiers:(id)a4
+- (void)removeInstallStatusObserver:(id)observer forAppIdentifiers:(id)identifiers
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFInterchangeAppRegistry *)self observersLock];
-  [v8 lock];
+  observerCopy = observer;
+  identifiersCopy = identifiers;
+  observersLock = [(WFInterchangeAppRegistry *)self observersLock];
+  [observersLock lock];
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = v7;
+  v9 = identifiersCopy;
   v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
@@ -173,16 +173,16 @@ void __48__WFInterchangeAppRegistry_refreshInstalledApps__block_invoke_3(uint64_
         }
 
         v14 = *(*(&v19 + 1) + 8 * v13);
-        v15 = [(WFInterchangeAppRegistry *)self observersByIdentifier];
-        v16 = [v15 objectForKey:v14];
-        if ([v16 count] == 1 && objc_msgSend(v16, "containsObject:", v6))
+        observersByIdentifier = [(WFInterchangeAppRegistry *)self observersByIdentifier];
+        v16 = [observersByIdentifier objectForKey:v14];
+        if ([v16 count] == 1 && objc_msgSend(v16, "containsObject:", observerCopy))
         {
-          [v15 removeObjectForKey:v14];
+          [observersByIdentifier removeObjectForKey:v14];
         }
 
         else
         {
-          [v16 removeObject:v6];
+          [v16 removeObject:observerCopy];
         }
 
         ++v13;
@@ -195,18 +195,18 @@ void __48__WFInterchangeAppRegistry_refreshInstalledApps__block_invoke_3(uint64_
     while (v11);
   }
 
-  v17 = [(WFInterchangeAppRegistry *)self observersLock];
-  [v17 unlock];
+  observersLock2 = [(WFInterchangeAppRegistry *)self observersLock];
+  [observersLock2 unlock];
 
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addInstallStatusObserver:(id)a3 forAppIdentifiers:(id)a4
+- (void)addInstallStatusObserver:(id)observer forAppIdentifiers:(id)identifiers
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFInterchangeAppRegistry *)self appsWithIdentifiers:v7];
+  observerCopy = observer;
+  identifiersCopy = identifiers;
+  v8 = [(WFInterchangeAppRegistry *)self appsWithIdentifiers:identifiersCopy];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -236,14 +236,14 @@ void __48__WFInterchangeAppRegistry_refreshInstalledApps__block_invoke_3(uint64_
     while (v10);
   }
 
-  v13 = [(WFInterchangeAppRegistry *)self observersLock];
-  [v13 lock];
+  observersLock = [(WFInterchangeAppRegistry *)self observersLock];
+  [observersLock lock];
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v14 = v7;
+  v14 = identifiersCopy;
   v15 = [v14 countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v15)
   {
@@ -260,15 +260,15 @@ void __48__WFInterchangeAppRegistry_refreshInstalledApps__block_invoke_3(uint64_
         }
 
         v19 = *(*(&v24 + 1) + 8 * v18);
-        v20 = [(WFInterchangeAppRegistry *)self observersByIdentifier];
-        v21 = [v20 objectForKey:v19];
-        if (!v21)
+        observersByIdentifier = [(WFInterchangeAppRegistry *)self observersByIdentifier];
+        weakObjectsHashTable = [observersByIdentifier objectForKey:v19];
+        if (!weakObjectsHashTable)
         {
-          v21 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
-          [v20 setObject:v21 forKey:v19];
+          weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+          [observersByIdentifier setObject:weakObjectsHashTable forKey:v19];
         }
 
-        [v21 addObject:v6];
+        [weakObjectsHashTable addObject:observerCopy];
 
         ++v18;
       }
@@ -280,18 +280,18 @@ void __48__WFInterchangeAppRegistry_refreshInstalledApps__block_invoke_3(uint64_
     while (v16);
   }
 
-  v22 = [(WFInterchangeAppRegistry *)self observersLock];
-  [v22 unlock];
+  observersLock2 = [(WFInterchangeAppRegistry *)self observersLock];
+  [observersLock2 unlock];
 
   v23 = *MEMORY[0x1E69E9840];
 }
 
 - (void)fillRegistry
 {
-  v3 = [(WFInterchangeAppRegistry *)self registryLock];
-  v4 = [v3 tryLock];
+  registryLock = [(WFInterchangeAppRegistry *)self registryLock];
+  tryLock = [registryLock tryLock];
 
-  if (v4)
+  if (tryLock)
   {
     v15 = [MEMORY[0x1E695DF30] exceptionWithName:@"WFInterchangeAppRegistry Locking Exception" reason:@"The registry must be locked while it is being filled." userInfo:0];
     objc_exception_throw(v15);
@@ -439,52 +439,52 @@ void __40__WFInterchangeAppRegistry_fillRegistry__block_invoke(uint64_t a1, void
 
 - (void)updateRegistry
 {
-  v3 = [(WFInterchangeAppRegistry *)self registryLock];
-  [v3 lock];
+  registryLock = [(WFInterchangeAppRegistry *)self registryLock];
+  [registryLock lock];
 
   if (self->_isFilled)
   {
     [(WFInterchangeAppRegistry *)self fillRegistry];
-    v8 = [(WFInterchangeAppRegistry *)self registryLock];
-    [v8 unlock];
+    registryLock2 = [(WFInterchangeAppRegistry *)self registryLock];
+    [registryLock2 unlock];
   }
 
   else
   {
-    v4 = [(WFInterchangeAppRegistry *)self appsDictionary];
-    v8 = [v4 allKeys];
+    appsDictionary = [(WFInterchangeAppRegistry *)self appsDictionary];
+    registryLock2 = [appsDictionary allKeys];
 
     appsDictionary = self->_appsDictionary;
     self->_appsDictionary = 0;
 
-    if ([v8 count])
+    if ([registryLock2 count])
     {
-      v6 = [(WFInterchangeAppRegistry *)self _appsWithIdentifiers:v8];
+      v6 = [(WFInterchangeAppRegistry *)self _appsWithIdentifiers:registryLock2];
     }
 
-    v7 = [(WFInterchangeAppRegistry *)self registryLock];
-    [v7 unlock];
+    registryLock3 = [(WFInterchangeAppRegistry *)self registryLock];
+    [registryLock3 unlock];
   }
 }
 
-- (id)actionsWithIdentifiers:(id)a3
+- (id)actionsWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(WFInterchangeAppRegistry *)self registryLock];
-  [v5 lock];
+  identifiersCopy = identifiers;
+  registryLock = [(WFInterchangeAppRegistry *)self registryLock];
+  [registryLock lock];
 
-  v6 = [(WFInterchangeAppRegistry *)self actions];
-  if (v6)
+  actions = [(WFInterchangeAppRegistry *)self actions];
+  if (actions)
   {
-    v7 = [(WFInterchangeAppRegistry *)self registryLock];
-    [v7 unlock];
+    registryLock2 = [(WFInterchangeAppRegistry *)self registryLock];
+    [registryLock2 unlock];
 
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __51__WFInterchangeAppRegistry_actionsWithIdentifiers___block_invoke;
     v17[3] = &unk_1E8375F68;
-    v18 = v6;
-    v8 = [v4 if_map:v17];
+    v18 = actions;
+    v8 = [identifiersCopy if_map:v17];
   }
 
   else
@@ -494,10 +494,10 @@ void __40__WFInterchangeAppRegistry_fillRegistry__block_invoke(uint64_t a1, void
     v16[2] = __51__WFInterchangeAppRegistry_actionsWithIdentifiers___block_invoke_2;
     v16[3] = &unk_1E837EB80;
     v16[4] = self;
-    v9 = [v4 if_map:v16];
+    v9 = [identifiersCopy if_map:v16];
     v10 = [(WFInterchangeAppRegistry *)self _appsWithIdentifiers:v9];
-    v11 = [(WFInterchangeAppRegistry *)self registryLock];
-    [v11 unlock];
+    registryLock3 = [(WFInterchangeAppRegistry *)self registryLock];
+    [registryLock3 unlock];
 
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
@@ -505,7 +505,7 @@ void __40__WFInterchangeAppRegistry_fillRegistry__block_invoke(uint64_t a1, void
     v14[3] = &unk_1E8375F68;
     v15 = v10;
     v12 = v10;
-    v8 = [v4 if_map:v14];
+    v8 = [identifiersCopy if_map:v14];
   }
 
   return v8;
@@ -655,29 +655,29 @@ LABEL_29:
 
 - (NSArray)allActions
 {
-  v3 = [(WFInterchangeAppRegistry *)self registryLock];
-  [v3 lock];
+  registryLock = [(WFInterchangeAppRegistry *)self registryLock];
+  [registryLock lock];
 
   if (!self->_isFilled)
   {
     [(WFInterchangeAppRegistry *)self fillRegistry];
   }
 
-  v4 = [(WFInterchangeAppRegistry *)self actions];
-  v5 = [v4 allValues];
+  actions = [(WFInterchangeAppRegistry *)self actions];
+  allValues = [actions allValues];
 
-  v6 = [(WFInterchangeAppRegistry *)self registryLock];
-  [v6 unlock];
+  registryLock2 = [(WFInterchangeAppRegistry *)self registryLock];
+  [registryLock2 unlock];
 
-  return v5;
+  return allValues;
 }
 
 - (NSDictionary)actions
 {
-  v3 = [(WFInterchangeAppRegistry *)self registryLock];
-  v4 = [v3 tryLock];
+  registryLock = [(WFInterchangeAppRegistry *)self registryLock];
+  tryLock = [registryLock tryLock];
 
-  if (v4)
+  if (tryLock)
   {
     v7 = [MEMORY[0x1E695DF30] exceptionWithName:@"WFInterchangeAppRegistry Locking Exception" reason:@"The registry must be locked while the actions dictionary is being accessed." userInfo:0];
     objc_exception_throw(v7);
@@ -688,46 +688,46 @@ LABEL_29:
   return actions;
 }
 
-- (id)appWithURLScheme:(id)a3
+- (id)appWithURLScheme:(id)scheme
 {
-  v4 = a3;
-  v5 = [(WFInterchangeAppRegistry *)self apps];
+  schemeCopy = scheme;
+  apps = [(WFInterchangeAppRegistry *)self apps];
   v6 = MEMORY[0x1E696AE18];
-  v7 = [v4 lowercaseString];
+  lowercaseString = [schemeCopy lowercaseString];
 
-  v8 = [v6 predicateWithFormat:@"%@ IN schemes.scheme", v7];
-  v9 = [v5 filteredArrayUsingPredicate:v8];
-  v10 = [v9 firstObject];
+  v8 = [v6 predicateWithFormat:@"%@ IN schemes.scheme", lowercaseString];
+  v9 = [apps filteredArrayUsingPredicate:v8];
+  firstObject = [v9 firstObject];
 
-  return v10;
+  return firstObject;
 }
 
-- (id)appWithBundleIdentifier:(id)a3
+- (id)appWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(WFInterchangeAppRegistry *)self apps];
-  v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%@ IN allBundleIdentifiers", v4];
+  identifierCopy = identifier;
+  apps = [(WFInterchangeAppRegistry *)self apps];
+  identifierCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%@ IN allBundleIdentifiers", identifierCopy];
 
-  v7 = [v5 filteredArrayUsingPredicate:v6];
-  v8 = [v7 firstObject];
+  v7 = [apps filteredArrayUsingPredicate:identifierCopy];
+  firstObject = [v7 firstObject];
 
-  return v8;
+  return firstObject;
 }
 
-- (id)appWithIdentifier:(id)a3
+- (id)appWithIdentifier:(id)identifier
 {
   v13 = *MEMORY[0x1E69E9840];
-  v12 = a3;
+  identifierCopy = identifier;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v12 count:1];
-  v7 = [(WFInterchangeAppRegistry *)self appsWithIdentifiers:v6, v12, v13];
-  v8 = [v7 firstObject];
+  identifierCopy2 = identifier;
+  v6 = [v4 arrayWithObjects:&identifierCopy count:1];
+  v7 = [(WFInterchangeAppRegistry *)self appsWithIdentifiers:v6, identifierCopy, v13];
+  firstObject = [v7 firstObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    v9 = firstObject;
   }
 
   else
@@ -740,32 +740,32 @@ LABEL_29:
   return v9;
 }
 
-- (id)appsWithIdentifiers:(id)a3
+- (id)appsWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(WFInterchangeAppRegistry *)self registryLock];
-  [v5 lock];
+  identifiersCopy = identifiers;
+  registryLock = [(WFInterchangeAppRegistry *)self registryLock];
+  [registryLock lock];
 
-  v6 = [(WFInterchangeAppRegistry *)self _appsWithIdentifiers:v4];
+  v6 = [(WFInterchangeAppRegistry *)self _appsWithIdentifiers:identifiersCopy];
 
-  v7 = [(WFInterchangeAppRegistry *)self registryLock];
-  [v7 unlock];
+  registryLock2 = [(WFInterchangeAppRegistry *)self registryLock];
+  [registryLock2 unlock];
 
   return v6;
 }
 
-- (id)_appsWithIdentifiers:(id)a3
+- (id)_appsWithIdentifiers:(id)identifiers
 {
   v71 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v49 = self;
-  v5 = [(WFInterchangeAppRegistry *)self appsDictionary];
+  identifiersCopy = identifiers;
+  selfCopy = self;
+  appsDictionary = [(WFInterchangeAppRegistry *)self appsDictionary];
   v6 = objc_opt_new();
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v7 = v4;
+  v7 = identifiersCopy;
   v8 = [v7 countByEnumeratingWithState:&v60 objects:v70 count:16];
   if (v8)
   {
@@ -781,7 +781,7 @@ LABEL_29:
         }
 
         v12 = *(*(&v60 + 1) + 8 * i);
-        v13 = [(NSDictionary *)v5 objectForKey:v12];
+        v13 = [(NSDictionary *)appsDictionary objectForKey:v12];
 
         if (!v13)
         {
@@ -807,7 +807,7 @@ LABEL_29:
       _os_log_impl(&dword_1CA256000, v14, OS_LOG_TYPE_DEFAULT, "%s Loading apps: %@", buf, 0x16u);
     }
 
-    v15 = [(NSDictionary *)v5 mutableCopy];
+    v15 = [(NSDictionary *)appsDictionary mutableCopy];
     v16 = v15;
     if (v15)
     {
@@ -820,11 +820,11 @@ LABEL_29:
     }
 
     v18 = v17;
-    v46 = v5;
+    v46 = appsDictionary;
     v47 = v7;
 
     v48 = v6;
-    if (v49->_isFilled)
+    if (selfCopy->_isFilled)
     {
       v19 = 0;
     }
@@ -920,9 +920,9 @@ LABEL_29:
       while (v33);
     }
 
-    v5 = v18;
-    appsDictionary = v49->_appsDictionary;
-    v49->_appsDictionary = v5;
+    appsDictionary = v18;
+    appsDictionary = selfCopy->_appsDictionary;
+    selfCopy->_appsDictionary = appsDictionary;
 
     v7 = v47;
     v6 = v48;
@@ -932,8 +932,8 @@ LABEL_29:
   v50[1] = 3221225472;
   v50[2] = __49__WFInterchangeAppRegistry__appsWithIdentifiers___block_invoke;
   v50[3] = &unk_1E8375F40;
-  v51 = v5;
-  v42 = v5;
+  v51 = appsDictionary;
+  v42 = appsDictionary;
   v43 = [v7 if_map:v50];
 
   v44 = *MEMORY[0x1E69E9840];
@@ -946,14 +946,14 @@ LABEL_29:
   currentApp = self->_currentApp;
   if (!currentApp)
   {
-    v4 = [MEMORY[0x1E6996CA8] sharedContext];
-    v5 = [v4 applicationBundle];
-    v6 = [v5 bundleIdentifier];
-    v7 = v6;
+    mEMORY[0x1E6996CA8] = [MEMORY[0x1E6996CA8] sharedContext];
+    applicationBundle = [mEMORY[0x1E6996CA8] applicationBundle];
+    bundleIdentifier = [applicationBundle bundleIdentifier];
+    v7 = bundleIdentifier;
     v8 = *MEMORY[0x1E69E0FB0];
-    if (v6)
+    if (bundleIdentifier)
     {
-      v8 = v6;
+      v8 = bundleIdentifier;
     }
 
     v9 = v8;
@@ -971,29 +971,29 @@ LABEL_29:
 
 - (NSArray)apps
 {
-  v3 = [(WFInterchangeAppRegistry *)self registryLock];
-  [v3 lock];
+  registryLock = [(WFInterchangeAppRegistry *)self registryLock];
+  [registryLock lock];
 
   if (!self->_isFilled)
   {
     [(WFInterchangeAppRegistry *)self fillRegistry];
   }
 
-  v4 = [(WFInterchangeAppRegistry *)self appsDictionary];
-  v5 = [v4 allValues];
+  appsDictionary = [(WFInterchangeAppRegistry *)self appsDictionary];
+  allValues = [appsDictionary allValues];
 
-  v6 = [(WFInterchangeAppRegistry *)self registryLock];
-  [v6 unlock];
+  registryLock2 = [(WFInterchangeAppRegistry *)self registryLock];
+  [registryLock2 unlock];
 
-  return v5;
+  return allValues;
 }
 
 - (NSDictionary)appsDictionary
 {
-  v3 = [(WFInterchangeAppRegistry *)self registryLock];
-  v4 = [v3 tryLock];
+  registryLock = [(WFInterchangeAppRegistry *)self registryLock];
+  tryLock = [registryLock tryLock];
 
-  if (v4)
+  if (tryLock)
   {
     v7 = [MEMORY[0x1E695DF30] exceptionWithName:@"WFInterchangeAppRegistry Locking Exception" reason:@"The registry must be locked while the apps dictionary is being accessed." userInfo:0];
     objc_exception_throw(v7);
@@ -1012,7 +1012,7 @@ LABEL_29:
   [(WFInterchangeAppRegistry *)&v3 dealloc];
 }
 
-- (WFInterchangeAppRegistry)initWithBackgroundRefresh:(BOOL)a3
+- (WFInterchangeAppRegistry)initWithBackgroundRefresh:(BOOL)refresh
 {
   v22.receiver = self;
   v22.super_class = WFInterchangeAppRegistry;
@@ -1020,7 +1020,7 @@ LABEL_29:
   v5 = v4;
   if (v4)
   {
-    v4->_refreshesInBackground = a3;
+    v4->_refreshesInBackground = refresh;
     v6 = objc_opt_new();
     observersByIdentifier = v5->_observersByIdentifier;
     v5->_observersByIdentifier = v6;
@@ -1035,7 +1035,7 @@ LABEL_29:
 
     objc_initWeak(&location, v5);
     v5->_urlTypesToken = -1;
-    v12 = [*MEMORY[0x1E6963548] UTF8String];
+    uTF8String = [*MEMORY[0x1E6963548] UTF8String];
     v13 = MEMORY[0x1E69E96A0];
     v14 = MEMORY[0x1E69E96A0];
     handler[0] = MEMORY[0x1E69E9820];
@@ -1045,7 +1045,7 @@ LABEL_29:
     v15 = v5;
     v19 = v15;
     objc_copyWeak(&v20, &location);
-    notify_register_dispatch(v12, &v5->_urlTypesToken, v13, handler);
+    notify_register_dispatch(uTF8String, &v5->_urlTypesToken, v13, handler);
 
     v16 = v15;
     objc_destroyWeak(&v20);
@@ -1107,15 +1107,15 @@ void __54__WFInterchangeAppRegistry_initWithBackgroundRefresh___block_invoke_177
   [v2 removeObserver:*(*(*(a1 + 32) + 8) + 40)];
 }
 
-+ (id)bundleIdentifierForLegacyAppIdentifier:(id)a3
++ (id)bundleIdentifierForLegacyAppIdentifier:(id)identifier
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [&unk_1F4A99D48 objectForKeyedSubscript:v3];
+  identifierCopy = identifier;
+  v4 = [&unk_1F4A99D48 objectForKeyedSubscript:identifierCopy];
   if (v4)
   {
     v5 = v4;
-    v6 = [v4 arrayByAddingObject:v3];
+    v6 = [v4 arrayByAddingObject:identifierCopy];
 
     v23 = 0u;
     v24 = 0u;
@@ -1142,12 +1142,12 @@ void __54__WFInterchangeAppRegistry_initWithBackgroundRefresh___block_invoke_177
           v15 = v14;
           if (v14)
           {
-            v16 = [v14 applicationState];
-            v17 = [v16 isInstalled];
+            applicationState = [v14 applicationState];
+            isInstalled = [applicationState isInstalled];
 
-            if (v17)
+            if (isInstalled)
             {
-              v18 = v12;
+              firstObject = v12;
 
               goto LABEL_14;
             }
@@ -1164,24 +1164,24 @@ void __54__WFInterchangeAppRegistry_initWithBackgroundRefresh___block_invoke_177
       }
     }
 
-    v18 = [v7 firstObject];
+    firstObject = [v7 firstObject];
 LABEL_14:
   }
 
   else
   {
-    v18 = v3;
+    firstObject = identifierCopy;
   }
 
   v19 = *MEMORY[0x1E69E9840];
 
-  return v18;
+  return firstObject;
 }
 
-+ (id)legacyAppIdentifierForBundleIdentifier:(id)a3
++ (id)legacyAppIdentifierForBundleIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [&unk_1F4A99D20 objectForKeyedSubscript:v3];
+  identifierCopy = identifier;
+  v4 = [&unk_1F4A99D20 objectForKeyedSubscript:identifierCopy];
   v5 = v4;
   if (v4)
   {
@@ -1190,7 +1190,7 @@ LABEL_14:
 
   else
   {
-    v6 = v3;
+    v6 = identifierCopy;
   }
 
   v7 = v6;
@@ -1204,7 +1204,7 @@ LABEL_14:
   block[1] = 3221225472;
   block[2] = __42__WFInterchangeAppRegistry_sharedRegistry__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedRegistry_onceToken_16530 != -1)
   {
     dispatch_once(&sharedRegistry_onceToken_16530, block);

@@ -1,11 +1,11 @@
 @interface CRLCLCanvasObjectArrayExporterHelper
-+ (BOOL)isExportable:(id)a3;
++ (BOOL)isExportable:(id)exportable;
 - (_TtC8Freeform36CRLCLCanvasObjectArrayExporterHelper)init;
 @end
 
 @implementation CRLCLCanvasObjectArrayExporterHelper
 
-+ (BOOL)isExportable:(id)a3
++ (BOOL)isExportable:(id)exportable
 {
   type metadata accessor for CRLBoardItem(0);
   v3 = static Array._unconditionallyBridgeFromObjectiveC(_:)();

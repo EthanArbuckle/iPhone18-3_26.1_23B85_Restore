@@ -1,47 +1,47 @@
 @interface CRFormFilterSurfacedFieldsStep
-- (CRFormFilterSurfacedFieldsStep)initWithAssignGlobalOrder:(BOOL)a3;
-- (id)process:(id)a3 externalFields:(id)a4 document:(id)a5 options:(id)a6;
-- (void)_setGlobalIndexesForFields:(id)a3 externalFields:(id)a4;
+- (CRFormFilterSurfacedFieldsStep)initWithAssignGlobalOrder:(BOOL)order;
+- (id)process:(id)process externalFields:(id)fields document:(id)document options:(id)options;
+- (void)_setGlobalIndexesForFields:(id)fields externalFields:(id)externalFields;
 @end
 
 @implementation CRFormFilterSurfacedFieldsStep
 
-- (CRFormFilterSurfacedFieldsStep)initWithAssignGlobalOrder:(BOOL)a3
+- (CRFormFilterSurfacedFieldsStep)initWithAssignGlobalOrder:(BOOL)order
 {
   v5.receiver = self;
   v5.super_class = CRFormFilterSurfacedFieldsStep;
   result = [(CRFormFilterSurfacedFieldsStep *)&v5 init];
   if (result)
   {
-    result->_assignGlobalOrder = a3;
+    result->_assignGlobalOrder = order;
   }
 
   return result;
 }
 
-- (id)process:(id)a3 externalFields:(id)a4 document:(id)a5 options:(id)a6
+- (id)process:(id)process externalFields:(id)fields document:(id)document options:(id)options
 {
   v39 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v27 = a4;
-  v10 = a6;
+  processCopy = process;
+  fieldsCopy = fields;
+  optionsCopy = options;
   v11 = CROSLogForCategory(6);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v38 = [v9 count];
+    v38 = [processCopy count];
     _os_log_impl(&dword_1B40D2000, v11, OS_LOG_TYPE_DEBUG, "CRFormPostProcessor: CRFormFilterSurfacedFieldsStep is running (#input:%lu).", buf, 0xCu);
   }
 
-  v12 = [v9 _fieldsOfSource:4];
-  v26 = [v9 _fieldsOfSource:6];
+  v12 = [processCopy _fieldsOfSource:4];
+  v26 = [processCopy _fieldsOfSource:6];
   v13 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_304];
-  v14 = [v9 filteredArrayUsingPredicate:v13];
+  v14 = [processCopy filteredArrayUsingPredicate:v13];
 
-  v15 = [v10 objectForKeyedSubscript:{@"ShouldSurfaceContourBasedFormFieldsOption", v12}];
+  v15 = [optionsCopy objectForKeyedSubscript:{@"ShouldSurfaceContourBasedFormFieldsOption", v12}];
   LOBYTE(v13) = [v15 BOOLValue];
 
-  v16 = [v10 objectForKeyedSubscript:@"ShouldSurfaceTextBasedFormFieldsOption"];
+  v16 = [optionsCopy objectForKeyedSubscript:@"ShouldSurfaceTextBasedFormFieldsOption"];
   LOBYTE(v15) = [v16 BOOLValue];
 
   LOBYTE(v16) = [(CRFormFilterSurfacedFieldsStep *)self assignGlobalOrder];
@@ -65,11 +65,11 @@
   v28[3] = &unk_1E7BC2048;
   v21 = v17;
   v29 = v21;
-  [CRFormPostProcessingManager enumerateFieldsInFields:v9 filter:v30 block:v28];
+  [CRFormPostProcessingManager enumerateFieldsInFields:processCopy filter:v30 block:v28];
   v22 = [v21 sortedArrayUsingComparator:&__block_literal_global_309];
   if ([(CRFormFilterSurfacedFieldsStep *)self assignGlobalOrder])
   {
-    [(CRFormFilterSurfacedFieldsStep *)self _setGlobalIndexesForFields:v22 externalFields:v27];
+    [(CRFormFilterSurfacedFieldsStep *)self _setGlobalIndexesForFields:v22 externalFields:fieldsCopy];
   }
 
   v23 = CROSLogForCategory(6);
@@ -376,16 +376,16 @@ uint64_t __74__CRFormFilterSurfacedFieldsStep_process_externalFields_document_op
   return v7;
 }
 
-- (void)_setGlobalIndexesForFields:(id)a3 externalFields:(id)a4
+- (void)_setGlobalIndexesForFields:(id)fields externalFields:(id)externalFields
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  fieldsCopy = fields;
+  externalFieldsCopy = externalFields;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = v5;
+  v7 = fieldsCopy;
   v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
@@ -406,12 +406,12 @@ uint64_t __74__CRFormFilterSurfacedFieldsStep_process_externalFields_document_op
         v14 = v13;
         if (v13)
         {
-          v15 = [v13 precedingExternalField];
-          if (v15)
+          precedingExternalField = [v13 precedingExternalField];
+          if (precedingExternalField)
           {
-            if (v6)
+            if (externalFieldsCopy)
             {
-              v16 = [v6 indexOfObject:v15];
+              v16 = [externalFieldsCopy indexOfObject:precedingExternalField];
             }
 
             else

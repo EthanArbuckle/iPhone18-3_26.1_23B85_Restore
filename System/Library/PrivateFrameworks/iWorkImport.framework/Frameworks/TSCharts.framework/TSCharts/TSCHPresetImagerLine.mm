@@ -1,16 +1,16 @@
 @interface TSCHPresetImagerLine
-- (UIEdgeInsets)swatchImageEdgeInsetsForSize:(CGSize)a3;
-- (id)p_strokeFromStyle:(id)a3 specific:(int)a4 default:(int)a5;
-- (void)p_drawShadowedContentIntoContext:(CGContext *)a3 size:(CGSize)a4 contentsScale:(double)a5 preset:(id)a6 target:(int)a7 shouldCache:(BOOL *)a8;
+- (UIEdgeInsets)swatchImageEdgeInsetsForSize:(CGSize)size;
+- (id)p_strokeFromStyle:(id)style specific:(int)specific default:(int)default;
+- (void)p_drawShadowedContentIntoContext:(CGContext *)context size:(CGSize)size contentsScale:(double)scale preset:(id)preset target:(int)target shouldCache:(BOOL *)cache;
 @end
 
 @implementation TSCHPresetImagerLine
 
-- (UIEdgeInsets)swatchImageEdgeInsetsForSize:(CGSize)a3
+- (UIEdgeInsets)swatchImageEdgeInsetsForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  objc_msgSend_p_nativeSize(self, a2, a3.width, a3.height, v3);
+  height = size.height;
+  width = size.width;
+  objc_msgSend_p_nativeSize(self, a2, size.width, size.height, v3);
   v7 = width / v6;
   v9 = height / v8;
   v10 = floor(height / v8 * 9.0);
@@ -24,9 +24,9 @@
   return result;
 }
 
-- (id)p_strokeFromStyle:(id)a3 specific:(int)a4 default:(int)a5
+- (id)p_strokeFromStyle:(id)style specific:(int)specific default:(int)default
 {
-  v8 = objc_msgSend_p_objectFromStyle_specific_default_(self, a2, v5, v6, v7, a3, *&a4, *&a5);
+  v8 = objc_msgSend_p_objectFromStyle_specific_default_(self, a2, v5, v6, v7, style, *&specific, *&default);
   v13 = v8;
   if (v8)
   {
@@ -43,11 +43,11 @@
   return v13;
 }
 
-- (void)p_drawShadowedContentIntoContext:(CGContext *)a3 size:(CGSize)a4 contentsScale:(double)a5 preset:(id)a6 target:(int)a7 shouldCache:(BOOL *)a8
+- (void)p_drawShadowedContentIntoContext:(CGContext *)context size:(CGSize)size contentsScale:(double)scale preset:(id)preset target:(int)target shouldCache:(BOOL *)cache
 {
-  width = a4.width;
+  width = size.width;
   v88[12] = *MEMORY[0x277D85DE8];
-  v11 = objc_msgSend_seriesStyles(a6, a2, a4.width, a4.height, a5);
+  v11 = objc_msgSend_seriesStyles(preset, a2, size.width, size.height, scale);
   v16 = objc_msgSend_objectAtIndexedSubscript_(v11, v12, v13, v14, v15, 0);
   if (objc_msgSend_count(v11, v17, v18, v19, v20) <= 1)
   {
@@ -88,13 +88,13 @@
   v87[7] = v48;
   v87[8] = sub_27628CEA8(127.0, 50.0, v32);
   v87[9] = v49;
-  CGContextSaveGState(a3);
+  CGContextSaveGState(context);
   v52 = objc_msgSend_colorWithWhite_alpha_(MEMORY[0x277D81180], v50, 0.46, 1.0, v51);
   v57 = objc_msgSend_CGColor(v52, v53, v54, v55, v56);
-  CGContextSetStrokeColorWithColor(a3, v57);
-  CGContextSetLineCap(a3, kCGLineCapSquare);
-  CGContextSetLineJoin(a3, kCGLineJoinMiter);
-  CGContextSetLineWidth(a3, 1.0);
+  CGContextSetStrokeColorWithColor(context, v57);
+  CGContextSetLineCap(context, kCGLineCapSquare);
+  CGContextSetLineJoin(context, kCGLineJoinMiter);
+  CGContextSetLineWidth(context, 1.0);
   v89.origin.x = v82;
   v89.origin.y = v34;
   v89.size.width = v36;
@@ -139,24 +139,24 @@
   v96.size.height = v38;
   v86[0] = v61;
   v86[1] = CGRectGetMaxY(v96);
-  sub_27628C654(a3, &points.x, v84, 2, 1.0);
-  sub_27628C654(a3, v85, v86, 2, 1.0);
-  CGContextStrokeLineSegments(a3, &points, 4uLL);
-  CGContextRestoreGState(a3);
+  sub_27628C654(context, &points.x, v84, 2, 1.0);
+  sub_27628C654(context, v85, v86, 2, 1.0);
+  CGContextStrokeLineSegments(context, &points, 4uLL);
+  CGContextRestoreGState(context);
 
-  CGContextSaveGState(a3);
+  CGContextSaveGState(context);
   v66 = objc_msgSend_p_strokeFromStyle_specific_default_(self, v62, v63, v64, v65, v30, 1500, 0);
   v67 = sub_2762A1ACC(v87, 5uLL, 0);
-  objc_msgSend_paintPath_wantsInteriorStroke_inContext_(v66, v68, v69, v70, v71, v67, 0, a3);
+  objc_msgSend_paintPath_wantsInteriorStroke_inContext_(v66, v68, v69, v70, v71, v67, 0, context);
   CGPathRelease(v67);
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 
-  CGContextSaveGState(a3);
+  CGContextSaveGState(context);
   v76 = objc_msgSend_p_strokeFromStyle_specific_default_(self, v72, v73, v74, v75, v16, 1500, 0);
   v77 = sub_2762A1ACC(v88, 6uLL, 0);
-  objc_msgSend_paintPath_wantsInteriorStroke_inContext_(v76, v78, v79, v80, v81, v77, 0, a3);
+  objc_msgSend_paintPath_wantsInteriorStroke_inContext_(v76, v78, v79, v80, v81, v77, 0, context);
   CGPathRelease(v77);
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 }
 
 @end

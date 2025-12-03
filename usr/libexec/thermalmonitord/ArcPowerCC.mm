@@ -1,5 +1,5 @@
 @interface ArcPowerCC
-- (ArcPowerCC)initWithParams:(__CFDictionary *)a3 product:(id)a4;
+- (ArcPowerCC)initWithParams:(__CFDictionary *)params product:(id)product;
 - (int)numberOfFields;
 - (void)defaultAction;
 - (void)refreshTGraphTelemetry;
@@ -8,7 +8,7 @@
 
 @implementation ArcPowerCC
 
-- (ArcPowerCC)initWithParams:(__CFDictionary *)a3 product:(id)a4
+- (ArcPowerCC)initWithParams:(__CFDictionary *)params product:(id)product
 {
   v16.receiver = self;
   v16.super_class = ArcPowerCC;
@@ -16,14 +16,14 @@
   v7 = v6;
   if (v6)
   {
-    *(v6 + 140) = a4;
+    *(v6 + 140) = product;
     *(v6 + 18) = 100;
     *(v6 + 42) = -1;
     *(v6 + 6) = CFStringCreateWithFormat(0, 0, @"%d Arc ", 11);
     v7->super.previousValue = v7->super.currentLoadingIndex;
-    v8 = sub_100002A20(a3, @"thresholdModule", kCFNumberIntType, &v7->_product + 4);
-    v9 = sub_100002A20(a3, @"maxArcPower", kCFNumberIntType, &v7->_latestModuleTemperature);
-    v10 = sub_100002A20(a3, @"minArcPower", kCFNumberIntType, &v7->_maxArcPower);
+    v8 = sub_100002A20(params, @"thresholdModule", kCFNumberIntType, &v7->_product + 4);
+    v9 = sub_100002A20(params, @"maxArcPower", kCFNumberIntType, &v7->_latestModuleTemperature);
+    v10 = sub_100002A20(params, @"minArcPower", kCFNumberIntType, &v7->_maxArcPower);
     if (v8 && v9 && v10)
     {
       if (byte_1000AB2F8 == 1)
@@ -52,8 +52,8 @@
       sub_1000534A0();
     }
 
-    [(ComponentControl *)v7 updatePowerParameters:a3];
-    if (sub_100031D64(a3, @"expectsCPMSSupport", 0))
+    [(ComponentControl *)v7 updatePowerParameters:params];
+    if (sub_100031D64(params, @"expectsCPMSSupport", 0))
     {
       [(ComponentControl *)v7 setCPMSMitigationState:1];
     }
@@ -160,15 +160,15 @@
   v5 = [v4 objectForKey:@"HapticTargetPower"];
   if (v5)
   {
-    v6 = [v5 intValue];
+    intValue = [v5 intValue];
   }
 
   else
   {
-    v6 = -1;
+    intValue = -1;
   }
 
-  self->_arcPowerTarget = v6;
+  self->_arcPowerTarget = intValue;
 }
 
 - (int)numberOfFields

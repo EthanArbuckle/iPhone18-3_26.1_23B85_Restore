@@ -1,9 +1,9 @@
 @interface NRDeviceProperties
 + (unsigned)getNetworkRelayVersion;
-- (NRDeviceProperties)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NRDeviceProperties)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NRDeviceProperties
@@ -15,17 +15,17 @@
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt64:-[NRDeviceProperties pairingProtocolVersion](self forKey:{"pairingProtocolVersion"), @"pairingProtocolVersion"}];
-  [v4 encodeInt32:-[NRDeviceProperties peerNetworkRelayVersion](self forKey:{"peerNetworkRelayVersion"), @"peerNetworkRelayVersion"}];
+  coderCopy = coder;
+  [coderCopy encodeInt64:-[NRDeviceProperties pairingProtocolVersion](self forKey:{"pairingProtocolVersion"), @"pairingProtocolVersion"}];
+  [coderCopy encodeInt32:-[NRDeviceProperties peerNetworkRelayVersion](self forKey:{"peerNetworkRelayVersion"), @"peerNetworkRelayVersion"}];
 }
 
-- (NRDeviceProperties)initWithCoder:(id)a3
+- (NRDeviceProperties)initWithCoder:(id)coder
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = NRDeviceProperties;
   v5 = [(NRDeviceProperties *)&v23 init];
@@ -62,16 +62,16 @@ LABEL_7:
   }
 
   v6 = v5;
-  -[NRDeviceProperties setPairingProtocolVersion:](v5, "setPairingProtocolVersion:", [v4 decodeInt64ForKey:@"pairingProtocolVersion"]);
-  -[NRDeviceProperties setPeerNetworkRelayVersion:](v6, "setPeerNetworkRelayVersion:", [v4 decodeInt32ForKey:@"peerNetworkRelayVersion"]);
+  -[NRDeviceProperties setPairingProtocolVersion:](v5, "setPairingProtocolVersion:", [coderCopy decodeInt64ForKey:@"pairingProtocolVersion"]);
+  -[NRDeviceProperties setPeerNetworkRelayVersion:](v6, "setPeerNetworkRelayVersion:", [coderCopy decodeInt32ForKey:@"peerNetworkRelayVersion"]);
 
   v7 = *MEMORY[0x277D85DE8];
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setPairingProtocolVersion:{-[NRDeviceProperties pairingProtocolVersion](self, "pairingProtocolVersion")}];
   [v4 setPeerNetworkRelayVersion:{-[NRDeviceProperties peerNetworkRelayVersion](self, "peerNetworkRelayVersion")}];
   return v4;

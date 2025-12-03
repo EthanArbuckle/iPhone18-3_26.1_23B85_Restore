@@ -5,24 +5,24 @@
 - (CGSize)_scaledSnapshotSize;
 - (IOSurface)IOSurface;
 - (IOSurface)fallbackIOSurface;
-- (_FBSSnapshot)initWithSnapshotContext:(id)a3;
+- (_FBSSnapshot)initWithSnapshotContext:(id)context;
 - (void)_doInvalidate;
-- (void)_synchronizedCaptureWithCompletion:(id)a3;
+- (void)_synchronizedCaptureWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation _FBSSnapshot
 
-- (_FBSSnapshot)initWithSnapshotContext:(id)a3
+- (_FBSSnapshot)initWithSnapshotContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = _FBSSnapshot;
   v5 = [(_FBSSnapshot *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [contextCopy copy];
     context = v5->_context;
     v5->_context = v6;
   }
@@ -40,8 +40,8 @@
 
 - (BOOL)hasProtectedContent
 {
-  v2 = [(_FBSSnapshot *)self fallbackIOSurface];
-  v3 = v2 != 0;
+  fallbackIOSurface = [(_FBSSnapshot *)self fallbackIOSurface];
+  v3 = fallbackIOSurface != 0;
 
   return v3;
 }
@@ -128,26 +128,26 @@
   }
 }
 
-- (void)_synchronizedCaptureWithCompletion:(id)a3
+- (void)_synchronizedCaptureWithCompletion:(id)completion
 {
   v31 = *MEMORY[0x1E69E9840];
-  v20 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  obj = v4;
-  v18 = [(_FBSSnapshotContext *)v4->_context layers];
-  v17 = [(_FBSSnapshotContext *)v4->_context displayConfiguration];
-  if (*&v4->_imageRef == 0 && !v4->_protectedSurfaceRef)
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  obj = selfCopy;
+  layers = [(_FBSSnapshotContext *)selfCopy->_context layers];
+  displayConfiguration = [(_FBSSnapshotContext *)selfCopy->_context displayConfiguration];
+  if (*&selfCopy->_imageRef == 0 && !selfCopy->_protectedSurfaceRef)
   {
-    if (v17 && [v18 count])
+    if (displayConfiguration && [layers count])
     {
-      v6 = [v18 count];
+      v6 = [layers count];
       v22 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v6];
       v25 = 0u;
       v26 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v21 = v18;
+      v21 = layers;
       v7 = [v21 countByEnumeratingWithState:&v23 objects:v30 count:16];
       if (v7)
       {
@@ -204,12 +204,12 @@
     v5 = 1;
   }
 
-  if (v20)
+  if (completionCopy)
   {
-    v20[2](v20, v5);
+    completionCopy[2](completionCopy, v5);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (CGSize)_scaledSnapshotSize

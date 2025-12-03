@@ -6,13 +6,13 @@
 - (NeuralNetworkConfig)neuralNetwork;
 - (RuntimeConfig)runtime;
 - (SecondPassConfig)secondPass;
-- (VATConfiguration)initWithFilename:(id)a3 error:(id *)a4;
-- (void)_replaceModelPathWithCustomModelPathForTestWithPrefix:(id)a3;
-- (void)setDecoder:(id)a3;
-- (void)setFeatureExtractor:(id)a3;
-- (void)setNeuralNetwork:(id)a3;
-- (void)setRuntime:(id)a3;
-- (void)setSecondPass:(id)a3;
+- (VATConfiguration)initWithFilename:(id)filename error:(id *)error;
+- (void)_replaceModelPathWithCustomModelPathForTestWithPrefix:(id)prefix;
+- (void)setDecoder:(id)decoder;
+- (void)setFeatureExtractor:(id)extractor;
+- (void)setNeuralNetwork:(id)network;
+- (void)setRuntime:(id)runtime;
+- (void)setSecondPass:(id)pass;
 @end
 
 @implementation VATConfiguration
@@ -36,13 +36,13 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setNeuralNetwork:(id)a3
+- (void)setNeuralNetwork:(id)network
 {
   v5 = OBJC_IVAR___VATConfiguration_neuralNetwork;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = network;
+  networkCopy = network;
 }
 
 - (FeatureExtractorConfig)featureExtractor
@@ -52,13 +52,13 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setFeatureExtractor:(id)a3
+- (void)setFeatureExtractor:(id)extractor
 {
   v5 = OBJC_IVAR___VATConfiguration_featureExtractor;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = extractor;
+  extractorCopy = extractor;
 }
 
 - (DecoderConfig)decoder
@@ -68,13 +68,13 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setDecoder:(id)a3
+- (void)setDecoder:(id)decoder
 {
   v5 = OBJC_IVAR___VATConfiguration_decoder;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = decoder;
+  decoderCopy = decoder;
 }
 
 - (SecondPassConfig)secondPass
@@ -84,13 +84,13 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setSecondPass:(id)a3
+- (void)setSecondPass:(id)pass
 {
   v5 = OBJC_IVAR___VATConfiguration_secondPass;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = pass;
+  passCopy = pass;
 }
 
 - (RuntimeConfig)runtime
@@ -100,18 +100,18 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setRuntime:(id)a3
+- (void)setRuntime:(id)runtime
 {
   v5 = OBJC_IVAR___VATConfiguration_runtime;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = runtime;
+  runtimeCopy = runtime;
 }
 
-- (VATConfiguration)initWithFilename:(id)a3 error:(id *)a4
+- (VATConfiguration)initWithFilename:(id)filename error:(id *)error
 {
-  if (a3)
+  if (filename)
   {
     v4 = sub_27237782C();
   }
@@ -125,13 +125,13 @@
   return VATConfiguration.init(filename:)(v4, v5);
 }
 
-- (void)_replaceModelPathWithCustomModelPathForTestWithPrefix:(id)a3
+- (void)_replaceModelPathWithCustomModelPathForTestWithPrefix:(id)prefix
 {
   v4 = sub_27237782C();
   v6 = v5;
   v7 = MEMORY[0x277D85000];
   v8 = *((*MEMORY[0x277D85000] & self->super.isa) + 0x78);
-  v14 = self;
+  selfCopy = self;
   v9 = v8();
   v10 = (*((*v7 & *v9) + 0x68))();
   v12 = v11;
@@ -147,7 +147,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_272289D78();
 
   v3 = sub_2723777FC();

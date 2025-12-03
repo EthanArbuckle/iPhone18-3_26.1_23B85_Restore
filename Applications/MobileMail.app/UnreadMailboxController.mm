@@ -9,10 +9,10 @@
 
 - (id)serverCountMailboxScope
 {
-  v2 = [(SharedMailboxController *)self mailbox];
-  v3 = [v2 mailboxScope];
+  mailbox = [(SharedMailboxController *)self mailbox];
+  mailboxScope = [mailbox mailboxScope];
 
-  return v3;
+  return mailboxScope;
 }
 
 - (id)mailboxTitle

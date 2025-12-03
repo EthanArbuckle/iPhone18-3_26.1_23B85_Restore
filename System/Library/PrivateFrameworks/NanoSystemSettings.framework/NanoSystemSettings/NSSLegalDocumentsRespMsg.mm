@@ -1,12 +1,12 @@
 @interface NSSLegalDocumentsRespMsg
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NSSLegalDocumentsRespMsg
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = NSSLegalDocumentsRespMsg;
   v4 = [(NSSLegalDocumentsRespMsg *)&v8 description];
-  v5 = [(NSSLegalDocumentsRespMsg *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NSSLegalDocumentsRespMsg *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   license = self->_license;
   if (license)
   {
-    [v3 setObject:license forKey:@"license"];
+    [dictionary setObject:license forKey:@"license"];
   }
 
   sarStatement = self->_sarStatement;
@@ -66,105 +66,105 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_license)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_sarStatement)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_legalNotices)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_buildVersion)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     sarUrlAdded = self->_sarUrlAdded;
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_builtinApps)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_license)
   {
-    [v4 setLicense:?];
-    v4 = v5;
+    [toCopy setLicense:?];
+    toCopy = v5;
   }
 
   if (self->_sarStatement)
   {
     [v5 setSarStatement:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_legalNotices)
   {
     [v5 setLegalNotices:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_buildVersion)
   {
     [v5 setBuildVersion:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    v4[48] = self->_sarUrlAdded;
-    v4[52] |= 1u;
+    toCopy[48] = self->_sarUrlAdded;
+    toCopy[52] |= 1u;
   }
 
   if (self->_builtinApps)
   {
     [v5 setBuiltinApps:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_license copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_license copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
-  v8 = [(NSData *)self->_sarStatement copyWithZone:a3];
+  v8 = [(NSData *)self->_sarStatement copyWithZone:zone];
   v9 = *(v5 + 40);
   *(v5 + 40) = v8;
 
-  v10 = [(NSData *)self->_legalNotices copyWithZone:a3];
+  v10 = [(NSData *)self->_legalNotices copyWithZone:zone];
   v11 = *(v5 + 24);
   *(v5 + 24) = v10;
 
-  v12 = [(NSString *)self->_buildVersion copyWithZone:a3];
+  v12 = [(NSString *)self->_buildVersion copyWithZone:zone];
   v13 = *(v5 + 8);
   *(v5 + 8) = v12;
 
@@ -174,23 +174,23 @@
     *(v5 + 52) |= 1u;
   }
 
-  v14 = [(NSData *)self->_builtinApps copyWithZone:a3];
+  v14 = [(NSData *)self->_builtinApps copyWithZone:zone];
   v15 = *(v5 + 16);
   *(v5 + 16) = v14;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
   license = self->_license;
-  if (license | *(v4 + 4))
+  if (license | *(equalCopy + 4))
   {
     if (![(NSData *)license isEqual:?])
     {
@@ -199,7 +199,7 @@
   }
 
   sarStatement = self->_sarStatement;
-  if (sarStatement | *(v4 + 5))
+  if (sarStatement | *(equalCopy + 5))
   {
     if (![(NSData *)sarStatement isEqual:?])
     {
@@ -208,7 +208,7 @@
   }
 
   legalNotices = self->_legalNotices;
-  if (legalNotices | *(v4 + 3))
+  if (legalNotices | *(equalCopy + 3))
   {
     if (![(NSData *)legalNotices isEqual:?])
     {
@@ -217,7 +217,7 @@
   }
 
   buildVersion = self->_buildVersion;
-  if (buildVersion | *(v4 + 1))
+  if (buildVersion | *(equalCopy + 1))
   {
     if (![(NSString *)buildVersion isEqual:?])
     {
@@ -225,18 +225,18 @@
     }
   }
 
-  v9 = *(v4 + 52);
+  v9 = *(equalCopy + 52);
   if ((*&self->_has & 1) == 0)
   {
     goto LABEL_11;
   }
 
-  if ((*(v4 + 52) & 1) == 0)
+  if ((*(equalCopy + 52) & 1) == 0)
   {
     goto LABEL_15;
   }
 
-  v9 = *(v4 + 48);
+  v9 = *(equalCopy + 48);
   if (!self->_sarUrlAdded)
   {
 LABEL_11:
@@ -250,14 +250,14 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if ((*(v4 + 48) & 1) == 0)
+  if ((*(equalCopy + 48) & 1) == 0)
   {
     goto LABEL_15;
   }
 
 LABEL_12:
   builtinApps = self->_builtinApps;
-  if (builtinApps | *(v4 + 2))
+  if (builtinApps | *(equalCopy + 2))
   {
     v11 = [(NSData *)builtinApps isEqual:?];
   }
@@ -291,44 +291,44 @@ LABEL_16:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ [(NSData *)self->_builtinApps hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 4))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(NSSLegalDocumentsRespMsg *)self setLicense:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(NSSLegalDocumentsRespMsg *)self setSarStatement:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(NSSLegalDocumentsRespMsg *)self setLegalNotices:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(NSSLegalDocumentsRespMsg *)self setBuildVersion:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[52])
+  if (fromCopy[52])
   {
-    self->_sarUrlAdded = v4[48];
+    self->_sarUrlAdded = fromCopy[48];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(NSSLegalDocumentsRespMsg *)self setBuiltinApps:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

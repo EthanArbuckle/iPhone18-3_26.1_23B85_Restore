@@ -1,36 +1,36 @@
 @interface RBProcessStateChange
-- (RBProcessStateChange)initWithIdentity:(id)a3 originalState:(id)a4 updatedState:(id)a5;
-- (id)changeByApplyingChange:(id)a3;
+- (RBProcessStateChange)initWithIdentity:(id)identity originalState:(id)state updatedState:(id)updatedState;
+- (id)changeByApplyingChange:(id)change;
 @end
 
 @implementation RBProcessStateChange
 
-- (RBProcessStateChange)initWithIdentity:(id)a3 originalState:(id)a4 updatedState:(id)a5
+- (RBProcessStateChange)initWithIdentity:(id)identity originalState:(id)state updatedState:(id)updatedState
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identityCopy = identity;
+  stateCopy = state;
+  updatedStateCopy = updatedState;
   v15.receiver = self;
   v15.super_class = RBProcessStateChange;
   v12 = [(RBProcessStateChange *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_identity, a3);
-    objc_storeStrong(&v13->_originalState, a4);
-    objc_storeStrong(&v13->_updatedState, a5);
+    objc_storeStrong(&v12->_identity, identity);
+    objc_storeStrong(&v13->_originalState, state);
+    objc_storeStrong(&v13->_updatedState, updatedState);
   }
 
   return v13;
 }
 
-- (id)changeByApplyingChange:(id)a3
+- (id)changeByApplyingChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 updatedState];
-  v6 = v5;
+  changeCopy = change;
+  updatedState = [changeCopy updatedState];
+  v6 = updatedState;
   originalState = self->_originalState;
-  if (originalState == v5 || v5 && originalState && ([v4 updatedState], v8 = objc_claimAutoreleasedReturnValue(), v9 = -[RBProcessState isEqual:](originalState, "isEqual:", v8), v8, v9))
+  if (originalState == updatedState || updatedState && originalState && ([changeCopy updatedState], v8 = objc_claimAutoreleasedReturnValue(), v9 = -[RBProcessState isEqual:](originalState, "isEqual:", v8), v8, v9))
   {
     v10 = 0;
   }

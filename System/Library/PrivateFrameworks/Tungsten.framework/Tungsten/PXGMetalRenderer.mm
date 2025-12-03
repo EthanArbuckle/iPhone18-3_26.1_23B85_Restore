@@ -1,62 +1,62 @@
 @interface PXGMetalRenderer
 + (NSString)mainShaderSource;
-+ (id)_loadAndPreprocessShaderSourceWithFilename:(id)a3 extension:(id)a4;
-+ (void)_configureUniformGeometries:(id *)a3 renderRect:(CGRect)a4 drawingScale:(double)a5 renderOrigin:(CGPoint)a6;
-- ($15EF911DBFB6DAA7434D55827AA48808)_handleCompiledRenderPipelineState:(SEL)a3 forColorProgram:(id)a4 shader:(id)a5 shaderFlags:(id)a6 colorPixelFormat:(int)a7 pipelineIndex:(unint64_t)a8 isOpaque:(int64_t)a9;
-- ($15EF911DBFB6DAA7434D55827AA48808)_pipelineForRenderTexture:(SEL)a3 colorPixelFormat:(id *)a4 waitForCompilation:(unint64_t)a5;
++ (id)_loadAndPreprocessShaderSourceWithFilename:(id)filename extension:(id)extension;
++ (void)_configureUniformGeometries:(id *)geometries renderRect:(CGRect)rect drawingScale:(double)scale renderOrigin:(CGPoint)origin;
+- ($15EF911DBFB6DAA7434D55827AA48808)_handleCompiledRenderPipelineState:(SEL)state forColorProgram:(id)program shader:(id)shader shaderFlags:(id)flags colorPixelFormat:(int)format pipelineIndex:(unint64_t)index isOpaque:(int64_t)opaque;
+- ($15EF911DBFB6DAA7434D55827AA48808)_pipelineForRenderTexture:(SEL)texture colorPixelFormat:(id *)format waitForCompilation:(unint64_t)compilation;
 - ($28B10562A11C0018BB97DE3323169FD5)interactionState;
 - (BOOL)wantsMipmaps;
-- (CGRect)converRectToRenderCoordinates:(CGRect)a3;
+- (CGRect)converRectToRenderCoordinates:(CGRect)coordinates;
 - (CGRect)visibleRect;
 - (CGRect)visibleRectInRenderCoordinates;
-- (PXGMetalRenderer)initWithRenderDestination:(id)a3 layoutQueue:(id)a4;
+- (PXGMetalRenderer)initWithRenderDestination:(id)destination layoutQueue:(id)queue;
 - (PXGMetalRendererTestingDelegate)testingDelegate;
 - (PXGRendererDelegate)delegate;
 - (__n128)cameraConfiguration;
-- (__n128)setCameraConfiguration:(uint64_t)a3;
-- (id)_createColorTextureForRenderStateValues:(id *)a3;
-- (id)_createPipelineStateForColorProgram:(id)a3 shader:(id)a4 shaderFlags:(int)a5 colorPixelFormat:(unint64_t)a6 depthStencilPixelFormat:(unint64_t)a7 isOpaque:(BOOL)a8;
-- (id)renderSnapshotForRequest:(id *)a3 offscreenEffect:(id)a4;
-- (int64_t)_drawRenderTexture:(id *)a3 forRenderPass:(id)a4 withCommandEncoder:(id)a5;
-- (int64_t)_drawSpritesWithRenderPass:(id)a3 renderState:(id)a4 commandEncoder:(id)a5 passingTest:(id)a6;
+- (__n128)setCameraConfiguration:(uint64_t)configuration;
+- (id)_createColorTextureForRenderStateValues:(id *)values;
+- (id)_createPipelineStateForColorProgram:(id)program shader:(id)shader shaderFlags:(int)flags colorPixelFormat:(unint64_t)format depthStencilPixelFormat:(unint64_t)pixelFormat isOpaque:(BOOL)opaque;
+- (id)renderSnapshotForRequest:(id *)request offscreenEffect:(id)effect;
+- (int64_t)_drawRenderTexture:(id *)texture forRenderPass:(id)pass withCommandEncoder:(id)encoder;
+- (int64_t)_drawSpritesWithRenderPass:(id)pass renderState:(id)state commandEncoder:(id)encoder passingTest:(id)test;
 - (unint64_t)destinationColorSpaceName;
 - (void)_clearPipelines;
-- (void)_parseAndSortRenderTextures:(id)a3 willPerformOffscreenPass:(BOOL)a4;
+- (void)_parseAndSortRenderTextures:(id)textures willPerformOffscreenPass:(BOOL)pass;
 - (void)_pipelinesLock_resizePipelinesStorageIfNeeded;
-- (void)_populateEffectSprites:(id)a3 spriteRenderDataStore:(id)a4 presentationDataStore:(id)a5 metadataStore:(id)a6;
-- (void)_preloadKernel:(id)a3;
-- (void)_preloadShader:(id)a3;
-- (void)_renderToCommandBuffer:(id)a3 renderState:(id)a4 renderPassDescriptor:(id)a5 withCompletionCompletion:(id)a6;
-- (void)_renderToMainDestination:(id)a3 withCompletionCompletion:(id)a4;
+- (void)_populateEffectSprites:(id)sprites spriteRenderDataStore:(id)store presentationDataStore:(id)dataStore metadataStore:(id)metadataStore;
+- (void)_preloadKernel:(id)kernel;
+- (void)_preloadShader:(id)shader;
+- (void)_renderToCommandBuffer:(id)buffer renderState:(id)state renderPassDescriptor:(id)descriptor withCompletionCompletion:(id)completion;
+- (void)_renderToMainDestination:(id)destination withCompletionCompletion:(id)completion;
 - (void)_setupMetalIfNeeded;
 - (void)_setupSquareGeometryBuffer;
 - (void)_setupYCbCrMatrices;
 - (void)dealloc;
-- (void)effectComponent:(id)a3 prepareForEffect:(id)a4;
-- (void)metalTextureConverter:(id)a3 didCreateTexture:(id)a4 options:(id)a5;
+- (void)effectComponent:(id)component prepareForEffect:(id)effect;
+- (void)metalTextureConverter:(id)converter didCreateTexture:(id)texture options:(id)options;
 - (void)releaseResources;
-- (void)renderDestination:(id)a3 renderSizeWillChange:(CGSize)a4;
-- (void)renderDestinationRequestRender:(id)a3;
+- (void)renderDestination:(id)destination renderSizeWillChange:(CGSize)change;
+- (void)renderDestinationRequestRender:(id)render;
 - (void)renderImmediately;
-- (void)renderSpritesWithTextures:(id)a3 dataStore:(id)a4 presentationDataStore:(id)a5 presentationMetadataStore:(id)a6 layout:(id)a7;
-- (void)setEntityManager:(id)a3;
-- (void)setInteractionState:(id *)a3;
-- (void)setIsInvertColorsEnabled:(BOOL)a3;
-- (void)setLowMemoryMode:(BOOL)a3;
+- (void)renderSpritesWithTextures:(id)textures dataStore:(id)store presentationDataStore:(id)dataStore presentationMetadataStore:(id)metadataStore layout:(id)layout;
+- (void)setEntityManager:(id)manager;
+- (void)setInteractionState:(id *)state;
+- (void)setIsInvertColorsEnabled:(BOOL)enabled;
+- (void)setLowMemoryMode:(BOOL)mode;
 - (void)setNeedsRender;
-- (void)setOffscreenEffectScale:(double)a3;
-- (void)setTest_renderSnapshotHandler:(id)a3;
+- (void)setOffscreenEffectScale:(double)scale;
+- (void)setTest_renderSnapshotHandler:(id)handler;
 @end
 
 @implementation PXGMetalRenderer
 
 - (void)_setupMetalIfNeeded
 {
-  v3 = [(PXGMetalRenderer *)self renderDestination];
-  v4 = [v3 device];
+  renderDestination = [(PXGMetalRenderer *)self renderDestination];
+  device = [renderDestination device];
 
-  v5 = [PXGMetalRenderContext privateContextWithDevice:v4 commandQueue:self->_commandQueue];
-  if (!v4)
+  v5 = [PXGMetalRenderContext privateContextWithDevice:device commandQueue:self->_commandQueue];
+  if (!device)
   {
     v6 = PXGTungstenGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -68,17 +68,17 @@
 
   os_unfair_lock_lock(&self->_metalLock);
   device = self->_device;
-  if (device != v4)
+  if (device != device)
   {
-    objc_storeStrong(&self->_device, v4);
+    objc_storeStrong(&self->_device, device);
     [(PXGMetalRenderStatePool *)self->_renderStatePool setDevice:self->_device];
     [(PXGMetalRenderer *)self _clearPipelines];
     v8 = self->_device;
     if (v8)
     {
-      v9 = [(MTLDevice *)v8 newCommandQueue];
+      newCommandQueue = [(MTLDevice *)v8 newCommandQueue];
       commandQueue = self->_commandQueue;
-      self->_commandQueue = v9;
+      self->_commandQueue = newCommandQueue;
 
       v11 = [PXGMetalRenderContext privateContextWithDevice:self->_device commandQueue:self->_commandQueue];
 
@@ -118,9 +118,9 @@
       depthStencil = self->_depthStencil;
       self->_depthStencil = v19;
 
-      v21 = [v11 library];
+      library = [v11 library];
       library = self->_library;
-      self->_library = v21;
+      self->_library = library;
 
       v23 = [[PXGColorGradingTexturesStore alloc] initWithMetalContext:v11];
       colorGradingTexturesStore = self->_colorGradingTexturesStore;
@@ -131,19 +131,19 @@
     }
   }
 
-  v25 = [(PXGMetalRenderer *)self renderDestination];
-  v26 = [v25 destinationColorSpaceName];
+  renderDestination2 = [(PXGMetalRenderer *)self renderDestination];
+  destinationColorSpaceName = [renderDestination2 destinationColorSpaceName];
 
-  if (device == v4)
+  if (device == device)
   {
-    v27 = [(PXGMetalTextureConverter *)self->_textureConverter metalRenderContext];
-    v28 = [v27 device];
-    v29 = v28;
-    if (v28 == v4)
+    metalRenderContext = [(PXGMetalTextureConverter *)self->_textureConverter metalRenderContext];
+    device2 = [metalRenderContext device];
+    v29 = device2;
+    if (device2 == device)
     {
-      v30 = [(PXGMetalTextureConverter *)self->_textureConverter destinationColorSpaceName];
+      destinationColorSpaceName2 = [(PXGMetalTextureConverter *)self->_textureConverter destinationColorSpaceName];
 
-      if (v30 == v26)
+      if (destinationColorSpaceName2 == destinationColorSpaceName)
       {
         os_unfair_lock_unlock(&self->_metalLock);
         goto LABEL_20;
@@ -158,23 +158,23 @@
   if (self->_device)
   {
     v31 = [PXGMetalTextureConverter alloc];
-    v32 = [(PXGMetalRenderer *)self presentationType];
-    v33 = [(PXGMetalRenderer *)self layoutQueue];
-    v34 = [(PXGMetalTextureConverter *)v31 initWithContext:v5 presentationType:v32 destinationColorspaceName:v26 layoutQueue:v33];
+    presentationType = [(PXGMetalRenderer *)self presentationType];
+    layoutQueue = [(PXGMetalRenderer *)self layoutQueue];
+    v34 = [(PXGMetalTextureConverter *)v31 initWithContext:v5 presentationType:presentationType destinationColorspaceName:destinationColorSpaceName layoutQueue:layoutQueue];
     textureConverter = self->_textureConverter;
     self->_textureConverter = v34;
   }
 
   else
   {
-    v33 = self->_textureConverter;
+    layoutQueue = self->_textureConverter;
     self->_textureConverter = 0;
   }
 
   [(PXGMetalTextureConverter *)self->_textureConverter setDelegate:self];
   os_unfair_lock_unlock(&self->_metalLock);
-  v36 = [(PXGMetalRenderer *)self delegate];
-  [v36 rendererDidChangeTextureConverter:self];
+  delegate = [(PXGMetalRenderer *)self delegate];
+  [delegate rendererDidChangeTextureConverter:self];
 
 LABEL_20:
 }
@@ -353,16 +353,16 @@ LABEL_52:
 
 - (unint64_t)destinationColorSpaceName
 {
-  v2 = [(PXGMetalRenderer *)self renderDestination];
-  v3 = [v2 destinationColorSpaceName];
+  renderDestination = [(PXGMetalRenderer *)self renderDestination];
+  destinationColorSpaceName = [renderDestination destinationColorSpaceName];
 
-  return v3;
+  return destinationColorSpaceName;
 }
 
 - (void)setNeedsRender
 {
-  v2 = [(PXGMetalRenderer *)self renderDestination];
-  [v2 setNeedsRender];
+  renderDestination = [(PXGMetalRenderer *)self renderDestination];
+  [renderDestination setNeedsRender];
 }
 
 - (CGRect)visibleRect
@@ -443,122 +443,122 @@ LABEL_52:
   return WeakRetained;
 }
 
-- (__n128)setCameraConfiguration:(uint64_t)a3
+- (__n128)setCameraConfiguration:(uint64_t)configuration
 {
-  *(a1 + 416) = *a3;
-  v3 = *(a3 + 16);
-  v4 = *(a3 + 32);
-  v5 = *(a3 + 64);
-  *(a1 + 464) = *(a3 + 48);
-  *(a1 + 480) = v5;
-  *(a1 + 432) = v3;
-  *(a1 + 448) = v4;
-  v6 = *(a3 + 80);
-  v7 = *(a3 + 96);
-  v8 = *(a3 + 128);
-  *(a1 + 528) = *(a3 + 112);
-  *(a1 + 544) = v8;
-  *(a1 + 496) = v6;
-  *(a1 + 512) = v7;
-  result = *(a3 + 144);
-  v10 = *(a3 + 160);
-  v11 = *(a3 + 192);
-  *(a1 + 592) = *(a3 + 176);
-  *(a1 + 608) = v11;
-  *(a1 + 560) = result;
-  *(a1 + 576) = v10;
+  *(self + 416) = *configuration;
+  v3 = *(configuration + 16);
+  v4 = *(configuration + 32);
+  v5 = *(configuration + 64);
+  *(self + 464) = *(configuration + 48);
+  *(self + 480) = v5;
+  *(self + 432) = v3;
+  *(self + 448) = v4;
+  v6 = *(configuration + 80);
+  v7 = *(configuration + 96);
+  v8 = *(configuration + 128);
+  *(self + 528) = *(configuration + 112);
+  *(self + 544) = v8;
+  *(self + 496) = v6;
+  *(self + 512) = v7;
+  result = *(configuration + 144);
+  v10 = *(configuration + 160);
+  v11 = *(configuration + 192);
+  *(self + 592) = *(configuration + 176);
+  *(self + 608) = v11;
+  *(self + 560) = result;
+  *(self + 576) = v10;
   return result;
 }
 
 - (__n128)cameraConfiguration
 {
-  v2 = *(a1 + 592);
-  *(a2 + 160) = *(a1 + 576);
+  v2 = *(self + 592);
+  *(a2 + 160) = *(self + 576);
   *(a2 + 176) = v2;
-  *(a2 + 192) = *(a1 + 608);
-  v3 = *(a1 + 528);
-  *(a2 + 96) = *(a1 + 512);
+  *(a2 + 192) = *(self + 608);
+  v3 = *(self + 528);
+  *(a2 + 96) = *(self + 512);
   *(a2 + 112) = v3;
-  v4 = *(a1 + 560);
-  *(a2 + 128) = *(a1 + 544);
+  v4 = *(self + 560);
+  *(a2 + 128) = *(self + 544);
   *(a2 + 144) = v4;
-  v5 = *(a1 + 464);
-  *(a2 + 32) = *(a1 + 448);
+  v5 = *(self + 464);
+  *(a2 + 32) = *(self + 448);
   *(a2 + 48) = v5;
-  v6 = *(a1 + 496);
-  *(a2 + 64) = *(a1 + 480);
+  v6 = *(self + 496);
+  *(a2 + 64) = *(self + 480);
   *(a2 + 80) = v6;
-  result = *(a1 + 432);
-  *a2 = *(a1 + 416);
+  result = *(self + 432);
+  *a2 = *(self + 416);
   *(a2 + 16) = result;
   return result;
 }
 
-- (void)setInteractionState:(id *)a3
+- (void)setInteractionState:(id *)state
 {
-  v3 = *&a3->var0;
-  v4 = *&a3->var4;
-  size = a3->var8.size;
-  self->_interactionState.targetRect.origin = a3->var8.origin;
+  v3 = *&state->var0;
+  v4 = *&state->var4;
+  size = state->var8.size;
+  self->_interactionState.targetRect.origin = state->var8.origin;
   self->_interactionState.targetRect.size = size;
   *&self->_interactionState.scrollRegime = v3;
   *&self->_interactionState.contentChangeTrend = v4;
 }
 
-- (void)metalTextureConverter:(id)a3 didCreateTexture:(id)a4 options:(id)a5
+- (void)metalTextureConverter:(id)converter didCreateTexture:(id)texture options:(id)options
 {
-  var2 = a5.var2;
-  v6 = *&a5.var0;
-  v9 = a4;
-  v10 = a3;
+  var2 = options.var2;
+  v6 = *&options.var0;
+  textureCopy = texture;
+  converterCopy = converter;
   os_unfair_lock_lock(&self->_metalLock);
   v11 = self->_textureConverter;
   os_unfair_lock_unlock(&self->_metalLock);
 
-  if (v11 == v10)
+  if (v11 == converterCopy)
   {
-    v12 = [(PXGMetalRenderer *)self recordingSession];
+    recordingSession = [(PXGMetalRenderer *)self recordingSession];
 
-    if (v12)
+    if (recordingSession)
     {
-      v13 = [(PXGMetalRenderer *)self recordingSession];
-      v14 = [PXGMetalRecordingTextureCreatedEvent eventWithTexture:v9 options:v6 recordingComponent:LODWORD(var2), 1];
-      [v13 recordEvent:v14];
+      recordingSession2 = [(PXGMetalRenderer *)self recordingSession];
+      v14 = [PXGMetalRecordingTextureCreatedEvent eventWithTexture:textureCopy options:v6 recordingComponent:LODWORD(var2), 1];
+      [recordingSession2 recordEvent:v14];
     }
 
-    v25 = v9;
-    v26 = 0;
+    v25 = textureCopy;
+    shader = 0;
     memset(v29, 0, sizeof(v29));
     v27 = 0x7FFFFFFFFFFFFFFFLL;
     v28 = 0;
     BYTE8(v29[0]) = 0;
-    v15 = [v9 shaderFlags];
+    shaderFlags = [textureCopy shaderFlags];
     if (v6)
     {
-      v16 = [(PXGMetalRenderer *)self entityManager];
-      v17 = [v16 effectComponent];
+      entityManager = [(PXGMetalRenderer *)self entityManager];
+      effectComponent = [entityManager effectComponent];
 
-      v18 = [v17 effectForId:v6];
-      v26 = [v18 shader];
-      v15 |= 0x400000u;
+      v18 = [effectComponent effectForId:v6];
+      shader = [v18 shader];
+      shaderFlags |= 0x400000u;
     }
 
-    v19 = [(PXGMetalRenderer *)self renderDestination];
-    v20 = [v19 colorPixelFormat];
+    renderDestination = [(PXGMetalRenderer *)self renderDestination];
+    colorPixelFormat = [renderDestination colorPixelFormat];
 
     didPerformFirstRender = self->_didPerformFirstRender;
     if (didPerformFirstRender)
     {
-      if ([v9 isOpaque])
+      if ([textureCopy isOpaque])
       {
         BYTE12(v29[1]) = 0;
-        DWORD1(v29[0]) = v15;
-        [(PXGMetalRenderer *)self _pipelineForRenderTexture:&v25 colorPixelFormat:v20 waitForCompilation:1];
+        DWORD1(v29[0]) = shaderFlags;
+        [(PXGMetalRenderer *)self _pipelineForRenderTexture:&v25 colorPixelFormat:colorPixelFormat waitForCompilation:1];
       }
 
       BYTE12(v29[1]) = 0;
-      DWORD1(v29[0]) = v15 | 0x100000;
-      [(PXGMetalRenderer *)self _pipelineForRenderTexture:&v25 colorPixelFormat:v20 waitForCompilation:1];
+      DWORD1(v29[0]) = shaderFlags | 0x100000;
+      [(PXGMetalRenderer *)self _pipelineForRenderTexture:&v25 colorPixelFormat:colorPixelFormat waitForCompilation:1];
 
       if (v6)
       {
@@ -566,67 +566,67 @@ LABEL_52:
       }
     }
 
-    BYTE12(v29[1]) = [v9 isOpaque];
-    DWORD1(v29[0]) = v15;
-    [(PXGMetalRenderer *)self _pipelineForRenderTexture:&v25 colorPixelFormat:v20 waitForCompilation:didPerformFirstRender];
+    BYTE12(v29[1]) = [textureCopy isOpaque];
+    DWORD1(v29[0]) = shaderFlags;
+    [(PXGMetalRenderer *)self _pipelineForRenderTexture:&v25 colorPixelFormat:colorPixelFormat waitForCompilation:didPerformFirstRender];
   }
 }
 
-- (void)_preloadKernel:(id)a3
+- (void)_preloadKernel:(id)kernel
 {
   device = self->_device;
   if (device)
   {
-    [a3 preloadWithDevice:device];
+    [kernel preloadWithDevice:device];
   }
 }
 
-- (void)_preloadShader:(id)a3
+- (void)_preloadShader:(id)shader
 {
-  v4 = a3;
-  v5 = v4;
+  shaderCopy = shader;
+  v5 = shaderCopy;
   if (self->_device)
   {
     v11[0] = 0;
     memset(v13, 0, sizeof(v13));
     v17 = 0;
-    v11[1] = v4;
+    v11[1] = shaderCopy;
     v12 = 0x7FFFFFFFFFFFFFFFuLL;
     *&v13[4] = 0x400000;
     v14 = 0;
-    v15 = [v4 isOpaque];
+    isOpaque = [shaderCopy isOpaque];
     v16 = 0;
-    v6 = [(PXGMetalRenderer *)self renderDestination];
-    v7 = [v6 colorPixelFormat];
+    renderDestination = [(PXGMetalRenderer *)self renderDestination];
+    colorPixelFormat = [renderDestination colorPixelFormat];
 
-    [(PXGMetalRenderer *)self _pipelineForRenderTexture:v11 colorPixelFormat:v7 waitForCompilation:0];
+    [(PXGMetalRenderer *)self _pipelineForRenderTexture:v11 colorPixelFormat:colorPixelFormat waitForCompilation:0];
     if ([v5 isOpaque])
     {
-      v15 = 0;
-      [(PXGMetalRenderer *)self _pipelineForRenderTexture:v11 colorPixelFormat:v7 waitForCompilation:0];
+      isOpaque = 0;
+      [(PXGMetalRenderer *)self _pipelineForRenderTexture:v11 colorPixelFormat:colorPixelFormat waitForCompilation:0];
     }
   }
 }
 
-- (void)effectComponent:(id)a3 prepareForEffect:(id)a4
+- (void)effectComponent:(id)component prepareForEffect:(id)effect
 {
-  v5 = a4;
-  v6 = [v5 shader];
-  if (v6)
+  effectCopy = effect;
+  shader = [effectCopy shader];
+  if (shader)
   {
-    [(PXGMetalRenderer *)self _preloadShader:v6];
+    [(PXGMetalRenderer *)self _preloadShader:shader];
   }
 
-  v7 = [v5 kernel];
-  v8 = v7;
-  if (v7)
+  kernel = [effectCopy kernel];
+  v8 = kernel;
+  if (kernel)
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __53__PXGMetalRenderer_effectComponent_prepareForEffect___block_invoke;
     v11[3] = &unk_2782AC0A8;
     v11[4] = self;
-    v12 = v7;
+    v12 = kernel;
     v9 = MEMORY[0x21CEE40A0](v11);
     v10 = v9;
     if (self->_didPerformFirstRender)
@@ -655,38 +655,38 @@ void __53__PXGMetalRenderer_effectComponent_prepareForEffect___block_invoke(uint
   dispatch_async(v3, v4);
 }
 
-- (void)renderDestinationRequestRender:(id)a3
+- (void)renderDestinationRequestRender:(id)render
 {
-  v4 = [(PXGMetalRenderer *)self delegate];
-  [v4 rendererPerformRender:self];
+  delegate = [(PXGMetalRenderer *)self delegate];
+  [delegate rendererPerformRender:self];
 }
 
-- (void)renderDestination:(id)a3 renderSizeWillChange:(CGSize)a4
+- (void)renderDestination:(id)destination renderSizeWillChange:(CGSize)change
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = [(PXGMetalRenderer *)self delegate];
-  [v7 renderer:self viewportSizeWillChange:{width, height}];
+  height = change.height;
+  width = change.width;
+  delegate = [(PXGMetalRenderer *)self delegate];
+  [delegate renderer:self viewportSizeWillChange:{width, height}];
 }
 
-- (int64_t)_drawRenderTexture:(id *)a3 forRenderPass:(id)a4 withCommandEncoder:(id)a5
+- (int64_t)_drawRenderTexture:(id *)texture forRenderPass:(id)pass withCommandEncoder:(id)encoder
 {
   v73 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3->var0;
+  passCopy = pass;
+  encoderCopy = encoder;
+  v10 = texture->var0;
   [(PXGMetalRenderer *)self interactionState];
   v11 = v70;
   v68 = 0u;
   v69 = 0u;
   v67 = 0u;
-  -[PXGMetalRenderer _pipelineForRenderTexture:colorPixelFormat:waitForCompilation:](self, "_pipelineForRenderTexture:colorPixelFormat:waitForCompilation:", a3, [v8 pixelFormat], v70 < 1);
-  v12 = a3->var1;
-  v13 = [(PXGMetalRenderer *)self recordingSession];
+  -[PXGMetalRenderer _pipelineForRenderTexture:colorPixelFormat:waitForCompilation:](self, "_pipelineForRenderTexture:colorPixelFormat:waitForCompilation:", texture, [passCopy pixelFormat], v70 < 1);
+  v12 = texture->var1;
+  recordingSession = [(PXGMetalRenderer *)self recordingSession];
 
-  if (v13)
+  if (recordingSession)
   {
-    v14 = [(PXGMetalRenderer *)self recordingSession];
+    recordingSession2 = [(PXGMetalRenderer *)self recordingSession];
     v62 = v67;
     v15 = v68;
     v63 = v15;
@@ -695,7 +695,7 @@ void __53__PXGMetalRenderer_effectComponent_prepareForEffect___block_invoke(uint
     v66 = BYTE8(v69);
     if (PXGMetalRenderEvent)
     {
-      v16 = [PXGMetalRenderEvent eventWithRenderTexture:a3 pipeline:&v62];
+      v16 = [PXGMetalRenderEvent eventWithRenderTexture:texture pipeline:&v62];
     }
 
     else
@@ -704,21 +704,21 @@ void __53__PXGMetalRenderer_effectComponent_prepareForEffect___block_invoke(uint
       v16 = 0;
     }
 
-    [v14 recordEvent:v16];
+    [recordingSession2 recordEvent:v16];
 
-    v17 = [(PXGMetalRenderer *)self recordingSession];
-    v18 = [v17 frameState];
-    v19 = [v10 spriteIndexes];
-    [v18 addRecordedSpriteIndexes:v19];
+    recordingSession3 = [(PXGMetalRenderer *)self recordingSession];
+    frameState = [recordingSession3 frameState];
+    spriteIndexes = [v10 spriteIndexes];
+    [frameState addRecordedSpriteIndexes:spriteIndexes];
   }
 
-  if (v69 || !self->_didPerformFirstRender && (dispatch_sync(self->_compilationQueue, &__block_literal_global_290), -[PXGMetalRenderer _pipelineForRenderTexture:colorPixelFormat:waitForCompilation:](self, "_pipelineForRenderTexture:colorPixelFormat:waitForCompilation:", a3, [v8 pixelFormat], v11 < 1), v67 = *buf, v40 = *&buf[16], *&buf[16] = 0, v41 = v68, *&v68 = v40, v41, v42 = *&buf[24], *&buf[24] = 0, v43 = *(&v68 + 1), *(&v68 + 1) = v42, v43, v44 = *v72, *v72 = 0, v45 = v69, *&v69 = v44, v45, BYTE8(v69) = v72[8], v69))
+  if (v69 || !self->_didPerformFirstRender && (dispatch_sync(self->_compilationQueue, &__block_literal_global_290), -[PXGMetalRenderer _pipelineForRenderTexture:colorPixelFormat:waitForCompilation:](self, "_pipelineForRenderTexture:colorPixelFormat:waitForCompilation:", texture, [passCopy pixelFormat], v11 < 1), v67 = *buf, v40 = *&buf[16], *&buf[16] = 0, v41 = v68, *&v68 = v40, v41, v42 = *&buf[24], *&buf[24] = 0, v43 = *(&v68 + 1), *(&v68 + 1) = v42, v43, v44 = *v72, *v72 = 0, v45 = v69, *&v69 = v44, v45, BYTE8(v69) = v72[8], v69))
   {
-    [v9 setRenderPipelineState:?];
+    [encoderCopy setRenderPipelineState:?];
     memset(buf, 0, sizeof(buf));
-    v20 = [v10 isOpaque];
+    isOpaque = [v10 isOpaque];
     v21 = 0.0;
-    if (v20)
+    if (isOpaque)
     {
       v21 = 1.0;
     }
@@ -728,29 +728,29 @@ void __53__PXGMetalRenderer_effectComponent_prepareForEffect___block_invoke(uint
 
     *&buf[16] = _Q0;
     v27 = [PXTungstenSettings sharedInstance:_Q0];
-    v28 = [v27 debugSharedTextures];
+    debugSharedTextures = [v27 debugSharedTextures];
 
-    if (v28)
+    if (debugSharedTextures)
     {
-      v29 = [v10 spriteCount];
+      spriteCount = [v10 spriteCount];
       v30.i32[0] = 1;
-      v31.i32[0] = v29;
+      v31.i32[0] = spriteCount;
       *&buf[16] = vbslq_s8(vdupq_lane_s32(*&vcgtq_u32(v31, v30), 0), xmmword_21AE2D3F0, v61);
     }
 
-    [v9 setFragmentBytes:buf length:32 atIndex:1];
+    [encoderCopy setFragmentBytes:buf length:32 atIndex:1];
     v32 = v68;
-    v33 = [v32 params];
-    [v9 setFragmentBuffer:v33 offset:0 atIndex:2];
+    params = [v32 params];
+    [encoderCopy setFragmentBuffer:params offset:0 atIndex:2];
 
-    v34 = [v32 TRCLUTs];
-    [v9 setFragmentTexture:v34 atIndex:1];
+    tRCLUTs = [v32 TRCLUTs];
+    [encoderCopy setFragmentTexture:tRCLUTs atIndex:1];
 
-    v35 = [v32 colorCube];
-    [v9 setFragmentTexture:v35 atIndex:2];
+    colorCube = [v32 colorCube];
+    [encoderCopy setFragmentTexture:colorCube atIndex:2];
 
     v36 = 112;
-    if (a3->var5 < 4u)
+    if (texture->var5 < 4u)
     {
       v36 = 104;
     }
@@ -761,31 +761,31 @@ void __53__PXGMetalRenderer_effectComponent_prepareForEffect___block_invoke(uint
       goto LABEL_30;
     }
 
-    v38 = [v12 sampler];
+    sampler = [v12 sampler];
     p_clampToZeroSampler = &self->_clampToZeroSampler;
-    if (v38 > 1)
+    if (sampler > 1)
     {
-      if (v38 != 2)
+      if (sampler != 2)
       {
-        if (v38 != 3)
+        if (sampler != 3)
         {
 LABEL_30:
-          [v9 setFragmentSamplerState:v37 atIndex:0];
-          location = a3->var2.location;
-          length = a3->var2.length;
-          [v9 setVertexBufferOffset:4 * location atIndex:2];
-          [v9 setVertexBufferOffset:location << 6 atIndex:5];
-          v56 = [v10 texture];
-          [v9 setFragmentTexture:v56 atTextureIndex:0 samplerState:v37 atSamplerIndex:0];
-          v57 = [v10 chromaTexture];
-          [v9 setFragmentTexture:v57 atIndex:4];
+          [encoderCopy setFragmentSamplerState:v37 atIndex:0];
+          location = texture->var2.location;
+          length = texture->var2.length;
+          [encoderCopy setVertexBufferOffset:4 * location atIndex:2];
+          [encoderCopy setVertexBufferOffset:location << 6 atIndex:5];
+          texture = [v10 texture];
+          [encoderCopy setFragmentTexture:texture atTextureIndex:0 samplerState:v37 atSamplerIndex:0];
+          chromaTexture = [v10 chromaTexture];
+          [encoderCopy setFragmentTexture:chromaTexture atIndex:4];
 
-          [v12 encodeBindableArgumentsWithEncoder:v9];
-          [v9 drawPrimitives:3 vertexStart:0 vertexCount:54 instanceCount:length];
-          v58 = [v56 width];
-          v59 = [v56 height];
+          [v12 encodeBindableArgumentsWithEncoder:encoderCopy];
+          [encoderCopy drawPrimitives:3 vertexStart:0 vertexCount:54 instanceCount:length];
+          width = [texture width];
+          height = [texture height];
 
-          v52 = v59 * v58;
+          v52 = height * width;
           goto LABEL_31;
         }
 
@@ -793,9 +793,9 @@ LABEL_30:
       }
     }
 
-    else if (v38)
+    else if (sampler)
     {
-      if (v38 != 1)
+      if (sampler != 1)
       {
         goto LABEL_30;
       }
@@ -818,7 +818,7 @@ LABEL_28:
     if (os_signpost_enabled(v46))
     {
       v49 = @"YES";
-      var0 = a3->var0;
+      var0 = texture->var0;
       *buf = 134218754;
       if (v11 < 1)
       {
@@ -843,40 +843,40 @@ LABEL_31:
   return v52;
 }
 
-- (int64_t)_drawSpritesWithRenderPass:(id)a3 renderState:(id)a4 commandEncoder:(id)a5 passingTest:(id)a6
+- (int64_t)_drawSpritesWithRenderPass:(id)pass renderState:(id)state commandEncoder:(id)encoder passingTest:(id)test
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v12;
+  passCopy = pass;
+  stateCopy = state;
+  encoderCopy = encoder;
+  testCopy = test;
+  v14 = encoderCopy;
   kdebug_trace();
   [v14 pushDebugGroup:@"PXGRender Draw Sprites"];
-  [v14 setVertexBytes:objc_msgSend(v11 length:"uniforms") atIndex:{272, 0}];
+  [v14 setVertexBytes:objc_msgSend(stateCopy length:"uniforms") atIndex:{272, 0}];
   [v14 setVertexBuffer:self->_squareGeometryBuffer offset:0 atIndex:1];
-  v15 = [v11 spriteGeometriesBuffer];
-  [v14 setVertexBuffer:v15 offset:0 atIndex:3];
+  spriteGeometriesBuffer = [stateCopy spriteGeometriesBuffer];
+  [v14 setVertexBuffer:spriteGeometriesBuffer offset:0 atIndex:3];
 
-  v16 = [v11 spriteStylesBuffer];
-  [v14 setVertexBuffer:v16 offset:0 atIndex:4];
+  spriteStylesBuffer = [stateCopy spriteStylesBuffer];
+  [v14 setVertexBuffer:spriteStylesBuffer offset:0 atIndex:4];
 
-  v17 = [v11 resizableCapInsetsBuffer];
-  [v14 setVertexBuffer:v17 offset:0 atIndex:6];
+  resizableCapInsetsBuffer = [stateCopy resizableCapInsetsBuffer];
+  [v14 setVertexBuffer:resizableCapInsetsBuffer offset:0 atIndex:6];
 
   [v14 setDepthStencilState:self->_depthStencil];
-  [v14 setFragmentBytes:objc_msgSend(v11 length:"uniforms") atIndex:{272, 0}];
+  [v14 setFragmentBytes:objc_msgSend(stateCopy length:"uniforms") atIndex:{272, 0}];
   yCbCrMatricesBuffer = self->_yCbCrMatricesBuffer;
   if (yCbCrMatricesBuffer)
   {
     [v14 setFragmentBuffer:yCbCrMatricesBuffer offset:0 atIndex:3];
   }
 
-  v19 = [v11 currentRenderPassState];
-  v20 = [v19 spriteIndexesMetalBuffer];
-  [v14 setVertexBuffer:v20 offset:0 atIndex:2];
+  currentRenderPassState = [stateCopy currentRenderPassState];
+  spriteIndexesMetalBuffer = [currentRenderPassState spriteIndexesMetalBuffer];
+  [v14 setVertexBuffer:spriteIndexesMetalBuffer offset:0 atIndex:2];
 
-  v21 = [v19 spriteTextureInfosMetalBuffer];
-  [v14 setVertexBuffer:v21 offset:0 atIndex:5];
+  spriteTextureInfosMetalBuffer = [currentRenderPassState spriteTextureInfosMetalBuffer];
+  [v14 setVertexBuffer:spriteTextureInfosMetalBuffer offset:0 atIndex:5];
 
   v57[0] = 0;
   v57[1] = v57;
@@ -889,9 +889,9 @@ LABEL_31:
   v52 = 0;
   v53 = &v52;
   v54 = 0x2020000000;
-  if (v13)
+  if (testCopy)
   {
-    v22 = v13;
+    v22 = testCopy;
   }
 
   else
@@ -901,9 +901,9 @@ LABEL_31:
 
   v55 = 0;
   v23 = MEMORY[0x21CEE40A0](v22);
-  if (v11)
+  if (stateCopy)
   {
-    [v11 values];
+    [stateCopy values];
   }
 
   else
@@ -925,25 +925,25 @@ LABEL_31:
   v34[3] = &unk_2782A97D8;
   v24 = v23;
   v39 = v24;
-  v25 = v11;
+  v25 = stateCopy;
   v35 = v25;
-  v26 = v10;
+  v26 = passCopy;
   v36 = v26;
   v27 = v14;
   v37 = v27;
-  v38 = self;
+  selfCopy = self;
   v40 = v56;
   v41 = v57;
   v42 = &v52;
   v28 = MEMORY[0x21CEE40A0](v34);
-  v29 = [v25 opaqueTextures];
-  [v29 drawWithOrder:1 enumerationBlock:v28];
+  opaqueTextures = [v25 opaqueTextures];
+  [opaqueTextures drawWithOrder:1 enumerationBlock:v28];
 
-  v30 = [v25 translucentTextures];
-  [v30 drawWithOrder:0 enumerationBlock:v28];
+  translucentTextures = [v25 translucentTextures];
+  [translucentTextures drawWithOrder:0 enumerationBlock:v28];
 
   [v27 popDebugGroup];
-  v31 = self;
+  selfCopy2 = self;
   kdebug_trace();
 
   v32 = v53[3];
@@ -1001,47 +1001,47 @@ void __86__PXGMetalRenderer__drawSpritesWithRenderPass_renderState_commandEncode
   }
 }
 
-- (void)setTest_renderSnapshotHandler:(id)a3
+- (void)setTest_renderSnapshotHandler:(id)handler
 {
-  v4 = a3;
-  if (self->_test_renderSnapshotHandler != v4)
+  handlerCopy = handler;
+  if (self->_test_renderSnapshotHandler != handlerCopy)
   {
-    v8 = v4;
+    v8 = handlerCopy;
     if (self->_renderDestinationIsPresentable)
     {
-      v5 = [(PXGMetalRenderer *)self renderDestination];
-      [v5 test_configureForRenderSnapshot];
+      renderDestination = [(PXGMetalRenderer *)self renderDestination];
+      [renderDestination test_configureForRenderSnapshot];
     }
 
     v6 = [v8 copy];
     test_renderSnapshotHandler = self->_test_renderSnapshotHandler;
     self->_test_renderSnapshotHandler = v6;
 
-    v4 = v8;
+    handlerCopy = v8;
   }
 }
 
-- (void)_parseAndSortRenderTextures:(id)a3 willPerformOffscreenPass:(BOOL)a4
+- (void)_parseAndSortRenderTextures:(id)textures willPerformOffscreenPass:(BOOL)pass
 {
-  v84 = a4;
+  passCopy = pass;
   v129 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (([v4 hasParsedRenderTextures] & 1) == 0)
+  texturesCopy = textures;
+  if (([texturesCopy hasParsedRenderTextures] & 1) == 0)
   {
-    [v4 setHasParsedRenderTextures:1];
-    v70 = v4;
-    v5 = [v4 textures];
-    v69 = [v70 opaqueTextures];
-    v68 = [v70 translucentTextures];
-    [v69 removeAllTextures];
-    [v68 removeAllTextures];
-    v85 = [v70 effectComponent];
-    v91 = [v85 effectIds];
+    [texturesCopy setHasParsedRenderTextures:1];
+    v70 = texturesCopy;
+    textures = [texturesCopy textures];
+    opaqueTextures = [v70 opaqueTextures];
+    translucentTextures = [v70 translucentTextures];
+    [opaqueTextures removeAllTextures];
+    [translucentTextures removeAllTextures];
+    effectComponent = [v70 effectComponent];
+    effectIds = [effectComponent effectIds];
     v116 = 0u;
     v117 = 0u;
     v118 = 0u;
     v119 = 0u;
-    obj = v5;
+    obj = textures;
     v6 = 0;
     v7 = [obj countByEnumeratingWithState:&v116 objects:v128 count:16];
     if (v7)
@@ -1069,18 +1069,18 @@ void __86__PXGMetalRenderer__drawSpritesWithRenderPass_renderState_commandEncode
     v11 = v10;
     if (v10)
     {
-      v77 = [v10 spriteIndexes];
-      v76 = [v11 textureInfos];
+      spriteIndexes = [v10 spriteIndexes];
+      textureInfos = [v11 textureInfos];
       v12 = v70;
-      v90 = [v70 spriteEntities];
+      spriteEntities = [v70 spriteEntities];
       v13 = v70;
-      v89 = [v70 spriteGeometries];
+      spriteGeometries = [v70 spriteGeometries];
       v14 = v70;
-      v75 = [v70 spriteOriginalGeometries];
+      spriteOriginalGeometries = [v70 spriteOriginalGeometries];
       v15 = v70;
-      v74 = [v70 spriteInfos];
+      spriteInfos = [v70 spriteInfos];
       v16 = v70;
-      v95 = [v70 spriteStyles];
+      spriteStyles = [v70 spriteStyles];
       v17 = v70;
       v18 = *([v70 uniforms] + 264);
       *&buf = 0;
@@ -1106,8 +1106,8 @@ void __86__PXGMetalRenderer__drawSpritesWithRenderPass_renderState_commandEncode
       p_buf = &buf;
       v106 = &v108;
       v107 = &v112;
-      v103 = v69;
-      v104 = v68;
+      v103 = opaqueTextures;
+      v104 = translucentTextures;
       v87 = MEMORY[0x21CEE40A0](v102);
       v100 = 0u;
       v101 = 0u;
@@ -1135,29 +1135,29 @@ void __86__PXGMetalRenderer__drawSpritesWithRenderPass_renderState_commandEncode
           }
 
           v19 = *(*(&v98 + 1) + 8 * j);
-          v20 = [v19 spriteCount];
-          if (v20)
+          spriteCount = [v19 spriteCount];
+          if (spriteCount)
           {
-            [v19 getSpriteIndexes:v77 + 4 * v83 maxSpriteCount:v20];
-            [v19 getTextureInfos:v76 + (v83 << 6) forSpriteIndexes:v77 + 4 * v83 geometries:v75 spriteStyles:v95 spriteInfos:v74 screenScale:v20 count:v73];
-            v94 = [v19 isOpaque];
-            v93 = [v19 isAtlas];
+            [v19 getSpriteIndexes:spriteIndexes + 4 * v83 maxSpriteCount:spriteCount];
+            [v19 getTextureInfos:textureInfos + (v83 << 6) forSpriteIndexes:spriteIndexes + 4 * v83 geometries:spriteOriginalGeometries spriteStyles:spriteStyles spriteInfos:spriteInfos screenScale:spriteCount count:v73];
+            isOpaque = [v19 isOpaque];
+            isAtlas = [v19 isAtlas];
             [v19 alpha];
             v22 = v21;
-            v23 = [v19 shaderFlags];
-            if (v23 >= 0x10000)
+            shaderFlags = [v19 shaderFlags];
+            if (shaderFlags >= 0x10000)
             {
-              v64 = [MEMORY[0x277CCA890] currentHandler];
-              [v64 handleFailureInMethod:a2 object:self file:@"PXGMetalRenderer.m" lineNumber:1515 description:{@"Invalid texture shader flags:%u specified for texture:%@", v23, v19}];
+              currentHandler = [MEMORY[0x277CCA890] currentHandler];
+              [currentHandler handleFailureInMethod:a2 object:self file:@"PXGMetalRenderer.m" lineNumber:1515 description:{@"Invalid texture shader flags:%u specified for texture:%@", shaderFlags, v19}];
             }
 
-            v92 = v23;
-            v24 = (v77 + 4 * v83);
+            v92 = shaderFlags;
+            v24 = (spriteIndexes + 4 * v83);
             v25 = v113;
             *(v113 + 24) = 0;
             *(v109 + 24) = 0;
             v26 = *(v25 + 24);
-            v27 = [v19 isCaptureTexture];
+            isCaptureTexture = [v19 isCaptureTexture];
             v28 = 0;
             v29 = 0;
             v30 = 0;
@@ -1172,18 +1172,18 @@ void __86__PXGMetalRenderer__drawSpritesWithRenderPass_renderState_commandEncode
             *(v31 + 48) = v83;
             *(v31 + 72) = 0;
             *(v31 + 76) = v72;
-            *(v31 + 93) = v27;
-            v32 = v20;
+            *(v31 + 93) = isCaptureTexture;
+            v32 = spriteCount;
             *(v31 + 84) = 0x80000000800000;
             v33 = 3.4028e38;
-            v86 = 1;
+            isOpaque2 = 1;
             *(v31 + 94) = 0;
-            v81 = v20;
+            v81 = spriteCount;
 LABEL_19:
             v35 = *v24++;
             v34 = v35;
-            v36 = *(v90 + 4 * v35);
-            v37 = *(v91 + 4 * v36);
+            v36 = *(spriteEntities + 4 * v35);
+            v37 = *(effectIds + 4 * v36);
             if (v37 == v29)
             {
               goto LABEL_26;
@@ -1191,12 +1191,12 @@ LABEL_19:
 
             if (v37)
             {
-              v38 = [v85 effectForId:*(v91 + 4 * v36)];
-              v39 = [v38 shader];
+              v38 = [effectComponent effectForId:*(effectIds + 4 * v36)];
+              shader = [v38 shader];
 
-              if (v39)
+              if (shader)
               {
-                v86 = [v39 isOpaque];
+                isOpaque2 = [shader isOpaque];
                 goto LABEL_25;
               }
             }
@@ -1204,16 +1204,16 @@ LABEL_19:
             else
             {
 
-              v39 = 0;
+              shader = 0;
             }
 
-            v86 = 1;
+            isOpaque2 = 1;
 LABEL_25:
-            v96 = v39 != 0;
-            v97 = v39;
+            v96 = shader != 0;
+            v97 = shader;
 LABEL_26:
             v40 = 0;
-            v41 = v95 + 160 * v34;
+            v41 = spriteStyles + 160 * v34;
             if (*(v41 + 36) == 0.0 && *(v41 + 40) == 0.0 && *(v41 + 44) == 0.0)
             {
               v40 = *(v41 + 48) == 0.0;
@@ -1239,8 +1239,8 @@ LABEL_26:
             }
 
             v45 = *(v41 + 70);
-            v46 = v94;
-            if (v94)
+            v46 = isOpaque;
+            if (isOpaque)
             {
               if (*v41 != 1.0 || !v40 || v45 > 3)
               {
@@ -1249,11 +1249,11 @@ LABEL_26:
 
               else
               {
-                v46 = v86 & !v43;
+                v46 = isOpaque2 & !v43;
               }
             }
 
-            if (v93)
+            if (isAtlas)
             {
               v48 = 0;
             }
@@ -1264,7 +1264,7 @@ LABEL_26:
             }
 
             v49 = v46 & 1;
-            v50 = v89 + 20 * v34;
+            v50 = spriteGeometries + 20 * v34;
             v51 = *v50;
             v52 = *(v50 + 12);
             v53 = *(v50 + 8) + *(v41 + 52);
@@ -1299,7 +1299,7 @@ LABEL_26:
             }
 
             v57 = v55 | v54 | v56 | v92;
-            if (v57 == v28 && (v58 = v113, *(v113 + 24) == v49) && ((v49 ^ 1 | v84) != 1 || v53 == v33) && ((v59 = v109, v37 == v29) ? (v60 = *(v109 + 24) == v48) : (v60 = 0), v60 ? (v61 = v45 == v30) : (v61 = 0), v61))
+            if (v57 == v28 && (v58 = v113, *(v113 + 24) == v49) && ((v49 ^ 1 | passCopy) != 1 || v53 == v33) && ((v59 = v109, v37 == v29) ? (v60 = *(v109 + 24) == v48) : (v60 = 0), v60 ? (v61 = v45 == v30) : (v61 = 0), v61))
             {
               v62 = *(&buf + 1);
             }
@@ -1363,7 +1363,7 @@ LABEL_73:
     }
 
 LABEL_77:
-    v4 = v70;
+    texturesCopy = v70;
   }
 }
 
@@ -1404,25 +1404,25 @@ double __73__PXGMetalRenderer__parseAndSortRenderTextures_willPerformOffscreenPa
   return result;
 }
 
-- (void)_renderToCommandBuffer:(id)a3 renderState:(id)a4 renderPassDescriptor:(id)a5 withCompletionCompletion:(id)a6
+- (void)_renderToCommandBuffer:(id)buffer renderState:(id)state renderPassDescriptor:(id)descriptor withCompletionCompletion:(id)completion
 {
   v241[1] = *MEMORY[0x277D85DE8];
-  v143 = a3;
-  v10 = a4;
-  v130 = a5;
-  v128 = a6;
+  bufferCopy = buffer;
+  stateCopy = state;
+  descriptorCopy = descriptor;
+  completionCopy = completion;
   nextFrameId = self->_nextFrameId;
-  v142 = self;
+  selfCopy = self;
   self->_nextFrameId = nextFrameId + 1;
   v129 = nextFrameId;
-  [v10 prepareForRender:?];
+  [stateCopy prepareForRender:?];
   v146 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v12 = [v10 effectComponent];
-  v144 = [v12 effectIds];
-  v140 = [v10 spriteStyles];
-  v137 = [v10 spriteEntities];
-  v139 = [v10 uniforms];
-  v13 = *(v139 + 264);
+  effectComponent = [stateCopy effectComponent];
+  effectIds = [effectComponent effectIds];
+  spriteStyles = [stateCopy spriteStyles];
+  spriteEntities = [stateCopy spriteEntities];
+  uniforms = [stateCopy uniforms];
+  v13 = *(uniforms + 264);
   v236 = 0u;
   v237 = 0u;
   v234 = 0u;
@@ -1431,9 +1431,9 @@ double __73__PXGMetalRenderer__parseAndSortRenderTextures_willPerformOffscreenPa
   v233 = 0u;
   v230 = 0u;
   v231 = 0u;
-  if (v10)
+  if (stateCopy)
   {
-    [v10 values];
+    [stateCopy values];
     v138 = v231;
   }
 
@@ -1446,8 +1446,8 @@ double __73__PXGMetalRenderer__parseAndSortRenderTextures_willPerformOffscreenPa
   v15 = v14;
   v17 = v16;
   v18 = *(&v236 + 1);
-  v19 = [v130 colorAttachments];
-  v20 = [v19 objectAtIndexedSubscript:0];
+  colorAttachments = [descriptorCopy colorAttachments];
+  v20 = [colorAttachments objectAtIndexedSubscript:0];
   [v20 clearColor];
   v22 = v21;
   v24 = v23;
@@ -1461,7 +1461,7 @@ double __73__PXGMetalRenderer__parseAndSortRenderTextures_willPerformOffscreenPa
     v26 = v26 / v28;
   }
 
-  v29 = [v10 captureSpriteTextures];
+  captureSpriteTextures = [stateCopy captureSpriteTextures];
   v228[0] = 0;
   v228[1] = v228;
   v228[2] = 0x3032000000;
@@ -1485,10 +1485,10 @@ double __73__PXGMetalRenderer__parseAndSortRenderTextures_willPerformOffscreenPa
   v188[2] = __101__PXGMetalRenderer__renderToCommandBuffer_renderState_renderPassDescriptor_withCompletionCompletion___block_invoke;
   v188[3] = &unk_2782A9660;
   v192 = &v220;
-  v196 = v140;
-  v197 = v137;
-  v198 = v144;
-  v30 = v12;
+  v196 = spriteStyles;
+  v197 = spriteEntities;
+  v198 = effectIds;
+  v30 = effectComponent;
   v203 = v234;
   v204 = v235;
   v205 = v236;
@@ -1500,7 +1500,7 @@ double __73__PXGMetalRenderer__parseAndSortRenderTextures_willPerformOffscreenPa
   v127 = v30;
   v189 = v30;
   v193 = &v216;
-  v31 = v10;
+  v31 = stateCopy;
   v207 = v15;
   v208 = v17;
   v209 = 1;
@@ -1516,7 +1516,7 @@ double __73__PXGMetalRenderer__parseAndSortRenderTextures_willPerformOffscreenPa
   v32 = v146;
   v191 = v32;
   v195 = v228;
-  [v29 enumerateObjectsUsingBlock:v188];
+  [captureSpriteTextures enumerateObjectsUsingBlock:v188];
   if ((v217[3] + v221[3]) >= 4)
   {
     v33 = 4;
@@ -1527,8 +1527,8 @@ double __73__PXGMetalRenderer__parseAndSortRenderTextures_willPerformOffscreenPa
     v33 = v217[3] + v221[3];
   }
 
-  offscreenTextureCache = v142->_offscreenTextureCache;
-  device = v142->_device;
+  offscreenTextureCache = selfCopy->_offscreenTextureCache;
+  device = selfCopy->_device;
   v185 = v15;
   v186 = v17;
   v187 = 1;
@@ -1539,7 +1539,7 @@ double __73__PXGMetalRenderer__parseAndSortRenderTextures_willPerformOffscreenPa
   [v32 sortUsingDescriptors:v37];
 
   v38 = objc_alloc_init(PXGMetalRenderPass);
-  [(PXGMetalRenderPass *)v38 setRenderPassDescriptor:v130];
+  [(PXGMetalRenderPass *)v38 setRenderPassDescriptor:descriptorCopy];
   [(PXGMetalRenderPass *)v38 setPixelFormat:v18];
   [(PXGMetalRenderPass *)v38 setRenderRect:v232, v233];
   [v32 addObject:v38];
@@ -1563,7 +1563,7 @@ double __73__PXGMetalRenderer__parseAndSortRenderTextures_willPerformOffscreenPa
   v174 = 0u;
   v171 = 0u;
   v172 = 0u;
-  obj = v29;
+  obj = captureSpriteTextures;
   v40 = [obj countByEnumeratingWithState:&v171 objects:v240 count:16];
   if (v40)
   {
@@ -1591,11 +1591,11 @@ double __73__PXGMetalRenderer__parseAndSortRenderTextures_willPerformOffscreenPa
   while (v43 < [v32 count])
   {
     v44 = [v32 objectAtIndexedSubscript:v43];
-    v45 = [(PXGMetalRenderPass *)v44 captureSpriteTexture];
-    v46 = v45;
-    if (v45)
+    captureSpriteTexture = [(PXGMetalRenderPass *)v44 captureSpriteTexture];
+    v46 = captureSpriteTexture;
+    if (captureSpriteTexture)
     {
-      v47 = [v45 behavior] == 2;
+      v47 = [captureSpriteTexture behavior] == 2;
     }
 
     else
@@ -1603,8 +1603,8 @@ double __73__PXGMetalRenderer__parseAndSortRenderTextures_willPerformOffscreenPa
       v47 = 0;
     }
 
-    v48 = [(PXGMetalRenderPass *)v132 captureSpriteTexture];
-    if (v48)
+    captureSpriteTexture2 = [(PXGMetalRenderPass *)v132 captureSpriteTexture];
+    if (captureSpriteTexture2)
     {
       v49 = v44 == v131;
     }
@@ -1628,7 +1628,7 @@ double __73__PXGMetalRenderer__parseAndSortRenderTextures_willPerformOffscreenPa
 LABEL_36:
         [(PXGMetalRenderPass *)v44 captureSpriteZPosition];
         [(PXGMetalRenderPass *)v44 setMinZ:?];
-        v54 = v142->_offscreenTextureCache;
+        v54 = selfCopy->_offscreenTextureCache;
         if (v44)
         {
           [(PXGMetalRenderPass *)v44 renderSize];
@@ -1641,23 +1641,23 @@ LABEL_36:
           v187 = 0;
         }
 
-        v51 = [(PXGMetalOffscreenTexturesStore *)v54 checkoutOffscreenTextureWithSize:&v185 pixelFormat:[(PXGMetalRenderPass *)v44 pixelFormat]];
-        if (v51)
+        snapshotTexture = [(PXGMetalOffscreenTexturesStore *)v54 checkoutOffscreenTextureWithSize:&v185 pixelFormat:[(PXGMetalRenderPass *)v44 pixelFormat]];
+        if (snapshotTexture)
         {
           v55 = objc_alloc_init(MEMORY[0x277CD6F50]);
-          v56 = [v55 colorAttachments];
-          v57 = [v56 objectAtIndexedSubscript:0];
+          colorAttachments2 = [v55 colorAttachments];
+          v57 = [colorAttachments2 objectAtIndexedSubscript:0];
 
           [(PXGMetalRenderPass *)v44 clearColor];
           [v57 setClearColor:?];
           [v57 setLoadAction:2];
           [v57 setStoreAction:1];
-          [v57 setTexture:v51];
-          v58 = [v130 depthAttachment];
-          [v55 setDepthAttachment:v58];
+          [v57 setTexture:snapshotTexture];
+          depthAttachment = [descriptorCopy depthAttachment];
+          [v55 setDepthAttachment:depthAttachment];
 
-          v59 = [v130 stencilAttachment];
-          [v55 setStencilAttachment:v59];
+          stencilAttachment = [descriptorCopy stencilAttachment];
+          [v55 setStencilAttachment:stencilAttachment];
         }
 
         else
@@ -1668,12 +1668,12 @@ LABEL_36:
         [(PXGMetalRenderPass *)v44 setRenderPassDescriptor:v55];
 
 LABEL_43:
-        v60 = [(PXGMetalRenderPass *)v44 offscreenKernelEffect];
-        v61 = [v60 kernel];
+        offscreenKernelEffect = [(PXGMetalRenderPass *)v44 offscreenKernelEffect];
+        kernel = [offscreenKernelEffect kernel];
 
-        if (v61)
+        if (kernel)
         {
-          v62 = v142->_offscreenTextureCache;
+          v62 = selfCopy->_offscreenTextureCache;
           if (v44)
           {
             [(PXGMetalRenderPass *)v44 renderSize];
@@ -1688,12 +1688,12 @@ LABEL_43:
 
           v63 = [(PXGMetalOffscreenTexturesStore *)v62 checkoutOffscreenTextureWithSize:&v185 pixelFormat:[(PXGMetalRenderPass *)v44 pixelFormat]];
 
-          v51 = v63;
+          snapshotTexture = v63;
         }
 
-        v64 = [(PXGMetalRenderPass *)v44 captureSpriteTexture];
+        captureSpriteTexture3 = [(PXGMetalRenderPass *)v44 captureSpriteTexture];
         [(PXGMetalRenderPass *)v44 drawingScale];
-        (v39)[2](v39, v64, v51, 1.0 / v65);
+        (v39)[2](v39, captureSpriteTexture3, snapshotTexture, 1.0 / v65);
 
 LABEL_49:
         if (v47)
@@ -1705,7 +1705,7 @@ LABEL_49:
       }
 
 LABEL_34:
-      v51 = [v46 snapshotTexture];
+      snapshotTexture = [v46 snapshotTexture];
       goto LABEL_43;
     }
 
@@ -1736,7 +1736,7 @@ LABEL_51:
     ++v43;
   }
 
-  [(PXGMetalRenderer *)v142 _parseAndSortRenderTextures:v141 willPerformOffscreenPass:v225[3] > 0];
+  [(PXGMetalRenderer *)selfCopy _parseAndSortRenderTextures:v141 willPerformOffscreenPass:v225[3] > 0];
   v169 = 0u;
   v170 = 0u;
   v167 = 0u;
@@ -1756,14 +1756,14 @@ LABEL_51:
         }
 
         v69 = *(*(&v167 + 1) + 8 * j);
-        v70 = [v69 renderPassDescriptor];
+        renderPassDescriptor = [v69 renderPassDescriptor];
 
-        if (v70)
+        if (renderPassDescriptor)
         {
-          v71 = [v69 renderPassDescriptor];
-          v72 = [v143 renderCommandEncoderWithDescriptor:v71];
+          renderPassDescriptor2 = [v69 renderPassDescriptor];
+          v72 = [bufferCopy renderCommandEncoderWithDescriptor:renderPassDescriptor2];
 
-          v73 = [v69 captureSpriteTexture];
+          captureSpriteTexture4 = [v69 captureSpriteTexture];
 
           [v69 renderRect];
           v75 = v74;
@@ -1771,7 +1771,7 @@ LABEL_51:
           v79 = v78;
           v81 = v80;
           [v69 drawingScale];
-          [PXGMetalRenderer _configureUniformGeometries:v139 renderRect:v75 drawingScale:v77 renderOrigin:v79, v81, v82, v138];
+          [PXGMetalRenderer _configureUniformGeometries:uniforms renderRect:v75 drawingScale:v77 renderOrigin:v79, v81, v82, v138];
           [v69 minZ];
           v84 = v83;
           [v69 maxZ];
@@ -1783,7 +1783,7 @@ LABEL_51:
           v165 = v84;
           v166 = v85;
           v87 = MEMORY[0x21CEE40A0]();
-          if (v73)
+          if (captureSpriteTexture4)
           {
             v159[0] = MEMORY[0x277D85DD0];
             v159[1] = 3221225472;
@@ -1791,13 +1791,13 @@ LABEL_51:
             v159[3] = &unk_2782A9738;
             v160 = v87;
             v87 = MEMORY[0x21CEE40A0](v159);
-            v88 = [v69 captureSpriteTexture];
-            v89 = [v88 behavior] == 1;
+            captureSpriteTexture5 = [v69 captureSpriteTexture];
+            v89 = [captureSpriteTexture5 behavior] == 1;
 
             if (v89)
             {
-              v90 = [v69 captureSpriteTexture];
-              [v90 captureRect];
+              captureSpriteTexture6 = [v69 captureSpriteTexture];
+              [captureSpriteTexture6 captureRect];
               v92 = v91;
               v94 = v93;
               v96 = v95;
@@ -1849,41 +1849,41 @@ LABEL_51:
           v106 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ pass [%.2f < z <= %.2f]", v105, v84, v86];
           [v72 setLabel:v106];
 
-          [v69 setDrawCalls:{-[PXGMetalRenderer _drawSpritesWithRenderPass:renderState:commandEncoder:passingTest:](v142, "_drawSpritesWithRenderPass:renderState:commandEncoder:passingTest:", v69, v141, v72, v87)}];
+          [v69 setDrawCalls:{-[PXGMetalRenderer _drawSpritesWithRenderPass:renderState:commandEncoder:passingTest:](selfCopy, "_drawSpritesWithRenderPass:renderState:commandEncoder:passingTest:", v69, v141, v72, v87)}];
           [v72 endEncoding];
         }
 
-        v107 = [v69 offscreenKernelEffect];
-        v108 = [v107 kernel];
+        offscreenKernelEffect2 = [v69 offscreenKernelEffect];
+        kernel2 = [offscreenKernelEffect2 kernel];
 
-        if (v108)
+        if (kernel2)
         {
-          v109 = [v69 renderPassDescriptor];
-          v110 = [v109 colorAttachments];
-          v111 = [v110 objectAtIndexedSubscript:0];
-          v112 = [v111 texture];
-          v113 = v112;
-          if (v112)
+          renderPassDescriptor3 = [v69 renderPassDescriptor];
+          colorAttachments3 = [renderPassDescriptor3 colorAttachments];
+          v111 = [colorAttachments3 objectAtIndexedSubscript:0];
+          texture = [v111 texture];
+          v113 = texture;
+          if (texture)
           {
-            v114 = v112;
+            snapshotTexture2 = texture;
           }
 
           else
           {
-            v115 = [v69 captureSpriteTexture];
-            v114 = [v115 snapshotTexture];
+            captureSpriteTexture7 = [v69 captureSpriteTexture];
+            snapshotTexture2 = [captureSpriteTexture7 snapshotTexture];
           }
 
-          if (v114)
+          if (snapshotTexture2)
           {
-            v116 = [v69 captureSpriteTexture];
-            v117 = [v116 texture];
+            captureSpriteTexture8 = [v69 captureSpriteTexture];
+            texture2 = [captureSpriteTexture8 texture];
 
-            if (v117)
+            if (texture2)
             {
-              v118 = [v69 offscreenKernelEffect];
-              v119 = [v118 kernel];
-              [v119 encodeToCommandBuffer:v143 sourceTexture:v114 destinationTexture:v117 targetScale:v133];
+              offscreenKernelEffect3 = [v69 offscreenKernelEffect];
+              kernel3 = [offscreenKernelEffect3 kernel];
+              [kernel3 encodeToCommandBuffer:bufferCopy sourceTexture:snapshotTexture2 destinationTexture:texture2 targetScale:v133];
             }
           }
         }
@@ -1931,10 +1931,10 @@ LABEL_51:
   v147[3] = &unk_2782A9788;
   v125 = v124;
   v148 = v125;
-  v126 = v128;
+  v126 = completionCopy;
   v149 = v126;
   v150 = v129;
-  [v143 addCompletedHandler:v147];
+  [bufferCopy addCompletedHandler:v147];
 
   _Block_object_dispose(&v216, 8);
   _Block_object_dispose(&v220, 8);
@@ -2311,31 +2311,31 @@ LABEL_34:
 LABEL_43:
 }
 
-- (void)_renderToMainDestination:(id)a3 withCompletionCompletion:(id)a4
+- (void)_renderToMainDestination:(id)destination withCompletionCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  destinationCopy = destination;
+  completionCopy = completion;
   dispatch_semaphore_wait(self->_inFlightSemaphore, 0xFFFFFFFFFFFFFFFFLL);
-  v8 = [(PXGMetalRenderer *)self renderDestination];
-  v9 = [v8 currentRenderPassDescriptor];
+  renderDestination = [(PXGMetalRenderer *)self renderDestination];
+  currentRenderPassDescriptor = [renderDestination currentRenderPassDescriptor];
 
-  if (v9)
+  if (currentRenderPassDescriptor)
   {
-    v10 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-    [v10 setLabel:@"PXGMetalRenderer Main Destination"];
+    commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+    [commandBuffer setLabel:@"PXGMetalRenderer Main Destination"];
     v12 = MEMORY[0x277D85DD0];
     v13 = 3221225472;
     v14 = __70__PXGMetalRenderer__renderToMainDestination_withCompletionCompletion___block_invoke;
     v15 = &unk_2782A9610;
-    v16 = self;
-    v17 = v7;
-    [(PXGMetalRenderer *)self _renderToCommandBuffer:v10 renderState:v6 renderPassDescriptor:v9 withCompletionCompletion:&v12];
-    [v10 commit];
-    [v10 waitUntilScheduled];
+    selfCopy = self;
+    v17 = completionCopy;
+    [(PXGMetalRenderer *)self _renderToCommandBuffer:commandBuffer renderState:destinationCopy renderPassDescriptor:currentRenderPassDescriptor withCompletionCompletion:&v12];
+    [commandBuffer commit];
+    [commandBuffer waitUntilScheduled];
     if (self->_renderDestinationIsPresentable)
     {
-      v11 = [(PXGMetalRenderer *)self renderDestination];
-      [v11 present];
+      renderDestination2 = [(PXGMetalRenderer *)self renderDestination];
+      [renderDestination2 present];
     }
   }
 
@@ -2375,9 +2375,9 @@ void __70__PXGMetalRenderer__renderToMainDestination_withCompletionCompletion___
   [v2 notifyDidCompleteRenderForFrameID:*(a1 + 40)];
 }
 
-- (id)renderSnapshotForRequest:(id *)a3 offscreenEffect:(id)a4
+- (id)renderSnapshotForRequest:(id *)request offscreenEffect:(id)effect
 {
-  v5 = a4;
+  effectCopy = effect;
   v6 = self->_lastFrameRenderState;
   if (!v6)
   {
@@ -2386,7 +2386,7 @@ void __70__PXGMetalRenderer__renderToMainDestination_withCompletionCompletion___
   }
 
   kdebug_trace();
-  v7 = [(PXGMetalRenderer *)self renderDestination];
+  renderDestination = [(PXGMetalRenderer *)self renderDestination];
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
@@ -2413,40 +2413,40 @@ void __70__PXGMetalRenderer__renderToMainDestination_withCompletionCompletion___
 
   v9 = v8;
   v10 = objc_alloc_init(MEMORY[0x277CD6F50]);
-  v11 = [v10 colorAttachments];
-  v12 = [v11 objectAtIndexedSubscript:0];
+  colorAttachments = [v10 colorAttachments];
+  v12 = [colorAttachments objectAtIndexedSubscript:0];
 
-  [v7 clearColor];
+  [renderDestination clearColor];
   [v12 setClearColor:?];
   [v12 setLoadAction:2];
   [v12 setStoreAction:1];
   v23 = v12;
   [v12 setTexture:v9];
-  v24 = v7;
-  v13 = [v7 depthStencilTexture];
-  v14 = [v10 depthAttachment];
-  [v14 setTexture:v13];
-  [v14 setLoadAction:2];
-  [v14 setStoreAction:0];
-  [v14 setClearDepth:1.0];
-  v15 = [v10 stencilAttachment];
-  v22 = v13;
-  [v15 setTexture:v13];
-  [v15 setLoadAction:2];
-  [v15 setStoreAction:0];
-  [v15 setClearStencil:0];
-  v16 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  [v16 setLabel:@"PXGMetalRenderer Snapshot"];
+  v24 = renderDestination;
+  depthStencilTexture = [renderDestination depthStencilTexture];
+  depthAttachment = [v10 depthAttachment];
+  [depthAttachment setTexture:depthStencilTexture];
+  [depthAttachment setLoadAction:2];
+  [depthAttachment setStoreAction:0];
+  [depthAttachment setClearDepth:1.0];
+  stencilAttachment = [v10 stencilAttachment];
+  v22 = depthStencilTexture;
+  [stencilAttachment setTexture:depthStencilTexture];
+  [stencilAttachment setLoadAction:2];
+  [stencilAttachment setStoreAction:0];
+  [stencilAttachment setClearStencil:0];
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  [commandBuffer setLabel:@"PXGMetalRenderer Snapshot"];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __61__PXGMetalRenderer_renderSnapshotForRequest_offscreenEffect___block_invoke;
   v25[3] = &unk_2782A95E8;
   v26 = v6;
-  [(PXGMetalRenderer *)self _renderToCommandBuffer:v16 renderState:v26 renderPassDescriptor:v10 withCompletionCompletion:v25];
-  v17 = v5;
-  v18 = [v5 kernel];
+  [(PXGMetalRenderer *)self _renderToCommandBuffer:commandBuffer renderState:v26 renderPassDescriptor:v10 withCompletionCompletion:v25];
+  v17 = effectCopy;
+  kernel = [effectCopy kernel];
 
-  if (!v18)
+  if (!kernel)
   {
     goto LABEL_6;
   }
@@ -2462,19 +2462,19 @@ void __70__PXGMetalRenderer__renderToMainDestination_withCompletionCompletion___
   v19 = [(PXGMetalRenderer *)self _createColorTextureForRenderStateValues:&v27];
   if (v19)
   {
-    v20 = [v17 kernel];
-    [v20 encodeToCommandBuffer:v16 sourceTexture:v9 destinationTexture:v19 targetScale:*(&v42 + 1)];
+    kernel2 = [v17 kernel];
+    [kernel2 encodeToCommandBuffer:commandBuffer sourceTexture:v9 destinationTexture:v19 targetScale:*(&v42 + 1)];
 
     v9 = v19;
 LABEL_6:
-    [v16 commit];
-    [v16 waitUntilScheduled];
+    [commandBuffer commit];
+    [commandBuffer waitUntilScheduled];
     v19 = [[PXGMetalRenderSnapshot alloc] initWithTexture:v9];
   }
 
-  v5 = v17;
+  effectCopy = v17;
 
-  v7 = v24;
+  renderDestination = v24;
 LABEL_10:
 
 LABEL_11:
@@ -2482,12 +2482,12 @@ LABEL_11:
   return v19;
 }
 
-- (id)_createColorTextureForRenderStateValues:(id *)a3
+- (id)_createColorTextureForRenderStateValues:(id *)values
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:a3->var5 width:a3->var0.width height:a3->var0.height mipmapped:0];
-  [v5 setSampleCount:a3->var6];
-  if (a3->var6 >= 2)
+  v5 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:values->var5 width:values->var0.width height:values->var0.height mipmapped:0];
+  [v5 setSampleCount:values->var6];
+  if (values->var6 >= 2)
   {
     v6 = 4;
   }
@@ -2524,23 +2524,23 @@ LABEL_11:
   return v7;
 }
 
-- (void)renderSpritesWithTextures:(id)a3 dataStore:(id)a4 presentationDataStore:(id)a5 presentationMetadataStore:(id)a6 layout:(id)a7
+- (void)renderSpritesWithTextures:(id)textures dataStore:(id)store presentationDataStore:(id)dataStore presentationMetadataStore:(id)metadataStore layout:(id)layout
 {
   v180 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(PXGMetalRenderStatePool *)self->_renderStatePool checkoutRenderState];
-  if (v17)
+  texturesCopy = textures;
+  storeCopy = store;
+  dataStoreCopy = dataStore;
+  metadataStoreCopy = metadataStore;
+  layoutCopy = layout;
+  checkoutRenderState = [(PXGMetalRenderStatePool *)self->_renderStatePool checkoutRenderState];
+  if (checkoutRenderState)
   {
-    v141 = v16;
+    v141 = layoutCopy;
     WeakRetained = objc_loadWeakRetained(&self->_testingDelegate);
-    v148 = v17;
-    [WeakRetained metalRenderer:self willCheckoutRenderState:v17];
+    v148 = checkoutRenderState;
+    [WeakRetained metalRenderer:self willCheckoutRenderState:checkoutRenderState];
 
-    v19 = [(PXGMetalRenderer *)self renderDestination];
+    renderDestination = [(PXGMetalRenderer *)self renderDestination];
     [(PXGMetalRenderer *)self visibleRect];
     v20.i32[0] = 0;
     *&v21 = v21;
@@ -2551,38 +2551,38 @@ LABEL_11:
     v25.i32[3] = v25.i32[2];
     v25.i32[0] = vminvq_u32(v25);
     v138 = vbslq_s8(vdupq_lane_s32(*&vcgtq_s32(v20, v25), 0), v23, v24);
-    v26 = [(PXGMetalRenderer *)self recordingSession];
+    recordingSession = [(PXGMetalRenderer *)self recordingSession];
 
-    if (v26)
+    if (recordingSession)
     {
-      v27 = [(PXGMetalRenderer *)self recordingSession];
+      recordingSession2 = [(PXGMetalRenderer *)self recordingSession];
       [(PXGMetalRenderer *)self visibleRect];
       v29 = v28;
       v31 = v30;
-      v32 = [(PXGMetalRenderer *)self renderDestination];
-      [v32 scale];
+      renderDestination2 = [(PXGMetalRenderer *)self renderDestination];
+      [renderDestination2 scale];
       v34 = [PXGMetalRecordingFrameStartEvent eventWithViewSize:v29 renderOrigin:v31 screenScale:*v138.i64, v33];
-      [v27 recordEvent:v34];
+      [recordingSession2 recordEvent:v34];
     }
 
-    v142 = v15;
-    v144 = v14;
-    v145 = v13;
-    if ([v19 canSetColorSpace])
+    v142 = metadataStoreCopy;
+    v144 = dataStoreCopy;
+    v145 = storeCopy;
+    if ([renderDestination canSetColorSpace])
     {
-      [v19 destinationColorSpaceName];
-      [v19 setColorspace:PXGetColorSpace()];
+      [renderDestination destinationColorSpaceName];
+      [renderDestination setColorspace:PXGetColorSpace()];
     }
 
-    v147 = v19;
-    v150 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v12, "count")}];
+    v147 = renderDestination;
+    v150 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(texturesCopy, "count")}];
     v149 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v162 = 0u;
     v163 = 0u;
     v164 = 0u;
     v165 = 0u;
-    v146 = v12;
-    v35 = v12;
+    v146 = texturesCopy;
+    v35 = texturesCopy;
     v36 = [v35 countByEnumeratingWithState:&v162 objects:v179 count:16];
     if (v36)
     {
@@ -2598,15 +2598,15 @@ LABEL_11:
           }
 
           v40 = *(*(&v162 + 1) + 8 * i);
-          v41 = [v40 texture];
-          if (v41)
+          texture = [v40 texture];
+          if (texture)
           {
-            v42 = v41;
-            v43 = [v40 texture];
-            v44 = [v43 device];
+            v42 = texture;
+            texture2 = [v40 texture];
+            device = [texture2 device];
             device = self->_device;
 
-            if (v44 != device)
+            if (device != device)
             {
               continue;
             }
@@ -2631,7 +2631,7 @@ LABEL_11:
     }
 
     v48 = self->_spriteRenderDataStore;
-    v14 = v144;
+    dataStoreCopy = v144;
     if (v144)
     {
       [v144 sprites];
@@ -2644,7 +2644,7 @@ LABEL_11:
       v160 = 0u;
     }
 
-    v15 = v142;
+    metadataStoreCopy = v142;
     *buf = v159;
     v168 = v160;
     *&v169 = v161;
@@ -2667,7 +2667,7 @@ LABEL_11:
       v49 = 0;
     }
 
-    v13 = v145;
+    storeCopy = v145;
     v50 = v49;
     v51 = [v148 spriteGeometriesBufferWithCount:v49];
     v52 = [v148 spriteEntitiesBufferWithCount:v50];
@@ -2699,51 +2699,51 @@ LABEL_11:
       memcpy(v53, v157[1], 160 * v50);
       memcpy(v54, v158, 40 * v50);
       memcpy(v56, v157[0], 32 * v50);
-      v61 = [v142 numberOfResizableCapInsets];
-      v62 = [v142 resizableCapInsets];
-      v17 = v148;
-      v63 = [v148 resizableCapInsetsBufferWithCount:v61];
+      numberOfResizableCapInsets = [v142 numberOfResizableCapInsets];
+      resizableCapInsets = [v142 resizableCapInsets];
+      checkoutRenderState = v148;
+      v63 = [v148 resizableCapInsetsBufferWithCount:numberOfResizableCapInsets];
       if (!v63)
       {
         v69 = PXAssertGetLog();
-        v12 = v146;
+        texturesCopy = v146;
         if (os_log_type_enabled(v69, OS_LOG_TYPE_FAULT))
         {
           *buf = 134217984;
-          *&buf[4] = v61;
+          *&buf[4] = numberOfResizableCapInsets;
           _os_log_fault_impl(&dword_21AD38000, v69, OS_LOG_TYPE_FAULT, "PXGMetalRenderer failed to allocate resizableCapInsetsBuffer with count %ld, unable to render.", buf, 0xCu);
         }
 
-        v16 = v141;
+        layoutCopy = v141;
         goto LABEL_51;
       }
 
-      memcpy(v63, v62, 16 * v61);
-      v64 = [v148 effectComponent];
+      memcpy(v63, resizableCapInsets, 16 * numberOfResizableCapInsets);
+      effectComponent = [v148 effectComponent];
       v155[0] = MEMORY[0x277D85DD0];
       v155[1] = 3221225472;
       v155[2] = __111__PXGMetalRenderer_renderSpritesWithTextures_dataStore_presentationDataStore_presentationMetadataStore_layout___block_invoke;
       v155[3] = &unk_2782A9570;
-      v65 = self;
+      selfCopy2 = self;
       v155[4] = self;
-      [v64 performChanges:v155];
+      [effectComponent performChanges:v155];
 
-      v66 = [(PXGMetalRenderer *)self test_renderSnapshotHandler];
-      v67 = [(PXGMetalRenderer *)self test_renderSnapshotHandler];
+      test_renderSnapshotHandler = [(PXGMetalRenderer *)self test_renderSnapshotHandler];
+      test_renderSnapshotHandler2 = [(PXGMetalRenderer *)self test_renderSnapshotHandler];
 
-      if (v67)
+      if (test_renderSnapshotHandler2)
       {
         [(PXGMetalRenderer *)self setTest_renderSnapshotHandler:0];
-        v143 = [v147 renderTexture];
+        renderTexture = [v147 renderTexture];
       }
 
       else
       {
-        v143 = 0;
+        renderTexture = 0;
       }
 
-      v70 = [v148 uniforms];
-      v71 = v70;
+      uniforms = [v148 uniforms];
+      v71 = uniforms;
       v72 = vceqq_f32(*&self[1]._nextFrameId, xmmword_21AE2D410);
       v72.i32[3] = v72.i32[2];
       if ((vminvq_u32(v72) & 0x80000000) != 0)
@@ -2763,33 +2763,33 @@ LABEL_11:
         v74 = *&self[1].super.isa;
         v75 = *&self[1]._device;
         v76 = *&self[1]._yCbCrMatricesBuffer;
-        *(v70 + 32) = *&self[1]._commandQueue;
-        *(v70 + 48) = v76;
-        *v70 = v74;
-        *(v70 + 16) = v75;
+        *(uniforms + 32) = *&self[1]._commandQueue;
+        *(uniforms + 48) = v76;
+        *uniforms = v74;
+        *(uniforms + 16) = v75;
         v77 = *&self[1]._lastOffscreenEffectRenderTime;
         v78 = *&self[1]._offscreenEffectTexture;
         v79 = *&self[1]._clampToZeroSampler;
-        *(v70 + 96) = *&self[1]._workQueue;
-        *(v70 + 112) = v79;
-        *(v70 + 64) = v77;
-        *(v70 + 80) = v78;
+        *(uniforms + 96) = *&self[1]._workQueue;
+        *(uniforms + 112) = v79;
+        *(uniforms + 64) = v77;
+        *(uniforms + 80) = v78;
         v80 = *&self[1]._pipelinesLock._os_unfair_lock_opaque;
         v81 = *&self[1]._pipelinesCount;
         v82 = *&self[1]._renderStatePool;
-        *(v70 + 224) = *&self[1]._compilationQueue;
-        *(v70 + 240) = v82;
-        *(v70 + 192) = v80;
-        *(v70 + 208) = v81;
-        *(v70 + 256) = self[1]._nextFrameId;
-        v83 = *(v70 + 64);
-        v84 = *(v70 + 80);
-        v85 = *(v70 + 96);
-        v86 = *(v70 + 112);
-        v87 = *(v70 + 16);
-        v88 = *(v70 + 32);
-        v89 = *(v70 + 48);
-        v166[0] = *v70;
+        *(uniforms + 224) = *&self[1]._compilationQueue;
+        *(uniforms + 240) = v82;
+        *(uniforms + 192) = v80;
+        *(uniforms + 208) = v81;
+        *(uniforms + 256) = self[1]._nextFrameId;
+        v83 = *(uniforms + 64);
+        v84 = *(uniforms + 80);
+        v85 = *(uniforms + 96);
+        v86 = *(uniforms + 112);
+        v87 = *(uniforms + 16);
+        v88 = *(uniforms + 32);
+        v89 = *(uniforms + 48);
+        v166[0] = *uniforms;
         v166[1] = v87;
         v166[2] = v88;
         v166[3] = v89;
@@ -2807,11 +2807,11 @@ LABEL_11:
         v90 = v168;
         v91 = v169;
         v92 = v170;
-        *(v70 + 128) = *buf;
-        *(v70 + 144) = v90;
-        *(v70 + 160) = v91;
-        *(v70 + 176) = v92;
-        v65 = self;
+        *(uniforms + 128) = *buf;
+        *(uniforms + 144) = v90;
+        *(uniforms + 160) = v91;
+        *(uniforms + 176) = v92;
+        selfCopy2 = self;
       }
 
       [v147 scale];
@@ -2821,7 +2821,7 @@ LABEL_11:
       [v147 renderSize];
       v136 = v106;
       v137 = v105;
-      [(PXGMetalRenderer *)v65 renderOrigin];
+      [(PXGMetalRenderer *)selfCopy2 renderOrigin];
       v134 = v108;
       v135 = v107;
       [v147 renderBoundsInPoints];
@@ -2829,15 +2829,15 @@ LABEL_11:
       v112 = v111;
       v114 = v113;
       v133 = v115;
-      [(PXGMetalRenderer *)v65 visibleRectInRenderCoordinates];
+      [(PXGMetalRenderer *)selfCopy2 visibleRectInRenderCoordinates];
       v117 = v116;
       v119 = v118;
       v121 = v120;
       v123 = v122;
-      [(PXGMetalRenderer *)v65 offscreenEffectScale];
+      [(PXGMetalRenderer *)selfCopy2 offscreenEffectScale];
       v125 = v124;
-      v126 = [v147 colorPixelFormat];
-      v127 = [v147 sampleCount];
+      colorPixelFormat = [v147 colorPixelFormat];
+      sampleCount = [v147 sampleCount];
       *buf = v137;
       *&buf[8] = v136;
       *&v168 = v135;
@@ -2851,31 +2851,31 @@ LABEL_11:
       v173 = v121;
       v174 = v123;
       v175 = v125;
-      v176 = v126;
-      v177 = v127;
+      v176 = colorPixelFormat;
+      v177 = sampleCount;
       v178 = v139;
       [v148 setValues:buf];
       v151[0] = MEMORY[0x277D85DD0];
       v151[1] = 3221225472;
       v151[2] = __111__PXGMetalRenderer_renderSpritesWithTextures_dataStore_presentationDataStore_presentationMetadataStore_layout___block_invoke_2;
       v151[3] = &unk_2782A95C0;
-      v128 = v66;
+      v128 = test_renderSnapshotHandler;
       v154 = v128;
-      v129 = v143;
+      v129 = renderTexture;
       v152 = v129;
-      v153 = v65;
-      [(PXGMetalRenderer *)v65 _renderToMainDestination:v148 withCompletionCompletion:v151];
-      objc_storeStrong(&v65->_lastFrameRenderState, v148);
-      v130 = [(PXGMetalRenderer *)v65 recordingSession];
+      v153 = selfCopy2;
+      [(PXGMetalRenderer *)selfCopy2 _renderToMainDestination:v148 withCompletionCompletion:v151];
+      objc_storeStrong(&selfCopy2->_lastFrameRenderState, v148);
+      recordingSession3 = [(PXGMetalRenderer *)selfCopy2 recordingSession];
 
-      if (v130)
+      if (recordingSession3)
       {
-        v131 = [(PXGMetalRenderer *)v65 recordingSession];
+        recordingSession4 = [(PXGMetalRenderer *)selfCopy2 recordingSession];
         v132 = +[PXGMetalRecordingFrameEndEvent event];
-        [v131 recordEvent:v132];
+        [recordingSession4 recordEvent:v132];
       }
 
-      v65->_didPerformFirstRender = 1;
+      selfCopy2->_didPerformFirstRender = 1;
     }
 
     else
@@ -2889,9 +2889,9 @@ LABEL_11:
       }
     }
 
-    v12 = v146;
-    v16 = v141;
-    v17 = v148;
+    texturesCopy = v146;
+    layoutCopy = v141;
+    checkoutRenderState = v148;
 LABEL_51:
   }
 }
@@ -2924,31 +2924,31 @@ void __111__PXGMetalRenderer_renderSpritesWithTextures_dataStore_presentationDat
   }
 }
 
-- (void)setOffscreenEffectScale:(double)a3
+- (void)setOffscreenEffectScale:(double)scale
 {
   if ((PXFloatApproximatelyEqualToFloat() & 1) == 0)
   {
-    self->_offscreenEffectScale = a3;
-    v5 = [(PXGMetalRenderer *)self delegate];
-    [v5 rendererNeedsUpdate:self];
+    self->_offscreenEffectScale = scale;
+    delegate = [(PXGMetalRenderer *)self delegate];
+    [delegate rendererNeedsUpdate:self];
   }
 }
 
-- (void)setIsInvertColorsEnabled:(BOOL)a3
+- (void)setIsInvertColorsEnabled:(BOOL)enabled
 {
-  if (self->_isInvertColorsEnabled != a3)
+  if (self->_isInvertColorsEnabled != enabled)
   {
-    self->_isInvertColorsEnabled = a3;
-    v5 = [(PXGMetalRenderer *)self delegate];
-    [v5 rendererNeedsUpdate:self];
+    self->_isInvertColorsEnabled = enabled;
+    delegate = [(PXGMetalRenderer *)self delegate];
+    [delegate rendererNeedsUpdate:self];
   }
 }
 
-- (void)setLowMemoryMode:(BOOL)a3
+- (void)setLowMemoryMode:(BOOL)mode
 {
-  if (self->_lowMemoryMode != a3)
+  if (self->_lowMemoryMode != mode)
   {
-    self->_lowMemoryMode = a3;
+    self->_lowMemoryMode = mode;
     [(PXGMetalRenderDestination *)self->_renderDestination setLowMemoryMode:?];
   }
 }
@@ -2958,59 +2958,59 @@ void __111__PXGMetalRenderer_renderSpritesWithTextures_dataStore_presentationDat
   lastFrameRenderState = self->_lastFrameRenderState;
   self->_lastFrameRenderState = 0;
 
-  v4 = [(PXGMetalRenderer *)self renderDestination];
-  [v4 releaseCachedResources];
+  renderDestination = [(PXGMetalRenderer *)self renderDestination];
+  [renderDestination releaseCachedResources];
 
   [(PXGMetalOffscreenTexturesStore *)self->_offscreenTextureCache removeAllTextures];
   [(PXGMetalRenderStatePool *)self->_renderStatePool clearReusePool];
-  v5 = [(PXGMetalRenderer *)self delegate];
-  [v5 rendererNeedsUpdate:self];
+  delegate = [(PXGMetalRenderer *)self delegate];
+  [delegate rendererNeedsUpdate:self];
 }
 
 - (void)renderImmediately
 {
-  v2 = [(PXGMetalRenderer *)self renderDestination];
-  [v2 renderImmediately];
+  renderDestination = [(PXGMetalRenderer *)self renderDestination];
+  [renderDestination renderImmediately];
 }
 
-- (void)setEntityManager:(id)a3
+- (void)setEntityManager:(id)manager
 {
-  v5 = a3;
-  if (self->_entityManager != v5)
+  managerCopy = manager;
+  if (self->_entityManager != managerCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_entityManager, a3);
-    v6 = [(PXGEntityManager *)v7 effectComponent];
-    [v6 setDelegate:self];
+    v7 = managerCopy;
+    objc_storeStrong(&self->_entityManager, manager);
+    effectComponent = [(PXGEntityManager *)v7 effectComponent];
+    [effectComponent setDelegate:self];
 
-    v5 = v7;
+    managerCopy = v7;
   }
 }
 
-- (void)_populateEffectSprites:(id)a3 spriteRenderDataStore:(id)a4 presentationDataStore:(id)a5 metadataStore:(id)a6
+- (void)_populateEffectSprites:(id)sprites spriteRenderDataStore:(id)store presentationDataStore:(id)dataStore metadataStore:(id)metadataStore
 {
   v54 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v29 = a4;
-  v20 = a5;
-  v19 = a6;
+  spritesCopy = sprites;
+  storeCopy = store;
+  dataStoreCopy = dataStore;
+  metadataStoreCopy = metadataStore;
   v30 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v21 = [(PXGMetalRenderer *)self entityManager];
-  v31 = [v21 effectComponent];
-  v28 = [v31 effectIds];
-  v27 = [v20 entities];
-  v26 = [v20 geometries];
-  v25 = [v20 styles];
-  v24 = [v20 infos];
-  v11 = [(PXGMetalRenderer *)self renderDestination];
-  [v11 scale];
+  entityManager = [(PXGMetalRenderer *)self entityManager];
+  effectComponent = [entityManager effectComponent];
+  effectIds = [effectComponent effectIds];
+  entities = [dataStoreCopy entities];
+  geometries = [dataStoreCopy geometries];
+  styles = [dataStoreCopy styles];
+  infos = [dataStoreCopy infos];
+  renderDestination = [(PXGMetalRenderer *)self renderDestination];
+  [renderDestination scale];
   v13 = v12;
 
   v51 = 0u;
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  obj = v10;
+  obj = spritesCopy;
   v14 = [obj countByEnumeratingWithState:&v49 objects:v53 count:16];
   if (v14)
   {
@@ -3038,25 +3038,25 @@ void __111__PXGMetalRenderer_renderSpritesWithTextures_dataStore_presentationDat
         v45[3] = __Block_byref_object_copy__8755;
         v45[4] = __Block_byref_object_dispose__8756;
         v46 = 0;
-        v17 = [v16 spriteIndexes];
+        spriteIndexes = [v16 spriteIndexes];
         v32[0] = MEMORY[0x277D85DD0];
         v32[1] = 3221225472;
         v32[2] = __101__PXGMetalRenderer__populateEffectSprites_spriteRenderDataStore_presentationDataStore_metadataStore___block_invoke;
         v32[3] = &unk_2782A9548;
-        v39 = v27;
-        v40 = v28;
-        v18 = v31;
+        v39 = entities;
+        v40 = effectIds;
+        v18 = effectComponent;
         v37 = v45;
         v38 = v47;
         v33 = v18;
         v34 = v16;
         v35 = v30;
-        v36 = v29;
-        v41 = v26;
-        v42 = v25;
-        v43 = v24;
+        v36 = storeCopy;
+        v41 = geometries;
+        v42 = styles;
+        v43 = infos;
         v44 = v13;
-        [v17 enumerateRangesUsingBlock:v32];
+        [spriteIndexes enumerateRangesUsingBlock:v32];
 
         _Block_object_dispose(v45, 8);
         _Block_object_dispose(v47, 8);
@@ -3150,10 +3150,10 @@ void __101__PXGMetalRenderer__populateEffectSprites_spriteRenderDataStore_presen
   }
 }
 
-- (CGRect)converRectToRenderCoordinates:(CGRect)a3
+- (CGRect)converRectToRenderCoordinates:(CGRect)coordinates
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = coordinates.size.height;
+  width = coordinates.size.width;
   [(PXGMetalRenderer *)self renderOrigin];
   PXPointSubtract();
   v7 = width;
@@ -3165,22 +3165,22 @@ void __101__PXGMetalRenderer__populateEffectSprites_spriteRenderDataStore_presen
   return result;
 }
 
-- (id)_createPipelineStateForColorProgram:(id)a3 shader:(id)a4 shaderFlags:(int)a5 colorPixelFormat:(unint64_t)a6 depthStencilPixelFormat:(unint64_t)a7 isOpaque:(BOOL)a8
+- (id)_createPipelineStateForColorProgram:(id)program shader:(id)shader shaderFlags:(int)flags colorPixelFormat:(unint64_t)format depthStencilPixelFormat:(unint64_t)pixelFormat isOpaque:(BOOL)opaque
 {
-  v76 = a8;
+  opaqueCopy = opaque;
   v97 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = [v12 source];
-  [v13 length];
+  programCopy = program;
+  shaderCopy = shader;
+  source = [shaderCopy source];
+  [source length];
   kdebug_trace();
 
-  v14 = [v11 params];
-  LODWORD(v13) = 4 * (v14 != 0);
+  params = [programCopy params];
+  LODWORD(source) = 4 * (params != 0);
 
-  v15 = v13 | (8 * (self->_yCbCrMatricesBuffer != 0));
-  v16 = [v11 TRCLUTs];
-  if (v16)
+  v15 = source | (8 * (self->_yCbCrMatricesBuffer != 0));
+  tRCLUTs = [programCopy TRCLUTs];
+  if (tRCLUTs)
   {
     v17 = 3;
   }
@@ -3190,22 +3190,22 @@ void __101__PXGMetalRenderer__populateEffectSprites_spriteRenderDataStore_presen
     v17 = 1;
   }
 
-  v18 = [v11 colorCube];
-  v19 = v17 | (4 * (v18 != 0));
+  colorCube = [programCopy colorCube];
+  v19 = v17 | (4 * (colorCube != 0));
 
-  v20 = [v11 numInputs];
-  v21 = [v12 opcodes];
-  v22 = v21;
+  numInputs = [programCopy numInputs];
+  opcodes = [shaderCopy opcodes];
+  v22 = opcodes;
   v24 = v23;
-  v25 = HIDWORD(v21);
-  v96[0] = a5;
-  v96[1] = v20;
-  v78 = v11;
-  v96[2] = [v11 opcodes];
+  v25 = HIDWORD(opcodes);
+  v96[0] = flags;
+  v96[1] = numInputs;
+  v78 = programCopy;
+  v96[2] = [programCopy opcodes];
   v96[3] = v15;
   v96[4] = v19;
   v96[5] = v22;
-  v26 = self;
+  selfCopy = self;
   v96[6] = v25;
   v96[7] = v24;
   v27 = objc_alloc_init(MEMORY[0x277CD6D70]);
@@ -3214,11 +3214,11 @@ void __101__PXGMetalRenderer__populateEffectSprites_spriteRenderDataStore_presen
   v28 = self->_device;
   v29 = self->_library;
   os_unfair_lock_unlock(&self->_metalLock);
-  v84 = v12;
-  v30 = [v12 source];
+  v84 = shaderCopy;
+  source2 = [shaderCopy source];
 
   v79 = v28;
-  if (v30)
+  if (source2)
   {
     if (!self->_didPerformFirstRender && [MEMORY[0x277CCACC8] isMainThread])
     {
@@ -3226,16 +3226,16 @@ void __101__PXGMetalRenderer__populateEffectSprites_spriteRenderDataStore_presen
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v95 = v12;
+        v95 = shaderCopy;
         _os_log_impl(&dword_21AD38000, v31, OS_LOG_TYPE_DEFAULT, "Warning, compiling shader %@ on main thread during first render.", buf, 0xCu);
       }
     }
 
     v80 = v29;
     v72 = v27;
-    v73 = self;
-    v32 = [objc_opt_class() mainShaderSource];
-    v33 = [v32 mutableCopy];
+    selfCopy2 = self;
+    mainShaderSource = [objc_opt_class() mainShaderSource];
+    v33 = [mainShaderSource mutableCopy];
 
     v91 = 0u;
     v92 = 0u;
@@ -3258,21 +3258,21 @@ void __101__PXGMetalRenderer__populateEffectSprites_spriteRenderDataStore_presen
           }
 
           v38 = *(*(&v89 + 1) + 8 * v37);
-          v39 = [v84 source];
-          v40 = [v39 sourceForShaderFunction:v38];
+          source3 = [v84 source];
+          v40 = [source3 sourceForShaderFunction:v38];
 
           if (v40)
           {
             v41 = MEMORY[0x277CCACA8];
-            v42 = [v38 name];
-            v43 = [v41 stringWithFormat:@"/* <PXGShaderInject(%@)> */\n", v42];
+            name = [v38 name];
+            v43 = [v41 stringWithFormat:@"/* <PXGShaderInject(%@)> */\n", name];
 
             v44 = [v33 rangeOfString:v43];
             v46 = v45;
             if (v44 == 0x7FFFFFFFFFFFFFFFLL)
             {
-              v48 = [MEMORY[0x277CCA890] currentHandler];
-              [v48 handleFailureInMethod:a2 object:v73 file:@"PXGMetalRenderer.m" lineNumber:589 description:{@"Invalid parameter not satisfying: %@", @"range.location != NSNotFound"}];
+              currentHandler = [MEMORY[0x277CCA890] currentHandler];
+              [currentHandler handleFailureInMethod:a2 object:selfCopy2 file:@"PXGMetalRenderer.m" lineNumber:589 description:{@"Invalid parameter not satisfying: %@", @"range.location != NSNotFound"}];
             }
 
             v47 = [MEMORY[0x277CCACA8] stringWithFormat:@"{\n%@\n}\n", v40];
@@ -3289,19 +3289,19 @@ void __101__PXGMetalRenderer__populateEffectSprites_spriteRenderDataStore_presen
       while (v35);
     }
 
-    v49 = [v84 parameterBindingDeclarations];
-    if ([v49 length])
+    parameterBindingDeclarations = [v84 parameterBindingDeclarations];
+    if ([parameterBindingDeclarations length])
     {
-      [v33 replaceOccurrencesOfString:@"/* <PXGShaderFragmentParameters> */" withString:v49 options:0 range:{0, objc_msgSend(v33, "length")}];
+      [v33 replaceOccurrencesOfString:@"/* <PXGShaderFragmentParameters> */" withString:parameterBindingDeclarations options:0 range:{0, objc_msgSend(v33, "length")}];
     }
 
-    v50 = [v84 source];
-    v51 = [v50 otherSource];
+    source4 = [v84 source];
+    otherSource = [source4 otherSource];
 
-    v26 = v73;
-    if ([v51 length])
+    selfCopy = selfCopy2;
+    if ([otherSource length])
     {
-      [v33 replaceOccurrencesOfString:@"/* <PXGShaderOtherSource> */" withString:v51 options:0 range:{0, objc_msgSend(v33, "length")}];
+      [v33 replaceOccurrencesOfString:@"/* <PXGShaderOtherSource> */" withString:otherSource options:0 range:{0, objc_msgSend(v33, "length")}];
     }
 
     v88 = 0;
@@ -3310,8 +3310,8 @@ void __101__PXGMetalRenderer__populateEffectSprites_spriteRenderDataStore_presen
 
     if (!v29)
     {
-      v70 = [MEMORY[0x277CCA890] currentHandler];
-      [v70 handleFailureInMethod:a2 object:v73 file:@"PXGMetalRenderer.m" lineNumber:606 description:{@"Failed to create library:%@", v52}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:selfCopy2 file:@"PXGMetalRenderer.m" lineNumber:606 description:{@"Failed to create library:%@", v52}];
     }
 
     v27 = v72;
@@ -3331,8 +3331,8 @@ void __101__PXGMetalRenderer__populateEffectSprites_spriteRenderDataStore_presen
 
   else
   {
-    v68 = [MEMORY[0x277CCA890] currentHandler];
-    [v68 handleFailureInMethod:a2 object:v26 file:@"PXGMetalRenderer.m" lineNumber:611 description:{@"Failed to create vertex function:%@", v55}];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:selfCopy file:@"PXGMetalRenderer.m" lineNumber:611 description:{@"Failed to create vertex function:%@", v55}];
 
     if (!v55)
     {
@@ -3364,8 +3364,8 @@ LABEL_33:
 
   else
   {
-    v69 = [MEMORY[0x277CCA890] currentHandler];
-    [v69 handleFailureInMethod:a2 object:v26 file:@"PXGMetalRenderer.m" lineNumber:618 description:{@"Failed to create fragment function:%@", v59}];
+    currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:selfCopy file:@"PXGMetalRenderer.m" lineNumber:618 description:{@"Failed to create fragment function:%@", v59}];
 
     if (!v59)
     {
@@ -3386,16 +3386,16 @@ LABEL_38:
   v61 = objc_opt_new();
   [v61 setVertexFunction:v53];
   [v61 setFragmentFunction:v57];
-  [v61 setDepthAttachmentPixelFormat:a7];
-  [v61 setStencilAttachmentPixelFormat:a7];
-  v62 = [(PXGMetalRenderer *)v26 renderDestination];
-  [v61 setRasterSampleCount:{objc_msgSend(v62, "sampleCount")}];
+  [v61 setDepthAttachmentPixelFormat:pixelFormat];
+  [v61 setStencilAttachmentPixelFormat:pixelFormat];
+  renderDestination = [(PXGMetalRenderer *)selfCopy renderDestination];
+  [v61 setRasterSampleCount:{objc_msgSend(renderDestination, "sampleCount")}];
 
-  v63 = [v61 colorAttachments];
-  v64 = [v63 objectAtIndexedSubscript:0];
+  colorAttachments = [v61 colorAttachments];
+  v64 = [colorAttachments objectAtIndexedSubscript:0];
 
-  [v64 setPixelFormat:a6];
-  [v64 setBlendingEnabled:!v76];
+  [v64 setPixelFormat:format];
+  [v64 setBlendingEnabled:!opaqueCopy];
   [v64 setRgbBlendOperation:0];
   [v64 setAlphaBlendOperation:0];
   [v64 setSourceRGBBlendFactor:1];
@@ -3407,8 +3407,8 @@ LABEL_38:
   v66 = v85;
   if (!v65)
   {
-    v77 = [MEMORY[0x277CCA890] currentHandler];
-    [v77 handleFailureInMethod:a2 object:v26 file:@"PXGMetalRenderer.m" lineNumber:642 description:{@"Failed to create render pipeline state:%@", v66}];
+    currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler5 handleFailureInMethod:a2 object:selfCopy file:@"PXGMetalRenderer.m" lineNumber:642 description:{@"Failed to create render pipeline state:%@", v66}];
   }
 
   kdebug_trace();
@@ -3416,27 +3416,27 @@ LABEL_38:
   return v65;
 }
 
-- ($15EF911DBFB6DAA7434D55827AA48808)_handleCompiledRenderPipelineState:(SEL)a3 forColorProgram:(id)a4 shader:(id)a5 shaderFlags:(id)a6 colorPixelFormat:(int)a7 pipelineIndex:(unint64_t)a8 isOpaque:(int64_t)a9
+- ($15EF911DBFB6DAA7434D55827AA48808)_handleCompiledRenderPipelineState:(SEL)state forColorProgram:(id)program shader:(id)shader shaderFlags:(id)flags colorPixelFormat:(int)format pipelineIndex:(unint64_t)index isOpaque:(int64_t)opaque
 {
-  v26 = a4;
-  v18 = a5;
-  v19 = a6;
+  programCopy = program;
+  shaderCopy = shader;
+  flagsCopy = flags;
   os_unfair_lock_lock(&self->_pipelinesLock);
   *&retstr->var2 = 0u;
   *&retstr->var4 = 0u;
   *&retstr->var0 = 0u;
-  if (self->_pipelinesCount > a9)
+  if (self->_pipelinesCount > opaque)
   {
-    v20 = &self->_pipelines[a9];
-    v21 = v18;
-    v22 = v19;
-    if (v20->var2 == v21 && ((var3 = v20->var3, var3 == v22) || [var3 isEquivalentToShader:v22]) && v20->var0 == a7 && v20->var1 == a8)
+    v20 = &self->_pipelines[opaque];
+    v21 = shaderCopy;
+    v22 = flagsCopy;
+    if (v20->var2 == v21 && ((var3 = v20->var3, var3 == v22) || [var3 isEquivalentToShader:v22]) && v20->var0 == format && v20->var1 == index)
     {
       var5 = v20->var5;
 
       if (var5 == a10)
       {
-        objc_storeStrong(&v20->var4, a4);
+        objc_storeStrong(&v20->var4, program);
         __copy_assignment_8_8_t0w16_s16_s24_s32_t40w1(retstr, v20);
       }
     }
@@ -3451,33 +3451,33 @@ LABEL_38:
   return result;
 }
 
-- ($15EF911DBFB6DAA7434D55827AA48808)_pipelineForRenderTexture:(SEL)a3 colorPixelFormat:(id *)a4 waitForCompilation:(unint64_t)a5
+- ($15EF911DBFB6DAA7434D55827AA48808)_pipelineForRenderTexture:(SEL)texture colorPixelFormat:(id *)format waitForCompilation:(unint64_t)compilation
 {
   v6 = a6;
   v10 = +[PXTungstenSettings sharedInstance];
-  v11 = a4->var0;
-  var1 = a4->var1;
+  v11 = format->var0;
+  var1 = format->var1;
   v13 = var1;
-  v66 = a5;
+  compilationCopy = compilation;
   v62 = v6;
   obj = var1;
   if ([v10 enableColorMatching])
   {
-    v14 = [v11 colorProgram];
+    colorProgram = [v11 colorProgram];
   }
 
   else
   {
-    v14 = 0;
+    colorProgram = 0;
   }
 
-  var4 = a4->var4;
+  var4 = format->var4;
   if (![v10 enableRoundedCorners])
   {
     var4 &= ~0x100000u;
   }
 
-  v16 = BYTE4(a4[1].var1);
+  v16 = BYTE4(format[1].var1);
   if ([(PXGMetalRenderer *)self isInvertColorsEnabled])
   {
     v17 = 0x200000;
@@ -3489,7 +3489,7 @@ LABEL_38:
   }
 
   v18 = v17 | var4;
-  v19 = [v10 debugOpaque];
+  debugOpaque = [v10 debugOpaque];
   v65 = v16;
   if (v16)
   {
@@ -3501,7 +3501,7 @@ LABEL_38:
     v20 = 0x2000000;
   }
 
-  if (v19)
+  if (debugOpaque)
   {
     v21 = v20;
   }
@@ -3554,8 +3554,8 @@ LABEL_38:
   }
 
   v28 = v23 | v26 | v27;
-  v29 = [(PXGMetalRenderer *)self renderDestination];
-  v61 = [v29 depthStencilPixelFormat];
+  renderDestination = [(PXGMetalRenderer *)self renderDestination];
+  depthStencilPixelFormat = [renderDestination depthStencilPixelFormat];
 
   os_unfair_lock_lock(&self->_pipelinesLock);
   *&retstr->var2 = 0u;
@@ -3568,9 +3568,9 @@ LABEL_38:
 
   pipelines = self->_pipelines;
   v31 = &pipelines[[v11 renderPipelineIndex]];
-  v32 = v14;
+  v32 = colorProgram;
   v33 = v13;
-  if (*(v31 + 16) != v32 || (v56 = *(v31 + 24), v56 != v33) && ![v56 isEquivalentToShader:v33] || *v31 != v28 || *(v31 + 8) != v66)
+  if (*(v31 + 16) != v32 || (v56 = *(v31 + 24), v56 != v33) && ![v56 isEquivalentToShader:v33] || *v31 != v28 || *(v31 + 8) != compilationCopy)
   {
 
 LABEL_31:
@@ -3600,9 +3600,9 @@ LABEL_32:
     {
       v38 = self->_pipelines;
       v39 = &v38[v36];
-      v40 = v14;
+      v40 = colorProgram;
       v41 = v13;
-      if (v38[v36].var2 == v40 && ((v42 = *(v39 + 24), v42 == v41) || [v42 isEquivalentToShader:v41]) && *v39 == v28 && v38[v36].var1 == v66)
+      if (v38[v36].var2 == v40 && ((v42 = *(v39 + 24), v42 == v41) || [v42 isEquivalentToShader:v41]) && *v39 == v28 && v38[v36].var1 == compilationCopy)
       {
         var5 = v38[v36].var5;
 
@@ -3644,10 +3644,10 @@ LABEL_45:
     self->_pipelinesCount = pipelinesCount + 1;
     [(PXGMetalRenderer *)self _pipelinesLock_resizePipelinesStorageIfNeeded];
     v44 = &self->_pipelines[pipelinesCount];
-    objc_storeStrong(&v44->var2, v14);
+    objc_storeStrong(&v44->var2, colorProgram);
     objc_storeStrong(&v44->var3, obj);
     v44->var0 = v28;
-    v44->var1 = v66;
+    v44->var1 = compilationCopy;
     v45 = v44->var4;
     v44->var4 = 0;
 
@@ -3657,9 +3657,9 @@ LABEL_45:
     os_unfair_lock_unlock(&self->_pipelinesLock);
     if (v62)
     {
-      v46 = [(PXGMetalRenderer *)self _createPipelineStateForColorProgram:v14 shader:v13 shaderFlags:v28 colorPixelFormat:v66 depthStencilPixelFormat:v61 isOpaque:v65];
+      v46 = [(PXGMetalRenderer *)self _createPipelineStateForColorProgram:colorProgram shader:v13 shaderFlags:v28 colorPixelFormat:compilationCopy depthStencilPixelFormat:depthStencilPixelFormat isOpaque:v65];
       LOBYTE(v58) = v65;
-      [(PXGMetalRenderer *)self _handleCompiledRenderPipelineState:v46 forColorProgram:v14 shader:v13 shaderFlags:v28 colorPixelFormat:v66 pipelineIndex:pipelinesCount isOpaque:v58];
+      [(PXGMetalRenderer *)self _handleCompiledRenderPipelineState:v46 forColorProgram:colorProgram shader:v13 shaderFlags:v28 colorPixelFormat:compilationCopy pipelineIndex:pipelinesCount isOpaque:v58];
       *&retstr->var0 = *location;
       v47 = v75;
       v75 = 0;
@@ -3688,15 +3688,15 @@ LABEL_45:
       block[2] = __82__PXGMetalRenderer__pipelineForRenderTexture_colorPixelFormat_waitForCompilation___block_invoke;
       block[3] = &unk_2782A9520;
       objc_copyWeak(v71, location);
-      v68 = v14;
+      v68 = colorProgram;
       v54 = v13;
       v72 = v28;
-      v71[1] = v66;
-      v71[2] = v61;
+      v71[1] = compilationCopy;
+      v71[2] = depthStencilPixelFormat;
       v73 = v65;
       v71[3] = pipelinesCount;
       v69 = v54;
-      v70 = self;
+      selfCopy = self;
       dispatch_async(compilationQueue, block);
 
       objc_destroyWeak(v71);
@@ -3814,21 +3814,21 @@ void __82__PXGMetalRenderer__pipelineForRenderTexture_colorPixelFormat_waitForCo
   [(PXGMetalRenderer *)&v3 dealloc];
 }
 
-- (PXGMetalRenderer)initWithRenderDestination:(id)a3 layoutQueue:(id)a4
+- (PXGMetalRenderer)initWithRenderDestination:(id)destination layoutQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  destinationCopy = destination;
+  queueCopy = queue;
   v30.receiver = self;
   v30.super_class = PXGMetalRenderer;
   v9 = [(PXGMetalRenderer *)&v30 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_layoutQueue, a4);
-    objc_storeStrong(&v10->_renderDestination, a3);
+    objc_storeStrong(&v9->_layoutQueue, queue);
+    objc_storeStrong(&v10->_renderDestination, destination);
     [(PXGMetalRenderDestination *)v10->_renderDestination setDelegate:v10];
-    [(PXGMetalRenderDestination *)v10->_renderDestination setLayoutQueue:v8];
-    v10->_renderDestinationIsPresentable = [v7 conformsToProtocol:&unk_282C9CA50];
+    [(PXGMetalRenderDestination *)v10->_renderDestination setLayoutQueue:queueCopy];
+    v10->_renderDestinationIsPresentable = [destinationCopy conformsToProtocol:&unk_282C9CA50];
     v10->_renderDestinationWantsCompleteRenderingNotification = objc_opt_respondsToSelector() & 1;
     v10->_pipelinesLock._os_unfair_lock_opaque = 0;
     v10->_metalLock._os_unfair_lock_opaque = 0;
@@ -3851,8 +3851,8 @@ void __82__PXGMetalRenderer__pipelineForRenderTexture_colorPixelFormat_waitForCo
     v10->_offscreenEffectScale = 1.0;
     [(PXGMetalRenderer *)v10 _setupMetalIfNeeded];
     v21 = [PXGMetalRenderStatePool alloc];
-    v22 = [v7 device];
-    v23 = [(PXGMetalRenderStatePool *)v21 initWithDevice:v22 queue:v8];
+    device = [destinationCopy device];
+    v23 = [(PXGMetalRenderStatePool *)v21 initWithDevice:device queue:queueCopy];
     renderStatePool = v10->_renderStatePool;
     v10->_renderStatePool = v23;
 
@@ -3868,14 +3868,14 @@ void __82__PXGMetalRenderer__pipelineForRenderTexture_colorPixelFormat_waitForCo
   return v10;
 }
 
-+ (void)_configureUniformGeometries:(id *)a3 renderRect:(CGRect)a4 drawingScale:(double)a5 renderOrigin:(CGPoint)a6
++ (void)_configureUniformGeometries:(id *)geometries renderRect:(CGRect)rect drawingScale:(double)scale renderOrigin:(CGPoint)origin
 {
-  x = a6.x;
-  y = a6.y;
-  width = a4.size.width;
-  height = a4.size.height;
-  v82 = a4.origin.x;
-  v85 = a4.origin.y;
+  x = origin.x;
+  y = origin.y;
+  width = rect.size.width;
+  height = rect.size.height;
+  v82 = rect.origin.x;
+  v85 = rect.origin.y;
   v7 = +[PXTungstenSettings sharedInstance];
   [v7 cameraZoomFactor];
   v9 = v8;
@@ -4044,18 +4044,18 @@ LABEL_14:
   v66 = v98;
   v67 = v99;
   v68 = v100;
-  *&a3->var4 = v97;
-  *&a3[4].var4 = v66;
-  *&a3[8].var4 = v67;
-  *&a3[12].var4 = v68;
-  *&a3[16].var4 = v92;
-  *&a3[20].var4 = v90;
-  *&a3[24].var4 = v88;
-  *&a3[28].var4 = v76;
-  *&a3[48].var4 = v81;
-  *&a3[52].var4 = v80;
-  *&a3[56].var4 = v84;
-  *&a3[60].var4 = v77;
+  *&geometries->var4 = v97;
+  *&geometries[4].var4 = v66;
+  *&geometries[8].var4 = v67;
+  *&geometries[12].var4 = v68;
+  *&geometries[16].var4 = v92;
+  *&geometries[20].var4 = v90;
+  *&geometries[24].var4 = v88;
+  *&geometries[28].var4 = v76;
+  *&geometries[48].var4 = v81;
+  *&geometries[52].var4 = v80;
+  *&geometries[56].var4 = v84;
+  *&geometries[60].var4 = v77;
   v93 = v65;
   v94 = v66;
   v95 = v67;
@@ -4074,30 +4074,30 @@ LABEL_14:
   v69 = v98;
   v70 = v99;
   v71 = v100;
-  *&a3[32].var4 = v97;
-  *&a3[36].var4 = v69;
-  *&a3[40].var4 = v70;
-  *&a3[44].var4 = v71;
+  *&geometries[32].var4 = v97;
+  *&geometries[36].var4 = v69;
+  *&geometries[40].var4 = v70;
+  *&geometries[44].var4 = v71;
   v69.f64[0] = x;
   v69.f64[1] = y;
-  *&a3[64].var4 = vcvt_f32_f64(v69);
+  *&geometries[64].var4 = vcvt_f32_f64(v69);
 }
 
 + (NSString)mainShaderSource
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"PXGMetalRenderer.m" lineNumber:210 description:{@"Dynamic shader source is not currently supported, see rdar://78532560"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGMetalRenderer.m" lineNumber:210 description:{@"Dynamic shader source is not currently supported, see rdar://78532560"}];
 
   abort();
 }
 
-+ (id)_loadAndPreprocessShaderSourceWithFilename:(id)a3 extension:(id)a4
++ (id)_loadAndPreprocessShaderSourceWithFilename:(id)filename extension:(id)extension
 {
   v7 = MEMORY[0x277CCA8D8];
-  v8 = a4;
-  v9 = a3;
+  extensionCopy = extension;
+  filenameCopy = filename;
   v10 = [v7 bundleForClass:objc_opt_class()];
-  v11 = [v10 URLForResource:v9 withExtension:v8];
+  v11 = [v10 URLForResource:filenameCopy withExtension:extensionCopy];
 
   v34 = 0;
   v12 = [MEMORY[0x277CCACA8] stringWithContentsOfURL:v11 encoding:4 error:&v34];
@@ -4106,8 +4106,8 @@ LABEL_14:
 
   if (!v14)
   {
-    v25 = [MEMORY[0x277CCA890] currentHandler];
-    [v25 handleFailureInMethod:a2 object:a1 file:@"PXGMetalRenderer.m" lineNumber:194 description:{@"Error:%@ loading file at path:%@", v13, v11}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGMetalRenderer.m" lineNumber:194 description:{@"Error:%@ loading file at path:%@", v13, v11}];
   }
 
   v33 = v13;
@@ -4120,7 +4120,7 @@ LABEL_14:
   v26[2] = __73__PXGMetalRenderer__loadAndPreprocessShaderSourceWithFilename_extension___block_invoke;
   v26[3] = &unk_2782A94D0;
   v31 = a2;
-  v32 = a1;
+  selfCopy = self;
   v27 = v15;
   v28 = v16;
   v29 = v11;

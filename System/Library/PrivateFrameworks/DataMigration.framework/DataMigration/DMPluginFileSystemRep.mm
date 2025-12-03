@@ -1,6 +1,6 @@
 @interface DMPluginFileSystemRep
 + (id)allReps;
-- (DMPluginFileSystemRep)initWithName:(id)a3 atEnclosingPath:(id)a4;
+- (DMPluginFileSystemRep)initWithName:(id)name atEnclosingPath:(id)path;
 @end
 
 @implementation DMPluginFileSystemRep
@@ -8,12 +8,12 @@
 + (id)allReps
 {
   v46 = *MEMORY[0x277D85DE8];
-  v2 = [a1 _pathsContainingPossiblePluginDirectory];
+  _pathsContainingPossiblePluginDirectory = [self _pathsContainingPossiblePluginDirectory];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v39 objects:v45 count:16];
+  v3 = [_pathsContainingPossiblePluginDirectory countByEnumeratingWithState:&v39 objects:v45 count:16];
   if (v3)
   {
     v4 = v3;
@@ -27,7 +27,7 @@
       {
         if (*v40 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_pathsContainingPossiblePluginDirectory);
         }
 
         v9 = [*(*(&v39 + 1) + 8 * v7) stringByAppendingPathComponent:@"DataClassMigrators"];
@@ -38,7 +38,7 @@
       }
 
       while (v4 != v7);
-      v4 = [v2 countByEnumeratingWithState:&v39 objects:v45 count:16];
+      v4 = [_pathsContainingPossiblePluginDirectory countByEnumeratingWithState:&v39 objects:v45 count:16];
     }
 
     while (v4);
@@ -49,7 +49,7 @@
     v6 = MEMORY[0x277CBEBF8];
   }
 
-  v25 = v2;
+  v25 = _pathsContainingPossiblePluginDirectory;
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v35 = 0u;
   v36 = 0u;
@@ -70,9 +70,9 @@
         }
 
         v12 = *(*(&v35 + 1) + 8 * i);
-        v13 = [MEMORY[0x277CCAA00] defaultManager];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
         v34 = 0;
-        v14 = [v13 contentsOfDirectoryAtPath:v12 error:&v34];
+        v14 = [defaultManager contentsOfDirectoryAtPath:v12 error:&v34];
         v15 = v34;
 
         v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v14, "count")}];
@@ -122,20 +122,20 @@
   return v10;
 }
 
-- (DMPluginFileSystemRep)initWithName:(id)a3 atEnclosingPath:(id)a4
+- (DMPluginFileSystemRep)initWithName:(id)name atEnclosingPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  pathCopy = path;
   v18.receiver = self;
   v18.super_class = DMPluginFileSystemRep;
   v8 = [(DMPluginFileSystemRep *)&v18 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     name = v8->_name;
     v8->_name = v9;
 
-    v11 = [v7 stringByAppendingPathComponent:v6];
+    v11 = [pathCopy stringByAppendingPathComponent:nameCopy];
     path = v8->_path;
     v8->_path = v11;
 
@@ -143,9 +143,9 @@
     bundle = v8->_bundle;
     v8->_bundle = v13;
 
-    v15 = [(NSBundle *)v8->_bundle bundleIdentifier];
+    bundleIdentifier = [(NSBundle *)v8->_bundle bundleIdentifier];
     bundleIdentifier = v8->_bundleIdentifier;
-    v8->_bundleIdentifier = v15;
+    v8->_bundleIdentifier = bundleIdentifier;
   }
 
   return v8;

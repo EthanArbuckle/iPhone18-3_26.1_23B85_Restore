@@ -1,16 +1,16 @@
 @interface FUFlightViewMainView
 - (CGSize)intrinsicContentSize;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 @end
 
 @implementation FUFlightViewMainView
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(FUFlightViewMainView *)self subviews];
-  v3 = [v2 firstObject];
+  subviews = [(FUFlightViewMainView *)self subviews];
+  firstObject = [subviews firstObject];
 
-  [v3 intrinsicContentSize];
+  [firstObject intrinsicContentSize];
   v5 = v4;
   v7 = v6;
 
@@ -21,11 +21,11 @@
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  if (a3.height <= 1500.0)
+  if (size.height <= 1500.0)
   {
-    height = a3.height;
+    height = size.height;
   }
 
   else
@@ -33,9 +33,9 @@
     height = 1500.0;
   }
 
-  if (a3.width <= 500.0)
+  if (size.width <= 500.0)
   {
-    width = a3.width;
+    width = size.width;
   }
 
   else
@@ -43,12 +43,12 @@
     width = 500.0;
   }
 
-  v9 = [(FUFlightViewMainView *)self subviews];
-  v10 = [v9 firstObject];
+  subviews = [(FUFlightViewMainView *)self subviews];
+  firstObject = [subviews firstObject];
 
-  *&v11 = a4;
-  *&v12 = a5;
-  [v10 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v11, v12}];
+  *&v11 = priority;
+  *&v12 = fittingPriority;
+  [firstObject systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v11, v12}];
   v14 = v13;
   v16 = v15;
 

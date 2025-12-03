@@ -1,58 +1,58 @@
 @interface NPKProtoResyncNeededRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addManifestHashes:(id)a3;
-- (void)addUniqueIDs:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasFullResyncNeeded:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addManifestHashes:(id)hashes;
+- (void)addUniqueIDs:(id)ds;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasFullResyncNeeded:(BOOL)needed;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoResyncNeededRequest
 
-- (void)addUniqueIDs:(id)a3
+- (void)addUniqueIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   uniqueIDs = self->_uniqueIDs;
-  v8 = v4;
+  v8 = dsCopy;
   if (!uniqueIDs)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_uniqueIDs;
     self->_uniqueIDs = v6;
 
-    v4 = v8;
+    dsCopy = v8;
     uniqueIDs = self->_uniqueIDs;
   }
 
-  [(NSMutableArray *)uniqueIDs addObject:v4];
+  [(NSMutableArray *)uniqueIDs addObject:dsCopy];
 }
 
-- (void)addManifestHashes:(id)a3
+- (void)addManifestHashes:(id)hashes
 {
-  v4 = a3;
+  hashesCopy = hashes;
   manifestHashes = self->_manifestHashes;
-  v8 = v4;
+  v8 = hashesCopy;
   if (!manifestHashes)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_manifestHashes;
     self->_manifestHashes = v6;
 
-    v4 = v8;
+    hashesCopy = v8;
     manifestHashes = self->_manifestHashes;
   }
 
-  [(NSMutableArray *)manifestHashes addObject:v4];
+  [(NSMutableArray *)manifestHashes addObject:hashesCopy];
 }
 
-- (void)setHasFullResyncNeeded:(BOOL)a3
+- (void)setHasFullResyncNeeded:(BOOL)needed
 {
-  if (a3)
+  if (needed)
   {
     v3 = 2;
   }
@@ -71,39 +71,39 @@
   v8.receiver = self;
   v8.super_class = NPKProtoResyncNeededRequest;
   v4 = [(NPKProtoResyncNeededRequest *)&v8 description];
-  v5 = [(NPKProtoResyncNeededRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoResyncNeededRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   expectedHash = self->_expectedHash;
   if (expectedHash)
   {
-    v5 = [(NPKProtoHash *)expectedHash dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"expectedHash"];
+    dictionaryRepresentation = [(NPKProtoHash *)expectedHash dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"expectedHash"];
   }
 
   uniqueIDs = self->_uniqueIDs;
   if (uniqueIDs)
   {
-    [v3 setObject:uniqueIDs forKey:@"uniqueIDs"];
+    [dictionary setObject:uniqueIDs forKey:@"uniqueIDs"];
   }
 
   manifestHashes = self->_manifestHashes;
   if (manifestHashes)
   {
-    [v3 setObject:manifestHashes forKey:@"manifestHashes"];
+    [dictionary setObject:manifestHashes forKey:@"manifestHashes"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithBool:self->_fullResyncNeeded];
-    [v3 setObject:v9 forKey:@"fullResyncNeeded"];
+    [dictionary setObject:v9 forKey:@"fullResyncNeeded"];
 
     has = self->_has;
   }
@@ -111,16 +111,16 @@
   if (has)
   {
     v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_resyncID];
-    [v3 setObject:v10 forKey:@"resyncID"];
+    [dictionary setObject:v10 forKey:@"resyncID"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_expectedHash)
   {
     PBDataWriterWriteSubmessage();
@@ -201,40 +201,40 @@
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v13 = a3;
+  toCopy = to;
   if (self->_expectedHash)
   {
-    [v13 setExpectedHash:?];
+    [toCopy setExpectedHash:?];
   }
 
   if ([(NPKProtoResyncNeededRequest *)self uniqueIDsCount])
   {
-    [v13 clearUniqueIDs];
-    v4 = [(NPKProtoResyncNeededRequest *)self uniqueIDsCount];
-    if (v4)
+    [toCopy clearUniqueIDs];
+    uniqueIDsCount = [(NPKProtoResyncNeededRequest *)self uniqueIDsCount];
+    if (uniqueIDsCount)
     {
-      v5 = v4;
+      v5 = uniqueIDsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NPKProtoResyncNeededRequest *)self uniqueIDsAtIndex:i];
-        [v13 addUniqueIDs:v7];
+        [toCopy addUniqueIDs:v7];
       }
     }
   }
 
   if ([(NPKProtoResyncNeededRequest *)self manifestHashesCount])
   {
-    [v13 clearManifestHashes];
-    v8 = [(NPKProtoResyncNeededRequest *)self manifestHashesCount];
-    if (v8)
+    [toCopy clearManifestHashes];
+    manifestHashesCount = [(NPKProtoResyncNeededRequest *)self manifestHashesCount];
+    if (manifestHashesCount)
     {
-      v9 = v8;
+      v9 = manifestHashesCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(NPKProtoResyncNeededRequest *)self manifestHashesAtIndex:j];
-        [v13 addManifestHashes:v11];
+        [toCopy addManifestHashes:v11];
       }
     }
   }
@@ -242,23 +242,23 @@
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v13 + 40) = self->_fullResyncNeeded;
-    *(v13 + 44) |= 2u;
+    *(toCopy + 40) = self->_fullResyncNeeded;
+    *(toCopy + 44) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v13 + 6) = self->_resyncID;
-    *(v13 + 44) |= 1u;
+    *(toCopy + 6) = self->_resyncID;
+    *(toCopy + 44) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NPKProtoHash *)self->_expectedHash copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NPKProtoHash *)self->_expectedHash copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -281,7 +281,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v27 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v27 + 1) + 8 * i) copyWithZone:zone];
         [v5 addUniqueIDs:v13];
       }
 
@@ -310,7 +310,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v23 + 1) + 8 * j) copyWithZone:{a3, v23}];
+        v19 = [*(*(&v23 + 1) + 8 * j) copyWithZone:{zone, v23}];
         [v5 addManifestHashes:v19];
       }
 
@@ -338,16 +338,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
   expectedHash = self->_expectedHash;
-  if (expectedHash | *(v4 + 1))
+  if (expectedHash | *(equalCopy + 1))
   {
     if (![(NPKProtoHash *)expectedHash isEqual:?])
     {
@@ -356,7 +356,7 @@
   }
 
   uniqueIDs = self->_uniqueIDs;
-  if (uniqueIDs | *(v4 + 4))
+  if (uniqueIDs | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)uniqueIDs isEqual:?])
     {
@@ -365,7 +365,7 @@
   }
 
   manifestHashes = self->_manifestHashes;
-  if (manifestHashes | *(v4 + 2))
+  if (manifestHashes | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)manifestHashes isEqual:?])
     {
@@ -375,35 +375,35 @@
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0)
+    if ((*(equalCopy + 44) & 2) == 0)
     {
       goto LABEL_15;
     }
 
-    v10 = *(v4 + 40);
+    v10 = *(equalCopy + 40);
     if (self->_fullResyncNeeded)
     {
-      if ((*(v4 + 40) & 1) == 0)
+      if ((*(equalCopy + 40) & 1) == 0)
       {
         goto LABEL_15;
       }
     }
 
-    else if (*(v4 + 40))
+    else if (*(equalCopy + 40))
     {
       goto LABEL_15;
     }
   }
 
-  else if ((*(v4 + 44) & 2) != 0)
+  else if ((*(equalCopy + 44) & 2) != 0)
   {
     goto LABEL_15;
   }
 
-  v8 = (*(v4 + 44) & 1) == 0;
+  v8 = (*(equalCopy + 44) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) != 0 && self->_resyncID == *(v4 + 6))
+    if ((*(equalCopy + 44) & 1) != 0 && self->_resyncID == *(equalCopy + 6))
     {
       v8 = 1;
       goto LABEL_16;
@@ -447,12 +447,12 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   expectedHash = self->_expectedHash;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (expectedHash)
   {
     if (v6)
@@ -470,7 +470,7 @@ LABEL_3:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = *(v4 + 4);
+  v7 = *(fromCopy + 4);
   v8 = [v7 countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v8)
   {
@@ -498,7 +498,7 @@ LABEL_3:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v12 = *(v4 + 2);
+  v12 = *(fromCopy + 2);
   v13 = [v12 countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v13)
   {
@@ -522,17 +522,17 @@ LABEL_3:
     while (v14);
   }
 
-  v17 = *(v4 + 44);
+  v17 = *(fromCopy + 44);
   if ((v17 & 2) != 0)
   {
-    self->_fullResyncNeeded = *(v4 + 40);
+    self->_fullResyncNeeded = *(fromCopy + 40);
     *&self->_has |= 2u;
-    v17 = *(v4 + 44);
+    v17 = *(fromCopy + 44);
   }
 
   if (v17)
   {
-    self->_resyncID = *(v4 + 6);
+    self->_resyncID = *(fromCopy + 6);
     *&self->_has |= 1u;
   }
 

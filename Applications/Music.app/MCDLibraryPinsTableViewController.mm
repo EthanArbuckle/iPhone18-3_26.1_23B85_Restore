@@ -1,17 +1,17 @@
 @interface MCDLibraryPinsTableViewController
-- (MCDLibraryPinsTableViewController)initWithIdentifier:(id)a3 showLocalContent:(BOOL)a4;
+- (MCDLibraryPinsTableViewController)initWithIdentifier:(id)identifier showLocalContent:(BOOL)content;
 @end
 
 @implementation MCDLibraryPinsTableViewController
 
-- (MCDLibraryPinsTableViewController)initWithIdentifier:(id)a3 showLocalContent:(BOOL)a4
+- (MCDLibraryPinsTableViewController)initWithIdentifier:(id)identifier showLocalContent:(BOOL)content
 {
-  v4 = a4;
-  v6 = a3;
+  contentCopy = content;
+  identifierCopy = identifier;
   v7 = objc_opt_new();
   v10.receiver = self;
   v10.super_class = MCDLibraryPinsTableViewController;
-  v8 = [(MCDLibraryTableViewController *)&v10 initWithIdentifier:v6 showLocalContent:v4 dataSource:v7];
+  v8 = [(MCDLibraryTableViewController *)&v10 initWithIdentifier:identifierCopy showLocalContent:contentCopy dataSource:v7];
 
   if (v8)
   {

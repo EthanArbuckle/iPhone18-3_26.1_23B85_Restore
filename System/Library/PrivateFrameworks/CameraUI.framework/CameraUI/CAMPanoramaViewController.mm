@@ -1,129 +1,129 @@
 @interface CAMPanoramaViewController
-- (CAMPanoramaViewController)initWithCaptureController:(id)a3 layoutStyle:(int64_t)a4;
-- (CAMPanoramaViewController)initWithCoder:(id)a3;
-- (void)_handleDirectionChange:(id)a3;
+- (CAMPanoramaViewController)initWithCaptureController:(id)controller layoutStyle:(int64_t)style;
+- (CAMPanoramaViewController)initWithCoder:(id)coder;
+- (void)_handleDirectionChange:(id)change;
 - (void)finishedProcessingPanorama;
 - (void)loadView;
-- (void)panoramaConfigurationDidChangeWithDirection:(int64_t)a3;
-- (void)panoramaView:(id)a3 didUpdateInstruction:(int64_t)a4;
-- (void)panoramaViewDidRequestSynchronizedDirectionChange:(id)a3 toDirection:(int64_t)a4;
-- (void)setDevicePosition:(int64_t)a3;
-- (void)setLayoutStyle:(int64_t)a3;
+- (void)panoramaConfigurationDidChangeWithDirection:(int64_t)direction;
+- (void)panoramaView:(id)view didUpdateInstruction:(int64_t)instruction;
+- (void)panoramaViewDidRequestSynchronizedDirectionChange:(id)change toDirection:(int64_t)direction;
+- (void)setDevicePosition:(int64_t)position;
+- (void)setLayoutStyle:(int64_t)style;
 - (void)startPainting;
 - (void)startProcessingPanorama;
 - (void)stopPainting;
-- (void)updateWithStatus:(id)a3;
+- (void)updateWithStatus:(id)status;
 @end
 
 @implementation CAMPanoramaViewController
 
-- (CAMPanoramaViewController)initWithCaptureController:(id)a3 layoutStyle:(int64_t)a4
+- (CAMPanoramaViewController)initWithCaptureController:(id)controller layoutStyle:(int64_t)style
 {
-  v7 = a3;
+  controllerCopy = controller;
   v14.receiver = self;
   v14.super_class = CAMPanoramaViewController;
   v8 = [(CAMPanoramaViewController *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->__captureController, a3);
+    objc_storeStrong(&v8->__captureController, controller);
     v9->__captureOrientation = 1;
     v10 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:v9 action:sel__handleDirectionChange_];
     directionChangeGestureRecognizer = v9->__directionChangeGestureRecognizer;
     v9->__directionChangeGestureRecognizer = v10;
 
-    v9->_layoutStyle = a4;
-    [v7 setPanoramaChangeDelegate:v9];
+    v9->_layoutStyle = style;
+    [controllerCopy setPanoramaChangeDelegate:v9];
     v12 = v9;
   }
 
   return v9;
 }
 
-- (CAMPanoramaViewController)initWithCoder:(id)a3
+- (CAMPanoramaViewController)initWithCoder:(id)coder
 {
   [(CAMPanoramaViewController *)self doesNotRecognizeSelector:a2];
 
   return [(CAMPanoramaViewController *)self initWithCaptureController:0 layoutStyle:0];
 }
 
-- (void)setLayoutStyle:(int64_t)a3
+- (void)setLayoutStyle:(int64_t)style
 {
-  if (self->_layoutStyle != a3)
+  if (self->_layoutStyle != style)
   {
-    self->_layoutStyle = a3;
-    v5 = [(CAMPanoramaViewController *)self panoramaView];
-    [v5 setLayoutStyle:a3];
+    self->_layoutStyle = style;
+    panoramaView = [(CAMPanoramaViewController *)self panoramaView];
+    [panoramaView setLayoutStyle:style];
   }
 }
 
 - (void)loadView
 {
-  v3 = [(CAMPanoramaViewController *)self layoutStyle];
-  v7 = [(CAMPanoramaViewController *)self _captureController];
-  v4 = [v7 panoramaPreviewView];
-  v5 = [[CAMPanoramaView alloc] initWithPanoramaPreviewView:v4 layoutStyle:v3];
+  layoutStyle = [(CAMPanoramaViewController *)self layoutStyle];
+  _captureController = [(CAMPanoramaViewController *)self _captureController];
+  panoramaPreviewView = [_captureController panoramaPreviewView];
+  v5 = [[CAMPanoramaView alloc] initWithPanoramaPreviewView:panoramaPreviewView layoutStyle:layoutStyle];
   [(CAMPanoramaView *)v5 setDevicePosition:[(CAMPanoramaViewController *)self devicePosition]];
   [(CAMPanoramaView *)v5 setDelegate:self];
-  v6 = [(CAMPanoramaViewController *)self _directionChangeGestureRecognizer];
-  [(CAMPanoramaView *)v5 addGestureRecognizer:v6];
+  _directionChangeGestureRecognizer = [(CAMPanoramaViewController *)self _directionChangeGestureRecognizer];
+  [(CAMPanoramaView *)v5 addGestureRecognizer:_directionChangeGestureRecognizer];
   [(CAMPanoramaViewController *)self setView:v5];
 }
 
-- (void)setDevicePosition:(int64_t)a3
+- (void)setDevicePosition:(int64_t)position
 {
-  if (self->_devicePosition != a3)
+  if (self->_devicePosition != position)
   {
-    self->_devicePosition = a3;
-    v5 = [(CAMPanoramaViewController *)self panoramaView];
-    [v5 setDevicePosition:{-[CAMPanoramaViewController devicePosition](self, "devicePosition")}];
+    self->_devicePosition = position;
+    panoramaView = [(CAMPanoramaViewController *)self panoramaView];
+    [panoramaView setDevicePosition:{-[CAMPanoramaViewController devicePosition](self, "devicePosition")}];
   }
 }
 
 - (void)startPainting
 {
-  v3 = [(CAMPanoramaViewController *)self panoramaView];
-  [v3 startPainting];
+  panoramaView = [(CAMPanoramaViewController *)self panoramaView];
+  [panoramaView startPainting];
   [(CAMPanoramaViewController *)self _setPainting:1];
 }
 
 - (void)stopPainting
 {
-  v3 = [(CAMPanoramaViewController *)self panoramaView];
-  [v3 stopPainting];
+  panoramaView = [(CAMPanoramaViewController *)self panoramaView];
+  [panoramaView stopPainting];
   [(CAMPanoramaViewController *)self _setPainting:0];
 }
 
 - (void)startProcessingPanorama
 {
-  v2 = [(CAMPanoramaViewController *)self panoramaView];
-  [v2 startProcessingPanorama];
+  panoramaView = [(CAMPanoramaViewController *)self panoramaView];
+  [panoramaView startProcessingPanorama];
 }
 
 - (void)finishedProcessingPanorama
 {
-  v2 = [(CAMPanoramaViewController *)self panoramaView];
-  [v2 finishedProcessingPanorama];
+  panoramaView = [(CAMPanoramaViewController *)self panoramaView];
+  [panoramaView finishedProcessingPanorama];
 }
 
-- (void)_handleDirectionChange:(id)a3
+- (void)_handleDirectionChange:(id)change
 {
-  v4 = [(CAMPanoramaViewController *)self _captureController];
-  v5 = [v4 isCapturingPanorama];
+  _captureController = [(CAMPanoramaViewController *)self _captureController];
+  isCapturingPanorama = [_captureController isCapturingPanorama];
 
-  if ((v5 & 1) == 0)
+  if ((isCapturingPanorama & 1) == 0)
   {
-    v6 = [(CAMPanoramaViewController *)self panoramaView];
-    v7 = [v6 direction];
-    if (v7)
+    panoramaView = [(CAMPanoramaViewController *)self panoramaView];
+    direction = [panoramaView direction];
+    if (direction)
     {
       v8 = 2;
-      if (v7 != 1)
+      if (direction != 1)
       {
         v8 = 0;
       }
 
-      if (v7 == 2)
+      if (direction == 2)
       {
         v9 = 1;
       }
@@ -146,40 +146,40 @@
       v9 = 1;
     }
 
-    [v6 setDirection:v9 animated:1];
+    [panoramaView setDirection:v9 animated:1];
   }
 }
 
-- (void)panoramaViewDidRequestSynchronizedDirectionChange:(id)a3 toDirection:(int64_t)a4
+- (void)panoramaViewDidRequestSynchronizedDirectionChange:(id)change toDirection:(int64_t)direction
 {
-  v5 = [(CAMPanoramaViewController *)self _captureController];
-  [v5 changeToPanoramaDirection:a4];
+  _captureController = [(CAMPanoramaViewController *)self _captureController];
+  [_captureController changeToPanoramaDirection:direction];
 }
 
-- (void)panoramaView:(id)a3 didUpdateInstruction:(int64_t)a4
+- (void)panoramaView:(id)view didUpdateInstruction:(int64_t)instruction
 {
-  v5 = [(CAMPanoramaViewController *)self analyticsCaptureEvent];
-  if (v5)
+  analyticsCaptureEvent = [(CAMPanoramaViewController *)self analyticsCaptureEvent];
+  if (analyticsCaptureEvent)
   {
-    v6 = v5;
-    [v5 populatePanoramaInstruction:a4];
-    v5 = v6;
+    v6 = analyticsCaptureEvent;
+    [analyticsCaptureEvent populatePanoramaInstruction:instruction];
+    analyticsCaptureEvent = v6;
   }
 }
 
-- (void)updateWithStatus:(id)a3
+- (void)updateWithStatus:(id)status
 {
-  v4 = a3;
-  v5 = [(CAMPanoramaViewController *)self panoramaView];
-  [v5 updatePaintingWithStatus:v4];
+  statusCopy = status;
+  panoramaView = [(CAMPanoramaViewController *)self panoramaView];
+  [panoramaView updatePaintingWithStatus:statusCopy];
 }
 
-- (void)panoramaConfigurationDidChangeWithDirection:(int64_t)a3
+- (void)panoramaConfigurationDidChangeWithDirection:(int64_t)direction
 {
-  if (a3)
+  if (direction)
   {
-    v4 = [(CAMPanoramaViewController *)self panoramaView];
-    [v4 setDirection:a3];
+    panoramaView = [(CAMPanoramaViewController *)self panoramaView];
+    [panoramaView setDirection:direction];
   }
 }
 

@@ -1,20 +1,20 @@
 @interface AVMomentCaptureMovieRecordingResolvedSettings
-+ (AVMomentCaptureMovieRecordingResolvedSettings)movieRecordingResolvedSettingsWithUniqueID:(int64_t)a3 torchEnabled:(BOOL)a4 movieURL:(id)a5 spatialOverCaptureURL:(id)a6 movieDimensions:(id)a7;
-- (id)_initWithUniqueID:(int64_t)a3 torchEnabled:(BOOL)a4 movieURL:(id)a5 spatialOverCaptureURL:(id)a6 movieDimensions:(id)a7;
++ (AVMomentCaptureMovieRecordingResolvedSettings)movieRecordingResolvedSettingsWithUniqueID:(int64_t)d torchEnabled:(BOOL)enabled movieURL:(id)l spatialOverCaptureURL:(id)rL movieDimensions:(id)dimensions;
+- (id)_initWithUniqueID:(int64_t)d torchEnabled:(BOOL)enabled movieURL:(id)l spatialOverCaptureURL:(id)rL movieDimensions:(id)dimensions;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation AVMomentCaptureMovieRecordingResolvedSettings
 
-+ (AVMomentCaptureMovieRecordingResolvedSettings)movieRecordingResolvedSettingsWithUniqueID:(int64_t)a3 torchEnabled:(BOOL)a4 movieURL:(id)a5 spatialOverCaptureURL:(id)a6 movieDimensions:(id)a7
++ (AVMomentCaptureMovieRecordingResolvedSettings)movieRecordingResolvedSettingsWithUniqueID:(int64_t)d torchEnabled:(BOOL)enabled movieURL:(id)l spatialOverCaptureURL:(id)rL movieDimensions:(id)dimensions
 {
-  v7 = [objc_alloc(objc_opt_class()) _initWithUniqueID:a3 torchEnabled:a4 movieURL:a5 spatialOverCaptureURL:a6 movieDimensions:a7];
+  v7 = [objc_alloc(objc_opt_class()) _initWithUniqueID:d torchEnabled:enabled movieURL:l spatialOverCaptureURL:rL movieDimensions:dimensions];
 
   return v7;
 }
 
-- (id)_initWithUniqueID:(int64_t)a3 torchEnabled:(BOOL)a4 movieURL:(id)a5 spatialOverCaptureURL:(id)a6 movieDimensions:(id)a7
+- (id)_initWithUniqueID:(int64_t)d torchEnabled:(BOOL)enabled movieURL:(id)l spatialOverCaptureURL:(id)rL movieDimensions:(id)dimensions
 {
   v15.receiver = self;
   v15.super_class = AVMomentCaptureMovieRecordingResolvedSettings;
@@ -22,11 +22,11 @@
   v13 = v12;
   if (v12)
   {
-    v12->_uniqueID = a3;
-    v12->_torchEnabled = a4;
-    v12->_movieURL = [a5 copy];
-    v13->_spatialOverCaptureURL = [a6 copy];
-    v13->_movieDimensions = a7;
+    v12->_uniqueID = d;
+    v12->_torchEnabled = enabled;
+    v12->_movieURL = [l copy];
+    v13->_spatialOverCaptureURL = [rL copy];
+    v13->_movieDimensions = dimensions;
   }
 
   return v13;

@@ -1,24 +1,24 @@
 @interface HKCategoricalDateAxis
-+ (double)_categoryLocationMinutesForCategoryCount:(int64_t)a3;
-+ (id)datePositionForCategoryIndex:(int64_t)a3 categoryCount:(int64_t)a4 startDate:(id)a5 calendar:(id)a6;
-- (HKCategoricalDateAxis)initWithCurrentCalendar:(id)a3 axisStyle:(id)a4 categoryTitles:(id)a5;
-- (id)nextDateForDate:(id)a3 components:(id)a4 timeScope:(int64_t)a5 calendar:(id)a6;
-- (id)stringForDate:(id)a3 zoom:(int64_t)a4 labelType:(int64_t)a5;
++ (double)_categoryLocationMinutesForCategoryCount:(int64_t)count;
++ (id)datePositionForCategoryIndex:(int64_t)index categoryCount:(int64_t)count startDate:(id)date calendar:(id)calendar;
+- (HKCategoricalDateAxis)initWithCurrentCalendar:(id)calendar axisStyle:(id)style categoryTitles:(id)titles;
+- (id)nextDateForDate:(id)date components:(id)components timeScope:(int64_t)scope calendar:(id)calendar;
+- (id)stringForDate:(id)date zoom:(int64_t)zoom labelType:(int64_t)type;
 @end
 
 @implementation HKCategoricalDateAxis
 
-- (HKCategoricalDateAxis)initWithCurrentCalendar:(id)a3 axisStyle:(id)a4 categoryTitles:(id)a5
+- (HKCategoricalDateAxis)initWithCurrentCalendar:(id)calendar axisStyle:(id)style categoryTitles:(id)titles
 {
-  v9 = a5;
+  titlesCopy = titles;
   v18.receiver = self;
   v18.super_class = HKCategoricalDateAxis;
-  v10 = [(HKDateAxis *)&v18 initWithCurrentCalendar:a3 axisStyle:a4];
+  v10 = [(HKDateAxis *)&v18 initWithCurrentCalendar:calendar axisStyle:style];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_categoryTitles, a5);
-    +[HKCategoricalDateAxis _categoryStartLocationMinutesForCategoryCount:](HKCategoricalDateAxis, "_categoryStartLocationMinutesForCategoryCount:", [v9 count]);
+    objc_storeStrong(&v10->_categoryTitles, titles);
+    +[HKCategoricalDateAxis _categoryStartLocationMinutesForCategoryCount:](HKCategoricalDateAxis, "_categoryStartLocationMinutesForCategoryCount:", [titlesCopy count]);
     v11->_categoriesStartMinutePosition = v12;
     v13 = objc_alloc_init(MEMORY[0x1E695DF10]);
     minorAxisIntervalComponents = v11->_minorAxisIntervalComponents;
@@ -35,70 +35,70 @@
   return v11;
 }
 
-- (id)nextDateForDate:(id)a3 components:(id)a4 timeScope:(int64_t)a5 calendar:(id)a6
+- (id)nextDateForDate:(id)date components:(id)components timeScope:(int64_t)scope calendar:(id)calendar
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [v11 dateByAddingComponents:v10 toDate:v9 options:0];
-  v13 = [v11 components:126 fromDate:v12];
-  v14 = [v13 hour];
-  v15 = [v13 minute] + 60 * v14;
-  if (!(v15 % [v10 minute]))
+  dateCopy = date;
+  componentsCopy = components;
+  calendarCopy = calendar;
+  v12 = [calendarCopy dateByAddingComponents:componentsCopy toDate:dateCopy options:0];
+  v13 = [calendarCopy components:126 fromDate:v12];
+  hour = [v13 hour];
+  v15 = [v13 minute] + 60 * hour;
+  if (!(v15 % [componentsCopy minute]))
   {
     v24 = v12;
     goto LABEL_9;
   }
 
-  v16 = [v11 startOfDayForDate:v9];
-  v29 = [v11 hk_dateByAddingDays:1 toDate:v16];
+  v16 = [calendarCopy startOfDayForDate:dateCopy];
+  v29 = [calendarCopy hk_dateByAddingDays:1 toDate:v16];
   [v29 timeIntervalSinceDate:v16];
   v18 = v17;
-  v19 = [v10 minute];
-  v20 = [(HKCategoricalDateAxis *)self minorAxisIntervalComponents];
-  v21 = [v20 minute];
+  minute = [componentsCopy minute];
+  minorAxisIntervalComponents = [(HKCategoricalDateAxis *)self minorAxisIntervalComponents];
+  minute2 = [minorAxisIntervalComponents minute];
 
-  if (v19 == v21)
+  if (minute == minute2)
   {
-    v22 = [(HKCategoricalDateAxis *)self categoryTitles];
-    v23 = v18 / [v22 count] * 0.5;
+    categoryTitles = [(HKCategoricalDateAxis *)self categoryTitles];
+    v23 = v18 / [categoryTitles count] * 0.5;
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  v25 = [v10 minute];
-  v26 = [(HKCategoricalDateAxis *)self majorAxisIntervalComponents];
-  v27 = [v26 minute];
+  minute3 = [componentsCopy minute];
+  majorAxisIntervalComponents = [(HKCategoricalDateAxis *)self majorAxisIntervalComponents];
+  minute4 = [majorAxisIntervalComponents minute];
 
   v23 = 0.0;
-  if (v25 == v27)
+  if (minute3 == minute4)
   {
-    v22 = [(HKCategoricalDateAxis *)self categoryTitles];
-    v23 = v18 / [v22 count];
+    categoryTitles = [(HKCategoricalDateAxis *)self categoryTitles];
+    v23 = v18 / [categoryTitles count];
     goto LABEL_7;
   }
 
 LABEL_8:
-  v24 = [v9 dateByAddingTimeInterval:v23];
+  v24 = [dateCopy dateByAddingTimeInterval:v23];
 
 LABEL_9:
 
   return v24;
 }
 
-- (id)stringForDate:(id)a3 zoom:(int64_t)a4 labelType:(int64_t)a5
+- (id)stringForDate:(id)date zoom:(int64_t)zoom labelType:(int64_t)type
 {
-  v8 = a3;
-  v9 = [(HKCategoricalDateAxis *)self canAddLabelForAxisLabelType:a5];
+  dateCopy = date;
+  v9 = [(HKCategoricalDateAxis *)self canAddLabelForAxisLabelType:type];
   v10 = 0;
-  if (a4 == 6 && v9)
+  if (zoom == 6 && v9)
   {
-    v11 = [(HKCategoricalDateAxis *)self categoryTitles];
-    v12 = [v11 count];
+    categoryTitles = [(HKCategoricalDateAxis *)self categoryTitles];
+    v12 = [categoryTitles count];
 
-    v13 = [(HKDateAxis *)self currentCalendar];
-    v14 = [v13 startOfDayForDate:v8];
+    currentCalendar = [(HKDateAxis *)self currentCalendar];
+    v14 = [currentCalendar startOfDayForDate:dateCopy];
 
     if (v12 < 1)
     {
@@ -111,10 +111,10 @@ LABEL_7:
       v15 = 0;
       while (1)
       {
-        v16 = [(HKDateAxis *)self currentCalendar];
-        v17 = [HKCategoricalDateAxis datePositionForCategoryIndex:v15 categoryCount:v12 startDate:v14 calendar:v16];
+        currentCalendar2 = [(HKDateAxis *)self currentCalendar];
+        v17 = [HKCategoricalDateAxis datePositionForCategoryIndex:v15 categoryCount:v12 startDate:v14 calendar:currentCalendar2];
 
-        if ([v8 isEqual:v17])
+        if ([dateCopy isEqual:v17])
         {
           break;
         }
@@ -125,31 +125,31 @@ LABEL_7:
         }
       }
 
-      v18 = [(HKCategoricalDateAxis *)self categoryTitles];
-      v10 = [v18 objectAtIndexedSubscript:v15];
+      categoryTitles2 = [(HKCategoricalDateAxis *)self categoryTitles];
+      v10 = [categoryTitles2 objectAtIndexedSubscript:v15];
     }
   }
 
   return v10;
 }
 
-+ (id)datePositionForCategoryIndex:(int64_t)a3 categoryCount:(int64_t)a4 startDate:(id)a5 calendar:(id)a6
++ (id)datePositionForCategoryIndex:(int64_t)index categoryCount:(int64_t)count startDate:(id)date calendar:(id)calendar
 {
-  v9 = a5;
-  v10 = [a6 hk_dateByAddingDays:1 toDate:v9];
-  [v10 timeIntervalSinceDate:v9];
-  v12 = [v9 dateByAddingTimeInterval:v11 / a4 * 0.5 + a3 * (v11 / a4)];
+  dateCopy = date;
+  v10 = [calendar hk_dateByAddingDays:1 toDate:dateCopy];
+  [v10 timeIntervalSinceDate:dateCopy];
+  v12 = [dateCopy dateByAddingTimeInterval:v11 / count * 0.5 + index * (v11 / count)];
 
   return v12;
 }
 
-+ (double)_categoryLocationMinutesForCategoryCount:(int64_t)a3
++ (double)_categoryLocationMinutesForCategoryCount:(int64_t)count
 {
   v4 = [HKGraphZoomLevelConfiguration configurationForZoomLevel:6];
   [v4 canonicalSize];
   v6 = v5;
 
-  return v6 / a3 / 60.0;
+  return v6 / count / 60.0;
 }
 
 @end

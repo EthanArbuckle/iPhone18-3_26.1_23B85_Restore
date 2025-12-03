@@ -7,13 +7,13 @@
 - (BOOL)_removeTempDirectory;
 - (BOOL)_replaceConfigWithNewHierarchy;
 - (BOOL)_testingFlag;
-- (BOOL)_writeCompressedFileWithData:(id)a3 atPath:(id)a4;
-- (BOOL)processResponseWithData:(id)a3;
+- (BOOL)_writeCompressedFileWithData:(id)data atPath:(id)path;
+- (BOOL)processResponseWithData:(id)data;
 - (id)_tempConfigPath;
 - (int64_t)_configurationVersion;
-- (int64_t)_processData:(id)a3;
-- (int64_t)_traverseDirectoryAtPath:(id)a3 replacingConfigurationAtPath:(id)a4;
-- (void)_sendCoreAnalyticsWithUpdateStatus:(int64_t)a3 version:(int64_t)a4;
+- (int64_t)_processData:(id)data;
+- (int64_t)_traverseDirectoryAtPath:(id)path replacingConfigurationAtPath:(id)atPath;
+- (void)_sendCoreAnalyticsWithUpdateStatus:(int64_t)status version:(int64_t)version;
 - (void)cancelProcess;
 @end
 
@@ -53,10 +53,10 @@
   return v4;
 }
 
-- (BOOL)processResponseWithData:(id)a3
+- (BOOL)processResponseWithData:(id)data
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = objc_msgSend__processData_(self, a2, a3);
+  v4 = objc_msgSend__processData_(self, a2, data);
   v5 = [APVersionHelper alloc];
   v6 = objc_alloc_init(APVersionData);
   v8 = objc_msgSend_initWithDatasource_(v5, v7, v6);
@@ -108,18 +108,18 @@ LABEL_8:
 
 - (BOOL)_isCancelled
 {
-  v3 = self;
+  selfCopy = self;
   v4 = objc_msgSend_lock(self, a2, v2);
   objc_msgSend_lock(v4, v5, v6);
-  LOBYTE(v3) = objc_msgSend_cancelled(v3, v7, v8);
+  LOBYTE(selfCopy) = objc_msgSend_cancelled(selfCopy, v7, v8);
   objc_msgSend_unlock(v4, v9, v10);
 
-  return v3;
+  return selfCopy;
 }
 
-- (int64_t)_processData:(id)a3
+- (int64_t)_processData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if (!objc_msgSend__createTempDirectory(self, v5, v6))
   {
     v11 = 1501;
@@ -131,7 +131,7 @@ LABEL_8:
     v12 = objc_msgSend_pathToTempDir(self, v9, v10);
     v14 = objc_msgSend_stringByAppendingPathComponent_(v12, v13, @"APCS.tar.gz");
 
-    if (objc_msgSend__writeCompressedFileWithData_atPath_(self, v15, v4, v14))
+    if (objc_msgSend__writeCompressedFileWithData_atPath_(self, v15, dataCopy, v14))
     {
       if (!objc_msgSend__isCancelled(self, v16, v17))
       {
@@ -228,11 +228,11 @@ LABEL_10:
   return v11;
 }
 
-- (BOOL)_writeCompressedFileWithData:(id)a3 atPath:(id)a4
+- (BOOL)_writeCompressedFileWithData:(id)data atPath:(id)path
 {
   v14 = *MEMORY[0x1E69E9840];
   v11 = 0;
-  objc_msgSend_writeToFile_options_error_(a3, a2, a4, 0x10000000, &v11);
+  objc_msgSend_writeToFile_options_error_(data, a2, path, 0x10000000, &v11);
   v4 = v11;
   if (v4)
   {
@@ -422,14 +422,14 @@ LABEL_10:
   return v15;
 }
 
-- (int64_t)_traverseDirectoryAtPath:(id)a3 replacingConfigurationAtPath:(id)a4
+- (int64_t)_traverseDirectoryAtPath:(id)path replacingConfigurationAtPath:(id)atPath
 {
   v99 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  pathCopy = path;
+  atPathCopy = atPath;
   v9 = objc_msgSend_defaultManager(MEMORY[0x1E696AC08], v7, v8);
-  v80 = v5;
-  objc_msgSend_enumeratorAtPath_(v9, v10, v5);
+  v80 = pathCopy;
+  objc_msgSend_enumeratorAtPath_(v9, v10, pathCopy);
   v88 = 0u;
   v89 = 0u;
   v90 = 0u;
@@ -442,7 +442,7 @@ LABEL_10:
     v16 = 0x1E695D000uLL;
     v81 = v9;
     v78 = v11;
-    v79 = v6;
+    v79 = atPathCopy;
     v77 = *v89;
 LABEL_3:
     v17 = 0;
@@ -454,7 +454,7 @@ LABEL_3:
       }
 
       v18 = *(*(&v88 + 1) + 8 * v17);
-      v19 = objc_msgSend_stringByAppendingPathComponent_(v6, v13, v18);
+      v19 = objc_msgSend_stringByAppendingPathComponent_(atPathCopy, v13, v18);
       v22 = objc_msgSend_pathExtension(v18, v20, v21);
       if (objc_msgSend_isEqualToString_(v22, v23, &stru_1F49DAC40))
       {
@@ -509,7 +509,7 @@ LABEL_34:
     }
 
     v82 = objc_msgSend_stringByDeletingLastPathComponent(v18, v27, v28);
-    v30 = objc_msgSend_stringByAppendingPathComponent_(v6, v29, v82);
+    v30 = objc_msgSend_stringByAppendingPathComponent_(atPathCopy, v29, v82);
     v32 = objc_msgSend_stringByAppendingPathComponent_(v30, v31, @"ConfigurationNode.json");
 
     v83 = objc_msgSend_fileURLWithPath_(*(v16 + 4088), v33, v32);
@@ -618,7 +618,7 @@ LABEL_31:
     {
 
       v11 = v78;
-      v6 = v79;
+      atPathCopy = v79;
       v9 = v81;
       v15 = v77;
       if (!v50)
@@ -630,7 +630,7 @@ LABEL_31:
     }
 
     v11 = v78;
-    v6 = v79;
+    atPathCopy = v79;
     v9 = v81;
     v15 = v77;
     goto LABEL_33;
@@ -644,14 +644,14 @@ LABEL_43:
   return v76;
 }
 
-- (void)_sendCoreAnalyticsWithUpdateStatus:(int64_t)a3 version:(int64_t)a4
+- (void)_sendCoreAnalyticsWithUpdateStatus:(int64_t)status version:(int64_t)version
 {
   v20[3] = *MEMORY[0x1E69E9840];
   v19[0] = @"ClientConfigVersion";
-  v6 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], a2, a4);
+  v6 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], a2, version);
   v20[0] = v6;
   v19[1] = @"StatusCode";
-  v8 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v7, a3);
+  v8 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v7, status);
   v20[1] = v8;
   v19[2] = @"TestingFlag";
   v9 = MEMORY[0x1E696AD98];

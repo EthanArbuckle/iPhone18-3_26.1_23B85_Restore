@@ -1,6 +1,6 @@
 @interface FMDBluetoothFrameworkBTManagingFactory
 + (BOOL)isAutomationActive;
-+ (id)bluetoothManagerWithQueue:(id)a3 delegate:(id)a4;
++ (id)bluetoothManagerWithQueue:(id)queue delegate:(id)delegate;
 @end
 
 @implementation FMDBluetoothFrameworkBTManagingFactory
@@ -23,9 +23,9 @@
   return byte_100314A38;
 }
 
-+ (id)bluetoothManagerWithQueue:(id)a3 delegate:(id)a4
++ (id)bluetoothManagerWithQueue:(id)queue delegate:(id)delegate
 {
-  v4 = a4;
+  delegateCopy = delegate;
   if (+[FMDBluetoothFrameworkBTManagingFactory isAutomationActive])
   {
     if (qword_100314A50 != -1)
@@ -33,7 +33,7 @@
       sub_10022F770();
     }
 
-    [qword_100314A48 setBluetoothManager:v4];
+    [qword_100314A48 setBluetoothManager:delegateCopy];
     v5 = qword_100314A48;
   }
 

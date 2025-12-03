@@ -1,16 +1,16 @@
 @interface TransitApertureElementWrapperView
 - (CGSize)intrinsicContentSize;
-- (TransitApertureElementWrapperView)initWithWrappedView:(id)a3 isDetached:(BOOL)a4;
+- (TransitApertureElementWrapperView)initWithWrappedView:(id)view isDetached:(BOOL)detached;
 @end
 
 @implementation TransitApertureElementWrapperView
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(TransitApertureElementWrapperView *)self isDetached];
+  isDetached = [(TransitApertureElementWrapperView *)self isDetached];
   v3 = 45.0;
   v4 = 20.0;
-  if (!v2)
+  if (!isDetached)
   {
     v3 = 20.0;
   }
@@ -20,28 +20,28 @@
   return result;
 }
 
-- (TransitApertureElementWrapperView)initWithWrappedView:(id)a3 isDetached:(BOOL)a4
+- (TransitApertureElementWrapperView)initWithWrappedView:(id)view isDetached:(BOOL)detached
 {
-  v4 = a4;
-  v6 = a3;
+  detachedCopy = detached;
+  viewCopy = view;
   v18.receiver = self;
   v18.super_class = TransitApertureElementWrapperView;
   v7 = [(TransitApertureElementWrapperView *)&v18 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v8 = v7;
   if (v7)
   {
-    [(TransitApertureElementWrapperView *)v7 setIsDetached:v4];
-    [(TransitApertureElementWrapperView *)v8 setWrappedView:v6];
-    [(TransitApertureElementWrapperView *)v8 addSubview:v6];
-    v9 = [v6 heightAnchor];
-    v10 = [v9 constraintEqualToConstant:20.0];
+    [(TransitApertureElementWrapperView *)v7 setIsDetached:detachedCopy];
+    [(TransitApertureElementWrapperView *)v8 setWrappedView:viewCopy];
+    [(TransitApertureElementWrapperView *)v8 addSubview:viewCopy];
+    heightAnchor = [viewCopy heightAnchor];
+    v10 = [heightAnchor constraintEqualToConstant:20.0];
     v19[0] = v10;
-    v11 = [v6 widthAnchor];
-    v12 = [v11 constraintEqualToConstant:20.0];
+    widthAnchor = [viewCopy widthAnchor];
+    v12 = [widthAnchor constraintEqualToConstant:20.0];
     v19[1] = v12;
-    v13 = [v6 centerXAnchor];
-    v14 = [(TransitApertureElementWrapperView *)v8 centerXAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    centerXAnchor = [viewCopy centerXAnchor];
+    centerXAnchor2 = [(TransitApertureElementWrapperView *)v8 centerXAnchor];
+    v15 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v19[2] = v15;
     v16 = [NSArray arrayWithObjects:v19 count:3];
     [NSLayoutConstraint activateConstraints:v16];

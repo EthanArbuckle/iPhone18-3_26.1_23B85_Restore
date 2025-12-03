@@ -1,5 +1,5 @@
 @interface CAMCaptureRequestIntervalometer
-- (CAMCaptureRequestIntervalometer)initWithDelegate:(id)a3 interval:(double)a4 delay:(double)a5 maximumCount:(int64_t)a6;
+- (CAMCaptureRequestIntervalometer)initWithDelegate:(id)delegate interval:(double)interval delay:(double)delay maximumCount:(int64_t)count;
 - (CAMCaptureRequestIntervalometerDelegate)delegate;
 - (void)_generateRequestForDelegate;
 - (void)startGeneratingRequests;
@@ -8,25 +8,25 @@
 
 @implementation CAMCaptureRequestIntervalometer
 
-- (CAMCaptureRequestIntervalometer)initWithDelegate:(id)a3 interval:(double)a4 delay:(double)a5 maximumCount:(int64_t)a6
+- (CAMCaptureRequestIntervalometer)initWithDelegate:(id)delegate interval:(double)interval delay:(double)delay maximumCount:(int64_t)count
 {
-  v10 = a3;
+  delegateCopy = delegate;
   v21.receiver = self;
   v21.super_class = CAMCaptureRequestIntervalometer;
   v11 = [(CAMCaptureRequestIntervalometer *)&v21 init];
   v12 = v11;
   if (v11)
   {
-    if (!a6)
+    if (!count)
     {
-      a6 = 0x7FFFFFFFFFFFFFFFLL;
+      count = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    objc_storeWeak(&v11->_delegate, v10);
-    v12->_interval = a4;
-    v12->_delay = a5;
-    v12->_maximumCount = a6;
-    v12->_remaining = a6;
+    objc_storeWeak(&v11->_delegate, delegateCopy);
+    v12->_interval = interval;
+    v12->_delay = delay;
+    v12->_maximumCount = count;
+    v12->_remaining = count;
     objc_initWeak(&location, v12);
     v13 = [CAMPreciseTimer alloc];
     v18[0] = MEMORY[0x1E69E9820];
@@ -34,7 +34,7 @@
     v18[2] = __80__CAMCaptureRequestIntervalometer_initWithDelegate_interval_delay_maximumCount___block_invoke;
     v18[3] = &unk_1E76F9A10;
     objc_copyWeak(&v19, &location);
-    v14 = [(CAMPreciseTimer *)v13 initWithDelay:v18 interval:a5 handler:a4];
+    v14 = [(CAMPreciseTimer *)v13 initWithDelay:v18 interval:delay handler:interval];
     timer = v12->__timer;
     v12->__timer = v14;
 
@@ -54,13 +54,13 @@ void __80__CAMCaptureRequestIntervalometer_initWithDelegate_interval_delay_maxim
 
 - (void)_generateRequestForDelegate
 {
-  v7 = [(CAMCaptureRequestIntervalometer *)self prototypeRequest];
-  v3 = [v7 distinctPersistenceCopy];
-  v4 = [(CAMCaptureRequestIntervalometer *)self delegate];
-  v5 = v4;
-  if (v4)
+  prototypeRequest = [(CAMCaptureRequestIntervalometer *)self prototypeRequest];
+  distinctPersistenceCopy = [prototypeRequest distinctPersistenceCopy];
+  delegate = [(CAMCaptureRequestIntervalometer *)self delegate];
+  v5 = delegate;
+  if (delegate)
   {
-    if ([v4 intervalometer:self didGenerateCaptureRequest:v3])
+    if ([delegate intervalometer:self didGenerateCaptureRequest:distinctPersistenceCopy])
     {
       v6 = [(CAMCaptureRequestIntervalometer *)self remaining]- 1;
       [(CAMCaptureRequestIntervalometer *)self setRemaining:v6];
@@ -69,7 +69,7 @@ void __80__CAMCaptureRequestIntervalometer_initWithDelegate_interval_delay_maxim
         [(CAMCaptureRequestIntervalometer *)self stopGeneratingRequests];
         if (objc_opt_respondsToSelector())
         {
-          [v5 intervalometer:self didReachMaximumCountWithRequest:v3];
+          [v5 intervalometer:self didReachMaximumCountWithRequest:distinctPersistenceCopy];
         }
       }
     }
@@ -83,27 +83,27 @@ void __80__CAMCaptureRequestIntervalometer_initWithDelegate_interval_delay_maxim
 
 - (void)startGeneratingRequests
 {
-  v3 = [(CAMCaptureRequestIntervalometer *)self prototypeRequest];
-  if (v3)
+  prototypeRequest = [(CAMCaptureRequestIntervalometer *)self prototypeRequest];
+  if (prototypeRequest)
   {
-    v4 = [(CAMCaptureRequestIntervalometer *)self _timer];
-    [v4 start];
+    _timer = [(CAMCaptureRequestIntervalometer *)self _timer];
+    [_timer start];
   }
 
   else
   {
-    v4 = os_log_create("com.apple.camera", "Camera");
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+    _timer = os_log_create("com.apple.camera", "Camera");
+    if (os_log_type_enabled(_timer, OS_LOG_TYPE_ERROR))
     {
-      [(CAMCaptureRequestIntervalometer *)v4 startGeneratingRequests];
+      [(CAMCaptureRequestIntervalometer *)_timer startGeneratingRequests];
     }
   }
 }
 
 - (void)stopGeneratingRequests
 {
-  v2 = [(CAMCaptureRequestIntervalometer *)self _timer];
-  [v2 invalidate];
+  _timer = [(CAMCaptureRequestIntervalometer *)self _timer];
+  [_timer invalidate];
 }
 
 - (CAMCaptureRequestIntervalometerDelegate)delegate

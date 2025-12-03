@@ -1,41 +1,41 @@
 @interface CPLBGSTActivityReport
-+ (id)descriptionForExpirationReason:(unint64_t)a3;
-+ (id)descriptionForPhase:(int64_t)a3;
-+ (id)simplifiedTaskIdentifierForTaskIdentifier:(id)a3;
-- (CPLBGSTActivityReport)initWithCoder:(id)a3;
-- (CPLBGSTActivityReport)initWithTaskIdentifier:(id)a3;
++ (id)descriptionForExpirationReason:(unint64_t)reason;
++ (id)descriptionForPhase:(int64_t)phase;
++ (id)simplifiedTaskIdentifierForTaskIdentifier:(id)identifier;
+- (CPLBGSTActivityReport)initWithCoder:(id)coder;
+- (CPLBGSTActivityReport)initWithTaskIdentifier:(id)identifier;
 - (NSDate)lastSubmitDate;
-- (id)statusWithNow:(id)a3 prefix:(id)a4;
-- (void)_didReportPhase:(int64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)statusWithNow:(id)now prefix:(id)prefix;
+- (void)_didReportPhase:(int64_t)phase;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPLBGSTActivityReport
 
-+ (id)descriptionForExpirationReason:(unint64_t)a3
++ (id)descriptionForExpirationReason:(unint64_t)reason
 {
-  if (a3 + 1 >= 4)
+  if (reason + 1 >= 4)
   {
-    v4 = [[NSString alloc] initWithFormat:@"unknown-%ld", a3];
+    reason = [[NSString alloc] initWithFormat:@"unknown-%ld", reason];
   }
 
   else
   {
-    v4 = *(&off_100273200 + a3 + 1);
+    reason = *(&off_100273200 + reason + 1);
   }
 
-  return v4;
+  return reason;
 }
 
-- (CPLBGSTActivityReport)initWithTaskIdentifier:(id)a3
+- (CPLBGSTActivityReport)initWithTaskIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = CPLBGSTActivityReport;
   v5 = [(CPLBGSTActivityReport *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     taskIdentifier = v5->_taskIdentifier;
     v5->_taskIdentifier = v6;
 
@@ -45,10 +45,10 @@
   return v5;
 }
 
-- (CPLBGSTActivityReport)initWithCoder:(id)a3
+- (CPLBGSTActivityReport)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"taskIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"taskIdentifier"];
   if (v5)
   {
     v6 = [(CPLBGSTActivityReport *)self initWithTaskIdentifier:v5];
@@ -57,7 +57,7 @@
       v7 = objc_opt_class();
       v8 = +[NSDate date];
       v9 = [NSSet setWithObjects:v7, v8, objc_opt_class(), 0];
-      v10 = [v4 decodeObjectOfClasses:v9 forKey:@"dates"];
+      v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"dates"];
 
       v21 = 0u;
       v22 = 0u;
@@ -95,21 +95,21 @@
     }
 
     self = v6;
-    v17 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_taskIdentifier forKey:@"taskIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_taskIdentifier forKey:@"taskIdentifier"];
   v5 = 0;
   v14 = 0u;
   v15 = 0u;
@@ -137,14 +137,14 @@
 
   while (v5 != 8);
   v10 = [[NSArray alloc] initWithObjects:&v12 count:8];
-  [v4 encodeObject:v10 forKey:@"dates"];
+  [coderCopy encodeObject:v10 forKey:@"dates"];
 
   for (i = 56; i != -8; i -= 8)
   {
   }
 }
 
-- (void)_didReportPhase:(int64_t)a3
+- (void)_didReportPhase:(int64_t)phase
 {
   phase = self->_phase;
   if (phase <= 3)
@@ -152,12 +152,12 @@
     self->_expireReason = 0;
   }
 
-  if (!a3)
+  if (!phase)
   {
     self->_submitDateIsDeferredDate = 0;
   }
 
-  if (phase == 5 && (a3 | 2) == 3)
+  if (phase == 5 && (phase | 2) == 3)
   {
     self->_submitDateIsDeferredDate = 1;
     objc_storeStrong(self->_phaseDates, self->_phaseDates[5]);
@@ -165,11 +165,11 @@
 
   v7 = +[NSDate date];
   phaseDates = self->_phaseDates;
-  v9 = self->_phaseDates[a3];
-  self->_phaseDates[a3] = v7;
+  v9 = self->_phaseDates[phase];
+  self->_phaseDates[phase] = v7;
 
   v10 = self->_phase;
-  if (a3 == 5 && v10 == 4)
+  if (phase == 5 && v10 == 4)
   {
     v11 = self->_phaseDates[4];
     if (v11)
@@ -191,46 +191,46 @@
     v10 = self->_phase;
   }
 
-  if (v10 > a3)
+  if (v10 > phase)
   {
     v15 = &self->_phaseDates[1];
-    v16 = a3;
+    phaseCopy = phase;
     do
     {
-      v17 = v16 + 1;
-      v18 = v15[v16];
-      v15[v16] = 0;
+      v17 = phaseCopy + 1;
+      v18 = v15[phaseCopy];
+      v15[phaseCopy] = 0;
 
-      v16 = v17;
+      phaseCopy = v17;
     }
 
     while (v17 < self->_phase);
   }
 
-  self->_phase = a3;
+  self->_phase = phase;
 }
 
-+ (id)descriptionForPhase:(int64_t)a3
++ (id)descriptionForPhase:(int64_t)phase
 {
-  if (a3 >= 8)
+  if (phase >= 8)
   {
-    sub_10018FD1C(a2, a1, a3);
+    sub_10018FD1C(a2, self, phase);
   }
 
-  return *(&off_100273220 + a3);
+  return *(&off_100273220 + phase);
 }
 
-+ (id)simplifiedTaskIdentifierForTaskIdentifier:(id)a3
++ (id)simplifiedTaskIdentifierForTaskIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"com.apple.cloudphotod."])
+  identifierCopy = identifier;
+  if ([identifierCopy hasPrefix:@"com.apple.cloudphotod."])
   {
-    v4 = [v3 substringFromIndex:22];
+    v4 = [identifierCopy substringFromIndex:22];
   }
 
   else
   {
-    v4 = v3;
+    v4 = identifierCopy;
   }
 
   v5 = v4;
@@ -238,18 +238,18 @@
   return v5;
 }
 
-- (id)statusWithNow:(id)a3 prefix:(id)a4
+- (id)statusWithNow:(id)now prefix:(id)prefix
 {
-  v32 = a3;
-  v6 = a4;
+  nowCopy = now;
+  prefixCopy = prefix;
   p_info = &OBJC_METACLASS___CPLCloudKitPushNotificationCenter.info;
   v8 = [CPLBGSTActivityReport simplifiedTaskIdentifierForTaskIdentifier:self->_taskIdentifier];
   v9 = [NSMutableString alloc];
   v29 = v8;
-  v30 = v6;
-  if (v6)
+  v30 = prefixCopy;
+  if (prefixCopy)
   {
-    v10 = v6;
+    v10 = prefixCopy;
   }
 
   else
@@ -294,14 +294,14 @@
       v18 = [p_info + 101 descriptionForExpirationReason:?];
       v19 = v15;
       v20 = v11;
-      v21 = self;
+      selfCopy = self;
       v22 = p_info;
       v23 = [[NSString alloc] initWithFormat:@"%@ (%@)", v17, v18];
 
       v33 = 1;
       v17 = v23;
       p_info = v22;
-      self = v21;
+      self = selfCopy;
       v11 = v20;
       v15 = v19;
       phaseDates = v31;
@@ -318,7 +318,7 @@ LABEL_13:
     if (!v12)
     {
 LABEL_18:
-      v25 = [v15[46] stringFromDateAgo:v16 now:v32];
+      v25 = [v15[46] stringFromDateAgo:v16 now:nowCopy];
       [v11 appendFormat:@"%@ [%@]", v17, v25];
       goto LABEL_19;
     }

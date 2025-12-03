@@ -1,16 +1,16 @@
 @interface RTVisitPipelineModuleBurstNoiseFilter
-+ (unint64_t)getIndexInArray:(id)a3 followedByCount:(unint64_t)a4;
-- (RTVisitPipelineModuleBurstNoiseFilter)initWithHyperParameter:(id)a3;
-- (RTVisitPipelineModuleBurstNoiseFilter)initWithMaximumFlankDistance:(double)a3 minimumNoiseToLeftFlankDistance:(double)a4 maximumWindowSize:(unint64_t)a5 maxHorizontalAccuracy:(double)a6;
-- (RTVisitPipelineModuleBurstNoiseFilter)initWithMaximumFlankDistance:(double)a3 minimumNoiseToLeftFlankDistance:(double)a4 maximumWindowSize:(unint64_t)a5 maxHorizontalAccuracy:(double)a6 distanceCalculator:(id)a7;
++ (unint64_t)getIndexInArray:(id)array followedByCount:(unint64_t)count;
+- (RTVisitPipelineModuleBurstNoiseFilter)initWithHyperParameter:(id)parameter;
+- (RTVisitPipelineModuleBurstNoiseFilter)initWithMaximumFlankDistance:(double)distance minimumNoiseToLeftFlankDistance:(double)flankDistance maximumWindowSize:(unint64_t)size maxHorizontalAccuracy:(double)accuracy;
+- (RTVisitPipelineModuleBurstNoiseFilter)initWithMaximumFlankDistance:(double)distance minimumNoiseToLeftFlankDistance:(double)flankDistance maximumWindowSize:(unint64_t)size maxHorizontalAccuracy:(double)accuracy distanceCalculator:(id)calculator;
 - (id)getFilteredLocations;
-- (id)process:(id)a3;
+- (id)process:(id)process;
 - (unint64_t)getFirstIndexToProcess;
 - (unint64_t)getFirstUnprocessableIndex;
-- (void)addLocations:(id)a3;
+- (void)addLocations:(id)locations;
 - (void)discardObsoleteLocations;
 - (void)filterNoise;
-- (void)identifyNoiseInWindowRange:(_NSRange)a3;
+- (void)identifyNoiseInWindowRange:(_NSRange)range;
 - (void)removeNoiseLocations;
 @end
 
@@ -42,8 +42,8 @@
   for (i = [(RTVisitPipelineModuleBurstNoiseFilter *)self getFirstIndexToProcess]; i < [(RTVisitPipelineModuleBurstNoiseFilter *)self getFirstUnprocessableIndex]; ++i)
   {
     v5 = [(NSMutableArray *)self->_potentialNoiseLocations objectAtIndexedSubscript:i];
-    v6 = [v5 location];
-    [v3 addObject:v6];
+    location = [v5 location];
+    [v3 addObject:location];
   }
 
   lastProcessedIndex = self->_lastProcessedIndex;
@@ -105,15 +105,15 @@
   }
 }
 
-- (void)addLocations:(id)a3
+- (void)addLocations:(id)locations
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  locationsCopy = locations;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [locationsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -124,7 +124,7 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(locationsCopy);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -137,24 +137,24 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [locationsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
   }
 }
 
-- (RTVisitPipelineModuleBurstNoiseFilter)initWithMaximumFlankDistance:(double)a3 minimumNoiseToLeftFlankDistance:(double)a4 maximumWindowSize:(unint64_t)a5 maxHorizontalAccuracy:(double)a6
+- (RTVisitPipelineModuleBurstNoiseFilter)initWithMaximumFlankDistance:(double)distance minimumNoiseToLeftFlankDistance:(double)flankDistance maximumWindowSize:(unint64_t)size maxHorizontalAccuracy:(double)accuracy
 {
   v11 = objc_opt_new();
-  v12 = [(RTVisitPipelineModuleBurstNoiseFilter *)self initWithMaximumFlankDistance:a5 minimumNoiseToLeftFlankDistance:v11 maximumWindowSize:a3 maxHorizontalAccuracy:a4 distanceCalculator:a6];
+  v12 = [(RTVisitPipelineModuleBurstNoiseFilter *)self initWithMaximumFlankDistance:size minimumNoiseToLeftFlankDistance:v11 maximumWindowSize:distance maxHorizontalAccuracy:flankDistance distanceCalculator:accuracy];
 
   return v12;
 }
 
-- (RTVisitPipelineModuleBurstNoiseFilter)initWithMaximumFlankDistance:(double)a3 minimumNoiseToLeftFlankDistance:(double)a4 maximumWindowSize:(unint64_t)a5 maxHorizontalAccuracy:(double)a6 distanceCalculator:(id)a7
+- (RTVisitPipelineModuleBurstNoiseFilter)initWithMaximumFlankDistance:(double)distance minimumNoiseToLeftFlankDistance:(double)flankDistance maximumWindowSize:(unint64_t)size maxHorizontalAccuracy:(double)accuracy distanceCalculator:(id)calculator
 {
-  v13 = a7;
+  calculatorCopy = calculator;
   v19.receiver = self;
   v19.super_class = RTVisitPipelineModuleBurstNoiseFilter;
   v14 = [(RTVisitPipelineModuleBurstNoiseFilter *)&v19 init];
@@ -167,36 +167,36 @@
     v15->_potentialNoiseLocations = v16;
 
     v15->_lastProcessedIndex = 0;
-    v15->_maximumFlankDistance = a3;
-    v15->_minimumNoiseToLeftFlankDistance = a4;
-    v15->_maximumWindowSize = a5;
-    v15->_maxHorizontalAccuracy = a6;
-    objc_storeStrong(&v15->_distanceCalculator, a7);
+    v15->_maximumFlankDistance = distance;
+    v15->_minimumNoiseToLeftFlankDistance = flankDistance;
+    v15->_maximumWindowSize = size;
+    v15->_maxHorizontalAccuracy = accuracy;
+    objc_storeStrong(&v15->_distanceCalculator, calculator);
   }
 
   return v15;
 }
 
-- (RTVisitPipelineModuleBurstNoiseFilter)initWithHyperParameter:(id)a3
+- (RTVisitPipelineModuleBurstNoiseFilter)initWithHyperParameter:(id)parameter
 {
-  v4 = a3;
-  [v4 maxNonFlankDistance];
+  parameterCopy = parameter;
+  [parameterCopy maxNonFlankDistance];
   v6 = v5;
-  [v4 minNoiseToLeftFlankDistance];
+  [parameterCopy minNoiseToLeftFlankDistance];
   v8 = v7;
-  v9 = [v4 maxBurstNoiseLength];
-  [v4 maxHorizontalAccuracy];
+  maxBurstNoiseLength = [parameterCopy maxBurstNoiseLength];
+  [parameterCopy maxHorizontalAccuracy];
   v11 = v10;
 
-  return [(RTVisitPipelineModuleBurstNoiseFilter *)self initWithMaximumFlankDistance:v9 minimumNoiseToLeftFlankDistance:v6 maximumWindowSize:v8 maxHorizontalAccuracy:v11];
+  return [(RTVisitPipelineModuleBurstNoiseFilter *)self initWithMaximumFlankDistance:maxBurstNoiseLength minimumNoiseToLeftFlankDistance:v6 maximumWindowSize:v8 maxHorizontalAccuracy:v11];
 }
 
-- (void)identifyNoiseInWindowRange:(_NSRange)a3
+- (void)identifyNoiseInWindowRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v48 = *MEMORY[0x277D85DE8];
-  if (!a3.location)
+  if (!range.location)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -228,24 +228,24 @@
   if (([v10 isNoise] & 1) == 0)
   {
     v11 = [(NSMutableArray *)self->_potentialNoiseLocations objectAtIndexedSubscript:v7];
-    v12 = [v11 isNoise];
+    isNoise = [v11 isNoise];
 
-    if (v12)
+    if (isNoise)
     {
       return;
     }
 
     v13 = [(NSMutableArray *)self->_potentialNoiseLocations objectAtIndexedSubscript:location - 1];
-    v14 = [v13 location];
+    location = [v13 location];
 
     v15 = [(NSMutableArray *)self->_potentialNoiseLocations objectAtIndexedSubscript:v7];
-    v16 = [v15 location];
+    location2 = [v15 location];
 
     distanceCalculator = self->_distanceCalculator;
     v43 = 0;
-    v40 = v16;
-    v41 = v14;
-    [(RTDistanceCalculator *)distanceCalculator distanceFromLocation:v14 toLocation:v16 error:&v43];
+    v40 = location2;
+    v41 = location;
+    [(RTDistanceCalculator *)distanceCalculator distanceFromLocation:location toLocation:location2 error:&v43];
     v19 = v18;
     v20 = v43;
     if (v20 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -283,9 +283,9 @@ LABEL_31:
       do
       {
         v24 = [(NSMutableArray *)self->_potentialNoiseLocations objectAtIndexedSubscript:location, v39];
-        v25 = [v24 isNoise];
+        isNoise2 = [v24 isNoise];
 
-        if (v25)
+        if (isNoise2)
         {
           v26 = v20;
         }
@@ -295,11 +295,11 @@ LABEL_31:
           v27 = self->_distanceCalculator;
           v28 = v9;
           v29 = [(NSMutableArray *)self->_potentialNoiseLocations objectAtIndexedSubscript:v9];
-          v30 = [v29 location];
+          location3 = [v29 location];
           v31 = [(NSMutableArray *)self->_potentialNoiseLocations objectAtIndexedSubscript:location];
-          v32 = [v31 location];
+          location4 = [v31 location];
           v42 = v20;
-          [(RTDistanceCalculator *)v27 distanceFromLocation:v30 toLocation:v32 error:&v42];
+          [(RTDistanceCalculator *)v27 distanceFromLocation:location3 toLocation:location4 error:&v42];
           v34 = v33;
           v26 = v42;
 
@@ -314,9 +314,9 @@ LABEL_31:
               if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
               {
                 v37 = [(NSMutableArray *)self->_potentialNoiseLocations objectAtIndexedSubscript:location];
-                v38 = [v37 location];
+                location5 = [v37 location];
                 *buf = v39;
-                v45 = v38;
+                v45 = location5;
                 _os_log_impl(&dword_2304B3000, v36, OS_LOG_TYPE_INFO, "Noisy Location: %@", buf, 0xCu);
               }
             }
@@ -336,12 +336,12 @@ LABEL_31:
   }
 }
 
-+ (unint64_t)getIndexInArray:(id)a3 followedByCount:(unint64_t)a4
++ (unint64_t)getIndexInArray:(id)array followedByCount:(unint64_t)count
 {
-  v5 = a3;
-  if ([v5 count] - 1 >= a4)
+  arrayCopy = array;
+  if ([arrayCopy count] - 1 >= count)
   {
-    v6 = [v5 count] + ~a4;
+    v6 = [arrayCopy count] + ~count;
   }
 
   else
@@ -352,14 +352,14 @@ LABEL_31:
   return v6;
 }
 
-- (id)process:(id)a3
+- (id)process:(id)process
 {
   v39 = *MEMORY[0x277D85DE8];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = a3;
+  obj = process;
   v4 = [obj countByEnumeratingWithState:&v29 objects:v38 count:16];
   if (v4)
   {
@@ -394,16 +394,16 @@ LABEL_31:
           }
         }
 
-        v12 = [(RTVisitCluster *)v10 points];
-        v13 = [v12 locations];
-        [(RTVisitPipelineModuleBurstNoiseFilter *)self addLocations:v13];
+        points = [(RTVisitCluster *)v10 points];
+        locations = [points locations];
+        [(RTVisitPipelineModuleBurstNoiseFilter *)self addLocations:locations];
 
         [(RTVisitPipelineModuleBurstNoiseFilter *)self filterNoise];
         v14 = [RTVisitCluster alloc];
-        v15 = [(RTVisitPipelineModuleBurstNoiseFilter *)self getFilteredLocations];
-        v16 = [v15 points];
-        v17 = [(RTVisitCluster *)v10 visit];
-        v18 = [(RTVisitCluster *)v14 initWithPoints:v16 visit:v17];
+        getFilteredLocations = [(RTVisitPipelineModuleBurstNoiseFilter *)self getFilteredLocations];
+        points2 = [getFilteredLocations points];
+        visit = [(RTVisitCluster *)v10 visit];
+        v18 = [(RTVisitCluster *)v14 initWithPoints:points2 visit:visit];
 
         [(RTVisitPipelineModuleBurstNoiseFilter *)self discardObsoleteLocations];
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))

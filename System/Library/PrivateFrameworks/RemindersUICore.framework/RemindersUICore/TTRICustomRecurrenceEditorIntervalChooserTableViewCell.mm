@@ -1,11 +1,11 @@
 @interface TTRICustomRecurrenceEditorIntervalChooserTableViewCell
 + (NSNumberFormatter)numberFormatter;
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
-- (TTRICustomRecurrenceEditorIntervalChooserTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
+- (TTRICustomRecurrenceEditorIntervalChooserTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (TTRICustomRecurrenceEditorIntervalChooserTableViewCellDelegate)delegate;
-- (void)setIntervalValue:(int64_t)a3;
-- (void)textViewDidChange:(id)a3;
-- (void)textViewDidEndEditing:(id)a3;
+- (void)setIntervalValue:(int64_t)value;
+- (void)textViewDidChange:(id)change;
+- (void)textViewDidEndEditing:(id)editing;
 @end
 
 @implementation TTRICustomRecurrenceEditorIntervalChooserTableViewCell
@@ -42,82 +42,82 @@ uint64_t __73__TTRICustomRecurrenceEditorIntervalChooserTableViewCell_numberForm
   return [v4 setRoundingMode:1];
 }
 
-- (TTRICustomRecurrenceEditorIntervalChooserTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (TTRICustomRecurrenceEditorIntervalChooserTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v18.receiver = self;
   v18.super_class = TTRICustomRecurrenceEditorIntervalChooserTableViewCell;
-  v4 = [(TTRIPopupMenuTableViewCell *)&v18 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(TTRIPopupMenuTableViewCell *)&v18 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x277D75C40]);
     v6 = [v5 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     [v6 setKeyboardType:8];
-    v7 = [(TTRIPopupMenuTableViewCell *)v4 titleLabel];
-    v8 = [v7 font];
-    [v6 setFont:v8];
+    titleLabel = [(TTRIPopupMenuTableViewCell *)v4 titleLabel];
+    font = [titleLabel font];
+    [v6 setFont:font];
 
-    v9 = [MEMORY[0x277D75348] labelColor];
-    [v6 setTextColor:v9];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [v6 setTextColor:labelColor];
 
-    v10 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
-    [v6 setBackgroundColor:v10];
+    secondarySystemBackgroundColor = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+    [v6 setBackgroundColor:secondarySystemBackgroundColor];
 
     [v6 setClipsToBounds:1];
-    v11 = [v6 layer];
-    [v11 setCornerRadius:4.0];
+    layer = [v6 layer];
+    [layer setCornerRadius:4.0];
 
     [v6 setAdjustsFontForContentSizeCategory:1];
-    v12 = [v6 textContainer];
-    [v12 setWidthTracksTextView:1];
+    textContainer = [v6 textContainer];
+    [textContainer setWidthTracksTextView:1];
 
-    v13 = [v6 textContainer];
-    [v13 setLineFragmentPadding:0.0];
+    textContainer2 = [v6 textContainer];
+    [textContainer2 setLineFragmentPadding:0.0];
 
     [v6 setTextContainerInset:{0.0, 8.0, 0.0, 8.0}];
     [v6 setTextAlignment:1];
     [v6 setScrollEnabled:0];
-    v14 = [v6 textContainer];
-    [v14 setMaximumNumberOfLines:1];
+    textContainer3 = [v6 textContainer];
+    [textContainer3 setMaximumNumberOfLines:1];
 
     [v6 setDelegate:v4];
     [(TTRICustomRecurrenceEditorIntervalChooserTableViewCell *)v4 setIntervalChooserTextView:v6];
     LODWORD(v15) = 1148829696;
     [v6 setLayoutSize:*MEMORY[0x277CEC620] withContentPriority:{*(MEMORY[0x277CEC620] + 8), v15}];
-    v16 = [(TTRIPopupMenuTableViewCell *)v4 accessoriesStackView];
-    [v16 insertArrangedSubview:v6 atIndex:0];
+    accessoriesStackView = [(TTRIPopupMenuTableViewCell *)v4 accessoriesStackView];
+    [accessoriesStackView insertArrangedSubview:v6 atIndex:0];
   }
 
   return v4;
 }
 
-- (void)setIntervalValue:(int64_t)a3
+- (void)setIntervalValue:(int64_t)value
 {
   v4 = MEMORY[0x277CCABB8];
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:value];
   v6 = [v4 localizedStringFromNumber:v5 numberStyle:0];
-  v7 = [(TTRICustomRecurrenceEditorIntervalChooserTableViewCell *)self intervalChooserTextView];
-  [v7 setText:v6];
+  intervalChooserTextView = [(TTRICustomRecurrenceEditorIntervalChooserTableViewCell *)self intervalChooserTextView];
+  [intervalChooserTextView setText:v6];
 
-  v8 = [(TTRICustomRecurrenceEditorIntervalChooserTableViewCell *)self intervalChooserTextView];
-  [v8 invalidateIntrinsicContentSize];
+  intervalChooserTextView2 = [(TTRICustomRecurrenceEditorIntervalChooserTableViewCell *)self intervalChooserTextView];
+  [intervalChooserTextView2 invalidateIntrinsicContentSize];
 }
 
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
-  v11 = [(TTRICustomRecurrenceEditorIntervalChooserTableViewCell *)self intervalChooserTextView];
+  length = range.length;
+  location = range.location;
+  viewCopy = view;
+  textCopy = text;
+  intervalChooserTextView = [(TTRICustomRecurrenceEditorIntervalChooserTableViewCell *)self intervalChooserTextView];
 
-  if (v11 == v9)
+  if (intervalChooserTextView == viewCopy)
   {
-    v13 = [v9 text];
-    v14 = [v13 mutableCopy];
-    [v14 replaceCharactersInRange:location withString:{length, v10}];
+    text = [viewCopy text];
+    v14 = [text mutableCopy];
+    [v14 replaceCharactersInRange:location withString:{length, textCopy}];
     if ([v14 containsString:@"\n"])
     {
-      [v9 resignFirstResponder];
+      [viewCopy resignFirstResponder];
     }
 
     if ([v14 length])
@@ -153,58 +153,58 @@ uint64_t __73__TTRICustomRecurrenceEditorIntervalChooserTableViewCell_numberForm
   return v12;
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(TTRICustomRecurrenceEditorIntervalChooserTableViewCell *)self intervalChooserTextView];
+  changeCopy = change;
+  intervalChooserTextView = [(TTRICustomRecurrenceEditorIntervalChooserTableViewCell *)self intervalChooserTextView];
 
-  if (v5 == v4)
+  if (intervalChooserTextView == changeCopy)
   {
-    v6 = [(TTRIPopupMenuTableViewCell *)self accessoriesStackView];
-    [v6 invalidateIntrinsicContentSize];
+    accessoriesStackView = [(TTRIPopupMenuTableViewCell *)self accessoriesStackView];
+    [accessoriesStackView invalidateIntrinsicContentSize];
   }
 }
 
-- (void)textViewDidEndEditing:(id)a3
+- (void)textViewDidEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = [(TTRICustomRecurrenceEditorIntervalChooserTableViewCell *)self intervalChooserTextView];
+  editingCopy = editing;
+  intervalChooserTextView = [(TTRICustomRecurrenceEditorIntervalChooserTableViewCell *)self intervalChooserTextView];
 
-  if (v5 == v4)
+  if (intervalChooserTextView == editingCopy)
   {
-    v6 = [(TTRICustomRecurrenceEditorIntervalChooserTableViewCell *)self intervalChooserTextView];
-    v15 = [v6 text];
+    intervalChooserTextView2 = [(TTRICustomRecurrenceEditorIntervalChooserTableViewCell *)self intervalChooserTextView];
+    text = [intervalChooserTextView2 text];
 
     v7 = [MEMORY[0x277CCABB8] localizedStringFromNumber:&unk_282F1AF58 numberStyle:0];
-    if (![v15 length])
+    if (![text length])
     {
       v8 = v7;
 
-      v9 = [(TTRICustomRecurrenceEditorIntervalChooserTableViewCell *)self intervalChooserTextView];
-      [v9 setText:v8];
+      intervalChooserTextView3 = [(TTRICustomRecurrenceEditorIntervalChooserTableViewCell *)self intervalChooserTextView];
+      [intervalChooserTextView3 setText:v8];
 
-      v15 = v8;
+      text = v8;
     }
 
     v10 = +[TTRICustomRecurrenceEditorIntervalChooserTableViewCell numberFormatter];
-    v11 = [v10 numberFromString:v15];
+    v11 = [v10 numberFromString:text];
 
     if (v11)
     {
-      v12 = [(TTRICustomRecurrenceEditorIntervalChooserTableViewCell *)self delegate];
-      [v12 intervalChooserDidUpdateValue:{objc_msgSend(v11, "intValue")}];
+      delegate = [(TTRICustomRecurrenceEditorIntervalChooserTableViewCell *)self delegate];
+      [delegate intervalChooserDidUpdateValue:{objc_msgSend(v11, "intValue")}];
 
-      v13 = [(TTRICustomRecurrenceEditorIntervalChooserTableViewCell *)self intervalChooserTextView];
-      [v13 invalidateIntrinsicContentSize];
+      intervalChooserTextView4 = [(TTRICustomRecurrenceEditorIntervalChooserTableViewCell *)self intervalChooserTextView];
+      [intervalChooserTextView4 invalidateIntrinsicContentSize];
     }
 
     else
     {
-      v14 = [(TTRICustomRecurrenceEditorIntervalChooserTableViewCell *)self intervalChooserTextView];
-      [v14 setText:v7];
+      intervalChooserTextView5 = [(TTRICustomRecurrenceEditorIntervalChooserTableViewCell *)self intervalChooserTextView];
+      [intervalChooserTextView5 setText:v7];
 
-      v13 = [(TTRICustomRecurrenceEditorIntervalChooserTableViewCell *)self delegate];
-      [v13 intervalChooserDidUpdateValue:1];
+      intervalChooserTextView4 = [(TTRICustomRecurrenceEditorIntervalChooserTableViewCell *)self delegate];
+      [intervalChooserTextView4 intervalChooserDidUpdateValue:1];
     }
   }
 }

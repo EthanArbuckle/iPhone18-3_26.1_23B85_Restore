@@ -1,6 +1,6 @@
 @interface CRLShapeSearchResult
-- (BOOL)isEqual:(id)a3;
-- (CRLShapeSearchResult)initWithIdentifier:(id)a3 matchingKeyword:(id)a4 priority:(unint64_t)a5 score:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (CRLShapeSearchResult)initWithIdentifier:(id)identifier matchingKeyword:(id)keyword priority:(unint64_t)priority score:(id)score;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -15,24 +15,24 @@
   return sub_100083B3C(&v5, 8, v3);
 }
 
-- (CRLShapeSearchResult)initWithIdentifier:(id)a3 matchingKeyword:(id)a4 priority:(unint64_t)a5 score:(id)a6
+- (CRLShapeSearchResult)initWithIdentifier:(id)identifier matchingKeyword:(id)keyword priority:(unint64_t)priority score:(id)score
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  identifierCopy = identifier;
+  keywordCopy = keyword;
+  scoreCopy = score;
   v19.receiver = self;
   v19.super_class = CRLShapeSearchResult;
   v14 = [(CRLShapeSearchResult *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_identifier, a3);
-    v16 = [v12 copy];
+    objc_storeStrong(&v14->_identifier, identifier);
+    v16 = [keywordCopy copy];
     matchingKeyword = v15->_matchingKeyword;
     v15->_matchingKeyword = v16;
 
-    v15->_priority = a5;
-    objc_storeStrong(&v15->_score, a6);
+    v15->_priority = priority;
+    objc_storeStrong(&v15->_score, score);
   }
 
   return v15;
@@ -41,28 +41,28 @@
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(CRLShapeSearchResult *)self identifier];
-  v5 = [(CRLShapeSearchResult *)self matchingKeyword];
-  v6 = [(CRLShapeSearchResult *)self priority];
-  v7 = [(CRLShapeSearchResult *)self score];
-  v8 = [NSString stringWithFormat:@"<%@: %p identifier=%@ matchingKeyword=%@ priority=%lu score=%@>", v3, self, v4, v5, v6, v7];
+  identifier = [(CRLShapeSearchResult *)self identifier];
+  matchingKeyword = [(CRLShapeSearchResult *)self matchingKeyword];
+  priority = [(CRLShapeSearchResult *)self priority];
+  score = [(CRLShapeSearchResult *)self score];
+  v8 = [NSString stringWithFormat:@"<%@: %p identifier=%@ matchingKeyword=%@ priority=%lu score=%@>", v3, self, identifier, matchingKeyword, priority, score];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, equalCopy);
 
-  v7 = [(CRLShapeSearchResult *)self identifier];
-  v8 = [v6 identifier];
-  if ([v7 isEqual:v8])
+  identifier = [(CRLShapeSearchResult *)self identifier];
+  identifier2 = [v6 identifier];
+  if ([identifier isEqual:identifier2])
   {
-    v9 = [(CRLShapeSearchResult *)self matchingKeyword];
-    v10 = [v6 matchingKeyword];
-    v11 = [v9 isEqual:v10];
+    matchingKeyword = [(CRLShapeSearchResult *)self matchingKeyword];
+    matchingKeyword2 = [v6 matchingKeyword];
+    v11 = [matchingKeyword isEqual:matchingKeyword2];
   }
 
   else

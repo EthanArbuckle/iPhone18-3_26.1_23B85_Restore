@@ -1,48 +1,48 @@
 @interface TileStateDefault
-+ (id)_predicateForBaseState:(id)a3;
-+ (id)_predicateForBaseStatePID:(int64_t)a3;
-+ (id)insertState:(id)a3 forBaseState:(id)a4 inDatabase:(id)a5;
-+ (void)deleteEntitiesForBaseState:(id)a3 inDatabase:(id)a4;
-+ (void)inflateState:(id)a3 forBaseStatePID:(int64_t)a4 inDatabase:(id)a5;
++ (id)_predicateForBaseState:(id)state;
++ (id)_predicateForBaseStatePID:(int64_t)d;
++ (id)insertState:(id)state forBaseState:(id)baseState inDatabase:(id)database;
++ (void)deleteEntitiesForBaseState:(id)state inDatabase:(id)database;
++ (void)inflateState:(id)state forBaseStatePID:(int64_t)d inDatabase:(id)database;
 - (BOOL)deleteFromDatabase;
-- (TileStateDefault)initWithState:(id)a3 forBaseState:(id)a4 forAccessory:(id)a5 forSecondaryAccessory:(id)a6 inDatabase:(id)a7;
+- (TileStateDefault)initWithState:(id)state forBaseState:(id)baseState forAccessory:(id)accessory forSecondaryAccessory:(id)secondaryAccessory inDatabase:(id)database;
 - (id)accessory;
 - (id)secondaryAccessory;
 @end
 
 @implementation TileStateDefault
 
-- (TileStateDefault)initWithState:(id)a3 forBaseState:(id)a4 forAccessory:(id)a5 forSecondaryAccessory:(id)a6 inDatabase:(id)a7
+- (TileStateDefault)initWithState:(id)state forBaseState:(id)baseState forAccessory:(id)accessory forSecondaryAccessory:(id)secondaryAccessory inDatabase:(id)database
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  databaseCopy = database;
+  secondaryAccessoryCopy = secondaryAccessory;
+  accessoryCopy = accessory;
+  baseStateCopy = baseState;
+  stateCopy = state;
   v17 = objc_alloc_init(NSMutableDictionary);
-  [v17 setEntityPIDOrNull:v15 forKey:@"state_pid"];
+  [v17 setEntityPIDOrNull:baseStateCopy forKey:@"state_pid"];
 
-  v18 = [v16 title];
-  [v17 setObjectOrNull:v18 forKey:@"title"];
+  title = [stateCopy title];
+  [v17 setObjectOrNull:title forKey:@"title"];
 
-  v19 = [v16 body];
+  body = [stateCopy body];
 
-  [v17 setObjectOrNull:v19 forKey:@"body"];
-  [v17 setEntityPIDOrNull:v14 forKey:@"accessory_pid"];
+  [v17 setObjectOrNull:body forKey:@"body"];
+  [v17 setEntityPIDOrNull:accessoryCopy forKey:@"accessory_pid"];
 
-  [v17 setEntityPIDOrNull:v13 forKey:@"secondary_accessory_pid"];
-  v20 = [(SQLiteEntity *)self initWithPropertyValues:v17 inDatabase:v12];
+  [v17 setEntityPIDOrNull:secondaryAccessoryCopy forKey:@"secondary_accessory_pid"];
+  v20 = [(SQLiteEntity *)self initWithPropertyValues:v17 inDatabase:databaseCopy];
 
   return v20;
 }
 
-+ (id)insertState:(id)a3 forBaseState:(id)a4 inDatabase:(id)a5
++ (id)insertState:(id)state forBaseState:(id)baseState inDatabase:(id)database
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stateCopy = state;
+  baseStateCopy = baseState;
+  databaseCopy = database;
   v11 = 0;
-  if (v8 && v9)
+  if (stateCopy && baseStateCopy)
   {
     v19 = 0;
     v20 = &v19;
@@ -54,11 +54,11 @@
     v13[1] = 3221225472;
     v13[2] = sub_1000989B4;
     v13[3] = &unk_1008415F0;
-    v14 = v8;
-    v15 = v10;
+    v14 = stateCopy;
+    v15 = databaseCopy;
     v17 = &v19;
-    v18 = a1;
-    v16 = v9;
+    selfCopy = self;
+    v16 = baseStateCopy;
     sub_1005D4424(v15, v13);
     v11 = v20[5];
 
@@ -68,14 +68,14 @@
   return v11;
 }
 
-+ (void)inflateState:(id)a3 forBaseStatePID:(int64_t)a4 inDatabase:(id)a5
++ (void)inflateState:(id)state forBaseStatePID:(int64_t)d inDatabase:(id)database
 {
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  stateCopy = state;
+  databaseCopy = database;
+  if (stateCopy)
   {
-    v10 = [a1 _predicateForBaseStatePID:a4];
-    v11 = [(SQLiteEntity *)TileStateDefault queryWithDatabase:v9 predicate:v10 orderingProperties:0 orderingDirections:0 limit:1];
+    v10 = [self _predicateForBaseStatePID:d];
+    v11 = [(SQLiteEntity *)TileStateDefault queryWithDatabase:databaseCopy predicate:v10 orderingProperties:0 orderingDirections:0 limit:1];
 
     v16[0] = @"title";
     v16[1] = @"body";
@@ -86,39 +86,39 @@
     v13[1] = 3221225472;
     v13[2] = sub_100098C44;
     v13[3] = &unk_10083CBC0;
-    v14 = v8;
-    v15 = v9;
+    v14 = stateCopy;
+    v15 = databaseCopy;
     [v11 enumeratePersistentIDsAndProperties:v12 usingBlock:v13];
   }
 }
 
-+ (void)deleteEntitiesForBaseState:(id)a3 inDatabase:(id)a4
++ (void)deleteEntitiesForBaseState:(id)state inDatabase:(id)database
 {
-  v6 = a4;
-  v8 = [a1 _predicateForBaseState:a3];
-  v7 = [(SQLiteEntity *)TileStateDefault queryWithDatabase:v6 predicate:v8];
+  databaseCopy = database;
+  v8 = [self _predicateForBaseState:state];
+  v7 = [(SQLiteEntity *)TileStateDefault queryWithDatabase:databaseCopy predicate:v8];
 
   [v7 deleteAllEntities];
 }
 
 - (BOOL)deleteFromDatabase
 {
-  v3 = [(TileStateDefault *)self accessory];
-  [v3 deleteFromDatabase];
+  accessory = [(TileStateDefault *)self accessory];
+  [accessory deleteFromDatabase];
 
-  v4 = [(TileStateDefault *)self secondaryAccessory];
-  [v4 deleteFromDatabase];
+  secondaryAccessory = [(TileStateDefault *)self secondaryAccessory];
+  [secondaryAccessory deleteFromDatabase];
 
   v6.receiver = self;
   v6.super_class = TileStateDefault;
   return [(SQLiteEntity *)&v6 deleteFromDatabase];
 }
 
-+ (id)_predicateForBaseState:(id)a3
++ (id)_predicateForBaseState:(id)state
 {
-  if (a3)
+  if (state)
   {
-    [a1 _predicateForBaseStatePID:{objc_msgSend(a3, "persistentID")}];
+    [self _predicateForBaseStatePID:{objc_msgSend(state, "persistentID")}];
   }
 
   else
@@ -130,9 +130,9 @@
   return v3;
 }
 
-+ (id)_predicateForBaseStatePID:(int64_t)a3
++ (id)_predicateForBaseStatePID:(int64_t)d
 {
-  v3 = [NSNumber numberWithLongLong:a3];
+  v3 = [NSNumber numberWithLongLong:d];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"state_pid" equalToValue:v3];
 
   return v4;

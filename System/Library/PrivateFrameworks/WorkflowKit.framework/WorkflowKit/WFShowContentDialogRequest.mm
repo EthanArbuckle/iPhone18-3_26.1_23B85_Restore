@@ -1,46 +1,46 @@
 @interface WFShowContentDialogRequest
-- (WFShowContentDialogRequest)initWithCoder:(id)a3;
-- (WFShowContentDialogRequest)initWithContentCollection:(id)a3 attribution:(id)a4 prompt:(id)a5;
+- (WFShowContentDialogRequest)initWithCoder:(id)coder;
+- (WFShowContentDialogRequest)initWithContentCollection:(id)collection attribution:(id)attribution prompt:(id)prompt;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)getContentCollectionWithCompletionHandler:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)getContentCollectionWithCompletionHandler:(id)handler;
 @end
 
 @implementation WFShowContentDialogRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = WFShowContentDialogRequest;
-  v4 = a3;
-  [(WFDialogRequest *)&v8 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFDialogRequest *)&v8 encodeWithCoder:coderCopy];
   v5 = [(WFShowContentDialogRequest *)self archivedContentCollection:v8.receiver];
-  [v4 encodeObject:v5 forKey:@"archivedContentCollection"];
+  [coderCopy encodeObject:v5 forKey:@"archivedContentCollection"];
 
-  v6 = [(WFShowContentDialogRequest *)self doneButton];
-  [v4 encodeObject:v6 forKey:@"doneButton"];
+  doneButton = [(WFShowContentDialogRequest *)self doneButton];
+  [coderCopy encodeObject:doneButton forKey:@"doneButton"];
 
-  v7 = [(WFShowContentDialogRequest *)self cancelButton];
-  [v4 encodeObject:v7 forKey:@"cancelButton"];
+  cancelButton = [(WFShowContentDialogRequest *)self cancelButton];
+  [coderCopy encodeObject:cancelButton forKey:@"cancelButton"];
 }
 
-- (WFShowContentDialogRequest)initWithCoder:(id)a3
+- (WFShowContentDialogRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = WFShowContentDialogRequest;
-  v5 = [(WFDialogRequest *)&v14 initWithCoder:v4];
+  v5 = [(WFDialogRequest *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"archivedContentCollection"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"archivedContentCollection"];
     archivedContentCollection = v5->_archivedContentCollection;
     v5->_archivedContentCollection = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"doneButton"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"doneButton"];
     doneButton = v5->_doneButton;
     v5->_doneButton = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cancelButton"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cancelButton"];
     cancelButton = v5->_cancelButton;
     v5->_cancelButton = v10;
 
@@ -55,43 +55,43 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WFDialogRequest *)self attribution];
-  v7 = [v6 title];
-  v8 = [(WFDialogRequest *)self prompt];
-  v9 = [(WFShowContentDialogRequest *)self cachedContentCollection];
-  v10 = [v3 stringWithFormat:@"<%@: %p, title: %@, prompt: %@, contentCollection (if loaded): %@>", v5, self, v7, v8, v9];
+  attribution = [(WFDialogRequest *)self attribution];
+  title = [attribution title];
+  prompt = [(WFDialogRequest *)self prompt];
+  cachedContentCollection = [(WFShowContentDialogRequest *)self cachedContentCollection];
+  v10 = [v3 stringWithFormat:@"<%@: %p, title: %@, prompt: %@, contentCollection (if loaded): %@>", v5, self, title, prompt, cachedContentCollection];
 
   return v10;
 }
 
-- (void)getContentCollectionWithCompletionHandler:(id)a3
+- (void)getContentCollectionWithCompletionHandler:(id)handler
 {
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"WFShowContentDialogRequest.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFShowContentDialogRequest.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __72__WFShowContentDialogRequest_getContentCollectionWithCompletionHandler___block_invoke;
   aBlock[3] = &unk_1E837BEF8;
-  v6 = v5;
+  v6 = handlerCopy;
   v17 = v6;
   v7 = _Block_copy(aBlock);
-  v8 = [(WFShowContentDialogRequest *)self cachedContentCollection];
+  cachedContentCollection = [(WFShowContentDialogRequest *)self cachedContentCollection];
 
-  if (v8)
+  if (cachedContentCollection)
   {
-    v9 = [(WFShowContentDialogRequest *)self cachedContentCollection];
-    v7[2](v7, v9);
+    cachedContentCollection2 = [(WFShowContentDialogRequest *)self cachedContentCollection];
+    v7[2](v7, cachedContentCollection2);
   }
 
   else
   {
     v10 = MEMORY[0x1E696ACD0];
-    v11 = [(WFShowContentDialogRequest *)self archivedContentCollection];
+    archivedContentCollection = [(WFShowContentDialogRequest *)self archivedContentCollection];
     v12 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
@@ -99,7 +99,7 @@
     v15[3] = &unk_1E837BF20;
     v15[4] = self;
     v15[5] = v7;
-    v13 = [v10 wf_securelyUnarchiveObjectWithData:v11 allowedClasses:v12 completionHandler:v15];
+    v13 = [v10 wf_securelyUnarchiveObjectWithData:archivedContentCollection allowedClasses:v12 completionHandler:v15];
   }
 }
 
@@ -144,13 +144,13 @@ void __72__WFShowContentDialogRequest_getContentCollectionWithCompletionHandler_
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (WFShowContentDialogRequest)initWithContentCollection:(id)a3 attribution:(id)a4 prompt:(id)a5
+- (WFShowContentDialogRequest)initWithContentCollection:(id)collection attribution:(id)attribution prompt:(id)prompt
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  collectionCopy = collection;
   v24.receiver = self;
   v24.super_class = WFShowContentDialogRequest;
-  v9 = [(WFDialogRequest *)&v24 initWithAttribution:a4 prompt:a5];
+  v9 = [(WFDialogRequest *)&v24 initWithAttribution:attribution prompt:prompt];
   if (!v9)
   {
 LABEL_7:
@@ -159,8 +159,8 @@ LABEL_7:
   }
 
   v10 = MEMORY[0x1E696ACC8];
-  v11 = [v8 getListRepresentation];
-  v12 = [v10 wf_securelyArchivedDataWithRootObject:v11];
+  getListRepresentation = [collectionCopy getListRepresentation];
+  v12 = [v10 wf_securelyArchivedDataWithRootObject:getListRepresentation];
   archivedContentCollection = v9->_archivedContentCollection;
   v9->_archivedContentCollection = v12;
 
@@ -179,17 +179,17 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v14 = [v8 copy];
+  v14 = [collectionCopy copy];
   cachedContentCollection = v9->_cachedContentCollection;
   v9->_cachedContentCollection = v14;
 
-  v16 = [MEMORY[0x1E69E0AA0] doneButton];
+  doneButton = [MEMORY[0x1E69E0AA0] doneButton];
   doneButton = v9->_doneButton;
-  v9->_doneButton = v16;
+  v9->_doneButton = doneButton;
 
-  v18 = [MEMORY[0x1E69E0AA0] cancelButton];
+  cancelButton = [MEMORY[0x1E69E0AA0] cancelButton];
   cancelButton = v9->_cancelButton;
-  v9->_cancelButton = v18;
+  v9->_cancelButton = cancelButton;
 
   v20 = v9;
 LABEL_8:

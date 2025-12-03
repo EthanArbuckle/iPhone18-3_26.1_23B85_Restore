@@ -1,27 +1,27 @@
 @interface CLKUITimeView
 - (CGAffineTransform)aodTransform;
-- (CLKUITimeView)initWithDevice:(id)a3 clockTimer:(id)a4;
+- (CLKUITimeView)initWithDevice:(id)device clockTimer:(id)timer;
 - (CLKUITimeViewDelegate)delegate;
 - (UIEdgeInsets)paddingInsets;
 - (void)dealloc;
-- (void)setAodTransform:(CGAffineTransform *)a3;
+- (void)setAodTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation CLKUITimeView
 
-- (CLKUITimeView)initWithDevice:(id)a3 clockTimer:(id)a4
+- (CLKUITimeView)initWithDevice:(id)device clockTimer:(id)timer
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  timerCopy = timer;
   v16.receiver = self;
   v16.super_class = CLKUITimeView;
   v9 = [(CLKUITimeView *)&v16 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_device, a3);
-    objc_storeStrong(&v10->_clockTimer, a4);
+    objc_storeStrong(&v9->_device, device);
+    objc_storeStrong(&v10->_clockTimer, timer);
     v11 = objc_opt_self();
     v17[0] = v11;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
@@ -57,11 +57,11 @@
   return self;
 }
 
-- (void)setAodTransform:(CGAffineTransform *)a3
+- (void)setAodTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_aodTransform.a = *&a3->a;
+  v4 = *&transform->c;
+  v3 = *&transform->tx;
+  *&self->_aodTransform.a = *&transform->a;
   *&self->_aodTransform.c = v4;
   *&self->_aodTransform.tx = v3;
 }

@@ -1,33 +1,33 @@
 @interface _DASBGSystemTask
-+ (BOOL)hasFastPassRun:(id)a3 semanticVersion:(int64_t)a4;
-+ (BOOL)resetFastPass:(id)a3 resetAll:(BOOL)a4;
++ (BOOL)hasFastPassRun:(id)run semanticVersion:(int64_t)version;
++ (BOOL)resetFastPass:(id)pass resetAll:(BOOL)all;
 + (id)allFastPassIdentifiers;
-+ (id)resourcesDescriptionFromBitmap:(int64_t)a3;
++ (id)resourcesDescriptionFromBitmap:(int64_t)bitmap;
 + (void)garbageCollectActivityDates;
 + (void)initialize;
-+ (void)markFastPassActivityDone:(id)a3 semanticVersion:(int64_t)a4;
++ (void)markFastPassActivityDone:(id)done semanticVersion:(int64_t)version;
 - (BOOL)hasInstallActivityRun;
-- (BOOL)validateFastPassSubmissionForActivity:(id)a3 featureCodes:(id)a4 service:(id)a5;
-- (BOOL)validateFeatureCodes:(id)a3 forToken:(unint64_t)a4;
+- (BOOL)validateFastPassSubmissionForActivity:(id)activity featureCodes:(id)codes service:(id)service;
+- (BOOL)validateFeatureCodes:(id)codes forToken:(unint64_t)token;
 - (NSString)name;
-- (_DASBGSystemTask)initWithDescriptor:(id)a3 withToken:(unint64_t)a4 withUID:(unsigned int)a5 withService:(id)a6 staticSubmission:(BOOL)a7 task:(id)a8;
+- (_DASBGSystemTask)initWithDescriptor:(id)descriptor withToken:(unint64_t)token withUID:(unsigned int)d withService:(id)service staticSubmission:(BOOL)submission task:(id)task;
 - (double)initialDelay;
 - (id)aboutMe;
 - (id)deadlineTime;
 - (id)description;
 - (id)eligibleTime;
 - (id)getActivityBaseTime;
-- (id)initForTestWithIdentifier:(id)a3;
+- (id)initForTestWithIdentifier:(id)identifier;
 - (id)resourcesDescription;
 - (id)stateString;
-- (void)adjustBaseTimeByOffset:(double)a3;
+- (void)adjustBaseTimeByOffset:(double)offset;
 - (void)advanceBaseTime;
 - (void)loadBaseTime;
 - (void)markInstallActivityDone;
-- (void)markStopped:(id)a3;
+- (void)markStopped:(id)stopped;
 - (void)resetBaseTime;
-- (void)saveActivityBaseTime:(id)a3;
-- (void)updateFeatureCodesForActivity:(id)a3;
+- (void)saveActivityBaseTime:(id)time;
+- (void)updateFeatureCodesForActivity:(id)activity;
 @end
 
 @implementation _DASBGSystemTask
@@ -37,10 +37,10 @@
   v8 = +[NSDate date];
   if (self->_type == 2)
   {
-    v3 = [(_DASBGSystemTask *)self getActivityBaseTime];
+    getActivityBaseTime = [(_DASBGSystemTask *)self getActivityBaseTime];
     baseTime = self->_baseTime;
     p_baseTime = &self->_baseTime;
-    *p_baseTime = v3;
+    *p_baseTime = getActivityBaseTime;
 
     v6 = [v8 dateByAddingTimeInterval:-*(p_baseTime - 7)];
     if ([*p_baseTime compare:v6] == -1)
@@ -98,7 +98,7 @@
 
 - (id)deadlineTime
 {
-  v3 = [(_DASBGSystemTask *)self eligibleTime];
+  eligibleTime = [(_DASBGSystemTask *)self eligibleTime];
   v4 = 128;
   if (self->_type == 2)
   {
@@ -106,14 +106,14 @@
   }
 
   v5 = [(NSDate *)self->_baseTime dateByAddingTimeInterval:*(&self->super.isa + v4)];
-  if ([v5 compare:v3] == 1)
+  if ([v5 compare:eligibleTime] == 1)
   {
     v6 = v5;
   }
 
   else
   {
-    v6 = v3;
+    v6 = eligibleTime;
   }
 
   v7 = v6;
@@ -133,15 +133,15 @@
 - (id)resourcesDescription
 {
   v3 = objc_opt_class();
-  v4 = [(_DASBGSystemTask *)self resources];
+  resources = [(_DASBGSystemTask *)self resources];
 
-  return [v3 resourcesDescriptionFromBitmap:v4];
+  return [v3 resourcesDescriptionFromBitmap:resources];
 }
 
 - (id)description
 {
-  v3 = [(_DASBGSystemTask *)self name];
-  v4 = [NSString stringWithFormat:@"%@ (%p)", v3, self];
+  name = [(_DASBGSystemTask *)self name];
+  v4 = [NSString stringWithFormat:@"%@ (%p)", name, self];
 
   return v4;
 }
@@ -167,9 +167,9 @@
     if (os_log_type_enabled(qword_10020B438, OS_LOG_TYPE_DEFAULT))
     {
       v9 = v12;
-      v10 = [(_DASBGSystemTask *)self name];
+      name = [(_DASBGSystemTask *)self name];
       *v24 = 138543362;
-      *&v24[4] = v10;
+      *&v24[4] = name;
       v11 = "Base Time is earlier than 2 * interval ago, moving forward for %{public}@";
       goto LABEL_9;
     }
@@ -189,9 +189,9 @@
     if (os_log_type_enabled(qword_10020B438, OS_LOG_TYPE_DEFAULT))
     {
       v9 = v8;
-      v10 = [(_DASBGSystemTask *)self name];
+      name = [(_DASBGSystemTask *)self name];
       *v24 = 138543362;
-      *&v24[4] = v10;
+      *&v24[4] = name;
       v11 = "Base Time is later than 2 * interval from now, moving back for %{public}@";
 LABEL_9:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, v11, v24, 0xCu);
@@ -217,11 +217,11 @@ LABEL_11:
     if (os_log_type_enabled(qword_10020B438, OS_LOG_TYPE_INFO))
     {
       v20 = v19;
-      v21 = [(_DASBGSystemTask *)self name];
+      name2 = [(_DASBGSystemTask *)self name];
       *v24 = 134218242;
       *&v24[4] = v16;
       *&v24[12] = 2114;
-      *&v24[14] = v21;
+      *&v24[14] = name2;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "Using temporary delay of %lld seconds to account for late fire of %{public}@", v24, 0x16u);
     }
   }
@@ -264,8 +264,8 @@ LABEL_19:
   }
 
   v13 = +[_DASBGSystemTaskHelper sharedInstance];
-  v14 = [v13 activityQueue];
-  v15 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v14);
+  activityQueue = [v13 activityQueue];
+  v15 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, activityQueue);
   v16 = qword_10020B450;
   qword_10020B450 = v15;
 
@@ -273,7 +273,7 @@ LABEL_19:
   handler[1] = 3221225472;
   handler[2] = sub_10006FD40;
   handler[3] = &unk_1001B54A0;
-  handler[4] = a1;
+  handler[4] = self;
   dispatch_source_set_event_handler(qword_10020B450, handler);
   v17 = qword_10020B450;
   v18 = dispatch_time(0, 86400000000000);
@@ -291,8 +291,8 @@ LABEL_19:
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = [qword_10020B448 allKeys];
-    v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    allKeys = [qword_10020B448 allKeys];
+    v5 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v5)
     {
       v6 = v5;
@@ -303,7 +303,7 @@ LABEL_19:
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allKeys);
           }
 
           v9 = *(*(&v11 + 1) + 8 * i);
@@ -319,7 +319,7 @@ LABEL_19:
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v6);
@@ -327,17 +327,17 @@ LABEL_19:
   }
 }
 
-- (_DASBGSystemTask)initWithDescriptor:(id)a3 withToken:(unint64_t)a4 withUID:(unsigned int)a5 withService:(id)a6 staticSubmission:(BOOL)a7 task:(id)a8
+- (_DASBGSystemTask)initWithDescriptor:(id)descriptor withToken:(unint64_t)token withUID:(unsigned int)d withService:(id)service staticSubmission:(BOOL)submission task:(id)task
 {
-  v9 = a7;
-  v14 = a3;
-  v143 = a6;
-  v144 = a8;
+  submissionCopy = submission;
+  descriptorCopy = descriptor;
+  serviceCopy = service;
+  taskCopy = task;
   v150.receiver = self;
   v150.super_class = _DASBGSystemTask;
   v15 = [(_DASBGSystemTask *)&v150 init];
 
-  if (xpc_get_type(v14) != &_xpc_type_dictionary)
+  if (xpc_get_type(descriptorCopy) != &_xpc_type_dictionary)
   {
     sub_100120F48();
   }
@@ -358,11 +358,11 @@ LABEL_19:
   identifier = v15->_identifier;
   v15->_identifier = v16;
 
-  v15->_token = a4;
-  v15->_uid = a5;
-  objc_storeStrong(&v15->_serviceName, a6);
+  v15->_token = token;
+  v15->_uid = d;
+  objc_storeStrong(&v15->_serviceName, service);
   v15->_suspensionReason = -1;
-  if (xpc_dictionary_get_BOOL(v14, "PostInstall"))
+  if (xpc_dictionary_get_BOOL(descriptorCopy, "PostInstall"))
   {
     if ([(_DASBGSystemTask *)v15 hasInstallActivityRun])
     {
@@ -370,9 +370,9 @@ LABEL_19:
       if (os_log_type_enabled(qword_10020B438, OS_LOG_TYPE_DEFAULT))
       {
         v19 = v18;
-        v20 = [(_DASBGSystemTask *)v15 name];
+        name = [(_DASBGSystemTask *)v15 name];
         *buf = 138543362;
-        *&buf[4] = v20;
+        *&buf[4] = name;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%{public}@: postinstall activity has already run on this build", buf, 0xCu);
       }
 
@@ -382,14 +382,14 @@ LABEL_19:
     v15->_post_install = 1;
   }
 
-  v24 = xpc_dictionary_get_dictionary(v14, "RepeatingTask");
+  v24 = xpc_dictionary_get_dictionary(descriptorCopy, "RepeatingTask");
   v25 = v24;
   if (!v24 || xpc_get_type(v24) != &_xpc_type_dictionary)
   {
     v15->_type = 1;
     v15->_startAfter = 0.0;
     v15->_trySchedulingBefore = 0.0;
-    v26 = xpc_dictionary_get_dictionary(v14, "NonRepeatingTask");
+    v26 = xpc_dictionary_get_dictionary(descriptorCopy, "NonRepeatingTask");
 
     if (!v26 || xpc_get_type(v26) != &_xpc_type_dictionary)
     {
@@ -426,7 +426,7 @@ LABEL_46:
     v15->_reRun = [v30 BOOLValue];
 
     reRun = v15->_reRun;
-    if (v9)
+    if (submissionCopy)
     {
       if (v15->_reRun)
       {
@@ -450,18 +450,18 @@ LABEL_39:
       v46 = qword_10020B438;
       if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
       {
-        v47 = [(_DASBGSystemTask *)v15 name];
-        v48 = [(_DASBGSystemTask *)v15 semanticVersion];
+        name2 = [(_DASBGSystemTask *)v15 name];
+        semanticVersion = [(_DASBGSystemTask *)v15 semanticVersion];
         *buf = 138543618;
-        *&buf[4] = v47;
+        *&buf[4] = name2;
         *&buf[12] = 1024;
-        *&buf[14] = v48;
+        *&buf[14] = semanticVersion;
         _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_DEFAULT, "%{public}@ v%d: Allowing FastPass resubmission", buf, 0x12u);
       }
 
       v49 = objc_opt_class();
-      v50 = [(_DASBGSystemTask *)v15 name];
-      [v49 resetFastPass:v50 resetAll:0];
+      name3 = [(_DASBGSystemTask *)v15 name];
+      [v49 resetFastPass:name3 resetAll:0];
 
 LABEL_42:
       v51 = [v28 objectForKey:@"ProcessingTaskIdentifiers"];
@@ -476,8 +476,8 @@ LABEL_42:
     }
 
     v40 = objc_opt_class();
-    v41 = [(_DASBGSystemTask *)v15 name];
-    LOBYTE(v40) = [v40 hasFastPassRun:v41 semanticVersion:{-[_DASBGSystemTask semanticVersion](v15, "semanticVersion")}];
+    name4 = [(_DASBGSystemTask *)v15 name];
+    LOBYTE(v40) = [v40 hasFastPassRun:name4 semanticVersion:{-[_DASBGSystemTask semanticVersion](v15, "semanticVersion")}];
 
     if (v40)
     {
@@ -485,12 +485,12 @@ LABEL_42:
       if (os_log_type_enabled(qword_10020B438, OS_LOG_TYPE_DEFAULT))
       {
         v43 = v42;
-        v44 = [(_DASBGSystemTask *)v15 name];
-        v45 = [(_DASBGSystemTask *)v15 semanticVersion];
+        name5 = [(_DASBGSystemTask *)v15 name];
+        semanticVersion2 = [(_DASBGSystemTask *)v15 semanticVersion];
         *buf = 138543618;
-        *&buf[4] = v44;
+        *&buf[4] = name5;
         *&buf[12] = 1024;
-        *&buf[14] = v45;
+        *&buf[14] = semanticVersion2;
         _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEFAULT, "%{public}@ v%d: FastPass activity has already run on this release", buf, 0x12u);
       }
 
@@ -543,14 +543,14 @@ LABEL_42:
   }
 
 LABEL_49:
-  v55 = xpc_dictionary_get_array(v14, "FeatureCodes");
+  v55 = xpc_dictionary_get_array(descriptorCopy, "FeatureCodes");
 
   if (v55 && xpc_get_type(v55) == &_xpc_type_array)
   {
     v60 = _CFXPCCreateCFObjectFromXPCObject();
     if ([v60 count])
     {
-      if ([(_DASBGSystemTask *)v15 validateFeatureCodes:v60 forToken:a4])
+      if ([(_DASBGSystemTask *)v15 validateFeatureCodes:v60 forToken:token])
       {
         objc_storeStrong(&v15->_featureCodes, v60);
 
@@ -585,7 +585,7 @@ LABEL_51:
       goto LABEL_186;
     }
 
-    if (![(_DASBGSystemTask *)v15 validateFastPassSubmissionForActivity:v15->_identifier featureCodes:featureCodes service:v143])
+    if (![(_DASBGSystemTask *)v15 validateFastPassSubmissionForActivity:v15->_identifier featureCodes:featureCodes service:serviceCopy])
     {
       if (os_log_type_enabled(qword_10020B438, OS_LOG_TYPE_ERROR))
       {
@@ -600,7 +600,7 @@ LABEL_51:
 
   v15->_priority = 1;
   v15->_requiresExternalPower = 1;
-  string = xpc_dictionary_get_string(v14, "Priority");
+  string = xpc_dictionary_get_string(descriptorCopy, "Priority");
   v58 = string;
   if (!string)
   {
@@ -640,16 +640,16 @@ LABEL_79:
   }
 
 LABEL_80:
-  v62 = xpc_dictionary_get_value(v14, "RequiresExternalPower");
+  v62 = xpc_dictionary_get_value(descriptorCopy, "RequiresExternalPower");
 
   if (v62)
   {
     v15->_requiresExternalPower = xpc_BOOL_get_value(v62);
   }
 
-  v15->_random_initial_delay = xpc_dictionary_get_int64(v14, "RandomInitialDelay");
-  v15->_expected_duration = xpc_dictionary_get_int64(v14, "ExpectedDuration");
-  v63 = xpc_dictionary_get_array(v14, "RelatedApplications");
+  v15->_random_initial_delay = xpc_dictionary_get_int64(descriptorCopy, "RandomInitialDelay");
+  v15->_expected_duration = xpc_dictionary_get_int64(descriptorCopy, "ExpectedDuration");
+  v63 = xpc_dictionary_get_array(descriptorCopy, "RelatedApplications");
 
   if (v63 && xpc_get_type(v63) == &_xpc_type_array)
   {
@@ -658,7 +658,7 @@ LABEL_80:
     v15->_related_applications = v64;
   }
 
-  v66 = xpc_dictionary_get_array(v14, "InvolvedProcesses");
+  v66 = xpc_dictionary_get_array(descriptorCopy, "InvolvedProcesses");
 
   if (v66 && xpc_get_type(v66) == &_xpc_type_array)
   {
@@ -667,14 +667,14 @@ LABEL_80:
     v15->_involved_processes = v67;
   }
 
-  v69 = xpc_dictionary_get_value(v14, "RequestsImmediateRuntime");
+  v69 = xpc_dictionary_get_value(descriptorCopy, "RequestsImmediateRuntime");
 
   if (v69)
   {
     v15->_requestsImmediateRuntime = xpc_BOOL_get_value(v69);
   }
 
-  v55 = xpc_dictionary_get_value(v14, "RunOnAppForeground");
+  v55 = xpc_dictionary_get_value(descriptorCopy, "RunOnAppForeground");
 
   if (v55)
   {
@@ -700,7 +700,7 @@ LABEL_80:
     }
   }
 
-  v72 = xpc_dictionary_get_value(v14, "RunWhenAppLaunchUnlikely");
+  v72 = xpc_dictionary_get_value(descriptorCopy, "RunWhenAppLaunchUnlikely");
 
   if (v72)
   {
@@ -726,7 +726,7 @@ LABEL_80:
     }
   }
 
-  v55 = xpc_dictionary_get_value(v14, "RequestsApplicationLaunch");
+  v55 = xpc_dictionary_get_value(descriptorCopy, "RequestsApplicationLaunch");
 
   if (v55)
   {
@@ -756,7 +756,7 @@ LABEL_186:
   }
 
 LABEL_105:
-  v72 = xpc_dictionary_get_value(v14, "BeforeApplicationLaunch");
+  v72 = xpc_dictionary_get_value(descriptorCopy, "BeforeApplicationLaunch");
 
   if (v72)
   {
@@ -786,14 +786,14 @@ LABEL_183:
   }
 
 LABEL_110:
-  v79 = xpc_dictionary_get_value(v14, "UserRequestedBackupTask");
+  v79 = xpc_dictionary_get_value(descriptorCopy, "UserRequestedBackupTask");
 
   if (v79)
   {
     v15->_user_requested_backup_task = xpc_BOOL_get_value(v79);
   }
 
-  v80 = xpc_dictionary_get_dictionary(v14, "NetworkEndpoint");
+  v80 = xpc_dictionary_get_dictionary(descriptorCopy, "NetworkEndpoint");
 
   if (v80 && xpc_get_type(v80) == &_xpc_type_dictionary)
   {
@@ -802,7 +802,7 @@ LABEL_110:
     v15->_network_endpoint = v81;
   }
 
-  v83 = xpc_dictionary_get_dictionary(v14, "NetworkParameters");
+  v83 = xpc_dictionary_get_dictionary(descriptorCopy, "NetworkParameters");
 
   if (v83 && xpc_get_type(v83) == &_xpc_type_dictionary)
   {
@@ -811,8 +811,8 @@ LABEL_110:
     v15->_network_parameters = v84;
   }
 
-  v15->_requires_buddy_complete = xpc_dictionary_get_BOOL(v14, "RequiresBuddyComplete");
-  v86 = xpc_dictionary_get_string(v14, "GroupName");
+  v15->_requires_buddy_complete = xpc_dictionary_get_BOOL(descriptorCopy, "RequiresBuddyComplete");
+  v86 = xpc_dictionary_get_string(descriptorCopy, "GroupName");
   if (v86)
   {
     v87 = [NSString stringWithUTF8String:v86];
@@ -822,11 +822,11 @@ LABEL_110:
 
   if (v15->_group_name)
   {
-    v89 = xpc_dictionary_get_value(v14, "GroupConcurrencyLimit");
+    v89 = xpc_dictionary_get_value(descriptorCopy, "GroupConcurrencyLimit");
 
     if (v89)
     {
-      int64 = xpc_dictionary_get_int64(v14, "GroupConcurrencyLimit");
+      int64 = xpc_dictionary_get_int64(descriptorCopy, "GroupConcurrencyLimit");
     }
 
     else
@@ -838,7 +838,7 @@ LABEL_110:
     v83 = v89;
   }
 
-  v91 = xpc_dictionary_get_string(v14, "RateLimitConfigurationName");
+  v91 = xpc_dictionary_get_string(descriptorCopy, "RateLimitConfigurationName");
   if (v91)
   {
     v92 = [NSString stringWithUTF8String:v91];
@@ -846,13 +846,13 @@ LABEL_110:
     v15->_rateLimitConfigurationName = v92;
   }
 
-  v15->_requires_significant_user_inactivity = xpc_dictionary_get_BOOL(v14, "RequiresSignificantUserInactivity");
-  v15->_requiresUserInactivity = xpc_dictionary_get_BOOL(v14, "RequiresUserInactivity");
-  v15->_power_nap = xpc_dictionary_get_BOOL(v14, "PowerNap");
-  v15->_app_refresh = xpc_dictionary_get_BOOL(v14, "AppRefresh");
-  v15->_prevents_device_sleep = xpc_dictionary_get_BOOL(v14, "PreventsDeviceSleep");
-  v15->_resource_intensive = xpc_dictionary_get_BOOL(v14, "ResourceIntensive");
-  v94 = xpc_dictionary_get_int64(v14, "Resources");
+  v15->_requires_significant_user_inactivity = xpc_dictionary_get_BOOL(descriptorCopy, "RequiresSignificantUserInactivity");
+  v15->_requiresUserInactivity = xpc_dictionary_get_BOOL(descriptorCopy, "RequiresUserInactivity");
+  v15->_power_nap = xpc_dictionary_get_BOOL(descriptorCopy, "PowerNap");
+  v15->_app_refresh = xpc_dictionary_get_BOOL(descriptorCopy, "AppRefresh");
+  v15->_prevents_device_sleep = xpc_dictionary_get_BOOL(descriptorCopy, "PreventsDeviceSleep");
+  v15->_resource_intensive = xpc_dictionary_get_BOOL(descriptorCopy, "ResourceIntensive");
+  v94 = xpc_dictionary_get_int64(descriptorCopy, "Resources");
   if (v94 <= 1)
   {
     v95 = 1;
@@ -864,14 +864,14 @@ LABEL_110:
   }
 
   v15->_resources = v95;
-  v15->_requires_inexpensive_network = xpc_dictionary_get_BOOL(v14, "RequiresInexpensiveNetworkConnectivity");
-  v15->_requires_unconstrained_network = xpc_dictionary_get_BOOL(v14, "RequiresUnconstrainedNetworkConnectivity");
-  v96 = xpc_dictionary_get_BOOL(v14, "RequiresNetworkConnectivity") || v15->_requires_inexpensive_network || v15->_requires_unconstrained_network;
+  v15->_requires_inexpensive_network = xpc_dictionary_get_BOOL(descriptorCopy, "RequiresInexpensiveNetworkConnectivity");
+  v15->_requires_unconstrained_network = xpc_dictionary_get_BOOL(descriptorCopy, "RequiresUnconstrainedNetworkConnectivity");
+  v96 = xpc_dictionary_get_BOOL(descriptorCopy, "RequiresNetworkConnectivity") || v15->_requires_inexpensive_network || v15->_requires_unconstrained_network;
   v15->_requires_network_connectivity = v96 & 1;
-  v15->_expected_network_download_size_bytes = xpc_dictionary_get_int64(v14, "NetworkDownloadSize");
-  v15->_expected_network_upload_size_bytes = xpc_dictionary_get_int64(v14, "NetworkUploadSize");
-  v15->_may_reboot_device = xpc_dictionary_get_BOOL(v14, "MayRebootDevice");
-  v97 = xpc_dictionary_get_array(v14, "ProducedResultIdentifiers");
+  v15->_expected_network_download_size_bytes = xpc_dictionary_get_int64(descriptorCopy, "NetworkDownloadSize");
+  v15->_expected_network_upload_size_bytes = xpc_dictionary_get_int64(descriptorCopy, "NetworkUploadSize");
+  v15->_may_reboot_device = xpc_dictionary_get_BOOL(descriptorCopy, "MayRebootDevice");
+  v97 = xpc_dictionary_get_array(descriptorCopy, "ProducedResultIdentifiers");
 
   if (v97 && xpc_get_type(v97) == &_xpc_type_array)
   {
@@ -884,7 +884,7 @@ LABEL_110:
     }
   }
 
-  v101 = xpc_dictionary_get_array(v14, "Dependencies");
+  v101 = xpc_dictionary_get_array(descriptorCopy, "Dependencies");
 
   if (v101 && xpc_get_type(v101) == &_xpc_type_array)
   {
@@ -899,7 +899,7 @@ LABEL_110:
     applier[2] = sub_10007155C;
     applier[3] = &unk_1001B6DA8;
     v102 = v15;
-    v149 = a5;
+    dCopy = d;
     v147 = v102;
     v148 = buf;
     if (!xpc_array_apply(v101, applier))
@@ -914,7 +914,7 @@ LABEL_110:
     _Block_object_dispose(buf, 8);
   }
 
-  v103 = xpc_dictionary_get_array(v14, "Context");
+  v103 = xpc_dictionary_get_array(descriptorCopy, "Context");
 
   if (v103 && xpc_get_type(v103) == &_xpc_type_dictionary)
   {
@@ -963,7 +963,7 @@ LABEL_110:
   }
 
 LABEL_145:
-  v104 = xpc_dictionary_get_string(v14, "DiskVolume");
+  v104 = xpc_dictionary_get_string(descriptorCopy, "DiskVolume");
   if (v104)
   {
     if (!v15->_expected_network_download_size_bytes)
@@ -982,9 +982,9 @@ LABEL_145:
     v15->_diskVolume = v105;
   }
 
-  v15->_communicates_with_paired_device = xpc_dictionary_get_BOOL(v14, "CommunicatesWithPairedDevice");
+  v15->_communicates_with_paired_device = xpc_dictionary_get_BOOL(descriptorCopy, "CommunicatesWithPairedDevice");
   v15->_targetDevice = 0;
-  v107 = xpc_dictionary_get_string(v14, "TargetDevice");
+  v107 = xpc_dictionary_get_string(descriptorCopy, "TargetDevice");
   v108 = v107;
   if (v107)
   {
@@ -1012,7 +1012,7 @@ LABEL_145:
   }
 
 LABEL_165:
-  v115 = xpc_dictionary_get_string(v14, "RemoteDeviceIdentifier");
+  v115 = xpc_dictionary_get_string(descriptorCopy, "RemoteDeviceIdentifier");
   if (v115)
   {
     v116 = [NSString stringWithUTF8String:v115];
@@ -1020,8 +1020,8 @@ LABEL_165:
     v15->_remoteDevice = v116;
   }
 
-  v15->_requiresRemoteDeviceWake = xpc_dictionary_get_BOOL(v14, "RequiresRemoteDeviceWake");
-  v118 = xpc_dictionary_get_string(v14, "RunOnMotionState");
+  v15->_requiresRemoteDeviceWake = xpc_dictionary_get_BOOL(descriptorCopy, "RequiresRemoteDeviceWake");
+  v118 = xpc_dictionary_get_string(descriptorCopy, "RunOnMotionState");
   if (v118)
   {
     v119 = [NSString stringWithUTF8String:v118];
@@ -1072,9 +1072,9 @@ LABEL_203:
   }
 
 LABEL_204:
-  v15->_duet_power_budgeted = xpc_dictionary_get_BOOL(v14, "PowerBudgeted");
-  v15->_data_budgeted = xpc_dictionary_get_BOOL(v14, "DataBudgeted");
-  v128 = xpc_dictionary_get_string(v14, "DataBudgetName");
+  v15->_duet_power_budgeted = xpc_dictionary_get_BOOL(descriptorCopy, "PowerBudgeted");
+  v15->_data_budgeted = xpc_dictionary_get_BOOL(descriptorCopy, "DataBudgeted");
+  v128 = xpc_dictionary_get_string(descriptorCopy, "DataBudgetName");
   if (v128 && v15->_data_budgeted)
   {
     v129 = [NSString stringWithUTF8String:v128];
@@ -1082,9 +1082,9 @@ LABEL_204:
     v15->_dataBudgetName = v129;
   }
 
-  v15->_shouldWakeDevice = xpc_dictionary_get_BOOL(v14, "ShouldWakeDevice");
+  v15->_shouldWakeDevice = xpc_dictionary_get_BOOL(descriptorCopy, "ShouldWakeDevice");
   v15->_requires_protection_class = 4;
-  v131 = xpc_dictionary_get_string(v14, "RequiresProtectionClass");
+  v131 = xpc_dictionary_get_string(descriptorCopy, "RequiresProtectionClass");
   if (!v131)
   {
     goto LABEL_219;
@@ -1128,20 +1128,20 @@ LABEL_218:
   }
 
 LABEL_219:
-  v15->_overrideRateLimiting = xpc_dictionary_get_BOOL(v14, "OverrideRateLimiting");
-  v15->_magneticInterferenceSensitivity = xpc_dictionary_get_BOOL(v14, "MagneticInterferenceSensitivity");
-  v15->_mailFetch = xpc_dictionary_get_BOOL(v14, "MailFetch");
-  v15->_bypassPeakPower = xpc_dictionary_get_BOOL(v14, "BypassPeakPower");
-  v15->_bypassBatteryAging = xpc_dictionary_get_BOOL(v14, "BypassBatteryAging");
-  v15->_backlogged = xpc_dictionary_get_BOOL(v14, "Backlogged");
-  v15->_requiresMinimumBatteryLevel = xpc_dictionary_get_int64(v14, "RequiresMinimumBatteryLevel");
-  v15->_blockRebootActivitiesForSU = xpc_dictionary_get_BOOL(v14, "BlockRebootActivitiesForSU");
+  v15->_overrideRateLimiting = xpc_dictionary_get_BOOL(descriptorCopy, "OverrideRateLimiting");
+  v15->_magneticInterferenceSensitivity = xpc_dictionary_get_BOOL(descriptorCopy, "MagneticInterferenceSensitivity");
+  v15->_mailFetch = xpc_dictionary_get_BOOL(descriptorCopy, "MailFetch");
+  v15->_bypassPeakPower = xpc_dictionary_get_BOOL(descriptorCopy, "BypassPeakPower");
+  v15->_bypassBatteryAging = xpc_dictionary_get_BOOL(descriptorCopy, "BypassBatteryAging");
+  v15->_backlogged = xpc_dictionary_get_BOOL(descriptorCopy, "Backlogged");
+  v15->_requiresMinimumBatteryLevel = xpc_dictionary_get_int64(descriptorCopy, "RequiresMinimumBatteryLevel");
+  v15->_blockRebootActivitiesForSU = xpc_dictionary_get_BOOL(descriptorCopy, "BlockRebootActivitiesForSU");
   if (v15->_requiresMinimumBatteryLevel >= 0x65)
   {
     v15->_requiresMinimumBatteryLevel = 0;
   }
 
-  v134 = xpc_dictionary_get_int64(v14, "RequiresMinimumDataBudgetPercentage");
+  v134 = xpc_dictionary_get_int64(descriptorCopy, "RequiresMinimumDataBudgetPercentage");
   if (v134 <= 0x64)
   {
     v135 = v134;
@@ -1154,13 +1154,13 @@ LABEL_219:
 
   v15->_requiresMinimumDataBudgetPercentage = v135;
   v15->_state = 0;
-  if (v144)
+  if (taskCopy)
   {
-    v136 = [v144 baseTime];
+    baseTime = [taskCopy baseTime];
     baseTime = v15->_baseTime;
-    v15->_baseTime = v136;
+    v15->_baseTime = baseTime;
 
-    [v144 tempDelay];
+    [taskCopy tempDelay];
     v15->_tempDelay = v138;
     if (v15->_type == 2)
     {
@@ -1172,7 +1172,7 @@ LABEL_219:
       }
     }
 
-    v15->_state = [v144 state];
+    v15->_state = [taskCopy state];
   }
 
   else
@@ -1180,16 +1180,16 @@ LABEL_219:
     [(_DASBGSystemTask *)v15 loadBaseTime];
   }
 
-  objc_storeStrong(&v15->_descriptor, a3);
+  objc_storeStrong(&v15->_descriptor, descriptor);
   v22 = v15;
 
 LABEL_10:
   return v22;
 }
 
-- (BOOL)validateFeatureCodes:(id)a3 forToken:(unint64_t)a4
+- (BOOL)validateFeatureCodes:(id)codes forToken:(unint64_t)token
 {
-  v4 = a3;
+  codesCopy = codes;
   v5 = +[_DASPlistParser sharedInstance];
   v6 = [v5 dictionaryForPlist:2];
 
@@ -1197,7 +1197,7 @@ LABEL_10:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v4;
+  v7 = codesCopy;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
@@ -1212,8 +1212,8 @@ LABEL_10:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v16 + 1) + 8 * i) stringValue];
-        v13 = [v6 objectForKey:v12];
+        stringValue = [*(*(&v16 + 1) + 8 * i) stringValue];
+        v13 = [v6 objectForKey:stringValue];
 
         if (!v13)
         {
@@ -1238,15 +1238,15 @@ LABEL_11:
   return v14;
 }
 
-- (void)updateFeatureCodesForActivity:(id)a3
+- (void)updateFeatureCodesForActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   if (self->_featureCodes)
   {
     v5 = +[_DASPlistParser sharedInstance];
     v6 = [v5 dictionaryForPlist:0];
 
-    v7 = [v6 objectForKeyedSubscript:v4];
+    v7 = [v6 objectForKeyedSubscript:activityCopy];
     v8 = v7;
     if (!v7)
     {
@@ -1304,9 +1304,9 @@ LABEL_11:
       v19 = self->_featureCodes;
       v13 = [NSMutableSet setWithArray:v19];
       [v13 addObjectsFromArray:v10];
-      v20 = [v13 allObjects];
+      allObjects = [v13 allObjects];
       featureCodes = self->_featureCodes;
-      self->_featureCodes = v20;
+      self->_featureCodes = allObjects;
     }
 
 LABEL_15:
@@ -1323,15 +1323,15 @@ LABEL_20:
 LABEL_21:
 }
 
-- (BOOL)validateFastPassSubmissionForActivity:(id)a3 featureCodes:(id)a4 service:(id)a5
+- (BOOL)validateFastPassSubmissionForActivity:(id)activity featureCodes:(id)codes service:(id)service
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  activityCopy = activity;
+  codesCopy = codes;
+  serviceCopy = service;
   v10 = +[_DASPlistParser sharedInstance];
   v11 = [v10 dictionaryForPlist:0];
 
-  v12 = [v11 objectForKeyedSubscript:v7];
+  v12 = [v11 objectForKeyedSubscript:activityCopy];
   v13 = v12;
   if (!v12)
   {
@@ -1344,7 +1344,7 @@ LABEL_21:
   }
 
   v14 = [v12 objectForKeyedSubscript:@"Service"];
-  v15 = [v9 isEqualToString:v14];
+  v15 = [serviceCopy isEqualToString:v14];
 
   if ((v15 & 1) == 0)
   {
@@ -1363,12 +1363,12 @@ LABEL_16:
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v17 = v8;
+  v17 = codesCopy;
   v18 = [v17 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v18)
   {
     v19 = v18;
-    v26 = v8;
+    v26 = codesCopy;
     v20 = *v28;
     while (2)
     {
@@ -1385,7 +1385,7 @@ LABEL_16:
           v24 = qword_10020B438;
           if (os_log_type_enabled(qword_10020B438, OS_LOG_TYPE_ERROR))
           {
-            sub_100121BF8(v24, v22, v7);
+            sub_100121BF8(v24, v22, activityCopy);
           }
 
           v23 = 0;
@@ -1404,7 +1404,7 @@ LABEL_16:
 
     v23 = 1;
 LABEL_20:
-    v8 = v26;
+    codesCopy = v26;
   }
 
   else
@@ -1416,9 +1416,9 @@ LABEL_23:
   return v23;
 }
 
-+ (BOOL)hasFastPassRun:(id)a3 semanticVersion:(int64_t)a4
++ (BOOL)hasFastPassRun:(id)run semanticVersion:(int64_t)version
 {
-  v5 = a3;
+  runCopy = run;
   if (qword_10020B458)
   {
     goto LABEL_10;
@@ -1458,12 +1458,12 @@ LABEL_23:
   {
 LABEL_10:
     v12 = [qword_10020B440 dictionaryForKey:@"FastPassActivitiesRun"];
-    v13 = [v12 objectForKey:v5];
+    v13 = [v12 objectForKey:runCopy];
 
     if (v13)
     {
-      v14 = [v12 objectForKey:v5];
-      v15 = [v14 intValue] == a4;
+      v14 = [v12 objectForKey:runCopy];
+      v15 = [v14 intValue] == version;
     }
 
     else
@@ -1484,10 +1484,10 @@ LABEL_10:
   return v15;
 }
 
-+ (void)markFastPassActivityDone:(id)a3 semanticVersion:(int64_t)a4
++ (void)markFastPassActivityDone:(id)done semanticVersion:(int64_t)version
 {
   v5 = qword_10020B440;
-  v6 = a3;
+  doneCopy = done;
   v7 = [v5 dictionaryForKey:@"FastPassActivitiesRun"];
   v11 = v7;
   if (v7)
@@ -1501,17 +1501,17 @@ LABEL_10:
   }
 
   v9 = v8;
-  v10 = [NSNumber numberWithInteger:a4];
-  [v9 setValue:v10 forKey:v6];
+  v10 = [NSNumber numberWithInteger:version];
+  [v9 setValue:v10 forKey:doneCopy];
 
   [qword_10020B440 setObject:v9 forKey:@"FastPassActivitiesRun"];
   [qword_10020B440 synchronize];
 }
 
-+ (BOOL)resetFastPass:(id)a3 resetAll:(BOOL)a4
++ (BOOL)resetFastPass:(id)pass resetAll:(BOOL)all
 {
-  v4 = a4;
-  v5 = a3;
+  allCopy = all;
+  passCopy = pass;
   v6 = [qword_10020B440 dictionaryForKey:@"FastPassActivitiesRun"];
   v7 = v6;
   if (v6)
@@ -1525,7 +1525,7 @@ LABEL_10:
   }
 
   v9 = v8;
-  if (v4)
+  if (allCopy)
   {
     [v8 removeAllObjects];
     v11 = +[_DASFeatureDurationTracker sharedInstance];
@@ -1538,17 +1538,17 @@ LABEL_10:
 
   else
   {
-    v12 = [v8 objectForKey:v5];
+    v12 = [v8 objectForKey:passCopy];
     LODWORD(v11) = v12 != 0;
 
     if (v12)
     {
-      [v9 removeObjectForKey:v5];
+      [v9 removeObjectForKey:passCopy];
     }
 
-    [v9 removeObjectForKey:v5];
+    [v9 removeObjectForKey:passCopy];
     v10 = +[_DASActivityDependencyManager sharedInstance];
-    [v10 resetFastPassDependenciesForActivity:v5];
+    [v10 resetFastPassDependenciesForActivity:passCopy];
   }
 
   [qword_10020B440 setObject:v9 forKey:@"FastPassActivitiesRun"];
@@ -1562,8 +1562,8 @@ LABEL_10:
   v2 = +[_DASPlistParser sharedInstance];
   v3 = [v2 dictionaryForPlist:0];
 
-  v4 = [v3 allKeys];
-  v5 = [NSSet setWithArray:v4];
+  allKeys = [v3 allKeys];
+  v5 = [NSSet setWithArray:allKeys];
   v6 = v5;
   if (v5)
   {
@@ -1616,8 +1616,8 @@ LABEL_10:
 
     v12 = [NSMutableDictionary dictionaryWithDictionary:v5];
     [v6 setObject:v12 forKeyedSubscript:@"Criteria"];
-    v13 = [(_DASBGSystemTask *)self name];
-    [v6 setObject:v13 forKeyedSubscript:@"ActivityName"];
+    name = [(_DASBGSystemTask *)self name];
+    [v6 setObject:name forKeyedSubscript:@"ActivityName"];
 
     v14 = +[NSMutableDictionary dictionary];
     v15 = objc_alloc_init(NSDateFormatter);
@@ -1631,36 +1631,36 @@ LABEL_10:
       [v14 setObject:v17 forKeyedSubscript:@"BaseTime"];
     }
 
-    v18 = [(_DASBGSystemTask *)self scheduler_activity];
-    v19 = [v18 startAfter];
-    v20 = [v15 stringFromDate:v19];
+    scheduler_activity = [(_DASBGSystemTask *)self scheduler_activity];
+    startAfter = [scheduler_activity startAfter];
+    v20 = [v15 stringFromDate:startAfter];
     [v14 setObject:v20 forKeyedSubscript:@"ScheduleAfter"];
 
-    v21 = [(_DASBGSystemTask *)self scheduler_activity];
-    v22 = [v21 startBefore];
-    v23 = [v15 stringFromDate:v22];
+    scheduler_activity2 = [(_DASBGSystemTask *)self scheduler_activity];
+    startBefore = [scheduler_activity2 startBefore];
+    v23 = [v15 stringFromDate:startBefore];
     [v14 setObject:v23 forKeyedSubscript:@"ScheduleBefore"];
 
     [v6 setObject:v14 forKeyedSubscript:@"Timings"];
-    v24 = [(_DASBGSystemTask *)self stateString];
-    [v6 setObject:v24 forKeyedSubscript:@"State"];
+    stateString = [(_DASBGSystemTask *)self stateString];
+    [v6 setObject:stateString forKeyedSubscript:@"State"];
   }
 
   return v6;
 }
 
-+ (id)resourcesDescriptionFromBitmap:(int64_t)a3
++ (id)resourcesDescriptionFromBitmap:(int64_t)bitmap
 {
-  v3 = a3;
+  bitmapCopy = bitmap;
   v4 = +[NSMutableArray array];
   v5 = v4;
-  if (v3)
+  if (bitmapCopy)
   {
     [v4 addObject:@"CPU"];
-    if ((v3 & 2) == 0)
+    if ((bitmapCopy & 2) == 0)
     {
 LABEL_3:
-      if ((v3 & 4) == 0)
+      if ((bitmapCopy & 4) == 0)
       {
         goto LABEL_4;
       }
@@ -1669,16 +1669,16 @@ LABEL_3:
     }
   }
 
-  else if ((v3 & 2) == 0)
+  else if ((bitmapCopy & 2) == 0)
   {
     goto LABEL_3;
   }
 
   [v5 addObject:@"Memory"];
-  if ((v3 & 4) == 0)
+  if ((bitmapCopy & 4) == 0)
   {
 LABEL_4:
-    if ((v3 & 8) == 0)
+    if ((bitmapCopy & 8) == 0)
     {
       goto LABEL_5;
     }
@@ -1688,10 +1688,10 @@ LABEL_4:
 
 LABEL_12:
   [v5 addObject:@"Disk"];
-  if ((v3 & 8) == 0)
+  if ((bitmapCopy & 8) == 0)
   {
 LABEL_5:
-    if ((v3 & 0x10) == 0)
+    if ((bitmapCopy & 0x10) == 0)
     {
       goto LABEL_7;
     }
@@ -1701,7 +1701,7 @@ LABEL_5:
 
 LABEL_13:
   [v5 addObject:@"ANE"];
-  if ((v3 & 0x10) != 0)
+  if ((bitmapCopy & 0x10) != 0)
   {
 LABEL_6:
     [v5 addObject:@"GPU"];
@@ -1715,7 +1715,7 @@ LABEL_7:
 
 - (BOOL)hasInstallActivityRun
 {
-  v2 = [(_DASBGSystemTask *)self name];
+  name = [(_DASBGSystemTask *)self name];
   if (!qword_10020B460)
   {
     if (sysctlbyname_get_data_np())
@@ -1735,7 +1735,7 @@ LABEL_7:
   }
 
   v3 = [qword_10020B440 arrayForKey:@"VersionSpecificActivitiesRun"];
-  v4 = [v3 containsObject:v2];
+  v4 = [v3 containsObject:name];
 
 LABEL_5:
   return v4;
@@ -1756,20 +1756,20 @@ LABEL_5:
   }
 
   v5 = v4;
-  v6 = [(_DASBGSystemTask *)self name];
-  [v5 addObject:v6];
+  name = [(_DASBGSystemTask *)self name];
+  [v5 addObject:name];
 
   [qword_10020B440 setObject:v5 forKey:@"VersionSpecificActivitiesRun"];
 }
 
-- (void)saveActivityBaseTime:(id)a3
+- (void)saveActivityBaseTime:(id)time
 {
-  if (a3)
+  if (time)
   {
     v4 = qword_10020B448;
-    v5 = a3;
-    v6 = [(_DASBGSystemTask *)self name];
-    [v4 setValue:v5 forKey:v6];
+    timeCopy = time;
+    name = [(_DASBGSystemTask *)self name];
+    [v4 setValue:timeCopy forKey:name];
   }
 
   v7 = qword_10020B440;
@@ -1781,8 +1781,8 @@ LABEL_5:
 - (id)getActivityBaseTime
 {
   v3 = qword_10020B448;
-  v4 = [(_DASBGSystemTask *)self name];
-  v5 = [v3 valueForKey:v4];
+  name = [(_DASBGSystemTask *)self name];
+  v5 = [v3 valueForKey:name];
 
   v6 = +[NSDate date];
   v7 = [v6 dateByAddingTimeInterval:-4838400.0];
@@ -1813,31 +1813,31 @@ LABEL_5:
   self->_startTime = 0;
 }
 
-- (void)adjustBaseTimeByOffset:(double)a3
+- (void)adjustBaseTimeByOffset:(double)offset
 {
-  v4 = [(NSDate *)self->_baseTime dateByAddingTimeInterval:a3];
+  v4 = [(NSDate *)self->_baseTime dateByAddingTimeInterval:offset];
   baseTime = self->_baseTime;
   self->_baseTime = v4;
 
   _objc_release_x1(v4, baseTime);
 }
 
-- (void)markStopped:(id)a3
+- (void)markStopped:(id)stopped
 {
   startTime = self->_startTime;
   self->_startTime = 0;
   _objc_release_x1();
 }
 
-- (id)initForTestWithIdentifier:(id)a3
+- (id)initForTestWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = _DASBGSystemTask;
   v5 = [(_DASBGSystemTask *)&v10 init];
   identifier = v5->_identifier;
-  v5->_identifier = v4;
-  v7 = v4;
+  v5->_identifier = identifierCopy;
+  v7 = identifierCopy;
 
   v5->_token = 0;
   v5->_pid = 0;

@@ -1,21 +1,21 @@
 @interface SAIntentGroupTextSnippetTemplate
 - (unint64_t)alignmentValue;
-- (void)setAlignmentValue:(unint64_t)a3;
+- (void)setAlignmentValue:(unint64_t)value;
 @end
 
 @implementation SAIntentGroupTextSnippetTemplate
 
 - (unint64_t)alignmentValue
 {
-  v2 = [(SAIntentGroupTextSnippetTemplate *)self alignment];
-  v3 = [SiriIntentsTemplateModelEnumMapper templateAlignmentFromString:v2];
+  alignment = [(SAIntentGroupTextSnippetTemplate *)self alignment];
+  v3 = [SiriIntentsTemplateModelEnumMapper templateAlignmentFromString:alignment];
 
   return v3;
 }
 
-- (void)setAlignmentValue:(unint64_t)a3
+- (void)setAlignmentValue:(unint64_t)value
 {
-  v4 = [SiriIntentsTemplateModelEnumMapper stringFromTemplateAlignment:a3];
+  v4 = [SiriIntentsTemplateModelEnumMapper stringFromTemplateAlignment:value];
   [(SAIntentGroupTextSnippetTemplate *)self setAlignment:v4];
 }
 

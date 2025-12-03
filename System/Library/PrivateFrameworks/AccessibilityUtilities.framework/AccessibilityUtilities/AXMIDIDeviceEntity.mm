@@ -1,27 +1,27 @@
 @interface AXMIDIDeviceEntity
 - (AXMIDIDevice)device;
-- (AXMIDIDeviceEntity)initWithMIDIEntity:(unsigned int)a3 device:(id)a4;
-- (id)_destinationForMidiEndpoint:(unsigned int)a3 addIfNeeded:(BOOL)a4;
-- (id)_sourceForMidiEndpoint:(unsigned int)a3 addIfNeeded:(BOOL)a4;
+- (AXMIDIDeviceEntity)initWithMIDIEntity:(unsigned int)entity device:(id)device;
+- (id)_destinationForMidiEndpoint:(unsigned int)endpoint addIfNeeded:(BOOL)needed;
+- (id)_sourceForMidiEndpoint:(unsigned int)endpoint addIfNeeded:(BOOL)needed;
 - (id)description;
-- (void)removeMidiDestination:(unsigned int)a3;
-- (void)removeMidiSource:(unsigned int)a3;
+- (void)removeMidiDestination:(unsigned int)destination;
+- (void)removeMidiSource:(unsigned int)source;
 - (void)resetAndDetectEndpoints;
 @end
 
 @implementation AXMIDIDeviceEntity
 
-- (AXMIDIDeviceEntity)initWithMIDIEntity:(unsigned int)a3 device:(id)a4
+- (AXMIDIDeviceEntity)initWithMIDIEntity:(unsigned int)entity device:(id)device
 {
-  v6 = a4;
+  deviceCopy = device;
   v14.receiver = self;
   v14.super_class = AXMIDIDeviceEntity;
   v7 = [(AXMIDIDeviceEntity *)&v14 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_device, v6);
-    v8->_midiEntity = a3;
+    objc_storeWeak(&v7->_device, deviceCopy);
+    v8->_midiEntity = entity;
     v9 = [MEMORY[0x1E695DFA8] set];
     sources = v8->_sources;
     v8->_sources = v9;
@@ -37,8 +37,8 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(AXMIDIDeviceEntity *)self device];
-  v5 = [v3 stringWithFormat:@"<AXMIDIDeviceEntity:%p parent:%@>", self, v4];
+  device = [(AXMIDIDeviceEntity *)self device];
+  v5 = [v3 stringWithFormat:@"<AXMIDIDeviceEntity:%p parent:%@>", self, device];
 
   return v5;
 }
@@ -66,10 +66,10 @@
   }
 }
 
-- (void)removeMidiSource:(unsigned int)a3
+- (void)removeMidiSource:(unsigned int)source
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = [(AXMIDIDeviceEntity *)self _sourceForMidiEndpoint:*&a3 addIfNeeded:0];
+  v4 = [(AXMIDIDeviceEntity *)self _sourceForMidiEndpoint:*&source addIfNeeded:0];
   if (v4)
   {
     v5 = AXLogMIDI();
@@ -80,18 +80,18 @@
       _os_log_impl(&dword_18B15E000, v5, OS_LOG_TYPE_INFO, "Removing source: %@", &v8, 0xCu);
     }
 
-    v6 = [(AXMIDIDeviceEntity *)self sources];
-    [v6 removeObject:v4];
+    sources = [(AXMIDIDeviceEntity *)self sources];
+    [sources removeObject:v4];
 
-    v7 = [(AXMIDIDeviceEntity *)self device];
-    [v7 entity:self didRemoveSource:v4];
+    device = [(AXMIDIDeviceEntity *)self device];
+    [device entity:self didRemoveSource:v4];
   }
 }
 
-- (void)removeMidiDestination:(unsigned int)a3
+- (void)removeMidiDestination:(unsigned int)destination
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = [(AXMIDIDeviceEntity *)self _destinationForMidiEndpoint:*&a3 addIfNeeded:0];
+  v4 = [(AXMIDIDeviceEntity *)self _destinationForMidiEndpoint:*&destination addIfNeeded:0];
   if (v4)
   {
     v5 = AXLogMIDI();
@@ -102,25 +102,25 @@
       _os_log_impl(&dword_18B15E000, v5, OS_LOG_TYPE_INFO, "Removing destination: %@", &v8, 0xCu);
     }
 
-    v6 = [(AXMIDIDeviceEntity *)self destinations];
-    [v6 removeObject:v4];
+    destinations = [(AXMIDIDeviceEntity *)self destinations];
+    [destinations removeObject:v4];
 
-    v7 = [(AXMIDIDeviceEntity *)self device];
-    [v7 entity:self didRemoveDestination:v4];
+    device = [(AXMIDIDeviceEntity *)self device];
+    [device entity:self didRemoveDestination:v4];
   }
 }
 
-- (id)_sourceForMidiEndpoint:(unsigned int)a3 addIfNeeded:(BOOL)a4
+- (id)_sourceForMidiEndpoint:(unsigned int)endpoint addIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v5 = *&a3;
+  neededCopy = needed;
+  v5 = *&endpoint;
   v24 = *MEMORY[0x1E69E9840];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [(AXMIDIDeviceEntity *)self sources];
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v23 count:16];
+  sources = [(AXMIDIDeviceEntity *)self sources];
+  v8 = [sources countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v8)
   {
     v9 = v8;
@@ -131,7 +131,7 @@
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(sources);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
@@ -142,7 +142,7 @@
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v17 objects:v23 count:16];
+      v9 = [sources countByEnumeratingWithState:&v17 objects:v23 count:16];
       if (v9)
       {
         continue;
@@ -152,11 +152,11 @@
     }
   }
 
-  if (v4)
+  if (neededCopy)
   {
     v13 = [[AXMIDIDeviceEntityEndpoint alloc] initWithMIDIEndpoint:v5 entity:self];
-    v14 = [(AXMIDIDeviceEntity *)self sources];
-    [v14 addObject:v13];
+    sources2 = [(AXMIDIDeviceEntity *)self sources];
+    [sources2 addObject:v13];
 
     v15 = AXLogMIDI();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -166,8 +166,8 @@
       _os_log_impl(&dword_18B15E000, v15, OS_LOG_TYPE_INFO, "Did add source endpoint: %@", buf, 0xCu);
     }
 
-    v7 = [(AXMIDIDeviceEntity *)self device];
-    [v7 entity:self didAddSource:v13];
+    sources = [(AXMIDIDeviceEntity *)self device];
+    [sources entity:self didAddSource:v13];
 LABEL_14:
   }
 
@@ -179,17 +179,17 @@ LABEL_14:
   return v13;
 }
 
-- (id)_destinationForMidiEndpoint:(unsigned int)a3 addIfNeeded:(BOOL)a4
+- (id)_destinationForMidiEndpoint:(unsigned int)endpoint addIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v5 = *&a3;
+  neededCopy = needed;
+  v5 = *&endpoint;
   v24 = *MEMORY[0x1E69E9840];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [(AXMIDIDeviceEntity *)self destinations];
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v23 count:16];
+  destinations = [(AXMIDIDeviceEntity *)self destinations];
+  v8 = [destinations countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v8)
   {
     v9 = v8;
@@ -200,7 +200,7 @@ LABEL_14:
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(destinations);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
@@ -211,7 +211,7 @@ LABEL_14:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v17 objects:v23 count:16];
+      v9 = [destinations countByEnumeratingWithState:&v17 objects:v23 count:16];
       if (v9)
       {
         continue;
@@ -221,11 +221,11 @@ LABEL_14:
     }
   }
 
-  if (v4)
+  if (neededCopy)
   {
     v13 = [[AXMIDIDeviceEntityEndpoint alloc] initWithMIDIEndpoint:v5 entity:self];
-    v14 = [(AXMIDIDeviceEntity *)self destinations];
-    [v14 addObject:v13];
+    destinations2 = [(AXMIDIDeviceEntity *)self destinations];
+    [destinations2 addObject:v13];
 
     v15 = AXLogMIDI();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -235,8 +235,8 @@ LABEL_14:
       _os_log_impl(&dword_18B15E000, v15, OS_LOG_TYPE_INFO, "Did add destination endpoint: %@", buf, 0xCu);
     }
 
-    v7 = [(AXMIDIDeviceEntity *)self device];
-    [v7 entity:self didAddDestination:v13];
+    destinations = [(AXMIDIDeviceEntity *)self device];
+    [destinations entity:self didAddDestination:v13];
 LABEL_14:
   }
 

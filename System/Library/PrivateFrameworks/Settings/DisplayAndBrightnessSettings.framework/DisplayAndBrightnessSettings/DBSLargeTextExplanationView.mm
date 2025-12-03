@@ -1,13 +1,13 @@
 @interface DBSLargeTextExplanationView
-- (DBSLargeTextExplanationView)initWithSpecifier:(id)a3;
-- (double)preferredHeightForWidth:(double)a3 inTableView:(id)a4;
-- (void)layoutForWidth:(double)a3 inTableView:(id)a4;
+- (DBSLargeTextExplanationView)initWithSpecifier:(id)specifier;
+- (double)preferredHeightForWidth:(double)width inTableView:(id)view;
+- (void)layoutForWidth:(double)width inTableView:(id)view;
 - (void)layoutSubviews;
 @end
 
 @implementation DBSLargeTextExplanationView
 
-- (DBSLargeTextExplanationView)initWithSpecifier:(id)a3
+- (DBSLargeTextExplanationView)initWithSpecifier:(id)specifier
 {
   v25.receiver = self;
   v25.super_class = DBSLargeTextExplanationView;
@@ -15,25 +15,25 @@
   v4 = *(MEMORY[0x277CBF3A0] + 8);
   v5 = *(MEMORY[0x277CBF3A0] + 16);
   v6 = *(MEMORY[0x277CBF3A0] + 24);
-  v7 = [(DBSLargeTextExplanationView *)&v25 initWithFrame:a3, *MEMORY[0x277CBF3A0], v4, v5, v6];
+  v7 = [(DBSLargeTextExplanationView *)&v25 initWithFrame:specifier, *MEMORY[0x277CBF3A0], v4, v5, v6];
   if (v7)
   {
-    v8 = [MEMORY[0x277D75418] currentDevice];
-    v9 = [v8 sf_isiPhone];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    sf_isiPhone = [currentDevice sf_isiPhone];
 
-    if (v9)
+    if (sf_isiPhone)
     {
       v10 = objc_alloc_init(MEMORY[0x277D756B8]);
       p_bodyExampleLabel = &v7->_bodyExampleLabel;
       bodyExampleLabel = v7->_bodyExampleLabel;
       v7->_bodyExampleLabel = v10;
 
-      v13 = [MEMORY[0x277D75348] clearColor];
-      [(UILabel *)v7->_bodyExampleLabel setBackgroundColor:v13];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [(UILabel *)v7->_bodyExampleLabel setBackgroundColor:clearColor];
 
-      v14 = [MEMORY[0x277D3FA48] appearance];
-      v15 = [v14 textColor];
-      [(UILabel *)v7->_bodyExampleLabel setTextColor:v15];
+      appearance = [MEMORY[0x277D3FA48] appearance];
+      textColor = [appearance textColor];
+      [(UILabel *)v7->_bodyExampleLabel setTextColor:textColor];
 
       [(UILabel *)v7->_bodyExampleLabel setNumberOfLines:0];
       [(UILabel *)v7->_bodyExampleLabel setLineBreakMode:0];
@@ -55,12 +55,12 @@
       v20 = DBS_LocalizedStringForLargeFontSettings(@"DYNAMIC_TYPE_DESCRIPTION");
       [(UITextView *)v7->_bodyExampleTextView setText:v20];
 
-      v21 = [MEMORY[0x277D75348] clearColor];
-      [(UITextView *)v7->_bodyExampleTextView setBackgroundColor:v21];
+      clearColor2 = [MEMORY[0x277D75348] clearColor];
+      [(UITextView *)v7->_bodyExampleTextView setBackgroundColor:clearColor2];
 
-      v22 = [MEMORY[0x277D3FA48] appearance];
-      v23 = [v22 textColor];
-      [(UITextView *)v7->_bodyExampleTextView setTextColor:v23];
+      appearance2 = [MEMORY[0x277D3FA48] appearance];
+      textColor2 = [appearance2 textColor];
+      [(UITextView *)v7->_bodyExampleTextView setTextColor:textColor2];
 
       [(UITextView *)v7->_bodyExampleTextView setTextAlignment:1];
       [(UITextView *)v7->_bodyExampleTextView setEditable:0];
@@ -80,17 +80,17 @@
   [(DBSLargeTextExplanationView *)&v6 layoutSubviews];
   [(DBSLargeTextExplanationView *)self bounds];
   v4 = v3;
-  v5 = [(DBSLargeTextExplanationView *)self superview];
-  [(DBSLargeTextExplanationView *)self layoutForWidth:v5 inTableView:v4];
+  superview = [(DBSLargeTextExplanationView *)self superview];
+  [(DBSLargeTextExplanationView *)self layoutForWidth:superview inTableView:v4];
 }
 
-- (double)preferredHeightForWidth:(double)a3 inTableView:(id)a4
+- (double)preferredHeightForWidth:(double)width inTableView:(id)view
 {
-  [(DBSLargeTextExplanationView *)self layoutForWidth:a4 inTableView:a3];
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 sf_isiPhone];
+  [(DBSLargeTextExplanationView *)self layoutForWidth:view inTableView:width];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sf_isiPhone = [currentDevice sf_isiPhone];
   v7 = &OBJC_IVAR___DBSLargeTextExplanationView__bodyExampleTextView;
-  if (v6)
+  if (sf_isiPhone)
   {
     v7 = &OBJC_IVAR___DBSLargeTextExplanationView__bodyExampleLabel;
   }
@@ -110,17 +110,17 @@
   return CGRectGetMaxY(v18) + 10.0;
 }
 
-- (void)layoutForWidth:(double)a3 inTableView:(id)a4
+- (void)layoutForWidth:(double)width inTableView:(id)view
 {
-  [a4 bounds];
+  [view bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [MEMORY[0x277D75418] currentDevice];
-  v14 = [v13 sf_isiPhone];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sf_isiPhone = [currentDevice sf_isiPhone];
 
-  if (v14)
+  if (sf_isiPhone)
   {
     [(DBSLargeTextExplanationView *)self frame];
     MinX = CGRectGetMinX(v27);
@@ -135,10 +135,10 @@
   {
     v25 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:*MEMORY[0x277D76918]];
     v16 = [MEMORY[0x277D74300] fontWithDescriptor:0.0 size:?];
-    v17 = [MEMORY[0x277D75418] currentDevice];
-    v18 = [v17 sf_isiPhone];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    sf_isiPhone2 = [currentDevice2 sf_isiPhone];
 
-    if (v18)
+    if (sf_isiPhone2)
     {
       p_bodyExampleLabel = &self->_bodyExampleLabel;
       [(UILabel *)self->_bodyExampleLabel setFont:v16];

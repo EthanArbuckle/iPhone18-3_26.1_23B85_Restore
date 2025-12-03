@@ -7,8 +7,8 @@
 - (NSData)recordChangeData;
 - (NSData)sharingRecordChangeData;
 - (id)description;
-- (id)realRecordChangeFromRecordChange:(id)a3 direction:(unint64_t)a4 newRecord:(id *)a5 changeType:(unint64_t)a6 diffTracker:(id)a7;
-- (id)realRecordChangeFromRecordChange:(id)a3 direction:(unint64_t)a4 newRecord:(id *)a5 diffTracker:(id)a6;
+- (id)realRecordChangeFromRecordChange:(id)change direction:(unint64_t)direction newRecord:(id *)record changeType:(unint64_t)type diffTracker:(id)tracker;
+- (id)realRecordChangeFromRecordChange:(id)change direction:(unint64_t)direction newRecord:(id *)record diffTracker:(id)tracker;
 - (id)redactedDescription;
 - (id)relatedScopedIdentifier;
 - (id)relation;
@@ -19,22 +19,22 @@
 
 - (BOOL)supportsResources
 {
-  v2 = [(CPLRecordView *)self recordClass];
+  recordClass = [(CPLRecordView *)self recordClass];
 
-  return [(objc_class *)v2 supportsResources];
+  return [(objc_class *)recordClass supportsResources];
 }
 
 - (id)relation
 {
   v2 = [(CPLRecordView *)self changeForType:2];
-  v3 = [v2 relation];
+  relation = [v2 relation];
 
-  return v3;
+  return relation;
 }
 
 - (Class)recordClass
 {
-  v2 = [(CPLRecordView *)self synthesizedRecord];
+  synthesizedRecord = [(CPLRecordView *)self synthesizedRecord];
   v3 = objc_opt_class();
 
   return v3;
@@ -43,43 +43,43 @@
 - (id)secondaryScopedIdentifier
 {
   v2 = [(CPLRecordView *)self changeForType:2];
-  v3 = [v2 secondaryScopedIdentifier];
+  secondaryScopedIdentifier = [v2 secondaryScopedIdentifier];
 
-  return v3;
+  return secondaryScopedIdentifier;
 }
 
 - (id)relatedScopedIdentifier
 {
   v2 = [(CPLRecordView *)self changeForType:2];
-  v3 = [v2 relatedScopedIdentifier];
+  relatedScopedIdentifier = [v2 relatedScopedIdentifier];
 
-  return v3;
+  return relatedScopedIdentifier;
 }
 
 - (NSData)sharingRecordChangeData
 {
-  v2 = [(CPLRecordView *)self synthesizedRecord];
-  v3 = [v2 sharingRecordChangeData];
+  synthesizedRecord = [(CPLRecordView *)self synthesizedRecord];
+  sharingRecordChangeData = [synthesizedRecord sharingRecordChangeData];
 
-  return v3;
+  return sharingRecordChangeData;
 }
 
 - (NSData)recordChangeData
 {
-  v2 = [(CPLRecordView *)self synthesizedRecord];
-  v3 = [v2 recordChangeData];
+  synthesizedRecord = [(CPLRecordView *)self synthesizedRecord];
+  recordChangeData = [synthesizedRecord recordChangeData];
 
-  return v3;
+  return recordChangeData;
 }
 
-- (id)realRecordChangeFromRecordChange:(id)a3 direction:(unint64_t)a4 newRecord:(id *)a5 diffTracker:(id)a6
+- (id)realRecordChangeFromRecordChange:(id)change direction:(unint64_t)direction newRecord:(id *)record diffTracker:(id)tracker
 {
-  v10 = a6;
-  v11 = a3;
-  v12 = [v11 changeType];
-  if (v12)
+  trackerCopy = tracker;
+  changeCopy = change;
+  changeType = [changeCopy changeType];
+  if (changeType)
   {
-    v13 = v12 | 0x100;
+    v13 = changeType | 0x100;
   }
 
   else
@@ -87,17 +87,17 @@
     v13 = 378;
   }
 
-  v14 = [(CPLRecordView *)self realRecordChangeFromRecordChange:v11 direction:a4 newRecord:a5 changeType:v13 diffTracker:v10];
+  v14 = [(CPLRecordView *)self realRecordChangeFromRecordChange:changeCopy direction:direction newRecord:record changeType:v13 diffTracker:trackerCopy];
 
   return v14;
 }
 
-- (id)realRecordChangeFromRecordChange:(id)a3 direction:(unint64_t)a4 newRecord:(id *)a5 changeType:(unint64_t)a6 diffTracker:(id)a7
+- (id)realRecordChangeFromRecordChange:(id)change direction:(unint64_t)direction newRecord:(id *)record changeType:(unint64_t)type diffTracker:(id)tracker
 {
-  v12 = a7;
-  v13 = a3;
-  v14 = [(CPLRecordView *)self synthesizedRecord];
-  v15 = [v14 realRecordChangeFromRecordChange:v13 direction:a4 newRecord:a5 changeType:a6 diffTracker:v12];
+  trackerCopy = tracker;
+  changeCopy = change;
+  synthesizedRecord = [(CPLRecordView *)self synthesizedRecord];
+  v15 = [synthesizedRecord realRecordChangeFromRecordChange:changeCopy direction:direction newRecord:record changeType:type diffTracker:trackerCopy];
 
   return v15;
 }
@@ -105,9 +105,9 @@
 - (id)redactedDescription
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(CPLRecordView *)self synthesizedRecord];
-  v5 = [v4 redactedDescription];
-  v6 = [v3 initWithFormat:@"%@", v5];
+  synthesizedRecord = [(CPLRecordView *)self synthesizedRecord];
+  redactedDescription = [synthesizedRecord redactedDescription];
+  v6 = [v3 initWithFormat:@"%@", redactedDescription];
 
   return v6;
 }
@@ -115,8 +115,8 @@
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(CPLRecordView *)self synthesizedRecord];
-  v5 = [v3 initWithFormat:@"%@", v4];
+  synthesizedRecord = [(CPLRecordView *)self synthesizedRecord];
+  v5 = [v3 initWithFormat:@"%@", synthesizedRecord];
 
   return v5;
 }
@@ -124,28 +124,28 @@
 - (CPLPlaceholderRecord)placeholderRecord
 {
   v3 = [CPLPlaceholderRecord alloc];
-  v4 = [(CPLRecordView *)self synthesizedRecord];
-  v5 = [(CPLPlaceholderRecord *)v3 initWithRecord:v4];
+  synthesizedRecord = [(CPLRecordView *)self synthesizedRecord];
+  v5 = [(CPLPlaceholderRecord *)v3 initWithRecord:synthesizedRecord];
 
   return v5;
 }
 
 - (CPLRecordChange)synthesizedRecord
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLRecordStorageView.m"];
   v6 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:self file:v5 lineNumber:21 description:{@"%@ should be implemented by subclasses", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:v5 lineNumber:21 description:{@"%@ should be implemented by subclasses", v6}];
 
   abort();
 }
 
 - (CPLScopedIdentifier)scopedIdentifier
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLRecordStorageView.m"];
   v6 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:self file:v5 lineNumber:16 description:{@"%@ should be implemented by subclasses", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:v5 lineNumber:16 description:{@"%@ should be implemented by subclasses", v6}];
 
   abort();
 }

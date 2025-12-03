@@ -1,16 +1,16 @@
 @interface PlayerProfileInfoBarViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
 - (void)layoutSubviews;
 @end
 
 @implementation PlayerProfileInfoBarViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"GameCenterUI.PlayerProfileInfoBarView" hasInstanceMethod:@"accessibilityInfoItemPairs" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GameCenterUI.PlayerProfileInfoBarView" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"GameCenterUI.PlayerProfileInfoBarView" hasInstanceMethod:@"accessibilityInfoItemPairs" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GameCenterUI.PlayerProfileInfoBarView" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
 }
 
 - (id)accessibilityElements
@@ -20,14 +20,14 @@
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy_;
   v14 = __Block_byref_object_dispose_;
-  v15 = [(PlayerProfileInfoBarViewAccessibility *)self _accessibilityInfoViewElements];
+  _accessibilityInfoViewElements = [(PlayerProfileInfoBarViewAccessibility *)self _accessibilityInfoViewElements];
   v3 = [(PlayerProfileInfoBarViewAccessibility *)self safeArrayForKey:@"accessibilityInfoItemPairs"];
   v4 = v11[5];
   if (!v4)
   {
-    v5 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     v6 = v11[5];
-    v11[5] = v5;
+    v11[5] = array;
 
     v9[0] = MEMORY[0x29EDCA5F8];
     v9[1] = 3221225472;

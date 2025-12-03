@@ -1,22 +1,22 @@
 @interface HDDeviceKeyValueStorageGroup
-- (HDDeviceKeyValueStorageGroup)initWithDeviceContext:(id)a3 storageEntries:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HDDeviceKeyValueStorageGroup)initWithDeviceContext:(id)context storageEntries:(id)entries;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HDDeviceKeyValueStorageGroup
 
-- (HDDeviceKeyValueStorageGroup)initWithDeviceContext:(id)a3 storageEntries:(id)a4
+- (HDDeviceKeyValueStorageGroup)initWithDeviceContext:(id)context storageEntries:(id)entries
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  entriesCopy = entries;
   v14.receiver = self;
   v14.super_class = HDDeviceKeyValueStorageGroup;
   v9 = [(HDDeviceKeyValueStorageGroup *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_deviceContext, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_deviceContext, context);
+    v11 = [entriesCopy copy];
     storageEntries = v10->_storageEntries;
     v10->_storageEntries = v11;
   }
@@ -24,9 +24,9 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HDDeviceKeyValueStorageGroup allocWithZone:a3];
+  v4 = [HDDeviceKeyValueStorageGroup allocWithZone:zone];
   deviceContext = self->_deviceContext;
   storageEntries = self->_storageEntries;
 

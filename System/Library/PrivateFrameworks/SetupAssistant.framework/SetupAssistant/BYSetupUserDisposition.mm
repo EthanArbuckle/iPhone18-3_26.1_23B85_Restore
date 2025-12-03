@@ -1,11 +1,11 @@
 @interface BYSetupUserDisposition
 + (id)current;
 - (BYSetupUserDisposition)init;
-- (BYSetupUserDisposition)initWithPreferences:(id)a3;
-- (BYSetupUserDisposition)initWithProductVersion:(id)a3 buildVersion:(id)a4 date:(id)a5;
+- (BYSetupUserDisposition)initWithPreferences:(id)preferences;
+- (BYSetupUserDisposition)initWithProductVersion:(id)version buildVersion:(id)buildVersion date:(id)date;
 - (id)_dictionaryRepresentation;
-- (void)_loadDataFromPreferences:(id)a3;
-- (void)persistUsingPreferences:(id)a3;
+- (void)_loadDataFromPreferences:(id)preferences;
+- (void)persistUsingPreferences:(id)preferences;
 @end
 
 @implementation BYSetupUserDisposition
@@ -18,35 +18,35 @@
   return v4;
 }
 
-- (BYSetupUserDisposition)initWithPreferences:(id)a3
+- (BYSetupUserDisposition)initWithPreferences:(id)preferences
 {
-  v4 = a3;
+  preferencesCopy = preferences;
   v8.receiver = self;
   v8.super_class = BYSetupUserDisposition;
   v5 = [(BYSetupUserDisposition *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(BYSetupUserDisposition *)v5 _loadDataFromPreferences:v4];
+    [(BYSetupUserDisposition *)v5 _loadDataFromPreferences:preferencesCopy];
   }
 
   return v6;
 }
 
-- (BYSetupUserDisposition)initWithProductVersion:(id)a3 buildVersion:(id)a4 date:(id)a5
+- (BYSetupUserDisposition)initWithProductVersion:(id)version buildVersion:(id)buildVersion date:(id)date
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  versionCopy = version;
+  buildVersionCopy = buildVersion;
+  dateCopy = date;
   v15.receiver = self;
   v15.super_class = BYSetupUserDisposition;
   v12 = [(BYSetupUserDisposition *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_productVersion, a3);
-    objc_storeStrong(&v13->_buildVersion, a4);
-    objc_storeStrong(&v13->_date, a5);
+    objc_storeStrong(&v12->_productVersion, version);
+    objc_storeStrong(&v13->_buildVersion, buildVersion);
+    objc_storeStrong(&v13->_date, date);
   }
 
   return v13;
@@ -71,20 +71,20 @@ uint64_t __33__BYSetupUserDisposition_current__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)persistUsingPreferences:(id)a3
+- (void)persistUsingPreferences:(id)preferences
 {
-  v4 = a3;
-  v5 = [(BYSetupUserDisposition *)self _dictionaryRepresentation];
-  [v4 setObject:v5 forKey:@"disposition" persistImmediately:1];
+  preferencesCopy = preferences;
+  _dictionaryRepresentation = [(BYSetupUserDisposition *)self _dictionaryRepresentation];
+  [preferencesCopy setObject:_dictionaryRepresentation forKey:@"disposition" persistImmediately:1];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
 
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.purplebuddy.userdisposition.updated", 0, 0, 1u);
 }
 
-- (void)_loadDataFromPreferences:(id)a3
+- (void)_loadDataFromPreferences:(id)preferences
 {
-  v4 = [a3 objectForKey:@"disposition"];
+  v4 = [preferences objectForKey:@"disposition"];
   if (v4)
   {
     v10 = v4;
@@ -130,44 +130,44 @@ uint64_t __33__BYSetupUserDisposition_current__block_invoke()
 - (id)_dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(BYSetupUserDisposition *)self date];
+  date = [(BYSetupUserDisposition *)self date];
 
-  if (v4)
+  if (date)
   {
-    v5 = [(BYSetupUserDisposition *)self date];
-    [v3 setObject:v5 forKeyedSubscript:@"date"];
+    date2 = [(BYSetupUserDisposition *)self date];
+    [v3 setObject:date2 forKeyedSubscript:@"date"];
   }
 
-  v6 = [(BYSetupUserDisposition *)self productVersion];
+  productVersion = [(BYSetupUserDisposition *)self productVersion];
 
-  if (v6)
+  if (productVersion)
   {
-    v7 = [(BYSetupUserDisposition *)self productVersion];
-    [v3 setObject:v7 forKeyedSubscript:@"productVersion"];
+    productVersion2 = [(BYSetupUserDisposition *)self productVersion];
+    [v3 setObject:productVersion2 forKeyedSubscript:@"productVersion"];
   }
 
-  v8 = [(BYSetupUserDisposition *)self buildVersion];
+  buildVersion = [(BYSetupUserDisposition *)self buildVersion];
 
-  if (v8)
+  if (buildVersion)
   {
-    v9 = [(BYSetupUserDisposition *)self buildVersion];
-    [v3 setObject:v9 forKeyedSubscript:@"buildVersion"];
+    buildVersion2 = [(BYSetupUserDisposition *)self buildVersion];
+    [v3 setObject:buildVersion2 forKeyedSubscript:@"buildVersion"];
   }
 
-  v10 = [(BYSetupUserDisposition *)self isChild];
+  isChild = [(BYSetupUserDisposition *)self isChild];
 
-  if (v10)
+  if (isChild)
   {
-    v11 = [(BYSetupUserDisposition *)self isChild];
-    [v3 setObject:v11 forKeyedSubscript:@"child"];
+    isChild2 = [(BYSetupUserDisposition *)self isChild];
+    [v3 setObject:isChild2 forKeyedSubscript:@"child"];
   }
 
-  v12 = [(BYSetupUserDisposition *)self isNewUser];
+  isNewUser = [(BYSetupUserDisposition *)self isNewUser];
 
-  if (v12)
+  if (isNewUser)
   {
-    v13 = [(BYSetupUserDisposition *)self isNewUser];
-    [v3 setObject:v13 forKeyedSubscript:@"newUser"];
+    isNewUser2 = [(BYSetupUserDisposition *)self isNewUser];
+    [v3 setObject:isNewUser2 forKeyedSubscript:@"newUser"];
   }
 
   return v3;

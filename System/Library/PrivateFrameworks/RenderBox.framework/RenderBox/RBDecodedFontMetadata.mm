@@ -1,9 +1,9 @@
 @interface RBDecodedFontMetadata
-+ (id)fontMetadata:(uint64_t)a1;
++ (id)fontMetadata:(uint64_t)metadata;
 - (id).cxx_construct;
 - (uint64_t)fontUID;
 - (uint64_t)glyphMap;
-- (void)initWithFontUID:(const void *)a3 glyphMap:;
+- (void)initWithFontUID:(const void *)d glyphMap:;
 @end
 
 @implementation RBDecodedFontMetadata
@@ -18,7 +18,7 @@
   return result;
 }
 
-+ (id)fontMetadata:(uint64_t)a1
++ (id)fontMetadata:(uint64_t)metadata
 {
   objc_opt_self();
   AssociatedObject = objc_getAssociatedObject(a2, "RBDecodedFontMetadata");
@@ -44,14 +44,14 @@
   return self;
 }
 
-- (void)initWithFontUID:(const void *)a3 glyphMap:
+- (void)initWithFontUID:(const void *)d glyphMap:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v12.receiver = a1;
+  v12.receiver = self;
   v12.super_class = RBDecodedFontMetadata;
   v5 = objc_msgSendSuper2(&v12, sel_init);
   v6 = v5;
@@ -79,16 +79,16 @@
     }
 
     v9 = v6[2];
-    if (v9 != a3)
+    if (v9 != d)
     {
       if (v9)
       {
         CFRelease(v9);
       }
 
-      if (a3)
+      if (d)
       {
-        v10 = CFRetain(a3);
+        v10 = CFRetain(d);
       }
 
       else

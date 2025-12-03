@@ -1,23 +1,23 @@
 @interface CNSimulatedCrashReporter
 + (id)os_log;
-+ (void)simulateCrashWithCode:(int64_t)a3 description:(id)a4;
-+ (void)simulateCrashWithMessage:(id)a3;
++ (void)simulateCrashWithCode:(int64_t)code description:(id)description;
++ (void)simulateCrashWithMessage:(id)message;
 @end
 
 @implementation CNSimulatedCrashReporter
 
-+ (void)simulateCrashWithMessage:(id)a3
++ (void)simulateCrashWithMessage:(id)message
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:v5 arguments:&v7];
+  messageCopy = message;
+  v6 = [[v4 alloc] initWithFormat:messageCopy arguments:&v7];
 
-  [a1 simulateCrashWithCode:732802011 description:v6];
+  [self simulateCrashWithCode:732802011 description:v6];
 }
 
-+ (void)simulateCrashWithCode:(int64_t)a3 description:(id)a4
++ (void)simulateCrashWithCode:(int64_t)code description:(id)description
 {
-  v6 = a4;
+  descriptionCopy = description;
   if (softLinkSimulateCrashAvailable_onceToken != -1)
   {
     +[CNSimulatedCrashReporter simulateCrashWithCode:description:];
@@ -27,21 +27,21 @@
   {
     v7 = softLinkSimulateCrash;
     v8 = getpid();
-    v7(v8, a3, v6);
+    v7(v8, code, descriptionCopy);
   }
 
   else
   {
-    v9 = [a1 os_log];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
+    os_log = [self os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_FAULT))
     {
-      [(CNSimulatedCrashReporter *)v6 simulateCrashWithCode:a3 description:v9];
+      [(CNSimulatedCrashReporter *)descriptionCopy simulateCrashWithCode:code description:os_log];
     }
 
-    v10 = [a1 os_log];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
+    os_log2 = [self os_log];
+    if (os_log_type_enabled(os_log2, OS_LOG_TYPE_FAULT))
     {
-      [CNSimulatedCrashReporter simulateCrashWithCode:v10 description:?];
+      [CNSimulatedCrashReporter simulateCrashWithCode:os_log2 description:?];
     }
   }
 }

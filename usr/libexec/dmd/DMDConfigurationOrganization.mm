@@ -1,31 +1,31 @@
 @interface DMDConfigurationOrganization
-+ (id)fetchRequestMatchingConfigurationOrganizationWithIdentifier:(id)a3;
-+ (id)fetchRequestMatchingConfigurationOrganizationsOfType:(id)a3;
++ (id)fetchRequestMatchingConfigurationOrganizationWithIdentifier:(id)identifier;
++ (id)fetchRequestMatchingConfigurationOrganizationsOfType:(id)type;
 - (void)didSave;
 @end
 
 @implementation DMDConfigurationOrganization
 
-+ (id)fetchRequestMatchingConfigurationOrganizationWithIdentifier:(id)a3
++ (id)fetchRequestMatchingConfigurationOrganizationWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 fetchRequest];
-  v6 = [NSPredicate predicateWithFormat:@"%K = %@", @"identifier", v4];
+  identifierCopy = identifier;
+  fetchRequest = [self fetchRequest];
+  identifierCopy = [NSPredicate predicateWithFormat:@"%K = %@", @"identifier", identifierCopy];
 
-  [v5 setPredicate:v6];
+  [fetchRequest setPredicate:identifierCopy];
 
-  return v5;
+  return fetchRequest;
 }
 
-+ (id)fetchRequestMatchingConfigurationOrganizationsOfType:(id)a3
++ (id)fetchRequestMatchingConfigurationOrganizationsOfType:(id)type
 {
-  v4 = a3;
-  v5 = [a1 fetchRequest];
-  v6 = [NSPredicate predicateWithFormat:@"%K = %@", @"type", v4];
+  typeCopy = type;
+  fetchRequest = [self fetchRequest];
+  typeCopy = [NSPredicate predicateWithFormat:@"%K = %@", @"type", typeCopy];
 
-  [v5 setPredicate:v6];
+  [fetchRequest setPredicate:typeCopy];
 
-  return v5;
+  return fetchRequest;
 }
 
 - (void)didSave

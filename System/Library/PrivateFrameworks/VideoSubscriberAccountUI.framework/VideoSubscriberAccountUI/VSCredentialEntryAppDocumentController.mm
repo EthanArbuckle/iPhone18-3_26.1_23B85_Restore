@@ -1,38 +1,38 @@
 @interface VSCredentialEntryAppDocumentController
-- (BOOL)_updateCredentialEntryViewModel:(id)a3 error:(id *)a4;
-- (BOOL)_updateCredentialEntryViewModel:(id)a3 withTemplate:(id)a4 error:(id *)a5;
-- (BOOL)_updateViewModel:(id)a3 error:(id *)a4;
-- (id)_credentialEntryViewModelWithViewModel:(id)a3;
+- (BOOL)_updateCredentialEntryViewModel:(id)model error:(id *)error;
+- (BOOL)_updateCredentialEntryViewModel:(id)model withTemplate:(id)template error:(id *)error;
+- (BOOL)_updateViewModel:(id)model error:(id *)error;
+- (id)_credentialEntryViewModelWithViewModel:(id)model;
 - (id)_newViewModel;
-- (void)_startObservingViewModel:(id)a3;
-- (void)_stopObservingViewModel:(id)a3;
-- (void)itemGroup:(id)a3 selectedItemIndexDidChange:(int64_t)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)viewModel:(id)a3 buttonTappedAtIndex:(unint64_t)a4;
-- (void)viewModel:(id)a3 pickerDidSelectRow:(unint64_t)a4;
+- (void)_startObservingViewModel:(id)model;
+- (void)_stopObservingViewModel:(id)model;
+- (void)itemGroup:(id)group selectedItemIndexDidChange:(int64_t)change;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)viewModel:(id)model buttonTappedAtIndex:(unint64_t)index;
+- (void)viewModel:(id)model pickerDidSelectRow:(unint64_t)row;
 @end
 
 @implementation VSCredentialEntryAppDocumentController
 
-- (void)_startObservingViewModel:(id)a3
+- (void)_startObservingViewModel:(id)model
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  modelCopy = model;
+  if (!modelCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The viewModel parameter must not be nil."];
   }
 
   v16.receiver = self;
   v16.super_class = VSCredentialEntryAppDocumentController;
-  [(VSAppDocumentController *)&v16 _startObservingViewModel:v4];
-  v5 = [(VSCredentialEntryAppDocumentController *)self _credentialEntryViewModelWithViewModel:v4];
+  [(VSAppDocumentController *)&v16 _startObservingViewModel:modelCopy];
+  v5 = [(VSCredentialEntryAppDocumentController *)self _credentialEntryViewModelWithViewModel:modelCopy];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v5 credentialEntryFields];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v17 count:16];
+  credentialEntryFields = [v5 credentialEntryFields];
+  v7 = [credentialEntryFields countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -43,13 +43,13 @@
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(credentialEntryFields);
         }
 
         [*(*(&v12 + 1) + 8 * i) addObserver:self forKeyPath:@"text" options:3 context:kVSKeyValueObservingContext_CredentialEntryFieldText];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v17 count:16];
+      v8 = [credentialEntryFields countByEnumeratingWithState:&v12 objects:v17 count:16];
     }
 
     while (v8);
@@ -58,25 +58,25 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_stopObservingViewModel:(id)a3
+- (void)_stopObservingViewModel:(id)model
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  modelCopy = model;
+  if (!modelCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The viewModel parameter must not be nil."];
   }
 
   v16.receiver = self;
   v16.super_class = VSCredentialEntryAppDocumentController;
-  [(VSAppDocumentController *)&v16 _stopObservingViewModel:v4];
-  v5 = [(VSCredentialEntryAppDocumentController *)self _credentialEntryViewModelWithViewModel:v4];
+  [(VSAppDocumentController *)&v16 _stopObservingViewModel:modelCopy];
+  v5 = [(VSCredentialEntryAppDocumentController *)self _credentialEntryViewModelWithViewModel:modelCopy];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v5 credentialEntryFields];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v17 count:16];
+  credentialEntryFields = [v5 credentialEntryFields];
+  v7 = [credentialEntryFields countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -87,13 +87,13 @@
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(credentialEntryFields);
         }
 
         [*(*(&v12 + 1) + 8 * i) removeObserver:self forKeyPath:@"text" context:kVSKeyValueObservingContext_CredentialEntryFieldText];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v17 count:16];
+      v8 = [credentialEntryFields countByEnumeratingWithState:&v12 objects:v17 count:16];
     }
 
     while (v8);
@@ -109,27 +109,27 @@
   return v3;
 }
 
-- (BOOL)_updateViewModel:(id)a3 error:(id *)a4
+- (BOOL)_updateViewModel:(id)model error:(id *)error
 {
-  v6 = a3;
-  if (!v6)
+  modelCopy = model;
+  if (!modelCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The viewModel parameter must not be nil."];
   }
 
   v14.receiver = self;
   v14.super_class = VSCredentialEntryAppDocumentController;
-  [(VSAppDocumentController *)&v14 _updateViewModel:v6 error:a4];
-  v7 = [(VSCredentialEntryAppDocumentController *)self _credentialEntryViewModelWithViewModel:v6];
-  v8 = [(VSAppDocumentController *)self appDocument];
-  v9 = [v8 error];
+  [(VSAppDocumentController *)&v14 _updateViewModel:modelCopy error:error];
+  v7 = [(VSCredentialEntryAppDocumentController *)self _credentialEntryViewModelWithViewModel:modelCopy];
+  appDocument = [(VSAppDocumentController *)self appDocument];
+  error = [appDocument error];
 
-  if (!v9)
+  if (!error)
   {
     v13 = 0;
     v10 = [(VSCredentialEntryAppDocumentController *)self _updateCredentialEntryViewModel:v7 error:&v13];
-    v9 = v13;
-    if (!a4)
+    error = v13;
+    if (!error)
     {
       goto LABEL_6;
     }
@@ -138,11 +138,11 @@
   }
 
   v10 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_5:
-    v11 = v9;
-    *a4 = v9;
+    v11 = error;
+    *error = error;
   }
 
 LABEL_6:
@@ -150,12 +150,12 @@ LABEL_6:
   return v10;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a4;
-  if (kVSKeyValueObservingContext_CredentialEntryFieldText == a6)
+  objectCopy = object;
+  if (kVSKeyValueObservingContext_CredentialEntryFieldText == context)
   {
-    v12 = a5;
+    changeCopy = change;
     v13 = VSDefaultLogObject();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
@@ -163,10 +163,10 @@ LABEL_6:
       _os_log_impl(&dword_270DD4000, v13, OS_LOG_TYPE_DEFAULT, "Text field text did change.", buf, 2u);
     }
 
-    v11 = v10;
-    v14 = [v12 objectForKey:*MEMORY[0x277CCA2F0]];
+    changeCopy2 = objectCopy;
+    v14 = [changeCopy objectForKey:*MEMORY[0x277CCA2F0]];
 
-    v15 = [v11 associatedTextFieldElement];
+    associatedTextFieldElement = [changeCopy2 associatedTextFieldElement];
     v16 = VSDefaultLogObject();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
@@ -174,8 +174,8 @@ LABEL_6:
       _os_log_impl(&dword_270DD4000, v16, OS_LOG_TYPE_DEFAULT, "Will update keyboard text.", buf, 2u);
     }
 
-    v17 = [v15 keyboard];
-    [v17 setText:v14];
+    keyboard = [associatedTextFieldElement keyboard];
+    [keyboard setText:v14];
 
     v18 = VSDefaultLogObject();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -189,15 +189,15 @@ LABEL_6:
   {
     v19.receiver = self;
     v19.super_class = VSCredentialEntryAppDocumentController;
-    v11 = a5;
-    [(VSAppDocumentController *)&v19 observeValueForKeyPath:a3 ofObject:v10 change:v11 context:a6];
+    changeCopy2 = change;
+    [(VSAppDocumentController *)&v19 observeValueForKeyPath:path ofObject:objectCopy change:changeCopy2 context:context];
   }
 }
 
-- (id)_credentialEntryViewModelWithViewModel:(id)a3
+- (id)_credentialEntryViewModelWithViewModel:(id)model
 {
-  v3 = a3;
-  if (!v3)
+  modelCopy = model;
+  if (!modelCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The viewModel parameter must not be nil."];
   }
@@ -212,24 +212,24 @@ LABEL_6:
     [v4 raise:v5 format:{@"Unexpectedly, viewModel was %@, instead of VSCredentialEntryViewModel.", v7}];
   }
 
-  return v3;
+  return modelCopy;
 }
 
-- (BOOL)_updateCredentialEntryViewModel:(id)a3 error:(id *)a4
+- (BOOL)_updateCredentialEntryViewModel:(id)model error:(id *)error
 {
-  v6 = a3;
-  if (!v6)
+  modelCopy = model;
+  if (!modelCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The viewModel parameter must not be nil."];
   }
 
-  v7 = [(VSAppDocumentController *)self templateElement];
-  if ([v7 vs_elementType] == 161)
+  templateElement = [(VSAppDocumentController *)self templateElement];
+  if ([templateElement vs_elementType] == 161)
   {
     v12 = 0;
-    v8 = [(VSCredentialEntryAppDocumentController *)self _updateCredentialEntryViewModel:v6 withTemplate:v7 error:&v12];
+    v8 = [(VSCredentialEntryAppDocumentController *)self _updateCredentialEntryViewModel:modelCopy withTemplate:templateElement error:&v12];
     v9 = v12;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_8;
     }
@@ -239,11 +239,11 @@ LABEL_6:
 
   v9 = VSPrivateError();
   v8 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_7:
     v10 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
 LABEL_8:
@@ -251,16 +251,16 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)_updateCredentialEntryViewModel:(id)a3 withTemplate:(id)a4 error:(id *)a5
+- (BOOL)_updateCredentialEntryViewModel:(id)model withTemplate:(id)template error:(id *)error
 {
   v141 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  modelCopy = model;
+  templateCopy = template;
   v9 = MEMORY[0x277CBE660];
-  v111 = v7;
-  if (v7)
+  v111 = modelCopy;
+  if (modelCopy)
   {
-    if (v8)
+    if (templateCopy)
     {
       goto LABEL_3;
     }
@@ -268,35 +268,35 @@ LABEL_8:
 
   else
   {
-    v82 = v8;
+    v82 = templateCopy;
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The viewModel parameter must not be nil."];
-    v8 = v82;
+    templateCopy = v82;
     if (v82)
     {
       goto LABEL_3;
     }
   }
 
-  v83 = v8;
+  v83 = templateCopy;
   [MEMORY[0x277CBEAD8] raise:*v9 format:@"The templateElement parameter must not be nil."];
-  v8 = v83;
+  templateCopy = v83;
 LABEL_3:
   v134 = 0u;
   v135 = 0u;
   v132 = 0u;
   v133 = 0u;
-  v103 = v8;
-  v10 = [v8 children];
-  v11 = [v10 countByEnumeratingWithState:&v132 objects:v140 count:16];
+  v103 = templateCopy;
+  children = [templateCopy children];
+  v11 = [children countByEnumeratingWithState:&v132 objects:v140 count:16];
   if (v11)
   {
     v12 = v11;
     v107 = 0;
     v13 = *v133;
     v112 = *v9;
-    v104 = self;
+    selfCopy = self;
     v105 = *v133;
-    v106 = v10;
+    v106 = children;
     while (1)
     {
       v14 = 0;
@@ -305,14 +305,14 @@ LABEL_3:
       {
         if (*v133 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(children);
         }
 
         v15 = *(*(&v132 + 1) + 8 * v14);
-        v16 = [v15 vs_elementType];
-        if (v16 <= 156)
+        vs_elementType = [v15 vs_elementType];
+        if (vs_elementType <= 156)
         {
-          if (v16 == 49)
+          if (vs_elementType == 49)
           {
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -329,7 +329,7 @@ LABEL_3:
 
           else
           {
-            if (v16 != 138)
+            if (vs_elementType != 138)
             {
               goto LABEL_72;
             }
@@ -344,11 +344,11 @@ LABEL_3:
             }
 
             v37 = v15;
-            v42 = [v37 elementName];
-            if ([v42 isEqual:@"description"])
+            elementName = [v37 elementName];
+            if ([elementName isEqual:@"description"])
             {
-              v43 = [v37 text];
-              [v43 string];
+              text = [v37 text];
+              [text string];
               v45 = v44 = v37;
 
               [v111 setAdditionalMessage:v45];
@@ -359,16 +359,16 @@ LABEL_3:
           goto LABEL_71;
         }
 
-        switch(v16)
+        switch(vs_elementType)
         {
           case 157:
-            v46 = [v15 attributes];
-            v47 = [v46 objectForKey:@"label"];
+            attributes = [v15 attributes];
+            v47 = [attributes objectForKey:@"label"];
 
             v48 = v47;
             [v111 setLinkTitle:v47];
-            v49 = [v15 attributes];
-            v50 = [v49 objectForKey:@"src"];
+            attributes2 = [v15 attributes];
+            v50 = [attributes2 objectForKey:@"src"];
 
             if (v50)
             {
@@ -384,9 +384,9 @@ LABEL_71:
 
             break;
           case 158:
-            v52 = [(VSCredentialEntryAppDocumentController *)self pickerElement];
+            pickerElement = [(VSCredentialEntryAppDocumentController *)self pickerElement];
 
-            if (v52)
+            if (pickerElement)
             {
               break;
             }
@@ -402,9 +402,9 @@ LABEL_71:
             }
 
             v37 = v15;
-            v56 = [MEMORY[0x277CBEB18] array];
-            v57 = [v37 attributes];
-            v58 = [v57 objectForKey:@"title"];
+            array = [MEMORY[0x277CBEB18] array];
+            attributes3 = [v37 attributes];
+            v58 = [attributes3 objectForKey:@"title"];
 
             if (v58)
             {
@@ -414,8 +414,8 @@ LABEL_71:
               v124 = 0u;
               v125 = 0u;
               v116 = v37;
-              v59 = [v37 children];
-              v60 = [v59 countByEnumeratingWithState:&v122 objects:v138 count:16];
+              children2 = [v37 children];
+              v60 = [children2 countByEnumeratingWithState:&v122 objects:v138 count:16];
               if (v60)
               {
                 v61 = v60;
@@ -426,51 +426,51 @@ LABEL_71:
                   {
                     if (*v123 != v62)
                     {
-                      objc_enumerationMutation(v59);
+                      objc_enumerationMutation(children2);
                     }
 
                     v64 = *(*(&v122 + 1) + 8 * i);
                     v65 = objc_alloc_init(VSCredentialEntryPickerItem);
-                    v66 = [v64 text];
-                    v67 = [v66 string];
-                    [(VSCredentialEntryPickerItem *)v65 setItemName:v67];
+                    text2 = [v64 text];
+                    string = [text2 string];
+                    [(VSCredentialEntryPickerItem *)v65 setItemName:string];
 
-                    v68 = [v64 attributes];
-                    v69 = [v68 objectForKey:@"value"];
+                    attributes4 = [v64 attributes];
+                    v69 = [attributes4 objectForKey:@"value"];
 
                     if (v69)
                     {
                       [(VSCredentialEntryPickerItem *)v65 setItemValue:v69];
-                      v70 = [v64 elementID];
-                      [(VSCredentialEntryPickerItem *)v65 setItemId:v70];
+                      elementID = [v64 elementID];
+                      [(VSCredentialEntryPickerItem *)v65 setItemId:elementID];
 
-                      [v56 addObject:v65];
+                      [array addObject:v65];
                     }
                   }
 
-                  v61 = [v59 countByEnumeratingWithState:&v122 objects:v138 count:16];
+                  v61 = [children2 countByEnumeratingWithState:&v122 objects:v138 count:16];
                 }
 
                 while (v61);
               }
 
-              v71 = [v116 vs_selectedChildElementIndex];
-              if ([v56 count])
+              vs_selectedChildElementIndex = [v116 vs_selectedChildElementIndex];
+              if ([array count])
               {
                 v72 = objc_alloc_init(VSCredentialEntryPicker);
                 v73 = obja;
                 [(VSCredentialEntryPicker *)v72 setTitle:obja];
-                [(VSCredentialEntryPicker *)v72 setPickerItems:v56];
-                [(VSCredentialEntryPicker *)v72 setSelectedIndex:v71];
-                self = v104;
-                [(VSCredentialEntryAppDocumentController *)v104 setPickerElement:v116];
-                v74 = [(VSCredentialEntryAppDocumentController *)v104 pickerElement];
-                v75 = [v74 itemGroup];
-                [v75 setSelectedItemIndex:v71];
+                [(VSCredentialEntryPicker *)v72 setPickerItems:array];
+                [(VSCredentialEntryPicker *)v72 setSelectedIndex:vs_selectedChildElementIndex];
+                self = selfCopy;
+                [(VSCredentialEntryAppDocumentController *)selfCopy setPickerElement:v116];
+                pickerElement2 = [(VSCredentialEntryAppDocumentController *)selfCopy pickerElement];
+                itemGroup = [pickerElement2 itemGroup];
+                [itemGroup setSelectedItemIndex:vs_selectedChildElementIndex];
 
-                v76 = [(VSCredentialEntryAppDocumentController *)v104 pickerElement];
-                v77 = [v76 itemGroup];
-                [v77 setDelegate:v104];
+                pickerElement3 = [(VSCredentialEntryAppDocumentController *)selfCopy pickerElement];
+                itemGroup2 = [pickerElement3 itemGroup];
+                [itemGroup2 setDelegate:selfCopy];
 
                 [v111 setPicker:v72];
                 ++v107;
@@ -478,7 +478,7 @@ LABEL_71:
 
               else
               {
-                self = v104;
+                self = selfCopy;
                 v73 = obja;
               }
 
@@ -486,14 +486,14 @@ LABEL_71:
             }
 
             v13 = v105;
-            v10 = v106;
+            children = v106;
             v12 = v108;
             v14 = v110;
             goto LABEL_71;
           case 160:
-            v17 = [v111 credentialEntryFields];
+            credentialEntryFields = [v111 credentialEntryFields];
 
-            if (!v17)
+            if (!credentialEntryFields)
             {
               v109 = v14;
               v115 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -521,8 +521,8 @@ LABEL_71:
                   }
 
                   v23 = *(*(&v128 + 1) + 8 * j);
-                  v24 = [v23 attributes];
-                  v25 = [v24 objectForKey:@"label"];
+                  attributes5 = [v23 attributes];
+                  v25 = [attributes5 objectForKey:@"label"];
 
                   if ([v25 length])
                   {
@@ -533,8 +533,8 @@ LABEL_71:
 
                     v26 = v25;
                     v27 = objc_alloc_init(VSITMLCredentialEntryField);
-                    v28 = [v23 attributes];
-                    v29 = [v28 objectForKey:@"required"];
+                    attributes6 = [v23 attributes];
+                    v29 = [attributes6 objectForKey:@"required"];
 
                     if (v29)
                     {
@@ -543,12 +543,12 @@ LABEL_71:
 
                     [(VSITMLCredentialEntryField *)v27 setAssociatedTextFieldElement:v23];
                     [(VSCredentialEntryField *)v27 setTitle:v26];
-                    v30 = [v23 text];
-                    v31 = [v30 string];
+                    text3 = [v23 text];
+                    string2 = [text3 string];
 
-                    [(VSCredentialEntryField *)v27 setPlaceholder:v31];
-                    v32 = [v23 attributes];
-                    v33 = [v32 objectForKey:@"type"];
+                    [(VSCredentialEntryField *)v27 setPlaceholder:string2];
+                    attributes7 = [v23 attributes];
+                    v33 = [attributes7 objectForKey:@"type"];
 
                     if ([v33 isEqualToString:@"emailAddress"])
                     {
@@ -563,8 +563,8 @@ LABEL_29:
                       [(VSCredentialEntryField *)v27 setKeyboardType:v34];
                     }
 
-                    v35 = [v23 attributes];
-                    v36 = [v35 objectForKey:@"secure"];
+                    attributes8 = [v23 attributes];
+                    v36 = [attributes8 objectForKey:@"secure"];
 
                     if (v36)
                     {
@@ -601,9 +601,9 @@ LABEL_35:
                     v107 += [v115 count];
                   }
 
-                  self = v104;
+                  self = selfCopy;
                   v13 = v105;
-                  v10 = v106;
+                  children = v106;
                   v12 = v108;
                   v14 = v109;
 
@@ -620,7 +620,7 @@ LABEL_72:
       }
 
       while (v14 != v12);
-      v12 = [v10 countByEnumeratingWithState:&v132 objects:v140 count:16];
+      v12 = [children countByEnumeratingWithState:&v132 objects:v140 count:16];
       if (!v12)
       {
         v81 = v107 == 0;
@@ -638,9 +638,9 @@ LABEL_78:
   v137[0] = @"title";
   v137[1] = @"text";
   v87 = [MEMORY[0x277CBEA60] arrayWithObjects:v137 count:2];
-  v88 = self;
+  selfCopy2 = self;
   v89 = v87;
-  v121.receiver = v88;
+  v121.receiver = selfCopy2;
   v121.super_class = VSCredentialEntryAppDocumentController;
   v90 = [(VSAppDocumentController *)&v121 _getSupportedButtonTextsforTemplate:v86 andElementKeys:v87 supportedCount:2];
 
@@ -687,26 +687,26 @@ LABEL_78:
     v98 = 0;
   }
 
-  if (a5)
+  if (error)
   {
     v99 = v98;
-    *a5 = v98;
+    *error = v98;
   }
 
   v100 = *MEMORY[0x277D85DE8];
   return v98 == 0;
 }
 
-- (void)itemGroup:(id)a3 selectedItemIndexDidChange:(int64_t)a4
+- (void)itemGroup:(id)group selectedItemIndexDidChange:(int64_t)change
 {
-  v6 = [(VSAppDocumentController *)self viewModel];
+  viewModel = [(VSAppDocumentController *)self viewModel];
 
-  if (!v6)
+  if (!viewModel)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [self viewModel] parameter must not be nil."];
   }
 
-  v12 = [(VSAppDocumentController *)self viewModel];
+  viewModel2 = [(VSAppDocumentController *)self viewModel];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -717,43 +717,43 @@ LABEL_78:
     [v7 raise:v8 format:{@"Unexpectedly, genericViewModel was %@, instead of VSCredentialEntryViewModel.", v10}];
   }
 
-  v11 = [v12 picker];
-  [v11 setSelectedIndex:a4];
+  picker = [viewModel2 picker];
+  [picker setSelectedIndex:change];
 }
 
-- (void)viewModel:(id)a3 buttonTappedAtIndex:(unint64_t)a4
+- (void)viewModel:(id)model buttonTappedAtIndex:(unint64_t)index
 {
-  v6 = [(VSAppDocumentController *)self filteredButtonLockupElements];
+  filteredButtonLockupElements = [(VSAppDocumentController *)self filteredButtonLockupElements];
 
-  if (!v6)
+  if (!filteredButtonLockupElements)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [self filteredButtonLockupElements] parameter must not be nil."];
   }
 
-  v7 = [(VSAppDocumentController *)self filteredButtonLockupElements];
-  v8 = [v7 objectAtIndex:a4];
+  filteredButtonLockupElements2 = [(VSAppDocumentController *)self filteredButtonLockupElements];
+  v8 = [filteredButtonLockupElements2 objectAtIndex:index];
 
   [v8 dispatchEventOfType:2 canBubble:1 isCancelable:0 extraInfo:0 completionBlock:0];
 }
 
-- (void)viewModel:(id)a3 pickerDidSelectRow:(unint64_t)a4
+- (void)viewModel:(id)model pickerDidSelectRow:(unint64_t)row
 {
-  v6 = [(VSCredentialEntryAppDocumentController *)self pickerElement];
-  v7 = [v6 children];
+  pickerElement = [(VSCredentialEntryAppDocumentController *)self pickerElement];
+  children = [pickerElement children];
 
-  if (!v7)
+  if (!children)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [[self pickerElement] children] parameter must not be nil."];
   }
 
-  v8 = [(VSCredentialEntryAppDocumentController *)self pickerElement];
-  v9 = [v8 children];
+  pickerElement2 = [(VSCredentialEntryAppDocumentController *)self pickerElement];
+  children2 = [pickerElement2 children];
 
-  v12 = [v9 objectAtIndex:a4];
+  v12 = [children2 objectAtIndex:row];
 
-  v10 = [(VSCredentialEntryAppDocumentController *)self pickerElement];
-  v11 = [v10 itemGroup];
-  [v11 setSelectedItemIndex:a4];
+  pickerElement3 = [(VSCredentialEntryAppDocumentController *)self pickerElement];
+  itemGroup = [pickerElement3 itemGroup];
+  [itemGroup setSelectedItemIndex:row];
 
   [v12 dispatchEventOfType:2 canBubble:1 isCancelable:0 extraInfo:0 completionBlock:0];
 }

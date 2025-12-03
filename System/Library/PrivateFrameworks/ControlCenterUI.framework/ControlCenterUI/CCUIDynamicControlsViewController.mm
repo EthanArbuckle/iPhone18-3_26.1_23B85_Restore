@@ -1,15 +1,15 @@
 @interface CCUIDynamicControlsViewController
 - (BOOL)isDisplayingSensorAttribution;
-- (CCUIDynamicControlsViewController)initWithCoder:(id)a3;
-- (CCUIDynamicControlsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)sensorAttributionsChanged:(id)a3 uniqueEntities:(id)a4;
+- (CCUIDynamicControlsViewController)initWithCoder:(id)coder;
+- (CCUIDynamicControlsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)sensorAttributionsChanged:(id)changed uniqueEntities:(id)entities;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation CCUIDynamicControlsViewController
 
-- (CCUIDynamicControlsViewController)initWithCoder:(id)a3
+- (CCUIDynamicControlsViewController)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   v4 = OBJC_IVAR___CCUIDynamicControlsViewController_buttonViewModel;
@@ -33,25 +33,25 @@
 - (void)viewWillLayoutSubviews
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR___CCUIDynamicControlsViewController_hostingViewController);
-  v15 = self;
-  v3 = [v2 view];
-  if (!v3)
+  selfCopy = self;
+  view = [v2 view];
+  if (!view)
   {
     __break(1u);
     goto LABEL_7;
   }
 
-  v4 = v3;
-  v5 = [(CCUIDynamicControlsViewController *)v15 view];
-  if (!v5)
+  v4 = view;
+  view2 = [(CCUIDynamicControlsViewController *)selfCopy view];
+  if (!view2)
   {
 LABEL_7:
     __break(1u);
     return;
   }
 
-  v6 = v5;
-  [v5 bounds];
+  v6 = view2;
+  [view2 bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -62,24 +62,24 @@ LABEL_7:
 
 - (BOOL)isDisplayingSensorAttribution
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21EA92E14();
 
   return v3 & 1;
 }
 
-- (void)sensorAttributionsChanged:(id)a3 uniqueEntities:(id)a4
+- (void)sensorAttributionsChanged:(id)changed uniqueEntities:(id)entities
 {
   sub_21E9F8880(0, &qword_28125B790);
   sub_21E9F84D4();
   v5 = sub_21EAA8F60();
   sub_21E9F8880(0, &unk_28125B750);
   v6 = sub_21EAA8EC0();
-  v7 = self;
+  selfCopy = self;
   sub_21EA93008(v5, v6);
 }
 
-- (CCUIDynamicControlsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CCUIDynamicControlsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

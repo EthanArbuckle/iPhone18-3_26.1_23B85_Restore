@@ -1,8 +1,8 @@
 @interface CSVoiceTriggerAlwaysOnProcessor
 - (CSVoiceTriggerAlwaysOnProcessor)init;
-- (void)_setBuiltInRTModelDictionary:(id)a3;
-- (void)disableVoiceTriggerOnAlwaysOnProcessorWithCompletion:(id)a3;
-- (void)enableVoiceTriggerOnAlwaysOnProcessorWithAsset:(id)a3 completion:(id)a4;
+- (void)_setBuiltInRTModelDictionary:(id)dictionary;
+- (void)disableVoiceTriggerOnAlwaysOnProcessorWithCompletion:(id)completion;
+- (void)enableVoiceTriggerOnAlwaysOnProcessorWithAsset:(id)asset completion:(id)completion;
 @end
 
 @implementation CSVoiceTriggerAlwaysOnProcessor
@@ -11,7 +11,7 @@
 {
   if (+[CSUtils isDarwinOS])
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -32,42 +32,42 @@
     }
 
     self = v4;
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)_setBuiltInRTModelDictionary:(id)a3
+- (void)_setBuiltInRTModelDictionary:(id)dictionary
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = CSLogCategoryVT;
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136315394;
     v7 = "[CSVoiceTriggerAlwaysOnProcessor _setBuiltInRTModelDictionary:]";
     v8 = 2114;
-    v9 = v3;
+    v9 = dictionaryCopy;
     _os_log_impl(&dword_1DDA4B000, v4, OS_LOG_TYPE_DEFAULT, "%s setting rtModel dictionary : %{public}@", &v6, 0x16u);
   }
 
-  [MEMORY[0x1E69E1488] setCurrentBuiltInRTModelDictionary:v3];
+  [MEMORY[0x1E69E1488] setCurrentBuiltInRTModelDictionary:dictionaryCopy];
 
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)disableVoiceTriggerOnAlwaysOnProcessorWithCompletion:(id)a3
+- (void)disableVoiceTriggerOnAlwaysOnProcessorWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __88__CSVoiceTriggerAlwaysOnProcessor_disableVoiceTriggerOnAlwaysOnProcessorWithCompletion___block_invoke;
   v7[3] = &unk_1E865CB90;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -147,20 +147,20 @@ void __88__CSVoiceTriggerAlwaysOnProcessor_disableVoiceTriggerOnAlwaysOnProcesso
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enableVoiceTriggerOnAlwaysOnProcessorWithAsset:(id)a3 completion:(id)a4
+- (void)enableVoiceTriggerOnAlwaysOnProcessorWithAsset:(id)asset completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __93__CSVoiceTriggerAlwaysOnProcessor_enableVoiceTriggerOnAlwaysOnProcessorWithAsset_completion___block_invoke;
   block[3] = &unk_1E865C678;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v6;
-  v10 = v7;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = assetCopy;
+  v9 = assetCopy;
+  v10 = completionCopy;
   dispatch_async(queue, block);
 }
 

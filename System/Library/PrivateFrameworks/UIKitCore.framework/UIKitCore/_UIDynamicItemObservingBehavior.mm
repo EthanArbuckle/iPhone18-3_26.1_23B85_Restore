@@ -1,13 +1,13 @@
 @interface _UIDynamicItemObservingBehavior
 - (CGVector)targetVelocity;
-- (void)willMoveToAnimator:(id)a3;
+- (void)willMoveToAnimator:(id)animator;
 @end
 
 @implementation _UIDynamicItemObservingBehavior
 
-- (void)willMoveToAnimator:(id)a3
+- (void)willMoveToAnimator:(id)animator
 {
-  v4 = a3;
+  animatorCopy = animator;
   [(_UIDynamicItemObservingBehavior *)self setEnabled:1];
   [(_UIDynamicItemObservingBehavior *)self setFrameCount:0];
   objc_initWeak(&location, self);

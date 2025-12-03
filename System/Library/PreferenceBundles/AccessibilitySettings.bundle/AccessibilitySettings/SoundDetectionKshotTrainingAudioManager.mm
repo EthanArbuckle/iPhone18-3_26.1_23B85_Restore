@@ -1,29 +1,29 @@
 @interface SoundDetectionKshotTrainingAudioManager
-- (SoundDetectionKshotTrainingAudioManager)initWithTargetDetector:(id)a3;
+- (SoundDetectionKshotTrainingAudioManager)initWithTargetDetector:(id)detector;
 - (SoundDetectionKshotTrainingAudioManagerDelegate)delegate;
 - (id)_audioUIClient;
-- (id)userInterfaceClient:(id)a3 processMessageFromServer:(id)a4 withIdentifier:(unint64_t)a5 error:(id *)a6;
+- (id)userInterfaceClient:(id)client processMessageFromServer:(id)server withIdentifier:(unint64_t)identifier error:(id *)error;
 - (int64_t)_stateForTargetDetector;
-- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)a3;
+- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)client;
 - (void)dealloc;
-- (void)setState:(int64_t)a3;
+- (void)setState:(int64_t)state;
 - (void)startListening;
-- (void)stopListeningAndTrainIfPossible:(BOOL)a3;
+- (void)stopListeningAndTrainIfPossible:(BOOL)possible;
 - (void)updateState;
 @end
 
 @implementation SoundDetectionKshotTrainingAudioManager
 
-- (SoundDetectionKshotTrainingAudioManager)initWithTargetDetector:(id)a3
+- (SoundDetectionKshotTrainingAudioManager)initWithTargetDetector:(id)detector
 {
-  v4 = a3;
+  detectorCopy = detector;
   v8.receiver = self;
   v8.super_class = SoundDetectionKshotTrainingAudioManager;
   v5 = [(SoundDetectionKshotTrainingAudioManager *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(SoundDetectionKshotTrainingAudioManager *)v5 setTargetDetector:v4];
+    [(SoundDetectionKshotTrainingAudioManager *)v5 setTargetDetector:detectorCopy];
     [(SoundDetectionKshotTrainingAudioManager *)v6 setState:6];
   }
 
@@ -38,22 +38,22 @@
   [(SoundDetectionKshotTrainingAudioManager *)&v3 dealloc];
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   v5 = AXLogUltronKShot();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     state = self->_state;
     v8 = 134218240;
-    v9 = state;
+    stateCopy = state;
     v10 = 2048;
-    v11 = a3;
+    stateCopy2 = state;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Updating State from: %ld to: %ld", &v8, 0x16u);
   }
 
-  self->_state = a3;
-  v7 = [(SoundDetectionKshotTrainingAudioManager *)self delegate];
-  [v7 stateDidUpdate:a3];
+  self->_state = state;
+  delegate = [(SoundDetectionKshotTrainingAudioManager *)self delegate];
+  [delegate stateDidUpdate:state];
 }
 
 - (void)startListening
@@ -67,8 +67,8 @@
 
   [(SoundDetectionKshotTrainingAudioManager *)self setState:[(SoundDetectionKshotTrainingAudioManager *)self _stateForTargetDetector]];
   v4 = +[AXSDKShotController sharedInstance];
-  v5 = [(SoundDetectionKshotTrainingAudioManager *)self targetDetector];
-  [v4 startListeningToTrainDetector:v5];
+  targetDetector = [(SoundDetectionKshotTrainingAudioManager *)self targetDetector];
+  [v4 startListeningToTrainDetector:targetDetector];
 
   v6 = +[AXSDKShotController sharedInstance];
   v7[0] = _NSConcreteStackBlock;
@@ -87,9 +87,9 @@ id __57__SoundDetectionKshotTrainingAudioManager_startListening__block_invoke(ui
   return [v3 setState:v2];
 }
 
-- (void)stopListeningAndTrainIfPossible:(BOOL)a3
+- (void)stopListeningAndTrainIfPossible:(BOOL)possible
 {
-  v3 = a3;
+  possibleCopy = possible;
   v5 = AXLogUltronKShot();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -104,39 +104,39 @@ id __57__SoundDetectionKshotTrainingAudioManager_startListening__block_invoke(ui
   v7 = +[AXSDKShotController sharedInstance];
   [v7 deregisterListener:self];
 
-  if (v3)
+  if (possibleCopy)
   {
-    v8 = [(SoundDetectionKshotTrainingAudioManager *)self targetDetector];
-    v9 = [v8 recordings];
-    if ([v9 count] <= 4)
+    targetDetector = [(SoundDetectionKshotTrainingAudioManager *)self targetDetector];
+    recordings = [targetDetector recordings];
+    if ([recordings count] <= 4)
     {
     }
 
     else
     {
-      v10 = [(SoundDetectionKshotTrainingAudioManager *)self targetDetector];
-      v11 = [v10 identifier];
+      targetDetector2 = [(SoundDetectionKshotTrainingAudioManager *)self targetDetector];
+      identifier = [targetDetector2 identifier];
 
-      if (v11)
+      if (identifier)
       {
-        v12 = [(SoundDetectionKshotTrainingAudioManager *)self _audioUIClient];
+        _audioUIClient = [(SoundDetectionKshotTrainingAudioManager *)self _audioUIClient];
         v18 = SoundDetectionModelCreationIdentifierKey;
-        v13 = [(SoundDetectionKshotTrainingAudioManager *)self targetDetector];
-        v14 = [v13 identifier];
-        v19 = v14;
+        targetDetector3 = [(SoundDetectionKshotTrainingAudioManager *)self targetDetector];
+        identifier2 = [targetDetector3 identifier];
+        v19 = identifier2;
         v15 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
         v16 = +[AXAccessQueue mainAccessQueue];
-        [v12 sendAsynchronousMessage:v15 withIdentifier:10003 targetAccessQueue:v16 completion:0];
+        [_audioUIClient sendAsynchronousMessage:v15 withIdentifier:10003 targetAccessQueue:v16 completion:0];
 
 LABEL_10:
         return;
       }
     }
 
-    v12 = AXLogUltronKShot();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    _audioUIClient = AXLogUltronKShot();
+    if (os_log_type_enabled(_audioUIClient, OS_LOG_TYPE_ERROR))
     {
-      [(SoundDetectionKshotTrainingAudioManager *)self stopListeningAndTrainIfPossible:v12];
+      [(SoundDetectionKshotTrainingAudioManager *)self stopListeningAndTrainIfPossible:_audioUIClient];
     }
 
     goto LABEL_10;
@@ -145,9 +145,9 @@ LABEL_10:
 
 - (int64_t)_stateForTargetDetector
 {
-  v2 = [(SoundDetectionKshotTrainingAudioManager *)self targetDetector];
-  v3 = [v2 recordings];
-  v4 = [v3 count];
+  targetDetector = [(SoundDetectionKshotTrainingAudioManager *)self targetDetector];
+  recordings = [targetDetector recordings];
+  v4 = [recordings count];
 
   if (v4 >= 5)
   {
@@ -162,9 +162,9 @@ LABEL_10:
 
 - (void)updateState
 {
-  v3 = [(SoundDetectionKshotTrainingAudioManager *)self _stateForTargetDetector];
+  _stateForTargetDetector = [(SoundDetectionKshotTrainingAudioManager *)self _stateForTargetDetector];
 
-  [(SoundDetectionKshotTrainingAudioManager *)self setState:v3];
+  [(SoundDetectionKshotTrainingAudioManager *)self setState:_stateForTargetDetector];
 }
 
 - (id)_audioUIClient
@@ -183,23 +183,23 @@ LABEL_10:
   return audioUIClient;
 }
 
-- (id)userInterfaceClient:(id)a3 processMessageFromServer:(id)a4 withIdentifier:(unint64_t)a5 error:(id *)a6
+- (id)userInterfaceClient:(id)client processMessageFromServer:(id)server withIdentifier:(unint64_t)identifier error:(id *)error
 {
-  v7 = a4;
+  serverCopy = server;
   v8 = AXLogUltronKShot();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 134218242;
-    v11 = a5;
+    identifierCopy = identifier;
     v12 = 2112;
-    v13 = v7;
+    v13 = serverCopy;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Custom Detector Onboarding - Received IPC Message %lu\nDict:%@", &v10, 0x16u);
   }
 
   return 0;
 }
 
-- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)a3
+- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)client
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;

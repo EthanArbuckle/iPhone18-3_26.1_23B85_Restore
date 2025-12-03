@@ -1,5 +1,5 @@
 @interface HKLineEnumerator
-+ (BOOL)enumerateUTF8LinesWithError:(id *)a3 dataProvider:(id)a4 lineHandler:(id)a5;
++ (BOOL)enumerateUTF8LinesWithError:(id *)error dataProvider:(id)provider lineHandler:(id)handler;
 - (HKLineEnumerator)init;
 @end
 
@@ -15,10 +15,10 @@
   return 0;
 }
 
-+ (BOOL)enumerateUTF8LinesWithError:(id *)a3 dataProvider:(id)a4 lineHandler:(id)a5
++ (BOOL)enumerateUTF8LinesWithError:(id *)error dataProvider:(id)provider lineHandler:(id)handler
 {
-  v6 = a4;
-  v38 = a5;
+  providerCopy = provider;
+  handlerCopy = handler;
   v39 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v7 = objc_alloc_init(MEMORY[0x1E695DF88]);
   v8 = 0;
@@ -43,7 +43,7 @@
     v9 = objc_autoreleasePoolPush();
     v10 = v58;
     v56 = v58[5];
-    v11 = v6[2](v6, &v56);
+    v11 = providerCopy[2](providerCopy, &v56);
     objc_storeStrong(v10 + 5, v56);
 
     if (v11 && [v11 length])
@@ -55,15 +55,15 @@
 
       if ([v7 length])
       {
-        v12 = [v7 bytes];
+        bytes = [v7 bytes];
       }
 
       else
       {
-        v12 = [v11 bytes];
+        bytes = [v11 bytes];
       }
 
-      v14 = v12;
+      v14 = bytes;
       if ([v7 length])
       {
         v15 = [v7 length];
@@ -122,7 +122,7 @@
         v26 = v39;
         v45 = v26;
         v47 = &v63;
-        v46 = v38;
+        v46 = handlerCopy;
         v48 = &v57;
         v49 = &v50;
         [v26 enumerateSubstringsInRange:0 options:v25 usingBlock:{0, v44}];
@@ -166,17 +166,17 @@
     v40[2] = __73__HKLineEnumerator_enumerateUTF8LinesWithError_dataProvider_lineHandler___block_invoke_2;
     v40[3] = &unk_1E737A9C8;
     v42 = &v63;
-    v41 = v38;
+    v41 = handlerCopy;
     v43 = &v57;
     [v39 enumerateSubstringsInRange:0 options:v28 usingBlock:{0, v40}];
     v29 = v58[5];
     v30 = v29;
     if (v29)
     {
-      if (a3)
+      if (error)
       {
         v31 = v29;
-        *a3 = v30;
+        *error = v30;
       }
 
       else
@@ -194,10 +194,10 @@ LABEL_36:
   v33 = v32;
   if (v32)
   {
-    if (a3)
+    if (error)
     {
       v34 = v32;
-      *a3 = v33;
+      *error = v33;
     }
 
     else

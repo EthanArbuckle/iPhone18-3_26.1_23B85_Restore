@@ -3,20 +3,20 @@
 - (BOOL)activeTableSupportsContractedBraille;
 - (BOOL)activeTableSupportsEightDotBraille;
 - (BOOL)activeTableSupportsIPA;
-- (BOOL)activeTableSupportsModeWithKey:(id)a3;
+- (BOOL)activeTableSupportsModeWithKey:(id)key;
 - (BOOL)activeTableSupportsTechnicalBraille;
 - (LBTLiblouisBrailleTranslator)init;
 - (NSDictionary)activeTableMap;
 - (NSDictionary)languageMap;
-- (id)_printBrailleForText:(id)a3 table:(id)a4 locations:(id *)a5 textPositionsRange:(_NSRange)a6 textFormattingRanges:(id)a7;
-- (id)printBrailleForText:(id)a3 mode:(unint64_t)a4 locations:(id *)a5 textFormattingRanges:(id)a6;
-- (id)printBrailleForText:(id)a3 mode:(unint64_t)a4 locations:(id *)a5 textPositionsRange:(_NSRange)a6 textFormattingRanges:(id)a7;
-- (id)tableForActiveTableMode:(unint64_t)a3;
-- (id)tableListForTable:(id)a3;
-- (id)technicalTableForActiveLanguage:(BOOL)a3;
-- (id)textForPrintBraille:(id)a3 mode:(unint64_t)a4 locations:(id *)a5;
+- (id)_printBrailleForText:(id)text table:(id)table locations:(id *)locations textPositionsRange:(_NSRange)range textFormattingRanges:(id)ranges;
+- (id)printBrailleForText:(id)text mode:(unint64_t)mode locations:(id *)locations textFormattingRanges:(id)ranges;
+- (id)printBrailleForText:(id)text mode:(unint64_t)mode locations:(id *)locations textPositionsRange:(_NSRange)range textFormattingRanges:(id)ranges;
+- (id)tableForActiveTableMode:(unint64_t)mode;
+- (id)tableListForTable:(id)table;
+- (id)technicalTableForActiveLanguage:(BOOL)language;
+- (id)textForPrintBraille:(id)braille mode:(unint64_t)mode locations:(id *)locations;
 - (void)dealloc;
-- (void)setActiveTable:(id)a3;
+- (void)setActiveTable:(id)table;
 @end
 
 @implementation LBTLiblouisBrailleTranslator
@@ -24,8 +24,8 @@
 + (void)initialize
 {
   v2 = [NSBundle bundleForClass:objc_opt_class()];
-  v3 = [v2 resourcePath];
-  v5 = [v3 stringByAppendingString:@"/liblouis/tables"];
+  resourcePath = [v2 resourcePath];
+  v5 = [resourcePath stringByAppendingString:@"/liblouis/tables"];
 
   v4 = v5;
   setenv("LOUIS_TABLEPATH", [v5 UTF8String], 1);
@@ -73,47 +73,47 @@
 
 - (NSDictionary)activeTableMap
 {
-  v3 = [(LBTLiblouisBrailleTranslator *)self languageMap];
-  v4 = [(LBTLiblouisBrailleTranslator *)self activeTable];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  languageMap = [(LBTLiblouisBrailleTranslator *)self languageMap];
+  activeTable = [(LBTLiblouisBrailleTranslator *)self activeTable];
+  v5 = [languageMap objectForKeyedSubscript:activeTable];
 
   return v5;
 }
 
-- (BOOL)activeTableSupportsModeWithKey:(id)a3
+- (BOOL)activeTableSupportsModeWithKey:(id)key
 {
-  v4 = a3;
-  v5 = [(LBTLiblouisBrailleTranslator *)self activeTableMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  activeTableMap = [(LBTLiblouisBrailleTranslator *)self activeTableMap];
+  v6 = [activeTableMap objectForKeyedSubscript:keyCopy];
 
   return v6 != 0;
 }
 
-- (id)tableListForTable:(id)a3
+- (id)tableListForTable:(id)table
 {
-  v4 = a3;
-  v5 = [(LBTLiblouisBrailleTranslator *)self languageMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  tableCopy = table;
+  languageMap = [(LBTLiblouisBrailleTranslator *)self languageMap];
+  v6 = [languageMap objectForKeyedSubscript:tableCopy];
 
-  v7 = [v6 allValues];
-  v8 = [v7 componentsJoinedByString:{@", "}];
+  allValues = [v6 allValues];
+  v8 = [allValues componentsJoinedByString:{@", "}];
 
   return v8;
 }
 
-- (id)tableForActiveTableMode:(unint64_t)a3
+- (id)tableForActiveTableMode:(unint64_t)mode
 {
-  v4 = [(LBTLiblouisBrailleTranslator *)self activeTableMap];
-  v5 = [v4 objectForKeyedSubscript:@"table"];
+  activeTableMap = [(LBTLiblouisBrailleTranslator *)self activeTableMap];
+  v5 = [activeTableMap objectForKeyedSubscript:@"table"];
   if (!v5)
   {
     v6 = @"6Dot";
-    if (a3 == 2)
+    if (mode == 2)
     {
       v6 = @"8Dot";
     }
 
-    if (a3 == 3)
+    if (mode == 3)
     {
       v7 = @"Contracted";
     }
@@ -123,16 +123,16 @@
       v7 = v6;
     }
 
-    v5 = [v4 objectForKeyedSubscript:v7];
+    v5 = [activeTableMap objectForKeyedSubscript:v7];
     if (!v5)
     {
-      v5 = [v4 objectForKeyedSubscript:@"Contracted"];
+      v5 = [activeTableMap objectForKeyedSubscript:@"Contracted"];
       if (!v5)
       {
-        v5 = [v4 objectForKeyedSubscript:@"8Dot"];
+        v5 = [activeTableMap objectForKeyedSubscript:@"8Dot"];
         if (!v5)
         {
-          v5 = [v4 objectForKeyedSubscript:@"6Dot"];
+          v5 = [activeTableMap objectForKeyedSubscript:@"6Dot"];
         }
       }
     }
@@ -143,12 +143,12 @@
   return v8;
 }
 
-- (id)technicalTableForActiveLanguage:(BOOL)a3
+- (id)technicalTableForActiveLanguage:(BOOL)language
 {
-  v3 = a3;
-  v5 = [(LBTLiblouisBrailleTranslator *)self activeTableMap];
-  v6 = v5;
-  if (!v3 || ([v5 objectForKeyedSubscript:@"Technical"], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
+  languageCopy = language;
+  activeTableMap = [(LBTLiblouisBrailleTranslator *)self activeTableMap];
+  v6 = activeTableMap;
+  if (!languageCopy || ([activeTableMap objectForKeyedSubscript:@"Technical"], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v7 = [(LBTLiblouisBrailleTranslator *)self tableForActiveTableMode:1];
   }
@@ -156,25 +156,25 @@
   return v7;
 }
 
-- (void)setActiveTable:(id)a3
+- (void)setActiveTable:(id)table
 {
-  v4 = a3;
+  tableCopy = table;
   v5 = LBTLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_1CA04();
   }
 
-  if (![(NSString *)self->_activeTable isEqualToString:v4])
+  if (![(NSString *)self->_activeTable isEqualToString:tableCopy])
   {
     lou_free();
-    v6 = [v4 copy];
+    v6 = [tableCopy copy];
     activeTable = self->_activeTable;
     self->_activeTable = v6;
 
     v8 = [NSBundle bundleForClass:objc_opt_class()];
     v9 = [v8 objectForInfoDictionaryKey:@"BrailleTables"];
-    v10 = [v9 objectForKey:v4];
+    v10 = [v9 objectForKey:tableCopy];
     v11 = [v10 objectForKey:@"supportsContraction"];
     self->_supportsContraction = [v11 BOOLValue];
 
@@ -219,25 +219,25 @@
   return [(LBTLiblouisBrailleTranslator *)self activeTableSupportsModeWithKey:@"Technical"];
 }
 
-- (id)printBrailleForText:(id)a3 mode:(unint64_t)a4 locations:(id *)a5 textFormattingRanges:(id)a6
+- (id)printBrailleForText:(id)text mode:(unint64_t)mode locations:(id *)locations textFormattingRanges:(id)ranges
 {
-  v10 = a6;
-  v11 = a3;
-  v12 = -[LBTLiblouisBrailleTranslator printBrailleForText:mode:locations:textPositionsRange:textFormattingRanges:](self, "printBrailleForText:mode:locations:textPositionsRange:textFormattingRanges:", v11, a4, a5, 0, [v11 length], v10);
+  rangesCopy = ranges;
+  textCopy = text;
+  v12 = -[LBTLiblouisBrailleTranslator printBrailleForText:mode:locations:textPositionsRange:textFormattingRanges:](self, "printBrailleForText:mode:locations:textPositionsRange:textFormattingRanges:", textCopy, mode, locations, 0, [textCopy length], rangesCopy);
 
   return v12;
 }
 
-- (id)printBrailleForText:(id)a3 mode:(unint64_t)a4 locations:(id *)a5 textPositionsRange:(_NSRange)a6 textFormattingRanges:(id)a7
+- (id)printBrailleForText:(id)text mode:(unint64_t)mode locations:(id *)locations textPositionsRange:(_NSRange)range textFormattingRanges:(id)ranges
 {
-  length = a6.length;
-  location = a6.location;
-  v13 = a3;
-  v14 = a7;
-  v15 = [(LBTLiblouisBrailleTranslator *)self tableForActiveTableMode:a4];
+  length = range.length;
+  location = range.location;
+  textCopy = text;
+  rangesCopy = ranges;
+  v15 = [(LBTLiblouisBrailleTranslator *)self tableForActiveTableMode:mode];
   if (v15)
   {
-    v16 = [(LBTLiblouisBrailleTranslator *)self _printBrailleForText:v13 table:v15 locations:a5 textPositionsRange:location textFormattingRanges:length, v14];
+    rangesCopy = [(LBTLiblouisBrailleTranslator *)self _printBrailleForText:textCopy table:v15 locations:locations textPositionsRange:location textFormattingRanges:length, rangesCopy];
   }
 
   else
@@ -248,28 +248,28 @@
       sub_1CAFC(self);
     }
 
-    v16 = 0;
+    rangesCopy = 0;
   }
 
-  return v16;
+  return rangesCopy;
 }
 
-- (id)_printBrailleForText:(id)a3 table:(id)a4 locations:(id *)a5 textPositionsRange:(_NSRange)a6 textFormattingRanges:(id)a7
+- (id)_printBrailleForText:(id)text table:(id)table locations:(id *)locations textPositionsRange:(_NSRange)range textFormattingRanges:(id)ranges
 {
-  v58 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a7;
-  v13 = [(LBTLiblouisBrailleTranslator *)self textFormattingPreprocessor];
-  v14 = [v13 processText:v10 withFormattingRanges:v12];
+  locationsCopy = locations;
+  textCopy = text;
+  tableCopy = table;
+  rangesCopy = ranges;
+  textFormattingPreprocessor = [(LBTLiblouisBrailleTranslator *)self textFormattingPreprocessor];
+  v14 = [textFormattingPreprocessor processText:textCopy withFormattingRanges:rangesCopy];
 
-  v15 = [(LBTLiblouisBrailleTranslator *)self emojiPreprocessor];
+  emojiPreprocessor = [(LBTLiblouisBrailleTranslator *)self emojiPreprocessor];
   v61 = 0;
-  v16 = [v15 preprocessPrintString:v10 withLocationMap:&v61 typeformData:v14];
+  v16 = [emojiPreprocessor preprocessPrintString:textCopy withLocationMap:&v61 typeformData:v14];
   v17 = v61;
 
   v18 = [v16 dataUsingEncoding:2483028224];
-  v19 = [v18 bytes];
+  bytes = [v18 bytes];
   v20 = [v16 rangeOfComposedCharacterSequencesForRange:{0, objc_msgSend(v16, "length")}];
   v60 = v20 + v21;
   if ((3 * (v20 + v21)) <= 512)
@@ -303,7 +303,7 @@
       }
     }
 
-    if (v58)
+    if (locationsCopy)
     {
       v27 = malloc_type_malloc(4 * v22, 0x9892EA0uLL);
       if (!v27)
@@ -340,17 +340,17 @@
       v33 = 0;
     }
 
-    if (lou_translate([v11 UTF8String], v19, &v60, v24, &v59, v33, 0, v27, 0, 0, 68) == 1)
+    if (lou_translate([tableCopy UTF8String], bytes, &v60, v24, &v59, v33, 0, v27, 0, 0, 68) == 1)
     {
       v17 = v57;
-      if (v58)
+      if (locationsCopy)
       {
         v55 = 8 * v59;
         v34 = malloc_type_malloc(v55, 0x6BDFE5AAuLL);
         if (v34)
         {
           v35 = v34;
-          v36 = [v17 bytes];
+          bytes2 = [v17 bytes];
           v38 = (v60 - 1);
           if (v60 >= 1)
           {
@@ -380,7 +380,7 @@ LABEL_31:
             if (v39 > v40)
             {
               v43 = 0;
-              v44 = v36[v38];
+              v44 = bytes2[v38];
               v45 = v39 - v42;
               v46 = (v39 - v42 + 1) & 0xFFFFFFFFFFFFFFFELL;
               v47 = vdupq_n_s64(v45 - 1);
@@ -411,7 +411,7 @@ LABEL_31:
 
 LABEL_41:
           v51 = [NSData dataWithBytes:v35 length:v55, v37];
-          *v58 = v51;
+          *locationsCopy = v51;
           free(v35);
         }
       }
@@ -460,18 +460,18 @@ LABEL_50:
   return v29;
 }
 
-- (id)textForPrintBraille:(id)a3 mode:(unint64_t)a4 locations:(id *)a5
+- (id)textForPrintBraille:(id)braille mode:(unint64_t)mode locations:(id *)locations
 {
-  v8 = a3;
-  v9 = [(LBTLiblouisBrailleTranslator *)self tableForActiveTableMode:a4];
-  v10 = [v8 dataUsingEncoding:2483028224];
-  v11 = [v10 bytes];
-  v12 = [v8 rangeOfComposedCharacterSequencesForRange:{0, objc_msgSend(v8, "length")}];
+  brailleCopy = braille;
+  v9 = [(LBTLiblouisBrailleTranslator *)self tableForActiveTableMode:mode];
+  v10 = [brailleCopy dataUsingEncoding:2483028224];
+  bytes = [v10 bytes];
+  v12 = [brailleCopy rangeOfComposedCharacterSequencesForRange:{0, objc_msgSend(brailleCopy, "length")}];
   v38 = v12 + v13;
   v14 = 4 * (v12 + v13) + 64;
   v37 = v14;
   v15 = malloc_type_malloc(2 * v14, 0x1000040BDFB0063uLL);
-  if (a5)
+  if (locations)
   {
     v16 = malloc_type_malloc(v14, 0x9550110CuLL);
     if (!v16)
@@ -495,7 +495,7 @@ LABEL_32:
     v16 = 0;
   }
 
-  if (lou_backTranslate([v9 UTF8String], v11, &v38, v15, &v37, 0, 0, v16, 0, 0, 0x80u) != 1)
+  if (lou_backTranslate([v9 UTF8String], bytes, &v38, v15, &v37, 0, 0, v16, 0, 0, 0x80u) != 1)
   {
     v17 = LBTLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -571,7 +571,7 @@ LABEL_15:
       }
 
 LABEL_25:
-      *a5 = [NSData dataWithBytes:v19 length:v18, v20];
+      *locations = [NSData dataWithBytes:v19 length:v18, v20];
       free(v21);
     }
 
@@ -598,8 +598,8 @@ LABEL_33:
     return self->_supportsIPA;
   }
 
-  v4 = [(LBTLiblouisBrailleTranslator *)self activeTable];
-  v5 = [v4 isEqualToString:@"ipa"];
+  activeTable = [(LBTLiblouisBrailleTranslator *)self activeTable];
+  v5 = [activeTable isEqualToString:@"ipa"];
 
   return v5;
 }

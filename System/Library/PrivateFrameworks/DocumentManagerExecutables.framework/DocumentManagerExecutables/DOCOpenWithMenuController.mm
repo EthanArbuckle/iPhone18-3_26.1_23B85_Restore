@@ -1,11 +1,11 @@
 @interface DOCOpenWithMenuController
 + (_TtC26DocumentManagerExecutables25DOCOpenWithMenuController)shared;
 - (_TtC26DocumentManagerExecutables25DOCOpenWithMenuController)init;
-- (id)openWithDeferredMenuFor:(id)a3 suppressTitle:(BOOL)a4;
-- (void)openWithFlow:(id)a3 didFailToOpenAppStoreWithError:(id)a4;
-- (void)openWithFlow:(id)a3 didFailToOpenUsingBoundBundle:(id)a4 withError:(id)a5;
-- (void)openWithFlowDidOpenAppStore:(id)a3;
-- (void)openWithMenuFromConstructorDidSelectAppStoreItem:(id)a3;
+- (id)openWithDeferredMenuFor:(id)for suppressTitle:(BOOL)title;
+- (void)openWithFlow:(id)flow didFailToOpenAppStoreWithError:(id)error;
+- (void)openWithFlow:(id)flow didFailToOpenUsingBoundBundle:(id)bundle withError:(id)error;
+- (void)openWithFlowDidOpenAppStore:(id)store;
+- (void)openWithMenuFromConstructorDidSelectAppStoreItem:(id)item;
 @end
 
 @implementation DOCOpenWithMenuController
@@ -22,18 +22,18 @@
   return v3;
 }
 
-- (id)openWithDeferredMenuFor:(id)a3 suppressTitle:(BOOL)a4
+- (id)openWithDeferredMenuFor:(id)for suppressTitle:(BOOL)title
 {
   swift_unknownObjectRetain();
-  v7 = self;
-  DOCOpenWithMenuController.openWithDeferredMenu(for:suppressTitle:)(a3, a4);
+  selfCopy = self;
+  DOCOpenWithMenuController.openWithDeferredMenu(for:suppressTitle:)(for, title);
   v9 = v8;
   swift_unknownObjectRelease();
 
   return v9;
 }
 
-- (void)openWithMenuFromConstructorDidSelectAppStoreItem:(id)a3
+- (void)openWithMenuFromConstructorDidSelectAppStoreItem:(id)item
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&_ss23_ContiguousArrayStorageCyypGMd);
   v3 = swift_allocObject();
@@ -44,18 +44,18 @@
   print(_:separator:terminator:)();
 }
 
-- (void)openWithFlow:(id)a3 didFailToOpenUsingBoundBundle:(id)a4 withError:(id)a5
+- (void)openWithFlow:(id)flow didFailToOpenUsingBoundBundle:(id)bundle withError:(id)error
 {
-  v7 = a3;
+  flowCopy = flow;
   swift_unknownObjectRetain();
-  v9 = a5;
-  v8 = self;
+  errorCopy = error;
+  selfCopy = self;
   specialized DOCOpenWithMenuController.openWithFlow(_:didFailToOpenUsing:error:)();
 
   swift_unknownObjectRelease();
 }
 
-- (void)openWithFlowDidOpenAppStore:(id)a3
+- (void)openWithFlowDidOpenAppStore:(id)store
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&_ss23_ContiguousArrayStorageCyypGMd);
   v3 = swift_allocObject();
@@ -66,11 +66,11 @@
   print(_:separator:terminator:)();
 }
 
-- (void)openWithFlow:(id)a3 didFailToOpenAppStoreWithError:(id)a4
+- (void)openWithFlow:(id)flow didFailToOpenAppStoreWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
+  flowCopy = flow;
+  errorCopy = error;
+  selfCopy = self;
   specialized DOCOpenWithMenuController.openWithFlow(_:didFailToOpenAppStoreWithError:)();
 }
 

@@ -1,31 +1,31 @@
 @interface PKBasicWebViewController
-- (PKBasicWebViewController)initWithURL:(id)a3;
+- (PKBasicWebViewController)initWithURL:(id)l;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
 @end
 
 @implementation PKBasicWebViewController
 
-- (PKBasicWebViewController)initWithURL:(id)a3
+- (PKBasicWebViewController)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = PKBasicWebViewController;
   v6 = [(PKBasicWebViewController *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_url, a3);
+    objc_storeStrong(&v6->_url, l);
     v8 = objc_alloc_init(MEMORY[0x1E69853A0]);
     webView = v7->_webView;
     v7->_webView = v8;
 
     [(WKWebView *)v7->_webView setNavigationDelegate:v7];
-    v10 = [(PKBasicWebViewController *)v7 view];
-    [v10 addSubview:v7->_webView];
+    view = [(PKBasicWebViewController *)v7 view];
+    [view addSubview:v7->_webView];
   }
 
   return v7;
@@ -36,7 +36,7 @@
   v21.receiver = self;
   v21.super_class = PKBasicWebViewController;
   [(PKBasicWebViewController *)&v21 viewDidLoad];
-  v3 = [(PKBasicWebViewController *)self navigationItem];
+  navigationItem = [(PKBasicWebViewController *)self navigationItem];
   objc_initWeak(&location, self);
   v4 = objc_alloc(MEMORY[0x1E69DC708]);
   v5 = MEMORY[0x1E69DC628];
@@ -50,21 +50,21 @@
   closeItem = self->_closeItem;
   self->_closeItem = v7;
 
-  [v3 setLeftBarButtonItem:self->_closeItem];
+  [navigationItem setLeftBarButtonItem:self->_closeItem];
   v9 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
   activityIndicator = self->_activityIndicator;
   self->_activityIndicator = v9;
 
   v11 = self->_activityIndicator;
-  v12 = [MEMORY[0x1E69DC888] systemGray3Color];
-  [(UIActivityIndicatorView *)v11 setColor:v12];
+  systemGray3Color = [MEMORY[0x1E69DC888] systemGray3Color];
+  [(UIActivityIndicatorView *)v11 setColor:systemGray3Color];
 
   [(UIActivityIndicatorView *)self->_activityIndicator setHidesWhenStopped:1];
   v13 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:self->_activityIndicator];
   activityIndicatorItem = self->_activityIndicatorItem;
   self->_activityIndicatorItem = v13;
 
-  [v3 setRightBarButtonItem:self->_activityIndicatorItem];
+  [navigationItem setRightBarButtonItem:self->_activityIndicatorItem];
   [(UIActivityIndicatorView *)self->_activityIndicator startAnimating];
   objc_destroyWeak(&v19);
   objc_destroyWeak(&location);
@@ -77,11 +77,11 @@ void __39__PKBasicWebViewController_viewDidLoad__block_invoke(uint64_t a1)
   [v1 dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = PKBasicWebViewController;
-  [(PKBasicWebViewController *)&v6 viewWillAppear:a3];
+  [(PKBasicWebViewController *)&v6 viewWillAppear:appear];
   v4 = [MEMORY[0x1E696AF68] requestWithURL:self->_url];
   v5 = [(WKWebView *)self->_webView loadRequest:v4];
 }
@@ -92,12 +92,12 @@ void __39__PKBasicWebViewController_viewDidLoad__block_invoke(uint64_t a1)
   v5.super_class = PKBasicWebViewController;
   [(PKBasicWebViewController *)&v5 viewWillLayoutSubviews];
   webView = self->_webView;
-  v4 = [(PKBasicWebViewController *)self view];
-  [v4 bounds];
+  view = [(PKBasicWebViewController *)self view];
+  [view bounds];
   [(WKWebView *)webView setFrame:?];
 }
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
   objc_initWeak(&location, self);
   v4[0] = MEMORY[0x1E69E9820];
@@ -124,11 +124,11 @@ void __56__PKBasicWebViewController_webView_didFinishNavigation___block_invoke(u
   }
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler
 {
-  v10 = a5;
-  v7 = [a4 request];
-  v8 = [v7 URL];
+  handlerCopy = handler;
+  request = [action request];
+  v8 = [request URL];
 
   if (v8)
   {
@@ -143,7 +143,7 @@ void __56__PKBasicWebViewController_webView_didFinishNavigation___block_invoke(u
 
   v9 = 0;
 LABEL_6:
-  v10[2](v10, v9);
+  handlerCopy[2](handlerCopy, v9);
 }
 
 @end

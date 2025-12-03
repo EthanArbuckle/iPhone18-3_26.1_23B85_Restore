@@ -1,15 +1,15 @@
 @interface PPReranker
 - (PPReranker)init;
-- (PPReranker)initWithNamedEntityStore:(id)a3;
-- (id)_lazyLoadEntityRankMapWithError:(id *)a3;
-- (id)forwardingTargetForSelector:(SEL)a3;
-- (id)rerankedMediaItems:(id)a3 error:(id *)a4;
-- (void)registerFeedback:(id)a3 completion:(id)a4;
+- (PPReranker)initWithNamedEntityStore:(id)store;
+- (id)_lazyLoadEntityRankMapWithError:(id *)error;
+- (id)forwardingTargetForSelector:(SEL)selector;
+- (id)rerankedMediaItems:(id)items error:(id *)error;
+- (void)registerFeedback:(id)feedback completion:(id)completion;
 @end
 
 @implementation PPReranker
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   clientFeedbackHelper = self->_clientFeedbackHelper;
   if (objc_opt_respondsToSelector())
@@ -25,35 +25,35 @@
   return v5;
 }
 
-- (void)registerFeedback:(id)a3 completion:(id)a4
+- (void)registerFeedback:(id)feedback completion:(id)completion
 {
   v11 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  feedbackCopy = feedback;
+  completionCopy = completion;
   v7 = pp_reranker_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v9 = 138739971;
-    v10 = v5;
+    v10 = feedbackCopy;
     _os_log_debug_impl(&dword_1A7FD3000, v7, OS_LOG_TYPE_DEBUG, "received feedback: %{sensitive}@", &v9, 0xCu);
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)rerankedMediaItems:(id)a3 error:(id *)a4
+- (id)rerankedMediaItems:(id)items error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!v7)
+  itemsCopy = items;
+  if (!itemsCopy)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"PPReranker.m" lineNumber:97 description:{@"Invalid parameter not satisfying: %@", @"mediaItems"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPReranker.m" lineNumber:97 description:{@"Invalid parameter not satisfying: %@", @"mediaItems"}];
   }
 
   v8 = pp_locations_signpost_handle();
@@ -76,7 +76,7 @@
     v15 = pp_reranker_log_handle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v7 count];
+      v16 = [itemsCopy count];
       v17 = [v12 count];
       *buf = 134218240;
       v31 = v16;
@@ -91,13 +91,13 @@
     v26[3] = &unk_1E77F6F78;
     v27 = v12;
     v28 = a2;
-    [v7 enumerateObjectsUsingBlock:v26];
+    [itemsCopy enumerateObjectsUsingBlock:v26];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __39__PPReranker_rerankedMediaItems_error___block_invoke_2;
     v25[3] = &__block_descriptor_40_e37_q24__0__INMediaItem_8__INMediaItem_16l;
     v25[4] = a2;
-    v18 = [v7 sortedArrayUsingComparator:v25];
+    v18 = [itemsCopy sortedArrayUsingComparator:v25];
     v19 = pp_locations_signpost_handle();
     v20 = v19;
     if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v19))
@@ -107,11 +107,11 @@
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v21 = v13;
     v18 = 0;
-    *a4 = v14;
+    *error = v14;
   }
 
   else
@@ -161,7 +161,7 @@ int64_t __39__PPReranker_rerankedMediaItems_error___block_invoke_2(uint64_t a1, 
   return v12;
 }
 
-- (id)_lazyLoadEntityRankMapWithError:(id *)a3
+- (id)_lazyLoadEntityRankMapWithError:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -184,9 +184,9 @@ int64_t __39__PPReranker_rerankedMediaItems_error___block_invoke_2(uint64_t a1, 
   v7[5] = &v14;
   v7[6] = &v8;
   [(_PASLock *)dataLock runWithLockAcquired:v7];
-  if (a3)
+  if (error)
   {
-    *a3 = v9[5];
+    *error = v9[5];
   }
 
   v5 = v15[5];
@@ -273,16 +273,16 @@ void __46__PPReranker__lazyLoadEntityRankMapWithError___block_invoke_14(uint64_t
   [v5 setObject:v9 forKeyedSubscript:v8];
 }
 
-- (PPReranker)initWithNamedEntityStore:(id)a3
+- (PPReranker)initWithNamedEntityStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v15.receiver = self;
   v15.super_class = PPReranker;
   v6 = [(PPReranker *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_namedEntityStore, a3);
+    objc_storeStrong(&v6->_namedEntityStore, store);
     v8 = [[PPClientFeedbackHelper alloc] initWithParentObject:v7];
     clientFeedbackHelper = v7->_clientFeedbackHelper;
     v7->_clientFeedbackHelper = v8;

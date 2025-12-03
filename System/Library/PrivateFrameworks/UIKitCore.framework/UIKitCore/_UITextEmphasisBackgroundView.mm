@@ -1,22 +1,22 @@
 @interface _UITextEmphasisBackgroundView
 - (CGPoint)origin;
-- (_UITextEmphasisBackgroundView)initWithTextView:(id)a3;
-- (void)drawRect:(CGRect)a3;
+- (_UITextEmphasisBackgroundView)initWithTextView:(id)view;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation _UITextEmphasisBackgroundView
 
-- (_UITextEmphasisBackgroundView)initWithTextView:(id)a3
+- (_UITextEmphasisBackgroundView)initWithTextView:(id)view
 {
-  v4 = a3;
-  [v4 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   v8.receiver = self;
   v8.super_class = _UITextEmphasisBackgroundView;
   v5 = [(UIView *)&v8 initWithFrame:?];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_textView, v4);
+    objc_storeWeak(&v5->_textView, viewCopy);
     [(UIView *)v6 setUserInteractionEnabled:0];
     [(UIView *)v6 setClipsToBounds:1];
     [(UIView *)v6 setAutoresizingMask:18];
@@ -26,7 +26,7 @@
   return v6;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   WeakRetained = objc_loadWeakRetained(&self->_textView);
   [WeakRetained drawTextHighlightBackgroundForTextRange:self->_textRange origin:{self->_origin.x, self->_origin.y}];

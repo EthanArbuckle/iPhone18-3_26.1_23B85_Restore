@@ -1,19 +1,19 @@
 @interface NavSpeedLimitView
 - (BOOL)isVisible;
 - (CGSize)intrinsicContentSize;
-- (NavSpeedLimitView)initWithFrame:(CGRect)a3;
+- (NavSpeedLimitView)initWithFrame:(CGRect)frame;
 - (id)_currentAccessibilityLabel;
 - (void)_drawSign;
-- (void)_setSpeedLimit:(unint64_t)a3 units:(unint64_t)a4 shieldType:(int64_t)a5 useNightMode:(BOOL)a6;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)_setSpeedLimit:(unint64_t)limit units:(unint64_t)units shieldType:(int64_t)type useNightMode:(BOOL)mode;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation NavSpeedLimitView
 
 - (BOOL)isVisible
 {
-  v2 = [(UIImageView *)self->_imageView image];
-  v3 = v2 != 0;
+  image = [(UIImageView *)self->_imageView image];
+  v3 = image != 0;
 
   return v3;
 }
@@ -92,8 +92,8 @@
       [v10 setVariant:{objc_msgSend(v15, "darkVariant")}];
     }
 
-    v16 = [(NavSpeedLimitView *)self traitCollection];
-    [v16 displayScale];
+    traitCollection = [(NavSpeedLimitView *)self traitCollection];
+    [traitCollection displayScale];
     v18 = v17;
 
     v19 = +[VKIconManager sharedManager];
@@ -116,9 +116,9 @@
     [(UIImageView *)*p_imageView intrinsicContentSize];
     p_intrinsicContentSize->width = v27;
     p_intrinsicContentSize->height = v28;
-    v29 = [(UIImageView *)*p_imageView image];
+    image = [(UIImageView *)*p_imageView image];
 
-    if (!v29)
+    if (!image)
     {
       v30 = sub_100090D58();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -147,8 +147,8 @@
     *p_intrinsicContentSize = CGSizeZero;
   }
 
-  v31 = [(NavSpeedLimitView *)self _currentAccessibilityLabel];
-  [(NavSpeedLimitView *)self setAccessibilityLabel:v31];
+  _currentAccessibilityLabel = [(NavSpeedLimitView *)self _currentAccessibilityLabel];
+  [(NavSpeedLimitView *)self setAccessibilityLabel:_currentAccessibilityLabel];
 
   if (width != p_intrinsicContentSize->width || height != p_intrinsicContentSize->height)
   {
@@ -157,10 +157,10 @@
   }
 }
 
-- (void)_setSpeedLimit:(unint64_t)a3 units:(unint64_t)a4 shieldType:(int64_t)a5 useNightMode:(BOOL)a6
+- (void)_setSpeedLimit:(unint64_t)limit units:(unint64_t)units shieldType:(int64_t)type useNightMode:(BOOL)mode
 {
-  v6 = a6;
-  if (*&self->_speedLimit != __PAIR128__(a4, a3) || self->_shieldType != a5 || self->_useNightMode != a6)
+  modeCopy = mode;
+  if (*&self->_speedLimit != __PAIR128__(units, limit) || self->_shieldType != type || self->_useNightMode != mode)
   {
     v11 = sub_100090D58();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -172,40 +172,40 @@
       v16 = 134219776;
       v17 = speedLimit;
       v18 = 2048;
-      v19 = a3;
+      limitCopy = limit;
       v20 = 2048;
-      v21 = units;
+      unitsCopy = units;
       v22 = 2048;
-      v23 = a4;
+      unitsCopy2 = units;
       v24 = 2048;
       v25 = shieldType;
       v26 = 2048;
-      v27 = a5;
+      typeCopy = type;
       v28 = 1024;
       v29 = useNightMode;
       v30 = 1024;
-      v31 = v6;
+      v31 = modeCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Changing speedLimit from %lu to %lu, units from %lu to %lu, shieldType from %lld to %lld, useNightMode from %d to %d", &v16, 0x4Au);
     }
 
-    self->_speedLimit = a3;
-    self->_units = a4;
-    self->_shieldType = a5;
-    self->_useNightMode = v6;
+    self->_speedLimit = limit;
+    self->_units = units;
+    self->_shieldType = type;
+    self->_useNightMode = modeCopy;
     [(NavSpeedLimitView *)self _drawSign];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = NavSpeedLimitView;
-  [(NavSpeedLimitView *)&v8 traitCollectionDidChange:a3];
+  [(NavSpeedLimitView *)&v8 traitCollectionDidChange:change];
   speedLimit = self->_speedLimit;
   units = self->_units;
   shieldType = self->_shieldType;
-  v7 = [(NavSpeedLimitView *)self traitCollection];
-  -[NavSpeedLimitView _setSpeedLimit:units:shieldType:useNightMode:](self, "_setSpeedLimit:units:shieldType:useNightMode:", speedLimit, units, shieldType, [v7 userInterfaceStyle] == 2);
+  traitCollection = [(NavSpeedLimitView *)self traitCollection];
+  -[NavSpeedLimitView _setSpeedLimit:units:shieldType:useNightMode:](self, "_setSpeedLimit:units:shieldType:useNightMode:", speedLimit, units, shieldType, [traitCollection userInterfaceStyle] == 2);
 }
 
 - (CGSize)intrinsicContentSize
@@ -217,11 +217,11 @@
   return result;
 }
 
-- (NavSpeedLimitView)initWithFrame:(CGRect)a3
+- (NavSpeedLimitView)initWithFrame:(CGRect)frame
 {
   v23.receiver = self;
   v23.super_class = NavSpeedLimitView;
-  v3 = [(NavSpeedLimitView *)&v23 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NavSpeedLimitView *)&v23 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_class();
@@ -237,24 +237,24 @@
     [(UIImageView *)v3->_imageView setContentMode:4];
     [(UIImageView *)v3->_imageView setIsAccessibilityElement:0];
     [(NavSpeedLimitView *)v3 addSubview:v3->_imageView];
-    v8 = [(NavSpeedLimitView *)v3 traitCollection];
-    v3->_useNightMode = [v8 userInterfaceStyle] == 2;
+    traitCollection = [(NavSpeedLimitView *)v3 traitCollection];
+    v3->_useNightMode = [traitCollection userInterfaceStyle] == 2;
 
-    v22 = [(UIImageView *)v3->_imageView leadingAnchor];
-    v21 = [(NavSpeedLimitView *)v3 leadingAnchor];
-    v20 = [v22 constraintEqualToAnchor:v21];
+    leadingAnchor = [(UIImageView *)v3->_imageView leadingAnchor];
+    leadingAnchor2 = [(NavSpeedLimitView *)v3 leadingAnchor];
+    v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v24[0] = v20;
-    v19 = [(UIImageView *)v3->_imageView trailingAnchor];
-    v9 = [(NavSpeedLimitView *)v3 trailingAnchor];
-    v10 = [v19 constraintEqualToAnchor:v9];
+    trailingAnchor = [(UIImageView *)v3->_imageView trailingAnchor];
+    trailingAnchor2 = [(NavSpeedLimitView *)v3 trailingAnchor];
+    v10 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v24[1] = v10;
-    v11 = [(UIImageView *)v3->_imageView topAnchor];
-    v12 = [(NavSpeedLimitView *)v3 topAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    topAnchor = [(UIImageView *)v3->_imageView topAnchor];
+    topAnchor2 = [(NavSpeedLimitView *)v3 topAnchor];
+    v13 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v24[2] = v13;
-    v14 = [(UIImageView *)v3->_imageView bottomAnchor];
-    v15 = [(NavSpeedLimitView *)v3 bottomAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    bottomAnchor = [(UIImageView *)v3->_imageView bottomAnchor];
+    bottomAnchor2 = [(NavSpeedLimitView *)v3 bottomAnchor];
+    v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v24[3] = v16;
     v17 = [NSArray arrayWithObjects:v24 count:4];
     [NSLayoutConstraint activateConstraints:v17];

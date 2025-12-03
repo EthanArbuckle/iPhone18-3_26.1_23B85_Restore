@@ -1,25 +1,25 @@
 @interface ISBasePlayer
-- (BOOL)behavior:(id)a3 prerollVideoAtRate:(float)a4 completionHandler:(id)a5;
-- (BOOL)behavior:(id)a3 seekVideoPlayerToTime:(id *)a4 completionHandler:(id)a5;
-- (BOOL)behavior:(id)a3 seekVideoPlayerToTime:(id *)a4 toleranceBefore:(id *)a5 toleranceAfter:(id *)a6 completionHandler:(id)a7;
+- (BOOL)behavior:(id)behavior prerollVideoAtRate:(float)rate completionHandler:(id)handler;
+- (BOOL)behavior:(id)behavior seekVideoPlayerToTime:(id *)time completionHandler:(id)handler;
+- (BOOL)behavior:(id)behavior seekVideoPlayerToTime:(id *)time toleranceBefore:(id *)before toleranceAfter:(id *)after completionHandler:(id)handler;
 - (BOOL)videoLayersReadyForDisplay;
-- (ISBasePlayer)initWithVideoPlayer:(id)a3;
+- (ISBasePlayer)initWithVideoPlayer:(id)player;
 - (ISBasePlayerDelegate)delegate;
 - (float)videoPlayRate;
 - (id)_newWrappedPlayer;
-- (id)behavior:(id)a3 addBoundaryTimeObserverForTimes:(id)a4 queue:(id)a5 usingBlock:(id)a6;
-- (void)_configureNewOutput:(id)a3;
+- (id)behavior:(id)behavior addBoundaryTimeObserverForTimes:(id)times queue:(id)queue usingBlock:(id)block;
+- (void)_configureNewOutput:(id)output;
 - (void)_finishResettingAVObjects;
 - (void)_handleErrorsIfNeeded;
 - (void)_mainQueue_handleMediaServicesReset;
-- (void)_mainQueue_resetAVObjectsWithResetCount:(int64_t)a3;
-- (void)_outputVideoReadyForDisplayDidChange:(id)a3;
-- (void)_setError:(id)a3;
-- (void)_setForwardPlaybackEndTime:(id *)a3;
-- (void)_setOutputContent:(id)a3;
-- (void)_setStatus:(int64_t)a3;
-- (void)_setVideoForwardPlaybackEndTime:(id *)a3;
-- (void)_setVideoPlayer:(id)a3;
+- (void)_mainQueue_resetAVObjectsWithResetCount:(int64_t)count;
+- (void)_outputVideoReadyForDisplayDidChange:(id)change;
+- (void)_setError:(id)error;
+- (void)_setForwardPlaybackEndTime:(id *)time;
+- (void)_setOutputContent:(id)content;
+- (void)_setStatus:(int64_t)status;
+- (void)_setVideoForwardPlaybackEndTime:(id *)time;
+- (void)_setVideoPlayer:(id)player;
 - (void)_updateContentFromPlayerItemIfNeeded;
 - (void)_updateIfNeeded;
 - (void)_updateStatusIfNeeded;
@@ -30,38 +30,38 @@
 - (void)_videoDidPlayToEnd;
 - (void)_videoWillPlayToEnd;
 - (void)_videoWillPlayToPhoto;
-- (void)addOutput:(id)a3;
-- (void)applyOutputInfo:(id)a3 fromBehavior:(id)a4 withTransitionOptions:(id)a5 completion:(id)a6;
-- (void)applyScale:(double)a3 withTransitionOptions:(id)a4 completion:(id)a5;
-- (void)behavior:(id)a3 didSetOutputInfo:(id)a4 withTransitionOptions:(id)a5 completion:(id)a6;
-- (void)behavior:(id)a3 playVideoToTime:(id *)a4 initialRate:(float)a5 overDuration:(double)a6 progressHandler:(id)a7;
-- (void)behavior:(id)a3 removeTimeObserver:(id)a4;
-- (void)behavior:(id)a3 setVideoForwardPlaybackEndTime:(id *)a4;
-- (void)behavior:(id)a3 setVideoPlayRate:(float)a4;
-- (void)behavior:(id)a3 setVideoVolume:(float)a4;
+- (void)addOutput:(id)output;
+- (void)applyOutputInfo:(id)info fromBehavior:(id)behavior withTransitionOptions:(id)options completion:(id)completion;
+- (void)applyScale:(double)scale withTransitionOptions:(id)options completion:(id)completion;
+- (void)behavior:(id)behavior didSetOutputInfo:(id)info withTransitionOptions:(id)options completion:(id)completion;
+- (void)behavior:(id)behavior playVideoToTime:(id *)time initialRate:(float)rate overDuration:(double)duration progressHandler:(id)handler;
+- (void)behavior:(id)behavior removeTimeObserver:(id)observer;
+- (void)behavior:(id)behavior setVideoForwardPlaybackEndTime:(id *)time;
+- (void)behavior:(id)behavior setVideoPlayRate:(float)rate;
+- (void)behavior:(id)behavior setVideoVolume:(float)volume;
 - (void)dealloc;
 - (void)didPerformChanges;
-- (void)enumerateOutputsWithBlock:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)enumerateOutputsWithBlock:(id)block;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)playerItemDidChange;
-- (void)removeOutput:(id)a3;
-- (void)resourceReclamationEventDidOccur:(id)a3;
-- (void)setActiveBehavior:(id)a3;
-- (void)setApertureMode:(id)a3;
-- (void)setAudioEnabled:(BOOL)a3;
-- (void)setAudioVolume:(float)a3;
-- (void)setDelegate:(id)a3;
-- (void)setPlayerItem:(id)a3;
-- (void)setVideoVolume:(float)a3;
+- (void)removeOutput:(id)output;
+- (void)resourceReclamationEventDidOccur:(id)occur;
+- (void)setActiveBehavior:(id)behavior;
+- (void)setApertureMode:(id)mode;
+- (void)setAudioEnabled:(BOOL)enabled;
+- (void)setAudioVolume:(float)volume;
+- (void)setDelegate:(id)delegate;
+- (void)setPlayerItem:(id)item;
+- (void)setVideoVolume:(float)volume;
 - (void)statusDidChange;
 @end
 
 @implementation ISBasePlayer
 
-- (void)_setVideoForwardPlaybackEndTime:(id *)a3
+- (void)_setVideoForwardPlaybackEndTime:(id *)time
 {
-  var3 = a3->var3;
-  *&self->value = *&a3->var0;
+  var3 = time->var3;
+  *&self->value = *&time->var0;
   self->epoch = var3;
 }
 
@@ -72,7 +72,7 @@
   return WeakRetained;
 }
 
-- (void)resourceReclamationEventDidOccur:(id)a3
+- (void)resourceReclamationEventDidOccur:(id)occur
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -82,15 +82,15 @@
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __45__ISBasePlayer_observable_didChange_context___block_invoke;
   v5[3] = &unk_279A29A18;
   v5[4] = self;
-  v5[5] = a5;
-  v5[6] = a4;
+  v5[5] = context;
+  v5[6] = change;
   is_dispatch_on_main_queue(v5);
 }
 
@@ -146,127 +146,127 @@ LABEL_11:
   }
 }
 
-- (void)behavior:(id)a3 playVideoToTime:(id *)a4 initialRate:(float)a5 overDuration:(double)a6 progressHandler:(id)a7
+- (void)behavior:(id)behavior playVideoToTime:(id *)time initialRate:(float)rate overDuration:(double)duration progressHandler:(id)handler
 {
-  v12 = a7;
-  v13 = a3;
-  v14 = [(ISBasePlayer *)self activeBehavior];
+  handlerCopy = handler;
+  behaviorCopy = behavior;
+  activeBehavior = [(ISBasePlayer *)self activeBehavior];
 
-  if (v14 == v13)
+  if (activeBehavior == behaviorCopy)
   {
-    v15 = [(ISBasePlayer *)self videoPlayer];
-    v16 = *&a4->var0;
-    var3 = a4->var3;
-    [v15 playToTime:&v16 withInitialRate:v12 overDuration:COERCE_DOUBLE(__PAIR64__(DWORD1(v16) progressHandler:{LODWORD(a5))), a6}];
+    videoPlayer = [(ISBasePlayer *)self videoPlayer];
+    v16 = *&time->var0;
+    var3 = time->var3;
+    [videoPlayer playToTime:&v16 withInitialRate:handlerCopy overDuration:COERCE_DOUBLE(__PAIR64__(DWORD1(v16) progressHandler:{LODWORD(rate))), duration}];
   }
 }
 
-- (void)behavior:(id)a3 removeTimeObserver:(id)a4
+- (void)behavior:(id)behavior removeTimeObserver:(id)observer
 {
-  v5 = a4;
-  v6 = [(ISBasePlayer *)self videoPlayer];
-  [v6 removeTimeObserver:v5];
+  observerCopy = observer;
+  videoPlayer = [(ISBasePlayer *)self videoPlayer];
+  [videoPlayer removeTimeObserver:observerCopy];
 }
 
-- (id)behavior:(id)a3 addBoundaryTimeObserverForTimes:(id)a4 queue:(id)a5 usingBlock:(id)a6
+- (id)behavior:(id)behavior addBoundaryTimeObserverForTimes:(id)times queue:(id)queue usingBlock:(id)block
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = [(ISBasePlayer *)self videoPlayer];
-  v13 = [v12 addBoundaryTimeObserverForTimes:v11 queue:v10 usingBlock:v9];
+  blockCopy = block;
+  queueCopy = queue;
+  timesCopy = times;
+  videoPlayer = [(ISBasePlayer *)self videoPlayer];
+  v13 = [videoPlayer addBoundaryTimeObserverForTimes:timesCopy queue:queueCopy usingBlock:blockCopy];
 
   return v13;
 }
 
-- (void)behavior:(id)a3 setVideoVolume:(float)a4
+- (void)behavior:(id)behavior setVideoVolume:(float)volume
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(ISBasePlayer *)self activeBehavior];
+  behaviorCopy = behavior;
+  activeBehavior = [(ISBasePlayer *)self activeBehavior];
 
-  if (v7 == v6)
+  if (activeBehavior == behaviorCopy)
   {
     v8 = ISGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       v11 = 138412802;
-      v12 = self;
+      selfCopy = self;
       v13 = 2112;
-      v14 = v6;
+      v14 = behaviorCopy;
       v15 = 2048;
-      v16 = a4;
+      volumeCopy = volume;
       _os_log_debug_impl(&dword_25E667000, v8, OS_LOG_TYPE_DEBUG, "%@: will set video volume: %@ - %f", &v11, 0x20u);
     }
 
-    *&v9 = a4;
+    *&v9 = volume;
     [(ISBasePlayer *)self setVideoVolume:v9];
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)behavior:(id)a3 setVideoForwardPlaybackEndTime:(id *)a4
+- (void)behavior:(id)behavior setVideoForwardPlaybackEndTime:(id *)time
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(ISBasePlayer *)self activeBehavior];
+  behaviorCopy = behavior;
+  activeBehavior = [(ISBasePlayer *)self activeBehavior];
 
-  if (v7 == v6)
+  if (activeBehavior == behaviorCopy)
   {
     v8 = ISGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v11 = *a4;
+      v11 = *time;
       Seconds = CMTimeGetSeconds(&v11);
       LODWORD(v11.var0) = 138412802;
       *(&v11.var0 + 4) = self;
       LOWORD(v11.var2) = 2112;
-      *(&v11.var2 + 2) = v6;
+      *(&v11.var2 + 2) = behaviorCopy;
       HIWORD(v11.var3) = 2048;
       v12 = Seconds;
       _os_log_debug_impl(&dword_25E667000, v8, OS_LOG_TYPE_DEBUG, "%@: will set video end time: %@ - %f", &v11, 0x20u);
     }
 
-    v11 = *a4;
+    v11 = *time;
     [(ISBasePlayer *)self _setForwardPlaybackEndTime:&v11];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)behavior:(id)a3 prerollVideoAtRate:(float)a4 completionHandler:(id)a5
+- (BOOL)behavior:(id)behavior prerollVideoAtRate:(float)rate completionHandler:(id)handler
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(ISBasePlayer *)self activeBehavior];
+  behaviorCopy = behavior;
+  handlerCopy = handler;
+  activeBehavior = [(ISBasePlayer *)self activeBehavior];
 
-  if (v10 == v8)
+  if (activeBehavior == behaviorCopy)
   {
     v12 = ISGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412802;
-      v21 = self;
+      selfCopy = self;
       v22 = 2112;
-      v23 = v8;
+      v23 = behaviorCopy;
       v24 = 2048;
-      v25 = a4;
+      rateCopy = rate;
       _os_log_debug_impl(&dword_25E667000, v12, OS_LOG_TYPE_DEBUG, "%@: will set video preroll rate: %@ - %f", buf, 0x20u);
     }
 
-    v13 = [(ISBasePlayer *)self videoPlayer];
-    v14 = [v13 currentItem];
-    v11 = v14 != 0;
+    videoPlayer = [(ISBasePlayer *)self videoPlayer];
+    currentItem = [videoPlayer currentItem];
+    v11 = currentItem != 0;
 
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __62__ISBasePlayer_behavior_prerollVideoAtRate_completionHandler___block_invoke;
     v18[3] = &unk_279A2A640;
-    v19 = v9;
-    *&v15 = a4;
-    [v13 prerollAtRate:v18 completionHandler:v15];
+    v19 = handlerCopy;
+    *&v15 = rate;
+    [videoPlayer prerollAtRate:v18 completionHandler:v15];
   }
 
   else
@@ -278,50 +278,50 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)behavior:(id)a3 seekVideoPlayerToTime:(id *)a4 toleranceBefore:(id *)a5 toleranceAfter:(id *)a6 completionHandler:(id)a7
+- (BOOL)behavior:(id)behavior seekVideoPlayerToTime:(id *)time toleranceBefore:(id *)before toleranceAfter:(id *)after completionHandler:(id)handler
 {
   v36 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a7;
-  v14 = [(ISBasePlayer *)self activeBehavior];
+  behaviorCopy = behavior;
+  handlerCopy = handler;
+  activeBehavior = [(ISBasePlayer *)self activeBehavior];
 
-  if (v14 == v12)
+  if (activeBehavior == behaviorCopy)
   {
-    v16 = [(ISBasePlayer *)self videoPlayer];
-    v17 = [v16 currentItem];
-    v18 = v17;
-    if (v17 && [v17 status] == 1)
+    videoPlayer = [(ISBasePlayer *)self videoPlayer];
+    currentItem = [videoPlayer currentItem];
+    v18 = currentItem;
+    if (currentItem && [currentItem status] == 1)
     {
       v19 = ISGetLog();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
       {
-        time = *a4;
+        time = *time;
         Seconds = CMTimeGetSeconds(&time);
         LODWORD(time.value) = 138412802;
         *(&time.value + 4) = self;
         LOWORD(time.flags) = 2112;
-        *(&time.flags + 2) = v12;
+        *(&time.flags + 2) = behaviorCopy;
         HIWORD(time.epoch) = 2048;
         v35 = Seconds;
         _os_log_debug_impl(&dword_25E667000, v19, OS_LOG_TYPE_DEBUG, "%@: will seek video to time: %@ - %f", &time, 0x20u);
       }
 
-      [v16 setRate:0.0];
+      [videoPlayer setRate:0.0];
       v29[0] = MEMORY[0x277D85DD0];
       v29[1] = 3221225472;
       v29[2] = __96__ISBasePlayer_behavior_seekVideoPlayerToTime_toleranceBefore_toleranceAfter_completionHandler___block_invoke;
       v29[3] = &unk_279A299F0;
       v29[4] = self;
-      v30 = v12;
-      v32 = *&a4->var0;
-      var3 = a4->var3;
-      v31 = v13;
-      time = *a4;
-      v27 = *&a5->var0;
-      v28 = a5->var3;
-      v25 = *&a6->var0;
-      v26 = a6->var3;
-      [v16 seekToTime:&time toleranceBefore:&v27 toleranceAfter:&v25 completionHandler:v29];
+      v30 = behaviorCopy;
+      v32 = *&time->var0;
+      var3 = time->var3;
+      v31 = handlerCopy;
+      time = *time;
+      v27 = *&before->var0;
+      v28 = before->var3;
+      v25 = *&after->var0;
+      v26 = after->var3;
+      [videoPlayer seekToTime:&time toleranceBefore:&v27 toleranceAfter:&v25 completionHandler:v29];
 
       v15 = 1;
     }
@@ -331,12 +331,12 @@ LABEL_11:
       v20 = ISGetLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
       {
-        time = *a4;
+        time = *time;
         v23 = CMTimeGetSeconds(&time);
         LODWORD(time.value) = 138412802;
         *(&time.value + 4) = self;
         LOWORD(time.flags) = 2112;
-        *(&time.flags + 2) = v12;
+        *(&time.flags + 2) = behaviorCopy;
         HIWORD(time.epoch) = 2048;
         v35 = v23;
         _os_log_debug_impl(&dword_25E667000, v20, OS_LOG_TYPE_DEBUG, "%@: unable to seek video to time: %@ - %f", &time, 0x20u);
@@ -379,24 +379,24 @@ uint64_t __96__ISBasePlayer_behavior_seekVideoPlayerToTime_toleranceBefore_toler
   return result;
 }
 
-- (BOOL)behavior:(id)a3 seekVideoPlayerToTime:(id *)a4 completionHandler:(id)a5
+- (BOOL)behavior:(id)behavior seekVideoPlayerToTime:(id *)time completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(ISBasePlayer *)self videoPlayer];
-  v11 = [v10 currentItem];
+  behaviorCopy = behavior;
+  handlerCopy = handler;
+  videoPlayer = [(ISBasePlayer *)self videoPlayer];
+  currentItem = [videoPlayer currentItem];
   memset(&v20, 0, sizeof(v20));
   CMTimeMake(&v20, 20, 600);
-  v12 = [v11 videoComposition];
+  videoComposition = [currentItem videoComposition];
 
-  if (v12)
+  if (videoComposition)
   {
     memset(&v19, 0, sizeof(v19));
-    v13 = [v11 videoComposition];
-    v14 = v13;
-    if (v13)
+    videoComposition2 = [currentItem videoComposition];
+    v14 = videoComposition2;
+    if (videoComposition2)
     {
-      [v13 frameDuration];
+      [videoComposition2 frameDuration];
     }
 
     else
@@ -415,63 +415,63 @@ uint64_t __96__ISBasePlayer_behavior_seekVideoPlayerToTime_toleranceBefore_toler
     }
   }
 
-  v19 = *a4;
+  v19 = *time;
   time1 = v20;
   v17 = v20;
-  v15 = [(ISBasePlayer *)self behavior:v8 seekVideoPlayerToTime:&v19 toleranceBefore:&time1 toleranceAfter:&v17 completionHandler:v9];
+  v15 = [(ISBasePlayer *)self behavior:behaviorCopy seekVideoPlayerToTime:&v19 toleranceBefore:&time1 toleranceAfter:&v17 completionHandler:handlerCopy];
 
   return v15;
 }
 
 - (float)videoPlayRate
 {
-  v2 = [(ISBasePlayer *)self videoPlayer];
-  [v2 rate];
+  videoPlayer = [(ISBasePlayer *)self videoPlayer];
+  [videoPlayer rate];
   v4 = v3;
 
   return v4;
 }
 
-- (void)behavior:(id)a3 setVideoPlayRate:(float)a4
+- (void)behavior:(id)behavior setVideoPlayRate:(float)rate
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(ISBasePlayer *)self activeBehavior];
+  behaviorCopy = behavior;
+  activeBehavior = [(ISBasePlayer *)self activeBehavior];
 
-  if (v7 == v6)
+  if (activeBehavior == behaviorCopy)
   {
     v8 = ISGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       v12 = 138412802;
-      v13 = self;
+      selfCopy = self;
       v14 = 2112;
-      v15 = v6;
+      v15 = behaviorCopy;
       v16 = 2048;
-      v17 = a4;
+      rateCopy = rate;
       _os_log_debug_impl(&dword_25E667000, v8, OS_LOG_TYPE_DEBUG, "%@: will set video rate: %@ - %f", &v12, 0x20u);
     }
 
-    v9 = [(ISBasePlayer *)self videoPlayer];
-    *&v10 = a4;
-    [v9 setRate:v10];
+    videoPlayer = [(ISBasePlayer *)self videoPlayer];
+    *&v10 = rate;
+    [videoPlayer setRate:v10];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)behavior:(id)a3 didSetOutputInfo:(id)a4 withTransitionOptions:(id)a5 completion:(id)a6
+- (void)behavior:(id)behavior didSetOutputInfo:(id)info withTransitionOptions:(id)options completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(ISBasePlayer *)self activeBehavior];
+  behaviorCopy = behavior;
+  infoCopy = info;
+  optionsCopy = options;
+  completionCopy = completion;
+  activeBehavior = [(ISBasePlayer *)self activeBehavior];
 
-  if (v14 == v10)
+  if (activeBehavior == behaviorCopy)
   {
-    [(ISBasePlayer *)self applyOutputInfo:v11 fromBehavior:v10 withTransitionOptions:v12 completion:v13];
+    [(ISBasePlayer *)self applyOutputInfo:infoCopy fromBehavior:behaviorCopy withTransitionOptions:optionsCopy completion:completionCopy];
   }
 
   else
@@ -480,7 +480,7 @@ uint64_t __96__ISBasePlayer_behavior_seekVideoPlayerToTime_toleranceBefore_toler
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
       v17 = 138412290;
-      v18 = v10;
+      v18 = behaviorCopy;
       _os_log_debug_impl(&dword_25E667000, v15, OS_LOG_TYPE_DEBUG, "Ignoring output from behavior that is not active: %@", &v17, 0xCu);
     }
   }
@@ -488,18 +488,18 @@ uint64_t __96__ISBasePlayer_behavior_seekVideoPlayerToTime_toleranceBefore_toler
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setVideoPlayer:(id)a3
+- (void)_setVideoPlayer:(id)player
 {
-  v5 = a3;
+  playerCopy = player;
   videoPlayer = self->_videoPlayer;
-  if (videoPlayer != v5)
+  if (videoPlayer != playerCopy)
   {
-    v12 = v5;
+    v12 = playerCopy;
     if (videoPlayer)
     {
-      v7 = [(ISWrappedAVPlayer *)videoPlayer delegate];
+      delegate = [(ISWrappedAVPlayer *)videoPlayer delegate];
 
-      if (v7 == self)
+      if (delegate == self)
       {
         [(ISWrappedAVPlayer *)self->_videoPlayer setDelegate:0];
       }
@@ -511,15 +511,15 @@ uint64_t __96__ISBasePlayer_behavior_seekVideoPlayerToTime_toleranceBefore_toler
 
       if (self->_delegateRespondsTo.playerWillRelinquishVideoPlayer)
       {
-        v10 = [(ISBasePlayer *)self delegate];
-        [v10 playerWillRelinquishVideoPlayer:self->_videoPlayer];
+        delegate2 = [(ISBasePlayer *)self delegate];
+        [delegate2 playerWillRelinquishVideoPlayer:self->_videoPlayer];
       }
 
       v11 = self->_videoPlayer;
       self->_videoPlayer = 0;
     }
 
-    objc_storeStrong(&self->_videoPlayer, a3);
+    objc_storeStrong(&self->_videoPlayer, player);
     [(ISWrappedAVPlayer *)self->_videoPlayer setDelegate:self];
     [(ISWrappedAVPlayer *)self->_videoPlayer registerChangeObserver:self context:ISWrappedAVPlayerObservableContext];
     [(ISBasePlayer *)self _invalidateContentFromPlayerItem];
@@ -527,20 +527,20 @@ uint64_t __96__ISBasePlayer_behavior_seekVideoPlayerToTime_toleranceBefore_toler
     [(ISBasePlayer *)self _invalidateWillPlayToEndObserver];
     [(ISBasePlayer *)self _invalidateWillPlayToPhotoObserver];
     videoPlayer = [(ISObservable *)self signalChange:4];
-    v5 = v12;
+    playerCopy = v12;
   }
 
-  MEMORY[0x2821F96F8](videoPlayer, v5);
+  MEMORY[0x2821F96F8](videoPlayer, playerCopy);
 }
 
 - (id)_newWrappedPlayer
 {
   if (self->_delegateRespondsTo.videoPlayerForPlayer)
   {
-    v3 = [(ISBasePlayer *)self delegate];
-    v4 = [v3 videoPlayerForPlayer:self];
+    delegate = [(ISBasePlayer *)self delegate];
+    delegate2 = [delegate videoPlayerForPlayer:self];
 
-    v5 = [[ISWrappedAVPlayer alloc] _initWithAVPlayer:v4];
+    v5 = [[ISWrappedAVPlayer alloc] _initWithAVPlayer:delegate2];
   }
 
   else
@@ -550,8 +550,8 @@ uint64_t __96__ISBasePlayer_behavior_seekVideoPlayerToTime_toleranceBefore_toler
       goto LABEL_7;
     }
 
-    v4 = [(ISBasePlayer *)self delegate];
-    v5 = [v4 wrappedVideoPlayerForPlayer:self];
+    delegate2 = [(ISBasePlayer *)self delegate];
+    v5 = [delegate2 wrappedVideoPlayerForPlayer:self];
   }
 
   v6 = v5;
@@ -568,14 +568,14 @@ LABEL_7:
 
 - (void)_finishResettingAVObjects
 {
-  v3 = [(ISBasePlayer *)self _newWrappedPlayer];
+  _newWrappedPlayer = [(ISBasePlayer *)self _newWrappedPlayer];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __41__ISBasePlayer__finishResettingAVObjects__block_invoke;
   v5[3] = &unk_279A2A398;
   v5[4] = self;
-  v6 = v3;
-  v4 = v3;
+  v6 = _newWrappedPlayer;
+  v4 = _newWrappedPlayer;
   [(ISObservable *)self performChanges:v5];
 }
 
@@ -586,18 +586,18 @@ void __41__ISBasePlayer__finishResettingAVObjects__block_invoke(uint64_t a1)
   [v2 resetAVObjects];
 }
 
-- (void)_mainQueue_resetAVObjectsWithResetCount:(int64_t)a3
+- (void)_mainQueue_resetAVObjectsWithResetCount:(int64_t)count
 {
-  if (self->_mainQueue_mediaServicesResetCounter == a3)
+  if (self->_mainQueue_mediaServicesResetCounter == count)
   {
     objc_initWeak(&location, self);
-    v4 = [(ISBasePlayer *)self videoPlayer];
+    videoPlayer = [(ISBasePlayer *)self videoPlayer];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __56__ISBasePlayer__mainQueue_resetAVObjectsWithResetCount___block_invoke;
     v5[3] = &unk_279A2A3C0;
     objc_copyWeak(&v6, &location);
-    [v4 replaceCurrentItemWithPlayerItem:0 thenCall:v5];
+    [videoPlayer replaceCurrentItemWithPlayerItem:0 thenCall:v5];
 
     objc_destroyWeak(&v6);
     objc_destroyWeak(&location);
@@ -644,18 +644,18 @@ void __51__ISBasePlayer__mainQueue_handleMediaServicesReset__block_invoke(uint64
   [WeakRetained _mainQueue_resetAVObjectsWithResetCount:*(a1 + 40)];
 }
 
-- (void)_setError:(id)a3
+- (void)_setError:(id)error
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_error != v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (self->_error != errorCopy)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __26__ISBasePlayer__setError___block_invoke;
     v6[3] = &unk_279A2A398;
     v6[4] = self;
-    v7 = v4;
+    v7 = errorCopy;
     [(ISObservable *)self performChanges:v6];
   }
 }
@@ -670,22 +670,22 @@ uint64_t __26__ISBasePlayer__setError___block_invoke(uint64_t a1)
 
 - (void)_handleErrorsIfNeeded
 {
-  v3 = [(ISBasePlayer *)self playerItem];
-  v6 = [v3 error];
+  playerItem = [(ISBasePlayer *)self playerItem];
+  error = [playerItem error];
 
-  if (!v6)
+  if (!error)
   {
-    v4 = [(ISBasePlayer *)self videoPlayer];
-    v6 = [v4 error];
+    videoPlayer = [(ISBasePlayer *)self videoPlayer];
+    error = [videoPlayer error];
 
-    if (!v6)
+    if (!error)
     {
-      v5 = [(ISBasePlayer *)self videoPlayer];
-      v6 = [v5 currentItemError];
+      videoPlayer2 = [(ISBasePlayer *)self videoPlayer];
+      error = [videoPlayer2 currentItemError];
     }
   }
 
-  [(ISBasePlayer *)self _setError:v6];
+  [(ISBasePlayer *)self _setError:error];
 }
 
 - (void)_updateVideoPlayerIfNeeded
@@ -693,14 +693,14 @@ uint64_t __26__ISBasePlayer__setError___block_invoke(uint64_t a1)
   if (!self->_isValid.videoPlayer)
   {
     self->_isValid.videoPlayer = 1;
-    v3 = [(ISBasePlayer *)self playerItem];
+    playerItem = [(ISBasePlayer *)self playerItem];
 
-    if (v3)
+    if (playerItem)
     {
       if (!self->_videoPlayer)
       {
-        v4 = [(ISBasePlayer *)self _newWrappedPlayer];
-        [(ISBasePlayer *)self _setVideoPlayer:v4];
+        _newWrappedPlayer = [(ISBasePlayer *)self _newWrappedPlayer];
+        [(ISBasePlayer *)self _setVideoPlayer:_newWrappedPlayer];
       }
     }
 
@@ -717,7 +717,7 @@ uint64_t __26__ISBasePlayer__setError___block_invoke(uint64_t a1)
   if (!self->_isValid.videoPlayerVolume)
   {
     self->_isValid.videoPlayerVolume = 1;
-    v8 = [(ISBasePlayer *)self videoPlayer];
+    videoPlayer = [(ISBasePlayer *)self videoPlayer];
     v5 = 0.0;
     if ([(ISBasePlayer *)self isAudioEnabled])
     {
@@ -728,8 +728,8 @@ uint64_t __26__ISBasePlayer__setError___block_invoke(uint64_t a1)
     }
 
     *&v4 = v5;
-    [v8 setVolume:v4];
-    [v8 setIsAudioEnabled:v5 > 0.0];
+    [videoPlayer setVolume:v4];
+    [videoPlayer setIsAudioEnabled:v5 > 0.0];
   }
 }
 
@@ -755,46 +755,46 @@ uint64_t __26__ISBasePlayer__setError___block_invoke(uint64_t a1)
   [(ISBasePlayer *)self _updateIfNeeded];
 }
 
-- (void)setApertureMode:(id)a3
+- (void)setApertureMode:(id)mode
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_apertureMode != v4)
+  modeCopy = mode;
+  v5 = modeCopy;
+  if (self->_apertureMode != modeCopy)
   {
-    v8 = v4;
-    v4 = [v4 isEqualToString:?];
+    v8 = modeCopy;
+    modeCopy = [modeCopy isEqualToString:?];
     v5 = v8;
-    if ((v4 & 1) == 0)
+    if ((modeCopy & 1) == 0)
     {
       v6 = [v8 copy];
       apertureMode = self->_apertureMode;
       self->_apertureMode = v6;
 
-      v4 = [(ISBasePlayer *)self _invalidateContentFromPlayerItem];
+      modeCopy = [(ISBasePlayer *)self _invalidateContentFromPlayerItem];
       v5 = v8;
     }
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](modeCopy, v5);
 }
 
-- (void)setVideoVolume:(float)a3
+- (void)setVideoVolume:(float)volume
 {
-  if (self->_videoVolume != a3)
+  if (self->_videoVolume != volume)
   {
-    self->_videoVolume = a3;
+    self->_videoVolume = volume;
     [(ISBasePlayer *)self _invalidateVideoPlayerVolume];
   }
 }
 
-- (void)_setForwardPlaybackEndTime:(id *)a3
+- (void)_setForwardPlaybackEndTime:(id *)time
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __43__ISBasePlayer__setForwardPlaybackEndTime___block_invoke;
   v3[3] = &unk_279A299C8;
   v3[4] = self;
-  v4 = *a3;
+  v4 = *time;
   [(ISObservable *)self performChanges:v3];
 }
 
@@ -826,11 +826,11 @@ void __43__ISBasePlayer__setForwardPlaybackEndTime___block_invoke(uint64_t a1)
   [*(a1 + 32) _invalidateWillPlayToEndObserver];
 }
 
-- (void)_setStatus:(int64_t)a3
+- (void)_setStatus:(int64_t)status
 {
-  if (self->_status != a3)
+  if (self->_status != status)
   {
-    self->_status = a3;
+    self->_status = status;
     [(ISBasePlayer *)self statusDidChange];
 
     [(ISObservable *)self signalChange:2];
@@ -842,11 +842,11 @@ void __43__ISBasePlayer__setForwardPlaybackEndTime___block_invoke(uint64_t a1)
   if (!self->_isValid.status)
   {
     self->_isValid.status = 1;
-    v3 = [(ISBasePlayer *)self playerItem];
-    v4 = [v3 status];
-    v5 = [(ISBasePlayer *)self videoPlayer];
-    v6 = [v5 currentItemStatus];
-    if (v4 == 1 || (v7 = v6, [v5 status] == 2))
+    playerItem = [(ISBasePlayer *)self playerItem];
+    status = [playerItem status];
+    videoPlayer = [(ISBasePlayer *)self videoPlayer];
+    currentItemStatus = [videoPlayer currentItemStatus];
+    if (status == 1 || (v7 = currentItemStatus, [videoPlayer status] == 2))
     {
       [(ISBasePlayer *)self _handleErrorsIfNeeded];
       v8 = 3;
@@ -873,26 +873,26 @@ void __43__ISBasePlayer__setForwardPlaybackEndTime___block_invoke(uint64_t a1)
   if (!self->_isValid.willPlayToPhotoObserver)
   {
     self->_isValid.willPlayToPhotoObserver = 1;
-    v3 = [(ISBasePlayer *)self videoPlayer];
-    v4 = [(ISBasePlayer *)self _videoWillPlayToPhotoObserver];
+    videoPlayer = [(ISBasePlayer *)self videoPlayer];
+    _videoWillPlayToPhotoObserver = [(ISBasePlayer *)self _videoWillPlayToPhotoObserver];
 
-    if (v4)
+    if (_videoWillPlayToPhotoObserver)
     {
-      v5 = [(ISBasePlayer *)self _videoWillPlayToPhotoObserver];
-      [v3 removeTimeObserver:v5];
+      _videoWillPlayToPhotoObserver2 = [(ISBasePlayer *)self _videoWillPlayToPhotoObserver];
+      [videoPlayer removeTimeObserver:_videoWillPlayToPhotoObserver2];
     }
 
-    v6 = [(ISBasePlayer *)self playerItem];
+    playerItem = [(ISBasePlayer *)self playerItem];
 
-    if (v6)
+    if (playerItem)
     {
       memset(&v22, 0, sizeof(v22));
-      v7 = [(ISBasePlayer *)self playerItem];
-      v8 = [v7 playerContent];
-      v9 = v8;
-      if (v8)
+      playerItem2 = [(ISBasePlayer *)self playerItem];
+      playerContent = [playerItem2 playerContent];
+      v9 = playerContent;
+      if (playerContent)
       {
-        [v8 photoTime];
+        [playerContent photoTime];
       }
 
       else
@@ -931,7 +931,7 @@ void __43__ISBasePlayer__setForwardPlaybackEndTime___block_invoke(uint64_t a1)
       v17[2] = __54__ISBasePlayer__updateWillPlayToPhotoObserverIfNeeded__block_invoke;
       v17[3] = &unk_279A2A3C0;
       objc_copyWeak(&v18, &lhs);
-      v14 = [v3 addBoundaryTimeObserverForTimes:v13 queue:0 usingBlock:v17];
+      v14 = [videoPlayer addBoundaryTimeObserverForTimes:v13 queue:0 usingBlock:v17];
 
       [(ISBasePlayer *)self _setVideoWillPlayToPhotoObserver:v14];
       objc_destroyWeak(&v18);
@@ -965,19 +965,19 @@ void __54__ISBasePlayer__updateWillPlayToPhotoObserverIfNeeded__block_invoke_2(u
   if (!self->_isValid.willPlayToEndObserver)
   {
     self->_isValid.willPlayToEndObserver = 1;
-    v3 = [(ISBasePlayer *)self videoPlayer];
-    if (v3)
+    videoPlayer = [(ISBasePlayer *)self videoPlayer];
+    if (videoPlayer)
     {
       memset(&v20, 0, sizeof(v20));
       [(ISBasePlayer *)self _videoForwardPlaybackEndTime];
       if (0 >> 96 != 1)
       {
-        v4 = [(ISBasePlayer *)self playerItem];
-        v5 = [v4 playerContent];
-        v6 = v5;
-        if (v5)
+        playerItem = [(ISBasePlayer *)self playerItem];
+        playerContent = [playerItem playerContent];
+        v6 = playerContent;
+        if (playerContent)
         {
-          [v5 videoDuration];
+          [playerContent videoDuration];
         }
 
         else
@@ -988,12 +988,12 @@ void __54__ISBasePlayer__updateWillPlayToPhotoObserverIfNeeded__block_invoke_2(u
         v20 = v19;
       }
 
-      v7 = [(ISBasePlayer *)self _videoWillPlayToEndObserver];
+      _videoWillPlayToEndObserver = [(ISBasePlayer *)self _videoWillPlayToEndObserver];
 
-      if (v7)
+      if (_videoWillPlayToEndObserver)
       {
-        v8 = [(ISBasePlayer *)self _videoWillPlayToEndObserver];
-        [v3 removeTimeObserver:v8];
+        _videoWillPlayToEndObserver2 = [(ISBasePlayer *)self _videoWillPlayToEndObserver];
+        [videoPlayer removeTimeObserver:_videoWillPlayToEndObserver2];
       }
 
       memset(&v19, 0, sizeof(v19));
@@ -1023,7 +1023,7 @@ void __54__ISBasePlayer__updateWillPlayToPhotoObserverIfNeeded__block_invoke_2(u
       v16[2] = __52__ISBasePlayer__updateWillPlayToEndObserverIfNeeded__block_invoke;
       v16[3] = &unk_279A2A3C0;
       objc_copyWeak(&v17, &lhs);
-      v13 = [v3 addBoundaryTimeObserverForTimes:v12 queue:0 usingBlock:v16];
+      v13 = [videoPlayer addBoundaryTimeObserverForTimes:v12 queue:0 usingBlock:v16];
 
       [(ISBasePlayer *)self _setVideoWillPlayToEndObserver:v13];
       objc_destroyWeak(&v17);
@@ -1051,18 +1051,18 @@ void __52__ISBasePlayer__updateWillPlayToEndObserverIfNeeded__block_invoke_2(uin
   [WeakRetained _videoWillPlayToEnd];
 }
 
-- (void)_setOutputContent:(id)a3
+- (void)_setOutputContent:(id)content
 {
-  v5 = a3;
-  if (self->__outputContent != v5)
+  contentCopy = content;
+  if (self->__outputContent != contentCopy)
   {
-    objc_storeStrong(&self->__outputContent, a3);
+    objc_storeStrong(&self->__outputContent, content);
     [(ISBasePlayer *)self _invalidateWillPlayToPhotoObserver];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __34__ISBasePlayer__setOutputContent___block_invoke;
     v6[3] = &unk_279A299A0;
-    v7 = v5;
+    v7 = contentCopy;
     [(ISBasePlayer *)self enumerateOutputsWithBlock:v6];
   }
 }
@@ -1072,60 +1072,60 @@ void __52__ISBasePlayer__updateWillPlayToEndObserverIfNeeded__block_invoke_2(uin
   if (!self->_isValid.contentFromPlayerItem)
   {
     self->_isValid.contentFromPlayerItem = 1;
-    v18 = [(ISBasePlayer *)self playerItem];
-    v4 = [v18 playerContent];
-    v5 = v4;
-    if (v4)
+    playerItem = [(ISBasePlayer *)self playerItem];
+    playerContent = [playerItem playerContent];
+    v5 = playerContent;
+    if (playerContent)
     {
-      v17 = [v4 photoIsOriginal];
+      photoIsOriginal = [playerContent photoIsOriginal];
     }
 
     else
     {
-      v17 = 1;
+      photoIsOriginal = 1;
     }
 
-    v6 = [(ISBasePlayer *)self videoPlayer];
-    v7 = [v5 videoPlayerItem];
-    v8 = [v6 currentItem];
-    v9 = [(ISBasePlayer *)self apertureMode];
-    v10 = [v7 asset];
-    v11 = [v8 asset];
+    videoPlayer = [(ISBasePlayer *)self videoPlayer];
+    videoPlayerItem = [v5 videoPlayerItem];
+    currentItem = [videoPlayer currentItem];
+    apertureMode = [(ISBasePlayer *)self apertureMode];
+    asset = [videoPlayerItem asset];
+    asset2 = [currentItem asset];
 
-    if (v10 == v11)
+    if (asset == asset2)
     {
-      [v8 setVideoApertureMode:v9];
+      [currentItem setVideoApertureMode:apertureMode];
     }
 
     else
     {
-      [v7 setVideoApertureMode:v9];
-      [v6 replaceCurrentItemWithPlayerItem:v7];
+      [videoPlayerItem setVideoApertureMode:apertureMode];
+      [videoPlayer replaceCurrentItemWithPlayerItem:videoPlayerItem];
     }
 
     v12 = [ISPlayerOutputContent alloc];
-    v13 = [v5 photo];
-    v14 = [v5 photoEXIFOrientation];
-    v15 = [v18 contentAspectRatio];
-    v16 = [(ISPlayerOutputContent *)v12 initWithPhoto:v13 photoIsOriginal:v17 photoEXIFOrientation:v14 videoPlayer:v6 aspectRatio:v15];
+    photo = [v5 photo];
+    photoEXIFOrientation = [v5 photoEXIFOrientation];
+    contentAspectRatio = [playerItem contentAspectRatio];
+    v16 = [(ISPlayerOutputContent *)v12 initWithPhoto:photo photoIsOriginal:photoIsOriginal photoEXIFOrientation:photoEXIFOrientation videoPlayer:videoPlayer aspectRatio:contentAspectRatio];
 
     [(ISBasePlayer *)self _setOutputContent:v16];
   }
 }
 
-- (void)_configureNewOutput:(id)a3
+- (void)_configureNewOutput:(id)output
 {
-  v4 = a3;
-  v6 = [(ISBasePlayer *)self _outputContent];
-  [v4 setContent:v6];
-  v5 = [(ISBasePlayer *)self lastAppliedLayoutInfo];
-  [v4 applyOutputInfo:v5 withTransitionOptions:0 completion:0];
+  outputCopy = output;
+  _outputContent = [(ISBasePlayer *)self _outputContent];
+  [outputCopy setContent:_outputContent];
+  lastAppliedLayoutInfo = [(ISBasePlayer *)self lastAppliedLayoutInfo];
+  [outputCopy applyOutputInfo:lastAppliedLayoutInfo withTransitionOptions:0 completion:0];
 }
 
-- (void)enumerateOutputsWithBlock:(id)a3
+- (void)enumerateOutputsWithBlock:(id)block
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -1146,7 +1146,7 @@ void __52__ISBasePlayer__updateWillPlayToEndObserverIfNeeded__block_invoke_2(uin
           objc_enumerationMutation(v5);
         }
 
-        v4[2](v4, *(*(&v11 + 1) + 8 * v9++));
+        blockCopy[2](blockCopy, *(*(&v11 + 1) + 8 * v9++));
       }
 
       while (v7 != v9);
@@ -1159,28 +1159,28 @@ void __52__ISBasePlayer__updateWillPlayToEndObserverIfNeeded__block_invoke_2(uin
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)applyOutputInfo:(id)a3 fromBehavior:(id)a4 withTransitionOptions:(id)a5 completion:(id)a6
+- (void)applyOutputInfo:(id)info fromBehavior:(id)behavior withTransitionOptions:(id)options completion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  infoCopy = info;
+  behaviorCopy = behavior;
+  optionsCopy = options;
+  completionCopy = completion;
   v14 = ISGetLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413058;
     *&buf[4] = self;
     *&buf[12] = 2112;
-    *&buf[14] = v11;
+    *&buf[14] = behaviorCopy;
     *&buf[22] = 2112;
-    v29 = v10;
+    v29 = infoCopy;
     v30 = 2112;
-    v31 = v12;
+    v31 = optionsCopy;
     _os_log_debug_impl(&dword_25E667000, v14, OS_LOG_TYPE_DEBUG, "%@: will apply output info: %@ - %@\n\toptions: %@", buf, 0x2Au);
   }
 
-  [(ISBasePlayer *)self _setLastAppliedLayoutInfo:v10];
+  [(ISBasePlayer *)self _setLastAppliedLayoutInfo:infoCopy];
   v15 = dispatch_group_create();
   *buf = 0;
   *&buf[8] = buf;
@@ -1192,19 +1192,19 @@ void __52__ISBasePlayer__updateWillPlayToEndObserverIfNeeded__block_invoke_2(uin
   v23[3] = &unk_279A29978;
   v16 = v15;
   v24 = v16;
-  v17 = v10;
+  v17 = infoCopy;
   v25 = v17;
-  v18 = v12;
+  v18 = optionsCopy;
   v26 = v18;
   v27 = buf;
   [(ISBasePlayer *)self enumerateOutputsWithBlock:v23];
-  if (v13)
+  if (completionCopy)
   {
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __78__ISBasePlayer_applyOutputInfo_fromBehavior_withTransitionOptions_completion___block_invoke_4;
     v20[3] = &unk_279A2A068;
-    v21 = v13;
+    v21 = completionCopy;
     v22 = buf;
     dispatch_group_notify(v16, MEMORY[0x277D85CD0], v20);
   }
@@ -1250,24 +1250,24 @@ void __78__ISBasePlayer_applyOutputInfo_fromBehavior_withTransitionOptions_compl
   [v1 applyOutputInfo:v2 withTransitionOptions:v3 completion:v6];
 }
 
-- (void)applyScale:(double)a3 withTransitionOptions:(id)a4 completion:(id)a5
+- (void)applyScale:(double)scale withTransitionOptions:(id)options completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  optionsCopy = options;
+  completionCopy = completion;
   v10 = ISGetLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
     *&buf[4] = self;
     *&buf[12] = 2048;
-    *&buf[14] = a3;
+    *&buf[14] = scale;
     *&buf[22] = 2112;
-    v24 = v8;
+    v24 = optionsCopy;
     _os_log_debug_impl(&dword_25E667000, v10, OS_LOG_TYPE_DEBUG, "%@: will apply scale %.2f\n\toptions: %@", buf, 0x20u);
   }
 
-  [(ISBasePlayer *)self _setLastAppliedScale:a3];
+  [(ISBasePlayer *)self _setLastAppliedScale:scale];
   v11 = dispatch_group_create();
   *buf = 0;
   *&buf[8] = buf;
@@ -1279,18 +1279,18 @@ void __78__ISBasePlayer_applyOutputInfo_fromBehavior_withTransitionOptions_compl
   v18[3] = &unk_279A29928;
   v12 = v11;
   v19 = v12;
-  v22 = a3;
-  v13 = v8;
+  scaleCopy = scale;
+  v13 = optionsCopy;
   v20 = v13;
   v21 = buf;
   [(ISBasePlayer *)self enumerateOutputsWithBlock:v18];
-  if (v9)
+  if (completionCopy)
   {
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __60__ISBasePlayer_applyScale_withTransitionOptions_completion___block_invoke_3;
     v15[3] = &unk_279A2A068;
-    v16 = v9;
+    v16 = completionCopy;
     v17 = buf;
     dispatch_group_notify(v12, MEMORY[0x277D85CD0], v15);
   }
@@ -1315,12 +1315,12 @@ void __60__ISBasePlayer_applyScale_withTransitionOptions_completion___block_invo
   [v4 applyScale:v6 withTransitionOptions:v7 completion:v5];
 }
 
-- (void)setActiveBehavior:(id)a3
+- (void)setActiveBehavior:(id)behavior
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  behaviorCopy = behavior;
   activeBehavior = self->_activeBehavior;
-  if (activeBehavior != v5)
+  if (activeBehavior != behaviorCopy)
   {
     [(ISBehavior *)activeBehavior setDelegate:0];
     [(ISBehavior *)self->_activeBehavior resignActive];
@@ -1328,11 +1328,11 @@ void __60__ISBasePlayer_applyScale_withTransitionOptions_completion___block_invo
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       v9 = 138412290;
-      v10 = v5;
+      v10 = behaviorCopy;
       _os_log_debug_impl(&dword_25E667000, v7, OS_LOG_TYPE_DEBUG, "ACTIVE BEHAVIOR: %@", &v9, 0xCu);
     }
 
-    objc_storeStrong(&self->_activeBehavior, a3);
+    objc_storeStrong(&self->_activeBehavior, behavior);
     [(ISBehavior *)self->_activeBehavior setDelegate:self];
     [(ISBehavior *)self->_activeBehavior becomeActive];
     [(ISBasePlayer *)self activeBehaviorDidChange];
@@ -1341,9 +1341,9 @@ void __60__ISBasePlayer_applyScale_withTransitionOptions_completion___block_invo
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAudioVolume:(float)a3
+- (void)setAudioVolume:(float)volume
 {
-  if (self->_audioVolume != a3)
+  if (self->_audioVolume != volume)
   {
     v7 = v3;
     v8 = v4;
@@ -1352,14 +1352,14 @@ void __60__ISBasePlayer_applyScale_withTransitionOptions_completion___block_invo
     v5[2] = __31__ISBasePlayer_setAudioVolume___block_invoke;
     v5[3] = &unk_279A29B58;
     v5[4] = self;
-    v6 = a3;
+    volumeCopy = volume;
     [(ISObservable *)self performChanges:v5];
   }
 }
 
-- (void)setAudioEnabled:(BOOL)a3
+- (void)setAudioEnabled:(BOOL)enabled
 {
-  if (self->_audioEnabled != a3)
+  if (self->_audioEnabled != enabled)
   {
     v7 = v3;
     v8 = v4;
@@ -1368,27 +1368,27 @@ void __60__ISBasePlayer_applyScale_withTransitionOptions_completion___block_invo
     v5[2] = __32__ISBasePlayer_setAudioEnabled___block_invoke;
     v5[3] = &unk_279A29DB8;
     v5[4] = self;
-    v6 = a3;
+    enabledCopy = enabled;
     [(ISObservable *)self performChanges:v5];
   }
 }
 
 - (void)_videoWillPlayToEnd
 {
-  v2 = [(ISBasePlayer *)self activeBehavior];
-  [v2 videoWillPlayToEnd];
+  activeBehavior = [(ISBasePlayer *)self activeBehavior];
+  [activeBehavior videoWillPlayToEnd];
 }
 
 - (void)_videoWillPlayToPhoto
 {
-  v2 = [(ISBasePlayer *)self activeBehavior];
-  [v2 videoWillPlayToPhoto];
+  activeBehavior = [(ISBasePlayer *)self activeBehavior];
+  [activeBehavior videoWillPlayToPhoto];
 }
 
 - (void)_videoDidPlayToEnd
 {
-  v2 = [(ISBasePlayer *)self activeBehavior];
-  [v2 videoDidPlayToEnd];
+  activeBehavior = [(ISBasePlayer *)self activeBehavior];
+  [activeBehavior videoDidPlayToEnd];
 }
 
 - (BOOL)videoLayersReadyForDisplay
@@ -1438,16 +1438,16 @@ LABEL_12:
   return v8;
 }
 
-- (void)_outputVideoReadyForDisplayDidChange:(id)a3
+- (void)_outputVideoReadyForDisplayDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __53__ISBasePlayer__outputVideoReadyForDisplayDidChange___block_invoke;
   v6[3] = &unk_279A2A348;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = changeCopy;
+  v5 = changeCopy;
   is_dispatch_on_main_queue(v6);
 }
 
@@ -1460,35 +1460,35 @@ void __53__ISBasePlayer__outputVideoReadyForDisplayDidChange___block_invoke(uint
   }
 }
 
-- (void)removeOutput:(id)a3
+- (void)removeOutput:(id)output
 {
-  v4 = a3;
-  [(ISBasePlayer *)self willRemoveOutput:v4];
-  [(NSHashTable *)self->_outputs removeObject:v4];
+  outputCopy = output;
+  [(ISBasePlayer *)self willRemoveOutput:outputCopy];
+  [(NSHashTable *)self->_outputs removeObject:outputCopy];
 }
 
-- (void)addOutput:(id)a3
+- (void)addOutput:(id)output
 {
-  v4 = a3;
-  [(NSHashTable *)self->_outputs addObject:v4];
+  outputCopy = output;
+  [(NSHashTable *)self->_outputs addObject:outputCopy];
   if (objc_opt_respondsToSelector())
   {
     objc_initWeak(&location, self);
-    objc_initWeak(&from, v4);
+    objc_initWeak(&from, outputCopy);
     v5 = MEMORY[0x277D85DD0];
     v6 = 3221225472;
     v7 = __26__ISBasePlayer_addOutput___block_invoke;
     v8 = &unk_279A29900;
     objc_copyWeak(&v9, &location);
     objc_copyWeak(&v10, &from);
-    [v4 setVideoLayerReadyForDisplayChangeHandler:&v5];
+    [outputCopy setVideoLayerReadyForDisplayChangeHandler:&v5];
     objc_destroyWeak(&v10);
     objc_destroyWeak(&v9);
     objc_destroyWeak(&from);
     objc_destroyWeak(&location);
   }
 
-  [(ISBasePlayer *)self didAddOutput:v4, v5, v6, v7, v8];
+  [(ISBasePlayer *)self didAddOutput:outputCopy, v5, v6, v7, v8];
 }
 
 void __26__ISBasePlayer_addOutput___block_invoke(uint64_t a1)
@@ -1526,18 +1526,18 @@ uint64_t __31__ISBasePlayer_statusDidChange__block_invoke(uint64_t a1)
   [(ISObservable *)self performChanges:v2];
 }
 
-- (void)setPlayerItem:(id)a3
+- (void)setPlayerItem:(id)item
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_playerItem != v4)
+  itemCopy = item;
+  v5 = itemCopy;
+  if (self->_playerItem != itemCopy)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __30__ISBasePlayer_setPlayerItem___block_invoke;
     v6[3] = &unk_279A2A398;
     v6[4] = self;
-    v7 = v4;
+    v7 = itemCopy;
     [(ISObservable *)self performChanges:v6];
   }
 }
@@ -1556,9 +1556,9 @@ uint64_t __30__ISBasePlayer_setPlayerItem___block_invoke(uint64_t a1)
   return [v2 playerItemDidChange];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -1599,9 +1599,9 @@ uint64_t __30__ISBasePlayer_setPlayerItem___block_invoke(uint64_t a1)
   [(ISBasePlayer *)&v8 dealloc];
 }
 
-- (ISBasePlayer)initWithVideoPlayer:(id)a3
+- (ISBasePlayer)initWithVideoPlayer:(id)player
 {
-  v5 = a3;
+  playerCopy = player;
   v15.receiver = self;
   v15.super_class = ISBasePlayer;
   v6 = [(ISObservable *)&v15 init];
@@ -1609,11 +1609,11 @@ uint64_t __30__ISBasePlayer_setPlayerItem___block_invoke(uint64_t a1)
   if (v6)
   {
     v6->_audioVolume = 1.0;
-    v8 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     outputs = v7->_outputs;
-    v7->_outputs = v8;
+    v7->_outputs = weakObjectsHashTable;
 
-    objc_storeStrong(&v7->_providedAVPlayer, a3);
+    objc_storeStrong(&v7->_providedAVPlayer, player);
     v10 = MEMORY[0x277CC08B0];
     *&v7->value = *MEMORY[0x277CC08B0];
     v7->epoch = *(v10 + 16);

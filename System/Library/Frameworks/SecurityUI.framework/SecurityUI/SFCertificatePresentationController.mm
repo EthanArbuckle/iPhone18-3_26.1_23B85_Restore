@@ -1,32 +1,32 @@
 @interface SFCertificatePresentationController
-- (SFCertificatePresentationController)initWithCertificatePresentationRequest:(id)a3;
+- (SFCertificatePresentationController)initWithCertificatePresentationRequest:(id)request;
 - (SFCertificatePresentationControllerDelegate)delegate;
-- (void)certificateViewControllerDidDismiss:(id)a3;
-- (void)dismissWithCompletion:(id)a3;
-- (void)presentWithCompletion:(id)a3;
+- (void)certificateViewControllerDidDismiss:(id)dismiss;
+- (void)dismissWithCompletion:(id)completion;
+- (void)presentWithCompletion:(id)completion;
 @end
 
 @implementation SFCertificatePresentationController
 
-- (SFCertificatePresentationController)initWithCertificatePresentationRequest:(id)a3
+- (SFCertificatePresentationController)initWithCertificatePresentationRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = SFCertificatePresentationController;
   v6 = [(SFCertificatePresentationController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_presentationRequest, a3);
+    objc_storeStrong(&v6->_presentationRequest, request);
   }
 
   return v7;
 }
 
-- (void)presentWithCompletion:(id)a3
+- (void)presentWithCompletion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = SFLogSFCertificatePresentationController();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -48,10 +48,10 @@
 
   if (!self->_presentationAnchor)
   {
-    v11 = [MEMORY[0x277D75DA0] _applicationKeyWindow];
-    v12 = [v11 rootViewController];
+    _applicationKeyWindow = [MEMORY[0x277D75DA0] _applicationKeyWindow];
+    rootViewController = [_applicationKeyWindow rootViewController];
     v13 = self->_presentationAnchor;
-    self->_presentationAnchor = v12;
+    self->_presentationAnchor = rootViewController;
   }
 
   v14 = [[SFCertificateViewController alloc] initWithCertificatePresentationRequest:self->_presentationRequest];
@@ -61,8 +61,8 @@
   v18[1] = 3221225472;
   v18[2] = __61__SFCertificatePresentationController_presentWithCompletion___block_invoke;
   v18[3] = &unk_278B69FE0;
-  v19 = v4;
-  v16 = v4;
+  v19 = completionCopy;
+  v16 = completionCopy;
   [(UIViewController *)v15 presentViewController:v14 animated:1 completion:v18];
 
   v17 = *MEMORY[0x277D85DE8];
@@ -89,10 +89,10 @@ uint64_t __61__SFCertificatePresentationController_presentWithCompletion___block
   return result;
 }
 
-- (void)dismissWithCompletion:(id)a3
+- (void)dismissWithCompletion:(id)completion
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  completionCopy = completion;
   v4 = SFLogSFCertificatePresentationController();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -101,15 +101,15 @@ uint64_t __61__SFCertificatePresentationController_presentWithCompletion___block
     _os_log_impl(&dword_23AA9F000, v4, OS_LOG_TYPE_DEFAULT, "%s", &v6, 0xCu);
   }
 
-  if (v3)
+  if (completionCopy)
   {
-    v3[2](v3, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)certificateViewControllerDidDismiss:(id)a3
+- (void)certificateViewControllerDidDismiss:(id)dismiss
 {
   v12 = *MEMORY[0x277D85DE8];
   v4 = SFLogSFCertificatePresentationController();

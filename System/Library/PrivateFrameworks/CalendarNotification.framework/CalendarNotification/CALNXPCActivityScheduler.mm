@@ -1,24 +1,24 @@
 @interface CALNXPCActivityScheduler
 - (CALNActivitySchedulerDelegate)delegate;
-- (CALNXPCActivityScheduler)initWithActivityIdentifier:(id)a3 otherCriteria:(id)a4;
-- (void)scheduleWithTimeInterval:(int64_t)a3 gracePeriod:(int64_t)a4;
+- (CALNXPCActivityScheduler)initWithActivityIdentifier:(id)identifier otherCriteria:(id)criteria;
+- (void)scheduleWithTimeInterval:(int64_t)interval gracePeriod:(int64_t)period;
 - (void)unschedule;
 @end
 
 @implementation CALNXPCActivityScheduler
 
-- (CALNXPCActivityScheduler)initWithActivityIdentifier:(id)a3 otherCriteria:(id)a4
+- (CALNXPCActivityScheduler)initWithActivityIdentifier:(id)identifier otherCriteria:(id)criteria
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  criteriaCopy = criteria;
   v14.receiver = self;
   v14.super_class = CALNXPCActivityScheduler;
   v9 = [(CALNXPCActivityScheduler *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_activityIdentifier, a3);
-    v11 = xpc_copy(v8);
+    objc_storeStrong(&v9->_activityIdentifier, identifier);
+    v11 = xpc_copy(criteriaCopy);
     otherCriteria = v10->_otherCriteria;
     v10->_otherCriteria = v11;
   }
@@ -28,19 +28,19 @@
 
 - (void)unschedule
 {
-  v2 = [(NSString *)self->_activityIdentifier UTF8String];
+  uTF8String = [(NSString *)self->_activityIdentifier UTF8String];
 
-  xpc_activity_unregister(v2);
+  xpc_activity_unregister(uTF8String);
 }
 
-- (void)scheduleWithTimeInterval:(int64_t)a3 gracePeriod:(int64_t)a4
+- (void)scheduleWithTimeInterval:(int64_t)interval gracePeriod:(int64_t)period
 {
   v7 = self->_activityIdentifier;
   objc_initWeak(&location, self);
   v8 = xpc_copy(self->_otherCriteria);
-  xpc_dictionary_set_int64(v8, *MEMORY[0x277D86250], a3);
-  xpc_dictionary_set_int64(v8, *MEMORY[0x277D86270], a4);
-  v9 = [(NSString *)v7 UTF8String];
+  xpc_dictionary_set_int64(v8, *MEMORY[0x277D86250], interval);
+  xpc_dictionary_set_int64(v8, *MEMORY[0x277D86270], period);
+  uTF8String = [(NSString *)v7 UTF8String];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __65__CALNXPCActivityScheduler_scheduleWithTimeInterval_gracePeriod___block_invoke;
@@ -48,7 +48,7 @@
   objc_copyWeak(&v13, &location);
   v10 = v7;
   v12 = v10;
-  xpc_activity_register(v9, v8, handler);
+  xpc_activity_register(uTF8String, v8, handler);
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);

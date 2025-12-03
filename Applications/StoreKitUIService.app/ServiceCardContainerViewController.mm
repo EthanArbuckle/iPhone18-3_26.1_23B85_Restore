@@ -1,19 +1,19 @@
 @interface ServiceCardContainerViewController
 - (CardControllerDismissalDelegate)dismissalDelegate;
-- (ServiceCardContainerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (ServiceCardContainerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)dealloc;
 - (void)loadView;
-- (void)setChildViewController:(id)a3;
+- (void)setChildViewController:(id)controller;
 - (void)viewDidLoad;
 @end
 
 @implementation ServiceCardContainerViewController
 
-- (ServiceCardContainerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (ServiceCardContainerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5.receiver = self;
   v5.super_class = ServiceCardContainerViewController;
-  result = [(ServiceCardContainerViewController *)&v5 initWithNibName:a3 bundle:a4];
+  result = [(ServiceCardContainerViewController *)&v5 initWithNibName:name bundle:bundle];
   if (result)
   {
     result->_didDisappear = 0;
@@ -30,7 +30,7 @@
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%{public}@: Start.", buf, 0xCu);
   }
 
@@ -47,41 +47,41 @@
   [(ServiceCardContainerViewController *)self setView:v4];
 }
 
-- (void)setChildViewController:(id)a3
+- (void)setChildViewController:(id)controller
 {
-  v12 = a3;
-  v5 = [(ServiceCardContainerViewController *)self childViewController];
+  controllerCopy = controller;
+  childViewController = [(ServiceCardContainerViewController *)self childViewController];
 
-  v6 = v12;
-  if (v5 != v12)
+  v6 = controllerCopy;
+  if (childViewController != controllerCopy)
   {
-    v7 = [(ServiceCardContainerViewController *)self childViewController];
-    objc_storeStrong(&self->_childViewController, a3);
-    if (v7)
+    childViewController2 = [(ServiceCardContainerViewController *)self childViewController];
+    objc_storeStrong(&self->_childViewController, controller);
+    if (childViewController2)
     {
-      [v7 willMoveToParentViewController:0];
-      v8 = [v7 view];
-      [v8 removeFromSuperview];
+      [childViewController2 willMoveToParentViewController:0];
+      view = [childViewController2 view];
+      [view removeFromSuperview];
 
-      [v7 removeFromParentViewController];
+      [childViewController2 removeFromParentViewController];
     }
 
-    if (v12)
+    if (controllerCopy)
     {
-      [(ServiceCardContainerViewController *)self addChildViewController:v12];
-      v9 = [v12 view];
-      v10 = [(ServiceCardContainerViewController *)self view];
-      [v10 bounds];
-      [v9 setFrame:?];
+      [(ServiceCardContainerViewController *)self addChildViewController:controllerCopy];
+      view2 = [controllerCopy view];
+      view3 = [(ServiceCardContainerViewController *)self view];
+      [view3 bounds];
+      [view2 setFrame:?];
 
-      [v9 setAutoresizingMask:18];
-      v11 = [(ServiceCardContainerViewController *)self view];
-      [v11 addSubview:v9];
+      [view2 setAutoresizingMask:18];
+      view4 = [(ServiceCardContainerViewController *)self view];
+      [view4 addSubview:view2];
 
-      [v12 didMoveToParentViewController:self];
+      [controllerCopy didMoveToParentViewController:self];
     }
 
-    v6 = v12;
+    v6 = controllerCopy;
   }
 }
 
@@ -90,7 +90,7 @@
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%{public}@: Dealloc.", buf, 0xCu);
   }
 

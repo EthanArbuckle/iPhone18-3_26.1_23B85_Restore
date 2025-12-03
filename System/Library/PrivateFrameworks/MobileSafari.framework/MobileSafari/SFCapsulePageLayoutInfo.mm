@@ -8,15 +8,15 @@
 - (NSString)parentIdentifier;
 - (double)alpha;
 - (double)cornerRadius;
-- (void)setAlpha:(double)a3;
-- (void)setCanRepresentCornersAsRadius:(BOOL)a3;
-- (void)setCornerRadii:(CACornerRadii *)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setIgnoresCornerRadius:(BOOL)a3;
-- (void)setIsHidden:(BOOL)a3;
-- (void)setParentIdentifier:(id)a3;
-- (void)setTransform:(CGAffineTransform *)a3;
+- (void)setAlpha:(double)alpha;
+- (void)setCanRepresentCornersAsRadius:(BOOL)radius;
+- (void)setCornerRadii:(CACornerRadii *)radii;
+- (void)setCornerRadius:(double)radius;
+- (void)setFrame:(CGRect)frame;
+- (void)setIgnoresCornerRadius:(BOOL)radius;
+- (void)setIsHidden:(BOOL)hidden;
+- (void)setParentIdentifier:(id)identifier;
+- (void)setTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation SFCapsulePageLayoutInfo
@@ -84,11 +84,11 @@
   return result;
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   v5 = OBJC_IVAR____TtC12MobileSafari23SFCapsulePageLayoutInfo_alpha;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = alpha;
 }
 
 - (BOOL)canRepresentCornersAsRadius
@@ -98,11 +98,11 @@
   return *(self + v3);
 }
 
-- (void)setCanRepresentCornersAsRadius:(BOOL)a3
+- (void)setCanRepresentCornersAsRadius:(BOOL)radius
 {
   v5 = OBJC_IVAR____TtC12MobileSafari23SFCapsulePageLayoutInfo_canRepresentCornersAsRadius;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = radius;
 }
 
 - (CACornerRadii)cornerRadii
@@ -118,29 +118,29 @@
   return result;
 }
 
-- (void)setCornerRadii:(CACornerRadii *)a3
+- (void)setCornerRadii:(CACornerRadii *)radii
 {
-  maxXMaxY = a3->maxXMaxY;
-  v5[0] = a3->minXMaxY;
+  maxXMaxY = radii->maxXMaxY;
+  v5[0] = radii->minXMaxY;
   v5[1] = maxXMaxY;
-  minXMinY = a3->minXMinY;
-  v5[2] = a3->maxXMinY;
+  minXMinY = radii->minXMinY;
+  v5[2] = radii->maxXMinY;
   v5[3] = minXMinY;
   sub_18BB8132C(v5);
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  v4 = self;
-  sub_18BB815EC(a3);
+  selfCopy = self;
+  sub_18BB815EC(radius);
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  x = a3.origin.x;
-  v9 = self;
+  x = frame.origin.x;
+  selfCopy = self;
   v4 = _SFRoundRectToPixels(x);
-  v5 = v9 + OBJC_IVAR____TtC12MobileSafari23SFCapsulePageLayoutInfo_pixelAlignedFrame;
+  v5 = selfCopy + OBJC_IVAR____TtC12MobileSafari23SFCapsulePageLayoutInfo_pixelAlignedFrame;
   *v5 = v4;
   *(v5 + 1) = v6;
   *(v5 + 2) = v7;
@@ -154,23 +154,23 @@
   return *(self + v3);
 }
 
-- (void)setIgnoresCornerRadius:(BOOL)a3
+- (void)setIgnoresCornerRadius:(BOOL)radius
 {
   v5 = OBJC_IVAR____TtC12MobileSafari23SFCapsulePageLayoutInfo_ignoresCornerRadius;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = radius;
 }
 
-- (void)setIsHidden:(BOOL)a3
+- (void)setIsHidden:(BOOL)hidden
 {
   v5 = OBJC_IVAR____TtC12MobileSafari23SFCapsulePageLayoutInfo_isHidden;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = hidden;
 }
 
-- (void)setParentIdentifier:(id)a3
+- (void)setParentIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = sub_18BC20BD8();
     v6 = v5;
@@ -188,13 +188,13 @@
   v7[1] = v6;
 }
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
-  tx = a3->tx;
-  ty = a3->ty;
+  tx = transform->tx;
+  ty = transform->ty;
   v5 = self + OBJC_IVAR____TtC12MobileSafari23SFCapsulePageLayoutInfo_transform;
-  v6 = *&a3->c;
-  v7 = *&a3->a;
+  v6 = *&transform->c;
+  v7 = *&transform->a;
   swift_beginAccess();
   *v5 = v7;
   *(v5 + 1) = v6;

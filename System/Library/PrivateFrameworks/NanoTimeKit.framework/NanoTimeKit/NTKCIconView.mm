@@ -1,11 +1,11 @@
 @interface NTKCIconView
 + (double)size;
 - (CGSize)intrinsicContentSize;
-- (NTKCIconView)initWithFrame:(CGRect)a3;
-- (NTKCIconView)initWithImage:(id)a3;
+- (NTKCIconView)initWithFrame:(CGRect)frame;
+- (NTKCIconView)initWithImage:(id)image;
 - (void)_resizeCornerRadius;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation NTKCIconView
@@ -33,10 +33,10 @@ uint64_t __20__NTKCIconView_size__block_invoke()
   return result;
 }
 
-- (NTKCIconView)initWithFrame:(CGRect)a3
+- (NTKCIconView)initWithFrame:(CGRect)frame
 {
-  y = a3.origin.y;
-  x = a3.origin.x;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [objc_opt_class() size];
   v9.receiver = self;
   v9.super_class = NTKCIconView;
@@ -45,11 +45,11 @@ uint64_t __20__NTKCIconView_size__block_invoke()
   return v7;
 }
 
-- (NTKCIconView)initWithImage:(id)a3
+- (NTKCIconView)initWithImage:(id)image
 {
   v5.receiver = self;
   v5.super_class = NTKCIconView;
-  v3 = [(NTKCIconView *)&v5 initWithImage:a3];
+  v3 = [(NTKCIconView *)&v5 initWithImage:image];
   [(NTKCIconView *)v3 setClipsToBounds:1];
   return v3;
 }
@@ -63,19 +63,19 @@ uint64_t __20__NTKCIconView_size__block_invoke()
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = NTKCIconView;
-  [(NTKCIconView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(NTKCIconView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(NTKCIconView *)self _resizeCornerRadius];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = NTKCIconView;
-  [(NTKCIconView *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(NTKCIconView *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(NTKCIconView *)self _resizeCornerRadius];
 }
 
@@ -85,8 +85,8 @@ uint64_t __20__NTKCIconView_size__block_invoke()
   CGRectGetWidth(v7);
   UIFloorToViewScale();
   v4 = v3;
-  v5 = [(NTKCIconView *)self layer];
-  [v5 setCornerRadius:v4];
+  layer = [(NTKCIconView *)self layer];
+  [layer setCornerRadius:v4];
 }
 
 @end

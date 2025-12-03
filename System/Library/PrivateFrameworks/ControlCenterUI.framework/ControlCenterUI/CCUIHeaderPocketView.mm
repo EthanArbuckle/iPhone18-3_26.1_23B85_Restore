@@ -1,8 +1,8 @@
 @interface CCUIHeaderPocketView
-- (BOOL)hitTestedViewWantsToBlockGestures:(id)a3;
+- (BOOL)hitTestedViewWantsToBlockGestures:(id)gestures;
 - (BOOL)isDisplayingSensorStatus;
 - (CATransform3D)contentTransformVelocity;
-- (CCUIHeaderPocketView)initWithFrame:(CGRect)a3 moduleInstanceManager:(id)a4;
+- (CCUIHeaderPocketView)initWithFrame:(CGRect)frame moduleInstanceManager:(id)manager;
 - (CCUIHeaderPocketViewActionsDelegate)actionsDelegate;
 - (CCUIHeaderPocketViewSensorAttributionDelegate)headerPocketViewDelegate;
 - (CCUIModuleInstanceManager)moduleInstanceManager;
@@ -14,46 +14,46 @@
 - (CGRect)sensorAttributionFrame;
 - (UIEdgeInsets)edgeInsets;
 - (double)_topButtonSymbolPointSize;
-- (double)additionalHeightForOrientation:(int64_t)a3;
+- (double)additionalHeightForOrientation:(int64_t)orientation;
 - (double)maximumAvailableWidth;
-- (double)yOriginForCompactControlForFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (double)yOriginForCompactControlForFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_configureTopButtons;
 - (void)_dismissControlCenterAndLaunchGameOverlay;
 - (void)_editButtonPrimaryActionTriggered;
 - (void)_powerButtonPrimaryActionTriggered;
-- (void)_preheatEntityIconsForAttributions:(id)a3;
+- (void)_preheatEntityIconsForAttributions:(id)attributions;
 - (void)_updateAlpha;
 - (void)_updateContentTransform;
-- (void)addDynamicControlsViewControllerAsChildOfViewController:(id)a3;
-- (void)addSensorAttributionViewControllerAsChildOfViewController:(id)a3;
-- (void)dismissSensorAttributionExpandedView:(BOOL)a3 completion:(id)a4;
-- (void)gameModeStateDidChange:(unint64_t)a3;
+- (void)addDynamicControlsViewControllerAsChildOfViewController:(id)controller;
+- (void)addSensorAttributionViewControllerAsChildOfViewController:(id)controller;
+- (void)dismissSensorAttributionExpandedView:(BOOL)view completion:(id)completion;
+- (void)gameModeStateDidChange:(unint64_t)change;
 - (void)handleCompactControlExpansionEvent;
-- (void)inactiveMicrophoneAttributionChanged:(id)a3;
+- (void)inactiveMicrophoneAttributionChanged:(id)changed;
 - (void)layoutSubviews;
-- (void)presentSensorAttributionExpandedView:(BOOL)a3;
-- (void)removeDynamicControlsViewControllerFromParentViewController:(id)a3;
-- (void)sensorAttributionsChanged:(id)a3;
-- (void)setAdditionalContentAlphaMultiplier:(double)a3;
-- (void)setAudioControlsEnabled:(BOOL)a3 videoControlsEnabled:(BOOL)a4 forBundleIdentifier:(id)a5;
-- (void)setAudioVideoModeSelectionAttribution:(id)a3;
-- (void)setBackgroundAlpha:(double)a3;
-- (void)setChevronAlpha:(double)a3;
-- (void)setChevronState:(unint64_t)a3;
-- (void)setCompactScaleTransform:(CGAffineTransform *)a3;
-- (void)setContentAlphaMultiplier:(double)a3;
-- (void)setContentTransform:(CGAffineTransform *)a3;
-- (void)setContentTransformVelocity:(CATransform3D *)a3;
-- (void)setEdgeInsets:(UIEdgeInsets)a3;
-- (void)setGameModeActivityDataProvider:(id)a3;
-- (void)setMode:(unint64_t)a3 orientationHint:(int64_t)a4;
-- (void)setPresentationState:(unint64_t)a3;
-- (void)setSensorAttributionEdgeInsets:(UIEdgeInsets)a3;
-- (void)setSensorStatusViewAlpha:(double)a3;
-- (void)setStatusBarAlpha:(double)a3;
-- (void)setStatusBarDelegate:(id)a3;
-- (void)setVerticalContentTranslation:(double)a3;
+- (void)presentSensorAttributionExpandedView:(BOOL)view;
+- (void)removeDynamicControlsViewControllerFromParentViewController:(id)controller;
+- (void)sensorAttributionsChanged:(id)changed;
+- (void)setAdditionalContentAlphaMultiplier:(double)multiplier;
+- (void)setAudioControlsEnabled:(BOOL)enabled videoControlsEnabled:(BOOL)controlsEnabled forBundleIdentifier:(id)identifier;
+- (void)setAudioVideoModeSelectionAttribution:(id)attribution;
+- (void)setBackgroundAlpha:(double)alpha;
+- (void)setChevronAlpha:(double)alpha;
+- (void)setChevronState:(unint64_t)state;
+- (void)setCompactScaleTransform:(CGAffineTransform *)transform;
+- (void)setContentAlphaMultiplier:(double)multiplier;
+- (void)setContentTransform:(CGAffineTransform *)transform;
+- (void)setContentTransformVelocity:(CATransform3D *)velocity;
+- (void)setEdgeInsets:(UIEdgeInsets)insets;
+- (void)setGameModeActivityDataProvider:(id)provider;
+- (void)setMode:(unint64_t)mode orientationHint:(int64_t)hint;
+- (void)setPresentationState:(unint64_t)state;
+- (void)setSensorAttributionEdgeInsets:(UIEdgeInsets)insets;
+- (void)setSensorStatusViewAlpha:(double)alpha;
+- (void)setStatusBarAlpha:(double)alpha;
+- (void)setStatusBarDelegate:(id)delegate;
+- (void)setVerticalContentTranslation:(double)translation;
 @end
 
 @implementation CCUIHeaderPocketView
@@ -78,8 +78,8 @@
   v88 = 0u;
   v89 = 0u;
   v90 = 0u;
-  v19 = [(CCUIHeaderPocketView *)self subviews];
-  v20 = [v19 countByEnumeratingWithState:&v87 objects:v92 count:16];
+  subviews = [(CCUIHeaderPocketView *)self subviews];
+  v20 = [subviews countByEnumeratingWithState:&v87 objects:v92 count:16];
   if (v20)
   {
     v21 = v20;
@@ -90,13 +90,13 @@
       {
         if (*v88 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v87 + 1) + 8 * i) setFrame:{v12, v14, v16, v18}];
       }
 
-      v21 = [v19 countByEnumeratingWithState:&v87 objects:v92 count:16];
+      v21 = [subviews countByEnumeratingWithState:&v87 objects:v92 count:16];
     }
 
     while (v21);
@@ -106,11 +106,11 @@
   [(SBUIChevronView *)self->_headerChevronView sizeToFit];
   [(SBUIChevronView *)self->_headerChevronView setCenter:v12 + v16 * 0.5, 30.0];
   [(SBUIChevronView *)self->_headerChevronView setHidden:[(CCUIHeaderPocketView *)self isDisplayingSensorStatus]];
-  v24 = [MEMORY[0x277D75418] currentDevice];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
   v79 = v10;
   v80 = v8;
   v78 = v6;
-  if ([v24 userInterfaceIdiom])
+  if ([currentDevice userInterfaceIdiom])
   {
     v25 = 0;
   }
@@ -180,12 +180,12 @@
     [(UIView *)self->_statusLabelView setFrame:?];
   }
 
-  v44 = [(CCUIHeaderPocketView *)self editButton];
-  v45 = [(CCUIHeaderPocketView *)self powerButton];
+  editButton = [(CCUIHeaderPocketView *)self editButton];
+  powerButton = [(CCUIHeaderPocketView *)self powerButton];
   [(CCUIHeaderPocketView *)self _topButtonSymbolPointSize];
   v47 = v46;
-  v48 = [MEMORY[0x277D75418] currentDevice];
-  if ([v48 userInterfaceIdiom])
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice2 userInterfaceIdiom])
   {
 
     v49 = v77;
@@ -214,10 +214,10 @@
   v52 = v51 + -7.0;
   CCUIEdgeInsetsRTLSwap();
   v54 = v53 + -7.0;
-  v55 = [MEMORY[0x277D75418] currentDevice];
-  v56 = [v55 userInterfaceIdiom];
+  currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice3 userInterfaceIdiom];
 
-  if (v56 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v54 = v54 + 10.0;
     v52 = v52 + 6.0;
@@ -233,8 +233,8 @@
 LABEL_21:
   v60 = v47 + 14.0;
   v61 = v58 - v60;
-  v62 = [(CCUIHeaderPocketView *)self _shouldReverseLayoutDirection];
-  if (v62)
+  _shouldReverseLayoutDirection = [(CCUIHeaderPocketView *)self _shouldReverseLayoutDirection];
+  if (_shouldReverseLayoutDirection)
   {
     v63 = v61;
   }
@@ -244,15 +244,15 @@ LABEL_21:
     v63 = v52;
   }
 
-  if (!v62)
+  if (!_shouldReverseLayoutDirection)
   {
     v52 = v61;
   }
 
-  [v44 setFrame:{v63, v59, v60, v60}];
-  [v45 setFrame:{v52, v59, v60, v60}];
-  [v44 setHidden:v25];
-  [v45 setHidden:v25];
+  [editButton setFrame:{v63, v59, v60, v60}];
+  [powerButton setFrame:{v52, v59, v60, v60}];
+  [editButton setHidden:v25];
+  [powerButton setHidden:v25];
   compactSensorAttributionControl = self->_compactSensorAttributionControl;
   v84 = v83;
   v85 = v82;
@@ -262,22 +262,22 @@ LABEL_21:
   [(CCUIHeaderPocketView *)self compactModeFrameForSensorView];
   [(CCUISensorAttributionCompactControl *)v65 setFrame:?];
   [(CCUIStatusBar *)self->_statusBar _updateCompactTrailingStatusBarAvoidanceFrame];
-  v66 = [(CCUIHeaderPocketView *)self sensorAttributionExpandedViewController];
-  v67 = [v66 view];
-  v68 = [v67 superview];
-  [v68 frame];
+  sensorAttributionExpandedViewController = [(CCUIHeaderPocketView *)self sensorAttributionExpandedViewController];
+  view = [sensorAttributionExpandedViewController view];
+  superview = [view superview];
+  [superview frame];
   v70 = v69;
   v72 = v71;
-  v73 = [v66 view];
-  [v73 setFrame:{0.0, 0.0, v70, v72}];
+  view2 = [sensorAttributionExpandedViewController view];
+  [view2 setFrame:{0.0, 0.0, v70, v72}];
 
-  v74 = [(CCUIHeaderPocketView *)self dynamicControllsViewController];
-  v75 = [v74 view];
+  dynamicControllsViewController = [(CCUIHeaderPocketView *)self dynamicControllsViewController];
+  view3 = [dynamicControllsViewController view];
   v84 = v83;
   v85 = v82;
   v86 = v81;
-  [v75 setTransform:&v84];
-  [v75 setFrame:{0.0, self->_verticalContentTranslation + 0.0, v57, 140.0}];
+  [view3 setTransform:&v84];
+  [view3 setFrame:{0.0, self->_verticalContentTranslation + 0.0, v57, 140.0}];
   [(CCUIHeaderPocketView *)self _updateContentTransform];
 }
 
@@ -319,10 +319,10 @@ LABEL_21:
 {
   if (CCUIFeatureEnabled())
   {
-    v3 = [(CCUIHeaderPocketView *)self dynamicControllsViewController];
-    v4 = [v3 isDisplayingSensorAttribution];
+    dynamicControllsViewController = [(CCUIHeaderPocketView *)self dynamicControllsViewController];
+    isDisplayingSensorAttribution = [dynamicControllsViewController isDisplayingSensorAttribution];
 
-    return v4;
+    return isDisplayingSensorAttribution;
   }
 
   else
@@ -351,8 +351,8 @@ LABEL_21:
   [(CCUIHeaderPocketView *)self bounds];
   UIRectGetCenter();
   [(CCUISensorAttributionCompactControl *)self->_compactSensorAttributionControl sizeThatFitsMaximumAllowableWidth];
-  v3 = [(CCUIHeaderPocketView *)self traitCollection];
-  [v3 displayScale];
+  traitCollection = [(CCUIHeaderPocketView *)self traitCollection];
+  [traitCollection displayScale];
   UIRectIntegralWithScale();
   v5 = v4;
   v7 = v6;
@@ -392,29 +392,29 @@ LABEL_21:
   v14 = v9;
   v15 = *&self->_contentTransform.tx;
   [(CCUISensorAttributionCompactControl *)compactSensorAttributionControl setTransform:&v13];
-  v10 = [(CCUIHeaderPocketView *)self dynamicControllsViewController];
-  v11 = [v10 view];
+  dynamicControllsViewController = [(CCUIHeaderPocketView *)self dynamicControllsViewController];
+  view = [dynamicControllsViewController view];
   v12 = *&p_contentTransform->c;
   v13 = *&p_contentTransform->a;
   v14 = v12;
   v15 = *&p_contentTransform->tx;
-  [v11 setTransform:&v13];
+  [view setTransform:&v13];
 }
 
-- (CCUIHeaderPocketView)initWithFrame:(CGRect)a3 moduleInstanceManager:(id)a4
+- (CCUIHeaderPocketView)initWithFrame:(CGRect)frame moduleInstanceManager:(id)manager
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  managerCopy = manager;
   v16.receiver = self;
   v16.super_class = CCUIHeaderPocketView;
-  v10 = [(CCUIHeaderPocketView *)&v16 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(CCUIHeaderPocketView *)&v16 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    objc_storeWeak(&v10->_moduleInstanceManager, v9);
+    objc_storeWeak(&height->_moduleInstanceManager, managerCopy);
     if ((CCUIFeatureEnabled() & 1) == 0)
     {
       v12 = [CCUISensorAttributionCompactControl alloc];
@@ -437,23 +437,23 @@ LABEL_21:
   return v11;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   if (CCUIFeatureEnabled())
   {
     v14.receiver = self;
     v14.super_class = CCUIHeaderPocketView;
-    v8 = [(CCUIHeaderPocketView *)&v14 hitTest:v7 withEvent:x, y];
+    v8 = [(CCUIHeaderPocketView *)&v14 hitTest:eventCopy withEvent:x, y];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = CCUIHeaderPocketView;
-    v8 = [(CCUIHeaderPocketView *)&v13 hitTest:v7 withEvent:x, y];
+    v8 = [(CCUIHeaderPocketView *)&v13 hitTest:eventCopy withEvent:x, y];
 
     if ([(CCUISensorAttributionCompactControl *)self->_compactSensorAttributionControl activeIndicatorsCount]>= 1)
     {
@@ -469,14 +469,14 @@ LABEL_21:
       }
     }
 
-    v7 = [(CCUIHeaderPocketView *)self dynamicControllsViewController];
-    v10 = [v7 view];
-    [v10 frame];
+    eventCopy = [(CCUIHeaderPocketView *)self dynamicControllsViewController];
+    view = [eventCopy view];
+    [view frame];
     v17.x = x;
     v17.y = y;
     if (CGRectContainsPoint(v20, v17))
     {
-      v11 = v10;
+      v11 = view;
 
       v8 = v11;
     }
@@ -487,9 +487,9 @@ LABEL_21:
 
 - (void)handleCompactControlExpansionEvent
 {
-  v3 = [(CCUISensorAttributionExpandedViewController *)self->_sensorAttributionExpandedViewController hasGameModeActivityOnly];
+  hasGameModeActivityOnly = [(CCUISensorAttributionExpandedViewController *)self->_sensorAttributionExpandedViewController hasGameModeActivityOnly];
   sensorAttributionExpandedViewController = self->_sensorAttributionExpandedViewController;
-  if (v3)
+  if (hasGameModeActivityOnly)
   {
     [(CCUISensorAttributionExpandedViewController *)sensorAttributionExpandedViewController setExpanded:0 animated:1];
 
@@ -512,44 +512,44 @@ LABEL_21:
   return v3 - v4 - v5;
 }
 
-- (BOOL)hitTestedViewWantsToBlockGestures:(id)a3
+- (BOOL)hitTestedViewWantsToBlockGestures:(id)gestures
 {
-  v4 = a3;
-  v5 = [(CCUIHeaderPocketView *)self dynamicControllsViewController];
-  v6 = [v5 view];
-  v8 = self->_compactSensorAttributionControl == v4 || v6 == v4 || self->_powerButton == v4;
+  gesturesCopy = gestures;
+  dynamicControllsViewController = [(CCUIHeaderPocketView *)self dynamicControllsViewController];
+  view = [dynamicControllsViewController view];
+  v8 = self->_compactSensorAttributionControl == gesturesCopy || view == gesturesCopy || self->_powerButton == gesturesCopy;
 
   return v8;
 }
 
-- (void)addSensorAttributionViewControllerAsChildOfViewController:(id)a3
+- (void)addSensorAttributionViewControllerAsChildOfViewController:(id)controller
 {
-  v4 = a3;
-  v7 = [(CCUIHeaderPocketView *)self moduleInstanceManager];
-  v5 = [[CCUISensorAttributionExpandedViewController alloc] initWithModuleInstanceManager:v7];
+  controllerCopy = controller;
+  moduleInstanceManager = [(CCUIHeaderPocketView *)self moduleInstanceManager];
+  v5 = [[CCUISensorAttributionExpandedViewController alloc] initWithModuleInstanceManager:moduleInstanceManager];
   [(CCUIHeaderPocketView *)self setSensorAttributionExpandedViewController:v5];
-  v6 = [v4 view];
-  [v4 bs_addChildViewController:v5 withSuperview:v6];
+  view = [controllerCopy view];
+  [controllerCopy bs_addChildViewController:v5 withSuperview:view];
 }
 
-- (void)addDynamicControlsViewControllerAsChildOfViewController:(id)a3
+- (void)addDynamicControlsViewControllerAsChildOfViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   if (CCUIFeatureEnabled())
   {
     v4 = [[CCUIDynamicControlsViewController alloc] initWithDelegate:self];
     [(CCUIHeaderPocketView *)self setDynamicControllsViewController:v4];
-    [v5 bs_addChildViewController:v4 withSuperview:self];
+    [controllerCopy bs_addChildViewController:v4 withSuperview:self];
   }
 }
 
-- (void)removeDynamicControlsViewControllerFromParentViewController:(id)a3
+- (void)removeDynamicControlsViewControllerFromParentViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   if (CCUIFeatureEnabled())
   {
-    v4 = [(CCUIHeaderPocketView *)self dynamicControllsViewController];
-    [v5 bs_removeChildViewController:v4];
+    dynamicControllsViewController = [(CCUIHeaderPocketView *)self dynamicControllsViewController];
+    [controllerCopy bs_removeChildViewController:dynamicControllsViewController];
     [(CCUIHeaderPocketView *)self setDynamicControllsViewController:0];
   }
 }
@@ -564,88 +564,88 @@ LABEL_21:
   return result;
 }
 
-- (void)setAudioVideoModeSelectionAttribution:(id)a3
+- (void)setAudioVideoModeSelectionAttribution:(id)attribution
 {
-  objc_storeStrong(&self->_audioVideoModeSelectionAttribution, a3);
-  v5 = a3;
-  v6 = [v5 displayName];
-  [(CCUISensorAttributionExpandedViewController *)self->_sensorAttributionExpandedViewController setAudioVideoHeaderTrailingText:v6];
+  objc_storeStrong(&self->_audioVideoModeSelectionAttribution, attribution);
+  attributionCopy = attribution;
+  displayName = [attributionCopy displayName];
+  [(CCUISensorAttributionExpandedViewController *)self->_sensorAttributionExpandedViewController setAudioVideoHeaderTrailingText:displayName];
 }
 
-- (void)sensorAttributionsChanged:(id)a3
+- (void)sensorAttributionsChanged:(id)changed
 {
-  v6 = CCUIFixSpecialAttributions(a3);
+  v6 = CCUIFixSpecialAttributions(changed);
   [(CCUISensorAttributionCompactControl *)self->_compactSensorAttributionControl sensorAttributionsChanged:v6];
   [(CCUISensorAttributionExpandedViewController *)self->_sensorAttributionExpandedViewController sensorAttributionsChanged:v6];
   [(CCUIHeaderPocketView *)self setNeedsLayout];
   [(CCUIHeaderPocketView *)self _preheatEntityIconsForAttributions:v6];
   v4 = CCUIUniqueSensorAttributionEntitiesForSensorActivityData(v6, 1);
-  v5 = [(CCUIHeaderPocketView *)self dynamicControllsViewController];
-  [v5 sensorAttributionsChanged:v6 uniqueEntities:v4];
+  dynamicControllsViewController = [(CCUIHeaderPocketView *)self dynamicControllsViewController];
+  [dynamicControllsViewController sensorAttributionsChanged:v6 uniqueEntities:v4];
 }
 
-- (void)gameModeStateDidChange:(unint64_t)a3
+- (void)gameModeStateDidChange:(unint64_t)change
 {
-  [(CCUISensorAttributionCompactControl *)self->_compactSensorAttributionControl gameModeStateDidChange:a3];
+  [(CCUISensorAttributionCompactControl *)self->_compactSensorAttributionControl gameModeStateDidChange:change];
 
   [(CCUIHeaderPocketView *)self setNeedsLayout];
 }
 
-- (void)inactiveMicrophoneAttributionChanged:(id)a3
+- (void)inactiveMicrophoneAttributionChanged:(id)changed
 {
-  v4 = a3;
-  if (v4)
+  changedCopy = changed;
+  if (changedCopy)
   {
-    v5 = v4;
-    v6 = [MEMORY[0x277CBEB98] setWithObject:v4];
+    v5 = changedCopy;
+    v6 = [MEMORY[0x277CBEB98] setWithObject:changedCopy];
     v7 = CCUIFixSpecialAttributions(v6);
-    v8 = [v7 anyObject];
+    anyObject = [v7 anyObject];
   }
 
   else
   {
-    v8 = 0;
+    anyObject = 0;
   }
 
   currentInactiveMicAttribution = self->_currentInactiveMicAttribution;
-  self->_currentInactiveMicAttribution = v8;
-  v10 = v8;
+  self->_currentInactiveMicAttribution = anyObject;
+  v10 = anyObject;
 
   [(CCUISensorAttributionCompactControl *)self->_compactSensorAttributionControl inactiveMicrophoneAttributionChanged:v10];
 
   [(CCUIHeaderPocketView *)self setNeedsLayout];
 }
 
-- (void)setGameModeActivityDataProvider:(id)a3
+- (void)setGameModeActivityDataProvider:(id)provider
 {
-  objc_storeStrong(&self->_gameModeActivityDataProvider, a3);
-  v5 = a3;
-  [(CCUISensorAttributionExpandedViewController *)self->_sensorAttributionExpandedViewController setGameModeActivityDataProvider:v5];
+  objc_storeStrong(&self->_gameModeActivityDataProvider, provider);
+  providerCopy = provider;
+  [(CCUISensorAttributionExpandedViewController *)self->_sensorAttributionExpandedViewController setGameModeActivityDataProvider:providerCopy];
 }
 
-- (void)setAudioControlsEnabled:(BOOL)a3 videoControlsEnabled:(BOOL)a4 forBundleIdentifier:(id)a5
+- (void)setAudioControlsEnabled:(BOOL)enabled videoControlsEnabled:(BOOL)controlsEnabled forBundleIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
-  [(CCUIHeaderPocketView *)self setBundleIdentifierUsingAudioVideoControls:a5];
-  [(CCUISensorAttributionExpandedViewController *)self->_sensorAttributionExpandedViewController setAudioControlsEnabled:v6 videoControlsEnabled:v5];
+  controlsEnabledCopy = controlsEnabled;
+  enabledCopy = enabled;
+  [(CCUIHeaderPocketView *)self setBundleIdentifierUsingAudioVideoControls:identifier];
+  [(CCUISensorAttributionExpandedViewController *)self->_sensorAttributionExpandedViewController setAudioControlsEnabled:enabledCopy videoControlsEnabled:controlsEnabledCopy];
 
   [(CCUIHeaderPocketView *)self setNeedsLayout];
 }
 
-- (void)setSensorAttributionEdgeInsets:(UIEdgeInsets)a3
+- (void)setSensorAttributionEdgeInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  self->_sensorAttributionEdgeInsets = a3;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  self->_sensorAttributionEdgeInsets = insets;
   CCUIEdgeInsetsRTLSwap();
   v9 = v8;
   CCUIEdgeInsetsRTLSwap();
   v11 = v10;
-  v12 = [MEMORY[0x277D75418] currentDevice];
-  if ([v12 userInterfaceIdiom])
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom])
   {
   }
 
@@ -655,11 +655,11 @@ LABEL_21:
 
     if (v13 <= 1)
     {
-      v14 = [(CCUIHeaderPocketView *)self window];
-      v15 = [v14 windowScene];
-      v16 = [v15 screen];
+      window = [(CCUIHeaderPocketView *)self window];
+      windowScene = [window windowScene];
+      screen = [windowScene screen];
 
-      [v16 _referenceBounds];
+      [screen _referenceBounds];
       v11 = (v18 - v17) * 0.5;
 
       top = 0.0;
@@ -686,26 +686,26 @@ LABEL_21:
   }
 
   [(CCUISensorAttributionCompactControl *)self->_compactSensorAttributionControl setMaximumAllowableWidth:v22];
-  v28 = [MEMORY[0x277D75418] currentDevice];
-  v29 = [v28 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice2 userInterfaceIdiom];
 
-  if ((v29 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
-    v30 = [(CCUISensorAttributionExpandedViewController *)self->_sensorAttributionExpandedViewController view];
+    view = [(CCUISensorAttributionExpandedViewController *)self->_sensorAttributionExpandedViewController view];
     [(CCUIHeaderPocketView *)self bounds];
-    [(CCUIHeaderPocketView *)self convertRect:v30 toView:?];
+    [(CCUIHeaderPocketView *)self convertRect:view toView:?];
     v32 = v31;
     v34 = v33;
     v36 = v35;
     v38 = v37;
-    [v30 bounds];
+    [view bounds];
     CGRectGetMaxY(v45);
     v46.origin.x = v32;
     v46.origin.y = v34;
     v46.size.width = v36;
     v46.size.height = v38;
     CGRectGetMaxY(v46);
-    [v30 bounds];
+    [view bounds];
     CGRectGetMaxX(v47);
     v48.origin.x = v32;
     v48.origin.y = v34;
@@ -724,9 +724,9 @@ LABEL_21:
   [(CCUIHeaderPocketView *)self setNeedsLayout];
 }
 
-- (void)presentSensorAttributionExpandedView:(BOOL)a3
+- (void)presentSensorAttributionExpandedView:(BOOL)view
 {
-  v3 = a3;
+  viewCopy = view;
   if (![(CCUIHeaderPocketView *)self isSensorAttributionViewControllerExpanded])
   {
     if ([(CCUISensorAttributionExpandedViewController *)self->_sensorAttributionExpandedViewController hasGameModeActivityOnly])
@@ -739,44 +739,44 @@ LABEL_21:
     {
       sensorAttributionExpandedViewController = self->_sensorAttributionExpandedViewController;
 
-      [(CCUISensorAttributionExpandedViewController *)sensorAttributionExpandedViewController setExpanded:1 animated:v3];
+      [(CCUISensorAttributionExpandedViewController *)sensorAttributionExpandedViewController setExpanded:1 animated:viewCopy];
     }
   }
 }
 
-- (void)dismissSensorAttributionExpandedView:(BOOL)a3 completion:(id)a4
+- (void)dismissSensorAttributionExpandedView:(BOOL)view completion:(id)completion
 {
-  v4 = a3;
-  v7 = a4;
+  viewCopy = view;
+  completionCopy = completion;
   if ([(CCUIHeaderPocketView *)self isSensorAttributionViewControllerExpanded])
   {
-    [(CCUISensorAttributionExpandedViewController *)self->_sensorAttributionExpandedViewController setExpanded:0 animated:v4];
+    [(CCUISensorAttributionExpandedViewController *)self->_sensorAttributionExpandedViewController setExpanded:0 animated:viewCopy];
   }
 
-  v6 = v7;
-  if (v7)
+  v6 = completionCopy;
+  if (completionCopy)
   {
-    (*(v7 + 2))(v7);
-    v6 = v7;
+    (*(completionCopy + 2))(completionCopy);
+    v6 = completionCopy;
   }
 }
 
-- (void)setStatusBarDelegate:(id)a3
+- (void)setStatusBarDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_statusBarDelegate, a3);
+  objc_storeWeak(&self->_statusBarDelegate, delegate);
   statusBar = self->_statusBar;
-  v5 = [(CCUIHeaderPocketView *)self statusBarDelegate];
-  [(CCUIStatusBar *)statusBar setDelegate:v5];
+  statusBarDelegate = [(CCUIHeaderPocketView *)self statusBarDelegate];
+  [(CCUIStatusBar *)statusBar setDelegate:statusBarDelegate];
 }
 
-- (void)setMode:(unint64_t)a3 orientationHint:(int64_t)a4
+- (void)setMode:(unint64_t)mode orientationHint:(int64_t)hint
 {
-  if (self->_mode == a3)
+  if (self->_mode == mode)
   {
     return;
   }
 
-  self->_mode = a3;
+  self->_mode = mode;
   [(SBUIChevronView *)self->_headerChevronView removeFromSuperview];
   headerChevronView = self->_headerChevronView;
   self->_headerChevronView = 0;
@@ -795,8 +795,8 @@ LABEL_21:
   if (mode == 2)
   {
     v9 = objc_alloc(MEMORY[0x277D679A0]);
-    v10 = [MEMORY[0x277D75348] blackColor];
-    v11 = [v9 initWithColor:v10];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    v11 = [v9 initWithColor:blackColor];
     v12 = self->_headerChevronView;
     self->_headerChevronView = v11;
 
@@ -810,11 +810,11 @@ LABEL_6:
     v16 = self->_statusBar;
     self->_statusBar = v15;
 
-    [(CCUIStatusBar *)self->_statusBar setOrientation:a4];
+    [(CCUIStatusBar *)self->_statusBar setOrientation:hint];
     [(CCUIStatusBar *)self->_statusBar setAlignCompactAndExpandedStatusBars:v13];
     v17 = self->_statusBar;
-    v18 = [(CCUIHeaderPocketView *)self statusBarDelegate];
-    [(CCUIStatusBar *)v17 setDelegate:v18];
+    statusBarDelegate = [(CCUIHeaderPocketView *)self statusBarDelegate];
+    [(CCUIStatusBar *)v17 setDelegate:statusBarDelegate];
 
     [(CCUIHeaderPocketView *)self addSubview:self->_statusBar];
   }
@@ -827,106 +827,106 @@ LABEL_6:
   [(CCUIHeaderPocketView *)self _updateContentTransform];
 }
 
-- (void)setEdgeInsets:(UIEdgeInsets)a3
+- (void)setEdgeInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_edgeInsets.top, v3), vceqq_f64(*&self->_edgeInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_edgeInsets = a3;
+    self->_edgeInsets = insets;
     [(CCUIHeaderPocketView *)self setNeedsLayout];
   }
 }
 
-- (void)setBackgroundAlpha:(double)a3
+- (void)setBackgroundAlpha:(double)alpha
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_backgroundAlpha = a3;
+    self->_backgroundAlpha = alpha;
     headerBackgroundView = self->_headerBackgroundView;
 
-    [(UIView *)headerBackgroundView setAlpha:a3];
+    [(UIView *)headerBackgroundView setAlpha:alpha];
   }
 }
 
-- (void)setChevronAlpha:(double)a3
+- (void)setChevronAlpha:(double)alpha
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_chevronAlpha = a3;
+    self->_chevronAlpha = alpha;
 
     [(CCUIHeaderPocketView *)self _updateAlpha];
   }
 }
 
-- (void)setStatusBarAlpha:(double)a3
+- (void)setStatusBarAlpha:(double)alpha
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_statusBarAlpha = a3;
+    self->_statusBarAlpha = alpha;
 
     [(CCUIHeaderPocketView *)self _updateAlpha];
   }
 }
 
-- (void)setSensorStatusViewAlpha:(double)a3
+- (void)setSensorStatusViewAlpha:(double)alpha
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_sensorStatusViewAlpha = a3;
+    self->_sensorStatusViewAlpha = alpha;
 
     [(CCUIHeaderPocketView *)self _updateAlpha];
   }
 }
 
-- (void)setContentAlphaMultiplier:(double)a3
+- (void)setContentAlphaMultiplier:(double)multiplier
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_contentAlphaMultiplier = a3;
+    self->_contentAlphaMultiplier = multiplier;
 
     [(CCUIHeaderPocketView *)self _updateAlpha];
   }
 }
 
-- (void)setAdditionalContentAlphaMultiplier:(double)a3
+- (void)setAdditionalContentAlphaMultiplier:(double)multiplier
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_additionalContentAlphaMultiplier = a3;
+    self->_additionalContentAlphaMultiplier = multiplier;
 
     [(CCUIHeaderPocketView *)self _updateAlpha];
   }
 }
 
-- (void)setVerticalContentTranslation:(double)a3
+- (void)setVerticalContentTranslation:(double)translation
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_verticalContentTranslation = a3;
+    self->_verticalContentTranslation = translation;
 
     [(CCUIHeaderPocketView *)self setNeedsLayout];
   }
 }
 
-- (void)setContentTransform:(CGAffineTransform *)a3
+- (void)setContentTransform:(CGAffineTransform *)transform
 {
   p_contentTransform = &self->_contentTransform;
   v6 = *&self->_contentTransform.c;
   *&t1.a = *&self->_contentTransform.a;
   *&t1.c = v6;
   *&t1.tx = *&self->_contentTransform.tx;
-  v7 = *&a3->c;
-  *&v10.a = *&a3->a;
+  v7 = *&transform->c;
+  *&v10.a = *&transform->a;
   *&v10.c = v7;
-  *&v10.tx = *&a3->tx;
+  *&v10.tx = *&transform->tx;
   if (!CGAffineTransformEqualToTransform(&t1, &v10))
   {
-    v8 = *&a3->a;
-    v9 = *&a3->tx;
-    *&p_contentTransform->c = *&a3->c;
+    v8 = *&transform->a;
+    v9 = *&transform->tx;
+    *&p_contentTransform->c = *&transform->c;
     *&p_contentTransform->tx = v9;
     *&p_contentTransform->a = v8;
     [(CCUIHeaderPocketView *)self _updateContentTransform];
@@ -958,27 +958,27 @@ LABEL_6:
   return result;
 }
 
-- (void)setContentTransformVelocity:(CATransform3D *)a3
+- (void)setContentTransformVelocity:(CATransform3D *)velocity
 {
-  v4 = *&a3->m33;
-  v11[4] = *&a3->m31;
+  v4 = *&velocity->m33;
+  v11[4] = *&velocity->m31;
   v11[5] = v4;
-  v5 = *&a3->m43;
-  v11[6] = *&a3->m41;
+  v5 = *&velocity->m43;
+  v11[6] = *&velocity->m41;
   v11[7] = v5;
-  v6 = *&a3->m13;
-  v11[0] = *&a3->m11;
+  v6 = *&velocity->m13;
+  v11[0] = *&velocity->m11;
   v11[1] = v6;
-  v7 = *&a3->m23;
-  v11[2] = *&a3->m21;
+  v7 = *&velocity->m23;
+  v11[2] = *&velocity->m21;
   v11[3] = v7;
   v8 = [MEMORY[0x277CCAE60] valueWithCATransform3D:v11];
   [(SBUIChevronView *)self->_headerChevronView _setVelocity:v8 forKey:@"transform"];
   [(CCUIStatusBar *)self->_statusBar _setVelocity:v8 forKey:@"transform"];
   [(CCUISensorAttributionCompactControl *)self->_compactSensorAttributionControl _setVelocity:v8 forKey:@"transform"];
-  v9 = [(CCUIHeaderPocketView *)self dynamicControllsViewController];
-  v10 = [v9 view];
-  [v10 _setVelocity:v8 forKey:@"transform"];
+  dynamicControllsViewController = [(CCUIHeaderPocketView *)self dynamicControllsViewController];
+  view = [dynamicControllsViewController view];
+  [view _setVelocity:v8 forKey:@"transform"];
 }
 
 - (CGAffineTransform)compactScaleTransform
@@ -995,29 +995,29 @@ LABEL_6:
   return result;
 }
 
-- (void)setCompactScaleTransform:(CGAffineTransform *)a3
+- (void)setCompactScaleTransform:(CGAffineTransform *)transform
 {
   statusBar = self->_statusBar;
-  v4 = *&a3->c;
-  v5[0] = *&a3->a;
+  v4 = *&transform->c;
+  v5[0] = *&transform->a;
   v5[1] = v4;
-  v5[2] = *&a3->tx;
+  v5[2] = *&transform->tx;
   [(CCUIStatusBar *)statusBar setCompactScaleTransform:v5];
 }
 
-- (void)setChevronState:(unint64_t)a3
+- (void)setChevronState:(unint64_t)state
 {
-  if (a3 <= 1)
+  if (state <= 1)
   {
     [SBUIChevronView setState:"setState:animated:" animated:?];
   }
 }
 
-- (void)setPresentationState:(unint64_t)a3
+- (void)setPresentationState:(unint64_t)state
 {
   presentationState = self->_presentationState;
-  self->_presentationState = a3;
-  if (a3 == 1 && !presentationState)
+  self->_presentationState = state;
+  if (state == 1 && !presentationState)
   {
     [(CCUIHeaderPocketView *)self additionalHeightForOrientation:1];
     v7 = v6;
@@ -1030,24 +1030,24 @@ LABEL_6:
   }
 }
 
-- (double)additionalHeightForOrientation:(int64_t)a3
+- (double)additionalHeightForOrientation:(int64_t)orientation
 {
-  v7 = (a3 - 1);
-  v8 = [MEMORY[0x277D75418] currentDevice];
-  v9 = [v8 userInterfaceIdiom];
+  currentDevice2 = (orientation - 1);
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v7 < 2 || (result = 0.0, v9 == 1))
+  if (currentDevice2 < 2 || (result = 0.0, userInterfaceIdiom == 1))
   {
-    v11 = [(CCUIHeaderPocketView *)self presentationState];
-    v12 = [(CCUIHeaderPocketView *)self isDisplayingSensorStatus];
+    presentationState = [(CCUIHeaderPocketView *)self presentationState];
+    isDisplayingSensorStatus = [(CCUIHeaderPocketView *)self isDisplayingSensorStatus];
     [(CCUIStatusBar *)self->_statusBar verticalSecondaryServiceDelta];
     v14 = v13;
     CCUIReferenceScreenBounds();
     Width = CGRectGetWidth(v26);
     if (Width >= 1024.0)
     {
-      v7 = [MEMORY[0x277D75418] currentDevice];
-      if ([v7 userInterfaceIdiom] == 1)
+      currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+      if ([currentDevice2 userInterfaceIdiom] == 1)
       {
         v16 = 28.0;
         if (SBFEffectiveHomeButtonType() != 2)
@@ -1071,8 +1071,8 @@ LABEL_6:
       v18 = CGRectGetWidth(v28);
       if (v18 >= 834.0)
       {
-        v4 = [MEMORY[0x277D75418] currentDevice];
-        if ([v4 userInterfaceIdiom] == 1)
+        currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+        if ([currentDevice3 userInterfaceIdiom] == 1)
         {
           v16 = 28.0;
           if (SBFEffectiveHomeButtonType() == 2)
@@ -1086,8 +1086,8 @@ LABEL_6:
       v19 = CGRectGetWidth(v29);
       if (v19 >= 834.0)
       {
-        v5 = [MEMORY[0x277D75418] currentDevice];
-        if ([v5 userInterfaceIdiom] == 1)
+        currentDevice4 = [MEMORY[0x277D75418] currentDevice];
+        if ([currentDevice4 userInterfaceIdiom] == 1)
         {
           v16 = 28.0;
           if (SBFEffectiveHomeButtonType() != 2)
@@ -1097,9 +1097,9 @@ LABEL_6:
         }
       }
 
-      v20 = [MEMORY[0x277D75418] currentDevice];
+      currentDevice5 = [MEMORY[0x277D75418] currentDevice];
       v16 = 28.0;
-      if ([v20 userInterfaceIdiom] != 1)
+      if ([currentDevice5 userInterfaceIdiom] != 1)
       {
         CCUIReferenceScreenBounds();
         v16 = 20.0;
@@ -1179,8 +1179,8 @@ LABEL_36:
 LABEL_40:
     }
 
-    v22 = self->_cachedIsDisplayingSensorStatus != v12 && v11 - 1 < 2;
-    if (v11 && v11 != 3 && self->_cachedVerticalSecondaryServiceDelta == v14 && !v22)
+    v22 = self->_cachedIsDisplayingSensorStatus != isDisplayingSensorStatus && presentationState - 1 < 2;
+    if (presentationState && presentationState != 3 && self->_cachedVerticalSecondaryServiceDelta == v14 && !v22)
     {
       return self->_cachedAdditionalHeight;
     }
@@ -1188,7 +1188,7 @@ LABEL_40:
     if (v22)
     {
       self->_sensorStatusChangedWhileVisible = 1;
-      if (v12)
+      if (isDisplayingSensorStatus)
       {
         v23 = v16;
       }
@@ -1201,12 +1201,12 @@ LABEL_40:
 LABEL_64:
       result = v14 + v23;
       self->_cachedVerticalSecondaryServiceDelta = v14;
-      self->_cachedIsDisplayingSensorStatus = v12;
+      self->_cachedIsDisplayingSensorStatus = isDisplayingSensorStatus;
       self->_cachedAdditionalHeight = v14 + v23;
       return result;
     }
 
-    if (v12)
+    if (isDisplayingSensorStatus)
     {
       v23 = v16;
     }
@@ -1216,7 +1216,7 @@ LABEL_64:
       v23 = 0.0;
     }
 
-    if (v11 != 3)
+    if (presentationState != 3)
     {
       goto LABEL_64;
     }
@@ -1257,11 +1257,11 @@ LABEL_64:
   [(CCUIHeaderPocketView *)self _topButtonSymbolPointSize];
   v3 = [MEMORY[0x277D755D0] configurationWithPointSize:6 weight:2 scale:?];
   objc_initWeak(&location, self);
-  v4 = [MEMORY[0x277D75230] plainButtonConfiguration];
+  plainButtonConfiguration = [MEMORY[0x277D75230] plainButtonConfiguration];
   v5 = [MEMORY[0x277D755B8] _systemImageNamed:@"plus" withConfiguration:v3];
-  [v4 setImage:v5];
-  v6 = [MEMORY[0x277D75348] systemWhiteColor];
-  [v4 setBaseForegroundColor:v6];
+  [plainButtonConfiguration setImage:v5];
+  systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+  [plainButtonConfiguration setBaseForegroundColor:systemWhiteColor];
 
   v7 = MEMORY[0x277D750C8];
   v16 = MEMORY[0x277D85DD0];
@@ -1270,7 +1270,7 @@ LABEL_64:
   v19 = &unk_278381D78;
   objc_copyWeak(&v20, &location);
   v8 = [v7 actionWithHandler:&v16];
-  v9 = [CCUIAccessoryButton buttonWithConfiguration:v4 primaryAction:v8, v16, v17, v18, v19];
+  v9 = [CCUIAccessoryButton buttonWithConfiguration:plainButtonConfiguration primaryAction:v8, v16, v17, v18, v19];
 
   v10 = objc_alloc_init(MEMORY[0x277D756C8]);
   [v9 addInteraction:v10];
@@ -1289,9 +1289,9 @@ LABEL_64:
 
   [(CCUIPowerButton *)v11 setShowsLargeContentViewer:1];
   [(CCUIPowerButton *)v11 setScalesLargeContentImage:1];
-  v14 = [(CCUIPowerButtonGlyphView *)v12 imageView];
-  v15 = [v14 largeContentImage];
-  [(CCUIPowerButton *)v11 setLargeContentImage:v15];
+  imageView = [(CCUIPowerButtonGlyphView *)v12 imageView];
+  largeContentImage = [imageView largeContentImage];
+  [(CCUIPowerButton *)v11 setLargeContentImage:largeContentImage];
 
   [(CCUIHeaderPocketView *)self addSubview:v11];
   [(CCUIHeaderPocketView *)self setPowerButton:v11];
@@ -1308,14 +1308,14 @@ void __44__CCUIHeaderPocketView__configureTopButtons__block_invoke(uint64_t a1)
 
 - (void)_editButtonPrimaryActionTriggered
 {
-  v2 = [(CCUIHeaderPocketView *)self actionsDelegate];
-  [v2 didTriggerEditButtonPrimaryAction];
+  actionsDelegate = [(CCUIHeaderPocketView *)self actionsDelegate];
+  [actionsDelegate didTriggerEditButtonPrimaryAction];
 }
 
 - (void)_powerButtonPrimaryActionTriggered
 {
-  v2 = [(CCUIHeaderPocketView *)self actionsDelegate];
-  [v2 didTriggerPowerButtonPrimaryAction];
+  actionsDelegate = [(CCUIHeaderPocketView *)self actionsDelegate];
+  [actionsDelegate didTriggerPowerButtonPrimaryAction];
 }
 
 - (void)_updateAlpha
@@ -1325,19 +1325,19 @@ void __44__CCUIHeaderPocketView__configureTopButtons__block_invoke(uint64_t a1)
   [(CCUIStatusBar *)self->_statusBar setAlpha:v3 * self->_statusBarAlpha];
   v4 = v3 * self->_sensorStatusViewAlpha;
   [(CCUISensorAttributionCompactControl *)self->_compactSensorAttributionControl setAlpha:v4];
-  v6 = [(CCUIHeaderPocketView *)self dynamicControllsViewController];
-  v5 = [v6 view];
-  [v5 setAlpha:v4];
+  dynamicControllsViewController = [(CCUIHeaderPocketView *)self dynamicControllsViewController];
+  view = [dynamicControllsViewController view];
+  [view setAlpha:v4];
   [(UIButton *)self->_editButton setAlpha:v4];
   [(CCUIPowerButton *)self->_powerButton setAlpha:v4];
 }
 
-- (void)_preheatEntityIconsForAttributions:(id)a3
+- (void)_preheatEntityIconsForAttributions:(id)attributions
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  attributionsCopy = attributions;
   v4 = +[CCUISensorEntityIconCache sharedInstance];
-  v5 = CCUIUniqueSensorAttributionEntitiesForSensorActivityData(v3, 1);
+  v5 = CCUIUniqueSensorAttributionEntitiesForSensorActivityData(attributionsCopy, 1);
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -1370,14 +1370,14 @@ void __44__CCUIHeaderPocketView__configureTopButtons__block_invoke(uint64_t a1)
 
 - (void)_dismissControlCenterAndLaunchGameOverlay
 {
-  v3 = [MEMORY[0x277CFC828] sharedService];
+  mEMORY[0x277CFC828] = [MEMORY[0x277CFC828] sharedService];
   objc_initWeak(&location, self);
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __65__CCUIHeaderPocketView__dismissControlCenterAndLaunchGameOverlay__block_invoke;
   v4[3] = &unk_278382358;
   objc_copyWeak(&v5, &location);
-  [v3 handleControlCenterOperationType:2 completionHandler:v4];
+  [mEMORY[0x277CFC828] handleControlCenterOperationType:2 completionHandler:v4];
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
 }
@@ -1399,17 +1399,17 @@ void __65__CCUIHeaderPocketView__dismissControlCenterAndLaunchGameOverlay__block
   }
 }
 
-- (double)yOriginForCompactControlForFrame:(CGRect)a3
+- (double)yOriginForCompactControlForFrame:(CGRect)frame
 {
-  Height = CGRectGetHeight(a3);
+  Height = CGRectGetHeight(frame);
   [(CCUIHeaderPocketView *)self contentBounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
   [(CCUIStatusBar *)self->_statusBar sizeThatFits:v12, v14];
-  v16 = [MEMORY[0x277D75418] currentDevice];
-  if (![v16 userInterfaceIdiom] && (self->_interfaceOrientation - 3) <= 1)
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if (![currentDevice userInterfaceIdiom] && (self->_interfaceOrientation - 3) <= 1)
   {
     CCUILandscapeGridLayoutTopMargin();
     CCUIStatusBarBaselineHeight();
@@ -1428,26 +1428,26 @@ void __65__CCUIHeaderPocketView__dismissControlCenterAndLaunchGameOverlay__block
   if (self->_mode != 2)
   {
     v19 = Height * 0.5;
-    v20 = [MEMORY[0x277D75418] currentDevice];
-    v21 = [v20 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice2 userInterfaceIdiom];
 
-    if (v21 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v17 = -v19;
       goto LABEL_118;
     }
 
     v48 = v19;
-    v22 = (self->_interfaceOrientation - 3);
+    currentDevice3 = (self->_interfaceOrientation - 3);
     CCUIReferenceScreenBounds();
     Width = CGRectGetWidth(v58);
     v46 = Width;
-    if (v22 > 1)
+    if (currentDevice3 > 1)
     {
       if (Width >= 1024.0)
       {
-        v22 = [MEMORY[0x277D75418] currentDevice];
-        if ([v22 userInterfaceIdiom] == 1)
+        currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+        if ([currentDevice3 userInterfaceIdiom] == 1)
         {
           v24 = 30.0;
           if (SBFEffectiveHomeButtonType() != 2)
@@ -1461,8 +1461,8 @@ void __65__CCUIHeaderPocketView__dismissControlCenterAndLaunchGameOverlay__block
       v44 = CGRectGetWidth(v60);
       if (v44 >= 1024.0)
       {
-        v21 = [MEMORY[0x277D75418] currentDevice];
-        if ([v21 userInterfaceIdiom] == 1)
+        userInterfaceIdiom = [MEMORY[0x277D75418] currentDevice];
+        if ([userInterfaceIdiom userInterfaceIdiom] == 1)
         {
           v24 = 30.0;
           if (SBFEffectiveHomeButtonType() == 2)
@@ -1486,14 +1486,14 @@ LABEL_116:
 
       CCUIReferenceScreenBounds();
       v42 = CGRectGetWidth(v61);
-      if (v42 < 834.0 || ([MEMORY[0x277D75418] currentDevice], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "userInterfaceIdiom") != 1) || (v24 = 30.0, SBFEffectiveHomeButtonType() != 2))
+      if (v42 < 834.0 || ([MEMORY[0x277D75418] currentDevice], currentDevice6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(currentDevice6, "userInterfaceIdiom") != 1) || (v24 = 30.0, SBFEffectiveHomeButtonType() != 2))
       {
         CCUIReferenceScreenBounds();
         v40 = CGRectGetWidth(v62);
         if (v40 >= 834.0)
         {
-          v5 = [MEMORY[0x277D75418] currentDevice];
-          if ([v5 userInterfaceIdiom] == 1)
+          currentDevice4 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice4 userInterfaceIdiom] == 1)
           {
             v24 = 30.0;
             if (SBFEffectiveHomeButtonType() != 2)
@@ -1511,9 +1511,9 @@ LABEL_111:
           }
         }
 
-        v26 = [MEMORY[0x277D75418] currentDevice];
+        currentDevice5 = [MEMORY[0x277D75418] currentDevice];
         v24 = 30.0;
-        if ([v26 userInterfaceIdiom] == 1)
+        if ([currentDevice5 userInterfaceIdiom] == 1)
         {
           goto LABEL_109;
         }
@@ -1601,8 +1601,8 @@ LABEL_108:
     {
       if (Width >= 1024.0)
       {
-        v22 = [MEMORY[0x277D75418] currentDevice];
-        if ([v22 userInterfaceIdiom] == 1)
+        currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+        if ([currentDevice3 userInterfaceIdiom] == 1)
         {
           v24 = 0.0;
           if (SBFEffectiveHomeButtonType() != 2)
@@ -1616,8 +1616,8 @@ LABEL_108:
       v25 = CGRectGetWidth(v59);
       if (v25 >= 1024.0)
       {
-        v21 = [MEMORY[0x277D75418] currentDevice];
-        if ([v21 userInterfaceIdiom] == 1 && SBFEffectiveHomeButtonType() == 2)
+        userInterfaceIdiom = [MEMORY[0x277D75418] currentDevice];
+        if ([userInterfaceIdiom userInterfaceIdiom] == 1 && SBFEffectiveHomeButtonType() == 2)
         {
 
           v24 = 0.0;
@@ -1628,14 +1628,14 @@ LABEL_108:
       v44 = v25;
       CCUIReferenceScreenBounds();
       v42 = CGRectGetWidth(v66);
-      if (v42 < 834.0 || ([MEMORY[0x277D75418] currentDevice], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "userInterfaceIdiom") != 1) || (v24 = 0.0, SBFEffectiveHomeButtonType() != 2))
+      if (v42 < 834.0 || ([MEMORY[0x277D75418] currentDevice], currentDevice6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(currentDevice6, "userInterfaceIdiom") != 1) || (v24 = 0.0, SBFEffectiveHomeButtonType() != 2))
       {
         CCUIReferenceScreenBounds();
         v27 = CGRectGetWidth(v67);
         if (v27 >= 834.0)
         {
-          v5 = [MEMORY[0x277D75418] currentDevice];
-          if ([v5 userInterfaceIdiom] == 1 && SBFEffectiveHomeButtonType() != 2)
+          currentDevice4 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice4 userInterfaceIdiom] == 1 && SBFEffectiveHomeButtonType() != 2)
           {
 
             v24 = 0.0;
@@ -1644,9 +1644,9 @@ LABEL_108:
         }
 
         v40 = v27;
-        v26 = [MEMORY[0x277D75418] currentDevice];
+        currentDevice5 = [MEMORY[0x277D75418] currentDevice];
         v24 = 0.0;
-        if ([v26 userInterfaceIdiom] == 1)
+        if ([currentDevice5 userInterfaceIdiom] == 1)
         {
           goto LABEL_109;
         }
@@ -1746,8 +1746,8 @@ LABEL_113:
   v47 = CGRectGetWidth(v51);
   if (v47 >= 1024.0)
   {
-    v16 = [MEMORY[0x277D75418] currentDevice];
-    if ([v16 userInterfaceIdiom] == 1)
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice userInterfaceIdiom] == 1)
     {
       v17 = 30.0;
       if (SBFEffectiveHomeButtonType() != 2)
@@ -1765,8 +1765,8 @@ LABEL_113:
     v43 = CGRectGetWidth(v53);
     if (v43 >= 834.0)
     {
-      v4 = [MEMORY[0x277D75418] currentDevice];
-      if ([v4 userInterfaceIdiom] == 1)
+      currentDevice6 = [MEMORY[0x277D75418] currentDevice];
+      if ([currentDevice6 userInterfaceIdiom] == 1)
       {
         v17 = 30.0;
         if (SBFEffectiveHomeButtonType() == 2)
@@ -1788,8 +1788,8 @@ LABEL_89:
     v41 = CGRectGetWidth(v54);
     if (v41 >= 834.0)
     {
-      v5 = [MEMORY[0x277D75418] currentDevice];
-      if ([v5 userInterfaceIdiom] == 1)
+      currentDevice4 = [MEMORY[0x277D75418] currentDevice];
+      if ([currentDevice4 userInterfaceIdiom] == 1)
       {
         v17 = 30.0;
         if (SBFEffectiveHomeButtonType() != 2)
@@ -1807,9 +1807,9 @@ LABEL_87:
       }
     }
 
-    v18 = [MEMORY[0x277D75418] currentDevice];
+    currentDevice7 = [MEMORY[0x277D75418] currentDevice];
     v17 = 30.0;
-    if ([v18 userInterfaceIdiom] != 1)
+    if ([currentDevice7 userInterfaceIdiom] != 1)
     {
       CCUIReferenceScreenBounds();
       if (CGRectGetWidth(v55) >= 430.0)
@@ -1896,13 +1896,13 @@ LABEL_118:
   UIRectCenteredXInRect();
   if (SBFEffectiveHomeButtonType() == 2 || ([MEMORY[0x277D75418] currentDevice], v32 = objc_claimAutoreleasedReturnValue(), v33 = objc_msgSend(v32, "userInterfaceIdiom"), v32, v33))
   {
-    v34 = [MEMORY[0x277D75418] currentDevice];
-    v35 = [v34 userInterfaceIdiom];
+    currentDevice8 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom2 = [currentDevice8 userInterfaceIdiom];
 
-    if (v35 == 1)
+    if (userInterfaceIdiom2 == 1)
     {
-      v36 = [(CCUIHeaderPocketView *)self editButton];
-      [v36 frame];
+      editButton = [(CCUIHeaderPocketView *)self editButton];
+      [editButton frame];
       v17 = CGRectGetMaxY(v92) + 5.0;
     }
 

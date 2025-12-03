@@ -1,11 +1,11 @@
 @interface _PUIPosterSnapshotCapture
-- (BOOL)_captureLevelSet:(id)a3 error:(id *)a4;
-- (BOOL)_setupCaptureForLevelSet:(id)a3 error:(id *)a4;
+- (BOOL)_captureLevelSet:(id)set error:(id *)error;
+- (BOOL)_setupCaptureForLevelSet:(id)set error:(id *)error;
 - (_PUIPosterSnapshotCapture)init;
-- (_PUIPosterSnapshotCapture)initWithScene:(id)a3 captureController:(id)a4 snapshotDescriptor:(id)a5 outputURL:(id)a6;
-- (void)_attemptSnapshot:(id)a3;
+- (_PUIPosterSnapshotCapture)initWithScene:(id)scene captureController:(id)controller snapshotDescriptor:(id)descriptor outputURL:(id)l;
+- (void)_attemptSnapshot:(id)snapshot;
 - (void)_cleanup;
-- (void)_finishCaptureWithError:(id)a3;
+- (void)_finishCaptureWithError:(id)error;
 - (void)_fire;
 - (void)dealloc;
 - (void)invalidate;
@@ -21,24 +21,24 @@
   return 0;
 }
 
-- (_PUIPosterSnapshotCapture)initWithScene:(id)a3 captureController:(id)a4 snapshotDescriptor:(id)a5 outputURL:(id)a6
+- (_PUIPosterSnapshotCapture)initWithScene:(id)scene captureController:(id)controller snapshotDescriptor:(id)descriptor outputURL:(id)l
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (!v12)
+  sceneCopy = scene;
+  controllerCopy = controller;
+  descriptorCopy = descriptor;
+  lCopy = l;
+  if (!sceneCopy)
   {
     [_PUIPosterSnapshotCapture initWithScene:a2 captureController:? snapshotDescriptor:? outputURL:?];
   }
 
-  if (!v14)
+  if (!descriptorCopy)
   {
     [_PUIPosterSnapshotCapture initWithScene:a2 captureController:? snapshotDescriptor:? outputURL:?];
   }
 
-  v16 = v15;
-  if (!v15)
+  v16 = lCopy;
+  if (!lCopy)
   {
     [_PUIPosterSnapshotCapture initWithScene:a2 captureController:? snapshotDescriptor:? outputURL:?];
   }
@@ -49,10 +49,10 @@
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_scene, a3);
-    objc_storeStrong(&v18->_captureController, a4);
-    objc_storeStrong(&v18->_snapshotDescriptor, a5);
-    objc_storeStrong(&v18->_outputURL, a6);
+    objc_storeStrong(&v17->_scene, scene);
+    objc_storeStrong(&v18->_captureController, controller);
+    objc_storeStrong(&v18->_snapshotDescriptor, descriptor);
+    objc_storeStrong(&v18->_outputURL, l);
     v19 = objc_opt_new();
     cleanedUpSignal = v18->_cleanedUpSignal;
     v18->_cleanedUpSignal = v19;
@@ -87,9 +87,9 @@
   _os_log_error_impl(v0, v1, v2, v3, v4, 0x16u);
 }
 
-- (void)_attemptSnapshot:(id)a3
+- (void)_attemptSnapshot:(id)snapshot
 {
-  v4 = a3;
+  snapshotCopy = snapshot;
   BSDispatchQueueAssertMain();
   v5 = PUILogSnapshotting();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -103,7 +103,7 @@
   v41[2] = __46___PUIPosterSnapshotCapture__attemptSnapshot___block_invoke;
   v41[3] = &unk_1E7854C68;
   objc_copyWeak(&v43, &location);
-  v6 = v4;
+  v6 = snapshotCopy;
   v42 = v6;
   v7 = MEMORY[0x1AC5769F0](v41);
   v8 = v7;
@@ -114,14 +114,14 @@
 
   else
   {
-    v9 = [(PUIPosterSnapshotDescriptor *)self->_snapshotDescriptor hostDescriptor];
-    v10 = [v9 waitUntilReady];
+    hostDescriptor = [(PUIPosterSnapshotDescriptor *)self->_snapshotDescriptor hostDescriptor];
+    waitUntilReady = [hostDescriptor waitUntilReady];
 
-    if (v10)
+    if (waitUntilReady)
     {
-      v11 = [(_PUIPosterSnapshotCapture *)self scene];
+      scene = [(_PUIPosterSnapshotCapture *)self scene];
       v40 = 0;
-      v12 = [v11 pui_sceneIsReadyToSnapshot:&v40];
+      v12 = [scene pui_sceneIsReadyToSnapshot:&v40];
       v13 = v40;
 
       if (v12)
@@ -144,8 +144,8 @@
         v37 = __Block_byref_object_copy__0;
         v38 = __Block_byref_object_dispose__0;
         v16 = [PUIPosterSnapshotReadinessSceneObserver alloc];
-        v17 = [(_PUIPosterSnapshotCapture *)self scene];
-        v39 = [(PUIPosterSnapshotReadinessSceneObserver *)v16 initWithFBSScene:v17];
+        scene2 = [(_PUIPosterSnapshotCapture *)self scene];
+        v39 = [(PUIPosterSnapshotReadinessSceneObserver *)v16 initWithFBSScene:scene2];
 
         v18 = objc_opt_new();
         v30[0] = MEMORY[0x1E69E9820];
@@ -202,64 +202,64 @@
   objc_destroyWeak(&location);
 }
 
-- (BOOL)_setupCaptureForLevelSet:(id)a3 error:(id *)a4
+- (BOOL)_setupCaptureForLevelSet:(id)set error:(id *)error
 {
-  v5 = a3;
+  setCopy = set;
   BSDispatchQueueAssertMain();
-  v6 = [(BSMutableOrderedDictionary *)self->_environmentOverridesForLevelSet objectForKey:v5];
+  v6 = [(BSMutableOrderedDictionary *)self->_environmentOverridesForLevelSet objectForKey:setCopy];
 
   if ((BSEqualObjects() & 1) == 0)
   {
     objc_storeStrong(&self->_lastEmittedEnvironmentOverrides, v6);
-    v7 = [(_PUIPosterSnapshotCapture *)self captureController];
-    v8 = [v7 delegate];
-    v9 = [(_PUIPosterSnapshotCapture *)self captureController];
-    [v8 captureController:v9 needsEnvironmentUpdate:v6];
+    captureController = [(_PUIPosterSnapshotCapture *)self captureController];
+    delegate = [captureController delegate];
+    captureController2 = [(_PUIPosterSnapshotCapture *)self captureController];
+    [delegate captureController:captureController2 needsEnvironmentUpdate:v6];
   }
 
   return 1;
 }
 
-- (BOOL)_captureLevelSet:(id)a3 error:(id *)a4
+- (BOOL)_captureLevelSet:(id)set error:(id *)error
 {
   v109 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  setCopy = set;
   BSDispatchQueueAssertMain();
-  v6 = [(_PUIPosterSnapshotCapture *)self scene];
-  v7 = [v6 settings];
+  scene = [(_PUIPosterSnapshotCapture *)self scene];
+  settings = [scene settings];
   v8 = PUILogSnapshotting();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf.a) = 134218496;
     *(&buf.a + 4) = self;
     WORD2(buf.b) = 2048;
-    *(&buf.b + 6) = [v7 pui_deviceOrientation];
+    *(&buf.b + 6) = [settings pui_deviceOrientation];
     HIWORD(buf.c) = 2048;
-    *&buf.d = [v7 pui_userInterfaceStyle];
+    *&buf.d = [settings pui_userInterfaceStyle];
     _os_log_impl(&dword_1A8C85000, v8, OS_LOG_TYPE_DEFAULT, "(capture %p) capturing snapshot for interface orientation %lu user interface style %lu", &buf, 0x20u);
   }
 
-  v9 = [(PUIPosterSnapshotDescriptor *)self->_snapshotDescriptor sceneDescriptor];
-  v10 = [(PUIPosterSnapshotDescriptor *)self->_snapshotDescriptor output];
-  [v10 persistenceScale];
+  sceneDescriptor = [(PUIPosterSnapshotDescriptor *)self->_snapshotDescriptor sceneDescriptor];
+  output = [(PUIPosterSnapshotDescriptor *)self->_snapshotDescriptor output];
+  [output persistenceScale];
   v12 = v11;
 
-  v13 = [v7 displayConfiguration];
+  displayConfiguration = [settings displayConfiguration];
   v77 = self->_builder;
-  [v13 pointScale];
+  [displayConfiguration pointScale];
   v15 = v14;
-  v72 = [v7 interfaceOrientation];
-  v71 = [v7 pui_deviceOrientation];
-  [v13 pointScale];
+  interfaceOrientation = [settings interfaceOrientation];
+  pui_deviceOrientation = [settings pui_deviceOrientation];
+  [displayConfiguration pointScale];
   v17 = v16;
-  v75 = v13;
-  [v13 bounds];
+  v75 = displayConfiguration;
+  [displayConfiguration bounds];
   v20 = v18;
   v21 = v19;
-  v76 = v9;
-  if (v9)
+  v76 = sceneDescriptor;
+  if (sceneDescriptor)
   {
-    [v9 canvasBounds];
+    [sceneDescriptor canvasBounds];
   }
 
   memset(&buf, 0, sizeof(buf));
@@ -271,29 +271,29 @@
   v100[3] = &unk_1E7854CE0;
   v23 = v22;
   v101 = v23;
-  v24 = v6;
+  v24 = scene;
   v102 = v24;
   v103 = buf;
-  [v5 enumerateLevels:v100];
+  [setCopy enumerateLevels:v100];
   v25 = objc_opt_new();
   v78 = v24;
-  if ([v5 isCompositeLevelSet])
+  if ([setCopy isCompositeLevelSet])
   {
     v98 = 0uLL;
     v99 = 0uLL;
     v96 = 0uLL;
     v97 = 0uLL;
-    v26 = [(NSMutableDictionary *)v23 allKeys];
-    v27 = [v26 sortedArrayUsingSelector:sel_compare_];
+    allKeys = [(NSMutableDictionary *)v23 allKeys];
+    sortedLevels = [allKeys sortedArrayUsingSelector:sel_compare_];
 
-    v28 = [v27 countByEnumeratingWithState:&v96 objects:v107 count:16];
+    v28 = [sortedLevels countByEnumeratingWithState:&v96 objects:v107 count:16];
     if (!v28)
     {
       goto LABEL_26;
     }
 
     v29 = v28;
-    v30 = v5;
+    v30 = setCopy;
     v31 = *v97;
     do
     {
@@ -301,7 +301,7 @@
       {
         if (*v97 != v31)
         {
-          objc_enumerationMutation(v27);
+          objc_enumerationMutation(sortedLevels);
         }
 
         v33 = [(NSMutableDictionary *)v23 objectForKey:*(*(&v96 + 1) + 8 * i)];
@@ -311,7 +311,7 @@
         }
       }
 
-      v29 = [v27 countByEnumeratingWithState:&v96 objects:v107 count:16];
+      v29 = [sortedLevels countByEnumeratingWithState:&v96 objects:v107 count:16];
     }
 
     while (v29);
@@ -323,15 +323,15 @@
     v95 = 0uLL;
     v92 = 0uLL;
     v93 = 0uLL;
-    v27 = [v5 sortedLevels];
-    v34 = [v27 countByEnumeratingWithState:&v92 objects:v106 count:16];
+    sortedLevels = [setCopy sortedLevels];
+    v34 = [sortedLevels countByEnumeratingWithState:&v92 objects:v106 count:16];
     if (!v34)
     {
       goto LABEL_26;
     }
 
     v35 = v34;
-    v30 = v5;
+    v30 = setCopy;
     v36 = *v93;
     do
     {
@@ -339,7 +339,7 @@
       {
         if (*v93 != v36)
         {
-          objc_enumerationMutation(v27);
+          objc_enumerationMutation(sortedLevels);
         }
 
         v38 = [(NSMutableDictionary *)v23 objectForKey:*(*(&v92 + 1) + 8 * j)];
@@ -349,13 +349,13 @@
         }
       }
 
-      v35 = [v27 countByEnumeratingWithState:&v92 objects:v106 count:16];
+      v35 = [sortedLevels countByEnumeratingWithState:&v92 objects:v106 count:16];
     }
 
     while (v35);
   }
 
-  v5 = v30;
+  setCopy = v30;
   v24 = v78;
 LABEL_26:
 
@@ -368,11 +368,11 @@ LABEL_26:
     v89[3] = &unk_1E78548A0;
     v44 = v77;
     v90 = v77;
-    v91 = v5;
+    v91 = setCopy;
     [(NSOperationQueue *)writeQueue addOperationWithBlock:v89];
 
-    v45 = 1;
-    v42 = v90;
+    capture = 1;
+    pui_fallbackSnapshotImage = v90;
     goto LABEL_44;
   }
 
@@ -384,16 +384,16 @@ LABEL_26:
   else
   {
     v40 = +[PUIPosterLevelSet floatingLevelSet];
-    v41 = [v5 isEqualToLevelSet:v40];
+    v41 = [setCopy isEqualToLevelSet:v40];
 
     if (v41)
     {
-      v42 = [MEMORY[0x1E69DCAB8] pui_fallbackSnapshotImage];
+      pui_fallbackSnapshotImage = [MEMORY[0x1E69DCAB8] pui_fallbackSnapshotImage];
       v43 = +[PUIPosterLevelSet floatingLevelSet];
       v44 = v77;
-      [(PUIPosterSnapshotBundleBuilder *)v77 setImage:v42 forLevelSet:v43];
+      [(PUIPosterSnapshotBundleBuilder *)v77 setImage:pui_fallbackSnapshotImage forLevelSet:v43];
 
-      v45 = 1;
+      capture = 1;
       v24 = v78;
       goto LABEL_44;
     }
@@ -401,26 +401,26 @@ LABEL_26:
 
   v46 = MEMORY[0x1E699FC48];
   v24 = v78;
-  v47 = [v78 identifier];
-  v42 = [v46 contextWithSceneID:v47 settings:v7];
+  identifier = [v78 identifier];
+  pui_fallbackSnapshotImage = [v46 contextWithSceneID:identifier settings:settings];
 
-  v48 = [objc_alloc(MEMORY[0x1E699F7E8]) initWithFBSContext:v42];
+  v48 = [objc_alloc(MEMORY[0x1E699F7E8]) initWithFBSContext:pui_fallbackSnapshotImage];
   v49 = [[_PUIFBSSceneSnapshot alloc] initWithScene:v78 snapshotContext:v48 layers:v25];
-  v45 = [(_PUIFBSSceneSnapshot *)v49 capture];
-  if (v45)
+  capture = [(_PUIFBSSceneSnapshot *)v49 capture];
+  if (capture)
   {
     if (!self->_hasCapturedSalientContentRect)
     {
-      v50 = [v78 clientSettings];
-      v74 = v5;
-      v51 = [v50 pui_adaptiveTimeMode];
+      clientSettings = [v78 clientSettings];
+      v74 = setCopy;
+      pui_adaptiveTimeMode = [clientSettings pui_adaptiveTimeMode];
 
-      v52 = v51 == 2;
-      v5 = v74;
+      v52 = pui_adaptiveTimeMode == 2;
+      setCopy = v74;
       if (v52)
       {
-        v53 = [v78 clientSettings];
-        [v53 pui_preferredSalientContentRectangle];
+        clientSettings2 = [v78 clientSettings];
+        [clientSettings2 pui_preferredSalientContentRectangle];
         v55 = v54;
         v57 = v56;
         v59 = v58;
@@ -462,13 +462,13 @@ LABEL_26:
     v79[2] = __52___PUIPosterSnapshotCapture__captureLevelSet_error___block_invoke_79;
     v79[3] = &unk_1E7854D08;
     v80 = v49;
-    v85 = v72;
-    v86 = v71;
+    v85 = interfaceOrientation;
+    v86 = pui_deviceOrientation;
     v87 = v15;
     v44 = v77;
     v81 = v77;
-    v82 = v7;
-    v83 = v5;
+    v82 = settings;
+    v83 = setCopy;
     v88 = v12;
     v84 = v78;
     v66 = v65;
@@ -481,22 +481,22 @@ LABEL_26:
   else
   {
     v68 = PFFunctionNameForAddress();
-    *a4 = PFGeneralErrorFromObjectWithLocalizedFailureReason();
+    *error = PFGeneralErrorFromObjectWithLocalizedFailureReason();
 
     v44 = v77;
   }
 
 LABEL_44:
-  return v45;
+  return capture;
 }
 
-- (void)_finishCaptureWithError:(id)a3
+- (void)_finishCaptureWithError:(id)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_finished)
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_finished)
   {
     v6 = PUILogSnapshotting();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -507,27 +507,27 @@ LABEL_44:
 
   else
   {
-    v5->_finished = 1;
-    startTime = v5->_startTime;
-    v6 = v5->_future;
-    v8 = v5->_builder;
-    objc_initWeak(&location, v5);
-    if (v4)
+    selfCopy->_finished = 1;
+    startTime = selfCopy->_startTime;
+    v6 = selfCopy->_future;
+    v8 = selfCopy->_builder;
+    objc_initWeak(&location, selfCopy);
+    if (errorCopy)
     {
       v9 = PUILogSnapshotting();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         Current = CFAbsoluteTimeGetCurrent();
         *buf = 134218498;
-        v32 = v5;
+        v32 = selfCopy;
         v33 = 2114;
-        v34 = v4;
+        v34 = errorCopy;
         v35 = 2048;
         v36 = Current - startTime;
         _os_log_error_impl(&dword_1A8C85000, v9, OS_LOG_TYPE_ERROR, "(%p) Snapshot failed to capture: %{public}@; capture time %f", buf, 0x20u);
       }
 
-      [v6 finishWithError:v4];
+      [v6 finishWithError:errorCopy];
       v10 = dispatch_get_global_queue(17, 0);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
@@ -541,24 +541,24 @@ LABEL_44:
 
     else
     {
-      builder = v5->_builder;
-      v5->_builder = 0;
+      builder = selfCopy->_builder;
+      selfCopy->_builder = 0;
 
-      v12 = v5->_outputURL;
-      v13 = [(_PUIPosterSnapshotCapture *)v5 scene];
-      v14 = [v13 settings];
+      v12 = selfCopy->_outputURL;
+      scene = [(_PUIPosterSnapshotCapture *)selfCopy scene];
+      settings = [scene settings];
 
-      v15 = [(PUIPosterSnapshotDescriptor *)v5->_snapshotDescriptor analysis];
-      v16 = [v15 determineColorStatistics];
+      analysis = [(PUIPosterSnapshotDescriptor *)selfCopy->_snapshotDescriptor analysis];
+      determineColorStatistics = [analysis determineColorStatistics];
 
-      writeQueue = v5->_writeQueue;
+      writeQueue = selfCopy->_writeQueue;
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __53___PUIPosterSnapshotCapture__finishCaptureWithError___block_invoke_2;
       v21[3] = &unk_1E7854D30;
-      v27 = v16;
+      v27 = determineColorStatistics;
       v22 = v8;
-      v18 = v14;
+      v18 = settings;
       v23 = v18;
       v19 = v12;
       v24 = v19;
@@ -573,68 +573,68 @@ LABEL_44:
     objc_destroyWeak(&location);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_cleanup
 {
   v20 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_finished)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_finished)
   {
-    if ([(BSAtomicSignal *)v2->_cleanedUpSignal signal])
+    if ([(BSAtomicSignal *)selfCopy->_cleanedUpSignal signal])
     {
       v3 = PUILogSnapshotting();
       if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v19 = v2;
+        v19 = selfCopy;
         _os_log_impl(&dword_1A8C85000, v3, OS_LOG_TYPE_DEFAULT, "(%p) Cleaning up...", buf, 0xCu);
       }
 
-      captureController = v2->_captureController;
-      v2->_captureController = 0;
+      captureController = selfCopy->_captureController;
+      selfCopy->_captureController = 0;
 
-      v5 = v2->_builder;
+      v5 = selfCopy->_builder;
       p_super = &v5->super;
       if (v5)
       {
-        writeQueue = v2->_writeQueue;
+        writeQueue = selfCopy->_writeQueue;
         v16[0] = MEMORY[0x1E69E9820];
         v16[1] = 3221225472;
         v16[2] = __37___PUIPosterSnapshotCapture__cleanup__block_invoke;
         v16[3] = &unk_1E7854320;
         v17 = v5;
         [(NSOperationQueue *)writeQueue addBarrierBlock:v16];
-        builder = v2->_builder;
-        v2->_builder = 0;
+        builder = selfCopy->_builder;
+        selfCopy->_builder = 0;
       }
 
-      v9 = v2->_writeQueue;
-      v2->_writeQueue = 0;
+      v9 = selfCopy->_writeQueue;
+      selfCopy->_writeQueue = 0;
 
-      scene = v2->_scene;
-      v2->_scene = 0;
+      scene = selfCopy->_scene;
+      selfCopy->_scene = 0;
 
-      snapshotLayerForLevel = v2->_snapshotLayerForLevel;
-      v2->_snapshotLayerForLevel = 0;
+      snapshotLayerForLevel = selfCopy->_snapshotLayerForLevel;
+      selfCopy->_snapshotLayerForLevel = 0;
 
-      environmentOverridesForLevelSet = v2->_environmentOverridesForLevelSet;
-      v2->_environmentOverridesForLevelSet = 0;
+      environmentOverridesForLevelSet = selfCopy->_environmentOverridesForLevelSet;
+      selfCopy->_environmentOverridesForLevelSet = 0;
 
-      levelSetEnumerator = v2->_levelSetEnumerator;
-      v2->_levelSetEnumerator = 0;
+      levelSetEnumerator = selfCopy->_levelSetEnumerator;
+      selfCopy->_levelSetEnumerator = 0;
 
-      [(RBSAssertion *)v2->_assertion invalidate];
-      assertion = v2->_assertion;
-      v2->_assertion = 0;
+      [(RBSAssertion *)selfCopy->_assertion invalidate];
+      assertion = selfCopy->_assertion;
+      selfCopy->_assertion = 0;
 
       v15 = PUILogSnapshotting();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v19 = v2;
+        v19 = selfCopy;
         _os_log_impl(&dword_1A8C85000, v15, OS_LOG_TYPE_DEFAULT, "(%p) Cleaned up complete", buf, 0xCu);
       }
     }
@@ -658,7 +658,7 @@ LABEL_44:
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)invalidate
@@ -668,7 +668,7 @@ LABEL_44:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A8C85000, v3, OS_LOG_TYPE_DEFAULT, "(%p) Invalidating _PUIPosterSnapshotCapture...", buf, 0xCu);
   }
 

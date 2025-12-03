@@ -1,20 +1,20 @@
 @interface CSDPodcastRecordingActivityManager
-- (CSDPodcastRecordingActivityManager)initWithFeatureFlags:(id)a3;
+- (CSDPodcastRecordingActivityManager)initWithFeatureFlags:(id)flags;
 - (void)startObservingSessions;
 @end
 
 @implementation CSDPodcastRecordingActivityManager
 
-- (CSDPodcastRecordingActivityManager)initWithFeatureFlags:(id)a3
+- (CSDPodcastRecordingActivityManager)initWithFeatureFlags:(id)flags
 {
-  v3 = a3;
+  flagsCopy = flags;
   sub_10033569C();
   return result;
 }
 
 - (void)startObservingSessions
 {
-  v2 = self;
+  selfCopy = self;
   PodcastRecordingActivityManager.startObservingSessions()();
 }
 

@@ -1,44 +1,44 @@
 @interface CPLCloudKitManageScopeTask
-- (BOOL)checkScopeIsValidWithError:(id *)a3;
-- (CPLCloudKitManageScopeTask)initWithController:(id)a3 scope:(id)a4;
+- (BOOL)checkScopeIsValidWithError:(id *)error;
+- (CPLCloudKitManageScopeTask)initWithController:(id)controller scope:(id)scope;
 - (CPLCloudKitScope)cloudKitScope;
 - (CPLCloudKitZoneIdentification)identification;
 - (CPLEngineScope)engineScope;
-- (void)fetchShareParticipantsForParticipants:(id)a3 completionBlock:(id)a4;
-- (void)resetCloudKitScope:(id)a3;
+- (void)fetchShareParticipantsForParticipants:(id)participants completionBlock:(id)block;
+- (void)resetCloudKitScope:(id)scope;
 @end
 
 @implementation CPLCloudKitManageScopeTask
 
-- (CPLCloudKitManageScopeTask)initWithController:(id)a3 scope:(id)a4
+- (CPLCloudKitManageScopeTask)initWithController:(id)controller scope:(id)scope
 {
-  v7 = a4;
+  scopeCopy = scope;
   v11.receiver = self;
   v11.super_class = CPLCloudKitManageScopeTask;
-  v8 = [(CPLCloudKitTransportTask *)&v11 initWithController:a3];
+  v8 = [(CPLCloudKitTransportTask *)&v11 initWithController:controller];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_scope, a4);
+    objc_storeStrong(&v8->_scope, scope);
   }
 
   return v9;
 }
 
-- (BOOL)checkScopeIsValidWithError:(id *)a3
+- (BOOL)checkScopeIsValidWithError:(id *)error
 {
   if (![(CPLScopeChange *)self->_scope needsToSetScopeIdentifier])
   {
     return 1;
   }
 
-  v5 = [(CPLCloudKitTransportTask *)self controller];
-  v6 = [(CPLCloudKitManageScopeTask *)self cloudKitScope];
-  v7 = [(CPLCloudKitManageScopeTask *)self engineScope];
-  v8 = [v5 zoneIdentificationForCloudKitScope:v6 engineScope:v7];
+  controller = [(CPLCloudKitTransportTask *)self controller];
+  cloudKitScope = [(CPLCloudKitManageScopeTask *)self cloudKitScope];
+  engineScope = [(CPLCloudKitManageScopeTask *)self engineScope];
+  v8 = [controller zoneIdentificationForCloudKitScope:cloudKitScope engineScope:engineScope];
 
-  v9 = [(CPLCloudKitTransportTask *)self mainScopeIdentifier];
-  v10 = [v8 newScopeIdentifierRelativeToMainScopeIdentifier:v9];
+  mainScopeIdentifier = [(CPLCloudKitTransportTask *)self mainScopeIdentifier];
+  v10 = [v8 newScopeIdentifierRelativeToMainScopeIdentifier:mainScopeIdentifier];
 
   if (v10)
   {
@@ -72,9 +72,9 @@
     return 1;
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = [CPLErrors incorrectParametersErrorForParameter:@"scopeIdentifier"];
+    *error = [CPLErrors incorrectParametersErrorForParameter:@"scopeIdentifier"];
   }
 
   return 0;
@@ -84,18 +84,18 @@
 {
   if (self->_identification)
   {
-    v2 = [(CPLCloudKitZoneIdentification *)self->_identification engineScope];
+    engineScope = [(CPLCloudKitZoneIdentification *)self->_identification engineScope];
   }
 
   else
   {
-    v3 = [(CPLCloudKitManageScopeTask *)self scope];
+    scope = [(CPLCloudKitManageScopeTask *)self scope];
     v4 = [CPLEngineScope alloc];
-    v5 = [v3 scopeIdentifier];
-    v2 = [v4 initWithScopeIdentifier:v5 scopeType:{objc_msgSend(v3, "scopeType")}];
+    scopeIdentifier = [scope scopeIdentifier];
+    engineScope = [v4 initWithScopeIdentifier:scopeIdentifier scopeType:{objc_msgSend(scope, "scopeType")}];
   }
 
-  return v2;
+  return engineScope;
 }
 
 - (CPLCloudKitScope)cloudKitScope
@@ -103,18 +103,18 @@
   identification = self->_identification;
   if (identification)
   {
-    v4 = [(CPLCloudKitZoneIdentification *)identification cloudKitScope];
+    cloudKitScope = [(CPLCloudKitZoneIdentification *)identification cloudKitScope];
   }
 
   else
   {
-    v5 = [(CPLScopeChange *)self->_scope scopeIdentifier];
-    v6 = [(CPLCloudKitTransportTask *)self zoneIDFromScopeIdentifier:v5];
+    scopeIdentifier = [(CPLScopeChange *)self->_scope scopeIdentifier];
+    v6 = [(CPLCloudKitTransportTask *)self zoneIDFromScopeIdentifier:scopeIdentifier];
 
-    v4 = [[CPLCloudKitScope alloc] initWithZoneID:v6 options:0];
+    cloudKitScope = [[CPLCloudKitScope alloc] initWithZoneID:v6 options:0];
   }
 
-  return v4;
+  return cloudKitScope;
 }
 
 - (CPLCloudKitZoneIdentification)identification
@@ -122,10 +122,10 @@
   identification = self->_identification;
   if (!identification)
   {
-    v4 = [(CPLCloudKitTransportTask *)self controller];
-    v5 = [(CPLCloudKitManageScopeTask *)self cloudKitScope];
-    v6 = [(CPLCloudKitManageScopeTask *)self engineScope];
-    v7 = [v4 zoneIdentificationForCloudKitScope:v5 engineScope:v6];
+    controller = [(CPLCloudKitTransportTask *)self controller];
+    cloudKitScope = [(CPLCloudKitManageScopeTask *)self cloudKitScope];
+    engineScope = [(CPLCloudKitManageScopeTask *)self engineScope];
+    v7 = [controller zoneIdentificationForCloudKitScope:cloudKitScope engineScope:engineScope];
     v8 = self->_identification;
     self->_identification = v7;
 
@@ -135,33 +135,33 @@
   return identification;
 }
 
-- (void)resetCloudKitScope:(id)a3
+- (void)resetCloudKitScope:(id)scope
 {
-  v4 = a3;
-  v8 = [(CPLCloudKitTransportTask *)self controller];
-  v5 = [(CPLCloudKitManageScopeTask *)self engineScope];
-  v6 = [v8 zoneIdentificationForCloudKitScope:v4 engineScope:v5];
+  scopeCopy = scope;
+  controller = [(CPLCloudKitTransportTask *)self controller];
+  engineScope = [(CPLCloudKitManageScopeTask *)self engineScope];
+  v6 = [controller zoneIdentificationForCloudKitScope:scopeCopy engineScope:engineScope];
 
   identification = self->_identification;
   self->_identification = v6;
 }
 
-- (void)fetchShareParticipantsForParticipants:(id)a3 completionBlock:(id)a4
+- (void)fetchShareParticipantsForParticipants:(id)participants completionBlock:(id)block
 {
-  v36 = a3;
-  v35 = a4;
+  participantsCopy = participants;
+  blockCopy = block;
   v53 = 0;
-  v33 = self;
-  LOBYTE(a4) = [(CPLCloudKitTransportTask *)self shouldRunOperationsWithError:&v53];
+  selfCopy = self;
+  LOBYTE(block) = [(CPLCloudKitTransportTask *)self shouldRunOperationsWithError:&v53];
   v6 = v53;
   v34 = v6;
-  if ((a4 & 1) == 0)
+  if ((block & 1) == 0)
   {
-    (*(v35 + 2))(v35, 0, 0, v6);
+    (*(blockCopy + 2))(blockCopy, 0, 0, v6);
     goto LABEL_27;
   }
 
-  v7 = [v36 count];
+  v7 = [participantsCopy count];
   v38 = objc_alloc_init(NSMutableArray);
   v8 = [[NSMutableDictionary alloc] initWithCapacity:v7];
   v9 = [[NSMutableDictionary alloc] initWithCapacity:v7];
@@ -169,7 +169,7 @@
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  obj = v36;
+  obj = participantsCopy;
   v10 = [obj countByEnumeratingWithState:&v49 objects:v59 count:16];
   if (!v10)
   {
@@ -187,12 +187,12 @@
       }
 
       v13 = *(*(&v49 + 1) + 8 * i);
-      v14 = [v13 email];
+      email = [v13 email];
 
-      if (!v14 || (v15 = [CKUserIdentityLookupInfo alloc], [v13 email], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v15, "initWithEmailAddress:", v16), v16, !v17))
+      if (!email || (v15 = [CKUserIdentityLookupInfo alloc], [v13 email], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v15, "initWithEmailAddress:", v16), v16, !v17))
       {
-        v18 = [v13 phoneNumber];
-        v19 = v18 == 0;
+        phoneNumber = [v13 phoneNumber];
+        v19 = phoneNumber == 0;
 
         if (v19)
         {
@@ -202,16 +202,16 @@
         else
         {
           v20 = [CKUserIdentityLookupInfo alloc];
-          v21 = [v13 phoneNumber];
-          v17 = [v20 initWithPhoneNumber:v21];
+          phoneNumber2 = [v13 phoneNumber];
+          v17 = [v20 initWithPhoneNumber:phoneNumber2];
         }
       }
 
-      v22 = [v13 userIdentifier];
-      v23 = v22;
-      if (v17 || !v22)
+      userIdentifier = [v13 userIdentifier];
+      v23 = userIdentifier;
+      if (v17 || !userIdentifier)
       {
-        if (!v22)
+        if (!userIdentifier)
         {
           goto LABEL_17;
         }
@@ -220,8 +220,8 @@
       else
       {
         v24 = [CKRecordID alloc];
-        v25 = [v13 userIdentifier];
-        v26 = [v24 initWithRecordName:v25];
+        userIdentifier2 = [v13 userIdentifier];
+        v26 = [v24 initWithRecordName:userIdentifier2];
 
         v17 = [[CKUserIdentityLookupInfo alloc] initWithUserRecordID:v26];
       }
@@ -280,12 +280,12 @@ LABEL_25:
   v39[1] = 3221225472;
   v39[2] = sub_100049854;
   v39[3] = &unk_100274430;
-  v39[4] = v33;
+  v39[4] = selfCopy;
   v40 = obj;
-  v41 = v35;
+  v41 = blockCopy;
   v42 = &buf;
   [v31 setFetchShareParticipantsCompletionBlock:v39];
-  [(CPLCloudKitTransportTask *)v33 launchOperation:v31 type:0 withContext:0];
+  [(CPLCloudKitTransportTask *)selfCopy launchOperation:v31 type:0 withContext:0];
 
   _Block_object_dispose(&buf, 8);
 LABEL_27:

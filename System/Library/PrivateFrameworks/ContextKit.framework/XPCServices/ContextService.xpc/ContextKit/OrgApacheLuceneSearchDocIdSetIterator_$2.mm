@@ -1,30 +1,30 @@
 @interface OrgApacheLuceneSearchDocIdSetIterator_$2
-- (OrgApacheLuceneSearchDocIdSetIterator_$2)initWithInt:(int)a3;
-- (int)advanceWithInt:(int)a3;
+- (OrgApacheLuceneSearchDocIdSetIterator_$2)initWithInt:(int)int;
+- (int)advanceWithInt:(int)int;
 @end
 
 @implementation OrgApacheLuceneSearchDocIdSetIterator_$2
 
-- (int)advanceWithInt:(int)a3
+- (int)advanceWithInt:(int)int
 {
-  self->doc_ = a3;
-  if (self->val$maxDoc_ <= a3)
+  self->doc_ = int;
+  if (self->val$maxDoc_ <= int)
   {
-    v3 = 0x7FFFFFFF;
+    intCopy = 0x7FFFFFFF;
   }
 
   else
   {
-    v3 = a3;
+    intCopy = int;
   }
 
-  self->doc_ = v3;
-  return v3;
+  self->doc_ = intCopy;
+  return intCopy;
 }
 
-- (OrgApacheLuceneSearchDocIdSetIterator_$2)initWithInt:(int)a3
+- (OrgApacheLuceneSearchDocIdSetIterator_$2)initWithInt:(int)int
 {
-  self->val$maxDoc_ = a3;
+  self->val$maxDoc_ = int;
   self->doc_ = -1;
   return self;
 }

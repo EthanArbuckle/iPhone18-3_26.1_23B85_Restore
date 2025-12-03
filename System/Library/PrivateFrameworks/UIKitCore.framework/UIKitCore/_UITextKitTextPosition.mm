@@ -1,9 +1,9 @@
 @interface _UITextKitTextPosition
-+ (id)positionWithOffset:(int64_t)a3 affinity:(int64_t)a4;
-+ (id)positionWithTextContentManager:(id)a3 location:(id)a4 affinity:(int64_t)a5;
++ (id)positionWithOffset:(int64_t)offset affinity:(int64_t)affinity;
++ (id)positionWithTextContentManager:(id)manager location:(id)location affinity:(int64_t)affinity;
 - (_UITextKitTextPosition)init;
 - (id)description;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation _UITextKitTextPosition
@@ -22,44 +22,44 @@
   return result;
 }
 
-+ (id)positionWithOffset:(int64_t)a3 affinity:(int64_t)a4
++ (id)positionWithOffset:(int64_t)offset affinity:(int64_t)affinity
 {
   v6 = objc_opt_new();
-  v6[1] = a3;
-  v6[2] = a4;
+  v6[1] = offset;
+  v6[2] = affinity;
 
   return v6;
 }
 
-+ (id)positionWithTextContentManager:(id)a3 location:(id)a4 affinity:(int64_t)a5
++ (id)positionWithTextContentManager:(id)manager location:(id)location affinity:(int64_t)affinity
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 documentRange];
-  v11 = [v10 location];
-  v12 = [v9 offsetFromLocation:v11 toLocation:v8];
+  locationCopy = location;
+  managerCopy = manager;
+  documentRange = [managerCopy documentRange];
+  location = [documentRange location];
+  v12 = [managerCopy offsetFromLocation:location toLocation:locationCopy];
 
-  v13 = [a1 positionWithOffset:v12 affinity:a5];
+  v13 = [self positionWithOffset:v12 affinity:affinity];
   v14 = v13[3];
-  v13[3] = v8;
+  v13[3] = locationCopy;
 
   return v13;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v5 = a3;
-  if (!v5)
+  compareCopy = compare;
+  if (!compareCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"UITextKitTextViewEditingSupport.m" lineNumber:118 description:{@"Invalid parameter not satisfying: %@", @"pos"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITextKitTextViewEditingSupport.m" lineNumber:118 description:{@"Invalid parameter not satisfying: %@", @"pos"}];
   }
 
-  v6 = [(_UITextKitTextPosition *)self offset];
-  if (v6 <= [v5 offset])
+  offset = [(_UITextKitTextPosition *)self offset];
+  if (offset <= [compareCopy offset])
   {
-    v8 = [(_UITextKitTextPosition *)self offset];
-    if (v8 >= [v5 offset])
+    offset2 = [(_UITextKitTextPosition *)self offset];
+    if (offset2 >= [compareCopy offset])
     {
       v7 = 0;
     }

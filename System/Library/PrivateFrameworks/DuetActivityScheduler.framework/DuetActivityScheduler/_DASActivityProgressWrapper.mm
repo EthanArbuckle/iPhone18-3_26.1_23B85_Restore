@@ -1,39 +1,39 @@
 @interface _DASActivityProgressWrapper
-- (_DASActivityProgressWrapper)initWithCoder:(id)a3;
-- (_DASActivityProgressWrapper)initWithProgress:(id)a3;
+- (_DASActivityProgressWrapper)initWithCoder:(id)coder;
+- (_DASActivityProgressWrapper)initWithProgress:(id)progress;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _DASActivityProgressWrapper
 
-- (_DASActivityProgressWrapper)initWithProgress:(id)a3
+- (_DASActivityProgressWrapper)initWithProgress:(id)progress
 {
-  v5 = a3;
+  progressCopy = progress;
   v9.receiver = self;
   v9.super_class = _DASActivityProgressWrapper;
   v6 = [(_DASActivityProgressWrapper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_progress, a3);
+    objc_storeStrong(&v6->_progress, progress);
   }
 
   return v7;
 }
 
-- (_DASActivityProgressWrapper)initWithCoder:(id)a3
+- (_DASActivityProgressWrapper)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = _DASActivityProgressWrapper;
   v5 = [(_DASActivityProgressWrapper *)&v21 init];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x1E696AE38]);
-    [v6 setTotalUnitCount:{objc_msgSend(v4, "decodeInt64ForKey:", @"total"}];
-    [v6 setCompletedUnitCount:{objc_msgSend(v4, "decodeInt64ForKey:", @"completed"}];
-    if ([v4 decodeInt64ForKey:@"cancelled"])
+    [v6 setTotalUnitCount:{objc_msgSend(coderCopy, "decodeInt64ForKey:", @"total"}];
+    [v6 setCompletedUnitCount:{objc_msgSend(coderCopy, "decodeInt64ForKey:", @"completed"}];
+    if ([coderCopy decodeInt64ForKey:@"cancelled"])
     {
       [v6 cancel];
     }
@@ -45,7 +45,7 @@
     v11 = objc_opt_class();
     v12 = objc_opt_class();
     v13 = [v7 setWithObjects:{v8, v9, v10, v11, v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"userInfo"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"userInfo"];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __45___DASActivityProgressWrapper_initWithCoder___block_invoke;
@@ -61,21 +61,21 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   progress = self->_progress;
-  v5 = a3;
-  [v5 encodeInt64:-[NSProgress completedUnitCount](progress forKey:{"completedUnitCount"), @"completed"}];
-  [v5 encodeInt64:-[NSProgress totalUnitCount](self->_progress forKey:{"totalUnitCount"), @"total"}];
-  [v5 encodeBool:-[NSProgress isCancelled](self->_progress forKey:{"isCancelled"), @"cancelled"}];
-  v6 = [(NSProgress *)self->_progress userInfo];
-  [v5 encodeObject:v6 forKey:@"userInfo"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:-[NSProgress completedUnitCount](progress forKey:{"completedUnitCount"), @"completed"}];
+  [coderCopy encodeInt64:-[NSProgress totalUnitCount](self->_progress forKey:{"totalUnitCount"), @"total"}];
+  [coderCopy encodeBool:-[NSProgress isCancelled](self->_progress forKey:{"isCancelled"), @"cancelled"}];
+  userInfo = [(NSProgress *)self->_progress userInfo];
+  [coderCopy encodeObject:userInfo forKey:@"userInfo"];
 }
 
 - (id)description
 {
-  v2 = [(_DASActivityProgressWrapper *)self progress];
-  v3 = [v2 description];
+  progress = [(_DASActivityProgressWrapper *)self progress];
+  v3 = [progress description];
 
   return v3;
 }

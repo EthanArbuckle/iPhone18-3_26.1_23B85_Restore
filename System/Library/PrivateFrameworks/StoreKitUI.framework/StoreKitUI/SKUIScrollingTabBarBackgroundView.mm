@@ -1,12 +1,12 @@
 @interface SKUIScrollingTabBarBackgroundView
 - (void)_updateTopHairlineColor;
 - (void)layoutSubviews;
-- (void)setBackdropBarGroupName:(id)a3;
-- (void)setShowsBackdrop:(BOOL)a3;
-- (void)setShowsBottomHairline:(BOOL)a3;
-- (void)setShowsTopHairline:(BOOL)a3;
-- (void)setUsesOpaqueColorForTopHairline:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setBackdropBarGroupName:(id)name;
+- (void)setShowsBackdrop:(BOOL)backdrop;
+- (void)setShowsBottomHairline:(BOOL)hairline;
+- (void)setShowsTopHairline:(BOOL)hairline;
+- (void)setUsesOpaqueColorForTopHairline:(BOOL)hairline;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SKUIScrollingTabBarBackgroundView
@@ -18,17 +18,17 @@
   v1 = "[SKUIScrollingTabBarBackgroundView layoutSubviews]";
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v10.receiver = self;
   v10.super_class = SKUIScrollingTabBarBackgroundView;
-  v4 = a3;
-  [(SKUIScrollingTabBarBackgroundView *)&v10 traitCollectionDidChange:v4];
-  [v4 displayScale];
+  changeCopy = change;
+  [(SKUIScrollingTabBarBackgroundView *)&v10 traitCollectionDidChange:changeCopy];
+  [changeCopy displayScale];
   v6 = v5;
 
-  v7 = [(SKUIScrollingTabBarBackgroundView *)self traitCollection];
-  [v7 displayScale];
+  traitCollection = [(SKUIScrollingTabBarBackgroundView *)self traitCollection];
+  [traitCollection displayScale];
   v9 = vabdd_f64(v6, v8);
 
   if (v9 > 0.00000011920929)
@@ -37,9 +37,9 @@
   }
 }
 
-- (void)setBackdropBarGroupName:(id)a3
+- (void)setBackdropBarGroupName:(id)name
 {
-  backdropView = a3;
+  backdropView = name;
   v5 = backdropView;
   if (self->_backdropBarGroupName != backdropView)
   {
@@ -60,12 +60,12 @@
   MEMORY[0x2821F96F8](backdropView, v5);
 }
 
-- (void)setShowsBackdrop:(BOOL)a3
+- (void)setShowsBackdrop:(BOOL)backdrop
 {
-  if (self->_showsBackdrop != a3)
+  if (self->_showsBackdrop != backdrop)
   {
-    self->_showsBackdrop = a3;
-    if (a3)
+    self->_showsBackdrop = backdrop;
+    if (backdrop)
     {
       if (self->_backdropView)
       {
@@ -103,12 +103,12 @@
   }
 }
 
-- (void)setShowsBottomHairline:(BOOL)a3
+- (void)setShowsBottomHairline:(BOOL)hairline
 {
-  if (self->_showsBottomHairline != a3)
+  if (self->_showsBottomHairline != hairline)
   {
-    self->_showsBottomHairline = a3;
-    if (a3)
+    self->_showsBottomHairline = hairline;
+    if (hairline)
     {
       if (self->_bottomHairlineView)
       {
@@ -123,8 +123,8 @@
         self->_bottomHairlineView = v6;
 
         v8 = self->_bottomHairlineView;
-        v9 = [MEMORY[0x277D75348] _barHairlineShadowColor];
-        [(UIView *)v8 setBackgroundColor:v9];
+        _barHairlineShadowColor = [MEMORY[0x277D75348] _barHairlineShadowColor];
+        [(UIView *)v8 setBackgroundColor:_barHairlineShadowColor];
 
         [(UIView *)self->_bottomHairlineView setUserInteractionEnabled:0];
         [(SKUIScrollingTabBarBackgroundView *)self addSubview:self->_bottomHairlineView];
@@ -144,12 +144,12 @@
   }
 }
 
-- (void)setShowsTopHairline:(BOOL)a3
+- (void)setShowsTopHairline:(BOOL)hairline
 {
-  if (self->_showsTopHairline != a3)
+  if (self->_showsTopHairline != hairline)
   {
-    self->_showsTopHairline = a3;
-    if (a3)
+    self->_showsTopHairline = hairline;
+    if (hairline)
     {
       if (self->_topHairlineView)
       {
@@ -182,11 +182,11 @@
   }
 }
 
-- (void)setUsesOpaqueColorForTopHairline:(BOOL)a3
+- (void)setUsesOpaqueColorForTopHairline:(BOOL)hairline
 {
-  if (self->_usesOpaqueColorForTopHairline != a3)
+  if (self->_usesOpaqueColorForTopHairline != hairline)
   {
-    self->_usesOpaqueColorForTopHairline = a3;
+    self->_usesOpaqueColorForTopHairline = hairline;
     [(SKUIScrollingTabBarBackgroundView *)self _updateTopHairlineColor];
   }
 }

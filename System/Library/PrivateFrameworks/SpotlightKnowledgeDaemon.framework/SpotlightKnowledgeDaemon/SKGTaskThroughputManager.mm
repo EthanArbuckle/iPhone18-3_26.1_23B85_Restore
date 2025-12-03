@@ -1,9 +1,9 @@
 @interface SKGTaskThroughputManager
 + (id)sharedInstance;
 - (SKGTaskThroughputManager)init;
-- (id)getThroughputMetricForTask:(int)a3 metricIdentifier:(id)a4;
-- (void)registerBeginForTask:(id)a3 taskType:(int)a4;
-- (void)registerEndForTask:(id)a3 taskType:(int)a4;
+- (id)getThroughputMetricForTask:(int)task metricIdentifier:(id)identifier;
+- (void)registerBeginForTask:(id)task taskType:(int)type;
+- (void)registerEndForTask:(id)task taskType:(int)type;
 @end
 
 @implementation SKGTaskThroughputManager
@@ -39,26 +39,26 @@ void __42__SKGTaskThroughputManager_sharedInstance__block_invoke()
     throughputQueue = v2->_throughputQueue;
     v2->_throughputQueue = v4;
 
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     taskMetricRepository = v2->_taskMetricRepository;
-    v2->_taskMetricRepository = v6;
+    v2->_taskMetricRepository = dictionary;
   }
 
   return v2;
 }
 
-- (void)registerBeginForTask:(id)a3 taskType:(int)a4
+- (void)registerBeginForTask:(id)task taskType:(int)type
 {
-  v6 = a3;
+  taskCopy = task;
   throughputQueue = self->_throughputQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__SKGTaskThroughputManager_registerBeginForTask_taskType___block_invoke;
   block[3] = &unk_27893DA10;
-  v11 = a4;
+  typeCopy = type;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = taskCopy;
+  v8 = taskCopy;
   dispatch_sync(throughputQueue, block);
 }
 
@@ -116,9 +116,9 @@ void __58__SKGTaskThroughputManager_registerBeginForTask_taskType___block_invoke
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getThroughputMetricForTask:(int)a3 metricIdentifier:(id)a4
+- (id)getThroughputMetricForTask:(int)task metricIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -130,11 +130,11 @@ void __58__SKGTaskThroughputManager_registerBeginForTask_taskType___block_invoke
   v11[1] = 3221225472;
   v11[2] = __72__SKGTaskThroughputManager_getThroughputMetricForTask_metricIdentifier___block_invoke;
   v11[3] = &unk_27893DA38;
-  v14 = a3;
-  v12 = v6;
+  taskCopy = task;
+  v12 = identifierCopy;
   v13 = &v15;
   v11[4] = self;
-  v8 = v6;
+  v8 = identifierCopy;
   dispatch_sync(throughputQueue, v11);
   v9 = v16[5];
 
@@ -171,18 +171,18 @@ void __72__SKGTaskThroughputManager_getThroughputMetricForTask_metricIdentifier_
   }
 }
 
-- (void)registerEndForTask:(id)a3 taskType:(int)a4
+- (void)registerEndForTask:(id)task taskType:(int)type
 {
-  v6 = a3;
+  taskCopy = task;
   throughputQueue = self->_throughputQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__SKGTaskThroughputManager_registerEndForTask_taskType___block_invoke;
   block[3] = &unk_27893DA10;
-  v11 = a4;
+  typeCopy = type;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = taskCopy;
+  v8 = taskCopy;
   dispatch_sync(throughputQueue, block);
 }
 

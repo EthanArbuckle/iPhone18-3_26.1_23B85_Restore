@@ -1,19 +1,19 @@
 @interface POConfigurationVersion
-+ (id)notificationForType:(int64_t)a3;
-- (POConfigurationVersion)initWithConfigurationType:(int64_t)a3;
++ (id)notificationForType:(int64_t)type;
+- (POConfigurationVersion)initWithConfigurationType:(int64_t)type;
 - (int64_t)checkVersion;
 - (unint64_t)_state;
-- (void)_setStateAndNotify:(unint64_t)a3 type:(int64_t)a4;
+- (void)_setStateAndNotify:(unint64_t)notify type:(int64_t)type;
 - (void)_state;
 - (void)dealloc;
-- (void)increaseVersionWithMessage:(id)a3;
+- (void)increaseVersionWithMessage:(id)message;
 - (void)reset;
 - (void)setPlatformSSOUnavailable;
 @end
 
 @implementation POConfigurationVersion
 
-- (POConfigurationVersion)initWithConfigurationType:(int64_t)a3
+- (POConfigurationVersion)initWithConfigurationType:(int64_t)type
 {
   v5 = PO_LOG_POConfigurationVersion();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -29,8 +29,8 @@
   {
     v6->_token = -1;
     v6->_version = 0;
-    v6->_type = a3;
-    v8 = [POConfigurationVersion notificationForType:a3];
+    v6->_type = type;
+    v8 = [POConfigurationVersion notificationForType:type];
     v9 = notify_register_check([v8 UTF8String], &v7->_token);
 
     if (v9)
@@ -57,27 +57,27 @@
 - (int64_t)checkVersion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(POConfigurationVersion *)v2 _state];
-  v4 = v3;
-  if (v3 == -1)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  _state = [(POConfigurationVersion *)selfCopy _state];
+  v4 = _state;
+  if (_state == -1)
   {
-    v2->_version = -1;
+    selfCopy->_version = -1;
     v5 = 2;
   }
 
   else
   {
-    if (!v3)
+    if (!_state)
     {
-      [(POConfigurationVersion *)v2 increaseVersionWithMessage:@"first load"];
+      [(POConfigurationVersion *)selfCopy increaseVersionWithMessage:@"first load"];
 LABEL_6:
       v5 = 0;
       goto LABEL_10;
     }
 
-    if (v3 == v2->_version)
+    if (_state == selfCopy->_version)
     {
       goto LABEL_6;
     }
@@ -85,7 +85,7 @@ LABEL_6:
     v6 = PO_LOG_POConfigurationVersion();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      version = v2->_version;
+      version = selfCopy->_version;
       v10 = 136315906;
       v11 = "[POConfigurationVersion checkVersion]";
       v12 = 2048;
@@ -93,51 +93,51 @@ LABEL_6:
       v14 = 2048;
       v15 = v4;
       v16 = 2112;
-      v17 = v2;
+      v17 = selfCopy;
       _os_log_impl(&dword_25E8B1000, v6, OS_LOG_TYPE_DEFAULT, "%s config version changed from from 0x%016llX to 0x%016llX on %@", &v10, 0x2Au);
     }
 
-    v2->_version = v4;
+    selfCopy->_version = v4;
     v5 = 1;
   }
 
 LABEL_10:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v8 = *MEMORY[0x277D85DE8];
   return v5;
 }
 
-- (void)increaseVersionWithMessage:(id)a3
+- (void)increaseVersionWithMessage:(id)message
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [MEMORY[0x277CBEAA8] date];
-  [v6 timeIntervalSince1970];
-  v5->_version = (v7 * 1000.0);
+  messageCopy = message;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
+  selfCopy->_version = (v7 * 1000.0);
 
   v8 = PO_LOG_POConfigurationVersion();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(POConfigurationVersion *)v5 _state];
-    version = v5->_version;
+    _state = [(POConfigurationVersion *)selfCopy _state];
+    version = selfCopy->_version;
     v12 = 136316162;
     v13 = "[POConfigurationVersion increaseVersionWithMessage:]";
     v14 = 2048;
-    v15 = v9;
+    v15 = _state;
     v16 = 2048;
     v17 = version;
     v18 = 2114;
-    v19 = v4;
+    v19 = messageCopy;
     v20 = 2112;
-    v21 = v5;
+    v21 = selfCopy;
     _os_log_impl(&dword_25E8B1000, v8, OS_LOG_TYPE_DEFAULT, "%s config version increased from 0x%016llX to 0x%016llX (%{public}@) on %@", &v12, 0x34u);
   }
 
-  [(POConfigurationVersion *)v5 _setStateAndNotify:v5->_version type:v5->_type];
-  objc_sync_exit(v5);
+  [(POConfigurationVersion *)selfCopy _setStateAndNotify:selfCopy->_version type:selfCopy->_type];
+  objc_sync_exit(selfCopy);
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -151,13 +151,13 @@ LABEL_10:
     v7 = 136315394;
     v8 = "[POConfigurationVersion setPlatformSSOUnavailable]";
     v9 = 2112;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E8B1000, v3, OS_LOG_TYPE_DEFAULT, "%s  on %@", &v7, 0x16u);
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  v4->_version = -1;
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  selfCopy2->_version = -1;
   v5 = PO_LOG_POConfigurationVersion();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -165,10 +165,10 @@ LABEL_10:
     _os_log_impl(&dword_25E8B1000, v5, OS_LOG_TYPE_DEFAULT, "set config version to PlatformSSO unavailable", &v7, 2u);
   }
 
-  [(POConfigurationVersion *)v4 _setStateAndNotify:v4->_version type:0];
-  [(POConfigurationVersion *)v4 _setStateAndNotify:v4->_version type:1];
-  [(POConfigurationVersion *)v4 _setStateAndNotify:v4->_version type:2];
-  objc_sync_exit(v4);
+  [(POConfigurationVersion *)selfCopy2 _setStateAndNotify:selfCopy2->_version type:0];
+  [(POConfigurationVersion *)selfCopy2 _setStateAndNotify:selfCopy2->_version type:1];
+  [(POConfigurationVersion *)selfCopy2 _setStateAndNotify:selfCopy2->_version type:2];
+  objc_sync_exit(selfCopy2);
 
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -211,9 +211,9 @@ LABEL_7:
   return state64;
 }
 
-- (void)_setStateAndNotify:(unint64_t)a3 type:(int64_t)a4
+- (void)_setStateAndNotify:(unint64_t)notify type:(int64_t)type
 {
-  if (notify_set_state(self->_token, a3))
+  if (notify_set_state(self->_token, notify))
   {
     v5 = PO_LOG_POConfigurationVersion();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -222,7 +222,7 @@ LABEL_7:
     }
   }
 
-  v6 = [POConfigurationVersion notificationForType:a4];
+  v6 = [POConfigurationVersion notificationForType:type];
   v7 = notify_post([v6 UTF8String]);
 
   if (v7)
@@ -235,15 +235,15 @@ LABEL_7:
   }
 }
 
-+ (id)notificationForType:(int64_t)a3
++ (id)notificationForType:(int64_t)type
 {
   v3 = @"/com.apple.PlatformSSO.user.version";
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = @"/com.apple.PlatformSSO.login.version";
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     return @"/com.apple.PlatformSSO.device.version";
   }

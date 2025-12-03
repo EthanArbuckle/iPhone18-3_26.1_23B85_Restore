@@ -2,58 +2,58 @@
 - (BOOL)isDisplayStyleAmbient;
 - (BOOL)isDisplayStyleMiniWindow;
 - (BOOL)isSwapEnabled;
-- (PHMultipleCallParticipantLabelView)initWithCallDisplayStyleManager:(id)a3;
-- (double)labelAlphaValueForActivityState:(unsigned __int16)a3;
+- (PHMultipleCallParticipantLabelView)initWithCallDisplayStyleManager:(id)manager;
+- (double)labelAlphaValueForActivityState:(unsigned __int16)state;
 - (double)leadingTrailingLabelSpacing;
 - (double)spacingBetweenLabels;
 - (id)marqueeLabelFont;
 - (id)statusLabelFont;
 - (void)dealloc;
-- (void)infoButtonTapped:(id)a3;
-- (void)setActivityState:(unsigned __int16)a3 animated:(BOOL)a4;
-- (void)setHidesLabel:(BOOL)a3;
-- (void)setLabelDescriptor:(id)a3;
-- (void)setShowsActivitySpinner:(BOOL)a3;
-- (void)setShowsCallDetailsViewButton:(BOOL)a3;
-- (void)setShowsConferenceParticipantsButton:(BOOL)a3;
-- (void)setTextColor:(id)a3;
+- (void)infoButtonTapped:(id)tapped;
+- (void)setActivityState:(unsigned __int16)state animated:(BOOL)animated;
+- (void)setHidesLabel:(BOOL)label;
+- (void)setLabelDescriptor:(id)descriptor;
+- (void)setShowsActivitySpinner:(BOOL)spinner;
+- (void)setShowsCallDetailsViewButton:(BOOL)button;
+- (void)setShowsConferenceParticipantsButton:(BOOL)button;
+- (void)setTextColor:(id)color;
 - (void)setUpParticipantMarqueeLabelWithSwapEnabled;
 - (void)setUpSwapButton;
-- (void)swapButtonTapped:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)swapButtonTapped:(id)tapped;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PHMultipleCallParticipantLabelView
 
-- (PHMultipleCallParticipantLabelView)initWithCallDisplayStyleManager:(id)a3
+- (PHMultipleCallParticipantLabelView)initWithCallDisplayStyleManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v69.receiver = self;
   v69.super_class = PHMultipleCallParticipantLabelView;
-  v6 = [(PHAbstractCallParticipantLabelView *)&v69 initWithCallDisplayStyleManager:v5];
+  v6 = [(PHAbstractCallParticipantLabelView *)&v69 initWithCallDisplayStyleManager:managerCopy];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_callDisplayStyleManager, a3);
+    objc_storeStrong(&v6->_callDisplayStyleManager, manager);
     [(PHMultipleCallParticipantLabelView *)v7 setUpSwapButton];
     [(PHMultipleCallParticipantLabelView *)v7 setUpParticipantMarqueeLabelWithSwapEnabled];
     if (![(PHMultipleCallParticipantLabelView *)v7 isSwapEnabled])
     {
-      v8 = [(PHMultipleCallParticipantLabelView *)v7 marqueeLabelFont];
-      v9 = [(PHAbstractCallParticipantLabelView *)v7 participantMarqueeLabel];
-      [v9 setFont:v8];
+      marqueeLabelFont = [(PHMultipleCallParticipantLabelView *)v7 marqueeLabelFont];
+      participantMarqueeLabel = [(PHAbstractCallParticipantLabelView *)v7 participantMarqueeLabel];
+      [participantMarqueeLabel setFont:marqueeLabelFont];
     }
 
-    v10 = [(PHAbstractCallParticipantLabelView *)v7 participantMarqueeLabel];
-    v11 = [v10 leadingAnchor];
-    v12 = [(PHMultipleCallParticipantLabelView *)v7 leadingAnchor];
+    participantMarqueeLabel2 = [(PHAbstractCallParticipantLabelView *)v7 participantMarqueeLabel];
+    leadingAnchor = [participantMarqueeLabel2 leadingAnchor];
+    leadingAnchor2 = [(PHMultipleCallParticipantLabelView *)v7 leadingAnchor];
     v13 = 0.0;
     if (!v7->_swapButton)
     {
       v13 = 24.0;
     }
 
-    v14 = [v11 constraintEqualToAnchor:v12 constant:v13];
+    v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v13];
 
     [v14 setActive:1];
     v15 = [[TPBadgeView alloc] initWithTitle:&stru_100361FD0 theme:1];
@@ -63,22 +63,22 @@
     [(PHMultipleCallParticipantLabelView *)v7 setBadgeView:v15];
     [(PHMultipleCallParticipantLabelView *)v7 leadingTrailingLabelSpacing];
     v17 = v16;
-    v18 = [v15 centerYAnchor];
-    v19 = [(PHAbstractCallParticipantLabelView *)v7 participantMarqueeLabel];
-    v20 = [v19 centerYAnchor];
-    v21 = [v18 constraintEqualToAnchor:v20];
+    centerYAnchor = [v15 centerYAnchor];
+    participantMarqueeLabel3 = [(PHAbstractCallParticipantLabelView *)v7 participantMarqueeLabel];
+    centerYAnchor2 = [participantMarqueeLabel3 centerYAnchor];
+    v21 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [(PHMultipleCallParticipantLabelView *)v7 addConstraint:v21];
 
-    v22 = [v15 leadingAnchor];
-    v23 = [(PHMultipleCallParticipantLabelView *)v7 leadingAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23 constant:v17];
+    leadingAnchor3 = [v15 leadingAnchor];
+    leadingAnchor4 = [(PHMultipleCallParticipantLabelView *)v7 leadingAnchor];
+    v24 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:v17];
     [(PHMultipleCallParticipantLabelView *)v7 addConstraint:v24];
 
-    v25 = [(PHAbstractCallParticipantLabelView *)v7 participantMarqueeLabel];
-    v26 = [v25 leadingAnchor];
-    v27 = [(PHMultipleCallParticipantLabelView *)v7 badgeView];
-    v28 = [v27 trailingAnchor];
-    v29 = [v26 constraintEqualToAnchor:v28 constant:6.0];
+    participantMarqueeLabel4 = [(PHAbstractCallParticipantLabelView *)v7 participantMarqueeLabel];
+    leadingAnchor5 = [participantMarqueeLabel4 leadingAnchor];
+    badgeView = [(PHMultipleCallParticipantLabelView *)v7 badgeView];
+    trailingAnchor = [badgeView trailingAnchor];
+    v29 = [leadingAnchor5 constraintEqualToAnchor:trailingAnchor constant:6.0];
 
     [v29 setActive:0];
     v71 = v14;
@@ -93,61 +93,61 @@
 
     [(PHMultipleCallParticipantLabelView *)v7 addConstraints:v7->_badgeViewHiddenLayoutConstraints];
     [(PHMultipleCallParticipantLabelView *)v7 addConstraints:v7->_badgeViewVisibleLayoutConstraints];
-    v34 = [(PHAbstractCallParticipantLabelView *)v7 participantMarqueeLabel];
-    v35 = [NSLayoutConstraint constraintWithItem:v34 attribute:3 relatedBy:0 toItem:v7 attribute:3 multiplier:1.0 constant:0.0];
+    participantMarqueeLabel5 = [(PHAbstractCallParticipantLabelView *)v7 participantMarqueeLabel];
+    v35 = [NSLayoutConstraint constraintWithItem:participantMarqueeLabel5 attribute:3 relatedBy:0 toItem:v7 attribute:3 multiplier:1.0 constant:0.0];
     [(PHMultipleCallParticipantLabelView *)v7 addConstraint:v35];
 
     v36 = objc_alloc_init(UILabel);
     [(PHAbstractCallParticipantLabelView *)v7 setStatusLabel:v36];
 
-    v37 = [(PHAbstractCallParticipantLabelView *)v7 statusLabel];
-    [v37 setAccessibilityIdentifier:@"PHMultipleCallParticipantLabelView_StatusLabel"];
+    statusLabel = [(PHAbstractCallParticipantLabelView *)v7 statusLabel];
+    [statusLabel setAccessibilityIdentifier:@"PHMultipleCallParticipantLabelView_StatusLabel"];
 
     if ([(PHMultipleCallParticipantLabelView *)v7 isSwapEnabled])
     {
-      v38 = [(PHAbstractCallParticipantLabelView *)v7 statusLabel];
-      [v38 setPreferredVibrancy:1];
+      statusLabel2 = [(PHAbstractCallParticipantLabelView *)v7 statusLabel];
+      [statusLabel2 setPreferredVibrancy:1];
 
       v39 = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle2];
-      v40 = [(PHAbstractCallParticipantLabelView *)v7 statusLabel];
-      [v40 setFont:v39];
+      statusLabel3 = [(PHAbstractCallParticipantLabelView *)v7 statusLabel];
+      [statusLabel3 setFont:v39];
 
       v41 = +[UIColor systemWhiteColor];
-      v42 = [(PHAbstractCallParticipantLabelView *)v7 statusLabel];
-      [v42 setTextColor:v41];
+      statusLabel4 = [(PHAbstractCallParticipantLabelView *)v7 statusLabel];
+      [statusLabel4 setTextColor:v41];
 
-      v43 = [(PHAbstractCallParticipantLabelView *)v7 statusLabel];
-      [v43 setAdjustsFontForContentSizeCategory:1];
+      statusLabel5 = [(PHAbstractCallParticipantLabelView *)v7 statusLabel];
+      [statusLabel5 setAdjustsFontForContentSizeCategory:1];
     }
 
     else
     {
-      v44 = [(PHMultipleCallParticipantLabelView *)v7 statusLabelFont];
-      v45 = [(PHAbstractCallParticipantLabelView *)v7 statusLabel];
-      [v45 setFont:v44];
+      statusLabelFont = [(PHMultipleCallParticipantLabelView *)v7 statusLabelFont];
+      statusLabel6 = [(PHAbstractCallParticipantLabelView *)v7 statusLabel];
+      [statusLabel6 setFont:statusLabelFont];
 
-      v43 = +[UIColor secondaryLabelColor];
-      v46 = [(PHAbstractCallParticipantLabelView *)v7 statusLabel];
-      [v46 setTextColor:v43];
+      statusLabel5 = +[UIColor secondaryLabelColor];
+      statusLabel7 = [(PHAbstractCallParticipantLabelView *)v7 statusLabel];
+      [statusLabel7 setTextColor:statusLabel5];
     }
 
-    v47 = [(PHAbstractCallParticipantLabelView *)v7 statusLabel];
-    [v47 setTextAlignment:1];
+    statusLabel8 = [(PHAbstractCallParticipantLabelView *)v7 statusLabel];
+    [statusLabel8 setTextAlignment:1];
 
-    v48 = [(PHAbstractCallParticipantLabelView *)v7 statusLabel];
-    [v48 setTranslatesAutoresizingMaskIntoConstraints:0];
+    statusLabel9 = [(PHAbstractCallParticipantLabelView *)v7 statusLabel];
+    [statusLabel9 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v49 = [(PHAbstractCallParticipantLabelView *)v7 statusLabel];
-    [(PHMultipleCallParticipantLabelView *)v7 addSubview:v49];
+    statusLabel10 = [(PHAbstractCallParticipantLabelView *)v7 statusLabel];
+    [(PHMultipleCallParticipantLabelView *)v7 addSubview:statusLabel10];
 
-    v50 = [(PHAbstractCallParticipantLabelView *)v7 statusLabel];
-    v51 = [(PHAbstractCallParticipantLabelView *)v7 participantMarqueeLabel];
-    v52 = [NSLayoutConstraint constraintWithItem:v50 attribute:10 relatedBy:0 toItem:v51 attribute:10 multiplier:1.0 constant:0.0];
+    statusLabel11 = [(PHAbstractCallParticipantLabelView *)v7 statusLabel];
+    participantMarqueeLabel6 = [(PHAbstractCallParticipantLabelView *)v7 participantMarqueeLabel];
+    v52 = [NSLayoutConstraint constraintWithItem:statusLabel11 attribute:10 relatedBy:0 toItem:participantMarqueeLabel6 attribute:10 multiplier:1.0 constant:0.0];
     [(PHMultipleCallParticipantLabelView *)v7 addConstraint:v52];
 
-    v53 = [(PHAbstractCallParticipantLabelView *)v7 statusLabel];
-    v54 = [(PHMultipleCallParticipantLabelView *)v7 callDisplayStyleManager];
-    if ([v54 usesLargeFormatUI])
+    statusLabel12 = [(PHAbstractCallParticipantLabelView *)v7 statusLabel];
+    callDisplayStyleManager = [(PHMultipleCallParticipantLabelView *)v7 callDisplayStyleManager];
+    if ([callDisplayStyleManager usesLargeFormatUI])
     {
       v55 = 0.0;
     }
@@ -157,13 +157,13 @@
       v55 = -v17;
     }
 
-    v56 = [NSLayoutConstraint constraintWithItem:v53 attribute:6 relatedBy:0 toItem:v7 attribute:6 multiplier:1.0 constant:v55];
+    v56 = [NSLayoutConstraint constraintWithItem:statusLabel12 attribute:6 relatedBy:0 toItem:v7 attribute:6 multiplier:1.0 constant:v55];
     [(PHMultipleCallParticipantLabelView *)v7 setStatusLabelRightConstraint:v56];
 
-    v57 = [(PHAbstractCallParticipantLabelView *)v7 statusLabel];
-    v58 = [(PHAbstractCallParticipantLabelView *)v7 participantMarqueeLabel];
+    statusLabel13 = [(PHAbstractCallParticipantLabelView *)v7 statusLabel];
+    participantMarqueeLabel7 = [(PHAbstractCallParticipantLabelView *)v7 participantMarqueeLabel];
     [(PHMultipleCallParticipantLabelView *)v7 spacingBetweenLabels];
-    v60 = [NSLayoutConstraint constraintWithItem:v57 attribute:5 relatedBy:1 toItem:v58 attribute:6 multiplier:1.0 constant:v59];
+    v60 = [NSLayoutConstraint constraintWithItem:statusLabel13 attribute:5 relatedBy:1 toItem:participantMarqueeLabel7 attribute:6 multiplier:1.0 constant:v59];
     [(PHMultipleCallParticipantLabelView *)v7 setParticipantMarqueeLabelRightConstraint:v60];
 
     if (v7->_statusLabelRightConstraint)
@@ -171,19 +171,19 @@
       [(PHMultipleCallParticipantLabelView *)v7 addConstraint:?];
     }
 
-    v61 = [(PHAbstractCallParticipantLabelView *)v7 statusLabel];
-    v62 = [(PHAbstractCallParticipantLabelView *)v7 participantMarqueeLabel];
-    v63 = [NSLayoutConstraint constraintWithItem:v61 attribute:3 relatedBy:0 toItem:v62 attribute:3 multiplier:1.0 constant:0.0];
+    statusLabel14 = [(PHAbstractCallParticipantLabelView *)v7 statusLabel];
+    participantMarqueeLabel8 = [(PHAbstractCallParticipantLabelView *)v7 participantMarqueeLabel];
+    v63 = [NSLayoutConstraint constraintWithItem:statusLabel14 attribute:3 relatedBy:0 toItem:participantMarqueeLabel8 attribute:3 multiplier:1.0 constant:0.0];
     [(PHMultipleCallParticipantLabelView *)v7 addConstraint:v63];
 
     [(PHMultipleCallParticipantLabelView *)v7 addConstraint:v7->_participantMarqueeLabelRightConstraint];
-    v64 = [(PHAbstractCallParticipantLabelView *)v7 participantMarqueeLabel];
+    participantMarqueeLabel9 = [(PHAbstractCallParticipantLabelView *)v7 participantMarqueeLabel];
     LODWORD(v65) = 1144750080;
-    [v64 setContentCompressionResistancePriority:0 forAxis:v65];
+    [participantMarqueeLabel9 setContentCompressionResistancePriority:0 forAxis:v65];
 
-    v66 = [(PHAbstractCallParticipantLabelView *)v7 statusLabel];
+    statusLabel15 = [(PHAbstractCallParticipantLabelView *)v7 statusLabel];
     LODWORD(v67) = 1148846080;
-    [v66 setContentCompressionResistancePriority:0 forAxis:v67];
+    [statusLabel15 setContentCompressionResistancePriority:0 forAxis:v67];
 
     if ([(PHMultipleCallParticipantLabelView *)v7 isSwapEnabled])
     {
@@ -216,7 +216,7 @@
     if ([(PHMultipleCallParticipantLabelView *)self isDisplayStyleAmbient])
     {
       v4 = [UIFont systemFontOfSize:50.0 weight:UIFontWeightMedium];
-      v5 = [v4 withCaseSensitiveAttribute];
+      withCaseSensitiveAttribute = [v4 withCaseSensitiveAttribute];
 
       goto LABEL_7;
     }
@@ -224,10 +224,10 @@
     v3 = +[PHUIConfiguration multipleCallParticipantLabelFont];
   }
 
-  v5 = v3;
+  withCaseSensitiveAttribute = v3;
 LABEL_7:
 
-  return v5;
+  return withCaseSensitiveAttribute;
 }
 
 - (id)statusLabelFont
@@ -242,7 +242,7 @@ LABEL_7:
     if ([(PHMultipleCallParticipantLabelView *)self isDisplayStyleAmbient])
     {
       v4 = [UIFont systemFontOfSize:50.0 weight:UIFontWeightMedium];
-      v5 = [v4 withCaseSensitiveAttribute];
+      withCaseSensitiveAttribute = [v4 withCaseSensitiveAttribute];
 
       goto LABEL_7;
     }
@@ -250,19 +250,19 @@ LABEL_7:
     v3 = +[PHUIConfiguration multipleCallStatusLabelFont];
   }
 
-  v5 = v3;
+  withCaseSensitiveAttribute = v3;
 LABEL_7:
 
-  return v5;
+  return withCaseSensitiveAttribute;
 }
 
 - (double)leadingTrailingLabelSpacing
 {
-  v2 = [(PHMultipleCallParticipantLabelView *)self callDisplayStyleManager];
-  v3 = [v2 callDisplayStyle];
+  callDisplayStyleManager = [(PHMultipleCallParticipantLabelView *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
   v4 = 24.0;
-  if (v3 == 1)
+  if (callDisplayStyle == 1)
   {
     v5 = +[PHUIConfiguration screenSize];
     if ((v5 - 10) <= 5)
@@ -276,11 +276,11 @@ LABEL_7:
 
 - (double)spacingBetweenLabels
 {
-  v2 = [(PHMultipleCallParticipantLabelView *)self callDisplayStyleManager];
-  v3 = [v2 callDisplayStyle];
+  callDisplayStyleManager = [(PHMultipleCallParticipantLabelView *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
   v4 = 15.0;
-  if (v3 == 1)
+  if (callDisplayStyle == 1)
   {
     v5 = +[PHUIConfiguration screenSize];
     if ((v5 - 10) <= 5)
@@ -294,69 +294,69 @@ LABEL_7:
 
 - (BOOL)isDisplayStyleMiniWindow
 {
-  v2 = [(PHMultipleCallParticipantLabelView *)self callDisplayStyleManager];
-  v3 = [v2 callDisplayStyle] == 1;
+  callDisplayStyleManager = [(PHMultipleCallParticipantLabelView *)self callDisplayStyleManager];
+  v3 = [callDisplayStyleManager callDisplayStyle] == 1;
 
   return v3;
 }
 
 - (BOOL)isDisplayStyleAmbient
 {
-  v2 = [(PHMultipleCallParticipantLabelView *)self callDisplayStyleManager];
-  v3 = [v2 callDisplayStyle] == 3;
+  callDisplayStyleManager = [(PHMultipleCallParticipantLabelView *)self callDisplayStyleManager];
+  v3 = [callDisplayStyleManager callDisplayStyle] == 3;
 
   return v3;
 }
 
-- (void)setLabelDescriptor:(id)a3
+- (void)setLabelDescriptor:(id)descriptor
 {
-  v16 = a3;
-  v4 = [v16 strings];
-  v5 = [v4 firstObject];
+  descriptorCopy = descriptor;
+  strings = [descriptorCopy strings];
+  firstObject = [strings firstObject];
 
-  v6 = [v16 localizedSenderIdentity];
-  v7 = [v6 length];
+  localizedSenderIdentity = [descriptorCopy localizedSenderIdentity];
+  v7 = [localizedSenderIdentity length];
 
-  v8 = [(PHMultipleCallParticipantLabelView *)self badgeView];
-  v9 = v8;
+  badgeView = [(PHMultipleCallParticipantLabelView *)self badgeView];
+  v9 = badgeView;
   if (v7)
   {
-    [v8 setHidden:0];
+    [badgeView setHidden:0];
 
-    v10 = [v16 localizedSenderIdentity];
-    v11 = [(PHMultipleCallParticipantLabelView *)self badgeView];
-    [v11 setTitle:v10];
+    localizedSenderIdentity2 = [descriptorCopy localizedSenderIdentity];
+    badgeView2 = [(PHMultipleCallParticipantLabelView *)self badgeView];
+    [badgeView2 setTitle:localizedSenderIdentity2];
 
-    v12 = [(PHMultipleCallParticipantLabelView *)self badgeViewVisibleLayoutConstraints];
-    [NSLayoutConstraint activateConstraints:v12];
+    badgeViewVisibleLayoutConstraints = [(PHMultipleCallParticipantLabelView *)self badgeViewVisibleLayoutConstraints];
+    [NSLayoutConstraint activateConstraints:badgeViewVisibleLayoutConstraints];
 
     [(PHMultipleCallParticipantLabelView *)self badgeViewHiddenLayoutConstraints];
   }
 
   else
   {
-    [v8 setHidden:1];
+    [badgeView setHidden:1];
 
-    v13 = [(PHMultipleCallParticipantLabelView *)self badgeViewHiddenLayoutConstraints];
-    [NSLayoutConstraint activateConstraints:v13];
+    badgeViewHiddenLayoutConstraints = [(PHMultipleCallParticipantLabelView *)self badgeViewHiddenLayoutConstraints];
+    [NSLayoutConstraint activateConstraints:badgeViewHiddenLayoutConstraints];
 
     [(PHMultipleCallParticipantLabelView *)self badgeViewVisibleLayoutConstraints];
   }
   v14 = ;
   [NSLayoutConstraint deactivateConstraints:v14];
 
-  v15 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
-  [v15 setAttributedOrPlainText:v5];
+  statusLabel = [(PHAbstractCallParticipantLabelView *)self statusLabel];
+  [statusLabel setAttributedOrPlainText:firstObject];
 }
 
-- (void)setShowsActivitySpinner:(BOOL)a3
+- (void)setShowsActivitySpinner:(BOOL)spinner
 {
-  v3 = a3;
-  v5 = [(PHMultipleCallParticipantLabelView *)self progressSpinner];
+  spinnerCopy = spinner;
+  progressSpinner = [(PHMultipleCallParticipantLabelView *)self progressSpinner];
 
-  if (v3)
+  if (spinnerCopy)
   {
-    if (!v5)
+    if (!progressSpinner)
     {
       v6 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:3];
       progressSpinner = self->_progressSpinner;
@@ -364,46 +364,46 @@ LABEL_7:
 
       [(UIActivityIndicatorView *)self->_progressSpinner startAnimating];
       [(PHMultipleCallParticipantLabelView *)self addSubview:self->_progressSpinner];
-      v8 = [(PHMultipleCallParticipantLabelView *)self progressSpinner];
-      [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+      progressSpinner2 = [(PHMultipleCallParticipantLabelView *)self progressSpinner];
+      [progressSpinner2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
       v9 = self->_progressSpinner;
-      v10 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
-      v11 = [NSLayoutConstraint constraintWithItem:v9 attribute:6 relatedBy:0 toItem:v10 attribute:5 multiplier:1.0 constant:-5.0];
+      statusLabel = [(PHAbstractCallParticipantLabelView *)self statusLabel];
+      v11 = [NSLayoutConstraint constraintWithItem:v9 attribute:6 relatedBy:0 toItem:statusLabel attribute:5 multiplier:1.0 constant:-5.0];
       [(PHMultipleCallParticipantLabelView *)self addConstraint:v11];
 
       v12 = self->_progressSpinner;
-      v13 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
-      v14 = [NSLayoutConstraint constraintWithItem:v12 attribute:10 relatedBy:0 toItem:v13 attribute:10 multiplier:1.0 constant:0.0];
+      statusLabel2 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
+      v14 = [NSLayoutConstraint constraintWithItem:v12 attribute:10 relatedBy:0 toItem:statusLabel2 attribute:10 multiplier:1.0 constant:0.0];
       [(PHMultipleCallParticipantLabelView *)self addConstraint:v14];
 
       [(UIActivityIndicatorView *)self->_progressSpinner intrinsicContentSize];
       v16 = v15 + 10.0;
-      v19 = [(PHMultipleCallParticipantLabelView *)self participantMarqueeLabelRightConstraint];
-      [v19 setConstant:v16];
+      participantMarqueeLabelRightConstraint = [(PHMultipleCallParticipantLabelView *)self participantMarqueeLabelRightConstraint];
+      [participantMarqueeLabelRightConstraint setConstant:v16];
     }
   }
 
-  else if (v5)
+  else if (progressSpinner)
   {
-    v17 = [(PHMultipleCallParticipantLabelView *)self participantMarqueeLabelRightConstraint];
-    [v17 setConstant:15.0];
+    participantMarqueeLabelRightConstraint2 = [(PHMultipleCallParticipantLabelView *)self participantMarqueeLabelRightConstraint];
+    [participantMarqueeLabelRightConstraint2 setConstant:15.0];
 
-    v18 = [(PHMultipleCallParticipantLabelView *)self progressSpinner];
-    [v18 removeFromSuperview];
+    progressSpinner3 = [(PHMultipleCallParticipantLabelView *)self progressSpinner];
+    [progressSpinner3 removeFromSuperview];
 
     [(PHMultipleCallParticipantLabelView *)self setProgressSpinner:0];
   }
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
   v6.receiver = self;
   v6.super_class = PHMultipleCallParticipantLabelView;
-  v4 = a3;
-  [(PHAbstractCallParticipantLabelView *)&v6 setTextColor:v4];
+  colorCopy = color;
+  [(PHAbstractCallParticipantLabelView *)&v6 setTextColor:colorCopy];
   v5 = [(PHAbstractCallParticipantLabelView *)self statusLabel:v6.receiver];
-  [v5 setTextColor:v4];
+  [v5 setTextColor:colorCopy];
 }
 
 - (void)setUpSwapButton
@@ -427,8 +427,8 @@ LABEL_7:
     swapButton = self->_swapButton;
     self->_swapButton = v5;
 
-    v7 = [(UIButton *)self->_swapButton imageView];
-    [v7 setAdjustsImageSizeForAccessibilityContentSizeCategory:1];
+    imageView = [(UIButton *)self->_swapButton imageView];
+    [imageView setAdjustsImageSizeForAccessibilityContentSizeCategory:1];
 
     [(UIButton *)self->_swapButton setContentMode:1];
     v8 = self->_swapButton;
@@ -442,63 +442,63 @@ LABEL_7:
     [(UIButton *)self->_swapButton addGestureRecognizer:v24];
     [(UIButton *)self->_swapButton setTranslatesAutoresizingMaskIntoConstraints:0];
     [(PHMultipleCallParticipantLabelView *)self addSubview:self->_swapButton];
-    v23 = [(UIButton *)self->_swapButton trailingAnchor];
-    v22 = [(PHMultipleCallParticipantLabelView *)self trailingAnchor];
-    v21 = [v23 constraintEqualToAnchor:v22];
+    trailingAnchor = [(UIButton *)self->_swapButton trailingAnchor];
+    trailingAnchor2 = [(PHMultipleCallParticipantLabelView *)self trailingAnchor];
+    v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v26[0] = v21;
-    v11 = [(UIButton *)self->_swapButton centerYAnchor];
-    v12 = [(PHMultipleCallParticipantLabelView *)self centerYAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    centerYAnchor = [(UIButton *)self->_swapButton centerYAnchor];
+    centerYAnchor2 = [(PHMultipleCallParticipantLabelView *)self centerYAnchor];
+    v13 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v26[1] = v13;
-    v14 = [(UIButton *)self->_swapButton heightAnchor];
-    v15 = [(PHMultipleCallParticipantLabelView *)self heightAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    heightAnchor = [(UIButton *)self->_swapButton heightAnchor];
+    heightAnchor2 = [(PHMultipleCallParticipantLabelView *)self heightAnchor];
+    v16 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     v26[2] = v16;
-    v17 = [(UIButton *)self->_swapButton widthAnchor];
-    v18 = [(PHMultipleCallParticipantLabelView *)self heightAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    widthAnchor = [(UIButton *)self->_swapButton widthAnchor];
+    heightAnchor3 = [(PHMultipleCallParticipantLabelView *)self heightAnchor];
+    v19 = [widthAnchor constraintEqualToAnchor:heightAnchor3];
     v26[3] = v19;
     v20 = [NSArray arrayWithObjects:v26 count:4];
     [NSLayoutConstraint activateConstraints:v20];
   }
 }
 
-- (void)swapButtonTapped:(id)a3
+- (void)swapButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [(PHAbstractCallParticipantLabelView *)self delegate];
-  [v5 swapButtonWasTapped:v4];
+  tappedCopy = tapped;
+  delegate = [(PHAbstractCallParticipantLabelView *)self delegate];
+  [delegate swapButtonWasTapped:tappedCopy];
 }
 
 - (void)setUpParticipantMarqueeLabelWithSwapEnabled
 {
   if ([(PHMultipleCallParticipantLabelView *)self isSwapEnabled])
   {
-    v3 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-    [v3 setPreferredVibrancy:1];
+    participantMarqueeLabel = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+    [participantMarqueeLabel setPreferredVibrancy:1];
 
     v4 = [UIFont _preferredFontForTextStyle:UIFontTextStyleTitle1 weight:UIFontWeightSemibold];
-    v5 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-    [v5 setFont:v4];
+    participantMarqueeLabel2 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+    [participantMarqueeLabel2 setFont:v4];
 
-    v6 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-    [v6 setAdjustsFontForContentSizeCategory:1];
+    participantMarqueeLabel3 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+    [participantMarqueeLabel3 setAdjustsFontForContentSizeCategory:1];
   }
 }
 
-- (void)setActivityState:(unsigned __int16)a3 animated:(BOOL)a4
+- (void)setActivityState:(unsigned __int16)state animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if ([(PHAbstractCallParticipantLabelView *)self activityState]!= a3)
+  animatedCopy = animated;
+  stateCopy = state;
+  if ([(PHAbstractCallParticipantLabelView *)self activityState]!= state)
   {
     v7 = sub_100004F84();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109376;
-      v15 = v5;
+      v15 = stateCopy;
       v16 = 1024;
-      v17 = [(PHAbstractCallParticipantLabelView *)self activityState];
+      activityState = [(PHAbstractCallParticipantLabelView *)self activityState];
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Participant label setting selection state to %d (current is %d)", buf, 0xEu);
     }
 
@@ -507,9 +507,9 @@ LABEL_7:
     v12[2] = sub_1000424E0;
     v12[3] = &unk_100356960;
     v12[4] = self;
-    v13 = v5;
+    v13 = stateCopy;
     v8 = objc_retainBlock(v12);
-    if (v4 && (-[PHMultipleCallParticipantLabelView callDisplayStyleManager](self, "callDisplayStyleManager"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 usesLargeFormatUI], v9, (v10 & 1) == 0))
+    if (animatedCopy && (-[PHMultipleCallParticipantLabelView callDisplayStyleManager](self, "callDisplayStyleManager"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 usesLargeFormatUI], v9, (v10 & 1) == 0))
     {
       [UIView animateWithDuration:v8 animations:0 completion:0.5];
     }
@@ -519,17 +519,17 @@ LABEL_7:
       (v8[2])(v8);
     }
 
-    [(PHMultipleCallParticipantLabelView *)self setShowsActivitySpinner:v5 == 2];
+    [(PHMultipleCallParticipantLabelView *)self setShowsActivitySpinner:stateCopy == 2];
     v11.receiver = self;
     v11.super_class = PHMultipleCallParticipantLabelView;
-    [(PHAbstractCallParticipantLabelView *)&v11 setActivityState:v5];
+    [(PHAbstractCallParticipantLabelView *)&v11 setActivityState:stateCopy];
   }
 }
 
-- (double)labelAlphaValueForActivityState:(unsigned __int16)a3
+- (double)labelAlphaValueForActivityState:(unsigned __int16)state
 {
   result = 1.0;
-  if (a3 < 2u)
+  if (state < 2u)
   {
     return 0.5;
   }
@@ -540,51 +540,51 @@ LABEL_7:
 - (BOOL)isSwapEnabled
 {
   v2 = +[CNKFeatures sharedInstance];
-  v3 = [v2 isNewCallSwapNonJindoEnabled];
+  isNewCallSwapNonJindoEnabled = [v2 isNewCallSwapNonJindoEnabled];
 
-  return v3;
+  return isNewCallSwapNonJindoEnabled;
 }
 
-- (void)setHidesLabel:(BOOL)a3
+- (void)setHidesLabel:(BOOL)label
 {
-  v3 = a3;
-  if ([(PHAbstractCallParticipantLabelView *)self hidesLabel]!= a3)
+  labelCopy = label;
+  if ([(PHAbstractCallParticipantLabelView *)self hidesLabel]!= label)
   {
-    v5 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
-    [v5 setHidden:v3];
+    statusLabel = [(PHAbstractCallParticipantLabelView *)self statusLabel];
+    [statusLabel setHidden:labelCopy];
 
     v6.receiver = self;
     v6.super_class = PHMultipleCallParticipantLabelView;
-    [(PHAbstractCallParticipantLabelView *)&v6 setHidesLabel:v3];
+    [(PHAbstractCallParticipantLabelView *)&v6 setHidesLabel:labelCopy];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v14.receiver = self;
   v14.super_class = PHMultipleCallParticipantLabelView;
-  v4 = a3;
-  [(PHMultipleCallParticipantLabelView *)&v14 traitCollectionDidChange:v4];
-  v5 = [v4 _backlightLuminance];
+  changeCopy = change;
+  [(PHMultipleCallParticipantLabelView *)&v14 traitCollectionDidChange:changeCopy];
+  _backlightLuminance = [changeCopy _backlightLuminance];
 
-  v6 = [(PHMultipleCallParticipantLabelView *)self traitCollection];
-  v7 = [v6 _backlightLuminance];
+  traitCollection = [(PHMultipleCallParticipantLabelView *)self traitCollection];
+  _backlightLuminance2 = [traitCollection _backlightLuminance];
 
-  if (v5 != v7)
+  if (_backlightLuminance != _backlightLuminance2)
   {
-    v8 = [(PHMultipleCallParticipantLabelView *)self traitCollection];
-    v9 = [v8 _backlightLuminance];
+    traitCollection2 = [(PHMultipleCallParticipantLabelView *)self traitCollection];
+    _backlightLuminance3 = [traitCollection2 _backlightLuminance];
 
-    v10 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
-    v11 = [v10 text];
+    statusLabel = [(PHAbstractCallParticipantLabelView *)self statusLabel];
+    text = [statusLabel text];
 
     v13 = 0;
-    if (v11)
+    if (text)
     {
-      if ([v11 length])
+      if ([text length])
       {
-        v12 = [v11 characterAtIndex:0];
-        if (v9 == 1 && v12 - 58 > 0xFFFFFFF5)
+        v12 = [text characterAtIndex:0];
+        if (_backlightLuminance3 == 1 && v12 - 58 > 0xFFFFFFF5)
         {
           v13 = 1;
         }
@@ -595,24 +595,24 @@ LABEL_7:
   }
 }
 
-- (void)setShowsConferenceParticipantsButton:(BOOL)a3
+- (void)setShowsConferenceParticipantsButton:(BOOL)button
 {
-  v3 = a3;
-  v5 = [(PHMultipleCallParticipantLabelView *)self callDisplayStyleManager];
-  v6 = [v5 usesLargeFormatUI];
+  buttonCopy = button;
+  callDisplayStyleManager = [(PHMultipleCallParticipantLabelView *)self callDisplayStyleManager];
+  usesLargeFormatUI = [callDisplayStyleManager usesLargeFormatUI];
 
-  if ((v6 & 1) == 0)
+  if ((usesLargeFormatUI & 1) == 0)
   {
     v7 = +[CNKFeatures sharedInstance];
-    v8 = [v7 isHeroImageEnabled];
+    isHeroImageEnabled = [v7 isHeroImageEnabled];
 
-    if ((v8 & 1) == 0)
+    if ((isHeroImageEnabled & 1) == 0)
     {
-      v9 = [(PHMultipleCallParticipantLabelView *)self conferenceParticipantsButton];
+      conferenceParticipantsButton = [(PHMultipleCallParticipantLabelView *)self conferenceParticipantsButton];
 
-      if (v3)
+      if (buttonCopy)
       {
-        if (v9)
+        if (conferenceParticipantsButton)
         {
           return;
         }
@@ -621,22 +621,22 @@ LABEL_7:
         [(PHMultipleCallParticipantLabelView *)self setConferenceParticipantsButton:v10];
 
         v11 = +[UIColor systemTealColor];
-        v12 = [(PHMultipleCallParticipantLabelView *)self conferenceParticipantsButton];
-        [v12 setTintColor:v11];
+        conferenceParticipantsButton2 = [(PHMultipleCallParticipantLabelView *)self conferenceParticipantsButton];
+        [conferenceParticipantsButton2 setTintColor:v11];
 
         [(PHMultipleCallParticipantLabelView *)self addSubview:self->_conferenceParticipantsButton];
-        v13 = [(PHMultipleCallParticipantLabelView *)self conferenceParticipantsButton];
-        [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
+        conferenceParticipantsButton3 = [(PHMultipleCallParticipantLabelView *)self conferenceParticipantsButton];
+        [conferenceParticipantsButton3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
         [(UIButton *)self->_conferenceParticipantsButton addTarget:self action:"infoButtonTapped:" forControlEvents:64];
         conferenceParticipantsButton = self->_conferenceParticipantsButton;
-        v15 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
-        v16 = [NSLayoutConstraint constraintWithItem:conferenceParticipantsButton attribute:5 relatedBy:0 toItem:v15 attribute:6 multiplier:1.0 constant:9.0];
+        statusLabel = [(PHAbstractCallParticipantLabelView *)self statusLabel];
+        v16 = [NSLayoutConstraint constraintWithItem:conferenceParticipantsButton attribute:5 relatedBy:0 toItem:statusLabel attribute:6 multiplier:1.0 constant:9.0];
         [(PHMultipleCallParticipantLabelView *)self addConstraint:v16];
 
         v17 = self->_conferenceParticipantsButton;
-        v18 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
-        v19 = [NSLayoutConstraint constraintWithItem:v17 attribute:10 relatedBy:0 toItem:v18 attribute:10 multiplier:1.0 constant:0.0];
+        statusLabel2 = [(PHAbstractCallParticipantLabelView *)self statusLabel];
+        v19 = [NSLayoutConstraint constraintWithItem:v17 attribute:10 relatedBy:0 toItem:statusLabel2 attribute:10 multiplier:1.0 constant:0.0];
         [(PHMultipleCallParticipantLabelView *)self addConstraint:v19];
 
         [(UIButton *)self->_conferenceParticipantsButton bounds];
@@ -645,31 +645,31 @@ LABEL_7:
 
       else
       {
-        if (!v9)
+        if (!conferenceParticipantsButton)
         {
           return;
         }
 
-        v22 = [(PHMultipleCallParticipantLabelView *)self conferenceParticipantsButton];
-        [v22 removeFromSuperview];
+        conferenceParticipantsButton4 = [(PHMultipleCallParticipantLabelView *)self conferenceParticipantsButton];
+        [conferenceParticipantsButton4 removeFromSuperview];
 
         [(PHMultipleCallParticipantLabelView *)self setConferenceParticipantsButton:0];
         v21 = -24.0;
       }
 
-      v23 = [(PHMultipleCallParticipantLabelView *)self statusLabelRightConstraint];
-      [v23 setConstant:v21];
+      statusLabelRightConstraint = [(PHMultipleCallParticipantLabelView *)self statusLabelRightConstraint];
+      [statusLabelRightConstraint setConstant:v21];
     }
   }
 }
 
-- (void)infoButtonTapped:(id)a3
+- (void)infoButtonTapped:(id)tapped
 {
-  v4 = [(PHAbstractCallParticipantLabelView *)self delegate];
-  [v4 callLabelInfoLabelWasTappedForLabel:self];
+  delegate = [(PHAbstractCallParticipantLabelView *)self delegate];
+  [delegate callLabelInfoLabelWasTappedForLabel:self];
 }
 
-- (void)setShowsCallDetailsViewButton:(BOOL)a3
+- (void)setShowsCallDetailsViewButton:(BOOL)button
 {
   v3 = sub_100004F84();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))

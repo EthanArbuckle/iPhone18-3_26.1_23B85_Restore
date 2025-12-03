@@ -1,38 +1,38 @@
 @interface PTCinematographyNetworkNamedSignal
-- (PTCinematographyNetworkNamedSignal)initWithModelDictionary:(id)a3;
-- (id)_flattenArray:(id)a3;
-- (void)_flattenArray:(id)a3 toMutableArray:(id)a4;
-- (void)writePayload:(id)a3 toStream:(id)a4;
+- (PTCinematographyNetworkNamedSignal)initWithModelDictionary:(id)dictionary;
+- (id)_flattenArray:(id)array;
+- (void)_flattenArray:(id)array toMutableArray:(id)mutableArray;
+- (void)writePayload:(id)payload toStream:(id)stream;
 @end
 
 @implementation PTCinematographyNetworkNamedSignal
 
-- (PTCinematographyNetworkNamedSignal)initWithModelDictionary:(id)a3
+- (PTCinematographyNetworkNamedSignal)initWithModelDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v8.receiver = self;
   v8.super_class = PTCinematographyNetworkNamedSignal;
-  v5 = [(PTCinematographyNetworkSignal *)&v8 initWithModelDictionary:v4];
+  v5 = [(PTCinematographyNetworkSignal *)&v8 initWithModelDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"flatten"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"flatten"];
     v5->_flatten = [v6 BOOLValue];
   }
 
   return v5;
 }
 
-- (void)writePayload:(id)a3 toStream:(id)a4
+- (void)writePayload:(id)payload toStream:(id)stream
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([(PTCinematographyNetworkSignal *)self checkSignalForStream:v7])
+  payloadCopy = payload;
+  streamCopy = stream;
+  if ([(PTCinematographyNetworkSignal *)self checkSignalForStream:streamCopy])
   {
-    v8 = [v6 detection];
-    v9 = [v8 _namedSignals];
-    v10 = [(PTCinematographyNetworkSignal *)self name];
-    v11 = [v9 objectForKeyedSubscript:v10];
+    detection = [payloadCopy detection];
+    _namedSignals = [detection _namedSignals];
+    name = [(PTCinematographyNetworkSignal *)self name];
+    v11 = [_namedSignals objectForKeyedSubscript:name];
 
     if (v11)
     {
@@ -52,7 +52,7 @@
         v11 = v11;
       }
 
-      if (![v6 isMissingDetection])
+      if (![payloadCopy isMissingDetection])
       {
         v13 = [v11 count];
         if (v13 == [(PTCinematographyNetworkSignal *)self count])
@@ -77,7 +77,7 @@
                 }
 
                 [*(*(&v19 + 1) + 8 * i) floatValue];
-                [v7 writeFloat:?];
+                [streamCopy writeFloat:?];
               }
 
               v15 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -98,7 +98,7 @@
     }
 
 LABEL_22:
-    [v7 writeZerosWithCount:{-[PTCinematographyNetworkSignal count](self, "count")}];
+    [streamCopy writeZerosWithCount:{-[PTCinematographyNetworkSignal count](self, "count")}];
 LABEL_23:
 
     goto LABEL_24;
@@ -113,27 +113,27 @@ LABEL_23:
 LABEL_24:
 }
 
-- (id)_flattenArray:(id)a3
+- (id)_flattenArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v5 = objc_opt_new();
-  [(PTCinematographyNetworkNamedSignal *)self _flattenArray:v4 toMutableArray:v5];
+  [(PTCinematographyNetworkNamedSignal *)self _flattenArray:arrayCopy toMutableArray:v5];
 
   v6 = [v5 copy];
 
   return v6;
 }
 
-- (void)_flattenArray:(id)a3 toMutableArray:(id)a4
+- (void)_flattenArray:(id)array toMutableArray:(id)mutableArray
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  arrayCopy = array;
+  mutableArrayCopy = mutableArray;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v8 = [arrayCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -145,25 +145,25 @@ LABEL_24:
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(arrayCopy);
         }
 
         v12 = *(*(&v13 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          [(PTCinematographyNetworkNamedSignal *)self _flattenArray:v12 toMutableArray:v7];
+          [(PTCinematographyNetworkNamedSignal *)self _flattenArray:v12 toMutableArray:mutableArrayCopy];
         }
 
         else
         {
-          [v7 addObject:v12];
+          [mutableArrayCopy addObject:v12];
         }
 
         ++v11;
       }
 
       while (v9 != v11);
-      v9 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [arrayCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);

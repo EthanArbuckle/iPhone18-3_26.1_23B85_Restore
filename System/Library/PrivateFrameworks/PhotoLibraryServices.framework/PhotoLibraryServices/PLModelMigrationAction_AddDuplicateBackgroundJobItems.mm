@@ -1,63 +1,63 @@
 @interface PLModelMigrationAction_AddDuplicateBackgroundJobItems
-- (char)_currentDuplicateProcessingStatusWithManagedObjectContext:(id)a3;
-- (id)_convertToPLManagedAssetOIDsFromSelectionOIDs:(id)a3 managedObjectContext:(id)a4 error:(id *)a5;
-- (id)_managedAssetOIDsFromAdditionalAssetAttributesOIDs:(id)a3 managedObjectContext:(id)a4 error:(id *)a5;
-- (id)_managedAssetOIDsFromDuplicateAlbumOIDs:(id)a3 managedObjectContext:(id)a4 error:(id *)a5;
-- (id)_validObjectIDFromChange:(id)a3 entityDescriptionMap:(id)a4;
-- (int64_t)_processTransactionIterator:(id)a3 managedObjectContext:(id)a4 error:(id *)a5;
-- (int64_t)_processWithLimitedSelection:(id)a3 managedObjectContext:(id)a4 error:(id *)a5;
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
-- (void)_cleanupLegacyProcessingTokensWithManagedObjectContext:(id)a3;
-- (void)_setupPropertiesWithManagedObjectContext:(id)a3;
-- (void)_updateDuplicateProcessingStatusIfNeededWithStatus:(char)a3 shouldSave:(BOOL)a4 managedObjectContext:(id)a5;
+- (char)_currentDuplicateProcessingStatusWithManagedObjectContext:(id)context;
+- (id)_convertToPLManagedAssetOIDsFromSelectionOIDs:(id)ds managedObjectContext:(id)context error:(id *)error;
+- (id)_managedAssetOIDsFromAdditionalAssetAttributesOIDs:(id)ds managedObjectContext:(id)context error:(id *)error;
+- (id)_managedAssetOIDsFromDuplicateAlbumOIDs:(id)ds managedObjectContext:(id)context error:(id *)error;
+- (id)_validObjectIDFromChange:(id)change entityDescriptionMap:(id)map;
+- (int64_t)_processTransactionIterator:(id)iterator managedObjectContext:(id)context error:(id *)error;
+- (int64_t)_processWithLimitedSelection:(id)selection managedObjectContext:(id)context error:(id *)error;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
+- (void)_cleanupLegacyProcessingTokensWithManagedObjectContext:(id)context;
+- (void)_setupPropertiesWithManagedObjectContext:(id)context;
+- (void)_updateDuplicateProcessingStatusIfNeededWithStatus:(char)status shouldSave:(BOOL)save managedObjectContext:(id)context;
 @end
 
 @implementation PLModelMigrationAction_AddDuplicateBackgroundJobItems
 
-- (void)_cleanupLegacyProcessingTokensWithManagedObjectContext:(id)a3
+- (void)_cleanupLegacyProcessingTokensWithManagedObjectContext:(id)context
 {
-  v4 = a3;
-  [PLModelMigrationActionUtility setHistoryTokenWithAction:self key:@"LastDuplicateDetectorProcessingToken" value:0 managedObjectContext:v4];
-  [PLModelMigrationActionUtility setHistoryTokenWithAction:self key:@"LastInitialDuplicateDetectorProcessingCompletedToken" value:0 managedObjectContext:v4];
+  contextCopy = context;
+  [PLModelMigrationActionUtility setHistoryTokenWithAction:self key:@"LastDuplicateDetectorProcessingToken" value:0 managedObjectContext:contextCopy];
+  [PLModelMigrationActionUtility setHistoryTokenWithAction:self key:@"LastInitialDuplicateDetectorProcessingCompletedToken" value:0 managedObjectContext:contextCopy];
 }
 
-- (char)_currentDuplicateProcessingStatusWithManagedObjectContext:(id)a3
+- (char)_currentDuplicateProcessingStatusWithManagedObjectContext:(id)context
 {
-  v3 = [PLGlobalKeyValue globalValueForKey:@"DuplicateProcessingStatus" managedObjectContext:a3];
-  v4 = [v3 intValue];
+  v3 = [PLGlobalKeyValue globalValueForKey:@"DuplicateProcessingStatus" managedObjectContext:context];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)_updateDuplicateProcessingStatusIfNeededWithStatus:(char)a3 shouldSave:(BOOL)a4 managedObjectContext:(id)a5
+- (void)_updateDuplicateProcessingStatusIfNeededWithStatus:(char)status shouldSave:(BOOL)save managedObjectContext:(id)context
 {
-  v5 = a3;
-  v8 = a5;
-  if ([(PLModelMigrationAction_AddDuplicateBackgroundJobItems *)self _currentDuplicateProcessingStatusWithManagedObjectContext:?]!= v5)
+  statusCopy = status;
+  contextCopy = context;
+  if ([(PLModelMigrationAction_AddDuplicateBackgroundJobItems *)self _currentDuplicateProcessingStatusWithManagedObjectContext:?]!= statusCopy)
   {
-    v7 = [MEMORY[0x1E696AD98] numberWithChar:v5];
-    [PLGlobalKeyValue setGlobalValue:v7 forKey:@"DuplicateProcessingStatus" managedObjectContext:v8];
+    v7 = [MEMORY[0x1E696AD98] numberWithChar:statusCopy];
+    [PLGlobalKeyValue setGlobalValue:v7 forKey:@"DuplicateProcessingStatus" managedObjectContext:contextCopy];
 
-    [(PLModelMigrationActionBackground *)self saveWithManagedObjectContext:v8 error:0];
+    [(PLModelMigrationActionBackground *)self saveWithManagedObjectContext:contextCopy error:0];
   }
 }
 
-- (void)_setupPropertiesWithManagedObjectContext:(id)a3
+- (void)_setupPropertiesWithManagedObjectContext:(id)context
 {
   v4 = MEMORY[0x1E695D5B8];
-  v5 = a3;
+  contextCopy = context;
   v6 = +[PLAdditionalAssetAttributes entityName];
-  v32 = [v4 entityForName:v6 inManagedObjectContext:v5];
+  v32 = [v4 entityForName:v6 inManagedObjectContext:contextCopy];
 
-  v7 = [v32 attributesByName];
+  attributesByName = [v32 attributesByName];
   v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v9 = [v7 objectForKeyedSubscript:@"sceneAnalysisTimestamp"];
+  v9 = [attributesByName objectForKeyedSubscript:@"sceneAnalysisTimestamp"];
   [v8 addObject:v9];
 
-  v10 = [v7 objectForKeyedSubscript:@"sceneAnalysisVersion"];
+  v10 = [attributesByName objectForKeyedSubscript:@"sceneAnalysisVersion"];
   [v8 addObject:v10];
 
-  v11 = [v7 objectForKeyedSubscript:@"originalStableHash"];
+  v11 = [attributesByName objectForKeyedSubscript:@"originalStableHash"];
   [v8 addObject:v11];
 
   v12 = [v8 copy];
@@ -67,22 +67,22 @@
   [v8 removeAllObjects];
   v14 = MEMORY[0x1E695D5B8];
   v15 = +[PLManagedAsset entityName];
-  v16 = [v14 entityForName:v15 inManagedObjectContext:v5];
+  v16 = [v14 entityForName:v15 inManagedObjectContext:contextCopy];
 
-  v17 = [v16 attributesByName];
-  v18 = [v17 objectForKeyedSubscript:@"hidden"];
+  attributesByName2 = [v16 attributesByName];
+  v18 = [attributesByName2 objectForKeyedSubscript:@"hidden"];
   [v8 addObject:v18];
 
-  v19 = [v17 objectForKeyedSubscript:@"trashedState"];
+  v19 = [attributesByName2 objectForKeyedSubscript:@"trashedState"];
   [v8 addObject:v19];
 
-  v20 = [v17 objectForKeyedSubscript:@"kindSubtype"];
+  v20 = [attributesByName2 objectForKeyedSubscript:@"kindSubtype"];
   [v8 addObject:v20];
 
-  v21 = [v17 objectForKeyedSubscript:@"adjustmentTimestamp"];
+  v21 = [attributesByName2 objectForKeyedSubscript:@"adjustmentTimestamp"];
   [v8 addObject:v21];
 
-  v22 = [v17 objectForKeyedSubscript:@"activeLibraryScopeParticipationState"];
+  v22 = [attributesByName2 objectForKeyedSubscript:@"activeLibraryScopeParticipationState"];
   [v8 addObject:v22];
 
   v23 = [v8 copy];
@@ -92,10 +92,10 @@
   [v8 removeAllObjects];
   v25 = MEMORY[0x1E695D5B8];
   v26 = +[PLDuplicateAlbum entityName];
-  v27 = [v25 entityForName:v26 inManagedObjectContext:v5];
+  v27 = [v25 entityForName:v26 inManagedObjectContext:contextCopy];
 
-  v28 = [v27 attributesByName];
-  v29 = [v28 objectForKeyedSubscript:@"processingVersion"];
+  attributesByName3 = [v27 attributesByName];
+  v29 = [attributesByName3 objectForKeyedSubscript:@"processingVersion"];
   [v8 addObject:v29];
 
   v30 = [v8 copy];
@@ -103,21 +103,21 @@
   self->_duplicateAlbumPropertiesToInclude = v30;
 }
 
-- (id)_validObjectIDFromChange:(id)a3 entityDescriptionMap:(id)a4
+- (id)_validObjectIDFromChange:(id)change entityDescriptionMap:(id)map
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 changedObjectID];
-  v9 = [v6 changeType];
-  if (v9 == 1)
+  changeCopy = change;
+  mapCopy = map;
+  changedObjectID = [changeCopy changedObjectID];
+  changeType = [changeCopy changeType];
+  if (changeType == 1)
   {
-    v15 = [v8 entity];
+    entity = [changedObjectID entity];
     v16 = +[PLAdditionalAssetAttributes entityName];
-    v17 = [v7 objectForKeyedSubscript:v16];
-    if ([v15 isEqual:v17])
+    v17 = [mapCopy objectForKeyedSubscript:v16];
+    if ([entity isEqual:v17])
     {
-      v18 = [v6 updatedProperties];
-      v19 = [v18 intersectsSet:self->_additionalAttributesPropertiesToInclude];
+      updatedProperties = [changeCopy updatedProperties];
+      v19 = [updatedProperties intersectsSet:self->_additionalAttributesPropertiesToInclude];
     }
 
     else
@@ -125,24 +125,24 @@
       v19 = 0;
     }
 
-    v20 = [v8 entity];
+    entity2 = [changedObjectID entity];
     v21 = +[PLManagedAsset entityName];
-    v22 = [v7 objectForKeyedSubscript:v21];
-    if ([v20 isEqual:v22])
+    v22 = [mapCopy objectForKeyedSubscript:v21];
+    if ([entity2 isEqual:v22])
     {
-      v23 = [v6 updatedProperties];
-      v24 = [v23 intersectsSet:self->_managedAssetPropertiesToInclude];
+      updatedProperties2 = [changeCopy updatedProperties];
+      v24 = [updatedProperties2 intersectsSet:self->_managedAssetPropertiesToInclude];
 
       v19 |= v24;
     }
 
-    v25 = [v8 entity];
+    entity3 = [changedObjectID entity];
     v26 = +[PLDuplicateAlbum entityName];
-    v27 = [v7 objectForKeyedSubscript:v26];
-    if ([v25 isEqual:v27])
+    v27 = [mapCopy objectForKeyedSubscript:v26];
+    if ([entity3 isEqual:v27])
     {
-      v28 = [v6 updatedProperties];
-      v29 = [v28 intersectsSet:self->_duplicateAlbumPropertiesToInclude];
+      updatedProperties3 = [changeCopy updatedProperties];
+      v29 = [updatedProperties3 intersectsSet:self->_duplicateAlbumPropertiesToInclude];
 
       if (((v29 | v19) & 1) == 0)
       {
@@ -160,16 +160,16 @@
     }
 
 LABEL_4:
-    v14 = v8;
+    v14 = changedObjectID;
     goto LABEL_13;
   }
 
-  if (!v9)
+  if (!changeType)
   {
-    v10 = [v8 entity];
+    entity4 = [changedObjectID entity];
     v11 = +[PLAdditionalAssetAttributes entityName];
-    v12 = [v7 objectForKeyedSubscript:v11];
-    v13 = [v10 isEqual:v12];
+    v12 = [mapCopy objectForKeyedSubscript:v11];
+    v13 = [entity4 isEqual:v12];
 
     if (v13)
     {
@@ -184,27 +184,27 @@ LABEL_13:
   return v14;
 }
 
-- (id)_managedAssetOIDsFromDuplicateAlbumOIDs:(id)a3 managedObjectContext:(id)a4 error:(id *)a5
+- (id)_managedAssetOIDsFromDuplicateAlbumOIDs:(id)ds managedObjectContext:(id)context error:(id *)error
 {
   v71[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dsCopy = ds;
+  contextCopy = context;
   v10 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  if ([v8 count])
+  if ([dsCopy count])
   {
     v11 = MEMORY[0x1E695D5E0];
     v12 = +[PLDuplicateAlbum entityName];
     v13 = [v11 fetchRequestWithEntityName:v12];
 
-    v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", v8];
-    [v13 setPredicate:v14];
+    dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", dsCopy];
+    [v13 setPredicate:dsCopy];
 
     v71[0] = @"assets";
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v71 count:1];
     [v13 setRelationshipKeyPathsForPrefetching:v15];
 
     v35 = 0;
-    v16 = [v9 executeFetchRequest:v13 error:&v35];
+    v16 = [contextCopy executeFetchRequest:v13 error:&v35];
     v17 = v35;
     if (v16)
     {
@@ -227,9 +227,9 @@ LABEL_14:
 
     if (v20)
     {
-      v21 = [(PLModelMigrationActionBackground *)self logger];
+      logger = [(PLModelMigrationActionBackground *)self logger];
 
-      if (!v21)
+      if (!logger)
       {
         v27 = PLMigrationGetLog();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -243,7 +243,7 @@ LABEL_14:
           _os_log_impl(&dword_19BF1F000, v27, OS_LOG_TYPE_ERROR, "Failed to fetch oids for %{public}@. Error: %@", buf, 0x16u);
         }
 
-        if (a5)
+        if (error)
         {
           goto LABEL_9;
         }
@@ -302,12 +302,12 @@ LABEL_14:
       }
     }
 
-    if (a5)
+    if (error)
     {
 LABEL_9:
       v26 = v17;
       v18 = 0;
-      *a5 = v17;
+      *error = v17;
       goto LABEL_14;
     }
 
@@ -321,20 +321,20 @@ LABEL_15:
   return v10;
 }
 
-- (id)_managedAssetOIDsFromAdditionalAssetAttributesOIDs:(id)a3 managedObjectContext:(id)a4 error:(id *)a5
+- (id)_managedAssetOIDsFromAdditionalAssetAttributesOIDs:(id)ds managedObjectContext:(id)context error:(id *)error
 {
   v71[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dsCopy = ds;
+  contextCopy = context;
   v10 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  if ([v8 count])
+  if ([dsCopy count])
   {
     v11 = MEMORY[0x1E695D5E0];
     v12 = +[PLAdditionalAssetAttributes entityName];
     v13 = [v11 fetchRequestWithEntityName:v12];
 
-    v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", v8];
-    [v13 setPredicate:v14];
+    dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", dsCopy];
+    [v13 setPredicate:dsCopy];
 
     v71[0] = @"asset";
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v71 count:1];
@@ -342,7 +342,7 @@ LABEL_15:
 
     [v13 setResultType:2];
     v35 = 0;
-    v16 = [v9 executeFetchRequest:v13 error:&v35];
+    v16 = [contextCopy executeFetchRequest:v13 error:&v35];
     v17 = v35;
     if (v16)
     {
@@ -365,9 +365,9 @@ LABEL_14:
 
     if (v20)
     {
-      v21 = [(PLModelMigrationActionBackground *)self logger];
+      logger = [(PLModelMigrationActionBackground *)self logger];
 
-      if (!v21)
+      if (!logger)
       {
         v27 = PLMigrationGetLog();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -381,7 +381,7 @@ LABEL_14:
           _os_log_impl(&dword_19BF1F000, v27, OS_LOG_TYPE_ERROR, "Failed to fetch oids for %{public}@. Error: %@", buf, 0x16u);
         }
 
-        if (a5)
+        if (error)
         {
           goto LABEL_9;
         }
@@ -440,12 +440,12 @@ LABEL_14:
       }
     }
 
-    if (a5)
+    if (error)
     {
 LABEL_9:
       v26 = v17;
       v18 = 0;
-      *a5 = v17;
+      *error = v17;
       goto LABEL_14;
     }
 
@@ -459,23 +459,23 @@ LABEL_15:
   return v10;
 }
 
-- (id)_convertToPLManagedAssetOIDsFromSelectionOIDs:(id)a3 managedObjectContext:(id)a4 error:(id *)a5
+- (id)_convertToPLManagedAssetOIDsFromSelectionOIDs:(id)ds managedObjectContext:(id)context error:(id *)error
 {
-  v7 = a4;
+  contextCopy = context;
   v8 = MEMORY[0x1E695D5B8];
-  v9 = a3;
+  dsCopy = ds;
   v10 = +[PLAdditionalAssetAttributes entityName];
-  v11 = [v8 entityForName:v10 inManagedObjectContext:v7];
+  v11 = [v8 entityForName:v10 inManagedObjectContext:contextCopy];
 
   v12 = MEMORY[0x1E695D5B8];
   v13 = +[PLManagedAsset entityName];
-  v14 = [v12 entityForName:v13 inManagedObjectContext:v7];
+  v14 = [v12 entityForName:v13 inManagedObjectContext:contextCopy];
 
   v15 = MEMORY[0x1E695D5B8];
   v16 = +[PLDuplicateAlbum entityName];
-  v17 = [v15 entityForName:v16 inManagedObjectContext:v7];
+  v17 = [v15 entityForName:v16 inManagedObjectContext:contextCopy];
 
-  v18 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v9, "count")}];
+  v18 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(dsCopy, "count")}];
   v19 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v20 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v44[0] = MEMORY[0x1E69E9820];
@@ -494,11 +494,11 @@ LABEL_15:
   v49 = v25;
   v26 = v18;
   v50 = v26;
-  v51 = self;
-  [v9 enumerateObjectsUsingBlock:v44];
+  selfCopy = self;
+  [dsCopy enumerateObjectsUsingBlock:v44];
 
   v43 = 0;
-  v27 = [(PLModelMigrationAction_AddDuplicateBackgroundJobItems *)self _managedAssetOIDsFromAdditionalAssetAttributesOIDs:v22 managedObjectContext:v7 error:&v43];
+  v27 = [(PLModelMigrationAction_AddDuplicateBackgroundJobItems *)self _managedAssetOIDsFromAdditionalAssetAttributesOIDs:v22 managedObjectContext:contextCopy error:&v43];
   v28 = v43;
   if (!v27)
   {
@@ -506,8 +506,8 @@ LABEL_7:
 
     v35 = v28;
     v32 = 0;
-    v36 = a5;
-    if (a5)
+    errorCopy2 = error;
+    if (error)
     {
       goto LABEL_5;
     }
@@ -518,11 +518,11 @@ LABEL_7:
   v40 = v25;
   v29 = v23;
   v30 = v21;
-  v31 = [v27 allObjects];
-  [v26 addObjectsFromArray:v31];
+  allObjects = [v27 allObjects];
+  [v26 addObjectsFromArray:allObjects];
 
   v42 = v28;
-  v32 = [(PLModelMigrationAction_AddDuplicateBackgroundJobItems *)self _managedAssetOIDsFromDuplicateAlbumOIDs:v24 managedObjectContext:v7 error:&v42];
+  v32 = [(PLModelMigrationAction_AddDuplicateBackgroundJobItems *)self _managedAssetOIDsFromDuplicateAlbumOIDs:v24 managedObjectContext:contextCopy error:&v42];
   v33 = v42;
 
   if (!v32)
@@ -534,22 +534,22 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v34 = [v32 allObjects];
-  [v26 addObjectsFromArray:v34];
+  allObjects2 = [v32 allObjects];
+  [v26 addObjectsFromArray:allObjects2];
 
   v35 = v33;
   v21 = v30;
   v23 = v29;
   v25 = v40;
-  v36 = a5;
+  errorCopy2 = error;
   if (!v26)
   {
-    if (a5)
+    if (error)
     {
 LABEL_5:
       v37 = v35;
       v26 = 0;
-      *v36 = v35;
+      *errorCopy2 = v35;
       goto LABEL_9;
     }
 
@@ -563,15 +563,15 @@ LABEL_9:
   return v26;
 }
 
-- (int64_t)_processWithLimitedSelection:(id)a3 managedObjectContext:(id)a4 error:(id *)a5
+- (int64_t)_processWithLimitedSelection:(id)selection managedObjectContext:(id)context error:(id *)error
 {
   v110 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if ([v8 count])
+  selectionCopy = selection;
+  contextCopy = context;
+  if ([selectionCopy count])
   {
     v73 = 0;
-    v10 = [(PLModelMigrationAction_AddDuplicateBackgroundJobItems *)self _convertToPLManagedAssetOIDsFromSelectionOIDs:v8 managedObjectContext:v9 error:&v73];
+    v10 = [(PLModelMigrationAction_AddDuplicateBackgroundJobItems *)self _convertToPLManagedAssetOIDsFromSelectionOIDs:selectionCopy managedObjectContext:contextCopy error:&v73];
     v11 = v73;
     if (!v10)
     {
@@ -580,9 +580,9 @@ LABEL_9:
 
       if (v36)
       {
-        v37 = [(PLModelMigrationActionBackground *)self logger];
+        logger = [(PLModelMigrationActionBackground *)self logger];
 
-        if (v37)
+        if (logger)
         {
           v108 = 0u;
           v109 = 0u;
@@ -644,10 +644,10 @@ LABEL_9:
         }
       }
 
-      if (a5)
+      if (error)
       {
         v54 = v11;
-        *a5 = v11;
+        *error = v11;
       }
 
       v34 = 3;
@@ -662,7 +662,7 @@ LABEL_59:
       goto LABEL_60;
     }
 
-    v65 = self;
+    selfCopy = self;
     v12 = MEMORY[0x1E695D5E0];
     v13 = +[PLManagedAsset entityName];
     v14 = [v12 fetchRequestWithEntityName:v13];
@@ -676,15 +676,15 @@ LABEL_59:
     [v14 setPropertiesToFetch:v16];
 
     v72 = v11;
-    v17 = [v9 executeFetchRequest:v14 error:&v72];
+    v17 = [contextCopy executeFetchRequest:v14 error:&v72];
     v64 = v72;
 
-    v66 = v9;
+    v66 = contextCopy;
     if (v17)
     {
-      v60 = a5;
+      errorCopy = error;
       v61 = v10;
-      v62 = v8;
+      v62 = selectionCopy;
       v70 = 0u;
       v71 = 0u;
       v68 = 0u;
@@ -708,7 +708,7 @@ LABEL_59:
             v23 = [*(*(&v68 + 1) + 8 * i) objectForKeyedSubscript:@"uuid"];
             if (v23)
             {
-              v24 = [PLBackgroundJobWorkItem insertBackgroundJobWorkItemWithIdentifier:v23 jobType:6 jobFlags:3 inManagedObjectContext:v9];
+              v24 = [PLBackgroundJobWorkItem insertBackgroundJobWorkItemWithIdentifier:v23 jobType:6 jobFlags:3 inManagedObjectContext:contextCopy];
             }
 
             else
@@ -716,12 +716,12 @@ LABEL_59:
               v25 = PLMigrationGetLog();
               v26 = os_log_type_enabled(v25, OS_LOG_TYPE_INFO);
 
-              v9 = v66;
+              contextCopy = v66;
               if (v26)
               {
-                v27 = [(PLModelMigrationActionBackground *)v65 logger];
+                logger2 = [(PLModelMigrationActionBackground *)selfCopy logger];
 
-                if (v27)
+                if (logger2)
                 {
                   v108 = 0u;
                   v109 = 0u;
@@ -761,7 +761,7 @@ LABEL_59:
                   LODWORD(v59) = 2;
                   v29 = _os_log_send_and_compose_impl();
 
-                  v30 = [(PLModelMigrationActionBackground *)v65 logger:&v76];
+                  v30 = [(PLModelMigrationActionBackground *)selfCopy logger:&v76];
                   [v30 logWithMessage:v29 fromCodeLocation:"PLModelMigrationActionBackground.m" type:{1778, 1}];
 
                   if (v29 != &buf)
@@ -780,7 +780,7 @@ LABEL_59:
                   }
                 }
 
-                v9 = v66;
+                contextCopy = v66;
               }
             }
           }
@@ -792,7 +792,7 @@ LABEL_59:
       }
 
       v67 = v64;
-      v32 = [v9 save:&v67];
+      v32 = [contextCopy save:&v67];
       v33 = v67;
 
       if (v32)
@@ -800,8 +800,8 @@ LABEL_59:
         v34 = 1;
         v11 = v33;
         v10 = v61;
-        v8 = v62;
-        v9 = v66;
+        selectionCopy = v62;
+        contextCopy = v66;
         v17 = v63;
 LABEL_58:
 
@@ -811,13 +811,13 @@ LABEL_58:
       v47 = PLMigrationGetLog();
       v48 = os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT);
 
-      v8 = v62;
-      a5 = v60;
+      selectionCopy = v62;
+      error = errorCopy;
       if (v48)
       {
-        v49 = [(PLModelMigrationActionBackground *)v65 logger];
+        logger3 = [(PLModelMigrationActionBackground *)selfCopy logger];
 
-        if (v49)
+        if (logger3)
         {
           v108 = 0u;
           v109 = 0u;
@@ -858,7 +858,7 @@ LABEL_58:
           LODWORD(v59) = 12;
           v51 = _os_log_send_and_compose_impl();
 
-          v52 = [(PLModelMigrationActionBackground *)v65 logger:&v76];
+          v52 = [(PLModelMigrationActionBackground *)selfCopy logger:&v76];
           [v52 logWithMessage:v51 fromCodeLocation:"PLModelMigrationActionBackground.m" type:{1786, 0}];
 
           if (v51 != &buf)
@@ -881,7 +881,7 @@ LABEL_58:
 
       v10 = v61;
       v17 = v63;
-      if (!v60)
+      if (!errorCopy)
       {
         v34 = 3;
         v11 = v33;
@@ -891,10 +891,10 @@ LABEL_58:
       v11 = v33;
 LABEL_55:
       v57 = v33;
-      *a5 = v33;
+      *error = v33;
       v34 = 3;
 LABEL_57:
-      v9 = v66;
+      contextCopy = v66;
       goto LABEL_58;
     }
 
@@ -903,9 +903,9 @@ LABEL_57:
 
     if (v42)
     {
-      v43 = [(PLModelMigrationActionBackground *)v65 logger];
+      logger4 = [(PLModelMigrationActionBackground *)selfCopy logger];
 
-      if (!v43)
+      if (!logger4)
       {
         v55 = PLMigrationGetLog();
         if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
@@ -915,7 +915,7 @@ LABEL_57:
           _os_log_impl(&dword_19BF1F000, v55, OS_LOG_TYPE_ERROR, "Failed to fetch assets. Error: %@", &buf, 0xCu);
         }
 
-        if (a5)
+        if (error)
         {
           goto LABEL_35;
         }
@@ -962,7 +962,7 @@ LABEL_57:
       LODWORD(v59) = 12;
       v45 = _os_log_send_and_compose_impl();
 
-      v46 = [(PLModelMigrationActionBackground *)v65 logger:&v76];
+      v46 = [(PLModelMigrationActionBackground *)selfCopy logger:&v76];
       [v46 logWithMessage:v45 fromCodeLocation:"PLModelMigrationActionBackground.m" type:{1769, 16}];
 
       if (v45 != &buf)
@@ -971,7 +971,7 @@ LABEL_57:
       }
     }
 
-    if (a5)
+    if (error)
     {
 LABEL_35:
       v11 = v64;
@@ -991,30 +991,30 @@ LABEL_60:
   return v34;
 }
 
-- (int64_t)_processTransactionIterator:(id)a3 managedObjectContext:(id)a4 error:(id *)a5
+- (int64_t)_processTransactionIterator:(id)iterator managedObjectContext:(id)context error:(id *)error
 {
   v57[3] = *MEMORY[0x1E69E9840];
-  v33 = a3;
-  v7 = a4;
-  v32 = self;
-  [(PLModelMigrationAction_AddDuplicateBackgroundJobItems *)self _setupPropertiesWithManagedObjectContext:v7];
+  iteratorCopy = iterator;
+  contextCopy = context;
+  selfCopy = self;
+  [(PLModelMigrationAction_AddDuplicateBackgroundJobItems *)self _setupPropertiesWithManagedObjectContext:contextCopy];
   v34 = +[PLAdditionalAssetAttributes entityName];
   v56[0] = v34;
   v8 = MEMORY[0x1E695D5B8];
   v9 = +[PLAdditionalAssetAttributes entityName];
-  v10 = [v8 entityForName:v9 inManagedObjectContext:v7];
+  v10 = [v8 entityForName:v9 inManagedObjectContext:contextCopy];
   v57[0] = v10;
   v11 = +[PLManagedAsset entityName];
   v56[1] = v11;
   v12 = MEMORY[0x1E695D5B8];
   v13 = +[PLManagedAsset entityName];
-  v14 = [v12 entityForName:v13 inManagedObjectContext:v7];
+  v14 = [v12 entityForName:v13 inManagedObjectContext:contextCopy];
   v57[1] = v14;
   v15 = +[PLDuplicateAlbum entityName];
   v56[2] = v15;
   v16 = MEMORY[0x1E695D5B8];
   v17 = +[PLDuplicateAlbum entityName];
-  v18 = [v16 entityForName:v17 inManagedObjectContext:v7];
+  v18 = [v16 entityForName:v17 inManagedObjectContext:contextCopy];
   v57[2] = v18;
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v57 forKeys:v56 count:3];
 
@@ -1039,7 +1039,7 @@ LABEL_60:
   v36[2] = __112__PLModelMigrationAction_AddDuplicateBackgroundJobItems__processTransactionIterator_managedObjectContext_error___block_invoke;
   v36[3] = &unk_1E7564B88;
   v41 = v44;
-  v36[4] = v32;
+  v36[4] = selfCopy;
   v22 = v19;
   v37 = v22;
   v23 = v21;
@@ -1047,18 +1047,18 @@ LABEL_60:
   v24 = v20;
   v39 = v24;
   v42 = &v52;
-  v25 = v7;
+  v25 = contextCopy;
   v40 = v25;
   v43 = &v46;
-  [v33 enumerateRemainingTransactionsWithBlock:v36];
+  [iteratorCopy enumerateRemainingTransactionsWithBlock:v36];
   if (v53[3] != 1)
   {
     v28 = v47[5];
 LABEL_7:
-    if (a5)
+    if (error)
     {
       v28 = v28;
-      *a5 = v28;
+      *error = v28;
     }
 
     goto LABEL_9;
@@ -1068,7 +1068,7 @@ LABEL_7:
   {
     v26 = (v47 + 5);
     obj = v47[5];
-    v27 = [(PLModelMigrationAction_AddDuplicateBackgroundJobItems *)v32 _processWithLimitedSelection:v24 managedObjectContext:v25 error:&obj];
+    v27 = [(PLModelMigrationAction_AddDuplicateBackgroundJobItems *)selfCopy _processWithLimitedSelection:v24 managedObjectContext:v25 error:&obj];
     objc_storeStrong(v26, obj);
     v53[3] = v27;
   }
@@ -1094,11 +1094,11 @@ LABEL_9:
   return v29;
 }
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v110 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [[PLGlobalValues alloc] initWithManagedObjectContext:v6];
+  contextCopy = context;
+  v7 = [[PLGlobalValues alloc] initWithManagedObjectContext:contextCopy];
   if (([(PLGlobalValues *)v7 libraryCreateOptions]& 0x40) != 0)
   {
     v17 = PLMigrationGetLog();
@@ -1109,9 +1109,9 @@ LABEL_9:
       goto LABEL_28;
     }
 
-    v19 = [(PLModelMigrationActionBackground *)self logger];
+    logger = [(PLModelMigrationActionBackground *)self logger];
 
-    if (!v19)
+    if (!logger)
     {
       v30 = PLMigrationGetLog();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
@@ -1174,11 +1174,11 @@ LABEL_10:
     goto LABEL_28;
   }
 
-  v8 = [(PLModelMigrationAction_AddDuplicateBackgroundJobItems *)self _currentDuplicateProcessingStatusWithManagedObjectContext:v6];
+  v8 = [(PLModelMigrationAction_AddDuplicateBackgroundJobItems *)self _currentDuplicateProcessingStatusWithManagedObjectContext:contextCopy];
   if (v8 < 1)
   {
-    [(PLModelMigrationAction_AddDuplicateBackgroundJobItems *)self _updateDuplicateProcessingStatusIfNeededWithStatus:0xFFFFFFFFLL shouldSave:1 managedObjectContext:v6];
-    v22 = [PLModelMigrationActionUtility getHistoryTokenWithAction:self key:@"LastDuplicateDetectorProcessingToken" managedObjectContext:v6];
+    [(PLModelMigrationAction_AddDuplicateBackgroundJobItems *)self _updateDuplicateProcessingStatusIfNeededWithStatus:0xFFFFFFFFLL shouldSave:1 managedObjectContext:contextCopy];
+    v22 = [PLModelMigrationActionUtility getHistoryTokenWithAction:self key:@"LastDuplicateDetectorProcessingToken" managedObjectContext:contextCopy];
     if (!v22)
     {
       v31 = PLMigrationGetLog();
@@ -1186,9 +1186,9 @@ LABEL_10:
 
       if (v32)
       {
-        v33 = [(PLModelMigrationActionBackground *)self logger];
+        logger2 = [(PLModelMigrationActionBackground *)self logger];
 
-        if (v33)
+        if (logger2)
         {
           v108 = 0u;
           v109 = 0u;
@@ -1248,21 +1248,21 @@ LABEL_10:
         }
       }
 
-      [(PLModelMigrationAction_AddDuplicateBackgroundJobItems *)self _cleanupLegacyProcessingTokensWithManagedObjectContext:v6];
+      [(PLModelMigrationAction_AddDuplicateBackgroundJobItems *)self _cleanupLegacyProcessingTokensWithManagedObjectContext:contextCopy];
       v27 = 1;
-      [(PLModelMigrationAction_AddDuplicateBackgroundJobItems *)self _updateDuplicateProcessingStatusIfNeededWithStatus:0 shouldSave:1 managedObjectContext:v6];
+      [(PLModelMigrationAction_AddDuplicateBackgroundJobItems *)self _updateDuplicateProcessingStatusIfNeededWithStatus:0 shouldSave:1 managedObjectContext:contextCopy];
       [(PLModelMigrationActionBackground *)self finalizeProgress];
       goto LABEL_69;
     }
 
-    v23 = [PLModelMigrationActionUtility getHistoryTokenWithAction:self key:@"LastInitialDuplicateDetectorProcessingCompletedToken" managedObjectContext:v6];
+    v23 = [PLModelMigrationActionUtility getHistoryTokenWithAction:self key:@"LastInitialDuplicateDetectorProcessingCompletedToken" managedObjectContext:contextCopy];
     if (v23)
     {
-      if ([PLModelMigrationActionUtility shouldProcessHistoryTokenWithAction:self token:v22 cutoffPercent:v6 managedObjectContext:0.5])
+      if ([PLModelMigrationActionUtility shouldProcessHistoryTokenWithAction:self token:v22 cutoffPercent:contextCopy managedObjectContext:0.5])
       {
         v71 = v23;
         v75 = 0;
-        v24 = [PLPersistentHistoryTransactionIterator iteratorSinceToken:v22 withManagedObjectObjectContext:v6 error:&v75];
+        v24 = [PLPersistentHistoryTransactionIterator iteratorSinceToken:v22 withManagedObjectObjectContext:contextCopy error:&v75];
         v25 = v75;
         v26 = v25;
         if (!v24)
@@ -1272,9 +1272,9 @@ LABEL_10:
 
           if (v54)
           {
-            v55 = [(PLModelMigrationActionBackground *)self logger];
+            logger3 = [(PLModelMigrationActionBackground *)self logger];
 
-            if (v55)
+            if (logger3)
             {
               v108 = 0u;
               v109 = 0u;
@@ -1336,38 +1336,38 @@ LABEL_10:
             }
           }
 
-          if (a4)
+          if (error)
           {
             v68 = v26;
-            *a4 = v26;
+            *error = v26;
           }
 
-          [(PLModelMigrationAction_AddDuplicateBackgroundJobItems *)self _cleanupLegacyProcessingTokensWithManagedObjectContext:v6];
+          [(PLModelMigrationAction_AddDuplicateBackgroundJobItems *)self _cleanupLegacyProcessingTokensWithManagedObjectContext:contextCopy];
           v27 = 1;
-          [(PLModelMigrationAction_AddDuplicateBackgroundJobItems *)self _updateDuplicateProcessingStatusIfNeededWithStatus:0 shouldSave:1 managedObjectContext:v6];
+          [(PLModelMigrationAction_AddDuplicateBackgroundJobItems *)self _updateDuplicateProcessingStatusIfNeededWithStatus:0 shouldSave:1 managedObjectContext:contextCopy];
           goto LABEL_67;
         }
 
         v74 = v25;
-        v27 = [(PLModelMigrationAction_AddDuplicateBackgroundJobItems *)self _processTransactionIterator:v24 managedObjectContext:v6 error:&v74];
+        v27 = [(PLModelMigrationAction_AddDuplicateBackgroundJobItems *)self _processTransactionIterator:v24 managedObjectContext:contextCopy error:&v74];
         v28 = v74;
 
         if (v27 == 3)
         {
-          v62 = [(PLModelMigrationActionBackground *)self pathManager];
-          [v62 libraryURL];
+          pathManager = [(PLModelMigrationActionBackground *)self pathManager];
+          [pathManager libraryURL];
           v63 = v70 = v24;
           v64 = PLIsFinalBackgroundMigrationRetryAttempt(v63);
 
           v24 = v70;
           if (v64)
           {
-            [(PLModelMigrationAction_AddDuplicateBackgroundJobItems *)self _cleanupLegacyProcessingTokensWithManagedObjectContext:v6];
-            [(PLModelMigrationAction_AddDuplicateBackgroundJobItems *)self _updateDuplicateProcessingStatusIfNeededWithStatus:0 shouldSave:0 managedObjectContext:v6];
+            [(PLModelMigrationAction_AddDuplicateBackgroundJobItems *)self _cleanupLegacyProcessingTokensWithManagedObjectContext:contextCopy];
+            [(PLModelMigrationAction_AddDuplicateBackgroundJobItems *)self _updateDuplicateProcessingStatusIfNeededWithStatus:0 shouldSave:0 managedObjectContext:contextCopy];
             v72 = v28;
             v29 = &v72;
 LABEL_50:
-            v27 = [(PLModelMigrationActionBackground *)self saveWithManagedObjectContext:v6 error:v29];
+            v27 = [(PLModelMigrationActionBackground *)self saveWithManagedObjectContext:contextCopy error:v29];
             v65 = *v29;
 
             v26 = v65;
@@ -1383,10 +1383,10 @@ LABEL_67:
             }
 
 LABEL_53:
-            if (a4)
+            if (error)
             {
               v66 = v26;
-              *a4 = v26;
+              *error = v26;
             }
 
             goto LABEL_55;
@@ -1395,8 +1395,8 @@ LABEL_53:
 
         else if (v27 == 1)
         {
-          [(PLModelMigrationAction_AddDuplicateBackgroundJobItems *)self _cleanupLegacyProcessingTokensWithManagedObjectContext:v6];
-          [(PLModelMigrationAction_AddDuplicateBackgroundJobItems *)self _updateDuplicateProcessingStatusIfNeededWithStatus:2 shouldSave:0 managedObjectContext:v6];
+          [(PLModelMigrationAction_AddDuplicateBackgroundJobItems *)self _cleanupLegacyProcessingTokensWithManagedObjectContext:contextCopy];
+          [(PLModelMigrationAction_AddDuplicateBackgroundJobItems *)self _updateDuplicateProcessingStatusIfNeededWithStatus:2 shouldSave:0 managedObjectContext:contextCopy];
           v73 = v28;
           v29 = &v73;
           goto LABEL_50;
@@ -1411,9 +1411,9 @@ LABEL_53:
 
       if (v50)
       {
-        v51 = [(PLModelMigrationActionBackground *)self logger];
+        logger4 = [(PLModelMigrationActionBackground *)self logger];
 
-        if (v51)
+        if (logger4)
         {
           v108 = 0u;
           v109 = 0u;
@@ -1489,9 +1489,9 @@ LABEL_59:
 
       if (v41)
       {
-        v42 = [(PLModelMigrationActionBackground *)self logger];
+        logger5 = [(PLModelMigrationActionBackground *)self logger];
 
-        if (v42)
+        if (logger5)
         {
           v108 = 0u;
           v109 = 0u;
@@ -1551,9 +1551,9 @@ LABEL_59:
     }
 
 LABEL_60:
-    [(PLModelMigrationAction_AddDuplicateBackgroundJobItems *)self _cleanupLegacyProcessingTokensWithManagedObjectContext:v6];
+    [(PLModelMigrationAction_AddDuplicateBackgroundJobItems *)self _cleanupLegacyProcessingTokensWithManagedObjectContext:contextCopy];
     v27 = 1;
-    [(PLModelMigrationAction_AddDuplicateBackgroundJobItems *)self _updateDuplicateProcessingStatusIfNeededWithStatus:0 shouldSave:1 managedObjectContext:v6];
+    [(PLModelMigrationAction_AddDuplicateBackgroundJobItems *)self _updateDuplicateProcessingStatusIfNeededWithStatus:0 shouldSave:1 managedObjectContext:contextCopy];
     [(PLModelMigrationActionBackground *)self finalizeProgress];
 LABEL_68:
 
@@ -1567,9 +1567,9 @@ LABEL_69:
 
   if (v11)
   {
-    v12 = [(PLModelMigrationActionBackground *)self logger];
+    logger6 = [(PLModelMigrationActionBackground *)self logger];
 
-    if (!v12)
+    if (!logger6)
     {
       v37 = PLMigrationGetLog();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
@@ -1633,7 +1633,7 @@ LABEL_69:
   }
 
 LABEL_28:
-  [(PLModelMigrationAction_AddDuplicateBackgroundJobItems *)self _cleanupLegacyProcessingTokensWithManagedObjectContext:v6];
+  [(PLModelMigrationAction_AddDuplicateBackgroundJobItems *)self _cleanupLegacyProcessingTokensWithManagedObjectContext:contextCopy];
   [(PLModelMigrationActionBackground *)self finalizeProgress];
   v27 = 1;
 LABEL_29:

@@ -1,8 +1,8 @@
 @interface TUIIdentifierMap
-+ (id)describeForDebuggingIdentifierIndex:(unint64_t)a3 package:(id)a4;
++ (id)describeForDebuggingIdentifierIndex:(unint64_t)index package:(id)package;
 - (TUIIdentifierMap)init;
-- (TUIIdentifierMap)initWithUUID:(id)a3;
-- (id)identifierWithNode:(id)a3 baseIdentifier:(id)a4;
+- (TUIIdentifierMap)initWithUUID:(id)d;
+- (id)identifierWithNode:(id)node baseIdentifier:(id)identifier;
 @end
 
 @implementation TUIIdentifierMap
@@ -15,16 +15,16 @@
   return v4;
 }
 
-- (TUIIdentifierMap)initWithUUID:(id)a3
+- (TUIIdentifierMap)initWithUUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = TUIIdentifierMap;
   v6 = [(TUIIdentifierMap *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_UUID, a3);
+    objc_storeStrong(&v6->_UUID, d);
     v8 = objc_opt_new();
     renderModelIdentifierMap = v7->_renderModelIdentifierMap;
     v7->_renderModelIdentifierMap = v8;
@@ -36,16 +36,16 @@
   return v7;
 }
 
-- (id)identifierWithNode:(id)a3 baseIdentifier:(id)a4
+- (id)identifierWithNode:(id)node baseIdentifier:(id)identifier
 {
-  v5 = a4;
-  if (TUIElementNodeNotNil(a3.var0))
+  identifierCopy = identifier;
+  if (TUIElementNodeNotNil(node.var0))
   {
-    v6 = [NSNumber numberWithUnsignedInt:(2 * a3.var0) | 1];
+    v6 = [NSNumber numberWithUnsignedInt:(2 * node.var0) | 1];
     v7 = v6;
-    if (v5)
+    if (identifierCopy)
     {
-      v8 = [v5 tui_identifierByAppendingIndex:{objc_msgSend(v6, "unsignedIntegerValue")}];
+      v8 = [identifierCopy tui_identifierByAppendingIndex:{objc_msgSend(v6, "unsignedIntegerValue")}];
     }
 
     else
@@ -64,11 +64,11 @@
   return v9;
 }
 
-+ (id)describeForDebuggingIdentifierIndex:(unint64_t)a3 package:(id)a4
++ (id)describeForDebuggingIdentifierIndex:(unint64_t)index package:(id)package
 {
-  if (a3)
+  if (index)
   {
-    v5 = [a4 debugLocationForNode:(a3 >> 1)];
+    v5 = [package debugLocationForNode:(index >> 1)];
   }
 
   else

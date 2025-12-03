@@ -1,9 +1,9 @@
 @interface CLKComplicationWidgetMigrationObjectProvider
 - (CLKComplicationWidgetMigrationObjectProvider)init;
-- (id)itemForAppIdentifier:(id)a3 key:(id)a4;
-- (void)enumerateAppIdentifiersWithBlock:(id)a3;
-- (void)enumerateItemsForAppIdentifier:(id)a3 withBlock:(id)a4;
-- (void)setItem:(id)a3 forAppIdentifier:(id)a4 key:(id)a5;
+- (id)itemForAppIdentifier:(id)identifier key:(id)key;
+- (void)enumerateAppIdentifiersWithBlock:(id)block;
+- (void)enumerateItemsForAppIdentifier:(id)identifier withBlock:(id)block;
+- (void)setItem:(id)item forAppIdentifier:(id)identifier key:(id)key;
 @end
 
 @implementation CLKComplicationWidgetMigrationObjectProvider
@@ -23,27 +23,27 @@
   return v2;
 }
 
-- (id)itemForAppIdentifier:(id)a3 key:(id)a4
+- (id)itemForAppIdentifier:(id)identifier key:(id)key
 {
   itemsByAppIdentifier = self->_itemsByAppIdentifier;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)itemsByAppIdentifier objectForKey:a3];
-  v8 = [v7 objectForKey:v6];
+  keyCopy = key;
+  v7 = [(NSMutableDictionary *)itemsByAppIdentifier objectForKey:identifier];
+  v8 = [v7 objectForKey:keyCopy];
 
   return v8;
 }
 
-- (void)enumerateAppIdentifiersWithBlock:(id)a3
+- (void)enumerateAppIdentifiersWithBlock:(id)block
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v14 = 0;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NSMutableDictionary *)self->_itemsByAppIdentifier keyEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  keyEnumerator = [(NSMutableDictionary *)self->_itemsByAppIdentifier keyEnumerator];
+  v6 = [keyEnumerator countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -54,10 +54,10 @@ LABEL_3:
     {
       if (*v11 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(keyEnumerator);
       }
 
-      v4[2](v4, *(*(&v10 + 1) + 8 * v9), &v14);
+      blockCopy[2](blockCopy, *(*(&v10 + 1) + 8 * v9), &v14);
       if (v14)
       {
         break;
@@ -65,7 +65,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+        v7 = [keyEnumerator countByEnumeratingWithState:&v10 objects:v15 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -77,11 +77,11 @@ LABEL_3:
   }
 }
 
-- (void)enumerateItemsForAppIdentifier:(id)a3 withBlock:(id)a4
+- (void)enumerateItemsForAppIdentifier:(id)identifier withBlock:(id)block
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_itemsByAppIdentifier objectForKey:a3];
+  blockCopy = block;
+  v7 = [(NSMutableDictionary *)self->_itemsByAppIdentifier objectForKey:identifier];
   v8 = v7;
   if (v7)
   {
@@ -90,8 +90,8 @@ LABEL_3:
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v9 = [v7 objectEnumerator];
-    v10 = [v9 countByEnumeratingWithState:&v14 objects:v19 count:16];
+    objectEnumerator = [v7 objectEnumerator];
+    v10 = [objectEnumerator countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v10)
     {
       v11 = v10;
@@ -102,10 +102,10 @@ LABEL_4:
       {
         if (*v15 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        v6[2](v6, *(*(&v14 + 1) + 8 * v13), &v18);
+        blockCopy[2](blockCopy, *(*(&v14 + 1) + 8 * v13), &v18);
         if (v18)
         {
           break;
@@ -113,7 +113,7 @@ LABEL_4:
 
         if (v11 == ++v13)
         {
-          v11 = [v9 countByEnumeratingWithState:&v14 objects:v19 count:16];
+          v11 = [objectEnumerator countByEnumeratingWithState:&v14 objects:v19 count:16];
           if (v11)
           {
             goto LABEL_4;
@@ -126,19 +126,19 @@ LABEL_4:
   }
 }
 
-- (void)setItem:(id)a3 forAppIdentifier:(id)a4 key:(id)a5
+- (void)setItem:(id)item forAppIdentifier:(id)identifier key:(id)key
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(NSMutableDictionary *)self->_itemsByAppIdentifier objectForKey:v8];
+  itemCopy = item;
+  identifierCopy = identifier;
+  keyCopy = key;
+  v10 = [(NSMutableDictionary *)self->_itemsByAppIdentifier objectForKey:identifierCopy];
   if (!v10)
   {
     v10 = objc_opt_new();
-    [(NSMutableDictionary *)self->_itemsByAppIdentifier setObject:v10 forKey:v8];
+    [(NSMutableDictionary *)self->_itemsByAppIdentifier setObject:v10 forKey:identifierCopy];
   }
 
-  [v10 setObject:v11 forKey:v9];
+  [v10 setObject:itemCopy forKey:keyCopy];
 }
 
 @end

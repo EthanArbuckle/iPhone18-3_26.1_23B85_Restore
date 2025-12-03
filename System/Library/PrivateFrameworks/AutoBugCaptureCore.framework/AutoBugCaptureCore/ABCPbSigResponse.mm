@@ -1,21 +1,21 @@
 @interface ABCPbSigResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCaseCountTarget:(BOOL)a3;
-- (void)setHasDecision:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCaseCountTarget:(BOOL)target;
+- (void)setHasDecision:(BOOL)decision;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ABCPbSigResponse
 
-- (void)setHasCaseCountTarget:(BOOL)a3
+- (void)setHasCaseCountTarget:(BOOL)target
 {
-  if (a3)
+  if (target)
   {
     v3 = 2;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasDecision:(BOOL)a3
+- (void)setHasDecision:(BOOL)decision
 {
-  if (a3)
+  if (decision)
   {
     v3 = 4;
   }
@@ -49,20 +49,20 @@
   v8.receiver = self;
   v8.super_class = ABCPbSigResponse;
   v4 = [(ABCPbSigResponse *)&v8 description];
-  v5 = [(ABCPbSigResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ABCPbSigResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   caseIdentifier = self->_caseIdentifier;
   if (caseIdentifier)
   {
-    [v3 setObject:caseIdentifier forKey:@"case_identifier"];
+    [dictionary setObject:caseIdentifier forKey:@"case_identifier"];
   }
 
   has = self->_has;
@@ -95,14 +95,14 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_caseIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -110,7 +110,7 @@
   {
     caseCount = self->_caseCount;
     PBDataWriterWriteUint32Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
   }
 
@@ -118,64 +118,64 @@
   {
     caseCountTarget = self->_caseCountTarget;
     PBDataWriterWriteUint32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_caseStatus)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if ((*&self->_has & 4) != 0)
   {
     decision = self->_decision;
     PBDataWriterWriteBOOLField();
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_caseIdentifier)
   {
-    [v4 setCaseIdentifier:?];
-    v4 = v6;
+    [toCopy setCaseIdentifier:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 2) = self->_caseCount;
-    *(v4 + 36) |= 1u;
+    *(toCopy + 2) = self->_caseCount;
+    *(toCopy + 36) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 3) = self->_caseCountTarget;
-    *(v4 + 36) |= 2u;
+    *(toCopy + 3) = self->_caseCountTarget;
+    *(toCopy + 36) |= 2u;
   }
 
   if (self->_caseStatus)
   {
     [v6 setCaseStatus:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    *(v4 + 32) = self->_decision;
-    *(v4 + 36) |= 4u;
+    *(toCopy + 32) = self->_decision;
+    *(toCopy + 36) |= 4u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_caseIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_caseIdentifier copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -193,7 +193,7 @@
     *(v5 + 36) |= 2u;
   }
 
-  v9 = [(NSString *)self->_caseStatus copyWithZone:a3];
+  v9 = [(NSString *)self->_caseStatus copyWithZone:zone];
   v10 = *(v5 + 24);
   *(v5 + 24) = v9;
 
@@ -206,16 +206,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   caseIdentifier = self->_caseIdentifier;
-  if (caseIdentifier | *(v4 + 2))
+  if (caseIdentifier | *(equalCopy + 2))
   {
     if (![(NSString *)caseIdentifier isEqual:?])
     {
@@ -224,35 +224,35 @@
   }
 
   has = self->_has;
-  v7 = *(v4 + 36);
+  v7 = *(equalCopy + 36);
   if (has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_caseCount != *(v4 + 2))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_caseCount != *(equalCopy + 2))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_19;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_caseCountTarget != *(v4 + 3))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_caseCountTarget != *(equalCopy + 3))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
     goto LABEL_19;
   }
 
   caseStatus = self->_caseStatus;
-  if (caseStatus | *(v4 + 3))
+  if (caseStatus | *(equalCopy + 3))
   {
     if (![(NSString *)caseStatus isEqual:?])
     {
@@ -262,20 +262,20 @@
     has = self->_has;
   }
 
-  v9 = (*(v4 + 36) & 4) == 0;
+  v9 = (*(equalCopy + 36) & 4) == 0;
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 36) & 4) != 0)
+    if ((*(equalCopy + 36) & 4) != 0)
     {
       if (self->_decision)
       {
-        if ((*(v4 + 32) & 1) == 0)
+        if ((*(equalCopy + 32) & 1) == 0)
         {
           goto LABEL_19;
         }
       }
 
-      else if (*(v4 + 32))
+      else if (*(equalCopy + 32))
       {
         goto LABEL_19;
       }
@@ -332,39 +332,39 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(ABCPbSigResponse *)self setCaseIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if (v5)
   {
-    self->_caseCount = *(v4 + 2);
+    self->_caseCount = *(fromCopy + 2);
     *&self->_has |= 1u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_caseCountTarget = *(v4 + 3);
+    self->_caseCountTarget = *(fromCopy + 3);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(ABCPbSigResponse *)self setCaseStatus:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((*(v4 + 36) & 4) != 0)
+  if ((*(fromCopy + 36) & 4) != 0)
   {
-    self->_decision = *(v4 + 32);
+    self->_decision = *(fromCopy + 32);
     *&self->_has |= 4u;
   }
 }

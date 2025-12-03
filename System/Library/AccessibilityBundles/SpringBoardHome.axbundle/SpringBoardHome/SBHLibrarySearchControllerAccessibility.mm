@@ -1,19 +1,19 @@
 @interface SBHLibrarySearchControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformEscape;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)setActive:(BOOL)a3;
+- (void)setActive:(BOOL)active;
 @end
 
 @implementation SBHLibrarySearchControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBHLibrarySearchController" hasInstanceMethod:@"isActive" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBHLibrarySearchController" hasInstanceMethod:@"setActive:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"SBHLibrarySearchController" hasInstanceMethod:@"searchResultsController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBHIconLibraryTableViewController" isKindOfClass:@"UIViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBHLibrarySearchController" hasInstanceMethod:@"isActive" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBHLibrarySearchController" hasInstanceMethod:@"setActive:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"SBHLibrarySearchController" hasInstanceMethod:@"searchResultsController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBHIconLibraryTableViewController" isKindOfClass:@"UIViewController"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -28,8 +28,8 @@
 
   if (v4)
   {
-    v5 = [v4 view];
-    v6 = [v5 superview];
+    view = [v4 view];
+    superview = [view superview];
 
     objc_initWeak(&location, self);
     v7[0] = MEMORY[0x29EDCA5F8];
@@ -37,7 +37,7 @@
     v7[2] = __85__SBHLibrarySearchControllerAccessibility__accessibilityLoadAccessibilityInformation__block_invoke;
     v7[3] = &unk_29F300190;
     objc_copyWeak(&v8, &location);
-    [v6 _setAccessibilityViewIsModalBlock:v7];
+    [superview _setAccessibilityViewIsModalBlock:v7];
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
   }
@@ -62,14 +62,14 @@ uint64_t __85__SBHLibrarySearchControllerAccessibility__accessibilityLoadAccessi
   return v2;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   v5 = [(SBHLibrarySearchControllerAccessibility *)self safeBoolForKey:@"isActive"];
   v6.receiver = self;
   v6.super_class = SBHLibrarySearchControllerAccessibility;
-  [(SBHLibrarySearchControllerAccessibility *)&v6 setActive:v3];
-  if (v5 != v3)
+  [(SBHLibrarySearchControllerAccessibility *)&v6 setActive:activeCopy];
+  if (v5 != activeCopy)
   {
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7F10], 0);
   }

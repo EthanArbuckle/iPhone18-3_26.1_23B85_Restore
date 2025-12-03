@@ -1,5 +1,5 @@
 @interface HFURLComponents
-+ (BOOL)isHomeAppURL:(id)a3;
++ (BOOL)isHomeAppURL:(id)l;
 + (NSURL)aboutImproveSiriAndDictationURL;
 + (NSURL)aboutResidentDeviceURL;
 + (NSURL)homeHub2OnboardingURL;
@@ -10,27 +10,27 @@
 + (NSURL)recognizeMyVoiceOptInURL;
 + (NSURL)siriPrivacyURL;
 + (NSURLComponents)dropInURLComponents;
-+ (id)_URLComponentsForDestination:(unint64_t)a3;
-+ (id)_settingsURLHostString:(id)a3 scheme:(id)a4 UUID:(id)a5 forHome:(id)a6;
-+ (id)accessoryDetailsURLForAccessory:(id)a3 home:(id)a4;
-+ (id)bridgeSettingsURLForAccessory:(id)a3 home:(id)a4;
-+ (id)cameraProfileDetailsURLForCameraProfile:(id)a3 home:(id)a4;
-+ (id)connectedServicesURLForAccessory:(id)a3 home:(id)a4;
-+ (id)fixSymptomURLForAccessory:(id)a3 symptom:(id)a4;
-+ (id)fixSymptomURLForAccessoryWithUUID:(id)a3 symptom:(id)a4;
-+ (id)homeKitObjectURLForDestination:(unint64_t)a3 secondaryDestination:(unint64_t)a4 UUID:(id)a5 queryItems:(id)a6;
-+ (id)personalRequestsOptInURLForHomeID:(id)a3;
-+ (id)roomURLForRoom:(id)a3;
-+ (id)serviceDetailsURLForService:(id)a3 home:(id)a4;
-+ (id)symptomFromURL:(id)a3 accessory:(id)a4;
-- (HFURLComponents)initWithURL:(id)a3;
-- (HFURLComponents)initWithURL:(id)a3 homeKitDispatcher:(id)a4;
++ (id)_URLComponentsForDestination:(unint64_t)destination;
++ (id)_settingsURLHostString:(id)string scheme:(id)scheme UUID:(id)d forHome:(id)home;
++ (id)accessoryDetailsURLForAccessory:(id)accessory home:(id)home;
++ (id)bridgeSettingsURLForAccessory:(id)accessory home:(id)home;
++ (id)cameraProfileDetailsURLForCameraProfile:(id)profile home:(id)home;
++ (id)connectedServicesURLForAccessory:(id)accessory home:(id)home;
++ (id)fixSymptomURLForAccessory:(id)accessory symptom:(id)symptom;
++ (id)fixSymptomURLForAccessoryWithUUID:(id)d symptom:(id)symptom;
++ (id)homeKitObjectURLForDestination:(unint64_t)destination secondaryDestination:(unint64_t)secondaryDestination UUID:(id)d queryItems:(id)items;
++ (id)personalRequestsOptInURLForHomeID:(id)d;
++ (id)roomURLForRoom:(id)room;
++ (id)serviceDetailsURLForService:(id)service home:(id)home;
++ (id)symptomFromURL:(id)l accessory:(id)accessory;
+- (HFURLComponents)initWithURL:(id)l;
+- (HFURLComponents)initWithURL:(id)l homeKitDispatcher:(id)dispatcher;
 - (NAFuture)homeKitObjectFuture;
 - (NSISO8601DateFormatter)isoDateFormatter;
 - (id)_homeKitIdentifier;
-- (id)dateForParameter:(id)a3;
+- (id)dateForParameter:(id)parameter;
 - (id)description;
-- (id)valueForParameter:(id)a3;
+- (id)valueForParameter:(id)parameter;
 - (unint64_t)destination;
 - (unint64_t)secondaryDestination;
 @end
@@ -125,101 +125,101 @@
   return v2;
 }
 
-+ (id)accessoryDetailsURLForAccessory:(id)a3 home:(id)a4
++ (id)accessoryDetailsURLForAccessory:(id)accessory home:(id)home
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [a3 uniqueIdentifier];
+  homeCopy = home;
+  uniqueIdentifier = [accessory uniqueIdentifier];
   v7 = MEMORY[0x277CCAD18];
-  v8 = [v5 uniqueIdentifier];
+  uniqueIdentifier2 = [homeCopy uniqueIdentifier];
 
-  v9 = [v8 UUIDString];
-  v10 = [v7 queryItemWithName:@"HFURLComponentsHome" value:v9];
+  uUIDString = [uniqueIdentifier2 UUIDString];
+  v10 = [v7 queryItemWithName:@"HFURLComponentsHome" value:uUIDString];
   v15[0] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
-  v12 = [HFURLComponents homeKitObjectURLForDestination:4 secondaryDestination:0 UUID:v6 queryItems:v11];
+  v12 = [HFURLComponents homeKitObjectURLForDestination:4 secondaryDestination:0 UUID:uniqueIdentifier queryItems:v11];
 
   v13 = *MEMORY[0x277D85DE8];
 
   return v12;
 }
 
-+ (id)serviceDetailsURLForService:(id)a3 home:(id)a4
++ (id)serviceDetailsURLForService:(id)service home:(id)home
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [a3 uniqueIdentifier];
+  homeCopy = home;
+  uniqueIdentifier = [service uniqueIdentifier];
   v7 = MEMORY[0x277CCAD18];
-  v8 = [v5 uniqueIdentifier];
+  uniqueIdentifier2 = [homeCopy uniqueIdentifier];
 
-  v9 = [v8 UUIDString];
-  v10 = [v7 queryItemWithName:@"HFURLComponentsHome" value:v9];
+  uUIDString = [uniqueIdentifier2 UUIDString];
+  v10 = [v7 queryItemWithName:@"HFURLComponentsHome" value:uUIDString];
   v15[0] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
-  v12 = [HFURLComponents homeKitObjectURLForDestination:7 secondaryDestination:0 UUID:v6 queryItems:v11];
+  v12 = [HFURLComponents homeKitObjectURLForDestination:7 secondaryDestination:0 UUID:uniqueIdentifier queryItems:v11];
 
   v13 = *MEMORY[0x277D85DE8];
 
   return v12;
 }
 
-+ (id)cameraProfileDetailsURLForCameraProfile:(id)a3 home:(id)a4
++ (id)cameraProfileDetailsURLForCameraProfile:(id)profile home:(id)home
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [a3 uniqueIdentifier];
+  homeCopy = home;
+  uniqueIdentifier = [profile uniqueIdentifier];
   v7 = MEMORY[0x277CCAD18];
-  v8 = [v5 uniqueIdentifier];
+  uniqueIdentifier2 = [homeCopy uniqueIdentifier];
 
-  v9 = [v8 UUIDString];
-  v10 = [v7 queryItemWithName:@"HFURLComponentsHome" value:v9];
+  uUIDString = [uniqueIdentifier2 UUIDString];
+  v10 = [v7 queryItemWithName:@"HFURLComponentsHome" value:uUIDString];
   v15[0] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
-  v12 = [HFURLComponents homeKitObjectURLForDestination:6 secondaryDestination:0 UUID:v6 queryItems:v11];
+  v12 = [HFURLComponents homeKitObjectURLForDestination:6 secondaryDestination:0 UUID:uniqueIdentifier queryItems:v11];
 
   v13 = *MEMORY[0x277D85DE8];
 
   return v12;
 }
 
-+ (id)bridgeSettingsURLForAccessory:(id)a3 home:(id)a4
++ (id)bridgeSettingsURLForAccessory:(id)accessory home:(id)home
 {
-  v6 = a4;
-  v7 = [a3 uniqueIdentifier];
-  v8 = [a1 _settingsURLHostString:@"bridgeSettings" UUID:v7 forHome:v6];
+  homeCopy = home;
+  uniqueIdentifier = [accessory uniqueIdentifier];
+  v8 = [self _settingsURLHostString:@"bridgeSettings" UUID:uniqueIdentifier forHome:homeCopy];
 
   return v8;
 }
 
-+ (id)connectedServicesURLForAccessory:(id)a3 home:(id)a4
++ (id)connectedServicesURLForAccessory:(id)accessory home:(id)home
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [a3 uniqueIdentifier];
+  homeCopy = home;
+  uniqueIdentifier = [accessory uniqueIdentifier];
   v7 = MEMORY[0x277CCAD18];
-  v8 = [v5 uniqueIdentifier];
+  uniqueIdentifier2 = [homeCopy uniqueIdentifier];
 
-  v9 = [v8 UUIDString];
-  v10 = [v7 queryItemWithName:@"HFURLComponentsHome" value:v9];
+  uUIDString = [uniqueIdentifier2 UUIDString];
+  v10 = [v7 queryItemWithName:@"HFURLComponentsHome" value:uUIDString];
   v15[0] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
-  v12 = [HFURLComponents homeKitObjectURLForDestination:29 secondaryDestination:3 UUID:v6 queryItems:v11];
+  v12 = [HFURLComponents homeKitObjectURLForDestination:29 secondaryDestination:3 UUID:uniqueIdentifier queryItems:v11];
 
   v13 = *MEMORY[0x277D85DE8];
 
   return v12;
 }
 
-+ (id)personalRequestsOptInURLForHomeID:(id)a3
++ (id)personalRequestsOptInURLForHomeID:(id)d
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dCopy = d;
   v4 = objc_alloc_init(MEMORY[0x277CCACE0]);
   [v4 setScheme:@"com.apple.Home-private"];
   [v4 setHost:@"personalRequestOptIn"];
-  if ([v3 length])
+  if ([dCopy length])
   {
-    v5 = [MEMORY[0x277CCAD18] queryItemWithName:@"homeId" value:v3];
+    v5 = [MEMORY[0x277CCAD18] queryItemWithName:@"homeId" value:dCopy];
     v10[0] = v5;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
     [v4 setQueryItems:v6];
@@ -232,17 +232,17 @@
   return v7;
 }
 
-+ (id)roomURLForRoom:(id)a3
++ (id)roomURLForRoom:(id)room
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  roomCopy = room;
   v4 = [HFURLComponents _URLComponentsForDestination:3];
   v5 = MEMORY[0x277CCACA8];
   v13[0] = @"/";
-  v6 = [v3 uniqueIdentifier];
+  uniqueIdentifier = [roomCopy uniqueIdentifier];
 
-  v7 = [v6 UUIDString];
-  v13[1] = v7;
+  uUIDString = [uniqueIdentifier UUIDString];
+  v13[1] = uUIDString;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
   v9 = [v5 pathWithComponents:v8];
   [v4 setPath:v9];
@@ -254,33 +254,33 @@
   return v10;
 }
 
-+ (id)_settingsURLHostString:(id)a3 scheme:(id)a4 UUID:(id)a5 forHome:(id)a6
++ (id)_settingsURLHostString:(id)string scheme:(id)scheme UUID:(id)d forHome:(id)home
 {
   v28[2] = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  v10 = a6;
+  dCopy = d;
+  homeCopy = home;
   v11 = MEMORY[0x277CCACE0];
-  v12 = a4;
-  v13 = a3;
+  schemeCopy = scheme;
+  stringCopy = string;
   v14 = objc_alloc_init(v11);
-  [v14 setScheme:v12];
+  [v14 setScheme:schemeCopy];
 
-  [v14 setHost:v13];
-  if (v9)
+  [v14 setHost:stringCopy];
+  if (dCopy)
   {
     v15 = MEMORY[0x277CCACA8];
     v28[0] = @"/";
-    v16 = [v9 UUIDString];
-    v28[1] = v16;
+    uUIDString = [dCopy UUIDString];
+    v28[1] = uUIDString;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:2];
     v18 = [v15 pathWithComponents:v17];
     [v14 setPath:v18];
   }
 
   v19 = MEMORY[0x277CCAD18];
-  v20 = [v10 uniqueIdentifier];
-  v21 = [v20 UUIDString];
-  v22 = [v19 queryItemWithName:@"HFURLComponentsHome" value:v21];
+  uniqueIdentifier = [homeCopy uniqueIdentifier];
+  uUIDString2 = [uniqueIdentifier UUIDString];
+  v22 = [v19 queryItemWithName:@"HFURLComponentsHome" value:uUIDString2];
   v27 = v22;
   v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v27 count:1];
   [v14 setQueryItems:v23];
@@ -292,32 +292,32 @@
   return v24;
 }
 
-+ (id)fixSymptomURLForAccessory:(id)a3 symptom:(id)a4
++ (id)fixSymptomURLForAccessory:(id)accessory symptom:(id)symptom
 {
-  v6 = a4;
-  v7 = [a3 uniqueIdentifier];
-  v8 = [a1 fixSymptomURLForAccessoryWithUUID:v7 symptom:v6];
+  symptomCopy = symptom;
+  uniqueIdentifier = [accessory uniqueIdentifier];
+  v8 = [self fixSymptomURLForAccessoryWithUUID:uniqueIdentifier symptom:symptomCopy];
 
   return v8;
 }
 
-+ (id)fixSymptomURLForAccessoryWithUUID:(id)a3 symptom:(id)a4
++ (id)fixSymptomURLForAccessoryWithUUID:(id)d symptom:(id)symptom
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = a3;
+  symptomCopy = symptom;
+  dCopy = d;
   v7 = objc_opt_new();
   [v7 setScheme:@"com.apple.Home.fixSymptom"];
-  v8 = [v6 UUIDString];
+  uUIDString = [dCopy UUIDString];
 
-  v9 = [@"/" stringByAppendingPathComponent:v8];
+  v9 = [@"/" stringByAppendingPathComponent:uUIDString];
   [v7 setPath:v9];
 
   [v7 setHost:@"symptomHandler"];
   v10 = MEMORY[0x277CCAD18];
-  v11 = [v5 type];
+  type = [symptomCopy type];
 
-  v12 = NSStringFromHMSymptomType(v11);
+  v12 = NSStringFromHMSymptomType(type);
   v13 = [v10 queryItemWithName:@"fixSymptom" value:v12];
   v18[0] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
@@ -340,28 +340,28 @@
   return v3;
 }
 
-+ (id)symptomFromURL:(id)a3 accessory:(id)a4
++ (id)symptomFromURL:(id)l accessory:(id)accessory
 {
   v5 = MEMORY[0x277CCACE0];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithURL:v7 resolvingAgainstBaseURL:0];
+  accessoryCopy = accessory;
+  lCopy = l;
+  v8 = [[v5 alloc] initWithURL:lCopy resolvingAgainstBaseURL:0];
 
-  v9 = [v8 queryItems];
-  v10 = [v9 na_firstObjectPassingTest:&__block_literal_global_72];
+  queryItems = [v8 queryItems];
+  v10 = [queryItems na_firstObjectPassingTest:&__block_literal_global_72];
 
-  v11 = [v10 value];
-  v12 = NSStringToHMSymptomType(v11);
+  value = [v10 value];
+  v12 = NSStringToHMSymptomType(value);
 
-  v13 = [v6 symptomsHandler];
+  symptomsHandler = [accessoryCopy symptomsHandler];
 
-  v14 = [v13 symptoms];
+  symptoms = [symptomsHandler symptoms];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __44__HFURLComponents_symptomFromURL_accessory___block_invoke_2;
   v17[3] = &__block_descriptor_40_e19_B16__0__HMSymptom_8l;
   v17[4] = v12;
-  v15 = [v14 na_firstObjectPassingTest:v17];
+  v15 = [symptoms na_firstObjectPassingTest:v17];
 
   return v15;
 }
@@ -374,9 +374,9 @@ uint64_t __44__HFURLComponents_symptomFromURL_accessory___block_invoke(uint64_t 
   return v3;
 }
 
-+ (BOOL)isHomeAppURL:(id)a3
++ (BOOL)isHomeAppURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   if (_MergedGlobals_243 != -1)
   {
     dispatch_once(&_MergedGlobals_243, &__block_literal_global_120);
@@ -387,8 +387,8 @@ uint64_t __44__HFURLComponents_symptomFromURL_accessory___block_invoke(uint64_t 
   v8[1] = 3221225472;
   v8[2] = __32__HFURLComponents_isHomeAppURL___block_invoke_3;
   v8[3] = &unk_277DF3130;
-  v9 = v3;
-  v5 = v3;
+  v9 = lCopy;
+  v5 = lCopy;
   v6 = [v4 na_any:v8];
 
   return v6;
@@ -422,27 +422,27 @@ BOOL __32__HFURLComponents_isHomeAppURL___block_invoke_3(uint64_t a1, void *a2)
   return v5 == 0;
 }
 
-- (HFURLComponents)initWithURL:(id)a3
+- (HFURLComponents)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = +[HFHomeKitDispatcher sharedDispatcher];
-  v6 = [(HFURLComponents *)self initWithURL:v4 homeKitDispatcher:v5];
+  v6 = [(HFURLComponents *)self initWithURL:lCopy homeKitDispatcher:v5];
 
   return v6;
 }
 
-- (HFURLComponents)initWithURL:(id)a3 homeKitDispatcher:(id)a4
+- (HFURLComponents)initWithURL:(id)l homeKitDispatcher:(id)dispatcher
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  dispatcherCopy = dispatcher;
   v12.receiver = self;
   v12.super_class = HFURLComponents;
   v9 = [(HFURLComponents *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_URL, a3);
-    objc_storeStrong(&v10->_homeKitDispatcher, a4);
+    objc_storeStrong(&v9->_URL, l);
+    objc_storeStrong(&v10->_homeKitDispatcher, dispatcher);
   }
 
   return v10;
@@ -451,16 +451,16 @@ BOOL __32__HFURLComponents_isHomeAppURL___block_invoke_3(uint64_t a1, void *a2)
 - (unint64_t)destination
 {
   v3 = [(HFURLComponents *)self URL];
-  v4 = [v3 scheme];
+  scheme = [v3 scheme];
 
-  if (!v4)
+  if (!scheme)
   {
     goto LABEL_5;
   }
 
   v5 = [(HFURLComponents *)self URL];
-  v6 = [v5 scheme];
-  v7 = [v6 caseInsensitiveCompare:@"X-HM"];
+  scheme2 = [v5 scheme];
+  v7 = [scheme2 caseInsensitiveCompare:@"X-HM"];
 
   if (!v7)
   {
@@ -468,8 +468,8 @@ BOOL __32__HFURLComponents_isHomeAppURL___block_invoke_3(uint64_t a1, void *a2)
   }
 
   v8 = [(HFURLComponents *)self URL];
-  v9 = [v8 scheme];
-  v10 = [v9 caseInsensitiveCompare:@"com.apple.Home.fixSymptom"];
+  scheme3 = [v8 scheme];
+  v10 = [scheme3 caseInsensitiveCompare:@"com.apple.Home.fixSymptom"];
 
   if (!v10)
   {
@@ -477,8 +477,8 @@ BOOL __32__HFURLComponents_isHomeAppURL___block_invoke_3(uint64_t a1, void *a2)
   }
 
   v11 = [(HFURLComponents *)self URL];
-  v12 = [v11 scheme];
-  v13 = [v12 caseInsensitiveCompare:@"com.apple.Home-private"];
+  scheme4 = [v11 scheme];
+  v13 = [scheme4 caseInsensitiveCompare:@"com.apple.Home-private"];
 
   if (v13)
   {
@@ -486,26 +486,26 @@ BOOL __32__HFURLComponents_isHomeAppURL___block_invoke_3(uint64_t a1, void *a2)
   }
 
   v71 = [(HFURLComponents *)self URL];
-  v72 = [v71 host];
+  host = [v71 host];
 
-  if (!v72)
+  if (!host)
   {
     return 0;
   }
 
   v73 = [(HFURLComponents *)self URL];
-  v74 = [v73 host];
-  if (![v74 caseInsensitiveCompare:@"installhomepodprofile"])
+  host2 = [v73 host];
+  if (![host2 caseInsensitiveCompare:@"installhomepodprofile"])
   {
 
     return 18;
   }
 
   v75 = [(HFURLComponents *)self URL];
-  v76 = [v75 host];
-  v77 = [v76 uppercaseString];
-  v78 = [@"installhomepodprofile&" uppercaseString];
-  v79 = [v77 hasPrefix:v78];
+  host3 = [v75 host];
+  uppercaseString = [host3 uppercaseString];
+  uppercaseString2 = [@"installhomepodprofile&" uppercaseString];
+  v79 = [uppercaseString hasPrefix:uppercaseString2];
 
   if (v79)
   {
@@ -513,8 +513,8 @@ BOOL __32__HFURLComponents_isHomeAppURL___block_invoke_3(uint64_t a1, void *a2)
   }
 
   v80 = [(HFURLComponents *)self URL];
-  v81 = [v80 host];
-  v82 = [v81 caseInsensitiveCompare:@"homepodSoftwareUpdate"];
+  host4 = [v80 host];
+  v82 = [host4 caseInsensitiveCompare:@"homepodSoftwareUpdate"];
 
   if (!v82)
   {
@@ -522,8 +522,8 @@ BOOL __32__HFURLComponents_isHomeAppURL___block_invoke_3(uint64_t a1, void *a2)
   }
 
   v83 = [(HFURLComponents *)self URL];
-  v84 = [v83 host];
-  v85 = [v84 caseInsensitiveCompare:@"addAccessory"];
+  host5 = [v83 host];
+  v85 = [host5 caseInsensitiveCompare:@"addAccessory"];
 
   if (!v85)
   {
@@ -531,8 +531,8 @@ BOOL __32__HFURLComponents_isHomeAppURL___block_invoke_3(uint64_t a1, void *a2)
   }
 
   v86 = [(HFURLComponents *)self URL];
-  v87 = [v86 host];
-  v88 = [v87 caseInsensitiveCompare:@"userLockSettings"];
+  host6 = [v86 host];
+  v88 = [host6 caseInsensitiveCompare:@"userLockSettings"];
 
   if (!v88)
   {
@@ -540,8 +540,8 @@ BOOL __32__HFURLComponents_isHomeAppURL___block_invoke_3(uint64_t a1, void *a2)
   }
 
   v89 = [(HFURLComponents *)self URL];
-  v90 = [v89 host];
-  v91 = [v90 caseInsensitiveCompare:@"locksOnboarding"];
+  host7 = [v89 host];
+  v91 = [host7 caseInsensitiveCompare:@"locksOnboarding"];
 
   if (!v91)
   {
@@ -549,8 +549,8 @@ BOOL __32__HFURLComponents_isHomeAppURL___block_invoke_3(uint64_t a1, void *a2)
   }
 
   v92 = [(HFURLComponents *)self URL];
-  v93 = [v92 host];
-  v94 = [v93 caseInsensitiveCompare:@"locksFirmwareUpdateSetup"];
+  host8 = [v92 host];
+  v94 = [host8 caseInsensitiveCompare:@"locksFirmwareUpdateSetup"];
 
   if (!v94)
   {
@@ -558,8 +558,8 @@ BOOL __32__HFURLComponents_isHomeAppURL___block_invoke_3(uint64_t a1, void *a2)
   }
 
   v95 = [(HFURLComponents *)self URL];
-  v96 = [v95 host];
-  v97 = [v96 caseInsensitiveCompare:@"homeHubUpdate"];
+  host9 = [v95 host];
+  v97 = [host9 caseInsensitiveCompare:@"homeHubUpdate"];
 
   if (!v97)
   {
@@ -567,8 +567,8 @@ BOOL __32__HFURLComponents_isHomeAppURL___block_invoke_3(uint64_t a1, void *a2)
   }
 
   v98 = [(HFURLComponents *)self URL];
-  v99 = [v98 host];
-  v100 = [v99 caseInsensitiveCompare:@"dropIn"];
+  host10 = [v98 host];
+  v100 = [host10 caseInsensitiveCompare:@"dropIn"];
 
   if (!v100)
   {
@@ -576,8 +576,8 @@ BOOL __32__HFURLComponents_isHomeAppURL___block_invoke_3(uint64_t a1, void *a2)
   }
 
   v101 = [(HFURLComponents *)self URL];
-  v102 = [v101 host];
-  v103 = [v102 caseInsensitiveCompare:@"mediaServiceDefaultAccountSettings"];
+  host11 = [v101 host];
+  v103 = [host11 caseInsensitiveCompare:@"mediaServiceDefaultAccountSettings"];
 
   if (!v103)
   {
@@ -585,8 +585,8 @@ BOOL __32__HFURLComponents_isHomeAppURL___block_invoke_3(uint64_t a1, void *a2)
   }
 
   v104 = [(HFURLComponents *)self URL];
-  v105 = [v104 host];
-  v106 = [v105 caseInsensitiveCompare:@"connectedServices"];
+  host12 = [v104 host];
+  v106 = [host12 caseInsensitiveCompare:@"connectedServices"];
 
   if (!v106)
   {
@@ -594,8 +594,8 @@ BOOL __32__HFURLComponents_isHomeAppURL___block_invoke_3(uint64_t a1, void *a2)
   }
 
   v107 = [(HFURLComponents *)self URL];
-  v108 = [v107 host];
-  v109 = [v108 caseInsensitiveCompare:@"userDetails"];
+  host13 = [v107 host];
+  v109 = [host13 caseInsensitiveCompare:@"userDetails"];
 
   if (!v109)
   {
@@ -604,16 +604,16 @@ BOOL __32__HFURLComponents_isHomeAppURL___block_invoke_3(uint64_t a1, void *a2)
 
 LABEL_5:
   v14 = [(HFURLComponents *)self URL];
-  v15 = [v14 host];
+  host14 = [v14 host];
 
-  if (!v15)
+  if (!host14)
   {
     return 0;
   }
 
   v16 = [(HFURLComponents *)self URL];
-  v17 = [v16 host];
-  v18 = [v17 caseInsensitiveCompare:@"invitation"];
+  host15 = [v16 host];
+  v18 = [host15 caseInsensitiveCompare:@"invitation"];
 
   if (!v18)
   {
@@ -621,8 +621,8 @@ LABEL_5:
   }
 
   v19 = [(HFURLComponents *)self URL];
-  v20 = [v19 host];
-  v21 = [v20 caseInsensitiveCompare:@"home"];
+  host16 = [v19 host];
+  v21 = [host16 caseInsensitiveCompare:@"home"];
 
   if (!v21)
   {
@@ -630,8 +630,8 @@ LABEL_5:
   }
 
   v22 = [(HFURLComponents *)self URL];
-  v23 = [v22 host];
-  v24 = [v23 caseInsensitiveCompare:@"room"];
+  host17 = [v22 host];
+  v24 = [host17 caseInsensitiveCompare:@"room"];
 
   if (!v24)
   {
@@ -639,8 +639,8 @@ LABEL_5:
   }
 
   v25 = [(HFURLComponents *)self URL];
-  v26 = [v25 host];
-  v27 = [v26 caseInsensitiveCompare:@"accessory"];
+  host18 = [v25 host];
+  v27 = [host18 caseInsensitiveCompare:@"accessory"];
 
   if (!v27)
   {
@@ -648,8 +648,8 @@ LABEL_5:
   }
 
   v28 = [(HFURLComponents *)self URL];
-  v29 = [v28 host];
-  v30 = [v29 caseInsensitiveCompare:@"mediaSystem"];
+  host19 = [v28 host];
+  v30 = [host19 caseInsensitiveCompare:@"mediaSystem"];
 
   if (!v30)
   {
@@ -657,8 +657,8 @@ LABEL_5:
   }
 
   v31 = [(HFURLComponents *)self URL];
-  v32 = [v31 host];
-  v33 = [v32 caseInsensitiveCompare:@"accessoryProfile"];
+  host20 = [v31 host];
+  v33 = [host20 caseInsensitiveCompare:@"accessoryProfile"];
 
   if (!v33)
   {
@@ -666,8 +666,8 @@ LABEL_5:
   }
 
   v34 = [(HFURLComponents *)self URL];
-  v35 = [v34 host];
-  v36 = [v35 caseInsensitiveCompare:@"service"];
+  host21 = [v34 host];
+  v36 = [host21 caseInsensitiveCompare:@"service"];
 
   if (!v36)
   {
@@ -675,8 +675,8 @@ LABEL_5:
   }
 
   v37 = [(HFURLComponents *)self URL];
-  v38 = [v37 host];
-  v39 = [v38 caseInsensitiveCompare:@"trigger"];
+  host22 = [v37 host];
+  v39 = [host22 caseInsensitiveCompare:@"trigger"];
 
   if (!v39)
   {
@@ -684,8 +684,8 @@ LABEL_5:
   }
 
   v40 = [(HFURLComponents *)self URL];
-  v41 = [v40 host];
-  v42 = [v41 caseInsensitiveCompare:@"person"];
+  host23 = [v40 host];
+  v42 = [host23 caseInsensitiveCompare:@"person"];
 
   if (!v42)
   {
@@ -693,8 +693,8 @@ LABEL_5:
   }
 
   v43 = [(HFURLComponents *)self URL];
-  v44 = [v43 host];
-  v45 = [v44 caseInsensitiveCompare:@"unknownPersonEvent"];
+  host24 = [v43 host];
+  v45 = [host24 caseInsensitiveCompare:@"unknownPersonEvent"];
 
   if (!v45)
   {
@@ -702,8 +702,8 @@ LABEL_5:
   }
 
   v46 = [(HFURLComponents *)self URL];
-  v47 = [v46 host];
-  v48 = [v47 caseInsensitiveCompare:@"aboutResidentDevice"];
+  host25 = [v46 host];
+  v48 = [host25 caseInsensitiveCompare:@"aboutResidentDevice"];
 
   if (!v48)
   {
@@ -711,8 +711,8 @@ LABEL_5:
   }
 
   v49 = [(HFURLComponents *)self URL];
-  v50 = [v49 host];
-  v51 = [v50 caseInsensitiveCompare:@"faceRecognitionSettings"];
+  host26 = [v49 host];
+  v51 = [host26 caseInsensitiveCompare:@"faceRecognitionSettings"];
 
   if (!v51)
   {
@@ -720,8 +720,8 @@ LABEL_5:
   }
 
   v52 = [(HFURLComponents *)self URL];
-  v53 = [v52 host];
-  v54 = [v53 caseInsensitiveCompare:@"networkRoutersSettings"];
+  host27 = [v52 host];
+  v54 = [host27 caseInsensitiveCompare:@"networkRoutersSettings"];
 
   if (!v54)
   {
@@ -729,8 +729,8 @@ LABEL_5:
   }
 
   v55 = [(HFURLComponents *)self URL];
-  v56 = [v55 host];
-  v57 = [v56 caseInsensitiveCompare:@"bridgeSettings"];
+  host28 = [v55 host];
+  v57 = [host28 caseInsensitiveCompare:@"bridgeSettings"];
 
   if (!v57)
   {
@@ -738,8 +738,8 @@ LABEL_5:
   }
 
   v58 = [(HFURLComponents *)self URL];
-  v59 = [v58 host];
-  v60 = [v59 caseInsensitiveCompare:@"firmwareUpdate"];
+  host29 = [v58 host];
+  v60 = [host29 caseInsensitiveCompare:@"firmwareUpdate"];
 
   if (!v60)
   {
@@ -747,8 +747,8 @@ LABEL_5:
   }
 
   v61 = [(HFURLComponents *)self URL];
-  v62 = [v61 host];
-  v63 = [v62 caseInsensitiveCompare:@"reprovisionDevice"];
+  host30 = [v61 host];
+  v63 = [host30 caseInsensitiveCompare:@"reprovisionDevice"];
 
   if (!v63)
   {
@@ -756,14 +756,14 @@ LABEL_5:
   }
 
   v64 = [(HFURLComponents *)self URL];
-  v65 = [v64 host];
-  v66 = [v65 caseInsensitiveCompare:@"personalRequestOptIn"];
+  host31 = [v64 host];
+  v66 = [host31 caseInsensitiveCompare:@"personalRequestOptIn"];
 
   if (v66)
   {
     v67 = [(HFURLComponents *)self URL];
-    v68 = [v67 host];
-    v69 = [v68 caseInsensitiveCompare:@"recognizeMyVoiceOptIn"];
+    host32 = [v67 host];
+    v69 = [host32 caseInsensitiveCompare:@"recognizeMyVoiceOptIn"];
 
     if (!v69)
     {
@@ -779,16 +779,16 @@ LABEL_5:
 - (unint64_t)secondaryDestination
 {
   v2 = [(HFURLComponents *)self URL];
-  v3 = [v2 pathComponents];
+  pathComponents = [v2 pathComponents];
 
-  if ([v3 count] >= 3)
+  if ([pathComponents count] >= 3)
   {
-    v4 = [v3 objectAtIndexedSubscript:2];
+    v4 = [pathComponents objectAtIndexedSubscript:2];
     v5 = [v4 isEqualToString:@"quickControl"];
 
     if ((v5 & 1) == 0)
     {
-      v8 = [v3 objectAtIndexedSubscript:2];
+      v8 = [pathComponents objectAtIndexedSubscript:2];
       v9 = [v8 isEqualToString:@"detailsAction"];
 
       if (v9)
@@ -798,7 +798,7 @@ LABEL_5:
       }
 
       v6 = 2;
-      v10 = [v3 objectAtIndexedSubscript:2];
+      v10 = [pathComponents objectAtIndexedSubscript:2];
       v11 = [v10 isEqualToString:@"alternateAction"];
 
       if (v11)
@@ -817,14 +817,14 @@ LABEL_4:
 - (NAFuture)homeKitObjectFuture
 {
   objc_initWeak(&location, self);
-  v3 = [(HFURLComponents *)self homeKitDispatcher];
-  v4 = [v3 allHomesFuture];
+  homeKitDispatcher = [(HFURLComponents *)self homeKitDispatcher];
+  allHomesFuture = [homeKitDispatcher allHomesFuture];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__HFURLComponents_homeKitObjectFuture__block_invoke;
   v7[3] = &unk_277DF52E0;
   objc_copyWeak(&v8, &location);
-  v5 = [v4 flatMap:v7];
+  v5 = [allHomesFuture flatMap:v7];
   objc_destroyWeak(&v8);
 
   objc_destroyWeak(&location);
@@ -1096,12 +1096,12 @@ uint64_t __38__HFURLComponents_homeKitObjectFuture__block_invoke_2(uint64_t a1, 
   return v5;
 }
 
-+ (id)_URLComponentsForDestination:(unint64_t)a3
++ (id)_URLComponentsForDestination:(unint64_t)destination
 {
   v4 = objc_alloc_init(MEMORY[0x277CCACE0]);
   [v4 setScheme:@"com.apple.Home"];
   v5 = @"invitation";
-  switch(a3)
+  switch(destination)
   {
     case 1uLL:
       goto LABEL_31;
@@ -1213,14 +1213,14 @@ LABEL_31:
   return v4;
 }
 
-+ (id)homeKitObjectURLForDestination:(unint64_t)a3 secondaryDestination:(unint64_t)a4 UUID:(id)a5 queryItems:(id)a6
++ (id)homeKitObjectURLForDestination:(unint64_t)destination secondaryDestination:(unint64_t)secondaryDestination UUID:(id)d queryItems:(id)items
 {
   v24[3] = *MEMORY[0x277D85DE8];
-  v11 = a5;
-  v12 = a6;
-  if (a3)
+  dCopy = d;
+  itemsCopy = items;
+  if (destination)
   {
-    if (v11)
+    if (dCopy)
     {
       goto LABEL_3;
     }
@@ -1228,40 +1228,40 @@ LABEL_31:
 
   else
   {
-    v22 = [MEMORY[0x277CCA890] currentHandler];
-    [v22 handleFailureInMethod:a2 object:a1 file:@"HFURLComponents.m" lineNumber:718 description:{@"Invalid parameter not satisfying: %@", @"primaryDestination != HFURLComponentsDestinationUnknown"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFURLComponents.m" lineNumber:718 description:{@"Invalid parameter not satisfying: %@", @"primaryDestination != HFURLComponentsDestinationUnknown"}];
 
-    if (v11)
+    if (dCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v23 = [MEMORY[0x277CCA890] currentHandler];
-  [v23 handleFailureInMethod:a2 object:a1 file:@"HFURLComponents.m" lineNumber:719 description:{@"Invalid parameter not satisfying: %@", @"uuid != nil"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HFURLComponents.m" lineNumber:719 description:{@"Invalid parameter not satisfying: %@", @"uuid != nil"}];
 
 LABEL_3:
-  v13 = [a1 _URLComponentsForDestination:a3];
-  if (a4 - 1 > 2)
+  v13 = [self _URLComponentsForDestination:destination];
+  if (secondaryDestination - 1 > 2)
   {
     v14 = @"quickControl";
   }
 
   else
   {
-    v14 = off_277DF9340[a4 - 1];
+    v14 = off_277DF9340[secondaryDestination - 1];
   }
 
   v15 = MEMORY[0x277CCACA8];
   v24[0] = @"/";
-  v16 = [v11 UUIDString];
-  v24[1] = v16;
+  uUIDString = [dCopy UUIDString];
+  v24[1] = uUIDString;
   v24[2] = v14;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:3];
   v18 = [v15 pathWithComponents:v17];
   [v13 setPath:v18];
 
-  [v13 setQueryItems:v12];
+  [v13 setQueryItems:itemsCopy];
   v19 = [v13 URL];
 
   v20 = *MEMORY[0x277D85DE8];
@@ -1291,31 +1291,31 @@ __CFString *__87__HFURLComponents_homeKitObjectURLForDestination_secondaryDestin
 
   v6 = [v3 appendUnsignedInteger:-[HFURLComponents destination](self withName:{"destination"), @"destination"}];
   v7 = [v3 appendUnsignedInteger:-[HFURLComponents secondaryDestination](self withName:{"secondaryDestination"), @"secondaryDestination"}];
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
-- (id)valueForParameter:(id)a3
+- (id)valueForParameter:(id)parameter
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 length])
+  parameterCopy = parameter;
+  if ([parameterCopy length])
   {
     v5 = MEMORY[0x277CCACE0];
     v6 = [(HFURLComponents *)self URL];
-    v7 = [v6 absoluteString];
-    v8 = [v5 componentsWithString:v7];
+    absoluteString = [v6 absoluteString];
+    v8 = [v5 componentsWithString:absoluteString];
 
-    v9 = [v8 queryItems];
+    queryItems = [v8 queryItems];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __37__HFURLComponents_valueForParameter___block_invoke;
     v14[3] = &unk_277DF9320;
-    v15 = v4;
-    v10 = [v9 na_firstObjectPassingTest:v14];
+    v15 = parameterCopy;
+    v10 = [queryItems na_firstObjectPassingTest:v14];
 
-    v11 = [v10 value];
+    value = [v10 value];
   }
 
   else
@@ -1328,12 +1328,12 @@ __CFString *__87__HFURLComponents_homeKitObjectURLForDestination_secondaryDestin
       _os_log_debug_impl(&dword_20D9BF000, v8, OS_LOG_TYPE_DEBUG, "(%s) parameter.length = 0", buf, 0xCu);
     }
 
-    v11 = 0;
+    value = 0;
   }
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return value;
 }
 
 uint64_t __37__HFURLComponents_valueForParameter___block_invoke(uint64_t a1, void *a2)
@@ -1344,13 +1344,13 @@ uint64_t __37__HFURLComponents_valueForParameter___block_invoke(uint64_t a1, voi
   return v4;
 }
 
-- (id)dateForParameter:(id)a3
+- (id)dateForParameter:(id)parameter
 {
-  v4 = [(HFURLComponents *)self valueForParameter:a3];
+  v4 = [(HFURLComponents *)self valueForParameter:parameter];
   if (v4)
   {
-    v5 = [(HFURLComponents *)self isoDateFormatter];
-    v6 = [v5 dateFromString:v4];
+    isoDateFormatter = [(HFURLComponents *)self isoDateFormatter];
+    v6 = [isoDateFormatter dateFromString:v4];
   }
 
   else
@@ -1383,8 +1383,8 @@ uint64_t __37__HFURLComponents_valueForParameter___block_invoke(uint64_t a1, voi
 - (id)_homeKitIdentifier
 {
   v3 = [(HFURLComponents *)self URL];
-  v4 = [v3 pathComponents];
-  v5 = [v4 count];
+  pathComponents = [v3 pathComponents];
+  v5 = [pathComponents count];
 
   if (v5 < 2)
   {
@@ -1395,8 +1395,8 @@ uint64_t __37__HFURLComponents_valueForParameter___block_invoke(uint64_t a1, voi
   {
     v6 = objc_alloc(MEMORY[0x277CCAD78]);
     v7 = [(HFURLComponents *)self URL];
-    v8 = [v7 pathComponents];
-    v9 = [v8 objectAtIndexedSubscript:1];
+    pathComponents2 = [v7 pathComponents];
+    v9 = [pathComponents2 objectAtIndexedSubscript:1];
     v10 = [v6 initWithUUIDString:v9];
   }
 

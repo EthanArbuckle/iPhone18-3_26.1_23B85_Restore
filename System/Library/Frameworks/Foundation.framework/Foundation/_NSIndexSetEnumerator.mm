@@ -1,12 +1,12 @@
 @interface _NSIndexSetEnumerator
-- (_NSIndexSetEnumerator)initWithIndexSet:(id)a3;
+- (_NSIndexSetEnumerator)initWithIndexSet:(id)set;
 - (id)nextObject;
 - (void)dealloc;
 @end
 
 @implementation _NSIndexSetEnumerator
 
-- (_NSIndexSetEnumerator)initWithIndexSet:(id)a3
+- (_NSIndexSetEnumerator)initWithIndexSet:(id)set
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -14,8 +14,8 @@
   v4 = [(_NSIndexSetEnumerator *)&v6 init];
   if (v4)
   {
-    v4->_indexSet = a3;
-    v4->_index = [a3 firstIndex];
+    v4->_indexSet = set;
+    v4->_index = [set firstIndex];
   }
 
   return v4;

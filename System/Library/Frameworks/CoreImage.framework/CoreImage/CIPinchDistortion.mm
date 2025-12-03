@@ -1,6 +1,6 @@
 @interface CIPinchDistortion
 + (id)customAttributes;
-- (CGRect)computeDOD:(float)a3 scale:(float)a4;
+- (CGRect)computeDOD:(float)d scale:(float)scale;
 - (id)outputImage;
 @end
 
@@ -56,7 +56,7 @@
   return [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:6];
 }
 
-- (CGRect)computeDOD:(float)a3 scale:(float)a4
+- (CGRect)computeDOD:(float)d scale:(float)scale
 {
   v128 = *(MEMORY[0x1E695F050] + 8);
   v130 = *MEMORY[0x1E695F050];
@@ -99,16 +99,16 @@
     v122 = LODWORD(v19);
     v123 = v30.i32[0];
     v30.i32[1] = LODWORD(v19);
-    *&v19 = a3;
-    v31 = map_point_inv(v30, v28, v19, a4, v20, v21, v22, v23);
+    *&v19 = d;
+    v31 = map_point_inv(v30, v28, v19, scale, v20, v21, v22, v23);
     v32 = unionPointWithRect(v31, v130, v128, v126, v124);
     v34 = v33;
     v36 = v35;
     v38 = v37;
     *&v33 = v9 + v18;
     v125 = LODWORD(v33);
-    *&v35 = a3;
-    v43 = map_point_inv(__PAIR64__(LODWORD(v33), v123), v135, v35, a4, v39, v40, v41, v42);
+    *&v35 = d;
+    v43 = map_point_inv(__PAIR64__(LODWORD(v33), v123), v135, v35, scale, v39, v40, v41, v42);
     v44 = unionPointWithRect(v43, v32, v34, v36, v38);
     v46 = v45;
     v48 = v47;
@@ -116,15 +116,15 @@
     v51.f32[0] = v132 + v134;
     v127 = v51.i32[0];
     v51.i32[1] = v122;
-    *&v47 = a3;
-    v56 = map_point_inv(v51, v135, v47, a4, v52, v53, v54, v55);
+    *&v47 = d;
+    v56 = map_point_inv(v51, v135, v47, scale, v52, v53, v54, v55);
     v57 = unionPointWithRect(v56, v44, v46, v48, v50);
     v59 = v58;
     v61 = v60;
     v63 = v62;
-    v119 = a3;
-    *&v60 = a3;
-    v68 = map_point_inv(__PAIR64__(v125, v127), v135, v60, a4, v64, v65, v66, v67);
+    dCopy = d;
+    *&v60 = d;
+    v68 = map_point_inv(__PAIR64__(v125, v127), v135, v60, scale, v64, v65, v66, v67);
     v69 = unionPointWithRect(v68, v57, v59, v61, v63);
     v71 = v70;
     v129 = v73;
@@ -143,12 +143,12 @@
       v138.size.height = v18;
       if (CGRectGetMaxX(v138) > v120)
       {
-        v80 = map_point_inv(__PAIR64__(v122, v135.u32[0]), v135, COERCE_DOUBLE(__PAIR64__(v135.u32[1], LODWORD(a3))), a4, v76, v77, v78, v79);
+        v80 = map_point_inv(__PAIR64__(v122, v135.u32[0]), v135, COERCE_DOUBLE(__PAIR64__(v135.u32[1], LODWORD(d))), scale, v76, v77, v78, v79);
         v81 = unionPointWithRect(v80, v69, v71, v131, v129);
         v83 = v82;
         v85 = v84;
         v87 = v86;
-        v92 = map_point_inv(__PAIR64__(v125, v135.u32[0]), v135, COERCE_DOUBLE(__PAIR64__(v135.u32[1], LODWORD(a3))), a4, v88, v89, v90, v91);
+        v92 = map_point_inv(__PAIR64__(v125, v135.u32[0]), v135, COERCE_DOUBLE(__PAIR64__(v135.u32[1], LODWORD(d))), scale, v88, v89, v90, v91);
         v93 = v83;
         v75 = v9;
         v74 = v134;
@@ -171,12 +171,12 @@
 
     else
     {
-      v101 = map_point_inv(__PAIR64__(v135.u32[1], v127), v135, COERCE_DOUBLE(__PAIR64__(v135.u32[1], LODWORD(a3))), a4, v97, v98, v99, v100);
+      v101 = map_point_inv(__PAIR64__(v135.u32[1], v127), v135, COERCE_DOUBLE(__PAIR64__(v135.u32[1], LODWORD(d))), scale, v97, v98, v99, v100);
       v102 = unionPointWithRect(v101, v69, v71, v131, v129);
       v104 = v103;
       v106 = v105;
       v108 = v107;
-      v113 = map_point_inv(__PAIR64__(v135.u32[1], v123), v135, COERCE_DOUBLE(__PAIR64__(v135.u32[1], LODWORD(v119))), a4, v109, v110, v111, v112);
+      v113 = map_point_inv(__PAIR64__(v135.u32[1], v123), v135, COERCE_DOUBLE(__PAIR64__(v135.u32[1], LODWORD(dCopy))), scale, v109, v110, v111, v112);
       v69 = unionPointWithRect(v113, v102, v104, v106, v108);
       v71 = v116;
     }
@@ -239,7 +239,7 @@
     v21 = v16;
     if (v16 >= 1.0)
     {
-      v22 = [(CIPinchDistortion *)self _pinchDistortionScaleGE1];
+      _pinchDistortionScaleGE1 = [(CIPinchDistortion *)self _pinchDistortionScaleGE1];
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
       v29[2] = __32__CIPinchDistortion_outputImage__block_invoke_2;
@@ -257,7 +257,7 @@
 
     else
     {
-      v22 = [(CIPinchDistortion *)self _pinchDistortionScaleLT1];
+      _pinchDistortionScaleGE1 = [(CIPinchDistortion *)self _pinchDistortionScaleLT1];
       v34[0] = MEMORY[0x1E69E9820];
       v34[1] = 3221225472;
       v34[2] = __32__CIPinchDistortion_outputImage__block_invoke;
@@ -273,7 +273,7 @@
       v25 = v34;
     }
 
-    return [v22 applyWithExtent:v25 roiCallback:inputImage inputImage:v24 arguments:{x, y, width, height}];
+    return [_pinchDistortionScaleGE1 applyWithExtent:v25 roiCallback:inputImage inputImage:v24 arguments:{x, y, width, height}];
   }
 
   else if (v16 >= 0.999)

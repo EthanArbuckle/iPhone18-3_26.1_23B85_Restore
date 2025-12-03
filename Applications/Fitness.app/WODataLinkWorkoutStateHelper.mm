@@ -1,15 +1,15 @@
 @interface WODataLinkWorkoutStateHelper
-+ (id)descriptionFor:(int64_t)a3;
++ (id)descriptionFor:(int64_t)for;
 - (WODataLinkWorkoutStateHelper)init;
 @end
 
 @implementation WODataLinkWorkoutStateHelper
 
-+ (id)descriptionFor:(int64_t)a3
++ (id)descriptionFor:(int64_t)for
 {
-  if (a3 <= 1)
+  if (for <= 1)
   {
-    if (!a3 || a3 == 1)
+    if (!for || for == 1)
     {
       goto LABEL_9;
     }
@@ -20,7 +20,7 @@ LABEL_12:
     return result;
   }
 
-  if (a3 != 2 && a3 != 3)
+  if (for != 2 && for != 3)
   {
     goto LABEL_12;
   }

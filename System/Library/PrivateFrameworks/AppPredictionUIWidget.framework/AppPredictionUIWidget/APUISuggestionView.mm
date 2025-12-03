@@ -1,23 +1,23 @@
 @interface APUISuggestionView
 - (APUISuggestionsWidgetViewDelegate)delegate;
-- (id)iconForSuggestionIconView:(id)a3;
+- (id)iconForSuggestionIconView:(id)view;
 - (int)_subtitleNumberOfLines;
 - (int)_titleNumberOfLines;
-- (void)_setAppImageViewWithBundleIdentifier:(id)a3;
-- (void)_setAppImageViewWithImage:(id)a3;
-- (void)_setINImage:(id)a3 withBundleID:(id)a4;
+- (void)_setAppImageViewWithBundleIdentifier:(id)identifier;
+- (void)_setAppImageViewWithImage:(id)image;
+- (void)_setINImage:(id)image withBundleID:(id)d;
 - (void)_updateLabelColors;
 - (void)_updateMaximumNumberOfLines;
 - (void)createViewsIfNeeded;
 - (void)installReasonLabelIfNecessary;
-- (void)layoutSuggestion:(id)a3;
-- (void)setINImage:(id)a3 withBundleID:(id)a4;
-- (void)setLNImage:(id)a3 withBundleID:(id)a4;
+- (void)layoutSuggestion:(id)suggestion;
+- (void)setINImage:(id)image withBundleID:(id)d;
+- (void)setLNImage:(id)image withBundleID:(id)d;
 @end
 
 @implementation APUISuggestionView
 
-- (void)layoutSuggestion:(id)a3
+- (void)layoutSuggestion:(id)suggestion
 {
   v5 = __atxlog_handle_ui();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
@@ -31,18 +31,18 @@
 - (void)createViewsIfNeeded
 {
   v121[1] = *MEMORY[0x277D85DE8];
-  v3 = [(APUISuggestionView *)self stackView];
+  stackView = [(APUISuggestionView *)self stackView];
 
-  if (!v3)
+  if (!stackView)
   {
     v4 = objc_alloc_init(APUISuggestionIconView);
     [(APUISuggestionView *)self setIconView:v4];
 
-    v5 = [(APUISuggestionView *)self iconView];
-    [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+    iconView = [(APUISuggestionView *)self iconView];
+    [iconView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v6 = [(APUISuggestionView *)self iconView];
-    [v6 setDelegate:self];
+    iconView2 = [(APUISuggestionView *)self iconView];
+    [iconView2 setDelegate:self];
 
     v7 = [(APUISuggestionView *)self platterSize]== 2;
     v8 = *MEMORY[0x277D76968];
@@ -61,50 +61,50 @@
     v11 = objc_alloc_init(MEMORY[0x277D756B8]);
     [(APUISuggestionView *)self setTitleLabel:v11];
 
-    v12 = [(APUISuggestionView *)self titleLabel];
-    [v12 setOverrideUserInterfaceStyle:2];
+    titleLabel = [(APUISuggestionView *)self titleLabel];
+    [titleLabel setOverrideUserInterfaceStyle:2];
 
     v107 = [MEMORY[0x277D75520] metricsForTextStyle:v8];
     v13 = *MEMORY[0x277D74420];
     v14 = [MEMORY[0x277D74300] systemFontOfSize:13.0 weight:*MEMORY[0x277D74420]];
     [v106 pointSize];
     v15 = [v107 scaledFontForFont:v14 maximumPointSize:?];
-    v16 = [(APUISuggestionView *)self titleLabel];
-    [v16 setFont:v15];
+    titleLabel2 = [(APUISuggestionView *)self titleLabel];
+    [titleLabel2 setFont:v15];
 
-    v17 = [(APUISuggestionView *)self titleLabel];
-    [v17 setAdjustsFontSizeToFitWidth:0];
+    titleLabel3 = [(APUISuggestionView *)self titleLabel];
+    [titleLabel3 setAdjustsFontSizeToFitWidth:0];
 
-    v18 = [(APUISuggestionView *)self titleLabel];
+    titleLabel4 = [(APUISuggestionView *)self titleLabel];
     LODWORD(v19) = 1132068864;
-    [v18 setContentCompressionResistancePriority:1 forAxis:v19];
+    [titleLabel4 setContentCompressionResistancePriority:1 forAxis:v19];
 
-    v20 = [(APUISuggestionView *)self subtitleLabel];
-    [v20 setLineBreakMode:4];
+    subtitleLabel = [(APUISuggestionView *)self subtitleLabel];
+    [subtitleLabel setLineBreakMode:4];
 
-    v21 = [(APUISuggestionView *)self titleLabel];
-    [v21 setTranslatesAutoresizingMaskIntoConstraints:0];
+    titleLabel5 = [(APUISuggestionView *)self titleLabel];
+    [titleLabel5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v22 = objc_alloc_init(MEMORY[0x277D756B8]);
     [(APUISuggestionView *)self setSubtitleLabel:v22];
 
     v23 = *MEMORY[0x277D76940];
     v24 = [MEMORY[0x277D74300] _preferredFontForTextStyle:*MEMORY[0x277D76940] maximumContentSizeCategory:v9];
-    v25 = [(APUISuggestionView *)self subtitleLabel];
-    [v25 setFont:v24];
+    subtitleLabel2 = [(APUISuggestionView *)self subtitleLabel];
+    [subtitleLabel2 setFont:v24];
 
-    v26 = [(APUISuggestionView *)self subtitleLabel];
-    [v26 setOverrideUserInterfaceStyle:2];
+    subtitleLabel3 = [(APUISuggestionView *)self subtitleLabel];
+    [subtitleLabel3 setOverrideUserInterfaceStyle:2];
 
-    v27 = [(APUISuggestionView *)self subtitleLabel];
+    subtitleLabel4 = [(APUISuggestionView *)self subtitleLabel];
     LODWORD(v28) = 1132003328;
-    [v27 setContentCompressionResistancePriority:1 forAxis:v28];
+    [subtitleLabel4 setContentCompressionResistancePriority:1 forAxis:v28];
 
-    v29 = [(APUISuggestionView *)self subtitleLabel];
-    [v29 setLineBreakMode:4];
+    subtitleLabel5 = [(APUISuggestionView *)self subtitleLabel];
+    [subtitleLabel5 setLineBreakMode:4];
 
-    v30 = [(APUISuggestionView *)self subtitleLabel];
-    [v30 setTranslatesAutoresizingMaskIntoConstraints:0];
+    subtitleLabel6 = [(APUISuggestionView *)self subtitleLabel];
+    [subtitleLabel6 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v105 = [MEMORY[0x277D74300] _preferredFontForTextStyle:v23 maximumContentSizeCategory:v9];
     v31 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -113,17 +113,17 @@
     v32 = [MEMORY[0x277D74300] systemFontOfSize:11.0 weight:v13];
     [v105 pointSize];
     v33 = [v107 scaledFontForFont:v32 maximumPointSize:?];
-    v34 = [(APUISuggestionView *)self reasonLabel];
-    [v34 setFont:v33];
+    reasonLabel = [(APUISuggestionView *)self reasonLabel];
+    [reasonLabel setFont:v33];
 
-    v35 = [(APUISuggestionView *)self reasonLabel];
-    [v35 setLineBreakMode:4];
+    reasonLabel2 = [(APUISuggestionView *)self reasonLabel];
+    [reasonLabel2 setLineBreakMode:4];
 
-    v36 = [(APUISuggestionView *)self reasonLabel];
-    [v36 setOverrideUserInterfaceStyle:2];
+    reasonLabel3 = [(APUISuggestionView *)self reasonLabel];
+    [reasonLabel3 setOverrideUserInterfaceStyle:2];
 
-    v37 = [(APUISuggestionView *)self reasonLabel];
-    [v37 setTranslatesAutoresizingMaskIntoConstraints:0];
+    reasonLabel4 = [(APUISuggestionView *)self reasonLabel];
+    [reasonLabel4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v110 = 0;
     v111 = &v110;
@@ -154,20 +154,20 @@
 
     [(APUISuggestionView *)self _updateLabelColors];
     [(APUISuggestionView *)self _updateMaximumNumberOfLines];
-    v45 = [(APUISuggestionView *)self titleLabel];
-    v119[0] = v45;
-    v46 = [(APUISuggestionView *)self subtitleLabel];
-    v119[1] = v46;
-    v47 = [(APUISuggestionView *)self reasonLabel];
-    v119[2] = v47;
+    titleLabel6 = [(APUISuggestionView *)self titleLabel];
+    v119[0] = titleLabel6;
+    subtitleLabel7 = [(APUISuggestionView *)self subtitleLabel];
+    v119[1] = subtitleLabel7;
+    reasonLabel5 = [(APUISuggestionView *)self reasonLabel];
+    v119[2] = reasonLabel5;
     v48 = [MEMORY[0x277CBEA60] arrayWithObjects:v119 count:3];
     [(APUISuggestionView *)self setLabels:v48];
 
     v49 = objc_alloc(MEMORY[0x277D75A68]);
-    v50 = [(APUISuggestionView *)self titleLabel];
-    v118[0] = v50;
-    v51 = [(APUISuggestionView *)self subtitleLabel];
-    v118[1] = v51;
+    titleLabel7 = [(APUISuggestionView *)self titleLabel];
+    v118[0] = titleLabel7;
+    subtitleLabel8 = [(APUISuggestionView *)self subtitleLabel];
+    v118[1] = subtitleLabel8;
     v52 = [MEMORY[0x277CBEA60] arrayWithObjects:v118 count:2];
     v108 = [v49 initWithArrangedSubviews:v52];
 
@@ -176,105 +176,105 @@
     [v108 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v108 setSpacing:3.0];
     v53 = objc_alloc(MEMORY[0x277D75A68]);
-    v54 = [(APUISuggestionView *)self iconView];
-    v117[0] = v54;
+    iconView3 = [(APUISuggestionView *)self iconView];
+    v117[0] = iconView3;
     v117[1] = v108;
     v55 = [MEMORY[0x277CBEA60] arrayWithObjects:v117 count:2];
     v56 = [v53 initWithArrangedSubviews:v55];
     [(APUISuggestionView *)self setStackView:v56];
 
     LODWORD(v55) = self->_platterSize == 2;
-    v57 = [(APUISuggestionView *)self stackView];
-    v58 = v57;
+    stackView2 = [(APUISuggestionView *)self stackView];
+    stackView3 = stackView2;
     if (v55)
     {
-      [v57 setAxis:0];
+      [stackView2 setAxis:0];
       v59 = 8.0;
       v60 = 3;
     }
 
     else
     {
-      [v57 setDistribution:0];
+      [stackView2 setDistribution:0];
 
-      v58 = [(APUISuggestionView *)self stackView];
-      [v58 setAxis:1];
+      stackView3 = [(APUISuggestionView *)self stackView];
+      [stackView3 setAxis:1];
       v59 = 5.5;
       v60 = 1;
     }
 
-    v61 = [(APUISuggestionView *)self stackView];
-    [v61 setAlignment:v60];
+    stackView4 = [(APUISuggestionView *)self stackView];
+    [stackView4 setAlignment:v60];
 
-    v62 = [(APUISuggestionView *)self stackView];
-    [v62 setSpacing:v59];
+    stackView5 = [(APUISuggestionView *)self stackView];
+    [stackView5 setSpacing:v59];
 
-    v63 = [(APUISuggestionView *)self stackView];
-    [v63 setTranslatesAutoresizingMaskIntoConstraints:0];
+    stackView6 = [(APUISuggestionView *)self stackView];
+    [stackView6 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v64 = [(APUISuggestionView *)self stackView];
-    [(APUISuggestionView *)self addSubview:v64];
+    stackView7 = [(APUISuggestionView *)self stackView];
+    [(APUISuggestionView *)self addSubview:stackView7];
 
     v85 = MEMORY[0x277CCAAD0];
-    v102 = [(APUISuggestionView *)self iconView];
-    v100 = [v102 heightAnchor];
-    v98 = [(APUISuggestionView *)self heightAnchor];
-    v96 = [v100 constraintEqualToAnchor:v98 multiplier:dbl_24004F6D0[v7]];
+    iconView4 = [(APUISuggestionView *)self iconView];
+    heightAnchor = [iconView4 heightAnchor];
+    heightAnchor2 = [(APUISuggestionView *)self heightAnchor];
+    v96 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:dbl_24004F6D0[v7]];
     v116[0] = v96;
-    v94 = [(APUISuggestionView *)self iconView];
-    v90 = [v94 widthAnchor];
-    v92 = [(APUISuggestionView *)self iconView];
-    v88 = [v92 heightAnchor];
-    v86 = [v90 constraintEqualToAnchor:v88 multiplier:1.0];
+    iconView5 = [(APUISuggestionView *)self iconView];
+    widthAnchor = [iconView5 widthAnchor];
+    iconView6 = [(APUISuggestionView *)self iconView];
+    heightAnchor3 = [iconView6 heightAnchor];
+    v86 = [widthAnchor constraintEqualToAnchor:heightAnchor3 multiplier:1.0];
     v116[1] = v86;
-    v65 = [(APUISuggestionView *)self stackView];
-    v66 = [v65 leadingAnchor];
-    v67 = [(APUISuggestionView *)self leadingAnchor];
-    v68 = [v66 constraintEqualToAnchor:v67 constant:16.0];
+    stackView8 = [(APUISuggestionView *)self stackView];
+    leadingAnchor = [stackView8 leadingAnchor];
+    leadingAnchor2 = [(APUISuggestionView *)self leadingAnchor];
+    v68 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
     v116[2] = v68;
-    v69 = [(APUISuggestionView *)self trailingAnchor];
-    v70 = [(APUISuggestionView *)self stackView];
-    v71 = [v70 trailingAnchor];
-    v72 = [v69 constraintGreaterThanOrEqualToAnchor:v71 constant:16.0];
+    trailingAnchor = [(APUISuggestionView *)self trailingAnchor];
+    stackView9 = [(APUISuggestionView *)self stackView];
+    trailingAnchor2 = [stackView9 trailingAnchor];
+    v72 = [trailingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor2 constant:16.0];
     v116[3] = v72;
     v73 = [MEMORY[0x277CBEA60] arrayWithObjects:v116 count:4];
     [v85 activateConstraints:v73];
 
-    LODWORD(v70) = self->_platterSize == 2;
+    LODWORD(stackView9) = self->_platterSize == 2;
     v99 = MEMORY[0x277CCAAD0];
-    v104 = [(APUISuggestionView *)self stackView];
-    if (v70)
+    stackView10 = [(APUISuggestionView *)self stackView];
+    if (stackView9)
     {
-      v103 = [v104 centerYAnchor];
-      v101 = [(APUISuggestionView *)self centerYAnchor];
-      v74 = [v103 constraintEqualToAnchor:v101];
+      centerYAnchor = [stackView10 centerYAnchor];
+      centerYAnchor2 = [(APUISuggestionView *)self centerYAnchor];
+      v74 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v115 = v74;
-      v75 = [MEMORY[0x277CBEA60] arrayWithObjects:&v115 count:1];
-      [v99 activateConstraints:v75];
+      bottomAnchor = [MEMORY[0x277CBEA60] arrayWithObjects:&v115 count:1];
+      [v99 activateConstraints:bottomAnchor];
     }
 
     else
     {
-      v103 = [v104 topAnchor];
-      v101 = [(APUISuggestionView *)self topAnchor];
-      v74 = [v103 constraintEqualToAnchor:v101 constant:16.0];
+      centerYAnchor = [stackView10 topAnchor];
+      centerYAnchor2 = [(APUISuggestionView *)self topAnchor];
+      v74 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2 constant:16.0];
       v114[0] = v74;
-      v75 = [(APUISuggestionView *)self bottomAnchor];
-      v97 = [(APUISuggestionView *)self stackView];
-      v95 = [v97 bottomAnchor];
-      v93 = [v75 constraintGreaterThanOrEqualToAnchor:v95 constant:16.0];
+      bottomAnchor = [(APUISuggestionView *)self bottomAnchor];
+      stackView11 = [(APUISuggestionView *)self stackView];
+      bottomAnchor2 = [stackView11 bottomAnchor];
+      v93 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2 constant:16.0];
       v114[1] = v93;
-      v91 = [(APUISuggestionView *)self titleLabel];
-      v87 = [v91 trailingAnchor];
-      v89 = [(APUISuggestionView *)self stackView];
-      v76 = [v89 trailingAnchor];
-      v77 = [v87 constraintEqualToAnchor:v76];
+      titleLabel8 = [(APUISuggestionView *)self titleLabel];
+      trailingAnchor3 = [titleLabel8 trailingAnchor];
+      stackView12 = [(APUISuggestionView *)self stackView];
+      trailingAnchor4 = [stackView12 trailingAnchor];
+      v77 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
       v114[2] = v77;
-      v78 = [(APUISuggestionView *)self subtitleLabel];
-      v79 = [v78 trailingAnchor];
-      v80 = [(APUISuggestionView *)self stackView];
-      v81 = [v80 trailingAnchor];
-      v82 = [v79 constraintEqualToAnchor:v81];
+      subtitleLabel9 = [(APUISuggestionView *)self subtitleLabel];
+      trailingAnchor5 = [subtitleLabel9 trailingAnchor];
+      stackView13 = [(APUISuggestionView *)self stackView];
+      trailingAnchor6 = [stackView13 trailingAnchor];
+      v82 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
       v114[3] = v82;
       v83 = [MEMORY[0x277CBEA60] arrayWithObjects:v114 count:4];
       [v99 activateConstraints:v83];
@@ -286,82 +286,82 @@
 
 - (void)_updateLabelColors
 {
-  v3 = [(APUISuggestionView *)self traitCollection];
-  v14 = [v3 sbh_iconTintColor];
+  traitCollection = [(APUISuggestionView *)self traitCollection];
+  sbh_iconTintColor = [traitCollection sbh_iconTintColor];
 
-  v4 = [(APUISuggestionView *)self traitCollection];
-  v5 = [v4 sbh_iconImageAppearance];
+  traitCollection2 = [(APUISuggestionView *)self traitCollection];
+  sbh_iconImageAppearance = [traitCollection2 sbh_iconImageAppearance];
 
-  if ([v5 appearanceType] == 5)
+  if ([sbh_iconImageAppearance appearanceType] == 5)
   {
-    v6 = [(APUISuggestionView *)self titleLabel];
-    [v6 setTextColor:v14];
+    titleLabel = [(APUISuggestionView *)self titleLabel];
+    [titleLabel setTextColor:sbh_iconTintColor];
 
-    v7 = [(APUISuggestionView *)self subtitleLabel];
-    [v7 setTextColor:v14];
+    subtitleLabel = [(APUISuggestionView *)self subtitleLabel];
+    [subtitleLabel setTextColor:sbh_iconTintColor];
 
-    v8 = [(APUISuggestionView *)self reasonLabel];
-    [v8 setTextColor:v14];
+    reasonLabel = [(APUISuggestionView *)self reasonLabel];
+    [reasonLabel setTextColor:sbh_iconTintColor];
   }
 
   else
   {
-    v9 = [MEMORY[0x277D75348] labelColor];
-    v10 = [(APUISuggestionView *)self titleLabel];
-    [v10 setTextColor:v9];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    titleLabel2 = [(APUISuggestionView *)self titleLabel];
+    [titleLabel2 setTextColor:labelColor];
 
-    v11 = [MEMORY[0x277D75348] labelColor];
-    v12 = [(APUISuggestionView *)self subtitleLabel];
-    [v12 setTextColor:v11];
+    labelColor2 = [MEMORY[0x277D75348] labelColor];
+    subtitleLabel2 = [(APUISuggestionView *)self subtitleLabel];
+    [subtitleLabel2 setTextColor:labelColor2];
 
-    v8 = [MEMORY[0x277D75348] secondaryLabelColor];
-    v13 = [(APUISuggestionView *)self reasonLabel];
-    [v13 setTextColor:v8];
+    reasonLabel = [MEMORY[0x277D75348] secondaryLabelColor];
+    reasonLabel2 = [(APUISuggestionView *)self reasonLabel];
+    [reasonLabel2 setTextColor:reasonLabel];
   }
 }
 
-- (id)iconForSuggestionIconView:(id)a3
+- (id)iconForSuggestionIconView:(id)view
 {
-  v4 = a3;
-  v5 = [(APUISuggestionView *)self delegate];
-  v6 = [v4 appBundleIdentifier];
+  viewCopy = view;
+  delegate = [(APUISuggestionView *)self delegate];
+  appBundleIdentifier = [viewCopy appBundleIdentifier];
 
-  v7 = [v5 view:self iconForBundleIdentifier:v6];
+  v7 = [delegate view:self iconForBundleIdentifier:appBundleIdentifier];
 
   return v7;
 }
 
 - (void)_updateMaximumNumberOfLines
 {
-  v3 = [(APUISuggestionView *)self _titleNumberOfLines];
-  v4 = [(APUISuggestionView *)self titleLabel];
-  [v4 setNumberOfLines:v3];
+  _titleNumberOfLines = [(APUISuggestionView *)self _titleNumberOfLines];
+  titleLabel = [(APUISuggestionView *)self titleLabel];
+  [titleLabel setNumberOfLines:_titleNumberOfLines];
 
-  v5 = [(APUISuggestionView *)self _subtitleNumberOfLines];
-  v6 = [(APUISuggestionView *)self subtitleLabel];
-  [v6 setNumberOfLines:v5];
+  _subtitleNumberOfLines = [(APUISuggestionView *)self _subtitleNumberOfLines];
+  subtitleLabel = [(APUISuggestionView *)self subtitleLabel];
+  [subtitleLabel setNumberOfLines:_subtitleNumberOfLines];
 
-  v7 = [(APUISuggestionView *)self reasonLabel];
-  [v7 setNumberOfLines:1];
+  reasonLabel = [(APUISuggestionView *)self reasonLabel];
+  [reasonLabel setNumberOfLines:1];
 }
 
 - (int)_titleNumberOfLines
 {
-  v3 = [(APUISuggestionView *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
+  traitCollection = [(APUISuggestionView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
   if (self->_platterSize == 2)
   {
     v5 = MEMORY[0x277D76808];
 LABEL_5:
-    v9 = UIContentSizeCategoryCompareToCategory(v4, *v5) == NSOrderedDescending;
+    v9 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *v5) == NSOrderedDescending;
     v10 = 1;
     goto LABEL_6;
   }
 
-  v6 = [(APUISuggestionView *)self reasonLabel];
-  v7 = [v6 attributedText];
-  v8 = [v7 length];
+  reasonLabel = [(APUISuggestionView *)self reasonLabel];
+  attributedText = [reasonLabel attributedText];
+  v8 = [attributedText length];
 
   if (v8)
   {
@@ -369,7 +369,7 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v9 = UIContentSizeCategoryCompareToCategory(v4, *MEMORY[0x277D76820]) == NSOrderedDescending;
+  v9 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x277D76820]) == NSOrderedDescending;
   v10 = 2;
 LABEL_6:
   if (v9)
@@ -387,12 +387,12 @@ LABEL_6:
 
 - (int)_subtitleNumberOfLines
 {
-  v3 = [(APUISuggestionView *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
+  traitCollection = [(APUISuggestionView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
   if (self->_platterSize == 2)
   {
-    if (UIContentSizeCategoryCompareToCategory(v4, *MEMORY[0x277D76828]) == NSOrderedDescending)
+    if (UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x277D76828]) == NSOrderedDescending)
     {
       v5 = 1;
     }
@@ -414,72 +414,72 @@ LABEL_6:
 - (void)installReasonLabelIfNecessary
 {
   v34[4] = *MEMORY[0x277D85DE8];
-  v3 = [(APUISuggestionView *)self reasonLabel];
-  [v3 removeFromSuperview];
+  reasonLabel = [(APUISuggestionView *)self reasonLabel];
+  [reasonLabel removeFromSuperview];
 
-  v4 = [(APUISuggestionView *)self reasonLabel];
-  v5 = [v4 attributedText];
-  v6 = [v5 length];
+  reasonLabel2 = [(APUISuggestionView *)self reasonLabel];
+  attributedText = [reasonLabel2 attributedText];
+  v6 = [attributedText length];
 
   if (v6)
   {
     [(APUISuggestionView *)self _updateMaximumNumberOfLines];
-    v7 = [(APUISuggestionView *)self reasonLabel];
-    [(APUISuggestionView *)self addSubview:v7];
+    reasonLabel3 = [(APUISuggestionView *)self reasonLabel];
+    [(APUISuggestionView *)self addSubview:reasonLabel3];
 
     v28 = MEMORY[0x277CCAAD0];
     if (self->_platterSize == 2)
     {
-      v32 = [(APUISuggestionView *)self stackView];
-      v8 = [v32 trailingAnchor];
-      v30 = [(APUISuggestionView *)self reasonLabel];
-      [v30 leadingAnchor];
-      v29 = v31 = v8;
-      v27 = [v8 constraintLessThanOrEqualToAnchor:-8.0 constant:?];
+      stackView = [(APUISuggestionView *)self stackView];
+      trailingAnchor = [stackView trailingAnchor];
+      reasonLabel4 = [(APUISuggestionView *)self reasonLabel];
+      [reasonLabel4 leadingAnchor];
+      v29 = v31 = trailingAnchor;
+      v27 = [trailingAnchor constraintLessThanOrEqualToAnchor:-8.0 constant:?];
       v34[0] = v27;
-      v9 = [(APUISuggestionView *)self trailingAnchor];
-      v25 = [(APUISuggestionView *)self reasonLabel];
-      [v25 trailingAnchor];
-      v24 = v26 = v9;
-      v10 = [v9 constraintEqualToAnchor:16.0 constant:?];
+      trailingAnchor2 = [(APUISuggestionView *)self trailingAnchor];
+      reasonLabel5 = [(APUISuggestionView *)self reasonLabel];
+      [reasonLabel5 trailingAnchor];
+      v24 = v26 = trailingAnchor2;
+      v10 = [trailingAnchor2 constraintEqualToAnchor:16.0 constant:?];
       v34[1] = v10;
-      v11 = [(APUISuggestionView *)self reasonLabel];
-      v12 = [v11 topAnchor];
-      v13 = [(APUISuggestionView *)self topAnchor];
-      v14 = [v12 constraintEqualToAnchor:v13 constant:16.0];
+      reasonLabel6 = [(APUISuggestionView *)self reasonLabel];
+      topAnchor = [reasonLabel6 topAnchor];
+      topAnchor2 = [(APUISuggestionView *)self topAnchor];
+      v14 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:16.0];
       v34[2] = v14;
-      v15 = [(APUISuggestionView *)self reasonLabel];
-      v16 = [v15 bottomAnchor];
-      v17 = [(APUISuggestionView *)self bottomAnchor];
-      v18 = [v16 constraintLessThanOrEqualToAnchor:v17 constant:16.0];
+      reasonLabel7 = [(APUISuggestionView *)self reasonLabel];
+      bottomAnchor = [reasonLabel7 bottomAnchor];
+      bottomAnchor2 = [(APUISuggestionView *)self bottomAnchor];
+      v18 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2 constant:16.0];
       v34[3] = v18;
       v19 = v34;
     }
 
     else
     {
-      v32 = [(APUISuggestionView *)self reasonLabel];
-      v20 = [v32 topAnchor];
-      v30 = [(APUISuggestionView *)self stackView];
-      [v30 bottomAnchor];
-      v29 = v31 = v20;
-      v27 = [v20 constraintGreaterThanOrEqualToAnchor:5.5 constant:?];
+      stackView = [(APUISuggestionView *)self reasonLabel];
+      topAnchor3 = [stackView topAnchor];
+      reasonLabel4 = [(APUISuggestionView *)self stackView];
+      [reasonLabel4 bottomAnchor];
+      v29 = v31 = topAnchor3;
+      v27 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:5.5 constant:?];
       v33[0] = v27;
-      v21 = [(APUISuggestionView *)self bottomAnchor];
-      v25 = [(APUISuggestionView *)self reasonLabel];
-      [v25 bottomAnchor];
-      v24 = v26 = v21;
-      v10 = [v21 constraintEqualToAnchor:16.0 constant:?];
+      bottomAnchor3 = [(APUISuggestionView *)self bottomAnchor];
+      reasonLabel5 = [(APUISuggestionView *)self reasonLabel];
+      [reasonLabel5 bottomAnchor];
+      v24 = v26 = bottomAnchor3;
+      v10 = [bottomAnchor3 constraintEqualToAnchor:16.0 constant:?];
       v33[1] = v10;
-      v11 = [(APUISuggestionView *)self reasonLabel];
-      v12 = [v11 leadingAnchor];
-      v13 = [(APUISuggestionView *)self leadingAnchor];
-      v14 = [v12 constraintEqualToAnchor:v13 constant:16.0];
+      reasonLabel6 = [(APUISuggestionView *)self reasonLabel];
+      topAnchor = [reasonLabel6 leadingAnchor];
+      topAnchor2 = [(APUISuggestionView *)self leadingAnchor];
+      v14 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:16.0];
       v33[2] = v14;
-      v15 = [(APUISuggestionView *)self reasonLabel];
-      v16 = [v15 trailingAnchor];
-      v17 = [(APUISuggestionView *)self trailingAnchor];
-      v18 = [v16 constraintLessThanOrEqualToAnchor:v17 constant:-16.0];
+      reasonLabel7 = [(APUISuggestionView *)self reasonLabel];
+      bottomAnchor = [reasonLabel7 trailingAnchor];
+      bottomAnchor2 = [(APUISuggestionView *)self trailingAnchor];
+      v18 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2 constant:-16.0];
       v33[3] = v18;
       v19 = v33;
     }
@@ -491,20 +491,20 @@ LABEL_6:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setINImage:(id)a3 withBundleID:(id)a4
+- (void)_setINImage:(id)image withBundleID:(id)d
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  imageCopy = image;
+  dCopy = d;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [MEMORY[0x277CD3D20] sharedConnection];
+    mEMORY[0x277CD3D20] = [MEMORY[0x277CD3D20] sharedConnection];
     v9 = __atxlog_handle_ui();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v22 = v8;
+      v22 = mEMORY[0x277CD3D20];
       _os_log_impl(&dword_240036000, v9, OS_LOG_TYPE_DEFAULT, "SuggestionsWidget: image with intent: INRemoteImageProxy image using connection %@", buf, 0xCu);
     }
 
@@ -512,12 +512,12 @@ LABEL_6:
     v16[1] = 3221225472;
     v16[2] = __47__APUISuggestionView__setINImage_withBundleID___block_invoke;
     v16[3] = &unk_278C90CD0;
-    v17 = v8;
-    v18 = v6;
-    v19 = self;
-    v20 = v7;
-    v10 = v7;
-    v11 = v8;
+    v17 = mEMORY[0x277CD3D20];
+    v18 = imageCopy;
+    selfCopy = self;
+    v20 = dCopy;
+    v10 = dCopy;
+    v11 = mEMORY[0x277CD3D20];
     [v11 loadImageDataAndSizeForImage:v18 reply:v16];
   }
 
@@ -527,7 +527,7 @@ LABEL_6:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v22 = v6;
+      v22 = imageCopy;
       _os_log_impl(&dword_240036000, v12, OS_LOG_TYPE_DEFAULT, "SuggestionsWidget: image with intent: using fetchUIImageWithCompletion %@", buf, 0xCu);
     }
 
@@ -536,9 +536,9 @@ LABEL_6:
     v14[2] = __47__APUISuggestionView__setINImage_withBundleID___block_invoke_26;
     v14[3] = &unk_278C90D20;
     v14[4] = self;
-    v15 = v7;
-    v11 = v7;
-    [v6 fetchUIImageWithCompletion:v14];
+    v15 = dCopy;
+    v11 = dCopy;
+    [imageCopy fetchUIImageWithCompletion:v14];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -629,74 +629,74 @@ uint64_t __47__APUISuggestionView__setINImage_withBundleID___block_invoke_2_27(v
   }
 }
 
-- (void)setINImage:(id)a3 withBundleID:(id)a4
+- (void)setINImage:(id)image withBundleID:(id)d
 {
-  if (a3)
+  if (image)
   {
-    [(APUISuggestionView *)self _setINImage:a3 withBundleID:a4];
+    [(APUISuggestionView *)self _setINImage:image withBundleID:d];
   }
 
   else
   {
-    [(APUISuggestionView *)self _setAppImageViewWithBundleIdentifier:a4];
+    [(APUISuggestionView *)self _setAppImageViewWithBundleIdentifier:d];
   }
 }
 
-- (void)setLNImage:(id)a3 withBundleID:(id)a4
+- (void)setLNImage:(id)image withBundleID:(id)d
 {
-  v6 = a4;
-  v9 = v6;
-  if (a3)
+  dCopy = d;
+  v9 = dCopy;
+  if (image)
   {
-    v7 = [a3 inImage];
-    [(APUISuggestionView *)self setINImage:v7 withBundleID:v9];
+    inImage = [image inImage];
+    [(APUISuggestionView *)self setINImage:inImage withBundleID:v9];
 
-    v8 = v7;
+    v8 = inImage;
   }
 
   else
   {
-    [(APUISuggestionView *)self _setAppImageViewWithBundleIdentifier:v6];
+    [(APUISuggestionView *)self _setAppImageViewWithBundleIdentifier:dCopy];
     v8 = v9;
   }
 }
 
-- (void)_setAppImageViewWithImage:(id)a3
+- (void)_setAppImageViewWithImage:(id)image
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  imageCopy = image;
   v5 = __atxlog_handle_ui();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[APUISuggestionView _setAppImageViewWithImage:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = imageCopy;
     _os_log_impl(&dword_240036000, v5, OS_LOG_TYPE_DEFAULT, "SuggestionsWidget: image with intent %s:  image: %@", &v8, 0x16u);
   }
 
-  v6 = [(APUISuggestionView *)self iconView];
-  [v6 setImage:v4];
+  iconView = [(APUISuggestionView *)self iconView];
+  [iconView setImage:imageCopy];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setAppImageViewWithBundleIdentifier:(id)a3
+- (void)_setAppImageViewWithBundleIdentifier:(id)identifier
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = __atxlog_handle_ui();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[APUISuggestionView _setAppImageViewWithBundleIdentifier:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = identifierCopy;
     _os_log_impl(&dword_240036000, v5, OS_LOG_TYPE_DEFAULT, "SuggestionsWidget: image with intent %s:  bundleId: %@", &v8, 0x16u);
   }
 
-  v6 = [(APUISuggestionView *)self iconView];
-  [v6 setAppBundleIdentifier:v4];
+  iconView = [(APUISuggestionView *)self iconView];
+  [iconView setAppBundleIdentifier:identifierCopy];
 
   v7 = *MEMORY[0x277D85DE8];
 }

@@ -1,6 +1,6 @@
 @interface NSObject_QSExtras
 - (BOOL)_accessibilityIsTextInput;
-- (BOOL)_accessibilityQScanPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)_accessibilityQScanPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)_accessibilityQuickSpeakContentIsSpeakable;
 - (BOOL)_accessibilityShouldUpdateQuickSpeakContent;
 - (BOOL)_accessibilitySystemShouldShowPauseBubble;
@@ -10,11 +10,11 @@
 - (BOOL)_accessibilitySystemShouldShowSpeakSentence;
 - (BOOL)_accessibilitySystemShouldShowSpeakSpellOut;
 - (void)_accessibilityCacheContentIfNecessary;
-- (void)_accessibilityPauseSpeaking:(id)a3;
-- (void)_accessibilitySpeak:(id)a3;
-- (void)_accessibilitySpeakLanguageSelection:(id)a3;
-- (void)_accessibilitySpeakSentence:(id)a3;
-- (void)_accessibilitySpeakSpellOut:(id)a3;
+- (void)_accessibilityPauseSpeaking:(id)speaking;
+- (void)_accessibilitySpeak:(id)speak;
+- (void)_accessibilitySpeakLanguageSelection:(id)selection;
+- (void)_accessibilitySpeakSentence:(id)sentence;
+- (void)_accessibilitySpeakSpellOut:(id)out;
 @end
 
 @implementation NSObject_QSExtras
@@ -37,38 +37,38 @@
 - (BOOL)_accessibilityShouldUpdateQuickSpeakContent
 {
   v3 = +[AXQuickSpeak sharedInstance];
-  v4 = [v3 content];
+  content = [v3 content];
   v5 = objc_getAssociatedObject(self, &CachedSelectedTextRange);
   if ([(NSObject_QSExtras *)self _accessibilityIsTextInput])
   {
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
   if ([(NSObject_QSExtras *)self _accessibilityIsTextInteraction])
   {
     v7 = [(NSObject_QSExtras *)self safeValueForKey:@"_textInput"];
 
-    v6 = v7;
+    selfCopy = v7;
   }
 
-  if (v6 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (selfCopy && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v8 = [(NSObject_QSExtras *)v6 selectedTextRange];
-    v9 = v8;
+    selectedTextRange = [(NSObject_QSExtras *)selfCopy selectedTextRange];
+    v9 = selectedTextRange;
     v11 = 1;
     if (v5)
     {
-      if (v8)
+      if (selectedTextRange)
       {
         v10 = objc_opt_class();
         if ([v10 isEqual:objc_opt_class()])
         {
-          if ([v5 isEqual:v9] && (!objc_msgSend(v4, "length") || !objc_msgSend(v9, "isEmpty")))
+          if ([v5 isEqual:v9] && (!objc_msgSend(content, "length") || !objc_msgSend(v9, "isEmpty")))
           {
             v11 = 0;
           }
@@ -87,14 +87,14 @@
   return v11;
 }
 
-- (void)_accessibilitySpeak:(id)a3
+- (void)_accessibilitySpeak:(id)speak
 {
-  v8 = a3;
+  speakCopy = speak;
   [(NSObject_QSExtras *)self _accessibilityCacheContentIfNecessary];
   v4 = +[AXQuickSpeak sharedInstance];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v8 safeValueForKey:@"dialect"];
+    v5 = [speakCopy safeValueForKey:@"dialect"];
   }
 
   else
@@ -105,18 +105,18 @@
   v6 = +[AXQSMenuHelper sharedInstance];
   [v6 restoreMenu];
 
-  v7 = [v5 specificLanguageID];
-  [v4 speakAction:self withPreferredLanguage:v7];
+  specificLanguageID = [v5 specificLanguageID];
+  [v4 speakAction:self withPreferredLanguage:specificLanguageID];
 }
 
-- (void)_accessibilitySpeakSpellOut:(id)a3
+- (void)_accessibilitySpeakSpellOut:(id)out
 {
-  v10 = a3;
+  outCopy = out;
   [(NSObject_QSExtras *)self _accessibilityCacheContentIfNecessary];
   v4 = +[AXQuickSpeak sharedInstance];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v10 safeValueForKey:@"dialect"];
+    v5 = [outCopy safeValueForKey:@"dialect"];
   }
 
   else
@@ -124,22 +124,22 @@
     v5 = 0;
   }
 
-  v6 = [v5 specificLanguageID];
-  if (!v6)
+  specificLanguageID = [v5 specificLanguageID];
+  if (!specificLanguageID)
   {
-    v7 = [MEMORY[0x29EDC7B18] sharedInputModeController];
-    v8 = [v7 currentInputModeInPreference];
-    v6 = [v8 primaryLanguage];
+    mEMORY[0x29EDC7B18] = [MEMORY[0x29EDC7B18] sharedInputModeController];
+    currentInputModeInPreference = [mEMORY[0x29EDC7B18] currentInputModeInPreference];
+    specificLanguageID = [currentInputModeInPreference primaryLanguage];
   }
 
   v9 = +[AXQSMenuHelper sharedInstance];
   [v9 restoreMenu];
 
   [v4 setSpellOutContent:1];
-  [v4 speakAction:self withPreferredLanguage:v6];
+  [v4 speakAction:self withPreferredLanguage:specificLanguageID];
 }
 
-- (void)_accessibilitySpeakSentence:(id)a3
+- (void)_accessibilitySpeakSentence:(id)sentence
 {
   v4 = +[AXQuickSpeak sharedInstance];
   v7 = 0;
@@ -151,57 +151,57 @@
   [v4 speakAction:self withPreferredLanguage:0];
 }
 
-- (void)_accessibilityPauseSpeaking:(id)a3
+- (void)_accessibilityPauseSpeaking:(id)speaking
 {
-  v3 = a3;
+  speakingCopy = speaking;
   v4 = +[AXQuickSpeak sharedInstance];
-  v5 = [v4 isSpeaking];
+  isSpeaking = [v4 isSpeaking];
 
   v6 = +[AXQuickSpeak sharedInstance];
   v7 = v6;
-  if (v5)
+  if (isSpeaking)
   {
-    [v6 pauseAction:v3];
+    [v6 pauseAction:speakingCopy];
   }
 
   else
   {
-    [v6 resumeAction:v3];
+    [v6 resumeAction:speakingCopy];
   }
 }
 
-- (void)_accessibilitySpeakLanguageSelection:(id)a3
+- (void)_accessibilitySpeakLanguageSelection:(id)selection
 {
   v85 = *MEMORY[0x29EDCA608];
   v63 = +[AXQuickSpeak sharedInstance];
-  v53 = [v63 selectedContent];
-  v54 = [v53 unpredictedAmbiguousLangMaps];
-  v3 = [v53 predictedSecondaryLangMaps];
-  v4 = [v53 unambiguousLangMaps];
-  v52 = v4;
-  if ([v4 count] >= 2)
+  selectedContent = [v63 selectedContent];
+  unpredictedAmbiguousLangMaps = [selectedContent unpredictedAmbiguousLangMaps];
+  predictedSecondaryLangMaps = [selectedContent predictedSecondaryLangMaps];
+  unambiguousLangMaps = [selectedContent unambiguousLangMaps];
+  v52 = unambiguousLangMaps;
+  if ([unambiguousLangMaps count] >= 2)
   {
     v5 = [MEMORY[0x29EDB9F48] bundleForClass:objc_opt_class()];
-    v6 = [v5 localizedStringForKey:@"quickspeak.many.languages" value:0 table:@"QuickSpeak"];
+    firstObject = [v5 localizedStringForKey:@"quickspeak.many.languages" value:0 table:@"QuickSpeak"];
 
-    v65 = [MEMORY[0x29EDBA0F8] localizedStringWithFormat:v6, objc_msgSend(v4, "count")];
+    v65 = [MEMORY[0x29EDBA0F8] localizedStringWithFormat:firstObject, objc_msgSend(unambiguousLangMaps, "count")];
     goto LABEL_5;
   }
 
-  if ([v4 count] == 1)
+  if ([unambiguousLangMaps count] == 1)
   {
     v7 = MEMORY[0x29EDBA0F8];
-    v6 = [v4 firstObject];
-    v8 = [v6 defaultDialect];
-    [v8 languageNameInNativeLocale];
-    v10 = v9 = v3;
+    firstObject = [unambiguousLangMaps firstObject];
+    defaultDialect = [firstObject defaultDialect];
+    [defaultDialect languageNameInNativeLocale];
+    v10 = v9 = predictedSecondaryLangMaps;
     v65 = [v7 stringWithFormat:@"& %@", v10];
 
-    v3 = v9;
+    predictedSecondaryLangMaps = v9;
 LABEL_5:
 
-    v4 = v52;
-    if (!v3)
+    unambiguousLangMaps = v52;
+    if (!predictedSecondaryLangMaps)
     {
       goto LABEL_12;
     }
@@ -210,64 +210,64 @@ LABEL_5:
   }
 
   v65 = 0;
-  if (!v3)
+  if (!predictedSecondaryLangMaps)
   {
     goto LABEL_12;
   }
 
 LABEL_8:
-  if ([v4 intersectsOrderedSet:v3])
+  if ([unambiguousLangMaps intersectsOrderedSet:predictedSecondaryLangMaps])
   {
     v11 = AXLogSpeakSelection();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v82 = v3;
+      v82 = predictedSecondaryLangMaps;
       v83 = 2112;
-      v84 = v4;
+      v84 = unambiguousLangMaps;
       _os_log_impl(&dword_29C1E5000, v11, OS_LOG_TYPE_INFO, "Secondary maps contained langs in non ambiguous maps. Secondary Maps: %@ Non-ambiguous Maps: %@", buf, 0x16u);
     }
   }
 
 LABEL_12:
-  v62 = [MEMORY[0x29EDB8DE8] array];
-  v12 = [MEMORY[0x29EDB8E10] orderedSet];
-  [v12 unionOrderedSet:v54];
-  v51 = v3;
-  if (!v3)
+  array = [MEMORY[0x29EDB8DE8] array];
+  orderedSet = [MEMORY[0x29EDB8E10] orderedSet];
+  [orderedSet unionOrderedSet:unpredictedAmbiguousLangMaps];
+  v51 = predictedSecondaryLangMaps;
+  if (!predictedSecondaryLangMaps)
   {
     goto LABEL_19;
   }
 
-  v13 = [v53 primaryUnambiguousDialect];
+  primaryUnambiguousDialect = [selectedContent primaryUnambiguousDialect];
 
-  if (v13)
+  if (primaryUnambiguousDialect)
   {
-    v14 = [v53 primaryUnambiguousDialect];
+    primaryUnambiguousDialect2 = [selectedContent primaryUnambiguousDialect];
 LABEL_17:
-    v16 = v14;
-    v17 = [v14 langMap];
-    [v12 addObject:v17];
+    v16 = primaryUnambiguousDialect2;
+    langMap = [primaryUnambiguousDialect2 langMap];
+    [orderedSet addObject:langMap];
 
     goto LABEL_18;
   }
 
-  v15 = [v53 primaryAmbiguousDialect];
+  primaryAmbiguousDialect = [selectedContent primaryAmbiguousDialect];
 
-  if (v15)
+  if (primaryAmbiguousDialect)
   {
-    v14 = [v53 primaryAmbiguousDialect];
+    primaryUnambiguousDialect2 = [selectedContent primaryAmbiguousDialect];
     goto LABEL_17;
   }
 
 LABEL_18:
-  [v12 unionOrderedSet:v3];
+  [orderedSet unionOrderedSet:predictedSecondaryLangMaps];
 LABEL_19:
   v76 = 0u;
   v77 = 0u;
   v75 = 0u;
   v74 = 0u;
-  obj = v12;
+  obj = orderedSet;
   v18 = [obj countByEnumeratingWithState:&v74 objects:v80 count:16];
   if (v18)
   {
@@ -287,16 +287,16 @@ LABEL_19:
         }
 
         v23 = *(*(&v74 + 1) + 8 * v22);
-        v24 = [v23 associatedAmbiguousLanguages];
-        v25 = [*(v21 + 3968) sharedInstance];
-        v26 = [v25 systemLanguageID];
-        v27 = [v24 containsObject:v26];
+        associatedAmbiguousLanguages = [v23 associatedAmbiguousLanguages];
+        sharedInstance = [*(v21 + 3968) sharedInstance];
+        systemLanguageID = [sharedInstance systemLanguageID];
+        v27 = [associatedAmbiguousLanguages containsObject:systemLanguageID];
 
         if ((v27 & 1) == 0)
         {
           v58 = v22;
-          v28 = [v23 defaultDialect];
-          v79 = v28;
+          defaultDialect2 = [v23 defaultDialect];
+          v79 = defaultDialect2;
           v29 = [MEMORY[0x29EDB8D80] arrayWithObjects:&v79 count:1];
 
           v72 = 0u;
@@ -325,16 +325,16 @@ LABEL_19:
               }
 
               v35 = *(*(&v70 + 1) + 8 * v34);
-              v36 = [*(v31 + 3968) sharedInstance];
-              v37 = [v36 dialectForCurrentLocale];
-              v38 = [v37 langMap];
-              if ([v23 isEqual:v38])
+              sharedInstance2 = [*(v31 + 3968) sharedInstance];
+              dialectForCurrentLocale = [sharedInstance2 dialectForCurrentLocale];
+              langMap2 = [dialectForCurrentLocale langMap];
+              if ([v23 isEqual:langMap2])
               {
                 [*(v31 + 3968) sharedInstance];
                 v39 = v33;
                 v41 = v40 = v23;
-                v42 = [v41 dialectForCurrentLocale];
-                v64 = [v35 isEqual:v42];
+                dialectForCurrentLocale2 = [v41 dialectForCurrentLocale];
+                v64 = [v35 isEqual:dialectForCurrentLocale2];
 
                 v31 = 0x29EDBD000;
                 v23 = v40;
@@ -351,16 +351,16 @@ LABEL_19:
               {
               }
 
-              v43 = [v35 languageNameInNativeLocale];
-              v44 = v43;
+              languageNameInNativeLocale = [v35 languageNameInNativeLocale];
+              v44 = languageNameInNativeLocale;
               if (v65)
               {
-                v45 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%@ %@", v43, v65];
+                v45 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%@ %@", languageNameInNativeLocale, v65];
               }
 
               else
               {
-                v45 = v43;
+                v45 = languageNameInNativeLocale;
               }
 
               v46 = v45;
@@ -370,10 +370,10 @@ LABEL_19:
               v66[2] = __58__NSObject_QSExtras__accessibilitySpeakLanguageSelection___block_invoke;
               v66[3] = &unk_29F2F0248;
               v67 = v63;
-              v68 = self;
+              selfCopy = self;
               v69 = v35;
               v48 = [v47 actionWithTitle:v46 image:0 identifier:0 handler:v66];
-              [v62 addObject:v48];
+              [array addObject:v48];
 
 LABEL_38:
               ++v34;
@@ -416,9 +416,9 @@ LABEL_40:
   if (v3)
   {
     v4 = +[AXQSMenuHelper sharedInstance];
-    v5 = [v4 isShowingLanguageChoices];
+    isShowingLanguageChoices = [v4 isShowingLanguageChoices];
 
-    if (v5 & 1) != 0 || (+[AXQuickSpeak sharedInstance](AXQuickSpeak, "sharedInstance"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isSpeaking], v6, (v7))
+    if (isShowingLanguageChoices & 1) != 0 || (+[AXQuickSpeak sharedInstance](AXQuickSpeak, "sharedInstance"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isSpeaking], v6, (v7))
     {
       LOBYTE(v3) = 0;
     }
@@ -435,21 +435,21 @@ LABEL_40:
 - (void)_accessibilityCacheContentIfNecessary
 {
   v11 = +[AXQuickSpeak sharedInstance];
-  v3 = [v11 content];
-  if (!v3 || (v4 = v3, v5 = [(NSObject_QSExtras *)self _accessibilityShouldUpdateQuickSpeakContent], v4, v5))
+  content = [v11 content];
+  if (!content || (v4 = content, v5 = [(NSObject_QSExtras *)self _accessibilityShouldUpdateQuickSpeakContent], v4, v5))
   {
-    v6 = self;
-    v7 = [(NSObject_QSExtras *)v6 _accessibilityUITextInput];
-    v8 = v7;
-    v9 = v6;
-    if (v7)
+    selfCopy = self;
+    _accessibilityUITextInput = [(NSObject_QSExtras *)selfCopy _accessibilityUITextInput];
+    v8 = _accessibilityUITextInput;
+    v9 = selfCopy;
+    if (_accessibilityUITextInput)
     {
-      v9 = v7;
+      v9 = _accessibilityUITextInput;
     }
 
-    v10 = [(NSObject_QSExtras *)v9 _accessibilityQuickSpeakContent];
-    [v11 setContent:v10];
-    [v11 setContentOwner:v6];
+    _accessibilityQuickSpeakContent = [(NSObject_QSExtras *)v9 _accessibilityQuickSpeakContent];
+    [v11 setContent:_accessibilityQuickSpeakContent];
+    [v11 setContentOwner:selfCopy];
   }
 }
 
@@ -460,7 +460,7 @@ LABEL_40:
   {
     [(NSObject_QSExtras *)self _accessibilityCacheContentIfNecessary];
     v3 = +[AXQuickSpeak sharedInstance];
-    v4 = [v3 content];
+    content = [v3 content];
 
     v5 = objc_alloc(MEMORY[0x29EDBA010]);
     v19[0] = *MEMORY[0x29EDB9EC8];
@@ -468,19 +468,19 @@ LABEL_40:
     v7 = [MEMORY[0x29EDB8D80] arrayWithObjects:v19 count:1];
     v8 = [v5 initWithTagSchemes:v7 options:0];
 
-    [v8 setString:v4];
+    [v8 setString:content];
     v15 = 0;
     v16 = &v15;
     v17 = 0x2020000000;
     v18 = 0;
-    v9 = [v4 length];
+    v9 = [content length];
     v14[0] = MEMORY[0x29EDCA5F8];
     v14[1] = 3221225472;
     v14[2] = __64__NSObject_QSExtras__accessibilitySystemShouldShowSpeakSpellOut__block_invoke;
     v14[3] = &unk_29F2F0270;
     v14[4] = &v15;
     [v8 enumerateTagsInRange:0 scheme:v9 options:v6 usingBlock:{0, v14}];
-    v11 = v16[3] == 1 && ([v4 rangeOfComposedCharacterSequenceAtIndex:0], v10 != objc_msgSend(v4, "length")) && v16[3] == 1;
+    v11 = v16[3] == 1 && ([content rangeOfComposedCharacterSequenceAtIndex:0], v10 != objc_msgSend(content, "length")) && v16[3] == 1;
     _Block_object_dispose(&v15, 8);
   }
 
@@ -502,10 +502,10 @@ LABEL_40:
 
   [(NSObject_QSExtras *)self _accessibilityCacheContentIfNecessary];
   v3 = +[AXQuickSpeak sharedInstance];
-  v4 = [v3 content];
+  content = [v3 content];
 
   v5 = 0;
-  if (![v4 length])
+  if (![content length])
   {
     v6 = [(NSObject_QSExtras *)self _accessibilityQuickSpeakEnclosingSentence:0];
     v7 = [v6 length];
@@ -563,15 +563,15 @@ LABEL_40:
   v3 = +[AXQuickSpeak sharedInstance];
   if ([v3 isPaused])
   {
-    v4 = 0;
+    selectedContentRequiresUserChoice = 0;
   }
 
   else
   {
-    v4 = [v3 selectedContentRequiresUserChoice];
+    selectedContentRequiresUserChoice = [v3 selectedContentRequiresUserChoice];
   }
 
-  return v4;
+  return selectedContentRequiresUserChoice;
 }
 
 - (BOOL)_accessibilitySystemShouldShowPauseBubble
@@ -579,94 +579,94 @@ LABEL_40:
   v2 = +[AXQSMenuHelper sharedInstance];
   if ([v2 isShowingLanguageChoices])
   {
-    v3 = 0;
+    isSpeaking = 0;
   }
 
   else
   {
     v4 = +[AXQuickSpeak sharedInstance];
-    v3 = [v4 isSpeaking];
+    isSpeaking = [v4 isSpeaking];
   }
 
-  return v3;
+  return isSpeaking;
 }
 
-- (BOOL)_accessibilityQScanPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)_accessibilityQScanPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  if (sel__accessibilitySpeak_ == a3)
+  senderCopy = sender;
+  if (sel__accessibilitySpeak_ == action)
   {
     if ([(NSObject_QSExtras *)self _accessibilitySystemShouldShowSpeakBubble])
     {
-      v7 = [(NSObject_QSExtras *)self _accessibilityShouldShowSpeakBubble];
+      _accessibilityShouldShowSpeakBubble = [(NSObject_QSExtras *)self _accessibilityShouldShowSpeakBubble];
       goto LABEL_13;
     }
 
 LABEL_17:
-    v8 = 0;
+    isShowingLanguageChoices = 0;
     goto LABEL_18;
   }
 
-  if (sel__accessibilitySpeakSentence_ == a3)
+  if (sel__accessibilitySpeakSentence_ == action)
   {
-    v7 = [(NSObject_QSExtras *)self _accessibilitySystemShouldShowSpeakSentence];
+    _accessibilityShouldShowSpeakBubble = [(NSObject_QSExtras *)self _accessibilitySystemShouldShowSpeakSentence];
     goto LABEL_13;
   }
 
-  if (sel__accessibilitySpeakSpellOut_ == a3)
+  if (sel__accessibilitySpeakSpellOut_ == action)
   {
-    v7 = [(NSObject_QSExtras *)self _accessibilityShouldShowSpeakSpellOut];
+    _accessibilityShouldShowSpeakBubble = [(NSObject_QSExtras *)self _accessibilityShouldShowSpeakSpellOut];
     goto LABEL_13;
   }
 
-  if (sel__accessibilitySpeakWithLanguage_ == a3)
+  if (sel__accessibilitySpeakWithLanguage_ == action)
   {
     v9 = +[AXQSMenuHelper sharedInstance];
-    v8 = [v9 isShowingLanguageChoices];
+    isShowingLanguageChoices = [v9 isShowingLanguageChoices];
 
     goto LABEL_18;
   }
 
-  if (sel__accessibilitySpeakLanguageSelection_ == a3)
+  if (sel__accessibilitySpeakLanguageSelection_ == action)
   {
     if ([(NSObject_QSExtras *)self _accessibilityShouldShowSpeakLanguageBubble])
     {
-      v7 = [(NSObject_QSExtras *)self _accessibilitySystemShouldShowSpeakLanguageBubble];
+      _accessibilityShouldShowSpeakBubble = [(NSObject_QSExtras *)self _accessibilitySystemShouldShowSpeakLanguageBubble];
       goto LABEL_13;
     }
 
     goto LABEL_17;
   }
 
-  if (sel__accessibilityPauseSpeaking_ != a3 || ![(NSObject_QSExtras *)self _accessibilitySystemShouldShowPauseBubble])
+  if (sel__accessibilityPauseSpeaking_ != action || ![(NSObject_QSExtras *)self _accessibilitySystemShouldShowPauseBubble])
   {
     goto LABEL_17;
   }
 
-  v7 = [(NSObject_QSExtras *)self _accessibilityShouldShowPauseBubble];
+  _accessibilityShouldShowSpeakBubble = [(NSObject_QSExtras *)self _accessibilityShouldShowPauseBubble];
 LABEL_13:
-  v8 = v7;
+  isShowingLanguageChoices = _accessibilityShouldShowSpeakBubble;
 LABEL_18:
 
-  return v8;
+  return isShowingLanguageChoices;
 }
 
 - (BOOL)_accessibilityQuickSpeakContentIsSpeakable
 {
   v16 = *MEMORY[0x29EDCA608];
-  v2 = [MEMORY[0x29EDBD6C8] sharedInstance];
-  v3 = [v2 ignoreLogging];
+  mEMORY[0x29EDBD6C8] = [MEMORY[0x29EDBD6C8] sharedInstance];
+  ignoreLogging = [mEMORY[0x29EDBD6C8] ignoreLogging];
 
-  if ((v3 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
-    v4 = [MEMORY[0x29EDBD6C8] identifier];
+    identifier = [MEMORY[0x29EDBD6C8] identifier];
     v5 = AXLoggerForFacility();
 
     v6 = AXOSLogLevelFromAXLogLevel();
     if (os_log_type_enabled(v5, v6))
     {
       v7 = AXColorizeFormatLog();
-      v13 = [MEMORY[0x29EDBA108] callStackSymbols];
+      callStackSymbols = [MEMORY[0x29EDBA108] callStackSymbols];
       v8 = _AXStringForArgs();
 
       if (os_log_type_enabled(v5, v6))
@@ -679,10 +679,10 @@ LABEL_18:
   }
 
   v9 = +[AXQuickSpeak sharedInstance];
-  v10 = [v9 selectedContentIsSpeakable];
+  selectedContentIsSpeakable = [v9 selectedContentIsSpeakable];
 
   v11 = *MEMORY[0x29EDCA608];
-  return v10;
+  return selectedContentIsSpeakable;
 }
 
 @end

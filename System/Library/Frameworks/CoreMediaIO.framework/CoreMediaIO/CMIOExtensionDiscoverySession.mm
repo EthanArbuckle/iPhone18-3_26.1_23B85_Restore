@@ -1,14 +1,14 @@
 @interface CMIOExtensionDiscoverySession
 + (id)sharedInstance;
-- (CMIOExtensionDiscoverySession)initWithQueue:(id)a3;
+- (CMIOExtensionDiscoverySession)initWithQueue:(id)queue;
 - (NSArray)devices;
-- (void)_invalidateProvider:(id)a3;
-- (void)completeRegistration:(id)a3;
+- (void)_invalidateProvider:(id)provider;
+- (void)completeRegistration:(id)registration;
 - (void)dealloc;
-- (void)provider:(id)a3 availableDevicesChanged:(id)a4;
-- (void)provider:(id)a3 didFailWithError:(id)a4;
-- (void)provider:(id)a3 propertiesChanged:(id)a4;
-- (void)providerHasBeenInvalidated:(id)a3;
+- (void)provider:(id)provider availableDevicesChanged:(id)changed;
+- (void)provider:(id)provider didFailWithError:(id)error;
+- (void)provider:(id)provider propertiesChanged:(id)changed;
+- (void)providerHasBeenInvalidated:(id)invalidated;
 - (void)setUpRegistration;
 @end
 
@@ -115,7 +115,7 @@ uint64_t __40__CMIOExtensionDiscoverySession_devices__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)provider:(id)a3 didFailWithError:(id)a4
+- (void)provider:(id)provider didFailWithError:(id)error
 {
   v24 = *MEMORY[0x277D85DE8];
   v7 = CMIOLog();
@@ -133,9 +133,9 @@ uint64_t __40__CMIOExtensionDiscoverySession_devices__block_invoke(uint64_t a1)
       v18 = 2080;
       v19 = "[CMIOExtensionDiscoverySession provider:didFailWithError:]";
       v20 = 2112;
-      v21 = a3;
+      providerCopy = provider;
       v22 = 2112;
-      v23 = a4;
+      errorCopy = error;
       _os_log_impl(&dword_22EA08000, v8, OS_LOG_TYPE_DEFAULT, "%s:%d:%s  %s %@ %@", buf, 0x3Au);
     }
   }
@@ -146,12 +146,12 @@ uint64_t __40__CMIOExtensionDiscoverySession_devices__block_invoke(uint64_t a1)
   v11[2] = __59__CMIOExtensionDiscoverySession_provider_didFailWithError___block_invoke;
   v11[3] = &unk_27885B938;
   v11[4] = self;
-  v11[5] = a3;
+  v11[5] = provider;
   dispatch_async(queue, v11);
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)providerHasBeenInvalidated:(id)a3
+- (void)providerHasBeenInvalidated:(id)invalidated
 {
   v20 = *MEMORY[0x277D85DE8];
   v5 = CMIOLog();
@@ -169,7 +169,7 @@ uint64_t __40__CMIOExtensionDiscoverySession_devices__block_invoke(uint64_t a1)
       v16 = 2080;
       v17 = "[CMIOExtensionDiscoverySession providerHasBeenInvalidated:]";
       v18 = 2112;
-      v19 = a3;
+      invalidatedCopy = invalidated;
       _os_log_impl(&dword_22EA08000, v6, OS_LOG_TYPE_DEFAULT, "%s:%d:%s  %s %@", buf, 0x30u);
     }
   }
@@ -180,12 +180,12 @@ uint64_t __40__CMIOExtensionDiscoverySession_devices__block_invoke(uint64_t a1)
   v9[2] = __60__CMIOExtensionDiscoverySession_providerHasBeenInvalidated___block_invoke;
   v9[3] = &unk_27885B938;
   v9[4] = self;
-  v9[5] = a3;
+  v9[5] = invalidated;
   dispatch_async(queue, v9);
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)provider:(id)a3 propertiesChanged:(id)a4
+- (void)provider:(id)provider propertiesChanged:(id)changed
 {
   v18 = *MEMORY[0x277D85DE8];
   v5 = CMIOLog();
@@ -203,7 +203,7 @@ uint64_t __40__CMIOExtensionDiscoverySession_devices__block_invoke(uint64_t a1)
       v14 = 2080;
       v15 = "[CMIOExtensionDiscoverySession provider:propertiesChanged:]";
       v16 = 2112;
-      v17 = a4;
+      changedCopy = changed;
       _os_log_impl(&dword_22EA08000, v6, OS_LOG_TYPE_DEFAULT, "%s:%d:%s  %s %@", &v8, 0x30u);
     }
   }
@@ -211,7 +211,7 @@ uint64_t __40__CMIOExtensionDiscoverySession_devices__block_invoke(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)provider:(id)a3 availableDevicesChanged:(id)a4
+- (void)provider:(id)provider availableDevicesChanged:(id)changed
 {
   v19 = *MEMORY[0x277D85DE8];
   v6 = CMIOLog();
@@ -229,7 +229,7 @@ uint64_t __40__CMIOExtensionDiscoverySession_devices__block_invoke(uint64_t a1)
       v15 = 2080;
       v16 = "[CMIOExtensionDiscoverySession provider:availableDevicesChanged:]";
       v17 = 2112;
-      v18 = a4;
+      changedCopy = changed;
       _os_log_impl(&dword_22EA08000, v7, OS_LOG_TYPE_DEFAULT, "%s:%d:%s  %s %@", &v9, 0x30u);
     }
   }
@@ -238,13 +238,13 @@ uint64_t __40__CMIOExtensionDiscoverySession_devices__block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)completeRegistration:(id)a3
+- (void)completeRegistration:(id)registration
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = [a3 bundleID];
-  [a3 token];
-  v6 = a3;
-  v7 = v5;
+  bundleID = [registration bundleID];
+  [registration token];
+  registrationCopy = registration;
+  v7 = bundleID;
   v8 = CMIOLog();
   if (v8)
   {
@@ -258,7 +258,7 @@ uint64_t __40__CMIOExtensionDiscoverySession_devices__block_invoke(uint64_t a1)
       v18 = 2080;
       v19 = "[CMIOExtensionDiscoverySession completeRegistration:]";
       v20 = 2114;
-      v21 = v5;
+      v21 = bundleID;
       _os_log_impl(&dword_22EA08000, v9, OS_LOG_TYPE_DEFAULT, "%s:%d:%s Register for bundleID %{public}@", buf, 0x26u);
     }
   }
@@ -550,7 +550,7 @@ void __50__CMIOExtensionDiscoverySession_setUpRegistration__block_invoke_61()
   }
 }
 
-- (CMIOExtensionDiscoverySession)initWithQueue:(id)a3
+- (CMIOExtensionDiscoverySession)initWithQueue:(id)queue
 {
   v9.receiver = self;
   v9.super_class = CMIOExtensionDiscoverySession;
@@ -558,7 +558,7 @@ void __50__CMIOExtensionDiscoverySession_setUpRegistration__block_invoke_61()
   v5 = v4;
   if (v4)
   {
-    v4->_queue = a3;
+    v4->_queue = queue;
     v4->_providersByBundleIdentifier = objc_alloc_init(MEMORY[0x277CBEB38]);
     v5->_extensionEventPublisher = xpc_event_publisher_create();
     queue = v5->_queue;
@@ -573,14 +573,14 @@ void __50__CMIOExtensionDiscoverySession_setUpRegistration__block_invoke_61()
   return v5;
 }
 
-- (void)_invalidateProvider:(id)a3
+- (void)_invalidateProvider:(id)provider
 {
-  if (a3)
+  if (provider)
   {
-    v4 = [a3 bundleID];
-    if (v4)
+    bundleID = [provider bundleID];
+    if (bundleID)
     {
-      v5 = v4;
+      v5 = bundleID;
       dispatch_assert_queue_V2(self->_queue);
       [(NSMutableDictionary *)self->_providersByBundleIdentifier removeObjectForKey:v5];
 

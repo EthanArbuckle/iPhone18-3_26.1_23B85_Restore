@@ -1,23 +1,23 @@
 @interface CKChatItemSizeCache
 + (id)sharedInstance;
 + (id)test_cachePath;
-- (BOOL)cachedSizeForChatItem:(id)a3 size:(CGSize *)a4 translationSecondaryTextSize:(CGSize *)a5 textAlignmentInsets:(UIEdgeInsets *)a6 fittingSize:(CGSize)a7;
+- (BOOL)cachedSizeForChatItem:(id)item size:(CGSize *)size translationSecondaryTextSize:(CGSize *)textSize textAlignmentInsets:(UIEdgeInsets *)insets fittingSize:(CGSize)fittingSize;
 - (CKChatItemSizeCache)init;
 - (id)_fontCacheKey;
-- (id)_generateChatItemGuidToCacheKeyMapWithCache:(id)a3;
+- (id)_generateChatItemGuidToCacheKeyMapWithCache:(id)cache;
 - (id)_systemVersion;
-- (id)cacheKeyForChatItem:(id)a3 fittingSize:(CGSize)a4;
-- (id)initForTestAndThrowException:(BOOL)a3 cacheFileData:(id)a4;
-- (void)___invalidateSizeCacheMetricsForKeys:(id)a3;
+- (id)cacheKeyForChatItem:(id)item fittingSize:(CGSize)size;
+- (id)initForTestAndThrowException:(BOOL)exception cacheFileData:(id)data;
+- (void)___invalidateSizeCacheMetricsForKeys:(id)keys;
 - (void)_commonInit;
 - (void)_evictIfNeeded;
 - (void)_inflateCache;
 - (void)_persistCache;
-- (void)_updateKeyMap:(id)a3 forKey:(id)a4 sizeCacheKey:(id)a5;
+- (void)_updateKeyMap:(id)map forKey:(id)key sizeCacheKey:(id)cacheKey;
 - (void)dealloc;
-- (void)invalidateCachedSizeForChatItems:(id)a3 reason:(id)a4;
-- (void)invalidateCachedSizeForGUIDPrefix:(id)a3 reason:(id)a4;
-- (void)setCachedSizeForChatItem:(id)a3 size:(CGSize)a4 translationSecondaryTextSize:(CGSize)a5 textAlignmentInsets:(UIEdgeInsets)a6 fittingSize:(CGSize)a7;
+- (void)invalidateCachedSizeForChatItems:(id)items reason:(id)reason;
+- (void)invalidateCachedSizeForGUIDPrefix:(id)prefix reason:(id)reason;
+- (void)setCachedSizeForChatItem:(id)item size:(CGSize)size translationSecondaryTextSize:(CGSize)textSize textAlignmentInsets:(UIEdgeInsets)insets fittingSize:(CGSize)fittingSize;
 @end
 
 @implementation CKChatItemSizeCache
@@ -77,8 +77,8 @@ void __37__CKChatItemSizeCache_sharedInstance__block_invoke()
     v4 = objc_alloc_init(MEMORY[0x1E69A60C8]);
     [(CKChatItemSizeCache *)self setOrderedKeys:v4];
     [(CKChatItemSizeCache *)self _inflateCache];
-    v5 = [MEMORY[0x1E695DF58] preferredLanguages];
-    v6 = [v5 componentsJoinedByString:@"-"];
+    preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+    v6 = [preferredLanguages componentsJoinedByString:@"-"];
 
     [(CKChatItemSizeCache *)self setPreferredLocalization:v6];
     v7 = [objc_alloc(MEMORY[0x1E69A6158]) initWithTarget:self action:sel__evictIfNeeded];
@@ -89,14 +89,14 @@ void __37__CKChatItemSizeCache_sharedInstance__block_invoke()
 
     if (CKIsRunningInMacCatalyst())
     {
-      v10 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v10 addObserver:self selector:sel_applicationWillResignActive name:*MEMORY[0x1E69DDBC8] object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:self selector:sel_applicationWillResignActive name:*MEMORY[0x1E69DDBC8] object:0];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E69A6160] sharedInstance];
-      [v10 addListener:self];
+      defaultCenter = [MEMORY[0x1E69A6160] sharedInstance];
+      [defaultCenter addListener:self];
     }
   }
 }
@@ -104,10 +104,10 @@ void __37__CKChatItemSizeCache_sharedInstance__block_invoke()
 - (void)_inflateCache
 {
   v68[4] = *MEMORY[0x1E69E9840];
-  v3 = [(CKChatItemSizeCache *)self test_cacheData];
-  if (v3)
+  test_cacheData = [(CKChatItemSizeCache *)self test_cacheData];
+  if (test_cacheData)
   {
-    v4 = [(CKChatItemSizeCache *)self test_cacheData];
+    test_cacheData2 = [(CKChatItemSizeCache *)self test_cacheData];
   }
 
   else
@@ -116,12 +116,12 @@ void __37__CKChatItemSizeCache_sharedInstance__block_invoke()
     v6 = MEMORY[0x1E696AEC0];
     v7 = [@"/var/mobile/Library/SMS/" stringByAppendingString:@"com.apple.messages.geometrycache_v%d.plist"];
     v8 = [v6 stringWithValidatedFormat:v7 validFormatSpecifiers:@"%d" error:0, 30];
-    v4 = [v5 dataWithContentsOfFile:v8];
+    test_cacheData2 = [v5 dataWithContentsOfFile:v8];
   }
 
-  if (v4)
+  if (test_cacheData2)
   {
-    v49 = v4;
+    v49 = test_cacheData2;
     v9 = MEMORY[0x1E695DFD8];
     v68[0] = objc_opt_class();
     v68[1] = objc_opt_class();
@@ -131,8 +131,8 @@ void __37__CKChatItemSizeCache_sharedInstance__block_invoke()
     v48 = [v9 setWithArray:v10];
 
     v61 = 0;
-    v11 = self;
-    v12 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v48 fromData:v4 error:&v61];
+    selfCopy3 = self;
+    v12 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v48 fromData:test_cacheData2 error:&v61];
     v47 = v61;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -142,7 +142,7 @@ void __37__CKChatItemSizeCache_sharedInstance__block_invoke()
         v13 = [MEMORY[0x1E695DF30] exceptionWithName:@"TestException" reason:@"CKChatItemSizeCache test exception" userInfo:0];
         [v13 raise];
 
-        v11 = self;
+        selfCopy3 = self;
       }
 
       v14 = [v12 objectForKeyedSubscript:@"ChatItemSizeMetricCache"];
@@ -152,19 +152,19 @@ void __37__CKChatItemSizeCache_sharedInstance__block_invoke()
         v15 = v14;
 
         v12 = v15;
-        v11 = self;
+        selfCopy3 = self;
       }
 
       v16 = [v12 mutableCopy];
-      [(CKChatItemSizeCache *)v11 setCache:v16];
+      [(CKChatItemSizeCache *)selfCopy3 setCache:v16];
 
-      v17 = [v12 allKeys];
-      v18 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v17, "count")}];
+      allKeys = [v12 allKeys];
+      v18 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(allKeys, "count")}];
       v59 = 0u;
       v60 = 0u;
       v57 = 0u;
       v58 = 0u;
-      obj = v17;
+      obj = allKeys;
       v19 = [obj countByEnumeratingWithState:&v57 objects:v67 count:16];
       if (v19)
       {
@@ -191,7 +191,7 @@ void __37__CKChatItemSizeCache_sharedInstance__block_invoke()
       }
 
       [v18 sortUsingComparator:&__block_literal_global_173];
-      v24 = [(CKChatItemSizeCache *)self orderedKeys];
+      orderedKeys = [(CKChatItemSizeCache *)self orderedKeys];
       v55 = 0u;
       v56 = 0u;
       v53 = 0u;
@@ -216,7 +216,7 @@ void __37__CKChatItemSizeCache_sharedInstance__block_invoke()
             v32 = [v30 initWithObject:v31];
 
             [v29 setNode:v32];
-            [v24 pushLinkedListNode:v32];
+            [orderedKeys pushLinkedListNode:v32];
           }
 
           v26 = [v25 countByEnumeratingWithState:&v53 objects:v66 count:16];
@@ -225,8 +225,8 @@ void __37__CKChatItemSizeCache_sharedInstance__block_invoke()
         while (v26);
       }
 
-      v33 = [(CKChatItemSizeCache *)self cache];
-      v34 = [(CKChatItemSizeCache *)self _generateChatItemGuidToCacheKeyMapWithCache:v33];
+      cache = [(CKChatItemSizeCache *)self cache];
+      v34 = [(CKChatItemSizeCache *)self _generateChatItemGuidToCacheKeyMapWithCache:cache];
 
       [(CKChatItemSizeCache *)self setChatItemGUIDToCacheKeyMap:v34];
     }
@@ -242,7 +242,7 @@ void __37__CKChatItemSizeCache_sharedInstance__block_invoke()
       }
     }
 
-    v4 = v49;
+    test_cacheData2 = v49;
   }
 
   else if (IMOSLoggingEnabled())
@@ -263,14 +263,14 @@ void __37__CKChatItemSizeCache_sharedInstance__block_invoke()
     v39 = [@"/var/mobile/Library/SMS/" stringByAppendingString:@"com.apple.messages.geometrycache_v%d.plist"];
     v40 = [v38 stringWithValidatedFormat:v39 validFormatSpecifiers:@"%d" error:0, v37];
 
-    v41 = [MEMORY[0x1E696AC08] defaultManager];
-    v42 = [v41 fileExistsAtPath:v40];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v42 = [defaultManager fileExistsAtPath:v40];
 
     if (v42)
     {
-      v43 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
       v52[0] = 0;
-      [v43 removeItemAtPath:v40 error:v52];
+      [defaultManager2 removeItemAtPath:v40 error:v52];
       v44 = v52[0];
 
       if (v44 && IMOSLoggingEnabled())
@@ -323,38 +323,38 @@ uint64_t __36__CKChatItemSizeCache__inflateCache__block_invoke(uint64_t a1, void
   [(CKChatItemSizeCache *)&v4 dealloc];
 }
 
-- (id)initForTestAndThrowException:(BOOL)a3 cacheFileData:(id)a4
+- (id)initForTestAndThrowException:(BOOL)exception cacheFileData:(id)data
 {
-  v4 = a3;
-  v6 = a4;
+  exceptionCopy = exception;
+  dataCopy = data;
   v10.receiver = self;
   v10.super_class = CKChatItemSizeCache;
   v7 = [(CKChatItemSizeCache *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(CKChatItemSizeCache *)v7 setTest_throwExceptionDuringInflate:v4];
-    [(CKChatItemSizeCache *)v8 setTest_cacheData:v6];
+    [(CKChatItemSizeCache *)v7 setTest_throwExceptionDuringInflate:exceptionCopy];
+    [(CKChatItemSizeCache *)v8 setTest_cacheData:dataCopy];
     [(CKChatItemSizeCache *)v8 _commonInit];
   }
 
   return v8;
 }
 
-- (BOOL)cachedSizeForChatItem:(id)a3 size:(CGSize *)a4 translationSecondaryTextSize:(CGSize *)a5 textAlignmentInsets:(UIEdgeInsets *)a6 fittingSize:(CGSize)a7
+- (BOOL)cachedSizeForChatItem:(id)item size:(CGSize *)size translationSecondaryTextSize:(CGSize *)textSize textAlignmentInsets:(UIEdgeInsets *)insets fittingSize:(CGSize)fittingSize
 {
-  height = a7.height;
-  width = a7.width;
-  v13 = a3;
+  height = fittingSize.height;
+  width = fittingSize.width;
+  itemCopy = item;
   if (CKDisableChatItemSizeCache() || CKIsRunningInIMTranscoderAgent())
   {
     v14 = 0;
     goto LABEL_4;
   }
 
-  v16 = [(CKChatItemSizeCache *)self cacheKeyForChatItem:v13 fittingSize:width, height];
-  v17 = [(CKChatItemSizeCache *)self cache];
-  v18 = [v17 objectForKey:v16];
+  height = [(CKChatItemSizeCache *)self cacheKeyForChatItem:itemCopy fittingSize:width, height];
+  cache = [(CKChatItemSizeCache *)self cache];
+  v18 = [cache objectForKey:height];
 
   v14 = v18 != 0;
   if (!v18)
@@ -367,7 +367,7 @@ uint64_t __36__CKChatItemSizeCache__inflateCache__block_invoke(uint64_t a1, void
     v36 = *(MEMORY[0x1E69DDCE0] + 24);
     v28 = v40;
     v26 = *MEMORY[0x1E695F060];
-    if (!a4)
+    if (!size)
     {
       goto LABEL_8;
     }
@@ -375,21 +375,21 @@ uint64_t __36__CKChatItemSizeCache__inflateCache__block_invoke(uint64_t a1, void
     goto LABEL_7;
   }
 
-  v41 = [v18 node];
+  node = [v18 node];
   v19 = objc_alloc(MEMORY[0x1E69A60D0]);
-  v20 = [v41 object];
-  v21 = [v19 initWithObject:v20];
+  object = [node object];
+  v21 = [v19 initWithObject:object];
 
-  [v18 setKey:v16];
+  [v18 setKey:height];
   [v18 setNode:v21];
-  v22 = [MEMORY[0x1E695DF00] date];
-  [v18 setLastAccess:v22];
+  date = [MEMORY[0x1E695DF00] date];
+  [v18 setLastAccess:date];
 
-  v23 = [(CKChatItemSizeCache *)self orderedKeys];
-  [v23 removeLinkedListNode:v41];
+  orderedKeys = [(CKChatItemSizeCache *)self orderedKeys];
+  [orderedKeys removeLinkedListNode:node];
 
-  v24 = [(CKChatItemSizeCache *)self orderedKeys];
-  [v24 pushLinkedListNode:v21];
+  orderedKeys2 = [(CKChatItemSizeCache *)self orderedKeys];
+  [orderedKeys2 pushLinkedListNode:v21];
 
   [v18 size];
   v26 = v25;
@@ -403,79 +403,79 @@ uint64_t __36__CKChatItemSizeCache__inflateCache__block_invoke(uint64_t a1, void
   v38 = v37;
   v40 = v39;
 
-  if (a4)
+  if (size)
   {
 LABEL_7:
-    a4->width = v26;
-    a4->height = v28;
+    size->width = v26;
+    size->height = v28;
   }
 
 LABEL_8:
-  if (a6)
+  if (insets)
   {
-    a6->top = v30;
-    a6->left = v32;
-    a6->bottom = v34;
-    a6->right = v36;
+    insets->top = v30;
+    insets->left = v32;
+    insets->bottom = v34;
+    insets->right = v36;
   }
 
-  if (a5)
+  if (textSize)
   {
-    a5->width = v38;
-    a5->height = v40;
+    textSize->width = v38;
+    textSize->height = v40;
   }
 
 LABEL_4:
   return v14;
 }
 
-- (void)setCachedSizeForChatItem:(id)a3 size:(CGSize)a4 translationSecondaryTextSize:(CGSize)a5 textAlignmentInsets:(UIEdgeInsets)a6 fittingSize:(CGSize)a7
+- (void)setCachedSizeForChatItem:(id)item size:(CGSize)size translationSecondaryTextSize:(CGSize)textSize textAlignmentInsets:(UIEdgeInsets)insets fittingSize:(CGSize)fittingSize
 {
-  bottom = a6.bottom;
-  right = a6.right;
-  left = a6.left;
-  top = a6.top;
-  height = a5.height;
-  width = a5.width;
-  v11 = a4.height;
-  v12 = a4.width;
-  v26 = a3;
+  bottom = insets.bottom;
+  right = insets.right;
+  left = insets.left;
+  top = insets.top;
+  height = textSize.height;
+  width = textSize.width;
+  v11 = size.height;
+  v12 = size.width;
+  itemCopy = item;
   if (!CKDisableChatItemSizeCache() && !CKIsRunningInIMTranscoderAgent() && !+[CKApplicationState isResizing])
   {
-    v14 = [v26 IMChatItem];
-    v15 = [v14 guid];
+    iMChatItem = [itemCopy IMChatItem];
+    guid = [iMChatItem guid];
 
-    v16 = [(CKChatItemSizeCache *)self cacheKeyForChatItem:v26 fittingSize:v28, v29];
+    v16 = [(CKChatItemSizeCache *)self cacheKeyForChatItem:itemCopy fittingSize:v28, v29];
     v17 = [objc_alloc(MEMORY[0x1E69A60D0]) initWithObject:v16];
     v18 = objc_alloc_init(CKChatItemCachedSizeMetrics);
-    [(CKChatItemCachedSizeMetrics *)v18 setChatItemGUID:v15];
+    [(CKChatItemCachedSizeMetrics *)v18 setChatItemGUID:guid];
     [(CKChatItemCachedSizeMetrics *)v18 setSize:v12, v11];
     [(CKChatItemCachedSizeMetrics *)v18 setTranslationSecondaryTextSize:width, height];
     [(CKChatItemCachedSizeMetrics *)v18 setTextAlignmentInsets:top, left, bottom, right];
     [(CKChatItemCachedSizeMetrics *)v18 setKey:v16];
-    v19 = [MEMORY[0x1E695DF00] date];
-    [(CKChatItemCachedSizeMetrics *)v18 setLastAccess:v19];
+    date = [MEMORY[0x1E695DF00] date];
+    [(CKChatItemCachedSizeMetrics *)v18 setLastAccess:date];
 
     [(CKChatItemCachedSizeMetrics *)v18 setNode:v17];
-    v20 = [(CKChatItemSizeCache *)self cache];
-    [v20 setObject:v18 forKey:v16];
+    cache = [(CKChatItemSizeCache *)self cache];
+    [cache setObject:v18 forKey:v16];
 
-    v21 = [(CKChatItemSizeCache *)self orderedKeys];
-    [v21 pushLinkedListNode:v17];
+    orderedKeys = [(CKChatItemSizeCache *)self orderedKeys];
+    [orderedKeys pushLinkedListNode:v17];
 
-    v22 = [(CKChatItemSizeCache *)self chatItemGUIDToCacheKeyMap];
-    [(CKChatItemSizeCache *)self _updateKeyMap:v22 forKey:v15 sizeCacheKey:v16];
+    chatItemGUIDToCacheKeyMap = [(CKChatItemSizeCache *)self chatItemGUIDToCacheKeyMap];
+    [(CKChatItemSizeCache *)self _updateKeyMap:chatItemGUIDToCacheKeyMap forKey:guid sizeCacheKey:v16];
 
-    v23 = [(CKChatItemSizeCache *)self evictionUpdater];
-    [v23 setNeedsUpdate];
+    evictionUpdater = [(CKChatItemSizeCache *)self evictionUpdater];
+    [evictionUpdater setNeedsUpdate];
   }
 }
 
-- (void)invalidateCachedSizeForChatItems:(id)a3 reason:(id)a4
+- (void)invalidateCachedSizeForChatItems:(id)items reason:(id)reason
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v30 = a4;
+  itemsCopy = items;
+  reasonCopy = reason;
   v7 = IMLogHandleForCategory();
   v8 = os_signpost_id_generate(v7);
   v9 = v7;
@@ -494,7 +494,7 @@ LABEL_4:
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v12 = v6;
+  v12 = itemsCopy;
   v13 = [v12 countByEnumeratingWithState:&v31 objects:v43 count:16];
   if (v13)
   {
@@ -509,11 +509,11 @@ LABEL_4:
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v31 + 1) + 8 * i) IMChatItem];
-        v18 = [v17 guid];
+        iMChatItem = [*(*(&v31 + 1) + 8 * i) IMChatItem];
+        guid = [iMChatItem guid];
 
-        v19 = [(CKChatItemSizeCache *)self chatItemGUIDToCacheKeyMap];
-        v20 = [v19 objectForKey:v18];
+        chatItemGUIDToCacheKeyMap = [(CKChatItemSizeCache *)self chatItemGUIDToCacheKeyMap];
+        v20 = [chatItemGUIDToCacheKeyMap objectForKey:guid];
 
         [v11 unionSet:v20];
       }
@@ -524,13 +524,13 @@ LABEL_4:
     while (v14);
   }
 
-  v21 = [(CKChatItemSizeCache *)self chatItemGUIDToCacheKeyMap];
-  v22 = [v21 count];
+  chatItemGUIDToCacheKeyMap2 = [(CKChatItemSizeCache *)self chatItemGUIDToCacheKeyMap];
+  v22 = [chatItemGUIDToCacheKeyMap2 count];
 
   v23 = [v11 count];
   [(CKChatItemSizeCache *)self ___invalidateSizeCacheMetricsForKeys:v11];
-  v24 = [(CKChatItemSizeCache *)self chatItemGUIDToCacheKeyMap];
-  v25 = [v24 count];
+  chatItemGUIDToCacheKeyMap3 = [(CKChatItemSizeCache *)self chatItemGUIDToCacheKeyMap];
+  v25 = [chatItemGUIDToCacheKeyMap3 count];
 
   v26 = v10;
   v27 = v26;
@@ -543,16 +543,16 @@ LABEL_4:
     v39 = 2048;
     v40 = v25;
     v41 = 2112;
-    v42 = v30;
+    v42 = reasonCopy;
     _os_signpost_emit_with_name_impl(&dword_19020E000, v27, OS_SIGNPOST_INTERVAL_END, spid, "InvalidateChatItems", "InvalidateChatItems: old number of cached size = %lu, number of invalidated sizes = %lu, number of new chaches size = %lu, reason: %@", buf, 0x2Au);
   }
 }
 
-- (void)invalidateCachedSizeForGUIDPrefix:(id)a3 reason:(id)a4
+- (void)invalidateCachedSizeForGUIDPrefix:(id)prefix reason:(id)reason
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v29 = a4;
+  prefixCopy = prefix;
+  reasonCopy = reason;
   v7 = IMLogHandleForCategory();
   v8 = os_signpost_id_generate(v7);
   v9 = v7;
@@ -566,15 +566,15 @@ LABEL_4:
 
   spid = v8;
 
-  v12 = [(CKChatItemSizeCache *)self chatItemGUIDToCacheKeyMap];
-  v13 = [v12 allKeys];
+  chatItemGUIDToCacheKeyMap = [(CKChatItemSizeCache *)self chatItemGUIDToCacheKeyMap];
+  allKeys = [chatItemGUIDToCacheKeyMap allKeys];
 
   v14 = objc_opt_new();
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v15 = v13;
+  v15 = allKeys;
   v16 = [v15 countByEnumeratingWithState:&v30 objects:v42 count:16];
   if (v16)
   {
@@ -590,7 +590,7 @@ LABEL_4:
         }
 
         v20 = *(*(&v30 + 1) + 8 * i);
-        if ([v20 containsString:{v6, spid}])
+        if ([v20 containsString:{prefixCopy, spid}])
         {
           [v14 addObject:v20];
         }
@@ -602,13 +602,13 @@ LABEL_4:
     while (v17);
   }
 
-  v21 = [(CKChatItemSizeCache *)self chatItemGUIDToCacheKeyMap];
-  v22 = [v21 count];
+  chatItemGUIDToCacheKeyMap2 = [(CKChatItemSizeCache *)self chatItemGUIDToCacheKeyMap];
+  v22 = [chatItemGUIDToCacheKeyMap2 count];
 
   v23 = [v14 count];
   [(CKChatItemSizeCache *)self ___invalidateSizeCacheMetricsForKeys:v14];
-  v24 = [(CKChatItemSizeCache *)self chatItemGUIDToCacheKeyMap];
-  v25 = [v24 count];
+  chatItemGUIDToCacheKeyMap3 = [(CKChatItemSizeCache *)self chatItemGUIDToCacheKeyMap];
+  v25 = [chatItemGUIDToCacheKeyMap3 count];
 
   v26 = v10;
   v27 = v26;
@@ -621,21 +621,21 @@ LABEL_4:
     v38 = 2048;
     v39 = v25;
     v40 = 2112;
-    v41 = v29;
+    v41 = reasonCopy;
     _os_signpost_emit_with_name_impl(&dword_19020E000, v27, OS_SIGNPOST_INTERVAL_END, spid, "InvalidateChatItems", "InvalidateChatItems: old number of cached size = %lu, number of invalidated sizes = %lu, number of new chaches size = %lu, reason: %@", buf, 0x2Au);
   }
 }
 
-- (void)___invalidateSizeCacheMetricsForKeys:(id)a3
+- (void)___invalidateSizeCacheMetricsForKeys:(id)keys
 {
   v51 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keysCopy = keys;
   v5 = objc_opt_new();
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v6 = v4;
+  v6 = keysCopy;
   v7 = [v6 countByEnumeratingWithState:&v39 objects:v50 count:16];
   if (v7)
   {
@@ -651,13 +651,13 @@ LABEL_4:
         }
 
         v10 = *(*(&v39 + 1) + 8 * v9);
-        v11 = [(CKChatItemSizeCache *)self cache];
-        v12 = [v11 objectForKeyedSubscript:v10];
+        cache = [(CKChatItemSizeCache *)self cache];
+        v12 = [cache objectForKeyedSubscript:v10];
 
         if (v12)
         {
-          v13 = [v12 chatItemGUID];
-          v14 = !v13 || v10 == 0;
+          chatItemGUID = [v12 chatItemGUID];
+          v14 = !chatItemGUID || v10 == 0;
           v15 = !v14;
 
           if (v15)
@@ -681,11 +681,11 @@ LABEL_4:
     v16 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
-      v17 = [(CKChatItemSizeCache *)self cache];
-      v18 = [v17 count];
+      cache2 = [(CKChatItemSizeCache *)self cache];
+      v18 = [cache2 count];
       v19 = [v5 count];
-      v20 = [(CKChatItemSizeCache *)self cache];
-      v21 = [v20 count];
+      cache3 = [(CKChatItemSizeCache *)self cache];
+      v21 = [cache3 count];
       v22 = [v5 count];
       *buf = 134218496;
       v45 = v18;
@@ -717,19 +717,19 @@ LABEL_4:
         }
 
         v27 = *(*(&v35 + 1) + 8 * v26);
-        v28 = [(CKChatItemSizeCache *)self cache];
-        v29 = [v28 objectForKeyedSubscript:v27];
+        cache4 = [(CKChatItemSizeCache *)self cache];
+        v29 = [cache4 objectForKeyedSubscript:v27];
 
-        v30 = [(CKChatItemSizeCache *)self chatItemGUIDToCacheKeyMap];
-        v31 = [v29 chatItemGUID];
-        [v30 removeObjectForKey:v31];
+        chatItemGUIDToCacheKeyMap = [(CKChatItemSizeCache *)self chatItemGUIDToCacheKeyMap];
+        chatItemGUID2 = [v29 chatItemGUID];
+        [chatItemGUIDToCacheKeyMap removeObjectForKey:chatItemGUID2];
 
-        v32 = [(CKChatItemSizeCache *)self orderedKeys];
-        v33 = [v29 node];
-        [v32 removeLinkedListNode:v33];
+        orderedKeys = [(CKChatItemSizeCache *)self orderedKeys];
+        node = [v29 node];
+        [orderedKeys removeLinkedListNode:node];
 
-        v34 = [(CKChatItemSizeCache *)self cache];
-        [v34 removeObjectForKey:v27];
+        cache5 = [(CKChatItemSizeCache *)self cache];
+        [cache5 removeObjectForKey:v27];
 
         ++v26;
       }
@@ -742,31 +742,31 @@ LABEL_4:
   }
 }
 
-- (id)cacheKeyForChatItem:(id)a3 fittingSize:(CGSize)a4
+- (id)cacheKeyForChatItem:(id)item fittingSize:(CGSize)size
 {
-  width = a4.width;
-  v6 = a3;
-  v25 = [(CKChatItemSizeCache *)self _fontCacheKey];
-  v7 = [(CKChatItemSizeCache *)self _systemVersion];
-  v24 = [v6 sizeCacheUniquenessValue];
-  v8 = [(CKChatItemSizeCache *)self _boldTextEnabled];
-  v9 = [v6 hasTail];
-  v10 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v11 = [v10 isCAShapeLayerBalloonsEnabled];
+  width = size.width;
+  itemCopy = item;
+  _fontCacheKey = [(CKChatItemSizeCache *)self _fontCacheKey];
+  _systemVersion = [(CKChatItemSizeCache *)self _systemVersion];
+  sizeCacheUniquenessValue = [itemCopy sizeCacheUniquenessValue];
+  _boldTextEnabled = [(CKChatItemSizeCache *)self _boldTextEnabled];
+  hasTail = [itemCopy hasTail];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isCAShapeLayerBalloonsEnabled = [mEMORY[0x1E69A8070] isCAShapeLayerBalloonsEnabled];
 
-  v12 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v13 = [v12 isRoundTailedBalloonShapeEnabled];
+  mEMORY[0x1E69A8070]2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isRoundTailedBalloonShapeEnabled = [mEMORY[0x1E69A8070]2 isRoundTailedBalloonShapeEnabled];
 
   v14 = MEMORY[0x1E696AEC0];
-  v23 = [v6 IMChatItem];
+  iMChatItem = [itemCopy IMChatItem];
 
-  v15 = [v23 guid];
-  v16 = [(CKChatItemSizeCache *)self preferredLocalization];
-  v17 = [MEMORY[0x1E696AD98] numberWithBool:v8];
-  v18 = [MEMORY[0x1E696AD98] numberWithBool:v9];
-  v19 = [MEMORY[0x1E696AD98] numberWithBool:v11];
-  v20 = [MEMORY[0x1E696AD98] numberWithBool:v13];
-  v21 = [v14 stringWithFormat:@"<%@-%@-%f-%@-%@-%@-%@-%@-%@-%@>", v15, v24, *&width, v25, v7, v16, v17, v18, v19, v20];
+  guid = [iMChatItem guid];
+  preferredLocalization = [(CKChatItemSizeCache *)self preferredLocalization];
+  v17 = [MEMORY[0x1E696AD98] numberWithBool:_boldTextEnabled];
+  v18 = [MEMORY[0x1E696AD98] numberWithBool:hasTail];
+  v19 = [MEMORY[0x1E696AD98] numberWithBool:isCAShapeLayerBalloonsEnabled];
+  v20 = [MEMORY[0x1E696AD98] numberWithBool:isRoundTailedBalloonShapeEnabled];
+  v21 = [v14 stringWithFormat:@"<%@-%@-%f-%@-%@-%@-%@-%@-%@-%@>", guid, sizeCacheUniquenessValue, *&width, _fontCacheKey, _systemVersion, preferredLocalization, v17, v18, v19, v20];
 
   return v21;
 }
@@ -793,17 +793,17 @@ void __37__CKChatItemSizeCache__systemVersion__block_invoke()
 
 - (id)_fontCacheKey
 {
-  v2 = [MEMORY[0x1E69DC668] sharedApplication];
-  v3 = [v2 preferredContentSizeCategory];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
 
-  return v3;
+  return preferredContentSizeCategory;
 }
 
 - (void)_evictIfNeeded
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(CKChatItemSizeCache *)self orderedKeys];
-  v4 = [v3 count];
+  orderedKeys = [(CKChatItemSizeCache *)self orderedKeys];
+  v4 = [orderedKeys count];
   if (v4 >= 0xBB9 && IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -820,9 +820,9 @@ void __37__CKChatItemSizeCache__systemVersion__block_invoke()
   }
 
   v6 = [MEMORY[0x1E695DFA8] set];
-  v7 = [v3 last];
-  v8 = v7;
-  if (v7)
+  last = [orderedKeys last];
+  v8 = last;
+  if (last)
   {
     v9 = v4 > 0xBB8;
   }
@@ -837,9 +837,9 @@ void __37__CKChatItemSizeCache__systemVersion__block_invoke()
     v10 = v4 - 1;
     do
     {
-      v11 = [v8 object];
-      [v6 addObject:v11];
-      v12 = [v8 prev];
+      object = [v8 object];
+      [v6 addObject:object];
+      prev = [v8 prev];
 
       if (v10 < 0xBB9)
       {
@@ -847,15 +847,15 @@ void __37__CKChatItemSizeCache__systemVersion__block_invoke()
       }
 
       --v10;
-      v8 = v12;
+      v8 = prev;
     }
 
-    while (v12);
+    while (prev);
   }
 
   else
   {
-    v12 = v7;
+    prev = last;
   }
 
   [(CKChatItemSizeCache *)self ___invalidateSizeCacheMetricsForKeys:v6];
@@ -863,11 +863,11 @@ void __37__CKChatItemSizeCache__systemVersion__block_invoke()
 
 - (void)_persistCache
 {
-  v3 = [(CKChatItemSizeCache *)self evictionUpdater];
-  [v3 updateIfNeeded];
+  evictionUpdater = [(CKChatItemSizeCache *)self evictionUpdater];
+  [evictionUpdater updateIfNeeded];
 
-  v4 = [(CKChatItemSizeCache *)self cache];
-  v5 = [v4 copy];
+  cache = [(CKChatItemSizeCache *)self cache];
+  v5 = [cache copy];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -906,17 +906,17 @@ void __36__CKChatItemSizeCache__persistCache__block_invoke(uint64_t a1)
   }
 }
 
-- (id)_generateChatItemGuidToCacheKeyMapWithCache:(id)a3
+- (id)_generateChatItemGuidToCacheKeyMapWithCache:(id)cache
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  cacheCopy = cache;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [v4 allValues];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  allValues = [cacheCopy allValues];
+  v7 = [allValues countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -927,14 +927,14 @@ void __36__CKChatItemSizeCache__persistCache__block_invoke(uint64_t a1)
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 chatItemGUID];
+        chatItemGUID = [v11 chatItemGUID];
         v13 = [v11 key];
         v14 = v13;
-        if (v12)
+        if (chatItemGUID)
         {
           v15 = v13 == 0;
         }
@@ -946,11 +946,11 @@ void __36__CKChatItemSizeCache__persistCache__block_invoke(uint64_t a1)
 
         if (!v15)
         {
-          [(CKChatItemSizeCache *)self _updateKeyMap:v5 forKey:v12 sizeCacheKey:v13];
+          [(CKChatItemSizeCache *)self _updateKeyMap:v5 forKey:chatItemGUID sizeCacheKey:v13];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
@@ -959,15 +959,15 @@ void __36__CKChatItemSizeCache__persistCache__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)_updateKeyMap:(id)a3 forKey:(id)a4 sizeCacheKey:(id)a5
+- (void)_updateKeyMap:(id)map forKey:(id)key sizeCacheKey:(id)cacheKey
 {
-  v7 = a5;
-  if (a3 && a4 && v7)
+  cacheKeyCopy = cacheKey;
+  if (map && key && cacheKeyCopy)
   {
-    v12 = v7;
-    v8 = a4;
-    v9 = a3;
-    v10 = [v9 objectForKey:v8];
+    v12 = cacheKeyCopy;
+    keyCopy = key;
+    mapCopy = map;
+    v10 = [mapCopy objectForKey:keyCopy];
     if (v10)
     {
       v11 = v10;
@@ -979,9 +979,9 @@ void __36__CKChatItemSizeCache__persistCache__block_invoke(uint64_t a1)
       v11 = [MEMORY[0x1E695DFA8] setWithObject:v12];
     }
 
-    [v9 setObject:v11 forKey:v8];
+    [mapCopy setObject:v11 forKey:keyCopy];
 
-    v7 = v12;
+    cacheKeyCopy = v12;
   }
 }
 

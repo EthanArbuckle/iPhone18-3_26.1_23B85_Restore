@@ -1,9 +1,9 @@
 @interface UnitRanks
-+ (id)unitRanksWithUnitsInfo:(id)a3;
++ (id)unitRanksWithUnitsInfo:(id)info;
 - (UnitRanks)init;
-- (UnitRanks)initWithUnitsInfo:(id)a3;
+- (UnitRanks)initWithUnitsInfo:(id)info;
 - (UnitsInfo)unitsInfo;
-- (void)addUnitRank:(id)a3;
+- (void)addUnitRank:(id)rank;
 @end
 
 @implementation UnitRanks
@@ -15,36 +15,36 @@
   return WeakRetained;
 }
 
-- (void)addUnitRank:(id)a3
+- (void)addUnitRank:(id)rank
 {
-  v13 = a3;
-  v4 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v13, "unitID")}];
+  rankCopy = rank;
+  v4 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(rankCopy, "unitID")}];
   if (([(NSMutableSet *)self->_units containsObject:v4]& 1) == 0)
   {
-    if ([v13 unitID] == -1)
+    if ([rankCopy unitID] == -1)
     {
       self->_containsFrom = 1;
     }
 
-    else if ([v13 unitID] == -2)
+    else if ([rankCopy unitID] == -2)
     {
       self->_containsTo = 1;
     }
 
-    else if ([v13 unitID])
+    else if ([rankCopy unitID])
     {
       self->_containsUnit = 1;
     }
 
     else
     {
-      self->_tokenType = [v13 tokenType];
-      v5 = [v13 normalized];
+      self->_tokenType = [rankCopy tokenType];
+      normalized = [rankCopy normalized];
       normalized = self->_normalized;
-      self->_normalized = v5;
+      self->_normalized = normalized;
     }
 
-    if (!self->_isLaTeX && [v13 isLaTeX])
+    if (!self->_isLaTeX && [rankCopy isLaTeX])
     {
       self->_isLaTeX = 1;
     }
@@ -54,18 +54,18 @@
     {
       v8 = WeakRetained;
       v9 = objc_loadWeakRetained(&self->_unitsInfo);
-      v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v13, "unitID")}];
-      v11 = [v10 typeInfo];
-      v12 = [v11 isCurrency];
+      v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(rankCopy, "unitID")}];
+      typeInfo = [v10 typeInfo];
+      isCurrency = [typeInfo isCurrency];
 
-      if (v12)
+      if (isCurrency)
       {
         self->_containsCurrency = 1;
       }
     }
 
     [(NSMutableSet *)self->_units addObject:v4];
-    [(NSMutableArray *)self->_ranks addObject:v13];
+    [(NSMutableArray *)self->_ranks addObject:rankCopy];
   }
 }
 
@@ -91,9 +91,9 @@
   return v2;
 }
 
-- (UnitRanks)initWithUnitsInfo:(id)a3
+- (UnitRanks)initWithUnitsInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v11.receiver = self;
   v11.super_class = UnitRanks;
   v5 = [(UnitRanks *)&v11 init];
@@ -107,17 +107,17 @@
     ranks = v5->_ranks;
     v5->_ranks = v8;
 
-    objc_storeWeak(&v5->_unitsInfo, v4);
+    objc_storeWeak(&v5->_unitsInfo, infoCopy);
     v5->_tokenType = 2;
   }
 
   return v5;
 }
 
-+ (id)unitRanksWithUnitsInfo:(id)a3
++ (id)unitRanksWithUnitsInfo:(id)info
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithUnitsInfo:v3];
+  infoCopy = info;
+  v4 = [objc_alloc(objc_opt_class()) initWithUnitsInfo:infoCopy];
 
   return v4;
 }

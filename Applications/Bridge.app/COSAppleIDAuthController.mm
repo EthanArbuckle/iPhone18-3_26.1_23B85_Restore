@@ -1,94 +1,94 @@
 @interface COSAppleIDAuthController
-+ (BOOL)isTermsUpdateNeededError:(id)a3;
-+ (BOOL)shouldAttemptPasswordLessSignInForAccount:(id)a3 inAccountStore:(id)a4;
-+ (BOOL)signInEndResultForValue:(BOOL)a3 error:(id)a4;
-+ (id)DSIDForIDMSAccount:(id)a3;
-+ (id)altDSIDForIDMSAccount:(id)a3;
++ (BOOL)isTermsUpdateNeededError:(id)error;
++ (BOOL)shouldAttemptPasswordLessSignInForAccount:(id)account inAccountStore:(id)store;
++ (BOOL)signInEndResultForValue:(BOOL)value error:(id)error;
++ (id)DSIDForIDMSAccount:(id)account;
++ (id)altDSIDForIDMSAccount:(id)account;
 + (id)amsSaveOptions;
-+ (id)lookupIDMSAccountWithAccountStore:(id)a3 matchingAccount:(id)a4;
-+ (void)saveToPairedDeviceAccount:(id)a3 fromAccountStore:(id)a4 withOptions:(id)a5 completion:(id)a6;
-+ (void)saveVerifiedRawPassword:(id)a3 forAccountIdentifier:(id)a4 withCompletionHandler:(id)a5;
++ (id)lookupIDMSAccountWithAccountStore:(id)store matchingAccount:(id)account;
++ (void)saveToPairedDeviceAccount:(id)account fromAccountStore:(id)store withOptions:(id)options completion:(id)completion;
++ (void)saveVerifiedRawPassword:(id)password forAccountIdentifier:(id)identifier withCompletionHandler:(id)handler;
 - (BOOL)isCurrentAccountiTunesAccount;
-- (COSAppleIDAuthController)initWithAccountStore:(id)a3 account:(id)a4 timeout:(double)a5 device:(id)a6;
+- (COSAppleIDAuthController)initWithAccountStore:(id)store account:(id)account timeout:(double)timeout device:(id)device;
 - (COSAppleIDAuthControllerDelegate)delegate;
 - (UIViewController)presentingController;
 - (id)authenticationContext;
 - (id)baseAppContext;
 - (id)companionSaveOptions;
 - (id)httpHeadersForRemoteAuthUI;
-- (id)optionsForPLTAuthWithTokens:(id)a3;
+- (id)optionsForPLTAuthWithTokens:(id)tokens;
 - (id)remoteUIStyle;
 - (id)tinkerFamilyMemberFromAuthenticationResultsForInternalUseByUpdatingtinkerSignInID;
 - (void)_resetTermsInformation;
 - (void)_resumeSatelliteSignin;
 - (void)attemptMagicSignIn;
-- (void)authenticatedWithResults:(id)a3 error:(id)a4;
+- (void)authenticatedWithResults:(id)results error:(id)error;
 - (void)cancelSignInTimer;
-- (void)contextDidDismissLoginAlertController:(id)a3;
-- (void)contextDidEndPresentingSecondaryUI:(id)a3;
-- (void)contextDidPresentLoginAlertController:(id)a3;
-- (void)contextWillBeginPresentingSecondaryUI:(id)a3;
-- (void)contextWillDismissLoginAlertController:(id)a3;
+- (void)contextDidDismissLoginAlertController:(id)controller;
+- (void)contextDidEndPresentingSecondaryUI:(id)i;
+- (void)contextDidPresentLoginAlertController:(id)controller;
+- (void)contextWillBeginPresentingSecondaryUI:(id)i;
+- (void)contextWillDismissLoginAlertController:(id)controller;
 - (void)dealloc;
-- (void)genericTermsRemoteUI:(id)a3 acceptedTermsInfo:(id)a4;
-- (void)genericTermsRemoteUI:(id)a3 didFinishWithSuccess:(BOOL)a4;
+- (void)genericTermsRemoteUI:(id)i acceptedTermsInfo:(id)info;
+- (void)genericTermsRemoteUI:(id)i didFinishWithSuccess:(BOOL)success;
 - (void)performProxiedAuthentication;
-- (void)presentTermsWithCachedAuthResultsForDSID:(id)a3;
-- (void)reauthFamilyCircleByExistingAuthenticationResultsWithCompletion:(id)a3;
-- (void)repairGuardianAccount:(id)a3;
-- (void)reportSignInCompletionWithSuccess:(BOOL)a3 error:(id)a4;
+- (void)presentTermsWithCachedAuthResultsForDSID:(id)d;
+- (void)reauthFamilyCircleByExistingAuthenticationResultsWithCompletion:(id)completion;
+- (void)repairGuardianAccount:(id)account;
+- (void)reportSignInCompletionWithSuccess:(BOOL)success error:(id)error;
 - (void)resetWatchSignInResponse;
 - (void)saveAccountToPairedDevice;
-- (void)saveAccountToPairedDeviceForPLTAuthWithTokens:(id)a3;
-- (void)saveAccountToPairedDeviceWithOptions:(id)a3;
-- (void)saveAccountToPairedDeviceWithRawPassword:(id)a3;
-- (void)savedAccountToPairedDeviceWithSuccess:(BOOL)a3 error:(id)a4;
+- (void)saveAccountToPairedDeviceForPLTAuthWithTokens:(id)tokens;
+- (void)saveAccountToPairedDeviceWithOptions:(id)options;
+- (void)saveAccountToPairedDeviceWithRawPassword:(id)password;
+- (void)savedAccountToPairedDeviceWithSuccess:(BOOL)success error:(id)error;
 - (void)signInTimerFired;
-- (void)signInViewController:(id)a3 didCompleteWithAuthenticationResults:(id)a4;
-- (void)startAccountActionWithContext:(id)a3;
+- (void)signInViewController:(id)controller didCompleteWithAuthenticationResults:(id)results;
+- (void)startAccountActionWithContext:(id)context;
 - (void)startRecoveringCredentials;
-- (void)startSatelliteSigninWithProgressCompletion:(id)a3;
+- (void)startSatelliteSigninWithProgressCompletion:(id)completion;
 - (void)startSignInTimer;
-- (void)startSigningInWithPassword:(id)a3;
+- (void)startSigningInWithPassword:(id)password;
 - (void)startSigningInWithoutPassword;
-- (void)waitForSatelliteSigninWithProgressCompletion:(id)a3;
-- (void)willPresentModalNavigationController:(id)a3;
+- (void)waitForSatelliteSigninWithProgressCompletion:(id)completion;
+- (void)willPresentModalNavigationController:(id)controller;
 @end
 
 @implementation COSAppleIDAuthController
 
-+ (id)DSIDForIDMSAccount:(id)a3
++ (id)DSIDForIDMSAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = +[AKAccountManager sharedInstance];
-  v5 = [v4 DSIDForAccount:v3];
+  v5 = [v4 DSIDForAccount:accountCopy];
 
-  v6 = [v5 stringValue];
+  stringValue = [v5 stringValue];
 
-  return v6;
+  return stringValue;
 }
 
-+ (id)altDSIDForIDMSAccount:(id)a3
++ (id)altDSIDForIDMSAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = +[AKAccountManager sharedInstance];
-  v5 = [v4 altDSIDForAccount:v3];
+  v5 = [v4 altDSIDForAccount:accountCopy];
 
   return v5;
 }
 
-+ (BOOL)shouldAttemptPasswordLessSignInForAccount:(id)a3 inAccountStore:(id)a4
++ (BOOL)shouldAttemptPasswordLessSignInForAccount:(id)account inAccountStore:(id)store
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  accountCopy = account;
+  storeCopy = store;
+  if (accountCopy)
   {
     v7 = +[MCProfileConnection sharedConnection];
-    v8 = [v7 isPasscodeSet];
+    isPasscodeSet = [v7 isPasscodeSet];
 
-    if (v8)
+    if (isPasscodeSet)
     {
-      v9 = [objc_opt_class() lookupIDMSAccountWithAccountStore:v6 matchingAccount:v5];
+      v9 = [objc_opt_class() lookupIDMSAccountWithAccountStore:storeCopy matchingAccount:accountCopy];
       if (v9)
       {
         v10 = +[AKAccountManager sharedInstance];
@@ -111,7 +111,7 @@ LABEL_16:
           v16 = [NSNumber numberWithBool:v11 != 0];
           v17 = [NSNumber numberWithBool:v13 != 0];
           v19 = 138412802;
-          v20 = v5;
+          v20 = accountCopy;
           v21 = 2112;
           v22 = v16;
           v23 = 2112;
@@ -126,7 +126,7 @@ LABEL_16:
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
           v19 = 138412290;
-          v20 = v5;
+          v20 = accountCopy;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Will skip silent sign-in for account: (%@); No matching IDMS account.", &v19, 0xCu);
         }
       }
@@ -138,7 +138,7 @@ LABEL_16:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v19 = 138412290;
-        v20 = v5;
+        v20 = accountCopy;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Will skip silent sign-in for account: (%@); No passcode set.", &v19, 0xCu);
       }
     }
@@ -153,53 +153,53 @@ LABEL_17:
   return v14;
 }
 
-+ (void)saveToPairedDeviceAccount:(id)a3 fromAccountStore:(id)a4 withOptions:(id)a5 completion:(id)a6
++ (void)saveToPairedDeviceAccount:(id)account fromAccountStore:(id)store withOptions:(id)options completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = a4;
+  accountCopy = account;
+  optionsCopy = options;
+  completionCopy = completion;
+  storeCopy = store;
   v13 = pbb_accountsignin_log();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = objc_retainBlock(v11);
+    v14 = objc_retainBlock(completionCopy);
     *buf = 134218498;
-    v22 = v9;
+    v22 = accountCopy;
     v23 = 2112;
-    v24 = v10;
+    v24 = optionsCopy;
     v25 = 2048;
     v26 = v14;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Saving Account (%p) to paired device with options: (%@); completion: (%p)", buf, 0x20u);
   }
 
   v15 = [[ACAccountCredential alloc] initWithPassword:0];
-  [v9 setCredential:v15];
+  [accountCopy setCredential:v15];
 
-  [v9 setAuthenticated:0];
+  [accountCopy setAuthenticated:0];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_1000FE4F8;
   v18[3] = &unk_10026BD88;
-  v19 = v9;
-  v20 = v11;
-  v16 = v11;
-  v17 = v9;
-  [v12 saveAccount:v17 toPairedDeviceWithOptions:v10 completion:v18];
+  v19 = accountCopy;
+  v20 = completionCopy;
+  v16 = completionCopy;
+  v17 = accountCopy;
+  [storeCopy saveAccount:v17 toPairedDeviceWithOptions:optionsCopy completion:v18];
 }
 
-+ (BOOL)signInEndResultForValue:(BOOL)a3 error:(id)a4
++ (BOOL)signInEndResultForValue:(BOOL)value error:(id)error
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3)
+  errorCopy = error;
+  v6 = errorCopy;
+  if (value)
   {
     v7 = 0;
   }
 
   else
   {
-    v8 = [v5 domain];
-    if ([v8 isEqualToString:ACErrorDomain])
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:ACErrorDomain])
     {
       v7 = [v6 code] == 5;
     }
@@ -210,31 +210,31 @@ LABEL_17:
     }
   }
 
-  return v7 || a3;
+  return v7 || value;
 }
 
-+ (BOOL)isTermsUpdateNeededError:(id)a3
++ (BOOL)isTermsUpdateNeededError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:AASignInErrorDomain] && objc_msgSend(v3, "code") == -8010)
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:AASignInErrorDomain] && objc_msgSend(errorCopy, "code") == -8010)
   {
-    v5 = [v3 userInfo];
+    userInfo = [errorCopy userInfo];
 
-    if (!v5)
+    if (!userInfo)
     {
       v10 = 0;
       goto LABEL_8;
     }
 
-    v6 = [v3 userInfo];
-    v4 = [v6 objectForKeyedSubscript:NSUnderlyingErrorKey];
+    userInfo2 = [errorCopy userInfo];
+    domain = [userInfo2 objectForKeyedSubscript:NSUnderlyingErrorKey];
 
-    v7 = [v4 userInfo];
-    if (v7)
+    userInfo3 = [domain userInfo];
+    if (userInfo3)
     {
-      v8 = [v4 userInfo];
-      v9 = [v8 objectForKeyedSubscript:kAAProtocolErrorKey];
+      userInfo4 = [domain userInfo];
+      v9 = [userInfo4 objectForKeyedSubscript:kAAProtocolErrorKey];
       v10 = [v9 isEqualToString:kAAProtocolErrorMobileMeTermsOfServiceUpdate];
     }
 
@@ -253,13 +253,13 @@ LABEL_8:
   return v10;
 }
 
-- (COSAppleIDAuthController)initWithAccountStore:(id)a3 account:(id)a4 timeout:(double)a5 device:(id)a6
+- (COSAppleIDAuthController)initWithAccountStore:(id)store account:(id)account timeout:(double)timeout device:(id)device
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = 0;
-  if (v11 && v12)
+  storeCopy = store;
+  accountCopy = account;
+  deviceCopy = device;
+  selfCopy = 0;
+  if (storeCopy && accountCopy)
   {
     v20.receiver = self;
     v20.super_class = COSAppleIDAuthController;
@@ -267,22 +267,22 @@ LABEL_8:
     v16 = v15;
     if (v15)
     {
-      objc_storeStrong(&v15->_accountStore, a3);
-      objc_storeStrong(&v16->_account, a4);
-      v16->_timeout = a5;
+      objc_storeStrong(&v15->_accountStore, store);
+      objc_storeStrong(&v16->_account, account);
+      v16->_timeout = timeout;
       account = v16->_account;
       v18 = [[ACAccountCredential alloc] initWithPassword:0];
       [(ACAccount *)account setCredential:v18];
 
       [(ACAccount *)v16->_account setAuthenticated:0];
-      objc_storeStrong(&v16->_watchDevice, a6);
+      objc_storeStrong(&v16->_watchDevice, device);
     }
 
     self = v16;
-    v14 = self;
+    selfCopy = self;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -307,20 +307,20 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Starting password-less sign-in for account: (%@); timer: (%f)", &v10, 0x16u);
   }
 
-  v6 = [UIApp setupController];
-  v7 = [v6 pairingReportManager];
+  setupController = [UIApp setupController];
+  pairingReportManager = [setupController pairingReportManager];
 
-  v8 = [(COSAppleIDAuthController *)self signInAccountType];
+  signInAccountType = [(COSAppleIDAuthController *)self signInAccountType];
   v9 = BRSignInPairingTimeEventForAccountType();
 
-  [v7 checkInWithOpenPairingTimeEvent:v9];
+  [pairingReportManager checkInWithOpenPairingTimeEvent:v9];
   [(COSAppleIDAuthController *)self startSignInTimer];
   [(COSAppleIDAuthController *)self attemptMagicSignIn];
 }
 
-- (void)startSigningInWithPassword:(id)a3
+- (void)startSigningInWithPassword:(id)password
 {
-  v5 = a3;
+  passwordCopy = password;
   v6 = pbb_accountsignin_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -331,28 +331,28 @@ LABEL_8:
     v24 = 2048;
     v25 = timeout;
     v26 = 1024;
-    v27 = v5 != 0;
+    v27 = passwordCopy != 0;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Starting interactive sign-in for account: (%@); timer: (%f) password: %{BOOL}d", buf, 0x1Cu);
   }
 
-  v9 = [UIApp setupController];
-  v10 = [v9 pairingReportManager];
+  setupController = [UIApp setupController];
+  pairingReportManager = [setupController pairingReportManager];
 
-  v11 = [(COSAppleIDAuthController *)self signInAccountType];
+  signInAccountType = [(COSAppleIDAuthController *)self signInAccountType];
   v12 = BRSignInPairingTimeEventForAccountType();
 
-  [v10 checkInWithOpenPairingTimeEvent:v12];
+  [pairingReportManager checkInWithOpenPairingTimeEvent:v12];
   [(COSAppleIDAuthController *)self startSignInTimer];
-  objc_storeStrong(&self->_password, a3);
+  objc_storeStrong(&self->_password, password);
   self->_hasStartedFallbackFlow = 1;
   watchDevice = self->_watchDevice;
   v14 = [[NSUUID alloc] initWithUUIDString:@"25B1B001-1F02-49A0-B7E7-6225BA6B004D"];
   if (([(NRDevice *)watchDevice supportsCapability:v14]& 1) != 0)
   {
     v15 = +[UIApplication sharedApplication];
-    v16 = [v15 bridgeController];
+    bridgeController = [v15 bridgeController];
 
-    if (v16)
+    if (bridgeController)
     {
       if (self->_proxiedDevice)
       {
@@ -369,13 +369,13 @@ LABEL_8:
         }
 
         v19 = +[UIApplication sharedApplication];
-        v20 = [v19 bridgeController];
+        bridgeController2 = [v19 bridgeController];
         v21[0] = _NSConcreteStackBlock;
         v21[1] = 3221225472;
         v21[2] = sub_1000FEDCC;
         v21[3] = &unk_100268958;
         v21[4] = self;
-        [v20 requestProxiedDeviceForWatchWithCompletion:v21];
+        [bridgeController2 requestProxiedDeviceForWatchWithCompletion:v21];
       }
 
       goto LABEL_11;
@@ -420,9 +420,9 @@ LABEL_11:
   if (([(NRDevice *)watchDevice supportsCapability:v7]& 1) != 0)
   {
     v8 = +[UIApplication sharedApplication];
-    v9 = [v8 bridgeController];
+    bridgeController = [v8 bridgeController];
 
-    if (v9)
+    if (bridgeController)
     {
       if (self->_proxiedDevice)
       {
@@ -439,13 +439,13 @@ LABEL_11:
         }
 
         v12 = +[UIApplication sharedApplication];
-        v13 = [v12 bridgeController];
+        bridgeController2 = [v12 bridgeController];
         v14[0] = _NSConcreteStackBlock;
         v14[1] = 3221225472;
         v14[2] = sub_1000FF08C;
         v14[3] = &unk_100268958;
         v14[4] = self;
-        [v13 requestProxiedDeviceForWatchWithCompletion:v14];
+        [bridgeController2 requestProxiedDeviceForWatchWithCompletion:v14];
       }
 
       return;
@@ -524,14 +524,14 @@ LABEL_11:
   [(COSAppleIDAuthController *)self reportSignInCompletionWithSuccess:0 error:v5];
 }
 
-+ (id)lookupIDMSAccountWithAccountStore:(id)a3 matchingAccount:(id)a4
++ (id)lookupIDMSAccountWithAccountStore:(id)store matchingAccount:(id)account
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierIDMS];
+  storeCopy = store;
+  accountCopy = account;
+  v7 = [storeCopy accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierIDMS];
   if (v7)
   {
-    [v5 accountsWithAccountType:v7];
+    [storeCopy accountsWithAccountType:v7];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
@@ -550,7 +550,7 @@ LABEL_11:
           }
 
           v12 = *(*(&v14 + 1) + 8 * i);
-          if ([COSAppleIDUtilities checkIfAccount:v12 isForSameAppleIDAsAccount:v6, v14])
+          if ([COSAppleIDUtilities checkIfAccount:v12 isForSameAppleIDAsAccount:accountCopy, v14])
           {
             v9 = v12;
             goto LABEL_12;
@@ -642,9 +642,9 @@ LABEL_12:
 
 - (BOOL)isCurrentAccountiTunesAccount
 {
-  v2 = [(ACAccount *)self->_account accountType];
-  v3 = [v2 identifier];
-  v4 = [v3 isEqualToString:ACAccountTypeIdentifieriTunesStore];
+  accountType = [(ACAccount *)self->_account accountType];
+  identifier = [accountType identifier];
+  v4 = [identifier isEqualToString:ACAccountTypeIdentifieriTunesStore];
 
   return v4;
 }
@@ -662,25 +662,25 @@ LABEL_12:
 {
   v3 = objc_opt_new();
   v4 = +[AKDevice currentDevice];
-  v5 = [v4 serverFriendlyDescription];
+  serverFriendlyDescription = [v4 serverFriendlyDescription];
 
-  if (v5)
+  if (serverFriendlyDescription)
   {
-    [v3 setObject:v5 forKeyedSubscript:kAASaveOptionCompanionDeviceClientInfoKey];
+    [v3 setObject:serverFriendlyDescription forKeyedSubscript:kAASaveOptionCompanionDeviceClientInfoKey];
   }
 
   v6 = +[AKDevice currentDevice];
-  v7 = [v6 uniqueDeviceIdentifier];
+  uniqueDeviceIdentifier = [v6 uniqueDeviceIdentifier];
 
-  if (v7)
+  if (uniqueDeviceIdentifier)
   {
-    [v3 setObject:v7 forKeyedSubscript:kAASaveOptionCompanionDeviceUDIDKey];
+    [v3 setObject:uniqueDeviceIdentifier forKeyedSubscript:kAASaveOptionCompanionDeviceUDIDKey];
   }
 
   if ([(COSAppleIDAuthController *)self isCurrentAccountiTunesAccount])
   {
-    v8 = [objc_opt_class() amsSaveOptions];
-    [v3 addEntriesFromDictionary:v8];
+    amsSaveOptions = [objc_opt_class() amsSaveOptions];
+    [v3 addEntriesFromDictionary:amsSaveOptions];
   }
 
   return v3;
@@ -688,17 +688,17 @@ LABEL_12:
 
 - (void)saveAccountToPairedDevice
 {
-  v5 = [(COSAppleIDAuthController *)self companionSaveOptions];
+  companionSaveOptions = [(COSAppleIDAuthController *)self companionSaveOptions];
   account = self->_account;
   v4 = [[ACAccountCredential alloc] initWithPassword:0];
   [(ACAccount *)account setCredential:v4];
 
-  [(COSAppleIDAuthController *)self saveAccountToPairedDeviceWithOptions:v5];
+  [(COSAppleIDAuthController *)self saveAccountToPairedDeviceWithOptions:companionSaveOptions];
 }
 
-- (void)saveAccountToPairedDeviceWithOptions:(id)a3
+- (void)saveAccountToPairedDeviceWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   objc_initWeak(&location, self);
   v5 = pbb_accountsignin_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -710,7 +710,7 @@ LABEL_12:
     v18 = 2112;
     v19 = accountStore;
     v20 = 2112;
-    v21 = v4;
+    v21 = optionsCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Saving account (%@) to paired device with account store: (%@) and options: (%@)", buf, 0x20u);
   }
 
@@ -724,23 +724,23 @@ LABEL_12:
   v11 = v8;
   v13 = v11;
   objc_copyWeak(&v14, &location);
-  [(ACAccountStore *)v9 saveAccount:v10 toPairedDeviceWithOptions:v4 completion:v12];
+  [(ACAccountStore *)v9 saveAccount:v10 toPairedDeviceWithOptions:optionsCopy completion:v12];
   objc_destroyWeak(&v14);
 
   objc_destroyWeak(&location);
 }
 
-- (void)savedAccountToPairedDeviceWithSuccess:(BOOL)a3 error:(id)a4
+- (void)savedAccountToPairedDeviceWithSuccess:(BOOL)success error:(id)error
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = v6;
+  successCopy = success;
+  errorCopy = error;
+  v7 = errorCopy;
   if (self->_didComplete)
   {
     goto LABEL_23;
   }
 
-  if (v4)
+  if (successCopy)
   {
     v8 = pbb_accountsignin_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -749,7 +749,7 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Successfully signed-in.", &v23, 2u);
     }
 
-    v9 = self;
+    selfCopy2 = self;
     v10 = 1;
     v11 = 0;
     goto LABEL_22;
@@ -765,16 +765,16 @@ LABEL_12:
 
 LABEL_21:
 
-    v9 = self;
+    selfCopy2 = self;
     v10 = 0;
     v11 = v7;
 LABEL_22:
-    [(COSAppleIDAuthController *)v9 reportSignInCompletionWithSuccess:v10 error:v11];
+    [(COSAppleIDAuthController *)selfCopy2 reportSignInCompletionWithSuccess:v10 error:v11];
     goto LABEL_23;
   }
 
-  v13 = [v6 domain];
-  if (![v13 isEqualToString:@"com.apple.appleaccount"])
+  domain = [errorCopy domain];
+  if (![domain isEqualToString:@"com.apple.appleaccount"])
   {
 
 LABEL_19:
@@ -787,17 +787,17 @@ LABEL_19:
     goto LABEL_21;
   }
 
-  v14 = [v7 code];
+  code = [v7 code];
 
-  if (v14 != -7)
+  if (code != -7)
   {
     goto LABEL_19;
   }
 
   if (self->_hasStartedFallbackFlow)
   {
-    v15 = [v7 userInfo];
-    v16 = [v15 objectForKeyedSubscript:kAAErrorDetailsProxiedDeviceDataKey];
+    userInfo = [v7 userInfo];
+    v16 = [userInfo objectForKeyedSubscript:kAAErrorDetailsProxiedDeviceDataKey];
     v17 = v16;
     if (v16)
     {
@@ -839,8 +839,8 @@ LABEL_19:
       sub_10018A6C0();
     }
 
-    v15 = sub_1000FF37C(0, v7);
-    [(COSAppleIDAuthController *)self reportSignInCompletionWithSuccess:0 error:v15];
+    userInfo = sub_1000FF37C(0, v7);
+    [(COSAppleIDAuthController *)self reportSignInCompletionWithSuccess:0 error:userInfo];
   }
 
 LABEL_23:
@@ -873,13 +873,13 @@ LABEL_23:
     [v3 setPresentingViewController:v7];
 
 LABEL_6:
-    v9 = [(ACAccount *)self->_account username];
-    [v3 setUsername:v9];
+    username = [(ACAccount *)self->_account username];
+    [v3 setUsername:username];
 
     [v3 setPassword:self->_password];
     [v3 setIsUsernameEditable:0];
-    v10 = [(COSAppleIDAuthController *)self httpHeadersForRemoteAuthUI];
-    [v3 setHttpHeadersForRemoteUI:v10];
+    httpHeadersForRemoteAuthUI = [(COSAppleIDAuthController *)self httpHeadersForRemoteAuthUI];
+    [v3 setHttpHeadersForRemoteUI:httpHeadersForRemoteAuthUI];
 
     [v3 setProxiedDevice:self->_proxiedDevice];
     [v3 setNeedsCredentialRecovery:self->_needsCredentialRecovery];
@@ -910,16 +910,16 @@ LABEL_6:
   }
 }
 
-- (void)authenticatedWithResults:(id)a3 error:(id)a4
+- (void)authenticatedWithResults:(id)results error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  resultsCopy = results;
+  errorCopy = error;
   if (!self->_didComplete)
   {
     authController = self->_authController;
     self->_authController = 0;
 
-    if (v7)
+    if (errorCopy)
     {
       v9 = pbb_accountsignin_log();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -927,13 +927,13 @@ LABEL_6:
         sub_10018A730();
       }
 
-      [(COSAppleIDAuthController *)self reportSignInCompletionWithSuccess:0 error:v7];
+      [(COSAppleIDAuthController *)self reportSignInCompletionWithSuccess:0 error:errorCopy];
     }
 
     else
     {
-      v10 = [v6 objectForKeyedSubscript:AKAuthenticationRawPasswordKey];
-      v11 = [v6 objectForKeyedSubscript:AKAuthenticationIDMSTokenKey];
+      v10 = [resultsCopy objectForKeyedSubscript:AKAuthenticationRawPasswordKey];
+      v11 = [resultsCopy objectForKeyedSubscript:AKAuthenticationIDMSTokenKey];
       v12 = [v11 objectForKeyedSubscript:AKPasswordlessTokenKey];
       if ([v12 length] && _os_feature_enabled_impl())
       {
@@ -962,14 +962,14 @@ LABEL_6:
 
           objc_initWeak(buf, self);
           v17 = objc_opt_class();
-          v18 = [(ACAccount *)self->_account identifier];
+          identifier = [(ACAccount *)self->_account identifier];
           v20[0] = _NSConcreteStackBlock;
           v20[1] = 3221225472;
           v20[2] = sub_100100974;
           v20[3] = &unk_100268458;
           objc_copyWeak(&v22, buf);
           v21 = v10;
-          [v17 saveVerifiedRawPassword:v21 forAccountIdentifier:v18 withCompletionHandler:v20];
+          [v17 saveVerifiedRawPassword:v21 forAccountIdentifier:identifier withCompletionHandler:v20];
 
           objc_destroyWeak(&v22);
           objc_destroyWeak(buf);
@@ -991,30 +991,30 @@ LABEL_6:
   }
 }
 
-+ (void)saveVerifiedRawPassword:(id)a3 forAccountIdentifier:(id)a4 withCompletionHandler:(id)a5
++ (void)saveVerifiedRawPassword:(id)password forAccountIdentifier:(id)identifier withCompletionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  passwordCopy = password;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v10 = pbb_accountsignin_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = v8;
+    v18 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Saving verified account locally for account identifier (%@)", buf, 0xCu);
   }
 
   v11 = objc_alloc_init(ACAccountStore);
-  v12 = [v11 accountWithIdentifier:v8];
+  v12 = [v11 accountWithIdentifier:identifierCopy];
   v13 = v12;
   if (v12)
   {
-    [v12 _aa_setRawPassword:v7];
+    [v12 _aa_setRawPassword:passwordCopy];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_100100C64;
     v15[3] = &unk_100268E98;
-    v16 = v9;
+    v16 = handlerCopy;
     [v11 saveVerifiedAccount:v13 withCompletionHandler:v15];
   }
 
@@ -1024,30 +1024,30 @@ LABEL_6:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR) && os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v18 = v8;
+      v18 = identifierCopy;
       v19 = 2112;
       v20 = v11;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Could not find account with identifier (%@) in account store (%@)", buf, 0x16u);
     }
 
-    if (v9)
+    if (handlerCopy)
     {
-      v9[2](v9);
+      handlerCopy[2](handlerCopy);
     }
   }
 }
 
-- (void)saveAccountToPairedDeviceWithRawPassword:(id)a3
+- (void)saveAccountToPairedDeviceWithRawPassword:(id)password
 {
-  v4 = a3;
-  v5 = [(ACAccount *)self->_account accountType];
-  v6 = [v5 identifier];
+  passwordCopy = password;
+  accountType = [(ACAccount *)self->_account accountType];
+  identifier = [accountType identifier];
 
   v7 = pbb_accountsignin_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138412290;
-    v19 = v6;
+    v19 = identifier;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Save Account of type identifier: %@", &v18, 0xCu);
   }
 
@@ -1064,17 +1064,17 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Supports iTunes PET? %@", &v18, 0xCu);
   }
 
-  if (v10 && [v6 isEqualToString:ACAccountTypeIdentifieriTunesStore])
+  if (v10 && [identifier isEqualToString:ACAccountTypeIdentifieriTunesStore])
   {
     v13 = [[ACAccountCredential alloc] initWithPassword:0];
     [(ACAccount *)self->_account setCredential:v13];
-    [v13 setCredentialItem:v4 forKey:ACRawPasswordKey];
+    [v13 setCredentialItem:passwordCopy forKey:ACRawPasswordKey];
   }
 
   else
   {
     account = self->_account;
-    v13 = [ACAccountCredential credentialWithPassword:v4];
+    v13 = [ACAccountCredential credentialWithPassword:passwordCopy];
     [(ACAccount *)account setCredential:v13];
   }
 
@@ -1098,9 +1098,9 @@ LABEL_6:
   self->_watchSignInErrorResult = 0;
 }
 
-- (void)saveAccountToPairedDeviceForPLTAuthWithTokens:(id)a3
+- (void)saveAccountToPairedDeviceForPLTAuthWithTokens:(id)tokens
 {
-  v4 = [(COSAppleIDAuthController *)self optionsForPLTAuthWithTokens:a3];
+  v4 = [(COSAppleIDAuthController *)self optionsForPLTAuthWithTokens:tokens];
   v5 = [v4 objectForKeyedSubscript:kAASaveOptionPasswordlessTokenKey];
   if (v5)
   {
@@ -1189,12 +1189,12 @@ LABEL_6:
   }
 }
 
-- (id)optionsForPLTAuthWithTokens:(id)a3
+- (id)optionsForPLTAuthWithTokens:(id)tokens
 {
-  v3 = a3;
+  tokensCopy = tokens;
   v4 = objc_opt_new();
-  v5 = [v3 objectForKeyedSubscript:AKPasswordlessTokenKey];
-  v6 = [v3 objectForKeyedSubscript:AKIdmsDataTokenKey];
+  v5 = [tokensCopy objectForKeyedSubscript:AKPasswordlessTokenKey];
+  v6 = [tokensCopy objectForKeyedSubscript:AKIdmsDataTokenKey];
 
   if (v5 && [v5 length])
   {
@@ -1242,11 +1242,11 @@ LABEL_6:
   return v4;
 }
 
-- (void)reportSignInCompletionWithSuccess:(BOOL)a3 error:(id)a4
+- (void)reportSignInCompletionWithSuccess:(BOOL)success error:(id)error
 {
-  v4 = a3;
+  successCopy = success;
   self->_didComplete = 1;
-  v6 = a4;
+  errorCopy = error;
   [(COSAppleIDAuthController *)self cancelSignInTimer];
   authController = self->_authController;
   if (authController)
@@ -1258,17 +1258,17 @@ LABEL_6:
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v11 = WeakRetained;
-  if (v4)
+  if (successCopy)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = v6;
+    v10 = errorCopy;
   }
 
-  [WeakRetained appleIDAuthController:self didSignInWithSuccess:v4 error:v10];
+  [WeakRetained appleIDAuthController:self didSignInWithSuccess:successCopy error:v10];
 }
 
 - (void)_resetTermsInformation
@@ -1280,9 +1280,9 @@ LABEL_6:
   self->_acceptedTermsInfo = 0;
 }
 
-- (void)startSatelliteSigninWithProgressCompletion:(id)a3
+- (void)startSatelliteSigninWithProgressCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(COSAppleIDAuthController *)self _resetTermsInformation];
   self->_satelliteSignInStatus = 0;
   satelliteSignInDetailedError = self->_satelliteSignInDetailedError;
@@ -1291,16 +1291,16 @@ LABEL_6:
   satelliteSignInErrorDescription = self->_satelliteSignInErrorDescription;
   self->_satelliteSignInErrorDescription = 0;
 
-  v7 = objc_retainBlock(v4);
+  v7 = objc_retainBlock(completionCopy);
   satelliteSignInCompletion = self->_satelliteSignInCompletion;
   self->_satelliteSignInCompletion = v7;
 
   [(COSAppleIDAuthController *)self _resumeSatelliteSignin];
 }
 
-- (void)waitForSatelliteSigninWithProgressCompletion:(id)a3
+- (void)waitForSatelliteSigninWithProgressCompletion:(id)completion
 {
-  v4 = objc_retainBlock(a3);
+  v4 = objc_retainBlock(completion);
   satelliteSignInCompletion = self->_satelliteSignInCompletion;
   self->_satelliteSignInCompletion = v4;
 
@@ -1331,12 +1331,12 @@ LABEL_6:
   v6 = +[NRPairedDeviceRegistry sharedInstance];
   v7 = +[NRPairedDeviceRegistry activeDeviceSelectorBlock];
   v8 = [v6 getAllDevicesWithArchivedAltAccountDevicesMatching:v7];
-  v9 = [v8 firstObject];
+  firstObject = [v8 firstObject];
 
-  if (v9)
+  if (firstObject)
   {
     v10 = +[NRPairedDeviceRegistry sharedInstance];
-    [v10 pairingClientSetAltAccountName:v3 altDSID:v5 forDevice:v9 completion:&stru_10026BDD0];
+    [v10 pairingClientSetAltAccountName:v3 altDSID:v5 forDevice:firstObject completion:&stru_10026BDD0];
   }
 
   else
@@ -1349,23 +1349,23 @@ LABEL_6:
   }
 
   v11 = +[UIApplication sharedApplication];
-  v12 = [v11 setupController];
+  setupController = [v11 setupController];
 
   v13 = objc_opt_new();
   [v13 setUsername:v3];
   [v13 setPassword:v4];
   [v13 setAcceptedTermsInfo:self->_acceptedTermsInfo];
-  v14 = [v12 pairingParentFamilyMember];
-  v15 = [v14 appleID];
-  [v13 setPairingParentUsername:v15];
+  pairingParentFamilyMember = [setupController pairingParentFamilyMember];
+  appleID = [pairingParentFamilyMember appleID];
+  [v13 setPairingParentUsername:appleID];
 
-  v16 = [v12 pairingParentFamilyMember];
-  v17 = [v16 altDSID];
-  [v13 setPairingParentAltDSID:v17];
+  pairingParentFamilyMember2 = [setupController pairingParentFamilyMember];
+  altDSID = [pairingParentFamilyMember2 altDSID];
+  [v13 setPairingParentAltDSID:altDSID];
 
   objc_initWeak(&location, self);
   v18 = +[UIApplication sharedApplication];
-  v19 = [v18 bridgeController];
+  bridgeController = [v18 bridgeController];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_100101B94;
@@ -1373,21 +1373,21 @@ LABEL_6:
   objc_copyWeak(&v24, &location);
   v20 = v21;
   v23 = v20;
-  [v19 sendTinkerAccountCredentialsWithContext:v13 completion:v22];
+  [bridgeController sendTinkerAccountCredentialsWithContext:v13 completion:v22];
 
   objc_destroyWeak(&v24);
   objc_destroyWeak(&location);
 }
 
-- (void)presentTermsWithCachedAuthResultsForDSID:(id)a3
+- (void)presentTermsWithCachedAuthResultsForDSID:(id)d
 {
   v4 = UIApp;
-  v5 = a3;
-  v6 = [v4 setupController];
-  v12 = [v6 navigationController];
+  dCopy = d;
+  setupController = [v4 setupController];
+  navigationController = [setupController navigationController];
 
   v7 = [(NSDictionary *)self->_authenticationResults mutableCopy];
-  [v7 setObject:v5 forKeyedSubscript:AKAuthenticationDSIDKey];
+  [v7 setObject:dCopy forKeyedSubscript:AKAuthenticationDSIDKey];
 
   v8 = [[AAUIProxiedTermsRemoteUI alloc] initWithAuthResults:v7 proxiedDevice:self->_proxiedDevice appProvidedContext:@"tinker"];
   proxiedTermsRemoteUI = self->_proxiedTermsRemoteUI;
@@ -1395,13 +1395,13 @@ LABEL_6:
 
   [(AAUIProxiedTermsRemoteUI *)self->_proxiedTermsRemoteUI setDelegate:self];
   v10 = self->_proxiedTermsRemoteUI;
-  v11 = [v12 topViewController];
-  [(AAUIProxiedTermsRemoteUI *)v10 presentFromViewController:v11 modal:1];
+  topViewController = [navigationController topViewController];
+  [(AAUIProxiedTermsRemoteUI *)v10 presentFromViewController:topViewController modal:1];
 }
 
-- (void)repairGuardianAccount:(id)a3
+- (void)repairGuardianAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = pbb_accountsignin_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1415,18 +1415,18 @@ LABEL_6:
   v25[2] = sub_100102364;
   v25[3] = &unk_10026BD88;
   v25[4] = self;
-  v6 = v4;
+  v6 = accountCopy;
   v26 = v6;
   v7 = objc_retainBlock(v25);
   v8 = [CDPStateController alloc];
   v9 = +[CDPAccount sharedInstance];
-  v10 = [v9 contextForPrimaryAccount];
-  v11 = [v8 initWithContext:v10];
+  contextForPrimaryAccount = [v9 contextForPrimaryAccount];
+  v11 = [v8 initWithContext:contextForPrimaryAccount];
 
   v24 = 0;
-  LOBYTE(v10) = [v11 isManateeAvailable:&v24];
+  LOBYTE(contextForPrimaryAccount) = [v11 isManateeAvailable:&v24];
   v12 = v24;
-  if (v10)
+  if (contextForPrimaryAccount)
   {
     v13 = pbb_accountsignin_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -1443,8 +1443,8 @@ LABEL_6:
   {
     v14 = [CDPUIDeviceToDeviceEncryptionFlowContext alloc];
     v15 = +[CDPAccount sharedInstance];
-    v16 = [v15 primaryAccountAltDSID];
-    v17 = [v14 initWithAltDSID:v16];
+    primaryAccountAltDSID = [v15 primaryAccountAltDSID];
+    v17 = [v14 initWithAltDSID:primaryAccountAltDSID];
 
     v18 = +[NSBundle mainBundle];
     v19 = [v18 localizedStringForKey:@"GUARDIAN_ACCOUNT_REPAIR_FEATURE_NAME" value:&stru_10026E598 table:@"Localizable-tinker"];
@@ -1479,15 +1479,15 @@ LABEL_6:
   [v3 setDelegate:self];
   [v3 setAppProvidedContext:@"tinker"];
   v5 = +[CDPAccount sharedInstance];
-  v6 = [v5 primaryAccountAltDSID];
-  [v3 setAltDSID:v6];
+  primaryAccountAltDSID = [v5 primaryAccountAltDSID];
+  [v3 setAltDSID:primaryAccountAltDSID];
 
   return v3;
 }
 
-- (void)startAccountActionWithContext:(id)a3
+- (void)startAccountActionWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_alloc_init(AKAppleIDAuthenticationController);
   AKAppleIDAuthController = self->_AKAppleIDAuthController;
   self->_AKAppleIDAuthController = v5;
@@ -1498,12 +1498,12 @@ LABEL_6:
   v8[2] = sub_10010270C;
   v8[3] = &unk_10026BE48;
   v8[4] = self;
-  [(AKAppleIDAuthenticationController *)v7 authenticateWithContext:v4 completion:v8];
+  [(AKAppleIDAuthenticationController *)v7 authenticateWithContext:contextCopy completion:v8];
 }
 
-- (void)reauthFamilyCircleByExistingAuthenticationResultsWithCompletion:(id)a3
+- (void)reauthFamilyCircleByExistingAuthenticationResultsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = self->_authenticationResults;
   v6 = [(NSDictionary *)v5 objectForKeyedSubscript:AKAuthenticationRawPasswordKey];
   if (v6)
@@ -1629,7 +1629,7 @@ LABEL_6:
     v36 = v5;
     v12 = v34;
     v37 = v12;
-    v38 = v4;
+    v38 = completionCopy;
     [(FACircleStateController *)v33 performWithContext:v20 completion:v35];
 
     objc_destroyWeak(&v39);
@@ -1645,8 +1645,8 @@ LABEL_6:
 - (id)tinkerFamilyMemberFromAuthenticationResultsForInternalUseByUpdatingtinkerSignInID
 {
   v3 = [(NSDictionary *)self->_authenticationResults objectForKeyedSubscript:AKAuthenticationUsernameKey];
-  v4 = [UIApp setupController];
-  [v4 setTinkerSignInId:v3];
+  setupController = [UIApp setupController];
+  [setupController setTinkerSignInId:v3];
 
   v5 = objc_alloc_init(NSMutableDictionary);
   [v5 setObject:v3 forKeyedSubscript:@"member-apple-id"];
@@ -1679,9 +1679,9 @@ LABEL_6:
   return v11;
 }
 
-- (void)signInViewController:(id)a3 didCompleteWithAuthenticationResults:(id)a4
+- (void)signInViewController:(id)controller didCompleteWithAuthenticationResults:(id)results
 {
-  v5 = a4;
+  resultsCopy = results;
   v6 = pbb_accountsignin_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -1690,7 +1690,7 @@ LABEL_6:
   }
 
   authenticationResults = self->_authenticationResults;
-  self->_authenticationResults = v5;
+  self->_authenticationResults = resultsCopy;
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained appleIDAuthController:self didSignInWithSuccess:1 error:0];
@@ -1714,7 +1714,7 @@ LABEL_6:
     }
 
     v8 = objc_loadWeakRetained(&self->_delegate);
-    v9 = [v8 authenticationContext];
+    authenticationContext = [v8 authenticationContext];
   }
 
   else
@@ -1727,13 +1727,13 @@ LABEL_6:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Delegate does not respond to authenticationContext: %@", &v12, 0xCu);
     }
 
-    v9 = [(COSAppleIDAuthController *)self baseAppContext];
+    authenticationContext = [(COSAppleIDAuthController *)self baseAppContext];
   }
 
-  return v9;
+  return authenticationContext;
 }
 
-- (void)contextDidPresentLoginAlertController:(id)a3
+- (void)contextDidPresentLoginAlertController:(id)controller
 {
   v3 = pbb_accountsignin_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -1744,7 +1744,7 @@ LABEL_6:
   }
 }
 
-- (void)contextWillDismissLoginAlertController:(id)a3
+- (void)contextWillDismissLoginAlertController:(id)controller
 {
   v3 = pbb_accountsignin_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -1755,7 +1755,7 @@ LABEL_6:
   }
 }
 
-- (void)contextDidDismissLoginAlertController:(id)a3
+- (void)contextDidDismissLoginAlertController:(id)controller
 {
   v3 = pbb_accountsignin_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -1766,7 +1766,7 @@ LABEL_6:
   }
 }
 
-- (void)contextWillBeginPresentingSecondaryUI:(id)a3
+- (void)contextWillBeginPresentingSecondaryUI:(id)i
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -1786,7 +1786,7 @@ LABEL_6:
   }
 }
 
-- (void)contextDidEndPresentingSecondaryUI:(id)a3
+- (void)contextDidEndPresentingSecondaryUI:(id)i
 {
   v3 = pbb_accountsignin_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -1804,26 +1804,26 @@ LABEL_6:
   return v2;
 }
 
-- (void)willPresentModalNavigationController:(id)a3
+- (void)willPresentModalNavigationController:(id)controller
 {
-  v3 = [a3 navigationBar];
+  navigationBar = [controller navigationBar];
   BPSApplyStyleToNavBar();
 }
 
-- (void)genericTermsRemoteUI:(id)a3 didFinishWithSuccess:(BOOL)a4
+- (void)genericTermsRemoteUI:(id)i didFinishWithSuccess:(BOOL)success
 {
-  v4 = a4;
+  successCopy = success;
   v6 = pbb_accountsignin_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315394;
     v10 = "[COSAppleIDAuthController genericTermsRemoteUI:didFinishWithSuccess:]";
     v11 = 1024;
-    v12 = v4;
+    v12 = successCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s success: %d", &v9, 0x12u);
   }
 
-  if (v4)
+  if (successCopy)
   {
     [(COSAppleIDAuthController *)self _resumeSatelliteSignin];
   }
@@ -1836,20 +1836,20 @@ LABEL_6:
   }
 }
 
-- (void)genericTermsRemoteUI:(id)a3 acceptedTermsInfo:(id)a4
+- (void)genericTermsRemoteUI:(id)i acceptedTermsInfo:(id)info
 {
-  v5 = a4;
+  infoCopy = info;
   v6 = pbb_accountsignin_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315394;
     v10 = "[COSAppleIDAuthController genericTermsRemoteUI:acceptedTermsInfo:]";
     v11 = 2114;
-    v12 = v5;
+    v12 = infoCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s terms info: %{public}@", &v9, 0x16u);
   }
 
-  v7 = [v5 copy];
+  v7 = [infoCopy copy];
   acceptedTermsInfo = self->_acceptedTermsInfo;
   self->_acceptedTermsInfo = v7;
 }

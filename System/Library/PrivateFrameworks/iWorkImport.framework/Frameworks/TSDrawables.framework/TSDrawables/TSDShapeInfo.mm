@@ -16,52 +16,52 @@
 - (BOOL)p_isLineForPastedStyleProperties;
 - (BOOL)pathIsOpen;
 - (BOOL)shouldBeIgnoredWhenCopying;
-- (BOOL)shouldFlipLineEndsForStyle:(id)a3 isStyleTailEndOnLeft:(int)a4;
+- (BOOL)shouldFlipLineEndsForStyle:(id)style isStyleTailEndOnLeft:(int)left;
 - (BOOL)shouldRemovePastedLineEndStyleProperties;
 - (BOOL)supportsHyperlinks;
-- (CGSize)targetSizeForImageData:(id)a3 associatedHint:(id)a4;
+- (CGSize)targetSizeForImageData:(id)data associatedHint:(id)hint;
 - (TSDFill)fill;
 - (TSDLineEnd)headLineEnd;
 - (TSDLineEnd)tailLineEnd;
-- (TSDShapeInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5;
-- (TSDShapeInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5 pathSource:(id)a6;
+- (TSDShapeInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style;
+- (TSDShapeInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style pathSource:(id)source;
 - (id)animationFilters;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (id)objectForProperty:(int)a3;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (id)objectForProperty:(int)property;
 - (id)p_nameFromPathSource;
 - (id)p_shapeLibraryUserDefinedName;
-- (id)pastedPropertyMapForStyle:(id)a3 tailLineEndInfo:(int)a4;
+- (id)pastedPropertyMapForStyle:(id)style tailLineEndInfo:(int)info;
 - (id)typeName;
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
 - (void)p_correctLineSegmentGeometry;
 - (void)p_correctNearZeroWidthLines;
-- (void)p_recoverFromMissingStyleDuringUnarchivingIfNeededFromVersion:(unint64_t)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
-- (void)setFill:(id)a3;
-- (void)setHeadLineEnd:(id)a3;
-- (void)setPathSource:(id)a3;
-- (void)setStyle:(id)a3;
-- (void)setTailLineEnd:(id)a3;
-- (void)setValuesForProperties:(id)a3;
+- (void)p_recoverFromMissingStyleDuringUnarchivingIfNeededFromVersion:(unint64_t)version;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setFill:(id)fill;
+- (void)setHeadLineEnd:(id)end;
+- (void)setPathSource:(id)source;
+- (void)setStyle:(id)style;
+- (void)setTailLineEnd:(id)end;
+- (void)setValuesForProperties:(id)properties;
 @end
 
 @implementation TSDShapeInfo
 
-- (TSDShapeInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5 pathSource:(id)a6
+- (TSDShapeInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style pathSource:(id)source
 {
-  v10 = a5;
-  v11 = a6;
+  styleCopy = style;
+  sourceCopy = source;
   v34.receiver = self;
   v34.super_class = TSDShapeInfo;
-  v13 = [(TSDDrawableInfo *)&v34 initWithContext:a3 geometry:a4];
+  v13 = [(TSDDrawableInfo *)&v34 initWithContext:context geometry:geometry];
   if (v13)
   {
-    if (v10)
+    if (styleCopy)
     {
-      if (v11)
+      if (sourceCopy)
       {
 LABEL_4:
         v30[0] = MEMORY[0x277D85DD0];
@@ -69,8 +69,8 @@ LABEL_4:
         v30[2] = sub_2766702F0;
         v30[3] = &unk_27A6CC6F0;
         v31 = v13;
-        v32 = v10;
-        v33 = v11;
+        v32 = styleCopy;
+        v33 = sourceCopy;
         objc_msgSend_performBlockIgnoringModifications_(v31, v14, v30);
 
         goto LABEL_5;
@@ -85,7 +85,7 @@ LABEL_4:
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v16, v20, v17, v19, 96, 0, "invalid nil value for '%{public}s'", "style");
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v21, v22);
-      if (v11)
+      if (sourceCopy)
       {
         goto LABEL_4;
       }
@@ -105,14 +105,14 @@ LABEL_5:
   return v13;
 }
 
-- (TSDShapeInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5
+- (TSDShapeInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  objc_msgSend_size(v9, v11, v12);
+  styleCopy = style;
+  geometryCopy = geometry;
+  contextCopy = context;
+  objc_msgSend_size(geometryCopy, v11, v12);
   v15 = objc_msgSend_rectangleWithNaturalSize_(TSDScalarPathSource, v13, v14);
-  v17 = objc_msgSend_initWithContext_geometry_style_pathSource_(self, v16, v10, v9, v8, v15);
+  v17 = objc_msgSend_initWithContext_geometry_style_pathSource_(self, v16, contextCopy, geometryCopy, styleCopy, v15);
 
   return v17;
 }
@@ -279,15 +279,15 @@ LABEL_5:
   }
 }
 
-- (void)setPathSource:(id)a3
+- (void)setPathSource:(id)source
 {
-  v5 = a3;
-  if (self->mPathSource != v5)
+  sourceCopy = source;
+  if (self->mPathSource != sourceCopy)
   {
-    v7 = v5;
+    v7 = sourceCopy;
     objc_msgSend_willChangeProperty_(self, v6, 527);
-    objc_storeStrong(&self->mPathSource, a3);
-    v5 = v7;
+    objc_storeStrong(&self->mPathSource, source);
+    sourceCopy = v7;
   }
 }
 
@@ -389,21 +389,21 @@ LABEL_18:
 {
   v9.receiver = self;
   v9.super_class = TSDShapeInfo;
-  v3 = [(TSDDrawableInfo *)&v9 canAspectRatioLockBeChangedByUser];
-  if (v3)
+  canAspectRatioLockBeChangedByUser = [(TSDDrawableInfo *)&v9 canAspectRatioLockBeChangedByUser];
+  if (canAspectRatioLockBeChangedByUser)
   {
     if (objc_msgSend_isLine(self, v4, v5))
     {
-      LOBYTE(v3) = objc_msgSend_aspectRatioLocked(self, v6, v7);
+      LOBYTE(canAspectRatioLockBeChangedByUser) = objc_msgSend_aspectRatioLocked(self, v6, v7);
     }
 
     else
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(canAspectRatioLockBeChangedByUser) = 1;
     }
   }
 
-  return v3;
+  return canAspectRatioLockBeChangedByUser;
 }
 
 - (BOOL)allowsParentGroupToBeResizedWithoutAspectRatioLock
@@ -433,19 +433,19 @@ LABEL_18:
   return isKindOfClass & 1;
 }
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
-  v5 = a3;
-  if (self->mStyle != v5)
+  styleCopy = style;
+  if (self->mStyle != styleCopy)
   {
-    v13 = v5;
+    v13 = styleCopy;
     v6 = objc_opt_class();
     v9 = objc_msgSend_properties(v6, v7, v8);
     objc_msgSend_willChangeProperties_(self, v10, v9);
 
     objc_msgSend_willModify(self, v11, v12);
-    objc_storeStrong(&self->mStyle, a3);
-    v5 = v13;
+    objc_storeStrong(&self->mStyle, style);
+    styleCopy = v13;
   }
 }
 
@@ -499,11 +499,11 @@ LABEL_18:
   return isLineSegment;
 }
 
-- (id)pastedPropertyMapForStyle:(id)a3 tailLineEndInfo:(int)a4
+- (id)pastedPropertyMapForStyle:(id)style tailLineEndInfo:(int)info
 {
-  v4 = *&a4;
-  v6 = a3;
-  v9 = objc_msgSend_fullPropertyMap(v6, v7, v8);
+  v4 = *&info;
+  styleCopy = style;
+  v9 = objc_msgSend_fullPropertyMap(styleCopy, v7, v8);
   v12 = objc_msgSend_copy(v9, v10, v11);
 
   if (objc_msgSend_shouldRemovePastedFillStyleProperties(self, v13, v14))
@@ -519,10 +519,10 @@ LABEL_18:
 
     if (hasLineEnds)
     {
-      if (objc_msgSend_shouldFlipLineEndsForStyle_isStyleTailEndOnLeft_(self, v17, v6, v4))
+      if (objc_msgSend_shouldFlipLineEndsForStyle_isStyleTailEndOnLeft_(self, v17, styleCopy, v4))
       {
-        v23 = objc_msgSend_boxedObjectForProperty_(v6, v17, 522);
-        v25 = objc_msgSend_boxedObjectForProperty_(v6, v24, 523);
+        v23 = objc_msgSend_boxedObjectForProperty_(styleCopy, v17, 522);
+        v25 = objc_msgSend_boxedObjectForProperty_(styleCopy, v24, 523);
         objc_msgSend_setObject_forProperty_(v12, v26, v25, 522);
         objc_msgSend_setObject_forProperty_(v12, v27, v23, 523);
       }
@@ -543,7 +543,7 @@ LABEL_18:
   if (objc_msgSend_shouldRemovePastedFrameStrokeStyleProperties(self, v31, v32))
   {
     objc_opt_class();
-    v34 = objc_msgSend_objectForProperty_(v6, v33, 517);
+    v34 = objc_msgSend_objectForProperty_(styleCopy, v33, 517);
     v35 = TSUDynamicCast();
 
     if (v35)
@@ -582,13 +582,13 @@ LABEL_18:
   return v16;
 }
 
-- (void)setHeadLineEnd:(id)a3
+- (void)setHeadLineEnd:(id)end
 {
-  v4 = a3;
-  v10 = v4;
-  if (v4)
+  endCopy = end;
+  v10 = endCopy;
+  if (endCopy)
   {
-    v7 = v4;
+    v7 = endCopy;
   }
 
   else
@@ -627,13 +627,13 @@ LABEL_18:
   return v16;
 }
 
-- (void)setTailLineEnd:(id)a3
+- (void)setTailLineEnd:(id)end
 {
-  v4 = a3;
-  v10 = v4;
-  if (v4)
+  endCopy = end;
+  v10 = endCopy;
+  if (endCopy)
   {
-    v7 = v4;
+    v7 = endCopy;
   }
 
   else
@@ -672,13 +672,13 @@ LABEL_18:
   return v16;
 }
 
-- (void)setFill:(id)a3
+- (void)setFill:(id)fill
 {
-  v4 = a3;
-  v10 = v4;
-  if (v4)
+  fillCopy = fill;
+  v10 = fillCopy;
+  if (fillCopy)
   {
-    v7 = v4;
+    v7 = fillCopy;
   }
 
   else
@@ -690,9 +690,9 @@ LABEL_18:
   objc_msgSend_i_setValue_forProperty_(self, v8, v7, 516);
 }
 
-- (void)setValuesForProperties:(id)a3
+- (void)setValuesForProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v7 = objc_msgSend_style(self, v5, v6);
 
   if (!v7)
@@ -718,13 +718,13 @@ LABEL_18:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v28, v29);
   }
 
-  v30 = objc_msgSend_allProperties(v4, v21, v22);
+  v30 = objc_msgSend_allProperties(propertiesCopy, v21, v22);
   objc_msgSend_willChangeProperties_(self, v31, v30);
 
   v34 = objc_msgSend_documentRoot(self, v32, v33);
   v37 = objc_msgSend_stylesheet(v34, v35, v36);
   v40 = objc_msgSend_style(self, v38, v39);
-  v50 = objc_msgSend_variationOfStyle_propertyMap_(v37, v41, v40, v4);
+  v50 = objc_msgSend_variationOfStyle_propertyMap_(v37, v41, v40, propertiesCopy);
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -758,17 +758,17 @@ LABEL_18:
   return v14;
 }
 
-- (CGSize)targetSizeForImageData:(id)a3 associatedHint:(id)a4
+- (CGSize)targetSizeForImageData:(id)data associatedHint:(id)hint
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  hintCopy = hint;
   objc_opt_class();
   v10 = objc_msgSend_fill(self, v8, v9);
   v11 = TSUDynamicCast();
 
   v14 = objc_msgSend_imageData(v11, v12, v13);
 
-  if (v14 != v6)
+  if (v14 != dataCopy)
   {
     v16 = MEMORY[0x277D81150];
     v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, "[TSDShapeInfo targetSizeForImageData:associatedHint:]");
@@ -865,10 +865,10 @@ LABEL_8:
   return v3;
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  objectCopy = object;
   objc_opt_class();
   v8 = TSUDynamicCast();
 
@@ -884,39 +884,39 @@ LABEL_8:
 
   v18 = objc_msgSend_geometry(self, v9, v10);
   v21 = objc_msgSend_geometry(v8, v19, v20);
-  v23 = objc_msgSend_mixingTypeWithObject_context_(v18, v22, v21, v6);
+  v23 = objc_msgSend_mixingTypeWithObject_context_(v18, v22, v21, contextCopy);
   v24 = TSDMixingTypeBestFromMixingTypes(5, v23);
 
   v27 = objc_msgSend_shapeStyle(self, v25, v26);
   v30 = objc_msgSend_shapeStyle(v8, v28, v29);
-  v31 = TSDMixingTypeWithObjects(v27, v30, v6);
+  v31 = TSDMixingTypeWithObjects(v27, v30, contextCopy);
   v32 = TSDMixingTypeBestFromMixingTypes(v24, v31);
 
   v35 = objc_msgSend_pathSource(self, v33, v34);
   v38 = objc_msgSend_pathSource(v8, v36, v37);
-  v39 = TSDMixingTypeWithObjects(v35, v38, v6);
+  v39 = TSDMixingTypeWithObjects(v35, v38, contextCopy);
 
   v40 = TSDMixingTypeBestFromMixingTypes(v32, v39);
   return v40;
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
-  v6 = a4;
+  objectCopy = object;
   objc_opt_class();
   v7 = TSUDynamicCast();
 
   v10 = objc_msgSend_geometry(self, v8, v9);
   v13 = objc_msgSend_geometry(v7, v11, v12);
-  v14 = TSDMixingMixedObjectWithFraction(v10, v13, a3);
+  v14 = TSDMixingMixedObjectWithFraction(v10, v13, fraction);
 
   v17 = objc_msgSend_shapeStyle(self, v15, v16);
   v20 = objc_msgSend_shapeStyle(v7, v18, v19);
-  v21 = TSDMixingMixedObjectWithFraction(v17, v20, a3);
+  v21 = TSDMixingMixedObjectWithFraction(v17, v20, fraction);
 
   v24 = objc_msgSend_pathSource(self, v22, v23);
   v27 = objc_msgSend_pathSource(v7, v25, v26);
-  v28 = TSDMixingMixedObjectWithFraction(v24, v27, a3);
+  v28 = TSDMixingMixedObjectWithFraction(v24, v27, fraction);
 
   v29 = [TSDShapeInfo alloc];
   v32 = objc_msgSend_context(self, v30, v31);
@@ -934,18 +934,18 @@ LABEL_8:
   return isOpen;
 }
 
-- (id)objectForProperty:(int)a3
+- (id)objectForProperty:(int)property
 {
-  switch(a3)
+  switch(property)
   {
     case 522:
-      v3 = objc_msgSend_headLineEnd(self, a2, *&a3);
+      v3 = objc_msgSend_headLineEnd(self, a2, *&property);
       break;
     case 523:
-      v3 = objc_msgSend_tailLineEnd(self, a2, *&a3);
+      v3 = objc_msgSend_tailLineEnd(self, a2, *&property);
       break;
     case 527:
-      v3 = objc_msgSend_pathSource(self, a2, *&a3);
+      v3 = objc_msgSend_pathSource(self, a2, *&property);
       break;
     default:
       v5.receiver = self;
@@ -974,15 +974,15 @@ LABEL_8:
   return v2;
 }
 
-- (BOOL)shouldFlipLineEndsForStyle:(id)a3 isStyleTailEndOnLeft:(int)a4
+- (BOOL)shouldFlipLineEndsForStyle:(id)style isStyleTailEndOnLeft:(int)left
 {
-  v6 = a3;
+  styleCopy = style;
   objc_opt_class();
   v9 = objc_msgSend_style(self, v7, v8);
   v10 = TSUDynamicCast();
 
-  v12 = objc_msgSend_boxedObjectForProperty_(v6, v11, 522);
-  v14 = objc_msgSend_boxedObjectForProperty_(v6, v13, 523);
+  v12 = objc_msgSend_boxedObjectForProperty_(styleCopy, v11, 522);
+  v14 = objc_msgSend_boxedObjectForProperty_(styleCopy, v13, 523);
 
   v16 = objc_msgSend_boxedObjectForProperty_(v10, v15, 522);
   v18 = objc_msgSend_boxedObjectForProperty_(v10, v17, 523);
@@ -1013,7 +1013,7 @@ LABEL_8:
     if (isNone & 1 | ((objc_msgSend_isEqual_(v12, v35, v18) & 1) == 0) && v32 & 1 | ((objc_msgSend_isEqual_(v14, v36, v16) & 1) == 0))
     {
       isTailEndOnLeftFromTemporaryLayoutForPasteboard = objc_msgSend_isTailEndOnLeftFromTemporaryLayoutForPasteboard(self, v37, v38);
-      if (a4 == 2 && (isNone & v32 & 1) == 0)
+      if (left == 2 && (isNone & v32 & 1) == 0)
       {
         v41 = MEMORY[0x277D81150];
         v42 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v39, "[TSDShapeInfo shouldFlipLineEndsForStyle:isStyleTailEndOnLeft:]");
@@ -1023,7 +1023,7 @@ LABEL_8:
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v46, v47);
       }
 
-      v48 = (a4 == 1) ^ isTailEndOnLeftFromTemporaryLayoutForPasteboard;
+      v48 = (left == 1) ^ isTailEndOnLeftFromTemporaryLayoutForPasteboard;
     }
 
     else
@@ -1091,21 +1091,21 @@ LABEL_8:
   return v17;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v7 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithDescriptor_(v7, v4, off_2812F5188[80]);
+  v5 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812F5188[80]);
 
-  objc_msgSend_loadFromArchive_unarchiver_(self, v6, v5, v7);
+  objc_msgSend_loadFromArchive_unarchiver_(self, v6, v5, unarchiverCopy);
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  if (*(a3 + 3))
+  unarchiverCopy = unarchiver;
+  if (*(archive + 3))
   {
-    v7 = *(a3 + 3);
+    v7 = *(archive + 3);
   }
 
   else
@@ -1115,10 +1115,10 @@ LABEL_8:
 
   v39.receiver = self;
   v39.super_class = TSDShapeInfo;
-  [(TSDDrawableInfo *)&v39 loadFromArchive:v7 unarchiver:v6];
-  if (*(a3 + 5))
+  [(TSDDrawableInfo *)&v39 loadFromArchive:v7 unarchiver:unarchiverCopy];
+  if (*(archive + 5))
   {
-    objc_msgSend_pathSourceWithArchive_(TSDPathSource, v8, *(a3 + 5));
+    objc_msgSend_pathSourceWithArchive_(TSDPathSource, v8, *(archive + 5));
   }
 
   else
@@ -1129,13 +1129,13 @@ LABEL_8:
   mPathSource = self->mPathSource;
   self->mPathSource = v9;
 
-  v13 = objc_msgSend_fileFormatVersion(v6, v11, v12);
+  v13 = objc_msgSend_fileFormatVersion(unarchiverCopy, v11, v12);
   v16 = v13;
   if (v13 < *MEMORY[0x277D80990] || v13 >= *MEMORY[0x277D80998])
   {
-    if ((*(a3 + 16) & 0x20) != 0)
+    if ((*(archive + 16) & 0x20) != 0)
     {
-      objc_msgSend_setStrokePatternOffsetDistance_(self, v14, v15, *(a3 + 16));
+      objc_msgSend_setStrokePatternOffsetDistance_(self, v14, v15, *(archive + 16));
     }
   }
 
@@ -1146,16 +1146,16 @@ LABEL_8:
     v38[2] = sub_27667A0DC;
     v38[3] = &unk_27A6CC790;
     v38[4] = self;
-    objc_msgSend_addFinalizeHandler_(v6, v14, v38);
+    objc_msgSend_addFinalizeHandler_(unarchiverCopy, v14, v38);
   }
 
-  v18 = *(a3 + 4);
+  v18 = *(archive + 4);
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
   v37[2] = sub_27667A198;
   v37[3] = &unk_27A6CC7B8;
   v37[4] = self;
-  v19 = v6;
+  v19 = unarchiverCopy;
   v21 = objc_opt_class();
   if (v18)
   {
@@ -1174,9 +1174,9 @@ LABEL_8:
   v36[4] = self;
   v36[5] = v16;
   objc_msgSend_addFinalizeHandler_(v19, v22, v36);
-  if ((*(a3 + 16) & 8) != 0)
+  if ((*(archive + 16) & 8) != 0)
   {
-    v25 = objc_msgSend_instanceWithArchive_unarchiver_(TSDLineEnd, v23, *(a3 + 6), v19);
+    v25 = objc_msgSend_instanceWithArchive_unarchiver_(TSDLineEnd, v23, *(archive + 6), v19);
   }
 
   else
@@ -1184,9 +1184,9 @@ LABEL_8:
     v25 = 0;
   }
 
-  if ((*(a3 + 16) & 0x10) != 0)
+  if ((*(archive + 16) & 0x10) != 0)
   {
-    v26 = objc_msgSend_instanceWithArchive_unarchiver_(TSDLineEnd, v23, *(a3 + 7), v19);
+    v26 = objc_msgSend_instanceWithArchive_unarchiver_(TSDLineEnd, v23, *(archive + 7), v19);
   }
 
   else
@@ -1219,7 +1219,7 @@ LABEL_8:
   }
 }
 
-- (void)p_recoverFromMissingStyleDuringUnarchivingIfNeededFromVersion:(unint64_t)a3
+- (void)p_recoverFromMissingStyleDuringUnarchivingIfNeededFromVersion:(unint64_t)version
 {
   if (self->mStyle)
   {
@@ -1321,61 +1321,61 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v7 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithNewFunction_descriptor_(v7, v4, sub_27667B024, off_2812F5188[80]);
+  v5 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_27667B024, off_2812F5188[80]);
 
-  objc_msgSend_saveToArchive_archiver_(self, v6, v5, v7);
+  objc_msgSend_saveToArchive_archiver_(self, v6, v5, archiverCopy);
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
+  archiverCopy = archiver;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = sub_27667AC50;
   v21[3] = &unk_27A6CC520;
-  v24 = a3;
-  v7 = v6;
+  archiveCopy = archive;
+  v7 = archiverCopy;
   v22 = v7;
-  v23 = self;
-  objc_msgSend_pushScopeForField_message_usingBlock_(v7, v8, 1, a3, v21);
+  selfCopy = self;
+  objc_msgSend_pushScopeForField_message_usingBlock_(v7, v8, 1, archive, v21);
   mPathSource = self->mPathSource;
-  *(a3 + 4) |= 4u;
-  v11 = *(a3 + 5);
+  *(archive + 4) |= 4u;
+  v11 = *(archive + 5);
   if (!v11)
   {
-    v12 = *(a3 + 1);
+    v12 = *(archive + 1);
     if (v12)
     {
       v12 = *(v12 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v11 = google::protobuf::Arena::CreateMaybeMessage<TSD::PathSourceArchive>(v12);
-    *(a3 + 5) = v11;
+    *(archive + 5) = v11;
   }
 
   objc_msgSend_saveToArchive_(mPathSource, v9, v11);
   objc_msgSend_strokePatternOffsetDistance(self, v13, v14);
   *&v16 = v16;
-  v17 = *(a3 + 4);
-  *(a3 + 4) = v17 | 0x20;
-  *(a3 + 16) = LODWORD(v16);
+  v17 = *(archive + 4);
+  *(archive + 4) = v17 | 0x20;
+  *(archive + 16) = LODWORD(v16);
   mStyle = self->mStyle;
-  *(a3 + 4) = v17 | 0x22;
-  v19 = *(a3 + 4);
+  *(archive + 4) = v17 | 0x22;
+  v19 = *(archive + 4);
   if (!v19)
   {
-    v20 = *(a3 + 1);
+    v20 = *(archive + 1);
     if (v20)
     {
       v20 = *(v20 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v19 = MEMORY[0x277C9BB20](v20);
-    *(a3 + 4) = v19;
+    *(archive + 4) = v19;
   }
 
   objc_msgSend_setStrongReference_message_(v7, v15, mStyle, v19);

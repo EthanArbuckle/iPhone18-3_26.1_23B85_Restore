@@ -1,19 +1,19 @@
 @interface MUPlaceEnrichmentSectionController
 - (BOOL)hasContent;
-- (MUPlaceEnrichmentSectionController)initWithMapItem:(id)a3 actionManager:(id)a4 dataAvailability:(id)a5 amsResultProvider:(id)a6 callToActionDelegate:(id)a7 externalActionHandler:(id)a8 rapActionHandler:(id)a9;
+- (MUPlaceEnrichmentSectionController)initWithMapItem:(id)item actionManager:(id)manager dataAvailability:(id)availability amsResultProvider:(id)provider callToActionDelegate:(id)delegate externalActionHandler:(id)handler rapActionHandler:(id)actionHandler;
 - (MUPlaceEnrichmentSectionControllerDelegate)placeEnrichmentDelegate;
-- (int)analyticSuppressionReasonFrom:(id)a3;
-- (void)_populateRevealedAnalyticsModule:(id)a3;
+- (int)analyticSuppressionReasonFrom:(id)from;
+- (void)_populateRevealedAnalyticsModule:(id)module;
 - (void)_setupPlaceEnrichmentViewController;
-- (void)addContextMenuUsingBoundingBox:(id)a3 accessibilityLabel:(id)a4;
+- (void)addContextMenuUsingBoundingBox:(id)box accessibilityLabel:(id)label;
 - (void)dealloc;
-- (void)didLayoutContextMenu:(id)a3 completion:(id)a4;
-- (void)placeEnrichmentAPIContollerDidFetchEnrichmentData:(id)a3 forMapItem:(id)a4;
+- (void)didLayoutContextMenu:(id)menu completion:(id)completion;
+- (void)placeEnrichmentAPIContollerDidFetchEnrichmentData:(id)data forMapItem:(id)item;
 - (void)refreshPlaceEnrichment;
-- (void)removeWebContentViewController:(id)a3 arguments:(id)a4;
-- (void)setEnrichmentData:(id)a3;
-- (void)webContentViewController:(id)a3 performHeightChangeWithBlock:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)webContentViewControllerDidStopLoading:(id)a3;
+- (void)removeWebContentViewController:(id)controller arguments:(id)arguments;
+- (void)setEnrichmentData:(id)data;
+- (void)webContentViewController:(id)controller performHeightChangeWithBlock:(id)block animated:(BOOL)animated completion:(id)completion;
+- (void)webContentViewControllerDidStopLoading:(id)loading;
 @end
 
 @implementation MUPlaceEnrichmentSectionController
@@ -25,55 +25,55 @@
   return WeakRetained;
 }
 
-- (int)analyticSuppressionReasonFrom:(id)a3
+- (int)analyticSuppressionReasonFrom:(id)from
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PLACECARD_ENRICHMENT_SUPPRESSION_REASON_UNKNOWN"])
+  fromCopy = from;
+  if ([fromCopy isEqualToString:@"PLACECARD_ENRICHMENT_SUPPRESSION_REASON_UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"PLACECARD_ENRICHMENT_SUPPRESSION_REASON_DIRECTIONS_UNAVAILABLE"])
+  else if ([fromCopy isEqualToString:@"PLACECARD_ENRICHMENT_SUPPRESSION_REASON_DIRECTIONS_UNAVAILABLE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"PLACECARD_ENRICHMENT_SUPPRESSION_REASON_APP_EXTENSION_UNAVAILABLE"])
+  else if ([fromCopy isEqualToString:@"PLACECARD_ENRICHMENT_SUPPRESSION_REASON_APP_EXTENSION_UNAVAILABLE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"PLACECARD_ENRICHMENT_SUPPRESSION_REASON_APP_CLIP_UNAVAILABLE"])
+  else if ([fromCopy isEqualToString:@"PLACECARD_ENRICHMENT_SUPPRESSION_REASON_APP_CLIP_UNAVAILABLE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"PLACECARD_ENRICHMENT_SUPPRESSION_REASON_APP_QUICK_LINK_UNAVAILABLE"])
+  else if ([fromCopy isEqualToString:@"PLACECARD_ENRICHMENT_SUPPRESSION_REASON_APP_QUICK_LINK_UNAVAILABLE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"PLACECARD_ENRICHMENT_SUPPRESSION_REASON_PHONE_NUMBER_UNAVAILABLE"])
+  else if ([fromCopy isEqualToString:@"PLACECARD_ENRICHMENT_SUPPRESSION_REASON_PHONE_NUMBER_UNAVAILABLE"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"PLACECARD_ENRICHMENT_SUPPRESSION_REASON_MESSAGE_URL_UNAVAILABLE"])
+  else if ([fromCopy isEqualToString:@"PLACECARD_ENRICHMENT_SUPPRESSION_REASON_MESSAGE_URL_UNAVAILABLE"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"PLACECARD_ENRICHMENT_SUPPRESSION_REASON_WEBSITE_URL_UNAVAILABLE"])
+  else if ([fromCopy isEqualToString:@"PLACECARD_ENRICHMENT_SUPPRESSION_REASON_WEBSITE_URL_UNAVAILABLE"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"PLACECARD_ENRICHMENT_SUPPRESSION_REASON_ARP_RATING_UNSUPPORTED"])
+  else if ([fromCopy isEqualToString:@"PLACECARD_ENRICHMENT_SUPPRESSION_REASON_ARP_RATING_UNSUPPORTED"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"PLACECARD_ENRICHMENT_SUPPRESSION_REASON_ARP_PHOTOS_UNSUPPORTED"])
+  else if ([fromCopy isEqualToString:@"PLACECARD_ENRICHMENT_SUPPRESSION_REASON_ARP_PHOTOS_UNSUPPORTED"])
   {
     v4 = 9;
   }
@@ -86,42 +86,42 @@
   return v4;
 }
 
-- (void)didLayoutContextMenu:(id)a3 completion:(id)a4
+- (void)didLayoutContextMenu:(id)menu completion:(id)completion
 {
-  [(MUPlaceEnrichmentSectionController *)self setContextMenuAction:a3, a4];
-  v6 = [(MUPlaceEnrichmentSectionController *)self contextMenuAction];
-  v5 = [(MUPlaceEnrichmentSectionController *)self contextMenuButton];
-  [v5 setContextMenuAction:v6];
+  [(MUPlaceEnrichmentSectionController *)self setContextMenuAction:menu, completion];
+  contextMenuAction = [(MUPlaceEnrichmentSectionController *)self contextMenuAction];
+  contextMenuButton = [(MUPlaceEnrichmentSectionController *)self contextMenuButton];
+  [contextMenuButton setContextMenuAction:contextMenuAction];
 }
 
-- (void)addContextMenuUsingBoundingBox:(id)a3 accessibilityLabel:(id)a4
+- (void)addContextMenuUsingBoundingBox:(id)box accessibilityLabel:(id)label
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"xCoordinate"];
+  boxCopy = box;
+  labelCopy = label;
+  v8 = [boxCopy objectForKeyedSubscript:@"xCoordinate"];
   [v8 doubleValue];
   v10 = v9;
-  v11 = [v6 objectForKeyedSubscript:@"yCoordinate"];
+  v11 = [boxCopy objectForKeyedSubscript:@"yCoordinate"];
   [v11 doubleValue];
   v13 = v12;
-  v14 = [v6 objectForKeyedSubscript:@"width"];
+  v14 = [boxCopy objectForKeyedSubscript:@"width"];
   [v14 doubleValue];
   v16 = v15;
-  v17 = [v6 objectForKeyedSubscript:@"height"];
+  v17 = [boxCopy objectForKeyedSubscript:@"height"];
   [v17 doubleValue];
   v19 = v18;
 
-  v20 = [(MUPlaceEnrichmentSectionController *)self contextMenuButton];
+  contextMenuButton = [(MUPlaceEnrichmentSectionController *)self contextMenuButton];
 
   v21 = MUGetMUPlaceEnrichmentSectionControllerLog();
   v22 = os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG);
-  if (v20)
+  if (contextMenuButton)
   {
     if (v22)
     {
-      v23 = [(MUPlaceEnrichmentSectionController *)self contextMenuButton];
-      [v23 frame];
+      contextMenuButton2 = [(MUPlaceEnrichmentSectionController *)self contextMenuButton];
+      [contextMenuButton2 frame];
       v24 = NSStringFromCGRect(v43);
       v44.origin.x = v10;
       v44.origin.y = v13;
@@ -135,8 +135,8 @@
       _os_log_impl(&dword_1C5620000, v21, OS_LOG_TYPE_DEBUG, "Context menu button alreadyd exists; changing boundingBox (from:%@) -> (to:%@)", &v38, 0x16u);
     }
 
-    v26 = [(MUPlaceEnrichmentSectionController *)self contextMenuButton];
-    [(MUPlaceEnrichmentContextMenu *)v26 setFrame:v10, v13, v16, v19];
+    contextMenuButton3 = [(MUPlaceEnrichmentSectionController *)self contextMenuButton];
+    [(MUPlaceEnrichmentContextMenu *)contextMenuButton3 setFrame:v10, v13, v16, v19];
   }
 
   else
@@ -144,76 +144,76 @@
     if (v22)
     {
       v38 = 138412290;
-      v39 = v6;
+      v39 = boxCopy;
       _os_log_impl(&dword_1C5620000, v21, OS_LOG_TYPE_DEBUG, "Trying to add a context menu button at: %@", &v38, 0xCu);
     }
 
-    v26 = [[MUPlaceEnrichmentContextMenu alloc] initWithFrame:v10, v13, v16, v19];
+    contextMenuButton3 = [[MUPlaceEnrichmentContextMenu alloc] initWithFrame:v10, v13, v16, v19];
     v27 = *MEMORY[0x1E696F150];
     v28 = *(MEMORY[0x1E696F150] + 8);
     if (GEOConfigGetBOOL())
     {
-      v29 = [MEMORY[0x1E69DC888] redColor];
-      [(MUPlaceEnrichmentContextMenu *)v26 setBackgroundColor:v29];
+      redColor = [MEMORY[0x1E69DC888] redColor];
+      [(MUPlaceEnrichmentContextMenu *)contextMenuButton3 setBackgroundColor:redColor];
 
-      [(MUPlaceEnrichmentContextMenu *)v26 setAlpha:0.1];
+      [(MUPlaceEnrichmentContextMenu *)contextMenuButton3 setAlpha:0.1];
     }
 
-    [(MUPlaceEnrichmentContextMenu *)v26 setIsAccessibilityElement:1];
-    [(MUPlaceEnrichmentContextMenu *)v26 setAccessibilityTraits:*MEMORY[0x1E69DD9B8]];
-    [(MUPlaceEnrichmentContextMenu *)v26 setAccessibilityLabel:v7];
-    [(MUPlaceEnrichmentContextMenu *)v26 setAccessibilityIdentifier:v7];
-    [(MUPlaceEnrichmentContextMenu *)v26 setContextMenuDelegate:self];
-    v30 = [(MUPlaceEnrichmentSectionController *)self actionManager];
-    [(MUPlaceEnrichmentContextMenu *)v26 setEnrichmentActionDelegate:v30];
+    [(MUPlaceEnrichmentContextMenu *)contextMenuButton3 setIsAccessibilityElement:1];
+    [(MUPlaceEnrichmentContextMenu *)contextMenuButton3 setAccessibilityTraits:*MEMORY[0x1E69DD9B8]];
+    [(MUPlaceEnrichmentContextMenu *)contextMenuButton3 setAccessibilityLabel:labelCopy];
+    [(MUPlaceEnrichmentContextMenu *)contextMenuButton3 setAccessibilityIdentifier:labelCopy];
+    [(MUPlaceEnrichmentContextMenu *)contextMenuButton3 setContextMenuDelegate:self];
+    actionManager = [(MUPlaceEnrichmentSectionController *)self actionManager];
+    [(MUPlaceEnrichmentContextMenu *)contextMenuButton3 setEnrichmentActionDelegate:actionManager];
 
-    v31 = [(MUPlaceEnrichmentSectionController *)self sectionView];
-    [v31 addSubview:v26];
+    sectionView = [(MUPlaceEnrichmentSectionController *)self sectionView];
+    [sectionView addSubview:contextMenuButton3];
 
-    [(MUPlaceEnrichmentSectionController *)self setContextMenuButton:v26];
-    v32 = [(GEOEnrichmentData *)self->_enrichmentData enrichmentEntities];
-    v33 = [v32 firstObject];
-    v34 = [v33 enrichmentInfo];
-    v35 = [v34 showcaseId];
+    [(MUPlaceEnrichmentSectionController *)self setContextMenuButton:contextMenuButton3];
+    enrichmentEntities = [(GEOEnrichmentData *)self->_enrichmentData enrichmentEntities];
+    firstObject = [enrichmentEntities firstObject];
+    enrichmentInfo = [firstObject enrichmentInfo];
+    showcaseId = [enrichmentInfo showcaseId];
 
-    v36 = [MEMORY[0x1E69A15A0] sharedData];
-    [v36 setPlaceCardPlaceActionDetailsShowcaseId:v35];
+    mEMORY[0x1E69A15A0] = [MEMORY[0x1E69A15A0] sharedData];
+    [mEMORY[0x1E69A15A0] setPlaceCardPlaceActionDetailsShowcaseId:showcaseId];
 
-    [(MUPlaceSectionController *)self captureInfoCardAction:6111 eventValue:v35 feedbackType:0];
+    [(MUPlaceSectionController *)self captureInfoCardAction:6111 eventValue:showcaseId feedbackType:0];
   }
 
   v37 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_populateRevealedAnalyticsModule:(id)a3
+- (void)_populateRevealedAnalyticsModule:(id)module
 {
-  v8 = a3;
+  moduleCopy = module;
   v4 = objc_alloc_init(MEMORY[0x1E69A24D0]);
-  v5 = [(MUPlaceSectionController *)self mapItem];
-  v6 = [v5 _enrichmentInfo];
-  v7 = [v6 showcaseId];
+  mapItem = [(MUPlaceSectionController *)self mapItem];
+  _enrichmentInfo = [mapItem _enrichmentInfo];
+  showcaseId = [_enrichmentInfo showcaseId];
 
-  if ([v7 length])
+  if ([showcaseId length])
   {
-    [v4 setShowcaseId:v7];
-    [v8 setShowcase:v4];
+    [v4 setShowcaseId:showcaseId];
+    [moduleCopy setShowcase:v4];
   }
 }
 
-- (void)webContentViewControllerDidStopLoading:(id)a3
+- (void)webContentViewControllerDidStopLoading:(id)loading
 {
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:@"MUPlaceEnrichmentSectionControllerDidFinishLoadingNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"MUPlaceEnrichmentSectionControllerDidFinishLoadingNotification" object:self];
 
-  v5 = [(MUPlaceEnrichmentSectionController *)self placeEnrichmentDelegate];
-  [v5 placeEnrichmentSectionControllerDidStopLoading:self];
+  placeEnrichmentDelegate = [(MUPlaceEnrichmentSectionController *)self placeEnrichmentDelegate];
+  [placeEnrichmentDelegate placeEnrichmentSectionControllerDidStopLoading:self];
 }
 
-- (void)webContentViewController:(id)a3 performHeightChangeWithBlock:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)webContentViewController:(id)controller performHeightChangeWithBlock:(id)block animated:(BOOL)animated completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  controllerCopy = controller;
+  blockCopy = block;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v12 = MEMORY[0x1E69DD250];
   v18[0] = MEMORY[0x1E69E9820];
@@ -222,14 +222,14 @@
   v18[3] = &unk_1E82194C8;
   objc_copyWeak(&v20, &location);
   v18[4] = self;
-  v13 = v10;
+  v13 = blockCopy;
   v19 = v13;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __112__MUPlaceEnrichmentSectionController_webContentViewController_performHeightChangeWithBlock_animated_completion___block_invoke_2;
   v15[3] = &unk_1E8219650;
   objc_copyWeak(&v17, &location);
-  v14 = v11;
+  v14 = completionCopy;
   v16 = v14;
   [v12 _mapsui_animateWithDuration:v18 animations:v15 completion:0.3];
 
@@ -268,23 +268,23 @@ void __112__MUPlaceEnrichmentSectionController_webContentViewController_performH
   }
 }
 
-- (void)removeWebContentViewController:(id)a3 arguments:(id)a4
+- (void)removeWebContentViewController:(id)controller arguments:(id)arguments
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  argumentsCopy = arguments;
   self->_shouldRemoveWebContent = 1;
-  if (v7)
+  if (argumentsCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v7 objectForKeyedSubscript:@"suppressionReason"];
+      v8 = [argumentsCopy objectForKeyedSubscript:@"suppressionReason"];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v10 = [v7 objectForKeyedSubscript:@"suppressionReason"];
+        v10 = [argumentsCopy objectForKeyedSubscript:@"suppressionReason"];
         v31 = v10;
         if (v10)
         {
@@ -296,15 +296,15 @@ void __112__MUPlaceEnrichmentSectionController_webContentViewController_performH
           v30 = 0;
         }
 
-        v11 = [v7 objectForKeyedSubscript:@"appCategory"];
+        v11 = [argumentsCopy objectForKeyedSubscript:@"appCategory"];
         v28 = v11;
         if (v11)
         {
           v12 = v11;
           v13 = objc_alloc_init(MEMORY[0x1E696ADA0]);
           [v13 setNumberStyle:1];
-          v14 = [(MUPlaceEnrichmentSectionController *)self actionManager];
-          v15 = [v14 adamIDForAppCategory:v12];
+          actionManager = [(MUPlaceEnrichmentSectionController *)self actionManager];
+          v15 = [actionManager adamIDForAppCategory:v12];
           v29 = [v13 numberFromString:v15];
         }
 
@@ -314,16 +314,16 @@ void __112__MUPlaceEnrichmentSectionController_webContentViewController_performH
         }
 
         v26 = MEMORY[0x1E69A1598];
-        v27 = [(MUPlaceSectionController *)self mapItem];
-        v25 = [v27 _muid];
-        v16 = [(MUPlaceSectionController *)self mapItem];
-        v17 = [v16 _resultProviderID];
-        v18 = [(MUPlaceEnrichmentSectionController *)self enrichmentData];
-        v19 = [v18 enrichmentEntities];
-        v20 = [v19 firstObject];
-        v21 = [v20 enrichmentInfo];
-        v22 = [v21 showcaseId];
-        [v26 captureShowcaseSuppressionEventWithBusinessId:v25 localSearchProviderID:v17 showcaseId:v22 adamId:v29 suppressionReason:v30];
+        mapItem = [(MUPlaceSectionController *)self mapItem];
+        _muid = [mapItem _muid];
+        mapItem2 = [(MUPlaceSectionController *)self mapItem];
+        _resultProviderID = [mapItem2 _resultProviderID];
+        enrichmentData = [(MUPlaceEnrichmentSectionController *)self enrichmentData];
+        enrichmentEntities = [enrichmentData enrichmentEntities];
+        firstObject = [enrichmentEntities firstObject];
+        enrichmentInfo = [firstObject enrichmentInfo];
+        showcaseId = [enrichmentInfo showcaseId];
+        [v26 captureShowcaseSuppressionEventWithBusinessId:_muid localSearchProviderID:_resultProviderID showcaseId:showcaseId adamId:v29 suppressionReason:v30];
       }
     }
   }
@@ -335,46 +335,46 @@ void __112__MUPlaceEnrichmentSectionController_webContentViewController_performH
     _os_log_impl(&dword_1C5620000, v23, OS_LOG_TYPE_INFO, "MUPlaceWebContentSectionController: Webmodule requested removal, will tell parent to update", buf, 2u);
   }
 
-  v24 = [(MUPlaceSectionController *)self delegate];
-  [v24 placeSectionControllerDidUpdateContent:self];
+  delegate = [(MUPlaceSectionController *)self delegate];
+  [delegate placeSectionControllerDidUpdateContent:self];
 }
 
-- (void)setEnrichmentData:(id)a3
+- (void)setEnrichmentData:(id)data
 {
-  v33 = a3;
-  v5 = [v33 enrichmentEntities];
-  v6 = [v5 firstObject];
-  v7 = [v6 enrichmentHtml];
-  v8 = [(MUPlaceEnrichmentSectionController *)self enrichmentData];
-  v9 = [v8 enrichmentEntities];
-  v10 = [v9 firstObject];
-  v11 = [v10 enrichmentHtml];
-  v12 = [v7 isEqualToString:v11];
+  dataCopy = data;
+  enrichmentEntities = [dataCopy enrichmentEntities];
+  firstObject = [enrichmentEntities firstObject];
+  enrichmentHtml = [firstObject enrichmentHtml];
+  enrichmentData = [(MUPlaceEnrichmentSectionController *)self enrichmentData];
+  enrichmentEntities2 = [enrichmentData enrichmentEntities];
+  firstObject2 = [enrichmentEntities2 firstObject];
+  enrichmentHtml2 = [firstObject2 enrichmentHtml];
+  v12 = [enrichmentHtml isEqualToString:enrichmentHtml2];
 
-  v13 = v33;
+  v13 = dataCopy;
   if ((v12 & 1) == 0)
   {
-    v14 = [v33 enrichmentEntities];
-    v15 = [v14 firstObject];
-    v16 = [v15 enrichmentHtml];
+    enrichmentEntities3 = [dataCopy enrichmentEntities];
+    firstObject3 = [enrichmentEntities3 firstObject];
+    enrichmentHtml3 = [firstObject3 enrichmentHtml];
 
-    if (v16)
+    if (enrichmentHtml3)
     {
-      objc_storeStrong(&self->_enrichmentData, a3);
-      v17 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v17 postNotificationName:@"MUPlaceEnrichmentSectionControllerDidFetchEnrichmentNotification" object:self];
+      objc_storeStrong(&self->_enrichmentData, data);
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"MUPlaceEnrichmentSectionControllerDidFetchEnrichmentNotification" object:self];
 
       v18 = objc_alloc_init(MUPresentationOptions);
       [(MUPresentationOptions *)v18 setPresentingViewController:self->_webContentViewController];
       [(MUPresentationOptions *)v18 setSourceView:self->_sectionView];
       [(MUPlaceSectionView *)self->_sectionView frame];
       [(MUPresentationOptions *)v18 setSourceRect:?];
-      v19 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v19 postNotificationName:@"MUPlaceEnrichmentSectionControllerDidStartLoadingNotification" object:self];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 postNotificationName:@"MUPlaceEnrichmentSectionControllerDidStartLoadingNotification" object:self];
 
-      v20 = [(MUPlaceEnrichmentSectionController *)self actionManager];
+      actionManager = [(MUPlaceEnrichmentSectionController *)self actionManager];
       v21 = +[MUPlaceEnrichmentAPIController sharedPlaceEnrichmentAPIController];
-      [v20 configureWithEnrichmentDataProvider:v21 presentationOptions:v18];
+      [actionManager configureWithEnrichmentDataProvider:v21 presentationOptions:v18];
 
       v22 = *MEMORY[0x1E696F140];
       v23 = *(MEMORY[0x1E696F140] + 8);
@@ -388,33 +388,33 @@ void __112__MUPlaceEnrichmentSectionController_webContentViewController_performH
       }
 
       webContentViewController = self->_webContentViewController;
-      v29 = [(MUPlaceEnrichmentSectionController *)self actionManager];
-      [(MUWebContentViewController *)webContentViewController configureWithHTML:v16 actionManager:v29 initialDefaultHeight:v24];
+      actionManager2 = [(MUPlaceEnrichmentSectionController *)self actionManager];
+      [(MUWebContentViewController *)webContentViewController configureWithHTML:enrichmentHtml3 actionManager:actionManager2 initialDefaultHeight:v24];
 
       sectionView = self->_sectionView;
-      v31 = [(MUWebContentViewController *)self->_webContentViewController view];
-      [(MUPlaceSectionView *)sectionView attachViewToContentView:v31];
+      view = [(MUWebContentViewController *)self->_webContentViewController view];
+      [(MUPlaceSectionView *)sectionView attachViewToContentView:view];
 
       v32 = +[MUPlaceEnrichmentAPIController sharedPlaceEnrichmentAPIController];
       [v32 cancelFetchingPlaceEnrichment];
     }
 
-    v13 = v33;
+    v13 = dataCopy;
   }
 }
 
-- (void)placeEnrichmentAPIContollerDidFetchEnrichmentData:(id)a3 forMapItem:(id)a4
+- (void)placeEnrichmentAPIContollerDidFetchEnrichmentData:(id)data forMapItem:(id)item
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(MUPlaceSectionController *)self mapItem];
-  v8 = [v7 _identifier];
-  v9 = [v6 _identifier];
+  dataCopy = data;
+  itemCopy = item;
+  mapItem = [(MUPlaceSectionController *)self mapItem];
+  _identifier = [mapItem _identifier];
+  _identifier2 = [itemCopy _identifier];
 
-  LODWORD(v6) = [v8 isEqual:v9];
-  if (v6)
+  LODWORD(itemCopy) = [_identifier isEqual:_identifier2];
+  if (itemCopy)
   {
-    [(MUPlaceEnrichmentSectionController *)self setEnrichmentData:v11];
+    [(MUPlaceEnrichmentSectionController *)self setEnrichmentData:dataCopy];
     v10 = +[MUPlaceEnrichmentAPIController sharedPlaceEnrichmentAPIController];
     [v10 unregisterObserver:self];
   }
@@ -425,8 +425,8 @@ void __112__MUPlaceEnrichmentSectionController_webContentViewController_performH
   v3 = +[MUPlaceEnrichmentAPIController sharedPlaceEnrichmentAPIController];
   [v3 unregisterObserver:self];
 
-  v4 = [MEMORY[0x1E69A15A0] sharedData];
-  [v4 setPlaceCardPlaceActionDetailsShowcaseId:0];
+  mEMORY[0x1E69A15A0] = [MEMORY[0x1E69A15A0] sharedData];
+  [mEMORY[0x1E69A15A0] setPlaceCardPlaceActionDetailsShowcaseId:0];
 
   v5.receiver = self;
   v5.super_class = MUPlaceEnrichmentSectionController;
@@ -450,24 +450,24 @@ void __112__MUPlaceEnrichmentSectionController_webContentViewController_performH
 - (void)refreshPlaceEnrichment
 {
   v3 = +[MUPlaceEnrichmentAPIController sharedPlaceEnrichmentAPIController];
-  v4 = [v3 mapItem];
-  v5 = [v4 _identifier];
-  v6 = [(MUPlaceSectionController *)self mapItem];
-  v7 = [v6 _identifier];
-  v8 = [v5 isEqual:v7];
+  mapItem = [v3 mapItem];
+  _identifier = [mapItem _identifier];
+  mapItem2 = [(MUPlaceSectionController *)self mapItem];
+  _identifier2 = [mapItem2 _identifier];
+  v8 = [_identifier isEqual:_identifier2];
 
-  v9 = [v3 placeEnrichmentData];
-  v10 = [(MUPlaceEnrichmentSectionController *)self enrichmentData];
-  v11 = [v9 isEqual:v10];
+  placeEnrichmentData = [v3 placeEnrichmentData];
+  enrichmentData = [(MUPlaceEnrichmentSectionController *)self enrichmentData];
+  v11 = [placeEnrichmentData isEqual:enrichmentData];
 
-  v12 = MUGetMUPlaceEnrichmentSectionControllerLog();
-  v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG);
+  delegate = MUGetMUPlaceEnrichmentSectionControllerLog();
+  v13 = os_log_type_enabled(delegate, OS_LOG_TYPE_DEBUG);
   if (v8 && v11)
   {
     if (v13)
     {
       *buf = 0;
-      _os_log_impl(&dword_1C5620000, v12, OS_LOG_TYPE_DEBUG, "MUPlaceEnrichmentSectionController was informed to refresh place enrichment but all the information is same. So no-operation here.", buf, 2u);
+      _os_log_impl(&dword_1C5620000, delegate, OS_LOG_TYPE_DEBUG, "MUPlaceEnrichmentSectionController was informed to refresh place enrichment but all the information is same. So no-operation here.", buf, 2u);
     }
   }
 
@@ -476,12 +476,12 @@ void __112__MUPlaceEnrichmentSectionController_webContentViewController_performH
     if (v13)
     {
       *v14 = 0;
-      _os_log_impl(&dword_1C5620000, v12, OS_LOG_TYPE_DEBUG, "MUPlaceEnrichmentSectionController was informed to refresh place enrichment.", v14, 2u);
+      _os_log_impl(&dword_1C5620000, delegate, OS_LOG_TYPE_DEBUG, "MUPlaceEnrichmentSectionController was informed to refresh place enrichment.", v14, 2u);
     }
 
     [(MUPlaceEnrichmentSectionController *)self _setupPlaceEnrichmentViewController];
-    v12 = [(MUPlaceSectionController *)self delegate];
-    [v12 placeSectionControllerDidUpdateContent:self];
+    delegate = [(MUPlaceSectionController *)self delegate];
+    [delegate placeSectionControllerDidUpdateContent:self];
   }
 }
 
@@ -503,29 +503,29 @@ void __112__MUPlaceEnrichmentSectionController_webContentViewController_performH
   v35 = 3221225472;
   v36 = __73__MUPlaceEnrichmentSectionController__setupPlaceEnrichmentViewController__block_invoke;
   v37 = &unk_1E821A870;
-  v38 = self;
+  selfCopy = self;
   v6 = v5;
   v39 = v6;
   v7 = _Block_copy(&v34);
-  v8 = [v6 mapItem];
-  v9 = [v8 _identifier];
-  v10 = [(MUPlaceSectionController *)self mapItem];
-  v11 = [v10 _identifier];
-  v12 = [v9 isEqual:v11];
+  mapItem = [v6 mapItem];
+  _identifier = [mapItem _identifier];
+  mapItem2 = [(MUPlaceSectionController *)self mapItem];
+  _identifier2 = [mapItem2 _identifier];
+  v12 = [_identifier isEqual:_identifier2];
 
   if ((v12 & 1) == 0)
   {
     v17 = MUGetMUPlaceEnrichmentSectionControllerLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      v18 = [v6 mapItem];
-      v19 = [v18 _identifier];
-      v20 = [(MUPlaceSectionController *)self mapItem];
-      v21 = [v20 _identifier];
+      mapItem3 = [v6 mapItem];
+      _identifier3 = [mapItem3 _identifier];
+      mapItem4 = [(MUPlaceSectionController *)self mapItem];
+      _identifier4 = [mapItem4 _identifier];
       *buf = 138412546;
-      v41 = v19;
+      v41 = _identifier3;
       v42 = 2112;
-      v43 = v21;
+      v43 = _identifier4;
       _os_log_impl(&dword_1C5620000, v17, OS_LOG_TYPE_DEBUG, "Unequal mapitems. API controller was holding identifier: %@ but placecard wants to show identifier: %@", buf, 0x16u);
 
 LABEL_14:
@@ -533,8 +533,8 @@ LABEL_14:
 
 LABEL_15:
 
-    v22 = [(MUPlaceSectionController *)self mapItem];
-    [v6 configureWithMapItem:v22 traits:0];
+    mapItem5 = [(MUPlaceSectionController *)self mapItem];
+    [v6 configureWithMapItem:mapItem5 traits:0];
 
 LABEL_16:
     v7[2](v7);
@@ -546,12 +546,12 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v13 = [v6 currentState];
-  if (v13 <= 1)
+  currentState = [v6 currentState];
+  if (currentState <= 1)
   {
-    if (v13)
+    if (currentState)
     {
-      if (v13 != 1)
+      if (currentState != 1)
       {
         goto LABEL_17;
       }
@@ -559,12 +559,12 @@ LABEL_16:
       v24 = MUGetMUPlaceEnrichmentSectionControllerLog();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
       {
-        v25 = [(MUPlaceSectionController *)self mapItem];
-        v26 = [v25 _identifier];
+        mapItem6 = [(MUPlaceSectionController *)self mapItem];
+        _identifier5 = [mapItem6 _identifier];
         *buf = 138412546;
         v41 = @"Initialized";
         v42 = 2112;
-        v43 = v26;
+        v43 = _identifier5;
         _os_log_impl(&dword_1C5620000, v24, OS_LOG_TYPE_DEBUG, "API Controller is in state: %@. So asking to fetch enrichment for identifier: %@", buf, 0x16u);
       }
 
@@ -574,12 +574,12 @@ LABEL_16:
     v17 = MUGetMUPlaceEnrichmentSectionControllerLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      v18 = [(MUPlaceSectionController *)self mapItem];
-      v19 = [v18 _identifier];
+      mapItem3 = [(MUPlaceSectionController *)self mapItem];
+      _identifier3 = [mapItem3 _identifier];
       *buf = 138412546;
       v41 = @"Unknown";
       v42 = 2112;
-      v43 = v19;
+      v43 = _identifier3;
       _os_log_impl(&dword_1C5620000, v17, OS_LOG_TYPE_DEBUG, "API Controller is in state: %@. So Configuring with identifier: %@", buf, 0x16u);
       goto LABEL_14;
     }
@@ -587,18 +587,18 @@ LABEL_16:
     goto LABEL_15;
   }
 
-  switch(v13)
+  switch(currentState)
   {
     case 2:
       v27 = MUGetMUPlaceEnrichmentSectionControllerLog();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
       {
-        v28 = [(MUPlaceSectionController *)self mapItem];
-        v29 = [v28 _identifier];
+        mapItem7 = [(MUPlaceSectionController *)self mapItem];
+        _identifier6 = [mapItem7 _identifier];
         *buf = 138412546;
         v41 = @"Loading";
         v42 = 2112;
-        v43 = v29;
+        v43 = _identifier6;
         _os_log_impl(&dword_1C5620000, v27, OS_LOG_TYPE_DEBUG, "API Controller is in state: %@. So asking to register for enrichment updates for identifier: %@", buf, 0x16u);
       }
 
@@ -608,29 +608,29 @@ LABEL_16:
       v30 = MUGetMUPlaceEnrichmentSectionControllerLog();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
       {
-        v31 = [(MUPlaceSectionController *)self mapItem];
-        v32 = [v31 _identifier];
+        mapItem8 = [(MUPlaceSectionController *)self mapItem];
+        _identifier7 = [mapItem8 _identifier];
         *buf = 138412546;
         v41 = @"ReadyWithData";
         v42 = 2112;
-        v43 = v32;
+        v43 = _identifier7;
         _os_log_impl(&dword_1C5620000, v30, OS_LOG_TYPE_DEBUG, "API Controller is in state: %@. So using enrichment for identifier: %@", buf, 0x16u);
       }
 
-      v33 = [v6 placeEnrichmentData];
-      [(MUPlaceEnrichmentSectionController *)self setEnrichmentData:v33];
+      placeEnrichmentData = [v6 placeEnrichmentData];
+      [(MUPlaceEnrichmentSectionController *)self setEnrichmentData:placeEnrichmentData];
 
       break;
     case 4:
       v14 = MUGetMUPlaceEnrichmentSectionControllerLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
-        v15 = [(MUPlaceSectionController *)self mapItem];
-        v16 = [v15 _identifier];
+        mapItem9 = [(MUPlaceSectionController *)self mapItem];
+        _identifier8 = [mapItem9 _identifier];
         *buf = 138412546;
         v41 = @"Error";
         v42 = 2112;
-        v43 = v16;
+        v43 = _identifier8;
         _os_log_impl(&dword_1C5620000, v14, OS_LOG_TYPE_DEBUG, "API Controller is in state: %@. So asking to remove enrichment module for identifier: %@", buf, 0x16u);
       }
 
@@ -662,17 +662,17 @@ uint64_t __73__MUPlaceEnrichmentSectionController__setupPlaceEnrichmentViewContr
   return result;
 }
 
-- (MUPlaceEnrichmentSectionController)initWithMapItem:(id)a3 actionManager:(id)a4 dataAvailability:(id)a5 amsResultProvider:(id)a6 callToActionDelegate:(id)a7 externalActionHandler:(id)a8 rapActionHandler:(id)a9
+- (MUPlaceEnrichmentSectionController)initWithMapItem:(id)item actionManager:(id)manager dataAvailability:(id)availability amsResultProvider:(id)provider callToActionDelegate:(id)delegate externalActionHandler:(id)handler rapActionHandler:(id)actionHandler
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  itemCopy = item;
+  managerCopy = manager;
+  availabilityCopy = availability;
+  providerCopy = provider;
+  delegateCopy = delegate;
+  handlerCopy = handler;
   v34.receiver = self;
   v34.super_class = MUPlaceEnrichmentSectionController;
-  v21 = [(MUPlaceSectionController *)&v34 initWithMapItem:v15];
+  v21 = [(MUPlaceSectionController *)&v34 initWithMapItem:itemCopy];
   if (v21)
   {
     v22 = MUGetPlaceCardLog();
@@ -694,7 +694,7 @@ uint64_t __73__MUPlaceEnrichmentSectionController__setupPlaceEnrichmentViewContr
     v31[3] = &unk_1E82194A0;
     v26 = v21;
     v32 = v26;
-    v27 = [(MUPlaceEnrichmentActionManager *)v25 initWithPlaceActionManager:v16 mapItem:v15 dataAvailability:v17 amsResultProvider:v18 callToActionDelegate:v19 contextMenuDelegate:v26 externalActionHandler:v20 analyticsDelegate:v26 onActionUpdate:v31];
+    v27 = [(MUPlaceEnrichmentActionManager *)v25 initWithPlaceActionManager:managerCopy mapItem:itemCopy dataAvailability:availabilityCopy amsResultProvider:providerCopy callToActionDelegate:delegateCopy contextMenuDelegate:v26 externalActionHandler:handlerCopy analyticsDelegate:v26 onActionUpdate:v31];
     actionManager = v26->_actionManager;
     v26->_actionManager = v27;
 

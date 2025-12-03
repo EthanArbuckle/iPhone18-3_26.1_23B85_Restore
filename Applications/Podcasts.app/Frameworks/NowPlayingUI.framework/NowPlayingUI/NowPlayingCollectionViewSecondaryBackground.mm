@@ -1,18 +1,18 @@
 @interface NowPlayingCollectionViewSecondaryBackground
-- (_TtC12NowPlayingUI43NowPlayingCollectionViewSecondaryBackground)initWithCoder:(id)a3;
-- (_TtC12NowPlayingUI43NowPlayingCollectionViewSecondaryBackground)initWithFrame:(CGRect)a3;
-- (void)applyLayoutAttributes:(id)a3;
+- (_TtC12NowPlayingUI43NowPlayingCollectionViewSecondaryBackground)initWithCoder:(id)coder;
+- (_TtC12NowPlayingUI43NowPlayingCollectionViewSecondaryBackground)initWithFrame:(CGRect)frame;
+- (void)applyLayoutAttributes:(id)attributes;
 @end
 
 @implementation NowPlayingCollectionViewSecondaryBackground
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
-  v4 = a3;
+  attributesCopy = attributes;
   v5 = v8.receiver;
-  [(NowPlayingCollectionViewSecondaryBackground *)&v8 applyLayoutAttributes:v4];
+  [(NowPlayingCollectionViewSecondaryBackground *)&v8 applyLayoutAttributes:attributesCopy];
   type metadata accessor for NowPlayingSecondaryBackgroundAttributes();
   v6 = swift_dynamicCastClass();
   if (v6)
@@ -22,31 +22,31 @@
 
   else
   {
-    v7 = [objc_opt_self() clearColor];
-    [v5 setBackgroundColor:v7];
+    clearColor = [objc_opt_self() clearColor];
+    [v5 setBackgroundColor:clearColor];
 
-    v4 = v5;
-    v5 = v7;
+    attributesCopy = v5;
+    v5 = clearColor;
   }
 }
 
-- (_TtC12NowPlayingUI43NowPlayingCollectionViewSecondaryBackground)initWithFrame:(CGRect)a3
+- (_TtC12NowPlayingUI43NowPlayingCollectionViewSecondaryBackground)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
   return [(NowPlayingCollectionViewSecondaryBackground *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC12NowPlayingUI43NowPlayingCollectionViewSecondaryBackground)initWithCoder:(id)a3
+- (_TtC12NowPlayingUI43NowPlayingCollectionViewSecondaryBackground)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
-  v5 = [(NowPlayingCollectionViewSecondaryBackground *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(NowPlayingCollectionViewSecondaryBackground *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

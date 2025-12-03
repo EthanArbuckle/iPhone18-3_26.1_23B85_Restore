@@ -1,30 +1,30 @@
 @interface PXFeedView
-- (BOOL)axGroup:(id)a3 didRequestToPerformAction:(int64_t)a4 userInfo:(id)a5;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)handlePrimaryInteractionAtPoint:(CGPoint)a3;
-- (PXFeedView)initWithCoder:(id)a3;
-- (PXFeedView)initWithFrame:(CGRect)a3;
-- (PXFeedView)initWithFrame:(CGRect)a3 configuration:(id)a4;
+- (BOOL)axGroup:(id)group didRequestToPerformAction:(int64_t)action userInfo:(id)info;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)handlePrimaryInteractionAtPoint:(CGPoint)point;
+- (PXFeedView)initWithCoder:(id)coder;
+- (PXFeedView)initWithFrame:(CGRect)frame;
+- (PXFeedView)initWithFrame:(CGRect)frame configuration:(id)configuration;
 - (PXGAXResponder)axNextResponder;
 - (PXGView)tungstenView;
-- (PXSimpleIndexPath)indexPathClosestToIndexPath:(SEL)a3 inDirection:(PXSimpleIndexPath *)a4;
-- (id)axContainingScrollViewForAXGroup:(id)a3;
-- (id)itemPlacementControllerForItemReference:(id)a3;
-- (id)regionOfInterestForObjectReference:(id)a3;
-- (void)_handleChangeToModifySelectionWithUserInfo:(id)a3;
-- (void)_handleHover:(id)a3;
-- (void)_handleHoverEventAtPoint:(CGPoint)a3;
-- (void)_handleTap:(id)a3;
+- (PXSimpleIndexPath)indexPathClosestToIndexPath:(SEL)path inDirection:(PXSimpleIndexPath *)direction;
+- (id)axContainingScrollViewForAXGroup:(id)group;
+- (id)itemPlacementControllerForItemReference:(id)reference;
+- (id)regionOfInterestForObjectReference:(id)reference;
+- (void)_handleChangeToModifySelectionWithUserInfo:(id)info;
+- (void)_handleHover:(id)hover;
+- (void)_handleHoverEventAtPoint:(CGPoint)point;
+- (void)_handleTap:(id)tap;
 - (void)_installGestureRecognizers;
-- (void)axGroup:(id)a3 didChange:(unint64_t)a4 userInfo:(id)a5;
-- (void)beginTouchingAtPoint:(CGPoint)a3;
-- (void)collectTapToRadarDiagnosticsIntoContainer:(id)a3;
-- (void)scrollObjectReference:(id)a3 toScrollPosition:(unint64_t)a4;
-- (void)setCurrentHoverCompletion:(id)a3;
-- (void)setCurrentTouchCompletion:(id)a3;
-- (void)setIsActive:(BOOL)a3;
-- (void)touchingUIGestureRecognizerWillBeginTouching:(id)a3;
+- (void)axGroup:(id)group didChange:(unint64_t)change userInfo:(id)info;
+- (void)beginTouchingAtPoint:(CGPoint)point;
+- (void)collectTapToRadarDiagnosticsIntoContainer:(id)container;
+- (void)scrollObjectReference:(id)reference toScrollPosition:(unint64_t)position;
+- (void)setCurrentHoverCompletion:(id)completion;
+- (void)setCurrentTouchCompletion:(id)completion;
+- (void)setIsActive:(BOOL)active;
+- (void)touchingUIGestureRecognizerWillBeginTouching:(id)touching;
 @end
 
 @implementation PXFeedView
@@ -36,33 +36,33 @@
   return WeakRetained;
 }
 
-- (void)collectTapToRadarDiagnosticsIntoContainer:(id)a3
+- (void)collectTapToRadarDiagnosticsIntoContainer:(id)container
 {
-  v4 = a3;
-  v5 = [(PXFeedView *)self viewModel];
-  [v4 addSubprovider:v5];
+  containerCopy = container;
+  viewModel = [(PXFeedView *)self viewModel];
+  [containerCopy addSubprovider:viewModel];
 
-  v6 = [(PXFeedView *)self tungstenView];
-  [v4 addSubprovider:v6];
+  tungstenView = [(PXFeedView *)self tungstenView];
+  [containerCopy addSubprovider:tungstenView];
 }
 
-- (void)touchingUIGestureRecognizerWillBeginTouching:(id)a3
+- (void)touchingUIGestureRecognizerWillBeginTouching:(id)touching
 {
-  [a3 locationInView:self];
+  [touching locationInView:self];
 
   [(PXFeedView *)self beginTouchingAtPoint:?];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PXFeedView *)self touchingGestureRecognizer];
+  gestureRecognizerCopy = gestureRecognizer;
+  recognizerCopy = recognizer;
+  touchingGestureRecognizer = [(PXFeedView *)self touchingGestureRecognizer];
 
-  if (v8 == v7)
+  if (touchingGestureRecognizer == recognizerCopy)
   {
     v14 = 0;
-    v10 = [v6 px_isPanGestureRecognizerOfScrollView:&v14];
+    v10 = [gestureRecognizerCopy px_isPanGestureRecognizerOfScrollView:&v14];
     v11 = v14;
     v12 = v11;
     v9 = !v10 || ([v11 px_isDecelerating] & 1) == 0;
@@ -76,16 +76,16 @@
   return v9;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 1;
-  v5 = [(PXFeedView *)self touchingGestureRecognizer];
-  v6 = v5;
-  if (v5 == v4)
+  touchingGestureRecognizer = [(PXFeedView *)self touchingGestureRecognizer];
+  v6 = touchingGestureRecognizer;
+  if (touchingGestureRecognizer == beginCopy)
   {
 
 LABEL_5:
@@ -93,7 +93,7 @@ LABEL_5:
     v11[1] = 3221225472;
     v11[2] = __43__PXFeedView_gestureRecognizerShouldBegin___block_invoke;
     v11[3] = &unk_1E7746FD8;
-    v12 = v4;
+    v12 = beginCopy;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __43__PXFeedView_gestureRecognizerShouldBegin___block_invoke_2;
@@ -104,9 +104,9 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v7 = [(PXFeedView *)self tapGestureRecognizer];
+  tapGestureRecognizer = [(PXFeedView *)self tapGestureRecognizer];
 
-  if (v7 == v4)
+  if (tapGestureRecognizer == beginCopy)
   {
     goto LABEL_5;
   }
@@ -160,22 +160,22 @@ void __43__PXFeedView_gestureRecognizerShouldBegin___block_invoke_2(uint64_t a1,
   }
 }
 
-- (void)_handleHover:(id)a3
+- (void)_handleHover:(id)hover
 {
-  v4 = a3;
-  if ([v4 state] == 1 || objc_msgSend(v4, "state") == 2)
+  hoverCopy = hover;
+  if ([hoverCopy state] == 1 || objc_msgSend(hoverCopy, "state") == 2)
   {
-    [v4 locationInView:0];
+    [hoverCopy locationInView:0];
     [(PXFeedView *)self _handleHoverEventAtPoint:?];
   }
 }
 
-- (void)_handleTap:(id)a3
+- (void)_handleTap:(id)tap
 {
-  v4 = a3;
-  if ([v4 state] == 3)
+  tapCopy = tap;
+  if ([tapCopy state] == 3)
   {
-    [v4 locationInView:self];
+    [tapCopy locationInView:self];
     [(PXFeedView *)self handlePrimaryInteractionAtPoint:?];
   }
 }
@@ -196,11 +196,11 @@ void __43__PXFeedView_gestureRecognizerShouldBegin___block_invoke_2(uint64_t a1,
 
   [(UITapGestureRecognizer *)self->_tapGestureRecognizer setDelegate:self];
   [(PXFeedView *)self addGestureRecognizer:self->_tapGestureRecognizer];
-  v7 = [(PXFeedView *)self viewModel];
-  v8 = [v7 spec];
-  v9 = [v8 wantsItemHoverEvents];
+  viewModel = [(PXFeedView *)self viewModel];
+  spec = [viewModel spec];
+  wantsItemHoverEvents = [spec wantsItemHoverEvents];
 
-  if (v9)
+  if (wantsItemHoverEvents)
   {
     v10 = [objc_alloc(MEMORY[0x1E69DCAA0]) initWithTarget:self action:sel__handleHover_];
     [(UIHoverGestureRecognizer *)v10 setDelegate:self];
@@ -212,19 +212,19 @@ void __43__PXFeedView_gestureRecognizerShouldBegin___block_invoke_2(uint64_t a1,
   }
 }
 
-- (BOOL)axGroup:(id)a3 didRequestToPerformAction:(int64_t)a4 userInfo:(id)a5
+- (BOOL)axGroup:(id)group didRequestToPerformAction:(int64_t)action userInfo:(id)info
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(PXFeedView *)self axNextResponder];
-  LOBYTE(a4) = [v10 axGroup:v9 didRequestToPerformAction:a4 userInfo:v8];
+  infoCopy = info;
+  groupCopy = group;
+  axNextResponder = [(PXFeedView *)self axNextResponder];
+  LOBYTE(action) = [axNextResponder axGroup:groupCopy didRequestToPerformAction:action userInfo:infoCopy];
 
-  return a4;
+  return action;
 }
 
-- (void)_handleChangeToModifySelectionWithUserInfo:(id)a3
+- (void)_handleChangeToModifySelectionWithUserInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   [(PXFeedView *)self viewModel];
   [objc_claimAutoreleasedReturnValue() selectionManager];
   objc_claimAutoreleasedReturnValue();
@@ -241,47 +241,47 @@ uint64_t __57__PXFeedView__handleChangeToModifySelectionWithUserInfo___block_inv
   return [a2 setSelectedIndexPath:v4];
 }
 
-- (void)axGroup:(id)a3 didChange:(unint64_t)a4 userInfo:(id)a5
+- (void)axGroup:(id)group didChange:(unint64_t)change userInfo:(id)info
 {
-  v8 = a3;
-  v9 = a5;
-  if ((a4 & 2) != 0)
+  groupCopy = group;
+  infoCopy = info;
+  if ((change & 2) != 0)
   {
     PXGAXGetFocusFromAndToInfosForUserInfo();
   }
 
-  if ((a4 & 4) != 0)
+  if ((change & 4) != 0)
   {
     PXGAXGetSelectionFromAndToInfosForUserInfo();
   }
 
-  v10 = [(PXFeedView *)self axNextResponder];
-  [v10 axGroup:v8 didChange:a4 userInfo:v9];
+  axNextResponder = [(PXFeedView *)self axNextResponder];
+  [axNextResponder axGroup:groupCopy didChange:change userInfo:infoCopy];
 }
 
-- (id)axContainingScrollViewForAXGroup:(id)a3
+- (id)axContainingScrollViewForAXGroup:(id)group
 {
-  v3 = [(PXFeedView *)self tungstenView];
-  v4 = [v3 scrollViewController];
-  v5 = [v4 scrollView];
+  tungstenView = [(PXFeedView *)self tungstenView];
+  scrollViewController = [tungstenView scrollViewController];
+  scrollView = [scrollViewController scrollView];
 
-  return v5;
+  return scrollView;
 }
 
-- (void)_handleHoverEventAtPoint:(CGPoint)a3
+- (void)_handleHoverEventAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(PXFeedView *)self tungstenView];
-  [v6 convertPoint:0 fromView:{x, y}];
-  v7 = [v6 feedHitTestResultAtPoint:1 ignoringOverlayContent:?];
-  v8 = [(PXFeedView *)self viewModel];
-  v9 = [v8 dataSource];
+  y = point.y;
+  x = point.x;
+  tungstenView = [(PXFeedView *)self tungstenView];
+  [tungstenView convertPoint:0 fromView:{x, y}];
+  v7 = [tungstenView feedHitTestResultAtPoint:1 ignoringOverlayContent:?];
+  viewModel = [(PXFeedView *)self viewModel];
+  dataSource = [viewModel dataSource];
 
   if (v7)
   {
     [v7 dataSourceIndexPath];
-    v10 = [v9 objectIDAtIndexPath:&v15];
+    v10 = [dataSource objectIDAtIndexPath:&v15];
   }
 
   else
@@ -289,8 +289,8 @@ uint64_t __57__PXFeedView__handleChangeToModifySelectionWithUserInfo___block_inv
     v10 = 0;
   }
 
-  v11 = [(PXFeedView *)self hoveredItemObjectID];
-  if ([v10 isEqual:v11])
+  hoveredItemObjectID = [(PXFeedView *)self hoveredItemObjectID];
+  if ([v10 isEqual:hoveredItemObjectID])
   {
 LABEL_10:
 
@@ -302,24 +302,24 @@ LABEL_10:
 
 LABEL_8:
     [(PXFeedView *)self setHoveredItemObjectID:v10];
-    v13 = [v7 hoverAction];
+    hoverAction = [v7 hoverAction];
 
-    if (!v13)
+    if (!hoverAction)
     {
       [(PXFeedView *)self setCurrentHoverCompletion:0];
       goto LABEL_11;
     }
 
-    v11 = [v7 hoverAction];
-    v14 = v11[2]();
+    hoveredItemObjectID = [v7 hoverAction];
+    v14 = hoveredItemObjectID[2]();
     [(PXFeedView *)self setCurrentHoverCompletion:v14];
 
     goto LABEL_10;
   }
 
-  v12 = [(PXFeedView *)self hoveredItemObjectID];
+  hoveredItemObjectID2 = [(PXFeedView *)self hoveredItemObjectID];
 
-  if (v12)
+  if (hoveredItemObjectID2)
   {
     goto LABEL_8;
   }
@@ -327,16 +327,16 @@ LABEL_8:
 LABEL_11:
 }
 
-- (PXSimpleIndexPath)indexPathClosestToIndexPath:(SEL)a3 inDirection:(PXSimpleIndexPath *)a4
+- (PXSimpleIndexPath)indexPathClosestToIndexPath:(SEL)path inDirection:(PXSimpleIndexPath *)direction
 {
-  v8 = [(PXFeedView *)self feedContentLayout];
-  v9 = v8;
-  if (v8)
+  feedContentLayout = [(PXFeedView *)self feedContentLayout];
+  v9 = feedContentLayout;
+  if (feedContentLayout)
   {
-    v10 = *&a4->item;
-    v12[0] = *&a4->dataSourceIdentifier;
+    v10 = *&direction->item;
+    v12[0] = *&direction->dataSourceIdentifier;
     v12[1] = v10;
-    [v8 indexPathClosestToIndexPath:v12 inDirection:a5];
+    [feedContentLayout indexPathClosestToIndexPath:v12 inDirection:a5];
   }
 
   else
@@ -348,190 +348,190 @@ LABEL_11:
   return result;
 }
 
-- (void)beginTouchingAtPoint:(CGPoint)a3
+- (void)beginTouchingAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = [(PXFeedView *)self tungstenView];
-  [v7 convertPoint:self fromView:{x, y}];
-  v6 = [v7 handleTouchAtPoint:?];
+  y = point.y;
+  x = point.x;
+  tungstenView = [(PXFeedView *)self tungstenView];
+  [tungstenView convertPoint:self fromView:{x, y}];
+  v6 = [tungstenView handleTouchAtPoint:?];
   [(PXFeedView *)self setCurrentTouchCompletion:v6];
 }
 
-- (BOOL)handlePrimaryInteractionAtPoint:(CGPoint)a3
+- (BOOL)handlePrimaryInteractionAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
-  v6 = [(PXFeedView *)self tungstenView];
-  [v6 convertPoint:v5 fromView:{x, y}];
-  LOBYTE(v5) = [v6 handlePrimaryInteractionAtPoint:?];
+  y = point.y;
+  x = point.x;
+  selfCopy = self;
+  tungstenView = [(PXFeedView *)self tungstenView];
+  [tungstenView convertPoint:selfCopy fromView:{x, y}];
+  LOBYTE(selfCopy) = [tungstenView handlePrimaryInteractionAtPoint:?];
 
-  return v5;
+  return selfCopy;
 }
 
-- (void)setCurrentHoverCompletion:(id)a3
+- (void)setCurrentHoverCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   currentHoverCompletion = self->_currentHoverCompletion;
-  if (currentHoverCompletion != v4)
+  if (currentHoverCompletion != completionCopy)
   {
-    v8 = v4;
+    v8 = completionCopy;
     if (currentHoverCompletion)
     {
       currentHoverCompletion[2]();
-      v4 = v8;
+      completionCopy = v8;
     }
 
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(completionCopy);
     v7 = self->_currentHoverCompletion;
     self->_currentHoverCompletion = v6;
 
-    v4 = v8;
+    completionCopy = v8;
   }
 }
 
-- (void)setCurrentTouchCompletion:(id)a3
+- (void)setCurrentTouchCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   currentTouchCompletion = self->_currentTouchCompletion;
-  if (currentTouchCompletion != v4)
+  if (currentTouchCompletion != completionCopy)
   {
-    v8 = v4;
+    v8 = completionCopy;
     if (currentTouchCompletion)
     {
       currentTouchCompletion[2]();
-      v4 = v8;
+      completionCopy = v8;
     }
 
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(completionCopy);
     v7 = self->_currentTouchCompletion;
     self->_currentTouchCompletion = v6;
 
-    v4 = v8;
+    completionCopy = v8;
   }
 }
 
-- (id)itemPlacementControllerForItemReference:(id)a3
+- (id)itemPlacementControllerForItemReference:(id)reference
 {
-  v4 = a3;
-  v5 = [(PXFeedView *)self feedContentLayout];
-  v6 = [v5 itemPlacementControllerForItemReference:v4];
+  referenceCopy = reference;
+  feedContentLayout = [(PXFeedView *)self feedContentLayout];
+  v6 = [feedContentLayout itemPlacementControllerForItemReference:referenceCopy];
 
   return v6;
 }
 
-- (void)scrollObjectReference:(id)a3 toScrollPosition:(unint64_t)a4
+- (void)scrollObjectReference:(id)reference toScrollPosition:(unint64_t)position
 {
-  v6 = a3;
-  v10 = [(PXFeedView *)self tungstenView];
-  v7 = [v10 rootLayout];
-  v8 = [v7 createAnchorForScrollingSpriteForObjectReference:v6 toScrollPosition:a4 padding:{*off_1E7721FA8, *(off_1E7721FA8 + 1), *(off_1E7721FA8 + 2), *(off_1E7721FA8 + 3)}];
+  referenceCopy = reference;
+  tungstenView = [(PXFeedView *)self tungstenView];
+  rootLayout = [tungstenView rootLayout];
+  v8 = [rootLayout createAnchorForScrollingSpriteForObjectReference:referenceCopy toScrollPosition:position padding:{*off_1E7721FA8, *(off_1E7721FA8 + 1), *(off_1E7721FA8 + 2), *(off_1E7721FA8 + 3)}];
 
-  v9 = [v8 autoInvalidate];
+  autoInvalidate = [v8 autoInvalidate];
 }
 
-- (id)regionOfInterestForObjectReference:(id)a3
+- (id)regionOfInterestForObjectReference:(id)reference
 {
-  v4 = a3;
-  v5 = [(PXFeedView *)self feedContentLayout];
-  v6 = [v5 spriteReferenceForObjectReference:v4];
+  referenceCopy = reference;
+  feedContentLayout = [(PXFeedView *)self feedContentLayout];
+  v6 = [feedContentLayout spriteReferenceForObjectReference:referenceCopy];
 
-  v7 = [(PXFeedView *)self tungstenView];
-  v8 = [v7 regionOfInterestForSpriteReference:v6];
+  tungstenView = [(PXFeedView *)self tungstenView];
+  v8 = [tungstenView regionOfInterestForSpriteReference:v6];
 
   return v8;
 }
 
 - (PXGView)tungstenView
 {
-  v2 = [(PXFeedView *)self tungstenViewCoordinator];
-  v3 = [v2 tungstenView];
+  tungstenViewCoordinator = [(PXFeedView *)self tungstenViewCoordinator];
+  tungstenView = [tungstenViewCoordinator tungstenView];
 
-  return v3;
+  return tungstenView;
 }
 
-- (void)setIsActive:(BOOL)a3
+- (void)setIsActive:(BOOL)active
 {
-  if (self->_isActive != a3)
+  if (self->_isActive != active)
   {
     v9 = v3;
     v10 = v4;
-    self->_isActive = a3;
-    v6 = [(PXFeedView *)self viewModel];
+    self->_isActive = active;
+    viewModel = [(PXFeedView *)self viewModel];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __26__PXFeedView_setIsActive___block_invoke;
     v7[3] = &__block_descriptor_33_e39_v16__0___PXStoryMutableFeedViewModel__8l;
-    v8 = a3;
-    [v6 performChanges:v7];
+    activeCopy = active;
+    [viewModel performChanges:v7];
   }
 }
 
-- (PXFeedView)initWithFrame:(CGRect)a3 configuration:(id)a4
+- (PXFeedView)initWithFrame:(CGRect)frame configuration:(id)configuration
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  configurationCopy = configuration;
   v27.receiver = self;
   v27.super_class = PXFeedView;
-  v10 = [(PXFeedView *)&v27 initWithFrame:x, y, width, height];
-  if (v10)
+  height = [(PXFeedView *)&v27 initWithFrame:x, y, width, height];
+  if (height)
   {
-    [v9 feedConfiguration];
+    [configurationCopy feedConfiguration];
     [objc_claimAutoreleasedReturnValue() mediaProvider];
     objc_claimAutoreleasedReturnValue();
-    v11 = [[PXFeedViewModel alloc] initWithFeedViewConfiguration:v9];
-    viewModel = v10->_viewModel;
-    v10->_viewModel = v11;
+    v11 = [[PXFeedViewModel alloc] initWithFeedViewConfiguration:configurationCopy];
+    viewModel = height->_viewModel;
+    height->_viewModel = v11;
 
-    v13 = [v9 feedConfiguration];
-    v14 = [v13 wantsEmbeddedScrollView];
+    feedConfiguration = [configurationCopy feedConfiguration];
+    wantsEmbeddedScrollView = [feedConfiguration wantsEmbeddedScrollView];
 
-    v15 = [[PXFeedContentLayout alloc] initWithViewModel:v10->_viewModel];
-    feedContentLayout = v10->_feedContentLayout;
-    v10->_feedContentLayout = v15;
+    v15 = [[PXFeedContentLayout alloc] initWithViewModel:height->_viewModel];
+    feedContentLayout = height->_feedContentLayout;
+    height->_feedContentLayout = v15;
 
-    if (v14)
+    if (wantsEmbeddedScrollView)
     {
-      v17 = [[PXFeedViewScrollLayout alloc] initWithViewModel:v10->_viewModel displayingFeedContentLayout:v10->_feedContentLayout];
+      v17 = [[PXFeedViewScrollLayout alloc] initWithViewModel:height->_viewModel displayingFeedContentLayout:height->_feedContentLayout];
     }
 
     else
     {
-      v17 = v10->_feedContentLayout;
+      v17 = height->_feedContentLayout;
     }
 
     v18 = v17;
-    v19 = [v9 feedConfiguration];
-    v20 = [v19 localizedSubtitle];
+    feedConfiguration2 = [configurationCopy feedConfiguration];
+    localizedSubtitle = [feedConfiguration2 localizedSubtitle];
 
-    if (v20)
+    if (localizedSubtitle)
     {
-      v21 = [[PXFeedTitleLayout alloc] initWithViewModel:v10->_viewModel];
-      titleLayout = v10->_titleLayout;
-      v10->_titleLayout = v21;
+      v21 = [[PXFeedTitleLayout alloc] initWithViewModel:height->_viewModel];
+      titleLayout = height->_titleLayout;
+      height->_titleLayout = v21;
 
       v23 = objc_alloc_init(off_1E77216C8);
-      splitLayout = v10->_splitLayout;
-      v10->_splitLayout = v23;
+      splitLayout = height->_splitLayout;
+      height->_splitLayout = v23;
 
-      [(PXGSplitLayout *)v10->_splitLayout setFirstSublayout:v10->_titleLayout];
-      [(PXGSplitLayout *)v10->_splitLayout setSecondSublayout:v18];
-      [(PXGSplitLayout *)v10->_splitLayout setObjectReferenceLookup:2];
-      v10->_splitLayout;
+      [(PXGSplitLayout *)height->_splitLayout setFirstSublayout:height->_titleLayout];
+      [(PXGSplitLayout *)height->_splitLayout setSecondSublayout:v18];
+      [(PXGSplitLayout *)height->_splitLayout setObjectReferenceLookup:2];
+      height->_splitLayout;
     }
 
-    if ((v14 & 1) == 0)
+    if ((wantsEmbeddedScrollView & 1) == 0)
     {
-      v25 = [(PXFeedViewModel *)v10->_viewModel spec];
-      [v25 wantsScrollIndicators];
+      spec = [(PXFeedViewModel *)height->_viewModel spec];
+      [spec wantsScrollIndicators];
     }
 
-    [(PXFeedView *)v10 bounds];
-    [(PXFeedViewModel *)v10->_viewModel spec];
+    [(PXFeedView *)height bounds];
+    [(PXFeedViewModel *)height->_viewModel spec];
     [objc_claimAutoreleasedReturnValue() viewOutsets];
     sub_1A524D1F4();
   }
@@ -547,19 +547,19 @@ void __42__PXFeedView_initWithFrame_configuration___block_invoke(uint64_t a1, vo
   sub_1A524D1F4();
 }
 
-- (PXFeedView)initWithCoder:(id)a3
+- (PXFeedView)initWithCoder:(id)coder
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXFeedView.m" lineNumber:58 description:{@"%s is not available as initializer", "-[PXFeedView initWithCoder:]"}];
+  coderCopy = coder;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXFeedView.m" lineNumber:58 description:{@"%s is not available as initializer", "-[PXFeedView initWithCoder:]"}];
 
   abort();
 }
 
-- (PXFeedView)initWithFrame:(CGRect)a3
+- (PXFeedView)initWithFrame:(CGRect)frame
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"PXFeedView.m" lineNumber:54 description:{@"%s is not available as initializer", "-[PXFeedView initWithFrame:]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXFeedView.m" lineNumber:54 description:{@"%s is not available as initializer", "-[PXFeedView initWithFrame:]"}];
 
   abort();
 }

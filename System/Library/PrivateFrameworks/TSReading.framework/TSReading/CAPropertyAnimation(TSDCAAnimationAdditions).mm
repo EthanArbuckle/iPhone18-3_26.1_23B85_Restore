@@ -15,7 +15,7 @@
     return a3;
   }
 
-  if (([objc_msgSend(a1 "keyPath")] & 1) != 0 || (objc_msgSend(objc_msgSend(a1, "keyPath"), "isEqualToString:", @"transform.rotation.x") & 1) != 0 || (objc_msgSend(objc_msgSend(a1, "keyPath"), "isEqualToString:", @"transform.rotation.y") & 1) != 0 || objc_msgSend(objc_msgSend(a1, "keyPath"), "isEqualToString:", @"transform.rotation.z"))
+  if (([objc_msgSend(self "keyPath")] & 1) != 0 || (objc_msgSend(objc_msgSend(self, "keyPath"), "isEqualToString:", @"transform.rotation.x") & 1) != 0 || (objc_msgSend(objc_msgSend(self, "keyPath"), "isEqualToString:", @"transform.rotation.y") & 1) != 0 || objc_msgSend(objc_msgSend(self, "keyPath"), "isEqualToString:", @"transform.rotation.z"))
   {
     [a3 doubleValue];
     v6 = fmod(v5 + 3.14159265, 6.28318531) + -3.14159265;
@@ -29,15 +29,15 @@
     return [v7 numberWithDouble:v6];
   }
 
-  if (([objc_msgSend(a1 "keyPath")] & 1) == 0 && !objc_msgSend(objc_msgSend(a1, "keyPath"), "isEqualToString:", @"doubleSided"))
+  if (([objc_msgSend(self "keyPath")] & 1) == 0 && !objc_msgSend(objc_msgSend(self, "keyPath"), "isEqualToString:", @"doubleSided"))
   {
     return a3;
   }
 
-  v9 = [a3 charValue];
+  charValue = [a3 charValue];
   v10 = MEMORY[0x277CCABB0];
 
-  return [v10 numberWithChar:v9];
+  return [v10 numberWithChar:charValue];
 }
 
 - (uint64_t)p_interpolatedValueFrom:()TSDCAAnimationAdditions to:percent:
@@ -60,26 +60,26 @@
 
 - (double)TSD_animationPercentFromAnimationTime:()TSDCAAnimationAdditions
 {
-  [a1 beginTime];
+  [self beginTime];
   v5 = a2 - v4;
-  [a1 timeOffset];
+  [self timeOffset];
   v7 = v5 - v6;
-  [a1 duration];
+  [self duration];
   return v7 / v8;
 }
 
 - (uint64_t)TSD_containsAnimationForKeyPath:()TSDCAAnimationAdditions
 {
-  v4 = [a1 keyPath];
+  keyPath = [self keyPath];
 
-  return [v4 isEqualToString:a3];
+  return [keyPath isEqualToString:a3];
 }
 
 - (void)TSD_animationForKeyPath:()TSDCAAnimationAdditions atTime:
 {
-  if ([objc_msgSend(a1 "keyPath")])
+  if ([objc_msgSend(self "keyPath")])
   {
-    return a1;
+    return self;
   }
 
   else

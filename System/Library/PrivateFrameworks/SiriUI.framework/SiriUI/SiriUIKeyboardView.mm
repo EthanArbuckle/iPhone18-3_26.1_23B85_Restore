@@ -1,62 +1,62 @@
 @interface SiriUIKeyboardView
-+ (double)_paddingBetweenKeyboardAndInputAccessoryViewWhenMinimized:(BOOL)a3;
++ (double)_paddingBetweenKeyboardAndInputAccessoryViewWhenMinimized:(BOOL)minimized;
 + (double)_textFieldHeight;
 - (BOOL)_showsReportBugButton;
 - (BOOL)becomeFirstResponder;
 - (BOOL)resignFirstResponder;
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldBeginEditing:(id)a3;
-- (BOOL)textFieldShouldClear:(id)a3;
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldBeginEditing:(id)editing;
+- (BOOL)textFieldShouldClear:(id)clear;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (CGRect)_defaultFrame;
 - (CGSize)intrinsicContentSize;
 - (SiriUIKeyboardView)init;
-- (SiriUIKeyboardView)initWithDelegate:(id)a3;
-- (SiriUIKeyboardView)initWithFrame:(CGRect)a3 inputViewStyle:(int64_t)a4;
+- (SiriUIKeyboardView)initWithDelegate:(id)delegate;
+- (SiriUIKeyboardView)initWithFrame:(CGRect)frame inputViewStyle:(int64_t)style;
 - (SiriUIKeyboardViewDelegate)delegate;
 - (UIEdgeInsets)safeAreaInsets;
-- (double)_visibleHeightFromNotification:(id)a3;
-- (id)_createHelpButton:(CGRect)a3;
-- (id)_createTextFieldWithFrame:(CGRect)a3;
-- (void)_audioRouteButtonTapped:(id)a3;
+- (double)_visibleHeightFromNotification:(id)notification;
+- (id)_createHelpButton:(CGRect)button;
+- (id)_createTextFieldWithFrame:(CGRect)frame;
+- (void)_audioRouteButtonTapped:(id)tapped;
 - (void)_configureAudioRoutePickerForAccessibility;
 - (void)_configureReportBugButton;
 - (void)_configureReportButtonForAccessibility;
-- (void)_createReportBugButtonWithTemplateImage:(id)a3;
-- (void)_helpButtonLongPressed:(id)a3;
-- (void)_helpButtonTapped:(id)a3;
-- (void)_keyboardWillHide:(id)a3;
-- (void)_keyboardWillShow:(id)a3;
-- (void)_loadReportBugButtonTemplateImageInBackgroundWithCompletion:(id)a3;
+- (void)_createReportBugButtonWithTemplateImage:(id)image;
+- (void)_helpButtonLongPressed:(id)pressed;
+- (void)_helpButtonTapped:(id)tapped;
+- (void)_keyboardWillHide:(id)hide;
+- (void)_keyboardWillShow:(id)show;
+- (void)_loadReportBugButtonTemplateImageInBackgroundWithCompletion:(id)completion;
 - (void)_reportBugButtonLongPressed;
 - (void)_reportBugButtonTapped;
-- (void)_undoTextFieldEdit:(id)a3;
+- (void)_undoTextFieldEdit:(id)edit;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)safeAreaInsetsDidChange;
-- (void)setShowAudioRoutePicker:(BOOL)a3;
+- (void)setShowAudioRoutePicker:(BOOL)picker;
 @end
 
 @implementation SiriUIKeyboardView
 
 + (double)_textFieldHeight
 {
-  v2 = [a1 _textFieldFont];
-  [v2 _scaledValueForValue:36.0];
+  _textFieldFont = [self _textFieldFont];
+  [_textFieldFont _scaledValueForValue:36.0];
   UIRoundToViewScale();
   v4 = v3;
 
   return v4;
 }
 
-- (SiriUIKeyboardView)initWithDelegate:(id)a3
+- (SiriUIKeyboardView)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = [(SiriUIKeyboardView *)self init];
   v6 = v5;
   if (v5)
   {
-    [(SiriUIKeyboardView *)v5 setDelegate:v4];
+    [(SiriUIKeyboardView *)v5 setDelegate:delegateCopy];
   }
 
   return v6;
@@ -70,11 +70,11 @@
   return [(SiriUIKeyboardView *)self initWithFrame:1 inputViewStyle:?];
 }
 
-- (SiriUIKeyboardView)initWithFrame:(CGRect)a3 inputViewStyle:(int64_t)a4
+- (SiriUIKeyboardView)initWithFrame:(CGRect)frame inputViewStyle:(int64_t)style
 {
   v16.receiver = self;
   v16.super_class = SiriUIKeyboardView;
-  v4 = [(UIInputView *)&v16 initWithFrame:1 inputViewStyle:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(UIInputView *)&v16 initWithFrame:1 inputViewStyle:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v4;
   if (v4)
   {
@@ -95,9 +95,9 @@
     [(SiriUIKeyboardView *)v5 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(SiriUIKeyboardView *)v5 addSubview:v5->_helpButton];
     [(SiriUIKeyboardView *)v5 addSubview:v5->_textField];
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 addObserver:v5 selector:sel__keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
-    [v14 addObserver:v5 selector:sel__keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
+    [defaultCenter addObserver:v5 selector:sel__keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
   }
 
   return v5;
@@ -138,8 +138,8 @@
   v10 = v9;
   if (v7 > 0.0)
   {
-    v11 = [(SiriUIKeyboardView *)self superview];
-    [v11 safeAreaInsets];
+    superview = [(SiriUIKeyboardView *)self superview];
+    [superview safeAreaInsets];
     v8 = v12;
   }
 
@@ -161,8 +161,8 @@
   v4 = v3;
   [objc_opt_class() _keyboardAccessoryViewHeight];
   v6 = v4 + v5;
-  v7 = [MEMORY[0x277D759A0] mainScreen];
-  [v7 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v8 = ceil(v2);
   v9 = ceil(v6);
   if (v10 < 2.0)
@@ -188,11 +188,11 @@
 
 - (BOOL)resignFirstResponder
 {
-  v3 = [(UITextField *)self->_textField resignFirstResponder];
+  resignFirstResponder = [(UITextField *)self->_textField resignFirstResponder];
   v5.receiver = self;
   v5.super_class = SiriUIKeyboardView;
   [(SiriUIKeyboardView *)&v5 resignFirstResponder];
-  return v3;
+  return resignFirstResponder;
 }
 
 - (void)layoutSubviews
@@ -212,8 +212,8 @@
   [v14 scaledValueForValue:10.0];
   v16 = v15;
 
-  v17 = [(UITextField *)self->_textField layer];
-  [v17 setCornerRadius:v16];
+  layer = [(UITextField *)self->_textField layer];
+  [layer setCornerRadius:v16];
 
   v18 = SiriUIIsCompactWidth();
   v19 = 25.0;
@@ -462,21 +462,21 @@ LABEL_28:
   [(SiriUIAudioRoutePickerButton *)self->_audioRoutePickerButton setFrame:rect.origin.x, v83, width, rect.origin.y];
 }
 
-+ (double)_paddingBetweenKeyboardAndInputAccessoryViewWhenMinimized:(BOOL)a3
++ (double)_paddingBetweenKeyboardAndInputAccessoryViewWhenMinimized:(BOOL)minimized
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  minimizedCopy = minimized;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   result = 10.0;
   v7 = 5.0;
-  if (!v3)
+  if (!minimizedCopy)
   {
     v7 = 10.0;
   }
 
   v8 = floor(v7);
-  if (v5 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return v8;
   }
@@ -484,24 +484,24 @@ LABEL_28:
   return result;
 }
 
-- (id)_createHelpButton:(CGRect)a3
+- (id)_createHelpButton:(CGRect)button
 {
-  v4 = [SiriUIHelpButton buttonWithHelpImageMask:a3.origin.x];
+  v4 = [SiriUIHelpButton buttonWithHelpImageMask:button.origin.x];
   [v4 setAlpha:0.0];
   [v4 _setTouchInsets:{-0.5, -0.5, -0.5, -0.5}];
   [v4 setEmphasized:1];
-  v5 = [v4 imageView];
-  [v5 setContentMode:4];
+  imageView = [v4 imageView];
+  [imageView setContentMode:4];
 
-  v6 = [v4 layer];
-  [v6 setHitTestsAsOpaque:1];
+  layer = [v4 layer];
+  [layer setHitTestsAsOpaque:1];
 
   [v4 sizeToFit];
   [v4 frame];
   v8 = v7;
   v10 = v9;
-  v11 = [v4 imageView];
-  [v11 size];
+  imageView2 = [v4 imageView];
+  [imageView2 size];
   v13 = v12 + 0.0;
   [objc_opt_class() _keyboardAccessoryViewHeight];
   v15 = v14;
@@ -514,25 +514,25 @@ LABEL_28:
   return v4;
 }
 
-- (void)_helpButtonTapped:(id)a3
+- (void)_helpButtonTapped:(id)tapped
 {
-  v4 = [(SiriUIKeyboardView *)self delegate];
-  [v4 keyboardViewDidReceiveHelpButtonAction:self];
+  delegate = [(SiriUIKeyboardView *)self delegate];
+  [delegate keyboardViewDidReceiveHelpButtonAction:self];
 }
 
-- (void)_helpButtonLongPressed:(id)a3
+- (void)_helpButtonLongPressed:(id)pressed
 {
-  if ([a3 state] == 3)
+  if ([pressed state] == 3)
   {
     [(UITextField *)self->_textField resignFirstResponder];
-    v4 = [(SiriUIKeyboardView *)self delegate];
-    [v4 keyboardViewDidReceiveHelpButtonAction:self];
+    delegate = [(SiriUIKeyboardView *)self delegate];
+    [delegate keyboardViewDidReceiveHelpButtonAction:self];
   }
 }
 
-- (id)_createTextFieldWithFrame:(CGRect)a3
+- (id)_createTextFieldWithFrame:(CGRect)frame
 {
-  v4 = [[SiriUITextField alloc] initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [[SiriUITextField alloc] initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(SiriUITextField *)v4 setDelegate:self];
   [(SiriUITextField *)v4 setDelegate:self];
   [(SiriUITextField *)v4 setKeyboardType:0];
@@ -540,32 +540,32 @@ LABEL_28:
   [(SiriUITextField *)v4 setReturnKeyType:9];
   [(SiriUITextField *)v4 setEnablesReturnKeyAutomatically:1];
   [(SiriUITextField *)v4 setEnablesReturnKeyOnNonWhiteSpaceContent:1];
-  v5 = [MEMORY[0x277D75348] siriui_lightTextColor];
-  [(SiriUITextField *)v4 setTextColor:v5];
+  siriui_lightTextColor = [MEMORY[0x277D75348] siriui_lightTextColor];
+  [(SiriUITextField *)v4 setTextColor:siriui_lightTextColor];
 
-  v6 = [objc_opt_class() inputAccessoryViewBackgroundColor];
-  [(SiriUITextField *)v4 setBackgroundColor:v6];
+  inputAccessoryViewBackgroundColor = [objc_opt_class() inputAccessoryViewBackgroundColor];
+  [(SiriUITextField *)v4 setBackgroundColor:inputAccessoryViewBackgroundColor];
 
-  v7 = [MEMORY[0x277D75348] siriui_lightInsertionPointColor];
-  [(SiriUITextField *)v4 setInsertionPointColor:v7];
+  siriui_lightInsertionPointColor = [MEMORY[0x277D75348] siriui_lightInsertionPointColor];
+  [(SiriUITextField *)v4 setInsertionPointColor:siriui_lightInsertionPointColor];
 
-  v8 = [objc_opt_class() _textFieldFont];
-  [(SiriUITextField *)v4 setFont:v8];
+  _textFieldFont = [objc_opt_class() _textFieldFont];
+  [(SiriUITextField *)v4 setFont:_textFieldFont];
 
   v9 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.SiriUI"];
   v10 = [v9 siriUILocalizedStringForKey:@"SIRI_TEXTINPUT_PLACEHOLDER" value:@"Type to Siri" table:0];
   [(SiriUITextField *)v4 setPlaceholder:v10];
-  v11 = [(SiriUITextField *)v4 _placeholderLabel];
-  v12 = [(SiriUITextField *)v4 textColor];
-  v13 = [v12 colorWithAlphaComponent:0.45];
-  [v11 setTextColor:v13];
+  _placeholderLabel = [(SiriUITextField *)v4 _placeholderLabel];
+  textColor = [(SiriUITextField *)v4 textColor];
+  v13 = [textColor colorWithAlphaComponent:0.45];
+  [_placeholderLabel setTextColor:v13];
 
-  v14 = [(SiriUITextField *)v4 font];
-  [v11 setFont:v14];
+  font = [(SiriUITextField *)v4 font];
+  [_placeholderLabel setFont:font];
 
-  [v11 setAdjustsFontSizeToFitWidth:1];
-  [v11 setBaselineAdjustment:1];
-  [v11 setMinimumScaleFactor:0.01];
+  [_placeholderLabel setAdjustsFontSizeToFitWidth:1];
+  [_placeholderLabel setBaselineAdjustment:1];
+  [_placeholderLabel setMinimumScaleFactor:0.01];
   LODWORD(v15) = 1132068864;
   [(SiriUITextField *)v4 setContentHuggingPriority:0 forAxis:v15];
   LODWORD(v16) = 1132068864;
@@ -598,13 +598,13 @@ LABEL_28:
   v6 = v5 + 0.0;
   [objc_opt_class() _keyboardAccessoryViewHeight];
   [(SiriUIAudioRoutePickerButton *)self->_audioRoutePickerButton setFrame:v3, v4, v6, v7];
-  v8 = [(SiriUIAudioRoutePickerButton *)self->_audioRoutePickerButton imageView];
-  [v8 setContentMode:4];
+  imageView = [(SiriUIAudioRoutePickerButton *)self->_audioRoutePickerButton imageView];
+  [imageView setContentMode:4];
 }
 
-- (void)setShowAudioRoutePicker:(BOOL)a3
+- (void)setShowAudioRoutePicker:(BOOL)picker
 {
-  if (a3 && !self->_audioRoutePickerButton)
+  if (picker && !self->_audioRoutePickerButton)
   {
     v5 = [SiriUIAudioRoutePickerButton alloc];
     v6 = [(SiriUIAudioRoutePickerButton *)v5 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
@@ -629,14 +629,14 @@ LABEL_28:
     v16[2] = __46__SiriUIKeyboardView_setShowAudioRoutePicker___block_invoke;
     v16[3] = &unk_279C5A138;
     v17 = v9;
-    v18 = a3;
+    pickerCopy = picker;
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __46__SiriUIKeyboardView_setShowAudioRoutePicker___block_invoke_2;
     v12[3] = &unk_279C5A160;
-    v15 = a3;
+    pickerCopy2 = picker;
     v13 = v17;
-    v14 = self;
+    selfCopy = self;
     v11 = v17;
     [v10 animateWithDuration:v16 animations:v12 completion:0.2];
   }
@@ -660,10 +660,10 @@ uint64_t __46__SiriUIKeyboardView_setShowAudioRoutePicker___block_invoke_2(uint6
   return [v4 setNeedsLayout];
 }
 
-- (void)_audioRouteButtonTapped:(id)a3
+- (void)_audioRouteButtonTapped:(id)tapped
 {
-  v4 = [(SiriUIKeyboardView *)self delegate];
-  [v4 keyboardViewDidReceiveAudioRouteAction:self];
+  delegate = [(SiriUIKeyboardView *)self delegate];
+  [delegate keyboardViewDidReceiveAudioRouteAction:self];
 }
 
 - (void)_reportBugButtonTapped
@@ -680,8 +680,8 @@ uint64_t __46__SiriUIKeyboardView_setShowAudioRoutePicker___block_invoke_2(uint6
 
 - (BOOL)_showsReportBugButton
 {
-  v2 = [MEMORY[0x277CEF368] sharedPreferences];
-  if ([v2 debugButtonIsEnabled])
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  if ([mEMORY[0x277CEF368] debugButtonIsEnabled])
   {
     v3 = AFIsInternalInstall();
   }
@@ -746,15 +746,15 @@ void __47__SiriUIKeyboardView__configureReportBugButton__block_invoke_2(uint64_t
   v7 = v6 + 0.0;
   [objc_opt_class() _keyboardAccessoryViewHeight];
   [(SiriUIContentButton *)self->_reportBugButton setFrame:v4, v5, v7, v8];
-  v9 = [(SiriUIContentButton *)self->_reportBugButton imageView];
-  [v9 setContentMode:4];
+  imageView = [(SiriUIContentButton *)self->_reportBugButton imageView];
+  [imageView setContentMode:4];
 }
 
-- (void)_createReportBugButtonWithTemplateImage:(id)a3
+- (void)_createReportBugButtonWithTemplateImage:(id)image
 {
   if (!self->_reportBugButton)
   {
-    v4 = [SiriUIContentButton buttonWithImageTemplate:a3 style:0];
+    v4 = [SiriUIContentButton buttonWithImageTemplate:image style:0];
     reportBugButton = self->_reportBugButton;
     self->_reportBugButton = v4;
 
@@ -770,16 +770,16 @@ void __47__SiriUIKeyboardView__configureReportBugButton__block_invoke_2(uint64_t
   }
 }
 
-- (void)_loadReportBugButtonTemplateImageInBackgroundWithCompletion:(id)a3
+- (void)_loadReportBugButtonTemplateImageInBackgroundWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = dispatch_get_global_queue(9, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __82__SiriUIKeyboardView__loadReportBugButtonTemplateImageInBackgroundWithCompletion___block_invoke;
   block[3] = &unk_279C5A1B0;
-  v7 = v3;
-  v5 = v3;
+  v7 = completionCopy;
+  v5 = completionCopy;
   dispatch_async(v4, block);
 }
 
@@ -810,99 +810,99 @@ uint64_t __82__SiriUIKeyboardView__loadReportBugButtonTemplateImageInBackgroundW
   return MEMORY[0x2821F97C8]();
 }
 
-- (void)_undoTextFieldEdit:(id)a3
+- (void)_undoTextFieldEdit:(id)edit
 {
-  v8 = a3;
-  v4 = [(SiriUIKeyboardView *)self undoManager];
-  v5 = [v4 isUndoRegistrationEnabled];
+  editCopy = edit;
+  undoManager = [(SiriUIKeyboardView *)self undoManager];
+  isUndoRegistrationEnabled = [undoManager isUndoRegistrationEnabled];
 
-  if (v5)
+  if (isUndoRegistrationEnabled)
   {
-    v6 = [(SiriUIKeyboardView *)self undoManager];
-    v7 = [(UITextField *)self->_textField text];
-    [v6 registerUndoWithTarget:self selector:sel__undoTextFieldEdit_ object:v7];
+    undoManager2 = [(SiriUIKeyboardView *)self undoManager];
+    text = [(UITextField *)self->_textField text];
+    [undoManager2 registerUndoWithTarget:self selector:sel__undoTextFieldEdit_ object:text];
 
-    [(UITextField *)self->_textField setText:v8];
+    [(UITextField *)self->_textField setText:editCopy];
   }
 }
 
-- (BOOL)textFieldShouldBeginEditing:(id)a3
+- (BOOL)textFieldShouldBeginEditing:(id)editing
 {
-  v4 = a3;
-  v5 = [(SiriUIKeyboardView *)self undoManager];
-  v6 = [v5 isUndoRegistrationEnabled];
+  editingCopy = editing;
+  undoManager = [(SiriUIKeyboardView *)self undoManager];
+  isUndoRegistrationEnabled = [undoManager isUndoRegistrationEnabled];
 
-  if (v6)
+  if (isUndoRegistrationEnabled)
   {
-    v7 = [(SiriUIKeyboardView *)self undoManager];
-    v8 = [v4 text];
-    [v7 registerUndoWithTarget:self selector:sel__undoTextFieldEdit_ object:v8];
-  }
-
-  return 1;
-}
-
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
-{
-  if (!a4.location && a4.length == 1)
-  {
-    v5 = [MEMORY[0x277CEF158] sharedAnalytics];
-    [v5 logEventWithType:1446 machAbsoluteTime:mach_absolute_time() context:0];
+    undoManager2 = [(SiriUIKeyboardView *)self undoManager];
+    text = [editingCopy text];
+    [undoManager2 registerUndoWithTarget:self selector:sel__undoTextFieldEdit_ object:text];
   }
 
   return 1;
 }
 
-- (BOOL)textFieldShouldClear:(id)a3
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
+{
+  if (!range.location && range.length == 1)
+  {
+    mEMORY[0x277CEF158] = [MEMORY[0x277CEF158] sharedAnalytics];
+    [mEMORY[0x277CEF158] logEventWithType:1446 machAbsoluteTime:mach_absolute_time() context:0];
+  }
+
+  return 1;
+}
+
+- (BOOL)textFieldShouldClear:(id)clear
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CEF158];
-  v4 = a3;
-  v5 = [v3 sharedAnalytics];
+  clearCopy = clear;
+  sharedAnalytics = [v3 sharedAnalytics];
   v6 = mach_absolute_time();
   v10 = @"text";
-  v7 = [v4 text];
+  text = [clearCopy text];
 
-  v11[0] = v7;
+  v11[0] = text;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-  [v5 logEventWithType:1448 machAbsoluteTime:v6 context:v8];
+  [sharedAnalytics logEventWithType:1448 machAbsoluteTime:v6 context:v8];
 
   return 1;
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CEF158];
-  v5 = a3;
-  v6 = [v4 sharedAnalytics];
+  returnCopy = return;
+  sharedAnalytics = [v4 sharedAnalytics];
   v7 = mach_absolute_time();
   v13 = @"text";
-  v8 = [v5 text];
-  v14[0] = v8;
+  text = [returnCopy text];
+  v14[0] = text;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-  [v6 logEventWithType:1447 machAbsoluteTime:v7 context:v9];
+  [sharedAnalytics logEventWithType:1447 machAbsoluteTime:v7 context:v9];
 
-  v10 = [(SiriUIKeyboardView *)self delegate];
-  v11 = [v5 text];
+  delegate = [(SiriUIKeyboardView *)self delegate];
+  text2 = [returnCopy text];
 
-  [v10 keyboardView:self didReceiveText:v11];
+  [delegate keyboardView:self didReceiveText:text2];
   return 1;
 }
 
-- (void)_keyboardWillShow:(id)a3
+- (void)_keyboardWillShow:(id)show
 {
-  [(SiriUIKeyboardView *)self _visibleHeightFromNotification:a3];
+  [(SiriUIKeyboardView *)self _visibleHeightFromNotification:show];
   v5 = v4;
   [objc_opt_class() _keyboardAccessoryViewHeight];
   if (v5 > v6)
   {
     [objc_opt_class() _paddingBetweenKeyboardAndInputAccessoryViewWhenMinimized:0];
     self->_interKeyboardAccessoryViewPadding = v7;
-    v8 = [MEMORY[0x277D75418] currentDevice];
-    v9 = [v8 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
     v10 = 0.0;
-    if (v9 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v10 = floor(self->_interKeyboardAccessoryViewPadding * 0.5);
     }
@@ -913,9 +913,9 @@ uint64_t __82__SiriUIKeyboardView__loadReportBugButtonTemplateImageInBackgroundW
   }
 }
 
-- (void)_keyboardWillHide:(id)a3
+- (void)_keyboardWillHide:(id)hide
 {
-  [(SiriUIKeyboardView *)self _visibleHeightFromNotification:a3];
+  [(SiriUIKeyboardView *)self _visibleHeightFromNotification:hide];
   v5 = v4;
   [objc_opt_class() _keyboardAccessoryViewHeight];
   if (v5 == v6)
@@ -928,18 +928,18 @@ uint64_t __82__SiriUIKeyboardView__loadReportBugButtonTemplateImageInBackgroundW
   }
 }
 
-- (double)_visibleHeightFromNotification:(id)a3
+- (double)_visibleHeightFromNotification:(id)notification
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKey:*MEMORY[0x277D76BB8]];
+  userInfo = [notification userInfo];
+  v4 = [userInfo objectForKey:*MEMORY[0x277D76BB8]];
   [v4 CGRectValue];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  v13 = [MEMORY[0x277D759A0] mainScreen];
-  [v13 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   MaxY = CGRectGetMaxY(v21);
 
   v22.origin.x = v6;
@@ -968,11 +968,11 @@ uint64_t __82__SiriUIKeyboardView__loadReportBugButtonTemplateImageInBackgroundW
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76C60] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76C60] object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277D76C50] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x277D76C50] object:0];
 
   v5.receiver = self;
   v5.super_class = SiriUIKeyboardView;

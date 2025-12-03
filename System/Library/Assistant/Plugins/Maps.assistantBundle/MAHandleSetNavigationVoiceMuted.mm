@@ -1,12 +1,12 @@
 @interface MAHandleSetNavigationVoiceMuted
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4;
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper;
 @end
 
 @implementation MAHandleSetNavigationVoiceMuted
 
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper
 {
-  v5 = a3;
+  completionCopy = completion;
   v6 = [SACommandFailed alloc];
   v7 = [v6 initWithErrorCode:SALocalSearchNavigationNotRunningErrorCode];
   if ([(MAHandleSetNavigationVoiceMuted *)self voiceMuted])
@@ -32,14 +32,14 @@
     v13[1] = 3221225472;
     v13[2] = sub_CEE4;
     v13[3] = &unk_34C68;
-    v14 = v5;
+    v14 = completionCopy;
     [v10 setNavigationMuted:v12 completion:v13];
   }
 
   else
   {
-    v11 = [v7 dictionary];
-    (*(v5 + 2))(v5, v11);
+    dictionary = [v7 dictionary];
+    (*(completionCopy + 2))(completionCopy, dictionary);
   }
 }
 

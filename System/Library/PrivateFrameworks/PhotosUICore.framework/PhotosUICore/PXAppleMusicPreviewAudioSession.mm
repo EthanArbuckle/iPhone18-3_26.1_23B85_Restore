@@ -1,27 +1,27 @@
 @interface PXAppleMusicPreviewAudioSession
-- (PXAppleMusicPreviewAudioSession)initWithAsset:(id)a3 volume:(float)a4 startTime:(id *)a5 queue:(id)a6 audioSessionDelegate:(id)a7;
-- (void)_handleRequestedAsset:(id)a3 audioMix:(id)a4 info:(id)a5 resultHandler:(id)a6;
+- (PXAppleMusicPreviewAudioSession)initWithAsset:(id)asset volume:(float)volume startTime:(id *)time queue:(id)queue audioSessionDelegate:(id)delegate;
+- (void)_handleRequestedAsset:(id)asset audioMix:(id)mix info:(id)info resultHandler:(id)handler;
 - (void)cancelMediaRequest;
-- (void)requestMediaWithResultHandler:(id)a3;
+- (void)requestMediaWithResultHandler:(id)handler;
 @end
 
 @implementation PXAppleMusicPreviewAudioSession
 
-- (void)_handleRequestedAsset:(id)a3 audioMix:(id)a4 info:(id)a5 resultHandler:(id)a6
+- (void)_handleRequestedAsset:(id)asset audioMix:(id)mix info:(id)info resultHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (v10)
+  assetCopy = asset;
+  mixCopy = mix;
+  infoCopy = info;
+  handlerCopy = handler;
+  v14 = handlerCopy;
+  if (assetCopy)
   {
-    v10;
+    assetCopy;
     PXExists();
   }
 
   self->_requestID = 0;
-  (*(v13 + 2))(v13, 0, v11, v12);
+  (*(handlerCopy + 2))(handlerCopy, 0, mixCopy, infoCopy);
 }
 
 void __85__PXAppleMusicPreviewAudioSession__handleRequestedAsset_audioMix_info_resultHandler___block_invoke_7(uint64_t a1)
@@ -48,9 +48,9 @@ void __85__PXAppleMusicPreviewAudioSession__handleRequestedAsset_audioMix_info_r
   [v3 cancelRequest:self->_requestID];
 }
 
-- (void)requestMediaWithResultHandler:(id)a3
+- (void)requestMediaWithResultHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (!self->_requestID)
   {
     objc_initWeak(&location, self);
@@ -75,15 +75,15 @@ void __85__PXAppleMusicPreviewAudioSession__handleRequestedAsset_audioMix_info_r
     }
 
     v9 = +[PXAppleMusicMediaProvider sharedInstance];
-    v10 = [(PXAudioSession *)self asset];
+    asset = [(PXAudioSession *)self asset];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __65__PXAppleMusicPreviewAudioSession_requestMediaWithResultHandler___block_invoke;
     v11[3] = &unk_1E7737B28;
     v11[4] = self;
     objc_copyWeak(&v13, &location);
-    v12 = v4;
-    self->_requestID = [v9 requestMediaForAsset:v10 options:v5 resultHandler:v11];
+    v12 = handlerCopy;
+    self->_requestID = [v9 requestMediaForAsset:asset options:v5 resultHandler:v11];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
@@ -111,12 +111,12 @@ void __65__PXAppleMusicPreviewAudioSession_requestMediaWithResultHandler___block
   [WeakRetained _handleRequestedAsset:v9 audioMix:v8 info:v7 resultHandler:*(a1 + 40)];
 }
 
-- (PXAppleMusicPreviewAudioSession)initWithAsset:(id)a3 volume:(float)a4 startTime:(id *)a5 queue:(id)a6 audioSessionDelegate:(id)a7
+- (PXAppleMusicPreviewAudioSession)initWithAsset:(id)asset volume:(float)volume startTime:(id *)time queue:(id)queue audioSessionDelegate:(id)delegate
 {
   v9.receiver = self;
   v9.super_class = PXAppleMusicPreviewAudioSession;
-  v8 = *a5;
-  result = [(PXAVPlayerAudioSession *)&v9 initWithAsset:a3 volume:&v8 startTime:a6 queue:a7 audioSessionDelegate:?];
+  v8 = *time;
+  result = [(PXAVPlayerAudioSession *)&v9 initWithAsset:asset volume:&v8 startTime:queue queue:delegate audioSessionDelegate:?];
   if (result)
   {
     result->_requestID = 0;

@@ -3,12 +3,12 @@
 - (id)composeViewDelegate;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_setupChildViewController;
-- (void)prepareForNewRecipients:(id)a3;
-- (void)sendFinishedMessageToDelegateCancelled:(BOOL)a3;
+- (void)prepareForNewRecipients:(id)recipients;
+- (void)sendFinishedMessageToDelegateCancelled:(BOOL)cancelled;
 - (void)setMessage:(NSString *)message;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation GKFriendRequestComposeViewController
@@ -27,32 +27,32 @@
   return v3;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = GKFriendRequestComposeViewController;
-  [(GKFriendRequestComposeViewController *)&v3 viewWillAppear:a3];
+  [(GKFriendRequestComposeViewController *)&v3 viewWillAppear:appear];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = GKFriendRequestComposeViewController;
-  [(GKFriendRequestComposeViewController *)&v6 viewDidAppear:a3];
-  v4 = [(GKFriendRequestComposeViewController *)self alertController];
+  [(GKFriendRequestComposeViewController *)&v6 viewDidAppear:appear];
+  alertController = [(GKFriendRequestComposeViewController *)self alertController];
 
-  if (v4)
+  if (alertController)
   {
-    v5 = [(GKFriendRequestComposeViewController *)self alertController];
-    [(GKFriendRequestComposeViewController *)self presentViewController:v5 animated:1 completion:&__block_literal_global_14];
+    alertController2 = [(GKFriendRequestComposeViewController *)self alertController];
+    [(GKFriendRequestComposeViewController *)self presentViewController:alertController2 animated:1 completion:&__block_literal_global_14];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = GKFriendRequestComposeViewController;
-  [(GKFriendRequestComposeViewController *)&v4 viewDidDisappear:a3];
+  [(GKFriendRequestComposeViewController *)&v4 viewDidDisappear:disappear];
   [(GKFriendRequestComposeViewController *)self setViewControllers:MEMORY[0x277CBEBF8]];
 }
 
@@ -79,15 +79,15 @@ uint64_t __65__GKFriendRequestComposeViewController__setupChildViewController__b
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3 != 1 || (result = 30, *MEMORY[0x277D0C258] == 1) && (*MEMORY[0x277D0C8F0] & 1) == 0)
+  if (userInterfaceIdiom != 1 || (result = 30, *MEMORY[0x277D0C258] == 1) && (*MEMORY[0x277D0C8F0] & 1) == 0)
   {
-    v5 = [MEMORY[0x277D75418] currentDevice];
-    v6 = [v5 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-    if (v6 || (([MEMORY[0x277D759A0] mainScreen], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "bounds"), v9 = v8, v11 = v10, v7, v9 >= 414.0) ? (v12 = v11 < 736.0) : (v12 = 1), v12 && (v9 < 736.0 || v11 < 414.0)))
+    if (userInterfaceIdiom2 || (([MEMORY[0x277D759A0] mainScreen], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "bounds"), v9 = v8, v11 = v10, v7, v9 >= 414.0) ? (v12 = v11 < 736.0) : (v12 = 1), v12 && (v9 < 736.0 || v11 < 414.0)))
     {
       if ([MEMORY[0x277D0C048] isGameCenter])
       {
@@ -120,27 +120,27 @@ uint64_t __65__GKFriendRequestComposeViewController__setupChildViewController__b
   }
 }
 
-- (void)prepareForNewRecipients:(id)a3
+- (void)prepareForNewRecipients:(id)recipients
 {
-  v9 = a3;
-  if (self->_recipientCount + [v9 count] >= 4)
+  recipientsCopy = recipients;
+  if (self->_recipientCount + [recipientsCopy count] >= 4)
   {
     v4 = MEMORY[0x277CCACA8];
     v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"can't add more than %d recipients", 3];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/API/GKFriendRequestComposeViewController.m"];
-    v7 = [v6 lastPathComponent];
-    v8 = [v4 stringWithFormat:@"%@ ([additionalRecipients count] + _recipientCount <= MAX_RECIPIENTS)\n[%s (%s:%d)]", v5, "-[GKFriendRequestComposeViewController prepareForNewRecipients:]", objc_msgSend(v7, "UTF8String"), 154];
+    lastPathComponent = [v6 lastPathComponent];
+    v8 = [v4 stringWithFormat:@"%@ ([additionalRecipients count] + _recipientCount <= MAX_RECIPIENTS)\n[%s (%s:%d)]", v5, "-[GKFriendRequestComposeViewController prepareForNewRecipients:]", objc_msgSend(lastPathComponent, "UTF8String"), 154];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v8}];
   }
 
-  self->_recipientCount += [v9 count];
+  self->_recipientCount += [recipientsCopy count];
 }
 
-- (void)sendFinishedMessageToDelegateCancelled:(BOOL)a3
+- (void)sendFinishedMessageToDelegateCancelled:(BOOL)cancelled
 {
-  v3 = a3;
-  v5 = [(GKFriendRequestComposeViewController *)self composeViewDelegate];
+  cancelledCopy = cancelled;
+  composeViewDelegate = [(GKFriendRequestComposeViewController *)self composeViewDelegate];
   if (!*MEMORY[0x277D0C2A0])
   {
     v6 = GKOSLoggers();
@@ -149,28 +149,28 @@ uint64_t __65__GKFriendRequestComposeViewController__setupChildViewController__b
   v7 = *MEMORY[0x277D0C2A8];
   if (os_log_type_enabled(*MEMORY[0x277D0C2A8], OS_LOG_TYPE_DEBUG))
   {
-    [(GKFriendRequestComposeViewController *)v3 sendFinishedMessageToDelegateCancelled:v7];
-    if (!v3)
+    [(GKFriendRequestComposeViewController *)cancelledCopy sendFinishedMessageToDelegateCancelled:v7];
+    if (!cancelledCopy)
     {
       goto LABEL_8;
     }
   }
 
-  else if (!v3)
+  else if (!cancelledCopy)
   {
     goto LABEL_8;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v5 friendRequestComposeViewControllerWasCancelled:self];
+    [composeViewDelegate friendRequestComposeViewControllerWasCancelled:self];
     goto LABEL_10;
   }
 
 LABEL_8:
   if (objc_opt_respondsToSelector())
   {
-    [v5 friendRequestComposeViewControllerDidFinish:self];
+    [composeViewDelegate friendRequestComposeViewControllerDidFinish:self];
   }
 
 LABEL_10:

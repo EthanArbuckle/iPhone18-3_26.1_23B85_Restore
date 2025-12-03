@@ -1,84 +1,84 @@
 @interface CaptureMTLBinaryArchive
-- (BOOL)addComputePipelineFunctionsWithDescriptor:(id)a3 error:(id *)a4;
-- (BOOL)addComputePipelineFunctionsWithDescriptor:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (BOOL)addFunctionWithDescriptor:(id)a3 library:(id)a4 error:(id *)a5;
-- (BOOL)addLibraryWithDescriptor:(id)a3 error:(id *)a4;
-- (BOOL)addMeshRenderPipelineFunctionsWithDescriptor:(id)a3 error:(id *)a4;
-- (BOOL)addMeshRenderPipelineFunctionsWithDescriptor:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (BOOL)addRenderPipelineFunctionsWithDescriptor:(id)a3 error:(id *)a4;
-- (BOOL)addRenderPipelineFunctionsWithDescriptor:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (BOOL)addTileRenderPipelineFunctionsWithDescriptor:(id)a3 error:(id *)a4;
-- (BOOL)addTileRenderPipelineFunctionsWithDescriptor:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)enumerateArchivesFromBackingFile:(id)a3;
-- (BOOL)enumerateArchivesFromPipelineCollection:(id)a3;
-- (BOOL)serializeToURL:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (BOOL)storeComputePipelineDescriptor:(id)a3;
-- (BOOL)storeMeshRenderPipelineDescriptor:(id)a3;
-- (BOOL)storeRenderPipelineDescriptor:(id)a3;
-- (BOOL)storeTileRenderPipelineDescriptor:(id)a3;
-- (CaptureMTLBinaryArchive)initWithBaseObject:(id)a3 captureDevice:(id)a4;
+- (BOOL)addComputePipelineFunctionsWithDescriptor:(id)descriptor error:(id *)error;
+- (BOOL)addComputePipelineFunctionsWithDescriptor:(id)descriptor options:(unint64_t)options error:(id *)error;
+- (BOOL)addFunctionWithDescriptor:(id)descriptor library:(id)library error:(id *)error;
+- (BOOL)addLibraryWithDescriptor:(id)descriptor error:(id *)error;
+- (BOOL)addMeshRenderPipelineFunctionsWithDescriptor:(id)descriptor error:(id *)error;
+- (BOOL)addMeshRenderPipelineFunctionsWithDescriptor:(id)descriptor options:(unint64_t)options error:(id *)error;
+- (BOOL)addRenderPipelineFunctionsWithDescriptor:(id)descriptor error:(id *)error;
+- (BOOL)addRenderPipelineFunctionsWithDescriptor:(id)descriptor options:(unint64_t)options error:(id *)error;
+- (BOOL)addTileRenderPipelineFunctionsWithDescriptor:(id)descriptor error:(id *)error;
+- (BOOL)addTileRenderPipelineFunctionsWithDescriptor:(id)descriptor options:(unint64_t)options error:(id *)error;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)enumerateArchivesFromBackingFile:(id)file;
+- (BOOL)enumerateArchivesFromPipelineCollection:(id)collection;
+- (BOOL)serializeToURL:(id)l options:(unint64_t)options error:(id *)error;
+- (BOOL)storeComputePipelineDescriptor:(id)descriptor;
+- (BOOL)storeMeshRenderPipelineDescriptor:(id)descriptor;
+- (BOOL)storeRenderPipelineDescriptor:(id)descriptor;
+- (BOOL)storeTileRenderPipelineDescriptor:(id)descriptor;
+- (CaptureMTLBinaryArchive)initWithBaseObject:(id)object captureDevice:(id)device;
 - (MTLPipelineCollection)pipelineCollection;
 - (NSString)description;
 - (unint64_t)streamReference;
 - (void)dealloc;
-- (void)setLabel:(id)a3;
+- (void)setLabel:(id)label;
 - (void)touch;
 @end
 
 @implementation CaptureMTLBinaryArchive
 
-- (BOOL)storeTileRenderPipelineDescriptor:(id)a3
+- (BOOL)storeTileRenderPipelineDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLBinaryArchive_storeTileRenderPipelineDescriptor", "Binary Linking", 0, 0);
   baseObject = self->_baseObject;
-  v6 = unwrapMTLTileRenderPipelineDescriptor(v4);
+  v6 = unwrapMTLTileRenderPipelineDescriptor(descriptorCopy);
 
   LOBYTE(baseObject) = [(MTLBinaryArchiveSPI *)baseObject storeTileRenderPipelineDescriptor:v6];
   return baseObject;
 }
 
-- (BOOL)storeRenderPipelineDescriptor:(id)a3
+- (BOOL)storeRenderPipelineDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLBinaryArchive_storeRenderPipelineDescriptor", "Binary Linking", 0, 0);
   baseObject = self->_baseObject;
-  v6 = unwrapMTLRenderPipelineDescriptor(v4);
+  v6 = unwrapMTLRenderPipelineDescriptor(descriptorCopy);
 
   LOBYTE(baseObject) = [(MTLBinaryArchiveSPI *)baseObject storeRenderPipelineDescriptor:v6];
   return baseObject;
 }
 
-- (BOOL)storeMeshRenderPipelineDescriptor:(id)a3
+- (BOOL)storeMeshRenderPipelineDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLBinaryArchive_storeMeshRenderPipelineDescriptor", "Mesh Shaders with Binary Archives", 0, 0);
   baseObject = self->_baseObject;
-  v6 = unwrapMTLMeshRenderPipelineDescriptor(v4);
+  v6 = unwrapMTLMeshRenderPipelineDescriptor(descriptorCopy);
 
   LOBYTE(baseObject) = [(MTLBinaryArchiveSPI *)baseObject storeMeshRenderPipelineDescriptor:v6];
   return baseObject;
 }
 
-- (BOOL)storeComputePipelineDescriptor:(id)a3
+- (BOOL)storeComputePipelineDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLBinaryArchive_storeComputePipelineDescriptor", "Binary Linking", 0, 0);
   baseObject = self->_baseObject;
-  v6 = unwrapMTLComputePipelineDescriptor(v4);
+  v6 = unwrapMTLComputePipelineDescriptor(descriptorCopy);
 
   LOBYTE(baseObject) = [(MTLBinaryArchiveSPI *)baseObject storeComputePipelineDescriptor:v6];
   return baseObject;
 }
 
-- (BOOL)serializeToURL:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)serializeToURL:(id)l options:(unint64_t)options error:(id *)error
 {
-  v8 = a3;
+  lCopy = l;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLBinaryArchive_serializeToURL_options_error", "Binary Archives SPI", 0, 0);
-  LOBYTE(a5) = [(MTLBinaryArchiveSPI *)self->_baseObject serializeToURL:v8 options:a4 error:a5];
+  LOBYTE(error) = [(MTLBinaryArchiveSPI *)self->_baseObject serializeToURL:lCopy options:options error:error];
 
-  return a5;
+  return error;
 }
 
 - (MTLPipelineCollection)pipelineCollection
@@ -89,20 +89,20 @@
   return [(MTLBinaryArchiveSPI *)baseObject pipelineCollection];
 }
 
-- (BOOL)enumerateArchivesFromPipelineCollection:(id)a3
+- (BOOL)enumerateArchivesFromPipelineCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLBinaryArchive_enumerateArchivesFromPipelineCollection", "Binary Linking", 0, 0);
-  LOBYTE(self) = [(MTLBinaryArchiveSPI *)self->_baseObject enumerateArchivesFromPipelineCollection:v4];
+  LOBYTE(self) = [(MTLBinaryArchiveSPI *)self->_baseObject enumerateArchivesFromPipelineCollection:collectionCopy];
 
   return self;
 }
 
-- (BOOL)enumerateArchivesFromBackingFile:(id)a3
+- (BOOL)enumerateArchivesFromBackingFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLBinaryArchive_enumerateArchivesFromBackingFile", "Binary Linking", 0, 0);
-  LOBYTE(self) = [(MTLBinaryArchiveSPI *)self->_baseObject enumerateArchivesFromBackingFile:v4];
+  LOBYTE(self) = [(MTLBinaryArchiveSPI *)self->_baseObject enumerateArchivesFromBackingFile:fileCopy];
 
   return self;
 }
@@ -133,10 +133,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLBinaryArchive *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLBinaryArchive *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -155,29 +155,29 @@
   [(CaptureMTLBinaryArchive *)&v13 dealloc];
 }
 
-- (BOOL)addTileRenderPipelineFunctionsWithDescriptor:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)addTileRenderPipelineFunctionsWithDescriptor:(id)descriptor options:(unint64_t)options error:(id *)error
 {
-  v8 = a3;
+  descriptorCopy = descriptor;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLBinaryArchive_addTileRenderPipelineFunctionsWithDescriptor_options_error", "Binary Archives SPI", 0, 0);
   baseObject = self->_baseObject;
-  v10 = unwrapMTLTileRenderPipelineDescriptor(v8);
+  v10 = unwrapMTLTileRenderPipelineDescriptor(descriptorCopy);
 
-  LOBYTE(a5) = [(MTLBinaryArchiveSPI *)baseObject addTileRenderPipelineFunctionsWithDescriptor:v10 options:a4 error:a5];
-  return a5;
+  LOBYTE(error) = [(MTLBinaryArchiveSPI *)baseObject addTileRenderPipelineFunctionsWithDescriptor:v10 options:options error:error];
+  return error;
 }
 
-- (BOOL)addTileRenderPipelineFunctionsWithDescriptor:(id)a3 error:(id *)a4
+- (BOOL)addTileRenderPipelineFunctionsWithDescriptor:(id)descriptor error:(id *)error
 {
   v25 = 0u;
   v26 = 0u;
   v24 = 0u;
   traceContext = self->_traceContext;
   traceStream = self->_traceStream;
-  v8 = a3;
+  descriptorCopy = descriptor;
   GTTraceContext_pushEncoderWithStream(traceContext, &v24);
   baseObject = self->_baseObject;
-  v10 = unwrapMTLTileRenderPipelineDescriptor(v8);
-  v11 = [(MTLBinaryArchiveSPI *)baseObject addTileRenderPipelineFunctionsWithDescriptor:v10 error:a4, v24];
+  v10 = unwrapMTLTileRenderPipelineDescriptor(descriptorCopy);
+  v11 = [(MTLBinaryArchiveSPI *)baseObject addTileRenderPipelineFunctionsWithDescriptor:v10 error:error, v24];
 
   v12 = v25;
   *(v25 + 8) = -15664;
@@ -198,11 +198,11 @@
   }
 
   *(v12 + 13) = v13;
-  v17 = [(CaptureMTLBinaryArchive *)self traceStream];
-  if (!v17)
+  traceStream = [(CaptureMTLBinaryArchive *)self traceStream];
+  if (!traceStream)
   {
     var0 = 0;
-    if (a4)
+    if (error)
     {
       goto LABEL_6;
     }
@@ -212,16 +212,16 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  var0 = v17->var0;
-  if (!a4)
+  var0 = traceStream->var0;
+  if (!error)
   {
     goto LABEL_8;
   }
 
 LABEL_6:
-  v19 = *a4;
+  v19 = *error;
 LABEL_9:
-  v20 = SaveMTLTileRenderPipelineDescriptor(&v24, v8);
+  v20 = SaveMTLTileRenderPipelineDescriptor(&v24, descriptorCopy);
 
   *v14 = var0;
   *(v14 + 1) = v19;
@@ -236,29 +236,29 @@ LABEL_9:
   return v11;
 }
 
-- (BOOL)addRenderPipelineFunctionsWithDescriptor:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)addRenderPipelineFunctionsWithDescriptor:(id)descriptor options:(unint64_t)options error:(id *)error
 {
-  v8 = a3;
+  descriptorCopy = descriptor;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLBinaryArchive_addRenderPipelineFunctionsWithDescriptor_options_error", "Binary Archives SPI", 0, 0);
   baseObject = self->_baseObject;
-  v10 = unwrapMTLRenderPipelineDescriptor(v8);
+  v10 = unwrapMTLRenderPipelineDescriptor(descriptorCopy);
 
-  LOBYTE(a5) = [(MTLBinaryArchiveSPI *)baseObject addRenderPipelineFunctionsWithDescriptor:v10 options:a4 error:a5];
-  return a5;
+  LOBYTE(error) = [(MTLBinaryArchiveSPI *)baseObject addRenderPipelineFunctionsWithDescriptor:v10 options:options error:error];
+  return error;
 }
 
-- (BOOL)addRenderPipelineFunctionsWithDescriptor:(id)a3 error:(id *)a4
+- (BOOL)addRenderPipelineFunctionsWithDescriptor:(id)descriptor error:(id *)error
 {
   v25 = 0u;
   v26 = 0u;
   v24 = 0u;
   traceContext = self->_traceContext;
   traceStream = self->_traceStream;
-  v8 = a3;
+  descriptorCopy = descriptor;
   GTTraceContext_pushEncoderWithStream(traceContext, &v24);
   baseObject = self->_baseObject;
-  v10 = unwrapMTLRenderPipelineDescriptor(v8);
-  v11 = [(MTLBinaryArchiveSPI *)baseObject addRenderPipelineFunctionsWithDescriptor:v10 error:a4, v24];
+  v10 = unwrapMTLRenderPipelineDescriptor(descriptorCopy);
+  v11 = [(MTLBinaryArchiveSPI *)baseObject addRenderPipelineFunctionsWithDescriptor:v10 error:error, v24];
 
   v12 = v25;
   *(v25 + 8) = -15665;
@@ -279,11 +279,11 @@ LABEL_9:
   }
 
   *(v12 + 13) = v13;
-  v17 = [(CaptureMTLBinaryArchive *)self traceStream];
-  if (!v17)
+  traceStream = [(CaptureMTLBinaryArchive *)self traceStream];
+  if (!traceStream)
   {
     var0 = 0;
-    if (a4)
+    if (error)
     {
       goto LABEL_6;
     }
@@ -293,16 +293,16 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  var0 = v17->var0;
-  if (!a4)
+  var0 = traceStream->var0;
+  if (!error)
   {
     goto LABEL_8;
   }
 
 LABEL_6:
-  v19 = *a4;
+  v19 = *error;
 LABEL_9:
-  v20 = SaveMTLRenderPipelineDescriptor(&v24, v8);
+  v20 = SaveMTLRenderPipelineDescriptor(&v24, descriptorCopy);
 
   *v14 = var0;
   *(v14 + 1) = v19;
@@ -317,40 +317,40 @@ LABEL_9:
   return v11;
 }
 
-- (BOOL)addMeshRenderPipelineFunctionsWithDescriptor:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)addMeshRenderPipelineFunctionsWithDescriptor:(id)descriptor options:(unint64_t)options error:(id *)error
 {
-  v8 = a3;
+  descriptorCopy = descriptor;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLBinaryArchive_addMeshRenderPipelineFunctionsWithDescriptor_options_error", "Mesh Shaders with Binary Archives", 0, 0);
   baseObject = self->_baseObject;
-  v10 = unwrapMTLMeshRenderPipelineDescriptor(v8);
+  v10 = unwrapMTLMeshRenderPipelineDescriptor(descriptorCopy);
 
-  LOBYTE(a5) = [(MTLBinaryArchiveSPI *)baseObject addMeshRenderPipelineFunctionsWithDescriptor:v10 options:a4 error:a5];
-  return a5;
+  LOBYTE(error) = [(MTLBinaryArchiveSPI *)baseObject addMeshRenderPipelineFunctionsWithDescriptor:v10 options:options error:error];
+  return error;
 }
 
-- (BOOL)addMeshRenderPipelineFunctionsWithDescriptor:(id)a3 error:(id *)a4
+- (BOOL)addMeshRenderPipelineFunctionsWithDescriptor:(id)descriptor error:(id *)error
 {
-  v6 = a3;
+  descriptorCopy = descriptor;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLBinaryArchive_addMeshRenderPipelineFunctionsWithDescriptor_error", "Mesh Shaders with Binary Archives", 0, 0);
   baseObject = self->_baseObject;
-  v8 = unwrapMTLMeshRenderPipelineDescriptor(v6);
+  v8 = unwrapMTLMeshRenderPipelineDescriptor(descriptorCopy);
 
-  LOBYTE(a4) = [(MTLBinaryArchiveSPI *)baseObject addMeshRenderPipelineFunctionsWithDescriptor:v8 error:a4];
-  return a4;
+  LOBYTE(error) = [(MTLBinaryArchiveSPI *)baseObject addMeshRenderPipelineFunctionsWithDescriptor:v8 error:error];
+  return error;
 }
 
-- (BOOL)addLibraryWithDescriptor:(id)a3 error:(id *)a4
+- (BOOL)addLibraryWithDescriptor:(id)descriptor error:(id *)error
 {
   v25 = 0u;
   v26 = 0u;
   v24 = 0u;
   traceContext = self->_traceContext;
   traceStream = self->_traceStream;
-  v8 = a3;
+  descriptorCopy = descriptor;
   GTTraceContext_pushEncoderWithStream(traceContext, &v24);
   baseObject = self->_baseObject;
-  v10 = unwrapMTLStitchedLibraryDescriptor(v8);
-  v11 = [(MTLBinaryArchiveSPI *)baseObject addLibraryWithDescriptor:v10 error:a4, v24];
+  v10 = unwrapMTLStitchedLibraryDescriptor(descriptorCopy);
+  v11 = [(MTLBinaryArchiveSPI *)baseObject addLibraryWithDescriptor:v10 error:error, v24];
 
   v12 = v25;
   *(v25 + 8) = -15426;
@@ -371,11 +371,11 @@ LABEL_9:
   }
 
   *(v12 + 13) = v13;
-  v17 = [(CaptureMTLBinaryArchive *)self traceStream];
-  if (!v17)
+  traceStream = [(CaptureMTLBinaryArchive *)self traceStream];
+  if (!traceStream)
   {
     var0 = 0;
-    if (a4)
+    if (error)
     {
       goto LABEL_6;
     }
@@ -385,16 +385,16 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  var0 = v17->var0;
-  if (!a4)
+  var0 = traceStream->var0;
+  if (!error)
   {
     goto LABEL_8;
   }
 
 LABEL_6:
-  v19 = *a4;
+  v19 = *error;
 LABEL_9:
-  v20 = SaveMTLStitchedLibraryDescriptor(&v24, v8);
+  v20 = SaveMTLStitchedLibraryDescriptor(&v24, descriptorCopy);
 
   *v14 = var0;
   *(v14 + 1) = v19;
@@ -409,43 +409,43 @@ LABEL_9:
   return v11;
 }
 
-- (BOOL)addFunctionWithDescriptor:(id)a3 library:(id)a4 error:(id *)a5
+- (BOOL)addFunctionWithDescriptor:(id)descriptor library:(id)library error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  libraryCopy = library;
+  descriptorCopy = descriptor;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLBinaryArchive_addFunctionWithDescriptor_library_error", "Binary Linking", 0, 0);
   baseObject = self->_baseObject;
-  v11 = unwrapMTLFunctionDescriptor(v9);
+  v11 = unwrapMTLFunctionDescriptor(descriptorCopy);
 
-  v12 = [v8 baseObject];
+  baseObject = [libraryCopy baseObject];
 
-  LOBYTE(a5) = [(MTLBinaryArchiveSPI *)baseObject addFunctionWithDescriptor:v11 library:v12 error:a5];
-  return a5;
+  LOBYTE(error) = [(MTLBinaryArchiveSPI *)baseObject addFunctionWithDescriptor:v11 library:baseObject error:error];
+  return error;
 }
 
-- (BOOL)addComputePipelineFunctionsWithDescriptor:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)addComputePipelineFunctionsWithDescriptor:(id)descriptor options:(unint64_t)options error:(id *)error
 {
-  v8 = a3;
+  descriptorCopy = descriptor;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLBinaryArchive_addComputePipelineFunctionsWithDescriptor_options_error", "Binary Archives SPI", 0, 0);
   baseObject = self->_baseObject;
-  v10 = unwrapMTLComputePipelineDescriptor(v8);
+  v10 = unwrapMTLComputePipelineDescriptor(descriptorCopy);
 
-  LOBYTE(a5) = [(MTLBinaryArchiveSPI *)baseObject addComputePipelineFunctionsWithDescriptor:v10 options:a4 error:a5];
-  return a5;
+  LOBYTE(error) = [(MTLBinaryArchiveSPI *)baseObject addComputePipelineFunctionsWithDescriptor:v10 options:options error:error];
+  return error;
 }
 
-- (BOOL)addComputePipelineFunctionsWithDescriptor:(id)a3 error:(id *)a4
+- (BOOL)addComputePipelineFunctionsWithDescriptor:(id)descriptor error:(id *)error
 {
   v25 = 0u;
   v26 = 0u;
   v24 = 0u;
   traceContext = self->_traceContext;
   traceStream = self->_traceStream;
-  v8 = a3;
+  descriptorCopy = descriptor;
   GTTraceContext_pushEncoderWithStream(traceContext, &v24);
   baseObject = self->_baseObject;
-  v10 = unwrapMTLComputePipelineDescriptor(v8);
-  v11 = [(MTLBinaryArchiveSPI *)baseObject addComputePipelineFunctionsWithDescriptor:v10 error:a4, v24];
+  v10 = unwrapMTLComputePipelineDescriptor(descriptorCopy);
+  v11 = [(MTLBinaryArchiveSPI *)baseObject addComputePipelineFunctionsWithDescriptor:v10 error:error, v24];
 
   v12 = v25;
   *(v25 + 8) = -15666;
@@ -466,11 +466,11 @@ LABEL_9:
   }
 
   *(v12 + 13) = v13;
-  v17 = [(CaptureMTLBinaryArchive *)self traceStream];
-  if (!v17)
+  traceStream = [(CaptureMTLBinaryArchive *)self traceStream];
+  if (!traceStream)
   {
     var0 = 0;
-    if (a4)
+    if (error)
     {
       goto LABEL_6;
     }
@@ -480,16 +480,16 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  var0 = v17->var0;
-  if (!a4)
+  var0 = traceStream->var0;
+  if (!error)
   {
     goto LABEL_8;
   }
 
 LABEL_6:
-  v19 = *a4;
+  v19 = *error;
 LABEL_9:
-  v20 = SaveMTLComputePipelineDescriptor(&v24, v8);
+  v20 = SaveMTLComputePipelineDescriptor(&v24, descriptorCopy);
 
   *v14 = var0;
   *(v14 + 1) = v19;
@@ -504,15 +504,15 @@ LABEL_9:
   return v11;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v19 = 0u;
   v20 = 0u;
   v18 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v18);
-  [(MTLBinaryArchiveSPI *)self->_baseObject setLabel:v4];
+  [(MTLBinaryArchiveSPI *)self->_baseObject setLabel:labelCopy];
   v6 = v19;
   *(v19 + 8) = -15668;
   v7 = BYTE9(v20);
@@ -532,10 +532,10 @@ LABEL_9:
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLBinaryArchive *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLBinaryArchive *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -543,16 +543,16 @@ LABEL_9:
     var0 = 0;
   }
 
-  v13 = [v4 UTF8String];
-  if (v13)
+  uTF8String = [labelCopy UTF8String];
+  if (uTF8String)
   {
-    v14 = [v4 UTF8String];
-    v15 = strlen([v4 UTF8String]);
-    LOBYTE(v13) = GTTraceEncoder_storeBytes(&v18, v14, v15 + 1);
+    uTF8String2 = [labelCopy UTF8String];
+    v15 = strlen([labelCopy UTF8String]);
+    LOBYTE(uTF8String) = GTTraceEncoder_storeBytes(&v18, uTF8String2, v15 + 1);
   }
 
   *v8 = var0;
-  v8[8] = v13;
+  v8[8] = uTF8String;
   *(v8 + 9) = 0;
   *(v8 + 3) = 0;
   s();
@@ -561,13 +561,13 @@ LABEL_9:
   *(v19 + 15) |= 8u;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   baseObject = self->_baseObject;
-  v4 = a3;
-  v5 = [(MTLBinaryArchiveSPI *)baseObject conformsToProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [(MTLBinaryArchiveSPI *)baseObject conformsToProtocol:protocolCopy];
 
-  if (&OBJC_PROTOCOL___CaptureMTLObject == v4)
+  if (&OBJC_PROTOCOL___CaptureMTLObject == protocolCopy)
   {
     return 1;
   }
@@ -622,22 +622,22 @@ LABEL_9:
   }
 }
 
-- (CaptureMTLBinaryArchive)initWithBaseObject:(id)a3 captureDevice:(id)a4
+- (CaptureMTLBinaryArchive)initWithBaseObject:(id)object captureDevice:(id)device
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  deviceCopy = device;
   v14.receiver = self;
   v14.super_class = CaptureMTLBinaryArchive;
   v9 = [(CaptureMTLBinaryArchive *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_baseObject, a3);
-    objc_storeStrong(&v10->_captureDevice, a4);
-    v11 = [v8 traceContext];
-    v10->_traceContext = v11;
-    v12 = DEVICEOBJECT(v7);
-    v10->_traceStream = GTTraceContext_openStream(v11, v12, v10);
+    objc_storeStrong(&v9->_baseObject, object);
+    objc_storeStrong(&v10->_captureDevice, device);
+    traceContext = [deviceCopy traceContext];
+    v10->_traceContext = traceContext;
+    v12 = DEVICEOBJECT(objectCopy);
+    v10->_traceStream = GTTraceContext_openStream(traceContext, v12, v10);
   }
 
   return v10;

@@ -1,50 +1,50 @@
 @interface MTPlaylist
-+ (id)artworkForStationUUID:(id)a3 podcastsUUIDs:(id)a4 size:(CGSize)a5;
-+ (id)containerOrderOptionArray:(BOOL)a3;
-+ (id)insertNewPlaylistInManagedObjectContext:(id)a3;
-+ (id)insertNewPlaylistInManagedObjectContext:(id)a3 uuid:(id)a4 defaultSettings:(id)a5;
-+ (id)predicateForFlag:(int)a3 isTrue:(BOOL)a4;
-+ (id)predicateForMediaLibraryId:(int64_t)a3;
-+ (id)stringForContainerOrder:(int)a3 short:(BOOL)a4;
++ (id)artworkForStationUUID:(id)d podcastsUUIDs:(id)ds size:(CGSize)size;
++ (id)containerOrderOptionArray:(BOOL)array;
++ (id)insertNewPlaylistInManagedObjectContext:(id)context;
++ (id)insertNewPlaylistInManagedObjectContext:(id)context uuid:(id)uuid defaultSettings:(id)settings;
++ (id)predicateForFlag:(int)flag isTrue:(BOOL)true;
++ (id)predicateForMediaLibraryId:(int64_t)id;
++ (id)stringForContainerOrder:(int)order short:(BOOL)short;
 + (id)topLevelPlaylistsExcludingFoldersPredicate;
 + (int64_t)getITunesPlaylistsCount;
 - (BOOL)isEditable;
 - (BOOL)updateUnplayedCount;
 - (MTEpisode)nextEpisode;
 - (double)totalDuration;
-- (id)artworkWithSize:(CGSize)a3;
+- (id)artworkWithSize:(CGSize)size;
 - (id)metricsAdditionalData;
 - (id)metricsContentIdentifier;
 - (id)podcasts;
 - (int64_t)getFolderSubPlaylistsCount;
 - (void)recalculateEpisodeCounts;
-- (void)removeEpisode:(id)a3 inBulkTransaction:(BOOL)a4;
-- (void)removeEpisodes:(id)a3;
-- (void)removePodcast:(id)a3;
-- (void)removePodcastEpisodes:(id)a3 shouldSave:(BOOL)a4;
-- (void)setEpisodes:(id)a3;
-- (void)setHasBeenSynced:(BOOL)a3;
-- (void)setIsBuiltIn:(BOOL)a3;
-- (void)setIsFolder:(BOOL)a3;
-- (void)setIsItunesSmartPlaylist:(BOOL)a3;
-- (void)setPodcasts:(id)a3;
+- (void)removeEpisode:(id)episode inBulkTransaction:(BOOL)transaction;
+- (void)removeEpisodes:(id)episodes;
+- (void)removePodcast:(id)podcast;
+- (void)removePodcastEpisodes:(id)episodes shouldSave:(BOOL)save;
+- (void)setEpisodes:(id)episodes;
+- (void)setHasBeenSynced:(BOOL)synced;
+- (void)setIsBuiltIn:(BOOL)in;
+- (void)setIsFolder:(BOOL)folder;
+- (void)setIsItunesSmartPlaylist:(BOOL)playlist;
+- (void)setPodcasts:(id)podcasts;
 @end
 
 @implementation MTPlaylist
 
 + (id)topLevelPlaylistsExcludingFoldersPredicate
 {
-  v3 = [a1 topLevelPlaylistsPredicate];
-  v4 = [a1 predicateForFlag:0 isTrue:0];
-  v5 = [v3 AND:v4];
+  topLevelPlaylistsPredicate = [self topLevelPlaylistsPredicate];
+  v4 = [self predicateForFlag:0 isTrue:0];
+  v5 = [topLevelPlaylistsPredicate AND:v4];
 
   return v5;
 }
 
-- (id)artworkWithSize:(CGSize)a3
+- (id)artworkWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -57,7 +57,7 @@
   v13 = sub_100008A3C;
   v14 = sub_10003B4F4;
   v15 = 0;
-  v6 = [(MTPlaylist *)self managedObjectContext];
+  managedObjectContext = [(MTPlaylist *)self managedObjectContext];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000C2478;
@@ -65,7 +65,7 @@
   v9[4] = self;
   v9[5] = &v16;
   v9[6] = &v10;
-  [v6 performBlockAndWait:v9];
+  [managedObjectContext performBlockAndWait:v9];
 
   v7 = [objc_opt_class() artworkForStationUUID:v17[5] podcastsUUIDs:v11[5] size:{width, height}];
   _Block_object_dispose(&v10, 8);
@@ -75,20 +75,20 @@
   return v7;
 }
 
-+ (id)artworkForStationUUID:(id)a3 podcastsUUIDs:(id)a4 size:(CGSize)a5
++ (id)artworkForStationUUID:(id)d podcastsUUIDs:(id)ds size:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v8 = a3;
-  v9 = a4;
+  height = size.height;
+  width = size.width;
+  dCopy = d;
+  dsCopy = ds;
   v10 = +[MTImageStore defaultStore];
-  v11 = [v10 imageForKey:v8];
+  v11 = [v10 imageForKey:dCopy];
   if (!v11)
   {
-    if ([v9 count] == 1)
+    if ([dsCopy count] == 1)
     {
-      v13 = [v9 firstObject];
-      v14 = [v10 imageForKey:v13 size:{width, height}];
+      firstObject = [dsCopy firstObject];
+      v14 = [v10 imageForKey:firstObject size:{width, height}];
       v15 = [v14 scaleToSize:1 addBorder:{width, height}];
 
       if (v15)
@@ -101,7 +101,7 @@
       goto LABEL_27;
     }
 
-    if ([v9 count] < 2)
+    if ([dsCopy count] < 2)
     {
 LABEL_27:
       v17 = [v10 imageForKey:kMTLibraryDefaultImageKey size:{width, height}];
@@ -114,7 +114,7 @@ LABEL_27:
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v18 = v9;
+    v18 = dsCopy;
     v19 = [v18 countByEnumeratingWithState:&v35 objects:v39 count:16];
     if (v19)
     {
@@ -175,12 +175,12 @@ LABEL_22:
         v17 = v31;
       }
 
-      v32 = [UIImage combineImages:v17 rowCount:2 size:1 border:width, height];
-      if (v32)
+      height = [UIImage combineImages:v17 rowCount:2 size:1 border:width, height];
+      if (height)
       {
-        v33 = v32;
-        [v10 removeItemsWithPrefx:v8];
-        [v10 addImage:v33 forKey:v8 persist:0];
+        v33 = height;
+        [v10 removeItemsWithPrefx:dCopy];
+        [v10 addImage:v33 forKey:dCopy persist:0];
 LABEL_28:
 
         v12 = v33;
@@ -204,62 +204,62 @@ LABEL_30:
   return v16;
 }
 
-+ (id)insertNewPlaylistInManagedObjectContext:(id)a3
++ (id)insertNewPlaylistInManagedObjectContext:(id)context
 {
-  v4 = a3;
-  v5 = [MTPodcastPlaylistSettings insertNewSettingsInManagedObjectContext:v4];
+  contextCopy = context;
+  v5 = [MTPodcastPlaylistSettings insertNewSettingsInManagedObjectContext:contextCopy];
   v6 = +[NSString UUID];
-  v7 = [a1 insertNewPlaylistInManagedObjectContext:v4 uuid:v6 defaultSettings:v5];
+  v7 = [self insertNewPlaylistInManagedObjectContext:contextCopy uuid:v6 defaultSettings:v5];
 
   return v7;
 }
 
-+ (id)insertNewPlaylistInManagedObjectContext:(id)a3 uuid:(id)a4 defaultSettings:(id)a5
++ (id)insertNewPlaylistInManagedObjectContext:(id)context uuid:(id)uuid defaultSettings:(id)settings
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [NSEntityDescription insertNewObjectForEntityForName:kMTPlaylistEntityName inManagedObjectContext:v8];
-  if (!v10)
+  contextCopy = context;
+  uuidCopy = uuid;
+  settingsCopy = settings;
+  v11 = [NSEntityDescription insertNewObjectForEntityForName:kMTPlaylistEntityName inManagedObjectContext:contextCopy];
+  if (!settingsCopy)
   {
-    v10 = [MTPodcastPlaylistSettings insertNewSettingsInManagedObjectContext:v8];
+    settingsCopy = [MTPodcastPlaylistSettings insertNewSettingsInManagedObjectContext:contextCopy];
   }
 
-  [v11 setUuid:v9];
-  [v11 setDefaultSettings:v10];
+  [v11 setUuid:uuidCopy];
+  [v11 setDefaultSettings:settingsCopy];
   [v11 setNeedsUpdate:1];
   [v11 setIsUngroupedList:1];
   v12 = kPlaylistSortOrder;
   v13 = +[NSPredicate truePredicate];
-  v14 = [a1 aggregateOperation:@"max:" attribute:v12 predicate:v13 managedObjectContext:v8];
+  v14 = [self aggregateOperation:@"max:" attribute:v12 predicate:v13 managedObjectContext:contextCopy];
 
   [v11 setSortOrder:{objc_msgSend(v14, "integerValue") + 1}];
-  [a1 prepareForPlatform:v11];
+  [self prepareForPlatform:v11];
 
   return v11;
 }
 
-- (void)setPodcasts:(id)a3
+- (void)setPodcasts:(id)podcasts
 {
-  v4 = a3;
-  v5 = [(MTPlaylist *)self settings];
-  v6 = [v5 valueForKey:kPlaylistSettingPodcast];
+  podcastsCopy = podcasts;
+  settings = [(MTPlaylist *)self settings];
+  v6 = [settings valueForKey:kPlaylistSettingPodcast];
 
-  if (([v6 isEqualToOrderedSet:v4] & 1) == 0)
+  if (([v6 isEqualToOrderedSet:podcastsCopy] & 1) == 0)
   {
-    v18 = [v4 mutableCopy];
+    v18 = [podcastsCopy mutableCopy];
     [v18 minusOrderedSet:v6];
     v19 = v6;
     v7 = [v6 mutableCopy];
-    v20 = v4;
-    [v7 minusOrderedSet:v4];
+    v20 = podcastsCopy;
+    [v7 minusOrderedSet:podcastsCopy];
     v8 = objc_opt_new();
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v9 = [(MTPlaylist *)self settings];
-    v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    settings2 = [(MTPlaylist *)self settings];
+    v10 = [settings2 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v10)
     {
       v11 = v10;
@@ -270,12 +270,12 @@ LABEL_30:
         {
           if (*v25 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(settings2);
           }
 
           v14 = *(*(&v24 + 1) + 8 * i);
-          v15 = [v14 podcast];
-          v16 = [v7 containsObject:v15];
+          podcast = [v14 podcast];
+          v16 = [v7 containsObject:podcast];
 
           if (v16)
           {
@@ -283,7 +283,7 @@ LABEL_30:
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v11 = [settings2 countByEnumeratingWithState:&v24 objects:v28 count:16];
       }
 
       while (v11);
@@ -305,80 +305,80 @@ LABEL_30:
     [v18 enumerateObjectsUsingBlock:v21];
 
     v6 = v19;
-    v4 = v20;
+    podcastsCopy = v20;
   }
 }
 
-- (void)setEpisodes:(id)a3
+- (void)setEpisodes:(id)episodes
 {
-  v7 = a3;
-  v4 = [(MTPlaylist *)self episodes];
-  v5 = [v7 isEqualToOrderedSet:v4];
+  episodesCopy = episodes;
+  episodes = [(MTPlaylist *)self episodes];
+  v5 = [episodesCopy isEqualToOrderedSet:episodes];
 
   if ((v5 & 1) == 0)
   {
     v6 = kPlaylistEpisodes;
     [(MTPlaylist *)self willChangeValueForKey:kPlaylistEpisodes];
-    [(MTPlaylist *)self setPrimitiveValue:v7 forKey:v6];
+    [(MTPlaylist *)self setPrimitiveValue:episodesCopy forKey:v6];
     [(MTPlaylist *)self didChangeValueForKey:v6];
   }
 }
 
 - (id)podcasts
 {
-  v2 = [(MTPlaylist *)self settings];
-  v3 = [v2 valueForKey:kPlaylistSettingPodcast];
+  settings = [(MTPlaylist *)self settings];
+  v3 = [settings valueForKey:kPlaylistSettingPodcast];
 
   return v3;
 }
 
-- (void)setIsFolder:(BOOL)a3
+- (void)setIsFolder:(BOOL)folder
 {
-  v3 = a3;
-  v5 = [(MTPlaylist *)self flags];
-  if ((v5 & 1) != v3)
+  folderCopy = folder;
+  flags = [(MTPlaylist *)self flags];
+  if ((flags & 1) != folderCopy)
   {
 
-    [(MTPlaylist *)self setFlags:v5 & 0xFFFFFFFFFFFFFFFELL | v3];
+    [(MTPlaylist *)self setFlags:flags & 0xFFFFFFFFFFFFFFFELL | folderCopy];
   }
 }
 
-- (void)setIsBuiltIn:(BOOL)a3
+- (void)setIsBuiltIn:(BOOL)in
 {
-  v3 = a3;
-  v5 = [(MTPlaylist *)self flags];
-  if (((((v5 & 8) == 0) ^ v3) & 1) == 0)
+  inCopy = in;
+  flags = [(MTPlaylist *)self flags];
+  if (((((flags & 8) == 0) ^ inCopy) & 1) == 0)
   {
     v6 = 8;
-    if (!v3)
+    if (!inCopy)
     {
       v6 = 0;
     }
 
-    [(MTPlaylist *)self setFlags:v5 & 0xFFFFFFFFFFFFFFF7 | v6];
+    [(MTPlaylist *)self setFlags:flags & 0xFFFFFFFFFFFFFFF7 | v6];
   }
 }
 
-- (void)setIsItunesSmartPlaylist:(BOOL)a3
+- (void)setIsItunesSmartPlaylist:(BOOL)playlist
 {
-  v3 = a3;
-  v5 = [(MTPlaylist *)self flags];
-  if (((((v5 & 0x80) == 0) ^ v3) & 1) == 0)
+  playlistCopy = playlist;
+  flags = [(MTPlaylist *)self flags];
+  if (((((flags & 0x80) == 0) ^ playlistCopy) & 1) == 0)
   {
     v6 = 128;
-    if (!v3)
+    if (!playlistCopy)
     {
       v6 = 0;
     }
 
-    [(MTPlaylist *)self setFlags:v5 & 0xFFFFFFFFFFFFFF7FLL | v6];
+    [(MTPlaylist *)self setFlags:flags & 0xFFFFFFFFFFFFFF7FLL | v6];
   }
 }
 
 - (BOOL)isEditable
 {
-  v2 = [(MTPlaylist *)self uuid];
-  v3 = [v2 isEqualToString:kPlaylistITunesPlaylistUuid];
+  uuid = [(MTPlaylist *)self uuid];
+  v3 = [uuid isEqualToString:kPlaylistITunesPlaylistUuid];
 
   return v3 ^ 1;
 }
@@ -389,8 +389,8 @@ LABEL_30:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(MTPlaylist *)self episodes];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  episodes = [(MTPlaylist *)self episodes];
+  v4 = [episodes countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -403,7 +403,7 @@ LABEL_30:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(episodes);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
@@ -414,7 +414,7 @@ LABEL_30:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [episodes countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -426,9 +426,9 @@ LABEL_30:
     v7 = 0;
   }
 
-  v11 = [(MTPlaylist *)self unplayedCount];
-  v12 = v11 != v6;
-  if (v11 != v6)
+  unplayedCount = [(MTPlaylist *)self unplayedCount];
+  v12 = unplayedCount != v6;
+  if (unplayedCount != v6)
   {
     [(MTPlaylist *)self setUnplayedCount:v6];
   }
@@ -442,19 +442,19 @@ LABEL_30:
   return v12;
 }
 
-- (void)setHasBeenSynced:(BOOL)a3
+- (void)setHasBeenSynced:(BOOL)synced
 {
-  v3 = a3;
-  v5 = [(MTPlaylist *)self flags];
-  if (((((v5 & 0x40) == 0) ^ v3) & 1) == 0)
+  syncedCopy = synced;
+  flags = [(MTPlaylist *)self flags];
+  if (((((flags & 0x40) == 0) ^ syncedCopy) & 1) == 0)
   {
     v6 = 64;
-    if (!v3)
+    if (!syncedCopy)
     {
       v6 = 0;
     }
 
-    [(MTPlaylist *)self setFlags:v5 & 0xFFFFFFFFFFFFFFBFLL | v6];
+    [(MTPlaylist *)self setFlags:flags & 0xFFFFFFFFFFFFFFBFLL | v6];
   }
 }
 
@@ -464,8 +464,8 @@ LABEL_30:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(MTPlaylist *)self episodes];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  episodes = [(MTPlaylist *)self episodes];
+  v4 = [episodes countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -477,13 +477,13 @@ LABEL_30:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(episodes);
         }
 
         v6 += [*(*(&v9 + 1) + 8 * i) isPlayed] ^ 1;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [episodes countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -497,34 +497,34 @@ LABEL_30:
   [(MTPlaylist *)self setUnplayedCount:v6];
 }
 
-- (void)removePodcast:(id)a3
+- (void)removePodcast:(id)podcast
 {
-  v4 = a3;
-  v5 = [(MTPlaylist *)self managedObjectContext];
+  podcastCopy = podcast;
+  managedObjectContext = [(MTPlaylist *)self managedObjectContext];
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = sub_100008ADC;
   v21 = sub_10003B544;
   v22 = 0;
-  v6 = [(MTPlaylist *)self settings];
+  settings = [(MTPlaylist *)self settings];
   v11 = _NSConcreteStackBlock;
   v12 = 3221225472;
   v13 = sub_1000F603C;
   v14 = &unk_1004D8238;
-  v7 = v4;
+  v7 = podcastCopy;
   v15 = v7;
   v16 = &v17;
-  [v6 enumerateObjectsUsingBlock:&v11];
+  [settings enumerateObjectsUsingBlock:&v11];
 
   if (v18[5])
   {
-    [v5 deleteObject:{v11, v12, v13, v14}];
+    [managedObjectContext deleteObject:{v11, v12, v13, v14}];
   }
 
   v8 = [(MTPlaylist *)self mutableSetValueForKey:kPlaylistDeletedEpisodes, v11, v12, v13, v14];
-  v9 = [v7 episodes];
-  [v8 minusSet:v9];
+  episodes = [v7 episodes];
+  [v8 minusSet:episodes];
 
   v10 = [(MTPlaylist *)self mutableOrderedSetValueForKey:kPlaylistPodcasts];
   [v10 removeObject:v7];
@@ -533,32 +533,32 @@ LABEL_30:
   _Block_object_dispose(&v17, 8);
 }
 
-- (void)removePodcastEpisodes:(id)a3 shouldSave:(BOOL)a4
+- (void)removePodcastEpisodes:(id)episodes shouldSave:(BOOL)save
 {
-  v6 = a3;
+  episodesCopy = episodes;
   [(MTPlaylist *)self managedObjectContext];
   v10 = _NSConcreteStackBlock;
   v11 = 3221225472;
   v12 = sub_1000F61C0;
   v13 = &unk_1004D9668;
-  v14 = self;
-  v15 = v6;
-  v16 = v17 = a4;
+  selfCopy = self;
+  v15 = episodesCopy;
+  v16 = v17 = save;
   v7 = v16;
-  v8 = v6;
+  v8 = episodesCopy;
   [v7 performBlockAndWait:&v10];
   v9 = [_TtC18PodcastsFoundation18SyncKeysRepository shared:v10];
   [v9 setIsPlaylistSyncDirty:1];
 }
 
-- (void)removeEpisodes:(id)a3
+- (void)removeEpisodes:(id)episodes
 {
-  v4 = a3;
+  episodesCopy = episodes;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [episodesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -570,7 +570,7 @@ LABEL_30:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(episodesCopy);
         }
 
         [(MTPlaylist *)self removeEpisode:*(*(&v13 + 1) + 8 * v8) inBulkTransaction:1];
@@ -578,7 +578,7 @@ LABEL_30:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [episodesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -595,22 +595,22 @@ LABEL_30:
   [v10 setIsPlaylistSyncDirty:1];
 }
 
-- (void)removeEpisode:(id)a3 inBulkTransaction:(BOOL)a4
+- (void)removeEpisode:(id)episode inBulkTransaction:(BOOL)transaction
 {
-  v6 = a3;
-  v7 = [(MTPlaylist *)self managedObjectContext];
+  episodeCopy = episode;
+  managedObjectContext = [(MTPlaylist *)self managedObjectContext];
   v11 = _NSConcreteStackBlock;
   v12 = 3221225472;
   v13 = sub_1000F667C;
   v14 = &unk_1004D9668;
-  v15 = self;
-  v8 = v6;
+  selfCopy = self;
+  v8 = episodeCopy;
   v16 = v8;
-  v18 = a4;
-  v9 = v7;
+  transactionCopy = transaction;
+  v9 = managedObjectContext;
   v17 = v9;
   [v9 performBlockAndWait:&v11];
-  if (!a4)
+  if (!transaction)
   {
     v10 = [_TtC18PodcastsFoundation18SyncKeysRepository shared:v11];
     [v10 setIsPlaylistSyncDirty:1];
@@ -623,8 +623,8 @@ LABEL_30:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(MTPlaylist *)self episodes];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  episodes = [(MTPlaylist *)self episodes];
+  v3 = [episodes countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -636,14 +636,14 @@ LABEL_30:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(episodes);
         }
 
         [*(*(&v10 + 1) + 8 * i) duration];
         v6 = v6 + v8;
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [episodes countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -661,16 +661,16 @@ LABEL_30:
 {
   if ([(MTPlaylist *)self isFolder])
   {
-    v3 = 0;
+    firstObject = 0;
   }
 
   else
   {
-    v4 = [(MTPlaylist *)self episodes];
-    v3 = [v4 firstObject];
+    episodes = [(MTPlaylist *)self episodes];
+    firstObject = [episodes firstObject];
   }
 
-  return v3;
+  return firstObject;
 }
 
 - (int64_t)getFolderSubPlaylistsCount
@@ -680,14 +680,14 @@ LABEL_30:
   v13 = 0x2020000000;
   v14 = 0;
   v3 = +[MTDB sharedInstance];
-  v4 = [v3 mainOrPrivateContext];
+  mainOrPrivateContext = [v3 mainOrPrivateContext];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000F6984;
   v8[3] = &unk_1004D87E8;
   v8[4] = self;
-  v5 = v4;
+  v5 = mainOrPrivateContext;
   v9 = v5;
   v10 = &v11;
   [v5 performBlockAndWait:v8];
@@ -704,13 +704,13 @@ LABEL_30:
   v12 = 0x2020000000;
   v13 = 0;
   v2 = +[MTDB sharedInstance];
-  v3 = [v2 mainOrPrivateContext];
+  mainOrPrivateContext = [v2 mainOrPrivateContext];
 
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000F6B6C;
   v7[3] = &unk_1004D8CC8;
-  v4 = v3;
+  v4 = mainOrPrivateContext;
   v8 = v4;
   v9 = &v10;
   [v4 performBlockAndWait:v7];
@@ -720,28 +720,28 @@ LABEL_30:
   return v5;
 }
 
-+ (id)stringForContainerOrder:(int)a3 short:(BOOL)a4
++ (id)stringForContainerOrder:(int)order short:(BOOL)short
 {
   v4 = 0;
-  if (a3 <= 2)
+  if (order <= 2)
   {
-    if (a3)
+    if (order)
     {
-      if (a3 == 1)
+      if (order == 1)
       {
-        v5 = [NSBundle mainBundle:*&a3];
+        v5 = [NSBundle mainBundle:*&order];
         v6 = v5;
         v7 = @"Newest To Oldest";
       }
 
       else
       {
-        if (a3 != 2)
+        if (order != 2)
         {
           goto LABEL_15;
         }
 
-        v5 = [NSBundle mainBundle:*&a3];
+        v5 = [NSBundle mainBundle:*&order];
         v6 = v5;
         v7 = @"Manual";
       }
@@ -751,7 +751,7 @@ LABEL_30:
     {
       v5 = +[NSBundle mainBundle];
       v6 = v5;
-      if (a4)
+      if (short)
       {
         v7 = @"MY_PODCASTS_ORDER_SHORT";
       }
@@ -765,15 +765,15 @@ LABEL_30:
     goto LABEL_14;
   }
 
-  if (a3 == 3)
+  if (order == 3)
   {
-    v5 = [NSBundle mainBundle:*&a3];
+    v5 = [NSBundle mainBundle:*&order];
     v6 = v5;
     v7 = @"Oldest To Newest";
     goto LABEL_14;
   }
 
-  if (a3 == 4 || a3 == 5)
+  if (order == 4 || order == 5)
   {
     v5 = +[NSBundle mainBundle];
     v6 = v5;
@@ -787,27 +787,27 @@ LABEL_15:
   return v4;
 }
 
-+ (id)containerOrderOptionArray:(BOOL)a3
++ (id)containerOrderOptionArray:(BOOL)array
 {
-  v3 = a3;
-  v5 = [a1 stringForContainerOrder:0 short:a3];
-  v6 = [a1 stringForContainerOrder:1 short:{v3, v5}];
+  arrayCopy = array;
+  v5 = [self stringForContainerOrder:0 short:array];
+  v6 = [self stringForContainerOrder:1 short:{arrayCopy, v5}];
   v12[1] = v6;
-  v7 = [a1 stringForContainerOrder:3 short:v3];
+  v7 = [self stringForContainerOrder:3 short:arrayCopy];
   v12[2] = v7;
-  v8 = [a1 stringForContainerOrder:2 short:v3];
+  v8 = [self stringForContainerOrder:2 short:arrayCopy];
   v12[3] = v8;
-  v9 = [a1 stringForContainerOrder:4 short:v3];
+  v9 = [self stringForContainerOrder:4 short:arrayCopy];
   v12[4] = v9;
   v10 = [NSArray arrayWithObjects:v12 count:5];
 
   return v10;
 }
 
-+ (id)predicateForFlag:(int)a3 isTrue:(BOOL)a4
++ (id)predicateForFlag:(int)flag isTrue:(BOOL)true
 {
-  v4 = (1 << a3);
-  if (a4)
+  v4 = (1 << flag);
+  if (true)
   {
     v5 = @"%K != NULL && (%K & %d) != 0";
   }
@@ -822,10 +822,10 @@ LABEL_15:
   return v6;
 }
 
-+ (id)predicateForMediaLibraryId:(int64_t)a3
++ (id)predicateForMediaLibraryId:(int64_t)id
 {
   v3 = kPlaylistMediaLibraryId;
-  v4 = [NSNumber numberWithLongLong:a3];
+  v4 = [NSNumber numberWithLongLong:id];
   v5 = [NSPredicate predicateWithFormat:@"%K = %@", v3, v4];
 
   return v5;
@@ -858,25 +858,25 @@ LABEL_15:
   v3 = [(MTPlaylist *)self dictionaryWithValuesForKeys:v17];
   v4 = [v3 mutableCopy];
 
-  v5 = [(MTPlaylist *)self defaultSettings];
-  v6 = [v5 metricsKeys];
-  v16 = [v5 dictionaryWithValuesForKeys:v6];
+  defaultSettings = [(MTPlaylist *)self defaultSettings];
+  metricsKeys = [defaultSettings metricsKeys];
+  v16 = [defaultSettings dictionaryWithValuesForKeys:metricsKeys];
 
   [v4 addEntriesFromDictionary:v16];
   v20[0] = @"settings";
   v20[1] = @"counts";
   v21[0] = v4;
   v18[0] = @"episodes";
-  v7 = [(MTPlaylist *)self episodes];
-  v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v7 count]);
+  episodes = [(MTPlaylist *)self episodes];
+  v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [episodes count]);
   v19[0] = v8;
   v18[1] = @"podcasts";
-  v9 = [(MTPlaylist *)self podcasts];
-  v10 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v9 count]);
+  podcasts = [(MTPlaylist *)self podcasts];
+  v10 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [podcasts count]);
   v19[1] = v10;
   v18[2] = @"deletedEpisodes";
-  v11 = [(MTPlaylist *)self deletedEpisodes];
-  v12 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v11 count]);
+  deletedEpisodes = [(MTPlaylist *)self deletedEpisodes];
+  v12 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [deletedEpisodes count]);
   v19[2] = v12;
   v13 = [NSDictionary dictionaryWithObjects:v19 forKeys:v18 count:3];
   v21[1] = v13;

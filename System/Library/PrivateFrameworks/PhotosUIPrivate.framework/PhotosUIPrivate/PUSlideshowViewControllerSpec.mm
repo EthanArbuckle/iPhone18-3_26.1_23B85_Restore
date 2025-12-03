@@ -1,60 +1,60 @@
 @interface PUSlideshowViewControllerSpec
-- (PUSlideshowViewControllerSpec)initWithMode:(unint64_t)a3;
+- (PUSlideshowViewControllerSpec)initWithMode:(unint64_t)mode;
 - (PUSlideshowViewControllerSpecChange)currentChange;
-- (void)_setShouldObserveAirplayRoute:(BOOL)a3;
-- (void)_setShouldShowAirplayButton:(BOOL)a3;
-- (void)_setShouldShowChromeBars:(BOOL)a3;
-- (void)_setShouldShowPlaceholder:(BOOL)a3;
+- (void)_setShouldObserveAirplayRoute:(BOOL)route;
+- (void)_setShouldShowAirplayButton:(BOOL)button;
+- (void)_setShouldShowChromeBars:(BOOL)bars;
+- (void)_setShouldShowPlaceholder:(BOOL)placeholder;
 - (void)updateIfNeeded;
 @end
 
 @implementation PUSlideshowViewControllerSpec
 
-- (void)_setShouldShowAirplayButton:(BOOL)a3
+- (void)_setShouldShowAirplayButton:(BOOL)button
 {
-  v3 = a3;
+  buttonCopy = button;
   [(PUViewControllerSpec *)self assertInsideChangesBlock];
-  if (self->_shouldShowAirplayButton != v3)
+  if (self->_shouldShowAirplayButton != buttonCopy)
   {
-    self->_shouldShowAirplayButton = v3;
-    v5 = [(PUSlideshowViewControllerSpec *)self currentChange];
-    [v5 _setShouldShowAirplayButtonChanged:1];
+    self->_shouldShowAirplayButton = buttonCopy;
+    currentChange = [(PUSlideshowViewControllerSpec *)self currentChange];
+    [currentChange _setShouldShowAirplayButtonChanged:1];
   }
 }
 
-- (void)_setShouldObserveAirplayRoute:(BOOL)a3
+- (void)_setShouldObserveAirplayRoute:(BOOL)route
 {
-  v3 = a3;
+  routeCopy = route;
   [(PUViewControllerSpec *)self assertInsideChangesBlock];
-  if (self->_shouldObserveAirplayRoute != v3)
+  if (self->_shouldObserveAirplayRoute != routeCopy)
   {
-    self->_shouldObserveAirplayRoute = v3;
-    v5 = [(PUSlideshowViewControllerSpec *)self currentChange];
-    [v5 _setShouldObserveAirplayRouteChanged:1];
+    self->_shouldObserveAirplayRoute = routeCopy;
+    currentChange = [(PUSlideshowViewControllerSpec *)self currentChange];
+    [currentChange _setShouldObserveAirplayRouteChanged:1];
   }
 }
 
-- (void)_setShouldShowChromeBars:(BOOL)a3
+- (void)_setShouldShowChromeBars:(BOOL)bars
 {
-  v3 = a3;
+  barsCopy = bars;
   [(PUViewControllerSpec *)self assertInsideChangesBlock];
-  if (self->_shouldShowChromeBars != v3)
+  if (self->_shouldShowChromeBars != barsCopy)
   {
-    self->_shouldShowChromeBars = v3;
-    v5 = [(PUSlideshowViewControllerSpec *)self currentChange];
-    [v5 _setShouldShowChromeBarsChanged:1];
+    self->_shouldShowChromeBars = barsCopy;
+    currentChange = [(PUSlideshowViewControllerSpec *)self currentChange];
+    [currentChange _setShouldShowChromeBarsChanged:1];
   }
 }
 
-- (void)_setShouldShowPlaceholder:(BOOL)a3
+- (void)_setShouldShowPlaceholder:(BOOL)placeholder
 {
-  v3 = a3;
+  placeholderCopy = placeholder;
   [(PUViewControllerSpec *)self assertInsideChangesBlock];
-  if (self->_shouldShowPlaceholder != v3)
+  if (self->_shouldShowPlaceholder != placeholderCopy)
   {
-    self->_shouldShowPlaceholder = v3;
-    v5 = [(PUSlideshowViewControllerSpec *)self currentChange];
-    [v5 _setShouldShowPlaceholderChanged:1];
+    self->_shouldShowPlaceholder = placeholderCopy;
+    currentChange = [(PUSlideshowViewControllerSpec *)self currentChange];
+    [currentChange _setShouldShowPlaceholderChanged:1];
   }
 }
 
@@ -63,26 +63,26 @@
   v9.receiver = self;
   v9.super_class = PUSlideshowViewControllerSpec;
   [(PUViewControllerSpec *)&v9 updateIfNeeded];
-  v3 = [(PUSlideshowViewControllerSpec *)self isChromeVisible];
-  v4 = [(PUSlideshowViewControllerSpec *)self isAirplayScreenAvailable];
-  v5 = [(PUSlideshowViewControllerSpec *)self isAirplayRouteAvailable];
+  isChromeVisible = [(PUSlideshowViewControllerSpec *)self isChromeVisible];
+  isAirplayScreenAvailable = [(PUSlideshowViewControllerSpec *)self isAirplayScreenAvailable];
+  isAirplayRouteAvailable = [(PUSlideshowViewControllerSpec *)self isAirplayRouteAvailable];
   v6 = self->_mode == 0;
-  v7 = v6 & (v3 | v4);
-  v8 = [(PUSlideshowViewControllerSpec *)self shouldRegisterToAirplay];
-  [(PUSlideshowViewControllerSpec *)self _setShouldShowPlaceholder:v6 & v4];
+  v7 = v6 & (isChromeVisible | isAirplayScreenAvailable);
+  shouldRegisterToAirplay = [(PUSlideshowViewControllerSpec *)self shouldRegisterToAirplay];
+  [(PUSlideshowViewControllerSpec *)self _setShouldShowPlaceholder:v6 & isAirplayScreenAvailable];
   [(PUSlideshowViewControllerSpec *)self _setShouldShowChromeBars:v7];
-  [(PUSlideshowViewControllerSpec *)self _setShouldObserveAirplayRoute:v8 & v7];
-  [(PUSlideshowViewControllerSpec *)self _setShouldShowAirplayButton:v7 & v5];
+  [(PUSlideshowViewControllerSpec *)self _setShouldObserveAirplayRoute:shouldRegisterToAirplay & v7];
+  [(PUSlideshowViewControllerSpec *)self _setShouldShowAirplayButton:v7 & isAirplayRouteAvailable];
 }
 
-- (PUSlideshowViewControllerSpec)initWithMode:(unint64_t)a3
+- (PUSlideshowViewControllerSpec)initWithMode:(unint64_t)mode
 {
   v5.receiver = self;
   v5.super_class = PUSlideshowViewControllerSpec;
   result = [(PUViewControllerSpec *)&v5 init];
   if (result)
   {
-    result->_mode = a3;
+    result->_mode = mode;
   }
 
   return result;
@@ -92,9 +92,9 @@
 {
   v4.receiver = self;
   v4.super_class = PUSlideshowViewControllerSpec;
-  v2 = [(PUViewControllerSpec *)&v4 currentChange];
+  currentChange = [(PUViewControllerSpec *)&v4 currentChange];
 
-  return v2;
+  return currentChange;
 }
 
 @end

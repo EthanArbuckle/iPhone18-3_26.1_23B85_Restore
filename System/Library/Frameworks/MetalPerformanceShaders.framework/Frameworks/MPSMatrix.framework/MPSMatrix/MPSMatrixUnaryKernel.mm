@@ -1,20 +1,20 @@
 @interface MPSMatrixUnaryKernel
-- (MPSMatrixUnaryKernel)initWithCoder:(id)a3 device:(id)a4;
-- (MPSMatrixUnaryKernel)initWithDevice:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (MPSMatrixUnaryKernel)initWithCoder:(id)coder device:(id)device;
+- (MPSMatrixUnaryKernel)initWithDevice:(id)device;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setResultMatrixOrigin:(MTLOrigin *)resultMatrixOrigin;
 - (void)setSourceMatrixOrigin:(MTLOrigin *)sourceMatrixOrigin;
 @end
 
 @implementation MPSMatrixUnaryKernel
 
-- (MPSMatrixUnaryKernel)initWithDevice:(id)a3
+- (MPSMatrixUnaryKernel)initWithDevice:(id)device
 {
   v4.receiver = self;
   v4.super_class = MPSMatrixUnaryKernel;
-  result = [(MPSKernel *)&v4 initWithDevice:a3];
+  result = [(MPSKernel *)&v4 initWithDevice:device];
   if (result)
   {
     result->_sourceMatrixOrigin.y = 0;
@@ -30,11 +30,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v8.receiver = self;
   v8.super_class = MPSMatrixUnaryKernel;
-  result = [(MPSKernel *)&v8 copyWithZone:a3 device:a4];
+  result = [(MPSKernel *)&v8 copyWithZone:zone device:device];
   if (result)
   {
     z = self->_sourceMatrixOrigin.z;
@@ -50,27 +50,27 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.isa + *MEMORY[0x277CD7358] + 1) = 1;
   v45.receiver = self;
   v45.super_class = MPSMatrixUnaryKernel;
   [(MPSKernel *)&v45 encodeWithCoder:?];
-  objc_msgSend_encodeInt64_forKey_(a3, v5, self->_sourceMatrixOrigin.x, @"MPSMatrixUnaryKernel.sourceMatrixOrigin.x", v6, v7, v8, v9);
-  objc_msgSend_encodeInt64_forKey_(a3, v10, self->_sourceMatrixOrigin.y, @"MPSMatrixUnaryKernel.sourceMatrixOrigin.y", v11, v12, v13, v14);
-  objc_msgSend_encodeInt64_forKey_(a3, v15, self->_sourceMatrixOrigin.z, @"MPSMatrixUnaryKernel.sourceMatrixOrigin.z", v16, v17, v18, v19);
-  objc_msgSend_encodeInt64_forKey_(a3, v20, self->_resultMatrixOrigin.x, @"MPSMatrixUnaryKernel.resultMatrixOrigin.x", v21, v22, v23, v24);
-  objc_msgSend_encodeInt64_forKey_(a3, v25, self->_resultMatrixOrigin.y, @"MPSMatrixUnaryKernel.resultMatrixOrigin.y", v26, v27, v28, v29);
-  objc_msgSend_encodeInt64_forKey_(a3, v30, self->_resultMatrixOrigin.z, @"MPSMatrixUnaryKernel.resultMatrixOrigin.z", v31, v32, v33, v34);
-  objc_msgSend_encodeInt64_forKey_(a3, v35, self->_batchStart, @"MPSMatrixUnaryKernel.batchStart", v36, v37, v38, v39);
-  objc_msgSend_encodeInt64_forKey_(a3, v40, self->_batchSize, @"MPSMatrixUnaryKernel.batchSize", v41, v42, v43, v44);
+  objc_msgSend_encodeInt64_forKey_(coder, v5, self->_sourceMatrixOrigin.x, @"MPSMatrixUnaryKernel.sourceMatrixOrigin.x", v6, v7, v8, v9);
+  objc_msgSend_encodeInt64_forKey_(coder, v10, self->_sourceMatrixOrigin.y, @"MPSMatrixUnaryKernel.sourceMatrixOrigin.y", v11, v12, v13, v14);
+  objc_msgSend_encodeInt64_forKey_(coder, v15, self->_sourceMatrixOrigin.z, @"MPSMatrixUnaryKernel.sourceMatrixOrigin.z", v16, v17, v18, v19);
+  objc_msgSend_encodeInt64_forKey_(coder, v20, self->_resultMatrixOrigin.x, @"MPSMatrixUnaryKernel.resultMatrixOrigin.x", v21, v22, v23, v24);
+  objc_msgSend_encodeInt64_forKey_(coder, v25, self->_resultMatrixOrigin.y, @"MPSMatrixUnaryKernel.resultMatrixOrigin.y", v26, v27, v28, v29);
+  objc_msgSend_encodeInt64_forKey_(coder, v30, self->_resultMatrixOrigin.z, @"MPSMatrixUnaryKernel.resultMatrixOrigin.z", v31, v32, v33, v34);
+  objc_msgSend_encodeInt64_forKey_(coder, v35, self->_batchStart, @"MPSMatrixUnaryKernel.batchStart", v36, v37, v38, v39);
+  objc_msgSend_encodeInt64_forKey_(coder, v40, self->_batchSize, @"MPSMatrixUnaryKernel.batchSize", v41, v42, v43, v44);
 }
 
-- (MPSMatrixUnaryKernel)initWithCoder:(id)a3 device:(id)a4
+- (MPSMatrixUnaryKernel)initWithCoder:(id)coder device:(id)device
 {
   v57.receiver = self;
   v57.super_class = MPSMatrixUnaryKernel;
-  v5 = [(MPSKernel *)&v57 initWithCoder:a3 device:a4];
+  v5 = [(MPSKernel *)&v57 initWithCoder:coder device:device];
   v12 = v5;
   if (!v5)
   {
@@ -79,14 +79,14 @@
 
   if (*(&v5->super.super.isa + *MEMORY[0x277CD7358] + 1) << 8 == 256)
   {
-    v5->_sourceMatrixOrigin.x = objc_msgSend_decodeInt64ForKey_(a3, v6, @"MPSMatrixUnaryKernel.sourceMatrixOrigin.x", v7, v8, v9, v10, v11);
-    v12->_sourceMatrixOrigin.y = objc_msgSend_decodeInt64ForKey_(a3, v13, @"MPSMatrixUnaryKernel.sourceMatrixOrigin.y", v14, v15, v16, v17, v18);
-    v12->_sourceMatrixOrigin.z = objc_msgSend_decodeInt64ForKey_(a3, v19, @"MPSMatrixUnaryKernel.sourceMatrixOrigin.z", v20, v21, v22, v23, v24);
-    v12->_resultMatrixOrigin.x = objc_msgSend_decodeInt64ForKey_(a3, v25, @"MPSMatrixUnaryKernel.resultMatrixOrigin.x", v26, v27, v28, v29, v30);
-    v12->_resultMatrixOrigin.y = objc_msgSend_decodeInt64ForKey_(a3, v31, @"MPSMatrixUnaryKernel.resultMatrixOrigin.y", v32, v33, v34, v35, v36);
-    v12->_resultMatrixOrigin.z = objc_msgSend_decodeInt64ForKey_(a3, v37, @"MPSMatrixUnaryKernel.resultMatrixOrigin.z", v38, v39, v40, v41, v42);
-    v12->_batchStart = objc_msgSend_decodeInt64ForKey_(a3, v43, @"MPSMatrixUnaryKernel.batchStart", v44, v45, v46, v47, v48);
-    v12->_batchSize = objc_msgSend_decodeInt64ForKey_(a3, v49, @"MPSMatrixUnaryKernel.batchSize", v50, v51, v52, v53, v54);
+    v5->_sourceMatrixOrigin.x = objc_msgSend_decodeInt64ForKey_(coder, v6, @"MPSMatrixUnaryKernel.sourceMatrixOrigin.x", v7, v8, v9, v10, v11);
+    v12->_sourceMatrixOrigin.y = objc_msgSend_decodeInt64ForKey_(coder, v13, @"MPSMatrixUnaryKernel.sourceMatrixOrigin.y", v14, v15, v16, v17, v18);
+    v12->_sourceMatrixOrigin.z = objc_msgSend_decodeInt64ForKey_(coder, v19, @"MPSMatrixUnaryKernel.sourceMatrixOrigin.z", v20, v21, v22, v23, v24);
+    v12->_resultMatrixOrigin.x = objc_msgSend_decodeInt64ForKey_(coder, v25, @"MPSMatrixUnaryKernel.resultMatrixOrigin.x", v26, v27, v28, v29, v30);
+    v12->_resultMatrixOrigin.y = objc_msgSend_decodeInt64ForKey_(coder, v31, @"MPSMatrixUnaryKernel.resultMatrixOrigin.y", v32, v33, v34, v35, v36);
+    v12->_resultMatrixOrigin.z = objc_msgSend_decodeInt64ForKey_(coder, v37, @"MPSMatrixUnaryKernel.resultMatrixOrigin.z", v38, v39, v40, v41, v42);
+    v12->_batchStart = objc_msgSend_decodeInt64ForKey_(coder, v43, @"MPSMatrixUnaryKernel.batchStart", v44, v45, v46, v47, v48);
+    v12->_batchSize = objc_msgSend_decodeInt64ForKey_(coder, v49, @"MPSMatrixUnaryKernel.batchSize", v50, v51, v52, v53, v54);
     return v12;
   }
 

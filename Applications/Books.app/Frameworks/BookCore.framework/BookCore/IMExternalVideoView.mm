@@ -1,37 +1,37 @@
 @interface IMExternalVideoView
-- (void)layoutSublayersOfLayer:(id)a3;
-- (void)setVideoLayer:(id)a3;
+- (void)layoutSublayersOfLayer:(id)layer;
+- (void)setVideoLayer:(id)layer;
 @end
 
 @implementation IMExternalVideoView
 
-- (void)setVideoLayer:(id)a3
+- (void)setVideoLayer:(id)layer
 {
-  v5 = a3;
+  layerCopy = layer;
   videoLayer = self->_videoLayer;
-  if (videoLayer != v5)
+  if (videoLayer != layerCopy)
   {
     [(AVPlayerLayer *)videoLayer removeFromSuperlayer];
-    objc_storeStrong(&self->_videoLayer, a3);
-    v7 = [(IMExternalVideoView *)self layer];
-    [v7 addSublayer:self->_videoLayer];
+    objc_storeStrong(&self->_videoLayer, layer);
+    layer = [(IMExternalVideoView *)self layer];
+    [layer addSublayer:self->_videoLayer];
   }
 
   _objc_release_x1(videoLayer);
 }
 
-- (void)layoutSublayersOfLayer:(id)a3
+- (void)layoutSublayersOfLayer:(id)layer
 {
   v17.receiver = self;
   v17.super_class = IMExternalVideoView;
-  v4 = a3;
-  [(IMExternalVideoView *)&v17 layoutSublayersOfLayer:v4];
+  layerCopy = layer;
+  [(IMExternalVideoView *)&v17 layoutSublayersOfLayer:layerCopy];
   v5 = [(IMExternalVideoView *)self layer:v17.receiver];
 
-  if (v5 == v4)
+  if (v5 == layerCopy)
   {
-    v6 = [(IMExternalVideoView *)self videoLayer];
-    [v6 bounds];
+    videoLayer = [(IMExternalVideoView *)self videoLayer];
+    [videoLayer bounds];
     IsEmpty = CGRectIsEmpty(v18);
 
     if (IsEmpty)
@@ -45,8 +45,8 @@
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = [(IMExternalVideoView *)self videoLayer];
-    [v16 setFrame:{v9, v11, v13, v15}];
+    videoLayer2 = [(IMExternalVideoView *)self videoLayer];
+    [videoLayer2 setFrame:{v9, v11, v13, v15}];
 
     if (IsEmpty)
     {

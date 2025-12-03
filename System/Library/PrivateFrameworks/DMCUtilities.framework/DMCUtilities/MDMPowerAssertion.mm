@@ -2,20 +2,20 @@
 + (id)_currentAssertions;
 + (id)_dateFormatter;
 + (id)assertionDescriptions;
-- (MDMPowerAssertion)initWithReason:(id)a3;
+- (MDMPowerAssertion)initWithReason:(id)reason;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation MDMPowerAssertion
 
-- (MDMPowerAssertion)initWithReason:(id)a3
+- (MDMPowerAssertion)initWithReason:(id)reason
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   v17.receiver = self;
   v17.super_class = MDMPowerAssertion;
-  v5 = [(DMCPowerAssertion *)&v17 initWithReason:v4];
+  v5 = [(DMCPowerAssertion *)&v17 initWithReason:reasonCopy];
   if (v5)
   {
     v6 = objc_opt_new();
@@ -24,7 +24,7 @@
 
     if (+[DMCMultiUserModeUtilities isSharediPad])
     {
-      v8 = [MEMORY[0x1E69DF090] taskWithName:@"MDMBlockingTask" reason:v4];
+      v8 = [MEMORY[0x1E69DF090] taskWithName:@"MDMBlockingTask" reason:reasonCopy];
       blockingTask = v5->_blockingTask;
       v5->_blockingTask = v8;
 
@@ -37,7 +37,7 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v19 = v4;
+        v19 = reasonCopy;
         _os_log_impl(&dword_1B1630000, v10, OS_LOG_TYPE_DEFAULT, "Starting MDM power assertion with reason: %{public}@", buf, 0xCu);
       }
     }
@@ -76,9 +76,9 @@ void __36__MDMPowerAssertion_initWithReason___block_invoke(uint64_t a1)
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v4 = v3;
-      v5 = [(DMCProcessAssertion *)self reason];
+      reason = [(DMCProcessAssertion *)self reason];
       *buf = 138543362;
-      v11 = v5;
+      v11 = reason;
       _os_log_impl(&dword_1B1630000, v4, OS_LOG_TYPE_DEFAULT, "Ending MDM power assertion with reason: %{public}@", buf, 0xCu);
     }
   }
@@ -135,7 +135,7 @@ LABEL_7:
   v10 = __42__MDMPowerAssertion_assertionDescriptions__block_invoke;
   v11 = &unk_1E7ADCF00;
   v12 = v3;
-  v13 = a1;
+  selfCopy = self;
   v5 = v3;
   dispatch_sync(v4, &v8);
 
@@ -191,13 +191,13 @@ void __42__MDMPowerAssertion_assertionDescriptions__block_invoke(uint64_t a1)
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [v3 _dateFormatter];
-  v5 = [(MDMPowerAssertion *)self creationDate];
-  v6 = [v4 stringFromDate:v5];
+  _dateFormatter = [v3 _dateFormatter];
+  creationDate = [(MDMPowerAssertion *)self creationDate];
+  v6 = [_dateFormatter stringFromDate:creationDate];
 
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [(DMCProcessAssertion *)self reason];
-  v9 = [v7 stringWithFormat:@"<%@: %p {\n\tReason  : %@\n\tCreated : %@\n}>", v3, self, v8, v6];
+  reason = [(DMCProcessAssertion *)self reason];
+  v9 = [v7 stringWithFormat:@"<%@: %p {\n\tReason  : %@\n\tCreated : %@\n}>", v3, self, reason, v6];
 
   return v9;
 }

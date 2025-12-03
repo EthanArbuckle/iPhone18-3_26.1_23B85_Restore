@@ -1,12 +1,12 @@
 @interface AVURLAuthenticationChallenge
-- (AVURLAuthenticationChallenge)initWithAuthenticationChallenge:(id)a3 sender:(id)a4 requestInfo:(__CFDictionary *)a5 requestID:(unint64_t)a6;
+- (AVURLAuthenticationChallenge)initWithAuthenticationChallenge:(id)challenge sender:(id)sender requestInfo:(__CFDictionary *)info requestID:(unint64_t)d;
 - (void)_performCancellationByClient;
 - (void)dealloc;
 @end
 
 @implementation AVURLAuthenticationChallenge
 
-- (AVURLAuthenticationChallenge)initWithAuthenticationChallenge:(id)a3 sender:(id)a4 requestInfo:(__CFDictionary *)a5 requestID:(unint64_t)a6
+- (AVURLAuthenticationChallenge)initWithAuthenticationChallenge:(id)challenge sender:(id)sender requestInfo:(__CFDictionary *)info requestID:(unint64_t)d
 {
   v14.receiver = self;
   v14.super_class = AVURLAuthenticationChallenge;
@@ -14,9 +14,9 @@
   if (v10)
   {
     v10->_weakReference = [[AVWeakReference alloc] initWithReferencedObject:v10];
-    v10->_requestID = a6;
-    v11 = a5 ? CFRetain(a5) : 0;
-    if ((v10->_requestInfo = v11, !a3) || !a4 || (v10->_weakReference ? (v12 = v11 == 0) : (v12 = 1), v12))
+    v10->_requestID = d;
+    v11 = info ? CFRetain(info) : 0;
+    if ((v10->_requestInfo = v11, !challenge) || !sender || (v10->_weakReference ? (v12 = v11 == 0) : (v12 = 1), v12))
     {
 
       return 0;
@@ -41,9 +41,9 @@
 
 - (void)_performCancellationByClient
 {
-  v3 = [(NSURLAuthenticationChallenge *)self sender];
+  sender = [(NSURLAuthenticationChallenge *)self sender];
 
-  [(NSURLAuthenticationChallengeSender *)v3 cancelAuthenticationChallenge:self];
+  [(NSURLAuthenticationChallengeSender *)sender cancelAuthenticationChallenge:self];
 }
 
 @end

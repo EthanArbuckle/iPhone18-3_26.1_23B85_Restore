@@ -1,11 +1,11 @@
 @interface _MRApplicationConnectionMessageProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRApplicationConnectionMessageProtobuf
@@ -16,86 +16,86 @@
   v8.receiver = self;
   v8.super_class = _MRApplicationConnectionMessageProtobuf;
   v4 = [(_MRApplicationConnectionMessageProtobuf *)&v8 description];
-  v5 = [(_MRApplicationConnectionMessageProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRApplicationConnectionMessageProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   header = self->_header;
   if (header)
   {
-    v5 = [(_MRApplicationConnectionMessageHeaderProtobuf *)header dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"header"];
+    dictionaryRepresentation = [(_MRApplicationConnectionMessageHeaderProtobuf *)header dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"header"];
   }
 
   underlyingMessage = self->_underlyingMessage;
   if (underlyingMessage)
   {
-    [v3 setObject:underlyingMessage forKey:@"underlyingMessage"];
+    [dictionary setObject:underlyingMessage forKey:@"underlyingMessage"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_header)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_underlyingMessage)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_header)
   {
-    [v4 setHeader:?];
-    v4 = v5;
+    [toCopy setHeader:?];
+    toCopy = v5;
   }
 
   if (self->_underlyingMessage)
   {
     [v5 setUnderlyingMessage:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(_MRApplicationConnectionMessageHeaderProtobuf *)self->_header copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(_MRApplicationConnectionMessageHeaderProtobuf *)self->_header copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSData *)self->_underlyingMessage copyWithZone:a3];
+  v8 = [(NSData *)self->_underlyingMessage copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((header = self->_header, !(header | v4[1])) || -[_MRApplicationConnectionMessageHeaderProtobuf isEqual:](header, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((header = self->_header, !(header | equalCopy[1])) || -[_MRApplicationConnectionMessageHeaderProtobuf isEqual:](header, "isEqual:")))
   {
     underlyingMessage = self->_underlyingMessage;
-    if (underlyingMessage | v4[2])
+    if (underlyingMessage | equalCopy[2])
     {
       v7 = [(NSData *)underlyingMessage isEqual:?];
     }
@@ -114,12 +114,12 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   header = self->_header;
-  v6 = v4[1];
-  v7 = v4;
+  v6 = fromCopy[1];
+  v7 = fromCopy;
   if (header)
   {
     if (!v6)
@@ -140,12 +140,12 @@
     [(_MRApplicationConnectionMessageProtobuf *)self setHeader:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(_MRApplicationConnectionMessageProtobuf *)self setUnderlyingMessage:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 }
 

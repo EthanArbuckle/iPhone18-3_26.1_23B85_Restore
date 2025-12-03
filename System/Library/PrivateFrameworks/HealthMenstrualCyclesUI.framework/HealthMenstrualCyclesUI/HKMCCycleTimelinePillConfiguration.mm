@@ -1,14 +1,14 @@
 @interface HKMCCycleTimelinePillConfiguration
-+ (id)pillConfigurationWithWidth:(double)a3 spacing:(double)a4;
++ (id)pillConfigurationWithWidth:(double)width spacing:(double)spacing;
 @end
 
 @implementation HKMCCycleTimelinePillConfiguration
 
-+ (id)pillConfigurationWithWidth:(double)a3 spacing:(double)a4
++ (id)pillConfigurationWithWidth:(double)width spacing:(double)spacing
 {
   v6 = objc_alloc_init(HKMCCycleTimelinePillConfiguration);
-  v6->_width = a3;
-  v6->_spacing = a4;
+  v6->_width = width;
+  v6->_spacing = spacing;
 
   return v6;
 }

@@ -1,50 +1,50 @@
 @interface TSKDocumentRoot
-- (BOOL)documentCacheHasAtMostFileProtection:(id)a3;
+- (BOOL)documentCacheHasAtMostFileProtection:(id)protection;
 - (BOOL)hasICloudConflict;
 - (BOOL)hasICloudTeardownObserver;
-- (BOOL)writeData:(id)a3 atDocumentCachePath:(id)a4;
-- (CGImageSource)newImageSourceForDocumentCachePath:(id)a3;
+- (BOOL)writeData:(id)data atDocumentCachePath:(id)path;
+- (CGImageSource)newImageSourceForDocumentCachePath:(id)path;
 - (NSString)creationLanguage;
-- (TSKDocumentRoot)initWithContext:(id)a3;
+- (TSKDocumentRoot)initWithContext:(id)context;
 - (TSKDocumentViewController)viewController;
 - (TSSStylesheet)stylesheet;
 - (TSSTheme)theme;
 - (id)additionalDocumentPropertiesForWrite;
-- (id)commandForPropagatingPresetChangeCommand:(id)a3 alwaysPreserveAppearance:(BOOL)a4;
-- (id)dataFromDocumentCachePath:(id)a3;
+- (id)commandForPropagatingPresetChangeCommand:(id)command alwaysPreserveAppearance:(BOOL)appearance;
+- (id)dataFromDocumentCachePath:(id)path;
 - (id)documentFonts;
 - (id)modelEnumerator;
-- (id)modelEnumeratorForObjectsConformingToProtocol:(id)a3;
-- (id)modelEnumeratorForObjectsOfClass:(Class)a3;
-- (id)modelEnumeratorForObjectsPassingTest:(id)a3;
-- (id)modelEnumeratorForObjectsRespondingToSelector:(SEL)a3;
+- (id)modelEnumeratorForObjectsConformingToProtocol:(id)protocol;
+- (id)modelEnumeratorForObjectsOfClass:(Class)class;
+- (id)modelEnumeratorForObjectsPassingTest:(id)test;
+- (id)modelEnumeratorForObjectsRespondingToSelector:(SEL)selector;
 - (id)unavailableDocumentFonts;
-- (id)uniqueDocumentCachePathForProposedPath:(id)a3;
-- (int64_t)addObserverForICloudTeardownWithBlock:(id)a3;
+- (id)uniqueDocumentCachePathForProposedPath:(id)path;
+- (int64_t)addObserverForICloudTeardownWithBlock:(id)block;
 - (unint64_t)applicationType;
-- (unint64_t)nextRootSearchTargetIndexFromIndex:(unint64_t)a3 forString:(id)a4 options:(unint64_t)a5 inDirection:(unint64_t)a6;
-- (unint64_t)rootSearchTargetCountThroughIndex:(unint64_t)a3;
-- (void)changeDocumentCacheFileProtection:(id)a3;
-- (void)coalesceChanges:(id)a3;
+- (unint64_t)nextRootSearchTargetIndexFromIndex:(unint64_t)index forString:(id)string options:(unint64_t)options inDirection:(unint64_t)direction;
+- (unint64_t)rootSearchTargetCountThroughIndex:(unint64_t)index;
+- (void)changeDocumentCacheFileProtection:(id)protection;
+- (void)coalesceChanges:(id)changes;
 - (void)dealloc;
 - (void)didSaveWithEncryptionChange;
 - (void)documentDidLoad;
-- (void)enumerateStyleClientsUsingBlock:(id)a3;
+- (void)enumerateStyleClientsUsingBlock:(id)block;
 - (void)markAsModifiedIfLocaleIsOutOfDate;
 - (void)notifyICloudTeardownObservers;
-- (void)removeICloudTeardownObserver:(int64_t)a3;
-- (void)setTheme:(id)a3;
-- (void)setThemeForTemplateImport:(id)a3;
-- (void)withRootSearchTargetAtIndex:(unint64_t)a3 executeBlock:(id)a4;
+- (void)removeICloudTeardownObserver:(int64_t)observer;
+- (void)setTheme:(id)theme;
+- (void)setThemeForTemplateImport:(id)import;
+- (void)withRootSearchTargetAtIndex:(unint64_t)index executeBlock:(id)block;
 @end
 
 @implementation TSKDocumentRoot
 
-- (TSKDocumentRoot)initWithContext:(id)a3
+- (TSKDocumentRoot)initWithContext:(id)context
 {
   v5.receiver = self;
   v5.super_class = TSKDocumentRoot;
-  v3 = [(TSPObject *)&v5 initWithContext:a3];
+  v3 = [(TSPObject *)&v5 initWithContext:context];
   if (v3)
   {
     v3->_annotationAuthorStorage = [(TSPObject *)[TSKAnnotationAuthorStorage alloc] initWithContext:[(TSPObject *)v3 context]];
@@ -69,68 +69,68 @@
 
 - (unint64_t)applicationType
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKDocumentRoot applicationType]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKDocumentRoot.mm"), 178, @"should be overridden in app-specific document roots!"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKDocumentRoot.mm"), 178, @"should be overridden in app-specific document roots!"}];
   return 3;
 }
 
-- (id)dataFromDocumentCachePath:(id)a3
+- (id)dataFromDocumentCachePath:(id)path
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKDocumentRoot dataFromDocumentCachePath:]"];
-  [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKDocumentRoot.mm"), 186, @"should be overridden in TSADocumentRoot"}];
+  [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKDocumentRoot.mm"), 186, @"should be overridden in TSADocumentRoot"}];
   return 0;
 }
 
-- (BOOL)writeData:(id)a3 atDocumentCachePath:(id)a4
+- (BOOL)writeData:(id)data atDocumentCachePath:(id)path
 {
-  v4 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKDocumentRoot writeData:atDocumentCachePath:]"];
-  [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKDocumentRoot.mm"), 192, @"should be overridden in TSADocumentRoot"}];
+  [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKDocumentRoot.mm"), 192, @"should be overridden in TSADocumentRoot"}];
   return 0;
 }
 
-- (CGImageSource)newImageSourceForDocumentCachePath:(id)a3
+- (CGImageSource)newImageSourceForDocumentCachePath:(id)path
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKDocumentRoot newImageSourceForDocumentCachePath:]"];
-  [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKDocumentRoot.mm"), 198, @"should be overridden in TSADocumentRoot"}];
+  [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKDocumentRoot.mm"), 198, @"should be overridden in TSADocumentRoot"}];
   return 0;
 }
 
-- (id)uniqueDocumentCachePathForProposedPath:(id)a3
+- (id)uniqueDocumentCachePathForProposedPath:(id)path
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKDocumentRoot uniqueDocumentCachePathForProposedPath:]"];
-  [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKDocumentRoot.mm"), 204, @"should be overridden in TSADocumentRoot"}];
+  [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKDocumentRoot.mm"), 204, @"should be overridden in TSADocumentRoot"}];
   return 0;
 }
 
-- (void)changeDocumentCacheFileProtection:(id)a3
+- (void)changeDocumentCacheFileProtection:(id)protection
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKDocumentRoot changeDocumentCacheFileProtection:]"];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKDocumentRoot.mm"];
 
-  [v3 handleFailureInFunction:v4 file:v5 lineNumber:210 description:@"should be overridden in TSADocumentRoot"];
+  [currentHandler handleFailureInFunction:v4 file:v5 lineNumber:210 description:@"should be overridden in TSADocumentRoot"];
 }
 
-- (BOOL)documentCacheHasAtMostFileProtection:(id)a3
+- (BOOL)documentCacheHasAtMostFileProtection:(id)protection
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKDocumentRoot documentCacheHasAtMostFileProtection:]"];
-  [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKDocumentRoot.mm"), 215, @"should be overridden in TSADocumentRoot"}];
+  [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKDocumentRoot.mm"), 215, @"should be overridden in TSADocumentRoot"}];
   return 0;
 }
 
 - (void)didSaveWithEncryptionChange
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKDocumentRoot didSaveWithEncryptionChange]"];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKDocumentRoot.mm"];
 
-  [v2 handleFailureInFunction:v3 file:v4 lineNumber:221 description:@"should be overridden in TSADocumentRoot"];
+  [currentHandler handleFailureInFunction:v3 file:v4 lineNumber:221 description:@"should be overridden in TSADocumentRoot"];
 }
 
 - (void)documentDidLoad
@@ -142,9 +142,9 @@
 
 - (NSString)creationLanguage
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKDocumentRoot creationLanguage]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKDocumentRoot.mm"), 250, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKDocumentRoot.mm"), 250, @"Abstract method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "-[TSKDocumentRoot creationLanguage]"), 0}]);
 }
 
@@ -155,40 +155,40 @@
   return v2;
 }
 
-- (id)modelEnumeratorForObjectsPassingTest:(id)a3
+- (id)modelEnumeratorForObjectsPassingTest:(id)test
 {
-  v3 = [[TSKDocumentModelEnumerator alloc] initWithRootModelObject:self filter:a3];
+  v3 = [[TSKDocumentModelEnumerator alloc] initWithRootModelObject:self filter:test];
 
   return v3;
 }
 
-- (id)modelEnumeratorForObjectsOfClass:(Class)a3
+- (id)modelEnumeratorForObjectsOfClass:(Class)class
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __52__TSKDocumentRoot_modelEnumeratorForObjectsOfClass___block_invoke;
   v4[3] = &unk_279D477C8;
-  v4[4] = a3;
+  v4[4] = class;
   return [(TSKDocumentRoot *)self modelEnumeratorForObjectsPassingTest:v4];
 }
 
-- (id)modelEnumeratorForObjectsConformingToProtocol:(id)a3
+- (id)modelEnumeratorForObjectsConformingToProtocol:(id)protocol
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __65__TSKDocumentRoot_modelEnumeratorForObjectsConformingToProtocol___block_invoke;
   v4[3] = &unk_279D477C8;
-  v4[4] = a3;
+  v4[4] = protocol;
   return [(TSKDocumentRoot *)self modelEnumeratorForObjectsPassingTest:v4];
 }
 
-- (id)modelEnumeratorForObjectsRespondingToSelector:(SEL)a3
+- (id)modelEnumeratorForObjectsRespondingToSelector:(SEL)selector
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __65__TSKDocumentRoot_modelEnumeratorForObjectsRespondingToSelector___block_invoke;
   v4[3] = &__block_descriptor_40_e24_B24__0___TSKModel__8_B16l;
-  v4[4] = a3;
+  v4[4] = selector;
   return [(TSKDocumentRoot *)self modelEnumeratorForObjectsPassingTest:v4];
 }
 
@@ -200,22 +200,22 @@
   return [MEMORY[0x277CBEAC0] dictionaryWithObjects:v4 forKeys:&v3 count:1];
 }
 
-- (void)coalesceChanges:(id)a3
+- (void)coalesceChanges:(id)changes
 {
-  v4 = [a3 count];
+  v4 = [changes count];
   if (v4 >= 2)
   {
     v5 = 0;
     v6 = v4 - 1;
     do
     {
-      v7 = [a3 objectAtIndex:v6];
+      v7 = [changes objectAtIndex:v6];
       if ([v7 kind] == 2)
       {
         v8 = ([objc_msgSend(objc_msgSend(v7 "details")] >> 3) & 1;
         if ((v8 & v5) == 1)
         {
-          [a3 removeObjectAtIndex:v6];
+          [changes removeObjectAtIndex:v6];
           v5 = 1;
         }
 
@@ -234,45 +234,45 @@
 
 - (void)markAsModifiedIfLocaleIsOutOfDate
 {
-  v3 = [(NSLocale *)[(TSKDocumentRoot *)self locale] localeIdentifier];
-  if (!-[NSString isEqualToString:](v3, "isEqualToString:", [objc_msgSend(MEMORY[0x277CBEAF8] "currentLocale")]))
+  localeIdentifier = [(NSLocale *)[(TSKDocumentRoot *)self locale] localeIdentifier];
+  if (!-[NSString isEqualToString:](localeIdentifier, "isEqualToString:", [objc_msgSend(MEMORY[0x277CBEAF8] "currentLocale")]))
   {
 
     [(TSPObject *)self willModify];
   }
 }
 
-- (void)withRootSearchTargetAtIndex:(unint64_t)a3 executeBlock:(id)a4
+- (void)withRootSearchTargetAtIndex:(unint64_t)index executeBlock:(id)block
 {
-  v4 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKDocumentRoot withRootSearchTargetAtIndex:executeBlock:]"];
-  [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKDocumentRoot.mm"), 514, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKDocumentRoot.mm"), 514, @"Abstract method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "-[TSKDocumentRoot withRootSearchTargetAtIndex:executeBlock:]"), 0}]);
 }
 
-- (unint64_t)rootSearchTargetCountThroughIndex:(unint64_t)a3
+- (unint64_t)rootSearchTargetCountThroughIndex:(unint64_t)index
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKDocumentRoot rootSearchTargetCountThroughIndex:]"];
-  [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKDocumentRoot.mm"), 519, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKDocumentRoot.mm"), 519, @"Abstract method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "-[TSKDocumentRoot rootSearchTargetCountThroughIndex:]"), 0}]);
 }
 
-- (unint64_t)nextRootSearchTargetIndexFromIndex:(unint64_t)a3 forString:(id)a4 options:(unint64_t)a5 inDirection:(unint64_t)a6
+- (unint64_t)nextRootSearchTargetIndexFromIndex:(unint64_t)index forString:(id)string options:(unint64_t)options inDirection:(unint64_t)direction
 {
-  v6 = a3;
-  if (a6 == 1)
+  indexCopy = index;
+  if (direction == 1)
   {
-    if (a3)
+    if (index)
     {
-      if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+      if (index == 0x7FFFFFFFFFFFFFFFLL)
       {
-        return [(TSKDocumentRoot *)self rootSearchTargetCountThroughIndex:0x7FFFFFFFFFFFFFFFLL, a4, a5]- 1;
+        return [(TSKDocumentRoot *)self rootSearchTargetCountThroughIndex:0x7FFFFFFFFFFFFFFFLL, string, options]- 1;
       }
 
       else
       {
-        return a3 - 1;
+        return index - 1;
       }
     }
 
@@ -282,16 +282,16 @@
     }
   }
 
-  else if (!a6)
+  else if (!direction)
   {
-    if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+    if (index == 0x7FFFFFFFFFFFFFFFLL)
     {
       return 0;
     }
 
-    else if ([(TSKDocumentRoot *)self rootSearchTargetCountThroughIndex:a3, a4, a5]- 1 > a3)
+    else if ([(TSKDocumentRoot *)self rootSearchTargetCountThroughIndex:index, string, options]- 1 > index)
     {
-      ++v6;
+      ++indexCopy;
     }
 
     else
@@ -300,22 +300,22 @@
     }
   }
 
-  return v6;
+  return indexCopy;
 }
 
-- (id)commandForPropagatingPresetChangeCommand:(id)a3 alwaysPreserveAppearance:(BOOL)a4
+- (id)commandForPropagatingPresetChangeCommand:(id)command alwaysPreserveAppearance:(BOOL)appearance
 {
-  v4 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKDocumentRoot commandForPropagatingPresetChangeCommand:alwaysPreserveAppearance:]"];
-  [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKDocumentRoot.mm"), 567, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKDocumentRoot.mm"), 567, @"Abstract method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "-[TSKDocumentRoot commandForPropagatingPresetChangeCommand:alwaysPreserveAppearance:]"), 0}]);
 }
 
-- (int64_t)addObserverForICloudTeardownWithBlock:(id)a3
+- (int64_t)addObserverForICloudTeardownWithBlock:(id)block
 {
   if (self->_iCloudTeardownStackQueue || (v5 = [MEMORY[0x277D6C290] currentHandler], v6 = objc_msgSend(MEMORY[0x277CCACA8], "stringWithUTF8String:", "-[TSKDocumentRoot addObserverForICloudTeardownWithBlock:]"), objc_msgSend(v5, "handleFailureInFunction:file:lineNumber:description:", v6, objc_msgSend(MEMORY[0x277CCACA8], "stringWithUTF8String:", "/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKDocumentRoot.mm"), 580, @"invalid nil value for '%s'", "_iCloudTeardownStackQueue"), self->_iCloudTeardownStackQueue))
   {
-    v7 = [[TSKDocumentRootICloudObserver alloc] initWithBlock:a3];
+    v7 = [[TSKDocumentRootICloudObserver alloc] initWithBlock:block];
     iCloudTeardownStackQueue = self->_iCloudTeardownStackQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -348,7 +348,7 @@ uint64_t __57__TSKDocumentRoot_addObserverForICloudTeardownWithBlock___block_inv
   return [v2 addObject:v3];
 }
 
-- (void)removeICloudTeardownObserver:(int64_t)a3
+- (void)removeICloudTeardownObserver:(int64_t)observer
 {
   iCloudTeardownStackQueue = self->_iCloudTeardownStackQueue;
   if (iCloudTeardownStackQueue || (v6 = [MEMORY[0x277D6C290] currentHandler], v7 = objc_msgSend(MEMORY[0x277CCACA8], "stringWithUTF8String:", "-[TSKDocumentRoot removeICloudTeardownObserver:]"), objc_msgSend(v6, "handleFailureInFunction:file:lineNumber:description:", v7, objc_msgSend(MEMORY[0x277CCACA8], "stringWithUTF8String:", "/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKDocumentRoot.mm"), 599, @"invalid nil value for '%s'", "_iCloudTeardownStackQueue"), (iCloudTeardownStackQueue = self->_iCloudTeardownStackQueue) != 0))
@@ -358,7 +358,7 @@ uint64_t __57__TSKDocumentRoot_addObserverForICloudTeardownWithBlock___block_inv
     block[2] = __48__TSKDocumentRoot_removeICloudTeardownObserver___block_invoke;
     block[3] = &unk_279D47810;
     block[4] = self;
-    block[5] = a3;
+    block[5] = observer;
     dispatch_async(iCloudTeardownStackQueue, block);
   }
 }
@@ -493,61 +493,61 @@ uint64_t __44__TSKDocumentRoot_hasICloudTeardownObserver__block_invoke(uint64_t 
 
 - (BOOL)hasICloudConflict
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKDocumentRoot hasICloudConflict]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKDocumentRoot.mm"), 649, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKDocumentRoot.mm"), 649, @"Abstract method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "-[TSKDocumentRoot hasICloudConflict]"), 0}]);
 }
 
 - (TSKDocumentViewController)viewController
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKDocumentRoot(iOS) viewController]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKDocumentRoot_iOS.m"), 12, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKDocumentRoot_iOS.m"), 12, @"Abstract method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "-[TSKDocumentRoot(iOS) viewController]"), 0}]);
 }
 
 - (TSSTheme)theme
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKDocumentRoot(TSSAdditions) theme]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSKDocumentRoot_TSSAdditions.m"), 20, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSKDocumentRoot_TSSAdditions.m"), 20, @"Abstract method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "-[TSKDocumentRoot(TSSAdditions) theme]"), 0}]);
 }
 
-- (void)setTheme:(id)a3
+- (void)setTheme:(id)theme
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKDocumentRoot(TSSAdditions) setTheme:]"];
-  [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSKDocumentRoot_TSSAdditions.m"), 25, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSKDocumentRoot_TSSAdditions.m"), 25, @"Abstract method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "-[TSKDocumentRoot(TSSAdditions) setTheme:]"), 0}]);
 }
 
-- (void)setThemeForTemplateImport:(id)a3
+- (void)setThemeForTemplateImport:(id)import
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKDocumentRoot(TSSAdditions) setThemeForTemplateImport:]"];
-  [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSKDocumentRoot_TSSAdditions.m"), 30, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSKDocumentRoot_TSSAdditions.m"), 30, @"Abstract method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "-[TSKDocumentRoot(TSSAdditions) setThemeForTemplateImport:]"), 0}]);
 }
 
 - (TSSStylesheet)stylesheet
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKDocumentRoot(TSSAdditions) stylesheet]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSKDocumentRoot_TSSAdditions.m"), 35, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSKDocumentRoot_TSSAdditions.m"), 35, @"Abstract method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "-[TSKDocumentRoot(TSSAdditions) stylesheet]"), 0}]);
 }
 
-- (void)enumerateStyleClientsUsingBlock:(id)a3
+- (void)enumerateStyleClientsUsingBlock:(id)block
 {
-  v4 = [(TSKDocumentRoot *)self modelEnumerator];
+  modelEnumerator = [(TSKDocumentRoot *)self modelEnumerator];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __65__TSKDocumentRoot_TSSAdditions__enumerateStyleClientsUsingBlock___block_invoke;
   v5[3] = &unk_279D48158;
-  v5[4] = a3;
-  [v4 enumerateUsingBlock:v5];
+  v5[4] = block;
+  [modelEnumerator enumerateUsingBlock:v5];
 }
 
 uint64_t __65__TSKDocumentRoot_TSSAdditions__enumerateStyleClientsUsingBlock___block_invoke(uint64_t a1)
@@ -659,13 +659,13 @@ uint64_t __47__TSKDocumentRoot_TSWPAdditions__documentFonts__block_invoke(uint64
 - (id)unavailableDocumentFonts
 {
   v21 = *MEMORY[0x277D85DE8];
-  v2 = [(TSKDocumentRoot *)self documentFonts];
+  documentFonts = [(TSKDocumentRoot *)self documentFonts];
   v3 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [v2 countByEnumeratingWithState:&v14 objects:v20 count:16];
+  v4 = [documentFonts countByEnumeratingWithState:&v14 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -678,7 +678,7 @@ uint64_t __47__TSKDocumentRoot_TSWPAdditions__documentFonts__block_invoke(uint64
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(documentFonts);
         }
 
         v9 = *(*(&v14 + 1) + 8 * v8);
@@ -699,7 +699,7 @@ uint64_t __47__TSKDocumentRoot_TSWPAdditions__documentFonts__block_invoke(uint64
       }
 
       while (v5 != v8);
-      v5 = [v2 countByEnumeratingWithState:&v14 objects:v20 count:16];
+      v5 = [documentFonts countByEnumeratingWithState:&v14 objects:v20 count:16];
     }
 
     while (v5);

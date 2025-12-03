@@ -1,48 +1,48 @@
 @interface MKRatingStringBuilder
-+ (Class)ratingStringProviderForMapItem:(id)a3;
-+ (id)carPlayHeaderStringForMapItem:(id)a3 titleAttributes:(id)a4 providerAttributes:(id)a5;
-+ (id)delimitedPriceRangeAttributedStringForMapItem:(id)a3 textColor:(id)a4 font:(id)a5;
-+ (id)priceLabelStringFromMapItem:(id)a3;
-+ (id)ratingAndReviewSummaryAttributedStringForMapItem:(id)a3 textColor:(id)a4 font:(id)a5 theme:(id)a6;
-+ (id)ratingColorForMapItem:(id)a3;
-+ (id)ratingSummaryAttributedStringForMapItem:(id)a3 textColor:(id)a4 font:(id)a5 theme:(id)a6;
-+ (id)ratingSymbolNameForMapItem:(id)a3;
++ (Class)ratingStringProviderForMapItem:(id)item;
++ (id)carPlayHeaderStringForMapItem:(id)item titleAttributes:(id)attributes providerAttributes:(id)providerAttributes;
++ (id)delimitedPriceRangeAttributedStringForMapItem:(id)item textColor:(id)color font:(id)font;
++ (id)priceLabelStringFromMapItem:(id)item;
++ (id)ratingAndReviewSummaryAttributedStringForMapItem:(id)item textColor:(id)color font:(id)font theme:(id)theme;
++ (id)ratingColorForMapItem:(id)item;
++ (id)ratingSummaryAttributedStringForMapItem:(id)item textColor:(id)color font:(id)font theme:(id)theme;
++ (id)ratingSymbolNameForMapItem:(id)item;
 @end
 
 @implementation MKRatingStringBuilder
 
-+ (id)ratingColorForMapItem:(id)a3
++ (id)ratingColorForMapItem:(id)item
 {
-  v4 = a3;
-  v5 = [objc_msgSend(a1 ratingStringProviderForMapItem:{v4), "ratingColorForMapItem:", v4}];
+  itemCopy = item;
+  v5 = [objc_msgSend(self ratingStringProviderForMapItem:{itemCopy), "ratingColorForMapItem:", itemCopy}];
 
   return v5;
 }
 
-+ (id)carPlayHeaderStringForMapItem:(id)a3 titleAttributes:(id)a4 providerAttributes:(id)a5
++ (id)carPlayHeaderStringForMapItem:(id)item titleAttributes:(id)attributes providerAttributes:(id)providerAttributes
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [objc_msgSend(a1 ratingStringProviderForMapItem:{v10), "carPlayHeaderStringForMapItem:titleAttributes:providerAttributes:", v10, v9, v8}];
+  providerAttributesCopy = providerAttributes;
+  attributesCopy = attributes;
+  itemCopy = item;
+  v11 = [objc_msgSend(self ratingStringProviderForMapItem:{itemCopy), "carPlayHeaderStringForMapItem:titleAttributes:providerAttributes:", itemCopy, attributesCopy, providerAttributesCopy}];
 
   return v11;
 }
 
-+ (id)priceLabelStringFromMapItem:(id)a3
++ (id)priceLabelStringFromMapItem:(id)item
 {
-  v3 = a3;
-  if ([v3 _hasPriceDescription])
+  itemCopy = item;
+  if ([itemCopy _hasPriceDescription])
   {
-    v4 = [v3 _priceDescription];
+    _priceDescription = [itemCopy _priceDescription];
 LABEL_5:
-    v5 = v4;
+    v5 = _priceDescription;
     goto LABEL_7;
   }
 
-  if ([v3 _hasPriceRange])
+  if ([itemCopy _hasPriceRange])
   {
-    v4 = [v3 _priceRangeString];
+    _priceDescription = [itemCopy _priceRangeString];
     goto LABEL_5;
   }
 
@@ -52,21 +52,21 @@ LABEL_7:
   return v5;
 }
 
-+ (id)delimitedPriceRangeAttributedStringForMapItem:(id)a3 textColor:(id)a4 font:(id)a5
++ (id)delimitedPriceRangeAttributedStringForMapItem:(id)item textColor:(id)color font:(id)font
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = [a3 _priceRangeString];
-  if ([v9 length])
+  colorCopy = color;
+  fontCopy = font;
+  _priceRangeString = [item _priceRangeString];
+  if ([_priceRangeString length])
   {
     v10 = _MKLocalizedStringFromThisBundle(@"Delimiter [Nano]");
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v10, v9];
+    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v10, _priceRangeString];
     v12 = *MEMORY[0x1E69DB648];
     v17[0] = *MEMORY[0x1E69DB650];
     v17[1] = v12;
-    v18[0] = v7;
-    v18[1] = v8;
+    v18[0] = colorCopy;
+    v18[1] = fontCopy;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:2];
     v14 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v11];
     [v14 setAttributes:v13 range:{0, objc_msgSend(v14, "length")}];
@@ -81,41 +81,41 @@ LABEL_7:
   return v15;
 }
 
-+ (id)ratingAndReviewSummaryAttributedStringForMapItem:(id)a3 textColor:(id)a4 font:(id)a5 theme:(id)a6
++ (id)ratingAndReviewSummaryAttributedStringForMapItem:(id)item textColor:(id)color font:(id)font theme:(id)theme
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [objc_msgSend(a1 ratingStringProviderForMapItem:{v13), "ratingAndReviewSummaryAttributedStringForMapItem:textColor:font:theme:", v13, v12, v11, v10}];
+  themeCopy = theme;
+  fontCopy = font;
+  colorCopy = color;
+  itemCopy = item;
+  v14 = [objc_msgSend(self ratingStringProviderForMapItem:{itemCopy), "ratingAndReviewSummaryAttributedStringForMapItem:textColor:font:theme:", itemCopy, colorCopy, fontCopy, themeCopy}];
 
   return v14;
 }
 
-+ (id)ratingSummaryAttributedStringForMapItem:(id)a3 textColor:(id)a4 font:(id)a5 theme:(id)a6
++ (id)ratingSummaryAttributedStringForMapItem:(id)item textColor:(id)color font:(id)font theme:(id)theme
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [objc_msgSend(a1 ratingStringProviderForMapItem:{v13), "ratingSummaryAttributedStringForMapItem:textColor:font:theme:", v13, v12, v11, v10}];
+  themeCopy = theme;
+  fontCopy = font;
+  colorCopy = color;
+  itemCopy = item;
+  v14 = [objc_msgSend(self ratingStringProviderForMapItem:{itemCopy), "ratingSummaryAttributedStringForMapItem:textColor:font:theme:", itemCopy, colorCopy, fontCopy, themeCopy}];
 
   return v14;
 }
 
-+ (Class)ratingStringProviderForMapItem:(id)a3
++ (Class)ratingStringProviderForMapItem:(id)item
 {
-  v3 = [a3 _geoMapItem];
-  [v3 _hasAppleRatings];
+  _geoMapItem = [item _geoMapItem];
+  [_geoMapItem _hasAppleRatings];
 
   v4 = objc_opt_class();
 
   return v4;
 }
 
-+ (id)ratingSymbolNameForMapItem:(id)a3
++ (id)ratingSymbolNameForMapItem:(id)item
 {
-  v3 = [a1 ratingStringProviderForMapItem:a3];
+  v3 = [self ratingStringProviderForMapItem:item];
 
   return [v3 ratingSymbolName];
 }

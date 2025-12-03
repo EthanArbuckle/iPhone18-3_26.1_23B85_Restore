@@ -1,25 +1,25 @@
 @interface WFUserPromptOperation
 + (id)sharedMapTable;
-- (WFUserPromptOperation)initWithOptions:(id)a3 timeout:(double)a4 flags:(unint64_t)a5;
-- (void)_notification:(__CFUserNotification *)a3 didFinishWithResponse:(unint64_t)a4;
+- (WFUserPromptOperation)initWithOptions:(id)options timeout:(double)timeout flags:(unint64_t)flags;
+- (void)_notification:(__CFUserNotification *)_notification didFinishWithResponse:(unint64_t)response;
 - (void)_showPrompt;
 - (void)start;
 @end
 
 @implementation WFUserPromptOperation
 
-- (WFUserPromptOperation)initWithOptions:(id)a3 timeout:(double)a4 flags:(unint64_t)a5
+- (WFUserPromptOperation)initWithOptions:(id)options timeout:(double)timeout flags:(unint64_t)flags
 {
-  v9 = a3;
+  optionsCopy = options;
   v13.receiver = self;
   v13.super_class = WFUserPromptOperation;
   v10 = [(WFUserPromptOperation *)&v13 init];
   v11 = v10;
-  if (v9 && v10)
+  if (optionsCopy && v10)
   {
-    objc_storeStrong(&v10->_options, a3);
-    v11->_timeout = a4;
-    v11->_flags = a5;
+    objc_storeStrong(&v10->_options, options);
+    v11->_timeout = timeout;
+    v11->_flags = flags;
   }
 
   else
@@ -45,15 +45,15 @@
   v3 = *MEMORY[0x277CBECE8];
   [(WFUserPromptOperation *)self timeout];
   v5 = v4;
-  v6 = [(WFUserPromptOperation *)self flags];
-  v7 = [(WFUserPromptOperation *)self options];
-  v8 = CFUserNotificationCreate(v3, v5, v6, &error, v7);
+  flags = [(WFUserPromptOperation *)self flags];
+  options = [(WFUserPromptOperation *)self options];
+  v8 = CFUserNotificationCreate(v3, v5, flags, &error, options);
 
   if (v8 && (RunLoopSource = CFUserNotificationCreateRunLoopSource(v3, v8, _UserNotificationDidFinish, 0)) != 0)
   {
     v10 = RunLoopSource;
-    v11 = [objc_opt_class() sharedMapTable];
-    [v11 setObject:self forKey:v8];
+    sharedMapTable = [objc_opt_class() sharedMapTable];
+    [sharedMapTable setObject:self forKey:v8];
 
     Main = CFRunLoopGetMain();
     CFRunLoopAddSource(Main, v10, *MEMORY[0x277CBF048]);
@@ -66,7 +66,7 @@
   }
 }
 
-- (void)_notification:(__CFUserNotification *)a3 didFinishWithResponse:(unint64_t)a4
+- (void)_notification:(__CFUserNotification *)_notification didFinishWithResponse:(unint64_t)response
 {
   v20 = *MEMORY[0x277D85DE8];
   v7 = WFLogForCategory(0);
@@ -76,13 +76,13 @@
     v16 = 136315394;
     v17 = "[WFUserPromptOperation _notification:didFinishWithResponse:]";
     v18 = 2048;
-    v19 = a4;
+    responseCopy = response;
     _os_log_impl(&dword_273ECD000, v7, v8, "%s: response %lu", &v16, 0x16u);
   }
 
-  if (a3)
+  if (_notification)
   {
-    v9 = CFUserNotificationGetResponseDictionary(a3);
+    v9 = CFUserNotificationGetResponseDictionary(_notification);
     userResponse = self->_userResponse;
     self->_userResponse = v9;
 
@@ -96,23 +96,23 @@
         v16 = 136315394;
         v17 = "[WFUserPromptOperation _notification:didFinishWithResponse:]";
         v18 = 2112;
-        v19 = v13;
+        responseCopy = v13;
         _os_log_impl(&dword_273ECD000, v11, v12, "%s: user response %@", &v16, 0x16u);
       }
     }
   }
 
-  if (a4 <= 3)
+  if (response <= 3)
   {
-    [(WFUserPromptOperation *)self setResult:qword_273F75D10[a4]];
+    [(WFUserPromptOperation *)self setResult:qword_273F75D10[response]];
   }
 
-  v14 = [objc_opt_class() sharedMapTable];
-  [v14 removeObjectForKey:a3];
+  sharedMapTable = [objc_opt_class() sharedMapTable];
+  [sharedMapTable removeObjectForKey:_notification];
 
-  if (a3)
+  if (_notification)
   {
-    CFRelease(a3);
+    CFRelease(_notification);
   }
 
   [(WFOperation *)self finish];

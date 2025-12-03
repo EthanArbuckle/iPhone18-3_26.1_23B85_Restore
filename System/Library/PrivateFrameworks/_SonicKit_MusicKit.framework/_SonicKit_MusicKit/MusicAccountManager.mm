@@ -1,10 +1,10 @@
 @interface MusicAccountManager
-- (void)userStateDidChange:(id)a3;
+- (void)userStateDidChange:(id)change;
 @end
 
 @implementation MusicAccountManager
 
-- (void)userStateDidChange:(id)a3
+- (void)userStateDidChange:(id)change
 {
   v3 = sub_2753B6058();
   v4 = *(v3 - 8);

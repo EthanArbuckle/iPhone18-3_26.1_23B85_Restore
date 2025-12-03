@@ -1,28 +1,28 @@
 @interface SXComponentViewFactory
 - (NSString)type;
-- (SXComponentViewFactory)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegateProvider:(id)a5 componentStyleRendererFactory:(id)a6;
-- (id)componentViewForComponent:(id)a3;
+- (SXComponentViewFactory)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegateProvider:(id)delegateProvider componentStyleRendererFactory:(id)factory;
+- (id)componentViewForComponent:(id)component;
 - (int)role;
 @end
 
 @implementation SXComponentViewFactory
 
-- (SXComponentViewFactory)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegateProvider:(id)a5 componentStyleRendererFactory:(id)a6
+- (SXComponentViewFactory)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegateProvider:(id)delegateProvider componentStyleRendererFactory:(id)factory
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  providerCopy = provider;
+  viewportCopy = viewport;
+  delegateProviderCopy = delegateProvider;
+  factoryCopy = factory;
   v18.receiver = self;
   v18.super_class = SXComponentViewFactory;
   v15 = [(SXComponentViewFactory *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_DOMObjectProvider, a3);
-    objc_storeStrong(&v16->_viewport, a4);
-    objc_storeStrong(&v16->_presentationDelegateProvider, a5);
-    objc_storeStrong(&v16->_componentStyleRendererFactory, a6);
+    objc_storeStrong(&v15->_DOMObjectProvider, provider);
+    objc_storeStrong(&v16->_viewport, viewport);
+    objc_storeStrong(&v16->_presentationDelegateProvider, delegateProvider);
+    objc_storeStrong(&v16->_componentStyleRendererFactory, factory);
   }
 
   return v16;
@@ -40,9 +40,9 @@
   objc_exception_throw(v2);
 }
 
-- (id)componentViewForComponent:(id)a3
+- (id)componentViewForComponent:(id)component
 {
-  v3 = a3;
+  componentCopy = component;
   v4 = [MEMORY[0x1E695DF30] exceptionWithName:@"Unavailable" reason:@"Must be implemented by subclass" userInfo:0];
   objc_exception_throw(v4);
 }

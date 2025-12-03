@@ -1,16 +1,16 @@
 @interface STVoiceControlStatusDomainData
-- (BOOL)isEqual:(id)a3;
-- (STVoiceControlStatusDomainData)initWithCoder:(id)a3;
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:;
-- (id)dataByApplyingDiff:(id)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)diffFromData:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (STVoiceControlStatusDomainData)initWithCoder:(id)coder;
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:;
+- (id)dataByApplyingDiff:(id)diff;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)diffFromData:(id)data;
 - (id)initWithData:(id)result;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STVoiceControlStatusDomainData
@@ -21,103 +21,103 @@
   {
     v2 = result;
     v3 = a2;
-    v4 = [v3 isVoiceControlActive];
-    v5 = [v3 listeningState];
+    isVoiceControlActive = [v3 isVoiceControlActive];
+    listeningState = [v3 listeningState];
 
     v6.receiver = v2;
     v6.super_class = STVoiceControlStatusDomainData;
     result = objc_msgSendSuper2(&v6, sel_init);
     if (result)
     {
-      *(result + 8) = v4;
-      *(result + 2) = v5;
+      *(result + 8) = isVoiceControlActive;
+      *(result + 2) = listeningState;
     }
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = [(STVoiceControlStatusDomainData *)self isVoiceControlActive];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+  isVoiceControlActive = [(STVoiceControlStatusDomainData *)self isVoiceControlActive];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __42__STVoiceControlStatusDomainData_isEqual___block_invoke;
   v18[3] = &unk_1E85DDD50;
-  v7 = v4;
+  v7 = equalCopy;
   v19 = v7;
-  v8 = [v5 appendBool:v6 counterpart:v18];
-  v9 = [(STVoiceControlStatusDomainData *)self listeningState];
+  v8 = [v5 appendBool:isVoiceControlActive counterpart:v18];
+  listeningState = [(STVoiceControlStatusDomainData *)self listeningState];
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __42__STVoiceControlStatusDomainData_isEqual___block_invoke_2;
   v16 = &unk_1E85DE2F8;
   v17 = v7;
   v10 = v7;
-  v11 = [v5 appendUnsignedInteger:v9 counterpart:&v13];
-  LOBYTE(v9) = [v5 isEqual];
+  v11 = [v5 appendUnsignedInteger:listeningState counterpart:&v13];
+  LOBYTE(listeningState) = [v5 isEqual];
 
-  return v9;
+  return listeningState;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendBool:{-[STVoiceControlStatusDomainData isVoiceControlActive](self, "isVoiceControlActive")}];
-  v5 = [v3 appendUnsignedInteger:{-[STVoiceControlStatusDomainData listeningState](self, "listeningState")}];
-  v6 = [v3 hash];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendBool:{-[STVoiceControlStatusDomainData isVoiceControlActive](self, "isVoiceControlActive")}];
+  v5 = [builder appendUnsignedInteger:{-[STVoiceControlStatusDomainData listeningState](self, "listeningState")}];
+  v6 = [builder hash];
 
   return v6;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [STMutableVoiceControlStatusDomainData allocWithZone:a3];
+  v4 = [STMutableVoiceControlStatusDomainData allocWithZone:zone];
 
   return [(STVoiceControlStatusDomainData *)v4 initWithData:?];
 }
 
 - (id)succinctDescription
 {
-  v2 = [(STVoiceControlStatusDomainData *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STVoiceControlStatusDomainData *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STVoiceControlStatusDomainData *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STVoiceControlStatusDomainData *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STVoiceControlStatusDomainData *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STVoiceControlStatusDomainData *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:
 {
-  if (a1)
+  if (self)
   {
     v5 = a2;
-    v6 = [a1 succinctDescriptionBuilder];
-    [v6 setUseDebugDescription:a3];
-    [v6 setActiveMultilinePrefix:v5];
+    succinctDescriptionBuilder = [self succinctDescriptionBuilder];
+    [succinctDescriptionBuilder setUseDebugDescription:prefix];
+    [succinctDescriptionBuilder setActiveMultilinePrefix:v5];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __82__STVoiceControlStatusDomainData__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke;
     v10[3] = &unk_1E85DDD00;
-    v7 = v6;
+    v7 = succinctDescriptionBuilder;
     v11 = v7;
-    v12 = a1;
+    selfCopy = self;
     [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:v10];
 
     v8 = v7;
@@ -149,13 +149,13 @@ uint64_t __82__STVoiceControlStatusDomainData__descriptionBuilderWithMultilinePr
   return [v3 appendString:v5 withName:@"listeningState"];
 }
 
-- (id)diffFromData:(id)a3
+- (id)diffFromData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [STVoiceControlStatusDomainDataDiff diffFromData:v4 toData:self];
+    v5 = [STVoiceControlStatusDomainDataDiff diffFromData:dataCopy toData:self];
   }
 
   else
@@ -166,13 +166,13 @@ uint64_t __82__STVoiceControlStatusDomainData__descriptionBuilderWithMultilinePr
   return v5;
 }
 
-- (id)dataByApplyingDiff:(id)a3
+- (id)dataByApplyingDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([v4 isEmpty])
+    if ([diffCopy isEmpty])
     {
       v5 = [(STVoiceControlStatusDomainData *)self copy];
     }
@@ -180,7 +180,7 @@ uint64_t __82__STVoiceControlStatusDomainData__descriptionBuilderWithMultilinePr
     else
     {
       v5 = [(STVoiceControlStatusDomainData *)self mutableCopy];
-      [v4 applyToMutableData:v5];
+      [diffCopy applyToMutableData:v5];
     }
   }
 
@@ -192,18 +192,18 @@ uint64_t __82__STVoiceControlStatusDomainData__descriptionBuilderWithMultilinePr
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[STVoiceControlStatusDomainData isVoiceControlActive](self forKey:{"isVoiceControlActive"), @"voiceControlActive"}];
-  [v4 encodeInteger:-[STVoiceControlStatusDomainData listeningState](self forKey:{"listeningState"), @"listeningState"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[STVoiceControlStatusDomainData isVoiceControlActive](self forKey:{"isVoiceControlActive"), @"voiceControlActive"}];
+  [coderCopy encodeInteger:-[STVoiceControlStatusDomainData listeningState](self forKey:{"listeningState"), @"listeningState"}];
 }
 
-- (STVoiceControlStatusDomainData)initWithCoder:(id)a3
+- (STVoiceControlStatusDomainData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeBoolForKey:@"voiceControlActive"];
-  v6 = [v4 decodeIntegerForKey:@"listeningState"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeBoolForKey:@"voiceControlActive"];
+  v6 = [coderCopy decodeIntegerForKey:@"listeningState"];
 
   if (!self)
   {

@@ -1,15 +1,15 @@
 @interface TXRDataScaler
-+ (id)newImageFromSourceImage:(id)a3 bufferAllocattor:(id)a4 filter:(unint64_t)a5 error:(id *)a6;
-+ (id)newImageFromSourceImage:(id)a3 scaledDimensions:(id)a4 bufferAllocattor:(unint64_t)a5 filter:(id *)a6 error:;
++ (id)newImageFromSourceImage:(id)image bufferAllocattor:(id)allocattor filter:(unint64_t)filter error:(id *)error;
++ (id)newImageFromSourceImage:(id)image scaledDimensions:(id)dimensions bufferAllocattor:(unint64_t)allocattor filter:(id *)filter error:;
 @end
 
 @implementation TXRDataScaler
 
-+ (id)newImageFromSourceImage:(id)a3 bufferAllocattor:(id)a4 filter:(unint64_t)a5 error:(id *)a6
++ (id)newImageFromSourceImage:(id)image bufferAllocattor:(id)allocattor filter:(unint64_t)filter error:(id *)error
 {
-  v10 = a4;
-  v11 = a3;
-  [v11 dimensions];
+  allocattorCopy = allocattor;
+  imageCopy = image;
+  [imageCopy dimensions];
   v12.i32[0] = 0;
   v14 = vshrq_n_u32(v13, 1uLL);
   v15.i32[0] = 1;
@@ -22,22 +22,22 @@
   v18 = vbslq_s8(vdupq_lane_s32(*&vceqq_s32(vdupq_lane_s32(*v16.i8, 1), v12), 0), v17, v16);
   v16.i64[1] = 0x100000001;
   v16.i64[0] = v18.i64[0];
-  v19 = [a1 newImageFromSourceImage:v11 scaledDimensions:v10 bufferAllocattor:a5 filter:a6 error:{*vbslq_s8(vdupq_lane_s32(*&vceqq_s32(vdupq_laneq_s32(v18, 2), v12), 0), v16, v18).i64}];
+  v19 = [self newImageFromSourceImage:imageCopy scaledDimensions:allocattorCopy bufferAllocattor:filter filter:error error:{*vbslq_s8(vdupq_lane_s32(*&vceqq_s32(vdupq_laneq_s32(v18, 2), v12), 0), v16, v18).i64}];
 
   return v19;
 }
 
-+ (id)newImageFromSourceImage:(id)a3 scaledDimensions:(id)a4 bufferAllocattor:(unint64_t)a5 filter:(id *)a6 error:
++ (id)newImageFromSourceImage:(id)image scaledDimensions:(id)dimensions bufferAllocattor:(unint64_t)allocattor filter:(id *)filter error:
 {
   v23 = v6;
-  v10 = a3;
-  v11 = a4;
-  [v10 dimensions];
+  imageCopy = image;
+  dimensionsCopy = dimensions;
+  [imageCopy dimensions];
   v13 = v12;
   v14 = v23;
-  if (v13 >= v23.n128_u32[0] && ([v10 dimensions], v16 = v15, v14 = v23, v16 >= v23.n128_u32[1]))
+  if (v13 >= v23.n128_u32[0] && ([imageCopy dimensions], v16 = v15, v14 = v23, v16 >= v23.n128_u32[1]))
   {
-    [v10 dimensions];
+    [imageCopy dimensions];
     v19 = v18;
     v14 = v23;
     v17 = v19 < v23.n128_u32[2];
@@ -48,27 +48,27 @@
     v17 = 1;
   }
 
-  if (a5 == 2 && v17)
+  if (allocattor == 2 && v17)
   {
-    v20 = 0;
+    allocattorCopy = 0;
   }
 
   else
   {
-    v20 = a5;
+    allocattorCopy = allocattor;
   }
 
-  if (v20 > 1)
+  if (allocattorCopy > 1)
   {
-    if (v20 == 2)
+    if (allocattorCopy == 2)
     {
-      [TXRDataScaler newImageFromSourceImage:v10 scaledDimensions:v11 bufferAllocattor:? filter:? error:?];
+      [TXRDataScaler newImageFromSourceImage:imageCopy scaledDimensions:dimensionsCopy bufferAllocattor:? filter:? error:?];
     }
 
-    if (a6)
+    if (filter)
     {
       _newTXRErrorWithCodeAndErrorString(0, @"Unsupported filter");
-      *a6 = v21 = 0;
+      *filter = v21 = 0;
     }
 
     else
@@ -79,7 +79,7 @@
 
   else
   {
-    v21 = newScaledImageWithLancosFilter(v10, v11, v20, a6, v14);
+    v21 = newScaledImageWithLancosFilter(imageCopy, dimensionsCopy, allocattorCopy, filter, v14);
   }
 
   return v21;

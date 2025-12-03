@@ -1,7 +1,7 @@
 @interface CocoaWebViewAdapter
 - (UIEdgeInsets)safeAreaInsets;
-- (_TtC15_WebKit_SwiftUI19CocoaWebViewAdapter)initWithCoder:(id)a3;
-- (_TtC15_WebKit_SwiftUI19CocoaWebViewAdapter)initWithFrame:(CGRect)a3;
+- (_TtC15_WebKit_SwiftUI19CocoaWebViewAdapter)initWithCoder:(id)coder;
+- (_TtC15_WebKit_SwiftUI19CocoaWebViewAdapter)initWithFrame:(CGRect)frame;
 @end
 
 @implementation CocoaWebViewAdapter
@@ -17,7 +17,7 @@
   }
 
   v3 = *((*MEMORY[0x277D85000] & self->super.super.super.isa) + 0xA0);
-  v4 = self;
+  selfCopy = self;
   v3(v15);
   if (v16)
   {
@@ -33,9 +33,9 @@
     v6 = *&v15[3];
     v5 = *v15;
     v9 = *&v15[1];
-    v10 = [(CocoaWebViewAdapter *)v4 effectiveUserInterfaceLayoutDirection];
+    effectiveUserInterfaceLayoutDirection = [(CocoaWebViewAdapter *)selfCopy effectiveUserInterfaceLayoutDirection];
 
-    if (v10 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v8 = v9;
     }
@@ -45,7 +45,7 @@
       v8 = v6;
     }
 
-    if (v10 != 1)
+    if (effectiveUserInterfaceLayoutDirection != 1)
     {
       v6 = v9;
     }
@@ -62,12 +62,12 @@
   return result;
 }
 
-- (_TtC15_WebKit_SwiftUI19CocoaWebViewAdapter)initWithFrame:(CGRect)a3
+- (_TtC15_WebKit_SwiftUI19CocoaWebViewAdapter)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_23BC95AEC();
   sub_23BC95ADC();
   sub_23BC95ACC();
@@ -81,7 +81,7 @@
   return v7;
 }
 
-- (_TtC15_WebKit_SwiftUI19CocoaWebViewAdapter)initWithCoder:(id)a3
+- (_TtC15_WebKit_SwiftUI19CocoaWebViewAdapter)initWithCoder:(id)coder
 {
   sub_23BC95AEC();
   sub_23BC95ADC();
@@ -91,7 +91,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = sub_23BC8BBE0(a3);
+  v4 = sub_23BC8BBE0(coder);
 
   return v4;
 }

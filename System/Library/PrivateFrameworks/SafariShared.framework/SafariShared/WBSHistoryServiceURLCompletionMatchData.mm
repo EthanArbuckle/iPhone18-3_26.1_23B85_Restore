@@ -1,23 +1,23 @@
 @interface WBSHistoryServiceURLCompletionMatchData
-- (BOOL)matchesAutocompleteTrigger:(id)a3 isStrengthened:(BOOL)a4;
+- (BOOL)matchesAutocompleteTrigger:(id)trigger isStrengthened:(BOOL)strengthened;
 - (NSString)originalURLString;
-- (WBSHistoryServiceURLCompletionMatchData)initWithLastVisitWasFailure:(BOOL)a3 visitWasFromThisDevice:(BOOL)a4 visitWasClientError:(BOOL)a5;
-- (WBSHistoryServiceURLCompletionMatchData)initWithStreamData:(void *)a3 entries:(id)a4;
-- (float)topSitesScoreForPageTitleAtTime:(double)a3;
-- (float)topSitesScoreForURLStringAtIndex:(unint64_t)a3 atTime:(double)a4;
-- (id)pageTitleAtIndex:(unint64_t)a3;
-- (id)userVisibleURLStringAtIndex:(unint64_t)a3;
+- (WBSHistoryServiceURLCompletionMatchData)initWithLastVisitWasFailure:(BOOL)failure visitWasFromThisDevice:(BOOL)device visitWasClientError:(BOOL)error;
+- (WBSHistoryServiceURLCompletionMatchData)initWithStreamData:(void *)data entries:(id)entries;
+- (float)topSitesScoreForPageTitleAtTime:(double)time;
+- (float)topSitesScoreForURLStringAtIndex:(unint64_t)index atTime:(double)time;
+- (id)pageTitleAtIndex:(unint64_t)index;
+- (id)userVisibleURLStringAtIndex:(unint64_t)index;
 - (int64_t)visitCountScoreForPageTitleAtTime;
-- (int64_t)visitCountScoreForURLStringAtIndex:(unint64_t)a3;
-- (void)enumeratePageTitlesAndUserVisibleURLsUsingBlock:(id)a3;
-- (void)enumeratePageTitlesUsingBlock:(id)a3;
-- (void)enumerateUserVisibleURLsUsingBlock:(id)a3;
-- (void)setAutocompleteTriggers:(const void *)a3 length:(unint64_t)a4;
+- (int64_t)visitCountScoreForURLStringAtIndex:(unint64_t)index;
+- (void)enumeratePageTitlesAndUserVisibleURLsUsingBlock:(id)block;
+- (void)enumeratePageTitlesUsingBlock:(id)block;
+- (void)enumerateUserVisibleURLsUsingBlock:(id)block;
+- (void)setAutocompleteTriggers:(const void *)triggers length:(unint64_t)length;
 @end
 
 @implementation WBSHistoryServiceURLCompletionMatchData
 
-- (WBSHistoryServiceURLCompletionMatchData)initWithLastVisitWasFailure:(BOOL)a3 visitWasFromThisDevice:(BOOL)a4 visitWasClientError:(BOOL)a5
+- (WBSHistoryServiceURLCompletionMatchData)initWithLastVisitWasFailure:(BOOL)failure visitWasFromThisDevice:(BOOL)device visitWasClientError:(BOOL)error
 {
   v13.receiver = self;
   v13.super_class = WBSHistoryServiceURLCompletionMatchData;
@@ -38,29 +38,29 @@
     }
 
     *p_var0 = 0x3800000006;
-    *(p_var0 + 48) = a3;
-    *(p_var0 + 49) = a4;
-    *(p_var0 + 50) = a5;
+    *(p_var0 + 48) = failure;
+    *(p_var0 + 49) = device;
+    *(p_var0 + 50) = error;
     v11 = v8;
   }
 
   return v8;
 }
 
-- (WBSHistoryServiceURLCompletionMatchData)initWithStreamData:(void *)a3 entries:(id)a4
+- (WBSHistoryServiceURLCompletionMatchData)initWithStreamData:(void *)data entries:(id)entries
 {
-  v6 = a4;
+  entriesCopy = entries;
   v14.receiver = self;
   v14.super_class = WBSHistoryServiceURLCompletionMatchData;
   v7 = [(WBSHistoryServiceURLCompletionMatchData *)&v14 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [entriesCopy copy];
     entries = v7->_entries;
     v7->_entries = v8;
 
-    v10 = *a3;
-    *a3 = 0;
+    v10 = *data;
+    *data = 0;
     ptr = v7->_streamData.__ptr_;
     v7->_streamData.__ptr_ = v10;
     if (ptr)
@@ -74,10 +74,10 @@
   return v7;
 }
 
-- (void)setAutocompleteTriggers:(const void *)a3 length:(unint64_t)a4
+- (void)setAutocompleteTriggers:(const void *)triggers length:(unint64_t)length
 {
-  v4 = a4;
-  v7 = operator new(a4 + 56);
+  lengthCopy = length;
+  v7 = operator new(length + 56);
   v8 = v7;
   ptr = self->_streamData.__ptr_;
   v11 = *&ptr->var2;
@@ -87,65 +87,65 @@
   *&v7->var2 = v11;
   *&v7->var4 = v10;
   *&v7->var0.var0 = v12;
-  if (a3)
+  if (triggers)
   {
     v13 = v7 + 1;
-    memcpy(&v7[1], a3, v4);
+    memcpy(&v7[1], triggers, lengthCopy);
   }
 
   else
   {
     v13 = 0;
-    v4 = 0;
+    lengthCopy = 0;
   }
 
   v8->var2 = v13;
-  v8->var3 = v4;
+  v8->var3 = lengthCopy;
   self->_streamData.__ptr_ = v8;
 
   JUMPOUT(0x1BFB13480);
 }
 
-- (void)enumeratePageTitlesUsingBlock:(id)a3
+- (void)enumeratePageTitlesUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(NSArray *)self->_entries firstObject];
+  blockCopy = block;
+  firstObject = [(NSArray *)self->_entries firstObject];
   v8 = 0;
-  v6 = [v5 title];
+  title = [firstObject title];
 
-  if (v6)
+  if (title)
   {
-    v7 = [v5 title];
-    v4[2](v4, v7, 0, &v8);
+    title2 = [firstObject title];
+    blockCopy[2](blockCopy, title2, 0, &v8);
   }
 }
 
-- (id)pageTitleAtIndex:(unint64_t)a3
+- (id)pageTitleAtIndex:(unint64_t)index
 {
   if ([(NSArray *)self->_entries count])
   {
-    v4 = [(NSArray *)self->_entries firstObject];
-    v5 = [v4 title];
+    firstObject = [(NSArray *)self->_entries firstObject];
+    title = [firstObject title];
   }
 
   else
   {
-    v5 = 0;
+    title = 0;
   }
 
-  return v5;
+  return title;
 }
 
-- (void)enumerateUserVisibleURLsUsingBlock:(id)a3
+- (void)enumerateUserVisibleURLsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   entries = self->_entries;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __78__WBSHistoryServiceURLCompletionMatchData_enumerateUserVisibleURLsUsingBlock___block_invoke;
   v7[3] = &unk_1E7FC8070;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSArray *)entries enumerateObjectsUsingBlock:v7];
 }
 
@@ -157,17 +157,17 @@ void __78__WBSHistoryServiceURLCompletionMatchData_enumerateUserVisibleURLsUsing
   (*(v6 + 16))(v6, v7, a3, a4);
 }
 
-- (void)enumeratePageTitlesAndUserVisibleURLsUsingBlock:(id)a3
+- (void)enumeratePageTitlesAndUserVisibleURLsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   entries = self->_entries;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __91__WBSHistoryServiceURLCompletionMatchData_enumeratePageTitlesAndUserVisibleURLsUsingBlock___block_invoke;
   v7[3] = &unk_1E7FC8098;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSArray *)entries enumerateObjectsUsingBlock:v7];
 }
 
@@ -182,29 +182,29 @@ void __91__WBSHistoryServiceURLCompletionMatchData_enumeratePageTitlesAndUserVis
   (*(v7 + 16))(v7, v9, 0, v11, a3, a4);
 }
 
-- (id)userVisibleURLStringAtIndex:(unint64_t)a3
+- (id)userVisibleURLStringAtIndex:(unint64_t)index
 {
-  if ([(NSArray *)self->_entries count]<= a3)
+  if ([(NSArray *)self->_entries count]<= index)
   {
-    v7 = 0;
+    safari_userVisibleURL = 0;
   }
 
   else
   {
-    v5 = [(NSArray *)self->_entries objectAtIndexedSubscript:a3];
+    v5 = [(NSArray *)self->_entries objectAtIndexedSubscript:index];
     v6 = [v5 url];
-    v7 = [v6 safari_userVisibleURL];
+    safari_userVisibleURL = [v6 safari_userVisibleURL];
   }
 
-  return v7;
+  return safari_userVisibleURL;
 }
 
 - (NSString)originalURLString
 {
   if ([(NSArray *)self->_entries count])
   {
-    v3 = [(NSArray *)self->_entries firstObject];
-    v4 = [v3 url];
+    firstObject = [(NSArray *)self->_entries firstObject];
+    v4 = [firstObject url];
   }
 
   else
@@ -215,10 +215,10 @@ void __91__WBSHistoryServiceURLCompletionMatchData_enumeratePageTitlesAndUserVis
   return v4;
 }
 
-- (BOOL)matchesAutocompleteTrigger:(id)a3 isStrengthened:(BOOL)a4
+- (BOOL)matchesAutocompleteTrigger:(id)trigger isStrengthened:(BOOL)strengthened
 {
-  v4 = a4;
-  v6 = a3;
+  strengthenedCopy = strengthened;
+  triggerCopy = trigger;
   if (self->_streamData.__ptr_->var2)
   {
     if (!self->_autocompleteTriggersAsStringArray)
@@ -231,8 +231,8 @@ void __91__WBSHistoryServiceURLCompletionMatchData_enumeratePageTitlesAndUserVis
     }
 
     v11 = [(WBSHistoryServiceURLCompletionMatchData *)self pageTitleAtIndex:0];
-    v12 = [(WBSHistoryServiceURLCompletionMatchData *)self originalURLString];
-    v13 = [WBSURLCompletionMatchDataHelpers typedStringMatchesTitleAndURLAutocompleteTriggers:v6 title:v11 urlString:v12 autoCompleteTriggers:self->_autocompleteTriggersAsStringArray isStrengthened:v4];
+    originalURLString = [(WBSHistoryServiceURLCompletionMatchData *)self originalURLString];
+    v13 = [WBSURLCompletionMatchDataHelpers typedStringMatchesTitleAndURLAutocompleteTriggers:triggerCopy title:v11 urlString:originalURLString autoCompleteTriggers:self->_autocompleteTriggersAsStringArray isStrengthened:strengthenedCopy];
   }
 
   else
@@ -243,12 +243,12 @@ void __91__WBSHistoryServiceURLCompletionMatchData_enumeratePageTitlesAndUserVis
   return v13;
 }
 
-- (float)topSitesScoreForURLStringAtIndex:(unint64_t)a3 atTime:(double)a4
+- (float)topSitesScoreForURLStringAtIndex:(unint64_t)index atTime:(double)time
 {
   v6 = 0.0;
-  if ([(NSArray *)self->_entries count]> a3)
+  if ([(NSArray *)self->_entries count]> index)
   {
-    v7 = [(NSArray *)self->_entries objectAtIndexedSubscript:a3];
+    v7 = [(NSArray *)self->_entries objectAtIndexedSubscript:index];
     [v7 topSitesScore];
     v6 = v8;
   }
@@ -256,15 +256,15 @@ void __91__WBSHistoryServiceURLCompletionMatchData_enumeratePageTitlesAndUserVis
   return v6;
 }
 
-- (float)topSitesScoreForPageTitleAtTime:(double)a3
+- (float)topSitesScoreForPageTitleAtTime:(double)time
 {
   if (![(NSArray *)self->_entries count])
   {
     return 0.0;
   }
 
-  v4 = [(NSArray *)self->_entries firstObject];
-  [v4 topSitesScore];
+  firstObject = [(NSArray *)self->_entries firstObject];
+  [firstObject topSitesScore];
   v6 = v5;
 
   return v6;
@@ -277,23 +277,23 @@ void __91__WBSHistoryServiceURLCompletionMatchData_enumeratePageTitlesAndUserVis
     return -1;
   }
 
-  v3 = [(NSArray *)self->_entries firstObject];
-  v4 = [v3 visitCountScore];
+  firstObject = [(NSArray *)self->_entries firstObject];
+  visitCountScore = [firstObject visitCountScore];
 
-  return v4;
+  return visitCountScore;
 }
 
-- (int64_t)visitCountScoreForURLStringAtIndex:(unint64_t)a3
+- (int64_t)visitCountScoreForURLStringAtIndex:(unint64_t)index
 {
-  if ([(NSArray *)self->_entries count]<= a3)
+  if ([(NSArray *)self->_entries count]<= index)
   {
     return -1;
   }
 
-  v5 = [(NSArray *)self->_entries objectAtIndexedSubscript:a3];
-  v6 = [v5 visitCountScore];
+  v5 = [(NSArray *)self->_entries objectAtIndexedSubscript:index];
+  visitCountScore = [v5 visitCountScore];
 
-  return v6;
+  return visitCountScore;
 }
 
 @end

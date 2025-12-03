@@ -1,6 +1,6 @@
 @interface NTCatchUpOperationTagRequest
 - (NTCatchUpOperationTagRequest)init;
-- (NTCatchUpOperationTagRequest)initWithTagTodaySectionSpecificConfig:(id)a3 tagID:(id)a4;
+- (NTCatchUpOperationTagRequest)initWithTagTodaySectionSpecificConfig:(id)config tagID:(id)d;
 @end
 
 @implementation NTCatchUpOperationTagRequest
@@ -31,20 +31,20 @@
   objc_exception_throw(v6);
 }
 
-- (NTCatchUpOperationTagRequest)initWithTagTodaySectionSpecificConfig:(id)a3 tagID:(id)a4
+- (NTCatchUpOperationTagRequest)initWithTagTodaySectionSpecificConfig:(id)config tagID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  configCopy = config;
+  dCopy = d;
+  if (!configCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTCatchUpOperationTagRequest initWithTagTodaySectionSpecificConfig:tagID:];
-    if (v7)
+    if (dCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v7)
+  else if (dCopy)
   {
     goto LABEL_6;
   }
@@ -60,15 +60,15 @@ LABEL_6:
   v8 = [(NTCatchUpOperationTagRequest *)&v14 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [dCopy copy];
     tagID = v8->_tagID;
     v8->_tagID = v9;
 
-    v8->_cutoffTime = [v6 cutoffTime];
-    v8->_headlinesPerFeedFetchCount = [v6 headlinesPerFeedFetchCount];
-    v11 = [v6 fetchingBin];
-    v12 = v11 == 1;
-    if (v11 == 2)
+    v8->_cutoffTime = [configCopy cutoffTime];
+    v8->_headlinesPerFeedFetchCount = [configCopy headlinesPerFeedFetchCount];
+    fetchingBin = [configCopy fetchingBin];
+    v12 = fetchingBin == 1;
+    if (fetchingBin == 2)
     {
       v12 = 2;
     }

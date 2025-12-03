@@ -1,10 +1,10 @@
 @interface TXROptions
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TXROptions
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [[TXROptions allocWithZone:?]];
   *(result + 8) = self->_cubemapFromVerticallyStackedImage;

@@ -1,5 +1,5 @@
 @interface MFIMAPFetchResult
-- (MFIMAPFetchResult)initWithType:(int)a3;
+- (MFIMAPFetchResult)initWithType:(int)type;
 - (id)bodyStructure;
 - (id)customFlagsArray;
 - (id)description;
@@ -22,30 +22,30 @@
 - (unsigned)encoding;
 - (unsigned)uid;
 - (void)dealloc;
-- (void)setBodyStructure:(id)a3;
-- (void)setCustomFlagsArray:(id)a3;
-- (void)setEnvelope:(id)a3;
-- (void)setFetchData:(id)a3;
-- (void)setFlagsArray:(id)a3;
-- (void)setInternalDate:(id)a3;
-- (void)setMessageFlags:(unint64_t)a3;
-- (void)setMessageSize:(unint64_t)a3;
-- (void)setSection:(id)a3;
-- (void)setStartOffset:(unint64_t)a3;
-- (void)setUid:(unsigned int)a3;
-- (void)setUniqueRemoteId:(unint64_t)a3;
+- (void)setBodyStructure:(id)structure;
+- (void)setCustomFlagsArray:(id)array;
+- (void)setEnvelope:(id)envelope;
+- (void)setFetchData:(id)data;
+- (void)setFlagsArray:(id)array;
+- (void)setInternalDate:(id)date;
+- (void)setMessageFlags:(unint64_t)flags;
+- (void)setMessageSize:(unint64_t)size;
+- (void)setSection:(id)section;
+- (void)setStartOffset:(unint64_t)offset;
+- (void)setUid:(unsigned int)uid;
+- (void)setUniqueRemoteId:(unint64_t)id;
 @end
 
 @implementation MFIMAPFetchResult
 
-- (MFIMAPFetchResult)initWithType:(int)a3
+- (MFIMAPFetchResult)initWithType:(int)type
 {
   v5.receiver = self;
   v5.super_class = MFIMAPFetchResult;
   result = [(MFIMAPFetchResult *)&v5 init];
   if (result)
   {
-    result->_itemType = a3;
+    result->_itemType = type;
   }
 
   return result;
@@ -91,7 +91,7 @@ LABEL_8:
   return self->_typeSpecific.envelope;
 }
 
-- (void)setEnvelope:(id)a3
+- (void)setEnvelope:(id)envelope
 {
   if (self->_itemType != 1)
   {
@@ -99,10 +99,10 @@ LABEL_8:
   }
 
   envelope = self->_typeSpecific.envelope;
-  if (envelope != a3)
+  if (envelope != envelope)
   {
 
-    self->_typeSpecific.messageSize = a3;
+    self->_typeSpecific.messageSize = envelope;
   }
 }
 
@@ -116,7 +116,7 @@ LABEL_8:
   return self->_typeSpecific.envelope;
 }
 
-- (void)setInternalDate:(id)a3
+- (void)setInternalDate:(id)date
 {
   if (self->_itemType != 2)
   {
@@ -124,10 +124,10 @@ LABEL_8:
   }
 
   envelope = self->_typeSpecific.envelope;
-  if (envelope != a3)
+  if (envelope != date)
   {
 
-    self->_typeSpecific.messageSize = a3;
+    self->_typeSpecific.messageSize = date;
   }
 }
 
@@ -141,29 +141,29 @@ LABEL_8:
     return self->_typeSpecific.bodySectionInfo.sectionData;
   }
 
-  v8 = [MEMORY[0x277CCA890] currentHandler];
-  [v8 handleFailureInFunction:objc_msgSend(MEMORY[0x277CCACA8] file:"stringWithUTF8String:" lineNumber:"-[MFIMAPFetchResult fetchData]") description:{@"IMAPFetchResult.m", 101, @"Invalid item type %d", self->_itemType}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInFunction:objc_msgSend(MEMORY[0x277CCACA8] file:"stringWithUTF8String:" lineNumber:"-[MFIMAPFetchResult fetchData]") description:{@"IMAPFetchResult.m", 101, @"Invalid item type %d", self->_itemType}];
   return 0;
 }
 
-- (void)setFetchData:(id)a3
+- (void)setFetchData:(id)data
 {
   itemType = self->_itemType;
   v5 = itemType > 7;
   v6 = (1 << itemType) & 0xB0;
   if (v5 || v6 == 0)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInFunction:objc_msgSend(MEMORY[0x277CCACA8] file:"stringWithUTF8String:" lineNumber:"-[MFIMAPFetchResult setFetchData:]") description:{@"IMAPFetchResult.m", 117, @"Invalid item type %d", self->_itemType}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInFunction:objc_msgSend(MEMORY[0x277CCACA8] file:"stringWithUTF8String:" lineNumber:"-[MFIMAPFetchResult setFetchData:]") description:{@"IMAPFetchResult.m", 117, @"Invalid item type %d", self->_itemType}];
   }
 
   else
   {
     sectionData = self->_typeSpecific.bodySectionInfo.sectionData;
-    if (sectionData != a3)
+    if (sectionData != data)
     {
 
-      self->_typeSpecific.bodySectionInfo.sectionData = a3;
+      self->_typeSpecific.bodySectionInfo.sectionData = data;
     }
   }
 }
@@ -178,14 +178,14 @@ LABEL_8:
   return self->_typeSpecific.messageSize;
 }
 
-- (void)setMessageSize:(unint64_t)a3
+- (void)setMessageSize:(unint64_t)size
 {
   if (self->_itemType != 3)
   {
     [MFIMAPFetchResult setMessageSize:];
   }
 
-  self->_typeSpecific.messageSize = a3;
+  self->_typeSpecific.messageSize = size;
 }
 
 - (id)bodyStructure
@@ -198,7 +198,7 @@ LABEL_8:
   return self->_typeSpecific.envelope;
 }
 
-- (void)setBodyStructure:(id)a3
+- (void)setBodyStructure:(id)structure
 {
   if (self->_itemType != 6)
   {
@@ -206,10 +206,10 @@ LABEL_8:
   }
 
   envelope = self->_typeSpecific.envelope;
-  if (envelope != a3)
+  if (envelope != structure)
   {
 
-    self->_typeSpecific.messageSize = a3;
+    self->_typeSpecific.messageSize = structure;
   }
 }
 
@@ -223,19 +223,19 @@ LABEL_8:
     return self->_typeSpecific.bodySectionInfo.startOffset;
   }
 
-  v8 = [MEMORY[0x277CCA890] currentHandler];
-  [v8 handleFailureInFunction:objc_msgSend(MEMORY[0x277CCACA8] file:"stringWithUTF8String:" lineNumber:"-[MFIMAPFetchResult startOffset]") description:{@"IMAPFetchResult.m", 155, @"Invalid item type %d", self->_itemType}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInFunction:objc_msgSend(MEMORY[0x277CCACA8] file:"stringWithUTF8String:" lineNumber:"-[MFIMAPFetchResult startOffset]") description:{@"IMAPFetchResult.m", 155, @"Invalid item type %d", self->_itemType}];
   return 0;
 }
 
-- (void)setStartOffset:(unint64_t)a3
+- (void)setStartOffset:(unint64_t)offset
 {
   if (self->_itemType != 7)
   {
     [MFIMAPFetchResult setStartOffset:];
   }
 
-  self->_typeSpecific.bodySectionInfo.startOffset = a3;
+  self->_typeSpecific.bodySectionInfo.startOffset = offset;
 }
 
 - (id)section
@@ -251,12 +251,12 @@ LABEL_8:
       return @"TEXT";
   }
 
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInFunction:objc_msgSend(MEMORY[0x277CCACA8] file:"stringWithUTF8String:" lineNumber:"-[MFIMAPFetchResult section]") description:{@"IMAPFetchResult.m", 180, @"Invalid item type %d", self->_itemType}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInFunction:objc_msgSend(MEMORY[0x277CCACA8] file:"stringWithUTF8String:" lineNumber:"-[MFIMAPFetchResult section]") description:{@"IMAPFetchResult.m", 180, @"Invalid item type %d", self->_itemType}];
   return 0;
 }
 
-- (void)setSection:(id)a3
+- (void)setSection:(id)section
 {
   if (self->_itemType != 7)
   {
@@ -264,10 +264,10 @@ LABEL_8:
   }
 
   envelope = self->_typeSpecific.envelope;
-  if (envelope != a3)
+  if (envelope != section)
   {
 
-    self->_typeSpecific.messageSize = a3;
+    self->_typeSpecific.messageSize = section;
   }
 }
 
@@ -281,14 +281,14 @@ LABEL_8:
   return self->_typeSpecific.uid;
 }
 
-- (void)setUid:(unsigned int)a3
+- (void)setUid:(unsigned int)uid
 {
   if (self->_itemType != 8)
   {
     [MFIMAPFetchResult setUid:];
   }
 
-  self->_typeSpecific.uid = a3;
+  self->_typeSpecific.uid = uid;
 }
 
 - (unint64_t)uniqueRemoteId
@@ -301,14 +301,14 @@ LABEL_8:
   return self->_typeSpecific.messageSize;
 }
 
-- (void)setUniqueRemoteId:(unint64_t)a3
+- (void)setUniqueRemoteId:(unint64_t)id
 {
   if (self->_itemType != 9)
   {
     [MFIMAPFetchResult setUniqueRemoteId:];
   }
 
-  self->_typeSpecific.messageSize = a3;
+  self->_typeSpecific.messageSize = id;
 }
 
 - (id)flagsArray
@@ -323,36 +323,36 @@ LABEL_8:
   return v3;
 }
 
-- (void)setFlagsArray:(id)a3
+- (void)setFlagsArray:(id)array
 {
   if (self->_itemType != 10)
   {
     [MFIMAPFetchResult setFlagsArray:];
   }
 
-  self->_typeSpecific.messageSize = MFMessageFlagsFromArray(a3);
+  self->_typeSpecific.messageSize = MFMessageFlagsFromArray(array);
 }
 
-- (void)setMessageFlags:(unint64_t)a3
+- (void)setMessageFlags:(unint64_t)flags
 {
   if (self->_itemType != 10)
   {
     [MFIMAPFetchResult setMessageFlags:];
   }
 
-  self->_typeSpecific.messageSize = a3;
+  self->_typeSpecific.messageSize = flags;
 }
 
-- (void)setCustomFlagsArray:(id)a3
+- (void)setCustomFlagsArray:(id)array
 {
   if (self->_itemType != 10)
   {
     [MFIMAPFetchResult setCustomFlagsArray:];
   }
 
-  v5 = a3;
+  arrayCopy = array;
 
-  self->_typeSpecific.bodySectionInfo.startOffset = a3;
+  self->_typeSpecific.bodySectionInfo.startOffset = array;
 }
 
 - (id)customFlagsArray
@@ -368,12 +368,12 @@ LABEL_8:
 - (unsigned)encoding
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = [(MFIMAPFetchResult *)self flagsArray];
+  flagsArray = [(MFIMAPFetchResult *)self flagsArray];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v3 = [flagsArray countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v3)
   {
     v4 = v3;
@@ -384,7 +384,7 @@ LABEL_3:
     {
       if (*v14 != v5)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(flagsArray);
       }
 
       v7 = *(*(&v13 + 1) + 8 * v6);
@@ -408,7 +408,7 @@ LABEL_3:
 
       if (v4 == ++v6)
       {
-        v4 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v4 = [flagsArray countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v4)
         {
           goto LABEL_3;
@@ -440,12 +440,12 @@ LABEL_12:
       {
         case 9:
           v6 = MEMORY[0x277CCACA8];
-          v12 = [(MFIMAPFetchResult *)self uniqueRemoteId];
+          uniqueRemoteId = [(MFIMAPFetchResult *)self uniqueRemoteId];
           v5 = @"X-GM-MSGID %llu";
           break;
         case 10:
           v6 = MEMORY[0x277CCACA8];
-          v12 = [-[MFIMAPFetchResult flagsArray](self "flagsArray")];
+          uniqueRemoteId = [-[MFIMAPFetchResult flagsArray](self "flagsArray")];
           v5 = @"FLAGS (%@)";
           break;
         case 11:
@@ -459,7 +459,7 @@ LABEL_12:
     else if (itemType == 6)
     {
       v6 = MEMORY[0x277CCACA8];
-      v12 = CFCopyDescription([(MFIMAPFetchResult *)self bodyStructure]);
+      uniqueRemoteId = CFCopyDescription([(MFIMAPFetchResult *)self bodyStructure]);
       v5 = @"BODYSTRUCTURE %@";
     }
 
@@ -468,18 +468,18 @@ LABEL_12:
       if (itemType == 7)
       {
 LABEL_12:
-        v7 = [(MFIMAPFetchResult *)self section];
-        v8 = [(MFIMAPFetchResult *)self startOffset];
+        section = [(MFIMAPFetchResult *)self section];
+        startOffset = [(MFIMAPFetchResult *)self startOffset];
         v9 = [-[MFIMAPFetchResult fetchData](self "fetchData")];
         v10 = &stru_2869E1DA0;
-        if (v7)
+        if (section)
         {
-          v10 = v7;
+          v10 = section;
         }
 
-        if (v8)
+        if (startOffset)
         {
-          result = [MEMORY[0x277CCACA8] stringWithFormat:@"BODY[%@]<%lu> {%lu}...", v10, v8, v9];
+          result = [MEMORY[0x277CCACA8] stringWithFormat:@"BODY[%@]<%lu> {%lu}...", v10, startOffset, v9];
         }
 
         else
@@ -497,7 +497,7 @@ LABEL_30:
       }
 
       v6 = MEMORY[0x277CCACA8];
-      v12 = [(MFIMAPFetchResult *)self uid];
+      uniqueRemoteId = [(MFIMAPFetchResult *)self uid];
       v5 = @"UID %u";
     }
 
@@ -519,7 +519,7 @@ LABEL_28:
     }
 
     v6 = MEMORY[0x277CCACA8];
-    v12 = [(MFIMAPFetchResult *)self messageSize];
+    uniqueRemoteId = [(MFIMAPFetchResult *)self messageSize];
     v5 = @"RFC822.SIZE %u";
     goto LABEL_28;
   }
@@ -530,14 +530,14 @@ LABEL_28:
       return @"* INVALID *";
     case 1:
       v6 = MEMORY[0x277CCACA8];
-      v12 = [(MFIMAPFetchResult *)self envelope];
+      uniqueRemoteId = [(MFIMAPFetchResult *)self envelope];
       v5 = @"ENVELOPE %@";
       goto LABEL_28;
     case 2:
       v4 = MEMORY[0x277CCACA8];
       v5 = @"INTERNALDATE";
 LABEL_29:
-      result = [v4 stringWithFormat:v5, v12, v13, v14];
+      result = [v4 stringWithFormat:v5, uniqueRemoteId, v13, v14];
       goto LABEL_30;
   }
 

@@ -1,7 +1,7 @@
 @interface SMUAvatarViewController
 + (id)descriptorForRequiredKeys;
 - (SMUAvatarViewController)init;
-- (void)setContact:(id)a3;
+- (void)setContact:(id)contact;
 @end
 
 @implementation SMUAvatarViewController
@@ -33,14 +33,14 @@ void __52__SMUAvatarViewController_descriptorForRequiredKeys__block_invoke()
   v2 = [(SMUAvatarViewController *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBDBF8] defaultSettings];
-    v4 = [objc_alloc(MEMORY[0x277CBDBF0]) initWithSettings:v3];
+    defaultSettings = [MEMORY[0x277CBDBF8] defaultSettings];
+    v4 = [objc_alloc(MEMORY[0x277CBDBF0]) initWithSettings:defaultSettings];
     avatarViewController = v2->_avatarViewController;
     v2->_avatarViewController = v4;
 
-    v6 = [(CNAvatarViewController *)v2->_avatarViewController view];
+    view = [(CNAvatarViewController *)v2->_avatarViewController view];
     view = v2->view;
-    v2->view = v6;
+    v2->view = view;
 
     objc_storeStrong(&v2->wrappedViewController, v2->_avatarViewController);
   }
@@ -48,16 +48,16 @@ void __52__SMUAvatarViewController_descriptorForRequiredKeys__block_invoke()
   return v2;
 }
 
-- (void)setContact:(id)a3
+- (void)setContact:(id)contact
 {
   v9 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (contact)
   {
-    v8 = a3;
+    contactCopy = contact;
     v4 = MEMORY[0x277CBEA60];
-    v5 = a3;
-    v6 = [v4 arrayWithObjects:&v8 count:1];
-    [(CNAvatarViewController *)self->_avatarViewController setContacts:v6, v8, v9];
+    contactCopy2 = contact;
+    v6 = [v4 arrayWithObjects:&contactCopy count:1];
+    [(CNAvatarViewController *)self->_avatarViewController setContacts:v6, contactCopy, v9];
   }
 
   else

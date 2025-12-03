@@ -4,19 +4,19 @@
 + (float)inputImageAspectRatio;
 + (float)inputImageMaxDimension;
 + (float)inputImageMinDimension;
-+ (id)processingDeviceDetectorWithEspressoNetwork:(id)a3 espressoPlan:(void *)a4 threshold:(float)a5;
-+ (id)processingDeviceNetworkWithModelPath:(id)a3 threshold:(float)a4 preferredDeviceID:(int)a5 engineID:(int)a6 storageType:(int)a7;
++ (id)processingDeviceDetectorWithEspressoNetwork:(id)network espressoPlan:(void *)plan threshold:(float)threshold;
++ (id)processingDeviceNetworkWithModelPath:(id)path threshold:(float)threshold preferredDeviceID:(int)d engineID:(int)iD storageType:(int)type;
 + (tuple<float,)inputBiasRGB;
-- (VNShotflowNetwork)initWithEspressoNetwork:(id)a3 espressoPlan:(void *)a4 threshold:(float)a5;
-- (VNShotflowNetwork)initWithModelPath:(id)a3 espressoEngineID:(int)a4 espressoDeviceID:(int)a5 espressoStorageType:(int)a6 threshold:(float)a7;
+- (VNShotflowNetwork)initWithEspressoNetwork:(id)network espressoPlan:(void *)plan threshold:(float)threshold;
+- (VNShotflowNetwork)initWithModelPath:(id)path espressoEngineID:(int)d espressoDeviceID:(int)iD espressoStorageType:(int)type threshold:(float)threshold;
 - (id).cxx_construct;
-- (id)processVImage:(vImage_Buffer *)a3 inputIsBGR:(BOOL)a4;
-- (id)resizeAndProcessVImage:(vImage_Buffer *)a3 inputIsBGR:(BOOL)a4;
-- (int)setInputShape:(unint64_t)a3 height:(unint64_t)a4;
+- (id)processVImage:(vImage_Buffer *)image inputIsBGR:(BOOL)r;
+- (id)resizeAndProcessVImage:(vImage_Buffer *)image inputIsBGR:(BOOL)r;
+- (int)setInputShape:(unint64_t)shape height:(unint64_t)height;
 - (void)dealloc;
 - (void)initializeBuffers;
-- (void)initializeEspressoResourcesWithModelPath:(id)a3 espressoEngineID:(int)a4 espressoDeviceID:(int)a5 espressoStorageType:(int)a6;
-- (void)runNetwork:(vImage_Buffer *)a3 inputIsBGR:(BOOL)a4;
+- (void)initializeEspressoResourcesWithModelPath:(id)path espressoEngineID:(int)d espressoDeviceID:(int)iD espressoStorageType:(int)type;
+- (void)runNetwork:(vImage_Buffer *)network inputIsBGR:(BOOL)r;
 @end
 
 @implementation VNShotflowNetwork
@@ -34,11 +34,11 @@
   return self;
 }
 
-- (id)resizeAndProcessVImage:(vImage_Buffer *)a3 inputIsBGR:(BOOL)a4
+- (id)resizeAndProcessVImage:(vImage_Buffer *)image inputIsBGR:(BOOL)r
 {
   v87 = *MEMORY[0x1E69E9840];
-  height = a3->height;
-  width = a3->width;
+  height = image->height;
+  width = image->width;
   if (width)
   {
     v6 = height == 0;
@@ -56,13 +56,13 @@
     __cxa_throw(exception, MEMORY[0x1E69E54B0], 0);
   }
 
-  v7 = a4;
+  rCopy = r;
   v10 = width;
   v11 = height;
   if (height <= width)
   {
-    v14 = *&a3->width;
-    *&dest.data = *&a3->data;
+    v14 = *&image->width;
+    *&dest.data = *&image->data;
     *&dest.width = v14;
     v13 = height;
     v12 = width;
@@ -78,7 +78,7 @@
       __cxa_throw(v75, MEMORY[0x1E69E54B0], 0);
     }
 
-    vImageRotate90_ARGB8888(a3, &dest, 1u, &backColor, 0);
+    vImageRotate90_ARGB8888(image, &dest, 1u, &backColor, 0);
     v12 = dest.width;
     v13 = dest.height;
   }
@@ -183,7 +183,7 @@ LABEL_31:
   if (v21 <= 0x4000 && v22 <= 0x4000)
   {
     color = v83;
-    [(VNShotflowNetwork *)self processVImage:&color inputIsBGR:v7];
+    [(VNShotflowNetwork *)self processVImage:&color inputIsBGR:rCopy];
     v78 = 0u;
     v79 = 0u;
     v80 = 0u;
@@ -329,12 +329,12 @@ LABEL_31:
   return v31;
 }
 
-- (id)processVImage:(vImage_Buffer *)a3 inputIsBGR:(BOOL)a4
+- (id)processVImage:(vImage_Buffer *)image inputIsBGR:(BOOL)r
 {
-  v4 = a4;
-  v6 = self;
-  height = a3->height;
-  width = a3->width;
+  rCopy = r;
+  selfCopy = self;
+  height = image->height;
+  width = image->width;
   if ([(VNShotflowNetwork *)self setInputShape:width height:height])
   {
     exception = __cxa_allocate_exception(8uLL);
@@ -342,12 +342,12 @@ LABEL_31:
     __cxa_throw(exception, MEMORY[0x1E69E54B0], 0);
   }
 
-  v9 = *&a3->width;
-  v121 = *&a3->data;
+  v9 = *&image->width;
+  v121 = *&image->data;
   v122 = v9;
-  [(VNShotflowNetwork *)v6 runNetwork:&v121 inputIsBGR:v4];
+  [(VNShotflowNetwork *)selfCopy runNetwork:&v121 inputIsBGR:rCopy];
   v100 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  [(VNShotflowNetwork *)v6 threshold];
+  [(VNShotflowNetwork *)selfCopy threshold];
   v11 = v10;
   if (v10 == 1.0)
   {
@@ -357,19 +357,19 @@ LABEL_31:
   }
 
   v112 = objc_opt_class();
-  v92 = [v112 numberMaxoutLayers];
+  numberMaxoutLayers = [v112 numberMaxoutLayers];
   v12 = 0;
   v108 = width;
   v107 = height;
-  defaultBoxSizes = v6->_defaultBoxSizes;
-  isAnchorSquare = v6->isAnchorSquare;
-  v80 = v6;
+  defaultBoxSizes = selfCopy->_defaultBoxSizes;
+  isAnchorSquare = selfCopy->isAnchorSquare;
+  v80 = selfCopy;
   v117 = v11;
   do
   {
     v13 = 16 * v12;
-    begin = v6->_rollOutputs.__begin_;
-    if (v6->_rollOutputs.__end_ == begin)
+    begin = selfCopy->_rollOutputs.__begin_;
+    if (selfCopy->_rollOutputs.__end_ == begin)
     {
       v15 = 0;
     }
@@ -379,8 +379,8 @@ LABEL_31:
       v15 = begin[2 * v12];
     }
 
-    v16 = v6->_yawOutputs.__begin_;
-    if (v6->_yawOutputs.__end_ == v16)
+    v16 = selfCopy->_yawOutputs.__begin_;
+    if (selfCopy->_yawOutputs.__end_ == v16)
     {
       v17 = 0;
     }
@@ -390,9 +390,9 @@ LABEL_31:
       v17 = v16[2 * v12];
     }
 
-    v18 = *(v6->_logitsPosOutputs.__begin_ + 2 * v12);
+    v18 = *(selfCopy->_logitsPosOutputs.__begin_ + 2 * v12);
     v19 = *v18;
-    if (v12 >= v92)
+    if (v12 >= numberMaxoutLayers)
     {
       v23 = v18[17];
       v22 = *v18;
@@ -409,7 +409,7 @@ LABEL_12:
     else
     {
       v20 = 0;
-      v21 = *(v6->_logitsNegOutputs.__begin_ + 2 * v12);
+      v21 = *(selfCopy->_logitsNegOutputs.__begin_ + 2 * v12);
       v22 = *v21;
       v23 = v21[17];
       if (v15)
@@ -433,19 +433,19 @@ LABEL_15:
       v24 = 0;
     }
 
-    v25 = *(v6->_offsetsOutputs.__begin_ + v13);
+    v25 = *(selfCopy->_offsetsOutputs.__begin_ + v13);
     v26 = *v25;
     v94 = v18[10];
     v85 = v18[11];
-    v27 = [v112 strides];
+    strides = [v112 strides];
     v121 = 0uLL;
     *&v122 = 0;
-    std::vector<float>::__init_with_size[abi:ne200100]<float *,float *>(&v121, *v27, v27[1], (v27[1] - *v27) >> 2);
+    std::vector<float>::__init_with_size[abi:ne200100]<float *,float *>(&v121, *strides, strides[1], (strides[1] - *strides) >> 2);
     v106 = v121;
     v90 = *(v121 + 4 * v109);
     v84 = *(*[v112 cellStartsY] + 4 * v109);
     v89 = *(*[v112 cellStartsX] + 4 * v109);
-    v28 = [v112 ratios];
+    ratios = [v112 ratios];
     v29 = v109 != 5;
     v30 = v106;
     if (v15)
@@ -468,27 +468,27 @@ LABEL_15:
       v102 = 0;
     }
 
-    v32 = *v28;
-    v31 = v28[1];
+    v32 = *ratios;
+    v31 = ratios[1];
     v104 = *(v25 + 136);
-    v103 = [v112 numberBinsRoll];
-    v101 = [v112 numberBinsYaw];
-    v93 = [v112 mumberBinsNegativeMaxout];
-    v87 = [v112 mumberPosClasses];
-    v111 = [v112 poseSquare];
-    std::vector<float>::vector[abi:ne200100](v120, v87 + 1);
+    numberBinsRoll = [v112 numberBinsRoll];
+    numberBinsYaw = [v112 numberBinsYaw];
+    mumberBinsNegativeMaxout = [v112 mumberBinsNegativeMaxout];
+    mumberPosClasses = [v112 mumberPosClasses];
+    poseSquare = [v112 poseSquare];
+    std::vector<float>::vector[abi:ne200100](v120, mumberPosClasses + 1);
     if (v31 != v32)
     {
       v99 = 0;
-      v33 = v93 - 1;
-      v88 = v111 ^ 1;
-      if (v109 >= v92)
+      v33 = mumberBinsNegativeMaxout - 1;
+      v88 = poseSquare ^ 1;
+      if (v109 >= numberMaxoutLayers)
       {
-        v33 = v87;
+        v33 = mumberPosClasses;
       }
 
       v83 = v33 * v115;
-      v82 = ((__PAIR128__(v87, v109) - v92) >> 64) * v113;
+      v82 = ((__PAIR128__(mumberPosClasses, v109) - numberMaxoutLayers) >> 64) * v113;
       if (((v31 - v32) >> 2 << v29) <= 1)
       {
         v34 = 1;
@@ -509,8 +509,8 @@ LABEL_15:
         {
           v86 = 0;
           v37 = defaultBoxSizes[v109][v99];
-          v39 = v87 + 1;
-          v38 = v93;
+          v39 = mumberPosClasses + 1;
+          v38 = mumberBinsNegativeMaxout;
           while (!v94)
           {
 LABEL_73:
@@ -523,7 +523,7 @@ LABEL_73:
           v97 = 0;
           while (2)
           {
-            if (v109 >= v92)
+            if (v109 >= numberMaxoutLayers)
             {
               v40 = *v22;
             }
@@ -552,7 +552,7 @@ LABEL_73:
             {
               v44 = v43 + 1;
               v45 = v19;
-              v46 = v87;
+              v46 = mumberPosClasses;
               do
               {
                 v40 = fmaxf(v40, *v45);
@@ -580,11 +580,11 @@ LABEL_73:
               while (v48);
             }
 
-            v50 = [v112 importantClasses];
+            importantClasses = [v112 importantClasses];
             v95 = v19;
-            v52 = *v50;
-            v51 = *(v50 + 8);
-            if (*v50 != v51)
+            v52 = *importantClasses;
+            v51 = *(importantClasses + 8);
+            if (*importantClasses != v51)
             {
               do
               {
@@ -602,7 +602,7 @@ LABEL_73:
                   aBlock[1] = 3221225472;
                   aBlock[2] = __46__VNShotflowNetwork_processVImage_inputIsBGR___block_invoke;
                   aBlock[3] = &__block_descriptor_56_e5_f8__0l;
-                  aBlock[4] = v103;
+                  aBlock[4] = numberBinsRoll;
                   aBlock[5] = v110;
                   aBlock[6] = v105;
                   v59 = _Block_copy(aBlock);
@@ -611,7 +611,7 @@ LABEL_73:
                   v62 = 0;
                   if (v110)
                   {
-                    if (v111 && !isAnchorSquare[v99])
+                    if (poseSquare && !isAnchorSquare[v99])
                     {
                       [v112 nonSquareRollDefault];
                     }
@@ -629,14 +629,14 @@ LABEL_73:
                   v118[1] = 3221225472;
                   v118[2] = __46__VNShotflowNetwork_processVImage_inputIsBGR___block_invoke_2;
                   v118[3] = &__block_descriptor_56_e5_f8__0l;
-                  v118[4] = v101;
+                  v118[4] = numberBinsYaw;
                   v118[5] = v24;
                   v118[6] = v102;
                   v65 = _Block_copy(v118);
                   v66 = v65;
                   if (v24)
                   {
-                    if (v111 && !isAnchorSquare[v99])
+                    if (poseSquare && !isAnchorSquare[v99])
                     {
                       [v112 nonSquareYawDefault];
                     }
@@ -652,9 +652,9 @@ LABEL_73:
                   v68 = expf(v56);
                   v69 = expf(v57);
                   v70 = [VNShotflowDetection alloc];
-                  v71 = [v112 importantClasses];
+                  importantClasses2 = [v112 importantClasses];
                   LODWORD(v78) = v61;
-                  v72 = [(VNShotflowDetection *)v70 initWithBox:v109 defaultBox:v71[1] - *v71 > 8uLL confidence:v53 scale:(((v89 + (v97 * v90)) / v108) + (v58 * (v114 / v108))) - ((v114 / v108) * v68) * 0.5 rotationAngle:1.0 - (((v84 + (v86 * v90)) / v107) + (v116 * (v55 / v107))) - ((v55 / v107) * v69) * 0.5 yawAngle:__PAIR64__(v62 hasLabel:LODWORD(v54)) label:v78];
+                  v72 = [(VNShotflowDetection *)v70 initWithBox:v109 defaultBox:importantClasses2[1] - *importantClasses2 > 8uLL confidence:v53 scale:(((v89 + (v97 * v90)) / v108) + (v58 * (v114 / v108))) - ((v114 / v108) * v68) * 0.5 rotationAngle:1.0 - (((v84 + (v86 * v90)) / v107) + (v116 * (v55 / v107))) - ((v55 / v107) * v69) * 0.5 yawAngle:__PAIR64__(v62 hasLabel:LODWORD(v54)) label:v78];
                   [v100 addObject:v72];
 
                   v30 = v106;
@@ -672,9 +672,9 @@ LABEL_73:
             {
               v74 = v95;
               v73 = v96;
-              v39 = v87 + 1;
-              v38 = v93;
-              if (v111 && ((isAnchorSquare[v99] | v88) & 1) == 0)
+              v39 = mumberPosClasses + 1;
+              v38 = mumberBinsNegativeMaxout;
+              if (poseSquare && ((isAnchorSquare[v99] | v88) & 1) == 0)
               {
                 goto LABEL_72;
               }
@@ -691,15 +691,15 @@ LABEL_73:
               v110 = 0;
               v74 = v95;
               v73 = v96;
-              v39 = v87 + 1;
-              v38 = v93;
+              v39 = mumberPosClasses + 1;
+              v38 = mumberBinsNegativeMaxout;
               if (!v24)
               {
                 goto LABEL_72;
               }
             }
 
-            if (!v111 || ((isAnchorSquare[v99] | v88) & 1) != 0)
+            if (!poseSquare || ((isAnchorSquare[v99] | v88) & 1) != 0)
             {
               v24 += 4;
             }
@@ -720,15 +720,15 @@ LABEL_72:
 LABEL_74:
         if (v110)
         {
-          if (!v111 || ((isAnchorSquare[v99] | v88) & 1) != 0)
+          if (!poseSquare || ((isAnchorSquare[v99] | v88) & 1) != 0)
           {
-            v110 += 4 * (v103 - 1) * v105;
+            v110 += 4 * (numberBinsRoll - 1) * v105;
             if (v24)
             {
 LABEL_80:
-              if (!v111 || ((isAnchorSquare[v99] | v88) & 1) != 0)
+              if (!poseSquare || ((isAnchorSquare[v99] | v88) & 1) != 0)
               {
-                v24 += 4 * (v101 - 1) * v102;
+                v24 += 4 * (numberBinsYaw - 1) * v102;
               }
             }
           }
@@ -758,7 +758,7 @@ LABEL_80:
       operator delete(v120[0]);
     }
 
-    v6 = v80;
+    selfCopy = v80;
     if (v30)
     {
       operator delete(v30);
@@ -838,14 +838,14 @@ float __46__VNShotflowNetwork_processVImage_inputIsBGR___block_invoke_2(void *a1
   return ((225.0 / v1) * v6) + -90.0;
 }
 
-- (void)runNetwork:(vImage_Buffer *)a3 inputIsBGR:(BOOL)a4
+- (void)runNetwork:(vImage_Buffer *)network inputIsBGR:(BOOL)r
 {
   v4 = objc_opt_class();
   [v4 inputBiasRGB];
   [v4 inputScale];
   [v4 inputBGR];
-  v5 = [v4 inputLayerName];
-  [v5 UTF8String];
+  inputLayerName = [v4 inputLayerName];
+  [inputLayerName UTF8String];
   v6 = espresso_network_bind_input_vimagebuffer_bgra8();
 
   if (v6 || espresso_plan_execute_sync())
@@ -856,21 +856,21 @@ float __46__VNShotflowNetwork_processVImage_inputIsBGR___block_invoke_2(void *a1
   }
 }
 
-- (int)setInputShape:(unint64_t)a3 height:(unint64_t)a4
+- (int)setInputShape:(unint64_t)shape height:(unint64_t)height
 {
-  v4 = a4;
-  v5 = a3;
-  if (*&self->_currentNetworkWidth == __PAIR128__(a4, a3))
+  heightCopy = height;
+  shapeCopy = shape;
+  if (*&self->_currentNetworkWidth == __PAIR128__(height, shape))
   {
     return 0;
   }
 
   v8 = objc_opt_class();
-  v9 = [v8 inputLayerName];
-  [v9 UTF8String];
+  inputLayerName = [v8 inputLayerName];
+  [inputLayerName UTF8String];
 
   [objc_opt_class() inputImageSize];
-  if (v4 != v11 || v5 != v10)
+  if (heightCopy != v11 || shapeCopy != v10)
   {
     exception = __cxa_allocate_exception(8uLL);
     *exception = 6005;
@@ -895,12 +895,12 @@ float __46__VNShotflowNetwork_processVImage_inputIsBGR___block_invoke_2(void *a1
     return v12;
   }
 
-  v21 = [v8 numberMaxoutLayers];
+  numberMaxoutLayers = [v8 numberMaxoutLayers];
   v14 = 0;
   v15 = 0;
   while (1)
   {
-    if (v15 >= v21)
+    if (v15 >= numberMaxoutLayers)
     {
       v16 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"logits_%ld", v15];
       [v16 UTF8String];
@@ -945,8 +945,8 @@ float __46__VNShotflowNetwork_processVImage_inputIsBGR___block_invoke_2(void *a1
     if (v15 == 6)
     {
       v7 = 0;
-      self->_currentNetworkWidth = v5;
-      self->_currentNetworkHeight = v4;
+      self->_currentNetworkWidth = shapeCopy;
+      self->_currentNetworkHeight = heightCopy;
       return v7;
     }
   }
@@ -958,8 +958,8 @@ float __46__VNShotflowNetwork_processVImage_inputIsBGR___block_invoke_2(void *a1
 {
   v2 = objc_opt_class();
   std::vector<unsigned long>::vector[abi:ne200100](&v6, 4uLL);
-  v3 = [v2 inputLayerName];
-  [v3 UTF8String];
+  inputLayerName = [v2 inputLayerName];
+  [inputLayerName UTF8String];
   blob_dimensions = espresso_network_query_blob_dimensions();
 
   if (!blob_dimensions)
@@ -977,9 +977,9 @@ float __46__VNShotflowNetwork_processVImage_inputIsBGR___block_invoke_2(void *a1
   __cxa_throw(exception, MEMORY[0x1E69E54B0], 0);
 }
 
-- (void)initializeEspressoResourcesWithModelPath:(id)a3 espressoEngineID:(int)a4 espressoDeviceID:(int)a5 espressoStorageType:(int)a6
+- (void)initializeEspressoResourcesWithModelPath:(id)path espressoEngineID:(int)d espressoDeviceID:(int)iD espressoStorageType:(int)type
 {
-  v13 = a3;
+  pathCopy = path;
   context = espresso_create_context();
   self->_espressoContext = context;
   if (!context)
@@ -1000,7 +1000,7 @@ float __46__VNShotflowNetwork_processVImage_inputIsBGR___block_invoke_2(void *a1
   }
 
   self->_releaseEspressoPlan = 1;
-  [v13 UTF8String];
+  [pathCopy UTF8String];
   if (espresso_plan_add_network())
   {
     v11 = __cxa_allocate_exception(8uLL);
@@ -1033,15 +1033,15 @@ float __46__VNShotflowNetwork_processVImage_inputIsBGR___block_invoke_2(void *a1
   [(VNShotflowNetwork *)&v3 dealloc];
 }
 
-- (VNShotflowNetwork)initWithEspressoNetwork:(id)a3 espressoPlan:(void *)a4 threshold:(float)a5
+- (VNShotflowNetwork)initWithEspressoNetwork:(id)network espressoPlan:(void *)plan threshold:(float)threshold
 {
-  v7 = *&a3.var1;
-  var0 = a3.var0;
+  v7 = *&network.var1;
+  var0 = network.var0;
   v14.receiver = self;
   v14.super_class = VNShotflowNetwork;
   v9 = [(VNShotflowNetwork *)&v14 init];
   v10 = v9;
-  if (a5 == 1.0 || v9 == 0)
+  if (threshold == 1.0 || v9 == 0)
   {
     v12 = 0;
   }
@@ -1050,9 +1050,9 @@ float __46__VNShotflowNetwork_processVImage_inputIsBGR___block_invoke_2(void *a1
   {
     v9->_espressoNetwork.plan = var0;
     *&v9->_espressoNetwork.network_index = v7;
-    v9->_espressoPlan = a4;
+    v9->_espressoPlan = plan;
     *&v9->_releaseEspressoContext = 0;
-    v9->_threshold = a5;
+    v9->_threshold = threshold;
     [(VNShotflowNetwork *)v9 initializeBuffers];
     v12 = v10;
   }
@@ -1060,25 +1060,25 @@ float __46__VNShotflowNetwork_processVImage_inputIsBGR___block_invoke_2(void *a1
   return v12;
 }
 
-- (VNShotflowNetwork)initWithModelPath:(id)a3 espressoEngineID:(int)a4 espressoDeviceID:(int)a5 espressoStorageType:(int)a6 threshold:(float)a7
+- (VNShotflowNetwork)initWithModelPath:(id)path espressoEngineID:(int)d espressoDeviceID:(int)iD espressoStorageType:(int)type threshold:(float)threshold
 {
-  v8 = *&a6;
-  v9 = *&a5;
-  v10 = *&a4;
-  v12 = a3;
+  v8 = *&type;
+  v9 = *&iD;
+  v10 = *&d;
+  pathCopy = path;
   v18.receiver = self;
   v18.super_class = VNShotflowNetwork;
   v13 = [(VNShotflowNetwork *)&v18 init];
   v14 = v13;
-  if (a7 == 1.0 || v13 == 0)
+  if (threshold == 1.0 || v13 == 0)
   {
     v16 = 0;
   }
 
   else
   {
-    v13->_threshold = a7;
-    [(VNShotflowNetwork *)v13 initializeEspressoResourcesWithModelPath:v12 espressoEngineID:v10 espressoDeviceID:v9 espressoStorageType:v8];
+    v13->_threshold = threshold;
+    [(VNShotflowNetwork *)v13 initializeEspressoResourcesWithModelPath:pathCopy espressoEngineID:v10 espressoDeviceID:v9 espressoStorageType:v8];
     [(VNShotflowNetwork *)v14 initializeBuffers];
     v16 = v14;
   }
@@ -1086,26 +1086,26 @@ float __46__VNShotflowNetwork_processVImage_inputIsBGR___block_invoke_2(void *a1
   return v16;
 }
 
-+ (id)processingDeviceDetectorWithEspressoNetwork:(id)a3 espressoPlan:(void *)a4 threshold:(float)a5
++ (id)processingDeviceDetectorWithEspressoNetwork:(id)network espressoPlan:(void *)plan threshold:(float)threshold
 {
-  v7 = *&a3.var1;
-  var0 = a3.var0;
-  v9 = [a1 alloc];
-  *&v10 = a5;
-  v11 = [v9 initWithEspressoNetwork:var0 espressoPlan:v7 threshold:{a4, v10}];
+  v7 = *&network.var1;
+  var0 = network.var0;
+  v9 = [self alloc];
+  *&v10 = threshold;
+  v11 = [v9 initWithEspressoNetwork:var0 espressoPlan:v7 threshold:{plan, v10}];
 
   return v11;
 }
 
-+ (id)processingDeviceNetworkWithModelPath:(id)a3 threshold:(float)a4 preferredDeviceID:(int)a5 engineID:(int)a6 storageType:(int)a7
++ (id)processingDeviceNetworkWithModelPath:(id)path threshold:(float)threshold preferredDeviceID:(int)d engineID:(int)iD storageType:(int)type
 {
-  v7 = *&a7;
-  v8 = *&a6;
-  v9 = *&a5;
-  v12 = a3;
-  v13 = [a1 alloc];
-  *&v14 = a4;
-  v15 = [v13 initWithModelPath:v12 espressoEngineID:v8 espressoDeviceID:v9 espressoStorageType:v7 threshold:v14];
+  v7 = *&type;
+  v8 = *&iD;
+  v9 = *&d;
+  pathCopy = path;
+  v13 = [self alloc];
+  *&v14 = threshold;
+  v15 = [v13 initWithModelPath:pathCopy espressoEngineID:v8 espressoDeviceID:v9 espressoStorageType:v7 threshold:v14];
 
   return v15;
 }
@@ -1127,7 +1127,7 @@ float __46__VNShotflowNetwork_processVImage_inputIsBGR___block_invoke_2(void *a1
   block[1] = 3221225472;
   block[2] = __38__VNShotflowNetwork_defaultBoxesSides__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNShotflowNetwork defaultBoxesSides]::onceToken != -1)
   {
     dispatch_once(&+[VNShotflowNetwork defaultBoxesSides]::onceToken, block);
@@ -1148,15 +1148,15 @@ float __46__VNShotflowNetwork_processVImage_inputIsBGR___block_invoke_2(void *a1
 
 + (float)inputImageAspectRatio
 {
-  [a1 inputImageMaxDimension];
+  [self inputImageMaxDimension];
   v4 = v3;
-  [a1 inputImageMinDimension];
+  [self inputImageMinDimension];
   return v4 / v5;
 }
 
 + (float)inputImageMaxDimension
 {
-  [a1 inputImageSize];
+  [self inputImageSize];
   if (v2 < v3)
   {
     return v3;
@@ -1167,7 +1167,7 @@ float __46__VNShotflowNetwork_processVImage_inputIsBGR___block_invoke_2(void *a1
 
 + (float)inputImageMinDimension
 {
-  [a1 inputImageSize];
+  [self inputImageSize];
   if (v3 < v2)
   {
     return v3;

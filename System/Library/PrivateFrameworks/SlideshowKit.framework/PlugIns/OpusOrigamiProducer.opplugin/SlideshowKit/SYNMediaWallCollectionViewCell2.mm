@@ -1,22 +1,22 @@
 @interface SYNMediaWallCollectionViewCell2
-- (CGRect)_contentsRectForRegionOfInterestContainerBounds:(CGRect)a3;
+- (CGRect)_contentsRectForRegionOfInterestContainerBounds:(CGRect)bounds;
 - (CGRect)imageContentsRect;
-- (SYNMediaWallCollectionViewCell2)initWithFrame:(CGRect)a3;
+- (SYNMediaWallCollectionViewCell2)initWithFrame:(CGRect)frame;
 - (void)animatePop;
 - (void)blinkSelection;
 - (void)dealloc;
 - (void)prepareForReuse;
-- (void)setAntialiasing:(BOOL)a3;
-- (void)setBadge:(id)a3;
-- (void)setBorderColor:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setImage:(id)a3 animated:(BOOL)a4;
-- (void)setIsFiltered:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setSelectedBorderColor:(id)a3;
-- (void)setUseShadow:(BOOL)a3;
+- (void)setAntialiasing:(BOOL)antialiasing;
+- (void)setBadge:(id)badge;
+- (void)setBorderColor:(id)color;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setImage:(id)image animated:(BOOL)animated;
+- (void)setIsFiltered:(BOOL)filtered;
+- (void)setSelected:(BOOL)selected;
+- (void)setSelectedBorderColor:(id)color;
+- (void)setUseShadow:(BOOL)shadow;
 - (void)updateImageContentsRect;
 - (void)updateShadowPath;
 - (void)updateVideoFooter;
@@ -24,12 +24,12 @@
 
 @implementation SYNMediaWallCollectionViewCell2
 
-- (SYNMediaWallCollectionViewCell2)initWithFrame:(CGRect)a3
+- (SYNMediaWallCollectionViewCell2)initWithFrame:(CGRect)frame
 {
-  width = a3.size.width;
+  width = frame.size.width;
   v22.receiver = self;
   v22.super_class = SYNMediaWallCollectionViewCell2;
-  v4 = [(SYNMediaWallCollectionViewCell2 *)&v22 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(SYNMediaWallCollectionViewCell2 *)&v22 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v4;
   if (v4)
   {
@@ -47,18 +47,18 @@
     [-[SYNMediaWallCollectionViewCellMainView2 layer](v5->_mainView "layer")];
     [-[SYNMediaWallCollectionViewCellMainView2 layer](v5->_mainView "layer")];
     [-[SYNMediaWallCollectionViewCellMainView2 layer](v5->_mainView "layer")];
-    v8 = [+[UIDevice currentDevice](UIDevice userInterfaceIdiom];
-    v9 = [(SYNMediaWallCollectionViewCellMainView2 *)v5->_mainView layer];
+    userInterfaceIdiom = [+[UIDevice currentDevice](UIDevice userInterfaceIdiom];
+    layer = [(SYNMediaWallCollectionViewCellMainView2 *)v5->_mainView layer];
     v10 = 2.0;
-    if (v8 == UIUserInterfaceIdiomPhone)
+    if (userInterfaceIdiom == UIUserInterfaceIdiomPhone)
     {
       v10 = 1.0;
     }
 
-    [v9 setShadowRadius:v10];
-    v11 = [(SYNMediaWallCollectionViewCellMainView2 *)v5->_mainView layer];
+    [layer setShadowRadius:v10];
+    layer2 = [(SYNMediaWallCollectionViewCellMainView2 *)v5->_mainView layer];
     LODWORD(v12) = 1.0;
-    [v11 setShadowOpacity:v12];
+    [layer2 setShadowOpacity:v12];
     [(SYNMediaWallCollectionViewCell2 *)v5 bounds];
     [-[SYNMediaWallCollectionViewCellMainView2 layer](v5->_mainView "layer")];
     [-[SYNMediaWallCollectionViewCellMainView2 layer](v5->_mainView "layer")];
@@ -94,8 +94,8 @@
     [-[SYNMediaWallCollectionViewCell2 contentView](v5 "contentView")];
     [(SYNMediaWallCollectionViewCellMainView2 *)v5->_mainView addSubview:v5->_imageView];
     [(SYNMediaWallCollectionViewCellMainView2 *)v5->_mainView addSubview:v5->_badgeView];
-    v17 = [+[UIDevice currentDevice](UIDevice userInterfaceIdiom];
-    if (v17)
+    userInterfaceIdiom2 = [+[UIDevice currentDevice](UIDevice userInterfaceIdiom];
+    if (userInterfaceIdiom2)
     {
       v18 = 23.0;
     }
@@ -105,7 +105,7 @@
       v18 = 16.0;
     }
 
-    if (v17)
+    if (userInterfaceIdiom2)
     {
       v19 = 22.0;
     }
@@ -139,12 +139,12 @@
   [(SYNMediaWallCollectionViewCell2 *)&v3 dealloc];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(SYNMediaWallCollectionViewCell2 *)self frame];
   v9 = v8;
   v11 = v10;
@@ -157,12 +157,12 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(SYNMediaWallCollectionViewCell2 *)self frame];
   v9 = v8;
   v11 = v10;
@@ -178,58 +178,58 @@
 - (void)updateShadowPath
 {
   [(SYNMediaWallCollectionViewCell2 *)self bounds];
-  v3 = [+[UIBezierPath bezierPathWithRect:](UIBezierPath CGPath];
-  v4 = [(SYNMediaWallCollectionViewCellMainView2 *)self->_mainView layer];
+  cGPath = [+[UIBezierPath bezierPathWithRect:](UIBezierPath CGPath];
+  layer = [(SYNMediaWallCollectionViewCellMainView2 *)self->_mainView layer];
 
-  [v4 setShadowPath:v3];
+  [layer setShadowPath:cGPath];
 }
 
-- (void)setBorderColor:(id)a3
+- (void)setBorderColor:(id)color
 {
   if (([(SYNMediaWallCollectionViewCell2 *)self isSelected]& 1) == 0)
   {
-    v5 = [(SYNMediaWallCollectionViewCellMainView2 *)self->_mainView layer];
-    if (a3)
+    layer = [(SYNMediaWallCollectionViewCellMainView2 *)self->_mainView layer];
+    if (color)
     {
-      [v5 setBorderWidth:1.0];
-      v6 = [a3 CGColor];
+      [layer setBorderWidth:1.0];
+      cGColor = [color CGColor];
     }
 
     else
     {
-      [v5 setBorderWidth:0.0];
-      v6 = 0;
+      [layer setBorderWidth:0.0];
+      cGColor = 0;
     }
 
     [-[SYNMediaWallCollectionViewCellMainView2 layer](self->_mainView "layer")];
   }
 
-  self->_borderColor = a3;
+  self->_borderColor = color;
 }
 
-- (void)setSelectedBorderColor:(id)a3
+- (void)setSelectedBorderColor:(id)color
 {
   if ([(SYNMediaWallCollectionViewCell2 *)self isSelected])
   {
-    v5 = [(SYNMediaWallCollectionViewCellMainView2 *)self->_mainView layer];
-    if (a3)
+    layer = [(SYNMediaWallCollectionViewCellMainView2 *)self->_mainView layer];
+    if (color)
     {
-      [v5 setBorderWidth:1.0];
+      [layer setBorderWidth:1.0];
       [-[SYNMediaWallCollectionViewCellMainView2 layer](self->_mainView "layer")];
-      v6 = a3;
+      colorCopy = color;
     }
 
     else
     {
-      [v5 setBorderWidth:0.0];
+      [layer setBorderWidth:0.0];
       [-[SYNMediaWallCollectionViewCellMainView2 layer](self->_mainView "layer")];
-      v6 = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0];
+      colorCopy = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0];
     }
 
     [-[SYNMediaWallCollectionViewCellMainView2 layer](self->_mainView "layer")];
   }
 
-  self->_selectedBorderColor = a3;
+  self->_selectedBorderColor = color;
 }
 
 - (void)prepareForReuse
@@ -251,9 +251,9 @@
   }
 }
 
-- (void)setAntialiasing:(BOOL)a3
+- (void)setAntialiasing:(BOOL)antialiasing
 {
-  if (a3)
+  if (antialiasing)
   {
     v4 = 15;
   }
@@ -264,14 +264,14 @@
   }
 
   [-[SYNMediaWallCollectionViewCellMainView2 layer](self->_mainView "layer")];
-  v5 = [(UIImageView *)self->_imageView layer];
+  layer = [(UIImageView *)self->_imageView layer];
 
-  [v5 setEdgeAntialiasingMask:v4];
+  [layer setEdgeAntialiasingMask:v4];
 }
 
-- (void)setUseShadow:(BOOL)a3
+- (void)setUseShadow:(BOOL)shadow
 {
-  if (a3)
+  if (shadow)
   {
     v3 = 1.0;
   }
@@ -281,17 +281,17 @@
     v3 = 0.0;
   }
 
-  v4 = [(SYNMediaWallCollectionViewCellMainView2 *)self->_mainView layer];
+  layer = [(SYNMediaWallCollectionViewCellMainView2 *)self->_mainView layer];
   *&v5 = v3;
 
-  [v4 setShadowOpacity:v5];
+  [layer setShadowOpacity:v5];
 }
 
-- (void)setImage:(id)a3 animated:(BOOL)a4
+- (void)setImage:(id)image animated:(BOOL)animated
 {
-  if (a3)
+  if (image)
   {
-    if (a4)
+    if (animated)
     {
       v6 = [CABasicAnimation animationWithKeyPath:@"opacity"];
       [(CABasicAnimation *)v6 setDuration:0.150000006];
@@ -300,18 +300,18 @@
       [(CABasicAnimation *)v6 setToValue:[NSNumber numberWithFloat:v7]];
       [(CABasicAnimation *)v6 setRemovedOnCompletion:1];
       [-[UIImageView layer](self->_imageView "layer")];
-      v8 = [(UIImageView *)self->_imageView layer];
+      layer = [(UIImageView *)self->_imageView layer];
       LODWORD(v9) = 1.0;
-      [v8 setOpacity:v9];
+      [layer setOpacity:v9];
     }
 
-    [(UIImageView *)self->_imageView setImage:a3];
+    [(UIImageView *)self->_imageView setImage:image];
     [(SYNMediaWallCollectionViewCellMainView2 *)self->_mainView setBackgroundColor:+[UIColor clearColor]];
   }
 
   else
   {
-    [(SYNMediaWallCollectionViewCellMainView2 *)self->_mainView setBackgroundColor:[UIColor colorWithWhite:0 alpha:a4, 0.200000003, 1.0]];
+    [(SYNMediaWallCollectionViewCellMainView2 *)self->_mainView setBackgroundColor:[UIColor colorWithWhite:0 alpha:animated, 0.200000003, 1.0]];
     [-[UIImageView layer](self->_imageView "layer")];
     [(UIImageView *)self->_imageView setImage:0];
   }
@@ -319,26 +319,26 @@
   [(SYNMediaWallCollectionViewCell2 *)self updateImageContentsRect];
 }
 
-- (void)setBadge:(id)a3
+- (void)setBadge:(id)badge
 {
   [(UIImageView *)self->_badgeView setImage:?];
   badgeView = self->_badgeView;
 
-  [(UIImageView *)badgeView setHidden:a3 == 0];
+  [(UIImageView *)badgeView setHidden:badge == 0];
 }
 
-- (void)setIsFiltered:(BOOL)a3
+- (void)setIsFiltered:(BOOL)filtered
 {
-  v3 = a3;
-  v5 = [(SYNMediaWallCollectionViewCell2 *)self contentView];
+  filteredCopy = filtered;
+  contentView = [(SYNMediaWallCollectionViewCell2 *)self contentView];
   v6 = 0.200000003;
-  if (!v3)
+  if (!filteredCopy)
   {
     v6 = 1.0;
   }
 
-  [v5 setAlpha:v6];
-  self->_isFiltered = v3;
+  [contentView setAlpha:v6];
+  self->_isFiltered = filteredCopy;
 }
 
 - (void)blinkSelection
@@ -360,38 +360,38 @@
     [+[NSRunLoop mainRunLoop](NSRunLoop runUntilDate:"runUntilDate:", [NSDate dateWithTimeIntervalSinceNow:0.100000001]];
     selectedBorderColor = self->_selectedBorderColor;
     p_mainView = &self->_mainView;
-    v8 = [(SYNMediaWallCollectionViewCellMainView2 *)self->_mainView layer];
+    layer = [(SYNMediaWallCollectionViewCellMainView2 *)self->_mainView layer];
     if (selectedBorderColor)
     {
-      [v8 setBorderWidth:2.0];
+      [layer setBorderWidth:2.0];
       [-[SYNMediaWallCollectionViewCellMainView2 layer](*p_mainView "layer")];
       v9 = self->_selectedBorderColor;
     }
 
     else
     {
-      [v8 setBorderWidth:0.0];
+      [layer setBorderWidth:0.0];
       [-[SYNMediaWallCollectionViewCellMainView2 layer](*p_mainView "layer")];
       v9 = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0];
     }
 
-    v10 = [(UIColor *)v9 CGColor];
+    cGColor = [(UIColor *)v9 CGColor];
   }
 
   else
   {
     v3 = self->_selectedBorderColor;
-    v4 = [(SYNMediaWallCollectionViewCellMainView2 *)self->_mainView layer];
+    layer2 = [(SYNMediaWallCollectionViewCellMainView2 *)self->_mainView layer];
     if (v3)
     {
-      [v4 setBorderWidth:2.0];
+      [layer2 setBorderWidth:2.0];
       [-[SYNMediaWallCollectionViewCellMainView2 layer](self->_mainView "layer")];
       v5 = self->_selectedBorderColor;
     }
 
     else
     {
-      [v4 setBorderWidth:0.0];
+      [layer2 setBorderWidth:0.0];
       [-[SYNMediaWallCollectionViewCellMainView2 layer](self->_mainView "layer")];
       v5 = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0];
     }
@@ -410,7 +410,7 @@
       [-[SYNMediaWallCollectionViewCellMainView2 layer](self->_mainView "layer")];
     }
 
-    v10 = [+[UIColor colorWithRed:green:blue:alpha:](UIColor CGColor:0.0];
+    cGColor = [+[UIColor colorWithRed:green:blue:alpha:](UIColor CGColor:0.0];
     p_mainView = &self->_mainView;
   }
 
@@ -451,14 +451,14 @@
   [objc_msgSend(-[SYNMediaWallCollectionViewCell2 contentView](self "contentView")];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
-  v5 = [(SYNMediaWallCollectionViewCell2 *)self borderColor];
-  v6 = v5;
-  if (!v3)
+  selectedCopy = selected;
+  borderColor = [(SYNMediaWallCollectionViewCell2 *)self borderColor];
+  v6 = borderColor;
+  if (!selectedCopy)
   {
-    if (v5)
+    if (borderColor)
     {
       [-[SYNMediaWallCollectionViewCellMainView2 layer](self->_mainView "layer")];
       v10 = 1.0;
@@ -475,54 +475,54 @@
   }
 
   p_mainView = &self->_mainView;
-  v8 = [(SYNMediaWallCollectionViewCellMainView2 *)self->_mainView layer];
+  layer = [(SYNMediaWallCollectionViewCellMainView2 *)self->_mainView layer];
   if (!v6)
   {
-    [v8 setBorderWidth:0.0];
+    [layer setBorderWidth:0.0];
     [-[SYNMediaWallCollectionViewCellMainView2 layer](*p_mainView "layer")];
 LABEL_9:
     selectedBorderColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0];
     goto LABEL_10;
   }
 
-  [v8 setBorderWidth:2.0];
+  [layer setBorderWidth:2.0];
   [-[SYNMediaWallCollectionViewCellMainView2 layer](*p_mainView "layer")];
   selectedBorderColor = self->_selectedBorderColor;
 LABEL_10:
   [-[SYNMediaWallCollectionViewCellMainView2 layer](*p_mainView "layer")];
   v11.receiver = self;
   v11.super_class = SYNMediaWallCollectionViewCell2;
-  [(SYNMediaWallCollectionViewCell2 *)&v11 setSelected:v3];
+  [(SYNMediaWallCollectionViewCell2 *)&v11 setSelected:selectedCopy];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  if (!a3)
+  highlightedCopy = highlighted;
+  if (!highlighted)
   {
     [-[SYNMediaWallCollectionViewCellMainView2 layer](self->_mainView "layer")];
   }
 
   v5.receiver = self;
   v5.super_class = SYNMediaWallCollectionViewCell2;
-  [(SYNMediaWallCollectionViewCell2 *)&v5 setHighlighted:v3];
+  [(SYNMediaWallCollectionViewCell2 *)&v5 setHighlighted:highlightedCopy];
 }
 
-- (CGRect)_contentsRectForRegionOfInterestContainerBounds:(CGRect)a3
+- (CGRect)_contentsRectForRegionOfInterestContainerBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(UIImageView *)self->_imageView image];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  image = [(UIImageView *)self->_imageView image];
   v9 = 0.0;
   v10 = 1.0;
-  if (!v8)
+  if (!image)
   {
     goto LABEL_3;
   }
 
-  v11 = v8;
+  v11 = image;
   v80.origin.x = CGRectZero.origin.x;
   v80.origin.y = CGRectZero.origin.y;
   v80.size.width = CGRectZero.size.width;
@@ -756,9 +756,9 @@ LABEL_5:
 
 - (CGRect)imageContentsRect
 {
-  v2 = [(UIImageView *)self->_imageView layer];
+  layer = [(UIImageView *)self->_imageView layer];
 
-  [v2 contentsRect];
+  [layer contentsRect];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -768,9 +768,9 @@ LABEL_5:
 
 - (void)updateImageContentsRect
 {
-  v2 = [(UIImageView *)self->_imageView layer];
+  layer = [(UIImageView *)self->_imageView layer];
 
-  [v2 setContentsRect:{0.0, 0.0, 1.0, 1.0}];
+  [layer setContentsRect:{0.0, 0.0, 1.0, 1.0}];
 }
 
 - (void)updateVideoFooter

@@ -13,10 +13,10 @@
   if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     v7 = v6;
-    v8 = [v5 identifier];
-    v9 = [v7 identifier];
+    identifier = [v5 identifier];
+    identifier2 = [v7 identifier];
 
-    v10 = [v8 compare:v9];
+    v10 = [identifier compare:identifier2];
   }
 
   else
@@ -42,7 +42,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (a1 == v4)
+    if (self == v4)
     {
       v12 = 1;
     }
@@ -50,22 +50,22 @@
     else
     {
       v5 = v4;
-      v6 = [a1 count];
+      v6 = [self count];
       if (v6 == [v5 count])
       {
-        v7 = [a1 mutableCopy];
+        v7 = [self mutableCopy];
         v15[0] = MEMORY[0x277D85DD0];
         v15[1] = 3221225472;
         v15[2] = __40__NSArray_FuzzyMatch__atx_isFuzzyMatch___block_invoke;
         v15[3] = &unk_2785904A8;
-        v15[4] = a1;
+        v15[4] = self;
         [v7 sortUsingComparator:v15];
         v8 = [v5 mutableCopy];
         v14[0] = MEMORY[0x277D85DD0];
         v14[1] = 3221225472;
         v14[2] = __40__NSArray_FuzzyMatch__atx_isFuzzyMatch___block_invoke_2;
         v14[3] = &unk_2785904A8;
-        v14[4] = a1;
+        v14[4] = self;
         [v8 sortUsingComparator:v14];
         if ([v7 count])
         {

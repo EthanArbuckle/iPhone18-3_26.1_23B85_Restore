@@ -13,8 +13,8 @@
 - (uint64_t)dc_matchesHost:()DCURLUtilities
 {
   v4 = a3;
-  v5 = [a1 host];
-  if ([v5 isEqualToString:v4])
+  host = [self host];
+  if ([host isEqualToString:v4])
   {
     v6 = 1;
   }
@@ -22,7 +22,7 @@
   else
   {
     v7 = [@"www." stringByAppendingString:v4];
-    v6 = [v5 isEqualToString:v7];
+    v6 = [host isEqualToString:v7];
   }
 
   return v6;
@@ -30,11 +30,11 @@
 
 - (id)dc_fragmentQueryDictionary
 {
-  v1 = [a1 fragment];
-  if ([v1 length] && objc_msgSend(v1, "characterAtIndex:", 0) == 33)
+  fragment = [self fragment];
+  if ([fragment length] && objc_msgSend(fragment, "characterAtIndex:", 0) == 33)
   {
     v2 = MEMORY[0x277CBEBC0];
-    v3 = [v1 substringFromIndex:1];
+    v3 = [fragment substringFromIndex:1];
     v4 = [v2 dc_dictionaryFromQueryString:v3];
   }
 
@@ -49,8 +49,8 @@
 - (id)dc_queryDictionary
 {
   v1 = MEMORY[0x277CBEBC0];
-  v2 = [a1 query];
-  v3 = [v1 dc_dictionaryFromQueryString:v2];
+  query = [self query];
+  v3 = [v1 dc_dictionaryFromQueryString:query];
 
   return v3;
 }
@@ -91,8 +91,8 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
-          v13 = [v12 mutableCopy];
+          uRLQueryAllowedCharacterSet = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
+          v13 = [uRLQueryAllowedCharacterSet mutableCopy];
 
           [v13 removeCharactersInString:@"?=&"];
           if (a4)
@@ -119,8 +119,8 @@
             goto LABEL_24;
           }
 
-          v16 = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
-          v13 = [v16 mutableCopy];
+          uRLQueryAllowedCharacterSet2 = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
+          v13 = [uRLQueryAllowedCharacterSet2 mutableCopy];
 
           [v13 removeCharactersInString:@"?=&"];
           v17 = v11;
@@ -156,8 +156,8 @@
           }
 
           v19 = v20;
-          v21 = [v14 stringValue];
-          [v5 appendFormat:@"&%@=%@", v19, v21];
+          stringValue = [v14 stringValue];
+          [v5 appendFormat:@"&%@=%@", v19, stringValue];
         }
 
 LABEL_24:
@@ -188,7 +188,7 @@ LABEL_24:
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [a1 dc_queryItemsFromQueryString:{v4, 0}];
+  v6 = [self dc_queryItemsFromQueryString:{v4, 0}];
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -204,11 +204,11 @@ LABEL_24:
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 value];
-        v13 = v12;
-        if (v12)
+        value = [v11 value];
+        v13 = value;
+        if (value)
         {
-          v14 = v12;
+          v14 = value;
         }
 
         else
@@ -216,8 +216,8 @@ LABEL_24:
           v14 = &stru_282F53518;
         }
 
-        v15 = [v11 name];
-        [v5 setObject:v14 forKey:v15];
+        name = [v11 name];
+        [v5 setObject:v14 forKey:name];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -238,8 +238,8 @@ LABEL_24:
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v5 = [v3 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  allKeys = [v3 allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v6)
   {
     v7 = v6;
@@ -253,7 +253,7 @@ LABEL_24:
       {
         if (*v26 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v25 + 1) + 8 * v10);
@@ -275,19 +275,19 @@ LABEL_11:
           {
             v15 = v8;
             v16 = v3;
-            v17 = v5;
+            v17 = allKeys;
             v18 = v4;
             v19 = v9;
             v20 = MEMORY[0x277CCAD18];
-            v21 = [v14 stringValue];
+            stringValue = [v14 stringValue];
             v22 = v20;
             v9 = v19;
             v4 = v18;
-            v5 = v17;
+            allKeys = v17;
             v3 = v16;
             v8 = v15;
             v7 = v24;
-            v13 = [v22 queryItemWithName:v11 value:v21];
+            v13 = [v22 queryItemWithName:v11 value:stringValue];
 
             goto LABEL_11;
           }
@@ -300,7 +300,7 @@ LABEL_13:
       }
 
       while (v7 != v10);
-      v7 = [v5 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v7);

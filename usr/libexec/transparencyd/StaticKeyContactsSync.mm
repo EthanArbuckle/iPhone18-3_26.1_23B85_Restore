@@ -1,9 +1,9 @@
 @interface StaticKeyContactsSync
 - (StaticKeyContactsStorage)storage;
-- (StaticKeyContactsSync)initWithStorage:(id)a3;
+- (StaticKeyContactsSync)initWithStorage:(id)storage;
 - (StaticKeyContactsSyncDelegate)delegate;
 - (void)consumeContactsChangeHistory;
-- (void)contactStoreDidChange:(id)a3;
+- (void)contactStoreDidChange:(id)change;
 - (void)dealloc;
 - (void)drainContactsSyncing;
 - (void)invalidateContactsSyncing;
@@ -13,16 +13,16 @@
 
 @implementation StaticKeyContactsSync
 
-- (StaticKeyContactsSync)initWithStorage:(id)a3
+- (StaticKeyContactsSync)initWithStorage:(id)storage
 {
-  v4 = a3;
+  storageCopy = storage;
   v18.receiver = self;
   v18.super_class = StaticKeyContactsSync;
   v5 = [(StaticKeyContactsSync *)&v18 init];
   v6 = v5;
   if (v5)
   {
-    [(StaticKeyContactsSync *)v5 setStorage:v4];
+    [(StaticKeyContactsSync *)v5 setStorage:storageCopy];
     [(StaticKeyContactsSync *)v6 setStarted:0];
     [(StaticKeyContactsSync *)v6 setTransaction:0];
     v7 = dispatch_queue_create("StaticKeyContactsSync", 0);
@@ -48,8 +48,8 @@
 
 - (void)dealloc
 {
-  v3 = [(StaticKeyContactsSync *)self sigTerm];
-  [v3 unregister];
+  sigTerm = [(StaticKeyContactsSync *)self sigTerm];
+  [sigTerm unregister];
 
   v4.receiver = self;
   v4.super_class = StaticKeyContactsSync;
@@ -58,13 +58,13 @@
 
 - (void)startContactsSyncing
 {
-  v3 = [(StaticKeyContactsSync *)self queue];
+  queue = [(StaticKeyContactsSync *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100209DA0;
   block[3] = &unk_100316FE0;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 
   if (qword_10039CC38 != -1)
   {
@@ -81,9 +81,9 @@
   [(StaticKeyContactsSync *)self consumeContactsChangeHistory];
 }
 
-- (void)contactStoreDidChange:(id)a3
+- (void)contactStoreDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if (qword_10039CC38 != -1)
   {
     sub_10025E350();
@@ -93,7 +93,7 @@
   if (os_log_type_enabled(qword_10039CC40, OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = changeCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "contactStoreDidChange: %@", &v6, 0xCu);
   }
 
@@ -102,9 +102,9 @@
 
 - (void)consumeContactsChangeHistory
 {
-  v3 = [(StaticKeyContactsSync *)self delegate];
+  delegate = [(StaticKeyContactsSync *)self delegate];
   v10 = 0;
-  v4 = [v3 listStaticKey:&v10];
+  v4 = [delegate listStaticKey:&v10];
   v5 = v10;
 
   if (v5)
@@ -127,13 +127,13 @@
   {
     if (!+[KTSignalTermHandler terminated])
     {
-      v7 = [(StaticKeyContactsSync *)self queue];
+      queue = [(StaticKeyContactsSync *)self queue];
       v9[0] = _NSConcreteStackBlock;
       v9[1] = 3221225472;
       v9[2] = sub_10020A290;
       v9[3] = &unk_100316FE0;
       v9[4] = self;
-      dispatch_async(v7, v9);
+      dispatch_async(queue, v9);
     }
   }
 
@@ -174,8 +174,8 @@
 
 - (void)drainContactsSyncing
 {
-  v2 = [(StaticKeyContactsSync *)self queue];
-  dispatch_sync(v2, &stru_10032A2F0);
+  queue = [(StaticKeyContactsSync *)self queue];
+  dispatch_sync(queue, &stru_10032A2F0);
 }
 
 - (void)onQueueMergeChangesFromContacts
@@ -192,13 +192,13 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "mergeChangesFromContacts started", buf, 2u);
   }
 
-  v4 = [(StaticKeyContactsSync *)self queue];
-  dispatch_assert_queue_V2(v4);
+  queue = [(StaticKeyContactsSync *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v5 = objc_alloc_init(CNChangeHistoryFetchRequest);
-  v6 = [(StaticKeyContactsSync *)self storage];
-  v7 = [v6 fetchContactsSyncToken];
-  [v5 setStartingToken:v7];
+  storage = [(StaticKeyContactsSync *)self storage];
+  fetchContactsSyncToken = [storage fetchContactsSyncToken];
+  [v5 setStartingToken:fetchContactsSyncToken];
 
   [v5 setExcludedTransactionAuthors:&off_10033D8B0];
   v58[0] = CNContactEmailAddressesKey;
@@ -232,16 +232,16 @@
 
   v51 = v11;
   v52 = v10;
-  v13 = [v10 value];
-  v14 = 0;
+  value = [v10 value];
+  nextObject = 0;
   *&v15 = 138412546;
   v49 = v15;
   while (1)
   {
-    v16 = v14;
-    v14 = [v13 nextObject];
+    v16 = nextObject;
+    nextObject = [value nextObject];
 
-    if (!v14)
+    if (!nextObject)
     {
       break;
     }
@@ -255,7 +255,7 @@
     if (os_log_type_enabled(qword_10039CC40, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v55 = v14;
+      v55 = nextObject;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "mergeChangesFromContacts: change history enumerator object = %@", buf, 0xCu);
     }
 
@@ -274,8 +274,8 @@
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "mergeChangesFromContacts: change history - drop everything", buf, 2u);
       }
 
-      v19 = [(StaticKeyContactsSync *)self delegate];
-      [v19 resetContactsStorage];
+      delegate = [(StaticKeyContactsSync *)self delegate];
+      [delegate resetContactsStorage];
     }
 
     else
@@ -283,7 +283,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v20 = v14;
+        v20 = nextObject;
         if (qword_10039CC38 != -1)
         {
           sub_10025E47C();
@@ -293,9 +293,9 @@
         if (os_log_type_enabled(qword_10039CC40, OS_LOG_TYPE_DEFAULT))
         {
           v22 = v21;
-          v23 = [v20 contact];
+          contact = [v20 contact];
           *buf = 138412290;
-          v55 = v23;
+          v55 = contact;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "mergeChangesFromContacts: change history - AddContact event - %@", buf, 0xCu);
         }
       }
@@ -308,7 +308,7 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v29 = v14;
+            v29 = nextObject;
             v50 = v9;
             if (qword_10039CC38 != -1)
             {
@@ -320,19 +320,19 @@
             if (os_log_type_enabled(qword_10039CC40, OS_LOG_TYPE_DEFAULT))
             {
               v32 = v31;
-              v33 = [v29 contactIdentifier];
-              v34 = [v29 externalURI];
+              contactIdentifier = [v29 contactIdentifier];
+              externalURI = [v29 externalURI];
               *buf = v49;
-              v55 = v33;
+              v55 = contactIdentifier;
               v56 = 2112;
-              v57 = v34;
+              v57 = externalURI;
               _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "mergeChangesFromContacts: change history - DeleteContact event - %@[%@]", buf, 0x16u);
             }
 
-            v35 = [(StaticKeyContactsSync *)self delegate];
-            v36 = [v29 contactIdentifier];
-            v37 = [v29 externalURI];
-            [v35 deleteContact:v36 contactExternalURI:v37];
+            delegate2 = [(StaticKeyContactsSync *)self delegate];
+            contactIdentifier2 = [v29 contactIdentifier];
+            externalURI2 = [v29 externalURI];
+            [delegate2 deleteContact:contactIdentifier2 contactExternalURI:externalURI2];
 
             v5 = v30;
             v9 = v50;
@@ -349,7 +349,7 @@
             if (os_log_type_enabled(qword_10039CC40, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v55 = v14;
+              v55 = nextObject;
               _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "mergeChangesFromContacts: change history - ignoring event - %@", buf, 0xCu);
             }
           }
@@ -357,7 +357,7 @@
           goto LABEL_29;
         }
 
-        v20 = v14;
+        v20 = nextObject;
         if (qword_10039CC38 != -1)
         {
           sub_10025E454();
@@ -367,16 +367,16 @@
         if (os_log_type_enabled(qword_10039CC40, OS_LOG_TYPE_DEFAULT))
         {
           v25 = v24;
-          v26 = [v20 contact];
+          contact2 = [v20 contact];
           *buf = 138412290;
-          v55 = v26;
+          v55 = contact2;
           _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "mergeChangesFromContacts: change history - UpdateContact event - %@", buf, 0xCu);
         }
       }
 
-      v27 = [(StaticKeyContactsSync *)self delegate];
-      v28 = [v20 contact];
-      [v27 updateContact:v28];
+      delegate3 = [(StaticKeyContactsSync *)self delegate];
+      contact3 = [v20 contact];
+      [delegate3 updateContact:contact3];
     }
 
 LABEL_29:
@@ -402,17 +402,17 @@ LABEL_29:
     }
   }
 
-  v40 = [v52 currentHistoryToken];
+  currentHistoryToken = [v52 currentHistoryToken];
 
-  if (v40)
+  if (currentHistoryToken)
   {
-    v41 = [(StaticKeyContactsSync *)self storage];
-    v42 = [v52 currentHistoryToken];
-    [v41 storeContactsSyncToken:v42];
+    storage2 = [(StaticKeyContactsSync *)self storage];
+    currentHistoryToken2 = [v52 currentHistoryToken];
+    [storage2 storeContactsSyncToken:currentHistoryToken2];
   }
 
-  v43 = [(StaticKeyContactsSync *)self storage];
-  [v43 updateLastContactSyncDate];
+  storage3 = [(StaticKeyContactsSync *)self storage];
+  [storage3 updateLastContactSyncDate];
 
   if (qword_10039CC38 != -1)
   {

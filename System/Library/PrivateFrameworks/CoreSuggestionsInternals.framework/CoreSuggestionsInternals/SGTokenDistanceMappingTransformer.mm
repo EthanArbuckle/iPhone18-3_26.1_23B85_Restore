@@ -1,15 +1,15 @@
 @interface SGTokenDistanceMappingTransformer
-+ (BOOL)debugAppendText:(id)a3;
-+ (id)transformArray:(id)a3 withTargetIndex:(unint64_t)a4 maximumDistance:(unint64_t)a5;
-+ (id)withTarget:(id)a3 maxDistance:(unint64_t)a4;
-+ (void)debugSetContext:(id)a3;
++ (BOOL)debugAppendText:(id)text;
++ (id)transformArray:(id)array withTargetIndex:(unint64_t)index maximumDistance:(unint64_t)distance;
++ (id)withTarget:(id)target maxDistance:(unint64_t)distance;
++ (void)debugSetContext:(id)context;
 + (void)debugStoreContext;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTokenDistanceMappingTransformer:(id)a3;
-- (SGTokenDistanceMappingTransformer)initWithPlist:(id)a3 chunks:(id)a4 context:(id)a5;
-- (SGTokenDistanceMappingTransformer)initWithTarget:(id)a3 maxDistance:(unint64_t)a4;
-- (id)toPlistWithChunks:(id)a3;
-- (id)transform:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTokenDistanceMappingTransformer:(id)transformer;
+- (SGTokenDistanceMappingTransformer)initWithPlist:(id)plist chunks:(id)chunks context:(id)context;
+- (SGTokenDistanceMappingTransformer)initWithTarget:(id)target maxDistance:(unint64_t)distance;
+- (id)toPlistWithChunks:(id)chunks;
+- (id)transform:(id)transform;
 - (unint64_t)hash;
 @end
 
@@ -17,41 +17,41 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SGTokenDistanceMappingTransformer *)self targetString];
-  v4 = [v3 hash];
+  targetString = [(SGTokenDistanceMappingTransformer *)self targetString];
+  v4 = [targetString hash];
 
   return [(SGTokenDistanceMappingTransformer *)self maxDistance]- v4 + 32 * v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGTokenDistanceMappingTransformer *)self isEqualToTokenDistanceMappingTransformer:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGTokenDistanceMappingTransformer *)self isEqualToTokenDistanceMappingTransformer:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToTokenDistanceMappingTransformer:(id)a3
+- (BOOL)isEqualToTokenDistanceMappingTransformer:(id)transformer
 {
-  v6 = a3;
-  if (v6)
+  transformerCopy = transformer;
+  if (transformerCopy)
   {
-    v7 = [(SGTokenDistanceMappingTransformer *)self targetString];
-    v8 = [v6 targetString];
-    if (v7 == v8 || (-[SGTokenDistanceMappingTransformer targetString](self, "targetString"), v3 = objc_claimAutoreleasedReturnValue(), [v6 targetString], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqual:", v4)))
+    targetString = [(SGTokenDistanceMappingTransformer *)self targetString];
+    targetString2 = [transformerCopy targetString];
+    if (targetString == targetString2 || (-[SGTokenDistanceMappingTransformer targetString](self, "targetString"), v3 = objc_claimAutoreleasedReturnValue(), [transformerCopy targetString], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqual:", v4)))
     {
-      v10 = [(SGTokenDistanceMappingTransformer *)self maxDistance];
-      v9 = v10 == [v6 maxDistance];
-      if (v7 == v8)
+      maxDistance = [(SGTokenDistanceMappingTransformer *)self maxDistance];
+      v9 = maxDistance == [transformerCopy maxDistance];
+      if (targetString == targetString2)
       {
 LABEL_8:
 
@@ -73,23 +73,23 @@ LABEL_9:
   return v9;
 }
 
-- (SGTokenDistanceMappingTransformer)initWithPlist:(id)a3 chunks:(id)a4 context:(id)a5
+- (SGTokenDistanceMappingTransformer)initWithPlist:(id)plist chunks:(id)chunks context:(id)context
 {
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"TARGET_STRING"];
-  v8 = [v6 objectForKeyedSubscript:@"MAC_DISTANCE"];
+  plistCopy = plist;
+  v7 = [plistCopy objectForKeyedSubscript:@"TARGET_STRING"];
+  v8 = [plistCopy objectForKeyedSubscript:@"MAC_DISTANCE"];
 
   v9 = -[SGTokenDistanceMappingTransformer initWithTarget:maxDistance:](self, "initWithTarget:maxDistance:", v7, [v8 unsignedIntegerValue]);
   return v9;
 }
 
-- (id)toPlistWithChunks:(id)a3
+- (id)toPlistWithChunks:(id)chunks
 {
   v10[2] = *MEMORY[0x277D85DE8];
   v9[0] = @"TARGET_STRING";
-  v4 = [(SGTokenDistanceMappingTransformer *)self targetString];
+  targetString = [(SGTokenDistanceMappingTransformer *)self targetString];
   v9[1] = @"MAC_DISTANCE";
-  v10[0] = v4;
+  v10[0] = targetString;
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SGTokenDistanceMappingTransformer maxDistance](self, "maxDistance")}];
   v10[1] = v5;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:v9 count:2];
@@ -99,19 +99,19 @@ LABEL_9:
   return v6;
 }
 
-- (id)transform:(id)a3
+- (id)transform:(id)transform
 {
-  v4 = a3;
+  transformCopy = transform;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     __assert_rtn("[SGTokenDistanceMappingTransformer transform:]", "SGTokenDistanceMappingTransformer.m", 47, "[input isKindOfClass:[NSArray class]]");
   }
 
-  if ([v4 count])
+  if ([transformCopy count])
   {
-    v5 = [(SGTokenDistanceMappingTransformer *)self targetString];
-    v6 = [v4 indexOfObject:v5];
+    targetString = [(SGTokenDistanceMappingTransformer *)self targetString];
+    v6 = [transformCopy indexOfObject:targetString];
 
     if (v6 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -123,12 +123,12 @@ LABEL_9:
       v7 = v6;
     }
 
-    v8 = [objc_opt_class() transformArray:v4 withTargetIndex:v7 maximumDistance:{-[SGTokenDistanceMappingTransformer maxDistance](self, "maxDistance")}];
+    v8 = [objc_opt_class() transformArray:transformCopy withTargetIndex:v7 maximumDistance:{-[SGTokenDistanceMappingTransformer maxDistance](self, "maxDistance")}];
   }
 
   else
   {
-    v8 = v4;
+    v8 = transformCopy;
   }
 
   v9 = v8;
@@ -136,31 +136,31 @@ LABEL_9:
   return v9;
 }
 
-- (SGTokenDistanceMappingTransformer)initWithTarget:(id)a3 maxDistance:(unint64_t)a4
+- (SGTokenDistanceMappingTransformer)initWithTarget:(id)target maxDistance:(unint64_t)distance
 {
-  v6 = a3;
+  targetCopy = target;
   v10.receiver = self;
   v10.super_class = SGTokenDistanceMappingTransformer;
   v7 = [(SGTokenDistanceMappingTransformer *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(SGTokenDistanceMappingTransformer *)v7 setTargetString:v6];
-    [(SGTokenDistanceMappingTransformer *)v8 setMaxDistance:a4];
+    [(SGTokenDistanceMappingTransformer *)v7 setTargetString:targetCopy];
+    [(SGTokenDistanceMappingTransformer *)v8 setMaxDistance:distance];
   }
 
   return v8;
 }
 
-+ (BOOL)debugAppendText:(id)a3
++ (BOOL)debugAppendText:(id)text
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (os_variant_has_internal_diagnostics() && [v3 length])
+  textCopy = text;
+  if (os_variant_has_internal_diagnostics() && [textCopy length])
   {
     objc_sync_enter(@"SuggestionsMLDebugContextDataKey");
     v4 = [SGPaths suggestionsDirectoryFile:@"assertion_context"];
-    v5 = [v3 stringByAppendingString:@"\n------\n"];
+    v5 = [textCopy stringByAppendingString:@"\n------\n"];
     v6 = [v5 dataUsingEncoding:4];
 
     v7 = [MEMORY[0x277CCA9F8] fileHandleForWritingAtPath:v4];
@@ -178,8 +178,8 @@ LABEL_9:
       v14 = *MEMORY[0x277CCA1B0];
       v15[0] = *MEMORY[0x277CCA198];
       v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
-      v11 = [MEMORY[0x277CCAA00] defaultManager];
-      v9 = [v11 createFileAtPath:v4 contents:v6 attributes:v10];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      v9 = [defaultManager createFileAtPath:v4 contents:v6 attributes:v10];
     }
 
     objc_sync_exit(@"SuggestionsMLDebugContextDataKey");
@@ -198,52 +198,52 @@ LABEL_9:
 {
   if (os_variant_has_internal_diagnostics())
   {
-    v3 = [MEMORY[0x277CCACC8] currentThread];
-    v5 = [v3 threadDictionary];
+    currentThread = [MEMORY[0x277CCACC8] currentThread];
+    threadDictionary = [currentThread threadDictionary];
 
-    v4 = [v5 objectForKeyedSubscript:@"SuggestionsMLDebugContextDataKey"];
-    [a1 debugAppendText:v4];
+    v4 = [threadDictionary objectForKeyedSubscript:@"SuggestionsMLDebugContextDataKey"];
+    [self debugAppendText:v4];
   }
 }
 
-+ (void)debugSetContext:(id)a3
++ (void)debugSetContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   if (os_variant_has_internal_diagnostics())
   {
-    v3 = [MEMORY[0x277CCACC8] currentThread];
-    v4 = [v3 threadDictionary];
+    currentThread = [MEMORY[0x277CCACC8] currentThread];
+    threadDictionary = [currentThread threadDictionary];
 
-    if ([v5 length])
+    if ([contextCopy length])
     {
-      [v4 setObject:v5 forKeyedSubscript:@"SuggestionsMLDebugContextDataKey"];
+      [threadDictionary setObject:contextCopy forKeyedSubscript:@"SuggestionsMLDebugContextDataKey"];
     }
 
     else
     {
-      [v4 removeObjectForKey:@"SuggestionsMLDebugContextDataKey"];
+      [threadDictionary removeObjectForKey:@"SuggestionsMLDebugContextDataKey"];
     }
   }
 }
 
-+ (id)transformArray:(id)a3 withTargetIndex:(unint64_t)a4 maximumDistance:(unint64_t)a5
++ (id)transformArray:(id)array withTargetIndex:(unint64_t)index maximumDistance:(unint64_t)distance
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if ([v8 count] <= a4)
+  arrayCopy = array;
+  if ([arrayCopy count] <= index)
   {
-    [a1 debugStoreContext];
+    [self debugStoreContext];
     v9 = sgLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       *buf = 134218240;
-      v19 = a4;
+      indexCopy = index;
       v20 = 2048;
-      v21 = [v8 count];
+      v21 = [arrayCopy count];
       _os_log_impl(&dword_231E60000, v9, OS_LOG_TYPE_INFO, "SGTokenDistanceMappingTransformer: index=%lu, count=%lu", buf, 0x16u);
     }
 
-    if ([v8 count] <= a4)
+    if ([arrayCopy count] <= index)
     {
       __assert_rtn("+[SGTokenDistanceMappingTransformer transformArray:withTargetIndex:maximumDistance:]", "SGTokenDistanceMappingTransformer.m", 66, "index < input.count");
     }
@@ -254,11 +254,11 @@ LABEL_9:
   v14[1] = 3221225472;
   v14[2] = __84__SGTokenDistanceMappingTransformer_transformArray_withTargetIndex_maximumDistance___block_invoke;
   v14[3] = &unk_27894EC80;
-  v16 = a4;
-  v17 = a5;
+  indexCopy2 = index;
+  distanceCopy = distance;
   v11 = v10;
   v15 = v11;
-  [v8 enumerateObjectsUsingBlock:v14];
+  [arrayCopy enumerateObjectsUsingBlock:v14];
 
   v12 = *MEMORY[0x277D85DE8];
 
@@ -289,10 +289,10 @@ void __84__SGTokenDistanceMappingTransformer_transformArray_withTargetIndex_maxi
   }
 }
 
-+ (id)withTarget:(id)a3 maxDistance:(unint64_t)a4
++ (id)withTarget:(id)target maxDistance:(unint64_t)distance
 {
-  v5 = a3;
-  v6 = [[SGTokenDistanceMappingTransformer alloc] initWithTarget:v5 maxDistance:a4];
+  targetCopy = target;
+  v6 = [[SGTokenDistanceMappingTransformer alloc] initWithTarget:targetCopy maxDistance:distance];
 
   return v6;
 }

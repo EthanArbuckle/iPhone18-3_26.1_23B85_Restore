@@ -1,30 +1,30 @@
 @interface HMIVideoAssetWriter
-- (HMIVideoAssetWriter)initWithVideoFormat:(opaqueCMFormatDescription *)a3 audioFormat:(opaqueCMFormatDescription *)a4;
-- (HMIVideoAssetWriter)initWithVideoFormat:(opaqueCMFormatDescription *)a3 audioFormat:(opaqueCMFormatDescription *)a4 initialFragmentSequenceNumber:(unint64_t)a5 preferredOutputSegmentInterval:(id *)a6;
+- (HMIVideoAssetWriter)initWithVideoFormat:(opaqueCMFormatDescription *)format audioFormat:(opaqueCMFormatDescription *)audioFormat;
+- (HMIVideoAssetWriter)initWithVideoFormat:(opaqueCMFormatDescription *)format audioFormat:(opaqueCMFormatDescription *)audioFormat initialFragmentSequenceNumber:(unint64_t)number preferredOutputSegmentInterval:(id *)interval;
 - (HMIVideoAssetWriterDelegate)delegate;
-- (void)_appendSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (void)_ensureFirstAudioSampleBufferHasSufficientPrimingTrim:(opaqueCMSampleBuffer *)a3;
-- (void)_failWithDescription:(id)a3;
-- (void)_flushAutomatically:(opaqueCMSampleBuffer *)a3;
-- (void)_removeTrimDurationAttachmentsFromAudioSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (void)_startWritingAtStartTime:(id *)a3;
-- (void)assetWriter:(id)a3 didOutputSegmentData:(id)a4 segmentType:(int64_t)a5 segmentReport:(id)a6;
+- (void)_appendSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)_ensureFirstAudioSampleBufferHasSufficientPrimingTrim:(opaqueCMSampleBuffer *)trim;
+- (void)_failWithDescription:(id)description;
+- (void)_flushAutomatically:(opaqueCMSampleBuffer *)automatically;
+- (void)_removeTrimDurationAttachmentsFromAudioSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)_startWritingAtStartTime:(id *)time;
+- (void)assetWriter:(id)writer didOutputSegmentData:(id)data segmentType:(int64_t)type segmentReport:(id)report;
 - (void)dealloc;
 - (void)flush;
-- (void)flushWithCompletionHandler:(id)a3;
-- (void)handleSampleBuffer:(opaqueCMSampleBuffer *)a3;
+- (void)flushWithCompletionHandler:(id)handler;
+- (void)handleSampleBuffer:(opaqueCMSampleBuffer *)buffer;
 @end
 
 @implementation HMIVideoAssetWriter
 
-- (HMIVideoAssetWriter)initWithVideoFormat:(opaqueCMFormatDescription *)a3 audioFormat:(opaqueCMFormatDescription *)a4
+- (HMIVideoAssetWriter)initWithVideoFormat:(opaqueCMFormatDescription *)format audioFormat:(opaqueCMFormatDescription *)audioFormat
 {
   v5 = *MEMORY[0x277CC0888];
   v6 = *(MEMORY[0x277CC0888] + 16);
-  return [(HMIVideoAssetWriter *)self initWithVideoFormat:a3 audioFormat:a4 initialFragmentSequenceNumber:1 preferredOutputSegmentInterval:&v5];
+  return [(HMIVideoAssetWriter *)self initWithVideoFormat:format audioFormat:audioFormat initialFragmentSequenceNumber:1 preferredOutputSegmentInterval:&v5];
 }
 
-- (HMIVideoAssetWriter)initWithVideoFormat:(opaqueCMFormatDescription *)a3 audioFormat:(opaqueCMFormatDescription *)a4 initialFragmentSequenceNumber:(unint64_t)a5 preferredOutputSegmentInterval:(id *)a6
+- (HMIVideoAssetWriter)initWithVideoFormat:(opaqueCMFormatDescription *)format audioFormat:(opaqueCMFormatDescription *)audioFormat initialFragmentSequenceNumber:(unint64_t)number preferredOutputSegmentInterval:(id *)interval
 {
   v44 = *MEMORY[0x277D85DE8];
   v41.receiver = self;
@@ -45,10 +45,10 @@
   v16 = *(v10 + 8);
   *(v10 + 8) = v15;
 
-  *(v10 + 9) = CFRetain(a3);
-  if (a4)
+  *(v10 + 9) = CFRetain(format);
+  if (audioFormat)
   {
-    v17 = CFRetain(a4);
+    v17 = CFRetain(audioFormat);
   }
 
   else
@@ -60,8 +60,8 @@
   v10[26] = 1;
   *(v10 + 12) = 1;
   *(v10 + 1) = 0;
-  var3 = a6->var3;
-  *(v10 + 7) = *&a6->var0;
+  var3 = interval->var3;
+  *(v10 + 7) = *&interval->var0;
   *(v10 + 16) = var3;
   v19 = MEMORY[0x277CC0898];
   v20 = *MEMORY[0x277CC0898];
@@ -87,10 +87,10 @@
   *buf = *MEMORY[0x277CC0888];
   v43 = *(MEMORY[0x277CC0888] + 16);
   [v24 setPreferredOutputSegmentInterval:buf];
-  [v24 setInitialMovieFragmentSequenceNumber:a5];
+  [v24 setInitialMovieFragmentSequenceNumber:number];
   [v24 setProducesCombinableFragments:1];
   v25 = objc_alloc(MEMORY[0x277CE6468]);
-  v26 = [v25 initWithMediaType:*MEMORY[0x277CE5EA8] outputSettings:0 sourceFormatHint:a3];
+  v26 = [v25 initWithMediaType:*MEMORY[0x277CE5EA8] outputSettings:0 sourceFormatHint:format];
   [v26 setExpectsMediaDataInRealTime:1];
   [v26 setMediaTimeScale:1000];
   if (![v24 canAddInput:v26])
@@ -112,9 +112,9 @@
 
   [v24 addInput:v26];
   objc_storeStrong(v10 + 12, v26);
-  if (a4)
+  if (audioFormat)
   {
-    v27 = [MEMORY[0x277CE6468] assetWriterInputWithMediaType:*MEMORY[0x277CE5E48] outputSettings:0 sourceFormatHint:a4];
+    v27 = [MEMORY[0x277CE6468] assetWriterInputWithMediaType:*MEMORY[0x277CE5E48] outputSettings:0 sourceFormatHint:audioFormat];
     [v27 setExpectsMediaDataInRealTime:1];
     if ([v24 canAddInput:v27])
     {
@@ -168,29 +168,29 @@ LABEL_19:
   [(HMIVideoAssetWriter *)&v4 dealloc];
 }
 
-- (void)_startWritingAtStartTime:(id *)a3
+- (void)_startWritingAtStartTime:(id *)time
 {
   v22 = *MEMORY[0x277D85DE8];
-  buf = *a3;
+  buf = *time;
   [(HMIVideoAssetWriter *)self setLastFlushedFramePresentationTimeStamp:&buf];
-  v19 = *a3;
-  v5 = [(HMIVideoAssetWriter *)self assetWriter];
+  v19 = *time;
+  assetWriter = [(HMIVideoAssetWriter *)self assetWriter];
   buf = v19;
-  [v5 setInitialSegmentStartTime:&buf];
+  [assetWriter setInitialSegmentStartTime:&buf];
 
-  v6 = [(HMIVideoAssetWriter *)self assetWriter];
-  v7 = [v6 startWriting];
+  assetWriter2 = [(HMIVideoAssetWriter *)self assetWriter];
+  startWriting = [assetWriter2 startWriting];
 
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   v11 = v10;
-  if (v7)
+  if (startWriting)
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       v12 = HMFGetLogIdentifier();
-      buf = *a3;
+      buf = *time;
       v13 = HMICMTimeDescription(&buf);
       LODWORD(buf.var0) = 138543618;
       *(&buf.var0 + 4) = v12;
@@ -200,7 +200,7 @@ LABEL_19:
     }
 
     objc_autoreleasePoolPop(v8);
-    v9->super.super._status = 2;
+    selfCopy->super.super._status = 2;
   }
 
   else
@@ -208,16 +208,16 @@ LABEL_19:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v14 = HMFGetLogIdentifier();
-      v15 = [(HMIVideoAssetWriter *)v9 assetWriter];
-      v16 = [v15 status];
-      v17 = [(HMIVideoAssetWriter *)v9 assetWriter];
-      v18 = [v17 error];
+      assetWriter3 = [(HMIVideoAssetWriter *)selfCopy assetWriter];
+      status = [assetWriter3 status];
+      assetWriter4 = [(HMIVideoAssetWriter *)selfCopy assetWriter];
+      error = [assetWriter4 error];
       LODWORD(buf.var0) = 138543874;
       *(&buf.var0 + 4) = v14;
       LOWORD(buf.var2) = 2048;
-      *(&buf.var2 + 2) = v16;
+      *(&buf.var2 + 2) = status;
       HIWORD(buf.var3) = 2112;
-      v21 = v18;
+      v21 = error;
       _os_log_impl(&dword_22D12F000, v11, OS_LOG_TYPE_ERROR, "%{public}@Failed to start writing, assetWriter.status: %ld, assetWriter:.error: %@", &buf, 0x20u);
     }
 
@@ -225,15 +225,15 @@ LABEL_19:
   }
 }
 
-- (void)assetWriter:(id)a3 didOutputSegmentData:(id)a4 segmentType:(int64_t)a5 segmentReport:(id)a6
+- (void)assetWriter:(id)writer didOutputSegmentData:(id)data segmentType:(int64_t)type segmentReport:(id)report
 {
   v30 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  writerCopy = writer;
+  dataCopy = data;
+  reportCopy = report;
   v13 = objc_autoreleasePoolPush();
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
@@ -241,39 +241,39 @@ LABEL_19:
     *buf = 138543618;
     v27 = v17;
     v28 = 2048;
-    v29 = a5;
+    typeCopy = type;
     _os_log_impl(&dword_22D12F000, v16, OS_LOG_TYPE_DEBUG, "%{public}@didOutputSegmentData segmentType: %ld", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v14);
-  if (a5 == 2)
+  if (type == 2)
   {
-    v20 = [(HMIVideoAssetWriter *)v15 delegateQueue];
+    delegateQueue = [(HMIVideoAssetWriter *)selfCopy delegateQueue];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __82__HMIVideoAssetWriter_assetWriter_didOutputSegmentData_segmentType_segmentReport___block_invoke_2;
     v21[3] = &unk_278755A48;
-    v21[4] = v15;
+    v21[4] = selfCopy;
     v19 = &v22;
-    v22 = v11;
-    v23 = v12;
-    dispatch_async(v20, v21);
+    v22 = dataCopy;
+    v23 = reportCopy;
+    dispatch_async(delegateQueue, v21);
 
-    v18 = v23;
+    delegateQueue2 = v23;
     goto LABEL_7;
   }
 
-  if (a5 == 1)
+  if (type == 1)
   {
-    v18 = [(HMIVideoAssetWriter *)v15 delegateQueue];
+    delegateQueue2 = [(HMIVideoAssetWriter *)selfCopy delegateQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __82__HMIVideoAssetWriter_assetWriter_didOutputSegmentData_segmentType_segmentReport___block_invoke;
     block[3] = &unk_278752818;
-    block[4] = v15;
+    block[4] = selfCopy;
     v19 = &v25;
-    v25 = v11;
-    dispatch_async(v18, block);
+    v25 = dataCopy;
+    dispatch_async(delegateQueue2, block);
 LABEL_7:
   }
 
@@ -304,9 +304,9 @@ void __82__HMIVideoAssetWriter_assetWriter_didOutputSegmentData_segmentType_segm
   }
 }
 
-- (void)_flushAutomatically:(opaqueCMSampleBuffer *)a3
+- (void)_flushAutomatically:(opaqueCMSampleBuffer *)automatically
 {
-  if (HMICMSampleBufferIsVideo(a3))
+  if (HMICMSampleBufferIsVideo(automatically))
   {
     [(HMIVideoAssetWriter *)self lastFlushedFramePresentationTimeStamp];
     if (v13)
@@ -314,10 +314,10 @@ void __82__HMIVideoAssetWriter_assetWriter_didOutputSegmentData_segmentType_segm
       [(HMIVideoAssetWriter *)self preferredOutputSegmentInterval];
       if ((v12 & 1) == 0 || ([(HMIVideoAssetWriter *)self preferredOutputSegmentInterval], (v11 & 0x10) == 0))
       {
-        if (HMICMSampleBufferIsSync(a3))
+        if (HMICMSampleBufferIsSync(automatically))
         {
           memset(&v10, 0, sizeof(v10));
-          CMSampleBufferGetPresentationTimeStamp(&v10, a3);
+          CMSampleBufferGetPresentationTimeStamp(&v10, automatically);
           memset(&v9, 0, sizeof(v9));
           [(HMIVideoAssetWriter *)self lastFlushedFramePresentationTimeStamp];
           lhs = v10;
@@ -343,18 +343,18 @@ void __82__HMIVideoAssetWriter_assetWriter_didOutputSegmentData_segmentType_segm
   }
 }
 
-- (void)handleSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)handleSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   [(HMIVideoAssetWriter *)self _flushAutomatically:?];
-  CFRetain(a3);
-  v5 = [(HMIVideoAssetWriter *)self workQueue];
+  CFRetain(buffer);
+  workQueue = [(HMIVideoAssetWriter *)self workQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__HMIVideoAssetWriter_handleSampleBuffer___block_invoke;
   v6[3] = &unk_278754838;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_async(v5, v6);
+  v6[5] = buffer;
+  dispatch_async(workQueue, v6);
 }
 
 void __42__HMIVideoAssetWriter_handleSampleBuffer___block_invoke(uint64_t a1)
@@ -365,14 +365,14 @@ void __42__HMIVideoAssetWriter_handleSampleBuffer___block_invoke(uint64_t a1)
   CFRelease(v2);
 }
 
-- (void)_removeTrimDurationAttachmentsFromAudioSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)_removeTrimDurationAttachmentsFromAudioSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  if (HMICMSampleBufferIsAudio(a3))
+  if (HMICMSampleBufferIsAudio(buffer))
   {
-    CMRemoveAttachment(a3, *MEMORY[0x277CC0760]);
+    CMRemoveAttachment(buffer, *MEMORY[0x277CC0760]);
     v4 = *MEMORY[0x277CC0758];
 
-    CMRemoveAttachment(a3, v4);
+    CMRemoveAttachment(buffer, v4);
   }
 
   else
@@ -382,10 +382,10 @@ void __42__HMIVideoAssetWriter_handleSampleBuffer___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_ensureFirstAudioSampleBufferHasSufficientPrimingTrim:(opaqueCMSampleBuffer *)a3
+- (void)_ensureFirstAudioSampleBufferHasSufficientPrimingTrim:(opaqueCMSampleBuffer *)trim
 {
   v24 = *MEMORY[0x277D85DE8];
-  if (!HMICMSampleBufferIsAudio(a3))
+  if (!HMICMSampleBufferIsAudio(trim))
   {
     [HMIVideoAssetWriter _removeTrimDurationAttachmentsFromAudioSampleBuffer:];
   }
@@ -397,7 +397,7 @@ void __42__HMIVideoAssetWriter_handleSampleBuffer___block_invoke(uint64_t a1)
     v21 = **&MEMORY[0x277CC08F0];
     attachmentModeOut = 0;
     v7 = *MEMORY[0x277CC0760];
-    v8 = CMGetAttachment(a3, *MEMORY[0x277CC0760], &attachmentModeOut);
+    v8 = CMGetAttachment(trim, *MEMORY[0x277CC0760], &attachmentModeOut);
     if (v8)
     {
       CMTimeMakeFromDictionary(&v21, v8);
@@ -412,7 +412,7 @@ void __42__HMIVideoAssetWriter_handleSampleBuffer___block_invoke(uint64_t a1)
       memset(&v18, 0, sizeof(v18));
       CMTimeMake(&v18, v10, v6->mSampleRate);
       v11 = objc_autoreleasePoolPush();
-      v12 = self;
+      selfCopy = self;
       v13 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
@@ -433,27 +433,27 @@ void __42__HMIVideoAssetWriter_handleSampleBuffer___block_invoke(uint64_t a1)
       objc_autoreleasePoolPop(v11);
       time = v18;
       v17 = CMTimeCopyAsDictionary(&time, 0);
-      CMSetAttachment(a3, v7, v17, 1u);
+      CMSetAttachment(trim, v7, v17, 1u);
       CFRelease(v17);
     }
   }
 }
 
-- (void)_appendSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)_appendSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   v59 = *MEMORY[0x277D85DE8];
-  v5 = [(HMIVideoAssetWriter *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  workQueue = [(HMIVideoAssetWriter *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   if (self->super.super._status == 4)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v9 = HMFGetLogIdentifier();
-      v10 = HMICMSampleBufferFormattedDescription(a3, 0);
+      v10 = HMICMSampleBufferFormattedDescription(buffer, 0);
       LODWORD(buf.value) = 138543618;
       *(&buf.value + 4) = v9;
       LOWORD(buf.flags) = 2112;
@@ -466,9 +466,9 @@ void __42__HMIVideoAssetWriter_handleSampleBuffer___block_invoke(uint64_t a1)
   }
 
   memset(&v55, 0, sizeof(v55));
-  CMSampleBufferGetPresentationTimeStamp(&v55, a3);
-  v11 = [(HMIVideoAssetWriter *)self assetWriter];
-  v12 = [v11 status] == 0;
+  CMSampleBufferGetPresentationTimeStamp(&v55, buffer);
+  assetWriter = [(HMIVideoAssetWriter *)self assetWriter];
+  v12 = [assetWriter status] == 0;
 
   if (v12)
   {
@@ -476,42 +476,42 @@ void __42__HMIVideoAssetWriter_handleSampleBuffer___block_invoke(uint64_t a1)
     [(HMIVideoAssetWriter *)self _startWritingAtStartTime:&buf];
     self->_dropSamplesUntilSync = 1;
     self->_dropTrimDurationAttachments = 0;
-    v21 = [(HMIVideoAssetWriter *)self assetWriter];
+    assetWriter2 = [(HMIVideoAssetWriter *)self assetWriter];
     buf = **&MEMORY[0x277CC08F0];
-    [v21 startSessionAtSourceTime:&buf];
+    [assetWriter2 startSessionAtSourceTime:&buf];
 
 LABEL_11:
-    if (HMICMSampleBufferIsVideo(a3))
+    if (HMICMSampleBufferIsVideo(buffer))
     {
-      v22 = [(HMIVideoAssetWriter *)self videoInput];
+      videoInput = [(HMIVideoAssetWriter *)self videoInput];
     }
 
     else
     {
-      if (!HMICMSampleBufferIsAudio(a3))
+      if (!HMICMSampleBufferIsAudio(buffer))
       {
         goto LABEL_20;
       }
 
-      v22 = [(HMIVideoAssetWriter *)self audioInput];
+      videoInput = [(HMIVideoAssetWriter *)self audioInput];
     }
 
-    v23 = v22;
-    if (v22)
+    v23 = videoInput;
+    if (videoInput)
     {
-      if ([v22 isReadyForMoreMediaData])
+      if ([videoInput isReadyForMoreMediaData])
       {
-        v24 = [v23 mediaType];
-        v25 = [v24 isEqualToString:*MEMORY[0x277CE5EA8]];
+        mediaType = [v23 mediaType];
+        v25 = [mediaType isEqualToString:*MEMORY[0x277CE5EA8]];
 
         if (!v25)
         {
 LABEL_30:
-          if (HMICMSampleBufferIsAudio(a3))
+          if (HMICMSampleBufferIsAudio(buffer))
           {
             if (self->_dropTrimDurationAttachments)
             {
-              [(HMIVideoAssetWriter *)self _removeTrimDurationAttachmentsFromAudioSampleBuffer:a3];
+              [(HMIVideoAssetWriter *)self _removeTrimDurationAttachmentsFromAudioSampleBuffer:buffer];
             }
 
             else
@@ -519,23 +519,23 @@ LABEL_30:
               self->_dropTrimDurationAttachments = 1;
               if ([(HMIVideoAssetWriter *)self allowRecoveryFromInsufficientAudioTrim])
               {
-                [(HMIVideoAssetWriter *)self _ensureFirstAudioSampleBufferHasSufficientPrimingTrim:a3];
+                [(HMIVideoAssetWriter *)self _ensureFirstAudioSampleBufferHasSufficientPrimingTrim:buffer];
               }
             }
           }
 
-          if ([v23 appendSampleBuffer:a3])
+          if ([v23 appendSampleBuffer:buffer])
           {
-            if (HMICMSampleBufferIsVideo(a3))
+            if (HMICMSampleBufferIsVideo(buffer))
             {
-              CMSampleBufferGetPresentationTimeStamp(&v54, a3);
+              CMSampleBufferGetPresentationTimeStamp(&v54, buffer);
               buf = v54;
               [(HMIVideoAssetWriter *)self setLastVideoPresentationTimeStamp:&buf];
             }
 
-            else if (HMICMSampleBufferIsAudio(a3))
+            else if (HMICMSampleBufferIsAudio(buffer))
             {
-              CMSampleBufferGetPresentationTimeStamp(&v53, a3);
+              CMSampleBufferGetPresentationTimeStamp(&v53, buffer);
               buf = v53;
               [(HMIVideoAssetWriter *)self setLastAudioPresentationTimeStamp:&buf];
             }
@@ -554,7 +554,7 @@ LABEL_30:
                 if (fabs(CMTimeGetSeconds(&lhs)) > 1.0)
                 {
                   v45 = objc_autoreleasePoolPush();
-                  v46 = self;
+                  selfCopy2 = self;
                   v47 = HMFGetOSLogHandle();
                   if (os_log_type_enabled(v47, OS_LOG_TYPE_DEBUG))
                   {
@@ -577,20 +577,20 @@ LABEL_30:
           else
           {
             v38 = objc_autoreleasePoolPush();
-            v39 = self;
+            selfCopy3 = self;
             v40 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
             {
               v41 = HMFGetLogIdentifier();
-              v42 = HMICMSampleBufferFormattedDescription(a3, 0);
-              v43 = [(HMIVideoAssetWriter *)v39 assetWriter];
-              v44 = [v43 error];
+              v42 = HMICMSampleBufferFormattedDescription(buffer, 0);
+              assetWriter3 = [(HMIVideoAssetWriter *)selfCopy3 assetWriter];
+              error = [assetWriter3 error];
               LODWORD(buf.value) = 138543874;
               *(&buf.value + 4) = v41;
               LOWORD(buf.flags) = 2112;
               *(&buf.flags + 2) = v42;
               HIWORD(buf.epoch) = 2112;
-              v58 = v44;
+              v58 = error;
               _os_log_impl(&dword_22D12F000, v40, OS_LOG_TYPE_ERROR, "%{public}@Dropped    %@ because of input error %@", &buf, 0x20u);
             }
 
@@ -600,7 +600,7 @@ LABEL_30:
           goto LABEL_49;
         }
 
-        if (HMICMSampleBufferIsSync(a3))
+        if (HMICMSampleBufferIsSync(buffer))
         {
           self->_dropSamplesUntilSync = 0;
           goto LABEL_30;
@@ -612,12 +612,12 @@ LABEL_30:
         }
 
         v31 = objc_autoreleasePoolPush();
-        v32 = self;
+        selfCopy5 = self;
         v33 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
         {
           v36 = HMFGetLogIdentifier();
-          v37 = HMICMSampleBufferFormattedDescription(a3, 0);
+          v37 = HMICMSampleBufferFormattedDescription(buffer, 0);
           LODWORD(buf.value) = 138543618;
           *(&buf.value + 4) = v36;
           LOWORD(buf.flags) = 2112;
@@ -629,12 +629,12 @@ LABEL_30:
       else
       {
         v31 = objc_autoreleasePoolPush();
-        v32 = self;
+        selfCopy5 = self;
         v33 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
         {
           v34 = HMFGetLogIdentifier();
-          v35 = HMICMSampleBufferFormattedDescription(a3, 0);
+          v35 = HMICMSampleBufferFormattedDescription(buffer, 0);
           LODWORD(buf.value) = 138543874;
           *(&buf.value + 4) = v34;
           LOWORD(buf.flags) = 2112;
@@ -653,12 +653,12 @@ LABEL_49:
 
 LABEL_20:
     v26 = objc_autoreleasePoolPush();
-    v27 = self;
+    selfCopy6 = self;
     v28 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
       v29 = HMFGetLogIdentifier();
-      v30 = HMICMSampleBufferFormattedDescription(a3, 0);
+      v30 = HMICMSampleBufferFormattedDescription(buffer, 0);
       LODWORD(buf.value) = 138543618;
       *(&buf.value + 4) = v29;
       LOWORD(buf.flags) = 2112;
@@ -671,8 +671,8 @@ LABEL_20:
     goto LABEL_49;
   }
 
-  v13 = [(HMIVideoAssetWriter *)self assetWriter];
-  v14 = [v13 status] == 3;
+  assetWriter4 = [(HMIVideoAssetWriter *)self assetWriter];
+  v14 = [assetWriter4 status] == 3;
 
   if (!v14)
   {
@@ -680,36 +680,36 @@ LABEL_20:
   }
 
   v15 = objc_autoreleasePoolPush();
-  v16 = self;
+  selfCopy7 = self;
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
   {
     v18 = HMFGetLogIdentifier();
-    v19 = [(HMIVideoAssetWriter *)v16 assetWriter];
-    v20 = [v19 error];
+    assetWriter5 = [(HMIVideoAssetWriter *)selfCopy7 assetWriter];
+    error2 = [assetWriter5 error];
     LODWORD(buf.value) = 138543618;
     *(&buf.value + 4) = v18;
     LOWORD(buf.flags) = 2112;
-    *(&buf.flags + 2) = v20;
+    *(&buf.flags + 2) = error2;
     _os_log_impl(&dword_22D12F000, v17, OS_LOG_TYPE_ERROR, "%{public}@Failed to write to asset writer, error %@", &buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v15);
-  [(HMIVideoAssetWriter *)v16 _failWithDescription:@"Underlying asset writer has failed."];
+  [(HMIVideoAssetWriter *)selfCopy7 _failWithDescription:@"Underlying asset writer has failed."];
 }
 
-- (void)flushWithCompletionHandler:(id)a3
+- (void)flushWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(HMIVideoAssetWriter *)self workQueue];
+  handlerCopy = handler;
+  workQueue = [(HMIVideoAssetWriter *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__HMIVideoAssetWriter_flushWithCompletionHandler___block_invoke;
   v7[3] = &unk_278752DF8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __50__HMIVideoAssetWriter_flushWithCompletionHandler___block_invoke(uint64_t a1)
@@ -833,13 +833,13 @@ intptr_t __50__HMIVideoAssetWriter_flushWithCompletionHandler___block_invoke_20(
   dispatch_semaphore_wait(v4, v5);
 }
 
-- (void)_failWithDescription:(id)a3
+- (void)_failWithDescription:(id)description
 {
   self->super.super._status = 4;
-  v5 = [MEMORY[0x277CCA9B8] hmiErrorWithCode:-1 description:a3];
+  v5 = [MEMORY[0x277CCA9B8] hmiErrorWithCode:-1 description:description];
   HMIErrorLog(self, v5);
-  v4 = [(HMIVideoAssetWriter *)self delegate];
-  [v4 assetWriter:self didFailWithError:v5];
+  delegate = [(HMIVideoAssetWriter *)self delegate];
+  [delegate assetWriter:self didFailWithError:v5];
 }
 
 - (HMIVideoAssetWriterDelegate)delegate

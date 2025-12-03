@@ -1,30 +1,30 @@
 @interface WiFiAnalyticsAWDWiFiNWActivityScanActivity
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAssocDur:(BOOL)a3;
-- (void)setHasOtherCount:(BOOL)a3;
-- (void)setHasOtherDur:(BOOL)a3;
-- (void)setHasPnoBSSIDCount:(BOOL)a3;
-- (void)setHasPnoBSSIDDur:(BOOL)a3;
-- (void)setHasPnoSSIDCount:(BOOL)a3;
-- (void)setHasPnoSSIDDur:(BOOL)a3;
-- (void)setHasRoamCount:(BOOL)a3;
-- (void)setHasRoamDur:(BOOL)a3;
-- (void)setHasUserCount:(BOOL)a3;
-- (void)setHasUserDur:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAssocDur:(BOOL)dur;
+- (void)setHasOtherCount:(BOOL)count;
+- (void)setHasOtherDur:(BOOL)dur;
+- (void)setHasPnoBSSIDCount:(BOOL)count;
+- (void)setHasPnoBSSIDDur:(BOOL)dur;
+- (void)setHasPnoSSIDCount:(BOOL)count;
+- (void)setHasPnoSSIDDur:(BOOL)dur;
+- (void)setHasRoamCount:(BOOL)count;
+- (void)setHasRoamDur:(BOOL)dur;
+- (void)setHasUserCount:(BOOL)count;
+- (void)setHasUserDur:(BOOL)dur;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WiFiAnalyticsAWDWiFiNWActivityScanActivity
 
-- (void)setHasUserCount:(BOOL)a3
+- (void)setHasUserCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 1024;
   }
@@ -37,9 +37,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasUserDur:(BOOL)a3
+- (void)setHasUserDur:(BOOL)dur
 {
-  if (a3)
+  if (dur)
   {
     v3 = 2048;
   }
@@ -52,9 +52,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasRoamCount:(BOOL)a3
+- (void)setHasRoamCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 256;
   }
@@ -67,9 +67,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasRoamDur:(BOOL)a3
+- (void)setHasRoamDur:(BOOL)dur
 {
-  if (a3)
+  if (dur)
   {
     v3 = 512;
   }
@@ -82,9 +82,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasAssocDur:(BOOL)a3
+- (void)setHasAssocDur:(BOOL)dur
 {
-  if (a3)
+  if (dur)
   {
     v3 = 2;
   }
@@ -97,9 +97,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasPnoBSSIDCount:(BOOL)a3
+- (void)setHasPnoBSSIDCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 16;
   }
@@ -112,9 +112,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasPnoBSSIDDur:(BOOL)a3
+- (void)setHasPnoBSSIDDur:(BOOL)dur
 {
-  if (a3)
+  if (dur)
   {
     v3 = 32;
   }
@@ -127,9 +127,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasPnoSSIDCount:(BOOL)a3
+- (void)setHasPnoSSIDCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 64;
   }
@@ -142,9 +142,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasPnoSSIDDur:(BOOL)a3
+- (void)setHasPnoSSIDDur:(BOOL)dur
 {
-  if (a3)
+  if (dur)
   {
     v3 = 128;
   }
@@ -157,9 +157,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasOtherCount:(BOOL)a3
+- (void)setHasOtherCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -172,9 +172,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasOtherDur:(BOOL)a3
+- (void)setHasOtherDur:(BOOL)dur
 {
-  if (a3)
+  if (dur)
   {
     v3 = 8;
   }
@@ -193,20 +193,20 @@
   v8.receiver = self;
   v8.super_class = WiFiAnalyticsAWDWiFiNWActivityScanActivity;
   v4 = [(WiFiAnalyticsAWDWiFiNWActivityScanActivity *)&v8 description];
-  v5 = [(WiFiAnalyticsAWDWiFiNWActivityScanActivity *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WiFiAnalyticsAWDWiFiNWActivityScanActivity *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 0x400) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_userCount];
-    [v3 setObject:v7 forKey:@"userCount"];
+    [dictionary setObject:v7 forKey:@"userCount"];
 
     has = self->_has;
     if ((has & 0x800) == 0)
@@ -227,7 +227,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_userDur];
-  [v3 setObject:v8 forKey:@"userDur"];
+  [dictionary setObject:v8 forKey:@"userDur"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -243,7 +243,7 @@ LABEL_4:
 
 LABEL_19:
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_roamCount];
-  [v3 setObject:v9 forKey:@"roamCount"];
+  [dictionary setObject:v9 forKey:@"roamCount"];
 
   has = self->_has;
   if ((has & 0x200) == 0)
@@ -259,7 +259,7 @@ LABEL_5:
 
 LABEL_20:
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_roamDur];
-  [v3 setObject:v10 forKey:@"roamDur"];
+  [dictionary setObject:v10 forKey:@"roamDur"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -275,7 +275,7 @@ LABEL_6:
 
 LABEL_21:
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_assocCount];
-  [v3 setObject:v11 forKey:@"assocCount"];
+  [dictionary setObject:v11 forKey:@"assocCount"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -291,7 +291,7 @@ LABEL_7:
 
 LABEL_22:
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_assocDur];
-  [v3 setObject:v12 forKey:@"assocDur"];
+  [dictionary setObject:v12 forKey:@"assocDur"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -307,7 +307,7 @@ LABEL_8:
 
 LABEL_23:
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_pnoBSSIDCount];
-  [v3 setObject:v13 forKey:@"pnoBSSIDCount"];
+  [dictionary setObject:v13 forKey:@"pnoBSSIDCount"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -323,7 +323,7 @@ LABEL_9:
 
 LABEL_24:
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_pnoBSSIDDur];
-  [v3 setObject:v14 forKey:@"pnoBSSIDDur"];
+  [dictionary setObject:v14 forKey:@"pnoBSSIDDur"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -339,7 +339,7 @@ LABEL_10:
 
 LABEL_25:
   v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_pnoSSIDCount];
-  [v3 setObject:v15 forKey:@"pnoSSIDCount"];
+  [dictionary setObject:v15 forKey:@"pnoSSIDCount"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -355,7 +355,7 @@ LABEL_11:
 
 LABEL_26:
   v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_pnoSSIDDur];
-  [v3 setObject:v16 forKey:@"pnoSSIDDur"];
+  [dictionary setObject:v16 forKey:@"pnoSSIDDur"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -371,23 +371,23 @@ LABEL_12:
 
 LABEL_27:
   v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_otherCount];
-  [v3 setObject:v17 forKey:@"otherCount"];
+  [dictionary setObject:v17 forKey:@"otherCount"];
 
   if ((*&self->_has & 8) != 0)
   {
 LABEL_13:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_otherDur];
-    [v3 setObject:v5 forKey:@"otherDur"];
+    [dictionary setObject:v5 forKey:@"otherDur"];
   }
 
 LABEL_14:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v17 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x400) != 0)
   {
@@ -558,14 +558,14 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x400) != 0)
   {
-    v4[12] = self->_userCount;
-    *(v4 + 28) |= 0x400u;
+    toCopy[12] = self->_userCount;
+    *(toCopy + 28) |= 0x400u;
     has = self->_has;
     if ((has & 0x800) == 0)
     {
@@ -584,8 +584,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[13] = self->_userDur;
-  *(v4 + 28) |= 0x800u;
+  toCopy[13] = self->_userDur;
+  *(toCopy + 28) |= 0x800u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -599,8 +599,8 @@ LABEL_4:
   }
 
 LABEL_19:
-  v4[10] = self->_roamCount;
-  *(v4 + 28) |= 0x100u;
+  toCopy[10] = self->_roamCount;
+  *(toCopy + 28) |= 0x100u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -614,8 +614,8 @@ LABEL_5:
   }
 
 LABEL_20:
-  v4[11] = self->_roamDur;
-  *(v4 + 28) |= 0x200u;
+  toCopy[11] = self->_roamDur;
+  *(toCopy + 28) |= 0x200u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -629,8 +629,8 @@ LABEL_6:
   }
 
 LABEL_21:
-  v4[2] = self->_assocCount;
-  *(v4 + 28) |= 1u;
+  toCopy[2] = self->_assocCount;
+  *(toCopy + 28) |= 1u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -644,8 +644,8 @@ LABEL_7:
   }
 
 LABEL_22:
-  v4[3] = self->_assocDur;
-  *(v4 + 28) |= 2u;
+  toCopy[3] = self->_assocDur;
+  *(toCopy + 28) |= 2u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -659,8 +659,8 @@ LABEL_8:
   }
 
 LABEL_23:
-  v4[6] = self->_pnoBSSIDCount;
-  *(v4 + 28) |= 0x10u;
+  toCopy[6] = self->_pnoBSSIDCount;
+  *(toCopy + 28) |= 0x10u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -674,8 +674,8 @@ LABEL_9:
   }
 
 LABEL_24:
-  v4[7] = self->_pnoBSSIDDur;
-  *(v4 + 28) |= 0x20u;
+  toCopy[7] = self->_pnoBSSIDDur;
+  *(toCopy + 28) |= 0x20u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -689,8 +689,8 @@ LABEL_10:
   }
 
 LABEL_25:
-  v4[8] = self->_pnoSSIDCount;
-  *(v4 + 28) |= 0x40u;
+  toCopy[8] = self->_pnoSSIDCount;
+  *(toCopy + 28) |= 0x40u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -704,8 +704,8 @@ LABEL_11:
   }
 
 LABEL_26:
-  v4[9] = self->_pnoSSIDDur;
-  *(v4 + 28) |= 0x80u;
+  toCopy[9] = self->_pnoSSIDDur;
+  *(toCopy + 28) |= 0x80u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -719,21 +719,21 @@ LABEL_12:
   }
 
 LABEL_27:
-  v4[4] = self->_otherCount;
-  *(v4 + 28) |= 4u;
+  toCopy[4] = self->_otherCount;
+  *(toCopy + 28) |= 4u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_13:
-    v4[5] = self->_otherDur;
-    *(v4 + 28) |= 8u;
+    toCopy[5] = self->_otherDur;
+    *(toCopy + 28) |= 8u;
   }
 
 LABEL_14:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 0x400) != 0)
   {
@@ -905,25 +905,25 @@ LABEL_13:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_62;
   }
 
   has = self->_has;
-  v6 = *(v4 + 28);
+  v6 = *(equalCopy + 28);
   if ((has & 0x400) != 0)
   {
-    if ((*(v4 + 28) & 0x400) == 0 || self->_userCount != *(v4 + 12))
+    if ((*(equalCopy + 28) & 0x400) == 0 || self->_userCount != *(equalCopy + 12))
     {
       goto LABEL_62;
     }
   }
 
-  else if ((*(v4 + 28) & 0x400) != 0)
+  else if ((*(equalCopy + 28) & 0x400) != 0)
   {
 LABEL_62:
     v7 = 0;
@@ -932,46 +932,46 @@ LABEL_62:
 
   if ((*&self->_has & 0x800) != 0)
   {
-    if ((*(v4 + 28) & 0x800) == 0 || self->_userDur != *(v4 + 13))
+    if ((*(equalCopy + 28) & 0x800) == 0 || self->_userDur != *(equalCopy + 13))
     {
       goto LABEL_62;
     }
   }
 
-  else if ((*(v4 + 28) & 0x800) != 0)
+  else if ((*(equalCopy + 28) & 0x800) != 0)
   {
     goto LABEL_62;
   }
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 28) & 0x100) == 0 || self->_roamCount != *(v4 + 10))
+    if ((*(equalCopy + 28) & 0x100) == 0 || self->_roamCount != *(equalCopy + 10))
     {
       goto LABEL_62;
     }
   }
 
-  else if ((*(v4 + 28) & 0x100) != 0)
+  else if ((*(equalCopy + 28) & 0x100) != 0)
   {
     goto LABEL_62;
   }
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 28) & 0x200) == 0 || self->_roamDur != *(v4 + 11))
+    if ((*(equalCopy + 28) & 0x200) == 0 || self->_roamDur != *(equalCopy + 11))
     {
       goto LABEL_62;
     }
   }
 
-  else if ((*(v4 + 28) & 0x200) != 0)
+  else if ((*(equalCopy + 28) & 0x200) != 0)
   {
     goto LABEL_62;
   }
 
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_assocCount != *(v4 + 2))
+    if ((v6 & 1) == 0 || self->_assocCount != *(equalCopy + 2))
     {
       goto LABEL_62;
     }
@@ -984,7 +984,7 @@ LABEL_62:
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_assocDur != *(v4 + 3))
+    if ((v6 & 2) == 0 || self->_assocDur != *(equalCopy + 3))
     {
       goto LABEL_62;
     }
@@ -997,7 +997,7 @@ LABEL_62:
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_pnoBSSIDCount != *(v4 + 6))
+    if ((v6 & 0x10) == 0 || self->_pnoBSSIDCount != *(equalCopy + 6))
     {
       goto LABEL_62;
     }
@@ -1010,7 +1010,7 @@ LABEL_62:
 
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_pnoBSSIDDur != *(v4 + 7))
+    if ((v6 & 0x20) == 0 || self->_pnoBSSIDDur != *(equalCopy + 7))
     {
       goto LABEL_62;
     }
@@ -1023,7 +1023,7 @@ LABEL_62:
 
   if ((has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_pnoSSIDCount != *(v4 + 8))
+    if ((v6 & 0x40) == 0 || self->_pnoSSIDCount != *(equalCopy + 8))
     {
       goto LABEL_62;
     }
@@ -1036,7 +1036,7 @@ LABEL_62:
 
   if ((has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_pnoSSIDDur != *(v4 + 9))
+    if ((v6 & 0x80) == 0 || self->_pnoSSIDDur != *(equalCopy + 9))
     {
       goto LABEL_62;
     }
@@ -1049,7 +1049,7 @@ LABEL_62:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_otherCount != *(v4 + 4))
+    if ((v6 & 4) == 0 || self->_otherCount != *(equalCopy + 4))
     {
       goto LABEL_62;
     }
@@ -1062,7 +1062,7 @@ LABEL_62:
 
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_otherDur != *(v4 + 5))
+    if ((v6 & 8) == 0 || self->_otherDur != *(equalCopy + 5))
     {
       goto LABEL_62;
     }
@@ -1247,15 +1247,15 @@ LABEL_13:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 28);
+  fromCopy = from;
+  v5 = *(fromCopy + 28);
   if ((v5 & 0x400) != 0)
   {
-    self->_userCount = *(v4 + 12);
+    self->_userCount = *(fromCopy + 12);
     *&self->_has |= 0x400u;
-    v5 = *(v4 + 28);
+    v5 = *(fromCopy + 28);
     if ((v5 & 0x800) == 0)
     {
 LABEL_3:
@@ -1268,14 +1268,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 28) & 0x800) == 0)
+  else if ((*(fromCopy + 28) & 0x800) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_userDur = *(v4 + 13);
+  self->_userDur = *(fromCopy + 13);
   *&self->_has |= 0x800u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 0x100) == 0)
   {
 LABEL_4:
@@ -1288,9 +1288,9 @@ LABEL_4:
   }
 
 LABEL_19:
-  self->_roamCount = *(v4 + 10);
+  self->_roamCount = *(fromCopy + 10);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 0x200) == 0)
   {
 LABEL_5:
@@ -1303,9 +1303,9 @@ LABEL_5:
   }
 
 LABEL_20:
-  self->_roamDur = *(v4 + 11);
+  self->_roamDur = *(fromCopy + 11);
   *&self->_has |= 0x200u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 1) == 0)
   {
 LABEL_6:
@@ -1318,9 +1318,9 @@ LABEL_6:
   }
 
 LABEL_21:
-  self->_assocCount = *(v4 + 2);
+  self->_assocCount = *(fromCopy + 2);
   *&self->_has |= 1u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 2) == 0)
   {
 LABEL_7:
@@ -1333,9 +1333,9 @@ LABEL_7:
   }
 
 LABEL_22:
-  self->_assocDur = *(v4 + 3);
+  self->_assocDur = *(fromCopy + 3);
   *&self->_has |= 2u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 0x10) == 0)
   {
 LABEL_8:
@@ -1348,9 +1348,9 @@ LABEL_8:
   }
 
 LABEL_23:
-  self->_pnoBSSIDCount = *(v4 + 6);
+  self->_pnoBSSIDCount = *(fromCopy + 6);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 0x20) == 0)
   {
 LABEL_9:
@@ -1363,9 +1363,9 @@ LABEL_9:
   }
 
 LABEL_24:
-  self->_pnoBSSIDDur = *(v4 + 7);
+  self->_pnoBSSIDDur = *(fromCopy + 7);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 0x40) == 0)
   {
 LABEL_10:
@@ -1378,9 +1378,9 @@ LABEL_10:
   }
 
 LABEL_25:
-  self->_pnoSSIDCount = *(v4 + 8);
+  self->_pnoSSIDCount = *(fromCopy + 8);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 0x80) == 0)
   {
 LABEL_11:
@@ -1393,9 +1393,9 @@ LABEL_11:
   }
 
 LABEL_26:
-  self->_pnoSSIDDur = *(v4 + 9);
+  self->_pnoSSIDDur = *(fromCopy + 9);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 4) == 0)
   {
 LABEL_12:
@@ -1408,12 +1408,12 @@ LABEL_12:
   }
 
 LABEL_27:
-  self->_otherCount = *(v4 + 4);
+  self->_otherCount = *(fromCopy + 4);
   *&self->_has |= 4u;
-  if ((*(v4 + 28) & 8) != 0)
+  if ((*(fromCopy + 28) & 8) != 0)
   {
 LABEL_13:
-    self->_otherDur = *(v4 + 5);
+    self->_otherDur = *(fromCopy + 5);
     *&self->_has |= 8u;
   }
 

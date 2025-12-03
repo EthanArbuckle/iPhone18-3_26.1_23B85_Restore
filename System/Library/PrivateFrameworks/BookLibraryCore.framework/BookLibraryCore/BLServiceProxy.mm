@@ -1,38 +1,38 @@
 @interface BLServiceProxy
-- (BLServiceProxy)initWithProgressReceiver:(id)a3 error:(id *)a4;
+- (BLServiceProxy)initWithProgressReceiver:(id)receiver error:(id *)error;
 - (BLServiceProxyConnectionMonitoring)connectionMonitor;
-- (id)_remoteObjectWithErrorHandler:(id)a3;
-- (id)_synchronousRemoteObjectWithErrorHandler:(id)a3;
+- (id)_remoteObjectWithErrorHandler:(id)handler;
+- (id)_synchronousRemoteObjectWithErrorHandler:(id)handler;
 - (void)_createAndStartConnection;
-- (void)cancelAllActiveDownloadsWithReply:(id)a3;
-- (void)cancelDownloadWithID:(id)a3 withReply:(id)a4;
+- (void)cancelAllActiveDownloadsWithReply:(id)reply;
+- (void)cancelDownloadWithID:(id)d withReply:(id)reply;
 - (void)dealloc;
-- (void)downloadWithPermlink:(id)a3 title:(id)a4 reply:(id)a5;
-- (void)fetchDownloadFromDownloadID:(id)a3 withReply:(id)a4;
-- (void)fetchDownloadListWithReply:(id)a3;
-- (void)getCrashSimulationOverrideValuesWithReply:(id)a3;
-- (void)getValueSimulateDeviceOutOfSpaceWithReply:(id)a3;
-- (void)migrationInfoWithStoreID:(int64_t)a3 withReply:(id)a4;
-- (void)migrationInfosWithStates:(id)a3 withReply:(id)a4;
-- (void)migrationInfosWithStoreIDs:(id)a3 withReply:(id)a4;
-- (void)monitorProgressWithReply:(id)a3;
-- (void)pauseDownloadWithID:(id)a3 withReply:(id)a4;
-- (void)prepareForRemoveAppWithReply:(id)a3;
-- (void)processAutomaticDownloadsWithReply:(id)a3;
-- (void)purchaseWithRequest:(id)a3 uiHostProxy:(id)a4 reply:(id)a5;
-- (void)racGUIDForStoreID:(int64_t)a3 withReply:(id)a4;
-- (void)reloadFromServerWithReply:(id)a3;
-- (void)removeAllMigrationInfosExcludingStates:(id)a3 withReply:(id)a4;
-- (void)removeMigrationInfoForStoreID:(int64_t)a3 withReply:(id)a4;
-- (void)removeRacGUIDForStoreID:(int64_t)a3 withReply:(id)a4;
-- (void)requestDownloadWithParameters:(id)a3 reply:(id)a4;
-- (void)requestDownloadsWithManifestRequest:(id)a3 uiHostProxy:(id)a4 reply:(id)a5;
-- (void)requestDownloadsWithRestoreContentRequestItems:(id)a3 reply:(id)a4;
-- (void)resetAllCrashSimulationOverridesWithReply:(id)a3;
-- (void)restartDownloadWithID:(id)a3 withReply:(id)a4;
-- (void)resumeDownloadWithID:(id)a3 withReply:(id)a4;
-- (void)setMigrationState:(int64_t)a3 forStoreIDs:(id)a4 withReply:(id)a5;
-- (void)setRacGUID:(id)a3 forStoreID:(int64_t)a4 withReply:(id)a5;
+- (void)downloadWithPermlink:(id)permlink title:(id)title reply:(id)reply;
+- (void)fetchDownloadFromDownloadID:(id)d withReply:(id)reply;
+- (void)fetchDownloadListWithReply:(id)reply;
+- (void)getCrashSimulationOverrideValuesWithReply:(id)reply;
+- (void)getValueSimulateDeviceOutOfSpaceWithReply:(id)reply;
+- (void)migrationInfoWithStoreID:(int64_t)d withReply:(id)reply;
+- (void)migrationInfosWithStates:(id)states withReply:(id)reply;
+- (void)migrationInfosWithStoreIDs:(id)ds withReply:(id)reply;
+- (void)monitorProgressWithReply:(id)reply;
+- (void)pauseDownloadWithID:(id)d withReply:(id)reply;
+- (void)prepareForRemoveAppWithReply:(id)reply;
+- (void)processAutomaticDownloadsWithReply:(id)reply;
+- (void)purchaseWithRequest:(id)request uiHostProxy:(id)proxy reply:(id)reply;
+- (void)racGUIDForStoreID:(int64_t)d withReply:(id)reply;
+- (void)reloadFromServerWithReply:(id)reply;
+- (void)removeAllMigrationInfosExcludingStates:(id)states withReply:(id)reply;
+- (void)removeMigrationInfoForStoreID:(int64_t)d withReply:(id)reply;
+- (void)removeRacGUIDForStoreID:(int64_t)d withReply:(id)reply;
+- (void)requestDownloadWithParameters:(id)parameters reply:(id)reply;
+- (void)requestDownloadsWithManifestRequest:(id)request uiHostProxy:(id)proxy reply:(id)reply;
+- (void)requestDownloadsWithRestoreContentRequestItems:(id)items reply:(id)reply;
+- (void)resetAllCrashSimulationOverridesWithReply:(id)reply;
+- (void)restartDownloadWithID:(id)d withReply:(id)reply;
+- (void)resumeDownloadWithID:(id)d withReply:(id)reply;
+- (void)setMigrationState:(int64_t)state forStoreIDs:(id)ds withReply:(id)reply;
+- (void)setRacGUID:(id)d forStoreID:(int64_t)iD withReply:(id)reply;
 - (void)shutdown;
 @end
 
@@ -48,7 +48,7 @@
   v5[1] = 3221225472;
   v6 = sub_241D208F8;
   v7 = &unk_278D175C0;
-  v8 = self;
+  selfCopy = self;
   v9 = &v10;
   v3 = v5;
   os_unfair_lock_lock(&self->_connectionLock);
@@ -57,23 +57,23 @@
 
   if (*(v11 + 24) == 1)
   {
-    v4 = [(BLServiceProxy *)self connectionMonitor];
-    [v4 reconnectingToServiceForProxy:self];
+    connectionMonitor = [(BLServiceProxy *)self connectionMonitor];
+    [connectionMonitor reconnectingToServiceForProxy:self];
   }
 
   _Block_object_dispose(&v10, 8);
 }
 
-- (BLServiceProxy)initWithProgressReceiver:(id)a3 error:(id *)a4
+- (BLServiceProxy)initWithProgressReceiver:(id)receiver error:(id *)error
 {
-  v6 = a3;
+  receiverCopy = receiver;
   v15.receiver = self;
   v15.super_class = BLServiceProxy;
   v7 = [(BLServiceProxy *)&v15 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_progressReceiver, a3);
+    objc_storeStrong(&v7->_progressReceiver, receiver);
     v8->_connectionLock._os_unfair_lock_opaque = 0;
     v8->_state = 0;
     [(BLServiceProxy *)v8 _createAndStartConnection];
@@ -124,41 +124,41 @@
   os_unfair_lock_unlock(&self->_connectionLock);
 }
 
-- (id)_remoteObjectWithErrorHandler:(id)a3
+- (id)_remoteObjectWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(BLServiceProxy *)self _createAndStartConnection];
   connection = self->_connection;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_241D36E30;
   v9[3] = &unk_278D175E8;
-  v10 = v4;
-  v6 = v4;
+  v10 = handlerCopy;
+  v6 = handlerCopy;
   v7 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
 
-- (id)_synchronousRemoteObjectWithErrorHandler:(id)a3
+- (id)_synchronousRemoteObjectWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(BLServiceProxy *)self _createAndStartConnection];
   connection = self->_connection;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_241D36FD0;
   v9[3] = &unk_278D175E8;
-  v10 = v4;
-  v6 = v4;
+  v10 = handlerCopy;
+  v6 = handlerCopy;
   v7 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
 
-- (void)fetchDownloadListWithReply:(id)a3
+- (void)fetchDownloadListWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = BLServiceProxyLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -170,16 +170,16 @@
   v8[1] = 3221225472;
   v8[2] = sub_241D371A8;
   v8[3] = &unk_278D175E8;
-  v9 = v4;
-  v6 = v4;
+  v9 = replyCopy;
+  v6 = replyCopy;
   v7 = [(BLServiceProxy *)self _remoteObjectWithErrorHandler:v8];
   [v7 fetchDownloadListWithReply:v6];
 }
 
-- (void)fetchDownloadFromDownloadID:(id)a3 withReply:(id)a4
+- (void)fetchDownloadFromDownloadID:(id)d withReply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  dCopy = d;
   v8 = BLServiceProxyLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -191,16 +191,16 @@
   v11[1] = 3221225472;
   v11[2] = sub_241D37324;
   v11[3] = &unk_278D175E8;
-  v12 = v6;
-  v9 = v6;
+  v12 = replyCopy;
+  v9 = replyCopy;
   v10 = [(BLServiceProxy *)self _remoteObjectWithErrorHandler:v11];
-  [v10 fetchDownloadFromDownloadID:v7 withReply:v9];
+  [v10 fetchDownloadFromDownloadID:dCopy withReply:v9];
 }
 
-- (void)pauseDownloadWithID:(id)a3 withReply:(id)a4
+- (void)pauseDownloadWithID:(id)d withReply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  dCopy = d;
   v8 = BLServiceProxyLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -208,14 +208,14 @@
     _os_log_impl(&dword_241D1F000, v8, OS_LOG_TYPE_DEBUG, "[BLServiceProxy] pauseDownloadWithID", v10, 2u);
   }
 
-  v9 = [(BLServiceProxy *)self _remoteObjectWithErrorHandler:v6];
-  [v9 pauseDownloadWithID:v7 withReply:v6];
+  v9 = [(BLServiceProxy *)self _remoteObjectWithErrorHandler:replyCopy];
+  [v9 pauseDownloadWithID:dCopy withReply:replyCopy];
 }
 
-- (void)resumeDownloadWithID:(id)a3 withReply:(id)a4
+- (void)resumeDownloadWithID:(id)d withReply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  dCopy = d;
   v8 = BLServiceProxyLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -223,14 +223,14 @@
     _os_log_impl(&dword_241D1F000, v8, OS_LOG_TYPE_DEBUG, "[BLServiceProxy] resumeDownloadWithID", v10, 2u);
   }
 
-  v9 = [(BLServiceProxy *)self _remoteObjectWithErrorHandler:v6];
-  [v9 resumeDownloadWithID:v7 withReply:v6];
+  v9 = [(BLServiceProxy *)self _remoteObjectWithErrorHandler:replyCopy];
+  [v9 resumeDownloadWithID:dCopy withReply:replyCopy];
 }
 
-- (void)restartDownloadWithID:(id)a3 withReply:(id)a4
+- (void)restartDownloadWithID:(id)d withReply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  dCopy = d;
   v8 = BLServiceProxyLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -238,14 +238,14 @@
     _os_log_impl(&dword_241D1F000, v8, OS_LOG_TYPE_DEBUG, "[BLServiceProxy] restartDownloadWithID", v10, 2u);
   }
 
-  v9 = [(BLServiceProxy *)self _remoteObjectWithErrorHandler:v6];
-  [v9 restartDownloadWithID:v7 withReply:v6];
+  v9 = [(BLServiceProxy *)self _remoteObjectWithErrorHandler:replyCopy];
+  [v9 restartDownloadWithID:dCopy withReply:replyCopy];
 }
 
-- (void)cancelDownloadWithID:(id)a3 withReply:(id)a4
+- (void)cancelDownloadWithID:(id)d withReply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  dCopy = d;
   v8 = BLServiceProxyLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -253,13 +253,13 @@
     _os_log_impl(&dword_241D1F000, v8, OS_LOG_TYPE_DEBUG, "[BLServiceProxy] cancelDownloadWithID", v10, 2u);
   }
 
-  v9 = [(BLServiceProxy *)self _remoteObjectWithErrorHandler:v6];
-  [v9 cancelDownloadWithID:v7 withReply:v6];
+  v9 = [(BLServiceProxy *)self _remoteObjectWithErrorHandler:replyCopy];
+  [v9 cancelDownloadWithID:dCopy withReply:replyCopy];
 }
 
-- (void)cancelAllActiveDownloadsWithReply:(id)a3
+- (void)cancelAllActiveDownloadsWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = BLServiceProxyLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -267,15 +267,15 @@
     _os_log_impl(&dword_241D1F000, v5, OS_LOG_TYPE_DEBUG, "[BLServiceProxy] cancelAllActiveDownloadsWithReply", v7, 2u);
   }
 
-  v6 = [(BLServiceProxy *)self _remoteObjectWithErrorHandler:v4];
-  [v6 cancelAllActiveDownloadsWithReply:v4];
+  v6 = [(BLServiceProxy *)self _remoteObjectWithErrorHandler:replyCopy];
+  [v6 cancelAllActiveDownloadsWithReply:replyCopy];
 }
 
-- (void)purchaseWithRequest:(id)a3 uiHostProxy:(id)a4 reply:(id)a5
+- (void)purchaseWithRequest:(id)request uiHostProxy:(id)proxy reply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  replyCopy = reply;
+  proxyCopy = proxy;
+  requestCopy = request;
   v11 = BLServiceProxyLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -287,17 +287,17 @@
   v14[1] = 3221225472;
   v14[2] = sub_241D3782C;
   v14[3] = &unk_278D175E8;
-  v15 = v8;
-  v12 = v8;
+  v15 = replyCopy;
+  v12 = replyCopy;
   v13 = [(BLServiceProxy *)self _remoteObjectWithErrorHandler:v14];
-  [v13 purchaseWithRequest:v10 uiHostProxy:v9 reply:v12];
+  [v13 purchaseWithRequest:requestCopy uiHostProxy:proxyCopy reply:v12];
 }
 
-- (void)downloadWithPermlink:(id)a3 title:(id)a4 reply:(id)a5
+- (void)downloadWithPermlink:(id)permlink title:(id)title reply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  replyCopy = reply;
+  titleCopy = title;
+  permlinkCopy = permlink;
   v11 = BLServiceProxyLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -309,16 +309,16 @@
   v14[1] = 3221225472;
   v14[2] = sub_241D379C8;
   v14[3] = &unk_278D175E8;
-  v15 = v8;
-  v12 = v8;
+  v15 = replyCopy;
+  v12 = replyCopy;
   v13 = [(BLServiceProxy *)self _remoteObjectWithErrorHandler:v14];
-  [v13 downloadWithPermlink:v10 title:v9 reply:v12];
+  [v13 downloadWithPermlink:permlinkCopy title:titleCopy reply:v12];
 }
 
-- (void)requestDownloadWithParameters:(id)a3 reply:(id)a4
+- (void)requestDownloadWithParameters:(id)parameters reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  parametersCopy = parameters;
   v8 = BLServiceProxyLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -330,16 +330,16 @@
   v11[1] = 3221225472;
   v11[2] = sub_241D37B44;
   v11[3] = &unk_278D175E8;
-  v12 = v6;
-  v9 = v6;
+  v12 = replyCopy;
+  v9 = replyCopy;
   v10 = [(BLServiceProxy *)self _remoteObjectWithErrorHandler:v11];
-  [v10 requestDownloadWithParameters:v7 reply:v9];
+  [v10 requestDownloadWithParameters:parametersCopy reply:v9];
 }
 
-- (void)requestDownloadsWithRestoreContentRequestItems:(id)a3 reply:(id)a4
+- (void)requestDownloadsWithRestoreContentRequestItems:(id)items reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  itemsCopy = items;
   v8 = BLServiceProxyLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -351,17 +351,17 @@
   v11[1] = 3221225472;
   v11[2] = sub_241D37FD8;
   v11[3] = &unk_278D175E8;
-  v12 = v6;
-  v9 = v6;
+  v12 = replyCopy;
+  v9 = replyCopy;
   v10 = [(BLServiceProxy *)self _remoteObjectWithErrorHandler:v11];
-  [v10 requestDownloadsWithRestoreContentRequestItems:v7 reply:v9];
+  [v10 requestDownloadsWithRestoreContentRequestItems:itemsCopy reply:v9];
 }
 
-- (void)requestDownloadsWithManifestRequest:(id)a3 uiHostProxy:(id)a4 reply:(id)a5
+- (void)requestDownloadsWithManifestRequest:(id)request uiHostProxy:(id)proxy reply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  replyCopy = reply;
+  proxyCopy = proxy;
+  requestCopy = request;
   v11 = BLServiceProxyLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -373,15 +373,15 @@
   v14[1] = 3221225472;
   v14[2] = sub_241D38170;
   v14[3] = &unk_278D175E8;
-  v15 = v8;
-  v12 = v8;
+  v15 = replyCopy;
+  v12 = replyCopy;
   v13 = [(BLServiceProxy *)self _remoteObjectWithErrorHandler:v14];
-  [v13 requestDownloadsWithManifestRequest:v10 uiHostProxy:v9 reply:v12];
+  [v13 requestDownloadsWithManifestRequest:requestCopy uiHostProxy:proxyCopy reply:v12];
 }
 
-- (void)processAutomaticDownloadsWithReply:(id)a3
+- (void)processAutomaticDownloadsWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = BLServiceProxyLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -393,15 +393,15 @@
   v8[1] = 3221225472;
   v8[2] = sub_241D382D8;
   v8[3] = &unk_278D175E8;
-  v9 = v4;
-  v6 = v4;
+  v9 = replyCopy;
+  v6 = replyCopy;
   v7 = [(BLServiceProxy *)self _remoteObjectWithErrorHandler:v8];
   [v7 processAutomaticDownloadsWithReply:v6];
 }
 
-- (void)reloadFromServerWithReply:(id)a3
+- (void)reloadFromServerWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = BLServiceProxyLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -409,13 +409,13 @@
     _os_log_impl(&dword_241D1F000, v5, OS_LOG_TYPE_DEBUG, "[BLServiceProxy] reloadFromServerWithReply", v7, 2u);
   }
 
-  v6 = [(BLServiceProxy *)self _remoteObjectWithErrorHandler:v4];
-  [v6 reloadFromServerWithReply:v4];
+  v6 = [(BLServiceProxy *)self _remoteObjectWithErrorHandler:replyCopy];
+  [v6 reloadFromServerWithReply:replyCopy];
 }
 
-- (void)monitorProgressWithReply:(id)a3
+- (void)monitorProgressWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = BLServiceProxyLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -423,14 +423,14 @@
     _os_log_impl(&dword_241D1F000, v5, OS_LOG_TYPE_DEFAULT, "[BLServiceProxy] monitorProgressWithReply", v7, 2u);
   }
 
-  v6 = [(BLServiceProxy *)self _remoteObjectWithErrorHandler:v4];
-  [v6 monitorProgressWithReply:v4];
+  v6 = [(BLServiceProxy *)self _remoteObjectWithErrorHandler:replyCopy];
+  [v6 monitorProgressWithReply:replyCopy];
 }
 
-- (void)setRacGUID:(id)a3 forStoreID:(int64_t)a4 withReply:(id)a5
+- (void)setRacGUID:(id)d forStoreID:(int64_t)iD withReply:(id)reply
 {
-  v8 = a5;
-  v9 = a3;
+  replyCopy = reply;
+  dCopy = d;
   v10 = BLServiceProxyLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -438,13 +438,13 @@
     _os_log_impl(&dword_241D1F000, v10, OS_LOG_TYPE_DEFAULT, "[BLServiceProxy] setRacGUID:forStoreID:", v12, 2u);
   }
 
-  v11 = [(BLServiceProxy *)self _synchronousRemoteObjectWithErrorHandler:v8];
-  [v11 setRacGUID:v9 forStoreID:a4 withReply:v8];
+  v11 = [(BLServiceProxy *)self _synchronousRemoteObjectWithErrorHandler:replyCopy];
+  [v11 setRacGUID:dCopy forStoreID:iD withReply:replyCopy];
 }
 
-- (void)racGUIDForStoreID:(int64_t)a3 withReply:(id)a4
+- (void)racGUIDForStoreID:(int64_t)d withReply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v7 = BLServiceProxyLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -456,15 +456,15 @@
   v10[1] = 3221225472;
   v10[2] = sub_241D387D8;
   v10[3] = &unk_278D175E8;
-  v11 = v6;
-  v8 = v6;
+  v11 = replyCopy;
+  v8 = replyCopy;
   v9 = [(BLServiceProxy *)self _synchronousRemoteObjectWithErrorHandler:v10];
-  [v9 racGUIDForStoreID:a3 withReply:v8];
+  [v9 racGUIDForStoreID:d withReply:v8];
 }
 
-- (void)removeRacGUIDForStoreID:(int64_t)a3 withReply:(id)a4
+- (void)removeRacGUIDForStoreID:(int64_t)d withReply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v7 = BLServiceProxyLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -472,14 +472,14 @@
     _os_log_impl(&dword_241D1F000, v7, OS_LOG_TYPE_DEFAULT, "[BLServiceProxy] removeRacGUIDForStoreID:", v9, 2u);
   }
 
-  v8 = [(BLServiceProxy *)self _synchronousRemoteObjectWithErrorHandler:v6];
-  [v8 removeRacGUIDForStoreID:a3 withReply:v6];
+  v8 = [(BLServiceProxy *)self _synchronousRemoteObjectWithErrorHandler:replyCopy];
+  [v8 removeRacGUIDForStoreID:d withReply:replyCopy];
 }
 
-- (void)setMigrationState:(int64_t)a3 forStoreIDs:(id)a4 withReply:(id)a5
+- (void)setMigrationState:(int64_t)state forStoreIDs:(id)ds withReply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
+  replyCopy = reply;
+  dsCopy = ds;
   v10 = BLServiceProxyLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -487,13 +487,13 @@
     _os_log_impl(&dword_241D1F000, v10, OS_LOG_TYPE_DEFAULT, "[BLServiceProxy] setMigrationState:forStoreIDs:", v12, 2u);
   }
 
-  v11 = [(BLServiceProxy *)self _synchronousRemoteObjectWithErrorHandler:v8];
-  [v11 setMigrationState:a3 forStoreIDs:v9 withReply:v8];
+  v11 = [(BLServiceProxy *)self _synchronousRemoteObjectWithErrorHandler:replyCopy];
+  [v11 setMigrationState:state forStoreIDs:dsCopy withReply:replyCopy];
 }
 
-- (void)migrationInfoWithStoreID:(int64_t)a3 withReply:(id)a4
+- (void)migrationInfoWithStoreID:(int64_t)d withReply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v7 = BLServiceProxyLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -505,16 +505,16 @@
   v10[1] = 3221225472;
   v10[2] = sub_241D38AB4;
   v10[3] = &unk_278D175E8;
-  v11 = v6;
-  v8 = v6;
+  v11 = replyCopy;
+  v8 = replyCopy;
   v9 = [(BLServiceProxy *)self _synchronousRemoteObjectWithErrorHandler:v10];
-  [v9 migrationInfoWithStoreID:a3 withReply:v8];
+  [v9 migrationInfoWithStoreID:d withReply:v8];
 }
 
-- (void)migrationInfosWithStoreIDs:(id)a3 withReply:(id)a4
+- (void)migrationInfosWithStoreIDs:(id)ds withReply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  dsCopy = ds;
   v8 = BLServiceProxyLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -526,16 +526,16 @@
   v11[1] = 3221225472;
   v11[2] = sub_241D38C30;
   v11[3] = &unk_278D175E8;
-  v12 = v6;
-  v9 = v6;
+  v12 = replyCopy;
+  v9 = replyCopy;
   v10 = [(BLServiceProxy *)self _synchronousRemoteObjectWithErrorHandler:v11];
-  [v10 migrationInfosWithStoreIDs:v7 withReply:v9];
+  [v10 migrationInfosWithStoreIDs:dsCopy withReply:v9];
 }
 
-- (void)migrationInfosWithStates:(id)a3 withReply:(id)a4
+- (void)migrationInfosWithStates:(id)states withReply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  statesCopy = states;
   v8 = BLServiceProxyLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -547,15 +547,15 @@
   v11[1] = 3221225472;
   v11[2] = sub_241D38DAC;
   v11[3] = &unk_278D175E8;
-  v12 = v6;
-  v9 = v6;
+  v12 = replyCopy;
+  v9 = replyCopy;
   v10 = [(BLServiceProxy *)self _synchronousRemoteObjectWithErrorHandler:v11];
-  [v10 migrationInfosWithStates:v7 withReply:v9];
+  [v10 migrationInfosWithStates:statesCopy withReply:v9];
 }
 
-- (void)removeMigrationInfoForStoreID:(int64_t)a3 withReply:(id)a4
+- (void)removeMigrationInfoForStoreID:(int64_t)d withReply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v7 = BLServiceProxyLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -563,14 +563,14 @@
     _os_log_impl(&dword_241D1F000, v7, OS_LOG_TYPE_DEFAULT, "[BLServiceProxy] removeMigrationInfoForStoreID:", v9, 2u);
   }
 
-  v8 = [(BLServiceProxy *)self _synchronousRemoteObjectWithErrorHandler:v6];
-  [v8 removeMigrationInfoForStoreID:a3 withReply:v6];
+  v8 = [(BLServiceProxy *)self _synchronousRemoteObjectWithErrorHandler:replyCopy];
+  [v8 removeMigrationInfoForStoreID:d withReply:replyCopy];
 }
 
-- (void)removeAllMigrationInfosExcludingStates:(id)a3 withReply:(id)a4
+- (void)removeAllMigrationInfosExcludingStates:(id)states withReply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  statesCopy = states;
   v8 = BLServiceProxyLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -578,13 +578,13 @@
     _os_log_impl(&dword_241D1F000, v8, OS_LOG_TYPE_DEFAULT, "[BLServiceProxy] removeAllMigrationInfosExcludingStates:", v10, 2u);
   }
 
-  v9 = [(BLServiceProxy *)self _synchronousRemoteObjectWithErrorHandler:v6];
-  [v9 removeAllMigrationInfosExcludingStates:v7 withReply:v6];
+  v9 = [(BLServiceProxy *)self _synchronousRemoteObjectWithErrorHandler:replyCopy];
+  [v9 removeAllMigrationInfosExcludingStates:statesCopy withReply:replyCopy];
 }
 
-- (void)prepareForRemoveAppWithReply:(id)a3
+- (void)prepareForRemoveAppWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = BLServiceProxyLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -592,13 +592,13 @@
     _os_log_impl(&dword_241D1F000, v5, OS_LOG_TYPE_DEBUG, "[BLServiceProxy] prepareForRemoveAppWithReply", v7, 2u);
   }
 
-  v6 = [(BLServiceProxy *)self _remoteObjectWithErrorHandler:v4];
-  [v6 prepareForRemoveAppWithReply:v4];
+  v6 = [(BLServiceProxy *)self _remoteObjectWithErrorHandler:replyCopy];
+  [v6 prepareForRemoveAppWithReply:replyCopy];
 }
 
-- (void)getCrashSimulationOverrideValuesWithReply:(id)a3
+- (void)getCrashSimulationOverrideValuesWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = BLServiceProxyLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -610,15 +610,15 @@
   v8[1] = 3221225472;
   v8[2] = sub_241D393B0;
   v8[3] = &unk_278D175E8;
-  v9 = v4;
-  v6 = v4;
+  v9 = replyCopy;
+  v6 = replyCopy;
   v7 = [(BLServiceProxy *)self _remoteObjectWithErrorHandler:v8];
   [v7 getCrashSimulationOverrideValuesWithReply:v6];
 }
 
-- (void)resetAllCrashSimulationOverridesWithReply:(id)a3
+- (void)resetAllCrashSimulationOverridesWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = BLServiceProxyLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -626,13 +626,13 @@
     _os_log_impl(&dword_241D1F000, v5, OS_LOG_TYPE_DEBUG, "[BLServiceProxy] resetAllCrashSimulationOverridesWithReply:", v7, 2u);
   }
 
-  v6 = [(BLServiceProxy *)self _remoteObjectWithErrorHandler:v4];
-  [v6 resetAllCrashSimulationOverridesWithReply:v4];
+  v6 = [(BLServiceProxy *)self _remoteObjectWithErrorHandler:replyCopy];
+  [v6 resetAllCrashSimulationOverridesWithReply:replyCopy];
 }
 
-- (void)getValueSimulateDeviceOutOfSpaceWithReply:(id)a3
+- (void)getValueSimulateDeviceOutOfSpaceWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = BLServiceProxyLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -644,8 +644,8 @@
   v8[1] = 3221225472;
   v8[2] = sub_241D3966C;
   v8[3] = &unk_278D175E8;
-  v9 = v4;
-  v6 = v4;
+  v9 = replyCopy;
+  v6 = replyCopy;
   v7 = [(BLServiceProxy *)self _remoteObjectWithErrorHandler:v8];
   [v7 getValueSimulateDeviceOutOfSpaceWithReply:v6];
 }

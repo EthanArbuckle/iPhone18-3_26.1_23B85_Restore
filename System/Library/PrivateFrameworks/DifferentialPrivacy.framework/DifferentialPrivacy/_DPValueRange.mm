@@ -1,21 +1,21 @@
 @interface _DPValueRange
-+ (id)rangeWithMin:(id)a3 max:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToValueRange:(id)a3;
-- (_DPValueRange)initWithMin:(id)a3 max:(id)a4;
++ (id)rangeWithMin:(id)min max:(id)max;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToValueRange:(id)range;
+- (_DPValueRange)initWithMin:(id)min max:(id)max;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation _DPValueRange
 
-- (_DPValueRange)initWithMin:(id)a3 max:(id)a4
+- (_DPValueRange)initWithMin:(id)min max:(id)max
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 compare:v8] == 1)
+  minCopy = min;
+  maxCopy = max;
+  if ([minCopy compare:maxCopy] == 1)
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -26,11 +26,11 @@
     v11 = v10;
     if (v10)
     {
-      objc_storeStrong(&v10->_minPossible, a3);
-      objc_storeStrong(&v11->_maxPossible, a4);
-      [v7 doubleValue];
+      objc_storeStrong(&v10->_minPossible, min);
+      objc_storeStrong(&v11->_maxPossible, max);
+      [minCopy doubleValue];
       v13 = v12;
-      [v8 doubleValue];
+      [maxCopy doubleValue];
       if (v14 >= 0.0)
       {
         v15 = MEMORY[0x277CCABB0];
@@ -57,17 +57,17 @@
     }
 
     self = v11;
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-+ (id)rangeWithMin:(id)a3 max:(id)a4
++ (id)rangeWithMin:(id)min max:(id)max
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithMin:v7 max:v6];
+  maxCopy = max;
+  minCopy = min;
+  v8 = [[self alloc] initWithMin:minCopy max:maxCopy];
 
   return v8;
 }
@@ -82,41 +82,41 @@
   return v6;
 }
 
-- (BOOL)isEqualToValueRange:(id)a3
+- (BOOL)isEqualToValueRange:(id)range
 {
-  if (!a3)
+  if (!range)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(_DPValueRange *)self maxPossible];
-  v6 = [v4 maxPossible];
-  v7 = [v5 isEqual:v6];
+  rangeCopy = range;
+  maxPossible = [(_DPValueRange *)self maxPossible];
+  maxPossible2 = [rangeCopy maxPossible];
+  v7 = [maxPossible isEqual:maxPossible2];
 
-  v8 = [(_DPValueRange *)self minPossible];
-  v9 = [v4 minPossible];
-  v10 = [v8 isEqual:v9];
+  minPossible = [(_DPValueRange *)self minPossible];
+  minPossible2 = [rangeCopy minPossible];
+  v10 = [minPossible isEqual:minPossible2];
 
-  v11 = [(_DPValueRange *)self range];
-  v12 = [v4 range];
+  range = [(_DPValueRange *)self range];
+  range2 = [rangeCopy range];
 
-  LOBYTE(v4) = [v11 isEqual:v12];
-  return v7 & v10 & v4;
+  LOBYTE(rangeCopy) = [range isEqual:range2];
+  return v7 & v10 & rangeCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(_DPValueRange *)self isEqualToValueRange:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(_DPValueRange *)self isEqualToValueRange:v5];
   }
 
   return v6;
@@ -124,14 +124,14 @@
 
 - (unint64_t)hash
 {
-  v3 = [(_DPValueRange *)self maxPossible];
-  v4 = [v3 unsignedIntegerValue];
-  v5 = [(_DPValueRange *)self minPossible];
-  v6 = [v5 unsignedIntegerValue] ^ v4;
-  v7 = [(_DPValueRange *)self range];
-  v8 = [v7 unsignedIntegerValue];
+  maxPossible = [(_DPValueRange *)self maxPossible];
+  unsignedIntegerValue = [maxPossible unsignedIntegerValue];
+  minPossible = [(_DPValueRange *)self minPossible];
+  v6 = [minPossible unsignedIntegerValue] ^ unsignedIntegerValue;
+  range = [(_DPValueRange *)self range];
+  unsignedIntegerValue2 = [range unsignedIntegerValue];
 
-  return v6 ^ v8;
+  return v6 ^ unsignedIntegerValue2;
 }
 
 @end

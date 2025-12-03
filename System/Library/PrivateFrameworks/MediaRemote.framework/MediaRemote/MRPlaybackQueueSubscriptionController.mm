@@ -1,33 +1,33 @@
 @interface MRPlaybackQueueSubscriptionController
-- (BOOL)hasRequest:(id)a3;
-- (MRPlaybackQueueSubscriptionController)initWithCoder:(id)a3;
-- (MRPlaybackQueueSubscriptionController)initWithPlayerPath:(id)a3;
-- (id)contentItemIdentifierForOffset:(int64_t)a3;
-- (id)filteredContentItemsBySubscriptionsForContentItems:(id)a3;
-- (id)offsetForIdentifier:(id)a3;
-- (id)requestForSubscribedContentItemIdentifier:(id)a3;
-- (void)_removeRequestID:(uint64_t)a1;
-- (void)addRequest:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateFilteredContentItemsBySubscriptionsForContentItems:(id)a3 block:(id)a4;
+- (BOOL)hasRequest:(id)request;
+- (MRPlaybackQueueSubscriptionController)initWithCoder:(id)coder;
+- (MRPlaybackQueueSubscriptionController)initWithPlayerPath:(id)path;
+- (id)contentItemIdentifierForOffset:(int64_t)offset;
+- (id)filteredContentItemsBySubscriptionsForContentItems:(id)items;
+- (id)offsetForIdentifier:(id)identifier;
+- (id)requestForSubscribedContentItemIdentifier:(id)identifier;
+- (void)_removeRequestID:(uint64_t)d;
+- (void)addRequest:(id)request;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateFilteredContentItemsBySubscriptionsForContentItems:(id)items block:(id)block;
 - (void)invalidate;
-- (void)removeRequest:(id)a3;
-- (void)restoreStateFromController:(id)a3;
-- (void)subscribeToPlaybackQueue:(id)a3 forRequest:(id)a4;
+- (void)removeRequest:(id)request;
+- (void)restoreStateFromController:(id)controller;
+- (void)subscribeToPlaybackQueue:(id)queue forRequest:(id)request;
 @end
 
 @implementation MRPlaybackQueueSubscriptionController
 
-- (MRPlaybackQueueSubscriptionController)initWithPlayerPath:(id)a3
+- (MRPlaybackQueueSubscriptionController)initWithPlayerPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v19.receiver = self;
   v19.super_class = MRPlaybackQueueSubscriptionController;
   v6 = [(MRPlaybackQueueSubscriptionController *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_playerPath, a3);
+    objc_storeStrong(&v6->_playerPath, path);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_attr_make_with_qos_class(v8, QOS_CLASS_USER_INTERACTIVE, 0);
     v10 = dispatch_queue_create("com.apple.MediaRemote.MRPlaybackQueueClient/serialQueue", v9);
@@ -50,11 +50,11 @@
   return v7;
 }
 
-- (MRPlaybackQueueSubscriptionController)initWithCoder:(id)a3
+- (MRPlaybackQueueSubscriptionController)initWithCoder:(id)coder
 {
   v27[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"playerPath"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"playerPath"];
   if (v5)
   {
     v6 = [(MRPlaybackQueueSubscriptionController *)self initWithPlayerPath:v5];
@@ -68,7 +68,7 @@
       v27[4] = objc_opt_class();
       v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:5];
       v9 = [v7 setWithArray:v8];
-      v10 = [v4 decodeObjectOfClasses:v9 forKey:@"requestFilters"];
+      v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"requestFilters"];
       requestFilters = v6->_requestFilters;
       v6->_requestFilters = v10;
 
@@ -77,7 +77,7 @@
       v26[1] = objc_opt_class();
       v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:2];
       v14 = [v12 setWithArray:v13];
-      v15 = [v4 decodeObjectOfClasses:v14 forKey:@"requests"];
+      v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"requests"];
       requests = v6->_requests;
       v6->_requests = v15;
 
@@ -87,35 +87,35 @@
       v25[2] = objc_opt_class();
       v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:3];
       v19 = [v17 setWithArray:v18];
-      v20 = [v4 decodeObjectOfClasses:v19 forKey:@"offsets"];
+      v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"offsets"];
       offsets = v6->_offsets;
       v6->_offsets = v20;
     }
 
     self = v6;
-    v22 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v22 = 0;
+    selfCopy = 0;
   }
 
   v23 = *MEMORY[0x1E69E9840];
-  return v22;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__MRPlaybackQueueSubscriptionController_encodeWithCoder___block_invoke;
   v7[3] = &unk_1E769A4A0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = coderCopy;
+  selfCopy = self;
+  v6 = coderCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -130,22 +130,22 @@ uint64_t __57__MRPlaybackQueueSubscriptionController_encodeWithCoder___block_inv
   return [v2 encodeObject:v3 forKey:@"offsets"];
 }
 
-- (void)restoreStateFromController:(id)a3
+- (void)restoreStateFromController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [(MRPlaybackQueueSubscriptionController *)v5 restoreStateFromController:a2, self];
+    [(MRPlaybackQueueSubscriptionController *)controllerCopy restoreStateFromController:a2, self];
   }
 
-  v6 = [v5 playerPath];
-  v7 = [(MRPlaybackQueueSubscriptionController *)self playerPath];
-  v8 = [v6 isEqual:v7];
+  playerPath = [controllerCopy playerPath];
+  playerPath2 = [(MRPlaybackQueueSubscriptionController *)self playerPath];
+  v8 = [playerPath isEqual:playerPath2];
 
   if ((v8 & 1) == 0)
   {
-    [(MRPlaybackQueueSubscriptionController *)v5 restoreStateFromController:a2];
+    [(MRPlaybackQueueSubscriptionController *)controllerCopy restoreStateFromController:a2];
   }
 
   queue = self->_queue;
@@ -154,8 +154,8 @@ uint64_t __57__MRPlaybackQueueSubscriptionController_encodeWithCoder___block_inv
   v11[2] = __68__MRPlaybackQueueSubscriptionController_restoreStateFromController___block_invoke;
   v11[3] = &unk_1E769A4A0;
   v11[4] = self;
-  v12 = v5;
-  v10 = v5;
+  v12 = controllerCopy;
+  v10 = controllerCopy;
   dispatch_sync(queue, v11);
 }
 
@@ -169,11 +169,11 @@ void __68__MRPlaybackQueueSubscriptionController_restoreStateFromController___bl
   objc_storeStrong(v3, v2);
 }
 
-- (void)addRequest:(id)a3
+- (void)addRequest:(id)request
 {
-  v4 = [a3 requestIdentifier];
-  v5 = v4;
-  if (v4)
+  requestIdentifier = [request requestIdentifier];
+  v5 = requestIdentifier;
+  if (requestIdentifier)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -181,7 +181,7 @@ void __68__MRPlaybackQueueSubscriptionController_restoreStateFromController___bl
     v7[2] = __52__MRPlaybackQueueSubscriptionController_addRequest___block_invoke;
     v7[3] = &unk_1E769A4A0;
     v7[4] = self;
-    v8 = v4;
+    v8 = requestIdentifier;
     dispatch_sync(queue, v7);
   }
 }
@@ -210,26 +210,26 @@ void __52__MRPlaybackQueueSubscriptionController_addRequest___block_invoke_2(uin
   [(MRPlaybackQueueSubscriptionController *)WeakRetained _removeRequestID:?];
 }
 
-- (void)_removeRequestID:(uint64_t)a1
+- (void)_removeRequestID:(uint64_t)d
 {
   v3 = a2;
   v4 = v3;
-  if (a1 && v3)
+  if (d && v3)
   {
-    v5 = *(a1 + 32);
+    v5 = *(d + 32);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __58__MRPlaybackQueueSubscriptionController__removeRequestID___block_invoke;
     v6[3] = &unk_1E769A4A0;
-    v6[4] = a1;
+    v6[4] = d;
     v7 = v3;
     dispatch_sync(v5, v6);
   }
 }
 
-- (BOOL)hasRequest:(id)a3
+- (BOOL)hasRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -239,10 +239,10 @@ void __52__MRPlaybackQueueSubscriptionController_addRequest___block_invoke_2(uin
   block[1] = 3221225472;
   block[2] = __52__MRPlaybackQueueSubscriptionController_hasRequest___block_invoke;
   block[3] = &unk_1E769BBB8;
-  v9 = v4;
+  v9 = requestCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = requestCopy;
   dispatch_sync(queue, block);
   LOBYTE(queue) = *(v12 + 24);
 
@@ -257,13 +257,13 @@ uint64_t __52__MRPlaybackQueueSubscriptionController_hasRequest___block_invoke(v
   return result;
 }
 
-- (void)removeRequest:(id)a3
+- (void)removeRequest:(id)request
 {
-  v4 = [a3 requestIdentifier];
-  [(MRPlaybackQueueSubscriptionController *)self _removeRequestID:v4];
+  requestIdentifier = [request requestIdentifier];
+  [(MRPlaybackQueueSubscriptionController *)self _removeRequestID:requestIdentifier];
 }
 
-- (id)contentItemIdentifierForOffset:(int64_t)a3
+- (id)contentItemIdentifierForOffset:(int64_t)offset
 {
   v7 = 0;
   v8 = &v7;
@@ -278,7 +278,7 @@ uint64_t __52__MRPlaybackQueueSubscriptionController_hasRequest___block_invoke(v
   block[3] = &unk_1E769EE88;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = offset;
   dispatch_sync(queue, block);
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -296,9 +296,9 @@ void __72__MRPlaybackQueueSubscriptionController_contentItemIdentifierForOffset_
   *(v4 + 40) = v3;
 }
 
-- (id)offsetForIdentifier:(id)a3
+- (id)offsetForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -310,10 +310,10 @@ void __72__MRPlaybackQueueSubscriptionController_contentItemIdentifierForOffset_
   block[1] = 3221225472;
   block[2] = __61__MRPlaybackQueueSubscriptionController_offsetForIdentifier___block_invoke;
   block[3] = &unk_1E769BBB8;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -451,21 +451,21 @@ void __74__MRPlaybackQueueSubscriptionController_augmentCommandOptions_forComman
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)subscribeToPlaybackQueue:(id)a3 forRequest:(id)a4
+- (void)subscribeToPlaybackQueue:(id)queue forRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  queueCopy = queue;
+  requestCopy = request;
+  v8 = requestCopy;
+  if (queueCopy)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __77__MRPlaybackQueueSubscriptionController_subscribeToPlaybackQueue_forRequest___block_invoke;
     block[3] = &unk_1E769BA00;
-    v11 = v7;
-    v12 = self;
-    v13 = v6;
+    v11 = requestCopy;
+    selfCopy = self;
+    v13 = queueCopy;
     dispatch_sync(queue, block);
   }
 }
@@ -595,9 +595,9 @@ void __77__MRPlaybackQueueSubscriptionController_subscribeToPlaybackQueue_forReq
   [v8 addObject:v9];
 }
 
-- (id)requestForSubscribedContentItemIdentifier:(id)a3
+- (id)requestForSubscribedContentItemIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -610,9 +610,9 @@ void __77__MRPlaybackQueueSubscriptionController_subscribeToPlaybackQueue_forReq
   block[2] = __83__MRPlaybackQueueSubscriptionController_requestForSubscribedContentItemIdentifier___block_invoke;
   block[3] = &unk_1E769D1B8;
   block[4] = self;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -675,16 +675,16 @@ void __83__MRPlaybackQueueSubscriptionController_requestForSubscribedContentItem
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enumerateFilteredContentItemsBySubscriptionsForContentItems:(id)a3 block:(id)a4
+- (void)enumerateFilteredContentItemsBySubscriptionsForContentItems:(id)items block:(id)block
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  blockCopy = block;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = v6;
+  v8 = itemsCopy;
   v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
@@ -700,8 +700,8 @@ void __83__MRPlaybackQueueSubscriptionController_requestForSubscribedContentItem
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
-        v14 = [v13 identifier];
-        v15 = [(MRPlaybackQueueSubscriptionController *)self requestForSubscribedContentItemIdentifier:v14];
+        identifier = [v13 identifier];
+        v15 = [(MRPlaybackQueueSubscriptionController *)self requestForSubscribedContentItemIdentifier:identifier];
 
         if (v15)
         {
@@ -709,7 +709,7 @@ void __83__MRPlaybackQueueSubscriptionController_requestForSubscribedContentItem
           if (v16)
           {
             v18 = 0;
-            v7[2](v7, v16, v15, &v18);
+            blockCopy[2](blockCopy, v16, v15, &v18);
             if (v18)
             {
 
@@ -734,18 +734,18 @@ LABEL_14:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (id)filteredContentItemsBySubscriptionsForContentItems:(id)a3
+- (id)filteredContentItemsBySubscriptionsForContentItems:(id)items
 {
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
-  v6 = [v4 arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  itemsCopy = items;
+  v6 = [v4 arrayWithCapacity:{objc_msgSend(itemsCopy, "count")}];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __92__MRPlaybackQueueSubscriptionController_filteredContentItemsBySubscriptionsForContentItems___block_invoke;
   v10[3] = &unk_1E76A3108;
   v11 = v6;
   v7 = v6;
-  [(MRPlaybackQueueSubscriptionController *)self enumerateFilteredContentItemsBySubscriptionsForContentItems:v5 block:v10];
+  [(MRPlaybackQueueSubscriptionController *)self enumerateFilteredContentItemsBySubscriptionsForContentItems:itemsCopy block:v10];
 
   v8 = [v7 copy];
 

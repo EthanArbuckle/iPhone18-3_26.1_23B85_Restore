@@ -1,43 +1,43 @@
 @interface SBHIconGridSizeClassIconImageInfoMap
-+ (id)allocWithZone:(_NSZone *)a3;
-- (BOOL)hasIconImageInfoForGridSizeClass:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CGSize)extraIconImageSizeForGridSizeClass:(id)a3 gridSizeClassSizes:(id)a4 iconSpacing:(CGSize)a5;
-- (CGSize)extraIconImageSizeForGridSizeClassSizes:(id)a3 iconSpacing:(CGSize)a4;
-- (CGSize)extraIconImageSizeForGridSizeClassSizes:(id)a3 iconSpacing:(CGSize)a4 inDomain:(id)a5;
++ (id)allocWithZone:(_NSZone *)zone;
+- (BOOL)hasIconImageInfoForGridSizeClass:(id)class;
+- (BOOL)isEqual:(id)equal;
+- (CGSize)extraIconImageSizeForGridSizeClass:(id)class gridSizeClassSizes:(id)sizes iconSpacing:(CGSize)spacing;
+- (CGSize)extraIconImageSizeForGridSizeClassSizes:(id)sizes iconSpacing:(CGSize)spacing;
+- (CGSize)extraIconImageSizeForGridSizeClassSizes:(id)sizes iconSpacing:(CGSize)spacing inDomain:(id)domain;
 - (NSString)description;
-- (SBHIconGridSizeClassIconImageInfoMap)initWithGridSizeClassesAndIconImageInfos:(id)a3;
-- (SBHIconGridSizeClassIconImageInfoMap)initWithIconGridSizeClassIconImageInfoMap:(id)a3;
-- (SBHIconGridSizeClassIconImageInfoMap)initWithIconImageInfo:(SBIconImageInfo *)a3 forGridSizeClass:(id)a4;
-- (SBHIconGridSizeClassIconImageInfoMap)initWithIconImageInfos:(id)a3;
-- (SBIconImageInfo)iconImageInfoForGridSizeClass:(SEL)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (SBHIconGridSizeClassIconImageInfoMap)initWithGridSizeClassesAndIconImageInfos:(id)infos;
+- (SBHIconGridSizeClassIconImageInfoMap)initWithIconGridSizeClassIconImageInfoMap:(id)map;
+- (SBHIconGridSizeClassIconImageInfoMap)initWithIconImageInfo:(SBIconImageInfo *)info forGridSizeClass:(id)class;
+- (SBHIconGridSizeClassIconImageInfoMap)initWithIconImageInfos:(id)infos;
+- (SBIconImageInfo)iconImageInfoForGridSizeClass:(SEL)class;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)enumerateIconImageInfosUsingBlock:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)enumerateIconImageInfosUsingBlock:(id)block;
 @end
 
 @implementation SBHIconGridSizeClassIconImageInfoMap
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_self();
 
-  if (v5 == a1)
+  if (v5 == self)
   {
 
-    return [(SBHIconGridSizeClassIconImageInfoMap *)SBHImmutableIconGridSizeClassIconImageInfoMap allocWithZone:a3];
+    return [(SBHIconGridSizeClassIconImageInfoMap *)SBHImmutableIconGridSizeClassIconImageInfoMap allocWithZone:zone];
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___SBHIconGridSizeClassIconImageInfoMap;
-    return objc_msgSendSuper2(&v7, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v7, sel_allocWithZone_, zone);
   }
 }
 
-- (SBHIconGridSizeClassIconImageInfoMap)initWithIconImageInfo:(SBIconImageInfo *)a3 forGridSizeClass:(id)a4
+- (SBHIconGridSizeClassIconImageInfoMap)initWithIconImageInfo:(SBIconImageInfo *)info forGridSizeClass:(id)class
 {
   v8 = v7;
   v9 = v6;
@@ -45,9 +45,9 @@
   v11 = v4;
   v20[1] = *MEMORY[0x1E69E9840];
   v13 = MEMORY[0x1E696B098];
-  v14 = a3;
+  infoCopy = info;
   v15 = [v13 sbh_valueWithSBIconImageInfo:{v11, v10, v9, v8}];
-  v19 = v14;
+  v19 = infoCopy;
   v20[0] = v15;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
 
@@ -55,22 +55,22 @@
   return v17;
 }
 
-- (SBHIconGridSizeClassIconImageInfoMap)initWithGridSizeClassesAndIconImageInfos:(id)a3
+- (SBHIconGridSizeClassIconImageInfoMap)initWithGridSizeClassesAndIconImageInfos:(id)infos
 {
-  v4 = a3;
+  infosCopy = infos;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v11 = &v12;
-  if (v4)
+  if (infosCopy)
   {
     do
     {
       v6 = [MEMORY[0x1E696B098] sbh_valueWithSBIconImageInfo:{*v11, v11[1], v11[2], v11[3]}];
-      [v5 setObject:v6 forKey:v4];
+      [v5 setObject:v6 forKey:infosCopy];
       v7 = (v11 + 4);
       v11 += 5;
       v8 = *v7;
 
-      v4 = v8;
+      infosCopy = v8;
     }
 
     while (v8);
@@ -81,26 +81,26 @@
   return v9;
 }
 
-- (SBHIconGridSizeClassIconImageInfoMap)initWithIconImageInfos:(id)a3
+- (SBHIconGridSizeClassIconImageInfoMap)initWithIconImageInfos:(id)infos
 {
   v4.receiver = self;
   v4.super_class = SBHIconGridSizeClassIconImageInfoMap;
   return [(SBHIconGridSizeClassIconImageInfoMap *)&v4 init];
 }
 
-- (SBHIconGridSizeClassIconImageInfoMap)initWithIconGridSizeClassIconImageInfoMap:(id)a3
+- (SBHIconGridSizeClassIconImageInfoMap)initWithIconGridSizeClassIconImageInfoMap:(id)map
 {
-  v4 = [a3 _iconImageInfos];
-  v5 = [(SBHIconGridSizeClassIconImageInfoMap *)self initWithIconImageInfos:v4];
+  _iconImageInfos = [map _iconImageInfos];
+  v5 = [(SBHIconGridSizeClassIconImageInfoMap *)self initWithIconImageInfos:_iconImageInfos];
 
   return v5;
 }
 
-- (SBIconImageInfo)iconImageInfoForGridSizeClass:(SEL)a3
+- (SBIconImageInfo)iconImageInfoForGridSizeClass:(SEL)class
 {
   v5 = a4;
-  v6 = [(SBHIconGridSizeClassIconImageInfoMap *)self _iconImageInfos];
-  v7 = [v6 objectForKey:v5];
+  _iconImageInfos = [(SBHIconGridSizeClassIconImageInfoMap *)self _iconImageInfos];
+  v7 = [_iconImageInfos objectForKey:v5];
 
   if (v7)
   {
@@ -110,32 +110,32 @@
   return result;
 }
 
-- (BOOL)hasIconImageInfoForGridSizeClass:(id)a3
+- (BOOL)hasIconImageInfoForGridSizeClass:(id)class
 {
-  v4 = a3;
-  v5 = [(SBHIconGridSizeClassIconImageInfoMap *)self _iconImageInfos];
-  v6 = [v5 objectForKey:v4];
+  classCopy = class;
+  _iconImageInfos = [(SBHIconGridSizeClassIconImageInfoMap *)self _iconImageInfos];
+  v6 = [_iconImageInfos objectForKey:classCopy];
 
   return v6 != 0;
 }
 
-- (CGSize)extraIconImageSizeForGridSizeClass:(id)a3 gridSizeClassSizes:(id)a4 iconSpacing:(CGSize)a5
+- (CGSize)extraIconImageSizeForGridSizeClass:(id)class gridSizeClassSizes:(id)sizes iconSpacing:(CGSize)spacing
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a3;
-  v10 = a4;
+  height = spacing.height;
+  width = spacing.width;
+  classCopy = class;
+  sizesCopy = sizes;
   v11 = *MEMORY[0x1E695F060];
   v12 = *(MEMORY[0x1E695F060] + 8);
-  if (@"SBHIconGridSizeClassDefault" != v9 && ([(__CFString *)v9 isEqualToString:@"SBHIconGridSizeClassDefault"]& 1) == 0)
+  if (@"SBHIconGridSizeClassDefault" != classCopy && ([(__CFString *)classCopy isEqualToString:@"SBHIconGridSizeClassDefault"]& 1) == 0)
   {
-    v13 = [v10 gridSizeForGridSizeClass:v9];
+    v13 = [sizesCopy gridSizeForGridSizeClass:classCopy];
     v14 = v13;
     v15 = HIWORD(v13);
     [(SBHIconGridSizeClassIconImageInfoMap *)self iconImageInfoForGridSizeClass:@"SBHIconGridSizeClassDefault"];
     v17 = v16;
     v19 = v18;
-    [(SBHIconGridSizeClassIconImageInfoMap *)self iconImageInfoForGridSizeClass:v9];
+    [(SBHIconGridSizeClassIconImageInfoMap *)self iconImageInfoForGridSizeClass:classCopy];
     v11 = v20 - (width * (v14 - 1) + v17 * v14);
     v12 = v21 - (height * (v15 - 1) + v19 * v15);
   }
@@ -147,13 +147,13 @@
   return result;
 }
 
-- (CGSize)extraIconImageSizeForGridSizeClassSizes:(id)a3 iconSpacing:(CGSize)a4
+- (CGSize)extraIconImageSizeForGridSizeClassSizes:(id)sizes iconSpacing:(CGSize)spacing
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = spacing.height;
+  width = spacing.width;
+  sizesCopy = sizes;
   v8 = +[SBHIconGridSizeClassDomain globalDomain];
-  [(SBHIconGridSizeClassIconImageInfoMap *)self extraIconImageSizeForGridSizeClassSizes:v7 iconSpacing:v8 inDomain:width, height];
+  [(SBHIconGridSizeClassIconImageInfoMap *)self extraIconImageSizeForGridSizeClassSizes:sizesCopy iconSpacing:v8 inDomain:width, height];
   v10 = v9;
   v12 = v11;
 
@@ -164,12 +164,12 @@
   return result;
 }
 
-- (CGSize)extraIconImageSizeForGridSizeClassSizes:(id)a3 iconSpacing:(CGSize)a4 inDomain:(id)a5
+- (CGSize)extraIconImageSizeForGridSizeClassSizes:(id)sizes iconSpacing:(CGSize)spacing inDomain:(id)domain
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v10 = a5;
+  height = spacing.height;
+  width = spacing.width;
+  sizesCopy = sizes;
+  domainCopy = domain;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3010000000;
@@ -180,12 +180,12 @@
   v16[2] = __101__SBHIconGridSizeClassIconImageInfoMap_extraIconImageSizeForGridSizeClassSizes_iconSpacing_inDomain___block_invoke;
   v16[3] = &unk_1E8091610;
   v16[4] = self;
-  v11 = v9;
+  v11 = sizesCopy;
   v19 = width;
   v20 = height;
   v17 = v11;
   v18 = &v21;
-  [v10 enumerateGridSizeClassesUsingBlock:v16];
+  [domainCopy enumerateGridSizeClassesUsingBlock:v16];
   v12 = v22[4];
   v13 = v22[5];
 
@@ -215,10 +215,10 @@ uint64_t __101__SBHIconGridSizeClassIconImageInfoMap_extraIconImageSizeForGridSi
   return result;
 }
 
-- (void)enumerateIconImageInfosUsingBlock:(id)a3
+- (void)enumerateIconImageInfosUsingBlock:(id)block
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   [(SBHIconGridSizeClassIconImageInfoMap *)self _iconImageInfos];
   v12 = 0u;
   v13 = 0u;
@@ -241,7 +241,7 @@ LABEL_3:
       v10 = *(*(&v12 + 1) + 8 * v9);
       [(SBHIconGridSizeClassIconImageInfoMap *)self iconImageInfoForGridSizeClass:v10];
       v11 = 0;
-      v4[2](v4, v10, &v11);
+      blockCopy[2](blockCopy, v10, &v11);
       if (v11)
       {
         break;
@@ -261,10 +261,10 @@ LABEL_3:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -276,9 +276,9 @@ LABEL_3:
 
     if (isKindOfClass)
     {
-      v7 = v4;
-      v8 = [(SBHIconGridSizeClassIconImageInfoMap *)self _iconImageInfos];
-      v9 = [(SBHIconGridSizeClassIconImageInfoMap *)v7 _iconImageInfos];
+      v7 = equalCopy;
+      _iconImageInfos = [(SBHIconGridSizeClassIconImageInfoMap *)self _iconImageInfos];
+      _iconImageInfos2 = [(SBHIconGridSizeClassIconImageInfoMap *)v7 _iconImageInfos];
 
       v10 = BSEqualDictionaries();
     }
@@ -294,8 +294,8 @@ LABEL_3:
 
 - (unint64_t)hash
 {
-  v2 = [(SBHIconGridSizeClassIconImageInfoMap *)self _iconImageInfos];
-  v3 = [v2 hash];
+  _iconImageInfos = [(SBHIconGridSizeClassIconImageInfoMap *)self _iconImageInfos];
+  v3 = [_iconImageInfos hash];
 
   return v3;
 }
@@ -309,23 +309,23 @@ LABEL_3:
   return v4;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [(SBHIconGridSizeClassIconImageInfoMap *)SBHMutableIconGridSizeClassIconImageInfoMap allocWithZone:a3];
+  v4 = [(SBHIconGridSizeClassIconImageInfoMap *)SBHMutableIconGridSizeClassIconImageInfoMap allocWithZone:zone];
 
   return [(SBHIconGridSizeClassIconImageInfoMap *)v4 initWithIconGridSizeClassIconImageInfoMap:self];
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v4 = a3;
+  formatterCopy = formatter;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __69__SBHIconGridSizeClassIconImageInfoMap_appendDescriptionToFormatter___block_invoke;
   v6[3] = &unk_1E8088F18;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = formatterCopy;
+  v5 = formatterCopy;
   [v5 appendProem:self block:v6];
 }
 

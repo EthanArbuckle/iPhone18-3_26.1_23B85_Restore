@@ -2,43 +2,43 @@
 + (Class)alternativeCellClass;
 - (BOOL)canReload;
 - (BOOL)shouldUseModernLayout;
-- (PSSwitchTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (PSSwitchTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)controlValue;
 - (id)newControl;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
-- (void)reloadWithSpecifier:(id)a3 animated:(BOOL)a4;
-- (void)setCellEnabled:(BOOL)a3;
-- (void)setLoading:(BOOL)a3;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
-- (void)setValue:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
+- (void)reloadWithSpecifier:(id)specifier animated:(BOOL)animated;
+- (void)setCellEnabled:(BOOL)enabled;
+- (void)setLoading:(BOOL)loading;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
+- (void)setValue:(id)value;
 @end
 
 @implementation PSSwitchTableCell
 
-- (PSSwitchTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PSSwitchTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = PSSwitchTableCell;
-  v4 = [(PSControlTableCell *)&v8 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PSControlTableCell *)&v8 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4 && ![(PSTableCell *)v4 skipsPreferencesTableCellLayoutSubviews])
   {
-    v6 = [(PSControlTableCell *)v5 control];
-    [(PSSwitchTableCell *)v5 setAccessoryView:v6];
+    control = [(PSControlTableCell *)v5 control];
+    [(PSSwitchTableCell *)v5 setAccessoryView:control];
   }
 
   return v5;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v6.receiver = self;
   v6.super_class = PSSwitchTableCell;
-  v4 = a3;
-  [(PSControlTableCell *)&v6 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 propertyForKey:{@"control-loading", v6.receiver, v6.super_class}];
+  specifierCopy = specifier;
+  [(PSControlTableCell *)&v6 refreshCellContentsWithSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:{@"control-loading", v6.receiver, v6.super_class}];
 
   if (v5)
   {
@@ -61,8 +61,8 @@
     v4.receiver = self;
     v4.super_class = PSSwitchTableCell;
     [(PSTableCell *)&v4 prepareForReuse];
-    v3 = [(PSControlTableCell *)self control];
-    [(PSSwitchTableCell *)self setAccessoryView:v3];
+    control = [(PSControlTableCell *)self control];
+    [(PSSwitchTableCell *)self setAccessoryView:control];
   }
 }
 
@@ -84,30 +84,30 @@
   return v3;
 }
 
-- (void)setCellEnabled:(BOOL)a3
+- (void)setCellEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5.receiver = self;
   v5.super_class = PSSwitchTableCell;
   [(PSControlTableCell *)&v5 setCellEnabled:?];
-  [(UIControl *)self->super._control setEnabled:v3];
+  [(UIControl *)self->super._control setEnabled:enabledCopy];
 }
 
-- (void)setLoading:(BOOL)a3
+- (void)setLoading:(BOOL)loading
 {
-  v3 = a3;
+  loadingCopy = loading;
   if ([(PSTableCell *)self skipsPreferencesTableCellLayoutSubviews])
   {
     return;
   }
 
   activityIndicator = self->_activityIndicator;
-  if (v3)
+  if (loadingCopy)
   {
     if (!activityIndicator)
     {
-      v6 = [(PSSwitchTableCell *)self contentView];
-      [v6 bounds];
+      contentView = [(PSSwitchTableCell *)self contentView];
+      [contentView bounds];
       v8 = v7;
       v10 = v9;
 
@@ -123,8 +123,8 @@
 
       [(UIActivityIndicatorView *)self->_activityIndicator setFrame:v15, v17, v12, v14];
       [(UIActivityIndicatorView *)self->_activityIndicator startAnimating];
-      v20 = [(PSSwitchTableCell *)self contentView];
-      [v20 addSubview:self->_activityIndicator];
+      contentView2 = [(PSSwitchTableCell *)self contentView];
+      [contentView2 addSubview:self->_activityIndicator];
 
       if (self->super._control)
       {
@@ -170,41 +170,41 @@ LABEL_14:
       goto LABEL_14;
     }
 
-    v25 = [(PSSwitchTableCell *)self contentView];
-    [v25 addSubview:self->super._control];
+    contentView3 = [(PSSwitchTableCell *)self contentView];
+    [contentView3 addSubview:self->super._control];
   }
 }
 
 - (id)controlValue
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [(UIControl *)self->super._control isOn];
+  isOn = [(UIControl *)self->super._control isOn];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:isOn];
 }
 
-- (void)reloadWithSpecifier:(id)a3 animated:(BOOL)a4
+- (void)reloadWithSpecifier:(id)specifier animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v7.receiver = self;
   v7.super_class = PSSwitchTableCell;
-  [(PSTableCell *)&v7 reloadWithSpecifier:a3 animated:?];
-  v6 = [self->super.super._value BOOLValue];
-  if (v6 != [(UIControl *)self->super._control isOn])
+  [(PSTableCell *)&v7 reloadWithSpecifier:specifier animated:?];
+  bOOLValue = [self->super.super._value BOOLValue];
+  if (bOOLValue != [(UIControl *)self->super._control isOn])
   {
-    -[UIControl setOn:animated:](self->super._control, "setOn:animated:", [self->super.super._value BOOLValue], v4);
+    -[UIControl setOn:animated:](self->super._control, "setOn:animated:", [self->super.super._value BOOLValue], animatedCopy);
   }
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v5 = a3;
-  if (self->super.super._value != v5)
+  valueCopy = value;
+  if (self->super.super._value != valueCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->super.super._value, a3);
+    v6 = valueCopy;
+    objc_storeStrong(&self->super.super._value, value);
     -[UIControl setOn:](self->super._control, "setOn:", [v6 intValue] != 0);
-    v5 = v6;
+    valueCopy = v6;
   }
 }
 
@@ -235,17 +235,17 @@ LABEL_14:
     [(PSTableCell *)&v15 layoutSubviews];
     if (self->_activityIndicator)
     {
-      v3 = [(PSSwitchTableCell *)self contentView];
-      [v3 bounds];
+      contentView = [(PSSwitchTableCell *)self contentView];
+      [contentView bounds];
       v5 = v4;
       v7 = v6;
 
       [MEMORY[0x1E69DC638] defaultSizeForStyle:{-[PSSwitchTableCell spinnerStyle](self, "spinnerStyle")}];
       v9 = v8;
       v11 = v10;
-      v12 = [(PSSwitchTableCell *)self _shouldReverseLayoutDirection];
+      _shouldReverseLayoutDirection = [(PSSwitchTableCell *)self _shouldReverseLayoutDirection];
       v13 = v5 + -9.0 - v9;
-      if (v12)
+      if (_shouldReverseLayoutDirection)
       {
         v13 = 9.0;
       }
@@ -256,16 +256,16 @@ LABEL_14:
   }
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v6 = [(PSSwitchTableCell *)self backgroundColor:a3];
-  v5 = [(PSSwitchTableCell *)self selectedBackgroundView];
-  [v5 setBackgroundColor:v6];
+  v6 = [(PSSwitchTableCell *)self backgroundColor:selected];
+  selectedBackgroundView = [(PSSwitchTableCell *)self selectedBackgroundView];
+  [selectedBackgroundView setBackgroundColor:v6];
 }
 
 + (Class)alternativeCellClass
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = objc_opt_class();
   }

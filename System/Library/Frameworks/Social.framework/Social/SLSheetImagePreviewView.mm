@@ -1,18 +1,18 @@
 @interface SLSheetImagePreviewView
 + (id)fallbackPreviewImage;
 - (CGSize)intrinsicContentSize;
-- (SLSheetImagePreviewView)initWithFrame:(CGRect)a3;
-- (void)setImage:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (SLSheetImagePreviewView)initWithFrame:(CGRect)frame;
+- (void)setImage:(id)image;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SLSheetImagePreviewView
 
-- (SLSheetImagePreviewView)initWithFrame:(CGRect)a3
+- (SLSheetImagePreviewView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = SLSheetImagePreviewView;
-  return [(SLSheetImagePreviewView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  return [(SLSheetImagePreviewView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
 + (id)fallbackPreviewImage
@@ -45,38 +45,38 @@
   return v2;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  objc_storeStrong(&self->_image, a3);
-  v5 = a3;
-  v6 = [(SLSheetImagePreviewView *)self imageView];
-  [v6 setImage:v5];
+  objc_storeStrong(&self->_image, image);
+  imageCopy = image;
+  imageView = [(SLSheetImagePreviewView *)self imageView];
+  [imageView setImage:imageCopy];
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v4 = [(SLSheetImagePreviewView *)self traitCollection];
-  v5 = [v4 verticalSizeClass];
+  traitCollection = [(SLSheetImagePreviewView *)self traitCollection];
+  verticalSizeClass = [traitCollection verticalSizeClass];
 
-  if (v5 == 1)
+  if (verticalSizeClass == 1)
   {
     v6 = 60.0;
   }
 
   else
   {
-    v7 = [(SLSheetImagePreviewView *)self traitCollection];
-    v8 = [v7 horizontalSizeClass] == 1;
+    traitCollection2 = [(SLSheetImagePreviewView *)self traitCollection];
+    v8 = [traitCollection2 horizontalSizeClass] == 1;
 
     v6 = dbl_1C23F4410[v8];
   }
 
   v9 = MEMORY[0x1E696AD98];
-  v10 = [(SLSheetImagePreviewView *)self traitCollection];
-  v11 = [v9 numberWithInteger:{objc_msgSend(v10, "horizontalSizeClass")}];
+  traitCollection3 = [(SLSheetImagePreviewView *)self traitCollection];
+  v11 = [v9 numberWithInteger:{objc_msgSend(traitCollection3, "horizontalSizeClass")}];
   v12 = MEMORY[0x1E696AD98];
-  v13 = [(SLSheetImagePreviewView *)self traitCollection];
-  v17 = [v12 numberWithInteger:{objc_msgSend(v13, "verticalSizeClass")}];
+  traitCollection4 = [(SLSheetImagePreviewView *)self traitCollection];
+  v17 = [v12 numberWithInteger:{objc_msgSend(traitCollection4, "verticalSizeClass")}];
   _SLLog(v2, 7, @"SLSheetImagePreviewView intrinsicContentSize horizontalSizeClass %@ verticalSizeClass %@");
 
   v16 = [MEMORY[0x1E696B098] valueWithCGSize:{v6, v6, v11, v17}];
@@ -89,22 +89,22 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   _SLLog(v3, 7, @"SLSheetImagePreviewView traitCollectionDidChange:");
   v11.receiver = self;
   v11.super_class = SLSheetImagePreviewView;
-  [(SLSheetImagePreviewView *)&v11 traitCollectionDidChange:v5];
-  v6 = [(SLSheetImagePreviewView *)self traitCollection];
-  v7 = [v6 horizontalSizeClass];
-  if (v7 == [v5 horizontalSizeClass])
+  [(SLSheetImagePreviewView *)&v11 traitCollectionDidChange:changeCopy];
+  traitCollection = [(SLSheetImagePreviewView *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
+  if (horizontalSizeClass == [changeCopy horizontalSizeClass])
   {
-    v8 = [(SLSheetImagePreviewView *)self traitCollection];
-    v9 = [v8 verticalSizeClass];
-    v10 = [v5 verticalSizeClass];
+    traitCollection2 = [(SLSheetImagePreviewView *)self traitCollection];
+    verticalSizeClass = [traitCollection2 verticalSizeClass];
+    verticalSizeClass2 = [changeCopy verticalSizeClass];
 
-    if (v9 == v10)
+    if (verticalSizeClass == verticalSizeClass2)
     {
       goto LABEL_6;
     }

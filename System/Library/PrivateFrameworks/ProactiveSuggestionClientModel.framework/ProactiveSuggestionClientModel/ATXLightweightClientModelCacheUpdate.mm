@@ -1,11 +1,11 @@
 @interface ATXLightweightClientModelCacheUpdate
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (ATXLightweightClientModelCacheUpdate)initWithClientModelCacheUpdate:(id)a3;
-- (ATXLightweightClientModelCacheUpdate)initWithClientModelId:(id)a3 suggestions:(id)a4 uuid:(id)a5 cacheCreationDate:(id)a6;
-- (ATXLightweightClientModelCacheUpdate)initWithProto:(id)a3;
-- (ATXLightweightClientModelCacheUpdate)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXLightweightClientModelCacheUpdate:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (ATXLightweightClientModelCacheUpdate)initWithClientModelCacheUpdate:(id)update;
+- (ATXLightweightClientModelCacheUpdate)initWithClientModelId:(id)id suggestions:(id)suggestions uuid:(id)uuid cacheCreationDate:(id)date;
+- (ATXLightweightClientModelCacheUpdate)initWithProto:(id)proto;
+- (ATXLightweightClientModelCacheUpdate)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXLightweightClientModelCacheUpdate:(id)update;
 - (NSString)description;
 - (id)encodeAsProto;
 - (id)json;
@@ -17,10 +17,10 @@
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXLightweightClientModelCacheUpdate *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXLightweightClientModelCacheUpdate *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
 - (id)proto
@@ -31,8 +31,8 @@
   v5 = [v4 copy];
   [v3 setSuggestions:v5];
 
-  v6 = [(NSUUID *)self->_uuid UUIDString];
-  [v3 setUuidString:v6];
+  uUIDString = [(NSUUID *)self->_uuid UUIDString];
+  [v3 setUuidString:uUIDString];
 
   [(NSDate *)self->_cacheCreationDate timeIntervalSinceReferenceDate];
   [v3 setCacheCreationDate:?];
@@ -40,46 +40,46 @@
   return v3;
 }
 
-- (ATXLightweightClientModelCacheUpdate)initWithClientModelCacheUpdate:(id)a3
+- (ATXLightweightClientModelCacheUpdate)initWithClientModelCacheUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [v4 clientModelId];
-  v6 = [v4 suggestions];
-  v7 = [ATXLightweightProactiveSuggestion lightWeightSuggestionsFromSuggestions:v6];
-  v8 = [v4 uuid];
-  v9 = [v4 cacheCreationDate];
+  updateCopy = update;
+  clientModelId = [updateCopy clientModelId];
+  suggestions = [updateCopy suggestions];
+  v7 = [ATXLightweightProactiveSuggestion lightWeightSuggestionsFromSuggestions:suggestions];
+  uuid = [updateCopy uuid];
+  cacheCreationDate = [updateCopy cacheCreationDate];
 
-  v10 = [(ATXLightweightClientModelCacheUpdate *)self initWithClientModelId:v5 suggestions:v7 uuid:v8 cacheCreationDate:v9];
+  v10 = [(ATXLightweightClientModelCacheUpdate *)self initWithClientModelId:clientModelId suggestions:v7 uuid:uuid cacheCreationDate:cacheCreationDate];
   return v10;
 }
 
-- (ATXLightweightClientModelCacheUpdate)initWithClientModelId:(id)a3 suggestions:(id)a4 uuid:(id)a5 cacheCreationDate:(id)a6
+- (ATXLightweightClientModelCacheUpdate)initWithClientModelId:(id)id suggestions:(id)suggestions uuid:(id)uuid cacheCreationDate:(id)date
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  idCopy = id;
+  suggestionsCopy = suggestions;
+  uuidCopy = uuid;
+  dateCopy = date;
   v18.receiver = self;
   v18.super_class = ATXLightweightClientModelCacheUpdate;
   v15 = [(ATXLightweightClientModelCacheUpdate *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_clientModelId, a3);
-    objc_storeStrong(&v16->_suggestions, a4);
-    objc_storeStrong(&v16->_uuid, a5);
-    objc_storeStrong(&v16->_cacheCreationDate, a6);
+    objc_storeStrong(&v15->_clientModelId, id);
+    objc_storeStrong(&v16->_suggestions, suggestions);
+    objc_storeStrong(&v16->_uuid, uuid);
+    objc_storeStrong(&v16->_cacheCreationDate, date);
   }
 
   return v16;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 1)
+  if (version == 1)
   {
-    v5 = a3;
-    v6 = [[a1 alloc] initWithProtoData:v5];
+    dataCopy = data;
+    v6 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else
@@ -97,8 +97,8 @@
   v4 = [ATXLightweightProactiveSuggestion lightWeightSuggestionDescriptionsFromLightWeightSuggestions:self->_suggestions];
   [v3 appendFormat:@"suggestions: %@\n", v4];
 
-  v5 = [(NSUUID *)self->_uuid UUIDString];
-  [v3 appendFormat:@"uuid: %@\n", v5];
+  uUIDString = [(NSUUID *)self->_uuid UUIDString];
+  [v3 appendFormat:@"uuid: %@\n", uUIDString];
 
   v6 = [(NSDate *)self->_cacheCreationDate description];
   [v3 appendFormat:@"cacheCreationDate: %@\n", v6];
@@ -120,11 +120,11 @@
   v16[0] = clientModelId;
   v15[0] = @"clientModelId";
   v15[1] = @"uuid";
-  v4 = [(NSUUID *)self->_uuid UUIDString];
-  v5 = v4;
-  if (v4)
+  uUIDString = [(NSUUID *)self->_uuid UUIDString];
+  v5 = uUIDString;
+  if (uUIDString)
   {
-    v6 = v4;
+    v6 = uUIDString;
   }
 
   else
@@ -163,35 +163,35 @@
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(ATXLightweightClientModelCacheUpdate *)self jsonDict];
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:0];
+  jsonDict = [(ATXLightweightClientModelCacheUpdate *)self jsonDict];
+  v4 = [v2 dataWithJSONObject:jsonDict options:1 error:0];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXLightweightClientModelCacheUpdate *)self isEqualToATXLightweightClientModelCacheUpdate:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXLightweightClientModelCacheUpdate *)self isEqualToATXLightweightClientModelCacheUpdate:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXLightweightClientModelCacheUpdate:(id)a3
+- (BOOL)isEqualToATXLightweightClientModelCacheUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v5 = self->_clientModelId;
   v6 = v5;
-  if (v5 == v4[1])
+  if (v5 == updateCopy[1])
   {
   }
 
@@ -207,7 +207,7 @@
 
   v8 = self->_suggestions;
   v9 = v8;
-  if (v8 == v4[2])
+  if (v8 == updateCopy[2])
   {
   }
 
@@ -223,7 +223,7 @@
 
   v11 = self->_uuid;
   v12 = v11;
-  if (v11 == v4[3])
+  if (v11 == updateCopy[3])
   {
   }
 
@@ -241,7 +241,7 @@ LABEL_11:
 
   v15 = self->_cacheCreationDate;
   v16 = v15;
-  if (v15 == v4[4])
+  if (v15 == updateCopy[4])
   {
     v14 = 1;
   }
@@ -255,32 +255,32 @@ LABEL_17:
   return v14;
 }
 
-- (ATXLightweightClientModelCacheUpdate)initWithProtoData:(id)a3
+- (ATXLightweightClientModelCacheUpdate)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBLightweightClientModelCacheUpdate alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBLightweightClientModelCacheUpdate alloc] initWithData:dataCopy];
 
     self = [(ATXLightweightClientModelCacheUpdate *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (ATXLightweightClientModelCacheUpdate)initWithProto:(id)a3
+- (ATXLightweightClientModelCacheUpdate)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_7:
-    v16 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -296,24 +296,24 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v5 = v4;
-  v6 = [v5 clientModelId];
-  v7 = [v5 suggestions];
-  v8 = [ATXLightweightProactiveSuggestion lightWeightSuggestionsFromProtoLightWeightSuggestions:v7];
+  v5 = protoCopy;
+  clientModelId = [v5 clientModelId];
+  suggestions = [v5 suggestions];
+  v8 = [ATXLightweightProactiveSuggestion lightWeightSuggestionsFromProtoLightWeightSuggestions:suggestions];
   v9 = objc_alloc(MEMORY[0x1E696AFB0]);
-  v10 = [v5 uuidString];
-  v11 = [v9 initWithUUIDString:v10];
+  uuidString = [v5 uuidString];
+  v11 = [v9 initWithUUIDString:uuidString];
   v12 = objc_alloc(MEMORY[0x1E695DF00]);
   [v5 cacheCreationDate];
   v14 = v13;
 
   v15 = [v12 initWithTimeIntervalSinceReferenceDate:v14];
-  self = [(ATXLightweightClientModelCacheUpdate *)self initWithClientModelId:v6 suggestions:v8 uuid:v11 cacheCreationDate:v15];
+  self = [(ATXLightweightClientModelCacheUpdate *)self initWithClientModelId:clientModelId suggestions:v8 uuid:v11 cacheCreationDate:v15];
 
-  v16 = self;
+  selfCopy = self;
 LABEL_8:
 
-  return v16;
+  return selfCopy;
 }
 
 - (void)initWithProto:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

@@ -1,42 +1,42 @@
 @interface OZJSElement
-+ (id)elementWithElement:(void *)a3;
-- (OZJSElement)initWithElement:(void *)a3;
++ (id)elementWithElement:(void *)element;
+- (OZJSElement)initWithElement:(void *)element;
 - (SCNVector3)getPosition;
-- (SCNVector3)getPositionAtTime:(float)a3;
+- (SCNVector3)getPositionAtTime:(float)time;
 - (float)getEndTime;
 - (float)getStartTime;
-- (id)getBehaviorWithName:(id)a3;
+- (id)getBehaviorWithName:(id)name;
 - (id)name;
-- (void)cloneAtTime:(float)a3;
-- (void)setStartTime:(float)a3;
+- (void)cloneAtTime:(float)time;
+- (void)setStartTime:(float)time;
 @end
 
 @implementation OZJSElement
 
-+ (id)elementWithElement:(void *)a3
++ (id)elementWithElement:(void *)element
 {
-  v3 = [[OZJSElement alloc] initWithElement:a3];
+  v3 = [[OZJSElement alloc] initWithElement:element];
 
   return v3;
 }
 
-- (OZJSElement)initWithElement:(void *)a3
+- (OZJSElement)initWithElement:(void *)element
 {
   v5.receiver = self;
   v5.super_class = OZJSElement;
   result = [(OZJSElement *)&v5 init];
   if (result)
   {
-    result->_element = a3;
+    result->_element = element;
   }
 
   return result;
 }
 
-- (void)setStartTime:(float)a3
+- (void)setStartTime:(float)time
 {
   memset(&v4, 0, sizeof(v4));
-  PC_CMTimeMakeWithSecondsRoundToNearest(30, &v4, a3);
+  PC_CMTimeMakeWithSecondsRoundToNearest(30, &v4, time);
   (*(*self->_element + 1160))();
 }
 
@@ -69,10 +69,10 @@
   return result;
 }
 
-- (SCNVector3)getPositionAtTime:(float)a3
+- (SCNVector3)getPositionAtTime:(float)time
 {
   memset(&v10, 0, sizeof(v10));
-  PC_CMTimeMakeWithSecondsRoundToNearest(30, &v10, a3);
+  PC_CMTimeMakeWithSecondsRoundToNearest(30, &v10, time);
   v7 = 0.0;
   v8 = 0.0;
   v9 = 0.0;
@@ -93,14 +93,14 @@
   return PCString::ns_str(Name);
 }
 
-- (void)cloneAtTime:(float)a3
+- (void)cloneAtTime:(float)time
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = *"";
   v3[2] = __27__OZJSElement_cloneAtTime___block_invoke;
   v3[3] = &unk_279AAA250;
   v3[4] = self;
-  v4 = a3;
+  timeCopy = time;
   dispatch_async(MEMORY[0x277D85CD0], v3);
 }
 
@@ -206,7 +206,7 @@ LABEL_24:
   return result;
 }
 
-- (id)getBehaviorWithName:(id)a3
+- (id)getBehaviorWithName:(id)name
 {
   element = self->_element;
   v4 = (element + 125);
@@ -217,7 +217,7 @@ LABEL_24:
     {
       Name = OZObjectManipulator::getName((*(v5 + 2) + 16));
       v9.var0 = 0;
-      PCString::set(&v9, a3);
+      PCString::set(&v9, name);
       LODWORD(Name) = PCString::compare(Name, &v9);
       PCString::~PCString(&v9);
       if (!Name)

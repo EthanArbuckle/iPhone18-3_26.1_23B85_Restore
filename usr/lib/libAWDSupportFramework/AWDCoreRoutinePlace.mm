@@ -1,13 +1,13 @@
 @interface AWDCoreRoutinePlace
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addDistanceToOtherPlaces:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addDistanceToOtherPlaces:(id)places;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCoreRoutinePlace
@@ -21,7 +21,7 @@
   [(AWDCoreRoutinePlace *)&v3 dealloc];
 }
 
-- (void)addDistanceToOtherPlaces:(id)a3
+- (void)addDistanceToOtherPlaces:(id)places
 {
   distanceToOtherPlaces = self->_distanceToOtherPlaces;
   if (!distanceToOtherPlaces)
@@ -30,7 +30,7 @@
     self->_distanceToOtherPlaces = distanceToOtherPlaces;
   }
 
-  [(NSMutableArray *)distanceToOtherPlaces addObject:a3];
+  [(NSMutableArray *)distanceToOtherPlaces addObject:places];
 }
 
 - (id)description
@@ -43,11 +43,11 @@
 - (id)dictionaryRepresentation
 {
   v18 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   mapItem = self->_mapItem;
   if (mapItem)
   {
-    [v3 setObject:-[AWDCoreRoutineMapItem dictionaryRepresentation](mapItem forKey:{"dictionaryRepresentation"), @"mapItem"}];
+    [dictionary setObject:-[AWDCoreRoutineMapItem dictionaryRepresentation](mapItem forKey:{"dictionaryRepresentation"), @"mapItem"}];
   }
 
   if ([(NSMutableArray *)self->_distanceToOtherPlaces count])
@@ -81,14 +81,14 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"distanceToOtherPlaces"];
+    [dictionary setObject:v5 forKey:@"distanceToOtherPlaces"];
   }
 
   v11 = *MEMORY[0x29EDCA608];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x29EDCA608];
   if (self->_mapItem)
@@ -131,34 +131,34 @@
   v10 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (self->_mapItem)
   {
-    [a3 setMapItem:?];
+    [to setMapItem:?];
   }
 
   if ([(AWDCoreRoutinePlace *)self distanceToOtherPlacesCount])
   {
-    [a3 clearDistanceToOtherPlaces];
-    v5 = [(AWDCoreRoutinePlace *)self distanceToOtherPlacesCount];
-    if (v5)
+    [to clearDistanceToOtherPlaces];
+    distanceToOtherPlacesCount = [(AWDCoreRoutinePlace *)self distanceToOtherPlacesCount];
+    if (distanceToOtherPlacesCount)
     {
-      v6 = v5;
+      v6 = distanceToOtherPlacesCount;
       for (i = 0; i != v6; ++i)
       {
-        [a3 addDistanceToOtherPlaces:{-[AWDCoreRoutinePlace distanceToOtherPlacesAtIndex:](self, "distanceToOtherPlacesAtIndex:", i)}];
+        [to addDistanceToOtherPlaces:{-[AWDCoreRoutinePlace distanceToOtherPlacesAtIndex:](self, "distanceToOtherPlacesAtIndex:", i)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
 
-  v5[2] = [(AWDCoreRoutineMapItem *)self->_mapItem copyWithZone:a3];
+  v5[2] = [(AWDCoreRoutineMapItem *)self->_mapItem copyWithZone:zone];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -179,7 +179,7 @@
           objc_enumerationMutation(distanceToOtherPlaces);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addDistanceToOtherPlaces:v11];
 
         ++v10;
@@ -196,16 +196,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     mapItem = self->_mapItem;
-    if (!(mapItem | *(a3 + 2)) || (v5 = [(AWDCoreRoutineMapItem *)mapItem isEqual:?]) != 0)
+    if (!(mapItem | *(equal + 2)) || (v5 = [(AWDCoreRoutineMapItem *)mapItem isEqual:?]) != 0)
     {
       distanceToOtherPlaces = self->_distanceToOtherPlaces;
-      if (distanceToOtherPlaces | *(a3 + 1))
+      if (distanceToOtherPlaces | *(equal + 1))
       {
 
         LOBYTE(v5) = [(NSMutableArray *)distanceToOtherPlaces isEqual:?];
@@ -221,11 +221,11 @@
   return v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x29EDCA608];
   mapItem = self->_mapItem;
-  v6 = *(a3 + 2);
+  v6 = *(from + 2);
   if (mapItem)
   {
     if (v6)
@@ -243,7 +243,7 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = *(a3 + 1);
+  v7 = *(from + 1);
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {

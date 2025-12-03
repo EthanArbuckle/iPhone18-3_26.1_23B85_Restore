@@ -1,84 +1,84 @@
 @interface PLDuplicateProcessor
-+ (BOOL)_removeAssetsFromDuplicateAlbumUsingFetchRequest:(id)a3 library:(id)a4 error:(id *)a5;
-+ (BOOL)isDuplicateProcessorEnabledForLibraryServicesManager:(id)a3;
-+ (BOOL)isExitingSharedLibraryForLibrary:(id)a3;
-+ (BOOL)removeAllDuplicateSharedLibraryAssetFromAlbumWithPhotoLibrary:(id)a3 error:(id *)a4;
-+ (BOOL)sharedLibraryDedupeEnabledWithPathManager:(id)a3;
-+ (void)signalDuplicateBackgroundJobItemForAssetUUID:(id)a3 requiresMetadataProcessing:(BOOL)a4 library:(id)a5;
-+ (void)updateSharedLibraryIsEnabledFeatureVersionIfNeededWithPhotoLibrary:(id)a3 cplConfiguration:(id)a4;
-- (BOOL)_batchEnumerateOrGenerateAssetObjectIdsFromStartingAssetOIDs:(id)a3 library:(id)a4 error:(id *)a5 continuationHandler:(id)a6 processingBatchBlock:(id)a7;
-- (BOOL)_detectDuplicatesAndInsertIntoDuplicateAlbumWithPhotoLibrary:(id)a3 detector:(id)a4 duplicateType:(signed __int16)a5 error:(id *)a6;
-- (BOOL)_insertIntoDuplicateAlbum:(id)a3 assets:(id)a4 duplicateType:(signed __int16)a5 photoLibrary:(id)a6 error:(id *)a7;
-- (BOOL)_isAssetValidForMerge:(id)a3;
-- (BOOL)_isMergeFeatureEnabled:(id *)a3;
-- (BOOL)_isValidSharedLibraryStateWithLibrary:(id)a3 error:(id *)a4;
-- (BOOL)_moveDuplicateAlbumAssetsFromAlbums:(id)a3 toTargetAlbum:(id)a4 duplicateType:(signed __int16)a5 error:(id *)a6;
-- (BOOL)_processDuplicatesWithPhotoLibrary:(id)a3 processingType:(unint64_t)a4 assetObjectIds:(id)a5 error:(id *)a6;
-- (BOOL)_processMergeAlbumAssetOIDMap:(id)a3 localIdentifierMap:(id)a4 library:(id)a5 error:(id *)a6;
-- (BOOL)_processMergeAssets:(id)a3 localIdentifierMap:(id)a4 library:(id)a5 error:(id *)a6;
-- (BOOL)_processMergeGroup:(id)a3 processedAssetCount:(unint64_t *)a4 skippedAssetCount:(unint64_t *)a5 processedAssetCountAfterSave:(unint64_t *)a6 library:(id)a7 error:(id *)a8;
-- (BOOL)_processMergeGroupContainer:(id)a3 processedAssetCount:(unint64_t *)a4 skippedAssetCount:(unint64_t *)a5 library:(id)a6 error:(id *)a7;
-- (BOOL)_processedDuplicateAssetSubGroupWithPhotoLibrary:(id)a3 assetObjectIDs:(id)a4 duplicateType:(signed __int16)a5 error:(id *)a6;
-- (BOOL)_processedRemoveExclusionGroupAssetsWithPhotoLibrary:(id)a3 assetObjectIDs:(id)a4 error:(id *)a5;
-- (BOOL)assetsArePendingForDuplicateMergeProcessing:(id)a3;
++ (BOOL)_removeAssetsFromDuplicateAlbumUsingFetchRequest:(id)request library:(id)library error:(id *)error;
++ (BOOL)isDuplicateProcessorEnabledForLibraryServicesManager:(id)manager;
++ (BOOL)isExitingSharedLibraryForLibrary:(id)library;
++ (BOOL)removeAllDuplicateSharedLibraryAssetFromAlbumWithPhotoLibrary:(id)library error:(id *)error;
++ (BOOL)sharedLibraryDedupeEnabledWithPathManager:(id)manager;
++ (void)signalDuplicateBackgroundJobItemForAssetUUID:(id)d requiresMetadataProcessing:(BOOL)processing library:(id)library;
++ (void)updateSharedLibraryIsEnabledFeatureVersionIfNeededWithPhotoLibrary:(id)library cplConfiguration:(id)configuration;
+- (BOOL)_batchEnumerateOrGenerateAssetObjectIdsFromStartingAssetOIDs:(id)ds library:(id)library error:(id *)error continuationHandler:(id)handler processingBatchBlock:(id)block;
+- (BOOL)_detectDuplicatesAndInsertIntoDuplicateAlbumWithPhotoLibrary:(id)library detector:(id)detector duplicateType:(signed __int16)type error:(id *)error;
+- (BOOL)_insertIntoDuplicateAlbum:(id)album assets:(id)assets duplicateType:(signed __int16)type photoLibrary:(id)library error:(id *)error;
+- (BOOL)_isAssetValidForMerge:(id)merge;
+- (BOOL)_isMergeFeatureEnabled:(id *)enabled;
+- (BOOL)_isValidSharedLibraryStateWithLibrary:(id)library error:(id *)error;
+- (BOOL)_moveDuplicateAlbumAssetsFromAlbums:(id)albums toTargetAlbum:(id)album duplicateType:(signed __int16)type error:(id *)error;
+- (BOOL)_processDuplicatesWithPhotoLibrary:(id)library processingType:(unint64_t)type assetObjectIds:(id)ids error:(id *)error;
+- (BOOL)_processMergeAlbumAssetOIDMap:(id)map localIdentifierMap:(id)identifierMap library:(id)library error:(id *)error;
+- (BOOL)_processMergeAssets:(id)assets localIdentifierMap:(id)map library:(id)library error:(id *)error;
+- (BOOL)_processMergeGroup:(id)group processedAssetCount:(unint64_t *)count skippedAssetCount:(unint64_t *)assetCount processedAssetCountAfterSave:(unint64_t *)save library:(id)library error:(id *)error;
+- (BOOL)_processMergeGroupContainer:(id)container processedAssetCount:(unint64_t *)count skippedAssetCount:(unint64_t *)assetCount library:(id)library error:(id *)error;
+- (BOOL)_processedDuplicateAssetSubGroupWithPhotoLibrary:(id)library assetObjectIDs:(id)ds duplicateType:(signed __int16)type error:(id *)error;
+- (BOOL)_processedRemoveExclusionGroupAssetsWithPhotoLibrary:(id)library assetObjectIDs:(id)ds error:(id *)error;
+- (BOOL)assetsArePendingForDuplicateMergeProcessing:(id)processing;
 - (BOOL)isMerging;
-- (BOOL)processDuplicatesOfAssetObjectIds:(id)a3 processingType:(unint64_t)a4 error:(id *)a5 continuationHandler:(id)a6;
-- (PLDuplicateProcessor)initWithLibraryServicesManager:(id)a3;
-- (id)_buildInterruptBatchFromStartingOIDs:(id)a3 library:(id)a4;
-- (id)_duplicateAlbumsFromAssets:(id)a3;
-- (id)_fetchAssetOIDsForPhotoLibrary:(id)a3 error:(id *)a4;
-- (id)_fetchAssetsFromReference:(id)a3 isOID:(BOOL)a4 library:(id)a5 error:(id *)a6;
-- (id)_fetchAssetsWithPhotoLibrary:(id)a3 assetObjectIDs:(id)a4 error:(id *)a5;
-- (id)_fetchCloudIdentifiersFromAssetUUIDs:(id)a3 library:(id)a4 error:(id *)a5;
+- (BOOL)processDuplicatesOfAssetObjectIds:(id)ids processingType:(unint64_t)type error:(id *)error continuationHandler:(id)handler;
+- (PLDuplicateProcessor)initWithLibraryServicesManager:(id)manager;
+- (id)_buildInterruptBatchFromStartingOIDs:(id)ds library:(id)library;
+- (id)_duplicateAlbumsFromAssets:(id)assets;
+- (id)_fetchAssetOIDsForPhotoLibrary:(id)library error:(id *)error;
+- (id)_fetchAssetsFromReference:(id)reference isOID:(BOOL)d library:(id)library error:(id *)error;
+- (id)_fetchAssetsWithPhotoLibrary:(id)library assetObjectIDs:(id)ds error:(id *)error;
+- (id)_fetchCloudIdentifiersFromAssetUUIDs:(id)ds library:(id)library error:(id *)error;
 - (id)_photoLibrary;
-- (id)_processAlbumGroupingFromAssets:(id)a3 localIdentifierToCloudIdentifiers:(id)a4 library:(id)a5;
-- (id)_processContainersAssetUUIDS:(id)a3 library:(id)a4;
-- (id)_processedDuplicateAssetsWithPhotoLibrary:(id)a3 assetObjectIDs:(id)a4 duplicateType:(signed __int16)a5 associatedDuplicateAlbum:(id *)a6 error:(id *)a7;
+- (id)_processAlbumGroupingFromAssets:(id)assets localIdentifierToCloudIdentifiers:(id)identifiers library:(id)library;
+- (id)_processContainersAssetUUIDS:(id)s library:(id)library;
+- (id)_processedDuplicateAssetsWithPhotoLibrary:(id)library assetObjectIDs:(id)ds duplicateType:(signed __int16)type associatedDuplicateAlbum:(id *)album error:(id *)error;
 - (id)_resumeInterruptMarker;
-- (void)_inFlightMergeAssetsAddUUIDs:(id)a3;
-- (void)_inFlightMergeAssetsRemoveUUIDs:(id)a3;
-- (void)_processCloudScopedIdentifierFromLocalIdentifiers:(id)a3 localToCloudIdentifierMap:(id)a4 cplManager:(id)a5 completionHandler:(id)a6;
-- (void)_processCloudScopedIdentifiersFromAssetUUIDS:(id)a3 library:(id)a4 completionHandler:(id)a5;
-- (void)_setInterruptMarker:(id)a3;
-- (void)mergeDuplicateAssetsWithAssetUUIDs:(id)a3 completionHandler:(id)a4;
+- (void)_inFlightMergeAssetsAddUUIDs:(id)ds;
+- (void)_inFlightMergeAssetsRemoveUUIDs:(id)ds;
+- (void)_processCloudScopedIdentifierFromLocalIdentifiers:(id)identifiers localToCloudIdentifierMap:(id)map cplManager:(id)manager completionHandler:(id)handler;
+- (void)_processCloudScopedIdentifiersFromAssetUUIDS:(id)s library:(id)library completionHandler:(id)handler;
+- (void)_setInterruptMarker:(id)marker;
+- (void)mergeDuplicateAssetsWithAssetUUIDs:(id)ds completionHandler:(id)handler;
 @end
 
 @implementation PLDuplicateProcessor
 
-- (void)_inFlightMergeAssetsRemoveUUIDs:(id)a3
+- (void)_inFlightMergeAssetsRemoveUUIDs:(id)ds
 {
-  v5 = a3;
+  dsCopy = ds;
   os_unfair_lock_lock(&self->_inFlightMergeLock);
-  if ([v5 count])
+  if ([dsCopy count])
   {
-    v4 = [MEMORY[0x1E695DFD8] setWithArray:v5];
+    v4 = [MEMORY[0x1E695DFD8] setWithArray:dsCopy];
     [(NSMutableSet *)self->_inFlightMergeAssetUuids minusSet:v4];
   }
 
   os_unfair_lock_unlock(&self->_inFlightMergeLock);
 }
 
-- (void)_inFlightMergeAssetsAddUUIDs:(id)a3
+- (void)_inFlightMergeAssetsAddUUIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   os_unfair_lock_lock(&self->_inFlightMergeLock);
-  [(NSMutableSet *)self->_inFlightMergeAssetUuids addObjectsFromArray:v4];
+  [(NSMutableSet *)self->_inFlightMergeAssetUuids addObjectsFromArray:dsCopy];
 
   os_unfair_lock_unlock(&self->_inFlightMergeLock);
 }
 
-- (BOOL)_isMergeFeatureEnabled:(id *)a3
+- (BOOL)_isMergeFeatureEnabled:(id *)enabled
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v4 = [(PLLibraryServicesManager *)self->_lsm cloudPhotoLibraryManager];
-  v5 = [v4 cplConfiguration];
+  cloudPhotoLibraryManager = [(PLLibraryServicesManager *)self->_lsm cloudPhotoLibraryManager];
+  cplConfiguration = [cloudPhotoLibraryManager cplConfiguration];
 
-  if (!v5)
+  if (!cplConfiguration)
   {
     goto LABEL_10;
   }
 
-  v6 = [v5 valueForKey:@"feature.version.duplicateprocessor"];
+  v6 = [cplConfiguration valueForKey:@"feature.version.duplicateprocessor"];
   v7 = v6;
   if (!v6 || [v6 unsignedShortValue] < 2)
   {
@@ -104,10 +104,10 @@ LABEL_10:
     _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_ERROR, "Duplicate Merge Processing: Merged feature disabled: %{public}@", buf, 0xCu);
   }
 
-  if (a3)
+  if (enabled)
   {
     v14 = v12;
-    *a3 = v12;
+    *enabled = v12;
   }
 
   v15 = 0;
@@ -116,24 +116,24 @@ LABEL_11:
   return v15;
 }
 
-- (BOOL)_isAssetValidForMerge:(id)a3
+- (BOOL)_isAssetValidForMerge:(id)merge
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 isTrashed];
-  if ([v3 isHidden])
+  mergeCopy = merge;
+  isTrashed = [mergeCopy isTrashed];
+  if ([mergeCopy isHidden])
   {
-    v4 |= 2uLL;
+    isTrashed |= 2uLL;
   }
 
-  if ([v3 cloudDeleteState] == 1)
+  if ([mergeCopy cloudDeleteState] == 1)
   {
-    v5 = v4 | 4;
+    v5 = isTrashed | 4;
   }
 
   else
   {
-    v5 = v4;
+    v5 = isTrashed;
   }
 
   if (v5)
@@ -141,9 +141,9 @@ LABEL_11:
     v6 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v3 uuid];
+      uuid = [mergeCopy uuid];
       v9 = 138543618;
-      v10 = v7;
+      v10 = uuid;
       v11 = 2048;
       v12 = v5;
       _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEFAULT, "Duplicate Merge Processing: Duplicate asset %{public}@ is invalid for merge processing. Reason: %tu", &v9, 0x16u);
@@ -153,10 +153,10 @@ LABEL_11:
   return v5 == 0;
 }
 
-- (id)_fetchCloudIdentifiersFromAssetUUIDs:(id)a3 library:(id)a4 error:(id *)a5
+- (id)_fetchCloudIdentifiersFromAssetUUIDs:(id)ds library:(id)library error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dsCopy = ds;
+  libraryCopy = library;
   v35 = 0;
   v36 = &v35;
   v37 = 0x2020000000;
@@ -177,21 +177,21 @@ LABEL_11:
   v16[1] = 3221225472;
   v16[2] = __75__PLDuplicateProcessor__fetchCloudIdentifiersFromAssetUUIDs_library_error___block_invoke;
   v16[3] = &unk_1E7572800;
-  v10 = v8;
+  v10 = dsCopy;
   v17 = v10;
-  v11 = v9;
+  v11 = libraryCopy;
   v18 = v11;
-  v19 = self;
+  selfCopy = self;
   v20 = &v29;
   v21 = &v23;
   v22 = &v35;
   [v11 performBlockAndWait:v16];
   v12 = *(v36 + 24);
   v13 = v30[5];
-  if (a5 && (v12 & 1) == 0)
+  if (error && (v12 & 1) == 0)
   {
     v13 = v13;
-    *a5 = v13;
+    *error = v13;
   }
 
   v14 = v24[5];
@@ -266,10 +266,10 @@ void __75__PLDuplicateProcessor__fetchCloudIdentifiersFromAssetUUIDs_library_err
   }
 }
 
-- (id)_fetchAssetsFromReference:(id)a3 isOID:(BOOL)a4 library:(id)a5 error:(id *)a6
+- (id)_fetchAssetsFromReference:(id)reference isOID:(BOOL)d library:(id)library error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
+  referenceCopy = reference;
+  libraryCopy = library;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -286,21 +286,21 @@ void __75__PLDuplicateProcessor__fetchCloudIdentifiersFromAssetUUIDs_library_err
   v18[1] = 3221225472;
   v18[2] = __70__PLDuplicateProcessor__fetchAssetsFromReference_isOID_library_error___block_invoke;
   v18[3] = &unk_1E7564910;
-  v24 = a4;
-  v12 = v10;
+  dCopy = d;
+  v12 = referenceCopy;
   v19 = v12;
-  v13 = v11;
+  v13 = libraryCopy;
   v22 = &v25;
   v23 = &v31;
   v20 = v13;
-  v21 = self;
+  selfCopy = self;
   [v13 performBlockAndWait:v18];
   v14 = v26[5];
   v15 = v32[5];
-  if (!v14 && a6)
+  if (!v14 && error)
   {
     v15 = v15;
-    *a6 = v15;
+    *error = v15;
   }
 
   v16 = v26[5];
@@ -365,19 +365,19 @@ void __70__PLDuplicateProcessor__fetchAssetsFromReference_isOID_library_error___
   }
 }
 
-- (void)_processCloudScopedIdentifierFromLocalIdentifiers:(id)a3 localToCloudIdentifierMap:(id)a4 cplManager:(id)a5 completionHandler:(id)a6
+- (void)_processCloudScopedIdentifierFromLocalIdentifiers:(id)identifiers localToCloudIdentifierMap:(id)map cplManager:(id)manager completionHandler:(id)handler
 {
   v31 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifiersCopy = identifiers;
+  mapCopy = map;
+  managerCopy = manager;
+  handlerCopy = handler;
   v14 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v15 = v10;
+  v15 = identifiersCopy;
   v16 = [v15 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v16)
   {
@@ -412,9 +412,9 @@ LABEL_3:
   }
 
   [v15 minusSet:v14];
-  if (!v11)
+  if (!mapCopy)
   {
-    v11 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v15, "count")}];
+    mapCopy = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v15, "count")}];
   }
 
   if ([v14 count])
@@ -423,17 +423,17 @@ LABEL_3:
     v20[1] = 3221225472;
     v20[2] = __129__PLDuplicateProcessor__processCloudScopedIdentifierFromLocalIdentifiers_localToCloudIdentifierMap_cplManager_completionHandler___block_invoke;
     v20[3] = &unk_1E7564F60;
-    v25 = v13;
-    v21 = v11;
-    v22 = self;
+    v25 = handlerCopy;
+    v21 = mapCopy;
+    selfCopy = self;
     v23 = v15;
-    v24 = v12;
+    v24 = managerCopy;
     [v24 getCloudScopedIdentifiersForLocalIdentifiers:v14 completionHandler:v20];
   }
 
-  else if (v13)
+  else if (handlerCopy)
   {
-    (*(v13 + 2))(v13, 1, v11, 0);
+    (*(handlerCopy + 2))(handlerCopy, 1, mapCopy, 0);
   }
 }
 
@@ -461,31 +461,31 @@ void __129__PLDuplicateProcessor__processCloudScopedIdentifierFromLocalIdentifie
   }
 }
 
-- (void)_processCloudScopedIdentifiersFromAssetUUIDS:(id)a3 library:(id)a4 completionHandler:(id)a5
+- (void)_processCloudScopedIdentifiersFromAssetUUIDS:(id)s library:(id)library completionHandler:(id)handler
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isCloudPhotoLibraryEnabled])
+  sCopy = s;
+  libraryCopy = library;
+  handlerCopy = handler;
+  if ([libraryCopy isCloudPhotoLibraryEnabled])
   {
-    v11 = [v9 libraryServicesManager];
-    v12 = [v11 cloudPhotoLibraryManager];
+    libraryServicesManager = [libraryCopy libraryServicesManager];
+    cloudPhotoLibraryManager = [libraryServicesManager cloudPhotoLibraryManager];
 
-    if (v12)
+    if (cloudPhotoLibraryManager)
     {
       v20 = 0;
-      v13 = [(PLDuplicateProcessor *)self _fetchCloudIdentifiersFromAssetUUIDs:v8 library:v9 error:&v20];
+      v13 = [(PLDuplicateProcessor *)self _fetchCloudIdentifiersFromAssetUUIDs:sCopy library:libraryCopy error:&v20];
       v14 = v20;
       if (v13)
       {
         v15 = [MEMORY[0x1E695DFA8] setWithArray:v13];
-        [(PLDuplicateProcessor *)self _processCloudScopedIdentifierFromLocalIdentifiers:v15 localToCloudIdentifierMap:0 cplManager:v12 completionHandler:v10];
+        [(PLDuplicateProcessor *)self _processCloudScopedIdentifierFromLocalIdentifiers:v15 localToCloudIdentifierMap:0 cplManager:cloudPhotoLibraryManager completionHandler:handlerCopy];
       }
 
-      else if (v10)
+      else if (handlerCopy)
       {
-        (*(v10 + 2))(v10, 0, 0, v14);
+        (*(handlerCopy + 2))(handlerCopy, 0, 0, v14);
       }
     }
 
@@ -506,25 +506,25 @@ void __129__PLDuplicateProcessor__processCloudScopedIdentifierFromLocalIdentifie
         _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_ERROR, "Duplicate Merge Processing: Unable to access cloud library manager for asset merge. Error: %@", buf, 0xCu);
       }
 
-      if (v10)
+      if (handlerCopy)
       {
-        (*(v10 + 2))(v10, 0, 0, v14);
+        (*(handlerCopy + 2))(handlerCopy, 0, 0, v14);
       }
     }
   }
 
-  else if (v10)
+  else if (handlerCopy)
   {
-    (*(v10 + 2))(v10, 1, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 1, 0, 0);
   }
 }
 
-- (id)_processContainersAssetUUIDS:(id)a3 library:(id)a4
+- (id)_processContainersAssetUUIDS:(id)s library:(id)library
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 count];
-  v9 = [v7 allObjects];
+  libraryCopy = library;
+  sCopy = s;
+  v8 = [sCopy count];
+  allObjects = [sCopy allObjects];
 
   v10 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:v8 >> 1];
   v17[0] = MEMORY[0x1E69E9820];
@@ -533,13 +533,13 @@ void __129__PLDuplicateProcessor__processCloudScopedIdentifierFromLocalIdentifie
   v17[3] = &unk_1E75648E8;
   v22 = v8;
   v23 = 100;
-  v18 = v9;
-  v19 = self;
-  v20 = v6;
+  v18 = allObjects;
+  selfCopy = self;
+  v20 = libraryCopy;
   v11 = v10;
   v21 = v11;
-  v12 = v6;
-  v13 = v9;
+  v12 = libraryCopy;
+  v13 = allObjects;
   [v12 performBlockAndWait:v17];
   v14 = v21;
   v15 = v11;
@@ -645,29 +645,29 @@ LABEL_17:
   }
 }
 
-- (id)_processAlbumGroupingFromAssets:(id)a3 localIdentifierToCloudIdentifiers:(id)a4 library:(id)a5
+- (id)_processAlbumGroupingFromAssets:(id)assets localIdentifierToCloudIdentifiers:(id)identifiers library:(id)library
 {
-  v8 = a3;
-  v9 = a4;
+  assetsCopy = assets;
+  identifiersCopy = identifiers;
   v10 = MEMORY[0x1E695DF90];
-  v11 = a5;
+  libraryCopy = library;
   v12 = objc_alloc_init(v10);
   v18 = MEMORY[0x1E69E9820];
   v19 = 3221225472;
   v20 = __98__PLDuplicateProcessor__processAlbumGroupingFromAssets_localIdentifierToCloudIdentifiers_library___block_invoke;
   v21 = &unk_1E7578100;
-  v22 = v8;
-  v23 = self;
+  v22 = assetsCopy;
+  selfCopy = self;
   v24 = v12;
-  v25 = v9;
-  v13 = v9;
+  v25 = identifiersCopy;
+  v13 = identifiersCopy;
   v14 = v12;
-  v15 = v8;
-  [v11 performBlockAndWait:&v18];
+  v15 = assetsCopy;
+  [libraryCopy performBlockAndWait:&v18];
 
-  v16 = [v14 allValues];
+  allValues = [v14 allValues];
 
-  return v16;
+  return allValues;
 }
 
 void __98__PLDuplicateProcessor__processAlbumGroupingFromAssets_localIdentifierToCloudIdentifiers_library___block_invoke(uint64_t a1)
@@ -744,12 +744,12 @@ void __98__PLDuplicateProcessor__processAlbumGroupingFromAssets_localIdentifierT
   }
 }
 
-- (BOOL)_processMergeGroup:(id)a3 processedAssetCount:(unint64_t *)a4 skippedAssetCount:(unint64_t *)a5 processedAssetCountAfterSave:(unint64_t *)a6 library:(id)a7 error:(id *)a8
+- (BOOL)_processMergeGroup:(id)group processedAssetCount:(unint64_t *)count skippedAssetCount:(unint64_t *)assetCount processedAssetCountAfterSave:(unint64_t *)save library:(id)library error:(id *)error
 {
   v49 = *MEMORY[0x1E69E9840];
-  v14 = a7;
-  v15 = [a3 allObjects];
-  v16 = [v15 mutableCopy];
+  libraryCopy = library;
+  allObjects = [group allObjects];
+  v16 = [allObjects mutableCopy];
 
   [v16 sortUsingComparator:&__block_literal_global_172];
   if (!v16)
@@ -769,13 +769,13 @@ void __98__PLDuplicateProcessor__processAlbumGroupingFromAssets_localIdentifierT
   v17 = [v16 objectAtIndexedSubscript:0];
   if ([v16 count] < 2)
   {
-    ++*a5;
+    ++*assetCount;
     v30 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
-      v34 = [v17 shortDescription];
+      shortDescription = [v17 shortDescription];
       *buf = 138543362;
-      v46 = v34;
+      v46 = shortDescription;
       _os_log_impl(&dword_19BF1F000, v30, OS_LOG_TYPE_DEFAULT, "Duplicate Merge Processing: skipped single asset merge : %{public}@", buf, 0xCu);
     }
 
@@ -783,47 +783,47 @@ void __98__PLDuplicateProcessor__processAlbumGroupingFromAssets_localIdentifierT
     goto LABEL_14;
   }
 
-  v43 = self;
+  selfCopy = self;
   v18 = PLDuplicateDetectionGetLog();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v42 = a4;
-    v19 = a6;
+    countCopy = count;
+    saveCopy = save;
     v20 = v17;
-    v21 = v14;
-    v22 = a8;
+    v21 = libraryCopy;
+    errorCopy = error;
     v23 = [v16 count];
     v24 = [v16 objectAtIndexedSubscript:0];
-    v25 = [v24 shortDescription];
+    shortDescription2 = [v24 shortDescription];
     *buf = 134218242;
     v46 = v23;
-    a8 = v22;
-    v14 = v21;
+    error = errorCopy;
+    libraryCopy = v21;
     v17 = v20;
-    a6 = v19;
-    a4 = v42;
+    save = saveCopy;
+    count = countCopy;
     v47 = 2114;
-    v48 = v25;
+    v48 = shortDescription2;
     _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_DEFAULT, "Duplicate Merge Processing: merging %tu assets using target asset %{public}@", buf, 0x16u);
   }
 
-  v26 = [v17 assetObjectID];
+  assetObjectID = [v17 assetObjectID];
   v44 = 0;
-  v27 = [PLDuplicateMerge mergeAssets:v16 targetAssetOID:v26 photolibrary:v14 error:&v44];
+  v27 = [PLDuplicateMerge mergeAssets:v16 targetAssetOID:assetObjectID photolibrary:libraryCopy error:&v44];
   v28 = v44;
 
   v29 = [v16 count];
   if (v27)
   {
-    *a4 += v29;
-    *a6 += [v16 count];
+    *count += v29;
+    *save += [v16 count];
     v30 = PLDuplicateDetectionGetLog();
-    self = v43;
+    self = selfCopy;
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
-      v31 = [v17 shortDescription];
+      shortDescription3 = [v17 shortDescription];
       *buf = 138543618;
-      v46 = v31;
+      v46 = shortDescription3;
       v47 = 2114;
       v48 = @"YES";
       _os_log_impl(&dword_19BF1F000, v30, OS_LOG_TYPE_DEFAULT, "Duplicate Merge Processing: completed merge to target asset %{public}@. Success: %{public}@", buf, 0x16u);
@@ -834,11 +834,11 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  *a5 += v29;
+  *assetCount += v29;
   HasDomainAndCode = PLErrorOrUnderlyingErrorHasDomainAndCode();
   v30 = PLDuplicateDetectionGetLog();
   v41 = os_log_type_enabled(v30, OS_LOG_TYPE_ERROR);
-  self = v43;
+  self = selfCopy;
   if (HasDomainAndCode)
   {
     if (v41)
@@ -872,11 +872,11 @@ LABEL_15:
   }
 
 LABEL_17:
-  if (a8)
+  if (error)
   {
     v38 = v33;
     v37 = 0;
-    *a8 = v33;
+    *error = v33;
   }
 
   else
@@ -889,10 +889,10 @@ LABEL_20:
   return v37;
 }
 
-- (BOOL)_processMergeGroupContainer:(id)a3 processedAssetCount:(unint64_t *)a4 skippedAssetCount:(unint64_t *)a5 library:(id)a6 error:(id *)a7
+- (BOOL)_processMergeGroupContainer:(id)container processedAssetCount:(unint64_t *)count skippedAssetCount:(unint64_t *)assetCount library:(id)library error:(id *)error
 {
-  v12 = a3;
-  v13 = a6;
+  containerCopy = container;
+  libraryCopy = library;
   v39[0] = 0;
   v39[1] = v39;
   v39[2] = 0x2020000000;
@@ -907,28 +907,28 @@ LABEL_20:
   v32 = __Block_byref_object_copy__709;
   v33 = __Block_byref_object_dispose__710;
   v34 = 0;
-  v14 = [[PLDuplicateMergeCrashRecovery alloc] initWithPhotoLibrary:v13];
+  v14 = [[PLDuplicateMergeCrashRecovery alloc] initWithPhotoLibrary:libraryCopy];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __104__PLDuplicateProcessor__processMergeGroupContainer_processedAssetCount_skippedAssetCount_library_error___block_invoke;
   v21[3] = &unk_1E75648C0;
   v24 = &v35;
   v21[4] = self;
-  v27 = a4;
-  v28 = a5;
+  countCopy = count;
+  assetCountCopy = assetCount;
   v25 = v39;
-  v15 = v13;
+  v15 = libraryCopy;
   v22 = v15;
   v26 = &v29;
   v16 = v14;
   v23 = v16;
-  [v12 enumerateObjectsUsingBlock:v21];
+  [containerCopy enumerateObjectsUsingBlock:v21];
   v17 = *(v36 + 24);
   v18 = v30[5];
-  if (a7 && (v17 & 1) == 0)
+  if (error && (v17 & 1) == 0)
   {
     v18 = v18;
-    *a7 = v18;
+    *error = v18;
   }
 
   v19 = *(v36 + 24);
@@ -992,12 +992,12 @@ void __104__PLDuplicateProcessor__processMergeGroupContainer_processedAssetCount
   }
 }
 
-- (BOOL)_processMergeAssets:(id)a3 localIdentifierMap:(id)a4 library:(id)a5 error:(id *)a6
+- (BOOL)_processMergeAssets:(id)assets localIdentifierMap:(id)map library:(id)library error:(id *)error
 {
   v59 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  assetsCopy = assets;
+  mapCopy = map;
+  libraryCopy = library;
   v50 = 0;
   v51 = &v50;
   v52 = 0x2020000000;
@@ -1009,21 +1009,21 @@ void __104__PLDuplicateProcessor__processMergeGroupContainer_processedAssetCount
   v48 = __Block_byref_object_dispose__710;
   v49 = 0;
   obj = 0;
-  v13 = [(PLDuplicateProcessor *)self _isValidSharedLibraryStateWithLibrary:v12 error:&obj];
+  v13 = [(PLDuplicateProcessor *)self _isValidSharedLibraryStateWithLibrary:libraryCopy error:&obj];
   objc_storeStrong(&v49, obj);
   if (v13)
   {
     v14 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v10 count];
+      v15 = [assetsCopy count];
       LODWORD(buf) = 134217984;
       *(&buf + 4) = v15;
       _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEFAULT, "Duplicate Merge Processing: start merge processing for %tu asset", &buf, 0xCu);
     }
 
     v16 = objc_autoreleasePoolPush();
-    v17 = [(PLDuplicateProcessor *)self _processAlbumGroupingFromAssets:v10 localIdentifierToCloudIdentifiers:v11 library:v12];
+    v17 = [(PLDuplicateProcessor *)self _processAlbumGroupingFromAssets:assetsCopy localIdentifierToCloudIdentifiers:mapCopy library:libraryCopy];
     if (v17)
     {
       v18 = PLDuplicateDetectionGetLog();
@@ -1052,7 +1052,7 @@ void __104__PLDuplicateProcessor__processMergeGroupContainer_processedAssetCount
       v36 = v17;
       p_buf = &buf;
       v40 = v42;
-      v37 = v12;
+      v37 = libraryCopy;
       v41 = &v44;
       v30[0] = MEMORY[0x1E69E9820];
       v30[1] = 3221225472;
@@ -1092,10 +1092,10 @@ void __104__PLDuplicateProcessor__processMergeGroupContainer_processedAssetCount
     objc_autoreleasePoolPop(v16);
     v27 = *(v51 + 24);
     v28 = v45[5];
-    if (a6 && (v27 & 1) == 0)
+    if (error && (v27 & 1) == 0)
     {
       v28 = v28;
-      *a6 = v28;
+      *error = v28;
     }
 
     v20 = *(v51 + 24);
@@ -1104,9 +1104,9 @@ void __104__PLDuplicateProcessor__processMergeGroupContainer_processedAssetCount
   else
   {
     v20 = 0;
-    if (a6)
+    if (error)
     {
-      *a6 = v45[5];
+      *error = v45[5];
     }
   }
 
@@ -1164,14 +1164,14 @@ void __77__PLDuplicateProcessor__processMergeAssets_localIdentifierMap_library_e
   }
 }
 
-- (BOOL)_processMergeAlbumAssetOIDMap:(id)a3 localIdentifierMap:(id)a4 library:(id)a5 error:(id *)a6
+- (BOOL)_processMergeAlbumAssetOIDMap:(id)map localIdentifierMap:(id)identifierMap library:(id)library error:(id *)error
 {
   v52 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v40 = a4;
-  v9 = a5;
-  v10 = [v8 allKeys];
-  v11 = [v10 copy];
+  mapCopy = map;
+  identifierMapCopy = identifierMap;
+  libraryCopy = library;
+  allKeys = [mapCopy allKeys];
+  v11 = [allKeys copy];
 
   v12 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v47 = 0u;
@@ -1180,7 +1180,7 @@ void __77__PLDuplicateProcessor__processMergeAssets_localIdentifierMap_library_e
   v50 = 0u;
   obj = v11;
   v13 = [obj countByEnumeratingWithState:&v47 objects:v51 count:16];
-  v37 = v8;
+  v37 = mapCopy;
   v38 = v12;
   if (!v13)
   {
@@ -1200,15 +1200,15 @@ void __77__PLDuplicateProcessor__processMergeAssets_localIdentifierMap_library_e
         objc_enumerationMutation(obj);
       }
 
-      v18 = [v8 objectForKeyedSubscript:*(*(&v47 + 1) + 8 * i)];
+      v18 = [mapCopy objectForKeyedSubscript:*(*(&v47 + 1) + 8 * i)];
       [v12 unionSet:v18];
 
       if ([v12 count] >= 0x65)
       {
-        v19 = v8;
+        v19 = mapCopy;
         context = objc_autoreleasePoolPush();
         v46 = v15;
-        v20 = [(PLDuplicateProcessor *)self _fetchAssetsFromUUIDs:v12 library:v9 error:&v46];
+        v20 = [(PLDuplicateProcessor *)self _fetchAssetsFromUUIDs:v12 library:libraryCopy error:&v46];
         v21 = v46;
 
         if (v20)
@@ -1216,15 +1216,15 @@ void __77__PLDuplicateProcessor__processMergeAssets_localIdentifierMap_library_e
           v22 = v21;
           v23 = v14;
           v45 = v22;
-          v24 = v9;
-          v25 = [(PLDuplicateProcessor *)self _processMergeAssets:v20 localIdentifierMap:v40 library:v9 error:&v45];
+          v24 = libraryCopy;
+          v25 = [(PLDuplicateProcessor *)self _processMergeAssets:v20 localIdentifierMap:identifierMapCopy library:libraryCopy error:&v45];
           v26 = v45;
 
           [v12 removeAllObjects];
           if (v25)
           {
             objc_autoreleasePoolPop(context);
-            v8 = v37;
+            mapCopy = v37;
             v12 = v38;
             v15 = v26;
             v14 = v23;
@@ -1237,11 +1237,11 @@ void __77__PLDuplicateProcessor__processMergeAssets_localIdentifierMap_library_e
 
         else
         {
-          v24 = v9;
+          v24 = libraryCopy;
           [v12 removeAllObjects];
         }
 
-        v33 = a6;
+        errorCopy3 = error;
         objc_autoreleasePoolPop(context);
 
         goto LABEL_21;
@@ -1266,23 +1266,23 @@ LABEL_14:
     goto LABEL_27;
   }
 
-  v19 = v8;
+  v19 = mapCopy;
   v27 = objc_autoreleasePoolPush();
   v44 = v15;
-  v28 = [(PLDuplicateProcessor *)self _fetchAssetsFromUUIDs:v12 library:v9 error:&v44];
+  v28 = [(PLDuplicateProcessor *)self _fetchAssetsFromUUIDs:v12 library:libraryCopy error:&v44];
   v21 = v44;
 
   if (!v28)
   {
-    v24 = v9;
+    v24 = libraryCopy;
     objc_autoreleasePoolPop(v27);
-    v33 = a6;
+    errorCopy3 = error;
 LABEL_21:
     v31 = v21;
-    v9 = v24;
-    v8 = v19;
+    libraryCopy = v24;
+    mapCopy = v19;
     v12 = v38;
-    if (!v33)
+    if (!errorCopy3)
     {
       goto LABEL_26;
     }
@@ -1291,16 +1291,16 @@ LABEL_21:
   }
 
   v43 = v21;
-  v29 = [(PLDuplicateProcessor *)self _processMergeAssets:v28 localIdentifierMap:v40 library:v9 error:&v43];
+  v29 = [(PLDuplicateProcessor *)self _processMergeAssets:v28 localIdentifierMap:identifierMapCopy library:libraryCopy error:&v43];
   v30 = v43;
 
   objc_autoreleasePoolPop(v27);
   v31 = v30;
   if (!v29)
   {
-    v33 = a6;
-    v8 = v37;
-    if (!a6)
+    errorCopy3 = error;
+    mapCopy = v37;
+    if (!error)
     {
 LABEL_26:
       v32 = 0;
@@ -1310,29 +1310,29 @@ LABEL_26:
 LABEL_22:
     v34 = v31;
     v32 = 0;
-    *v33 = v31;
+    *errorCopy3 = v31;
     goto LABEL_27;
   }
 
   v32 = 1;
-  v8 = v37;
+  mapCopy = v37;
 LABEL_27:
 
   return v32;
 }
 
-- (void)mergeDuplicateAssetsWithAssetUUIDs:(id)a3 completionHandler:(id)a4
+- (void)mergeDuplicateAssetsWithAssetUUIDs:(id)ds completionHandler:(id)handler
 {
   v52[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   v39 = 0;
   v40 = &v39;
   v41 = 0x3032000000;
   v42 = __Block_byref_object_copy__709;
   v43 = __Block_byref_object_dispose__710;
   v44 = 0;
-  if ([v6 count])
+  if ([dsCopy count])
   {
     v8 = (v40 + 5);
     obj = v40[5];
@@ -1340,15 +1340,15 @@ LABEL_27:
     objc_storeStrong(v8, obj);
     if (v9)
     {
-      v10 = [(PLDuplicateProcessor *)self _photoLibrary];
+      _photoLibrary = [(PLDuplicateProcessor *)self _photoLibrary];
       v11 = (v40 + 5);
       v37 = v40[5];
-      v12 = [(PLDuplicateProcessor *)self _isValidSharedLibraryStateWithLibrary:v10 error:&v37];
+      v12 = [(PLDuplicateProcessor *)self _isValidSharedLibraryStateWithLibrary:_photoLibrary error:&v37];
       objc_storeStrong(v11, v37);
       if (v12)
       {
-        v13 = [v10 libraryBundle];
-        v14 = PLIsCloudPhotoLibraryDisableInProgressForPhotoLibraryBundle(v13);
+        libraryBundle = [_photoLibrary libraryBundle];
+        v14 = PLIsCloudPhotoLibraryDisableInProgressForPhotoLibraryBundle(libraryBundle);
 
         if (v14)
         {
@@ -1365,12 +1365,12 @@ LABEL_27:
         {
           if ((PLIsAssetsd() & 1) != 0 || (PLIsInternalTool() & 1) != 0 || MEMORY[0x19EAEE520]())
           {
-            v23 = [v10 managedObjectContext];
-            [v23 setNonCoalescing:1];
+            managedObjectContext = [_photoLibrary managedObjectContext];
+            [managedObjectContext setNonCoalescing:1];
 
             if (self->_enableEXIFDataAccess)
             {
-              self->_enableEXIFDataAccess = ![PLDuplicateDetector duplicateDetectorCompletedDateBackgroundMigrationAction:v10];
+              self->_enableEXIFDataAccess = ![PLDuplicateDetector duplicateDetectorCompletedDateBackgroundMigrationAction:_photoLibrary];
             }
 
             v24 = PLDuplicateDetectionGetLog();
@@ -1392,18 +1392,18 @@ LABEL_27:
               _os_log_impl(&dword_19BF1F000, v24, OS_LOG_TYPE_INFO, "Duplicate Merge Processing: enableEXIFDataAccess: %{public}@", buf, 0xCu);
             }
 
-            v27 = [v6 allObjects];
-            [(PLDuplicateProcessor *)self _inFlightMergeAssetsAddUUIDs:v27];
+            allObjects = [dsCopy allObjects];
+            [(PLDuplicateProcessor *)self _inFlightMergeAssetsAddUUIDs:allObjects];
 
             v32[0] = MEMORY[0x1E69E9820];
             v32[1] = 3221225472;
             v32[2] = __77__PLDuplicateProcessor_mergeDuplicateAssetsWithAssetUUIDs_completionHandler___block_invoke;
             v32[3] = &unk_1E7564898;
             v32[4] = self;
-            v33 = v6;
-            v34 = v10;
+            v33 = dsCopy;
+            v34 = _photoLibrary;
             v36 = &v39;
-            v35 = v7;
+            v35 = handlerCopy;
             [(PLDuplicateProcessor *)self _processCloudScopedIdentifiersFromAssetUUIDS:v33 library:v34 completionHandler:v32];
 
             goto LABEL_22;
@@ -1419,9 +1419,9 @@ LABEL_27:
         }
       }
 
-      if (v7)
+      if (handlerCopy)
       {
-        (*(v7 + 2))(v7, 0, v40[5]);
+        (*(handlerCopy + 2))(handlerCopy, 0, v40[5]);
       }
 
 LABEL_22:
@@ -1441,9 +1441,9 @@ LABEL_22:
     v40[5] = v21;
   }
 
-  if (v7)
+  if (handlerCopy)
   {
-    (*(v7 + 2))(v7, 0, v40[5]);
+    (*(handlerCopy + 2))(handlerCopy, 0, v40[5]);
   }
 
 LABEL_23:
@@ -1506,13 +1506,13 @@ void __77__PLDuplicateProcessor_mergeDuplicateAssetsWithAssetUUIDs_completionHan
   os_unfair_lock_unlock((*(a1 + 32) + 16));
 }
 
-- (BOOL)assetsArePendingForDuplicateMergeProcessing:(id)a3
+- (BOOL)assetsArePendingForDuplicateMergeProcessing:(id)processing
 {
-  v4 = a3;
-  if ([v4 count])
+  processingCopy = processing;
+  if ([processingCopy count])
   {
     os_unfair_lock_lock(&self->_inFlightMergeLock);
-    v5 = [(NSMutableSet *)self->_inFlightMergeAssetUuids intersectsSet:v4];
+    v5 = [(NSMutableSet *)self->_inFlightMergeAssetUuids intersectsSet:processingCopy];
     os_unfair_lock_unlock(&self->_inFlightMergeLock);
   }
 
@@ -1532,16 +1532,16 @@ void __77__PLDuplicateProcessor_mergeDuplicateAssetsWithAssetUUIDs_completionHan
   return v3;
 }
 
-- (id)_duplicateAlbumsFromAssets:(id)a3
+- (id)_duplicateAlbumsFromAssets:(id)assets
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  assetsCopy = assets;
   v4 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = v3;
+  v5 = assetsCopy;
   v6 = [v5 countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v6)
   {
@@ -1561,8 +1561,8 @@ void __77__PLDuplicateProcessor_mergeDuplicateAssetsWithAssetUUIDs_completionHan
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v11 = [v10 albums];
-        v12 = [v11 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        albums = [v10 albums];
+        v12 = [albums countByEnumeratingWithState:&v19 objects:v27 count:16];
         if (v12)
         {
           v13 = v12;
@@ -1573,7 +1573,7 @@ void __77__PLDuplicateProcessor_mergeDuplicateAssetsWithAssetUUIDs_completionHan
             {
               if (*v20 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(albums);
               }
 
               v16 = *(*(&v19 + 1) + 8 * j);
@@ -1584,7 +1584,7 @@ void __77__PLDuplicateProcessor_mergeDuplicateAssetsWithAssetUUIDs_completionHan
               }
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v19 objects:v27 count:16];
+            v13 = [albums countByEnumeratingWithState:&v19 objects:v27 count:16];
             if (v13)
             {
               continue;
@@ -1603,30 +1603,30 @@ LABEL_17:
     while (v7);
   }
 
-  v17 = [v4 allObjects];
+  allObjects = [v4 allObjects];
 
-  return v17;
+  return allObjects;
 }
 
-- (BOOL)_insertIntoDuplicateAlbum:(id)a3 assets:(id)a4 duplicateType:(signed __int16)a5 photoLibrary:(id)a6 error:(id *)a7
+- (BOOL)_insertIntoDuplicateAlbum:(id)album assets:(id)assets duplicateType:(signed __int16)type photoLibrary:(id)library error:(id *)error
 {
-  v9 = a5;
+  typeCopy = type;
   v42[1] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (v11)
+  albumCopy = album;
+  assetsCopy = assets;
+  libraryCopy = library;
+  if (albumCopy)
   {
-    v14 = v11;
+    v14 = albumCopy;
 LABEL_5:
-    [v14 addAssets:v12 type:v9];
+    [v14 addAssets:assetsCopy type:typeCopy];
     [v14 sortAssets];
     v16 = PFMap();
     v17 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v12 count];
-      if (v11)
+      v18 = [assetsCopy count];
+      if (albumCopy)
       {
         v19 = @"e";
       }
@@ -1636,14 +1636,14 @@ LABEL_5:
         v19 = @"n";
       }
 
-      v20 = [v14 uuid];
+      uuid = [v14 uuid];
       v21 = [v16 componentsJoinedByString:{@", "}];
       v33 = 134218754;
       v34 = v18;
       v35 = 2114;
       v36 = v19;
       v37 = 2114;
-      v38 = v20;
+      v38 = uuid;
       v39 = 2114;
       v40 = v21;
       _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_DEFAULT, "Duplicate Processing: Added %tu assets to duplicate album [%{public}@/%{public}@], assets:[%{public}@]", &v33, 0x2Au);
@@ -1653,7 +1653,7 @@ LABEL_5:
     goto LABEL_11;
   }
 
-  v15 = [PLDuplicateAlbum insertIntoPhotoLibrary:v13];
+  v15 = [PLDuplicateAlbum insertIntoPhotoLibrary:libraryCopy];
   if (v15)
   {
     v14 = v15;
@@ -1681,11 +1681,11 @@ LABEL_5:
 
   v31 = v27;
   v16 = v31;
-  if (a7)
+  if (error)
   {
     v32 = v31;
     v22 = 0;
-    *a7 = v16;
+    *error = v16;
   }
 
   else
@@ -1699,21 +1699,21 @@ LABEL_11:
   return v22;
 }
 
-- (BOOL)_moveDuplicateAlbumAssetsFromAlbums:(id)a3 toTargetAlbum:(id)a4 duplicateType:(signed __int16)a5 error:(id *)a6
+- (BOOL)_moveDuplicateAlbumAssetsFromAlbums:(id)albums toTargetAlbum:(id)album duplicateType:(signed __int16)type error:(id *)error
 {
-  v40 = a5;
+  typeCopy = type;
   v53 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if ([v8 count] >= 2)
+  albumsCopy = albums;
+  albumCopy = album;
+  if ([albumsCopy count] >= 2)
   {
-    if (v9)
+    if (albumCopy)
     {
       v44 = 0u;
       v45 = 0u;
       v42 = 0u;
       v43 = 0u;
-      v10 = v8;
+      v10 = albumsCopy;
       v11 = [v10 countByEnumeratingWithState:&v42 objects:v52 count:16];
       if (!v11)
       {
@@ -1722,8 +1722,8 @@ LABEL_11:
       }
 
       v12 = v11;
-      v36 = a6;
-      v37 = v8;
+      errorCopy = error;
+      v37 = albumsCopy;
       v13 = 0;
       v14 = *v43;
       v38 = v10;
@@ -1737,25 +1737,25 @@ LABEL_11:
           }
 
           v16 = *(*(&v42 + 1) + 8 * i);
-          if (([v16 isEqual:{v9, v36}] & 1) == 0)
+          if (([v16 isEqual:{albumCopy, errorCopy}] & 1) == 0)
           {
-            v17 = [v16 assets];
-            v18 = [v17 count];
+            assets = [v16 assets];
+            v18 = [assets count];
 
             if (v18)
             {
               v19 = PLDuplicateDetectionGetLog();
               if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
               {
-                v20 = [v16 uuid];
+                uuid = [v16 uuid];
                 *buf = 134218242;
                 v49 = v18;
                 v50 = 2114;
-                v51 = v20;
+                v51 = uuid;
                 _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_DEFAULT, "Duplicate Processing: Relocating %tu matching assets from album: %{public}@", buf, 0x16u);
               }
 
-              if (v40 == 1)
+              if (typeCopy == 1)
               {
                 v21 = PLDuplicateDetectionGetLog();
                 if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -1767,26 +1767,26 @@ LABEL_11:
                 }
               }
 
-              v23 = [v16 assets];
-              v24 = [v23 array];
+              assets2 = [v16 assets];
+              array = [assets2 array];
               v41 = v13;
-              v25 = v9;
-              v26 = [(PLDuplicateProcessor *)self _insertIntoDuplicateAlbum:v9 assets:v24 duplicateType:v40 photoLibrary:0 error:&v41];
+              v25 = albumCopy;
+              v26 = [(PLDuplicateProcessor *)self _insertIntoDuplicateAlbum:albumCopy assets:array duplicateType:typeCopy photoLibrary:0 error:&v41];
               v27 = v41;
 
               if (!v26)
               {
-                a6 = v36;
-                v8 = v37;
+                error = errorCopy;
+                albumsCopy = v37;
                 v32 = v38;
-                v9 = v25;
+                albumCopy = v25;
                 goto LABEL_25;
               }
 
               [v16 delete];
               v13 = v27;
               v10 = v38;
-              v9 = v25;
+              albumCopy = v25;
             }
           }
         }
@@ -1801,7 +1801,7 @@ LABEL_11:
       }
 
       v28 = 1;
-      v8 = v37;
+      albumsCopy = v37;
     }
 
     else
@@ -1825,11 +1825,11 @@ LABEL_25:
 
       v33 = v27;
       v10 = v33;
-      if (a6)
+      if (error)
       {
         v34 = v33;
         v28 = 0;
-        *a6 = v10;
+        *error = v10;
       }
 
       else
@@ -1852,9 +1852,9 @@ LABEL_32:
   return v28;
 }
 
-- (id)_fetchAssetOIDsForPhotoLibrary:(id)a3 error:(id *)a4
+- (id)_fetchAssetOIDsForPhotoLibrary:(id)library error:(id *)error
 {
-  v6 = a3;
+  libraryCopy = library;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -1865,11 +1865,11 @@ LABEL_32:
   v10[1] = 3221225472;
   v10[2] = __61__PLDuplicateProcessor__fetchAssetOIDsForPhotoLibrary_error___block_invoke;
   v10[3] = &unk_1E7576680;
-  v7 = v6;
+  v7 = libraryCopy;
   v11 = v7;
-  v12 = self;
+  selfCopy = self;
   v13 = &v15;
-  v14 = a4;
+  errorCopy = error;
   [v7 performBlockAndWait:v10];
   v8 = v16[5];
 
@@ -1944,30 +1944,30 @@ void __61__PLDuplicateProcessor__fetchAssetOIDsForPhotoLibrary_error___block_inv
   }
 }
 
-- (id)_fetchAssetsWithPhotoLibrary:(id)a3 assetObjectIDs:(id)a4 error:(id *)a5
+- (id)_fetchAssetsWithPhotoLibrary:(id)library assetObjectIDs:(id)ds error:(id *)error
 {
   v36[1] = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E695D5E0];
-  v8 = a4;
-  v9 = a3;
+  dsCopy = ds;
+  libraryCopy = library;
   v10 = +[PLManagedAsset entityName];
   v11 = [v7 fetchRequestWithEntityName:v10];
 
-  v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", v8];
+  dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", dsCopy];
 
-  [v11 setPredicate:v12];
+  [v11 setPredicate:dsCopy];
   v36[0] = @"albums";
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:1];
   [v11 setRelationshipKeyPathsForPrefetching:v13];
 
   v14 = MEMORY[0x1E69BF2C8];
-  v15 = [v9 managedObjectContext];
-  v16 = [v14 startedQueryStatsWithContext:v15];
+  managedObjectContext = [libraryCopy managedObjectContext];
+  v16 = [v14 startedQueryStatsWithContext:managedObjectContext];
 
-  v17 = [v9 managedObjectContext];
+  managedObjectContext2 = [libraryCopy managedObjectContext];
 
   v29 = 0;
-  v18 = [v17 executeFetchRequest:v11 error:&v29];
+  v18 = [managedObjectContext2 executeFetchRequest:v11 error:&v29];
   v19 = v29;
 
   v20 = [v16 stopRecordingDescriptionWithFetchCount:{objc_msgSend(v18, "count")}];
@@ -2002,30 +2002,30 @@ void __61__PLDuplicateProcessor__fetchAssetOIDsForPhotoLibrary_error___block_inv
       _os_log_impl(&dword_19BF1F000, v24, OS_LOG_TYPE_ERROR, "Duplicate Processing: Failed to fetch identifiers for %{public}@. Error: %@", buf, 0x16u);
     }
 
-    if (a5)
+    if (error)
     {
       v27 = v19;
-      *a5 = v19;
+      *error = v19;
     }
   }
 
   return v18;
 }
 
-- (BOOL)_processedRemoveExclusionGroupAssetsWithPhotoLibrary:(id)a3 assetObjectIDs:(id)a4 error:(id *)a5
+- (BOOL)_processedRemoveExclusionGroupAssetsWithPhotoLibrary:(id)library assetObjectIDs:(id)ds error:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E695D5E0];
-  v8 = a4;
-  v9 = a3;
+  dsCopy = ds;
+  libraryCopy = library;
   v10 = +[PLManagedAsset entityName];
   v11 = [v7 fetchRequestWithEntityName:v10];
 
-  v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", v8];
+  dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", dsCopy];
 
-  [v11 setPredicate:v12];
+  [v11 setPredicate:dsCopy];
   v20 = 0;
-  v13 = [objc_opt_class() _removeAssetsFromDuplicateAlbumUsingFetchRequest:v11 library:v9 error:&v20];
+  v13 = [objc_opt_class() _removeAssetsFromDuplicateAlbumUsingFetchRequest:v11 library:libraryCopy error:&v20];
 
   v14 = v20;
   v15 = PLDuplicateDetectionGetLog();
@@ -2051,30 +2051,30 @@ void __61__PLDuplicateProcessor__fetchAssetOIDsForPhotoLibrary_error___block_inv
     }
 
     v18 = v14;
-    if (a5)
+    if (error)
     {
-      *a5 = v18;
+      *error = v18;
     }
   }
 
   return v13;
 }
 
-- (id)_processedDuplicateAssetsWithPhotoLibrary:(id)a3 assetObjectIDs:(id)a4 duplicateType:(signed __int16)a5 associatedDuplicateAlbum:(id *)a6 error:(id *)a7
+- (id)_processedDuplicateAssetsWithPhotoLibrary:(id)library assetObjectIDs:(id)ds duplicateType:(signed __int16)type associatedDuplicateAlbum:(id *)album error:(id *)error
 {
-  v9 = a5;
+  typeCopy = type;
   v34 = 0;
-  v11 = [(PLDuplicateProcessor *)self _fetchAssetsWithPhotoLibrary:a3 assetObjectIDs:a4 error:&v34];
+  v11 = [(PLDuplicateProcessor *)self _fetchAssetsWithPhotoLibrary:library assetObjectIDs:ds error:&v34];
   v12 = v34;
   if (v11)
   {
     v13 = [v11 mutableCopy];
     v14 = [(PLDuplicateProcessor *)self _duplicateAlbumsFromAssets:v13];
-    v15 = [v14 firstObject];
-    if (v15)
+    firstObject = [v14 firstObject];
+    if (firstObject)
     {
       v33 = v12;
-      v16 = [(PLDuplicateProcessor *)self _moveDuplicateAlbumAssetsFromAlbums:v14 toTargetAlbum:v15 duplicateType:v9 error:&v33];
+      v16 = [(PLDuplicateProcessor *)self _moveDuplicateAlbumAssetsFromAlbums:v14 toTargetAlbum:firstObject duplicateType:typeCopy error:&v33];
       v31 = v33;
 
       if (!v16)
@@ -2085,14 +2085,14 @@ void __61__PLDuplicateProcessor__fetchAssetOIDsForPhotoLibrary_error___block_inv
         goto LABEL_19;
       }
 
-      if (v9 == 1)
+      if (typeCopy == 1)
       {
-        [v15 metadataMatchingAssets];
+        [firstObject metadataMatchingAssets];
       }
 
       else
       {
-        [v15 perceptualMatchingAssets];
+        [firstObject perceptualMatchingAssets];
       }
       v19 = ;
       v20 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self in %@", v13];
@@ -2127,7 +2127,7 @@ void __61__PLDuplicateProcessor__fetchAssetOIDsForPhotoLibrary_error___block_inv
     v18 = 1;
 LABEL_19:
 
-    if (!a6)
+    if (!album)
     {
       goto LABEL_21;
     }
@@ -2135,20 +2135,20 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v15 = 0;
+  firstObject = 0;
   v17 = 0;
   v18 = 0;
-  if (a6)
+  if (album)
   {
 LABEL_20:
-    v24 = v15;
-    *a6 = v15;
+    v24 = firstObject;
+    *album = firstObject;
   }
 
 LABEL_21:
   v25 = v12;
   v26 = v25;
-  if (a7)
+  if (error)
   {
     v27 = v18;
   }
@@ -2161,28 +2161,28 @@ LABEL_21:
   if ((v27 & 1) == 0)
   {
     v28 = v25;
-    *a7 = v26;
+    *error = v26;
   }
 
   v29 = v17;
   return v17;
 }
 
-- (BOOL)_processedDuplicateAssetSubGroupWithPhotoLibrary:(id)a3 assetObjectIDs:(id)a4 duplicateType:(signed __int16)a5 error:(id *)a6
+- (BOOL)_processedDuplicateAssetSubGroupWithPhotoLibrary:(id)library assetObjectIDs:(id)ds duplicateType:(signed __int16)type error:(id *)error
 {
-  v7 = a5;
+  typeCopy = type;
   v28 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  libraryCopy = library;
   v24 = 0;
   v25 = 0;
-  v11 = [(PLDuplicateProcessor *)self _processedDuplicateAssetsWithPhotoLibrary:v10 assetObjectIDs:a4 duplicateType:v7 associatedDuplicateAlbum:&v25 error:&v24];
+  v11 = [(PLDuplicateProcessor *)self _processedDuplicateAssetsWithPhotoLibrary:libraryCopy assetObjectIDs:ds duplicateType:typeCopy associatedDuplicateAlbum:&v25 error:&v24];
   v12 = v25;
   v13 = v24;
   v14 = v13;
   if (!v11)
   {
     v17 = v13;
-    if (a6)
+    if (error)
     {
       goto LABEL_5;
     }
@@ -2197,9 +2197,9 @@ LABEL_7:
     v20 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v12 uuid];
+      uuid = [v12 uuid];
       *buf = 138543362;
-      v27 = v21;
+      v27 = uuid;
       _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_DEFAULT, "Duplicate Processing: no new assets to add to duplicate album %{public}@", buf, 0xCu);
     }
 
@@ -2208,7 +2208,7 @@ LABEL_7:
   }
 
   v23 = v14;
-  v15 = [(PLDuplicateProcessor *)self _insertIntoDuplicateAlbum:v12 assets:v11 duplicateType:v7 photoLibrary:v10 error:&v23];
+  v15 = [(PLDuplicateProcessor *)self _insertIntoDuplicateAlbum:v12 assets:v11 duplicateType:typeCopy photoLibrary:libraryCopy error:&v23];
   v16 = v23;
 
   v17 = v16;
@@ -2219,7 +2219,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!a6)
+  if (!error)
   {
     goto LABEL_7;
   }
@@ -2227,21 +2227,21 @@ LABEL_11:
 LABEL_5:
   v18 = v17;
   v19 = 0;
-  *a6 = v17;
+  *error = v17;
 LABEL_12:
 
   return v19;
 }
 
-- (BOOL)_detectDuplicatesAndInsertIntoDuplicateAlbumWithPhotoLibrary:(id)a3 detector:(id)a4 duplicateType:(signed __int16)a5 error:(id *)a6
+- (BOOL)_detectDuplicatesAndInsertIntoDuplicateAlbumWithPhotoLibrary:(id)library detector:(id)detector duplicateType:(signed __int16)type error:(id *)error
 {
   v49[2] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  if (!v12)
+  libraryCopy = library;
+  detectorCopy = detector;
+  if (!detectorCopy)
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"PLDuplicateProcessor.m" lineNumber:366 description:{@"Invalid parameter not satisfying: %@", @"detector"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLDuplicateProcessor.m" lineNumber:366 description:{@"Invalid parameter not satisfying: %@", @"detector"}];
   }
 
   v13 = PLDuplicateDetectionGetLog();
@@ -2265,7 +2265,7 @@ LABEL_12:
   v41 = 0x2020000000;
   v42 = 1;
   obj = 0;
-  v16 = [v12 detectDuplicatesWithPhotoLibrary:v11 error:&obj];
+  v16 = [detectorCopy detectDuplicatesWithPhotoLibrary:libraryCopy error:&obj];
   objc_storeStrong(v49, obj);
   if (v16)
   {
@@ -2276,9 +2276,9 @@ LABEL_12:
     v17 = v16;
     v35 = &v39;
     v32 = v17;
-    v33 = self;
-    v18 = v11;
-    v37 = a5;
+    selfCopy = self;
+    v18 = libraryCopy;
+    typeCopy = type;
     v34 = v18;
     p_buf = &buf;
     [v18 performTransactionAndWait:v31];
@@ -2324,10 +2324,10 @@ LABEL_12:
 
   v25 = *(v40 + 24);
   v22 = *(*(&buf + 1) + 40);
-  if (a6 && (v25 & 1) == 0)
+  if (error && (v25 & 1) == 0)
   {
     v22 = v22;
-    *a6 = v22;
+    *error = v22;
   }
 
 LABEL_18:
@@ -2459,22 +2459,22 @@ void __114__PLDuplicateProcessor__detectDuplicatesAndInsertIntoDuplicateAlbumWit
   [v1 refreshAllObjects];
 }
 
-- (BOOL)_processDuplicatesWithPhotoLibrary:(id)a3 processingType:(unint64_t)a4 assetObjectIds:(id)a5 error:(id *)a6
+- (BOOL)_processDuplicatesWithPhotoLibrary:(id)library processingType:(unint64_t)type assetObjectIds:(id)ids error:(id *)error
 {
-  v8 = a4;
+  typeCopy = type;
   v53 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = [MEMORY[0x1E69BF318] start];
-  if ((v8 & 1) == 0)
+  libraryCopy = library;
+  idsCopy = ids;
+  start = [MEMORY[0x1E69BF318] start];
+  if ((typeCopy & 1) == 0)
   {
     goto LABEL_2;
   }
 
   if (PLIsInternalTool())
   {
-    v15 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v16 = [v15 BOOLForKey:@"com.apple.Photos.backend.disableFingerprintDuplicateProcessing"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v16 = [standardUserDefaults BOOLForKey:@"com.apple.Photos.backend.disableFingerprintDuplicateProcessing"];
 
     if (v16)
     {
@@ -2487,7 +2487,7 @@ void __114__PLDuplicateProcessor__detectDuplicatesAndInsertIntoDuplicateAlbumWit
 
 LABEL_2:
       v13 = 0;
-      if ((v8 & 2) == 0)
+      if ((typeCopy & 2) == 0)
       {
         goto LABEL_3;
       }
@@ -2496,8 +2496,8 @@ LABEL_2:
     }
   }
 
-  v47 = v12;
-  v48 = a6;
+  v47 = start;
+  errorCopy2 = error;
   v18 = PLDuplicateDetectionGetLog();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
@@ -2505,20 +2505,20 @@ LABEL_2:
     _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_DEFAULT, "Duplicate Processing: metadata duplicate matching", buf, 2u);
   }
 
-  v19 = [MEMORY[0x1E69BF318] start];
-  v20 = v11;
-  v21 = [[PLDuplicateDetectorMetadata alloc] initWithSourceOIDs:v11];
+  start2 = [MEMORY[0x1E69BF318] start];
+  v20 = idsCopy;
+  v21 = [[PLDuplicateDetectorMetadata alloc] initWithSourceOIDs:idsCopy];
   v50 = 0;
-  v46 = self;
-  v22 = self;
-  v23 = v10;
-  v24 = [(PLDuplicateProcessor *)v22 _detectDuplicatesAndInsertIntoDuplicateAlbumWithPhotoLibrary:v10 detector:v21 duplicateType:1 error:&v50];
+  selfCopy = self;
+  selfCopy2 = self;
+  v23 = libraryCopy;
+  v24 = [(PLDuplicateProcessor *)selfCopy2 _detectDuplicatesAndInsertIntoDuplicateAlbumWithPhotoLibrary:libraryCopy detector:v21 duplicateType:1 error:&v50];
   v14 = v50;
-  v25 = [v19 stop];
+  stop = [start2 stop];
   v26 = PLDuplicateDetectionGetLog();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
-    v27 = [v19 perfCheckLogStringWithPerfCheckInfo:v25];
+    v27 = [start2 perfCheckLogStringWithPerfCheckInfo:stop];
     *buf = 138412290;
     v52 = v27;
     _os_log_impl(&dword_19BF1F000, v26, OS_LOG_TYPE_DEFAULT, "Duplicate Processing: metadata matching completed%@", buf, 0xCu);
@@ -2527,21 +2527,21 @@ LABEL_2:
   if (!v24)
   {
     v37 = 0;
-    v10 = v23;
+    libraryCopy = v23;
     goto LABEL_30;
   }
 
   v13 = v14;
-  v10 = v23;
-  v11 = v20;
-  v12 = v47;
-  a6 = v48;
-  self = v46;
-  if ((v8 & 2) == 0)
+  libraryCopy = v23;
+  idsCopy = v20;
+  start = v47;
+  error = errorCopy2;
+  self = selfCopy;
+  if ((typeCopy & 2) == 0)
   {
 LABEL_3:
     v14 = v13;
-    if ((v8 & 4) == 0)
+    if ((typeCopy & 4) == 0)
     {
       goto LABEL_27;
     }
@@ -2550,8 +2550,8 @@ LABEL_3:
   }
 
 LABEL_16:
-  v47 = v12;
-  v48 = a6;
+  v47 = start;
+  errorCopy2 = error;
   v28 = PLDuplicateDetectionGetLog();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
@@ -2559,18 +2559,18 @@ LABEL_16:
     _os_log_impl(&dword_19BF1F000, v28, OS_LOG_TYPE_DEFAULT, "Duplicate Processing: exact pixel matching", buf, 2u);
   }
 
-  v29 = [MEMORY[0x1E69BF318] start];
-  v20 = v11;
-  v30 = [[PLDuplicateDetectorExactPixel alloc] initWithSourceOIDs:v11];
+  start3 = [MEMORY[0x1E69BF318] start];
+  v20 = idsCopy;
+  v30 = [[PLDuplicateDetectorExactPixel alloc] initWithSourceOIDs:idsCopy];
   v49 = v13;
-  v31 = [(PLDuplicateProcessor *)self _detectDuplicatesAndInsertIntoDuplicateAlbumWithPhotoLibrary:v10 detector:v30 duplicateType:2 error:&v49];
+  v31 = [(PLDuplicateProcessor *)self _detectDuplicatesAndInsertIntoDuplicateAlbumWithPhotoLibrary:libraryCopy detector:v30 duplicateType:2 error:&v49];
   v14 = v49;
 
-  v32 = [v29 stop];
+  stop2 = [start3 stop];
   v33 = PLDuplicateDetectionGetLog();
   if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
   {
-    v34 = [v29 perfCheckLogStringWithPerfCheckInfo:v32];
+    v34 = [start3 perfCheckLogStringWithPerfCheckInfo:stop2];
     *buf = 138412290;
     v52 = v34;
     _os_log_impl(&dword_19BF1F000, v33, OS_LOG_TYPE_DEFAULT, "Duplicate Processing: exact pixel matching completed%@", buf, 0xCu);
@@ -2578,10 +2578,10 @@ LABEL_16:
 
   if (v31)
   {
-    v11 = v20;
-    v12 = v47;
-    a6 = v48;
-    if ((v8 & 4) == 0)
+    idsCopy = v20;
+    start = v47;
+    error = errorCopy2;
+    if ((typeCopy & 4) == 0)
     {
 LABEL_27:
       v37 = 1;
@@ -2608,15 +2608,15 @@ LABEL_22:
 
   v37 = 0;
 LABEL_30:
-  v11 = v20;
-  v12 = v47;
-  a6 = v48;
+  idsCopy = v20;
+  start = v47;
+  error = errorCopy2;
 LABEL_31:
-  v38 = [v12 stop];
+  stop3 = [start stop];
   v39 = PLDuplicateDetectionGetLog();
   if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
   {
-    v40 = [v12 perfCheckLogStringWithPerfCheckInfo:v38];
+    v40 = [start perfCheckLogStringWithPerfCheckInfo:stop3];
     *buf = 138412290;
     v52 = v40;
     _os_log_impl(&dword_19BF1F000, v39, OS_LOG_TYPE_DEFAULT, "Duplicate Processing: completed%@", buf, 0xCu);
@@ -2624,7 +2624,7 @@ LABEL_31:
 
   v41 = v14;
   v42 = v41;
-  if (a6)
+  if (error)
   {
     v43 = v37;
   }
@@ -2637,23 +2637,23 @@ LABEL_31:
   if ((v43 & 1) == 0)
   {
     v44 = v41;
-    *a6 = v42;
+    *error = v42;
   }
 
   return v37;
 }
 
-- (id)_buildInterruptBatchFromStartingOIDs:(id)a3 library:(id)a4
+- (id)_buildInterruptBatchFromStartingOIDs:(id)ds library:(id)library
 {
-  v6 = a4;
-  v7 = [a3 sortedArrayUsingComparator:&__block_literal_global_808];
-  v8 = [v6 managedObjectContext];
+  libraryCopy = library;
+  v7 = [ds sortedArrayUsingComparator:&__block_literal_global_808];
+  managedObjectContext = [libraryCopy managedObjectContext];
 
-  v9 = [(PLDuplicateProcessor *)self _resumeInterruptMarker];
-  v10 = v8;
-  if (v9)
+  _resumeInterruptMarker = [(PLDuplicateProcessor *)self _resumeInterruptMarker];
+  v10 = managedObjectContext;
+  if (_resumeInterruptMarker)
   {
-    v11 = [MEMORY[0x1E695DFF8] URLWithString:v9];
+    v11 = [MEMORY[0x1E695DFF8] URLWithString:_resumeInterruptMarker];
   }
 
   else
@@ -2661,8 +2661,8 @@ LABEL_31:
     v11 = 0;
   }
 
-  v12 = [v10 persistentStoreCoordinator];
-  v13 = [v12 managedObjectIDForURIRepresentation:v11];
+  persistentStoreCoordinator = [v10 persistentStoreCoordinator];
+  v13 = [persistentStoreCoordinator managedObjectIDForURIRepresentation:v11];
 
   v14 = [v7 indexOfObject:v13];
   v15 = v7;
@@ -2680,30 +2680,30 @@ LABEL_31:
 
 - (id)_resumeInterruptMarker
 {
-  v2 = [(PLDuplicateProcessor *)self _appPrivateData];
-  v3 = [v2 valueForKey:@"DuplicateProcessingLibraryInterruptMarker"];
+  _appPrivateData = [(PLDuplicateProcessor *)self _appPrivateData];
+  v3 = [_appPrivateData valueForKey:@"DuplicateProcessingLibraryInterruptMarker"];
 
   return v3;
 }
 
-- (void)_setInterruptMarker:(id)a3
+- (void)_setInterruptMarker:(id)marker
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  markerCopy = marker;
+  if (markerCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [v4 URIRepresentation];
-    v6 = [v5 absoluteString];
+    uRIRepresentation = [markerCopy URIRepresentation];
+    absoluteString = [uRIRepresentation absoluteString];
   }
 
   else
   {
-    v6 = 0;
+    absoluteString = 0;
   }
 
-  v7 = [(PLDuplicateProcessor *)self _appPrivateData];
+  _appPrivateData = [(PLDuplicateProcessor *)self _appPrivateData];
   v11 = 0;
-  v8 = [v7 setValue:v6 forKey:@"DuplicateProcessingLibraryInterruptMarker" error:&v11];
+  v8 = [_appPrivateData setValue:absoluteString forKey:@"DuplicateProcessingLibraryInterruptMarker" error:&v11];
   v9 = v11;
 
   if ((v8 & 1) == 0)
@@ -2718,21 +2718,21 @@ LABEL_31:
   }
 }
 
-- (BOOL)_batchEnumerateOrGenerateAssetObjectIdsFromStartingAssetOIDs:(id)a3 library:(id)a4 error:(id *)a5 continuationHandler:(id)a6 processingBatchBlock:(id)a7
+- (BOOL)_batchEnumerateOrGenerateAssetObjectIdsFromStartingAssetOIDs:(id)ds library:(id)library error:(id *)error continuationHandler:(id)handler processingBatchBlock:(id)block
 {
   v57[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v47 = a7;
-  v15 = v12;
-  v48 = v14;
+  dsCopy = ds;
+  libraryCopy = library;
+  handlerCopy = handler;
+  blockCopy = block;
+  v15 = dsCopy;
+  v48 = handlerCopy;
   if ([v15 count])
   {
-    if (v14 && [v15 count] >= 0x5DD)
+    if (handlerCopy && [v15 count] >= 0x5DD)
     {
       v16 = objc_autoreleasePoolPush();
-      v17 = [(PLDuplicateProcessor *)self _buildInterruptBatchFromStartingOIDs:v15 library:v13];
+      v17 = [(PLDuplicateProcessor *)self _buildInterruptBatchFromStartingOIDs:v15 library:libraryCopy];
 
       objc_autoreleasePoolPop(v16);
       v18 = 0;
@@ -2749,7 +2749,7 @@ LABEL_31:
   {
     v19 = objc_autoreleasePoolPush();
     v55 = 0;
-    v20 = [(PLDuplicateProcessor *)self _fetchAssetOIDsForPhotoLibrary:v13 error:&v55];
+    v20 = [(PLDuplicateProcessor *)self _fetchAssetOIDsForPhotoLibrary:libraryCopy error:&v55];
     v18 = v55;
     if (!v20)
     {
@@ -2773,7 +2773,7 @@ LABEL_31:
 
     if (v48 && v21 >= 0x5DD)
     {
-      v17 = [(PLDuplicateProcessor *)self _buildInterruptBatchFromStartingOIDs:v20 library:v13];
+      v17 = [(PLDuplicateProcessor *)self _buildInterruptBatchFromStartingOIDs:v20 library:libraryCopy];
     }
 
     objc_autoreleasePoolPop(v19);
@@ -2782,13 +2782,13 @@ LABEL_31:
   if ([v17 count] <= 0x5DC)
   {
     v54 = v18;
-    v23 = [(PLDuplicateProcessor *)self _isValidSharedLibraryStateWithLibrary:v13 error:&v54];
+    v23 = [(PLDuplicateProcessor *)self _isValidSharedLibraryStateWithLibrary:libraryCopy error:&v54];
     v24 = v54;
 
     if (v23)
     {
       v53 = v24;
-      LOBYTE(v25) = v47[2](v47, v17, &v53);
+      LOBYTE(v25) = blockCopy[2](blockCopy, v17, &v53);
       v18 = v53;
 
       if (v48)
@@ -2812,10 +2812,10 @@ LABEL_40:
     goto LABEL_45;
   }
 
-  v43 = a5;
+  errorCopy = error;
   v44 = v15;
   v49 = v17;
-  v50 = v13;
+  v50 = libraryCopy;
   v26 = [v17 count];
   if (v26)
   {
@@ -2849,7 +2849,7 @@ LABEL_40:
       }
 
       v51 = v18;
-      v25 = v47[2](v47, v33, &v51);
+      v25 = blockCopy[2](blockCopy, v33, &v51);
       v34 = v51;
 
       v28 += v31;
@@ -2863,8 +2863,8 @@ LABEL_40:
         break;
       }
 
-      v35 = [v33 lastObject];
-      [(PLDuplicateProcessor *)self _setInterruptMarker:v35];
+      lastObject = [v33 lastObject];
+      [(PLDuplicateProcessor *)self _setInterruptMarker:lastObject];
 
       v36 = MEMORY[0x1E696ABC0];
       v56 = v45;
@@ -2893,23 +2893,23 @@ LABEL_35:
   if (!v48)
   {
     v17 = v49;
-    v13 = v50;
+    libraryCopy = v50;
     goto LABEL_42;
   }
 
   v17 = v49;
-  v13 = v50;
+  libraryCopy = v50;
   if (!v25)
   {
 LABEL_42:
-    a5 = v43;
+    error = errorCopy;
     v15 = v44;
     goto LABEL_43;
   }
 
   [(PLDuplicateProcessor *)self _setInterruptMarker:0];
   v38 = v18;
-  a5 = v43;
+  error = errorCopy;
   v15 = v44;
   if (v25)
   {
@@ -2921,11 +2921,11 @@ LABEL_44:
 
 LABEL_45:
   v40 = v48;
-  if (a5)
+  if (error)
   {
     v41 = v38;
     v39 = 0;
-    *a5 = v38;
+    *error = v38;
   }
 
   else
@@ -2938,31 +2938,31 @@ LABEL_48:
   return v39;
 }
 
-- (BOOL)processDuplicatesOfAssetObjectIds:(id)a3 processingType:(unint64_t)a4 error:(id *)a5 continuationHandler:(id)a6
+- (BOOL)processDuplicatesOfAssetObjectIds:(id)ids processingType:(unint64_t)type error:(id *)error continuationHandler:(id)handler
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
+  idsCopy = ids;
+  handlerCopy = handler;
   if (PLIsAssetsd() & 1) != 0 || (PLIsInternalTool() & 1) != 0 || (MEMORY[0x19EAEE520]())
   {
     os_unfair_lock_lock(&self->_processingLock);
-    v12 = [(PLDuplicateProcessor *)self _photoLibrary];
-    v13 = [v10 allObjects];
-    v26 = a4;
+    _photoLibrary = [(PLDuplicateProcessor *)self _photoLibrary];
+    allObjects = [idsCopy allObjects];
+    typeCopy = type;
     v27 = 0;
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __99__PLDuplicateProcessor_processDuplicatesOfAssetObjectIds_processingType_error_continuationHandler___block_invoke;
     v24[3] = &unk_1E7564828;
     v24[4] = self;
-    v25 = v12;
-    v14 = v12;
-    LOBYTE(v12) = [(PLDuplicateProcessor *)self _batchEnumerateOrGenerateAssetObjectIdsFromStartingAssetOIDs:v13 library:v14 error:&v27 continuationHandler:v11 processingBatchBlock:v24];
+    v25 = _photoLibrary;
+    v14 = _photoLibrary;
+    LOBYTE(_photoLibrary) = [(PLDuplicateProcessor *)self _batchEnumerateOrGenerateAssetObjectIdsFromStartingAssetOIDs:allObjects library:v14 error:&v27 continuationHandler:handlerCopy processingBatchBlock:v24];
     v15 = v27;
 
     os_unfair_lock_unlock(&self->_processingLock);
     v16 = v15;
-    if (v12)
+    if (_photoLibrary)
     {
       v17 = 1;
       goto LABEL_10;
@@ -2981,11 +2981,11 @@ LABEL_48:
     v16 = v21;
   }
 
-  if (a5)
+  if (error)
   {
     v22 = v16;
     v17 = 0;
-    *a5 = v16;
+    *error = v16;
   }
 
   else
@@ -2998,10 +2998,10 @@ LABEL_10:
   return v17;
 }
 
-- (BOOL)_isValidSharedLibraryStateWithLibrary:(id)a3 error:(id *)a4
+- (BOOL)_isValidSharedLibraryStateWithLibrary:(id)library error:(id *)error
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v5 = [PLDuplicateProcessor isExitingSharedLibraryForLibrary:a3];
+  v5 = [PLDuplicateProcessor isExitingSharedLibraryForLibrary:library];
   if (v5)
   {
     v6 = MEMORY[0x1E696ABC0];
@@ -3011,10 +3011,10 @@ LABEL_10:
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
     v9 = [v6 errorWithDomain:v7 code:49406 userInfo:v8];
 
-    if (a4)
+    if (error)
     {
       v10 = v9;
-      *a4 = v9;
+      *error = v9;
     }
   }
 
@@ -3023,33 +3023,33 @@ LABEL_10:
 
 - (id)_photoLibrary
 {
-  v3 = [(PLDuplicateProcessor *)self unitTestLibrary];
-  if (v3)
+  unitTestLibrary = [(PLDuplicateProcessor *)self unitTestLibrary];
+  if (unitTestLibrary)
   {
-    v4 = [(PLDuplicateProcessor *)self unitTestLibrary];
+    unitTestLibrary2 = [(PLDuplicateProcessor *)self unitTestLibrary];
   }
 
   else
   {
-    v5 = [(PLLibraryServicesManager *)self->_lsm databaseContext];
+    databaseContext = [(PLLibraryServicesManager *)self->_lsm databaseContext];
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v4 = [v5 newShortLivedLibraryWithName:{objc_msgSend(v7, "UTF8String")}];
+    unitTestLibrary2 = [databaseContext newShortLivedLibraryWithName:{objc_msgSend(v7, "UTF8String")}];
   }
 
-  return v4;
+  return unitTestLibrary2;
 }
 
-- (PLDuplicateProcessor)initWithLibraryServicesManager:(id)a3
+- (PLDuplicateProcessor)initWithLibraryServicesManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v28.receiver = self;
   v28.super_class = PLDuplicateProcessor;
   v6 = [(PLDuplicateProcessor *)&v28 init];
   v7 = v6;
   if (v6)
   {
-    if ((objc_storeStrong(&v6->_lsm, a3), v7->_processingLock._os_unfair_lock_opaque = 0, v8 = objc_alloc_init(MEMORY[0x1E695DFA8]), inFlightMergeAssetUuids = v7->_inFlightMergeAssetUuids, v7->_inFlightMergeAssetUuids = v8, inFlightMergeAssetUuids, v7->_inFlightMergeLock._os_unfair_lock_opaque = 0, v10 = objc_initWeak(location, v7), v7, v11 = objc_alloc(MEMORY[0x1E69BF270]), v21 = MEMORY[0x1E69E9820], v22 = 3221225472, v23 = __55__PLDuplicateProcessor_initWithLibraryServicesManager___block_invoke, v24 = &unk_1E7573318, objc_copyWeak(&v26, location), v12 = v5, v25 = v12, v13 = [v11 initWithBlock:&v21], v25, objc_destroyWeak(&v26), objc_destroyWeak(location), lazyAppPrivateData = v7->_lazyAppPrivateData, v7->_lazyAppPrivateData = v13, lazyAppPrivateData, v7->_enableEXIFDataAccess = 1, v15 = PLIsReallyAssetsd(), (v15 & 1) == 0) && !MEMORY[0x19EAEE520](v15, v16, v17, v18) || !+[PLDuplicateProcessor isDuplicateProcessorEnabledForLibraryServicesManager:](PLDuplicateProcessor, "isDuplicateProcessorEnabledForLibraryServicesManager:", v12, v21, v22, v23, v24))
+    if ((objc_storeStrong(&v6->_lsm, manager), v7->_processingLock._os_unfair_lock_opaque = 0, v8 = objc_alloc_init(MEMORY[0x1E695DFA8]), inFlightMergeAssetUuids = v7->_inFlightMergeAssetUuids, v7->_inFlightMergeAssetUuids = v8, inFlightMergeAssetUuids, v7->_inFlightMergeLock._os_unfair_lock_opaque = 0, v10 = objc_initWeak(location, v7), v7, v11 = objc_alloc(MEMORY[0x1E69BF270]), v21 = MEMORY[0x1E69E9820], v22 = 3221225472, v23 = __55__PLDuplicateProcessor_initWithLibraryServicesManager___block_invoke, v24 = &unk_1E7573318, objc_copyWeak(&v26, location), v12 = managerCopy, v25 = v12, v13 = [v11 initWithBlock:&v21], v25, objc_destroyWeak(&v26), objc_destroyWeak(location), lazyAppPrivateData = v7->_lazyAppPrivateData, v7->_lazyAppPrivateData = v13, lazyAppPrivateData, v7->_enableEXIFDataAccess = 1, v15 = PLIsReallyAssetsd(), (v15 & 1) == 0) && !MEMORY[0x19EAEE520](v15, v16, v17, v18) || !+[PLDuplicateProcessor isDuplicateProcessorEnabledForLibraryServicesManager:](PLDuplicateProcessor, "isDuplicateProcessorEnabledForLibraryServicesManager:", v12, v21, v22, v23, v24))
     {
       v19 = PLDuplicateDetectionGetLog();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -3084,19 +3084,19 @@ id __55__PLDuplicateProcessor_initWithLibraryServicesManager___block_invoke(uint
   return v6;
 }
 
-+ (void)updateSharedLibraryIsEnabledFeatureVersionIfNeededWithPhotoLibrary:(id)a3 cplConfiguration:(id)a4
++ (void)updateSharedLibraryIsEnabledFeatureVersionIfNeededWithPhotoLibrary:(id)library cplConfiguration:(id)configuration
 {
   v61 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  configurationCopy = configuration;
   v8 = MEMORY[0x1E69BF2A0];
-  v9 = [v6 pathManager];
-  v10 = [v9 libraryURL];
-  LODWORD(v8) = [v8 isSystemPhotoLibraryURL:v10];
+  pathManager = [libraryCopy pathManager];
+  libraryURL = [pathManager libraryURL];
+  LODWORD(v8) = [v8 isSystemPhotoLibraryURL:libraryURL];
 
   if (v8)
   {
-    v11 = [v7 valueForKey:@"feature.version.duplicateprocessorsharedlibrary"];
+    v11 = [configurationCopy valueForKey:@"feature.version.duplicateprocessorsharedlibrary"];
     if (v11)
     {
       v12 = v11;
@@ -3108,16 +3108,16 @@ id __55__PLDuplicateProcessor_initWithLibraryServicesManager___block_invoke(uint
     }
 
     v13 = MEMORY[0x1E69BF188];
-    v14 = [v6 pathManager];
-    v15 = [v14 libraryURL];
-    v16 = [v13 appPrivateDataForLibraryURL:v15];
+    pathManager2 = [libraryCopy pathManager];
+    libraryURL2 = [pathManager2 libraryURL];
+    v16 = [v13 appPrivateDataForLibraryURL:libraryURL2];
 
     v17 = [v16 valueForKey:@"DuplicateSharedLibraryCPLConfigurationFeatureVersion"];
     if (v17)
     {
 LABEL_13:
-      v29 = [v12 unsignedIntValue];
-      if (v29 <= [v17 unsignedIntValue])
+      unsignedIntValue = [v12 unsignedIntValue];
+      if (unsignedIntValue <= [v17 unsignedIntValue])
       {
         v39 = PLDuplicateDetectionGetLog();
         if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
@@ -3154,7 +3154,7 @@ LABEL_33:
       }
 
       v51 = 0;
-      v31 = [a1 removeAllDuplicateSharedLibraryAssetFromAlbumWithPhotoLibrary:v6 error:&v51];
+      v31 = [self removeAllDuplicateSharedLibraryAssetFromAlbumWithPhotoLibrary:libraryCopy error:&v51];
       v32 = v51;
       v33 = PLDuplicateDetectionGetLog();
       v34 = v33;
@@ -3202,14 +3202,14 @@ LABEL_25:
       {
         if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
         {
-          v43 = [v6 libraryServicesManager];
-          v44 = [v43 wellKnownPhotoLibraryIdentifier];
+          libraryServicesManager = [libraryCopy libraryServicesManager];
+          wellKnownPhotoLibraryIdentifier = [libraryServicesManager wellKnownPhotoLibraryIdentifier];
           *buf = 136315650;
           v54 = "+[PLDuplicateProcessor updateSharedLibraryIsEnabledFeatureVersionIfNeededWithPhotoLibrary:cplConfiguration:]";
           v55 = 2114;
           v56 = v17;
           v57 = 2048;
-          v58 = v44;
+          v58 = wellKnownPhotoLibraryIdentifier;
           v45 = "%s: Updating shared library enable marker %{public}@ for library identifier: %td";
           v46 = v42;
           v47 = OS_LOG_TYPE_DEFAULT;
@@ -3221,14 +3221,14 @@ LABEL_30:
 
       else if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
       {
-        v43 = [v6 libraryServicesManager];
-        v49 = [v43 wellKnownPhotoLibraryIdentifier];
+        libraryServicesManager = [libraryCopy libraryServicesManager];
+        wellKnownPhotoLibraryIdentifier2 = [libraryServicesManager wellKnownPhotoLibraryIdentifier];
         *buf = 136315906;
         v54 = "+[PLDuplicateProcessor updateSharedLibraryIsEnabledFeatureVersionIfNeededWithPhotoLibrary:cplConfiguration:]";
         v55 = 2114;
         v56 = v17;
         v57 = 2048;
-        v58 = v49;
+        v58 = wellKnownPhotoLibraryIdentifier2;
         v59 = 2112;
         v60 = v39;
         v45 = "%s: Failed to update shared library enable marker %{public}@ for library identifier: %td. Error: %@";
@@ -3251,14 +3251,14 @@ LABEL_32:
     {
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = [v6 libraryServicesManager];
-        v23 = [v22 wellKnownPhotoLibraryIdentifier];
+        libraryServicesManager2 = [libraryCopy libraryServicesManager];
+        wellKnownPhotoLibraryIdentifier3 = [libraryServicesManager2 wellKnownPhotoLibraryIdentifier];
         *buf = 136315650;
         v54 = "+[PLDuplicateProcessor updateSharedLibraryIsEnabledFeatureVersionIfNeededWithPhotoLibrary:cplConfiguration:]";
         v55 = 2114;
         v56 = &unk_1F0FBA7F8;
         v57 = 2048;
-        v58 = v23;
+        v58 = wellKnownPhotoLibraryIdentifier3;
         v24 = "%s: Setting the initial shared library enable marker %{public}@ for library identifier: %td";
         v25 = v21;
         v26 = OS_LOG_TYPE_DEFAULT;
@@ -3270,14 +3270,14 @@ LABEL_11:
 
     else if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      v22 = [v6 libraryServicesManager];
-      v28 = [v22 wellKnownPhotoLibraryIdentifier];
+      libraryServicesManager2 = [libraryCopy libraryServicesManager];
+      wellKnownPhotoLibraryIdentifier4 = [libraryServicesManager2 wellKnownPhotoLibraryIdentifier];
       *buf = 136315906;
       v54 = "+[PLDuplicateProcessor updateSharedLibraryIsEnabledFeatureVersionIfNeededWithPhotoLibrary:cplConfiguration:]";
       v55 = 2114;
       v56 = &unk_1F0FBA7F8;
       v57 = 2048;
-      v58 = v28;
+      v58 = wellKnownPhotoLibraryIdentifier4;
       v59 = 2112;
       v60 = v19;
       v24 = "%s: Failed to set the initial shared library enable marker %{public}@ for library identifier: %td. Error: %@";
@@ -3294,14 +3294,14 @@ LABEL_11:
 LABEL_34:
 }
 
-+ (BOOL)sharedLibraryDedupeEnabledWithPathManager:(id)a3
++ (BOOL)sharedLibraryDedupeEnabledWithPathManager:(id)manager
 {
-  v3 = a3;
-  if ([v3 isSystemPhotoLibraryPathManager])
+  managerCopy = manager;
+  if ([managerCopy isSystemPhotoLibraryPathManager])
   {
     v4 = MEMORY[0x1E69BF188];
-    v5 = [v3 libraryURL];
-    v6 = [v4 appPrivateDataForLibraryURL:v5];
+    libraryURL = [managerCopy libraryURL];
+    v6 = [v4 appPrivateDataForLibraryURL:libraryURL];
 
     v7 = [v6 valueForKey:@"DuplicateSharedLibraryCPLConfigurationFeatureVersion"];
     v8 = v7;
@@ -3324,10 +3324,10 @@ LABEL_34:
   return v9;
 }
 
-+ (BOOL)_removeAssetsFromDuplicateAlbumUsingFetchRequest:(id)a3 library:(id)a4 error:(id *)a5
++ (BOOL)_removeAssetsFromDuplicateAlbumUsingFetchRequest:(id)request library:(id)library error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  requestCopy = request;
+  libraryCopy = library;
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
@@ -3342,20 +3342,20 @@ LABEL_34:
   v16[1] = 3221225472;
   v16[2] = __87__PLDuplicateProcessor__removeAssetsFromDuplicateAlbumUsingFetchRequest_library_error___block_invoke;
   v16[3] = &unk_1E756E960;
-  v10 = v9;
+  v10 = libraryCopy;
   v17 = v10;
-  v11 = v8;
+  v11 = requestCopy;
   v18 = v11;
   v19 = &v22;
   v20 = &v28;
-  v21 = a1;
+  selfCopy = self;
   [v10 performTransactionAndWait:v16];
   v12 = *(v29 + 24);
   v13 = v23[5];
-  if (a5 && (v12 & 1) == 0)
+  if (error && (v12 & 1) == 0)
   {
     v13 = v13;
-    *a5 = v13;
+    *error = v13;
   }
 
   v14 = *(v29 + 24);
@@ -3444,11 +3444,11 @@ void __87__PLDuplicateProcessor__removeAssetsFromDuplicateAlbumUsingFetchRequest
   }
 }
 
-+ (BOOL)removeAllDuplicateSharedLibraryAssetFromAlbumWithPhotoLibrary:(id)a3 error:(id *)a4
++ (BOOL)removeAllDuplicateSharedLibraryAssetFromAlbumWithPhotoLibrary:(id)library error:(id *)error
 {
   v25[2] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E695D5E0];
-  v7 = a3;
+  libraryCopy = library;
   v8 = +[PLManagedAsset entityName];
   v9 = [v6 fetchRequestWithEntityName:v8];
 
@@ -3462,7 +3462,7 @@ void __87__PLDuplicateProcessor__removeAssetsFromDuplicateAlbumUsingFetchRequest
   [v9 setPredicate:v14];
 
   v22 = 0;
-  v15 = [a1 _removeAssetsFromDuplicateAlbumUsingFetchRequest:v9 library:v7 error:&v22];
+  v15 = [self _removeAssetsFromDuplicateAlbumUsingFetchRequest:v9 library:libraryCopy error:&v22];
 
   v16 = v22;
   v17 = PLDuplicateDetectionGetLog();
@@ -3488,26 +3488,26 @@ void __87__PLDuplicateProcessor__removeAssetsFromDuplicateAlbumUsingFetchRequest
     }
 
     v20 = v16;
-    if (a4)
+    if (error)
     {
-      *a4 = v20;
+      *error = v20;
     }
   }
 
   return v15;
 }
 
-+ (void)signalDuplicateBackgroundJobItemForAssetUUID:(id)a3 requiresMetadataProcessing:(BOOL)a4 library:(id)a5
++ (void)signalDuplicateBackgroundJobItemForAssetUUID:(id)d requiresMetadataProcessing:(BOOL)processing library:(id)library
 {
-  v6 = a4;
+  processingCopy = processing;
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v9 = v8;
-  if (v7)
+  dCopy = d;
+  libraryCopy = library;
+  v9 = libraryCopy;
+  if (dCopy)
   {
-    v10 = [v8 libraryServicesManager];
-    if (v6)
+    libraryServicesManager = [libraryCopy libraryServicesManager];
+    if (processingCopy)
     {
       v11 = 3;
     }
@@ -3517,7 +3517,7 @@ void __87__PLDuplicateProcessor__removeAssetsFromDuplicateAlbumUsingFetchRequest
       v11 = 1;
     }
 
-    v12 = [v9 addBackgroundJobWorkItemIfNeededWithIdentifier:v7 jobType:6 jobFlags:v11];
+    v12 = [v9 addBackgroundJobWorkItemIfNeededWithIdentifier:dCopy jobType:6 jobFlags:v11];
 
     if (v12)
     {
@@ -3528,13 +3528,13 @@ void __87__PLDuplicateProcessor__removeAssetsFromDuplicateAlbumUsingFetchRequest
         v18 = 138543618;
         v19 = @"Duplicate Detector Processing";
         v20 = 2114;
-        v21 = v7;
+        v21 = dCopy;
         _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEBUG, "Duplicate Processing: Installed background job type [%{public}@] and triggering update: %{public}@", &v18, 0x16u);
       }
 
-      v15 = [v10 backgroundJobService];
+      backgroundJobService = [libraryServicesManager backgroundJobService];
       v16 = [PLBackgroundJobWorkerTypes workerTypesMaskForBackgroundJobType:6];
-      [(__CFString *)v15 signalBackgroundProcessingNeededOnLibrary:v9 workerTypes:v16];
+      [(__CFString *)backgroundJobService signalBackgroundProcessingNeededOnLibrary:v9 workerTypes:v16];
 
       goto LABEL_11;
     }
@@ -3542,22 +3542,22 @@ void __87__PLDuplicateProcessor__removeAssetsFromDuplicateAlbumUsingFetchRequest
 
   else
   {
-    v10 = PLDuplicateDetectionGetLog();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+    libraryServicesManager = PLDuplicateDetectionGetLog();
+    if (os_log_type_enabled(libraryServicesManager, OS_LOG_TYPE_DEBUG))
     {
-      v15 = @"Duplicate Detector Processing";
+      backgroundJobService = @"Duplicate Detector Processing";
       v17 = @"Duplicate Detector Processing";
       v18 = 138543362;
       v19 = @"Duplicate Detector Processing";
-      _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_DEBUG, "Duplicate Processing: Skip signaling worker for job type [%{public}@] - missing identifier", &v18, 0xCu);
+      _os_log_impl(&dword_19BF1F000, libraryServicesManager, OS_LOG_TYPE_DEBUG, "Duplicate Processing: Skip signaling worker for job type [%{public}@] - missing identifier", &v18, 0xCu);
 LABEL_11:
     }
   }
 }
 
-+ (BOOL)isExitingSharedLibraryForLibrary:(id)a3
++ (BOOL)isExitingSharedLibraryForLibrary:(id)library
 {
-  v3 = a3;
+  libraryCopy = library;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -3566,7 +3566,7 @@ LABEL_11:
   v7[1] = 3221225472;
   v7[2] = __57__PLDuplicateProcessor_isExitingSharedLibraryForLibrary___block_invoke;
   v7[3] = &unk_1E7578910;
-  v4 = v3;
+  v4 = libraryCopy;
   v8 = v4;
   v9 = &v10;
   [v4 performBlockAndWait:v7];
@@ -3587,17 +3587,17 @@ void __57__PLDuplicateProcessor_isExitingSharedLibraryForLibrary___block_invoke(
   }
 }
 
-+ (BOOL)isDuplicateProcessorEnabledForLibraryServicesManager:(id)a3
++ (BOOL)isDuplicateProcessorEnabledForLibraryServicesManager:(id)manager
 {
-  v3 = a3;
+  managerCopy = manager;
   if (MEMORY[0x19EAEE520]() & 1) != 0 || (PLIsInternalTool())
   {
     v4 = 1;
   }
 
-  else if (v3)
+  else if (managerCopy)
   {
-    v4 = [v3 wellKnownPhotoLibraryIdentifier] < 2;
+    v4 = [managerCopy wellKnownPhotoLibraryIdentifier] < 2;
   }
 
   else

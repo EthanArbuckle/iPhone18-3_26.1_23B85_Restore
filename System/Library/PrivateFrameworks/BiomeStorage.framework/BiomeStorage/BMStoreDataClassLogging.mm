@@ -1,16 +1,16 @@
 @interface BMStoreDataClassLogging
-+ (void)logClassNamed:(id)a3;
++ (void)logClassNamed:(id)named;
 @end
 
 @implementation BMStoreDataClassLogging
 
-+ (void)logClassNamed:(id)a3
++ (void)logClassNamed:(id)named
 {
-  v3 = a3;
+  namedCopy = named;
   if (_os_feature_enabled_impl())
   {
-    v4 = NSClassFromString(v3);
-    if (![(NSString *)v3 hasPrefix:@"BM"])
+    v4 = NSClassFromString(namedCopy);
+    if (![(NSString *)namedCopy hasPrefix:@"BM"])
     {
       goto LABEL_6;
     }
@@ -22,24 +22,24 @@
     }
 
     v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:ImageName];
-    v7 = [v6 lastPathComponent];
+    lastPathComponent = [v6 lastPathComponent];
 
-    if (([v7 isEqual:@"BiomeStreams"]& 1) != 0)
+    if (([lastPathComponent isEqual:@"BiomeStreams"]& 1) != 0)
     {
 LABEL_8:
 
       goto LABEL_9;
     }
 
-    v8 = [v7 hasPrefix:@"BiomeLibrary"];
+    v8 = [lastPathComponent hasPrefix:@"BiomeLibrary"];
 
     if ((v8 & 1) == 0)
     {
 LABEL_6:
-      v7 = __biome_log_for_category();
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
+      lastPathComponent = __biome_log_for_category();
+      if (os_log_type_enabled(lastPathComponent, OS_LOG_TYPE_FAULT))
       {
-        [(BMStoreDataClassLogging *)v3 logClassNamed:v7];
+        [(BMStoreDataClassLogging *)namedCopy logClassNamed:lastPathComponent];
       }
 
       goto LABEL_8;

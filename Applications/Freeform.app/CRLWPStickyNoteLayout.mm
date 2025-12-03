@@ -1,7 +1,7 @@
 @interface CRLWPStickyNoteLayout
 - (CGSize)minimumSize;
 - (CRLFill)instructionalTextCharacterFill;
-- (_TtC8Freeform21CRLWPStickyNoteLayout)initWithInfo:(id)a3;
+- (_TtC8Freeform21CRLWPStickyNoteLayout)initWithInfo:(id)info;
 @end
 
 @implementation CRLWPStickyNoteLayout
@@ -22,12 +22,12 @@
   return v2;
 }
 
-- (_TtC8Freeform21CRLWPStickyNoteLayout)initWithInfo:(id)a3
+- (_TtC8Freeform21CRLWPStickyNoteLayout)initWithInfo:(id)info
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for CRLWPStickyNoteLayout();
   swift_unknownObjectRetain();
-  v4 = [(CRLWPShapeLayout *)&v6 initWithInfo:a3];
+  v4 = [(CRLWPShapeLayout *)&v6 initWithInfo:info];
   swift_unknownObjectRelease();
   if (v4)
   {

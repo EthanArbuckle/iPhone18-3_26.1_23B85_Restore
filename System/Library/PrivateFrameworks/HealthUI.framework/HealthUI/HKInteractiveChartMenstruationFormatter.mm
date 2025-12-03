@@ -1,31 +1,31 @@
 @interface HKInteractiveChartMenstruationFormatter
-- (id)formattedSelectedRangeLabelDataWithChartData:(id)a3 context:(int64_t)a4;
+- (id)formattedSelectedRangeLabelDataWithChartData:(id)data context:(int64_t)context;
 @end
 
 @implementation HKInteractiveChartMenstruationFormatter
 
-- (id)formattedSelectedRangeLabelDataWithChartData:(id)a3 context:(int64_t)a4
+- (id)formattedSelectedRangeLabelDataWithChartData:(id)data context:(int64_t)context
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (!v5 || ![v5 count])
+  dataCopy = data;
+  v6 = dataCopy;
+  if (!dataCopy || ![dataCopy count])
   {
     v16 = MEMORY[0x1E695E0F0];
     goto LABEL_27;
   }
 
-  v7 = [(HKInteractiveChartDataFormatter *)self displayType];
-  v8 = [v7 hk_enumeratedValueLabels];
+  displayType = [(HKInteractiveChartDataFormatter *)self displayType];
+  hk_enumeratedValueLabels = [displayType hk_enumeratedValueLabels];
 
-  if (v8 && [v6 count] == 1)
+  if (hk_enumeratedValueLabels && [v6 count] == 1)
   {
     v9 = [[HKSelectedRangeData alloc] initWithStatisticsType:0];
-    v10 = [v6 firstObject];
-    v11 = [(HKInteractiveChartCategoryValueFormatter *)self _formattedStringWithValue:[(HKSelectedRangeData *)v10 value] useColorAttributes:1];
+    firstObject = [v6 firstObject];
+    v11 = [(HKInteractiveChartCategoryValueFormatter *)self _formattedStringWithValue:[(HKSelectedRangeData *)firstObject value] useColorAttributes:1];
     [(HKSelectedRangeData *)v9 setAttributedString:v11];
 
-    if ([(HKSelectedRangeData *)v10 startOfCycle])
+    if ([(HKSelectedRangeData *)firstObject startOfCycle])
     {
       v12 = 12;
     }
@@ -36,7 +36,7 @@
     }
 
     [(HKSelectedRangeData *)v9 setDataType:v12];
-    v13 = [MEMORY[0x1E696AD98] numberWithInteger:{-[HKSelectedRangeData value](v10, "value")}];
+    v13 = [MEMORY[0x1E696AD98] numberWithInteger:{-[HKSelectedRangeData value](firstObject, "value")}];
     [(HKSelectedRangeData *)v9 setValueAsNumber:v13];
 
     v36[0] = v9;
@@ -66,9 +66,9 @@
           objc_enumerationMutation(v17);
         }
 
-        v24 = [*(*(&v28 + 1) + 8 * i) startOfCycle];
-        v20 |= v24;
-        v21 |= v24 ^ 1;
+        startOfCycle = [*(*(&v28 + 1) + 8 * i) startOfCycle];
+        v20 |= startOfCycle;
+        v21 |= startOfCycle ^ 1;
       }
 
       v19 = [v17 countByEnumeratingWithState:&v28 objects:v35 count:16];
@@ -86,11 +86,11 @@
   v9 = -[HKInteractiveChartCategoryValueFormatter _formattedStringWithCount:](self, "_formattedStringWithCount:", [v17 count]);
   if ((v21 & 1) != 0 && (v20 & 1) == 0)
   {
-    v10 = [[HKSelectedRangeData alloc] initWithStatisticsType:0];
-    [(HKSelectedRangeData *)v10 setAttributedString:v9];
-    [(HKSelectedRangeData *)v10 setDataType:11];
-    [(HKSelectedRangeData *)v10 setValueAsNumber:0];
-    v34 = v10;
+    firstObject = [[HKSelectedRangeData alloc] initWithStatisticsType:0];
+    [(HKSelectedRangeData *)firstObject setAttributedString:v9];
+    [(HKSelectedRangeData *)firstObject setDataType:11];
+    [(HKSelectedRangeData *)firstObject setValueAsNumber:0];
+    v34 = firstObject;
     v14 = MEMORY[0x1E695DEC8];
     v15 = &v34;
 LABEL_25:
@@ -98,27 +98,27 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v10 = [[HKSelectedRangeData alloc] initWithStatisticsType:0];
-  [(HKSelectedRangeData *)v10 setAttributedString:v9];
+  firstObject = [[HKSelectedRangeData alloc] initWithStatisticsType:0];
+  [(HKSelectedRangeData *)firstObject setAttributedString:v9];
   if (!(v21 & 1 | ((v20 & 1) == 0)))
   {
-    [(HKSelectedRangeData *)v10 setDataType:12];
-    [(HKSelectedRangeData *)v10 setValueAsNumber:0];
-    v33 = v10;
+    [(HKSelectedRangeData *)firstObject setDataType:12];
+    [(HKSelectedRangeData *)firstObject setValueAsNumber:0];
+    v33 = firstObject;
     v14 = MEMORY[0x1E695DEC8];
     v15 = &v33;
     goto LABEL_25;
   }
 
-  [(HKSelectedRangeData *)v10 setDataType:11];
-  [(HKSelectedRangeData *)v10 setValueAsNumber:0];
+  [(HKSelectedRangeData *)firstObject setDataType:11];
+  [(HKSelectedRangeData *)firstObject setValueAsNumber:0];
   v25 = [[HKSelectedRangeData alloc] initWithStatisticsType:0];
   [(HKSelectedRangeData *)v25 setDataType:12];
   v26 = [(HKInteractiveChartCategoryValueFormatter *)self _formattedStringWithText:@" "];
   [(HKSelectedRangeData *)v25 setAttributedString:v26];
 
   [(HKSelectedRangeData *)v25 setValueAsNumber:0];
-  v32[0] = v10;
+  v32[0] = firstObject;
   v32[1] = v25;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:2];
 

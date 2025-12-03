@@ -3,52 +3,52 @@
 - (void)confirmUserConsent;
 - (void)dismiss;
 - (void)expandSheet;
-- (void)finishWithTranslation:(id)a3;
+- (void)finishWithTranslation:(id)translation;
 - (void)remoteIsReady;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation LTUIRemoteViewController
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = _LTOSLogSystemTranslation();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
-    [(LTUIRemoteViewController *)v3 viewServiceDidTerminateWithError:v4];
+    [(LTUIRemoteViewController *)errorCopy viewServiceDidTerminateWithError:v4];
   }
 }
 
 - (void)dismiss
 {
-  v2 = [(LTUIRemoteViewController *)self delegate];
-  [v2 dismiss];
+  delegate = [(LTUIRemoteViewController *)self delegate];
+  [delegate dismiss];
 }
 
 - (void)confirmUserConsent
 {
-  v2 = [(LTUIRemoteViewController *)self delegate];
-  [v2 confirmUserConsent];
+  delegate = [(LTUIRemoteViewController *)self delegate];
+  [delegate confirmUserConsent];
 }
 
 - (void)expandSheet
 {
-  v2 = [(LTUIRemoteViewController *)self delegate];
-  [v2 expandSheet];
+  delegate = [(LTUIRemoteViewController *)self delegate];
+  [delegate expandSheet];
 }
 
 - (void)remoteIsReady
 {
-  v2 = [(LTUIRemoteViewController *)self delegate];
-  [v2 remoteIsReady];
+  delegate = [(LTUIRemoteViewController *)self delegate];
+  [delegate remoteIsReady];
 }
 
-- (void)finishWithTranslation:(id)a3
+- (void)finishWithTranslation:(id)translation
 {
-  v4 = a3;
-  v5 = [(LTUIRemoteViewController *)self delegate];
-  [v5 finishWithTranslation:v4];
+  translationCopy = translation;
+  delegate = [(LTUIRemoteViewController *)self delegate];
+  [delegate finishWithTranslation:translationCopy];
 }
 
 - (LTUIViewServiceExtensionHostProtocol)delegate

@@ -1,32 +1,32 @@
 @interface SHSignature
-+ (BOOL)splitSignatureFromData:(id)a3 intoSpectralPeaks:(id *)a4 andMusicalFeatures:(id *)a5 error:(id *)a6;
++ (BOOL)splitSignatureFromData:(id)data intoSpectralPeaks:(id *)peaks andMusicalFeatures:(id *)features error:(id *)error;
 + (SHSignature)signatureWithDataRepresentation:(NSData *)dataRepresentation error:(NSError *)error;
-+ (int64_t)signatureTypeFromData:(id)a3;
++ (int64_t)signatureTypeFromData:(id)data;
 - (NSData)dataRepresentation;
 - (NSTimeInterval)duration;
 - (SHSignature)init;
-- (SHSignature)initWithCoder:(id)a3;
+- (SHSignature)initWithCoder:(id)coder;
 - (SHSignature)initWithDataRepresentation:(NSData *)dataRepresentation error:(NSError *)error;
-- (SHSignature)initWithID:(id)a3 dataRepresentation:(id)a4 startTime:(id)a5 error:(id *)a6;
-- (SHSignature)initWithID:(id)a3 spectralPeaksData:(id)a4 musicalFeaturesData:(id)a5 startTime:(id)a6 error:(id *)a7;
+- (SHSignature)initWithID:(id)d dataRepresentation:(id)representation startTime:(id)time error:(id *)error;
+- (SHSignature)initWithID:(id)d spectralPeaksData:(id)data musicalFeaturesData:(id)featuresData startTime:(id)time error:(id *)error;
 - (SHSignatureMetrics)metrics;
-- (double)durationForSignatureData:(id)a3;
+- (double)durationForSignatureData:(id)data;
 - (double)musicalFeaturesDuration;
 - (double)spectralPeaksDuration;
-- (id)_descriptionWithInternalState:(BOOL)a3;
-- (id)_startDateBasedUponAudioTime:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)commonSetupWithID:(id)a3 spectralPeaksData:(id)a4 musicalFeaturesData:(id)a5 startTime:(id)a6;
-- (void)encodeWithCoder:(id)a3;
+- (id)_descriptionWithInternalState:(BOOL)state;
+- (id)_startDateBasedUponAudioTime:(id)time;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)commonSetupWithID:(id)d spectralPeaksData:(id)data musicalFeaturesData:(id)featuresData startTime:(id)time;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SHSignature
 
-+ (int64_t)signatureTypeFromData:(id)a3
++ (int64_t)signatureTypeFromData:(id)data
 {
   v11 = *MEMORY[0x277D85DE8];
   v8 = 0;
-  v3 = [SHSigUtilities signatureFileTypeForData:a3 error:&v8];
+  v3 = [SHSigUtilities signatureFileTypeForData:data error:&v8];
   v4 = v8;
   if (!v3)
   {
@@ -43,13 +43,13 @@
   return v3;
 }
 
-+ (BOOL)splitSignatureFromData:(id)a3 intoSpectralPeaks:(id *)a4 andMusicalFeatures:(id *)a5 error:(id *)a6
++ (BOOL)splitSignatureFromData:(id)data intoSpectralPeaks:(id *)peaks andMusicalFeatures:(id *)features error:(id *)error
 {
-  v10 = a3;
-  if ([v10 length])
+  dataCopy = data;
+  if ([dataCopy length])
   {
     v16 = 0;
-    v11 = [SHSigUtilities signatureFileTypeForData:v10 error:&v16];
+    v11 = [SHSigUtilities signatureFileTypeForData:dataCopy error:&v16];
     v12 = v16;
     if (v11 <= 1)
     {
@@ -57,10 +57,10 @@
       {
         if (v11 == 1)
         {
-          if (a4)
+          if (peaks)
           {
-            v13 = v10;
-            *a4 = v10;
+            v13 = dataCopy;
+            *peaks = dataCopy;
           }
 
 LABEL_14:
@@ -70,7 +70,7 @@ LABEL_14:
 
       else
       {
-        [SHError annotateClientError:a6 code:200 underlyingError:v12];
+        [SHError annotateClientError:error code:200 underlyingError:v12];
         v6 = 0;
       }
 
@@ -83,16 +83,16 @@ LABEL_15:
     {
       if (v11 == 3)
       {
-        v6 = [SHCoalescedSignature separate:v10 intoPeakFeatures:a4 andMusicalFeatures:a5 error:a6];
+        v6 = [SHCoalescedSignature separate:dataCopy intoPeakFeatures:peaks andMusicalFeatures:features error:error];
       }
 
       goto LABEL_15;
     }
 
-    if (a5)
+    if (features)
     {
-      v14 = v10;
-      *a5 = v10;
+      v14 = dataCopy;
+      *features = dataCopy;
     }
 
     goto LABEL_14;
@@ -143,44 +143,44 @@ LABEL_16:
           _os_log_impl(&dword_230F52000, v14, OS_LOG_TYPE_ERROR, "Could not separate signatures: %@", buf, 0xCu);
         }
 
-        v13 = 0;
+        selfCopy = 0;
         goto LABEL_10;
       }
 
-      v12 = [MEMORY[0x277CCAD78] UUID];
-      [(SHSignature *)self commonSetupWithID:v12 spectralPeaksData:v9 musicalFeaturesData:v10 startTime:v7];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      [(SHSignature *)self commonSetupWithID:uUID spectralPeaksData:v9 musicalFeaturesData:v10 startTime:v7];
     }
 
-    v13 = self;
+    selfCopy = self;
 LABEL_10:
 
     goto LABEL_11;
   }
 
   [SHError remapErrorToClientErrorPointer:error];
-  v13 = 0;
+  selfCopy = 0;
 LABEL_11:
 
   v15 = *MEMORY[0x277D85DE8];
-  return v13;
+  return selfCopy;
 }
 
-- (SHSignature)initWithID:(id)a3 dataRepresentation:(id)a4 startTime:(id)a5 error:(id *)a6
+- (SHSignature)initWithID:(id)d dataRepresentation:(id)representation startTime:(id)time error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
+  dCopy = d;
+  timeCopy = time;
   v21 = 0;
   v22 = 0;
   v20 = 0;
-  v12 = [SHSignature splitSignatureFromData:a4 intoSpectralPeaks:&v22 andMusicalFeatures:&v21 error:&v20];
+  v12 = [SHSignature splitSignatureFromData:representation intoSpectralPeaks:&v22 andMusicalFeatures:&v21 error:&v20];
   v13 = v22;
   v14 = v21;
   v15 = v20;
   if (v12)
   {
-    self = [(SHSignature *)self initWithID:v10 spectralPeaksData:v13 musicalFeaturesData:v14 startTime:v11 error:a6];
-    v16 = self;
+    self = [(SHSignature *)self initWithID:dCopy spectralPeaksData:v13 musicalFeaturesData:v14 startTime:timeCopy error:error];
+    selfCopy = self;
   }
 
   else
@@ -193,52 +193,52 @@ LABEL_11:
       _os_log_impl(&dword_230F52000, v17, OS_LOG_TYPE_ERROR, "Could not separate signatures: %@", buf, 0xCu);
     }
 
-    v16 = 0;
+    selfCopy = 0;
   }
 
   v18 = *MEMORY[0x277D85DE8];
-  return v16;
+  return selfCopy;
 }
 
-- (SHSignature)initWithID:(id)a3 spectralPeaksData:(id)a4 musicalFeaturesData:(id)a5 startTime:(id)a6 error:(id *)a7
+- (SHSignature)initWithID:(id)d spectralPeaksData:(id)data musicalFeaturesData:(id)featuresData startTime:(id)time error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  dataCopy = data;
+  featuresDataCopy = featuresData;
+  timeCopy = time;
   v18.receiver = self;
   v18.super_class = SHSignature;
   v15 = [(SHSignature *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    [(SHSignature *)v15 commonSetupWithID:v11 spectralPeaksData:v12 musicalFeaturesData:v13 startTime:v14];
+    [(SHSignature *)v15 commonSetupWithID:dCopy spectralPeaksData:dataCopy musicalFeaturesData:featuresDataCopy startTime:timeCopy];
   }
 
   return v16;
 }
 
-- (void)commonSetupWithID:(id)a3 spectralPeaksData:(id)a4 musicalFeaturesData:(id)a5 startTime:(id)a6
+- (void)commonSetupWithID:(id)d spectralPeaksData:(id)data musicalFeaturesData:(id)featuresData startTime:(id)time
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  dataCopy = data;
+  featuresDataCopy = featuresData;
+  timeCopy = time;
   ID = self->__ID;
-  self->__ID = v10;
-  v23 = v10;
+  self->__ID = dCopy;
+  v23 = dCopy;
 
   time = self->_time;
-  self->_time = v13;
-  v16 = v13;
+  self->_time = timeCopy;
+  v16 = timeCopy;
 
   spectralPeaksData = self->_spectralPeaksData;
-  self->_spectralPeaksData = v11;
-  v18 = v11;
+  self->_spectralPeaksData = dataCopy;
+  v18 = dataCopy;
 
   musicalFeaturesData = self->_musicalFeaturesData;
-  self->_musicalFeaturesData = v12;
-  v20 = v12;
+  self->_musicalFeaturesData = featuresDataCopy;
+  v20 = featuresDataCopy;
 
   v21 = [(SHSignature *)self _startDateBasedUponAudioTime:v16];
   audioStartDate = self->_audioStartDate;
@@ -248,17 +248,17 @@ LABEL_11:
 - (NSData)dataRepresentation
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(SHSignature *)self spectralPeaksData];
-  v4 = [v3 length];
+  spectralPeaksData = [(SHSignature *)self spectralPeaksData];
+  v4 = [spectralPeaksData length];
 
-  v5 = [(SHSignature *)self musicalFeaturesData];
-  v6 = [v5 length];
+  musicalFeaturesData = [(SHSignature *)self musicalFeaturesData];
+  v6 = [musicalFeaturesData length];
 
   if (!(v4 | v6))
   {
-    v7 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
 LABEL_11:
-    v13 = v7;
+    v13 = data;
     goto LABEL_16;
   }
 
@@ -273,19 +273,19 @@ LABEL_11:
     {
       [(SHSignature *)self musicalFeaturesData];
     }
-    v7 = ;
+    data = ;
     goto LABEL_11;
   }
 
-  v8 = [(SHSignature *)self spectralPeaksData];
-  v9 = [(SHSignature *)self musicalFeaturesData];
+  spectralPeaksData2 = [(SHSignature *)self spectralPeaksData];
+  musicalFeaturesData2 = [(SHSignature *)self musicalFeaturesData];
   v17 = 0;
-  v10 = [SHCoalescedSignature coalesePeakFeatures:v8 musicalFeatures:v9 error:&v17];
+  v10 = [SHCoalescedSignature coalesePeakFeatures:spectralPeaksData2 musicalFeatures:musicalFeaturesData2 error:&v17];
   v11 = v17;
 
   if (v10)
   {
-    v12 = v10;
+    data2 = v10;
   }
 
   else
@@ -298,10 +298,10 @@ LABEL_11:
       _os_log_impl(&dword_230F52000, v14, OS_LOG_TYPE_ERROR, "Could not coalesce signature with error %@", buf, 0xCu);
     }
 
-    v12 = [MEMORY[0x277CBEA90] data];
+    data2 = [MEMORY[0x277CBEA90] data];
   }
 
-  v13 = v12;
+  v13 = data2;
 
 LABEL_16:
   v15 = *MEMORY[0x277D85DE8];
@@ -312,20 +312,20 @@ LABEL_16:
 - (SHSignature)init
 {
   v3 = [objc_alloc(MEMORY[0x277CB8428]) initWithHostTime:mach_absolute_time()];
-  v4 = [MEMORY[0x277CCAD78] UUID];
-  v5 = [(SHSignature *)self initWithID:v4 spectralPeaksData:0 musicalFeaturesData:0 startTime:v3 error:0];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v5 = [(SHSignature *)self initWithID:uUID spectralPeaksData:0 musicalFeaturesData:0 startTime:v3 error:0];
 
   return v5;
 }
 
-- (id)_startDateBasedUponAudioTime:(id)a3
+- (id)_startDateBasedUponAudioTime:(id)time
 {
-  v4 = a3;
-  if ([v4 isHostTimeValid])
+  timeCopy = time;
+  if ([timeCopy isHostTimeValid])
   {
     [MEMORY[0x277CB8428] secondsForHostTime:mach_absolute_time()];
     v6 = v5;
-    [MEMORY[0x277CB8428] secondsForHostTime:{objc_msgSend(v4, "hostTime")}];
+    [MEMORY[0x277CB8428] secondsForHostTime:{objc_msgSend(timeCopy, "hostTime")}];
     v8 = v6 - v7;
     v9 = MEMORY[0x277CBEAA8];
   }
@@ -361,8 +361,8 @@ LABEL_16:
 
 - (double)spectralPeaksDuration
 {
-  v3 = [(SHSignature *)self spectralPeaksData];
-  [(SHSignature *)self durationForSignatureData:v3];
+  spectralPeaksData = [(SHSignature *)self spectralPeaksData];
+  [(SHSignature *)self durationForSignatureData:spectralPeaksData];
   v5 = v4;
 
   return v5;
@@ -370,21 +370,21 @@ LABEL_16:
 
 - (double)musicalFeaturesDuration
 {
-  v3 = [(SHSignature *)self musicalFeaturesData];
-  [(SHSignature *)self durationForSignatureData:v3];
+  musicalFeaturesData = [(SHSignature *)self musicalFeaturesData];
+  [(SHSignature *)self durationForSignatureData:musicalFeaturesData];
   v5 = v4;
 
   return v5;
 }
 
-- (double)durationForSignatureData:(id)a3
+- (double)durationForSignatureData:(id)data
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 length])
+  dataCopy = data;
+  if ([dataCopy length])
   {
     v10 = 0;
-    [SHSigUtilities signatureDurationForData:v3 error:&v10];
+    [SHSigUtilities signatureDurationForData:dataCopy error:&v10];
     v5 = v4;
     v6 = v10;
     if (v6)
@@ -416,8 +416,8 @@ LABEL_16:
   if (!metrics)
   {
     v4 = [SHSignatureMetrics alloc];
-    v5 = [(SHSignature *)self audioStartDate];
-    v6 = [(SHSignatureMetrics *)v4 initWithSessionStartDate:v5 signatureRecordingOffset:0.0];
+    audioStartDate = [(SHSignature *)self audioStartDate];
+    v6 = [(SHSignatureMetrics *)v4 initWithSessionStartDate:audioStartDate signatureRecordingOffset:0.0];
     v7 = self->_metrics;
     self->_metrics = v6;
 
@@ -427,17 +427,17 @@ LABEL_16:
   return metrics;
 }
 
-- (SHSignature)initWithCoder:(id)a3
+- (SHSignature)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHSignatureCodingKeyData"];
-  v6 = [v4 decodeInt64ForKey:@"SHSignatureCodingHostTime"];
-  v7 = [v4 decodeInt64ForKey:@"SHSignatureCodingSampleTime"];
-  [v4 decodeDoubleForKey:@"SHSignatureCodingTimeSampleRate"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHSignatureCodingKeyData"];
+  v6 = [coderCopy decodeInt64ForKey:@"SHSignatureCodingHostTime"];
+  v7 = [coderCopy decodeInt64ForKey:@"SHSignatureCodingSampleTime"];
+  [coderCopy decodeDoubleForKey:@"SHSignatureCodingTimeSampleRate"];
   v9 = v8;
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHSignatureCodingKeyID"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHSignatureCodingMetrics"];
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHSignatureCodingSignatureStartDate"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHSignatureCodingKeyID"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHSignatureCodingMetrics"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHSignatureCodingSignatureStartDate"];
 
   v13 = [MEMORY[0x277CB8428] timeWithHostTime:v6 sampleTime:v7 atRate:v9];
   v14 = [(SHSignature *)self initWithID:v10 dataRepresentation:v5 startTime:v13 error:0];
@@ -448,83 +448,83 @@ LABEL_16:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SHSignature *)self dataRepresentation];
-  [v4 encodeObject:v5 forKey:@"SHSignatureCodingKeyData"];
+  coderCopy = coder;
+  dataRepresentation = [(SHSignature *)self dataRepresentation];
+  [coderCopy encodeObject:dataRepresentation forKey:@"SHSignatureCodingKeyData"];
 
-  v6 = [(SHSignature *)self time];
-  [v4 encodeInt64:objc_msgSend(v6 forKey:{"hostTime"), @"SHSignatureCodingHostTime"}];
+  time = [(SHSignature *)self time];
+  [coderCopy encodeInt64:objc_msgSend(time forKey:{"hostTime"), @"SHSignatureCodingHostTime"}];
 
-  v7 = [(SHSignature *)self time];
-  [v4 encodeInt64:objc_msgSend(v7 forKey:{"sampleTime"), @"SHSignatureCodingSampleTime"}];
+  time2 = [(SHSignature *)self time];
+  [coderCopy encodeInt64:objc_msgSend(time2 forKey:{"sampleTime"), @"SHSignatureCodingSampleTime"}];
 
-  v8 = [(SHSignature *)self time];
-  [v8 sampleRate];
-  [v4 encodeDouble:@"SHSignatureCodingTimeSampleRate" forKey:?];
+  time3 = [(SHSignature *)self time];
+  [time3 sampleRate];
+  [coderCopy encodeDouble:@"SHSignatureCodingTimeSampleRate" forKey:?];
 
   v9 = [(SHSignature *)self _ID];
-  [v4 encodeObject:v9 forKey:@"SHSignatureCodingKeyID"];
+  [coderCopy encodeObject:v9 forKey:@"SHSignatureCodingKeyID"];
 
-  v10 = [(SHSignature *)self metrics];
-  [v4 encodeObject:v10 forKey:@"SHSignatureCodingMetrics"];
+  metrics = [(SHSignature *)self metrics];
+  [coderCopy encodeObject:metrics forKey:@"SHSignatureCodingMetrics"];
 
-  v11 = [(SHSignature *)self audioStartDate];
-  [v4 encodeObject:v11 forKey:@"SHSignatureCodingSignatureStartDate"];
+  audioStartDate = [(SHSignature *)self audioStartDate];
+  [coderCopy encodeObject:audioStartDate forKey:@"SHSignatureCodingSignatureStartDate"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = MEMORY[0x277CB8428];
-  v6 = [(SHSignature *)self time];
-  v7 = [v6 sampleTime];
-  v8 = [(SHSignature *)self time];
-  [v8 sampleRate];
-  v9 = [v5 timeWithSampleTime:v7 atRate:?];
+  time = [(SHSignature *)self time];
+  sampleTime = [time sampleTime];
+  time2 = [(SHSignature *)self time];
+  [time2 sampleRate];
+  v9 = [v5 timeWithSampleTime:sampleTime atRate:?];
 
-  v10 = [SHSignature allocWithZone:a3];
+  v10 = [SHSignature allocWithZone:zone];
   v11 = [(SHSignature *)self _ID];
-  v12 = [v11 copyWithZone:a3];
-  v13 = [(SHSignature *)self dataRepresentation];
-  v14 = [v13 copyWithZone:a3];
+  v12 = [v11 copyWithZone:zone];
+  dataRepresentation = [(SHSignature *)self dataRepresentation];
+  v14 = [dataRepresentation copyWithZone:zone];
   v15 = [(SHSignature *)v10 initWithID:v12 dataRepresentation:v14 startTime:v9 error:0];
 
-  v16 = [(SHSignature *)self metrics];
-  v17 = [v16 copyWithZone:a3];
+  metrics = [(SHSignature *)self metrics];
+  v17 = [metrics copyWithZone:zone];
   [(SHSignature *)v15 setMetrics:v17];
 
-  v18 = [(SHSignature *)self audioStartDate];
-  v19 = [v18 copyWithZone:a3];
+  audioStartDate = [(SHSignature *)self audioStartDate];
+  v19 = [audioStartDate copyWithZone:zone];
   [(SHSignature *)v15 setAudioStartDate:v19];
 
   return v15;
 }
 
-- (id)_descriptionWithInternalState:(BOOL)a3
+- (id)_descriptionWithInternalState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v36 = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCAB68];
   [(SHSignature *)self duration];
   v7 = [v5 stringWithFormat:@"<SHSignature: %p duration='%.3f s'", self, v6];
-  if (v3)
+  if (stateCopy)
   {
     [(SHSignature *)self spectralPeaksDuration];
     v9 = v8;
     [(SHSignature *)self musicalFeaturesDuration];
     [v7 appendFormat:@" spectralPeaksDuration='%.3f s' musicalFeaturesDuration='%.3f s'", v9, v10];
-    v11 = [(SHSignature *)self dataRepresentation];
-    [v7 appendFormat:@" dataRepresentation='%lu bytes'", objc_msgSend(v11, "length")];
+    dataRepresentation = [(SHSignature *)self dataRepresentation];
+    [v7 appendFormat:@" dataRepresentation='%lu bytes'", objc_msgSend(dataRepresentation, "length")];
 
-    v12 = [(SHSignature *)self spectralPeaksData];
-    v13 = [v12 length];
-    v14 = [(SHSignature *)self musicalFeaturesData];
-    [v7 appendFormat:@" spectralPeaksData='%lu bytes' musicalFeaturesData='%lu bytes'", v13, objc_msgSend(v14, "length")];
+    spectralPeaksData = [(SHSignature *)self spectralPeaksData];
+    v13 = [spectralPeaksData length];
+    musicalFeaturesData = [(SHSignature *)self musicalFeaturesData];
+    [v7 appendFormat:@" spectralPeaksData='%lu bytes' musicalFeaturesData='%lu bytes'", v13, objc_msgSend(musicalFeaturesData, "length")];
 
-    v15 = [(SHSignature *)self dataRepresentation];
+    dataRepresentation2 = [(SHSignature *)self dataRepresentation];
     v31 = 0;
-    v16 = [SHSigUtilities signatureInfoForData:v15 error:&v31];
+    v16 = [SHSigUtilities signatureInfoForData:dataRepresentation2 error:&v31];
     v17 = v31;
 
     if (v17)
@@ -532,9 +532,9 @@ LABEL_16:
       v18 = sh_log_object();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        v19 = [(SHSignature *)self dataRepresentation];
+        dataRepresentation3 = [(SHSignature *)self dataRepresentation];
         *buf = 138412546;
-        v33 = v19;
+        v33 = dataRepresentation3;
         v34 = 2112;
         v35 = v17;
         _os_log_impl(&dword_230F52000, v18, OS_LOG_TYPE_ERROR, "Could not retrieve signature info for data %@ with error: %@", buf, 0x16u);
@@ -542,23 +542,23 @@ LABEL_16:
     }
 
     v20 = [v16 valueForKey:0x2845C8610];
-    v21 = [v20 unsignedLongValue];
+    unsignedLongValue = [v20 unsignedLongValue];
 
     v22 = [v16 valueForKey:0x2845C8630];
     v23 = [v16 valueForKey:0x2845C8650];
     v24 = [v16 valueForKey:0x2845C8670];
-    v25 = [v24 unsignedLongValue];
+    unsignedLongValue2 = [v24 unsignedLongValue];
 
     v26 = [v16 valueForKey:0x2845C8690];
-    v27 = [v26 unsignedLongValue];
+    unsignedLongValue3 = [v26 unsignedLongValue];
 
-    [v7 appendFormat:@" sampleRate='%lu Hz' softwareVersion='%@' fileVersion='%@' numberOfFeatures='%lu' numberOfBands='%lu'", v21, v22, v23, v25, v27];
+    [v7 appendFormat:@" sampleRate='%lu Hz' softwareVersion='%@' fileVersion='%@' numberOfFeatures='%lu' numberOfBands='%lu'", unsignedLongValue, v22, v23, unsignedLongValue2, unsignedLongValue3];
   }
 
   else
   {
-    v28 = [(SHSignature *)self dataRepresentation];
-    [v7 appendFormat:@" dataRepresentation='%lu bytes'", objc_msgSend(v28, "length")];
+    dataRepresentation4 = [(SHSignature *)self dataRepresentation];
+    [v7 appendFormat:@" dataRepresentation='%lu bytes'", objc_msgSend(dataRepresentation4, "length")];
   }
 
   [v7 appendString:@">"];

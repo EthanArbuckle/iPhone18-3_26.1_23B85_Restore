@@ -1,20 +1,20 @@
 @interface FIFitnessAppsStateObserver
 - (BOOL)areFitnessAppsRestricted;
 - (FIFitnessAppsStateObserver)init;
-- (FIFitnessAppsStateObserver)initWithBundleIdentifiers:(id)a3;
+- (FIFitnessAppsStateObserver)initWithBundleIdentifiers:(id)identifiers;
 - (FIFitnessAppsStateObserverDelegate)delegate;
-- (id)_filteredAppProxies:(id)a3;
-- (int64_t)_lock_installStateForBundleIdentifier:(id)a3;
-- (int64_t)installStateForBundleIdentifier:(id)a3;
+- (id)_filteredAppProxies:(id)proxies;
+- (int64_t)_lock_installStateForBundleIdentifier:(id)identifier;
+- (int64_t)installStateForBundleIdentifier:(id)identifier;
 - (void)_cacheInitialFitnessAppsInstallState;
 - (void)_cacheInitialFitnessAppsRestrictedState;
-- (void)_updateCurrentFitnessAppsInstallStateWithProxies:(id)a3 newState:(int64_t)a4;
-- (void)_updateCurrentFitnessAppsRestrictedStateWithProxies:(id)a3;
-- (void)applicationStateDidChange:(id)a3;
-- (void)applicationsDidInstall:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
+- (void)_updateCurrentFitnessAppsInstallStateWithProxies:(id)proxies newState:(int64_t)state;
+- (void)_updateCurrentFitnessAppsRestrictedStateWithProxies:(id)proxies;
+- (void)applicationStateDidChange:(id)change;
+- (void)applicationsDidInstall:(id)install;
+- (void)applicationsDidUninstall:(id)uninstall;
 - (void)dealloc;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation FIFitnessAppsStateObserver
@@ -33,9 +33,9 @@
   return v4;
 }
 
-- (FIFitnessAppsStateObserver)initWithBundleIdentifiers:(id)a3
+- (FIFitnessAppsStateObserver)initWithBundleIdentifiers:(id)identifiers
 {
-  v5 = a3;
+  identifiersCopy = identifiers;
   v12.receiver = self;
   v12.super_class = FIFitnessAppsStateObserver;
   v6 = [(FIFitnessAppsStateObserver *)&v12 init];
@@ -48,11 +48,11 @@
     fitnessAppsInstallationState = v7->_fitnessAppsInstallationState;
     v7->_fitnessAppsInstallationState = v8;
 
-    objc_storeStrong(&v7->_appBundleIdentifersToMonitor, a3);
+    objc_storeStrong(&v7->_appBundleIdentifersToMonitor, identifiers);
     [(FIFitnessAppsStateObserver *)v7 _cacheInitialFitnessAppsInstallState];
     [(FIFitnessAppsStateObserver *)v7 _cacheInitialFitnessAppsRestrictedState];
-    v10 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    [v10 addObserver:v7];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    [defaultWorkspace addObserver:v7];
   }
 
   return v7;
@@ -60,19 +60,19 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v3 removeObserver:self];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = FIFitnessAppsStateObserver;
   [(FIFitnessAppsStateObserver *)&v4 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->_lock);
-  objc_storeWeak(&self->_delegate, v4);
+  objc_storeWeak(&self->_delegate, delegateCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -85,21 +85,21 @@
   return v3;
 }
 
-- (int64_t)installStateForBundleIdentifier:(id)a3
+- (int64_t)installStateForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(FIFitnessAppsStateObserver *)self _lock_installStateForBundleIdentifier:v4];
+  v5 = [(FIFitnessAppsStateObserver *)self _lock_installStateForBundleIdentifier:identifierCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   return v5;
 }
 
-- (id)_filteredAppProxies:(id)a3
+- (id)_filteredAppProxies:(id)proxies
 {
   v3 = MEMORY[0x277CBEB98];
   appBundleIdentifersToMonitor = self->_appBundleIdentifersToMonitor;
-  v5 = a3;
+  proxiesCopy = proxies;
   v6 = [v3 setWithArray:appBundleIdentifersToMonitor];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -107,7 +107,7 @@
   v10[3] = &unk_279004A10;
   v11 = v6;
   v7 = v6;
-  v8 = [v5 hk_filter:v10];
+  v8 = [proxiesCopy hk_filter:v10];
 
   return v8;
 }
@@ -121,9 +121,9 @@ uint64_t __50__FIFitnessAppsStateObserver__filteredAppProxies___block_invoke(uin
   return v4;
 }
 
-- (void)applicationStateDidChange:(id)a3
+- (void)applicationStateDidChange:(id)change
 {
-  v4 = [(FIFitnessAppsStateObserver *)self _filteredAppProxies:a3];
+  v4 = [(FIFitnessAppsStateObserver *)self _filteredAppProxies:change];
   if ([v4 count])
   {
     _HKInitializeLogging();
@@ -138,9 +138,9 @@ uint64_t __50__FIFitnessAppsStateObserver__filteredAppProxies___block_invoke(uin
   }
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
-  v4 = [(FIFitnessAppsStateObserver *)self _filteredAppProxies:a3];
+  v4 = [(FIFitnessAppsStateObserver *)self _filteredAppProxies:uninstall];
   if ([v4 count])
   {
     _HKInitializeLogging();
@@ -155,9 +155,9 @@ uint64_t __50__FIFitnessAppsStateObserver__filteredAppProxies___block_invoke(uin
   }
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
-  v4 = [(FIFitnessAppsStateObserver *)self _filteredAppProxies:a3];
+  v4 = [(FIFitnessAppsStateObserver *)self _filteredAppProxies:install];
   if ([v4 count])
   {
     _HKInitializeLogging();
@@ -172,12 +172,12 @@ uint64_t __50__FIFitnessAppsStateObserver__filteredAppProxies___block_invoke(uin
   }
 }
 
-- (int64_t)_lock_installStateForBundleIdentifier:(id)a3
+- (int64_t)_lock_installStateForBundleIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_fitnessAppsInstallationState objectForKeyedSubscript:a3];
-  v4 = [v3 integerValue];
+  v3 = [(NSMutableDictionary *)self->_fitnessAppsInstallationState objectForKeyedSubscript:identifier];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (void)_cacheInitialFitnessAppsInstallState
@@ -215,13 +215,13 @@ uint64_t __50__FIFitnessAppsStateObserver__filteredAppProxies___block_invoke(uin
 
         v10 = *(*(&v19 + 1) + 8 * i);
         v11 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:{v10, v18, v19}];
-        v12 = [v11 appState];
-        v13 = [v12 isInstalled];
+        appState = [v11 appState];
+        isInstalled = [appState isInstalled];
 
         _HKInitializeLogging();
         v14 = *MEMORY[0x277CCC270];
         v15 = os_log_type_enabled(*MEMORY[0x277CCC270], OS_LOG_TYPE_DEFAULT);
-        if (v13)
+        if (isInstalled)
         {
           v16 = &unk_285E69E28;
           if (v15)
@@ -258,24 +258,24 @@ uint64_t __50__FIFitnessAppsStateObserver__filteredAppProxies___block_invoke(uin
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateCurrentFitnessAppsInstallStateWithProxies:(id)a3 newState:(int64_t)a4
+- (void)_updateCurrentFitnessAppsInstallStateWithProxies:(id)proxies newState:(int64_t)state
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  proxiesCopy = proxies;
   os_unfair_lock_lock(&self->_lock);
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = v6;
+  v8 = proxiesCopy;
   v9 = [v8 countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v9)
   {
     v11 = v9;
     v12 = *v26;
     v13 = @"Uninstalled";
-    if (a4 == 1)
+    if (state == 1)
     {
       v13 = @"Installed";
     }
@@ -293,24 +293,24 @@ uint64_t __50__FIFitnessAppsStateObserver__filteredAppProxies___block_invoke(uin
           objc_enumerationMutation(v8);
         }
 
-        v15 = [*(*(&v25 + 1) + 8 * v14) bundleIdentifier];
-        if ([(FIFitnessAppsStateObserver *)self _lock_installStateForBundleIdentifier:v15]!= a4)
+        bundleIdentifier = [*(*(&v25 + 1) + 8 * v14) bundleIdentifier];
+        if ([(FIFitnessAppsStateObserver *)self _lock_installStateForBundleIdentifier:bundleIdentifier]!= state)
         {
           _HKInitializeLogging();
           v16 = *MEMORY[0x277CCC270];
           if (os_log_type_enabled(*MEMORY[0x277CCC270], OS_LOG_TYPE_DEFAULT))
           {
             *buf = v23;
-            v30 = v15;
+            v30 = bundleIdentifier;
             v31 = 2114;
             v32 = v24;
             _os_log_impl(&dword_24B35E000, v16, OS_LOG_TYPE_DEFAULT, "Updating installed stated for %{public}@ to %{public}@", buf, 0x16u);
           }
 
-          v17 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-          [(NSMutableDictionary *)self->_fitnessAppsInstallationState setObject:v17 forKeyedSubscript:v15];
+          v17 = [MEMORY[0x277CCABB0] numberWithInteger:state];
+          [(NSMutableDictionary *)self->_fitnessAppsInstallationState setObject:v17 forKeyedSubscript:bundleIdentifier];
 
-          [v7 addObject:v15];
+          [v7 addObject:bundleIdentifier];
         }
 
         ++v14;
@@ -384,16 +384,16 @@ uint64_t __50__FIFitnessAppsStateObserver__filteredAppProxies___block_invoke(uin
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateCurrentFitnessAppsRestrictedStateWithProxies:(id)a3
+- (void)_updateCurrentFitnessAppsRestrictedStateWithProxies:(id)proxies
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  proxiesCopy = proxies;
   os_unfair_lock_lock(&self->_lock);
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v4;
+  v5 = proxiesCopy;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v6)
   {
@@ -407,10 +407,10 @@ uint64_t __50__FIFitnessAppsStateObserver__filteredAppProxies___block_invoke(uin
           objc_enumerationMutation(v5);
         }
 
-        v9 = [*(*(&v18 + 1) + 8 * i) appState];
-        v10 = [v9 isRestricted];
+        appState = [*(*(&v18 + 1) + 8 * i) appState];
+        isRestricted = [appState isRestricted];
 
-        if (v10)
+        if (isRestricted)
         {
           LODWORD(v6) = 1;
           goto LABEL_11;

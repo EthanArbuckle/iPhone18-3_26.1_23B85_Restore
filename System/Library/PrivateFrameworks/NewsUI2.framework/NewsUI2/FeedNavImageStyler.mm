@@ -1,7 +1,7 @@
 @interface FeedNavImageStyler
 - (UIFont)tagTitleFont;
 - (double)cornerRadius;
-- (id)tagColorFor:(id)a3;
+- (id)tagColorFor:(id)for;
 @end
 
 @implementation FeedNavImageStyler
@@ -13,9 +13,9 @@
   return v2;
 }
 
-- (id)tagColorFor:(id)a3
+- (id)tagColorFor:(id)for
 {
-  v3 = [objc_opt_self() nu:a3 safeColorForIdentifier:?];
+  v3 = [objc_opt_self() nu:for safeColorForIdentifier:?];
 
   return v3;
 }

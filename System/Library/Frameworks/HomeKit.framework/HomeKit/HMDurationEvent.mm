@@ -1,27 +1,27 @@
 @interface HMDurationEvent
-+ (id)createWithDictionary:(id)a3 home:(id)a4;
-- (BOOL)mergeFromNewObject:(id)a3;
-- (HMDurationEvent)initWithCoder:(id)a3;
-- (HMDurationEvent)initWithDict:(id)a3 duration:(double)a4;
++ (id)createWithDictionary:(id)dictionary home:(id)home;
+- (BOOL)mergeFromNewObject:(id)object;
+- (HMDurationEvent)initWithCoder:(id)coder;
+- (HMDurationEvent)initWithDict:(id)dict duration:(double)duration;
 - (HMDurationEvent)initWithDuration:(NSTimeInterval)duration;
 - (NSTimeInterval)duration;
 - (id)_serializeForAdd;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)_updateFromDictionary:(id)a3;
-- (void)setOffset:(double)a3;
-- (void)updateDuration:(double)a3 completionHandler:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)_updateFromDictionary:(id)dictionary;
+- (void)setOffset:(double)offset;
+- (void)updateDuration:(double)duration completionHandler:(id)handler;
 @end
 
 @implementation HMDurationEvent
 
-- (BOOL)mergeFromNewObject:(id)a3
+- (BOOL)mergeFromNewObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
   }
 
   else
@@ -54,15 +54,15 @@
   return v9;
 }
 
-- (HMDurationEvent)initWithCoder:(id)a3
+- (HMDurationEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = HMDurationEvent;
-  v5 = [(HMEvent *)&v9 initWithCoder:v4];
+  v5 = [(HMEvent *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kDurationEventDuration"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kDurationEventDuration"];
     [v6 doubleValue];
     v5->_duration = v7;
   }
@@ -70,7 +70,7 @@
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [HMMutableDurationEvent alloc];
   [(HMDurationEvent *)self duration];
@@ -78,18 +78,18 @@
   return [(HMDurationEvent *)v4 initWithDuration:?];
 }
 
-+ (id)createWithDictionary:(id)a3 home:(id)a4
++ (id)createWithDictionary:(id)dictionary home:(id)home
 {
-  v4 = a3;
-  v5 = [v4 hmf_numberForKey:@"kDurationEventDuration"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy hmf_numberForKey:@"kDurationEventDuration"];
   v6 = [HMDurationEvent alloc];
   [v5 doubleValue];
-  v7 = [(HMDurationEvent *)v6 initWithDict:v4 duration:?];
+  v7 = [(HMDurationEvent *)v6 initWithDict:dictionaryCopy duration:?];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [HMDurationEvent alloc];
   [(HMDurationEvent *)self duration];
@@ -97,16 +97,16 @@
   return [(HMDurationEvent *)v4 initWithDuration:?];
 }
 
-- (void)updateDuration:(double)a3 completionHandler:(id)a4
+- (void)updateDuration:(double)duration completionHandler:(id)handler
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(HMEvent *)self context];
-  if (!v6)
+  handlerCopy = handler;
+  context = [(HMEvent *)self context];
+  if (!handlerCopy)
   {
     v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMDurationEvent updateDuration:completionHandler:]", @"completion"];
     v25 = objc_autoreleasePoolPush();
-    v26 = self;
+    selfCopy = self;
     v27 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
@@ -123,30 +123,30 @@
     objc_exception_throw(v29);
   }
 
-  v8 = v7;
-  if (v7)
+  v8 = context;
+  if (context)
   {
     [(HMDurationEvent *)self duration];
-    if (vabdd_f64(v9, a3) >= 0.001)
+    if (vabdd_f64(v9, duration) >= 0.001)
     {
       v30 = @"kDurationEventDuration";
-      v17 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-      v31 = v17;
+      delegateCaller = [MEMORY[0x1E696AD98] numberWithDouble:duration];
+      v31 = delegateCaller;
       v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
-      [(HMEvent *)self _updateEventWithPayload:v22 completionHandler:v6];
+      [(HMEvent *)self _updateEventWithPayload:v22 completionHandler:handlerCopy];
     }
 
     else
     {
       v10 = objc_autoreleasePoolPush();
-      v11 = self;
+      selfCopy2 = self;
       v12 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
         v13 = HMFGetLogIdentifier();
-        v14 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+        v14 = [MEMORY[0x1E696AD98] numberWithDouble:duration];
         v15 = MEMORY[0x1E696AD98];
-        [(HMDurationEvent *)v11 duration];
+        [(HMDurationEvent *)selfCopy2 duration];
         v16 = [v15 numberWithDouble:?];
         *buf = 138543874;
         v33 = v13;
@@ -158,15 +158,15 @@
       }
 
       objc_autoreleasePoolPop(v10);
-      v17 = [v8 delegateCaller];
-      [v17 callCompletion:v6 error:0];
+      delegateCaller = [v8 delegateCaller];
+      [delegateCaller callCompletion:handlerCopy error:0];
     }
   }
 
   else
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy3 = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -179,20 +179,20 @@
     }
 
     objc_autoreleasePoolPop(v18);
-    v17 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    v6[2](v6, v17);
+    delegateCaller = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
+    handlerCopy[2](handlerCopy, delegateCaller);
   }
 
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateFromDictionary:(id)a3
+- (void)_updateFromDictionary:(id)dictionary
 {
   v6.receiver = self;
   v6.super_class = HMDurationEvent;
-  v4 = a3;
-  [(HMEvent *)&v6 _updateFromDictionary:v4];
-  v5 = [v4 hmf_numberForKey:{@"kDurationEventDuration", v6.receiver, v6.super_class}];
+  dictionaryCopy = dictionary;
+  [(HMEvent *)&v6 _updateFromDictionary:dictionaryCopy];
+  v5 = [dictionaryCopy hmf_numberForKey:{@"kDurationEventDuration", v6.receiver, v6.super_class}];
 
   if (v5)
   {
@@ -205,8 +205,8 @@
 {
   v9.receiver = self;
   v9.super_class = HMDurationEvent;
-  v3 = [(HMEvent *)&v9 _serializeForAdd];
-  v4 = [v3 mutableCopy];
+  _serializeForAdd = [(HMEvent *)&v9 _serializeForAdd];
+  v4 = [_serializeForAdd mutableCopy];
 
   v5 = MEMORY[0x1E696AD98];
   [(HMDurationEvent *)self duration];
@@ -218,10 +218,10 @@
   return v7;
 }
 
-- (void)setOffset:(double)a3
+- (void)setOffset:(double)offset
 {
   os_unfair_lock_lock_with_options();
-  self->_duration = a3;
+  self->_duration = offset;
 
   os_unfair_lock_unlock(&self->super.super._lock);
 }
@@ -234,14 +234,14 @@
   return duration;
 }
 
-- (HMDurationEvent)initWithDict:(id)a3 duration:(double)a4
+- (HMDurationEvent)initWithDict:(id)dict duration:(double)duration
 {
   v6.receiver = self;
   v6.super_class = HMDurationEvent;
-  result = [(HMEvent *)&v6 initWithDict:a3];
+  result = [(HMEvent *)&v6 initWithDict:dict];
   if (result)
   {
-    result->_duration = a4;
+    result->_duration = duration;
   }
 
   return result;
@@ -251,9 +251,9 @@
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v10[0] = @"kEventUUIDKey";
-  v5 = [MEMORY[0x1E696AFB0] UUID];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   v10[1] = @"kEventTriggerEndEvent";
-  v11[0] = v5;
+  v11[0] = uUID;
   v11[1] = MEMORY[0x1E695E118];
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
   v7 = [(HMDurationEvent *)self initWithDict:v6 duration:duration];

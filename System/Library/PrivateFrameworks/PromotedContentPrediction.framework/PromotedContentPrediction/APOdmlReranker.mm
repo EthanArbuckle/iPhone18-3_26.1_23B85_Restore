@@ -1,27 +1,27 @@
 @interface APOdmlReranker
 + (OS_dispatch_queue)rerankResponseTimeoutQueue;
 + (OS_dispatch_queue)rerankSerialQueue;
-- (APOdmlReranker)initWithPersonalizedAdsEnabled:(BOOL)a3 assetManager:(id)a4 placementType:(unint64_t)a5;
-- (BOOL)sendRerankResponseIfAvailable:(id)a3 error:(id)a4;
-- (id)predictAndExplore:(id)a3;
-- (void)_handleError:(int64_t)a3;
-- (void)getRerankedAdsWithTimeLimit:(double)a3 completion:(id)a4;
-- (void)setAndRerankAds:(id)a3;
+- (APOdmlReranker)initWithPersonalizedAdsEnabled:(BOOL)enabled assetManager:(id)manager placementType:(unint64_t)type;
+- (BOOL)sendRerankResponseIfAvailable:(id)available error:(id)error;
+- (id)predictAndExplore:(id)explore;
+- (void)_handleError:(int64_t)error;
+- (void)getRerankedAdsWithTimeLimit:(double)limit completion:(id)completion;
+- (void)setAndRerankAds:(id)ads;
 @end
 
 @implementation APOdmlReranker
 
-- (APOdmlReranker)initWithPersonalizedAdsEnabled:(BOOL)a3 assetManager:(id)a4 placementType:(unint64_t)a5
+- (APOdmlReranker)initWithPersonalizedAdsEnabled:(BOOL)enabled assetManager:(id)manager placementType:(unint64_t)type
 {
-  v9 = a4;
+  managerCopy = manager;
   v20.receiver = self;
   v20.super_class = APOdmlReranker;
   v10 = [(APOdmlReranker *)&v20 init];
   v11 = v10;
   if (v10)
   {
-    v10->_isPersonalizedAdsEnabled = a3;
-    objc_storeStrong(&v10->_assetManager, a4);
+    v10->_isPersonalizedAdsEnabled = enabled;
+    objc_storeStrong(&v10->_assetManager, manager);
     v12 = [APOdmlUnfairLock alloc];
     v14 = objc_msgSend_initWithOptions_(v12, v13, 1);
     rerankResponseLock = v11->_rerankResponseLock;
@@ -30,7 +30,7 @@
     v16 = OdmlLogForCategory(5uLL);
     v11->_ident = os_signpost_id_generate(v16);
 
-    v11->_placementType = a5;
+    v11->_placementType = type;
     v17 = dispatch_group_create();
     rerankDispatchGroup = v11->_rerankDispatchGroup;
     v11->_rerankDispatchGroup = v17;
@@ -39,9 +39,9 @@
   return v11;
 }
 
-- (void)setAndRerankAds:(id)a3
+- (void)setAndRerankAds:(id)ads
 {
-  v4 = a3;
+  adsCopy = ads;
   v5 = OdmlLogForCategory(5uLL);
   v8 = objc_msgSend_ident(self, v6, v7);
   if ((v8 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
@@ -85,14 +85,14 @@
   v27[2] = sub_260EF20E4;
   v27[3] = &unk_279AC6228;
   v27[4] = self;
-  v28 = v4;
-  v26 = v4;
+  v28 = adsCopy;
+  v26 = adsCopy;
   dispatch_group_async(v22, v25, v27);
 }
 
-- (void)getRerankedAdsWithTimeLimit:(double)a3 completion:(id)a4
+- (void)getRerankedAdsWithTimeLimit:(double)limit completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = OdmlLogForCategory(5uLL);
   v10 = objc_msgSend_ident(self, v8, v9);
   if ((v10 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
@@ -107,7 +107,7 @@
 
   v14 = objc_msgSend_rerankResponseLock(self, v12, v13);
   objc_msgSend_lock(v14, v15, v16);
-  objc_msgSend_setRerankResponse_(self, v17, v6);
+  objc_msgSend_setRerankResponse_(self, v17, completionCopy);
 
   objc_msgSend_unlock(v14, v18, v19);
   v22 = objc_msgSend_rerankDispatchGroup(self, v20, v21);
@@ -125,14 +125,14 @@
   v29[2] = sub_260EF28B0;
   v29[3] = &unk_279AC69E8;
   v29[4] = self;
-  *&v29[5] = a3;
+  *&v29[5] = limit;
   dispatch_async(v28, v29);
 }
 
-- (id)predictAndExplore:(id)a3
+- (id)predictAndExplore:(id)explore
 {
   v73 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  exploreCopy = explore;
   v5 = OdmlLogForCategory(5uLL);
   v8 = objc_msgSend_ident(self, v6, v7);
   if ((v8 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
@@ -141,7 +141,7 @@
     if (os_signpost_enabled(v5))
     {
       v67 = 134283521;
-      v68 = objc_msgSend_count(v4, v10, v11);
+      v68 = objc_msgSend_count(exploreCopy, v10, v11);
       _os_signpost_emit_with_name_impl(&dword_260ECB000, v5, OS_SIGNPOST_INTERVAL_BEGIN, v9, "Aggregated PTTR Prediction", "%{private}lu", &v67, 0xCu);
     }
   }
@@ -150,7 +150,7 @@
   v15 = objc_msgSend_assetManager(self, v13, v14);
   v18 = objc_msgSend_assetManager(self, v16, v17);
   v21 = objc_msgSend_currentMLModel(v18, v19, v20);
-  v23 = objc_msgSend_initWithResponses_assetManager_model_(v12, v22, v4, v15, v21);
+  v23 = objc_msgSend_initWithResponses_assetManager_model_(v12, v22, exploreCopy, v15, v21);
 
   v26 = objc_msgSend_predictTapThroughRate(v23, v24, v25);
   v29 = v26;
@@ -173,7 +173,7 @@
   }
 
   v30 = objc_msgSend_count(v26, v27, v28);
-  v33 = objc_msgSend_count(v4, v31, v32);
+  v33 = objc_msgSend_count(exploreCopy, v31, v32);
   v34 = OdmlLogForCategory(5uLL);
   v37 = v34;
   if (v30 != v33)
@@ -183,7 +183,7 @@
       v57 = objc_opt_class();
       v58 = v57;
       v61 = objc_msgSend_count(v29, v59, v60);
-      v64 = objc_msgSend_count(v4, v62, v63);
+      v64 = objc_msgSend_count(exploreCopy, v62, v63);
       v67 = 138412802;
       v68 = v57;
       v69 = 2048;
@@ -206,7 +206,7 @@ LABEL_16:
     v39 = v38;
     if (os_signpost_enabled(v37))
     {
-      v42 = objc_msgSend_count(v4, v40, v41);
+      v42 = objc_msgSend_count(exploreCopy, v40, v41);
       v67 = 134283521;
       v68 = v42;
       _os_signpost_emit_with_name_impl(&dword_260ECB000, v37, OS_SIGNPOST_INTERVAL_END, v39, "Aggregated PTTR Prediction", "%{private}lu", &v67, 0xCu);
@@ -215,7 +215,7 @@ LABEL_16:
 
   v43 = [APOdmlExplorer alloc];
   v46 = objc_msgSend_assetManager(self, v44, v45);
-  v48 = objc_msgSend_initWithRankableObjects_pttrArray_assetManager_(v43, v47, v4, v29, v46);
+  v48 = objc_msgSend_initWithRankableObjects_pttrArray_assetManager_(v43, v47, exploreCopy, v29, v46);
 
   v51 = objc_msgSend_explore(v48, v49, v50);
 
@@ -225,11 +225,11 @@ LABEL_17:
   return v51;
 }
 
-- (BOOL)sendRerankResponseIfAvailable:(id)a3 error:(id)a4
+- (BOOL)sendRerankResponseIfAvailable:(id)available error:(id)error
 {
   v109 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  availableCopy = available;
+  errorCopy = error;
   v8 = OdmlLogForCategory(5uLL);
   v11 = objc_msgSend_ident(self, v9, v10);
   if ((v11 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
@@ -238,7 +238,7 @@ LABEL_17:
     if (os_signpost_enabled(v8))
     {
       *buf = 134283521;
-      v108 = COERCE_DOUBLE(objc_msgSend_count(v6, v13, v14));
+      v108 = COERCE_DOUBLE(objc_msgSend_count(availableCopy, v13, v14));
       _os_signpost_emit_with_name_impl(&dword_260ECB000, v8, OS_SIGNPOST_INTERVAL_END, v12, "Overall reranking", "%{private}lu", buf, 0xCu);
     }
   }
@@ -255,8 +255,8 @@ LABEL_17:
     v31 = v30;
 
     v34 = objc_msgSend_rerankResponse(self, v32, v33);
-    v95 = v7;
-    (v34)[2](v34, v6, v7);
+    v95 = errorCopy;
+    (v34)[2](v34, availableCopy, errorCopy);
 
     objc_msgSend_setRerankResponse_(self, v35, 0);
     v36 = OdmlLogForCategory(5uLL);
@@ -270,8 +270,8 @@ LABEL_17:
     v40 = objc_msgSend_originalAds(self, v38, v39);
     v43 = objc_msgSend_count(v40, v41, v42);
 
-    v96 = v6;
-    v46 = objc_msgSend_count(v6, v44, v45);
+    v96 = availableCopy;
+    v46 = objc_msgSend_count(availableCopy, v44, v45);
     if (v43 <= v46)
     {
       objc_msgSend_arrayWithCapacity_(v37, v47, v46);
@@ -373,7 +373,7 @@ LABEL_17:
     }
 
     v87 = OdmlLogForCategory(5uLL);
-    v7 = v95;
+    errorCopy = v95;
     if (os_log_type_enabled(v87, OS_LOG_TYPE_DEFAULT))
     {
       objc_msgSend_description(v95, v88, v89);
@@ -392,7 +392,7 @@ LABEL_17:
     }
 
     v92 = OdmlLogForCategory(5uLL);
-    v6 = v96;
+    availableCopy = v96;
     if (os_log_type_enabled(v92, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
@@ -406,10 +406,10 @@ LABEL_17:
   return v22 != 0;
 }
 
-- (void)_handleError:(int64_t)a3
+- (void)_handleError:(int64_t)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], a2, @"APOdmlRerankingErrorDomain", a3, 0);
+  v5 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], a2, @"APOdmlRerankingErrorDomain", error, 0);
   objc_msgSend_setRerankerError_(self, v6, v5);
 
   v9 = objc_msgSend_rerankerError(self, v7, v8);
@@ -424,7 +424,7 @@ LABEL_17:
       v25 = 138412546;
       v26 = objc_opt_class();
       v27 = 2048;
-      v28 = a3;
+      errorCopy = error;
       v16 = v26;
       _os_log_impl(&dword_260ECB000, v15, OS_LOG_TYPE_ERROR, "[%@] Reranking Error: %ld.", &v25, 0x16u);
     }

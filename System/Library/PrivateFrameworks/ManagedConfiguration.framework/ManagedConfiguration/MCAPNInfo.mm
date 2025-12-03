@@ -8,11 +8,11 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  v4 = v3;
+  string = [MEMORY[0x1E696AD60] string];
+  v4 = string;
   if (self->_apnName)
   {
-    [v3 appendFormat:@"APN Name      : %@\n", self->_apnName];
+    [string appendFormat:@"APN Name      : %@\n", self->_apnName];
   }
 
   if (self->_username)
@@ -70,12 +70,12 @@
 
 - (id)defaultsRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   apnName = self->_apnName;
   if (apnName)
   {
-    [v3 setObject:apnName forKey:@"apn"];
+    [dictionary setObject:apnName forKey:@"apn"];
   }
 
   username = self->_username;

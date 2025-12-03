@@ -7,24 +7,24 @@
 - (id)icon
 {
   v23 = *MEMORY[0x277D85DE8];
-  v2 = [a1 appDescriptor];
-  v3 = [v2 bundleIdentifier];
-  v4 = v3;
-  if (v3)
+  appDescriptor = [self appDescriptor];
+  bundleIdentifier = [appDescriptor bundleIdentifier];
+  v4 = bundleIdentifier;
+  if (bundleIdentifier)
   {
-    v5 = v3;
+    extensionBundleIdentifier = bundleIdentifier;
   }
 
   else
   {
-    v6 = [a1 appDescriptor];
-    v5 = [v6 extensionBundleIdentifier];
+    appDescriptor2 = [self appDescriptor];
+    extensionBundleIdentifier = [appDescriptor2 extensionBundleIdentifier];
   }
 
-  if ([v5 length])
+  if ([extensionBundleIdentifier length])
   {
     v7 = WFPossibleMobileDocumentsFileProviderDomainIDs();
-    v8 = [v7 containsObject:v5];
+    v8 = [v7 containsObject:extensionBundleIdentifier];
 
     if (v8)
     {
@@ -37,10 +37,10 @@
 
     else
     {
-      v17 = [MEMORY[0x277D79FC8] applicationIconImageForBundleIdentifier:v5];
+      v17 = [MEMORY[0x277D79FC8] applicationIconImageForBundleIdentifier:extensionBundleIdentifier];
       if (v17)
       {
-        v13 = [objc_alloc(MEMORY[0x277D79DA8]) initWithBundleIdentifier:v5];
+        v13 = [objc_alloc(MEMORY[0x277D79DA8]) initWithBundleIdentifier:extensionBundleIdentifier];
       }
 
       else
@@ -55,8 +55,8 @@
     v14 = getWFSecurityLogObject();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
     {
-      v15 = [a1 appDescriptor];
-      v16 = [v15 debugDescription];
+      appDescriptor3 = [self appDescriptor];
+      v16 = [appDescriptor3 debugDescription];
       v19 = 136315394;
       v20 = "[WFAppContentLocation(Icon) icon]";
       v21 = 2112;

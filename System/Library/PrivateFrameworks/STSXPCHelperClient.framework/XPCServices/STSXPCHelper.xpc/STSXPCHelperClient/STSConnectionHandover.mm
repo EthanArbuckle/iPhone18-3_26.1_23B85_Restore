@@ -1,41 +1,41 @@
 @interface STSConnectionHandover
-+ (id)_connectionHandoverWithNdefMessage:(id)a3;
-+ (id)_createNdefWithType:(int64_t)a3 alternativeCarriers:(id)a4 errorRecord:(id)a5;
-+ (id)connectionHandoverWithData:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)_connectionHandoverWithNdefMessage:(id)message;
++ (id)_createNdefWithType:(int64_t)type alternativeCarriers:(id)carriers errorRecord:(id)record;
++ (id)connectionHandoverWithData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (STSConnectionHandover)init;
-- (STSConnectionHandover)initWithCoder:(id)a3;
-- (void)addAlternativeCarrier:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (STSConnectionHandover)initWithCoder:(id)coder;
+- (void)addAlternativeCarrier:(id)carrier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STSConnectionHandover
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   majorVersion = self->_majorVersion;
-  v5 = a3;
-  [v5 encodeInteger:majorVersion forKey:@"majorVersion"];
-  [v5 encodeInteger:self->_minorVersion forKey:@"minorVersion"];
-  [v5 encodeObject:self->_alternativeCarriers forKey:@"alternativeCarriers"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:majorVersion forKey:@"majorVersion"];
+  [coderCopy encodeInteger:self->_minorVersion forKey:@"minorVersion"];
+  [coderCopy encodeObject:self->_alternativeCarriers forKey:@"alternativeCarriers"];
 }
 
-- (STSConnectionHandover)initWithCoder:(id)a3
+- (STSConnectionHandover)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = STSConnectionHandover;
   v5 = [(STSConnectionHandover *)&v14 init];
   if (v5)
   {
-    v5->_majorVersion = [v4 decodeIntForKey:@"majorVersion"];
-    v5->_minorVersion = [v4 decodeIntForKey:@"minorVersion"];
+    v5->_majorVersion = [coderCopy decodeIntForKey:@"majorVersion"];
+    v5->_minorVersion = [coderCopy decodeIntForKey:@"minorVersion"];
     v6 = objc_opt_class();
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = [NSSet setWithObjects:v6, v7, v8, v9, objc_opt_class(), 0];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"alternativeCarriers"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"alternativeCarriers"];
     alternativeCarriers = v5->_alternativeCarriers;
     v5->_alternativeCarriers = v11;
   }
@@ -58,24 +58,24 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     majorVersion = self->_majorVersion;
     if (majorVersion == [(STSConnectionHandover *)v6 majorVersion]|| (minorVersion = self->_minorVersion, minorVersion == [(STSConnectionHandover *)v6 minorVersion]))
     {
       alternativeCarriers = self->_alternativeCarriers;
-      v10 = [(STSConnectionHandover *)v6 alternativeCarriers];
-      v11 = [(NSMutableArray *)alternativeCarriers isEqualToArray:v10];
+      alternativeCarriers = [(STSConnectionHandover *)v6 alternativeCarriers];
+      v11 = [(NSMutableArray *)alternativeCarriers isEqualToArray:alternativeCarriers];
     }
 
     else
@@ -92,22 +92,22 @@
   return v11;
 }
 
-- (void)addAlternativeCarrier:(id)a3
+- (void)addAlternativeCarrier:(id)carrier
 {
-  if (a3)
+  if (carrier)
   {
     [(NSMutableArray *)self->_alternativeCarriers addObject:?];
   }
 }
 
-+ (id)connectionHandoverWithData:(id)a3
++ (id)connectionHandoverWithData:(id)data
 {
-  v4 = [STSNDEFRecord ndefRecordsWithData:a3];
+  v4 = [STSNDEFRecord ndefRecordsWithData:data];
   v8 = v4;
   if (v4)
   {
     sub_100024938(OS_LOG_TYPE_INFO, 0, "+[STSConnectionHandover connectionHandoverWithData:]", 154, @"NDEF:%@", v5, v6, v7, v4);
-    v9 = [a1 _connectionHandoverWithNdefMessage:v8];
+    v9 = [self _connectionHandoverWithNdefMessage:v8];
   }
 
   else
@@ -119,9 +119,9 @@
   return v9;
 }
 
-+ (id)_connectionHandoverWithNdefMessage:(id)a3
++ (id)_connectionHandoverWithNdefMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v100 = +[NSMutableArray array];
   v92 = +[NSMutableDictionary dictionary];
   v4 = +[NSMutableDictionary dictionary];
@@ -129,7 +129,7 @@
   v115 = 0u;
   v116 = 0u;
   v117 = 0u;
-  v5 = v3;
+  v5 = messageCopy;
   v6 = [v5 countByEnumeratingWithState:&v114 objects:v121 count:16];
   if (v6)
   {
@@ -153,10 +153,10 @@
         }
 
         v11 = *(*(&v114 + 1) + 8 * v10);
-        v12 = [v11 isHandoverSelectRecord];
-        v13 = [v11 isHandoverRequestRecord];
+        isHandoverSelectRecord = [v11 isHandoverSelectRecord];
+        isHandoverRequestRecord = [v11 isHandoverRequestRecord];
         v98 = v10;
-        if ((v12 & 1) != 0 || v13)
+        if ((isHandoverSelectRecord & 1) != 0 || isHandoverRequestRecord)
         {
           if (v96)
           {
@@ -166,14 +166,14 @@
             goto LABEL_71;
           }
 
-          v29 = [v11 payload];
-          v30 = [v29 bytes];
+          payload = [v11 payload];
+          bytes = [payload bytes];
 
-          v31 = [v11 payload];
-          v32 = [v31 length];
+          payload2 = [v11 payload];
+          v32 = [payload2 length];
 
-          v94 = *v30;
-          v33 = [NSData dataWithBytes:v30 + 1 length:v32 - 1];
+          v94 = *bytes;
+          v33 = [NSData dataWithBytes:bytes + 1 length:v32 - 1];
           v34 = [STSNDEFRecord ndefRecordsWithData:v33];
 
           v35 = [v34 count];
@@ -213,7 +213,7 @@
                       [v100 addObject:v44];
                     }
 
-                    else if (([v44 isHandoverSelectErrorRecord] & v12) == 1)
+                    else if (([v44 isHandoverSelectErrorRecord] & isHandoverSelectRecord) == 1)
                     {
                       v49 = v44;
 
@@ -223,8 +223,8 @@
                     else
                     {
                       v50 = [NSString alloc];
-                      v51 = [v44 type];
-                      v52 = [v50 initWithData:v51 encoding:4];
+                      type = [v44 type];
+                      v52 = [v50 initWithData:type encoding:4];
 
                       sub_100024938(OS_LOG_TYPE_DEFAULT, 0, "+[STSConnectionHandover _connectionHandoverWithNdefMessage:]", 211, @"Unsupported type:%@", v53, v54, v55, v52);
                     }
@@ -233,8 +233,8 @@
 
                 else
                 {
-                  v45 = [v44 typeNameFormat];
-                  sub_100024938(OS_LOG_TYPE_DEFAULT, 0, "+[STSConnectionHandover _connectionHandoverWithNdefMessage:]", 200, @"Unsupported record TNF:%d", v46, v47, v48, v45);
+                  typeNameFormat = [v44 typeNameFormat];
+                  sub_100024938(OS_LOG_TYPE_DEFAULT, 0, "+[STSConnectionHandover _connectionHandoverWithNdefMessage:]", 200, @"Unsupported record TNF:%d", v46, v47, v48, typeNameFormat);
                 }
 
                 v43 = v43 + 1;
@@ -259,43 +259,43 @@
         {
           if (([v11 isWiFiAwareConfigurationRecord] & 1) == 0 && (objc_msgSend(v11, "isBluetoothLEConfigurationRecord") & 1) == 0 && !objc_msgSend(v11, "isNfcConfigurationRecord"))
           {
-            v57 = [v11 identifier];
+            identifier = [v11 identifier];
 
-            if (v57)
+            if (identifier)
             {
-              v27 = [v11 identifier];
+              identifier2 = [v11 identifier];
               v28 = v4;
               goto LABEL_15;
             }
 
             v58 = [NSString alloc];
-            v59 = [v11 type];
-            v27 = [v58 initWithData:v59 encoding:4];
+            type2 = [v11 type];
+            identifier2 = [v58 initWithData:type2 encoding:4];
 
-            v60 = [v11 typeNameFormat];
-            sub_100024938(OS_LOG_TYPE_DEFAULT, 0, "+[STSConnectionHandover _connectionHandoverWithNdefMessage:]", 229, @"Unsupported record TNF=%d,type=%@,id=nil", v61, v62, v63, v60);
+            typeNameFormat2 = [v11 typeNameFormat];
+            sub_100024938(OS_LOG_TYPE_DEFAULT, 0, "+[STSConnectionHandover _connectionHandoverWithNdefMessage:]", 229, @"Unsupported record TNF=%d,type=%@,id=nil", v61, v62, v63, typeNameFormat2);
 LABEL_16:
 
             goto LABEL_38;
           }
 
-          v17 = [v11 identifier];
+          identifier3 = [v11 identifier];
 
-          if (v17)
+          if (identifier3)
           {
-            v21 = [v11 identifier];
-            v22 = [v92 objectForKey:v21];
+            identifier4 = [v11 identifier];
+            v22 = [v92 objectForKey:identifier4];
 
             if (v22)
             {
-              v23 = [v11 identifier];
-              sub_100024938(OS_LOG_TYPE_INFO, 0, "+[STSConnectionHandover _connectionHandoverWithNdefMessage:]", 219, @"Carrier config %@ exists", v24, v25, v26, v23);
+              identifier5 = [v11 identifier];
+              sub_100024938(OS_LOG_TYPE_INFO, 0, "+[STSConnectionHandover _connectionHandoverWithNdefMessage:]", 219, @"Carrier config %@ exists", v24, v25, v26, identifier5);
             }
 
-            v27 = [v11 identifier];
+            identifier2 = [v11 identifier];
             v28 = v92;
 LABEL_15:
-            [v28 setObject:v11 forKey:v27];
+            [v28 setObject:v11 forKey:identifier2];
             goto LABEL_16;
           }
 
@@ -341,17 +341,17 @@ LABEL_38:
               }
 
               v70 = *(*(&v106 + 1) + 8 * i);
-              v71 = [v70 getCarrierDataReferenceFromAlternativeCarrierRecord];
-              if (v71)
+              getCarrierDataReferenceFromAlternativeCarrierRecord = [v70 getCarrierDataReferenceFromAlternativeCarrierRecord];
+              if (getCarrierDataReferenceFromAlternativeCarrierRecord)
               {
-                v99 = [v92 objectForKeyedSubscript:v71];
+                v99 = [v92 objectForKeyedSubscript:getCarrierDataReferenceFromAlternativeCarrierRecord];
                 v72 = +[NSMutableArray array];
-                v73 = [v70 getAuxiliaryDataReferencesFromAlternativeCarrierRecord];
+                getAuxiliaryDataReferencesFromAlternativeCarrierRecord = [v70 getAuxiliaryDataReferencesFromAlternativeCarrierRecord];
                 v102 = 0u;
                 v103 = 0u;
                 v104 = 0u;
                 v105 = 0u;
-                v74 = [v73 countByEnumeratingWithState:&v102 objects:v118 count:16];
+                v74 = [getAuxiliaryDataReferencesFromAlternativeCarrierRecord countByEnumeratingWithState:&v102 objects:v118 count:16];
                 if (v74)
                 {
                   v75 = v74;
@@ -362,7 +362,7 @@ LABEL_38:
                     {
                       if (*v103 != v76)
                       {
-                        objc_enumerationMutation(v73);
+                        objc_enumerationMutation(getAuxiliaryDataReferencesFromAlternativeCarrierRecord);
                       }
 
                       v78 = [v4 objectForKeyedSubscript:*(*(&v102 + 1) + 8 * j)];
@@ -372,16 +372,16 @@ LABEL_38:
                       }
                     }
 
-                    v75 = [v73 countByEnumeratingWithState:&v102 objects:v118 count:16];
+                    v75 = [getAuxiliaryDataReferencesFromAlternativeCarrierRecord countByEnumeratingWithState:&v102 objects:v118 count:16];
                   }
 
                   while (v75);
                 }
 
                 v79 = [[STSCHNdefRecordBundle alloc] initWithAlternativeRecord:v70 configurationRecord:v99 auxiliaryRecords:v72 errorRecord:v101];
-                v80 = [v99 isWiFiAwareConfigurationRecord];
+                isWiFiAwareConfigurationRecord = [v99 isWiFiAwareConfigurationRecord];
                 v81 = &off_100058598;
-                if (v80 & 1) != 0 || (v82 = [v99 isBluetoothLEConfigurationRecord], v81 = off_100058588, (v82) || (v83 = objc_msgSend(v99, "isNfcConfigurationRecord"), v81 = off_100058590, v83))
+                if (isWiFiAwareConfigurationRecord & 1) != 0 || (v82 = [v99 isBluetoothLEConfigurationRecord], v81 = off_100058588, (v82) || (v83 = objc_msgSend(v99, "isNfcConfigurationRecord"), v81 = off_100058590, v83))
                 {
                   v84 = [(__objc2_class *)*v81 connectionHandoverAlternativeCarrierWithBundle:v79];
                   [(STSConnectionHandover *)v90 addAlternativeCarrier:v84];
@@ -411,11 +411,11 @@ LABEL_72:
   return v90;
 }
 
-+ (id)_createNdefWithType:(int64_t)a3 alternativeCarriers:(id)a4 errorRecord:(id)a5
++ (id)_createNdefWithType:(int64_t)type alternativeCarriers:(id)carriers errorRecord:(id)record
 {
-  v7 = a4;
-  v31 = a5;
-  if (a3)
+  carriersCopy = carriers;
+  recordCopy = record;
+  if (type)
   {
     v8 = "Hs";
   }
@@ -431,7 +431,7 @@ LABEL_72:
   [v9 appendBytes:&v37 length:1];
   v10 = +[NSMutableArray array];
   v11 = +[NSMutableArray array];
-  if (!a3)
+  if (!type)
   {
     arc4random_buf(__buf, 2uLL);
     v12 = [STSNDEFRecord alloc];
@@ -446,7 +446,7 @@ LABEL_72:
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v16 = v7;
+  v16 = carriersCopy;
   v17 = [v16 countByEnumeratingWithState:&v32 objects:v38 count:16];
   if (v17)
   {
@@ -461,15 +461,15 @@ LABEL_72:
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v32 + 1) + 8 * i) createNdefRecordBundle];
-        v22 = [v21 alternativeRecord];
-        [v10 addObject:v22];
+        createNdefRecordBundle = [*(*(&v32 + 1) + 8 * i) createNdefRecordBundle];
+        alternativeRecord = [createNdefRecordBundle alternativeRecord];
+        [v10 addObject:alternativeRecord];
 
-        v23 = [v21 configurationRecord];
-        [v11 addObject:v23];
+        configurationRecord = [createNdefRecordBundle configurationRecord];
+        [v11 addObject:configurationRecord];
 
-        v24 = [v21 auxiliaryRecords];
-        [v11 addObjectsFromArray:v24];
+        auxiliaryRecords = [createNdefRecordBundle auxiliaryRecords];
+        [v11 addObjectsFromArray:auxiliaryRecords];
       }
 
       v18 = [v16 countByEnumeratingWithState:&v32 objects:v38 count:16];
@@ -478,9 +478,9 @@ LABEL_72:
     while (v18);
   }
 
-  if (a3 == 1 && v31)
+  if (type == 1 && recordCopy)
   {
-    [v10 addObject:v31];
+    [v10 addObject:recordCopy];
   }
 
   v25 = [NSData dataWithSTSNDEFRecords:v10];

@@ -1,18 +1,18 @@
 @interface String
-- (uint64_t):(unint64_t *)a1;
+- (uint64_t):(unint64_t *)self;
 @end
 
 @implementation String
 
-- (uint64_t):(unint64_t *)a1
+- (uint64_t):(unint64_t *)self
 {
-  result = *a1;
+  result = *self;
   if (!result)
   {
     __swift_instantiateConcreteTypeFromMangledNameAbstractV2(&_sSDySSSaySiGGMd);
     a2();
     result = swift_getWitnessTable();
-    atomic_store(result, a1);
+    atomic_store(result, self);
   }
 
   return result;

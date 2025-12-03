@@ -1,23 +1,23 @@
 @interface BirthdateInput
-- (BOOL)isEqual:(id)a3;
-- (BOOL)lessThan:(id)a3;
-- (BirthdateInput)initWithCoder:(id)a3;
-- (BirthdateInput)initWithDate:(id)a3 status:(unint64_t)a4 process:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)lessThan:(id)than;
+- (BirthdateInput)initWithCoder:(id)coder;
+- (BirthdateInput)initWithDate:(id)date status:(unint64_t)status process:(id)process;
 - (NSNumber)age;
 - (NSString)description;
 - (id)ageBand;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BirthdateInput
 
-- (BOOL)lessThan:(id)a3
+- (BOOL)lessThan:(id)than
 {
-  v4 = a3;
+  thanCopy = than;
   objc_opt_class();
-  v5 = v4;
+  v5 = thanCopy;
   if (objc_opt_isKindOfClass())
   {
     if (v5)
@@ -52,11 +52,11 @@ LABEL_8:
 
 - (NSString)description
 {
-  v3 = [(BirthdateInput *)self ageBand];
+  ageBand = [(BirthdateInput *)self ageBand];
   v7.receiver = self;
   v7.super_class = BirthdateInput;
   v4 = [(EligibilityInput *)&v7 description];
-  v5 = [NSString stringWithFormat:@"[BirthdateInput age:%@ %@]", v3, v4];
+  v5 = [NSString stringWithFormat:@"[BirthdateInput age:%@ %@]", ageBand, v4];
 
   return v5;
 }
@@ -86,17 +86,17 @@ LABEL_8:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v11.receiver = self;
   v11.super_class = BirthdateInput;
-  if (![(EligibilityInput *)&v11 isEqual:v4])
+  if (![(EligibilityInput *)&v11 isEqual:equalCopy])
   {
     goto LABEL_9;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v8 = 1;
     goto LABEL_11;
@@ -105,10 +105,10 @@ LABEL_8:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BirthdateInput *)self birthdate];
-    v7 = [(BirthdateInput *)v5 birthdate];
-    v8 = sub_1000277EC(v6, v7);
+    v5 = equalCopy;
+    birthdate = [(BirthdateInput *)self birthdate];
+    birthdate2 = [(BirthdateInput *)v5 birthdate];
+    v8 = sub_1000277EC(birthdate, birthdate2);
 
     if ((v8 & 1) == 0)
     {
@@ -140,33 +140,33 @@ LABEL_11:
   v7.receiver = self;
   v7.super_class = BirthdateInput;
   v3 = [(EligibilityInput *)&v7 hash];
-  v4 = [(BirthdateInput *)self birthdate];
-  v5 = [v4 hash];
+  birthdate = [(BirthdateInput *)self birthdate];
+  v5 = [birthdate hash];
 
   return v5 ^ v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = BirthdateInput;
   v5 = [(EligibilityInput *)&v9 copyWithZone:?];
-  v6 = [(BirthdateInput *)self birthdate];
-  v7 = [v6 copyWithZone:a3];
+  birthdate = [(BirthdateInput *)self birthdate];
+  v7 = [birthdate copyWithZone:zone];
   [v5 setBirthdate:v7];
 
   return v5;
 }
 
-- (BirthdateInput)initWithCoder:(id)a3
+- (BirthdateInput)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = BirthdateInput;
-  v5 = [(EligibilityInput *)&v9 initWithCoder:v4];
+  v5 = [(EligibilityInput *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"birthdate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"birthdate"];
     birthdate = v5->_birthdate;
     v5->_birthdate = v6;
   }
@@ -174,24 +174,24 @@ LABEL_11:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = BirthdateInput;
-  v4 = a3;
-  [(EligibilityInput *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(EligibilityInput *)&v6 encodeWithCoder:coderCopy];
   v5 = [(BirthdateInput *)self birthdate:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"birthdate"];
+  [coderCopy encodeObject:v5 forKey:@"birthdate"];
 }
 
 - (NSNumber)age
 {
-  v2 = [(BirthdateInput *)self birthdate];
-  if (v2)
+  birthdate = [(BirthdateInput *)self birthdate];
+  if (birthdate)
   {
     v3 = +[NSDate date];
     v4 = +[NSCalendar currentCalendar];
-    v5 = [v4 components:4 fromDate:v2 toDate:v3 options:0];
+    v5 = [v4 components:4 fromDate:birthdate toDate:v3 options:0];
 
     v6 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v5 year]);
   }
@@ -204,13 +204,13 @@ LABEL_11:
   return v6;
 }
 
-- (BirthdateInput)initWithDate:(id)a3 status:(unint64_t)a4 process:(id)a5
+- (BirthdateInput)initWithDate:(id)date status:(unint64_t)status process:(id)process
 {
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  dateCopy = date;
+  processCopy = process;
+  if (dateCopy)
   {
-    type = xpc_get_type(v8);
+    type = xpc_get_type(dateCopy);
     if (type != &_xpc_type_date)
     {
       v11 = type;
@@ -224,7 +224,7 @@ LABEL_11:
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%s: Birthdate input is wrong data type: %s", buf, 0x16u);
       }
 
-      v13 = 0;
+      selfCopy = 0;
       goto LABEL_11;
     }
 
@@ -238,7 +238,7 @@ LABEL_11:
 
   v17.receiver = self;
   v17.super_class = BirthdateInput;
-  v14 = [(EligibilityInput *)&v17 initWithInputType:15 status:a4 process:v9];
+  v14 = [(EligibilityInput *)&v17 initWithInputType:15 status:status process:processCopy];
   v15 = v14;
   if (v14)
   {
@@ -246,10 +246,10 @@ LABEL_11:
   }
 
   self = v15;
-  v13 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v13;
+  return selfCopy;
 }
 
 @end

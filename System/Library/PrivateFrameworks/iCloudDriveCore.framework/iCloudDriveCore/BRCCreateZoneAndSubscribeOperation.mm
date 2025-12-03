@@ -1,59 +1,59 @@
 @interface BRCCreateZoneAndSubscribeOperation
-- (BRCCreateZoneAndSubscribeOperation)initWithServerZone:(id)a3 sessionContext:(id)a4;
-- (BRCCreateZoneAndSubscribeOperation)initWithSessionContext:(id)a3 zoneID:(id)a4;
+- (BRCCreateZoneAndSubscribeOperation)initWithServerZone:(id)zone sessionContext:(id)context;
+- (BRCCreateZoneAndSubscribeOperation)initWithSessionContext:(id)context zoneID:(id)d;
 - (id)createActivity;
-- (void)_createZoneWithZoneID:(id)a3;
-- (void)_registerSubscriptionForZoneID:(id)a3 isOptimisticSubscribe:(BOOL)a4;
-- (void)finishWithResult:(id)a3 error:(id)a4;
+- (void)_createZoneWithZoneID:(id)d;
+- (void)_registerSubscriptionForZoneID:(id)d isOptimisticSubscribe:(BOOL)subscribe;
+- (void)finishWithResult:(id)result error:(id)error;
 - (void)main;
 @end
 
 @implementation BRCCreateZoneAndSubscribeOperation
 
-- (BRCCreateZoneAndSubscribeOperation)initWithSessionContext:(id)a3 zoneID:(id)a4
+- (BRCCreateZoneAndSubscribeOperation)initWithSessionContext:(id)context zoneID:(id)d
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v7 zoneName];
-  v10 = [@"create-subscribe-zone/" stringByAppendingString:v9];
-  v11 = [v8 syncContextProvider];
-  v12 = [v11 defaultSyncContext];
+  dCopy = d;
+  contextCopy = context;
+  zoneName = [dCopy zoneName];
+  v10 = [@"create-subscribe-zone/" stringByAppendingString:zoneName];
+  syncContextProvider = [contextCopy syncContextProvider];
+  defaultSyncContext = [syncContextProvider defaultSyncContext];
   v15.receiver = self;
   v15.super_class = BRCCreateZoneAndSubscribeOperation;
-  v13 = [(_BRCOperation *)&v15 initWithName:v10 syncContext:v12 sessionContext:v8];
+  v13 = [(_BRCOperation *)&v15 initWithName:v10 syncContext:defaultSyncContext sessionContext:contextCopy];
 
   if (v13)
   {
-    objc_storeStrong(&v13->_zoneID, a4);
+    objc_storeStrong(&v13->_zoneID, d);
     [(BRCCreateZoneAndSubscribeOperation *)v13 setQueuePriority:4];
   }
 
   return v13;
 }
 
-- (BRCCreateZoneAndSubscribeOperation)initWithServerZone:(id)a3 sessionContext:(id)a4
+- (BRCCreateZoneAndSubscribeOperation)initWithServerZone:(id)zone sessionContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 zoneName];
-  v9 = [@"create-subscribe-zone/" stringByAppendingString:v8];
+  zoneCopy = zone;
+  contextCopy = context;
+  zoneName = [zoneCopy zoneName];
+  v9 = [@"create-subscribe-zone/" stringByAppendingString:zoneName];
 
-  v10 = [v6 zoneID];
+  zoneID = [zoneCopy zoneID];
   zoneID = self->_zoneID;
-  self->_zoneID = v10;
+  self->_zoneID = zoneID;
 
-  v12 = [v6 metadataSyncContext];
+  metadataSyncContext = [zoneCopy metadataSyncContext];
   v17.receiver = self;
   v17.super_class = BRCCreateZoneAndSubscribeOperation;
-  v13 = [(_BRCOperation *)&v17 initWithName:v9 syncContext:v12 sessionContext:v7];
+  v13 = [(_BRCOperation *)&v17 initWithName:v9 syncContext:metadataSyncContext sessionContext:contextCopy];
 
   if (v13)
   {
     [(BRCCreateZoneAndSubscribeOperation *)v13 setQueuePriority:4];
-    v14 = [v6 clientZone];
-    v15 = [v14 hasHighPriorityWatchers];
+    clientZone = [zoneCopy clientZone];
+    hasHighPriorityWatchers = [clientZone hasHighPriorityWatchers];
 
-    if (v15)
+    if (hasHighPriorityWatchers)
     {
       [(_BRCOperation *)v13 setNonDiscretionary:1];
     }
@@ -73,31 +73,31 @@
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_fault_impl(&dword_223E7A000, a2, OS_LOG_TYPE_FAULT, "[CRIT] Assertion failed: !_optimisticSubscribe%@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  errorCopy = error;
   createZoneAndSubscribeCompletionBlock = self->_createZoneAndSubscribeCompletionBlock;
   if (createZoneAndSubscribeCompletionBlock)
   {
-    createZoneAndSubscribeCompletionBlock[2](createZoneAndSubscribeCompletionBlock, v7);
+    createZoneAndSubscribeCompletionBlock[2](createZoneAndSubscribeCompletionBlock, errorCopy);
   }
 
   v9.receiver = self;
   v9.super_class = BRCCreateZoneAndSubscribeOperation;
-  [(_BRCOperation *)&v9 finishWithResult:v6 error:v7];
+  [(_BRCOperation *)&v9 finishWithResult:resultCopy error:errorCopy];
 }
 
-- (void)_createZoneWithZoneID:(id)a3
+- (void)_createZoneWithZoneID:(id)d
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CBC5E8]) initWithZoneID:v4];
+  dCopy = d;
+  v5 = [objc_alloc(MEMORY[0x277CBC5E8]) initWithZoneID:dCopy];
   v6 = objc_alloc(MEMORY[0x277CBC490]);
   v19[0] = v5;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
@@ -109,9 +109,9 @@
   v13 = __60__BRCCreateZoneAndSubscribeOperation__createZoneWithZoneID___block_invoke;
   v14 = &unk_278504E70;
   objc_copyWeak(&v17, &location);
-  v9 = v4;
+  v9 = dCopy;
   v15 = v9;
-  v16 = self;
+  selfCopy = self;
   [v8 setModifyRecordZonesCompletionBlock:&v11];
   [(_BRCOperation *)self addSubOperation:v8, v11, v12, v13, v14];
 
@@ -198,19 +198,19 @@ void __60__BRCCreateZoneAndSubscribeOperation__createZoneWithZoneID___block_invo
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_registerSubscriptionForZoneID:(id)a3 isOptimisticSubscribe:(BOOL)a4
+- (void)_registerSubscriptionForZoneID:(id)d isOptimisticSubscribe:(BOOL)subscribe
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dCopy = d;
   if ([(BRCSyncContext *)self->super._syncContext isShared])
   {
     [BRCCreateZoneAndSubscribeOperation _registerSubscriptionForZoneID:isOptimisticSubscribe:];
   }
 
-  v7 = [v6 zoneName];
-  v8 = [@"subscription/" stringByAppendingString:v7];
+  zoneName = [dCopy zoneName];
+  v8 = [@"subscription/" stringByAppendingString:zoneName];
 
-  v9 = [objc_alloc(MEMORY[0x277CBC618]) initWithZoneID:v6 subscriptionID:v8];
+  v9 = [objc_alloc(MEMORY[0x277CBC618]) initWithZoneID:dCopy subscriptionID:v8];
   v10 = objc_alloc_init(MEMORY[0x277CBC4D0]);
   [v10 setShouldSendContentAvailable:1];
   [v9 setNotificationInfo:v10];
@@ -228,10 +228,10 @@ void __60__BRCCreateZoneAndSubscribeOperation__createZoneWithZoneID___block_invo
   v19 = v14;
   objc_copyWeak(&v23, &location);
   v15 = v9;
-  v24 = a4;
+  subscribeCopy = subscribe;
   v20 = v15;
-  v21 = self;
-  v16 = v6;
+  selfCopy = self;
+  v16 = dCopy;
   v22 = v16;
   [v13 setModifySubscriptionsCompletionBlock:v18];
   [(_BRCOperation *)self addSubOperation:v13];

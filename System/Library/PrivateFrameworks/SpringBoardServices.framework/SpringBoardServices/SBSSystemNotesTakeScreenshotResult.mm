@@ -1,43 +1,43 @@
 @interface SBSSystemNotesTakeScreenshotResult
-- (SBSSystemNotesTakeScreenshotResult)initWithDisplay:(id)a3 sendRight:(id)a4 scale:(double)a5;
-- (SBSSystemNotesTakeScreenshotResult)initWithXPCDictionary:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (SBSSystemNotesTakeScreenshotResult)initWithDisplay:(id)display sendRight:(id)right scale:(double)scale;
+- (SBSSystemNotesTakeScreenshotResult)initWithXPCDictionary:(id)dictionary;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation SBSSystemNotesTakeScreenshotResult
 
-- (SBSSystemNotesTakeScreenshotResult)initWithDisplay:(id)a3 sendRight:(id)a4 scale:(double)a5
+- (SBSSystemNotesTakeScreenshotResult)initWithDisplay:(id)display sendRight:(id)right scale:(double)scale
 {
-  v9 = a3;
-  v10 = a4;
+  displayCopy = display;
+  rightCopy = right;
   v14.receiver = self;
   v14.super_class = SBSSystemNotesTakeScreenshotResult;
   v11 = [(SBSSystemNotesTakeScreenshotResult *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_displayIdentity, a3);
-    objc_storeStrong(&v12->_machPortSendRight, a4);
-    v12->_scale = a5;
+    objc_storeStrong(&v11->_displayIdentity, display);
+    objc_storeStrong(&v12->_machPortSendRight, right);
+    v12->_scale = scale;
   }
 
   return v12;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
-    v3 = a3;
+    dictionaryCopy = dictionary;
     BSSerializeBSXPCEncodableObjectToXPCDictionaryWithKey();
     BSSerializeBSXPCEncodableObjectToXPCDictionaryWithKey();
     BSSerializeDoubleToXPCDictionaryWithKey();
   }
 }
 
-- (SBSSystemNotesTakeScreenshotResult)initWithXPCDictionary:(id)a3
+- (SBSSystemNotesTakeScreenshotResult)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = BSDeserializeBSXPCEncodableObjectFromXPCDictionaryWithKey();
   v6 = BSDeserializeBSXPCEncodableObjectFromXPCDictionaryWithKey();
   BSDeserializeDoubleFromXPCDictionaryWithKey();

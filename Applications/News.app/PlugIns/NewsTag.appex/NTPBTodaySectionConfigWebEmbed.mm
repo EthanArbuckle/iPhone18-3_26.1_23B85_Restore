@@ -1,15 +1,15 @@
 @interface NTPBTodaySectionConfigWebEmbed
-- (BOOL)conformsToProtocol:(id)a3;
+- (BOOL)conformsToProtocol:(id)protocol;
 @end
 
 @implementation NTPBTodaySectionConfigWebEmbed
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   v5.receiver = self;
   v5.super_class = NTPBTodaySectionConfigWebEmbed;
-  v3 = a3;
-  if ([(NTPBTodaySectionConfigWebEmbed *)&v5 conformsToProtocol:v3])
+  protocolCopy = protocol;
+  if ([(NTPBTodaySectionConfigWebEmbed *)&v5 conformsToProtocol:protocolCopy])
   {
 
     return 1;
@@ -18,7 +18,7 @@
   else
   {
 
-    return &OBJC_PROTOCOL___NTTodayItem == v3;
+    return &OBJC_PROTOCOL___NTTodayItem == protocolCopy;
   }
 }
 

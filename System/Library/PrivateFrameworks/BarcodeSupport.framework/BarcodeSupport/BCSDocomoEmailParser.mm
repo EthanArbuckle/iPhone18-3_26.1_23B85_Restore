@@ -1,24 +1,24 @@
 @interface BCSDocomoEmailParser
-+ (id)parseString:(id)a3;
++ (id)parseString:(id)string;
 @end
 
 @implementation BCSDocomoEmailParser
 
-+ (id)parseString:(id)a3
++ (id)parseString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
   if (v4)
   {
     [(BCSDocomoEmailParser *)v4 parseString:v5, v6, v7, v8, v9, v10, v11];
   }
 
-  if ([v3 length] > 6)
+  if ([stringCopy length] > 6)
   {
-    v21 = [v3 substringToIndex:7];
-    v22 = [v21 lowercaseString];
+    v21 = [stringCopy substringToIndex:7];
+    lowercaseString = [v21 lowercaseString];
 
-    if (([v22 isEqualToString:@"matmsg:"] & 1) == 0)
+    if (([lowercaseString isEqualToString:@"matmsg:"] & 1) == 0)
     {
       v40 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
       if (v40)
@@ -30,19 +30,19 @@
       goto LABEL_36;
     }
 
-    v23 = [[BCSKeyValueParser alloc] initWithString:v3 startIndex:7];
-    v24 = [(BCSKeyValueParser *)v23 keyValuePairs];
-    v25 = [v24 objectForKeyedSubscript:@"TO"];
-    v26 = [v25 _bcs_trimmedString];
+    v23 = [[BCSKeyValueParser alloc] initWithString:stringCopy startIndex:7];
+    keyValuePairs = [(BCSKeyValueParser *)v23 keyValuePairs];
+    v25 = [keyValuePairs objectForKeyedSubscript:@"TO"];
+    _bcs_trimmedString = [v25 _bcs_trimmedString];
 
-    v27 = [v24 objectForKeyedSubscript:@"SUB"];
-    v28 = [v24 objectForKeyedSubscript:@"BODY"];
+    v27 = [keyValuePairs objectForKeyedSubscript:@"SUB"];
+    v28 = [keyValuePairs objectForKeyedSubscript:@"BODY"];
     v29 = [v27 length];
     v30 = [v28 length];
     v31 = [MEMORY[0x277CCAB68] stringWithString:@"mailto:"];
-    if ([v26 length] && objc_msgSend(v26, "_bcs_looksLikeEmailAddress"))
+    if ([_bcs_trimmedString length] && objc_msgSend(_bcs_trimmedString, "_bcs_looksLikeEmailAddress"))
     {
-      [v31 appendString:v26];
+      [v31 appendString:_bcs_trimmedString];
       v32 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
       if (v32)
       {
@@ -57,7 +57,7 @@
         +[BCSDocomoEmailParser parseString:];
       }
 
-      v20 = [[BCSInvalidParsedData alloc] initWithInvalidDataType:3 invalidContents:v3];
+      v20 = [[BCSInvalidParsedData alloc] initWithInvalidDataType:3 invalidContents:stringCopy];
       goto LABEL_35;
     }
 
@@ -66,8 +66,8 @@
       [v31 appendString:@"?"];
       if (v29)
       {
-        v48 = [v27 _bcs_urlEncodedQueryValue];
-        [v31 appendFormat:@"subject=%@", v48];
+        _bcs_urlEncodedQueryValue = [v27 _bcs_urlEncodedQueryValue];
+        [v31 appendFormat:@"subject=%@", _bcs_urlEncodedQueryValue];
 
         v49 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
         if (v49)
@@ -90,8 +90,8 @@ LABEL_20:
       else if (v30)
       {
 LABEL_25:
-        v57 = [v28 _bcs_urlEncodedQueryValue];
-        [v31 appendFormat:@"body=%@", v57];
+        _bcs_urlEncodedQueryValue2 = [v28 _bcs_urlEncodedQueryValue];
+        [v31 appendFormat:@"body=%@", _bcs_urlEncodedQueryValue2];
 
         v58 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
         if (v58)
@@ -120,7 +120,7 @@ LABEL_25:
         +[BCSDocomoEmailParser parseString:];
       }
 
-      v67 = [[BCSInvalidParsedData alloc] initWithInvalidDataType:3 invalidContents:v3];
+      v67 = [[BCSInvalidParsedData alloc] initWithInvalidDataType:3 invalidContents:stringCopy];
     }
 
     v20 = v67;

@@ -1,13 +1,13 @@
 @interface TPSLinkedDocument
-+ (id)linkedDocumentFromDictionary:(id)a3;
++ (id)linkedDocumentFromDictionary:(id)dictionary;
 - (TPSLinkedDocument)init;
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TPSLinkedDocument
 
-+ (id)linkedDocumentFromDictionary:(id)a3
++ (id)linkedDocumentFromDictionary:(id)dictionary
 {
   v3 = sub_1C014C170();
   v4 = _s8TipsCore14LinkedDocumentC06linkedD14FromDictionary10dictionarySDys11AnyHashableVypGSgAH_tFZ_0(v3);
@@ -25,17 +25,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C00FB2F4(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1C00FB2F4(coderCopy);
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v4 = self;
-  sub_1C00FB694(a3, v7);
+  selfCopy = self;
+  sub_1C00FB694(zone, v7);
 
   __swift_project_boxed_opaque_existential_0(v7, v7[3]);
   v5 = sub_1C014C9E0();

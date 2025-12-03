@@ -1,7 +1,7 @@
 @interface PBUILivePhotoPlayerLiveWallpaperView
 - (PBUILivePhotoPlayerLiveWallpaperView)init;
 - (int64_t)playbackState;
-- (void)_subclass_updateForForcingPlayback:(BOOL)a3;
+- (void)_subclass_updateForForcingPlayback:(BOOL)playback;
 @end
 
 @implementation PBUILivePhotoPlayerLiveWallpaperView
@@ -35,8 +35,8 @@
     liveWallpaperView = v2->_liveWallpaperView;
     v2->_liveWallpaperView = v5;
 
-    v7 = [(ISLiveWallpaperUIView *)v2->_liveWallpaperView player];
-    [(PBUILivePhotoPlayerView *)v2 _common_configurePlayer:v7];
+    player = [(ISLiveWallpaperUIView *)v2->_liveWallpaperView player];
+    [(PBUILivePhotoPlayerView *)v2 _common_configurePlayer:player];
 
     [(PBUILivePhotoPlayerView *)v2 _common_configurePlayerView:v2->_liveWallpaperView];
   }
@@ -46,10 +46,10 @@
 
 - (int64_t)playbackState
 {
-  v2 = [(ISLiveWallpaperUIView *)self->_liveWallpaperView player];
-  v3 = [v2 isPlaying];
+  player = [(ISLiveWallpaperUIView *)self->_liveWallpaperView player];
+  isPlaying = [player isPlaying];
 
-  if (v3)
+  if (isPlaying)
   {
     return 4;
   }
@@ -60,15 +60,15 @@
   }
 }
 
-- (void)_subclass_updateForForcingPlayback:(BOOL)a3
+- (void)_subclass_updateForForcingPlayback:(BOOL)playback
 {
-  v4 = [(ISLiveWallpaperUIView *)self->_liveWallpaperView player];
+  player = [(ISLiveWallpaperUIView *)self->_liveWallpaperView player];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __75__PBUILivePhotoPlayerLiveWallpaperView__subclass_updateForForcingPlayback___block_invoke;
   v5[3] = &__block_descriptor_33_e31_v16__0__ISLiveWallpaperPlayer_8l;
-  v6 = a3;
-  [v4 performChanges:v5];
+  playbackCopy = playback;
+  [player performChanges:v5];
 }
 
 void __75__PBUILivePhotoPlayerLiveWallpaperView__subclass_updateForForcingPlayback___block_invoke(uint64_t a1, void *a2)

@@ -1,32 +1,32 @@
 @interface CSTrackQueuedMessage
-- (CSTrackQueuedMessage)initWithMessage:(id)a3;
-- (CSTrackQueuedMessage)initWithQueuedTracks:(id)a3 shouldQueueOnServer:(BOOL)a4;
+- (CSTrackQueuedMessage)initWithMessage:(id)message;
+- (CSTrackQueuedMessage)initWithQueuedTracks:(id)tracks shouldQueueOnServer:(BOOL)server;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation CSTrackQueuedMessage
 
-- (CSTrackQueuedMessage)initWithQueuedTracks:(id)a3 shouldQueueOnServer:(BOOL)a4
+- (CSTrackQueuedMessage)initWithQueuedTracks:(id)tracks shouldQueueOnServer:(BOOL)server
 {
-  v6 = a3;
+  tracksCopy = tracks;
   v11.receiver = self;
   v11.super_class = CSTrackQueuedMessage;
   v7 = [(CSTrackQueuedMessage *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [tracksCopy copy];
     queuedTracks = v7->_queuedTracks;
     v7->_queuedTracks = v8;
 
-    v7->_shouldQueueOnServer = a4;
+    v7->_shouldQueueOnServer = server;
   }
 
   return v7;
 }
 
-- (CSTrackQueuedMessage)initWithMessage:(id)a3
+- (CSTrackQueuedMessage)initWithMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v26.receiver = self;
   v26.super_class = CSTrackQueuedMessage;
   v5 = [(CSTrackQueuedMessage *)&v26 init];
@@ -35,7 +35,7 @@
     goto LABEL_12;
   }
 
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   objc_opt_class();
   NSDictionaryGetNSArrayOfClass();
   v22 = 0u;
@@ -71,7 +71,7 @@
         }
 
         v13 = v12;
-        [v6 addObject:v12];
+        [array addObject:v12];
 
         ++v11;
       }
@@ -87,9 +87,9 @@
     }
   }
 
-  if ([v6 count])
+  if ([array count])
   {
-    v14 = [v6 copy];
+    v14 = [array copy];
     queuedTracks = v5->_queuedTracks;
     v5->_queuedTracks = v14;
 
@@ -137,8 +137,8 @@ LABEL_17:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-        [v3 addObject:v9];
+        dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+        [v3 addObject:dictionaryRepresentation];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v16 objects:v15 count:16];
@@ -149,8 +149,8 @@ LABEL_17:
 
   v14.receiver = self;
   v14.super_class = CSTrackQueuedMessage;
-  v10 = [(CSMessage *)&v14 dictionaryRepresentation];
-  v11 = [v10 mutableCopy];
+  dictionaryRepresentation2 = [(CSMessage *)&v14 dictionaryRepresentation];
+  v11 = [dictionaryRepresentation2 mutableCopy];
 
   [v11 setObject:v3 forKeyedSubscript:@"QueuedTracks"];
   v12 = [MEMORY[0x277CCABB0] numberWithBool:self->_shouldQueueOnServer];

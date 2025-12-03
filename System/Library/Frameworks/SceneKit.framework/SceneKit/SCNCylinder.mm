@@ -1,28 +1,28 @@
 @interface SCNCylinder
 + (SCNCylinder)cylinderWithRadius:(CGFloat)radius height:(CGFloat)height;
-- (BOOL)getBoundingBoxMin:(SCNVector3 *)a3 max:(SCNVector3 *)a4;
-- (BOOL)getBoundingSphereCenter:(SCNVector3 *)a3 radius:(double *)a4;
+- (BOOL)getBoundingBoxMin:(SCNVector3 *)min max:(SCNVector3 *)max;
+- (BOOL)getBoundingSphereCenter:(SCNVector3 *)center radius:(double *)radius;
 - (CGFloat)height;
 - (CGFloat)radius;
 - (NSInteger)heightSegmentCount;
 - (NSInteger)radialSegmentCount;
 - (SCNCylinder)init;
-- (SCNCylinder)initWithCoder:(id)a3;
-- (SCNCylinder)initWithParametricGeometryRef:(__C3DParametricGeometry *)a3;
+- (SCNCylinder)initWithCoder:(id)coder;
+- (SCNCylinder)initWithParametricGeometryRef:(__C3DParametricGeometry *)ref;
 - (double)radialSpan;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initPresentationParametricGeometryWithParametricGeometryRef:(__C3DParametricGeometry *)a3;
+- (id)initPresentationParametricGeometryWithParametricGeometryRef:(__C3DParametricGeometry *)ref;
 - (id)presentationCylinder;
 - (int64_t)primitiveType;
-- (void)_setupObjCModelFrom:(id)a3;
-- (void)_syncObjCModel:(__C3DParametricGeometry *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setupObjCModelFrom:(id)from;
+- (void)_syncObjCModel:(__C3DParametricGeometry *)model;
+- (void)encodeWithCoder:(id)coder;
 - (void)setHeight:(CGFloat)height;
 - (void)setHeightSegmentCount:(NSInteger)heightSegmentCount;
-- (void)setPrimitiveType:(int64_t)a3;
+- (void)setPrimitiveType:(int64_t)type;
 - (void)setRadialSegmentCount:(NSInteger)radialSegmentCount;
-- (void)setRadialSpan:(double)a3;
+- (void)setRadialSpan:(double)span;
 - (void)setRadius:(CGFloat)radius;
 @end
 
@@ -47,11 +47,11 @@
   return v5;
 }
 
-- (SCNCylinder)initWithParametricGeometryRef:(__C3DParametricGeometry *)a3
+- (SCNCylinder)initWithParametricGeometryRef:(__C3DParametricGeometry *)ref
 {
   v7.receiver = self;
   v7.super_class = SCNCylinder;
-  v3 = [(SCNGeometry *)&v7 initWithGeometryRef:a3];
+  v3 = [(SCNGeometry *)&v7 initWithGeometryRef:ref];
   v4 = v3;
   if (v3)
   {
@@ -64,11 +64,11 @@
   return v4;
 }
 
-- (id)initPresentationParametricGeometryWithParametricGeometryRef:(__C3DParametricGeometry *)a3
+- (id)initPresentationParametricGeometryWithParametricGeometryRef:(__C3DParametricGeometry *)ref
 {
   v4.receiver = self;
   v4.super_class = SCNCylinder;
-  return [(SCNGeometry *)&v4 initPresentationGeometryWithGeometryRef:a3];
+  return [(SCNGeometry *)&v4 initPresentationGeometryWithGeometryRef:ref];
 }
 
 - (id)presentationCylinder
@@ -78,14 +78,14 @@
   return v2;
 }
 
-- (void)_syncObjCModel:(__C3DParametricGeometry *)a3
+- (void)_syncObjCModel:(__C3DParametricGeometry *)model
 {
-  self->_cylinderradius = C3DParametricGeometryGetFloatValue(a3, 4);
-  self->_cylinderradialSpan = C3DParametricGeometryGetFloatValue(a3, 21);
-  self->_cylinderheight = C3DParametricGeometryGetFloatValue(a3, 1);
-  self->_cylinderheightSegmentCount = C3DParametricGeometryGetIntValue(a3, 12);
-  self->_cylinderradialSegmentCount = C3DParametricGeometryGetIntValue(a3, 15);
-  self->_cylinderprimitiveType = C3DParametricGeometryGetIntValue(a3, 20);
+  self->_cylinderradius = C3DParametricGeometryGetFloatValue(model, 4);
+  self->_cylinderradialSpan = C3DParametricGeometryGetFloatValue(model, 21);
+  self->_cylinderheight = C3DParametricGeometryGetFloatValue(model, 1);
+  self->_cylinderheightSegmentCount = C3DParametricGeometryGetIntValue(model, 12);
+  self->_cylinderradialSegmentCount = C3DParametricGeometryGetIntValue(model, 15);
+  self->_cylinderprimitiveType = C3DParametricGeometryGetIntValue(model, 20);
 }
 
 - (CGFloat)height
@@ -95,11 +95,11 @@
     return self->_cylinderheight;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   Height = C3DParametricGeometryGetHeight([(SCNGeometry *)self geometryRef]);
@@ -125,14 +125,14 @@
   else if (self->_cylinderheight != height)
   {
     self->_cylinderheight = height;
-    v6 = [(SCNGeometry *)self sceneRef];
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __25__SCNCylinder_setHeight___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = height;
-    [SCNTransaction postCommandWithContext:v6 object:self key:@"height" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"height" applyBlock:v7];
   }
 }
 
@@ -151,11 +151,11 @@ void __25__SCNCylinder_setHeight___block_invoke(uint64_t a1)
     return self->_cylinderheightSegmentCount;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   HeightSegmentCount = C3DParametricGeometryGetHeightSegmentCount([(SCNGeometry *)self geometryRef]);
@@ -181,14 +181,14 @@ void __25__SCNCylinder_setHeight___block_invoke(uint64_t a1)
   else if (self->_cylinderheightSegmentCount != heightSegmentCount)
   {
     self->_cylinderheightSegmentCount = heightSegmentCount;
-    v6 = [(SCNGeometry *)self sceneRef];
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __37__SCNCylinder_setHeightSegmentCount___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     v7[5] = heightSegmentCount;
-    [SCNTransaction postCommandWithContext:v6 object:self key:@"heightSegmentCount" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"heightSegmentCount" applyBlock:v7];
   }
 }
 
@@ -207,11 +207,11 @@ void __37__SCNCylinder_setHeightSegmentCount___block_invoke(uint64_t a1)
     return self->_cylinderprimitiveType;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   PrimitiveType = C3DParametricGeometryGetPrimitiveType([(SCNGeometry *)self geometryRef]);
@@ -223,7 +223,7 @@ void __37__SCNCylinder_setHeightSegmentCount___block_invoke(uint64_t a1)
   return PrimitiveType;
 }
 
-- (void)setPrimitiveType:(int64_t)a3
+- (void)setPrimitiveType:(int64_t)type
 {
   if ([(SCNGeometry *)self isPresentationInstance])
   {
@@ -234,17 +234,17 @@ void __37__SCNCylinder_setHeightSegmentCount___block_invoke(uint64_t a1)
     }
   }
 
-  else if (self->_cylinderprimitiveType != a3)
+  else if (self->_cylinderprimitiveType != type)
   {
-    self->_cylinderprimitiveType = a3;
-    v6 = [(SCNGeometry *)self sceneRef];
+    self->_cylinderprimitiveType = type;
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __32__SCNCylinder_setPrimitiveType___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
-    v7[5] = a3;
-    [SCNTransaction postCommandWithContext:v6 object:self applyBlock:v7];
+    v7[5] = type;
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
   }
 }
 
@@ -263,11 +263,11 @@ void __32__SCNCylinder_setPrimitiveType___block_invoke(uint64_t a1)
     return self->_cylinderradialSegmentCount;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   RadialSegmentCount = C3DParametricGeometryGetRadialSegmentCount([(SCNGeometry *)self geometryRef]);
@@ -293,14 +293,14 @@ void __32__SCNCylinder_setPrimitiveType___block_invoke(uint64_t a1)
   else if (self->_cylinderradialSegmentCount != radialSegmentCount)
   {
     self->_cylinderradialSegmentCount = radialSegmentCount;
-    v6 = [(SCNGeometry *)self sceneRef];
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __37__SCNCylinder_setRadialSegmentCount___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     v7[5] = radialSegmentCount;
-    [SCNTransaction postCommandWithContext:v6 object:self key:@"radialSegmentCount" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"radialSegmentCount" applyBlock:v7];
   }
 }
 
@@ -319,11 +319,11 @@ void __37__SCNCylinder_setRadialSegmentCount___block_invoke(uint64_t a1)
     return self->_cylinderradialSpan;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   RadialSpan = C3DParametricGeometryGetRadialSpan([(SCNGeometry *)self geometryRef]);
@@ -335,7 +335,7 @@ void __37__SCNCylinder_setRadialSegmentCount___block_invoke(uint64_t a1)
   return RadialSpan;
 }
 
-- (void)setRadialSpan:(double)a3
+- (void)setRadialSpan:(double)span
 {
   if ([(SCNGeometry *)self isPresentationInstance])
   {
@@ -346,17 +346,17 @@ void __37__SCNCylinder_setRadialSegmentCount___block_invoke(uint64_t a1)
     }
   }
 
-  else if (self->_cylinderradialSpan != a3)
+  else if (self->_cylinderradialSpan != span)
   {
-    self->_cylinderradialSpan = a3;
-    v6 = [(SCNGeometry *)self sceneRef];
+    self->_cylinderradialSpan = span;
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __29__SCNCylinder_setRadialSpan___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
-    *&v7[5] = a3;
-    [SCNTransaction postCommandWithContext:v6 object:self key:@"radialSpan" applyBlock:v7];
+    *&v7[5] = span;
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"radialSpan" applyBlock:v7];
   }
 }
 
@@ -375,11 +375,11 @@ void __29__SCNCylinder_setRadialSpan___block_invoke(uint64_t a1)
     return self->_cylinderradius;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   Radius = C3DParametricGeometryGetRadius([(SCNGeometry *)self geometryRef]);
@@ -405,14 +405,14 @@ void __29__SCNCylinder_setRadialSpan___block_invoke(uint64_t a1)
   else if (self->_cylinderradius != radius)
   {
     self->_cylinderradius = radius;
-    v6 = [(SCNGeometry *)self sceneRef];
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __25__SCNCylinder_setRadius___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = radius;
-    [SCNTransaction postCommandWithContext:v6 object:self key:@"radius" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"radius" applyBlock:v7];
   }
 }
 
@@ -424,7 +424,7 @@ void __25__SCNCylinder_setRadius___block_invoke(uint64_t a1)
   C3DParametricGeometrySetCapRadius(v2, v3);
 }
 
-- (BOOL)getBoundingBoxMin:(SCNVector3 *)a3 max:(SCNVector3 *)a4
+- (BOOL)getBoundingBoxMin:(SCNVector3 *)min max:(SCNVector3 *)max
 {
   v24 = 0.0;
   v23 = 0;
@@ -432,11 +432,11 @@ void __25__SCNCylinder_setRadius___block_invoke(uint64_t a1)
   v21 = 0;
   if ([(SCNGeometry *)self isPresentationInstance])
   {
-    v7 = [(SCNGeometry *)self sceneRef];
-    v8 = v7;
-    if (v7)
+    sceneRef = [(SCNGeometry *)self sceneRef];
+    v8 = sceneRef;
+    if (sceneRef)
     {
-      C3DSceneLock(v7);
+      C3DSceneLock(sceneRef);
     }
 
     if ([(SCNGeometry *)self geometryRef])
@@ -465,7 +465,7 @@ LABEL_11:
     {
       v20.receiver = self;
       v20.super_class = SCNCylinder;
-      return [(SCNGeometry *)&v20 getBoundingBoxMin:a3 max:a4];
+      return [(SCNGeometry *)&v20 getBoundingBoxMin:min max:max];
     }
 
     [(SCNCylinder *)self radius];
@@ -478,47 +478,47 @@ LABEL_11:
   }
 
 LABEL_12:
-  if (a3)
+  if (min)
   {
     v17 = v24;
-    *&a3->x = v23;
-    a3->z = v17;
+    *&min->x = v23;
+    min->z = v17;
   }
 
-  if (a4)
+  if (max)
   {
     v18 = v22;
-    *&a4->x = v21;
-    a4->z = v18;
+    *&max->x = v21;
+    max->z = v18;
   }
 
   return v10;
 }
 
-- (BOOL)getBoundingSphereCenter:(SCNVector3 *)a3 radius:(double *)a4
+- (BOOL)getBoundingSphereCenter:(SCNVector3 *)center radius:(double *)radius
 {
   v16 = 0uLL;
   if ([(SCNGeometry *)self isPresentationInstance])
   {
-    v7 = [(SCNGeometry *)self sceneRef];
-    v8 = v7;
-    if (v7)
+    sceneRef = [(SCNGeometry *)self sceneRef];
+    v8 = sceneRef;
+    if (sceneRef)
     {
-      C3DSceneLock(v7);
+      C3DSceneLock(sceneRef);
     }
 
     if ([(SCNGeometry *)self geometryRef]&& C3DCylinderGetBoundingSphere([(SCNGeometry *)self geometryRef], &v16))
     {
-      if (a3)
+      if (center)
       {
         v9 = *(&v16 + 2);
-        *&a3->x = v16;
-        a3->z = v9;
+        *&center->x = v16;
+        center->z = v9;
       }
 
-      if (a4)
+      if (radius)
       {
-        *a4 = *(&v16 + 3);
+        *radius = *(&v16 + 3);
       }
 
       v10 = 1;
@@ -549,16 +549,16 @@ LABEL_12:
     return 0;
   }
 
-  if (a3)
+  if (center)
   {
     v14 = *(&v16 + 2);
-    *&a3->x = v16;
-    a3->z = v14;
+    *&center->x = v16;
+    center->z = v14;
   }
 
-  if (a4)
+  if (radius)
   {
-    *a4 = *(&v16 + 3);
+    *radius = *(&v16 + 3);
   }
 
   return 1;
@@ -566,7 +566,7 @@ LABEL_12:
 
 + (SCNCylinder)cylinderWithRadius:(CGFloat)radius height:(CGFloat)height
 {
-  v6 = objc_alloc_init(a1);
+  v6 = objc_alloc_init(self);
   [v6 setRadius:radius];
   [v6 setHeight:height];
 
@@ -576,33 +576,33 @@ LABEL_12:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SCNGeometry *)self geometryDescription];
+  geometryDescription = [(SCNGeometry *)self geometryDescription];
   [(SCNCylinder *)self radius];
   v6 = v5;
   [(SCNCylinder *)self height];
-  return [v3 stringWithFormat:@"<%@ | radius=%.3f height=%.3f>", v4, v6, v7];
+  return [v3 stringWithFormat:@"<%@ | radius=%.3f height=%.3f>", geometryDescription, v6, v7];
 }
 
-- (void)_setupObjCModelFrom:(id)a3
+- (void)_setupObjCModelFrom:(id)from
 {
   v5.receiver = self;
   v5.super_class = SCNCylinder;
   [(SCNGeometry *)&v5 _setupObjCModelFrom:?];
   +[SCNTransaction begin];
   [SCNTransaction setImmediateMode:1];
-  [a3 radius];
+  [from radius];
   [(SCNCylinder *)self setRadius:?];
-  [a3 height];
+  [from height];
   [(SCNCylinder *)self setHeight:?];
-  [a3 radialSpan];
+  [from radialSpan];
   [(SCNCylinder *)self setRadialSpan:?];
-  -[SCNCylinder setHeightSegmentCount:](self, "setHeightSegmentCount:", [a3 heightSegmentCount]);
-  -[SCNCylinder setRadialSegmentCount:](self, "setRadialSegmentCount:", [a3 radialSegmentCount]);
-  -[SCNCylinder setPrimitiveType:](self, "setPrimitiveType:", [a3 primitiveType]);
+  -[SCNCylinder setHeightSegmentCount:](self, "setHeightSegmentCount:", [from heightSegmentCount]);
+  -[SCNCylinder setRadialSegmentCount:](self, "setRadialSegmentCount:", [from radialSegmentCount]);
+  -[SCNCylinder setPrimitiveType:](self, "setPrimitiveType:", [from primitiveType]);
   +[SCNTransaction commitImmediate];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 _setupObjCModelFrom:self];
@@ -610,7 +610,7 @@ LABEL_12:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SCNCylinder;
@@ -620,15 +620,15 @@ LABEL_12:
     [(SCNCylinder *)self _syncObjCModel:[(SCNGeometry *)self geometryRef]];
   }
 
-  [a3 encodeDouble:@"cylinderradius" forKey:self->_cylinderradius];
-  [a3 encodeDouble:@"cylinderheight" forKey:self->_cylinderheight];
-  [a3 encodeDouble:@"cylinderradialSpan" forKey:self->_cylinderradialSpan];
-  [a3 encodeInteger:self->_cylinderheightSegmentCount forKey:@"cylinderheightSegmentCount"];
-  [a3 encodeInteger:self->_cylinderradialSegmentCount forKey:@"cylinderradialSegmentCount"];
-  [a3 encodeInteger:self->_cylinderprimitiveType forKey:@"cylinderprimitiveType"];
+  [coder encodeDouble:@"cylinderradius" forKey:self->_cylinderradius];
+  [coder encodeDouble:@"cylinderheight" forKey:self->_cylinderheight];
+  [coder encodeDouble:@"cylinderradialSpan" forKey:self->_cylinderradialSpan];
+  [coder encodeInteger:self->_cylinderheightSegmentCount forKey:@"cylinderheightSegmentCount"];
+  [coder encodeInteger:self->_cylinderradialSegmentCount forKey:@"cylinderradialSegmentCount"];
+  [coder encodeInteger:self->_cylinderprimitiveType forKey:@"cylinderprimitiveType"];
 }
 
-- (SCNCylinder)initWithCoder:(id)a3
+- (SCNCylinder)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = SCNCylinder;
@@ -637,15 +637,15 @@ LABEL_12:
   {
     v5 = +[SCNTransaction immediateMode];
     [SCNTransaction setImmediateMode:1];
-    [a3 decodeDoubleForKey:@"cylinderradius"];
+    [coder decodeDoubleForKey:@"cylinderradius"];
     [(SCNCylinder *)v4 setRadius:?];
-    [a3 decodeDoubleForKey:@"cylinderheight"];
+    [coder decodeDoubleForKey:@"cylinderheight"];
     [(SCNCylinder *)v4 setHeight:?];
-    [a3 decodeDoubleForKey:@"cylinderradialSpan"];
+    [coder decodeDoubleForKey:@"cylinderradialSpan"];
     [(SCNCylinder *)v4 setRadialSpan:?];
-    -[SCNCylinder setHeightSegmentCount:](v4, "setHeightSegmentCount:", [a3 decodeIntegerForKey:@"cylinderheightSegmentCount"]);
-    -[SCNCylinder setRadialSegmentCount:](v4, "setRadialSegmentCount:", [a3 decodeIntegerForKey:@"cylinderradialSegmentCount"]);
-    -[SCNCylinder setPrimitiveType:](v4, "setPrimitiveType:", [a3 decodeIntegerForKey:@"cylinderprimitiveType"]);
+    -[SCNCylinder setHeightSegmentCount:](v4, "setHeightSegmentCount:", [coder decodeIntegerForKey:@"cylinderheightSegmentCount"]);
+    -[SCNCylinder setRadialSegmentCount:](v4, "setRadialSegmentCount:", [coder decodeIntegerForKey:@"cylinderradialSegmentCount"]);
+    -[SCNCylinder setPrimitiveType:](v4, "setPrimitiveType:", [coder decodeIntegerForKey:@"cylinderprimitiveType"]);
     [SCNTransaction setImmediateMode:v5];
   }
 

@@ -1,14 +1,14 @@
 @interface PUPhotoEditCircularIndicatorView
-- (PUPhotoEditCircularIndicatorView)initWithFrame:(CGRect)a3;
+- (PUPhotoEditCircularIndicatorView)initWithFrame:(CGRect)frame;
 - (UIColor)ringColor;
 - (void)_layoutSubLayers;
 - (void)_setupLayers;
 - (void)_updateProgressLayer;
 - (void)layoutSubviews;
 - (void)resetToDefaults;
-- (void)setCurrentValue:(double)a3;
-- (void)setRingColor:(id)a3;
-- (void)setThickness:(double)a3;
+- (void)setCurrentValue:(double)value;
+- (void)setRingColor:(id)color;
+- (void)setThickness:(double)thickness;
 @end
 
 @implementation PUPhotoEditCircularIndicatorView
@@ -21,14 +21,14 @@
   [(PUPhotoEditCircularIndicatorView *)self _updateProgressLayer];
 }
 
-- (void)setCurrentValue:(double)a3
+- (void)setCurrentValue:(double)value
 {
   [(PUPhotoEditCircularIndicatorView *)self minValue];
   [(PUPhotoEditCircularIndicatorView *)self maxValue];
   PXClamp();
-  if (self->_currentValue != a3)
+  if (self->_currentValue != value)
   {
-    self->_currentValue = a3;
+    self->_currentValue = value;
 
     [(PUPhotoEditCircularIndicatorView *)self _updateProgressLayer];
   }
@@ -36,47 +36,47 @@
 
 - (void)_updateProgressLayer
 {
-  v3 = [MEMORY[0x1E6979518] disableActions];
+  disableActions = [MEMORY[0x1E6979518] disableActions];
   [MEMORY[0x1E6979518] setDisableActions:1];
   [(PUPhotoEditCircularIndicatorView *)self currentValue];
   if (v4 == 0.0)
   {
-    v5 = [(PUPhotoEditCircularIndicatorView *)self progressLayer];
-    [v5 setStrokeEnd:0.0];
+    progressLayer = [(PUPhotoEditCircularIndicatorView *)self progressLayer];
+    [progressLayer setStrokeEnd:0.0];
 
-    v6 = [(PUPhotoEditCircularIndicatorView *)self progressLayer];
-    v7 = v6;
+    progressLayer2 = [(PUPhotoEditCircularIndicatorView *)self progressLayer];
+    progressLayer5 = progressLayer2;
     v8 = 0.0;
 LABEL_5:
-    [v6 setStrokeStart:v8];
+    [progressLayer2 setStrokeStart:v8];
     goto LABEL_6;
   }
 
   [(PUPhotoEditCircularIndicatorView *)self currentValue];
   v10 = v9;
-  v11 = [(PUPhotoEditCircularIndicatorView *)self progressLayer];
-  v12 = v11;
+  progressLayer3 = [(PUPhotoEditCircularIndicatorView *)self progressLayer];
+  v12 = progressLayer3;
   if (v10 < 0.0)
   {
-    [v11 setStrokeEnd:1.0];
+    [progressLayer3 setStrokeEnd:1.0];
 
     [(PUPhotoEditCircularIndicatorView *)self currentValue];
     v14 = v13 + 1.0;
-    v6 = [(PUPhotoEditCircularIndicatorView *)self progressLayer];
-    v7 = v6;
+    progressLayer2 = [(PUPhotoEditCircularIndicatorView *)self progressLayer];
+    progressLayer5 = progressLayer2;
     v8 = v14;
     goto LABEL_5;
   }
 
-  [v11 setStrokeStart:0.0];
+  [progressLayer3 setStrokeStart:0.0];
 
   [(PUPhotoEditCircularIndicatorView *)self currentValue];
   v17 = v16;
-  v18 = [(PUPhotoEditCircularIndicatorView *)self progressLayer];
-  [v18 setStrokeEnd:v17];
+  progressLayer4 = [(PUPhotoEditCircularIndicatorView *)self progressLayer];
+  [progressLayer4 setStrokeEnd:v17];
 
-  v7 = [(PUPhotoEditCircularIndicatorView *)self progressLayer];
-  [v7 strokeEnd];
+  progressLayer5 = [(PUPhotoEditCircularIndicatorView *)self progressLayer];
+  [progressLayer5 strokeEnd];
   v19 = MEMORY[0x1E6979E70];
   if (v20 != 1.0)
   {
@@ -84,46 +84,46 @@ LABEL_5:
   }
 
   v21 = *v19;
-  v22 = [(PUPhotoEditCircularIndicatorView *)self progressLayer];
-  [v22 setLineCap:v21];
+  progressLayer6 = [(PUPhotoEditCircularIndicatorView *)self progressLayer];
+  [progressLayer6 setLineCap:v21];
 
 LABEL_6:
   v15 = MEMORY[0x1E6979518];
 
-  [v15 setDisableActions:v3];
+  [v15 setDisableActions:disableActions];
 }
 
 - (UIColor)ringColor
 {
   v2 = MEMORY[0x1E69DC888];
-  v3 = [(PUPhotoEditCircularIndicatorView *)self progressLayer];
-  v4 = [v2 colorWithCGColor:{objc_msgSend(v3, "strokeColor")}];
+  progressLayer = [(PUPhotoEditCircularIndicatorView *)self progressLayer];
+  v4 = [v2 colorWithCGColor:{objc_msgSend(progressLayer, "strokeColor")}];
 
   return v4;
 }
 
-- (void)setRingColor:(id)a3
+- (void)setRingColor:(id)color
 {
-  v4 = a3;
-  v5 = [v4 colorWithAlphaComponent:0.3];
-  v6 = [v5 CGColor];
-  v7 = [(PUPhotoEditCircularIndicatorView *)self backgroundLayer];
-  [v7 setStrokeColor:v6];
+  colorCopy = color;
+  v5 = [colorCopy colorWithAlphaComponent:0.3];
+  cGColor = [v5 CGColor];
+  backgroundLayer = [(PUPhotoEditCircularIndicatorView *)self backgroundLayer];
+  [backgroundLayer setStrokeColor:cGColor];
 
-  v8 = [v4 CGColor];
-  v9 = [(PUPhotoEditCircularIndicatorView *)self progressLayer];
-  [v9 setStrokeColor:v8];
+  cGColor2 = [colorCopy CGColor];
+  progressLayer = [(PUPhotoEditCircularIndicatorView *)self progressLayer];
+  [progressLayer setStrokeColor:cGColor2];
 }
 
-- (void)setThickness:(double)a3
+- (void)setThickness:(double)thickness
 {
-  if (self->_thickness != a3)
+  if (self->_thickness != thickness)
   {
-    v5 = [(PUPhotoEditCircularIndicatorView *)self backgroundLayer];
-    [v5 setLineWidth:a3];
+    backgroundLayer = [(PUPhotoEditCircularIndicatorView *)self backgroundLayer];
+    [backgroundLayer setLineWidth:thickness];
 
-    v6 = [(PUPhotoEditCircularIndicatorView *)self progressLayer];
-    [v6 setLineWidth:a3 + -0.5];
+    progressLayer = [(PUPhotoEditCircularIndicatorView *)self progressLayer];
+    [progressLayer setLineWidth:thickness + -0.5];
 
     [(PUPhotoEditCircularIndicatorView *)self setNeedsLayout];
   }
@@ -136,33 +136,33 @@ LABEL_6:
   [(PUPhotoEditCircularIndicatorView *)self bounds];
   v6 = v5 + -2.5;
   v7 = [MEMORY[0x1E69DC728] _bezierPathWithPillRect:0.0 cornerRadius:{0.0, v4, v5 + -2.5, v4 * 0.5}];
-  v8 = [v7 CGPath];
+  cGPath = [v7 CGPath];
 
-  v9 = [(PUPhotoEditCircularIndicatorView *)self backgroundLayer];
-  [v9 setFrame:{0.0, 0.0, v4, v6}];
+  backgroundLayer = [(PUPhotoEditCircularIndicatorView *)self backgroundLayer];
+  [backgroundLayer setFrame:{0.0, 0.0, v4, v6}];
 
-  v10 = [(PUPhotoEditCircularIndicatorView *)self backgroundLayer];
-  [v10 setPath:v8];
+  backgroundLayer2 = [(PUPhotoEditCircularIndicatorView *)self backgroundLayer];
+  [backgroundLayer2 setPath:cGPath];
 
   [(PUPhotoEditCircularIndicatorView *)self bounds];
   PXRectGetCenter();
   v12 = v11;
   v14 = v13;
-  v15 = [(PUPhotoEditCircularIndicatorView *)self backgroundLayer];
-  [v15 setPosition:{v12, v14}];
+  backgroundLayer3 = [(PUPhotoEditCircularIndicatorView *)self backgroundLayer];
+  [backgroundLayer3 setPosition:{v12, v14}];
 
-  v16 = [(PUPhotoEditCircularIndicatorView *)self progressLayer];
-  [v16 setFrame:{0.0, 0.0, v4, v6}];
+  progressLayer = [(PUPhotoEditCircularIndicatorView *)self progressLayer];
+  [progressLayer setFrame:{0.0, 0.0, v4, v6}];
 
-  v17 = [(PUPhotoEditCircularIndicatorView *)self progressLayer];
-  [v17 setPath:v8];
+  progressLayer2 = [(PUPhotoEditCircularIndicatorView *)self progressLayer];
+  [progressLayer2 setPath:cGPath];
 
-  v23 = [(PUPhotoEditCircularIndicatorView *)self backgroundLayer];
-  [v23 position];
+  backgroundLayer4 = [(PUPhotoEditCircularIndicatorView *)self backgroundLayer];
+  [backgroundLayer4 position];
   v19 = v18;
   v21 = v20;
-  v22 = [(PUPhotoEditCircularIndicatorView *)self progressLayer];
-  [v22 setPosition:{v19, v21}];
+  progressLayer3 = [(PUPhotoEditCircularIndicatorView *)self progressLayer];
+  [progressLayer3 setPosition:{v19, v21}];
 }
 
 - (void)layoutSubviews
@@ -175,48 +175,48 @@ LABEL_6:
 
 - (void)_setupLayers
 {
-  v3 = [MEMORY[0x1E69794A0] layer];
-  [(PUPhotoEditCircularIndicatorView *)self setBackgroundLayer:v3];
+  layer = [MEMORY[0x1E69794A0] layer];
+  [(PUPhotoEditCircularIndicatorView *)self setBackgroundLayer:layer];
 
-  v4 = [(PUPhotoEditCircularIndicatorView *)self backgroundLayer];
-  [v4 setFillColor:0];
+  backgroundLayer = [(PUPhotoEditCircularIndicatorView *)self backgroundLayer];
+  [backgroundLayer setFillColor:0];
 
-  v5 = [(PUPhotoEditCircularIndicatorView *)self backgroundLayer];
-  [v5 setStrokeEnd:1.0];
+  backgroundLayer2 = [(PUPhotoEditCircularIndicatorView *)self backgroundLayer];
+  [backgroundLayer2 setStrokeEnd:1.0];
 
-  v6 = [(PUPhotoEditCircularIndicatorView *)self backgroundLayer];
-  [v6 setLineWidth:2.5];
+  backgroundLayer3 = [(PUPhotoEditCircularIndicatorView *)self backgroundLayer];
+  [backgroundLayer3 setLineWidth:2.5];
 
-  v7 = [(PUPhotoEditCircularIndicatorView *)self layer];
-  v8 = [(PUPhotoEditCircularIndicatorView *)self backgroundLayer];
-  [v7 addSublayer:v8];
+  layer2 = [(PUPhotoEditCircularIndicatorView *)self layer];
+  backgroundLayer4 = [(PUPhotoEditCircularIndicatorView *)self backgroundLayer];
+  [layer2 addSublayer:backgroundLayer4];
 
-  v9 = [MEMORY[0x1E69794A0] layer];
-  [(PUPhotoEditCircularIndicatorView *)self setProgressLayer:v9];
+  layer3 = [MEMORY[0x1E69794A0] layer];
+  [(PUPhotoEditCircularIndicatorView *)self setProgressLayer:layer3];
 
-  v10 = [(PUPhotoEditCircularIndicatorView *)self progressLayer];
-  [v10 setFillColor:0];
+  progressLayer = [(PUPhotoEditCircularIndicatorView *)self progressLayer];
+  [progressLayer setFillColor:0];
 
-  v11 = [(PUPhotoEditCircularIndicatorView *)self progressLayer];
-  [v11 setLineWidth:2.0];
+  progressLayer2 = [(PUPhotoEditCircularIndicatorView *)self progressLayer];
+  [progressLayer2 setLineWidth:2.0];
 
   v12 = *MEMORY[0x1E6979E78];
-  v13 = [(PUPhotoEditCircularIndicatorView *)self progressLayer];
-  [v13 setLineCap:v12];
+  progressLayer3 = [(PUPhotoEditCircularIndicatorView *)self progressLayer];
+  [progressLayer3 setLineCap:v12];
 
-  v14 = [(PUPhotoEditCircularIndicatorView *)self progressLayer];
-  [v14 setStrokeEnd:0.0];
+  progressLayer4 = [(PUPhotoEditCircularIndicatorView *)self progressLayer];
+  [progressLayer4 setStrokeEnd:0.0];
 
-  v16 = [(PUPhotoEditCircularIndicatorView *)self layer];
-  v15 = [(PUPhotoEditCircularIndicatorView *)self progressLayer];
-  [v16 addSublayer:v15];
+  layer4 = [(PUPhotoEditCircularIndicatorView *)self layer];
+  progressLayer5 = [(PUPhotoEditCircularIndicatorView *)self progressLayer];
+  [layer4 addSublayer:progressLayer5];
 }
 
-- (PUPhotoEditCircularIndicatorView)initWithFrame:(CGRect)a3
+- (PUPhotoEditCircularIndicatorView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = PUPhotoEditCircularIndicatorView;
-  v3 = [(PUPhotoEditCircularIndicatorView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUPhotoEditCircularIndicatorView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[PUInterfaceManager currentTheme];
@@ -228,11 +228,11 @@ LABEL_6:
     v3->_minValue = -1.0;
     v3->_maxValue = 1.0;
     v3->_currentValue = 0.0;
-    v6 = [v4 photoEditingCircularIndicatorBackgroundStrokeColor];
-    -[CAShapeLayer setStrokeColor:](v3->_backgroundLayer, "setStrokeColor:", [v6 CGColor]);
+    photoEditingCircularIndicatorBackgroundStrokeColor = [v4 photoEditingCircularIndicatorBackgroundStrokeColor];
+    -[CAShapeLayer setStrokeColor:](v3->_backgroundLayer, "setStrokeColor:", [photoEditingCircularIndicatorBackgroundStrokeColor CGColor]);
 
-    v7 = [v4 photoEditingCircularIndicatorProgressStrokeColor];
-    -[CAShapeLayer setStrokeColor:](v3->_progressLayer, "setStrokeColor:", [v7 CGColor]);
+    photoEditingCircularIndicatorProgressStrokeColor = [v4 photoEditingCircularIndicatorProgressStrokeColor];
+    -[CAShapeLayer setStrokeColor:](v3->_progressLayer, "setStrokeColor:", [photoEditingCircularIndicatorProgressStrokeColor CGColor]);
   }
 
   return v3;

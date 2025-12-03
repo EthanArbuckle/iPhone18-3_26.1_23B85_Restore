@@ -1,11 +1,11 @@
 @interface IMPersistentMenu
-+ (BOOL)isEmptyStamped:(id)a3;
++ (BOOL)isEmptyStamped:(id)stamped;
 + (id)emptyStampProperty;
 + (id)example;
 + (id)relayEmptyStampProperty;
 - (IMPersistentMenu)init;
-- (IMPersistentMenu)initWithDictionary:(id)a3;
-- (IMPersistentMenu)initWithLevel:(int64_t)a3 displayText:(id)a4 items:(id)a5;
+- (IMPersistentMenu)initWithDictionary:(id)dictionary;
+- (IMPersistentMenu)initWithLevel:(int64_t)level displayText:(id)text items:(id)items;
 - (NSArray)items;
 - (NSString)displayText;
 @end
@@ -37,9 +37,9 @@
   return v2;
 }
 
-- (IMPersistentMenu)initWithLevel:(int64_t)a3 displayText:(id)a4 items:(id)a5
+- (IMPersistentMenu)initWithLevel:(int64_t)level displayText:(id)text items:(id)items
 {
-  if (a4)
+  if (text)
   {
     v7 = sub_1A88C82E8();
     v9 = v8;
@@ -53,7 +53,7 @@
 
   type metadata accessor for IMPersistentMenuItem();
   v10 = sub_1A88C85F8();
-  *(self + OBJC_IVAR___IMPersistentMenu_level) = a3;
+  *(self + OBJC_IVAR___IMPersistentMenu_level) = level;
   v11 = (self + OBJC_IVAR___IMPersistentMenu_displayText);
   *v11 = v7;
   v11[1] = v9;
@@ -63,16 +63,16 @@
   return [(IMPersistentMenu *)&v13 init];
 }
 
-- (IMPersistentMenu)initWithDictionary:(id)a3
+- (IMPersistentMenu)initWithDictionary:(id)dictionary
 {
   v3 = sub_1A88C81A8();
   IMPersistentMenu.init(dictionary:)(v3);
   return result;
 }
 
-+ (BOOL)isEmptyStamped:(id)a3
++ (BOOL)isEmptyStamped:(id)stamped
 {
-  if (a3)
+  if (stamped)
   {
     swift_unknownObjectRetain();
     sub_1A88C8CB8();
@@ -133,12 +133,12 @@
   v2 = objc_allocWithZone(IMPersistentMenu);
   v3 = sub_1A88C8188();
 
-  v4 = [v2 initWithDictionary_];
+  initWithDictionary_ = [v2 initWithDictionary_];
 
-  if (v4)
+  if (initWithDictionary_)
   {
 
-    return v4;
+    return initWithDictionary_;
   }
 
   else

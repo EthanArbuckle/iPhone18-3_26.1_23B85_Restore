@@ -1,7 +1,7 @@
 @interface CTSweetgumDataPlanMetricsItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CTSweetgumDataPlanMetricsItem)init;
-- (CTSweetgumDataPlanMetricsItem)initWithCoder:(id)a3;
+- (CTSweetgumDataPlanMetricsItem)initWithCoder:(id)coder;
 - (id)description;
 @end
 
@@ -25,18 +25,18 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTSweetgumDataPlanMetricsItem *)self capacityBytes];
-  [v3 appendFormat:@", capacityBytes=%@", v4];
+  capacityBytes = [(CTSweetgumDataPlanMetricsItem *)self capacityBytes];
+  [v3 appendFormat:@", capacityBytes=%@", capacityBytes];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -46,18 +46,18 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(CTSweetgumDataPlanMetricsItem *)self capacityBytes];
-      v6 = [(CTSweetgumDataPlanMetricsItem *)v4 capacityBytes];
-      if (v5 == v6)
+      capacityBytes = [(CTSweetgumDataPlanMetricsItem *)self capacityBytes];
+      capacityBytes2 = [(CTSweetgumDataPlanMetricsItem *)equalCopy capacityBytes];
+      if (capacityBytes == capacityBytes2)
       {
         v9 = 1;
       }
 
       else
       {
-        v7 = [(CTSweetgumDataPlanMetricsItem *)self capacityBytes];
-        v8 = [(CTSweetgumDataPlanMetricsItem *)v4 capacityBytes];
-        v9 = [v7 isEqualToNumber:v8];
+        capacityBytes3 = [(CTSweetgumDataPlanMetricsItem *)self capacityBytes];
+        capacityBytes4 = [(CTSweetgumDataPlanMetricsItem *)equalCopy capacityBytes];
+        v9 = [capacityBytes3 isEqualToNumber:capacityBytes4];
       }
     }
 
@@ -70,15 +70,15 @@
   return v9;
 }
 
-- (CTSweetgumDataPlanMetricsItem)initWithCoder:(id)a3
+- (CTSweetgumDataPlanMetricsItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CTSweetgumDataPlanMetricsItem;
   v5 = [(CTSweetgumDataPlanMetricsItem *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"capacityBytes"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"capacityBytes"];
     capacityBytes = v5->_capacityBytes;
     v5->_capacityBytes = v6;
   }

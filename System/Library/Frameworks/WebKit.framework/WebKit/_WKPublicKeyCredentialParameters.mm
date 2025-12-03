@@ -1,11 +1,11 @@
 @interface _WKPublicKeyCredentialParameters
-- (_WKPublicKeyCredentialParameters)initWithAlgorithm:(id)a3;
+- (_WKPublicKeyCredentialParameters)initWithAlgorithm:(id)algorithm;
 - (void)dealloc;
 @end
 
 @implementation _WKPublicKeyCredentialParameters
 
-- (_WKPublicKeyCredentialParameters)initWithAlgorithm:(id)a3
+- (_WKPublicKeyCredentialParameters)initWithAlgorithm:(id)algorithm
 {
   v7.receiver = self;
   v7.super_class = _WKPublicKeyCredentialParameters;
@@ -13,7 +13,7 @@
   v5 = v4;
   if (v4)
   {
-    [(_WKPublicKeyCredentialParameters *)v4 setAlgorithm:a3];
+    [(_WKPublicKeyCredentialParameters *)v4 setAlgorithm:algorithm];
   }
 
   return v5;

@@ -1,39 +1,39 @@
 @interface PKSelectActionGroupActionsView
-- (PKSelectActionGroupActionsView)initWithPass:(id)a3 actionGroup:(id)a4;
+- (PKSelectActionGroupActionsView)initWithPass:(id)pass actionGroup:(id)group;
 - (PKSelectActionGroupActionsViewDelegate)delegate;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_addSubviews;
 - (void)layoutSubviews;
-- (void)setDelegate:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setDelegate:(id)delegate;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation PKSelectActionGroupActionsView
 
-- (PKSelectActionGroupActionsView)initWithPass:(id)a3 actionGroup:(id)a4
+- (PKSelectActionGroupActionsView)initWithPass:(id)pass actionGroup:(id)group
 {
-  v7 = a3;
-  v8 = a4;
+  passCopy = pass;
+  groupCopy = group;
   v20.receiver = self;
   v20.super_class = PKSelectActionGroupActionsView;
   v9 = [(PKSelectActionGroupActionsView *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_pass, a3);
+    objc_storeStrong(&v9->_pass, pass);
     selectedAction = v10->_selectedAction;
     v10->_selectedAction = 0;
 
-    objc_storeStrong(&v10->_actionGroup, a4);
-    v12 = [v8 actions];
+    objc_storeStrong(&v10->_actionGroup, group);
+    actions = [groupCopy actions];
     actions = v10->_actions;
-    v10->_actions = v12;
+    v10->_actions = actions;
 
     v14 = [PKSelectActionGroupActionsHeader alloc];
     v15 = PKLocalizedPaymentString(&cfstr_ActionGroupCho.isa);
     v16 = PKLocalizedPaymentString(&cfstr_ActionGroupCho_0.isa);
-    v17 = [(PKSelectActionGroupActionsHeader *)v14 initWithPass:v7 title:v15 subtitle:v16];
+    v17 = [(PKSelectActionGroupActionsHeader *)v14 initWithPass:passCopy title:v15 subtitle:v16];
     actionGroupActionsHeader = v10->_actionGroupActionsHeader;
     v10->_actionGroupActionsHeader = v17;
 
@@ -53,30 +53,30 @@
   [(UITableView *)tableView setFrame:?];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v5 = a3;
-  v4 = objc_storeWeak(&self->_delegate, v5);
-  [v5 setRightBarButtonEnabled:self->_selectedAction != 0];
+  delegateCopy = delegate;
+  v4 = objc_storeWeak(&self->_delegate, delegateCopy);
+  [delegateCopy setRightBarButtonEnabled:self->_selectedAction != 0];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"PKSelectActionGroupActionCellIdentifier"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"PKSelectActionGroupActionCellIdentifier"];
   if (!v7)
   {
     v7 = [[PKCommutePlanDetailsTableViewCell alloc] initWithStyle:3 reuseIdentifier:@"PKSelectActionGroupActionCellIdentifier"];
   }
 
   v8 = v7;
-  v9 = -[NSArray objectAtIndexedSubscript:](self->_actions, "objectAtIndexedSubscript:", [v6 row]);
-  v10 = [(PKPaymentPassAction *)v9 title];
-  v18 = [(PKPaymentPassAction *)v9 actionDescription];
+  v9 = -[NSArray objectAtIndexedSubscript:](self->_actions, "objectAtIndexedSubscript:", [pathCopy row]);
+  title = [(PKPaymentPassAction *)v9 title];
+  actionDescription = [(PKPaymentPassAction *)v9 actionDescription];
   PKCommutePlanFormatTitleFromLabelAndValue();
-  v11 = v10;
+  v11 = title;
 
-  v12 = v18;
+  v12 = actionDescription;
   [(PKCommutePlanDetailsTableViewCell *)v8 setPrimaryText:v11];
   [(PKCommutePlanDetailsTableViewCell *)v8 setSecondaryText:v12];
   [(PKCommutePlanDetailsTableViewCell *)v8 setSelectionStyle:0];
@@ -92,16 +92,16 @@
     v15 = 3;
   }
 
-  [(PKCommutePlanDetailsTableViewCell *)v8 setAccessoryType:v15, v18];
+  [(PKCommutePlanDetailsTableViewCell *)v8 setAccessoryType:v15, actionDescription];
   v16 = PKProvisioningSecondaryBackgroundColor();
   [(PKCommutePlanDetailsTableViewCell *)v8 setBackgroundColor:v16];
 
   return v8;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  if ([(PKSelectActionGroupActionsHeader *)self->_actionGroupActionsHeader isLoading:a3])
+  if ([(PKSelectActionGroupActionsHeader *)self->_actionGroupActionsHeader isLoading:view])
   {
     [(PKSelectActionGroupActionsView *)self bounds];
     return v5;
@@ -116,13 +116,13 @@
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v8 = self->_selectedAction;
-  v9 = -[NSArray objectAtIndex:](self->_actions, "objectAtIndex:", [v7 row]);
+  v9 = -[NSArray objectAtIndex:](self->_actions, "objectAtIndex:", [pathCopy row]);
   if (v8 != v9)
   {
     objc_storeStrong(&self->_selectedAction, v9);
@@ -132,18 +132,18 @@
     if (v8)
     {
       v11 = [(NSArray *)self->_actions indexOfObject:v8];
-      v12 = [MEMORY[0x1E696AC88] indexPathForRow:v11 inSection:{objc_msgSend(v7, "section")}];
+      v12 = [MEMORY[0x1E696AC88] indexPathForRow:v11 inSection:{objc_msgSend(pathCopy, "section")}];
       v17[0] = v12;
-      v17[1] = v7;
+      v17[1] = pathCopy;
       v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
-      [v6 reloadRowsAtIndexPaths:v13 withRowAnimation:5];
+      [viewCopy reloadRowsAtIndexPaths:v13 withRowAnimation:5];
     }
 
     else
     {
-      v18[0] = v7;
+      v18[0] = pathCopy;
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
-      [v6 reloadRowsAtIndexPaths:v12 withRowAnimation:5];
+      [viewCopy reloadRowsAtIndexPaths:v12 withRowAnimation:5];
     }
 
     v14 = objc_loadWeakRetained(&self->_delegate);

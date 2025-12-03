@@ -1,51 +1,51 @@
 @interface NTKPageScrollViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityOpaqueElementProvider;
 - (NTKPageScrollViewControllerAccessibility)accessibilityPageScrollViewController;
 - (id)_accessibilityGetCurrentPageView;
-- (id)_accessibilityMoveFocusToNextOpaqueElementForTechnology:(id)a3 direction:(int64_t)a4 searchType:(int64_t)a5 range:(_NSRange)a6 shouldScrollToVisible:(BOOL)a7 honorsGroups:(BOOL)a8;
+- (id)_accessibilityMoveFocusToNextOpaqueElementForTechnology:(id)technology direction:(int64_t)direction searchType:(int64_t)type range:(_NSRange)range shouldScrollToVisible:(BOOL)visible honorsGroups:(BOOL)groups;
 - (id)_accessibilityScrollStatus;
 - (id)_accessibilitySubviews;
 - (id)accessibilityLabel;
-- (void)_accessibilityScrollToIndex:(unint64_t)a3;
-- (void)setAccessibilityPageScrollViewController:(id)a3;
+- (void)_accessibilityScrollToIndex:(unint64_t)index;
+- (void)setAccessibilityPageScrollViewController:(id)controller;
 @end
 
 @implementation NTKPageScrollViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NTKPageScrollView" hasInstanceMethod:@"pageAtIndex:" withFullSignature:{"@", "Q", 0}];
-  [v3 validateClass:@"NTKPageScrollView" hasInstanceMethod:@"_contentOffsetToCenterPageAtIndex:" withFullSignature:{"{CGPoint=dd}", "Q", 0}];
-  [v3 validateClass:@"NTKPageScrollView" hasInstanceMethod:@"currentPageIndex" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"NTKPageScrollView" hasInstanceMethod:@"numberOfPages" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"NTKPageScrollView" hasInstanceMethod:@"enumeratePagesWithBlock:" withFullSignature:{"v", "@?", 0}];
-  [v3 validateClass:@"NTKPageScrollView" hasInstanceVariable:@"_tiledPages" withType:"NSMutableDictionary"];
-  [v3 validateClass:@"NTKPageView"];
-  [v3 validateClass:@"NSObject" hasInstanceMethod:@"_accessibilityMoveFocusToNextOpaqueElementForTechnology:direction:searchType:range:shouldScrollToVisible:honorsGroups:" withFullSignature:{"@", "@", "q", "q", "{_NSRange=QQ}", "B", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NTKPageScrollView" hasInstanceMethod:@"pageAtIndex:" withFullSignature:{"@", "Q", 0}];
+  [validationsCopy validateClass:@"NTKPageScrollView" hasInstanceMethod:@"_contentOffsetToCenterPageAtIndex:" withFullSignature:{"{CGPoint=dd}", "Q", 0}];
+  [validationsCopy validateClass:@"NTKPageScrollView" hasInstanceMethod:@"currentPageIndex" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"NTKPageScrollView" hasInstanceMethod:@"numberOfPages" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"NTKPageScrollView" hasInstanceMethod:@"enumeratePagesWithBlock:" withFullSignature:{"v", "@?", 0}];
+  [validationsCopy validateClass:@"NTKPageScrollView" hasInstanceVariable:@"_tiledPages" withType:"NSMutableDictionary"];
+  [validationsCopy validateClass:@"NTKPageView"];
+  [validationsCopy validateClass:@"NSObject" hasInstanceMethod:@"_accessibilityMoveFocusToNextOpaqueElementForTechnology:direction:searchType:range:shouldScrollToVisible:honorsGroups:" withFullSignature:{"@", "@", "q", "q", "{_NSRange=QQ}", "B", "B", 0}];
 }
 
 - (BOOL)isAccessibilityOpaqueElementProvider
 {
-  v2 = [(NTKPageScrollViewAccessibility *)self accessibilityPageScrollViewController];
-  v3 = [v2 _accessibilityShouldSwipeBetweenPages];
+  accessibilityPageScrollViewController = [(NTKPageScrollViewAccessibility *)self accessibilityPageScrollViewController];
+  _accessibilityShouldSwipeBetweenPages = [accessibilityPageScrollViewController _accessibilityShouldSwipeBetweenPages];
 
-  return v3;
+  return _accessibilityShouldSwipeBetweenPages;
 }
 
 - (id)accessibilityLabel
 {
-  v2 = [(NTKPageScrollViewAccessibility *)self accessibilityPageScrollViewController];
-  v3 = [v2 _accessibilityTouchContainerLabel];
+  accessibilityPageScrollViewController = [(NTKPageScrollViewAccessibility *)self accessibilityPageScrollViewController];
+  _accessibilityTouchContainerLabel = [accessibilityPageScrollViewController _accessibilityTouchContainerLabel];
 
-  return v3;
+  return _accessibilityTouchContainerLabel;
 }
 
-- (id)_accessibilityMoveFocusToNextOpaqueElementForTechnology:(id)a3 direction:(int64_t)a4 searchType:(int64_t)a5 range:(_NSRange)a6 shouldScrollToVisible:(BOOL)a7 honorsGroups:(BOOL)a8
+- (id)_accessibilityMoveFocusToNextOpaqueElementForTechnology:(id)technology direction:(int64_t)direction searchType:(int64_t)type range:(_NSRange)range shouldScrollToVisible:(BOOL)visible honorsGroups:(BOOL)groups
 {
-  v10 = a3;
-  v11 = [(NTKPageScrollViewAccessibility *)self _accessibilityCurrentlyFocusedElementForTechnology:v10];
+  technologyCopy = technology;
+  v11 = [(NTKPageScrollViewAccessibility *)self _accessibilityCurrentlyFocusedElementForTechnology:technologyCopy];
   v12 = v11;
   if (!v11)
   {
@@ -61,7 +61,7 @@
   v30 = 3221225472;
   v31 = __152__NTKPageScrollViewAccessibility__accessibilityMoveFocusToNextOpaqueElementForTechnology_direction_searchType_range_shouldScrollToVisible_honorsGroups___block_invoke;
   v32 = &unk_1C528;
-  v33 = self;
+  selfCopy = self;
   v13 = v11;
   v34 = v13;
   v35 = &v23;
@@ -73,7 +73,7 @@
   }
 
   v14 = [(NTKPageScrollViewAccessibility *)self safeUnsignedIntegerForKey:@"numberOfPages", v22];
-  if (a4 == 2)
+  if (direction == 2)
   {
     v18 = v24[3];
     if (v18)
@@ -91,7 +91,7 @@ LABEL_11:
     }
   }
 
-  else if (a4 == 1)
+  else if (direction == 1)
   {
     v15 = v24[3];
     if (v15 < (v14 - 1))
@@ -142,7 +142,7 @@ LABEL_15:
     }
   }
 
-  [v19 _accessibilityHandleATFocused:1 assistiveTech:{v10, v22}];
+  [v19 _accessibilityHandleATFocused:1 assistiveTech:{technologyCopy, v22}];
 
   return v19;
 }
@@ -186,15 +186,15 @@ uint64_t __152__NTKPageScrollViewAccessibility__accessibilityMoveFocusToNextOpaq
 {
   v20.receiver = self;
   v20.super_class = NTKPageScrollViewAccessibility;
-  v3 = [(NTKPageScrollViewAccessibility *)&v20 _accessibilitySubviews];
+  _accessibilitySubviews = [(NTKPageScrollViewAccessibility *)&v20 _accessibilitySubviews];
   if ([(NTKPageScrollViewAccessibility *)self isAccessibilityOpaqueElementProvider])
   {
-    v4 = v3;
+    v4 = _accessibilitySubviews;
   }
 
   else
   {
-    v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+    v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [_accessibilitySubviews count]);
     v5 = [(NTKPageScrollViewAccessibility *)self safeUnsignedIntegerForKey:@"currentPageIndex"];
     v6 = [(NTKPageScrollViewAccessibility *)self safeValueForKey:@"_tiledPages"];
     v7 = [NSNumber numberWithUnsignedInteger:v5];
@@ -204,7 +204,7 @@ uint64_t __152__NTKPageScrollViewAccessibility__accessibilityMoveFocusToNextOpaq
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v9 = v3;
+    v9 = _accessibilitySubviews;
     v10 = [v9 countByEnumeratingWithState:&v16 objects:v21 count:16];
     if (v10)
     {
@@ -241,15 +241,15 @@ uint64_t __152__NTKPageScrollViewAccessibility__accessibilityMoveFocusToNextOpaq
 {
   v8.receiver = self;
   v8.super_class = NTKPageScrollViewAccessibility;
-  v3 = [(NTKPageScrollViewAccessibility *)&v8 _accessibilityScrollStatus];
-  v4 = [(NTKPageScrollViewAccessibility *)self _accessibilityGetCurrentPageView];
-  v5 = [v4 accessibilityLabel];
+  _accessibilityScrollStatus = [(NTKPageScrollViewAccessibility *)&v8 _accessibilityScrollStatus];
+  _accessibilityGetCurrentPageView = [(NTKPageScrollViewAccessibility *)self _accessibilityGetCurrentPageView];
+  accessibilityLabel = [_accessibilityGetCurrentPageView accessibilityLabel];
   v6 = __UIAXStringForVariables();
 
   return v6;
 }
 
-- (void)_accessibilityScrollToIndex:(unint64_t)a3
+- (void)_accessibilityScrollToIndex:(unint64_t)index
 {
   v8 = 0;
   v9 = &v8;
@@ -320,16 +320,16 @@ uint64_t __66__NTKPageScrollViewAccessibility__accessibilityGetCurrentPageView__
 - (NTKPageScrollViewControllerAccessibility)accessibilityPageScrollViewController
 {
   v2 = objc_getAssociatedObject(self, &_AXPageScrollViewController);
-  v3 = [v2 referencedScrollViewController];
+  referencedScrollViewController = [v2 referencedScrollViewController];
 
-  return v3;
+  return referencedScrollViewController;
 }
 
-- (void)setAccessibilityPageScrollViewController:(id)a3
+- (void)setAccessibilityPageScrollViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   value = objc_alloc_init(_UIAccessibilityWeakObjectHolder_NTKPageScrollViewControllerAccessibility);
-  [(_UIAccessibilityWeakObjectHolder_NTKPageScrollViewControllerAccessibility *)value setReferencedScrollViewController:v4];
+  [(_UIAccessibilityWeakObjectHolder_NTKPageScrollViewControllerAccessibility *)value setReferencedScrollViewController:controllerCopy];
 
   objc_setAssociatedObject(self, &_AXPageScrollViewController, value, &dword_0 + 1);
 }

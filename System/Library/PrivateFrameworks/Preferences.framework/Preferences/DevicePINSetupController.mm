@@ -2,7 +2,7 @@
 - (BOOL)success;
 - (CGSize)preferredContentSize;
 - (DevicePINSetupController)init;
-- (void)showController:(id)a3 animate:(BOOL)a4;
+- (void)showController:(id)controller animate:(BOOL)animate;
 @end
 
 @implementation DevicePINSetupController
@@ -22,20 +22,20 @@
 
 - (BOOL)success
 {
-  v2 = [(DevicePINSetupController *)self topViewController];
-  v3 = [v2 success];
+  topViewController = [(DevicePINSetupController *)self topViewController];
+  success = [topViewController success];
 
-  return v3;
+  return success;
 }
 
 - (CGSize)preferredContentSize
 {
-  v3 = [(PSSetupController *)self controller];
+  controller = [(PSSetupController *)self controller];
 
-  if (v3)
+  if (controller)
   {
-    v4 = [(PSSetupController *)self controller];
-    [v4 preferredContentSize];
+    controller2 = [(PSSetupController *)self controller];
+    [controller2 preferredContentSize];
     v6 = v5;
     v8 = v7;
   }
@@ -53,19 +53,19 @@
   return result;
 }
 
-- (void)showController:(id)a3 animate:(BOOL)a4
+- (void)showController:(id)controller animate:(BOOL)animate
 {
-  v4 = a4;
-  v6 = a3;
+  animateCopy = animate;
+  controllerCopy = controller;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v6 setAllowOptionsButton:self->_allowOptionsButton];
+    [controllerCopy setAllowOptionsButton:self->_allowOptionsButton];
   }
 
   v7.receiver = self;
   v7.super_class = DevicePINSetupController;
-  [(PSSetupController *)&v7 showController:v6 animate:v4];
+  [(PSSetupController *)&v7 showController:controllerCopy animate:animateCopy];
 }
 
 @end

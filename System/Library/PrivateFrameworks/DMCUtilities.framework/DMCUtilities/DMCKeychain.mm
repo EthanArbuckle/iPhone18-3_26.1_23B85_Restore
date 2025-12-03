@@ -1,49 +1,49 @@
 @interface DMCKeychain
-+ (BOOL)deleteAttestationCertWithGroup:(id)a3 label:(id)a4;
-+ (BOOL)deleteAttestationKeyWithGroup:(id)a3 label:(id)a4;
-+ (BOOL)deleteAttestationMetadataWithGroup:(id)a3 service:(id)a4;
-+ (BOOL)setData:(id)a3 forService:(id)a4 account:(id)a5 label:(id)a6 description:(id)a7 access:(void *)a8 group:(id)a9 useSystemKeychain:(BOOL)a10 sysBound:(BOOL)a11 enforcePersonalPersona:(BOOL)a12 outError:(id *)a13;
-+ (BOOL)storeAttestationCert:(__SecCertificate *)a3 withGroup:(id)a4 label:(id)a5;
-+ (BOOL)storeAttestationKey:(__SecKey *)a3 withGroup:(id)a4 label:(id)a5;
-+ (BOOL)storeAttestationMetadata:(id)a3 withGroup:(id)a4 service:(id)a5;
-+ (__CFDictionary)_newQueryWithService:(id)a3 account:(id)a4 label:(id)a5 description:(id)a6 group:(id)a7 useSystemKeychain:(BOOL)a8 outError:(id *)a9;
-+ (__SecCertificate)retrieveAttestationCertWithGroup:(id)a3 label:(id)a4;
-+ (__SecIdentity)retrieveAttestationIdentityWithGroup:(id)a3 label:(id)a4;
-+ (__SecKey)retrieveAttestationKeyWithGroup:(id)a3 label:(id)a4;
-+ (id)retrieveAttestationMetadataWithGroup:(id)a3 service:(id)a4;
-+ (id)saveItem:(void *)a3 withLabel:(id)a4 group:(id)a5 useSystemKeychain:(BOOL)a6 enforcePersonalPersona:(BOOL)a7;
-+ (id)stringFromServiceData:(id)a3;
-+ (void)_copyTypeRefWithQuery:(id)a3 useSystemKeychain:(BOOL)a4 enforcePersonalPersona:(BOOL)a5;
++ (BOOL)deleteAttestationCertWithGroup:(id)group label:(id)label;
++ (BOOL)deleteAttestationKeyWithGroup:(id)group label:(id)label;
++ (BOOL)deleteAttestationMetadataWithGroup:(id)group service:(id)service;
++ (BOOL)setData:(id)data forService:(id)service account:(id)account label:(id)label description:(id)description access:(void *)access group:(id)group useSystemKeychain:(BOOL)self0 sysBound:(BOOL)self1 enforcePersonalPersona:(BOOL)self2 outError:(id *)self3;
++ (BOOL)storeAttestationCert:(__SecCertificate *)cert withGroup:(id)group label:(id)label;
++ (BOOL)storeAttestationKey:(__SecKey *)key withGroup:(id)group label:(id)label;
++ (BOOL)storeAttestationMetadata:(id)metadata withGroup:(id)group service:(id)service;
++ (__CFDictionary)_newQueryWithService:(id)service account:(id)account label:(id)label description:(id)description group:(id)group useSystemKeychain:(BOOL)keychain outError:(id *)error;
++ (__SecCertificate)retrieveAttestationCertWithGroup:(id)group label:(id)label;
++ (__SecIdentity)retrieveAttestationIdentityWithGroup:(id)group label:(id)label;
++ (__SecKey)retrieveAttestationKeyWithGroup:(id)group label:(id)label;
++ (id)retrieveAttestationMetadataWithGroup:(id)group service:(id)service;
++ (id)saveItem:(void *)item withLabel:(id)label group:(id)group useSystemKeychain:(BOOL)keychain enforcePersonalPersona:(BOOL)persona;
++ (id)stringFromServiceData:(id)data;
++ (void)_copyTypeRefWithQuery:(id)query useSystemKeychain:(BOOL)keychain enforcePersonalPersona:(BOOL)persona;
 @end
 
 @implementation DMCKeychain
 
-+ (id)stringFromServiceData:(id)a3
++ (id)stringFromServiceData:(id)data
 {
-  v4 = a3;
-  if (a3)
+  dataCopy = data;
+  if (data)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{objc_msgSend(a3, "bytes")}];
+    dataCopy = [MEMORY[0x1E696AEC0] stringWithUTF8String:{objc_msgSend(data, "bytes")}];
     v3 = vars8;
   }
 
-  return v4;
+  return dataCopy;
 }
 
-+ (BOOL)setData:(id)a3 forService:(id)a4 account:(id)a5 label:(id)a6 description:(id)a7 access:(void *)a8 group:(id)a9 useSystemKeychain:(BOOL)a10 sysBound:(BOOL)a11 enforcePersonalPersona:(BOOL)a12 outError:(id *)a13
++ (BOOL)setData:(id)data forService:(id)service account:(id)account label:(id)label description:(id)description access:(void *)access group:(id)group useSystemKeychain:(BOOL)self0 sysBound:(BOOL)self1 enforcePersonalPersona:(BOOL)self2 outError:(id *)self3
 {
   v73 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v23 = a9;
-  v58 = v19;
-  if ([v18 length])
+  dataCopy = data;
+  serviceCopy = service;
+  accountCopy = account;
+  labelCopy = label;
+  descriptionCopy = description;
+  groupCopy = group;
+  v58 = serviceCopy;
+  if ([dataCopy length])
   {
     v65 = 0;
-    v31 = [DMCKeychain _newQueryWithService:v19 account:v20 label:v21 description:v22 group:v23 useSystemKeychain:a10 outError:&v65];
+    v31 = [DMCKeychain _newQueryWithService:serviceCopy account:accountCopy label:labelCopy description:descriptionCopy group:groupCopy useSystemKeychain:keychain outError:&v65];
     v32 = v65;
     if (v32)
     {
@@ -56,8 +56,8 @@
       goto LABEL_17;
     }
 
-    LOBYTE(v57) = a12;
-    v36 = [DMCKeychain dataFromService:v19 account:v20 label:v21 description:v22 group:v23 useSystemKeychain:a10 enforcePersonalPersona:v57 outError:0];
+    LOBYTE(v57) = persona;
+    v36 = [DMCKeychain dataFromService:serviceCopy account:accountCopy label:labelCopy description:descriptionCopy group:groupCopy useSystemKeychain:keychain enforcePersonalPersona:v57 outError:0];
     *&v70 = 0;
     *(&v70 + 1) = &v70;
     v71 = 0x2020000000;
@@ -68,13 +68,13 @@
     v59[3] = &unk_1E7ADCC10;
     v37 = v36;
     v60 = v37;
-    v61 = v18;
+    v61 = dataCopy;
     v62 = &v70;
-    v63 = a8;
+    accessCopy = access;
     v64 = v31;
     v38 = MEMORY[0x1B2731A20](v59);
     v39 = v38;
-    if (a12)
+    if (persona)
     {
       v33 = [DMCPersonaHelper performBlockUnderPersonalPersona:v38];
     }
@@ -129,19 +129,19 @@
   }
 
 LABEL_17:
-  if (a13)
+  if (error)
   {
     v50 = v33;
-    *a13 = v33;
+    *error = v33;
   }
 
   v51 = *DMCLogObjects();
   if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
   {
     v52 = v51;
-    v53 = [v33 DMCVerboseDescription];
+    dMCVerboseDescription = [v33 DMCVerboseDescription];
     LODWORD(v70) = 138543362;
-    *(&v70 + 4) = v53;
+    *(&v70 + 4) = dMCVerboseDescription;
     _os_log_impl(&dword_1B1630000, v52, OS_LOG_TYPE_ERROR, "Failed to set data in keychain. Error: %{public}@", &v70, 0xCu);
   }
 
@@ -190,35 +190,35 @@ uint64_t __113__DMCKeychain_dataFromService_account_label_description_group_useS
   return result;
 }
 
-+ (id)saveItem:(void *)a3 withLabel:(id)a4 group:(id)a5 useSystemKeychain:(BOOL)a6 enforcePersonalPersona:(BOOL)a7
++ (id)saveItem:(void *)item withLabel:(id)label group:(id)group useSystemKeychain:(BOOL)keychain enforcePersonalPersona:(BOOL)persona
 {
-  v7 = a7;
-  v8 = a6;
+  personaCopy = persona;
+  keychainCopy = keychain;
   v51[4] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
+  labelCopy = label;
+  groupCopy = group;
   v13 = *MEMORY[0x1E697ABD0];
   v50[0] = *MEMORY[0x1E697B3D0];
   v50[1] = v13;
   v14 = *MEMORY[0x1E697ABD8];
   v50[2] = *MEMORY[0x1E697B320];
   v50[3] = v14;
-  v51[0] = a3;
-  v51[1] = v12;
+  v51[0] = item;
+  v51[1] = groupCopy;
   v15 = *MEMORY[0x1E697AC08];
   v51[2] = MEMORY[0x1E695E118];
   v51[3] = v15;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v51 forKeys:v50 count:4];
   v17 = [v16 mutableCopy];
 
-  if (v8)
+  if (keychainCopy)
   {
     [v17 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E697B3A8]];
   }
 
-  if (v11)
+  if (labelCopy)
   {
-    [v17 setObject:v11 forKeyedSubscript:*MEMORY[0x1E697ADC8]];
+    [v17 setObject:labelCopy forKeyedSubscript:*MEMORY[0x1E697ADC8]];
   }
 
   v42 = 0;
@@ -242,7 +242,7 @@ uint64_t __113__DMCKeychain_dataFromService_account_label_description_group_useS
   v32 = v18;
   v19 = MEMORY[0x1B2731A20](&v28);
   v20 = v19;
-  if (v7)
+  if (personaCopy)
   {
     v21 = [DMCPersonaHelper performBlockUnderPersonalPersona:v19, v28, v29, v30, v31];
     if (v21)
@@ -320,40 +320,40 @@ void __81__DMCKeychain_saveItem_withLabel_group_useSystemKeychain_enforcePersona
   }
 }
 
-+ (__CFDictionary)_newQueryWithService:(id)a3 account:(id)a4 label:(id)a5 description:(id)a6 group:(id)a7 useSystemKeychain:(BOOL)a8 outError:(id *)a9
++ (__CFDictionary)_newQueryWithService:(id)service account:(id)account label:(id)label description:(id)description group:(id)group useSystemKeychain:(BOOL)keychain outError:(id *)error
 {
-  v9 = a8;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  if ([v14 length])
+  keychainCopy = keychain;
+  serviceCopy = service;
+  accountCopy = account;
+  labelCopy = label;
+  descriptionCopy = description;
+  groupCopy = group;
+  if ([serviceCopy length])
   {
     Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, 0, 0);
     CFDictionaryAddValue(Mutable, *MEMORY[0x1E697AFF8], *MEMORY[0x1E697B008]);
-    CFDictionaryAddValue(Mutable, *MEMORY[0x1E697AE88], v14);
-    if ([v15 length])
+    CFDictionaryAddValue(Mutable, *MEMORY[0x1E697AE88], serviceCopy);
+    if ([accountCopy length])
     {
-      CFDictionaryAddValue(Mutable, *MEMORY[0x1E697AC30], v15);
+      CFDictionaryAddValue(Mutable, *MEMORY[0x1E697AC30], accountCopy);
     }
 
-    if ([v16 length])
+    if ([labelCopy length])
     {
-      CFDictionaryAddValue(Mutable, *MEMORY[0x1E697ADC8], v16);
+      CFDictionaryAddValue(Mutable, *MEMORY[0x1E697ADC8], labelCopy);
     }
 
-    if ([v17 length])
+    if ([descriptionCopy length])
     {
-      CFDictionaryAddValue(Mutable, *MEMORY[0x1E697ACE0], v17);
+      CFDictionaryAddValue(Mutable, *MEMORY[0x1E697ACE0], descriptionCopy);
     }
 
-    if ([v18 length])
+    if ([groupCopy length])
     {
-      CFDictionaryAddValue(Mutable, *MEMORY[0x1E697ABD0], v18);
+      CFDictionaryAddValue(Mutable, *MEMORY[0x1E697ABD0], groupCopy);
     }
 
-    if (v9)
+    if (keychainCopy)
     {
       CFDictionaryAddValue(Mutable, *MEMORY[0x1E697B3A8], MEMORY[0x1E695E118]);
     }
@@ -361,11 +361,11 @@ void __81__DMCKeychain_saveItem_withLabel_group_useSystemKeychain_enforcePersona
 
   else
   {
-    if (a9)
+    if (error)
     {
       v27 = MEMORY[0x1E696ABC0];
       v28 = DMCErrorArray(@"KEYCHAIN_ERROR_CANNOT_CREATE_QUERY", v19, v20, v21, v22, v23, v24, v25, 0);
-      *a9 = [v27 DMCErrorWithDomain:@"DMCKeychainErrorDomain" code:6002 descriptionArray:v28 errorType:@"DMCFatalError"];
+      *error = [v27 DMCErrorWithDomain:@"DMCKeychainErrorDomain" code:6002 descriptionArray:v28 errorType:@"DMCFatalError"];
     }
 
     Mutable = 0;
@@ -374,13 +374,13 @@ void __81__DMCKeychain_saveItem_withLabel_group_useSystemKeychain_enforcePersona
   return Mutable;
 }
 
-+ (void)_copyTypeRefWithQuery:(id)a3 useSystemKeychain:(BOOL)a4 enforcePersonalPersona:(BOOL)a5
++ (void)_copyTypeRefWithQuery:(id)query useSystemKeychain:(BOOL)keychain enforcePersonalPersona:(BOOL)persona
 {
-  v5 = a5;
-  v6 = a4;
+  personaCopy = persona;
+  keychainCopy = keychain;
   v37 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = v7;
+  queryCopy = query;
+  v8 = queryCopy;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -389,14 +389,14 @@ void __81__DMCKeychain_saveItem_withLabel_group_useSystemKeychain_enforcePersona
   v26 = &v25;
   v27 = 0x2020000000;
   v28 = 0;
-  if (v5)
+  if (personaCopy)
   {
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __78__DMCKeychain__copyTypeRefWithQuery_useSystemKeychain_enforcePersonalPersona___block_invoke;
     v21[3] = &unk_1E7ADCCB0;
     v23 = &v25;
-    v22 = v7;
+    v22 = queryCopy;
     v24 = &v29;
     v9 = [DMCPersonaHelper performBlockUnderPersonalPersona:v21];
 
@@ -420,7 +420,7 @@ void __81__DMCKeychain_saveItem_withLabel_group_useSystemKeychain_enforcePersona
 
   else
   {
-    v11 = SecItemCopyMatching(v7, &v32);
+    v11 = SecItemCopyMatching(queryCopy, &v32);
     *(v26 + 6) = v11;
   }
 
@@ -432,7 +432,7 @@ void __81__DMCKeychain_saveItem_withLabel_group_useSystemKeychain_enforcePersona
       *buf = 138543618;
       v34 = v8;
       v35 = 1024;
-      LODWORD(v36) = v6;
+      LODWORD(v36) = keychainCopy;
       v14 = "Couldn't find item with query: %{public}@ system keychain: %d";
       v15 = v13;
       v16 = OS_LOG_TYPE_DEBUG;
@@ -479,22 +479,22 @@ uint64_t __78__DMCKeychain__copyTypeRefWithQuery_useSystemKeychain_enforcePerson
   return result;
 }
 
-+ (BOOL)storeAttestationKey:(__SecKey *)a3 withGroup:(id)a4 label:(id)a5
++ (BOOL)storeAttestationKey:(__SecKey *)key withGroup:(id)group label:(id)label
 {
   v17 = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E695DF90];
-  v8 = a5;
-  v9 = a4;
-  v10 = [v7 dictionary];
-  [v10 setObject:a3 forKeyedSubscript:*MEMORY[0x1E697B3D0]];
-  [v10 setObject:v9 forKeyedSubscript:*MEMORY[0x1E697ABD0]];
+  labelCopy = label;
+  groupCopy = group;
+  dictionary = [v7 dictionary];
+  [dictionary setObject:key forKeyedSubscript:*MEMORY[0x1E697B3D0]];
+  [dictionary setObject:groupCopy forKeyedSubscript:*MEMORY[0x1E697ABD0]];
 
-  [v10 setObject:v8 forKeyedSubscript:*MEMORY[0x1E697ADC8]];
+  [dictionary setObject:labelCopy forKeyedSubscript:*MEMORY[0x1E697ADC8]];
   v11 = SecAccessControlCreateWithFlags(0, *MEMORY[0x1E697AC08], 0x40000000uLL, 0);
-  [v10 setObject:v11 forKeyedSubscript:*MEMORY[0x1E697ABC8]];
+  [dictionary setObject:v11 forKeyedSubscript:*MEMORY[0x1E697ABC8]];
   CFRelease(v11);
-  [v10 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E697B3A8]];
-  v12 = SecItemAdd(v10, 0);
+  [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E697B3A8]];
+  v12 = SecItemAdd(dictionary, 0);
   if (v12)
   {
     v13 = *DMCLogObjects();
@@ -510,22 +510,22 @@ uint64_t __78__DMCKeychain__copyTypeRefWithQuery_useSystemKeychain_enforcePerson
   return v12 == 0;
 }
 
-+ (__SecKey)retrieveAttestationKeyWithGroup:(id)a3 label:(id)a4
++ (__SecKey)retrieveAttestationKeyWithGroup:(id)group label:(id)label
 {
   v19 = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E695DF90];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 dictionary];
-  [v8 setObject:*MEMORY[0x1E697B020] forKeyedSubscript:*MEMORY[0x1E697AFF8]];
-  [v8 setObject:v7 forKeyedSubscript:*MEMORY[0x1E697ABD0]];
+  labelCopy = label;
+  groupCopy = group;
+  dictionary = [v5 dictionary];
+  [dictionary setObject:*MEMORY[0x1E697B020] forKeyedSubscript:*MEMORY[0x1E697AFF8]];
+  [dictionary setObject:groupCopy forKeyedSubscript:*MEMORY[0x1E697ABD0]];
 
-  [v8 setObject:v6 forKeyedSubscript:*MEMORY[0x1E697ADC8]];
+  [dictionary setObject:labelCopy forKeyedSubscript:*MEMORY[0x1E697ADC8]];
   v9 = MEMORY[0x1E695E118];
-  [v8 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E697B3A8]];
-  [v8 setObject:v9 forKeyedSubscript:*MEMORY[0x1E697B328]];
+  [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E697B3A8]];
+  [dictionary setObject:v9 forKeyedSubscript:*MEMORY[0x1E697B328]];
   result = 0;
-  v10 = SecItemCopyMatching(v8, &result);
+  v10 = SecItemCopyMatching(dictionary, &result);
   if (v10)
   {
     v11 = v10;
@@ -549,19 +549,19 @@ uint64_t __78__DMCKeychain__copyTypeRefWithQuery_useSystemKeychain_enforcePerson
   return v13;
 }
 
-+ (BOOL)deleteAttestationKeyWithGroup:(id)a3 label:(id)a4
++ (BOOL)deleteAttestationKeyWithGroup:(id)group label:(id)label
 {
   v14 = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E695DF90];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 dictionary];
-  [v8 setObject:*MEMORY[0x1E697B020] forKeyedSubscript:*MEMORY[0x1E697AFF8]];
-  [v8 setObject:v7 forKeyedSubscript:*MEMORY[0x1E697ABD0]];
+  labelCopy = label;
+  groupCopy = group;
+  dictionary = [v5 dictionary];
+  [dictionary setObject:*MEMORY[0x1E697B020] forKeyedSubscript:*MEMORY[0x1E697AFF8]];
+  [dictionary setObject:groupCopy forKeyedSubscript:*MEMORY[0x1E697ABD0]];
 
-  [v8 setObject:v6 forKeyedSubscript:*MEMORY[0x1E697ADC8]];
-  [v8 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E697B3A8]];
-  v9 = SecItemDelete(v8);
+  [dictionary setObject:labelCopy forKeyedSubscript:*MEMORY[0x1E697ADC8]];
+  [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E697B3A8]];
+  v9 = SecItemDelete(dictionary);
   if (v9)
   {
     v10 = *DMCLogObjects();
@@ -577,20 +577,20 @@ uint64_t __78__DMCKeychain__copyTypeRefWithQuery_useSystemKeychain_enforcePerson
   return v9 == 0;
 }
 
-+ (BOOL)storeAttestationCert:(__SecCertificate *)a3 withGroup:(id)a4 label:(id)a5
++ (BOOL)storeAttestationCert:(__SecCertificate *)cert withGroup:(id)group label:(id)label
 {
   v16 = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E695DF90];
-  v8 = a5;
-  v9 = a4;
-  v10 = [v7 dictionary];
-  [v10 setObject:a3 forKeyedSubscript:*MEMORY[0x1E697B3D0]];
-  [v10 setObject:v9 forKeyedSubscript:*MEMORY[0x1E697ABD0]];
+  labelCopy = label;
+  groupCopy = group;
+  dictionary = [v7 dictionary];
+  [dictionary setObject:cert forKeyedSubscript:*MEMORY[0x1E697B3D0]];
+  [dictionary setObject:groupCopy forKeyedSubscript:*MEMORY[0x1E697ABD0]];
 
-  [v10 setObject:v8 forKeyedSubscript:*MEMORY[0x1E697ADC8]];
-  [v10 setObject:*MEMORY[0x1E697AC08] forKeyedSubscript:*MEMORY[0x1E697ABD8]];
-  [v10 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E697B3A8]];
-  v11 = SecItemAdd(v10, 0);
+  [dictionary setObject:labelCopy forKeyedSubscript:*MEMORY[0x1E697ADC8]];
+  [dictionary setObject:*MEMORY[0x1E697AC08] forKeyedSubscript:*MEMORY[0x1E697ABD8]];
+  [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E697B3A8]];
+  v11 = SecItemAdd(dictionary, 0);
   if (v11)
   {
     v12 = *DMCLogObjects();
@@ -606,22 +606,22 @@ uint64_t __78__DMCKeychain__copyTypeRefWithQuery_useSystemKeychain_enforcePerson
   return v11 == 0;
 }
 
-+ (__SecCertificate)retrieveAttestationCertWithGroup:(id)a3 label:(id)a4
++ (__SecCertificate)retrieveAttestationCertWithGroup:(id)group label:(id)label
 {
   v19 = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E695DF90];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 dictionary];
-  [v8 setObject:*MEMORY[0x1E697B000] forKeyedSubscript:*MEMORY[0x1E697AFF8]];
-  [v8 setObject:v7 forKeyedSubscript:*MEMORY[0x1E697ABD0]];
+  labelCopy = label;
+  groupCopy = group;
+  dictionary = [v5 dictionary];
+  [dictionary setObject:*MEMORY[0x1E697B000] forKeyedSubscript:*MEMORY[0x1E697AFF8]];
+  [dictionary setObject:groupCopy forKeyedSubscript:*MEMORY[0x1E697ABD0]];
 
-  [v8 setObject:v6 forKeyedSubscript:*MEMORY[0x1E697ADC8]];
+  [dictionary setObject:labelCopy forKeyedSubscript:*MEMORY[0x1E697ADC8]];
   v9 = MEMORY[0x1E695E118];
-  [v8 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E697B3A8]];
-  [v8 setObject:v9 forKeyedSubscript:*MEMORY[0x1E697B328]];
+  [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E697B3A8]];
+  [dictionary setObject:v9 forKeyedSubscript:*MEMORY[0x1E697B328]];
   result = 0;
-  v10 = SecItemCopyMatching(v8, &result);
+  v10 = SecItemCopyMatching(dictionary, &result);
   if (v10)
   {
     v11 = v10;
@@ -645,19 +645,19 @@ uint64_t __78__DMCKeychain__copyTypeRefWithQuery_useSystemKeychain_enforcePerson
   return v13;
 }
 
-+ (BOOL)deleteAttestationCertWithGroup:(id)a3 label:(id)a4
++ (BOOL)deleteAttestationCertWithGroup:(id)group label:(id)label
 {
   v14 = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E695DF90];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 dictionary];
-  [v8 setObject:*MEMORY[0x1E697B000] forKeyedSubscript:*MEMORY[0x1E697AFF8]];
-  [v8 setObject:v7 forKeyedSubscript:*MEMORY[0x1E697ABD0]];
+  labelCopy = label;
+  groupCopy = group;
+  dictionary = [v5 dictionary];
+  [dictionary setObject:*MEMORY[0x1E697B000] forKeyedSubscript:*MEMORY[0x1E697AFF8]];
+  [dictionary setObject:groupCopy forKeyedSubscript:*MEMORY[0x1E697ABD0]];
 
-  [v8 setObject:v6 forKeyedSubscript:*MEMORY[0x1E697ADC8]];
-  [v8 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E697B3A8]];
-  v9 = SecItemDelete(v8);
+  [dictionary setObject:labelCopy forKeyedSubscript:*MEMORY[0x1E697ADC8]];
+  [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E697B3A8]];
+  v9 = SecItemDelete(dictionary);
   if (v9)
   {
     v10 = *DMCLogObjects();
@@ -673,22 +673,22 @@ uint64_t __78__DMCKeychain__copyTypeRefWithQuery_useSystemKeychain_enforcePerson
   return v9 == 0;
 }
 
-+ (__SecIdentity)retrieveAttestationIdentityWithGroup:(id)a3 label:(id)a4
++ (__SecIdentity)retrieveAttestationIdentityWithGroup:(id)group label:(id)label
 {
   v19 = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E695DF90];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 dictionary];
-  [v8 setObject:*MEMORY[0x1E697B010] forKeyedSubscript:*MEMORY[0x1E697AFF8]];
-  [v8 setObject:v7 forKeyedSubscript:*MEMORY[0x1E697ABD0]];
+  labelCopy = label;
+  groupCopy = group;
+  dictionary = [v5 dictionary];
+  [dictionary setObject:*MEMORY[0x1E697B010] forKeyedSubscript:*MEMORY[0x1E697AFF8]];
+  [dictionary setObject:groupCopy forKeyedSubscript:*MEMORY[0x1E697ABD0]];
 
-  [v8 setObject:v6 forKeyedSubscript:*MEMORY[0x1E697ADC8]];
+  [dictionary setObject:labelCopy forKeyedSubscript:*MEMORY[0x1E697ADC8]];
   v9 = MEMORY[0x1E695E118];
-  [v8 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E697B3A8]];
-  [v8 setObject:v9 forKeyedSubscript:*MEMORY[0x1E697B328]];
+  [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E697B3A8]];
+  [dictionary setObject:v9 forKeyedSubscript:*MEMORY[0x1E697B328]];
   result = 0;
-  v10 = SecItemCopyMatching(v8, &result);
+  v10 = SecItemCopyMatching(dictionary, &result);
   if (v10)
   {
     v11 = v10;
@@ -712,23 +712,23 @@ uint64_t __78__DMCKeychain__copyTypeRefWithQuery_useSystemKeychain_enforcePerson
   return v13;
 }
 
-+ (BOOL)storeAttestationMetadata:(id)a3 withGroup:(id)a4 service:(id)a5
++ (BOOL)storeAttestationMetadata:(id)metadata withGroup:(id)group service:(id)service
 {
   v17 = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E695DF90];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v7 dictionary];
-  [v11 setObject:v10 forKeyedSubscript:*MEMORY[0x1E697B3C0]];
+  serviceCopy = service;
+  groupCopy = group;
+  metadataCopy = metadata;
+  dictionary = [v7 dictionary];
+  [dictionary setObject:metadataCopy forKeyedSubscript:*MEMORY[0x1E697B3C0]];
 
-  [v11 setObject:*MEMORY[0x1E697B008] forKeyedSubscript:*MEMORY[0x1E697AFF8]];
-  [v11 setObject:v9 forKeyedSubscript:*MEMORY[0x1E697ABD0]];
+  [dictionary setObject:*MEMORY[0x1E697B008] forKeyedSubscript:*MEMORY[0x1E697AFF8]];
+  [dictionary setObject:groupCopy forKeyedSubscript:*MEMORY[0x1E697ABD0]];
 
-  [v11 setObject:v8 forKeyedSubscript:*MEMORY[0x1E697AE88]];
-  [v11 setObject:*MEMORY[0x1E697AC08] forKeyedSubscript:*MEMORY[0x1E697ABD8]];
-  [v11 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E697B3A8]];
-  v12 = SecItemAdd(v11, 0);
+  [dictionary setObject:serviceCopy forKeyedSubscript:*MEMORY[0x1E697AE88]];
+  [dictionary setObject:*MEMORY[0x1E697AC08] forKeyedSubscript:*MEMORY[0x1E697ABD8]];
+  [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E697B3A8]];
+  v12 = SecItemAdd(dictionary, 0);
   if (v12)
   {
     v13 = *DMCLogObjects();
@@ -744,22 +744,22 @@ uint64_t __78__DMCKeychain__copyTypeRefWithQuery_useSystemKeychain_enforcePerson
   return v12 == 0;
 }
 
-+ (id)retrieveAttestationMetadataWithGroup:(id)a3 service:(id)a4
++ (id)retrieveAttestationMetadataWithGroup:(id)group service:(id)service
 {
   v19 = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E695DF90];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 dictionary];
-  [v8 setObject:*MEMORY[0x1E697B008] forKeyedSubscript:*MEMORY[0x1E697AFF8]];
-  [v8 setObject:v7 forKeyedSubscript:*MEMORY[0x1E697ABD0]];
+  serviceCopy = service;
+  groupCopy = group;
+  dictionary = [v5 dictionary];
+  [dictionary setObject:*MEMORY[0x1E697B008] forKeyedSubscript:*MEMORY[0x1E697AFF8]];
+  [dictionary setObject:groupCopy forKeyedSubscript:*MEMORY[0x1E697ABD0]];
 
-  [v8 setObject:v6 forKeyedSubscript:*MEMORY[0x1E697AE88]];
+  [dictionary setObject:serviceCopy forKeyedSubscript:*MEMORY[0x1E697AE88]];
   v9 = MEMORY[0x1E695E118];
-  [v8 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E697B3A8]];
-  [v8 setObject:v9 forKeyedSubscript:*MEMORY[0x1E697B328]];
+  [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E697B3A8]];
+  [dictionary setObject:v9 forKeyedSubscript:*MEMORY[0x1E697B328]];
   result = 0;
-  v10 = SecItemCopyMatching(v8, &result);
+  v10 = SecItemCopyMatching(dictionary, &result);
   if (v10)
   {
     v11 = v10;
@@ -784,19 +784,19 @@ uint64_t __78__DMCKeychain__copyTypeRefWithQuery_useSystemKeychain_enforcePerson
   return v13;
 }
 
-+ (BOOL)deleteAttestationMetadataWithGroup:(id)a3 service:(id)a4
++ (BOOL)deleteAttestationMetadataWithGroup:(id)group service:(id)service
 {
   v14 = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E695DF90];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 dictionary];
-  [v8 setObject:*MEMORY[0x1E697B008] forKeyedSubscript:*MEMORY[0x1E697AFF8]];
-  [v8 setObject:v7 forKeyedSubscript:*MEMORY[0x1E697ABD0]];
+  serviceCopy = service;
+  groupCopy = group;
+  dictionary = [v5 dictionary];
+  [dictionary setObject:*MEMORY[0x1E697B008] forKeyedSubscript:*MEMORY[0x1E697AFF8]];
+  [dictionary setObject:groupCopy forKeyedSubscript:*MEMORY[0x1E697ABD0]];
 
-  [v8 setObject:v6 forKeyedSubscript:*MEMORY[0x1E697AE88]];
-  [v8 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E697B3A8]];
-  v9 = SecItemDelete(v8);
+  [dictionary setObject:serviceCopy forKeyedSubscript:*MEMORY[0x1E697AE88]];
+  [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E697B3A8]];
+  v9 = SecItemDelete(dictionary);
   if (v9)
   {
     v10 = *DMCLogObjects();

@@ -1,15 +1,15 @@
 @interface HUUpdateListeningHistorySettingsItemModuleController
-- (Class)cellClassForItem:(id)a3;
-- (void)setupCell:(id)a3 forItem:(id)a4;
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5;
+- (Class)cellClassForItem:(id)item;
+- (void)setupCell:(id)cell forItem:(id)item;
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on;
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated;
 @end
 
 @implementation HUUpdateListeningHistorySettingsItemModuleController
 
-- (Class)cellClassForItem:(id)a3
+- (Class)cellClassForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   objc_opt_class();
   objc_opt_isKindOfClass();
 
@@ -18,14 +18,14 @@
   return v4;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4
+- (void)setupCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
+  cellCopy = cell;
   v10.receiver = self;
   v10.super_class = HUUpdateListeningHistorySettingsItemModuleController;
-  [(HUItemModuleController *)&v10 setupCell:v6 forItem:a4];
+  [(HUItemModuleController *)&v10 setupCell:cellCopy forItem:item];
   objc_opt_class();
-  v7 = v6;
+  v7 = cellCopy;
   if (objc_opt_isKindOfClass())
   {
     v8 = v7;
@@ -44,16 +44,16 @@
   }
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  animatedCopy = animated;
+  cellCopy = cell;
+  itemCopy = item;
   v37.receiver = self;
   v37.super_class = HUUpdateListeningHistorySettingsItemModuleController;
-  [(HUItemModuleController *)&v37 updateCell:v8 forItem:v9 animated:v5];
+  [(HUItemModuleController *)&v37 updateCell:cellCopy forItem:itemCopy animated:animatedCopy];
   objc_opt_class();
-  v10 = v8;
+  v10 = cellCopy;
   if (objc_opt_isKindOfClass())
   {
     v11 = v10;
@@ -69,7 +69,7 @@
   if (v12)
   {
     objc_opt_class();
-    v13 = v9;
+    v13 = itemCopy;
     if (objc_opt_isKindOfClass())
     {
       v14 = v13;
@@ -83,10 +83,10 @@
     v15 = v14;
 
     objc_opt_class();
-    v16 = [v15 sourceItem];
+    sourceItem = [v15 sourceItem];
     if (objc_opt_isKindOfClass())
     {
-      v17 = v16;
+      v17 = sourceItem;
     }
 
     else
@@ -110,10 +110,10 @@
     v21 = v20;
 
     objc_opt_class();
-    v22 = [(HUItemModuleController *)self module];
+    module = [(HUItemModuleController *)self module];
     if (objc_opt_isKindOfClass())
     {
-      v23 = v22;
+      v23 = module;
     }
 
     else
@@ -123,11 +123,11 @@
 
     v24 = v23;
 
-    v25 = [v24 user];
-    v26 = [v24 home];
-    v27 = [v25 userListeningHistoryUpdateControlForHome:v26];
+    user = [v24 user];
+    home = [v24 home];
+    v27 = [user userListeningHistoryUpdateControlForHome:home];
 
-    v28 = [v21 accessories];
+    accessories = [v21 accessories];
 
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
@@ -135,12 +135,12 @@
     v35[3] = &unk_277DB8EC0;
     v29 = v27;
     v36 = v29;
-    v30 = [v28 na_all:v35];
+    v30 = [accessories na_all:v35];
 
-    v31 = [v15 sourceItem];
-    if ([v31 conformsToProtocol:&unk_28251AE08])
+    sourceItem2 = [v15 sourceItem];
+    if ([sourceItem2 conformsToProtocol:&unk_28251AE08])
     {
-      v32 = v31;
+      v32 = sourceItem2;
     }
 
     else
@@ -189,27 +189,27 @@ uint64_t __84__HUUpdateListeningHistorySettingsItemModuleController_updateCell_f
   return v8;
 }
 
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on
 {
-  v4 = a4;
+  onCopy = on;
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  cellCopy = cell;
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 item];
+    item = [cellCopy item];
     *buf = 67109378;
-    v26 = v4;
+    v26 = onCopy;
     v27 = 2112;
-    v28 = v8;
+    v28 = item;
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "User tapped on switch to enable ULH? %{BOOL}d for item: %@", buf, 0x12u);
   }
 
   objc_opt_class();
-  v9 = [(HUItemModuleController *)self module];
+  module = [(HUItemModuleController *)self module];
   if (objc_opt_isKindOfClass())
   {
-    v10 = v9;
+    v10 = module;
   }
 
   else
@@ -220,10 +220,10 @@ uint64_t __84__HUUpdateListeningHistorySettingsItemModuleController_updateCell_f
   v11 = v10;
 
   objc_opt_class();
-  v12 = [v6 item];
+  item2 = [cellCopy item];
   if (objc_opt_isKindOfClass())
   {
-    v13 = v12;
+    v13 = item2;
   }
 
   else
@@ -234,10 +234,10 @@ uint64_t __84__HUUpdateListeningHistorySettingsItemModuleController_updateCell_f
   v14 = v13;
 
   objc_opt_class();
-  v15 = [v14 sourceItem];
+  sourceItem = [v14 sourceItem];
   if (objc_opt_isKindOfClass())
   {
-    v16 = v15;
+    v16 = sourceItem;
   }
 
   else
@@ -246,11 +246,11 @@ uint64_t __84__HUUpdateListeningHistorySettingsItemModuleController_updateCell_f
   }
 
   objc_opt_class();
-  v17 = [v14 sourceItem];
+  sourceItem2 = [v14 sourceItem];
 
   if (objc_opt_isKindOfClass())
   {
-    v18 = v17;
+    v18 = sourceItem2;
   }
 
   else
@@ -260,15 +260,15 @@ uint64_t __84__HUUpdateListeningHistorySettingsItemModuleController_updateCell_f
 
   if (v16 | v18)
   {
-    v19 = [v6 item];
-    v20 = [v11 setUpdateListeningHistorySetting:v4 forItem:v19];
+    item3 = [cellCopy item];
+    v20 = [v11 setUpdateListeningHistorySetting:onCopy forItem:item3];
 
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __77__HUUpdateListeningHistorySettingsItemModuleController_switchCell_didTurnOn___block_invoke;
     v22[3] = &unk_277DB7EB8;
-    v23 = v6;
-    v24 = v4;
+    v23 = cellCopy;
+    v24 = onCopy;
     v21 = [v20 addCompletionBlock:v22];
   }
 }

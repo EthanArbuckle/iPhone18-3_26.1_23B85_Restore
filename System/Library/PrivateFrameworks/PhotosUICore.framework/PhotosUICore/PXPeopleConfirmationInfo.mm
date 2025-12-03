@@ -1,6 +1,6 @@
 @interface PXPeopleConfirmationInfo
-- (PXPeopleConfirmationInfo)initWithBootstrapContext:(id)a3;
-- (PXPeopleConfirmationInfo)initWithSourcePerson:(id)a3 targetPerson:(id)a4 confirmedSuggestions:(id)a5;
+- (PXPeopleConfirmationInfo)initWithBootstrapContext:(id)context;
+- (PXPeopleConfirmationInfo)initWithSourcePerson:(id)person targetPerson:(id)targetPerson confirmedSuggestions:(id)suggestions;
 - (id)description;
 @end
 
@@ -14,24 +14,24 @@
   v4 = [v3 mutableCopy];
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(PXPeopleConfirmationInfo *)self sourcePerson];
-  v7 = [v5 stringWithFormat:@"\nsourcePerson: %@\n", v6];
+  sourcePerson = [(PXPeopleConfirmationInfo *)self sourcePerson];
+  v7 = [v5 stringWithFormat:@"\nsourcePerson: %@\n", sourcePerson];
   [v4 appendString:v7];
 
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [(PXPeopleConfirmationInfo *)self targetPerson];
-  v10 = [v8 stringWithFormat:@"targetPerson: %@\n", v9];
+  targetPerson = [(PXPeopleConfirmationInfo *)self targetPerson];
+  v10 = [v8 stringWithFormat:@"targetPerson: %@\n", targetPerson];
   [v4 appendString:v10];
 
   v11 = MEMORY[0x1E696AEC0];
-  v12 = [(PXPeopleConfirmationInfo *)self otherPersons];
-  v13 = [v11 stringWithFormat:@"otherPersons: %@\n", v12];
+  otherPersons = [(PXPeopleConfirmationInfo *)self otherPersons];
+  v13 = [v11 stringWithFormat:@"otherPersons: %@\n", otherPersons];
   [v4 appendString:v13];
 
   v14 = MEMORY[0x1E696AEC0];
-  v15 = [(PXPeopleConfirmationInfo *)self wasNaming];
+  wasNaming = [(PXPeopleConfirmationInfo *)self wasNaming];
   v16 = @"NO";
-  if (v15)
+  if (wasNaming)
   {
     v16 = @"YES";
   }
@@ -41,21 +41,21 @@
   [v4 appendString:v18];
 
   v19 = MEMORY[0x1E696AEC0];
-  v20 = [(PXPeopleConfirmationInfo *)self localizedName];
-  v21 = [v19 stringWithFormat:@"localizedName: %@\n", v20];
+  localizedName = [(PXPeopleConfirmationInfo *)self localizedName];
+  v21 = [v19 stringWithFormat:@"localizedName: %@\n", localizedName];
   [v4 appendString:v21];
 
   return v4;
 }
 
-- (PXPeopleConfirmationInfo)initWithBootstrapContext:(id)a3
+- (PXPeopleConfirmationInfo)initWithBootstrapContext:(id)context
 {
-  v4 = a3;
-  [v4 sourcePerson];
+  contextCopy = context;
+  [contextCopy sourcePerson];
   objc_claimAutoreleasedReturnValue();
-  [v4 targetPerson];
+  [contextCopy targetPerson];
   objc_claimAutoreleasedReturnValue();
-  [v4 suggestionManager];
+  [contextCopy suggestionManager];
   [objc_claimAutoreleasedReturnValue() currentSuggestions];
   objc_claimAutoreleasedReturnValue();
   self;
@@ -97,20 +97,20 @@ LABEL_3:
   return v3;
 }
 
-- (PXPeopleConfirmationInfo)initWithSourcePerson:(id)a3 targetPerson:(id)a4 confirmedSuggestions:(id)a5
+- (PXPeopleConfirmationInfo)initWithSourcePerson:(id)person targetPerson:(id)targetPerson confirmedSuggestions:(id)suggestions
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  personCopy = person;
+  targetPersonCopy = targetPerson;
+  suggestionsCopy = suggestions;
   v18.receiver = self;
   v18.super_class = PXPeopleConfirmationInfo;
   v12 = [(PXPeopleConfirmationInfo *)&v18 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_sourcePerson, a3);
-    objc_storeStrong(&v13->_targetPerson, a4);
-    v14 = [v11 mutableCopy];
+    objc_storeStrong(&v12->_sourcePerson, person);
+    objc_storeStrong(&v13->_targetPerson, targetPerson);
+    v14 = [suggestionsCopy mutableCopy];
     [v14 removeObject:v13->_sourcePerson];
     [v14 removeObject:v13->_targetPerson];
     v15 = [v14 copy];

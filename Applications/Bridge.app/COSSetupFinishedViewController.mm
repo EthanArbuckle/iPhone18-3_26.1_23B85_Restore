@@ -12,24 +12,24 @@
 - (void)continuePairedSync;
 - (void)dealloc;
 - (void)determineArchitectureCompatibilityIfNeeded;
-- (void)deviceBecameActive:(id)a3;
-- (void)deviceIsSetup:(id)a3;
+- (void)deviceBecameActive:(id)active;
+- (void)deviceIsSetup:(id)setup;
 - (void)didEstablishHold;
-- (void)dismissDiscoverIntro:(id)a3;
+- (void)dismissDiscoverIntro:(id)intro;
 - (void)finishedActivating;
 - (void)finishedInitialSyncPrep;
-- (void)globalAlertPresentationCoordinator:(id)a3 dismissAlert:(unint64_t)a4 withCompletion:(id)a5;
-- (void)globalAlertPresentationCoordinator:(id)a3 presentAlert:(unint64_t)a4 withCompletion:(id)a5;
-- (void)globalAlertPresentationCoordinator:(id)a3 syncProgressDidUpdate:(double)a4;
-- (void)initialSyncStateObserver:(id)a3 syncDidCompleteForPairingIdentifier:(id)a4;
-- (void)okayButtonPressed:(id)a3;
+- (void)globalAlertPresentationCoordinator:(id)coordinator dismissAlert:(unint64_t)alert withCompletion:(id)completion;
+- (void)globalAlertPresentationCoordinator:(id)coordinator presentAlert:(unint64_t)alert withCompletion:(id)completion;
+- (void)globalAlertPresentationCoordinator:(id)coordinator syncProgressDidUpdate:(double)update;
+- (void)initialSyncStateObserver:(id)observer syncDidCompleteForPairingIdentifier:(id)identifier;
+- (void)okayButtonPressed:(id)pressed;
 - (void)removeAllObservers;
-- (void)setIsSyncComplete:(BOOL)a3;
+- (void)setIsSyncComplete:(BOOL)complete;
 - (void)setupSyncMonitorIfNeeded;
-- (void)updateAppsIfNeededWithArchitectureIncompatibleApps:(id)a3;
+- (void)updateAppsIfNeededWithArchitectureIncompatibleApps:(id)apps;
 - (void)updateLiveActivityProgress;
 - (void)userAbortedPairing;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -101,7 +101,7 @@
     [(BPSIllustratedWatchView *)v3->_illustratedSyncView addSubview:v3->_progress];
   }
 
-  v23 = [UIApp activeWatch];
+  activeWatch = [UIApp activeWatch];
   v24 = BPSIsDeviceCompatibleWithVersions();
 
   v25 = +[PBBridgeWatchAttributeController sharedDeviceController];
@@ -152,8 +152,8 @@ LABEL_21:
   v32 = +[COSGlobalAlertPresentationCoordinator sharedInstance];
   [v32 addAlertPresenterObserver:v3];
 
-  v33 = [UIApp activeWatch];
-  v34 = [v33 valueForProperty:NRDevicePropertyIsSetup];
+  activeWatch2 = [UIApp activeWatch];
+  v34 = [activeWatch2 valueForProperty:NRDevicePropertyIsSetup];
   if ([v34 BOOLValue])
   {
     [(COSSetupFinishedViewController *)v3 deviceIsSetup:0];
@@ -205,9 +205,9 @@ LABEL_21:
 - (BOOL)holdBeforeDisplaying
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 isActivated];
+  isActivated = [v3 isActivated];
 
-  if (v4)
+  if (isActivated)
   {
     self->_isDeviceActivated = 1;
   }
@@ -237,13 +237,13 @@ LABEL_21:
 
   objc_initWeak(buf, self);
   v10 = +[UIApplication sharedApplication];
-  v11 = [v10 bridgeController];
+  bridgeController = [v10 bridgeController];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10007F874;
   v13[3] = &unk_100268430;
   objc_copyWeak(&v14, buf);
-  [v11 tellGizmoToPrepareForInitialSyncWithCompletion:v13];
+  [bridgeController tellGizmoToPrepareForInitialSyncWithCompletion:v13];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(buf);
@@ -253,14 +253,14 @@ LABEL_21:
 - (void)didEstablishHold
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 isActivated];
+  isActivated = [v2 isActivated];
 
-  if ((v3 & 1) == 0)
+  if ((isActivated & 1) == 0)
   {
     v6 = +[UIApplication sharedApplication];
-    v4 = [v6 setupController];
-    v5 = [v4 activationManager];
-    [v5 setAwaitingActivation:1];
+    setupController = [v6 setupController];
+    activationManager = [setupController activationManager];
+    [activationManager setAwaitingActivation:1];
   }
 }
 
@@ -302,8 +302,8 @@ LABEL_21:
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Conditions met, showing sync trap", v7, 2u);
       }
 
-      v6 = [(COSSetupFinishedViewController *)self delegate];
-      [v6 buddyControllerReleaseHold:self];
+      delegate = [(COSSetupFinishedViewController *)self delegate];
+      [delegate buddyControllerReleaseHold:self];
     }
   }
 }
@@ -313,11 +313,11 @@ LABEL_21:
   v26.receiver = self;
   v26.super_class = COSSetupFinishedViewController;
   [(COSSetupFinishedViewController *)&v26 viewDidLoad];
-  v3 = [(COSSetupFinishedViewController *)self contentView];
-  [v3 addSubview:self->_illustratedSyncView];
+  contentView = [(COSSetupFinishedViewController *)self contentView];
+  [contentView addSubview:self->_illustratedSyncView];
 
-  v4 = [(COSSetupFinishedViewController *)self contentView];
-  [v4 bounds];
+  contentView2 = [(COSSetupFinishedViewController *)self contentView];
+  [contentView2 bounds];
   v6 = v5;
   [(BPSIllustratedWatchView *)self->_illustratedSyncView idealAssetHeight];
   v8 = v7;
@@ -326,44 +326,44 @@ LABEL_21:
   [(BPSIllustratedWatchView *)self->_illustratedSyncView setPreferredCGSizeValue:v9];
 
   [(BPSIllustratedWatchView *)self->_illustratedSyncView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v25 = [(COSSetupFinishedViewController *)self contentView];
-  v24 = [v25 heightAnchor];
+  contentView3 = [(COSSetupFinishedViewController *)self contentView];
+  heightAnchor = [contentView3 heightAnchor];
   [(BPSIllustratedWatchView *)self->_illustratedSyncView idealContainerHeight];
-  v23 = [v24 constraintEqualToConstant:?];
+  v23 = [heightAnchor constraintEqualToConstant:?];
   v27[0] = v23;
-  v21 = [(BPSIllustratedWatchView *)self->_illustratedSyncView topAnchor];
-  v22 = [(COSSetupFinishedViewController *)self contentView];
-  v20 = [v22 topAnchor];
-  v10 = [v21 constraintEqualToAnchor:v20];
+  topAnchor = [(BPSIllustratedWatchView *)self->_illustratedSyncView topAnchor];
+  contentView4 = [(COSSetupFinishedViewController *)self contentView];
+  topAnchor2 = [contentView4 topAnchor];
+  v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v27[1] = v10;
-  v11 = [(BPSIllustratedWatchView *)self->_illustratedSyncView bottomAnchor];
-  v12 = [(COSSetupFinishedViewController *)self contentView];
-  v13 = [v12 bottomAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  bottomAnchor = [(BPSIllustratedWatchView *)self->_illustratedSyncView bottomAnchor];
+  contentView5 = [(COSSetupFinishedViewController *)self contentView];
+  bottomAnchor2 = [contentView5 bottomAnchor];
+  v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v27[2] = v14;
-  v15 = [(BPSIllustratedWatchView *)self->_illustratedSyncView centerXAnchor];
-  v16 = [(COSSetupFinishedViewController *)self contentView];
-  v17 = [v16 centerXAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17];
+  centerXAnchor = [(BPSIllustratedWatchView *)self->_illustratedSyncView centerXAnchor];
+  contentView6 = [(COSSetupFinishedViewController *)self contentView];
+  centerXAnchor2 = [contentView6 centerXAnchor];
+  v18 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v27[3] = v18;
   v19 = [NSArray arrayWithObjects:v27 count:4];
   [NSLayoutConstraint activateConstraints:v19];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v17.receiver = self;
   v17.super_class = COSSetupFinishedViewController;
-  [(COSSetupFinishedViewController *)&v17 viewDidAppear:a3];
-  v4 = [UIApp activeWatch];
+  [(COSSetupFinishedViewController *)&v17 viewDidAppear:appear];
+  activeWatch = [UIApp activeWatch];
   v5 = pbb_setupflow_log();
   v6 = v5;
-  if (v4)
+  if (activeWatch)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v19 = v4;
+      v19 = activeWatch;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Telling NR to end Setup with %@.", buf, 0xCu);
     }
 
@@ -371,15 +371,15 @@ LABEL_21:
     [v7 beginMacroActivity:@"InitialPairingPhase" beginTime:CFAbsoluteTimeGetCurrent()];
 
     v8 = +[PBBridgeWatchAttributeController sharedDeviceController];
-    v9 = [v8 hardwareBehavior];
+    hardwareBehavior = [v8 hardwareBehavior];
 
     v10 = 16;
-    if (v9 == 2)
+    if (hardwareBehavior == 2)
     {
       v10 = 14;
     }
 
-    if (v9 == 1)
+    if (hardwareBehavior == 1)
     {
       v11 = 15;
     }
@@ -399,11 +399,11 @@ LABEL_21:
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Updating NR to end pairing", buf, 2u);
       }
 
-      v13 = [UIApp setupController];
-      [v13 tellAppConduitToInstallAllApps];
+      setupController = [UIApp setupController];
+      [setupController tellAppConduitToInstallAllApps];
 
       v14 = +[NRPairedDeviceRegistry sharedInstance];
-      [v14 notifyActivationCompleted:v4 withSuccess:1];
+      [v14 notifyActivationCompleted:activeWatch withSuccess:1];
     }
 
     [PBBridgeCAReporter incrementSuccessType:8];
@@ -423,19 +423,19 @@ LABEL_21:
     [UIApp resetSetupFlowAnimated:1 forEvent:47];
   }
 
-  v15 = [UIApp setupController];
-  v16 = [v15 resumePairingController];
-  [v16 clearPairingState];
+  setupController2 = [UIApp setupController];
+  resumePairingController = [setupController2 resumePairingController];
+  [resumePairingController clearPairingState];
 }
 
-- (void)setIsSyncComplete:(BOOL)a3
+- (void)setIsSyncComplete:(BOOL)complete
 {
-  v3 = a3;
+  completeCopy = complete;
   v5 = pbb_setup_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = [NSNumber numberWithBool:self->_isSyncComplete];
-    [NSNumber numberWithBool:v3];
+    [NSNumber numberWithBool:completeCopy];
     v7 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
     v8 = [NSNumber numberWithBool:self->_userDidAbortSync];
     v41 = 138412802;
@@ -447,31 +447,31 @@ LABEL_21:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "SyncComplete State Changed from %@ to %@ (userDidAbortSync: %@)", &v41, 0x20u);
   }
 
-  if (v3)
+  if (completeCopy)
   {
     v9 = +[UIApplication sharedApplication];
-    v10 = [v9 isActivated];
+    isActivated = [v9 isActivated];
 
-    if (v10)
+    if (isActivated)
     {
       if (self->_isSyncComplete)
       {
-        v11 = pbb_setupflow_log();
-        if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+        activeWatch = pbb_setupflow_log();
+        if (os_log_type_enabled(activeWatch, OS_LOG_TYPE_DEFAULT))
         {
           LOWORD(v41) = 0;
-          _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "We already think that sync has completed!", &v41, 2u);
+          _os_log_impl(&_mh_execute_header, activeWatch, OS_LOG_TYPE_DEFAULT, "We already think that sync has completed!", &v41, 2u);
         }
 
 LABEL_27:
 
-        v37 = [UIApp setupController];
-        v38 = [v37 linkUpgradeMonitor];
-        [v38 resetCompanionLinkPreference];
+        setupController = [UIApp setupController];
+        linkUpgradeMonitor = [setupController linkUpgradeMonitor];
+        [linkUpgradeMonitor resetCompanionLinkPreference];
 
-        v39 = [UIApp setupController];
-        v40 = [v39 resumePairingController];
-        [v40 clearPairingState];
+        setupController2 = [UIApp setupController];
+        resumePairingController = [setupController2 resumePairingController];
+        [resumePairingController clearPairingState];
 
         [(COSSetupFinishedViewController *)self _pushToSetupFinished];
         self->_isSyncComplete = 1;
@@ -479,11 +479,11 @@ LABEL_27:
       }
 
       v21 = +[UIApplication sharedApplication];
-      v22 = [v21 bridgeController];
-      [v22 setShouldSuppressTransportReachabilityTimeout:1];
+      bridgeController = [v21 bridgeController];
+      [bridgeController setShouldSuppressTransportReachabilityTimeout:1];
 
-      v11 = [UIApp activeWatch];
-      v23 = [v11 valueForProperty:NRDevicePropertySerialNumber];
+      activeWatch = [UIApp activeWatch];
+      v23 = [activeWatch valueForProperty:NRDevicePropertySerialNumber];
       if (v23)
       {
         [AMSDevice registerCompanionWithSerialNumber:v23];
@@ -505,7 +505,7 @@ LABEL_23:
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
           v41 = 138412290;
-          v42 = *&v11;
+          v42 = *&activeWatch;
           v25 = "Skipped Morocco %@";
           v26 = v24;
           v27 = 12;
@@ -537,8 +537,8 @@ LABEL_23:
       }
 
       v35 = +[UIApplication sharedApplication];
-      v36 = [v35 bridgeController];
-      [v36 stopListeningForIDSSentMessages];
+      bridgeController2 = [v35 bridgeController];
+      [bridgeController2 stopListeningForIDSSentMessages];
 
       goto LABEL_27;
     }
@@ -551,9 +551,9 @@ LABEL_23:
     }
 
     self->_syncCompletedBeforeActivation = 1;
-    v19 = [UIApp setupController];
-    v20 = [v19 linkUpgradeMonitor];
-    [v20 resetCompanionLinkPreference];
+    setupController3 = [UIApp setupController];
+    linkUpgradeMonitor2 = [setupController3 linkUpgradeMonitor];
+    [linkUpgradeMonitor2 resetCompanionLinkPreference];
   }
 
   else
@@ -617,7 +617,7 @@ LABEL_23:
   return v3;
 }
 
-- (void)okayButtonPressed:(id)a3
+- (void)okayButtonPressed:(id)pressed
 {
   v4 = objc_alloc_init(COSDiscoverListViewController);
   discoverIntro = self->_discoverIntro;
@@ -629,18 +629,18 @@ LABEL_23:
   [(COSDiscoverListViewController *)v6 setTitle:v8];
 
   v12 = [[UINavigationController alloc] initWithRootViewController:self->_discoverIntro];
-  v9 = [v12 navigationBar];
-  [v9 setPrefersLargeTitles:1];
+  navigationBar = [v12 navigationBar];
+  [navigationBar setPrefersLargeTitles:1];
 
   v10 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"dismissDiscoverIntro:"];
-  v11 = [(COSDiscoverListViewController *)self->_discoverIntro navigationItem];
-  [v11 setRightBarButtonItem:v10];
+  navigationItem = [(COSDiscoverListViewController *)self->_discoverIntro navigationItem];
+  [navigationItem setRightBarButtonItem:v10];
 
   [BCCAReporter incrementDiscoverSuccessType:12];
   [(COSSetupFinishedViewController *)self presentViewController:v12 animated:1 completion:0];
 }
 
-- (void)dismissDiscoverIntro:(id)a3
+- (void)dismissDiscoverIntro:(id)intro
 {
   discoverIntro = self->_discoverIntro;
   v4[0] = _NSConcreteStackBlock;
@@ -662,17 +662,17 @@ LABEL_23:
   v21 = 0;
   v4 = [COSTinkerHealthSharingSetupDelegate tinkerDevice]_0();
   v5 = [v4 valueForProperty:NRDevicePropertyIsAltAccount];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  if ((v3 != 2) | v6 & 1)
+  if ((v3 != 2) | bOOLValue & 1)
   {
     *(v19 + 24) = v3 == 1;
   }
 
   else
   {
-    v7 = [UIApp activeWatch];
-    v8 = [v7 valueForProperty:NRDevicePropertyPairingID];
+    activeWatch = [UIApp activeWatch];
+    v8 = [activeWatch valueForProperty:NRDevicePropertyPairingID];
 
     if (v8)
     {
@@ -718,16 +718,16 @@ LABEL_23:
   }
 
   [(COSSetupFinishedViewController *)self removeAllObservers];
-  v4 = [(COSSetupFinishedViewController *)self delegate];
-  v5 = [v4 topBuddyController];
+  delegate = [(COSSetupFinishedViewController *)self delegate];
+  topBuddyController = [delegate topBuddyController];
 
-  if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (topBuddyController && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = pbb_setupflow_log();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    delegate2 = pbb_setupflow_log();
+    if (os_log_type_enabled(delegate2, OS_LOG_TYPE_DEFAULT))
     {
       *v8 = 0;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "We are already displaying setup finished controller. Don't push it again.", v8, 2u);
+      _os_log_impl(&_mh_execute_header, delegate2, OS_LOG_TYPE_DEFAULT, "We are already displaying setup finished controller. Don't push it again.", v8, 2u);
     }
   }
 
@@ -740,8 +740,8 @@ LABEL_23:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Pushing setup finished controller.", v9, 2u);
     }
 
-    v6 = [(COSSetupFinishedViewController *)self delegate];
-    [v6 buddyControllerDone:self nextControllerClass:objc_opt_class()];
+    delegate2 = [(COSSetupFinishedViewController *)self delegate];
+    [delegate2 buddyControllerDone:self nextControllerClass:objc_opt_class()];
   }
 }
 
@@ -766,9 +766,9 @@ LABEL_23:
   }
 }
 
-- (void)initialSyncStateObserver:(id)a3 syncDidCompleteForPairingIdentifier:(id)a4
+- (void)initialSyncStateObserver:(id)observer syncDidCompleteForPairingIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = pbb_setupflow_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -780,9 +780,9 @@ LABEL_23:
   v8[1] = 3221225472;
   v8[2] = sub_1000810A4;
   v8[3] = &unk_100268358;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = identifierCopy;
+  selfCopy = self;
+  v7 = identifierCopy;
   dispatch_async(&_dispatch_main_q, v8);
 }
 
@@ -790,19 +790,19 @@ LABEL_23:
 {
   v2 = [COSTinkerHealthSharingSetupDelegate tinkerDevice]_0();
   v3 = [v2 valueForProperty:NRDevicePropertyIsAltAccount];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)deviceIsSetup:(id)a3
+- (void)deviceIsSetup:(id)setup
 {
-  v4 = a3;
+  setupCopy = setup;
   v5 = pbb_setupflow_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = v4;
+    v14 = setupCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Device Is Setup(Sender %@)", buf, 0xCu);
   }
 
@@ -816,10 +816,10 @@ LABEL_23:
   v7 = +[NSNotificationCenter defaultCenter];
   [v7 removeObserver:self name:NRPairedDeviceRegistryDeviceIsSetupNotification object:0];
 
-  v8 = [UIApp bridgeController];
-  v9 = [v8 isTinkerPairing];
+  bridgeController = [UIApp bridgeController];
+  isTinkerPairing = [bridgeController isTinkerPairing];
 
-  if (v9)
+  if (isTinkerPairing)
   {
     v10 = pbb_setupflow_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -904,15 +904,15 @@ LABEL_14:
   }
 
   [(COSSetupFinishedViewController *)self removeAllObservers];
-  v4 = [UIApp activeWatch];
-  v5 = [v4 valueForProperty:NRDevicePropertyIsPaired];
-  v6 = [v5 BOOLValue];
+  activeWatch = [UIApp activeWatch];
+  v5 = [activeWatch valueForProperty:NRDevicePropertyIsPaired];
+  bOOLValue = [v5 BOOLValue];
 
-  v7 = [UIApp isActivated];
+  isActivated = [UIApp isActivated];
   self->_userDidAbortSync = 1;
   v8 = pbb_setupflow_log();
   v9 = v8;
-  if (v4 && ((v6 | v7) & 1) != 0)
+  if (activeWatch && ((bOOLValue | isActivated) & 1) != 0)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -925,13 +925,13 @@ LABEL_14:
     v16[0] = &__kCFBooleanTrue;
     v16[1] = &__kCFBooleanTrue;
     v10 = [NSDictionary dictionaryWithObjects:v16 forKeys:v15 count:2];
-    v11 = [UIApp setupController];
-    v12 = [v11 pairingReportManager];
+    setupController = [UIApp setupController];
+    pairingReportManager = [setupController pairingReportManager];
 
-    [v12 addPairingTimeEventToPairingReportPlist:1 withValue:&__kCFBooleanTrue withError:0];
-    [v12 completePairingMetricWithSuccess:0];
+    [pairingReportManager addPairingTimeEventToPairingReportPlist:1 withValue:&__kCFBooleanTrue withError:0];
+    [pairingReportManager completePairingMetricWithSuccess:0];
     v13 = +[NRPairedDeviceRegistry sharedInstance];
-    [v13 unpairWithDevice:v4 withOptions:v10 operationHasBegun:&stru_100269F70];
+    [v13 unpairWithDevice:activeWatch withOptions:v10 operationHasBegun:&stru_100269F70];
   }
 
   else
@@ -948,7 +948,7 @@ LABEL_14:
   [PBBridgeCAReporter incrementSuccessType:42];
 }
 
-- (void)deviceBecameActive:(id)a3
+- (void)deviceBecameActive:(id)active
 {
   v3 = pbb_setupflow_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -958,7 +958,7 @@ LABEL_14:
   }
 }
 
-- (void)globalAlertPresentationCoordinator:(id)a3 syncProgressDidUpdate:(double)a4
+- (void)globalAlertPresentationCoordinator:(id)coordinator syncProgressDidUpdate:(double)update
 {
   v6 = pbb_setupflow_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -973,33 +973,33 @@ LABEL_14:
   v8[1] = 3221225472;
   v8[2] = sub_100081A98;
   v8[3] = &unk_100268220;
-  *&v8[5] = a4;
+  *&v8[5] = update;
   v8[4] = self;
   dispatch_async(&_dispatch_main_q, v8);
 }
 
-- (void)globalAlertPresentationCoordinator:(id)a3 presentAlert:(unint64_t)a4 withCompletion:(id)a5
+- (void)globalAlertPresentationCoordinator:(id)coordinator presentAlert:(unint64_t)alert withCompletion:(id)completion
 {
-  v6 = a5;
+  completionCopy = completion;
   v7 = pbb_setupflow_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [NSNumber numberWithUnsignedInteger:a4];
+    v8 = [NSNumber numberWithUnsignedInteger:alert];
     v9 = 138412290;
     v10 = v8;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "(COSSetupFinishedViewController) presentAlert: %@", &v9, 0xCu);
   }
 
-  v6[2](v6);
+  completionCopy[2](completionCopy);
 }
 
-- (void)globalAlertPresentationCoordinator:(id)a3 dismissAlert:(unint64_t)a4 withCompletion:(id)a5
+- (void)globalAlertPresentationCoordinator:(id)coordinator dismissAlert:(unint64_t)alert withCompletion:(id)completion
 {
-  v7 = a5;
+  completionCopy = completion;
   v8 = pbb_setupflow_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [NSNumber numberWithUnsignedInteger:a4];
+    v9 = [NSNumber numberWithUnsignedInteger:alert];
     v10 = [NSNumber numberWithInt:!self->_userDidAbortSync];
     *buf = 138412546;
     v16 = v9;
@@ -1012,29 +1012,29 @@ LABEL_14:
   block[1] = 3221225472;
   block[2] = sub_100081E8C;
   block[3] = &unk_100268180;
-  v13 = v7;
-  v14 = a4;
+  v13 = completionCopy;
+  alertCopy = alert;
   block[4] = self;
-  v11 = v7;
+  v11 = completionCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
 - (void)determineArchitectureCompatibilityIfNeeded
 {
   v3 = +[ACXDeviceConnection sharedDeviceConnection];
-  v4 = [UIApp activeWatch];
+  activeWatch = [UIApp activeWatch];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10008203C;
   v5[3] = &unk_100269800;
   v5[4] = self;
-  [v3 getAlwaysInstallForPairedDevice:v4 completion:v5];
+  [v3 getAlwaysInstallForPairedDevice:activeWatch completion:v5];
 }
 
-- (void)updateAppsIfNeededWithArchitectureIncompatibleApps:(id)a3
+- (void)updateAppsIfNeededWithArchitectureIncompatibleApps:(id)apps
 {
-  v3 = a3;
-  v4 = [UIApp activeWatch];
+  appsCopy = apps;
+  activeWatch = [UIApp activeWatch];
   HasCapabilityForString = BPSDeviceHasCapabilityForString();
 
   v6 = pbb_setup_log();
@@ -1057,11 +1057,11 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "32->64 flow matters", buf, 2u);
   }
 
-  if (![v3 count])
+  if (![appsCopy count])
   {
     v23 = pbb_setup_log();
     v6 = v23;
-    if (v3)
+    if (appsCopy)
     {
       if (!os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
@@ -1100,8 +1100,8 @@ LABEL_30:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v24 = v3;
-  v9 = v3;
+  v24 = appsCopy;
+  v9 = appsCopy;
   v10 = [v9 countByEnumeratingWithState:&v26 objects:v32 count:16];
   if (v10)
   {
@@ -1148,7 +1148,7 @@ LABEL_30:
     v18 = [ASDUpdateWatchApps updateBundleIDs:v6 userInitiated:0 error:&v25];
     v19 = v25;
     v20 = v19;
-    v3 = v24;
+    appsCopy = v24;
     if (!v18 || v19)
     {
       v21 = pbb_setup_log();
@@ -1163,7 +1163,7 @@ LABEL_30:
 
   else
   {
-    v3 = v24;
+    appsCopy = v24;
   }
 
 LABEL_38:
@@ -1171,7 +1171,7 @@ LABEL_38:
 
 - (void)updateLiveActivityProgress
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001382B0();
 }
 

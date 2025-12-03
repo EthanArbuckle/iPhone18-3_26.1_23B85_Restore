@@ -1,20 +1,20 @@
 @interface BAApplicationConfigurationOverrides
 + (BOOL)clearAllOverrides;
-- (void)setDomainAllowlist:(id)a3;
-- (void)setDownloadAllowance:(id)a3;
-- (void)setEssentialDownloadAllowance:(id)a3;
-- (void)setEssentialMaxInstallSize:(id)a3;
-- (void)setManifestURL:(id)a3;
-- (void)setMaxInstallSize:(id)a3;
+- (void)setDomainAllowlist:(id)allowlist;
+- (void)setDownloadAllowance:(id)allowance;
+- (void)setEssentialDownloadAllowance:(id)allowance;
+- (void)setEssentialMaxInstallSize:(id)size;
+- (void)setManifestURL:(id)l;
+- (void)setMaxInstallSize:(id)size;
 @end
 
 @implementation BAApplicationConfigurationOverrides
 
-- (void)setEssentialMaxInstallSize:(id)a3
+- (void)setEssentialMaxInstallSize:(id)size
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [(NSNumber *)v4 integerValue]< 0)
+  sizeCopy = size;
+  v5 = sizeCopy;
+  if (sizeCopy && [(NSNumber *)sizeCopy integerValue]< 0)
   {
     v7 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT);
     if (v7)
@@ -33,11 +33,11 @@
   }
 }
 
-- (void)setMaxInstallSize:(id)a3
+- (void)setMaxInstallSize:(id)size
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [(NSNumber *)v4 integerValue]< 0)
+  sizeCopy = size;
+  v5 = sizeCopy;
+  if (sizeCopy && [(NSNumber *)sizeCopy integerValue]< 0)
   {
     v7 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT);
     if (v7)
@@ -56,11 +56,11 @@
   }
 }
 
-- (void)setEssentialDownloadAllowance:(id)a3
+- (void)setEssentialDownloadAllowance:(id)allowance
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [(NSNumber *)v4 integerValue]< 0)
+  allowanceCopy = allowance;
+  v5 = allowanceCopy;
+  if (allowanceCopy && [(NSNumber *)allowanceCopy integerValue]< 0)
   {
     v7 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT);
     if (v7)
@@ -79,11 +79,11 @@
   }
 }
 
-- (void)setDownloadAllowance:(id)a3
+- (void)setDownloadAllowance:(id)allowance
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [(NSNumber *)v4 integerValue]< 0)
+  allowanceCopy = allowance;
+  v5 = allowanceCopy;
+  if (allowanceCopy && [(NSNumber *)allowanceCopy integerValue]< 0)
   {
     v7 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT);
     if (v7)
@@ -102,11 +102,11 @@
   }
 }
 
-- (void)setManifestURL:(id)a3
+- (void)setManifestURL:(id)l
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ![(NSString *)v4 length])
+  lCopy = l;
+  v5 = lCopy;
+  if (lCopy && ![(NSString *)lCopy length])
   {
     v7 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT);
     if (v7)
@@ -125,11 +125,11 @@
   }
 }
 
-- (void)setDomainAllowlist:(id)a3
+- (void)setDomainAllowlist:(id)allowlist
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  allowlistCopy = allowlist;
+  v5 = allowlistCopy;
+  if (!allowlistCopy)
   {
 LABEL_12:
     domainAllowlist = self->_domainAllowlist;
@@ -138,7 +138,7 @@ LABEL_12:
     return;
   }
 
-  if ([(NSArray *)v4 count])
+  if ([(NSArray *)allowlistCopy count])
   {
     v30 = 0u;
     v31 = 0u;

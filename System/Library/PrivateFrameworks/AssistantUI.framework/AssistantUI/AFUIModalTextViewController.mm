@@ -1,27 +1,27 @@
 @interface AFUIModalTextViewController
-- (AFUIModalTextViewController)initWithTitleText:(id)a3 andBodyText:(id)a4;
+- (AFUIModalTextViewController)initWithTitleText:(id)text andBodyText:(id)bodyText;
 - (void)donePressed;
 - (void)loadView;
-- (void)presentFromParentViewController:(id)a3;
+- (void)presentFromParentViewController:(id)controller;
 @end
 
 @implementation AFUIModalTextViewController
 
-- (AFUIModalTextViewController)initWithTitleText:(id)a3 andBodyText:(id)a4
+- (AFUIModalTextViewController)initWithTitleText:(id)text andBodyText:(id)bodyText
 {
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  bodyTextCopy = bodyText;
   v13.receiver = self;
   v13.super_class = AFUIModalTextViewController;
   v8 = [(AFUIModalTextViewController *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    [(AFUIModalTextViewController *)v8 setTitle:v6];
-    objc_storeStrong(&v9->_bodyText, a4);
+    [(AFUIModalTextViewController *)v8 setTitle:textCopy];
+    objc_storeStrong(&v9->_bodyText, bodyText);
     v10 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:v9 action:sel_donePressed];
-    v11 = [(AFUIModalTextViewController *)v9 navigationItem];
-    [v11 setRightBarButtonItem:v10];
+    navigationItem = [(AFUIModalTextViewController *)v9 navigationItem];
+    [navigationItem setRightBarButtonItem:v10];
   }
 
   return v9;
@@ -41,19 +41,19 @@
   [(AFUIModalTextViewController *)self setView:v5];
 }
 
-- (void)presentFromParentViewController:(id)a3
+- (void)presentFromParentViewController:(id)controller
 {
   v4 = MEMORY[0x277D757A0];
-  v5 = a3;
+  controllerCopy = controller;
   v6 = [[v4 alloc] initWithRootViewController:self];
   [v6 setModalPresentationStyle:6];
-  [v5 presentViewController:v6 animated:1 completion:0];
+  [controllerCopy presentViewController:v6 animated:1 completion:0];
 }
 
 - (void)donePressed
 {
-  v2 = [(AFUIModalTextViewController *)self parentViewController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  parentViewController = [(AFUIModalTextViewController *)self parentViewController];
+  [parentViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 @end

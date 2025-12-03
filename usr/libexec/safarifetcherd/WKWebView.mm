@@ -1,25 +1,25 @@
 @interface WKWebView
-- (BOOL)_createSymlinkInDirectory:(id)a3 pointingToPath:(id)a4;
-- (id)_fileNameForSuggestedName:(id)a3;
-- (void)_writeDataAtPath:(id)a3 asArchive:(BOOL)a4 completion:(id)a5;
+- (BOOL)_createSymlinkInDirectory:(id)directory pointingToPath:(id)path;
+- (id)_fileNameForSuggestedName:(id)name;
+- (void)_writeDataAtPath:(id)path asArchive:(BOOL)archive completion:(id)completion;
 @end
 
 @implementation WKWebView
 
-- (void)_writeDataAtPath:(id)a3 asArchive:(BOOL)a4 completion:(id)a5
+- (void)_writeDataAtPath:(id)path asArchive:(BOOL)archive completion:(id)completion
 {
-  v6 = a4;
+  archiveCopy = archive;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000062EC;
   v11[3] = &unk_10001C860;
-  v12 = a3;
-  v13 = a5;
+  pathCopy = path;
+  completionCopy = completion;
   v11[4] = self;
-  v8 = v12;
-  v9 = v13;
+  v8 = pathCopy;
+  v9 = completionCopy;
   v10 = objc_retainBlock(v11);
-  if (v6)
+  if (archiveCopy)
   {
     [(WKWebView *)self createWebArchiveDataWithCompletionHandler:v10];
   }
@@ -30,10 +30,10 @@
   }
 }
 
-- (BOOL)_createSymlinkInDirectory:(id)a3 pointingToPath:(id)a4
+- (BOOL)_createSymlinkInDirectory:(id)directory pointingToPath:(id)path
 {
-  v5 = a4;
-  v6 = [a3 stringByAppendingPathComponent:@"/file"];
+  pathCopy = path;
+  v6 = [directory stringByAppendingPathComponent:@"/file"];
   if (v6)
   {
     v7 = +[NSFileManager defaultManager];
@@ -50,7 +50,7 @@
     }
 
     v17 = v9;
-    v11 = [v7 createSymbolicLinkAtPath:v6 withDestinationPath:v5 error:&v17];
+    v11 = [v7 createSymbolicLinkAtPath:v6 withDestinationPath:pathCopy error:&v17];
     v12 = v17;
 
     if ((v11 & 1) == 0)
@@ -59,13 +59,13 @@
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         v15 = v13;
-        v16 = [v12 safari_privacyPreservingDescription];
+        safari_privacyPreservingDescription = [v12 safari_privacyPreservingDescription];
         *buf = 138543874;
         v20 = v6;
         v21 = 2114;
-        v22 = v5;
+        v22 = pathCopy;
         v23 = 2114;
-        v24 = v16;
+        v24 = safari_privacyPreservingDescription;
         _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Could not create sym link from %{public}@ to %{public}@: %{public}@", buf, 0x20u);
       }
     }
@@ -79,27 +79,27 @@
   return v11;
 }
 
-- (id)_fileNameForSuggestedName:(id)a3
+- (id)_fileNameForSuggestedName:(id)name
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  nameCopy = name;
+  v5 = nameCopy;
+  if (nameCopy)
   {
-    v6 = v4;
+    v6 = nameCopy;
   }
 
   else
   {
-    v7 = [(WKWebView *)self _mainFrameURL];
-    v8 = [v7 pathExtension];
+    _mainFrameURL = [(WKWebView *)self _mainFrameURL];
+    pathExtension = [_mainFrameURL pathExtension];
 
-    if (!v8)
+    if (!pathExtension)
     {
-      v9 = [(WKWebView *)self _MIMEType];
-      v8 = [WebMIMETypeRegistry preferredExtensionForMIMEType:v9];
+      _MIMEType = [(WKWebView *)self _MIMEType];
+      pathExtension = [WebMIMETypeRegistry preferredExtensionForMIMEType:_MIMEType];
     }
 
-    v6 = [@"Page" stringByAppendingPathExtension:v8];
+    v6 = [@"Page" stringByAppendingPathExtension:pathExtension];
   }
 
   return v6;

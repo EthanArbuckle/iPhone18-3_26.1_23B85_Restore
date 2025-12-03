@@ -1,8 +1,8 @@
 @interface _UIPreviewInteractionDismissTransition
 - (_UIPreviewInteractionDismissTransition)init;
-- (double)transitionDuration:(id)a3;
+- (double)transitionDuration:(id)duration;
 - (id)_preparedDismissAnimator;
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation _UIPreviewInteractionDismissTransition
@@ -21,28 +21,28 @@
   return v3;
 }
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
-  v3 = [(_UIPreviewInteractionDismissTransition *)self _preparedDismissAnimator];
-  [v3 duration];
+  _preparedDismissAnimator = [(_UIPreviewInteractionDismissTransition *)self _preparedDismissAnimator];
+  [_preparedDismissAnimator duration];
   v5 = v4;
 
   return v5;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [(_UIPreviewInteractionDismissTransition *)self _preparedDismissAnimator];
-  [v5 addAnimations:&__block_literal_global_460];
+  transitionCopy = transition;
+  _preparedDismissAnimator = [(_UIPreviewInteractionDismissTransition *)self _preparedDismissAnimator];
+  [_preparedDismissAnimator addAnimations:&__block_literal_global_460];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60___UIPreviewInteractionDismissTransition_animateTransition___block_invoke_2;
   v7[3] = &unk_1E70F5DB8;
-  v8 = v4;
-  v6 = v4;
-  [v5 addCompletion:v7];
-  [v5 startAnimation];
+  v8 = transitionCopy;
+  v6 = transitionCopy;
+  [_preparedDismissAnimator addCompletion:v7];
+  [_preparedDismissAnimator startAnimation];
 }
 
 - (id)_preparedDismissAnimator

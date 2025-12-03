@@ -1,20 +1,20 @@
 @interface TSDCachedGestureTargetHolder
 - (CRLGestureTarget)weakCachedGestureTarget;
-- (TSDCachedGestureTargetHolder)initWithTarget:(id)a3;
+- (TSDCachedGestureTargetHolder)initWithTarget:(id)target;
 @end
 
 @implementation TSDCachedGestureTargetHolder
 
-- (TSDCachedGestureTargetHolder)initWithTarget:(id)a3
+- (TSDCachedGestureTargetHolder)initWithTarget:(id)target
 {
-  v4 = a3;
+  targetCopy = target;
   v8.receiver = self;
   v8.super_class = TSDCachedGestureTargetHolder;
   v5 = [(TSDCachedGestureTargetHolder *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->mWeakCachedGestureTarget, v4);
+    objc_storeWeak(&v5->mWeakCachedGestureTarget, targetCopy);
   }
 
   return v6;

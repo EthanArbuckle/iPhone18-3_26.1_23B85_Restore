@@ -1,7 +1,7 @@
 @interface FRTimeAndCountAwareLimitedPersonalizationDataGenerator
 - (FRTimeAndCountAwareLimitedPersonalizationDataGenerator)init;
-- (FRTimeAndCountAwareLimitedPersonalizationDataGenerator)initWithGenerator:(id)a3 configurationManager:(id)a4;
-- (id)generateDerivedDataWithMaxAggregateCount:(unint64_t)a3;
+- (FRTimeAndCountAwareLimitedPersonalizationDataGenerator)initWithGenerator:(id)generator configurationManager:(id)manager;
+- (id)generateDerivedDataWithMaxAggregateCount:(unint64_t)count;
 @end
 
 @implementation FRTimeAndCountAwareLimitedPersonalizationDataGenerator
@@ -29,20 +29,20 @@
   objc_exception_throw(v4);
 }
 
-- (FRTimeAndCountAwareLimitedPersonalizationDataGenerator)initWithGenerator:(id)a3 configurationManager:(id)a4
+- (FRTimeAndCountAwareLimitedPersonalizationDataGenerator)initWithGenerator:(id)generator configurationManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  generatorCopy = generator;
+  managerCopy = manager;
+  if (!generatorCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_1000735B0();
-    if (v8)
+    if (managerCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v8)
+  else if (managerCopy)
   {
     goto LABEL_6;
   }
@@ -59,27 +59,27 @@ LABEL_6:
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_generator, a3);
-    objc_storeStrong(&v10->_configurationManager, a4);
+    objc_storeStrong(&v9->_generator, generator);
+    objc_storeStrong(&v10->_configurationManager, manager);
   }
 
   return v10;
 }
 
-- (id)generateDerivedDataWithMaxAggregateCount:(unint64_t)a3
+- (id)generateDerivedDataWithMaxAggregateCount:(unint64_t)count
 {
-  v5 = [(FRTimeAndCountAwareLimitedPersonalizationDataGenerator *)self generator];
-  v6 = [v5 generateDerivedData];
+  generator = [(FRTimeAndCountAwareLimitedPersonalizationDataGenerator *)self generator];
+  generateDerivedData = [generator generateDerivedData];
 
-  v7 = v6;
+  v7 = generateDerivedData;
   v8 = v7;
   if (v7)
   {
-    v36 = self;
-    v37 = a3;
-    v9 = [v7 allAggregates];
-    v10 = [v9 allValues];
-    v11 = [v10 mutableCopy];
+    selfCopy = self;
+    countCopy = count;
+    allAggregates = [v7 allAggregates];
+    allValues = [allAggregates allValues];
+    v11 = [allValues mutableCopy];
 
     v43 = 0u;
     v44 = 0u;
@@ -105,28 +105,28 @@ LABEL_6:
           }
 
           v21 = *(*(&v41 + 1) + 8 * i);
-          v22 = [v21 timestamp];
-          if (v22 < v19)
+          timestamp = [v21 timestamp];
+          if (timestamp < v19)
           {
-            v19 = v22;
+            v19 = timestamp;
           }
 
-          v23 = [v21 timestamp];
-          if (v23 > v16)
+          timestamp2 = [v21 timestamp];
+          if (timestamp2 > v16)
           {
-            v16 = v23;
+            v16 = timestamp2;
           }
 
-          v24 = [v21 eventCount];
-          if (v24 < v18)
+          eventCount = [v21 eventCount];
+          if (eventCount < v18)
           {
-            v18 = v24;
+            v18 = eventCount;
           }
 
-          v25 = [v21 eventCount];
-          if (v25 > v15)
+          eventCount2 = [v21 eventCount];
+          if (eventCount2 > v15)
           {
-            v15 = v25;
+            v15 = eventCount2;
           }
         }
 
@@ -144,9 +144,9 @@ LABEL_6:
       v19 = -1;
     }
 
-    v27 = [(FRTimeAndCountAwareLimitedPersonalizationDataGenerator *)v36 configurationManager];
-    v28 = [v27 configuration];
-    [v28 derivedPersonalizationDataBalanceValue];
+    configurationManager = [(FRTimeAndCountAwareLimitedPersonalizationDataGenerator *)selfCopy configurationManager];
+    configuration = [configurationManager configuration];
+    [configuration derivedPersonalizationDataBalanceValue];
     v40[0] = _NSConcreteStackBlock;
     v40[1] = 3221225472;
     v40[2] = sub_10005920C;
@@ -163,12 +163,12 @@ LABEL_6:
     v39 = objc_retainBlock(v40);
     v30 = v39;
     [v12 sortUsingComparator:v38];
-    v31 = [v12 fc_safeSubarrayWithCountFromBack:v37];
+    v31 = [v12 fc_safeSubarrayWithCountFromBack:countCopy];
     v32 = [v31 fc_dictionaryWithKeyBlock:&stru_1000C5BF0];
     v33 = [FCDerivedPersonalizationData alloc];
-    v34 = [v8 scoringType];
+    scoringType = [v8 scoringType];
     [v8 decayRate];
-    v26 = [v33 initWithAggregates:v32 scoringType:v34 decayRate:?];
+    v26 = [v33 initWithAggregates:v32 scoringType:scoringType decayRate:?];
   }
 
   else

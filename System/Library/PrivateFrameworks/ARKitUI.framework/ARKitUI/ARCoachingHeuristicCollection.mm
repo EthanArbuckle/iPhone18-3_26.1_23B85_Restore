@@ -1,9 +1,9 @@
 @interface ARCoachingHeuristicCollection
 - (ARCoachingHeuristicCollection)init;
 - (int64_t)requirements;
-- (void)addHeuristic:(id)a3;
+- (void)addHeuristic:(id)heuristic;
 - (void)clear;
-- (void)updateWithFrame:(id)a3 cache:(id)a4;
+- (void)updateWithFrame:(id)frame cache:(id)cache;
 @end
 
 @implementation ARCoachingHeuristicCollection
@@ -64,16 +64,16 @@
   return v5;
 }
 
-- (void)updateWithFrame:(id)a3 cache:(id)a4
+- (void)updateWithFrame:(id)frame cache:(id)cache
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  frameCopy = frame;
+  cacheCopy = cache;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v28 = self;
+  selfCopy = self;
   v8 = self->_heuristics;
   v9 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v30 objects:v42 count:16];
   if (v9)
@@ -96,10 +96,10 @@
         }
 
         v15 = *(*(&v30 + 1) + 8 * v14);
-        v16 = [v15 satisfied];
-        [v15 updateWithFrame:v6 cache:v7];
-        v17 = [v15 satisfied];
-        if (v16 != v17)
+        satisfied = [v15 satisfied];
+        [v15 updateWithFrame:frameCopy cache:cacheCopy];
+        satisfied2 = [v15 satisfied];
+        if (satisfied != satisfied2)
         {
           v18 = _ARLogCoaching_3();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
@@ -111,14 +111,14 @@
             v23 = v22;
             *buf = v26;
             v24 = @"unsatisfied";
-            if (v17)
+            if (satisfied2)
             {
               v24 = @"satisfied";
             }
 
             v35 = v20;
             v36 = 2048;
-            v37 = v28;
+            v37 = selfCopy;
             v12 = v27;
             v38 = 2112;
             v39 = v22;
@@ -130,7 +130,7 @@
           }
         }
 
-        v13 = v13 & v17;
+        v13 = v13 & satisfied2;
         ++v14;
       }
 
@@ -146,15 +146,15 @@
     v13 = 1;
   }
 
-  [(ARCoachingHeuristic *)v28 setSatisfied:v13];
+  [(ARCoachingHeuristic *)selfCopy setSatisfied:v13];
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addHeuristic:(id)a3
+- (void)addHeuristic:(id)heuristic
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(NSMutableArray *)self->_heuristics addObject:v4];
+  heuristicCopy = heuristic;
+  [(NSMutableArray *)self->_heuristics addObject:heuristicCopy];
   v5 = _ARLogCoaching_3();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -165,7 +165,7 @@
     v11 = 138543874;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
     v16 = v9;
     _os_log_impl(&dword_23D3AE000, v5, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Added coaching heuristic %@", &v11, 0x20u);
@@ -187,7 +187,7 @@
     v7 = 138543618;
     v8 = v5;
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23D3AE000, v3, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Cleared coaching heuristics", &v7, 0x16u);
   }
 

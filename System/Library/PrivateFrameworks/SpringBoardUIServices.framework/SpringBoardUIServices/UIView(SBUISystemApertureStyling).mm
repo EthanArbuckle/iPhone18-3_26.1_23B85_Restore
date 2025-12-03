@@ -6,10 +6,10 @@
 
 - (void)sbui_systemApertureApplyMinimumAndMaximumContentSizeCategoryForCustomLayoutMode:()SBUISystemApertureStyling
 {
-  [a1 setMinimumContentSizeCategory:*MEMORY[0x1E69DDC70]];
-  v6 = [a1 traitCollection];
-  v5 = [v6 sbui_preferredContentSizeCategoryAllowingTraitsForCustomLayoutMode:a3];
-  [a1 setMaximumContentSizeCategory:v5];
+  [self setMinimumContentSizeCategory:*MEMORY[0x1E69DDC70]];
+  traitCollection = [self traitCollection];
+  v5 = [traitCollection sbui_preferredContentSizeCategoryAllowingTraitsForCustomLayoutMode:a3];
+  [self setMaximumContentSizeCategory:v5];
 }
 
 @end

@@ -1,32 +1,32 @@
 @interface HMAccessorySettingsMessenger
-+ (id)legacyMessageTargetUUIDWithHomeUUID:(id)a3;
++ (id)legacyMessageTargetUUIDWithHomeUUID:(id)d;
 + (id)logCategory;
 + (id)shortDescription;
-- (HMAccessorySettingsMessenger)initWithMessageDispatcher:(id)a3 messageTargetUUID:(id)a4 metricsDispatcher:(id)a5;
+- (HMAccessorySettingsMessenger)initWithMessageDispatcher:(id)dispatcher messageTargetUUID:(id)d metricsDispatcher:(id)metricsDispatcher;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (id)logIdentifier;
-- (void)sendFetchAccessorySettingsRequestWithAccessoryUUID:(id)a3 keyPaths:(id)a4 completionHandler:(id)a5;
-- (void)sendUpdateAccessorySettingRequestWithAccessoryUUID:(id)a3 keyPath:(id)a4 settingValue:(id)a5 completionHandler:(id)a6;
-- (void)submitMetricEventWithMessage:(id)a3 error:(id)a4;
+- (void)sendFetchAccessorySettingsRequestWithAccessoryUUID:(id)d keyPaths:(id)paths completionHandler:(id)handler;
+- (void)sendUpdateAccessorySettingRequestWithAccessoryUUID:(id)d keyPath:(id)path settingValue:(id)value completionHandler:(id)handler;
+- (void)submitMetricEventWithMessage:(id)message error:(id)error;
 @end
 
 @implementation HMAccessorySettingsMessenger
 
 - (id)logIdentifier
 {
-  v2 = [(HMAccessorySettingsMessenger *)self messageTargetUUID];
-  v3 = [v2 UUIDString];
+  messageTargetUUID = [(HMAccessorySettingsMessenger *)self messageTargetUUID];
+  uUIDString = [messageTargetUUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (NSArray)attributeDescriptions
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v4 = [(HMAccessorySettingsMessenger *)self messageTargetUUID];
-  v5 = [v3 initWithName:@"messageTargetUUID" value:v4];
+  messageTargetUUID = [(HMAccessorySettingsMessenger *)self messageTargetUUID];
+  v5 = [v3 initWithName:@"messageTargetUUID" value:messageTargetUUID];
   v9[0] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
 
@@ -42,21 +42,21 @@
   return [v2 shortDescription];
 }
 
-- (void)submitMetricEventWithMessage:(id)a3 error:(id)a4
+- (void)submitMetricEventWithMessage:(id)message error:(id)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  messageCopy = message;
+  errorCopy = error;
+  if (messageCopy)
   {
-    v8 = [(HMAccessorySettingsMessenger *)self metricsDispatcher];
-    [v8 submitEventWithMessage:v6 error:v7];
+    metricsDispatcher = [(HMAccessorySettingsMessenger *)self metricsDispatcher];
+    [metricsDispatcher submitEventWithMessage:messageCopy error:errorCopy];
   }
 
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -72,15 +72,15 @@
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendUpdateAccessorySettingRequestWithAccessoryUUID:(id)a3 keyPath:(id)a4 settingValue:(id)a5 completionHandler:(id)a6
+- (void)sendUpdateAccessorySettingRequestWithAccessoryUUID:(id)d keyPath:(id)path settingValue:(id)value completionHandler:(id)handler
 {
   v42 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  pathCopy = path;
+  valueCopy = value;
+  handlerCopy = handler;
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
@@ -88,40 +88,40 @@
     *buf = 138544130;
     v35 = v17;
     v36 = 2112;
-    v37 = v10;
+    v37 = dCopy;
     v38 = 2112;
-    v39 = v11;
+    v39 = pathCopy;
     v40 = 2112;
-    v41 = v12;
+    v41 = valueCopy;
     _os_log_impl(&dword_19BB39000, v16, OS_LOG_TYPE_INFO, "%{public}@Sending update request message with accessory UUID: %@ key path: %@ setting value: %@", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v14);
-  v18 = [[HMAccessorySettingsUpdateRequestMessagePayload alloc] initWithAccessoryUUID:v10 keyPath:v11 settingValue:v12];
+  v18 = [[HMAccessorySettingsUpdateRequestMessagePayload alloc] initWithAccessoryUUID:dCopy keyPath:pathCopy settingValue:valueCopy];
   v19 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v20 = [(HMAccessorySettingsMessenger *)v15 messageTargetUUID];
-  v21 = [v19 initWithTarget:v20];
+  messageTargetUUID = [(HMAccessorySettingsMessenger *)selfCopy messageTargetUUID];
+  v21 = [v19 initWithTarget:messageTargetUUID];
 
   v22 = objc_alloc(MEMORY[0x1E69A2A10]);
-  v23 = [(HMAccessorySettingsUpdateRequestMessagePayload *)v18 payloadCopy];
-  v24 = [v22 initWithName:@"HMAccessorySettingsUpdateRequestMessage" destination:v21 payload:v23];
+  payloadCopy = [(HMAccessorySettingsUpdateRequestMessagePayload *)v18 payloadCopy];
+  v24 = [v22 initWithName:@"HMAccessorySettingsUpdateRequestMessage" destination:v21 payload:payloadCopy];
 
   v25 = [v24 copy];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __122__HMAccessorySettingsMessenger_sendUpdateAccessorySettingRequestWithAccessoryUUID_keyPath_settingValue_completionHandler___block_invoke;
   v31[3] = &unk_1E754E480;
-  v31[4] = v15;
+  v31[4] = selfCopy;
   v32 = v25;
-  v33 = v13;
-  v26 = v13;
+  v33 = handlerCopy;
+  v26 = handlerCopy;
   v27 = v25;
   [v24 setResponseHandler:v31];
-  v28 = [(HMAccessorySettingsMessenger *)v15 metricsDispatcher];
-  [v28 startEventWithMessage:v24 updateKeyPath:v11];
+  metricsDispatcher = [(HMAccessorySettingsMessenger *)selfCopy metricsDispatcher];
+  [metricsDispatcher startEventWithMessage:v24 updateKeyPath:pathCopy];
 
-  v29 = [(HMAccessorySettingsMessenger *)v15 messageDispatcher];
-  [v29 sendMessage:v24];
+  messageDispatcher = [(HMAccessorySettingsMessenger *)selfCopy messageDispatcher];
+  [messageDispatcher sendMessage:v24];
 
   v30 = *MEMORY[0x1E69E9840];
 }
@@ -172,14 +172,14 @@ LABEL_6:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendFetchAccessorySettingsRequestWithAccessoryUUID:(id)a3 keyPaths:(id)a4 completionHandler:(id)a5
+- (void)sendFetchAccessorySettingsRequestWithAccessoryUUID:(id)d keyPaths:(id)paths completionHandler:(id)handler
 {
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  pathsCopy = paths;
+  handlerCopy = handler;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -187,21 +187,21 @@ LABEL_6:
     *buf = 138543874;
     v32 = v14;
     v33 = 2112;
-    v34 = v8;
+    v34 = dCopy;
     v35 = 2112;
-    v36 = v9;
+    v36 = pathsCopy;
     _os_log_impl(&dword_19BB39000, v13, OS_LOG_TYPE_INFO, "%{public}@Sending fetch request message with accessory UUID: %@ key paths: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v11);
-  v15 = [[HMAccessorySettingsFetchRequestMessagePayload alloc] initWithAccessoryUUID:v8 keyPaths:v9];
+  v15 = [[HMAccessorySettingsFetchRequestMessagePayload alloc] initWithAccessoryUUID:dCopy keyPaths:pathsCopy];
   v16 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v17 = [(HMAccessorySettingsMessenger *)v12 messageTargetUUID];
-  v18 = [v16 initWithTarget:v17];
+  messageTargetUUID = [(HMAccessorySettingsMessenger *)selfCopy messageTargetUUID];
+  v18 = [v16 initWithTarget:messageTargetUUID];
 
   v19 = objc_alloc(MEMORY[0x1E69A2A10]);
-  v20 = [(HMAccessorySettingsFetchRequestMessagePayload *)v15 payloadCopy];
-  v21 = [v19 initWithName:@"HMAccessorySettingsFetchRequestMessage" destination:v18 payload:v20];
+  payloadCopy = [(HMAccessorySettingsFetchRequestMessagePayload *)v15 payloadCopy];
+  v21 = [v19 initWithName:@"HMAccessorySettingsFetchRequestMessage" destination:v18 payload:payloadCopy];
 
   v22 = [v21 copy];
   v28[0] = MEMORY[0x1E69E9820];
@@ -209,16 +209,16 @@ LABEL_6:
   v28[2] = __110__HMAccessorySettingsMessenger_sendFetchAccessorySettingsRequestWithAccessoryUUID_keyPaths_completionHandler___block_invoke;
   v28[3] = &unk_1E754E480;
   v29 = v22;
-  v30 = v10;
-  v28[4] = v12;
+  v30 = handlerCopy;
+  v28[4] = selfCopy;
   v23 = v22;
-  v24 = v10;
+  v24 = handlerCopy;
   [v21 setResponseHandler:v28];
-  v25 = [(HMAccessorySettingsMessenger *)v12 metricsDispatcher];
-  [v25 startEventWithMessage:v21 updateKeyPath:0];
+  metricsDispatcher = [(HMAccessorySettingsMessenger *)selfCopy metricsDispatcher];
+  [metricsDispatcher startEventWithMessage:v21 updateKeyPath:0];
 
-  v26 = [(HMAccessorySettingsMessenger *)v12 messageDispatcher];
-  [v26 sendMessage:v21];
+  messageDispatcher = [(HMAccessorySettingsMessenger *)selfCopy messageDispatcher];
+  [messageDispatcher sendMessage:v21];
 
   v27 = *MEMORY[0x1E69E9840];
 }
@@ -318,26 +318,26 @@ void __110__HMAccessorySettingsMessenger_sendFetchAccessorySettingsRequestWithAc
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (HMAccessorySettingsMessenger)initWithMessageDispatcher:(id)a3 messageTargetUUID:(id)a4 metricsDispatcher:(id)a5
+- (HMAccessorySettingsMessenger)initWithMessageDispatcher:(id)dispatcher messageTargetUUID:(id)d metricsDispatcher:(id)metricsDispatcher
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  dispatcherCopy = dispatcher;
+  dCopy = d;
+  metricsDispatcherCopy = metricsDispatcher;
+  if (!dispatcherCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_8;
   }
 
-  if (!v10)
+  if (!dCopy)
   {
 LABEL_8:
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  v12 = v11;
-  if (!v11)
+  v12 = metricsDispatcherCopy;
+  if (!metricsDispatcherCopy)
   {
 LABEL_9:
     v16 = _HMFPreconditionFailure();
@@ -350,9 +350,9 @@ LABEL_9:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_messageDispatcher, a3);
-    objc_storeStrong(&v14->_messageTargetUUID, a4);
-    objc_storeStrong(&v14->_metricsDispatcher, a5);
+    objc_storeStrong(&v13->_messageDispatcher, dispatcher);
+    objc_storeStrong(&v14->_messageTargetUUID, d);
+    objc_storeStrong(&v14->_metricsDispatcher, metricsDispatcher);
   }
 
   return v14;
@@ -387,15 +387,15 @@ uint64_t __43__HMAccessorySettingsMessenger_logCategory__block_invoke()
   return NSStringFromClass(v2);
 }
 
-+ (id)legacyMessageTargetUUIDWithHomeUUID:(id)a3
++ (id)legacyMessageTargetUUIDWithHomeUUID:(id)d
 {
   v3 = MEMORY[0x1E696AFB0];
-  v4 = a3;
+  dCopy = d;
   v5 = [[v3 alloc] initWithUUIDString:@"257D2091-3412-4683-8586-B0CF9DF75439"];
   v6 = MEMORY[0x1E696AFB0];
-  v7 = [v4 UUIDString];
+  uUIDString = [dCopy UUIDString];
 
-  v8 = [v7 dataUsingEncoding:4];
+  v8 = [uUIDString dataUsingEncoding:4];
   v9 = [v6 hmf_UUIDWithNamespace:v5 data:v8];
 
   return v9;

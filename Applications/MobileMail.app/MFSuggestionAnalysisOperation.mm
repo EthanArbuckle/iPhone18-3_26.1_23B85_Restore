@@ -1,17 +1,17 @@
 @interface MFSuggestionAnalysisOperation
 + (id)log;
 - (EFScheduler)scheduler;
-- (MFSuggestionAnalysisOperation)initWithDelegate:(id)a3 presenter:(id)a4 scheduler:(id)a5;
+- (MFSuggestionAnalysisOperation)initWithDelegate:(id)delegate presenter:(id)presenter scheduler:(id)scheduler;
 - (SGFoundInSuggestionPresenter)suggestionPresenter;
 - (SGSuggestionDelegate)delegate;
-- (id)_concatenatedStringFromContent:(id)a3;
-- (id)_unsubscribeSuggestionForContentRepresentation:(id)a3;
-- (id)_unsubscribeSuggestionForContentRepresentation:(id)a3 shouldShowICloudUnsubscribe:(BOOL)a4;
-- (id)preparePresenter:(id)a3;
-- (id)prepareUnsubscribeSuggestion:(id)a3;
+- (id)_concatenatedStringFromContent:(id)content;
+- (id)_unsubscribeSuggestionForContentRepresentation:(id)representation;
+- (id)_unsubscribeSuggestionForContentRepresentation:(id)representation shouldShowICloudUnsubscribe:(BOOL)unsubscribe;
+- (id)preparePresenter:(id)presenter;
+- (id)prepareUnsubscribeSuggestion:(id)suggestion;
 - (void)cancel;
-- (void)handleContentRepresentation:(id)a3 allowUnsubscribe:(BOOL)a4;
-- (void)handleContentRepresentation:(id)a3 allowUnsubscribe:(BOOL)a4 shouldShowICloudUnsubscribe:(BOOL)a5;
+- (void)handleContentRepresentation:(id)representation allowUnsubscribe:(BOOL)unsubscribe;
+- (void)handleContentRepresentation:(id)representation allowUnsubscribe:(BOOL)unsubscribe shouldShowICloudUnsubscribe:(BOOL)cloudUnsubscribe;
 @end
 
 @implementation MFSuggestionAnalysisOperation
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = sub_100218E50;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD698 != -1)
   {
     dispatch_once(&qword_1006DD698, block);
@@ -33,20 +33,20 @@
   return v2;
 }
 
-- (MFSuggestionAnalysisOperation)initWithDelegate:(id)a3 presenter:(id)a4 scheduler:(id)a5
+- (MFSuggestionAnalysisOperation)initWithDelegate:(id)delegate presenter:(id)presenter scheduler:(id)scheduler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  presenterCopy = presenter;
+  schedulerCopy = scheduler;
   v14.receiver = self;
   v14.super_class = MFSuggestionAnalysisOperation;
   v11 = [(MFSuggestionAnalysisOperation *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_delegate, v8);
-    objc_storeWeak(&v12->_suggestionPresenter, v9);
-    objc_storeWeak(&v12->_scheduler, v10);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
+    objc_storeWeak(&v12->_suggestionPresenter, presenterCopy);
+    objc_storeWeak(&v12->_scheduler, schedulerCopy);
   }
 
   return v12;
@@ -54,17 +54,17 @@
 
 - (void)cancel
 {
-  v3 = [(MFSuggestionAnalysisOperation *)self isCancelled];
+  isCancelled = [(MFSuggestionAnalysisOperation *)self isCancelled];
   [(MFSuggestionAnalysisOperation *)self setCancelled:1];
-  if ((v3 & 1) == 0)
+  if ((isCancelled & 1) == 0)
   {
-    v4 = [(MFSuggestionAnalysisOperation *)self suggestionPresenter];
+    suggestionPresenter = [(MFSuggestionAnalysisOperation *)self suggestionPresenter];
     v11 = 0u;
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v5 = [v4 suggestions];
-    v6 = [v5 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    suggestions = [suggestionPresenter suggestions];
+    v6 = [suggestions countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v6)
     {
       v7 = *v10;
@@ -75,15 +75,15 @@
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(suggestions);
           }
 
-          [v4 removeSuggestion:*(*(&v9 + 1) + 8 * v8)];
+          [suggestionPresenter removeSuggestion:*(*(&v9 + 1) + 8 * v8)];
           v8 = v8 + 1;
         }
 
         while (v6 != v8);
-        v6 = [v5 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v6 = [suggestions countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v6);
@@ -91,17 +91,17 @@
   }
 }
 
-- (id)preparePresenter:(id)a3
+- (id)preparePresenter:(id)presenter
 {
-  v4 = a3;
-  v5 = [(MFSuggestionAnalysisOperation *)self suggestionPresenter];
-  v6 = [v4 searchableItem];
+  presenterCopy = presenter;
+  suggestionPresenter = [(MFSuggestionAnalysisOperation *)self suggestionPresenter];
+  searchableItem = [presenterCopy searchableItem];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [v5 suggestions];
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  suggestions = [suggestionPresenter suggestions];
+  v8 = [suggestions countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v8)
   {
     v9 = *v15;
@@ -111,38 +111,38 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(suggestions);
         }
 
-        [v5 removeSuggestion:*(*(&v14 + 1) + 8 * i)];
+        [suggestionPresenter removeSuggestion:*(*(&v14 + 1) + 8 * i)];
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      v8 = [suggestions countByEnumeratingWithState:&v14 objects:v19 count:16];
     }
 
     while (v8);
   }
 
-  if (v6 && +[MSSiriIntelligenceSettings canShowSiriSuggestions])
+  if (searchableItem && +[MSSiriIntelligenceSettings canShowSiriSuggestions])
   {
-    v11 = [v6 copy];
+    v11 = [searchableItem copy];
     v18 = v11;
     v12 = [NSArray arrayWithObjects:&v18 count:1];
-    [v5 addSuggestionsFromSearchableItems:v12 options:0 filter:0];
+    [suggestionPresenter addSuggestionsFromSearchableItems:v12 options:0 filter:0];
   }
 
-  return v5;
+  return suggestionPresenter;
 }
 
-- (void)handleContentRepresentation:(id)a3 allowUnsubscribe:(BOOL)a4
+- (void)handleContentRepresentation:(id)representation allowUnsubscribe:(BOOL)unsubscribe
 {
-  v4 = a4;
-  v11 = a3;
-  v6 = [(MFSuggestionAnalysisOperation *)self isCancelled];
-  v7 = v11;
-  if (v11)
+  unsubscribeCopy = unsubscribe;
+  representationCopy = representation;
+  isCancelled = [(MFSuggestionAnalysisOperation *)self isCancelled];
+  v7 = representationCopy;
+  if (representationCopy)
   {
-    v8 = v6;
+    v8 = isCancelled;
   }
 
   else
@@ -153,9 +153,9 @@
   if ((v8 & 1) == 0)
   {
     v9 = [(MFSuggestionAnalysisOperation *)self preparePresenter:?];
-    if (v4)
+    if (unsubscribeCopy)
     {
-      v10 = [(MFSuggestionAnalysisOperation *)self _unsubscribeSuggestionForContentRepresentation:v11];
+      v10 = [(MFSuggestionAnalysisOperation *)self _unsubscribeSuggestionForContentRepresentation:representationCopy];
       if (v10)
       {
         [v9 addSuggestion:v10];
@@ -167,20 +167,20 @@
       v10 = 0;
     }
 
-    v7 = v11;
+    v7 = representationCopy;
   }
 }
 
-- (id)_concatenatedStringFromContent:(id)a3
+- (id)_concatenatedStringFromContent:(id)content
 {
-  v16 = a3;
+  contentCopy = content;
   v17 = objc_alloc_init(MFStringAccumulator);
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = v16;
-  v4 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:{16, v16}];
+  v3 = contentCopy;
+  v4 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:{16, contentCopy}];
   if (v4)
   {
     v5 = *v19;
@@ -198,10 +198,10 @@
         if (objc_opt_isKindOfClass())
         {
           v8 = v7;
-          v9 = [v8 htmlData];
-          if (v9)
+          htmlData = [v8 htmlData];
+          if (htmlData)
           {
-            v10 = [v8 preferredCharacterSet];
+            preferredCharacterSet = [v8 preferredCharacterSet];
             v11 = MFEncodingForCharset();
             v12 = MFCreateStringWithData();
             if (v12)
@@ -233,27 +233,27 @@
     while (v4);
   }
 
-  v14 = [v17 string];
+  string = [v17 string];
 
-  return v14;
+  return string;
 }
 
-- (id)prepareUnsubscribeSuggestion:(id)a3
+- (id)prepareUnsubscribeSuggestion:(id)suggestion
 {
-  v4 = a3;
-  v5 = [v4 unsubscribeCommand];
-  if (v5)
+  suggestionCopy = suggestion;
+  unsubscribeCommand = [suggestionCopy unsubscribeCommand];
+  if (unsubscribeCommand)
   {
     v6 = objc_alloc_init(MFListUnsubscribeSuggestion_iOS);
-    v7 = [(MFSuggestionAnalysisOperation *)self delegate];
-    v8 = [(MFListUnsubscribeSuggestion_iOS *)v6 suggestion];
-    [v8 setSuggestionDelegate:v7];
+    delegate = [(MFSuggestionAnalysisOperation *)self delegate];
+    suggestion = [(MFListUnsubscribeSuggestion_iOS *)v6 suggestion];
+    [suggestion setSuggestionDelegate:delegate];
 
-    [(MFListUnsubscribeSuggestion_iOS *)v6 setListUnsubscribeCommand:v5];
-    v9 = [(MFSuggestionAnalysisOperation *)self suggestionPresenter];
-    [(MFListUnsubscribeSuggestion_iOS *)v6 setSuggestionPresenter:v9];
+    [(MFListUnsubscribeSuggestion_iOS *)v6 setListUnsubscribeCommand:unsubscribeCommand];
+    suggestionPresenter = [(MFSuggestionAnalysisOperation *)self suggestionPresenter];
+    [(MFListUnsubscribeSuggestion_iOS *)v6 setSuggestionPresenter:suggestionPresenter];
 
-    [(MFListUnsubscribeSuggestion_iOS *)v6 setContentRepresentation:v4];
+    [(MFListUnsubscribeSuggestion_iOS *)v6 setContentRepresentation:suggestionCopy];
   }
 
   else
@@ -264,33 +264,33 @@
   return v6;
 }
 
-- (id)_unsubscribeSuggestionForContentRepresentation:(id)a3
+- (id)_unsubscribeSuggestionForContentRepresentation:(id)representation
 {
-  v3 = [(MFSuggestionAnalysisOperation *)self prepareUnsubscribeSuggestion:a3];
+  v3 = [(MFSuggestionAnalysisOperation *)self prepareUnsubscribeSuggestion:representation];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 suggestion];
+    suggestion = [v3 suggestion];
   }
 
   else
   {
-    v5 = 0;
+    suggestion = 0;
   }
 
-  return v5;
+  return suggestion;
 }
 
-- (void)handleContentRepresentation:(id)a3 allowUnsubscribe:(BOOL)a4 shouldShowICloudUnsubscribe:(BOOL)a5
+- (void)handleContentRepresentation:(id)representation allowUnsubscribe:(BOOL)unsubscribe shouldShowICloudUnsubscribe:(BOOL)cloudUnsubscribe
 {
-  v5 = a5;
-  v6 = a4;
-  v13 = a3;
-  v8 = [(MFSuggestionAnalysisOperation *)self isCancelled];
-  v9 = v13;
-  if (v13)
+  cloudUnsubscribeCopy = cloudUnsubscribe;
+  unsubscribeCopy = unsubscribe;
+  representationCopy = representation;
+  isCancelled = [(MFSuggestionAnalysisOperation *)self isCancelled];
+  v9 = representationCopy;
+  if (representationCopy)
   {
-    v10 = v8;
+    v10 = isCancelled;
   }
 
   else
@@ -301,9 +301,9 @@
   if ((v10 & 1) == 0)
   {
     v11 = [(MFSuggestionAnalysisOperation *)self preparePresenter:?];
-    if (v6)
+    if (unsubscribeCopy)
     {
-      v12 = [(MFSuggestionAnalysisOperation *)self _unsubscribeSuggestionForContentRepresentation:v13 shouldShowICloudUnsubscribe:v5];
+      v12 = [(MFSuggestionAnalysisOperation *)self _unsubscribeSuggestionForContentRepresentation:representationCopy shouldShowICloudUnsubscribe:cloudUnsubscribeCopy];
       if (v12)
       {
         [v11 addSuggestion:v12];
@@ -315,37 +315,37 @@
       v12 = 0;
     }
 
-    v9 = v13;
+    v9 = representationCopy;
   }
 }
 
-- (id)_unsubscribeSuggestionForContentRepresentation:(id)a3 shouldShowICloudUnsubscribe:(BOOL)a4
+- (id)_unsubscribeSuggestionForContentRepresentation:(id)representation shouldShowICloudUnsubscribe:(BOOL)unsubscribe
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(MFSuggestionAnalysisOperation *)self prepareUnsubscribeSuggestion:v6];
+  unsubscribeCopy = unsubscribe;
+  representationCopy = representation;
+  v7 = [(MFSuggestionAnalysisOperation *)self prepareUnsubscribeSuggestion:representationCopy];
   if (!v7)
   {
-    v18 = 0;
+    suggestion = 0;
     goto LABEL_12;
   }
 
   v8 = +[UIApplication sharedApplication];
-  v9 = [v8 getiCloudMailCleanupService];
+  getiCloudMailCleanupService = [v8 getiCloudMailCleanupService];
 
-  v10 = [v7 listUnsubscribeCommand];
-  v11 = [v10 sender];
-  v12 = [v11 emailAddressValue];
+  listUnsubscribeCommand = [v7 listUnsubscribeCommand];
+  sender = [listUnsubscribeCommand sender];
+  emailAddressValue = [sender emailAddressValue];
 
-  if (!v12)
+  if (!emailAddressValue)
   {
     [v7 setShouldShowICloudUnsubscribe:0];
     v19 = +[MFSuggestionAnalysisOperation log];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [v7 listUnsubscribeCommand];
-      v21 = [v20 sender];
-      v22 = [EFPrivacy fullyOrPartiallyRedactedStringForString:v21];
+      listUnsubscribeCommand2 = [v7 listUnsubscribeCommand];
+      sender2 = [listUnsubscribeCommand2 sender];
+      v22 = [EFPrivacy fullyOrPartiallyRedactedStringForString:sender2];
       v24 = 138412290;
       v25 = v22;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Invalid email address for sender: %@", &v24, 0xCu);
@@ -354,26 +354,26 @@
     goto LABEL_10;
   }
 
-  v13 = [v7 listUnsubscribeCommand];
-  v14 = [v13 sender];
-  v15 = [v14 emailAddressValue];
-  v16 = [v15 simpleAddress];
-  v17 = [v9 isSenderEmailAddressBlocked:v16];
+  listUnsubscribeCommand3 = [v7 listUnsubscribeCommand];
+  sender3 = [listUnsubscribeCommand3 sender];
+  emailAddressValue2 = [sender3 emailAddressValue];
+  simpleAddress = [emailAddressValue2 simpleAddress];
+  v17 = [getiCloudMailCleanupService isSenderEmailAddressBlocked:simpleAddress];
 
-  if (!(v4 & v17))
+  if (!(unsubscribeCopy & v17))
   {
-    [v7 setShouldShowICloudUnsubscribe:v4];
+    [v7 setShouldShowICloudUnsubscribe:unsubscribeCopy];
 LABEL_10:
-    v18 = [v7 suggestion];
+    suggestion = [v7 suggestion];
     goto LABEL_11;
   }
 
-  v18 = 0;
+  suggestion = 0;
 LABEL_11:
 
 LABEL_12:
 
-  return v18;
+  return suggestion;
 }
 
 - (SGSuggestionDelegate)delegate

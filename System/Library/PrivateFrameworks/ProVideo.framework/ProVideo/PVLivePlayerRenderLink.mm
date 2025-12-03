@@ -1,14 +1,14 @@
 @interface PVLivePlayerRenderLink
-- (BOOL)setThrottledFPS:(unsigned int)a3;
-- (BOOL)skipThrottledRenderLinkTime:(id *)a3;
+- (BOOL)setThrottledFPS:(unsigned int)s;
+- (BOOL)skipThrottledRenderLinkTime:(id *)time;
 - (PVLivePlayerRenderLink)init;
 - (unsigned)_throttledRenderLinkFPS_NoLock;
 - (unsigned)thermalPolicyThrottledFPS;
 - (unsigned)throttledFPS;
 - (void)dealloc;
-- (void)registerWithPlayer:(id)a3;
+- (void)registerWithPlayer:(id)player;
 - (void)signalDroppedRenderLink;
-- (void)signalPlayer:(id *)a3;
+- (void)signalPlayer:(id *)player;
 @end
 
 @implementation PVLivePlayerRenderLink
@@ -38,11 +38,11 @@
   [(PVLivePlayerRenderLink *)&v4 dealloc];
 }
 
-- (void)registerWithPlayer:(id)a3
+- (void)registerWithPlayer:(id)player
 {
-  v4 = a3;
+  playerCopy = player;
   lock = self->_lock;
-  obj = v4;
+  obj = playerCopy;
   HGSynchronizable::Lock(lock);
   v6 = objc_storeWeak(&self->_player, obj);
 
@@ -59,14 +59,14 @@
   HGSynchronizable::Unlock(lock);
 }
 
-- (BOOL)setThrottledFPS:(unsigned int)a3
+- (BOOL)setThrottledFPS:(unsigned int)s
 {
   lock = self->_lock;
   HGSynchronizable::Lock(lock);
   WeakRetained = objc_loadWeakRetained(&self->_player);
-  v7 = [WeakRetained thermalThrottlingPolicy];
+  thermalThrottlingPolicy = [WeakRetained thermalThrottlingPolicy];
 
-  if (v7)
+  if (thermalThrottlingPolicy)
   {
     v8 = objc_loadWeakRetained(&self->_player);
     NSLog(&cfstr_IgnoreSetthrot.isa, self, v8, lock, 0);
@@ -74,46 +74,46 @@
 
   else
   {
-    self->_throttledFPS = a3;
+    self->_throttledFPS = s;
   }
 
   HGSynchronizable::Unlock(lock);
-  return v7 == 0;
+  return thermalThrottlingPolicy == 0;
 }
 
 - (unsigned)throttledFPS
 {
-  v2 = self;
+  selfCopy = self;
   lock = self->_lock;
   HGSynchronizable::Lock(lock);
-  LODWORD(v2) = v2->_throttledFPS;
+  LODWORD(selfCopy) = selfCopy->_throttledFPS;
   HGSynchronizable::Unlock(lock);
-  return v2;
+  return selfCopy;
 }
 
 - (unsigned)thermalPolicyThrottledFPS
 {
-  v2 = self;
+  selfCopy = self;
   lock = self->_lock;
   LOBYTE(v5) = 0;
   HGSynchronizable::Lock(lock);
-  LODWORD(v2) = [(PVLivePlayerRenderLink *)v2 _throttledRenderLinkFPS_NoLock:lock];
+  LODWORD(selfCopy) = [(PVLivePlayerRenderLink *)selfCopy _throttledRenderLinkFPS_NoLock:lock];
   HGSynchronizable::Unlock(lock);
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)skipThrottledRenderLinkTime:(id *)a3
+- (BOOL)skipThrottledRenderLinkTime:(id *)time
 {
   lock = self->_lock;
   v12 = lock;
   v13 = 0;
   HGSynchronizable::Lock(lock);
-  v6 = [(PVLivePlayerRenderLink *)self _throttledRenderLinkFPS_NoLock];
-  if (v6)
+  _throttledRenderLinkFPS_NoLock = [(PVLivePlayerRenderLink *)self _throttledRenderLinkFPS_NoLock];
+  if (_throttledRenderLinkFPS_NoLock)
   {
     memset(&v11, 0, sizeof(v11));
-    time = *a3;
-    CMTimeConvertScale(&v11, &time, v6, kCMTimeRoundingMethod_RoundTowardZero);
+    time = *time;
+    CMTimeConvertScale(&v11, &time, _throttledRenderLinkFPS_NoLock, kCMTimeRoundingMethod_RoundTowardZero);
     time = self->_lastTime;
     v9 = v11;
     v7 = CMTimeCompare(&time, &v9) == 0;
@@ -131,34 +131,34 @@
 
 - (unsigned)_throttledRenderLinkFPS_NoLock
 {
-  v3 = [(PVLivePlayerRenderLink *)self throttledFPS];
+  throttledFPS = [(PVLivePlayerRenderLink *)self throttledFPS];
   WeakRetained = objc_loadWeakRetained(&self->_player);
-  v5 = [WeakRetained thermalThrottlingPolicy];
+  thermalThrottlingPolicy = [WeakRetained thermalThrottlingPolicy];
 
-  if (v5)
+  if (thermalThrottlingPolicy)
   {
     v6 = objc_loadWeakRetained(&self->_player);
-    v7 = [v6 thermalThrottlingPolicy];
-    v8 = [v7 populatedControlParametersForCurrentThermalLevel];
+    thermalThrottlingPolicy2 = [v6 thermalThrottlingPolicy];
+    populatedControlParametersForCurrentThermalLevel = [thermalThrottlingPolicy2 populatedControlParametersForCurrentThermalLevel];
 
-    v9 = [v8 renderLinkRate];
-    if (v9)
+    renderLinkRate = [populatedControlParametersForCurrentThermalLevel renderLinkRate];
+    if (renderLinkRate)
     {
-      v10 = [v8 renderLinkRate];
-      v11 = [v10 unsignedIntegerValue];
+      renderLinkRate2 = [populatedControlParametersForCurrentThermalLevel renderLinkRate];
+      unsignedIntegerValue = [renderLinkRate2 unsignedIntegerValue];
 
-      if (v11)
+      if (unsignedIntegerValue)
       {
-        v12 = [v8 renderLinkRate];
-        v3 = [v12 unsignedIntegerValue];
+        renderLinkRate3 = [populatedControlParametersForCurrentThermalLevel renderLinkRate];
+        throttledFPS = [renderLinkRate3 unsignedIntegerValue];
       }
     }
   }
 
-  return v3;
+  return throttledFPS;
 }
 
-- (void)signalPlayer:(id *)a3
+- (void)signalPlayer:(id *)player
 {
   lock = self->_lock;
   HGSynchronizable::Lock(lock);
@@ -166,8 +166,8 @@
   HGSynchronizable::Unlock(lock);
   if (WeakRetained)
   {
-    v7 = *&a3->var0;
-    var3 = a3->var3;
+    v7 = *&player->var0;
+    var3 = player->var3;
     if ([(PVLivePlayerRenderLink *)self skipThrottledRenderLinkTime:&v7])
     {
       [WeakRetained renderLinkSignalSkipped];
@@ -175,8 +175,8 @@
 
     else
     {
-      v7 = *&a3->var0;
-      var3 = a3->var3;
+      v7 = *&player->var0;
+      var3 = player->var3;
       [WeakRetained renderLinkSignal:&v7];
     }
   }

@@ -1,45 +1,45 @@
 @interface NDContentArchiveStore
-+ (void)_prepareRootContainerAtPath:(id)a3;
-- (BOOL)_isContentIDComplete:(id)a3;
-- (BOOL)isContentIDComplete:(id)a3;
-- (NDContentArchiveStore)initWithParentDirectory:(id)a3 name:(id)a4;
++ (void)_prepareRootContainerAtPath:(id)path;
+- (BOOL)_isContentIDComplete:(id)complete;
+- (BOOL)isContentIDComplete:(id)complete;
+- (NDContentArchiveStore)initWithParentDirectory:(id)directory name:(id)name;
 - (NSArray)allCompleteContentIDs;
-- (id)_blobPathForName:(id)a3 contentID:(id)a4;
-- (id)_containerPathForContentID:(id)a3;
-- (id)_manifestPathForContentID:(id)a3;
-- (id)_newUniqueArchivePathForContentID:(id)a3;
-- (id)_tokenPathForContentID:(id)a3;
-- (id)aggregateArchiveForContentID:(id)a3;
-- (id)archivesForContentID:(id)a3;
-- (id)blobWithName:(id)a3 contentID:(id)a4;
-- (id)bookmarkForBlobWithName:(id)a3 contentID:(id)a4;
-- (id)interestTokenForContentID:(id)a3;
-- (id)interestTokenForContentIDs:(id)a3;
-- (id)manifestForContentID:(id)a3;
+- (id)_blobPathForName:(id)name contentID:(id)d;
+- (id)_containerPathForContentID:(id)d;
+- (id)_manifestPathForContentID:(id)d;
+- (id)_newUniqueArchivePathForContentID:(id)d;
+- (id)_tokenPathForContentID:(id)d;
+- (id)aggregateArchiveForContentID:(id)d;
+- (id)archivesForContentID:(id)d;
+- (id)blobWithName:(id)name contentID:(id)d;
+- (id)bookmarkForBlobWithName:(id)name contentID:(id)d;
+- (id)interestTokenForContentID:(id)d;
+- (id)interestTokenForContentIDs:(id)ds;
+- (id)manifestForContentID:(id)d;
 - (int64_t)storageSize;
-- (void)_pruneArchivesFromContainer:(id)a3 forContentID:(id)a4;
-- (void)addArchive:(id)a3 forContentID:(id)a4;
-- (void)addBlob:(id)a3 name:(id)a4 contentID:(id)a5;
-- (void)addManifest:(id)a3 forContentID:(id)a4;
-- (void)cacheCoordinator:(id)a3 flushKeysWithWriteLock:(id)a4;
-- (void)didCompleteContentID:(id)a3;
-- (void)enableFlushingWithFlushingThreshold:(unint64_t)a3;
-- (void)prepareForContentID:(id)a3;
-- (void)pruneArchivesForContentID:(id)a3;
+- (void)_pruneArchivesFromContainer:(id)container forContentID:(id)d;
+- (void)addArchive:(id)archive forContentID:(id)d;
+- (void)addBlob:(id)blob name:(id)name contentID:(id)d;
+- (void)addManifest:(id)manifest forContentID:(id)d;
+- (void)cacheCoordinator:(id)coordinator flushKeysWithWriteLock:(id)lock;
+- (void)didCompleteContentID:(id)d;
+- (void)enableFlushingWithFlushingThreshold:(unint64_t)threshold;
+- (void)prepareForContentID:(id)d;
+- (void)pruneArchivesForContentID:(id)d;
 @end
 
 @implementation NDContentArchiveStore
 
-- (NDContentArchiveStore)initWithParentDirectory:(id)a3 name:(id)a4
+- (NDContentArchiveStore)initWithParentDirectory:(id)directory name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  directoryCopy = directory;
+  nameCopy = name;
   v31.receiver = self;
   v31.super_class = NDContentArchiveStore;
   v8 = [(NDContentArchiveStore *)&v31 init];
   if (v8)
   {
-    v9 = [v6 stringByAppendingPathComponent:v7];
+    v9 = [directoryCopy stringByAppendingPathComponent:nameCopy];
     rootContainerPath = v8->_rootContainerPath;
     v8->_rootContainerPath = v9;
 
@@ -117,14 +117,14 @@
   v10 = sub_10000FE74;
   v11 = sub_10000FE84;
   v12 = 0;
-  v3 = [(NDContentArchiveStore *)self cacheCoordinator];
+  cacheCoordinator = [(NDContentArchiveStore *)self cacheCoordinator];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10000FE8C;
   v6[3] = &unk_100072398;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performCacheRead:v6];
+  [cacheCoordinator performCacheRead:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -132,63 +132,63 @@
   return v4;
 }
 
-- (void)prepareForContentID:(id)a3
+- (void)prepareForContentID:(id)d
 {
-  v4 = a3;
-  v5 = [(NDContentArchiveStore *)self _containerPathForContentID:v4];
-  v6 = [(NDContentArchiveStore *)self cacheCoordinator];
+  dCopy = d;
+  v5 = [(NDContentArchiveStore *)self _containerPathForContentID:dCopy];
+  cacheCoordinator = [(NDContentArchiveStore *)self cacheCoordinator];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100010038;
   v9[3] = &unk_100071E78;
   v10 = v5;
-  v11 = self;
-  v12 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v12 = dCopy;
+  v7 = dCopy;
   v8 = v5;
-  [v6 performCacheWrite:v9];
+  [cacheCoordinator performCacheWrite:v9];
 }
 
-- (void)pruneArchivesForContentID:(id)a3
+- (void)pruneArchivesForContentID:(id)d
 {
-  v4 = a3;
-  v5 = [(NDContentArchiveStore *)self _containerPathForContentID:v4];
-  v6 = [(NDContentArchiveStore *)self cacheCoordinator];
+  dCopy = d;
+  v5 = [(NDContentArchiveStore *)self _containerPathForContentID:dCopy];
+  cacheCoordinator = [(NDContentArchiveStore *)self cacheCoordinator];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000102B8;
   v9[3] = &unk_100071E78;
   v9[4] = self;
   v10 = v5;
-  v11 = v4;
-  v7 = v4;
+  v11 = dCopy;
+  v7 = dCopy;
   v8 = v5;
-  [v6 performCacheWrite:v9];
+  [cacheCoordinator performCacheWrite:v9];
 }
 
-- (void)addArchive:(id)a3 forContentID:(id)a4
+- (void)addArchive:(id)archive forContentID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  archiveCopy = archive;
+  dCopy = d;
   v8 = objc_autoreleasePoolPush();
   v23 = 0;
-  v9 = [NSKeyedArchiver archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v23];
+  v9 = [NSKeyedArchiver archivedDataWithRootObject:archiveCopy requiringSecureCoding:1 error:&v23];
   v10 = v23;
   if (v9)
   {
     v11 = v9;
-    v12 = [(NDContentArchiveStore *)self _newUniqueArchivePathForContentID:v7];
-    v13 = [(NDContentArchiveStore *)self cacheCoordinator];
+    v12 = [(NDContentArchiveStore *)self _newUniqueArchivePathForContentID:dCopy];
+    cacheCoordinator = [(NDContentArchiveStore *)self cacheCoordinator];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_1000104EC;
     v16[3] = &unk_100071E78;
     v17 = v11;
     v18 = v12;
-    v19 = v7;
+    v19 = dCopy;
     v14 = v12;
     v15 = v11;
-    [v13 performCacheWrite:v16];
+    [cacheCoordinator performCacheWrite:v16];
   }
 
   else
@@ -197,7 +197,7 @@
     v20[1] = 3221225472;
     v20[2] = sub_1000104A0;
     v20[3] = &unk_100071DB0;
-    v21 = v7;
+    v21 = dCopy;
     v22 = v10;
     sub_1000104A0(v20);
 
@@ -207,29 +207,29 @@
   objc_autoreleasePoolPop(v8);
 }
 
-- (void)addManifest:(id)a3 forContentID:(id)a4
+- (void)addManifest:(id)manifest forContentID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  manifestCopy = manifest;
+  dCopy = d;
   v8 = objc_autoreleasePoolPush();
   v23 = 0;
-  v9 = [NSKeyedArchiver archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v23];
+  v9 = [NSKeyedArchiver archivedDataWithRootObject:manifestCopy requiringSecureCoding:1 error:&v23];
   v10 = v23;
   if (v9)
   {
     v11 = v9;
-    v12 = [(NDContentArchiveStore *)self _manifestPathForContentID:v7];
-    v13 = [(NDContentArchiveStore *)self cacheCoordinator];
+    v12 = [(NDContentArchiveStore *)self _manifestPathForContentID:dCopy];
+    cacheCoordinator = [(NDContentArchiveStore *)self cacheCoordinator];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_1000108C4;
     v16[3] = &unk_100071E78;
     v17 = v11;
     v18 = v12;
-    v19 = v7;
+    v19 = dCopy;
     v14 = v12;
     v15 = v11;
-    [v13 performCacheWrite:v16];
+    [cacheCoordinator performCacheWrite:v16];
   }
 
   else
@@ -238,7 +238,7 @@
     v20[1] = 3221225472;
     v20[2] = sub_100010878;
     v20[3] = &unk_100071DB0;
-    v21 = v7;
+    v21 = dCopy;
     v22 = v10;
     sub_100010878(v20);
 
@@ -248,56 +248,56 @@
   objc_autoreleasePoolPop(v8);
 }
 
-- (void)addBlob:(id)a3 name:(id)a4 contentID:(id)a5
+- (void)addBlob:(id)blob name:(id)name contentID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  blobCopy = blob;
+  nameCopy = name;
+  dCopy = d;
   v11 = objc_autoreleasePoolPush();
-  v12 = [(NDContentArchiveStore *)self _blobPathForName:v9 contentID:v10];
-  v13 = [(NDContentArchiveStore *)self cacheCoordinator];
+  v12 = [(NDContentArchiveStore *)self _blobPathForName:nameCopy contentID:dCopy];
+  cacheCoordinator = [(NDContentArchiveStore *)self cacheCoordinator];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100010BBC;
   v18[3] = &unk_1000723C0;
-  v14 = v8;
+  v14 = blobCopy;
   v19 = v14;
   v20 = v12;
-  v15 = v9;
+  v15 = nameCopy;
   v21 = v15;
-  v16 = v10;
+  v16 = dCopy;
   v22 = v16;
   v17 = v12;
-  [v13 performCacheWrite:v18];
+  [cacheCoordinator performCacheWrite:v18];
 
   objc_autoreleasePoolPop(v11);
 }
 
-- (void)didCompleteContentID:(id)a3
+- (void)didCompleteContentID:(id)d
 {
-  v4 = a3;
-  v5 = [(NDContentArchiveStore *)self _tokenPathForContentID:v4];
-  v6 = [(NDContentArchiveStore *)self cacheCoordinator];
+  dCopy = d;
+  v5 = [(NDContentArchiveStore *)self _tokenPathForContentID:dCopy];
+  cacheCoordinator = [(NDContentArchiveStore *)self cacheCoordinator];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100010E68;
   v9[3] = &unk_100071DB0;
   v10 = v5;
-  v11 = v4;
-  v7 = v4;
+  v11 = dCopy;
+  v7 = dCopy;
   v8 = v5;
-  [v6 performCacheWrite:v9];
+  [cacheCoordinator performCacheWrite:v9];
 }
 
-- (BOOL)isContentIDComplete:(id)a3
+- (BOOL)isContentIDComplete:(id)complete
 {
-  v4 = a3;
+  completeCopy = complete;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v5 = [(NDContentArchiveStore *)self _tokenPathForContentID:v4];
-  v6 = [(NDContentArchiveStore *)self cacheCoordinator];
+  v5 = [(NDContentArchiveStore *)self _tokenPathForContentID:completeCopy];
+  cacheCoordinator = [(NDContentArchiveStore *)self cacheCoordinator];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000110B8;
@@ -305,44 +305,44 @@
   v11 = &v12;
   v7 = v5;
   v10 = v7;
-  [v6 performCacheRead:v9];
+  [cacheCoordinator performCacheRead:v9];
 
-  LOBYTE(v6) = *(v13 + 24);
+  LOBYTE(cacheCoordinator) = *(v13 + 24);
   _Block_object_dispose(&v12, 8);
 
-  return v6;
+  return cacheCoordinator;
 }
 
-- (id)interestTokenForContentIDs:(id)a3
+- (id)interestTokenForContentIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(NDContentArchiveStore *)self cacheCoordinator];
-  v6 = [v5 holdTokenForKeys:v4];
-
-  return v6;
-}
-
-- (id)interestTokenForContentID:(id)a3
-{
-  v4 = a3;
-  v5 = [(NDContentArchiveStore *)self cacheCoordinator];
-  v6 = [v5 holdTokenForKey:v4];
+  dsCopy = ds;
+  cacheCoordinator = [(NDContentArchiveStore *)self cacheCoordinator];
+  v6 = [cacheCoordinator holdTokenForKeys:dsCopy];
 
   return v6;
 }
 
-- (id)manifestForContentID:(id)a3
+- (id)interestTokenForContentID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
+  cacheCoordinator = [(NDContentArchiveStore *)self cacheCoordinator];
+  v6 = [cacheCoordinator holdTokenForKey:dCopy];
+
+  return v6;
+}
+
+- (id)manifestForContentID:(id)d
+{
+  dCopy = d;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(NDContentArchiveStore *)self _manifestPathForContentID:v4];
+  v6 = [(NDContentArchiveStore *)self _manifestPathForContentID:dCopy];
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = sub_10000FE74;
   v22 = sub_10000FE84;
   v23 = 0;
-  v7 = [(NDContentArchiveStore *)self cacheCoordinator];
+  cacheCoordinator = [(NDContentArchiveStore *)self cacheCoordinator];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000113EC;
@@ -350,7 +350,7 @@
   v17 = &v18;
   v8 = v6;
   v16 = v8;
-  [v7 performCacheRead:v15];
+  [cacheCoordinator performCacheRead:v15];
 
   if (v19[5])
   {
@@ -376,13 +376,13 @@
   return v11;
 }
 
-- (id)archivesForContentID:(id)a3
+- (id)archivesForContentID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[NSMutableArray array];
   v6 = objc_autoreleasePoolPush();
-  v7 = [(NDContentArchiveStore *)self _containerPathForContentID:v4];
-  v8 = [(NDContentArchiveStore *)self cacheCoordinator];
+  v7 = [(NDContentArchiveStore *)self _containerPathForContentID:dCopy];
+  cacheCoordinator = [(NDContentArchiveStore *)self cacheCoordinator];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100011560;
@@ -391,25 +391,25 @@
   v9 = v5;
   v14 = v9;
   v10 = v7;
-  [v8 performCacheRead:v12];
+  [cacheCoordinator performCacheRead:v12];
 
   objc_autoreleasePoolPop(v6);
 
   return v9;
 }
 
-- (id)aggregateArchiveForContentID:(id)a3
+- (id)aggregateArchiveForContentID:(id)d
 {
-  v3 = [(NDContentArchiveStore *)self archivesForContentID:a3];
+  v3 = [(NDContentArchiveStore *)self archivesForContentID:d];
   v4 = [FCContentArchive archiveWithChildArchives:v3];
 
   return v4;
 }
 
-- (id)blobWithName:(id)a3 contentID:(id)a4
+- (id)blobWithName:(id)name contentID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  dCopy = d;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -417,8 +417,8 @@
   v21 = sub_10000FE84;
   v22 = 0;
   v8 = objc_autoreleasePoolPush();
-  v9 = [(NDContentArchiveStore *)self _blobPathForName:v6 contentID:v7];
-  v10 = [(NDContentArchiveStore *)self cacheCoordinator];
+  v9 = [(NDContentArchiveStore *)self _blobPathForName:nameCopy contentID:dCopy];
+  cacheCoordinator = [(NDContentArchiveStore *)self cacheCoordinator];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000118D8;
@@ -426,7 +426,7 @@
   v16 = &v17;
   v11 = v9;
   v15 = v11;
-  [v10 performCacheRead:v14];
+  [cacheCoordinator performCacheRead:v14];
 
   objc_autoreleasePoolPop(v8);
   v12 = v18[5];
@@ -435,10 +435,10 @@
   return v12;
 }
 
-- (id)bookmarkForBlobWithName:(id)a3 contentID:(id)a4
+- (id)bookmarkForBlobWithName:(id)name contentID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  dCopy = d;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -446,9 +446,9 @@
   v26 = sub_10000FE84;
   v27 = 0;
   v8 = objc_autoreleasePoolPush();
-  v9 = [(NDContentArchiveStore *)self _blobPathForName:v6 contentID:v7];
+  v9 = [(NDContentArchiveStore *)self _blobPathForName:nameCopy contentID:dCopy];
   v10 = [NSURL fileURLWithPath:v9];
-  v11 = [(NDContentArchiveStore *)self cacheCoordinator];
+  cacheCoordinator = [(NDContentArchiveStore *)self cacheCoordinator];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100011B04;
@@ -456,11 +456,11 @@
   v21 = &v22;
   v12 = v10;
   v18 = v12;
-  v13 = v6;
+  v13 = nameCopy;
   v19 = v13;
-  v14 = v7;
+  v14 = dCopy;
   v20 = v14;
-  [v11 performCacheRead:v17];
+  [cacheCoordinator performCacheRead:v17];
 
   objc_autoreleasePoolPop(v8);
   v15 = v23[5];
@@ -472,27 +472,27 @@
 - (int64_t)storageSize
 {
   v3 = +[NSFileManager defaultManager];
-  v4 = [(NDContentArchiveStore *)self rootContainerPath];
-  v5 = [NSURL fileURLWithPath:v4];
+  rootContainerPath = [(NDContentArchiveStore *)self rootContainerPath];
+  v5 = [NSURL fileURLWithPath:rootContainerPath];
   v6 = [v3 fc_sizeOfItemAtURL:v5 error:0];
 
   return v6;
 }
 
-- (void)enableFlushingWithFlushingThreshold:(unint64_t)a3
+- (void)enableFlushingWithFlushingThreshold:(unint64_t)threshold
 {
   v5 = [[FCCacheCoordinatorFlushPolicy alloc] initWithLowWaterMark:0 highWaterMark:0 alwaysFlushKeysWithZeroInterest:1];
-  v4 = [(NDContentArchiveStore *)self cacheCoordinator];
-  [v4 enableFlushingWithPolicy:v5];
+  cacheCoordinator = [(NDContentArchiveStore *)self cacheCoordinator];
+  [cacheCoordinator enableFlushingWithPolicy:v5];
 }
 
-- (void)cacheCoordinator:(id)a3 flushKeysWithWriteLock:(id)a4
+- (void)cacheCoordinator:(id)coordinator flushKeysWithWriteLock:(id)lock
 {
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = a4;
+  obj = lock;
   v5 = [obj countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v5)
   {
@@ -546,64 +546,64 @@
   }
 }
 
-- (id)_containerPathForContentID:(id)a3
+- (id)_containerPathForContentID:(id)d
 {
-  v4 = a3;
-  v5 = [(NDContentArchiveStore *)self rootContainerPath];
-  v6 = [v5 stringByAppendingPathComponent:v4];
+  dCopy = d;
+  rootContainerPath = [(NDContentArchiveStore *)self rootContainerPath];
+  v6 = [rootContainerPath stringByAppendingPathComponent:dCopy];
 
   return v6;
 }
 
-- (id)_manifestPathForContentID:(id)a3
+- (id)_manifestPathForContentID:(id)d
 {
-  v3 = [(NDContentArchiveStore *)self _containerPathForContentID:a3];
+  v3 = [(NDContentArchiveStore *)self _containerPathForContentID:d];
   v4 = [v3 stringByAppendingPathComponent:@"manifest"];
 
   return v4;
 }
 
-- (id)_newUniqueArchivePathForContentID:(id)a3
+- (id)_newUniqueArchivePathForContentID:(id)d
 {
-  v3 = [(NDContentArchiveStore *)self _containerPathForContentID:a3];
+  v3 = [(NDContentArchiveStore *)self _containerPathForContentID:d];
   v4 = +[NSUUID UUID];
-  v5 = [v4 UUIDString];
-  v6 = [v3 stringByAppendingPathComponent:v5];
+  uUIDString = [v4 UUIDString];
+  v6 = [v3 stringByAppendingPathComponent:uUIDString];
   v7 = [v6 stringByAppendingPathExtension:@"contentArchive"];
 
   return v7;
 }
 
-- (id)_blobPathForName:(id)a3 contentID:(id)a4
+- (id)_blobPathForName:(id)name contentID:(id)d
 {
-  v6 = a3;
-  v7 = [(NDContentArchiveStore *)self _containerPathForContentID:a4];
-  v8 = [v7 stringByAppendingPathComponent:v6];
+  nameCopy = name;
+  v7 = [(NDContentArchiveStore *)self _containerPathForContentID:d];
+  v8 = [v7 stringByAppendingPathComponent:nameCopy];
 
   return v8;
 }
 
-- (id)_tokenPathForContentID:(id)a3
+- (id)_tokenPathForContentID:(id)d
 {
-  v3 = [(NDContentArchiveStore *)self _containerPathForContentID:a3];
+  v3 = [(NDContentArchiveStore *)self _containerPathForContentID:d];
   v4 = [v3 stringByAppendingPathComponent:@"complete"];
 
   return v4;
 }
 
-- (BOOL)_isContentIDComplete:(id)a3
+- (BOOL)_isContentIDComplete:(id)complete
 {
-  v3 = [(NDContentArchiveStore *)self _tokenPathForContentID:a3];
+  v3 = [(NDContentArchiveStore *)self _tokenPathForContentID:complete];
   v4 = +[NSFileManager defaultManager];
   v5 = [v4 fileExistsAtPath:v3];
 
   return v5;
 }
 
-- (void)_pruneArchivesFromContainer:(id)a3 forContentID:(id)a4
+- (void)_pruneArchivesFromContainer:(id)container forContentID:(id)d
 {
-  v37 = a3;
-  v35 = a4;
+  containerCopy = container;
+  dCopy = d;
   v6 = [(NDContentArchiveStore *)self _tokenPathForContentID:?];
   v7 = NSError_ptr;
   v8 = +[NSFileManager defaultManager];
@@ -631,7 +631,7 @@
   v40 = 0u;
   v41 = 0u;
   v12 = +[NSFileManager defaultManager];
-  v13 = [v12 subpathsOfDirectoryAtPath:v37 error:0];
+  v13 = [v12 subpathsOfDirectoryAtPath:containerCopy error:0];
 
   v14 = [v13 countByEnumeratingWithState:&v40 objects:v49 count:16];
   if (v14)
@@ -655,19 +655,19 @@
 
         v19 = *(*(&v40 + 1) + 8 * v18);
         v20 = objc_autoreleasePoolPush();
-        v21 = [v19 pathExtension];
-        v22 = [v21 isEqualToString:v17];
+        pathExtension = [v19 pathExtension];
+        v22 = [pathExtension isEqualToString:v17];
 
         if (v22)
         {
           v23 = v16;
           v24 = v17;
           v25 = v13;
-          v26 = [v37 stringByAppendingPathComponent:v19];
+          v26 = [containerCopy stringByAppendingPathComponent:v19];
           v27 = v7;
-          v28 = [v7[2] defaultManager];
+          defaultManager = [v7[2] defaultManager];
           v39 = 0;
-          v29 = [v28 removeItemAtPath:v26 error:&v39];
+          v29 = [defaultManager removeItemAtPath:v26 error:&v39];
           v30 = v39;
 
           if (v29)
@@ -681,7 +681,7 @@
             if (os_log_type_enabled(FCOfflineDownloadsLog, OS_LOG_TYPE_ERROR))
             {
               *buf = 138543618;
-              v46 = v35;
+              v46 = dCopy;
               v47 = 2114;
               v48 = v30;
               _os_log_error_impl(&_mh_execute_header, v31, OS_LOG_TYPE_ERROR, "content archive store failed to remove archive for incomplete container, contentID=%{public}@, error=%{public}@", buf, 0x16u);
@@ -716,7 +716,7 @@
         *buf = 134218242;
         v46 = v36;
         v47 = 2114;
-        v48 = v35;
+        v48 = dCopy;
         _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "content archive store removed %lu archives from container, contentID=%{public}@", buf, 0x16u);
       }
     }
@@ -727,16 +727,16 @@
   }
 }
 
-+ (void)_prepareRootContainerAtPath:(id)a3
++ (void)_prepareRootContainerAtPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = +[NSFileManager defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  v5 = [v4 fileExistsAtPath:pathCopy];
 
   if (v5)
   {
     value = 0;
-    getxattr([v3 fileSystemRepresentation], "com.apple.newsd.storeVersion", &value, 2uLL, 0, 0);
+    getxattr([pathCopy fileSystemRepresentation], "com.apple.newsd.storeVersion", &value, 2uLL, 0, 0);
     if (value != 2)
     {
       v6 = FCOfflineDownloadsLog;
@@ -749,7 +749,7 @@
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "wiping content archive store because persisted version %lu does not match current version %lu", buf, 0x16u);
       }
 
-      v7 = [NSURL fileURLWithPath:v3 isDirectory:1];
+      v7 = [NSURL fileURLWithPath:pathCopy isDirectory:1];
       v8 = +[NSFileManager defaultManager];
       v15 = 0;
       v9 = [v8 fc_removeLargeDirectoryAtURL:v7 error:&v15];
@@ -769,14 +769,14 @@
   }
 
   v12 = +[NSFileManager defaultManager];
-  v13 = [v12 fileExistsAtPath:v3];
+  v13 = [v12 fileExistsAtPath:pathCopy];
 
   if ((v13 & 1) == 0)
   {
     v14 = +[NSFileManager defaultManager];
-    [v14 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:0];
+    [v14 createDirectoryAtPath:pathCopy withIntermediateDirectories:1 attributes:0 error:0];
 
-    setxattr([v3 fileSystemRepresentation], "com.apple.newsd.storeVersion", &NDContentArchiveStoreVersion, 2uLL, 0, 0);
+    setxattr([pathCopy fileSystemRepresentation], "com.apple.newsd.storeVersion", &NDContentArchiveStoreVersion, 2uLL, 0, 0);
   }
 }
 

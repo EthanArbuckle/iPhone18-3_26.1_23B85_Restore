@@ -1,35 +1,35 @@
 @interface PKApplyRadioPickerRow
-- (PKApplyRadioPickerRow)initWithTitle:(id)a3 submissionValue:(id)a4;
-- (void)configureCell:(id)a3;
+- (PKApplyRadioPickerRow)initWithTitle:(id)title submissionValue:(id)value;
+- (void)configureCell:(id)cell;
 @end
 
 @implementation PKApplyRadioPickerRow
 
-- (PKApplyRadioPickerRow)initWithTitle:(id)a3 submissionValue:(id)a4
+- (PKApplyRadioPickerRow)initWithTitle:(id)title submissionValue:(id)value
 {
-  v7 = a3;
-  v8 = a4;
+  titleCopy = title;
+  valueCopy = value;
   v12.receiver = self;
   v12.super_class = PKApplyRadioPickerRow;
   v9 = [(PKApplyRadioPickerRow *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_title, a3);
-    objc_storeStrong(&v10->_submissionValue, a4);
+    objc_storeStrong(&v9->_title, title);
+    objc_storeStrong(&v10->_submissionValue, value);
   }
 
   return v10;
 }
 
-- (void)configureCell:(id)a3
+- (void)configureCell:(id)cell
 {
-  v6 = a3;
+  cellCopy = cell;
   [(PKApplyRadioPickerRow *)self cellClass];
   if (objc_opt_isKindOfClass())
   {
     selected = self->_selected;
-    v5 = v6;
+    v5 = cellCopy;
     [v5 setRadioButtonSelected:selected];
     [v5 setTitle:self->_title];
     [v5 setAction:self->_action];

@@ -1,9 +1,9 @@
 @interface HMBLocalZoneIDUnshared
-- (BOOL)isEqual:(id)a3;
-- (HMBLocalZoneIDUnshared)initWithName:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMBLocalZoneIDUnshared)initWithName:(id)name;
 - (NSData)token;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -11,32 +11,32 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMBLocalZoneIDUnshared *)self token];
-  v3 = [v2 hash];
+  token = [(HMBLocalZoneIDUnshared *)self token];
+  v3 = [token hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [v4 conformsToProtocol:&unk_283EBFBA0];
+  equalCopy = equal;
+  v5 = [equalCopy conformsToProtocol:&unk_283EBFBA0];
   v6 = 0;
-  if (v4 && v5)
+  if (equalCopy && v5)
   {
-    v7 = [v4 token];
-    v8 = [(HMBLocalZoneIDUnshared *)self token];
-    v6 = [v7 isEqual:v8];
+    token = [equalCopy token];
+    token2 = [(HMBLocalZoneIDUnshared *)self token];
+    v6 = [token isEqual:token2];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HMBLocalZoneIDUnshared *)self name];
-  v6 = [v4 initWithName:v5];
+  name = [(HMBLocalZoneIDUnshared *)self name];
+  v6 = [v4 initWithName:name];
 
   return v6;
 }
@@ -44,30 +44,30 @@
 - (NSString)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMBLocalZoneIDUnshared *)self name];
-  v4 = [v2 stringWithFormat:@"<HMBLocalZoneIDUnshared: %@>", v3];
+  name = [(HMBLocalZoneIDUnshared *)self name];
+  v4 = [v2 stringWithFormat:@"<HMBLocalZoneIDUnshared: %@>", name];
 
   return v4;
 }
 
 - (NSData)token
 {
-  v2 = [(HMBLocalZoneIDUnshared *)self name];
-  v3 = [v2 dataUsingEncoding:10];
+  name = [(HMBLocalZoneIDUnshared *)self name];
+  v3 = [name dataUsingEncoding:10];
 
   return v3;
 }
 
-- (HMBLocalZoneIDUnshared)initWithName:(id)a3
+- (HMBLocalZoneIDUnshared)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = HMBLocalZoneIDUnshared;
   v6 = [(HMBLocalZoneIDUnshared *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_name, a3);
+    objc_storeStrong(&v6->_name, name);
   }
 
   return v7;

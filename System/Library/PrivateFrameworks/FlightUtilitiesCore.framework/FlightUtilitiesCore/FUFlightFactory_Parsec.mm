@@ -1,39 +1,39 @@
 @interface FUFlightFactory_Parsec
-+ (id)unsubscribeFromFlightUpdateChannel:(id)a3;
-+ (id)validatedFlightNumber:(unint64_t)a3 airlineCode:(id)a4 error:(id *)a5;
-+ (void)fetchUpdateForChannelId:(id)a3 completionHandler:(id)a4;
-+ (void)httpQuery:(id)a3 date:(id)a4 bundleIdentifier:(id)a5 userAgent:(id)a6 sessionID:(id)a7 completionHandler:(id)a8;
-+ (void)loadFlightStructuresWithFlightNumber:(unint64_t)a3 airlineCode:(id)a4 date:(id)a5 dateType:(int64_t)a6 userAgent:(id)a7 sessionID:(id)a8 completionHandler:(id)a9;
-+ (void)loadFlightsWithNumber:(unint64_t)a3 airlineCode:(id)a4 date:(id)a5 dateType:(int64_t)a6 userAgent:(id)a7 sessionID:(id)a8 completionHandler:(id)a9;
-+ (void)subscribeToUpdatesForFlightsWithNumber:(unint64_t)a3 airlineCode:(id)a4 date:(id)a5 completionHandler:(id)a6;
-+ (void)subscribeToUpdatesForFlightsWithNumber:(unint64_t)a3 airlineCode:(id)a4 date:(id)a5 updatesHandler:(id)a6 completionHandler:(id)a7;
++ (id)unsubscribeFromFlightUpdateChannel:(id)channel;
++ (id)validatedFlightNumber:(unint64_t)number airlineCode:(id)code error:(id *)error;
++ (void)fetchUpdateForChannelId:(id)id completionHandler:(id)handler;
++ (void)httpQuery:(id)query date:(id)date bundleIdentifier:(id)identifier userAgent:(id)agent sessionID:(id)d completionHandler:(id)handler;
++ (void)loadFlightStructuresWithFlightNumber:(unint64_t)number airlineCode:(id)code date:(id)date dateType:(int64_t)type userAgent:(id)agent sessionID:(id)d completionHandler:(id)handler;
++ (void)loadFlightsWithNumber:(unint64_t)number airlineCode:(id)code date:(id)date dateType:(int64_t)type userAgent:(id)agent sessionID:(id)d completionHandler:(id)handler;
++ (void)subscribeToUpdatesForFlightsWithNumber:(unint64_t)number airlineCode:(id)code date:(id)date completionHandler:(id)handler;
++ (void)subscribeToUpdatesForFlightsWithNumber:(unint64_t)number airlineCode:(id)code date:(id)date updatesHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation FUFlightFactory_Parsec
 
-+ (void)loadFlightsWithNumber:(unint64_t)a3 airlineCode:(id)a4 date:(id)a5 dateType:(int64_t)a6 userAgent:(id)a7 sessionID:(id)a8 completionHandler:(id)a9
++ (void)loadFlightsWithNumber:(unint64_t)number airlineCode:(id)code date:(id)date dateType:(int64_t)type userAgent:(id)agent sessionID:(id)d completionHandler:(id)handler
 {
-  v15 = a4;
-  v16 = a9;
+  codeCopy = code;
+  handlerCopy = handler;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __112__FUFlightFactory_Parsec_loadFlightsWithNumber_airlineCode_date_dateType_userAgent_sessionID_completionHandler___block_invoke;
   v19[3] = &unk_279012C80;
-  v20 = v15;
-  v21 = v16;
-  v17 = v15;
-  v18 = v16;
-  [a1 loadFlightStructuresWithFlightNumber:a3 airlineCode:v17 date:a5 dateType:a6 userAgent:a7 sessionID:a8 completionHandler:v19];
+  v20 = codeCopy;
+  v21 = handlerCopy;
+  v17 = codeCopy;
+  v18 = handlerCopy;
+  [self loadFlightStructuresWithFlightNumber:number airlineCode:v17 date:date dateType:type userAgent:agent sessionID:d completionHandler:v19];
 }
 
-+ (id)validatedFlightNumber:(unint64_t)a3 airlineCode:(id)a4 error:(id *)a5
++ (id)validatedFlightNumber:(unint64_t)number airlineCode:(id)code error:(id *)error
 {
-  v7 = a4;
-  if ([v7 length])
+  codeCopy = code;
+  if ([codeCopy length])
   {
-    if (a3)
+    if (number)
     {
-      a3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%lu", v7, a3];
+      number = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%lu", codeCopy, number];
       goto LABEL_7;
     }
 
@@ -45,31 +45,31 @@
   {
     NSLog(&cfstr_TryingToHandle.isa);
     v8 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.FlightUtilities.QueryError" code:0 userInfo:0];
-    a3 = 0;
+    number = 0;
   }
 
-  *a5 = v8;
+  *error = v8;
 LABEL_7:
 
-  return a3;
+  return number;
 }
 
-+ (void)httpQuery:(id)a3 date:(id)a4 bundleIdentifier:(id)a5 userAgent:(id)a6 sessionID:(id)a7 completionHandler:(id)a8
++ (void)httpQuery:(id)query date:(id)date bundleIdentifier:(id)identifier userAgent:(id)agent sessionID:(id)d completionHandler:(id)handler
 {
-  v14 = a6;
-  v15 = a8;
+  agentCopy = agent;
+  handlerCopy = handler;
   v16 = MEMORY[0x277D007B0];
-  v17 = a7;
-  v18 = [v16 flightRequestForQuery:a3 date:a4 appBundleId:a5];
-  v19 = [MEMORY[0x277CCA8D8] bundleForClass:a1];
+  dCopy = d;
+  v18 = [v16 flightRequestForQuery:query date:date appBundleId:identifier];
+  v19 = [MEMORY[0x277CCA8D8] bundleForClass:self];
   v20 = [v19 objectForInfoDictionaryKey:*MEMORY[0x277CBED58]];
 
   if ([(__CFString *)v20 length])
   {
-    if (v14)
+    if (agentCopy)
     {
 LABEL_3:
-      v21 = v14;
+      v21 = agentCopy;
       goto LABEL_6;
     }
   }
@@ -78,7 +78,7 @@ LABEL_3:
   {
 
     v20 = @"1.0";
-    if (v14)
+    if (agentCopy)
     {
       goto LABEL_3;
     }
@@ -88,9 +88,9 @@ LABEL_3:
 LABEL_6:
   v22 = v21;
   v23 = @"com.apple.flightutilities";
-  if (v17)
+  if (dCopy)
   {
-    v23 = v17;
+    v23 = dCopy;
   }
 
   v24 = MEMORY[0x277D007C8];
@@ -102,27 +102,27 @@ LABEL_6:
   v30[1] = 3221225472;
   v30[2] = __96__FUFlightFactory_Parsec_httpQuery_date_bundleIdentifier_userAgent_sessionID_completionHandler___block_invoke;
   v30[3] = &unk_279012CA8;
-  v31 = v15;
-  v28 = v15;
+  v31 = handlerCopy;
+  v28 = handlerCopy;
   v29 = [v27 taskWithRequest:v18 completion:v30];
   [v29 resume];
 }
 
-+ (void)loadFlightStructuresWithFlightNumber:(unint64_t)a3 airlineCode:(id)a4 date:(id)a5 dateType:(int64_t)a6 userAgent:(id)a7 sessionID:(id)a8 completionHandler:(id)a9
++ (void)loadFlightStructuresWithFlightNumber:(unint64_t)number airlineCode:(id)code date:(id)date dateType:(int64_t)type userAgent:(id)agent sessionID:(id)d completionHandler:(id)handler
 {
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
-  if (a6 == 1)
+  dateCopy = date;
+  agentCopy = agent;
+  dCopy = d;
+  handlerCopy = handler;
+  if (type == 1)
   {
     v31 = 0;
-    v19 = [a1 validatedFlightNumber:a3 airlineCode:a4 error:&v31];
+    v19 = [self validatedFlightNumber:number airlineCode:code error:&v31];
     v20 = v31;
     v21 = v20;
     if (!v19 || v20)
     {
-      v18[2](v18, 0, v20);
+      handlerCopy[2](handlerCopy, 0, v20);
     }
 
     else
@@ -132,12 +132,12 @@ LABEL_6:
       block[1] = 3221225472;
       block[2] = __127__FUFlightFactory_Parsec_loadFlightStructuresWithFlightNumber_airlineCode_date_dateType_userAgent_sessionID_completionHandler___block_invoke;
       block[3] = &unk_279012CD0;
-      v30 = a1;
+      selfCopy = self;
       v25 = v19;
-      v26 = v15;
-      v29 = v18;
-      v27 = v16;
-      v28 = v17;
+      v26 = dateCopy;
+      v29 = handlerCopy;
+      v27 = agentCopy;
+      v28 = dCopy;
       dispatch_async(v22, block);
     }
   }
@@ -146,79 +146,79 @@ LABEL_6:
   {
     NSLog(&cfstr_TryingToHandle_1.isa);
     v23 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.FlightUtilities.QueryError" code:2 userInfo:0];
-    v18[2](v18, 0, v23);
+    handlerCopy[2](handlerCopy, 0, v23);
   }
 }
 
-+ (void)subscribeToUpdatesForFlightsWithNumber:(unint64_t)a3 airlineCode:(id)a4 date:(id)a5 updatesHandler:(id)a6 completionHandler:(id)a7
++ (void)subscribeToUpdatesForFlightsWithNumber:(unint64_t)number airlineCode:(id)code date:(id)date updatesHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  dateCopy = date;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v22 = 0;
-  v15 = [a1 validatedFlightNumber:a3 airlineCode:a4 error:&v22];
+  v15 = [self validatedFlightNumber:number airlineCode:code error:&v22];
   v16 = v22;
   v17 = v16;
   if (!v15 || v16)
   {
-    v14[2](v14, 0, v16);
+    completionHandlerCopy[2](completionHandlerCopy, 0, v16);
   }
 
   else
   {
-    v18 = [MEMORY[0x277CCA8D8] mainBundle];
-    v19 = [v18 bundleIdentifier];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __115__FUFlightFactory_Parsec_subscribeToUpdatesForFlightsWithNumber_airlineCode_date_updatesHandler_completionHandler___block_invoke;
     v20[3] = &unk_279012CF8;
-    v21 = v13;
-    [_TtC19FlightUtilitiesCore15FUPegasusBridge subscribeTo:v15 date:v12 clientBundleIdentifier:v19 pushMessagesHandler:v20 completionHandler:v14];
+    v21 = handlerCopy;
+    [_TtC19FlightUtilitiesCore15FUPegasusBridge subscribeTo:v15 date:dateCopy clientBundleIdentifier:bundleIdentifier pushMessagesHandler:v20 completionHandler:completionHandlerCopy];
   }
 }
 
-+ (void)subscribeToUpdatesForFlightsWithNumber:(unint64_t)a3 airlineCode:(id)a4 date:(id)a5 completionHandler:(id)a6
++ (void)subscribeToUpdatesForFlightsWithNumber:(unint64_t)number airlineCode:(id)code date:(id)date completionHandler:(id)handler
 {
-  v10 = a5;
-  v11 = a6;
+  dateCopy = date;
+  handlerCopy = handler;
   v17 = 0;
-  v12 = [a1 validatedFlightNumber:a3 airlineCode:a4 error:&v17];
+  v12 = [self validatedFlightNumber:number airlineCode:code error:&v17];
   v13 = v17;
   v14 = v13;
   if (!v12 || v13)
   {
-    if (v11)
+    if (handlerCopy)
     {
-      v11[2](v11, 0, v13);
+      handlerCopy[2](handlerCopy, 0, v13);
     }
   }
 
   else
   {
-    v15 = [MEMORY[0x277CCA8D8] mainBundle];
-    v16 = [v15 bundleIdentifier];
-    [_TtC19FlightUtilitiesCore15FUPegasusBridge subscribeTo:v12 date:v10 clientBundleIdentifier:v16 completionHandler:v11];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    [_TtC19FlightUtilitiesCore15FUPegasusBridge subscribeTo:v12 date:dateCopy clientBundleIdentifier:bundleIdentifier completionHandler:handlerCopy];
   }
 }
 
-+ (void)fetchUpdateForChannelId:(id)a3 completionHandler:(id)a4
++ (void)fetchUpdateForChannelId:(id)id completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = v5;
-  if (v5)
+  handlerCopy = handler;
+  v6 = handlerCopy;
+  if (handlerCopy)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __68__FUFlightFactory_Parsec_fetchUpdateForChannelId_completionHandler___block_invoke;
     v7[3] = &unk_279012D20;
-    v8 = v5;
-    [_TtC19FlightUtilitiesCore15FUPegasusBridge fetchUpdateFor:a3 completionHandler:v7];
+    v8 = handlerCopy;
+    [_TtC19FlightUtilitiesCore15FUPegasusBridge fetchUpdateFor:id completionHandler:v7];
   }
 }
 
-+ (id)unsubscribeFromFlightUpdateChannel:(id)a3
++ (id)unsubscribeFromFlightUpdateChannel:(id)channel
 {
-  if (a3)
+  if (channel)
   {
     v4 = [_TtC19FlightUtilitiesCore15FUPegasusBridge unsubscribeWithChannelId:?];
   }

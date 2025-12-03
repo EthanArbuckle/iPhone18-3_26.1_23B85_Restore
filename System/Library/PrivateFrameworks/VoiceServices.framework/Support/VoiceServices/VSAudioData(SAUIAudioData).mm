@@ -17,10 +17,10 @@
 {
   v28 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [a1 audioData];
+  audioData = [self audioData];
   memset(&inFormat, 0, sizeof(inFormat));
-  [a1 asbd];
-  [a1 asbd];
+  [self asbd];
+  [self asbd];
   if (v25 == 1869641075)
   {
     v6 = VSGetLogDefault();
@@ -30,7 +30,7 @@
       _os_log_impl(&dword_2727E4000, v6, OS_LOG_TYPE_INFO, "Decoding opus for dumping.", &buf, 2u);
     }
 
-    v7 = [MEMORY[0x277D79920] pcmAudioDataFromOpusAudio:a1];
+    v7 = [MEMORY[0x277D79920] pcmAudioDataFromOpusAudio:self];
     v8 = VSGetLogDefault();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -38,7 +38,7 @@
       _os_log_impl(&dword_2727E4000, v8, OS_LOG_TYPE_INFO, "Opus decoded for dumping.", &buf, 2u);
     }
 
-    v9 = [v7 audioData];
+    audioData2 = [v7 audioData];
 
     if (v7)
     {
@@ -52,7 +52,7 @@
 
     inFormat = buf;
 
-    v5 = v9;
+    audioData = audioData2;
   }
 
   outAudioFile = 0;
@@ -77,8 +77,8 @@ LABEL_19:
 
   else
   {
-    ioNumBytes = [v5 length];
-    v16 = AudioFileWriteBytes(outAudioFile, 0, 0, &ioNumBytes, [v5 bytes]);
+    ioNumBytes = [audioData length];
+    v16 = AudioFileWriteBytes(outAudioFile, 0, 0, &ioNumBytes, [audioData bytes]);
     if (v16)
     {
       v17 = v16;
@@ -130,20 +130,20 @@ LABEL_21:
 {
   v31 = *MEMORY[0x277D85DE8];
   v6 = a3;
-  v7 = [MEMORY[0x277D79960] sharedInstance];
+  mEMORY[0x277D79960] = [MEMORY[0x277D79960] sharedInstance];
   v8 = *(a4 + 16);
   *buf = *a4;
   v29 = v8;
   v30 = *(a4 + 32);
-  v9 = [v7 beginChunkDecoderForStreamDescription:buf];
+  v9 = [mEMORY[0x277D79960] beginChunkDecoderForStreamDescription:buf];
 
-  v10 = [MEMORY[0x277CBEB28] data];
+  data = [MEMORY[0x277CBEB28] data];
   v11 = [v6 length];
-  v12 = [v6 bytes];
+  bytes = [v6 bytes];
   if (v11)
   {
-    v13 = v12;
-    v26 = a1;
+    v13 = bytes;
+    selfCopy = self;
     v14 = 0;
     LODWORD(v15) = 0;
     while (1)
@@ -168,9 +168,9 @@ LABEL_21:
       }
 
       v18 = [MEMORY[0x277CBEA90] dataWithBytes:v13 + v14 length:v15];
-      v19 = [MEMORY[0x277D79960] sharedInstance];
+      mEMORY[0x277D79960]2 = [MEMORY[0x277D79960] sharedInstance];
       v27 = 0;
-      v15 = [v19 decodeChunk:v18 outError:&v27];
+      v15 = [mEMORY[0x277D79960]2 decodeChunk:v18 outError:&v27];
       v20 = v27;
 
       if (v20)
@@ -186,7 +186,7 @@ LABEL_21:
         goto LABEL_15;
       }
 
-      [v10 appendData:v15];
+      [data appendData:v15];
 
       LODWORD(v15) = 0;
       v14 = v17;
@@ -220,10 +220,10 @@ LABEL_15:
   }
 
 LABEL_16:
-  v23 = [MEMORY[0x277D79960] sharedInstance];
-  [v23 endChunkDecoding];
+  mEMORY[0x277D79960]3 = [MEMORY[0x277D79960] sharedInstance];
+  [mEMORY[0x277D79960]3 endChunkDecoding];
 
-  [a1 setAudioData:v10];
+  [self setAudioData:data];
   v24 = *MEMORY[0x277D85DE8];
   return v21;
 }
@@ -232,13 +232,13 @@ LABEL_16:
 {
   v22 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [MEMORY[0x277CBEB28] data];
-  v6 = [MEMORY[0x277CBEB28] data];
+  data = [MEMORY[0x277CBEB28] data];
+  data2 = [MEMORY[0x277CBEB28] data];
   v7 = [v4 length];
-  v8 = [v4 bytes];
+  bytes = [v4 bytes];
   if (v7)
   {
-    v9 = v8;
+    v9 = bytes;
     v10 = 0;
     v11 = 0;
     while (1)
@@ -263,11 +263,11 @@ LABEL_16:
         break;
       }
 
-      v19 = [v5 length];
+      v19 = [data length];
       LODWORD(v20) = 0;
       HIDWORD(v20) = v12;
-      [v6 appendBytes:&v19 length:16];
-      [v5 appendBytes:v9 + v11 length:v12];
+      [data2 appendBytes:&v19 length:16];
+      [data appendBytes:v9 + v11 length:v12];
       ++v10;
       v11 += v12;
       if (v14 >= v7)
@@ -295,9 +295,9 @@ LABEL_16:
   {
     v10 = 0;
 LABEL_13:
-    [a1 setPacketCount:v10];
-    [a1 setPacketDescriptions:v6];
-    [a1 setAudioData:v5];
+    [self setPacketCount:v10];
+    [self setPacketDescriptions:data2];
+    [self setAudioData:data];
     v16 = 1;
   }
 
@@ -307,43 +307,43 @@ LABEL_13:
 
 - (uint64_t)populateWithPCMData:()SAUIAudioData
 {
-  [a1 setAudioData:?];
-  [a1 setPacketCount:0];
-  [a1 setPacketDescriptions:0];
+  [self setAudioData:?];
+  [self setPacketCount:0];
+  [self setPacketDescriptions:0];
   return 1;
 }
 
 + (void)asbdFromDescription:()SAUIAudioData
 {
-  v3 = a1;
-  v4 = [v3 formatID];
-  *(a2 + 8) = [v4 unsignedIntegerValue];
+  selfCopy = self;
+  formatID = [selfCopy formatID];
+  *(a2 + 8) = [formatID unsignedIntegerValue];
 
-  v5 = [v3 sampleRate];
-  [v5 doubleValue];
+  sampleRate = [selfCopy sampleRate];
+  [sampleRate doubleValue];
   *a2 = v6;
 
-  v7 = [v3 formatFlags];
-  *(a2 + 12) = [v7 unsignedIntValue];
+  formatFlags = [selfCopy formatFlags];
+  *(a2 + 12) = [formatFlags unsignedIntValue];
 
-  v8 = [v3 bytesPerPacket];
-  *(a2 + 16) = [v8 unsignedIntValue];
+  bytesPerPacket = [selfCopy bytesPerPacket];
+  *(a2 + 16) = [bytesPerPacket unsignedIntValue];
 
-  v9 = [v3 framesPerPacket];
-  *(a2 + 20) = [v9 unsignedIntValue];
+  framesPerPacket = [selfCopy framesPerPacket];
+  *(a2 + 20) = [framesPerPacket unsignedIntValue];
 
-  v10 = [v3 bytesPerFrame];
-  *(a2 + 24) = [v10 unsignedIntValue];
+  bytesPerFrame = [selfCopy bytesPerFrame];
+  *(a2 + 24) = [bytesPerFrame unsignedIntValue];
 
-  v11 = [v3 channelsPerFrame];
-  *(a2 + 28) = [v11 unsignedIntValue];
+  channelsPerFrame = [selfCopy channelsPerFrame];
+  *(a2 + 28) = [channelsPerFrame unsignedIntValue];
 
-  v12 = [v3 bitsPerChannel];
-  *(a2 + 32) = [v12 unsignedIntValue];
+  bitsPerChannel = [selfCopy bitsPerChannel];
+  *(a2 + 32) = [bitsPerChannel unsignedIntValue];
 
-  v13 = [v3 reserved];
+  reserved = [selfCopy reserved];
 
-  *(a2 + 36) = [v13 unsignedIntValue];
+  *(a2 + 36) = [reserved unsignedIntValue];
 }
 
 + (id)audioDataWithASBD:()SAUIAudioData rawData:
@@ -364,8 +364,8 @@ LABEL_13:
   [v6 asbd];
   if (v19 == 1819304813)
   {
-    v8 = [v6 audioData];
-    [v6 populateWithPCMData:v8];
+    audioData = [v6 audioData];
+    [v6 populateWithPCMData:audioData];
 
 LABEL_4:
     v9 = v6;
@@ -441,13 +441,13 @@ LABEL_12:
     v6 = 0;
     do
     {
-      v7 = [v3 packetDescriptions];
-      [v7 getBytes:&v18 range:{v5, 16}];
+      packetDescriptions = [v3 packetDescriptions];
+      [packetDescriptions getBytes:&v18 range:{v5, 16}];
 
       v8 = MEMORY[0x277CBEA90];
-      v9 = [v3 audioData];
-      v10 = [v9 bytes];
-      v11 = [v8 dataWithBytes:v10 + v18 length:HIDWORD(v19)];
+      audioData = [v3 audioData];
+      bytes = [audioData bytes];
+      v11 = [v8 dataWithBytes:bytes + v18 length:HIDWORD(v19)];
 
       [v4 addObject:v11];
       ++v6;
@@ -511,54 +511,54 @@ LABEL_12:
   v3 = a3;
   v4 = objc_alloc_init(MEMORY[0x277D79920]);
   v42 = v3;
-  v5 = [v3 decoderStreamDescription];
+  decoderStreamDescription = [v3 decoderStreamDescription];
   v6 = VSGetLogDefault();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v38 = [v5 formatID];
-    v39 = [v5 sampleRate];
+    formatID = [decoderStreamDescription formatID];
+    sampleRate = [decoderStreamDescription sampleRate];
     *buf = 138412546;
-    *&buf[4] = v38;
+    *&buf[4] = formatID;
     *v44 = 2112;
-    *&v44[2] = v39;
+    *&v44[2] = sampleRate;
     _os_log_debug_impl(&dword_2727E4000, v6, OS_LOG_TYPE_DEBUG, "decoderStreamDescription formatID: %@, sample rate: %@", buf, 0x16u);
   }
 
-  v7 = [v5 formatID];
-  v8 = [v7 unsignedIntegerValue];
+  formatID2 = [decoderStreamDescription formatID];
+  unsignedIntegerValue = [formatID2 unsignedIntegerValue];
 
-  v9 = [v5 sampleRate];
-  [v9 doubleValue];
+  sampleRate2 = [decoderStreamDescription sampleRate];
+  [sampleRate2 doubleValue];
   v11 = v10;
 
-  v12 = [v5 formatFlags];
-  v13 = [v12 unsignedIntValue];
+  formatFlags = [decoderStreamDescription formatFlags];
+  unsignedIntValue = [formatFlags unsignedIntValue];
 
-  v14 = [v5 bytesPerPacket];
-  v15 = [v14 unsignedIntValue];
+  bytesPerPacket = [decoderStreamDescription bytesPerPacket];
+  unsignedIntValue2 = [bytesPerPacket unsignedIntValue];
 
-  v16 = [v5 framesPerPacket];
-  v17 = [v16 unsignedIntValue];
+  framesPerPacket = [decoderStreamDescription framesPerPacket];
+  unsignedIntValue3 = [framesPerPacket unsignedIntValue];
 
-  v18 = [v5 bytesPerFrame];
-  v19 = [v18 unsignedIntValue];
+  bytesPerFrame = [decoderStreamDescription bytesPerFrame];
+  unsignedIntValue4 = [bytesPerFrame unsignedIntValue];
 
-  v20 = [v5 channelsPerFrame];
-  v21 = [v20 unsignedIntValue];
+  channelsPerFrame = [decoderStreamDescription channelsPerFrame];
+  unsignedIntValue5 = [channelsPerFrame unsignedIntValue];
 
-  v22 = [v5 bitsPerChannel];
-  v41 = [v22 unsignedIntValue];
+  bitsPerChannel = [decoderStreamDescription bitsPerChannel];
+  unsignedIntValue6 = [bitsPerChannel unsignedIntValue];
 
-  v23 = [v5 reserved];
-  v24 = [v23 unsignedIntValue];
+  reserved = [decoderStreamDescription reserved];
+  unsignedIntValue7 = [reserved unsignedIntValue];
 
-  if (v8 == 1869641075)
+  if (unsignedIntegerValue == 1869641075)
   {
-    v40 = v21;
-    v25 = v19;
-    v26 = v17;
-    v27 = v15;
-    v28 = v13;
+    v40 = unsignedIntValue5;
+    v25 = unsignedIntValue4;
+    v26 = unsignedIntValue3;
+    v27 = unsignedIntValue2;
+    v28 = unsignedIntValue;
     [v42 audioBuffer];
     v33 = v30 = v4;
     v34 = [v30 populateWithOpusData:v33];
@@ -571,29 +571,29 @@ LABEL_12:
     goto LABEL_8;
   }
 
-  if (v8 == 1819304813)
+  if (unsignedIntegerValue == 1819304813)
   {
-    v40 = v21;
-    v25 = v19;
-    v26 = v17;
-    v27 = v15;
-    v28 = v13;
-    v29 = [v42 audioBuffer];
+    v40 = unsignedIntValue5;
+    v25 = unsignedIntValue4;
+    v26 = unsignedIntValue3;
+    v27 = unsignedIntValue2;
+    v28 = unsignedIntValue;
+    audioBuffer = [v42 audioBuffer];
     v30 = v4;
-    v31 = [v4 populateWithPCMData:v29];
+    v31 = [v4 populateWithPCMData:audioBuffer];
 
     if (v31)
     {
 LABEL_6:
       *buf = v11;
-      *&buf[8] = v8;
+      *&buf[8] = unsignedIntegerValue;
       *v44 = v28;
       *&v44[4] = v27;
       *&v44[8] = v26;
       v45 = v25;
       v46 = v40;
-      v47 = v41;
-      v48 = v24;
+      v47 = unsignedIntValue6;
+      v48 = unsignedIntValue7;
       [v30 setAsbd:buf];
       v32 = v30;
 LABEL_9:
@@ -610,7 +610,7 @@ LABEL_8:
   if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
   {
     *buf = 67109120;
-    *&buf[4] = v8;
+    *&buf[4] = unsignedIntegerValue;
     _os_log_error_impl(&dword_2727E4000, v35, OS_LOG_TYPE_ERROR, "Unknown server audio format ID: %d", buf, 8u);
   }
 
@@ -715,10 +715,10 @@ LABEL_11:
   else
   {
     v21 = [MEMORY[0x277CBEB28] dataWithLength:16 * *ioNumPackets];
-    v22 = [v21 mutableBytes];
+    mutableBytes = [v21 mutableBytes];
     v23 = [MEMORY[0x277CBEB28] dataWithLength:*ioNumBytes];
-    v24 = [v23 mutableBytes];
-    PacketData = AudioFileReadPacketData(outAudioFile, 0, ioNumBytes, v22, 0, ioNumPackets, v24);
+    mutableBytes2 = [v23 mutableBytes];
+    PacketData = AudioFileReadPacketData(outAudioFile, 0, ioNumBytes, mutableBytes, 0, ioNumPackets, mutableBytes2);
     if (PacketData)
     {
       if (a4)

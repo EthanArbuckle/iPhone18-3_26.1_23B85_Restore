@@ -1,6 +1,6 @@
 @interface _EARVisualContextEvaluation
 + (void)initialize;
-- (id)computeContextualizationMetricsWithMesssagesContext:(id)a3 correctedText:(id)a4 recognizedText:(id)a5 profilePath:(id)a6;
+- (id)computeContextualizationMetricsWithMesssagesContext:(id)context correctedText:(id)text recognizedText:(id)recognizedText profilePath:(id)path;
 @end
 
 @implementation _EARVisualContextEvaluation
@@ -8,20 +8,20 @@
 + (void)initialize
 {
   v3 = objc_opt_class();
-  if (v3 == a1)
+  if (v3 == self)
   {
 
     EARLogger::initializeLogging(v3);
   }
 }
 
-- (id)computeContextualizationMetricsWithMesssagesContext:(id)a3 correctedText:(id)a4 recognizedText:(id)a5 profilePath:(id)a6
+- (id)computeContextualizationMetricsWithMesssagesContext:(id)context correctedText:(id)text recognizedText:(id)recognizedText profilePath:(id)path
 {
   v113 = *MEMORY[0x1E69E9840];
-  v69 = a3;
-  v72 = a4;
-  v71 = a5;
-  v70 = a6;
+  contextCopy = context;
+  textCopy = text;
+  recognizedTextCopy = recognizedText;
+  pathCopy = path;
   v90 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v89 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v75 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -33,7 +33,7 @@
   v98 = 0u;
   v95 = 0u;
   v96 = 0u;
-  obj = v69;
+  obj = contextCopy;
   v9 = [obj countByEnumeratingWithState:&v95 objects:v106 count:16];
   if (v9)
   {
@@ -48,11 +48,11 @@
         }
 
         v12 = *(*(&v95 + 1) + 8 * i);
-        v13 = [v12 sender];
-        [v90 addObject:v13];
+        sender = [v12 sender];
+        [v90 addObject:sender];
 
-        v14 = [v12 messages];
-        v15 = [(_EAREntityTagger *)v88 tagEntitiesInArray:v14];
+        messages = [v12 messages];
+        v15 = [(_EAREntityTagger *)v88 tagEntitiesInArray:messages];
 
         [v89 unionSet:v15];
       }
@@ -68,7 +68,7 @@
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v105 count:1];
   v74 = [v16 initWithTagSchemes:v17];
 
-  tokenizeAndTagText(v74, v72, v75, v81);
+  tokenizeAndTagText(v74, textCopy, v75, v81);
   v18 = [v75 count];
   if (v18 >= 0x65)
   {
@@ -85,7 +85,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  tokenizeAndTagText(v74, v71, v73, v76);
+  tokenizeAndTagText(v74, recognizedTextCopy, v73, v76);
   v21 = [v73 count];
   if (v21 >= 0x65)
   {
@@ -170,25 +170,25 @@ LABEL_23:
 
           if ([v34 isEqualToString:@"~"])
           {
-            v36 = [(_EARConfusionPair *)v33 correctedTokens];
-            [v36 addObject:v35];
+            correctedTokens = [(_EARConfusionPair *)v33 correctedTokens];
+            [correctedTokens addObject:v35];
             ++v29;
           }
 
           else if ([v35 isEqualToString:@"~"])
           {
-            v36 = [(_EARConfusionPair *)v33 recognizedTokens];
-            [v36 addObject:v34];
+            correctedTokens = [(_EARConfusionPair *)v33 recognizedTokens];
+            [correctedTokens addObject:v34];
             ++v83;
           }
 
           else
           {
-            v37 = [(_EARConfusionPair *)v33 recognizedTokens];
-            [v37 addObject:v34];
+            recognizedTokens = [(_EARConfusionPair *)v33 recognizedTokens];
+            [recognizedTokens addObject:v34];
 
-            v36 = [(_EARConfusionPair *)v33 correctedTokens];
-            [v36 addObject:v35];
+            correctedTokens = [(_EARConfusionPair *)v33 correctedTokens];
+            [correctedTokens addObject:v35];
           }
 
           if (++v28 >= v27)
@@ -200,15 +200,15 @@ LABEL_23:
       }
 
 LABEL_35:
-      v38 = [(_EARConfusionPair *)v33 recognizedTokens];
-      if ([v38 count])
+      recognizedTokens2 = [(_EARConfusionPair *)v33 recognizedTokens];
+      if ([recognizedTokens2 count])
       {
       }
 
       else
       {
-        v39 = [(_EARConfusionPair *)v33 correctedTokens];
-        v40 = [v39 count] == 0;
+        correctedTokens2 = [(_EARConfusionPair *)v33 correctedTokens];
+        v40 = [correctedTokens2 count] == 0;
 
         if (v40)
         {
@@ -232,9 +232,9 @@ LABEL_41:
   _Block_object_dispose(&v100, 8);
 
   _Block_object_dispose(buf, 8);
-  if ([v70 length])
+  if ([pathCopy length])
   {
-    v79 = [[_EARUserProfileContainer alloc] initWithPath:v70 error:0];
+    v79 = [[_EARUserProfileContainer alloc] initWithPath:pathCopy error:0];
   }
 
   else
@@ -270,14 +270,14 @@ LABEL_41:
         }
 
         v42 = *(*(&v91 + 1) + 8 * v87);
-        v43 = [v42 correctedTokenStartIndex];
-        v44 = [v42 correctedTokens];
-        v45 = entityFromTokenIndexRange(v43, [v44 count], v81);
+        correctedTokenStartIndex = [v42 correctedTokenStartIndex];
+        correctedTokens3 = [v42 correctedTokens];
+        v45 = entityFromTokenIndexRange(correctedTokenStartIndex, [correctedTokens3 count], v81);
 
         v84 = [v45 length];
         if (v84)
         {
-          v46 = [v42 correctedTokens];
+          correctedTokens4 = [v42 correctedTokens];
           v47 = v90;
           v48 = v89;
           v49 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -285,7 +285,7 @@ LABEL_41:
           v103 = 0u;
           v100 = 0u;
           v101 = 0u;
-          v50 = v46;
+          v50 = correctedTokens4;
           v51 = [v50 countByEnumeratingWithState:&v100 objects:buf count:16];
           if (v51)
           {
@@ -328,32 +328,32 @@ LABEL_54:
             }
           }
 
-          v55 = [v49 allObjects];
+          allObjects = [v49 allObjects];
 
-          v56 = [v42 correctedTokens];
-          v57 = getTokensProfileCategories(v56, v79);
+          correctedTokens5 = [v42 correctedTokens];
+          v57 = getTokensProfileCategories(correctedTokens5, v79);
           goto LABEL_65;
         }
 
-        v60 = [v42 recognizedTokenStartIndex];
-        v61 = [v42 recognizedTokens];
-        v56 = entityFromTokenIndexRange(v60, [v61 count], v76);
+        recognizedTokenStartIndex = [v42 recognizedTokenStartIndex];
+        recognizedTokens3 = [v42 recognizedTokens];
+        correctedTokens5 = entityFromTokenIndexRange(recognizedTokenStartIndex, [recognizedTokens3 count], v76);
 
-        if (![v56 length])
+        if (![correctedTokens5 length])
         {
-          v55 = 0;
+          allObjects = 0;
           v57 = 0;
 LABEL_65:
           v58 = 0;
           goto LABEL_66;
         }
 
-        v62 = [v42 recognizedTokens];
-        v57 = getTokensProfileCategories(v62, v79);
+        recognizedTokens4 = [v42 recognizedTokens];
+        v57 = getTokensProfileCategories(recognizedTokens4, v79);
 
         if (![v57 count])
         {
-          v55 = 0;
+          allObjects = 0;
           goto LABEL_65;
         }
 
@@ -361,14 +361,14 @@ LABEL_65:
         v64 = [v57 objectAtIndex:0];
         v65 = [v63 arrayWithObject:v64];
 
-        v55 = 0;
+        allObjects = 0;
         v58 = 1;
         v57 = v65;
 LABEL_66:
 
         if (((v84 != 0) | v58) == 1)
         {
-          v59 = [[_EARVisualContextMetrics alloc] initWithEntityCategory:v45 visualContextCategories:v55 speechProfileCategories:v57];
+          v59 = [[_EARVisualContextMetrics alloc] initWithEntityCategory:v45 visualContextCategories:allObjects speechProfileCategories:v57];
           [v77 addObject:v59];
         }
 

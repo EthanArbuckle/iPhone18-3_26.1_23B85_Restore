@@ -1,51 +1,51 @@
 @interface BMTopicEntity
-- (BMTopicEntity)initWithProto:(id)a3;
-- (BMTopicEntity)initWithProtoData:(id)a3;
-- (BMTopicEntity)initWithTopicId:(id)a3 displayName:(id)a4 attributes:(id)a5;
-- (BOOL)isEqual:(id)a3;
+- (BMTopicEntity)initWithProto:(id)proto;
+- (BMTopicEntity)initWithProtoData:(id)data;
+- (BMTopicEntity)initWithTopicId:(id)id displayName:(id)name attributes:(id)attributes;
+- (BOOL)isEqual:(id)equal;
 - (id)encodeAsProto;
 - (id)proto;
 @end
 
 @implementation BMTopicEntity
 
-- (BMTopicEntity)initWithTopicId:(id)a3 displayName:(id)a4 attributes:(id)a5
+- (BMTopicEntity)initWithTopicId:(id)id displayName:(id)name attributes:(id)attributes
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  idCopy = id;
+  nameCopy = name;
+  attributesCopy = attributes;
   v15.receiver = self;
   v15.super_class = BMTopicEntity;
   v12 = [(BMTopicEntity *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_topicId, a3);
-    objc_storeStrong(&v13->_displayName, a4);
-    objc_storeStrong(&v13->_attributes, a5);
+    objc_storeStrong(&v12->_topicId, id);
+    objc_storeStrong(&v13->_displayName, name);
+    objc_storeStrong(&v13->_attributes, attributes);
   }
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     topicId = self->_topicId;
-    v7 = [v5 topicId];
-    if ([(NSString *)topicId isEqualToString:v7])
+    topicId = [v5 topicId];
+    if ([(NSString *)topicId isEqualToString:topicId])
     {
       displayName = self->_displayName;
-      v9 = [v5 displayName];
-      if ([BMEntityRelationshipEventUtilities checkNullableStringEqualityForSource:displayName target:v9])
+      displayName = [v5 displayName];
+      if ([BMEntityRelationshipEventUtilities checkNullableStringEqualityForSource:displayName target:displayName])
       {
         attributes = self->_attributes;
-        v11 = [v5 attributes];
-        v12 = [BMEntityRelationshipEventUtilities checkNullableDictionaryEqualityForSource:attributes target:v11];
+        attributes = [v5 attributes];
+        v12 = [BMEntityRelationshipEventUtilities checkNullableDictionaryEqualityForSource:attributes target:attributes];
       }
 
       else
@@ -70,30 +70,30 @@
 
 - (id)encodeAsProto
 {
-  v2 = [(BMTopicEntity *)self proto];
-  v3 = [v2 data];
+  proto = [(BMTopicEntity *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMTopicEntity)initWithProto:(id)a3
+- (BMTopicEntity)initWithProto:(id)proto
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  protoCopy = proto;
+  if (protoCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
-    v6 = [v5 attributes];
+    v5 = protoCopy;
+    attributes = [v5 attributes];
 
-    if (v6)
+    if (attributes)
     {
-      v6 = objc_opt_new();
+      attributes = objc_opt_new();
       v21 = 0u;
       v22 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v7 = [v5 attributes];
-      v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      attributes2 = [v5 attributes];
+      v8 = [attributes2 countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v8)
       {
         v9 = v8;
@@ -104,71 +104,71 @@
           {
             if (*v22 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(attributes2);
             }
 
             v12 = *(*(&v21 + 1) + 8 * i);
-            v13 = [v12 value];
+            value = [v12 value];
             v14 = [v12 key];
-            [v6 setValue:v13 forKey:v14];
+            [attributes setValue:value forKey:v14];
           }
 
-          v9 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+          v9 = [attributes2 countByEnumeratingWithState:&v21 objects:v25 count:16];
         }
 
         while (v9);
       }
     }
 
-    v15 = [v5 topicId];
-    v16 = [v5 displayName];
-    v17 = [v6 copy];
-    self = [(BMTopicEntity *)self initWithTopicId:v15 displayName:v16 attributes:v17];
+    topicId = [v5 topicId];
+    displayName = [v5 displayName];
+    v17 = [attributes copy];
+    self = [(BMTopicEntity *)self initWithTopicId:topicId displayName:displayName attributes:v17];
 
-    v18 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
   v19 = *MEMORY[0x1E69E9840];
-  return v18;
+  return selfCopy;
 }
 
-- (BMTopicEntity)initWithProtoData:(id)a3
+- (BMTopicEntity)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBTopicEntity alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBTopicEntity alloc] initWithData:dataCopy];
 
     self = [(BMTopicEntity *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v26 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(BMTopicEntity *)self topicId];
-  [v3 setTopicId:v4];
+  topicId = [(BMTopicEntity *)self topicId];
+  [v3 setTopicId:topicId];
 
-  v5 = [(BMTopicEntity *)self displayName];
-  [v3 setDisplayName:v5];
+  displayName = [(BMTopicEntity *)self displayName];
+  [v3 setDisplayName:displayName];
 
-  v6 = [(BMTopicEntity *)self attributes];
+  attributes = [(BMTopicEntity *)self attributes];
 
-  if (v6)
+  if (attributes)
   {
     v7 = objc_opt_new();
     v21 = 0u;
@@ -194,8 +194,8 @@
           v13 = objc_autoreleasePoolPush();
           v14 = objc_opt_new();
           [v14 setKey:v12];
-          v15 = [(BMTopicEntity *)self attributes];
-          v16 = [v15 objectForKeyedSubscript:v12];
+          attributes2 = [(BMTopicEntity *)self attributes];
+          v16 = [attributes2 objectForKeyedSubscript:v12];
           [v14 setValue:v16];
 
           [v7 addObject:v14];

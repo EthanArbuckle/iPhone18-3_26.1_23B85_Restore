@@ -1,24 +1,24 @@
 @interface _SFBrowserWindowSettings
 + (_SFBrowserWindowSettings)settings;
-+ (void)setSharedSettings:(id)a3;
-- (BOOL)_BOOLValueForKey:(id)a3 windowUUID:(id)a4;
-- (BOOL)activeDocumentIsValidForWindowWithUUID:(id)a3;
++ (void)setSharedSettings:(id)settings;
+- (BOOL)_BOOLValueForKey:(id)key windowUUID:(id)d;
+- (BOOL)activeDocumentIsValidForWindowWithUUID:(id)d;
 - (BOOL)hasPrivateBrowsingWindow;
 - (_SFBrowserWindowSettings)init;
-- (id)_blankSnapshotKeyForPrivateBrowsing:(BOOL)a3 syncableTabGroupUUID:(id)a4;
-- (id)_numberForKey:(id)a3 windowUUID:(id)a4;
-- (id)_stringForKey:(id)a3 windowUUID:(id)a4;
-- (id)blankSnapshotGroupIdentifierForPrivateBrowsing:(BOOL)a3 syncableTabGroupUUID:(id)a4 forWindowWithUUID:(id)a5;
-- (id)dataForKey:(id)a3 forWindowWithUUID:(id)a4;
+- (id)_blankSnapshotKeyForPrivateBrowsing:(BOOL)browsing syncableTabGroupUUID:(id)d;
+- (id)_numberForKey:(id)key windowUUID:(id)d;
+- (id)_stringForKey:(id)key windowUUID:(id)d;
+- (id)blankSnapshotGroupIdentifierForPrivateBrowsing:(BOOL)browsing syncableTabGroupUUID:(id)d forWindowWithUUID:(id)iD;
+- (id)dataForKey:(id)key forWindowWithUUID:(id)d;
 - (void)_initializeSettingsDictionaryIfNeeded;
-- (void)_setBool:(BOOL)a3 forKey:(id)a4 windowUUID:(id)a5;
-- (void)_setString:(id)a3 forKey:(id)a4 windowUUID:(id)a5;
+- (void)_setBool:(BOOL)bool forKey:(id)key windowUUID:(id)d;
+- (void)_setString:(id)string forKey:(id)key windowUUID:(id)d;
 - (void)_synchronizeNow;
-- (void)removeWindowWithUUID:(id)a3;
-- (void)setBlankSnapshotGroupIdentifier:(id)a3 forPrivateBrowsing:(BOOL)a4 syncableTabGroupUUID:(id)a5 forWindowWithUUID:(id)a6;
-- (void)setData:(id)a3 forKey:(id)a4 forWindowWithUUID:(id)a5;
+- (void)removeWindowWithUUID:(id)d;
+- (void)setBlankSnapshotGroupIdentifier:(id)identifier forPrivateBrowsing:(BOOL)browsing syncableTabGroupUUID:(id)d forWindowWithUUID:(id)iD;
+- (void)setData:(id)data forKey:(id)key forWindowWithUUID:(id)d;
 - (void)synchronize;
-- (void)validateWindowSettingsWithUUIDs:(id)a3;
+- (void)validateWindowSettingsWithUUIDs:(id)ds;
 @end
 
 @implementation _SFBrowserWindowSettings
@@ -32,7 +32,7 @@
     block[1] = 3221225472;
     block[2] = __36___SFBrowserWindowSettings_settings__block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (settings_onceToken != -1)
     {
       dispatch_once(&settings_onceToken, block);
@@ -64,12 +64,12 @@
 
 - (void)_initializeSettingsDictionaryIfNeeded
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   settingsDictionary = self->_settingsDictionary;
-  self->_settingsDictionary = v3;
+  self->_settingsDictionary = dictionary;
 
-  v5 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v6 = [v5 objectForKey:@"BrowserControllersSavedState"];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  v6 = [safari_browserDefaults objectForKey:@"BrowserControllersSavedState"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -90,8 +90,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(NSMutableDictionary *)self->_settingsDictionary allValues];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allValues = [(NSMutableDictionary *)self->_settingsDictionary allValues];
+  v3 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -102,7 +102,7 @@
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         if ([*(*(&v9 + 1) + 8 * i) safari_BOOLForKey:@"PrivateBrowsing"])
@@ -112,7 +112,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -128,26 +128,26 @@ LABEL_11:
   return v7;
 }
 
-+ (void)setSharedSettings:(id)a3
++ (void)setSharedSettings:(id)settings
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69DC668] sharedApplication];
-  v5 = [v4 launchedToTest];
+  settingsCopy = settings;
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  launchedToTest = [mEMORY[0x1E69DC668] launchedToTest];
   v6 = sharedSettingsInstance;
 
-  if ((v5 & 1) == 0 && v6)
+  if ((launchedToTest & 1) == 0 && v6)
   {
     +[_SFBrowserWindowSettings setSharedSettings:];
   }
 
   v7 = sharedSettingsInstance;
-  sharedSettingsInstance = v3;
+  sharedSettingsInstance = settingsCopy;
 }
 
-- (void)validateWindowSettingsWithUUIDs:(id)a3
+- (void)validateWindowSettingsWithUUIDs:(id)ds
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   if (self->_invalidatesClosedWindows)
   {
     [(NSMutableDictionary *)self->_settingsDictionary allKeys];
@@ -178,7 +178,7 @@ LABEL_11:
           v15[3] = &unk_1E721CA40;
           v11 = v10;
           v16 = v11;
-          v12 = [v4 safari_firstObjectPassingTest:v15];
+          v12 = [dsCopy safari_firstObjectPassingTest:v15];
 
           if (!v12)
           {
@@ -199,137 +199,137 @@ LABEL_11:
   }
 }
 
-- (void)_setBool:(BOOL)a3 forKey:(id)a4 windowUUID:(id)a5
+- (void)_setBool:(BOOL)bool forKey:(id)key windowUUID:(id)d
 {
-  v6 = a3;
-  v14 = a4;
-  v8 = a5;
-  v9 = [(_SFBrowserWindowSettings *)self _numberForKey:v14 windowUUID:v8];
+  boolCopy = bool;
+  keyCopy = key;
+  dCopy = d;
+  v9 = [(_SFBrowserWindowSettings *)self _numberForKey:keyCopy windowUUID:dCopy];
   v10 = v9;
-  if (!v9 || [v9 BOOLValue] != v6)
+  if (!v9 || [v9 BOOLValue] != boolCopy)
   {
-    v11 = [v8 UUIDString];
-    v12 = [(NSMutableDictionary *)self->_settingsDictionary objectForKeyedSubscript:v11];
-    if (!v12)
+    uUIDString = [dCopy UUIDString];
+    dictionary = [(NSMutableDictionary *)self->_settingsDictionary objectForKeyedSubscript:uUIDString];
+    if (!dictionary)
     {
-      v12 = [MEMORY[0x1E695DF90] dictionary];
-      [(NSMutableDictionary *)self->_settingsDictionary setObject:v12 forKeyedSubscript:v11];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      [(NSMutableDictionary *)self->_settingsDictionary setObject:dictionary forKeyedSubscript:uUIDString];
     }
 
-    v13 = [MEMORY[0x1E696AD98] numberWithBool:v6];
-    [v12 setObject:v13 forKeyedSubscript:v14];
+    v13 = [MEMORY[0x1E696AD98] numberWithBool:boolCopy];
+    [dictionary setObject:v13 forKeyedSubscript:keyCopy];
 
     [(_SFBrowserWindowSettings *)self synchronize];
   }
 }
 
-- (void)setData:(id)a3 forKey:(id)a4 forWindowWithUUID:(id)a5
+- (void)setData:(id)data forKey:(id)key forWindowWithUUID:(id)d
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = [a5 UUIDString];
-  v10 = [(NSMutableDictionary *)self->_settingsDictionary objectForKeyedSubscript:v9];
-  if (!v10)
+  dataCopy = data;
+  keyCopy = key;
+  uUIDString = [d UUIDString];
+  dictionary = [(NSMutableDictionary *)self->_settingsDictionary objectForKeyedSubscript:uUIDString];
+  if (!dictionary)
   {
-    v10 = [MEMORY[0x1E695DF90] dictionary];
-    [(NSMutableDictionary *)self->_settingsDictionary setObject:v10 forKeyedSubscript:v9];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [(NSMutableDictionary *)self->_settingsDictionary setObject:dictionary forKeyedSubscript:uUIDString];
   }
 
-  [v10 setObject:v11 forKeyedSubscript:v8];
+  [dictionary setObject:dataCopy forKeyedSubscript:keyCopy];
   [(_SFBrowserWindowSettings *)self synchronize];
 }
 
-- (id)dataForKey:(id)a3 forWindowWithUUID:(id)a4
+- (id)dataForKey:(id)key forWindowWithUUID:(id)d
 {
   settingsDictionary = self->_settingsDictionary;
-  v6 = a3;
-  v7 = [a4 UUIDString];
-  v8 = [(NSMutableDictionary *)settingsDictionary objectForKeyedSubscript:v7];
+  keyCopy = key;
+  uUIDString = [d UUIDString];
+  v8 = [(NSMutableDictionary *)settingsDictionary objectForKeyedSubscript:uUIDString];
 
-  v9 = [v8 safari_dataForKey:v6];
+  v9 = [v8 safari_dataForKey:keyCopy];
 
   return v9;
 }
 
-- (id)_numberForKey:(id)a3 windowUUID:(id)a4
+- (id)_numberForKey:(id)key windowUUID:(id)d
 {
   settingsDictionary = self->_settingsDictionary;
-  v6 = a3;
-  v7 = [a4 UUIDString];
-  v8 = [(NSMutableDictionary *)settingsDictionary objectForKeyedSubscript:v7];
+  keyCopy = key;
+  uUIDString = [d UUIDString];
+  v8 = [(NSMutableDictionary *)settingsDictionary objectForKeyedSubscript:uUIDString];
 
-  v9 = [v8 safari_numberForKey:v6];
+  v9 = [v8 safari_numberForKey:keyCopy];
 
   return v9;
 }
 
-- (BOOL)_BOOLValueForKey:(id)a3 windowUUID:(id)a4
+- (BOOL)_BOOLValueForKey:(id)key windowUUID:(id)d
 {
-  v4 = [(_SFBrowserWindowSettings *)self _numberForKey:a3 windowUUID:a4];
-  v5 = [v4 BOOLValue];
+  v4 = [(_SFBrowserWindowSettings *)self _numberForKey:key windowUUID:d];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (id)_stringForKey:(id)a3 windowUUID:(id)a4
+- (id)_stringForKey:(id)key windowUUID:(id)d
 {
   settingsDictionary = self->_settingsDictionary;
-  v6 = a3;
-  v7 = [a4 UUIDString];
-  v8 = [(NSMutableDictionary *)settingsDictionary objectForKeyedSubscript:v7];
+  keyCopy = key;
+  uUIDString = [d UUIDString];
+  v8 = [(NSMutableDictionary *)settingsDictionary objectForKeyedSubscript:uUIDString];
 
-  v9 = [v8 safari_stringForKey:v6];
+  v9 = [v8 safari_stringForKey:keyCopy];
 
   return v9;
 }
 
-- (void)_setString:(id)a3 forKey:(id)a4 windowUUID:(id)a5
+- (void)_setString:(id)string forKey:(id)key windowUUID:(id)d
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  stringCopy = string;
+  keyCopy = key;
+  dCopy = d;
+  if (dCopy)
   {
-    v10 = [(_SFBrowserWindowSettings *)self _stringForKey:v8 windowUUID:v9];
-    if (v10 != v13 && ([v10 isEqualToString:v13] & 1) == 0)
+    v10 = [(_SFBrowserWindowSettings *)self _stringForKey:keyCopy windowUUID:dCopy];
+    if (v10 != stringCopy && ([v10 isEqualToString:stringCopy] & 1) == 0)
     {
-      v11 = [v9 UUIDString];
-      v12 = [(NSMutableDictionary *)self->_settingsDictionary objectForKeyedSubscript:v11];
-      if (!v12)
+      uUIDString = [dCopy UUIDString];
+      dictionary = [(NSMutableDictionary *)self->_settingsDictionary objectForKeyedSubscript:uUIDString];
+      if (!dictionary)
       {
-        v12 = [MEMORY[0x1E695DF90] dictionary];
-        [(NSMutableDictionary *)self->_settingsDictionary setObject:v12 forKeyedSubscript:v11];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
+        [(NSMutableDictionary *)self->_settingsDictionary setObject:dictionary forKeyedSubscript:uUIDString];
       }
 
-      [v12 setValue:v13 forKey:v8];
+      [dictionary setValue:stringCopy forKey:keyCopy];
       [(_SFBrowserWindowSettings *)self synchronize];
     }
   }
 }
 
-- (BOOL)activeDocumentIsValidForWindowWithUUID:(id)a3
+- (BOOL)activeDocumentIsValidForWindowWithUUID:(id)d
 {
-  v3 = [(_SFBrowserWindowSettings *)self _numberForKey:@"ActiveDocumentIsValid" windowUUID:a3];
+  v3 = [(_SFBrowserWindowSettings *)self _numberForKey:@"ActiveDocumentIsValid" windowUUID:d];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (id)blankSnapshotGroupIdentifierForPrivateBrowsing:(BOOL)a3 syncableTabGroupUUID:(id)a4 forWindowWithUUID:(id)a5
+- (id)blankSnapshotGroupIdentifierForPrivateBrowsing:(BOOL)browsing syncableTabGroupUUID:(id)d forWindowWithUUID:(id)iD
 {
-  v6 = a3;
-  v8 = a5;
-  v9 = [(_SFBrowserWindowSettings *)self _blankSnapshotKeyForPrivateBrowsing:v6 syncableTabGroupUUID:a4];
-  v10 = [(_SFBrowserWindowSettings *)self _stringForKey:v9 windowUUID:v8];
+  browsingCopy = browsing;
+  iDCopy = iD;
+  v9 = [(_SFBrowserWindowSettings *)self _blankSnapshotKeyForPrivateBrowsing:browsingCopy syncableTabGroupUUID:d];
+  v10 = [(_SFBrowserWindowSettings *)self _stringForKey:v9 windowUUID:iDCopy];
 
   if (v10)
   {
@@ -344,28 +344,28 @@ LABEL_11:
   return v11;
 }
 
-- (void)setBlankSnapshotGroupIdentifier:(id)a3 forPrivateBrowsing:(BOOL)a4 syncableTabGroupUUID:(id)a5 forWindowWithUUID:(id)a6
+- (void)setBlankSnapshotGroupIdentifier:(id)identifier forPrivateBrowsing:(BOOL)browsing syncableTabGroupUUID:(id)d forWindowWithUUID:(id)iD
 {
-  v7 = a4;
-  v10 = a6;
-  v11 = a3;
-  v13 = [(_SFBrowserWindowSettings *)self _blankSnapshotKeyForPrivateBrowsing:v7 syncableTabGroupUUID:a5];
-  v12 = [v11 UUIDString];
+  browsingCopy = browsing;
+  iDCopy = iD;
+  identifierCopy = identifier;
+  v13 = [(_SFBrowserWindowSettings *)self _blankSnapshotKeyForPrivateBrowsing:browsingCopy syncableTabGroupUUID:d];
+  uUIDString = [identifierCopy UUIDString];
 
-  [(_SFBrowserWindowSettings *)self _setString:v12 forKey:v13 windowUUID:v10];
+  [(_SFBrowserWindowSettings *)self _setString:uUIDString forKey:v13 windowUUID:iDCopy];
 }
 
-- (id)_blankSnapshotKeyForPrivateBrowsing:(BOOL)a3 syncableTabGroupUUID:(id)a4
+- (id)_blankSnapshotKeyForPrivateBrowsing:(BOOL)browsing syncableTabGroupUUID:(id)d
 {
-  if (a4)
+  if (d)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", @"TabGroupBlankSnapshotGroupIdentifier", a4];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", @"TabGroupBlankSnapshotGroupIdentifier", d];
   }
 
   else
   {
     v5 = @"NormalBlankSnapshotGroupIdentifier";
-    if (a3)
+    if (browsing)
     {
       v5 = @"PrivateBlankSnapshotGroupIdentifier";
     }
@@ -376,11 +376,11 @@ LABEL_11:
   return v4;
 }
 
-- (void)removeWindowWithUUID:(id)a3
+- (void)removeWindowWithUUID:(id)d
 {
   settingsDictionary = self->_settingsDictionary;
-  v5 = [a3 UUIDString];
-  [(NSMutableDictionary *)settingsDictionary removeObjectForKey:v5];
+  uUIDString = [d UUIDString];
+  [(NSMutableDictionary *)settingsDictionary removeObjectForKey:uUIDString];
 
   [(_SFBrowserWindowSettings *)self synchronize];
 }
@@ -401,9 +401,9 @@ LABEL_11:
 
 - (void)_synchronizeNow
 {
-  v3 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  [v3 setObject:self->_settingsDictionary forKey:@"BrowserControllersSavedState"];
-  [v3 synchronize];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  [safari_browserDefaults setObject:self->_settingsDictionary forKey:@"BrowserControllersSavedState"];
+  [safari_browserDefaults synchronize];
 }
 
 + (void)setSharedSettings:.cold.1()

@@ -21,19 +21,19 @@
   v9.receiver = self;
   v9.super_class = MPVolumeViewController;
   [(MPVolumeViewController *)&v9 viewDidLoad];
-  v3 = [(MPVolumeViewController *)self view];
+  view = [(MPVolumeViewController *)self view];
   [(MPVolumeView *)self->_volumeView setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v3 addSubview:self->_volumeView];
-  v4 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_volumeView attribute:7 relatedBy:0 toItem:v3 attribute:7 multiplier:1.0 constant:-31.0];
-  v5 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_volumeView attribute:8 relatedBy:0 toItem:v3 attribute:8 multiplier:1.0 constant:0.0];
-  v6 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_volumeView attribute:9 relatedBy:0 toItem:v3 attribute:9 multiplier:1.0 constant:0.0];
-  v7 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_volumeView attribute:10 relatedBy:0 toItem:v3 attribute:10 multiplier:1.0 constant:10.0];
+  [view addSubview:self->_volumeView];
+  v4 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_volumeView attribute:7 relatedBy:0 toItem:view attribute:7 multiplier:1.0 constant:-31.0];
+  v5 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_volumeView attribute:8 relatedBy:0 toItem:view attribute:8 multiplier:1.0 constant:0.0];
+  v6 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_volumeView attribute:9 relatedBy:0 toItem:view attribute:9 multiplier:1.0 constant:0.0];
+  v7 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_volumeView attribute:10 relatedBy:0 toItem:view attribute:10 multiplier:1.0 constant:10.0];
   v10[0] = v4;
   v10[1] = v5;
   v10[2] = v6;
   v10[3] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:4];
-  [v3 addConstraints:v8];
+  [view addConstraints:v8];
 }
 
 - (MPVolumeViewController)init

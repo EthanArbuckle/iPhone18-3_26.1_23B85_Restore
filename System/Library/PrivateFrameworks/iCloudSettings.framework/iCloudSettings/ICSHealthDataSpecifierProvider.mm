@@ -1,25 +1,25 @@
 @interface ICSHealthDataSpecifierProvider
 - (AAUISpecifierProviderDelegate)delegate;
-- (BOOL)_isHealthDataEnabled:(id)a3;
-- (ICSHealthDataSpecifierProvider)initWithAccountManager:(id)a3;
+- (BOOL)_isHealthDataEnabled:(id)enabled;
+- (ICSHealthDataSpecifierProvider)initWithAccountManager:(id)manager;
 - (NSArray)specifiers;
-- (id)_isHealthDataEnabledString:(id)a3;
+- (id)_isHealthDataEnabledString:(id)string;
 - (id)_specifierForHealthData;
 - (id)account;
 @end
 
 @implementation ICSHealthDataSpecifierProvider
 
-- (ICSHealthDataSpecifierProvider)initWithAccountManager:(id)a3
+- (ICSHealthDataSpecifierProvider)initWithAccountManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = ICSHealthDataSpecifierProvider;
   v6 = [(ICSHealthDataSpecifierProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountManager, a3);
+    objc_storeStrong(&v6->_accountManager, manager);
   }
 
   return v7;
@@ -27,8 +27,8 @@
 
 - (id)account
 {
-  v2 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v3 = [accounts objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
 
   return v3;
 }
@@ -39,11 +39,11 @@
   specifiers = self->_specifiers;
   if (!specifiers)
   {
-    v4 = [(ICSHealthDataSpecifierProvider *)self _specifierForHealthData];
-    v5 = v4;
-    if (v4)
+    _specifierForHealthData = [(ICSHealthDataSpecifierProvider *)self _specifierForHealthData];
+    v5 = _specifierForHealthData;
+    if (_specifierForHealthData)
     {
-      v10[0] = v4;
+      v10[0] = _specifierForHealthData;
       v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
       v7 = self->_specifiers;
       self->_specifiers = v6;
@@ -75,9 +75,9 @@
   return v6;
 }
 
-- (id)_isHealthDataEnabledString:(id)a3
+- (id)_isHealthDataEnabledString:(id)string
 {
-  v3 = [(ICSHealthDataSpecifierProvider *)self _isHealthDataEnabled:a3];
+  v3 = [(ICSHealthDataSpecifierProvider *)self _isHealthDataEnabled:string];
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = v4;
   if (v3)
@@ -95,9 +95,9 @@
   return v7;
 }
 
-- (BOOL)_isHealthDataEnabled:(id)a3
+- (BOOL)_isHealthDataEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
@@ -113,7 +113,7 @@
   }
 
   v7 = objc_loadWeakRetained(&self->_delegate);
-  v8 = [v7 specifierProvider:self isDataclassAvailableForSpecifier:v4];
+  v8 = [v7 specifierProvider:self isDataclassAvailableForSpecifier:enabledCopy];
 
   if ((v8 & 1) == 0)
   {
@@ -122,8 +122,8 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v9 = [(ICSHealthDataSpecifierProvider *)self account];
-  v10 = [v9 isEnabledForDataclass:*MEMORY[0x277CB89A0]];
+  account = [(ICSHealthDataSpecifierProvider *)self account];
+  v10 = [account isEnabledForDataclass:*MEMORY[0x277CB89A0]];
 
 LABEL_8:
   return v10;

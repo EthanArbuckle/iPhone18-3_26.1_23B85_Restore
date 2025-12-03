@@ -1,34 +1,34 @@
 @interface PUIPosterSnapshotReadinessSceneObserver
 - (PUIPosterSnapshotReadinessSceneObserver)init;
-- (PUIPosterSnapshotReadinessSceneObserver)initWithFBSScene:(id)a3;
-- (PUIPosterSnapshotReadinessSceneObserver)initWithFBScene:(id)a3;
+- (PUIPosterSnapshotReadinessSceneObserver)initWithFBSScene:(id)scene;
+- (PUIPosterSnapshotReadinessSceneObserver)initWithFBScene:(id)scene;
 - (id)_init;
-- (void)_fireObserverBlock:(id)a3 isSceneReadyForSnapshotting:(BOOL)a4;
-- (void)addSnapshotReadinessObserver:(id)a3;
-- (void)removeSnapshotReadinessObserver:(id)a3;
-- (void)setSceneReadyForSnapshotting:(BOOL)a3;
+- (void)_fireObserverBlock:(id)block isSceneReadyForSnapshotting:(BOOL)snapshotting;
+- (void)addSnapshotReadinessObserver:(id)observer;
+- (void)removeSnapshotReadinessObserver:(id)observer;
+- (void)setSceneReadyForSnapshotting:(BOOL)snapshotting;
 @end
 
 @implementation PUIPosterSnapshotReadinessSceneObserver
 
-- (PUIPosterSnapshotReadinessSceneObserver)initWithFBSScene:(id)a3
+- (PUIPosterSnapshotReadinessSceneObserver)initWithFBSScene:(id)scene
 {
-  v4 = a3;
-  v5 = [(PUIPosterSnapshotReadinessSceneObserver *)[PUISnapshotReadinessFBSSceneObserver alloc] _init];
-  [v4 addObserver:v5];
-  [(PUIPosterSnapshotReadinessSceneObserver *)v5 setScene:v4];
+  sceneCopy = scene;
+  _init = [(PUIPosterSnapshotReadinessSceneObserver *)[PUISnapshotReadinessFBSSceneObserver alloc] _init];
+  [sceneCopy addObserver:_init];
+  [(PUIPosterSnapshotReadinessSceneObserver *)_init setScene:sceneCopy];
 
-  return v5;
+  return _init;
 }
 
-- (PUIPosterSnapshotReadinessSceneObserver)initWithFBScene:(id)a3
+- (PUIPosterSnapshotReadinessSceneObserver)initWithFBScene:(id)scene
 {
-  v4 = a3;
-  v5 = [(PUIPosterSnapshotReadinessSceneObserver *)[PUISnapshotReadinessFBSceneObserver alloc] _init];
-  [v4 addObserver:v5];
-  [(PUIPosterSnapshotReadinessSceneObserver *)v5 setScene:v4];
+  sceneCopy = scene;
+  _init = [(PUIPosterSnapshotReadinessSceneObserver *)[PUISnapshotReadinessFBSceneObserver alloc] _init];
+  [sceneCopy addObserver:_init];
+  [(PUIPosterSnapshotReadinessSceneObserver *)_init setScene:sceneCopy];
 
-  return v5;
+  return _init;
 }
 
 - (PUIPosterSnapshotReadinessSceneObserver)init
@@ -53,29 +53,29 @@
   return v2;
 }
 
-- (void)addSnapshotReadinessObserver:(id)a3
+- (void)addSnapshotReadinessObserver:(id)observer
 {
   observers = self->_observers;
-  v5 = MEMORY[0x1AC5769F0](a3, a2);
+  v5 = MEMORY[0x1AC5769F0](observer, a2);
   [(NSMutableArray *)observers addObject:v5];
 
   [(PUIPosterSnapshotReadinessSceneObserver *)self _check];
 }
 
-- (void)removeSnapshotReadinessObserver:(id)a3
+- (void)removeSnapshotReadinessObserver:(id)observer
 {
   observers = self->_observers;
-  v4 = MEMORY[0x1AC5769F0](a3, a2);
+  v4 = MEMORY[0x1AC5769F0](observer, a2);
   [(NSMutableArray *)observers removeObject:v4];
 }
 
-- (void)setSceneReadyForSnapshotting:(BOOL)a3
+- (void)setSceneReadyForSnapshotting:(BOOL)snapshotting
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (self->_isSceneReadyForSnapshotting != a3)
+  if (self->_isSceneReadyForSnapshotting != snapshotting)
   {
-    v3 = a3;
-    self->_isSceneReadyForSnapshotting = a3;
+    snapshottingCopy = snapshotting;
+    self->_isSceneReadyForSnapshotting = snapshotting;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
@@ -96,7 +96,7 @@
             objc_enumerationMutation(v5);
           }
 
-          [(PUIPosterSnapshotReadinessSceneObserver *)self _fireObserverBlock:*(*(&v10 + 1) + 8 * v9++) isSceneReadyForSnapshotting:v3];
+          [(PUIPosterSnapshotReadinessSceneObserver *)self _fireObserverBlock:*(*(&v10 + 1) + 8 * v9++) isSceneReadyForSnapshotting:snapshottingCopy];
         }
 
         while (v7 != v9);
@@ -108,14 +108,14 @@
   }
 }
 
-- (void)_fireObserverBlock:(id)a3 isSceneReadyForSnapshotting:(BOOL)a4
+- (void)_fireObserverBlock:(id)block isSceneReadyForSnapshotting:(BOOL)snapshotting
 {
-  v4 = a4;
-  v8 = a3;
-  if (v8[2](v8, v4))
+  snapshottingCopy = snapshotting;
+  blockCopy = block;
+  if (blockCopy[2](blockCopy, snapshottingCopy))
   {
     observers = self->_observers;
-    v7 = MEMORY[0x1AC5769F0](v8);
+    v7 = MEMORY[0x1AC5769F0](blockCopy);
     [(NSMutableArray *)observers removeObject:v7];
   }
 }

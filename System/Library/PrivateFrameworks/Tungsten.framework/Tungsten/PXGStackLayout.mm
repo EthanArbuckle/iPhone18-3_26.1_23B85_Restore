@@ -3,7 +3,7 @@
 - (PXGStackLayout)init;
 - (PXGStackLayoutSublayoutAlignmentDelegate)sublayoutAlignmentDelegate;
 - (PXGSublayoutFaultingDelegate)sublayoutFaultingDelegate;
-- (UIEdgeInsets)additionalSafeAreaInsetsForSublayout:(id)a3;
+- (UIEdgeInsets)additionalSafeAreaInsetsForSublayout:(id)sublayout;
 - (UIEdgeInsets)faultInOutsets;
 - (UIEdgeInsets)faultOutOutsets;
 - (UIEdgeInsets)flexibleRegionInsets;
@@ -13,28 +13,28 @@
 - (void)_updateFirstFloatingLayout;
 - (void)_updateInterlayoutSpacing;
 - (void)_updateSublayouts;
-- (void)_updateSublayoutsForAnchoringSublayoutIndex:(int64_t)a3 enumerationOptions:(unint64_t)a4 sublayoutIndexRange:(_NSRange)a5 shouldFaultInAnchoringSublayout:(BOOL)a6 sublayoutIndexesToAlignToVisibleTopEdge:(id)a7 subreferenceSize:(CGSize)a8 visibleRect:(CGRect *)a9;
+- (void)_updateSublayoutsForAnchoringSublayoutIndex:(int64_t)index enumerationOptions:(unint64_t)options sublayoutIndexRange:(_NSRange)range shouldFaultInAnchoringSublayout:(BOOL)sublayout sublayoutIndexesToAlignToVisibleTopEdge:(id)edge subreferenceSize:(CGSize)size visibleRect:(CGRect *)rect;
 - (void)dealloc;
-- (void)didAddSublayout:(id)a3 atIndex:(int64_t)a4 flags:(unint64_t)a5;
+- (void)didAddSublayout:(id)sublayout atIndex:(int64_t)index flags:(unint64_t)flags;
 - (void)didUpdate;
 - (void)displayScaleDidChange;
-- (void)insertSublayoutProvider:(id)a3 inRange:(_NSRange)a4;
+- (void)insertSublayoutProvider:(id)provider inRange:(_NSRange)range;
 - (void)invalidateAdditionalSafeAreaInsets;
 - (void)referenceDepthDidChange;
 - (void)referenceSizeDidChange;
 - (void)scrollSpeedRegimeDidChange;
-- (void)setAxis:(int64_t)a3;
-- (void)setFaultInOutsets:(UIEdgeInsets)a3;
-- (void)setInterlayoutSpacing:(double)a3;
-- (void)setPadding:(UIEdgeInsets)a3;
-- (void)setSublayoutAlignmentDelegate:(id)a3;
-- (void)sublayoutDidChangeContentSize:(id)a3;
-- (void)sublayoutDidChangeLastBaseline:(id)a3;
-- (void)sublayoutNeedsUpdate:(id)a3;
+- (void)setAxis:(int64_t)axis;
+- (void)setFaultInOutsets:(UIEdgeInsets)outsets;
+- (void)setInterlayoutSpacing:(double)spacing;
+- (void)setPadding:(UIEdgeInsets)padding;
+- (void)setSublayoutAlignmentDelegate:(id)delegate;
+- (void)sublayoutDidChangeContentSize:(id)size;
+- (void)sublayoutDidChangeLastBaseline:(id)baseline;
+- (void)sublayoutNeedsUpdate:(id)update;
 - (void)update;
 - (void)viewEnvironmentDidChange;
 - (void)visibleRectDidChange;
-- (void)willRemoveSublayout:(id)a3 atIndex:(int64_t)a4 flags:(unint64_t)a5;
+- (void)willRemoveSublayout:(id)sublayout atIndex:(int64_t)index flags:(unint64_t)flags;
 - (void)willUpdate;
 @end
 
@@ -119,12 +119,12 @@
   return result;
 }
 
-- (void)setInterlayoutSpacing:(double)a3
+- (void)setInterlayoutSpacing:(double)spacing
 {
   if ((PXFloatApproximatelyEqualToFloat() & 1) == 0)
   {
-    PXGAssertErrValidFloat(a3);
-    self->_interlayoutSpacing = a3;
+    PXGAssertErrValidFloat(spacing);
+    self->_interlayoutSpacing = spacing;
     p_updateFlags = &self->_updateFlags;
     needsUpdate = self->_updateFlags.needsUpdate;
     if (needsUpdate)
@@ -139,9 +139,9 @@ LABEL_7:
 LABEL_6:
       if ((self->_updateFlags.updated & 2) != 0)
       {
-        v8 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGStackLayout setInterlayoutSpacing:]"];
-        [v8 handleFailureInFunction:v9 file:@"PXGStackLayout.m" lineNumber:761 description:{@"invalidating %lu after it already has been updated", 2}];
+        [currentHandler handleFailureInFunction:v9 file:@"PXGStackLayout.m" lineNumber:761 description:{@"invalidating %lu after it already has been updated", 2}];
 
         abort();
       }
@@ -164,12 +164,12 @@ LABEL_6:
   }
 }
 
-- (void)setFaultInOutsets:(UIEdgeInsets)a3
+- (void)setFaultInOutsets:(UIEdgeInsets)outsets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = outsets.right;
+  bottom = outsets.bottom;
+  left = outsets.left;
+  top = outsets.top;
   p_faultInOutsets = &self->_faultInOutsets;
   if ((PXEdgeInsetsEqualToEdgeInsets() & 1) == 0)
   {
@@ -191,9 +191,9 @@ LABEL_7:
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v12 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGStackLayout setFaultInOutsets:]"];
-        [v12 handleFailureInFunction:v13 file:@"PXGStackLayout.m" lineNumber:750 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v13 file:@"PXGStackLayout.m" lineNumber:750 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -216,12 +216,12 @@ LABEL_6:
   }
 }
 
-- (void)setPadding:(UIEdgeInsets)a3
+- (void)setPadding:(UIEdgeInsets)padding
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = padding.right;
+  bottom = padding.bottom;
+  left = padding.left;
+  top = padding.top;
   p_padding = &self->_padding;
   if ((PXEdgeInsetsEqualToEdgeInsets() & 1) == 0)
   {
@@ -243,9 +243,9 @@ LABEL_7:
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v12 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGStackLayout setPadding:]"];
-        [v12 handleFailureInFunction:v13 file:@"PXGStackLayout.m" lineNumber:742 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v13 file:@"PXGStackLayout.m" lineNumber:742 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -268,14 +268,14 @@ LABEL_6:
   }
 }
 
-- (void)setAxis:(int64_t)a3
+- (void)setAxis:(int64_t)axis
 {
-  if (self->_axis == a3)
+  if (self->_axis == axis)
   {
     return;
   }
 
-  self->_axis = a3;
+  self->_axis = axis;
   p_updateFlags = &self->_updateFlags;
   needsUpdate = self->_updateFlags.needsUpdate;
   if (!needsUpdate)
@@ -300,9 +300,9 @@ LABEL_6:
 LABEL_6:
     if (self->_updateFlags.updated)
     {
-      v7 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGStackLayout setAxis:]"];
-      [v7 handleFailureInFunction:v8 file:@"PXGStackLayout.m" lineNumber:729 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v8 file:@"PXGStackLayout.m" lineNumber:729 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -333,9 +333,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGStackLayout scrollSpeedRegimeDidChange]"];
-      [v6 handleFailureInFunction:v7 file:@"PXGStackLayout.m" lineNumber:721 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXGStackLayout.m" lineNumber:721 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -375,9 +375,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGStackLayout displayScaleDidChange]"];
-      [v6 handleFailureInFunction:v7 file:@"PXGStackLayout.m" lineNumber:716 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXGStackLayout.m" lineNumber:716 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -423,9 +423,9 @@ LABEL_8:
 LABEL_7:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGStackLayout visibleRectDidChange]"];
-      [v6 handleFailureInFunction:v7 file:@"PXGStackLayout.m" lineNumber:710 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXGStackLayout.m" lineNumber:710 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -467,9 +467,9 @@ LABEL_7:
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v6 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGStackLayout referenceDepthDidChange]"];
-        [v6 handleFailureInFunction:v7 file:@"PXGStackLayout.m" lineNumber:700 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v7 file:@"PXGStackLayout.m" lineNumber:700 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -513,9 +513,9 @@ LABEL_7:
 LABEL_6:
       if ((self->_updateFlags.updated & 2) != 0)
       {
-        v6 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGStackLayout referenceSizeDidChange]"];
-        [v6 handleFailureInFunction:v7 file:@"PXGStackLayout.m" lineNumber:693 description:{@"invalidating %lu after it already has been updated", 2}];
+        [currentHandler handleFailureInFunction:v7 file:@"PXGStackLayout.m" lineNumber:693 description:{@"invalidating %lu after it already has been updated", 2}];
 
         abort();
       }
@@ -556,9 +556,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGStackLayout viewEnvironmentDidChange]"];
-      [v6 handleFailureInFunction:v7 file:@"PXGStackLayout.m" lineNumber:686 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXGStackLayout.m" lineNumber:686 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -579,12 +579,12 @@ LABEL_5:
   }
 }
 
-- (void)sublayoutDidChangeLastBaseline:(id)a3
+- (void)sublayoutDidChangeLastBaseline:(id)baseline
 {
-  v4 = a3;
+  baselineCopy = baseline;
   v10.receiver = self;
   v10.super_class = PXGStackLayout;
-  [(PXGLayout *)&v10 sublayoutDidChangeLastBaseline:v4];
+  [(PXGLayout *)&v10 sublayoutDidChangeLastBaseline:baselineCopy];
   if (!self->_isUpdatingSublayouts)
   {
     p_updateFlags = &self->_updateFlags;
@@ -601,9 +601,9 @@ LABEL_7:
 LABEL_6:
       if ((self->_updateFlags.updated & 3) != 0)
       {
-        v8 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGStackLayout sublayoutDidChangeLastBaseline:]"];
-        [v8 handleFailureInFunction:v9 file:@"PXGStackLayout.m" lineNumber:680 description:{@"invalidating %lu after it already has been updated", 3}];
+        [currentHandler handleFailureInFunction:v9 file:@"PXGStackLayout.m" lineNumber:680 description:{@"invalidating %lu after it already has been updated", 3}];
 
         abort();
       }
@@ -627,12 +627,12 @@ LABEL_6:
 LABEL_8:
 }
 
-- (void)sublayoutDidChangeContentSize:(id)a3
+- (void)sublayoutDidChangeContentSize:(id)size
 {
-  v4 = a3;
+  sizeCopy = size;
   v10.receiver = self;
   v10.super_class = PXGStackLayout;
-  [(PXGLayout *)&v10 sublayoutDidChangeContentSize:v4];
+  [(PXGLayout *)&v10 sublayoutDidChangeContentSize:sizeCopy];
   if (!self->_isUpdatingSublayouts)
   {
     p_updateFlags = &self->_updateFlags;
@@ -649,9 +649,9 @@ LABEL_7:
 LABEL_6:
       if ((self->_updateFlags.updated & 3) != 0)
       {
-        v8 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGStackLayout sublayoutDidChangeContentSize:]"];
-        [v8 handleFailureInFunction:v9 file:@"PXGStackLayout.m" lineNumber:672 description:{@"invalidating %lu after it already has been updated", 3}];
+        [currentHandler handleFailureInFunction:v9 file:@"PXGStackLayout.m" lineNumber:672 description:{@"invalidating %lu after it already has been updated", 3}];
 
         abort();
       }
@@ -675,15 +675,15 @@ LABEL_6:
 LABEL_8:
 }
 
-- (void)sublayoutNeedsUpdate:(id)a3
+- (void)sublayoutNeedsUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v10.receiver = self;
   v10.super_class = PXGStackLayout;
-  [(PXGLayout *)&v10 sublayoutNeedsUpdate:v4];
+  [(PXGLayout *)&v10 sublayoutNeedsUpdate:updateCopy];
   if (self->_isUpdatingSublayouts)
   {
-    [(PXGLayout *)self assumeWillUpdateSublayoutInUpdatePass:v4];
+    [(PXGLayout *)self assumeWillUpdateSublayoutInUpdatePass:updateCopy];
     goto LABEL_9;
   }
 
@@ -701,9 +701,9 @@ LABEL_8:
 LABEL_7:
     if ((self->_updateFlags.updated & 3) != 0)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGStackLayout sublayoutNeedsUpdate:]"];
-      [v8 handleFailureInFunction:v9 file:@"PXGStackLayout.m" lineNumber:662 description:{@"invalidating %lu after it already has been updated", 3}];
+      [currentHandler handleFailureInFunction:v9 file:@"PXGStackLayout.m" lineNumber:662 description:{@"invalidating %lu after it already has been updated", 3}];
 
       abort();
     }
@@ -726,12 +726,12 @@ LABEL_7:
 LABEL_9:
 }
 
-- (void)willRemoveSublayout:(id)a3 atIndex:(int64_t)a4 flags:(unint64_t)a5
+- (void)willRemoveSublayout:(id)sublayout atIndex:(int64_t)index flags:(unint64_t)flags
 {
-  v8 = a3;
+  sublayoutCopy = sublayout;
   v14.receiver = self;
   v14.super_class = PXGStackLayout;
-  [(PXGLayout *)&v14 willRemoveSublayout:v8 atIndex:a4 flags:a5];
+  [(PXGLayout *)&v14 willRemoveSublayout:sublayoutCopy atIndex:index flags:flags];
   if (!self->_isUpdatingSublayouts)
   {
     p_updateFlags = &self->_updateFlags;
@@ -748,9 +748,9 @@ LABEL_7:
 LABEL_6:
       if ((self->_updateFlags.updated & 3) != 0)
       {
-        v12 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGStackLayout willRemoveSublayout:atIndex:flags:]"];
-        [v12 handleFailureInFunction:v13 file:@"PXGStackLayout.m" lineNumber:654 description:{@"invalidating %lu after it already has been updated", 3}];
+        [currentHandler handleFailureInFunction:v13 file:@"PXGStackLayout.m" lineNumber:654 description:{@"invalidating %lu after it already has been updated", 3}];
 
         abort();
       }
@@ -774,12 +774,12 @@ LABEL_6:
 LABEL_8:
 }
 
-- (void)didAddSublayout:(id)a3 atIndex:(int64_t)a4 flags:(unint64_t)a5
+- (void)didAddSublayout:(id)sublayout atIndex:(int64_t)index flags:(unint64_t)flags
 {
-  v8 = a3;
+  sublayoutCopy = sublayout;
   v14.receiver = self;
   v14.super_class = PXGStackLayout;
-  [(PXGLayout *)&v14 didAddSublayout:v8 atIndex:a4 flags:a5];
+  [(PXGLayout *)&v14 didAddSublayout:sublayoutCopy atIndex:index flags:flags];
   if (!self->_isUpdatingSublayouts)
   {
     p_updateFlags = &self->_updateFlags;
@@ -796,9 +796,9 @@ LABEL_7:
 LABEL_6:
       if ((self->_updateFlags.updated & 3) != 0)
       {
-        v12 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGStackLayout didAddSublayout:atIndex:flags:]"];
-        [v12 handleFailureInFunction:v13 file:@"PXGStackLayout.m" lineNumber:646 description:{@"invalidating %lu after it already has been updated", 3}];
+        [currentHandler handleFailureInFunction:v13 file:@"PXGStackLayout.m" lineNumber:646 description:{@"invalidating %lu after it already has been updated", 3}];
 
         abort();
       }
@@ -822,14 +822,14 @@ LABEL_6:
 LABEL_8:
 }
 
-- (void)insertSublayoutProvider:(id)a3 inRange:(_NSRange)a4
+- (void)insertSublayoutProvider:(id)provider inRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
+  length = range.length;
+  location = range.location;
+  providerCopy = provider;
   v13.receiver = self;
   v13.super_class = PXGStackLayout;
-  [(PXGLayout *)&v13 insertSublayoutProvider:v7 inRange:location, length];
+  [(PXGLayout *)&v13 insertSublayoutProvider:providerCopy inRange:location, length];
   if (!self->_isUpdatingSublayouts)
   {
     p_updateFlags = &self->_updateFlags;
@@ -846,9 +846,9 @@ LABEL_7:
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v11 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGStackLayout insertSublayoutProvider:inRange:]"];
-        [v11 handleFailureInFunction:v12 file:@"PXGStackLayout.m" lineNumber:638 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v12 file:@"PXGStackLayout.m" lineNumber:638 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -887,7 +887,7 @@ LABEL_8:
     v13[1] = v13;
     v13[2] = 0x2020000000;
     v13[3] = 0;
-    v11 = [(PXGLayout *)self sublayoutDataStore];
+    sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __44__PXGStackLayout__updateFirstFloatingLayout__block_invoke;
@@ -898,7 +898,7 @@ LABEL_8:
     v12[9] = v10;
     v12[4] = self;
     v12[5] = v13;
-    [v11 enumerateSublayoutGeometriesUsingBlock:v12];
+    [sublayoutDataStore enumerateSublayoutGeometriesUsingBlock:v12];
 
     _Block_object_dispose(v13, 8);
   }
@@ -930,9 +930,9 @@ LABEL_6:
 LABEL_5:
     if (self->_postUpdateFlags.updated)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGStackLayout _invalidateFirstFloatingLayout]"];
-      [v6 handleFailureInFunction:v7 file:@"PXGStackLayout.m" lineNumber:611 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXGStackLayout.m" lineNumber:611 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -956,30 +956,30 @@ LABEL_5:
 
 - (void)_updateSublayouts
 {
-  v3 = [(PXGLayout *)self sublayoutDataStore];
-  v4 = [v3 count];
+  sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
+  v4 = [sublayoutDataStore count];
   if (self->_isUpdatingSublayouts)
   {
-    v71 = [MEMORY[0x277CCA890] currentHandler];
-    [v71 handleFailureInMethod:a2 object:self file:@"PXGStackLayout.m" lineNumber:365 description:{@"Invalid parameter not satisfying: %@", @"!_isUpdatingSublayouts"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGStackLayout.m" lineNumber:365 description:{@"Invalid parameter not satisfying: %@", @"!_isUpdatingSublayouts"}];
   }
 
   self->_isUpdatingSublayouts = 1;
-  v5 = [(PXGStackLayout *)self axis];
-  if (!v5)
+  axis = [(PXGStackLayout *)self axis];
+  if (!axis)
   {
-    v72 = [MEMORY[0x277CCA890] currentHandler];
-    [v72 handleFailureInMethod:a2 object:self file:@"PXGStackLayout.m" lineNumber:369 description:{@"stacking axis is undefined %@", self}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXGStackLayout.m" lineNumber:369 description:{@"stacking axis is undefined %@", self}];
 
     [(PXGStackLayout *)self padding];
     [(PXGLayout *)self referenceSize];
-    v73 = [MEMORY[0x277CCA890] currentHandler];
-    [v73 handleFailureInMethod:a2 object:self file:@"PXGStackLayout.m" lineNumber:376 description:@"Code which should be unreachable has been reached"];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXGStackLayout.m" lineNumber:376 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v6 = v5;
+  v6 = axis;
   [(PXGStackLayout *)self padding];
   v8 = v7;
   v10 = v9;
@@ -1053,11 +1053,11 @@ LABEL_5:
   *&v132 = v27;
   *(&v132 + 1) = v28;
   self->_sublayoutOriginsBeforeUpdate = malloc_type_realloc(self->_sublayoutOriginsBeforeUpdate, 24 * v4, 0x42760281uLL);
-  v29 = [v3 geometries];
+  geometries = [sublayoutDataStore geometries];
   if (v4 >= 1)
   {
     sublayoutOriginsBeforeUpdate = self->_sublayoutOriginsBeforeUpdate;
-    v31 = v29 + 48;
+    v31 = geometries + 48;
     v32 = v4;
     do
     {
@@ -1087,21 +1087,21 @@ LABEL_5:
   v113 = &v112;
   v114 = 0x2020000000;
   v115 = 0;
-  v34 = [(PXGLayout *)self anchoredContentEdges];
-  if (v34)
+  anchoredContentEdges = [(PXGLayout *)self anchoredContentEdges];
+  if (anchoredContentEdges)
   {
-    if (v34)
+    if (anchoredContentEdges)
     {
       v35 = 0;
     }
 
     else
     {
-      if ((v34 & 4) == 0)
+      if ((anchoredContentEdges & 4) == 0)
       {
 LABEL_30:
-        v37 = [(PXGLayout *)self shouldFaultInContentAtAnchoredContentEdges];
-        *(v113 + 24) = v37;
+        shouldFaultInContentAtAnchoredContentEdges = [(PXGLayout *)self shouldFaultInContentAtAnchoredContentEdges];
+        *(v113 + 24) = shouldFaultInContentAtAnchoredContentEdges;
         goto LABEL_31;
       }
 
@@ -1112,15 +1112,15 @@ LABEL_30:
     goto LABEL_30;
   }
 
-  v36 = [(PXGLayout *)self anchoredSublayoutIndex];
-  if (v36 != 0x7FFFFFFFFFFFFFFFLL)
+  anchoredSublayoutIndex = [(PXGLayout *)self anchoredSublayoutIndex];
+  if (anchoredSublayoutIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v117[3] = v36;
+    v117[3] = anchoredSublayoutIndex;
     *(v113 + 24) = 1;
   }
 
 LABEL_31:
-  v38 = [(PXGStackLayout *)self sublayoutAlignmentDelegate];
+  sublayoutAlignmentDelegate = [(PXGStackLayout *)self sublayoutAlignmentDelegate];
   v39 = objc_alloc_init(MEMORY[0x277CCAB58]);
   v40 = objc_alloc_init(MEMORY[0x277CCAB58]);
   v100[0] = MEMORY[0x277D85DD0];
@@ -1136,13 +1136,13 @@ LABEL_31:
   v107 = &v112;
   v110 = v6;
   v111 = a2;
-  v41 = v38;
+  v41 = sublayoutAlignmentDelegate;
   v101 = v41;
   v42 = v39;
   v102 = v42;
   v43 = v40;
   v103 = v43;
-  [v3 enumerateSublayoutGeometriesUsingBlock:v100];
+  [sublayoutDataStore enumerateSublayoutGeometriesUsingBlock:v100];
   v44 = v117[3];
   if (v44 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -1183,7 +1183,7 @@ LABEL_31:
   v80[3] = &unk_2782A8778;
   v55 = v42;
   v81 = v55;
-  v82 = self;
+  selfCopy = self;
   v84 = &v93;
   v86 = v6;
   v87 = a2;
@@ -1195,18 +1195,18 @@ LABEL_31:
   v90 = v50;
   v91 = v52;
   v92 = v54;
-  [v3 enumerateSublayoutGeometriesUsingBlock:v80];
-  if (v4 != [v3 count])
+  [sublayoutDataStore enumerateSublayoutGeometriesUsingBlock:v80];
+  if (v4 != [sublayoutDataStore count])
   {
-    v74 = [MEMORY[0x277CCA890] currentHandler];
-    [v74 handleFailureInMethod:a2 object:self file:@"PXGStackLayout.m" lineNumber:569 description:{@"number of sublayouts unexpectedly changed during update pass of %@", self}];
+    currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"PXGStackLayout.m" lineNumber:569 description:{@"number of sublayouts unexpectedly changed during update pass of %@", self}];
   }
 
-  v57 = [v3 geometries];
+  geometries2 = [sublayoutDataStore geometries];
   if (v4 >= 1)
   {
     v58 = self->_sublayoutOriginsBeforeUpdate;
-    v59 = (v57 + 64);
+    v59 = (geometries2 + 64);
     while (1)
     {
       var1 = v58->var1;
@@ -1236,7 +1236,7 @@ LABEL_49:
   v77[3] = &unk_2782AAF40;
   v65 = v64;
   v78 = v65;
-  v66 = v3;
+  v66 = sublayoutDataStore;
   v79 = v66;
   [v55 enumerateIndexesUsingBlock:v77];
   v67 = [v65 copy];
@@ -1475,21 +1475,21 @@ void __35__PXGStackLayout__updateSublayouts__block_invoke_3(uint64_t a1, uint64_
   [v2 addObject:v3];
 }
 
-- (void)_updateSublayoutsForAnchoringSublayoutIndex:(int64_t)a3 enumerationOptions:(unint64_t)a4 sublayoutIndexRange:(_NSRange)a5 shouldFaultInAnchoringSublayout:(BOOL)a6 sublayoutIndexesToAlignToVisibleTopEdge:(id)a7 subreferenceSize:(CGSize)a8 visibleRect:(CGRect *)a9
+- (void)_updateSublayoutsForAnchoringSublayoutIndex:(int64_t)index enumerationOptions:(unint64_t)options sublayoutIndexRange:(_NSRange)range shouldFaultInAnchoringSublayout:(BOOL)sublayout sublayoutIndexesToAlignToVisibleTopEdge:(id)edge subreferenceSize:(CGSize)size visibleRect:(CGRect *)rect
 {
-  v48 = a7;
-  v49 = [(PXGStackLayout *)self sublayoutFaultingDelegate];
-  v12 = [(PXGLayout *)self sublayoutDataStore];
-  v52 = [v12 count];
-  v51 = [(PXGLayout *)self anchoredContentEdges];
-  v13 = [(PXGStackLayout *)self axis];
+  edgeCopy = edge;
+  sublayoutFaultingDelegate = [(PXGStackLayout *)self sublayoutFaultingDelegate];
+  sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
+  v52 = [sublayoutDataStore count];
+  anchoredContentEdges = [(PXGLayout *)self anchoredContentEdges];
+  axis = [(PXGStackLayout *)self axis];
   [(PXGLayout *)self referenceDepth];
   v47 = v14;
-  v15 = [(PXGLayout *)self referenceOptions];
-  v16 = [(PXGLayout *)self scrollSpeedRegime];
+  referenceOptions = [(PXGLayout *)self referenceOptions];
+  scrollSpeedRegime = [(PXGLayout *)self scrollSpeedRegime];
   [(PXGLayout *)self displayScale];
   v45 = v17;
-  v18 = [(PXGLayout *)self userInterfaceDirection];
+  userInterfaceDirection = [(PXGLayout *)self userInterfaceDirection];
   [(PXGLayout *)self lastScrollDirection];
   v43 = v20;
   v44 = v19;
@@ -1511,48 +1511,48 @@ void __35__PXGStackLayout__updateSublayouts__block_invoke_3(uint64_t a1, uint64_
   v84[3] = "";
   v85 = 0uLL;
   v86 = 0;
-  v37 = [v12 geometries] + 136 * a3;
+  v37 = [sublayoutDataStore geometries] + 136 * index;
   v38 = *(v37 + 64);
   v85 = *(v37 + 48);
   v86 = v38;
-  v39 = [(PXGLayout *)self viewEnvironment];
+  viewEnvironment = [(PXGLayout *)self viewEnvironment];
   v55[0] = MEMORY[0x277D85DD0];
   v55[1] = 3221225472;
   v55[2] = __202__PXGStackLayout__updateSublayoutsForAnchoringSublayoutIndex_enumerationOptions_sublayoutIndexRange_shouldFaultInAnchoringSublayout_sublayoutIndexesToAlignToVisibleTopEdge_subreferenceSize_visibleRect___block_invoke;
   v55[3] = &unk_2782A8728;
-  v82 = (a4 & 2) != 0;
+  v82 = (options & 2) != 0;
   v60 = a2;
-  v61 = v13;
+  v61 = axis;
   v55[4] = self;
   v59 = v84;
-  v83 = a6;
-  v62 = a3;
-  v63 = a9;
+  sublayoutCopy = sublayout;
+  indexCopy = index;
+  rectCopy = rect;
   v64 = v30;
   v65 = v32;
   v66 = v34;
   v67 = v36;
-  v40 = v48;
+  v40 = edgeCopy;
   v56 = v40;
-  v41 = v49;
+  v41 = sublayoutFaultingDelegate;
   v57 = v41;
   v68 = v22;
   v69 = v24;
   v70 = v26;
   v71 = v28;
-  v42 = v39;
+  v42 = viewEnvironment;
   v58 = v42;
-  v72 = a8;
-  v81 = v15;
+  sizeCopy = size;
+  v81 = referenceOptions;
   v73 = v47;
   v74 = v45;
   v75 = v44;
   v76 = v43;
-  v77 = v16;
-  v78 = v18;
+  v77 = scrollSpeedRegime;
+  v78 = userInterfaceDirection;
   v79 = v52;
-  v80 = v51;
-  [v12 enumerateSublayoutGeometriesInRange:a5.location options:a5.length usingBlock:{a4, v55}];
+  v80 = anchoredContentEdges;
+  [sublayoutDataStore enumerateSublayoutGeometriesInRange:range.location options:range.length usingBlock:{options, v55}];
 
   _Block_object_dispose(v84, 8);
 }
@@ -1950,15 +1950,15 @@ LABEL_93:
 
 - (void)_updateInterlayoutSpacing
 {
-  v3 = [(PXGLayout *)self sublayoutDataStore];
-  v4 = [(PXGStackLayout *)self axis];
+  sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
+  axis = [(PXGStackLayout *)self axis];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __43__PXGStackLayout__updateInterlayoutSpacing__block_invoke;
   v5[3] = &unk_2782A8700;
   v5[4] = self;
-  v5[5] = v4;
-  [v3 enumerateSublayoutGeometriesUsingBlock:v5];
+  v5[5] = axis;
+  [sublayoutDataStore enumerateSublayoutGeometriesUsingBlock:v5];
 }
 
 void __43__PXGStackLayout__updateInterlayoutSpacing__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, id *a4)
@@ -2001,8 +2001,8 @@ void __43__PXGStackLayout__updateInterlayoutSpacing__block_invoke(uint64_t a1, u
 
 - (void)_invalidateEstimatedSublayoutContentSizes
 {
-  v3 = [(PXGLayout *)self sublayoutDataStore];
-  [v3 enumerateSublayoutGeometriesUsingBlock:&__block_literal_global_4436];
+  sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
+  [sublayoutDataStore enumerateSublayoutGeometriesUsingBlock:&__block_literal_global_4436];
 
   p_updateFlags = &self->_updateFlags;
   needsUpdate = self->_updateFlags.needsUpdate;
@@ -2018,9 +2018,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v7 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGStackLayout _invalidateEstimatedSublayoutContentSizes]"];
-      [v7 handleFailureInFunction:v8 file:@"PXGStackLayout.m" lineNumber:149 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v8 file:@"PXGStackLayout.m" lineNumber:149 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -2056,25 +2056,25 @@ __n128 __59__PXGStackLayout__invalidateEstimatedSublayoutContentSizes__block_inv
   [(PXGLayout *)&v7 didUpdate];
   if (self->_updateFlags.willPerformUpdate)
   {
-    v3 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGStackLayout didUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXGStackLayout.m" lineNumber:140 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXGStackLayout.m" lineNumber:140 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
   }
 
   if (self->_postUpdateFlags.willPerformUpdate)
   {
-    v5 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGStackLayout didUpdate]"];
-    [v5 handleFailureInFunction:v6 file:@"PXGStackLayout.m" lineNumber:141 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.willPerformUpdate"}];
+    [currentHandler2 handleFailureInFunction:v6 file:@"PXGStackLayout.m" lineNumber:141 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.willPerformUpdate"}];
   }
 }
 
 - (void)update
 {
-  v3 = [(PXGLayout *)self numberOfDescendantAnchors];
+  numberOfDescendantAnchors = [(PXGLayout *)self numberOfDescendantAnchors];
   p_updateFlags = &self->_updateFlags;
   needsUpdate = self->_updateFlags.needsUpdate;
-  if (v3 < 1)
+  if (numberOfDescendantAnchors < 1)
   {
     self->_updateFlags.willPerformUpdate = 0;
     if (!needsUpdate)
@@ -2095,9 +2095,9 @@ __n128 __59__PXGStackLayout__invalidateEstimatedSublayoutContentSizes__block_inv
     {
       if (self->_updateFlags.updated)
       {
-        v20 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGStackLayout update]"];
-        [v20 handleFailureInFunction:v21 file:@"PXGStackLayout.m" lineNumber:117 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v21 file:@"PXGStackLayout.m" lineNumber:117 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -2106,9 +2106,9 @@ __n128 __59__PXGStackLayout__invalidateEstimatedSublayoutContentSizes__block_inv
       self->_updateFlags.willPerformUpdate = 0;
       p_isPerformingUpdate = &self->_updateFlags.isPerformingUpdate;
 LABEL_5:
-      v7 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGStackLayout update]"];
-      [v7 handleFailureInFunction:v8 file:@"PXGStackLayout.m" lineNumber:120 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler2 handleFailureInFunction:v8 file:@"PXGStackLayout.m" lineNumber:120 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
       goto LABEL_10;
@@ -2129,9 +2129,9 @@ LABEL_10:
     [(PXGStackLayout *)self _updateInterlayoutSpacing];
     if (!self->_updateFlags.isPerformingUpdate)
     {
-      v12 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGStackLayout update]"];
-      [v12 handleFailureInFunction:v13 file:@"PXGStackLayout.m" lineNumber:124 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler3 handleFailureInFunction:v13 file:@"PXGStackLayout.m" lineNumber:124 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
   }
 
@@ -2147,9 +2147,9 @@ LABEL_10:
   *p_isPerformingUpdate = 0;
   if (v9)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
     v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGStackLayout update]"];
-    [v14 handleFailureInFunction:v15 file:@"PXGStackLayout.m" lineNumber:127 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+    [currentHandler4 handleFailureInFunction:v15 file:@"PXGStackLayout.m" lineNumber:127 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
   }
 
 LABEL_17:
@@ -2163,9 +2163,9 @@ LABEL_17:
   {
     if (self->_postUpdateFlags.isPerformingUpdate)
     {
-      v16 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
       v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGStackLayout update]"];
-      [v16 handleFailureInFunction:v17 file:@"PXGStackLayout.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.isPerformingUpdate"}];
+      [currentHandler5 handleFailureInFunction:v17 file:@"PXGStackLayout.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.isPerformingUpdate"}];
 
       v11 = p_postUpdateFlags->needsUpdate;
     }
@@ -2182,9 +2182,9 @@ LABEL_17:
     self->_postUpdateFlags.isPerformingUpdate = 0;
     if (v11)
     {
-      v18 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler6 = [MEMORY[0x277CCA890] currentHandler];
       v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGStackLayout update]"];
-      [v18 handleFailureInFunction:v19 file:@"PXGStackLayout.m" lineNumber:135 description:{@"still needing to update %lu after update pass", p_postUpdateFlags->needsUpdate}];
+      [currentHandler6 handleFailureInFunction:v19 file:@"PXGStackLayout.m" lineNumber:135 description:{@"still needing to update %lu after update pass", p_postUpdateFlags->needsUpdate}];
     }
   }
 }
@@ -2197,17 +2197,17 @@ LABEL_17:
   self->_updateFlags.willPerformUpdate = 1;
   if (self->_updateFlags.isPerformingUpdate)
   {
-    v3 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGStackLayout willUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXGStackLayout.m" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXGStackLayout.m" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
   }
 
   self->_postUpdateFlags.willPerformUpdate = 1;
   if (self->_postUpdateFlags.isPerformingUpdate)
   {
-    v5 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGStackLayout willUpdate]"];
-    [v5 handleFailureInFunction:v6 file:@"PXGStackLayout.m" lineNumber:111 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.isPerformingUpdate"}];
+    [currentHandler2 handleFailureInFunction:v6 file:@"PXGStackLayout.m" lineNumber:111 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.isPerformingUpdate"}];
   }
 }
 
@@ -2229,9 +2229,9 @@ LABEL_7:
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v6 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGStackLayout invalidateAdditionalSafeAreaInsets]"];
-        [v6 handleFailureInFunction:v7 file:@"PXGStackLayout.m" lineNumber:104 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v7 file:@"PXGStackLayout.m" lineNumber:104 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -2254,7 +2254,7 @@ LABEL_6:
   }
 }
 
-- (UIEdgeInsets)additionalSafeAreaInsetsForSublayout:(id)a3
+- (UIEdgeInsets)additionalSafeAreaInsetsForSublayout:(id)sublayout
 {
   v3 = *MEMORY[0x277D3CF90];
   v4 = *(MEMORY[0x277D3CF90] + 8);
@@ -2267,9 +2267,9 @@ LABEL_6:
   return result;
 }
 
-- (void)setSublayoutAlignmentDelegate:(id)a3
+- (void)setSublayoutAlignmentDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_sublayoutAlignmentDelegate);
   v5 = WeakRetained;
   if (WeakRetained == obj)
@@ -2306,9 +2306,9 @@ LABEL_11:
 LABEL_10:
         if (self->_updateFlags.updated)
         {
-          v12 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
           v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGStackLayout setSublayoutAlignmentDelegate:]"];
-          [v12 handleFailureInFunction:v13 file:@"PXGStackLayout.m" lineNumber:90 description:{@"invalidating %lu after it already has been updated", 1}];
+          [currentHandler handleFailureInFunction:v13 file:@"PXGStackLayout.m" lineNumber:90 description:{@"invalidating %lu after it already has been updated", 1}];
 
           abort();
         }

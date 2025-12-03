@@ -1,36 +1,36 @@
 @interface CPLResourceTransferTask
-+ (BOOL)isForegroundOperationForIntent:(unint64_t)a3;
-+ (BOOL)isHighPriorityForIntent:(unint64_t)a3;
-+ (id)descriptionForIntent:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (CPLResourceTransferTask)initWithCoder:(id)a3;
-- (CPLResourceTransferTask)initWithResource:(id)a3 taskIdentifier:(id)a4;
++ (BOOL)isForegroundOperationForIntent:(unint64_t)intent;
++ (BOOL)isHighPriorityForIntent:(unint64_t)intent;
++ (id)descriptionForIntent:(unint64_t)intent;
+- (BOOL)isEqual:(id)equal;
+- (CPLResourceTransferTask)initWithCoder:(id)coder;
+- (CPLResourceTransferTask)initWithResource:(id)resource taskIdentifier:(id)identifier;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)launch;
-- (void)setHighPriority:(BOOL)a3;
-- (void)setIntent:(unint64_t)a3;
-- (void)setOptions:(id)a3;
-- (void)setTaskIdentifier:(id)a3;
+- (void)setHighPriority:(BOOL)priority;
+- (void)setIntent:(unint64_t)intent;
+- (void)setOptions:(id)options;
+- (void)setTaskIdentifier:(id)identifier;
 @end
 
 @implementation CPLResourceTransferTask
 
-- (void)setIntent:(unint64_t)a3
+- (void)setIntent:(unint64_t)intent
 {
-  v4 = [CPLResourceTransferTaskOptions optionsForLegacyIntent:a3];
+  v4 = [CPLResourceTransferTaskOptions optionsForLegacyIntent:intent];
   options = self->_options;
   self->_options = v4;
 
   MEMORY[0x1EEE66BB8](v4, options);
 }
 
-- (void)setOptions:(id)a3
+- (void)setOptions:(id)options
 {
-  if (a3)
+  if (options)
   {
-    v4 = [a3 copy];
+    v4 = [options copy];
   }
 
   else
@@ -48,8 +48,8 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(CPLResourceTransferTask *)self taskIdentifier];
-  v6 = [(CPLResourceTransferTask *)self resource];
+  taskIdentifier = [(CPLResourceTransferTask *)self taskIdentifier];
+  resource = [(CPLResourceTransferTask *)self resource];
   if ([(CPLResourceTransferTask *)self isHighPriority])
   {
     v7 = "YES";
@@ -70,28 +70,28 @@
     v8 = "NO";
   }
 
-  v9 = [v3 stringWithFormat:@"<%@ %p task identifier %@ resource %@ highPriority %s cancelled %s options %@>", v4, self, v5, v6, v7, v8, self->_options];
+  v9 = [v3 stringWithFormat:@"<%@ %p task identifier %@ resource %@ highPriority %s cancelled %s options %@>", v4, self, taskIdentifier, resource, v7, v8, self->_options];
 
   return v9;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(CPLResourceTransferTask *)self taskIdentifier];
-  v3 = [v2 hash];
+  taskIdentifier = [(CPLResourceTransferTask *)self taskIdentifier];
+  v3 = [taskIdentifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(CPLResourceTransferTask *)self taskIdentifier];
-    v6 = [v4 taskIdentifier];
-    v7 = [v5 isEqualToString:v6];
+    taskIdentifier = [(CPLResourceTransferTask *)self taskIdentifier];
+    taskIdentifier2 = [equalCopy taskIdentifier];
+    v7 = [taskIdentifier isEqualToString:taskIdentifier2];
   }
 
   else
@@ -104,17 +104,17 @@
 
 - (void)launch
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLResourceTransferTask.m"];
   v6 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:self file:v5 lineNumber:85 description:{@"%@ should be overriden by subclasses", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:v5 lineNumber:85 description:{@"%@ should be overriden by subclasses", v6}];
 
   abort();
 }
 
-- (void)setHighPriority:(BOOL)a3
+- (void)setHighPriority:(BOOL)priority
 {
-  v3 = a3;
+  priorityCopy = priority;
   v5 = [CPLResourceTransferTaskOptions alloc];
   options = self->_options;
   if (options)
@@ -127,7 +127,7 @@
     memset(v10, 0, sizeof(v10));
   }
 
-  if (v3)
+  if (priorityCopy)
   {
     v7 = 0;
   }
@@ -142,12 +142,12 @@
   self->_options = v8;
 }
 
-- (void)setTaskIdentifier:(id)a3
+- (void)setTaskIdentifier:(id)identifier
 {
-  v8 = a3;
-  if ([v8 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    v4 = [v8 copy];
+    v4 = [identifierCopy copy];
     taskIdentifier = self->_taskIdentifier;
     self->_taskIdentifier = v4;
   }
@@ -155,30 +155,30 @@
   else
   {
     taskIdentifier = [MEMORY[0x1E696AFB0] UUID];
-    v6 = [taskIdentifier UUIDString];
+    uUIDString = [taskIdentifier UUIDString];
     v7 = self->_taskIdentifier;
-    self->_taskIdentifier = v6;
+    self->_taskIdentifier = uUIDString;
   }
 }
 
-- (CPLResourceTransferTask)initWithCoder:(id)a3
+- (CPLResourceTransferTask)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectForKey:@"keyResource"];
-  v6 = [v4 decodeObjectForKey:@"keyTaskID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectForKey:@"keyResource"];
+  v6 = [coderCopy decodeObjectForKey:@"keyTaskID"];
   v7 = [(CPLResourceTransferTask *)self initWithResource:v5 taskIdentifier:v6];
 
   if (v7)
   {
     if (![(NSString *)v7->_taskIdentifier length])
     {
-      v8 = [MEMORY[0x1E696AFB0] UUID];
-      v9 = [v8 UUIDString];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
       taskIdentifier = v7->_taskIdentifier;
-      v7->_taskIdentifier = v9;
+      v7->_taskIdentifier = uUIDString;
     }
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"options"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"options"];
     v12 = v11;
     if (v11)
     {
@@ -197,27 +197,27 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   resource = self->_resource;
-  v5 = a3;
-  [v5 encodeObject:resource forKey:@"keyResource"];
-  [v5 encodeObject:self->_taskIdentifier forKey:@"keyTaskID"];
-  [v5 encodeObject:self->_options forKey:@"options"];
+  coderCopy = coder;
+  [coderCopy encodeObject:resource forKey:@"keyResource"];
+  [coderCopy encodeObject:self->_taskIdentifier forKey:@"keyTaskID"];
+  [coderCopy encodeObject:self->_options forKey:@"options"];
 }
 
-- (CPLResourceTransferTask)initWithResource:(id)a3 taskIdentifier:(id)a4
+- (CPLResourceTransferTask)initWithResource:(id)resource taskIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  resourceCopy = resource;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = CPLResourceTransferTask;
   v9 = [(CPLResourceTransferTask *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_resource, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_resource, resource);
+    v11 = [identifierCopy copy];
     taskIdentifier = v10->_taskIdentifier;
     v10->_taskIdentifier = v11;
 
@@ -229,25 +229,25 @@
   return v10;
 }
 
-+ (BOOL)isForegroundOperationForIntent:(unint64_t)a3
++ (BOOL)isForegroundOperationForIntent:(unint64_t)intent
 {
-  v3 = [CPLResourceTransferTaskOptions optionsForLegacyIntent:a3];
+  v3 = [CPLResourceTransferTaskOptions optionsForLegacyIntent:intent];
   v4 = +[CPLResourceTransferTaskOptions isForegroundOperationForIntent:priority:](CPLResourceTransferTaskOptions, "isForegroundOperationForIntent:priority:", [v3 intent], objc_msgSend(v3, "priority"));
 
   return v4;
 }
 
-+ (BOOL)isHighPriorityForIntent:(unint64_t)a3
++ (BOOL)isHighPriorityForIntent:(unint64_t)intent
 {
-  v3 = [CPLResourceTransferTaskOptions optionsForLegacyIntent:a3];
-  v4 = [v3 isHighPriority];
+  v3 = [CPLResourceTransferTaskOptions optionsForLegacyIntent:intent];
+  isHighPriority = [v3 isHighPriority];
 
-  return v4;
+  return isHighPriority;
 }
 
-+ (id)descriptionForIntent:(unint64_t)a3
++ (id)descriptionForIntent:(unint64_t)intent
 {
-  v3 = [CPLResourceTransferTaskOptions optionsForLegacyIntent:a3];
+  v3 = [CPLResourceTransferTaskOptions optionsForLegacyIntent:intent];
   v4 = [v3 description];
 
   return v4;

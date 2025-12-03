@@ -1,22 +1,22 @@
 @interface RFSelfDiagExtensionHelper
-- (BOOL)addAWDConfiguration:(int)a3;
-- (BOOL)isTestSupported:(int)a3;
+- (BOOL)addAWDConfiguration:(int)configuration;
+- (BOOL)isTestSupported:(int)supported;
 - (BOOL)loadTestConfigFromUserDefaults;
 - (BOOL)prepareSetupForTest;
-- (BOOL)recoverBasebandState:(BOOL)a3;
-- (BOOL)resetBaseband:(BOOL)a3;
-- (BOOL)startBasebandRFSelfTest:(unsigned int)a3 TestCommand:(unsigned int)a4;
+- (BOOL)recoverBasebandState:(BOOL)state;
+- (BOOL)resetBaseband:(BOOL)baseband;
+- (BOOL)startBasebandRFSelfTest:(unsigned int)test TestCommand:(unsigned int)command;
 - (BOOL)startMonitorChamberOpen;
-- (BOOL)updateEnclosedCheckRunningFlag:(BOOL)a3;
-- (BOOL)waitForChamberClosed:(unsigned int)a3;
-- (RFSelfDiagExtensionHelper)initWithDelegate:(id)a3;
+- (BOOL)updateEnclosedCheckRunningFlag:(BOOL)flag;
+- (BOOL)waitForChamberClosed:(unsigned int)closed;
+- (RFSelfDiagExtensionHelper)initWithDelegate:(id)delegate;
 - (RFSelfDiagExtensionHelperDelegate)delegate;
 - (TestConfigFlag)testConfiguration;
 - (id).cxx_construct;
 - (unsigned)getBasebandResultWaitTime;
 - (void)dealloc;
-- (void)handleALSEnclosedEvent:(int)a3;
-- (void)handleWifiAvailabilityEvent:(int)a3;
+- (void)handleALSEnclosedEvent:(int)event;
+- (void)handleWifiAvailabilityEvent:(int)event;
 - (void)resetAll;
 - (void)restoreSetup;
 - (void)stopMonitorChamber;
@@ -24,13 +24,13 @@
 
 @implementation RFSelfDiagExtensionHelper
 
-- (RFSelfDiagExtensionHelper)initWithDelegate:(id)a3
+- (RFSelfDiagExtensionHelper)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = RFSelfDiagExtensionHelper;
   v5 = [(RFSelfDiagExtensionHelper *)&v16 init];
-  [v5 setDelegate:v4];
+  [v5 setDelegate:delegateCopy];
   v6 = dispatch_group_create();
   v7 = *(v5 + 5);
   *(v5 + 5) = v6;
@@ -117,7 +117,7 @@
   }
 }
 
-- (BOOL)isTestSupported:(int)a3
+- (BOOL)isTestSupported:(int)supported
 {
   ptr = self->fBasebandDiagnostics.__ptr_;
   isRFTestSupported = BasebandRFDiagnostics::isRFTestSupported();
@@ -305,15 +305,15 @@ LABEL_11:
   return 0;
 }
 
-- (BOOL)updateEnclosedCheckRunningFlag:(BOOL)a3
+- (BOOL)updateEnclosedCheckRunningFlag:(BOOL)flag
 {
-  v3 = a3;
+  flagCopy = flag;
   self->fGroupMonitorChamber.gr_gid = 0;
   if (([(RFSelfDiagExtensionHelper *)self fSensor]& 1) != 0)
   {
-    v5 = [(DiagExtALSDataMonitor *)self->fALSMonitor currentALSEnclosedState];
-    v6 = v5;
-    if (v3)
+    currentALSEnclosedState = [(DiagExtALSDataMonitor *)self->fALSMonitor currentALSEnclosedState];
+    v6 = currentALSEnclosedState;
+    if (flagCopy)
     {
       v7 = 1;
     }
@@ -323,7 +323,7 @@ LABEL_11:
       v7 = 2;
     }
 
-    if (v5 != v7)
+    if (currentALSEnclosedState != v7)
     {
       ++self->fGroupMonitorChamber.gr_gid;
     }
@@ -342,9 +342,9 @@ LABEL_11:
 
   if (([(RFSelfDiagExtensionHelper *)self fSensor]& 2) != 0)
   {
-    v10 = [(DiagExtWifiScanner *)self->fWifiScanner currentWifiAvailabilityState];
-    v11 = v10;
-    if (v3)
+    currentWifiAvailabilityState = [(DiagExtWifiScanner *)self->fWifiScanner currentWifiAvailabilityState];
+    v11 = currentWifiAvailabilityState;
+    if (flagCopy)
     {
       v12 = 1;
     }
@@ -354,7 +354,7 @@ LABEL_11:
       v12 = 2;
     }
 
-    if (v10 != v12)
+    if (currentWifiAvailabilityState != v12)
     {
       self->fGroupMonitorChamber.gr_gid += 2;
     }
@@ -376,7 +376,7 @@ LABEL_11:
   {
     v17 = "Opened";
     v18 = self->fGroupMonitorChamber.gr_gid;
-    if (v3)
+    if (flagCopy)
     {
       v17 = "Closed";
     }
@@ -391,15 +391,15 @@ LABEL_11:
   return self->fGroupMonitorChamber.gr_gid != 0;
 }
 
-- (BOOL)waitForChamberClosed:(unsigned int)a3
+- (BOOL)waitForChamberClosed:(unsigned int)closed
 {
   v5 = +[ABMDiagnosticExtensionLogging getOSLogHandler];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v20 = 67109376;
-    v21 = a3;
+    closedCopy = closed;
     v22 = 1024;
-    v23 = [(RFSelfDiagExtensionHelper *)self fSensor];
+    fSensor = [(RFSelfDiagExtensionHelper *)self fSensor];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Waiting for Chamber Clossed: waitTime=%d, sensor=%d", &v20, 0xEu);
   }
 
@@ -444,7 +444,7 @@ LABEL_11:
       }
     }
 
-    v8 = 1000000000 * a3;
+    v8 = 1000000000 * closed;
     v9 = self->fGroupMonitorChamber.gr_name;
     v10 = dispatch_time(0, v8);
     if (dispatch_group_wait(v9, v10))
@@ -454,7 +454,7 @@ LABEL_11:
       {
         v19 = self->fGroupMonitorChamber.gr_gid;
         v20 = 67109120;
-        v21 = v19;
+        closedCopy = v19;
         _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Chamber is still Open: MonitoringFlag=%d", &v20, 8u);
       }
     }
@@ -491,14 +491,14 @@ LABEL_14:
   return v12;
 }
 
-- (void)handleALSEnclosedEvent:(int)a3
+- (void)handleALSEnclosedEvent:(int)event
 {
   v5 = +[ABMDiagnosticExtensionLogging getOSLogHandler];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     gr_gid = self->fGroupMonitorChamber.gr_gid;
     v16[0] = 67109376;
-    v16[1] = a3;
+    v16[1] = event;
     v17 = 1024;
     v18 = gr_gid;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received ALS event w/ state=%d, monitoring flag=%d", v16, 0xEu);
@@ -506,8 +506,8 @@ LABEL_14:
 
   if ([(RFSelfDiagExtensionHelper *)self fMonitoring]&& (self->fGroupMonitorChamber.gr_gid & 1) != 0)
   {
-    v7 = [(RFSelfDiagExtensionHelper *)self fMonitoring];
-    if (a3 == 1 && v7 == 2)
+    fMonitoring = [(RFSelfDiagExtensionHelper *)self fMonitoring];
+    if (event == 1 && fMonitoring == 2)
     {
       gr_passwd = self->fGroupMonitorChamber.gr_passwd;
       v9 = self->fGroupMonitorChamber.gr_gid - 1;
@@ -546,8 +546,8 @@ LABEL_14:
 
     else
     {
-      v11 = [(RFSelfDiagExtensionHelper *)self fMonitoring];
-      if (a3 == 2 && v11 == 1)
+      fMonitoring2 = [(RFSelfDiagExtensionHelper *)self fMonitoring];
+      if (event == 2 && fMonitoring2 == 1)
       {
         v12 = +[ABMDiagnosticExtensionLogging getOSLogHandler];
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -557,21 +557,21 @@ LABEL_14:
         }
 
         --self->fGroupMonitorChamber.gr_gid;
-        v13 = [(RFSelfDiagExtensionHelper *)self delegate];
-        [v13 handleChamberOpenEvent:1];
+        delegate = [(RFSelfDiagExtensionHelper *)self delegate];
+        [delegate handleChamberOpenEvent:1];
       }
     }
   }
 }
 
-- (void)handleWifiAvailabilityEvent:(int)a3
+- (void)handleWifiAvailabilityEvent:(int)event
 {
   v5 = +[ABMDiagnosticExtensionLogging getOSLogHandler];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     gr_gid = self->fGroupMonitorChamber.gr_gid;
     v15[0] = 67109376;
-    v15[1] = a3;
+    v15[1] = event;
     v16 = 1024;
     v17 = gr_gid;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received wifi availability event w/ state=%d, monitoring flag=%d", v15, 0xEu);
@@ -579,8 +579,8 @@ LABEL_14:
 
   if ([(RFSelfDiagExtensionHelper *)self fMonitoring]&& (self->fGroupMonitorChamber.gr_gid & 2) != 0)
   {
-    v7 = [(RFSelfDiagExtensionHelper *)self fMonitoring];
-    if (a3 == 1 && v7 == 2)
+    fMonitoring = [(RFSelfDiagExtensionHelper *)self fMonitoring];
+    if (event == 1 && fMonitoring == 2)
     {
       gr_passwd = self->fGroupMonitorChamber.gr_passwd;
       v9 = self->fGroupMonitorChamber.gr_gid - 2;
@@ -619,28 +619,28 @@ LABEL_14:
 
     else
     {
-      v11 = [(RFSelfDiagExtensionHelper *)self fMonitoring];
-      if (a3 == 2 && v11 == 1)
+      fMonitoring2 = [(RFSelfDiagExtensionHelper *)self fMonitoring];
+      if (event == 2 && fMonitoring2 == 1)
       {
         self->fGroupMonitorChamber.gr_gid -= 2;
-        v12 = [(RFSelfDiagExtensionHelper *)self delegate];
-        [v12 handleChamberOpenEvent:2];
+        delegate = [(RFSelfDiagExtensionHelper *)self delegate];
+        [delegate handleChamberOpenEvent:2];
       }
     }
   }
 }
 
-- (BOOL)addAWDConfiguration:(int)a3
+- (BOOL)addAWDConfiguration:(int)configuration
 {
   v5 = [NSBundle bundleWithIdentifier:@"com.apple.DiagnosticsService.Diagnostic-8209"];
-  v6 = [v5 bundleURL];
+  bundleURL = [v5 bundleURL];
 
   RadioType = BasebandDiagnostics::getRadioType(self->fBasebandDiagnostics.__ptr_);
   if (RadioType)
   {
     if (RadioType == 1)
     {
-      if ((a3 & 0xFFFFFFFE) == 2)
+      if ((configuration & 0xFFFFFFFE) == 2)
       {
         v8 = @"mav-desense-rf-self-test-result.deviceconfig";
       }
@@ -674,12 +674,12 @@ LABEL_14:
     v8 = @"ice-rf-self-test-result.deviceconfig";
   }
 
-  v9 = [v6 URLByAppendingPathComponent:v8 isDirectory:0];
+  v9 = [bundleURL URLByAppendingPathComponent:v8 isDirectory:0];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 path];
-    v12 = [[NSData alloc] initWithContentsOfFile:v11];
+    path = [v9 path];
+    v12 = [[NSData alloc] initWithContentsOfFile:path];
     v13 = [v12 length];
     v14 = v13;
     if (v13)
@@ -747,7 +747,7 @@ LABEL_26:
   return v17;
 }
 
-- (BOOL)startBasebandRFSelfTest:(unsigned int)a3 TestCommand:(unsigned int)a4
+- (BOOL)startBasebandRFSelfTest:(unsigned int)test TestCommand:(unsigned int)command
 {
   RadioType = BasebandDiagnostics::getRadioType(self->fBasebandDiagnostics.__ptr_);
   switch(RadioType)
@@ -861,7 +861,7 @@ LABEL_13:
   return result;
 }
 
-- (BOOL)resetBaseband:(BOOL)a3
+- (BOOL)resetBaseband:(BOOL)baseband
 {
   ptr = self->fBasebandDiagnostics.__ptr_;
   __p = operator new(0x40uLL);
@@ -871,7 +871,7 @@ LABEL_13:
   return v4;
 }
 
-- (BOOL)recoverBasebandState:(BOOL)a3
+- (BOOL)recoverBasebandState:(BOOL)state
 {
   RadioType = BasebandDiagnostics::getRadioType(self->fBasebandDiagnostics.__ptr_);
   switch(RadioType)
@@ -879,7 +879,7 @@ LABEL_13:
     case 2:
       goto LABEL_4;
     case 1:
-      if (!a3)
+      if (!state)
       {
         v7 = +[ABMDiagnosticExtensionLogging getOSLogHandler];
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))

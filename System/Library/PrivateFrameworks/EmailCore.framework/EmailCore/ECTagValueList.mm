@@ -1,12 +1,12 @@
 @interface ECTagValueList
-+ (id)_errorWithCode:(void *)a3 failureReason:;
-+ (id)tagValueListFromDictionary:(id)a3 error:(id *)a4;
-+ (id)tagValueListFromString:(id)a3 error:(id *)a4;
++ (id)_errorWithCode:(void *)code failureReason:;
++ (id)tagValueListFromDictionary:(id)dictionary error:(id *)error;
++ (id)tagValueListFromString:(id)string error:(id *)error;
 - (NSString)stringRepresentation;
-- (id)_initWithDictionaryRepresentation:(id)a3;
-- (id)_initWithDictionaryRepresentation:(id)a3 stringRepresentation:(id)a4;
-- (id)objectForKeyedSubscript:(id)a3;
-- (id)valueForTag:(id)a3;
+- (id)_initWithDictionaryRepresentation:(id)representation;
+- (id)_initWithDictionaryRepresentation:(id)representation stringRepresentation:(id)stringRepresentation;
+- (id)objectForKeyedSubscript:(id)subscript;
+- (id)valueForTag:(id)tag;
 - (void)dealloc;
 @end
 
@@ -19,15 +19,15 @@ uint64_t ___ef_log_ECTagValueList_block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_initWithDictionaryRepresentation:(id)a3
+- (id)_initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v9.receiver = self;
   v9.super_class = ECTagValueList;
   v5 = [(ECTagValueList *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [representationCopy copy];
     dictionaryRepresentation = v5->_dictionaryRepresentation;
     v5->_dictionaryRepresentation = v6;
   }
@@ -35,11 +35,11 @@ uint64_t ___ef_log_ECTagValueList_block_invoke()
   return v5;
 }
 
-- (id)_initWithDictionaryRepresentation:(id)a3 stringRepresentation:(id)a4
+- (id)_initWithDictionaryRepresentation:(id)representation stringRepresentation:(id)stringRepresentation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ECTagValueList *)self _initWithDictionaryRepresentation:v6];
+  representationCopy = representation;
+  stringRepresentationCopy = stringRepresentation;
+  v8 = [(ECTagValueList *)self _initWithDictionaryRepresentation:representationCopy];
   if (v8)
   {
     v9 = EFAtomicObjectSetIfNil();
@@ -56,12 +56,12 @@ uint64_t ___ef_log_ECTagValueList_block_invoke()
   [(ECTagValueList *)&v4 dealloc];
 }
 
-+ (id)tagValueListFromString:(id)a3 error:(id *)a4
++ (id)tagValueListFromString:(id)string error:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v27 = a3;
-  v4 = [MEMORY[0x277CCA900] newlineCharacterSet];
-  v5 = [v27 ef_stringByTrimmingTrailingCharactersInSet:v4];
+  stringCopy = string;
+  newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
+  v5 = [stringCopy ef_stringByTrimmingTrailingCharactersInSet:newlineCharacterSet];
 
   v26 = v5;
   v25 = [v5 componentsSeparatedByString:@""];;
@@ -95,28 +95,28 @@ uint64_t ___ef_log_ECTagValueList_block_invoke()
         v12 = [v11 ef_componentsSeparatedByString:@"=" maxSeparations:1];
         if ([v12 count] == 2)
         {
-          v13 = [v12 firstObject];
-          v14 = [v13 ef_stringByTrimmingWhitespaceAndNewlineCharacters];
+          firstObject = [v12 firstObject];
+          ef_stringByTrimmingWhitespaceAndNewlineCharacters = [firstObject ef_stringByTrimmingWhitespaceAndNewlineCharacters];
 
-          v15 = [v12 lastObject];
-          v16 = [v15 ef_stringByTrimmingWhitespaceAndNewlineCharacters];
+          lastObject = [v12 lastObject];
+          ef_stringByTrimmingWhitespaceAndNewlineCharacters2 = [lastObject ef_stringByTrimmingWhitespaceAndNewlineCharacters];
 
-          v17 = [v6 objectForKeyedSubscript:v14];
+          v17 = [v6 objectForKeyedSubscript:ef_stringByTrimmingWhitespaceAndNewlineCharacters];
 
           if (!v17)
           {
-            [v6 setObject:v16 forKeyedSubscript:v14];
+            [v6 setObject:ef_stringByTrimmingWhitespaceAndNewlineCharacters2 forKeyedSubscript:ef_stringByTrimmingWhitespaceAndNewlineCharacters];
 
             continue;
           }
 
-          v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"Duplicate '%@' tags in tag value list", v14];
-          v8 = [(ECTagValueList *)a1 _errorWithCode:v18 failureReason:?];
+          v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"Duplicate '%@' tags in tag value list", ef_stringByTrimmingWhitespaceAndNewlineCharacters];
+          v8 = [(ECTagValueList *)self _errorWithCode:v18 failureReason:?];
         }
 
         else
         {
-          v8 = [(ECTagValueList *)a1 _errorWithCode:0 failureReason:?];
+          v8 = [(ECTagValueList *)self _errorWithCode:0 failureReason:?];
         }
 
         goto LABEL_18;
@@ -138,16 +138,16 @@ LABEL_18:
 
   if (![v6 count])
   {
-    v19 = [(ECTagValueList *)a1 _errorWithCode:0 failureReason:?];
+    v19 = [(ECTagValueList *)self _errorWithCode:0 failureReason:?];
 
     v6 = 0;
     v8 = v19;
   }
 
-  if (a4)
+  if (error)
   {
     v20 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   if (v8)
@@ -159,12 +159,12 @@ LABEL_18:
   {
     if (v30)
     {
-      v22 = [[a1 alloc] _initWithDictionaryRepresentation:v6 stringRepresentation:v27];
+      v22 = [[self alloc] _initWithDictionaryRepresentation:v6 stringRepresentation:stringCopy];
     }
 
     else
     {
-      v22 = [[a1 alloc] _initWithDictionaryRepresentation:v6];
+      v22 = [[self alloc] _initWithDictionaryRepresentation:v6];
     }
 
     v21 = v22;
@@ -175,15 +175,15 @@ LABEL_18:
   return v21;
 }
 
-+ (id)_errorWithCode:(void *)a3 failureReason:
++ (id)_errorWithCode:(void *)code failureReason:
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  codeCopy = code;
   objc_opt_self();
-  if (v4)
+  if (codeCopy)
   {
     v9 = *MEMORY[0x277CCA470];
-    v10[0] = v4;
+    v10[0] = codeCopy;
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   }
 
@@ -199,18 +199,18 @@ LABEL_18:
   return v6;
 }
 
-+ (id)tagValueListFromDictionary:(id)a3 error:(id *)a4
++ (id)tagValueListFromDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
-  if ([v6 count])
+  dictionaryCopy = dictionary;
+  if ([dictionaryCopy count])
   {
-    v7 = [[a1 alloc] _initWithDictionaryRepresentation:v6];
+    v7 = [[self alloc] _initWithDictionaryRepresentation:dictionaryCopy];
   }
 
-  else if (a4)
+  else if (error)
   {
-    [(ECTagValueList *)a1 _errorWithCode:0 failureReason:?];
-    *a4 = v7 = 0;
+    [(ECTagValueList *)self _errorWithCode:0 failureReason:?];
+    *error = v7 = 0;
   }
 
   else
@@ -227,14 +227,14 @@ LABEL_18:
   if (!v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v5 = [(ECTagValueList *)self dictionaryRepresentation];
+    dictionaryRepresentation = [(ECTagValueList *)self dictionaryRepresentation];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __38__ECTagValueList_stringRepresentation__block_invoke;
     v9[3] = &unk_27874C408;
     v6 = v4;
     v10 = v6;
-    [v5 enumerateKeysAndObjectsUsingBlock:v9];
+    [dictionaryRepresentation enumerateKeysAndObjectsUsingBlock:v9];
 
     v7 = [v6 componentsJoinedByString:@""];;
     v3 = EFAtomicObjectSetIfNil();
@@ -250,18 +250,18 @@ void __38__ECTagValueList_stringRepresentation__block_invoke(uint64_t a1, uint64
   [v3 addObject:?];
 }
 
-- (id)valueForTag:(id)a3
+- (id)valueForTag:(id)tag
 {
-  v4 = a3;
-  v5 = [(ECTagValueList *)self dictionaryRepresentation];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  tagCopy = tag;
+  dictionaryRepresentation = [(ECTagValueList *)self dictionaryRepresentation];
+  v6 = [dictionaryRepresentation objectForKeyedSubscript:tagCopy];
 
   return v6;
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v3 = [(ECTagValueList *)self valueForTag:a3];
+  v3 = [(ECTagValueList *)self valueForTag:subscript];
 
   return v3;
 }

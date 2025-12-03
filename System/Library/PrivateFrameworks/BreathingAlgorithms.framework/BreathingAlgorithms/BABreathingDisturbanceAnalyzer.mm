@@ -1,13 +1,13 @@
 @interface BABreathingDisturbanceAnalyzer
-+ (BABreathingDisturbanceAnalysis)analyzeSamples:(SEL)a3 dateInterval:(id)a4;
++ (BABreathingDisturbanceAnalysis)analyzeSamples:(SEL)samples dateInterval:(id)interval;
 @end
 
 @implementation BABreathingDisturbanceAnalyzer
 
-+ (BABreathingDisturbanceAnalysis)analyzeSamples:(SEL)a3 dateInterval:(id)a4
++ (BABreathingDisturbanceAnalysis)analyzeSamples:(SEL)samples dateInterval:(id)interval
 {
   v114 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  intervalCopy = interval;
   v90 = a5;
   retstr->var0 = &unk_285402D90;
   retstr->var1 = 0;
@@ -16,7 +16,7 @@
   v103 = 0u;
   v104 = 0u;
   v105 = 0u;
-  obj = v7;
+  obj = intervalCopy;
   v8 = [obj countByEnumeratingWithState:&v102 objects:v113 count:16];
   if (v8)
   {
@@ -34,21 +34,21 @@
         v12 = hws_get_framework_log();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
-          v13 = [v11 quantity];
-          v14 = [MEMORY[0x277CCDAB0] countUnit];
-          [v13 doubleValueForUnit:v14];
+          quantity = [v11 quantity];
+          countUnit = [MEMORY[0x277CCDAB0] countUnit];
+          [quantity doubleValueForUnit:countUnit];
           v16 = v15;
-          v17 = [v11 startDate];
-          v18 = [v11 endDate];
-          v19 = [v11 UUID];
+          startDate = [v11 startDate];
+          endDate = [v11 endDate];
+          uUID = [v11 UUID];
           *buf = 134546435;
           *&buf[4] = v16;
           *&buf[12] = 2114;
-          *&buf[14] = v17;
+          *&buf[14] = startDate;
           *&buf[22] = 2114;
-          *&buf[24] = v18;
+          *&buf[24] = endDate;
           LOWORD(v111) = 2114;
-          *(&v111 + 2) = v19;
+          *(&v111 + 2) = uUID;
           _os_log_impl(&dword_241E46000, v12, OS_LOG_TYPE_DEFAULT, "%{sensitive}lf for %{public}@ - %{public}@ for %{public}@", buf, 0x2Au);
         }
       }
@@ -61,18 +61,18 @@
 
   if ([obj count] < 0x1F)
   {
-    v21 = [v90 startDate];
-    v22 = [v90 endDate];
-    v23 = [v21 isEqualToDate:v22];
+    startDate2 = [v90 startDate];
+    endDate2 = [v90 endDate];
+    v23 = [startDate2 isEqualToDate:endDate2];
 
     if (v23)
     {
       v24 = hws_get_framework_log();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
       {
-        v25 = [v90 startDate];
-        v26 = [v90 endDate];
-        [(BABreathingDisturbanceAnalyzer *)v25 analyzeSamples:v26 dateInterval:buf, v24];
+        startDate3 = [v90 startDate];
+        endDate3 = [v90 endDate];
+        [(BABreathingDisturbanceAnalyzer *)startDate3 analyzeSamples:endDate3 dateInterval:buf, v24];
       }
     }
 
@@ -102,27 +102,27 @@ LABEL_20:
           }
 
           v31 = *(*(&v95 + 1) + 8 * v30);
-          v32 = [v31 quantity];
-          v33 = [MEMORY[0x277CCDAB0] countUnit];
-          [v32 doubleValueForUnit:v33];
+          quantity2 = [v31 quantity];
+          countUnit2 = [MEMORY[0x277CCDAB0] countUnit];
+          [quantity2 doubleValueForUnit:countUnit2];
           v35 = v34;
 
-          v36 = [v31 quantityType];
-          v37 = [v36 identifier];
-          v38 = v37 == v29;
+          quantityType = [v31 quantityType];
+          identifier = [quantityType identifier];
+          v38 = identifier == v29;
 
           if (!v38)
           {
             v83 = hws_get_framework_log();
             if (os_log_type_enabled(v83, OS_LOG_TYPE_FAULT))
             {
-              v84 = [v31 quantityType];
-              v85 = [v84 identifier];
-              v86 = [v31 UUID];
+              quantityType2 = [v31 quantityType];
+              identifier2 = [quantityType2 identifier];
+              uUID2 = [v31 UUID];
               *buf = 138543618;
-              *&buf[4] = v85;
+              *&buf[4] = identifier2;
               *&buf[12] = 2114;
-              *&buf[14] = v86;
+              *&buf[14] = uUID2;
               _os_log_fault_impl(&dword_241E46000, v83, OS_LOG_TYPE_FAULT, "Invalid HealthKit type (%{public}@) for sample %{public}@.", buf, 0x16u);
             }
 
@@ -155,18 +155,18 @@ LABEL_20:
             goto LABEL_54;
           }
 
-          v39 = [v31 endDate];
-          v40 = [v90 startDate];
-          v41 = [v39 compare:v40] == 1;
+          endDate4 = [v31 endDate];
+          startDate4 = [v90 startDate];
+          v41 = [endDate4 compare:startDate4] == 1;
 
           if (!v41)
           {
             break;
           }
 
-          v42 = [v31 endDate];
-          v43 = [v90 endDate];
-          v44 = [v42 compare:v43] == 1;
+          endDate5 = [v31 endDate];
+          endDate6 = [v90 endDate];
+          v44 = [endDate5 compare:endDate6] == 1;
 
           if (v44)
           {
@@ -183,11 +183,11 @@ LABEL_54:
             goto LABEL_55;
           }
 
-          v45 = [v31 startDate];
-          [v45 timeIntervalSinceReferenceDate];
+          startDate5 = [v31 startDate];
+          [startDate5 timeIntervalSinceReferenceDate];
           v47 = v46;
-          v48 = [v31 endDate];
-          [v48 timeIntervalSinceReferenceDate];
+          endDate7 = [v31 endDate];
+          [endDate7 timeIntervalSinceReferenceDate];
           v50 = v35;
           v51 = v100;
           if (v100 >= v101)

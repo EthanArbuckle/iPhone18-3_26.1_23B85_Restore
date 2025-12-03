@@ -6,40 +6,40 @@
 - (NSMutableDictionary)vkToMadIDs;
 - (VICVisualIntelligenceAnalyzer)viInterface;
 - (VKImageAnalyzerMadInterface)init;
-- (id)VNRequestHandlerForRequest:(id)a3;
-- (id)analysisResultFromMadRequests:(id)a3 imageSize:(CGSize)a4 durations:(id)a5;
+- (id)VNRequestHandlerForRequest:(id)request;
+- (id)analysisResultFromMadRequests:(id)requests imageSize:(CGSize)size durations:(id)durations;
 - (id)cancelledError;
-- (id)documentObservationFromRequests:(id)a3 durations:(id)a4;
-- (id)madSuggestionTypeFromItems:(id)a3;
-- (id)mrcDDElementsFromRequests:(id)a3 didParse:(BOOL *)a4 durations:(id)a5;
-- (id)rectangleObservationsFromRequests:(id)a3 durations:(id)a4;
-- (id)requestForRequestID:(int)a3;
-- (id)visualSearchResultFromRequests:(id)a3 durations:(id)a4;
-- (int)_performMADRequest:(id)a3 forRequest:(id)a4 pixelBuffer:(__CVBuffer *)a5 cgImage:(CGImage *)a6 useCGForMad:(BOOL)a7 withCompletion:(id)a8;
-- (int)processRequest:(id)a3 callbackQueue:(id)a4;
-- (unint64_t)_statusForRequestID:(int)a3;
-- (unint64_t)sfViewAppearEventFromInvocationType:(int64_t)a3 request:(id)a4;
-- (unint64_t)statusForRequestID:(int)a3;
-- (void)_cancelRequest:(id)a3;
-- (void)_cancelRequestID:(int)a3;
-- (void)_didFinishRequest:(id)a3 withAnalysis:(id)a4 analyticsEvent:(id)a5 error:(id)a6;
-- (void)_processRequest:(id)a3 callbackQueue:(id)a4;
+- (id)documentObservationFromRequests:(id)requests durations:(id)durations;
+- (id)madSuggestionTypeFromItems:(id)items;
+- (id)mrcDDElementsFromRequests:(id)requests didParse:(BOOL *)parse durations:(id)durations;
+- (id)rectangleObservationsFromRequests:(id)requests durations:(id)durations;
+- (id)requestForRequestID:(int)d;
+- (id)visualSearchResultFromRequests:(id)requests durations:(id)durations;
+- (int)_performMADRequest:(id)request forRequest:(id)forRequest pixelBuffer:(__CVBuffer *)buffer cgImage:(CGImage *)image useCGForMad:(BOOL)mad withCompletion:(id)completion;
+- (int)processRequest:(id)request callbackQueue:(id)queue;
+- (unint64_t)_statusForRequestID:(int)d;
+- (unint64_t)sfViewAppearEventFromInvocationType:(int64_t)type request:(id)request;
+- (unint64_t)statusForRequestID:(int)d;
+- (void)_cancelRequest:(id)request;
+- (void)_cancelRequestID:(int)d;
+- (void)_didFinishRequest:(id)request withAnalysis:(id)analysis analyticsEvent:(id)event error:(id)error;
+- (void)_processRequest:(id)request callbackQueue:(id)queue;
 - (void)cancelAllRequests;
-- (void)cancelRequestID:(int)a3;
-- (void)clearCompletedRequest:(id)a3;
+- (void)cancelRequestID:(int)d;
+- (void)clearCompletedRequest:(id)request;
 - (void)createNewIdleTimerIfNecessary;
-- (void)didFinishRequest:(id)a3 withAnalysis:(id)a4 analyticsEvent:(id)a5 error:(id)a6;
+- (void)didFinishRequest:(id)request withAnalysis:(id)analysis analyticsEvent:(id)event error:(id)error;
 - (void)didLeaveVisualSearchHints;
-- (void)didShowVisualSearchCachedResultsForQueryID:(unint64_t)a3 cachedResultQueryID:(unint64_t)a4 item:(id)a5;
-- (void)didShowVisualSearchHintsForRequest:(id)a3 invocationType:(int64_t)a4;
-- (void)generateTextualVisualSearchResultForAnalysis:(id)a3 queryInfo:(id)a4 completionHandler:(id)a5;
-- (void)generateVisualSearchResultForRequest:(id)a3 analysis:(id)a4 items:(id)a5 payload:(id)a6 queryID:(unint64_t)a7 completionHandler:(id)a8;
-- (void)performMADRequest:(id)a3 forRequest:(id)a4 withCompletion:(id)a5;
-- (void)processMRCInfo:(id)a3 completionHandler:(id)a4;
-- (void)removeAndNotifyOfCancelledRequest:(id)a3 completion:(id)a4;
-- (void)request:(id)a3 didCompleteWithAnalysis:(id)a4 analysisEvent:(id)a5 error:(id)a6;
-- (void)setRequest:(id)a3 forRequestID:(int)a4;
-- (void)submitVisualIntelligenceUserFeedbackForRequest:(id)a3 reportIdentifier:(id)a4 userFeedbackPayload:(id)a5 sfReportData:(id)a6;
+- (void)didShowVisualSearchCachedResultsForQueryID:(unint64_t)d cachedResultQueryID:(unint64_t)iD item:(id)item;
+- (void)didShowVisualSearchHintsForRequest:(id)request invocationType:(int64_t)type;
+- (void)generateTextualVisualSearchResultForAnalysis:(id)analysis queryInfo:(id)info completionHandler:(id)handler;
+- (void)generateVisualSearchResultForRequest:(id)request analysis:(id)analysis items:(id)items payload:(id)payload queryID:(unint64_t)d completionHandler:(id)handler;
+- (void)performMADRequest:(id)request forRequest:(id)forRequest withCompletion:(id)completion;
+- (void)processMRCInfo:(id)info completionHandler:(id)handler;
+- (void)removeAndNotifyOfCancelledRequest:(id)request completion:(id)completion;
+- (void)request:(id)request didCompleteWithAnalysis:(id)analysis analysisEvent:(id)event error:(id)error;
+- (void)setRequest:(id)request forRequestID:(int)d;
+- (void)submitVisualIntelligenceUserFeedbackForRequest:(id)request reportIdentifier:(id)identifier userFeedbackPayload:(id)payload sfReportData:(id)data;
 @end
 
 @implementation VKImageAnalyzerMadInterface
@@ -70,9 +70,9 @@ void __46__VKImageAnalyzerMadInterface_sharedInterface__block_invoke()
   v2 = [(VKImageAnalyzerMadInterface *)&v20 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69AE3E0] service];
+    service = [MEMORY[0x1E69AE3E0] service];
     madService = v2->_madService;
-    v2->_madService = v3;
+    v2->_madService = service;
 
     v5 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
     v6 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
@@ -167,58 +167,58 @@ void __46__VKImageAnalyzerMadInterface_sharedInterface__block_invoke()
   return viInterface;
 }
 
-- (int)processRequest:(id)a3 callbackQueue:(id)a4
+- (int)processRequest:(id)request callbackQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  LODWORD(a4) = [(VKImageAnalyzerMadInterface *)v8 requestIDIndex];
-  [(VKImageAnalyzerMadInterface *)v8 setRequestIDIndex:(a4 + 1)];
-  [v6 setRequestID:(a4 + 1)];
-  -[VKImageAnalyzerMadInterface setRequest:forRequestID:](v8, "setRequest:forRequestID:", v6, [v6 requestID]);
-  objc_sync_exit(v8);
+  requestCopy = request;
+  queueCopy = queue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  LODWORD(queue) = [(VKImageAnalyzerMadInterface *)selfCopy requestIDIndex];
+  [(VKImageAnalyzerMadInterface *)selfCopy setRequestIDIndex:(queue + 1)];
+  [requestCopy setRequestID:(queue + 1)];
+  -[VKImageAnalyzerMadInterface setRequest:forRequestID:](selfCopy, "setRequest:forRequestID:", requestCopy, [requestCopy requestID]);
+  objc_sync_exit(selfCopy);
 
-  v9 = [(VKImageAnalyzerMadInterface *)v8 housekeepingQueue];
+  housekeepingQueue = [(VKImageAnalyzerMadInterface *)selfCopy housekeepingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__VKImageAnalyzerMadInterface_processRequest_callbackQueue___block_invoke;
   block[3] = &unk_1E7BE4718;
-  block[4] = v8;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  block[4] = selfCopy;
+  v14 = requestCopy;
+  v15 = queueCopy;
+  v10 = queueCopy;
+  v11 = requestCopy;
+  dispatch_async(housekeepingQueue, block);
 
-  return a4 + 1;
+  return queue + 1;
 }
 
 - (NSMutableDictionary)vkToMadIDs
 {
-  v3 = [(VKImageAnalyzerMadInterface *)self housekeepingQueue];
-  dispatch_assert_queue_V2(v3);
+  housekeepingQueue = [(VKImageAnalyzerMadInterface *)self housekeepingQueue];
+  dispatch_assert_queue_V2(housekeepingQueue);
 
   vkToMadIDs = self->_vkToMadIDs;
 
   return vkToMadIDs;
 }
 
-- (unint64_t)statusForRequestID:(int)a3
+- (unint64_t)statusForRequestID:(int)d
 {
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 3;
-  v5 = [(VKImageAnalyzerMadInterface *)self housekeepingQueue];
+  housekeepingQueue = [(VKImageAnalyzerMadInterface *)self housekeepingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50__VKImageAnalyzerMadInterface_statusForRequestID___block_invoke;
   block[3] = &unk_1E7BE6278;
   block[4] = self;
   block[5] = &v10;
-  v9 = a3;
-  dispatch_sync(v5, block);
+  dCopy = d;
+  dispatch_sync(housekeepingQueue, block);
 
   v6 = v11[3];
   _Block_object_dispose(&v10, 8);
@@ -232,36 +232,36 @@ uint64_t __50__VKImageAnalyzerMadInterface_statusForRequestID___block_invoke(uin
   return result;
 }
 
-- (void)cancelRequestID:(int)a3
+- (void)cancelRequestID:(int)d
 {
-  v5 = [(VKImageAnalyzerMadInterface *)self housekeepingQueue];
+  housekeepingQueue = [(VKImageAnalyzerMadInterface *)self housekeepingQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __47__VKImageAnalyzerMadInterface_cancelRequestID___block_invoke;
   v6[3] = &unk_1E7BE62A0;
   v6[4] = self;
-  v7 = a3;
-  dispatch_async(v5, v6);
+  dCopy = d;
+  dispatch_async(housekeepingQueue, v6);
 }
 
 - (void)cancelAllRequests
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(VKImageAnalyzerMadInterface *)v2 idsToRequests];
-  v4 = [v3 allKeys];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  idsToRequests = [(VKImageAnalyzerMadInterface *)selfCopy idsToRequests];
+  allKeys = [idsToRequests allKeys];
 
-  objc_sync_exit(v2);
-  objc_initWeak(&location, v2);
-  v5 = [(VKImageAnalyzerMadInterface *)v2 housekeepingQueue];
+  objc_sync_exit(selfCopy);
+  objc_initWeak(&location, selfCopy);
+  housekeepingQueue = [(VKImageAnalyzerMadInterface *)selfCopy housekeepingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __48__VKImageAnalyzerMadInterface_cancelAllRequests__block_invoke;
   block[3] = &unk_1E7BE62F0;
-  v8 = v4;
-  v6 = v4;
+  v8 = allKeys;
+  v6 = allKeys;
   objc_copyWeak(&v9, &location);
-  dispatch_async(v5, block);
+  dispatch_async(housekeepingQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -300,12 +300,12 @@ uint64_t __48__VKImageAnalyzerMadInterface_cancelAllRequests__block_invoke_163(u
   return [v2 _cancelRequestID:v3];
 }
 
-- (void)_cancelRequestID:(int)a3
+- (void)_cancelRequestID:(int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   v10 = *MEMORY[0x1E69E9840];
-  v5 = [(VKImageAnalyzerMadInterface *)self housekeepingQueue];
-  dispatch_assert_queue_V2(v5);
+  housekeepingQueue = [(VKImageAnalyzerMadInterface *)self housekeepingQueue];
+  dispatch_assert_queue_V2(housekeepingQueue);
 
   v6 = [(VKImageAnalyzerMadInterface *)self requestForRequestID:v3];
   v7 = v6;
@@ -331,16 +331,16 @@ uint64_t __48__VKImageAnalyzerMadInterface_cancelAllRequests__block_invoke_163(u
 
 - (BOOL)hasAnyRequests
 {
-  v3 = [(VKImageAnalyzerMadInterface *)self requestQueueCancelling];
-  if ([v3 count])
+  requestQueueCancelling = [(VKImageAnalyzerMadInterface *)self requestQueueCancelling];
+  if ([requestQueueCancelling count])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(VKImageAnalyzerMadInterface *)self requestQueueProcessing];
-    v4 = [v5 count] != 0;
+    requestQueueProcessing = [(VKImageAnalyzerMadInterface *)self requestQueueProcessing];
+    v4 = [requestQueueProcessing count] != 0;
   }
 
   return v4;
@@ -358,9 +358,9 @@ uint64_t __48__VKImageAnalyzerMadInterface_cancelAllRequests__block_invoke_163(u
       _os_log_impl(&dword_1B4335000, v4, OS_LOG_TYPE_INFO, "Retaining MADService", v8, 2u);
     }
 
-    v5 = [MEMORY[0x1E69AE3E0] service];
+    service = [MEMORY[0x1E69AE3E0] service];
     v6 = self->__serviceDontUseThisOneDirectly;
-    self->__serviceDontUseThisOneDirectly = v5;
+    self->__serviceDontUseThisOneDirectly = service;
 
     serviceDontUseThisOneDirectly = self->__serviceDontUseThisOneDirectly;
   }
@@ -368,105 +368,105 @@ uint64_t __48__VKImageAnalyzerMadInterface_cancelAllRequests__block_invoke_163(u
   return serviceDontUseThisOneDirectly;
 }
 
-- (id)requestForRequestID:(int)a3
+- (id)requestForRequestID:(int)d
 {
-  v3 = *&a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(VKImageAnalyzerMadInterface *)v4 idsToRequests];
+  v3 = *&d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  idsToRequests = [(VKImageAnalyzerMadInterface *)selfCopy idsToRequests];
   v6 = [MEMORY[0x1E696AD98] numberWithInt:v3];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [idsToRequests objectForKeyedSubscript:v6];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (void)setRequest:(id)a3 forRequestID:(int)a4
+- (void)setRequest:(id)request forRequestID:(int)d
 {
-  v4 = *&a4;
-  v9 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(VKImageAnalyzerMadInterface *)v6 idsToRequests];
+  v4 = *&d;
+  requestCopy = request;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  idsToRequests = [(VKImageAnalyzerMadInterface *)selfCopy idsToRequests];
   v8 = [MEMORY[0x1E696AD98] numberWithInt:v4];
-  [v7 setObject:v9 forKeyedSubscript:v8];
+  [idsToRequests setObject:requestCopy forKeyedSubscript:v8];
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_cancelRequest:(id)a3
+- (void)_cancelRequest:(id)request
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(VKImageAnalyzerMadInterface *)self housekeepingQueue];
-  dispatch_assert_queue_V2(v5);
+  requestCopy = request;
+  housekeepingQueue = [(VKImageAnalyzerMadInterface *)self housekeepingQueue];
+  dispatch_assert_queue_V2(housekeepingQueue);
 
-  [v4 setCancelled:1];
-  v6 = -[VKImageAnalyzerMadInterface _statusForRequestID:](self, "_statusForRequestID:", [v4 requestID]);
-  v7 = [(VKImageAnalyzerMadInterface *)self vkToMadIDs];
-  v8 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "requestID")}];
-  v9 = [v7 objectForKeyedSubscript:v8];
-  v10 = [v9 intValue];
+  [requestCopy setCancelled:1];
+  v6 = -[VKImageAnalyzerMadInterface _statusForRequestID:](self, "_statusForRequestID:", [requestCopy requestID]);
+  vkToMadIDs = [(VKImageAnalyzerMadInterface *)self vkToMadIDs];
+  v8 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(requestCopy, "requestID")}];
+  v9 = [vkToMadIDs objectForKeyedSubscript:v8];
+  intValue = [v9 intValue];
 
   v11 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.processing");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v4 shortLoggingDescription];
+    shortLoggingDescription = [requestCopy shortLoggingDescription];
     v16 = 138412290;
-    v17 = v12;
+    v17 = shortLoggingDescription;
     _os_log_impl(&dword_1B4335000, v11, OS_LOG_TYPE_DEFAULT, "Cancelling Request: %@", &v16, 0xCu);
   }
 
   if (!v6)
   {
-    v13 = [(VKImageAnalyzerMadInterface *)self service];
-    [v13 cancelRequestID:v10];
+    service = [(VKImageAnalyzerMadInterface *)self service];
+    [service cancelRequestID:intValue];
 
-    v14 = [(VKImageAnalyzerMadInterface *)self requestQueueCancelling];
-    v15 = [v4 requestIDValue];
-    [v14 addObject:v15];
+    requestQueueCancelling = [(VKImageAnalyzerMadInterface *)self requestQueueCancelling];
+    requestIDValue = [requestCopy requestIDValue];
+    [requestQueueCancelling addObject:requestIDValue];
   }
 }
 
-- (void)removeAndNotifyOfCancelledRequest:(id)a3 completion:(id)a4
+- (void)removeAndNotifyOfCancelledRequest:(id)request completion:(id)completion
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VKImageAnalyzerMadInterface *)self housekeepingQueue];
-  dispatch_assert_queue_V2(v8);
+  requestCopy = request;
+  completionCopy = completion;
+  housekeepingQueue = [(VKImageAnalyzerMadInterface *)self housekeepingQueue];
+  dispatch_assert_queue_V2(housekeepingQueue);
 
   v9 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.processing");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v6 shortLoggingDescription];
+    shortLoggingDescription = [requestCopy shortLoggingDescription];
     v12 = 138412290;
-    v13 = v10;
+    v13 = shortLoggingDescription;
     _os_log_impl(&dword_1B4335000, v9, OS_LOG_TYPE_DEFAULT, "Removing and notifying of cancelled request not yet submitted to MAD: %@", &v12, 0xCu);
   }
 
-  [(VKImageAnalyzerMadInterface *)self clearCompletedRequest:v6];
-  v11 = [(VKImageAnalyzerMadInterface *)self cancelledError];
-  v7[2](v7, [v6 madRequestID], v11);
+  [(VKImageAnalyzerMadInterface *)self clearCompletedRequest:requestCopy];
+  cancelledError = [(VKImageAnalyzerMadInterface *)self cancelledError];
+  completionCopy[2](completionCopy, [requestCopy madRequestID], cancelledError);
 }
 
-- (unint64_t)_statusForRequestID:(int)a3
+- (unint64_t)_statusForRequestID:(int)d
 {
-  v3 = *&a3;
-  v5 = [(VKImageAnalyzerMadInterface *)self housekeepingQueue];
-  dispatch_assert_queue_V2(v5);
+  v3 = *&d;
+  housekeepingQueue = [(VKImageAnalyzerMadInterface *)self housekeepingQueue];
+  dispatch_assert_queue_V2(housekeepingQueue);
 
   v6 = [MEMORY[0x1E696AD98] numberWithInt:v3];
   v7 = [(VKImageAnalyzerMadInterface *)self requestForRequestID:v3];
-  v8 = [(VKImageAnalyzerMadInterface *)self vkToMadIDs];
-  v9 = [v8 objectForKeyedSubscript:v6];
-  v10 = [v9 integerValue];
+  vkToMadIDs = [(VKImageAnalyzerMadInterface *)self vkToMadIDs];
+  v9 = [vkToMadIDs objectForKeyedSubscript:v6];
+  integerValue = [v9 integerValue];
 
   if (v7)
   {
-    v11 = [(VKImageAnalyzerMadInterface *)self requestQueueProcessing];
-    v12 = [v11 containsObject:v6];
+    requestQueueProcessing = [(VKImageAnalyzerMadInterface *)self requestQueueProcessing];
+    v12 = [requestQueueProcessing containsObject:v6];
 
     if (v12)
     {
@@ -475,11 +475,11 @@ uint64_t __48__VKImageAnalyzerMadInterface_cancelAllRequests__block_invoke_163(u
 
     else
     {
-      v14 = [(VKImageAnalyzerMadInterface *)self requestQueueCancelling];
-      v15 = [v14 containsObject:v6];
+      requestQueueCancelling = [(VKImageAnalyzerMadInterface *)self requestQueueCancelling];
+      v15 = [requestQueueCancelling containsObject:v6];
 
       v16 = 3;
-      if (v10 == -1)
+      if (integerValue == -1)
       {
         v16 = 1;
       }
@@ -504,25 +504,25 @@ uint64_t __48__VKImageAnalyzerMadInterface_cancelAllRequests__block_invoke_163(u
   return v13;
 }
 
-- (void)clearCompletedRequest:(id)a3
+- (void)clearCompletedRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(VKImageAnalyzerMadInterface *)self housekeepingQueue];
-  dispatch_assert_queue_V2(v5);
+  requestCopy = request;
+  housekeepingQueue = [(VKImageAnalyzerMadInterface *)self housekeepingQueue];
+  dispatch_assert_queue_V2(housekeepingQueue);
 
-  v6 = [v4 requestIDValue];
-  if (v6)
+  requestIDValue = [requestCopy requestIDValue];
+  if (requestIDValue)
   {
-    v7 = [(VKImageAnalyzerMadInterface *)self requestQueueProcessing];
-    [v7 removeObject:v6];
+    requestQueueProcessing = [(VKImageAnalyzerMadInterface *)self requestQueueProcessing];
+    [requestQueueProcessing removeObject:requestIDValue];
 
-    v8 = [(VKImageAnalyzerMadInterface *)self requestQueueCancelling];
-    [v8 vk_removeNonNilObject:v6];
+    requestQueueCancelling = [(VKImageAnalyzerMadInterface *)self requestQueueCancelling];
+    [requestQueueCancelling vk_removeNonNilObject:requestIDValue];
 
-    v9 = [(VKImageAnalyzerMadInterface *)self vkToMadIDs];
-    [v9 removeObjectForKey:v6];
+    vkToMadIDs = [(VKImageAnalyzerMadInterface *)self vkToMadIDs];
+    [vkToMadIDs removeObjectForKey:requestIDValue];
 
-    -[VKImageAnalyzerMadInterface setRequest:forRequestID:](self, "setRequest:forRequestID:", 0, [v4 requestID]);
+    -[VKImageAnalyzerMadInterface setRequest:forRequestID:](self, "setRequest:forRequestID:", 0, [requestCopy requestID]);
     [(VKImageAnalyzerMadInterface *)self createNewIdleTimerIfNecessary];
     [(VKImageAnalyzerMadInterface *)self logCollectionsIfNecessary];
   }
@@ -532,7 +532,7 @@ uint64_t __48__VKImageAnalyzerMadInterface_cancelAllRequests__block_invoke_163(u
     v10 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.processing");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(VKImageAnalyzerMadInterface *)v4 clearCompletedRequest:v10];
+      [(VKImageAnalyzerMadInterface *)requestCopy clearCompletedRequest:v10];
     }
   }
 }
@@ -561,55 +561,55 @@ uint64_t __48__VKImageAnalyzerMadInterface_cancelAllRequests__block_invoke_163(u
   return v4;
 }
 
-- (void)request:(id)a3 didCompleteWithAnalysis:(id)a4 analysisEvent:(id)a5 error:(id)a6
+- (void)request:(id)request didCompleteWithAnalysis:(id)analysis analysisEvent:(id)event error:(id)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(VKImageAnalyzerMadInterface *)self housekeepingQueue];
-  dispatch_assert_queue_V2(v14);
+  requestCopy = request;
+  analysisCopy = analysis;
+  eventCopy = event;
+  errorCopy = error;
+  housekeepingQueue = [(VKImageAnalyzerMadInterface *)self housekeepingQueue];
+  dispatch_assert_queue_V2(housekeepingQueue);
 
   v15 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.processing");
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v10 shortLoggingDescription];
+    shortLoggingDescription = [requestCopy shortLoggingDescription];
     v19 = 138412290;
-    v20 = v16;
+    v20 = shortLoggingDescription;
     _os_log_impl(&dword_1B4335000, v15, OS_LOG_TYPE_DEFAULT, "Request completed: %@", &v19, 0xCu);
   }
 
-  [(VKImageAnalyzerMadInterface *)self clearCompletedRequest:v10];
-  v17 = [v10 completionHandler];
+  [(VKImageAnalyzerMadInterface *)self clearCompletedRequest:requestCopy];
+  completionHandler = [requestCopy completionHandler];
 
-  if (v17)
+  if (completionHandler)
   {
-    v18 = [v10 completionHandler];
-    (v18)[2](v18, v11, v12, v13);
+    completionHandler2 = [requestCopy completionHandler];
+    (completionHandler2)[2](completionHandler2, analysisCopy, eventCopy, errorCopy);
   }
 }
 
-- (void)_processRequest:(id)a3 callbackQueue:(id)a4
+- (void)_processRequest:(id)request callbackQueue:(id)queue
 {
   v49 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v33 = a4;
-  v7 = [(VKImageAnalyzerMadInterface *)self housekeepingQueue];
-  dispatch_assert_queue_V2(v7);
+  requestCopy = request;
+  queueCopy = queue;
+  housekeepingQueue = [(VKImageAnalyzerMadInterface *)self housekeepingQueue];
+  dispatch_assert_queue_V2(housekeepingQueue);
 
-  v8 = [v6 requestID];
+  requestID = [requestCopy requestID];
   v9 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.processing");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 67109378;
-    HIDWORD(buf) = v8;
+    HIDWORD(buf) = requestID;
     v47 = 2112;
-    v48 = v6;
+    v48 = requestCopy;
     _os_log_impl(&dword_1B4335000, v9, OS_LOG_TYPE_DEFAULT, "Processing Request: %d - %@", &buf, 0x12u);
   }
 
-  v10 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v11 = _VKSignpostLog();
   v12 = _VKSignpostLog();
   v13 = os_signpost_id_make_with_pointer(v12, self);
@@ -627,15 +627,15 @@ uint64_t __48__VKImageAnalyzerMadInterface_cancelAllRequests__block_invoke_163(u
     _os_log_impl(&dword_1B4335000, v14, OS_LOG_TYPE_INFO, "Signpost Begin: VisionKit MAD Parse Request", &buf, 2u);
   }
 
-  v15 = [(VKImageAnalyzerMadInterface *)self vkToMadIDs];
-  v16 = [MEMORY[0x1E696AD98] numberWithInt:v8];
-  [v15 setObject:&unk_1F2C38EC0 forKeyedSubscript:v16];
+  vkToMadIDs = [(VKImageAnalyzerMadInterface *)self vkToMadIDs];
+  v16 = [MEMORY[0x1E696AD98] numberWithInt:requestID];
+  [vkToMadIDs setObject:&unk_1F2C38EC0 forKeyedSubscript:v16];
 
-  v17 = [v6 madRequests];
-  v18 = [v6 viRequest];
-  if (v17 | v18)
+  madRequests = [requestCopy madRequests];
+  viRequest = [requestCopy viRequest];
+  if (madRequests | viRequest)
   {
-    [v6 imageSize];
+    [requestCopy imageSize];
     v20 = v19;
     v22 = v21;
     objc_initWeak(&buf, self);
@@ -644,10 +644,10 @@ uint64_t __48__VKImageAnalyzerMadInterface_cancelAllRequests__block_invoke_163(u
     aBlock[2] = __61__VKImageAnalyzerMadInterface__processRequest_callbackQueue___block_invoke;
     aBlock[3] = &unk_1E7BE6318;
     objc_copyWeak(v43, &buf);
-    v23 = v6;
+    v23 = requestCopy;
     v40 = v23;
-    v41 = self;
-    v24 = v17;
+    selfCopy = self;
+    v24 = madRequests;
     v42 = v24;
     v43[1] = v20;
     v43[2] = v22;
@@ -658,9 +658,9 @@ uint64_t __48__VKImageAnalyzerMadInterface_cancelAllRequests__block_invoke_163(u
       v34[1] = 3221225472;
       v34[2] = __61__VKImageAnalyzerMadInterface__processRequest_callbackQueue___block_invoke_2;
       v34[3] = &unk_1E7BE6340;
-      v35 = v10;
+      v35 = date;
       v36 = v23;
-      v37 = self;
+      selfCopy2 = self;
       v38 = v25;
       [(VKImageAnalyzerMadInterface *)self performMADRequest:v24 forRequest:v36 withCompletion:v34];
     }
@@ -668,8 +668,8 @@ uint64_t __48__VKImageAnalyzerMadInterface_cancelAllRequests__block_invoke_163(u
     else
     {
       [v23 setMadRequestID:420420420];
-      v32 = [MEMORY[0x1E695DF00] date];
-      [v23 setProcessDate:v32];
+      date2 = [MEMORY[0x1E695DF00] date];
+      [v23 setProcessDate:date2];
 
       (*(v25 + 2))(v25, 420420420, 0);
     }
@@ -680,8 +680,8 @@ uint64_t __48__VKImageAnalyzerMadInterface_cancelAllRequests__block_invoke_163(u
 
   else
   {
-    v26 = [v6 shortLoggingDescription];
-    [VKAssert handleFailedAssertWithCondition:"__objc_no" functionName:"[VKImageAnalyzerMadInterface _processRequest:callbackQueue:]" simulateCrash:0 showAlert:0 format:@"unable to create madRequests or viRequests for request %@", v26];
+    shortLoggingDescription = [requestCopy shortLoggingDescription];
+    [VKAssert handleFailedAssertWithCondition:"__objc_no" functionName:"[VKImageAnalyzerMadInterface _processRequest:callbackQueue:]" simulateCrash:0 showAlert:0 format:@"unable to create madRequests or viRequests for request %@", shortLoggingDescription];
 
     v27 = objc_alloc(MEMORY[0x1E696ABC0]);
     v44 = *MEMORY[0x1E695E620];
@@ -692,11 +692,11 @@ uint64_t __48__VKImageAnalyzerMadInterface_cancelAllRequests__block_invoke_163(u
     v30 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.processing");
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
-      [VKImageAnalyzerMadInterface _processRequest:v6 callbackQueue:?];
+      [VKImageAnalyzerMadInterface _processRequest:requestCopy callbackQueue:?];
     }
 
-    v31 = [[VKAnalyticsAnalyzerEvent alloc] initWithExecutionDurations:0 request:v6 analysis:0 customIdentifier:0 error:v29];
-    [(VKImageAnalyzerMadInterface *)self _didFinishRequest:v6 withAnalysis:0 analyticsEvent:v31 error:v29];
+    v31 = [[VKAnalyticsAnalyzerEvent alloc] initWithExecutionDurations:0 request:requestCopy analysis:0 customIdentifier:0 error:v29];
+    [(VKImageAnalyzerMadInterface *)self _didFinishRequest:requestCopy withAnalysis:0 analyticsEvent:v31 error:v29];
   }
 
   [(VKImageAnalyzerMadInterface *)self logCollectionsIfNecessary];
@@ -822,25 +822,25 @@ void __61__VKImageAnalyzerMadInterface__processRequest_callbackQueue___block_inv
   }
 }
 
-- (void)processMRCInfo:(id)a3 completionHandler:(id)a4
+- (void)processMRCInfo:(id)info completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [a3 observation];
-  if (v7)
+  handlerCopy = handler;
+  observation = [info observation];
+  if (observation)
   {
-    v8 = [(VKImageAnalyzerMadInterface *)self processingQueue];
+    processingQueue = [(VKImageAnalyzerMadInterface *)self processingQueue];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __64__VKImageAnalyzerMadInterface_processMRCInfo_completionHandler___block_invoke;
     v9[3] = &unk_1E7BE47B8;
-    v10 = v7;
-    v11 = v6;
-    dispatch_async(v8, v9);
+    v10 = observation;
+    v11 = handlerCopy;
+    dispatch_async(processingQueue, v9);
   }
 
   else
   {
-    (*(v6 + 2))(v6, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -850,28 +850,28 @@ void __64__VKImageAnalyzerMadInterface_processMRCInfo_completionHandler___block_
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)performMADRequest:(id)a3 forRequest:(id)a4 withCompletion:(id)a5
+- (void)performMADRequest:(id)request forRequest:(id)forRequest withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  forRequestCopy = forRequest;
+  completionCopy = completion;
   v11 = +[VKCInternalSettings isCGImageForMadEnabled];
   objc_initWeak(&location, self);
-  v12 = [(VKImageAnalyzerMadInterface *)self processingQueue];
+  processingQueue = [(VKImageAnalyzerMadInterface *)self processingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __75__VKImageAnalyzerMadInterface_performMADRequest_forRequest_withCompletion___block_invoke;
   block[3] = &unk_1E7BE6390;
   v22 = v11;
-  v17 = v9;
-  v18 = self;
-  v13 = v9;
+  v17 = forRequestCopy;
+  selfCopy = self;
+  v13 = forRequestCopy;
   objc_copyWeak(&v21, &location);
-  v19 = v8;
-  v20 = v10;
-  v14 = v10;
-  v15 = v8;
-  dispatch_async(v12, block);
+  v19 = requestCopy;
+  v20 = completionCopy;
+  v14 = completionCopy;
+  v15 = requestCopy;
+  dispatch_async(processingQueue, block);
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&location);
@@ -1049,94 +1049,94 @@ LABEL_10:
   CGImageRelease(*(a1 + 72));
 }
 
-- (int)_performMADRequest:(id)a3 forRequest:(id)a4 pixelBuffer:(__CVBuffer *)a5 cgImage:(CGImage *)a6 useCGForMad:(BOOL)a7 withCompletion:(id)a8
+- (int)_performMADRequest:(id)request forRequest:(id)forRequest pixelBuffer:(__CVBuffer *)buffer cgImage:(CGImage *)image useCGForMad:(BOOL)mad withCompletion:(id)completion
 {
-  v9 = a7;
+  madCopy = mad;
   v34 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a8;
-  v17 = [(VKImageAnalyzerMadInterface *)self service];
-  v18 = [(VKImageAnalyzerMadInterface *)self housekeepingQueue];
-  dispatch_assert_queue_V2(v18);
+  requestCopy = request;
+  forRequestCopy = forRequest;
+  completionCopy = completion;
+  service = [(VKImageAnalyzerMadInterface *)self service];
+  housekeepingQueue = [(VKImageAnalyzerMadInterface *)self housekeepingQueue];
+  dispatch_assert_queue_V2(housekeepingQueue);
 
-  v19 = vk_cgImagePropertyOrientationFromVKOrientation([v15 imageOrientation]);
-  v20 = [v15 requestType];
+  v19 = vk_cgImagePropertyOrientationFromVKOrientation([forRequestCopy imageOrientation]);
+  requestType = [forRequestCopy requestType];
   v21 = 0;
-  if (v20 <= 3)
+  if (requestType <= 3)
   {
-    if (v20 <= 1)
+    if (requestType <= 1)
     {
-      if (v20 > 1)
+      if (requestType > 1)
       {
         goto LABEL_20;
       }
 
-      if (v9)
+      if (madCopy)
       {
-        v22 = [v17 performRequests:v14 onCGImage:a6 withOrientation:v19 andIdentifier:0 completionHandler:v16];
+        v22 = [service performRequests:requestCopy onCGImage:image withOrientation:v19 andIdentifier:0 completionHandler:completionCopy];
 LABEL_11:
         v21 = v22;
         goto LABEL_20;
       }
 
 LABEL_10:
-      v22 = [v17 performRequests:v14 onPixelBuffer:a5 withOrientation:v19 andIdentifier:0 completionHandler:v16];
+      v22 = [service performRequests:requestCopy onPixelBuffer:buffer withOrientation:v19 andIdentifier:0 completionHandler:completionCopy];
       goto LABEL_11;
     }
 
-    if (v20 != 2)
+    if (requestType != 2)
     {
       goto LABEL_10;
     }
 
-    v23 = [v15 ciImage];
-    v27 = [v17 performRequests:v14 onCIImage:v23 withOrientation:v19 andIdentifier:0 completionHandler:v16];
+    ciImage = [forRequestCopy ciImage];
+    v27 = [service performRequests:requestCopy onCIImage:ciImage withOrientation:v19 andIdentifier:0 completionHandler:completionCopy];
     goto LABEL_17;
   }
 
-  if (v20 <= 5)
+  if (requestType <= 5)
   {
-    if (v20 != 4)
+    if (requestType != 4)
     {
-      v23 = [v15 localIdentifier];
-      v24 = [v15 URL];
-      v21 = [v17 performRequests:v14 onAssetWithLocalIdentifier:v23 fromPhotoLibraryWithURL:v24 completionHandler:v16];
+      ciImage = [forRequestCopy localIdentifier];
+      v24 = [forRequestCopy URL];
+      v21 = [service performRequests:requestCopy onAssetWithLocalIdentifier:ciImage fromPhotoLibraryWithURL:v24 completionHandler:completionCopy];
 
 LABEL_19:
       goto LABEL_20;
     }
 
-    v23 = [v15 URL];
-    v27 = [v17 performRequests:v14 onImageURL:v23 withIdentifier:0 completionHandler:v16];
+    ciImage = [forRequestCopy URL];
+    v27 = [service performRequests:requestCopy onImageURL:ciImage withIdentifier:0 completionHandler:completionCopy];
 LABEL_17:
     v21 = v27;
     goto LABEL_19;
   }
 
-  if (v20 == 6)
+  if (requestType == 6)
   {
-    v23 = [v15 localIdentifier];
-    v28 = [v15 URL];
-    v21 = [v17 performRequests:v14 onCGImage:a6 withOrientation:v19 assetLocalIdentifier:v23 photoLibraryURL:v28 completionHandler:v16];
+    ciImage = [forRequestCopy localIdentifier];
+    v28 = [forRequestCopy URL];
+    v21 = [service performRequests:requestCopy onCGImage:image withOrientation:v19 assetLocalIdentifier:ciImage photoLibraryURL:v28 completionHandler:completionCopy];
 
     goto LABEL_19;
   }
 
-  if (v20 == 7)
+  if (requestType == 7)
   {
-    v25 = [v15 localIdentifier];
-    v26 = [v15 URL];
-    v21 = [v17 performRequests:v14 onPixelBuffer:a5 withOrientation:v19 assetLocalIdentifier:v25 photoLibraryURL:v26 completionHandler:v16];
+    localIdentifier = [forRequestCopy localIdentifier];
+    v26 = [forRequestCopy URL];
+    v21 = [service performRequests:requestCopy onPixelBuffer:buffer withOrientation:v19 assetLocalIdentifier:localIdentifier photoLibraryURL:v26 completionHandler:completionCopy];
   }
 
 LABEL_20:
   v29 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.processing");
   if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
   {
-    v30 = [v15 shortLoggingDescription];
+    shortLoggingDescription = [forRequestCopy shortLoggingDescription];
     v32 = 138412290;
-    v33 = v30;
+    v33 = shortLoggingDescription;
     _os_log_impl(&dword_1B4335000, v29, OS_LOG_TYPE_INFO, "Request Submitted to MAD: %@", &v32, 0xCu);
   }
 
@@ -1144,69 +1144,69 @@ LABEL_20:
   return v21;
 }
 
-- (id)analysisResultFromMadRequests:(id)a3 imageSize:(CGSize)a4 durations:(id)a5
+- (id)analysisResultFromMadRequests:(id)requests imageSize:(CGSize)size durations:(id)durations
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v10 = a5;
-  v11 = [(VKImageAnalyzerMadInterface *)self documentObservationFromRequests:v9 durations:v10];
+  height = size.height;
+  width = size.width;
+  requestsCopy = requests;
+  durationsCopy = durations;
+  v11 = [(VKImageAnalyzerMadInterface *)self documentObservationFromRequests:requestsCopy durations:durationsCopy];
   v12 = [MEMORY[0x1E695DF00] now];
   v19 = 0;
-  v13 = [(VKImageAnalyzerMadInterface *)self mrcDDElementsFromRequests:v9 didParse:&v19 durations:v10];
+  v13 = [(VKImageAnalyzerMadInterface *)self mrcDDElementsFromRequests:requestsCopy didParse:&v19 durations:durationsCopy];
   if (v19)
   {
     v14 = [MEMORY[0x1E695DF00] now];
     [v14 timeIntervalSinceDate:v12];
-    [v10 setMrcParseDuration:?];
+    [durationsCopy setMrcParseDuration:?];
   }
 
   else
   {
-    [v10 setMrcParseDuration:0.0];
+    [durationsCopy setMrcParseDuration:0.0];
   }
 
-  v15 = [[VKCImageAnalysisResult alloc] initWithDocumentObservation:v11 mrcDataDetectors:v13 imageSize:width, height];
-  v16 = [(VKImageAnalyzerMadInterface *)self visualSearchResultFromRequests:v9 durations:v10];
-  [(VKCImageAnalysisResult *)v15 setVisualSearchResult:v16];
-  v17 = [(VKImageAnalyzerMadInterface *)self rectangleObservationsFromRequests:v9 durations:v10];
-  [(VKCTextRecognitionResult *)v15 setRectangleObservations:v17];
+  height = [[VKCImageAnalysisResult alloc] initWithDocumentObservation:v11 mrcDataDetectors:v13 imageSize:width, height];
+  v16 = [(VKImageAnalyzerMadInterface *)self visualSearchResultFromRequests:requestsCopy durations:durationsCopy];
+  [(VKCImageAnalysisResult *)height setVisualSearchResult:v16];
+  v17 = [(VKImageAnalyzerMadInterface *)self rectangleObservationsFromRequests:requestsCopy durations:durationsCopy];
+  [(VKCTextRecognitionResult *)height setRectangleObservations:v17];
 
-  return v15;
+  return height;
 }
 
-- (id)documentObservationFromRequests:(id)a3 durations:(id)a4
+- (id)documentObservationFromRequests:(id)requests durations:(id)durations
 {
-  v5 = a4;
-  v6 = [a3 vk_objectPassingTest:&__block_literal_global_198];
+  durationsCopy = durations;
+  v6 = [requests vk_objectPassingTest:&__block_literal_global_198];
   if (v6)
   {
     v7 = objc_opt_class();
-    v8 = [v6 results];
-    v9 = [v8 firstObject];
-    v10 = VKCheckedDynamicCast(v7, v9);
+    results = [v6 results];
+    firstObject = [results firstObject];
+    v10 = VKCheckedDynamicCast(v7, firstObject);
 
     if (v10)
     {
-      v11 = [v10 observations];
-      v12 = [v11 firstObject];
+      observations = [v10 observations];
+      firstObject2 = [observations firstObject];
 
       [v10 executionTimeInterval];
-      [v5 setMadDocumentDuration:?];
+      [durationsCopy setMadDocumentDuration:?];
     }
 
     else
     {
-      v12 = 0;
+      firstObject2 = 0;
     }
   }
 
   else
   {
-    v12 = 0;
+    firstObject2 = 0;
   }
 
-  return v12;
+  return firstObject2;
 }
 
 uint64_t __73__VKImageAnalyzerMadInterface_documentObservationFromRequests_durations___block_invoke(uint64_t a1, void *a2)
@@ -1218,28 +1218,28 @@ uint64_t __73__VKImageAnalyzerMadInterface_documentObservationFromRequests_durat
   return isKindOfClass & 1;
 }
 
-- (id)rectangleObservationsFromRequests:(id)a3 durations:(id)a4
+- (id)rectangleObservationsFromRequests:(id)requests durations:(id)durations
 {
-  v5 = a4;
-  v6 = [a3 vk_objectPassingTest:&__block_literal_global_202];
+  durationsCopy = durations;
+  v6 = [requests vk_objectPassingTest:&__block_literal_global_202];
   if (v6)
   {
     v7 = objc_opt_class();
-    v8 = [v6 results];
-    v9 = [v8 firstObject];
-    v10 = VKDynamicCast(v7, v9);
+    results = [v6 results];
+    firstObject = [results firstObject];
+    v10 = VKDynamicCast(v7, firstObject);
 
-    v11 = [v10 observations];
+    observations = [v10 observations];
     [v10 executionTimeInterval];
-    [v5 setMadRectangleDuration:?];
+    [durationsCopy setMadRectangleDuration:?];
   }
 
   else
   {
-    v11 = 0;
+    observations = 0;
   }
 
-  return v11;
+  return observations;
 }
 
 uint64_t __75__VKImageAnalyzerMadInterface_rectangleObservationsFromRequests_durations___block_invoke(uint64_t a1, void *a2)
@@ -1251,17 +1251,17 @@ uint64_t __75__VKImageAnalyzerMadInterface_rectangleObservationsFromRequests_dur
   return isKindOfClass & 1;
 }
 
-- (id)visualSearchResultFromRequests:(id)a3 durations:(id)a4
+- (id)visualSearchResultFromRequests:(id)requests durations:(id)durations
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [a3 vk_objectPassingTest:&__block_literal_global_206];
+  durationsCopy = durations;
+  v6 = [requests vk_objectPassingTest:&__block_literal_global_206];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 error];
+    error = [v6 error];
 
-    if (v8)
+    if (error)
     {
       v9 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.processing");
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1281,11 +1281,11 @@ uint64_t __75__VKImageAnalyzerMadInterface_rectangleObservationsFromRequests_dur
       }
     }
 
-    v11 = [v7 results];
-    v12 = [v11 firstObject];
-    v10 = [[VKCVisualSearchResult alloc] initWithGatingResult:v12];
-    [v12 executionTimeInterval];
-    [v5 setMadVisualSearchDuration:?];
+    results = [v7 results];
+    firstObject = [results firstObject];
+    v10 = [[VKCVisualSearchResult alloc] initWithGatingResult:firstObject];
+    [firstObject executionTimeInterval];
+    [durationsCopy setMadVisualSearchDuration:?];
   }
 
   else
@@ -1305,45 +1305,45 @@ uint64_t __72__VKImageAnalyzerMadInterface_visualSearchResultFromRequests_durati
   return isKindOfClass & 1;
 }
 
-- (id)mrcDDElementsFromRequests:(id)a3 didParse:(BOOL *)a4 durations:(id)a5
+- (id)mrcDDElementsFromRequests:(id)requests didParse:(BOOL *)parse durations:(id)durations
 {
   v36 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  requestsCopy = requests;
+  durationsCopy = durations;
   v9 = [MEMORY[0x1E695DF00] now];
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
   v31 = 0;
-  v10 = [v7 vk_objectPassingTest:&__block_literal_global_211];
+  v10 = [requestsCopy vk_objectPassingTest:&__block_literal_global_211];
   if (v10)
   {
     v11 = objc_opt_class();
-    v12 = [v10 results];
-    v13 = [v12 firstObject];
-    v14 = VKCheckedDynamicCast(v11, v13);
+    results = [v10 results];
+    firstObject = [results firstObject];
+    v14 = VKCheckedDynamicCast(v11, firstObject);
 
     if (v14)
     {
       v15 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.processing");
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [v14 observations];
-        v17 = [v16 count];
+        observations = [v14 observations];
+        v17 = [observations count];
         *buf = 134217984;
         v33 = v17;
         _os_log_impl(&dword_1B4335000, v15, OS_LOG_TYPE_DEFAULT, "Beginning MRC Parsing with %lu elements", buf, 0xCu);
       }
 
       [v14 executionTimeInterval];
-      [v8 setMadMRCDuration:?];
-      v18 = [v14 observations];
+      [durationsCopy setMadMRCDuration:?];
+      observations2 = [v14 observations];
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = __76__VKImageAnalyzerMadInterface_mrcDDElementsFromRequests_didParse_durations___block_invoke_214;
       v27[3] = &unk_1E7BE63D8;
       v27[4] = &v28;
-      v19 = [v18 vk_compactMap:v27];
+      v19 = [observations2 vk_compactMap:v27];
     }
 
     else
@@ -1361,8 +1361,8 @@ uint64_t __72__VKImageAnalyzerMadInterface_visualSearchResultFromRequests_durati
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     v21 = [v19 count];
-    v22 = [MEMORY[0x1E695DF00] date];
-    [v22 timeIntervalSinceDate:v9];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceDate:v9];
     *buf = 134218240;
     v33 = v21;
     v34 = 2048;
@@ -1378,7 +1378,7 @@ uint64_t __72__VKImageAnalyzerMadInterface_visualSearchResultFromRequests_durati
 
   v25 = v24;
 
-  *a4 = *(v29 + 24);
+  *parse = *(v29 + 24);
   _Block_object_dispose(&v28, 8);
 
   return v25;
@@ -1393,31 +1393,31 @@ uint64_t __76__VKImageAnalyzerMadInterface_mrcDDElementsFromRequests_didParse_du
   return isKindOfClass & 1;
 }
 
-- (void)_didFinishRequest:(id)a3 withAnalysis:(id)a4 analyticsEvent:(id)a5 error:(id)a6
+- (void)_didFinishRequest:(id)request withAnalysis:(id)analysis analyticsEvent:(id)event error:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 viRequest];
-  if (v14)
+  requestCopy = request;
+  analysisCopy = analysis;
+  eventCopy = event;
+  errorCopy = error;
+  viRequest = [requestCopy viRequest];
+  if (viRequest)
   {
-    v15 = [(VKImageAnalyzerMadInterface *)self viInterface];
+    viInterface = [(VKImageAnalyzerMadInterface *)self viInterface];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __83__VKImageAnalyzerMadInterface__didFinishRequest_withAnalysis_analyticsEvent_error___block_invoke;
     v16[3] = &unk_1E7BE6400;
-    v17 = v11;
-    v18 = self;
-    v19 = v10;
-    v20 = v12;
-    v21 = v13;
-    [v15 processRequest:v14 completionHandler:v16];
+    v17 = analysisCopy;
+    selfCopy = self;
+    v19 = requestCopy;
+    v20 = eventCopy;
+    v21 = errorCopy;
+    [viInterface processRequest:viRequest completionHandler:v16];
   }
 
   else
   {
-    [(VKImageAnalyzerMadInterface *)self didFinishRequest:v10 withAnalysis:v11 analyticsEvent:v12 error:v13];
+    [(VKImageAnalyzerMadInterface *)self didFinishRequest:requestCopy withAnalysis:analysisCopy analyticsEvent:eventCopy error:errorCopy];
   }
 }
 
@@ -1437,32 +1437,32 @@ uint64_t __83__VKImageAnalyzerMadInterface__didFinishRequest_withAnalysis_analyt
   return [v6 didFinishRequest:v8 withAnalysis:v7 analyticsEvent:v9 error:v10];
 }
 
-- (void)didFinishRequest:(id)a3 withAnalysis:(id)a4 analyticsEvent:(id)a5 error:(id)a6
+- (void)didFinishRequest:(id)request withAnalysis:(id)analysis analyticsEvent:(id)event error:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  requestCopy = request;
+  analysisCopy = analysis;
+  eventCopy = event;
   v23[0] = 0;
   v23[1] = v23;
   v23[2] = 0x3032000000;
   v23[3] = __Block_byref_object_copy__10;
   v23[4] = __Block_byref_object_dispose__10;
-  v13 = a6;
-  v24 = v13;
-  v14 = [(VKImageAnalyzerMadInterface *)self housekeepingQueue];
+  errorCopy = error;
+  v24 = errorCopy;
+  housekeepingQueue = [(VKImageAnalyzerMadInterface *)self housekeepingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __82__VKImageAnalyzerMadInterface_didFinishRequest_withAnalysis_analyticsEvent_error___block_invoke;
   block[3] = &unk_1E7BE6428;
   block[4] = self;
-  v19 = v10;
-  v21 = v12;
+  v19 = requestCopy;
+  v21 = eventCopy;
   v22 = v23;
-  v20 = v11;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
-  dispatch_async(v14, block);
+  v20 = analysisCopy;
+  v15 = eventCopy;
+  v16 = analysisCopy;
+  v17 = requestCopy;
+  dispatch_async(housekeepingQueue, block);
 
   _Block_object_dispose(v23, 8);
 }
@@ -1488,55 +1488,55 @@ void __82__VKImageAnalyzerMadInterface_didFinishRequest_withAnalysis_analyticsEv
   [*(a1 + 32) request:*(a1 + 40) didCompleteWithAnalysis:*(a1 + 48) analysisEvent:*(a1 + 56) error:*(*(*(a1 + 64) + 8) + 40)];
 }
 
-- (id)VNRequestHandlerForRequest:(id)a3
+- (id)VNRequestHandlerForRequest:(id)request
 {
-  v3 = a3;
-  v4 = vk_cgImagePropertyOrientationFromVKOrientation([v3 imageOrientation]);
-  v5 = [v3 requestType];
+  requestCopy = request;
+  v4 = vk_cgImagePropertyOrientationFromVKOrientation([requestCopy imageOrientation]);
+  requestType = [requestCopy requestType];
   v6 = 0;
-  if (v5 <= 1)
+  if (requestType <= 1)
   {
-    if (v5 > 1)
+    if (requestType > 1)
     {
       goto LABEL_12;
     }
 
-    v10 = [v3 image];
-    v11 = [v10 vk_cgImage];
+    image = [requestCopy image];
+    vk_cgImage = [image vk_cgImage];
 
     v12 = objc_alloc(MEMORY[0x1E69845B8]);
-    v13 = [v12 initWithCGImage:v11 orientation:v4 options:MEMORY[0x1E695E0F8]];
+    v13 = [v12 initWithCGImage:vk_cgImage orientation:v4 options:MEMORY[0x1E695E0F8]];
   }
 
   else
   {
-    if (v5 == 2)
+    if (requestType == 2)
     {
       v14 = objc_alloc(MEMORY[0x1E69845B8]);
-      v8 = [v3 ciImage];
-      v9 = [v14 initWithCIImage:v8 orientation:v4 options:MEMORY[0x1E695E0F8]];
+      ciImage = [requestCopy ciImage];
+      v9 = [v14 initWithCIImage:ciImage orientation:v4 options:MEMORY[0x1E695E0F8]];
 LABEL_9:
       v6 = v9;
 
       goto LABEL_12;
     }
 
-    if (v5 != 3)
+    if (requestType != 3)
     {
-      if (v5 != 4)
+      if (requestType != 4)
       {
         goto LABEL_12;
       }
 
       v7 = objc_alloc(MEMORY[0x1E69845B8]);
-      v8 = [v3 URL];
-      v9 = [v7 initWithURL:v8 options:MEMORY[0x1E695E0F8]];
+      ciImage = [requestCopy URL];
+      v9 = [v7 initWithURL:ciImage options:MEMORY[0x1E695E0F8]];
       goto LABEL_9;
     }
 
     v15 = objc_alloc(MEMORY[0x1E69845B8]);
-    v16 = [v3 pixelBuffer];
-    v13 = [v15 initWithCVPixelBuffer:v16 orientation:v4 options:MEMORY[0x1E695E0F8]];
+    pixelBuffer = [requestCopy pixelBuffer];
+    v13 = [v15 initWithCVPixelBuffer:pixelBuffer orientation:v4 options:MEMORY[0x1E695E0F8]];
   }
 
   v6 = v13;
@@ -1545,35 +1545,35 @@ LABEL_12:
   return v6;
 }
 
-- (void)generateVisualSearchResultForRequest:(id)a3 analysis:(id)a4 items:(id)a5 payload:(id)a6 queryID:(unint64_t)a7 completionHandler:(id)a8
+- (void)generateVisualSearchResultForRequest:(id)request analysis:(id)analysis items:(id)items payload:(id)payload queryID:(unint64_t)d completionHandler:(id)handler
 {
   v59 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v43 = a8;
+  requestCopy = request;
+  analysisCopy = analysis;
+  itemsCopy = items;
+  handlerCopy = handler;
   v17 = MEMORY[0x1E695DF00];
-  v18 = a6;
-  v44 = [v17 date];
+  payloadCopy = payload;
+  date = [v17 date];
   v19 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.visualSearch");
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v56 = a7;
+    dCopy = d;
     v57 = 1024;
-    v58 = [v15 analysisRequestID];
+    analysisRequestID = [analysisCopy analysisRequestID];
     _os_log_impl(&dword_1B4335000, v19, OS_LOG_TYPE_DEFAULT, "VS Request Activate began with queryID: %llu, id: %d", buf, 0x12u);
   }
 
-  v20 = [v16 vk_compactMap:&__block_literal_global_220];
-  if ([v16 vk_containsObjectPassingTest:&__block_literal_global_225])
+  v20 = [itemsCopy vk_compactMap:&__block_literal_global_220];
+  if ([itemsCopy vk_containsObjectPassingTest:&__block_literal_global_225])
   {
-    v21 = [v15 imageAnalysisResult];
-    v22 = [v21 sourceVNDocument];
+    imageAnalysisResult = [analysisCopy imageAnalysisResult];
+    sourceVNDocument = [imageAnalysisResult sourceVNDocument];
 
-    if (v22)
+    if (sourceVNDocument)
     {
-      v54 = v22;
+      v54 = sourceVNDocument;
       v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v54 count:1];
     }
 
@@ -1590,29 +1590,29 @@ LABEL_12:
   }
 
   v42 = v20;
-  v24 = [objc_alloc(MEMORY[0x1E69AE4A0]) initWithGatingResultItems:v20 payload:v18 documentObservations:v23];
+  v24 = [objc_alloc(MEMORY[0x1E69AE4A0]) initWithGatingResultItems:v20 payload:payloadCopy documentObservations:v23];
 
-  v25 = [(VKImageAnalyzerMadInterface *)self madSuggestionTypeFromItems:v16];
-  v45 = a7;
-  v26 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a7];
+  v25 = [(VKImageAnalyzerMadInterface *)self madSuggestionTypeFromItems:itemsCopy];
+  dCopy2 = d;
+  v26 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:d];
   [v24 setQueryID:v26];
 
   v27 = MEMORY[0x1E696AD98];
-  [v14 screenScale];
+  [requestCopy screenScale];
   v28 = [v27 numberWithDouble:?];
   [v24 setUiScale:v28];
 
-  v29 = [v14 location];
-  [v24 setLocation:v29];
+  location = [requestCopy location];
+  [v24 setLocation:location];
 
-  v30 = [v14 imageURL];
-  [v24 setImageURL:v30];
+  imageURL = [requestCopy imageURL];
+  [v24 setImageURL:imageURL];
 
-  v31 = [v14 pageURL];
-  [v24 setReferralURL:v31];
+  pageURL = [requestCopy pageURL];
+  [v24 setReferralURL:pageURL];
 
-  v32 = [v14 viImageType];
-  [v24 setImageType:v32];
+  viImageType = [requestCopy viImageType];
+  [v24 setImageType:viImageType];
 
   [v24 setEngagementSuggestionType:v25];
   v33 = _VKSignpostLog();
@@ -1638,17 +1638,17 @@ LABEL_12:
   v46[1] = 3221225472;
   v46[2] = __117__VKImageAnalyzerMadInterface_generateVisualSearchResultForRequest_analysis_items_payload_queryID_completionHandler___block_invoke_232;
   v46[3] = &unk_1E7BE6450;
-  v47 = v44;
-  v48 = v15;
+  v47 = date;
+  v48 = analysisCopy;
   v49 = v24;
-  v50 = self;
-  v51 = v43;
-  v52 = v45;
-  v38 = v43;
+  selfCopy = self;
+  v51 = handlerCopy;
+  v52 = dCopy2;
+  v38 = handlerCopy;
   v39 = v24;
-  v40 = v15;
-  v41 = v44;
-  [(VKImageAnalyzerMadInterface *)self performMADRequest:v37 forRequest:v14 withCompletion:v46];
+  v40 = analysisCopy;
+  v41 = date;
+  [(VKImageAnalyzerMadInterface *)self performMADRequest:v37 forRequest:requestCopy withCompletion:v46];
 }
 
 id __117__VKImageAnalyzerMadInterface_generateVisualSearchResultForRequest_analysis_items_payload_queryID_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1715,36 +1715,36 @@ void __117__VKImageAnalyzerMadInterface_generateVisualSearchResultForRequest_ana
   (*(*(a1 + 64) + 16))();
 }
 
-- (void)generateTextualVisualSearchResultForAnalysis:(id)a3 queryInfo:(id)a4 completionHandler:(id)a5
+- (void)generateTextualVisualSearchResultForAnalysis:(id)analysis queryInfo:(id)info completionHandler:(id)handler
 {
   v50 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  analysisCopy = analysis;
+  handlerCopy = handler;
   v10 = MEMORY[0x1E695DF00];
-  v11 = a4;
-  v40 = [v10 date];
+  infoCopy = info;
+  date = [v10 date];
   v12 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.visualSearch.text");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v49 = [v8 analysisRequestID];
+    analysisRequestID = [analysisCopy analysisRequestID];
     _os_log_impl(&dword_1B4335000, v12, OS_LOG_TYPE_DEFAULT, "VisualSearch Text Request begin, id: %d", buf, 8u);
   }
 
-  v13 = [v8 imageAnalysisResult];
-  v14 = [v13 request];
+  imageAnalysisResult = [analysisCopy imageAnalysisResult];
+  request = [imageAnalysisResult request];
 
   v15 = objc_alloc(MEMORY[0x1E69AE458]);
-  v16 = [v11 queryString];
-  v17 = [v15 initWithQueryTerm:v16];
+  queryString = [infoCopy queryString];
+  v17 = [v15 initWithQueryTerm:queryString];
 
-  v18 = [v8 imageAnalysisResult];
-  v19 = [v18 text];
-  [v17 setSurroundingText:v19];
+  imageAnalysisResult2 = [analysisCopy imageAnalysisResult];
+  text = [imageAnalysisResult2 text];
+  [v17 setSurroundingText:text];
 
-  v20 = [v8 imageAnalysisResult];
-  v21 = [v20 allLineQuads];
-  v22 = [v21 vk_compactMap:&__block_literal_global_237];
+  imageAnalysisResult3 = [analysisCopy imageAnalysisResult];
+  allLineQuads = [imageAnalysisResult3 allLineQuads];
+  v22 = [allLineQuads vk_compactMap:&__block_literal_global_237];
 
   if (v22)
   {
@@ -1758,13 +1758,13 @@ void __117__VKImageAnalyzerMadInterface_generateVisualSearchResultForRequest_ana
 
   [v17 setNormalizedBoundingBoxes:v23];
   v24 = MEMORY[0x1E696AD98];
-  v25 = [v11 queryID];
+  queryID = [infoCopy queryID];
 
-  v26 = [v24 numberWithInteger:v25];
+  v26 = [v24 numberWithInteger:queryID];
   [v17 setQueryID:v26];
 
   v27 = MEMORY[0x1E696AD98];
-  [v14 screenScale];
+  [request screenScale];
   v28 = [v27 numberWithDouble:?];
   [v17 setUiScale:v28];
 
@@ -1787,22 +1787,22 @@ void __117__VKImageAnalyzerMadInterface_generateVisualSearchResultForRequest_ana
 
   v47 = v17;
   v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v47 count:1];
-  v34 = [v8 imageAnalysisResult];
-  v35 = [v34 request];
+  imageAnalysisResult4 = [analysisCopy imageAnalysisResult];
+  request2 = [imageAnalysisResult4 request];
   v41[0] = MEMORY[0x1E69E9820];
   v41[1] = 3221225472;
   v41[2] = __104__VKImageAnalyzerMadInterface_generateTextualVisualSearchResultForAnalysis_queryInfo_completionHandler___block_invoke_239;
   v41[3] = &unk_1E7BE6478;
-  v42 = v40;
-  v43 = v8;
+  v42 = date;
+  v43 = analysisCopy;
   v44 = v17;
-  v45 = self;
-  v46 = v9;
-  v36 = v9;
+  selfCopy = self;
+  v46 = handlerCopy;
+  v36 = handlerCopy;
   v37 = v17;
-  v38 = v8;
-  v39 = v40;
-  [(VKImageAnalyzerMadInterface *)self performMADRequest:v33 forRequest:v35 withCompletion:v41];
+  v38 = analysisCopy;
+  v39 = date;
+  [(VKImageAnalyzerMadInterface *)self performMADRequest:v33 forRequest:request2 withCompletion:v41];
 }
 
 uint64_t __104__VKImageAnalyzerMadInterface_generateTextualVisualSearchResultForAnalysis_queryInfo_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1876,15 +1876,15 @@ void __104__VKImageAnalyzerMadInterface_generateTextualVisualSearchResultForAnal
   (*(*(a1 + 64) + 16))();
 }
 
-- (void)submitVisualIntelligenceUserFeedbackForRequest:(id)a3 reportIdentifier:(id)a4 userFeedbackPayload:(id)a5 sfReportData:(id)a6
+- (void)submitVisualIntelligenceUserFeedbackForRequest:(id)request reportIdentifier:(id)identifier userFeedbackPayload:(id)payload sfReportData:(id)data
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
+  requestCopy = request;
+  identifierCopy = identifier;
   v12 = MEMORY[0x1E69AE468];
-  v13 = a6;
-  v14 = a5;
-  v15 = [[v12 alloc] initWithUserFeedbackPayload:v14 sfReportData:v13 reportIdentifier:v11];
+  dataCopy = data;
+  payloadCopy = payload;
+  v15 = [[v12 alloc] initWithUserFeedbackPayload:payloadCopy sfReportData:dataCopy reportIdentifier:identifierCopy];
 
   v22[0] = v15;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
@@ -1892,10 +1892,10 @@ void __104__VKImageAnalyzerMadInterface_generateTextualVisualSearchResultForAnal
   v19[1] = 3221225472;
   v19[2] = __128__VKImageAnalyzerMadInterface_submitVisualIntelligenceUserFeedbackForRequest_reportIdentifier_userFeedbackPayload_sfReportData___block_invoke;
   v19[3] = &unk_1E7BE64A0;
-  v20 = v11;
-  v21 = v10;
-  v17 = v10;
-  v18 = v11;
+  v20 = identifierCopy;
+  v21 = requestCopy;
+  v17 = requestCopy;
+  v18 = identifierCopy;
   [(VKImageAnalyzerMadInterface *)self performMADRequest:v16 forRequest:v17 withCompletion:v19];
 }
 
@@ -1915,53 +1915,53 @@ void __128__VKImageAnalyzerMadInterface_submitVisualIntelligenceUserFeedbackForR
   }
 }
 
-- (void)didShowVisualSearchHintsForRequest:(id)a3 invocationType:(int64_t)a4
+- (void)didShowVisualSearchHintsForRequest:(id)request invocationType:(int64_t)type
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(VKImageAnalyzerMadInterface *)self sfViewAppearEventFromInvocationType:a4 request:v6];
-  v8 = [(VKImageAnalyzerMadInterface *)self service];
-  [v8 startEntryPointWithQueryID:objc_msgSend(v6 andEvent:{"queryID"), v7}];
+  requestCopy = request;
+  v7 = [(VKImageAnalyzerMadInterface *)self sfViewAppearEventFromInvocationType:type request:requestCopy];
+  service = [(VKImageAnalyzerMadInterface *)self service];
+  [service startEntryPointWithQueryID:objc_msgSend(requestCopy andEvent:{"queryID"), v7}];
 
   v9 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.visualSearch");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = VKMUIStringForVKCVSInvocationType(a4);
+    v10 = VKMUIStringForVKCVSInvocationType(type);
     v11 = 138412546;
     v12 = v10;
     v13 = 1024;
-    v14 = [v6 requestID];
+    requestID = [requestCopy requestID];
     _os_log_impl(&dword_1B4335000, v9, OS_LOG_TYPE_INFO, "DidShowVisualSearchHints with invocationType: %@, id: %d", &v11, 0x12u);
   }
 }
 
-- (void)didShowVisualSearchCachedResultsForQueryID:(unint64_t)a3 cachedResultQueryID:(unint64_t)a4 item:(id)a5
+- (void)didShowVisualSearchCachedResultsForQueryID:(unint64_t)d cachedResultQueryID:(unint64_t)iD item:(id)item
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v18[0] = v8;
+  itemCopy = item;
+  v18[0] = itemCopy;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
   v10 = [(VKImageAnalyzerMadInterface *)self madSuggestionTypeFromItems:v9];
 
-  v11 = [(VKImageAnalyzerMadInterface *)self service];
-  [v11 cacheHitWithQueryID:a3 cachedResultQueryID:a4 engagementSuggestionType:v10];
+  service = [(VKImageAnalyzerMadInterface *)self service];
+  [service cacheHitWithQueryID:d cachedResultQueryID:iD engagementSuggestionType:v10];
 
   v12 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.visualSearch");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v13 = [v8 analysis];
+    analysis = [itemCopy analysis];
     v14 = 138412546;
     v15 = v10;
     v16 = 1024;
-    v17 = [v13 analysisRequestID];
+    analysisRequestID = [analysis analysisRequestID];
     _os_log_impl(&dword_1B4335000, v12, OS_LOG_TYPE_INFO, "didShowVisualSearchCachedResultsForQueryID suggestionType: %@, id: %d", &v14, 0x12u);
   }
 }
 
 - (void)didLeaveVisualSearchHints
 {
-  v2 = [(VKImageAnalyzerMadInterface *)self service];
-  [v2 endEntryPoint];
+  service = [(VKImageAnalyzerMadInterface *)self service];
+  [service endEntryPoint];
 }
 
 - (void)createNewIdleTimerIfNecessary
@@ -1972,14 +1972,14 @@ void __128__VKImageAnalyzerMadInterface_submitVisualIntelligenceUserFeedbackForR
     [(VKImageAnalyzerMadInterface *)self setTimeoutIndex:v3];
     objc_initWeak(&location, self);
     v4 = dispatch_time(0, 60000000000);
-    v5 = [(VKImageAnalyzerMadInterface *)self housekeepingQueue];
+    housekeepingQueue = [(VKImageAnalyzerMadInterface *)self housekeepingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __60__VKImageAnalyzerMadInterface_createNewIdleTimerIfNecessary__block_invoke;
     block[3] = &unk_1E7BE4348;
     objc_copyWeak(v7, &location);
     v7[1] = v3;
-    dispatch_after(v4, v5, block);
+    dispatch_after(v4, housekeepingQueue, block);
 
     objc_destroyWeak(v7);
     objc_destroyWeak(&location);
@@ -2005,20 +2005,20 @@ void __60__VKImageAnalyzerMadInterface_createNewIdleTimerIfNecessary__block_invo
   }
 }
 
-- (id)madSuggestionTypeFromItems:(id)a3
+- (id)madSuggestionTypeFromItems:(id)items
 {
-  v3 = [a3 firstObject];
-  v4 = [v3 currentInvocationType];
+  firstObject = [items firstObject];
+  currentInvocationType = [firstObject currentInvocationType];
 
-  if (v4 > 3)
+  if (currentInvocationType > 3)
   {
-    if (v4 == 4)
+    if (currentInvocationType == 4)
     {
       v5 = @"automatic";
       goto LABEL_13;
     }
 
-    if (v4 != 5)
+    if (currentInvocationType != 5)
     {
       v5 = 0;
       goto LABEL_13;
@@ -2030,13 +2030,13 @@ LABEL_10:
     goto LABEL_13;
   }
 
-  if (v4 == 1)
+  if (currentInvocationType == 1)
   {
     v6 = MEMORY[0x1E69AE2E8];
     goto LABEL_10;
   }
 
-  if (v4 == 2)
+  if (currentInvocationType == 2)
   {
     v5 = @"highlightedSubject";
   }
@@ -2051,49 +2051,49 @@ LABEL_13:
   return v5;
 }
 
-- (unint64_t)sfViewAppearEventFromInvocationType:(int64_t)a3 request:(id)a4
+- (unint64_t)sfViewAppearEventFromInvocationType:(int64_t)type request:(id)request
 {
-  v5 = [a4 imageSource];
+  imageSource = [request imageSource];
   v6 = 28;
   v7 = 34;
-  if (v5 == 2)
+  if (imageSource == 2)
   {
     v7 = 31;
   }
 
-  if (a3 != 4)
+  if (type != 4)
   {
     v7 = 0;
   }
 
-  if (a3 != 3)
+  if (type != 3)
   {
     v6 = v7;
   }
 
   v8 = 34;
-  if (v5 == 2)
+  if (imageSource == 2)
   {
     v8 = 31;
   }
 
   v9 = 32;
-  if (v5 == 2)
+  if (imageSource == 2)
   {
     v9 = 33;
   }
 
-  if (a3 != 2)
+  if (type != 2)
   {
     v9 = 0;
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
     v8 = v9;
   }
 
-  if (a3 <= 2)
+  if (type <= 2)
   {
     return v8;
   }

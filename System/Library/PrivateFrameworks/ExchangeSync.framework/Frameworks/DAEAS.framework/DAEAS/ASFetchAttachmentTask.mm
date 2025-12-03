@@ -1,20 +1,20 @@
 @interface ASFetchAttachmentTask
-- (BOOL)processContext:(id)a3;
+- (BOOL)processContext:(id)context;
 - (id)command;
-- (id)initForMessageServerID:(id)a3 andAttachmentName:(id)a4;
-- (id)initForMessageUUID:(id)a3;
+- (id)initForMessageServerID:(id)d andAttachmentName:(id)name;
+- (id)initForMessageUUID:(id)d;
 - (id)parameterData;
-- (void)finishWithError:(id)a3;
+- (void)finishWithError:(id)error;
 @end
 
 @implementation ASFetchAttachmentTask
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ASTask *)self taskStatusForError:v4];
-  if (!v4)
+  errorCopy = error;
+  v5 = [(ASTask *)self taskStatusForError:errorCopy];
+  if (!errorCopy)
   {
     v7 = DALoggingwithCategory();
     v8 = *(MEMORY[0x277D03988] + 6);
@@ -45,7 +45,7 @@
     *buf = 138412546;
     v20 = objc_opt_class();
     v21 = 2112;
-    v22 = v4;
+    v22 = errorCopy;
     v9 = v20;
     v10 = "%@ failed: %@";
 LABEL_7:
@@ -72,7 +72,7 @@ LABEL_10:
   _os_log_impl(&dword_24A0AC000, v11, v12, v10, buf, v13);
 
 LABEL_11:
-  if ([(ASTask *)self attemptRetryWithStatus:v5 error:v4])
+  if ([(ASTask *)self attemptRetryWithStatus:v5 error:errorCopy])
   {
     [(ASTask *)self setCurrentlyParsingItem:0];
   }
@@ -85,7 +85,7 @@ LABEL_11:
     v16[3] = &unk_278FC7B68;
     v16[4] = self;
     v18 = v5;
-    v17 = v4;
+    v17 = errorCopy;
     [(ASTask *)self finishWithError:v17 afterDelegateCallout:v16];
   }
 
@@ -100,8 +100,8 @@ void __41__ASFetchAttachmentTask_finishWithError___block_invoke(void *a1)
 
 - (id)parameterData
 {
-  v2 = [(ASFetchAttachmentTask *)self attachmentName];
-  v3 = [v2 dataUsingEncoding:4];
+  attachmentName = [(ASFetchAttachmentTask *)self attachmentName];
+  v3 = [attachmentName dataUsingEncoding:4];
 
   v4 = [MEMORY[0x277CBEB28] dataWithCapacity:{objc_msgSend(v3, "length") + 2}];
   v6 = 0;
@@ -116,61 +116,61 @@ void __41__ASFetchAttachmentTask_finishWithError___block_invoke(void *a1)
 - (id)command
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(ASFetchAttachmentTask *)self attachmentName];
-  v4 = [v2 stringWithFormat:@"GetAttachment&AttachmentName=%@", v3];
+  attachmentName = [(ASFetchAttachmentTask *)self attachmentName];
+  v4 = [v2 stringWithFormat:@"GetAttachment&AttachmentName=%@", attachmentName];
 
   return v4;
 }
 
-- (BOOL)processContext:(id)a3
+- (BOOL)processContext:(id)context
 {
-  v5 = a3;
-  v6 = [v5 goodSizeForBuffer];
-  if (v6)
+  contextCopy = context;
+  goodSizeForBuffer = [contextCopy goodSizeForBuffer];
+  if (goodSizeForBuffer)
   {
-    v7 = v6;
+    goodSizeForBuffer2 = goodSizeForBuffer;
     do
     {
       v13 = 0;
-      v8 = [v5 bufferForLength:v7 shouldFree:&v13];
+      v8 = [contextCopy bufferForLength:goodSizeForBuffer2 shouldFree:&v13];
       if (v13 == 1)
       {
         [(ASFetchAttachmentTask *)a2 processContext:&v13, &v14];
       }
 
-      v9 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:v8 length:v7 freeWhenDone:?];
-      v10 = [(ASTask *)self delegate];
-      v11 = [(ASTask *)self responseContentType];
-      [v10 fetchAttachmentTask:self receivedData:v9 ofContentType:v11];
+      v9 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:v8 length:goodSizeForBuffer2 freeWhenDone:?];
+      delegate = [(ASTask *)self delegate];
+      responseContentType = [(ASTask *)self responseContentType];
+      [delegate fetchAttachmentTask:self receivedData:v9 ofContentType:responseContentType];
 
-      if (([v5 advanceOffsetByAmount:v7 retainLastToken:0] & 1) == 0)
+      if (([contextCopy advanceOffsetByAmount:goodSizeForBuffer2 retainLastToken:0] & 1) == 0)
       {
         [(ASFetchAttachmentTask *)a2 processContext:?];
       }
 
-      v7 = [v5 goodSizeForBuffer];
+      goodSizeForBuffer2 = [contextCopy goodSizeForBuffer];
     }
 
-    while (v7);
+    while (goodSizeForBuffer2);
   }
 
   return 1;
 }
 
-- (id)initForMessageServerID:(id)a3 andAttachmentName:(id)a4
+- (id)initForMessageServerID:(id)d andAttachmentName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = ASFetchAttachmentTask;
   v8 = [(ASTask *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dCopy copy];
     messageID = v8->_messageID;
     v8->_messageID = v9;
 
-    v11 = [v7 copy];
+    v11 = [nameCopy copy];
     attachmentName = v8->_attachmentName;
     v8->_attachmentName = v11;
   }
@@ -178,15 +178,15 @@ void __41__ASFetchAttachmentTask_finishWithError___block_invoke(void *a1)
   return v8;
 }
 
-- (id)initForMessageUUID:(id)a3
+- (id)initForMessageUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = ASFetchAttachmentTask;
   v5 = [(ASTask *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     attachmentUUID = v5->_attachmentUUID;
     v5->_attachmentUUID = v6;
   }

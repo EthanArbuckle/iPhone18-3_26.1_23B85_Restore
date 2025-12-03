@@ -1,13 +1,13 @@
 @interface CarCardRoundedButton
 + ($3CC2805F0189FCCE51047C0D2B5A52A9)_defaultButtonMetrics;
-+ (CarCardRoundedButton)buttonWithType:(int64_t)a3;
++ (CarCardRoundedButton)buttonWithType:(int64_t)type;
 - ($3CC2805F0189FCCE51047C0D2B5A52A9)buttonMetrics;
-- (CGRect)imageRectForContentRect:(CGRect)a3;
-- (CGRect)titleRectForContentRect:(CGRect)a3;
-- (CarCardRoundedButton)initWithFrame:(CGRect)a3;
+- (CGRect)imageRectForContentRect:(CGRect)rect;
+- (CGRect)titleRectForContentRect:(CGRect)rect;
+- (CarCardRoundedButton)initWithFrame:(CGRect)frame;
 - (void)_commonInit;
 - (void)layoutSubviews;
-- (void)setButtonMetrics:(id *)a3;
+- (void)setButtonMetrics:(id *)metrics;
 @end
 
 @implementation CarCardRoundedButton
@@ -17,8 +17,8 @@
   v6.receiver = self;
   v6.super_class = CarCardRoundedButton;
   [(CarFocusableButton *)&v6 layoutSubviews];
-  v3 = [(CarCardRoundedButton *)self currentImage];
-  if (v3)
+  currentImage = [(CarCardRoundedButton *)self currentImage];
+  if (currentImage)
   {
     v4 = 4;
   }
@@ -28,8 +28,8 @@
     v4 = 1;
   }
 
-  v5 = [(CarCardRoundedButton *)self titleLabel];
-  [v5 setTextAlignment:v4];
+  titleLabel = [(CarCardRoundedButton *)self titleLabel];
+  [titleLabel setTextAlignment:v4];
 }
 
 - ($3CC2805F0189FCCE51047C0D2B5A52A9)buttonMetrics
@@ -41,11 +41,11 @@
   return self;
 }
 
-+ (CarCardRoundedButton)buttonWithType:(int64_t)a3
++ (CarCardRoundedButton)buttonWithType:(int64_t)type
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___CarCardRoundedButton;
-  v3 = objc_msgSendSuper2(&v5, "buttonWithType:", a3);
+  v3 = objc_msgSendSuper2(&v5, "buttonWithType:", type);
   [v3 _commonInit];
 
   return v3;
@@ -59,34 +59,34 @@
   return result;
 }
 
-- (void)setButtonMetrics:(id *)a3
+- (void)setButtonMetrics:(id *)metrics
 {
-  var4 = a3->var4;
-  v4 = *&a3->var2;
-  *&self->_buttonMetrics.cornerRadius = *&a3->var0;
+  var4 = metrics->var4;
+  v4 = *&metrics->var2;
+  *&self->_buttonMetrics.cornerRadius = *&metrics->var0;
   *&self->_buttonMetrics.secondaryFontSize = v4;
   self->_buttonMetrics.buttonHeight = var4;
   [(CarCardRoundedButton *)self setNeedsLayout];
 }
 
-- (CGRect)titleRectForContentRect:(CGRect)a3
+- (CGRect)titleRectForContentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(CarCardRoundedButton *)self currentImage];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  currentImage = [(CarCardRoundedButton *)self currentImage];
 
-  v9 = [(CarCardRoundedButton *)self currentTitle];
-  if (v9)
+  currentTitle = [(CarCardRoundedButton *)self currentTitle];
+  if (currentTitle)
   {
     v10 = 0;
   }
 
   else
   {
-    v11 = [(CarCardRoundedButton *)self currentAttributedTitle];
-    v10 = v11 == 0;
+    currentAttributedTitle = [(CarCardRoundedButton *)self currentAttributedTitle];
+    v10 = currentAttributedTitle == 0;
   }
 
   v31.receiver = self;
@@ -95,7 +95,7 @@
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  if (v8 && !v10)
+  if (currentImage && !v10)
   {
     v32.origin.x = x;
     v32.origin.y = y;
@@ -143,27 +143,27 @@
   return result;
 }
 
-- (CGRect)imageRectForContentRect:(CGRect)a3
+- (CGRect)imageRectForContentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(CarCardRoundedButton *)self currentTitle];
-  if (v8)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  currentTitle = [(CarCardRoundedButton *)self currentTitle];
+  if (currentTitle)
   {
     v9 = 0;
   }
 
   else
   {
-    v10 = [(CarCardRoundedButton *)self currentAttributedTitle];
-    v9 = v10 == 0;
+    currentAttributedTitle = [(CarCardRoundedButton *)self currentAttributedTitle];
+    v9 = currentAttributedTitle == 0;
   }
 
-  v11 = [(CarCardRoundedButton *)self currentImage];
-  v12 = v11;
-  if (!v11 || v9)
+  currentImage = [(CarCardRoundedButton *)self currentImage];
+  v12 = currentImage;
+  if (!currentImage || v9)
   {
     v34.receiver = self;
     v34.super_class = CarCardRoundedButton;
@@ -172,7 +172,7 @@
 
   else
   {
-    [v11 size];
+    [currentImage size];
     v13 = 0.0;
     if (v14 < 41.0)
     {
@@ -227,26 +227,26 @@
   v5 = [(CarCardRoundedButton *)self layer:v17];
   [v5 setCornerRadius:cornerRadius];
 
-  v6 = [(CarCardRoundedButton *)self layer];
-  [v6 setMasksToBounds:1];
+  layer = [(CarCardRoundedButton *)self layer];
+  [layer setMasksToBounds:1];
 
   [(CarCardRoundedButton *)self setContentHorizontalAlignment:0];
   [(CarCardRoundedButton *)self setContentVerticalAlignment:0];
-  v7 = [(CarCardRoundedButton *)self titleLabel];
-  [v7 setAccessibilityIdentifier:@"TitleLabel"];
+  titleLabel = [(CarCardRoundedButton *)self titleLabel];
+  [titleLabel setAccessibilityIdentifier:@"TitleLabel"];
 
-  v8 = [(CarCardRoundedButton *)self titleLabel];
-  [v8 setTextAlignment:4];
+  titleLabel2 = [(CarCardRoundedButton *)self titleLabel];
+  [titleLabel2 setTextAlignment:4];
 
-  v9 = [(CarCardRoundedButton *)self titleLabel];
+  titleLabel3 = [(CarCardRoundedButton *)self titleLabel];
   v10 = [UIFont systemFontOfSize:15.0 weight:UIFontWeightMedium];
-  [v9 setFont:v10];
+  [titleLabel3 setFont:v10];
 
-  v11 = [(CarCardRoundedButton *)self imageView];
-  [v11 setAccessibilityIdentifier:@"ImageView"];
+  imageView = [(CarCardRoundedButton *)self imageView];
+  [imageView setAccessibilityIdentifier:@"ImageView"];
 
-  v12 = [(CarCardRoundedButton *)self imageView];
-  [v12 setContentMode:1];
+  imageView2 = [(CarCardRoundedButton *)self imageView];
+  [imageView2 setContentMode:1];
 
   [(CarFocusableButton *)self setModifiesBackgroundColor:1];
   [(CarFocusableButton *)self setAdjustsImageWhenDisabled:0];
@@ -264,11 +264,11 @@
   [(CarFocusableButton *)self setFocusedBackgroundColor:v16];
 }
 
-- (CarCardRoundedButton)initWithFrame:(CGRect)a3
+- (CarCardRoundedButton)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CarCardRoundedButton;
-  v3 = [(CarFocusableButton *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CarFocusableButton *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

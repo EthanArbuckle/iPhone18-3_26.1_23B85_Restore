@@ -1,11 +1,11 @@
 @interface STAskForTimeGroupSpecifierProvider
 - (STAskForTimeGroupSpecifierProvider)init;
-- (id)_createSpecifierForAskForMore:(id)a3;
+- (id)_createSpecifierForAskForMore:(id)more;
 - (id)requestSpecifiers;
-- (void)confirmRespondToRequest:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)respondToRequest:(id)a3 withApproval:(BOOL)a4 timeApproved:(id)a5;
-- (void)setCoordinator:(id)a3;
+- (void)confirmRespondToRequest:(id)request;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)respondToRequest:(id)request withApproval:(BOOL)approval timeApproved:(id)approved;
+- (void)setCoordinator:(id)coordinator;
 @end
 
 @implementation STAskForTimeGroupSpecifierProvider
@@ -27,27 +27,27 @@
   return v2;
 }
 
-- (void)setCoordinator:(id)a3
+- (void)setCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(STRootGroupSpecifierProvider *)self coordinator];
-  [v5 removeObserver:self forKeyPath:@"viewModel.canViewAskForTimeRequests" context:"STAskForTimeGroupSpecifierProviderObservationContext"];
-  [v5 removeObserver:self forKeyPath:@"timeAllowancesCoordinator.viewModel.pendingAskForTimeByIdentifier" context:"STAskForTimeGroupSpecifierProviderObservationContext"];
+  coordinatorCopy = coordinator;
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  [coordinator removeObserver:self forKeyPath:@"viewModel.canViewAskForTimeRequests" context:"STAskForTimeGroupSpecifierProviderObservationContext"];
+  [coordinator removeObserver:self forKeyPath:@"timeAllowancesCoordinator.viewModel.pendingAskForTimeByIdentifier" context:"STAskForTimeGroupSpecifierProviderObservationContext"];
   v6.receiver = self;
   v6.super_class = STAskForTimeGroupSpecifierProvider;
-  [(STRootGroupSpecifierProvider *)&v6 setCoordinator:v4];
-  [v4 addObserver:self forKeyPath:@"timeAllowancesCoordinator.viewModel.pendingAskForTimeByIdentifier" options:4 context:"STAskForTimeGroupSpecifierProviderObservationContext"];
-  [v4 addObserver:self forKeyPath:@"viewModel.canViewAskForTimeRequests" options:4 context:"STAskForTimeGroupSpecifierProviderObservationContext"];
+  [(STRootGroupSpecifierProvider *)&v6 setCoordinator:coordinatorCopy];
+  [coordinatorCopy addObserver:self forKeyPath:@"timeAllowancesCoordinator.viewModel.pendingAskForTimeByIdentifier" options:4 context:"STAskForTimeGroupSpecifierProviderObservationContext"];
+  [coordinatorCopy addObserver:self forKeyPath:@"viewModel.canViewAskForTimeRequests" options:4 context:"STAskForTimeGroupSpecifierProviderObservationContext"];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == "STAskForTimeGroupSpecifierProviderObservationContext")
+  if (context == "STAskForTimeGroupSpecifierProviderObservationContext")
   {
-    v11 = [(STAskForTimeGroupSpecifierProvider *)self requestSpecifiers:a3];
-    v7 = [(STRootGroupSpecifierProvider *)self coordinator];
-    v8 = [v7 viewModel];
-    if ([v8 canViewAskForTimeRequests])
+    v11 = [(STAskForTimeGroupSpecifierProvider *)self requestSpecifiers:path];
+    coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+    viewModel = [coordinator viewModel];
+    if ([viewModel canViewAskForTimeRequests])
     {
       v9 = [v11 count] == 0;
     }
@@ -59,57 +59,57 @@
 
     [(STGroupSpecifierProvider *)self setIsHidden:v9];
 
-    v10 = [(STGroupSpecifierProvider *)self mutableSpecifiers];
-    [v10 replaceObjectsInRange:0 withObjectsFromArray:{objc_msgSend(v10, "count"), v11}];
+    mutableSpecifiers = [(STGroupSpecifierProvider *)self mutableSpecifiers];
+    [mutableSpecifiers replaceObjectsInRange:0 withObjectsFromArray:{objc_msgSend(mutableSpecifiers, "count"), v11}];
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = STAskForTimeGroupSpecifierProvider;
-    [(STAskForTimeGroupSpecifierProvider *)&v12 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(STAskForTimeGroupSpecifierProvider *)&v12 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-- (id)_createSpecifierForAskForMore:(id)a3
+- (id)_createSpecifierForAskForMore:(id)more
 {
-  v4 = a3;
-  v5 = [v4 usageType];
-  if (v5 == 2)
+  moreCopy = more;
+  usageType = [moreCopy usageType];
+  if (usageType == 2)
   {
-    v18 = [v4 budgetedIdentifier];
-    v19 = [v18 _lp_userVisibleHost];
-    v11 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v19 target:self set:0 get:0 detail:0 cell:2 edit:objc_opt_class()];
+    budgetedIdentifier = [moreCopy budgetedIdentifier];
+    _lp_userVisibleHost = [budgetedIdentifier _lp_userVisibleHost];
+    v11 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:_lp_userVisibleHost target:self set:0 get:0 detail:0 cell:2 edit:objc_opt_class()];
     [v11 setObject:objc_opt_class() forKeyedSubscript:*MEMORY[0x277D3FE58]];
-    [v11 setObject:v19 forKeyedSubscript:*MEMORY[0x277D40170]];
-    v20 = [MEMORY[0x277D75C80] currentTraitCollection];
-    v21 = [v20 userInterfaceStyle];
-    v22 = v19;
+    [v11 setObject:_lp_userVisibleHost forKeyedSubscript:*MEMORY[0x277D40170]];
+    currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
+    userInterfaceStyle = [currentTraitCollection userInterfaceStyle];
+    v22 = _lp_userVisibleHost;
     if ([v22 length])
     {
-      v47 = v21;
-      v48 = v20;
-      v49 = v18;
+      v47 = userInterfaceStyle;
+      v48 = currentTraitCollection;
+      v49 = budgetedIdentifier;
       v23 = objc_opt_new();
       [v23 setScheme:@"https"];
       [v23 setHost:v22];
       v24 = [v23 URL];
-      v25 = [v24 _lp_highLevelDomain];
-      v26 = [v23 host];
+      _lp_highLevelDomain = [v24 _lp_highLevelDomain];
+      host = [v23 host];
       v27 = [v23 URL];
-      v28 = v25;
-      v29 = v26;
+      v28 = _lp_highLevelDomain;
+      v29 = host;
       v30 = v27;
       if ([v28 length])
       {
         v31 = [v28 substringToIndex:1];
-        v32 = [v31 uppercaseString];
+        uppercaseString = [v31 uppercaseString];
       }
 
       else
       {
         v35 = [v29 substringToIndex:1];
-        v32 = [v35 uppercaseString];
+        uppercaseString = [v35 uppercaseString];
 
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
@@ -117,10 +117,10 @@
         }
       }
 
-      v21 = v47;
+      userInterfaceStyle = v47;
 
-      v20 = v48;
-      v18 = v49;
+      currentTraitCollection = v48;
+      budgetedIdentifier = v49;
     }
 
     else
@@ -130,13 +130,13 @@
         [STAllowanceItemSearchResultsController tableView:v22 cellForRowAtIndexPath:?];
       }
 
-      v32 = 0;
+      uppercaseString = 0;
     }
 
-    v36 = v21 == 2;
+    v36 = userInterfaceStyle == 2;
 
-    v37 = [MEMORY[0x277D4BD98] sharedCache];
-    v38 = [v37 monogramImageForInitial:v32 useDarkColors:v36];
+    mEMORY[0x277D4BD98] = [MEMORY[0x277D4BD98] sharedCache];
+    v38 = [mEMORY[0x277D4BD98] monogramImageForInitial:uppercaseString useDarkColors:v36];
     [v11 setObject:v38 forKeyedSubscript:*MEMORY[0x277D3FFC0]];
 
     v39 = +[STScreenTimeSettingsUIBundle bundle];
@@ -146,14 +146,14 @@
 
   else
   {
-    if (v5 == 1)
+    if (usageType == 1)
     {
-      v6 = [v4 budgetedIdentifier];
+      budgetedIdentifier2 = [moreCopy budgetedIdentifier];
       v8 = STCategoryNameWithIdentifier();
       v11 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v8 target:self set:0 get:0 detail:0 cell:2 edit:objc_opt_class()];
       [v11 setObject:objc_opt_class() forKeyedSubscript:*MEMORY[0x277D3FE58]];
-      v13 = [MEMORY[0x277D4BD98] sharedCache];
-      v14 = [v13 imageForCategoryIdentifier:v6];
+      mEMORY[0x277D4BD98]2 = [MEMORY[0x277D4BD98] sharedCache];
+      v14 = [mEMORY[0x277D4BD98]2 imageForCategoryIdentifier:budgetedIdentifier2];
       [v11 setObject:v14 forKeyedSubscript:*MEMORY[0x277D3FFC0]];
 
       [v11 setObject:v8 forKeyedSubscript:*MEMORY[0x277D40170]];
@@ -164,21 +164,21 @@
 
     else
     {
-      if (v5)
+      if (usageType)
       {
         v11 = 0;
         goto LABEL_22;
       }
 
-      v6 = [v4 budgetedIdentifier];
-      v7 = [MEMORY[0x277D4B8C0] sharedCache];
-      v8 = [v7 appInfoForBundleIdentifier:v6];
+      budgetedIdentifier2 = [moreCopy budgetedIdentifier];
+      mEMORY[0x277D4B8C0] = [MEMORY[0x277D4B8C0] sharedCache];
+      v8 = [mEMORY[0x277D4B8C0] appInfoForBundleIdentifier:budgetedIdentifier2];
 
       v9 = MEMORY[0x277D3FAD8];
-      v10 = [v8 displayName];
-      v11 = [v9 preferenceSpecifierNamed:v10 target:self set:0 get:0 detail:0 cell:2 edit:objc_opt_class()];
+      displayName = [v8 displayName];
+      v11 = [v9 preferenceSpecifierNamed:displayName target:self set:0 get:0 detail:0 cell:2 edit:objc_opt_class()];
 
-      if ([v8 source] == 2 && (objc_msgSend(v6, "isEqualToString:", *MEMORY[0x277D4BBC8]) & 1) == 0)
+      if ([v8 source] == 2 && (objc_msgSend(budgetedIdentifier2, "isEqualToString:", *MEMORY[0x277D4BBC8]) & 1) == 0)
       {
         [v11 setObject:objc_opt_class() forKeyedSubscript:*MEMORY[0x277D3FE58]];
         [v11 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D40020]];
@@ -191,9 +191,9 @@
         v12 = &STAppBundleIDKey;
       }
 
-      [v11 setObject:v6 forKeyedSubscript:*v12];
-      v33 = [v8 displayName];
-      [v11 setObject:v33 forKeyedSubscript:*MEMORY[0x277D40170]];
+      [v11 setObject:budgetedIdentifier2 forKeyedSubscript:*v12];
+      displayName2 = [v8 displayName];
+      [v11 setObject:displayName2 forKeyedSubscript:*MEMORY[0x277D40170]];
 
       v15 = +[STScreenTimeSettingsUIBundle bundle];
       v16 = v15;
@@ -206,11 +206,11 @@
 
 LABEL_22:
   v41 = MEMORY[0x277CCACA8];
-  v42 = [v4 identifier];
-  v43 = [v41 stringWithFormat:@"ASK_%@", v42];
+  identifier = [moreCopy identifier];
+  v43 = [v41 stringWithFormat:@"ASK_%@", identifier];
   [v11 setIdentifier:v43];
 
-  [v11 setUserInfo:v4];
+  [v11 setUserInfo:moreCopy];
   v44 = objc_opt_class();
   v45 = NSStringFromClass(v44);
   [v11 setObject:v45 forKeyedSubscript:*MEMORY[0x277D400B8]];
@@ -225,22 +225,22 @@ LABEL_22:
 - (id)requestSpecifiers
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v4 = [v3 timeAllowancesCoordinator];
-  v5 = [v4 viewModel];
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  timeAllowancesCoordinator = [coordinator timeAllowancesCoordinator];
+  viewModel = [timeAllowancesCoordinator viewModel];
 
   v6 = MEMORY[0x277CBEB18];
-  v7 = [v5 pendingAskForTimeByIdentifier];
-  v8 = [v6 arrayWithCapacity:{objc_msgSend(v7, "count")}];
+  pendingAskForTimeByIdentifier = [viewModel pendingAskForTimeByIdentifier];
+  v8 = [v6 arrayWithCapacity:{objc_msgSend(pendingAskForTimeByIdentifier, "count")}];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = [v5 pendingAskForTimeByIdentifier];
-  v10 = [v9 allValues];
+  pendingAskForTimeByIdentifier2 = [viewModel pendingAskForTimeByIdentifier];
+  allValues = [pendingAskForTimeByIdentifier2 allValues];
 
-  v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v11 = [allValues countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v11)
   {
     v12 = v11;
@@ -251,14 +251,14 @@ LABEL_22:
       {
         if (*v18 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allValues);
         }
 
         v15 = [(STAskForTimeGroupSpecifierProvider *)self _createSpecifierForAskForMore:*(*(&v17 + 1) + 8 * i)];
         [v8 addObject:v15];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v12 = [allValues countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v12);
@@ -267,13 +267,13 @@ LABEL_22:
   return v8;
 }
 
-- (void)confirmRespondToRequest:(id)a3
+- (void)confirmRespondToRequest:(id)request
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 sf_isiPad];
+  requestCopy = request;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sf_isiPad = [currentDevice sf_isiPad];
 
-  v7 = [MEMORY[0x277D75110] alertControllerWithTitle:0 message:0 preferredStyle:v6];
+  v7 = [MEMORY[0x277D75110] alertControllerWithTitle:0 message:0 preferredStyle:sf_isiPad];
   v8 = objc_opt_new();
   [v8 setAllowedUnits:64];
   [v8 setUnitsStyle:3];
@@ -288,7 +288,7 @@ LABEL_22:
   v38[2] = __62__STAskForTimeGroupSpecifierProvider_confirmRespondToRequest___block_invoke;
   v38[3] = &unk_279B7CDF0;
   v38[4] = self;
-  v14 = v4;
+  v14 = requestCopy;
   v39 = v14;
   v15 = [v10 actionWithTitle:v13 style:0 handler:v38];
   [v7 addAction:v15];
@@ -337,23 +337,23 @@ LABEL_22:
   [(STGroupSpecifierProvider *)self presentViewController:v7 animated:1 completion:0];
 }
 
-- (void)respondToRequest:(id)a3 withApproval:(BOOL)a4 timeApproved:(id)a5
+- (void)respondToRequest:(id)request withApproval:(BOOL)approval timeApproved:(id)approved
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = [a3 userInfo];
-  v10 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v11 = [v10 timeAllowancesCoordinator];
+  approvalCopy = approval;
+  approvedCopy = approved;
+  userInfo = [request userInfo];
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  timeAllowancesCoordinator = [coordinator timeAllowancesCoordinator];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __81__STAskForTimeGroupSpecifierProvider_respondToRequest_withApproval_timeApproved___block_invoke;
   v14[3] = &unk_279B7CD08;
-  v17 = v5;
-  v15 = v8;
-  v16 = v9;
-  v12 = v9;
-  v13 = v8;
-  [v11 respondToAskForTime:v12 withApproval:v5 timeApproved:v13 completionHandler:v14];
+  v17 = approvalCopy;
+  v15 = approvedCopy;
+  v16 = userInfo;
+  v12 = userInfo;
+  v13 = approvedCopy;
+  [timeAllowancesCoordinator respondToAskForTime:v12 withApproval:approvalCopy timeApproved:v13 completionHandler:v14];
 }
 
 void __81__STAskForTimeGroupSpecifierProvider_respondToRequest_withApproval_timeApproved___block_invoke(uint64_t a1)

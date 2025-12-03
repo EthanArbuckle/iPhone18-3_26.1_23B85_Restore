@@ -1,17 +1,17 @@
 @interface UITrackingElementPlacementInitialPosition
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation UITrackingElementPlacementInitialPosition
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v7.receiver = self;
   v7.super_class = UITrackingElementPlacementInitialPosition;
-  v4 = a3;
-  v5 = [(UIInputViewSetPlacement *)&v7 isEqual:v4];
+  equalCopy = equal;
+  v5 = [(UIInputViewSetPlacement *)&v7 isEqual:equalCopy];
 
-  return self != v4 && v5;
+  return self != equalCopy && v5;
 }
 
 @end

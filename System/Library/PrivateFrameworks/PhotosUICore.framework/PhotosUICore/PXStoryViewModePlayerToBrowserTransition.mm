@@ -1,24 +1,24 @@
 @interface PXStoryViewModePlayerToBrowserTransition
-- ($B0175D27BC26B8A5DA33FAD13D27C2F3)contentsTransformOverrideForClipWithInfo:(SEL)a3 proposedOverride:(id *)a4 inViewMode:(id *)a5 layout:(int64_t)a6;
+- ($B0175D27BC26B8A5DA33FAD13D27C2F3)contentsTransformOverrideForClipWithInfo:(SEL)info proposedOverride:(id *)override inViewMode:(id *)mode layout:(int64_t)layout;
 - (BOOL)hasActiveAnimation;
 - (BOOL)shouldFinish;
-- (CGRect)frameForClipWithInfo:(id *)a3 proposedFrame:(CGRect)a4 inViewMode:(int64_t)a5 layout:(id)a6;
-- (PXStoryViewModePlayerToBrowserTransition)initWithSourceTimelineLayoutSnapshot:(id)a3 assetReference:(id)a4 trackingClipIdentifier:(int64_t)a5;
-- (double)alphaForClipWithInfo:(id *)a3 proposedAlpha:(double)a4 inViewMode:(int64_t)a5 layout:(id)a6;
+- (CGRect)frameForClipWithInfo:(id *)info proposedFrame:(CGRect)frame inViewMode:(int64_t)mode layout:(id)layout;
+- (PXStoryViewModePlayerToBrowserTransition)initWithSourceTimelineLayoutSnapshot:(id)snapshot assetReference:(id)reference trackingClipIdentifier:(int64_t)identifier;
+- (double)alphaForClipWithInfo:(id *)info proposedAlpha:(double)alpha inViewMode:(int64_t)mode layout:(id)layout;
 - (double)fadeoutDuration;
-- (id)presentedBoundingBoxForViewMode:(int64_t)a3;
+- (id)presentedBoundingBoxForViewMode:(int64_t)mode;
 - (void)swipeDownInteractionStateDidChange;
 @end
 
 @implementation PXStoryViewModePlayerToBrowserTransition
 
-- ($B0175D27BC26B8A5DA33FAD13D27C2F3)contentsTransformOverrideForClipWithInfo:(SEL)a3 proposedOverride:(id *)a4 inViewMode:(id *)a5 layout:(int64_t)a6
+- ($B0175D27BC26B8A5DA33FAD13D27C2F3)contentsTransformOverrideForClipWithInfo:(SEL)info proposedOverride:(id *)override inViewMode:(id *)mode layout:(int64_t)layout
 {
   v12 = a7;
   *&retstr->var0 = 0u;
   *&retstr->var1.origin.y = 0u;
   retstr->var1.size.height = 0.0;
-  if (self->_swipeDownTracker && (-[PXStoryViewModeFocusedClipsViewTransition focusedClipIdentifiers](self, "focusedClipIdentifiers"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 containsIndex:a4->var0], v13, v14))
+  if (self->_swipeDownTracker && (-[PXStoryViewModeFocusedClipsViewTransition focusedClipIdentifiers](self, "focusedClipIdentifiers"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 containsIndex:override->var0], v13, v14))
   {
     if (self->_completionProgressAnimator && [(PXSwipeDownTracker *)self->_swipeDownTracker shouldFinishDismissal])
     {
@@ -26,34 +26,34 @@
       PXFloatByLinearlyInterpolatingFloats();
     }
 
-    v16 = *&a5->var1.origin.y;
-    *&retstr->var0 = *&a5->var0;
+    v16 = *&mode->var1.origin.y;
+    *&retstr->var0 = *&mode->var0;
     *&retstr->var1.origin.y = v16;
-    retstr->var1.size.height = a5->var1.size.height;
+    retstr->var1.size.height = mode->var1.size.height;
   }
 
   else
   {
     v21.receiver = self;
     v21.super_class = PXStoryViewModePlayerToBrowserTransition;
-    memcpy(__dst, a4, sizeof(__dst));
-    v15 = *&a5->var1.origin.y;
-    v18[0] = *&a5->var0;
+    memcpy(__dst, override, sizeof(__dst));
+    v15 = *&mode->var1.origin.y;
+    v18[0] = *&mode->var0;
     v18[1] = v15;
-    height = a5->var1.size.height;
-    [($B0175D27BC26B8A5DA33FAD13D27C2F3 *)&v21 contentsTransformOverrideForClipWithInfo:__dst proposedOverride:v18 inViewMode:a6 layout:v12];
+    height = mode->var1.size.height;
+    [($B0175D27BC26B8A5DA33FAD13D27C2F3 *)&v21 contentsTransformOverrideForClipWithInfo:__dst proposedOverride:v18 inViewMode:layout layout:v12];
   }
 
   return result;
 }
 
-- (double)alphaForClipWithInfo:(id *)a3 proposedAlpha:(double)a4 inViewMode:(int64_t)a5 layout:(id)a6
+- (double)alphaForClipWithInfo:(id *)info proposedAlpha:(double)alpha inViewMode:(int64_t)mode layout:(id)layout
 {
-  v10 = a6;
-  v11 = [(PXStoryViewModeTransition *)self regionOfInterest];
-  if (v11 && (v12 = v11, -[PXStoryViewModeFocusedClipsViewTransition focusedClipIdentifiers](self, "focusedClipIdentifiers"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 containsIndex:a3->var0], v13, v12, v14))
+  layoutCopy = layout;
+  regionOfInterest = [(PXStoryViewModeTransition *)self regionOfInterest];
+  if (regionOfInterest && (v12 = regionOfInterest, -[PXStoryViewModeFocusedClipsViewTransition focusedClipIdentifiers](self, "focusedClipIdentifiers"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 containsIndex:info->var0], v13, v12, v14))
   {
-    var1 = a3->var1;
+    var1 = info->var1;
     if (var1 <= 5)
     {
       if (((1 << var1) & 0xD) != 0)
@@ -65,21 +65,21 @@
         PXFloatProgressBetween();
       }
 
-      [(PXStoryViewModeTransition *)self valueWithFadeout:a4];
-      v20 = v19 < a4;
-      a4 = v19;
+      [(PXStoryViewModeTransition *)self valueWithFadeout:alpha];
+      v20 = v19 < alpha;
+      alpha = v19;
       if (v20)
       {
         v21 = v19;
-        var0 = a3->var0;
+        var0 = info->var0;
         if (var0 == [(PXStoryViewModeFocusedClipsViewTransition *)self trackingClipIdentifier])
         {
-          a4 = v21;
+          alpha = v21;
         }
 
         else
         {
-          a4 = 0.0;
+          alpha = 0.0;
         }
       }
     }
@@ -89,9 +89,9 @@
   {
     v24.receiver = self;
     v24.super_class = PXStoryViewModePlayerToBrowserTransition;
-    memcpy(v23, a3, sizeof(v23));
-    [(PXStoryViewModeTransition *)&v24 alphaForClipWithInfo:v23 proposedAlpha:a5 inViewMode:v10 layout:a4];
-    a4 = v17;
+    memcpy(v23, info, sizeof(v23));
+    [(PXStoryViewModeTransition *)&v24 alphaForClipWithInfo:v23 proposedAlpha:mode inViewMode:layoutCopy layout:alpha];
+    alpha = v17;
   }
 
   if (self->_shouldFadeOutEverything)
@@ -100,36 +100,36 @@
     PXFloatNormalize();
   }
 
-  return a4;
+  return alpha;
 }
 
-- (CGRect)frameForClipWithInfo:(id *)a3 proposedFrame:(CGRect)a4 inViewMode:(int64_t)a5 layout:(id)a6
+- (CGRect)frameForClipWithInfo:(id *)info proposedFrame:(CGRect)frame inViewMode:(int64_t)mode layout:(id)layout
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v64 = *MEMORY[0x1E69E9840];
-  v13 = a6;
-  v14 = [(PXStoryViewModeTransition *)self regionOfInterest];
+  layoutCopy = layout;
+  regionOfInterest = [(PXStoryViewModeTransition *)self regionOfInterest];
   [(PXStoryViewModeTransition *)self swipeDownInteractionState];
   v15 = PXStorySwipeDownInteractionStateEqualsState(__dst, &PXStorySwipeDownInteractionStateNull);
-  if (v14 && ((v16 = v15, !v15) || self->_swipeDownTracker || self->_centerOffsetAnimator || self->_completionProgressAnimator))
+  if (regionOfInterest && ((v16 = v15, !v15) || self->_swipeDownTracker || self->_centerOffsetAnimator || self->_completionProgressAnimator))
   {
     v52 = width;
     v53 = height;
-    [v13 visibleRect];
-    v17 = [v13 rootLayout];
-    v18 = [v17 coordinateSpace];
-    [v14 rectInCoordinateSpace:v18];
+    [layoutCopy visibleRect];
+    rootLayout = [layoutCopy rootLayout];
+    coordinateSpace = [rootLayout coordinateSpace];
+    [regionOfInterest rectInCoordinateSpace:coordinateSpace];
     v20 = v19;
     v22 = v21;
     v24 = v23;
     v26 = v25;
-    v27 = [v13 rootLayout];
-    [v13 convertRect:v27 fromLayout:{v20, v22, v24, v26}];
+    rootLayout2 = [layoutCopy rootLayout];
+    [layoutCopy convertRect:rootLayout2 fromLayout:{v20, v22, v24, v26}];
 
-    v28 = [(PXStoryViewModePlayerToBrowserTransition *)self shouldFinish];
+    shouldFinish = [(PXStoryViewModePlayerToBrowserTransition *)self shouldFinish];
     swipeDownTracker = self->_swipeDownTracker;
     if (v16)
     {
@@ -141,13 +141,13 @@
         v33 = v32;
         [(PXStoryViewModeTransition *)self dampingRatio];
         v35 = v34;
-        v36 = [(PXStoryViewModeTransition *)self progressAnimator];
+        progressAnimator = [(PXStoryViewModeTransition *)self progressAnimator];
         v55[0] = MEMORY[0x1E69E9820];
         v55[1] = 3221225472;
         v55[2] = __97__PXStoryViewModePlayerToBrowserTransition_frameForClipWithInfo_proposedFrame_inViewMode_layout___block_invoke_2;
         v55[3] = &__block_descriptor_33_e35_v16__0___PXMutableNumberAnimator__8l;
-        v56 = v28;
-        [v36 performChangesUsingSpringAnimationWithStiffness:v55 dampingRatio:v33 initialVelocity:v35 changes:0.0];
+        v56 = shouldFinish;
+        [progressAnimator performChangesUsingSpringAnimationWithStiffness:v55 dampingRatio:v33 initialVelocity:v35 changes:0.0];
 
         [(PXSwipeDownTracker *)self->_swipeDownTracker trackedVelocity];
         [(PXSwipeDownTracker *)self->_swipeDownTracker trackedCenter];
@@ -171,7 +171,7 @@
         aBlock[1] = 3221225472;
         aBlock[2] = __97__PXStoryViewModePlayerToBrowserTransition_frameForClipWithInfo_proposedFrame_inViewMode_layout___block_invoke;
         aBlock[3] = &unk_1E772EB80;
-        v39 = v13;
+        v39 = layoutCopy;
         v59 = __dst[1];
         v60 = __dst[2];
         v61 = __dst[3];
@@ -184,11 +184,11 @@
       }
     }
 
-    var1 = a3->var1;
+    var1 = info->var1;
     if (var1 <= 5 && ((1 << var1) & 0x32) != 0)
     {
-      v42 = [(PXStoryViewModeFocusedClipsViewTransition *)self focusedClipIdentifiers];
-      v43 = [v42 containsIndex:a3->var0];
+      focusedClipIdentifiers = [(PXStoryViewModeFocusedClipsViewTransition *)self focusedClipIdentifiers];
+      v43 = [focusedClipIdentifiers containsIndex:info->var0];
 
       if (v43)
       {
@@ -201,8 +201,8 @@
   {
     v54.receiver = self;
     v54.super_class = PXStoryViewModePlayerToBrowserTransition;
-    memcpy(__dst, a3, sizeof(__dst));
-    [(PXStoryViewModeFocusedClipsViewTransition *)&v54 frameForClipWithInfo:__dst proposedFrame:a5 inViewMode:v13 layout:x, y, width, height];
+    memcpy(__dst, info, sizeof(__dst));
+    [(PXStoryViewModeFocusedClipsViewTransition *)&v54 frameForClipWithInfo:__dst proposedFrame:mode inViewMode:layoutCopy layout:x, y, width, height];
     x = v44;
     y = v45;
     v31 = v46;
@@ -241,9 +241,9 @@ uint64_t __97__PXStoryViewModePlayerToBrowserTransition_frameForClipWithInfo_pro
 
 - (BOOL)shouldFinish
 {
-  v3 = [(PXStoryViewModePlayerToBrowserTransition *)self swipeDownTracker];
-  v4 = v3;
-  if (v3 && ![v3 shouldFinishDismissal])
+  swipeDownTracker = [(PXStoryViewModePlayerToBrowserTransition *)self swipeDownTracker];
+  v4 = swipeDownTracker;
+  if (swipeDownTracker && ![swipeDownTracker shouldFinishDismissal])
   {
     v8 = 0;
   }
@@ -259,9 +259,9 @@ uint64_t __97__PXStoryViewModePlayerToBrowserTransition_frameForClipWithInfo_pro
   return v8;
 }
 
-- (id)presentedBoundingBoxForViewMode:(int64_t)a3
+- (id)presentedBoundingBoxForViewMode:(int64_t)mode
 {
-  if (a3 == 1)
+  if (mode == 1)
   {
     if ([(PXStoryViewModeFocusedClipsViewTransition *)self trackingClipIdentifier])
     {
@@ -276,7 +276,7 @@ uint64_t __97__PXStoryViewModePlayerToBrowserTransition_frameForClipWithInfo_pro
 
   v8.receiver = self;
   v8.super_class = PXStoryViewModePlayerToBrowserTransition;
-  v6 = [(PXStoryViewModeTransition *)&v8 presentedBoundingBoxForViewMode:a3];
+  v6 = [(PXStoryViewModeTransition *)&v8 presentedBoundingBoxForViewMode:mode];
 
   return v6;
 }
@@ -305,12 +305,12 @@ uint64_t __97__PXStoryViewModePlayerToBrowserTransition_frameForClipWithInfo_pro
       PXPointSubtract();
     }
 
-    v3 = [(PXStoryViewModeTransition *)self progressAnimator];
-    [v3 presentationValue];
+    progressAnimator = [(PXStoryViewModeTransition *)self progressAnimator];
+    [progressAnimator presentationValue];
     v5 = v4;
 
-    v6 = [(PXStoryViewModeTransition *)self progressAnimator];
-    [v6 performChangesWithoutAnimation:{&v14, v9, v10, v11, v12, v13, MEMORY[0x1E69E9820], 3221225472, __78__PXStoryViewModePlayerToBrowserTransition_swipeDownInteractionStateDidChange__block_invoke, &__block_descriptor_40_e35_v16__0___PXMutableNumberAnimator__8l, v5}];
+    progressAnimator2 = [(PXStoryViewModeTransition *)self progressAnimator];
+    [progressAnimator2 performChangesWithoutAnimation:{&v14, v9, v10, v11, v12, v13, MEMORY[0x1E69E9820], 3221225472, __78__PXStoryViewModePlayerToBrowserTransition_swipeDownInteractionStateDidChange__block_invoke, &__block_descriptor_40_e35_v16__0___PXMutableNumberAnimator__8l, v5}];
 
     self->_lastSwipeDownDuration = v19 - *(&v18 + 1);
     v7 = PLStoryGetLog();
@@ -340,9 +340,9 @@ void __78__PXStoryViewModePlayerToBrowserTransition_swipeDownInteractionStateDid
     return 0.1;
   }
 
-  v3 = [(PXSwipeDownTracker *)swipeDownTracker shouldFinishDismissal];
+  shouldFinishDismissal = [(PXSwipeDownTracker *)swipeDownTracker shouldFinishDismissal];
   result = 0.1;
-  if (!v3)
+  if (!shouldFinishDismissal)
   {
     return 0.0;
   }
@@ -365,16 +365,16 @@ void __78__PXStoryViewModePlayerToBrowserTransition_swipeDownInteractionStateDid
   }
 }
 
-- (PXStoryViewModePlayerToBrowserTransition)initWithSourceTimelineLayoutSnapshot:(id)a3 assetReference:(id)a4 trackingClipIdentifier:(int64_t)a5
+- (PXStoryViewModePlayerToBrowserTransition)initWithSourceTimelineLayoutSnapshot:(id)snapshot assetReference:(id)reference trackingClipIdentifier:(int64_t)identifier
 {
-  v8 = a3;
+  snapshotCopy = snapshot;
   v9 = MEMORY[0x1E696AD50];
-  v10 = a4;
+  referenceCopy = reference;
   v11 = objc_alloc_init(v9);
-  v12 = [v8 timeline];
-  if (v8)
+  timeline = [snapshotCopy timeline];
+  if (snapshotCopy)
   {
-    [v8 timeRange];
+    [snapshotCopy timeRange];
   }
 
   else
@@ -382,7 +382,7 @@ void __78__PXStoryViewModePlayerToBrowserTransition_swipeDownInteractionStateDid
     memset(v27, 0, sizeof(v27));
   }
 
-  [v8 timelineRect];
+  [snapshotCopy timelineRect];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -393,11 +393,11 @@ void __78__PXStoryViewModePlayerToBrowserTransition_swipeDownInteractionStateDid
   v25[3] = &unk_1E773B178;
   v26 = v11;
   v21 = v11;
-  [v12 enumerateClipsInTimeRange:v27 rect:v25 usingBlock:{v14, v16, v18, v20}];
+  [timeline enumerateClipsInTimeRange:v27 rect:v25 usingBlock:{v14, v16, v18, v20}];
 
   v24.receiver = self;
   v24.super_class = PXStoryViewModePlayerToBrowserTransition;
-  v22 = [(PXStoryViewModeFocusedClipsViewTransition *)&v24 initWithSourceViewMode:1 sourceSnapshot:v8 destinationViewMode:2 destinationSnapshot:0 assetReference:v10 focusedClipIdentifiers:v21 trackingClipIdentifier:a5];
+  v22 = [(PXStoryViewModeFocusedClipsViewTransition *)&v24 initWithSourceViewMode:1 sourceSnapshot:snapshotCopy destinationViewMode:2 destinationSnapshot:0 assetReference:referenceCopy focusedClipIdentifiers:v21 trackingClipIdentifier:identifier];
 
   return v22;
 }

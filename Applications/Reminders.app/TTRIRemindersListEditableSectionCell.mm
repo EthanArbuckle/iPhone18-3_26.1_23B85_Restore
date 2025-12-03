@@ -3,18 +3,18 @@
 - (BOOL)accessibilityActivate;
 - (BOOL)isAccessibilityElement;
 - (BOOL)isHidden;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSArray)accessibilityCustomActions;
 - (NSArray)accessibilityUserInputLabels;
 - (NSString)accessibilityLabel;
-- (_TtC9Reminders36TTRIRemindersListEditableSectionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC9Reminders36TTRIRemindersListEditableSectionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (unint64_t)accessibilityTraits;
 - (void)containerViewDidLoad;
 - (void)prepareForReuse;
 - (void)setAccessibilityCustomActions:(id)isa;
-- (void)setAccessibilityTraits:(unint64_t)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setHidden:(BOOL)a3;
+- (void)setAccessibilityTraits:(unint64_t)traits;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setHidden:(BOOL)hidden;
 @end
 
 @implementation TTRIRemindersListEditableSectionCell
@@ -33,28 +33,28 @@
   return [(TTRIRemindersListEditableSectionCell *)&v3 isHidden];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   ObjectType = swift_getObjectType();
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v6 = self;
-  v7 = [(TTRIRemindersListEditableSectionCell *)&v10 isHidden];
-  v9.receiver = v6;
+  selfCopy = self;
+  isHidden = [(TTRIRemindersListEditableSectionCell *)&v10 isHidden];
+  v9.receiver = selfCopy;
   v9.super_class = ObjectType;
-  [(TTRIRemindersListEditableSectionCell *)&v9 setHidden:v3];
-  v8.receiver = v6;
+  [(TTRIRemindersListEditableSectionCell *)&v9 setHidden:hiddenCopy];
+  v8.receiver = selfCopy;
   v8.super_class = ObjectType;
-  if (v7 != [(TTRIRemindersListEditableSectionCell *)&v8 isHidden])
+  if (isHidden != [(TTRIRemindersListEditableSectionCell *)&v8 isHidden])
   {
-    [(TTRIRemindersListEditableSectionCell *)v6 setNeedsLayout];
+    [(TTRIRemindersListEditableSectionCell *)selfCopy setNeedsLayout];
   }
 }
 
 - (void)containerViewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100497BB4();
 }
 
@@ -66,41 +66,41 @@
   v6 = &v9 - v5;
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v7 = self;
+  selfCopy = self;
   [(TTRIRemindersListEditableSectionCell *)&v9 prepareForReuse];
   v8 = type metadata accessor for TTRRemindersListEditableSectionNameViewModel();
   (*(*(v8 - 8) + 56))(v6, 1, 1, v8);
   sub_100496818(v6);
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  editingCopy = editing;
   ObjectType = swift_getObjectType();
-  v8 = self;
-  v9 = [(TTRIRemindersListEditableSectionCell *)v8 isEditing];
-  v10.receiver = v8;
+  selfCopy = self;
+  isEditing = [(TTRIRemindersListEditableSectionCell *)selfCopy isEditing];
+  v10.receiver = selfCopy;
   v10.super_class = ObjectType;
-  [(TTRIRemindersListEditableSectionCell *)&v10 setEditing:v5 animated:v4];
-  if (v9 != v5)
+  [(TTRIRemindersListEditableSectionCell *)&v10 setEditing:editingCopy animated:animatedCopy];
+  if (isEditing != editingCopy)
   {
     sub_100496AA0();
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   ObjectType = swift_getObjectType();
   v15.receiver = self;
   v15.super_class = ObjectType;
-  v7 = self;
+  selfCopy = self;
   [(TTRIRemindersListEditableSectionCell *)&v15 sizeThatFits:width, height];
   v9 = v8;
   v11 = v10;
-  v14.receiver = v7;
+  v14.receiver = selfCopy;
   v14.super_class = ObjectType;
   LODWORD(ObjectType) = [(TTRIRemindersListEditableSectionCell *)&v14 isHidden];
 
@@ -120,11 +120,11 @@
   return result;
 }
 
-- (_TtC9Reminders36TTRIRemindersListEditableSectionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC9Reminders36TTRIRemindersListEditableSectionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -133,7 +133,7 @@
     v6 = 0;
   }
 
-  return sub_100499F1C(a3, a4, v6);
+  return sub_100499F1C(style, identifier, v6);
 }
 
 - (BOOL)isAccessibilityElement
@@ -154,7 +154,7 @@
 
 - (BOOL)accessibilityActivate
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10049ADAC();
 
   return v3 & 1;
@@ -162,7 +162,7 @@
 
 - (NSString)accessibilityLabel
 {
-  v2 = self;
+  selfCopy = self;
   sub_10049AF6C();
   v4 = v3;
 
@@ -181,7 +181,7 @@
 
 - (NSArray)accessibilityUserInputLabels
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10049B24C();
 
   if (v3)
@@ -199,7 +199,7 @@
 
 - (NSArray)accessibilityCustomActions
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10049B44C();
 
   if (v3)
@@ -223,13 +223,13 @@
   {
     sub_100003540(0, &qword_10076BCE0);
     static Array._unconditionallyBridgeFromObjectiveC(_:)();
-    v6 = self;
+    selfCopy = self;
     isa = Array._bridgeToObjectiveC()().super.isa;
   }
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
   }
 
   v8.receiver = self;
@@ -242,17 +242,17 @@
   v6.receiver = self;
   v6.super_class = swift_getObjectType();
   v2 = v6.receiver;
-  v3 = [(TTRIRemindersListEditableSectionCell *)&v6 accessibilityTraits];
+  accessibilityTraits = [(TTRIRemindersListEditableSectionCell *)&v6 accessibilityTraits];
   v4 = UIAccessibilityTraitHeader;
 
-  return v4 | v3;
+  return v4 | accessibilityTraits;
 }
 
-- (void)setAccessibilityTraits:(unint64_t)a3
+- (void)setAccessibilityTraits:(unint64_t)traits
 {
   v4.receiver = self;
   v4.super_class = swift_getObjectType();
-  [(TTRIRemindersListEditableSectionCell *)&v4 setAccessibilityTraits:a3];
+  [(TTRIRemindersListEditableSectionCell *)&v4 setAccessibilityTraits:traits];
 }
 
 @end

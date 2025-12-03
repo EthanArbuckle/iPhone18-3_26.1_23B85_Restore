@@ -9,10 +9,10 @@
 
 - (UIImage)snapshot:()OFUIViewExtensions
 {
-  [a1 frame];
+  [self frame];
   v6 = v5;
   v8 = v7;
-  [objc_msgSend(objc_msgSend(a1 "window")];
+  [objc_msgSend(objc_msgSend(self "window")];
   if (v9 >= 1.0)
   {
     v10 = v9;
@@ -26,7 +26,7 @@
   v14.width = v6;
   v14.height = v8;
   UIGraphicsBeginImageContextWithOptions(v14, a3, v10);
-  [objc_msgSend(a1 "layer")];
+  [objc_msgSend(self "layer")];
   v11 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
 
@@ -35,29 +35,29 @@
 
 - (void)layerFromSnapshot:()OFUIViewExtensions
 {
-  v2 = [a1 snapshot:?];
-  v3 = [MEMORY[0x277CD9ED0] layer];
-  [v3 setContents:{objc_msgSend(v2, "CGImage")}];
-  [a1 frame];
-  [v3 setFrame:?];
-  [v3 setBackgroundColor:{objc_msgSend(objc_msgSend(MEMORY[0x277D75348], "grayColor"), "CGColor")}];
-  return v3;
+  v2 = [self snapshot:?];
+  layer = [MEMORY[0x277CD9ED0] layer];
+  [layer setContents:{objc_msgSend(v2, "CGImage")}];
+  [self frame];
+  [layer setFrame:?];
+  [layer setBackgroundColor:{objc_msgSend(objc_msgSend(MEMORY[0x277D75348], "grayColor"), "CGColor")}];
+  return layer;
 }
 
 - (uint64_t)ancestorViewOfClass:()OFUIViewExtensions
 {
-  v4 = [a1 superview];
-  if (!v4 || (objc_opt_isKindOfClass() & 1) != 0)
+  superview = [self superview];
+  if (!superview || (objc_opt_isKindOfClass() & 1) != 0)
   {
-    return v4;
+    return superview;
   }
 
-  return [v4 ancestorViewOfClass:a3];
+  return [superview ancestorViewOfClass:a3];
 }
 
 - (void)ancestorViewOfInstance:()OFUIViewExtensions
 {
-  result = [a1 superview];
+  result = [self superview];
   if (result && result != a3)
   {
 

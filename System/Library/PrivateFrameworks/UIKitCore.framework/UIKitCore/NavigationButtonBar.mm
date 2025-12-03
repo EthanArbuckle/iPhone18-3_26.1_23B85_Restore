@@ -1,30 +1,30 @@
 @interface NavigationButtonBar
-- (CGPoint)convertPoint:(CGPoint)a3 fromCoordinateSpace:(id)a4;
-- (CGPoint)convertPoint:(CGPoint)a3 toCoordinateSpace:(id)a4;
+- (CGPoint)convertPoint:(CGPoint)point fromCoordinateSpace:(id)space;
+- (CGPoint)convertPoint:(CGPoint)point toCoordinateSpace:(id)space;
 - (CGRect)bounds;
-- (CGRect)convertRect:(CGRect)a3 fromCoordinateSpace:(id)a4;
-- (CGRect)convertRect:(CGRect)a3 toCoordinateSpace:(id)a4;
-- (UIEdgeInsets)_layoutMarginsForButtonBarButton:(id)a3 compact:(BOOL)a4;
-- (double)additionalEdgeSpacingForButtonBarButton:(id)a3 representingBarButtonItem:(id)a4;
-- (id)_groupOrdererGroups:(id)a3;
-- (id)itemAtPoint:(CGPoint)a3 inView:(id)a4;
-- (id)tintColorForButtonBarButton:(id)a3;
-- (void)_groupOrdererDidUpdate:(id)a3;
-- (void)configurationDependenciesChangedForButtonBarButton:(id)a3 representingBarButtonItem:(id)a4;
-- (void)invalidateAssistant:(id)a3;
-- (void)setAppearanceStorage:(id)a3;
+- (CGRect)convertRect:(CGRect)rect fromCoordinateSpace:(id)space;
+- (CGRect)convertRect:(CGRect)rect toCoordinateSpace:(id)space;
+- (UIEdgeInsets)_layoutMarginsForButtonBarButton:(id)button compact:(BOOL)compact;
+- (double)additionalEdgeSpacingForButtonBarButton:(id)button representingBarButtonItem:(id)item;
+- (id)_groupOrdererGroups:(id)groups;
+- (id)itemAtPoint:(CGPoint)point inView:(id)view;
+- (id)tintColorForButtonBarButton:(id)button;
+- (void)_groupOrdererDidUpdate:(id)update;
+- (void)configurationDependenciesChangedForButtonBarButton:(id)button representingBarButtonItem:(id)item;
+- (void)invalidateAssistant:(id)assistant;
+- (void)setAppearanceStorage:(id)storage;
 @end
 
 @implementation NavigationButtonBar
 
-- (id)tintColorForButtonBarButton:(id)a3
+- (id)tintColorForButtonBarButton:(id)button
 {
-  v3 = [objc_opt_self() tintColor];
+  tintColor = [objc_opt_self() tintColor];
 
-  return v3;
+  return tintColor;
 }
 
-- (UIEdgeInsets)_layoutMarginsForButtonBarButton:(id)a3 compact:(BOOL)a4
+- (UIEdgeInsets)_layoutMarginsForButtonBarButton:(id)button compact:(BOOL)compact
 {
   v4 = 0.0;
   v5 = 0.0;
@@ -37,32 +37,32 @@
   return result;
 }
 
-- (double)additionalEdgeSpacingForButtonBarButton:(id)a3 representingBarButtonItem:(id)a4
+- (double)additionalEdgeSpacingForButtonBarButton:(id)button representingBarButtonItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_188C4081C(v7);
+  buttonCopy = button;
+  itemCopy = item;
+  selfCopy = self;
+  sub_188C4081C(itemCopy);
   v10 = v9;
 
   return v10;
 }
 
-- (void)setAppearanceStorage:(id)a3
+- (void)setAppearanceStorage:(id)storage
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC5UIKit19NavigationButtonBar_appearanceStorage);
-  *(&self->super.isa + OBJC_IVAR____TtC5UIKit19NavigationButtonBar_appearanceStorage) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC5UIKit19NavigationButtonBar_appearanceStorage) = storage;
+  storageCopy = storage;
 }
 
-- (id)itemAtPoint:(CGPoint)a3 inView:(id)a4
+- (id)itemAtPoint:(CGPoint)point inView:(id)view
 {
   v12 = 0;
-  v9[2] = a4;
-  v10 = a3;
+  v9[2] = view;
+  pointCopy = point;
   v11 = &v12;
-  v5 = a4;
-  v6 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_188B487E8(sub_188EC2444, v9);
 
   v7 = v12;
@@ -70,11 +70,11 @@
   return v7;
 }
 
-- (id)_groupOrdererGroups:(id)a3
+- (id)_groupOrdererGroups:(id)groups
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_18907AEA8(v4);
+  groupsCopy = groups;
+  selfCopy = self;
+  v6 = sub_18907AEA8(groupsCopy);
 
   if (v6)
   {
@@ -90,12 +90,12 @@
   return v7;
 }
 
-- (void)_groupOrdererDidUpdate:(id)a3
+- (void)_groupOrdererDidUpdate:(id)update
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC5UIKit19NavigationButtonBar_groupOrderer);
   if (v4)
   {
-    v5 = v4 == a3;
+    v5 = v4 == update;
   }
 
   else
@@ -106,14 +106,14 @@
   if (v5)
   {
     *(&self->super.isa + OBJC_IVAR____TtC5UIKit19NavigationButtonBar_resolvedSections) = 0;
-    v7 = a3;
-    v8 = self;
+    updateCopy = update;
+    selfCopy = self;
 
     sub_18907A694();
   }
 }
 
-- (void)invalidateAssistant:(id)a3
+- (void)invalidateAssistant:(id)assistant
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
@@ -123,33 +123,33 @@
   }
 }
 
-- (void)configurationDependenciesChangedForButtonBarButton:(id)a3 representingBarButtonItem:(id)a4
+- (void)configurationDependenciesChangedForButtonBarButton:(id)button representingBarButtonItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_18907CE10(v7);
+  buttonCopy = button;
+  itemCopy = item;
+  selfCopy = self;
+  sub_18907CE10(itemCopy);
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 toCoordinateSpace:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point toCoordinateSpace:(id)space
 {
-  v4 = sub_18907B854(a3.x, a3.y, self, a2, a4, &selRef_convertPoint_toCoordinateSpace_);
+  v4 = sub_18907B854(point.x, point.y, self, a2, space, &selRef_convertPoint_toCoordinateSpace_);
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 fromCoordinateSpace:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point fromCoordinateSpace:(id)space
 {
-  v4 = sub_18907B854(a3.x, a3.y, self, a2, a4, &selRef_convertPoint_fromCoordinateSpace_);
+  v4 = sub_18907B854(point.x, point.y, self, a2, space, &selRef_convertPoint_fromCoordinateSpace_);
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3 toCoordinateSpace:(id)a4
+- (CGRect)convertRect:(CGRect)rect toCoordinateSpace:(id)space
 {
-  v4 = sub_18907B8E0(a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, self, a2, a4, &selRef_convertRect_toCoordinateSpace_);
+  v4 = sub_18907B8E0(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, self, a2, space, &selRef_convertRect_toCoordinateSpace_);
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -157,9 +157,9 @@
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3 fromCoordinateSpace:(id)a4
+- (CGRect)convertRect:(CGRect)rect fromCoordinateSpace:(id)space
 {
-  v4 = sub_18907B8E0(a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, self, a2, a4, &selRef_convertRect_fromCoordinateSpace_);
+  v4 = sub_18907B8E0(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, self, a2, space, &selRef_convertRect_fromCoordinateSpace_);
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;

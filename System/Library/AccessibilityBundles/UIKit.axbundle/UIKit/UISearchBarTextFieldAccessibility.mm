@@ -1,5 +1,5 @@
 @interface UISearchBarTextFieldAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityRightButtons;
 - (id)accessibilityLabel;
 - (id)accessibilityLocalizedStringKey;
@@ -9,14 +9,14 @@
 
 @implementation UISearchBarTextFieldAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v7 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"UITextField";
   [location[0] validateClass:@"UISearchBarTextField" isKindOfClass:?];
   v5 = "@";
@@ -31,11 +31,11 @@
 
 - (id)accessibilityLabel
 {
-  v8 = [(UISearchBarTextFieldAccessibility *)self accessibilityUserDefinedLabel];
-  *&v2 = MEMORY[0x29EDC9740](v8).n128_u64[0];
-  if (v8)
+  accessibilityUserDefinedLabel = [(UISearchBarTextFieldAccessibility *)self accessibilityUserDefinedLabel];
+  *&v2 = MEMORY[0x29EDC9740](accessibilityUserDefinedLabel).n128_u64[0];
+  if (accessibilityUserDefinedLabel)
   {
-    v10 = [(UISearchBarTextFieldAccessibility *)self accessibilityUserDefinedLabel];
+    accessibilityUserDefinedLabel2 = [(UISearchBarTextFieldAccessibility *)self accessibilityUserDefinedLabel];
   }
 
   else
@@ -46,31 +46,31 @@
       v7 = !UIAccessibilityIsVoiceOverRunning();
     }
 
-    v5 = [(UISearchBarTextFieldAccessibility *)self accessibilityValue];
+    accessibilityValue = [(UISearchBarTextFieldAccessibility *)self accessibilityValue];
     v6 = 1;
-    if ([v5 length])
+    if ([accessibilityValue length])
     {
       v6 = v7;
     }
 
-    *&v3 = MEMORY[0x29EDC9740](v5).n128_u64[0];
+    *&v3 = MEMORY[0x29EDC9740](accessibilityValue).n128_u64[0];
     if (v6)
     {
-      v10 = [(UISearchBarTextFieldAccessibility *)self safeValueForKey:@"placeholder", v3];
+      accessibilityUserDefinedLabel2 = [(UISearchBarTextFieldAccessibility *)self safeValueForKey:@"placeholder", v3];
     }
 
     else
     {
-      v10 = 0;
+      accessibilityUserDefinedLabel2 = 0;
     }
   }
 
-  return v10;
+  return accessibilityUserDefinedLabel2;
 }
 
 - (id)accessibilityValue
 {
-  v30 = self;
+  selfCopy = self;
   v29[1] = a2;
   v23 = 0;
   v24 = &v23;
@@ -81,7 +81,7 @@
   v29[0] = [MEMORY[0x29EDBA0F8] string];
   v21 = 0;
   objc_opt_class();
-  v9 = [(UISearchBarTextFieldAccessibility *)v30 safeValueForKey:@"textStorage"];
+  v9 = [(UISearchBarTextFieldAccessibility *)selfCopy safeValueForKey:@"textStorage"];
   v20 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v9);
   v19 = MEMORY[0x29EDC9748](v20);
@@ -103,14 +103,14 @@
   v16 = &v23;
   [v19 enumerateAttribute:v7 inRange:0 options:v8 usingBlock:0];
   v11[0] = [MEMORY[0x29EDBA0F8] string];
-  v10.receiver = v30;
+  v10.receiver = selfCopy;
   v10.super_class = UISearchBarTextFieldAccessibility;
-  v5 = [(UISearchBarTextFieldAccessibility *)&v10 accessibilityValue];
+  accessibilityValue = [(UISearchBarTextFieldAccessibility *)&v10 accessibilityValue];
   v2 = __UIAXStringForVariables();
   v3 = v24[5];
   v24[5] = v2;
   MEMORY[0x29EDC9740](v3);
-  MEMORY[0x29EDC9740](v5);
+  MEMORY[0x29EDC9740](accessibilityValue);
   v6 = MEMORY[0x29EDC9748](v24[5]);
   objc_storeStrong(v11, 0);
   objc_storeStrong(&v22, 0);
@@ -147,11 +147,11 @@ void __55__UISearchBarTextFieldAccessibility_accessibilityValue__block_invoke(vo
   v6[2] = self;
   v6[1] = a2;
   v6[0] = [(UISearchBarTextFieldAccessibility *)self safeValueForKey:@"placeholder"];
-  v5 = [v6[0] _accessibilityAttributedLocalizedString];
-  v4 = [v5 attributeValueForKey:@"UIAccessibilityTokenLocalizedStringKey"];
+  _accessibilityAttributedLocalizedString = [v6[0] _accessibilityAttributedLocalizedString];
+  v4 = [_accessibilityAttributedLocalizedString attributeValueForKey:@"UIAccessibilityTokenLocalizedStringKey"];
   v3 = MEMORY[0x29EDC9748](v4);
   objc_storeStrong(&v4, 0);
-  objc_storeStrong(&v5, 0);
+  objc_storeStrong(&_accessibilityAttributedLocalizedString, 0);
   objc_storeStrong(v6, 0);
 
   return v3;
@@ -159,22 +159,22 @@ void __55__UISearchBarTextFieldAccessibility_accessibilityValue__block_invoke(vo
 
 - (unint64_t)accessibilityTraits
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
   v3.receiver = self;
   v3.super_class = UISearchBarTextFieldAccessibility;
-  v4 = [(UISearchBarTextFieldAccessibility *)&v3 accessibilityTraits];
-  return v4 | *MEMORY[0x29EDC7FB8];
+  accessibilityTraits = [(UISearchBarTextFieldAccessibility *)&v3 accessibilityTraits];
+  return accessibilityTraits | *MEMORY[0x29EDC7FB8];
 }
 
 - (id)_accessibilityRightButtons
 {
-  v24 = self;
+  selfCopy = self;
   v23[1] = a2;
   v23[0] = objc_alloc_init(MEMORY[0x29EDB8DE8]);
   v21 = 0;
   objc_opt_class();
-  v9 = [(UISearchBarTextFieldAccessibility *)v24 safeValueForKey:@"textStorage"];
+  v9 = [(UISearchBarTextFieldAccessibility *)selfCopy safeValueForKey:@"textStorage"];
   v20 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v9);
   v19 = MEMORY[0x29EDC9748](v20);
@@ -197,11 +197,11 @@ void __55__UISearchBarTextFieldAccessibility_accessibilityValue__block_invoke(vo
   v16 = MEMORY[0x29EDC9748](v23[0]);
   [v5 enumerateAttribute:v4 inRange:v17 options:v18 usingBlock:{0, &v11}];
   v6 = v23[0];
-  v10.receiver = v24;
+  v10.receiver = selfCopy;
   v10.super_class = UISearchBarTextFieldAccessibility;
-  v7 = [(UISearchBarTextFieldAccessibility *)&v10 _accessibilityRightButtons];
+  _accessibilityRightButtons = [(UISearchBarTextFieldAccessibility *)&v10 _accessibilityRightButtons];
   v8 = [v6 arrayByAddingObjectsFromArray:?];
-  MEMORY[0x29EDC9740](v7);
+  MEMORY[0x29EDC9740](_accessibilityRightButtons);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(&v22, 0);
   objc_storeStrong(v23, 0);

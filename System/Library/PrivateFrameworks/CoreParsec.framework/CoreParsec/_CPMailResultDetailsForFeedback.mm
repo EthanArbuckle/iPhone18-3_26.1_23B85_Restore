@@ -1,8 +1,8 @@
 @interface _CPMailResultDetailsForFeedback
-- (BOOL)isEqual:(id)a3;
-- (_CPMailResultDetailsForFeedback)initWithFacade:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_CPMailResultDetailsForFeedback)initWithFacade:(id)facade;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPMailResultDetailsForFeedback
@@ -27,13 +27,13 @@
   return (2654435761 * self->_skgMegadomeSpotlightIndexEntries) ^ (2654435761 * self->_dataSources) ^ ((*vbslq_s8(vnegq_f64(v6), v3, v2).i64 * 2654435760.0) + vcvtd_n_u64_f64(v5 - *v2.i64, 0x40uLL));
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (dataSources = self->_dataSources, dataSources == objc_msgSend(v4, "dataSources")) && (suggestionScore = self->_suggestionScore, objc_msgSend(v4, "suggestionScore"), suggestionScore == v7))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (dataSources = self->_dataSources, dataSources == objc_msgSend(equalCopy, "dataSources")) && (suggestionScore = self->_suggestionScore, objc_msgSend(equalCopy, "suggestionScore"), suggestionScore == v7))
   {
     skgMegadomeSpotlightIndexEntries = self->_skgMegadomeSpotlightIndexEntries;
-    v8 = skgMegadomeSpotlightIndexEntries == [v4 skgMegadomeSpotlightIndexEntries];
+    v8 = skgMegadomeSpotlightIndexEntries == [equalCopy skgMegadomeSpotlightIndexEntries];
   }
 
   else
@@ -44,9 +44,9 @@
   return v8;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  a3;
+  to;
   if ([(_CPMailResultDetailsForFeedback *)self dataSources])
   {
     dataSources = self->_dataSources;
@@ -69,30 +69,30 @@
   MEMORY[0x1EEE66BE0]();
 }
 
-- (_CPMailResultDetailsForFeedback)initWithFacade:(id)a3
+- (_CPMailResultDetailsForFeedback)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v12.receiver = self;
   v12.super_class = _CPMailResultDetailsForFeedback;
   v5 = [(_CPMailResultDetailsForFeedback *)&v12 init];
   if (v5)
   {
-    -[_CPMailResultDetailsForFeedback setDataSources:](v5, "setDataSources:", [v4 dataSources]);
-    v6 = [v4 suggestionScore];
+    -[_CPMailResultDetailsForFeedback setDataSources:](v5, "setDataSources:", [facadeCopy dataSources]);
+    suggestionScore = [facadeCopy suggestionScore];
 
-    if (v6)
+    if (suggestionScore)
     {
-      v7 = [v4 suggestionScore];
-      [v7 floatValue];
+      suggestionScore2 = [facadeCopy suggestionScore];
+      [suggestionScore2 floatValue];
       [(_CPMailResultDetailsForFeedback *)v5 setSuggestionScore:?];
     }
 
-    v8 = [v4 skgMegadomeSpotlightIndexEntries];
+    skgMegadomeSpotlightIndexEntries = [facadeCopy skgMegadomeSpotlightIndexEntries];
 
-    if (v8)
+    if (skgMegadomeSpotlightIndexEntries)
     {
-      v9 = [v4 skgMegadomeSpotlightIndexEntries];
-      -[_CPMailResultDetailsForFeedback setSkgMegadomeSpotlightIndexEntries:](v5, "setSkgMegadomeSpotlightIndexEntries:", [v9 intValue]);
+      skgMegadomeSpotlightIndexEntries2 = [facadeCopy skgMegadomeSpotlightIndexEntries];
+      -[_CPMailResultDetailsForFeedback setSkgMegadomeSpotlightIndexEntries:](v5, "setSkgMegadomeSpotlightIndexEntries:", [skgMegadomeSpotlightIndexEntries2 intValue]);
     }
 
     v10 = v5;

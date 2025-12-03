@@ -7,9 +7,9 @@
 + (id)mad_daemonUserDefaults
 {
   v2 = +[NSBundle mainBundle];
-  v3 = [v2 bundleIdentifier];
+  bundleIdentifier = [v2 bundleIdentifier];
   v4 = MediaAnalysisDaemonDomain;
-  v5 = [v3 isEqualToString:MediaAnalysisDaemonDomain];
+  v5 = [bundleIdentifier isEqualToString:MediaAnalysisDaemonDomain];
 
   if (v5)
   {

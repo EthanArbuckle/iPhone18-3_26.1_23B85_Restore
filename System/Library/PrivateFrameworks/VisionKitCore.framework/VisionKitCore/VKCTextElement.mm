@@ -1,5 +1,5 @@
 @interface VKCTextElement
-+ (id)textElementFromCROutputRegion:(id)a3 parentDocument:(id)a4;
++ (id)textElementFromCROutputRegion:(id)region parentDocument:(id)document;
 - (NSArray)_children;
 - (NSArray)candidates;
 - (NSArray)components;
@@ -8,14 +8,14 @@
 
 @implementation VKCTextElement
 
-+ (id)textElementFromCROutputRegion:(id)a3 parentDocument:(id)a4
++ (id)textElementFromCROutputRegion:(id)region parentDocument:(id)document
 {
-  v5 = a4;
-  v6 = a3;
+  documentCopy = document;
+  regionCopy = region;
   v7 = objc_alloc_init(VKCTextElement);
-  [(VKCBaseElement *)v7 setParentCRDocument:v5];
+  [(VKCBaseElement *)v7 setParentCRDocument:documentCopy];
 
-  [(VKCBaseElement *)v7 setCrOutputRegion:v6];
+  [(VKCBaseElement *)v7 setCrOutputRegion:regionCopy];
 
   return v7;
 }
@@ -50,38 +50,38 @@
   {
     [(VKCTextElement *)self setChildrenCreated:1];
     v3 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:3];
-    v4 = [(VKCBaseElement *)self crOutputRegion];
-    v5 = [v4 children];
-    v6 = [v5 count];
+    crOutputRegion = [(VKCBaseElement *)self crOutputRegion];
+    children = [crOutputRegion children];
+    v6 = [children count];
 
     if (v6)
     {
-      v7 = [(VKCBaseElement *)self crOutputRegion];
-      v8 = [v7 children];
+      crOutputRegion2 = [(VKCBaseElement *)self crOutputRegion];
+      children2 = [crOutputRegion2 children];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __43__VKCTextElement_createChildrenIfNecessary__block_invoke;
       v19[3] = &unk_1E7BE64E0;
       v19[4] = self;
-      v9 = [v8 vk_compactMap:v19];
+      v9 = [children2 vk_compactMap:v19];
 
       [(VKCTextElement *)self setComponents:v9];
     }
 
-    v10 = [(VKCBaseElement *)self crOutputRegion];
-    v11 = [v10 candidates];
-    v12 = [v11 count];
+    crOutputRegion3 = [(VKCBaseElement *)self crOutputRegion];
+    candidates = [crOutputRegion3 candidates];
+    v12 = [candidates count];
 
     if (v12)
     {
-      v13 = [(VKCBaseElement *)self crOutputRegion];
-      v14 = [v13 candidates];
+      crOutputRegion4 = [(VKCBaseElement *)self crOutputRegion];
+      candidates2 = [crOutputRegion4 candidates];
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __43__VKCTextElement_createChildrenIfNecessary__block_invoke_2;
       v18[3] = &unk_1E7BE64E0;
       v18[4] = self;
-      v15 = [v14 vk_compactMap:v18];
+      v15 = [candidates2 vk_compactMap:v18];
 
       [(VKCTextElement *)self setCandidates:v15];
     }

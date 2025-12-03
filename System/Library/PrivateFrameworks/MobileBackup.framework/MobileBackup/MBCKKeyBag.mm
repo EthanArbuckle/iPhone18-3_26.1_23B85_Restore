@@ -1,85 +1,85 @@
 @interface MBCKKeyBag
-+ (BOOL)_deviceHasValidKeyBagReferences:(id)a3;
-+ (BOOL)_removeInvalidKeyBagReferencesFromDevice:(id)a3 tracker:(id)a4 validationState:(id)a5 error:(id *)a6;
-+ (BOOL)setupKeybagForDevice:(id)a3 operationTracker:(id)a4 passcode:(id)a5 error:(id *)a6;
-+ (BOOL)unlockKeybag:(id)a3 accountType:(int64_t)a4 error:(id *)a5 block:(id)a6;
-+ (BOOL)validateAndRepairInvalidKeyBagReferencesFromDeviceRecordWithTracker:(id)a3 state:(id *)a4 error:(id *)a5;
-+ (id)UUIDStringFromRecordID:(id)a3;
-+ (id)keybagWithDevice:(id)a3 keybagUUID:(id)a4 operationTracker:(id)a5 error:(id *)a6;
-+ (id)recordIDStringWithUUID:(id)a3;
-+ (id)recordIDStringWithUUIDString:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)unlockWithAccountType:(int64_t)a3 error:(id *)a4;
++ (BOOL)_deviceHasValidKeyBagReferences:(id)references;
++ (BOOL)_removeInvalidKeyBagReferencesFromDevice:(id)device tracker:(id)tracker validationState:(id)state error:(id *)error;
++ (BOOL)setupKeybagForDevice:(id)device operationTracker:(id)tracker passcode:(id)passcode error:(id *)error;
++ (BOOL)unlockKeybag:(id)keybag accountType:(int64_t)type error:(id *)error block:(id)block;
++ (BOOL)validateAndRepairInvalidKeyBagReferencesFromDeviceRecordWithTracker:(id)tracker state:(id *)state error:(id *)error;
++ (id)UUIDStringFromRecordID:(id)d;
++ (id)keybagWithDevice:(id)device keybagUUID:(id)d operationTracker:(id)tracker error:(id *)error;
++ (id)recordIDStringWithUUID:(id)d;
++ (id)recordIDStringWithUUIDString:(id)string;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)unlockWithAccountType:(int64_t)type error:(id *)error;
 - (CKRecordID)recordID;
 - (MBCKDevice)device;
-- (MBCKKeyBag)initWithDictionary:(id)a3 device:(id)a4;
-- (MBCKKeyBag)initWithRecord:(id)a3 device:(id)a4;
-- (MBCKKeyBag)initWithUUID:(id)a3 data:(id)a4 secret:(id)a5 device:(id)a6;
+- (MBCKKeyBag)initWithDictionary:(id)dictionary device:(id)device;
+- (MBCKKeyBag)initWithRecord:(id)record device:(id)device;
+- (MBCKKeyBag)initWithUUID:(id)d data:(id)data secret:(id)secret device:(id)device;
 - (MBKeyBag)keybag;
 - (NSString)keybagUUIDString;
-- (id)OTAKeybagWithError:(id *)a3;
+- (id)OTAKeybagWithError:(id *)error;
 - (id)_getRecordIDString;
 - (id)recordRepresentation;
 - (unint64_t)hash;
 - (void)lock;
-- (void)refreshWithRecord:(id)a3;
+- (void)refreshWithRecord:(id)record;
 @end
 
 @implementation MBCKKeyBag
 
-+ (BOOL)setupKeybagForDevice:(id)a3 operationTracker:(id)a4 passcode:(id)a5 error:(id *)a6
++ (BOOL)setupKeybagForDevice:(id)device operationTracker:(id)tracker passcode:(id)passcode error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v90 = a5;
-  if (!v10)
+  deviceCopy = device;
+  trackerCopy = tracker;
+  passcodeCopy = passcode;
+  if (!trackerCopy)
   {
     __assert_rtn("+[MBCKKeyBag setupKeybagForDevice:operationTracker:passcode:error:]", "MBCKKeyBag.m", 45, "tracker");
   }
 
-  if (!a6)
+  if (!error)
   {
     __assert_rtn("+[MBCKKeyBag setupKeybagForDevice:operationTracker:passcode:error:]", "MBCKKeyBag.m", 46, "error");
   }
 
-  v11 = [v10 account];
-  if (!v11)
+  account = [trackerCopy account];
+  if (!account)
   {
     __assert_rtn("+[MBCKKeyBag setupKeybagForDevice:operationTracker:passcode:error:]", "MBCKKeyBag.m", 48, "serviceAccount");
   }
 
-  v12 = v11;
-  v92 = [v11 accountIdentifier];
-  v13 = [v9 keybagManager];
-  if (!v13)
+  v12 = account;
+  accountIdentifier = [account accountIdentifier];
+  keybagManager = [deviceCopy keybagManager];
+  if (!keybagManager)
   {
     __assert_rtn("+[MBCKKeyBag setupKeybagForDevice:operationTracker:passcode:error:]", "MBCKKeyBag.m", 51, "keybagManager");
   }
 
-  v14 = v13;
-  v89 = a6;
+  v14 = keybagManager;
+  errorCopy = error;
   v15 = MBGetDefaultLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v9 deviceUUID];
+    deviceUUID = [deviceCopy deviceUUID];
     *buf = 138543618;
-    v126 = v16;
+    v126 = deviceUUID;
     v127 = 2114;
-    v128 = v92;
+    v128 = accountIdentifier;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "=keybag= Setting up a new keybag for device %{public}@ (%{public}@)", buf, 0x16u);
 
-    v81 = [v9 deviceUUID];
-    v82 = v92;
+    deviceUUID2 = [deviceCopy deviceUUID];
+    v82 = accountIdentifier;
     _MBLog();
   }
 
   v95 = v14;
-  v87 = v10;
-  v88 = v9;
+  v87 = trackerCopy;
+  v88 = deviceCopy;
 
   v86 = v12;
-  v85 = [v12 persona];
-  [v85 volumesToBackUp];
+  persona = [v12 persona];
+  [persona volumesToBackUp];
   v118 = 0u;
   v119 = 0u;
   v120 = 0u;
@@ -101,14 +101,14 @@
 
         v22 = *(*(&v118 + 1) + 8 * i);
         v117 = 0;
-        v23 = [MBKeyBag OTAKeybagUUIDStringWithVolume:v22 error:&v117, v81, v82];
+        v23 = [MBKeyBag OTAKeybagUUIDStringWithVolume:v22 error:&v117, deviceUUID2, v82];
         v24 = v117;
         if (!v23 && ![MBError isError:v24 withCode:4])
         {
           v27 = v24;
           v28 = 0;
-          v29 = v9;
-          *v89 = v24;
+          v29 = deviceCopy;
+          *errorCopy = v24;
           v30 = obj;
           v31 = v87;
 LABEL_26:
@@ -126,7 +126,7 @@ LABEL_27:
           v127 = 2112;
           v128 = v22;
           _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "=keybag= Fetched OTAKeybagUUID:%{public}@ for %@", buf, 0x16u);
-          v81 = v23;
+          deviceUUID2 = v23;
           v82 = v22;
           _MBLog();
         }
@@ -142,9 +142,9 @@ LABEL_27:
           if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            v126 = v92;
+            v126 = accountIdentifier;
             _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "=keybag= Replacing existing backup keybag (%{public}@)", buf, 0xCu);
-            v81 = v92;
+            deviceUUID2 = accountIdentifier;
             _MBLog();
           }
         }
@@ -169,7 +169,7 @@ LABEL_27:
   {
     v28 = 1;
     v31 = v87;
-    v29 = v9;
+    v29 = deviceCopy;
     v32 = v86;
     v33 = v95;
     goto LABEL_32;
@@ -180,9 +180,9 @@ LABEL_27:
   if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v126 = v92;
+    v126 = accountIdentifier;
     _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "=keybag= Registering new keybags for (%{public}@)", buf, 0xCu);
-    v81 = v92;
+    deviceUUID2 = accountIdentifier;
     _MBLog();
   }
 
@@ -193,7 +193,7 @@ LABEL_27:
   v116 = 0u;
   v24 = obj;
   v36 = [v24 countByEnumeratingWithState:&v113 objects:v131 count:16];
-  v29 = v9;
+  v29 = deviceCopy;
   v91 = v30;
   if (v36)
   {
@@ -211,18 +211,18 @@ LABEL_27:
         v39 = *(*(&v113 + 1) + 8 * j);
         v40 = MBGetDefaultLog();
         v41 = os_log_type_enabled(v40, OS_LOG_TYPE_INFO);
-        if (v90)
+        if (passcodeCopy)
         {
           if (v41)
           {
             *buf = 138543362;
             v126 = v39;
             _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_INFO, "=keybag= Using passcode as keybag secret for %{public}@", buf, 0xCu);
-            v81 = v39;
+            deviceUUID2 = v39;
             _MBLog();
           }
 
-          v42 = [v90 dataUsingEncoding:4];
+          v42 = [passcodeCopy dataUsingEncoding:4];
         }
 
         else
@@ -232,7 +232,7 @@ LABEL_27:
             *buf = 138543362;
             v126 = v39;
             _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_INFO, "=keybag= Creating random secret for %{public}@", buf, 0xCu);
-            v81 = v39;
+            deviceUUID2 = v39;
             _MBLog();
           }
 
@@ -243,14 +243,14 @@ LABEL_27:
         if (!v42)
         {
           [MBError errorWithCode:1 format:@"Failed to generate secret for keybag"];
-          *v89 = v28 = 0;
+          *errorCopy = v28 = 0;
           v32 = v86;
           v31 = v87;
           goto LABEL_27;
         }
 
         v112 = 0;
-        v44 = [MBKeyBag registerOTAKeyBagWithVolume:v39 secret:v42 keybagUUIDData:&v112 error:v89];
+        v44 = [MBKeyBag registerOTAKeyBagWithVolume:v39 secret:v42 keybagUUIDData:&v112 error:errorCopy];
         v45 = v112;
         v46 = v45;
         if (!v44)
@@ -259,15 +259,15 @@ LABEL_27:
           v31 = v87;
           if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
           {
-            v55 = *v89;
+            v55 = *errorCopy;
             *buf = 138543874;
             v126 = v39;
             v127 = 2114;
-            v128 = v92;
+            v128 = accountIdentifier;
             v129 = 2112;
             v130 = v55;
             _os_log_impl(&_mh_execute_header, v54, OS_LOG_TYPE_ERROR, "=keybag= Failed to register keybag for volume %{public}@ (%{public}@): %@", buf, 0x20u);
-            v84 = *v89;
+            v84 = *errorCopy;
             _MBLog();
           }
 
@@ -289,7 +289,7 @@ LABEL_27:
           _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_DEFAULT, "=keybag= Registered a new keybag for %@ (%lu bytes): %{public}@", buf, 0x20u);
           v82 = [v44 length];
           v83 = v47;
-          v81 = v39;
+          deviceUUID2 = v39;
           _MBLog();
         }
 
@@ -316,9 +316,9 @@ LABEL_27:
     if ([v51 isAutomation])
     {
       v52 = +[MBBehaviorOptions sharedOptions];
-      v53 = [v52 forceInvalidKeyBagReference];
+      forceInvalidKeyBagReference = [v52 forceInvalidKeyBagReference];
 
-      if (v53)
+      if (forceInvalidKeyBagReference)
       {
         v24 = MBGetDefaultLog();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -395,7 +395,7 @@ LABEL_27:
     }
 
     v73 = v65;
-    *v89 = v65;
+    *errorCopy = v65;
 
     v28 = 0;
     v30 = v57;
@@ -429,7 +429,7 @@ LABEL_73:
           objc_enumerationMutation(v30);
         }
 
-        [v33 addKeybag:{*(*(&v101 + 1) + 8 * m), v81, v82, v83}];
+        [v33 addKeybag:{*(*(&v101 + 1) + 8 * m), deviceUUID2, v82, v83}];
       }
 
       v67 = [v30 countByEnumeratingWithState:&v101 objects:v123 count:16];
@@ -438,9 +438,9 @@ LABEL_73:
     while (v67);
   }
 
-  v70 = [v29 recordRepresentation];
+  recordRepresentation = [v29 recordRepresentation];
   v100 = 0;
-  v71 = [v31 saveRecord:v70 delegate:0 error:&v100];
+  v71 = [v31 saveRecord:recordRepresentation delegate:0 error:&v100];
   v24 = v100;
 
   if (v71)
@@ -454,11 +454,11 @@ LABEL_73:
     if (os_log_type_enabled(v74, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v126 = v92;
+      v126 = accountIdentifier;
       v127 = 2112;
       v128 = v24;
       _os_log_impl(&_mh_execute_header, v74, OS_LOG_TYPE_ERROR, "=keybag= Failed to save device record with new keybag references (%{public}@): %@", buf, 0x16u);
-      v81 = v92;
+      deviceUUID2 = accountIdentifier;
       v82 = v24;
       _MBLog();
     }
@@ -482,8 +482,8 @@ LABEL_73:
             objc_enumerationMutation(v30);
           }
 
-          v79 = [*(*(&v96 + 1) + 8 * n) keybagUUIDString];
-          [v33 removeKeybagWithUUID:v79];
+          keybagUUIDString = [*(*(&v96 + 1) + 8 * n) keybagUUIDString];
+          [v33 removeKeybagWithUUID:keybagUUIDString];
         }
 
         v76 = [v30 countByEnumeratingWithState:&v96 objects:v122 count:16];
@@ -494,7 +494,7 @@ LABEL_73:
 
     v80 = v24;
     v28 = 0;
-    *v89 = v24;
+    *errorCopy = v24;
   }
 
 LABEL_28:
@@ -503,30 +503,30 @@ LABEL_32:
   return v28;
 }
 
-+ (id)keybagWithDevice:(id)a3 keybagUUID:(id)a4 operationTracker:(id)a5 error:(id *)a6
++ (id)keybagWithDevice:(id)device keybagUUID:(id)d operationTracker:(id)tracker error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v12)
+  deviceCopy = device;
+  dCopy = d;
+  trackerCopy = tracker;
+  if (!trackerCopy)
   {
     __assert_rtn("+[MBCKKeyBag keybagWithDevice:keybagUUID:operationTracker:error:]", "MBCKKeyBag.m", 153, "tracker");
   }
 
-  v13 = v12;
-  if (!v10)
+  v13 = trackerCopy;
+  if (!deviceCopy)
   {
 LABEL_9:
     v26 = 0;
     goto LABEL_10;
   }
 
-  if (!v11)
+  if (!dCopy)
   {
-    if (a6)
+    if (error)
     {
       [MBError errorWithCode:1 format:@"Invalid keybag UUID (%@)", 0];
-      *a6 = v26 = 0;
+      *error = v26 = 0;
       goto LABEL_10;
     }
 
@@ -547,9 +547,9 @@ LABEL_9:
   v42 = 0;
   v14 = dispatch_semaphore_create(0);
   v15 = [CKRecordID alloc];
-  v16 = [a1 recordIDStringWithUUID:v11];
-  v17 = [v13 syncZoneID];
-  v18 = [v15 initWithRecordName:v16 zoneID:v17];
+  v16 = [self recordIDStringWithUUID:dCopy];
+  syncZoneID = [v13 syncZoneID];
+  v18 = [v15 initWithRecordName:v16 zoneID:syncZoneID];
 
   v19 = [NSPredicate predicateWithFormat:@"recordID==%@", v18];
   v20 = [CKQuery alloc];
@@ -557,8 +557,8 @@ LABEL_9:
   v22 = [v20 initWithRecordType:v21 predicate:v19];
 
   v23 = [[CKQueryOperation alloc] initWithQuery:v22];
-  v24 = [v13 syncZoneID];
-  [v23 setZoneID:v24];
+  syncZoneID2 = [v13 syncZoneID];
+  [v23 setZoneID:syncZoneID2];
 
   objc_initWeak(&location, v23);
   v33[0] = _NSConcreteStackBlock;
@@ -566,7 +566,7 @@ LABEL_9:
   v33[2] = sub_100068108;
   v33[3] = &unk_1003BC7C8;
   v35 = &v43;
-  v34 = v10;
+  v34 = deviceCopy;
   [v23 setRecordFetchedBlock:v33];
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
@@ -574,15 +574,15 @@ LABEL_9:
   v28[3] = &unk_1003BC7F0;
   objc_copyWeak(&v32, &location);
   v31 = &v37;
-  v29 = v11;
+  v29 = dCopy;
   v25 = v14;
   v30 = v25;
   [v23 setQueryCompletionBlock:v28];
   [v13 addDatabaseOperation:v23];
   MBSemaphoreWaitForever();
-  if (a6)
+  if (error)
   {
-    *a6 = v38[5];
+    *error = v38[5];
   }
 
   v26 = v44[5];
@@ -598,83 +598,83 @@ LABEL_10:
   return v26;
 }
 
-+ (id)recordIDStringWithUUID:(id)a3
++ (id)recordIDStringWithUUID:(id)d
 {
-  v4 = [a3 base64EncodedStringWithOptions:0];
-  v5 = [a1 recordIDStringWithUUIDString:v4];
+  v4 = [d base64EncodedStringWithOptions:0];
+  v5 = [self recordIDStringWithUUIDString:v4];
 
   return v5;
 }
 
-+ (id)recordIDStringWithUUIDString:(id)a3
++ (id)recordIDStringWithUUIDString:(id)string
 {
-  v3 = a3;
-  v4 = [[NSString alloc] initWithFormat:@"%@%@", @"K:", v3];
+  stringCopy = string;
+  stringCopy = [[NSString alloc] initWithFormat:@"%@%@", @"K:", stringCopy];
+
+  return stringCopy;
+}
+
++ (id)UUIDStringFromRecordID:(id)d
+{
+  recordName = [d recordName];
+  v4 = [recordName substringFromIndex:{objc_msgSend(@"K:", "length")}];
 
   return v4;
 }
 
-+ (id)UUIDStringFromRecordID:(id)a3
+- (MBCKKeyBag)initWithRecord:(id)record device:(id)device
 {
-  v3 = [a3 recordName];
-  v4 = [v3 substringFromIndex:{objc_msgSend(@"K:", "length")}];
-
-  return v4;
-}
-
-- (MBCKKeyBag)initWithRecord:(id)a3 device:(id)a4
-{
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 cache];
+  recordCopy = record;
+  deviceCopy = device;
+  cache = [deviceCopy cache];
   v11.receiver = self;
   v11.super_class = MBCKKeyBag;
-  v9 = [(MBCKModel *)&v11 initWithRecord:v6 cache:v8];
+  v9 = [(MBCKModel *)&v11 initWithRecord:recordCopy cache:cache];
 
   if (v9)
   {
-    objc_storeWeak(&v9->_device, v7);
-    [(MBCKKeyBag *)v9 refreshWithRecord:v6];
+    objc_storeWeak(&v9->_device, deviceCopy);
+    [(MBCKKeyBag *)v9 refreshWithRecord:recordCopy];
   }
 
   return v9;
 }
 
-- (MBCKKeyBag)initWithUUID:(id)a3 data:(id)a4 secret:(id)a5 device:(id)a6
+- (MBCKKeyBag)initWithUUID:(id)d data:(id)data secret:(id)secret device:(id)device
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = [(MBCKKeyBag *)self initWithRecord:0 device:a6];
+  dCopy = d;
+  dataCopy = data;
+  secretCopy = secret;
+  v14 = [(MBCKKeyBag *)self initWithRecord:0 device:device];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_keybagData, a4);
-    objc_storeStrong(&v15->_keybagUUID, a3);
-    objc_storeStrong(&v15->_secret, a5);
+    objc_storeStrong(&v14->_keybagData, data);
+    objc_storeStrong(&v15->_keybagUUID, d);
+    objc_storeStrong(&v15->_secret, secret);
   }
 
   return v15;
 }
 
-- (MBCKKeyBag)initWithDictionary:(id)a3 device:(id)a4
+- (MBCKKeyBag)initWithDictionary:(id)dictionary device:(id)device
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MBCKKeyBag *)self initWithRecord:0 device:v7];
+  dictionaryCopy = dictionary;
+  deviceCopy = device;
+  v8 = [(MBCKKeyBag *)self initWithRecord:0 device:deviceCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_device, v7);
-    v10 = [v6 objectForKeyedSubscript:@"keybagUUID"];
+    objc_storeWeak(&v8->_device, deviceCopy);
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"keybagUUID"];
     keybagUUID = v9->_keybagUUID;
     v9->_keybagUUID = v10;
 
-    v12 = [v6 objectForKeyedSubscript:@"keybagData"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"keybagData"];
     keybagData = v9->_keybagData;
     v9->_keybagData = v12;
 
-    v14 = [v6 objectForKeyedSubscript:@"secret"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"secret"];
     secret = v9->_secret;
     v9->_secret = v14;
   }
@@ -682,12 +682,12 @@ LABEL_10:
   return v9;
 }
 
-- (void)refreshWithRecord:(id)a3
+- (void)refreshWithRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 recordID];
-  v6 = [v5 recordName];
-  v7 = [v6 substringFromIndex:{objc_msgSend(@"K:", "length")}];
+  recordCopy = record;
+  recordID = [recordCopy recordID];
+  recordName = [recordID recordName];
+  v7 = [recordName substringFromIndex:{objc_msgSend(@"K:", "length")}];
 
   if (v7)
   {
@@ -696,16 +696,16 @@ LABEL_10:
     self->_keybagUUID = v8;
   }
 
-  v10 = [v4 encryptedValues];
-  v11 = [v10 objectForKeyedSubscript:@"keybagData"];
+  encryptedValues = [recordCopy encryptedValues];
+  v11 = [encryptedValues objectForKeyedSubscript:@"keybagData"];
 
   if (v11)
   {
     objc_storeStrong(&self->_keybagData, v11);
   }
 
-  v12 = [v4 encryptedValues];
-  v13 = [v12 objectForKeyedSubscript:@"secret"];
+  encryptedValues2 = [recordCopy encryptedValues];
+  v13 = [encryptedValues2 objectForKeyedSubscript:@"secret"];
 
   if (v13)
   {
@@ -714,7 +714,7 @@ LABEL_10:
 
   v14.receiver = self;
   v14.super_class = MBCKKeyBag;
-  [(MBCKModel *)&v14 refreshWithRecord:v4];
+  [(MBCKModel *)&v14 refreshWithRecord:recordCopy];
 }
 
 - (NSString)keybagUUIDString
@@ -725,14 +725,14 @@ LABEL_10:
   return [v3 UUIDStringForKeyBagUUID:keybagUUID];
 }
 
-- (id)OTAKeybagWithError:(id *)a3
+- (id)OTAKeybagWithError:(id *)error
 {
   keybag = self->_keybag;
   if (!keybag)
   {
-    v6 = [(MBCKKeyBag *)self keybagData];
-    v7 = [(MBCKKeyBag *)self secret];
-    v8 = [MBKeyBag OTAKeyBagWithData:v6 secret:v7 error:a3];
+    keybagData = [(MBCKKeyBag *)self keybagData];
+    secret = [(MBCKKeyBag *)self secret];
+    v8 = [MBKeyBag OTAKeyBagWithData:keybagData secret:secret error:error];
     v9 = self->_keybag;
     self->_keybag = v8;
 
@@ -768,7 +768,7 @@ LABEL_10:
   return keybag;
 }
 
-- (BOOL)unlockWithAccountType:(int64_t)a3 error:(id *)a4
+- (BOOL)unlockWithAccountType:(int64_t)type error:(id *)error
 {
   v6 = self->_keybag;
   v7 = v6;
@@ -780,15 +780,15 @@ LABEL_10:
 
   else
   {
-    v10 = [(MBCKKeyBag *)self keybagData];
-    v11 = [(MBCKKeyBag *)self secret];
-    v9 = [MBKeyBag OTAKeyBagWithData:v10 secret:v11 error:a4];
+    keybagData = [(MBCKKeyBag *)self keybagData];
+    secret = [(MBCKKeyBag *)self secret];
+    v9 = [MBKeyBag OTAKeyBagWithData:keybagData secret:secret error:error];
 
     if (v9)
     {
-      v12 = [(MBCKKeyBag *)self secret];
+      secret2 = [(MBCKKeyBag *)self secret];
       v20 = 0;
-      v8 = [v9 unlockWithSecret:v12 error:&v20];
+      v8 = [v9 unlockWithSecret:secret2 error:&v20];
       v13 = v20;
 
       if (v8)
@@ -797,12 +797,12 @@ LABEL_10:
         v14 = MBGetDefaultLog();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
         {
-          v15 = [(MBCKKeyBag *)self keybagUUIDString];
+          keybagUUIDString = [(MBCKKeyBag *)self keybagUUIDString];
           *buf = 138543362;
-          v22 = v15;
+          v22 = keybagUUIDString;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "=keybag= Unlocked keybag %{public}@", buf, 0xCu);
 
-          v19 = [(MBCKKeyBag *)self keybagUUIDString];
+          keybagUUIDString2 = [(MBCKKeyBag *)self keybagUUIDString];
           _MBLog();
         }
       }
@@ -818,10 +818,10 @@ LABEL_10:
           _MBLog();
         }
 
-        if (a4)
+        if (error)
         {
           v17 = v13;
-          *a4 = v13;
+          *error = v13;
         }
       }
     }
@@ -845,12 +845,12 @@ LABEL_10:
     v4 = MBGetDefaultLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
-      v5 = [(MBCKKeyBag *)self keybagUUIDString];
+      keybagUUIDString = [(MBCKKeyBag *)self keybagUUIDString];
       *buf = 138543362;
-      v8 = v5;
+      v8 = keybagUUIDString;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "=keybag= Locked keybag %{public}@", buf, 0xCu);
 
-      v6 = [(MBCKKeyBag *)self keybagUUIDString];
+      keybagUUIDString2 = [(MBCKKeyBag *)self keybagUUIDString];
       _MBLog();
     }
   }
@@ -859,8 +859,8 @@ LABEL_10:
 - (CKRecordID)recordID
 {
   v3 = [CKRecordID alloc];
-  v4 = [(MBCKKeyBag *)self keybagUUIDString];
-  v5 = [MBCKKeyBag recordIDStringWithUUIDString:v4];
+  keybagUUIDString = [(MBCKKeyBag *)self keybagUUIDString];
+  v5 = [MBCKKeyBag recordIDStringWithUUIDString:keybagUUIDString];
   v6 = +[MBCKDatabaseManager syncZoneID];
   v7 = [v3 initWithRecordName:v5 zoneID:v6];
 
@@ -869,34 +869,34 @@ LABEL_10:
 
 - (unint64_t)hash
 {
-  v3 = [(MBCKKeyBag *)self keybagUUID];
-  v4 = [v3 hash];
-  v5 = [(MBCKKeyBag *)self keybagData];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(MBCKKeyBag *)self secret];
-  v8 = [v7 hash];
+  keybagUUID = [(MBCKKeyBag *)self keybagUUID];
+  v4 = [keybagUUID hash];
+  keybagData = [(MBCKKeyBag *)self keybagData];
+  v6 = [keybagData hash] ^ v4;
+  secret = [(MBCKKeyBag *)self secret];
+  v8 = [secret hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(MBCKKeyBag *)self keybagUUID];
-    v7 = [v5 keybagUUID];
-    if ([v6 isEqualToData:v7])
+    v5 = equalCopy;
+    keybagUUID = [(MBCKKeyBag *)self keybagUUID];
+    keybagUUID2 = [v5 keybagUUID];
+    if ([keybagUUID isEqualToData:keybagUUID2])
     {
-      v8 = [(MBCKKeyBag *)self keybagData];
-      v9 = [v5 keybagData];
-      if ([v8 isEqualToData:v9])
+      keybagData = [(MBCKKeyBag *)self keybagData];
+      keybagData2 = [v5 keybagData];
+      if ([keybagData isEqualToData:keybagData2])
       {
-        v10 = [(MBCKKeyBag *)self secret];
-        v11 = [v5 secret];
-        v12 = [v10 isEqualToData:v11];
+        secret = [(MBCKKeyBag *)self secret];
+        secret2 = [v5 secret];
+        v12 = [secret isEqualToData:secret2];
       }
 
       else
@@ -923,50 +923,50 @@ LABEL_10:
 {
   v9.receiver = self;
   v9.super_class = MBCKKeyBag;
-  v3 = [(MBCKModel *)&v9 recordRepresentation];
+  recordRepresentation = [(MBCKModel *)&v9 recordRepresentation];
   keybagData = self->_keybagData;
-  v5 = [v3 encryptedValues];
-  [v5 setObject:keybagData forKeyedSubscript:@"keybagData"];
+  encryptedValues = [recordRepresentation encryptedValues];
+  [encryptedValues setObject:keybagData forKeyedSubscript:@"keybagData"];
 
   secret = self->_secret;
-  v7 = [v3 encryptedValues];
-  [v7 setObject:secret forKeyedSubscript:@"secret"];
+  encryptedValues2 = [recordRepresentation encryptedValues];
+  [encryptedValues2 setObject:secret forKeyedSubscript:@"secret"];
 
-  return v3;
+  return recordRepresentation;
 }
 
 - (id)_getRecordIDString
 {
-  v4 = [(MBCKKeyBag *)self keybagUUID];
+  keybagUUID = [(MBCKKeyBag *)self keybagUUID];
 
-  if (!v4)
+  if (!keybagUUID)
   {
     v8 = +[NSAssertionHandler currentHandler];
     [v8 handleFailureInMethod:a2 object:self file:@"MBCKKeyBag.m" lineNumber:333 description:@"Keybag is missing a UUID"];
   }
 
-  v5 = [(MBCKKeyBag *)self keybagUUID];
-  v6 = [MBCKKeyBag recordIDStringWithUUID:v5];
+  keybagUUID2 = [(MBCKKeyBag *)self keybagUUID];
+  v6 = [MBCKKeyBag recordIDStringWithUUID:keybagUUID2];
 
   return v6;
 }
 
-+ (BOOL)unlockKeybag:(id)a3 accountType:(int64_t)a4 error:(id *)a5 block:(id)a6
++ (BOOL)unlockKeybag:(id)keybag accountType:(int64_t)type error:(id *)error block:(id)block
 {
-  v10 = a3;
-  v11 = a6;
-  if (!v10)
+  keybagCopy = keybag;
+  blockCopy = block;
+  if (!keybagCopy)
   {
     __assert_rtn("+[MBCKKeyBag unlockKeybag:accountType:error:block:]", "MBCKKeyBag.m", 350, "keybag");
   }
 
-  if (!a5)
+  if (!error)
   {
     __assert_rtn("+[MBCKKeyBag unlockKeybag:accountType:error:block:]", "MBCKKeyBag.m", 351, "error");
   }
 
-  v12 = v11;
-  if (!v11)
+  v12 = blockCopy;
+  if (!blockCopy)
   {
     __assert_rtn("+[MBCKKeyBag unlockKeybag:accountType:error:block:]", "MBCKKeyBag.m", 352, "block");
   }
@@ -975,7 +975,7 @@ LABEL_10:
   v37[1] = 3221225472;
   v37[2] = sub_1000694A4;
   v37[3] = &unk_1003BBFE8;
-  v37[4] = a1;
+  v37[4] = self;
   if (qword_100421628 != -1)
   {
     dispatch_once(&qword_100421628, v37);
@@ -999,22 +999,22 @@ LABEL_10:
   block[1] = 3221225472;
   block[2] = sub_100069550;
   block[3] = &unk_1003BC818;
-  v14 = v10;
+  v14 = keybagCopy;
   v21 = v14;
   v22 = &v31;
   v23 = &v25;
-  v24 = a4;
+  typeCopy = type;
   dispatch_sync(v13, block);
   v15 = v32[5];
   if (v15)
   {
-    v16 = [v32[5] keybag];
-    if (!v16)
+    keybag = [v32[5] keybag];
+    if (!keybag)
     {
       __assert_rtn("+[MBCKKeyBag unlockKeybag:accountType:error:block:]", "MBCKKeyBag.m", 440, "keybag");
     }
 
-    (v12)[2](v12, v16);
+    (v12)[2](v12, keybag);
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_1000699CC;
@@ -1031,7 +1031,7 @@ LABEL_10:
       __assert_rtn("+[MBCKKeyBag unlockKeybag:accountType:error:block:]", "MBCKKeyBag.m", 436, "unlockError");
     }
 
-    *a5 = v17;
+    *error = v17;
   }
 
   dispatch_semaphore_signal(qword_100421610);
@@ -1042,17 +1042,17 @@ LABEL_10:
   return v15 != 0;
 }
 
-+ (BOOL)_deviceHasValidKeyBagReferences:(id)a3
++ (BOOL)_deviceHasValidKeyBagReferences:(id)references
 {
-  v3 = a3;
-  v4 = [v3 keybagManager];
-  v5 = [v4 keybagRefs];
-  v6 = [v5 copy];
+  referencesCopy = references;
+  keybagManager = [referencesCopy keybagManager];
+  keybagRefs = [keybagManager keybagRefs];
+  v6 = [keybagRefs copy];
 
-  v7 = [v3 keybagManager];
+  keybagManager2 = [referencesCopy keybagManager];
 
-  v8 = [v7 keybagsByUUIDString];
-  v9 = [v8 copy];
+  keybagsByUUIDString = [keybagManager2 keybagsByUUIDString];
+  v9 = [keybagsByUUIDString copy];
 
   v10 = [v6 count];
   LOBYTE(v10) = v10 == [v9 count];
@@ -1060,45 +1060,45 @@ LABEL_10:
   return v10;
 }
 
-+ (BOOL)_removeInvalidKeyBagReferencesFromDevice:(id)a3 tracker:(id)a4 validationState:(id)a5 error:(id *)a6
++ (BOOL)_removeInvalidKeyBagReferencesFromDevice:(id)device tracker:(id)tracker validationState:(id)state error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v10 account];
-  v13 = [v12 persona];
+  deviceCopy = device;
+  trackerCopy = tracker;
+  stateCopy = state;
+  account = [trackerCopy account];
+  persona = [account persona];
 
-  if (!v13)
+  if (!persona)
   {
     __assert_rtn("+[MBCKKeyBag _removeInvalidKeyBagReferencesFromDevice:tracker:validationState:error:]", "MBCKKeyBag.m", 462, "persona");
   }
 
-  if (!v11)
+  if (!stateCopy)
   {
     __assert_rtn("+[MBCKKeyBag _removeInvalidKeyBagReferencesFromDevice:tracker:validationState:error:]", "MBCKKeyBag.m", 464, "validationState");
   }
 
-  if (!v9)
+  if (!deviceCopy)
   {
     __assert_rtn("+[MBCKKeyBag _removeInvalidKeyBagReferencesFromDevice:tracker:validationState:error:]", "MBCKKeyBag.m", 466, "device");
   }
 
-  v14 = [v9 keybagManager];
-  v15 = [v14 hasFetchedKeybags];
+  keybagManager = [deviceCopy keybagManager];
+  hasFetchedKeybags = [keybagManager hasFetchedKeybags];
 
-  if (v15)
+  if (hasFetchedKeybags)
   {
-    v52 = a6;
-    v53 = v13;
-    v54 = v11;
-    v55 = v10;
-    v16 = [v9 keybagManager];
-    v17 = [v16 keybagRefs];
-    v18 = [v17 copy];
+    errorCopy = error;
+    v53 = persona;
+    v54 = stateCopy;
+    v55 = trackerCopy;
+    keybagManager2 = [deviceCopy keybagManager];
+    keybagRefs = [keybagManager2 keybagRefs];
+    v18 = [keybagRefs copy];
 
-    v19 = [v9 keybagManager];
-    v20 = [v19 keybagsByUUIDString];
-    v21 = [v20 copy];
+    keybagManager3 = [deviceCopy keybagManager];
+    keybagsByUUIDString = [keybagManager3 keybagsByUUIDString];
+    v21 = [keybagsByUUIDString copy];
 
     v61 = 0u;
     v62 = 0u;
@@ -1106,7 +1106,7 @@ LABEL_10:
     v60 = 0u;
     obj = v18;
     v22 = [obj countByEnumeratingWithState:&v59 objects:v67 count:16];
-    v56 = v9;
+    v56 = deviceCopy;
     if (v22)
     {
       v23 = v22;
@@ -1122,8 +1122,8 @@ LABEL_10:
             objc_enumerationMutation(obj);
           }
 
-          v28 = [*(*(&v59 + 1) + 8 * i) recordID];
-          v29 = [MBCKKeyBag UUIDStringFromRecordID:v28];
+          recordID = [*(*(&v59 + 1) + 8 * i) recordID];
+          v29 = [MBCKKeyBag UUIDStringFromRecordID:recordID];
 
           v30 = [v21 objectForKeyedSubscript:v29];
           v31 = MBGetDefaultLog();
@@ -1132,20 +1132,20 @@ LABEL_10:
           {
             if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
             {
-              v33 = [v30 keybagData];
-              v34 = [v33 length];
+              keybagData = [v30 keybagData];
+              v34 = [keybagData length];
               *buf = 138412546;
               v64 = v29;
               v65 = 2048;
               v66 = v34;
               _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "=keybag= Fetched keybag %@ (%llu bytes)", buf, 0x16u);
 
-              v35 = [v30 keybagData];
+              keybagData2 = [v30 keybagData];
               v50 = v29;
-              v51 = [v35 length];
+              v51 = [keybagData2 length];
               _MBLog();
 
-              v9 = v56;
+              deviceCopy = v56;
             }
 
             ++v25;
@@ -1162,8 +1162,8 @@ LABEL_10:
               _MBLog();
             }
 
-            v36 = [v9 keybagManager];
-            [v36 removeKeybagWithUUID:v29];
+            keybagManager4 = [deviceCopy keybagManager];
+            [keybagManager4 removeKeybagWithUUID:v29];
 
             ++v24;
           }
@@ -1181,39 +1181,39 @@ LABEL_10:
       v25 = 0;
     }
 
-    v38 = [v9 keybagManager];
-    v39 = [v38 keybagsByUUIDString];
-    v40 = [v39 count];
-    v41 = [v9 keybagManager];
-    v42 = [v41 keybagRefs];
-    if (v40 != [v42 count])
+    keybagManager5 = [deviceCopy keybagManager];
+    keybagsByUUIDString2 = [keybagManager5 keybagsByUUIDString];
+    v40 = [keybagsByUUIDString2 count];
+    keybagManager6 = [deviceCopy keybagManager];
+    keybagRefs2 = [keybagManager6 keybagRefs];
+    if (v40 != [keybagRefs2 count])
     {
       __assert_rtn("+[MBCKKeyBag _removeInvalidKeyBagReferencesFromDevice:tracker:validationState:error:]", "MBCKKeyBag.m", 490, "device.keybagManager.keybagsByUUIDString.count == device.keybagManager.keybagRefs.count");
     }
 
-    v11 = v54;
+    stateCopy = v54;
     v43 = v24;
-    v13 = v53;
-    if ([v54 trackValidationFailureWithInvalidKeyBagCount:v43 validKeyBagCount:v25 persona:v53 error:v52])
+    persona = v53;
+    if ([v54 trackValidationFailureWithInvalidKeyBagCount:v43 validKeyBagCount:v25 persona:v53 error:errorCopy])
     {
-      v9 = v56;
-      v44 = [v56 recordRepresentation];
+      deviceCopy = v56;
+      recordRepresentation = [v56 recordRepresentation];
       v58 = 0;
-      v10 = v55;
-      v45 = [v55 saveRecord:v44 delegate:0 error:&v58];
+      trackerCopy = v55;
+      v45 = [v55 saveRecord:recordRepresentation delegate:0 error:&v58];
       v46 = v58;
 
       if (v45)
       {
-        v37 = [v54 trackRepairedDeviceRecordWithPersona:v53 error:v52];
+        v37 = [v54 trackRepairedDeviceRecordWithPersona:v53 error:errorCopy];
       }
 
       else
       {
-        if (v52)
+        if (errorCopy)
         {
           v47 = v46;
-          *v52 = v46;
+          *errorCopy = v46;
         }
 
         v48 = MBGetDefaultLog();
@@ -1232,15 +1232,15 @@ LABEL_10:
     else
     {
       v37 = 0;
-      v9 = v56;
-      v10 = v55;
+      deviceCopy = v56;
+      trackerCopy = v55;
     }
   }
 
-  else if (a6)
+  else if (error)
   {
     [MBError errorWithCode:1 format:@"MBCKDevice has not fetched keybag records"];
-    *a6 = v37 = 0;
+    *error = v37 = 0;
   }
 
   else
@@ -1251,35 +1251,35 @@ LABEL_10:
   return v37;
 }
 
-+ (BOOL)validateAndRepairInvalidKeyBagReferencesFromDeviceRecordWithTracker:(id)a3 state:(id *)a4 error:(id *)a5
++ (BOOL)validateAndRepairInvalidKeyBagReferencesFromDeviceRecordWithTracker:(id)tracker state:(id *)state error:(id *)error
 {
-  v8 = a3;
-  if (!v8)
+  trackerCopy = tracker;
+  if (!trackerCopy)
   {
     __assert_rtn("+[MBCKKeyBag validateAndRepairInvalidKeyBagReferencesFromDeviceRecordWithTracker:state:error:]", "MBCKKeyBag.m", 509, "tracker");
   }
 
-  v9 = v8;
-  v10 = [v8 account];
-  if (!v10)
+  v9 = trackerCopy;
+  account = [trackerCopy account];
+  if (!account)
   {
     __assert_rtn("+[MBCKKeyBag validateAndRepairInvalidKeyBagReferencesFromDeviceRecordWithTracker:state:error:]", "MBCKKeyBag.m", 511, "account");
   }
 
-  v11 = v10;
-  v12 = [v10 persona];
-  if (!v12)
+  v11 = account;
+  persona = [account persona];
+  if (!persona)
   {
     __assert_rtn("+[MBCKKeyBag validateAndRepairInvalidKeyBagReferencesFromDeviceRecordWithTracker:state:error:]", "MBCKKeyBag.m", 513, "persona");
   }
 
-  if (!a4)
+  if (!state)
   {
     __assert_rtn("+[MBCKKeyBag validateAndRepairInvalidKeyBagReferencesFromDeviceRecordWithTracker:state:error:]", "MBCKKeyBag.m", 514, "outState");
   }
 
-  v13 = v12;
-  v14 = [MBKeyBagValidationState stateForPersona:v12];
+  v13 = persona;
+  v14 = [MBKeyBagValidationState stateForPersona:persona];
   v15 = MBGetDefaultLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
@@ -1300,7 +1300,7 @@ LABEL_10:
   if (v20)
   {
     v21 = v14;
-    *a4 = v14;
+    *state = v14;
     v22 = +[MBCKManager sharedInstance];
     v23 = MBDeviceUUID();
     v34 = 0;
@@ -1309,13 +1309,13 @@ LABEL_10:
 
     if (v24)
     {
-      if ([a1 _deviceHasValidKeyBagReferences:v24])
+      if ([self _deviceHasValidKeyBagReferences:v24])
       {
         if (([v14 requiresDeviceRecordReferenceRepair] & 1) == 0 && (objc_msgSend(v14, "requiresEncryptionKeyRepair") & 1) == 0)
         {
-          v33 = [v24 keybagManager];
-          v31 = [v33 keybagRefs];
-          v27 = [v14 trackValidationSuccess:objc_msgSend(v31 persona:"count") error:{v13, a5}];
+          keybagManager = [v24 keybagManager];
+          keybagRefs = [keybagManager keybagRefs];
+          v27 = [v14 trackValidationSuccess:objc_msgSend(keybagRefs persona:"count") error:{v13, error}];
 
           goto LABEL_19;
         }
@@ -1334,12 +1334,12 @@ LABEL_10:
           goto LABEL_19;
         }
 
-        v26 = [v14 trackRepairedDeviceRecordWithPersona:v13 error:a5];
+        v26 = [v14 trackRepairedDeviceRecordWithPersona:v13 error:error];
       }
 
       else
       {
-        v26 = [a1 _removeInvalidKeyBagReferencesFromDevice:v24 tracker:v9 validationState:v14 error:a5];
+        v26 = [self _removeInvalidKeyBagReferencesFromDevice:v24 tracker:v9 validationState:v14 error:error];
       }
     }
 
@@ -1347,11 +1347,11 @@ LABEL_10:
     {
       if (![MBError isError:v25 withCode:204])
       {
-        if (a5)
+        if (error)
         {
           v29 = v25;
           v27 = 0;
-          *a5 = v25;
+          *error = v25;
         }
 
         else
@@ -1362,7 +1362,7 @@ LABEL_10:
         goto LABEL_19;
       }
 
-      v26 = [v14 resetValidationStateWithPersona:v13 error:a5];
+      v26 = [v14 resetValidationStateWithPersona:v13 error:error];
     }
 
     v27 = v26;
@@ -1371,7 +1371,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  *a4 = 0;
+  *state = 0;
   v27 = 1;
 LABEL_20:
 

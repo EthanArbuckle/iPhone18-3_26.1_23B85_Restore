@@ -1,17 +1,17 @@
 @interface RTAIDManagerCallStateReporter
 - (RTAIDManagerCallStateReporter)init;
-- (void)callObserver:(id)a3 callChanged:(id)a4;
+- (void)callObserver:(id)observer callChanged:(id)changed;
 - (void)postInit;
 @end
 
 @implementation RTAIDManagerCallStateReporter
 
-- (void)callObserver:(id)a3 callChanged:(id)a4
+- (void)callObserver:(id)observer callChanged:(id)changed
 {
   v19 = *MEMORY[0x29EDCA608];
-  v5 = a3;
-  v6 = [v5 calls];
-  v7 = [v6 count];
+  observerCopy = observer;
+  calls = [observerCopy calls];
+  v7 = [calls count];
 
   if (v7)
   {
@@ -19,8 +19,8 @@
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = [v5 calls];
-    v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    calls2 = [observerCopy calls];
+    v9 = [calls2 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v9)
     {
       v10 = *v15;
@@ -30,7 +30,7 @@
         {
           if (*v15 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(calls2);
           }
 
           v12 = *(*(&v14 + 1) + 8 * i);
@@ -42,7 +42,7 @@
           }
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v9 = [calls2 countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v9)
         {
           continue;

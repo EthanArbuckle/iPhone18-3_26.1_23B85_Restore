@@ -7,8 +7,8 @@
 - (void)performUserInteractionTask
 {
   v120 = *MEMORY[0x1E69E9840];
-  v4 = [(PXAssetActionPerformer *)self selectionSnapshot];
-  if ([v4 isAnyItemSelected])
+  selectionSnapshot = [(PXAssetActionPerformer *)self selectionSnapshot];
+  if ([selectionSnapshot isAnyItemSelected])
   {
     v107 = 0;
     v66 = [MEMORY[0x1E69789A8] openPhotoLibraryWithWellKnownIdentifier:1 error:&v107];
@@ -32,8 +32,8 @@
       goto LABEL_46;
     }
 
-    v5 = [v4 dataSource];
-    if (v5)
+    dataSource = [selectionSnapshot dataSource];
+    if (dataSource)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -41,25 +41,25 @@
         goto LABEL_5;
       }
 
-      v54 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v57 = objc_opt_class();
       v56 = NSStringFromClass(v57);
-      v58 = [v5 px_descriptionForAssertionMessage];
-      [v54 handleFailureInMethod:a2 object:self file:@"PXPhotoKitMessagesAddToLibraryAssetActionPerformer.m" lineNumber:58 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"snapshot.dataSource", v56, v58}];
+      px_descriptionForAssertionMessage = [dataSource px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitMessagesAddToLibraryAssetActionPerformer.m" lineNumber:58 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"snapshot.dataSource", v56, px_descriptionForAssertionMessage}];
     }
 
     else
     {
-      v54 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v55 = objc_opt_class();
       v56 = NSStringFromClass(v55);
-      [v54 handleFailureInMethod:a2 object:self file:@"PXPhotoKitMessagesAddToLibraryAssetActionPerformer.m" lineNumber:58 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"snapshot.dataSource", v56}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitMessagesAddToLibraryAssetActionPerformer.m" lineNumber:58 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"snapshot.dataSource", v56}];
     }
 
 LABEL_5:
-    v6 = [(PXPhotoKitAssetActionPerformer *)self importStatusManager];
-    v7 = [v4 selectedIndexPaths];
-    v8 = [v7 itemCount];
+    importStatusManager = [(PXPhotoKitAssetActionPerformer *)self importStatusManager];
+    selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
+    itemCount = [selectedIndexPaths itemCount];
 
     v103 = 0;
     v104 = &v103;
@@ -87,17 +87,17 @@ LABEL_5:
     v117 = __Block_byref_object_copy__147498;
     v118 = __Block_byref_object_dispose__147499;
     v119 = 0;
-    v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:v8];
-    v10 = [v4 selectedIndexPaths];
+    v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:itemCount];
+    selectedIndexPaths2 = [selectionSnapshot selectedIndexPaths];
     v77[0] = MEMORY[0x1E69E9820];
     v77[1] = 3221225472;
     v77[2] = __80__PXPhotoKitMessagesAddToLibraryAssetActionPerformer_performUserInteractionTask__block_invoke;
     v77[3] = &unk_1E773D7C0;
     v89 = a2;
-    v59 = v5;
+    v59 = dataSource;
     v78 = v59;
-    v79 = self;
-    v60 = v6;
+    selfCopy = self;
+    v60 = importStatusManager;
     v80 = v60;
     v83 = &v103;
     v84 = v116;
@@ -109,7 +109,7 @@ LABEL_5:
     v86 = &v95;
     v87 = &v91;
     v88 = v90;
-    [v10 enumerateItemIndexPathsUsingBlock:v77];
+    [selectedIndexPaths2 enumerateItemIndexPathsUsingBlock:v77];
 
     v61 = [v64 count];
     v12 = PLSharingGetLog();
@@ -118,7 +118,7 @@ LABEL_5:
       v13 = v104[3];
       v14 = v100[3];
       *buf = 134218752;
-      v109 = v8;
+      v109 = itemCount;
       v110 = 2048;
       v111 = v13;
       v112 = 2048;
@@ -128,12 +128,12 @@ LABEL_5:
       _os_log_impl(&dword_1A3C1C000, v12, OS_LOG_TYPE_DEFAULT, "PXPhotoKitMessagesAddToLibraryAssetActionPerformer: Assets selected: %tu, assets saved: %tu, assets in progress %tu, assets to save: %tu", buf, 0x2Au);
     }
 
-    if (v96[3] == v8)
+    if (v96[3] == itemCount)
     {
       v15 = @"_Photo";
     }
 
-    else if (v92[3] == v8)
+    else if (v92[3] == itemCount)
     {
       v15 = @"_Video";
     }
@@ -143,14 +143,14 @@ LABEL_5:
       v15 = @"_Item";
     }
 
-    v19 = [v11 isCloudPhotoLibraryEnabled];
+    isCloudPhotoLibraryEnabled = [v11 isCloudPhotoLibraryEnabled];
     v20 = v104[3];
     v21 = v20 != 0;
     if (v20)
     {
-      if (v20 != v8)
+      if (v20 != itemCount)
       {
-        if (v100[3] + v20 == v8)
+        if (v100[3] + v20 == itemCount)
         {
           v32 = [@"PXCMMMessagesSaveToLibrary_AllSavedOrInProgress" stringByAppendingString:v15];
           PXLocalizedStringFromTable(v32, @"PhotosUICore");
@@ -165,7 +165,7 @@ LABEL_5:
       }
 
       v22 = @"PXCMMMessagesSaveToLibrary_AllSaved_Multiple";
-      if (v8 == 1)
+      if (itemCount == 1)
       {
         v22 = @"PXCMMMessagesSaveToLibrary_AllSaved";
       }
@@ -181,10 +181,10 @@ LABEL_5:
 
     else
     {
-      v25 = v19;
+      v25 = isCloudPhotoLibraryEnabled;
       v26 = @"PXCMMMessagesSaveToLibrary_AllUnsaved_Multiple";
       v27 = v100[3];
-      if (v8 == 1)
+      if (itemCount == 1)
       {
         v26 = @"PXCMMMessagesSaveToLibrary_AllUnsaved";
         v28 = @"PXCMMMessagesSaveToLibrary_AllInProgress";
@@ -195,9 +195,9 @@ LABEL_5:
         v28 = @"PXCMMMessagesSaveToLibrary_AllInProgress_Multiple";
       }
 
-      v62 = v27 == v8;
-      v33 = v27 != v8;
-      if (v27 == v8)
+      v62 = v27 == itemCount;
+      v33 = v27 != itemCount;
+      if (v27 == itemCount)
       {
         v29 = v28;
       }
@@ -222,7 +222,7 @@ LABEL_5:
     }
 
     v35 = @"PXCMMMessagesSaveToLibraryActionTitle_Multiple";
-    if (v8 == 1)
+    if (itemCount == 1)
     {
       v35 = @"PXCMMMessagesSaveToLibraryActionTitle";
     }

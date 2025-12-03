@@ -1,61 +1,61 @@
 @interface DBSColorTemperatureSliderTableCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (DBSColorTemperatureSliderTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (DBSColorTemperatureSliderTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (void)layoutSubviews;
 @end
 
 @implementation DBSColorTemperatureSliderTableCell
 
-- (DBSColorTemperatureSliderTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (DBSColorTemperatureSliderTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v28.receiver = self;
   v28.super_class = DBSColorTemperatureSliderTableCell;
-  v5 = [(PSControlTableCell *)&v28 initWithStyle:a3 reuseIdentifier:a4 specifier:a5];
+  v5 = [(PSControlTableCell *)&v28 initWithStyle:style reuseIdentifier:identifier specifier:specifier];
   v6 = v5;
   if (v5)
   {
-    v7 = [(DBSColorTemperatureSliderTableCell *)v5 textLabel];
-    v8 = [v7 font];
+    textLabel = [(DBSColorTemperatureSliderTableCell *)v5 textLabel];
+    font = [textLabel font];
 
     v9 = objc_alloc_init(MEMORY[0x277D756B8]);
     coolerLabel = v6->_coolerLabel;
     v6->_coolerLabel = v9;
 
-    [(UILabel *)v6->_coolerLabel setFont:v8];
+    [(UILabel *)v6->_coolerLabel setFont:font];
     v11 = DBS_LocalizedStringForColorTemperature(@"COOLER");
     [(UILabel *)v6->_coolerLabel setText:v11];
 
     [(UILabel *)v6->_coolerLabel setNumberOfLines:0];
     [(UILabel *)v6->_coolerLabel setLineBreakMode:0];
-    v12 = [MEMORY[0x277D3FA48] appearance];
-    v13 = [v12 textColor];
-    [(UILabel *)v6->_coolerLabel setTextColor:v13];
+    appearance = [MEMORY[0x277D3FA48] appearance];
+    textColor = [appearance textColor];
+    [(UILabel *)v6->_coolerLabel setTextColor:textColor];
 
-    v14 = [(DBSColorTemperatureSliderTableCell *)v6 contentView];
-    [v14 addSubview:v6->_coolerLabel];
+    contentView = [(DBSColorTemperatureSliderTableCell *)v6 contentView];
+    [contentView addSubview:v6->_coolerLabel];
 
     v15 = objc_alloc_init(MEMORY[0x277D756B8]);
     warmerLabel = v6->_warmerLabel;
     v6->_warmerLabel = v15;
 
-    [(UILabel *)v6->_warmerLabel setFont:v8];
+    [(UILabel *)v6->_warmerLabel setFont:font];
     v17 = DBS_LocalizedStringForColorTemperature(@"WARMER");
     [(UILabel *)v6->_warmerLabel setText:v17];
 
     [(UILabel *)v6->_warmerLabel setNumberOfLines:0];
     [(UILabel *)v6->_warmerLabel setLineBreakMode:0];
-    v18 = [MEMORY[0x277D3FA48] appearance];
-    v19 = [v18 textColor];
-    [(UILabel *)v6->_warmerLabel setTextColor:v19];
+    appearance2 = [MEMORY[0x277D3FA48] appearance];
+    textColor2 = [appearance2 textColor];
+    [(UILabel *)v6->_warmerLabel setTextColor:textColor2];
 
-    v20 = [(DBSColorTemperatureSliderTableCell *)v6 contentView];
-    [v20 addSubview:v6->_warmerLabel];
+    contentView2 = [(DBSColorTemperatureSliderTableCell *)v6 contentView];
+    [contentView2 addSubview:v6->_warmerLabel];
 
     v27.receiver = v6;
     v27.super_class = DBSColorTemperatureSliderTableCell;
     [(PSTableCell *)&v27 layoutSubviews];
-    v21 = [(DBSColorTemperatureSliderTableCell *)v6 textLabel];
-    [v21 frame];
+    textLabel2 = [(DBSColorTemperatureSliderTableCell *)v6 textLabel];
+    [textLabel2 frame];
     v23 = v22;
     v25 = v24;
 
@@ -72,12 +72,12 @@
   return v6;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(DBSColorTemperatureSliderTableCell *)self layoutSubviews:a3.width];
-  v5 = [(PSControlTableCell *)self control];
-  [v5 frame];
+  width = fits.width;
+  [(DBSColorTemperatureSliderTableCell *)self layoutSubviews:fits.width];
+  control = [(PSControlTableCell *)self control];
+  [control frame];
   v6 = CGRectGetMaxY(v10) + self->_verticalMargin;
 
   v7 = width;
@@ -93,16 +93,16 @@
   v33.super_class = DBSColorTemperatureSliderTableCell;
   [(PSTableCell *)&v33 layoutSubviews];
   v3 = *(&self->super.super.super.super.super.super.super.isa + *MEMORY[0x277D3FC78]);
-  v4 = [(PSControlTableCell *)self control];
-  [v4 frame];
+  control = [(PSControlTableCell *)self control];
+  [control frame];
   [v3 setFrame:?];
 
-  v5 = [(DBSColorTemperatureSliderTableCell *)self effectiveUserInterfaceLayoutDirection];
+  effectiveUserInterfaceLayoutDirection = [(DBSColorTemperatureSliderTableCell *)self effectiveUserInterfaceLayoutDirection];
   [(DBSColorTemperatureSliderTableCell *)self bounds];
   Width = CGRectGetWidth(v34);
   PSRoundToPixel();
   v8 = v7;
-  if (v5)
+  if (effectiveUserInterfaceLayoutDirection)
   {
     v9 = &OBJC_IVAR___DBSColorTemperatureSliderTableCell__warmerLabel;
   }
@@ -113,7 +113,7 @@
   }
 
   v10 = *(&self->super.super.super.super.super.super.super.isa + *v9);
-  if (v5)
+  if (effectiveUserInterfaceLayoutDirection)
   {
     v11 = &OBJC_IVAR___DBSColorTemperatureSliderTableCell__coolerLabel;
   }
@@ -141,10 +141,10 @@
   v22 = Width - (self->_horizontalMargin + v18);
   v23 = self->_verticalMargin;
   [v13 setFrame:{v22, v23, v18, v20}];
-  v24 = [(PSControlTableCell *)self control];
+  control2 = [(PSControlTableCell *)self control];
 
-  [v24 sizeToFit];
-  [v24 frame];
+  [control2 sizeToFit];
+  [control2 frame];
   PSRoundToPixel();
   v26 = v25;
   PSRoundToPixel();
@@ -164,7 +164,7 @@
     v30 = MaxY;
   }
 
-  [v24 setFrame:{v28, v30 + 10.0, v26, 31.0}];
+  [control2 setFrame:{v28, v30 + 10.0, v26, 31.0}];
 }
 
 @end

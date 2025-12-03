@@ -1,6 +1,6 @@
 @interface MTRDoorLockClusterCredentialStruct
 - (MTRDoorLockClusterCredentialStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDoorLockClusterCredentialStruct);
-  v5 = [(MTRDoorLockClusterCredentialStruct *)self credentialType];
-  [(MTRDoorLockClusterCredentialStruct *)v4 setCredentialType:v5];
+  credentialType = [(MTRDoorLockClusterCredentialStruct *)self credentialType];
+  [(MTRDoorLockClusterCredentialStruct *)v4 setCredentialType:credentialType];
 
-  v6 = [(MTRDoorLockClusterCredentialStruct *)self credentialIndex];
-  [(MTRDoorLockClusterCredentialStruct *)v4 setCredentialIndex:v6];
+  credentialIndex = [(MTRDoorLockClusterCredentialStruct *)self credentialIndex];
+  [(MTRDoorLockClusterCredentialStruct *)v4 setCredentialIndex:credentialIndex];
 
   return v4;
 }

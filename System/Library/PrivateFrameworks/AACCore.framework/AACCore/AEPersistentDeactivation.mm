@@ -1,31 +1,31 @@
 @interface AEPersistentDeactivation
-- (id)initWithScratchpadIdentifier:(void *)a3 deactivation:;
+- (id)initWithScratchpadIdentifier:(void *)identifier deactivation:;
 - (uint64_t)deactivation;
 - (uint64_t)scratchpadIdentifier;
 @end
 
 @implementation AEPersistentDeactivation
 
-- (id)initWithScratchpadIdentifier:(void *)a3 deactivation:
+- (id)initWithScratchpadIdentifier:(void *)identifier deactivation:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  identifierCopy = identifier;
+  if (self)
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = AEPersistentDeactivation;
-    a1 = objc_msgSendSuper2(&v10, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v10, sel_init);
+    if (self)
     {
       v7 = [v5 copy];
-      v8 = a1[1];
-      a1[1] = v7;
+      v8 = self[1];
+      self[1] = v7;
 
-      objc_storeStrong(a1 + 2, a3);
+      objc_storeStrong(self + 2, identifier);
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)scratchpadIdentifier

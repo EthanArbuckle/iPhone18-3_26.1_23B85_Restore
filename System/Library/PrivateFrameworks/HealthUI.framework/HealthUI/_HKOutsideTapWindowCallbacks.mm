@@ -1,26 +1,26 @@
 @interface _HKOutsideTapWindowCallbacks
-- (BOOL)matchesWindow:(id)a3;
+- (BOOL)matchesWindow:(id)window;
 - (UIWindow)window;
-- (_HKOutsideTapWindowCallbacks)initWithWindow:(id)a3;
-- (void)_handleTap:(id)a3;
+- (_HKOutsideTapWindowCallbacks)initWithWindow:(id)window;
+- (void)_handleTap:(id)tap;
 - (void)_installTapGestureRecognizerIfNeeded;
 - (void)_removeTapGestureRecognizerIfNeeded;
-- (void)addCallbackForView:(id)a3 outsideTapBlock:(id)a4;
-- (void)removeCallbackForView:(id)a3;
+- (void)addCallbackForView:(id)view outsideTapBlock:(id)block;
+- (void)removeCallbackForView:(id)view;
 @end
 
 @implementation _HKOutsideTapWindowCallbacks
 
-- (_HKOutsideTapWindowCallbacks)initWithWindow:(id)a3
+- (_HKOutsideTapWindowCallbacks)initWithWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   v11.receiver = self;
   v11.super_class = _HKOutsideTapWindowCallbacks;
   v5 = [(_HKOutsideTapWindowCallbacks *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_window, v4);
+    objc_storeWeak(&v5->_window, windowCopy);
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     callbacks = v6->_callbacks;
     v6->_callbacks = v7;
@@ -32,95 +32,95 @@
   return v6;
 }
 
-- (BOOL)matchesWindow:(id)a3
+- (BOOL)matchesWindow:(id)window
 {
-  v4 = a3;
-  v5 = [(_HKOutsideTapWindowCallbacks *)self window];
+  windowCopy = window;
+  window = [(_HKOutsideTapWindowCallbacks *)self window];
 
-  return v5 == v4;
+  return window == windowCopy;
 }
 
-- (void)addCallbackForView:(id)a3 outsideTapBlock:(id)a4
+- (void)addCallbackForView:(id)view outsideTapBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [[_HKOutsideTapCallback alloc] initWithView:v7 outsideTapBlock:v6];
+  blockCopy = block;
+  viewCopy = view;
+  v9 = [[_HKOutsideTapCallback alloc] initWithView:viewCopy outsideTapBlock:blockCopy];
 
-  v8 = [(_HKOutsideTapWindowCallbacks *)self callbacks];
-  [v8 addObject:v9];
+  callbacks = [(_HKOutsideTapWindowCallbacks *)self callbacks];
+  [callbacks addObject:v9];
 
   [(_HKOutsideTapWindowCallbacks *)self _installTapGestureRecognizerIfNeeded];
 }
 
-- (void)removeCallbackForView:(id)a3
+- (void)removeCallbackForView:(id)view
 {
-  v4 = a3;
-  v5 = [(_HKOutsideTapWindowCallbacks *)self callbacks];
+  viewCopy = view;
+  callbacks = [(_HKOutsideTapWindowCallbacks *)self callbacks];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54___HKOutsideTapWindowCallbacks_removeCallbackForView___block_invoke;
   v7[3] = &unk_1E81B8B68;
-  v8 = v4;
-  v6 = v4;
-  [v5 hk_removeObjectsPassingTest:v7];
+  v8 = viewCopy;
+  v6 = viewCopy;
+  [callbacks hk_removeObjectsPassingTest:v7];
 
   [(_HKOutsideTapWindowCallbacks *)self _removeTapGestureRecognizerIfNeeded];
 }
 
 - (void)_installTapGestureRecognizerIfNeeded
 {
-  v3 = [(_HKOutsideTapWindowCallbacks *)self recognizer];
+  recognizer = [(_HKOutsideTapWindowCallbacks *)self recognizer];
 
-  if (!v3)
+  if (!recognizer)
   {
     v4 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__handleTap_];
     [(_HKOutsideTapWindowCallbacks *)self setRecognizer:v4];
 
-    v5 = [(_HKOutsideTapWindowCallbacks *)self recognizer];
-    [v5 setNumberOfTapsRequired:1];
+    recognizer2 = [(_HKOutsideTapWindowCallbacks *)self recognizer];
+    [recognizer2 setNumberOfTapsRequired:1];
 
-    v6 = [(_HKOutsideTapWindowCallbacks *)self recognizer];
-    [v6 setNumberOfTouchesRequired:1];
+    recognizer3 = [(_HKOutsideTapWindowCallbacks *)self recognizer];
+    [recognizer3 setNumberOfTouchesRequired:1];
 
-    v7 = [(_HKOutsideTapWindowCallbacks *)self recognizer];
-    [v7 setCancelsTouchesInView:0];
+    recognizer4 = [(_HKOutsideTapWindowCallbacks *)self recognizer];
+    [recognizer4 setCancelsTouchesInView:0];
 
-    v8 = [(_HKOutsideTapWindowCallbacks *)self window];
-    [v8 addGestureRecognizer:self->_recognizer];
+    window = [(_HKOutsideTapWindowCallbacks *)self window];
+    [window addGestureRecognizer:self->_recognizer];
   }
 }
 
 - (void)_removeTapGestureRecognizerIfNeeded
 {
-  v3 = [(_HKOutsideTapWindowCallbacks *)self recognizer];
-  if (v3)
+  recognizer = [(_HKOutsideTapWindowCallbacks *)self recognizer];
+  if (recognizer)
   {
-    v4 = v3;
-    v5 = [(_HKOutsideTapWindowCallbacks *)self callbacks];
-    v6 = [v5 count];
+    v4 = recognizer;
+    callbacks = [(_HKOutsideTapWindowCallbacks *)self callbacks];
+    v6 = [callbacks count];
 
     if (!v6)
     {
-      v7 = [(_HKOutsideTapWindowCallbacks *)self window];
-      v8 = [(_HKOutsideTapWindowCallbacks *)self recognizer];
-      [v7 removeGestureRecognizer:v8];
+      window = [(_HKOutsideTapWindowCallbacks *)self window];
+      recognizer2 = [(_HKOutsideTapWindowCallbacks *)self recognizer];
+      [window removeGestureRecognizer:recognizer2];
 
       [(_HKOutsideTapWindowCallbacks *)self setRecognizer:0];
     }
   }
 }
 
-- (void)_handleTap:(id)a3
+- (void)_handleTap:(id)tap
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tapCopy = tap;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = [(_HKOutsideTapWindowCallbacks *)self callbacks];
-  v7 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  callbacks = [(_HKOutsideTapWindowCallbacks *)self callbacks];
+  v7 = [callbacks countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v7)
   {
     v8 = v7;
@@ -131,30 +131,30 @@
       {
         if (*v24 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(callbacks);
         }
 
         v11 = *(*(&v23 + 1) + 8 * i);
-        v12 = [v11 view];
+        view = [v11 view];
 
-        if (v12)
+        if (view)
         {
-          v13 = [v11 view];
-          [v4 locationInView:v13];
+          view2 = [v11 view];
+          [tapCopy locationInView:view2];
           v15 = v14;
           v17 = v16;
 
-          v18 = [v11 view];
-          [v18 frame];
+          view3 = [v11 view];
+          [view3 frame];
           v29.x = v15;
           v29.y = v17;
           v19 = CGRectContainsPoint(v30, v29);
 
           if (!v19)
           {
-            v20 = [v11 outsideTapBlock];
-            v21 = [v11 view];
-            (v20)[2](v20, v21);
+            outsideTapBlock = [v11 outsideTapBlock];
+            view4 = [v11 view];
+            (outsideTapBlock)[2](outsideTapBlock, view4);
           }
         }
 
@@ -164,14 +164,14 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v8 = [callbacks countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v8);
   }
 
-  v22 = [(_HKOutsideTapWindowCallbacks *)self callbacks];
-  [v22 removeObjectsInArray:v5];
+  callbacks2 = [(_HKOutsideTapWindowCallbacks *)self callbacks];
+  [callbacks2 removeObjectsInArray:v5];
 
   [(_HKOutsideTapWindowCallbacks *)self _removeTapGestureRecognizerIfNeeded];
 }

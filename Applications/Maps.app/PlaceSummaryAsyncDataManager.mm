@@ -1,6 +1,6 @@
 @interface PlaceSummaryAsyncDataManager
 - (_TtC4Maps28PlaceSummaryAsyncDataManager)init;
-- (void)loadWith:(id)a3 containerWidth:(double)a4 desiredScale:(double)a5;
+- (void)loadWith:(id)with containerWidth:(double)width desiredScale:(double)scale;
 @end
 
 @implementation PlaceSummaryAsyncDataManager
@@ -15,11 +15,11 @@
   return [(PlaceSummaryAsyncDataManager *)&v4 init];
 }
 
-- (void)loadWith:(id)a3 containerWidth:(double)a4 desiredScale:(double)a5
+- (void)loadWith:(id)with containerWidth:(double)width desiredScale:(double)scale
 {
-  v8 = a3;
-  v9 = self;
-  sub_100305A18(a4, a5);
+  withCopy = with;
+  selfCopy = self;
+  sub_100305A18(width, scale);
 }
 
 @end

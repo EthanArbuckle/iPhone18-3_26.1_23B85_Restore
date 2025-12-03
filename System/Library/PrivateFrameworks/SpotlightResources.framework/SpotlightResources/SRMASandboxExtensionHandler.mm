@@ -1,20 +1,20 @@
 @interface SRMASandboxExtensionHandler
-- (SRMASandboxExtensionHandler)initWithAssetType:(id)a3;
-- (void)executeBlock:(id)a3 wait:(BOOL)a4;
+- (SRMASandboxExtensionHandler)initWithAssetType:(id)type;
+- (void)executeBlock:(id)block wait:(BOOL)wait;
 @end
 
 @implementation SRMASandboxExtensionHandler
 
-- (SRMASandboxExtensionHandler)initWithAssetType:(id)a3
+- (SRMASandboxExtensionHandler)initWithAssetType:(id)type
 {
-  v5 = a3;
+  typeCopy = type;
   v13.receiver = self;
   v13.super_class = SRMASandboxExtensionHandler;
   v6 = [(SRMASandboxExtensionHandler *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_assetType, a3);
+    objc_storeStrong(&v6->_assetType, type);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_attr_make_with_qos_class(v8, QOS_CLASS_BACKGROUND, 0);
 
@@ -26,10 +26,10 @@
   return v7;
 }
 
-- (void)executeBlock:(id)a3 wait:(BOOL)a4
+- (void)executeBlock:(id)block wait:(BOOL)wait
 {
-  v4 = a4;
-  v6 = a3;
+  waitCopy = wait;
+  blockCopy = block;
   v7 = self->_assetType;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -44,14 +44,14 @@
   }
 
   queue = self->_queue;
-  if (v4)
+  if (waitCopy)
   {
-    dispatch_sync(queue, v6);
+    dispatch_sync(queue, blockCopy);
   }
 
   else
   {
-    dispatch_async(queue, v6);
+    dispatch_async(queue, blockCopy);
   }
 }
 

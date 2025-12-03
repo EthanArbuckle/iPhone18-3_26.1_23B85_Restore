@@ -1,21 +1,21 @@
 @interface PPSpotlightAttributes
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSpotlightAttributes:(id)a3;
-- (PPSpotlightAttributes)initWithCoder:(id)a3;
-- (PPSpotlightAttributes)initWithStaticScore:(double)a3 featureVector:(id)a4 featureVectorVersion:(id)a5 namedEntityScores:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSpotlightAttributes:(id)attributes;
+- (PPSpotlightAttributes)initWithCoder:(id)coder;
+- (PPSpotlightAttributes)initWithStaticScore:(double)score featureVector:(id)vector featureVectorVersion:(id)version namedEntityScores:(id)scores;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PPSpotlightAttributes
 
-- (BOOL)isEqualToSpotlightAttributes:(id)a3
+- (BOOL)isEqualToSpotlightAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || self->_staticScore != *(v4 + 1))
+  attributesCopy = attributes;
+  v5 = attributesCopy;
+  if (!attributesCopy || self->_staticScore != *(attributesCopy + 1))
   {
     goto LABEL_9;
   }
@@ -70,24 +70,24 @@ LABEL_10:
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPSpotlightAttributes *)self isEqualToSpotlightAttributes:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPSpotlightAttributes *)self isEqualToSpotlightAttributes:v5];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v4 = objc_opt_new();
@@ -111,30 +111,30 @@ LABEL_10:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   staticScore = self->_staticScore;
-  v5 = a3;
-  [v5 encodeDouble:@"ssc" forKey:staticScore];
-  [v5 encodeObject:self->_featureVector forKey:@"fev"];
-  [v5 encodeObject:self->_featureVectorVersion forKey:@"fvv"];
-  [v5 encodeObject:self->_namedEntityScores forKey:@"nes"];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"ssc" forKey:staticScore];
+  [coderCopy encodeObject:self->_featureVector forKey:@"fev"];
+  [coderCopy encodeObject:self->_featureVectorVersion forKey:@"fvv"];
+  [coderCopy encodeObject:self->_namedEntityScores forKey:@"nes"];
 }
 
-- (PPSpotlightAttributes)initWithCoder:(id)a3
+- (PPSpotlightAttributes)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"ssc"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"ssc"];
   v6 = v5;
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fev"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ssc"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fev"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ssc"];
   v9 = objc_autoreleasePoolPush();
   v10 = objc_alloc(MEMORY[0x1E695DFD8]);
   v11 = objc_opt_class();
   v12 = objc_opt_class();
   v13 = [v10 initWithObjects:{v11, v12, objc_opt_class(), 0}];
   objc_autoreleasePoolPop(v9);
-  v14 = [v4 decodeObjectOfClasses:v13 forKey:@"nes"];
+  v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"nes"];
 
   v15 = [(PPSpotlightAttributes *)self initWithStaticScore:v7 featureVector:v8 featureVectorVersion:v14 namedEntityScores:v6];
   return v15;
@@ -159,24 +159,24 @@ LABEL_10:
   return v7;
 }
 
-- (PPSpotlightAttributes)initWithStaticScore:(double)a3 featureVector:(id)a4 featureVectorVersion:(id)a5 namedEntityScores:(id)a6
+- (PPSpotlightAttributes)initWithStaticScore:(double)score featureVector:(id)vector featureVectorVersion:(id)version namedEntityScores:(id)scores
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  vectorCopy = vector;
+  versionCopy = version;
+  scoresCopy = scores;
   v20.receiver = self;
   v20.super_class = PPSpotlightAttributes;
   v13 = [(PPSpotlightAttributes *)&v20 init];
   v14 = v13;
   if (v13)
   {
-    v13->_staticScore = a3;
-    v15 = [v10 copy];
+    v13->_staticScore = score;
+    v15 = [vectorCopy copy];
     featureVector = v14->_featureVector;
     v14->_featureVector = v15;
 
-    objc_storeStrong(&v14->_featureVectorVersion, a5);
-    v17 = [v12 copy];
+    objc_storeStrong(&v14->_featureVectorVersion, version);
+    v17 = [scoresCopy copy];
     namedEntityScores = v14->_namedEntityScores;
     v14->_namedEntityScores = v17;
   }

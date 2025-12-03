@@ -1,11 +1,11 @@
 @interface _UIKBEventDeferralPolicyAssistant
-- (BOOL)shouldLoadKeySceneInputViewsForResponder:(id)a3;
+- (BOOL)shouldLoadKeySceneInputViewsForResponder:(id)responder;
 - (UIKeyboardSceneDelegate)keyboardSceneDelegate;
 - (void)_handleObserverDeliveryPolicyDidChange;
-- (void)_isWindowDeferringTarget:(void *)a1;
+- (void)_isWindowDeferringTarget:(void *)target;
 - (void)configureEventDeferralPolicyObserver;
-- (void)didReloadInputViewsForNonKeyWindowSceneForResponder:(id)a3 force:(BOOL)a4 fromBecomeFirstResponder:(BOOL)a5;
-- (void)observerDeliveryPolicyDidChange:(id)a3;
+- (void)didReloadInputViewsForNonKeyWindowSceneForResponder:(id)responder force:(BOOL)force fromBecomeFirstResponder:(BOOL)firstResponder;
+- (void)observerDeliveryPolicyDidChange:(id)change;
 - (void)prepareForReloadInputViews;
 - (void)stopEventDeferralPolicyObserver;
 @end
@@ -15,14 +15,14 @@
 - (void)configureEventDeferralPolicyObserver
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(_UIKBEventDeferralPolicyAssistant *)self keyboardSceneDelegate];
-  v4 = [v3 scene];
-  v5 = [v4 keyWindow];
+  keyboardSceneDelegate = [(_UIKBEventDeferralPolicyAssistant *)self keyboardSceneDelegate];
+  scene = [keyboardSceneDelegate scene];
+  keyWindow = [scene keyWindow];
 
-  v6 = [MEMORY[0x1E698E3A0] tokenForIdentifierOfCAContext:{objc_msgSend(v5, "_contextId")}];
-  v7 = [(_UIKBEventDeferralPolicyAssistant *)self eventDeferralPolicyObserver];
-  v8 = [v7 deferringToken];
-  v9 = _deferringTokenEqualToToken(v6, v8);
+  v6 = [MEMORY[0x1E698E3A0] tokenForIdentifierOfCAContext:{objc_msgSend(keyWindow, "_contextId")}];
+  eventDeferralPolicyObserver = [(_UIKBEventDeferralPolicyAssistant *)self eventDeferralPolicyObserver];
+  deferringToken = [eventDeferralPolicyObserver deferringToken];
+  v9 = _deferringTokenEqualToToken(v6, deferringToken);
 
   if ((v9 & 1) == 0)
   {
@@ -40,11 +40,11 @@
       v11 = objc_opt_new();
       [(_UIKBEventDeferralPolicyAssistant *)self setEventDeferralPolicyObserver:v11];
 
-      v12 = [(_UIKBEventDeferralPolicyAssistant *)self eventDeferralPolicyObserver];
-      [v12 setDeferringToken:v6];
+      eventDeferralPolicyObserver2 = [(_UIKBEventDeferralPolicyAssistant *)self eventDeferralPolicyObserver];
+      [eventDeferralPolicyObserver2 setDeferringToken:v6];
 
-      v13 = [(_UIKBEventDeferralPolicyAssistant *)self eventDeferralPolicyObserver];
-      [v13 addObserver:self];
+      eventDeferralPolicyObserver3 = [(_UIKBEventDeferralPolicyAssistant *)self eventDeferralPolicyObserver];
+      [eventDeferralPolicyObserver3 addObserver:self];
 
       [(_UIKBEventDeferralPolicyAssistant *)self _handleObserverDeliveryPolicyDidChange];
     }
@@ -54,22 +54,22 @@
 - (void)stopEventDeferralPolicyObserver
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [(_UIKBEventDeferralPolicyAssistant *)self eventDeferralPolicyObserver];
+  eventDeferralPolicyObserver = [(_UIKBEventDeferralPolicyAssistant *)self eventDeferralPolicyObserver];
 
-  if (v3)
+  if (eventDeferralPolicyObserver)
   {
     v4 = _UIKBEventDeferralPolicyAssistantLogger();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
-      v6 = [(_UIKBEventDeferralPolicyAssistant *)self eventDeferralPolicyObserver];
-      v7 = [v6 deferringToken];
+      eventDeferralPolicyObserver2 = [(_UIKBEventDeferralPolicyAssistant *)self eventDeferralPolicyObserver];
+      deferringToken = [eventDeferralPolicyObserver2 deferringToken];
       v8 = 138543362;
-      v9 = v7;
+      v9 = deferringToken;
       _os_log_debug_impl(&dword_188A29000, v4, OS_LOG_TYPE_DEBUG, "Stop observing event deferral policy for window with token %{public}@", &v8, 0xCu);
     }
 
-    v5 = [(_UIKBEventDeferralPolicyAssistant *)self eventDeferralPolicyObserver];
-    [v5 removeObserver:self];
+    eventDeferralPolicyObserver3 = [(_UIKBEventDeferralPolicyAssistant *)self eventDeferralPolicyObserver];
+    [eventDeferralPolicyObserver3 removeObserver:self];
 
     [(_UIKBEventDeferralPolicyAssistant *)self setEventDeferralPolicyObserver:0];
   }
@@ -84,41 +84,41 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_isWindowDeferringTarget:(void *)a1
+- (void)_isWindowDeferringTarget:(void *)target
 {
   v3 = a2;
-  if (a1)
+  if (target)
   {
-    if ([a1 keyWindowIsDeferringTarget])
+    if ([target keyWindowIsDeferringTarget])
     {
       v4 = [MEMORY[0x1E698E3A0] tokenForIdentifierOfCAContext:{objc_msgSend(v3, "_contextId")}];
-      v5 = [a1 eventDeferralPolicyObserver];
-      v6 = [v5 deferringToken];
-      a1 = _deferringTokenEqualToToken(v4, v6);
+      eventDeferralPolicyObserver = [target eventDeferralPolicyObserver];
+      deferringToken = [eventDeferralPolicyObserver deferringToken];
+      target = _deferringTokenEqualToToken(v4, deferringToken);
     }
 
     else
     {
-      a1 = 0;
+      target = 0;
     }
   }
 
-  return a1;
+  return target;
 }
 
-- (BOOL)shouldLoadKeySceneInputViewsForResponder:(id)a3
+- (BOOL)shouldLoadKeySceneInputViewsForResponder:(id)responder
 {
-  v4 = a3;
-  v5 = [v4 _window];
-  v6 = [(_UIKBEventDeferralPolicyAssistant *)self _isWindowDeferringTarget:v5];
+  responderCopy = responder;
+  _window = [responderCopy _window];
+  v6 = [(_UIKBEventDeferralPolicyAssistant *)self _isWindowDeferringTarget:_window];
 
-  v7 = [(_UIKBEventDeferralPolicyAssistant *)self keyboardSceneDelegate];
-  v8 = [v7 scene];
-  v9 = [v8 _isKeyWindowScene];
+  keyboardSceneDelegate = [(_UIKBEventDeferralPolicyAssistant *)self keyboardSceneDelegate];
+  scene = [keyboardSceneDelegate scene];
+  _isKeyWindowScene = [scene _isKeyWindowScene];
 
-  if ([v4 isFirstResponder])
+  if ([responderCopy isFirstResponder])
   {
-    v10 = [v4 _requiresKeyboardWhenFirstResponder] ^ 1;
+    v10 = [responderCopy _requiresKeyboardWhenFirstResponder] ^ 1;
   }
 
   else
@@ -128,7 +128,7 @@
 
   v11 = +[UIKeyboard isKeyboardProcess];
   v12 = v11;
-  v13 = v9 ^ 1 | v6;
+  v13 = _isKeyWindowScene ^ 1 | v6;
   if ((v13 & 1) == 0 && (v10 & 1) == 0 && !v11)
   {
     v14 = _UIKBEventDeferralPolicyAssistantLogger();
@@ -141,34 +141,34 @@
 
   if ((v13 & 1) == 0)
   {
-    v9 = v10 | v12;
+    _isKeyWindowScene = v10 | v12;
   }
 
-  return v9 & 1;
+  return _isKeyWindowScene & 1;
 }
 
-- (void)didReloadInputViewsForNonKeyWindowSceneForResponder:(id)a3 force:(BOOL)a4 fromBecomeFirstResponder:(BOOL)a5
+- (void)didReloadInputViewsForNonKeyWindowSceneForResponder:(id)responder force:(BOOL)force fromBecomeFirstResponder:(BOOL)firstResponder
 {
-  v5 = a5;
-  v6 = a4;
+  firstResponderCopy = firstResponder;
+  forceCopy = force;
   v40 = *MEMORY[0x1E69E9840];
-  v31 = a3;
+  responderCopy = responder;
   if (!self)
   {
     goto LABEL_6;
   }
 
-  v8 = [(_UIKBEventDeferralPolicyAssistant *)self keyboardSceneDelegate];
-  v9 = [v31 _window];
-  v10 = [(_UIKBEventDeferralPolicyAssistant *)self _isWindowDeferringTarget:v9];
+  keyboardSceneDelegate = [(_UIKBEventDeferralPolicyAssistant *)self keyboardSceneDelegate];
+  _window = [responderCopy _window];
+  v10 = [(_UIKBEventDeferralPolicyAssistant *)self _isWindowDeferringTarget:_window];
 
-  v11 = [v8 scene];
-  v12 = [v11 _isKeyWindowScene];
+  scene = [keyboardSceneDelegate scene];
+  _isKeyWindowScene = [scene _isKeyWindowScene];
 
-  v13 = [v31 isFirstResponder];
-  if (v13)
+  isFirstResponder = [responderCopy isFirstResponder];
+  if (isFirstResponder)
   {
-    v13 = [v31 _requiresKeyboardWhenFirstResponder];
+    isFirstResponder = [responderCopy _requiresKeyboardWhenFirstResponder];
   }
 
   if (v10)
@@ -178,30 +178,30 @@ LABEL_6:
     goto LABEL_18;
   }
 
-  v14 = v12 & v13;
+  v14 = _isKeyWindowScene & isFirstResponder;
 
   if (v14 == 1)
   {
-    v15 = v31;
+    v15 = responderCopy;
     v16 = _UIKBEventDeferralPolicyAssistantLogger();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v17 = objc_opt_class();
       v18 = NSStringFromClass(v17);
-      v19 = [(_UIKBEventDeferralPolicyAssistant *)self eventDeferralPolicyObserver];
-      v20 = [v19 deferringToken];
+      eventDeferralPolicyObserver = [(_UIKBEventDeferralPolicyAssistant *)self eventDeferralPolicyObserver];
+      deferringToken = [eventDeferralPolicyObserver deferringToken];
       *buf = 138543875;
       v33 = v18;
       v34 = 2049;
       v35 = v15;
       v36 = 2112;
-      v37 = v20;
+      v37 = deferringToken;
       _os_log_impl(&dword_188A29000, v16, OS_LOG_TYPE_DEFAULT, "Request event deferral target selection (responder:<%{public}@: %{private}p> token:%@)", buf, 0x20u);
     }
 
     v21 = +[UIKeyboardSceneDelegate automaticKeyboardArbiterClient];
-    v22 = [v15 _window];
-    [v21 requestEventDeferralTargetSelectionForWindow:v22];
+    _window2 = [v15 _window];
+    [v21 requestEventDeferralTargetSelectionForWindow:_window2];
 
     v23 = v15;
     v24 = _UIKBEventDeferralPolicyAssistantLogger();
@@ -213,7 +213,7 @@ LABEL_6:
       v28 = "N";
       *buf = 138544131;
       v34 = 2049;
-      if (v6)
+      if (forceCopy)
       {
         v29 = "Y";
       }
@@ -225,7 +225,7 @@ LABEL_6:
 
       v33 = v26;
       v35 = v23;
-      if (v5)
+      if (firstResponderCopy)
       {
         v28 = "Y";
       }
@@ -237,7 +237,7 @@ LABEL_6:
       _os_log_impl(&dword_188A29000, v24, OS_LOG_TYPE_DEFAULT, "Queue reload task for become event deferral target (responder:<%{public}@: %{private}p> force:%s fromBFR:%s)", buf, 0x2Au);
     }
 
-    v30 = [[_UIReloadInputViewsTask alloc] initWithResponder:v23 force:v6 fromBecomeFirstResponder:v5];
+    v30 = [[_UIReloadInputViewsTask alloc] initWithResponder:v23 force:forceCopy fromBecomeFirstResponder:firstResponderCopy];
     [(_UIKBEventDeferralPolicyAssistant *)self setReloadInputViewTask:v30];
   }
 
@@ -251,9 +251,9 @@ LABEL_18:
   [(_UIKBEventDeferralPolicyAssistant *)self configureEventDeferralPolicyObserver];
 }
 
-- (void)observerDeliveryPolicyDidChange:(id)a3
+- (void)observerDeliveryPolicyDidChange:(id)change
 {
-  if (self->_eventDeferralPolicyObserver == a3)
+  if (self->_eventDeferralPolicyObserver == change)
   {
     [(_UIKBEventDeferralPolicyAssistant *)self _handleObserverDeliveryPolicyDidChange];
   }

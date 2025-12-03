@@ -1,47 +1,47 @@
 @interface STRegionRatings
 + (STRegionRatings)sharedRatings;
-+ (void)loadRegionRatingsWithOptions:(id)a3 completionHandler:(id)a4;
-+ (void)loadRegionRatingsWithOptions:(id)a3 storefrontClient:(id)a4 managementState:(id)a5 completionHandler:(id)a6;
++ (void)loadRegionRatingsWithOptions:(id)options completionHandler:(id)handler;
++ (void)loadRegionRatingsWithOptions:(id)options storefrontClient:(id)client managementState:(id)state completionHandler:(id)handler;
 - (NSString)preferredRegion;
-- (STRegionRatings)initWithStorefrontClient:(id)a3;
-- (id)_localizedLabelForRegion:(id)a3 rating:(id)a4;
-- (id)_localizedRatingsForRegion:(id)a3 type:(id)a4 includeAllContentKey:(BOOL)a5;
-- (id)_overrideValueForString:(id)a3;
-- (id)getClosestRestrictionMatch:(id)a3 within:(id)a4 forPayloadKey:(id)a5;
-- (id)getRatingSystemTypeFrom:(id)a3;
-- (id)localizedStringForAppRatingLabel:(id)a3;
+- (STRegionRatings)initWithStorefrontClient:(id)client;
+- (id)_localizedLabelForRegion:(id)region rating:(id)rating;
+- (id)_localizedRatingsForRegion:(id)region type:(id)type includeAllContentKey:(BOOL)key;
+- (id)_overrideValueForString:(id)string;
+- (id)getClosestRestrictionMatch:(id)match within:(id)within forPayloadKey:(id)key;
+- (id)getRatingSystemTypeFrom:(id)from;
+- (id)localizedStringForAppRatingLabel:(id)label;
 - (id)ratingValuesByRatingSystemType;
-- (void)_loadRegionRatingsDataWithOptions:(id)a3 managementState:(id)a4 completionHandler:(id)a5;
+- (void)_loadRegionRatingsDataWithOptions:(id)options managementState:(id)state completionHandler:(id)handler;
 @end
 
 @implementation STRegionRatings
 
-+ (void)loadRegionRatingsWithOptions:(id)a3 completionHandler:(id)a4
++ (void)loadRegionRatingsWithOptions:(id)options completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  optionsCopy = options;
   v9 = objc_opt_new();
   v8 = objc_opt_new();
-  [a1 loadRegionRatingsWithOptions:v7 storefrontClient:v9 managementState:v8 completionHandler:v6];
+  [self loadRegionRatingsWithOptions:optionsCopy storefrontClient:v9 managementState:v8 completionHandler:handlerCopy];
 }
 
-+ (void)loadRegionRatingsWithOptions:(id)a3 storefrontClient:(id)a4 managementState:(id)a5 completionHandler:(id)a6
++ (void)loadRegionRatingsWithOptions:(id)options storefrontClient:(id)client managementState:(id)state completionHandler:(id)handler
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[STRegionRatings alloc] initWithStorefrontClient:v11];
+  handlerCopy = handler;
+  stateCopy = state;
+  clientCopy = client;
+  optionsCopy = options;
+  v13 = [[STRegionRatings alloc] initWithStorefrontClient:clientCopy];
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __99__STRegionRatings_loadRegionRatingsWithOptions_storefrontClient_managementState_completionHandler___block_invoke;
   v16[3] = &unk_1E7CE7760;
   v17 = v13;
-  v18 = v9;
+  v18 = handlerCopy;
   v14 = v13;
-  v15 = v9;
-  [(STRegionRatings *)v14 _loadRegionRatingsDataWithOptions:v12 managementState:v10 completionHandler:v16];
+  v15 = handlerCopy;
+  [(STRegionRatings *)v14 _loadRegionRatingsDataWithOptions:optionsCopy managementState:stateCopy completionHandler:v16];
 }
 
 uint64_t __99__STRegionRatings_loadRegionRatingsWithOptions_storefrontClient_managementState_completionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -79,41 +79,41 @@ void __32__STRegionRatings_sharedRatings__block_invoke()
   sharedRatings_sharedRatings = v1;
 }
 
-- (STRegionRatings)initWithStorefrontClient:(id)a3
+- (STRegionRatings)initWithStorefrontClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v8.receiver = self;
   v8.super_class = STRegionRatings;
   v5 = [(STRegionRatings *)&v8 init];
   storefrontClient = v5->_storefrontClient;
-  v5->_storefrontClient = v4;
+  v5->_storefrontClient = clientCopy;
 
   return v5;
 }
 
-- (void)_loadRegionRatingsDataWithOptions:(id)a3 managementState:(id)a4 completionHandler:(id)a5
+- (void)_loadRegionRatingsDataWithOptions:(id)options managementState:(id)state completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  optionsCopy = options;
+  stateCopy = state;
+  handlerCopy = handler;
   if (_os_feature_enabled_impl())
   {
-    v11 = [(STRegionRatings *)self storefrontClient];
+    storefrontClient = [(STRegionRatings *)self storefrontClient];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __87__STRegionRatings__loadRegionRatingsDataWithOptions_managementState_completionHandler___block_invoke;
     v13[3] = &unk_1E7CE8160;
     v13[4] = self;
-    v14 = v8;
-    v15 = v9;
-    v16 = v10;
-    [v11 fetchStorefrontWithOptions:v14 completionHandler:v13];
+    v14 = optionsCopy;
+    v15 = stateCopy;
+    v16 = handlerCopy;
+    [storefrontClient fetchStorefrontWithOptions:v14 completionHandler:v13];
   }
 
   else
   {
-    v12 = [(STRegionRatings *)self preferredRegion];
-    -[STRegionRatings _loadRegionRatingsDataForStorefront:includeUnrated:managementState:completionHandler:](self, "_loadRegionRatingsDataForStorefront:includeUnrated:managementState:completionHandler:", v12, [v8 unrated], v9, v10);
+    preferredRegion = [(STRegionRatings *)self preferredRegion];
+    -[STRegionRatings _loadRegionRatingsDataForStorefront:includeUnrated:managementState:completionHandler:](self, "_loadRegionRatingsDataForStorefront:includeUnrated:managementState:completionHandler:", preferredRegion, [optionsCopy unrated], stateCopy, handlerCopy);
   }
 }
 
@@ -213,13 +213,13 @@ uint64_t __104__STRegionRatings__loadRegionRatingsDataForStorefront_includeUnrat
 
 - (NSString)preferredRegion
 {
-  v2 = [MEMORY[0x1E695DF58] currentLocale];
-  v3 = [v2 countryCode];
-  v4 = [v3 lowercaseString];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  countryCode = [currentLocale countryCode];
+  lowercaseString = [countryCode lowercaseString];
 
-  if ([v4 length])
+  if ([lowercaseString length])
   {
-    v5 = v4;
+    v5 = lowercaseString;
   }
 
   else
@@ -238,18 +238,18 @@ uint64_t __104__STRegionRatings__loadRegionRatingsDataForStorefront_includeUnrat
 
 - (id)ratingValuesByRatingSystemType
 {
-  v2 = [(STRegionRatings *)self regionRatingsData];
-  v3 = [v2 allValues];
-  v4 = [v3 firstObject];
+  regionRatingsData = [(STRegionRatings *)self regionRatingsData];
+  allValues = [regionRatingsData allValues];
+  firstObject = [allValues firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-- (id)_overrideValueForString:(id)a3
+- (id)_overrideValueForString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v5 = [v4 localizedStringForKey:v3 value:@"xx" table:@"RatingProviders"];
+  v5 = [v4 localizedStringForKey:stringCopy value:@"xx" table:@"RatingProviders"];
 
   if (v5 == @"xx")
   {
@@ -259,32 +259,32 @@ uint64_t __104__STRegionRatings__loadRegionRatingsDataForStorefront_includeUnrat
   else
   {
     v6 = [MEMORY[0x1E696AE70] regularExpressionWithPattern:@"(\\d+)" options:0 error:0];
-    v7 = [v6 firstMatchInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}];
+    v7 = [v6 firstMatchInString:stringCopy options:0 range:{0, objc_msgSend(stringCopy, "length")}];
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 range];
-      v11 = [v3 substringWithRange:{v9, v10}];
-      v12 = [v11 integerValue];
+      range = [v7 range];
+      v11 = [stringCopy substringWithRange:{range, v10}];
+      integerValue = [v11 integerValue];
     }
 
     else
     {
-      v12 = 0;
+      integerValue = 0;
     }
 
-    v13 = [MEMORY[0x1E696AEC0] localizedStringWithValidatedFormat:v5 validFormatSpecifiers:@"%ld" error:0, v12];
+    v13 = [MEMORY[0x1E696AEC0] localizedStringWithValidatedFormat:v5 validFormatSpecifiers:@"%ld" error:0, integerValue];
   }
 
   return v13;
 }
 
-- (id)_localizedLabelForRegion:(id)a3 rating:(id)a4
+- (id)_localizedLabelForRegion:(id)region rating:(id)rating
 {
   v6 = MEMORY[0x1E696AEC0];
-  v7 = a4;
-  v8 = [v6 stringWithFormat:@"%@_%@", a3, v7];
-  v9 = [(STRegionRatings *)self _overrideValueForString:v8];
+  ratingCopy = rating;
+  ratingCopy = [v6 stringWithFormat:@"%@_%@", region, ratingCopy];
+  v9 = [(STRegionRatings *)self _overrideValueForString:ratingCopy];
   v10 = v9;
   if (v9)
   {
@@ -293,7 +293,7 @@ uint64_t __104__STRegionRatings__loadRegionRatingsDataForStorefront_includeUnrat
 
   else
   {
-    v11 = v7;
+    v11 = ratingCopy;
   }
 
   v12 = v11;
@@ -301,23 +301,23 @@ uint64_t __104__STRegionRatings__loadRegionRatingsDataForStorefront_includeUnrat
   return v11;
 }
 
-- (id)_localizedRatingsForRegion:(id)a3 type:(id)a4 includeAllContentKey:(BOOL)a5
+- (id)_localizedRatingsForRegion:(id)region type:(id)type includeAllContentKey:(BOOL)key
 {
-  v5 = a5;
+  keyCopy = key;
   v40 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  regionCopy = region;
+  typeCopy = type;
   if (_os_feature_enabled_impl())
   {
-    v10 = [(STRegionRatings *)self ratingValuesByRatingSystemType];
-    v11 = [v10 objectForKeyedSubscript:v9];
+    ratingValuesByRatingSystemType = [(STRegionRatings *)self ratingValuesByRatingSystemType];
+    v11 = [ratingValuesByRatingSystemType objectForKeyedSubscript:typeCopy];
   }
 
   else
   {
-    v10 = [(STRegionRatings *)self regionRatingsData];
-    v12 = [v10 objectForKeyedSubscript:v8];
-    v11 = [v12 objectForKeyedSubscript:v9];
+    ratingValuesByRatingSystemType = [(STRegionRatings *)self regionRatingsData];
+    v12 = [ratingValuesByRatingSystemType objectForKeyedSubscript:regionCopy];
+    v11 = [v12 objectForKeyedSubscript:typeCopy];
   }
 
   if (v11)
@@ -330,8 +330,8 @@ uint64_t __104__STRegionRatings__loadRegionRatingsDataForStorefront_includeUnrat
 
     else
     {
-      v33 = v5;
-      v34 = v9;
+      v33 = keyCopy;
+      v34 = typeCopy;
       v32 = v13;
       v14 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v13, "count")}];
       v35 = 0u;
@@ -354,7 +354,7 @@ uint64_t __104__STRegionRatings__loadRegionRatingsDataForStorefront_includeUnrat
             }
 
             v21 = [*(*(&v35 + 1) + 8 * i) objectForKeyedSubscript:@"rating"];
-            v22 = [(STRegionRatings *)self _localizedLabelForRegion:v8 rating:v21];
+            v22 = [(STRegionRatings *)self _localizedLabelForRegion:regionCopy rating:v21];
             [v14 addObject:v22];
           }
 
@@ -364,8 +364,8 @@ uint64_t __104__STRegionRatings__loadRegionRatingsDataForStorefront_includeUnrat
         while (v18);
       }
 
-      v9 = v34;
-      v5 = v33;
+      typeCopy = v34;
+      keyCopy = v33;
       v13 = v32;
     }
 
@@ -381,7 +381,7 @@ uint64_t __104__STRegionRatings__loadRegionRatingsDataForStorefront_includeUnrat
 
   if (v23)
   {
-    if (!v5)
+    if (!keyCopy)
     {
       goto LABEL_23;
     }
@@ -393,7 +393,7 @@ uint64_t __104__STRegionRatings__loadRegionRatingsDataForStorefront_includeUnrat
     v25 = [v24 localizedStringForKey:@"DontAllow" value:@"xx" table:@"RatingProviders"];
     [v15 setObject:v25 forKeyedSubscript:&unk_1F3059BE8];
 
-    if (!v5)
+    if (!keyCopy)
     {
       goto LABEL_23;
     }
@@ -416,17 +416,17 @@ LABEL_23:
   return v29;
 }
 
-- (id)localizedStringForAppRatingLabel:(id)a3
+- (id)localizedStringForAppRatingLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   if (_os_feature_enabled_impl())
   {
-    v5 = v4;
+    v5 = labelCopy;
   }
 
   else
   {
-    v5 = [(STRegionRatings *)self _localizedLabelForRegion:@"us" rating:v4];
+    v5 = [(STRegionRatings *)self _localizedLabelForRegion:@"us" rating:labelCopy];
   }
 
   v6 = v5;
@@ -434,10 +434,10 @@ LABEL_23:
   return v6;
 }
 
-- (id)getRatingSystemTypeFrom:(id)a3
+- (id)getRatingSystemTypeFrom:(id)from
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  fromCopy = from;
   if (getRatingSystemTypeFrom__onceToken[0] != -1)
   {
     [STRegionRatings getRatingSystemTypeFrom:];
@@ -447,7 +447,7 @@ LABEL_23:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = v3;
+  v4 = fromCopy;
   v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
@@ -512,17 +512,17 @@ void __43__STRegionRatings_getRatingSystemTypeFrom___block_invoke()
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (id)getClosestRestrictionMatch:(id)a3 within:(id)a4 forPayloadKey:(id)a5
+- (id)getClosestRestrictionMatch:(id)match within:(id)within forPayloadKey:(id)key
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 integerValue];
-  v11 = [v9 componentsSeparatedByString:@"."];
+  matchCopy = match;
+  withinCopy = within;
+  keyCopy = key;
+  integerValue = [matchCopy integerValue];
+  v11 = [keyCopy componentsSeparatedByString:@"."];
 
-  v12 = [v11 lastObject];
+  lastObject = [v11 lastObject];
 
-  v13 = [v12 isEqualToString:@"ratingApps"];
+  v13 = [lastObject isEqualToString:@"ratingApps"];
   v14 = _os_feature_enabled_impl();
   if (v13)
   {
@@ -539,21 +539,21 @@ void __43__STRegionRatings_getRatingSystemTypeFrom___block_invoke()
     v15 = &unk_1F3059C00;
   }
 
-  if ([v7 isEqual:v15])
+  if ([matchCopy isEqual:v15])
   {
-    v16 = v7;
-    v17 = v8;
+    v16 = matchCopy;
+    v17 = withinCopy;
     goto LABEL_12;
   }
 
 LABEL_7:
-  v17 = [v8 sortedArrayUsingComparator:&__block_literal_global_89];
+  v17 = [withinCopy sortedArrayUsingComparator:&__block_literal_global_89];
 
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __67__STRegionRatings_getClosestRestrictionMatch_within_forPayloadKey___block_invoke_2;
   v22[3] = &__block_descriptor_40_e25_B32__0__NSNumber_8Q16_B24l;
-  v22[4] = v10;
+  v22[4] = integerValue;
   v18 = [v17 indexOfObjectPassingTest:v22];
   if (v18 == 0x7FFFFFFFFFFFFFFFLL)
   {

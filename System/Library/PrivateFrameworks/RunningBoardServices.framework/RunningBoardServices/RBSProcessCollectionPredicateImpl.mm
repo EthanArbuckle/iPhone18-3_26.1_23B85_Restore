@@ -1,6 +1,6 @@
 @interface RBSProcessCollectionPredicateImpl
-- (BOOL)isEqual:(id)a3;
-- (RBSProcessCollectionPredicateImpl)initWithIdentifiers:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (RBSProcessCollectionPredicateImpl)initWithIdentifiers:(id)identifiers;
 - (id)description;
 @end
 
@@ -15,10 +15,10 @@
   return v5;
 }
 
-- (RBSProcessCollectionPredicateImpl)initWithIdentifiers:(id)a3
+- (RBSProcessCollectionPredicateImpl)initWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  if (!v4)
+  identifiersCopy = identifiers;
+  if (!identifiersCopy)
   {
     [RBSProcessCollectionPredicateImpl initWithIdentifiers:];
   }
@@ -28,7 +28,7 @@
   v5 = [(RBSProcessCollectionPredicateImpl *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifiersCopy copy];
     identifiers = v5->_identifiers;
     v5->_identifiers = v6;
   }
@@ -36,10 +36,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     goto LABEL_10;
   }
@@ -51,7 +51,7 @@
   }
 
   identifiers = self->_identifiers;
-  v8 = v4->_identifiers;
+  v8 = equalCopy->_identifiers;
   if (identifiers == v8)
   {
 LABEL_10:

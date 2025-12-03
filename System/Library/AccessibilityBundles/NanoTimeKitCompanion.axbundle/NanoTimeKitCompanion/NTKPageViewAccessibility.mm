@@ -1,5 +1,5 @@
 @interface NTKPageViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityFKAShouldProcessChildren;
 - (BOOL)_axAllowsDelete;
 - (BOOL)_axAllowsSelect;
@@ -18,49 +18,49 @@
 
 @implementation NTKPageViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NTKPageView" hasInstanceMethod:@"pageDelegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NTKPageView" hasInstanceVariable:@"_outlineView" withType:"UIView"];
-  [v3 validateProtocol:@"NTKPageDelegate" hasRequiredInstanceMethod:@"pageWasSelected:"];
-  [v3 validateProtocol:@"NTKPageDelegate" hasRequiredInstanceMethod:@"pageDidBeginSwipeToDelete:"];
-  [v3 validateProtocol:@"NTKPageDelegate" hasRequiredInstanceMethod:@"page:didEndSwipeToDelete:"];
-  [v3 validateProtocol:@"NTKPageDelegate" hasRequiredInstanceMethod:@"page:didUpdateSwipeToDelete:"];
-  [v3 validateClass:@"NTKPageScrollViewController"];
-  [v3 validateClass:@"NTKPageScrollViewController" hasInstanceMethod:@"_canSelectPageAtIndex:" withFullSignature:{"B", "Q", 0}];
-  [v3 validateClass:@"NTKPageScrollViewController" hasInstanceMethod:@"_canDeletePageAtIndex:" withFullSignature:{"B", "Q", 0}];
-  [v3 validateClass:@"NTKPageScrollViewController" hasInstanceMethod:@"confirmPageDeletion" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NTKPageView" hasInstanceMethod:@"pageDelegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NTKPageView" hasInstanceVariable:@"_outlineView" withType:"UIView"];
+  [validationsCopy validateProtocol:@"NTKPageDelegate" hasRequiredInstanceMethod:@"pageWasSelected:"];
+  [validationsCopy validateProtocol:@"NTKPageDelegate" hasRequiredInstanceMethod:@"pageDidBeginSwipeToDelete:"];
+  [validationsCopy validateProtocol:@"NTKPageDelegate" hasRequiredInstanceMethod:@"page:didEndSwipeToDelete:"];
+  [validationsCopy validateProtocol:@"NTKPageDelegate" hasRequiredInstanceMethod:@"page:didUpdateSwipeToDelete:"];
+  [validationsCopy validateClass:@"NTKPageScrollViewController"];
+  [validationsCopy validateClass:@"NTKPageScrollViewController" hasInstanceMethod:@"_canSelectPageAtIndex:" withFullSignature:{"B", "Q", 0}];
+  [validationsCopy validateClass:@"NTKPageScrollViewController" hasInstanceMethod:@"_canDeletePageAtIndex:" withFullSignature:{"B", "Q", 0}];
+  [validationsCopy validateClass:@"NTKPageScrollViewController" hasInstanceMethod:@"confirmPageDeletion" withFullSignature:{"v", 0}];
 }
 
 - (id)accessibilityPath
 {
-  v3 = [(NTKPageViewAccessibility *)self _axPageScrollViewController];
-  v4 = [v3 _accessibilityShouldSwipeBetweenPages];
+  _axPageScrollViewController = [(NTKPageViewAccessibility *)self _axPageScrollViewController];
+  _accessibilityShouldSwipeBetweenPages = [_axPageScrollViewController _accessibilityShouldSwipeBetweenPages];
 
-  if (v4)
+  if (_accessibilityShouldSwipeBetweenPages)
   {
     v5 = [(NTKPageViewAccessibility *)self safeUIViewForKey:@"_outlineView"];
-    v6 = [v5 accessibilityPath];
+    accessibilityPath = [v5 accessibilityPath];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = NTKPageViewAccessibility;
-    v6 = [(NTKPageViewAccessibility *)&v8 accessibilityPath];
+    accessibilityPath = [(NTKPageViewAccessibility *)&v8 accessibilityPath];
   }
 
-  return v6;
+  return accessibilityPath;
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(NTKPageViewAccessibility *)self _axPageScrollViewController];
-  if ([v3 _accessibilityShouldSwipeBetweenPages])
+  _axPageScrollViewController = [(NTKPageViewAccessibility *)self _axPageScrollViewController];
+  if ([_axPageScrollViewController _accessibilityShouldSwipeBetweenPages])
   {
-    v4 = [(NTKPageViewAccessibility *)self _axPageScrollViewController];
-    v5 = [v4 _accessibilityIsPageViewVisible:self];
+    _axPageScrollViewController2 = [(NTKPageViewAccessibility *)self _axPageScrollViewController];
+    v5 = [_axPageScrollViewController2 _accessibilityIsPageViewVisible:self];
   }
 
   else
@@ -75,16 +75,16 @@
 {
   if ([(NTKPageViewAccessibility *)self _accessibilityIsFKARunningForFocusItem])
   {
-    v3 = [(NTKPageViewAccessibility *)self _axPageScrollViewController];
-    if ([v3 _accessibilityShouldSwipeBetweenPages])
+    _axPageScrollViewController = [(NTKPageViewAccessibility *)self _axPageScrollViewController];
+    if ([_axPageScrollViewController _accessibilityShouldSwipeBetweenPages])
     {
       v4 = 0;
     }
 
     else
     {
-      v5 = [(NTKPageViewAccessibility *)self _axPageScrollViewController];
-      v4 = [v5 _accessibilityIsPageViewVisible:self];
+      _axPageScrollViewController2 = [(NTKPageViewAccessibility *)self _axPageScrollViewController];
+      v4 = [_axPageScrollViewController2 _accessibilityIsPageViewVisible:self];
     }
   }
 
@@ -100,32 +100,32 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(NTKPageViewAccessibility *)self _axPageScrollViewController];
-  v4 = [v3 _accessibilityLabelForPageView:self];
+  _axPageScrollViewController = [(NTKPageViewAccessibility *)self _axPageScrollViewController];
+  v4 = [_axPageScrollViewController _accessibilityLabelForPageView:self];
 
   return v4;
 }
 
 - (id)accessibilityValue
 {
-  v3 = [(NTKPageViewAccessibility *)self _axPageScrollViewController];
-  v4 = [v3 _accessibilityValueForPageView:self];
+  _axPageScrollViewController = [(NTKPageViewAccessibility *)self _axPageScrollViewController];
+  v4 = [_axPageScrollViewController _accessibilityValueForPageView:self];
 
   return v4;
 }
 
 - (id)accessibilityHint
 {
-  v3 = [(NTKPageViewAccessibility *)self _axPageScrollViewController];
-  v4 = [v3 _accessibilityHintForPageView:self];
+  _axPageScrollViewController = [(NTKPageViewAccessibility *)self _axPageScrollViewController];
+  v4 = [_axPageScrollViewController _accessibilityHintForPageView:self];
 
   return v4;
 }
 
 - (id)accessibilityCustomActions
 {
-  v3 = [(NTKPageViewAccessibility *)self _axPageScrollViewController];
-  v4 = [v3 _accessibilityCustomActionsForPageView:self];
+  _axPageScrollViewController = [(NTKPageViewAccessibility *)self _axPageScrollViewController];
+  v4 = [_axPageScrollViewController _accessibilityCustomActionsForPageView:self];
 
   if ([(NTKPageViewAccessibility *)self _axAllowsDelete])
   {

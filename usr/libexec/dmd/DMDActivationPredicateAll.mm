@@ -1,17 +1,17 @@
 @interface DMDActivationPredicateAll
-- (id)evaluatePredicateWithError:(id *)a3;
+- (id)evaluatePredicateWithError:(id *)error;
 @end
 
 @implementation DMDActivationPredicateAll
 
-- (id)evaluatePredicateWithError:(id *)a3
+- (id)evaluatePredicateWithError:(id *)error
 {
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [(DMDActivationPredicateCompound *)self subPredicateObservers];
-  v6 = [v5 countByEnumeratingWithState:&v20 objects:v30 count:16];
+  subPredicateObservers = [(DMDActivationPredicateCompound *)self subPredicateObservers];
+  v6 = [subPredicateObservers countByEnumeratingWithState:&v20 objects:v30 count:16];
   if (v6)
   {
     v7 = v6;
@@ -23,10 +23,10 @@
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subPredicateObservers);
         }
 
-        v10 = [*(*(&v20 + 1) + 8 * v9) evaluatePredicateWithError:a3];
+        v10 = [*(*(&v20 + 1) + 8 * v9) evaluatePredicateWithError:error];
         if (!v10)
         {
 
@@ -35,9 +35,9 @@
         }
 
         v11 = v10;
-        v12 = [v10 BOOLValue];
+        bOOLValue = [v10 BOOLValue];
 
-        if (!v12)
+        if (!bOOLValue)
         {
           v13 = 0;
           goto LABEL_13;
@@ -47,7 +47,7 @@
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v20 objects:v30 count:16];
+      v7 = [subPredicateObservers countByEnumeratingWithState:&v20 objects:v30 count:16];
       if (v7)
       {
         continue;
@@ -64,15 +64,15 @@ LABEL_13:
   v15 = DMFConfigurationEngineLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [(DMDActivationPredicateObserver *)self predicateType];
-    v17 = [(DMDActivationPredicateObserver *)self uniqueIdentifier];
-    v18 = [(DMDActivationPredicateObserver *)self lastPredicateEvaluationValue];
+    predicateType = [(DMDActivationPredicateObserver *)self predicateType];
+    uniqueIdentifier = [(DMDActivationPredicateObserver *)self uniqueIdentifier];
+    lastPredicateEvaluationValue = [(DMDActivationPredicateObserver *)self lastPredicateEvaluationValue];
     *buf = 138543874;
-    v25 = v16;
+    v25 = predicateType;
     v26 = 2114;
-    v27 = v17;
+    v27 = uniqueIdentifier;
     v28 = 1024;
-    v29 = v18;
+    v29 = lastPredicateEvaluationValue;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Predicate type: %{public}@ with unique identifier: %{public}@ evaluated predicate: %d", buf, 0x1Cu);
   }
 

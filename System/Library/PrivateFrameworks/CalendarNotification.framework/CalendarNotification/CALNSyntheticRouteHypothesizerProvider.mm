@@ -1,9 +1,9 @@
 @interface CALNSyntheticRouteHypothesizerProvider
 + (CALNSyntheticRouteHypothesizerProvider)sharedInstance;
 - (CALNSyntheticRouteHypothesizerProvider)init;
-- (id)hypothesizerForPlannedDestination:(id)a3;
-- (void)createdRouteHypothesizer:(id)a3 forEventExternalURL:(id)a4;
-- (void)removedRouteHypothesizerForEventExternalURL:(id)a3;
+- (id)hypothesizerForPlannedDestination:(id)destination;
+- (void)createdRouteHypothesizer:(id)hypothesizer forEventExternalURL:(id)l;
+- (void)removedRouteHypothesizerForEventExternalURL:(id)l;
 @end
 
 @implementation CALNSyntheticRouteHypothesizerProvider
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __56__CALNSyntheticRouteHypothesizerProvider_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_3 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_3, block);
@@ -39,38 +39,38 @@ uint64_t __56__CALNSyntheticRouteHypothesizerProvider_sharedInstance__block_invo
   v2 = [(CALNSyntheticRouteHypothesizerProvider *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CF7108] sharedInstance];
+    mEMORY[0x277CF7108] = [MEMORY[0x277CF7108] sharedInstance];
     syntheticRouteHypothesizerCache = v2->_syntheticRouteHypothesizerCache;
-    v2->_syntheticRouteHypothesizerCache = v3;
+    v2->_syntheticRouteHypothesizerCache = mEMORY[0x277CF7108];
   }
 
   return v2;
 }
 
-- (id)hypothesizerForPlannedDestination:(id)a3
+- (id)hypothesizerForPlannedDestination:(id)destination
 {
   v3 = objc_alloc_init(CALNSyntheticRouteHypothesizer);
 
   return v3;
 }
 
-- (void)createdRouteHypothesizer:(id)a3 forEventExternalURL:(id)a4
+- (void)createdRouteHypothesizer:(id)hypothesizer forEventExternalURL:(id)l
 {
-  v9 = a3;
-  v6 = a4;
-  if ([v9 conformsToProtocol:&unk_285534140])
+  hypothesizerCopy = hypothesizer;
+  lCopy = l;
+  if ([hypothesizerCopy conformsToProtocol:&unk_285534140])
   {
-    v7 = v9;
-    v8 = [(CALNSyntheticRouteHypothesizerProvider *)self syntheticRouteHypothesizerCache];
-    [v8 addSyntheticRouteHypothesizer:v7 forEventExternalURL:v6];
+    v7 = hypothesizerCopy;
+    syntheticRouteHypothesizerCache = [(CALNSyntheticRouteHypothesizerProvider *)self syntheticRouteHypothesizerCache];
+    [syntheticRouteHypothesizerCache addSyntheticRouteHypothesizer:v7 forEventExternalURL:lCopy];
   }
 }
 
-- (void)removedRouteHypothesizerForEventExternalURL:(id)a3
+- (void)removedRouteHypothesizerForEventExternalURL:(id)l
 {
-  v4 = a3;
-  v5 = [(CALNSyntheticRouteHypothesizerProvider *)self syntheticRouteHypothesizerCache];
-  [v5 removeSyntheticRouteHypothesizerForEventExternalURL:v4];
+  lCopy = l;
+  syntheticRouteHypothesizerCache = [(CALNSyntheticRouteHypothesizerProvider *)self syntheticRouteHypothesizerCache];
+  [syntheticRouteHypothesizerCache removeSyntheticRouteHypothesizerForEventExternalURL:lCopy];
 }
 
 @end

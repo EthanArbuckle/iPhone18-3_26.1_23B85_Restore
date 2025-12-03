@@ -5,7 +5,7 @@
 - (id)description;
 - (void)acquireBackgroundAssertion;
 - (void)acquireBackgroundAssertionIfNeeded;
-- (void)addPowerAssertionForIdentifier:(unsigned int)a3 withReason:(unsigned int)a4 completion:(id)a5;
+- (void)addPowerAssertionForIdentifier:(unsigned int)identifier withReason:(unsigned int)reason completion:(id)completion;
 - (void)dealloc;
 - (void)handleEnteringBackground;
 - (void)handleEnteringForeground;
@@ -13,7 +13,7 @@
 - (void)invalidateBackgroundAssertionIfNeeded;
 - (void)releasePowerAssertion;
 - (void)releasePowerAssertionIfNeeded;
-- (void)removePowerAssertionForIdentifier:(unsigned int)a3 withReason:(unsigned int)a4 completion:(id)a5;
+- (void)removePowerAssertionForIdentifier:(unsigned int)identifier withReason:(unsigned int)reason completion:(id)completion;
 - (void)takePowerAssertion;
 - (void)takePowerAssertionIfNeeded;
 @end
@@ -22,10 +22,10 @@
 
 - (BOOL)hasBackgroundAssertion
 {
-  v2 = [(PXPowerController *)self backgroundProcessAssertion];
-  v3 = [v2 valid];
+  backgroundProcessAssertion = [(PXPowerController *)self backgroundProcessAssertion];
+  valid = [backgroundProcessAssertion valid];
 
-  return v3;
+  return valid;
 }
 
 - (void)acquireBackgroundAssertion
@@ -38,13 +38,13 @@
     _os_log_impl(&dword_1A3C1C000, v3, OS_LOG_TYPE_INFO, "📴✅ Acquiring background assertion", buf, 2u);
   }
 
-  v4 = [(PXPowerController *)self assertionReasonsByIdentifier];
-  v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
+  assertionReasonsByIdentifier = [(PXPowerController *)self assertionReasonsByIdentifier];
+  v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(assertionReasonsByIdentifier, "count")}];
   v30 = 0u;
   v28 = 0u;
   v29 = 0u;
   *location = 0u;
-  v6 = v4;
+  v6 = assertionReasonsByIdentifier;
   v7 = [v6 countByEnumeratingWithState:location objects:buf count:16];
   if (v7)
   {
@@ -91,13 +91,13 @@
   v22[3] = &unk_1E774C648;
   v18 = v16;
   v23 = v18;
-  v19 = [(PXPowerController *)self backgroundProcessAssertion];
-  [v19 setInvalidationHandler:v22];
+  backgroundProcessAssertion = [(PXPowerController *)self backgroundProcessAssertion];
+  [backgroundProcessAssertion setInvalidationHandler:v22];
 
-  v20 = [(PXPowerController *)self backgroundProcessAssertion];
-  LOBYTE(v19) = [v20 acquire];
+  backgroundProcessAssertion2 = [(PXPowerController *)self backgroundProcessAssertion];
+  LOBYTE(backgroundProcessAssertion) = [backgroundProcessAssertion2 acquire];
 
-  if ((v19 & 1) == 0)
+  if ((backgroundProcessAssertion & 1) == 0)
   {
     v21 = _powerControllerLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -150,14 +150,14 @@ void __47__PXPowerController_acquireBackgroundAssertion__block_invoke_41(uint64_
   v3 = _powerControllerLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(PXPowerController *)self backgroundProcessAssertion];
+    backgroundProcessAssertion = [(PXPowerController *)self backgroundProcessAssertion];
     v6 = 138543362;
-    v7 = v4;
+    v7 = backgroundProcessAssertion;
     _os_log_impl(&dword_1A3C1C000, v3, OS_LOG_TYPE_INFO, "📴❌ Invalidating background assertion: %{public}@", &v6, 0xCu);
   }
 
-  v5 = [(PXPowerController *)self backgroundProcessAssertion];
-  [v5 invalidate];
+  backgroundProcessAssertion2 = [(PXPowerController *)self backgroundProcessAssertion];
+  [backgroundProcessAssertion2 invalidate];
 
   [(PXPowerController *)self setBackgroundProcessAssertion:0];
 }
@@ -173,11 +173,11 @@ void __47__PXPowerController_acquireBackgroundAssertion__block_invoke_41(uint64_
     _os_log_debug_impl(&dword_1A3C1C000, v3, OS_LOG_TYPE_DEBUG, "%s", &v17, 0xCu);
   }
 
-  v4 = [(PXPowerController *)self hasPowerAssertion];
-  v5 = [(PXPowerController *)self isBackgrounded];
-  v6 = [(PXPowerController *)self hasBackgroundAssertion];
-  v7 = v6;
-  if (v5 && v4 && !v6)
+  hasPowerAssertion = [(PXPowerController *)self hasPowerAssertion];
+  isBackgrounded = [(PXPowerController *)self isBackgrounded];
+  hasBackgroundAssertion = [(PXPowerController *)self hasBackgroundAssertion];
+  v7 = hasBackgroundAssertion;
+  if (isBackgrounded && hasPowerAssertion && !hasBackgroundAssertion)
   {
     [(PXPowerController *)self acquireBackgroundAssertion];
   }
@@ -187,7 +187,7 @@ void __47__PXPowerController_acquireBackgroundAssertion__block_invoke_41(uint64_
     v8 = _powerControllerLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      if (v5)
+      if (isBackgrounded)
       {
         v9 = @"NO";
       }
@@ -198,7 +198,7 @@ void __47__PXPowerController_acquireBackgroundAssertion__block_invoke_41(uint64_
       }
 
       v10 = v9;
-      if (v4)
+      if (hasPowerAssertion)
       {
         v11 = @"NO";
       }
@@ -244,15 +244,15 @@ void __47__PXPowerController_acquireBackgroundAssertion__block_invoke_41(uint64_
     _os_log_debug_impl(&dword_1A3C1C000, v3, OS_LOG_TYPE_DEBUG, "%s", &v13, 0xCu);
   }
 
-  v4 = [(PXPowerController *)self hasPowerAssertion];
-  v5 = [(PXPowerController *)self isBackgrounded];
-  v6 = [(PXPowerController *)self hasBackgroundAssertion];
-  if (!v6 || v4 && v5)
+  hasPowerAssertion = [(PXPowerController *)self hasPowerAssertion];
+  isBackgrounded = [(PXPowerController *)self isBackgrounded];
+  hasBackgroundAssertion = [(PXPowerController *)self hasBackgroundAssertion];
+  if (!hasBackgroundAssertion || hasPowerAssertion && isBackgrounded)
   {
     v7 = _powerControllerLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      if (v4)
+      if (hasPowerAssertion)
       {
         v8 = @"NO";
       }
@@ -263,7 +263,7 @@ void __47__PXPowerController_acquireBackgroundAssertion__block_invoke_41(uint64_
       }
 
       v9 = v8;
-      if (v6)
+      if (hasBackgroundAssertion)
       {
         v10 = @"YES";
       }
@@ -300,7 +300,7 @@ void __47__PXPowerController_acquireBackgroundAssertion__block_invoke_41(uint64_
     _os_log_debug_impl(&dword_1A3C1C000, v3, OS_LOG_TYPE_DEBUG, "%s", buf, 0xCu);
   }
 
-  v4 = [(PXPowerController *)self powerControllerQueue];
+  powerControllerQueue = [(PXPowerController *)self powerControllerQueue];
   pl_dispatch_sync();
 }
 
@@ -323,7 +323,7 @@ uint64_t __45__PXPowerController_handleEnteringBackground__block_invoke(uint64_t
     _os_log_debug_impl(&dword_1A3C1C000, v3, OS_LOG_TYPE_DEBUG, "%s", buf, 0xCu);
   }
 
-  v4 = [(PXPowerController *)self powerControllerQueue];
+  powerControllerQueue = [(PXPowerController *)self powerControllerQueue];
   pl_dispatch_sync();
 }
 
@@ -386,12 +386,12 @@ uint64_t __45__PXPowerController_handleEnteringForeground__block_invoke(uint64_t
     _os_log_debug_impl(&dword_1A3C1C000, v3, OS_LOG_TYPE_DEBUG, "%s", &v11, 0xCu);
   }
 
-  v4 = [(PXPowerController *)self assertionReasonsByIdentifier];
-  v5 = [v4 count];
+  assertionReasonsByIdentifier = [(PXPowerController *)self assertionReasonsByIdentifier];
+  v5 = [assertionReasonsByIdentifier count];
 
-  v6 = [(PXPowerController *)self hasPowerAssertion];
-  v7 = v6;
-  if (v5 || !v6)
+  hasPowerAssertion = [(PXPowerController *)self hasPowerAssertion];
+  v7 = hasPowerAssertion;
+  if (v5 || !hasPowerAssertion)
   {
     v8 = _powerControllerLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -429,12 +429,12 @@ uint64_t __45__PXPowerController_handleEnteringForeground__block_invoke(uint64_t
     _os_log_debug_impl(&dword_1A3C1C000, v3, OS_LOG_TYPE_DEBUG, "%s", &v11, 0xCu);
   }
 
-  v4 = [(PXPowerController *)self assertionReasonsByIdentifier];
-  v5 = [v4 count];
+  assertionReasonsByIdentifier = [(PXPowerController *)self assertionReasonsByIdentifier];
+  v5 = [assertionReasonsByIdentifier count];
 
-  v6 = [(PXPowerController *)self hasPowerAssertion];
-  v7 = v6;
-  if (!v5 || v6)
+  hasPowerAssertion = [(PXPowerController *)self hasPowerAssertion];
+  v7 = hasPowerAssertion;
+  if (!v5 || hasPowerAssertion)
   {
     v8 = _powerControllerLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -461,11 +461,11 @@ uint64_t __45__PXPowerController_handleEnteringForeground__block_invoke(uint64_t
   }
 }
 
-- (void)removePowerAssertionForIdentifier:(unsigned int)a3 withReason:(unsigned int)a4 completion:(id)a5
+- (void)removePowerAssertionForIdentifier:(unsigned int)identifier withReason:(unsigned int)reason completion:(id)completion
 {
-  v6 = a5;
-  v7 = [(PXPowerController *)self powerControllerQueue];
-  v8 = v6;
+  completionCopy = completion;
+  powerControllerQueue = [(PXPowerController *)self powerControllerQueue];
+  v8 = completionCopy;
   pl_dispatch_async();
 }
 
@@ -610,11 +610,11 @@ void __77__PXPowerController_removePowerAssertionForIdentifier_withReason_comple
   }
 }
 
-- (void)addPowerAssertionForIdentifier:(unsigned int)a3 withReason:(unsigned int)a4 completion:(id)a5
+- (void)addPowerAssertionForIdentifier:(unsigned int)identifier withReason:(unsigned int)reason completion:(id)completion
 {
-  v6 = a5;
-  v7 = [(PXPowerController *)self powerControllerQueue];
-  v8 = v6;
+  completionCopy = completion;
+  powerControllerQueue = [(PXPowerController *)self powerControllerQueue];
+  v8 = completionCopy;
   pl_dispatch_async();
 }
 
@@ -713,13 +713,13 @@ void __74__PXPowerController_addPowerAssertionForIdentifier_withReason_completio
 - (id)description
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(PXPowerController *)self assertionReasonsByIdentifier];
+  assertionReasonsByIdentifier = [(PXPowerController *)self assertionReasonsByIdentifier];
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = v3;
+  v5 = assertionReasonsByIdentifier;
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
@@ -736,9 +736,9 @@ void __74__PXPowerController_addPowerAssertionForIdentifier_withReason_completio
 
         v10 = *(*(&v19 + 1) + 8 * i);
         v11 = [v5 objectForKeyedSubscript:v10];
-        v12 = [v11 intValue];
+        intValue = [v11 intValue];
 
-        v13 = NSStringFromPXPowerAssertionReasonBitfield(v12);
+        v13 = NSStringFromPXPowerAssertionReasonBitfield(intValue);
         [v4 setObject:v13 forKeyedSubscript:v10];
       }
 
@@ -750,17 +750,17 @@ void __74__PXPowerController_addPowerAssertionForIdentifier_withReason_completio
 
   v14 = MEMORY[0x1E696AEC0];
   v15 = objc_opt_class();
-  v16 = [(PXPowerController *)self backgroundProcessAssertion];
-  v17 = [v14 stringWithFormat:@"<%@ backgroundProcessAssertion:%@ assertions:%@>", v15, v16, v4];
+  backgroundProcessAssertion = [(PXPowerController *)self backgroundProcessAssertion];
+  v17 = [v14 stringWithFormat:@"<%@ backgroundProcessAssertion:%@ assertions:%@>", v15, backgroundProcessAssertion, v4];
 
   return v17;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDBC8] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDBC0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDBC8] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDBC0] object:0];
 
   v4.receiver = self;
   v4.super_class = PXPowerController;
@@ -786,9 +786,9 @@ void __74__PXPowerController_addPowerAssertionForIdentifier_withReason_completio
     powerControllerQueue = v2->_powerControllerQueue;
     v2->_powerControllerQueue = v7;
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:v2 selector:sel_applicationWillResignActive_ name:*MEMORY[0x1E69DDBC8] object:0];
-    [v9 addObserver:v2 selector:sel_applicationWillEnterForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_applicationWillResignActive_ name:*MEMORY[0x1E69DDBC8] object:0];
+    [defaultCenter addObserver:v2 selector:sel_applicationWillEnterForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
   }
 
   return v2;

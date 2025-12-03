@@ -1,7 +1,7 @@
 @interface FigCaptureCinematographyPipeline
 - (id)_buildPreviewOutputNetworkWithGraph:(id)result previewOutput:;
 - (id)_buildVideoCaptureOutputNetworkWithGraph:(id)result videoCaptureOutput:;
-- (uint64_t)_buildCinematographyPipeline:(uint64_t)a3 videoSourceCaptureOutput:(uint64_t)a4 sourceSemanticMasksOutput:(uint64_t)a5 previewOutput:(uint64_t)a6 auxiliaryOutput:(void *)a7 sourceID:(void *)a8 graph:(void *)a9 captureDevice:(uint64_t)a10 inferenceScheduler:;
+- (uint64_t)_buildCinematographyPipeline:(uint64_t)pipeline videoSourceCaptureOutput:(uint64_t)output sourceSemanticMasksOutput:(uint64_t)masksOutput previewOutput:(uint64_t)previewOutput auxiliaryOutput:(void *)auxiliaryOutput sourceID:(void *)d graph:(void *)graph captureDevice:(uint64_t)self0 inferenceScheduler:;
 - (uint64_t)cinematicVideoFocusDetectionsProvider;
 - (uint64_t)depthOutputDimensions;
 - (uint64_t)detectedObjectsOutput;
@@ -16,7 +16,7 @@
 - (uint64_t)sourceID;
 - (uint64_t)videoCaptureOutputTransform;
 - (void)dealloc;
-- (void)initWithConfiguration:(uint64_t)a3 videoSourceCaptureOutput:(uint64_t)a4 sourceSemanticMasksOutput:(uint64_t)a5 previewOutput:(uint64_t)a6 auxiliaryOutput:(void *)a7 graph:(uint64_t)a8 name:(void *)a9 sourceID:(void *)a10 captureDevice:(uint64_t)a11 inferenceScheduler:(_DWORD *)a12 errorOut:;
+- (void)initWithConfiguration:(uint64_t)configuration videoSourceCaptureOutput:(uint64_t)output sourceSemanticMasksOutput:(uint64_t)masksOutput previewOutput:(uint64_t)previewOutput auxiliaryOutput:(void *)auxiliaryOutput graph:(uint64_t)graph name:(void *)name sourceID:(void *)self0 captureDevice:(uint64_t)self1 inferenceScheduler:(_DWORD *)self2 errorOut:;
 @end
 
 @implementation FigCaptureCinematographyPipeline
@@ -38,28 +38,28 @@
   [(FigCapturePipeline *)&v3 dealloc];
 }
 
-- (void)initWithConfiguration:(uint64_t)a3 videoSourceCaptureOutput:(uint64_t)a4 sourceSemanticMasksOutput:(uint64_t)a5 previewOutput:(uint64_t)a6 auxiliaryOutput:(void *)a7 graph:(uint64_t)a8 name:(void *)a9 sourceID:(void *)a10 captureDevice:(uint64_t)a11 inferenceScheduler:(_DWORD *)a12 errorOut:
+- (void)initWithConfiguration:(uint64_t)configuration videoSourceCaptureOutput:(uint64_t)output sourceSemanticMasksOutput:(uint64_t)masksOutput previewOutput:(uint64_t)previewOutput auxiliaryOutput:(void *)auxiliaryOutput graph:(uint64_t)graph name:(void *)name sourceID:(void *)self0 captureDevice:(uint64_t)self1 inferenceScheduler:(_DWORD *)self2 errorOut:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v23.receiver = a1;
+  v23.receiver = self;
   v23.super_class = FigCaptureCinematographyPipeline;
-  v18 = objc_msgSendSuper2(&v23, sel_initWithGraph_name_, a7, a8);
+  v18 = objc_msgSendSuper2(&v23, sel_initWithGraph_name_, auxiliaryOutput, graph);
   v19 = v18;
   if (v18)
   {
-    v21 = [(FigCaptureCinematographyPipeline *)v18 _buildCinematographyPipeline:a2 videoSourceCaptureOutput:a3 sourceSemanticMasksOutput:a4 previewOutput:a5 auxiliaryOutput:a6 sourceID:a9 graph:a7 captureDevice:a10 inferenceScheduler:a11];
+    v21 = [(FigCaptureCinematographyPipeline *)v18 _buildCinematographyPipeline:a2 videoSourceCaptureOutput:configuration sourceSemanticMasksOutput:output previewOutput:masksOutput auxiliaryOutput:previewOutput sourceID:name graph:auxiliaryOutput captureDevice:d inferenceScheduler:device];
     if (v21)
     {
       v22 = v21;
       fig_log_get_emitter();
       FigDebugAssert3();
-      if (a12)
+      if (scheduler)
       {
-        *a12 = v22;
+        *scheduler = v22;
       }
 
       return 0;
@@ -69,7 +69,7 @@
   return v19;
 }
 
-- (uint64_t)_buildCinematographyPipeline:(uint64_t)a3 videoSourceCaptureOutput:(uint64_t)a4 sourceSemanticMasksOutput:(uint64_t)a5 previewOutput:(uint64_t)a6 auxiliaryOutput:(void *)a7 sourceID:(void *)a8 graph:(void *)a9 captureDevice:(uint64_t)a10 inferenceScheduler:
+- (uint64_t)_buildCinematographyPipeline:(uint64_t)pipeline videoSourceCaptureOutput:(uint64_t)output sourceSemanticMasksOutput:(uint64_t)masksOutput previewOutput:(uint64_t)previewOutput auxiliaryOutput:(void *)auxiliaryOutput sourceID:(void *)d graph:(void *)graph captureDevice:(uint64_t)self0 inferenceScheduler:
 {
   if (!result)
   {
@@ -80,41 +80,41 @@
   v137[0] = 0;
   v136 = 0;
   *(result + 32) = a2;
-  if (a5)
+  if (masksOutput)
   {
-    v16 = a5;
+    pipelineCopy = masksOutput;
   }
 
   else
   {
-    v16 = a3;
+    pipelineCopy = pipeline;
   }
 
   v17 = [BWPipelineStage pipelineStageWithName:@"com.apple.coremedia.capture.cinematic_video.color_inferences" priority:14];
   v120 = v15;
-  v121 = a3;
+  pipelineCopy2 = pipeline;
   v122 = a2;
   [BWPipelineStage pipelineStageWithName:@"com.apple.coremedia.capture.cinematic_video.depth" priority:14];
   [BWPipelineStage pipelineStageWithName:@"com.apple.coremedia.capture.cinematic_video.cinematography" priority:14];
-  v117 = a5;
+  masksOutputCopy2 = masksOutput;
   if (a2)
   {
-    v118 = a7;
+    auxiliaryOutputCopy = auxiliaryOutput;
     v18 = *(a2 + 60);
     v19 = v18 == 3;
     if (v18 == 3)
     {
-      v125 = a6;
+      previewOutputCopy = previewOutput;
       v123 = v18 == 3;
       v20 = objc_alloc_init(FigVideoCaptureConnectionConfiguration);
       [(FigCaptureConnectionConfiguration *)v20 setSourceConfiguration:*(a2 + 32)];
       [(FigVideoCaptureConnectionConfiguration *)v20 setVideoStabilizationMethod:3];
       v21 = [FigCaptureVISPipeline alloc];
       OUTLINED_FUNCTION_6_81();
-      v48 = a8;
+      dCopy4 = d;
       OUTLINED_FUNCTION_8_62();
-      v29 = OUTLINED_FUNCTION_10_56(v22, v16, v23, v24, v25, v26, v27, v28, v85, HIDWORD(v85), v88, v91, *v93, v93[4], v95, HIDWORD(v95), v97, v99, v101, v103, SHIBYTE(v103), v105, v107, BYTE4(v107), BYTE5(v107), SBYTE6(v107), HIBYTE(v107), v109[0], v109[1], v109[2], v109[3], v109[4], v111, v113);
-      if (!v29 || (v30 = [-[FigCaptureVISPipeline visNode](v29) output], v31 = [FigCaptureVISPipeline alloc], OUTLINED_FUNCTION_6_81(), OUTLINED_FUNCTION_8_62(), (v39 = OUTLINED_FUNCTION_10_56(v32, v125, v33, v34, v35, v36, v37, v38, v86, HIDWORD(v86), v89, v92, *v94, v94[4], v96, HIDWORD(v96), v98, v100, v102, v104, SHIBYTE(v104), v106, v108, BYTE4(v108), BYTE5(v108), SBYTE6(v108), HIBYTE(v108), v110[0], v110[1], v110[2], v110[3], v110[4], v112, v114)) == 0))
+      v29 = OUTLINED_FUNCTION_10_56(v22, pipelineCopy, v23, v24, v25, v26, v27, v28, v85, HIDWORD(v85), v88, v91, *v93, v93[4], v95, HIDWORD(v95), v97, v99, v101, v103, SHIBYTE(v103), v105, v107, BYTE4(v107), BYTE5(v107), SBYTE6(v107), HIBYTE(v107), v109[0], v109[1], v109[2], v109[3], v109[4], v111, v113);
+      if (!v29 || (v30 = [-[FigCaptureVISPipeline visNode](v29) output], v31 = [FigCaptureVISPipeline alloc], OUTLINED_FUNCTION_6_81(), OUTLINED_FUNCTION_8_62(), (v39 = OUTLINED_FUNCTION_10_56(v32, previewOutputCopy, v33, v34, v35, v36, v37, v38, v86, HIDWORD(v86), v89, v92, *v94, v94[4], v96, HIDWORD(v96), v98, v100, v102, v104, SHIBYTE(v104), v106, v108, BYTE4(v108), BYTE5(v108), SBYTE6(v108), HIBYTE(v108), v110[0], v110[1], v110[2], v110[3], v110[4], v112, v114)) == 0))
       {
         OUTLINED_FUNCTION_3_19();
         fig_log_get_emitter();
@@ -125,7 +125,7 @@
         goto LABEL_106;
       }
 
-      a6 = [-[FigCaptureVISPipeline visNode](v39) output];
+      previewOutput = [-[FigCaptureVISPipeline visNode](v39) output];
       if (*(a2 + 57))
       {
         v40 = &unk_1F224A0E0;
@@ -161,7 +161,7 @@
       LOBYTE(v90) = 1;
       v43 = [BWSlaveFrameSynchronizerNode initWithDepthEnabled:"initWithDepthEnabled:numberOfInputs:syncSlaveForMasterPortTypes:separateDepthComponentsEnabled:preLTMThumbnailEnabledInputs:postColorProcessingThumbnailEnabledInputs:weightSegmentMapEnabledInputs:differentInputFormatsSupported:bufferSize:numberOfSlaveFramesToSkip:startEmittingMasterFramesBeforeSlaveStreamStarts:" numberOfInputs:0 syncSlaveForMasterPortTypes:2 separateDepthComponentsEnabled:0 preLTMThumbnailEnabledInputs:0 postColorProcessingThumbnailEnabledInputs:v40 weightSegmentMapEnabledInputs:v41 differentInputFormatsSupported:v42 bufferSize:v90 numberOfSlaveFramesToSkip:? startEmittingMasterFramesBeforeSlaveStreamStarts:?];
       [(BWNode *)v43 setName:@"REF/AUX sync node"];
-      if (([v15 addNode:v43 error:&v136] & 1) == 0 || (-[NSArray objectAtIndexedSubscript:](-[BWNode inputs](v43, "inputs"), "objectAtIndexedSubscript:", 1), (objc_msgSend(OUTLINED_FUNCTION_129(), "connectOutput:toInput:pipelineStage:", v30) & 1) == 0) || (-[NSArray objectAtIndexedSubscript:](-[BWNode inputs](v43, "inputs"), "objectAtIndexedSubscript:", 0), (objc_msgSend(OUTLINED_FUNCTION_129(), "connectOutput:toInput:pipelineStage:", a6) & 1) == 0))
+      if (([v15 addNode:v43 error:&v136] & 1) == 0 || (-[NSArray objectAtIndexedSubscript:](-[BWNode inputs](v43, "inputs"), "objectAtIndexedSubscript:", 1), (objc_msgSend(OUTLINED_FUNCTION_129(), "connectOutput:toInput:pipelineStage:", v30) & 1) == 0) || (-[NSArray objectAtIndexedSubscript:](-[BWNode inputs](v43, "inputs"), "objectAtIndexedSubscript:", 0), (objc_msgSend(OUTLINED_FUNCTION_129(), "connectOutput:toInput:pipelineStage:", previewOutput) & 1) == 0))
       {
         fig_log_get_emitter();
         OUTLINED_FUNCTION_0_118();
@@ -170,13 +170,13 @@ LABEL_108:
         goto LABEL_86;
       }
 
-      v16 = [(BWNode *)v43 output];
+      pipelineCopy = [(BWNode *)v43 output];
       if (*(a2 + 40) == 1)
       {
-        v126 = a6;
+        previewOutputCopy2 = previewOutput;
         v44 = *(a2 + 56);
-        v47 = a9;
-        v45 = +[BWSmartStyleLearningNode newISPSMGProcessingSession:](BWSmartStyleLearningNode, "newISPSMGProcessingSession:", [a9 device]);
+        graphCopy5 = graph;
+        v45 = +[BWSmartStyleLearningNode newISPSMGProcessingSession:](BWSmartStyleLearningNode, "newISPSMGProcessingSession:", [graph device]);
         v46 = -[BWSmartStyleLearningNode initWithOutputs:masksRefinerEnabled:propagateMasks:ispSMGProcessingSession:squareAspectRatioConfigEnabled:subjectRelightingPreviewVersion:]([BWSmartStyleLearningNode alloc], "initWithOutputs:masksRefinerEnabled:propagateMasks:ispSMGProcessingSession:squareAspectRatioConfigEnabled:subjectRelightingPreviewVersion:", 1, 1, v44, v45, [objc_msgSend(*(a2 + 32) "requiredFormat")], objc_msgSend(objc_msgSend(+[FigCaptureSourceBackingsProvider sharedCaptureSourceBackingsProvider](FigCaptureSourceBackingsProvider, "sharedCaptureSourceBackingsProvider"), "commonSettings"), "smartStyleRenderingVersion"));
 
         if (!v46)
@@ -187,7 +187,7 @@ LABEL_108:
         [(BWNode *)v46 setName:@"Cinematic SmartStyle Learning"];
         [(BWSmartStyleLearningNode *)v46 setDisableWaitForCoefficientsOnFirstFrame:0];
         [(BWSmartStyleLearningNode *)v46 setSubjectRelightingEnabled:0];
-        -[BWSmartStyleLearningNode setCameraInfoByPortType:](v46, "setCameraInfoByPortType:", [a9 cameraInfoByPortType]);
+        -[BWSmartStyleLearningNode setCameraInfoByPortType:](v46, "setCameraInfoByPortType:", [graph cameraInfoByPortType]);
         [(BWSmartStyleLearningNode *)v46 setSmartStyle:*(a2 + 48)];
         v135.receiver = v15;
         v135.super_class = FigCaptureCinematographyPipeline;
@@ -197,76 +197,76 @@ LABEL_108:
         }
 
         [(NSArray *)[(BWNode *)v46 inputs] objectAtIndexedSubscript:0];
-        if (([OUTLINED_FUNCTION_129() connectOutput:v16 toInput:? pipelineStage:?] & 1) == 0)
+        if (([OUTLINED_FUNCTION_129() connectOutput:pipelineCopy toInput:? pipelineStage:?] & 1) == 0)
         {
           goto LABEL_107;
         }
 
-        if (a4)
+        if (output)
         {
           [(NSArray *)[(BWNode *)v46 inputs] objectAtIndexedSubscript:1];
-          if (([OUTLINED_FUNCTION_129() connectOutput:a4 toInput:? pipelineStage:?] & 1) == 0)
+          if (([OUTLINED_FUNCTION_129() connectOutput:output toInput:? pipelineStage:?] & 1) == 0)
           {
             goto LABEL_107;
           }
         }
 
-        v16 = [(BWNode *)v46 output];
+        pipelineCopy = [(BWNode *)v46 output];
         *(v15 + 64) = v46;
         v19 = v123;
-        a6 = v126;
+        previewOutput = previewOutputCopy2;
       }
 
       else
       {
-        v47 = a9;
+        graphCopy5 = graph;
         v19 = v123;
       }
     }
 
     else
     {
-      v48 = a8;
-      v47 = a9;
+      dCopy4 = d;
+      graphCopy5 = graph;
     }
 
-    v127 = a6;
-    *(v15 + 72) = v118;
-    v49 = [*(a2 + 32) outputAspectRatio];
-    if (v49)
+    previewOutputCopy3 = previewOutput;
+    *(v15 + 72) = auxiliaryOutputCopy;
+    outputAspectRatio = [*(a2 + 32) outputAspectRatio];
+    if (outputAspectRatio)
     {
-      v50 = v49;
-      v51 = v16;
-      v52 = v48;
+      v50 = outputAspectRatio;
+      v51 = pipelineCopy;
+      dCopy3 = dCopy4;
       goto LABEL_36;
     }
 
-    v51 = v16;
+    v51 = pipelineCopy;
     v53 = *(a2 + 32);
   }
 
   else
   {
-    v83 = a6;
-    v51 = v16;
-    v127 = v83;
-    *(v15 + 72) = a7;
-    v84 = [0 outputAspectRatio];
+    previewOutputCopy4 = previewOutput;
+    v51 = pipelineCopy;
+    previewOutputCopy3 = previewOutputCopy4;
+    *(v15 + 72) = auxiliaryOutput;
+    outputAspectRatio2 = [0 outputAspectRatio];
     v19 = 0;
-    if (v84)
+    if (outputAspectRatio2)
     {
-      v50 = v84;
-      v52 = a8;
-      v47 = a9;
+      v50 = outputAspectRatio2;
+      dCopy3 = d;
+      graphCopy5 = graph;
       goto LABEL_36;
     }
 
     v53 = 0;
-    v48 = a8;
-    v47 = a9;
+    dCopy4 = d;
+    graphCopy5 = graph;
   }
 
-  v52 = v48;
+  dCopy3 = dCopy4;
   v54 = [objc_msgSend(v53 "requiredFormat")];
   if (v54 > SHIDWORD(v54))
   {
@@ -279,14 +279,14 @@ LABEL_108:
   }
 
 LABEL_36:
-  *(v15 + 48) = [[BWCinematicPerceptionNode alloc] initWithConvEngineSupportWithCaptureDevice:v47 scheduler:a10 priority:6 depthInferenceEnabled:v19 aspectRatio:v50];
+  *(v15 + 48) = [[BWCinematicPerceptionNode alloc] initWithConvEngineSupportWithCaptureDevice:graphCopy5 scheduler:device priority:6 depthInferenceEnabled:v19 aspectRatio:v50];
   [*(v15 + 48) setName:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%@ %@", objc_msgSend(v15, "name"), @"Cinematic Perception"}];
   if (([v15 addNode:*(v15 + 48) error:&v136] & 1) == 0)
   {
     goto LABEL_107;
   }
 
-  if (([v52 connectOutput:v51 toInput:objc_msgSend(*(v15 + 48) pipelineStage:{"input"), v17}] & 1) == 0)
+  if (([dCopy3 connectOutput:v51 toInput:objc_msgSend(*(v15 + 48) pipelineStage:{"input"), v17}] & 1) == 0)
   {
     OUTLINED_FUNCTION_3_19();
     fig_log_get_emitter();
@@ -299,18 +299,18 @@ LABEL_106:
     goto LABEL_86;
   }
 
-  v55 = [*(v15 + 48) output];
+  output = [*(v15 + 48) output];
   v124 = v19;
-  if ([v47 depthType] - 1 > 1)
+  if ([graphCopy5 depthType] - 1 > 1)
   {
-    v119 = v55;
+    output2 = output;
     goto LABEL_44;
   }
 
   v56 = [[BWDepthSynchronizerNode alloc] initForStreaming:1 separateDepthComponentsEnabled:0];
   [v56 setName:@"Cinematography Depth Synchronizer"];
   [v56 setFlushOnDepthEOD:1];
-  if (([v15 addNode:v56 error:&v136] & 1) == 0 || (objc_msgSend(v56, "imageInput"), (objc_msgSend(OUTLINED_FUNCTION_129(), "connectOutput:toInput:pipelineStage:", v55) & 1) == 0) || (objc_msgSend(v56, "depthInput"), (objc_msgSend(OUTLINED_FUNCTION_129(), "connectOutput:toInput:pipelineStage:", v127) & 1) == 0))
+  if (([v15 addNode:v56 error:&v136] & 1) == 0 || (objc_msgSend(v56, "imageInput"), (objc_msgSend(OUTLINED_FUNCTION_129(), "connectOutput:toInput:pipelineStage:", output) & 1) == 0) || (objc_msgSend(v56, "depthInput"), (objc_msgSend(OUTLINED_FUNCTION_129(), "connectOutput:toInput:pipelineStage:", previewOutputCopy3) & 1) == 0))
   {
 LABEL_107:
     fig_log_get_emitter();
@@ -318,17 +318,17 @@ LABEL_107:
     goto LABEL_108;
   }
 
-  v119 = [v56 output];
+  output2 = [v56 output];
 LABEL_44:
   v128 = +[FigCaptureCameraParameters sharedInstance];
   v57 = *off_1E798A0C0;
-  v58 = [objc_msgSend(v47 "captureStream")];
+  sensorIDString = [objc_msgSend(graphCopy5 "captureStream")];
   v131 = 0u;
   v132 = 0u;
   v133 = 0u;
   v134 = 0u;
-  v59 = [v47 activePortTypes];
-  v60 = [v59 countByEnumeratingWithState:&v131 objects:v130 count:16];
+  activePortTypes = [graphCopy5 activePortTypes];
+  v60 = [activePortTypes countByEnumeratingWithState:&v131 objects:v130 count:16];
   v61 = *off_1E798A0E8;
   v116 = v57;
   if (!v60)
@@ -346,22 +346,22 @@ LABEL_44:
     {
       if (*v132 != v63)
       {
-        objc_enumerationMutation(v59);
+        objc_enumerationMutation(activePortTypes);
       }
 
       v67 = *(*(&v131 + 1) + 8 * i);
       if ([v67 isEqualToString:v64])
       {
-        v68 = [a9 bravoTelephotoCaptureStream];
+        bravoTelephotoCaptureStream = [graph bravoTelephotoCaptureStream];
 LABEL_53:
-        v58 = [v68 sensorIDString];
+        sensorIDString = [bravoTelephotoCaptureStream sensorIDString];
         v57 = v67;
         continue;
       }
 
       if ([v67 isEqualToString:v61])
       {
-        v68 = [a9 pearlInfraredCaptureStream];
+        bravoTelephotoCaptureStream = [graph pearlInfraredCaptureStream];
         goto LABEL_53;
       }
 
@@ -371,7 +371,7 @@ LABEL_53:
       }
     }
 
-    v62 = [v59 countByEnumeratingWithState:&v131 objects:v130 count:16];
+    v62 = [activePortTypes countByEnumeratingWithState:&v131 objects:v130 count:16];
   }
 
   while (v62);
@@ -380,11 +380,11 @@ LABEL_58:
   LODWORD(v70) = 1.0;
   if ((v69 & 1) == 0)
   {
-    [a9 requestedZoomFactorRelativeToPortType:{v116, v70}];
+    [graph requestedZoomFactorRelativeToPortType:{v116, v70}];
   }
 
-  v71 = [(FigCaptureCameraParameters *)v128 portraitSceneMonitoringParametersForPortType:v57 sensorIDString:v58 zoomFactorRelativeToWidePortType:v70];
-  v72 = [*(v120 + 48) videoDepthConfiguration];
+  v71 = [(FigCaptureCameraParameters *)v128 portraitSceneMonitoringParametersForPortType:v57 sensorIDString:sensorIDString zoomFactorRelativeToWidePortType:v70];
+  videoDepthConfiguration = [*(v120 + 48) videoDepthConfiguration];
   if (v122)
   {
     v73 = *(v122 + 16);
@@ -396,9 +396,9 @@ LABEL_58:
   }
 
   v74 = [FigCaptureConnectionConfigurationWithSinkType(v73 4)];
-  if (v121)
+  if (pipelineCopy2)
   {
-    v75 = v117 == 0;
+    v75 = masksOutputCopy2 == 0;
   }
 
   else
@@ -411,19 +411,19 @@ LABEL_58:
   if (v122)
   {
     v78 = *(v122 + 8);
-    [a9 simulatedAperture];
+    [graph simulatedAperture];
     v79 = *(v122 + 40);
   }
 
   else
   {
-    [a9 simulatedAperture];
+    [graph simulatedAperture];
     v78 = 0;
     v79 = 0;
   }
 
   LOBYTE(v87) = v74 == 0;
-  *(v120 + 56) = [(BWRealtimeCinematographyNode *)v77 initWithObjectMetadataIdentifiers:v78 cachedSimulatedAperture:a9 captureDevice:v71 tuningParameters:v72 videoDepthConfiguration:v79 & 1 smartStyleLearningEnabled:v76 highResolutionInputEnabled:v87 transformCinematographyDetectionsForMovieFileOutput:?];
+  *(v120 + 56) = [(BWRealtimeCinematographyNode *)v77 initWithObjectMetadataIdentifiers:v78 cachedSimulatedAperture:graph captureDevice:v71 tuningParameters:videoDepthConfiguration videoDepthConfiguration:v79 & 1 smartStyleLearningEnabled:v76 highResolutionInputEnabled:v87 transformCinematographyDetectionsForMovieFileOutput:?];
   [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", objc_msgSend(v120, "name"), @"Cinematography"];
   [OUTLINED_FUNCTION_9_67() setName:?];
   if (([v120 addNode:*(v120 + 56) error:&v136] & 1) == 0)
@@ -436,7 +436,7 @@ LABEL_104:
 
   if ((v124 & 1) == 0)
   {
-    *(v120 + 40) = [[BWVideoDepthNode alloc] initWithInferenceScheduler:a10 captureDevice:a9 videoDepthConfiguration:v72 extraDepthOutputRetainedBufferCount:0 error:v137];
+    *(v120 + 40) = [[BWVideoDepthNode alloc] initWithInferenceScheduler:device captureDevice:graph videoDepthConfiguration:videoDepthConfiguration extraDepthOutputRetainedBufferCount:0 error:v137];
     if (v137[0])
     {
       goto LABEL_91;
@@ -446,9 +446,9 @@ LABEL_104:
     if ([v120 addNode:*(v120 + 40) error:&v136])
     {
       [*(v120 + 40) input];
-      if ([OUTLINED_FUNCTION_129() connectOutput:v119 toInput:? pipelineStage:?])
+      if ([OUTLINED_FUNCTION_129() connectOutput:output2 toInput:? pipelineStage:?])
       {
-        v80 = [*(v120 + 40) output];
+        output3 = [*(v120 + 40) output];
         goto LABEL_77;
       }
     }
@@ -456,10 +456,10 @@ LABEL_104:
     goto LABEL_104;
   }
 
-  v80 = v119;
+  output3 = output2;
 LABEL_77:
   [OUTLINED_FUNCTION_9_67() input];
-  if (([OUTLINED_FUNCTION_129() connectOutput:v80 toInput:? pipelineStage:?] & 1) == 0 || v76 && (objc_msgSend(objc_msgSend(OUTLINED_FUNCTION_9_67(), "inputs"), "objectAtIndexedSubscript:", 1), (objc_msgSend(OUTLINED_FUNCTION_129(), "connectOutput:toInput:pipelineStage:", v121) & 1) == 0))
+  if (([OUTLINED_FUNCTION_129() connectOutput:output3 toInput:? pipelineStage:?] & 1) == 0 || v76 && (objc_msgSend(objc_msgSend(OUTLINED_FUNCTION_9_67(), "inputs"), "objectAtIndexedSubscript:", 1), (objc_msgSend(OUTLINED_FUNCTION_129(), "connectOutput:toInput:pipelineStage:", pipelineCopy2) & 1) == 0))
   {
     OUTLINED_FUNCTION_3_19();
     fig_log_get_emitter();
@@ -589,9 +589,9 @@ LABEL_86:
 {
   if (result)
   {
-    v1 = [*(result + 48) videoDepthConfiguration];
+    videoDepthConfiguration = [*(result + 48) videoDepthConfiguration];
 
-    return [v1 outputDimensions];
+    return [videoDepthConfiguration outputDimensions];
   }
 
   return result;
@@ -692,27 +692,27 @@ LABEL_7:
 
 - (uint64_t)videoCaptureOutputTransform
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 80))
+    if (*(self + 80))
     {
-      v1 = [objc_msgSend(*(a1 + 80) "outputs")];
+      movieFileOutput = [objc_msgSend(*(self + 80) "outputs")];
     }
 
     else
     {
-      v1 = [*(a1 + 56) movieFileOutput];
+      movieFileOutput = [*(self + 56) movieFileOutput];
     }
 
-    v2 = v1;
-    if (v1)
+    v2 = movieFileOutput;
+    if (movieFileOutput)
     {
       while (1)
       {
-        v3 = [v2 formatRequirements];
-        if ([v3 width])
+        formatRequirements = [v2 formatRequirements];
+        if ([formatRequirements width])
         {
-          if ([v3 height])
+          if ([formatRequirements height])
           {
             break;
           }
@@ -729,11 +729,11 @@ LABEL_7:
     else
     {
 LABEL_9:
-      v3 = 0;
+      formatRequirements = 0;
     }
 
-    [v3 width];
-    [v3 height];
+    [formatRequirements width];
+    [formatRequirements height];
   }
 
   return OUTLINED_FUNCTION_3_19();
@@ -774,27 +774,27 @@ LABEL_7:
 
 - (uint64_t)previewOutputTransform
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 96))
+    if (*(self + 96))
     {
-      v1 = [objc_msgSend(*(a1 + 96) "outputs")];
+      previewOutput = [objc_msgSend(*(self + 96) "outputs")];
     }
 
     else
     {
-      v1 = [*(a1 + 56) previewOutput];
+      previewOutput = [*(self + 56) previewOutput];
     }
 
-    v2 = v1;
-    if (v1)
+    v2 = previewOutput;
+    if (previewOutput)
     {
       while (1)
       {
-        v3 = [v2 formatRequirements];
-        if ([v3 width])
+        formatRequirements = [v2 formatRequirements];
+        if ([formatRequirements width])
         {
-          if ([v3 height])
+          if ([formatRequirements height])
           {
             break;
           }
@@ -811,11 +811,11 @@ LABEL_7:
     else
     {
 LABEL_9:
-      v3 = 0;
+      formatRequirements = 0;
     }
 
-    [v3 width];
-    [v3 height];
+    [formatRequirements width];
+    [formatRequirements height];
   }
 
   return OUTLINED_FUNCTION_3_19();

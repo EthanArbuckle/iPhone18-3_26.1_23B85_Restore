@@ -1,24 +1,24 @@
 @interface HKFeatureAvailabilityRequirementOSEligibilityDomainIsEligible
-- (BOOL)isEqual:(id)a3;
-- (HKFeatureAvailabilityRequirementOSEligibilityDomainIsEligible)initWithCoder:(id)a3;
-- (HKFeatureAvailabilityRequirementOSEligibilityDomainIsEligible)initWithDomain:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (HKFeatureAvailabilityRequirementOSEligibilityDomainIsEligible)initWithCoder:(id)coder;
+- (HKFeatureAvailabilityRequirementOSEligibilityDomainIsEligible)initWithDomain:(unint64_t)domain;
 - (NSArray)requiredEntitlements;
-- (id)isSatisfiedWithDataSource:(id)a3 error:(id *)a4;
-- (void)handleDarwinNotificationForObserver:(uint64_t)a3 dataSource:;
-- (void)registerObserver:(id)a3 forDataSource:(id)a4;
-- (void)unregisterObserver:(id)a3 fromDataSource:(id)a4;
+- (id)isSatisfiedWithDataSource:(id)source error:(id *)error;
+- (void)handleDarwinNotificationForObserver:(uint64_t)observer dataSource:;
+- (void)registerObserver:(id)observer forDataSource:(id)source;
+- (void)unregisterObserver:(id)observer fromDataSource:(id)source;
 @end
 
 @implementation HKFeatureAvailabilityRequirementOSEligibilityDomainIsEligible
 
-- (HKFeatureAvailabilityRequirementOSEligibilityDomainIsEligible)initWithDomain:(unint64_t)a3
+- (HKFeatureAvailabilityRequirementOSEligibilityDomainIsEligible)initWithDomain:(unint64_t)domain
 {
   v5.receiver = self;
   v5.super_class = HKFeatureAvailabilityRequirementOSEligibilityDomainIsEligible;
   result = [(HKFeatureAvailabilityRequirementOSEligibilityDomainIsEligible *)&v5 init];
   if (result)
   {
-    result->_domain = a3;
+    result->_domain = domain;
   }
 
   return result;
@@ -36,13 +36,13 @@
   return v3;
 }
 
-- (id)isSatisfiedWithDataSource:(id)a3 error:(id *)a4
+- (id)isSatisfiedWithDataSource:(id)source error:(id *)error
 {
   v16 = 0;
-  v6 = [a3 OSEligibilityDataSource];
+  oSEligibilityDataSource = [source OSEligibilityDataSource];
   domain = self->_domain;
   v15 = 0;
-  v8 = [v6 getAnswer:&v16 forDomain:domain error:&v15];
+  v8 = [oSEligibilityDataSource getAnswer:&v16 forDomain:domain error:&v15];
   v9 = v15;
 
   if (!v8)
@@ -51,10 +51,10 @@
     v12 = v11;
     if (v11)
     {
-      if (a4)
+      if (error)
       {
         v13 = v11;
-        *a4 = v12;
+        *error = v12;
       }
 
       else
@@ -68,7 +68,7 @@
 
   if ((v16 - 1) >= 4)
   {
-    [MEMORY[0x1E696ABC0] hk_assignError:a4 code:2000 format:{@"Could not get an answer for %llu", self->_domain}];
+    [MEMORY[0x1E696ABC0] hk_assignError:error code:2000 format:{@"Could not get an answer for %llu", self->_domain}];
 LABEL_10:
     v10 = 0;
     goto LABEL_11;
@@ -80,24 +80,24 @@ LABEL_11:
   return v10;
 }
 
-- (void)registerObserver:(id)a3 forDataSource:(id)a4
+- (void)registerObserver:(id)observer forDataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 OSEligibilityDataSource];
-  v9 = [v8 notificationNameForDomain:self->_domain];
+  observerCopy = observer;
+  sourceCopy = source;
+  oSEligibilityDataSource = [sourceCopy OSEligibilityDataSource];
+  v9 = [oSEligibilityDataSource notificationNameForDomain:self->_domain];
 
   if (v9)
   {
-    objc_initWeak(&location, v7);
-    v10 = [v7 darwinNotificationDataSource];
+    objc_initWeak(&location, sourceCopy);
+    darwinNotificationDataSource = [sourceCopy darwinNotificationDataSource];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __96__HKFeatureAvailabilityRequirementOSEligibilityDomainIsEligible_registerObserver_forDataSource___block_invoke;
     v11[3] = &unk_1E73842F8;
     objc_copyWeak(&v12, &location);
     v11[4] = self;
-    [v10 registerObserver:v6 forKey:v9 newValueHandler:v11];
+    [darwinNotificationDataSource registerObserver:observerCopy forKey:v9 newValueHandler:v11];
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
@@ -114,54 +114,54 @@ void __96__HKFeatureAvailabilityRequirementOSEligibilityDomainIsEligible_registe
   }
 }
 
-- (void)unregisterObserver:(id)a3 fromDataSource:(id)a4
+- (void)unregisterObserver:(id)observer fromDataSource:(id)source
 {
-  v8 = a4;
-  v5 = [v8 OSEligibilityDataSource];
-  v6 = [v5 notificationNameForDomain:self->_domain];
+  sourceCopy = source;
+  oSEligibilityDataSource = [sourceCopy OSEligibilityDataSource];
+  v6 = [oSEligibilityDataSource notificationNameForDomain:self->_domain];
 
   if (v6)
   {
-    v7 = [v8 darwinNotificationDataSource];
-    [v7 unregisterObserver:self forKey:v6];
+    darwinNotificationDataSource = [sourceCopy darwinNotificationDataSource];
+    [darwinNotificationDataSource unregisterObserver:self forKey:v6];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_domain == v4[1];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_domain == equalCopy[1];
 
   return v5;
 }
 
-- (HKFeatureAvailabilityRequirementOSEligibilityDomainIsEligible)initWithCoder:(id)a3
+- (HKFeatureAvailabilityRequirementOSEligibilityDomainIsEligible)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = HKFeatureAvailabilityRequirementOSEligibilityDomainIsEligible;
   v5 = [(HKFeatureAvailabilityRequirementOSEligibilityDomainIsEligible *)&v7 init];
   if (v5)
   {
-    v5->_domain = [v4 decodeInt64ForKey:@"Domain"];
+    v5->_domain = [coderCopy decodeInt64ForKey:@"Domain"];
   }
 
   return v5;
 }
 
-- (void)handleDarwinNotificationForObserver:(uint64_t)a3 dataSource:
+- (void)handleDarwinNotificationForObserver:(uint64_t)observer dataSource:
 {
   v17 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  if (a1)
+  if (self)
   {
     v12 = 0;
-    v6 = [a1 isSatisfiedWithDataSource:a3 error:&v12];
+    v6 = [self isSatisfiedWithDataSource:observer error:&v12];
     v7 = v12;
     if (v6)
     {
-      [v5 featureAvailabilityRequirement:a1 didUpdateSatisfaction:{objc_msgSend(v6, "BOOLValue")}];
+      [v5 featureAvailabilityRequirement:self didUpdateSatisfaction:{objc_msgSend(v6, "BOOLValue")}];
     }
 
     else

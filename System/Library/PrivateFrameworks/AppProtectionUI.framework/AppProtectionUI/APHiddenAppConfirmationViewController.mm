@@ -1,27 +1,27 @@
 @interface APHiddenAppConfirmationViewController
-- (id)buttonTrayForAssistant:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (id)buttonTrayForAssistant:(id)assistant;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation APHiddenAppConfirmationViewController
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1AEA26710(a3);
+  selfCopy = self;
+  sub_1AEA26710(appear);
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1AEA26824();
 }
 
-- (id)buttonTrayForAssistant:(id)a3
+- (id)buttonTrayForAssistant:(id)assistant
 {
-  v3 = self;
-  result = [(APHiddenAppConfirmationViewController *)v3 view];
+  selfCopy = self;
+  result = [(APHiddenAppConfirmationViewController *)selfCopy view];
   if (result)
   {
     v5 = result;

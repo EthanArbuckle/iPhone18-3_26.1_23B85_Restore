@@ -1,20 +1,20 @@
 @interface SCKPMessageCardSectionViewController
 + (void)initialize;
 - (CRKCardSectionViewControllingDelegate)cardSectionViewControllingDelegate;
-- (SCKPMessageCardSectionViewController)initWithMessageCardSection:(id)a3 interaction:(id)a4;
-- (void)_asrUpdated:(id)a3;
-- (void)audioPlayerDecodeErrorDidOccur:(id)a3 error:(id)a4;
-- (void)audioPlayerDidFinishPlaying:(id)a3 successfully:(BOOL)a4;
+- (SCKPMessageCardSectionViewController)initWithMessageCardSection:(id)section interaction:(id)interaction;
+- (void)_asrUpdated:(id)updated;
+- (void)audioPlayerDecodeErrorDidOccur:(id)occur error:(id)error;
+- (void)audioPlayerDidFinishPlaying:(id)playing successfully:(BOOL)successfully;
 - (void)beginAudioPlayback;
-- (void)cardEventDidOccur:(unint64_t)a3 withIdentifier:(id)a4 userInfo:(id)a5;
+- (void)cardEventDidOccur:(unint64_t)occur withIdentifier:(id)identifier userInfo:(id)info;
 - (void)createAudioPlayer;
-- (void)desiresInteractivity:(id)a3;
+- (void)desiresInteractivity:(id)interactivity;
 - (void)loadView;
-- (void)messageCardSectionAttachmentTapped:(id)a3;
-- (void)messageCardSectionPlayButtonTapped:(id)a3;
-- (void)messageCardSectionSendButtonTapped:(id)a3;
-- (void)messageCardSectionViewBeganEditing:(id)a3;
-- (void)messageCardSectionViewFinishedEditing:(id)a3;
+- (void)messageCardSectionAttachmentTapped:(id)tapped;
+- (void)messageCardSectionPlayButtonTapped:(id)tapped;
+- (void)messageCardSectionSendButtonTapped:(id)tapped;
+- (void)messageCardSectionViewBeganEditing:(id)editing;
+- (void)messageCardSectionViewFinishedEditing:(id)editing;
 - (void)pauseAudioPlayback;
 - (void)setupPlaybackSessionOptions;
 @end
@@ -23,24 +23,24 @@
 
 + (void)initialize
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___SCKPMessageCardSectionViewController;
   objc_msgSendSuper2(&v2, sel_initialize);
   CRLogInitIfNeeded();
 }
 
-- (SCKPMessageCardSectionViewController)initWithMessageCardSection:(id)a3 interaction:(id)a4
+- (SCKPMessageCardSectionViewController)initWithMessageCardSection:(id)section interaction:(id)interaction
 {
-  v7 = a3;
-  v8 = a4;
+  sectionCopy = section;
+  interactionCopy = interaction;
   v12.receiver = self;
   v12.super_class = SCKPMessageCardSectionViewController;
   v9 = [(SCKPMessageCardSectionViewController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_cardSection, a3);
-    objc_storeStrong(&v10->_interaction, a4);
+    objc_storeStrong(&v9->_cardSection, section);
+    objc_storeStrong(&v10->_interaction, interaction);
   }
 
   return v10;
@@ -52,35 +52,35 @@
   [(SCKPMessageCardSectionViewController *)self setView:v3];
 }
 
-- (void)desiresInteractivity:(id)a3
+- (void)desiresInteractivity:(id)interactivity
 {
-  if (a3)
+  if (interactivity)
   {
-    (*(a3 + 2))(a3, 1);
+    (*(interactivity + 2))(interactivity, 1);
   }
 }
 
-- (void)messageCardSectionViewBeganEditing:(id)a3
+- (void)messageCardSectionViewBeganEditing:(id)editing
 {
-  v12 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = MEMORY[0x277CCABB0];
-  v5 = [(SFMessageCardSection *)self->_cardSection messageText];
-  v6 = [v4 numberWithUnsignedInteger:{objc_msgSend(v5, "length")}];
-  [v12 setObject:v6 forKeyedSubscript:@"oldTextLength"];
+  messageText = [(SFMessageCardSection *)self->_cardSection messageText];
+  v6 = [v4 numberWithUnsignedInteger:{objc_msgSend(messageText, "length")}];
+  [dictionary setObject:v6 forKeyedSubscript:@"oldTextLength"];
 
-  v7 = [(SCKPMessageCardSectionViewController *)self textInputMode];
-  v8 = [v7 primaryLanguage];
-  [v12 setObject:v8 forKeyedSubscript:@"keyboardLocale"];
+  textInputMode = [(SCKPMessageCardSectionViewController *)self textInputMode];
+  primaryLanguage = [textInputMode primaryLanguage];
+  [dictionary setObject:primaryLanguage forKeyedSubscript:@"keyboardLocale"];
 
-  v9 = [MEMORY[0x277CEF158] sharedAnalytics];
-  [v9 logEventWithType:5701 context:v12];
+  mEMORY[0x277CEF158] = [MEMORY[0x277CEF158] sharedAnalytics];
+  [mEMORY[0x277CEF158] logEventWithType:5701 context:dictionary];
 
-  v10 = [(SCKPMessageCardSectionViewController *)self cardSectionViewControllingDelegate];
+  cardSectionViewControllingDelegate = [(SCKPMessageCardSectionViewController *)self cardSectionViewControllingDelegate];
   v11 = objc_alloc_init(MEMORY[0x277CF9428]);
-  [v10 performCommand:v11 forViewController:self];
+  [cardSectionViewControllingDelegate performCommand:v11 forViewController:self];
 }
 
-- (void)messageCardSectionViewFinishedEditing:(id)a3
+- (void)messageCardSectionViewFinishedEditing:(id)editing
 {
   v4 = dispatch_time(0, 200000000);
   block[0] = MEMORY[0x277D85DD0];
@@ -98,60 +98,60 @@ void __78__SCKPMessageCardSectionViewController_messageCardSectionViewFinishedEd
   [v3 performCommand:v2 forViewController:*(a1 + 32)];
 }
 
-- (void)messageCardSectionSendButtonTapped:(id)a3
+- (void)messageCardSectionSendButtonTapped:(id)tapped
 {
   v25[2] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB38];
-  v5 = a3;
-  v6 = [v4 dictionary];
+  tappedCopy = tapped;
+  dictionary = [v4 dictionary];
   v7 = MEMORY[0x277CCABB0];
-  v8 = [(SCKPMessageCardSectionViewController *)self view];
-  v9 = [v8 displayedText];
-  v10 = [v7 numberWithUnsignedInteger:{objc_msgSend(v9, "length")}];
-  [v6 setObject:v10 forKeyedSubscript:@"newTextLength"];
+  view = [(SCKPMessageCardSectionViewController *)self view];
+  displayedText = [view displayedText];
+  v10 = [v7 numberWithUnsignedInteger:{objc_msgSend(displayedText, "length")}];
+  [dictionary setObject:v10 forKeyedSubscript:@"newTextLength"];
 
   v11 = MEMORY[0x277CCABB0];
-  v12 = [(SFMessageCardSection *)self->_cardSection messageText];
-  v13 = [v11 numberWithUnsignedInteger:{objc_msgSend(v12, "length")}];
-  [v6 setObject:v13 forKeyedSubscript:@"oldTextLength"];
+  messageText = [(SFMessageCardSection *)self->_cardSection messageText];
+  v13 = [v11 numberWithUnsignedInteger:{objc_msgSend(messageText, "length")}];
+  [dictionary setObject:v13 forKeyedSubscript:@"oldTextLength"];
 
-  v14 = [(SCKPMessageCardSectionViewController *)self textInputMode];
-  v15 = [v14 primaryLanguage];
-  [v6 setObject:v15 forKeyedSubscript:@"keyboardLocale"];
+  textInputMode = [(SCKPMessageCardSectionViewController *)self textInputMode];
+  primaryLanguage = [textInputMode primaryLanguage];
+  [dictionary setObject:primaryLanguage forKeyedSubscript:@"keyboardLocale"];
 
-  v16 = [MEMORY[0x277CEF158] sharedAnalytics];
-  [v16 logEventWithType:5703 context:v6];
+  mEMORY[0x277CEF158] = [MEMORY[0x277CEF158] sharedAnalytics];
+  [mEMORY[0x277CEF158] logEventWithType:5703 context:dictionary];
 
   v17 = objc_alloc_init(MEMORY[0x277CF9440]);
   [v17 setInvocationIdentifier:*MEMORY[0x277D5C2E0]];
   v24[0] = *MEMORY[0x277D5C2D8];
-  v18 = [v5 displayedText];
+  displayedText2 = [tappedCopy displayedText];
 
   v24[1] = @"keyboardLocale";
-  v25[0] = v18;
-  v19 = [(SCKPMessageCardSectionViewController *)self textInputMode];
-  v20 = [v19 primaryLanguage];
-  v25[1] = v20;
+  v25[0] = displayedText2;
+  textInputMode2 = [(SCKPMessageCardSectionViewController *)self textInputMode];
+  primaryLanguage2 = [textInputMode2 primaryLanguage];
+  v25[1] = primaryLanguage2;
   v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:2];
   [v17 setUserInfo:v21];
 
-  v22 = [(SCKPMessageCardSectionViewController *)self cardSectionViewControllingDelegate];
-  [v22 performCommand:v17 forViewController:self];
+  cardSectionViewControllingDelegate = [(SCKPMessageCardSectionViewController *)self cardSectionViewControllingDelegate];
+  [cardSectionViewControllingDelegate performCommand:v17 forViewController:self];
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)messageCardSectionPlayButtonTapped:(id)a3
+- (void)messageCardSectionPlayButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = v4;
+  tappedCopy = tapped;
+  v5 = tappedCopy;
   if (!self->_player)
   {
     [(SCKPMessageCardSectionViewController *)self createAudioPlayer];
-    v4 = v5;
+    tappedCopy = v5;
   }
 
-  if ([v4 playButtonState])
+  if ([tappedCopy playButtonState])
   {
     if ([v5 playButtonState] == 1)
     {
@@ -166,15 +166,15 @@ void __78__SCKPMessageCardSectionViewController_messageCardSectionViewFinishedEd
   }
 }
 
-- (void)messageCardSectionAttachmentTapped:(id)a3
+- (void)messageCardSectionAttachmentTapped:(id)tapped
 {
-  v4 = [(SFMessageCardSection *)self->_cardSection commands];
-  v5 = [v4 firstObject];
+  commands = [(SFMessageCardSection *)self->_cardSection commands];
+  firstObject = [commands firstObject];
 
-  if (v5)
+  if (firstObject)
   {
-    v6 = [(SCKPMessageCardSectionViewController *)self cardSectionViewControllingDelegate];
-    [v6 performCommand:v5 forViewController:self];
+    cardSectionViewControllingDelegate = [(SCKPMessageCardSectionViewController *)self cardSectionViewControllingDelegate];
+    [cardSectionViewControllingDelegate performCommand:firstObject forViewController:self];
   }
 
   else if (os_log_type_enabled(*MEMORY[0x277CF93F0], OS_LOG_TYPE_ERROR))
@@ -220,8 +220,8 @@ void __78__SCKPMessageCardSectionViewController_messageCardSectionViewFinishedEd
 
   if ([(AVAudioPlayer *)self->_player play])
   {
-    v8 = [(SCKPMessageCardSectionViewController *)self view];
-    [v8 setPlayButtonState:1];
+    view = [(SCKPMessageCardSectionViewController *)self view];
+    [view setPlayButtonState:1];
   }
 
   else if (os_log_type_enabled(*v3, OS_LOG_TYPE_ERROR))
@@ -235,43 +235,43 @@ void __78__SCKPMessageCardSectionViewController_messageCardSectionViewFinishedEd
 - (void)pauseAudioPlayback
 {
   [(AVAudioPlayer *)self->_player pause];
-  v3 = [(SCKPMessageCardSectionViewController *)self view];
-  [v3 setPlayButtonState:0];
+  view = [(SCKPMessageCardSectionViewController *)self view];
+  [view setPlayButtonState:0];
 }
 
-- (void)audioPlayerDidFinishPlaying:(id)a3 successfully:(BOOL)a4
+- (void)audioPlayerDidFinishPlaying:(id)playing successfully:(BOOL)successfully
 {
-  v5 = a3;
+  playingCopy = playing;
   if (os_log_type_enabled(*MEMORY[0x277CF93F0], OS_LOG_TYPE_ERROR))
   {
     [SCKPMessageCardSectionViewController audioPlayerDidFinishPlaying:successfully:];
   }
 
-  v6 = [(SCKPMessageCardSectionViewController *)self view];
-  [v6 setPlayButtonState:0];
+  view = [(SCKPMessageCardSectionViewController *)self view];
+  [view setPlayButtonState:0];
 }
 
-- (void)audioPlayerDecodeErrorDidOccur:(id)a3 error:(id)a4
+- (void)audioPlayerDecodeErrorDidOccur:(id)occur error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  occurCopy = occur;
+  errorCopy = error;
   if (os_log_type_enabled(*MEMORY[0x277CF93F0], OS_LOG_TYPE_ERROR))
   {
     [SCKPMessageCardSectionViewController audioPlayerDecodeErrorDidOccur:error:];
   }
 
-  v8 = [(SCKPMessageCardSectionViewController *)self view];
-  [v8 setPlayButtonState:0];
+  view = [(SCKPMessageCardSectionViewController *)self view];
+  [view setPlayButtonState:0];
 }
 
-- (void)cardEventDidOccur:(unint64_t)a3 withIdentifier:(id)a4 userInfo:(id)a5
+- (void)cardEventDidOccur:(unint64_t)occur withIdentifier:(id)identifier userInfo:(id)info
 {
-  v17 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (a3 == 7 && v8)
+  identifierCopy = identifier;
+  infoCopy = info;
+  v9 = infoCopy;
+  if (occur == 7 && infoCopy)
   {
-    v10 = [v8 objectForKey:@"UpdatedRecognition"];
+    v10 = [infoCopy objectForKey:@"UpdatedRecognition"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -281,56 +281,56 @@ void __78__SCKPMessageCardSectionViewController_messageCardSectionViewFinishedEd
 
   else
   {
-    if (a3 == 9)
+    if (occur == 9)
     {
-      v14 = [(SCKPMessageCardSectionViewController *)self view];
-      v15 = [v14 keyboardIsVisible];
+      view = [(SCKPMessageCardSectionViewController *)self view];
+      keyboardIsVisible = [view keyboardIsVisible];
 
-      if (!v15)
+      if (!keyboardIsVisible)
       {
         goto LABEL_12;
       }
 
-      v16 = [(SCKPMessageCardSectionViewController *)self view];
-      [v16 dismissKeyboard];
+      view2 = [(SCKPMessageCardSectionViewController *)self view];
+      [view2 dismissKeyboard];
 
-      v12 = self;
+      selfCopy2 = self;
       v13 = 1;
     }
 
     else
     {
-      if (a3 != 8)
+      if (occur != 8)
       {
         goto LABEL_12;
       }
 
-      v11 = [(SCKPMessageCardSectionViewController *)self view];
-      [v11 dismissKeyboard];
+      view3 = [(SCKPMessageCardSectionViewController *)self view];
+      [view3 dismissKeyboard];
 
-      v12 = self;
+      selfCopy2 = self;
       v13 = 0;
     }
 
-    [(SCKPMessageCardSectionViewController *)v12 messageContentUpdatedAndInitiatedByNewRequest:v13];
+    [(SCKPMessageCardSectionViewController *)selfCopy2 messageContentUpdatedAndInitiatedByNewRequest:v13];
   }
 
 LABEL_12:
 }
 
-- (void)_asrUpdated:(id)a3
+- (void)_asrUpdated:(id)updated
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(INInteraction *)self->_interaction intent];
+  updatedCopy = updated;
+  intent = [(INInteraction *)self->_interaction intent];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [(INInteraction *)self->_interaction intent];
-    v8 = [v7 content];
-    v9 = [v8 length];
+    intent2 = [(INInteraction *)self->_interaction intent];
+    content = [intent2 content];
+    v9 = [content length];
 
     if (v9)
     {
@@ -349,8 +349,8 @@ LABEL_5:
       goto LABEL_18;
     }
 
-    v12 = [v7 recipients];
-    v13 = [v12 count];
+    recipients = [intent2 recipients];
+    v13 = [recipients count];
 
     if (!v13)
     {
@@ -365,8 +365,8 @@ LABEL_5:
       goto LABEL_5;
     }
 
-    v14 = [v7 attachments];
-    v15 = [v14 count];
+    attachments = [intent2 attachments];
+    v15 = [attachments count];
 
     if (v15)
     {
@@ -382,18 +382,18 @@ LABEL_5:
     }
   }
 
-  if (v4 && [v4 length])
+  if (updatedCopy && [updatedCopy length])
   {
     v16 = *MEMORY[0x277CF93F0];
     if (os_log_type_enabled(*MEMORY[0x277CF93F0], OS_LOG_TYPE_INFO))
     {
       v18 = 138412290;
-      v19 = v4;
+      v19 = updatedCopy;
       _os_log_impl(&dword_26950D000, v16, OS_LOG_TYPE_INFO, "Updating message field with ASR recognition : %@", &v18, 0xCu);
     }
 
-    v7 = [(SCKPMessageCardSectionViewController *)self view];
-    [v7 setMessageContents:v4];
+    intent2 = [(SCKPMessageCardSectionViewController *)self view];
+    [intent2 setMessageContents:updatedCopy];
     goto LABEL_18;
   }
 

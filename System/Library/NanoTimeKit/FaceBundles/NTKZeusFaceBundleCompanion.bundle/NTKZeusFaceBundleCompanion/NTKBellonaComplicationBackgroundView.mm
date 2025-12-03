@@ -1,12 +1,12 @@
 @interface NTKBellonaComplicationBackgroundView
 - (NTKBellonaComplicationBackgroundView)init;
-- (id)borderColorForCurrentHour:(unint64_t)a3;
-- (void)alphaBasedOnSpecificFadeInProgress:(double)a3 fadeOutProgress:(double)a4 forCurrentHour:(unint64_t)a5;
+- (id)borderColorForCurrentHour:(unint64_t)hour;
+- (void)alphaBasedOnSpecificFadeInProgress:(double)progress fadeOutProgress:(double)outProgress forCurrentHour:(unint64_t)hour;
 - (void)applyStyleChange;
-- (void)applyTransitionFraction:(double)a3 fromPalette:(id)a4 toPalette:(id)a5;
-- (void)hourChangeAnimationFromCurrentHour:(unint64_t)a3 withFraction:(double)a4 timeChanged:(BOOL)a5;
+- (void)applyTransitionFraction:(double)fraction fromPalette:(id)palette toPalette:(id)toPalette;
+- (void)hourChangeAnimationFromCurrentHour:(unint64_t)hour withFraction:(double)fraction timeChanged:(BOOL)changed;
 - (void)layoutSubviews;
-- (void)tritiumOnTransitionWithFraction:(double)a3 forCurrentHour:(unint64_t)a4;
+- (void)tritiumOnTransitionWithFraction:(double)fraction forCurrentHour:(unint64_t)hour;
 @end
 
 @implementation NTKBellonaComplicationBackgroundView
@@ -33,99 +33,99 @@
   v17.receiver = self;
   v17.super_class = NTKBellonaComplicationBackgroundView;
   [(NTKBellonaComplicationBackgroundView *)&v17 layoutSubviews];
-  v3 = [(NTKZeudleComplicationBackgroundView *)self device];
-  v4 = sub_D6FC(v3, v3);
+  device = [(NTKZeudleComplicationBackgroundView *)self device];
+  v4 = sub_D6FC(device, device);
 
   [(NTKZeudleComplicationBackgroundView *)self contentFrame];
   [(UIView *)self->_backgroundView setFrame:?];
   CLKRectGetCenter();
   [(UIView *)self->_backgroundView setCenter:?];
-  v5 = [(UIView *)self->_backgroundView layer];
-  [v5 setCornerRadius:v4];
+  layer = [(UIView *)self->_backgroundView layer];
+  [layer setCornerRadius:v4];
 
-  v6 = [(UIView *)self->_backgroundView layer];
-  [v6 setCornerCurve:kCACornerCurveContinuous];
+  layer2 = [(UIView *)self->_backgroundView layer];
+  [layer2 setCornerCurve:kCACornerCurveContinuous];
 
-  v7 = [(UIView *)self->_backgroundView layer];
-  [v7 setMasksToBounds:1];
+  layer3 = [(UIView *)self->_backgroundView layer];
+  [layer3 setMasksToBounds:1];
 
-  v8 = [(UIView *)self->_backgroundView layer];
-  [v8 setBorderWidth:1.0];
+  layer4 = [(UIView *)self->_backgroundView layer];
+  [layer4 setBorderWidth:1.0];
 
-  v9 = [(NTKZeudleComplicationBackgroundView *)self palette];
-  v10 = [v9 dateComplicationBackgroundStroke];
-  v11 = [v10 colorWithAlphaComponent:1.0];
-  v12 = [v11 CGColor];
-  v13 = [(UIView *)self->_backgroundView layer];
-  [v13 setBorderColor:v12];
+  palette = [(NTKZeudleComplicationBackgroundView *)self palette];
+  dateComplicationBackgroundStroke = [palette dateComplicationBackgroundStroke];
+  v11 = [dateComplicationBackgroundStroke colorWithAlphaComponent:1.0];
+  cGColor = [v11 CGColor];
+  layer5 = [(UIView *)self->_backgroundView layer];
+  [layer5 setBorderColor:cGColor];
 
-  v14 = [(NTKZeudleComplicationBackgroundView *)self palette];
-  v15 = [v14 dateComplicationBackground];
-  v16 = [v15 colorWithAlphaComponent:0.0];
+  palette2 = [(NTKZeudleComplicationBackgroundView *)self palette];
+  dateComplicationBackground = [palette2 dateComplicationBackground];
+  v16 = [dateComplicationBackground colorWithAlphaComponent:0.0];
   [(UIView *)self->_backgroundView setBackgroundColor:v16];
 }
 
-- (id)borderColorForCurrentHour:(unint64_t)a3
+- (id)borderColorForCurrentHour:(unint64_t)hour
 {
-  if (a3 <= 0xB)
+  if (hour <= 0xB)
   {
-    v3 = a3;
+    hourCopy = hour;
   }
 
   else
   {
-    v3 = a3 - 12;
+    hourCopy = hour - 12;
   }
 
-  v4 = [(NTKZeudleComplicationBackgroundView *)self palette];
-  v5 = v4;
-  if (v3 == 3)
+  palette = [(NTKZeudleComplicationBackgroundView *)self palette];
+  v5 = palette;
+  if (hourCopy == 3)
   {
-    [v4 beige];
+    [palette beige];
   }
 
   else
   {
-    [v4 dateComplicationBackgroundStroke];
+    [palette dateComplicationBackgroundStroke];
   }
   v6 = ;
 
   return v6;
 }
 
-- (void)hourChangeAnimationFromCurrentHour:(unint64_t)a3 withFraction:(double)a4 timeChanged:(BOOL)a5
+- (void)hourChangeAnimationFromCurrentHour:(unint64_t)hour withFraction:(double)fraction timeChanged:(BOOL)changed
 {
-  v5 = a5;
+  changedCopy = changed;
   v13 = [(NTKBellonaComplicationBackgroundView *)self borderColorForCurrentHour:?];
-  if (v5)
+  if (changedCopy)
   {
-    v8 = [v13 CGColor];
-    v9 = [(UIView *)self->_backgroundView layer];
-    [v9 setBorderColor:v8];
+    cGColor = [v13 CGColor];
+    layer = [(UIView *)self->_backgroundView layer];
+    [layer setBorderColor:cGColor];
   }
 
   else
   {
-    v9 = [(NTKBellonaComplicationBackgroundView *)self borderColorForCurrentHour:a3 + 1];
+    layer = [(NTKBellonaComplicationBackgroundView *)self borderColorForCurrentHour:hour + 1];
     v10 = CLKInterpolateBetweenColors();
-    v11 = [v10 CGColor];
-    v12 = [(UIView *)self->_backgroundView layer];
-    [v12 setBorderColor:v11];
+    cGColor2 = [v10 CGColor];
+    layer2 = [(UIView *)self->_backgroundView layer];
+    [layer2 setBorderColor:cGColor2];
   }
 }
 
-- (void)tritiumOnTransitionWithFraction:(double)a3 forCurrentHour:(unint64_t)a4
+- (void)tritiumOnTransitionWithFraction:(double)fraction forCurrentHour:(unint64_t)hour
 {
-  v8 = [(NTKBellonaComplicationBackgroundView *)self borderColorForCurrentHour:a4, a3];
-  v5 = v8;
-  v6 = [v8 CGColor];
-  v7 = [(UIView *)self->_backgroundView layer];
-  [v7 setBorderColor:v6];
+  fraction = [(NTKBellonaComplicationBackgroundView *)self borderColorForCurrentHour:hour, fraction];
+  v5 = fraction;
+  cGColor = [fraction CGColor];
+  layer = [(UIView *)self->_backgroundView layer];
+  [layer setBorderColor:cGColor];
 }
 
-- (void)alphaBasedOnSpecificFadeInProgress:(double)a3 fadeOutProgress:(double)a4 forCurrentHour:(unint64_t)a5
+- (void)alphaBasedOnSpecificFadeInProgress:(double)progress fadeOutProgress:(double)outProgress forCurrentHour:(unint64_t)hour
 {
-  v6 = [(NTKBellonaComplicationBackgroundView *)self borderColorForCurrentHour:a5, 0, 0, 0, 0, 0, 0, 0, 0];
+  v6 = [(NTKBellonaComplicationBackgroundView *)self borderColorForCurrentHour:hour, 0, 0, 0, 0, 0, 0, 0, 0];
   [v6 getRed:&v29 green:&v28 blue:&v27 alpha:&v26];
 
   v7 = [(NTKBellonaComplicationBackgroundView *)self borderColorForCurrentHour:3];
@@ -143,9 +143,9 @@
   v17 = v16;
   CLKInterpolateBetweenFloatsClipped();
   v19 = [UIColor colorWithRed:v9 * v15 green:v11 * v17 blue:v13 * v18 alpha:1.0];
-  v20 = [v19 CGColor];
-  v21 = [(UIView *)self->_backgroundView layer];
-  [v21 setBorderColor:v20];
+  cGColor = [v19 CGColor];
+  layer = [(UIView *)self->_backgroundView layer];
+  [layer setBorderColor:cGColor];
 }
 
 - (void)applyStyleChange
@@ -153,46 +153,46 @@
   v9.receiver = self;
   v9.super_class = NTKBellonaComplicationBackgroundView;
   [(NTKZeudleComplicationBackgroundView *)&v9 applyStyleChange];
-  v3 = [(NTKZeudleComplicationBackgroundView *)self palette];
-  v4 = [v3 dateComplicationBackground];
-  [(UIView *)self->_backgroundView setBackgroundColor:v4];
+  palette = [(NTKZeudleComplicationBackgroundView *)self palette];
+  dateComplicationBackground = [palette dateComplicationBackground];
+  [(UIView *)self->_backgroundView setBackgroundColor:dateComplicationBackground];
 
-  v5 = [(NTKZeudleComplicationBackgroundView *)self palette];
-  v6 = [v5 dateComplicationBackgroundStroke];
-  v7 = [v6 CGColor];
-  v8 = [(UIView *)self->_backgroundView layer];
-  [v8 setBorderColor:v7];
+  palette2 = [(NTKZeudleComplicationBackgroundView *)self palette];
+  dateComplicationBackgroundStroke = [palette2 dateComplicationBackgroundStroke];
+  cGColor = [dateComplicationBackgroundStroke CGColor];
+  layer = [(UIView *)self->_backgroundView layer];
+  [layer setBorderColor:cGColor];
 }
 
-- (void)applyTransitionFraction:(double)a3 fromPalette:(id)a4 toPalette:(id)a5
+- (void)applyTransitionFraction:(double)fraction fromPalette:(id)palette toPalette:(id)toPalette
 {
-  v8 = a4;
-  v9 = a5;
+  paletteCopy = palette;
+  toPaletteCopy = toPalette;
   v20.receiver = self;
   v20.super_class = NTKBellonaComplicationBackgroundView;
-  [(NTKZeudleComplicationBackgroundView *)&v20 applyTransitionFraction:v8 fromPalette:v9 toPalette:a3];
+  [(NTKZeudleComplicationBackgroundView *)&v20 applyTransitionFraction:paletteCopy fromPalette:toPaletteCopy toPalette:fraction];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = v9;
-      v11 = v8;
-      v12 = [v11 dateComplicationBackground];
-      v13 = [v10 dateComplicationBackground];
+      v10 = toPaletteCopy;
+      v11 = paletteCopy;
+      dateComplicationBackground = [v11 dateComplicationBackground];
+      dateComplicationBackground2 = [v10 dateComplicationBackground];
       v14 = NTKInterpolateBetweenColors();
 
-      v15 = [v11 dateComplicationBackgroundStroke];
+      dateComplicationBackgroundStroke = [v11 dateComplicationBackgroundStroke];
 
-      v16 = [v10 dateComplicationBackgroundStroke];
+      dateComplicationBackgroundStroke2 = [v10 dateComplicationBackgroundStroke];
 
       v17 = NTKInterpolateBetweenColors();
 
       [(UIView *)self->_backgroundView setBackgroundColor:v14];
-      v18 = [v17 CGColor];
-      v19 = [(UIView *)self->_backgroundView layer];
-      [v19 setBorderColor:v18];
+      cGColor = [v17 CGColor];
+      layer = [(UIView *)self->_backgroundView layer];
+      [layer setBorderColor:cGColor];
     }
   }
 }

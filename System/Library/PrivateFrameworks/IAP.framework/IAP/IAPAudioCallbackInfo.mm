@@ -1,26 +1,26 @@
 @interface IAPAudioCallbackInfo
 + (id)sharedInstance;
 - (IAPAudioCallbackInfo)init;
-- (void)_handleiAPDaemonDied:(id)a3;
+- (void)_handleiAPDaemonDied:(id)died;
 - (void)clearDeviceStateChangedCallback;
 - (void)clearPauseOnHeadphoneDisconnectChangedCallback;
 - (void)clearVolumeChangedCallback;
 - (void)clearVolumeControlSupportChangedCallback;
 - (void)dealloc;
-- (void)setupDeviceStateChangedCallback:(void *)a3 withContext:(void *)a4 andRunLoop:(__CFRunLoop *)a5;
-- (void)setupPauseOnHeadphoneDisconnectChangedCallback:(void *)a3 withContext:(void *)a4 andRunLoop:(__CFRunLoop *)a5;
-- (void)setupVolumeChangedCallback:(void *)a3 withContext:(void *)a4 andRunLoop:(__CFRunLoop *)a5;
-- (void)setupVolumeControlSupportChangedCallback:(void *)a3 withContext:(void *)a4 andRunLoop:(__CFRunLoop *)a5;
+- (void)setupDeviceStateChangedCallback:(void *)callback withContext:(void *)context andRunLoop:(__CFRunLoop *)loop;
+- (void)setupPauseOnHeadphoneDisconnectChangedCallback:(void *)callback withContext:(void *)context andRunLoop:(__CFRunLoop *)loop;
+- (void)setupVolumeChangedCallback:(void *)callback withContext:(void *)context andRunLoop:(__CFRunLoop *)loop;
+- (void)setupVolumeControlSupportChangedCallback:(void *)callback withContext:(void *)context andRunLoop:(__CFRunLoop *)loop;
 @end
 
 @implementation IAPAudioCallbackInfo
 
-- (void)_handleiAPDaemonDied:(id)a3
+- (void)_handleiAPDaemonDied:(id)died
 {
   [objc_msgSend(MEMORY[0x277CCAB98] defaultCenter];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-  [v3 postNotificationName:@"IAPAudioVolumeControlSupportChangedNotification" object:0];
+  [defaultCenter postNotificationName:@"IAPAudioVolumeControlSupportChangedNotification" object:0];
 }
 
 - (IAPAudioCallbackInfo)init
@@ -65,11 +65,11 @@ IAPAudioCallbackInfo *__38__IAPAudioCallbackInfo_sharedInstance__block_invoke()
   return result;
 }
 
-- (void)setupDeviceStateChangedCallback:(void *)a3 withContext:(void *)a4 andRunLoop:(__CFRunLoop *)a5
+- (void)setupDeviceStateChangedCallback:(void *)callback withContext:(void *)context andRunLoop:(__CFRunLoop *)loop
 {
-  [(NSLock *)self->_lock lock:a3];
-  self->_deviceStateChangedCallback = a3;
-  self->_deviceStateChangedContext = a4;
+  [(NSLock *)self->_lock lock:callback];
+  self->_deviceStateChangedCallback = callback;
+  self->_deviceStateChangedContext = context;
   [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterAddObserver(DarwinNotifyCenter, self, IAPAudioDeviceStateChangedNotificationCallBack, @"IAPAudioDeviceStateChangedNotification", 0, 0);
@@ -95,11 +95,11 @@ IAPAudioCallbackInfo *__38__IAPAudioCallbackInfo_sharedInstance__block_invoke()
   [(NSLock *)lock unlock];
 }
 
-- (void)setupVolumeChangedCallback:(void *)a3 withContext:(void *)a4 andRunLoop:(__CFRunLoop *)a5
+- (void)setupVolumeChangedCallback:(void *)callback withContext:(void *)context andRunLoop:(__CFRunLoop *)loop
 {
-  [(NSLock *)self->_lock lock:a3];
-  self->_volumeChangedCallback = a3;
-  self->_volumeChangedContext = a4;
+  [(NSLock *)self->_lock lock:callback];
+  self->_volumeChangedCallback = callback;
+  self->_volumeChangedContext = context;
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterAddObserver(DarwinNotifyCenter, self, IAPAudioVolumeChangedNotificationCallBack, @"IAPAudioVolumeChangedNotification", 0, 0);
   lock = self->_lock;
@@ -119,11 +119,11 @@ IAPAudioCallbackInfo *__38__IAPAudioCallbackInfo_sharedInstance__block_invoke()
   [(NSLock *)lock unlock];
 }
 
-- (void)setupPauseOnHeadphoneDisconnectChangedCallback:(void *)a3 withContext:(void *)a4 andRunLoop:(__CFRunLoop *)a5
+- (void)setupPauseOnHeadphoneDisconnectChangedCallback:(void *)callback withContext:(void *)context andRunLoop:(__CFRunLoop *)loop
 {
-  [(NSLock *)self->_lock lock:a3];
-  self->_pauseOnHeadphoneDisconnectChangedCallback = a3;
-  self->_pauseOnHeadphoneDisconnectChangedContext = a4;
+  [(NSLock *)self->_lock lock:callback];
+  self->_pauseOnHeadphoneDisconnectChangedCallback = callback;
+  self->_pauseOnHeadphoneDisconnectChangedContext = context;
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterAddObserver(DarwinNotifyCenter, self, IAPAudioShouldPauseOnHeadphoneDisconnectChangedNotificationCallBack, @"IAPAudioShouldPauseOnHeadphoneDisconnectChangedNotification", 0, 0);
   lock = self->_lock;
@@ -143,11 +143,11 @@ IAPAudioCallbackInfo *__38__IAPAudioCallbackInfo_sharedInstance__block_invoke()
   [(NSLock *)lock unlock];
 }
 
-- (void)setupVolumeControlSupportChangedCallback:(void *)a3 withContext:(void *)a4 andRunLoop:(__CFRunLoop *)a5
+- (void)setupVolumeControlSupportChangedCallback:(void *)callback withContext:(void *)context andRunLoop:(__CFRunLoop *)loop
 {
-  [(NSLock *)self->_lock lock:a3];
-  self->_volumeControlSupportChangedCallback = a3;
-  self->_volumeControlSupportChangedContext = a4;
+  [(NSLock *)self->_lock lock:callback];
+  self->_volumeControlSupportChangedCallback = callback;
+  self->_volumeControlSupportChangedContext = context;
   [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterAddObserver(DarwinNotifyCenter, self, IAPAudioVolumeControlSupportChangedNotificationCallBack, @"IAPAudioVolumeControlSupportChangedNotification", 0, 0);

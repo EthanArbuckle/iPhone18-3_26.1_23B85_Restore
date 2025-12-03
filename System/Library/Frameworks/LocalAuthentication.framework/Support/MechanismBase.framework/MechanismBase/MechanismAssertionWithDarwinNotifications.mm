@@ -1,28 +1,28 @@
 @interface MechanismAssertionWithDarwinNotifications
-- (MechanismAssertionWithDarwinNotifications)initWithMechanism:(id)a3 inStateNotificationName:(id)a4 outStateNotificationName:(id)a5;
-- (id)_notificationNameForInState:(BOOL)a3;
+- (MechanismAssertionWithDarwinNotifications)initWithMechanism:(id)mechanism inStateNotificationName:(id)name outStateNotificationName:(id)notificationName;
+- (id)_notificationNameForInState:(BOOL)state;
 - (id)assertInState;
-- (int)_notificationTokenForInState:(BOOL)a3;
-- (void)handleAssertionFailureWithReason:(id)a3 error:(id)a4;
-- (void)handleAssertionSuccessWithReason:(id)a3;
+- (int)_notificationTokenForInState:(BOOL)state;
+- (void)handleAssertionFailureWithReason:(id)reason error:(id)error;
+- (void)handleAssertionSuccessWithReason:(id)reason;
 - (void)startMonitoring;
 - (void)stopMonitoring;
 @end
 
 @implementation MechanismAssertionWithDarwinNotifications
 
-- (MechanismAssertionWithDarwinNotifications)initWithMechanism:(id)a3 inStateNotificationName:(id)a4 outStateNotificationName:(id)a5
+- (MechanismAssertionWithDarwinNotifications)initWithMechanism:(id)mechanism inStateNotificationName:(id)name outStateNotificationName:(id)notificationName
 {
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  notificationNameCopy = notificationName;
   v14.receiver = self;
   v14.super_class = MechanismAssertionWithDarwinNotifications;
-  v11 = [(MechanismAssertion *)&v14 initWithMechanism:a3];
+  v11 = [(MechanismAssertion *)&v14 initWithMechanism:mechanism];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_inStateNotificationName, a4);
-    objc_storeStrong(&v12->_outStateNotificationName, a5);
+    objc_storeStrong(&v11->_inStateNotificationName, name);
+    objc_storeStrong(&v12->_outStateNotificationName, notificationName);
     v12->_isInState = 1;
   }
 
@@ -62,19 +62,19 @@
   [(MechanismAssertionWithDarwinNotifications *)self _unregisterDarwinNotificationForInstate:0];
 }
 
-- (void)handleAssertionSuccessWithReason:(id)a3
+- (void)handleAssertionSuccessWithReason:(id)reason
 {
   v4.receiver = self;
   v4.super_class = MechanismAssertionWithDarwinNotifications;
-  [(MechanismAssertion *)&v4 handleAssertionSuccessWithReason:a3];
+  [(MechanismAssertion *)&v4 handleAssertionSuccessWithReason:reason];
   self->_isInState = 1;
 }
 
-- (void)handleAssertionFailureWithReason:(id)a3 error:(id)a4
+- (void)handleAssertionFailureWithReason:(id)reason error:(id)error
 {
   v5.receiver = self;
   v5.super_class = MechanismAssertionWithDarwinNotifications;
-  [(MechanismAssertion *)&v5 handleAssertionFailureWithReason:a3 error:a4];
+  [(MechanismAssertion *)&v5 handleAssertionFailureWithReason:reason error:error];
   self->_isInState = 0;
 }
 
@@ -101,9 +101,9 @@ void __83__MechanismAssertionWithDarwinNotifications__registerDarwinNotification
   }
 }
 
-- (id)_notificationNameForInState:(BOOL)a3
+- (id)_notificationNameForInState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     [(MechanismAssertionWithDarwinNotifications *)self inStateNotificationName];
   }
@@ -117,10 +117,10 @@ void __83__MechanismAssertionWithDarwinNotifications__registerDarwinNotification
   return v3;
 }
 
-- (int)_notificationTokenForInState:(BOOL)a3
+- (int)_notificationTokenForInState:(BOOL)state
 {
   v3 = &OBJC_IVAR___MechanismAssertionWithDarwinNotifications__outStateToken;
-  if (a3)
+  if (state)
   {
     v3 = &OBJC_IVAR___MechanismAssertionWithDarwinNotifications__inStateToken;
   }

@@ -1,10 +1,10 @@
 @interface MailQuickLookScene
 + (OS_os_log)log;
-- (id)dismissActionsForPreviewController:(id)a3;
+- (id)dismissActionsForPreviewController:(id)controller;
 - (id)stateRestorationActivityForMailScene;
-- (int64_t)previewController:(id)a3 editingModeForPreviewItem:(id)a4;
-- (void)_switchToComposeSceneAsReply:(BOOL)a3 composeType:(int64_t)a4;
-- (void)mailSceneDidConnectWithOptions:(id)a3;
+- (int64_t)previewController:(id)controller editingModeForPreviewItem:(id)item;
+- (void)_switchToComposeSceneAsReply:(BOOL)reply composeType:(int64_t)type;
+- (void)mailSceneDidConnectWithOptions:(id)options;
 - (void)mailSceneWillEnterForeground;
 @end
 
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = sub_100123310;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD120 != -1)
   {
     dispatch_once(&qword_1006DD120, block);
@@ -27,43 +27,43 @@
   return v2;
 }
 
-- (void)mailSceneDidConnectWithOptions:(id)a3
+- (void)mailSceneDidConnectWithOptions:(id)options
 {
   v47.receiver = self;
   v47.super_class = MailQuickLookScene;
-  v46 = a3;
+  optionsCopy = options;
   [(MailScene *)&v47 mailSceneDidConnectWithOptions:?];
-  v4 = [(MailQuickLookScene *)self session];
-  v5 = [v4 stateRestorationActivity];
-  if (v5)
+  session = [(MailQuickLookScene *)self session];
+  stateRestorationActivity = [session stateRestorationActivity];
+  if (stateRestorationActivity)
   {
 LABEL_2:
 
     goto LABEL_4;
   }
 
-  v6 = [v46 userActivities];
-  v5 = [v6 anyObject];
+  userActivities = [optionsCopy userActivities];
+  stateRestorationActivity = [userActivities anyObject];
 
-  if (!v5)
+  if (!stateRestorationActivity)
   {
-    v4 = +[MailQuickLookScene log];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+    session = +[MailQuickLookScene log];
+    if (os_log_type_enabled(session, OS_LOG_TYPE_ERROR))
     {
-      sub_1004890C8(v4, v39, v40, v41, v42, v43, v44, v45);
+      sub_1004890C8(session, v39, v40, v41, v42, v43, v44, v45);
     }
 
-    v5 = 0;
+    stateRestorationActivity = 0;
     goto LABEL_2;
   }
 
 LABEL_4:
-  v7 = [MFMailQLAttachmentContext contextWithUserActivity:v5];
+  v7 = [MFMailQLAttachmentContext contextWithUserActivity:stateRestorationActivity];
   if (v7)
   {
     v8 = [QLItem alloc];
-    v9 = [v7 attachmentURL];
-    v10 = [v8 initWithURL:v9];
+    attachmentURL = [v7 attachmentURL];
+    v10 = [v8 initWithURL:attachmentURL];
 
     if (!v10)
     {
@@ -74,9 +74,9 @@ LABEL_4:
       }
     }
 
-    v19 = [v7 attachmentURL];
-    v20 = [v19 lastPathComponent];
-    [(MailQuickLookScene *)self setTitle:v20];
+    attachmentURL2 = [v7 attachmentURL];
+    lastPathComponent = [attachmentURL2 lastPathComponent];
+    [(MailQuickLookScene *)self setTitle:lastPathComponent];
 
     if (v10)
     {
@@ -108,21 +108,21 @@ LABEL_15:
   [v30 setDelegate:self];
   v31 = objc_alloc_init(UIViewController);
   v32 = +[UIColor systemBackgroundColor];
-  v33 = [v31 view];
-  [v33 setBackgroundColor:v32];
+  view = [v31 view];
+  [view setBackgroundColor:v32];
 
   [(MailQuickLookScene *)self setContext:v7];
   [(MailScene *)self setMf_rootViewController:v31];
   [(MailQuickLookScene *)self setPreviewController:v30];
-  v34 = [v7 attachmentURL];
-  v35 = [v34 absoluteString];
-  v36 = [NSPredicate predicateWithFormat:@"self ENDSWITH %@", v35];
+  attachmentURL3 = [v7 attachmentURL];
+  absoluteString = [attachmentURL3 absoluteString];
+  v36 = [NSPredicate predicateWithFormat:@"self ENDSWITH %@", absoluteString];
 
-  v37 = [(MailQuickLookScene *)self activationConditions];
-  [v37 setCanActivateForTargetContentIdentifierPredicate:v36];
+  activationConditions = [(MailQuickLookScene *)self activationConditions];
+  [activationConditions setCanActivateForTargetContentIdentifierPredicate:v36];
 
-  v38 = [(MailQuickLookScene *)self activationConditions];
-  [v38 setPrefersToActivateForTargetContentIdentifierPredicate:v36];
+  activationConditions2 = [(MailQuickLookScene *)self activationConditions];
+  [activationConditions2 setPrefersToActivateForTargetContentIdentifierPredicate:v36];
 }
 
 - (void)mailSceneWillEnterForeground
@@ -130,17 +130,17 @@ LABEL_15:
   v9.receiver = self;
   v9.super_class = MailQuickLookScene;
   [(MailScene *)&v9 mailSceneWillEnterForeground];
-  v3 = [(MailScene *)self mf_rootViewController];
-  v4 = [v3 presentedViewController];
+  mf_rootViewController = [(MailScene *)self mf_rootViewController];
+  presentedViewController = [mf_rootViewController presentedViewController];
 
-  v5 = +[MailQuickLookScene log];
-  v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  mf_rootViewController2 = +[MailQuickLookScene log];
+  v6 = os_log_type_enabled(mf_rootViewController2, OS_LOG_TYPE_DEFAULT);
+  if (presentedViewController)
   {
     if (v6)
     {
       *v8 = 0;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Preview controller already presented", v8, 2u);
+      _os_log_impl(&_mh_execute_header, mf_rootViewController2, OS_LOG_TYPE_DEFAULT, "Preview controller already presented", v8, 2u);
     }
   }
 
@@ -149,46 +149,46 @@ LABEL_15:
     if (v6)
     {
       *v8 = 0;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Present preview controller", v8, 2u);
+      _os_log_impl(&_mh_execute_header, mf_rootViewController2, OS_LOG_TYPE_DEFAULT, "Present preview controller", v8, 2u);
     }
 
-    v5 = [(MailScene *)self mf_rootViewController];
-    v7 = [(MailQuickLookScene *)self previewController];
-    [v5 presentViewController:v7 animated:0 completion:0];
+    mf_rootViewController2 = [(MailScene *)self mf_rootViewController];
+    previewController = [(MailQuickLookScene *)self previewController];
+    [mf_rootViewController2 presentViewController:previewController animated:0 completion:0];
   }
 }
 
 - (id)stateRestorationActivityForMailScene
 {
-  v2 = [(MailQuickLookScene *)self context];
-  v3 = [v2 userActivity];
+  context = [(MailQuickLookScene *)self context];
+  userActivity = [context userActivity];
 
-  return v3;
+  return userActivity;
 }
 
-- (int64_t)previewController:(id)a3 editingModeForPreviewItem:(id)a4
+- (int64_t)previewController:(id)controller editingModeForPreviewItem:(id)item
 {
-  v4 = [(MailQuickLookScene *)self context:a3];
+  v4 = [(MailQuickLookScene *)self context:controller];
   v5 = 2 * ([v4 editBehavior] != 0);
 
   return v5;
 }
 
-- (id)dismissActionsForPreviewController:(id)a3
+- (id)dismissActionsForPreviewController:(id)controller
 {
   v4 = objc_opt_new();
-  v5 = [(MailQuickLookScene *)self context];
-  v6 = [v5 shouldShowReplyAll];
+  context = [(MailQuickLookScene *)self context];
+  shouldShowReplyAll = [context shouldShowReplyAll];
 
-  v7 = [(MailQuickLookScene *)self context];
-  v8 = [v7 senderDisplayName];
+  context2 = [(MailQuickLookScene *)self context];
+  senderDisplayName = [context2 senderDisplayName];
 
   objc_initWeak(location, self);
-  if (v8)
+  if (senderDisplayName)
   {
     v9 = +[NSBundle mainBundle];
     v10 = [v9 localizedStringForKey:@"REPLY_TO_SENDER" value:&stru_100662A88 table:@"Main"];
-    v11 = [NSString stringWithFormat:v10, v8];
+    v11 = [NSString stringWithFormat:v10, senderDisplayName];
     v12 = [UIImage systemImageNamed:MFImageGlyphReply];
     v27[0] = _NSConcreteStackBlock;
     v27[1] = 3221225472;
@@ -201,7 +201,7 @@ LABEL_15:
     objc_destroyWeak(&v28);
   }
 
-  if (v6)
+  if (shouldShowReplyAll)
   {
     v14 = +[NSBundle mainBundle];
     v15 = [v14 localizedStringForKey:@"REPLY_ALL" value:&stru_100662A88 table:@"Main"];
@@ -234,12 +234,12 @@ LABEL_15:
   return v4;
 }
 
-- (void)_switchToComposeSceneAsReply:(BOOL)a3 composeType:(int64_t)a4
+- (void)_switchToComposeSceneAsReply:(BOOL)reply composeType:(int64_t)type
 {
-  v5 = a3;
-  v8 = [(MailQuickLookScene *)self context];
-  v7 = [(MailQuickLookScene *)self modifiedContentsURL];
-  [(MailScene *)self _switchToComposeSceneWithContext:v8 modifiedContentsURL:v7 isReply:v5 composeType:a4];
+  replyCopy = reply;
+  context = [(MailQuickLookScene *)self context];
+  modifiedContentsURL = [(MailQuickLookScene *)self modifiedContentsURL];
+  [(MailScene *)self _switchToComposeSceneWithContext:context modifiedContentsURL:modifiedContentsURL isReply:replyCopy composeType:type];
 }
 
 @end

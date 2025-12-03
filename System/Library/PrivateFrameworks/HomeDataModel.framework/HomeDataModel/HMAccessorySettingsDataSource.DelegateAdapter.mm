@@ -1,6 +1,6 @@
 @interface HMAccessorySettingsDataSource.DelegateAdapter
 - (_TtCE13HomeDataModelCSo29HMAccessorySettingsDataSource15DelegateAdapter)init;
-- (void)accessorySettingsDataSource:(id)a3 didReceiveSettingsUpdatesForAccessoryWithIdentifier:(id)a4 settings:(id)a5;
+- (void)accessorySettingsDataSource:(id)source didReceiveSettingsUpdatesForAccessoryWithIdentifier:(id)identifier settings:(id)settings;
 @end
 
 @implementation HMAccessorySettingsDataSource.DelegateAdapter
@@ -12,7 +12,7 @@
   return result;
 }
 
-- (void)accessorySettingsDataSource:(id)a3 didReceiveSettingsUpdatesForAccessoryWithIdentifier:(id)a4 settings:(id)a5
+- (void)accessorySettingsDataSource:(id)source didReceiveSettingsUpdatesForAccessoryWithIdentifier:(id)identifier settings:(id)settings
 {
   v7 = sub_1D1E66A7C();
   v8 = *(v7 - 8);
@@ -28,11 +28,11 @@
     v20 = v7;
     v14 = *(v13 + 1);
     ObjectType = swift_getObjectType();
-    v21 = a3;
+    sourceCopy = source;
     v16 = *(v14 + 24);
-    v19 = a3;
-    v17 = self;
-    v16(&v21, v11, v12, ObjectType, v14);
+    sourceCopy2 = source;
+    selfCopy = self;
+    v16(&sourceCopy, v11, v12, ObjectType, v14);
 
     swift_unknownObjectRelease();
     (*(v8 + 8))(v11, v20);

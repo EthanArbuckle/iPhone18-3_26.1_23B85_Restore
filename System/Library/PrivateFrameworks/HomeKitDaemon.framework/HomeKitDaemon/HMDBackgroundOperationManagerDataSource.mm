@@ -1,8 +1,8 @@
 @interface HMDBackgroundOperationManagerDataSource
 + (NSString)name;
 - (HMDBackgroundOperationManager)owner;
-- (HMDBackgroundOperationManagerDataSource)initWithOperationManager:(id)a3;
-- (HMDBackgroundOperationManagerDataSource)initWithOperationManager:(id)a3 notificationCenter:(id)a4;
+- (HMDBackgroundOperationManagerDataSource)initWithOperationManager:(id)manager;
+- (HMDBackgroundOperationManagerDataSource)initWithOperationManager:(id)manager notificationCenter:(id)center;
 - (NSDictionary)values;
 - (void)notifyDataSourceChanged;
 @end
@@ -18,8 +18,8 @@
 
 - (void)notifyDataSourceChanged
 {
-  v3 = [(HMDBackgroundOperationManagerDataSource *)self owner];
-  [v3 dataSourceHasUpdate:self];
+  owner = [(HMDBackgroundOperationManagerDataSource *)self owner];
+  [owner dataSourceHasUpdate:self];
 }
 
 - (NSDictionary)values
@@ -35,29 +35,29 @@
   objc_exception_throw(v7);
 }
 
-- (HMDBackgroundOperationManagerDataSource)initWithOperationManager:(id)a3 notificationCenter:(id)a4
+- (HMDBackgroundOperationManagerDataSource)initWithOperationManager:(id)manager notificationCenter:(id)center
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  centerCopy = center;
   v11.receiver = self;
   v11.super_class = HMDBackgroundOperationManagerDataSource;
   v8 = [(HMDBackgroundOperationManagerDataSource *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_notificationCenter, a4);
-    objc_storeWeak(&v9->_owner, v6);
+    objc_storeStrong(&v8->_notificationCenter, center);
+    objc_storeWeak(&v9->_owner, managerCopy);
   }
 
   return v9;
 }
 
-- (HMDBackgroundOperationManagerDataSource)initWithOperationManager:(id)a3
+- (HMDBackgroundOperationManagerDataSource)initWithOperationManager:(id)manager
 {
   v4 = MEMORY[0x277CCAB98];
-  v5 = a3;
-  v6 = [v4 defaultCenter];
-  v7 = [(HMDBackgroundOperationManagerDataSource *)self initWithOperationManager:v5 notificationCenter:v6];
+  managerCopy = manager;
+  defaultCenter = [v4 defaultCenter];
+  v7 = [(HMDBackgroundOperationManagerDataSource *)self initWithOperationManager:managerCopy notificationCenter:defaultCenter];
 
   return v7;
 }

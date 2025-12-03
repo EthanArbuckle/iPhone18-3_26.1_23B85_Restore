@@ -1,24 +1,24 @@
 @interface REUpNextSetNode
-- (REUpNextSetNode)initWithItem:(id)a3;
+- (REUpNextSetNode)initWithItem:(id)item;
 - (id)rootNode;
-- (void)_addChild:(id)a3;
-- (void)_removeChild:(id)a3;
-- (void)join:(id)a3;
+- (void)_addChild:(id)child;
+- (void)_removeChild:(id)child;
+- (void)join:(id)join;
 - (void)remove;
 @end
 
 @implementation REUpNextSetNode
 
-- (REUpNextSetNode)initWithItem:(id)a3
+- (REUpNextSetNode)initWithItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = REUpNextSetNode;
   v6 = [(REUpNextSetNode *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_item, a3);
+    objc_storeStrong(&v6->_item, item);
     children = v7->_children;
     v7->_children = 0;
 
@@ -30,27 +30,27 @@
   return v7;
 }
 
-- (void)_addChild:(id)a3
+- (void)_addChild:(id)child
 {
-  v4 = a3;
+  childCopy = child;
   children = self->_children;
-  v8 = v4;
+  v8 = childCopy;
   if (!children)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_children;
     self->_children = v6;
 
-    v4 = v8;
+    childCopy = v8;
     children = self->_children;
   }
 
-  [(NSMutableArray *)children addObject:v4];
+  [(NSMutableArray *)children addObject:childCopy];
 }
 
-- (void)_removeChild:(id)a3
+- (void)_removeChild:(id)child
 {
-  [(NSMutableArray *)self->_children removeObject:a3];
+  [(NSMutableArray *)self->_children removeObject:child];
   if (![(NSMutableArray *)self->_children count])
   {
     children = self->_children;
@@ -64,51 +64,51 @@
   parent = self->_parent;
   if (parent)
   {
-    v5 = [(REUpNextSetNode *)parent rootNode];
+    rootNode = [(REUpNextSetNode *)parent rootNode];
     v6 = *p_parent;
-    if (*p_parent != v5)
+    if (*p_parent != rootNode)
     {
       [v6 _removeChild:self];
-      objc_storeStrong(p_parent, v5);
-      [v5 _addChild:self];
+      objc_storeStrong(p_parent, rootNode);
+      [rootNode _addChild:self];
       v6 = self->_parent;
     }
 
-    v7 = v6;
+    selfCopy = v6;
   }
 
   else
   {
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)join:(id)a3
+- (void)join:(id)join
 {
-  v4 = a3;
-  v9 = [(REUpNextSetNode *)self rootNode];
-  v5 = [v4 rootNode];
+  joinCopy = join;
+  rootNode = [(REUpNextSetNode *)self rootNode];
+  rootNode2 = [joinCopy rootNode];
 
-  if (v9 != v5)
+  if (rootNode != rootNode2)
   {
-    v6 = [v9 rank];
-    if (v6 >= [v5 rank])
+    rank = [rootNode rank];
+    if (rank >= [rootNode2 rank])
     {
-      v7 = [v9 rank];
-      v8 = [v5 rank];
-      [v5 setParent:v9];
-      if (v7 <= v8)
+      rank2 = [rootNode rank];
+      rank3 = [rootNode2 rank];
+      [rootNode2 setParent:rootNode];
+      if (rank2 <= rank3)
       {
-        ++v9[4];
+        ++rootNode[4];
       }
     }
 
     else
     {
-      [v9 setParent:v5];
-      [v5 _addChild:v9];
+      [rootNode setParent:rootNode2];
+      [rootNode2 _addChild:rootNode];
     }
   }
 }
@@ -118,12 +118,12 @@
   v20 = *MEMORY[0x277D85DE8];
   if (self->_parent)
   {
-    v3 = [(REUpNextSetNode *)self rootNode];
+    rootNode = [(REUpNextSetNode *)self rootNode];
     [(REUpNextSetNode *)self->_parent _removeChild:self];
     parent = self->_parent;
     self->_parent = 0;
 
-    if (!v3)
+    if (!rootNode)
     {
       goto LABEL_14;
     }
@@ -131,17 +131,17 @@
 
   else
   {
-    v5 = [(NSMutableArray *)self->_children lastObject];
-    v3 = v5;
-    if (!v5)
+    lastObject = [(NSMutableArray *)self->_children lastObject];
+    rootNode = lastObject;
+    if (!lastObject)
     {
       goto LABEL_14;
     }
 
-    v6 = *(v5 + 16);
-    *(v5 + 16) = 0;
+    v6 = *(lastObject + 16);
+    *(lastObject + 16) = 0;
 
-    v3[4] = self->_rank - 1;
+    rootNode[4] = self->_rank - 1;
     [(NSMutableArray *)self->_children removeLastObject];
   }
 
@@ -165,8 +165,8 @@
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        [v3 _addChild:{v12, v15}];
-        objc_storeStrong((v12 + 16), v3);
+        [rootNode _addChild:{v12, v15}];
+        objc_storeStrong((v12 + 16), rootNode);
       }
 
       v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];

@@ -2,8 +2,8 @@
 + (id)sharedInstance;
 - (BOOL)_checkCanUseVoiceTriggerDuringCallEnabled;
 - (CSHangUpEnabledMonitor)init;
-- (void)_didReceiveCanUseVoiceTriggerDuringCallSettingChangedInQueue:(BOOL)a3;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_didReceiveCanUseVoiceTriggerDuringCallSettingChangedInQueue:(BOOL)queue;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
 - (void)_voiceTriggerDuringCallEnabledDidChange;
 @end
@@ -36,13 +36,13 @@
 - (BOOL)_checkCanUseVoiceTriggerDuringCallEnabled
 {
   v2 = +[VTPreferences sharedPreferences];
-  v3 = [v2 canUseVoiceTriggerDuringPhoneCall];
+  canUseVoiceTriggerDuringPhoneCall = [v2 canUseVoiceTriggerDuringPhoneCall];
 
   v4 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v5 = @"NO";
-    if (v3)
+    if (canUseVoiceTriggerDuringPhoneCall)
     {
       v5 = @"YES";
     }
@@ -54,17 +54,17 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s Siri Hangup enabled = %{public}@", &v7, 0x16u);
   }
 
-  return v3;
+  return canUseVoiceTriggerDuringPhoneCall;
 }
 
-- (void)_didReceiveCanUseVoiceTriggerDuringCallSettingChangedInQueue:(BOOL)a3
+- (void)_didReceiveCanUseVoiceTriggerDuringCallSettingChangedInQueue:(BOOL)queue
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1000AA534;
   v3[3] = &unk_1002537E8;
   v3[4] = self;
-  v4 = a3;
+  queueCopy = queue;
   [(CSHangUpEnabledMonitor *)self enumerateObserversInQueue:v3];
 }
 
@@ -82,7 +82,7 @@
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, kVTPreferencesCanUseVoiceTriggerDuringPhoneCallDidChangeDarwinNotification, 0);
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   v4 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -101,7 +101,7 @@
 {
   if ((+[CSUtils isDarwinOS]& 1) != 0)
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -119,10 +119,10 @@
     }
 
     self = v4;
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 @end

@@ -1,49 +1,49 @@
 @interface SBInCallBannerPresentableViewController
-- (BOOL)handleHeadsetButtonPress:(BOOL)a3;
+- (BOOL)handleHeadsetButtonPress:(BOOL)press;
 - (BOOL)handleVolumeDownButtonPress;
 - (BOOL)handleVolumeUpButtonPress;
 - (BOOL)isCallConnected;
 - (BOOL)isTouchOutsideDismissalEnabled;
-- (BOOL)shouldDismissForReason:(id)a3;
-- (CGPoint)translationInCoordinateSpace:(id)a3;
-- (CGPoint)velocityInCoordinateSpace:(id)a3;
-- (CGPoint)visualTranslationInCoordinateSpace:(id)a3;
+- (BOOL)shouldDismissForReason:(id)reason;
+- (CGPoint)translationInCoordinateSpace:(id)space;
+- (CGPoint)velocityInCoordinateSpace:(id)space;
+- (CGPoint)visualTranslationInCoordinateSpace:(id)space;
 - (CGSize)preferredBannerContentSize;
-- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)result containerSize:(CGSize)a4;
+- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)result containerSize:(CGSize)size;
 - (NSString)requesterIdentifier;
-- (SBInCallBannerPresentableViewController)initWithSceneHandle:(id)a3;
+- (SBInCallBannerPresentableViewController)initWithSceneHandle:(id)handle;
 - (SBInCallBannerPresentableViewControllerDelegate)delegate;
 - (id)_inCallSceneClientSettingsDiffInspector;
 - (void)_callConnectedStatusChanged;
-- (void)_handlePanGestureProxyAction:(id)a3;
-- (void)_handleTapAction:(id)a3;
+- (void)_handlePanGestureProxyAction:(id)action;
+- (void)_handleTapAction:(id)action;
 - (void)dealloc;
-- (void)draggingDidBeginWithGestureProxy:(id)a3;
+- (void)draggingDidBeginWithGestureProxy:(id)proxy;
 - (void)invalidate;
-- (void)presentableDidAppearAsBanner:(id)a3;
-- (void)presentableDidDisappearAsBanner:(id)a3 withReason:(id)a4;
-- (void)presentableWillAppearAsBanner:(id)a3;
-- (void)presentableWillDisappearAsBanner:(id)a3 withReason:(id)a4;
-- (void)sceneHandle:(id)a3 didUpdateClientSettings:(id)a4;
-- (void)userInteractionDidEndForBannerForPresentable:(id)a3;
-- (void)userInteractionWillBeginForBannerForPresentable:(id)a3;
+- (void)presentableDidAppearAsBanner:(id)banner;
+- (void)presentableDidDisappearAsBanner:(id)banner withReason:(id)reason;
+- (void)presentableWillAppearAsBanner:(id)banner;
+- (void)presentableWillDisappearAsBanner:(id)banner withReason:(id)reason;
+- (void)sceneHandle:(id)handle didUpdateClientSettings:(id)settings;
+- (void)userInteractionDidEndForBannerForPresentable:(id)presentable;
+- (void)userInteractionWillBeginForBannerForPresentable:(id)presentable;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SBInCallBannerPresentableViewController
 
-- (SBInCallBannerPresentableViewController)initWithSceneHandle:(id)a3
+- (SBInCallBannerPresentableViewController)initWithSceneHandle:(id)handle
 {
-  v5 = a3;
+  handleCopy = handle;
   v9.receiver = self;
   v9.super_class = SBInCallBannerPresentableViewController;
   v6 = [(SBInCallBannerPresentableViewController *)&v9 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sceneHandle, a3);
+    objc_storeStrong(&v6->_sceneHandle, handle);
     [(SBDeviceApplicationSceneHandle *)v7->_sceneHandle addObserver:v7];
   }
 
@@ -67,19 +67,19 @@
   v15.receiver = self;
   v15.super_class = SBInCallBannerPresentableViewController;
   [(SBInCallBannerPresentableViewController *)&v15 viewDidLayoutSubviews];
-  v3 = [(SBInCallBannerPresentableViewController *)self view];
-  [v3 bounds];
+  view = [(SBInCallBannerPresentableViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(SBDeviceApplicationSceneViewController *)self->_sceneViewController view];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  view2 = [(SBDeviceApplicationSceneViewController *)self->_sceneViewController view];
+  [view2 setFrame:{v5, v7, v9, v11}];
 
-  v13 = [(SBInCallBannerPresentableViewController *)self interfaceOrientation];
-  [(SBSceneViewController *)self->_sceneViewController setContentReferenceSize:v13 withContentOrientation:v13 andContainerOrientation:v9, v11];
-  v14 = [(SBDeviceApplicationSceneViewController *)self->_sceneViewController backgroundView];
-  [v14 setFrame:{v5, v7, v9, v11}];
+  interfaceOrientation = [(SBInCallBannerPresentableViewController *)self interfaceOrientation];
+  [(SBSceneViewController *)self->_sceneViewController setContentReferenceSize:interfaceOrientation withContentOrientation:interfaceOrientation andContainerOrientation:v9, v11];
+  backgroundView = [(SBDeviceApplicationSceneViewController *)self->_sceneViewController backgroundView];
+  [backgroundView setFrame:{v5, v7, v9, v11}];
 }
 
 - (void)viewDidLoad
@@ -87,10 +87,10 @@
   v15.receiver = self;
   v15.super_class = SBInCallBannerPresentableViewController;
   [(SBInCallBannerPresentableViewController *)&v15 viewDidLoad];
-  v3 = [(SBInCallBannerPresentableViewController *)self view];
-  v4 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle newSceneViewController];
+  view = [(SBInCallBannerPresentableViewController *)self view];
+  newSceneViewController = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle newSceneViewController];
   sceneViewController = self->_sceneViewController;
-  self->_sceneViewController = v4;
+  self->_sceneViewController = newSceneViewController;
 
   [(SBDeviceApplicationSceneViewController *)self->_sceneViewController setRendersWhileLocked:1];
   [(SBDeviceApplicationSceneViewController *)self->_sceneViewController setHomeGrabberDisplayMode:1];
@@ -98,42 +98,42 @@
   statusBarHiddenAssertion = self->_statusBarHiddenAssertion;
   self->_statusBarHiddenAssertion = v6;
 
-  v8 = [(SBDeviceApplicationSceneViewController *)self->_sceneViewController view];
+  view2 = [(SBDeviceApplicationSceneViewController *)self->_sceneViewController view];
   [objc_opt_class() cornerRadius];
-  [v8 _setContinuousCornerRadius:?];
-  [v8 setClipsToBounds:1];
+  [view2 _setContinuousCornerRadius:?];
+  [view2 setClipsToBounds:1];
   v9 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__handleTapAction_];
-  [v8 addGestureRecognizer:v9];
+  [view2 addGestureRecognizer:v9];
   v10 = [SBInCallBannerSceneBackgroundView alloc];
-  [v8 bounds];
+  [view2 bounds];
   v11 = [(SBInCallBannerSceneBackgroundView *)v10 initWithFrame:?];
   [(SBDeviceApplicationSceneViewController *)self->_sceneViewController setBackgroundView:v11];
   [(SBInCallBannerPresentableViewController *)self addChildViewController:self->_sceneViewController];
-  v12 = [(SBInCallBannerPresentableViewController *)self interfaceOrientation];
+  interfaceOrientation = [(SBInCallBannerPresentableViewController *)self interfaceOrientation];
   v13 = self->_sceneViewController;
   [(SBInCallBannerPresentableViewController *)self preferredBannerContentSize];
-  [(SBSceneViewController *)v13 setContentReferenceSize:v12 withContentOrientation:v12 andContainerOrientation:?];
-  v14 = [(SBDeviceApplicationSceneViewController *)self->_sceneViewController view];
-  [v3 addSubview:v14];
+  [(SBSceneViewController *)v13 setContentReferenceSize:interfaceOrientation withContentOrientation:interfaceOrientation andContainerOrientation:?];
+  view3 = [(SBDeviceApplicationSceneViewController *)self->_sceneViewController view];
+  [view addSubview:view3];
 
   [(SBDeviceApplicationSceneViewController *)self->_sceneViewController didMoveToParentViewController:self];
   [(SBDeviceApplicationSceneViewController *)self->_sceneViewController setDisplayMode:4 animationFactory:0 completion:0];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = SBInCallBannerPresentableViewController;
-  v7 = a4;
-  [(SBInCallBannerPresentableViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(SBInCallBannerPresentableViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __94__SBInCallBannerPresentableViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_2783A9488;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
 void __94__SBInCallBannerPresentableViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -144,17 +144,17 @@ void __94__SBInCallBannerPresentableViewController_viewWillTransitionToSize_with
   [v4 inCallBannerPresentableViewController:v2 viewWillTransitionSizeWithAnimationSettings:v3];
 }
 
-- (void)draggingDidBeginWithGestureProxy:(id)a3
+- (void)draggingDidBeginWithGestureProxy:(id)proxy
 {
-  v5 = a3;
-  objc_storeStrong(&self->_lastGestureProxy, a3);
+  proxyCopy = proxy;
+  objc_storeStrong(&self->_lastGestureProxy, proxy);
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __76__SBInCallBannerPresentableViewController_draggingDidBeginWithGestureProxy___block_invoke;
   v6[3] = &unk_2783B0770;
   objc_copyWeak(&v7, &location);
-  [v5 setActionHandler:v6];
+  [proxyCopy setActionHandler:v6];
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
 }
@@ -169,15 +169,15 @@ void __76__SBInCallBannerPresentableViewController_draggingDidBeginWithGesturePr
 - (BOOL)isTouchOutsideDismissalEnabled
 {
   v3 = objc_opt_class();
-  v4 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
-  v5 = [v4 clientSettings];
-  v6 = SBSafeCast(v3, v5);
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
+  clientSettings = [sceneIfExists clientSettings];
+  v6 = SBSafeCast(v3, clientSettings);
 
-  LOBYTE(v4) = [v6 isCallConnected];
-  return v4;
+  LOBYTE(sceneIfExists) = [v6 isCallConnected];
+  return sceneIfExists;
 }
 
-- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)result containerSize:(CGSize)a4
+- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)result containerSize:(CGSize)size
 {
   height = self->_preferredBannerContentSize.height;
   result.height = height;
@@ -191,62 +191,62 @@ void __76__SBInCallBannerPresentableViewController_draggingDidBeginWithGesturePr
   return [v2 requesterIdentifier];
 }
 
-- (BOOL)shouldDismissForReason:(id)a3
+- (BOOL)shouldDismissForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   if ([(SBInCallBannerPresentableViewController *)self isCallConnected])
   {
     LOBYTE(v5) = 1;
   }
 
-  else if ([v4 isEqualToString:@"dismissOverlays"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"mainScreenAnimationController"))
+  else if ([reasonCopy isEqualToString:@"dismissOverlays"] & 1) != 0 || (objc_msgSend(reasonCopy, "isEqualToString:", @"mainScreenAnimationController"))
   {
     LOBYTE(v5) = 0;
   }
 
   else
   {
-    v5 = [v4 isEqualToString:@"assistantWillAppear"] ^ 1;
+    v5 = [reasonCopy isEqualToString:@"assistantWillAppear"] ^ 1;
   }
 
   return v5;
 }
 
-- (void)presentableDidAppearAsBanner:(id)a3
+- (void)presentableDidAppearAsBanner:(id)banner
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained inCallBannerPresentableViewControllerDidAppear:self];
 }
 
-- (void)presentableWillAppearAsBanner:(id)a3
+- (void)presentableWillAppearAsBanner:(id)banner
 {
   self->_presented = 1;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained inCallBannerPresentableViewControllerWillAppear:self];
 }
 
-- (void)presentableWillDisappearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableWillDisappearAsBanner:(id)banner withReason:(id)reason
 {
-  v5 = a4;
+  reasonCopy = reason;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained inCallBannerPresentableViewController:self willDisappearWithReason:v5];
+  [WeakRetained inCallBannerPresentableViewController:self willDisappearWithReason:reasonCopy];
 }
 
-- (void)presentableDidDisappearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableDidDisappearAsBanner:(id)banner withReason:(id)reason
 {
   self->_presented = 0;
-  v5 = a4;
+  reasonCopy = reason;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained inCallBannerPresentableViewController:self didDisappearWithReason:v5];
+  [WeakRetained inCallBannerPresentableViewController:self didDisappearWithReason:reasonCopy];
 }
 
-- (void)userInteractionWillBeginForBannerForPresentable:(id)a3
+- (void)userInteractionWillBeginForBannerForPresentable:(id)presentable
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained inCallBannerPresentableViewControllerUserInteractionWillBegin:self];
 }
 
-- (void)userInteractionDidEndForBannerForPresentable:(id)a3
+- (void)userInteractionDidEndForBannerForPresentable:(id)presentable
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained inCallBannerPresentableViewControllerUserInteractionDidEnd:self];
@@ -284,13 +284,13 @@ void __76__SBInCallBannerPresentableViewController_draggingDidBeginWithGesturePr
   return [(SBDeviceApplicationSceneHandle *)sceneHandle handleHardwareButtonEventType:2];
 }
 
-- (BOOL)handleHeadsetButtonPress:(BOOL)a3
+- (BOOL)handleHeadsetButtonPress:(BOOL)press
 {
-  v3 = a3;
-  v5 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle preferredHardwareButtonEventTypes];
-  if (!v3)
+  pressCopy = press;
+  preferredHardwareButtonEventTypes = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle preferredHardwareButtonEventTypes];
+  if (!pressCopy)
   {
-    if ((v5 & 8) != 0)
+    if ((preferredHardwareButtonEventTypes & 8) != 0)
     {
       v6 = 3;
       goto LABEL_7;
@@ -299,7 +299,7 @@ void __76__SBInCallBannerPresentableViewController_draggingDidBeginWithGesturePr
     return 0;
   }
 
-  if ((v5 & 0x10) == 0)
+  if ((preferredHardwareButtonEventTypes & 0x10) == 0)
   {
     return 0;
   }
@@ -311,11 +311,11 @@ LABEL_7:
   return [(SBDeviceApplicationSceneHandle *)sceneHandle handleHardwareButtonEventType:v6];
 }
 
-- (void)sceneHandle:(id)a3 didUpdateClientSettings:(id)a4
+- (void)sceneHandle:(id)handle didUpdateClientSettings:(id)settings
 {
-  v6 = [a4 settingsDiff];
-  v5 = [(SBInCallBannerPresentableViewController *)self _inCallSceneClientSettingsDiffInspector];
-  [v5 inspectDiff:v6 withContext:0];
+  settingsDiff = [settings settingsDiff];
+  _inCallSceneClientSettingsDiffInspector = [(SBInCallBannerPresentableViewController *)self _inCallSceneClientSettingsDiffInspector];
+  [_inCallSceneClientSettingsDiffInspector inspectDiff:settingsDiff withContext:0];
 }
 
 - (id)_inCallSceneClientSettingsDiffInspector
@@ -358,50 +358,50 @@ void __82__SBInCallBannerPresentableViewController__inCallSceneClientSettingsDif
 - (BOOL)isCallConnected
 {
   v3 = objc_opt_class();
-  v4 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
-  v5 = [v4 clientSettings];
-  v6 = SBSafeCast(v3, v5);
-  v7 = [v6 isCallConnected];
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
+  clientSettings = [sceneIfExists clientSettings];
+  v6 = SBSafeCast(v3, clientSettings);
+  isCallConnected = [v6 isCallConnected];
 
-  return v7;
+  return isCallConnected;
 }
 
-- (CGPoint)translationInCoordinateSpace:(id)a3
+- (CGPoint)translationInCoordinateSpace:(id)space
 {
-  [(BNPanGestureProxy *)self->_lastGestureProxy translationInCoordinateSpace:a3];
+  [(BNPanGestureProxy *)self->_lastGestureProxy translationInCoordinateSpace:space];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (CGPoint)visualTranslationInCoordinateSpace:(id)a3
+- (CGPoint)visualTranslationInCoordinateSpace:(id)space
 {
-  [(BNPanGestureProxy *)self->_lastGestureProxy visualTranslationInCoordinateSpace:a3];
+  [(BNPanGestureProxy *)self->_lastGestureProxy visualTranslationInCoordinateSpace:space];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (CGPoint)velocityInCoordinateSpace:(id)a3
+- (CGPoint)velocityInCoordinateSpace:(id)space
 {
-  [(BNPanGestureProxy *)self->_lastGestureProxy velocityInCoordinateSpace:a3];
+  [(BNPanGestureProxy *)self->_lastGestureProxy velocityInCoordinateSpace:space];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (void)_handleTapAction:(id)a3
+- (void)_handleTapAction:(id)action
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained inCallBannerPresentableViewControllerDidReceiveTap:self];
 }
 
-- (void)_handlePanGestureProxyAction:(id)a3
+- (void)_handlePanGestureProxyAction:(id)action
 {
-  v4 = [a3 didCrossDefaultThreshold];
-  if (!self->_didCrossDefaultDraggingThreshold && v4)
+  didCrossDefaultThreshold = [action didCrossDefaultThreshold];
+  if (!self->_didCrossDefaultDraggingThreshold && didCrossDefaultThreshold)
   {
-    self->_didCrossDefaultDraggingThreshold = v4;
+    self->_didCrossDefaultDraggingThreshold = didCrossDefaultThreshold;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained inCallBannerPresentableViewControllerDidCrossDefaultDraggingThreshold:self];
   }

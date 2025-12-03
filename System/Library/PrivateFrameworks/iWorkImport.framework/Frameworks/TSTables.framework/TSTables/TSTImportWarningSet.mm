@@ -1,9 +1,9 @@
 @interface TSTImportWarningSet
-+ (id)cellDiffClearingAllWarningsWithContext:(id)a3;
++ (id)cellDiffClearingAllWarningsWithContext:(id)context;
 + (id)emptyWarningSet;
-+ (id)warningSetFor3DReferenceFormula:(id)a3;
-+ (id)warningSetForArrayModeWarning:(id)a3;
-+ (id)warningSetForArrayedFormula:(id)a3;
++ (id)warningSetFor3DReferenceFormula:(id)formula;
++ (id)warningSetForArrayModeWarning:(id)warning;
++ (id)warningSetForArrayedFormula:(id)formula;
 + (id)warningSetForCondFormatAboveAvgEqualAvg;
 + (id)warningSetForCondFormatAboveAvgStdDev;
 + (id)warningSetForCondFormatComplexFormula;
@@ -15,49 +15,49 @@
 + (id)warningSetForCondFormatUnsupportedOperator;
 + (id)warningSetForCondFormatUnsupportedStyling;
 + (id)warningSetForCondFormatUnsupportedTimePeriod;
-+ (id)warningSetForDifferentBehaviorForFunctionFormula:(id)a3 originalFormula:(id)a4;
++ (id)warningSetForDifferentBehaviorForFunctionFormula:(id)formula originalFormula:(id)originalFormula;
 + (id)warningSetForDurationFormatRangeChanged;
-+ (id)warningSetForErrorTokenFormula:(id)a3;
-+ (id)warningSetForExternalReferenceFormula:(id)a3;
++ (id)warningSetForErrorTokenFormula:(id)formula;
++ (id)warningSetForExternalReferenceFormula:(id)formula;
 + (id)warningSetForFilteredColumnFormulaNotCopied;
-+ (id)warningSetForFormulaReplacedForExcelCompat:(id)a3 originalFormula:(id)a4;
-+ (id)warningSetForNaturalLanguageFormula:(id)a3;
-+ (id)warningSetForReferenceOutOfBoundsFormula:(id)a3;
-+ (id)warningSetForSharedFormulaBaseNotFoundFormula:(id)a3;
++ (id)warningSetForFormulaReplacedForExcelCompat:(id)compat originalFormula:(id)formula;
++ (id)warningSetForNaturalLanguageFormula:(id)formula;
++ (id)warningSetForReferenceOutOfBoundsFormula:(id)formula;
++ (id)warningSetForSharedFormulaBaseNotFoundFormula:(id)formula;
 + (id)warningSetForTransposeUnmodifiedWithIssues;
-+ (id)warningSetForTransposedWithIssues:(id)a3;
-+ (id)warningSetForTransposedWithoutIssues:(id)a3;
-+ (id)warningSetForUnknownName:(id)a3 originalFormula:(id)a4;
++ (id)warningSetForTransposedWithIssues:(id)issues;
++ (id)warningSetForTransposedWithoutIssues:(id)issues;
++ (id)warningSetForUnknownName:(id)name originalFormula:(id)formula;
 + (id)warningSetForUnsupportedCondFormat;
-+ (id)warningSetForUnsupportedDataFormat:(id)a3;
-+ (id)warningSetForUnsupportedFormula:(id)a3;
-+ (id)warningSetForUnsupportedFunction:(id)a3 originalFormula:(id)a4;
-+ (id)warningSetForUnsupportedNameFormula:(id)a3 originalFormula:(id)a4;
-+ (id)warningSetForWarning:(id)a3;
-+ (id)warningSetForWarnings:(id)a3;
++ (id)warningSetForUnsupportedDataFormat:(id)format;
++ (id)warningSetForUnsupportedFormula:(id)formula;
++ (id)warningSetForUnsupportedFunction:(id)function originalFormula:(id)formula;
++ (id)warningSetForUnsupportedNameFormula:(id)formula originalFormula:(id)originalFormula;
++ (id)warningSetForWarning:(id)warning;
++ (id)warningSetForWarnings:(id)warnings;
 - (BOOL)areAnySet;
-- (BOOL)containsWarningOfType:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)containsWarningOfType:(int64_t)type;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)cellDiffClearingWarningsWithContext:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)cellDiffClearingWarningsWithContext:(id)context;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)individualWarnings;
-- (id)initFromArchive:(const void *)a3;
-- (id)localizedWarningStringsForCalcEngine:(id)a3 forTable:(TSKUIDStruct)a4;
+- (id)initFromArchive:(const void *)archive;
+- (id)localizedWarningStringsForCalcEngine:(id)engine forTable:(TSKUIDStruct)table;
 - (id)sortedWarnings;
-- (id)warningSetByAddingWarningsFromSet:(id)a3;
-- (id)warningSetByRemovingWarningsOfTypes:(id)a3;
-- (int)TSTImportFormulaWarningTypeToArchive:(int64_t)a3;
-- (int64_t)TSTImportFormulaWarningTypeFromArchive:(int)a3;
+- (id)warningSetByAddingWarningsFromSet:(id)set;
+- (id)warningSetByRemovingWarningsOfTypes:(id)types;
+- (int)TSTImportFormulaWarningTypeToArchive:(int64_t)archive;
+- (int64_t)TSTImportFormulaWarningTypeFromArchive:(int)archive;
 - (unint64_t)hash;
-- (void)addWarning:(id)a3;
-- (void)removeWarning:(id)a3;
-- (void)saveToArchive:(void *)a3;
+- (void)addWarning:(id)warning;
+- (void)removeWarning:(id)warning;
+- (void)saveToArchive:(void *)archive;
 @end
 
 @implementation TSTImportWarningSet
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v24 = *MEMORY[0x277D85DE8];
   v4 = objc_opt_new();
@@ -141,13 +141,13 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v10 = objc_msgSend_hash(self, v6, v7, v8, v9);
     if (v10 == objc_msgSend_hash(v5, v11, v12, v13, v14))
     {
@@ -223,23 +223,23 @@ LABEL_11:
   return v3;
 }
 
-+ (id)warningSetForWarning:(id)a3
++ (id)warningSetForWarning:(id)warning
 {
-  v3 = a3;
+  warningCopy = warning;
   v4 = objc_opt_new();
-  objc_msgSend_addWarning_(v4, v5, v3, v6, v7);
+  objc_msgSend_addWarning_(v4, v5, warningCopy, v6, v7);
 
   return v4;
 }
 
 + (id)emptyWarningSet
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-- (BOOL)containsWarningOfType:(int64_t)a3
+- (BOOL)containsWarningOfType:(int64_t)type
 {
   v20 = *MEMORY[0x277D85DE8];
   v15 = 0u;
@@ -260,7 +260,7 @@ LABEL_11:
           objc_enumerationMutation(v4);
         }
 
-        if (objc_msgSend_warningType(*(*(&v15 + 1) + 8 * i), v6, v7, v8, v9, v15) == a3)
+        if (objc_msgSend_warningType(*(*(&v15 + 1) + 8 * i), v6, v7, v8, v9, v15) == type)
         {
           v13 = 1;
           goto LABEL_11;
@@ -283,10 +283,10 @@ LABEL_11:
   return v13;
 }
 
-- (void)addWarning:(id)a3
+- (void)addWarning:(id)warning
 {
-  v10 = a3;
-  if (v10)
+  warningCopy = warning;
+  if (warningCopy)
   {
     warnings = self->_warnings;
     if (!warnings)
@@ -298,131 +298,131 @@ LABEL_11:
       warnings = self->_warnings;
     }
 
-    objc_msgSend_addObject_(warnings, v4, v10, v5, v6);
+    objc_msgSend_addObject_(warnings, v4, warningCopy, v5, v6);
   }
 
   self->_cachedHashValValid = 0;
 }
 
-- (void)removeWarning:(id)a3
+- (void)removeWarning:(id)warning
 {
-  v7 = a3;
-  if (v7)
+  warningCopy = warning;
+  if (warningCopy)
   {
-    objc_msgSend_removeObject_(self->_warnings, v4, v7, v5, v6);
+    objc_msgSend_removeObject_(self->_warnings, v4, warningCopy, v5, v6);
   }
 
   self->_cachedHashValValid = 0;
 }
 
-+ (id)warningSetFor3DReferenceFormula:(id)a3
++ (id)warningSetFor3DReferenceFormula:(id)formula
 {
-  v6 = objc_msgSend_warningFor3DReferenceFormula_(TSCEWarning, a2, a3, v3, v4);
-  v10 = objc_msgSend_warningSetForWarning_(a1, v7, v6, v8, v9);
+  v6 = objc_msgSend_warningFor3DReferenceFormula_(TSCEWarning, a2, formula, v3, v4);
+  v10 = objc_msgSend_warningSetForWarning_(self, v7, v6, v8, v9);
 
   return v10;
 }
 
-+ (id)warningSetForArrayedFormula:(id)a3
++ (id)warningSetForArrayedFormula:(id)formula
 {
-  v6 = objc_msgSend_warningForArrayedFormula_(TSCEWarning, a2, a3, v3, v4);
-  v10 = objc_msgSend_warningSetForWarning_(a1, v7, v6, v8, v9);
+  v6 = objc_msgSend_warningForArrayedFormula_(TSCEWarning, a2, formula, v3, v4);
+  v10 = objc_msgSend_warningSetForWarning_(self, v7, v6, v8, v9);
 
   return v10;
 }
 
-+ (id)warningSetForDifferentBehaviorForFunctionFormula:(id)a3 originalFormula:(id)a4
++ (id)warningSetForDifferentBehaviorForFunctionFormula:(id)formula originalFormula:(id)originalFormula
 {
-  v6 = objc_msgSend_warningForDifferentBehaviorForFunctionFormula_originalFormula_(TSCEWarning, a2, a3, a4, v4);
-  v10 = objc_msgSend_warningSetForWarning_(a1, v7, v6, v8, v9);
+  v6 = objc_msgSend_warningForDifferentBehaviorForFunctionFormula_originalFormula_(TSCEWarning, a2, formula, originalFormula, v4);
+  v10 = objc_msgSend_warningSetForWarning_(self, v7, v6, v8, v9);
 
   return v10;
 }
 
-+ (id)warningSetForErrorTokenFormula:(id)a3
++ (id)warningSetForErrorTokenFormula:(id)formula
 {
-  v6 = objc_msgSend_warningForErrorTokenFormula_(TSCEWarning, a2, a3, v3, v4);
-  v10 = objc_msgSend_warningSetForWarning_(a1, v7, v6, v8, v9);
+  v6 = objc_msgSend_warningForErrorTokenFormula_(TSCEWarning, a2, formula, v3, v4);
+  v10 = objc_msgSend_warningSetForWarning_(self, v7, v6, v8, v9);
 
   return v10;
 }
 
-+ (id)warningSetForExternalReferenceFormula:(id)a3
++ (id)warningSetForExternalReferenceFormula:(id)formula
 {
-  v6 = objc_msgSend_warningForExternalReferenceFormula_(TSCEWarning, a2, a3, v3, v4);
-  v10 = objc_msgSend_warningSetForWarning_(a1, v7, v6, v8, v9);
+  v6 = objc_msgSend_warningForExternalReferenceFormula_(TSCEWarning, a2, formula, v3, v4);
+  v10 = objc_msgSend_warningSetForWarning_(self, v7, v6, v8, v9);
 
   return v10;
 }
 
-+ (id)warningSetForNaturalLanguageFormula:(id)a3
++ (id)warningSetForNaturalLanguageFormula:(id)formula
 {
-  v6 = objc_msgSend_warningForNaturalLanguageFormula_(TSCEWarning, a2, a3, v3, v4);
-  v10 = objc_msgSend_warningSetForWarning_(a1, v7, v6, v8, v9);
+  v6 = objc_msgSend_warningForNaturalLanguageFormula_(TSCEWarning, a2, formula, v3, v4);
+  v10 = objc_msgSend_warningSetForWarning_(self, v7, v6, v8, v9);
 
   return v10;
 }
 
-+ (id)warningSetForReferenceOutOfBoundsFormula:(id)a3
++ (id)warningSetForReferenceOutOfBoundsFormula:(id)formula
 {
-  v6 = objc_msgSend_warningForReferenceOutOfBoundsFormula_(TSCEWarning, a2, a3, v3, v4);
-  v10 = objc_msgSend_warningSetForWarning_(a1, v7, v6, v8, v9);
+  v6 = objc_msgSend_warningForReferenceOutOfBoundsFormula_(TSCEWarning, a2, formula, v3, v4);
+  v10 = objc_msgSend_warningSetForWarning_(self, v7, v6, v8, v9);
 
   return v10;
 }
 
-+ (id)warningSetForSharedFormulaBaseNotFoundFormula:(id)a3
++ (id)warningSetForSharedFormulaBaseNotFoundFormula:(id)formula
 {
-  v6 = objc_msgSend_warningForSharedFormulaBaseNotFoundFormula_(TSCEWarning, a2, a3, v3, v4);
-  v10 = objc_msgSend_warningSetForWarning_(a1, v7, v6, v8, v9);
+  v6 = objc_msgSend_warningForSharedFormulaBaseNotFoundFormula_(TSCEWarning, a2, formula, v3, v4);
+  v10 = objc_msgSend_warningSetForWarning_(self, v7, v6, v8, v9);
 
   return v10;
 }
 
-+ (id)warningSetForUnknownName:(id)a3 originalFormula:(id)a4
++ (id)warningSetForUnknownName:(id)name originalFormula:(id)formula
 {
-  v6 = objc_msgSend_warningForUnknownName_originalFormula_(TSCEWarning, a2, a3, a4, v4);
-  v10 = objc_msgSend_warningSetForWarning_(a1, v7, v6, v8, v9);
+  v6 = objc_msgSend_warningForUnknownName_originalFormula_(TSCEWarning, a2, name, formula, v4);
+  v10 = objc_msgSend_warningSetForWarning_(self, v7, v6, v8, v9);
 
   return v10;
 }
 
-+ (id)warningSetForUnsupportedFormula:(id)a3
++ (id)warningSetForUnsupportedFormula:(id)formula
 {
-  v6 = objc_msgSend_warningForUnsupportedFormula_(TSCEWarning, a2, a3, v3, v4);
-  v10 = objc_msgSend_warningSetForWarning_(a1, v7, v6, v8, v9);
+  v6 = objc_msgSend_warningForUnsupportedFormula_(TSCEWarning, a2, formula, v3, v4);
+  v10 = objc_msgSend_warningSetForWarning_(self, v7, v6, v8, v9);
 
   return v10;
 }
 
-+ (id)warningSetForUnsupportedFunction:(id)a3 originalFormula:(id)a4
++ (id)warningSetForUnsupportedFunction:(id)function originalFormula:(id)formula
 {
-  v6 = objc_msgSend_warningForUnsupportedFunction_originalFormula_(TSCEWarning, a2, a3, a4, v4);
-  v10 = objc_msgSend_warningSetForWarning_(a1, v7, v6, v8, v9);
+  v6 = objc_msgSend_warningForUnsupportedFunction_originalFormula_(TSCEWarning, a2, function, formula, v4);
+  v10 = objc_msgSend_warningSetForWarning_(self, v7, v6, v8, v9);
 
   return v10;
 }
 
-+ (id)warningSetForUnsupportedNameFormula:(id)a3 originalFormula:(id)a4
++ (id)warningSetForUnsupportedNameFormula:(id)formula originalFormula:(id)originalFormula
 {
-  v6 = objc_msgSend_warningForUnsupportedNameFormula_originalFormula_(TSCEWarning, a2, a3, a4, v4);
-  v10 = objc_msgSend_warningSetForWarning_(a1, v7, v6, v8, v9);
+  v6 = objc_msgSend_warningForUnsupportedNameFormula_originalFormula_(TSCEWarning, a2, formula, originalFormula, v4);
+  v10 = objc_msgSend_warningSetForWarning_(self, v7, v6, v8, v9);
 
   return v10;
 }
 
-+ (id)warningSetForTransposedWithoutIssues:(id)a3
++ (id)warningSetForTransposedWithoutIssues:(id)issues
 {
-  v6 = objc_msgSend_warningForTransposedWithoutIssues_(TSCEWarning, a2, a3, v3, v4);
-  v10 = objc_msgSend_warningSetForWarning_(a1, v7, v6, v8, v9);
+  v6 = objc_msgSend_warningForTransposedWithoutIssues_(TSCEWarning, a2, issues, v3, v4);
+  v10 = objc_msgSend_warningSetForWarning_(self, v7, v6, v8, v9);
 
   return v10;
 }
 
-+ (id)warningSetForTransposedWithIssues:(id)a3
++ (id)warningSetForTransposedWithIssues:(id)issues
 {
-  v6 = objc_msgSend_warningForTransposedWithIssues_(TSCEWarning, a2, a3, v3, v4);
-  v10 = objc_msgSend_warningSetForWarning_(a1, v7, v6, v8, v9);
+  v6 = objc_msgSend_warningForTransposedWithIssues_(TSCEWarning, a2, issues, v3, v4);
+  v10 = objc_msgSend_warningSetForWarning_(self, v7, v6, v8, v9);
 
   return v10;
 }
@@ -430,15 +430,15 @@ LABEL_11:
 + (id)warningSetForTransposeUnmodifiedWithIssues
 {
   v6 = objc_msgSend_warningForTransposeUnmodifiedWithIssues(TSCEWarning, a2, v2, v3, v4);
-  v10 = objc_msgSend_warningSetForWarning_(a1, v7, v6, v8, v9);
+  v10 = objc_msgSend_warningSetForWarning_(self, v7, v6, v8, v9);
 
   return v10;
 }
 
-+ (id)warningSetForArrayModeWarning:(id)a3
++ (id)warningSetForArrayModeWarning:(id)warning
 {
-  v6 = objc_msgSend_warningForArrayModeWarning_(TSCEWarning, a2, a3, v3, v4);
-  v10 = objc_msgSend_warningSetForWarning_(a1, v7, v6, v8, v9);
+  v6 = objc_msgSend_warningForArrayModeWarning_(TSCEWarning, a2, warning, v3, v4);
+  v10 = objc_msgSend_warningSetForWarning_(self, v7, v6, v8, v9);
 
   return v10;
 }
@@ -446,15 +446,15 @@ LABEL_11:
 + (id)warningSetForFilteredColumnFormulaNotCopied
 {
   v6 = objc_msgSend_warningForFilteredColumnFormulaNotCopied(TSCEWarning, a2, v2, v3, v4);
-  v10 = objc_msgSend_warningSetForWarning_(a1, v7, v6, v8, v9);
+  v10 = objc_msgSend_warningSetForWarning_(self, v7, v6, v8, v9);
 
   return v10;
 }
 
-+ (id)warningSetForFormulaReplacedForExcelCompat:(id)a3 originalFormula:(id)a4
++ (id)warningSetForFormulaReplacedForExcelCompat:(id)compat originalFormula:(id)formula
 {
-  v6 = objc_msgSend_warningForFormulaReplacedForExcelCompat_originalFormula_(TSCEWarning, a2, a3, a4, v4);
-  v10 = objc_msgSend_warningSetForWarning_(a1, v7, v6, v8, v9);
+  v6 = objc_msgSend_warningForFormulaReplacedForExcelCompat_originalFormula_(TSCEWarning, a2, compat, formula, v4);
+  v10 = objc_msgSend_warningSetForWarning_(self, v7, v6, v8, v9);
 
   return v10;
 }
@@ -462,7 +462,7 @@ LABEL_11:
 + (id)warningSetForCondFormatAboveAvgEqualAvg
 {
   v6 = objc_msgSend_warningForCondFormatAboveAvgEqualAvg(TSCEWarning, a2, v2, v3, v4);
-  v10 = objc_msgSend_warningSetForWarning_(a1, v7, v6, v8, v9);
+  v10 = objc_msgSend_warningSetForWarning_(self, v7, v6, v8, v9);
 
   return v10;
 }
@@ -470,7 +470,7 @@ LABEL_11:
 + (id)warningSetForCondFormatAboveAvgStdDev
 {
   v6 = objc_msgSend_warningForCondFormatAboveAvgStdDev(TSCEWarning, a2, v2, v3, v4);
-  v10 = objc_msgSend_warningSetForWarning_(a1, v7, v6, v8, v9);
+  v10 = objc_msgSend_warningSetForWarning_(self, v7, v6, v8, v9);
 
   return v10;
 }
@@ -478,7 +478,7 @@ LABEL_11:
 + (id)warningSetForCondFormatComplexFormula
 {
   v6 = objc_msgSend_warningForCondFormatComplexFormula(TSCEWarning, a2, v2, v3, v4);
-  v10 = objc_msgSend_warningSetForWarning_(a1, v7, v6, v8, v9);
+  v10 = objc_msgSend_warningSetForWarning_(self, v7, v6, v8, v9);
 
   return v10;
 }
@@ -486,7 +486,7 @@ LABEL_11:
 + (id)warningSetForCondFormatContainsErrors
 {
   v6 = objc_msgSend_warningForCondFormatContainsErrors(TSCEWarning, a2, v2, v3, v4);
-  v10 = objc_msgSend_warningSetForWarning_(a1, v7, v6, v8, v9);
+  v10 = objc_msgSend_warningSetForWarning_(self, v7, v6, v8, v9);
 
   return v10;
 }
@@ -494,7 +494,7 @@ LABEL_11:
 + (id)warningSetForCondFormatExpr
 {
   v6 = objc_msgSend_warningForCondFormatExpr(TSCEWarning, a2, v2, v3, v4);
-  v10 = objc_msgSend_warningSetForWarning_(a1, v7, v6, v8, v9);
+  v10 = objc_msgSend_warningSetForWarning_(self, v7, v6, v8, v9);
 
   return v10;
 }
@@ -502,7 +502,7 @@ LABEL_11:
 + (id)warningSetForCondFormatNotContainsErrors
 {
   v6 = objc_msgSend_warningForCondFormatNotContainsErrors(TSCEWarning, a2, v2, v3, v4);
-  v10 = objc_msgSend_warningSetForWarning_(a1, v7, v6, v8, v9);
+  v10 = objc_msgSend_warningSetForWarning_(self, v7, v6, v8, v9);
 
   return v10;
 }
@@ -510,7 +510,7 @@ LABEL_11:
 + (id)warningSetForCondFormatParamatersNotAllTheSame
 {
   v6 = objc_msgSend_warningForCondFormatParamatersNotAllTheSame(TSCEWarning, a2, v2, v3, v4);
-  v10 = objc_msgSend_warningSetForWarning_(a1, v7, v6, v8, v9);
+  v10 = objc_msgSend_warningSetForWarning_(self, v7, v6, v8, v9);
 
   return v10;
 }
@@ -518,7 +518,7 @@ LABEL_11:
 + (id)warningSetForCondFormatStopIfTrue
 {
   v6 = objc_msgSend_warningForCondFormatStopIfTrue(TSCEWarning, a2, v2, v3, v4);
-  v10 = objc_msgSend_warningSetForWarning_(a1, v7, v6, v8, v9);
+  v10 = objc_msgSend_warningSetForWarning_(self, v7, v6, v8, v9);
 
   return v10;
 }
@@ -526,7 +526,7 @@ LABEL_11:
 + (id)warningSetForCondFormatUnsupportedOperator
 {
   v6 = objc_msgSend_warningForCondFormatUnsupportedOperator(TSCEWarning, a2, v2, v3, v4);
-  v10 = objc_msgSend_warningSetForWarning_(a1, v7, v6, v8, v9);
+  v10 = objc_msgSend_warningSetForWarning_(self, v7, v6, v8, v9);
 
   return v10;
 }
@@ -534,7 +534,7 @@ LABEL_11:
 + (id)warningSetForCondFormatUnsupportedStyling
 {
   v6 = objc_msgSend_warningForCondFormatUnsupportedStyling(TSCEWarning, a2, v2, v3, v4);
-  v10 = objc_msgSend_warningSetForWarning_(a1, v7, v6, v8, v9);
+  v10 = objc_msgSend_warningSetForWarning_(self, v7, v6, v8, v9);
 
   return v10;
 }
@@ -542,7 +542,7 @@ LABEL_11:
 + (id)warningSetForCondFormatUnsupportedTimePeriod
 {
   v6 = objc_msgSend_warningForCondFormatUnsupportedTimePeriod(TSCEWarning, a2, v2, v3, v4);
-  v10 = objc_msgSend_warningSetForWarning_(a1, v7, v6, v8, v9);
+  v10 = objc_msgSend_warningSetForWarning_(self, v7, v6, v8, v9);
 
   return v10;
 }
@@ -550,7 +550,7 @@ LABEL_11:
 + (id)warningSetForUnsupportedCondFormat
 {
   v6 = objc_msgSend_warningForUnsupportedCondFormat(TSCEWarning, a2, v2, v3, v4);
-  v10 = objc_msgSend_warningSetForWarning_(a1, v7, v6, v8, v9);
+  v10 = objc_msgSend_warningSetForWarning_(self, v7, v6, v8, v9);
 
   return v10;
 }
@@ -558,15 +558,15 @@ LABEL_11:
 + (id)warningSetForDurationFormatRangeChanged
 {
   v6 = objc_msgSend_warningForDurationFormatRangeChanged(TSCEWarning, a2, v2, v3, v4);
-  v10 = objc_msgSend_warningSetForWarning_(a1, v7, v6, v8, v9);
+  v10 = objc_msgSend_warningSetForWarning_(self, v7, v6, v8, v9);
 
   return v10;
 }
 
-+ (id)warningSetForUnsupportedDataFormat:(id)a3
++ (id)warningSetForUnsupportedDataFormat:(id)format
 {
-  v6 = objc_msgSend_warningForUnsupportedDataFormat_(TSCEWarning, a2, a3, v3, v4);
-  v10 = objc_msgSend_warningSetForWarning_(a1, v7, v6, v8, v9);
+  v6 = objc_msgSend_warningForUnsupportedDataFormat_(TSCEWarning, a2, format, v3, v4);
+  v10 = objc_msgSend_warningSetForWarning_(self, v7, v6, v8, v9);
 
   return v10;
 }
@@ -606,11 +606,11 @@ LABEL_11:
   return v6;
 }
 
-- (id)localizedWarningStringsForCalcEngine:(id)a3 forTable:(TSKUIDStruct)a4
+- (id)localizedWarningStringsForCalcEngine:(id)engine forTable:(TSKUIDStruct)table
 {
   v25 = *MEMORY[0x277D85DE8];
-  v23 = a4;
-  v5 = a3;
+  tableCopy = table;
+  engineCopy = engine;
   v6 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
@@ -630,7 +630,7 @@ LABEL_11:
           objc_enumerationMutation(v7);
         }
 
-        v14 = objc_msgSend_displayStringWithCalculationEngine_forTable_(*(*(&v19 + 1) + 8 * i), v9, v5, &v23, v10, v19);
+        v14 = objc_msgSend_displayStringWithCalculationEngine_forTable_(*(*(&v19 + 1) + 8 * i), v9, engineCopy, &tableCopy, v10, v19);
         objc_msgSend_addObject_(v6, v15, v14, v16, v17);
       }
 
@@ -643,16 +643,16 @@ LABEL_11:
   return v6;
 }
 
-+ (id)warningSetForWarnings:(id)a3
++ (id)warningSetForWarnings:(id)warnings
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v9 = objc_msgSend_emptyWarningSet(a1, v5, v6, v7, v8);
+  warningsCopy = warnings;
+  v9 = objc_msgSend_emptyWarningSet(self, v5, v6, v7, v8);
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = v4;
+  v10 = warningsCopy;
   v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v11, &v19, v23, 16);
   if (v15)
   {
@@ -678,18 +678,18 @@ LABEL_11:
   return v9;
 }
 
-- (id)warningSetByAddingWarningsFromSet:(id)a3
+- (id)warningSetByAddingWarningsFromSet:(id)set
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  setCopy = set;
   v13 = objc_msgSend_copy(self, v5, v6, v7, v8);
-  if (v4)
+  if (setCopy)
   {
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v14 = objc_msgSend_warnings(v4, v9, v10, v11, v12, 0);
+    v14 = objc_msgSend_warnings(setCopy, v9, v10, v11, v12, 0);
     v20 = objc_msgSend_countByEnumeratingWithState_objects_count_(v14, v15, &v28, v32, 16);
     if (v20)
     {
@@ -717,7 +717,7 @@ LABEL_11:
   return v13;
 }
 
-- (id)cellDiffClearingWarningsWithContext:(id)a3
+- (id)cellDiffClearingWarningsWithContext:(id)context
 {
   v4 = objc_alloc_init(TSTCellDiff);
   objc_msgSend_resetObject_forProperty_(v4, v5, self, 908, v6);
@@ -725,7 +725,7 @@ LABEL_11:
   return v4;
 }
 
-+ (id)cellDiffClearingAllWarningsWithContext:(id)a3
++ (id)cellDiffClearingAllWarningsWithContext:(id)context
 {
   v3 = objc_alloc_init(TSTCellDiff);
   v8 = objc_msgSend_emptyWarningSet(TSTImportWarningSet, v4, v5, v6, v7);
@@ -734,10 +734,10 @@ LABEL_11:
   return v3;
 }
 
-- (id)warningSetByRemovingWarningsOfTypes:(id)a3
+- (id)warningSetByRemovingWarningsOfTypes:(id)types
 {
   v48 = *MEMORY[0x277D85DE8];
-  v37 = a3;
+  typesCopy = types;
   v8 = objc_msgSend_copy(self, v4, v5, v6, v7);
   v44 = 0u;
   v45 = 0u;
@@ -763,7 +763,7 @@ LABEL_11:
         v39 = 0u;
         v40 = 0u;
         v41 = 0u;
-        v18 = v37;
+        v18 = typesCopy;
         v24 = objc_msgSend_countByEnumeratingWithState_objects_count_(v18, v19, &v38, v46, 16);
         if (v24)
         {
@@ -802,9 +802,9 @@ LABEL_11:
   return v8;
 }
 
-- (int64_t)TSTImportFormulaWarningTypeFromArchive:(int)a3
+- (int64_t)TSTImportFormulaWarningTypeFromArchive:(int)archive
 {
-  v3 = (a3 - 1);
+  v3 = (archive - 1);
   if (v3 < 0xF)
   {
     return v3 + 1;
@@ -816,16 +816,16 @@ LABEL_11:
   }
 }
 
-- (id)initFromArchive:(const void *)a3
+- (id)initFromArchive:(const void *)archive
 {
-  v6 = objc_msgSend_init(self, a2, a3, v3, v4);
+  v6 = objc_msgSend_init(self, a2, archive, v3, v4);
   v11 = v6;
   if (!v6)
   {
     return v11;
   }
 
-  v12 = *(a3 + 8);
+  v12 = *(archive + 8);
   if (v12)
   {
     if (v12 >= 1)
@@ -833,7 +833,7 @@ LABEL_11:
       v13 = 8;
       do
       {
-        v14 = objc_msgSend_loadFromArchive_(TSCEWarning, v7, *(*(a3 + 5) + v13), v9, v10);
+        v14 = objc_msgSend_loadFromArchive_(TSCEWarning, v7, *(*(archive + 5) + v13), v9, v10);
         objc_msgSend_addWarning_(v11, v15, v14, v16, v17);
 
         v13 += 8;
@@ -846,9 +846,9 @@ LABEL_11:
     return v11;
   }
 
-  if ((*(a3 + 16) & 2) != 0)
+  if ((*(archive + 16) & 2) != 0)
   {
-    v18 = *(a3 + 7);
+    v18 = *(archive + 7);
     v19 = *(v18 + 16);
     if ((v19 & 4) != 0)
     {
@@ -897,93 +897,93 @@ LABEL_14:
   }
 
 LABEL_16:
-  if (*(a3 + 77) == 1)
+  if (*(archive + 77) == 1)
   {
     v36 = objc_msgSend_warningForFilteredColumnFormulaNotCopied(TSCEWarning, v7, v8, v9, v10);
     objc_msgSend_addWarning_(v11, v37, v36, v38, v39);
   }
 
-  if (*(a3 + 64) == 1)
+  if (*(archive + 64) == 1)
   {
     v40 = objc_msgSend_warningForCondFormatAboveAvgEqualAvg(TSCEWarning, v7, v8, v9, v10);
     objc_msgSend_addWarning_(v11, v41, v40, v42, v43);
   }
 
-  if (*(a3 + 65) == 1)
+  if (*(archive + 65) == 1)
   {
     v44 = objc_msgSend_warningForCondFormatAboveAvgStdDev(TSCEWarning, v7, v8, v9, v10);
     objc_msgSend_addWarning_(v11, v45, v44, v46, v47);
   }
 
-  if (*(a3 + 66) == 1)
+  if (*(archive + 66) == 1)
   {
     v48 = objc_msgSend_warningForCondFormatComplexFormula(TSCEWarning, v7, v8, v9, v10);
     objc_msgSend_addWarning_(v11, v49, v48, v50, v51);
   }
 
-  if (*(a3 + 67) == 1)
+  if (*(archive + 67) == 1)
   {
     v52 = objc_msgSend_warningForCondFormatContainsErrors(TSCEWarning, v7, v8, v9, v10);
     objc_msgSend_addWarning_(v11, v53, v52, v54, v55);
   }
 
-  if (*(a3 + 68) == 1)
+  if (*(archive + 68) == 1)
   {
     v56 = objc_msgSend_warningForCondFormatExpr(TSCEWarning, v7, v8, v9, v10);
     objc_msgSend_addWarning_(v11, v57, v56, v58, v59);
   }
 
-  if (*(a3 + 69) == 1)
+  if (*(archive + 69) == 1)
   {
     v60 = objc_msgSend_warningForCondFormatNotContainsErrors(TSCEWarning, v7, v8, v9, v10);
     objc_msgSend_addWarning_(v11, v61, v60, v62, v63);
   }
 
-  if (*(a3 + 70) == 1)
+  if (*(archive + 70) == 1)
   {
     v64 = objc_msgSend_warningForCondFormatParamatersNotAllTheSame(TSCEWarning, v7, v8, v9, v10);
     objc_msgSend_addWarning_(v11, v65, v64, v66, v67);
   }
 
-  if (*(a3 + 71) == 1)
+  if (*(archive + 71) == 1)
   {
     v68 = objc_msgSend_warningForCondFormatStopIfTrue(TSCEWarning, v7, v8, v9, v10);
     objc_msgSend_addWarning_(v11, v69, v68, v70, v71);
   }
 
-  if (*(a3 + 72) == 1)
+  if (*(archive + 72) == 1)
   {
     v72 = objc_msgSend_warningForCondFormatUnsupportedOperator(TSCEWarning, v7, v8, v9, v10);
     objc_msgSend_addWarning_(v11, v73, v72, v74, v75);
   }
 
-  if (*(a3 + 73) == 1)
+  if (*(archive + 73) == 1)
   {
     v76 = objc_msgSend_warningForCondFormatUnsupportedStyling(TSCEWarning, v7, v8, v9, v10);
     objc_msgSend_addWarning_(v11, v77, v76, v78, v79);
   }
 
-  if (*(a3 + 74) == 1)
+  if (*(archive + 74) == 1)
   {
     v80 = objc_msgSend_warningForCondFormatUnsupportedTimePeriod(TSCEWarning, v7, v8, v9, v10);
     objc_msgSend_addWarning_(v11, v81, v80, v82, v83);
   }
 
-  if (*(a3 + 76) == 1)
+  if (*(archive + 76) == 1)
   {
     v84 = objc_msgSend_warningForUnsupportedCondFormat(TSCEWarning, v7, v8, v9, v10);
     objc_msgSend_addWarning_(v11, v85, v84, v86, v87);
   }
 
-  if (*(a3 + 78) == 1)
+  if (*(archive + 78) == 1)
   {
     v88 = objc_msgSend_warningForDurationFormatRangeChanged(TSCEWarning, v7, v8, v9, v10);
     objc_msgSend_addWarning_(v11, v89, v88, v90, v91);
   }
 
-  if (*(a3 + 16))
+  if (*(archive + 16))
   {
-    v92 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v7, *(a3 + 6) & 0xFFFFFFFFFFFFFFFELL, v9, v10);
+    v92 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v7, *(archive + 6) & 0xFFFFFFFFFFFFFFFELL, v9, v10);
     v96 = objc_msgSend_warningForUnsupportedDataFormat_(TSCEWarning, v93, v92, v94, v95);
     objc_msgSend_addWarning_(v11, v97, v96, v98, v99);
   }
@@ -991,11 +991,11 @@ LABEL_16:
   return v11;
 }
 
-- (int)TSTImportFormulaWarningTypeToArchive:(int64_t)a3
+- (int)TSTImportFormulaWarningTypeToArchive:(int64_t)archive
 {
-  if ((a3 - 1) < 0xF)
+  if ((archive - 1) < 0xF)
   {
-    return a3;
+    return archive;
   }
 
   v6 = MEMORY[0x277D81150];
@@ -1049,10 +1049,10 @@ LABEL_16:
   return v15;
 }
 
-- (void)saveToArchive:(void *)a3
+- (void)saveToArchive:(void *)archive
 {
   v114 = *MEMORY[0x277D85DE8];
-  objc_msgSend_sortedWarnings(self, a2, a3, v3, v4);
+  objc_msgSend_sortedWarnings(self, a2, archive, v3, v4);
   v109 = 0u;
   v110 = 0u;
   v107 = 0u;
@@ -1083,34 +1083,34 @@ LABEL_16:
       }
 
       v15 = *(*(&v107 + 1) + 8 * i);
-      v16 = *(a3 + 5);
+      v16 = *(archive + 5);
       if (!v16)
       {
         goto LABEL_11;
       }
 
-      v17 = *(a3 + 8);
+      v17 = *(archive + 8);
       v18 = *v16;
       if (v17 < *v16)
       {
-        *(a3 + 8) = v17 + 1;
+        *(archive + 8) = v17 + 1;
         objc_msgSend_saveToArchive_(v15, v7, *&v16[2 * v17 + 2], v8, v9);
         goto LABEL_13;
       }
 
-      if (v18 == *(a3 + 9))
+      if (v18 == *(archive + 9))
       {
 LABEL_11:
-        google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 24));
-        v16 = *(a3 + 5);
+        google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archive + 24));
+        v16 = *(archive + 5);
         v18 = *v16;
       }
 
       *v16 = v18 + 1;
-      v23 = google::protobuf::Arena::CreateMaybeMessage<TSCE::WarningArchive>(*(a3 + 3));
-      v24 = *(a3 + 8);
-      v25 = *(a3 + 5) + 8 * v24;
-      *(a3 + 8) = v24 + 1;
+      v23 = google::protobuf::Arena::CreateMaybeMessage<TSCE::WarningArchive>(*(archive + 3));
+      v24 = *(archive + 8);
+      v25 = *(archive + 5) + 8 * v24;
+      *(archive + 8) = v24 + 1;
       *(v25 + 8) = v23;
       objc_msgSend_saveToArchive_(v15, v26, v23, v27, v28);
 LABEL_13:
@@ -1162,18 +1162,18 @@ LABEL_13:
 
   if ((v48 & 1) == 0)
   {
-    *(a3 + 4) |= 2u;
-    v49 = *(a3 + 7);
+    *(archive + 4) |= 2u;
+    v49 = *(archive + 7);
     if (!v49)
     {
-      v50 = *(a3 + 1);
+      v50 = *(archive + 1);
       if (v50)
       {
         v50 = *(v50 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v49 = google::protobuf::Arena::CreateMaybeMessage<TST::ImportWarningSetArchive_FormulaImportWarning>(v50);
-      *(a3 + 7) = v49;
+      *(archive + 7) = v49;
     }
 
     if (objc_msgSend_p_isPersistedWithFormulaWarningTypeEnumeration_(self, v45, v11, v46, v47))
@@ -1191,8 +1191,8 @@ LABEL_13:
       v49[11] = 11;
       if (v11 == 16)
       {
-        *(a3 + 4) |= 0x8000u;
-        *(a3 + 77) = 1;
+        *(archive + 4) |= 0x8000u;
+        *(archive + 77) = 1;
         v56 = v49[4];
       }
 
@@ -1232,86 +1232,86 @@ LABEL_13:
 LABEL_42:
   if (objc_msgSend_containsWarningOfType_(self, v45, 18, v46, v47))
   {
-    *(a3 + 4) |= 4u;
-    *(a3 + 64) = 1;
+    *(archive + 4) |= 4u;
+    *(archive + 64) = 1;
   }
 
   if (objc_msgSend_containsWarningOfType_(self, v61, 19, v62, v63))
   {
-    *(a3 + 4) |= 8u;
-    *(a3 + 65) = 1;
+    *(archive + 4) |= 8u;
+    *(archive + 65) = 1;
   }
 
   if (objc_msgSend_containsWarningOfType_(self, v64, 20, v65, v66))
   {
-    *(a3 + 4) |= 0x10u;
-    *(a3 + 66) = 1;
+    *(archive + 4) |= 0x10u;
+    *(archive + 66) = 1;
   }
 
   if (objc_msgSend_containsWarningOfType_(self, v67, 21, v68, v69))
   {
-    *(a3 + 4) |= 0x20u;
-    *(a3 + 67) = 1;
+    *(archive + 4) |= 0x20u;
+    *(archive + 67) = 1;
   }
 
   if (objc_msgSend_containsWarningOfType_(self, v70, 22, v71, v72))
   {
-    *(a3 + 4) |= 0x40u;
-    *(a3 + 68) = 1;
+    *(archive + 4) |= 0x40u;
+    *(archive + 68) = 1;
   }
 
   if (objc_msgSend_containsWarningOfType_(self, v73, 23, v74, v75))
   {
-    *(a3 + 4) |= 0x80u;
-    *(a3 + 69) = 1;
+    *(archive + 4) |= 0x80u;
+    *(archive + 69) = 1;
   }
 
   if (objc_msgSend_containsWarningOfType_(self, v76, 24, v77, v78))
   {
-    *(a3 + 4) |= 0x100u;
-    *(a3 + 70) = 1;
+    *(archive + 4) |= 0x100u;
+    *(archive + 70) = 1;
   }
 
   if (objc_msgSend_containsWarningOfType_(self, v79, 25, v80, v81))
   {
-    *(a3 + 4) |= 0x200u;
-    *(a3 + 71) = 1;
+    *(archive + 4) |= 0x200u;
+    *(archive + 71) = 1;
   }
 
   if (objc_msgSend_containsWarningOfType_(self, v82, 26, v83, v84))
   {
-    *(a3 + 4) |= 0x400u;
-    *(a3 + 72) = 1;
+    *(archive + 4) |= 0x400u;
+    *(archive + 72) = 1;
   }
 
   if (objc_msgSend_containsWarningOfType_(self, v85, 27, v86, v87))
   {
-    *(a3 + 4) |= 0x800u;
-    *(a3 + 73) = 1;
+    *(archive + 4) |= 0x800u;
+    *(archive + 73) = 1;
   }
 
   if (objc_msgSend_containsWarningOfType_(self, v88, 28, v89, v90))
   {
-    *(a3 + 4) |= 0x1000u;
-    *(a3 + 74) = 1;
+    *(archive + 4) |= 0x1000u;
+    *(archive + 74) = 1;
   }
 
   if (objc_msgSend_containsWarningOfType_(self, v91, 29, v92, v93))
   {
-    *(a3 + 4) |= 0x4000u;
-    *(a3 + 76) = 1;
+    *(archive + 4) |= 0x4000u;
+    *(archive + 76) = 1;
   }
 
   if (objc_msgSend_containsWarningOfType_(self, v94, 31, v95, v96))
   {
-    *(a3 + 4) |= 0x10000u;
-    *(a3 + 78) = 1;
+    *(archive + 4) |= 0x10000u;
+    *(archive + 78) = 1;
   }
 
   v101 = objc_msgSend_tsp_protobufString(v105, v97, v98, v99, v100);
   if (v101)
   {
-    *(a3 + 4) |= 1u;
+    *(archive + 4) |= 1u;
     sub_22108CCD0(__p, v101);
     google::protobuf::internal::ArenaStringPtr::Set();
     if (v112 < 0)

@@ -1,30 +1,30 @@
 @interface SFSafariAttributes
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFSafariAttributes)initWithCoder:(id)a3;
-- (SFSafariAttributes)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SFSafariAttributes)initWithCoder:(id)coder;
+- (SFSafariAttributes)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFSafariAttributes
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
 
-  else if ([(SFSafariAttributes *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(SFSafariAttributes *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(SFSafariAttributes *)self hideReason];
-    v7 = [(SFSafariAttributes *)v5 hideReason];
+    v5 = equalCopy;
+    hideReason = [(SFSafariAttributes *)self hideReason];
+    hideReason2 = [(SFSafariAttributes *)v5 hideReason];
 
-    v8 = v6 == v7;
+    v8 = hideReason == hideReason2;
   }
 
   else
@@ -35,9 +35,9 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setHideReason:{-[SFSafariAttributes hideReason](self, "hideReason")}];
   return v4;
 }
@@ -45,31 +45,31 @@
 - (NSData)jsonData
 {
   v2 = [[_SFPBSafariAttributes alloc] initWithFacade:self];
-  v3 = [(_SFPBSafariAttributes *)v2 jsonData];
+  jsonData = [(_SFPBSafariAttributes *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBSafariAttributes alloc] initWithFacade:self];
-  v3 = [(_SFPBSafariAttributes *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBSafariAttributes *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBSafariAttributes alloc] initWithFacade:self];
-  v5 = [(_SFPBSafariAttributes *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBSafariAttributes *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFSafariAttributes)initWithCoder:(id)a3
+- (SFSafariAttributes)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBSafariAttributes alloc] initWithData:v5];
   v7 = [(SFSafariAttributes *)self initWithProtobuf:v6];
@@ -77,17 +77,17 @@
   return v7;
 }
 
-- (SFSafariAttributes)initWithProtobuf:(id)a3
+- (SFSafariAttributes)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v8.receiver = self;
   v8.super_class = SFSafariAttributes;
   v5 = [(SFSafariAttributes *)&v8 init];
   if (v5)
   {
-    if ([v4 hideReason])
+    if ([protobufCopy hideReason])
     {
-      -[SFSafariAttributes setHideReason:](v5, "setHideReason:", [v4 hideReason]);
+      -[SFSafariAttributes setHideReason:](v5, "setHideReason:", [protobufCopy hideReason]);
     }
 
     v6 = v5;

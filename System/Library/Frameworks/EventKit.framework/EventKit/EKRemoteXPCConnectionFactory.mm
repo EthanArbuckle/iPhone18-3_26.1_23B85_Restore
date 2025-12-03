@@ -2,7 +2,7 @@
 + (BOOL)_tryRegisterNewConnection;
 + (id)sharedInstance;
 + (void)_unregisterConnection;
-- (id)tryNewConnectionWithExportedObject:(id)a3 interruptionHandler:(id)a4;
+- (id)tryNewConnectionWithExportedObject:(id)object interruptionHandler:(id)handler;
 @end
 
 @implementation EKRemoteXPCConnectionFactory
@@ -48,10 +48,10 @@ uint64_t __46__EKRemoteXPCConnectionFactory_sharedInstance__block_invoke()
   os_unfair_lock_unlock(&sNumberOfOpenConnectionsLock);
 }
 
-- (id)tryNewConnectionWithExportedObject:(id)a3 interruptionHandler:(id)a4
+- (id)tryNewConnectionWithExportedObject:(id)object interruptionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  handlerCopy = handler;
   if ([objc_opt_class() _tryRegisterNewConnection])
   {
     v8 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.calaccessd" options:0];
@@ -61,8 +61,8 @@ uint64_t __46__EKRemoteXPCConnectionFactory_sharedInstance__block_invoke()
     v10 = GetSharedXPCInterfaceForCADClientInterface();
     [v8 setExportedInterface:v10];
 
-    [v8 setExportedObject:v6];
-    [v8 setInterruptionHandler:v7];
+    [v8 setExportedObject:objectCopy];
+    [v8 setInterruptionHandler:handlerCopy];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __87__EKRemoteXPCConnectionFactory_tryNewConnectionWithExportedObject_interruptionHandler___block_invoke;

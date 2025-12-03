@@ -1,21 +1,21 @@
 @interface INBookRestaurantReservationIntentResponse
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (INBookRestaurantReservationIntentCode)code;
 - (INBookRestaurantReservationIntentResponse)initWithCode:(INBookRestaurantReservationIntentCode)code userActivity:(NSUserActivity *)userActivity;
-- (INBookRestaurantReservationIntentResponse)initWithCoder:(id)a3;
+- (INBookRestaurantReservationIntentResponse)initWithCoder:(id)coder;
 - (id)_dictionaryRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_injectProxiesForImages:(id)a3 completion:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_injectProxiesForImages:(id)images completion:(id)completion;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INBookRestaurantReservationIntentResponse
 
-- (void)_injectProxiesForImages:(id)a3 completion:(id)a4
+- (void)_injectProxiesForImages:(id)images completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = [(INBookRestaurantReservationIntentResponse *)self copyWithZone:0];
-  (*(a4 + 2))(v6, v7);
+  (*(completion + 2))(completionCopy, v7);
 }
 
 - (id)_dictionaryRepresentation
@@ -26,13 +26,13 @@
   v9[1] = @"userBooking";
   v10[0] = v3;
   userBooking = self->_userBooking;
-  v5 = userBooking;
+  null = userBooking;
   if (!userBooking)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v10[1] = v5;
+  v10[1] = null;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:2];
   if (!userBooking)
   {
@@ -50,31 +50,31 @@
   return [(INIntentResponse *)&v3 code];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (self == v5)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if (v5)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v7 = v6;
-        v8 = [(INBookRestaurantReservationIntentResponse *)self userBooking];
-        if (v8 || ([(INBookRestaurantReservationIntentResponse *)v7 userBooking], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+        userBooking = [(INBookRestaurantReservationIntentResponse *)self userBooking];
+        if (userBooking || ([(INBookRestaurantReservationIntentResponse *)v7 userBooking], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v9 = [(INBookRestaurantReservationIntentResponse *)self userBooking];
-          v10 = [(INBookRestaurantReservationIntentResponse *)v7 userBooking];
-          v11 = [v9 isEqual:v10];
+          userBooking2 = [(INBookRestaurantReservationIntentResponse *)self userBooking];
+          userBooking3 = [(INBookRestaurantReservationIntentResponse *)v7 userBooking];
+          v11 = [userBooking2 isEqual:userBooking3];
 
-          if (v8)
+          if (userBooking)
           {
 LABEL_12:
 
@@ -99,35 +99,35 @@ LABEL_13:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = INBookRestaurantReservationIntentResponse;
-  v4 = [(INIntentResponse *)&v7 copyWithZone:a3];
-  v5 = [(INBookRestaurantReservationIntentResponse *)self userBooking];
-  [v4 setUserBooking:v5];
+  v4 = [(INIntentResponse *)&v7 copyWithZone:zone];
+  userBooking = [(INBookRestaurantReservationIntentResponse *)self userBooking];
+  [v4 setUserBooking:userBooking];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = INBookRestaurantReservationIntentResponse;
-  v4 = a3;
-  [(INIntentResponse *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_userBooking forKey:{@"userBooking", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(INIntentResponse *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_userBooking forKey:{@"userBooking", v5.receiver, v5.super_class}];
 }
 
-- (INBookRestaurantReservationIntentResponse)initWithCoder:(id)a3
+- (INBookRestaurantReservationIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = INBookRestaurantReservationIntentResponse;
-  v5 = [(INIntentResponse *)&v9 initWithCoder:v4];
+  v5 = [(INIntentResponse *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userBooking"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userBooking"];
     userBooking = v5->_userBooking;
     v5->_userBooking = v6;
   }

@@ -11,8 +11,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [a1 loadedTimeRanges];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  loadedTimeRanges = [self loadedTimeRanges];
+  v5 = [loadedTimeRanges countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -23,7 +23,7 @@
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(loadedTimeRanges);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
@@ -42,7 +42,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [loadedTimeRanges countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v6)
       {
         continue;

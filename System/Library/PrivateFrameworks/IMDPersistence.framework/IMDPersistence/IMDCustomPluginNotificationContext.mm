@@ -1,9 +1,9 @@
 @interface IMDCustomPluginNotificationContext
 + (id)logger;
-- (BOOL)canPopulateUserInfoForMessageBalloonBundleID:(id)a3;
+- (BOOL)canPopulateUserInfoForMessageBalloonBundleID:(id)d;
 - (id)logger;
 - (id)notificationCategories;
-- (void)populateUserInfoForNotificationContent:(id)a3 messageBalloonBundleID:(id)a4 payloadData:(id)a5;
+- (void)populateUserInfoForNotificationContent:(id)content messageBalloonBundleID:(id)d payloadData:(id)data;
 @end
 
 @implementation IMDCustomPluginNotificationContext
@@ -27,24 +27,24 @@
   return objc_msgSend_logger(v2, v3, v4);
 }
 
-- (BOOL)canPopulateUserInfoForMessageBalloonBundleID:(id)a3
+- (BOOL)canPopulateUserInfoForMessageBalloonBundleID:(id)d
 {
   v3 = *MEMORY[0x1E69A68E0];
-  v4 = a3;
+  dCopy = d;
   v5 = IMBalloonExtensionIDWithSuffix();
-  isEqualToString = objc_msgSend_isEqualToString_(v4, v6, v5);
+  isEqualToString = objc_msgSend_isEqualToString_(dCopy, v6, v5);
 
   return isEqualToString;
 }
 
-- (void)populateUserInfoForNotificationContent:(id)a3 messageBalloonBundleID:(id)a4 payloadData:(id)a5
+- (void)populateUserInfoForNotificationContent:(id)content messageBalloonBundleID:(id)d payloadData:(id)data
 {
-  v26 = a3;
-  v8 = a5;
-  if (objc_msgSend_canPopulateUserInfoForMessageBalloonBundleID_(self, v9, a4))
+  contentCopy = content;
+  dataCopy = data;
+  if (objc_msgSend_canPopulateUserInfoForMessageBalloonBundleID_(self, v9, d))
   {
-    objc_msgSend_setCategoryIdentifier_(v26, v10, *MEMORY[0x1E69A7838]);
-    v13 = objc_msgSend_userInfo(v26, v11, v12);
+    objc_msgSend_setCategoryIdentifier_(contentCopy, v10, *MEMORY[0x1E69A7838]);
+    v13 = objc_msgSend_userInfo(contentCopy, v11, v12);
     Mutable = objc_msgSend_mutableCopy(v13, v14, v15);
 
     if (!Mutable)
@@ -62,8 +62,8 @@
     }
 
     objc_msgSend_setObject_forKey_(Mutable, v19, MEMORY[0x1E695E118], *MEMORY[0x1E69A7830]);
-    objc_msgSend_setUserInfo_(v26, v24, Mutable);
-    objc_msgSend_setInterruptionLevel_(v26, v25, 2);
+    objc_msgSend_setUserInfo_(contentCopy, v24, Mutable);
+    objc_msgSend_setInterruptionLevel_(contentCopy, v25, 2);
   }
 }
 

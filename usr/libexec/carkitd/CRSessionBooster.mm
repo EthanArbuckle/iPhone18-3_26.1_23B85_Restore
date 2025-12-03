@@ -1,18 +1,18 @@
 @interface CRSessionBooster
 - (_TtC7carkitd16CRSessionBooster)init;
-- (void)cancelledConnectionAttemptOnTransport:(unint64_t)a3;
+- (void)cancelledConnectionAttemptOnTransport:(unint64_t)transport;
 - (void)connectionRequested;
-- (void)session:(id)a3 didUpdateConfiguration:(id)a4;
-- (void)sessionDidConnect:(id)a3;
-- (void)sessionDidDisconnect:(id)a3;
-- (void)startedConnectionAttemptOnTransport:(unint64_t)a3;
+- (void)session:(id)session didUpdateConfiguration:(id)configuration;
+- (void)sessionDidConnect:(id)connect;
+- (void)sessionDidDisconnect:(id)disconnect;
+- (void)startedConnectionAttemptOnTransport:(unint64_t)transport;
 @end
 
 @implementation CRSessionBooster
 
 - (void)connectionRequested
 {
-  v2 = self;
+  selfCopy = self;
   CRSessionBooster.connectionRequested()();
 }
 
@@ -23,38 +23,38 @@
   return result;
 }
 
-- (void)startedConnectionAttemptOnTransport:(unint64_t)a3
+- (void)startedConnectionAttemptOnTransport:(unint64_t)transport
 {
-  v4 = self;
-  CRSessionBooster.startedConnectionAttempt(on:)(a3);
+  selfCopy = self;
+  CRSessionBooster.startedConnectionAttempt(on:)(transport);
 }
 
-- (void)cancelledConnectionAttemptOnTransport:(unint64_t)a3
+- (void)cancelledConnectionAttemptOnTransport:(unint64_t)transport
 {
-  v4 = self;
-  CRSessionBooster.cancelledConnectionAttempt(on:)(a3);
+  selfCopy = self;
+  CRSessionBooster.cancelledConnectionAttempt(on:)(transport);
 }
 
-- (void)sessionDidConnect:(id)a3
+- (void)sessionDidConnect:(id)connect
 {
-  v4 = a3;
-  v5 = self;
-  CRSessionBooster.sessionDidConnect(_:)(v4);
+  connectCopy = connect;
+  selfCopy = self;
+  CRSessionBooster.sessionDidConnect(_:)(connectCopy);
 }
 
-- (void)session:(id)a3 didUpdateConfiguration:(id)a4
+- (void)session:(id)session didUpdateConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  _s7carkitd16CRSessionBoosterC7session_9didUpdateySo10CARSessionC_So0G13ConfigurationCtF_0(v6);
+  sessionCopy = session;
+  configurationCopy = configuration;
+  selfCopy = self;
+  _s7carkitd16CRSessionBoosterC7session_9didUpdateySo10CARSessionC_So0G13ConfigurationCtF_0(sessionCopy);
 }
 
-- (void)sessionDidDisconnect:(id)a3
+- (void)sessionDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = self;
-  CRSessionBooster.sessionDidDisconnect(_:)(v4);
+  disconnectCopy = disconnect;
+  selfCopy = self;
+  CRSessionBooster.sessionDidDisconnect(_:)(disconnectCopy);
 }
 
 @end

@@ -1,21 +1,21 @@
 @interface SXDataNumberSortDescriptor
-- (id)numberForObject:(id)a3;
-- (int64_t)compareObject:(id)a3 toObject:(id)a4;
+- (id)numberForObject:(id)object;
+- (int64_t)compareObject:(id)object toObject:(id)toObject;
 @end
 
 @implementation SXDataNumberSortDescriptor
 
-- (int64_t)compareObject:(id)a3 toObject:(id)a4
+- (int64_t)compareObject:(id)object toObject:(id)toObject
 {
-  v6 = a4;
-  v7 = a3;
+  toObjectCopy = toObject;
+  objectCopy = object;
   v8 = [(SXDataNumberSortDescriptor *)self key];
-  v9 = [v7 valueForKey:v8];
+  v9 = [objectCopy valueForKey:v8];
 
   v10 = [(SXDataNumberSortDescriptor *)self numberForObject:v9];
 
   v11 = [(SXDataNumberSortDescriptor *)self key];
-  v12 = [v6 valueForKey:v11];
+  v12 = [toObjectCopy valueForKey:v11];
 
   v13 = [(SXDataNumberSortDescriptor *)self numberForObject:v12];
 
@@ -52,13 +52,13 @@
   return v16;
 }
 
-- (id)numberForObject:(id)a3
+- (id)numberForObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = objectCopy;
   }
 
   else

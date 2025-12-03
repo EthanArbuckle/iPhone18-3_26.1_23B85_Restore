@@ -1,15 +1,15 @@
 @interface ClientTypeResolverSource
-- (BOOL)typeIsValid:(int)a3;
+- (BOOL)typeIsValid:(int)valid;
 @end
 
 @implementation ClientTypeResolverSource
 
-- (BOOL)typeIsValid:(int)a3
+- (BOOL)typeIsValid:(int)valid
 {
-  v3 = *&a3;
-  v4 = [(ClientTypeResolverSource *)self knownTypes];
+  v3 = *&valid;
+  knownTypes = [(ClientTypeResolverSource *)self knownTypes];
   v5 = [NSNumber numberWithInt:v3];
-  v6 = [v4 containsObject:v5];
+  v6 = [knownTypes containsObject:v5];
 
   return v6;
 }

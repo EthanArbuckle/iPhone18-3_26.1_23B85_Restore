@@ -1,27 +1,27 @@
 @interface CUIEncapsulationShape
 - (CUIEncapsulationShape)init;
-- (const)pathInRect:(CGRect)a3;
-- (const)pathInRect:(CGRect)a3 inset:(double)a4;
+- (const)pathInRect:(CGRect)rect;
+- (const)pathInRect:(CGRect)rect inset:(double)inset;
 - (int64_t)graphicVariantShape;
 @end
 
 @implementation CUIEncapsulationShape
 
-- (const)pathInRect:(CGRect)a3
+- (const)pathInRect:(CGRect)rect
 {
-  v3 = [(CUIEncapsulationShape *)self pathInRect:a3.origin.x inset:a3.origin.y, a3.size.width, a3.size.height, 0.0];
+  v3 = [(CUIEncapsulationShape *)self pathInRect:rect.origin.x inset:rect.origin.y, rect.size.width, rect.size.height, 0.0];
 
   return v3;
 }
 
-- (const)pathInRect:(CGRect)a3 inset:(double)a4
+- (const)pathInRect:(CGRect)rect inset:(double)inset
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = self;
-  v10 = sub_18DFFD570(x, y, width, height, a4);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
+  v10 = sub_18DFFD570(x, y, width, height, inset);
 
   return v10;
 }

@@ -1,13 +1,13 @@
 @interface AVAssetCustomURLBridgeForNSURLProtocol
-- (AVAssetCustomURLBridgeForNSURLProtocol)initWithFigAsset:(OpaqueFigAsset *)a3;
-- (BOOL)_willSendRequest:(id)a3 request:(_CFURLRequest *)a4 redirectionResponse:(_CFURLResponse *)a5;
-- (int)_handleRequest:(__CFDictionary *)a3 requestID:(unint64_t)a4;
-- (void)_cancelAndFinishRequest:(id)a3 error:(__CFError *)a4;
+- (AVAssetCustomURLBridgeForNSURLProtocol)initWithFigAsset:(OpaqueFigAsset *)asset;
+- (BOOL)_willSendRequest:(id)request request:(_CFURLRequest *)a4 redirectionResponse:(_CFURLResponse *)response;
+- (int)_handleRequest:(__CFDictionary *)request requestID:(unint64_t)d;
+- (void)_cancelAndFinishRequest:(id)request error:(__CFError *)error;
 - (void)_cancelPendingRequests;
-- (void)_cancelRequestID:(unint64_t)a3;
-- (void)_didFinish:(id)a3 error:(__CFError *)a4;
-- (void)_didReceiveData:(id)a3 data:(__CFData *)a4;
-- (void)_didReceiveResponse:(id)a3 response:(_CFURLResponse *)a4;
+- (void)_cancelRequestID:(unint64_t)d;
+- (void)_didFinish:(id)finish error:(__CFError *)error;
+- (void)_didReceiveData:(id)data data:(__CFData *)a4;
+- (void)_didReceiveResponse:(id)response response:(_CFURLResponse *)a4;
 - (void)dealloc;
 - (void)reportSuccessfulURLLoad;
 @end
@@ -39,12 +39,12 @@
 {
   v14 = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A978] code:-999 userInfo:0];
-  v4 = [(NSMutableDictionary *)self->_requestIDToDownload allValues];
+  allValues = [(NSMutableDictionary *)self->_requestIDToDownload allValues];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -56,14 +56,14 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         [(AVAssetCustomURLBridgeForNSURLProtocol *)self _cancelAndFinishRequest:*(*(&v9 + 1) + 8 * v8++) error:v3];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -80,7 +80,7 @@
   MEMORY[0x1EEDBC2F8](v2, v3, v4, v5);
 }
 
-- (AVAssetCustomURLBridgeForNSURLProtocol)initWithFigAsset:(OpaqueFigAsset *)a3
+- (AVAssetCustomURLBridgeForNSURLProtocol)initWithFigAsset:(OpaqueFigAsset *)asset
 {
   v14.receiver = self;
   v14.super_class = AVAssetCustomURLBridgeForNSURLProtocol;
@@ -88,7 +88,7 @@
   v4 = [(AVAssetCustomURLBridgeForNSURLProtocol *)&v14 init];
   if (v4)
   {
-    if (!a3)
+    if (!asset)
     {
       goto LABEL_11;
     }
@@ -134,7 +134,7 @@ LABEL_11:
   return v4;
 }
 
-- (int)_handleRequest:(__CFDictionary *)a3 requestID:(unint64_t)a4
+- (int)_handleRequest:(__CFDictionary *)request requestID:(unint64_t)d
 {
   v7 = FigCustomURLRequestInfoCopyURL();
   if (v7)
@@ -148,7 +148,7 @@ LABEL_25:
     goto LABEL_16;
   }
 
-  v8 = [(AVAssetCustomURLRequest *)[AVNSURLProtocolRequest alloc] initWithRequest:a3 id:a4];
+  v8 = [(AVAssetCustomURLRequest *)[AVNSURLProtocolRequest alloc] initWithRequest:request id:d];
   if (!v8)
   {
     Request = 0;
@@ -206,7 +206,7 @@ LABEL_24:
     v15 = v14;
     [(AVNSURLProtocolRequest *)v8 setConnection:v14];
     [(AVNSURLProtocolRequest *)v8 setBridge:self];
-    -[NSMutableDictionary setObject:forKey:](self->_requestIDToDownload, "setObject:forKey:", v8, [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a4]);
+    -[NSMutableDictionary setObject:forKey:](self->_requestIDToDownload, "setObject:forKey:", v8, [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:d]);
     FigThreadGetGlobalNetworkBufferingRunloop();
     CFURLConnectionScheduleWithRunLoop();
     CFURLConnectionStart();
@@ -236,7 +236,7 @@ LABEL_16:
   return v16;
 }
 
-- (void)_cancelRequestID:(unint64_t)a3
+- (void)_cancelRequestID:(unint64_t)d
 {
   v5 = -[NSMutableDictionary objectForKey:](self->_requestIDToDownload, "objectForKey:", [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:?]);
   if (v5)
@@ -244,30 +244,30 @@ LABEL_16:
     [v5 connection];
     CFURLConnectionCancel();
     requestIDToDownload = self->_requestIDToDownload;
-    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:d];
 
     [(NSMutableDictionary *)requestIDToDownload removeObjectForKey:v7];
   }
 }
 
-- (void)_cancelAndFinishRequest:(id)a3 error:(__CFError *)a4
+- (void)_cancelAndFinishRequest:(id)request error:(__CFError *)error
 {
-  -[AVAssetCustomURLBridgeForNSURLProtocol _cancelRequestID:](self, "_cancelRequestID:", [a3 requestID]);
+  -[AVAssetCustomURLBridgeForNSURLProtocol _cancelRequestID:](self, "_cancelRequestID:", [request requestID]);
   handler = self->_handler;
-  v8 = [a3 requestID];
+  requestID = [request requestID];
   v9 = *(*(CMBaseObjectGetVTable() + 16) + 24);
   if (v9)
   {
 
-    v9(handler, v8, a4, 0);
+    v9(handler, requestID, error, 0);
   }
 }
 
-- (void)_didFinish:(id)a3 error:(__CFError *)a4
+- (void)_didFinish:(id)finish error:(__CFError *)error
 {
-  if (a4)
+  if (error)
   {
-    CFRetain(a4);
+    CFRetain(error);
   }
 
   callbackQueue = self->_callbackQueue;
@@ -276,8 +276,8 @@ LABEL_16:
   block[2] = __59__AVAssetCustomURLBridgeForNSURLProtocol__didFinish_error___block_invoke;
   block[3] = &unk_1E7460FF0;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = finish;
+  block[6] = error;
   dispatch_async(callbackQueue, block);
 }
 
@@ -292,10 +292,10 @@ void __59__AVAssetCustomURLBridgeForNSURLProtocol__didFinish_error___block_invok
   }
 }
 
-- (BOOL)_willSendRequest:(id)a3 request:(_CFURLRequest *)a4 redirectionResponse:(_CFURLResponse *)a5
+- (BOOL)_willSendRequest:(id)request request:(_CFURLRequest *)a4 redirectionResponse:(_CFURLResponse *)response
 {
   URL = CFURLRequestGetURL();
-  if (a5)
+  if (response)
   {
     v10 = URL == 0;
   }
@@ -323,14 +323,14 @@ void __59__AVAssetCustomURLBridgeForNSURLProtocol__didFinish_error___block_invok
     v15[6] = v12;
     v15[7] = a4;
     v15[4] = self;
-    v15[5] = a3;
+    v15[5] = request;
     dispatch_async(callbackQueue, v15);
   }
 
   return v11;
 }
 
-- (void)_didReceiveResponse:(id)a3 response:(_CFURLResponse *)a4
+- (void)_didReceiveResponse:(id)response response:(_CFURLResponse *)a4
 {
   if (a4)
   {
@@ -344,11 +344,11 @@ void __59__AVAssetCustomURLBridgeForNSURLProtocol__didFinish_error___block_invok
   block[3] = &unk_1E7460FF0;
   block[5] = self;
   block[6] = a4;
-  block[4] = a3;
+  block[4] = response;
   dispatch_async(callbackQueue, block);
 }
 
-- (void)_didReceiveData:(id)a3 data:(__CFData *)a4
+- (void)_didReceiveData:(id)data data:(__CFData *)a4
 {
   if (a4)
   {
@@ -360,7 +360,7 @@ void __59__AVAssetCustomURLBridgeForNSURLProtocol__didFinish_error___block_invok
   block[1] = 3221225472;
   block[2] = __63__AVAssetCustomURLBridgeForNSURLProtocol__didReceiveData_data___block_invoke;
   block[3] = &unk_1E7460FF0;
-  block[5] = a3;
+  block[5] = data;
   block[6] = a4;
   block[4] = self;
   dispatch_async(callbackQueue, block);

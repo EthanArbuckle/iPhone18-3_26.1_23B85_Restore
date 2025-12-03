@@ -1,27 +1,27 @@
 @interface STUIStatusBarActivityView
 - (CGSize)intrinsicContentSize;
-- (STUIStatusBarActivityView)initWithCoder:(id)a3;
-- (STUIStatusBarActivityView)initWithFrame:(CGRect)a3;
-- (double)_thicknessForTraitCollection:(id)a3;
+- (STUIStatusBarActivityView)initWithCoder:(id)coder;
+- (STUIStatusBarActivityView)initWithFrame:(CGRect)frame;
+- (double)_thicknessForTraitCollection:(id)collection;
 - (void)_commonInit;
 - (void)_displayScaleChanged;
-- (void)_stopAnimatingWithStoppingAnimations:(BOOL)a3 completionHandler:(id)a4;
-- (void)applyStyleAttributes:(id)a3;
-- (void)setColor:(id)a3;
-- (void)setIsSlow:(BOOL)a3;
+- (void)_stopAnimatingWithStoppingAnimations:(BOOL)animations completionHandler:(id)handler;
+- (void)applyStyleAttributes:(id)attributes;
+- (void)setColor:(id)color;
+- (void)setIsSlow:(BOOL)slow;
 - (void)startAnimating;
-- (void)stopAnimatingWithCompletionHandler:(id)a3;
+- (void)stopAnimatingWithCompletionHandler:(id)handler;
 @end
 
 @implementation STUIStatusBarActivityView
 
-- (void)applyStyleAttributes:(id)a3
+- (void)applyStyleAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [v4 imageTintColor];
-  v6 = [v4 style] == 1;
+  attributesCopy = attributes;
+  imageTintColor = [attributesCopy imageTintColor];
+  v6 = [attributesCopy style] == 1;
 
-  v7 = [v5 colorWithAlphaComponent:dbl_26C582320[v6]];
+  v7 = [imageTintColor colorWithAlphaComponent:dbl_26C582320[v6]];
 
   [(STUIStatusBarActivityView *)self setColor:v7];
 }
@@ -29,25 +29,25 @@
 - (void)_commonInit
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CD9ED0] layer];
+  layer = [MEMORY[0x277CD9ED0] layer];
   mainLayer = self->_mainLayer;
-  self->_mainLayer = v3;
+  self->_mainLayer = layer;
 
-  v5 = [MEMORY[0x277CD9EB0] layer];
+  layer2 = [MEMORY[0x277CD9EB0] layer];
   barLayer = self->_barLayer;
-  self->_barLayer = v5;
+  self->_barLayer = layer2;
 
   [(CAGradientLayer *)self->_barLayer setStartPoint:0.0, 0.5];
   [(CAGradientLayer *)self->_barLayer setEndPoint:1.0, 0.5];
   [(CAGradientLayer *)self->_barLayer setLocations:&unk_287D1AF78];
   [(CALayer *)self->_mainLayer addSublayer:self->_barLayer];
-  v7 = [MEMORY[0x277CD9ED0] layer];
+  layer3 = [MEMORY[0x277CD9ED0] layer];
   pointLayer = self->_pointLayer;
-  self->_pointLayer = v7;
+  self->_pointLayer = layer3;
 
   [(CALayer *)self->_mainLayer addSublayer:self->_pointLayer];
-  v9 = [(STUIStatusBarActivityView *)self layer];
-  [v9 addSublayer:self->_mainLayer];
+  layer4 = [(STUIStatusBarActivityView *)self layer];
+  [layer4 addSublayer:self->_mainLayer];
 
   LODWORD(v10) = 1112014848;
   [(STUIStatusBarActivityView *)self setContentHuggingPriority:0 forAxis:v10];
@@ -65,20 +65,20 @@
   [(STUIStatusBarActivityView *)self _displayScaleChanged];
 }
 
-- (STUIStatusBarActivityView)initWithFrame:(CGRect)a3
+- (STUIStatusBarActivityView)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = STUIStatusBarActivityView;
-  v3 = [(STUIStatusBarActivityView *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(STUIStatusBarActivityView *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(STUIStatusBarActivityView *)v3 _commonInit];
   return v3;
 }
 
-- (STUIStatusBarActivityView)initWithCoder:(id)a3
+- (STUIStatusBarActivityView)initWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = STUIStatusBarActivityView;
-  v3 = [(STUIStatusBarActivityView *)&v5 initWithCoder:a3];
+  v3 = [(STUIStatusBarActivityView *)&v5 initWithCoder:coder];
   [(STUIStatusBarActivityView *)v3 _commonInit];
   return v3;
 }
@@ -89,7 +89,7 @@
   cycleAnimation = self->_cycleAnimation;
   if (!cycleAnimation)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     [(STUIStatusBarActivityView *)self bounds];
     v9 = v5;
     v10 = v6;
@@ -140,7 +140,7 @@
     LODWORD(v25) = 2139095040;
     [v16 setRepeatCount:v25];
     v26 = [STUIStatusBarCycleLayerAnimation cycleAnimationWithLayer:self->_mainLayer animation:v16 key:@"position"];
-    [v4 addObject:v26];
+    [array addObject:v26];
 
     v27 = [MEMORY[0x277CD9EC8] animationWithKeyPath:@"bounds.size.width"];
     [v27 setRemovedOnCompletion:0];
@@ -165,8 +165,8 @@
     LODWORD(v34) = 2139095040;
     [v27 setRepeatCount:v34];
     v35 = [STUIStatusBarCycleLayerAnimation cycleAnimationWithLayer:self->_pointLayer animation:v27 key:@"size"];
-    v36 = v4;
-    [v4 addObject:v35];
+    v36 = array;
+    [array addObject:v35];
 
     v37 = [MEMORY[0x277CD9EC8] animationWithKeyPath:@"locations"];
     [v37 setTimeOffset:v13 * -0.1];
@@ -200,20 +200,20 @@
   [(STUIStatusBarCycleAnimation *)cycleAnimation start];
 }
 
-- (void)stopAnimatingWithCompletionHandler:(id)a3
+- (void)stopAnimatingWithCompletionHandler:(id)handler
 {
   cycleAnimation = self->_cycleAnimation;
-  v5 = a3;
+  handlerCopy = handler;
   [(STUIStatusBarCycleAnimation *)cycleAnimation setStopsAfterReversing:0];
-  [(STUIStatusBarActivityView *)self _stopAnimatingWithStoppingAnimations:1 completionHandler:v5];
+  [(STUIStatusBarActivityView *)self _stopAnimatingWithStoppingAnimations:1 completionHandler:handlerCopy];
 }
 
-- (void)_stopAnimatingWithStoppingAnimations:(BOOL)a3 completionHandler:(id)a4
+- (void)_stopAnimatingWithStoppingAnimations:(BOOL)animations completionHandler:(id)handler
 {
-  v4 = a3;
+  animationsCopy = animations;
   v11[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if ([(STUIStatusBarCycleAnimation *)self->_cycleAnimation state]== 1 && v4)
+  handlerCopy = handler;
+  if ([(STUIStatusBarCycleAnimation *)self->_cycleAnimation state]== 1 && animationsCopy)
   {
     v8 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"opacity"];
     [v8 setDuration:0.2];
@@ -226,18 +226,18 @@
     [(STUIStatusBarCycleAnimation *)self->_cycleAnimation setStoppingLayerAnimations:v10];
   }
 
-  [(STUIStatusBarCycleAnimation *)self->_cycleAnimation stopWithCompletionHandler:v6];
+  [(STUIStatusBarCycleAnimation *)self->_cycleAnimation stopWithCompletionHandler:handlerCopy];
 }
 
-- (void)setIsSlow:(BOOL)a3
+- (void)setIsSlow:(BOOL)slow
 {
-  if (self->_isSlow != a3)
+  if (self->_isSlow != slow)
   {
-    self->_isSlow = a3;
-    v4 = [(STUIStatusBarCycleAnimation *)self->_cycleAnimation state];
-    if (v4)
+    self->_isSlow = slow;
+    state = [(STUIStatusBarCycleAnimation *)self->_cycleAnimation state];
+    if (state)
     {
-      if (v4 == 2)
+      if (state == 2)
       {
         if ([(STUIStatusBarCycleAnimation *)self->_cycleAnimation stopsAfterReversing])
         {
@@ -256,7 +256,7 @@
 
       else
       {
-        if (v4 != 1)
+        if (state != 1)
         {
           return;
         }
@@ -322,9 +322,9 @@ void __39__STUIStatusBarActivityView_setIsSlow___block_invoke_2(uint64_t a1, int
   }
 }
 
-- (double)_thicknessForTraitCollection:(id)a3
+- (double)_thicknessForTraitCollection:(id)collection
 {
-  [a3 displayScale];
+  [collection displayScale];
   v4 = v3 <= 2.5;
   result = 2.66666667;
   if (v4)
@@ -335,16 +335,16 @@ void __39__STUIStatusBarActivityView_setIsSlow___block_invoke_2(uint64_t a1, int
   return result;
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
   v10[4] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_color != v5)
+  colorCopy = color;
+  if (self->_color != colorCopy)
   {
-    objc_storeStrong(&self->_color, a3);
-    v6 = [(UIColor *)v5 colorWithAlphaComponent:1.0];
-    v7 = [(UIColor *)v5 colorWithAlphaComponent:0.0];
-    [(UIColor *)v5 alphaComponent];
+    objc_storeStrong(&self->_color, color);
+    v6 = [(UIColor *)colorCopy colorWithAlphaComponent:1.0];
+    v7 = [(UIColor *)colorCopy colorWithAlphaComponent:0.0];
+    [(UIColor *)colorCopy alphaComponent];
     *&v8 = v8;
     [(CALayer *)self->_mainLayer setOpacity:v8];
     v10[0] = [v7 CGColor];
@@ -360,8 +360,8 @@ void __39__STUIStatusBarActivityView_setIsSlow___block_invoke_2(uint64_t a1, int
 
 - (void)_displayScaleChanged
 {
-  v3 = [(STUIStatusBarActivityView *)self traitCollection];
-  [(STUIStatusBarActivityView *)self _thicknessForTraitCollection:v3];
+  traitCollection = [(STUIStatusBarActivityView *)self traitCollection];
+  [(STUIStatusBarActivityView *)self _thicknessForTraitCollection:traitCollection];
   self->_thickness = v4;
 
   [(CALayer *)self->_pointLayer setCornerRadius:self->_thickness * 0.5];

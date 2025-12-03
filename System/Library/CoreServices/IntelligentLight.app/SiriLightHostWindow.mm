@@ -1,35 +1,35 @@
 @interface SiriLightHostWindow
-- (_TtC16IntelligentLight19SiriLightHostWindow)initWithCoder:(id)a3;
-- (_TtC16IntelligentLight19SiriLightHostWindow)initWithFrame:(CGRect)a3;
-- (_TtC16IntelligentLight19SiriLightHostWindow)initWithWindowScene:(id)a3;
+- (_TtC16IntelligentLight19SiriLightHostWindow)initWithCoder:(id)coder;
+- (_TtC16IntelligentLight19SiriLightHostWindow)initWithFrame:(CGRect)frame;
+- (_TtC16IntelligentLight19SiriLightHostWindow)initWithWindowScene:(id)scene;
 @end
 
 @implementation SiriLightHostWindow
 
-- (_TtC16IntelligentLight19SiriLightHostWindow)initWithWindowScene:(id)a3
+- (_TtC16IntelligentLight19SiriLightHostWindow)initWithWindowScene:(id)scene
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for SiriLightHostWindow();
-  return [(SiriLightHostWindow *)&v5 initWithWindowScene:a3];
+  return [(SiriLightHostWindow *)&v5 initWithWindowScene:scene];
 }
 
-- (_TtC16IntelligentLight19SiriLightHostWindow)initWithFrame:(CGRect)a3
+- (_TtC16IntelligentLight19SiriLightHostWindow)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for SiriLightHostWindow();
   return [(SiriLightHostWindow *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC16IntelligentLight19SiriLightHostWindow)initWithCoder:(id)a3
+- (_TtC16IntelligentLight19SiriLightHostWindow)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for SiriLightHostWindow();
-  v4 = a3;
-  v5 = [(SiriLightHostWindow *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(SiriLightHostWindow *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

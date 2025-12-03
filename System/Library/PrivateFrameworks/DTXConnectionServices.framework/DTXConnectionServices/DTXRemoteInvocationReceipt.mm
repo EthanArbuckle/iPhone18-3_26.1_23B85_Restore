@@ -1,8 +1,8 @@
 @interface DTXRemoteInvocationReceipt
 - (DTXRemoteInvocationReceipt)init;
-- (void)_checkedAssign:(id)a3;
-- (void)handleCompletion:(id)a3;
-- (void)invokeCompletionWithReturnValue:(id)a3 error:(id)a4;
+- (void)_checkedAssign:(id)assign;
+- (void)handleCompletion:(id)completion;
+- (void)invokeCompletionWithReturnValue:(id)value error:(id)error;
 - (void)waitForFulfillment;
 @end
 
@@ -21,11 +21,11 @@
   return result;
 }
 
-- (void)_checkedAssign:(id)a3
+- (void)_checkedAssign:(id)assign
 {
-  v15 = a3;
+  assignCopy = assign;
   os_unfair_lock_lock(&self->_guard);
-  v15[2]();
+  assignCopy[2]();
   if (self->_completionHandler && (*(self + 36) & 3) != 0)
   {
     if ((*(self + 36) & 3) == 1)
@@ -97,32 +97,32 @@
   }
 }
 
-- (void)handleCompletion:(id)a3
+- (void)handleCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_247F3EA40;
   v7[3] = &unk_278EEE5F0;
   v7[4] = self;
-  v8 = v4;
-  v5 = v4;
+  v8 = completionCopy;
+  v5 = completionCopy;
   objc_msgSend__checkedAssign_(self, v6, v7);
 }
 
-- (void)invokeCompletionWithReturnValue:(id)a3 error:(id)a4
+- (void)invokeCompletionWithReturnValue:(id)value error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  errorCopy = error;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_247F3EB5C;
   v11[3] = &unk_278EEE618;
   v11[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v8 = v6;
-  v9 = v7;
+  v12 = errorCopy;
+  v13 = valueCopy;
+  v8 = valueCopy;
+  v9 = errorCopy;
   objc_msgSend__checkedAssign_(self, v10, v11);
 }
 

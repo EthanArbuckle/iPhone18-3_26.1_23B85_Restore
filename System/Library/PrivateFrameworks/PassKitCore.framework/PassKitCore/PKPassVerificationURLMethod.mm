@@ -1,34 +1,34 @@
 @interface PKPassVerificationURLMethod
-- (PKPassVerificationURLMethod)initWithCoder:(id)a3;
-- (PKPassVerificationURLMethod)initWithDictionary:(id)a3;
-- (id)_initWithChannel:(id)a3;
+- (PKPassVerificationURLMethod)initWithCoder:(id)coder;
+- (PKPassVerificationURLMethod)initWithDictionary:(id)dictionary;
+- (id)_initWithChannel:(id)channel;
 - (id)legacyChannelRepresentation;
 - (id)supplementalTypeDescription;
 - (id)typeDescription;
-- (void)_appendDescription:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_appendDescription:(id)description;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassVerificationURLMethod
 
-- (PKPassVerificationURLMethod)initWithDictionary:(id)a3
+- (PKPassVerificationURLMethod)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 PKURLForKey:@"url"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy PKURLForKey:@"url"];
   if (v5)
   {
     v12.receiver = self;
     v12.super_class = PKPassVerificationURLMethod;
-    v6 = [(PKPassVerificationMethod *)&v12 _initWithType:5 dictionary:v4];
+    v6 = [(PKPassVerificationMethod *)&v12 _initWithType:5 dictionary:dictionaryCopy];
     v7 = v6;
     if (v6)
     {
       objc_storeStrong(v6 + 5, v5);
-      v8 = [v4 PKStringForKey:@"websiteName"];
+      v8 = [dictionaryCopy PKStringForKey:@"websiteName"];
       websiteName = v7->_websiteName;
       v7->_websiteName = v8;
 
-      v10 = [v4 PKStringForKey:@"strategy"];
+      v10 = [dictionaryCopy PKStringForKey:@"strategy"];
       v7->_strategy = PKPassVerificationURLStrategyFromString(v10);
     }
   }
@@ -42,29 +42,29 @@
   return v7;
 }
 
-- (id)_initWithChannel:(id)a3
+- (id)_initWithChannel:(id)channel
 {
-  v4 = a3;
+  channelCopy = channel;
   v5 = objc_alloc(MEMORY[0x1E695DFF8]);
-  v6 = [v4 sourceAddress];
-  v7 = [v5 initWithString:v6];
+  sourceAddress = [channelCopy sourceAddress];
+  v7 = [v5 initWithString:sourceAddress];
 
   if (v7)
   {
     v16.receiver = self;
     v16.super_class = PKPassVerificationURLMethod;
-    v8 = [(PKPassVerificationMethod *)&v16 _initWithType:5 channel:v4];
+    v8 = [(PKPassVerificationMethod *)&v16 _initWithType:5 channel:channelCopy];
     if (v8)
     {
       v9 = objc_alloc(MEMORY[0x1E695DFF8]);
-      v10 = [v4 sourceAddress];
-      v11 = [v9 initWithString:v10];
+      sourceAddress2 = [channelCopy sourceAddress];
+      v11 = [v9 initWithString:sourceAddress2];
       v12 = v8[5];
       v8[5] = v11;
 
-      v13 = [v4 contactPoint];
+      contactPoint = [channelCopy contactPoint];
       v14 = v8[6];
-      v8[6] = v13;
+      v8[6] = contactPoint;
 
       v8[7] = 1;
     }
@@ -81,23 +81,23 @@
 
 - (id)legacyChannelRepresentation
 {
-  v3 = [(PKPassVerificationMethod *)self _legacyChannelRepresentation];
-  [v3 setType:8];
-  v4 = [(NSURL *)self->_url absoluteString];
-  [v3 setSourceAddress:v4];
+  _legacyChannelRepresentation = [(PKPassVerificationMethod *)self _legacyChannelRepresentation];
+  [_legacyChannelRepresentation setType:8];
+  absoluteString = [(NSURL *)self->_url absoluteString];
+  [_legacyChannelRepresentation setSourceAddress:absoluteString];
 
-  [v3 setContactPoint:self->_websiteName];
+  [_legacyChannelRepresentation setContactPoint:self->_websiteName];
 
-  return v3;
+  return _legacyChannelRepresentation;
 }
 
 - (id)typeDescription
 {
-  v3 = [(PKPassVerificationMethod *)self organizationName];
-  if (v3)
+  organizationName = [(PKPassVerificationMethod *)self organizationName];
+  if (organizationName)
   {
-    v4 = [(PKPassVerificationMethod *)self organizationName];
-    v5 = PKLocalizedPaymentString(&cfstr_VerificationCh_5.isa, &stru_1F2281668.isa, v4);
+    organizationName2 = [(PKPassVerificationMethod *)self organizationName];
+    v5 = PKLocalizedPaymentString(&cfstr_VerificationCh_5.isa, &stru_1F2281668.isa, organizationName2);
   }
 
   else
@@ -113,48 +113,48 @@
   websiteName = self->_websiteName;
   if (websiteName)
   {
-    v3 = websiteName;
+    host = websiteName;
   }
 
   else
   {
-    v3 = [(NSURL *)self->_url host];
+    host = [(NSURL *)self->_url host];
   }
 
-  return v3;
+  return host;
 }
 
-- (PKPassVerificationURLMethod)initWithCoder:(id)a3
+- (PKPassVerificationURLMethod)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = PKPassVerificationURLMethod;
-  v5 = [(PKPassVerificationMethod *)&v12 initWithCoder:v4];
+  v5 = [(PKPassVerificationMethod *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
     url = v5->_url;
     v5->_url = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"websiteName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"websiteName"];
     websiteName = v5->_websiteName;
     v5->_websiteName = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"strategy"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"strategy"];
     v5->_strategy = PKPassVerificationURLStrategyFromString(v10);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = PKPassVerificationURLMethod;
-  v4 = a3;
-  [(PKPassVerificationMethod *)&v7 encodeWithCoder:v4];
-  [v4 encodeObject:self->_url forKey:{@"url", v7.receiver, v7.super_class}];
-  [v4 encodeObject:self->_websiteName forKey:@"websiteName"];
+  coderCopy = coder;
+  [(PKPassVerificationMethod *)&v7 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_url forKey:{@"url", v7.receiver, v7.super_class}];
+  [coderCopy encodeObject:self->_websiteName forKey:@"websiteName"];
   v5 = self->_strategy - 1;
   if (v5 > 2)
   {
@@ -166,17 +166,17 @@
     v6 = off_1E79D88E8[v5];
   }
 
-  [v4 encodeObject:v6 forKey:@"strategy"];
+  [coderCopy encodeObject:v6 forKey:@"strategy"];
 }
 
-- (void)_appendDescription:(id)a3
+- (void)_appendDescription:(id)description
 {
   v7.receiver = self;
   v7.super_class = PKPassVerificationURLMethod;
-  v4 = a3;
-  [(PKPassVerificationMethod *)&v7 _appendDescription:v4];
-  [v4 appendFormat:@"url: '%@'; ", self->_url];
-  [v4 appendFormat:@"websiteName: '%@'; ", self->_websiteName];
+  descriptionCopy = description;
+  [(PKPassVerificationMethod *)&v7 _appendDescription:descriptionCopy];
+  [descriptionCopy appendFormat:@"url: '%@'; ", self->_url];
+  [descriptionCopy appendFormat:@"websiteName: '%@'; ", self->_websiteName];
   v5 = self->_strategy - 1;
   if (v5 > 2)
   {
@@ -188,7 +188,7 @@
     v6 = off_1E79D88E8[v5];
   }
 
-  [v4 appendFormat:@"strategy: '%@'; ", v6];
+  [descriptionCopy appendFormat:@"strategy: '%@'; ", v6];
 }
 
 @end

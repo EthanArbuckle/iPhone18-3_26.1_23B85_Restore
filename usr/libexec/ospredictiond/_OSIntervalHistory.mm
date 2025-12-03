@@ -1,9 +1,9 @@
 @interface _OSIntervalHistory
 + (id)sharedInstance;
-- (BOOL)refreshCacheIfStaleWithQueryDate:(id)a3;
+- (BOOL)refreshCacheIfStaleWithQueryDate:(id)date;
 - (_OSIntervalHistory)init;
 - (void)loadHistoryFromUnderlyingDataSource;
-- (void)updateStratasWithQueryDate:(id)a3;
+- (void)updateStratasWithQueryDate:(id)date;
 @end
 
 @implementation _OSIntervalHistory
@@ -46,12 +46,12 @@
   }
 }
 
-- (BOOL)refreshCacheIfStaleWithQueryDate:(id)a3
+- (BOOL)refreshCacheIfStaleWithQueryDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   os_unfair_lock_lock(&self->_lock);
   v6 = +[NSDate now];
-  v7 = [v6 earlierDate:v5];
+  v7 = [v6 earlierDate:dateCopy];
 
   if (self->_lastRefreshDate && ([v7 timeIntervalSinceDate:?], v8 < 900.0))
   {
@@ -65,7 +65,7 @@
     {
       lastRefreshDate = self->_lastRefreshDate;
       v14 = 138412546;
-      v15 = v5;
+      v15 = dateCopy;
       v16 = 2112;
       v17 = lastRefreshDate;
       _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Refreshing history because input date = %@ and last refreshed at %@", &v14, 0x16u);
@@ -76,10 +76,10 @@
   }
 
   lastQueryDate = self->_lastQueryDate;
-  if (!lastQueryDate || lastQueryDate != v5)
+  if (!lastQueryDate || lastQueryDate != dateCopy)
   {
-    [(_OSIntervalHistory *)self updateStratasWithQueryDate:v5];
-    objc_storeStrong(&self->_lastQueryDate, a3);
+    [(_OSIntervalHistory *)self updateStratasWithQueryDate:dateCopy];
+    objc_storeStrong(&self->_lastQueryDate, date);
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -87,9 +87,9 @@
   return v9;
 }
 
-- (void)updateStratasWithQueryDate:(id)a3
+- (void)updateStratasWithQueryDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = [NSString stringWithFormat:@"%s must be overridden in a subclass", "[_OSIntervalHistory updateStratasWithQueryDate:]"];
   v5 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v4 userInfo:0];
   v6 = v5;

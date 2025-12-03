@@ -1,7 +1,7 @@
 @interface AVTransition
-- (AVTransition)initWithTransitionContext:(id)a3;
+- (AVTransition)initWithTransitionContext:(id)context;
 - (AVTransitionDelegate)delegate;
-- (CGAffineTransform)_transformForScale:(SEL)a3 translation:(double)a4 rotation:(CGPoint)a5 locationInWindow:(double)a6 sourceRectInContainerView:(CGPoint)a7;
+- (CGAffineTransform)_transformForScale:(SEL)scale translation:(double)translation rotation:(CGPoint)rotation locationInWindow:(double)window sourceRectInContainerView:(CGPoint)view;
 - (CGRect)_finalFrameForPresentedView;
 - (CGRect)_initialFrameForPresentedView;
 - (CGRect)_sourceViewFrameInContainerView;
@@ -11,21 +11,21 @@
 - (void)_animateAlongsideInteractiveDismissalTransitionAnimationForCancelling;
 - (void)_animateAlongsideInteractivePresentationTransitionAnimationForCancelling;
 - (void)_animateFinishInteractiveTransition;
-- (void)_dismissalTransitionDidEnd:(BOOL)a3;
+- (void)_dismissalTransitionDidEnd:(BOOL)end;
 - (void)_dismissalTransitionWillBegin;
 - (void)_freezeDismissingViewForFinishing;
-- (void)_presentationTransitionDidEnd:(BOOL)a3;
+- (void)_presentationTransitionDidEnd:(BOOL)end;
 - (void)_presentationTransitionWillBegin;
-- (void)_startOrContinueAnimatorsReversed:(BOOL)a3;
-- (void)_updateCornerAppearanceAttributesOfView:(id)a3 toSourceView:(id)a4 similarity:(double)a5;
+- (void)_startOrContinueAnimatorsReversed:(BOOL)reversed;
+- (void)_updateCornerAppearanceAttributesOfView:(id)view toSourceView:(id)sourceView similarity:(double)similarity;
 - (void)addRunAlongsideAnimationsIfNeeded;
 - (void)cancelInteractiveTransition;
-- (void)completeTransition:(BOOL)a3;
+- (void)completeTransition:(BOOL)transition;
 - (void)dealloc;
 - (void)finishInteractiveTransition;
 - (void)pauseInteractiveTransition;
 - (void)startInteractiveTransition;
-- (void)updateWithPercentComplete:(double)a3 scale:(double)a4 translation:(CGPoint)a5 rotation:(double)a6;
+- (void)updateWithPercentComplete:(double)complete scale:(double)scale translation:(CGPoint)translation rotation:(double)rotation;
 @end
 
 @implementation AVTransition
@@ -46,75 +46,75 @@
 
 - (CGRect)_sourceViewFrameInContainerView
 {
-  v3 = [(AVTransition *)self transitionContext];
-  v4 = [v3 containerView];
-  [v4 bounds];
+  transitionContext = [(AVTransition *)self transitionContext];
+  containerView = [transitionContext containerView];
+  [containerView bounds];
   MidX = CGRectGetMidX(v57);
-  v5 = [(AVTransition *)self transitionContext];
-  v6 = [v5 containerView];
-  [v6 bounds];
+  transitionContext2 = [(AVTransition *)self transitionContext];
+  containerView2 = [transitionContext2 containerView];
+  [containerView2 bounds];
   Height = CGRectGetHeight(v58);
-  v7 = [(AVTransition *)self transitionContext];
-  v8 = [v7 containerView];
-  [v8 bounds];
+  transitionContext3 = [(AVTransition *)self transitionContext];
+  containerView3 = [transitionContext3 containerView];
+  [containerView3 bounds];
   MinY = CGRectGetMinY(v59);
   v9 = *MEMORY[0x1E695F060];
   v10 = *(MEMORY[0x1E695F060] + 8);
 
-  v11 = [(AVTransition *)self presentationContext];
-  v12 = [v11 sourceView];
+  presentationContext = [(AVTransition *)self presentationContext];
+  sourceView = [presentationContext sourceView];
   v54 = v10;
   v52 = v9;
-  if (!v12)
+  if (!sourceView)
   {
 
     goto LABEL_5;
   }
 
-  v13 = v12;
-  v14 = [(AVTransition *)self presentationContext];
-  v15 = [v14 sourceView];
-  v16 = [v15 _isInAWindow];
+  v13 = sourceView;
+  presentationContext2 = [(AVTransition *)self presentationContext];
+  sourceView2 = [presentationContext2 sourceView];
+  _isInAWindow = [sourceView2 _isInAWindow];
 
-  if (!v16)
+  if (!_isInAWindow)
   {
 LABEL_5:
-    v17 = [(AVTransition *)self transitionContext];
-    v18 = [v17 containerView];
-    [v18 bounds];
+    transitionContext4 = [(AVTransition *)self transitionContext];
+    containerView4 = [transitionContext4 containerView];
+    [containerView4 bounds];
     v32 = CGRectGetMidX(v60);
-    v19 = [(AVTransition *)self transitionContext];
-    v20 = [v19 containerView];
-    [v20 bounds];
+    transitionContext5 = [(AVTransition *)self transitionContext];
+    containerView5 = [transitionContext5 containerView];
+    [containerView5 bounds];
     v37 = CGRectGetHeight(v61);
-    v29 = [(AVTransition *)self transitionContext];
-    v30 = [v29 containerView];
-    [v30 bounds];
+    transitionContext6 = [(AVTransition *)self transitionContext];
+    containerView6 = [transitionContext6 containerView];
+    [containerView6 bounds];
     v34 = CGRectGetMinY(v62) + v37 * 0.75;
     goto LABEL_6;
   }
 
-  v17 = [(AVTransition *)self transitionContext];
-  v18 = [v17 containerView];
-  v19 = [(AVTransition *)self presentationContext];
-  v20 = [v19 sourceView];
-  [v20 bounds];
+  transitionContext4 = [(AVTransition *)self transitionContext];
+  containerView4 = [transitionContext4 containerView];
+  transitionContext5 = [(AVTransition *)self presentationContext];
+  containerView5 = [transitionContext5 sourceView];
+  [containerView5 bounds];
   v22 = v21;
   v24 = v23;
   v26 = v25;
   v28 = v27;
-  v29 = [(AVTransition *)self presentationContext];
-  v30 = [v29 sourceView];
-  [v18 convertRect:v30 fromView:{v22, v24, v26, v28}];
+  transitionContext6 = [(AVTransition *)self presentationContext];
+  containerView6 = [transitionContext6 sourceView];
+  [containerView4 convertRect:containerView6 fromView:{v22, v24, v26, v28}];
   v32 = v31;
   v34 = v33;
   v9 = v35;
   v10 = v36;
 LABEL_6:
 
-  v38 = [(AVTransition *)self transitionContext];
-  v39 = [v38 containerView];
-  [v39 bounds];
+  transitionContext7 = [(AVTransition *)self transitionContext];
+  containerView7 = [transitionContext7 containerView];
+  [containerView7 bounds];
   v68.origin.x = v40;
   v68.origin.y = v41;
   v68.size.width = v42;
@@ -152,46 +152,46 @@ LABEL_6:
   return result;
 }
 
-- (void)_updateCornerAppearanceAttributesOfView:(id)a3 toSourceView:(id)a4 similarity:(double)a5
+- (void)_updateCornerAppearanceAttributesOfView:(id)view toSourceView:(id)sourceView similarity:(double)similarity
 {
-  v7 = a4;
-  v8 = a3;
-  v13 = [v8 layer];
-  v9 = [v7 layer];
+  sourceViewCopy = sourceView;
+  viewCopy = view;
+  layer = [viewCopy layer];
+  layer2 = [sourceViewCopy layer];
 
-  v10 = fmin(fmax(a5, 0.0), 1.0);
-  [v8 setClipsToBounds:1];
+  v10 = fmin(fmax(similarity, 0.0), 1.0);
+  [viewCopy setClipsToBounds:1];
 
   if (v10 <= 0.0)
   {
-    [v13 setCornerCurve:*MEMORY[0x1E69796E0]];
+    [layer setCornerCurve:*MEMORY[0x1E69796E0]];
   }
 
   else
   {
-    v11 = [v9 cornerCurve];
-    [v13 setCornerCurve:v11];
+    cornerCurve = [layer2 cornerCurve];
+    [layer setCornerCurve:cornerCurve];
   }
 
-  [v9 cornerRadius];
-  [v13 setCornerRadius:v10 * v12];
-  [v13 setMaskedCorners:{objc_msgSend(v9, "maskedCorners")}];
+  [layer2 cornerRadius];
+  [layer setCornerRadius:v10 * v12];
+  [layer setMaskedCorners:{objc_msgSend(layer2, "maskedCorners")}];
 }
 
-- (CGAffineTransform)_transformForScale:(SEL)a3 translation:(double)a4 rotation:(CGPoint)a5 locationInWindow:(double)a6 sourceRectInContainerView:(CGPoint)a7
+- (CGAffineTransform)_transformForScale:(SEL)scale translation:(double)translation rotation:(CGPoint)rotation locationInWindow:(double)window sourceRectInContainerView:(CGPoint)view
 {
-  y = a7.y;
-  x = a7.x;
-  v10 = a5.y;
-  v11 = a5.x;
+  y = view.y;
+  x = view.x;
+  v10 = rotation.y;
+  v11 = rotation.x;
   memset(&v48, 0, sizeof(v48));
-  CGAffineTransformMakeScale(&v48, a4, a4);
-  v14 = [(AVTransition *)self transitionContext];
-  v15 = [v14 containerView];
-  v16 = [(AVTransition *)self transitionContext];
-  v17 = [v16 containerView];
-  v18 = [v17 window];
-  [v15 convertPoint:v18 fromView:{x - v11, y - v10}];
+  CGAffineTransformMakeScale(&v48, translation, translation);
+  transitionContext = [(AVTransition *)self transitionContext];
+  containerView = [transitionContext containerView];
+  transitionContext2 = [(AVTransition *)self transitionContext];
+  containerView2 = [transitionContext2 containerView];
+  window = [containerView2 window];
+  [containerView convertPoint:window fromView:{x - v11, y - v10}];
   v20 = v19;
   v43 = v21;
   v44 = v19;
@@ -231,22 +231,22 @@ LABEL_6:
   UIRectGetCenter();
   v35 = v34;
   UIRectGetCenter();
-  v48.tx = v44 - v42 + a5.x + v48.tx;
-  v48.ty = v43 - v40 + a5.y + v35 - v36;
+  v48.tx = v44 - v42 + rotation.x + v48.tx;
+  v48.ty = v43 - v40 + rotation.y + v35 - v36;
   v47 = v48;
-  return CGAffineTransformRotate(retstr, &v47, a6);
+  return CGAffineTransformRotate(retstr, &v47, window);
 }
 
 - (CGRect)_finalFrameForPresentedView
 {
-  v3 = [(AVTransition *)self presentationContext];
-  v4 = [v3 presentedViewController];
-  if ([v4 isBeingPresented])
+  presentationContext = [(AVTransition *)self presentationContext];
+  presentedViewController = [presentationContext presentedViewController];
+  if ([presentedViewController isBeingPresented])
   {
-    v5 = [(AVTransition *)self transitionContext];
-    v6 = [(AVTransition *)self presentationContext];
-    v7 = [v6 presentedViewController];
-    [v5 finalFrameForViewController:v7];
+    transitionContext = [(AVTransition *)self transitionContext];
+    presentationContext2 = [(AVTransition *)self presentationContext];
+    presentedViewController2 = [presentationContext2 presentedViewController];
+    [transitionContext finalFrameForViewController:presentedViewController2];
     v9 = v8;
     v11 = v10;
     v13 = v12;
@@ -275,9 +275,9 @@ LABEL_6:
 
 - (CGRect)_initialFrameForPresentedView
 {
-  v3 = [(AVTransition *)self presentationContext];
-  v4 = [v3 presentedViewController];
-  if ([v4 isBeingPresented])
+  presentationContext = [(AVTransition *)self presentationContext];
+  presentedViewController = [presentationContext presentedViewController];
+  if ([presentedViewController isBeingPresented])
   {
     [(AVTransition *)self _sourceViewFrameInContainerView];
     v6 = v5;
@@ -288,9 +288,9 @@ LABEL_6:
 
   else
   {
-    v13 = [(AVTransition *)self presentationContext];
-    v14 = [v13 presentedView];
-    [v14 frame];
+    presentationContext2 = [(AVTransition *)self presentationContext];
+    presentedView = [presentationContext2 presentedView];
+    [presentedView frame];
     v6 = v15;
     v8 = v16;
     v10 = v17;
@@ -308,21 +308,21 @@ LABEL_6:
   return result;
 }
 
-- (void)_startOrContinueAnimatorsReversed:(BOOL)a3
+- (void)_startOrContinueAnimatorsReversed:(BOOL)reversed
 {
-  v3 = a3;
+  reversedCopy = reversed;
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(AVTransition *)self allAnimators];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allAnimators = [(AVTransition *)self allAnimators];
+  v5 = [allAnimators countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
     v7 = *v14;
-    if (v3)
+    if (reversedCopy)
     {
       v8 = 0.0;
     }
@@ -338,19 +338,19 @@ LABEL_6:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allAnimators);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v10 state];
-        if (v11 == 2)
+        state = [v10 state];
+        if (state == 2)
         {
           goto LABEL_11;
         }
 
-        if (v11 != 1)
+        if (state != 1)
         {
-          if (v11)
+          if (state)
           {
             continue;
           }
@@ -365,81 +365,81 @@ LABEL_11:
           [v10 pauseAnimation];
         }
 
-        [v10 setReversed:v3];
-        v12 = [v10 timingParameters];
-        [v10 continueAnimationWithTimingParameters:v12 durationFactor:v8];
+        [v10 setReversed:reversedCopy];
+        timingParameters = [v10 timingParameters];
+        [v10 continueAnimationWithTimingParameters:timingParameters durationFactor:v8];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [allAnimators countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_dismissalTransitionDidEnd:(BOOL)a3
+- (void)_dismissalTransitionDidEnd:(BOOL)end
 {
-  if (!a3)
+  if (!end)
   {
-    v4 = [(AVTransition *)self presentationContext];
-    v5 = [v4 backgroundView];
-    [v5 setAlpha:1.0];
+    presentationContext = [(AVTransition *)self presentationContext];
+    backgroundView = [presentationContext backgroundView];
+    [backgroundView setAlpha:1.0];
 
-    v6 = [(AVTransition *)self presentationContext];
-    v7 = [v6 touchBlockingView];
-    [v7 setAlpha:1.0];
+    presentationContext2 = [(AVTransition *)self presentationContext];
+    touchBlockingView = [presentationContext2 touchBlockingView];
+    [touchBlockingView setAlpha:1.0];
 
-    v8 = [(AVTransition *)self presentationContext];
-    v9 = [v8 backgroundView];
-    v10 = [(AVTransition *)self delegate];
-    v11 = [v10 transitionBackgroundViewBackgroundColor:self];
-    [v9 setBackgroundColor:v11];
+    presentationContext3 = [(AVTransition *)self presentationContext];
+    backgroundView2 = [presentationContext3 backgroundView];
+    delegate = [(AVTransition *)self delegate];
+    v11 = [delegate transitionBackgroundViewBackgroundColor:self];
+    [backgroundView2 setBackgroundColor:v11];
 
-    v12 = [(AVTransition *)self presentationContext];
-    v13 = [v12 presentedView];
-    v14 = [(AVTransition *)self delegate];
-    v15 = [v14 transitionPresentedViewBackgroundColor:self];
-    [v13 setBackgroundColor:v15];
+    presentationContext4 = [(AVTransition *)self presentationContext];
+    presentedView = [presentationContext4 presentedView];
+    delegate2 = [(AVTransition *)self delegate];
+    v15 = [delegate2 transitionPresentedViewBackgroundColor:self];
+    [presentedView setBackgroundColor:v15];
   }
 
-  v17 = [(AVTransition *)self presentationContext];
-  v16 = [v17 presentedView];
-  [v16 setAlpha:1.0];
+  presentationContext5 = [(AVTransition *)self presentationContext];
+  presentedView2 = [presentationContext5 presentedView];
+  [presentedView2 setAlpha:1.0];
 }
 
-- (void)_presentationTransitionDidEnd:(BOOL)a3
+- (void)_presentationTransitionDidEnd:(BOOL)end
 {
-  if (a3)
+  if (end)
   {
-    v4 = [(AVTransition *)self presentationContext];
-    v5 = [v4 backgroundView];
-    v6 = [(AVTransition *)self delegate];
-    v7 = [v6 transitionBackgroundViewBackgroundColor:self];
-    [v5 setBackgroundColor:v7];
+    presentationContext = [(AVTransition *)self presentationContext];
+    backgroundView = [presentationContext backgroundView];
+    delegate = [(AVTransition *)self delegate];
+    v7 = [delegate transitionBackgroundViewBackgroundColor:self];
+    [backgroundView setBackgroundColor:v7];
 
-    v8 = [(AVTransition *)self presentationContext];
-    v9 = [v8 presentedView];
-    v10 = [(AVTransition *)self delegate];
-    v11 = [v10 transitionPresentedViewBackgroundColor:self];
-    [v9 setBackgroundColor:v11];
+    presentationContext2 = [(AVTransition *)self presentationContext];
+    presentedView = [presentationContext2 presentedView];
+    delegate2 = [(AVTransition *)self delegate];
+    v11 = [delegate2 transitionPresentedViewBackgroundColor:self];
+    [presentedView setBackgroundColor:v11];
 
-    v12 = [(AVTransition *)self presentationContext];
-    v13 = [v12 backgroundView];
-    [v13 setAlpha:1.0];
+    presentationContext3 = [(AVTransition *)self presentationContext];
+    backgroundView2 = [presentationContext3 backgroundView];
+    [backgroundView2 setAlpha:1.0];
 
-    v14 = [(AVTransition *)self presentationContext];
-    v15 = [v14 touchBlockingView];
-    [v15 setAlpha:1.0];
+    presentationContext4 = [(AVTransition *)self presentationContext];
+    touchBlockingView = [presentationContext4 touchBlockingView];
+    [touchBlockingView setAlpha:1.0];
   }
 
-  v17 = [(AVTransition *)self presentationContext];
-  v16 = [v17 presentedView];
-  [v16 setAlpha:1.0];
+  presentationContext5 = [(AVTransition *)self presentationContext];
+  presentedView2 = [presentationContext5 presentedView];
+  [presentedView2 setAlpha:1.0];
 }
 
-- (void)completeTransition:(BOOL)a3
+- (void)completeTransition:(BOOL)transition
 {
-  v3 = a3;
+  transitionCopy = transition;
   v16 = *MEMORY[0x1E69E9840];
   v5 = _AVLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -449,7 +449,7 @@ LABEL_11:
     v11 = "[AVTransition completeTransition:]";
     v13 = "didComplete";
     v12 = 2080;
-    if (v3)
+    if (transitionCopy)
     {
       v6 = "YES";
     }
@@ -459,14 +459,14 @@ LABEL_11:
     _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s %s %s", buf, 0x20u);
   }
 
-  v7 = [(AVTransition *)self delegate];
+  delegate = [(AVTransition *)self delegate];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __35__AVTransition_completeTransition___block_invoke;
   v8[3] = &unk_1E7208F28;
   v8[4] = self;
-  v9 = v3;
-  [v7 transitionWillComplete:self success:v3 continueBlock:v8];
+  v9 = transitionCopy;
+  [delegate transitionWillComplete:self success:transitionCopy continueBlock:v8];
 }
 
 void __35__AVTransition_completeTransition___block_invoke(uint64_t a1, int a2)
@@ -537,13 +537,13 @@ void __35__AVTransition_completeTransition___block_invoke(uint64_t a1, int a2)
 
 - (void)addRunAlongsideAnimationsIfNeeded
 {
-  v3 = [(AVTransition *)self clientAnimator];
+  clientAnimator = [(AVTransition *)self clientAnimator];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __49__AVTransition_addRunAlongsideAnimationsIfNeeded__block_invoke;
   v4[3] = &unk_1E720A090;
   v4[4] = self;
-  [v3 addAnimations:v4];
+  [clientAnimator addAnimations:v4];
 }
 
 void __49__AVTransition_addRunAlongsideAnimationsIfNeeded__block_invoke(uint64_t a1)
@@ -560,49 +560,49 @@ void __49__AVTransition_addRunAlongsideAnimationsIfNeeded__block_invoke(uint64_t
 
 - (void)_animateAlongsideInteractiveDismissalTransitionAnimationForCancelling
 {
-  v3 = [(AVTransition *)self presentationContext];
-  v4 = [v3 presentedView];
-  v5 = [(AVTransition *)self presentationContext];
-  v6 = [v5 sourceView];
-  [(AVTransition *)self _updateCornerAppearanceAttributesOfView:v4 toSourceView:v6 similarity:0.0];
+  presentationContext = [(AVTransition *)self presentationContext];
+  presentedView = [presentationContext presentedView];
+  presentationContext2 = [(AVTransition *)self presentationContext];
+  sourceView = [presentationContext2 sourceView];
+  [(AVTransition *)self _updateCornerAppearanceAttributesOfView:presentedView toSourceView:sourceView similarity:0.0];
 
-  v7 = [(AVTransition *)self presentationContext];
-  v8 = [v7 presentedView];
+  presentationContext3 = [(AVTransition *)self presentationContext];
+  presentedView2 = [presentationContext3 presentedView];
   v9 = *&self->_destinationViewTransform.c;
   v12[0] = *&self->_destinationViewTransform.a;
   v12[1] = v9;
   v12[2] = *&self->_destinationViewTransform.tx;
-  [v8 setTransform:v12];
+  [presentedView2 setTransform:v12];
 
-  v10 = [(AVTransition *)self presentationContext];
-  v11 = [v10 backgroundView];
-  [v11 setAlpha:1.0];
+  presentationContext4 = [(AVTransition *)self presentationContext];
+  backgroundView = [presentationContext4 backgroundView];
+  [backgroundView setAlpha:1.0];
 }
 
 - (void)_animateAlongsideInteractivePresentationTransitionAnimationForCancelling
 {
-  v3 = [(AVTransition *)self presentationContext];
-  v4 = [v3 presentedView];
+  presentationContext = [(AVTransition *)self presentationContext];
+  presentedView = [presentationContext presentedView];
   v5 = *(MEMORY[0x1E695EFD0] + 16);
   v14[0] = *MEMORY[0x1E695EFD0];
   v14[1] = v5;
   v14[2] = *(MEMORY[0x1E695EFD0] + 32);
-  [v4 setTransform:v14];
+  [presentedView setTransform:v14];
 
-  v6 = [(AVTransition *)self presentationContext];
-  v7 = [v6 presentedView];
+  presentationContext2 = [(AVTransition *)self presentationContext];
+  presentedView2 = [presentationContext2 presentedView];
   [(AVTransition *)self _sourceViewFrameInContainerView];
-  [v7 setFrame:?];
+  [presentedView2 setFrame:?];
 
-  v8 = [(AVTransition *)self presentationContext];
-  v9 = [v8 presentedView];
-  v10 = [(AVTransition *)self presentationContext];
-  v11 = [v10 sourceView];
-  [(AVTransition *)self _updateCornerAppearanceAttributesOfView:v9 toSourceView:v11 similarity:1.0];
+  presentationContext3 = [(AVTransition *)self presentationContext];
+  presentedView3 = [presentationContext3 presentedView];
+  presentationContext4 = [(AVTransition *)self presentationContext];
+  sourceView = [presentationContext4 sourceView];
+  [(AVTransition *)self _updateCornerAppearanceAttributesOfView:presentedView3 toSourceView:sourceView similarity:1.0];
 
-  v12 = [(AVTransition *)self presentationContext];
-  v13 = [v12 backgroundView];
-  [v13 setAlpha:0.0];
+  presentationContext5 = [(AVTransition *)self presentationContext];
+  backgroundView = [presentationContext5 backgroundView];
+  [backgroundView setAlpha:0.0];
 }
 
 - (void)cancelInteractiveTransition
@@ -616,28 +616,28 @@ void __49__AVTransition_addRunAlongsideAnimationsIfNeeded__block_invoke(uint64_t
     v11 = 1024;
     v12 = 426;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&dword_18B49C000, v3, OS_LOG_TYPE_DEFAULT, "%s %d %p", buf, 0x1Cu);
   }
 
-  v4 = [(AVTransition *)self transitionContext];
-  [v4 cancelInteractiveTransition];
+  transitionContext = [(AVTransition *)self transitionContext];
+  [transitionContext cancelInteractiveTransition];
 
-  v5 = [(AVTransition *)self transitionAnimator];
+  transitionAnimator = [(AVTransition *)self transitionAnimator];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __43__AVTransition_cancelInteractiveTransition__block_invoke;
   v8[3] = &unk_1E720A090;
   v8[4] = self;
-  [v5 addAnimations:v8];
+  [transitionAnimator addAnimations:v8];
 
-  v6 = [(AVTransition *)self transitionAnimator];
+  transitionAnimator2 = [(AVTransition *)self transitionAnimator];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__AVTransition_cancelInteractiveTransition__block_invoke_9;
   v7[3] = &unk_1E7208F00;
   v7[4] = self;
-  [v6 addCompletion:v7];
+  [transitionAnimator2 addCompletion:v7];
 
   [(AVTransition *)self _startOrContinueAnimatorsReversed:1];
 }
@@ -725,48 +725,48 @@ void __49__AVTransition__freezeDismissingViewForFinishing__block_invoke(uint64_t
 
 - (void)_animateFinishInteractiveTransition
 {
-  v3 = [(AVTransition *)self presentationContext];
-  v4 = [v3 configuration];
-  v5 = [v4 transitionStyle];
+  presentationContext = [(AVTransition *)self presentationContext];
+  configuration = [presentationContext configuration];
+  transitionStyle = [configuration transitionStyle];
 
-  v6 = [(AVTransition *)self presentationContext];
-  v7 = [v6 transitionType];
+  presentationContext2 = [(AVTransition *)self presentationContext];
+  transitionType = [presentationContext2 transitionType];
 
-  switch(v7)
+  switch(transitionType)
   {
     case 0:
-      v37 = _AVLog();
-      if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
+      presentationContext28 = _AVLog();
+      if (os_log_type_enabled(presentationContext28, OS_LOG_TYPE_ERROR))
       {
         LOWORD(buf.a) = 0;
-        _os_log_error_impl(&dword_18B49C000, v37, OS_LOG_TYPE_ERROR, "Unexpected", &buf, 2u);
+        _os_log_error_impl(&dword_18B49C000, presentationContext28, OS_LOG_TYPE_ERROR, "Unexpected", &buf, 2u);
       }
 
       goto LABEL_41;
     case 2:
-      v26 = [(AVTransition *)self presentationContext];
-      v27 = [v26 sourceView];
-      if (v27)
+      presentationContext3 = [(AVTransition *)self presentationContext];
+      sourceView = [presentationContext3 sourceView];
+      if (sourceView)
       {
-        v28 = v27;
+        v28 = sourceView;
         [(AVTransition *)self _sourceViewFrameInContainerView];
         IsEmpty = CGRectIsEmpty(v125);
 
         if (!IsEmpty)
         {
           [(AVTransition *)self _freezeDismissingViewForFinishing];
-          v30 = [(AVTransition *)self presentationContext];
-          v31 = [v30 presentedView];
+          presentationContext4 = [(AVTransition *)self presentationContext];
+          presentedView = [presentationContext4 presentedView];
           v32 = *(MEMORY[0x1E695EFD0] + 16);
           *&buf.a = *MEMORY[0x1E695EFD0];
           *&buf.c = v32;
           *&buf.tx = *(MEMORY[0x1E695EFD0] + 32);
-          [v31 setTransform:&buf];
+          [presentedView setTransform:&buf];
 
-          v33 = [(AVTransition *)self presentationContext];
-          v34 = [v33 presentedView];
+          presentationContext5 = [(AVTransition *)self presentationContext];
+          presentedView2 = [presentationContext5 presentedView];
           [(AVTransition *)self _sourceViewFrameInContainerView];
-          [v34 setFrame:?];
+          [presentedView2 setFrame:?];
 
           v35 = MEMORY[0x1E69DD250];
           v120[0] = MEMORY[0x1E69E9820];
@@ -783,17 +783,17 @@ void __49__AVTransition__freezeDismissingViewForFinishing__block_invoke(uint64_t
       {
       }
 
-      v53 = [(AVTransition *)self presentationContext];
-      v54 = [v53 dismissingTransition];
-      v55 = [v54 wasInitiallyInteractive];
+      presentationContext6 = [(AVTransition *)self presentationContext];
+      dismissingTransition = [presentationContext6 dismissingTransition];
+      wasInitiallyInteractive = [dismissingTransition wasInitiallyInteractive];
 
-      if (!v55)
+      if (!wasInitiallyInteractive)
       {
-        v67 = [(AVTransition *)self transitionContext];
-        v117 = [v67 viewForKey:*MEMORY[0x1E69DE770]];
+        transitionContext = [(AVTransition *)self transitionContext];
+        v117 = [transitionContext viewForKey:*MEMORY[0x1E69DE770]];
 
-        v68 = [(AVTransition *)self transitionContext];
-        v69 = [v68 viewForKey:*MEMORY[0x1E69DE780]];
+        transitionContext2 = [(AVTransition *)self transitionContext];
+        v69 = [transitionContext2 viewForKey:*MEMORY[0x1E69DE780]];
 
         [v117 frame];
         v71 = v70;
@@ -848,43 +848,43 @@ void __49__AVTransition__freezeDismissingViewForFinishing__block_invoke(uint64_t
           }
         }
 
-        v109 = [(AVTransition *)self presentationContext];
-        v110 = [v109 presentedView];
-        [v110 setFrame:{v75, v77, v79, v81}];
+        presentationContext7 = [(AVTransition *)self presentationContext];
+        presentedView3 = [presentationContext7 presentedView];
+        [presentedView3 setFrame:{v75, v77, v79, v81}];
 
-        v111 = [(AVTransition *)self presentationContext];
-        v112 = [v111 backgroundView];
-        [v112 setAlpha:0.0];
+        presentationContext8 = [(AVTransition *)self presentationContext];
+        backgroundView = [presentationContext8 backgroundView];
+        [backgroundView setAlpha:0.0];
 
-        if (!v5)
+        if (!transitionStyle)
         {
-          v113 = [(AVTransition *)self presentationContext];
-          v114 = [v113 containerView];
-          [v114 setAlpha:0.0];
+          presentationContext9 = [(AVTransition *)self presentationContext];
+          containerView = [presentationContext9 containerView];
+          [containerView setAlpha:0.0];
         }
 
         return;
       }
 
-      v56 = [(AVTransition *)self presentationContext];
-      v57 = [v56 presentedView];
-      v58 = [(AVTransition *)self presentationContext];
-      v59 = [v58 sourceView];
-      [(AVTransition *)self _updateCornerAppearanceAttributesOfView:v57 toSourceView:v59 similarity:1.0];
+      presentationContext10 = [(AVTransition *)self presentationContext];
+      presentedView4 = [presentationContext10 presentedView];
+      presentationContext11 = [(AVTransition *)self presentationContext];
+      sourceView2 = [presentationContext11 sourceView];
+      [(AVTransition *)self _updateCornerAppearanceAttributesOfView:presentedView4 toSourceView:sourceView2 similarity:1.0];
 
-      v60 = [(AVTransition *)self presentationContext];
-      v61 = [v60 backgroundView];
-      [v61 setAlpha:0.0];
+      presentationContext12 = [(AVTransition *)self presentationContext];
+      backgroundView2 = [presentationContext12 backgroundView];
+      [backgroundView2 setAlpha:0.0];
 
       [(AVTransition *)self _freezeDismissingViewForFinishing];
-      v62 = [(AVTransition *)self presentationContext];
-      v63 = [v62 presentedView];
-      v64 = [(AVTransition *)self presentationContext];
-      v65 = [v64 presentedView];
-      v66 = v65;
-      if (v65)
+      presentationContext13 = [(AVTransition *)self presentationContext];
+      presentedView5 = [presentationContext13 presentedView];
+      presentationContext14 = [(AVTransition *)self presentationContext];
+      presentedView6 = [presentationContext14 presentedView];
+      v66 = presentedView6;
+      if (presentedView6)
       {
-        [v65 transform];
+        [presentedView6 transform];
       }
 
       else
@@ -893,7 +893,7 @@ void __49__AVTransition__freezeDismissingViewForFinishing__block_invoke(uint64_t
       }
 
       CGAffineTransformScale(&buf, &v121, 0.001, 0.001);
-      [v63 setTransform:&buf];
+      [presentedView5 setTransform:&buf];
 
       v35 = MEMORY[0x1E69DD250];
       v119[0] = MEMORY[0x1E69E9820];
@@ -906,46 +906,46 @@ LABEL_44:
       [v35 animateKeyframesWithDuration:0 delay:v36 options:0 animations:0.0 completion:0.0];
       return;
     case 1:
-      v8 = [(AVTransition *)self presentationContext];
-      v9 = [v8 presentingTransition];
-      v10 = [v9 wasInitiallyInteractive];
+      presentationContext15 = [(AVTransition *)self presentationContext];
+      presentingTransition = [presentationContext15 presentingTransition];
+      wasInitiallyInteractive2 = [presentingTransition wasInitiallyInteractive];
 
-      v11 = [(AVTransition *)self presentationContext];
-      v12 = v11;
+      presentationContext16 = [(AVTransition *)self presentationContext];
+      v12 = presentationContext16;
       v13 = MEMORY[0x1E695EFD0];
-      v118 = v5;
-      if (v10)
+      v118 = transitionStyle;
+      if (wasInitiallyInteractive2)
       {
-        v14 = [v11 backgroundView];
-        [v14 setAlpha:1.0];
+        backgroundView3 = [presentationContext16 backgroundView];
+        [backgroundView3 setAlpha:1.0];
 
-        v15 = [(AVTransition *)self presentationContext];
-        v16 = [v15 presentedView];
-        v17 = [(AVTransition *)self presentationContext];
-        v18 = [v17 sourceView];
-        [(AVTransition *)self _updateCornerAppearanceAttributesOfView:v16 toSourceView:v18 similarity:0.0];
+        presentationContext17 = [(AVTransition *)self presentationContext];
+        presentedView7 = [presentationContext17 presentedView];
+        presentationContext18 = [(AVTransition *)self presentationContext];
+        sourceView3 = [presentationContext18 sourceView];
+        [(AVTransition *)self _updateCornerAppearanceAttributesOfView:presentedView7 toSourceView:sourceView3 similarity:0.0];
 
-        v19 = [(AVTransition *)self presentationContext];
-        v20 = [v19 presentedView];
-        v21 = [(AVTransition *)self transitionContext];
-        v22 = [v21 containerView];
-        [v22 bounds];
-        [v20 setFrame:?];
+        presentationContext19 = [(AVTransition *)self presentationContext];
+        presentedView8 = [presentationContext19 presentedView];
+        transitionContext3 = [(AVTransition *)self transitionContext];
+        containerView2 = [transitionContext3 containerView];
+        [containerView2 bounds];
+        [presentedView8 setFrame:?];
 
-        v23 = [(AVTransition *)self presentationContext];
-        v24 = [v23 presentedView];
+        presentationContext20 = [(AVTransition *)self presentationContext];
+        presentedView9 = [presentationContext20 presentedView];
         v25 = v13[1];
         *&buf.a = *v13;
         *&buf.c = v25;
         *&buf.tx = v13[2];
-        [v24 setTransform:&buf];
+        [presentedView9 setTransform:&buf];
       }
 
       else
       {
-        v38 = [v11 sourceView];
+        sourceView4 = [presentationContext16 sourceView];
 
-        if (v38)
+        if (sourceView4)
         {
           v122[0] = MEMORY[0x1E69E9820];
           v122[1] = 3221225472;
@@ -956,43 +956,43 @@ LABEL_44:
         }
       }
 
-      v39 = [(AVTransition *)self presentationContext];
-      v40 = [v39 presentingTransition];
-      v41 = [v40 wasInitiallyInteractive];
-      if ((v41 & 1) == 0)
+      presentationContext21 = [(AVTransition *)self presentationContext];
+      presentingTransition2 = [presentationContext21 presentingTransition];
+      wasInitiallyInteractive3 = [presentingTransition2 wasInitiallyInteractive];
+      if ((wasInitiallyInteractive3 & 1) == 0)
       {
-        v42 = [(AVTransition *)self presentationContext];
-        v43 = [v42 sourceView];
-        if (!v43)
+        presentationContext22 = [(AVTransition *)self presentationContext];
+        sourceView5 = [presentationContext22 sourceView];
+        if (!sourceView5)
         {
 
           goto LABEL_29;
         }
 
-        v115 = v43;
-        v116 = v42;
+        v115 = sourceView5;
+        v116 = presentationContext22;
       }
 
-      v44 = [(AVTransition *)self presentationContext];
-      v45 = [v44 presentingTransition];
-      v46 = [v45 initialInterfaceOrientation];
-      v47 = [(AVTransition *)self presentationContext];
-      v48 = [v47 presentingTransition];
-      v49 = [v48 finalInterfaceOrientation];
+      presentationContext23 = [(AVTransition *)self presentationContext];
+      presentingTransition3 = [presentationContext23 presentingTransition];
+      initialInterfaceOrientation = [presentingTransition3 initialInterfaceOrientation];
+      presentationContext24 = [(AVTransition *)self presentationContext];
+      presentingTransition4 = [presentationContext24 presentingTransition];
+      finalInterfaceOrientation = [presentingTransition4 finalInterfaceOrientation];
 
-      if ((v41 & 1) == 0)
+      if ((wasInitiallyInteractive3 & 1) == 0)
       {
       }
 
-      if (v46 != v49)
+      if (initialInterfaceOrientation != finalInterfaceOrientation)
       {
         memset(&buf, 0, sizeof(buf));
-        v50 = [(AVTransition *)self presentationContext];
-        v51 = [v50 presentingTransition];
-        v52 = v51;
-        if (v51)
+        presentationContext25 = [(AVTransition *)self presentationContext];
+        presentingTransition5 = [presentationContext25 presentingTransition];
+        v52 = presentingTransition5;
+        if (presentingTransition5)
         {
-          [v51 rotationTransform];
+          [presentingTransition5 rotationTransform];
         }
 
         else
@@ -1000,9 +1000,9 @@ LABEL_44:
           memset(&buf, 0, sizeof(buf));
         }
 
-        v97 = [(AVTransition *)self transitionContext];
-        v98 = [v97 containerView];
-        [v98 bounds];
+        transitionContext4 = [(AVTransition *)self transitionContext];
+        containerView3 = [transitionContext4 containerView];
+        [containerView3 bounds];
         v121 = buf;
         v129 = CGRectApplyAffineTransform(v128, &v121);
         v99 = v129.size.width;
@@ -1020,22 +1020,22 @@ LABEL_44:
           v100 = -v100;
         }
 
-        v103 = [(AVTransition *)self presentationContext];
-        v104 = [v103 presentedView];
-        [v104 setFrame:{v101, v102, v99, v100}];
+        presentationContext26 = [(AVTransition *)self presentationContext];
+        presentedView10 = [presentationContext26 presentedView];
+        [presentedView10 setFrame:{v101, v102, v99, v100}];
 
-        v105 = [(AVTransition *)self presentationContext];
-        v106 = [v105 presentedView];
-        v107 = [(AVTransition *)self transitionContext];
-        v108 = [v107 containerView];
-        [v108 bounds];
+        presentationContext27 = [(AVTransition *)self presentationContext];
+        presentedView11 = [presentationContext27 presentedView];
+        transitionContext5 = [(AVTransition *)self transitionContext];
+        containerView4 = [transitionContext5 containerView];
+        [containerView4 bounds];
         UIRectGetCenter();
-        [v106 setCenter:?];
+        [presentedView11 setCenter:?];
 
-        v37 = [(AVTransition *)self presentationContext];
-        v95 = [v37 presentedView];
+        presentationContext28 = [(AVTransition *)self presentationContext];
+        presentedView12 = [presentationContext28 presentedView];
         v121 = buf;
-        [v95 setTransform:&v121];
+        [presentedView12 setTransform:&v121];
 LABEL_40:
 
 LABEL_41:
@@ -1043,29 +1043,29 @@ LABEL_41:
       }
 
 LABEL_29:
-      v88 = [(AVTransition *)self presentationContext];
-      v89 = [v88 presentedView];
+      presentationContext29 = [(AVTransition *)self presentationContext];
+      presentedView13 = [presentationContext29 presentedView];
       v90 = *(MEMORY[0x1E695EFD0] + 16);
       *&buf.a = *MEMORY[0x1E695EFD0];
       *&buf.c = v90;
       *&buf.tx = *(MEMORY[0x1E695EFD0] + 32);
-      [v89 setTransform:&buf];
+      [presentedView13 setTransform:&buf];
 
       if (v118)
       {
-        v91 = [(AVTransition *)self presentationContext];
-        v92 = [v91 presentedView];
-        v93 = [(AVTransition *)self transitionContext];
-        v94 = [v93 containerView];
-        [v94 bounds];
-        [v92 setFrame:?];
+        presentationContext30 = [(AVTransition *)self presentationContext];
+        presentedView14 = [presentationContext30 presentedView];
+        transitionContext6 = [(AVTransition *)self transitionContext];
+        containerView5 = [transitionContext6 containerView];
+        [containerView5 bounds];
+        [presentedView14 setFrame:?];
 
         return;
       }
 
-      v37 = [(AVTransition *)self transitionContext];
-      v95 = [v37 containerView];
-      [v95 setAlpha:1.0];
+      presentationContext28 = [(AVTransition *)self transitionContext];
+      presentedView12 = [presentationContext28 containerView];
+      [presentedView12 setAlpha:1.0];
       goto LABEL_40;
   }
 }
@@ -1164,46 +1164,46 @@ void __51__AVTransition__animateFinishInteractiveTransition__block_invoke_3(uint
     v11 = 1024;
     v12 = 262;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&dword_18B49C000, v3, OS_LOG_TYPE_DEFAULT, "%s %d %p", buf, 0x1Cu);
   }
 
-  v4 = [(AVTransition *)self transitionContext];
-  [v4 finishInteractiveTransition];
+  transitionContext = [(AVTransition *)self transitionContext];
+  [transitionContext finishInteractiveTransition];
 
-  v5 = [(AVTransition *)self transitionAnimator];
+  transitionAnimator = [(AVTransition *)self transitionAnimator];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __43__AVTransition_finishInteractiveTransition__block_invoke;
   v8[3] = &unk_1E720A090;
   v8[4] = self;
-  [v5 addAnimations:v8];
+  [transitionAnimator addAnimations:v8];
 
-  v6 = [(AVTransition *)self transitionAnimator];
+  transitionAnimator2 = [(AVTransition *)self transitionAnimator];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__AVTransition_finishInteractiveTransition__block_invoke_2;
   v7[3] = &unk_1E7208F00;
   v7[4] = self;
-  [v6 addCompletion:v7];
+  [transitionAnimator2 addCompletion:v7];
 
   [(AVTransition *)self _startOrContinueAnimatorsReversed:0];
 }
 
-- (void)updateWithPercentComplete:(double)a3 scale:(double)a4 translation:(CGPoint)a5 rotation:(double)a6
+- (void)updateWithPercentComplete:(double)complete scale:(double)scale translation:(CGPoint)translation rotation:(double)rotation
 {
-  y = a5.y;
-  x = a5.x;
+  y = translation.y;
+  x = translation.x;
   v28 = *MEMORY[0x1E69E9840];
-  v11 = [(AVTransition *)self transitionContext:a3];
-  [v11 updateInteractiveTransition:a3];
+  v11 = [(AVTransition *)self transitionContext:complete];
+  [v11 updateInteractiveTransition:complete];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v12 = [(AVTransition *)self allAnimators];
-  v13 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  allAnimators = [(AVTransition *)self allAnimators];
+  v13 = [allAnimators countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v13)
   {
     v14 = v13;
@@ -1215,14 +1215,14 @@ void __51__AVTransition__animateFinishInteractiveTransition__block_invoke_3(uint
       {
         if (*v24 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(allAnimators);
         }
 
-        [*(*(&v23 + 1) + 8 * v16++) setFractionComplete:a3];
+        [*(*(&v23 + 1) + 8 * v16++) setFractionComplete:complete];
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v14 = [allAnimators countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v14);
@@ -1235,29 +1235,29 @@ void __51__AVTransition__animateFinishInteractiveTransition__block_invoke_3(uint
   memset(&v22, 0, sizeof(v22));
   CGAffineTransformTranslate(&v22, &v21, x, y);
   v20 = v22;
-  CGAffineTransformScale(&v21, &v20, a4, a4);
+  CGAffineTransformScale(&v21, &v20, scale, scale);
   v22 = v21;
-  v18 = [(AVTransition *)self presentationContext];
-  v19 = [v18 presentedView];
+  presentationContext = [(AVTransition *)self presentationContext];
+  presentedView = [presentationContext presentedView];
   v21 = v22;
-  [v19 setTransform:&v21];
+  [presentedView setTransform:&v21];
 }
 
 - (void)pauseInteractiveTransition
 {
-  v3 = [(AVTransition *)self transitionContext];
-  [v3 pauseInteractiveTransition];
+  transitionContext = [(AVTransition *)self transitionContext];
+  [transitionContext pauseInteractiveTransition];
 
-  v4 = [(AVTransition *)self allAnimators];
-  [v4 makeObjectsPerformSelector:sel_pauseAnimation];
+  allAnimators = [(AVTransition *)self allAnimators];
+  [allAnimators makeObjectsPerformSelector:sel_pauseAnimation];
 
-  v5 = [(AVTransition *)self transitionAnimator];
+  transitionAnimator = [(AVTransition *)self transitionAnimator];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __42__AVTransition_pauseInteractiveTransition__block_invoke;
   v6[3] = &unk_1E720A090;
   v6[4] = self;
-  [v5 addAnimations:v6];
+  [transitionAnimator addAnimations:v6];
 }
 
 uint64_t __42__AVTransition_pauseInteractiveTransition__block_invoke(uint64_t a1)
@@ -1370,32 +1370,32 @@ void __42__AVTransition_pauseInteractiveTransition__block_invoke_6(uint64_t a1)
 
 - (void)_dismissalTransitionWillBegin
 {
-  v3 = [(AVTransition *)self presentationContext];
-  v4 = [v3 transitionContext];
-  v5 = [v4 containerView];
-  v6 = [(AVTransition *)self presentationContext];
-  v7 = [v6 backgroundView];
-  v8 = [(AVTransition *)self presentationContext];
-  v9 = [v8 presentedView];
-  [v5 insertSubview:v7 belowSubview:v9];
+  presentationContext = [(AVTransition *)self presentationContext];
+  transitionContext = [presentationContext transitionContext];
+  containerView = [transitionContext containerView];
+  presentationContext2 = [(AVTransition *)self presentationContext];
+  backgroundView = [presentationContext2 backgroundView];
+  presentationContext3 = [(AVTransition *)self presentationContext];
+  presentedView = [presentationContext3 presentedView];
+  [containerView insertSubview:backgroundView belowSubview:presentedView];
 
-  v10 = [(AVTransition *)self presentationContext];
-  v11 = [v10 transitionContext];
-  v12 = [v11 containerView];
-  v13 = [(AVTransition *)self presentationContext];
-  v14 = [v13 touchBlockingView];
-  v15 = [(AVTransition *)self presentationContext];
-  v16 = [v15 presentedView];
-  [v12 insertSubview:v14 belowSubview:v16];
+  presentationContext4 = [(AVTransition *)self presentationContext];
+  transitionContext2 = [presentationContext4 transitionContext];
+  containerView2 = [transitionContext2 containerView];
+  presentationContext5 = [(AVTransition *)self presentationContext];
+  touchBlockingView = [presentationContext5 touchBlockingView];
+  presentationContext6 = [(AVTransition *)self presentationContext];
+  presentedView2 = [presentationContext6 presentedView];
+  [containerView2 insertSubview:touchBlockingView belowSubview:presentedView2];
 
-  v17 = [(AVTransition *)self transitionContext];
-  v18 = [v17 viewForKey:*MEMORY[0x1E69DE780]];
+  transitionContext3 = [(AVTransition *)self transitionContext];
+  v18 = [transitionContext3 viewForKey:*MEMORY[0x1E69DE780]];
 
-  v19 = [(AVTransition *)self transitionContext];
-  v20 = [v19 viewForKey:*MEMORY[0x1E69DE770]];
+  transitionContext4 = [(AVTransition *)self transitionContext];
+  v20 = [transitionContext4 viewForKey:*MEMORY[0x1E69DE770]];
 
-  v21 = [(AVTransition *)self transitionContext];
-  v22 = [v21 viewControllerForKey:*MEMORY[0x1E69DE778]];
+  transitionContext5 = [(AVTransition *)self transitionContext];
+  v22 = [transitionContext5 viewControllerForKey:*MEMORY[0x1E69DE778]];
 
   if (v20)
   {
@@ -1414,8 +1414,8 @@ void __42__AVTransition_pauseInteractiveTransition__block_invoke_6(uint64_t a1)
   *&self->_destinationViewTransform.tx = v56;
   if (v18)
   {
-    v23 = [(AVTransition *)self transitionContext];
-    [v23 finalFrameForViewController:v22];
+    transitionContext6 = [(AVTransition *)self transitionContext];
+    [transitionContext6 finalFrameForViewController:v22];
     v25 = v24;
     v27 = v26;
     v29 = v28;
@@ -1427,151 +1427,151 @@ void __42__AVTransition_pauseInteractiveTransition__block_invoke_6(uint64_t a1)
     v57.size.height = v31;
     if (!CGRectIsEmpty(v57))
     {
-      v32 = [v22 view];
-      [v32 setFrame:{v25, v27, v29, v31}];
+      view = [v22 view];
+      [view setFrame:{v25, v27, v29, v31}];
     }
 
     v33 = [(AVTransition *)self transitionContext:v54];
-    v34 = [v33 containerView];
-    v35 = [(AVTransition *)self presentationContext];
-    v36 = [v35 backgroundView];
-    [v34 insertSubview:v18 belowSubview:v36];
+    containerView3 = [v33 containerView];
+    presentationContext7 = [(AVTransition *)self presentationContext];
+    backgroundView2 = [presentationContext7 backgroundView];
+    [containerView3 insertSubview:v18 belowSubview:backgroundView2];
 
-    v37 = [v22 view];
-    [v37 layoutIfNeeded];
+    view2 = [v22 view];
+    [view2 layoutIfNeeded];
 
-    v38 = [v22 view];
+    view3 = [v22 view];
 
-    if (v18 != v38)
+    if (v18 != view3)
     {
       [v18 layoutIfNeeded];
     }
   }
 
   v39 = [(AVTransition *)self presentationContext:v54];
-  v40 = [v39 configuration];
-  v41 = [v40 transitionStyle];
+  configuration = [v39 configuration];
+  transitionStyle = [configuration transitionStyle];
 
-  v42 = [(AVTransition *)self transitionContext];
-  if ([v42 isInteractive])
+  transitionContext7 = [(AVTransition *)self transitionContext];
+  if ([transitionContext7 isInteractive])
   {
 
 LABEL_11:
-    v43 = [(AVTransition *)self presentationContext];
-    v44 = [v43 backgroundView];
-    [v44 setAlpha:1.0];
+    presentationContext8 = [(AVTransition *)self presentationContext];
+    backgroundView3 = [presentationContext8 backgroundView];
+    [backgroundView3 setAlpha:1.0];
 
     goto LABEL_14;
   }
 
-  v45 = [(AVTransition *)self presentationContext];
-  v46 = [v45 sourceView];
+  presentationContext9 = [(AVTransition *)self presentationContext];
+  sourceView = [presentationContext9 sourceView];
 
-  if (v46 || !v41)
+  if (sourceView || !transitionStyle)
   {
     goto LABEL_11;
   }
 
 LABEL_14:
-  v47 = [(AVTransition *)self presentationContext];
-  v48 = [v47 presentedPresentationContainerView];
-  v49 = [(AVTransition *)self presentationContext];
-  v50 = [v49 dismissingTransition];
-  v51 = [v50 initialInterfaceOrientation];
-  v52 = [(AVTransition *)self presentationContext];
-  v53 = [v52 dismissingTransition];
-  [v48 willStartDismissalTransitionFromInterfaceOrientation:v51 toOrientation:objc_msgSend(v53 needsCounterRotation:{"finalInterfaceOrientation"), 0}];
+  presentationContext10 = [(AVTransition *)self presentationContext];
+  presentedPresentationContainerView = [presentationContext10 presentedPresentationContainerView];
+  presentationContext11 = [(AVTransition *)self presentationContext];
+  dismissingTransition = [presentationContext11 dismissingTransition];
+  initialInterfaceOrientation = [dismissingTransition initialInterfaceOrientation];
+  presentationContext12 = [(AVTransition *)self presentationContext];
+  dismissingTransition2 = [presentationContext12 dismissingTransition];
+  [presentedPresentationContainerView willStartDismissalTransitionFromInterfaceOrientation:initialInterfaceOrientation toOrientation:objc_msgSend(dismissingTransition2 needsCounterRotation:{"finalInterfaceOrientation"), 0}];
 }
 
 - (void)_presentationTransitionWillBegin
 {
-  v3 = [(AVTransition *)self presentationContext];
-  v4 = [v3 configuration];
-  v5 = [v4 transitionStyle];
+  presentationContext = [(AVTransition *)self presentationContext];
+  configuration = [presentationContext configuration];
+  transitionStyle = [configuration transitionStyle];
 
-  v6 = [(AVTransition *)self presentationContext];
-  v7 = [v6 presentedView];
-  [v7 setAutoresizingMask:18];
+  presentationContext2 = [(AVTransition *)self presentationContext];
+  presentedView = [presentationContext2 presentedView];
+  [presentedView setAutoresizingMask:18];
 
-  v8 = [(AVTransition *)self presentationContext];
-  v9 = [v8 backgroundView];
-  [v9 setAutoresizingMask:18];
+  presentationContext3 = [(AVTransition *)self presentationContext];
+  backgroundView = [presentationContext3 backgroundView];
+  [backgroundView setAutoresizingMask:18];
 
-  v10 = [(AVTransition *)self presentationContext];
-  v11 = [v10 touchBlockingView];
-  [v11 setAutoresizingMask:18];
+  presentationContext4 = [(AVTransition *)self presentationContext];
+  touchBlockingView = [presentationContext4 touchBlockingView];
+  [touchBlockingView setAutoresizingMask:18];
 
-  v12 = [(AVTransition *)self transitionContext];
-  v13 = [v12 containerView];
-  v14 = [(AVTransition *)self presentationContext];
-  v15 = [v14 presentedView];
-  [v13 addSubview:v15];
+  transitionContext = [(AVTransition *)self transitionContext];
+  containerView = [transitionContext containerView];
+  presentationContext5 = [(AVTransition *)self presentationContext];
+  presentedView2 = [presentationContext5 presentedView];
+  [containerView addSubview:presentedView2];
 
-  v16 = [(AVTransition *)self presentationContext];
-  v17 = [v16 transitionContext];
-  v18 = [v17 containerView];
-  v19 = [(AVTransition *)self presentationContext];
-  v20 = [v19 backgroundView];
-  v21 = [(AVTransition *)self presentationContext];
-  v22 = [v21 presentedView];
-  [v18 insertSubview:v20 belowSubview:v22];
+  presentationContext6 = [(AVTransition *)self presentationContext];
+  transitionContext2 = [presentationContext6 transitionContext];
+  containerView2 = [transitionContext2 containerView];
+  presentationContext7 = [(AVTransition *)self presentationContext];
+  backgroundView2 = [presentationContext7 backgroundView];
+  presentationContext8 = [(AVTransition *)self presentationContext];
+  presentedView3 = [presentationContext8 presentedView];
+  [containerView2 insertSubview:backgroundView2 belowSubview:presentedView3];
 
-  v23 = [(AVTransition *)self presentationContext];
-  v24 = [v23 transitionContext];
-  v25 = [v24 containerView];
-  v26 = [(AVTransition *)self presentationContext];
-  v27 = [v26 touchBlockingView];
-  v28 = [(AVTransition *)self presentationContext];
-  v29 = [v28 presentedView];
-  [v25 insertSubview:v27 belowSubview:v29];
+  presentationContext9 = [(AVTransition *)self presentationContext];
+  transitionContext3 = [presentationContext9 transitionContext];
+  containerView3 = [transitionContext3 containerView];
+  presentationContext10 = [(AVTransition *)self presentationContext];
+  touchBlockingView2 = [presentationContext10 touchBlockingView];
+  presentationContext11 = [(AVTransition *)self presentationContext];
+  presentedView4 = [presentationContext11 presentedView];
+  [containerView3 insertSubview:touchBlockingView2 belowSubview:presentedView4];
 
-  v30 = [(AVTransition *)self presentationContext];
-  v31 = [v30 backgroundView];
-  [v31 setAlpha:0.0];
+  presentationContext12 = [(AVTransition *)self presentationContext];
+  backgroundView3 = [presentationContext12 backgroundView];
+  [backgroundView3 setAlpha:0.0];
 
-  if (!v5)
+  if (!transitionStyle)
   {
-    v32 = [(AVTransition *)self transitionContext];
-    v33 = [v32 containerView];
-    [v33 setAlpha:0.0];
+    transitionContext4 = [(AVTransition *)self transitionContext];
+    containerView4 = [transitionContext4 containerView];
+    [containerView4 setAlpha:0.0];
   }
 
-  v34 = [(AVTransition *)self presentationContext];
-  v35 = [v34 sourceView];
-  if (v35)
+  presentationContext13 = [(AVTransition *)self presentationContext];
+  sourceView = [presentationContext13 sourceView];
+  if (sourceView)
   {
 
 LABEL_6:
-    v38 = [(AVTransition *)self presentationContext];
-    v39 = [v38 presentedView];
-    v40 = [(AVTransition *)self presentationContext];
-    v41 = [v40 sourceView];
-    [(AVTransition *)self _updateCornerAppearanceAttributesOfView:v39 toSourceView:v41 similarity:1.0];
+    presentationContext14 = [(AVTransition *)self presentationContext];
+    presentedView5 = [presentationContext14 presentedView];
+    presentationContext15 = [(AVTransition *)self presentationContext];
+    sourceView2 = [presentationContext15 sourceView];
+    [(AVTransition *)self _updateCornerAppearanceAttributesOfView:presentedView5 toSourceView:sourceView2 similarity:1.0];
 
-    v42 = [(AVTransition *)self presentationContext];
-    v43 = [v42 presentedView];
+    presentationContext16 = [(AVTransition *)self presentationContext];
+    presentedView6 = [presentationContext16 presentedView];
     [(AVTransition *)self _sourceViewFrameInContainerView];
-    v44 = v43;
+    presentedView7 = presentedView6;
     goto LABEL_7;
   }
 
-  v36 = [(AVTransition *)self transitionContext];
-  v37 = [v36 isInteractive];
+  transitionContext5 = [(AVTransition *)self transitionContext];
+  isInteractive = [transitionContext5 isInteractive];
 
-  if (v37)
+  if (isInteractive)
   {
     goto LABEL_6;
   }
 
-  v51 = [(AVTransition *)self transitionContext];
-  v52 = [v51 containerView];
-  [v52 bounds];
+  transitionContext6 = [(AVTransition *)self transitionContext];
+  containerView5 = [transitionContext6 containerView];
+  [containerView5 bounds];
   v54 = v53;
   v56 = v55;
   v58 = v57;
   v60 = v59;
 
-  if (v5 == 1)
+  if (transitionStyle == 1)
   {
     v63.origin.x = v54;
     v63.origin.y = v56;
@@ -1580,20 +1580,20 @@ LABEL_6:
     CGRectGetHeight(v63);
   }
 
-  v42 = [(AVTransition *)self presentationContext];
-  v44 = [v42 presentedView];
-  v43 = v44;
+  presentationContext16 = [(AVTransition *)self presentationContext];
+  presentedView7 = [presentationContext16 presentedView];
+  presentedView6 = presentedView7;
 LABEL_7:
-  [v44 setFrame:?];
+  [presentedView7 setFrame:?];
 
-  v61 = [(AVTransition *)self presentationContext];
-  v45 = [v61 presentedPresentationContainerView];
-  v46 = [(AVTransition *)self presentationContext];
-  v47 = [v46 presentingTransition];
-  v48 = [v47 initialInterfaceOrientation];
-  v49 = [(AVTransition *)self presentationContext];
-  v50 = [v49 presentingTransition];
-  [v45 willStartPresentationTransitionFromInterfaceOrientation:v48 toOrientation:objc_msgSend(v50 needsCounterRotation:{"finalInterfaceOrientation"), 0}];
+  presentationContext17 = [(AVTransition *)self presentationContext];
+  presentedPresentationContainerView = [presentationContext17 presentedPresentationContainerView];
+  presentationContext18 = [(AVTransition *)self presentationContext];
+  presentingTransition = [presentationContext18 presentingTransition];
+  initialInterfaceOrientation = [presentingTransition initialInterfaceOrientation];
+  presentationContext19 = [(AVTransition *)self presentationContext];
+  presentingTransition2 = [presentationContext19 presentingTransition];
+  [presentedPresentationContainerView willStartPresentationTransitionFromInterfaceOrientation:initialInterfaceOrientation toOrientation:objc_msgSend(presentingTransition2 needsCounterRotation:{"finalInterfaceOrientation"), 0}];
 }
 
 - (void)startInteractiveTransition
@@ -1607,32 +1607,32 @@ LABEL_7:
     v41 = 1024;
     v42 = 86;
     v43 = 2048;
-    v44 = self;
+    selfCopy = self;
     _os_log_impl(&dword_18B49C000, v3, OS_LOG_TYPE_DEFAULT, "%s %d %p", buf, 0x1Cu);
   }
 
-  v4 = [(AVTransition *)self presentationContext];
-  v5 = [v4 isPresenting];
+  presentationContext = [(AVTransition *)self presentationContext];
+  isPresenting = [presentationContext isPresenting];
 
-  v6 = [(AVTransition *)self presentationContext];
-  v7 = v6;
-  if (v5)
+  presentationContext2 = [(AVTransition *)self presentationContext];
+  presentationContext3 = presentationContext2;
+  if (isPresenting)
   {
-    v8 = [v6 presentingTransition];
+    presentingTransition = [presentationContext2 presentingTransition];
 LABEL_7:
-    v10 = v8;
-    v11 = [(AVTransition *)self transitionContext];
-    [v10 setWasInitiallyInteractive:{objc_msgSend(v11, "isInteractive")}];
+    v10 = presentingTransition;
+    transitionContext = [(AVTransition *)self transitionContext];
+    [v10 setWasInitiallyInteractive:{objc_msgSend(transitionContext, "isInteractive")}];
 
     goto LABEL_8;
   }
 
-  v9 = [v6 isDismissing];
+  isDismissing = [presentationContext2 isDismissing];
 
-  if (v9)
+  if (isDismissing)
   {
-    v7 = [(AVTransition *)self presentationContext];
-    v8 = [v7 dismissingTransition];
+    presentationContext3 = [(AVTransition *)self presentationContext];
+    presentingTransition = [presentationContext3 dismissingTransition];
     goto LABEL_7;
   }
 
@@ -1645,12 +1645,12 @@ LABEL_8:
   clientAnimator = self->_clientAnimator;
   self->_clientAnimator = v16;
 
-  v18 = [(AVTransition *)self clientAnimator];
-  [v18 setScrubsLinearly:0];
+  clientAnimator = [(AVTransition *)self clientAnimator];
+  [clientAnimator setScrubsLinearly:0];
 
-  v19 = [(AVTransition *)self allAnimators];
-  v20 = [(AVTransition *)self clientAnimator];
-  [v19 addObject:v20];
+  allAnimators = [(AVTransition *)self allAnimators];
+  clientAnimator2 = [(AVTransition *)self clientAnimator];
+  [allAnimators addObject:clientAnimator2];
 
   v21 = objc_alloc(MEMORY[0x1E69DD278]);
   [(AVTransition *)self duration];
@@ -1660,24 +1660,24 @@ LABEL_8:
   transitionAnimator = self->_transitionAnimator;
   self->_transitionAnimator = v25;
 
-  v27 = [(AVTransition *)self transitionAnimator];
-  [v27 setScrubsLinearly:0];
+  transitionAnimator = [(AVTransition *)self transitionAnimator];
+  [transitionAnimator setScrubsLinearly:0];
 
-  v28 = [(AVTransition *)self allAnimators];
-  v29 = [(AVTransition *)self transitionAnimator];
-  [v28 addObject:v29];
+  allAnimators2 = [(AVTransition *)self allAnimators];
+  transitionAnimator2 = [(AVTransition *)self transitionAnimator];
+  [allAnimators2 addObject:transitionAnimator2];
 
-  v30 = [(AVTransition *)self presentationContext];
-  v31 = [v30 backgroundView];
-  v32 = [(AVTransition *)self delegate];
-  v33 = [v32 transitionBackgroundViewBackgroundColor:self];
-  [v31 setBackgroundColor:v33];
+  presentationContext4 = [(AVTransition *)self presentationContext];
+  backgroundView = [presentationContext4 backgroundView];
+  delegate = [(AVTransition *)self delegate];
+  v33 = [delegate transitionBackgroundViewBackgroundColor:self];
+  [backgroundView setBackgroundColor:v33];
 
-  v34 = [(AVTransition *)self presentationContext];
-  v35 = [v34 presentedView];
-  v36 = [(AVTransition *)self delegate];
-  v37 = [v36 transitionPresentedViewBackgroundColor:self];
-  [v35 setBackgroundColor:v37];
+  presentationContext5 = [(AVTransition *)self presentationContext];
+  presentedView = [presentationContext5 presentedView];
+  delegate2 = [(AVTransition *)self delegate];
+  v37 = [delegate2 transitionPresentedViewBackgroundColor:self];
+  [presentedView setBackgroundColor:v37];
 
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
@@ -1722,15 +1722,15 @@ void __42__AVTransition_startInteractiveTransition__block_invoke(uint64_t a1)
 
 - (double)transitionAnimatorProgress
 {
-  v3 = [(AVTransition *)self transitionAnimator];
-  [v3 fractionComplete];
+  transitionAnimator = [(AVTransition *)self transitionAnimator];
+  [transitionAnimator fractionComplete];
   v5 = v4;
 
-  v6 = [(AVTransition *)self transitionAnimator];
-  LODWORD(v3) = [v6 isReversed];
+  transitionAnimator2 = [(AVTransition *)self transitionAnimator];
+  LODWORD(transitionAnimator) = [transitionAnimator2 isReversed];
 
   result = 1.0 - v5;
-  if (!v3)
+  if (!transitionAnimator)
   {
     return v5;
   }
@@ -1740,10 +1740,10 @@ void __42__AVTransition_startInteractiveTransition__block_invoke(uint64_t a1)
 
 - (double)duration
 {
-  v2 = [(AVTransition *)self presentationContext];
-  v3 = [v2 presentedViewController];
-  v4 = [v3 transitionCoordinator];
-  [v4 transitionDuration];
+  presentationContext = [(AVTransition *)self presentationContext];
+  presentedViewController = [presentationContext presentedViewController];
+  transitionCoordinator = [presentedViewController transitionCoordinator];
+  [transitionCoordinator transitionDuration];
   v6 = v5;
 
   return v6;
@@ -1760,7 +1760,7 @@ void __42__AVTransition_startInteractiveTransition__block_invoke(uint64_t a1)
     v7 = 1024;
     v8 = 58;
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_18B49C000, v3, OS_LOG_TYPE_DEFAULT, "%s %d %p", buf, 0x1Cu);
   }
 
@@ -1769,10 +1769,10 @@ void __42__AVTransition_startInteractiveTransition__block_invoke(uint64_t a1)
   [(AVTransition *)&v4 dealloc];
 }
 
-- (AVTransition)initWithTransitionContext:(id)a3
+- (AVTransition)initWithTransitionContext:(id)context
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = AVTransition;
   v5 = [(AVTransition *)&v10 init];
@@ -1790,11 +1790,11 @@ void __42__AVTransition_startInteractiveTransition__block_invoke(uint64_t a1)
       _os_log_impl(&dword_18B49C000, v6, OS_LOG_TYPE_DEFAULT, "%s %d %p", buf, 0x1Cu);
     }
 
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     allAnimators = v5->_allAnimators;
-    v5->_allAnimators = v7;
+    v5->_allAnimators = array;
 
-    objc_storeWeak(&v5->_transitionContext, v4);
+    objc_storeWeak(&v5->_transitionContext, contextCopy);
   }
 
   return v5;

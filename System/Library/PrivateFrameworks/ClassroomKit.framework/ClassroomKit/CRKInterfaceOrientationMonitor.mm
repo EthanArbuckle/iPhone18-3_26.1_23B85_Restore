@@ -1,12 +1,12 @@
 @interface CRKInterfaceOrientationMonitor
 - (CRKInterfaceOrientationMonitor)init;
 - (id)makeUpdateHandler;
-- (unint64_t)DMFInterfaceOrientationFromBSInterfaceOrientation:(int64_t)a3;
+- (unint64_t)DMFInterfaceOrientationFromBSInterfaceOrientation:(int64_t)orientation;
 - (void)dealloc;
-- (void)interfaceOrientationWithCompletion:(id)a3;
-- (void)updateInterfaceOrientationWithBSOrientation:(int64_t)a3;
-- (void)updateInterfaceOrientationWithDMFOrientation:(unint64_t)a3;
-- (void)updateInterfaceOrientationWithNotification:(id)a3;
+- (void)interfaceOrientationWithCompletion:(id)completion;
+- (void)updateInterfaceOrientationWithBSOrientation:(int64_t)orientation;
+- (void)updateInterfaceOrientationWithDMFOrientation:(unint64_t)orientation;
+- (void)updateInterfaceOrientationWithNotification:(id)notification;
 @end
 
 @implementation CRKInterfaceOrientationMonitor
@@ -33,13 +33,13 @@
     v3->mCompletionBlocks = v4;
 
     v3->mIsWaitingForFirstUpdate = 1;
-    v6 = [(CRKInterfaceOrientationMonitor *)v3 makeUpdateHandler];
+    makeUpdateHandler = [(CRKInterfaceOrientationMonitor *)v3 makeUpdateHandler];
     v7 = objc_opt_new();
     mObserver = v3->mObserver;
     v3->mObserver = v7;
 
-    [(FBSOrientationObserver *)v3->mObserver setHandler:v6];
-    [(FBSOrientationObserver *)v3->mObserver activeInterfaceOrientationWithCompletion:v6];
+    [(FBSOrientationObserver *)v3->mObserver setHandler:makeUpdateHandler];
+    [(FBSOrientationObserver *)v3->mObserver activeInterfaceOrientationWithCompletion:makeUpdateHandler];
   }
 
   return v3;
@@ -82,15 +82,15 @@ void __51__CRKInterfaceOrientationMonitor_makeUpdateHandler__block_invoke_2(uint
   [WeakRetained updateInterfaceOrientationWithNotification:*(a1 + 32)];
 }
 
-- (void)interfaceOrientationWithCompletion:(id)a3
+- (void)interfaceOrientationWithCompletion:(id)completion
 {
-  v7 = a3;
+  completionCopy = completion;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [(CRKInterfaceOrientationMonitor *)a2 interfaceOrientationWithCompletion:?];
   }
 
-  if (!v7)
+  if (!completionCopy)
   {
     [(CRKInterfaceOrientationMonitor *)a2 interfaceOrientationWithCompletion:?];
   }
@@ -104,20 +104,20 @@ void __51__CRKInterfaceOrientationMonitor_makeUpdateHandler__block_invoke_2(uint
 
   else
   {
-    v7[2](v7, [(CRKInterfaceOrientationMonitor *)self interfaceOrientation]);
+    completionCopy[2](completionCopy, [(CRKInterfaceOrientationMonitor *)self interfaceOrientation]);
   }
 }
 
-- (void)updateInterfaceOrientationWithNotification:(id)a3
+- (void)updateInterfaceOrientationWithNotification:(id)notification
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  notificationCopy = notification;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [(CRKInterfaceOrientationMonitor *)a2 updateInterfaceOrientationWithNotification:?];
   }
 
-  -[CRKInterfaceOrientationMonitor updateInterfaceOrientationWithBSOrientation:](self, "updateInterfaceOrientationWithBSOrientation:", [v5 orientation]);
+  -[CRKInterfaceOrientationMonitor updateInterfaceOrientationWithBSOrientation:](self, "updateInterfaceOrientationWithBSOrientation:", [notificationCopy orientation]);
   if (self->mIsWaitingForFirstUpdate)
   {
     self->mIsWaitingForFirstUpdate = 0;
@@ -156,18 +156,18 @@ void __51__CRKInterfaceOrientationMonitor_makeUpdateHandler__block_invoke_2(uint
   }
 }
 
-- (void)updateInterfaceOrientationWithBSOrientation:(int64_t)a3
+- (void)updateInterfaceOrientationWithBSOrientation:(int64_t)orientation
 {
-  v4 = [(CRKInterfaceOrientationMonitor *)self DMFInterfaceOrientationFromBSInterfaceOrientation:a3];
+  v4 = [(CRKInterfaceOrientationMonitor *)self DMFInterfaceOrientationFromBSInterfaceOrientation:orientation];
 
   [(CRKInterfaceOrientationMonitor *)self updateInterfaceOrientationWithDMFOrientation:v4];
 }
 
-- (unint64_t)DMFInterfaceOrientationFromBSInterfaceOrientation:(int64_t)a3
+- (unint64_t)DMFInterfaceOrientationFromBSInterfaceOrientation:(int64_t)orientation
 {
-  if (a3 < 5)
+  if (orientation < 5)
   {
-    return qword_243616510[a3];
+    return qword_243616510[orientation];
   }
 
   if (_CRKLogGeneral_onceToken_14 != -1)
@@ -178,18 +178,18 @@ void __51__CRKInterfaceOrientationMonitor_makeUpdateHandler__block_invoke_2(uint
   v5 = _CRKLogGeneral_logObj_14;
   if (os_log_type_enabled(_CRKLogGeneral_logObj_14, OS_LOG_TYPE_ERROR))
   {
-    [(CRKInterfaceOrientationMonitor *)v5 DMFInterfaceOrientationFromBSInterfaceOrientation:a3];
+    [(CRKInterfaceOrientationMonitor *)v5 DMFInterfaceOrientationFromBSInterfaceOrientation:orientation];
   }
 
   return 0;
 }
 
-- (void)updateInterfaceOrientationWithDMFOrientation:(unint64_t)a3
+- (void)updateInterfaceOrientationWithDMFOrientation:(unint64_t)orientation
 {
-  if ([(CRKInterfaceOrientationMonitor *)self interfaceOrientation]!= a3)
+  if ([(CRKInterfaceOrientationMonitor *)self interfaceOrientation]!= orientation)
   {
 
-    [(CRKInterfaceOrientationMonitor *)self setInterfaceOrientation:a3];
+    [(CRKInterfaceOrientationMonitor *)self setInterfaceOrientation:orientation];
   }
 }
 

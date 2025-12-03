@@ -1,12 +1,12 @@
 @interface VCEmulatedOutputQueue
 - (unsigned)numberOfPacketsInOutputQueue;
-- (void)connectFrom:(id)a3;
-- (void)runUntilTime:(double)a3;
+- (void)connectFrom:(id)from;
+- (void)runUntilTime:(double)time;
 @end
 
 @implementation VCEmulatedOutputQueue
 
-- (void)runUntilTime:(double)a3
+- (void)runUntilTime:(double)time
 {
   if (VRTraceGetErrorLogLevelForModule() >= 3)
   {
@@ -18,7 +18,7 @@
   }
 }
 
-- (void)connectFrom:(id)a3
+- (void)connectFrom:(id)from
 {
   if (VRTraceGetErrorLogLevelForModule() >= 3)
   {

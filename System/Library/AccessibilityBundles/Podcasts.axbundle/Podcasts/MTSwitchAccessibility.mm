@@ -7,8 +7,8 @@
 
 - (id)accessibilityLabel
 {
-  v2 = [(MTSwitchAccessibility *)self accessibilityIdentifier];
-  v3 = [v2 isEqualToString:@"AudioVideoSwitch"];
+  accessibilityIdentifier = [(MTSwitchAccessibility *)self accessibilityIdentifier];
+  v3 = [accessibilityIdentifier isEqualToString:@"AudioVideoSwitch"];
 
   if (v3)
   {
@@ -25,15 +25,15 @@
 
 - (id)accessibilityValue
 {
-  v3 = [(MTSwitchAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"AudioVideoSwitch"];
+  accessibilityIdentifier = [(MTSwitchAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"AudioVideoSwitch"];
 
   if (v4)
   {
     v5 = [(MTSwitchAccessibility *)self safeValueForKey:@"isOn"];
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
 
-    if (v6)
+    if (bOOLValue)
     {
       v7 = @"av.switch.value.video";
     }

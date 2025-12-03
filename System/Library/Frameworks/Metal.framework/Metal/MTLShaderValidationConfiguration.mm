@@ -1,7 +1,7 @@
 @interface MTLShaderValidationConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTLShaderValidationConfiguration)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -17,9 +17,9 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 8) = self->_enableBoundsChecking;
   *(result + 9) = self->_enableThreadgroupMemoryChecks;
   *(result + 10) = self->_enableTextureChecks;
@@ -28,20 +28,20 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   Class = object_getClass(self);
-  if (Class != object_getClass(a3))
+  if (Class != object_getClass(equal))
   {
     return 0;
   }
 
-  return *(a3 + 2) == *&self->_enableBoundsChecking && *(a3 + 12) == self->_enableStackOverflow;
+  return *(equal + 2) == *&self->_enableBoundsChecking && *(equal + 12) == self->_enableStackOverflow;
 }
 
 - (unint64_t)hash

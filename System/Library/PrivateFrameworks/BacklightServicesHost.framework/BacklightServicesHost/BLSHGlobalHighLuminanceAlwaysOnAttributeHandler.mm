@@ -1,32 +1,32 @@
 @interface BLSHGlobalHighLuminanceAlwaysOnAttributeHandler
 + (id)attributeClasses;
-+ (id)registerHandlerForService:(id)a3 provider:(id)a4;
-- (id)initForService:(id)a3 provider:(id)a4;
++ (id)registerHandlerForService:(id)service provider:(id)provider;
+- (id)initForService:(id)service provider:(id)provider;
 @end
 
 @implementation BLSHGlobalHighLuminanceAlwaysOnAttributeHandler
 
-+ (id)registerHandlerForService:(id)a3 provider:(id)a4
++ (id)registerHandlerForService:(id)service provider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initForService:v7 provider:v6];
+  providerCopy = provider;
+  serviceCopy = service;
+  v8 = [[self alloc] initForService:serviceCopy provider:providerCopy];
 
   [v8 setupService];
 
   return v8;
 }
 
-- (id)initForService:(id)a3 provider:(id)a4
+- (id)initForService:(id)service provider:(id)provider
 {
-  v7 = a4;
+  providerCopy = provider;
   v11.receiver = self;
   v11.super_class = BLSHGlobalHighLuminanceAlwaysOnAttributeHandler;
-  v8 = [(BLSHLocalCountingAssertionAttributeHandler *)&v11 initForService:a3];
+  v8 = [(BLSHLocalCountingAssertionAttributeHandler *)&v11 initForService:service];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(v8 + 6, a4);
+    objc_storeStrong(v8 + 6, provider);
   }
 
   return v9;

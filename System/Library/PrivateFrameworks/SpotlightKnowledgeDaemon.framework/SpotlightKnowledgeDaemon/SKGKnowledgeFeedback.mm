@@ -1,10 +1,10 @@
 @interface SKGKnowledgeFeedback
-- (BOOL)generateReportUsingBlock:(id)a3;
-- (BOOL)hasCurrentFlagWithName:(id)a3;
-- (BOOL)hasError:(int64_t)a3;
-- (BOOL)hasEvent:(int64_t)a3;
-- (BOOL)hasFlag:(int64_t)a3;
-- (BOOL)modeWithKey:(id)a3;
+- (BOOL)generateReportUsingBlock:(id)block;
+- (BOOL)hasCurrentFlagWithName:(id)name;
+- (BOOL)hasError:(int64_t)error;
+- (BOOL)hasEvent:(int64_t)event;
+- (BOOL)hasFlag:(int64_t)flag;
+- (BOOL)modeWithKey:(id)key;
 - (NSDate)documentUnderstandingGenStartTime;
 - (NSDate)embeddingGenStartTime;
 - (NSDate)keyphraseGenStartTime;
@@ -12,18 +12,18 @@
 - (NSDictionary)feedbackData;
 - (NSDictionary)feedbackDefaults;
 - (SKGKnowledgeFeedback)init;
-- (SKGKnowledgeFeedback)initWithVersionName:(id)a3;
+- (SKGKnowledgeFeedback)initWithVersionName:(id)name;
 - (double)elapsedTime;
-- (double)timeWithKey:(id)a3;
-- (id)defaultPropertiesForVersionName:(id)a3;
-- (id)defaultValueWithKey:(id)a3;
-- (id)defaultValueWithKey:(id)a3 versionName:(id)a4;
+- (double)timeWithKey:(id)key;
+- (id)defaultPropertiesForVersionName:(id)name;
+- (id)defaultValueWithKey:(id)key;
+- (id)defaultValueWithKey:(id)key versionName:(id)name;
 - (id)defaults;
-- (id)getDefaultWithIdentifier:(id)a3 protectionClass:(id)a4 key:(id)a5;
+- (id)getDefaultWithIdentifier:(id)identifier protectionClass:(id)class key:(id)key;
 - (id)getEmbeddingDonationItemCounts;
-- (id)getEmbeddingGenCompletenessForBundle:(id)a3;
+- (id)getEmbeddingGenCompletenessForBundle:(id)bundle;
 - (id)getReindexRequestItemCounts;
-- (id)recoveryTimesWithKey:(id)a3;
+- (id)recoveryTimesWithKey:(id)key;
 - (id)versionName;
 - (int64_t)archiveGeneratedCount;
 - (int64_t)archiveItemExtractedCount;
@@ -37,78 +37,78 @@
 - (int64_t)getCurrentExtractedArchiveItemCount;
 - (int64_t)getCurrentExtractedJournalItemCount;
 - (int64_t)getCurrentExtractedQueryItemCount;
-- (int64_t)getGenCompleteDayString:(id)a3 forBundle:(id)a4;
+- (int64_t)getGenCompleteDayString:(id)string forBundle:(id)bundle;
 - (int64_t)graphVersion;
 - (int64_t)journalItemExtractedCount;
 - (int64_t)journalProcessedCount;
 - (int64_t)queryItemArchivedCount;
 - (int64_t)queryItemExtractedCount;
 - (int64_t)queryItemUpdatedCount;
-- (unint64_t)getReindexCountForTask:(id)a3;
+- (unint64_t)getReindexCountForTask:(id)task;
 - (unint64_t)getUpdateTaskReindexCount;
 - (unint64_t)getUpdateTaskRunCount;
-- (unint64_t)indexWithKey:(id)a3;
-- (unint64_t)itemCountWithKey:(id)a3;
+- (unint64_t)indexWithKey:(id)key;
+- (unint64_t)itemCountWithKey:(id)key;
 - (void)clear;
-- (void)clearDefaultWithIdentifier:(id)a3 protectionClass:(id)a4 key:(id)a5;
+- (void)clearDefaultWithIdentifier:(id)identifier protectionClass:(id)class key:(id)key;
 - (void)clearDocumentUnderstandingGenCompleteDay;
 - (void)clearEmbeddingDefaults;
 - (void)clearEmbeddingGenCompleteDay;
 - (void)clearKeyphraseGenCompleteDay;
 - (void)clearSuggestedEventsGenCompleteDay;
-- (void)commonInitWithVersionName:(id)a3 graphVersion:(id)a4 stats:(id)a5;
-- (void)getQueryTimeWithIdentifier:(id)a3 protectionClass:(id)a4 startTime:(double *)a5 endTime:(double *)a6 processingEndTime:(double *)a7;
-- (void)logArchiveCount:(unint64_t)a3;
-- (void)logArchiveSize:(unint64_t)a3;
-- (void)logArchiveWithIdentifier:(id)a3 protectionClass:(id)a4;
-- (void)logArchivedQueryItemCount:(unint64_t)a3 bundleIdentifier:(id)a4;
-- (void)logDefaultWithIdentifier:(id)a3 protectionClass:(id)a4 key:(id)a5 value:(id)a6;
-- (void)logDeletesCount:(unint64_t)a3;
-- (void)logEmbeddingDonationItemCounts:(unint64_t)a3 bundleId:(id)a4;
+- (void)commonInitWithVersionName:(id)name graphVersion:(id)version stats:(id)stats;
+- (void)getQueryTimeWithIdentifier:(id)identifier protectionClass:(id)class startTime:(double *)time endTime:(double *)endTime processingEndTime:(double *)processingEndTime;
+- (void)logArchiveCount:(unint64_t)count;
+- (void)logArchiveSize:(unint64_t)size;
+- (void)logArchiveWithIdentifier:(id)identifier protectionClass:(id)class;
+- (void)logArchivedQueryItemCount:(unint64_t)count bundleIdentifier:(id)identifier;
+- (void)logDefaultWithIdentifier:(id)identifier protectionClass:(id)class key:(id)key value:(id)value;
+- (void)logDeletesCount:(unint64_t)count;
+- (void)logEmbeddingDonationItemCounts:(unint64_t)counts bundleId:(id)id;
 - (void)logEnd;
-- (void)logError:(int64_t)a3 message:(id)a4;
-- (void)logEvent:(int64_t)a3 message:(id)a4;
-- (void)logExtractedArchiveItemCount:(unint64_t)a3 bundleIdentifier:(id)a4;
-- (void)logExtractedJournalItemCount:(unint64_t)a3 bundleIdentifier:(id)a4;
-- (void)logExtractedQueryItemCount:(unint64_t)a3 bundleIdentifier:(id)a4;
-- (void)logFlag:(int64_t)a3 message:(id)a4;
-- (void)logGraphSize:(unint64_t)a3;
-- (void)logGraphVersion:(int64_t)a3;
-- (void)logJournalCount:(unint64_t)a3;
-- (void)logJournalSize:(unint64_t)a3;
-- (void)logMarkedPurgeableAtPath:(id)a3;
-- (void)logProcessedArchiveWithName:(id)a3;
-- (void)logProcessedJournalWithName:(id)a3;
-- (void)logQueryTimeWithIdentifier:(id)a3 protectionClass:(id)a4 startTime:(double)a5 doneProcessing:(BOOL)a6;
-- (void)logReindexRequestItemCounts:(unint64_t)a3 bundleId:(id)a4;
-- (void)logSignpost:(int64_t)a3 message:(id)a4;
+- (void)logError:(int64_t)error message:(id)message;
+- (void)logEvent:(int64_t)event message:(id)message;
+- (void)logExtractedArchiveItemCount:(unint64_t)count bundleIdentifier:(id)identifier;
+- (void)logExtractedJournalItemCount:(unint64_t)count bundleIdentifier:(id)identifier;
+- (void)logExtractedQueryItemCount:(unint64_t)count bundleIdentifier:(id)identifier;
+- (void)logFlag:(int64_t)flag message:(id)message;
+- (void)logGraphSize:(unint64_t)size;
+- (void)logGraphVersion:(int64_t)version;
+- (void)logJournalCount:(unint64_t)count;
+- (void)logJournalSize:(unint64_t)size;
+- (void)logMarkedPurgeableAtPath:(id)path;
+- (void)logProcessedArchiveWithName:(id)name;
+- (void)logProcessedJournalWithName:(id)name;
+- (void)logQueryTimeWithIdentifier:(id)identifier protectionClass:(id)class startTime:(double)time doneProcessing:(BOOL)processing;
+- (void)logReindexRequestItemCounts:(unint64_t)counts bundleId:(id)id;
+- (void)logSignpost:(int64_t)signpost message:(id)message;
 - (void)logStart;
-- (void)logUpdateTaskReindexCount:(unint64_t)a3 taskName:(id)a4;
-- (void)logUpdatedQueryItemCount:(unint64_t)a3 bundleIdentifier:(id)a4;
+- (void)logUpdateTaskReindexCount:(unint64_t)count taskName:(id)name;
+- (void)logUpdatedQueryItemCount:(unint64_t)count bundleIdentifier:(id)identifier;
 - (void)removeDefaults;
-- (void)removeKey:(id)a3;
+- (void)removeKey:(id)key;
 - (void)resetCleanupItemCountsForAllListenerTypes;
 - (void)resetEmbeddingDonationItemCounts;
 - (void)resetReindexRequestItemCounts;
-- (void)setDefaultWithKey:(id)a3 value:(id)a4;
-- (void)setEmbeddingGenCompleteness:(id)a3 forBundle:(id)a4;
-- (void)setGenCompleteDayString:(id)a3 forBundle:(id)a4 day:(int64_t)a5;
-- (void)setIndexWithKey:(id)a3 value:(unint64_t)a4;
-- (void)setTimeWithKey:(id)a3 value:(double)a4;
+- (void)setDefaultWithKey:(id)key value:(id)value;
+- (void)setEmbeddingGenCompleteness:(id)completeness forBundle:(id)bundle;
+- (void)setGenCompleteDayString:(id)string forBundle:(id)bundle day:(int64_t)day;
+- (void)setIndexWithKey:(id)key value:(unint64_t)value;
+- (void)setTimeWithKey:(id)key value:(double)value;
 - (void)updateDefaults;
 - (void)updateFeedback;
-- (void)updateItemCountWithKey:(id)a3;
+- (void)updateItemCountWithKey:(id)key;
 @end
 
 @implementation SKGKnowledgeFeedback
 
-- (void)commonInitWithVersionName:(id)a3 graphVersion:(id)a4 stats:(id)a5
+- (void)commonInitWithVersionName:(id)name graphVersion:(id)version stats:(id)stats
 {
   v70 = *MEMORY[0x277D85DE8];
-  v64 = a3;
-  v63 = a4;
-  v9 = a5;
-  objc_storeStrong(&self->_versionName, a3);
+  nameCopy = name;
+  versionCopy = version;
+  statsCopy = stats;
+  objc_storeStrong(&self->_versionName, name);
   v10 = [MEMORY[0x277CBEBB0] timeZoneWithName:@"GMT"];
   v11 = [MEMORY[0x277CBEA80] calendarWithIdentifier:*MEMORY[0x277CBE5C0]];
   currentCalendar = self->_currentCalendar;
@@ -118,16 +118,16 @@
   [(NSCalendar *)self->_currentCalendar setTimeZone:v10];
   v13 = objc_alloc_init(MEMORY[0x277CBEAB8]);
   v14 = self->_currentCalendar;
-  v15 = [MEMORY[0x277CBEAA8] date];
-  [v13 setDay:{-[NSCalendar component:fromDate:](v14, "component:fromDate:", 16, v15)}];
+  date = [MEMORY[0x277CBEAA8] date];
+  [v13 setDay:{-[NSCalendar component:fromDate:](v14, "component:fromDate:", 16, date)}];
 
   v16 = self->_currentCalendar;
-  v17 = [MEMORY[0x277CBEAA8] date];
-  [v13 setMonth:{-[NSCalendar component:fromDate:](v16, "component:fromDate:", 8, v17)}];
+  date2 = [MEMORY[0x277CBEAA8] date];
+  [v13 setMonth:{-[NSCalendar component:fromDate:](v16, "component:fromDate:", 8, date2)}];
 
   v18 = self->_currentCalendar;
-  v19 = [MEMORY[0x277CBEAA8] date];
-  [v13 setYear:{-[NSCalendar component:fromDate:](v18, "component:fromDate:", 4, v19)}];
+  date3 = [MEMORY[0x277CBEAA8] date];
+  [v13 setYear:{-[NSCalendar component:fromDate:](v18, "component:fromDate:", 4, date3)}];
 
   v61 = v13;
   v20 = [(NSCalendar *)self->_currentCalendar dateFromComponents:v13];
@@ -183,7 +183,7 @@
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v39 = v9;
+  v39 = statsCopy;
   v40 = [v39 countByEnumeratingWithState:&v65 objects:v69 count:16];
   if (v40)
   {
@@ -205,11 +205,11 @@
           if ([v45 count] == 3)
           {
             v46 = [v45 objectAtIndex:1];
-            v47 = [v45 lastObject];
-            v48 = [v47 intValue];
+            lastObject = [v45 lastObject];
+            intValue = [lastObject intValue];
 
             v49 = self->_stats;
-            v50 = [MEMORY[0x277CCABB0] numberWithInteger:v48];
+            v50 = [MEMORY[0x277CCABB0] numberWithInteger:intValue];
             [(NSMutableDictionary *)v49 setObject:v50 forKey:v46];
           }
         }
@@ -243,7 +243,7 @@
   flags = self->_flags;
   self->_flags = v57;
 
-  self->_graphVersion = [v63 integerValue];
+  self->_graphVersion = [versionCopy integerValue];
   v59 = *MEMORY[0x277D85DE8];
 }
 
@@ -266,8 +266,8 @@
     else
     {
       v8 = MEMORY[0x277CCABB0];
-      v9 = [MEMORY[0x277D657A0] sharedContext];
-      v7 = [v8 numberWithInteger:{objc_msgSend(v9, "graphVersion")}];
+      mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+      v7 = [v8 numberWithInteger:{objc_msgSend(mEMORY[0x277D657A0], "graphVersion")}];
     }
 
     [(SKGKnowledgeFeedback *)v3 commonInitWithVersionName:@"SpotlightKnowledgeV2" graphVersion:v7 stats:v4];
@@ -277,17 +277,17 @@
   return v3;
 }
 
-- (SKGKnowledgeFeedback)initWithVersionName:(id)a3
+- (SKGKnowledgeFeedback)initWithVersionName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = SKGKnowledgeFeedback;
   v5 = [(SKGKnowledgeFeedback *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    v7 = [(SKGKnowledgeFeedback *)v5 defaultValueWithKey:@"stats" versionName:v4];
-    v8 = [(SKGKnowledgeFeedback *)v6 defaultValueWithKey:@"graphVersionV2" versionName:v4];
+    v7 = [(SKGKnowledgeFeedback *)v5 defaultValueWithKey:@"stats" versionName:nameCopy];
+    v8 = [(SKGKnowledgeFeedback *)v6 defaultValueWithKey:@"graphVersionV2" versionName:nameCopy];
     v9 = v8;
     if (v8)
     {
@@ -297,11 +297,11 @@
     else
     {
       v11 = MEMORY[0x277CCABB0];
-      v12 = [MEMORY[0x277D657A0] sharedContext];
-      v10 = [v11 numberWithInteger:{objc_msgSend(v12, "graphVersion")}];
+      mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+      v10 = [v11 numberWithInteger:{objc_msgSend(mEMORY[0x277D657A0], "graphVersion")}];
     }
 
-    [(SKGKnowledgeFeedback *)v6 commonInitWithVersionName:v4 graphVersion:v10 stats:v7];
+    [(SKGKnowledgeFeedback *)v6 commonInitWithVersionName:nameCopy graphVersion:v10 stats:v7];
     [(SKGKnowledgeFeedback *)v6 updateDefaults];
   }
 
@@ -326,8 +326,8 @@
   else
   {
     v5 = MEMORY[0x277CCABB0];
-    v6 = [MEMORY[0x277D657A0] sharedContext];
-    v28 = [v5 numberWithInteger:{objc_msgSend(v6, "graphVersion")}];
+    mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+    v28 = [v5 numberWithInteger:{objc_msgSend(mEMORY[0x277D657A0], "graphVersion")}];
   }
 
   [(SKGKnowledgeFeedback *)self versionName];
@@ -426,8 +426,8 @@ LABEL_22:
   v24 = [v23 mutableCopy];
 
   [v24 addEntriesFromDictionary:v8];
-  v25 = [(SKGKnowledgeFeedback *)v29 defaults];
-  [v25 setObject:v24 forKey:v27];
+  defaults = [(SKGKnowledgeFeedback *)v29 defaults];
+  [defaults setObject:v24 forKey:v27];
 
   [(SKGKnowledgeFeedback *)v29 updateDefaults];
   v26 = *MEMORY[0x277D85DE8];
@@ -442,78 +442,78 @@ void __29__SKGKnowledgeFeedback_clear__block_invoke()
   clear_prefixesToPreserve = &unk_2846E84A8;
 }
 
-- (int64_t)getGenCompleteDayString:(id)a3 forBundle:(id)a4
+- (int64_t)getGenCompleteDayString:(id)string forBundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 length])
+  stringCopy = string;
+  bundleCopy = bundle;
+  if ([bundleCopy length])
   {
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@#%@", v6, v7];
+    bundleCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@#%@", stringCopy, bundleCopy];
   }
 
   else
   {
-    v8 = v6;
+    bundleCopy = stringCopy;
   }
 
-  v9 = v8;
-  v10 = [(SKGKnowledgeFeedback *)self defaultValueWithKey:v8];
+  v9 = bundleCopy;
+  v10 = [(SKGKnowledgeFeedback *)self defaultValueWithKey:bundleCopy];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 integerValue];
+    integerValue = [v10 integerValue];
   }
 
   else
   {
-    v12 = -1;
+    integerValue = -1;
   }
 
-  return v12;
+  return integerValue;
 }
 
-- (void)setGenCompleteDayString:(id)a3 forBundle:(id)a4 day:(int64_t)a5
+- (void)setGenCompleteDayString:(id)string forBundle:(id)bundle day:(int64_t)day
 {
-  v12 = a3;
-  v8 = a4;
-  if ([v8 length])
+  stringCopy = string;
+  bundleCopy = bundle;
+  if ([bundleCopy length])
   {
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@#%@", v12, v8];
+    bundleCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@#%@", stringCopy, bundleCopy];
   }
 
   else
   {
-    v9 = v12;
+    bundleCopy = stringCopy;
   }
 
-  v10 = v9;
-  v11 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+  v10 = bundleCopy;
+  v11 = [MEMORY[0x277CCABB0] numberWithInteger:day];
   [(SKGKnowledgeFeedback *)self setDefaultWithKey:v10 value:v11];
 }
 
-- (id)getEmbeddingGenCompletenessForBundle:(id)a3
+- (id)getEmbeddingGenCompletenessForBundle:(id)bundle
 {
-  v4 = a3;
-  if ([v4 length] && (objc_msgSend(v4, "isEqualToString:", @"Total") & 1) == 0)
+  bundleCopy = bundle;
+  if ([bundleCopy length] && (objc_msgSend(bundleCopy, "isEqualToString:", @"Total") & 1) == 0)
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"embeddingGenCompleteness#%@", v4];
+    bundleCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"embeddingGenCompleteness#%@", bundleCopy];
   }
 
   else
   {
-    v5 = @"embeddingGenComplete";
+    bundleCopy = @"embeddingGenComplete";
   }
 
   os_unfair_lock_lock(&self->_embeddingGenCompletenessLock);
-  v6 = [(NSMutableDictionary *)self->_embeddingGenCompleteness objectForKeyedSubscript:v5];
+  v6 = [(NSMutableDictionary *)self->_embeddingGenCompleteness objectForKeyedSubscript:bundleCopy];
   os_unfair_lock_unlock(&self->_embeddingGenCompletenessLock);
   if (!v6)
   {
-    v6 = [(SKGKnowledgeFeedback *)self defaultValueWithKey:v5];
+    v6 = [(SKGKnowledgeFeedback *)self defaultValueWithKey:bundleCopy];
     if (v6)
     {
       os_unfair_lock_lock(&self->_embeddingGenCompletenessLock);
-      [(NSMutableDictionary *)self->_embeddingGenCompleteness setObject:v6 forKeyedSubscript:v5];
+      [(NSMutableDictionary *)self->_embeddingGenCompleteness setObject:v6 forKeyedSubscript:bundleCopy];
       os_unfair_lock_unlock(&self->_embeddingGenCompletenessLock);
     }
   }
@@ -521,33 +521,33 @@ void __29__SKGKnowledgeFeedback_clear__block_invoke()
   return v6;
 }
 
-- (void)setEmbeddingGenCompleteness:(id)a3 forBundle:(id)a4
+- (void)setEmbeddingGenCompleteness:(id)completeness forBundle:(id)bundle
 {
-  v8 = a4;
-  v6 = a3;
-  if ([v8 length] && (objc_msgSend(v8, "isEqualToString:", @"Total") & 1) == 0)
+  bundleCopy = bundle;
+  completenessCopy = completeness;
+  if ([bundleCopy length] && (objc_msgSend(bundleCopy, "isEqualToString:", @"Total") & 1) == 0)
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"embeddingGenCompleteness#%@", v8];
+    bundleCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"embeddingGenCompleteness#%@", bundleCopy];
   }
 
   else
   {
-    v7 = @"embeddingGenComplete";
+    bundleCopy = @"embeddingGenComplete";
   }
 
   os_unfair_lock_lock(&self->_embeddingGenCompletenessLock);
-  [(NSMutableDictionary *)self->_embeddingGenCompleteness setObject:v6 forKeyedSubscript:v7];
+  [(NSMutableDictionary *)self->_embeddingGenCompleteness setObject:completenessCopy forKeyedSubscript:bundleCopy];
   os_unfair_lock_unlock(&self->_embeddingGenCompletenessLock);
-  [(SKGKnowledgeFeedback *)self setDefaultWithKey:v7 value:v6];
+  [(SKGKnowledgeFeedback *)self setDefaultWithKey:bundleCopy value:completenessCopy];
 }
 
 - (void)clearEmbeddingDefaults
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(SKGKnowledgeFeedback *)self versionName];
-  v4 = [(SKGKnowledgeFeedback *)self defaultPropertiesForVersionName:v3];
+  versionName = [(SKGKnowledgeFeedback *)self versionName];
+  v4 = [(SKGKnowledgeFeedback *)self defaultPropertiesForVersionName:versionName];
   os_unfair_lock_lock(&gFeedbackLock_0);
-  v5 = [(SKGKnowledgeFeedback *)self defaults];
+  defaults = [(SKGKnowledgeFeedback *)self defaults];
   v6 = [v4 mutableCopy];
   v14 = 0u;
   v15 = 0u;
@@ -581,7 +581,7 @@ void __29__SKGKnowledgeFeedback_clear__block_invoke()
     while (v9);
   }
 
-  [v5 setObject:v6 forKey:v3];
+  [defaults setObject:v6 forKey:versionName];
   os_unfair_lock_unlock(&gFeedbackLock_0);
 
   v13 = *MEMORY[0x277D85DE8];
@@ -590,10 +590,10 @@ void __29__SKGKnowledgeFeedback_clear__block_invoke()
 - (void)clearEmbeddingGenCompleteDay
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(SKGKnowledgeFeedback *)self versionName];
-  v4 = [(SKGKnowledgeFeedback *)self defaultPropertiesForVersionName:v3];
+  versionName = [(SKGKnowledgeFeedback *)self versionName];
+  v4 = [(SKGKnowledgeFeedback *)self defaultPropertiesForVersionName:versionName];
   os_unfair_lock_lock(&gFeedbackLock_0);
-  v5 = [(SKGKnowledgeFeedback *)self defaults];
+  defaults = [(SKGKnowledgeFeedback *)self defaults];
   v6 = [v4 mutableCopy];
   v14 = 0u;
   v15 = 0u;
@@ -627,7 +627,7 @@ void __29__SKGKnowledgeFeedback_clear__block_invoke()
     while (v9);
   }
 
-  [v5 setObject:v6 forKey:v3];
+  [defaults setObject:v6 forKey:versionName];
   os_unfair_lock_unlock(&gFeedbackLock_0);
 
   v13 = *MEMORY[0x277D85DE8];
@@ -636,10 +636,10 @@ void __29__SKGKnowledgeFeedback_clear__block_invoke()
 - (void)clearSuggestedEventsGenCompleteDay
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(SKGKnowledgeFeedback *)self versionName];
-  v4 = [(SKGKnowledgeFeedback *)self defaultPropertiesForVersionName:v3];
+  versionName = [(SKGKnowledgeFeedback *)self versionName];
+  v4 = [(SKGKnowledgeFeedback *)self defaultPropertiesForVersionName:versionName];
   os_unfair_lock_lock(&gFeedbackLock_0);
-  v5 = [(SKGKnowledgeFeedback *)self defaults];
+  defaults = [(SKGKnowledgeFeedback *)self defaults];
   v6 = [v4 mutableCopy];
   v14 = 0u;
   v15 = 0u;
@@ -673,7 +673,7 @@ void __29__SKGKnowledgeFeedback_clear__block_invoke()
     while (v9);
   }
 
-  [v5 setObject:v6 forKey:v3];
+  [defaults setObject:v6 forKey:versionName];
   os_unfair_lock_unlock(&gFeedbackLock_0);
 
   v13 = *MEMORY[0x277D85DE8];
@@ -682,10 +682,10 @@ void __29__SKGKnowledgeFeedback_clear__block_invoke()
 - (void)clearDocumentUnderstandingGenCompleteDay
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(SKGKnowledgeFeedback *)self versionName];
-  v4 = [(SKGKnowledgeFeedback *)self defaultPropertiesForVersionName:v3];
+  versionName = [(SKGKnowledgeFeedback *)self versionName];
+  v4 = [(SKGKnowledgeFeedback *)self defaultPropertiesForVersionName:versionName];
   os_unfair_lock_lock(&gFeedbackLock_0);
-  v5 = [(SKGKnowledgeFeedback *)self defaults];
+  defaults = [(SKGKnowledgeFeedback *)self defaults];
   v6 = [v4 mutableCopy];
   v14 = 0u;
   v15 = 0u;
@@ -719,7 +719,7 @@ void __29__SKGKnowledgeFeedback_clear__block_invoke()
     while (v9);
   }
 
-  [v5 setObject:v6 forKey:v3];
+  [defaults setObject:v6 forKey:versionName];
   os_unfair_lock_unlock(&gFeedbackLock_0);
 
   v13 = *MEMORY[0x277D85DE8];
@@ -728,10 +728,10 @@ void __29__SKGKnowledgeFeedback_clear__block_invoke()
 - (void)clearKeyphraseGenCompleteDay
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(SKGKnowledgeFeedback *)self versionName];
-  v4 = [(SKGKnowledgeFeedback *)self defaultPropertiesForVersionName:v3];
+  versionName = [(SKGKnowledgeFeedback *)self versionName];
+  v4 = [(SKGKnowledgeFeedback *)self defaultPropertiesForVersionName:versionName];
   os_unfair_lock_lock(&gFeedbackLock_0);
-  v5 = [(SKGKnowledgeFeedback *)self defaults];
+  defaults = [(SKGKnowledgeFeedback *)self defaults];
   v6 = [v4 mutableCopy];
   v14 = 0u;
   v15 = 0u;
@@ -765,7 +765,7 @@ void __29__SKGKnowledgeFeedback_clear__block_invoke()
     while (v9);
   }
 
-  [v5 setObject:v6 forKey:v3];
+  [defaults setObject:v6 forKey:versionName];
   os_unfair_lock_unlock(&gFeedbackLock_0);
 
   v13 = *MEMORY[0x277D85DE8];
@@ -774,7 +774,7 @@ void __29__SKGKnowledgeFeedback_clear__block_invoke()
 - (void)updateDefaults
 {
   v131 = *MEMORY[0x277D85DE8];
-  v3 = [(SKGKnowledgeFeedback *)self versionName];
+  versionName = [(SKGKnowledgeFeedback *)self versionName];
   os_unfair_lock_lock(&gFeedbackLock_0);
   feedback = self->_feedback;
   v5 = [MEMORY[0x277CCABB0] numberWithDouble:CFAbsoluteTimeGetCurrent() - self->_startTime];
@@ -935,7 +935,7 @@ void __29__SKGKnowledgeFeedback_clear__block_invoke()
 
   if ([(NSMutableDictionary *)self->_stats count])
   {
-    v112 = v3;
+    v112 = versionName;
     v56 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v118 = 0u;
     v119 = 0u;
@@ -971,7 +971,7 @@ void __29__SKGKnowledgeFeedback_clear__block_invoke()
       while (v58);
     }
 
-    v3 = v112;
+    versionName = v112;
     v66 = v56;
   }
 
@@ -1037,10 +1037,10 @@ void __29__SKGKnowledgeFeedback_clear__block_invoke()
     [(SKGKnowledgeFeedback *)self clearEmbeddingDefaults];
   }
 
-  v80 = [MEMORY[0x277D657A0] sharedContext];
-  v81 = [v80 enableSuggestedEvents];
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  enableSuggestedEvents = [mEMORY[0x277D657A0] enableSuggestedEvents];
 
-  if (v81)
+  if (enableSuggestedEvents)
   {
     v82 = objc_opt_new();
     v83 = [(SKGKnowledgeFeedback *)self defaultValueWithKey:@"suggestedEventsGenStartTime"];
@@ -1061,10 +1061,10 @@ void __29__SKGKnowledgeFeedback_clear__block_invoke()
     os_unfair_lock_unlock(&gFeedbackLock_0);
   }
 
-  v87 = [MEMORY[0x277D657A0] sharedContext];
-  v88 = [v87 enableDocumentUnderstanding];
+  mEMORY[0x277D657A0]2 = [MEMORY[0x277D657A0] sharedContext];
+  enableDocumentUnderstanding = [mEMORY[0x277D657A0]2 enableDocumentUnderstanding];
 
-  if (v88)
+  if (enableDocumentUnderstanding)
   {
     v89 = objc_opt_new();
     v90 = [(SKGKnowledgeFeedback *)self defaultValueWithKey:@"documentUnderstandingGenStartTime"];
@@ -1085,10 +1085,10 @@ void __29__SKGKnowledgeFeedback_clear__block_invoke()
     os_unfair_lock_unlock(&gFeedbackLock_0);
   }
 
-  v94 = [MEMORY[0x277D657A0] sharedContext];
-  v95 = [v94 enableKeyphrases];
+  mEMORY[0x277D657A0]3 = [MEMORY[0x277D657A0] sharedContext];
+  enableKeyphrases = [mEMORY[0x277D657A0]3 enableKeyphrases];
 
-  if (v95)
+  if (enableKeyphrases)
   {
     v96 = objc_opt_new();
     v97 = [(SKGKnowledgeFeedback *)self defaultValueWithKey:@"keyphraseGenStartTime"];
@@ -1117,7 +1117,7 @@ void __29__SKGKnowledgeFeedback_clear__block_invoke()
   v101 = [MEMORY[0x277CCABB0] numberWithInteger:self->_graphVersion];
   [(SKGKnowledgeFeedback *)self setDefaultWithKey:@"graphVersionV2" value:v101];
 
-  v102 = [(SKGKnowledgeFeedback *)self defaultPropertiesForVersionName:v3];
+  v102 = [(SKGKnowledgeFeedback *)self defaultPropertiesForVersionName:versionName];
   os_unfair_lock_lock(&gFeedbackLock_0);
   [(NSMutableDictionary *)self->_defaults removeAllObjects];
   v116 = 0u;
@@ -1449,14 +1449,14 @@ void __29__SKGKnowledgeFeedback_clear__block_invoke()
 {
   v57 = *MEMORY[0x277D85DE8];
   [(SKGKnowledgeFeedback *)self updateDefaults];
-  v3 = [(SKGKnowledgeFeedback *)self versionName];
+  versionName = [(SKGKnowledgeFeedback *)self versionName];
   os_unfair_lock_lock(&gFeedbackLock_0);
   if (self->_sessions)
   {
-    v41 = v3;
+    v41 = versionName;
     v42 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v4 = [(NSMutableDictionary *)self->_sessions allKeys];
-    v5 = [v4 sortedArrayUsingSelector:sel_compare_];
+    allKeys = [(NSMutableDictionary *)self->_sessions allKeys];
+    v5 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
     v53 = 0u;
     v54 = 0u;
@@ -1522,7 +1522,7 @@ void __29__SKGKnowledgeFeedback_clear__block_invoke()
     }
 
     os_unfair_lock_unlock(&gFeedbackLock_0);
-    v3 = v41;
+    versionName = v41;
     if (v42)
     {
       v29 = [(SKGKnowledgeFeedback *)self defaultValueWithKey:@"sessions" versionName:v41];
@@ -1588,45 +1588,45 @@ LABEL_30:
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logGraphVersion:(int64_t)a3
+- (void)logGraphVersion:(int64_t)version
 {
   os_unfair_lock_lock(&gFeedbackLock_0);
-  self->_graphVersion = a3;
+  self->_graphVersion = version;
   os_unfair_lock_unlock(&gFeedbackLock_0);
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:self->_graphVersion];
   [(SKGKnowledgeFeedback *)self setDefaultWithKey:@"graphVersionV2" value:v5];
 }
 
-- (void)logFlag:(int64_t)a3 message:(id)a4
+- (void)logFlag:(int64_t)flag message:(id)message
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (v6)
+  messageCopy = message;
+  if (messageCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v13 = 134218242;
-      v14 = a3;
+      flagCopy = flag;
       v15 = 2112;
-      v16 = v6;
+      v16 = messageCopy;
       _os_log_impl(&dword_231B25000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "SKG: flag (%lu) %@", &v13, 0x16u);
     }
 
     os_unfair_lock_lock(&gFeedbackLock_0);
     flags = self->_flags;
-    v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v8 = [MEMORY[0x277CCABB0] numberWithInteger:flag];
     [(NSMutableSet *)flags addObject:v8];
 
     stats = self->_stats;
-    v10 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-    [(NSMutableDictionary *)stats setObject:v10 forKey:v6];
+    v10 = [MEMORY[0x277CCABB0] numberWithInteger:flag];
+    [(NSMutableDictionary *)stats setObject:v10 forKey:messageCopy];
   }
 
   else
   {
     os_unfair_lock_lock(&gFeedbackLock_0);
     v11 = self->_flags;
-    v10 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v10 = [MEMORY[0x277CCABB0] numberWithInteger:flag];
     [(NSMutableSet *)v11 addObject:v10];
   }
 
@@ -1634,61 +1634,61 @@ LABEL_30:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logEvent:(int64_t)a3 message:(id)a4
+- (void)logEvent:(int64_t)event message:(id)message
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
+  messageCopy = message;
+  if (messageCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v10 = 134218242;
-    v11 = a3;
+    eventCopy = event;
     v12 = 2112;
-    v13 = v6;
+    v13 = messageCopy;
     _os_log_impl(&dword_231B25000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "SKG: event (%lu) %@", &v10, 0x16u);
   }
 
   os_unfair_lock_lock(&gFeedbackLock_0);
   events = self->_events;
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:event];
   [(NSMutableSet *)events addObject:v8];
 
   os_unfair_lock_unlock(&gFeedbackLock_0);
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logError:(int64_t)a3 message:(id)a4
+- (void)logError:(int64_t)error message:(id)message
 {
-  v6 = a4;
-  if (v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  messageCopy = message;
+  if (messageCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    [SKGKnowledgeFeedback logError:v6 message:a3];
+    [SKGKnowledgeFeedback logError:messageCopy message:error];
   }
 
   os_unfair_lock_lock(&gFeedbackLock_0);
   errors = self->_errors;
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:error];
   [(NSMutableSet *)errors addObject:v8];
 
   os_unfair_lock_unlock(&gFeedbackLock_0);
   [(SKGKnowledgeFeedback *)self updateDefaults];
 }
 
-- (void)logSignpost:(int64_t)a3 message:(id)a4
+- (void)logSignpost:(int64_t)signpost message:(id)message
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  messageCopy = message;
   os_unfair_lock_lock(&gFeedbackLock_0);
   v7 = SKGLogInit();
   v8 = v7;
-  v9 = __ROR8__(a3 - 1, 1);
+  v9 = __ROR8__(signpost - 1, 1);
   if ((v9 - 6) < 9 || v9 == 0)
   {
-    v11 = os_signpost_id_make_with_pointer(v7, self);
-    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v11];
-    [(NSMutableDictionary *)self->_signposts setObject:v12 forKeyedSubscript:v6];
+    unsignedLongLongValue = os_signpost_id_make_with_pointer(v7, self);
+    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:unsignedLongLongValue];
+    [(NSMutableDictionary *)self->_signposts setObject:v12 forKeyedSubscript:messageCopy];
 
     v13 = v8;
-    if ((v11 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+    if ((unsignedLongLongValue - 1) > 0xFFFFFFFFFFFFFFFDLL)
     {
       goto LABEL_10;
     }
@@ -1700,22 +1700,22 @@ LABEL_30:
     }
 
     v23 = 138412290;
-    v24 = v6;
+    v24 = messageCopy;
     v15 = "SKG start";
     v16 = v14;
     v17 = OS_SIGNPOST_INTERVAL_BEGIN;
     goto LABEL_9;
   }
 
-  v19 = [(NSMutableDictionary *)self->_signposts objectForKeyedSubscript:v6];
+  v19 = [(NSMutableDictionary *)self->_signposts objectForKeyedSubscript:messageCopy];
 
   if (v19)
   {
-    v20 = [(NSMutableDictionary *)self->_signposts objectForKeyedSubscript:v6];
-    v11 = [v20 unsignedLongLongValue];
+    v20 = [(NSMutableDictionary *)self->_signposts objectForKeyedSubscript:messageCopy];
+    unsignedLongLongValue = [v20 unsignedLongLongValue];
 
     v21 = v8;
-    if ((v11 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+    if ((unsignedLongLongValue - 1) > 0xFFFFFFFFFFFFFFFDLL)
     {
       goto LABEL_10;
     }
@@ -1727,12 +1727,12 @@ LABEL_30:
     }
 
     v23 = 138412290;
-    v24 = v6;
+    v24 = messageCopy;
     v15 = "SKG end";
     v16 = v22;
     v17 = OS_SIGNPOST_INTERVAL_END;
 LABEL_9:
-    _os_signpost_emit_with_name_impl(&dword_231B25000, v16, v17, v11, v15, "%@", &v23, 0xCu);
+    _os_signpost_emit_with_name_impl(&dword_231B25000, v16, v17, unsignedLongLongValue, v15, "%@", &v23, 0xCu);
 LABEL_10:
   }
 
@@ -1741,122 +1741,122 @@ LABEL_10:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logGraphSize:(unint64_t)a3
+- (void)logGraphSize:(unint64_t)size
 {
   v8 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = a3;
+    sizeCopy = size;
     _os_log_impl(&dword_231B25000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "SKG: graph size %lu", &v6, 0xCu);
   }
 
   os_unfair_lock_lock(&gFeedbackLock_0);
-  self->_currentGraphSize = a3;
+  self->_currentGraphSize = size;
   os_unfair_lock_unlock(&gFeedbackLock_0);
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logArchiveSize:(unint64_t)a3
+- (void)logArchiveSize:(unint64_t)size
 {
   v8 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = a3;
+    sizeCopy = size;
     _os_log_impl(&dword_231B25000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "SKG: archive size %lu", &v6, 0xCu);
   }
 
   os_unfair_lock_lock(&gFeedbackLock_0);
-  self->_currentArchiveSize = a3;
+  self->_currentArchiveSize = size;
   os_unfair_lock_unlock(&gFeedbackLock_0);
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logJournalSize:(unint64_t)a3
+- (void)logJournalSize:(unint64_t)size
 {
   v8 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = a3;
+    sizeCopy = size;
     _os_log_impl(&dword_231B25000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "SKG: journal size %lu", &v6, 0xCu);
   }
 
   os_unfair_lock_lock(&gFeedbackLock_0);
-  self->_currentJournalSize = a3;
+  self->_currentJournalSize = size;
   os_unfair_lock_unlock(&gFeedbackLock_0);
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logArchiveCount:(unint64_t)a3
+- (void)logArchiveCount:(unint64_t)count
 {
   v8 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = a3;
+    countCopy = count;
     _os_log_impl(&dword_231B25000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "SKG: archive count %lu", &v6, 0xCu);
   }
 
   os_unfair_lock_lock(&gFeedbackLock_0);
-  self->_currentArchiveCount = a3;
+  self->_currentArchiveCount = count;
   os_unfair_lock_unlock(&gFeedbackLock_0);
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logJournalCount:(unint64_t)a3
+- (void)logJournalCount:(unint64_t)count
 {
   v8 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = a3;
+    countCopy = count;
     _os_log_impl(&dword_231B25000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "SKG: journal count %lu", &v6, 0xCu);
   }
 
   os_unfair_lock_lock(&gFeedbackLock_0);
-  self->_currentJournalCount = a3;
+  self->_currentJournalCount = count;
   os_unfair_lock_unlock(&gFeedbackLock_0);
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logDeletesCount:(unint64_t)a3
+- (void)logDeletesCount:(unint64_t)count
 {
   v8 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = a3;
+    countCopy = count;
     _os_log_impl(&dword_231B25000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "SKG: deletes journal count %lu", &v6, 0xCu);
   }
 
   os_unfair_lock_lock(&gFeedbackLock_0);
-  self->_currentDeletesCount = a3;
+  self->_currentDeletesCount = count;
   os_unfair_lock_unlock(&gFeedbackLock_0);
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logMarkedPurgeableAtPath:(id)a3
+- (void)logMarkedPurgeableAtPath:(id)path
 {
   v7 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = a3;
+    pathCopy = path;
     _os_log_impl(&dword_231B25000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "SKG: purgeable %@", &v5, 0xCu);
   }
 
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logProcessedJournalWithName:(id)a3
+- (void)logProcessedJournalWithName:(id)name
 {
   v8 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = a3;
+    nameCopy = name;
     _os_log_impl(&dword_231B25000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "SKG: processed journal %@", &v6, 0xCu);
   }
 
@@ -1866,13 +1866,13 @@ LABEL_10:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logProcessedArchiveWithName:(id)a3
+- (void)logProcessedArchiveWithName:(id)name
 {
   v8 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = a3;
+    nameCopy = name;
     _os_log_impl(&dword_231B25000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "SKG: processed archive %@", &v6, 0xCu);
   }
 
@@ -1882,12 +1882,12 @@ LABEL_10:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logExtractedQueryItemCount:(unint64_t)a3 bundleIdentifier:(id)a4
+- (void)logExtractedQueryItemCount:(unint64_t)count bundleIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&gFeedbackLock_0);
-  v7 = self->_numQueryItemsExtracted + a3;
+  v7 = self->_numQueryItemsExtracted + count;
   self->_numQueryItemsExtracted = v7;
   if (__ROR8__(0x8F5C28F5C28F5C29 * v7, 2) <= 0x28F5C28F5C28F5CuLL && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
@@ -1897,30 +1897,30 @@ LABEL_10:
     _os_log_impl(&dword_231B25000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "SKG: %lu items extracted", &v15, 0xCu);
   }
 
-  v9 = [(NSMutableDictionary *)self->_bundles objectForKeyedSubscript:v6];
+  v9 = [(NSMutableDictionary *)self->_bundles objectForKeyedSubscript:identifierCopy];
 
   if (!v9)
   {
-    [(NSMutableDictionary *)self->_bundles setObject:&unk_2846E7E30 forKey:v6];
+    [(NSMutableDictionary *)self->_bundles setObject:&unk_2846E7E30 forKey:identifierCopy];
   }
 
-  v10 = [(NSMutableDictionary *)self->_bundles objectForKeyedSubscript:v6];
-  v11 = a3 + [v10 intValue];
+  v10 = [(NSMutableDictionary *)self->_bundles objectForKeyedSubscript:identifierCopy];
+  v11 = count + [v10 intValue];
 
   bundles = self->_bundles;
   v13 = [MEMORY[0x277CCABB0] numberWithInteger:v11];
-  [(NSMutableDictionary *)bundles setObject:v13 forKey:v6];
+  [(NSMutableDictionary *)bundles setObject:v13 forKey:identifierCopy];
 
   os_unfair_lock_unlock(&gFeedbackLock_0);
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logUpdatedQueryItemCount:(unint64_t)a3 bundleIdentifier:(id)a4
+- (void)logUpdatedQueryItemCount:(unint64_t)count bundleIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&gFeedbackLock_0);
-  self->_numQueryItemsUpdated += a3;
+  self->_numQueryItemsUpdated += count;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     numQueryItemsUpdated = self->_numQueryItemsUpdated;
@@ -1929,30 +1929,30 @@ LABEL_10:
     _os_log_impl(&dword_231B25000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "SKG: %lu query items updated", &v14, 0xCu);
   }
 
-  v8 = [(NSMutableDictionary *)self->_bundles objectForKeyedSubscript:v6];
+  v8 = [(NSMutableDictionary *)self->_bundles objectForKeyedSubscript:identifierCopy];
 
   if (!v8)
   {
-    [(NSMutableDictionary *)self->_bundles setObject:&unk_2846E7E30 forKey:v6];
+    [(NSMutableDictionary *)self->_bundles setObject:&unk_2846E7E30 forKey:identifierCopy];
   }
 
-  v9 = [(NSMutableDictionary *)self->_bundles objectForKeyedSubscript:v6];
-  v10 = a3 + [v9 intValue];
+  v9 = [(NSMutableDictionary *)self->_bundles objectForKeyedSubscript:identifierCopy];
+  v10 = count + [v9 intValue];
 
   bundles = self->_bundles;
   v12 = [MEMORY[0x277CCABB0] numberWithInteger:v10];
-  [(NSMutableDictionary *)bundles setObject:v12 forKey:v6];
+  [(NSMutableDictionary *)bundles setObject:v12 forKey:identifierCopy];
 
   os_unfair_lock_unlock(&gFeedbackLock_0);
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logArchivedQueryItemCount:(unint64_t)a3 bundleIdentifier:(id)a4
+- (void)logArchivedQueryItemCount:(unint64_t)count bundleIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&gFeedbackLock_0);
-  self->_numQueryItemsArchived += a3;
+  self->_numQueryItemsArchived += count;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     numQueryItemsArchived = self->_numQueryItemsArchived;
@@ -1961,30 +1961,30 @@ LABEL_10:
     _os_log_impl(&dword_231B25000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "SKG: %lu query items archived", &v14, 0xCu);
   }
 
-  v8 = [(NSMutableDictionary *)self->_bundles objectForKeyedSubscript:v6];
+  v8 = [(NSMutableDictionary *)self->_bundles objectForKeyedSubscript:identifierCopy];
 
   if (!v8)
   {
-    [(NSMutableDictionary *)self->_bundles setObject:&unk_2846E7E30 forKey:v6];
+    [(NSMutableDictionary *)self->_bundles setObject:&unk_2846E7E30 forKey:identifierCopy];
   }
 
-  v9 = [(NSMutableDictionary *)self->_bundles objectForKeyedSubscript:v6];
-  v10 = a3 + [v9 intValue];
+  v9 = [(NSMutableDictionary *)self->_bundles objectForKeyedSubscript:identifierCopy];
+  v10 = count + [v9 intValue];
 
   bundles = self->_bundles;
   v12 = [MEMORY[0x277CCABB0] numberWithInteger:v10];
-  [(NSMutableDictionary *)bundles setObject:v12 forKey:v6];
+  [(NSMutableDictionary *)bundles setObject:v12 forKey:identifierCopy];
 
   os_unfair_lock_unlock(&gFeedbackLock_0);
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logExtractedJournalItemCount:(unint64_t)a3 bundleIdentifier:(id)a4
+- (void)logExtractedJournalItemCount:(unint64_t)count bundleIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&gFeedbackLock_0);
-  v7 = self->_numJournalItemsExtracted + a3;
+  v7 = self->_numJournalItemsExtracted + count;
   self->_numJournalItemsExtracted = v7;
   if (__ROR8__(0x8F5C28F5C28F5C29 * v7, 2) <= 0x28F5C28F5C28F5CuLL && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
@@ -1994,30 +1994,30 @@ LABEL_10:
     _os_log_impl(&dword_231B25000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "SKG: %lu journal items extracted", &v15, 0xCu);
   }
 
-  v9 = [(NSMutableDictionary *)self->_bundles objectForKeyedSubscript:v6];
+  v9 = [(NSMutableDictionary *)self->_bundles objectForKeyedSubscript:identifierCopy];
 
   if (!v9)
   {
-    [(NSMutableDictionary *)self->_bundles setObject:&unk_2846E7E30 forKey:v6];
+    [(NSMutableDictionary *)self->_bundles setObject:&unk_2846E7E30 forKey:identifierCopy];
   }
 
-  v10 = [(NSMutableDictionary *)self->_bundles objectForKeyedSubscript:v6];
-  v11 = a3 + [v10 intValue];
+  v10 = [(NSMutableDictionary *)self->_bundles objectForKeyedSubscript:identifierCopy];
+  v11 = count + [v10 intValue];
 
   bundles = self->_bundles;
   v13 = [MEMORY[0x277CCABB0] numberWithInteger:v11];
-  [(NSMutableDictionary *)bundles setObject:v13 forKey:v6];
+  [(NSMutableDictionary *)bundles setObject:v13 forKey:identifierCopy];
 
   os_unfair_lock_unlock(&gFeedbackLock_0);
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logExtractedArchiveItemCount:(unint64_t)a3 bundleIdentifier:(id)a4
+- (void)logExtractedArchiveItemCount:(unint64_t)count bundleIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&gFeedbackLock_0);
-  v7 = self->_numArchiveItemsExtracted + a3;
+  v7 = self->_numArchiveItemsExtracted + count;
   self->_numArchiveItemsExtracted = v7;
   if (__ROR8__(0x8F5C28F5C28F5C29 * v7, 2) <= 0x28F5C28F5C28F5CuLL && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
@@ -2027,19 +2027,19 @@ LABEL_10:
     _os_log_impl(&dword_231B25000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "SKG: %lu archive items extracted", &v15, 0xCu);
   }
 
-  v9 = [(NSMutableDictionary *)self->_bundles objectForKeyedSubscript:v6];
+  v9 = [(NSMutableDictionary *)self->_bundles objectForKeyedSubscript:identifierCopy];
 
   if (!v9)
   {
-    [(NSMutableDictionary *)self->_bundles setObject:&unk_2846E7E30 forKey:v6];
+    [(NSMutableDictionary *)self->_bundles setObject:&unk_2846E7E30 forKey:identifierCopy];
   }
 
-  v10 = [(NSMutableDictionary *)self->_bundles objectForKeyedSubscript:v6];
-  v11 = a3 + [v10 intValue];
+  v10 = [(NSMutableDictionary *)self->_bundles objectForKeyedSubscript:identifierCopy];
+  v11 = count + [v10 intValue];
 
   bundles = self->_bundles;
   v13 = [MEMORY[0x277CCABB0] numberWithInteger:v11];
-  [(NSMutableDictionary *)bundles setObject:v13 forKey:v6];
+  [(NSMutableDictionary *)bundles setObject:v13 forKey:identifierCopy];
 
   os_unfair_lock_unlock(&gFeedbackLock_0);
   v14 = *MEMORY[0x277D85DE8];
@@ -2222,30 +2222,30 @@ LABEL_10:
   return v7;
 }
 
-- (BOOL)hasCurrentFlagWithName:(id)a3
+- (BOOL)hasCurrentFlagWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   os_unfair_lock_lock(&gFeedbackLock_0);
-  v5 = [(NSMutableDictionary *)self->_stats objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_stats objectForKey:nameCopy];
 
   os_unfair_lock_unlock(&gFeedbackLock_0);
   return v5 != 0;
 }
 
-- (void)logQueryTimeWithIdentifier:(id)a3 protectionClass:(id)a4 startTime:(double)a5 doneProcessing:(BOOL)a6
+- (void)logQueryTimeWithIdentifier:(id)identifier protectionClass:(id)class startTime:(double)time doneProcessing:(BOOL)processing
 {
-  v6 = a6;
-  v9 = @"None";
-  if (a4)
+  processingCopy = processing;
+  classCopy = @"None";
+  if (class)
   {
-    v9 = a4;
+    classCopy = class;
   }
 
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v9, a3];
-  v18 = v10;
-  if (v6)
+  identifier = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", classCopy, identifier];
+  v18 = identifier;
+  if (processingCopy)
   {
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"startTime.%@", v10];
+    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"startTime.%@", identifier];
     [(SKGKnowledgeFeedback *)self timeWithKey:v11];
     v13 = v12;
 
@@ -2264,30 +2264,30 @@ LABEL_10:
 
   else
   {
-    v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"endTime.%@", v10];
-    [(SKGKnowledgeFeedback *)self setTimeWithKey:v17 value:a5];
+    v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"endTime.%@", identifier];
+    [(SKGKnowledgeFeedback *)self setTimeWithKey:v17 value:time];
   }
 
   [(SKGKnowledgeFeedback *)self updateDefaults];
 }
 
-- (void)getQueryTimeWithIdentifier:(id)a3 protectionClass:(id)a4 startTime:(double *)a5 endTime:(double *)a6 processingEndTime:(double *)a7
+- (void)getQueryTimeWithIdentifier:(id)identifier protectionClass:(id)class startTime:(double *)time endTime:(double *)endTime processingEndTime:(double *)processingEndTime
 {
-  v11 = @"None";
-  if (a4)
+  classCopy = @"None";
+  if (class)
   {
-    v11 = a4;
+    classCopy = class;
   }
 
-  v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v11, a3];
-  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"finished.%@", v23];
+  identifier = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", classCopy, identifier];
+  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"finished.%@", identifier];
   v13 = [(SKGKnowledgeFeedback *)self modeWithKey:v12];
 
-  v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"endTime.%@", v23];
+  v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"endTime.%@", identifier];
   [(SKGKnowledgeFeedback *)self timeWithKey:v14];
   Current = v15;
 
-  v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"processingTime.%@", v23];
+  v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"processingTime.%@", identifier];
   [(SKGKnowledgeFeedback *)self timeWithKey:v17];
   v19 = v18;
 
@@ -2304,10 +2304,10 @@ LABEL_10:
       v20 = v19;
     }
 
-    v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"startTime.%@", v23];
+    v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"startTime.%@", identifier];
     [(SKGKnowledgeFeedback *)self setTimeWithKey:v21 value:Current];
 
-    v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"finished.%@", v23];
+    v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"finished.%@", identifier];
     [(SKGKnowledgeFeedback *)self removeKey:v22];
   }
 
@@ -2316,98 +2316,98 @@ LABEL_10:
     v20 = Current + -60.0;
   }
 
-  *a6 = Current;
-  *a5 = v20;
-  *a7 = v19;
+  *endTime = Current;
+  *time = v20;
+  *processingEndTime = v19;
   [(SKGKnowledgeFeedback *)self updateDefaults];
 }
 
-- (void)logArchiveWithIdentifier:(id)a3 protectionClass:(id)a4
+- (void)logArchiveWithIdentifier:(id)identifier protectionClass:(id)class
 {
-  v5 = @"None";
-  if (a4)
+  classCopy = @"None";
+  if (class)
   {
-    v5 = a4;
+    classCopy = class;
   }
 
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.CurrentFileIndex-%@", v5, a3];
-  [(SKGKnowledgeFeedback *)self setIndexWithKey:v6 value:[(SKGKnowledgeFeedback *)self indexWithKey:v6]+ 1];
+  identifier = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.CurrentFileIndex-%@", classCopy, identifier];
+  [(SKGKnowledgeFeedback *)self setIndexWithKey:identifier value:[(SKGKnowledgeFeedback *)self indexWithKey:identifier]+ 1];
   os_unfair_lock_lock(&gFeedbackLock_0);
   ++self->_numArchivesGenerated;
   os_unfair_lock_unlock(&gFeedbackLock_0);
 }
 
-- (void)logDefaultWithIdentifier:(id)a3 protectionClass:(id)a4 key:(id)a5 value:(id)a6
+- (void)logDefaultWithIdentifier:(id)identifier protectionClass:(id)class key:(id)key value:(id)value
 {
   v9 = MEMORY[0x277CCACA8];
-  if (a4)
+  if (class)
   {
-    v10 = a4;
+    classCopy = class;
   }
 
   else
   {
-    v10 = @"None";
+    classCopy = @"None";
   }
 
-  v11 = a6;
-  v12 = a5;
-  v14 = [v9 stringWithFormat:@"%@.%@", v10, a3];
-  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v14, v12];
+  valueCopy = value;
+  keyCopy = key;
+  identifier = [v9 stringWithFormat:@"%@.%@", classCopy, identifier];
+  keyCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", identifier, keyCopy];
 
-  [(SKGKnowledgeFeedback *)self setDefaultWithKey:v13 value:v11];
+  [(SKGKnowledgeFeedback *)self setDefaultWithKey:keyCopy value:valueCopy];
   [(SKGKnowledgeFeedback *)self updateDefaults];
 }
 
-- (id)getDefaultWithIdentifier:(id)a3 protectionClass:(id)a4 key:(id)a5
+- (id)getDefaultWithIdentifier:(id)identifier protectionClass:(id)class key:(id)key
 {
   v7 = MEMORY[0x277CCACA8];
-  if (a4)
+  if (class)
   {
-    v8 = a4;
+    classCopy = class;
   }
 
   else
   {
-    v8 = @"None";
+    classCopy = @"None";
   }
 
-  v9 = a5;
-  v10 = [v7 stringWithFormat:@"%@.%@", v8, a3];
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v10, v9];
+  keyCopy = key;
+  identifier = [v7 stringWithFormat:@"%@.%@", classCopy, identifier];
+  keyCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", identifier, keyCopy];
 
-  v12 = [(SKGKnowledgeFeedback *)self defaultValueWithKey:v11];
+  v12 = [(SKGKnowledgeFeedback *)self defaultValueWithKey:keyCopy];
 
   return v12;
 }
 
-- (void)clearDefaultWithIdentifier:(id)a3 protectionClass:(id)a4 key:(id)a5
+- (void)clearDefaultWithIdentifier:(id)identifier protectionClass:(id)class key:(id)key
 {
   v7 = MEMORY[0x277CCACA8];
-  if (a4)
+  if (class)
   {
-    v8 = a4;
+    classCopy = class;
   }
 
   else
   {
-    v8 = @"None";
+    classCopy = @"None";
   }
 
-  v9 = a5;
-  v11 = [v7 stringWithFormat:@"%@.%@", v8, a3];
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v11, v9];
+  keyCopy = key;
+  identifier = [v7 stringWithFormat:@"%@.%@", classCopy, identifier];
+  keyCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", identifier, keyCopy];
 
-  [(SKGKnowledgeFeedback *)self removeKey:v10];
+  [(SKGKnowledgeFeedback *)self removeKey:keyCopy];
 }
 
-- (BOOL)hasEvent:(int64_t)a3
+- (BOOL)hasEvent:(int64_t)event
 {
   os_unfair_lock_lock(&gFeedbackLock_0);
   events = self->_events;
   if (events)
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v6 = [MEMORY[0x277CCABB0] numberWithInteger:event];
     v7 = [(NSMutableSet *)events containsObject:v6];
   }
 
@@ -2420,13 +2420,13 @@ LABEL_10:
   return v7;
 }
 
-- (BOOL)hasError:(int64_t)a3
+- (BOOL)hasError:(int64_t)error
 {
   os_unfair_lock_lock(&gFeedbackLock_0);
   errors = self->_errors;
   if (errors)
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v6 = [MEMORY[0x277CCABB0] numberWithInteger:error];
     v7 = [(NSMutableSet *)errors containsObject:v6];
   }
 
@@ -2439,13 +2439,13 @@ LABEL_10:
   return v7;
 }
 
-- (BOOL)hasFlag:(int64_t)a3
+- (BOOL)hasFlag:(int64_t)flag
 {
   os_unfair_lock_lock(&gFeedbackLock_0);
   flags = self->_flags;
   if (flags)
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v6 = [MEMORY[0x277CCABB0] numberWithInteger:flag];
     v7 = [(NSMutableSet *)flags containsObject:v6];
   }
 
@@ -2458,21 +2458,21 @@ LABEL_10:
   return v7;
 }
 
-- (BOOL)generateReportUsingBlock:(id)a3
+- (BOOL)generateReportUsingBlock:(id)block
 {
   v56 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v52 = 0;
-  v5 = [(SKGKnowledgeFeedback *)self feedbackData];
-  v38 = v5;
-  if ([v5 count])
+  feedbackData = [(SKGKnowledgeFeedback *)self feedbackData];
+  v38 = feedbackData;
+  if ([feedbackData count])
   {
-    v36 = self;
+    selfCopy = self;
     v50 = 0u;
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    obj = v5;
+    obj = feedbackData;
     v6 = [obj countByEnumeratingWithState:&v48 objects:v55 count:16];
     if (v6)
     {
@@ -2495,7 +2495,7 @@ LABEL_10:
           v14 = [obj objectForKeyedSubscript:v12];
           v8 = [v13 stringWithFormat:@"%@: %@", v12, v14];
 
-          v4[2](v4, v8, &v52);
+          blockCopy[2](blockCopy, v8, &v52);
           if (v52)
           {
             v15 = 0;
@@ -2522,7 +2522,7 @@ LABEL_10:
       v8 = 0;
     }
 
-    self = v36;
+    self = selfCopy;
   }
 
   else
@@ -2582,7 +2582,7 @@ LABEL_10:
 
                 v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", *(*(&v40 + 1) + 8 * v27)];
 
-                v4[2](v4, v8, &v52);
+                blockCopy[2](blockCopy, v8, &v52);
                 if (v52)
                 {
 
@@ -2618,7 +2618,7 @@ LABEL_10:
           [MEMORY[0x277CCACA8] stringWithFormat:@"%@: %@", v20, v21];
           v30 = v29 = v21;
 
-          v4[2](v4, v30, &v52);
+          blockCopy[2](blockCopy, v30, &v52);
           v8 = v30;
           if (v52 == 1)
           {
@@ -2654,11 +2654,11 @@ LABEL_38:
   return v15;
 }
 
-- (void)logUpdateTaskReindexCount:(unint64_t)a3 taskName:(id)a4
+- (void)logUpdateTaskReindexCount:(unint64_t)count taskName:(id)name
 {
   v30[2] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if ([v6 length])
+  nameCopy = name;
+  if ([nameCopy length])
   {
     v7 = [(SKGKnowledgeFeedback *)self defaultValueWithKey:@"embeddingGenUpdates"];
     v8 = v7;
@@ -2667,7 +2667,7 @@ LABEL_38:
       v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v7, "unsignedIntegerValue") + 1}];
       [(SKGKnowledgeFeedback *)self setDefaultWithKey:@"embeddingGenUpdates" value:v9];
 
-      if (!a3)
+      if (!count)
       {
         goto LABEL_17;
       }
@@ -2676,7 +2676,7 @@ LABEL_38:
     else
     {
       [(SKGKnowledgeFeedback *)self setDefaultWithKey:@"embeddingGenUpdates" value:&unk_2846E7E48];
-      if (!a3)
+      if (!count)
       {
 LABEL_17:
 
@@ -2684,14 +2684,14 @@ LABEL_17:
       }
     }
 
-    v10 = [MEMORY[0x277CBEAA8] date];
-    v11 = [(SKGKnowledgeFeedback *)self defaultValueWithKey:v6];
+    date = [MEMORY[0x277CBEAA8] date];
+    v11 = [(SKGKnowledgeFeedback *)self defaultValueWithKey:nameCopy];
     v12 = v11;
-    v27 = v10;
+    v27 = date;
     if (v11)
     {
       v13 = [v11 mutableCopy];
-      v14 = [v10 dateByAddingTimeInterval:-86400.0];
+      v14 = [date dateByAddingTimeInterval:-86400.0];
       v15 = [v13 count];
       if (v15)
       {
@@ -2712,23 +2712,23 @@ LABEL_17:
       }
 
       v30[0] = v27;
-      v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+      v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:count];
       v30[1] = v19;
       v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:2];
       [v13 addObject:v20];
 
-      [(SKGKnowledgeFeedback *)self setDefaultWithKey:v6 value:v13];
+      [(SKGKnowledgeFeedback *)self setDefaultWithKey:nameCopy value:v13];
     }
 
     else
     {
-      v28[0] = v10;
-      v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+      v28[0] = date;
+      v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:count];
       v28[1] = v13;
       v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:2];
       v29 = v14;
       v21 = [MEMORY[0x277CBEA60] arrayWithObjects:&v29 count:1];
-      [(SKGKnowledgeFeedback *)self setDefaultWithKey:v6 value:v21];
+      [(SKGKnowledgeFeedback *)self setDefaultWithKey:nameCopy value:v21];
     }
 
     v22 = [(SKGKnowledgeFeedback *)self defaultValueWithKey:@"embeddingGenUpdateReindexCount"];
@@ -2736,10 +2736,10 @@ LABEL_17:
     v24 = MEMORY[0x277CCABB0];
     if (v22)
     {
-      a3 = [v22 unsignedIntegerValue] + 1;
+      count = [v22 unsignedIntegerValue] + 1;
     }
 
-    v25 = [v24 numberWithUnsignedInteger:a3];
+    v25 = [v24 numberWithUnsignedInteger:count];
     [(SKGKnowledgeFeedback *)self setDefaultWithKey:@"embeddingGenUpdateReindexCount" value:v25];
 
     goto LABEL_17;
@@ -2756,15 +2756,15 @@ LABEL_18:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)getUpdateTaskRunCount
@@ -2773,26 +2773,26 @@ LABEL_18:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (unint64_t)getReindexCountForTask:(id)a3
+- (unint64_t)getReindexCountForTask:(id)task
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 length])
+  taskCopy = task;
+  if ([taskCopy length])
   {
-    v5 = [MEMORY[0x277CBEAA8] date];
-    v6 = [v5 dateByAddingTimeInterval:-86400.0];
-    v7 = [(SKGKnowledgeFeedback *)self defaultValueWithKey:v4];
+    date = [MEMORY[0x277CBEAA8] date];
+    v6 = [date dateByAddingTimeInterval:-86400.0];
+    v7 = [(SKGKnowledgeFeedback *)self defaultValueWithKey:taskCopy];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
@@ -2842,9 +2842,9 @@ LABEL_18:
   return v10;
 }
 
-- (void)logEmbeddingDonationItemCounts:(unint64_t)a3 bundleId:(id)a4
+- (void)logEmbeddingDonationItemCounts:(unint64_t)counts bundleId:(id)id
 {
-  v13 = a4;
+  idCopy = id;
   os_unfair_lock_lock(&gEmbeddingDonationCountLock);
   v6 = [(SKGKnowledgeFeedback *)self defaultValueWithKey:@"embeddingDonationCount"];
   if (v6)
@@ -2858,16 +2858,16 @@ LABEL_18:
     v8 = objc_opt_new();
   }
 
-  v9 = [v8 objectForKey:v13];
+  v9 = [v8 objectForKey:idCopy];
   v10 = v9;
   v11 = MEMORY[0x277CCABB0];
   if (v9)
   {
-    a3 += [v9 unsignedIntegerValue];
+    counts += [v9 unsignedIntegerValue];
   }
 
-  v12 = [v11 numberWithUnsignedInteger:a3];
-  [v8 setObject:v12 forKey:v13];
+  v12 = [v11 numberWithUnsignedInteger:counts];
+  [v8 setObject:v12 forKey:idCopy];
 
   [(SKGKnowledgeFeedback *)self setDefaultWithKey:@"embeddingDonationCount" value:v8];
   os_unfair_lock_unlock(&gEmbeddingDonationCountLock);
@@ -2892,8 +2892,8 @@ LABEL_18:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 allValues];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allValues = [v4 allValues];
+  v6 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2905,13 +2905,13 @@ LABEL_18:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v8 += [*(*(&v14 + 1) + 8 * i) unsignedIntegerValue];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -2948,9 +2948,9 @@ LABEL_18:
   os_unfair_lock_unlock(&gCleanupCountLock);
 }
 
-- (void)logReindexRequestItemCounts:(unint64_t)a3 bundleId:(id)a4
+- (void)logReindexRequestItemCounts:(unint64_t)counts bundleId:(id)id
 {
-  v13 = a4;
+  idCopy = id;
   os_unfair_lock_lock(&gReindexRequestCountLock);
   v6 = [(SKGKnowledgeFeedback *)self defaultValueWithKey:@"reindexRequestPerBundleCount"];
   if (v6)
@@ -2964,16 +2964,16 @@ LABEL_18:
     v8 = objc_opt_new();
   }
 
-  v9 = [v8 objectForKey:v13];
+  v9 = [v8 objectForKey:idCopy];
   v10 = v9;
   v11 = MEMORY[0x277CCABB0];
   if (v9)
   {
-    a3 += [v9 unsignedIntegerValue];
+    counts += [v9 unsignedIntegerValue];
   }
 
-  v12 = [v11 numberWithUnsignedInteger:a3];
-  [v8 setObject:v12 forKey:v13];
+  v12 = [v11 numberWithUnsignedInteger:counts];
+  [v8 setObject:v12 forKey:idCopy];
 
   [(SKGKnowledgeFeedback *)self setDefaultWithKey:@"reindexRequestPerBundleCount" value:v8];
   os_unfair_lock_unlock(&gReindexRequestCountLock);
@@ -2998,8 +2998,8 @@ LABEL_18:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 allValues];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allValues = [v4 allValues];
+  v6 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -3011,13 +3011,13 @@ LABEL_18:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v8 += [*(*(&v14 + 1) + 8 * i) unsignedIntegerValue];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -3052,19 +3052,19 @@ LABEL_18:
   return v2;
 }
 
-- (id)defaultPropertiesForVersionName:(id)a3
+- (id)defaultPropertiesForVersionName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   os_unfair_lock_lock(&gFeedbackLock_0);
-  v5 = [(SKGKnowledgeFeedback *)self defaults];
-  v6 = [v5 dictionaryRepresentation];
-  v7 = [v6 objectForKey:v4];
+  defaults = [(SKGKnowledgeFeedback *)self defaults];
+  dictionaryRepresentation = [defaults dictionaryRepresentation];
+  v7 = [dictionaryRepresentation objectForKey:nameCopy];
 
   if (!v7)
   {
-    [v5 setObject:&unk_2846E86F0 forKey:v4];
-    v8 = [v5 dictionaryRepresentation];
-    v7 = [v8 objectForKey:v4];
+    [defaults setObject:&unk_2846E86F0 forKey:nameCopy];
+    dictionaryRepresentation2 = [defaults dictionaryRepresentation];
+    v7 = [dictionaryRepresentation2 objectForKey:nameCopy];
   }
 
   os_unfair_lock_unlock(&gFeedbackLock_0);
@@ -3072,14 +3072,14 @@ LABEL_18:
   return v7;
 }
 
-- (void)setDefaultWithKey:(id)a3 value:(id)a4
+- (void)setDefaultWithKey:(id)key value:(id)value
 {
-  v6 = a4;
-  v7 = a3;
-  v12 = [(SKGKnowledgeFeedback *)self versionName];
+  valueCopy = value;
+  keyCopy = key;
+  versionName = [(SKGKnowledgeFeedback *)self versionName];
   v8 = [(SKGKnowledgeFeedback *)self defaultPropertiesForVersionName:?];
   os_unfair_lock_lock(&gFeedbackLock_0);
-  v9 = [(SKGKnowledgeFeedback *)self defaults];
+  defaults = [(SKGKnowledgeFeedback *)self defaults];
   if (v8)
   {
     v10 = [v8 mutableCopy];
@@ -3091,83 +3091,83 @@ LABEL_18:
   }
 
   v11 = v10;
-  [v10 setObject:v6 forKey:v7];
+  [v10 setObject:valueCopy forKey:keyCopy];
 
-  [v9 setObject:v11 forKey:v12];
+  [defaults setObject:v11 forKey:versionName];
   os_unfair_lock_unlock(&gFeedbackLock_0);
 }
 
-- (id)defaultValueWithKey:(id)a3 versionName:(id)a4
+- (id)defaultValueWithKey:(id)key versionName:(id)name
 {
-  v6 = a3;
-  v7 = [(SKGKnowledgeFeedback *)self defaultPropertiesForVersionName:a4];
+  keyCopy = key;
+  v7 = [(SKGKnowledgeFeedback *)self defaultPropertiesForVersionName:name];
   os_unfair_lock_lock(&gFeedbackLock_0);
-  v8 = [v7 objectForKey:v6];
+  v8 = [v7 objectForKey:keyCopy];
 
   os_unfair_lock_unlock(&gFeedbackLock_0);
 
   return v8;
 }
 
-- (id)defaultValueWithKey:(id)a3
+- (id)defaultValueWithKey:(id)key
 {
-  v4 = a3;
-  v5 = [(SKGKnowledgeFeedback *)self versionName];
-  v6 = [(SKGKnowledgeFeedback *)self defaultPropertiesForVersionName:v5];
+  keyCopy = key;
+  versionName = [(SKGKnowledgeFeedback *)self versionName];
+  v6 = [(SKGKnowledgeFeedback *)self defaultPropertiesForVersionName:versionName];
   os_unfair_lock_lock(&gFeedbackLock_0);
-  v7 = [v6 objectForKey:v4];
+  v7 = [v6 objectForKey:keyCopy];
 
   os_unfair_lock_unlock(&gFeedbackLock_0);
 
   return v7;
 }
 
-- (void)removeKey:(id)a3
+- (void)removeKey:(id)key
 {
-  v4 = a3;
-  v8 = [(SKGKnowledgeFeedback *)self versionName];
-  v5 = [(SKGKnowledgeFeedback *)self defaultPropertiesForVersionName:v8];
+  keyCopy = key;
+  versionName = [(SKGKnowledgeFeedback *)self versionName];
+  v5 = [(SKGKnowledgeFeedback *)self defaultPropertiesForVersionName:versionName];
   os_unfair_lock_lock(&gFeedbackLock_0);
-  v6 = [(SKGKnowledgeFeedback *)self defaults];
+  defaults = [(SKGKnowledgeFeedback *)self defaults];
   v7 = [v5 mutableCopy];
-  [v7 removeObjectForKey:v4];
+  [v7 removeObjectForKey:keyCopy];
 
-  [v6 setObject:v7 forKey:v8];
+  [defaults setObject:v7 forKey:versionName];
   os_unfair_lock_unlock(&gFeedbackLock_0);
 }
 
 - (void)removeDefaults
 {
   os_unfair_lock_lock(&gFeedbackLock_0);
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v2 removePersistentDomainForName:@"com.apple.spotlightknowledge"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults removePersistentDomainForName:@"com.apple.spotlightknowledge"];
 
   [MEMORY[0x277CBEBD0] resetStandardUserDefaults];
 
   os_unfair_lock_unlock(&gFeedbackLock_0);
 }
 
-- (BOOL)modeWithKey:(id)a3
+- (BOOL)modeWithKey:(id)key
 {
-  v4 = a3;
-  v5 = [(SKGKnowledgeFeedback *)self defaultValueWithKey:v4];
+  keyCopy = key;
+  v5 = [(SKGKnowledgeFeedback *)self defaultValueWithKey:keyCopy];
   if (v5)
   {
-    v6 = [(SKGKnowledgeFeedback *)self defaultValueWithKey:v4];
-    v7 = [v6 BOOLValue];
+    v6 = [(SKGKnowledgeFeedback *)self defaultValueWithKey:keyCopy];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (id)recoveryTimesWithKey:(id)a3
+- (id)recoveryTimesWithKey:(id)key
 {
-  v3 = [(SKGKnowledgeFeedback *)self defaultValueWithKey:a3];
+  v3 = [(SKGKnowledgeFeedback *)self defaultValueWithKey:key];
   v4 = v3;
   if (v3)
   {
@@ -3184,21 +3184,21 @@ LABEL_18:
   return v5;
 }
 
-- (void)setTimeWithKey:(id)a3 value:(double)a4
+- (void)setTimeWithKey:(id)key value:(double)value
 {
   v6 = MEMORY[0x277CCABB0];
-  v7 = a3;
-  v8 = [v6 numberWithDouble:a4];
-  [(SKGKnowledgeFeedback *)self setDefaultWithKey:v7 value:v8];
+  keyCopy = key;
+  v8 = [v6 numberWithDouble:value];
+  [(SKGKnowledgeFeedback *)self setDefaultWithKey:keyCopy value:v8];
 }
 
-- (double)timeWithKey:(id)a3
+- (double)timeWithKey:(id)key
 {
-  v4 = a3;
-  v5 = [(SKGKnowledgeFeedback *)self defaultValueWithKey:v4];
+  keyCopy = key;
+  v5 = [(SKGKnowledgeFeedback *)self defaultValueWithKey:keyCopy];
   if (v5)
   {
-    v6 = [(SKGKnowledgeFeedback *)self defaultValueWithKey:v4];
+    v6 = [(SKGKnowledgeFeedback *)self defaultValueWithKey:keyCopy];
     [v6 doubleValue];
     v8 = v7;
   }
@@ -3211,56 +3211,56 @@ LABEL_18:
   return v8;
 }
 
-- (void)setIndexWithKey:(id)a3 value:(unint64_t)a4
+- (void)setIndexWithKey:(id)key value:(unint64_t)value
 {
   v6 = MEMORY[0x277CCABB0];
-  v7 = a3;
-  v8 = [v6 numberWithUnsignedInteger:a4];
-  [(SKGKnowledgeFeedback *)self setDefaultWithKey:v7 value:v8];
+  keyCopy = key;
+  v8 = [v6 numberWithUnsignedInteger:value];
+  [(SKGKnowledgeFeedback *)self setDefaultWithKey:keyCopy value:v8];
 }
 
-- (unint64_t)indexWithKey:(id)a3
+- (unint64_t)indexWithKey:(id)key
 {
-  v4 = a3;
-  v5 = [(SKGKnowledgeFeedback *)self defaultValueWithKey:v4];
+  keyCopy = key;
+  v5 = [(SKGKnowledgeFeedback *)self defaultValueWithKey:keyCopy];
   if (v5)
   {
-    v6 = [(SKGKnowledgeFeedback *)self defaultValueWithKey:v4];
-    v7 = [v6 intValue];
+    v6 = [(SKGKnowledgeFeedback *)self defaultValueWithKey:keyCopy];
+    intValue = [v6 intValue];
   }
 
   else
   {
-    v7 = 0;
+    intValue = 0;
   }
 
-  return v7;
+  return intValue;
 }
 
-- (void)updateItemCountWithKey:(id)a3
+- (void)updateItemCountWithKey:(id)key
 {
-  v4 = a3;
-  v5 = [(SKGKnowledgeFeedback *)self itemCountWithKey:v4];
+  keyCopy = key;
+  v5 = [(SKGKnowledgeFeedback *)self itemCountWithKey:keyCopy];
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v5 + 1];
-  [(SKGKnowledgeFeedback *)self setDefaultWithKey:v4 value:v6];
+  [(SKGKnowledgeFeedback *)self setDefaultWithKey:keyCopy value:v6];
 }
 
-- (unint64_t)itemCountWithKey:(id)a3
+- (unint64_t)itemCountWithKey:(id)key
 {
-  v4 = a3;
-  v5 = [(SKGKnowledgeFeedback *)self defaultValueWithKey:v4];
+  keyCopy = key;
+  v5 = [(SKGKnowledgeFeedback *)self defaultValueWithKey:keyCopy];
   if (v5)
   {
-    v6 = [(SKGKnowledgeFeedback *)self defaultValueWithKey:v4];
-    v7 = [v6 intValue];
+    v6 = [(SKGKnowledgeFeedback *)self defaultValueWithKey:keyCopy];
+    intValue = [v6 intValue];
   }
 
   else
   {
-    v7 = 0;
+    intValue = 0;
   }
 
-  return v7;
+  return intValue;
 }
 
 - (void)logError:(uint64_t)a1 message:(uint64_t)a2 .cold.1(uint64_t a1, uint64_t a2)

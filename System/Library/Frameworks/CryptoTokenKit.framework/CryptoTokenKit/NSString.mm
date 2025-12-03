@@ -1,14 +1,14 @@
 @interface NSString
-+ (id)supportedAIDsOfExtension:(id)a3;
-+ (void)parseAIDForAttribute:(id)a3 into:(id)a4;
++ (id)supportedAIDsOfExtension:(id)extension;
++ (void)parseAIDForAttribute:(id)attribute into:(id)into;
 @end
 
 @implementation NSString
 
-+ (id)supportedAIDsOfExtension:(id)a3
++ (id)supportedAIDsOfExtension:(id)extension
 {
-  v4 = [a3 attributes];
-  v5 = [v4 objectForKeyedSubscript:TKTokenClassDriverApplicationIDKey];
+  attributes = [extension attributes];
+  v5 = [attributes objectForKeyedSubscript:TKTokenClassDriverApplicationIDKey];
 
   if (v5)
   {
@@ -35,7 +35,7 @@
               objc_enumerationMutation(v7);
             }
 
-            [a1 parseAIDForAttribute:*(*(&v13 + 1) + 8 * i) into:{v6, v13}];
+            [self parseAIDForAttribute:*(*(&v13 + 1) + 8 * i) into:{v6, v13}];
           }
 
           v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -47,7 +47,7 @@
 
     else
     {
-      [a1 parseAIDForAttribute:v5 into:v6];
+      [self parseAIDForAttribute:v5 into:v6];
     }
   }
 
@@ -59,14 +59,14 @@
   return v6;
 }
 
-+ (void)parseAIDForAttribute:(id)a3 into:(id)a4
++ (void)parseAIDForAttribute:(id)attribute into:(id)into
 {
-  v8 = a3;
-  v5 = a4;
+  attributeCopy = attribute;
+  intoCopy = into;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v8 hexString];
+    hexString = [attributeCopy hexString];
   }
 
   else
@@ -77,13 +77,13 @@
       goto LABEL_7;
     }
 
-    v6 = v8;
+    hexString = attributeCopy;
   }
 
-  v7 = v6;
-  if (v6)
+  v7 = hexString;
+  if (hexString)
   {
-    [v5 addObject:v6];
+    [intoCopy addObject:hexString];
   }
 
 LABEL_7:

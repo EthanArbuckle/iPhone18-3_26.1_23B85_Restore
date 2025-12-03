@@ -1,32 +1,32 @@
 @interface PVMatrix44Double
-+ (BOOL)isMatrix:(id)a3 equivalentTo:(id)a4;
++ (BOOL)isMatrix:(id)matrix equivalentTo:(id)to;
 + (id)matrix;
-+ (id)matrixWithPCMatrix44Double:(id)a3;
-+ (id)matrixWithPCMatrix44d:(const void *)a3;
-+ (id)matrixWithSIMDDouble4x4:(_OWORD *)a3;
-+ (id)matrixWithSIMDFloat4x4:(double)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)matrixWithPCMatrix44Double:(id)double;
++ (id)matrixWithPCMatrix44d:(const void *)matrix44d;
++ (id)matrixWithSIMDDouble4x4:(_OWORD *)double4x4;
++ (id)matrixWithSIMDFloat4x4:(double)float4x4;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isFinite;
 - (BOOL)isIdentity;
 - (PVMatrix44Double)init;
-- (PVMatrix44Double)initWithCoder:(id)a3;
-- (PVMatrix44Double)initWithPCMatrix44Double:(id)a3;
-- (PVMatrix44Double)initWithPCMatrix44d:(const void *)a3;
+- (PVMatrix44Double)initWithCoder:(id)coder;
+- (PVMatrix44Double)initWithPCMatrix44Double:(id)double;
+- (PVMatrix44Double)initWithPCMatrix44d:(const void *)matrix44d;
 - (__n128)SIMDDouble4x4;
-- (__n128)initWithSIMDDouble4x4:(uint64_t)a3;
-- (__n128)setSIMDDouble4x4:(__int128 *)a3;
-- (float64x2_t)setSIMDFloat4x4:(float32x4_t)a3;
+- (__n128)initWithSIMDDouble4x4:(uint64_t)double4x4;
+- (__n128)setSIMDDouble4x4:(__int128 *)double4x4;
+- (float64x2_t)setSIMDFloat4x4:(float32x4_t)float4x4;
 - (id)compactDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)extendedDescription;
 - (id)pcMatrix44Double;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)getTransformInfo:(_OWORD *)a3@<X8>;
-- (void)initWithSIMDFloat4x4:(double)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)getTransformInfo:(_OWORD *)info@<X8>;
+- (void)initWithSIMDFloat4x4:(double)float4x4;
 - (void)makeIdentity;
-- (void)setPCMatrix44Double:(id)a3;
+- (void)setPCMatrix44Double:(id)double;
 - (void)transpose;
 @end
 
@@ -34,32 +34,32 @@
 
 + (id)matrix
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (BOOL)isMatrix:(id)a3 equivalentTo:(id)a4
++ (BOOL)isMatrix:(id)matrix equivalentTo:(id)to
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 == v6 || !(v5 | v6))
+  matrixCopy = matrix;
+  toCopy = to;
+  v7 = toCopy;
+  if (matrixCopy == toCopy || !(matrixCopy | toCopy))
   {
     goto LABEL_3;
   }
 
-  if (v5 && v6)
+  if (matrixCopy && toCopy)
   {
-    v9 = [v5 isEqual:v6];
+    isIdentity = [matrixCopy isEqual:toCopy];
 LABEL_9:
-    v8 = v9;
+    v8 = isIdentity;
     goto LABEL_10;
   }
 
-  if (([v5 isIdentity] & 1) == 0)
+  if (([matrixCopy isIdentity] & 1) == 0)
   {
-    v9 = [v7 isIdentity];
+    isIdentity = [v7 isIdentity];
     goto LABEL_9;
   }
 
@@ -70,27 +70,27 @@ LABEL_10:
   return v8;
 }
 
-+ (id)matrixWithSIMDFloat4x4:(double)a3
++ (id)matrixWithSIMDFloat4x4:(double)float4x4
 {
-  v5 = [[a1 alloc] initWithSIMDFloat4x4:{a2, a3, a4, a5}];
+  v5 = [[self alloc] initWithSIMDFloat4x4:{a2, float4x4, a4, a5}];
 
   return v5;
 }
 
-+ (id)matrixWithSIMDDouble4x4:(_OWORD *)a3
++ (id)matrixWithSIMDDouble4x4:(_OWORD *)double4x4
 {
-  v4 = [a1 alloc];
-  v5 = a3[5];
-  v11[4] = a3[4];
+  v4 = [self alloc];
+  v5 = double4x4[5];
+  v11[4] = double4x4[4];
   v11[5] = v5;
-  v6 = a3[7];
-  v11[6] = a3[6];
+  v6 = double4x4[7];
+  v11[6] = double4x4[6];
   v11[7] = v6;
-  v7 = a3[1];
-  v11[0] = *a3;
+  v7 = double4x4[1];
+  v11[0] = *double4x4;
   v11[1] = v7;
-  v8 = a3[3];
-  v11[2] = a3[2];
+  v8 = double4x4[3];
+  v11[2] = double4x4[2];
   v11[3] = v8;
   v9 = [v4 initWithSIMDDouble4x4:v11];
 
@@ -114,36 +114,36 @@ LABEL_10:
   return [(PVMatrix44Double *)self initWithSIMDDouble4x4:v7];
 }
 
-- (void)initWithSIMDFloat4x4:(double)a3
+- (void)initWithSIMDFloat4x4:(double)float4x4
 {
-  v5 = [a1 init];
+  v5 = [self init];
   v6 = v5;
   if (v5)
   {
-    [v5 setSIMDFloat4x4:{a2, a3, a4, a5}];
+    [v5 setSIMDFloat4x4:{a2, float4x4, a4, a5}];
   }
 
   return v6;
 }
 
-- (__n128)initWithSIMDDouble4x4:(uint64_t)a3
+- (__n128)initWithSIMDDouble4x4:(uint64_t)double4x4
 {
-  v11.receiver = a1;
+  v11.receiver = self;
   v11.super_class = PVMatrix44Double;
   v4 = [(PVMatrix44Double *)&v11 init];
   if (v4)
   {
-    v6 = *a3;
-    v7 = *(a3 + 16);
-    v8 = *(a3 + 48);
-    v4[3] = *(a3 + 32);
+    v6 = *double4x4;
+    v7 = *(double4x4 + 16);
+    v8 = *(double4x4 + 48);
+    v4[3] = *(double4x4 + 32);
     v4[4] = v8;
     v4[1] = v6;
     v4[2] = v7;
-    result = *(a3 + 64);
-    v9 = *(a3 + 80);
-    v10 = *(a3 + 112);
-    v4[7] = *(a3 + 96);
+    result = *(double4x4 + 64);
+    v9 = *(double4x4 + 80);
+    v10 = *(double4x4 + 112);
+    v4[7] = *(double4x4 + 96);
     v4[8] = v10;
     v4[5] = result;
     v4[6] = v9;
@@ -152,17 +152,17 @@ LABEL_10:
   return result;
 }
 
-- (float64x2_t)setSIMDFloat4x4:(float32x4_t)a3
+- (float64x2_t)setSIMDFloat4x4:(float32x4_t)float4x4
 {
-  a1[1] = vcvtq_f64_f32(*a2.f32);
-  a1[2] = vcvt_hight_f64_f32(a2);
-  a1[3] = vcvtq_f64_f32(*a3.f32);
-  a1[4] = vcvt_hight_f64_f32(a3);
-  a1[5] = vcvtq_f64_f32(*a4.f32);
-  a1[6] = vcvt_hight_f64_f32(a4);
+  self[1] = vcvtq_f64_f32(*a2.f32);
+  self[2] = vcvt_hight_f64_f32(a2);
+  self[3] = vcvtq_f64_f32(*float4x4.f32);
+  self[4] = vcvt_hight_f64_f32(float4x4);
+  self[5] = vcvtq_f64_f32(*a4.f32);
+  self[6] = vcvt_hight_f64_f32(a4);
   result = vcvt_hight_f64_f32(a5);
-  a1[7] = vcvtq_f64_f32(*a5.f32);
-  a1[8] = result;
+  self[7] = vcvtq_f64_f32(*a5.f32);
+  self[8] = result;
   return result;
 }
 
@@ -223,7 +223,7 @@ LABEL_10:
   self[8] = v5.val[3];
 }
 
-- (void)getTransformInfo:(_OWORD *)a3@<X8>
+- (void)getTransformInfo:(_OWORD *)info@<X8>
 {
   v17[1] = *MEMORY[0x277D85DE8];
   if (a2)
@@ -231,34 +231,34 @@ LABEL_10:
     *a2 = 0;
   }
 
-  a3[4] = xmmword_260342820;
-  a3[5] = unk_260342830;
-  a3[6] = xmmword_260342840;
-  a3[7] = unk_260342850;
-  *a3 = pv_transform_info_identity;
-  a3[1] = *algn_2603427F0;
-  a3[2] = xmmword_260342800;
-  a3[3] = unk_260342810;
-  v5 = a1[6];
-  v15[4] = a1[5];
+  info[4] = xmmword_260342820;
+  info[5] = unk_260342830;
+  info[6] = xmmword_260342840;
+  info[7] = unk_260342850;
+  *info = pv_transform_info_identity;
+  info[1] = *algn_2603427F0;
+  info[2] = xmmword_260342800;
+  info[3] = unk_260342810;
+  v5 = self[6];
+  v15[4] = self[5];
   v15[5] = v5;
-  v6 = a1[8];
-  v15[6] = a1[7];
+  v6 = self[8];
+  v15[6] = self[7];
   v15[7] = v6;
-  v7 = a1[2];
-  v15[0] = a1[1];
+  v7 = self[2];
+  v15[0] = self[1];
   v15[1] = v7;
-  v8 = a1[4];
-  v15[2] = a1[3];
+  v8 = self[4];
+  v15[2] = self[3];
   v15[3] = v8;
-  v9 = pv_transform_info_make(v15, a3);
+  v9 = pv_transform_info_make(v15, info);
   if (a2)
   {
     if (!v9)
     {
       v10 = MEMORY[0x277CCACA8];
-      v11 = [a1 compactDescription];
-      v12 = [v10 stringWithFormat:@"Failed to get transformInfo for matrix: %p %@", a1, v11];
+      compactDescription = [self compactDescription];
+      v12 = [v10 stringWithFormat:@"Failed to get transformInfo for matrix: %p %@", self, compactDescription];
 
       v13 = MEMORY[0x277CCA9B8];
       v16 = *MEMORY[0x277CCA450];
@@ -269,12 +269,12 @@ LABEL_10:
   }
 }
 
-- (PVMatrix44Double)initWithCoder:(id)a3
+- (PVMatrix44Double)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if (![v4 containsValueForKey:@"kPVMatrixKey"])
+  coderCopy = coder;
+  if (![coderCopy containsValueForKey:@"kPVMatrixKey"])
   {
-    v5 = [[PCMatrix44Double alloc] initWithCoder:v4];
+    v5 = [[PCMatrix44Double alloc] initWithCoder:coderCopy];
 
     if (v5)
     {
@@ -283,11 +283,11 @@ LABEL_10:
     }
 
 LABEL_7:
-    v7 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kPVMatrixKey"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kPVMatrixKey"];
 
   if (!v5)
   {
@@ -299,13 +299,13 @@ LABEL_7:
 LABEL_6:
   self = v6;
 
-  v7 = self;
+  selfCopy = self;
 LABEL_8:
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3 = MEMORY[0x277CCAE60];
   v4 = self[6];
@@ -320,12 +320,12 @@ LABEL_8:
   v7 = self[4];
   v12 = self[3];
   v13 = v7;
-  v8 = a3;
+  coderCopy = coder;
   v9 = [v3 valueWithSIMDDouble4x4:&v10];
-  [v8 encodeObject:v9 forKey:{@"kPVMatrixKey", v10, v11, v12, v13, v14, v15, v16, v17}];
+  [coderCopy encodeObject:v9 forKey:{@"kPVMatrixKey", v10, v11, v12, v13, v14, v15, v16, v17}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = self[6];
   v8[4] = self[5];
@@ -343,15 +343,15 @@ LABEL_8:
   return objc_claimAutoreleasedReturnValue();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (v4)
+    if (equalCopy)
     {
-      [v4 SIMDDouble4x4];
+      [equalCopy SIMDDouble4x4];
       v5 = v17;
       v6 = v18;
       v7 = v19;
@@ -431,8 +431,8 @@ LABEL_8:
   v8.receiver = self;
   v8.super_class = PVMatrix44Double;
   v4 = [(PVMatrix44Double *)&v8 description];
-  v5 = [(PVMatrix44Double *)self compactDescription];
-  v6 = [v3 initWithFormat:@"%@\n%@", v4, v5];
+  compactDescription = [(PVMatrix44Double *)self compactDescription];
+  v6 = [v3 initWithFormat:@"%@\n%@", v4, compactDescription];
 
   return v6;
 }
@@ -474,13 +474,13 @@ LABEL_8:
   v6 = v5;
   if (v3)
   {
-    v7 = [v3 localizedDescription];
-    v8 = [v4 stringWithFormat:@"%@\nExtended Description Failed: %@", v6, v7];
+    localizedDescription = [v3 localizedDescription];
+    v8 = [v4 stringWithFormat:@"%@\nExtended Description Failed: %@", v6, localizedDescription];
   }
 
   else
   {
-    v7 = [v5 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n    "];
+    localizedDescription = [v5 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n    "];
     v11[4] = v17;
     v11[5] = v18;
     v11[6] = v19;
@@ -490,7 +490,7 @@ LABEL_8:
     v11[2] = v15;
     v11[3] = v16;
     v9 = NSStringFromPVTransformInfo(v11, 3);
-    v8 = [v4 stringWithFormat:@"%@\n%@", v7, v9];
+    v8 = [v4 stringWithFormat:@"%@\n%@", localizedDescription, v9];
   }
 
   return v8;
@@ -498,67 +498,67 @@ LABEL_8:
 
 - (__n128)SIMDDouble4x4
 {
-  v2 = *(a1 + 96);
-  *(a2 + 64) = *(a1 + 80);
+  v2 = *(self + 96);
+  *(a2 + 64) = *(self + 80);
   *(a2 + 80) = v2;
-  v3 = *(a1 + 128);
-  *(a2 + 96) = *(a1 + 112);
+  v3 = *(self + 128);
+  *(a2 + 96) = *(self + 112);
   *(a2 + 112) = v3;
-  v4 = *(a1 + 32);
-  *a2 = *(a1 + 16);
+  v4 = *(self + 32);
+  *a2 = *(self + 16);
   *(a2 + 16) = v4;
-  result = *(a1 + 48);
-  v6 = *(a1 + 64);
+  result = *(self + 48);
+  v6 = *(self + 64);
   *(a2 + 32) = result;
   *(a2 + 48) = v6;
   return result;
 }
 
-- (__n128)setSIMDDouble4x4:(__int128 *)a3
+- (__n128)setSIMDDouble4x4:(__int128 *)double4x4
 {
-  v3 = *a3;
-  v4 = a3[1];
-  v5 = a3[3];
-  *(a1 + 48) = a3[2];
-  *(a1 + 64) = v5;
-  *(a1 + 16) = v3;
-  *(a1 + 32) = v4;
-  result = a3[4];
-  v7 = a3[5];
-  v8 = a3[7];
-  *(a1 + 112) = a3[6];
-  *(a1 + 128) = v8;
-  *(a1 + 80) = result;
-  *(a1 + 96) = v7;
+  v3 = *double4x4;
+  v4 = double4x4[1];
+  v5 = double4x4[3];
+  *(self + 48) = double4x4[2];
+  *(self + 64) = v5;
+  *(self + 16) = v3;
+  *(self + 32) = v4;
+  result = double4x4[4];
+  v7 = double4x4[5];
+  v8 = double4x4[7];
+  *(self + 112) = double4x4[6];
+  *(self + 128) = v8;
+  *(self + 80) = result;
+  *(self + 96) = v7;
   return result;
 }
 
-+ (id)matrixWithPCMatrix44Double:(id)a3
++ (id)matrixWithPCMatrix44Double:(id)double
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithPCMatrix44Double:v4];
+  doubleCopy = double;
+  v5 = [[self alloc] initWithPCMatrix44Double:doubleCopy];
 
   return v5;
 }
 
-- (PVMatrix44Double)initWithPCMatrix44Double:(id)a3
+- (PVMatrix44Double)initWithPCMatrix44Double:(id)double
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  doubleCopy = double;
+  v5 = doubleCopy;
+  if (doubleCopy)
   {
-    v6 = [v4 pcMatrix];
-    v7 = *v6;
-    v8 = v6[1];
-    v9 = v6[3];
-    *&v15[32] = v6[2];
+    pcMatrix = [doubleCopy pcMatrix];
+    v7 = *pcMatrix;
+    v8 = pcMatrix[1];
+    v9 = pcMatrix[3];
+    *&v15[32] = pcMatrix[2];
     v16 = v9;
     *v15 = v7;
     *&v15[16] = v8;
-    v10 = v6[4];
-    v11 = v6[5];
-    v12 = v6[7];
-    *&v18[16] = v6[6];
+    v10 = pcMatrix[4];
+    v11 = pcMatrix[5];
+    v12 = pcMatrix[7];
+    *&v18[16] = pcMatrix[6];
     *&v18[32] = v12;
     v17 = v10;
     *v18 = v11;
@@ -600,26 +600,26 @@ LABEL_8:
   return v2;
 }
 
-- (void)setPCMatrix44Double:(id)a3
+- (void)setPCMatrix44Double:(id)double
 {
-  v4 = a3;
-  -[PVMatrix44Double setPCMatrix44d:](self, "setPCMatrix44d:", [v4 pcMatrix]);
+  doubleCopy = double;
+  -[PVMatrix44Double setPCMatrix44d:](self, "setPCMatrix44d:", [doubleCopy pcMatrix]);
 }
 
-+ (id)matrixWithPCMatrix44d:(const void *)a3
++ (id)matrixWithPCMatrix44d:(const void *)matrix44d
 {
-  v3 = [[a1 alloc] initWithPCMatrix44d:a3];
+  v3 = [[self alloc] initWithPCMatrix44d:matrix44d];
 
   return v3;
 }
 
-- (PVMatrix44Double)initWithPCMatrix44d:(const void *)a3
+- (PVMatrix44Double)initWithPCMatrix44d:(const void *)matrix44d
 {
   v4 = [(PVMatrix44Double *)self init];
   v5 = v4;
   if (v4)
   {
-    [(PVMatrix44Double *)v4 setPCMatrix44d:a3];
+    [(PVMatrix44Double *)v4 setPCMatrix44d:matrix44d];
   }
 
   return v5;

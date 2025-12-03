@@ -1,11 +1,11 @@
 @interface PPSRequestValidator
-+ (BOOL)_isMetricDefinedForFilepath:(id)a3 subsystem:(id)a4 category:(id)a5 name:(id)a6;
-+ (BOOL)_validateFilepath:(id)a3 error:(id *)a4;
-+ (BOOL)_validatePredicateRequiredKey:(id)a3 value:(id)a4 error:(id *)a5;
-+ (BOOL)_validatePredicateValue:(id)a3 metricDefinition:(id)a4 error:(id *)a5;
-+ (BOOL)_validateRequestType:(int64_t)a3 error:(id *)a4;
++ (BOOL)_isMetricDefinedForFilepath:(id)filepath subsystem:(id)subsystem category:(id)category name:(id)name;
++ (BOOL)_validateFilepath:(id)filepath error:(id *)error;
++ (BOOL)_validatePredicateRequiredKey:(id)key value:(id)value error:(id *)error;
++ (BOOL)_validatePredicateValue:(id)value metricDefinition:(id)definition error:(id *)error;
++ (BOOL)_validateRequestType:(int64_t)type error:(id *)error;
 + (id)sharedInstance;
-- (BOOL)validateDataRequest:(id)a3 filepath:(id)a4 withError:(id *)a5;
+- (BOOL)validateDataRequest:(id)request filepath:(id)filepath withError:(id *)error;
 @end
 
 @implementation PPSRequestValidator
@@ -58,15 +58,15 @@ void __37__PPSRequestValidator_sharedInstance__block_invoke()
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)validateDataRequest:(id)a3 filepath:(id)a4 withError:(id *)a5
+- (BOOL)validateDataRequest:(id)request filepath:(id)filepath withError:(id *)error
 {
   v83[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 subsystem];
-  v10 = [v7 category];
-  v11 = [v7 valueFilter];
-  v12 = [PPSPredicateUtilities keyPathsAndValuesForPredicate:v11];
+  requestCopy = request;
+  filepathCopy = filepath;
+  subsystem = [requestCopy subsystem];
+  category = [requestCopy category];
+  valueFilter = [requestCopy valueFilter];
+  v12 = [PPSPredicateUtilities keyPathsAndValuesForPredicate:valueFilter];
   if (![PPSEntitlementChecker checkForEntitlement:@"com.apple.PerfPowerServices.data-read"])
   {
     v27 = MEMORY[0x277CCA9B8];
@@ -83,32 +83,32 @@ void __37__PPSRequestValidator_sharedInstance__block_invoke()
     goto LABEL_16;
   }
 
-  v66 = a5;
-  if (!v7)
+  errorCopy = error;
+  if (!requestCopy)
   {
     objb = MEMORY[0x277CCA9B8];
     v29 = MEMORY[0x277CBEAC0];
     v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"Null request."];
     [v29 dictionaryWithObject:v30 forKey:*MEMORY[0x277CCA450]];
     v31 = v12;
-    v32 = v11;
-    v33 = v8;
-    v34 = v9;
-    v36 = v35 = v10;
+    v32 = valueFilter;
+    v33 = filepathCopy;
+    v34 = subsystem;
+    v36 = v35 = category;
     v14 = [objb errorWithDomain:@"com.apple.PerfPowerServicesReader.request" code:1 userInfo:v36];
 
-    v10 = v35;
-    v9 = v34;
-    v8 = v33;
-    v11 = v32;
+    category = v35;
+    subsystem = v34;
+    filepathCopy = v33;
+    valueFilter = v32;
     v12 = v31;
-    v7 = 0;
+    requestCopy = 0;
 
     goto LABEL_15;
   }
 
   v79 = 0;
-  v13 = [PPSRequestValidator _validateFilepath:v8 error:&v79];
+  v13 = [PPSRequestValidator _validateFilepath:filepathCopy error:&v79];
   v14 = v79;
   if (!v13)
   {
@@ -116,7 +116,7 @@ void __37__PPSRequestValidator_sharedInstance__block_invoke()
   }
 
   v78 = v14;
-  v15 = +[PPSRequestValidator _validateRequestType:error:](PPSRequestValidator, "_validateRequestType:error:", [v7 requestType], &v78);
+  v15 = +[PPSRequestValidator _validateRequestType:error:](PPSRequestValidator, "_validateRequestType:error:", [requestCopy requestType], &v78);
   v16 = v78;
 
   if (!v15)
@@ -125,7 +125,7 @@ void __37__PPSRequestValidator_sharedInstance__block_invoke()
   }
 
   v77 = v16;
-  v17 = [PPSRequestValidator _validatePredicateRequiredKey:@"subsystem" value:v9 error:&v77];
+  v17 = [PPSRequestValidator _validatePredicateRequiredKey:@"subsystem" value:subsystem error:&v77];
   v14 = v77;
 
   if (!v17)
@@ -134,7 +134,7 @@ void __37__PPSRequestValidator_sharedInstance__block_invoke()
   }
 
   v76 = v14;
-  v18 = [PPSRequestValidator _validatePredicateRequiredKey:@"category" value:v10 error:&v76];
+  v18 = [PPSRequestValidator _validatePredicateRequiredKey:@"category" value:category error:&v76];
   v16 = v76;
 
   if (!v18)
@@ -142,7 +142,7 @@ void __37__PPSRequestValidator_sharedInstance__block_invoke()
 LABEL_14:
     v14 = v16;
 LABEL_15:
-    a5 = v66;
+    error = errorCopy;
     if (!v14)
     {
       goto LABEL_20;
@@ -152,21 +152,21 @@ LABEL_15:
   }
 
   v58 = v16;
-  if ([v7 requestType] == 2)
+  if ([requestCopy requestType] == 2)
   {
-    v19 = [v7 metrics];
-    v20 = v10;
-    v21 = [v19 count];
+    metrics = [requestCopy metrics];
+    v20 = category;
+    v21 = [metrics count];
 
     v22 = v21 >= 2;
-    v10 = v20;
+    category = v20;
     if (v22)
     {
       v23 = MEMORY[0x277CCA9B8];
       v24 = MEMORY[0x277CBEAC0];
       v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"Interval-set requests only support a single metric."];
       v26 = [v24 dictionaryWithObject:v25 forKey:*MEMORY[0x277CCA450]];
-      v10 = v20;
+      category = v20;
       v14 = [v23 errorWithDomain:@"com.apple.PerfPowerServicesReader.request" code:5 userInfo:v26];
 
       goto LABEL_15;
@@ -178,7 +178,7 @@ LABEL_15:
   v75 = 0u;
   v72 = 0u;
   v73 = 0u;
-  obj = [v7 metrics];
+  obj = [requestCopy metrics];
   v41 = [obj countByEnumeratingWithState:&v72 objects:v81 count:16];
   if (v41)
   {
@@ -194,11 +194,11 @@ LABEL_15:
         }
 
         v45 = *(*(&v72 + 1) + 8 * i);
-        if (![objc_opt_class() _isMetricDefinedForFilepath:v8 subsystem:v9 category:v10 name:v45])
+        if (![objc_opt_class() _isMetricDefinedForFilepath:filepathCopy subsystem:subsystem category:category name:v45])
         {
           v53 = MEMORY[0x277CCA9B8];
           v54 = MEMORY[0x277CBEAC0];
-          v55 = [MEMORY[0x277CCACA8] stringWithFormat:@"Select metric '%@' is not defined for subsystem='%@', category='%@'", v45, v9, v10];
+          v55 = [MEMORY[0x277CCACA8] stringWithFormat:@"Select metric '%@' is not defined for subsystem='%@', category='%@'", v45, subsystem, category];
           v56 = [v54 dictionaryWithObject:v55 forKey:*MEMORY[0x277CCA450]];
           v14 = [v53 errorWithDomain:@"com.apple.PerfPowerServicesReader.request" code:3 userInfo:v56];
 
@@ -224,7 +224,7 @@ LABEL_15:
   v61 = [v62 countByEnumeratingWithState:&v68 objects:v80 count:16];
   if (v61)
   {
-    v59 = v10;
+    v59 = category;
     v60 = *v69;
     v46 = v58;
     while (2)
@@ -240,14 +240,14 @@ LABEL_15:
 
         v49 = *(*(&v68 + 1) + 8 * v47);
         obja = objc_autoreleasePoolPush();
-        if (v8)
+        if (filepathCopy)
         {
-          [PPSOffDeviceIngesterUtilities metricDefinitionForFilepath:v8 subsystem:v9 category:v10 metricName:v49];
+          [PPSOffDeviceIngesterUtilities metricDefinitionForFilepath:filepathCopy subsystem:subsystem category:category metricName:v49];
         }
 
         else
         {
-          [PPSOnDeviceIngesterUtilities metricDefinitionForSubsystem:v9 category:v10 metricName:v49];
+          [PPSOnDeviceIngesterUtilities metricDefinitionForSubsystem:subsystem category:category metricName:v49];
         }
         v50 = ;
         v51 = [v62 objectForKeyedSubscript:v49];
@@ -258,13 +258,13 @@ LABEL_15:
         objc_autoreleasePoolPop(obja);
         if (!v52)
         {
-          v10 = v59;
+          category = v59;
           goto LABEL_44;
         }
 
         ++v47;
         v48 = v46;
-        v10 = v59;
+        category = v59;
       }
 
       while (v61 != v47);
@@ -287,7 +287,7 @@ LABEL_44:
 
   v14 = v46;
 LABEL_45:
-  a5 = v66;
+  error = errorCopy;
   v12 = v57;
   if (v14)
   {
@@ -298,10 +298,10 @@ LABEL_16:
       [PPSRequestValidator validateDataRequest:v14 filepath:v37 withError:?];
     }
 
-    if (a5)
+    if (error)
     {
       v38 = v14;
-      *a5 = v14;
+      *error = v14;
     }
   }
 
@@ -311,27 +311,27 @@ LABEL_20:
   return v14 == 0;
 }
 
-+ (BOOL)_isMetricDefinedForFilepath:(id)a3 subsystem:(id)a4 category:(id)a5 name:(id)a6
++ (BOOL)_isMetricDefinedForFilepath:(id)filepath subsystem:(id)subsystem category:(id)category name:(id)name
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if ([v12 isEqualToString:@"BLD"] & 1) != 0 || (objc_msgSend(v12, "isEqualToString:", @"timestamp"))
+  filepathCopy = filepath;
+  subsystemCopy = subsystem;
+  categoryCopy = category;
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"BLD"] & 1) != 0 || (objc_msgSend(nameCopy, "isEqualToString:", @"timestamp"))
   {
     v13 = 1;
   }
 
   else
   {
-    if (v9)
+    if (filepathCopy)
     {
-      [PPSOffDeviceIngesterUtilities metricDefinitionForFilepath:v9 subsystem:v10 category:v11 metricName:v12];
+      [PPSOffDeviceIngesterUtilities metricDefinitionForFilepath:filepathCopy subsystem:subsystemCopy category:categoryCopy metricName:nameCopy];
     }
 
     else
     {
-      [PPSOnDeviceIngesterUtilities metricDefinitionForSubsystem:v10 category:v11 metricName:v12];
+      [PPSOnDeviceIngesterUtilities metricDefinitionForSubsystem:subsystemCopy category:categoryCopy metricName:nameCopy];
     }
     v14 = ;
     v13 = v14 != 0;
@@ -340,23 +340,23 @@ LABEL_20:
   return v13;
 }
 
-+ (BOOL)_validateFilepath:(id)a3 error:(id *)a4
++ (BOOL)_validateFilepath:(id)filepath error:(id *)error
 {
-  v5 = [a3 path];
-  v6 = [v5 stringByExpandingTildeInPath];
+  path = [filepath path];
+  stringByExpandingTildeInPath = [path stringByExpandingTildeInPath];
 
-  if (v6)
+  if (stringByExpandingTildeInPath)
   {
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
-    v8 = [v7 fileExistsAtPath:v6];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v8 = [defaultManager fileExistsAtPath:stringByExpandingTildeInPath];
 
-    if (a4 && (v8 & 1) == 0)
+    if (error && (v8 & 1) == 0)
     {
       v9 = MEMORY[0x277CCA9B8];
       v10 = MEMORY[0x277CBEAC0];
-      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"File doesn't exist: '%@'", v6];
+      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"File doesn't exist: '%@'", stringByExpandingTildeInPath];
       v12 = [v10 dictionaryWithObject:v11 forKey:*MEMORY[0x277CCA450]];
-      *a4 = [v9 errorWithDomain:@"com.apple.PerfPowerServicesReader.request" code:5 userInfo:v12];
+      *error = [v9 errorWithDomain:@"com.apple.PerfPowerServicesReader.request" code:5 userInfo:v12];
 
       v8 = 0;
     }
@@ -370,39 +370,39 @@ LABEL_20:
   return v8;
 }
 
-+ (BOOL)_validatePredicateRequiredKey:(id)a3 value:(id)a4 error:(id *)a5
++ (BOOL)_validatePredicateRequiredKey:(id)key value:(id)value error:(id *)error
 {
-  if (!a4 && a5)
+  if (!value && error)
   {
     v7 = MEMORY[0x277CCA9B8];
     v8 = MEMORY[0x277CBEAC0];
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Missing required field in predicate: '%@'.", a3];
+    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Missing required field in predicate: '%@'.", key];
     v10 = [v8 dictionaryWithObject:v9 forKey:*MEMORY[0x277CCA450]];
-    *a5 = [v7 errorWithDomain:@"com.apple.PerfPowerServicesReader.request" code:3 userInfo:v10];
+    *error = [v7 errorWithDomain:@"com.apple.PerfPowerServicesReader.request" code:3 userInfo:v10];
   }
 
-  return a4 != 0;
+  return value != 0;
 }
 
-+ (BOOL)_validatePredicateValue:(id)a3 metricDefinition:(id)a4 error:(id *)a5
++ (BOOL)_validatePredicateValue:(id)value metricDefinition:(id)definition error:(id *)error
 {
   v63 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
+  valueCopy = value;
+  definitionCopy = definition;
+  v9 = definitionCopy;
   v10 = 1;
-  if (v7 && v8)
+  if (valueCopy && definitionCopy)
   {
-    v11 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v8, "datatype")}];
+    v11 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(definitionCopy, "datatype")}];
     v12 = [kMetricDataTypeToClass objectForKey:v11];
     v13 = 0x277CCA000uLL;
     objc_opt_class();
-    if (objc_opt_isKindOfClass() & 1) != 0 && ([v7 isEqualToString:&stru_286FFF1D8])
+    if (objc_opt_isKindOfClass() & 1) != 0 && ([valueCopy isEqualToString:&stru_286FFF1D8])
     {
       goto LABEL_21;
     }
 
-    if ([v7 conformsToProtocol:&unk_28702FB30])
+    if ([valueCopy conformsToProtocol:&unk_28702FB30])
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
@@ -411,8 +411,8 @@ LABEL_20:
         v51 = 0u;
         v48 = 0u;
         v49 = 0u;
-        v14 = v7;
-        v15 = [v14 countByEnumeratingWithState:&v48 objects:v62 count:16];
+        name4 = valueCopy;
+        v15 = [name4 countByEnumeratingWithState:&v48 objects:v62 count:16];
         if (!v15)
         {
           v10 = 1;
@@ -422,7 +422,7 @@ LABEL_37:
         }
 
         v16 = v15;
-        v46 = a5;
+        errorCopy = error;
         v47 = v11;
         v17 = *v49;
 LABEL_10:
@@ -431,7 +431,7 @@ LABEL_10:
         {
           if (*v49 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(name4);
           }
 
           v19 = *(*(&v48 + 1) + 8 * v18);
@@ -440,19 +440,19 @@ LABEL_10:
           {
             if ([v19 expressionType])
             {
-              v25 = PPSReaderLog();
-              if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
+              name2 = PPSReaderLog();
+              if (os_log_type_enabled(name2, OS_LOG_TYPE_DEBUG))
               {
-                [PPSRequestValidator _validatePredicateValue:v9 metricDefinition:v19 error:v25];
+                [PPSRequestValidator _validatePredicateValue:v9 metricDefinition:v19 error:name2];
               }
 
               v11 = v47;
               goto LABEL_35;
             }
 
-            v20 = [v19 constantValue];
+            constantValue = [v19 constantValue];
 
-            v19 = v20;
+            v19 = constantValue;
           }
 
           if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -462,7 +462,7 @@ LABEL_10:
 
           if (v16 == ++v18)
           {
-            v16 = [v14 countByEnumeratingWithState:&v48 objects:v62 count:16];
+            v16 = [name4 countByEnumeratingWithState:&v48 objects:v62 count:16];
             v10 = 1;
             if (v16)
             {
@@ -477,18 +477,18 @@ LABEL_10:
         v26 = PPSReaderLog();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
         {
-          v39 = [v9 subsystem];
-          v40 = [v9 category];
-          v41 = [v9 name];
+          subsystem = [v9 subsystem];
+          category = [v9 category];
+          name = [v9 name];
           v42 = objc_opt_class();
           v43 = NSStringFromClass(v42);
           v44 = NSStringFromClass(v12);
           *buf = 138413314;
-          v53 = v39;
+          v53 = subsystem;
           v54 = 2112;
-          v55 = v40;
+          v55 = category;
           v56 = 2112;
-          v57 = v41;
+          v57 = name;
           v58 = 2114;
           v59 = v43;
           v60 = 2114;
@@ -497,15 +497,15 @@ LABEL_10:
         }
 
         v11 = v47;
-        if (v46)
+        if (errorCopy)
         {
           v45 = MEMORY[0x277CCA9B8];
           v27 = MEMORY[0x277CBEAC0];
           v28 = MEMORY[0x277CCACA8];
-          v25 = [v9 name];
-          v29 = [v28 stringWithFormat:@"Mismatch between value type of '%@' in predicate and its metric definition.", v25];
+          name2 = [v9 name];
+          v29 = [v28 stringWithFormat:@"Mismatch between value type of '%@' in predicate and its metric definition.", name2];
           v30 = [v27 dictionaryWithObject:v29 forKey:*MEMORY[0x277CCA450]];
-          *v46 = [v45 errorWithDomain:@"com.apple.PerfPowerServicesReader.request" code:3 userInfo:v30];
+          *errorCopy = [v45 errorWithDomain:@"com.apple.PerfPowerServicesReader.request" code:3 userInfo:v30];
 
           goto LABEL_35;
         }
@@ -528,18 +528,18 @@ LABEL_21:
       v21 = PPSReaderLog();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
       {
-        v33 = [v9 subsystem];
-        v34 = [v9 category];
-        v35 = [v9 name];
+        subsystem2 = [v9 subsystem];
+        category2 = [v9 category];
+        name3 = [v9 name];
         v36 = objc_opt_class();
         v37 = NSStringFromClass(v36);
         v38 = NSStringFromClass(v12);
         *buf = 138413314;
-        v53 = v33;
+        v53 = subsystem2;
         v54 = 2112;
-        v55 = v34;
+        v55 = category2;
         v56 = 2112;
-        v57 = v35;
+        v57 = name3;
         v58 = 2114;
         v59 = v37;
         v60 = 2114;
@@ -549,15 +549,15 @@ LABEL_21:
         v13 = 0x277CCA000;
       }
 
-      if (a5)
+      if (error)
       {
         v22 = MEMORY[0x277CCA9B8];
         v23 = MEMORY[0x277CBEAC0];
         v24 = *(v13 + 3240);
-        v14 = [v9 name];
-        v19 = [v24 stringWithFormat:@"Mismatch between value type of '%@' in predicate and its metric definition.", v14];
-        v25 = [v23 dictionaryWithObject:v19 forKey:*MEMORY[0x277CCA450]];
-        *a5 = [v22 errorWithDomain:@"com.apple.PerfPowerServicesReader.request" code:3 userInfo:v25];
+        name4 = [v9 name];
+        v19 = [v24 stringWithFormat:@"Mismatch between value type of '%@' in predicate and its metric definition.", name4];
+        name2 = [v23 dictionaryWithObject:v19 forKey:*MEMORY[0x277CCA450]];
+        *error = [v22 errorWithDomain:@"com.apple.PerfPowerServicesReader.request" code:3 userInfo:name2];
 LABEL_35:
 
         goto LABEL_36;
@@ -573,18 +573,18 @@ LABEL_38:
   return v10;
 }
 
-+ (BOOL)_validateRequestType:(int64_t)a3 error:(id *)a4
++ (BOOL)_validateRequestType:(int64_t)type error:(id *)error
 {
-  if (a3 >= 3 && a4)
+  if (type >= 3 && error)
   {
     v6 = MEMORY[0x277CCA9B8];
     v7 = MEMORY[0x277CBEAC0];
     v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid request type."];
     v9 = [v7 dictionaryWithObject:v8 forKey:*MEMORY[0x277CCA450]];
-    *a4 = [v6 errorWithDomain:@"com.apple.PerfPowerServicesReader.request" code:2 userInfo:v9];
+    *error = [v6 errorWithDomain:@"com.apple.PerfPowerServicesReader.request" code:2 userInfo:v9];
   }
 
-  return a3 < 3;
+  return type < 3;
 }
 
 - (void)validateDataRequest:(uint64_t)a1 filepath:(NSObject *)a2 withError:.cold.1(uint64_t a1, NSObject *a2)

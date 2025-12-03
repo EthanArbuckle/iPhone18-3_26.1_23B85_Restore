@@ -1,14 +1,14 @@
 @interface JavaLangDouble
-+ (BOOL)isInfiniteWithDouble:(double)a3;
-+ (BOOL)isNaNWithDouble:(double)a3;
-+ (double)longBitsToDoubleWithLong:(int64_t)a3;
-+ (int64_t)doubleToRawLongBitsWithDouble:(double)a3;
++ (BOOL)isInfiniteWithDouble:(double)double;
++ (BOOL)isNaNWithDouble:(double)double;
++ (double)longBitsToDoubleWithLong:(int64_t)long;
++ (int64_t)doubleToRawLongBitsWithDouble:(double)double;
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isInfinite;
 - (BOOL)isNaN;
 - (char)charValue;
-- (int)compareToWithId:(id)a3;
+- (int)compareToWithId:(id)id;
 - (int)intValue;
 - (int64_t)longLongValue;
 - (signed)shortValue;
@@ -16,10 +16,10 @@
 
 @implementation JavaLangDouble
 
-- (int)compareToWithId:(id)a3
+- (int)compareToWithId:(id)id
 {
   objc_opt_class();
-  if (!a3)
+  if (!id)
   {
     JreThrowNullPointerException();
   }
@@ -30,7 +30,7 @@
   }
 
   value = self->value_;
-  v6 = *(a3 + 1);
+  v6 = *(id + 1);
 
   return JavaLangDouble_compareWithDouble_withDouble_(value, v6);
 }
@@ -57,17 +57,17 @@
   return v3;
 }
 
-+ (int64_t)doubleToRawLongBitsWithDouble:(double)a3
++ (int64_t)doubleToRawLongBitsWithDouble:(double)double
 {
   if ((atomic_load_explicit(JavaLangDouble__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100242234();
   }
 
-  return *&a3;
+  return *&double;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -77,7 +77,7 @@
 
   v5 = JavaLangDouble_doubleToLongBitsWithDouble_(self->value_);
   objc_opt_class();
-  if (!a3)
+  if (!equal)
   {
     JreThrowNullPointerException();
   }
@@ -87,7 +87,7 @@
     JreThrowClassCastException();
   }
 
-  return v5 == JavaLangDouble_doubleToLongBitsWithDouble_(*(a3 + 1));
+  return v5 == JavaLangDouble_doubleToLongBitsWithDouble_(*(equal + 1));
 }
 
 - (int)intValue
@@ -125,14 +125,14 @@
   return fabs(value) == INFINITY;
 }
 
-+ (BOOL)isInfiniteWithDouble:(double)a3
++ (BOOL)isInfiniteWithDouble:(double)double
 {
   if ((atomic_load_explicit(JavaLangDouble__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100242234();
   }
 
-  return fabs(a3) == INFINITY;
+  return fabs(double) == INFINITY;
 }
 
 - (BOOL)isNaN
@@ -146,7 +146,7 @@
   return 0;
 }
 
-+ (BOOL)isNaNWithDouble:(double)a3
++ (BOOL)isNaNWithDouble:(double)double
 {
   if ((atomic_load_explicit(JavaLangDouble__initialized, memory_order_acquire) & 1) == 0)
   {
@@ -156,14 +156,14 @@
   return 0;
 }
 
-+ (double)longBitsToDoubleWithLong:(int64_t)a3
++ (double)longBitsToDoubleWithLong:(int64_t)long
 {
   if ((atomic_load_explicit(JavaLangDouble__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100242234();
   }
 
-  return *&a3;
+  return *&long;
 }
 
 - (int64_t)longLongValue
@@ -210,7 +210,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [IOSClass_arrayType(+[IOSClass doubleClass](IOSClass "doubleClass")];
     objc_opt_class();

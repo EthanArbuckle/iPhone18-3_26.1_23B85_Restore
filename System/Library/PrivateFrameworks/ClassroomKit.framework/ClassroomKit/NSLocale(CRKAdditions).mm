@@ -6,10 +6,10 @@
 
 + (uint64_t)crk_showPhoneticNames
 {
-  v0 = [MEMORY[0x277CBEAF8] currentLocale];
-  v1 = [v0 languageCode];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  languageCode = [currentLocale languageCode];
 
-  v2 = [v1 isEqualToString:@"ja"];
+  v2 = [languageCode isEqualToString:@"ja"];
   return v2;
 }
 

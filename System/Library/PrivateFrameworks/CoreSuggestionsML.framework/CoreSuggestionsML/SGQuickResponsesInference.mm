@@ -1,101 +1,101 @@
 @interface SGQuickResponsesInference
-+ (id)dynamicIndicesAndTopIsDynamic:(id)a3 config:(id)a4;
-+ (id)dynamicLabelForScore:(id)a3 config:(id)a4;
-+ (id)languageForLocale:(id)a3 withLanguageDetectionForMessage:(id)a4;
-+ (id)normalizeLabelScores:(id)a3;
-+ (id)proactiveTriggerForDynamicLabel:(id)a3 context:(id)a4 language:(id)a5 useContactNames:(BOOL)a6;
-+ (id)quickResponsesForMessage:(id)a3 context:(id)a4 time:(id)a5 maxResponses:(unint64_t)a6 locale:(id)a7 recipientHandles:(id)a8 chunkPath:(id)a9 plistPath:(id)a10 espressoBinFilePath:(id)a11 vocabFilePath:(id)a12 includeCustomResponses:(BOOL)a13 includeResponsesToRobots:(BOOL)a14;
-+ (id)quickResponsesForMessage:(id)a3 conversationTurns:(id)a4 maxResponses:(unint64_t)a5 localeIdentifier:(id)a6 recipientHandles:(id)a7 chunkPath:(id)a8 plistPath:(id)a9 espressoBinFilePath:(id)a10 vocabFilePath:(id)a11 useContactNames:(BOOL)a12 includeCustomResponses:(BOOL)a13 includeResponsesToRobots:(BOOL)a14;
-+ (id)stringsForQuickResponses:(id)a3;
-+ (void)registerDisplayedQuickResponses:(id)a3 plistPath:(id)a4 vocabPath:(id)a5;
-+ (void)registerResponse:(id)a3 position:(id)a4 isCanned:(BOOL)a5 isUsingQuickResponses:(BOOL)a6 locale:(id)a7 plistPath:(id)a8 vocabPath:(id)a9;
-- (SGQuickResponsesInference)initWithLanguage:(id)a3 chunkPath:(id)a4 plistPath:(id)a5 espressoBinFilePath:(id)a6 vocabFilePath:(id)a7;
-- (SGQuickResponsesInference)initWithLanguage:(id)a3 plistPath:(id)a4 espressoBinFilePath:(id)a5 vocabFilePath:(id)a6 storeDirectory:(id)a7;
-- (SGQuickResponsesInference)initWithModel:(id)a3 ranking:(id)a4 personalization:(id)a5 rng:(id)a6 store:(id)a7;
-- (id)_getMergedPromptForMessage:(id)a3 conversationTurns:(id)a4;
-- (id)addCustomResponsesToCommonResponses:(id)a3 language:(id)a4 locale:(id)a5 recipient:(id)a6 modelScores:(id)a7 maxResponses:(unint64_t)a8 customResponsesParams:(id)a9;
-- (id)customResponsesForMessage:(id)a3 maximumResponses:(unint64_t)a4 context:(id)a5 language:(id)a6 locale:(id)a7 recipients:(id)a8;
-- (id)quickResponsesForMessage:(id)a3 maximumResponses:(unint64_t)a4 conversationHistory:(id)a5 context:(id)a6 time:(id)a7 language:(id)a8 locale:(id)a9 recipients:(id)a10 useContactNames:(BOOL)a11 includeCustomResponses:(BOOL)a12 includeResponsesToRobots:(BOOL)a13;
-- (id)quickResponsesFromReplyPositions:(id)a3 isConfident:(BOOL)a4 config:(id)a5;
-- (id)randomizedReplyPositionsForSemanticClass:(unint64_t)a3 responseCount:(unint64_t)a4 config:(id)a5;
-- (id)replyPositionsForSemanticClass:(unint64_t)a3 responseCount:(unint64_t)a4 config:(id)a5;
-- (id)replyPositionsFromSemanticClasses:(id)a3 config:(id)a4;
-- (id)scoresAndIsConfidentForMessage:(id)a3 language:(id)a4 locale:(id)a5;
-- (id)signpostedQuickResponsesForMessage:(id)a3 maximumResponses:(unint64_t)a4 conversationHistory:(id)a5 context:(id)a6 time:(id)a7 language:(id)a8 locale:(id)a9 recipients:(id)a10 useContactNames:(BOOL)a11 includeCustomResponses:(BOOL)a12 includeResponsesToRobots:(BOOL)a13;
++ (id)dynamicIndicesAndTopIsDynamic:(id)dynamic config:(id)config;
++ (id)dynamicLabelForScore:(id)score config:(id)config;
++ (id)languageForLocale:(id)locale withLanguageDetectionForMessage:(id)message;
++ (id)normalizeLabelScores:(id)scores;
++ (id)proactiveTriggerForDynamicLabel:(id)label context:(id)context language:(id)language useContactNames:(BOOL)names;
++ (id)quickResponsesForMessage:(id)message context:(id)context time:(id)time maxResponses:(unint64_t)responses locale:(id)locale recipientHandles:(id)handles chunkPath:(id)path plistPath:(id)self0 espressoBinFilePath:(id)self1 vocabFilePath:(id)self2 includeCustomResponses:(BOOL)self3 includeResponsesToRobots:(BOOL)self4;
++ (id)quickResponsesForMessage:(id)message conversationTurns:(id)turns maxResponses:(unint64_t)responses localeIdentifier:(id)identifier recipientHandles:(id)handles chunkPath:(id)path plistPath:(id)plistPath espressoBinFilePath:(id)self0 vocabFilePath:(id)self1 useContactNames:(BOOL)self2 includeCustomResponses:(BOOL)self3 includeResponsesToRobots:(BOOL)self4;
++ (id)stringsForQuickResponses:(id)responses;
++ (void)registerDisplayedQuickResponses:(id)responses plistPath:(id)path vocabPath:(id)vocabPath;
++ (void)registerResponse:(id)response position:(id)position isCanned:(BOOL)canned isUsingQuickResponses:(BOOL)responses locale:(id)locale plistPath:(id)path vocabPath:(id)vocabPath;
+- (SGQuickResponsesInference)initWithLanguage:(id)language chunkPath:(id)path plistPath:(id)plistPath espressoBinFilePath:(id)filePath vocabFilePath:(id)vocabFilePath;
+- (SGQuickResponsesInference)initWithLanguage:(id)language plistPath:(id)path espressoBinFilePath:(id)filePath vocabFilePath:(id)vocabFilePath storeDirectory:(id)directory;
+- (SGQuickResponsesInference)initWithModel:(id)model ranking:(id)ranking personalization:(id)personalization rng:(id)rng store:(id)store;
+- (id)_getMergedPromptForMessage:(id)message conversationTurns:(id)turns;
+- (id)addCustomResponsesToCommonResponses:(id)responses language:(id)language locale:(id)locale recipient:(id)recipient modelScores:(id)scores maxResponses:(unint64_t)maxResponses customResponsesParams:(id)params;
+- (id)customResponsesForMessage:(id)message maximumResponses:(unint64_t)responses context:(id)context language:(id)language locale:(id)locale recipients:(id)recipients;
+- (id)quickResponsesForMessage:(id)message maximumResponses:(unint64_t)responses conversationHistory:(id)history context:(id)context time:(id)time language:(id)language locale:(id)locale recipients:(id)self0 useContactNames:(BOOL)self1 includeCustomResponses:(BOOL)self2 includeResponsesToRobots:(BOOL)self3;
+- (id)quickResponsesFromReplyPositions:(id)positions isConfident:(BOOL)confident config:(id)config;
+- (id)randomizedReplyPositionsForSemanticClass:(unint64_t)class responseCount:(unint64_t)count config:(id)config;
+- (id)replyPositionsForSemanticClass:(unint64_t)class responseCount:(unint64_t)count config:(id)config;
+- (id)replyPositionsFromSemanticClasses:(id)classes config:(id)config;
+- (id)scoresAndIsConfidentForMessage:(id)message language:(id)language locale:(id)locale;
+- (id)signpostedQuickResponsesForMessage:(id)message maximumResponses:(unint64_t)responses conversationHistory:(id)history context:(id)context time:(id)time language:(id)language locale:(id)locale recipients:(id)self0 useContactNames:(BOOL)self1 includeCustomResponses:(BOOL)self2 includeResponsesToRobots:(BOOL)self3;
 @end
 
 @implementation SGQuickResponsesInference
 
-- (id)customResponsesForMessage:(id)a3 maximumResponses:(unint64_t)a4 context:(id)a5 language:(id)a6 locale:(id)a7 recipients:(id)a8
+- (id)customResponsesForMessage:(id)message maximumResponses:(unint64_t)responses context:(id)context language:(id)language locale:(id)locale recipients:(id)recipients
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (!v15)
+  messageCopy = message;
+  contextCopy = context;
+  languageCopy = language;
+  localeCopy = locale;
+  recipientsCopy = recipients;
+  if (!messageCopy)
   {
-    v55 = [MEMORY[0x277CCA890] currentHandler];
-    [v55 handleFailureInMethod:a2 object:self file:@"SGQuickResponsesInference.m" lineNumber:887 description:{@"Invalid parameter not satisfying: %@", @"message"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGQuickResponsesInference.m" lineNumber:887 description:{@"Invalid parameter not satisfying: %@", @"message"}];
   }
 
-  v20 = [(SGQuickResponsesModel *)self->_model config];
-  v21 = v20;
-  if (v15 && ([v20 customResponsesParameters], v22 = objc_claimAutoreleasedReturnValue(), v22, v22))
+  config = [(SGQuickResponsesModel *)self->_model config];
+  v21 = config;
+  if (messageCopy && ([config customResponsesParameters], v22 = objc_claimAutoreleasedReturnValue(), v22, v22))
   {
-    v23 = [(SGQuickResponsesInference *)self scoresAndIsConfidentForMessage:v15 language:v17 locale:v18];
+    v23 = [(SGQuickResponsesInference *)self scoresAndIsConfidentForMessage:messageCopy language:languageCopy locale:localeCopy];
     v24 = v23;
     if (v23)
     {
-      v58 = v17;
-      v62 = v16;
-      v63 = v19;
-      v25 = [v23 modelScores];
-      v26 = [v24 normalizedModelScores];
-      v27 = [v21 customResponsesParameters];
-      v28 = [v27 useNonNegativeClassesOnly];
+      v58 = languageCopy;
+      v62 = contextCopy;
+      v63 = recipientsCopy;
+      modelScores = [v23 modelScores];
+      normalizedModelScores = [v24 normalizedModelScores];
+      customResponsesParameters = [v21 customResponsesParameters];
+      useNonNegativeClassesOnly = [customResponsesParameters useNonNegativeClassesOnly];
 
-      v59 = v26;
-      if (v28)
+      v59 = normalizedModelScores;
+      if (useNonNegativeClassesOnly)
       {
-        v29 = v26;
+        v29 = normalizedModelScores;
 
-        v25 = v29;
+        modelScores = v29;
       }
 
-      v30 = [v21 customResponsesParameters];
-      v17 = v58;
-      v60 = a4;
+      customResponsesParameters2 = [v21 customResponsesParameters];
+      languageCopy = v58;
+      responsesCopy = responses;
       v61 = v24;
       if (v63 && [v63 count] == 1)
       {
-        v31 = [v63 firstObject];
+        firstObject = [v63 firstObject];
       }
 
       else
       {
-        v31 = 0;
+        firstObject = 0;
       }
 
       store = self->_store;
-      [v30 distanceThreshold];
+      [customResponsesParameters2 distanceThreshold];
       v35 = v34;
-      [v30 countExponent];
+      [customResponsesParameters2 countExponent];
       v37 = v36;
-      [v30 minDecayedCountForPrediction];
+      [customResponsesParameters2 minDecayedCountForPrediction];
       v39 = v38;
-      v40 = [v30 compatibilityVersion];
-      v41 = [v30 allowProfanity];
-      [v30 minimumTimeIntervalSecs];
+      compatibilityVersion = [customResponsesParameters2 compatibilityVersion];
+      allowProfanity = [customResponsesParameters2 allowProfanity];
+      [customResponsesParameters2 minimumTimeIntervalSecs];
       v43 = v42;
-      [v30 usageSpreadExponent];
+      [customResponsesParameters2 usageSpreadExponent];
       *&v45 = v44;
-      LOBYTE(v56) = v41;
-      v57 = v25;
+      LOBYTE(v56) = allowProfanity;
+      v57 = modelScores;
       *&v44 = v35;
       *&v46 = v37;
       *&v47 = v39;
-      v48 = [(SGQuickResponsesStore *)store nearestCustomResponsesAndScoresToPromptEmbedding:v25 recipient:v31 limit:v60 withinRadius:v40 responseCountExponent:v58 minimumDecayedCount:v18 compatibilityVersion:v44 language:v46 locale:v47 allowProfanity:v43 minimumTimeInterval:v45 usageSpreadExponent:v56];
+      v48 = [(SGQuickResponsesStore *)store nearestCustomResponsesAndScoresToPromptEmbedding:modelScores recipient:firstObject limit:responsesCopy withinRadius:compatibilityVersion responseCountExponent:v58 minimumDecayedCount:localeCopy compatibilityVersion:v44 language:v46 locale:v47 allowProfanity:v43 minimumTimeInterval:v45 usageSpreadExponent:v56];
       v49 = objc_opt_new();
       v64[0] = MEMORY[0x277D85DD0];
       v64[1] = 3221225472;
@@ -103,16 +103,16 @@
       v64[3] = &unk_278EB78C8;
       v50 = v49;
       v65 = v50;
-      v66 = v30;
-      v51 = v30;
+      v66 = customResponsesParameters2;
+      v51 = customResponsesParameters2;
       [v48 enumerateObjectsUsingBlock:v64];
-      v52 = v31;
+      v52 = firstObject;
       v53 = v66;
       v32 = v50;
 
       v24 = v61;
-      v16 = v62;
-      v19 = v63;
+      contextCopy = v62;
+      recipientsCopy = v63;
     }
 
     else
@@ -161,18 +161,18 @@ void __107__SGQuickResponsesInference_customResponsesForMessage_maximumResponses
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)addCustomResponsesToCommonResponses:(id)a3 language:(id)a4 locale:(id)a5 recipient:(id)a6 modelScores:(id)a7 maxResponses:(unint64_t)a8 customResponsesParams:(id)a9
+- (id)addCustomResponsesToCommonResponses:(id)responses language:(id)language locale:(id)locale recipient:(id)recipient modelScores:(id)scores maxResponses:(unint64_t)maxResponses customResponsesParams:(id)params
 {
   v70 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a9;
-  if ([v20 isCustomResponsesEnabled])
+  responsesCopy = responses;
+  languageCopy = language;
+  localeCopy = locale;
+  recipientCopy = recipient;
+  scoresCopy = scores;
+  paramsCopy = params;
+  if ([paramsCopy isCustomResponsesEnabled])
   {
-    v62 = v15;
+    v62 = responsesCopy;
     v21 = sgSignpostHandle();
     ptr = 7;
     v22 = os_signpost_id_make_with_pointer(v21, &ptr);
@@ -189,25 +189,25 @@ void __107__SGQuickResponsesInference_customResponsesForMessage_maximumResponses
     spid = v22;
 
     store = self->_store;
-    [v20 distanceThreshold];
+    [paramsCopy distanceThreshold];
     v27 = v26;
-    [v20 countExponent];
+    [paramsCopy countExponent];
     v29 = v28;
-    [v20 minDecayedCountForPrediction];
+    [paramsCopy minDecayedCountForPrediction];
     v31 = v30;
-    v32 = [v20 compatibilityVersion];
-    v33 = [v20 allowProfanity];
-    [v20 minimumTimeIntervalSecs];
+    compatibilityVersion = [paramsCopy compatibilityVersion];
+    allowProfanity = [paramsCopy allowProfanity];
+    [paramsCopy minimumTimeIntervalSecs];
     v35 = v34;
-    [v20 usageSpreadExponent];
+    [paramsCopy usageSpreadExponent];
     *&v37 = v36;
-    LOBYTE(v56) = v33;
-    v60 = v18;
+    LOBYTE(v56) = allowProfanity;
+    v60 = recipientCopy;
     *&v36 = v27;
     *&v38 = v29;
     *&v39 = v31;
-    v61 = v17;
-    v40 = [(SGQuickResponsesStore *)store nearestCustomResponsesToPromptEmbedding:v19 recipient:v18 limit:a8 withinRadius:v32 responseCountExponent:v16 minimumDecayedCount:v17 compatibilityVersion:v36 language:v38 locale:v39 allowProfanity:v35 minimumTimeInterval:v37 usageSpreadExponent:v56];
+    v61 = localeCopy;
+    v40 = [(SGQuickResponsesStore *)store nearestCustomResponsesToPromptEmbedding:scoresCopy recipient:recipientCopy limit:maxResponses withinRadius:compatibilityVersion responseCountExponent:languageCopy minimumDecayedCount:localeCopy compatibilityVersion:v36 language:v38 locale:v39 allowProfanity:v35 minimumTimeInterval:v37 usageSpreadExponent:v56];
     v41 = objc_opt_new();
     v63 = 0u;
     v64 = 0u;
@@ -230,7 +230,7 @@ void __107__SGQuickResponsesInference_customResponsesForMessage_maximumResponses
 
           BYTE2(v57) = 1;
           LOWORD(v57) = 1;
-          v47 = [[SGQuickResponse alloc] initWithText:*(*(&v63 + 1) + 8 * i) lang:v16 replyTextId:-1 styleGroupId:-1 semanticClassId:-1 modelId:-1 categoryId:-1 isCustomResponse:v57 isRobotResponse:spid isConfident:?];
+          v47 = [[SGQuickResponse alloc] initWithText:*(*(&v63 + 1) + 8 * i) lang:languageCopy replyTextId:-1 styleGroupId:-1 semanticClassId:-1 modelId:-1 categoryId:-1 isCustomResponse:v57 isRobotResponse:spid isConfident:?];
           [v41 addObject:v47];
         }
 
@@ -242,8 +242,8 @@ void __107__SGQuickResponsesInference_customResponsesForMessage_maximumResponses
 
     if ([v41 count])
     {
-      v15 = v62;
-      if ([v41 count] < a8 && objc_msgSend(v62, "count"))
+      responsesCopy = v62;
+      if ([v41 count] < maxResponses && objc_msgSend(v62, "count"))
       {
         [v62 enumerateObjectsUsingBlock:&__block_literal_global_150];
         v48 = [v41 arrayByAddingObjectsFromArray:v62];
@@ -256,15 +256,15 @@ void __107__SGQuickResponsesInference_customResponsesForMessage_maximumResponses
         v50 = [v41 copy];
       }
 
-      v18 = v60;
-      if ([v50 count] > a8)
+      recipientCopy = v60;
+      if ([v50 count] > maxResponses)
       {
-        v51 = [v50 subarrayWithRange:{0, a8}];
+        v51 = [v50 subarrayWithRange:{0, maxResponses}];
 
         v50 = v51;
       }
 
-      v17 = v61;
+      localeCopy = v61;
       v52 = sgSignpostHandle();
       v53 = v52;
       if (v59 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v52))
@@ -276,16 +276,16 @@ void __107__SGQuickResponsesInference_customResponsesForMessage_maximumResponses
 
     else
     {
-      v15 = v62;
+      responsesCopy = v62;
       v50 = v62;
-      v18 = v60;
-      v17 = v61;
+      recipientCopy = v60;
+      localeCopy = v61;
     }
   }
 
   else
   {
-    v50 = v15;
+    v50 = responsesCopy;
   }
 
   v54 = *MEMORY[0x277D85DE8];
@@ -310,36 +310,36 @@ id __138__SGQuickResponsesInference_addCustomResponsesToCommonResponses_language
   return v3;
 }
 
-- (id)quickResponsesFromReplyPositions:(id)a3 isConfident:(BOOL)a4 config:(id)a5
+- (id)quickResponsesFromReplyPositions:(id)positions isConfident:(BOOL)confident config:(id)config
 {
   v74 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a5;
-  v8 = v7;
-  if (v6)
+  positionsCopy = positions;
+  configCopy = config;
+  v8 = configCopy;
+  if (positionsCopy)
   {
-    v62 = [v7 language];
+    language = [configCopy language];
     v63 = objc_opt_new();
-    v9 = [v8 replies];
+    replies = [v8 replies];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
       v51 = v8;
-      v11 = [v8 replies];
-      v59 = [v11 replyTextParent];
-      v58 = [v11 styleGroupParent];
-      v57 = [v11 semanticClassParent];
-      v56 = [v11 models];
-      v60 = v11;
-      v55 = [v11 replyTexts];
+      replies2 = [v8 replies];
+      replyTextParent = [replies2 replyTextParent];
+      styleGroupParent = [replies2 styleGroupParent];
+      semanticClassParent = [replies2 semanticClassParent];
+      models = [replies2 models];
+      v60 = replies2;
+      replyTexts = [replies2 replyTexts];
       v64 = 0u;
       v65 = 0u;
       v66 = 0u;
       v67 = 0u;
-      v52 = v6;
-      obj = v6;
+      v52 = positionsCopy;
+      obj = positionsCopy;
       v12 = [obj countByEnumeratingWithState:&v64 objects:v72 count:16];
       if (v12)
       {
@@ -355,33 +355,33 @@ id __138__SGQuickResponsesInference_addCustomResponsesToCommonResponses_language
             }
 
             v16 = *(*(&v64 + 1) + 8 * i);
-            v17 = [v16 first];
-            v18 = [v17 unsignedIntegerValue];
+            first = [v16 first];
+            unsignedIntegerValue = [first unsignedIntegerValue];
 
-            v19 = [v16 second];
-            v20 = [v19 unsignedIntegerValue];
+            second = [v16 second];
+            unsignedIntegerValue2 = [second unsignedIntegerValue];
 
-            v21 = [v60 semanticClassReplyTexts];
-            v22 = [v21 objectAtIndexedSubscript:v18];
-            v23 = [v22 firstObject];
-            v24 = [v23 unsignedIntegerValue];
+            semanticClassReplyTexts = [v60 semanticClassReplyTexts];
+            v22 = [semanticClassReplyTexts objectAtIndexedSubscript:unsignedIntegerValue];
+            firstObject = [v22 firstObject];
+            unsignedIntegerValue3 = [firstObject unsignedIntegerValue];
 
-            v25 = [v59 objectAtIndexedSubscript:v24 + v20];
-            v26 = [v25 unsignedIntegerValue];
+            v25 = [replyTextParent objectAtIndexedSubscript:unsignedIntegerValue3 + unsignedIntegerValue2];
+            unsignedIntegerValue4 = [v25 unsignedIntegerValue];
 
-            v27 = [v58 objectAtIndexedSubscript:v26];
-            v28 = [v27 unsignedIntegerValue];
+            v27 = [styleGroupParent objectAtIndexedSubscript:unsignedIntegerValue4];
+            unsignedIntegerValue5 = [v27 unsignedIntegerValue];
 
-            v29 = [v57 objectAtIndexedSubscript:v28];
-            v30 = [v29 unsignedIntegerValue];
+            v29 = [semanticClassParent objectAtIndexedSubscript:unsignedIntegerValue5];
+            unsignedIntegerValue6 = [v29 unsignedIntegerValue];
 
-            v31 = [v56 objectAtIndexedSubscript:v30];
-            v32 = [v31 category];
+            v31 = [models objectAtIndexedSubscript:unsignedIntegerValue6];
+            category = [v31 category];
 
-            v33 = [v55 objectAtIndexedSubscript:v24 + v20];
-            BYTE2(v50) = a4;
+            v33 = [replyTexts objectAtIndexedSubscript:unsignedIntegerValue3 + unsignedIntegerValue2];
+            BYTE2(v50) = confident;
             LOWORD(v50) = 0;
-            v34 = [SGQuickResponse initWithText:"initWithText:lang:replyTextId:styleGroupId:semanticClassId:modelId:categoryId:isCustomResponse:isRobotResponse:isConfident:" lang:v33 replyTextId:v62 styleGroupId:v24 + v20 semanticClassId:v26 modelId:v28 categoryId:v30 isCustomResponse:v32 isRobotResponse:v50 isConfident:?];
+            v34 = [SGQuickResponse initWithText:"initWithText:lang:replyTextId:styleGroupId:semanticClassId:modelId:categoryId:isCustomResponse:isRobotResponse:isConfident:" lang:v33 replyTextId:language styleGroupId:unsignedIntegerValue3 + unsignedIntegerValue2 semanticClassId:unsignedIntegerValue4 modelId:unsignedIntegerValue5 categoryId:unsignedIntegerValue6 isCustomResponse:category isRobotResponse:v50 isConfident:?];
             [v63 addObject:v34];
           }
 
@@ -392,7 +392,7 @@ id __138__SGQuickResponsesInference_addCustomResponsesToCommonResponses_language
       }
 
       v8 = v51;
-      v6 = v52;
+      positionsCopy = v52;
     }
 
     else
@@ -401,12 +401,12 @@ id __138__SGQuickResponsesInference_addCustomResponsesToCommonResponses_language
       v71 = 0u;
       v68 = 0u;
       v69 = 0u;
-      v60 = v6;
+      v60 = positionsCopy;
       v35 = [v60 countByEnumeratingWithState:&v68 objects:v73 count:16];
       if (v35)
       {
         v36 = v35;
-        v53 = v6;
+        v53 = positionsCopy;
         v37 = *v69;
         do
         {
@@ -418,19 +418,19 @@ id __138__SGQuickResponsesInference_addCustomResponsesToCommonResponses_language
             }
 
             v39 = *(*(&v68 + 1) + 8 * j);
-            v40 = [v39 first];
-            v41 = [v40 unsignedIntegerValue];
+            first2 = [v39 first];
+            unsignedIntegerValue7 = [first2 unsignedIntegerValue];
 
-            v42 = [v39 second];
-            v43 = [v42 unsignedIntegerValue];
+            second2 = [v39 second];
+            unsignedIntegerValue8 = [second2 unsignedIntegerValue];
 
-            v44 = [v8 replies];
-            v45 = [v44 replyTextsForIndex:v41];
-            v46 = [v45 objectAtIndexedSubscript:v43];
+            replies3 = [v8 replies];
+            v45 = [replies3 replyTextsForIndex:unsignedIntegerValue7];
+            v46 = [v45 objectAtIndexedSubscript:unsignedIntegerValue8];
 
-            BYTE2(v50) = a4;
+            BYTE2(v50) = confident;
             LOWORD(v50) = 0;
-            v47 = [SGQuickResponse initWithText:"initWithText:lang:replyTextId:styleGroupId:semanticClassId:modelId:categoryId:isCustomResponse:isRobotResponse:isConfident:" lang:v46 replyTextId:v62 styleGroupId:-1 semanticClassId:-1 modelId:v41 categoryId:-1 isCustomResponse:-1 isRobotResponse:v50 isConfident:?];
+            v47 = [SGQuickResponse initWithText:"initWithText:lang:replyTextId:styleGroupId:semanticClassId:modelId:categoryId:isCustomResponse:isRobotResponse:isConfident:" lang:v46 replyTextId:language styleGroupId:-1 semanticClassId:-1 modelId:unsignedIntegerValue7 categoryId:-1 isCustomResponse:-1 isRobotResponse:v50 isConfident:?];
             [v63 addObject:v47];
           }
 
@@ -438,7 +438,7 @@ id __138__SGQuickResponsesInference_addCustomResponsesToCommonResponses_language
         }
 
         while (v36);
-        v6 = v53;
+        positionsCopy = v53;
       }
     }
   }
@@ -453,68 +453,68 @@ id __138__SGQuickResponsesInference_addCustomResponsesToCommonResponses_language
   return v63;
 }
 
-- (id)randomizedReplyPositionsForSemanticClass:(unint64_t)a3 responseCount:(unint64_t)a4 config:(id)a5
+- (id)randomizedReplyPositionsForSemanticClass:(unint64_t)class responseCount:(unint64_t)count config:(id)config
 {
   v46 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  configCopy = config;
   v9 = objc_opt_new();
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v11 = [v8 replies];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:class];
+  replies = [configCopy replies];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v13 = [v8 replies];
-  v14 = v13;
+  replies2 = [configCopy replies];
+  v14 = replies2;
   if (isKindOfClass)
   {
-    v34 = v8;
-    v15 = [v13 semanticClassStyleGroups];
-    v33 = [v15 objectAtIndexedSubscript:a3];
+    v34 = configCopy;
+    semanticClassStyleGroups = [replies2 semanticClassStyleGroups];
+    v33 = [semanticClassStyleGroups objectAtIndexedSubscript:class];
 
-    v16 = [v14 styleGroupReplyTexts];
-    v17 = [v14 semanticClassReplyTexts];
-    v18 = [v17 objectAtIndexedSubscript:a3];
-    v19 = [v18 firstObject];
-    v20 = [v19 unsignedIntegerValue];
+    styleGroupReplyTexts = [v14 styleGroupReplyTexts];
+    semanticClassReplyTexts = [v14 semanticClassReplyTexts];
+    v18 = [semanticClassReplyTexts objectAtIndexedSubscript:class];
+    firstObject = [v18 firstObject];
+    unsignedIntegerValue = [firstObject unsignedIntegerValue];
 
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __91__SGQuickResponsesInference_randomizedReplyPositionsForSemanticClass_responseCount_config___block_invoke;
     v35[3] = &unk_278EB7880;
-    v21 = v16;
+    v21 = styleGroupReplyTexts;
     v36 = v21;
-    v37 = self;
-    v40 = v20;
+    selfCopy = self;
+    v40 = unsignedIntegerValue;
     v22 = v9;
     v38 = v22;
     v39 = v10;
     [v33 enumerateObjectsUsingBlock:v35];
     [SGRandomization shuffleMutableArray:v22 withRng:self->_rng];
-    if ([v22 count] <= a4)
+    if ([v22 count] <= count)
     {
-      a4 = [v22 count];
+      count = [v22 count];
     }
 
-    v23 = [v22 subarrayWithRange:{0, a4}];
+    v23 = [v22 subarrayWithRange:{0, count}];
 
-    v8 = v34;
+    configCopy = v34;
   }
 
   else
   {
-    v24 = [v13 replyCountForIndex:a3];
+    v24 = [replies2 replyCountForIndex:class];
 
-    if (v24 >= a4)
+    if (v24 >= count)
     {
-      v25 = a4;
+      countCopy = count;
     }
 
     else
     {
-      v25 = v24;
+      countCopy = v24;
     }
 
-    v14 = [SGRandomization shuffledSamplingWithoutReplacementForK:v25 fromN:v24 withRng:self->_rng];
+    v14 = [SGRandomization shuffledSamplingWithoutReplacementForK:countCopy fromN:v24 withRng:self->_rng];
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
@@ -575,53 +575,53 @@ void __91__SGQuickResponsesInference_randomizedReplyPositionsForSemanticClass_re
   [v9 addObject:v10];
 }
 
-- (id)replyPositionsForSemanticClass:(unint64_t)a3 responseCount:(unint64_t)a4 config:(id)a5
+- (id)replyPositionsForSemanticClass:(unint64_t)class responseCount:(unint64_t)count config:(id)config
 {
-  v7 = a5;
+  configCopy = config;
   v8 = objc_opt_new();
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v10 = [v7 replies];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:class];
+  replies = [configCopy replies];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v12 = [v7 replies];
-  v13 = v12;
+  replies2 = [configCopy replies];
+  v13 = replies2;
   if (isKindOfClass)
   {
-    v39 = v7;
-    v14 = [v12 semanticClassStyleGroups];
-    v15 = [v14 objectAtIndexedSubscript:a3];
+    v39 = configCopy;
+    semanticClassStyleGroups = [replies2 semanticClassStyleGroups];
+    v15 = [semanticClassStyleGroups objectAtIndexedSubscript:class];
 
-    v16 = [v13 styleGroupReplyTexts];
-    if ([v15 count] <= a4)
+    styleGroupReplyTexts = [v13 styleGroupReplyTexts];
+    if ([v15 count] <= count)
     {
-      a4 = [v15 count];
+      count = [v15 count];
     }
 
-    v17 = [v13 semanticClassReplyTexts];
-    v18 = [v17 objectAtIndexedSubscript:a3];
-    v19 = [v18 firstObject];
-    v41 = [v19 unsignedIntegerValue];
+    semanticClassReplyTexts = [v13 semanticClassReplyTexts];
+    v18 = [semanticClassReplyTexts objectAtIndexedSubscript:class];
+    firstObject = [v18 firstObject];
+    unsignedIntegerValue = [firstObject unsignedIntegerValue];
 
-    if (a4)
+    if (count)
     {
       v20 = 0;
-      v40 = a4;
+      countCopy = count;
       do
       {
         v21 = [v15 objectAtIndexedSubscript:v20];
-        v22 = [v16 objectAtIndexedSubscript:{objc_msgSend(v21, "unsignedIntegerValue")}];
-        v23 = [v22 firstObject];
+        v22 = [styleGroupReplyTexts objectAtIndexedSubscript:{objc_msgSend(v21, "unsignedIntegerValue")}];
+        firstObject2 = [v22 firstObject];
         v24 = v9;
         v25 = v8;
-        v26 = v16;
+        v26 = styleGroupReplyTexts;
         v27 = v15;
-        v28 = [v23 unsignedIntegerValue];
+        unsignedIntegerValue2 = [firstObject2 unsignedIntegerValue];
 
         v29 = objc_alloc(MEMORY[0x277CCABB0]);
-        v30 = v28 - v41;
+        v30 = unsignedIntegerValue2 - unsignedIntegerValue;
         v15 = v27;
-        v16 = v26;
+        styleGroupReplyTexts = v26;
         v8 = v25;
         v9 = v24;
         v31 = [v29 initWithUnsignedInteger:v30];
@@ -631,21 +631,21 @@ void __91__SGQuickResponsesInference_randomizedReplyPositionsForSemanticClass_re
         ++v20;
       }
 
-      while (v40 != v20);
+      while (countCopy != v20);
     }
 
-    v7 = v39;
+    configCopy = v39;
   }
 
   else
   {
-    if ([v12 replyCountForIndex:a3] <= a4)
+    if ([replies2 replyCountForIndex:class] <= count)
     {
-      v33 = [v7 replies];
-      a4 = [v33 replyCountForIndex:a3];
+      replies3 = [configCopy replies];
+      count = [replies3 replyCountForIndex:class];
     }
 
-    if (a4)
+    if (count)
     {
       v34 = 0;
       do
@@ -657,28 +657,28 @@ void __91__SGQuickResponsesInference_randomizedReplyPositionsForSemanticClass_re
         ++v34;
       }
 
-      while (a4 != v34);
+      while (count != v34);
     }
   }
 
   return v8;
 }
 
-- (id)replyPositionsFromSemanticClasses:(id)a3 config:(id)a4
+- (id)replyPositionsFromSemanticClasses:(id)classes config:(id)config
 {
   v50 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  classesCopy = classes;
+  configCopy = config;
+  if (classesCopy)
   {
-    v34 = v7;
+    v34 = configCopy;
     v8 = objc_opt_new();
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v33 = v6;
-    v9 = v6;
+    v33 = classesCopy;
+    v9 = classesCopy;
     v10 = [v9 countByEnumeratingWithState:&v44 objects:v49 count:16];
     if (v10)
     {
@@ -695,9 +695,9 @@ void __91__SGQuickResponsesInference_randomizedReplyPositionsForSemanticClass_re
 
           v14 = *(*(&v44 + 1) + 8 * i);
           v15 = [v8 objectForKeyedSubscript:v14];
-          v16 = [v15 unsignedIntegerValue];
+          unsignedIntegerValue = [v15 unsignedIntegerValue];
 
-          v17 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:v16 + 1];
+          v17 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:unsignedIntegerValue + 1];
           [v8 setObject:v17 forKeyedSubscript:v14];
         }
 
@@ -713,7 +713,7 @@ void __91__SGQuickResponsesInference_randomizedReplyPositionsForSemanticClass_re
     v40[2] = __70__SGQuickResponsesInference_replyPositionsFromSemanticClasses_config___block_invoke;
     v40[3] = &unk_278EB7858;
     v41 = v34;
-    v42 = self;
+    selfCopy = self;
     v19 = v18;
     v43 = v19;
     [v8 enumerateKeysAndObjectsUsingBlock:v40];
@@ -740,11 +740,11 @@ void __91__SGQuickResponsesInference_randomizedReplyPositionsForSemanticClass_re
           v25 = *(*(&v36 + 1) + 8 * j);
           v26 = [v19 objectForKeyedSubscript:v25];
           v27 = [v8 objectForKeyedSubscript:v25];
-          v28 = [v27 unsignedIntegerValue];
+          unsignedIntegerValue2 = [v27 unsignedIntegerValue];
 
-          v29 = [v26 objectAtIndexedSubscript:{objc_msgSend(v26, "count") - v28}];
+          v29 = [v26 objectAtIndexedSubscript:{objc_msgSend(v26, "count") - unsignedIntegerValue2}];
           [v20 addObject:v29];
-          v30 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:v28 - 1];
+          v30 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:unsignedIntegerValue2 - 1];
           [v8 setObject:v30 forKeyedSubscript:v25];
         }
 
@@ -754,8 +754,8 @@ void __91__SGQuickResponsesInference_randomizedReplyPositionsForSemanticClass_re
       while (v22);
     }
 
-    v6 = v33;
-    v7 = v34;
+    classesCopy = v33;
+    configCopy = v34;
   }
 
   else
@@ -804,27 +804,27 @@ LABEL_6:
   [*(a1 + 48) setObject:v15 forKeyedSubscript:v6];
 }
 
-- (id)quickResponsesForMessage:(id)a3 maximumResponses:(unint64_t)a4 conversationHistory:(id)a5 context:(id)a6 time:(id)a7 language:(id)a8 locale:(id)a9 recipients:(id)a10 useContactNames:(BOOL)a11 includeCustomResponses:(BOOL)a12 includeResponsesToRobots:(BOOL)a13
+- (id)quickResponsesForMessage:(id)message maximumResponses:(unint64_t)responses conversationHistory:(id)history context:(id)context time:(id)time language:(id)language locale:(id)locale recipients:(id)self0 useContactNames:(BOOL)self1 includeCustomResponses:(BOOL)self2 includeResponsesToRobots:(BOOL)self3
 {
   v178 = *MEMORY[0x277D85DE8];
-  v19 = a3;
-  v164 = a5;
-  v163 = a6;
-  v162 = a7;
-  v20 = a8;
-  v21 = a9;
-  v166 = a10;
+  messageCopy = message;
+  historyCopy = history;
+  contextCopy = context;
+  timeCopy = time;
+  languageCopy = language;
+  localeCopy = locale;
+  recipientsCopy = recipients;
   v22 = objc_autoreleasePoolPush();
-  v23 = v22;
-  v167 = v19;
-  if (v19)
+  contextCopy2 = v22;
+  v167 = messageCopy;
+  if (messageCopy)
   {
     context = v22;
-    v24 = [(SGQuickResponsesModel *)self->_model config];
-    v25 = self;
-    if (v21)
+    config = [(SGQuickResponsesModel *)self->_model config];
+    selfCopy = self;
+    if (localeCopy)
     {
-      v26 = [SGLanguageDetection languageForLocaleIdentifier:v21];
+      v26 = [SGLanguageDetection languageForLocaleIdentifier:localeCopy];
     }
 
     else
@@ -839,7 +839,7 @@ LABEL_6:
 
     else
     {
-      v27 = v20;
+      v27 = languageCopy;
     }
 
     v28 = v27;
@@ -857,21 +857,21 @@ LABEL_6:
     }
 
     v160 = v28;
-    if (a13)
+    if (robots)
     {
-      v34 = [SGQuickResponsesToRobots repliesToRobot:v167 language:v28 recipients:v166];
+      v34 = [SGQuickResponsesToRobots repliesToRobot:v167 language:v28 recipients:recipientsCopy];
       if ([v34 count])
       {
         v35 = sgLogHandle();
         v36 = v35;
-        v37 = v166;
+        v37 = recipientsCopy;
         if (v33 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v35))
         {
           *buf = 0;
           _os_signpost_emit_with_name_impl(&dword_24799E000, v36, OS_SIGNPOST_INTERVAL_END, v30, "QuickResponsesForMessageRobo", &unk_2479DB655, buf, 2u);
         }
 
-        v38 = v164;
+        v38 = historyCopy;
         v39 = v36;
         goto LABEL_107;
       }
@@ -885,57 +885,57 @@ LABEL_6:
       _os_signpost_emit_with_name_impl(&dword_24799E000, v41, OS_SIGNPOST_INTERVAL_END, v30, "QuickResponsesForMessageRobo", &unk_2479DB655, buf, 2u);
     }
 
-    v42 = [v24 language];
-    v39 = v42;
-    if (v28 && ([v42 isEqualToString:v28]& 1) == 0)
+    language = [config language];
+    v39 = language;
+    if (v28 && ([language isEqualToString:v28]& 1) == 0)
     {
-      v37 = v166;
+      v37 = recipientsCopy;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v175 = v21;
+        v175 = localeCopy;
         v176 = 2112;
         v177 = v39;
         _os_log_error_impl(&dword_24799E000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Cannot predict for locale %@ using model with language %@", buf, 0x16u);
       }
 
       v34 = 0;
-      v38 = v164;
+      v38 = historyCopy;
       goto LABEL_107;
     }
 
     v156 = v39;
-    v43 = [(SGQuickResponsesModel *)self->_model config];
-    v44 = [v43 predictionParams];
-    v45 = [v44 maxPromptLength];
+    config2 = [(SGQuickResponsesModel *)self->_model config];
+    predictionParams = [config2 predictionParams];
+    maxPromptLength = [predictionParams maxPromptLength];
 
-    v37 = v166;
-    if ([v167 length] > v45)
+    v37 = recipientsCopy;
+    if ([v167 length] > maxPromptLength)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         *buf = 134217984;
-        v175 = v45;
+        v175 = maxPromptLength;
         _os_log_impl(&dword_24799E000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Returning nil because message length exceeds maximum length %ld)", buf, 0xCu);
       }
 
       v34 = 0;
-      v38 = v164;
+      v38 = historyCopy;
       v39 = v156;
       goto LABEL_107;
     }
 
-    v38 = v164;
-    if (!v164)
+    v38 = historyCopy;
+    if (!historyCopy)
     {
       v46 = +[SGConversationTracker instance];
-      v47 = [objc_alloc(MEMORY[0x277D01F70]) initWithText:v167 senderID:v163 timestamp:v162];
+      v47 = [objc_alloc(MEMORY[0x277D01F70]) initWithText:v167 senderID:contextCopy timestamp:timeCopy];
       v38 = [v46 addMessage:v47];
     }
 
-    v48 = v25;
-    v154 = [(SGQuickResponsesInference *)v25 _getMergedPromptForMessage:v167 conversationTurns:v38];
-    v49 = [SGQuickResponsesInference scoresAndIsConfidentForMessage:v25 language:"scoresAndIsConfidentForMessage:language:locale:" locale:?];
+    v48 = selfCopy;
+    v154 = [(SGQuickResponsesInference *)selfCopy _getMergedPromptForMessage:v167 conversationTurns:v38];
+    v49 = [SGQuickResponsesInference scoresAndIsConfidentForMessage:selfCopy language:"scoresAndIsConfidentForMessage:language:locale:" locale:?];
     v152 = v49;
     if (!v49)
     {
@@ -952,35 +952,35 @@ LABEL_6:
 
     v50 = v49;
     v165 = v38;
-    v51 = [v49 modelScores];
-    v153 = [v50 normalizedModelScores];
-    v52 = a4;
-    if (!a4)
+    modelScores = [v49 modelScores];
+    normalizedModelScores = [v50 normalizedModelScores];
+    responsesCopy = responses;
+    if (!responses)
     {
-      v53 = [v24 predictionParams];
-      v52 = [v53 defaultResponsesToReturn];
+      predictionParams2 = [config predictionParams];
+      responsesCopy = [predictionParams2 defaultResponsesToReturn];
     }
 
     p_isa = &v48->super.isa;
-    v54 = [v24 replies];
-    if (v52 >= [v54 maxDistinctReplies])
+    replies = [config replies];
+    if (responsesCopy >= [replies maxDistinctReplies])
     {
-      v55 = [v24 replies];
-      v52 = [v55 maxDistinctReplies];
+      replies2 = [config replies];
+      responsesCopy = [replies2 maxDistinctReplies];
     }
 
-    v56 = [v24 predictionParams];
-    v151 = v51;
-    if ([v56 hasNegativeClass])
+    predictionParams3 = [config predictionParams];
+    v151 = modelScores;
+    if ([predictionParams3 hasNegativeClass])
     {
-      v57 = [v51 objectAtIndexedSubscript:0];
+      v57 = [modelScores objectAtIndexedSubscript:0];
       [v57 doubleValue];
       v59 = v58;
-      v60 = [v24 predictionParams];
-      [v60 negativeClassMaximumToPredict];
+      predictionParams4 = [config predictionParams];
+      [predictionParams4 negativeClassMaximumToPredict];
       v145 = v59 >= v61;
 
-      v51 = v151;
+      modelScores = v151;
     }
 
     else
@@ -988,24 +988,24 @@ LABEL_6:
       v145 = 0;
     }
 
-    v149 = v52;
+    v149 = responsesCopy;
 
-    if (v153)
+    if (normalizedModelScores)
     {
-      v62 = v153;
+      v62 = normalizedModelScores;
     }
 
     else
     {
-      v62 = v51;
+      v62 = modelScores;
     }
 
-    v63 = [SGQuickResponsesScoring sortedWithUnweightedScores:v62 config:v24];
+    v63 = [SGQuickResponsesScoring sortedWithUnweightedScores:v62 config:config];
     v64 = [v63 objectAtIndexedSubscript:0];
     [v64 value];
     v66 = v65;
-    v67 = [v24 predictionParams];
-    [v67 minToShowThreshold];
+    predictionParams5 = [config predictionParams];
+    [predictionParams5 minToShowThreshold];
     v143 = v66 < v68;
 
     v69 = sgLogHandle();
@@ -1022,42 +1022,42 @@ LABEL_6:
 
     spid = v70;
 
-    v73 = [objc_opt_class() dynamicIndicesAndTopIsDynamic:v63 config:v24];
-    v74 = [v24 predictionParams];
-    v75 = [v74 dynamicLabelsEnabled];
+    v73 = [objc_opt_class() dynamicIndicesAndTopIsDynamic:v63 config:config];
+    predictionParams6 = [config predictionParams];
+    dynamicLabelsEnabled = [predictionParams6 dynamicLabelsEnabled];
 
     v76 = v73;
     v150 = v73;
-    if (!v75)
+    if (!dynamicLabelsEnabled)
     {
       goto LABEL_62;
     }
 
-    v77 = [v73 second];
-    if ([v77 BOOLValue])
+    second = [v73 second];
+    if ([second BOOLValue])
     {
       v78 = [v63 objectAtIndexedSubscript:0];
       [v78 value];
       v80 = v79;
-      v81 = [v24 predictionParams];
-      [v81 minToShowThreshold];
+      predictionParams7 = [config predictionParams];
+      [predictionParams7 minToShowThreshold];
       v83 = v82;
 
       v76 = v150;
       if (v80 < v83)
       {
 LABEL_62:
-        v101 = [v76 first];
-        v157 = v101;
-        if ([v101 count])
+        first = [v76 first];
+        v157 = first;
+        if ([first count])
         {
           v102 = [v63 mutableCopy];
-          [v102 removeObjectsAtIndexes:v101];
-          v103 = [v24 predictionParams];
-          v104 = [v103 modelTypeName];
-          v105 = [v104 isEqualToString:@"quickResponsesEspressoClassifierMultiLabel"];
+          [v102 removeObjectsAtIndexes:first];
+          predictionParams8 = [config predictionParams];
+          modelTypeName = [predictionParams8 modelTypeName];
+          v105 = [modelTypeName isEqualToString:@"quickResponsesEspressoClassifierMultiLabel"];
 
-          v106 = a12;
+          customResponsesCopy2 = customResponses;
           v107 = v145;
           if (v105)
           {
@@ -1069,12 +1069,12 @@ LABEL_62:
           v109 = v147;
           v110 = v149;
 
-          v51 = v151;
+          modelScores = v151;
         }
 
         else
         {
-          v106 = a12;
+          customResponsesCopy2 = customResponses;
           v109 = v147;
           v110 = v149;
           v107 = v145;
@@ -1089,19 +1089,19 @@ LABEL_62:
           _os_signpost_emit_with_name_impl(&dword_24799E000, v113, OS_SIGNPOST_INTERVAL_END, spid, "QuickResponsesForMessageTriggers", &unk_2479DB655, buf, 2u);
         }
 
-        v114 = [p_isa[3] resultsForModelScores:v63 responseCount:v110 config:v24];
-        [p_isa replyPositionsFromSemanticClasses:v114 config:v24];
+        v114 = [p_isa[3] resultsForModelScores:v63 responseCount:v110 config:config];
+        [p_isa replyPositionsFromSemanticClasses:v114 config:config];
         v148 = v144 = v111;
         v115 = [p_isa quickResponsesFromReplyPositions:? isConfident:? config:?];
         v146 = v114;
-        if (v166 && [v166 count] == 1)
+        if (recipientsCopy && [recipientsCopy count] == 1)
         {
-          v158 = [v166 firstObject];
+          firstObject = [recipientsCopy firstObject];
         }
 
         else
         {
-          v158 = 0;
+          firstObject = 0;
         }
 
         v116 = sgLogHandle();
@@ -1115,36 +1115,36 @@ LABEL_62:
           _os_signpost_emit_with_name_impl(&dword_24799E000, v119, OS_SIGNPOST_INTERVAL_BEGIN, v117, "QuickResponsesForMessageCustom", " enableTelemetry=YES ", buf, 2u);
         }
 
-        if (v106)
+        if (customResponsesCopy2)
         {
-          v120 = [v24 customResponsesParameters];
-          v121 = [v120 useNonNegativeClassesOnly];
+          customResponsesParameters = [config customResponsesParameters];
+          useNonNegativeClassesOnly = [customResponsesParameters useNonNegativeClassesOnly];
 
-          if (v121)
+          if (useNonNegativeClassesOnly)
           {
-            v51 = v153;
+            modelScores = normalizedModelScores;
           }
 
           else
           {
-            v51 = v151;
+            modelScores = v151;
           }
 
           if (v115)
           {
-            if (v51)
+            if (modelScores)
             {
-              v122 = [v24 customResponsesParameters];
+              customResponsesParameters2 = [config customResponsesParameters];
 
-              if (v122)
+              if (customResponsesParameters2)
               {
-                v123 = [v24 customResponsesParameters];
-                [p_isa addCustomResponsesToCommonResponses:v115 language:v20 locale:v21 recipient:v158 modelScores:v51 maxResponses:v149 customResponsesParams:v123];
+                customResponsesParameters3 = [config customResponsesParameters];
+                [p_isa addCustomResponsesToCommonResponses:v115 language:languageCopy locale:localeCopy recipient:firstObject modelScores:modelScores maxResponses:v149 customResponsesParams:customResponsesParameters3];
                 v124 = v63;
-                v126 = v125 = v20;
+                v126 = v125 = languageCopy;
 
                 v115 = v126;
-                v20 = v125;
+                languageCopy = v125;
                 v63 = v124;
               }
             }
@@ -1159,12 +1159,12 @@ LABEL_62:
           _os_signpost_emit_with_name_impl(&dword_24799E000, v128, OS_SIGNPOST_INTERVAL_END, v117, "QuickResponsesForMessageCustom", &unk_2479DB655, buf, 2u);
         }
 
-        if ([v115 count] == a4)
+        if ([v115 count] == responses)
         {
           v129 = v63;
-          v130 = v20;
-          v131 = [v24 predictionParams];
-          v132 = v144 & [v131 filterNonConfident];
+          v130 = languageCopy;
+          predictionParams9 = [config predictionParams];
+          v132 = v144 & [predictionParams9 filterNonConfident];
 
           if (v132 == 1)
           {
@@ -1180,7 +1180,7 @@ LABEL_62:
               v135 = *v169;
               while (2)
               {
-                v136 = v51;
+                v136 = modelScores;
                 for (i = 0; i != v134; ++i)
                 {
                   if (*v169 != v135)
@@ -1191,15 +1191,15 @@ LABEL_62:
                   if ([*(*(&v168 + 1) + 8 * i) isCustomResponse])
                   {
                     v138 = v115;
-                    v20 = v130;
-                    v37 = v166;
-                    v51 = v136;
+                    languageCopy = v130;
+                    v37 = recipientsCopy;
+                    modelScores = v136;
                     goto LABEL_103;
                   }
                 }
 
                 v134 = [v34 countByEnumeratingWithState:&v168 objects:v172 count:16];
-                v51 = v136;
+                modelScores = v136;
                 if (v134)
                 {
                   continue;
@@ -1220,8 +1220,8 @@ LABEL_62:
             v34 = v115;
           }
 
-          v20 = v130;
-          v37 = v166;
+          languageCopy = v130;
+          v37 = recipientsCopy;
 LABEL_103:
           v63 = v129;
         }
@@ -1229,11 +1229,11 @@ LABEL_103:
         else
         {
           v138 = v115;
-          v37 = v166;
+          v37 = recipientsCopy;
           v34 = 0;
         }
 
-        v77 = v146;
+        second = v146;
 
         v38 = v165;
         goto LABEL_105;
@@ -1241,15 +1241,15 @@ LABEL_103:
 
       v84 = objc_opt_class();
       v85 = [v63 objectAtIndexedSubscript:0];
-      v77 = [v84 dynamicLabelForScore:v85 config:v24];
+      second = [v84 dynamicLabelForScore:v85 config:config];
 
-      if (v77)
+      if (second)
       {
-        v86 = [objc_opt_class() proactiveTriggerForDynamicLabel:v77 context:v154 language:v20 useContactNames:a11];
+        v86 = [objc_opt_class() proactiveTriggerForDynamicLabel:second context:v154 language:languageCopy useContactNames:names];
         if (v86)
         {
           v87 = v86;
-          v88 = v20;
+          v88 = languageCopy;
           v89 = sgQuicktypeLogHandle();
           if (os_log_type_enabled(v89, OS_LOG_TYPE_DEFAULT))
           {
@@ -1266,8 +1266,8 @@ LABEL_103:
           v93 = [v63 objectAtIndexedSubscript:0];
           [v93 value];
           v95 = v94;
-          v96 = [v24 predictionParams];
-          [v96 minToShowThreshold];
+          predictionParams10 = [config predictionParams];
+          [predictionParams10 minToShowThreshold];
           v157 = v87;
           v98 = [(SGQuickResponse *)v92 initWithProactiveTrigger:v87 isConfident:v95 >= v97];
 
@@ -1282,16 +1282,16 @@ LABEL_103:
           v148 = v98;
           v173 = v98;
           v34 = [MEMORY[0x277CBEA60] arrayWithObjects:&v173 count:1];
-          v20 = v88;
+          languageCopy = v88;
           v38 = v165;
-          v37 = v166;
+          v37 = recipientsCopy;
 LABEL_105:
           v39 = v156;
 
 LABEL_106:
 LABEL_107:
 
-          v23 = context;
+          contextCopy2 = context;
           goto LABEL_108;
         }
       }
@@ -1302,39 +1302,39 @@ LABEL_107:
     goto LABEL_62;
   }
 
-  v141 = [MEMORY[0x277CCA890] currentHandler];
-  [v141 handleFailureInMethod:a2 object:self file:@"SGQuickResponsesInference.m" lineNumber:501 description:{@"Invalid parameter not satisfying: %@", @"message"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SGQuickResponsesInference.m" lineNumber:501 description:{@"Invalid parameter not satisfying: %@", @"message"}];
 
   v34 = 0;
-  v38 = v164;
-  v37 = v166;
+  v38 = historyCopy;
+  v37 = recipientsCopy;
 LABEL_108:
-  objc_autoreleasePoolPop(v23);
+  objc_autoreleasePoolPop(contextCopy2);
 
   v139 = *MEMORY[0x277D85DE8];
 
   return v34;
 }
 
-- (id)scoresAndIsConfidentForMessage:(id)a3 language:(id)a4 locale:(id)a5
+- (id)scoresAndIsConfidentForMessage:(id)message language:(id)language locale:(id)locale
 {
   v56 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SGQuickResponsesModel *)self->_model config];
-  v12 = [(SGQuickResponsesModel *)self->_model config];
-  v13 = [v12 predictionParams];
-  v14 = [v13 maxPromptLength];
+  messageCopy = message;
+  languageCopy = language;
+  localeCopy = locale;
+  config = [(SGQuickResponsesModel *)self->_model config];
+  config2 = [(SGQuickResponsesModel *)self->_model config];
+  predictionParams = [config2 predictionParams];
+  maxPromptLength = [predictionParams maxPromptLength];
 
-  if ([v8 length] <= v14)
+  if ([messageCopy length] <= maxPromptLength)
   {
-    v16 = [(SGQuickResponsesModel *)self->_model config];
-    v17 = [v16 language];
+    config3 = [(SGQuickResponsesModel *)self->_model config];
+    language = [config3 language];
 
-    if (v10)
+    if (localeCopy)
     {
-      v18 = [SGLanguageDetection languageForLocaleIdentifier:v10];
+      v18 = [SGLanguageDetection languageForLocaleIdentifier:localeCopy];
     }
 
     else
@@ -1349,19 +1349,19 @@ LABEL_108:
 
     else
     {
-      v19 = v9;
+      v19 = languageCopy;
     }
 
     v20 = v19;
 
-    if (v20 && ([v17 isEqualToString:v20] & 1) == 0)
+    if (v20 && ([language isEqualToString:v20] & 1) == 0)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v53 = v10;
+        v53 = localeCopy;
         v54 = 2112;
-        v55 = v17;
+        v55 = language;
         _os_log_error_impl(&dword_24799E000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Cannot predict for locale %@ using model with language %@", buf, 0x16u);
       }
 
@@ -1370,7 +1370,7 @@ LABEL_108:
 
     else
     {
-      v51 = v17;
+      v51 = language;
       v21 = sgLogHandle();
       v22 = os_signpost_id_generate(v21);
 
@@ -1382,7 +1382,7 @@ LABEL_108:
         _os_signpost_emit_with_name_impl(&dword_24799E000, v24, OS_SIGNPOST_INTERVAL_BEGIN, v22, "QuickResponsesForMessageFeaturization", " enableTelemetry=YES ", buf, 2u);
       }
 
-      v25 = [(SGQuickResponsesModel *)self->_model featuresOf:v8];
+      v25 = [(SGQuickResponsesModel *)self->_model featuresOf:messageCopy];
       v26 = sgLogHandle();
       v27 = v26;
       if (v22 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v26))
@@ -1415,10 +1415,10 @@ LABEL_108:
 
         if (v32)
         {
-          v35 = [v11 predictionParams];
-          v36 = [v35 hasNegativeClass];
+          predictionParams2 = [config predictionParams];
+          hasNegativeClass = [predictionParams2 hasNegativeClass];
 
-          if (v36)
+          if (hasNegativeClass)
           {
             v37 = 0.0;
             if ([v32 count] >= 2)
@@ -1473,14 +1473,14 @@ LABEL_108:
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v53 = v9;
+            v53 = languageCopy;
             _os_log_error_impl(&dword_24799E000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Could not predict score (prediction for language %@ not supported?)", buf, 0xCu);
           }
 
           v15 = 0;
         }
 
-        v17 = v51;
+        language = v51;
       }
 
       else
@@ -1488,7 +1488,7 @@ LABEL_108:
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v53 = v9;
+          v53 = languageCopy;
           _os_log_impl(&dword_24799E000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Could not featurize (prediction for language %@ not supported?)", buf, 0xCu);
         }
 
@@ -1502,7 +1502,7 @@ LABEL_108:
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v53 = v14;
+      v53 = maxPromptLength;
       _os_log_impl(&dword_24799E000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Returning nil because message length exceeds maximum length %ld)", buf, 0xCu);
     }
 
@@ -1514,15 +1514,15 @@ LABEL_108:
   return v15;
 }
 
-- (id)signpostedQuickResponsesForMessage:(id)a3 maximumResponses:(unint64_t)a4 conversationHistory:(id)a5 context:(id)a6 time:(id)a7 language:(id)a8 locale:(id)a9 recipients:(id)a10 useContactNames:(BOOL)a11 includeCustomResponses:(BOOL)a12 includeResponsesToRobots:(BOOL)a13
+- (id)signpostedQuickResponsesForMessage:(id)message maximumResponses:(unint64_t)responses conversationHistory:(id)history context:(id)context time:(id)time language:(id)language locale:(id)locale recipients:(id)self0 useContactNames:(BOOL)self1 includeCustomResponses:(BOOL)self2 includeResponsesToRobots:(BOOL)self3
 {
-  v18 = a10;
-  v19 = a9;
-  v20 = a8;
-  v21 = a7;
-  v22 = a6;
-  v23 = a5;
-  v24 = a3;
+  recipientsCopy = recipients;
+  localeCopy = locale;
+  languageCopy = language;
+  timeCopy = time;
+  contextCopy = context;
+  historyCopy = history;
+  messageCopy = message;
   v25 = sgLogHandle();
   v26 = os_signpost_id_generate(v25);
 
@@ -1534,10 +1534,10 @@ LABEL_108:
     _os_signpost_emit_with_name_impl(&dword_24799E000, v28, OS_SIGNPOST_INTERVAL_BEGIN, v26, "QuickResponsesForMessage", " enableTelemetry=YES ", buf, 2u);
   }
 
-  BYTE2(v33) = a13;
-  BYTE1(v33) = a12;
+  BYTE2(v33) = robots;
+  BYTE1(v33) = customResponses;
   LOBYTE(v33) = 1;
-  v29 = [SGQuickResponsesInference quickResponsesForMessage:"quickResponsesForMessage:maximumResponses:conversationHistory:context:time:language:locale:recipients:useContactNames:includeCustomResponses:includeResponsesToRobots:" maximumResponses:v24 conversationHistory:a4 context:v23 time:v22 language:v21 locale:v20 recipients:v19 useContactNames:v18 includeCustomResponses:v33 includeResponsesToRobots:?];
+  v29 = [SGQuickResponsesInference quickResponsesForMessage:"quickResponsesForMessage:maximumResponses:conversationHistory:context:time:language:locale:recipients:useContactNames:includeCustomResponses:includeResponsesToRobots:" maximumResponses:messageCopy conversationHistory:responses context:historyCopy time:contextCopy language:timeCopy locale:languageCopy recipients:localeCopy useContactNames:recipientsCopy includeCustomResponses:v33 includeResponsesToRobots:?];
 
   v30 = sgLogHandle();
   v31 = v30;
@@ -1550,51 +1550,51 @@ LABEL_108:
   return v29;
 }
 
-- (id)_getMergedPromptForMessage:(id)a3 conversationTurns:(id)a4
+- (id)_getMergedPromptForMessage:(id)message conversationTurns:(id)turns
 {
   model = self->_model;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SGQuickResponsesModel *)model config];
-  v9 = [v8 predictionParams];
+  turnsCopy = turns;
+  messageCopy = message;
+  config = [(SGQuickResponsesModel *)model config];
+  predictionParams = [config predictionParams];
 
-  v10 = [v9 maxPromptLength];
-  [v9 maxPromptWindowSeconds];
+  maxPromptLength = [predictionParams maxPromptLength];
+  [predictionParams maxPromptWindowSeconds];
   v12 = v11;
-  v13 = [v9 promptJoiningString];
-  v14 = [SGConversationTracker getMergedPromptForMessage:v7 conversationTurns:v6 maxPromptLength:v10 maxPromptWindowSeconds:v13 promptJoiningString:v12];
+  promptJoiningString = [predictionParams promptJoiningString];
+  v14 = [SGConversationTracker getMergedPromptForMessage:messageCopy conversationTurns:turnsCopy maxPromptLength:maxPromptLength maxPromptWindowSeconds:promptJoiningString promptJoiningString:v12];
 
   return v14;
 }
 
-- (SGQuickResponsesInference)initWithLanguage:(id)a3 plistPath:(id)a4 espressoBinFilePath:(id)a5 vocabFilePath:(id)a6 storeDirectory:(id)a7
+- (SGQuickResponsesInference)initWithLanguage:(id)language plistPath:(id)path espressoBinFilePath:(id)filePath vocabFilePath:(id)vocabFilePath storeDirectory:(id)directory
 {
   v33 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (![v17 length])
+  languageCopy = language;
+  pathCopy = path;
+  filePathCopy = filePath;
+  vocabFilePathCopy = vocabFilePath;
+  directoryCopy = directory;
+  if (![directoryCopy length])
   {
-    v29 = [MEMORY[0x277CCA890] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"SGQuickResponsesInference.m" lineNumber:250 description:{@"Invalid parameter not satisfying: %@", @"storeDirectory.length"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGQuickResponsesInference.m" lineNumber:250 description:{@"Invalid parameter not satisfying: %@", @"storeDirectory.length"}];
   }
 
-  v18 = [[SGQuickResponsesStore alloc] initInDirectory:v17 inMemory:0 withMigration:1];
+  v18 = [[SGQuickResponsesStore alloc] initInDirectory:directoryCopy inMemory:0 withMigration:1];
   if (v18)
   {
-    v19 = [(SGQuickResponsesModel *)SGQuickResponsesClassificationModel modelForLanguage:v13 mode:1 chunkPath:v15 plistPath:v14 vocabPath:v16];
+    v19 = [(SGQuickResponsesModel *)SGQuickResponsesClassificationModel modelForLanguage:languageCopy mode:1 chunkPath:filePathCopy plistPath:pathCopy vocabPath:vocabFilePathCopy];
     v20 = v19;
     if (v19)
     {
-      v30 = v13;
-      v21 = [v19 config];
-      v22 = [v21 predictionParams];
-      v23 = [v22 isPersonalizationDisabled];
+      v30 = languageCopy;
+      config = [v19 config];
+      predictionParams = [config predictionParams];
+      isPersonalizationDisabled = [predictionParams isPersonalizationDisabled];
 
       v24 = objc_opt_new();
-      if (v23)
+      if (isPersonalizationDisabled)
       {
         self = [(SGQuickResponsesInference *)self initWithModel:v20 ranking:v24 personalization:0 rng:0 store:v18];
       }
@@ -1605,13 +1605,13 @@ LABEL_108:
         self = [(SGQuickResponsesInference *)self initWithModel:v20 ranking:v24 personalization:v26 rng:0 store:v18];
       }
 
-      v25 = self;
-      v13 = v30;
+      selfCopy = self;
+      languageCopy = v30;
     }
 
     else
     {
-      v25 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -1620,50 +1620,50 @@ LABEL_108:
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v32 = v17;
+      v32 = directoryCopy;
       _os_log_error_impl(&dword_24799E000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "QuickResponses: Could not initialize SGQuickResponsesStore in directory - %@", buf, 0xCu);
     }
 
-    v25 = 0;
+    selfCopy = 0;
   }
 
   v27 = *MEMORY[0x277D85DE8];
-  return v25;
+  return selfCopy;
 }
 
-- (SGQuickResponsesInference)initWithLanguage:(id)a3 chunkPath:(id)a4 plistPath:(id)a5 espressoBinFilePath:(id)a6 vocabFilePath:(id)a7
+- (SGQuickResponsesInference)initWithLanguage:(id)language chunkPath:(id)path plistPath:(id)plistPath espressoBinFilePath:(id)filePath vocabFilePath:(id)vocabFilePath
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [SGQuickResponsesConfig modelTypeAndSubModelKeyForLanguage:v12 plistPath:v14 vocabPath:v16 warmupBlock:&__block_literal_global_424];
+  languageCopy = language;
+  pathCopy = path;
+  plistPathCopy = plistPath;
+  filePathCopy = filePath;
+  vocabFilePathCopy = vocabFilePath;
+  v17 = [SGQuickResponsesConfig modelTypeAndSubModelKeyForLanguage:languageCopy plistPath:plistPathCopy vocabPath:vocabFilePathCopy warmupBlock:&__block_literal_global_424];
   if (v17)
   {
-    v18 = v13;
-    v19 = [v17 first];
-    v20 = [v19 isEqualToString:@"quickResponsesEspressoClassifierMultiLabel"];
+    v18 = pathCopy;
+    first = [v17 first];
+    v20 = [first isEqualToString:@"quickResponsesEspressoClassifierMultiLabel"];
 
     if (v20)
     {
-      v21 = v15;
+      v21 = filePathCopy;
 
       v18 = v21;
     }
 
-    v22 = [(SGQuickResponsesModel *)SGQuickResponsesClassificationModel modelForLanguage:v12 mode:1 chunkPath:v18 plistPath:v14 vocabPath:v16 modelTypeAndSubModelKey:v17];
+    v22 = [(SGQuickResponsesModel *)SGQuickResponsesClassificationModel modelForLanguage:languageCopy mode:1 chunkPath:v18 plistPath:plistPathCopy vocabPath:vocabFilePathCopy modelTypeAndSubModelKey:v17];
     v23 = v22;
     if (v22)
     {
-      v31 = v15;
-      v32 = v13;
-      v24 = [v22 config];
-      v25 = [v24 predictionParams];
-      v26 = [v25 isPersonalizationDisabled];
+      v31 = filePathCopy;
+      v32 = pathCopy;
+      config = [v22 config];
+      predictionParams = [config predictionParams];
+      isPersonalizationDisabled = [predictionParams isPersonalizationDisabled];
 
       v27 = objc_opt_new();
-      if (v26)
+      if (isPersonalizationDisabled)
       {
         self = [(SGQuickResponsesInference *)self initWithModel:v23 ranking:v27 personalization:0 rng:0 store:0];
       }
@@ -1674,24 +1674,24 @@ LABEL_108:
         self = [(SGQuickResponsesInference *)self initWithModel:v23 ranking:v27 personalization:v29 rng:0 store:0];
       }
 
-      v13 = v32;
+      pathCopy = v32;
 
-      v28 = self;
-      v15 = v31;
+      selfCopy = self;
+      filePathCopy = v31;
     }
 
     else
     {
-      v28 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v28 = 0;
+    selfCopy = 0;
   }
 
-  return v28;
+  return selfCopy;
 }
 
 void __100__SGQuickResponsesInference_initWithLanguage_chunkPath_plistPath_espressoBinFilePath_vocabFilePath___block_invoke()
@@ -1702,67 +1702,67 @@ void __100__SGQuickResponsesInference_initWithLanguage_chunkPath_plistPath_espre
   SGPersonalizeEmojisWarmup();
 }
 
-- (SGQuickResponsesInference)initWithModel:(id)a3 ranking:(id)a4 personalization:(id)a5 rng:(id)a6 store:(id)a7
+- (SGQuickResponsesInference)initWithModel:(id)model ranking:(id)ranking personalization:(id)personalization rng:(id)rng store:(id)store
 {
-  v11 = a3;
-  v14 = a3;
-  v15 = a4;
-  obj = a5;
-  v16 = a5;
-  v40 = a6;
-  v17 = a6;
-  v18 = a7;
-  if (!v14)
+  modelCopy = model;
+  modelCopy2 = model;
+  rankingCopy = ranking;
+  obj = personalization;
+  personalizationCopy = personalization;
+  rngCopy = rng;
+  rngCopy2 = rng;
+  storeCopy = store;
+  if (!modelCopy2)
   {
-    v35 = [MEMORY[0x277CCA890] currentHandler];
-    [v35 handleFailureInMethod:a2 object:self file:@"SGQuickResponsesInference.m" lineNumber:192 description:{@"Invalid parameter not satisfying: %@", @"model"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGQuickResponsesInference.m" lineNumber:192 description:{@"Invalid parameter not satisfying: %@", @"model"}];
 
-    if (v15)
+    if (rankingCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_13:
-    v36 = [MEMORY[0x277CCA890] currentHandler];
-    [v36 handleFailureInMethod:a2 object:self file:@"SGQuickResponsesInference.m" lineNumber:193 description:{@"Invalid parameter not satisfying: %@", @"ranking"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGQuickResponsesInference.m" lineNumber:193 description:{@"Invalid parameter not satisfying: %@", @"ranking"}];
 
     goto LABEL_3;
   }
 
-  if (!v15)
+  if (!rankingCopy)
   {
     goto LABEL_13;
   }
 
 LABEL_3:
   v38 = a2;
-  v19 = v16;
-  if (!v16)
+  v19 = personalizationCopy;
+  if (!personalizationCopy)
   {
-    [v14 config];
-    v20 = v18;
-    v21 = v11;
-    v22 = v14;
-    v23 = a4;
-    v24 = self;
-    v26 = v25 = v15;
+    [modelCopy2 config];
+    v20 = storeCopy;
+    v21 = modelCopy;
+    v22 = modelCopy2;
+    rankingCopy2 = ranking;
+    selfCopy = self;
+    v26 = v25 = rankingCopy;
     [v26 predictionParams];
-    v27 = v37 = v17;
-    v28 = [v27 isPersonalizationDisabled];
+    v27 = v37 = rngCopy2;
+    isPersonalizationDisabled = [v27 isPersonalizationDisabled];
 
-    v17 = v37;
-    v15 = v25;
-    self = v24;
-    a4 = v23;
-    v14 = v22;
-    v11 = v21;
-    v18 = v20;
-    if ((v28 & 1) == 0)
+    rngCopy2 = v37;
+    rankingCopy = v25;
+    self = selfCopy;
+    ranking = rankingCopy2;
+    modelCopy2 = v22;
+    modelCopy = v21;
+    storeCopy = v20;
+    if ((isPersonalizationDisabled & 1) == 0)
     {
-      v29 = [MEMORY[0x277CCA890] currentHandler];
-      [v29 handleFailureInMethod:v38 object:self file:@"SGQuickResponsesInference.m" lineNumber:194 description:{@"Invalid parameter not satisfying: %@", @"personalization != nil || model.config.predictionParams.isPersonalizationDisabled"}];
+      currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler3 handleFailureInMethod:v38 object:self file:@"SGQuickResponsesInference.m" lineNumber:194 description:{@"Invalid parameter not satisfying: %@", @"personalization != nil || model.config.predictionParams.isPersonalizationDisabled"}];
 
-      v17 = v37;
+      rngCopy2 = v37;
     }
   }
 
@@ -1772,13 +1772,13 @@ LABEL_3:
   v31 = v30;
   if (v30)
   {
-    objc_storeStrong(&v30->_model, v11);
-    objc_storeStrong(&v31->_ranking, a4);
+    objc_storeStrong(&v30->_model, modelCopy);
+    objc_storeStrong(&v31->_ranking, ranking);
     objc_storeStrong(&v31->_personalization, obj);
-    objc_storeStrong(&v31->_rng, v40);
-    if (v18)
+    objc_storeStrong(&v31->_rng, rngCopy);
+    if (storeCopy)
     {
-      v32 = v18;
+      v32 = storeCopy;
     }
 
     else
@@ -1793,17 +1793,17 @@ LABEL_3:
   return v31;
 }
 
-+ (void)registerResponse:(id)a3 position:(id)a4 isCanned:(BOOL)a5 isUsingQuickResponses:(BOOL)a6 locale:(id)a7 plistPath:(id)a8 vocabPath:(id)a9
++ (void)registerResponse:(id)response position:(id)position isCanned:(BOOL)canned isUsingQuickResponses:(BOOL)responses locale:(id)locale plistPath:(id)path vocabPath:(id)vocabPath
 {
-  v12 = a5;
+  cannedCopy = canned;
   v43 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
+  responseCopy = response;
+  positionCopy = position;
+  localeCopy = locale;
+  pathCopy = path;
+  vocabPathCopy = vocabPath;
   v19 = objc_autoreleasePoolPush();
-  if (v12 && !a6)
+  if (cannedCopy && !responses)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -1811,7 +1811,7 @@ LABEL_3:
       _os_log_impl(&dword_24799E000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "SGQuickResponses: attempted to register a canned response but not using QuickResponses.", buf, 2u);
     }
 
-    v20 = v14;
+    v20 = responseCopy;
     goto LABEL_27;
   }
 
@@ -1820,20 +1820,20 @@ LABEL_3:
 
   v20 = _PASRepairString();
 
-  if (v16)
+  if (localeCopy)
   {
-    v22 = [SGLanguageDetection languageForLocaleIdentifier:v16];
+    v22 = [SGLanguageDetection languageForLocaleIdentifier:localeCopy];
     if (v22)
     {
       v23 = v22;
-      v24 = [(SGQuickResponsesModel *)SGQuickResponsesClassificationModel configForLanguage:v22 mode:1 plistPath:v17 vocabPath:v18];
+      v24 = [(SGQuickResponsesModel *)SGQuickResponsesClassificationModel configForLanguage:v22 mode:1 plistPath:pathCopy vocabPath:vocabPathCopy];
       v25 = v24;
       if (!v24)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412546;
-          v40 = v17;
+          v40 = pathCopy;
           v41 = 2112;
           v42 = v23;
           _os_log_debug_impl(&dword_24799E000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "SGQuickResponses: attempted to register a response but config at %@ is nil (language %@ not supported?).", buf, 0x16u);
@@ -1843,12 +1843,12 @@ LABEL_3:
       }
 
       v38 = v24;
-      if (v15 && v12 && (v37 = [v15 unsignedIntegerValue], objc_msgSend(v25, "predictionParams"), v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v26, "defaultResponsesToReturn"), v26, v28 = v37 >= v27, v25 = v38, v28))
+      if (positionCopy && cannedCopy && (v37 = [positionCopy unsignedIntegerValue], objc_msgSend(v25, "predictionParams"), v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v26, "defaultResponsesToReturn"), v26, v28 = v37 >= v27, v25 = v38, v28))
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v40 = v15;
+          v40 = positionCopy;
           v31 = MEMORY[0x277D86220];
           v32 = "SGQuickResponses: attempted to register a canned response at position %@ that is not likely to have come from QuickResponses.";
           v33 = 12;
@@ -1858,15 +1858,15 @@ LABEL_3:
 
       else
       {
-        v29 = [v25 predictionParams];
-        v30 = [v29 isPersonalizationDisabled];
+        predictionParams = [v25 predictionParams];
+        isPersonalizationDisabled = [predictionParams isPersonalizationDisabled];
 
-        if (!v30)
+        if (!isPersonalizationDisabled)
         {
           v34 = objc_opt_new();
           v35 = v34;
           v25 = v38;
-          if (v12)
+          if (cannedCopy)
           {
             [v34 registerSelectedResponse:v20 config:v38];
           }
@@ -1909,28 +1909,28 @@ LABEL_27:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)registerDisplayedQuickResponses:(id)a3 plistPath:(id)a4 vocabPath:(id)a5
++ (void)registerDisplayedQuickResponses:(id)responses plistPath:(id)path vocabPath:(id)vocabPath
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  responsesCopy = responses;
+  pathCopy = path;
+  vocabPathCopy = vocabPath;
   v11 = objc_autoreleasePoolPush();
-  if ([v8 count])
+  if ([responsesCopy count])
   {
-    v12 = [v8 firstObject];
-    v13 = [v12 lang];
+    firstObject = [responsesCopy firstObject];
+    lang = [firstObject lang];
 
-    if (v13)
+    if (lang)
     {
-      v14 = [(SGQuickResponsesModel *)SGQuickResponsesClassificationModel configForLanguage:v13 mode:1 plistPath:v9 vocabPath:v10];
+      v14 = [(SGQuickResponsesModel *)SGQuickResponsesClassificationModel configForLanguage:lang mode:1 plistPath:pathCopy vocabPath:vocabPathCopy];
       v15 = v14;
       if (v14)
       {
-        v16 = [v14 predictionParams];
-        v17 = [v16 isPersonalizationDisabled];
+        predictionParams = [v14 predictionParams];
+        isPersonalizationDisabled = [predictionParams isPersonalizationDisabled];
 
-        if (v17)
+        if (isPersonalizationDisabled)
         {
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
           {
@@ -1941,7 +1941,7 @@ LABEL_27:
 
         else
         {
-          v18 = [a1 stringsForQuickResponses:v8];
+          v18 = [self stringsForQuickResponses:responsesCopy];
           if ([v18 count])
           {
             v19 = objc_opt_new();
@@ -1953,7 +1953,7 @@ LABEL_27:
       else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
       {
         v21 = 138412290;
-        v22 = v13;
+        v22 = lang;
         _os_log_debug_impl(&dword_24799E000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "SGQuickResponses: attempted to register displayed responses but config is nil (language %@ not supported?).", &v21, 0xCu);
       }
     }
@@ -1976,25 +1976,25 @@ LABEL_27:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)dynamicLabelForScore:(id)a3 config:(id)a4
++ (id)dynamicLabelForScore:(id)score config:(id)config
 {
   v35 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 replies];
+  scoreCopy = score;
+  configCopy = config;
+  replies = [configCopy replies];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v11 = [v8 replies];
-    v12 = [v8 predictionParams];
-    v13 = [v12 isPerCategory];
+    replies2 = [configCopy replies];
+    predictionParams = [configCopy predictionParams];
+    isPerCategory = [predictionParams isPerCategory];
 
-    if (v13)
+    if (isPerCategory)
     {
-      v14 = [v11 categorySemanticClasses];
-      v15 = [v14 objectAtIndexedSubscript:{objc_msgSend(v7, "index")}];
+      categorySemanticClasses = [replies2 categorySemanticClasses];
+      v15 = [categorySemanticClasses objectAtIndexedSubscript:{objc_msgSend(scoreCopy, "index")}];
 
       if ([v15 count] != 1)
       {
@@ -2003,12 +2003,12 @@ LABEL_27:
         {
 LABEL_14:
 
-          v21 = 0;
+          firstObject = 0;
           goto LABEL_15;
         }
 
         *buf = 134218240;
-        v32 = [v7 index];
+        index = [scoreCopy index];
         v33 = 2048;
         v34 = [v15 count];
         v27 = "SGQuickResponses: dynamic label (score index %tu) should have one semantic class (count - %tu)!";
@@ -2018,24 +2018,24 @@ LABEL_19:
       }
 
       v16 = [v15 objectAtIndexedSubscript:0];
-      v17 = [v16 unsignedIntegerValue];
+      unsignedIntegerValue = [v16 unsignedIntegerValue];
     }
 
     else
     {
-      v17 = [v7 index];
+      unsignedIntegerValue = [scoreCopy index];
     }
 
-    v22 = [v11 semanticClassReplyTexts];
-    v15 = [v22 objectAtIndexedSubscript:v17];
+    semanticClassReplyTexts = [replies2 semanticClassReplyTexts];
+    v15 = [semanticClassReplyTexts objectAtIndexedSubscript:unsignedIntegerValue];
 
     if ([v15 count] == 1)
     {
       v23 = [v15 objectAtIndexedSubscript:0];
-      v24 = [v23 unsignedIntegerValue];
+      unsignedIntegerValue2 = [v23 unsignedIntegerValue];
 
-      v25 = [v11 replyTexts];
-      v21 = [v25 objectAtIndexedSubscript:v24];
+      replyTexts = [replies2 replyTexts];
+      firstObject = [replyTexts objectAtIndexedSubscript:unsignedIntegerValue2];
 
       goto LABEL_15;
     }
@@ -2047,39 +2047,39 @@ LABEL_19:
     }
 
     *buf = 134218240;
-    v32 = [v7 index];
+    index = [scoreCopy index];
     v33 = 2048;
     v34 = [v15 count];
     v27 = "SGQuickResponses: dynamic label (score index %tu) should have one reply text per semantic class (count - %tu)!";
     goto LABEL_19;
   }
 
-  v18 = [v7 index];
-  v19 = [v8 replies];
-  v20 = [v19 replyCountForIndex:v18];
+  index2 = [scoreCopy index];
+  replies3 = [configCopy replies];
+  v20 = [replies3 replyCountForIndex:index2];
 
   if (v20 != 1)
   {
-    v30 = [MEMORY[0x277CCA890] currentHandler];
-    [v30 handleFailureInMethod:a2 object:a1 file:@"SGQuickResponsesInference.m" lineNumber:1125 description:{@"Invalid parameter not satisfying: %@", @"[config.replies replyCountForIndex:semanticClassIndex] == 1"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGQuickResponsesInference.m" lineNumber:1125 description:{@"Invalid parameter not satisfying: %@", @"[config.replies replyCountForIndex:semanticClassIndex] == 1"}];
   }
 
-  v11 = [v8 replies];
-  v15 = [v11 replyTextsForIndex:v18];
-  v21 = [v15 firstObject];
+  replies2 = [configCopy replies];
+  v15 = [replies2 replyTextsForIndex:index2];
+  firstObject = [v15 firstObject];
 LABEL_15:
 
   v28 = *MEMORY[0x277D85DE8];
 
-  return v21;
+  return firstObject;
 }
 
-+ (id)proactiveTriggerForDynamicLabel:(id)a3 context:(id)a4 language:(id)a5 useContactNames:(BOOL)a6
++ (id)proactiveTriggerForDynamicLabel:(id)label context:(id)context language:(id)language useContactNames:(BOOL)names
 {
   v42[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  labelCopy = label;
+  contextCopy = context;
+  languageCopy = language;
   if (proactiveTriggerForDynamicLabel_context_language_useContactNames__onceToken != -1)
   {
     dispatch_once(&proactiveTriggerForDynamicLabel_context_language_useContactNames__onceToken, &__block_literal_global_174);
@@ -2103,20 +2103,20 @@ LABEL_15:
   v23[3] = &unk_278EB7940;
   v26 = &v29;
   v27 = &v35;
-  v28 = a6;
-  v12 = v11;
+  namesCopy = names;
+  v12 = languageCopy;
   v24 = v12;
-  v13 = v10;
+  v13 = contextCopy;
   v25 = v13;
   v14 = MEMORY[0x24C1B0A20](v23);
-  v15 = [proactiveTriggerForDynamicLabel_context_language_useContactNames__triggerForLabel objectForKeyedSubscript:v9];
+  v15 = [proactiveTriggerForDynamicLabel_context_language_useContactNames__triggerForLabel objectForKeyedSubscript:labelCopy];
   if (!v15)
   {
     v20 = sgQuicktypeLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412290;
-      *&buf[4] = v9;
+      *&buf[4] = labelCopy;
       _os_log_fault_impl(&dword_24799E000, v20, OS_LOG_TYPE_FAULT, "SGQuickResponses: Could not find trigger for dynamic label %@", buf, 0xCu);
     }
 
@@ -2126,7 +2126,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (([v9 isEqualToString:@"thirdPartyPhoneUEhPTkUuM3AK"] & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", @"thirdPartyEmailRU1BSUwuMXAK") & 1) != 0 || objc_msgSend(v9, "isEqualToString:", @"thirdPartyPostalUE9TVEFMLjFwCg"))
+  if (([labelCopy isEqualToString:@"thirdPartyPhoneUEhPTkUuM3AK"] & 1) != 0 || (objc_msgSend(labelCopy, "isEqualToString:", @"thirdPartyEmailRU1BSUwuMXAK") & 1) != 0 || objc_msgSend(labelCopy, "isEqualToString:", @"thirdPartyPostalUE9TVEFMLjFwCg"))
   {
     v14[2](v14);
     v16 = v30[5];
@@ -2146,7 +2146,7 @@ LABEL_14:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      *&buf[4] = v9;
+      *&buf[4] = labelCopy;
       _os_log_impl(&dword_24799E000, v20, OS_LOG_TYPE_DEFAULT, "SGQuickResponses: No name found for thirdparty dynamic label: %@", buf, 0xCu);
     }
 
@@ -2321,24 +2321,24 @@ void __94__SGQuickResponsesInference_proactiveTriggerForDynamicLabel_context_lan
   v24 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)normalizeLabelScores:(id)a3
++ (id)normalizeLabelScores:(id)scores
 {
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v3, "count")}];
-  if ([v3 count])
+  scoresCopy = scores;
+  v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(scoresCopy, "count")}];
+  if ([scoresCopy count])
   {
     v5 = 0;
     v6 = 0.0;
     do
     {
-      v7 = [v3 objectAtIndexedSubscript:v5];
+      v7 = [scoresCopy objectAtIndexedSubscript:v5];
       [v7 value];
       v6 = v6 + v8;
 
       ++v5;
     }
 
-    while (v5 < [v3 count]);
+    while (v5 < [scoresCopy count]);
   }
 
   else
@@ -2346,32 +2346,32 @@ void __94__SGQuickResponsesInference_proactiveTriggerForDynamicLabel_context_lan
     v6 = 0.0;
   }
 
-  if ([v3 count])
+  if ([scoresCopy count])
   {
     v9 = 0;
     do
     {
       v10 = [SGQuickResponsesClassScore alloc];
-      v11 = [v3 objectAtIndexedSubscript:v9];
+      v11 = [scoresCopy objectAtIndexedSubscript:v9];
       [v11 value];
       v13 = v12 / v6;
-      v14 = [v3 objectAtIndexedSubscript:v9];
+      v14 = [scoresCopy objectAtIndexedSubscript:v9];
       v15 = -[SGQuickResponsesClassScore initWithValue:index:](v10, "initWithValue:index:", [v14 index], v13);
       [v4 setObject:v15 atIndexedSubscript:v9];
 
       ++v9;
     }
 
-    while (v9 < [v3 count]);
+    while (v9 < [scoresCopy count]);
   }
 
   return v4;
 }
 
-+ (id)dynamicIndicesAndTopIsDynamic:(id)a3 config:(id)a4
++ (id)dynamicIndicesAndTopIsDynamic:(id)dynamic config:(id)config
 {
-  v5 = a3;
-  v6 = a4;
+  dynamicCopy = dynamic;
+  configCopy = config;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -2384,23 +2384,23 @@ void __94__SGQuickResponsesInference_proactiveTriggerForDynamicLabel_context_lan
   v25 = __Block_byref_object_copy__438;
   v26 = __Block_byref_object_dispose__439;
   v27 = MEMORY[0x277CBEC28];
-  v7 = [v6 replies];
+  replies = [configCopy replies];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v9 = [v6 replies];
+    replies2 = [configCopy replies];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __66__SGQuickResponsesInference_dynamicIndicesAndTopIsDynamic_config___block_invoke_2;
     v13[3] = &unk_278EB7918;
-    v14 = v6;
-    v10 = v9;
+    v14 = configCopy;
+    v10 = replies2;
     v15 = v10;
     v16 = &v28;
     v17 = &v22;
-    [v5 enumerateObjectsUsingBlock:v13];
+    [dynamicCopy enumerateObjectsUsingBlock:v13];
     v11 = [MEMORY[0x277D42648] tupleWithFirst:v29[5] second:v23[5]];
   }
 
@@ -2410,10 +2410,10 @@ void __94__SGQuickResponsesInference_proactiveTriggerForDynamicLabel_context_lan
     v18[1] = 3221225472;
     v18[2] = __66__SGQuickResponsesInference_dynamicIndicesAndTopIsDynamic_config___block_invoke;
     v18[3] = &unk_278EB78F0;
-    v19 = v6;
+    v19 = configCopy;
     v20 = &v28;
     v21 = &v22;
-    [v5 enumerateObjectsUsingBlock:v18];
+    [dynamicCopy enumerateObjectsUsingBlock:v18];
     v11 = [MEMORY[0x277D42648] tupleWithFirst:v29[5] second:v23[5]];
     v10 = v19;
   }
@@ -2486,40 +2486,40 @@ void __66__SGQuickResponsesInference_dynamicIndicesAndTopIsDynamic_config___bloc
   }
 }
 
-+ (id)quickResponsesForMessage:(id)a3 conversationTurns:(id)a4 maxResponses:(unint64_t)a5 localeIdentifier:(id)a6 recipientHandles:(id)a7 chunkPath:(id)a8 plistPath:(id)a9 espressoBinFilePath:(id)a10 vocabFilePath:(id)a11 useContactNames:(BOOL)a12 includeCustomResponses:(BOOL)a13 includeResponsesToRobots:(BOOL)a14
++ (id)quickResponsesForMessage:(id)message conversationTurns:(id)turns maxResponses:(unint64_t)responses localeIdentifier:(id)identifier recipientHandles:(id)handles chunkPath:(id)path plistPath:(id)plistPath espressoBinFilePath:(id)self0 vocabFilePath:(id)self1 useContactNames:(BOOL)self2 includeCustomResponses:(BOOL)self3 includeResponsesToRobots:(BOOL)self4
 {
-  v19 = a3;
-  v20 = a4;
-  v21 = a6;
-  v22 = a7;
-  v23 = a8;
-  v24 = a9;
-  v25 = a10;
-  v26 = a11;
-  if ([v23 length] || objc_msgSend(v25, "length"))
+  messageCopy = message;
+  turnsCopy = turns;
+  identifierCopy = identifier;
+  handlesCopy = handles;
+  pathCopy = path;
+  plistPathCopy = plistPath;
+  filePathCopy = filePath;
+  vocabFilePathCopy = vocabFilePath;
+  if ([pathCopy length] || objc_msgSend(filePathCopy, "length"))
   {
-    v40 = v19;
+    v40 = messageCopy;
     context = objc_autoreleasePoolPush();
-    v27 = [SGLanguageDetection languageForLocaleIdentifier:v21];
-    v28 = [[SGQuickResponsesInference alloc] initWithLanguage:v27 chunkPath:v23 plistPath:v24 espressoBinFilePath:v25 vocabFilePath:v26];
-    v29 = a5;
-    v30 = v23;
-    v31 = v26;
-    v32 = v25;
-    v33 = v24;
-    v34 = v20;
+    v27 = [SGLanguageDetection languageForLocaleIdentifier:identifierCopy];
+    v28 = [[SGQuickResponsesInference alloc] initWithLanguage:v27 chunkPath:pathCopy plistPath:plistPathCopy espressoBinFilePath:filePathCopy vocabFilePath:vocabFilePathCopy];
+    responsesCopy = responses;
+    v30 = pathCopy;
+    v31 = vocabFilePathCopy;
+    v32 = filePathCopy;
+    v33 = plistPathCopy;
+    v34 = turnsCopy;
     v35 = v28;
-    BYTE2(v38) = a14;
-    LOWORD(v38) = __PAIR16__(a13, a12);
-    v36 = [SGQuickResponsesInference signpostedQuickResponsesForMessage:v28 maximumResponses:"signpostedQuickResponsesForMessage:maximumResponses:conversationHistory:context:time:language:locale:recipients:useContactNames:includeCustomResponses:includeResponsesToRobots:" conversationHistory:v40 context:v29 time:v34 language:0 locale:0 recipients:v27 useContactNames:v21 includeCustomResponses:v22 includeResponsesToRobots:v38];
+    BYTE2(v38) = robots;
+    LOWORD(v38) = __PAIR16__(customResponses, names);
+    v36 = [SGQuickResponsesInference signpostedQuickResponsesForMessage:v28 maximumResponses:"signpostedQuickResponsesForMessage:maximumResponses:conversationHistory:context:time:language:locale:recipients:useContactNames:includeCustomResponses:includeResponsesToRobots:" conversationHistory:v40 context:responsesCopy time:v34 language:0 locale:0 recipients:v27 useContactNames:identifierCopy includeCustomResponses:handlesCopy includeResponsesToRobots:v38];
 
-    v20 = v34;
-    v24 = v33;
-    v25 = v32;
-    v26 = v31;
-    v23 = v30;
+    turnsCopy = v34;
+    plistPathCopy = v33;
+    filePathCopy = v32;
+    vocabFilePathCopy = v31;
+    pathCopy = v30;
 
-    v19 = v40;
+    messageCopy = v40;
     objc_autoreleasePoolPop(context);
   }
 
@@ -2537,40 +2537,40 @@ void __66__SGQuickResponsesInference_dynamicIndicesAndTopIsDynamic_config___bloc
   return v36;
 }
 
-+ (id)quickResponsesForMessage:(id)a3 context:(id)a4 time:(id)a5 maxResponses:(unint64_t)a6 locale:(id)a7 recipientHandles:(id)a8 chunkPath:(id)a9 plistPath:(id)a10 espressoBinFilePath:(id)a11 vocabFilePath:(id)a12 includeCustomResponses:(BOOL)a13 includeResponsesToRobots:(BOOL)a14
++ (id)quickResponsesForMessage:(id)message context:(id)context time:(id)time maxResponses:(unint64_t)responses locale:(id)locale recipientHandles:(id)handles chunkPath:(id)path plistPath:(id)self0 espressoBinFilePath:(id)self1 vocabFilePath:(id)self2 includeCustomResponses:(BOOL)self3 includeResponsesToRobots:(BOOL)self4
 {
   v41 = *MEMORY[0x277D85DE8];
-  v38 = a4;
-  v17 = a5;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
-  v22 = a11;
-  v23 = a12;
+  contextCopy = context;
+  timeCopy = time;
+  localeCopy = locale;
+  handlesCopy = handles;
+  pathCopy = path;
+  plistPathCopy = plistPath;
+  filePathCopy = filePath;
+  vocabFilePathCopy = vocabFilePath;
   context = objc_autoreleasePoolPush();
   v24 = _PASRepairString();
-  v25 = [SGQuickResponsesInference languageForLocale:v18 withLanguageDetectionForMessage:v24];
-  v37 = v20;
+  v25 = [SGQuickResponsesInference languageForLocale:localeCopy withLanguageDetectionForMessage:v24];
+  v37 = pathCopy;
   if (v25)
   {
-    v26 = [[SGQuickResponsesInference alloc] initWithLanguage:v25 chunkPath:v20 plistPath:v21 espressoBinFilePath:v22 vocabFilePath:v23];
+    v26 = [[SGQuickResponsesInference alloc] initWithLanguage:v25 chunkPath:pathCopy plistPath:plistPathCopy espressoBinFilePath:filePathCopy vocabFilePath:vocabFilePathCopy];
     v27 = v26;
     if (v26)
     {
-      BYTE2(v34) = a14;
-      BYTE1(v34) = a13;
+      BYTE2(v34) = robots;
+      BYTE1(v34) = customResponses;
       LOBYTE(v34) = 1;
-      v28 = v19;
-      v33 = v19;
-      v29 = v17;
-      v30 = [SGQuickResponsesInference signpostedQuickResponsesForMessage:v26 maximumResponses:"signpostedQuickResponsesForMessage:maximumResponses:conversationHistory:context:time:language:locale:recipients:useContactNames:includeCustomResponses:includeResponsesToRobots:" conversationHistory:v24 context:a6 time:0 language:v38 locale:v17 recipients:v25 useContactNames:v18 includeCustomResponses:v33 includeResponsesToRobots:v34];
+      v28 = handlesCopy;
+      v33 = handlesCopy;
+      v29 = timeCopy;
+      v30 = [SGQuickResponsesInference signpostedQuickResponsesForMessage:v26 maximumResponses:"signpostedQuickResponsesForMessage:maximumResponses:conversationHistory:context:time:language:locale:recipients:useContactNames:includeCustomResponses:includeResponsesToRobots:" conversationHistory:v24 context:responses time:0 language:contextCopy locale:timeCopy recipients:v25 useContactNames:localeCopy includeCustomResponses:v33 includeResponsesToRobots:v34];
     }
 
     else
     {
-      v28 = v19;
-      v29 = v17;
+      v28 = handlesCopy;
+      v29 = timeCopy;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
@@ -2584,8 +2584,8 @@ void __66__SGQuickResponsesInference_dynamicIndicesAndTopIsDynamic_config___bloc
 
   else
   {
-    v28 = v19;
-    v29 = v17;
+    v28 = handlesCopy;
+    v29 = timeCopy;
     v30 = 0;
   }
 
@@ -2595,18 +2595,18 @@ void __66__SGQuickResponsesInference_dynamicIndicesAndTopIsDynamic_config___bloc
   return v30;
 }
 
-+ (id)stringsForQuickResponses:(id)a3
++ (id)stringsForQuickResponses:(id)responses
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  responsesCopy = responses;
+  if (responsesCopy)
   {
     v4 = objc_opt_new();
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = v3;
+    v5 = responsesCopy;
     v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
@@ -2621,8 +2621,8 @@ void __66__SGQuickResponsesInference_dynamicIndicesAndTopIsDynamic_config___bloc
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * i) text];
-          [v4 addObject:v10];
+          text = [*(*(&v13 + 1) + 8 * i) text];
+          [v4 addObject:text];
         }
 
         v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -2642,12 +2642,12 @@ void __66__SGQuickResponsesInference_dynamicIndicesAndTopIsDynamic_config___bloc
   return v4;
 }
 
-+ (id)languageForLocale:(id)a3 withLanguageDetectionForMessage:(id)a4
++ (id)languageForLocale:(id)locale withLanguageDetectionForMessage:(id)message
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v6)
+  localeCopy = locale;
+  messageCopy = message;
+  v7 = messageCopy;
+  if (!messageCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -2658,7 +2658,7 @@ void __66__SGQuickResponsesInference_dynamicIndicesAndTopIsDynamic_config___bloc
     goto LABEL_13;
   }
 
-  if (![v6 length])
+  if (![messageCopy length])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -2671,10 +2671,10 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (v5)
+  if (localeCopy)
   {
 LABEL_8:
-    v10 = [SGLanguageDetection languageForLocaleIdentifier:v5];
+    v10 = [SGLanguageDetection languageForLocaleIdentifier:localeCopy];
 
     goto LABEL_15;
   }
@@ -2689,7 +2689,7 @@ LABEL_8:
   v9 = [SGLanguageDetection detectLanguageFromText:v7];
   if (v9)
   {
-    v5 = v9;
+    localeCopy = v9;
     objc_autoreleasePoolPop(v8);
     goto LABEL_8;
   }

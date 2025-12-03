@@ -9,7 +9,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [objc_msgSend(MEMORY[0x1E695E000] "standardUserDefaults")];
     if (v2)
@@ -67,26 +67,26 @@ NSGlyphGenerator *__41__NSGlyphGenerator_defaultGlyphGenerator__block_invoke()
   v128[2] = *MEMORY[0x1E69E9840];
   range.length = 0;
   v115 = 0;
-  v103 = [v13 attributedString];
-  v15 = [v103 string];
+  attributedString = [v13 attributedString];
+  string = [attributedString string];
   v99 = v8;
   v101 = *v8;
   range.location = *v8;
-  theString = v15;
-  Length = CFStringGetLength(v15);
+  theString = string;
+  Length = CFStringGetLength(string);
   v100 = v10;
   v17 = *v10;
-  v113 = [v14 layoutOptions];
+  layoutOptions = [v14 layoutOptions];
   objc_opt_class();
-  v18 = 0;
+  delegate = 0;
   if (objc_opt_isKindOfClass())
   {
-    v18 = [v14 delegate];
+    delegate = [v14 delegate];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v19 = v18;
+    v19 = delegate;
   }
 
   else
@@ -112,7 +112,7 @@ NSGlyphGenerator *__41__NSGlyphGenerator_defaultGlyphGenerator__block_invoke()
     {
       while (1)
       {
-        v23 = [v103 attributesAtIndex:v22 longestEffectiveRange:&range.length inRange:{v21, v102}];
+        v23 = [attributedString attributesAtIndex:v22 longestEffectiveRange:&range.length inRange:{v21, v102}];
         font = [v23 objectForKey:@"NSFont"];
         location = range.length;
         v25 = v115;
@@ -359,13 +359,13 @@ LABEL_208:
 
         CTFontGetGlyphsForCharacters(font, v122, v121, v44);
         v45 = range.location;
-        v46 = [(__CTFont *)font _isDefaultFace];
+        _isDefaultFace = [(__CTFont *)font _isDefaultFace];
         if (__NSInsertNominalGlyphs_onceToken != -1)
         {
           [NSGlyphGenerator generateGlyphsForGlyphStorage:desiredNumberOfCharacters:glyphIndex:characterIndex:];
         }
 
-        if ((v113 & 2) != 0)
+        if ((layoutOptions & 2) != 0)
         {
           *&__pattern8[0] = 0x20002E25CA2423;
           CTFontGetGlyphsForCharacters(font, __pattern8, v123, 4);
@@ -475,7 +475,7 @@ LABEL_208:
 
             else
             {
-              v68 = v46;
+              v68 = _isDefaultFace;
             }
 
             if (v68)
@@ -483,7 +483,7 @@ LABEL_208:
               goto LABEL_84;
             }
 
-            if (v46)
+            if (_isDefaultFace)
             {
               goto LABEL_99;
             }
@@ -541,7 +541,7 @@ LABEL_151:
               }
 
               v82 = [_CTGetVisibleFormatterCharacterSet() longCharacterIsMember:v59];
-              if ((v113 & 2) == 0 && (v59 & 0xFFFFFFFE) != 0xFE0E && (v82 & 1) == 0)
+              if ((layoutOptions & 2) == 0 && (v59 & 0xFFFFFFFE) != 0xFE0E && (v82 & 1) == 0)
               {
                 if (WORD1(v59))
                 {
@@ -671,7 +671,7 @@ LABEL_88:
             }
 
 LABEL_91:
-            if ((v113 & 1) != 0 && (v120[v60] & 2) != 0 && (v59 < 0x20 || (v59 - 127) <= 0x20) && (CFUniCharIsMemberOf() & 1) == 0)
+            if ((layoutOptions & 1) != 0 && (v120[v60] & 2) != 0 && (v59 < 0x20 || (v59 - 127) <= 0x20) && (CFUniCharIsMemberOf() & 1) == 0)
             {
               v126 = 94;
               if (v59 < 0x80)
@@ -700,7 +700,7 @@ LABEL_91:
               }
             }
 
-            if (v46)
+            if (_isDefaultFace)
             {
               goto LABEL_142;
             }

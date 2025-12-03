@@ -1,10 +1,10 @@
 @interface NRAccountsManager
 + (id)sharedInstance;
-- (BOOL)_addCompletionBlock:(id)a3;
+- (BOOL)_addCompletionBlock:(id)block;
 - (NRAccountsManager)init;
 - (void)fireCompletionBlocks;
 - (void)reset;
-- (void)signOutAccountsWithKill:(BOOL)a3 queue:(id)a4 completion:(id)a5;
+- (void)signOutAccountsWithKill:(BOOL)kill queue:(id)queue completion:(id)completion;
 @end
 
 @implementation NRAccountsManager
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = sub_100005D18;
   block[3] = &unk_1001756A8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1001B3708 != -1)
   {
     dispatch_once(&qword_1001B3708, block);
@@ -39,9 +39,9 @@
   return result;
 }
 
-- (BOOL)_addCompletionBlock:(id)a3
+- (BOOL)_addCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   completions = self->_completions;
   if (!completions)
   {
@@ -50,10 +50,10 @@
     self->_completions = v6;
   }
 
-  if (v4)
+  if (blockCopy)
   {
     v8 = self->_completions;
-    v9 = objc_retainBlock(v4);
+    v9 = objc_retainBlock(blockCopy);
     [(NSMutableArray *)v8 addObject:v9];
   }
 
@@ -78,7 +78,7 @@
   v13[1] = 3221225472;
   v14 = sub_10000607C;
   v15 = &unk_1001756D0;
-  v16 = self;
+  selfCopy = self;
   v17 = &v25;
   v18 = &v19;
   v3 = v13;
@@ -121,11 +121,11 @@
   _Block_object_dispose(&v25, 8);
 }
 
-- (void)signOutAccountsWithKill:(BOOL)a3 queue:(id)a4 completion:(id)a5
+- (void)signOutAccountsWithKill:(BOOL)kill queue:(id)queue completion:(id)completion
 {
-  if (a5)
+  if (completion)
   {
-    (*(a5 + 2))(a5, 0);
+    (*(completion + 2))(completion, 0);
   }
 }
 
@@ -147,7 +147,7 @@
   v13[1] = 3221225472;
   v14 = sub_100006368;
   v15 = &unk_1001756D0;
-  v16 = self;
+  selfCopy = self;
   v17 = &v25;
   v18 = &v19;
   v3 = v13;

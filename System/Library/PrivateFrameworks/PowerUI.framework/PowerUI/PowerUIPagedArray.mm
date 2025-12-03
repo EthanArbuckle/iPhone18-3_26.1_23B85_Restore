@@ -1,24 +1,24 @@
 @interface PowerUIPagedArray
-- (PowerUIPagedArray)initWithChunkSize:(int64_t)a3 chunkGetter:(id)a4;
-- (id)chunkArrayForIndex:(int64_t)a3;
-- (id)objectAtIndex:(int64_t)a3;
-- (id)retrieveElementFromMemoryAtIndex:(int64_t)a3;
-- (void)loadChunk:(int64_t)a3;
+- (PowerUIPagedArray)initWithChunkSize:(int64_t)size chunkGetter:(id)getter;
+- (id)chunkArrayForIndex:(int64_t)index;
+- (id)objectAtIndex:(int64_t)index;
+- (id)retrieveElementFromMemoryAtIndex:(int64_t)index;
+- (void)loadChunk:(int64_t)chunk;
 @end
 
 @implementation PowerUIPagedArray
 
-- (PowerUIPagedArray)initWithChunkSize:(int64_t)a3 chunkGetter:(id)a4
+- (PowerUIPagedArray)initWithChunkSize:(int64_t)size chunkGetter:(id)getter
 {
-  v6 = a4;
+  getterCopy = getter;
   v16.receiver = self;
   v16.super_class = PowerUIPagedArray;
   v7 = [(PowerUIPagedArray *)&v16 init];
   v8 = v7;
   if (v7)
   {
-    v7->_chunkSize = a3;
-    v9 = MEMORY[0x21CEF8A60](v6);
+    v7->_chunkSize = size;
+    v9 = MEMORY[0x21CEF8A60](getterCopy);
     getChunkHandler = v8->_getChunkHandler;
     v8->_getChunkHandler = v9;
 
@@ -38,13 +38,13 @@
   return v8;
 }
 
-- (id)objectAtIndex:(int64_t)a3
+- (id)objectAtIndex:(int64_t)index
 {
   v5 = objc_autoreleasePoolPush();
-  if ([(PowerUIPagedArray *)self isIndexInMemory:a3])
+  if ([(PowerUIPagedArray *)self isIndexInMemory:index])
   {
-    v6 = [(PowerUIPagedArray *)self retrieveElementFromMemoryAtIndex:a3];
-    v7 = a3 / self->_chunkSize;
+    v6 = [(PowerUIPagedArray *)self retrieveElementFromMemoryAtIndex:index];
+    v7 = index / self->_chunkSize;
     self->_currentChunkIndex = v7;
     v8 = v7 + 1;
     endChunkIndex = self->_endChunkIndex;
@@ -66,12 +66,12 @@
   return v6;
 }
 
-- (void)loadChunk:(int64_t)a3
+- (void)loadChunk:(int64_t)chunk
 {
   v34 = *MEMORY[0x277D85DE8];
   v5 = objc_autoreleasePoolPush();
   chunks = self->_chunks;
-  v7 = [(PowerUIPagedArray *)self keyForChunkIndex:a3 - 3];
+  v7 = [(PowerUIPagedArray *)self keyForChunkIndex:chunk - 3];
   [(NSMutableDictionary *)chunks removeObjectForKey:v7];
 
   log = self->_log;
@@ -80,7 +80,7 @@
     chunkSize = self->_chunkSize;
     numberOfQueries = self->_numberOfQueries;
     v28 = 134218496;
-    v29 = a3;
+    chunkCopy = chunk;
     v30 = 2048;
     v31 = chunkSize;
     v32 = 2048;
@@ -97,7 +97,7 @@
     v15 = v13;
     v16 = [v14 numberWithUnsignedInteger:{objc_msgSend(v12, "count")}];
     v28 = 138412290;
-    v29 = v16;
+    chunkCopy = v16;
     _os_log_impl(&dword_21B766000, v15, OS_LOG_TYPE_DEFAULT, "Received chunk of size %@", &v28, 0xCu);
   }
 
@@ -105,11 +105,11 @@
   {
     ++self->_numberOfQueries;
     v17 = self->_chunks;
-    v18 = [(PowerUIPagedArray *)self keyForChunkIndex:a3];
+    v18 = [(PowerUIPagedArray *)self keyForChunkIndex:chunk];
     [(NSMutableDictionary *)v17 setObject:v12 forKeyedSubscript:v18];
 
     v19 = self->_chunkSize;
-    v20 = [v12 count] + v19 * a3 - 1;
+    v20 = [v12 count] + v19 * chunk - 1;
     if (self->_highestIndexInMemory < v20)
     {
       self->_highestIndexInMemory = v20;
@@ -118,7 +118,7 @@
 
   if ([v12 count] != self->_chunkSize)
   {
-    self->_endChunkIndex = a3;
+    self->_endChunkIndex = chunk;
     v21 = self->_log;
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
@@ -128,7 +128,7 @@
       v25 = [v22 numberWithLong:endChunkIndex];
       v26 = [MEMORY[0x277CCABB0] numberWithLong:{-[PowerUIPagedArray countDynamic](self, "countDynamic")}];
       v28 = 138412546;
-      v29 = v25;
+      chunkCopy = v25;
       v30 = 2112;
       v31 = v26;
       _os_log_impl(&dword_21B766000, v24, OS_LOG_TYPE_DEFAULT, "Marking chunk as end of stream, chunk: %@, countDynamic: %@", &v28, 0x16u);
@@ -139,21 +139,21 @@
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (id)chunkArrayForIndex:(int64_t)a3
+- (id)chunkArrayForIndex:(int64_t)index
 {
   chunks = self->_chunks;
-  v4 = [(PowerUIPagedArray *)self keyForChunkIndex:a3];
+  v4 = [(PowerUIPagedArray *)self keyForChunkIndex:index];
   v5 = [(NSMutableDictionary *)chunks objectForKey:v4];
 
   return v5;
 }
 
-- (id)retrieveElementFromMemoryAtIndex:(int64_t)a3
+- (id)retrieveElementFromMemoryAtIndex:(int64_t)index
 {
   chunkSize = self->_chunkSize;
-  v4 = a3 % chunkSize;
-  v5 = [(PowerUIPagedArray *)self chunkArrayForIndex:a3 / chunkSize];
-  v6 = [v5 objectAtIndex:v4];
+  v4 = index % chunkSize;
+  chunkSize = [(PowerUIPagedArray *)self chunkArrayForIndex:index / chunkSize];
+  v6 = [chunkSize objectAtIndex:v4];
 
   return v6;
 }

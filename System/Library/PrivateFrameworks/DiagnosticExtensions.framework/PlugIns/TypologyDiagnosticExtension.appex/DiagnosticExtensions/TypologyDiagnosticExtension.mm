@@ -1,8 +1,8 @@
 @interface TypologyDiagnosticExtension
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 - (void)cleanupDatavault;
-- (void)setupWithParameters:(id)a3;
-- (void)teardownWithParameters:(id)a3;
+- (void)setupWithParameters:(id)parameters;
+- (void)teardownWithParameters:(id)parameters;
 @end
 
 @implementation TypologyDiagnosticExtension
@@ -19,7 +19,7 @@
   [v2 enumerateTypologyLogs:v4];
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
   v3 = TITypologyDiagnosticExtensionOSLogFacility();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
@@ -56,7 +56,7 @@
   return v11;
 }
 
-- (void)setupWithParameters:(id)a3
+- (void)setupWithParameters:(id)parameters
 {
   v4 = TITypologyDiagnosticExtensionOSLogFacility();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -70,7 +70,7 @@
   [v5 synchronizePreferences];
 }
 
-- (void)teardownWithParameters:(id)a3
+- (void)teardownWithParameters:(id)parameters
 {
   v4 = TITypologyDiagnosticExtensionOSLogFacility();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))

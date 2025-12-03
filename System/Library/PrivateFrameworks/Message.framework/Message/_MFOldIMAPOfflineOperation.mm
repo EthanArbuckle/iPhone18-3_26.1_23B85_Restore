@@ -1,18 +1,18 @@
 @interface _MFOldIMAPOfflineOperation
-+ (id)_createStringFromData:(id)a3 cursor:(unint64_t *)a4;
-+ (id)deserializedCopyFromData:(id)a3 cursor:(unint64_t *)a4;
++ (id)_createStringFromData:(id)data cursor:(unint64_t *)cursor;
++ (id)deserializedCopyFromData:(id)data cursor:(unint64_t *)cursor;
 @end
 
 @implementation _MFOldIMAPOfflineOperation
 
-+ (id)deserializedCopyFromData:(id)a3 cursor:(unint64_t *)a4
++ (id)deserializedCopyFromData:(id)data cursor:(unint64_t *)cursor
 {
-  v6 = a3;
+  dataCopy = data;
   v13 = 0;
   v12 = -86;
-  [v6 getBytes:&v13 range:{(*a4)++, 1}];
-  [v6 getBytes:&v12 range:?];
-  ++*a4;
+  [dataCopy getBytes:&v13 range:{(*cursor)++, 1}];
+  [dataCopy getBytes:&v12 range:?];
+  ++*cursor;
   if (v13)
   {
     p_super = EDLibraryLog();
@@ -30,7 +30,7 @@
     p_super = EDLibraryLog();
     if (os_log_type_enabled(p_super, OS_LOG_TYPE_ERROR))
     {
-      [(_MFOldIMAPOfflineOperation *)&v12 deserializedCopyFromData:a4 cursor:p_super];
+      [(_MFOldIMAPOfflineOperation *)&v12 deserializedCopyFromData:cursor cursor:p_super];
     }
 
     goto LABEL_10;
@@ -40,7 +40,7 @@
   [(_MFOldIMAPOfflineOperation *)v9 setOperationType:v8];
   if (v9)
   {
-    p_super = [a1 _createStringFromData:v6 cursor:a4];
+    p_super = [self _createStringFromData:dataCopy cursor:cursor];
     if (p_super)
     {
       [(_MFOldIMAPOfflineOperation *)v9 setMailboxName:p_super];
@@ -66,18 +66,18 @@ LABEL_12:
   return v9;
 }
 
-+ (id)_createStringFromData:(id)a3 cursor:(unint64_t *)a4
++ (id)_createStringFromData:(id)data cursor:(unint64_t *)cursor
 {
-  v5 = a3;
-  v6 = [v5 bytes];
-  v7 = *a4;
-  v8 = [v5 bytes];
-  v9 = (v6 + v7);
-  v10 = v8 + [v5 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v7 = *cursor;
+  bytes2 = [dataCopy bytes];
+  v9 = (bytes + v7);
+  v10 = bytes2 + [dataCopy length];
   if (v9 >= v10)
   {
 LABEL_5:
-    v13 = [v5 length];
+    v13 = [dataCopy length];
     v14 = 0;
   }
 
@@ -105,10 +105,10 @@ LABEL_5:
       v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:v9];
     }
 
-    v13 = *a4 + v11;
+    v13 = *cursor + v11;
   }
 
-  *a4 = v13;
+  *cursor = v13;
 
   return v14;
 }

@@ -1,17 +1,17 @@
 @interface MFAccountsListService
-+ (BOOL)handleMessage:(id)a3 connectionState:(id)a4 replyObject:(id *)a5 error:(id *)a6;
++ (BOOL)handleMessage:(id)message connectionState:(id)state replyObject:(id *)object error:(id *)error;
 @end
 
 @implementation MFAccountsListService
 
-+ (BOOL)handleMessage:(id)a3 connectionState:(id)a4 replyObject:(id *)a5 error:(id *)a6
++ (BOOL)handleMessage:(id)message connectionState:(id)state replyObject:(id *)object error:(id *)error
 {
-  original = a3;
+  original = message;
   xdict = xpc_dictionary_get_value(original, [_MSMailServiceArguments UTF8String]);
   if (!xdict)
   {
     v25 = +[NSAssertionHandler currentHandler];
-    [v25 handleFailureInMethod:a2 object:a1 file:@"MFAccountsService.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"arguments"}];
+    [v25 handleFailureInMethod:a2 object:self file:@"MFAccountsService.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"arguments"}];
   }
 
   v26 = xpc_dictionary_get_value(xdict, [MSAccountsArgumentKeys UTF8String]);
@@ -58,8 +58,8 @@
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
           [(MFAccountResultsGenerator *)v14 setAccount:v19];
-          v20 = [(_MFResultsGenerator *)v14 results];
-          [v13 addObject:v20];
+          results = [(_MFResultsGenerator *)v14 results];
+          [v13 addObject:results];
         }
       }
 
@@ -73,7 +73,7 @@
   v22 = _CFXPCCreateXPCObjectFromCFObject();
   xpc_dictionary_set_value(reply, [MSAccountsResultAccounts UTF8String], v22);
   v23 = reply;
-  *a5 = reply;
+  *object = reply;
 
   return 1;
 }

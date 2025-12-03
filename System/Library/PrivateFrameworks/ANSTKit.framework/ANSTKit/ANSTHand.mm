@@ -1,13 +1,13 @@
 @interface ANSTHand
 + (id)new;
 - (ANSTHand)init;
-- (ANSTHand)initWithAcObject:(id *)a3;
-- (ANSTHand)initWithCoder:(id)a3;
-- (ANSTHand)initWithObjectID:(unint64_t)a3 groupID:(unint64_t)a4 category:(id)a5 boundingBox:(CGRect)a6 confidence:(unint64_t)a7 distance:(float)a8;
-- (ANSTHand)initWithObjectID:(unint64_t)a3 groupID:(unint64_t)a4 category:(id)a5 boundingBox:(CGRect)a6 confidence:(unint64_t)a7 distance:(float)a8 chirality:(int64_t)a9;
+- (ANSTHand)initWithAcObject:(id *)object;
+- (ANSTHand)initWithCoder:(id)coder;
+- (ANSTHand)initWithObjectID:(unint64_t)d groupID:(unint64_t)iD category:(id)category boundingBox:(CGRect)box confidence:(unint64_t)confidence distance:(float)distance;
+- (ANSTHand)initWithObjectID:(unint64_t)d groupID:(unint64_t)iD category:(id)category boundingBox:(CGRect)box confidence:(unint64_t)confidence distance:(float)distance chirality:(int64_t)chirality;
 - (id)debugJSONDictionary;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ANSTHand
@@ -21,23 +21,23 @@
 
 + (id)new
 {
-  result = objc_msgSend_doesNotRecognizeSelector_(a1, a2, a2);
+  result = objc_msgSend_doesNotRecognizeSelector_(self, a2, a2);
   __break(1u);
   return result;
 }
 
-- (ANSTHand)initWithObjectID:(unint64_t)a3 groupID:(unint64_t)a4 category:(id)a5 boundingBox:(CGRect)a6 confidence:(unint64_t)a7 distance:(float)a8
+- (ANSTHand)initWithObjectID:(unint64_t)d groupID:(unint64_t)iD category:(id)category boundingBox:(CGRect)box confidence:(unint64_t)confidence distance:(float)distance
 {
-  v10 = a5;
+  categoryCopy = category;
   result = objc_msgSend_doesNotRecognizeSelector_(self, v11, a2);
   __break(1u);
   return result;
 }
 
-- (ANSTHand)initWithAcObject:(id *)a3
+- (ANSTHand)initWithAcObject:(id *)object
 {
-  var1 = a3->var1;
-  var2 = a3->var2;
+  var1 = object->var1;
+  var2 = object->var2;
   if (var2 == 10)
   {
     v7 = 1;
@@ -48,32 +48,32 @@
     v7 = 2 * (var2 == 11);
   }
 
-  var0 = a3->var0;
+  var0 = object->var0;
   v9 = ANSTObjectCategoryFromAcDetCategory(var2);
-  *&v10 = a3->var5;
-  v12 = objc_msgSend_initWithObjectID_groupID_category_boundingBox_confidence_distance_chirality_(self, v11, var0, var1, v9, a3->var4, v7, a3->var3.var0, a3->var3.var1, a3->var3.var2, a3->var3.var3, v10);
+  *&v10 = object->var5;
+  v12 = objc_msgSend_initWithObjectID_groupID_category_boundingBox_confidence_distance_chirality_(self, v11, var0, var1, v9, object->var4, v7, object->var3.var0, object->var3.var1, object->var3.var2, object->var3.var3, v10);
 
   return v12;
 }
 
-- (ANSTHand)initWithObjectID:(unint64_t)a3 groupID:(unint64_t)a4 category:(id)a5 boundingBox:(CGRect)a6 confidence:(unint64_t)a7 distance:(float)a8 chirality:(int64_t)a9
+- (ANSTHand)initWithObjectID:(unint64_t)d groupID:(unint64_t)iD category:(id)category boundingBox:(CGRect)box confidence:(unint64_t)confidence distance:(float)distance chirality:(int64_t)chirality
 {
   v11.receiver = self;
   v11.super_class = ANSTHand;
-  result = [(ANSTObject *)&v11 initWithObjectID:a3 groupID:a4 category:a5 boundingBox:a7 confidence:a6.origin.x distance:a6.origin.y, a6.size.width, a6.size.height];
-  result->_chirality = a9;
+  result = [(ANSTObject *)&v11 initWithObjectID:d groupID:iD category:category boundingBox:confidence confidence:box.origin.x distance:box.origin.y, box.size.width, box.size.height];
+  result->_chirality = chirality;
   return result;
 }
 
-- (ANSTHand)initWithCoder:(id)a3
+- (ANSTHand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = ANSTHand;
-  v5 = [(ANSTObject *)&v14 initWithCoder:v4];
+  v5 = [(ANSTObject *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = v4;
+    v6 = coderCopy;
     v7 = objc_opt_class();
     v8 = NSStringFromSelector(sel_chirality);
     v10 = objc_msgSend_decodeObjectOfClass_forKey_(v6, v9, v7, v8);
@@ -94,15 +94,15 @@
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = ANSTHand;
-  [(ANSTObject *)&v12 encodeWithCoder:v4];
+  [(ANSTObject *)&v12 encodeWithCoder:coderCopy];
   chirality = self->_chirality;
   v6 = MEMORY[0x277CCABB0];
-  v7 = v4;
+  v7 = coderCopy;
   v9 = objc_msgSend_numberWithInteger_(v6, v8, chirality);
   v10 = NSStringFromSelector(sel_chirality);
   objc_msgSend_encodeObject_forKey_(v7, v11, v9, v10);
@@ -167,8 +167,8 @@
 {
   v15.receiver = self;
   v15.super_class = ANSTHand;
-  v3 = [(ANSTObject *)&v15 debugJSONDictionary];
-  v6 = objc_msgSend_mutableCopy(v3, v4, v5);
+  debugJSONDictionary = [(ANSTObject *)&v15 debugJSONDictionary];
+  v6 = objc_msgSend_mutableCopy(debugJSONDictionary, v4, v5);
 
   chirality = self->_chirality;
   if (chirality > 2)

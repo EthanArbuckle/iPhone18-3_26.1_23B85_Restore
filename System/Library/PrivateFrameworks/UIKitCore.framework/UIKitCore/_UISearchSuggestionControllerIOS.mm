@@ -1,29 +1,29 @@
 @interface _UISearchSuggestionControllerIOS
 - (BOOL)_hasVisibleMenu;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (_UISearchSuggestionControllerIOS)initWithSearchTextField:(id)a3;
-- (id)_contextMenuInteraction:(id)a3 styleForMenuWithConfiguration:(id)a4;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (_UISearchSuggestionControllerIOS)initWithSearchTextField:(id)field;
+- (id)_contextMenuInteraction:(id)interaction styleForMenuWithConfiguration:(id)configuration;
 - (id)_suggestionsMenu;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
 - (uint64_t)__shouldUseMenu;
 - (void)_dismissMenuWithoutAnimation;
 - (void)_suggestionsRecoveryGestureRecognized;
-- (void)_updateMenuWithSuggestionGroups:(id)a3;
-- (void)updateSuggestionGroups:(id)a3 userInitiated:(BOOL)a4;
+- (void)_updateMenuWithSuggestionGroups:(id)groups;
+- (void)updateSuggestionGroups:(id)groups userInitiated:(BOOL)initiated;
 @end
 
 @implementation _UISearchSuggestionControllerIOS
 
 - (BOOL)_hasVisibleMenu
 {
-  v3 = [(_UISearchSuggestionControllerIOSBase *)self suggestions];
-  v4 = [v3 count];
+  suggestions = [(_UISearchSuggestionControllerIOSBase *)self suggestions];
+  v4 = [suggestions count];
 
-  v5 = [(_UISearchSuggestionControllerIOS *)self menuInteraction];
-  v6 = [v5 _hasVisibleMenu];
+  menuInteraction = [(_UISearchSuggestionControllerIOS *)self menuInteraction];
+  _hasVisibleMenu = [menuInteraction _hasVisibleMenu];
   if (v4)
   {
-    v7 = v6;
+    v7 = _hasVisibleMenu;
   }
 
   else
@@ -34,11 +34,11 @@
   return v7;
 }
 
-- (_UISearchSuggestionControllerIOS)initWithSearchTextField:(id)a3
+- (_UISearchSuggestionControllerIOS)initWithSearchTextField:(id)field
 {
   v8.receiver = self;
   v8.super_class = _UISearchSuggestionControllerIOS;
-  v3 = [(_UISearchSuggestionControllerIOSBase *)&v8 initWithSearchTextField:a3];
+  v3 = [(_UISearchSuggestionControllerIOSBase *)&v8 initWithSearchTextField:field];
   if (v3)
   {
     v4 = [[UITapGestureRecognizer alloc] initWithTarget:v3 action:sel__suggestionsRecoveryGestureRecognized];
@@ -46,8 +46,8 @@
     v3->_suggestionsRecoveryGesture = v4;
 
     [(UIGestureRecognizer *)v3->_suggestionsRecoveryGesture setDelegate:v3];
-    v6 = [(_UISearchSuggestionControllerIOSBase *)v3 searchTextField];
-    [v6 addGestureRecognizer:v3->_suggestionsRecoveryGesture];
+    searchTextField = [(_UISearchSuggestionControllerIOSBase *)v3 searchTextField];
+    [searchTextField addGestureRecognizer:v3->_suggestionsRecoveryGesture];
   }
 
   return v3;
@@ -62,16 +62,16 @@
   v36 = __52___UISearchSuggestionControllerIOS__suggestionsMenu__block_invoke;
   v37 = &unk_1E70F6A20;
   objc_copyWeak(&v38, &location);
-  v3 = [(_UISearchSuggestionController *)self suggestionGroups];
-  v4 = [v3 count];
-  v28 = [v3 firstObject];
-  v30 = [MEMORY[0x1E695DF70] array];
-  v26 = v3;
+  suggestionGroups = [(_UISearchSuggestionController *)self suggestionGroups];
+  v4 = [suggestionGroups count];
+  firstObject = [suggestionGroups firstObject];
+  array = [MEMORY[0x1E695DF70] array];
+  v26 = suggestionGroups;
   v27 = v4;
   if (v4 == 1)
   {
-    v5 = [v28 suggestionItems];
-    v6 = v36(v35, v5);
+    suggestionItems = [firstObject suggestionItems];
+    v6 = v36(v35, suggestionItems);
   }
 
   else
@@ -80,12 +80,12 @@
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v5 = v3;
-    v6 = [v5 countByEnumeratingWithState:&v31 objects:v40 count:16];
+    suggestionItems = suggestionGroups;
+    v6 = [suggestionItems countByEnumeratingWithState:&v31 objects:v40 count:16];
     if (v6)
     {
       v7 = *v32;
-      obj = v5;
+      obj = suggestionItems;
       do
       {
         for (i = 0; i != v6; i = i + 1)
@@ -96,11 +96,11 @@
           }
 
           v9 = *(*(&v31 + 1) + 8 * i);
-          v10 = [v9 headerTitle];
-          v11 = v10;
-          if (v10)
+          headerTitle = [v9 headerTitle];
+          v11 = headerTitle;
+          if (headerTitle)
           {
-            v12 = v10;
+            v12 = headerTitle;
           }
 
           else
@@ -108,17 +108,17 @@
             v12 = &stru_1EFB14550;
           }
 
-          v13 = [v9 suggestionItems];
-          v14 = v36(v35, v13);
+          suggestionItems2 = [v9 suggestionItems];
+          v14 = v36(v35, suggestionItems2);
           v15 = [UIMenu menuWithTitle:v12 image:0 identifier:0 options:1 children:v14];
 
-          v16 = [v9 headerAction];
-          [v15 set_accessoryAction:v16];
+          headerAction = [v9 headerAction];
+          [v15 set_accessoryAction:headerAction];
 
-          [v30 addObject:v15];
+          [array addObject:v15];
         }
 
-        v5 = obj;
+        suggestionItems = obj;
         v6 = [obj countByEnumeratingWithState:&v31 objects:v40 count:16];
       }
 
@@ -126,9 +126,9 @@
     }
   }
 
-  v17 = [v28 headerTitle];
-  v18 = v17;
-  if (v17)
+  headerTitle2 = [firstObject headerTitle];
+  v18 = headerTitle2;
+  if (headerTitle2)
   {
     v19 = v27 == 1;
   }
@@ -141,7 +141,7 @@
   v20 = &stru_1EFB14550;
   if (v19)
   {
-    v20 = v17;
+    v20 = headerTitle2;
   }
 
   v21 = v20;
@@ -152,14 +152,14 @@
 
   else
   {
-    v22 = v30;
+    v22 = array;
   }
 
   v23 = [UIMenu menuWithTitle:v21 image:0 identifier:0 options:16 children:v22];
   if (v27 == 1)
   {
-    v24 = [v28 headerAction];
-    [v23 set_accessoryAction:v24];
+    headerAction2 = [firstObject headerAction];
+    [v23 set_accessoryAction:headerAction2];
   }
 
   objc_destroyWeak(&v38);
@@ -178,56 +178,56 @@
   [UIView performWithoutAnimation:v2];
 }
 
-- (void)_updateMenuWithSuggestionGroups:(id)a3
+- (void)_updateMenuWithSuggestionGroups:(id)groups
 {
-  v4 = a3;
-  [(_UISearchSuggestionController *)self setSuggestionGroups:v4];
-  v5 = [(_UISearchSuggestionControllerIOS *)self menuInteraction];
-  v6 = _UISearchSuggestionNumberOfSuggestionsFromGroups(v4);
+  groupsCopy = groups;
+  [(_UISearchSuggestionController *)self setSuggestionGroups:groupsCopy];
+  menuInteraction = [(_UISearchSuggestionControllerIOS *)self menuInteraction];
+  v6 = _UISearchSuggestionNumberOfSuggestionsFromGroups(groupsCopy);
 
-  if (!v5 && v6)
+  if (!menuInteraction && v6)
   {
-    v5 = [[UIContextMenuInteraction alloc] initWithDelegate:self];
-    [(UIContextMenuInteraction *)v5 _setFallbackDriverStyle:1];
-    [(_UISearchSuggestionControllerIOS *)self setMenuInteraction:v5];
-    [(UIContextMenuInteraction *)v5 setDrivers:MEMORY[0x1E695E0F0]];
-    v7 = [(_UISearchSuggestionControllerIOSBase *)self searchTextField];
-    [v7 addInteraction:v5];
+    menuInteraction = [[UIContextMenuInteraction alloc] initWithDelegate:self];
+    [(UIContextMenuInteraction *)menuInteraction _setFallbackDriverStyle:1];
+    [(_UISearchSuggestionControllerIOS *)self setMenuInteraction:menuInteraction];
+    [(UIContextMenuInteraction *)menuInteraction setDrivers:MEMORY[0x1E695E0F0]];
+    searchTextField = [(_UISearchSuggestionControllerIOSBase *)self searchTextField];
+    [searchTextField addInteraction:menuInteraction];
   }
 
-  if ([(UIContextMenuInteraction *)v5 _hasVisibleMenu]|| !v6)
+  if ([(UIContextMenuInteraction *)menuInteraction _hasVisibleMenu]|| !v6)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __68___UISearchSuggestionControllerIOS__updateMenuWithSuggestionGroups___block_invoke;
     v8[3] = &unk_1E70F6A48;
     v8[4] = self;
-    [(UIContextMenuInteraction *)v5 updateVisibleMenuWithBlock:v8];
+    [(UIContextMenuInteraction *)menuInteraction updateVisibleMenuWithBlock:v8];
   }
 
   else
   {
-    [(UIContextMenuInteraction *)v5 _presentMenuAtLocation:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
+    [(UIContextMenuInteraction *)menuInteraction _presentMenuAtLocation:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
   }
 }
 
 - (uint64_t)__shouldUseMenu
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v2 = [a1 searchBar];
-  v3 = [v2 _searchController];
-  v4 = [a1 searchTextField];
-  v5 = [v4 window];
+  searchBar = [self searchBar];
+  _searchController = [searchBar _searchController];
+  searchTextField = [self searchTextField];
+  window = [searchTextField window];
 
-  if (v3)
+  if (_searchController)
   {
-    v6 = [v3 _usesSearchSuggestionsMenuForStackedSearch];
-    v7 = [v2 _isHostedInlineByNavigationBar] | v6;
-    if ((v7 & 1) == 0 || !v5)
+    _usesSearchSuggestionsMenuForStackedSearch = [_searchController _usesSearchSuggestionsMenuForStackedSearch];
+    v7 = [searchBar _isHostedInlineByNavigationBar] | _usesSearchSuggestionsMenuForStackedSearch;
+    if ((v7 & 1) == 0 || !window)
     {
       v11 = 0;
       v12 = 0;
@@ -239,15 +239,15 @@
       goto LABEL_19;
     }
 
-    if ((v6 & 1) == 0)
+    if ((_usesSearchSuggestionsMenuForStackedSearch & 1) == 0)
     {
-      v8 = [v2 traitCollection];
+      traitCollection = [searchBar traitCollection];
 LABEL_9:
-      v9 = v8;
-      if (_UIBarsUseDesktopNavigationBar(v8))
+      v9 = traitCollection;
+      if (_UIBarsUseDesktopNavigationBar(traitCollection))
       {
-        v10 = [v5 traitCollection];
-        v11 = [v10 verticalSizeClass] == 2 || +[UIKeyboard isInHardwareKeyboardMode](UIKeyboard, "isInHardwareKeyboardMode");
+        traitCollection2 = [window traitCollection];
+        v11 = [traitCollection2 verticalSizeClass] == 2 || +[UIKeyboard isInHardwareKeyboardMode](UIKeyboard, "isInHardwareKeyboardMode");
       }
 
       else
@@ -259,47 +259,47 @@ LABEL_9:
     }
 
 LABEL_8:
-    v8 = [UITraitCollection traitCollectionWithUserInterfaceIdiom:1];
+    traitCollection = [UITraitCollection traitCollectionWithUserInterfaceIdiom:1];
     goto LABEL_9;
   }
 
-  if (v5)
+  if (window)
   {
     goto LABEL_8;
   }
 
   v11 = 0;
 LABEL_19:
-  v12 = (v5 != 0) & v11;
+  v12 = (window != 0) & v11;
 LABEL_20:
 
   return v12;
 }
 
-- (void)updateSuggestionGroups:(id)a3 userInitiated:(BOOL)a4
+- (void)updateSuggestionGroups:(id)groups userInitiated:(BOOL)initiated
 {
-  v9 = a3;
-  if (_UISearchSuggestionNumberOfSuggestionsFromGroups(v9) || ([(_UISearchSuggestionController *)self suggestionGroups], v5 = objc_claimAutoreleasedReturnValue(), v6 = _UISearchSuggestionNumberOfSuggestionsFromGroups(v5), v5, v6))
+  groupsCopy = groups;
+  if (_UISearchSuggestionNumberOfSuggestionsFromGroups(groupsCopy) || ([(_UISearchSuggestionController *)self suggestionGroups], v5 = objc_claimAutoreleasedReturnValue(), v6 = _UISearchSuggestionNumberOfSuggestionsFromGroups(v5), v5, v6))
   {
     if ([(_UISearchSuggestionControllerIOS *)self __shouldUseMenu])
     {
-      [(_UISearchSuggestionControllerIOS *)self _updateMenuWithSuggestionGroups:v9];
+      [(_UISearchSuggestionControllerIOS *)self _updateMenuWithSuggestionGroups:groupsCopy];
     }
 
     else
     {
-      v7 = [(_UISearchSuggestionControllerIOSBase *)self searchBar];
-      v8 = [v7 _searchController];
+      searchBar = [(_UISearchSuggestionControllerIOSBase *)self searchBar];
+      _searchController = [searchBar _searchController];
 
-      if (v8)
+      if (_searchController)
       {
-        [(_UISearchSuggestionController *)self setSuggestionGroups:v9];
+        [(_UISearchSuggestionController *)self setSuggestionGroups:groupsCopy];
       }
     }
   }
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -311,9 +311,9 @@ LABEL_20:
   return v4;
 }
 
-- (id)_contextMenuInteraction:(id)a3 styleForMenuWithConfiguration:(id)a4
+- (id)_contextMenuInteraction:(id)interaction styleForMenuWithConfiguration:(id)configuration
 {
-  v4 = [(_UISearchSuggestionControllerIOSBase *)self searchTextField:a3];
+  v4 = [(_UISearchSuggestionControllerIOSBase *)self searchTextField:interaction];
   v5 = +[_UIContextMenuStyle defaultStyle];
   [v5 set_wantsTypeSelect:0];
   [v5 setPreferredLayout:3];
@@ -329,11 +329,11 @@ LABEL_20:
   return v5;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (self->_suggestionsRecoveryGesture != v4)
+  beginCopy = begin;
+  if (self->_suggestionsRecoveryGesture != beginCopy)
   {
     if (os_variant_has_internal_diagnostics())
     {
@@ -341,7 +341,7 @@ LABEL_20:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
       {
         v13 = 138412290;
-        v14 = v4;
+        v14 = beginCopy;
         _os_log_fault_impl(&dword_188A29000, v12, OS_LOG_TYPE_FAULT, "unexpected gesture: %@", &v13, 0xCu);
       }
     }
@@ -352,32 +352,32 @@ LABEL_20:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         v13 = 138412290;
-        v14 = v4;
+        v14 = beginCopy;
         _os_log_impl(&dword_188A29000, v11, OS_LOG_TYPE_ERROR, "unexpected gesture: %@", &v13, 0xCu);
       }
     }
   }
 
-  if (self->_suggestionsRecoveryGesture == v4)
+  if (self->_suggestionsRecoveryGesture == beginCopy)
   {
     if ([(_UISearchSuggestionControllerIOS *)self __shouldUseMenu])
     {
-      v6 = [(_UISearchSuggestionControllerIOS *)self menuInteraction];
-      if (v6)
+      menuInteraction = [(_UISearchSuggestionControllerIOS *)self menuInteraction];
+      if (menuInteraction)
       {
-        v7 = [(_UISearchSuggestionControllerIOS *)self menuInteraction];
-        if ([v7 _hasVisibleMenu])
+        menuInteraction2 = [(_UISearchSuggestionControllerIOS *)self menuInteraction];
+        if ([menuInteraction2 _hasVisibleMenu])
         {
           v5 = 0;
         }
 
         else
         {
-          v8 = [(_UISearchSuggestionControllerIOSBase *)self searchTextField];
-          if ([v8 isEditing])
+          searchTextField = [(_UISearchSuggestionControllerIOSBase *)self searchTextField];
+          if ([searchTextField isEditing])
           {
-            v9 = [(_UISearchSuggestionControllerIOSBase *)self suggestions];
-            v5 = [v9 count] != 0;
+            suggestions = [(_UISearchSuggestionControllerIOSBase *)self suggestions];
+            v5 = [suggestions count] != 0;
           }
 
           else
@@ -409,16 +409,16 @@ LABEL_20:
 
 - (void)_suggestionsRecoveryGestureRecognized
 {
-  v3 = [(_UISearchSuggestionControllerIOSBase *)self searchBar];
-  v4 = [v3 _searchController];
+  searchBar = [(_UISearchSuggestionControllerIOSBase *)self searchBar];
+  _searchController = [searchBar _searchController];
 
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __73___UISearchSuggestionControllerIOS__suggestionsRecoveryGestureRecognized__block_invoke;
   v6[3] = &unk_1E70F35B8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = _searchController;
+  selfCopy = self;
+  v5 = _searchController;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 

@@ -1,5 +1,5 @@
 @interface PKButtonBadgeView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 @end
 
@@ -15,13 +15,13 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PKButtonBadgeView *)self layer];
-  [v11 setCornerRadius:{fmin(v8, v10) * 0.5}];
+  layer = [(PKButtonBadgeView *)self layer];
+  [layer setCornerRadius:{fmin(v8, v10) * 0.5}];
 
   [(UILabel *)self->_label setFrame:v4 + 4.0, v6 + 4.0, v8 + -8.0, v10 + -8.0];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   [(UILabel *)self->_label pkui_sizeThatFits:1.79769313e308, 1.79769313e308];
   if (v3 < v4)

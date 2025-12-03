@@ -1,17 +1,17 @@
 @interface AXUICameraButtonPracticeCell
-- (AXUICameraButtonPracticeCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (void)_physicalButtonInteraction:(id)a3 handleAction:(id)a4 withActiveActions:(id)a5;
-- (void)_updatePackageState:(unint64_t)a3;
+- (AXUICameraButtonPracticeCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (void)_physicalButtonInteraction:(id)interaction handleAction:(id)action withActiveActions:(id)actions;
+- (void)_updatePackageState:(unint64_t)state;
 @end
 
 @implementation AXUICameraButtonPracticeCell
 
-- (AXUICameraButtonPracticeCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (AXUICameraButtonPracticeCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v66[4] = *MEMORY[0x1E69E9840];
   v57.receiver = self;
   v57.super_class = AXUICameraButtonPracticeCell;
-  v5 = [(PSTableCell *)&v57 initWithStyle:a3 reuseIdentifier:a4 specifier:a5];
+  v5 = [(PSTableCell *)&v57 initWithStyle:style reuseIdentifier:identifier specifier:specifier];
   if (v5)
   {
     v6 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -23,38 +23,38 @@
     v5->_packageView = v8;
 
     v10 = *MEMORY[0x1E69796E8];
-    v11 = [(BSUICAPackageView *)v5->_packageView layer];
-    [v11 setCornerCurve:v10];
+    layer = [(BSUICAPackageView *)v5->_packageView layer];
+    [layer setCornerCurve:v10];
 
-    v12 = [(BSUICAPackageView *)v5->_packageView layer];
-    [v12 setCornerRadius:20.0];
+    layer2 = [(BSUICAPackageView *)v5->_packageView layer];
+    [layer2 setCornerRadius:20.0];
 
-    v13 = [(BSUICAPackageView *)v5->_packageView layer];
-    [v13 setMasksToBounds:1];
+    layer3 = [(BSUICAPackageView *)v5->_packageView layer];
+    [layer3 setMasksToBounds:1];
 
-    v14 = [(AXUICameraButtonPracticeCell *)v5 contentView];
-    [v14 addSubview:v5->_packageView];
+    contentView = [(AXUICameraButtonPracticeCell *)v5 contentView];
+    [contentView addSubview:v5->_packageView];
 
     [(BSUICAPackageView *)v5->_packageView setContentMode:2];
     [(BSUICAPackageView *)v5->_packageView setTranslatesAutoresizingMaskIntoConstraints:0];
     v47 = MEMORY[0x1E696ACD8];
-    v52 = [(BSUICAPackageView *)v5->_packageView topAnchor];
-    v54 = [(AXUICameraButtonPracticeCell *)v5 contentView];
-    v51 = [v54 topAnchor];
-    v50 = [v52 constraintEqualToAnchor:v51];
+    topAnchor = [(BSUICAPackageView *)v5->_packageView topAnchor];
+    contentView2 = [(AXUICameraButtonPracticeCell *)v5 contentView];
+    topAnchor2 = [contentView2 topAnchor];
+    v50 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v66[0] = v50;
-    v48 = [(BSUICAPackageView *)v5->_packageView bottomAnchor];
-    v49 = [(AXUICameraButtonPracticeCell *)v5 contentView];
-    v46 = [v49 bottomAnchor];
-    v15 = [v48 constraintEqualToAnchor:v46];
+    bottomAnchor = [(BSUICAPackageView *)v5->_packageView bottomAnchor];
+    contentView3 = [(AXUICameraButtonPracticeCell *)v5 contentView];
+    bottomAnchor2 = [contentView3 bottomAnchor];
+    v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v66[1] = v15;
-    v16 = [(BSUICAPackageView *)v5->_packageView centerXAnchor];
-    v17 = [(AXUICameraButtonPracticeCell *)v5 contentView];
-    v18 = [v17 centerXAnchor];
-    v19 = [v16 constraintEqualToAnchor:v18];
+    centerXAnchor = [(BSUICAPackageView *)v5->_packageView centerXAnchor];
+    contentView4 = [(AXUICameraButtonPracticeCell *)v5 contentView];
+    centerXAnchor2 = [contentView4 centerXAnchor];
+    v19 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v66[2] = v19;
-    v20 = [(BSUICAPackageView *)v5->_packageView widthAnchor];
-    v21 = [v20 constraintEqualToConstant:362.0];
+    widthAnchor = [(BSUICAPackageView *)v5->_packageView widthAnchor];
+    v21 = [widthAnchor constraintEqualToConstant:362.0];
     v66[3] = v21;
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v66 count:4];
     [v47 activateConstraints:v22];
@@ -65,9 +65,9 @@
     v5->_interaction = v23;
 
     [(BSUICAPackageView *)v5->_packageView addInteraction:v5->_interaction];
-    v25 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     activeStages = v5->_activeStages;
-    v5->_activeStages = v25;
+    v5->_activeStages = array;
 
     v27 = CFPreferencesCopyAppValue(@"systemOverlay.halfPressHapticVolume", @"com.apple.camera");
     objc_opt_class();
@@ -113,8 +113,8 @@
     v39 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v61 forKeys:v60 count:3];
     v40 = [v36 feedbackWithDictionaryRepresentation:v39];
 
-    v41 = [MEMORY[0x1E69DD3A8] defaultConfiguration];
-    v42 = [v41 tweakedConfigurationForCaller:v5 usage:@"cameraOverlayHalfPress"];
+    defaultConfiguration = [MEMORY[0x1E69DD3A8] defaultConfiguration];
+    v42 = [defaultConfiguration tweakedConfigurationForCaller:v5 usage:@"cameraOverlayHalfPress"];
 
     [v42 setInteractionStartedFeedback:v35];
     [v42 setInteractionEndedFeedback:v40];
@@ -129,46 +129,46 @@
   return v5;
 }
 
-- (void)_physicalButtonInteraction:(id)a3 handleAction:(id)a4 withActiveActions:(id)a5
+- (void)_physicalButtonInteraction:(id)interaction handleAction:(id)action withActiveActions:(id)actions
 {
-  v11 = a4;
-  if ([v11 _stagePhase])
+  actionCopy = action;
+  if ([actionCopy _stagePhase])
   {
-    if ([v11 _stagePhase] != 2)
+    if ([actionCopy _stagePhase] != 2)
     {
       goto LABEL_6;
     }
 
     activeStages = self->_activeStages;
-    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v11, "_stage")}];
+    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(actionCopy, "_stage")}];
     [(NSMutableArray *)activeStages removeObject:v7];
   }
 
   else
   {
     v8 = self->_activeStages;
-    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v11, "_stage")}];
+    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(actionCopy, "_stage")}];
     [(NSMutableArray *)v8 addObject:v7];
   }
 
 LABEL_6:
   if ([(NSMutableArray *)self->_activeStages count])
   {
-    v9 = [(NSMutableArray *)self->_activeStages lastObject];
-    v10 = [v9 unsignedIntegerValue];
+    lastObject = [(NSMutableArray *)self->_activeStages lastObject];
+    unsignedIntegerValue = [lastObject unsignedIntegerValue];
   }
 
   else
   {
-    v10 = 1;
+    unsignedIntegerValue = 1;
   }
 
-  [(AXUICameraButtonPracticeCell *)self _updatePackageState:v10];
+  [(AXUICameraButtonPracticeCell *)self _updatePackageState:unsignedIntegerValue];
 }
 
-- (void)_updatePackageState:(unint64_t)a3
+- (void)_updatePackageState:(unint64_t)state
 {
-  if (a3 < 2)
+  if (state < 2)
   {
     packageView = self->_packageView;
     v6 = @"Idle";
@@ -176,7 +176,7 @@ LABEL_6:
 
   else
   {
-    if (a3 - 2 < 2)
+    if (state - 2 < 2)
     {
       [(BSUICAPackageView *)self->_packageView setState:@"LightPress" animated:1];
       if (([(_UIButtonFeedbackGenerator *)self->_halfPressFeedbackGenerator isActive]& 1) == 0)
@@ -190,7 +190,7 @@ LABEL_6:
       return;
     }
 
-    if (a3 != 4)
+    if (state != 4)
     {
       return;
     }

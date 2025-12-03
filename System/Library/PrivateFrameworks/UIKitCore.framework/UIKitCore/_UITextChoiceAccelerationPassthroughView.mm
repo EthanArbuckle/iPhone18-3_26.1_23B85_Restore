@@ -1,47 +1,47 @@
 @interface _UITextChoiceAccelerationPassthroughView
-- (BOOL)_hitTest:(CGPoint)a3 withEvent:(id)a4 withSourceView:(id)a5;
-- (BOOL)dismissalGestureRecognizer:(id)a3 shouldInteractAtLocation:(CGPoint)a4 withEvent:(id)a5;
+- (BOOL)_hitTest:(CGPoint)test withEvent:(id)event withSourceView:(id)view;
+- (BOOL)dismissalGestureRecognizer:(id)recognizer shouldInteractAtLocation:(CGPoint)location withEvent:(id)event;
 - (_UITextChoiceAccelerationPassthroughDelegate)delegate;
-- (_UITextChoiceAccelerationPassthroughView)initWithFrame:(CGRect)a3 delegate:(id)a4;
+- (_UITextChoiceAccelerationPassthroughView)initWithFrame:(CGRect)frame delegate:(id)delegate;
 - (_UITouchFallbackView)touchFallbackView;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_installDismissalGesture;
 - (void)_passthroughViewDidChangeSize;
 - (void)didMoveToWindow;
-- (void)didRecognizeDismissalGestureRecognizer:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)didRecognizeDismissalGestureRecognizer:(id)recognizer;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation _UITextChoiceAccelerationPassthroughView
 
-- (_UITextChoiceAccelerationPassthroughView)initWithFrame:(CGRect)a3 delegate:(id)a4
+- (_UITextChoiceAccelerationPassthroughView)initWithFrame:(CGRect)frame delegate:(id)delegate
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  delegateCopy = delegate;
   v13.receiver = self;
   v13.super_class = _UITextChoiceAccelerationPassthroughView;
-  v10 = [(UIView *)&v13 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(UIView *)&v13 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    objc_storeWeak(&v10->_delegate, v9);
+    objc_storeWeak(&height->_delegate, delegateCopy);
     [(_UITextChoiceAccelerationPassthroughView *)v11 _installDismissalGesture];
   }
 
   return v11;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(UIView *)self bounds];
   if (width != v9 || height != v8)
   {
@@ -53,12 +53,12 @@
   [(UIView *)&v11 setBounds:x, y, width, height];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(UIView *)self frame];
   if (width != v9 || height != v8)
   {
@@ -72,8 +72,8 @@
 
 - (void)_passthroughViewDidChangeSize
 {
-  v2 = [(_UITextChoiceAccelerationPassthroughView *)self delegate];
-  [v2 passthruViewDidChangeSize];
+  delegate = [(_UITextChoiceAccelerationPassthroughView *)self delegate];
+  [delegate passthruViewDidChangeSize];
 }
 
 - (_UITouchFallbackView)touchFallbackView
@@ -105,18 +105,18 @@
   [(UIView *)self setUserInteractionEnabled:1];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v7.receiver = self;
   v7.super_class = _UITextChoiceAccelerationPassthroughView;
-  [(UIView *)&v7 willMoveToWindow:a3];
-  v4 = [(_UITextChoiceAccelerationPassthroughView *)self dismissalGestureRecognizer];
+  [(UIView *)&v7 willMoveToWindow:window];
+  dismissalGestureRecognizer = [(_UITextChoiceAccelerationPassthroughView *)self dismissalGestureRecognizer];
 
-  if (v4)
+  if (dismissalGestureRecognizer)
   {
-    v5 = [(UIView *)self window];
-    v6 = [(_UITextChoiceAccelerationPassthroughView *)self dismissalGestureRecognizer];
-    [v5 removeGestureRecognizer:v6];
+    window = [(UIView *)self window];
+    dismissalGestureRecognizer2 = [(_UITextChoiceAccelerationPassthroughView *)self dismissalGestureRecognizer];
+    [window removeGestureRecognizer:dismissalGestureRecognizer2];
   }
 
   [(UIView *)self->_touchFallbackView removeFromSuperview];
@@ -127,30 +127,30 @@
   v7.receiver = self;
   v7.super_class = _UITextChoiceAccelerationPassthroughView;
   [(UIView *)&v7 didMoveToWindow];
-  v3 = [(UIView *)self window];
-  if (v3)
+  window = [(UIView *)self window];
+  if (window)
   {
-    v4 = [(_UITextChoiceAccelerationPassthroughView *)self dismissalGestureRecognizer];
+    dismissalGestureRecognizer = [(_UITextChoiceAccelerationPassthroughView *)self dismissalGestureRecognizer];
 
-    if (v4)
+    if (dismissalGestureRecognizer)
     {
-      v5 = [(_UITextChoiceAccelerationPassthroughView *)self dismissalGestureRecognizer];
-      [v3 addGestureRecognizer:v5];
+      dismissalGestureRecognizer2 = [(_UITextChoiceAccelerationPassthroughView *)self dismissalGestureRecognizer];
+      [window addGestureRecognizer:dismissalGestureRecognizer2];
 
-      v6 = [(_UITextChoiceAccelerationPassthroughView *)self touchFallbackView];
-      [v3 bounds];
-      [v6 setFrame:?];
-      [v3 insertSubview:v6 atIndex:0];
+      touchFallbackView = [(_UITextChoiceAccelerationPassthroughView *)self touchFallbackView];
+      [window bounds];
+      [touchFallbackView setFrame:?];
+      [window insertSubview:touchFallbackView atIndex:0];
     }
   }
 }
 
-- (void)didRecognizeDismissalGestureRecognizer:(id)a3
+- (void)didRecognizeDismissalGestureRecognizer:(id)recognizer
 {
-  v4 = [a3 state];
-  if ((v4 - 2) >= 2)
+  state = [recognizer state];
+  if ((state - 2) >= 2)
   {
-    if (v4 == 1)
+    if (state == 1)
     {
       self->_didDismissFromGesture = 0;
     }
@@ -159,83 +159,83 @@
   else if (!self->_didDismissFromGesture)
   {
     self->_didDismissFromGesture = 1;
-    v5 = [(_UITextChoiceAccelerationPassthroughView *)self delegate];
-    [v5 didRecognizeDismissal];
+    delegate = [(_UITextChoiceAccelerationPassthroughView *)self delegate];
+    [delegate didRecognizeDismissal];
   }
 }
 
-- (BOOL)dismissalGestureRecognizer:(id)a3 shouldInteractAtLocation:(CGPoint)a4 withEvent:(id)a5
+- (BOOL)dismissalGestureRecognizer:(id)recognizer shouldInteractAtLocation:(CGPoint)location withEvent:(id)event
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a5;
-  v10 = [a3 view];
-  [v10 convertPoint:self toView:{x, y}];
+  y = location.y;
+  x = location.x;
+  eventCopy = event;
+  view = [recognizer view];
+  [view convertPoint:self toView:{x, y}];
   v12 = v11;
   v14 = v13;
 
-  v15 = [(_UITextChoiceAccelerationPassthroughView *)self delegate];
-  v16 = [v15 sourceView];
-  LOBYTE(self) = [(_UITextChoiceAccelerationPassthroughView *)self _hitTest:v9 withEvent:v16 withSourceView:v12, v14];
+  delegate = [(_UITextChoiceAccelerationPassthroughView *)self delegate];
+  sourceView = [delegate sourceView];
+  LOBYTE(self) = [(_UITextChoiceAccelerationPassthroughView *)self _hitTest:eventCopy withEvent:sourceView withSourceView:v12, v14];
 
   return self;
 }
 
-- (BOOL)_hitTest:(CGPoint)a3 withEvent:(id)a4 withSourceView:(id)a5
+- (BOOL)_hitTest:(CGPoint)test withEvent:(id)event withSourceView:(id)view
 {
-  if (!a5)
+  if (!view)
   {
     return 1;
   }
 
-  y = a3.y;
-  x = a3.x;
-  v9 = a5;
-  v10 = a4;
+  y = test.y;
+  x = test.x;
+  viewCopy = view;
+  eventCopy = event;
   [(UIView *)self setUserInteractionEnabled:0];
-  v11 = [(UIView *)self window];
-  [(UIView *)self convertPoint:v11 toView:x, y];
+  window = [(UIView *)self window];
+  [(UIView *)self convertPoint:window toView:x, y];
 
-  v12 = [(UIView *)self window];
-  v13 = [v12 hitTest:v10 withEvent:{x, y}];
+  window2 = [(UIView *)self window];
+  v13 = [window2 hitTest:eventCopy withEvent:{x, y}];
 
   [(UIView *)self setUserInteractionEnabled:1];
-  LOBYTE(self) = [v13 isDescendantOfView:v9];
+  LOBYTE(self) = [v13 isDescendantOfView:viewCopy];
 
   v14 = self ^ 1;
   return v14;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v11.receiver = self;
   v11.super_class = _UITextChoiceAccelerationPassthroughView;
-  v8 = [(UIView *)&v11 hitTest:v7 withEvent:x, y];
+  v8 = [(UIView *)&v11 hitTest:eventCopy withEvent:x, y];
   if (v8 != self)
   {
     goto LABEL_2;
   }
 
-  v9 = [(_UITextChoiceAccelerationPassthroughView *)self dismissalGestureRecognizer];
+  dismissalGestureRecognizer = [(_UITextChoiceAccelerationPassthroughView *)self dismissalGestureRecognizer];
 
-  if (v9)
+  if (dismissalGestureRecognizer)
   {
-    if ([v7 type] != 9 && !+[_UIEditMenuDismissalGestureRecognizer canHandleEventForPassthrough:](_UIEditMenuDismissalGestureRecognizer, "canHandleEventForPassthrough:", v7))
+    if ([eventCopy type] != 9 && !+[_UIEditMenuDismissalGestureRecognizer canHandleEventForPassthrough:](_UIEditMenuDismissalGestureRecognizer, "canHandleEventForPassthrough:", eventCopy))
     {
 LABEL_2:
-      v9 = v8;
+      dismissalGestureRecognizer = v8;
       goto LABEL_7;
     }
 
-    v9 = 0;
+    dismissalGestureRecognizer = 0;
   }
 
 LABEL_7:
 
-  return v9;
+  return dismissalGestureRecognizer;
 }
 
 - (_UITextChoiceAccelerationPassthroughDelegate)delegate

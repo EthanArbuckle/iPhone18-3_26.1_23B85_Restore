@@ -1,14 +1,14 @@
 @interface CNContactListCountFooterView
-- (CNContactListCountFooterView)initWithFrame:(CGRect)a3;
+- (CNContactListCountFooterView)initWithFrame:(CGRect)frame;
 - (CNContactListCountViewDelegate)delegate;
-- (id)countStringForLocalizedStringKey:(id)a3 count:(int64_t)a4;
+- (id)countStringForLocalizedStringKey:(id)key count:(int64_t)count;
 - (id)countViewConfiguration;
 - (id)primaryText;
 - (id)secondaryText;
 - (void)didSelectViewAllDuplicates;
-- (void)setContactCount:(int64_t)a3;
-- (void)setDuplicateCount:(int64_t)a3;
-- (void)setSelectedCount:(int64_t)a3;
+- (void)setContactCount:(int64_t)count;
+- (void)setDuplicateCount:(int64_t)count;
+- (void)setSelectedCount:(int64_t)count;
 @end
 
 @implementation CNContactListCountFooterView
@@ -31,50 +31,50 @@
   }
 }
 
-- (void)setSelectedCount:(int64_t)a3
+- (void)setSelectedCount:(int64_t)count
 {
-  if (self->_selectedCount != a3)
+  if (self->_selectedCount != count)
   {
-    self->_selectedCount = a3;
-    v5 = [(CNContactListCountFooterView *)self countViewConfiguration];
-    [(CNContactListCountFooterView *)self setContentConfiguration:v5];
+    self->_selectedCount = count;
+    countViewConfiguration = [(CNContactListCountFooterView *)self countViewConfiguration];
+    [(CNContactListCountFooterView *)self setContentConfiguration:countViewConfiguration];
   }
 }
 
-- (void)setDuplicateCount:(int64_t)a3
+- (void)setDuplicateCount:(int64_t)count
 {
-  if (self->_duplicateCount != a3)
+  if (self->_duplicateCount != count)
   {
-    self->_duplicateCount = a3;
-    v5 = [(CNContactListCountFooterView *)self countViewConfiguration];
-    [(CNContactListCountFooterView *)self setContentConfiguration:v5];
+    self->_duplicateCount = count;
+    countViewConfiguration = [(CNContactListCountFooterView *)self countViewConfiguration];
+    [(CNContactListCountFooterView *)self setContentConfiguration:countViewConfiguration];
   }
 }
 
-- (void)setContactCount:(int64_t)a3
+- (void)setContactCount:(int64_t)count
 {
-  if (self->_contactCount != a3)
+  if (self->_contactCount != count)
   {
-    self->_contactCount = a3;
-    v5 = [(CNContactListCountFooterView *)self countViewConfiguration];
-    [(CNContactListCountFooterView *)self setContentConfiguration:v5];
+    self->_contactCount = count;
+    countViewConfiguration = [(CNContactListCountFooterView *)self countViewConfiguration];
+    [(CNContactListCountFooterView *)self setContentConfiguration:countViewConfiguration];
   }
 }
 
-- (id)countStringForLocalizedStringKey:(id)a3 count:(int64_t)a4
+- (id)countStringForLocalizedStringKey:(id)key count:(int64_t)count
 {
-  v5 = a3;
+  keyCopy = key;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __71__CNContactListCountFooterView_countStringForLocalizedStringKey_count___block_invoke;
   aBlock[3] = &unk_1E74E59A8;
-  v13 = v5;
-  v14 = a4;
-  v6 = v5;
+  v13 = keyCopy;
+  countCopy = count;
+  v6 = keyCopy;
   v7 = _Block_copy(aBlock);
   v8 = MEMORY[0x1E696AEC0];
   v9 = v7[2]();
-  v10 = [v8 localizedStringWithFormat:v9, a4];
+  v10 = [v8 localizedStringWithFormat:v9, count];
 
   return v10;
 }
@@ -109,16 +109,16 @@ id __71__CNContactListCountFooterView_countStringForLocalizedStringKey_count___b
 {
   if ([(CNContactListCountFooterView *)self shouldDisplayContactCount])
   {
-    v3 = [(CNContactListCountFooterView *)self contactCount];
+    contactCount = [(CNContactListCountFooterView *)self contactCount];
     v4 = @"CONTACTS_COUNT";
 LABEL_5:
-    v5 = [(CNContactListCountFooterView *)self countStringForLocalizedStringKey:v4 count:v3];
+    v5 = [(CNContactListCountFooterView *)self countStringForLocalizedStringKey:v4 count:contactCount];
     goto LABEL_7;
   }
 
   if ([(CNContactListCountFooterView *)self shouldDisplaySelectedCount])
   {
-    v3 = [(CNContactListCountFooterView *)self selectedCount];
+    contactCount = [(CNContactListCountFooterView *)self selectedCount];
     v4 = @"SELECTED_CONTACTS_COUNT";
     goto LABEL_5;
   }
@@ -131,46 +131,46 @@ LABEL_7:
 
 - (id)countViewConfiguration
 {
-  v3 = [MEMORY[0x1E69DCC28] plainFooterConfiguration];
-  v4 = [(CNContactListCountFooterView *)self primaryText];
-  [v3 setText:v4];
+  plainFooterConfiguration = [MEMORY[0x1E69DCC28] plainFooterConfiguration];
+  primaryText = [(CNContactListCountFooterView *)self primaryText];
+  [plainFooterConfiguration setText:primaryText];
 
   v5 = +[CNUIFontRepository contactListContactCountFont];
-  v6 = [v3 textProperties];
-  [v6 setFont:v5];
+  textProperties = [plainFooterConfiguration textProperties];
+  [textProperties setFont:v5];
 
   v7 = +[CNUIColorRepository contactListContactCountTextColor];
-  v8 = [v3 textProperties];
-  [v8 setColor:v7];
+  textProperties2 = [plainFooterConfiguration textProperties];
+  [textProperties2 setColor:v7];
 
-  v9 = [v3 textProperties];
-  [v9 setAlignment:1];
+  textProperties3 = [plainFooterConfiguration textProperties];
+  [textProperties3 setAlignment:1];
 
-  v10 = [(CNContactListCountFooterView *)self secondaryText];
-  [v3 setSecondaryText:v10];
+  secondaryText = [(CNContactListCountFooterView *)self secondaryText];
+  [plainFooterConfiguration setSecondaryText:secondaryText];
 
   v11 = +[CNUIFontRepository contactListDuplicateCountFont];
-  v12 = [v3 secondaryTextProperties];
-  [v12 setFont:v11];
+  secondaryTextProperties = [plainFooterConfiguration secondaryTextProperties];
+  [secondaryTextProperties setFont:v11];
 
   v13 = +[CNUIColorRepository contactListDuplicateCountTextColor];
-  v14 = [v3 secondaryTextProperties];
-  [v14 setColor:v13];
+  secondaryTextProperties2 = [plainFooterConfiguration secondaryTextProperties];
+  [secondaryTextProperties2 setColor:v13];
 
-  v15 = [v3 secondaryTextProperties];
-  [v15 setAlignment:1];
+  secondaryTextProperties3 = [plainFooterConfiguration secondaryTextProperties];
+  [secondaryTextProperties3 setAlignment:1];
 
-  [v3 directionalLayoutMargins];
-  [v3 setDirectionalLayoutMargins:15.0];
+  [plainFooterConfiguration directionalLayoutMargins];
+  [plainFooterConfiguration setDirectionalLayoutMargins:15.0];
 
-  return v3;
+  return plainFooterConfiguration;
 }
 
-- (CNContactListCountFooterView)initWithFrame:(CGRect)a3
+- (CNContactListCountFooterView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CNContactListCountFooterView;
-  v3 = [(CNContactListCountFooterView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CNContactListCountFooterView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:v3 action:sel_didSelectViewAllDuplicates];

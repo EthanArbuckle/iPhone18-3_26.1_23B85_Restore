@@ -25,8 +25,8 @@
     }
 
     while (v3);
-    v4 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-    v5 = [v4 mutableCopy];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    v5 = [whitespaceAndNewlineCharacterSet mutableCopy];
 
     [v5 addCharactersInString:v1];
     v6 = [v5 copy];
@@ -48,12 +48,12 @@
 
   else
   {
-    v1 = [MEMORY[0x1E696AB08] whitespaceNewlineAndSpecialCharacterSet];
-    v2 = [v1 mutableCopy];
+    whitespaceNewlineAndSpecialCharacterSet = [MEMORY[0x1E696AB08] whitespaceNewlineAndSpecialCharacterSet];
+    v2 = [whitespaceNewlineAndSpecialCharacterSet mutableCopy];
 
     [v2 addCharactersInString:@"\x05"];
-    v3 = [MEMORY[0x1E696AB08] punctuationCharacterSet];
-    [v2 formUnionWithCharacterSet:v3];
+    punctuationCharacterSet = [MEMORY[0x1E696AB08] punctuationCharacterSet];
+    [v2 formUnionWithCharacterSet:punctuationCharacterSet];
     v4 = [v2 copy];
     v5 = wordBreakCharacterSet_CharacterSetIncludesPunctuation;
     wordBreakCharacterSet_CharacterSetIncludesPunctuation = v4;

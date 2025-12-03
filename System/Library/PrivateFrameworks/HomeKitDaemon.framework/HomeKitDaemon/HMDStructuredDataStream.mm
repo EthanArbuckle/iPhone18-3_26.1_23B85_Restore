@@ -1,14 +1,14 @@
 @interface HMDStructuredDataStream
 - (NSError)error;
-- (void)failWithError:(id)a3;
-- (void)failWithReason:(id)a3;
+- (void)failWithError:(id)error;
+- (void)failWithReason:(id)reason;
 @end
 
 @implementation HMDStructuredDataStream
 
-- (void)failWithError:(id)a3
+- (void)failWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -33,11 +33,11 @@
   objc_exception_throw(v7);
 }
 
-- (void)failWithReason:(id)a3
+- (void)failWithReason:(id)reason
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:v5 arguments:&v8];
+  reasonCopy = reason;
+  v6 = [[v4 alloc] initWithFormat:reasonCopy arguments:&v8];
 
   v7 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:15 reason:v6];
   [(HMDStructuredDataStream *)self failWithError:v7];

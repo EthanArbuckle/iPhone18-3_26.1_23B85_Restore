@@ -1,18 +1,18 @@
 @interface CacheDeletePeriodicOperation
-- (CacheDeletePeriodicOperation)initWithInfo:(id)a3 services:(id)a4 volumes:(id)a5;
-- (void)_startOperation:(id)a3;
+- (CacheDeletePeriodicOperation)initWithInfo:(id)info services:(id)services volumes:(id)volumes;
+- (void)_startOperation:(id)operation;
 @end
 
 @implementation CacheDeletePeriodicOperation
 
-- (CacheDeletePeriodicOperation)initWithInfo:(id)a3 services:(id)a4 volumes:(id)a5
+- (CacheDeletePeriodicOperation)initWithInfo:(id)info services:(id)services volumes:(id)volumes
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (![v10 count])
+  infoCopy = info;
+  servicesCopy = services;
+  volumesCopy = volumes;
+  if (![volumesCopy count])
   {
-    v11 = [v8 objectForKeyedSubscript:@"CACHE_DELETE_VOLUME"];
+    v11 = [infoCopy objectForKeyedSubscript:@"CACHE_DELETE_VOLUME"];
 
     if (!v11)
     {
@@ -20,24 +20,24 @@
       v33 = v12;
       v13 = [NSArray arrayWithObjects:&v33 count:1];
 
-      v10 = v13;
+      volumesCopy = v13;
     }
   }
 
   v31.receiver = self;
   v31.super_class = CacheDeletePeriodicOperation;
-  v14 = [(CacheDeleteOperation *)&v31 initWithInfo:v8 services:v9 volumes:v10];
+  v14 = [(CacheDeleteOperation *)&v31 initWithInfo:infoCopy services:servicesCopy volumes:volumesCopy];
   if (v14)
   {
-    v25 = v9;
-    v26 = v8;
+    v25 = servicesCopy;
+    v26 = infoCopy;
     v15 = +[NSMutableDictionary dictionary];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v16 = [(CacheDeleteOperation *)v14 services];
-    v17 = [v16 countByEnumeratingWithState:&v27 objects:v32 count:16];
+    services = [(CacheDeleteOperation *)v14 services];
+    v17 = [services countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v17)
     {
       v18 = v17;
@@ -49,12 +49,12 @@
         {
           if (*v28 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(services);
           }
 
           v21 = *(*(&v27 + 1) + 8 * v20);
-          v22 = [(CacheDeleteOperation *)v14 services];
-          v23 = [v22 objectForKeyedSubscript:v21];
+          services2 = [(CacheDeleteOperation *)v14 services];
+          v23 = [services2 objectForKeyedSubscript:v21];
 
           if ([v23 doesPeriodic])
           {
@@ -65,35 +65,35 @@
         }
 
         while (v18 != v20);
-        v18 = [v16 countByEnumeratingWithState:&v27 objects:v32 count:16];
+        v18 = [services countByEnumeratingWithState:&v27 objects:v32 count:16];
       }
 
       while (v18);
     }
 
     [(CacheDeleteOperation *)v14 setServices:v15];
-    v9 = v25;
-    v8 = v26;
+    servicesCopy = v25;
+    infoCopy = v26;
   }
 
   return v14;
 }
 
-- (void)_startOperation:(id)a3
+- (void)_startOperation:(id)operation
 {
-  v38 = a3;
+  operationCopy = operation;
   v77[0] = 0;
   v77[1] = v77;
   v77[2] = 0x2020000000;
   v77[3] = 0;
   group = dispatch_group_create();
   v4 = [CDPeriodicOperationResult alloc];
-  v5 = [(CacheDeleteOperation *)self volumeNames];
-  v6 = [(CDPeriodicOperationResult *)v4 initWithVolumes:v5];
+  volumeNames = [(CacheDeleteOperation *)self volumeNames];
+  v6 = [(CDPeriodicOperationResult *)v4 initWithVolumes:volumeNames];
   [(CacheDeletePeriodicOperation *)self setPeriodicResult:v6];
 
-  v7 = [(CacheDeleteOperation *)self info];
-  v40 = [v7 objectForKeyedSubscript:@"CACHE_DELETE_TEST_PARAMETERS"];
+  info = [(CacheDeleteOperation *)self info];
+  v40 = [info objectForKeyedSubscript:@"CACHE_DELETE_TEST_PARAMETERS"];
 
   v75[0] = 0;
   v75[1] = v75;
@@ -111,12 +111,12 @@
   {
     v8 = [v40 objectForKeyedSubscript:@"CACHE_DELETE_PURGE_TIMEOUT"];
     v9 = evaluateNumberProperty();
-    v10 = [v9 unsignedLongLongValue];
+    unsignedLongLongValue = [v9 unsignedLongLongValue];
 
     v11 = 120;
-    if (v10)
+    if (unsignedLongLongValue)
     {
-      v11 = v10;
+      v11 = unsignedLongLongValue;
     }
   }
 
@@ -127,13 +127,13 @@
 
   v41 = v11;
   queue = dispatch_queue_create("com.apple.cache_delete_periodic_results", 0);
-  v12 = [(CacheDeleteOperation *)self info];
-  v13 = [(CacheDeleteOperation *)self validateDictionaryForXPC:v12];
+  info2 = [(CacheDeleteOperation *)self info];
+  v13 = [(CacheDeleteOperation *)self validateDictionaryForXPC:info2];
 
   if (v13)
   {
-    v14 = [(CacheDeleteOperation *)self info];
-    v49 = [v14 mutableCopy];
+    info3 = [(CacheDeleteOperation *)self info];
+    v49 = [info3 mutableCopy];
   }
 
   else
@@ -141,15 +141,15 @@
     v49 = objc_opt_new();
   }
 
-  v15 = [NSNumber numberWithInt:1, v38];
-  [v49 setObject:v15 forKeyedSubscript:@"CACHE_DELETE_URGENCY"];
+  operationCopy = [NSNumber numberWithInt:1, operationCopy];
+  [v49 setObject:operationCopy forKeyedSubscript:@"CACHE_DELETE_URGENCY"];
 
   v16 = CDGetLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [(CacheDeleteOperation *)self volumes];
+    volumes = [(CacheDeleteOperation *)self volumes];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v17;
+    *(&buf + 4) = volumes;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Periodic Operation: Info %@ ", &buf, 0xCu);
   }
 
@@ -184,8 +184,8 @@
         v64 = 0u;
         v61 = 0u;
         v62 = 0u;
-        v19 = [(CacheDeleteOperation *)self services];
-        v20 = [v19 countByEnumeratingWithState:&v61 objects:v81 count:16];
+        services = [(CacheDeleteOperation *)self services];
+        v20 = [services countByEnumeratingWithState:&v61 objects:v81 count:16];
         if (v20)
         {
           v21 = *v62;
@@ -195,12 +195,12 @@
             {
               if (*v62 != v21)
               {
-                objc_enumerationMutation(v19);
+                objc_enumerationMutation(services);
               }
 
               v23 = *(*(&v61 + 1) + 8 * j);
-              v24 = [(CacheDeleteOperation *)self services];
-              v25 = [v24 objectForKeyedSubscript:v23];
+              services2 = [(CacheDeleteOperation *)self services];
+              v25 = [services2 objectForKeyedSubscript:v23];
 
               if ([v25 inFlight])
               {
@@ -226,11 +226,11 @@
                   _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Periodic Operation: Service %{public}@ ", &buf, 0xCu);
                 }
 
-                v29 = [(CacheDeleteOperation *)self servicesToTranslate];
+                servicesToTranslate = [(CacheDeleteOperation *)self servicesToTranslate];
                 v30 = [v25 ID];
-                [v29 containsObject:v30];
+                [servicesToTranslate containsObject:v30];
 
-                v31 = [v48 mountPoint];
+                mountPoint = [v48 mountPoint];
                 v32 = mapVolume();
                 [v49 setObject:v32 forKeyedSubscript:@"CACHE_DELETE_VOLUME"];
 
@@ -247,7 +247,7 @@
                 p_buf = &buf;
                 v34 = v25;
                 v53 = v34;
-                v54 = self;
+                selfCopy = self;
                 v26 = v27;
                 v55 = v26;
                 v59 = v77;
@@ -260,7 +260,7 @@
               }
             }
 
-            v20 = [v19 countByEnumeratingWithState:&v61 objects:v81 count:16];
+            v20 = [services countByEnumeratingWithState:&v61 objects:v81 count:16];
           }
 
           while (v20);
@@ -277,8 +277,8 @@
             _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "timed out (%llu seconds) waiting for:", &buf, 0xCu);
           }
 
-          v37 = [(CacheDeleteOperation *)self services];
-          [v37 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_4];
+          services3 = [(CacheDeleteOperation *)self services];
+          [services3 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_4];
 
           block[0] = _NSConcreteStackBlock;
           block[1] = 3221225472;

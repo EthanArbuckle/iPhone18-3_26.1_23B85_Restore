@@ -1,20 +1,20 @@
 @interface CDPeriodicOperationResult
-- (CDPeriodicOperationResult)initWithVolumes:(id)a3;
-- (void)addResult:(id)a3;
+- (CDPeriodicOperationResult)initWithVolumes:(id)volumes;
+- (void)addResult:(id)result;
 @end
 
 @implementation CDPeriodicOperationResult
 
-- (CDPeriodicOperationResult)initWithVolumes:(id)a3
+- (CDPeriodicOperationResult)initWithVolumes:(id)volumes
 {
-  v5 = a3;
+  volumesCopy = volumes;
   v11.receiver = self;
   v11.super_class = CDPeriodicOperationResult;
   v6 = [(CDResult *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_volumeNames, a3);
+    objc_storeStrong(&v6->_volumeNames, volumes);
     v8 = objc_alloc_init(NSMutableArray);
     mutableResults = v7->_mutableResults;
     v7->_mutableResults = v8;
@@ -23,14 +23,14 @@
   return v7;
 }
 
-- (void)addResult:(id)a3
+- (void)addResult:(id)result
 {
-  v6 = a3;
-  v4 = [(CDResult *)self isFinished];
-  if (v6 && (v4 & 1) == 0)
+  resultCopy = result;
+  isFinished = [(CDResult *)self isFinished];
+  if (resultCopy && (isFinished & 1) == 0)
   {
-    v5 = [(CDPeriodicOperationResult *)self mutableResults];
-    [v5 addObject:v6];
+    mutableResults = [(CDPeriodicOperationResult *)self mutableResults];
+    [mutableResults addObject:resultCopy];
   }
 }
 

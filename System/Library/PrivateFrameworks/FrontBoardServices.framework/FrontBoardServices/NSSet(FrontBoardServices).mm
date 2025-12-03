@@ -6,8 +6,8 @@
 
 - (id)fbs_singleLineDescriptionOfBSActions
 {
-  v1 = [a1 allObjects];
-  v2 = [v1 bs_map:&__block_literal_global_21];
+  allObjects = [self allObjects];
+  v2 = [allObjects bs_map:&__block_literal_global_21];
   v3 = [v2 componentsJoinedByString:{@", "}];
 
   return v3;

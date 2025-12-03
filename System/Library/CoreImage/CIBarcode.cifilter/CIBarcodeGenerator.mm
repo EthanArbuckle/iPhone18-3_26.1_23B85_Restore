@@ -31,18 +31,18 @@
 - (CGImage)outputCGImageForQRCodeDescriptor
 {
   v2 = self->inputBarcodeDescriptor;
-  v3 = [(CIBarcodeDescriptor *)v2 errorCorrectedPayload];
-  if (v3)
+  errorCorrectedPayload = [(CIBarcodeDescriptor *)v2 errorCorrectedPayload];
+  if (errorCorrectedPayload)
   {
-    v4 = [(CIBarcodeDescriptor *)v2 maskPattern];
-    v5 = [(CIBarcodeDescriptor *)v2 symbolVersion];
+    maskPattern = [(CIBarcodeDescriptor *)v2 maskPattern];
+    symbolVersion = [(CIBarcodeDescriptor *)v2 symbolVersion];
     v6 = [(CIBarcodeDescriptor *)v2 errorCorrectionLevel]- 72;
     if (v6 >= 0xA || ((0x231u >> v6) & 1) == 0)
     {
       sub_EE3C();
     }
 
-    v7 = sub_9954(v3, *(&off_1C490 + v6), v4, v5);
+    v7 = sub_9954(errorCorrectedPayload, *(&off_1C490 + v6), maskPattern, symbolVersion);
     v8 = v7;
     if (v7)
     {
@@ -70,8 +70,8 @@
 - (CGImage)outputCGImageForAztecCodeDescriptor
 {
   v2 = self->inputBarcodeDescriptor;
-  v3 = [(CIBarcodeDescriptor *)v2 errorCorrectedPayload];
-  if (v3)
+  errorCorrectedPayload = [(CIBarcodeDescriptor *)v2 errorCorrectedPayload];
+  if (errorCorrectedPayload)
   {
     v14[0] = &__kCFBooleanTrue;
     v13[0] = @"AztecOptionMessageDataIsDataCodeWords";
@@ -86,7 +86,7 @@
     v14[3] = v6;
     v7 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:4];
 
-    v8 = sub_5360(v3, v7);
+    v8 = sub_5360(errorCorrectedPayload, v7);
     v9 = 0;
     if (v8)
     {
@@ -123,8 +123,8 @@
 - (CGImage)outputCGImageForPDF417CodeDescriptor
 {
   v2 = self->inputBarcodeDescriptor;
-  v3 = [(CIBarcodeDescriptor *)v2 errorCorrectedPayload];
-  if (v3)
+  errorCorrectedPayload = [(CIBarcodeDescriptor *)v2 errorCorrectedPayload];
+  if (errorCorrectedPayload)
   {
     v14[0] = &__kCFBooleanTrue;
     v13[0] = @"PDF417OptionMessageDataIsCodeWordData";
@@ -139,7 +139,7 @@
     v14[3] = v6;
     v7 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:4];
 
-    v8 = sub_C45C(v3, v7);
+    v8 = sub_C45C(errorCorrectedPayload, v7);
     v9 = 0;
     if (v8)
     {
@@ -226,18 +226,18 @@
 
 - (id)outputImage
 {
-  v2 = [(CIBarcodeGenerator *)self outputCGImage];
-  if (v2)
+  outputCGImage = [(CIBarcodeGenerator *)self outputCGImage];
+  if (outputCGImage)
   {
     v5[0] = kCIImageNearestSampling;
     v5[1] = kCIImageAlphaOne;
     v6[0] = &__kCFBooleanTrue;
     v6[1] = &__kCFBooleanTrue;
     v3 = [NSDictionary dictionaryWithObjects:v6 forKeys:v5 count:2];
-    v2 = [CIImage imageWithCGImage:v2 options:v3];
+    outputCGImage = [CIImage imageWithCGImage:outputCGImage options:v3];
   }
 
-  return v2;
+  return outputCGImage;
 }
 
 @end

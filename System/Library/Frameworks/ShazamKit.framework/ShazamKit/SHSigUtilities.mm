@@ -1,29 +1,29 @@
 @interface SHSigUtilities
-+ (BOOL)convertException:(const exception *)a3 toError:(id *)a4 code:(int)a5;
-+ (double)signatureDurationForData:(id)a3 error:(id *)a4;
-+ (id)signatureInfoForData:(id)a3 error:(id *)a4;
-+ (int64_t)signatureFileTypeForData:(id)a3 error:(id *)a4;
++ (BOOL)convertException:(const exception *)exception toError:(id *)error code:(int)code;
++ (double)signatureDurationForData:(id)data error:(id *)error;
++ (id)signatureInfoForData:(id)data error:(id *)error;
++ (int64_t)signatureFileTypeForData:(id)data error:(id *)error;
 @end
 
 @implementation SHSigUtilities
 
-+ (BOOL)convertException:(const exception *)a3 toError:(id *)a4 code:(int)a5
++ (BOOL)convertException:(const exception *)exception toError:(id *)error code:(int)code
 {
-  if (a4)
+  if (error)
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithCString:(*(a3->var0 + 2))(a3 encoding:{a2), objc_msgSend(MEMORY[0x277CCACA8], "defaultCStringEncoding")}];
+    v7 = [MEMORY[0x277CCACA8] stringWithCString:(*(exception->var0 + 2))(exception encoding:{a2), objc_msgSend(MEMORY[0x277CCACA8], "defaultCStringEncoding")}];
     v8 = MEMORY[0x277CCA9B8];
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObject:v7 forKey:*MEMORY[0x277CCA068]];
-    *a4 = [v8 errorWithDomain:@"com.shazam.sigvalidation" code:a5 userInfo:v9];
+    *error = [v8 errorWithDomain:@"com.shazam.sigvalidation" code:code userInfo:v9];
   }
 
-  return a4 != 0;
+  return error != 0;
 }
 
-+ (double)signatureDurationForData:(id)a3 error:(id *)a4
++ (double)signatureDurationForData:(id)data error:(id *)error
 {
-  v4 = a3;
-  v5 = gsl::make_span<shazam::spectral_peak_compact_t const>([v4 bytes], objc_msgSend(v4, "length"));
+  dataCopy = data;
+  v5 = gsl::make_span<shazam::spectral_peak_compact_t const>([dataCopy bytes], objc_msgSend(dataCopy, "length"));
   shazam::packed_signature_view::packed_signature_view(v10, v5, v6);
   shazam::get_siginfo(v10, v9);
   SampleLength = shazam::signature_info::getSampleLength(v9);
@@ -31,10 +31,10 @@
   return SampleLength;
 }
 
-+ (int64_t)signatureFileTypeForData:(id)a3 error:(id *)a4
++ (int64_t)signatureFileTypeForData:(id)data error:(id *)error
 {
-  v4 = a3;
-  v5 = gsl::make_span<shazam::spectral_peak_compact_t const>([v4 bytes], objc_msgSend(v4, "length"));
+  dataCopy = data;
+  v5 = gsl::make_span<shazam::spectral_peak_compact_t const>([dataCopy bytes], objc_msgSend(dataCopy, "length"));
   shazam::packed_signature_view::packed_signature_view(v12, v5, v6);
   v7 = v13;
   if (v13 <= 1342177284)
@@ -79,11 +79,11 @@ LABEL_12:
   return v9;
 }
 
-+ (id)signatureInfoForData:(id)a3 error:(id *)a4
++ (id)signatureInfoForData:(id)data error:(id *)error
 {
   v30[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = gsl::make_span<shazam::spectral_peak_compact_t const>([v4 bytes], objc_msgSend(v4, "length"));
+  dataCopy = data;
+  v5 = gsl::make_span<shazam::spectral_peak_compact_t const>([dataCopy bytes], objc_msgSend(dataCopy, "length"));
   if (v5 == -1 || !v6 && v5)
   {
     gsl::details::terminate(v5);

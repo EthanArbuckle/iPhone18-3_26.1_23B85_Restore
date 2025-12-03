@@ -1,22 +1,22 @@
 @interface CWFHomeManager
-+ (id)cwfHomeManagerWithDelegate:(id)a3;
++ (id)cwfHomeManagerWithDelegate:(id)delegate;
 - (BOOL)initHomeManagerInstance;
-- (CWFHomeManager)initWithDelegate:(id)a3;
+- (CWFHomeManager)initWithDelegate:(id)delegate;
 - (id)getServiceEvents;
-- (id)getServiceTypeStringFor:(int64_t)a3;
-- (int)createServiceObjectFor:(int64_t)a3 withParams:(id)a4 andAccessory:(id)a5;
-- (int)registerForAccessoryStateChange:(id)a3 withParams:(id)a4 forCWFHMServiceType:(int64_t)a5;
+- (id)getServiceTypeStringFor:(int64_t)for;
+- (int)createServiceObjectFor:(int64_t)for withParams:(id)params andAccessory:(id)accessory;
+- (int)registerForAccessoryStateChange:(id)change withParams:(id)params forCWFHMServiceType:(int64_t)type;
 - (void)dealloc;
-- (void)homeManagerDidUpdateHomes:(id)a3;
-- (void)removeObjectForServieType:(int64_t)a3 withUUID:(id)a4;
+- (void)homeManagerDidUpdateHomes:(id)homes;
+- (void)removeObjectForServieType:(int64_t)type withUUID:(id)d;
 @end
 
 @implementation CWFHomeManager
 
-+ (id)cwfHomeManagerWithDelegate:(id)a3
++ (id)cwfHomeManagerWithDelegate:(id)delegate
 {
-  v3 = a3;
-  v4 = [[CWFHomeManager alloc] initWithDelegate:v3];
+  delegateCopy = delegate;
+  v4 = [[CWFHomeManager alloc] initWithDelegate:delegateCopy];
 
   return v4;
 }
@@ -30,16 +30,16 @@
     v21 = CWFGetOSLog();
     if (v21)
     {
-      v14 = CWFGetOSLog();
+      defaultPrivateConfiguration = CWFGetOSLog();
     }
 
     else
     {
-      v14 = MEMORY[0x1E69E9C10];
+      defaultPrivateConfiguration = MEMORY[0x1E69E9C10];
       v22 = MEMORY[0x1E69E9C10];
     }
 
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(defaultPrivateConfiguration, OS_LOG_TYPE_ERROR))
     {
       *v29 = 136446722;
       *&v29[4] = "[CWFHomeManager initHomeManagerInstance]";
@@ -54,9 +54,9 @@
     goto LABEL_11;
   }
 
-  v3 = [(CWFHomeManager *)self _homeManager];
+  _homeManager = [(CWFHomeManager *)self _homeManager];
 
-  if (!v3)
+  if (!_homeManager)
   {
     v25 = 0;
     v26 = &v25;
@@ -105,23 +105,23 @@
 
     v13 = v11;
     _Block_object_dispose(&v25, 8);
-    v14 = [v11 defaultPrivateConfiguration];
-    [v14 setOptions:576];
-    [v14 setAdaptive:1];
-    v15 = [(CWFHomeManager *)self _homeLocationAuthorization];
-    [v14 setLocationAuthorization:v15];
+    defaultPrivateConfiguration = [v11 defaultPrivateConfiguration];
+    [defaultPrivateConfiguration setOptions:576];
+    [defaultPrivateConfiguration setAdaptive:1];
+    _homeLocationAuthorization = [(CWFHomeManager *)self _homeLocationAuthorization];
+    [defaultPrivateConfiguration setLocationAuthorization:_homeLocationAuthorization];
 
-    [v14 setCachePolicy:0];
-    v16 = [objc_alloc(sub_1E0D32224()) initWithHomeMangerConfiguration:v14];
+    [defaultPrivateConfiguration setCachePolicy:0];
+    v16 = [objc_alloc(sub_1E0D32224()) initWithHomeMangerConfiguration:defaultPrivateConfiguration];
     [(CWFHomeManager *)self set_homeManager:v16];
 
-    v17 = [(CWFHomeManager *)self _homeManager];
-    v4 = v17 != 0;
+    _homeManager2 = [(CWFHomeManager *)self _homeManager];
+    v4 = _homeManager2 != 0;
 
     if (v4)
     {
-      v18 = [(CWFHomeManager *)self _homeManager];
-      [v18 setDelegate:self];
+      _homeManager3 = [(CWFHomeManager *)self _homeManager];
+      [_homeManager3 setDelegate:self];
     }
 
     else
@@ -129,16 +129,16 @@
       v23 = CWFGetOSLog();
       if (v23)
       {
-        v18 = CWFGetOSLog();
+        _homeManager3 = CWFGetOSLog();
       }
 
       else
       {
-        v18 = MEMORY[0x1E69E9C10];
+        _homeManager3 = MEMORY[0x1E69E9C10];
         v24 = MEMORY[0x1E69E9C10];
       }
 
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(_homeManager3, OS_LOG_TYPE_ERROR))
       {
         *v29 = 136446722;
         *&v29[4] = "[CWFHomeManager initHomeManagerInstance]";
@@ -160,10 +160,10 @@ LABEL_12:
   return v4;
 }
 
-- (CWFHomeManager)initWithDelegate:(id)a3
+- (CWFHomeManager)initWithDelegate:(id)delegate
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  delegateCopy = delegate;
   v25.receiver = self;
   v25.super_class = CWFHomeManager;
   v5 = [(CWFHomeManager *)&v25 init];
@@ -173,18 +173,18 @@ LABEL_12:
     [(CWFHomeManager *)v5 set_serviceQueue:v6];
 
     [(CWFHomeManager *)v5 set_isHomeInformationAvailable:0];
-    v7 = [MEMORY[0x1E695DF90] dictionary];
-    [(CWFHomeManager *)v5 set_serviceObjects:v7];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [(CWFHomeManager *)v5 set_serviceObjects:dictionary];
 
     [(CWFHomeManager *)v5 set_autoDataColletor:0];
-    [(CWFHomeManager *)v5 set_delegate:v4];
-    v8 = [(CWFHomeManager *)v5 _delegate];
+    [(CWFHomeManager *)v5 set_delegate:delegateCopy];
+    _delegate = [(CWFHomeManager *)v5 _delegate];
 
-    if (v8)
+    if (_delegate)
     {
-      v9 = [(CWFHomeManager *)v5 _delegate];
-      v10 = [(CWFHomeManager *)v5 getServiceEvents];
-      v11 = [v9 startMonitoringSupportedEvents:v10];
+      _delegate2 = [(CWFHomeManager *)v5 _delegate];
+      getServiceEvents = [(CWFHomeManager *)v5 getServiceEvents];
+      v11 = [_delegate2 startMonitoringSupportedEvents:getServiceEvents];
 
       if ([v11 code])
       {
@@ -216,8 +216,8 @@ LABEL_12:
 
       if ([(CWFHomeManager *)v5 initHomeManagerInstance:v23])
       {
-        v15 = [(CWFHomeManager *)v5 _homeManager];
-        v16 = [v15 _beginActiveAssertionWithReason:@"com.apple.wifi.HMNotificationAssertion"];
+        _homeManager = [(CWFHomeManager *)v5 _homeManager];
+        v16 = [_homeManager _beginActiveAssertionWithReason:@"com.apple.wifi.HMNotificationAssertion"];
         [(CWFHomeManager *)v5 set_activeAssertion:v16];
       }
 
@@ -227,16 +227,16 @@ LABEL_12:
         v20 = CWFGetOSLog();
         if (v20)
         {
-          v15 = CWFGetOSLog();
+          _homeManager = CWFGetOSLog();
         }
 
         else
         {
-          v15 = MEMORY[0x1E69E9C10];
+          _homeManager = MEMORY[0x1E69E9C10];
           v22 = MEMORY[0x1E69E9C10];
         }
 
-        if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(_homeManager, OS_LOG_TYPE_ERROR))
         {
           v26 = 136446722;
           v27 = "[CWFHomeManager initWithDelegate:]";
@@ -279,13 +279,13 @@ LABEL_12:
 
 - (void)dealloc
 {
-  v3 = [(CWFHomeManager *)self _delegate];
+  _delegate = [(CWFHomeManager *)self _delegate];
 
-  if (v3)
+  if (_delegate)
   {
-    v4 = [(CWFHomeManager *)self _delegate];
-    v5 = [(CWFHomeManager *)self getServiceEvents];
-    v6 = [v4 stopMonitoringSupportedEvents:v5];
+    _delegate2 = [(CWFHomeManager *)self _delegate];
+    getServiceEvents = [(CWFHomeManager *)self getServiceEvents];
+    v6 = [_delegate2 stopMonitoringSupportedEvents:getServiceEvents];
   }
 
   v7.receiver = self;
@@ -293,44 +293,44 @@ LABEL_12:
   [(CWFHomeManager *)&v7 dealloc];
 }
 
-- (void)removeObjectForServieType:(int64_t)a3 withUUID:(id)a4
+- (void)removeObjectForServieType:(int64_t)type withUUID:(id)d
 {
-  v6 = a4;
-  v9 = [(CWFHomeManager *)self _serviceObjects];
-  v7 = [v9 objectForKey:v6];
+  dCopy = d;
+  _serviceObjects = [(CWFHomeManager *)self _serviceObjects];
+  v7 = [_serviceObjects objectForKey:dCopy];
 
-  v8 = [(CWFHomeManager *)self getServiceTypeStringFor:a3];
+  v8 = [(CWFHomeManager *)self getServiceTypeStringFor:type];
   [v7 removeObjectForKey:v8];
 }
 
-- (int)createServiceObjectFor:(int64_t)a3 withParams:(id)a4 andAccessory:(id)a5
+- (int)createServiceObjectFor:(int64_t)for withParams:(id)params andAccessory:(id)accessory
 {
   v45 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  if (a3 == 1)
+  accessoryCopy = accessory;
+  if (for == 1)
   {
-    v9 = a4;
-    v10 = [(CWFHomeManager *)self _delegate];
-    v11 = [CWFSensingHMADataCollector createCWFSensingHMADataCollectorFor:v8 withOptions:v9 andDelegate:v10];
+    paramsCopy = params;
+    _delegate = [(CWFHomeManager *)self _delegate];
+    v11 = [CWFSensingHMADataCollector createCWFSensingHMADataCollectorFor:accessoryCopy withOptions:paramsCopy andDelegate:_delegate];
 
     if (v11)
     {
-      v12 = [(CWFHomeManager *)self _serviceQueue];
+      _serviceQueue = [(CWFHomeManager *)self _serviceQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = sub_1E0D32BD0;
       block[3] = &unk_1E86E6B18;
       v13 = v11;
       v31 = v13;
-      v14 = v8;
+      v14 = accessoryCopy;
       v32 = v14;
-      v33 = self;
+      selfCopy = self;
       v34 = 1;
-      dispatch_async(v12, block);
+      dispatch_async(_serviceQueue, block);
 
-      v15 = [(CWFHomeManager *)self _serviceObjects];
-      v16 = [v14 uniqueIdentifier];
-      v17 = [v15 objectForKey:v16];
+      _serviceObjects = [(CWFHomeManager *)self _serviceObjects];
+      uniqueIdentifier = [v14 uniqueIdentifier];
+      v17 = [_serviceObjects objectForKey:uniqueIdentifier];
       v18 = [(CWFHomeManager *)self getServiceTypeStringFor:1];
       [v17 setObject:v13 forKey:v18];
 
@@ -348,8 +348,8 @@ LABEL_12:
 
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [v14 uniqueIdentifier];
-        v24 = [(CWFHomeManager *)self _serviceObjects];
+        uniqueIdentifier2 = [v14 uniqueIdentifier];
+        _serviceObjects2 = [(CWFHomeManager *)self _serviceObjects];
         v35 = 136447234;
         v36 = "[CWFHomeManager createServiceObjectFor:withParams:andAccessory:]";
         v37 = 2082;
@@ -357,9 +357,9 @@ LABEL_12:
         v39 = 1024;
         v40 = 178;
         v41 = 2114;
-        v42 = v23;
+        v42 = uniqueIdentifier2;
         v43 = 2114;
-        v44 = v24;
+        v44 = _serviceObjects2;
         _os_log_send_and_compose_impl();
       }
 
@@ -383,7 +383,7 @@ LABEL_12:
 
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
-        [v8 uniqueIdentifier];
+        [accessoryCopy uniqueIdentifier];
         v35 = 136446978;
         v36 = "[CWFHomeManager createServiceObjectFor:withParams:andAccessory:]";
         v37 = 2082;
@@ -407,9 +407,9 @@ LABEL_12:
   return v21;
 }
 
-- (id)getServiceTypeStringFor:(int64_t)a3
+- (id)getServiceTypeStringFor:(int64_t)for
 {
-  if (a3 == 1)
+  if (for == 1)
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CWFSensingDataCollect", v3];
   }
@@ -424,40 +424,40 @@ LABEL_12:
 
 - (id)getServiceEvents
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = sub_1E0D32EFC;
   v6[3] = &unk_1E86E9878;
   v6[4] = self;
   v4 = MEMORY[0x1E12EA400](v6);
-  [v3 setObject:v4 forKeyedSubscript:@"CWFPerformSensingDataCollect"];
+  [dictionary setObject:v4 forKeyedSubscript:@"CWFPerformSensingDataCollect"];
 
-  return v3;
+  return dictionary;
 }
 
-- (int)registerForAccessoryStateChange:(id)a3 withParams:(id)a4 forCWFHMServiceType:(int64_t)a5
+- (int)registerForAccessoryStateChange:(id)change withParams:(id)params forCWFHMServiceType:(int64_t)type
 {
   v81 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v60 = a4;
-  v9 = [(CWFHomeManager *)self _homeManager];
+  changeCopy = change;
+  paramsCopy = params;
+  _homeManager = [(CWFHomeManager *)self _homeManager];
 
-  if (!v9)
+  if (!_homeManager)
   {
     v39 = CWFGetOSLog();
     if (v39)
     {
-      v12 = CWFGetOSLog();
+      homes = CWFGetOSLog();
     }
 
     else
     {
-      v12 = MEMORY[0x1E69E9C10];
+      homes = MEMORY[0x1E69E9C10];
       v45 = MEMORY[0x1E69E9C10];
     }
 
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled(homes, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_67;
     }
@@ -473,23 +473,23 @@ LABEL_66:
     goto LABEL_67;
   }
 
-  v10 = [(CWFHomeManager *)self _delegate];
+  _delegate = [(CWFHomeManager *)self _delegate];
 
-  if (!v10)
+  if (!_delegate)
   {
     v40 = CWFGetOSLog();
     if (v40)
     {
-      v12 = CWFGetOSLog();
+      homes = CWFGetOSLog();
     }
 
     else
     {
-      v12 = MEMORY[0x1E69E9C10];
+      homes = MEMORY[0x1E69E9C10];
       v46 = MEMORY[0x1E69E9C10];
     }
 
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled(homes, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_67;
     }
@@ -508,16 +508,16 @@ LABEL_66:
     v41 = CWFGetOSLog();
     if (v41)
     {
-      v12 = CWFGetOSLog();
+      homes = CWFGetOSLog();
     }
 
     else
     {
-      v12 = MEMORY[0x1E69E9C10];
+      homes = MEMORY[0x1E69E9C10];
       v47 = MEMORY[0x1E69E9C10];
     }
 
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled(homes, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_67;
     }
@@ -531,21 +531,21 @@ LABEL_66:
     goto LABEL_66;
   }
 
-  if (!v8 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (!changeCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v38 = CWFGetOSLog();
     if (v38)
     {
-      v12 = CWFGetOSLog();
+      homes = CWFGetOSLog();
     }
 
     else
     {
-      v12 = MEMORY[0x1E69E9C10];
+      homes = MEMORY[0x1E69E9C10];
       v44 = MEMORY[0x1E69E9C10];
     }
 
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled(homes, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_82;
     }
@@ -559,21 +559,21 @@ LABEL_66:
     goto LABEL_81;
   }
 
-  if (!v60)
+  if (!paramsCopy)
   {
     v42 = CWFGetOSLog();
     if (v42)
     {
-      v12 = CWFGetOSLog();
+      homes = CWFGetOSLog();
     }
 
     else
     {
-      v12 = MEMORY[0x1E69E9C10];
+      homes = MEMORY[0x1E69E9C10];
       v54 = MEMORY[0x1E69E9C10];
     }
 
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled(homes, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_82;
     }
@@ -587,21 +587,21 @@ LABEL_66:
     goto LABEL_81;
   }
 
-  if (a5 >= 2)
+  if (type >= 2)
   {
     v43 = CWFGetOSLog();
     if (v43)
     {
-      v12 = CWFGetOSLog();
+      homes = CWFGetOSLog();
     }
 
     else
     {
-      v12 = MEMORY[0x1E69E9C10];
+      homes = MEMORY[0x1E69E9C10];
       v55 = MEMORY[0x1E69E9C10];
     }
 
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled(homes, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_82;
     }
@@ -619,15 +619,15 @@ LABEL_82:
     goto LABEL_68;
   }
 
-  v58 = a5;
+  typeCopy = type;
   v69 = 0u;
   v70 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v11 = [(CWFHomeManager *)self _homeManager];
-  v12 = [v11 homes];
+  _homeManager2 = [(CWFHomeManager *)self _homeManager];
+  homes = [_homeManager2 homes];
 
-  v62 = [v12 countByEnumeratingWithState:&v67 objects:v80 count:16];
+  v62 = [homes countByEnumeratingWithState:&v67 objects:v80 count:16];
   if (!v62)
   {
 LABEL_67:
@@ -639,8 +639,8 @@ LABEL_68:
 
   v61 = *v68;
   v59 = -3931;
-  obj = v12;
-  v57 = v8;
+  obj = homes;
+  v57 = changeCopy;
   do
   {
     for (i = 0; i != v62; ++i)
@@ -655,8 +655,8 @@ LABEL_68:
       v64 = 0u;
       v65 = 0u;
       v66 = 0u;
-      v15 = [v14 accessories];
-      v16 = [v15 countByEnumeratingWithState:&v63 objects:v79 count:16];
+      accessories = [v14 accessories];
+      v16 = [accessories countByEnumeratingWithState:&v63 objects:v79 count:16];
       if (!v16)
       {
         goto LABEL_27;
@@ -670,29 +670,29 @@ LABEL_68:
         {
           if (*v64 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(accessories);
           }
 
           v20 = *(*(&v63 + 1) + 8 * j);
-          v21 = [v20 uniqueIdentifier];
-          v22 = [v8 isEqual:v21];
+          uniqueIdentifier = [v20 uniqueIdentifier];
+          v22 = [changeCopy isEqual:uniqueIdentifier];
 
           if (v22)
           {
-            v23 = [(CWFHomeManager *)self _serviceObjects];
-            v24 = [v23 objectForKey:v8];
+            _serviceObjects = [(CWFHomeManager *)self _serviceObjects];
+            v24 = [_serviceObjects objectForKey:changeCopy];
 
             if (!v24)
             {
-              v25 = [(CWFHomeManager *)self _serviceObjects];
-              v26 = [MEMORY[0x1E695DF90] dictionary];
-              [v25 setObject:v26 forKey:v8];
+              _serviceObjects2 = [(CWFHomeManager *)self _serviceObjects];
+              dictionary = [MEMORY[0x1E695DF90] dictionary];
+              [_serviceObjects2 setObject:dictionary forKey:changeCopy];
             }
 
-            v27 = [(CWFHomeManager *)self _serviceObjects];
-            v28 = [v20 uniqueIdentifier];
-            v29 = [v27 objectForKey:v28];
-            v30 = [(CWFHomeManager *)self getServiceTypeStringFor:v58];
+            _serviceObjects3 = [(CWFHomeManager *)self _serviceObjects];
+            uniqueIdentifier2 = [v20 uniqueIdentifier];
+            v29 = [_serviceObjects3 objectForKey:uniqueIdentifier2];
+            v30 = [(CWFHomeManager *)self getServiceTypeStringFor:typeCopy];
             v31 = [v29 objectForKey:v30];
 
             if (v31)
@@ -709,8 +709,8 @@ LABEL_68:
                 v36 = MEMORY[0x1E69E9C10];
               }
 
-              v12 = obj;
-              v8 = v57;
+              homes = obj;
+              changeCopy = v57;
 
               if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
               {
@@ -726,17 +726,17 @@ LABEL_68:
 
             else
             {
-              v32 = [(CWFHomeManager *)self createServiceObjectFor:v58 withParams:v60 andAccessory:v20];
+              v32 = [(CWFHomeManager *)self createServiceObjectFor:typeCopy withParams:paramsCopy andAccessory:v20];
               if (!v32)
               {
                 v59 = 0;
-                v8 = v57;
+                changeCopy = v57;
                 goto LABEL_27;
               }
 
               v59 = v32;
               v35 = CWFGetOSLog();
-              v8 = v57;
+              changeCopy = v57;
               if (v35)
               {
                 v34 = CWFGetOSLog();
@@ -748,7 +748,7 @@ LABEL_68:
                 v37 = MEMORY[0x1E69E9C10];
               }
 
-              v12 = obj;
+              homes = obj;
 
               if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
               {
@@ -769,7 +769,7 @@ LABEL_40:
           }
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v63 objects:v79 count:16];
+        v17 = [accessories countByEnumeratingWithState:&v63 objects:v79 count:16];
         if (v17)
         {
           continue;
@@ -781,7 +781,7 @@ LABEL_40:
 LABEL_27:
     }
 
-    v12 = obj;
+    homes = obj;
     v62 = [obj countByEnumeratingWithState:&v67 objects:v80 count:16];
   }
 
@@ -817,15 +817,15 @@ LABEL_69:
   return v59;
 }
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
-  v4 = [(CWFHomeManager *)self _serviceQueue];
+  _serviceQueue = [(CWFHomeManager *)self _serviceQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1E0D33BB4;
   block[3] = &unk_1E86E6010;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(_serviceQueue, block);
 }
 
 @end

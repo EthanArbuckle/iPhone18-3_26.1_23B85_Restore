@@ -1,50 +1,50 @@
 @interface _INPBCreateEventIntentResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBCreateEventIntentResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBCreateEventIntentResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsConfirmationReason:(id)a3;
+- (int)StringAsConfirmationReason:(id)reason;
 - (unint64_t)hash;
-- (void)addConflictingEventIdentifiers:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setConfirmationReason:(int)a3;
-- (void)setConflictingEventIdentifiers:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addConflictingEventIdentifiers:(id)identifiers;
+- (void)encodeWithCoder:(id)coder;
+- (void)setConfirmationReason:(int)reason;
+- (void)setConflictingEventIdentifiers:(id)identifiers;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBCreateEventIntentResponse
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBCreateEventIntentResponse *)self hasConfirmationReason])
   {
-    v4 = [(_INPBCreateEventIntentResponse *)self confirmationReason];
-    if ((v4 - 1) >= 3)
+    confirmationReason = [(_INPBCreateEventIntentResponse *)self confirmationReason];
+    if ((confirmationReason - 1) >= 3)
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", confirmationReason];
     }
 
     else
     {
-      v5 = off_1E7286EA8[(v4 - 1)];
+      v5 = off_1E7286EA8[(confirmationReason - 1)];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"confirmationReason"];
+    [dictionary setObject:v5 forKeyedSubscript:@"confirmationReason"];
   }
 
   if (self->_conflictingEventIdentifiers)
   {
-    v6 = [(_INPBCreateEventIntentResponse *)self conflictingEventIdentifiers];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"conflictingEventIdentifiers"];
+    conflictingEventIdentifiers = [(_INPBCreateEventIntentResponse *)self conflictingEventIdentifiers];
+    v7 = [conflictingEventIdentifiers copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"conflictingEventIdentifiers"];
   }
 
-  v8 = [(_INPBCreateEventIntentResponse *)self createdEvent];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"createdEvent"];
+  createdEvent = [(_INPBCreateEventIntentResponse *)self createdEvent];
+  dictionaryRepresentation = [createdEvent dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"createdEvent"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -63,46 +63,46 @@
   return v4 ^ [(_INPBCalendarEvent *)self->_createdEvent hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
-  v5 = [(_INPBCreateEventIntentResponse *)self hasConfirmationReason];
-  if (v5 != [v4 hasConfirmationReason])
+  hasConfirmationReason = [(_INPBCreateEventIntentResponse *)self hasConfirmationReason];
+  if (hasConfirmationReason != [equalCopy hasConfirmationReason])
   {
     goto LABEL_16;
   }
 
   if ([(_INPBCreateEventIntentResponse *)self hasConfirmationReason])
   {
-    if ([v4 hasConfirmationReason])
+    if ([equalCopy hasConfirmationReason])
     {
       confirmationReason = self->_confirmationReason;
-      if (confirmationReason != [v4 confirmationReason])
+      if (confirmationReason != [equalCopy confirmationReason])
       {
         goto LABEL_16;
       }
     }
   }
 
-  v7 = [(_INPBCreateEventIntentResponse *)self conflictingEventIdentifiers];
-  v8 = [v4 conflictingEventIdentifiers];
-  if ((v7 != 0) == (v8 == 0))
+  conflictingEventIdentifiers = [(_INPBCreateEventIntentResponse *)self conflictingEventIdentifiers];
+  conflictingEventIdentifiers2 = [equalCopy conflictingEventIdentifiers];
+  if ((conflictingEventIdentifiers != 0) == (conflictingEventIdentifiers2 == 0))
   {
     goto LABEL_15;
   }
 
-  v9 = [(_INPBCreateEventIntentResponse *)self conflictingEventIdentifiers];
-  if (v9)
+  conflictingEventIdentifiers3 = [(_INPBCreateEventIntentResponse *)self conflictingEventIdentifiers];
+  if (conflictingEventIdentifiers3)
   {
-    v10 = v9;
-    v11 = [(_INPBCreateEventIntentResponse *)self conflictingEventIdentifiers];
-    v12 = [v4 conflictingEventIdentifiers];
-    v13 = [v11 isEqual:v12];
+    v10 = conflictingEventIdentifiers3;
+    conflictingEventIdentifiers4 = [(_INPBCreateEventIntentResponse *)self conflictingEventIdentifiers];
+    conflictingEventIdentifiers5 = [equalCopy conflictingEventIdentifiers];
+    v13 = [conflictingEventIdentifiers4 isEqual:conflictingEventIdentifiers5];
 
     if (!v13)
     {
@@ -114,12 +114,12 @@
   {
   }
 
-  v7 = [(_INPBCreateEventIntentResponse *)self createdEvent];
-  v8 = [v4 createdEvent];
-  if ((v7 != 0) != (v8 == 0))
+  conflictingEventIdentifiers = [(_INPBCreateEventIntentResponse *)self createdEvent];
+  conflictingEventIdentifiers2 = [equalCopy createdEvent];
+  if ((conflictingEventIdentifiers != 0) != (conflictingEventIdentifiers2 == 0))
   {
-    v14 = [(_INPBCreateEventIntentResponse *)self createdEvent];
-    if (!v14)
+    createdEvent = [(_INPBCreateEventIntentResponse *)self createdEvent];
+    if (!createdEvent)
     {
 
 LABEL_19:
@@ -127,10 +127,10 @@ LABEL_19:
       goto LABEL_17;
     }
 
-    v15 = v14;
-    v16 = [(_INPBCreateEventIntentResponse *)self createdEvent];
-    v17 = [v4 createdEvent];
-    v18 = [v16 isEqual:v17];
+    v15 = createdEvent;
+    createdEvent2 = [(_INPBCreateEventIntentResponse *)self createdEvent];
+    createdEvent3 = [equalCopy createdEvent];
+    v18 = [createdEvent2 isEqual:createdEvent3];
 
     if (v18)
     {
@@ -150,7 +150,7 @@ LABEL_17:
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBCreateEventIntentResponse allocWithZone:](_INPBCreateEventIntentResponse init];
   if ([(_INPBCreateEventIntentResponse *)self hasConfirmationReason])
@@ -158,43 +158,43 @@ LABEL_17:
     [(_INPBCreateEventIntentResponse *)v5 setConfirmationReason:[(_INPBCreateEventIntentResponse *)self confirmationReason]];
   }
 
-  v6 = [(NSArray *)self->_conflictingEventIdentifiers copyWithZone:a3];
+  v6 = [(NSArray *)self->_conflictingEventIdentifiers copyWithZone:zone];
   [(_INPBCreateEventIntentResponse *)v5 setConflictingEventIdentifiers:v6];
 
-  v7 = [(_INPBCalendarEvent *)self->_createdEvent copyWithZone:a3];
+  v7 = [(_INPBCalendarEvent *)self->_createdEvent copyWithZone:zone];
   [(_INPBCreateEventIntentResponse *)v5 setCreatedEvent:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBCreateEventIntentResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBCreateEventIntentResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBCreateEventIntentResponse)initWithCoder:(id)a3
+- (_INPBCreateEventIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBCreateEventIntentResponse *)self initWithData:v6];
+    self = [(_INPBCreateEventIntentResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if ([(_INPBCreateEventIntentResponse *)self hasConfirmationReason])
   {
     confirmationReason = self->_confirmationReason;
@@ -233,58 +233,58 @@ LABEL_17:
     while (v8);
   }
 
-  v12 = [(_INPBCreateEventIntentResponse *)self createdEvent];
+  createdEvent = [(_INPBCreateEventIntentResponse *)self createdEvent];
 
-  if (v12)
+  if (createdEvent)
   {
-    v13 = [(_INPBCreateEventIntentResponse *)self createdEvent];
+    createdEvent2 = [(_INPBCreateEventIntentResponse *)self createdEvent];
     PBDataWriterWriteSubmessage();
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addConflictingEventIdentifiers:(id)a3
+- (void)addConflictingEventIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   conflictingEventIdentifiers = self->_conflictingEventIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!conflictingEventIdentifiers)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_conflictingEventIdentifiers;
-    self->_conflictingEventIdentifiers = v6;
+    self->_conflictingEventIdentifiers = array;
 
-    v4 = v8;
+    identifiersCopy = v8;
     conflictingEventIdentifiers = self->_conflictingEventIdentifiers;
   }
 
-  [(NSArray *)conflictingEventIdentifiers addObject:v4];
+  [(NSArray *)conflictingEventIdentifiers addObject:identifiersCopy];
 }
 
-- (void)setConflictingEventIdentifiers:(id)a3
+- (void)setConflictingEventIdentifiers:(id)identifiers
 {
-  v4 = [a3 mutableCopy];
+  v4 = [identifiers mutableCopy];
   conflictingEventIdentifiers = self->_conflictingEventIdentifiers;
   self->_conflictingEventIdentifiers = v4;
 
   MEMORY[0x1EEE66BB8](v4, conflictingEventIdentifiers);
 }
 
-- (int)StringAsConfirmationReason:(id)a3
+- (int)StringAsConfirmationReason:(id)reason
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SCHEDULE_CONFLICT"])
+  reasonCopy = reason;
+  if ([reasonCopy isEqualToString:@"SCHEDULE_CONFLICT"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SEND_INVITATION_TO_PARTICIPANTS"])
+  else if ([reasonCopy isEqualToString:@"SEND_INVITATION_TO_PARTICIPANTS"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"DATE_TIME_CLARIFICATION"])
+  else if ([reasonCopy isEqualToString:@"DATE_TIME_CLARIFICATION"])
   {
     v4 = 3;
   }
@@ -297,10 +297,10 @@ LABEL_17:
   return v4;
 }
 
-- (void)setConfirmationReason:(int)a3
+- (void)setConfirmationReason:(int)reason
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (reason == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -308,7 +308,7 @@ LABEL_17:
   else
   {
     *&self->_has = has | 1;
-    self->_confirmationReason = a3;
+    self->_confirmationReason = reason;
   }
 }
 

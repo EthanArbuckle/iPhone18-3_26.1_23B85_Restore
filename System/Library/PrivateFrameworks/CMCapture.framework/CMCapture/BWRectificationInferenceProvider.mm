@@ -1,36 +1,36 @@
 @interface BWRectificationInferenceProvider
-- (BWRectificationInferenceProvider)initWithRefInputRequirement:(id)a3 auxInputRequirement:(id)a4 refKeypointsInputRequirement:(id)a5 auxKeypointsInputRequirement:(id)a6 refOutputRequirement:(id)a7 auxOutputRequirement:(id)a8 opticalFlowOutputRequirement:(id)a9 originalRefRequirement:(id)a10 originalAuxRequirement:(id)a11 resourceProvider:(id)a12 configuration:(id)a13;
+- (BWRectificationInferenceProvider)initWithRefInputRequirement:(id)requirement auxInputRequirement:(id)inputRequirement refKeypointsInputRequirement:(id)keypointsInputRequirement auxKeypointsInputRequirement:(id)auxKeypointsInputRequirement refOutputRequirement:(id)outputRequirement auxOutputRequirement:(id)auxOutputRequirement opticalFlowOutputRequirement:(id)flowOutputRequirement originalRefRequirement:(id)self0 originalAuxRequirement:(id)self1 resourceProvider:(id)self2 configuration:(id)self3;
 - (NSArray)inputVideoRequirements;
 - (id)newStorage;
-- (int)prepareForSubmissionWithWorkQueue:(id)a3;
-- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)a3 usingStorage:(id)a4 withSubmissionTime:(id *)a5 workQueue:(id)a6 completionHandler:(id)a7;
-- (uint64_t)_applyRollingShutterCorrectionToKeypointsRef:(uint64_t)a3 andAux:(unsigned int)a4 withCount:(uint64_t)a5 inverseRefHomographies:(int)a6 refHomographyCount:(uint64_t)a7 refHomographyStep:(int)a8 inverseAuxHomographies:(float)a9 auxHomographyCount:(float)a10 auxHomographyStep:;
-- (uint64_t)_detectKeypointsLKTFlowWithMagnification:(uint64_t)a3 preShift:(_DWORD *)a4 refTex:(float)a5 auxTex:(float32x2_t)a6 keypointsCountOut:;
-- (unint64_t)_rscForBuffer:(void *)a3 withHomograhies:(void *)a4 andInverseHomographies:(float *)a5 withHomographyStep:;
+- (int)prepareForSubmissionWithWorkQueue:(id)queue;
+- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)buffer usingStorage:(id)storage withSubmissionTime:(id *)time workQueue:(id)queue completionHandler:(id)handler;
+- (uint64_t)_applyRollingShutterCorrectionToKeypointsRef:(uint64_t)ref andAux:(unsigned int)aux withCount:(uint64_t)count inverseRefHomographies:(int)homographies refHomographyCount:(uint64_t)homographyCount refHomographyStep:(int)step inverseAuxHomographies:(float)auxHomographies auxHomographyCount:(float)self0 auxHomographyStep:;
+- (uint64_t)_detectKeypointsLKTFlowWithMagnification:(uint64_t)magnification preShift:(_DWORD *)shift refTex:(float)tex auxTex:(float32x2_t)auxTex keypointsCountOut:;
+- (unint64_t)_rscForBuffer:(void *)buffer withHomograhies:(void *)homograhies andInverseHomographies:(float *)homographies withHomographyStep:;
 - (void)dealloc;
-- (void)setCustomInferenceIdentifier:(id)a3;
+- (void)setCustomInferenceIdentifier:(id)identifier;
 @end
 
 @implementation BWRectificationInferenceProvider
 
-- (BWRectificationInferenceProvider)initWithRefInputRequirement:(id)a3 auxInputRequirement:(id)a4 refKeypointsInputRequirement:(id)a5 auxKeypointsInputRequirement:(id)a6 refOutputRequirement:(id)a7 auxOutputRequirement:(id)a8 opticalFlowOutputRequirement:(id)a9 originalRefRequirement:(id)a10 originalAuxRequirement:(id)a11 resourceProvider:(id)a12 configuration:(id)a13
+- (BWRectificationInferenceProvider)initWithRefInputRequirement:(id)requirement auxInputRequirement:(id)inputRequirement refKeypointsInputRequirement:(id)keypointsInputRequirement auxKeypointsInputRequirement:(id)auxKeypointsInputRequirement refOutputRequirement:(id)outputRequirement auxOutputRequirement:(id)auxOutputRequirement opticalFlowOutputRequirement:(id)flowOutputRequirement originalRefRequirement:(id)self0 originalAuxRequirement:(id)self1 resourceProvider:(id)self2 configuration:(id)self3
 {
   v21.receiver = self;
   v21.super_class = BWRectificationInferenceProvider;
   v19 = [(BWRectificationInferenceProvider *)&v21 init];
   if (v19)
   {
-    *(v19 + 2) = a3;
-    *(v19 + 3) = a4;
-    *(v19 + 4) = a5;
-    *(v19 + 5) = a6;
-    *(v19 + 6) = a7;
-    *(v19 + 7) = a8;
-    *(v19 + 8) = a9;
-    *(v19 + 9) = a10;
-    *(v19 + 10) = a11;
-    *(v19 + 90) = [a13 cameraInfoByPortType];
-    *(v19 + 92) = [objc_msgSend(a12 "defaultDeviceMetalContext")];
+    *(v19 + 2) = requirement;
+    *(v19 + 3) = inputRequirement;
+    *(v19 + 4) = keypointsInputRequirement;
+    *(v19 + 5) = auxKeypointsInputRequirement;
+    *(v19 + 6) = outputRequirement;
+    *(v19 + 7) = auxOutputRequirement;
+    *(v19 + 8) = flowOutputRequirement;
+    *(v19 + 9) = refRequirement;
+    *(v19 + 10) = auxRequirement;
+    *(v19 + 90) = [configuration cameraInfoByPortType];
+    *(v19 + 92) = [objc_msgSend(provider "defaultDeviceMetalContext")];
     v19[792] = 1;
     *(v19 + 204) = 2;
     *(v19 + 103) = 1;
@@ -76,7 +76,7 @@
   [(BWRectificationInferenceProvider *)&v7 dealloc];
 }
 
-- (int)prepareForSubmissionWithWorkQueue:(id)a3
+- (int)prepareForSubmissionWithWorkQueue:(id)queue
 {
   v4 = [MEMORY[0x1E696AAE8] bundleWithPath:@"/System/Library/VideoProcessors/DisparityV5.bundle"];
   if (!v4)
@@ -127,15 +127,15 @@ LABEL_20:
   }
 
   v12 = v11;
-  v13 = [+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters cameraParameters];
-  if (!v13)
+  cameraParameters = [+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters cameraParameters];
+  if (!cameraParameters)
   {
     [BWRectificationInferenceProvider prepareForSubmissionWithWorkQueue:];
     goto LABEL_36;
   }
 
   v14 = *off_1E798A9D0;
-  v15 = [objc_msgSend(-[NSDictionary objectForKeyedSubscript:](v13 objectForKeyedSubscript:{*off_1E798A9D0), "objectForKeyedSubscript:", @"Common", "objectForKeyedSubscript:", @"StereoDisparity"}];
+  v15 = [objc_msgSend(-[NSDictionary objectForKeyedSubscript:](cameraParameters objectForKeyedSubscript:{*off_1E798A9D0), "objectForKeyedSubscript:", @"Common", "objectForKeyedSubscript:", @"StereoDisparity"}];
   v16 = [v15 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"V5"}];
   v17 = [[v8 alloc] initWithTuningDictionary:objc_msgSend(v16 cameraInfoByPortType:{"objectForKeyedSubscript:", @"BaseConfiguration", self->_cameraInfoByPortType}];
   self->_disparityTuningParameters = v17;
@@ -158,23 +158,23 @@ LABEL_20:
   v52[0] = v16;
   v52[1] = cameraInfoByPortType;
   self->_calibrationOptions = [MEMORY[0x1E695DF20] dictionaryWithObjects:v52 forKeys:v51 count:2];
-  v20 = [(BWInferenceVideoRequirement *)self->_refInputRequirement videoFormat];
-  v21 = [(BWInferenceVideoRequirement *)self->_auxInputRequirement videoFormat];
-  self->_rectificationWidth = [(BWInferenceVideoFormat *)v20 width];
-  self->_rectificationHeight = [(BWInferenceVideoFormat *)v20 height];
-  v22 = [(DisparityTuningParameters *)self->_disparityTuningParameters lastScale];
-  v23 = self->_rectificationWidth >> v22;
+  videoFormat = [(BWInferenceVideoRequirement *)self->_refInputRequirement videoFormat];
+  videoFormat2 = [(BWInferenceVideoRequirement *)self->_auxInputRequirement videoFormat];
+  self->_rectificationWidth = [(BWInferenceVideoFormat *)videoFormat width];
+  self->_rectificationHeight = [(BWInferenceVideoFormat *)videoFormat height];
+  lastScale = [(DisparityTuningParameters *)self->_disparityTuningParameters lastScale];
+  v23 = self->_rectificationWidth >> lastScale;
   self->_keypointGridWidth = v23 / [(DisparityTuningParameters *)self->_disparityTuningParameters blockSize];
-  v24 = self->_rectificationHeight >> v22;
+  v24 = self->_rectificationHeight >> lastScale;
   v25 = v24 / [(DisparityTuningParameters *)self->_disparityTuningParameters blockSize];
   self->_keypointGridHeight = v25;
   v26 = v25 * LODWORD(self->_keypointGridWidth);
   [(Calibration *)self->_calibration allocateResourcesForMaxNumPoints:v26];
-  v27 = [(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_originalRefInputRequirement videoFormat] width];
-  v28 = [(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_originalRefInputRequirement videoFormat] height];
-  self->_calibrationWidth = v27;
-  self->_calibrationHeight = v28;
-  [(Calibration *)self->_calibration setReferenceBufferDimensions:v27 | (v28 << 32) auxillaryBufferDimensions:v27 | (v28 << 32) normalizedReferenceFinalCropRect:*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
+  width = [(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_originalRefInputRequirement videoFormat] width];
+  height = [(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_originalRefInputRequirement videoFormat] height];
+  self->_calibrationWidth = width;
+  self->_calibrationHeight = height;
+  [(Calibration *)self->_calibration setReferenceBufferDimensions:width | (height << 32) auxillaryBufferDimensions:width | (height << 32) normalizedReferenceFinalCropRect:*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
   [(Calibration *)self->_calibration setTemporalCorrectionEnabled:1];
   [(Calibration *)self->_calibration setPixelBufferScalingEnabled:1];
   self->_adcFramesConverged = 0;
@@ -186,10 +186,10 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  self->_lktKeypointDetector = [[v10 alloc] initWithMetalContext:self->_metalContext width:self->_rectificationWidth height:self->_rectificationHeight nscales:0xFFFFFFFFLL lastScale:v22];
+  self->_lktKeypointDetector = [[v10 alloc] initWithMetalContext:self->_metalContext width:self->_rectificationWidth height:self->_rectificationHeight nscales:0xFFFFFFFFLL lastScale:lastScale];
   [(LKTKeypointDetector *)self->_lktKeypointDetector setNwarpings:[(DisparityTuningParameters *)self->_disparityTuningParameters nwarps]];
-  v30 = [(BWInferenceVideoFormat *)v20 width];
-  if (v30 != [(BWInferenceVideoFormat *)v21 width]|| (v31 = [(BWInferenceVideoFormat *)v20 height], v31 != [(BWInferenceVideoFormat *)v21 height]))
+  width2 = [(BWInferenceVideoFormat *)videoFormat width];
+  if (width2 != [(BWInferenceVideoFormat *)videoFormat2 width]|| (v31 = [(BWInferenceVideoFormat *)videoFormat height], v31 != [(BWInferenceVideoFormat *)videoFormat2 height]))
   {
     [BWRectificationInferenceProvider prepareForSubmissionWithWorkQueue:];
 LABEL_36:
@@ -238,24 +238,24 @@ LABEL_36:
     {
     }
 
-    v38 = [(MTLTextureDescriptor *)self->_refOutputDescriptor width];
-    v39 = [(MTLTextureDescriptor *)self->_refOutputDescriptor height];
-    v40 = [(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_opticalFlowOutputRequirement videoFormat] width];
-    v41 = [(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_opticalFlowOutputRequirement videoFormat] height];
-    v42 = [(MTLTextureDescriptor *)self->_refOutputDescriptor width];
-    v43 = [(MTLTextureDescriptor *)self->_refOutputDescriptor height];
+    width3 = [(MTLTextureDescriptor *)self->_refOutputDescriptor width];
+    height2 = [(MTLTextureDescriptor *)self->_refOutputDescriptor height];
+    width4 = [(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_opticalFlowOutputRequirement videoFormat] width];
+    height3 = [(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_opticalFlowOutputRequirement videoFormat] height];
+    width5 = [(MTLTextureDescriptor *)self->_refOutputDescriptor width];
+    height4 = [(MTLTextureDescriptor *)self->_refOutputDescriptor height];
     v44 = objc_alloc(getPTDisparityPostProcessingClass());
-    v45 = [(FigMetalContext *)self->_metalContext commandQueue];
-    v50[0] = v38;
-    v50[1] = v39;
+    commandQueue = [(FigMetalContext *)self->_metalContext commandQueue];
+    v50[0] = width3;
+    v50[1] = height2;
     v50[2] = 1;
-    v49[0] = v42;
-    v49[1] = v43;
+    v49[0] = width5;
+    v49[1] = height4;
     v49[2] = 1;
-    v48[0] = v40;
-    v48[1] = v41;
+    v48[0] = width4;
+    v48[1] = height3;
     v48[2] = 1;
-    v46 = [v44 initWithCommandQueue:v45 disparitySize:v50 filteredDisparitySize:v49 disparityPixelFormat:25 colorSize:v48 colorPixelFormat:71 sensorPort:&stru_1F216A3D0];
+    v46 = [v44 initWithCommandQueue:commandQueue disparitySize:v50 filteredDisparitySize:v49 disparityPixelFormat:25 colorSize:v48 colorPixelFormat:71 sensorPort:&stru_1F216A3D0];
     self->_disparityPostProcessor = v46;
     if (v46)
     {
@@ -269,14 +269,14 @@ LABEL_36:
   return opticalFlowOutputRequirement;
 }
 
-- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)a3 usingStorage:(id)a4 withSubmissionTime:(id *)a5 workQueue:(id)a6 completionHandler:(id)a7
+- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)buffer usingStorage:(id)storage withSubmissionTime:(id *)time workQueue:(id)queue completionHandler:(id)handler
 {
   v194 = 0;
   v195 = 0;
   v192 = 0;
   v193 = 0;
   v191 = 0;
-  AttachedMedia = BWSampleBufferGetAttachedMedia(a3, @"SynchronizedSlaveFrame");
+  AttachedMedia = BWSampleBufferGetAttachedMedia(buffer, @"SynchronizedSlaveFrame");
   v11 = *off_1E798A3C8;
   v12 = CMGetAttachment(AttachedMedia, *off_1E798A3C8, 0);
   if (!v12)
@@ -298,11 +298,11 @@ LABEL_114:
     v77 = 0;
     v78 = 0;
 LABEL_142:
-    v79 = a7;
+    handlerCopy4 = handler;
     goto LABEL_79;
   }
 
-  v13 = CMGetAttachment(a3, v11, 0);
+  v13 = CMGetAttachment(buffer, v11, 0);
   if (!v13)
   {
     [BWRectificationInferenceProvider submitForSampleBuffer:usingStorage:withSubmissionTime:workQueue:completionHandler:];
@@ -318,12 +318,12 @@ LABEL_142:
     goto LABEL_113;
   }
 
-  v113 = a4;
-  target = a3;
+  storageCopy = storage;
+  target = buffer;
   v130 = v12;
   if (self->_applyRollingShutterCorrection)
   {
-    v128 = [(BWRectificationInferenceProvider *)self _rscForBuffer:a3 withHomograhies:&v195 andInverseHomographies:&v194 withHomographyStep:&v191 + 1];
+    v128 = [(BWRectificationInferenceProvider *)self _rscForBuffer:buffer withHomograhies:&v195 andInverseHomographies:&v194 withHomographyStep:&v191 + 1];
     if (v128 <= 0)
     {
       [BWRectificationInferenceProvider submitForSampleBuffer:usingStorage:withSubmissionTime:workQueue:completionHandler:];
@@ -337,18 +337,18 @@ LABEL_142:
       goto LABEL_119;
     }
 
-    v86 = [(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_originalAuxInputRequirement videoFormat] width];
-    v87 = [(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_originalAuxInputRequirement videoFormat] height];
-    v88 = self->_calibrationWidth / v86;
+    width = [(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_originalAuxInputRequirement videoFormat] width];
+    height = [(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_originalAuxInputRequirement videoFormat] height];
+    v88 = self->_calibrationWidth / width;
     calibrationHeight = self->_calibrationHeight;
-    v90 = calibrationHeight / v87;
+    v90 = calibrationHeight / height;
     if (v88 != 1.0 || v90 != 1.0)
     {
       v92 = 0;
       v93 = LODWORD(v88);
       v94.i32[0] = 0;
       v94.i64[1] = 0;
-      v94.f32[1] = calibrationHeight / v87;
+      v94.f32[1] = calibrationHeight / height;
       v95 = 0uLL;
       v116 = v94.f32[1];
       v123 = COERCE_UNSIGNED_INT(1.0 / v88);
@@ -422,7 +422,7 @@ LABEL_142:
 
       while (v92 != v112);
       *&v191 = v116 * *&v191;
-      a4 = v113;
+      storage = storageCopy;
     }
   }
 
@@ -432,7 +432,7 @@ LABEL_142:
     v128 = 0;
   }
 
-  v12 = [a4 pixelBufferForRequirement:self->_refInputRequirement];
+  v12 = [storage pixelBufferForRequirement:self->_refInputRequirement];
   if (!v12)
   {
     [BWRectificationInferenceProvider submitForSampleBuffer:usingStorage:withSubmissionTime:workQueue:completionHandler:];
@@ -445,7 +445,7 @@ LABEL_121:
     goto LABEL_122;
   }
 
-  v14 = [a4 pixelBufferForRequirement:self->_refKeypointsInputRequirement];
+  v14 = [storage pixelBufferForRequirement:self->_refKeypointsInputRequirement];
   if (!v14)
   {
     [BWRectificationInferenceProvider submitForSampleBuffer:usingStorage:withSubmissionTime:workQueue:completionHandler:];
@@ -456,7 +456,7 @@ LABEL_120:
     goto LABEL_121;
   }
 
-  v15 = [a4 pixelBufferForRequirement:self->_auxInputRequirement];
+  v15 = [storage pixelBufferForRequirement:self->_auxInputRequirement];
   if (!v15)
   {
     [BWRectificationInferenceProvider submitForSampleBuffer:usingStorage:withSubmissionTime:workQueue:completionHandler:];
@@ -478,7 +478,7 @@ LABEL_141:
     goto LABEL_142;
   }
 
-  v16 = [a4 pixelBufferForRequirement:self->_auxKeypointsInputRequirement];
+  v16 = [storage pixelBufferForRequirement:self->_auxKeypointsInputRequirement];
   if (!v16)
   {
     [BWRectificationInferenceProvider submitForSampleBuffer:usingStorage:withSubmissionTime:workQueue:completionHandler:];
@@ -490,7 +490,7 @@ LABEL_119:
   }
 
   v17 = v16;
-  v18 = [objc_msgSend(a4 pixelBufferPoolForRequirement:{self->_refOutputRequirement), "newPixelBuffer"}];
+  v18 = [objc_msgSend(storage pixelBufferPoolForRequirement:{self->_refOutputRequirement), "newPixelBuffer"}];
   if (!v18)
   {
     [BWRectificationInferenceProvider submitForSampleBuffer:usingStorage:withSubmissionTime:workQueue:completionHandler:];
@@ -513,7 +513,7 @@ LABEL_125:
   }
 
   v19 = v18;
-  v20 = [objc_msgSend(a4 pixelBufferPoolForRequirement:{self->_auxOutputRequirement), "newPixelBuffer"}];
+  v20 = [objc_msgSend(storage pixelBufferPoolForRequirement:{self->_auxOutputRequirement), "newPixelBuffer"}];
   cf = v19;
   if (!v20)
   {
@@ -531,12 +531,12 @@ LABEL_125:
     goto LABEL_125;
   }
 
-  [a4 setPixelBuffer:v19 forRequirement:self->_refOutputRequirement];
-  [a4 setPixelBuffer:v20 forRequirement:self->_auxOutputRequirement];
-  v21 = [(FigMetalContext *)self->_metalContext commandQueue];
-  v126 = [objc_msgSend(v21 "device")];
-  v124 = [objc_msgSend(v21 "device")];
-  v122 = [objc_msgSend(v21 "device")];
+  [storage setPixelBuffer:v19 forRequirement:self->_refOutputRequirement];
+  [storage setPixelBuffer:v20 forRequirement:self->_auxOutputRequirement];
+  commandQueue = [(FigMetalContext *)self->_metalContext commandQueue];
+  v126 = [objc_msgSend(commandQueue "device")];
+  v124 = [objc_msgSend(commandQueue "device")];
+  v122 = [objc_msgSend(commandQueue "device")];
   calibrationOptions = self->_calibrationOptions;
   calibration = self->_calibration;
   disparityTuningParameters = self->_disparityTuningParameters;
@@ -669,9 +669,9 @@ LABEL_132:
   }
 
   [(Calibration *)self->_calibration setKeypointsForReference:self->_adaptiveCorrectionKeypointsReferenceDistorted auxiliary:self->_adaptiveCorrectionKeypointsAuxiliaryDistorted keypointCount:v83];
-  v84 = [(Calibration *)self->_calibration computeCalibration];
+  computeCalibration = [(Calibration *)self->_calibration computeCalibration];
   adcFramesConverged = self->_adcFramesConverged;
-  if (!v84)
+  if (!computeCalibration)
   {
     ++adcFramesConverged;
   }
@@ -899,10 +899,10 @@ LABEL_40:
   }
 
   while (v41 != 3);
-  v47 = [(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_auxOutputRequirement videoFormat] width];
-  v131 = v47 / [(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_refOutputRequirement videoFormat] width];
-  v48 = [(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_auxOutputRequirement videoFormat] height];
-  v49 = [(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_refOutputRequirement videoFormat] height];
+  width2 = [(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_auxOutputRequirement videoFormat] width];
+  v131 = width2 / [(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_refOutputRequirement videoFormat] width];
+  height2 = [(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_auxOutputRequirement videoFormat] height];
+  height3 = [(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_refOutputRequirement videoFormat] height];
   [(Calibration *)self->_calibration rectReferenceToAuxiliary];
   v115 = v51;
   v117 = v50;
@@ -924,7 +924,7 @@ LABEL_40:
   while (v53 != 48);
   v57 = 0;
   LODWORD(v58) = 0;
-  *(&v58 + 1) = v48 / v49;
+  *(&v58 + 1) = height2 / height3;
   v59 = v159;
   v60 = v160;
   v61 = v161;
@@ -964,8 +964,8 @@ LABEL_40:
   }
 
   while (v62 != 3);
-  v68 = [v21 commandBuffer];
-  v14 = [objc_msgSend(v21 "device")];
+  commandBuffer = [commandQueue commandBuffer];
+  v14 = [objc_msgSend(commandQueue "device")];
   if (!v14)
   {
     [BWRectificationInferenceProvider submitForSampleBuffer:usingStorage:withSubmissionTime:workQueue:completionHandler:];
@@ -979,7 +979,7 @@ LABEL_140:
     goto LABEL_141;
   }
 
-  v15 = [objc_msgSend(v21 "device")];
+  v15 = [objc_msgSend(commandQueue "device")];
   if (!v15)
   {
     [BWRectificationInferenceProvider submitForSampleBuffer:usingStorage:withSubmissionTime:workQueue:completionHandler:];
@@ -991,10 +991,10 @@ LABEL_139:
     goto LABEL_140;
   }
 
-  v69 = [(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_auxOutputRequirement videoFormat] width];
-  v70 = [(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_auxOutputRequirement videoFormat] height];
-  self->_gdcParametersAuxiliary.canvasResolution.width = v69;
-  self->_gdcParametersAuxiliary.canvasResolution.height = v70;
+  width3 = [(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_auxOutputRequirement videoFormat] width];
+  height4 = [(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_auxOutputRequirement videoFormat] height];
+  self->_gdcParametersAuxiliary.canvasResolution.width = width3;
+  self->_gdcParametersAuxiliary.canvasResolution.height = height4;
   self->_gdcParametersAuxiliary.applyZTransform = 0;
   self->_gdcParametersAuxiliary.samplerType = 1;
   if (self->_applyRollingShutterCorrection)
@@ -1005,8 +1005,8 @@ LABEL_139:
     self->_gdcParametersAuxiliary.applyRollingShutterCorrection = 1;
   }
 
-  LODWORD(v70) = 1.0;
-  if ([(GDCTransform *)self->_gdcTransform transformFrom:v14 to:v15 withParameters:&self->_gdcParametersAuxiliary withScale:1 withMode:v68 andCommandBuffer:v70])
+  LODWORD(height4) = 1.0;
+  if ([(GDCTransform *)self->_gdcTransform transformFrom:v14 to:v15 withParameters:&self->_gdcParametersAuxiliary withScale:1 withMode:commandBuffer andCommandBuffer:height4])
   {
     [BWRectificationInferenceProvider submitForSampleBuffer:usingStorage:withSubmissionTime:workQueue:completionHandler:];
     v20 = 0;
@@ -1016,7 +1016,7 @@ LABEL_139:
     goto LABEL_132;
   }
 
-  v12 = [objc_msgSend(v21 "device")];
+  v12 = [objc_msgSend(commandQueue "device")];
   if (!v12)
   {
     [BWRectificationInferenceProvider submitForSampleBuffer:usingStorage:withSubmissionTime:workQueue:completionHandler:];
@@ -1026,17 +1026,17 @@ LABEL_138:
     goto LABEL_139;
   }
 
-  v132 = [objc_msgSend(v21 "device")];
+  v132 = [objc_msgSend(commandQueue "device")];
   if (!v132)
   {
     [BWRectificationInferenceProvider submitForSampleBuffer:usingStorage:withSubmissionTime:workQueue:completionHandler:];
     goto LABEL_138;
   }
 
-  v71 = [(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_refOutputRequirement videoFormat] width];
-  v72 = [(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_refOutputRequirement videoFormat] height];
-  self->_gdcParametersReference.canvasResolution.width = v71;
-  self->_gdcParametersReference.canvasResolution.height = v72;
+  width4 = [(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_refOutputRequirement videoFormat] width];
+  height5 = [(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_refOutputRequirement videoFormat] height];
+  self->_gdcParametersReference.canvasResolution.width = width4;
+  self->_gdcParametersReference.canvasResolution.height = height5;
   self->_gdcParametersReference.applyZTransform = 0;
   self->_gdcParametersReference.samplerType = 1;
   if (self->_applyRollingShutterCorrection)
@@ -1047,8 +1047,8 @@ LABEL_138:
     self->_gdcParametersReference.applyRollingShutterCorrection = 1;
   }
 
-  LODWORD(v72) = 1.0;
-  if ([(GDCTransform *)self->_gdcTransform transformFrom:v12 to:v132 withParameters:&self->_gdcParametersReference withScale:1 withMode:v68 andCommandBuffer:v72])
+  LODWORD(height5) = 1.0;
+  if ([(GDCTransform *)self->_gdcTransform transformFrom:v12 to:v132 withParameters:&self->_gdcParametersReference withScale:1 withMode:commandBuffer andCommandBuffer:height5])
   {
     [BWRectificationInferenceProvider submitForSampleBuffer:usingStorage:withSubmissionTime:workQueue:completionHandler:];
     v20 = 0;
@@ -1056,7 +1056,7 @@ LABEL_138:
     v13 = 0;
     v77 = 0;
     v78 = 4294935586;
-    v79 = a7;
+    handlerCopy4 = handler;
   }
 
   else
@@ -1082,7 +1082,7 @@ LABEL_138:
     CMSetAttachment(target, @"unrectifyData", v20, 1u);
     if (self->_opticalFlowOutputRequirement)
     {
-      v13 = [objc_msgSend(v113 "pixelBufferPoolForRequirement:"newPixelBuffer"")];
+      v13 = [objc_msgSend(storageCopy "pixelBufferPoolForRequirement:"newPixelBuffer"")];
       if (!v13)
       {
         [BWRectificationInferenceProvider submitForSampleBuffer:usingStorage:withSubmissionTime:workQueue:completionHandler:];
@@ -1092,8 +1092,8 @@ LABEL_138:
         goto LABEL_146;
       }
 
-      [v113 setPixelBuffer:v13 forRequirement:self->_opticalFlowOutputRequirement];
-      v76 = [objc_msgSend(v21 "device")];
+      [storageCopy setPixelBuffer:v13 forRequirement:self->_opticalFlowOutputRequirement];
+      v76 = [objc_msgSend(commandQueue "device")];
       if (!v76)
       {
         [BWRectificationInferenceProvider submitForSampleBuffer:usingStorage:withSubmissionTime:workQueue:completionHandler:];
@@ -1102,13 +1102,13 @@ LABEL_138:
         goto LABEL_146;
       }
 
-      if ([(PTDisparityPostProcessing *)self->_disparityPostProcessor computeOpticalFlow:v68 inRGBA:v12 outDisplacement:v76])
+      if ([(PTDisparityPostProcessing *)self->_disparityPostProcessor computeOpticalFlow:commandBuffer inRGBA:v12 outDisplacement:v76])
       {
         [BWRectificationInferenceProvider submitForSampleBuffer:usingStorage:withSubmissionTime:workQueue:completionHandler:];
         v77 = 0;
         v78 = 0;
 LABEL_146:
-        v79 = a7;
+        handlerCopy4 = handler;
         goto LABEL_79;
       }
     }
@@ -1119,7 +1119,7 @@ LABEL_146:
       v13 = 0;
     }
 
-    if (a7)
+    if (handler)
     {
       v133[0] = MEMORY[0x1E69E9820];
       v133[1] = 3221225472;
@@ -1127,21 +1127,21 @@ LABEL_146:
       v133[3] = &unk_1E798FB70;
       v134 = 0;
       v133[4] = self;
-      v133[5] = a7;
-      [v68 addScheduledHandler:v133];
+      v133[5] = handler;
+      [commandBuffer addScheduledHandler:v133];
     }
 
-    [v68 commit];
+    [commandBuffer commit];
     v78 = 0;
     v77 = 1;
-    v79 = a7;
+    handlerCopy4 = handler;
   }
 
 LABEL_79:
   *&self->_frameIndex = vaddq_s64(*&self->_frameIndex, vdupq_n_s64(1uLL));
-  if (v79 && (v77 & 1) == 0)
+  if (handlerCopy4 && (v77 & 1) == 0)
   {
-    v79[2](v79, v78, self);
+    handlerCopy4[2](handlerCopy4, v78, self);
   }
 
   if (cf)
@@ -1166,13 +1166,13 @@ LABEL_79:
   return v78;
 }
 
-- (void)setCustomInferenceIdentifier:(id)a3
+- (void)setCustomInferenceIdentifier:(id)identifier
 {
   customInferenceIdentifier = self->_customInferenceIdentifier;
-  if (customInferenceIdentifier != a3)
+  if (customInferenceIdentifier != identifier)
   {
 
-    self->_customInferenceIdentifier = a3;
+    self->_customInferenceIdentifier = identifier;
   }
 }
 
@@ -1195,9 +1195,9 @@ LABEL_79:
   return [MEMORY[0x1E695DEC8] arrayWithObjects:v4 count:6];
 }
 
-- (unint64_t)_rscForBuffer:(void *)a3 withHomograhies:(void *)a4 andInverseHomographies:(float *)a5 withHomographyStep:
+- (unint64_t)_rscForBuffer:(void *)buffer withHomograhies:(void *)homograhies andInverseHomographies:(float *)homographies withHomographyStep:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -1223,24 +1223,24 @@ LABEL_14:
   }
 
   v11 = v10;
-  v12 = [v9 bytes];
-  v13 = v12[6];
-  v9 = v12[7];
-  *a5 = v13;
+  bytes = [v9 bytes];
+  v13 = bytes[6];
+  v9 = bytes[7];
+  *homographies = v13;
   if ((v9 - 50) <= 0xFFFFFFCE)
   {
     goto LABEL_14;
   }
 
-  v14 = v12;
-  if (v12[8] != 1 || v13 <= 0 || v11 != 36 * v9 + 36)
+  v14 = bytes;
+  if (bytes[8] != 1 || v13 <= 0 || v11 != 36 * v9 + 36)
   {
     goto LABEL_14;
   }
 
-  *a3 = malloc_type_malloc(48 * v9, 0x1000040EED21634uLL);
+  *buffer = malloc_type_malloc(48 * v9, 0x1000040EED21634uLL);
   v15 = 0;
-  *a4 = malloc_type_malloc(48 * v9, 0x1000040EED21634uLL);
+  *homograhies = malloc_type_malloc(48 * v9, 0x1000040EED21634uLL);
   v16 = v14 + 17;
   do
   {
@@ -1251,7 +1251,7 @@ LABEL_14:
     v21 = *(v16 - 1);
     v22 = *v16;
     v16 += 9;
-    v23 = (*a3 + v15);
+    v23 = (*buffer + v15);
     v18.i32[1] = *v20;
     v23[1].i32[0] = v21;
     *v23 = vzip1_s32(v17, v19);
@@ -1259,8 +1259,8 @@ LABEL_14:
     v23[2] = vzip2_s32(v17, v19);
     v23[5].i32[0] = v22;
     v23[4] = v18;
-    v24 = *a4 + v15;
-    v26 = __invert_f3(*(*a3 + v15));
+    v24 = *homograhies + v15;
+    v26 = __invert_f3(*(*buffer + v15));
     *(v24 + 2) = v26.columns[0].i32[2];
     *v24 = v26.columns[0].i64[0];
     *(v24 + 6) = v26.columns[1].i32[2];
@@ -1274,32 +1274,32 @@ LABEL_14:
   return v9;
 }
 
-- (uint64_t)_detectKeypointsLKTFlowWithMagnification:(uint64_t)a3 preShift:(_DWORD *)a4 refTex:(float)a5 auxTex:(float32x2_t)a6 keypointsCountOut:
+- (uint64_t)_detectKeypointsLKTFlowWithMagnification:(uint64_t)magnification preShift:(_DWORD *)shift refTex:(float)tex auxTex:(float32x2_t)auxTex keypointsCountOut:
 {
   if (result)
   {
     v12 = result;
     v51 = 0;
-    v13 = [*(result + 88) lastScale];
+    lastScale = [*(result + 88) lastScale];
     v49 = *(v12 + 752);
     v14 = *(v12 + 768);
-    [*(v12 + 88) estimateFlowFromReference:a2 target:a3];
+    [*(v12 + 88) estimateFlowFromReference:a2 target:magnification];
     v15 = *(v12 + 88);
-    v16 = [v15 uv_fwd];
-    v17 = [*(v12 + 88) uv_bwd];
-    v18 = [*(v12 + 88) conf_fwd];
-    v19 = [*(v12 + 88) conf_bwd];
+    uv_fwd = [v15 uv_fwd];
+    uv_bwd = [*(v12 + 88) uv_bwd];
+    conf_fwd = [*(v12 + 88) conf_fwd];
+    conf_bwd = [*(v12 + 88) conf_bwd];
     [*(v12 + 104) bidirectionalError];
     v21 = v20;
     [*(v12 + 104) confidenceRadialWeight];
     v23 = v22;
     [*(v12 + 104) confidenceMinimum];
     v25 = v24;
-    v26 = [*(v12 + 104) blockSize];
+    blockSize = [*(v12 + 104) blockSize];
     LODWORD(v27) = v21;
     LODWORD(v28) = v23;
     LODWORD(v29) = v25;
-    [v15 computeKeypointsFromForwardFlow:v16 backwardFlow:v17 forwardConfidence:v18 backwardConfidence:v19 bidirectionalError:v26 confidenceRadialWeight:&v51 confidenceMinimum:v27 blockSize:v28 outNumKeypoints:v29];
+    [v15 computeKeypointsFromForwardFlow:uv_fwd backwardFlow:uv_bwd forwardConfidence:conf_fwd backwardConfidence:conf_bwd bidirectionalError:blockSize confidenceRadialWeight:&v51 confidenceMinimum:v27 blockSize:v28 outNumKeypoints:v29];
     [*(v12 + 88) waitUntilCompleted];
     if (*(v12 + 784) * *(v12 + 776) < v51)
     {
@@ -1318,11 +1318,11 @@ LABEL_14:
       {
         v33 = 0;
         v34 = 0;
-        v35 = 1.0 / a5;
+        v35 = 1.0 / tex;
         v36 = vcvt_f32_f64(vcvtq_f64_u64(v49));
-        v37 = vdiv_f32(vmul_n_f32(v36, (1 << v13)), vcvt_f32_u32(v14));
+        v37 = vdiv_f32(vmul_n_f32(v36, (1 << lastScale)), vcvt_f32_u32(v14));
         v38 = vmul_n_f32(v37, v35);
-        v39 = vmla_n_f32(a6, v36, (1.0 - v35) * 0.5);
+        v39 = vmla_n_f32(auxTex, v36, (1.0 - v35) * 0.5);
         v40 = (v31 + 6);
         v41 = (v30 + 4);
         do
@@ -1363,17 +1363,17 @@ LABEL_14:
       result = 0;
     }
 
-    *a4 = v34;
+    *shift = v34;
   }
 
   return result;
 }
 
-- (uint64_t)_applyRollingShutterCorrectionToKeypointsRef:(uint64_t)a3 andAux:(unsigned int)a4 withCount:(uint64_t)a5 inverseRefHomographies:(int)a6 refHomographyCount:(uint64_t)a7 refHomographyStep:(int)a8 inverseAuxHomographies:(float)a9 auxHomographyCount:(float)a10 auxHomographyStep:
+- (uint64_t)_applyRollingShutterCorrectionToKeypointsRef:(uint64_t)ref andAux:(unsigned int)aux withCount:(uint64_t)count inverseRefHomographies:(int)homographies refHomographyCount:(uint64_t)homographyCount refHomographyStep:(int)step inverseAuxHomographies:(float)auxHomographies auxHomographyCount:(float)self0 auxHomographyStep:
 {
   if (result)
   {
-    if (!a5 || !a7)
+    if (!count || !homographyCount)
     {
 LABEL_15:
       fig_log_get_emitter();
@@ -1382,19 +1382,19 @@ LABEL_15:
       return 1;
     }
 
-    if (a4)
+    if (aux)
     {
       v10 = 0;
       while (1)
       {
         v12 = *(a2 + 8 * (v10 + 1));
-        v13 = (v12 / a9);
-        if (v13 >= a6)
+        v13 = (v12 / auxHomographies);
+        if (v13 >= homographies)
         {
-          v13 = a6 - 1;
+          v13 = homographies - 1;
         }
 
-        v14 = (a5 + 48 * (v13 & ~(v13 >> 31)));
+        v14 = (count + 48 * (v13 & ~(v13 >> 31)));
         v11 = *(a2 + 8 * v10);
         v15 = vaddq_f32(v14[2], vmlaq_n_f32(vmulq_n_f32(*v14, v11), v14[1], v12));
         if (*&v15.i32[2] == 0.0)
@@ -1402,15 +1402,15 @@ LABEL_15:
           break;
         }
 
-        v16 = *(a3 + 8 * (v10 + 1));
-        v17 = (v16 / a10);
-        if (v17 >= a8)
+        v16 = *(ref + 8 * (v10 + 1));
+        v17 = (v16 / auxHomographyCount);
+        if (v17 >= step)
         {
-          v17 = a8 - 1;
+          v17 = step - 1;
         }
 
-        v18 = *(a3 + 8 * v10);
-        v19 = (a7 + 48 * (v17 & ~(v17 >> 31)));
+        v18 = *(ref + 8 * v10);
+        v19 = (homographyCount + 48 * (v17 & ~(v17 >> 31)));
         v20 = vaddq_f32(v19[2], vmlaq_n_f32(vmulq_n_f32(*v19, v18), v19[1], v16));
         if (*&v20.i32[2] == 0.0)
         {
@@ -1418,9 +1418,9 @@ LABEL_15:
         }
 
         *(a2 + 8 * v10) = vcvtq_f64_f32(vdiv_f32(*v15.i8, vdup_laneq_s32(v15, 2)));
-        *(a3 + 8 * v10) = vcvtq_f64_f32(vdiv_f32(*v20.i8, vdup_laneq_s32(v20, 2)));
+        *(ref + 8 * v10) = vcvtq_f64_f32(vdiv_f32(*v20.i8, vdup_laneq_s32(v20, 2)));
         v10 += 2;
-        if (2 * a4 == v10)
+        if (2 * aux == v10)
         {
           return 0;
         }

@@ -4,53 +4,53 @@
 - (BOOL)_isAppStoreInstallationAllowed;
 - (MicroPaymentQueue)init;
 - (id)_beginManagedContextSession;
-- (id)_clientForConnection:(id)a3 paymentQueueClient:(id)a4;
-- (id)_clientForObjectID:(id)a3;
-- (id)_clientForPayment:(id)a3;
+- (id)_clientForConnection:(id)connection paymentQueueClient:(id)client;
+- (id)_clientForObjectID:(id)d;
+- (id)_clientForPayment:(id)payment;
 - (id)_clients;
-- (id)_copyDownloadsIDsFromMessage:(id)a3 key:(const char *)a4;
-- (id)_firstReadyPaymentInContext:(id)a3;
+- (id)_copyDownloadsIDsFromMessage:(id)message key:(const char *)key;
+- (id)_firstReadyPaymentInContext:(id)context;
 - (id)_inAppReviewRequestConstants;
-- (id)_newPaymentQueueClientWithMessage:(id)a3 connection:(id)a4 parameter:(const char *)a5;
-- (void)_clientDisconnectNotification:(id)a3;
-- (void)_dispatchAsync:(id)a3;
-- (void)_enumerateDownloadsForIdentifiers:(id)a3 context:(id)a4 usingBlock:(id)a5;
-- (void)_finishPaymentOperationForPaymentID:(id)a3 result:(BOOL)a4 error:(id)a5;
-- (void)_networkTypeChanged:(id)a3;
-- (void)_refreshDidFinishNotification:(id)a3;
-- (void)_sendPurchaseIntentsForApp:(id)a3 storeKitClient:(id)a4 force:(BOOL)a5;
-- (void)_setActivePaymentID:(id)a3;
+- (id)_newPaymentQueueClientWithMessage:(id)message connection:(id)connection parameter:(const char *)parameter;
+- (void)_clientDisconnectNotification:(id)notification;
+- (void)_dispatchAsync:(id)async;
+- (void)_enumerateDownloadsForIdentifiers:(id)identifiers context:(id)context usingBlock:(id)block;
+- (void)_finishPaymentOperationForPaymentID:(id)d result:(BOOL)result error:(id)error;
+- (void)_networkTypeChanged:(id)changed;
+- (void)_refreshDidFinishNotification:(id)notification;
+- (void)_sendPurchaseIntentsForApp:(id)app storeKitClient:(id)client force:(BOOL)force;
+- (void)_setActivePaymentID:(id)d;
 - (void)_startFirstReadyPayment;
-- (void)addInAppReviewRequestWithMessage:(id)a3 connection:(id)a4;
-- (void)addPaymentWithMessage:(id)a3 connection:(id)a4;
-- (void)addPurchaseIntentWithMessage:(id)a3 connection:(id)a4;
-- (void)addPurchaseIntentWithProductIdentifier:(id)a3 productName:(id)a4 appBundleId:(id)a5 appName:(id)a6;
-- (void)cancelDownloadsWithMessage:(id)a3 connection:(id)a4;
-- (void)cancelRequestWithMessage:(id)a3 connection:(id)a4;
-- (void)checkQueueForClientWithIdentifier:(id)a3 URLBagContext:(id)a4;
-- (void)checkQueueForClientWithMessage:(id)a3 connection:(id)a4;
-- (void)connectedAppEnteredForegroundWithMessage:(id)a3 connection:(id)a4;
+- (void)addInAppReviewRequestWithMessage:(id)message connection:(id)connection;
+- (void)addPaymentWithMessage:(id)message connection:(id)connection;
+- (void)addPurchaseIntentWithMessage:(id)message connection:(id)connection;
+- (void)addPurchaseIntentWithProductIdentifier:(id)identifier productName:(id)name appBundleId:(id)id appName:(id)appName;
+- (void)cancelDownloadsWithMessage:(id)message connection:(id)connection;
+- (void)cancelRequestWithMessage:(id)message connection:(id)connection;
+- (void)checkQueueForClientWithIdentifier:(id)identifier URLBagContext:(id)context;
+- (void)checkQueueForClientWithMessage:(id)message connection:(id)connection;
+- (void)connectedAppEnteredForegroundWithMessage:(id)message connection:(id)connection;
 - (void)dealloc;
-- (void)failDownloadsWithIdentifiers:(id)a3;
-- (void)finishDownloadsWithIdentifiers:(id)a3;
-- (void)finishPaymentWithMessage:(id)a3 connection:(id)a4;
-- (void)forceSandboxWithMessage:(id)a3 connection:(id)a4;
-- (void)getTransactionsWithMessage:(id)a3 connection:(id)a4;
-- (void)installSheetStateUpdatedWithMessage:(id)a3 connection:(id)a4;
-- (void)notifyClientsOfExternalPropertyChanges:(id)a3 ofDownloadID:(int64_t)a4;
-- (void)observeXPCServer:(id)a3;
-- (void)pauseDownloadsWithMessage:(id)a3 connection:(id)a4;
-- (void)productsRequestWithMessage:(id)a3 connection:(id)a4;
-- (void)registerClientWithMessage:(id)a3 connection:(id)a4;
-- (void)resetInAppReviewRequestsWithMessage:(id)a3 connection:(id)a4;
-- (void)restoreCompletedTransactionsWithMessage:(id)a3 connection:(id)a4;
-- (void)resumeDownloadsWithMessage:(id)a3 connection:(id)a4;
+- (void)failDownloadsWithIdentifiers:(id)identifiers;
+- (void)finishDownloadsWithIdentifiers:(id)identifiers;
+- (void)finishPaymentWithMessage:(id)message connection:(id)connection;
+- (void)forceSandboxWithMessage:(id)message connection:(id)connection;
+- (void)getTransactionsWithMessage:(id)message connection:(id)connection;
+- (void)installSheetStateUpdatedWithMessage:(id)message connection:(id)connection;
+- (void)notifyClientsOfExternalPropertyChanges:(id)changes ofDownloadID:(int64_t)d;
+- (void)observeXPCServer:(id)server;
+- (void)pauseDownloadsWithMessage:(id)message connection:(id)connection;
+- (void)productsRequestWithMessage:(id)message connection:(id)connection;
+- (void)registerClientWithMessage:(id)message connection:(id)connection;
+- (void)resetInAppReviewRequestsWithMessage:(id)message connection:(id)connection;
+- (void)restoreCompletedTransactionsWithMessage:(id)message connection:(id)connection;
+- (void)resumeDownloadsWithMessage:(id)message connection:(id)connection;
 - (void)start;
-- (void)startDownloadsWithMessage:(id)a3 connection:(id)a4;
+- (void)startDownloadsWithMessage:(id)message connection:(id)connection;
 - (void)startFirstReadyPayment;
-- (void)updateDeferredPaymentWithMessage:(id)a3 connection:(id)a4;
-- (void)updateInAppReviewRequestWithMessage:(id)a3 connection:(id)a4;
-- (void)updateWithPurchaseResponse:(id)a3;
+- (void)updateDeferredPaymentWithMessage:(id)message connection:(id)connection;
+- (void)updateInAppReviewRequestWithMessage:(id)message connection:(id)connection;
+- (void)updateWithPurchaseResponse:(id)response;
 @end
 
 @implementation MicroPaymentQueue
@@ -114,7 +114,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000BBFEC;
   block[3] = &unk_100327378;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100383E50 != -1)
   {
     dispatch_once(&qword_100383E50, block);
@@ -123,25 +123,25 @@
   return qword_100383E48;
 }
 
-- (void)addPurchaseIntentWithProductIdentifier:(id)a3 productName:(id)a4 appBundleId:(id)a5 appName:(id)a6
+- (void)addPurchaseIntentWithProductIdentifier:(id)identifier productName:(id)name appBundleId:(id)id appName:(id)appName
 {
-  if (!a5)
+  if (!id)
   {
-    v25 = [SSLogConfig sharedDaemonConfig:a3];
+    v25 = [SSLogConfig sharedDaemonConfig:identifier];
     if (!v25)
     {
       v25 = +[SSLogConfig sharedConfig];
     }
 
-    v26 = [v25 shouldLog];
+    shouldLog = [v25 shouldLog];
     if ([v25 shouldLogToDisk])
     {
-      v27 = v26 | 2;
+      v27 = shouldLog | 2;
     }
 
     else
     {
-      v27 = v26;
+      v27 = shouldLog;
     }
 
     if (!os_log_type_enabled([v25 OSLogObject], OS_LOG_TYPE_ERROR))
@@ -157,7 +157,7 @@
     v40 = 138543618;
     v41 = objc_opt_class();
     v42 = 2112;
-    v43 = a3;
+    idCopy4 = identifier;
     LODWORD(v38) = 22;
     v28 = _os_log_send_and_compose_impl();
     if (!v28)
@@ -176,22 +176,22 @@ LABEL_54:
 
   v10 = +[SSLogConfig sharedDaemonConfig];
   v11 = v10;
-  if (!a3)
+  if (!identifier)
   {
     if (!v10)
     {
       v11 = +[SSLogConfig sharedConfig];
     }
 
-    v30 = [v11 shouldLog];
+    shouldLog2 = [v11 shouldLog];
     if ([v11 shouldLogToDisk])
     {
-      v31 = v30 | 2;
+      v31 = shouldLog2 | 2;
     }
 
     else
     {
-      v31 = v30;
+      v31 = shouldLog2;
     }
 
     if (!os_log_type_enabled([v11 OSLogObject], OS_LOG_TYPE_ERROR))
@@ -207,7 +207,7 @@ LABEL_54:
     v40 = 138543618;
     v41 = objc_opt_class();
     v42 = 2112;
-    v43 = a5;
+    idCopy4 = id;
     LODWORD(v38) = 22;
     v28 = _os_log_send_and_compose_impl();
     if (!v28)
@@ -223,15 +223,15 @@ LABEL_54:
     v11 = +[SSLogConfig sharedConfig];
   }
 
-  v12 = [v11 shouldLog];
+  shouldLog3 = [v11 shouldLog];
   if ([v11 shouldLogToDisk])
   {
-    v13 = v12 | 2;
+    v13 = shouldLog3 | 2;
   }
 
   else
   {
-    v13 = v12;
+    v13 = shouldLog3;
   }
 
   if (!os_log_type_enabled([v11 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -244,13 +244,13 @@ LABEL_54:
     v40 = 138544386;
     v41 = objc_opt_class();
     v42 = 2114;
-    v43 = a3;
+    idCopy4 = identifier;
     v44 = 2114;
-    v45 = a4;
+    nameCopy = name;
     v46 = 2114;
-    v47 = a5;
+    idCopy2 = id;
     v48 = 2114;
-    v49 = a6;
+    appNameCopy = appName;
     LODWORD(v38) = 52;
     v37 = &v40;
     v14 = _os_log_send_and_compose_impl();
@@ -265,16 +265,16 @@ LABEL_54:
   }
 
   v17 = objc_alloc_init(PurchaseIntent);
-  [(PurchaseIntent *)v17 setProductIdentifier:a3];
-  [(PurchaseIntent *)v17 setProductName:a4];
-  [(PurchaseIntent *)v17 setAppBundleId:a5];
-  [(PurchaseIntent *)v17 setAppName:a6];
+  [(PurchaseIntent *)v17 setProductIdentifier:identifier];
+  [(PurchaseIntent *)v17 setProductName:name];
+  [(PurchaseIntent *)v17 setAppBundleId:id];
+  [(PurchaseIntent *)v17 setAppName:appName];
   [+[NSDate date](NSDate timeIntervalSince1970];
   [(PurchaseIntent *)v17 setTimestamp:[NSNumber numberWithLongLong:v18]];
   [+[PurchaseActionsManager sharedInstance](PurchaseActionsManager insertPurchaseIntent:"insertPurchaseIntent:", v17];
 
   v39 = 0;
-  [+[SpringBoardUtility sharedInstance](SpringBoardUtility launchApplicationWithIdentifier:"launchApplicationWithIdentifier:options:error:" options:a5 error:0, &v39];
+  [+[SpringBoardUtility sharedInstance](SpringBoardUtility launchApplicationWithIdentifier:"launchApplicationWithIdentifier:options:error:" options:id error:0, &v39];
   v19 = v39;
   v20 = +[SSLogConfig sharedDaemonConfig];
   v21 = v20;
@@ -285,15 +285,15 @@ LABEL_54:
       v21 = +[SSLogConfig sharedConfig];
     }
 
-    v22 = [v21 shouldLog];
+    shouldLog4 = [v21 shouldLog];
     if ([v21 shouldLogToDisk])
     {
-      v23 = v22 | 2;
+      v23 = shouldLog4 | 2;
     }
 
     else
     {
-      v23 = v22;
+      v23 = shouldLog4;
     }
 
     if (!os_log_type_enabled([v21 OSLogObject], OS_LOG_TYPE_ERROR))
@@ -307,9 +307,9 @@ LABEL_54:
       v40 = 138543874;
       v41 = v24;
       v42 = 2114;
-      v43 = a5;
+      idCopy4 = id;
       v44 = 2114;
-      v45 = v39;
+      nameCopy = v39;
       LODWORD(v38) = 32;
 LABEL_52:
       v35 = _os_log_send_and_compose_impl();
@@ -332,15 +332,15 @@ LABEL_52:
       v21 = +[SSLogConfig sharedConfig];
     }
 
-    v32 = [v21 shouldLog];
+    shouldLog5 = [v21 shouldLog];
     if ([v21 shouldLogToDisk])
     {
-      v33 = v32 | 2;
+      v33 = shouldLog5 | 2;
     }
 
     else
     {
-      v33 = v32;
+      v33 = shouldLog5;
     }
 
     if (!os_log_type_enabled([v21 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -354,52 +354,52 @@ LABEL_52:
       v40 = 138543618;
       v41 = v34;
       v42 = 2114;
-      v43 = a5;
+      idCopy4 = id;
       LODWORD(v38) = 22;
       goto LABEL_52;
     }
   }
 }
 
-- (void)checkQueueForClientWithIdentifier:(id)a3 URLBagContext:(id)a4
+- (void)checkQueueForClientWithIdentifier:(id)identifier URLBagContext:(id)context
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000BC680;
   v4[3] = &unk_1003273E0;
-  v4[4] = a4;
+  v4[4] = context;
   v4[5] = self;
-  v4[6] = a3;
+  v4[6] = identifier;
   [(MicroPaymentQueue *)self _dispatchAsync:v4];
 }
 
-- (void)failDownloadsWithIdentifiers:(id)a3
+- (void)failDownloadsWithIdentifiers:(id)identifiers
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1000BCA10;
   v3[3] = &unk_100327350;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = identifiers;
   [(MicroPaymentQueue *)self _dispatchAsync:v3];
 }
 
-- (void)finishDownloadsWithIdentifiers:(id)a3
+- (void)finishDownloadsWithIdentifiers:(id)identifiers
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1000BD0A0;
   v3[3] = &unk_100327350;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = identifiers;
   [(MicroPaymentQueue *)self _dispatchAsync:v3];
 }
 
-- (void)notifyClientsOfExternalPropertyChanges:(id)a3 ofDownloadID:(int64_t)a4
+- (void)notifyClientsOfExternalPropertyChanges:(id)changes ofDownloadID:(int64_t)d
 {
-  v7 = [a3 objectForKey:SSDownloadExternalPropertyPercentComplete];
-  v8 = [a3 objectForKey:SSDownloadPropertyDownloadPhase];
-  v9 = [a3 objectForKey:SSDownloadExternalPropertyEstimatedTimeRemaining];
+  v7 = [changes objectForKey:SSDownloadExternalPropertyPercentComplete];
+  v8 = [changes objectForKey:SSDownloadPropertyDownloadPhase];
+  v9 = [changes objectForKey:SSDownloadExternalPropertyEstimatedTimeRemaining];
   if (v7)
   {
     v10 = 0;
@@ -417,7 +417,7 @@ LABEL_52:
     v12[2] = sub_1000BDC1C;
     v12[3] = &unk_100327F60;
     v12[7] = v9;
-    v12[8] = a4;
+    v12[8] = d;
     v12[4] = self;
     v12[5] = v8;
     v12[6] = v7;
@@ -425,29 +425,29 @@ LABEL_52:
   }
 }
 
-- (void)observeXPCServer:(id)a3
+- (void)observeXPCServer:(id)server
 {
-  [a3 addObserver:self selector:"addPaymentWithMessage:connection:" forMessage:10000];
-  [a3 addObserver:self selector:"cancelDownloadsWithMessage:connection:" forMessage:10007];
-  [a3 addObserver:self selector:"cancelRequestWithMessage:connection:" forMessage:10003];
-  [a3 addObserver:self selector:"checkQueueForClientWithMessage:connection:" forMessage:83];
-  [a3 addObserver:self selector:"connectedAppEnteredForegroundWithMessage:connection:" forMessage:10012];
-  [a3 addObserver:self selector:"finishPaymentWithMessage:connection:" forMessage:10001];
-  [a3 addObserver:self selector:"getTransactionsWithMessage:connection:" forMessage:10006];
-  [a3 addObserver:self selector:"pauseDownloadsWithMessage:connection:" forMessage:10008];
-  [a3 addObserver:self selector:"productsRequestWithMessage:connection:" forMessage:10004];
-  [a3 addObserver:self selector:"registerClientWithMessage:connection:" forMessage:10005];
-  [a3 addObserver:self selector:"restoreCompletedTransactionsWithMessage:connection:" forMessage:10002];
-  [a3 addObserver:self selector:"resumeDownloadsWithMessage:connection:" forMessage:10009];
-  [a3 addObserver:self selector:"startDownloadsWithMessage:connection:" forMessage:10010];
-  [a3 addObserver:self selector:"updateDeferredPaymentWithMessage:connection:" forMessage:143];
-  [a3 addObserver:self selector:"addInAppReviewRequestWithMessage:connection:" forMessage:188];
-  [a3 addObserver:self selector:"updateInAppReviewRequestWithMessage:connection:" forMessage:189];
-  [a3 addObserver:self selector:"resetInAppReviewRequestsWithMessage:connection:" forMessage:190];
-  [a3 addObserver:self selector:"addPurchaseIntentWithMessage:connection:" forMessage:10013];
-  [a3 addObserver:self selector:"installSheetStateUpdatedWithMessage:connection:" forMessage:10014];
+  [server addObserver:self selector:"addPaymentWithMessage:connection:" forMessage:10000];
+  [server addObserver:self selector:"cancelDownloadsWithMessage:connection:" forMessage:10007];
+  [server addObserver:self selector:"cancelRequestWithMessage:connection:" forMessage:10003];
+  [server addObserver:self selector:"checkQueueForClientWithMessage:connection:" forMessage:83];
+  [server addObserver:self selector:"connectedAppEnteredForegroundWithMessage:connection:" forMessage:10012];
+  [server addObserver:self selector:"finishPaymentWithMessage:connection:" forMessage:10001];
+  [server addObserver:self selector:"getTransactionsWithMessage:connection:" forMessage:10006];
+  [server addObserver:self selector:"pauseDownloadsWithMessage:connection:" forMessage:10008];
+  [server addObserver:self selector:"productsRequestWithMessage:connection:" forMessage:10004];
+  [server addObserver:self selector:"registerClientWithMessage:connection:" forMessage:10005];
+  [server addObserver:self selector:"restoreCompletedTransactionsWithMessage:connection:" forMessage:10002];
+  [server addObserver:self selector:"resumeDownloadsWithMessage:connection:" forMessage:10009];
+  [server addObserver:self selector:"startDownloadsWithMessage:connection:" forMessage:10010];
+  [server addObserver:self selector:"updateDeferredPaymentWithMessage:connection:" forMessage:143];
+  [server addObserver:self selector:"addInAppReviewRequestWithMessage:connection:" forMessage:188];
+  [server addObserver:self selector:"updateInAppReviewRequestWithMessage:connection:" forMessage:189];
+  [server addObserver:self selector:"resetInAppReviewRequestsWithMessage:connection:" forMessage:190];
+  [server addObserver:self selector:"addPurchaseIntentWithMessage:connection:" forMessage:10013];
+  [server addObserver:self selector:"installSheetStateUpdatedWithMessage:connection:" forMessage:10014];
 
-  [a3 addObserver:self selector:"forceSandboxWithMessage:connection:" forMessage:10015];
+  [server addObserver:self selector:"forceSandboxWithMessage:connection:" forMessage:10015];
 }
 
 - (void)start
@@ -470,123 +470,123 @@ LABEL_52:
   [(MicroPaymentQueue *)self _dispatchAsync:v2];
 }
 
-- (void)updateWithPurchaseResponse:(id)a3
+- (void)updateWithPurchaseResponse:(id)response
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1000BE150;
   v3[3] = &unk_100327350;
-  v3[4] = a3;
+  v3[4] = response;
   v3[5] = self;
   [(MicroPaymentQueue *)self _dispatchAsync:v3];
 }
 
-- (void)addPaymentWithMessage:(id)a3 connection:(id)a4
+- (void)addPaymentWithMessage:(id)message connection:(id)connection
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000BE498;
   v4[3] = &unk_1003273E0;
   v4[4] = self;
-  v4[5] = a3;
-  v4[6] = a4;
+  v4[5] = message;
+  v4[6] = connection;
   [(MicroPaymentQueue *)self _dispatchAsync:v4];
 }
 
-- (void)addPurchaseIntentWithMessage:(id)a3 connection:(id)a4
+- (void)addPurchaseIntentWithMessage:(id)message connection:(id)connection
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000BE644;
   v4[3] = &unk_1003273E0;
-  v4[4] = a3;
+  v4[4] = message;
   v4[5] = self;
-  v4[6] = a4;
+  v4[6] = connection;
   [(MicroPaymentQueue *)self _dispatchAsync:v4];
 }
 
-- (void)cancelDownloadsWithMessage:(id)a3 connection:(id)a4
+- (void)cancelDownloadsWithMessage:(id)message connection:(id)connection
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000BE7CC;
   v4[3] = &unk_1003273E0;
   v4[4] = self;
-  v4[5] = a3;
-  v4[6] = a4;
+  v4[5] = message;
+  v4[6] = connection;
   [(MicroPaymentQueue *)self _dispatchAsync:v4];
 }
 
-- (void)cancelRequestWithMessage:(id)a3 connection:(id)a4
+- (void)cancelRequestWithMessage:(id)message connection:(id)connection
 {
   v5 = +[StoreKitRequestQueue sharedInstance];
 
-  [(RequestQueue *)v5 cancelOperationForConnection:a4];
+  [(RequestQueue *)v5 cancelOperationForConnection:connection];
 }
 
-- (void)checkQueueForClientWithMessage:(id)a3 connection:(id)a4
+- (void)checkQueueForClientWithMessage:(id)message connection:(id)connection
 {
   if (SSXPCConnectionHasEntitlement())
   {
     objc_opt_class();
     v7 = SSXPCDictionaryCopyCFObjectWithClass();
-    v6 = [[SSURLBagContext alloc] initWithXPCEncoding:{xpc_dictionary_get_value(a3, "2")}];
+    v6 = [[SSURLBagContext alloc] initWithXPCEncoding:{xpc_dictionary_get_value(message, "2")}];
     [(MicroPaymentQueue *)self checkQueueForClientWithIdentifier:v7 URLBagContext:v6];
   }
 }
 
-- (void)connectedAppEnteredForegroundWithMessage:(id)a3 connection:(id)a4
+- (void)connectedAppEnteredForegroundWithMessage:(id)message connection:(id)connection
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000BE9E8;
   v4[3] = &unk_1003273E0;
   v4[4] = self;
-  v4[5] = a3;
-  v4[6] = a4;
+  v4[5] = message;
+  v4[6] = connection;
   [(MicroPaymentQueue *)self _dispatchAsync:v4];
 }
 
-- (void)forceSandboxWithMessage:(id)a3 connection:(id)a4
+- (void)forceSandboxWithMessage:(id)message connection:(id)connection
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000BEC1C;
   v4[3] = &unk_100327350;
-  v4[4] = a4;
-  v4[5] = a3;
+  v4[4] = connection;
+  v4[5] = message;
   [(MicroPaymentQueue *)self _dispatchAsync:v4];
 }
 
-- (void)finishPaymentWithMessage:(id)a3 connection:(id)a4
+- (void)finishPaymentWithMessage:(id)message connection:(id)connection
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000BED70;
   v4[3] = &unk_1003273E0;
   v4[4] = self;
-  v4[5] = a3;
-  v4[6] = a4;
+  v4[5] = message;
+  v4[6] = connection;
   [(MicroPaymentQueue *)self _dispatchAsync:v4];
 }
 
-- (void)getTransactionsWithMessage:(id)a3 connection:(id)a4
+- (void)getTransactionsWithMessage:(id)message connection:(id)connection
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000BEE58;
   v4[3] = &unk_1003273E0;
   v4[4] = self;
-  v4[5] = a3;
-  v4[6] = a4;
+  v4[5] = message;
+  v4[6] = connection;
   [(MicroPaymentQueue *)self _dispatchAsync:v4];
 }
 
-- (void)installSheetStateUpdatedWithMessage:(id)a3 connection:(id)a4
+- (void)installSheetStateUpdatedWithMessage:(id)message connection:(id)connection
 {
-  if (xpc_dictionary_get_uint64(a3, "2"))
+  if (xpc_dictionary_get_uint64(message, "2"))
   {
-    v6 = sub_10018E3C4(a3, "1");
+    v6 = sub_10018E3C4(message, "1");
   }
 
   else
@@ -596,80 +596,80 @@ LABEL_52:
 
   [+[PurchaseActionsManager sharedInstance](PurchaseActionsManager setAppBundleIdForCurrentInstallSheet:"setAppBundleIdForCurrentInstallSheet:", v6];
 
-  reply = xpc_dictionary_create_reply(a3);
-  xpc_connection_send_message(a4, reply);
+  reply = xpc_dictionary_create_reply(message);
+  xpc_connection_send_message(connection, reply);
 
   xpc_release(reply);
 }
 
-- (void)pauseDownloadsWithMessage:(id)a3 connection:(id)a4
+- (void)pauseDownloadsWithMessage:(id)message connection:(id)connection
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000BF074;
   v4[3] = &unk_1003273E0;
   v4[4] = self;
-  v4[5] = a3;
-  v4[6] = a4;
+  v4[5] = message;
+  v4[6] = connection;
   [(MicroPaymentQueue *)self _dispatchAsync:v4];
 }
 
-- (void)productsRequestWithMessage:(id)a3 connection:(id)a4
+- (void)productsRequestWithMessage:(id)message connection:(id)connection
 {
   v6 = +[StoreKitRequestQueue sharedInstance];
 
-  [(StoreKitRequestQueue *)v6 requestProductsWithMessage:a3 connection:a4];
+  [(StoreKitRequestQueue *)v6 requestProductsWithMessage:message connection:connection];
 }
 
-- (void)registerClientWithMessage:(id)a3 connection:(id)a4
+- (void)registerClientWithMessage:(id)message connection:(id)connection
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000BF1BC;
   v4[3] = &unk_1003273E0;
-  v4[4] = a3;
+  v4[4] = message;
   v4[5] = self;
-  v4[6] = a4;
+  v4[6] = connection;
   [(MicroPaymentQueue *)self _dispatchAsync:v4];
 }
 
-- (void)restoreCompletedTransactionsWithMessage:(id)a3 connection:(id)a4
+- (void)restoreCompletedTransactionsWithMessage:(id)message connection:(id)connection
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000BF4CC;
   v4[3] = &unk_1003273E0;
-  v4[4] = a3;
+  v4[4] = message;
   v4[5] = self;
-  v4[6] = a4;
+  v4[6] = connection;
   [(MicroPaymentQueue *)self _dispatchAsync:v4];
 }
 
-- (void)resumeDownloadsWithMessage:(id)a3 connection:(id)a4
+- (void)resumeDownloadsWithMessage:(id)message connection:(id)connection
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000BF5D0;
   v4[3] = &unk_1003273E0;
   v4[4] = self;
-  v4[5] = a3;
-  v4[6] = a4;
+  v4[5] = message;
+  v4[6] = connection;
   [(MicroPaymentQueue *)self _dispatchAsync:v4];
 }
 
-- (void)startDownloadsWithMessage:(id)a3 connection:(id)a4
+- (void)startDownloadsWithMessage:(id)message connection:(id)connection
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000BF6D0;
   v4[3] = &unk_1003273E0;
   v4[4] = self;
-  v4[5] = a3;
-  v4[6] = a4;
+  v4[5] = message;
+  v4[6] = connection;
   [(MicroPaymentQueue *)self _dispatchAsync:v4];
 }
 
-- (void)updateDeferredPaymentWithMessage:(id)a3 connection:(id)a4
+- (void)updateDeferredPaymentWithMessage:(id)message connection:(id)connection
 {
   if ((SSXPCConnectionHasEntitlement() & 1) != 0 || SSXPCConnectionHasEntitlement())
   {
@@ -677,21 +677,21 @@ LABEL_52:
     v6[1] = 3221225472;
     v6[2] = sub_1000BF81C;
     v6[3] = &unk_100327350;
-    v6[4] = a3;
+    v6[4] = message;
     v6[5] = self;
     [(MicroPaymentQueue *)self _dispatchAsync:v6];
   }
 }
 
-- (void)addInAppReviewRequestWithMessage:(id)a3 connection:(id)a4
+- (void)addInAppReviewRequestWithMessage:(id)message connection:(id)connection
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000BFFCC;
   v4[3] = &unk_1003273E0;
-  v4[4] = a4;
+  v4[4] = connection;
   v4[5] = self;
-  v4[6] = a3;
+  v4[6] = message;
   [(MicroPaymentQueue *)self _dispatchAsync:v4];
 }
 
@@ -718,19 +718,19 @@ LABEL_52:
   return v2;
 }
 
-- (void)updateInAppReviewRequestWithMessage:(id)a3 connection:(id)a4
+- (void)updateInAppReviewRequestWithMessage:(id)message connection:(id)connection
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000C0CD8;
   v4[3] = &unk_1003273E0;
-  v4[4] = a4;
-  v4[5] = a3;
+  v4[4] = connection;
+  v4[5] = message;
   v4[6] = self;
   [(MicroPaymentQueue *)self _dispatchAsync:v4];
 }
 
-- (void)resetInAppReviewRequestsWithMessage:(id)a3 connection:(id)a4
+- (void)resetInAppReviewRequestsWithMessage:(id)message connection:(id)connection
 {
   if ((SSXPCConnectionHasEntitlement() & 1) != 0 || SSXPCConnectionHasEntitlement())
   {
@@ -738,7 +738,7 @@ LABEL_52:
     v6[1] = 3221225472;
     v6[2] = sub_1000C0FB8;
     v6[3] = &unk_100327350;
-    v6[4] = a4;
+    v6[4] = connection;
     v6[5] = self;
     [(MicroPaymentQueue *)self _dispatchAsync:v6];
   }
@@ -768,20 +768,20 @@ LABEL_52:
   return [v2 isOnDeviceAppInstallationAllowed];
 }
 
-- (void)_clientDisconnectNotification:(id)a3
+- (void)_clientDisconnectNotification:(id)notification
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1000C1234;
   v3[3] = &unk_100327350;
-  v4 = self;
-  v5 = [a3 object];
-  [(MicroPaymentQueue *)v4 _dispatchAsync:v3];
+  selfCopy = self;
+  object = [notification object];
+  [(MicroPaymentQueue *)selfCopy _dispatchAsync:v3];
 }
 
-- (void)_networkTypeChanged:(id)a3
+- (void)_networkTypeChanged:(id)changed
 {
-  if ([+[ISNetworkObserver networkType:a3]])
+  if ([+[ISNetworkObserver networkType:changed]])
   {
     v4[0] = _NSConcreteStackBlock;
     v4[1] = 3221225472;
@@ -792,7 +792,7 @@ LABEL_52:
   }
 }
 
-- (void)_refreshDidFinishNotification:(id)a3
+- (void)_refreshDidFinishNotification:(id)notification
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
@@ -817,14 +817,14 @@ LABEL_52:
   return +[NSThread beginManagedContextSession];
 }
 
-- (id)_clientForConnection:(id)a3 paymentQueueClient:(id)a4
+- (id)_clientForConnection:(id)connection paymentQueueClient:(id)client
 {
-  v7 = [(MicroPaymentQueue *)self _clients];
+  _clients = [(MicroPaymentQueue *)self _clients];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v8 = [_clients countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -835,18 +835,18 @@ LABEL_3:
     {
       if (*v17 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(_clients);
       }
 
       v12 = *(*(&v16 + 1) + 8 * v11);
-      if ([(StoreKitClient *)v12 isEqualToXPCConnection:a3 paymentQueueClient:a4])
+      if ([(StoreKitClient *)v12 isEqualToXPCConnection:connection paymentQueueClient:client])
       {
         break;
       }
 
       if (v9 == ++v11)
       {
-        v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v9 = [_clients countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v9)
         {
           goto LABEL_3;
@@ -867,28 +867,28 @@ LABEL_11:
   [(NSMutableArray *)self->_clients addObject:v12];
   v13 = v12;
 LABEL_12:
-  if (a4)
+  if (client)
   {
-    [(StoreKitClient *)v12 setPaymentQueueClient:a4];
+    [(StoreKitClient *)v12 setPaymentQueueClient:client];
   }
 
   if (![(StoreKitClient *)v12 XPCClient])
   {
-    v14 = [[XPCClient alloc] initWithInputConnection:a3];
+    v14 = [[XPCClient alloc] initWithInputConnection:connection];
     [(StoreKitClient *)v12 setXPCClient:v14];
   }
 
   return v12;
 }
 
-- (id)_clientForObjectID:(id)a3
+- (id)_clientForObjectID:(id)d
 {
-  v5 = [(MicroPaymentQueue *)self _clients];
+  _clients = [(MicroPaymentQueue *)self _clients];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [_clients countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -899,18 +899,18 @@ LABEL_3:
     {
       if (*v14 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(_clients);
       }
 
       v10 = *(*(&v13 + 1) + 8 * v9);
-      if (([(NSManagedObjectID *)[(StoreKitClient *)v10 microPaymentClientID] isEqual:a3]& 1) != 0)
+      if (([(NSManagedObjectID *)[(StoreKitClient *)v10 microPaymentClientID] isEqual:d]& 1) != 0)
       {
         break;
       }
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [_clients countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -927,15 +927,15 @@ LABEL_3:
   }
 
 LABEL_11:
-  v10 = [[StoreKitClient alloc] initWithMicroPaymentClientID:a3];
+  v10 = [[StoreKitClient alloc] initWithMicroPaymentClientID:d];
   [(NSMutableArray *)self->_clients addObject:v10];
   v11 = v10;
   return v10;
 }
 
-- (id)_clientForPayment:(id)a3
+- (id)_clientForPayment:(id)payment
 {
-  result = [objc_msgSend(a3 "client")];
+  result = [objc_msgSend(payment "client")];
   if (result)
   {
 
@@ -951,12 +951,12 @@ LABEL_11:
   if (!result)
   {
     self->_clients = objc_alloc_init(NSMutableArray);
-    v4 = [(MicroPaymentQueue *)self _beginManagedContextSession];
+    _beginManagedContextSession = [(MicroPaymentQueue *)self _beginManagedContextSession];
     v5 = objc_alloc_init(NSFetchRequest);
-    [v5 setEntity:{+[MicroPaymentClient entityForContext:](MicroPaymentClient, "entityForContext:", v4)}];
+    [v5 setEntity:{+[MicroPaymentClient entityForContext:](MicroPaymentClient, "entityForContext:", _beginManagedContextSession)}];
     v75 = 0;
-    v59 = v4;
-    obj = [v4 executeFetchRequest:v5 error:&v75];
+    v59 = _beginManagedContextSession;
+    obj = [_beginManagedContextSession executeFetchRequest:v5 error:&v75];
     v57 = v5;
     if (obj)
     {
@@ -987,15 +987,15 @@ LABEL_11:
               v10 = *(*(&v71 + 1) + 8 * i);
               v11 = [objc_msgSend(v10 "usesIdentityAttributes")];
               v12 = [NSArray alloc];
-              v13 = [v10 identifier];
+              identifier = [v10 identifier];
               if (v11)
               {
-                v14 = [v12 initWithObjects:{v13, objc_msgSend(v10, "bundleVersion"), objc_msgSend(v10, "storeIdentifier"), objc_msgSend(v10, "storeVersion"), objc_msgSend(v10, "sandboxed"), 0}];
+                v14 = [v12 initWithObjects:{identifier, objc_msgSend(v10, "bundleVersion"), objc_msgSend(v10, "storeIdentifier"), objc_msgSend(v10, "storeVersion"), objc_msgSend(v10, "sandboxed"), 0}];
               }
 
               else
               {
-                v14 = [v12 initWithObjects:{v13, objc_msgSend(v10, "sandboxed"), 0, v53, v54, v55}];
+                v14 = [v12 initWithObjects:{identifier, objc_msgSend(v10, "sandboxed"), 0, v53, v54, v55}];
               }
 
               v15 = v14;
@@ -1005,25 +1005,25 @@ LABEL_11:
               if (v17)
               {
                 v18 = v17;
-                v19 = [v7[412] sharedDaemonConfig];
-                if (!v19)
+                sharedDaemonConfig = [v7[412] sharedDaemonConfig];
+                if (!sharedDaemonConfig)
                 {
-                  v19 = [v7[412] sharedConfig];
+                  sharedDaemonConfig = [v7[412] sharedConfig];
                 }
 
                 v20 = v7;
-                v21 = [v19 shouldLog];
-                if ([v19 shouldLogToDisk])
+                shouldLog = [sharedDaemonConfig shouldLog];
+                if ([sharedDaemonConfig shouldLogToDisk])
                 {
-                  v21 |= 2u;
+                  shouldLog |= 2u;
                 }
 
-                if (!os_log_type_enabled([v19 OSLogObject], OS_LOG_TYPE_DEFAULT))
+                if (!os_log_type_enabled([sharedDaemonConfig OSLogObject], OS_LOG_TYPE_DEFAULT))
                 {
-                  v21 &= 2u;
+                  shouldLog &= 2u;
                 }
 
-                if (v21)
+                if (shouldLog)
                 {
                   v22 = objc_opt_class();
                   v78 = 138412802;
@@ -1045,12 +1045,12 @@ LABEL_11:
                   }
                 }
 
-                v26 = [objc_msgSend(v10 payments];
+                payments = [objc_msgSend(v10 payments];
                 v67 = 0u;
                 v68 = 0u;
                 v69 = 0u;
                 v70 = 0u;
-                v27 = [v26 countByEnumeratingWithState:&v67 objects:v77 count:16];
+                v27 = [payments countByEnumeratingWithState:&v67 objects:v77 count:16];
                 if (v27)
                 {
                   v28 = v27;
@@ -1061,13 +1061,13 @@ LABEL_11:
                     {
                       if (*v68 != v29)
                       {
-                        objc_enumerationMutation(v26);
+                        objc_enumerationMutation(payments);
                       }
 
                       [*(*(&v67 + 1) + 8 * j) setClient:v18];
                     }
 
-                    v28 = [v26 countByEnumeratingWithState:&v67 objects:v77 count:16];
+                    v28 = [payments countByEnumeratingWithState:&v67 objects:v77 count:16];
                   }
 
                   while (v28);
@@ -1098,24 +1098,24 @@ LABEL_11:
         CFPreferencesAppSynchronize(kITunesStoreDaemonDefaultsID);
       }
 
-      v31 = [v7[412] sharedDaemonConfig];
-      if (!v31)
+      sharedDaemonConfig2 = [v7[412] sharedDaemonConfig];
+      if (!sharedDaemonConfig2)
       {
-        v31 = [v7[412] sharedConfig];
+        sharedDaemonConfig2 = [v7[412] sharedConfig];
       }
 
-      v32 = [v31 shouldLog];
-      if ([v31 shouldLogToDisk])
+      shouldLog2 = [sharedDaemonConfig2 shouldLog];
+      if ([sharedDaemonConfig2 shouldLogToDisk])
       {
-        v33 = v32 | 2;
+        v33 = shouldLog2 | 2;
       }
 
       else
       {
-        v33 = v32;
+        v33 = shouldLog2;
       }
 
-      if (os_log_type_enabled([v31 OSLogObject], OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled([sharedDaemonConfig2 OSLogObject], OS_LOG_TYPE_INFO))
       {
         v34 = v33;
       }
@@ -1183,15 +1183,15 @@ LABEL_11:
         v45 = +[SSLogConfig sharedConfig];
       }
 
-      v46 = [v45 shouldLog];
+      shouldLog3 = [v45 shouldLog];
       if ([v45 shouldLogToDisk])
       {
-        v47 = v46 | 2;
+        v47 = shouldLog3 | 2;
       }
 
       else
       {
-        v47 = v46;
+        v47 = shouldLog3;
       }
 
       if (!os_log_type_enabled([v45 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -1225,10 +1225,10 @@ LABEL_11:
   return result;
 }
 
-- (id)_copyDownloadsIDsFromMessage:(id)a3 key:(const char *)a4
+- (id)_copyDownloadsIDsFromMessage:(id)message key:(const char *)key
 {
   v6 = objc_alloc_init(NSMutableArray);
-  value = xpc_dictionary_get_value(a3, a4);
+  value = xpc_dictionary_get_value(message, key);
   if (value)
   {
     v8 = value;
@@ -1246,7 +1246,7 @@ LABEL_11:
   return v6;
 }
 
-- (void)_dispatchAsync:(id)a3
+- (void)_dispatchAsync:(id)async
 {
   [+[Daemon daemon](Daemon "daemon")];
   dispatchQueue = self->_dispatchQueue;
@@ -1254,19 +1254,19 @@ LABEL_11:
   block[1] = 3221225472;
   block[2] = sub_1000C23B4;
   block[3] = &unk_100327FD8;
-  block[4] = a3;
+  block[4] = async;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_enumerateDownloadsForIdentifiers:(id)a3 context:(id)a4 usingBlock:(id)a5
+- (void)_enumerateDownloadsForIdentifiers:(id)identifiers context:(id)context usingBlock:(id)block
 {
-  v18 = [MicroPaymentDownload downloadEntityFromContext:a4];
+  v18 = [MicroPaymentDownload downloadEntityFromContext:context];
   v7 = [[NSArray alloc] initWithObjects:{@"downloadID", @"payment", 0}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v8 = [identifiers countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1277,7 +1277,7 @@ LABEL_11:
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(identifiers);
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
@@ -1286,7 +1286,7 @@ LABEL_11:
         [v14 setEntity:v18];
         [v14 setPredicate:{+[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"downloadID=%@", v12)}];
         [v14 setPropertiesToFetch:v7];
-        v15 = [a4 executeFetchRequest:v14 error:0];
+        v15 = [context executeFetchRequest:v14 error:0];
         v16 = [v15 count];
         v17 = 0;
         if (v16 == 1)
@@ -1294,38 +1294,38 @@ LABEL_11:
           v17 = [v15 objectAtIndex:0];
         }
 
-        (*(a5 + 2))(a5, v12, v17);
+        (*(block + 2))(block, v12, v17);
 
         objc_autoreleasePoolPop(v13);
       }
 
-      v9 = [a3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v9 = [identifiers countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)_finishPaymentOperationForPaymentID:(id)a3 result:(BOOL)a4 error:(id)a5
+- (void)_finishPaymentOperationForPaymentID:(id)d result:(BOOL)result error:(id)error
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000C264C;
   v5[3] = &unk_100328000;
   v5[4] = self;
-  v5[5] = a3;
-  v6 = a4;
-  [(MicroPaymentQueue *)self _dispatchAsync:v5, a4, a5];
+  v5[5] = d;
+  resultCopy = result;
+  [(MicroPaymentQueue *)self _dispatchAsync:v5, result, error];
 }
 
-- (id)_firstReadyPaymentInContext:(id)a3
+- (id)_firstReadyPaymentInContext:(id)context
 {
-  v4 = [(MicroPaymentQueue *)self _clients];
+  _clients = [(MicroPaymentQueue *)self _clients];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  result = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  result = [_clients countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (result)
   {
     v6 = result;
@@ -1337,20 +1337,20 @@ LABEL_11:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_clients);
         }
 
-        v9 = [*(*(&v10 + 1) + 8 * v8) firstReadyPaymentID];
-        if (v9)
+        firstReadyPaymentID = [*(*(&v10 + 1) + 8 * v8) firstReadyPaymentID];
+        if (firstReadyPaymentID)
         {
-          return [a3 objectWithID:v9];
+          return [context objectWithID:firstReadyPaymentID];
         }
 
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      result = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      result = [_clients countByEnumeratingWithState:&v10 objects:v14 count:16];
       v6 = result;
       if (result)
       {
@@ -1364,7 +1364,7 @@ LABEL_11:
   return result;
 }
 
-- (id)_newPaymentQueueClientWithMessage:(id)a3 connection:(id)a4 parameter:(const char *)a5
+- (id)_newPaymentQueueClientWithMessage:(id)message connection:(id)connection parameter:(const char *)parameter
 {
   if ((SSXPCConnectionHasEntitlement() & 1) == 0 && !SSXPCConnectionHasEntitlement())
   {
@@ -1372,12 +1372,12 @@ LABEL_11:
   }
 
   v7 = objc_alloc(sub_1001FA240());
-  value = xpc_dictionary_get_value(a3, a5);
+  value = xpc_dictionary_get_value(message, parameter);
 
   return [v7 initWithXPCEncoding:value];
 }
 
-- (void)_sendPurchaseIntentsForApp:(id)a3 storeKitClient:(id)a4 force:(BOOL)a5
+- (void)_sendPurchaseIntentsForApp:(id)app storeKitClient:(id)client force:(BOOL)force
 {
   v8 = dispatch_semaphore_create(0);
   dispatch_retain(v8);
@@ -1386,19 +1386,19 @@ LABEL_11:
   v10[2] = sub_1000C2954;
   v10[3] = &unk_100328028;
   v10[4] = self;
-  v10[5] = a3;
+  v10[5] = app;
   v10[6] = v8;
-  v10[7] = a4;
-  [+[PurchaseActionsManager sharedInstance](PurchaseActionsManager getPurchaseIntentsForApp:"getPurchaseIntentsForApp:completionHandler:" completionHandler:a3, v10];
+  v10[7] = client;
+  [+[PurchaseActionsManager sharedInstance](PurchaseActionsManager getPurchaseIntentsForApp:"getPurchaseIntentsForApp:completionHandler:" completionHandler:app, v10];
   v9 = dispatch_time(0, 90000000000);
   dispatch_semaphore_wait(v8, v9);
   dispatch_release(v8);
 }
 
-- (void)_setActivePaymentID:(id)a3
+- (void)_setActivePaymentID:(id)d
 {
   activePaymentID = self->_activePaymentID;
-  if (activePaymentID != a3)
+  if (activePaymentID != d)
   {
     if (!activePaymentID)
     {
@@ -1406,9 +1406,9 @@ LABEL_11:
       activePaymentID = self->_activePaymentID;
     }
 
-    v6 = a3;
-    self->_activePaymentID = v6;
-    if (!v6)
+    dCopy = d;
+    self->_activePaymentID = dCopy;
+    if (!dCopy)
     {
       v7 = +[Daemon daemon];
 
@@ -1436,15 +1436,15 @@ LABEL_11:
         v6 = +[SSLogConfig sharedConfig];
       }
 
-      v7 = [v6 shouldLog];
+      shouldLog = [v6 shouldLog];
       if ([v6 shouldLogToDisk])
       {
-        v8 = v7 | 2;
+        v8 = shouldLog | 2;
       }
 
       else
       {
-        v8 = v7;
+        v8 = shouldLog;
       }
 
       if (!os_log_type_enabled([v6 OSLogObject], OS_LOG_TYPE_INFO))
@@ -1471,15 +1471,15 @@ LABEL_11:
         }
       }
 
-      v12 = [v5 objectID];
-      [(MicroPaymentQueue *)self _setActivePaymentID:v12];
+      objectID = [v5 objectID];
+      [(MicroPaymentQueue *)self _setActivePaymentID:objectID];
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
       v17[2] = sub_1000C3028;
       v17[3] = &unk_100328050;
       v17[4] = [SSWeakReference weakReferenceWithObject:self];
-      v17[5] = v12;
-      [-[MicroPaymentQueue _clientForPayment:](self _clientForPayment:{v5), "startPaymentWithObjectID:withCompletionBlock:", v12, v17}];
+      v17[5] = objectID;
+      [-[MicroPaymentQueue _clientForPayment:](self _clientForPayment:{v5), "startPaymentWithObjectID:withCompletionBlock:", objectID, v17}];
     }
 
     +[NSThread endManagedContextSession];

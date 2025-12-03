@@ -2,16 +2,16 @@
 + (id)sharedInstance;
 - (ABSContactsInterface)init;
 - (void)_decrementInUse;
-- (void)_incrementInUseForMutation:(BOOL)a3;
-- (void)accessAssert:(id)a3;
-- (void)accessAsync:(id)a3;
-- (void)accessSync:(id)a3;
+- (void)_incrementInUseForMutation:(BOOL)mutation;
+- (void)accessAssert:(id)assert;
+- (void)accessAsync:(id)async;
+- (void)accessSync:(id)sync;
 - (void)decrementInUse;
 - (void)incrementInUse;
-- (void)mutateAssert:(id)a3;
-- (void)mutateAsync:(id)a3;
-- (void)mutateSync:(id)a3;
-- (void)registerPostSaveBlock:(id)a3;
+- (void)mutateAssert:(id)assert;
+- (void)mutateAsync:(id)async;
+- (void)mutateSync:(id)sync;
+- (void)registerPostSaveBlock:(id)block;
 @end
 
 @implementation ABSContactsInterface
@@ -47,23 +47,23 @@
   return v2;
 }
 
-- (void)accessSync:(id)a3
+- (void)accessSync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   q = self->_q;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001151C;
   v7[3] = &unk_10005CF58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = syncCopy;
+  v6 = syncCopy;
   dispatch_sync(q, v7);
 }
 
-- (void)accessAsync:(id)a3
+- (void)accessAsync:(id)async
 {
-  v4 = a3;
+  asyncCopy = async;
   v5 = os_transaction_create();
   q = self->_q;
   block[0] = _NSConcreteStackBlock;
@@ -71,41 +71,41 @@
   block[2] = sub_100011648;
   block[3] = &unk_10005CF80;
   v10 = v5;
-  v11 = v4;
+  v11 = asyncCopy;
   block[4] = self;
   v7 = v5;
-  v8 = v4;
+  v8 = asyncCopy;
   dispatch_async(q, block);
 }
 
-- (void)accessAssert:(id)a3
+- (void)accessAssert:(id)assert
 {
-  v5 = a3;
+  assertCopy = assert;
   dispatch_assert_queue_V2(self->_q);
   [(ABSContactsInterface *)self _incrementInUseForMutation:0];
   v4 = objc_autoreleasePoolPush();
-  v5[2](v5, self->_cnStore);
+  assertCopy[2](assertCopy, self->_cnStore);
   objc_autoreleasePoolPop(v4);
   [(ABSContactsInterface *)self _decrementInUse];
 }
 
-- (void)mutateSync:(id)a3
+- (void)mutateSync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   q = self->_q;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000117CC;
   v7[3] = &unk_10005CF58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = syncCopy;
+  v6 = syncCopy;
   dispatch_sync(q, v7);
 }
 
-- (void)mutateAsync:(id)a3
+- (void)mutateAsync:(id)async
 {
-  v4 = a3;
+  asyncCopy = async;
   v5 = os_transaction_create();
   q = self->_q;
   block[0] = _NSConcreteStackBlock;
@@ -113,20 +113,20 @@
   block[2] = sub_100011920;
   block[3] = &unk_10005CF80;
   v10 = v5;
-  v11 = v4;
+  v11 = asyncCopy;
   block[4] = self;
   v7 = v5;
-  v8 = v4;
+  v8 = asyncCopy;
   dispatch_async(q, block);
 }
 
-- (void)mutateAssert:(id)a3
+- (void)mutateAssert:(id)assert
 {
-  v6 = a3;
+  assertCopy = assert;
   dispatch_assert_queue_V2(self->_q);
   [(ABSContactsInterface *)self _incrementInUseForMutation:1];
   v4 = objc_autoreleasePoolPush();
-  if (v6[2](v6, self->_cnStore, self->_cnSaveRequest))
+  if (assertCopy[2](assertCopy, self->_cnStore, self->_cnSaveRequest))
   {
     cnSaveRequest = self->_cnSaveRequest;
     self->_cnSaveRequest = 0;
@@ -182,9 +182,9 @@
   }
 }
 
-- (void)_incrementInUseForMutation:(BOOL)a3
+- (void)_incrementInUseForMutation:(BOOL)mutation
 {
-  v3 = a3;
+  mutationCopy = mutation;
   ++self->_inUse;
   v5 = objc_autoreleasePoolPush();
   if (self->_inUse == 1)
@@ -196,7 +196,7 @@
     self->_didSave = 0;
   }
 
-  if (v3 && !self->_cnSaveRequest)
+  if (mutationCopy && !self->_cnSaveRequest)
   {
     v8 = +[CNSaveRequest abs_new];
     cnSaveRequest = self->_cnSaveRequest;
@@ -281,10 +281,10 @@
   }
 }
 
-- (void)registerPostSaveBlock:(id)a3
+- (void)registerPostSaveBlock:(id)block
 {
   postSaveActions = self->_postSaveActions;
-  v4 = [a3 copy];
+  v4 = [block copy];
   [(NSMutableArray *)postSaveActions addObject:v4];
 }
 

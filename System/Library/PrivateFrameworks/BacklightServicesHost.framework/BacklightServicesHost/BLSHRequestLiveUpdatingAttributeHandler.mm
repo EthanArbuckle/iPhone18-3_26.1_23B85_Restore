@@ -1,7 +1,7 @@
 @interface BLSHRequestLiveUpdatingAttributeHandler
 + (id)attributeClasses;
-- (void)activateForSceneEnvironment:(id)a3;
-- (void)deactivateForSceneEnvironment:(id)a3;
+- (void)activateForSceneEnvironment:(id)environment;
+- (void)deactivateForSceneEnvironment:(id)environment;
 @end
 
 @implementation BLSHRequestLiveUpdatingAttributeHandler
@@ -16,17 +16,17 @@
   return v2;
 }
 
-- (void)activateForSceneEnvironment:(id)a3
+- (void)activateForSceneEnvironment:(id)environment
 {
-  v4 = a3;
-  v3 = v4;
+  environmentCopy = environment;
+  v3 = environmentCopy;
   BSDispatchMain();
 }
 
-- (void)deactivateForSceneEnvironment:(id)a3
+- (void)deactivateForSceneEnvironment:(id)environment
 {
-  v4 = a3;
-  v3 = v4;
+  environmentCopy = environment;
+  v3 = environmentCopy;
   BSDispatchMain();
 }
 

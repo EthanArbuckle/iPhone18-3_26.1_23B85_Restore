@@ -1,30 +1,30 @@
 @interface NACAlertProxy
-+ (id)alertProxyWithConfiguration:(id)a3;
-- (id)_initWithConfiguration:(id)a3;
++ (id)alertProxyWithConfiguration:(id)configuration;
+- (id)_initWithConfiguration:(id)configuration;
 - (void)play;
-- (void)stopWithOptions:(id)a3;
+- (void)stopWithOptions:(id)options;
 @end
 
 @implementation NACAlertProxy
 
-+ (id)alertProxyWithConfiguration:(id)a3
++ (id)alertProxyWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithConfiguration:v4];
+  configurationCopy = configuration;
+  v5 = [[self alloc] _initWithConfiguration:configurationCopy];
 
   return v5;
 }
 
-- (id)_initWithConfiguration:(id)a3
+- (id)_initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = NACAlertProxy;
   v6 = [(NACAlertProxy *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_alertConfiguration, a3);
+    objc_storeStrong(&v6->_alertConfiguration, configuration);
   }
 
   return v7;
@@ -36,11 +36,11 @@
   [v3 playToneWithConfiguration:self->_alertConfiguration];
 }
 
-- (void)stopWithOptions:(id)a3
+- (void)stopWithOptions:(id)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v4 = +[NACXPCClient sharedClient];
-  [v4 stopToneWithOptions:v3];
+  [v4 stopToneWithOptions:optionsCopy];
 }
 
 @end

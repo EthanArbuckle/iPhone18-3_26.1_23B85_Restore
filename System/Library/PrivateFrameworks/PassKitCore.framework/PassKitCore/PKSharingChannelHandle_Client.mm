@@ -1,33 +1,33 @@
 @interface PKSharingChannelHandle_Client
-+ (id)createHandleForDescriptor:(id)a3 queue:(id)a4;
-+ (void)bootstrapProximityChannelWithTemplateSession:(id)a3 group:(id)a4 completion:(id)a5;
-+ (void)descriptorsForAccountDevices:(id)a3;
-+ (void)terminateProximityChannelForGroup:(id)a3;
++ (id)createHandleForDescriptor:(id)descriptor queue:(id)queue;
++ (void)bootstrapProximityChannelWithTemplateSession:(id)session group:(id)group completion:(id)completion;
++ (void)descriptorsForAccountDevices:(id)devices;
++ (void)terminateProximityChannelForGroup:(id)group;
 - (id)_fetchTransportIdentifier;
-- (id)_initWithQueue:(id)a3;
+- (id)_initWithQueue:(id)queue;
 - (id)transportIdentifier;
-- (void)attachWithCompletion:(id)a3;
-- (void)closeWithCompletion:(id)a3;
-- (void)didReceiveMessages:(id)a3 reply:(id)a4;
-- (void)didReceiveUpdatedTransportIdentifier:(id)a3 reply:(id)a4;
-- (void)fetchHandleTransferToken:(id)a3;
-- (void)invalidateWithRemoteWithCompletion:(id)a3;
-- (void)markMessageAsHandled:(id)a3;
-- (void)pingWithCompletion:(id)a3;
-- (void)relinquishWithCompletion:(id)a3;
-- (void)remoteDeviceInformation:(id)a3;
-- (void)sendMessage:(id)a3 completion:(id)a4;
-- (void)startProximityAdvertisementOfType:(unint64_t)a3 completion:(id)a4;
-- (void)startProximityDetectionForAdvertisement:(id)a3 completion:(id)a4;
+- (void)attachWithCompletion:(id)completion;
+- (void)closeWithCompletion:(id)completion;
+- (void)didReceiveMessages:(id)messages reply:(id)reply;
+- (void)didReceiveUpdatedTransportIdentifier:(id)identifier reply:(id)reply;
+- (void)fetchHandleTransferToken:(id)token;
+- (void)invalidateWithRemoteWithCompletion:(id)completion;
+- (void)markMessageAsHandled:(id)handled;
+- (void)pingWithCompletion:(id)completion;
+- (void)relinquishWithCompletion:(id)completion;
+- (void)remoteDeviceInformation:(id)information;
+- (void)sendMessage:(id)message completion:(id)completion;
+- (void)startProximityAdvertisementOfType:(unint64_t)type completion:(id)completion;
+- (void)startProximityDetectionForAdvertisement:(id)advertisement completion:(id)completion;
 @end
 
 @implementation PKSharingChannelHandle_Client
 
-+ (id)createHandleForDescriptor:(id)a3 queue:(id)a4
++ (id)createHandleForDescriptor:(id)descriptor queue:(id)queue
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[PKSharingChannelHandle_Client alloc] _initWithQueue:v6];
+  descriptorCopy = descriptor;
+  queueCopy = queue;
+  v7 = [[PKSharingChannelHandle_Client alloc] _initWithQueue:queueCopy];
   v8 = [v7 _synchronousRemoteObjectProxyWithErrorHandler:0];
   v14 = 0;
   v15 = &v14;
@@ -38,12 +38,12 @@
   v13[2] = __65__PKSharingChannelHandle_Client_createHandleForDescriptor_queue___block_invoke;
   v13[3] = &unk_1E79CA7B0;
   v13[4] = &v14;
-  [v8 configureHandleWithDescriptor:v5 completion:v13];
+  [v8 configureHandleWithDescriptor:descriptorCopy completion:v13];
   if (v15[3])
   {
-    v9 = [v7 _fetchTransportIdentifier];
+    _fetchTransportIdentifier = [v7 _fetchTransportIdentifier];
     v10 = v7[16];
-    v7[16] = v9;
+    v7[16] = _fetchTransportIdentifier;
 
     v11 = v7;
   }
@@ -59,11 +59,11 @@
   return v11;
 }
 
-- (id)_initWithQueue:(id)a3
+- (id)_initWithQueue:(id)queue
 {
   v11.receiver = self;
   v11.super_class = PKSharingChannelHandle_Client;
-  v3 = [(PKSharingChannelHandle *)&v11 _initWithQueue:a3];
+  v3 = [(PKSharingChannelHandle *)&v11 _initWithQueue:queue];
   v4 = v3;
   if (v3)
   {
@@ -81,20 +81,20 @@
   return v4;
 }
 
-- (void)pingWithCompletion:(id)a3
+- (void)pingWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PKSharingChannelHandle *)self createActionAssertion];
-  if (v5)
+  completionCopy = completion;
+  createActionAssertion = [(PKSharingChannelHandle *)self createActionAssertion];
+  if (createActionAssertion)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __52__PKSharingChannelHandle_Client_pingWithCompletion___block_invoke;
     v10[3] = &unk_1E79E0050;
     v10[4] = self;
-    v6 = v4;
+    v6 = completionCopy;
     v12 = v6;
-    v11 = v5;
+    v11 = createActionAssertion;
     v7 = [(PKSharingChannelHandle_Client *)self _remoteObjectProxyWithErrorHandler:v10];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
@@ -107,24 +107,24 @@
 
   else
   {
-    (*(v4 + 2))(v4, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-- (void)attachWithCompletion:(id)a3
+- (void)attachWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PKSharingChannelHandle *)self createActionAssertion];
-  if (v5)
+  completionCopy = completion;
+  createActionAssertion = [(PKSharingChannelHandle *)self createActionAssertion];
+  if (createActionAssertion)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __54__PKSharingChannelHandle_Client_attachWithCompletion___block_invoke;
     v10[3] = &unk_1E79E0050;
     v10[4] = self;
-    v6 = v4;
+    v6 = completionCopy;
     v12 = v6;
-    v11 = v5;
+    v11 = createActionAssertion;
     v7 = [(PKSharingChannelHandle_Client *)self _remoteObjectProxyWithErrorHandler:v10];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
@@ -137,25 +137,25 @@
 
   else
   {
-    (*(v4 + 2))(v4, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-- (void)sendMessage:(id)a3 completion:(id)a4
+- (void)sendMessage:(id)message completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKSharingChannelHandle *)self createActionAssertion];
-  if (v8)
+  messageCopy = message;
+  completionCopy = completion;
+  createActionAssertion = [(PKSharingChannelHandle *)self createActionAssertion];
+  if (createActionAssertion)
   {
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __56__PKSharingChannelHandle_Client_sendMessage_completion___block_invoke;
     v13[3] = &unk_1E79E0050;
     v13[4] = self;
-    v9 = v7;
+    v9 = completionCopy;
     v15 = v9;
-    v14 = v8;
+    v14 = createActionAssertion;
     v10 = [(PKSharingChannelHandle_Client *)self _remoteObjectProxyWithErrorHandler:v13];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
@@ -163,29 +163,29 @@
     v11[3] = &unk_1E79C4568;
     v11[4] = self;
     v12 = v9;
-    [v10 sendMessage:v6 completion:v11];
+    [v10 sendMessage:messageCopy completion:v11];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-- (void)closeWithCompletion:(id)a3
+- (void)closeWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PKSharingChannelHandle *)self createActionAssertion];
-  if (v5)
+  completionCopy = completion;
+  createActionAssertion = [(PKSharingChannelHandle *)self createActionAssertion];
+  if (createActionAssertion)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __53__PKSharingChannelHandle_Client_closeWithCompletion___block_invoke;
     v10[3] = &unk_1E79E0050;
     v10[4] = self;
-    v6 = v4;
+    v6 = completionCopy;
     v12 = v6;
-    v11 = v5;
+    v11 = createActionAssertion;
     v7 = [(PKSharingChannelHandle_Client *)self _remoteObjectProxyWithErrorHandler:v10];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
@@ -196,26 +196,26 @@
     [v7 closeWithCompletion:v8];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    (*(v4 + 2))(v4, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-- (void)relinquishWithCompletion:(id)a3
+- (void)relinquishWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PKSharingChannelHandle *)self createActionAssertion];
-  if (v5)
+  completionCopy = completion;
+  createActionAssertion = [(PKSharingChannelHandle *)self createActionAssertion];
+  if (createActionAssertion)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __58__PKSharingChannelHandle_Client_relinquishWithCompletion___block_invoke;
     v10[3] = &unk_1E79E0050;
     v10[4] = self;
-    v6 = v4;
+    v6 = completionCopy;
     v12 = v6;
-    v11 = v5;
+    v11 = createActionAssertion;
     v7 = [(PKSharingChannelHandle_Client *)self _remoteObjectProxyWithErrorHandler:v10];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
@@ -226,24 +226,24 @@
     [v7 relinquishWithCompletion:v8];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    (*(v4 + 2))(v4, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-- (void)markMessageAsHandled:(id)a3
+- (void)markMessageAsHandled:(id)handled
 {
-  v4 = a3;
-  v5 = [(PKSharingChannelHandle *)self createActionAssertion];
-  v6 = v5;
-  if (v5)
+  handledCopy = handled;
+  createActionAssertion = [(PKSharingChannelHandle *)self createActionAssertion];
+  v6 = createActionAssertion;
+  if (createActionAssertion)
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __54__PKSharingChannelHandle_Client_markMessageAsHandled___block_invoke;
     v11[3] = &unk_1E79C7D08;
-    v7 = v5;
+    v7 = createActionAssertion;
     v12 = v7;
     v8 = [(PKSharingChannelHandle_Client *)self _remoteObjectProxyWithErrorHandler:v11];
     v9[0] = MEMORY[0x1E69E9820];
@@ -251,18 +251,18 @@
     v9[2] = __54__PKSharingChannelHandle_Client_markMessageAsHandled___block_invoke_2;
     v9[3] = &unk_1E79C4E28;
     v10 = v7;
-    [v8 markMessageAsHandled:v4 completion:v9];
+    [v8 markMessageAsHandled:handledCopy completion:v9];
   }
 }
 
-- (void)invalidateWithRemoteWithCompletion:(id)a3
+- (void)invalidateWithRemoteWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __68__PKSharingChannelHandle_Client_invalidateWithRemoteWithCompletion___block_invoke;
   v10[3] = &unk_1E79C4450;
-  v5 = v4;
+  v5 = completionCopy;
   v11 = v5;
   v6 = [(PKSharingChannelHandle_Client *)self _remoteObjectProxyWithErrorHandler:v10];
   v8[0] = MEMORY[0x1E69E9820];
@@ -274,9 +274,9 @@
   [v6 invalidateFromRemoteWithReply:v8];
 }
 
-- (void)fetchHandleTransferToken:(id)a3
+- (void)fetchHandleTransferToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v5 = [(PKSharingChannelHandle *)self createActionAssertionAllowWhileTransferring:1];
   v6 = v5;
   if (v5)
@@ -292,31 +292,31 @@
     v9[1] = 3221225472;
     v9[2] = __58__PKSharingChannelHandle_Client_fetchHandleTransferToken___block_invoke_2;
     v9[3] = &unk_1E79C4AE0;
-    v11 = v4;
+    v11 = tokenCopy;
     v10 = v7;
     [v8 fetchHandleTransferToken:v9];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(tokenCopy + 2))(tokenCopy, 0);
   }
 }
 
-- (void)remoteDeviceInformation:(id)a3
+- (void)remoteDeviceInformation:(id)information
 {
-  v4 = a3;
-  v5 = [(PKSharingChannelHandle *)self createActionAssertion];
-  if (v5)
+  informationCopy = information;
+  createActionAssertion = [(PKSharingChannelHandle *)self createActionAssertion];
+  if (createActionAssertion)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __57__PKSharingChannelHandle_Client_remoteDeviceInformation___block_invoke;
     v10[3] = &unk_1E79E0050;
     v10[4] = self;
-    v6 = v4;
+    v6 = informationCopy;
     v12 = v6;
-    v11 = v5;
+    v11 = createActionAssertion;
     v7 = [(PKSharingChannelHandle_Client *)self _remoteObjectProxyWithErrorHandler:v10];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
@@ -329,7 +329,7 @@
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(informationCopy + 2))(informationCopy, 0);
   }
 }
 
@@ -379,18 +379,18 @@
   return v6;
 }
 
-- (void)startProximityAdvertisementOfType:(unint64_t)a3 completion:(id)a4
+- (void)startProximityAdvertisementOfType:(unint64_t)type completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(PKSharingChannelHandle *)self createActionAssertion];
-  if (v7)
+  completionCopy = completion;
+  createActionAssertion = [(PKSharingChannelHandle *)self createActionAssertion];
+  if (createActionAssertion)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __78__PKSharingChannelHandle_Client_startProximityAdvertisementOfType_completion___block_invoke;
     v12[3] = &unk_1E79C4C70;
     v12[4] = self;
-    v8 = v6;
+    v8 = completionCopy;
     v13 = v8;
     v9 = [(PKSharingChannelHandle_Client *)self _remoteObjectProxyWithErrorHandler:v12];
     v10[0] = MEMORY[0x1E69E9820];
@@ -399,28 +399,28 @@
     v10[3] = &unk_1E79E00A0;
     v10[4] = self;
     v11 = v8;
-    [v9 startProximityAdvertisementOfType:a3 completion:v10];
+    [v9 startProximityAdvertisementOfType:type completion:v10];
   }
 
   else
   {
-    (*(v6 + 2))(v6, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)startProximityDetectionForAdvertisement:(id)a3 completion:(id)a4
+- (void)startProximityDetectionForAdvertisement:(id)advertisement completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKSharingChannelHandle *)self createActionAssertion];
-  if (v8)
+  advertisementCopy = advertisement;
+  completionCopy = completion;
+  createActionAssertion = [(PKSharingChannelHandle *)self createActionAssertion];
+  if (createActionAssertion)
   {
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __84__PKSharingChannelHandle_Client_startProximityDetectionForAdvertisement_completion___block_invoke;
     v13[3] = &unk_1E79C4C70;
     v13[4] = self;
-    v9 = v7;
+    v9 = completionCopy;
     v14 = v9;
     v10 = [(PKSharingChannelHandle_Client *)self _remoteObjectProxyWithErrorHandler:v13];
     v11[0] = MEMORY[0x1E69E9820];
@@ -429,18 +429,18 @@
     v11[3] = &unk_1E79E00C8;
     v11[4] = self;
     v12 = v9;
-    [v10 startProximityDetectionForAdvertisement:v6 completion:v11];
+    [v10 startProximityDetectionForAdvertisement:advertisementCopy completion:v11];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-+ (void)descriptorsForAccountDevices:(id)a3
++ (void)descriptorsForAccountDevices:(id)devices
 {
-  v3 = a3;
+  devicesCopy = devices;
   v4 = [PKSharingChannelHandle_Client alloc];
   v5 = [(PKSharingChannelHandle_Client *)v4 _initWithQueue:MEMORY[0x1E69E96A0]];
   v6 = v5;
@@ -455,7 +455,7 @@
     v14[3] = &unk_1E79C4C70;
     v8 = v6;
     v15 = v8;
-    v9 = v3;
+    v9 = devicesCopy;
     v16 = v9;
     v10 = [v8 _remoteObjectProxyWithErrorHandler:v14];
     v11[0] = MEMORY[0x1E69E9820];
@@ -469,15 +469,15 @@
 
   else
   {
-    (*(v3 + 2))(v3, 0);
+    (*(devicesCopy + 2))(devicesCopy, 0);
   }
 }
 
-+ (void)bootstrapProximityChannelWithTemplateSession:(id)a3 group:(id)a4 completion:(id)a5
++ (void)bootstrapProximityChannelWithTemplateSession:(id)session group:(id)group completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  sessionCopy = session;
+  groupCopy = group;
+  completionCopy = completion;
   v10 = [PKSharingChannelHandle_Client alloc];
   v11 = [(PKSharingChannelHandle_Client *)v10 _initWithQueue:MEMORY[0x1E69E96A0]];
   v12 = v11;
@@ -492,7 +492,7 @@
     v20[3] = &unk_1E79C4C70;
     v14 = v12;
     v21 = v14;
-    v15 = v9;
+    v15 = completionCopy;
     v22 = v15;
     v16 = [v14 _remoteObjectProxyWithErrorHandler:v20];
     v17[0] = MEMORY[0x1E69E9820];
@@ -501,18 +501,18 @@
     v17[3] = &unk_1E79C4568;
     v18 = v14;
     v19 = v15;
-    [v16 bootstrapProximityChannelWithTemplateSession:v7 group:v8 completion:v17];
+    [v16 bootstrapProximityChannelWithTemplateSession:sessionCopy group:groupCopy completion:v17];
   }
 
   else
   {
-    (*(v9 + 2))(v9, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-+ (void)terminateProximityChannelForGroup:(id)a3
++ (void)terminateProximityChannelForGroup:(id)group
 {
-  v8 = a3;
+  groupCopy = group;
   v3 = [PKSharingChannelHandle_Client alloc];
   v4 = [(PKSharingChannelHandle_Client *)v3 _initWithQueue:MEMORY[0x1E69E96A0]];
   v5 = v4;
@@ -521,32 +521,32 @@
     v6 = *(v4 + 128);
     *(v4 + 128) = @"XPC-Helper";
 
-    v7 = [v5 _remoteObjectProxy];
-    [v7 terminateProximityChannelForGroup:v8];
+    _remoteObjectProxy = [v5 _remoteObjectProxy];
+    [_remoteObjectProxy terminateProximityChannelForGroup:groupCopy];
   }
 }
 
-- (void)didReceiveMessages:(id)a3 reply:(id)a4
+- (void)didReceiveMessages:(id)messages reply:(id)reply
 {
   v6.receiver = self;
   v6.super_class = PKSharingChannelHandle_Client;
-  v5 = a4;
-  [(PKSharingChannelHandle *)&v6 didReceiveMessages:a3];
-  v5[2](v5);
+  replyCopy = reply;
+  [(PKSharingChannelHandle *)&v6 didReceiveMessages:messages];
+  replyCopy[2](replyCopy);
 }
 
-- (void)didReceiveUpdatedTransportIdentifier:(id)a3 reply:(id)a4
+- (void)didReceiveUpdatedTransportIdentifier:(id)identifier reply:(id)reply
 {
-  v9 = a4;
-  v6 = a3;
+  replyCopy = reply;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  v7 = [v6 copy];
+  v7 = [identifierCopy copy];
 
   transportIdentifier = self->_transportIdentifier;
   self->_transportIdentifier = v7;
 
   os_unfair_lock_unlock(&self->_lock);
-  v9[2]();
+  replyCopy[2]();
 }
 
 @end

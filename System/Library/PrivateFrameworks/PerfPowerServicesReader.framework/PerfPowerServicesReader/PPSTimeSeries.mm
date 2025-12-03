@@ -1,28 +1,28 @@
 @interface PPSTimeSeries
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTimeSeries:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTimeSeries:(id)series;
 - (NSArray)allTimestamps;
 - (NSArray)array;
 - (PPSEvent)firstObject;
 - (PPSEvent)lastObject;
 - (PPSTimeSeries)init;
-- (PPSTimeSeries)initWithCoder:(id)a3;
-- (PPSTimeSeries)initWithEvents:(id)a3;
+- (PPSTimeSeries)initWithCoder:(id)coder;
+- (PPSTimeSeries)initWithEvents:(id)events;
 - (id)JSONRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
-- (id)filteredTimeSeriesUsingPredicate:(id)a3;
-- (id)metricValuesForKey:(id)a3;
+- (id)filteredTimeSeriesUsingPredicate:(id)predicate;
+- (id)metricValuesForKey:(id)key;
 - (id)objectEnumerator;
 - (id)reverseObjectEnumerator;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (unint64_t)hash;
 - (void)JSONRepresentation;
 - (void)_guaranteeSortedness;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateObjectsUsingBlock:(id)a3;
-- (void)mergeWithTimeSeries:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateObjectsUsingBlock:(id)block;
+- (void)mergeWithTimeSeries:(id)series;
 @end
 
 @implementation PPSTimeSeries
@@ -47,9 +47,9 @@
     v7 = self->_events;
     self->_events = v6;
 
-    v8 = [(NSMutableArray *)self->_events sortedArrayHint];
+    sortedArrayHint = [(NSMutableArray *)self->_events sortedArrayHint];
     sortHint = self->_sortHint;
-    self->_sortHint = v8;
+    self->_sortHint = sortedArrayHint;
 
     self->_isSorted = 1;
 
@@ -72,9 +72,9 @@
   v2 = [(PPSTimeSeries *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     events = v2->_events;
-    v2->_events = v3;
+    v2->_events = array;
 
     v2->_isSorted = 1;
   }
@@ -82,40 +82,40 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [PPSTimeSeries allocWithZone:a3];
+  v4 = [PPSTimeSeries allocWithZone:zone];
   events = self->_events;
 
   return [(PPSTimeSeries *)v4 initWithEvents:events];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(PPSTimeSeries *)self _guaranteeSortedness];
-  [v4 encodeBool:self->_isSorted forKey:@"isSorted"];
-  [v4 encodeObject:self->_sortHint forKey:@"sortHint"];
-  [v4 encodeObject:self->_events forKey:@"events"];
+  [coderCopy encodeBool:self->_isSorted forKey:@"isSorted"];
+  [coderCopy encodeObject:self->_sortHint forKey:@"sortHint"];
+  [coderCopy encodeObject:self->_events forKey:@"events"];
 }
 
-- (PPSTimeSeries)initWithCoder:(id)a3
+- (PPSTimeSeries)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = PPSTimeSeries;
   v5 = [(PPSTimeSeries *)&v14 init];
   if (v5)
   {
-    v5->_isSorted = [v4 decodeBoolForKey:@"isSorted"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sortHint"];
+    v5->_isSorted = [coderCopy decodeBoolForKey:@"isSorted"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sortHint"];
     sortHint = v5->_sortHint;
     v5->_sortHint = v6;
 
     v8 = MEMORY[0x277CBEB98];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"events"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"events"];
     events = v5->_events;
     v5->_events = v11;
 
@@ -125,19 +125,19 @@
   return v5;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
   [(PPSTimeSeries *)self _guaranteeSortedness];
   events = self->_events;
 
-  return [(NSMutableArray *)events countByEnumeratingWithState:a3 objects:a4 count:a5];
+  return [(NSMutableArray *)events countByEnumeratingWithState:state objects:objects count:count];
 }
 
-- (void)enumerateObjectsUsingBlock:(id)a3
+- (void)enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(PPSTimeSeries *)self _guaranteeSortedness];
-  [(NSMutableArray *)self->_events enumerateObjectsUsingBlock:v4];
+  [(NSMutableArray *)self->_events enumerateObjectsUsingBlock:blockCopy];
 }
 
 - (id)objectEnumerator
@@ -156,15 +156,15 @@
   return [(NSMutableArray *)events reverseObjectEnumerator];
 }
 
-- (PPSTimeSeries)initWithEvents:(id)a3
+- (PPSTimeSeries)initWithEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   v9.receiver = self;
   v9.super_class = PPSTimeSeries;
   v5 = [(PPSTimeSeries *)&v9 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [eventsCopy mutableCopy];
     events = v5->_events;
     v5->_events = v6;
 
@@ -175,20 +175,20 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v6 = [(PPSTimeSeries *)self isEqualToTimeSeries:v4];
+    v6 = [(PPSTimeSeries *)self isEqualToTimeSeries:equalCopy];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = PPSTimeSeries;
-    v6 = [(PPSTimeSeries *)&v9 isEqual:v4];
+    v6 = [(PPSTimeSeries *)&v9 isEqual:equalCopy];
   }
 
   v7 = v6;
@@ -196,17 +196,17 @@
   return v7;
 }
 
-- (BOOL)isEqualToTimeSeries:(id)a3
+- (BOOL)isEqualToTimeSeries:(id)series
 {
-  if (self == a3)
+  if (self == series)
   {
     return 1;
   }
 
-  v4 = a3;
+  seriesCopy = series;
   [(PPSTimeSeries *)self _guaranteeSortedness];
   events = self->_events;
-  v6 = v4[4];
+  v6 = seriesCopy[4];
 
   v7 = [v6 copy];
   LOBYTE(events) = [(NSMutableArray *)events isEqualToArray:v7];
@@ -355,10 +355,10 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-        if (v10)
+        dictionaryRepresentation = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+        if (dictionaryRepresentation)
         {
-          [v4 addObject:v10];
+          [v4 addObject:dictionaryRepresentation];
         }
       }
 
@@ -386,23 +386,23 @@
   return v11;
 }
 
-- (id)filteredTimeSeriesUsingPredicate:(id)a3
+- (id)filteredTimeSeriesUsingPredicate:(id)predicate
 {
-  v3 = [(NSMutableArray *)self->_events filteredArrayUsingPredicate:a3];
+  v3 = [(NSMutableArray *)self->_events filteredArrayUsingPredicate:predicate];
   v4 = [[PPSTimeSeries alloc] initWithEvents:v3];
 
   return v4;
 }
 
-- (void)mergeWithTimeSeries:(id)a3
+- (void)mergeWithTimeSeries:(id)series
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  seriesCopy = series;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [seriesCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -414,14 +414,14 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(seriesCopy);
         }
 
         [(NSMutableArray *)self->_events addObject:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [seriesCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -432,10 +432,10 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)metricValuesForKey:(id)a3
+- (id)metricValuesForKey:(id)key
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   if (![(NSMutableArray *)self->_events count])
   {
     v14 = 0;
@@ -443,7 +443,7 @@
   }
 
   [(PPSTimeSeries *)self _guaranteeSortedness];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -470,17 +470,17 @@ LABEL_16:
         objc_enumerationMutation(v6);
       }
 
-      v12 = [*(*(&v17 + 1) + 8 * i) metricValueForKey:{v4, v17}];
+      v12 = [*(*(&v17 + 1) + 8 * i) metricValueForKey:{keyCopy, v17}];
       if (v12)
       {
-        [v5 addObject:v12];
+        [array addObject:v12];
         v9 = 1;
       }
 
       else
       {
-        v13 = [MEMORY[0x277CBEB68] null];
-        [v5 addObject:v13];
+        null = [MEMORY[0x277CBEB68] null];
+        [array addObject:null];
       }
     }
 
@@ -494,7 +494,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v14 = [v5 copy];
+  v14 = [array copy];
 LABEL_17:
 
 LABEL_18:
@@ -507,7 +507,7 @@ LABEL_18:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_25E225000, a2, OS_LOG_TYPE_DEBUG, "Error while parsing JSON data: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

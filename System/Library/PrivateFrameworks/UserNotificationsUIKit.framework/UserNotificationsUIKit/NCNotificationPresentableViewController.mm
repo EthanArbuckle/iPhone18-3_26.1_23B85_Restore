@@ -7,47 +7,47 @@
 - (BOOL)isDragging;
 - (BOOL)resignFirstResponder;
 - (CGRect)_initialBannerFrame;
-- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)a3 containerSize:(CGSize)a4;
-- (NCNotificationPresentableViewController)initWithNotificationViewController:(id)a3;
+- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)size containerSize:(CGSize)containerSize;
+- (NCNotificationPresentableViewController)initWithNotificationViewController:(id)controller;
 - (NCNotificationPresentableViewControllerDelegate)delegate;
 - (NSString)requestIdentifier;
-- (id)customBackgroundContainerViewForExpandedPlatterPresentationController:(id)a3;
+- (id)customBackgroundContainerViewForExpandedPlatterPresentationController:(id)controller;
 - (id)presentableDescription;
-- (void)draggingDidBeginWithGestureProxy:(id)a3;
-- (void)longLookDidPresentForNotificationViewController:(id)a3;
-- (void)longLookWillPresentForNotificationViewController:(id)a3;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)presentableDidAppearAsBanner:(id)a3;
-- (void)presentableDidDisappearAsBanner:(id)a3 withReason:(id)a4;
-- (void)presentableWillAppearAsBanner:(id)a3;
-- (void)presentableWillDisappearAsBanner:(id)a3 withReason:(id)a4;
-- (void)presentableWillNotAppearAsBanner:(id)a3 withReason:(id)a4;
-- (void)userInteractionDidEndForBannerForPresentable:(id)a3;
-- (void)userInteractionWillBeginForBannerForPresentable:(id)a3;
+- (void)draggingDidBeginWithGestureProxy:(id)proxy;
+- (void)longLookDidPresentForNotificationViewController:(id)controller;
+- (void)longLookWillPresentForNotificationViewController:(id)controller;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)presentableDidAppearAsBanner:(id)banner;
+- (void)presentableDidDisappearAsBanner:(id)banner withReason:(id)reason;
+- (void)presentableWillAppearAsBanner:(id)banner;
+- (void)presentableWillDisappearAsBanner:(id)banner withReason:(id)reason;
+- (void)presentableWillNotAppearAsBanner:(id)banner withReason:(id)reason;
+- (void)userInteractionDidEndForBannerForPresentable:(id)presentable;
+- (void)userInteractionWillBeginForBannerForPresentable:(id)presentable;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation NCNotificationPresentableViewController
 
 - (NSString)requestIdentifier
 {
-  v2 = [(NCNotificationPresentableViewController *)self notificationViewController];
-  v3 = [v2 notificationRequest];
-  v4 = [v3 notificationIdentifier];
+  notificationViewController = [(NCNotificationPresentableViewController *)self notificationViewController];
+  notificationRequest = [notificationViewController notificationRequest];
+  notificationIdentifier = [notificationRequest notificationIdentifier];
 
-  return v4;
+  return notificationIdentifier;
 }
 
 - (id)presentableDescription
 {
   v10[2] = *MEMORY[0x277D85DE8];
   v9[0] = @"logDigest";
-  v3 = [(NCNotificationPresentableViewController *)self requestIdentifier];
-  v4 = [v3 un_logDigest];
+  requestIdentifier = [(NCNotificationPresentableViewController *)self requestIdentifier];
+  un_logDigest = [requestIdentifier un_logDigest];
   v9[1] = @"bannerAppearState";
-  v10[0] = v4;
+  v10[0] = un_logDigest;
   v5 = NCStringForAppearState(self->_bannerAppearState);
   v10[1] = v5;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:v9 count:2];
@@ -101,10 +101,10 @@
   [(NCNotificationPresentableViewController *)&v5 viewWillLayoutSubviews];
   if (!self->_presentationState)
   {
-    v3 = [(NCNotificationViewController *)self->_notificationViewController view];
-    v4 = [(NCNotificationPresentableViewController *)self view];
-    [v4 bounds];
-    [v3 setFrame:?];
+    view = [(NCNotificationViewController *)self->_notificationViewController view];
+    view2 = [(NCNotificationPresentableViewController *)self view];
+    [view2 bounds];
+    [view setFrame:?];
   }
 }
 
@@ -125,9 +125,9 @@
   return v4;
 }
 
-- (NCNotificationPresentableViewController)initWithNotificationViewController:(id)a3
+- (NCNotificationPresentableViewController)initWithNotificationViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v14.receiver = self;
   v14.super_class = NCNotificationPresentableViewController;
   v6 = [(NCNotificationPresentableViewController *)&v14 init];
@@ -135,19 +135,19 @@
   if (v6)
   {
     v6->_readyForPanGestureProxy = 1;
-    objc_storeStrong(&v6->_notificationViewController, a3);
+    objc_storeStrong(&v6->_notificationViewController, controller);
     [(NCNotificationViewController *)v7->_notificationViewController addObserver:v7];
     [(NCNotificationViewController *)v7->_notificationViewController setDefinesPresentationContext:1];
     [(NCNotificationPresentableViewController *)v7 addChildViewController:v7->_notificationViewController];
-    v8 = [(NCNotificationViewController *)v7->_notificationViewController notificationRequest];
-    v9 = [v8 options];
-    v10 = [v9 revealsAdditionalContentOnPresentation];
+    notificationRequest = [(NCNotificationViewController *)v7->_notificationViewController notificationRequest];
+    options = [notificationRequest options];
+    revealsAdditionalContentOnPresentation = [options revealsAdditionalContentOnPresentation];
 
     notificationViewController = v7->_notificationViewController;
-    if (v10)
+    if (revealsAdditionalContentOnPresentation)
     {
-      v12 = [(NCNotificationViewController *)notificationViewController view];
-      [v12 setHidden:1];
+      view = [(NCNotificationViewController *)notificationViewController view];
+      [view setHidden:1];
     }
 
     else
@@ -203,32 +203,32 @@
   v5.receiver = self;
   v5.super_class = NCNotificationPresentableViewController;
   [(NCNotificationPresentableViewController *)&v5 viewDidLoad];
-  v3 = [(NCNotificationPresentableViewController *)self view];
-  v4 = [(NCNotificationViewController *)self->_notificationViewController view];
-  [v3 addSubview:v4];
+  view = [(NCNotificationPresentableViewController *)self view];
+  view2 = [(NCNotificationViewController *)self->_notificationViewController view];
+  [view addSubview:view2];
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v5.receiver = self;
   v5.super_class = NCNotificationPresentableViewController;
-  [(NCNotificationPresentableViewController *)&v5 preferredContentSizeDidChangeForChildContentContainer:v4];
+  [(NCNotificationPresentableViewController *)&v5 preferredContentSizeDidChangeForChildContentContainer:containerCopy];
   if (!self->_presentationState)
   {
-    [v4 preferredContentSize];
+    [containerCopy preferredContentSize];
     [(NCNotificationPresentableViewController *)self setPreferredContentSize:?];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v13.receiver = self;
   v13.super_class = NCNotificationPresentableViewController;
-  [(NCNotificationPresentableViewController *)&v13 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(NCNotificationPresentableViewController *)&v13 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   if (self->_presentationState == 1)
   {
     self->_presentationState = 2;
@@ -243,7 +243,7 @@
     v8[2] = __94__NCNotificationPresentableViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_3;
     v8[3] = &unk_278371238;
     objc_copyWeak(&v9, &location);
-    [v7 animateAlongsideTransition:v10 completion:v8];
+    [coordinatorCopy animateAlongsideTransition:v10 completion:v8];
     objc_destroyWeak(&v9);
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
@@ -288,28 +288,28 @@ void __94__NCNotificationPresentableViewController_viewWillTransitionToSize_with
   }
 }
 
-- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)a3 containerSize:(CGSize)a4
+- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)size containerSize:(CGSize)containerSize
 {
   if (self->_presentationState < 1)
   {
-    [(NCNotificationViewController *)self->_notificationViewController preferredContentSizeWithPresentationSize:a3.width containerSize:a3.height, a4.width, a4.height, v4, v5];
-    a4.width = v6;
-    a4.height = v7;
+    [(NCNotificationViewController *)self->_notificationViewController preferredContentSizeWithPresentationSize:size.width containerSize:size.height, containerSize.width, containerSize.height, v4, v5];
+    containerSize.width = v6;
+    containerSize.height = v7;
   }
 
-  width = a4.width;
-  height = a4.height;
+  width = containerSize.width;
+  height = containerSize.height;
   result.height = height;
   result.width = width;
   return result;
 }
 
-- (void)draggingDidBeginWithGestureProxy:(id)a3
+- (void)draggingDidBeginWithGestureProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   if (self->_readyForPanGestureProxy)
   {
-    objc_storeWeak(&self->_panGestureProxy, v4);
+    objc_storeWeak(&self->_panGestureProxy, proxyCopy);
     objc_initWeak(&location, self);
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
@@ -317,7 +317,7 @@ void __94__NCNotificationPresentableViewController_viewWillTransitionToSize_with
     v5[3] = &unk_278371260;
     objc_copyWeak(&v6, &location);
     v5[4] = self;
-    [v4 setActionHandler:v5];
+    [proxyCopy setActionHandler:v5];
     objc_destroyWeak(&v6);
     objc_destroyWeak(&location);
   }
@@ -475,22 +475,22 @@ LABEL_33:
 LABEL_41:
 }
 
-- (void)presentableWillAppearAsBanner:(id)a3
+- (void)presentableWillAppearAsBanner:(id)banner
 {
-  v4 = a3;
+  bannerCopy = banner;
   self->_bannerAppearState = 1;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained presentableWillAppearAsBanner:v4];
+    [WeakRetained presentableWillAppearAsBanner:bannerCopy];
   }
 
-  v6 = [(NCNotificationPresentableViewController *)self notificationViewController];
-  [v6 setGlassMode:2];
-  [v6 setUnmanagedBackdropContrast:1];
-  v7 = [v6 notificationRequest];
-  v8 = [v7 options];
-  if (![v8 revealsAdditionalContentOnPresentation] || !-[NCNotificationPresentableViewController _isAppearingOrAppeared](self, "_isAppearingOrAppeared"))
+  notificationViewController = [(NCNotificationPresentableViewController *)self notificationViewController];
+  [notificationViewController setGlassMode:2];
+  [notificationViewController setUnmanagedBackdropContrast:1];
+  notificationRequest = [notificationViewController notificationRequest];
+  options = [notificationRequest options];
+  if (![options revealsAdditionalContentOnPresentation] || !-[NCNotificationPresentableViewController _isAppearingOrAppeared](self, "_isAppearingOrAppeared"))
   {
 
     goto LABEL_9;
@@ -521,79 +521,79 @@ LABEL_41:
 LABEL_9:
 }
 
-- (void)presentableDidAppearAsBanner:(id)a3
+- (void)presentableDidAppearAsBanner:(id)banner
 {
-  v9 = a3;
+  bannerCopy = banner;
   self->_bannerAppearState = 2;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained presentableDidAppearAsBanner:v9];
+    [WeakRetained presentableDidAppearAsBanner:bannerCopy];
   }
 
-  v5 = [(NCNotificationPresentableViewController *)self notificationViewController];
-  v6 = [v5 notificationRequest];
-  v7 = [v6 options];
-  v8 = [v7 revealsAdditionalContentOnPresentation];
+  notificationViewController = [(NCNotificationPresentableViewController *)self notificationViewController];
+  notificationRequest = [notificationViewController notificationRequest];
+  options = [notificationRequest options];
+  revealsAdditionalContentOnPresentation = [options revealsAdditionalContentOnPresentation];
 
-  if (v8)
+  if (revealsAdditionalContentOnPresentation)
   {
-    [v5 presentLongLookAnimated:1 trigger:7 completion:0];
+    [notificationViewController presentLongLookAnimated:1 trigger:7 completion:0];
   }
 }
 
-- (void)presentableWillDisappearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableWillDisappearAsBanner:(id)banner withReason:(id)reason
 {
-  v8 = a3;
-  v6 = a4;
+  bannerCopy = banner;
+  reasonCopy = reason;
   self->_bannerAppearState = 3;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained presentableWillDisappearAsBanner:v8 withReason:v6];
+    [WeakRetained presentableWillDisappearAsBanner:bannerCopy withReason:reasonCopy];
   }
 }
 
-- (void)presentableDidDisappearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableDidDisappearAsBanner:(id)banner withReason:(id)reason
 {
-  v8 = a3;
-  v6 = a4;
+  bannerCopy = banner;
+  reasonCopy = reason;
   self->_bannerAppearState = 0;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained presentableDidDisappearAsBanner:v8 withReason:v6];
+    [WeakRetained presentableDidDisappearAsBanner:bannerCopy withReason:reasonCopy];
   }
 }
 
-- (void)presentableWillNotAppearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableWillNotAppearAsBanner:(id)banner withReason:(id)reason
 {
-  v8 = a3;
-  v6 = a4;
+  bannerCopy = banner;
+  reasonCopy = reason;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained presentableWillNotAppearAsBanner:v8 withReason:v6];
+    [WeakRetained presentableWillNotAppearAsBanner:bannerCopy withReason:reasonCopy];
   }
 }
 
-- (void)userInteractionWillBeginForBannerForPresentable:(id)a3
+- (void)userInteractionWillBeginForBannerForPresentable:(id)presentable
 {
-  v5 = a3;
+  presentableCopy = presentable;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained userInteractionWillBeginForBannerForPresentable:v5];
+    [WeakRetained userInteractionWillBeginForBannerForPresentable:presentableCopy];
   }
 }
 
-- (void)userInteractionDidEndForBannerForPresentable:(id)a3
+- (void)userInteractionDidEndForBannerForPresentable:(id)presentable
 {
-  v5 = a3;
+  presentableCopy = presentable;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained userInteractionDidEndForBannerForPresentable:v5];
+    [WeakRetained userInteractionDidEndForBannerForPresentable:presentableCopy];
   }
 
   if ((self->_presentationState - 1) <= 2)
@@ -603,16 +603,16 @@ LABEL_9:
   }
 }
 
-- (void)longLookWillPresentForNotificationViewController:(id)a3
+- (void)longLookWillPresentForNotificationViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if (!self->_panPresentation && self->_presentationState <= 0)
   {
     self->_presentationState = 1;
-    v5 = [(NCNotificationPresentableViewController *)self view];
-    v6 = [(NCNotificationViewController *)self->_notificationViewController view];
-    [v6 frame];
-    [v5 convertRect:0 toView:?];
+    view = [(NCNotificationPresentableViewController *)self view];
+    view2 = [(NCNotificationViewController *)self->_notificationViewController view];
+    [view2 frame];
+    [view convertRect:0 toView:?];
     self->_initialBannerFrame.origin.x = v7;
     self->_initialBannerFrame.origin.y = v8;
     self->_initialBannerFrame.size.width = v9;
@@ -628,7 +628,7 @@ LABEL_9:
   }
 }
 
-- (void)longLookDidPresentForNotificationViewController:(id)a3
+- (void)longLookDidPresentForNotificationViewController:(id)controller
 {
   if (!self->_panPresentation)
   {
@@ -636,31 +636,31 @@ LABEL_9:
   }
 }
 
-- (id)customBackgroundContainerViewForExpandedPlatterPresentationController:(id)a3
+- (id)customBackgroundContainerViewForExpandedPlatterPresentationController:(id)controller
 {
-  v4 = [a3 presentingViewController];
-  if (v4 == self->_notificationViewController)
+  presentingViewController = [controller presentingViewController];
+  if (presentingViewController == self->_notificationViewController)
   {
-    v5 = [(NCNotificationPresentableViewController *)self view];
+    view = [(NCNotificationPresentableViewController *)self view];
   }
 
   else
   {
-    v5 = 0;
+    view = 0;
   }
 
-  return v5;
+  return view;
 }
 
 - (BOOL)_isAppearingOrAppeared
 {
-  v3 = [(NCNotificationPresentableViewController *)self bs_isAppearingOrAppeared];
-  if (v3)
+  bs_isAppearingOrAppeared = [(NCNotificationPresentableViewController *)self bs_isAppearingOrAppeared];
+  if (bs_isAppearingOrAppeared)
   {
-    LOBYTE(v3) = (self->_bannerAppearState - 1) < 2;
+    LOBYTE(bs_isAppearingOrAppeared) = (self->_bannerAppearState - 1) < 2;
   }
 
-  return v3;
+  return bs_isAppearingOrAppeared;
 }
 
 - (NCNotificationPresentableViewControllerDelegate)delegate

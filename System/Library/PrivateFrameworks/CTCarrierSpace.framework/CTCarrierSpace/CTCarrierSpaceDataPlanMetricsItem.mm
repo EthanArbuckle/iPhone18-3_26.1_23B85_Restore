@@ -1,7 +1,7 @@
 @interface CTCarrierSpaceDataPlanMetricsItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CTCarrierSpaceDataPlanMetricsItem)init;
-- (CTCarrierSpaceDataPlanMetricsItem)initWithCoder:(id)a3;
+- (CTCarrierSpaceDataPlanMetricsItem)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)capacity;
 @end
@@ -30,8 +30,8 @@
 - (id)description
 {
   v3 = [MEMORY[0x277CCAB68] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTCarrierSpaceDataPlanMetricsItem *)self capacityBytes];
-  [v3 appendFormat:@", capacityBytes=%@", v4];
+  capacityBytes = [(CTCarrierSpaceDataPlanMetricsItem *)self capacityBytes];
+  [v3 appendFormat:@", capacityBytes=%@", capacityBytes];
 
   [v3 appendFormat:@", capacityValid=%d", -[CTCarrierSpaceDataPlanMetricsItem capacityValid](self, "capacityValid")];
   [v3 appendFormat:@", capacity=%lu %s", -[CTCarrierSpaceDataPlanMetricsItem capacity](self, "capacity"), CTCarrierSpaceDataUnitsAsString(-[CTCarrierSpaceDataPlanMetricsItem units](self, "units"))];
@@ -40,10 +40,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -53,18 +53,18 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(CTCarrierSpaceDataPlanMetricsItem *)self capacityBytes];
-      v6 = [(CTCarrierSpaceDataPlanMetricsItem *)v4 capacityBytes];
-      if (v5 == v6)
+      capacityBytes = [(CTCarrierSpaceDataPlanMetricsItem *)self capacityBytes];
+      capacityBytes2 = [(CTCarrierSpaceDataPlanMetricsItem *)equalCopy capacityBytes];
+      if (capacityBytes == capacityBytes2)
       {
         v9 = 1;
       }
 
       else
       {
-        v7 = [(CTCarrierSpaceDataPlanMetricsItem *)self capacityBytes];
-        v8 = [(CTCarrierSpaceDataPlanMetricsItem *)v4 capacityBytes];
-        v9 = [v7 isEqualToNumber:v8];
+        capacityBytes3 = [(CTCarrierSpaceDataPlanMetricsItem *)self capacityBytes];
+        capacityBytes4 = [(CTCarrierSpaceDataPlanMetricsItem *)equalCopy capacityBytes];
+        v9 = [capacityBytes3 isEqualToNumber:capacityBytes4];
       }
     }
 
@@ -88,15 +88,15 @@
   return result;
 }
 
-- (CTCarrierSpaceDataPlanMetricsItem)initWithCoder:(id)a3
+- (CTCarrierSpaceDataPlanMetricsItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CTCarrierSpaceDataPlanMetricsItem;
   v5 = [(CTCarrierSpaceDataPlanMetricsItem *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"capacityBytes"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"capacityBytes"];
     capacityBytes = v5->_capacityBytes;
     v5->_capacityBytes = v6;
   }

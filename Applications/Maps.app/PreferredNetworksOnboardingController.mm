@@ -1,23 +1,23 @@
 @interface PreferredNetworksOnboardingController
-- (BOOL)_validateStateTransitionFromState:(int64_t)a3 toState:(int64_t)a4;
-- (PreferredNetworksOnboardingController)initWithVehicle:(id)a3;
-- (id)_viewControllerForState:(int64_t)a3;
+- (BOOL)_validateStateTransitionFromState:(int64_t)state toState:(int64_t)toState;
+- (PreferredNetworksOnboardingController)initWithVehicle:(id)vehicle;
+- (id)_viewControllerForState:(int64_t)state;
 - (void)_dismissOnboarding;
 - (void)_proceedToNextState;
-- (void)networksOfferViewControllerDidSelectSetupLater:(id)a3;
-- (void)networksOfferViewControllerDidSelectSetupNow:(id)a3;
-- (void)networksSelectionViewController:(id)a3 didSelectNetworks:(id)a4 forVehicle:(id)a5;
-- (void)onboardingViewControllerWillMoveFromParentViewController:(id)a3;
-- (void)presentInViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setState:(int64_t)a3;
+- (void)networksOfferViewControllerDidSelectSetupLater:(id)later;
+- (void)networksOfferViewControllerDidSelectSetupNow:(id)now;
+- (void)networksSelectionViewController:(id)controller didSelectNetworks:(id)networks forVehicle:(id)vehicle;
+- (void)onboardingViewControllerWillMoveFromParentViewController:(id)controller;
+- (void)presentInViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)setState:(int64_t)state;
 @end
 
 @implementation PreferredNetworksOnboardingController
 
-- (void)networksSelectionViewController:(id)a3 didSelectNetworks:(id)a4 forVehicle:(id)a5
+- (void)networksSelectionViewController:(id)controller didSelectNetworks:(id)networks forVehicle:(id)vehicle
 {
-  v7 = a4;
-  v8 = a5;
+  networksCopy = networks;
+  vehicleCopy = vehicle;
   if ([(PreferredNetworksOnboardingController *)self state]!= 2)
   {
     v74 = sub_10006D178();
@@ -50,16 +50,16 @@
   v9 = sub_100798370();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = v7;
+    v10 = networksCopy;
     v11 = v10;
     if (v10)
     {
       if ([v10 count])
       {
         v87 = v9;
-        v89 = self;
-        v92 = v8;
-        v95 = v7;
+        selfCopy = self;
+        v92 = vehicleCopy;
+        v95 = networksCopy;
         v12 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v11 count]);
         v97 = 0u;
         v98 = 0u;
@@ -129,10 +129,10 @@ LABEL_22:
             v25 = [v13 componentsJoinedByString:{@", "}];
             v26 = [NSString stringWithFormat:@"<%p> [%@]", v13, v25];
 
-            v8 = v92;
-            v7 = v95;
+            vehicleCopy = v92;
+            networksCopy = v95;
             v9 = v87;
-            self = v89;
+            self = selfCopy;
             v11 = v84;
             goto LABEL_25;
           }
@@ -152,15 +152,15 @@ LABEL_25:
     *buf = 138412546;
     v102 = v26;
     v103 = 2112;
-    v104 = v8;
+    v104 = vehicleCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "networksSelectionViewController:didSelectNetworks: %@ forVehicle: %@. will call into VGService", buf, 0x16u);
   }
 
-  v27 = [(VGVehicle *)self->_vehicle preferredChargingNetworks];
-  v28 = v27;
-  if (v27)
+  preferredChargingNetworks = [(VGVehicle *)self->_vehicle preferredChargingNetworks];
+  v28 = preferredChargingNetworks;
+  if (preferredChargingNetworks)
   {
-    v29 = v27;
+    v29 = preferredChargingNetworks;
   }
 
   else
@@ -170,23 +170,23 @@ LABEL_25:
 
   v30 = v29;
 
-  v31 = [v30 setByAddingObjectsFromArray:v7];
+  v31 = [v30 setByAddingObjectsFromArray:networksCopy];
   v32 = sub_100022C48();
   if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
   {
-    v33 = [(VGVehicle *)self->_vehicle displayName];
-    v34 = [v30 allObjects];
-    v35 = v34;
-    v96 = v7;
-    if (v34)
+    displayName = [(VGVehicle *)self->_vehicle displayName];
+    allObjects = [v30 allObjects];
+    v35 = allObjects;
+    v96 = networksCopy;
+    if (allObjects)
     {
-      if ([v34 count])
+      if ([allObjects count])
       {
-        v80 = v33;
+        v80 = displayName;
         v81 = v32;
         v85 = v30;
-        v90 = self;
-        v93 = v8;
+        selfCopy2 = self;
+        v93 = vehicleCopy;
         v36 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v35 count]);
         v37 = v35;
         v38 = v36;
@@ -258,10 +258,10 @@ LABEL_49:
             v51 = [v39 componentsJoinedByString:{@", "}];
             v52 = [NSString stringWithFormat:@"<%p> [%@]", v39, v51];
 
-            self = v90;
-            v8 = v93;
+            self = selfCopy2;
+            vehicleCopy = v93;
             v30 = v85;
-            v33 = v80;
+            displayName = v80;
             v32 = v81;
             v35 = v78;
             goto LABEL_52;
@@ -280,19 +280,19 @@ LABEL_49:
 LABEL_52:
 
     v53 = v52;
-    v54 = [v31 allObjects];
+    allObjects2 = [v31 allObjects];
     v88 = v53;
-    if (v54)
+    if (allObjects2)
     {
-      v55 = v54;
-      if ([v54 count])
+      v55 = allObjects2;
+      if ([allObjects2 count])
       {
         v79 = v35;
         v82 = v32;
         v83 = v31;
         v86 = v30;
-        v91 = self;
-        v94 = v8;
+        selfCopy3 = self;
+        v94 = vehicleCopy;
         v56 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v55 count]);
         v97 = 0u;
         v98 = 0u;
@@ -362,42 +362,42 @@ LABEL_71:
             v69 = [v57 componentsJoinedByString:{@", "}];
             v70 = [NSString stringWithFormat:@"<%p> [%@]", v57, v69];
 
-            self = v91;
+            self = selfCopy3;
             v71 = v94;
             v31 = v83;
             v30 = v86;
             v32 = v82;
-            v54 = v77;
+            allObjects2 = v77;
             v35 = v79;
             goto LABEL_74;
           }
         }
       }
 
-      v71 = v8;
+      v71 = vehicleCopy;
       v70 = [NSString stringWithFormat:@"<%p> (empty)", v55];
-      v54 = v55;
+      allObjects2 = v55;
     }
 
     else
     {
-      v71 = v8;
+      v71 = vehicleCopy;
       v70 = @"<nil>";
     }
 
 LABEL_74:
-    v72 = v54;
+    v72 = allObjects2;
 
     *buf = 138412802;
-    v102 = v33;
+    v102 = displayName;
     v103 = 2112;
     v104 = v88;
     v105 = 2112;
     v106[0] = v70;
     _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_INFO, "networksSelectionViewController will update vehicle: %@ from networks: %@ to networks: %@)", buf, 0x20u);
 
-    v8 = v71;
-    v7 = v96;
+    vehicleCopy = v71;
+    networksCopy = v96;
   }
 
   [(VGVehicle *)self->_vehicle setPreferredChargingNetworks:v31];
@@ -408,7 +408,7 @@ LABEL_74:
   [(PreferredNetworksOnboardingController *)self _dismissOnboarding];
 }
 
-- (void)networksOfferViewControllerDidSelectSetupLater:(id)a3
+- (void)networksOfferViewControllerDidSelectSetupLater:(id)later
 {
   if ([(PreferredNetworksOnboardingController *)self state]!= 1)
   {
@@ -449,7 +449,7 @@ LABEL_74:
   [(PreferredNetworksOnboardingController *)self _dismissOnboarding];
 }
 
-- (void)networksOfferViewControllerDidSelectSetupNow:(id)a3
+- (void)networksOfferViewControllerDidSelectSetupNow:(id)now
 {
   if ([(PreferredNetworksOnboardingController *)self state]!= 1)
   {
@@ -492,18 +492,18 @@ LABEL_74:
 
 - (void)_proceedToNextState
 {
-  v3 = [(PreferredNetworksOnboardingController *)self state];
-  v4 = v3 + 1;
+  state = [(PreferredNetworksOnboardingController *)self state];
+  v4 = state + 1;
   v5 = sub_100798370();
   if (!os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     goto LABEL_20;
   }
 
-  v6 = self;
-  if (!v6)
+  selfCopy = self;
+  if (!selfCopy)
   {
-    v11 = @"<nil>";
+    selfCopy = @"<nil>";
     goto LABEL_10;
   }
 
@@ -511,21 +511,21 @@ LABEL_74:
   v8 = NSStringFromClass(v7);
   if (objc_opt_respondsToSelector())
   {
-    v9 = [(PreferredNetworksOnboardingController *)v6 performSelector:"accessibilityIdentifier"];
+    v9 = [(PreferredNetworksOnboardingController *)selfCopy performSelector:"accessibilityIdentifier"];
     v10 = v9;
     if (v9 && ![v9 isEqualToString:v8])
     {
-      v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+      selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
       goto LABEL_8;
     }
   }
 
-  v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+  selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_8:
 
 LABEL_10:
-  v12 = v11;
+  v12 = selfCopy;
   if (v4 >= 4)
   {
     v14 = sub_10006D178();
@@ -569,7 +569,7 @@ LABEL_10:
   _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] %s, nextState: %{public}@", buf, 0x20u);
 
 LABEL_20:
-  if (v3 >= 2)
+  if (state >= 2)
   {
     v18 = sub_10006D178();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -600,12 +600,12 @@ LABEL_20:
     v17 = sub_100798370();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
     {
-      if (v3 == -1)
+      if (state == -1)
       {
         v21 = @"None";
       }
 
-      else if (v3 == 2)
+      else if (state == 2)
       {
         v21 = @"Dismissed";
       }
@@ -658,10 +658,10 @@ LABEL_20:
   v3 = sub_100798370();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = self;
-    if (!v4)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v9 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -669,22 +669,22 @@ LABEL_20:
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(PreferredNetworksOnboardingController *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(PreferredNetworksOnboardingController *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_8;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543618;
-    v13 = v9;
+    v13 = selfCopy;
     v14 = 2080;
     v15 = "[PreferredNetworksOnboardingController _dismissOnboarding]";
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] %s", buf, 0x16u);
@@ -699,7 +699,7 @@ LABEL_10:
   [(UIViewController *)presentingViewController dismissViewControllerAnimated:1 completion:v11];
 }
 
-- (id)_viewControllerForState:(int64_t)a3
+- (id)_viewControllerForState:(int64_t)state
 {
   viewControllersByState = self->_viewControllersByState;
   v6 = [NSNumber numberWithInteger:?];
@@ -707,9 +707,9 @@ LABEL_10:
 
   if (!v7)
   {
-    if (a3 > 1)
+    if (state > 1)
     {
-      if (a3 == 2)
+      if (state == 2)
       {
         v8 = [[EVOnboardingNetworksSelectionViewController alloc] initWithVehicle:self->_vehicle delegate:self];
         v9 = self->_viewControllersByState;
@@ -722,15 +722,15 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      if (a3 != 3)
+      if (state != 3)
       {
         goto LABEL_19;
       }
     }
 
-    else if (a3)
+    else if (state)
     {
-      if (a3 != 1)
+      if (state != 1)
       {
         goto LABEL_19;
       }
@@ -770,7 +770,7 @@ LABEL_18:
     v8 = sub_100798370();
     if (os_log_type_enabled(&v8->super.super.super.super, OS_LOG_TYPE_FAULT))
     {
-      v14 = *(&off_1016284C8 + a3);
+      v14 = *(&off_1016284C8 + state);
       v26 = 138412290;
       v27 = v14;
       _os_log_impl(&_mh_execute_header, &v8->super.super.super.super, OS_LOG_TYPE_FAULT, "Tried to get a VC for %@ state", &v26, 0xCu);
@@ -781,7 +781,7 @@ LABEL_18:
 
 LABEL_19:
   v16 = self->_viewControllersByState;
-  v17 = [NSNumber numberWithInteger:a3];
+  v17 = [NSNumber numberWithInteger:state];
   v18 = [(NSMutableDictionary *)v16 objectForKeyedSubscript:v17];
 
   if (!v18)
@@ -814,18 +814,18 @@ LABEL_19:
   }
 
   v19 = self->_viewControllersByState;
-  v20 = [NSNumber numberWithInteger:a3];
+  v20 = [NSNumber numberWithInteger:state];
   v21 = [(NSMutableDictionary *)v19 objectForKeyedSubscript:v20];
 
   return v21;
 }
 
-- (void)presentInViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentInViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = [a3 topMostPresentedViewController];
-  if (v9)
+  animatedCopy = animated;
+  completionCopy = completion;
+  topMostPresentedViewController = [controller topMostPresentedViewController];
+  if (topMostPresentedViewController)
   {
     if (self->_state)
     {
@@ -907,7 +907,7 @@ LABEL_19:
       }
     }
 
-    objc_storeStrong(&self->_presentingViewController, v9);
+    objc_storeStrong(&self->_presentingViewController, topMostPresentedViewController);
     [(PreferredNetworksOnboardingController *)self setState:1];
     v10 = [(PreferredNetworksOnboardingController *)self _viewControllerForState:self->_state];
     v11 = [[OBNavigationController alloc] initWithRootViewController:v10];
@@ -916,13 +916,13 @@ LABEL_19:
     v12 = sub_100798370();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(VGVehicle *)self->_vehicle displayName];
+      displayName = [(VGVehicle *)self->_vehicle displayName];
       v25 = 138412290;
-      v26 = v13;
+      v26 = displayName;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Will present preferred networks onboarding for vehicle: %@.", &v25, 0xCu);
     }
 
-    [v9 presentViewController:v11 animated:v5 completion:v8];
+    [topMostPresentedViewController presentViewController:v11 animated:animatedCopy completion:completionCopy];
   }
 
   else
@@ -942,23 +942,23 @@ LABEL_8:
 LABEL_9:
 }
 
-- (BOOL)_validateStateTransitionFromState:(int64_t)a3 toState:(int64_t)a4
+- (BOOL)_validateStateTransitionFromState:(int64_t)state toState:(int64_t)toState
 {
-  v4 = a4 - a3;
-  if (a4 - a3 < 0)
+  v4 = toState - state;
+  if (toState - state < 0)
   {
-    v4 = a3 - a4;
+    v4 = state - toState;
   }
 
-  return a4 == 3 || v4 == 1;
+  return toState == 3 || v4 == 1;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   state = self->_state;
-  if (state != a3)
+  if (state != state)
   {
-    if ([(PreferredNetworksOnboardingController *)self _validateStateTransitionFromState:state toState:a3])
+    if ([(PreferredNetworksOnboardingController *)self _validateStateTransitionFromState:state toState:state])
     {
       v6 = sub_100798370();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -998,7 +998,7 @@ LABEL_9:
           v8 = *(&off_1016284C8 + v7);
         }
 
-        if (a3 >= 4)
+        if (state >= 4)
         {
           v23 = sub_10006D178();
           if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -1029,7 +1029,7 @@ LABEL_9:
 
         else
         {
-          v18 = *(&off_1016284C8 + a3);
+          v18 = *(&off_1016284C8 + state);
         }
 
         v29 = 138412546;
@@ -1039,7 +1039,7 @@ LABEL_9:
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Setting state from: %@, to: %@", &v29, 0x16u);
       }
 
-      self->_state = a3;
+      self->_state = state;
     }
 
     else
@@ -1106,7 +1106,7 @@ LABEL_9:
           v14 = *(&off_1016284C8 + v13);
         }
 
-        if (a3 >= 4)
+        if (state >= 4)
         {
           v26 = sub_10006D178();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -1137,7 +1137,7 @@ LABEL_9:
 
         else
         {
-          v22 = *(&off_1016284C8 + a3);
+          v22 = *(&off_1016284C8 + state);
         }
 
         v29 = 138412546;
@@ -1150,12 +1150,12 @@ LABEL_9:
   }
 }
 
-- (void)onboardingViewControllerWillMoveFromParentViewController:(id)a3
+- (void)onboardingViewControllerWillMoveFromParentViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = [(PreferredNetworksOnboardingController *)self _viewControllerForState:[(PreferredNetworksOnboardingController *)self state]];
 
-  if (v5 != v4)
+  if (v5 != controllerCopy)
   {
     v21 = sub_10006D178();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -1184,9 +1184,9 @@ LABEL_9:
     }
   }
 
-  v6 = [v4 navigationController];
-  v7 = [v6 childViewControllers];
-  v8 = [v7 lastObject];
+  navigationController = [controllerCopy navigationController];
+  childViewControllers = [navigationController childViewControllers];
+  lastObject = [childViewControllers lastObject];
 
   v9 = sub_100798370();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -1224,7 +1224,7 @@ LABEL_9:
         v19 = *(*(&v24 + 1) + 8 * i);
         v20 = [(NSMutableDictionary *)self->_viewControllersByState objectForKeyedSubscript:v19, v24];
 
-        if (v20 == v8)
+        if (v20 == lastObject)
         {
           -[PreferredNetworksOnboardingController setState:](self, "setState:", [v19 integerValue]);
         }
@@ -1237,16 +1237,16 @@ LABEL_9:
   }
 }
 
-- (PreferredNetworksOnboardingController)initWithVehicle:(id)a3
+- (PreferredNetworksOnboardingController)initWithVehicle:(id)vehicle
 {
-  v5 = a3;
+  vehicleCopy = vehicle;
   v11.receiver = self;
   v11.super_class = PreferredNetworksOnboardingController;
   v6 = [(PreferredNetworksOnboardingController *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_vehicle, a3);
+    objc_storeStrong(&v6->_vehicle, vehicle);
     v8 = objc_opt_new();
     viewControllersByState = v7->_viewControllersByState;
     v7->_viewControllersByState = v8;

@@ -1,9 +1,9 @@
 @interface NTKRichComplicationBaseCircularOpenGaugeSwiftUIView
 - (id)bottomView;
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4;
-- (void)gaugeProvider:(id *)a3 andCenterTextProvider:(id *)a4 fromTemplate:(id)a5;
-- (void)setPaused:(BOOL)a3;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)_handleTemplate:(id)template reason:(int64_t)reason;
+- (void)gaugeProvider:(id *)provider andCenterTextProvider:(id *)textProvider fromTemplate:(id)template;
+- (void)setPaused:(BOOL)paused;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateMonochromeColor;
 @end
 
@@ -14,13 +14,13 @@
   bottomSwiftUIView = self->_bottomSwiftUIView;
   if (!bottomSwiftUIView)
   {
-    v4 = [off_27877BE70 async];
+    async = [off_27877BE70 async];
     v5 = self->_bottomSwiftUIView;
-    self->_bottomSwiftUIView = v4;
+    self->_bottomSwiftUIView = async;
 
     [(CDComplicationHostingView *)self->_bottomSwiftUIView setFilterProvider:self];
-    v6 = [(CDRichComplicationView *)self device];
-    v7 = NTKShowGossamerUI(v6);
+    device = [(CDRichComplicationView *)self device];
+    v7 = NTKShowGossamerUI(device);
 
     [(CDComplicationHostingView *)self->_bottomSwiftUIView setShouldAccentDesaturatedView:v7 ^ 1u];
     objc_initWeak(&location, self);
@@ -45,42 +45,42 @@ void __65__NTKRichComplicationBaseCircularOpenGaugeSwiftUIView_bottomView__block
   [v5 complicationDisplay:WeakRetained renderStatsWithTime:a2 cost:a3];
 }
 
-- (void)gaugeProvider:(id *)a3 andCenterTextProvider:(id *)a4 fromTemplate:(id)a5
+- (void)gaugeProvider:(id *)provider andCenterTextProvider:(id *)textProvider fromTemplate:(id)template
 {
-  v7 = a5;
-  *a3 = [v7 gaugeProvider];
-  v8 = [v7 centerTextProvider];
+  templateCopy = template;
+  *provider = [templateCopy gaugeProvider];
+  centerTextProvider = [templateCopy centerTextProvider];
 
-  v9 = v8;
-  *a4 = v8;
+  v9 = centerTextProvider;
+  *textProvider = centerTextProvider;
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  v3 = a3;
+  pausedCopy = paused;
   v5.receiver = self;
   v5.super_class = NTKRichComplicationBaseCircularOpenGaugeSwiftUIView;
   [(CDRichComplicationView *)&v5 setPaused:?];
-  [(CDComplicationHostingView *)self->_bottomSwiftUIView setPaused:v3];
+  [(CDComplicationHostingView *)self->_bottomSwiftUIView setPaused:pausedCopy];
 }
 
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4
+- (void)_handleTemplate:(id)template reason:(int64_t)reason
 {
   v8.receiver = self;
   v8.super_class = NTKRichComplicationBaseCircularOpenGaugeSwiftUIView;
-  v6 = a3;
-  [(NTKRichComplicationCircularOpenGaugeContentView *)&v8 _handleTemplate:v6 reason:a4];
-  v7 = [v6 bottomLabelData];
+  templateCopy = template;
+  [(NTKRichComplicationCircularOpenGaugeContentView *)&v8 _handleTemplate:templateCopy reason:reason];
+  bottomLabelData = [templateCopy bottomLabelData];
 
-  [(CDComplicationHostingView *)self->_bottomSwiftUIView setViewData:v7];
+  [(CDComplicationHostingView *)self->_bottomSwiftUIView setViewData:bottomLabelData];
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
   v5.receiver = self;
   v5.super_class = NTKRichComplicationBaseCircularOpenGaugeSwiftUIView;
   [(NTKRichComplicationCircularOpenGaugeContentView *)&v5 transitionToMonochromeWithFraction:?];
-  [(CDComplicationHostingView *)self->_bottomSwiftUIView transitionToMonochromeWithFraction:a3];
+  [(CDComplicationHostingView *)self->_bottomSwiftUIView transitionToMonochromeWithFraction:fraction];
 }
 
 - (void)updateMonochromeColor

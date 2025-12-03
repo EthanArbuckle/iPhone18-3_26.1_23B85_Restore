@@ -1,30 +1,30 @@
 @interface HDHearingPlugin
-+ (BOOL)shouldLoadPluginForDaemon:(id)a3;
-- (id)_databaseSchemaForProtectionClass:(int64_t)a3;
-- (id)databaseEntitiesForProtectionClass:(int64_t)a3;
-- (id)extensionForProfile:(id)a3;
++ (BOOL)shouldLoadPluginForDaemon:(id)daemon;
+- (id)_databaseSchemaForProtectionClass:(int64_t)class;
+- (id)databaseEntitiesForProtectionClass:(int64_t)class;
+- (id)extensionForProfile:(id)profile;
 - (id)orderedSyncEntities;
 - (id)taskServerClasses;
-- (int64_t)currentSchemaVersionForProtectionClass:(int64_t)a3;
-- (void)registerMigrationStepsForProtectionClass:(int64_t)a3 migrator:(id)a4;
+- (int64_t)currentSchemaVersionForProtectionClass:(int64_t)class;
+- (void)registerMigrationStepsForProtectionClass:(int64_t)class migrator:(id)migrator;
 @end
 
 @implementation HDHearingPlugin
 
-+ (BOOL)shouldLoadPluginForDaemon:(id)a3
++ (BOOL)shouldLoadPluginForDaemon:(id)daemon
 {
-  v3 = [a3 behavior];
-  v4 = [v3 isRealityDevice];
+  behavior = [daemon behavior];
+  isRealityDevice = [behavior isRealityDevice];
 
-  return v4 ^ 1;
+  return isRealityDevice ^ 1;
 }
 
-- (id)extensionForProfile:(id)a3
+- (id)extensionForProfile:(id)profile
 {
-  v3 = a3;
-  if ([v3 profileType] == 1)
+  profileCopy = profile;
+  if ([profileCopy profileType] == 1)
   {
-    v4 = [[HDHearingProfileExtension alloc] initWithProfile:v3];
+    v4 = [[HDHearingProfileExtension alloc] initWithProfile:profileCopy];
   }
 
   else
@@ -55,40 +55,40 @@
   return v2;
 }
 
-- (int64_t)currentSchemaVersionForProtectionClass:(int64_t)a3
+- (int64_t)currentSchemaVersionForProtectionClass:(int64_t)class
 {
-  v3 = [(HDHearingPlugin *)self _databaseSchemaForProtectionClass:a3];
-  v4 = [v3 currentSchemaVersion];
+  v3 = [(HDHearingPlugin *)self _databaseSchemaForProtectionClass:class];
+  currentSchemaVersion = [v3 currentSchemaVersion];
 
-  return v4;
+  return currentSchemaVersion;
 }
 
-- (id)databaseEntitiesForProtectionClass:(int64_t)a3
+- (id)databaseEntitiesForProtectionClass:(int64_t)class
 {
-  v3 = [(HDHearingPlugin *)self _databaseSchemaForProtectionClass:a3];
-  v4 = [v3 databaseEntities];
+  v3 = [(HDHearingPlugin *)self _databaseSchemaForProtectionClass:class];
+  databaseEntities = [v3 databaseEntities];
 
-  return v4;
+  return databaseEntities;
 }
 
-- (void)registerMigrationStepsForProtectionClass:(int64_t)a3 migrator:(id)a4
+- (void)registerMigrationStepsForProtectionClass:(int64_t)class migrator:(id)migrator
 {
-  v6 = a4;
-  v8 = [(HDHearingPlugin *)self _databaseSchemaForProtectionClass:a3];
-  v7 = [(HDHearingPlugin *)self schemaName];
-  [v8 registerMigrationStepsForSchemaName:v7 migrator:v6];
+  migratorCopy = migrator;
+  v8 = [(HDHearingPlugin *)self _databaseSchemaForProtectionClass:class];
+  schemaName = [(HDHearingPlugin *)self schemaName];
+  [v8 registerMigrationStepsForSchemaName:schemaName migrator:migratorCopy];
 }
 
-- (id)_databaseSchemaForProtectionClass:(int64_t)a3
+- (id)_databaseSchemaForProtectionClass:(int64_t)class
 {
-  if (a3 == 1)
+  if (class == 1)
   {
     v4 = &off_2796C5E88;
   }
 
   else
   {
-    if (a3 != 2)
+    if (class != 2)
     {
       goto LABEL_6;
     }

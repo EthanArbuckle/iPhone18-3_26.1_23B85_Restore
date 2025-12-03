@@ -1,12 +1,12 @@
 @interface TSCH3DChartLayoutSceneSettingsUpgrader
 - ($6BF1DF173A55784CAE4B3BED4B6FCF3F)oldLayoutSettings;
 - (CGRect)oldResizingFrame;
-- (id)containingViewportByResizingScene:(id)a3 toResizingFrame:(CGRect)a4;
-- (id)sceneResetWithLayoutSettings:(id *)a3;
+- (id)containingViewportByResizingScene:(id)scene toResizingFrame:(CGRect)frame;
+- (id)sceneResetWithLayoutSettings:(id *)settings;
 - (void)dealloc;
-- (void)mutateInfoWithContainingViewport:(id)a3 scene:(id)a4;
+- (void)mutateInfoWithContainingViewport:(id)viewport scene:(id)scene;
 - (void)updateInfoGeometryIfNecessary;
-- (void)upgradeForSpice:(BOOL)a3 naturalSize:(CGSize)a4;
+- (void)upgradeForSpice:(BOOL)spice naturalSize:(CGSize)size;
 @end
 
 @implementation TSCH3DChartLayoutSceneSettingsUpgrader
@@ -45,7 +45,7 @@
   return result;
 }
 
-- (id)sceneResetWithLayoutSettings:(id *)a3
+- (id)sceneResetWithLayoutSettings:(id *)settings
 {
   v8 = objc_msgSend_chartLayoutWithChartInfo_(TSCHChartLayout, a2, v3, v4, v5, self->super._chartInfo);
   chartLayout = self->_chartLayout;
@@ -63,8 +63,8 @@
     v14 = self->_chartLayout;
   }
 
-  v36 = *&a3->var0;
-  var9 = a3->var9;
+  v36 = *&settings->var0;
+  var9 = settings->var9;
   objc_msgSend_setLayoutSettings_(v14, v10, *&v36, v12, v13, &v36);
   v34 = objc_msgSend_scene(self->_chartLayout, v30, v31, v32, v33);
 
@@ -113,11 +113,11 @@
   return result;
 }
 
-- (id)containingViewportByResizingScene:(id)a3 toResizingFrame:(CGRect)a4
+- (id)containingViewportByResizingScene:(id)scene toResizingFrame:(CGRect)frame
 {
-  y = a4.origin.y;
-  x = a4.origin.x;
-  objc_msgSend_layoutForChartBodySize_(self->_chartLayout, a2, a4.size.width, a4.size.height, a4.size.width, a3);
+  y = frame.origin.y;
+  x = frame.origin.x;
+  objc_msgSend_layoutForChartBodySize_(self->_chartLayout, a2, frame.size.width, frame.size.height, frame.size.width, scene);
   objc_msgSend_chartBodyFrame(self->_chartLayout, v7, v8, v9, v10);
   v15 = objc_msgSend_valueWithCGPoint_(MEMORY[0x277CCAE60], v13, v11 - x, v12 - y, v14);
   infoGeometryOffset = self->_infoGeometryOffset;
@@ -128,11 +128,11 @@
   return v21;
 }
 
-- (void)mutateInfoWithContainingViewport:(id)a3 scene:(id)a4
+- (void)mutateInfoWithContainingViewport:(id)viewport scene:(id)scene
 {
   v5.receiver = self;
   v5.super_class = TSCH3DChartLayoutSceneSettingsUpgrader;
-  [(TSCH3DAbstractLimitingSeriesUpgrader *)&v5 mutateInfoWithContainingViewport:a3 scene:a4];
+  [(TSCH3DAbstractLimitingSeriesUpgrader *)&v5 mutateInfoWithContainingViewport:viewport scene:scene];
   self->_isMutatedForSceneSettings = 1;
 }
 
@@ -221,13 +221,13 @@
   self->_infoGeometryOffset = 0;
 }
 
-- (void)upgradeForSpice:(BOOL)a3 naturalSize:(CGSize)a4
+- (void)upgradeForSpice:(BOOL)spice naturalSize:(CGSize)size
 {
-  v5 = a3;
+  spiceCopy = spice;
   if (self->_isMutatedForSceneSettings)
   {
     v7 = MEMORY[0x277D81150];
-    v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, a4.width, a4.height, v4, "[TSCH3DChartLayoutSceneSettingsUpgrader upgradeForSpice:naturalSize:]");
+    v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, size.width, size.height, v4, "[TSCH3DChartLayoutSceneSettingsUpgrader upgradeForSpice:naturalSize:]");
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, v10, v11, v12, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DChartLayout.mm");
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v7, v14, v15, v16, v17, v8, v13, 146, 0, "should not be mutated before upgrading");
 
@@ -238,7 +238,7 @@
   v23 = *(MEMORY[0x277CBF3A8] + 8);
   v54.receiver = self;
   v54.super_class = TSCH3DChartLayoutSceneSettingsUpgrader;
-  [(TSCH3DAbstractLimitingSeriesUpgrader *)&v54 upgradeForSpice:v5 naturalSize:v22, v23];
+  [(TSCH3DAbstractLimitingSeriesUpgrader *)&v54 upgradeForSpice:spiceCopy naturalSize:v22, v23];
   if (!self->_isMutatedForSceneSettings)
   {
     chartLayout = self->_chartLayout;

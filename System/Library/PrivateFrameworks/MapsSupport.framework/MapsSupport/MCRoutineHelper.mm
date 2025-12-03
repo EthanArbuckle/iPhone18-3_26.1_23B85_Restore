@@ -1,10 +1,10 @@
 @interface MCRoutineHelper
 - (MCRoutineHelper)init;
-- (void)findMUIDsForPlaceInferences:(id)a3 analytics:(id)a4 completionQueue:(id)a5 completionHandler:(id)a6;
-- (void)findNearbySignificantLocationsAtLocation:(id)a3 inRadius:(double)a4 numberOfVisitsBucketSize:(unsigned int)a5 completionQueue:(id)a6 finishedHandler:(id)a7;
-- (void)findSignificantLocationWithCompletionQueue:(id)a3 completionHandler:(id)a4;
-- (void)findSignificantLocationWithLocation:(id)a3 numberOfVisitsBucketSize:(unsigned int)a4 completionQueue:(id)a5 finishedHandler:(id)a6;
-- (void)findWorkLocationsWithCompletionQueue:(id)a3 completionHandler:(id)a4;
+- (void)findMUIDsForPlaceInferences:(id)inferences analytics:(id)analytics completionQueue:(id)queue completionHandler:(id)handler;
+- (void)findNearbySignificantLocationsAtLocation:(id)location inRadius:(double)radius numberOfVisitsBucketSize:(unsigned int)size completionQueue:(id)queue finishedHandler:(id)handler;
+- (void)findSignificantLocationWithCompletionQueue:(id)queue completionHandler:(id)handler;
+- (void)findSignificantLocationWithLocation:(id)location numberOfVisitsBucketSize:(unsigned int)size completionQueue:(id)queue finishedHandler:(id)handler;
+- (void)findWorkLocationsWithCompletionQueue:(id)queue completionHandler:(id)handler;
 @end
 
 @implementation MCRoutineHelper
@@ -24,38 +24,38 @@
   return v2;
 }
 
-- (void)findSignificantLocationWithCompletionQueue:(id)a3 completionHandler:(id)a4
+- (void)findSignificantLocationWithCompletionQueue:(id)queue completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  handlerCopy = handler;
   routineManager = self->_routineManager;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10000E360;
   v11[3] = &unk_10001C9E0;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = queueCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = queueCopy;
   [(RTRoutineManager *)routineManager _maps_fetchAllLocationsOfInterestWithHandler:v11];
 }
 
-- (void)findSignificantLocationWithLocation:(id)a3 numberOfVisitsBucketSize:(unsigned int)a4 completionQueue:(id)a5 finishedHandler:(id)a6
+- (void)findSignificantLocationWithLocation:(id)location numberOfVisitsBucketSize:(unsigned int)size completionQueue:(id)queue finishedHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 latLng];
+  locationCopy = location;
+  queueCopy = queue;
+  handlerCopy = handler;
+  latLng = [locationCopy latLng];
   v14 = [CLLocation alloc];
-  [v13 lat];
+  [latLng lat];
   v16 = v15;
-  [v13 lng];
+  [latLng lng];
   v18 = [v14 initWithLatitude:v16 longitude:v17];
-  [v10 horizontalAccuracy];
+  [locationCopy horizontalAccuracy];
   v19 = 10.0;
   if (v20 > 0.0)
   {
-    [v10 horizontalAccuracy];
+    [locationCopy horizontalAccuracy];
     v19 = v21;
   }
 
@@ -64,61 +64,61 @@
   v25[1] = 3221225472;
   v25[2] = sub_10000E58C;
   v25[3] = &unk_10001DA68;
-  v28 = a4;
-  v26 = v11;
-  v27 = v12;
-  v23 = v12;
-  v24 = v11;
+  sizeCopy = size;
+  v26 = queueCopy;
+  v27 = handlerCopy;
+  v23 = handlerCopy;
+  v24 = queueCopy;
   [(RTRoutineManager *)routineManager fetchLocationsOfInterestWithinDistance:v18 ofLocation:v25 withHandler:v19];
 }
 
-- (void)findNearbySignificantLocationsAtLocation:(id)a3 inRadius:(double)a4 numberOfVisitsBucketSize:(unsigned int)a5 completionQueue:(id)a6 finishedHandler:(id)a7
+- (void)findNearbySignificantLocationsAtLocation:(id)location inRadius:(double)radius numberOfVisitsBucketSize:(unsigned int)size completionQueue:(id)queue finishedHandler:(id)handler
 {
-  v12 = a6;
-  v13 = a7;
-  v14 = [a3 latLng];
+  queueCopy = queue;
+  handlerCopy = handler;
+  latLng = [location latLng];
   v15 = [CLLocation alloc];
-  [v14 lat];
+  [latLng lat];
   v17 = v16;
-  [v14 lng];
+  [latLng lng];
   v19 = [v15 initWithLatitude:v17 longitude:v18];
   routineManager = self->_routineManager;
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_10000E880;
   v23[3] = &unk_10001DA90;
-  v26 = a5;
+  sizeCopy = size;
   v23[4] = self;
-  v24 = v12;
-  v25 = v13;
-  v21 = v13;
-  v22 = v12;
-  [(RTRoutineManager *)routineManager fetchLocationsOfInterestWithinDistance:v19 ofLocation:v23 withHandler:a4];
+  v24 = queueCopy;
+  v25 = handlerCopy;
+  v21 = handlerCopy;
+  v22 = queueCopy;
+  [(RTRoutineManager *)routineManager fetchLocationsOfInterestWithinDistance:v19 ofLocation:v23 withHandler:radius];
 }
 
-- (void)findWorkLocationsWithCompletionQueue:(id)a3 completionHandler:(id)a4
+- (void)findWorkLocationsWithCompletionQueue:(id)queue completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  handlerCopy = handler;
   routineManager = self->_routineManager;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10000EB90;
   v11[3] = &unk_10001C9E0;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = queueCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = queueCopy;
   [(RTRoutineManager *)routineManager _maps_fetchLocationsOfInterestWithTypes:1 handler:v11];
 }
 
-- (void)findMUIDsForPlaceInferences:(id)a3 analytics:(id)a4 completionQueue:(id)a5 completionHandler:(id)a6
+- (void)findMUIDsForPlaceInferences:(id)inferences analytics:(id)analytics completionQueue:(id)queue completionHandler:(id)handler
 {
-  v9 = a3;
-  v32 = a4;
-  queue = a5;
-  v31 = a6;
-  v10 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v9 count]);
+  inferencesCopy = inferences;
+  analyticsCopy = analytics;
+  queue = queue;
+  handlerCopy = handler;
+  v10 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [inferencesCopy count]);
   v11 = dispatch_group_create();
   v64[0] = 0;
   v64[1] = v64;
@@ -132,7 +132,7 @@
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
-  obj = v9;
+  obj = inferencesCopy;
   v12 = [obj countByEnumeratingWithState:&v59 objects:v67 count:16];
   if (v12)
   {
@@ -150,14 +150,14 @@
         }
 
         v16 = *(*(&v59 + 1) + 8 * i);
-        v17 = [v16 _loiIdentifier];
-        v18 = v17 == 0;
+        _loiIdentifier = [v16 _loiIdentifier];
+        v18 = _loiIdentifier == 0;
 
         if (v18)
         {
-          v22 = [v16 placemark];
-          v23 = [v22 _geoMapItemHandle];
-          v24 = v23 == 0;
+          placemark = [v16 placemark];
+          _geoMapItemHandle = [placemark _geoMapItemHandle];
+          v24 = _geoMapItemHandle == 0;
 
           if (v24)
           {
@@ -175,18 +175,18 @@
           {
             dispatch_group_enter(v11);
             v25 = +[GEOMapService sharedService];
-            v26 = [v16 placemark];
-            v27 = [v26 _geoMapItemHandle];
+            placemark2 = [v16 placemark];
+            _geoMapItemHandle2 = [placemark2 _geoMapItemHandle];
             v47[0] = _NSConcreteStackBlock;
             v47[1] = 3221225472;
             v47[2] = sub_10000F570;
             v47[3] = &unk_10001DB08;
             v48 = v11;
             v52 = v63;
-            v49 = queue;
+            queueCopy = queue;
             v50 = v10;
             v51 = v16;
-            [v25 resolveMapItemFromHandle:v27 completionHandler:v47];
+            [v25 resolveMapItemFromHandle:_geoMapItemHandle2 completionHandler:v47];
 
             ++v34;
             v21 = v48;
@@ -197,17 +197,17 @@
         {
           dispatch_group_enter(v11);
           routineManager = self->_routineManager;
-          v20 = [v16 _loiIdentifier];
+          _loiIdentifier2 = [v16 _loiIdentifier];
           v53[0] = _NSConcreteStackBlock;
           v53[1] = 3221225472;
           v53[2] = sub_10000F2C0;
           v53[3] = &unk_10001DAE0;
           v54 = v11;
           v58 = v64;
-          v55 = queue;
+          queueCopy2 = queue;
           v56 = v10;
           v57 = v16;
-          [(RTRoutineManager *)routineManager fetchLocationOfInterestWithIdentifier:v20 withHandler:v53];
+          [(RTRoutineManager *)routineManager fetchLocationOfInterestWithIdentifier:_loiIdentifier2 withHandler:v53];
 
           ++v13;
           v21 = v54;
@@ -235,13 +235,13 @@
   v44 = v13;
   v45 = v34;
   v46 = v33;
-  v41 = v31;
+  v41 = handlerCopy;
   v42 = v64;
-  v39 = v32;
+  v39 = analyticsCopy;
   v40 = v10;
   v28 = v10;
-  v29 = v31;
-  v30 = v32;
+  v29 = handlerCopy;
+  v30 = analyticsCopy;
   dispatch_group_notify(v11, queue, block);
 
   _Block_object_dispose(v63, 8);

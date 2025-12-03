@@ -1,38 +1,38 @@
 @interface ATXUserNotificationAppDigest
-- (ATXUserNotificationAppDigest)initWithBundleId:(id)a3 appMarqueeGroups:(id)a4 nonAppMarqueeGroups:(id)a5;
-- (ATXUserNotificationAppDigest)initWithProto:(id)a3;
-- (ATXUserNotificationAppDigest)initWithProtoData:(id)a3;
+- (ATXUserNotificationAppDigest)initWithBundleId:(id)id appMarqueeGroups:(id)groups nonAppMarqueeGroups:(id)marqueeGroups;
+- (ATXUserNotificationAppDigest)initWithProto:(id)proto;
+- (ATXUserNotificationAppDigest)initWithProtoData:(id)data;
 - (id)encodeAsProto;
-- (id)initFromJSON:(id)a3;
+- (id)initFromJSON:(id)n;
 - (id)jsonRepresentation;
 - (id)proto;
 @end
 
 @implementation ATXUserNotificationAppDigest
 
-- (ATXUserNotificationAppDigest)initWithBundleId:(id)a3 appMarqueeGroups:(id)a4 nonAppMarqueeGroups:(id)a5
+- (ATXUserNotificationAppDigest)initWithBundleId:(id)id appMarqueeGroups:(id)groups nonAppMarqueeGroups:(id)marqueeGroups
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  idCopy = id;
+  groupsCopy = groups;
+  marqueeGroupsCopy = marqueeGroups;
   v21.receiver = self;
   v21.super_class = ATXUserNotificationAppDigest;
   v11 = [(ATXUserNotificationAppDigest *)&v21 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [idCopy copy];
     bundleId = v11->_bundleId;
     v11->_bundleId = v12;
 
-    v14 = [v9 copy];
+    v14 = [groupsCopy copy];
     appMarqueeGroups = v11->_appMarqueeGroups;
     v11->_appMarqueeGroups = v14;
 
-    v16 = [v10 copy];
+    v16 = [marqueeGroupsCopy copy];
     nonAppMarqueeGroups = v11->_nonAppMarqueeGroups;
     v11->_nonAppMarqueeGroups = v16;
 
-    v18 = [v9 arrayByAddingObjectsFromArray:v10];
+    v18 = [groupsCopy arrayByAddingObjectsFromArray:marqueeGroupsCopy];
     groups = v11->_groups;
     v11->_groups = v18;
   }
@@ -40,10 +40,10 @@
   return v11;
 }
 
-- (id)initFromJSON:(id)a3
+- (id)initFromJSON:(id)n
 {
-  v4 = a3;
-  v5 = [[ATXPBUserNotificationAppDigest alloc] initFromJSON:v4];
+  nCopy = n;
+  v5 = [[ATXPBUserNotificationAppDigest alloc] initFromJSON:nCopy];
 
   v6 = [(ATXUserNotificationAppDigest *)self initWithProto:v5];
   return v6;
@@ -51,46 +51,46 @@
 
 - (id)jsonRepresentation
 {
-  v2 = [(ATXUserNotificationAppDigest *)self proto];
-  v3 = [v2 jsonRepresentation];
+  proto = [(ATXUserNotificationAppDigest *)self proto];
+  jsonRepresentation = [proto jsonRepresentation];
 
-  return v3;
+  return jsonRepresentation;
 }
 
-- (ATXUserNotificationAppDigest)initWithProtoData:(id)a3
+- (ATXUserNotificationAppDigest)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBUserNotificationAppDigest alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBUserNotificationAppDigest alloc] initWithData:dataCopy];
 
     self = [(ATXUserNotificationAppDigest *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXUserNotificationAppDigest *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXUserNotificationAppDigest *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXUserNotificationAppDigest)initWithProto:(id)a3
+- (ATXUserNotificationAppDigest)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_7:
-    v11 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -106,19 +106,19 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v5 = v4;
-  v6 = [v5 bundleId];
-  v7 = [v5 appMarqueeGroups];
-  v8 = [ATXUserNotificationDigestNotificationGroup groupsFromProtos:v7];
-  v9 = [v5 nonAppMarqueeGroups];
+  v5 = protoCopy;
+  bundleId = [v5 bundleId];
+  appMarqueeGroups = [v5 appMarqueeGroups];
+  v8 = [ATXUserNotificationDigestNotificationGroup groupsFromProtos:appMarqueeGroups];
+  nonAppMarqueeGroups = [v5 nonAppMarqueeGroups];
 
-  v10 = [ATXUserNotificationDigestNotificationGroup groupsFromProtos:v9];
-  self = [(ATXUserNotificationAppDigest *)self initWithBundleId:v6 appMarqueeGroups:v8 nonAppMarqueeGroups:v10];
+  v10 = [ATXUserNotificationDigestNotificationGroup groupsFromProtos:nonAppMarqueeGroups];
+  self = [(ATXUserNotificationAppDigest *)self initWithBundleId:bundleId appMarqueeGroups:v8 nonAppMarqueeGroups:v10];
 
-  v11 = self;
+  selfCopy = self;
 LABEL_8:
 
-  return v11;
+  return selfCopy;
 }
 
 - (id)proto

@@ -1,33 +1,33 @@
 @interface HUWheelControlPanelCell
 - (BOOL)isDisabled;
-- (HUWheelControlPanelCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HUWheelControlPanelCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (NSString)detailText;
 - (NSString)titleText;
 - (id)_defaultValueFormatter;
 - (id)allControlViews;
-- (void)_generateWheelValuesWithMinValue:(double)a3 maxValue:(double)a4 stepValue:(double)a5;
+- (void)_generateWheelValuesWithMinValue:(double)value maxValue:(double)maxValue stepValue:(double)stepValue;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setDetailText:(id)a3;
-- (void)setMaxValue:(id)a3;
-- (void)setMinValue:(id)a3;
-- (void)setStepValue:(id)a3;
-- (void)setTitleText:(id)a3;
-- (void)setValueFormatter:(id)a3;
-- (void)setWheelView:(id)a3;
-- (void)setWheelViewVisible:(BOOL)a3;
+- (void)setDetailText:(id)text;
+- (void)setMaxValue:(id)value;
+- (void)setMinValue:(id)value;
+- (void)setStepValue:(id)value;
+- (void)setTitleText:(id)text;
+- (void)setValueFormatter:(id)formatter;
+- (void)setWheelView:(id)view;
+- (void)setWheelViewVisible:(BOOL)visible;
 - (void)updateConstraints;
-- (void)updateUIWithAnimation:(BOOL)a3;
-- (void)wheelControlView:(id)a3 didUpdateValue:(id)a4;
+- (void)updateUIWithAnimation:(BOOL)animation;
+- (void)wheelControlView:(id)view didUpdateValue:(id)value;
 @end
 
 @implementation HUWheelControlPanelCell
 
-- (HUWheelControlPanelCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HUWheelControlPanelCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v21.receiver = self;
   v21.super_class = HUWheelControlPanelCell;
-  v4 = [(HUWheelControlPanelCell *)&v21 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HUWheelControlPanelCell *)&v21 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -39,8 +39,8 @@
     v8 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
     [(UILabel *)v4->_titleLabel setFont:v8];
 
-    v9 = [(HUWheelControlPanelCell *)v4 contentView];
-    [v9 addSubview:v4->_titleLabel];
+    contentView = [(HUWheelControlPanelCell *)v4 contentView];
+    [contentView addSubview:v4->_titleLabel];
 
     if ([MEMORY[0x277D14CE8] useMacIdiom])
     {
@@ -66,16 +66,16 @@
       [(UILabel *)v4->_detailLabel setFont:v15];
     }
 
-    v16 = [(HUWheelControlPanelCell *)v4 contentView];
-    [v16 addSubview:*p_wheelButton];
+    contentView2 = [(HUWheelControlPanelCell *)v4 contentView];
+    [contentView2 addSubview:*p_wheelButton];
 
     v17 = objc_alloc_init(MEMORY[0x277D75D18]);
     separatorView = v4->_separatorView;
     v4->_separatorView = v17;
 
     [(UIView *)v4->_separatorView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v19 = [(HUWheelControlPanelCell *)v4 contentView];
-    [v19 addSubview:v4->_separatorView];
+    contentView3 = [(HUWheelControlPanelCell *)v4 contentView];
+    [contentView3 addSubview:v4->_separatorView];
   }
 
   return v4;
@@ -83,9 +83,9 @@
 
 - (id)allControlViews
 {
-  v3 = [MEMORY[0x277D14CE8] useMacIdiom];
+  useMacIdiom = [MEMORY[0x277D14CE8] useMacIdiom];
   v4 = MEMORY[0x277CBEB98];
-  if (v3)
+  if (useMacIdiom)
   {
     [(HUWheelControlPanelCell *)self wheelButton];
   }
@@ -100,70 +100,70 @@
   return v6;
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
-  v4 = a3;
-  v5 = [(HUWheelControlPanelCell *)self titleLabel];
-  [v5 setText:v4];
+  textCopy = text;
+  titleLabel = [(HUWheelControlPanelCell *)self titleLabel];
+  [titleLabel setText:textCopy];
 }
 
 - (NSString)titleText
 {
-  v2 = [(HUWheelControlPanelCell *)self titleLabel];
-  v3 = [v2 text];
+  titleLabel = [(HUWheelControlPanelCell *)self titleLabel];
+  text = [titleLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setDetailText:(id)a3
+- (void)setDetailText:(id)text
 {
-  v4 = a3;
-  v5 = [(HUWheelControlPanelCell *)self detailLabel];
-  [v5 setText:v4];
+  textCopy = text;
+  detailLabel = [(HUWheelControlPanelCell *)self detailLabel];
+  [detailLabel setText:textCopy];
 }
 
 - (NSString)detailText
 {
-  v2 = [(HUWheelControlPanelCell *)self detailLabel];
-  v3 = [v2 text];
+  detailLabel = [(HUWheelControlPanelCell *)self detailLabel];
+  text = [detailLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setWheelView:(id)a3
+- (void)setWheelView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   wheelView = self->_wheelView;
-  if (wheelView != v5)
+  if (wheelView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(HUWheelControlView *)wheelView removeFromSuperview];
-    objc_storeStrong(&self->_wheelView, a3);
+    objc_storeStrong(&self->_wheelView, view);
     [(HUWheelControlView *)self->_wheelView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v7 = [(HUWheelControlPanelCell *)self contentView];
-    [v7 addSubview:self->_wheelView];
+    contentView = [(HUWheelControlPanelCell *)self contentView];
+    [contentView addSubview:self->_wheelView];
 
     [(HUWheelControlView *)self->_wheelView setWheelDelegate:self];
     self->_wheelViewVisible = 0;
     [(HUWheelControlView *)self->_wheelView setHidden:1];
     [(UIView *)self->_separatorView setHidden:1];
     [(HUWheelControlPanelCell *)self setNeedsUpdateConstraints];
-    v5 = v8;
+    viewCopy = v8;
   }
 }
 
-- (void)setWheelViewVisible:(BOOL)a3
+- (void)setWheelViewVisible:(BOOL)visible
 {
-  if (self->_wheelViewVisible != a3)
+  if (self->_wheelViewVisible != visible)
   {
-    v3 = a3;
-    self->_wheelViewVisible = a3;
-    v5 = [(HUWheelControlPanelCell *)self wheelView];
-    [v5 setHidden:!v3];
+    visibleCopy = visible;
+    self->_wheelViewVisible = visible;
+    wheelView = [(HUWheelControlPanelCell *)self wheelView];
+    [wheelView setHidden:!visibleCopy];
 
-    LOBYTE(v5) = self->_wheelViewVisible;
-    v6 = [(HUWheelControlPanelCell *)self separatorView];
-    [v6 setHidden:(v5 & 1) == 0];
+    LOBYTE(wheelView) = self->_wheelViewVisible;
+    separatorView = [(HUWheelControlPanelCell *)self separatorView];
+    [separatorView setHidden:(wheelView & 1) == 0];
 
     [(HUWheelControlPanelCell *)self setNeedsUpdateConstraints];
   }
@@ -171,58 +171,58 @@
 
 - (BOOL)isDisabled
 {
-  v2 = [(HUWheelControlPanelCell *)self wheelView];
-  v3 = [v2 isDisabled];
+  wheelView = [(HUWheelControlPanelCell *)self wheelView];
+  isDisabled = [wheelView isDisabled];
 
-  return v3;
+  return isDisabled;
 }
 
 - (void)updateConstraints
 {
-  v3 = [(HUWheelControlPanelCell *)self contentView];
-  v4 = [v3 layoutMarginsGuide];
+  contentView = [(HUWheelControlPanelCell *)self contentView];
+  layoutMarginsGuide = [contentView layoutMarginsGuide];
 
-  v5 = [(HUWheelControlPanelCell *)self staticConstraints];
+  staticConstraints = [(HUWheelControlPanelCell *)self staticConstraints];
 
-  if (!v5)
+  if (!staticConstraints)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v7 = [MEMORY[0x277D756E0] cellConfiguration];
-    v8 = [(HUWheelControlPanelCell *)self traitCollection];
-    [v7 _minimumHeightForTraitCollection:v8];
+    cellConfiguration = [MEMORY[0x277D756E0] cellConfiguration];
+    traitCollection = [(HUWheelControlPanelCell *)self traitCollection];
+    [cellConfiguration _minimumHeightForTraitCollection:traitCollection];
     v10 = v9;
 
-    v11 = [(HUWheelControlPanelCell *)self titleLabel];
-    v12 = [v11 topAnchor];
-    v13 = [v4 topAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    titleLabel = [(HUWheelControlPanelCell *)self titleLabel];
+    topAnchor = [titleLabel topAnchor];
+    topAnchor2 = [layoutMarginsGuide topAnchor];
+    v14 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v6 addObject:v14];
 
-    v15 = [(HUWheelControlPanelCell *)self titleLabel];
-    v16 = [v15 leadingAnchor];
-    v17 = [v4 leadingAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    titleLabel2 = [(HUWheelControlPanelCell *)self titleLabel];
+    leadingAnchor = [titleLabel2 leadingAnchor];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v6 addObject:v18];
 
-    v19 = [(HUWheelControlPanelCell *)self titleLabel];
-    v20 = [v19 centerYAnchor];
-    v21 = [(HUWheelControlPanelCell *)self topAnchor];
+    titleLabel3 = [(HUWheelControlPanelCell *)self titleLabel];
+    centerYAnchor = [titleLabel3 centerYAnchor];
+    topAnchor3 = [(HUWheelControlPanelCell *)self topAnchor];
     v22 = v10 * 0.5;
-    v23 = [v20 constraintEqualToAnchor:v21 constant:v22];
+    v23 = [centerYAnchor constraintEqualToAnchor:topAnchor3 constant:v22];
     [v6 addObject:v23];
 
     if ([MEMORY[0x277D14CE8] useMacIdiom])
     {
-      v24 = [(HUWheelControlPanelCell *)self wheelButton];
-      v25 = [v24 topAnchor];
-      v26 = [v4 topAnchor];
-      v27 = [v25 constraintEqualToAnchor:v26];
+      wheelButton = [(HUWheelControlPanelCell *)self wheelButton];
+      topAnchor4 = [wheelButton topAnchor];
+      topAnchor5 = [layoutMarginsGuide topAnchor];
+      v27 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
       [v6 addObject:v27];
 
-      v28 = [(HUWheelControlPanelCell *)self wheelButton];
-      v29 = [v28 trailingAnchor];
-      v30 = [v4 trailingAnchor];
-      v31 = [v29 constraintEqualToAnchor:v30];
+      wheelButton2 = [(HUWheelControlPanelCell *)self wheelButton];
+      trailingAnchor = [wheelButton2 trailingAnchor];
+      trailingAnchor2 = [layoutMarginsGuide trailingAnchor];
+      v31 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       [v6 addObject:v31];
 
       [(HUWheelControlPanelCell *)self wheelButton];
@@ -230,39 +230,39 @@
 
     else
     {
-      v32 = [(HUWheelControlPanelCell *)self titleLabel];
-      v33 = [v32 trailingAnchor];
-      v34 = [(HUWheelControlPanelCell *)self detailLabel];
-      v35 = [v34 leadingAnchor];
-      v36 = [v33 constraintEqualToAnchor:v35];
+      titleLabel4 = [(HUWheelControlPanelCell *)self titleLabel];
+      trailingAnchor3 = [titleLabel4 trailingAnchor];
+      detailLabel = [(HUWheelControlPanelCell *)self detailLabel];
+      leadingAnchor3 = [detailLabel leadingAnchor];
+      v36 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor3];
       [v6 addObject:v36];
 
-      v37 = [(HUWheelControlPanelCell *)self detailLabel];
+      detailLabel2 = [(HUWheelControlPanelCell *)self detailLabel];
       LODWORD(v38) = 1144766464;
-      [v37 setContentCompressionResistancePriority:0 forAxis:v38];
+      [detailLabel2 setContentCompressionResistancePriority:0 forAxis:v38];
 
-      v39 = [(HUWheelControlPanelCell *)self detailLabel];
+      detailLabel3 = [(HUWheelControlPanelCell *)self detailLabel];
       LODWORD(v40) = 1132134400;
-      [v39 setContentHuggingPriority:0 forAxis:v40];
+      [detailLabel3 setContentHuggingPriority:0 forAxis:v40];
 
-      v41 = [(HUWheelControlPanelCell *)self detailLabel];
-      v42 = [v41 topAnchor];
-      v43 = [v4 topAnchor];
-      v44 = [v42 constraintEqualToAnchor:v43];
+      detailLabel4 = [(HUWheelControlPanelCell *)self detailLabel];
+      topAnchor6 = [detailLabel4 topAnchor];
+      topAnchor7 = [layoutMarginsGuide topAnchor];
+      v44 = [topAnchor6 constraintEqualToAnchor:topAnchor7];
       [v6 addObject:v44];
 
-      v45 = [(HUWheelControlPanelCell *)self detailLabel];
-      v46 = [v45 trailingAnchor];
-      v47 = [v4 trailingAnchor];
-      v48 = [v46 constraintEqualToAnchor:v47];
+      detailLabel5 = [(HUWheelControlPanelCell *)self detailLabel];
+      trailingAnchor4 = [detailLabel5 trailingAnchor];
+      trailingAnchor5 = [layoutMarginsGuide trailingAnchor];
+      v48 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
       [v6 addObject:v48];
 
       [(HUWheelControlPanelCell *)self detailLabel];
     }
     v49 = ;
-    v50 = [v49 centerYAnchor];
-    v51 = [(HUWheelControlPanelCell *)self topAnchor];
-    v52 = [v50 constraintEqualToAnchor:v51 constant:v22];
+    centerYAnchor2 = [v49 centerYAnchor];
+    topAnchor8 = [(HUWheelControlPanelCell *)self topAnchor];
+    v52 = [centerYAnchor2 constraintEqualToAnchor:topAnchor8 constant:v22];
     [v6 addObject:v52];
 
     [MEMORY[0x277CCAAD0] activateConstraints:v6];
@@ -270,72 +270,72 @@
   }
 
   v53 = MEMORY[0x277CCAAD0];
-  v54 = [(HUWheelControlPanelCell *)self dynamicConstraints];
-  [v53 deactivateConstraints:v54];
+  dynamicConstraints = [(HUWheelControlPanelCell *)self dynamicConstraints];
+  [v53 deactivateConstraints:dynamicConstraints];
 
-  LODWORD(v54) = [(HUWheelControlPanelCell *)self wheelViewVisible];
+  LODWORD(dynamicConstraints) = [(HUWheelControlPanelCell *)self wheelViewVisible];
   v55 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (v54)
+  if (dynamicConstraints)
   {
-    v56 = [(HUWheelControlPanelCell *)self separatorView];
-    v57 = [v56 topAnchor];
-    v58 = [(HUWheelControlPanelCell *)self titleLabel];
-    v59 = [v58 bottomAnchor];
+    separatorView = [(HUWheelControlPanelCell *)self separatorView];
+    topAnchor9 = [separatorView topAnchor];
+    titleLabel5 = [(HUWheelControlPanelCell *)self titleLabel];
+    bottomAnchor = [titleLabel5 bottomAnchor];
     [(HUWheelControlPanelCell *)self layoutMargins];
-    v61 = [v57 constraintEqualToAnchor:v59 constant:v60];
+    v61 = [topAnchor9 constraintEqualToAnchor:bottomAnchor constant:v60];
     [v55 addObject:v61];
 
-    v62 = [(HUWheelControlPanelCell *)self separatorView];
-    v63 = [v62 leadingAnchor];
-    v64 = [v4 leadingAnchor];
-    v65 = [v63 constraintEqualToAnchor:v64];
+    separatorView2 = [(HUWheelControlPanelCell *)self separatorView];
+    leadingAnchor4 = [separatorView2 leadingAnchor];
+    leadingAnchor5 = [layoutMarginsGuide leadingAnchor];
+    v65 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
     [v55 addObject:v65];
 
-    v66 = [(HUWheelControlPanelCell *)self separatorView];
-    v67 = [v66 trailingAnchor];
-    v68 = [(HUWheelControlPanelCell *)self contentView];
-    v69 = [v68 trailingAnchor];
-    v70 = [v67 constraintEqualToAnchor:v69];
+    separatorView3 = [(HUWheelControlPanelCell *)self separatorView];
+    trailingAnchor6 = [separatorView3 trailingAnchor];
+    contentView2 = [(HUWheelControlPanelCell *)self contentView];
+    trailingAnchor7 = [contentView2 trailingAnchor];
+    v70 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7];
     [v55 addObject:v70];
 
-    v71 = [(HUWheelControlPanelCell *)self separatorView];
-    v72 = [v71 heightAnchor];
-    v73 = [MEMORY[0x277D759A0] mainScreen];
-    [v73 scale];
-    v75 = [v72 constraintEqualToConstant:1.0 / v74];
+    separatorView4 = [(HUWheelControlPanelCell *)self separatorView];
+    heightAnchor = [separatorView4 heightAnchor];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
+    v75 = [heightAnchor constraintEqualToConstant:1.0 / v74];
     [v55 addObject:v75];
 
-    v76 = [(HUWheelControlPanelCell *)self wheelView];
-    v77 = [v76 topAnchor];
-    v78 = [(HUWheelControlPanelCell *)self separatorView];
-    v79 = [v78 bottomAnchor];
-    v80 = [v77 constraintEqualToAnchor:v79];
+    wheelView = [(HUWheelControlPanelCell *)self wheelView];
+    topAnchor10 = [wheelView topAnchor];
+    separatorView5 = [(HUWheelControlPanelCell *)self separatorView];
+    bottomAnchor2 = [separatorView5 bottomAnchor];
+    v80 = [topAnchor10 constraintEqualToAnchor:bottomAnchor2];
     [v55 addObject:v80];
 
-    v81 = [(HUWheelControlPanelCell *)self wheelView];
-    v82 = [v81 leadingAnchor];
-    v83 = [v4 leadingAnchor];
-    v84 = [v82 constraintEqualToAnchor:v83];
+    wheelView2 = [(HUWheelControlPanelCell *)self wheelView];
+    leadingAnchor6 = [wheelView2 leadingAnchor];
+    leadingAnchor7 = [layoutMarginsGuide leadingAnchor];
+    v84 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
     [v55 addObject:v84];
 
-    v85 = [(HUWheelControlPanelCell *)self wheelView];
-    v86 = [v85 trailingAnchor];
-    v87 = [v4 trailingAnchor];
-    v88 = [v86 constraintEqualToAnchor:v87];
+    wheelView3 = [(HUWheelControlPanelCell *)self wheelView];
+    trailingAnchor8 = [wheelView3 trailingAnchor];
+    trailingAnchor9 = [layoutMarginsGuide trailingAnchor];
+    v88 = [trailingAnchor8 constraintEqualToAnchor:trailingAnchor9];
     [v55 addObject:v88];
 
-    v89 = [(HUWheelControlPanelCell *)self wheelView];
-    v90 = [v89 bottomAnchor];
-    v91 = [v4 bottomAnchor];
-    v92 = [v90 constraintEqualToAnchor:v91];
+    wheelView4 = [(HUWheelControlPanelCell *)self wheelView];
+    bottomAnchor3 = [wheelView4 bottomAnchor];
+    bottomAnchor4 = [layoutMarginsGuide bottomAnchor];
+    v92 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   }
 
   else
   {
-    v93 = [(HUWheelControlPanelCell *)self titleLabel];
-    v94 = [v93 bottomAnchor];
-    v95 = [v4 bottomAnchor];
-    v96 = [v94 constraintEqualToAnchor:v95 constant:-5.0];
+    titleLabel6 = [(HUWheelControlPanelCell *)self titleLabel];
+    bottomAnchor5 = [titleLabel6 bottomAnchor];
+    bottomAnchor6 = [layoutMarginsGuide bottomAnchor];
+    v96 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6 constant:-5.0];
     [v55 addObject:v96];
 
     if ([MEMORY[0x277D14CE8] useMacIdiom])
@@ -347,10 +347,10 @@
     {
       [(HUWheelControlPanelCell *)self detailLabel];
     }
-    v89 = ;
-    v90 = [v89 bottomAnchor];
-    v91 = [v4 bottomAnchor];
-    v92 = [v90 constraintEqualToAnchor:v91 constant:-5.0];
+    wheelView4 = ;
+    bottomAnchor3 = [wheelView4 bottomAnchor];
+    bottomAnchor4 = [layoutMarginsGuide bottomAnchor];
+    v92 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-5.0];
   }
 
   v97 = v92;
@@ -358,8 +358,8 @@
 
   [(HUWheelControlPanelCell *)self setDynamicConstraints:v55];
   v98 = MEMORY[0x277CCAAD0];
-  v99 = [(HUWheelControlPanelCell *)self dynamicConstraints];
-  [v98 activateConstraints:v99];
+  dynamicConstraints2 = [(HUWheelControlPanelCell *)self dynamicConstraints];
+  [v98 activateConstraints:dynamicConstraints2];
 
   v100.receiver = self;
   v100.super_class = HUWheelControlPanelCell;
@@ -371,9 +371,9 @@
   v5.receiver = self;
   v5.super_class = HUWheelControlPanelCell;
   [(HUWheelControlPanelCell *)&v5 layoutSubviews];
-  v3 = [(HUWheelControlPanelCell *)self separatorColor];
-  v4 = [(HUWheelControlPanelCell *)self separatorView];
-  [v4 setBackgroundColor:v3];
+  separatorColor = [(HUWheelControlPanelCell *)self separatorColor];
+  separatorView = [(HUWheelControlPanelCell *)self separatorView];
+  [separatorView setBackgroundColor:separatorColor];
 }
 
 - (void)prepareForReuse
@@ -384,18 +384,18 @@
   [(HUWheelControlPanelCell *)&v3 prepareForReuse];
 }
 
-- (void)updateUIWithAnimation:(BOOL)a3
+- (void)updateUIWithAnimation:(BOOL)animation
 {
   v4 = objc_opt_class();
-  v5 = [(HUControlPanelCell *)self item];
-  if (!v5)
+  item = [(HUControlPanelCell *)self item];
+  if (!item)
   {
     goto LABEL_7;
   }
 
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = item;
   }
 
   else
@@ -404,12 +404,12 @@
   }
 
   v7 = v6;
-  v8 = v5;
+  v8 = item;
   if (!v7)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v9 handleFailureInFunction:v10 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v4, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v10 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v4, objc_opt_class()}];
 
 LABEL_7:
     v8 = 0;
@@ -418,9 +418,9 @@ LABEL_7:
   v39 = v8;
 
   v11 = objc_opt_class();
-  v12 = [v39 controlItems];
-  v13 = [v12 anyObject];
-  if (!v13)
+  controlItems = [v39 controlItems];
+  anyObject = [controlItems anyObject];
+  if (!anyObject)
   {
 LABEL_14:
     v15 = 0;
@@ -429,7 +429,7 @@ LABEL_14:
 
   if (objc_opt_isKindOfClass())
   {
-    v14 = v13;
+    v14 = anyObject;
   }
 
   else
@@ -437,12 +437,12 @@ LABEL_14:
     v14 = 0;
   }
 
-  v15 = v13;
+  v15 = anyObject;
   if (!v14)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v16 handleFailureInFunction:v17 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v11, objc_opt_class()}];
+    [currentHandler2 handleFailureInFunction:v17 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v11, objc_opt_class()}];
 
     goto LABEL_14;
   }
@@ -450,147 +450,147 @@ LABEL_14:
 LABEL_15:
 
   v18 = MEMORY[0x277CCAA28];
-  v19 = [v15 incrementalCharacteristicType];
-  v20 = [v15 valueSource];
-  v21 = [v15 incrementalCharacteristicType];
-  v22 = [v20 metadataForCharacteristicType:v21];
-  v23 = [v18 hf_valueFormatterForCharacteristicType:v19 withMetadata:v22 options:0];
+  incrementalCharacteristicType = [v15 incrementalCharacteristicType];
+  valueSource = [v15 valueSource];
+  incrementalCharacteristicType2 = [v15 incrementalCharacteristicType];
+  v22 = [valueSource metadataForCharacteristicType:incrementalCharacteristicType2];
+  v23 = [v18 hf_valueFormatterForCharacteristicType:incrementalCharacteristicType withMetadata:v22 options:0];
 
-  v24 = [v15 minValue];
-  [v24 doubleValue];
+  minValue = [v15 minValue];
+  [minValue doubleValue];
   v26 = v25;
 
-  v27 = [v15 maxValue];
-  [v27 doubleValue];
+  maxValue = [v15 maxValue];
+  [maxValue doubleValue];
   v29 = v28;
 
-  v30 = [v15 stepValue];
-  [v30 doubleValue];
+  stepValue = [v15 stepValue];
+  [stepValue doubleValue];
 
   [(HUWheelControlPanelCell *)self _generateWheelValuesWithMinValue:v26 maxValue:v29 stepValue:1.0];
-  LODWORD(v20) = [MEMORY[0x277D14CE8] useMacIdiom];
+  LODWORD(valueSource) = [MEMORY[0x277D14CE8] useMacIdiom];
   v31 = [v39 identifierForControlItem:v15];
-  if (v20)
+  if (valueSource)
   {
-    v32 = [(HUWheelControlPanelCell *)self wheelButton];
-    [v32 setIdentifier:v31];
+    wheelButton = [(HUWheelControlPanelCell *)self wheelButton];
+    [wheelButton setIdentifier:v31];
 
-    v33 = [(HUWheelControlPanelCell *)self wheelButton];
-    [v33 setValueFormatter:v23];
+    wheelButton2 = [(HUWheelControlPanelCell *)self wheelButton];
+    [wheelButton2 setValueFormatter:v23];
   }
 
   else
   {
-    v34 = [(HUWheelControlPanelCell *)self wheelView];
-    [v34 setIdentifier:v31];
+    wheelView = [(HUWheelControlPanelCell *)self wheelView];
+    [wheelView setIdentifier:v31];
 
-    v35 = [(HUWheelControlPanelCell *)self wheelView];
-    [v35 setValueFormatter:v23];
+    wheelView2 = [(HUWheelControlPanelCell *)self wheelView];
+    [wheelView2 setValueFormatter:v23];
 
-    v33 = [(HUWheelControlPanelCell *)self wheelView];
-    [v33 setCanBeHighlighted:1];
+    wheelButton2 = [(HUWheelControlPanelCell *)self wheelView];
+    [wheelButton2 setCanBeHighlighted:1];
   }
 
-  v36 = [(HUControlPanelCell *)self item];
-  v37 = [v36 latestResults];
-  v38 = [v37 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+  item2 = [(HUControlPanelCell *)self item];
+  latestResults = [item2 latestResults];
+  v38 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
   [(HUWheelControlPanelCell *)self setTitleText:v38];
 }
 
-- (void)wheelControlView:(id)a3 didUpdateValue:(id)a4
+- (void)wheelControlView:(id)view didUpdateValue:(id)value
 {
-  v6 = a4;
-  v8 = [a3 valueFormatter];
-  v7 = [v8 stringForObjectValue:v6];
+  valueCopy = value;
+  valueFormatter = [view valueFormatter];
+  v7 = [valueFormatter stringForObjectValue:valueCopy];
 
   [(HUWheelControlPanelCell *)self setDetailText:v7];
 }
 
-- (void)setMaxValue:(id)a3
+- (void)setMaxValue:(id)value
 {
-  v15 = a3;
+  valueCopy = value;
   if (![(NSNumber *)self->_maxValue isEqualToNumber:?])
   {
-    objc_storeStrong(&self->_maxValue, a3);
+    objc_storeStrong(&self->_maxValue, value);
     maxValue = self->_maxValue;
     if (!maxValue || [(NSNumber *)maxValue isEqualToNumber:&unk_2824927F8])
     {
-      v6 = [(HUWheelControlPanelCell *)self _defaultMaxValue];
+      _defaultMaxValue = [(HUWheelControlPanelCell *)self _defaultMaxValue];
       v7 = self->_maxValue;
-      self->_maxValue = v6;
+      self->_maxValue = _defaultMaxValue;
     }
 
-    v8 = [(HUWheelControlPanelCell *)self minValue];
-    [v8 doubleValue];
+    minValue = [(HUWheelControlPanelCell *)self minValue];
+    [minValue doubleValue];
     v10 = v9;
-    [v15 doubleValue];
+    [valueCopy doubleValue];
     v12 = v11;
-    v13 = [(HUWheelControlPanelCell *)self stepValue];
-    [v13 doubleValue];
+    stepValue = [(HUWheelControlPanelCell *)self stepValue];
+    [stepValue doubleValue];
     [(HUWheelControlPanelCell *)self _generateWheelValuesWithMinValue:v10 maxValue:v12 stepValue:v14];
   }
 }
 
-- (void)setMinValue:(id)a3
+- (void)setMinValue:(id)value
 {
-  v15 = a3;
+  valueCopy = value;
   if (![(NSNumber *)self->_minValue isEqualToNumber:?])
   {
-    objc_storeStrong(&self->_minValue, a3);
+    objc_storeStrong(&self->_minValue, value);
     minValue = self->_minValue;
     if (!minValue || [(NSNumber *)minValue isEqualToNumber:&unk_2824927F8])
     {
-      v6 = [(HUWheelControlPanelCell *)self _defaultMinValue];
+      _defaultMinValue = [(HUWheelControlPanelCell *)self _defaultMinValue];
       v7 = self->_minValue;
-      self->_minValue = v6;
+      self->_minValue = _defaultMinValue;
     }
 
-    [v15 doubleValue];
+    [valueCopy doubleValue];
     v9 = v8;
-    v10 = [(HUWheelControlPanelCell *)self maxValue];
-    [v10 doubleValue];
+    maxValue = [(HUWheelControlPanelCell *)self maxValue];
+    [maxValue doubleValue];
     v12 = v11;
-    v13 = [(HUWheelControlPanelCell *)self stepValue];
-    [v13 doubleValue];
+    stepValue = [(HUWheelControlPanelCell *)self stepValue];
+    [stepValue doubleValue];
     [(HUWheelControlPanelCell *)self _generateWheelValuesWithMinValue:v9 maxValue:v12 stepValue:v14];
   }
 }
 
-- (void)setStepValue:(id)a3
+- (void)setStepValue:(id)value
 {
-  v15 = a3;
+  valueCopy = value;
   if (![(NSNumber *)self->_stepValue isEqualToNumber:?])
   {
-    objc_storeStrong(&self->_stepValue, a3);
+    objc_storeStrong(&self->_stepValue, value);
     stepValue = self->_stepValue;
     if (!stepValue || [(NSNumber *)stepValue compare:&unk_282492810]== NSOrderedAscending)
     {
-      v6 = [(HUWheelControlPanelCell *)self _defaultStepValue];
+      _defaultStepValue = [(HUWheelControlPanelCell *)self _defaultStepValue];
       v7 = self->_stepValue;
-      self->_stepValue = v6;
+      self->_stepValue = _defaultStepValue;
     }
 
-    v8 = [(HUWheelControlPanelCell *)self minValue];
-    [v8 doubleValue];
+    minValue = [(HUWheelControlPanelCell *)self minValue];
+    [minValue doubleValue];
     v10 = v9;
-    v11 = [(HUWheelControlPanelCell *)self maxValue];
-    [v11 doubleValue];
+    maxValue = [(HUWheelControlPanelCell *)self maxValue];
+    [maxValue doubleValue];
     v13 = v12;
-    [v15 doubleValue];
+    [valueCopy doubleValue];
     [(HUWheelControlPanelCell *)self _generateWheelValuesWithMinValue:v10 maxValue:v13 stepValue:v14];
   }
 }
 
-- (void)setValueFormatter:(id)a3
+- (void)setValueFormatter:(id)formatter
 {
-  v4 = a3;
-  if (!v4)
+  formatterCopy = formatter;
+  if (!formatterCopy)
   {
-    v4 = [(HUWheelControlPanelCell *)self _defaultValueFormatter];
+    formatterCopy = [(HUWheelControlPanelCell *)self _defaultValueFormatter];
   }
 
-  v6 = v4;
-  objc_storeStrong(&self->_valueFormatter, v4);
+  v6 = formatterCopy;
+  objc_storeStrong(&self->_valueFormatter, formatterCopy);
   if ([MEMORY[0x277D14CE8] isAMac])
   {
     [(HUWheelControlPanelCell *)self wheelButton];
@@ -604,13 +604,13 @@ LABEL_15:
   [v5 setValueFormatter:v6];
 }
 
-- (void)_generateWheelValuesWithMinValue:(double)a3 maxValue:(double)a4 stepValue:(double)a5
+- (void)_generateWheelValuesWithMinValue:(double)value maxValue:(double)maxValue stepValue:(double)stepValue
 {
-  v8 = llround(a4 - a3);
+  v8 = llround(maxValue - value);
   v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
   if (v8 < 1)
   {
-    if (a4 == a3)
+    if (maxValue == value)
     {
       [v13 addObject:&unk_2824927F8];
     }
@@ -622,8 +622,8 @@ LABEL_15:
     v10 = v8 + 1;
     do
     {
-      v11 = [MEMORY[0x277CCABB0] numberWithDouble:v9 + a3];
-      [v13 addObject:v11];
+      value = [MEMORY[0x277CCABB0] numberWithDouble:v9 + value];
+      [v13 addObject:value];
 
       ++v9;
     }

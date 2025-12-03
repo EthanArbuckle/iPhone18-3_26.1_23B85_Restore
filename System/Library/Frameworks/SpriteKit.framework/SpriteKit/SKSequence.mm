@@ -1,10 +1,10 @@
 @interface SKSequence
-+ (id)sequenceWithActions:(id)a3;
++ (id)sequenceWithActions:(id)actions;
 - (SKSequence)init;
-- (SKSequence)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SKSequence)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)reversedAction;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SKSequence
@@ -21,13 +21,13 @@
   return 0;
 }
 
-- (SKSequence)initWithCoder:(id)a3
+- (SKSequence)initWithCoder:(id)coder
 {
   v7 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = SKSequence;
-  if ([(SKAction *)&v6 initWithCoder:v4])
+  if ([(SKAction *)&v6 initWithCoder:coderCopy])
   {
     operator new();
   }
@@ -35,24 +35,24 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = SKSequence;
-  [(SKAction *)&v6 encodeWithCoder:v4];
+  [(SKAction *)&v6 encodeWithCoder:coderCopy];
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:*(self->_mycaction + 17)];
-  [v4 encodeObject:v5 forKey:@"_mycaction->_animIndex"];
+  [coderCopy encodeObject:v5 forKey:@"_mycaction->_animIndex"];
 
-  [v4 encodeObject:self->_actions forKey:@"_actions"];
+  [coderCopy encodeObject:self->_actions forKey:@"_actions"];
 }
 
-+ (id)sequenceWithActions:(id)a3
++ (id)sequenceWithActions:(id)actions
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 count])
+  actionsCopy = actions;
+  v4 = actionsCopy;
+  if (actionsCopy && [actionsCopy count])
   {
     objc_opt_class();
     v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v4, "count")}];
@@ -146,14 +146,14 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SKSequence sequenceWithActions:self->_actions];
   [(SKAction *)self speed];
   [v4 setSpeed:?];
   [v4 setTimingMode:{-[SKAction timingMode](self, "timingMode")}];
-  v5 = [(SKAction *)self timingFunction];
-  [v4 setTimingFunction:v5];
+  timingFunction = [(SKAction *)self timingFunction];
+  [v4 setTimingFunction:timingFunction];
 
   return v4;
 }
@@ -180,8 +180,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * i) reversedAction];
-        [v3 insertObject:v8 atIndex:0];
+        reversedAction = [*(*(&v11 + 1) + 8 * i) reversedAction];
+        [v3 insertObject:reversedAction atIndex:0];
       }
 
       v5 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];

@@ -1,5 +1,5 @@
 @interface MPModelLibraryPlaylistEditTrackDataSource
-- (MPModelLibraryPlaylistEditTrackDataSource)initWithTrackObjects:(id)a3 authorProfile:(id)a4;
+- (MPModelLibraryPlaylistEditTrackDataSource)initWithTrackObjects:(id)objects authorProfile:(id)profile;
 - (id)description;
 @end
 
@@ -9,41 +9,41 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MPModelLibraryPlaylistEditDataSource *)self identifier];
-  v6 = [v3 stringWithFormat:@"<%@ %p : %@>{\n", v4, self, v5];
+  identifier = [(MPModelLibraryPlaylistEditDataSource *)self identifier];
+  v6 = [v3 stringWithFormat:@"<%@ %p : %@>{\n", v4, self, identifier];
 
   return v6;
 }
 
-- (MPModelLibraryPlaylistEditTrackDataSource)initWithTrackObjects:(id)a3 authorProfile:(id)a4
+- (MPModelLibraryPlaylistEditTrackDataSource)initWithTrackObjects:(id)objects authorProfile:(id)profile
 {
   v53 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 firstObject];
-  v10 = [v9 identifiers];
+  objectsCopy = objects;
+  profileCopy = profile;
+  firstObject = [objectsCopy firstObject];
+  identifiers = [firstObject identifiers];
 
-  v11 = [v10 library];
-  v12 = [v11 persistentID];
+  library = [identifiers library];
+  persistentID = [library persistentID];
 
-  if (v12)
+  if (persistentID)
   {
     v13 = MEMORY[0x1E696AEC0];
-    v14 = [v10 library];
-    [v13 stringWithFormat:@"l.%lld", objc_msgSend(v14, "persistentID")];
+    library2 = [identifiers library];
+    [v13 stringWithFormat:@"l.%lld", objc_msgSend(library2, "persistentID")];
     v18 = LABEL_5:;
 
     goto LABEL_6;
   }
 
-  v15 = [v10 universalStore];
-  v16 = [v15 subscriptionAdamID];
+  universalStore = [identifiers universalStore];
+  subscriptionAdamID = [universalStore subscriptionAdamID];
 
-  if (v16)
+  if (subscriptionAdamID)
   {
     v17 = MEMORY[0x1E696AEC0];
-    v14 = [v10 universalStore];
-    [v17 stringWithFormat:@"s.%lld", objc_msgSend(v14, "subscriptionAdamID")];
+    library2 = [identifiers universalStore];
+    [v17 stringWithFormat:@"s.%lld", objc_msgSend(library2, "subscriptionAdamID")];
     goto LABEL_5;
   }
 
@@ -55,24 +55,24 @@ LABEL_6:
 
   v47.receiver = self;
   v47.super_class = MPModelLibraryPlaylistEditTrackDataSource;
-  v22 = [(MPModelLibraryPlaylistEditDataSource *)&v47 initWithIdentifier:v21 authorProfile:v8];
+  v22 = [(MPModelLibraryPlaylistEditDataSource *)&v47 initWithIdentifier:v21 authorProfile:profileCopy];
   if (v22)
   {
     v39 = v21;
     v38 = a2;
-    v40 = v10;
-    v41 = v8;
-    v23 = [v7 copy];
+    v40 = identifiers;
+    v41 = profileCopy;
+    v23 = [objectsCopy copy];
     tracks = v22->_tracks;
     v22->_tracks = v23;
 
-    v25 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v7, "count")}];
+    v25 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(objectsCopy, "count")}];
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v42 = v7;
-    v26 = v7;
+    v42 = objectsCopy;
+    v26 = objectsCopy;
     v27 = [v26 countByEnumeratingWithState:&v43 objects:v52 count:16];
     if (v27)
     {
@@ -92,8 +92,8 @@ LABEL_6:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            v34 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v34 handleFailureInMethod:v38 object:v22 file:@"MPModelLibraryPlaylistEditTrackDataSource.m" lineNumber:40 description:{@"Object is not a song track: %@", objc_opt_class()}];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler handleFailureInMethod:v38 object:v22 file:@"MPModelLibraryPlaylistEditTrackDataSource.m" lineNumber:40 description:{@"Object is not a song track: %@", objc_opt_class()}];
           }
 
           v32 = [(MPModelLibraryPlaylistEditDataSource *)v22 newPlaylistEntryForTrack:v31];
@@ -129,9 +129,9 @@ LABEL_6:
     playlistEntries = v22->_playlistEntries;
     v22->_playlistEntries = v35;
 
-    v8 = v41;
-    v7 = v42;
-    v10 = v40;
+    profileCopy = v41;
+    objectsCopy = v42;
+    identifiers = v40;
     v21 = v39;
   }
 

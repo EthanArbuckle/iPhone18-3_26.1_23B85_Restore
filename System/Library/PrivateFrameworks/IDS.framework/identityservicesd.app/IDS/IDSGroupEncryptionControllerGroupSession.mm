@@ -1,8 +1,8 @@
 @interface IDSGroupEncryptionControllerGroupSession
 - (_TtC17identityservicesd38IDSGroupRootMaterialExchangeController)rootExchangeController;
 - (_TtC17identityservicesd40IDSGroupEncryptionControllerGroupSession)init;
-- (void)setKeyMaterialIsNeededForParticipant:(id)a3 forMKM:(BOOL)a4 forSKM:(BOOL)a5;
-- (void)setRootExchangeController:(id)a3;
+- (void)setKeyMaterialIsNeededForParticipant:(id)participant forMKM:(BOOL)m forSKM:(BOOL)kM;
+- (void)setRootExchangeController:(id)controller;
 @end
 
 @implementation IDSGroupEncryptionControllerGroupSession
@@ -14,18 +14,18 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setRootExchangeController:(id)a3
+- (void)setRootExchangeController:(id)controller
 {
-  v6 = a3;
-  v5 = self;
-  sub_1007D55C4(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1007D55C4(controller);
 }
 
-- (void)setKeyMaterialIsNeededForParticipant:(id)a3 forMKM:(BOOL)a4 forSKM:(BOOL)a5
+- (void)setKeyMaterialIsNeededForParticipant:(id)participant forMKM:(BOOL)m forSKM:(BOOL)kM
 {
-  v8 = a3;
-  v9 = self;
-  sub_1007CD61C(v8, a4, a5);
+  participantCopy = participant;
+  selfCopy = self;
+  sub_1007CD61C(participantCopy, m, kM);
 }
 
 - (_TtC17identityservicesd40IDSGroupEncryptionControllerGroupSession)init

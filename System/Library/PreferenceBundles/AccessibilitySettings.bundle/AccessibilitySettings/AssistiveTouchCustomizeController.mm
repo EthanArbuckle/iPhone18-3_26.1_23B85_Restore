@@ -1,16 +1,16 @@
 @interface AssistiveTouchCustomizeController
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_iconPickerDone:(id)a3;
-- (void)_resetCustomization:(id)a3 specifier:(id)a4;
-- (void)customCell:(id)a3 wantsPickerDisplayedForIconKey:(id)a4 andLocation:(id)a5 cell:(id)a6;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_iconPickerDone:(id)done;
+- (void)_resetCustomization:(id)customization specifier:(id)specifier;
+- (void)customCell:(id)cell wantsPickerDisplayedForIconKey:(id)key andLocation:(id)location cell:(id)a6;
 - (void)dealloc;
 - (void)didUpdateCustomizeCellHeight;
 - (void)loadView;
-- (void)stepperCellCountChanged:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)stepperCellCountChanged:(id)changed;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation AssistiveTouchCustomizeController
@@ -114,9 +114,9 @@ id __45__AssistiveTouchCustomizeController_loadView__block_invoke(uint64_t a1, v
   return v9;
 }
 
-- (void)_resetCustomization:(id)a3 specifier:(id)a4
+- (void)_resetCustomization:(id)customization specifier:(id)specifier
 {
-  v4 = [AXSettings sharedInstance:a3];
+  v4 = [AXSettings sharedInstance:customization];
   [v4 setAssistiveTouchMainScreenCustomization:0];
 
   v5 = +[AXSettings sharedInstance];
@@ -132,13 +132,13 @@ id __45__AssistiveTouchCustomizeController_loadView__block_invoke(uint64_t a1, v
   [v8 setAssistiveTouchLongPressAction:0];
 }
 
-- (void)stepperCellCountChanged:(id)a3
+- (void)stepperCellCountChanged:(id)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   v4 = +[AXSettings sharedInstance];
-  v7 = [v4 assistiveTouchMainScreenCustomization];
+  assistiveTouchMainScreenCustomization = [v4 assistiveTouchMainScreenCustomization];
 
-  [v3 buttonCount];
+  [changedCopy buttonCount];
   v5 = AXAssistiveTouchChangeIconCount();
   v6 = +[AXSettings sharedInstance];
   [v6 setAssistiveTouchMainScreenCustomization:v5];
@@ -152,36 +152,36 @@ id __45__AssistiveTouchCustomizeController_loadView__block_invoke(uint64_t a1, v
   [(AssistiveTouchCustomizeController *)&v3 dealloc];
 }
 
-- (void)customCell:(id)a3 wantsPickerDisplayedForIconKey:(id)a4 andLocation:(id)a5 cell:(id)a6
+- (void)customCell:(id)cell wantsPickerDisplayedForIconKey:(id)key andLocation:(id)location cell:(id)a6
 {
-  v26 = a3;
+  cellCopy = cell;
   v10 = a6;
-  v11 = a5;
-  v12 = a4;
+  locationCopy = location;
+  keyCopy = key;
   [(AssistiveTouchCustomizeController *)self _cleanupIconPickerTableView];
   v13 = [[ASTIconPickerTableViewController alloc] initWithStyle:2];
   iconPickerTableViewController = self->_iconPickerTableViewController;
   self->_iconPickerTableViewController = v13;
 
   [(ASTIconPickerTableViewController *)self->_iconPickerTableViewController setIconPickerDelegate:self];
-  [(AssistiveTouchCustomizeBaseActionPickerController *)self setSelectedPopoverIcon:v12];
+  [(AssistiveTouchCustomizeBaseActionPickerController *)self setSelectedPopoverIcon:keyCopy];
 
-  [(AssistiveTouchCustomizeBaseActionPickerController *)self setSelectedPopoverLocation:v11];
-  LODWORD(v11) = AXDeviceIsPad();
+  [(AssistiveTouchCustomizeBaseActionPickerController *)self setSelectedPopoverLocation:locationCopy];
+  LODWORD(locationCopy) = AXDeviceIsPad();
   v15 = [UINavigationController alloc];
-  if (v11)
+  if (locationCopy)
   {
     v16 = [v15 initWithRootViewController:self->_iconPickerTableViewController];
     [v16 setModalPresentationStyle:7];
-    v17 = [v16 popoverPresentationController];
+    popoverPresentationController = [v16 popoverPresentationController];
     iconPickerPopoverController = self->_iconPickerPopoverController;
-    self->_iconPickerPopoverController = v17;
+    self->_iconPickerPopoverController = popoverPresentationController;
 
-    [(UIPopoverPresentationController *)self->_iconPickerPopoverController setSourceView:v26];
-    v19 = [v10 borderView];
-    v20 = [v10 borderView];
-    [v20 bounds];
-    [v19 convertRect:v26 toView:?];
+    [(UIPopoverPresentationController *)self->_iconPickerPopoverController setSourceView:cellCopy];
+    borderView = [v10 borderView];
+    borderView2 = [v10 borderView];
+    [borderView2 bounds];
+    [borderView convertRect:cellCopy toView:?];
     [(UIPopoverPresentationController *)self->_iconPickerPopoverController setSourceRect:?];
 
     [(UIPopoverPresentationController *)self->_iconPickerPopoverController setPermittedArrowDirections:1];
@@ -192,14 +192,14 @@ id __45__AssistiveTouchCustomizeController_loadView__block_invoke(uint64_t a1, v
   {
     v16 = [v15 initWithNavigationBarClass:0 toolbarClass:0];
     [v16 pushViewController:self->_iconPickerTableViewController animated:1];
-    v21 = [v16 navigationBar];
-    v22 = [v21 topItem];
-    [v22 setTitle:0];
+    navigationBar = [v16 navigationBar];
+    topItem = [navigationBar topItem];
+    [topItem setTitle:0];
 
     v23 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"_iconPickerDone:"];
-    v24 = [v16 navigationBar];
-    v25 = [v24 topItem];
-    [v25 setRightBarButtonItem:v23];
+    navigationBar2 = [v16 navigationBar];
+    topItem2 = [navigationBar2 topItem];
+    [topItem2 setRightBarButtonItem:v23];
 
     [v16 setModalPresentationStyle:0];
   }
@@ -209,32 +209,32 @@ id __45__AssistiveTouchCustomizeController_loadView__block_invoke(uint64_t a1, v
 
 - (void)didUpdateCustomizeCellHeight
 {
-  v3 = [(AssistiveTouchCustomizeController *)self table];
-  [v3 beginUpdates];
+  table = [(AssistiveTouchCustomizeController *)self table];
+  [table beginUpdates];
 
-  v4 = [(AssistiveTouchCustomizeController *)self table];
-  [v4 endUpdates];
+  table2 = [(AssistiveTouchCustomizeController *)self table];
+  [table2 endUpdates];
 }
 
-- (void)_iconPickerDone:(id)a3
+- (void)_iconPickerDone:(id)done
 {
-  v4 = [(ASTIconPickerTableViewController *)self->_iconPickerTableViewController parentViewController];
+  parentViewController = [(ASTIconPickerTableViewController *)self->_iconPickerTableViewController parentViewController];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = __53__AssistiveTouchCustomizeController__iconPickerDone___block_invoke;
   v5[3] = &unk_2553B0;
   v5[4] = self;
-  [v4 dismissViewControllerAnimated:1 completion:v5];
+  [parentViewController dismissViewControllerAnimated:1 completion:v5];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v12 = 0;
   v11.receiver = self;
   v11.super_class = AssistiveTouchCustomizeController;
-  v8 = [(AssistiveTouchCustomizeController *)&v11 tableView:v6 cellForRowAtIndexPath:v7];
+  v8 = [(AssistiveTouchCustomizeController *)&v11 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
   v9 = __UIAccessibilitySafeClass();
 
   if (v12 == 1)
@@ -263,16 +263,16 @@ id __45__AssistiveTouchCustomizeController_loadView__block_invoke(uint64_t a1, v
   return v9;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v4.receiver = self;
   v4.super_class = AssistiveTouchCustomizeController;
-  [(AssistiveTouchCustomizeController *)&v4 tableView:a3 didSelectRowAtIndexPath:a4];
+  [(AssistiveTouchCustomizeController *)&v4 tableView:view didSelectRowAtIndexPath:path];
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v4 = [(AssistiveTouchCustomizeController *)self specifierForIndexPath:a4];
+  v4 = [(AssistiveTouchCustomizeController *)self specifierForIndexPath:path];
   v5 = [v4 propertyForKey:PSIDKey];
   if ([v5 isEqualToString:@"Reset"])
   {
@@ -288,11 +288,11 @@ id __45__AssistiveTouchCustomizeController_loadView__block_invoke(uint64_t a1, v
   return v6;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AssistiveTouchCustomizeController *)self specifierForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(AssistiveTouchCustomizeController *)self specifierForIndexPath:pathCopy];
   v9 = [v8 propertyForKey:PSIDKey];
   v10 = [v9 isEqualToString:@"ASTCustomizeCell"];
 
@@ -305,7 +305,7 @@ id __45__AssistiveTouchCustomizeController_loadView__block_invoke(uint64_t a1, v
   {
     v14.receiver = self;
     v14.super_class = AssistiveTouchCustomizeController;
-    [(AssistiveTouchCustomizeController *)&v14 tableView:v6 heightForRowAtIndexPath:v7];
+    [(AssistiveTouchCustomizeController *)&v14 tableView:viewCopy heightForRowAtIndexPath:pathCopy];
     v11 = v12;
   }
 

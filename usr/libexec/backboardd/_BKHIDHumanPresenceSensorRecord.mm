@@ -1,54 +1,54 @@
 @interface _BKHIDHumanPresenceSensorRecord
 - (id)description;
 - (void)_resetServiceStatus;
-- (void)addService:(id)a3;
-- (void)removeService:(id)a3;
-- (void)setHumanIsPresent:(BOOL)a3;
-- (void)setProximityInCentimeters:(double)a3;
+- (void)addService:(id)service;
+- (void)removeService:(id)service;
+- (void)setHumanIsPresent:(BOOL)present;
+- (void)setProximityInCentimeters:(double)centimeters;
 @end
 
 @implementation _BKHIDHumanPresenceSensorRecord
 
-- (void)removeService:(id)a3
+- (void)removeService:(id)service
 {
-  [(NSMutableArray *)self->_services removeObject:a3];
+  [(NSMutableArray *)self->_services removeObject:service];
 
   [(_BKHIDHumanPresenceSensorRecord *)self _resetServiceStatus];
 }
 
-- (void)addService:(id)a3
+- (void)addService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   services = self->_services;
-  v8 = v4;
+  v8 = serviceCopy;
   if (!services)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_services;
     self->_services = v6;
 
-    v4 = v8;
+    serviceCopy = v8;
     services = self->_services;
   }
 
-  [(NSMutableArray *)services addObject:v4];
+  [(NSMutableArray *)services addObject:serviceCopy];
   [(_BKHIDHumanPresenceSensorRecord *)self _resetServiceStatus];
 }
 
-- (void)setHumanIsPresent:(BOOL)a3
+- (void)setHumanIsPresent:(BOOL)present
 {
-  if (self->_humanIsPresent != a3)
+  if (self->_humanIsPresent != present)
   {
-    self->_humanIsPresent = a3;
+    self->_humanIsPresent = present;
     self->_status |= 4uLL;
   }
 }
 
-- (void)setProximityInCentimeters:(double)a3
+- (void)setProximityInCentimeters:(double)centimeters
 {
-  if (self->_proximityInCentimeters != a3)
+  if (self->_proximityInCentimeters != centimeters)
   {
-    self->_proximityInCentimeters = a3;
+    self->_proximityInCentimeters = centimeters;
     self->_status |= 8uLL;
   }
 }
@@ -75,15 +75,15 @@
           objc_enumerationMutation(v3);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * i) primaryUsage];
-        if (v8 == 17)
+        primaryUsage = [*(*(&v12 + 1) + 8 * i) primaryUsage];
+        if (primaryUsage == 17)
         {
           v9 = 1;
         }
 
         else
         {
-          if (v8 != 18)
+          if (primaryUsage != 18)
           {
             continue;
           }
@@ -122,9 +122,9 @@
 
   v7 = [v3 appendFloat:@"proximityInCentimeters" withName:self->_proximityInCentimeters];
   v8 = [v3 appendBool:self->_humanIsPresent withName:@"humanIsPresent"];
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
 @end

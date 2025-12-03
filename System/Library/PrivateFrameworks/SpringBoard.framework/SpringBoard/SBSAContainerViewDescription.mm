@@ -1,13 +1,13 @@
 @interface SBSAContainerViewDescription
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)contentCenter;
 - (CGRect)contentBounds;
 - (CGSize)contentScale;
 - (NSString)description;
-- (id)copyByPixelAligningGeometryWithScale:(double)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyByPixelAligningGeometryWithScale:(double)scale;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)_setRenderingConfiguration:(SBSystemApertureContainerRenderingConfiguration *)a3;
+- (void)_setRenderingConfiguration:(SBSystemApertureContainerRenderingConfiguration *)configuration;
 @end
 
 @implementation SBSAContainerViewDescription
@@ -43,7 +43,7 @@
   return result;
 }
 
-- (id)copyByPixelAligningGeometryWithScale:(double)a3
+- (id)copyByPixelAligningGeometryWithScale:(double)scale
 {
   v10.receiver = self;
   v10.super_class = SBSAContainerViewDescription;
@@ -54,7 +54,7 @@
   v9[3] = &unk_2783ACD90;
   v9[4] = self;
   v9[5] = a2;
-  *&v9[6] = a3;
+  *&v9[6] = scale;
   v7 = [v6 copyWithBlock:v9];
 
   return v7;
@@ -108,16 +108,16 @@ void __69__SBSAContainerViewDescription_copyByPixelAligningGeometryWithScale___b
   [v6 setContentCenter:?];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v36 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v36 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   v59[0] = MEMORY[0x277D85DD0];
   v59[1] = 3221225472;
   v59[2] = __40__SBSAContainerViewDescription_isEqual___block_invoke;
   v59[3] = &unk_2783A94B0;
-  v60 = v4;
-  v61 = self;
+  v60 = equalCopy;
+  selfCopy = self;
   v57[0] = MEMORY[0x277D85DD0];
   v57[1] = 3221225472;
   v57[2] = __40__SBSAContainerViewDescription_isEqual___block_invoke_2;
@@ -239,13 +239,13 @@ BOOL __40__SBSAContainerViewDescription_isEqual___block_invoke_2(uint64_t a1)
 
 - (unint64_t)hash
 {
-  v18 = [MEMORY[0x277CF0C40] builder];
+  builder = [MEMORY[0x277CF0C40] builder];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __36__SBSAContainerViewDescription_hash__block_invoke;
   v19[3] = &unk_2783A9500;
   v19[4] = self;
-  v17 = [v18 appendHashingBlocks:{v19, 0}];
+  v17 = [builder appendHashingBlocks:{v19, 0}];
   v16 = [v17 appendObject:self->_associatedSystemApertureElementIdentity];
   v15 = [v16 appendCGSize:{self->_contentScale.width, self->_contentScale.height}];
   v14 = [v15 appendCGRect:{self->_contentBounds.origin.x, self->_contentBounds.origin.y, self->_contentBounds.size.width, self->_contentBounds.size.height}];
@@ -296,17 +296,17 @@ id __36__SBSAContainerViewDescription_hash__block_invoke(uint64_t a1)
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v15.receiver = self;
   v15.super_class = SBSAContainerViewDescription;
-  v4 = [(SBSAViewDescription *)&v15 copyWithZone:a3];
+  v4 = [(SBSAViewDescription *)&v15 copyWithZone:zone];
   if (self->_associatedSystemApertureElementIdentity)
   {
     v5 = [SBSAElementIdentification alloc];
-    v6 = [(SAElementIdentifying *)self->_associatedSystemApertureElementIdentity clientIdentifier];
-    v7 = [(SAElementIdentifying *)self->_associatedSystemApertureElementIdentity elementIdentifier];
-    v8 = [(SBSAElementIdentification *)v5 initWithClientIdentifier:v6 elementIdentifier:v7];
+    clientIdentifier = [(SAElementIdentifying *)self->_associatedSystemApertureElementIdentity clientIdentifier];
+    elementIdentifier = [(SAElementIdentifying *)self->_associatedSystemApertureElementIdentity elementIdentifier];
+    v8 = [(SBSAElementIdentification *)v5 initWithClientIdentifier:clientIdentifier elementIdentifier:elementIdentifier];
     v9 = *(v4 + 18);
     *(v4 + 18) = v8;
   }
@@ -331,10 +331,10 @@ id __36__SBSAContainerViewDescription_hash__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)_setRenderingConfiguration:(SBSystemApertureContainerRenderingConfiguration *)a3
+- (void)_setRenderingConfiguration:(SBSystemApertureContainerRenderingConfiguration *)configuration
 {
-  v3 = *&a3->alwaysRenderInSnapshots;
-  *&self->_renderingConfiguration.renderingStyle = *&a3->renderingStyle;
+  v3 = *&configuration->alwaysRenderInSnapshots;
+  *&self->_renderingConfiguration.renderingStyle = *&configuration->renderingStyle;
   *&self->_renderingConfiguration.alwaysRenderInSnapshots = v3;
 }
 

@@ -1,100 +1,100 @@
 @interface NTKRoundedCornerOverlayView
-- (NTKRoundedCornerOverlayView)initWithFrame:(CGRect)a3 forDevice:(id)a4 cornerRadius:(double)a5;
-- (NTKRoundedCornerOverlayView)initWithFrame:(CGRect)a3 forDeviceCornerRadius:(id)a4;
-- (NTKRoundedCornerOverlayView)initWithFrame:(CGRect)a3 screenScale:(double)a4 cornerRadius:(double)a5;
+- (NTKRoundedCornerOverlayView)initWithFrame:(CGRect)frame forDevice:(id)device cornerRadius:(double)radius;
+- (NTKRoundedCornerOverlayView)initWithFrame:(CGRect)frame forDeviceCornerRadius:(id)radius;
+- (NTKRoundedCornerOverlayView)initWithFrame:(CGRect)frame screenScale:(double)scale cornerRadius:(double)radius;
 - (void)layoutSubviews;
 @end
 
 @implementation NTKRoundedCornerOverlayView
 
-- (NTKRoundedCornerOverlayView)initWithFrame:(CGRect)a3 screenScale:(double)a4 cornerRadius:(double)a5
+- (NTKRoundedCornerOverlayView)initWithFrame:(CGRect)frame screenScale:(double)scale cornerRadius:(double)radius
 {
   v36.receiver = self;
   v36.super_class = NTKRoundedCornerOverlayView;
-  v7 = [(NTKRoundedCornerOverlayView *)&v36 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v7 = [(NTKRoundedCornerOverlayView *)&v36 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v8 = v7;
   if (v7)
   {
-    v7->_cornerRadius = a5;
-    v7->_screenScale = a4;
-    v9 = [MEMORY[0x277D755B8] newImageForScreenCorner:1 screenScale:a4 cornerRadius:a5];
+    v7->_cornerRadius = radius;
+    v7->_screenScale = scale;
+    v9 = [MEMORY[0x277D755B8] newImageForScreenCorner:1 screenScale:scale cornerRadius:radius];
     v10 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v9];
     upperLeftCorner = v8->_upperLeftCorner;
     v8->_upperLeftCorner = v10;
 
     v12 = objc_alloc(MEMORY[0x277D755E8]);
     v13 = MEMORY[0x277D755B8];
-    v14 = [v9 CGImage];
+    cGImage = [v9 CGImage];
     [v9 scale];
-    v15 = [v13 imageWithCGImage:v14 scale:3 orientation:?];
+    v15 = [v13 imageWithCGImage:cGImage scale:3 orientation:?];
     v16 = [v12 initWithImage:v15];
     upperRightCorner = v8->_upperRightCorner;
     v8->_upperRightCorner = v16;
 
     v18 = objc_alloc(MEMORY[0x277D755E8]);
     v19 = MEMORY[0x277D755B8];
-    v20 = [v9 CGImage];
+    cGImage2 = [v9 CGImage];
     [v9 scale];
-    v21 = [v19 imageWithCGImage:v20 scale:2 orientation:?];
+    v21 = [v19 imageWithCGImage:cGImage2 scale:2 orientation:?];
     v22 = [v18 initWithImage:v21];
     bottomLeftCorner = v8->_bottomLeftCorner;
     v8->_bottomLeftCorner = v22;
 
     v24 = objc_alloc(MEMORY[0x277D755E8]);
     v25 = MEMORY[0x277D755B8];
-    v26 = [v9 CGImage];
+    cGImage3 = [v9 CGImage];
     [v9 scale];
-    v27 = [v25 imageWithCGImage:v26 scale:1 orientation:?];
+    v27 = [v25 imageWithCGImage:cGImage3 scale:1 orientation:?];
     v28 = [v24 initWithImage:v27];
     bottomRightCorner = v8->_bottomRightCorner;
     v8->_bottomRightCorner = v28;
 
-    v30 = [(UIImageView *)v8->_upperLeftCorner layer];
-    [v30 setAllowsEdgeAntialiasing:0];
+    layer = [(UIImageView *)v8->_upperLeftCorner layer];
+    [layer setAllowsEdgeAntialiasing:0];
 
-    v31 = [(UIImageView *)v8->_upperRightCorner layer];
-    [v31 setAllowsEdgeAntialiasing:0];
+    layer2 = [(UIImageView *)v8->_upperRightCorner layer];
+    [layer2 setAllowsEdgeAntialiasing:0];
 
-    v32 = [(UIImageView *)v8->_bottomLeftCorner layer];
-    [v32 setAllowsEdgeAntialiasing:0];
+    layer3 = [(UIImageView *)v8->_bottomLeftCorner layer];
+    [layer3 setAllowsEdgeAntialiasing:0];
 
-    v33 = [(UIImageView *)v8->_bottomRightCorner layer];
-    [v33 setAllowsEdgeAntialiasing:0];
+    layer4 = [(UIImageView *)v8->_bottomRightCorner layer];
+    [layer4 setAllowsEdgeAntialiasing:0];
 
     [(NTKRoundedCornerOverlayView *)v8 addSubview:v8->_upperRightCorner];
     [(NTKRoundedCornerOverlayView *)v8 addSubview:v8->_upperLeftCorner];
     [(NTKRoundedCornerOverlayView *)v8 addSubview:v8->_bottomLeftCorner];
     [(NTKRoundedCornerOverlayView *)v8 addSubview:v8->_bottomRightCorner];
     [(NTKRoundedCornerOverlayView *)v8 setUserInteractionEnabled:0];
-    v34 = [(NTKRoundedCornerOverlayView *)v8 layer];
-    [v34 setAllowsHitTesting:0];
+    layer5 = [(NTKRoundedCornerOverlayView *)v8 layer];
+    [layer5 setAllowsHitTesting:0];
   }
 
   return v8;
 }
 
-- (NTKRoundedCornerOverlayView)initWithFrame:(CGRect)a3 forDeviceCornerRadius:(id)a4
+- (NTKRoundedCornerOverlayView)initWithFrame:(CGRect)frame forDeviceCornerRadius:(id)radius
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  [v9 screenCornerRadius];
-  v11 = [(NTKRoundedCornerOverlayView *)self initWithFrame:v9 forDevice:x cornerRadius:y, width, height, v10];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  radiusCopy = radius;
+  [radiusCopy screenCornerRadius];
+  v11 = [(NTKRoundedCornerOverlayView *)self initWithFrame:radiusCopy forDevice:x cornerRadius:y, width, height, v10];
 
   return v11;
 }
 
-- (NTKRoundedCornerOverlayView)initWithFrame:(CGRect)a3 forDevice:(id)a4 cornerRadius:(double)a5
+- (NTKRoundedCornerOverlayView)initWithFrame:(CGRect)frame forDevice:(id)device cornerRadius:(double)radius
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [a4 screenScale];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  [device screenScale];
 
-  return [(NTKRoundedCornerOverlayView *)self initWithFrame:x screenScale:y cornerRadius:width, height, v11, a5];
+  return [(NTKRoundedCornerOverlayView *)self initWithFrame:x screenScale:y cornerRadius:width, height, v11, radius];
 }
 
 - (void)layoutSubviews

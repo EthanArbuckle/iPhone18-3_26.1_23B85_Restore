@@ -8,23 +8,23 @@
 - (void)dealloc
 {
   v2 = qword_10006E0B8;
-  v3 = self;
+  selfCopy = self;
   if (v2 != -1)
   {
-    v9 = v3;
+    v9 = selfCopy;
     swift_once();
-    v3 = v9;
+    selfCopy = v9;
   }
 
   v4 = qword_100073150;
-  v6 = *&v3->tagID[OBJC_IVAR____TtC32DynamicBackgroundPosterExtension14SnapshotReader_viewConfiguration + 7];
-  v5 = *&v3->updateBlock[OBJC_IVAR____TtC32DynamicBackgroundPosterExtension14SnapshotReader_viewConfiguration + 7];
-  v7 = *(&v3->super.isa + OBJC_IVAR____TtC32DynamicBackgroundPosterExtension14SnapshotReader_viewConfiguration);
-  *&v13[13] = *&v3->currentSnapshotConfiguration[OBJC_IVAR____TtC32DynamicBackgroundPosterExtension14SnapshotReader_viewConfiguration + 4];
+  v6 = *&selfCopy->tagID[OBJC_IVAR____TtC32DynamicBackgroundPosterExtension14SnapshotReader_viewConfiguration + 7];
+  v5 = *&selfCopy->updateBlock[OBJC_IVAR____TtC32DynamicBackgroundPosterExtension14SnapshotReader_viewConfiguration + 7];
+  v7 = *(&selfCopy->super.isa + OBJC_IVAR____TtC32DynamicBackgroundPosterExtension14SnapshotReader_viewConfiguration);
+  *&v13[13] = *&selfCopy->currentSnapshotConfiguration[OBJC_IVAR____TtC32DynamicBackgroundPosterExtension14SnapshotReader_viewConfiguration + 4];
   v12[1] = v6;
   *v13 = v5;
   v12[0] = v7;
-  v8 = v3;
+  v8 = selfCopy;
   sub_1000131F8(v12, v11);
   sub_100012B38(v8, v12, v4);
   sub_100013254(v12);

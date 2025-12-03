@@ -1,29 +1,29 @@
 @interface TUILayoutAttributes
-+ (id)newLayoutAttributesWithIndexPath:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)newLayoutAttributesWithIndexPath:(id)path;
+- (BOOL)isEqual:(id)equal;
 - (CGAffineTransform)transform;
 - (CGPoint)center;
 - (CGRect)bounds;
 - (CGRect)frame;
 - (CGSize)size;
 - (TUILayoutAttributes)init;
-- (TUILayoutAttributes)initWithOther:(id)a3;
+- (TUILayoutAttributes)initWithOther:(id)other;
 - (UIEdgeInsets)outsets;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)setBounds:(CGRect)a3;
-- (void)setCenter:(CGPoint)a3;
-- (void)setSize:(CGSize)a3;
-- (void)setTransform:(CGAffineTransform *)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCenter:(CGPoint)center;
+- (void)setSize:(CGSize)size;
+- (void)setTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation TUILayoutAttributes
 
-+ (id)newLayoutAttributesWithIndexPath:(id)a3
++ (id)newLayoutAttributesWithIndexPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = objc_alloc_init(TUILayoutAttributes);
-  [(TUILayoutAttributes *)v4 setIndexPath:v3];
+  [(TUILayoutAttributes *)v4 setIndexPath:pathCopy];
 
   return v4;
 }
@@ -52,49 +52,49 @@
   return result;
 }
 
-- (TUILayoutAttributes)initWithOther:(id)a3
+- (TUILayoutAttributes)initWithOther:(id)other
 {
-  v4 = a3;
+  otherCopy = other;
   v13.receiver = self;
   v13.super_class = TUILayoutAttributes;
   v5 = [(TUILayoutAttributes *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    v7 = *(v4 + 8);
-    *(v5 + 24) = *(v4 + 24);
+    v7 = *(otherCopy + 8);
+    *(v5 + 24) = *(otherCopy + 24);
     *(v5 + 8) = v7;
-    v8 = *(v4 + 120);
-    *(v5 + 136) = *(v4 + 136);
+    v8 = *(otherCopy + 120);
+    *(v5 + 136) = *(otherCopy + 136);
     *(v5 + 120) = v8;
-    *(v5 + 7) = *(v4 + 7);
-    *(v5 + 6) = *(v4 + 6);
-    v9 = *(v4 + 184);
-    v10 = *(v4 + 200);
-    *(v5 + 216) = *(v4 + 216);
+    *(v5 + 7) = *(otherCopy + 7);
+    *(v5 + 6) = *(otherCopy + 6);
+    v9 = *(otherCopy + 184);
+    v10 = *(otherCopy + 200);
+    *(v5 + 216) = *(otherCopy + 216);
     *(v5 + 200) = v10;
     *(v5 + 184) = v9;
-    *(v5 + 104) = *(v4 + 104);
-    v5[40] = v4[40];
-    objc_storeStrong(v5 + 8, *(v4 + 8));
-    objc_storeStrong(v6 + 9, *(v4 + 9));
-    objc_storeStrong(v6 + 10, *(v4 + 10));
-    objc_storeStrong(v6 + 11, *(v4 + 11));
-    objc_storeStrong(v6 + 12, *(v4 + 12));
-    v11 = *(v4 + 152);
-    *(v6 + 168) = *(v4 + 168);
+    *(v5 + 104) = *(otherCopy + 104);
+    v5[40] = otherCopy[40];
+    objc_storeStrong(v5 + 8, *(otherCopy + 8));
+    objc_storeStrong(v6 + 9, *(otherCopy + 9));
+    objc_storeStrong(v6 + 10, *(otherCopy + 10));
+    objc_storeStrong(v6 + 11, *(otherCopy + 11));
+    objc_storeStrong(v6 + 12, *(otherCopy + 12));
+    v11 = *(otherCopy + 152);
+    *(v6 + 168) = *(otherCopy + 168);
     *(v6 + 152) = v11;
-    v6[41] = v4[41];
+    v6[41] = otherCopy[41];
   }
 
   return v6;
 }
 
-- (void)setSize:(CGSize)a3
+- (void)setSize:(CGSize)size
 {
-  if (self->_bounds.size.width != a3.width || self->_bounds.size.height != a3.height)
+  if (self->_bounds.size.width != size.width || self->_bounds.size.height != size.height)
   {
-    self->_bounds.size = a3;
+    self->_bounds.size = size;
     size = CGRectNull.size;
     self->_frame.origin = CGRectNull.origin;
     self->_frame.size = size;
@@ -110,13 +110,13 @@
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectEqualToRect(self->_bounds, a3))
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  if (!CGRectEqualToRect(self->_bounds, bounds))
   {
     self->_bounds.origin.x = x;
     self->_bounds.origin.y = y;
@@ -128,32 +128,32 @@
   }
 }
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
-  if (self->_center.x != a3.x || self->_center.y != a3.y)
+  if (self->_center.x != center.x || self->_center.y != center.y)
   {
-    self->_center = a3;
+    self->_center = center;
     size = CGRectNull.size;
     self->_frame.origin = CGRectNull.origin;
     self->_frame.size = size;
   }
 }
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
   v5 = *&self->_transform.c;
   *&t1.a = *&self->_transform.a;
   *&t1.c = v5;
   *&t1.tx = *&self->_transform.tx;
-  v6 = *&a3->c;
-  *&v10.a = *&a3->a;
+  v6 = *&transform->c;
+  *&v10.a = *&transform->a;
   *&v10.c = v6;
-  *&v10.tx = *&a3->tx;
+  *&v10.tx = *&transform->tx;
   if (!CGAffineTransformEqualToTransform(&t1, &v10))
   {
-    v7 = *&a3->a;
-    v8 = *&a3->c;
-    *&self->_transform.tx = *&a3->tx;
+    v7 = *&transform->a;
+    v8 = *&transform->c;
+    *&self->_transform.tx = *&transform->tx;
     *&self->_transform.c = v8;
     *&self->_transform.a = v7;
     size = CGRectNull.size;
@@ -198,23 +198,23 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [TUILayoutAttributes allocWithZone:a3];
+  v4 = [TUILayoutAttributes allocWithZone:zone];
 
   return [(TUILayoutAttributes *)v4 initWithOther:self];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_12;
   }
 
-  if (!CGRectEqualToRect(self->_bounds, *(v4 + 120)))
+  if (!CGRectEqualToRect(self->_bounds, *(equalCopy + 120)))
   {
     goto LABEL_12;
   }
@@ -223,32 +223,32 @@
   *&t1.a = *&self->_transform.a;
   *&t1.c = v5;
   *&t1.tx = *&self->_transform.tx;
-  v6 = *(v4 + 200);
-  *&v12.a = *(v4 + 184);
+  v6 = *(equalCopy + 200);
+  *&v12.a = *(equalCopy + 184);
   *&v12.c = v6;
-  *&v12.tx = *(v4 + 216);
+  *&v12.tx = *(equalCopy + 216);
   if (!CGAffineTransformEqualToTransform(&t1, &v12))
   {
     goto LABEL_12;
   }
 
   v7 = 0;
-  if (self->_center.x == *(v4 + 13) && self->_center.y == *(v4 + 14))
+  if (self->_center.x == *(equalCopy + 13) && self->_center.y == *(equalCopy + 14))
   {
-    if (self->_alpha == *(v4 + 6) && self->_zIndex == *(v4 + 7) && self->_hidden == v4[40] && self->_forceVisibleOnHover == v4[41])
+    if (self->_alpha == *(equalCopy + 6) && self->_zIndex == *(equalCopy + 7) && self->_hidden == equalCopy[40] && self->_forceVisibleOnHover == equalCopy[41])
     {
-      if ([(NSIndexPath *)self->_indexPath isEqual:*(v4 + 8)])
+      if ([(NSIndexPath *)self->_indexPath isEqual:*(equalCopy + 8)])
       {
-        if (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_outsets.top, *(v4 + 152)), vceqq_f64(*&self->_outsets.bottom, *(v4 + 168))))))
+        if (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_outsets.top, *(equalCopy + 152)), vceqq_f64(*&self->_outsets.bottom, *(equalCopy + 168))))))
         {
           renderModel = self->_renderModel;
-          if (renderModel == *(v4 + 9) || [(TUIRenderModel *)renderModel isEqualToRenderModel:?])
+          if (renderModel == *(equalCopy + 9) || [(TUIRenderModel *)renderModel isEqualToRenderModel:?])
           {
             refId = self->_refId;
-            if (refId == *(v4 + 11) || [(NSString *)refId isEqualToString:?])
+            if (refId == *(equalCopy + 11) || [(NSString *)refId isEqualToString:?])
             {
               refInstance = self->_refInstance;
-              if (refInstance == *(v4 + 12))
+              if (refInstance == *(equalCopy + 12))
               {
                 v7 = 1;
               }

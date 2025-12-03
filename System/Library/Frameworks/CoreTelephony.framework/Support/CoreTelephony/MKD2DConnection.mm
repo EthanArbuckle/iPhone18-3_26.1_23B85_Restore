@@ -1,22 +1,22 @@
 @interface MKD2DConnection
-- (MKD2DConnection)initWithRegistry:(shared_ptr<const Registry>)a3 queue:(queue)a4;
+- (MKD2DConnection)initWithRegistry:(shared_ptr<const Registry>)registry queue:(queue)queue;
 - (id).cxx_construct;
 - (void)onCodeError;
 - (void)onCodeReady;
-- (void)onConnectFail:(int64_t)a3;
+- (void)onConnectFail:(int64_t)fail;
 - (void)onConnected;
 - (void)onDisconnected;
-- (void)onReceived:(id)a3;
+- (void)onReceived:(id)received;
 - (void)onRequestTimeout;
-- (void)setDelegate:(shared_ptr<D2DConnectionDelegate>)a3 forTarget:(BOOL)a4 completion:(id)a5;
+- (void)setDelegate:(shared_ptr<D2DConnectionDelegate>)delegate forTarget:(BOOL)target completion:(id)completion;
 - (weak_ptr<D2DConnectionDelegate>)weakDelegate;
 @end
 
 @implementation MKD2DConnection
 
-- (MKD2DConnection)initWithRegistry:(shared_ptr<const Registry>)a3 queue:(queue)a4
+- (MKD2DConnection)initWithRegistry:(shared_ptr<const Registry>)registry queue:(queue)queue
 {
-  v5 = *a3.__cntrl_;
+  v5 = *registry.__cntrl_;
   object = v5;
   if (v5)
   {
@@ -36,11 +36,11 @@
   return v6;
 }
 
-- (void)setDelegate:(shared_ptr<D2DConnectionDelegate>)a3 forTarget:(BOOL)a4 completion:(id)a5
+- (void)setDelegate:(shared_ptr<D2DConnectionDelegate>)delegate forTarget:(BOOL)target completion:(id)completion
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v8 = a4;
+  var1 = delegate.var1;
+  var0 = delegate.var0;
+  targetCopy = target;
   v10 = *var0;
   v9 = *(var0 + 1);
   if (v9)
@@ -61,8 +61,8 @@
   v13[2] = sub_1002D07C4;
   v13[3] = &unk_101E3BA80;
   v13[4] = self;
-  v14 = v8;
-  v12 = v8;
+  v14 = targetCopy;
+  v12 = targetCopy;
   [ObjcMKD2DConnection create:var1 delegate:self completion:v13];
 }
 
@@ -130,7 +130,7 @@
   }
 }
 
-- (void)onConnectFail:(int64_t)a3
+- (void)onConnectFail:(int64_t)fail
 {
   p_weakDelegate = &self->_weakDelegate;
   cntrl = self->_weakDelegate.__cntrl_;
@@ -150,7 +150,7 @@
         v10[4] = ptr;
         v11 = v7;
         atomic_fetch_add_explicit(&v7->__shared_owners_, 1uLL, memory_order_relaxed);
-        v12 = a3;
+        failCopy = fail;
         [(MKD2DConnection *)self executeBlock:v10];
         if (v11)
         {
@@ -163,9 +163,9 @@
   }
 }
 
-- (void)onReceived:(id)a3
+- (void)onReceived:(id)received
 {
-  v4 = a3;
+  receivedCopy = received;
   p_weakDelegate = &self->_weakDelegate;
   cntrl = self->_weakDelegate.__cntrl_;
   if (cntrl)
@@ -184,7 +184,7 @@
         v12 = ptr;
         v13 = v7;
         atomic_fetch_add_explicit(&v7->__shared_owners_, 1uLL, memory_order_relaxed);
-        v11 = v4;
+        v11 = receivedCopy;
         [(MKD2DConnection *)self executeBlock:v10];
 
         if (v13)

@@ -1,7 +1,7 @@
 @interface CKAppContainerTitleView
 - (CKAppContainerTitleView)init;
 - (UIImage)iconImage;
-- (void)setIconImage:(id)a3;
+- (void)setIconImage:(id)image;
 - (void)setup;
 @end
 
@@ -34,8 +34,8 @@
   self->_label = v5;
 
   v7 = +[CKUIBehavior sharedBehaviors];
-  v8 = [v7 appLabelFont];
-  [(UILabel *)self->_label setFont:v8];
+  appLabelFont = [v7 appLabelFont];
+  [(UILabel *)self->_label setFont:appLabelFont];
 
   v9 = [MEMORY[0x1E69DC738] buttonWithType:7];
   closeButton = self->_closeButton;
@@ -53,47 +53,47 @@
   v43[4] = self;
   [v12 __imForEach:v43];
 
-  v13 = [(UIImageView *)self->_iconImageView widthAnchor];
-  v14 = [v13 constraintEqualToConstant:40.0];
+  widthAnchor = [(UIImageView *)self->_iconImageView widthAnchor];
+  v14 = [widthAnchor constraintEqualToConstant:40.0];
   iconWidthConstraint = self->_iconWidthConstraint;
   self->_iconWidthConstraint = v14;
 
-  v16 = [(UIImageView *)self->_iconImageView heightAnchor];
-  v17 = [v16 constraintEqualToConstant:30.0];
+  heightAnchor = [(UIImageView *)self->_iconImageView heightAnchor];
+  v17 = [heightAnchor constraintEqualToConstant:30.0];
   iconHeightConstraint = self->_iconHeightConstraint;
   self->_iconHeightConstraint = v17;
 
   v35 = MEMORY[0x1E696ACD8];
-  v42 = [(UIImageView *)self->_iconImageView leadingAnchor];
-  v41 = [(CKAppContainerTitleView *)self leadingAnchor];
-  v40 = [v42 constraintEqualToAnchor:v41 constant:16.0];
+  leadingAnchor = [(UIImageView *)self->_iconImageView leadingAnchor];
+  leadingAnchor2 = [(CKAppContainerTitleView *)self leadingAnchor];
+  v40 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   v19 = self->_iconWidthConstraint;
   v44[0] = v40;
   v44[1] = v19;
   v44[2] = self->_iconHeightConstraint;
-  v39 = [(UIImageView *)self->_iconImageView centerYAnchor];
-  v38 = [(CKAppContainerTitleView *)self centerYAnchor];
-  v37 = [v39 constraintEqualToAnchor:v38];
+  centerYAnchor = [(UIImageView *)self->_iconImageView centerYAnchor];
+  centerYAnchor2 = [(CKAppContainerTitleView *)self centerYAnchor];
+  v37 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v44[3] = v37;
-  v36 = [(UILabel *)self->_label leadingAnchor];
-  v34 = [(UIImageView *)self->_iconImageView trailingAnchor];
-  v33 = [v36 constraintEqualToSystemSpacingAfterAnchor:v34 multiplier:1.0];
+  leadingAnchor3 = [(UILabel *)self->_label leadingAnchor];
+  trailingAnchor = [(UIImageView *)self->_iconImageView trailingAnchor];
+  v33 = [leadingAnchor3 constraintEqualToSystemSpacingAfterAnchor:trailingAnchor multiplier:1.0];
   v44[4] = v33;
-  v32 = [(UILabel *)self->_label centerYAnchor];
-  v31 = [(UIImageView *)self->_iconImageView centerYAnchor];
-  v30 = [v32 constraintEqualToAnchor:v31];
+  centerYAnchor3 = [(UILabel *)self->_label centerYAnchor];
+  centerYAnchor4 = [(UIImageView *)self->_iconImageView centerYAnchor];
+  v30 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v44[5] = v30;
-  v20 = [(UILabel *)self->_label trailingAnchor];
-  v21 = [(UIButton *)self->_closeButton leadingAnchor];
-  v22 = [v20 constraintLessThanOrEqualToAnchor:v21];
+  trailingAnchor2 = [(UILabel *)self->_label trailingAnchor];
+  leadingAnchor4 = [(UIButton *)self->_closeButton leadingAnchor];
+  v22 = [trailingAnchor2 constraintLessThanOrEqualToAnchor:leadingAnchor4];
   v44[6] = v22;
-  v23 = [(UIButton *)self->_closeButton centerYAnchor];
-  v24 = [(CKAppContainerTitleView *)self centerYAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24];
+  centerYAnchor5 = [(UIButton *)self->_closeButton centerYAnchor];
+  centerYAnchor6 = [(CKAppContainerTitleView *)self centerYAnchor];
+  v25 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
   v44[7] = v25;
-  v26 = [(UIButton *)self->_closeButton trailingAnchor];
-  v27 = [(CKAppContainerTitleView *)self trailingAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27 constant:-16.0];
+  trailingAnchor3 = [(UIButton *)self->_closeButton trailingAnchor];
+  trailingAnchor4 = [(CKAppContainerTitleView *)self trailingAnchor];
+  v28 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-16.0];
   v44[8] = v28;
   v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:9];
   [v35 activateConstraints:v29];
@@ -108,23 +108,23 @@ void __32__CKAppContainerTitleView_setup__block_invoke(uint64_t a1, void *a2)
 
 - (UIImage)iconImage
 {
-  v2 = [(CKAppContainerTitleView *)self iconImageView];
-  v3 = [v2 image];
+  iconImageView = [(CKAppContainerTitleView *)self iconImageView];
+  image = [iconImageView image];
 
-  return v3;
+  return image;
 }
 
-- (void)setIconImage:(id)a3
+- (void)setIconImage:(id)image
 {
-  v13 = a3;
-  v4 = [(CKAppContainerTitleView *)self iconImageView];
-  [v4 setImage:v13];
+  imageCopy = image;
+  iconImageView = [(CKAppContainerTitleView *)self iconImageView];
+  [iconImageView setImage:imageCopy];
 
-  if (v13)
+  if (imageCopy)
   {
-    [v13 size];
+    [imageCopy size];
     v6 = v5;
-    [v13 size];
+    [imageCopy size];
     v8 = v6 == v7;
     if (v6 == v7)
     {
@@ -153,11 +153,11 @@ void __32__CKAppContainerTitleView_setup__block_invoke(uint64_t a1, void *a2)
     v9 = *(MEMORY[0x1E695F060] + 8);
   }
 
-  v11 = [(CKAppContainerTitleView *)self iconWidthConstraint];
-  [v11 setConstant:v10];
+  iconWidthConstraint = [(CKAppContainerTitleView *)self iconWidthConstraint];
+  [iconWidthConstraint setConstant:v10];
 
-  v12 = [(CKAppContainerTitleView *)self iconHeightConstraint];
-  [v12 setConstant:v9];
+  iconHeightConstraint = [(CKAppContainerTitleView *)self iconHeightConstraint];
+  [iconHeightConstraint setConstant:v9];
 }
 
 @end

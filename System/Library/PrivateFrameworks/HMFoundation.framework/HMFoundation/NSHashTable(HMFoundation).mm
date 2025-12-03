@@ -9,20 +9,20 @@
   v4 = a3;
   v5 = objc_autoreleasePoolPush();
   v10 = 0;
-  v6 = [a1 objectEnumerator];
-  v7 = 0;
+  objectEnumerator = [self objectEnumerator];
+  nextObject = 0;
   while (1)
   {
-    v8 = v7;
+    v8 = nextObject;
     v9 = objc_autoreleasePoolPush();
-    v7 = [v6 nextObject];
+    nextObject = [objectEnumerator nextObject];
 
-    if (!v7)
+    if (!nextObject)
     {
       break;
     }
 
-    v4[2](v4, v7, &v10);
+    v4[2](v4, nextObject, &v10);
     objc_autoreleasePoolPop(v9);
     if (v10 == 1)
     {

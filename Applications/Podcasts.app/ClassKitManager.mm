@@ -1,14 +1,14 @@
 @interface ClassKitManager
 - (_TtC8Podcasts15ClassKitManager)init;
-- (void)applicationWillTerminate:(id)a3;
+- (void)applicationWillTerminate:(id)terminate;
 @end
 
 @implementation ClassKitManager
 
-- (void)applicationWillTerminate:(id)a3
+- (void)applicationWillTerminate:(id)terminate
 {
-  v4 = a3;
-  v5 = self;
+  terminateCopy = terminate;
+  selfCopy = self;
   sub_100338458();
 }
 

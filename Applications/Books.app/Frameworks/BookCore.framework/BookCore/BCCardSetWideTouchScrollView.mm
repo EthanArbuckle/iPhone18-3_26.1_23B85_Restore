@@ -1,16 +1,16 @@
 @interface BCCardSetWideTouchScrollView
 - (BCCardSetWideTouchScrollViewDelegate)accessibilityDelegate;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (id)_accessibilityScrollStatus;
-- (void)accessibilityApplyScrollContent:(CGPoint)a3 sendScrollStatus:(BOOL)a4 animated:(BOOL)a5;
+- (void)accessibilityApplyScrollContent:(CGPoint)content sendScrollStatus:(BOOL)status animated:(BOOL)animated;
 @end
 
 @implementation BCCardSetWideTouchScrollView
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(BCCardSetWideTouchScrollView *)self contentSize];
   CGRectMakeWithSize();
   v10 = x;
@@ -21,21 +21,21 @@
 
 - (id)_accessibilityScrollStatus
 {
-  v3 = [(BCCardSetWideTouchScrollView *)self accessibilityDelegate];
-  v4 = [v3 accessibilityScrollStatusForWideTouchScrollView:self];
+  accessibilityDelegate = [(BCCardSetWideTouchScrollView *)self accessibilityDelegate];
+  v4 = [accessibilityDelegate accessibilityScrollStatusForWideTouchScrollView:self];
 
   return v4;
 }
 
-- (void)accessibilityApplyScrollContent:(CGPoint)a3 sendScrollStatus:(BOOL)a4 animated:(BOOL)a5
+- (void)accessibilityApplyScrollContent:(CGPoint)content sendScrollStatus:(BOOL)status animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a4;
-  x = a3.x;
-  [(BCCardSetWideTouchScrollView *)self contentOffset:a3.x];
+  animatedCopy = animated;
+  statusCopy = status;
+  x = content.x;
+  [(BCCardSetWideTouchScrollView *)self contentOffset:content.x];
   v9.receiver = self;
   v9.super_class = BCCardSetWideTouchScrollView;
-  [(BCCardSetWideTouchScrollView *)&v9 accessibilityApplyScrollContent:v6 sendScrollStatus:v5 animated:x];
+  [(BCCardSetWideTouchScrollView *)&v9 accessibilityApplyScrollContent:statusCopy sendScrollStatus:animatedCopy animated:x];
 }
 
 - (BCCardSetWideTouchScrollViewDelegate)accessibilityDelegate

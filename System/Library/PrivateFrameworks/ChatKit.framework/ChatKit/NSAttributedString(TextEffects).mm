@@ -12,7 +12,7 @@
 
 - (id)ck_attributedStringByApplyingTextEffectType:()TextEffects range:
 {
-  v8 = [a1 mutableCopy];
+  v8 = [self mutableCopy];
   [v8 ck_applyTextEffectType:a3 range:{a4, a5}];
   v9 = [v8 copy];
 
@@ -21,7 +21,7 @@
 
 - (id)ck_attributedStringByApplyingTextStyle:()TextEffects range:
 {
-  v8 = [a1 mutableCopy];
+  v8 = [self mutableCopy];
   [v8 ck_addTextStyle:a3 options:3 range:{a4, a5}];
   v9 = [v8 copy];
 
@@ -30,21 +30,21 @@
 
 - (BOOL)ck_attributedStringHasTextEffectType:()TextEffects inRange:
 {
-  if (a4 >= [a1 length])
+  if (a4 >= [self length])
   {
-    [a1 length];
+    [self length];
     return 0;
   }
 
   else
   {
-    v9 = [a1 length];
+    v9 = [self length];
     v10 = 0;
-    if ([a1 length] && a4 + a5 <= v9)
+    if ([self length] && a4 + a5 <= v9)
     {
       v15 = 0;
       v16 = 0;
-      v11 = [a1 attributesAtIndex:a4 longestEffectiveRange:&v15 inRange:{a4, a5}];
+      v11 = [self attributesAtIndex:a4 longestEffectiveRange:&v15 inRange:{a4, a5}];
       v12 = [v11 objectForKey:*MEMORY[0x1E69A7CF8]];
       v13 = v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v12 unsignedIntegerValue] == a3;
       v10 = v16 >= a5 && v13;
@@ -57,7 +57,7 @@
 - (id)ck_attributedStringByTogglingTextEffectNamed:()TextEffects range:
 {
   v8 = a3;
-  v9 = [a1 mutableCopy];
+  v9 = [self mutableCopy];
   [v9 ck_toggleTextEffectNamed:v8 range:a4 getAdded:{a5, 0}];
 
   v10 = [v9 copy];
@@ -68,7 +68,7 @@
 - (id)ck_attributedStringByConverting:()TextEffects range:
 {
   v8 = a3;
-  v9 = [a1 mutableCopy];
+  v9 = [self mutableCopy];
   [v9 ck_convertAttributesUsingConversionHandler:v8 range:{a4, a5}];
 
   v10 = [v9 copy];
@@ -91,7 +91,7 @@
     v13[2] = __65__NSAttributedString_TextEffects__ck_actionForIMTextStyle_range___block_invoke;
     v13[3] = &unk_1E72EF840;
     v13[4] = &v14;
-    [a1 enumerateAttribute:v8 inRange:a4 options:a5 usingBlock:{0, v13}];
+    [self enumerateAttribute:v8 inRange:a4 options:a5 usingBlock:{0, v13}];
     v19.location = a4;
     v19.length = a5;
     v9 = NSIntersectionRange(v15[2], v19);
@@ -109,12 +109,12 @@
 
 - (uint64_t)ck_activeTextStylesInRange:()TextEffects
 {
-  if (![a1 length])
+  if (![self length])
   {
     return 0;
   }
 
-  v5 = [a1 attributesAtIndex:a3 effectiveRange:0];
+  v5 = [self attributesAtIndex:a3 effectiveRange:0];
   v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69DB758]];
   if (v6)
   {
@@ -172,8 +172,8 @@
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 fontDescriptor];
-    v7 |= __rbit32([v13 symbolicTraits]) >> 30;
+    fontDescriptor = [v11 fontDescriptor];
+    v7 |= __rbit32([fontDescriptor symbolicTraits]) >> 30;
   }
 
   v14 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69A7CF0]];

@@ -2,7 +2,7 @@
 - (AKMasterToken)masterToken;
 - (NSDictionary)serverProvidedData;
 - (NSDictionary)status;
-- (id)configureWithParameters:(id)a3;
+- (id)configureWithParameters:(id)parameters;
 - (void)dealloc;
 @end
 
@@ -10,33 +10,33 @@
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   if (self->_underlyingContext)
   {
-    CFRelease(v4->_underlyingContext);
-    v4->_underlyingContext = 0;
+    CFRelease(selfCopy->_underlyingContext);
+    selfCopy->_underlyingContext = 0;
   }
 
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = AKSRPContext;
   [(AKSRPContext *)&v2 dealloc];
 }
 
-- (id)configureWithParameters:(id)a3
+- (id)configureWithParameters:(id)parameters
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, parameters);
   v9 = 0;
   v3 = [location[0] copy];
-  configurationParameters = v11->_configurationParameters;
-  v11->_configurationParameters = v3;
+  configurationParameters = selfCopy->_configurationParameters;
+  selfCopy->_configurationParameters = v3;
   _objc_release(configurationParameters);
-  v11->_underlyingContext = AppleIDAuthSupportCreate();
+  selfCopy->_underlyingContext = AppleIDAuthSupportCreate();
   v8 = v9;
-  if (v11->_underlyingContext)
+  if (selfCopy->_underlyingContext)
   {
     v12 = 0;
   }
@@ -73,21 +73,21 @@
 
 - (AKMasterToken)masterToken
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
   if (self->_underlyingContext)
   {
-    underlyingContext = v12->_underlyingContext;
+    underlyingContext = selfCopy->_underlyingContext;
     v10 = AppleIDAuthSupportCopyToken();
     if (v10)
     {
       v9 = AppleIDAuthSupportTokenCopyExternalizedVersion();
       v5 = v9;
-      v7 = [(AKSRPContext *)v12 serverProvidedData];
-      v6 = [(NSDictionary *)v7 objectForKeyedSubscript:@"duration"];
+      serverProvidedData = [(AKSRPContext *)selfCopy serverProvidedData];
+      v6 = [(NSDictionary *)serverProvidedData objectForKeyedSubscript:@"duration"];
       v8 = [AKMasterToken tokenWithExternalizedVersion:v5 lifetime:?];
       _objc_release(v6);
-      _objc_release(v7);
+      _objc_release(serverProvidedData);
       CFRelease(v10);
       v13 = _objc_retain(v8);
       objc_storeStrong(&v8, 0);

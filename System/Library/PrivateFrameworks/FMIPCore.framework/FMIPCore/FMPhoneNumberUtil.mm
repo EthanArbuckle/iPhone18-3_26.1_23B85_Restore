@@ -1,13 +1,13 @@
 @interface FMPhoneNumberUtil
-+ (BOOL)isEmailValidWithEmail:(id)a3;
-+ (BOOL)isPhoneNumberValidWithPhoneNumber:(id)a3;
-+ (id)unformatWithPhoneNumber:(id)a3;
++ (BOOL)isEmailValidWithEmail:(id)email;
++ (BOOL)isPhoneNumberValidWithPhoneNumber:(id)number;
++ (id)unformatWithPhoneNumber:(id)number;
 - (_TtC8FMIPCore17FMPhoneNumberUtil)init;
 @end
 
 @implementation FMPhoneNumberUtil
 
-+ (id)unformatWithPhoneNumber:(id)a3
++ (id)unformatWithPhoneNumber:(id)number
 {
   v3 = sub_24A82C604();
   v4 = *(v3 - 8);
@@ -26,21 +26,21 @@
   return v11;
 }
 
-+ (BOOL)isEmailValidWithEmail:(id)a3
++ (BOOL)isEmailValidWithEmail:(id)email
 {
   v3 = qword_27EF5CC30;
-  v4 = a3;
+  emailCopy = email;
   if (v3 != -1)
   {
     swift_once();
   }
 
-  v5 = [qword_27EF5F5D0 evaluateWithObject_];
+  evaluateWithObject_ = [qword_27EF5F5D0 evaluateWithObject_];
 
-  return v5;
+  return evaluateWithObject_;
 }
 
-+ (BOOL)isPhoneNumberValidWithPhoneNumber:(id)a3
++ (BOOL)isPhoneNumberValidWithPhoneNumber:(id)number
 {
   v3 = sub_24A82CFC4();
   v5 = sub_24A78F7E8(v3, v4);

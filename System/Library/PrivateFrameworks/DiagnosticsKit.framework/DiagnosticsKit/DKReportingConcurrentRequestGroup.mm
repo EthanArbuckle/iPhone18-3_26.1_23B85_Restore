@@ -1,6 +1,6 @@
 @interface DKReportingConcurrentRequestGroup
-+ (id)initWithResources:(id)a3;
-- (BOOL)addComponentIdentity:(id)a3 usingGenerator:(id)a4;
++ (id)initWithResources:(id)resources;
+- (BOOL)addComponentIdentity:(id)identity usingGenerator:(id)generator;
 - (DKReportingConcurrentRequestGroup)init;
 @end
 
@@ -21,61 +21,61 @@
     requests = v2->_requests;
     v2->_requests = v5;
 
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     requestLookupByGenerator = v2->_requestLookupByGenerator;
-    v2->_requestLookupByGenerator = v7;
+    v2->_requestLookupByGenerator = dictionary;
   }
 
   return v2;
 }
 
-+ (id)initWithResources:(id)a3
++ (id)initWithResources:(id)resources
 {
-  v3 = a3;
+  resourcesCopy = resources;
   v4 = objc_opt_new();
-  v5 = [v4 resources];
-  [v5 unionSet:v3];
+  resources = [v4 resources];
+  [resources unionSet:resourcesCopy];
 
   return v4;
 }
 
-- (BOOL)addComponentIdentity:(id)a3 usingGenerator:(id)a4
+- (BOOL)addComponentIdentity:(id)identity usingGenerator:(id)generator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DKReportingConcurrentRequestGroup *)self resources];
-  v9 = [v6 resources];
-  v10 = [v8 isEqualToSet:v9];
+  identityCopy = identity;
+  generatorCopy = generator;
+  resources = [(DKReportingConcurrentRequestGroup *)self resources];
+  resources2 = [identityCopy resources];
+  v10 = [resources isEqualToSet:resources2];
 
   if (v10)
   {
-    v11 = [(DKReportingConcurrentRequestGroup *)self requestLookupByGenerator];
-    v12 = [v7 extensionAttributes];
-    v13 = [v11 objectForKeyedSubscript:v12];
+    requestLookupByGenerator = [(DKReportingConcurrentRequestGroup *)self requestLookupByGenerator];
+    extensionAttributes = [generatorCopy extensionAttributes];
+    v13 = [requestLookupByGenerator objectForKeyedSubscript:extensionAttributes];
 
     if (!v13)
     {
-      v13 = [DKReportingConcurrentRequest concurrentRequestWithGenerator:v7];
-      v14 = [(DKReportingConcurrentRequestGroup *)self requestLookupByGenerator];
-      v15 = [v7 extensionAttributes];
-      [v14 setObject:v13 forKeyedSubscript:v15];
+      v13 = [DKReportingConcurrentRequest concurrentRequestWithGenerator:generatorCopy];
+      requestLookupByGenerator2 = [(DKReportingConcurrentRequestGroup *)self requestLookupByGenerator];
+      extensionAttributes2 = [generatorCopy extensionAttributes];
+      [requestLookupByGenerator2 setObject:v13 forKeyedSubscript:extensionAttributes2];
     }
 
-    v16 = [v13 manifest];
-    v17 = [v16 count];
+    manifest = [v13 manifest];
+    v17 = [manifest count];
     v18 = v17 == 0;
 
     if (!v17)
     {
-      v19 = [v13 manifest];
-      [v19 addObject:v6];
+      manifest2 = [v13 manifest];
+      [manifest2 addObject:identityCopy];
 
-      v20 = [(DKReportingConcurrentRequestGroup *)self requests];
-      [v20 addObject:v13];
+      requests = [(DKReportingConcurrentRequestGroup *)self requests];
+      [requests addObject:v13];
 
-      v21 = [(DKReportingConcurrentRequestGroup *)self resources];
-      v22 = [v6 resources];
-      [v21 unionSet:v22];
+      resources3 = [(DKReportingConcurrentRequestGroup *)self resources];
+      resources4 = [identityCopy resources];
+      [resources3 unionSet:resources4];
     }
   }
 

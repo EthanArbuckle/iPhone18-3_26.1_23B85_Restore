@@ -2,21 +2,21 @@
 + (id)sharedInstance;
 - (CSMediaPlayingMonitor)init;
 - (int64_t)mediaPlayingState;
-- (void)_notePossiblePlayPausedStateChange:(id)a3;
-- (void)_notifyObserver:(id)a3 mediaIsPlayingState:(int64_t)a4;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_notePossiblePlayPausedStateChange:(id)change;
+- (void)_notifyObserver:(id)observer mediaIsPlayingState:(int64_t)state;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
 - (void)initializeMediaPlayingState;
-- (void)mediaPlayingStateWithCompletion:(id)a3;
+- (void)mediaPlayingStateWithCompletion:(id)completion;
 @end
 
 @implementation CSMediaPlayingMonitor
 
-- (void)mediaPlayingStateWithCompletion:(id)a3
+- (void)mediaPlayingStateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -24,7 +24,7 @@
     v7[2] = sub_100166FEC;
     v7[3] = &unk_100253718;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -48,22 +48,22 @@
   return v3;
 }
 
-- (void)_notifyObserver:(id)a3 mediaIsPlayingState:(int64_t)a4
+- (void)_notifyObserver:(id)observer mediaIsPlayingState:(int64_t)state
 {
-  v6 = a3;
-  [(CSMediaPlayingMonitor *)self notifyObserver:v6];
-  self->_mediaIsPlaying = a4;
+  observerCopy = observer;
+  [(CSMediaPlayingMonitor *)self notifyObserver:observerCopy];
+  self->_mediaIsPlaying = state;
   if (objc_opt_respondsToSelector())
   {
-    [v6 CSMediaPlayingMonitor:self didReceiveMediaPlayingChanged:a4];
+    [observerCopy CSMediaPlayingMonitor:self didReceiveMediaPlayingChanged:state];
   }
 }
 
-- (void)_notePossiblePlayPausedStateChange:(id)a3
+- (void)_notePossiblePlayPausedStateChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:kMRMediaRemoteNowPlayingApplicationIsPlayingUserInfoKey];
-  v6 = [v5 BOOLValue];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKey:kMRMediaRemoteNowPlayingApplicationIsPlayingUserInfoKey];
+  bOOLValue = [v5 BOOLValue];
 
   v7 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -71,7 +71,7 @@
     v8 = "NOT PLAYING";
     v12 = "[CSMediaPlayingMonitor _notePossiblePlayPausedStateChange:]";
     *buf = 136315650;
-    if (v6)
+    if (bOOLValue)
     {
       v8 = "PLAYING";
     }
@@ -79,7 +79,7 @@
     v13 = 2080;
     v14 = v8;
     v15 = 1024;
-    v16 = v6;
+    v16 = bOOLValue;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s MediaRemote reported the now playing app playback state changed to %s (state %d)", buf, 0x1Cu);
   }
 
@@ -88,7 +88,7 @@
   v9[2] = sub_1001672D0;
   v9[3] = &unk_1002537E8;
   v9[4] = self;
-  v10 = v6;
+  v10 = bOOLValue;
   [(CSMediaPlayingMonitor *)self enumerateObserversInQueue:v9];
 }
 
@@ -106,9 +106,9 @@
   }
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   [(CSMediaPlayingMonitor *)self _stopMonitoring];
   MRMediaRemoteRegisterForNowPlayingNotifications();
 

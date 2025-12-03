@@ -1,30 +1,30 @@
 @interface HDSharingRecipientAuthorizationStoreServer
-+ (BOOL)validateConfiguration:(id)a3 client:(id)a4 error:(id *)a5;
++ (BOOL)validateConfiguration:(id)configuration client:(id)client error:(id *)error;
 + (id)requiredEntitlements;
-- (HDSharingRecipientAuthorizationStoreServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
-- (void)remote_addSharingAuthorizations:(id)a3 completion:(id)a4;
-- (void)remote_fetchSharingAuthorizationsMarkedForDeletionWithCompletion:(id)a3;
-- (void)remote_fetchSharingAuthorizationsWithCompletion:(id)a3;
+- (HDSharingRecipientAuthorizationStoreServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
+- (void)remote_addSharingAuthorizations:(id)authorizations completion:(id)completion;
+- (void)remote_fetchSharingAuthorizationsMarkedForDeletionWithCompletion:(id)completion;
+- (void)remote_fetchSharingAuthorizationsWithCompletion:(id)completion;
 - (void)remote_registerObservers;
-- (void)remote_removeSharingAuthorizations:(id)a3 completion:(id)a4;
-- (void)remote_revokeWithCompletion:(id)a3;
+- (void)remote_removeSharingAuthorizations:(id)authorizations completion:(id)completion;
+- (void)remote_revokeWithCompletion:(id)completion;
 - (void)remote_unregisterObservers;
-- (void)sharingAuthorizationManager:(id)a3 didAddSharingAuthorizations:(id)a4 recipientIdentifier:(id)a5;
-- (void)sharingAuthorizationManager:(id)a3 didRemoveSharingAuthorizations:(id)a4 recipientIdentifier:(id)a5;
-- (void)sharingAuthorizationManager:(id)a3 didRevokeRecipientWithIdentifier:(id)a4;
+- (void)sharingAuthorizationManager:(id)manager didAddSharingAuthorizations:(id)authorizations recipientIdentifier:(id)identifier;
+- (void)sharingAuthorizationManager:(id)manager didRemoveSharingAuthorizations:(id)authorizations recipientIdentifier:(id)identifier;
+- (void)sharingAuthorizationManager:(id)manager didRevokeRecipientWithIdentifier:(id)identifier;
 @end
 
 @implementation HDSharingRecipientAuthorizationStoreServer
 
-- (HDSharingRecipientAuthorizationStoreServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDSharingRecipientAuthorizationStoreServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a4;
+  configurationCopy = configuration;
   v15.receiver = self;
   v15.super_class = HDSharingRecipientAuthorizationStoreServer;
-  v11 = [(HDStandardTaskServer *)&v15 initWithUUID:a3 configuration:v10 client:a5 delegate:a6];
+  v11 = [(HDStandardTaskServer *)&v15 initWithUUID:d configuration:configurationCopy client:client delegate:delegate];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [configurationCopy copy];
     configuration = v11->_configuration;
     v11->_configuration = v12;
   }
@@ -32,97 +32,97 @@
   return v11;
 }
 
-- (void)remote_fetchSharingAuthorizationsWithCompletion:(id)a3
+- (void)remote_fetchSharingAuthorizationsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HDStandardTaskServer *)self profile];
-  v6 = [v5 sharingAuthorizationManager];
-  v7 = [(HKSharingRecipientAuthorizationStoreTaskConfiguration *)self->_configuration recipientIdentifier];
+  completionCopy = completion;
+  profile = [(HDStandardTaskServer *)self profile];
+  sharingAuthorizationManager = [profile sharingAuthorizationManager];
+  recipientIdentifier = [(HKSharingRecipientAuthorizationStoreTaskConfiguration *)self->_configuration recipientIdentifier];
   v10 = 0;
-  v8 = [v6 sharingAuthorizationsForRecipientIdentifier:v7 error:&v10];
+  v8 = [sharingAuthorizationManager sharingAuthorizationsForRecipientIdentifier:recipientIdentifier error:&v10];
   v9 = v10;
 
-  v4[2](v4, v8, v9);
+  completionCopy[2](completionCopy, v8, v9);
 }
 
-- (void)remote_fetchSharingAuthorizationsMarkedForDeletionWithCompletion:(id)a3
+- (void)remote_fetchSharingAuthorizationsMarkedForDeletionWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HDStandardTaskServer *)self profile];
-  v6 = [v5 sharingAuthorizationManager];
-  v7 = [(HKSharingRecipientAuthorizationStoreTaskConfiguration *)self->_configuration recipientIdentifier];
+  completionCopy = completion;
+  profile = [(HDStandardTaskServer *)self profile];
+  sharingAuthorizationManager = [profile sharingAuthorizationManager];
+  recipientIdentifier = [(HKSharingRecipientAuthorizationStoreTaskConfiguration *)self->_configuration recipientIdentifier];
   v10 = 0;
-  v8 = [v6 sharingAuthorizationsMarkedForDeletionForRecipientIdentifier:v7 error:&v10];
+  v8 = [sharingAuthorizationManager sharingAuthorizationsMarkedForDeletionForRecipientIdentifier:recipientIdentifier error:&v10];
   v9 = v10;
 
-  v4[2](v4, v8, v9);
+  completionCopy[2](completionCopy, v8, v9);
 }
 
-- (void)remote_addSharingAuthorizations:(id)a3 completion:(id)a4
+- (void)remote_addSharingAuthorizations:(id)authorizations completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HDStandardTaskServer *)self profile];
-  v9 = [v8 sharingAuthorizationManager];
-  v10 = [(HKSharingRecipientAuthorizationStoreTaskConfiguration *)self->_configuration recipientIdentifier];
+  completionCopy = completion;
+  authorizationsCopy = authorizations;
+  profile = [(HDStandardTaskServer *)self profile];
+  sharingAuthorizationManager = [profile sharingAuthorizationManager];
+  recipientIdentifier = [(HKSharingRecipientAuthorizationStoreTaskConfiguration *)self->_configuration recipientIdentifier];
   v13 = 0;
-  v11 = [v9 addSharingAuthorizations:v7 recipientIdentifier:v10 error:&v13];
+  v11 = [sharingAuthorizationManager addSharingAuthorizations:authorizationsCopy recipientIdentifier:recipientIdentifier error:&v13];
 
   v12 = v13;
-  v6[2](v6, v11, v12);
+  completionCopy[2](completionCopy, v11, v12);
 }
 
-- (void)remote_removeSharingAuthorizations:(id)a3 completion:(id)a4
+- (void)remote_removeSharingAuthorizations:(id)authorizations completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HDStandardTaskServer *)self profile];
-  v9 = [v8 sharingAuthorizationManager];
-  v10 = [(HKSharingRecipientAuthorizationStoreTaskConfiguration *)self->_configuration recipientIdentifier];
+  completionCopy = completion;
+  authorizationsCopy = authorizations;
+  profile = [(HDStandardTaskServer *)self profile];
+  sharingAuthorizationManager = [profile sharingAuthorizationManager];
+  recipientIdentifier = [(HKSharingRecipientAuthorizationStoreTaskConfiguration *)self->_configuration recipientIdentifier];
   v13 = 0;
-  v11 = [v9 removeSharingAuthorizations:v7 recipientIdentifier:v10 error:&v13];
+  v11 = [sharingAuthorizationManager removeSharingAuthorizations:authorizationsCopy recipientIdentifier:recipientIdentifier error:&v13];
 
   v12 = v13;
-  v6[2](v6, v11, v12);
+  completionCopy[2](completionCopy, v11, v12);
 }
 
-- (void)remote_revokeWithCompletion:(id)a3
+- (void)remote_revokeWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HDStandardTaskServer *)self profile];
-  v6 = [v5 sharingAuthorizationManager];
-  v7 = [(HKSharingRecipientAuthorizationStoreTaskConfiguration *)self->_configuration recipientIdentifier];
+  completionCopy = completion;
+  profile = [(HDStandardTaskServer *)self profile];
+  sharingAuthorizationManager = [profile sharingAuthorizationManager];
+  recipientIdentifier = [(HKSharingRecipientAuthorizationStoreTaskConfiguration *)self->_configuration recipientIdentifier];
   v10 = 0;
-  v8 = [v6 revokeRecipientWithIdentifier:v7 error:&v10];
+  v8 = [sharingAuthorizationManager revokeRecipientWithIdentifier:recipientIdentifier error:&v10];
   v9 = v10;
 
-  v4[2](v4, v8, v9);
+  completionCopy[2](completionCopy, v8, v9);
 }
 
 - (void)remote_registerObservers
 {
-  v4 = [(HDStandardTaskServer *)self profile];
-  v3 = [v4 sharingAuthorizationManager];
-  [v3 registerObserver:self];
+  profile = [(HDStandardTaskServer *)self profile];
+  sharingAuthorizationManager = [profile sharingAuthorizationManager];
+  [sharingAuthorizationManager registerObserver:self];
 }
 
 - (void)remote_unregisterObservers
 {
-  v4 = [(HDStandardTaskServer *)self profile];
-  v3 = [v4 sharingAuthorizationManager];
-  [v3 unregisterObserver:self];
+  profile = [(HDStandardTaskServer *)self profile];
+  sharingAuthorizationManager = [profile sharingAuthorizationManager];
+  [sharingAuthorizationManager unregisterObserver:self];
 }
 
-- (void)sharingAuthorizationManager:(id)a3 didAddSharingAuthorizations:(id)a4 recipientIdentifier:(id)a5
+- (void)sharingAuthorizationManager:(id)manager didAddSharingAuthorizations:(id)authorizations recipientIdentifier:(id)identifier
 {
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __122__HDSharingRecipientAuthorizationStoreServer_sharingAuthorizationManager_didAddSharingAuthorizations_recipientIdentifier___block_invoke;
   v8[3] = &unk_2786138D0;
   v8[4] = self;
-  v6 = a4;
+  authorizationsCopy = authorizations;
   v7 = [(HDStandardTaskServer *)self remoteObjectProxyWithErrorHandler:v8];
-  [v7 clientRemote_didAddSharingAuthorizations:v6];
+  [v7 clientRemote_didAddSharingAuthorizations:authorizationsCopy];
 }
 
 void __122__HDSharingRecipientAuthorizationStoreServer_sharingAuthorizationManager_didAddSharingAuthorizations_recipientIdentifier___block_invoke(uint64_t a1, void *a2)
@@ -144,16 +144,16 @@ void __122__HDSharingRecipientAuthorizationStoreServer_sharingAuthorizationManag
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sharingAuthorizationManager:(id)a3 didRemoveSharingAuthorizations:(id)a4 recipientIdentifier:(id)a5
+- (void)sharingAuthorizationManager:(id)manager didRemoveSharingAuthorizations:(id)authorizations recipientIdentifier:(id)identifier
 {
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __125__HDSharingRecipientAuthorizationStoreServer_sharingAuthorizationManager_didRemoveSharingAuthorizations_recipientIdentifier___block_invoke;
   v8[3] = &unk_2786138D0;
   v8[4] = self;
-  v6 = a4;
+  authorizationsCopy = authorizations;
   v7 = [(HDStandardTaskServer *)self remoteObjectProxyWithErrorHandler:v8];
-  [v7 clientRemote_didRemoveSharingAuthorizations:v6];
+  [v7 clientRemote_didRemoveSharingAuthorizations:authorizationsCopy];
 }
 
 void __125__HDSharingRecipientAuthorizationStoreServer_sharingAuthorizationManager_didRemoveSharingAuthorizations_recipientIdentifier___block_invoke(uint64_t a1, void *a2)
@@ -175,18 +175,18 @@ void __125__HDSharingRecipientAuthorizationStoreServer_sharingAuthorizationManag
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sharingAuthorizationManager:(id)a3 didRevokeRecipientWithIdentifier:(id)a4
+- (void)sharingAuthorizationManager:(id)manager didRevokeRecipientWithIdentifier:(id)identifier
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  identifierCopy = identifier;
   _HKInitializeLogging();
   v6 = *MEMORY[0x277CCC328];
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v11 = self;
+    selfCopy = self;
     v12 = 2114;
-    v13 = v5;
+    v13 = identifierCopy;
     _os_log_impl(&dword_228986000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Revoking Recipient with Identifier: %{public}@", buf, 0x16u);
   }
 
@@ -230,16 +230,16 @@ void __107__HDSharingRecipientAuthorizationStoreServer_sharingAuthorizationManag
   return v2;
 }
 
-+ (BOOL)validateConfiguration:(id)a3 client:(id)a4 error:(id *)a5
++ (BOOL)validateConfiguration:(id)configuration client:(id)client error:(id *)error
 {
-  v6 = [a3 recipientIdentifier];
+  recipientIdentifier = [configuration recipientIdentifier];
 
-  if (!v6)
+  if (!recipientIdentifier)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:3 format:@"Missing recipient identifier"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:@"Missing recipient identifier"];
   }
 
-  return v6 != 0;
+  return recipientIdentifier != 0;
 }
 
 @end

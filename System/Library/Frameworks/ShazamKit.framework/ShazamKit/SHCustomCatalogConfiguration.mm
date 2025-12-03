@@ -1,8 +1,8 @@
 @interface SHCustomCatalogConfiguration
 - (SHCustomCatalogConfiguration)init;
-- (SHCustomCatalogConfiguration)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SHCustomCatalogConfiguration)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SHCustomCatalogConfiguration
@@ -35,18 +35,18 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_new();
-  v6 = [(SHCatalogConfiguration *)self installationID];
-  v7 = [v6 copyWithZone:a3];
+  installationID = [(SHCatalogConfiguration *)self installationID];
+  v7 = [installationID copyWithZone:zone];
   [v5 setInstallationID:v7];
 
   [v5 setDensity:{-[SHCustomCatalogConfiguration density](self, "density")}];
   [v5 setAlgorithm:{-[SHCustomCatalogConfiguration algorithm](self, "algorithm")}];
   [v5 setSupportsSignatureTracking:{-[SHCustomCatalogConfiguration supportsSignatureTracking](self, "supportsSignatureTracking")}];
-  v8 = [(SHCatalogConfiguration *)self signatureDurationRange];
-  v9 = [v8 copyWithZone:a3];
+  signatureDurationRange = [(SHCatalogConfiguration *)self signatureDurationRange];
+  v9 = [signatureDurationRange copyWithZone:zone];
   [v5 setSignatureDurationRange:v9];
 
   [(SHCatalogConfiguration *)self streamingBufferDuration];
@@ -54,28 +54,28 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SHCustomCatalogConfiguration;
-  v4 = a3;
-  [(SHCatalogConfiguration *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:-[SHCustomCatalogConfiguration density](self forKey:{"density", v5.receiver, v5.super_class), @"SHCatalogConfigurationDensityKey"}];
-  [v4 encodeInteger:-[SHCustomCatalogConfiguration algorithm](self forKey:{"algorithm"), @"SHCatalogConfigurationAlgorithmKey"}];
-  [v4 encodeBool:-[SHCustomCatalogConfiguration supportsSignatureTracking](self forKey:{"supportsSignatureTracking"), @"SHCatalogConfigurationSupportsSignatureTrackingKey"}];
+  coderCopy = coder;
+  [(SHCatalogConfiguration *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:-[SHCustomCatalogConfiguration density](self forKey:{"density", v5.receiver, v5.super_class), @"SHCatalogConfigurationDensityKey"}];
+  [coderCopy encodeInteger:-[SHCustomCatalogConfiguration algorithm](self forKey:{"algorithm"), @"SHCatalogConfigurationAlgorithmKey"}];
+  [coderCopy encodeBool:-[SHCustomCatalogConfiguration supportsSignatureTracking](self forKey:{"supportsSignatureTracking"), @"SHCatalogConfigurationSupportsSignatureTrackingKey"}];
 }
 
-- (SHCustomCatalogConfiguration)initWithCoder:(id)a3
+- (SHCustomCatalogConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = SHCustomCatalogConfiguration;
-  v5 = [(SHCatalogConfiguration *)&v7 initWithCoder:v4];
+  v5 = [(SHCatalogConfiguration *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_density = [v4 decodeIntegerForKey:@"SHCatalogConfigurationDensityKey"];
-    v5->_algorithm = [v4 decodeIntegerForKey:@"SHCatalogConfigurationAlgorithmKey"];
-    v5->_supportsSignatureTracking = [v4 decodeBoolForKey:@"SHCatalogConfigurationSupportsSignatureTrackingKey"];
+    v5->_density = [coderCopy decodeIntegerForKey:@"SHCatalogConfigurationDensityKey"];
+    v5->_algorithm = [coderCopy decodeIntegerForKey:@"SHCatalogConfigurationAlgorithmKey"];
+    v5->_supportsSignatureTracking = [coderCopy decodeBoolForKey:@"SHCatalogConfigurationSupportsSignatureTrackingKey"];
   }
 
   return v5;

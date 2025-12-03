@@ -1,9 +1,9 @@
 @interface STUIStatusBarStyleRequest
-- (BOOL)isEqual:(id)a3;
-- (STUIStatusBarStyleRequest)initWithResolvedStyle:(int64_t)a3 foregroundColor:(id)a4;
-- (id)_descriptionBuilderWithMultilinePrefix:(id)a3 forDebug:(BOOL)a4;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (STUIStatusBarStyleRequest)initWithResolvedStyle:(int64_t)style foregroundColor:(id)color;
+- (id)_descriptionBuilderWithMultilinePrefix:(id)prefix forDebug:(BOOL)debug;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (unint64_t)hash;
 @end
@@ -18,31 +18,31 @@
   return 1000 * self->_resolvedStyle - v3 + 32 * v3;
 }
 
-- (STUIStatusBarStyleRequest)initWithResolvedStyle:(int64_t)a3 foregroundColor:(id)a4
+- (STUIStatusBarStyleRequest)initWithResolvedStyle:(int64_t)style foregroundColor:(id)color
 {
-  v6 = a4;
+  colorCopy = color;
   v7 = _UIStatusBarStyleFromResolvedStyle();
   v10.receiver = self;
   v10.super_class = STUIStatusBarStyleRequest;
-  v8 = [(STUIStatusBarStyleRequest *)&v10 initWithStyle:v7 legibilityStyle:0 foregroundColor:v6];
+  v8 = [(STUIStatusBarStyleRequest *)&v10 initWithStyle:v7 legibilityStyle:0 foregroundColor:colorCopy];
 
   if (v8)
   {
-    v8->_resolvedStyle = a3;
+    v8->_resolvedStyle = style;
   }
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = STUIStatusBarStyleRequest;
-  if ([(STUIStatusBarStyleRequest *)&v8 isEqual:v4])
+  if ([(STUIStatusBarStyleRequest *)&v8 isEqual:equalCopy])
   {
     resolvedStyle = self->_resolvedStyle;
-    v6 = resolvedStyle == [v4 resolvedStyle];
+    v6 = resolvedStyle == [equalCopy resolvedStyle];
   }
 
   else
@@ -55,45 +55,45 @@
 
 - (id)succinctDescription
 {
-  v2 = [(STUIStatusBarStyleRequest *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STUIStatusBarStyleRequest *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STUIStatusBarStyleRequest *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STUIStatusBarStyleRequest *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STUIStatusBarStyleRequest *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STUIStatusBarStyleRequest *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(id)a3 forDebug:(BOOL)a4
+- (id)_descriptionBuilderWithMultilinePrefix:(id)prefix forDebug:(BOOL)debug
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(STUIStatusBarStyleRequest *)self succinctDescriptionBuilder];
-  [v7 setUseDebugDescription:v4];
-  [v7 setActiveMultilinePrefix:v6];
+  debugCopy = debug;
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(STUIStatusBarStyleRequest *)self succinctDescriptionBuilder];
+  [succinctDescriptionBuilder setUseDebugDescription:debugCopy];
+  [succinctDescriptionBuilder setActiveMultilinePrefix:prefixCopy];
 
-  v8 = [v7 activeMultilinePrefix];
+  activeMultilinePrefix = [succinctDescriptionBuilder activeMultilinePrefix];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __77__STUIStatusBarStyleRequest__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke;
   v12[3] = &unk_279D38150;
-  v9 = v7;
+  v9 = succinctDescriptionBuilder;
   v13 = v9;
-  v14 = self;
-  [v9 appendBodySectionWithName:0 multilinePrefix:v8 block:v12];
+  selfCopy = self;
+  [v9 appendBodySectionWithName:0 multilinePrefix:activeMultilinePrefix block:v12];
 
   v10 = v9;
   return v9;

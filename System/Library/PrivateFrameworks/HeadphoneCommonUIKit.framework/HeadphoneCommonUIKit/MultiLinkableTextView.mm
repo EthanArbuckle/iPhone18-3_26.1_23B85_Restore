@@ -1,7 +1,7 @@
 @interface MultiLinkableTextView
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range;
 - (id)action;
-- (void)refreshContentsWith:(id)a3;
+- (void)refreshContentsWith:(id)with;
 @end
 
 @implementation MultiLinkableTextView
@@ -34,38 +34,38 @@
   return v5;
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range
 {
-  v16 = self;
-  v17 = a3;
-  v15 = a4;
-  v19 = a5;
-  v10 = a5;
+  selfCopy = self;
+  viewCopy = view;
+  lCopy = l;
+  rangeCopy = range;
+  rangeCopy2 = range;
   v13 = sub_1AC3B7204();
   v11 = *(v13 - 8);
   v12 = v13 - 8;
   v9 = (*(v11 + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
-  MEMORY[0x1EEE9AC00](v17);
+  MEMORY[0x1EEE9AC00](viewCopy);
   v14 = &v8 - v9;
   MEMORY[0x1E69E5928](v6);
-  MEMORY[0x1E69E5928](v15);
+  MEMORY[0x1E69E5928](lCopy);
   MEMORY[0x1E69E5928](self);
   sub_1AC3B71F4();
-  v18 = sub_1AC38D0B4(v17, v14, v10.location, v10.length);
+  v18 = sub_1AC38D0B4(viewCopy, v14, rangeCopy2.location, rangeCopy2.length);
   (*(v11 + 8))(v14, v13);
-  MEMORY[0x1E69E5920](v15);
-  MEMORY[0x1E69E5920](v16);
-  MEMORY[0x1E69E5920](v17);
+  MEMORY[0x1E69E5920](lCopy);
+  MEMORY[0x1E69E5920](selfCopy);
+  MEMORY[0x1E69E5920](viewCopy);
   return sub_1AC3B72B4() & 1;
 }
 
-- (void)refreshContentsWith:(id)a3
+- (void)refreshContentsWith:(id)with
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](with);
   MEMORY[0x1E69E5928](self);
   sub_1AC38D358();
   MEMORY[0x1E69E5920](self);
-  MEMORY[0x1E69E5920](a3);
+  MEMORY[0x1E69E5920](with);
 }
 
 @end

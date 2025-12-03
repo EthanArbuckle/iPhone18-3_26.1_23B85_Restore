@@ -1,22 +1,22 @@
 @interface BRSharingModifyRecordAccessOperation
-- (BRSharingModifyRecordAccessOperation)initWithURL:(id)a3 allowAccess:(BOOL)a4;
-- (void)finishWithResult:(id)a3 error:(id)a4;
+- (BRSharingModifyRecordAccessOperation)initWithURL:(id)l allowAccess:(BOOL)access;
+- (void)finishWithResult:(id)result error:(id)error;
 - (void)main;
 @end
 
 @implementation BRSharingModifyRecordAccessOperation
 
-- (BRSharingModifyRecordAccessOperation)initWithURL:(id)a3 allowAccess:(BOOL)a4
+- (BRSharingModifyRecordAccessOperation)initWithURL:(id)l allowAccess:(BOOL)access
 {
-  v7 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = BRSharingModifyRecordAccessOperation;
-  v8 = [(BRShareOperation *)&v11 initWithURL:v7];
+  v8 = [(BRShareOperation *)&v11 initWithURL:lCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_fileURL, a3);
-    v9->_allowAccess = a4;
+    objc_storeStrong(&v8->_fileURL, l);
+    v9->_allowAccess = access;
   }
 
   return v9;
@@ -30,8 +30,8 @@
   v5[3] = &unk_1E7A14CA8;
   v5[4] = self;
   v3 = MEMORY[0x1B26FEA90](v5, a2);
-  v4 = [(BRShareOperation *)self remoteFPFSObject];
-  [v4 startOperation:self toModifyRecordWithAllowAccess:self->_allowAccess reply:v3];
+  remoteFPFSObject = [(BRShareOperation *)self remoteFPFSObject];
+  [remoteFPFSObject startOperation:self toModifyRecordWithAllowAccess:self->_allowAccess reply:v3];
 }
 
 void __44__BRSharingModifyRecordAccessOperation_main__block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -53,31 +53,31 @@ void __44__BRSharingModifyRecordAccessOperation_main__block_invoke(uint64_t a1, 
   [*(a1 + 32) completedWithResult:v9 error:v8];
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BRSharingModifyRecordAccessOperation *)self allowAccessCompletionBlock];
-  v9 = v8;
-  if (v8)
+  resultCopy = result;
+  errorCopy = error;
+  allowAccessCompletionBlock = [(BRSharingModifyRecordAccessOperation *)self allowAccessCompletionBlock];
+  v9 = allowAccessCompletionBlock;
+  if (allowAccessCompletionBlock)
   {
-    (*(v8 + 16))(v8, v7);
+    (*(allowAccessCompletionBlock + 16))(allowAccessCompletionBlock, errorCopy);
     [(BRSharingModifyRecordAccessOperation *)self setAllowAccessCompletionBlock:0];
   }
 
-  v10 = [(BRSharingModifyRecordAccessOperation *)self accessAllowedCompletionBlock];
-  if (v10)
+  accessAllowedCompletionBlock = [(BRSharingModifyRecordAccessOperation *)self accessAllowedCompletionBlock];
+  if (accessAllowedCompletionBlock)
   {
-    v11 = [v6 objectForKeyedSubscript:@"accessToken"];
-    v12 = [v6 objectForKeyedSubscript:@"referenceIdentifier"];
-    (v10)[2](v10, v11, v12, v7);
+    v11 = [resultCopy objectForKeyedSubscript:@"accessToken"];
+    v12 = [resultCopy objectForKeyedSubscript:@"referenceIdentifier"];
+    (accessAllowedCompletionBlock)[2](accessAllowedCompletionBlock, v11, v12, errorCopy);
 
     [(BRSharingModifyRecordAccessOperation *)self setAccessAllowedCompletionBlock:0];
   }
 
   v13.receiver = self;
   v13.super_class = BRSharingModifyRecordAccessOperation;
-  [(BROperation *)&v13 finishWithResult:v6 error:v7];
+  [(BROperation *)&v13 finishWithResult:resultCopy error:errorCopy];
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface CKDPRecordRetrieveResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPRecordRetrieveResponse
@@ -42,48 +42,48 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_record)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     clientVersionETagMatch = self->_clientVersionETagMatch;
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   record = self->_record;
   if (record)
   {
-    v7 = v4;
-    objc_msgSend_setRecord_(v4, v5, record);
-    v4 = v7;
+    v7 = toCopy;
+    objc_msgSend_setRecord_(toCopy, v5, record);
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
-    v4[16] = self->_clientVersionETagMatch;
-    v4[20] |= 1u;
+    toCopy[16] = self->_clientVersionETagMatch;
+    toCopy[20] |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_record, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_record, v11, zone);
   v13 = *(v10 + 8);
   *(v10 + 8) = v12;
 
@@ -96,17 +96,17 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_6;
   }
 
   record = self->_record;
-  v9 = v4[1];
+  v9 = equalCopy[1];
   if (record | v9)
   {
     if (!objc_msgSend_isEqual_(record, v7, v9))
@@ -115,10 +115,10 @@
     }
   }
 
-  v10 = (*(v4 + 20) & 1) == 0;
+  v10 = (*(equalCopy + 20) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0)
+    if ((*(equalCopy + 20) & 1) == 0)
     {
 LABEL_6:
       v10 = 0;
@@ -127,13 +127,13 @@ LABEL_6:
 
     if (self->_clientVersionETagMatch)
     {
-      if ((v4[2] & 1) == 0)
+      if ((equalCopy[2] & 1) == 0)
       {
         goto LABEL_6;
       }
     }
 
-    else if (*(v4 + 16))
+    else if (*(equalCopy + 16))
     {
       goto LABEL_6;
     }
@@ -162,11 +162,11 @@ LABEL_7:
   return v5 ^ v4;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   record = self->_record;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (record)
   {
     if (!v6)
@@ -174,8 +174,8 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v7 = v4;
-    objc_msgSend_mergeFrom_(record, v4, v6);
+    v7 = fromCopy;
+    objc_msgSend_mergeFrom_(record, fromCopy, v6);
   }
 
   else
@@ -185,15 +185,15 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v7 = v4;
-    objc_msgSend_setRecord_(self, v4, v6);
+    v7 = fromCopy;
+    objc_msgSend_setRecord_(self, fromCopy, v6);
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
-  if (*(v4 + 20))
+  if (*(fromCopy + 20))
   {
-    self->_clientVersionETagMatch = *(v4 + 16);
+    self->_clientVersionETagMatch = *(fromCopy + 16);
     *&self->_has |= 1u;
   }
 

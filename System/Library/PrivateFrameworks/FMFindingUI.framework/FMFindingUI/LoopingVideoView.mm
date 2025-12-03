@@ -1,5 +1,5 @@
 @interface LoopingVideoView
-- (_TtC11FMFindingUIP33_853A022D7D7E29EDCAC43AB8D600AA2016LoopingVideoView)initWithFrame:(CGRect)a3;
+- (_TtC11FMFindingUIP33_853A022D7D7E29EDCAC43AB8D600AA2016LoopingVideoView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -20,7 +20,7 @@
   }
 }
 
-- (_TtC11FMFindingUIP33_853A022D7D7E29EDCAC43AB8D600AA2016LoopingVideoView)initWithFrame:(CGRect)a3
+- (_TtC11FMFindingUIP33_853A022D7D7E29EDCAC43AB8D600AA2016LoopingVideoView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

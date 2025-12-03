@@ -14,7 +14,7 @@
   v9 = &v14 - v8;
   swift_getKeyPath();
   swift_getKeyPath();
-  v10 = self;
+  selfCopy = self;
   sub_10079B9A4();
 
   (*(v4 + 104))(v6, enum case for UserInterfaceSizeClass.compact(_:), v3);

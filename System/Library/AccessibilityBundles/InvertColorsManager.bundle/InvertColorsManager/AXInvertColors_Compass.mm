@@ -1,14 +1,14 @@
 @interface AXInvertColors_Compass
-+ (void)performValidations:(id)a3;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_Compass
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CompassAppDelegate" hasInstanceMethod:@"window" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CompassAppDelegate"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CompassAppDelegate" hasInstanceMethod:@"window" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CompassAppDelegate"];
 }
 
 @end

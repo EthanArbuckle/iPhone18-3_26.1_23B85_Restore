@@ -1,10 +1,10 @@
 @interface SBSSmartCoverService
 + (id)sharedInstance;
 - (SBSSmartCoverService)init;
-- (id)registerSmartCoverStateObserver:(id)a3;
+- (id)registerSmartCoverStateObserver:(id)observer;
 - (void)dealloc;
 - (void)invalidate;
-- (void)observeSmartCoverStateDidChange:(id)a3;
+- (void)observeSmartCoverStateDidChange:(id)change;
 @end
 
 @implementation SBSSmartCoverService
@@ -49,9 +49,9 @@ uint64_t __38__SBSSmartCoverService_sharedInstance__block_invoke()
     v5->_observerAssertion = v6;
 
     v8 = MEMORY[0x1E698F498];
-    v9 = [MEMORY[0x1E698F498] defaultShellMachName];
+    defaultShellMachName = [MEMORY[0x1E698F498] defaultShellMachName];
     v10 = +[SBSSmartCoverServiceSpecification identifier];
-    v11 = [v8 endpointForMachName:v9 service:v10 instance:0];
+    v11 = [v8 endpointForMachName:defaultShellMachName service:v10 instance:0];
 
     if (v11)
     {
@@ -165,7 +165,7 @@ void __28__SBSSmartCoverService_init__block_invoke_26(uint64_t a1)
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"must invalidate SBSSmartCoverService before dealloc"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    v5 = NSStringFromSelector(a1);
+    v5 = NSStringFromSelector(self);
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     v8 = 138544642;
@@ -198,26 +198,26 @@ void __28__SBSSmartCoverService_init__block_invoke_26(uint64_t a1)
   os_unfair_lock_lock(&self->_lock);
 }
 
-- (id)registerSmartCoverStateObserver:(id)a3
+- (id)registerSmartCoverStateObserver:(id)observer
 {
   observerAssertion = self->_observerAssertion;
-  v4 = a3;
+  observerCopy = observer;
   v5 = [objc_opt_class() description];
-  v6 = [(BSCompoundAssertion *)observerAssertion acquireForReason:v5 withContext:v4];
+  v6 = [(BSCompoundAssertion *)observerAssertion acquireForReason:v5 withContext:observerCopy];
 
   return v6;
 }
 
-- (void)observeSmartCoverStateDidChange:(id)a3
+- (void)observeSmartCoverStateDidChange:(id)change
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = [a3 integerValue];
-  v5 = [(BSCompoundAssertion *)self->_observerAssertion context];
+  integerValue = [change integerValue];
+  context = [(BSCompoundAssertion *)self->_observerAssertion context];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [context countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -229,14 +229,14 @@ void __28__SBSSmartCoverService_init__block_invoke_26(uint64_t a1)
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(context);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) smartCoverStateDidChange:v4];
+        [*(*(&v10 + 1) + 8 * v9++) smartCoverStateDidChange:integerValue];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [context countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);

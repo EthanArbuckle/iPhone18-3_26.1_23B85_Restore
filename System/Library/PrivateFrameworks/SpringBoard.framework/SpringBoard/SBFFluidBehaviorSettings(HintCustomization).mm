@@ -6,12 +6,12 @@
 
 - (uint64_t)_setDefaultButtonHintGeometryFastValues
 {
-  [a1 setBehaviorType:2];
-  [a1 setDampingRatio:0.7];
-  [a1 setResponse:0.3];
+  [self setBehaviorType:2];
+  [self setDampingRatio:0.7];
+  [self setResponse:0.3];
   v4 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
 
-  return [a1 setFrameRateRange:1114149 highFrameRateReason:{*&v4.minimum, *&v4.maximum, *&v4.preferred}];
+  return [self setFrameRateRange:1114149 highFrameRateReason:{*&v4.minimum, *&v4.maximum, *&v4.preferred}];
 }
 
 @end

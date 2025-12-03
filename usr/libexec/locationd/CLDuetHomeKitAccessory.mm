@@ -1,11 +1,11 @@
 @interface CLDuetHomeKitAccessory
-- (CLDuetHomeKitAccessory)initWithHomeUUID:(id)a3 accessoryUUID:(id)a4 accessoryName:(id)a5 serviceName:(id)a6 serviceType:(id)a7 characteristicType:(id)a8 clientName:(id)a9 source:(id)a10 serviceUUID:(id)a11 triggerLocalizationScan:(id)a12 triggerRecordingScan:(id)a13;
+- (CLDuetHomeKitAccessory)initWithHomeUUID:(id)d accessoryUUID:(id)iD accessoryName:(id)name serviceName:(id)serviceName serviceType:(id)type characteristicType:(id)characteristicType clientName:(id)clientName source:(id)self0 serviceUUID:(id)self1 triggerLocalizationScan:(id)self2 triggerRecordingScan:(id)self3;
 - (void)dealloc;
 @end
 
 @implementation CLDuetHomeKitAccessory
 
-- (CLDuetHomeKitAccessory)initWithHomeUUID:(id)a3 accessoryUUID:(id)a4 accessoryName:(id)a5 serviceName:(id)a6 serviceType:(id)a7 characteristicType:(id)a8 clientName:(id)a9 source:(id)a10 serviceUUID:(id)a11 triggerLocalizationScan:(id)a12 triggerRecordingScan:(id)a13
+- (CLDuetHomeKitAccessory)initWithHomeUUID:(id)d accessoryUUID:(id)iD accessoryName:(id)name serviceName:(id)serviceName serviceType:(id)type characteristicType:(id)characteristicType clientName:(id)clientName source:(id)self0 serviceUUID:(id)self1 triggerLocalizationScan:(id)self2 triggerRecordingScan:(id)self3
 {
   v22.receiver = self;
   v22.super_class = CLDuetHomeKitAccessory;
@@ -13,17 +13,17 @@
   v20 = v19;
   if (v19)
   {
-    [(CLDuetHomeKitAccessory *)v19 setHomeUUID:a3];
-    [(CLDuetHomeKitAccessory *)v20 setAccessoryUUID:a4];
-    [(CLDuetHomeKitAccessory *)v20 setAccessoryName:a5];
-    [(CLDuetHomeKitAccessory *)v20 setServiceName:a6];
-    [(CLDuetHomeKitAccessory *)v20 setServiceType:a7];
-    [(CLDuetHomeKitAccessory *)v20 setCharacteristicType:a8];
-    [(CLDuetHomeKitAccessory *)v20 setClientName:a9];
-    [(CLDuetHomeKitAccessory *)v20 setSource:a10];
-    [(CLDuetHomeKitAccessory *)v20 setServiceUUID:a11];
-    [(CLDuetHomeKitAccessory *)v20 setTriggerLocalizationScan:a12];
-    [(CLDuetHomeKitAccessory *)v20 setTriggerRecordingScan:a13];
+    [(CLDuetHomeKitAccessory *)v19 setHomeUUID:d];
+    [(CLDuetHomeKitAccessory *)v20 setAccessoryUUID:iD];
+    [(CLDuetHomeKitAccessory *)v20 setAccessoryName:name];
+    [(CLDuetHomeKitAccessory *)v20 setServiceName:serviceName];
+    [(CLDuetHomeKitAccessory *)v20 setServiceType:type];
+    [(CLDuetHomeKitAccessory *)v20 setCharacteristicType:characteristicType];
+    [(CLDuetHomeKitAccessory *)v20 setClientName:clientName];
+    [(CLDuetHomeKitAccessory *)v20 setSource:source];
+    [(CLDuetHomeKitAccessory *)v20 setServiceUUID:uID];
+    [(CLDuetHomeKitAccessory *)v20 setTriggerLocalizationScan:scan];
+    [(CLDuetHomeKitAccessory *)v20 setTriggerRecordingScan:recordingScan];
   }
 
   return v20;

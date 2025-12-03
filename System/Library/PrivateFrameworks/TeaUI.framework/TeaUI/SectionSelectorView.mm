@@ -3,20 +3,20 @@
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
 - (void)layoutSubviews;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
 @end
 
 @implementation SectionSelectorView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7F83194();
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1D7F823E8();
   v5 = v4;
 
@@ -27,22 +27,22 @@
   return result;
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  v7 = a3;
-  v8 = self;
-  sub_1D7F8399C(v8, &a5->x);
+  draggingCopy = dragging;
+  selfCopy = self;
+  sub_1D7F8399C(selfCopy, &offset->x);
 }
 
 - (void)accessibilityIncrement
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7F83C08();
 }
 
 - (void)accessibilityDecrement
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7F83D5C();
 }
 

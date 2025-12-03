@@ -1,26 +1,26 @@
 @interface MPContentItem
 + (BOOL)isSuppressingChangeNotifications;
-+ (void)performChangeImmediately:(id)a3;
-+ (void)performSuppressingChangeNotifications:(id)a3;
++ (void)performChangeImmediately:(id)immediately;
++ (void)performSuppressingChangeNotifications:(id)notifications;
 - (BOOL)isContainer;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isExplicitContent;
 - (BOOL)isPlayable;
 - (BOOL)isStreamingContent;
 - (MPContentItem)init;
-- (MPContentItem)initWithExternalRepresentation:(id)a3;
+- (MPContentItem)initWithExternalRepresentation:(id)representation;
 - (MPContentItem)initWithIdentifier:(NSString *)identifier;
 - (NSString)identifier;
 - (NSString)subtitle;
 - (NSString)title;
 - (float)playbackProgress;
-- (id)_initWithMediaRemoteContentItem:(void *)a3;
+- (id)_initWithMediaRemoteContentItem:(void *)item;
 - (id)createExternalRepresentation;
 - (id)description;
-- (void)_loadArtwork:(id)a3 completion:(id)a4;
-- (void)_postItemChangedNotificationWithDeltaBlock:(id)a3;
+- (void)_loadArtwork:(id)artwork completion:(id)completion;
+- (void)_postItemChangedNotificationWithDeltaBlock:(id)block;
 - (void)dealloc;
-- (void)postChangeNotificationImmediately:(BOOL)a3;
+- (void)postChangeNotificationImmediately:(BOOL)immediately;
 - (void)setArtwork:(MPMediaItemArtwork *)artwork;
 - (void)setContainer:(BOOL)container;
 - (void)setExplicitContent:(BOOL)explicitContent;
@@ -53,9 +53,9 @@
   return MRContentItemGetIdentifier();
 }
 
-- (void)_loadArtwork:(id)a3 completion:(id)a4
+- (void)_loadArtwork:(id)artwork completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = +[MPPlayableContentManager sharedContentManager];
   artwork = self->_artwork;
   v9[0] = MEMORY[0x1E69E9820];
@@ -63,8 +63,8 @@
   v9[2] = __41__MPContentItem__loadArtwork_completion___block_invoke;
   v9[3] = &unk_1E7676FB8;
   v9[4] = self;
-  v10 = v5;
-  v8 = v5;
+  v10 = completionCopy;
+  v8 = completionCopy;
   [v6 _enqueueArtworkUpdate:artwork size:v9 withCompletion:{-1.0, -1.0}];
 }
 
@@ -131,30 +131,30 @@ uint64_t __41__MPContentItem__loadArtwork_completion___block_invoke_2(uint64_t a
   }
 }
 
-- (void)_postItemChangedNotificationWithDeltaBlock:(id)a3
+- (void)_postItemChangedNotificationWithDeltaBlock:(id)block
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AF00] currentThread];
-  v6 = [v5 threadDictionary];
+  blockCopy = block;
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v7 = [v6 objectForKeyedSubscript:@"_MPContentItemNotificationsSuppressedKey"];
-  v8 = [v7 BOOLValue];
+  v7 = [threadDictionary objectForKeyedSubscript:@"_MPContentItemNotificationsSuppressedKey"];
+  bOOLValue = [v7 BOOLValue];
 
-  if ((v8 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v9 = MRContentItemGetIdentifier();
     if (v9)
     {
-      if (v4)
+      if (blockCopy)
       {
         v10 = MRContentItemCreate();
-        v4[2](v4, v10);
+        blockCopy[2](blockCopy, v10);
         v11 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:2];
         [v11 setObject:v10 forKeyedSubscript:@"_MPContentItemDidChangeUserInfoKeyDeltaItem"];
-        v12 = [v6 objectForKeyedSubscript:@"_MPContentItemNotificationsImmediateKey"];
-        v13 = [v12 BOOLValue];
+        v12 = [threadDictionary objectForKeyedSubscript:@"_MPContentItemNotificationsImmediateKey"];
+        bOOLValue2 = [v12 BOOLValue];
 
-        if (v13)
+        if (bOOLValue2)
         {
           [v11 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"_MPContentItemDidChangeUserInfoKeyImmediately"];
         }
@@ -167,8 +167,8 @@ uint64_t __41__MPContentItem__loadArtwork_completion___block_invoke_2(uint64_t a
         v11 = 0;
       }
 
-      v14 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v14 postNotificationName:@"_MPContentItemDidChangeNotification" object:self userInfo:v11];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"_MPContentItemDidChangeNotification" object:self userInfo:v11];
     }
 
     else
@@ -200,9 +200,9 @@ uint64_t __41__MPContentItem__loadArtwork_completion___block_invoke_2(uint64_t a
 
 - (BOOL)isPlayable
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CAB0](v2);
+  return MEMORY[0x1EEE1CAB0](_mediaRemoteContentItem);
 }
 
 - (void)setStreamingContent:(BOOL)streamingContent
@@ -222,9 +222,9 @@ uint64_t __41__MPContentItem__loadArtwork_completion___block_invoke_2(uint64_t a
 
 - (BOOL)isStreamingContent
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CAC0](v2);
+  return MEMORY[0x1EEE1CAC0](_mediaRemoteContentItem);
 }
 
 - (void)setExplicitContent:(BOOL)explicitContent
@@ -244,9 +244,9 @@ uint64_t __41__MPContentItem__loadArtwork_completion___block_invoke_2(uint64_t a
 
 - (BOOL)isExplicitContent
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CA98](v2);
+  return MEMORY[0x1EEE1CA98](_mediaRemoteContentItem);
 }
 
 - (void)setContainer:(BOOL)container
@@ -266,9 +266,9 @@ uint64_t __41__MPContentItem__loadArtwork_completion___block_invoke_2(uint64_t a
 
 - (BOOL)isContainer
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CA90](v2);
+  return MEMORY[0x1EEE1CA90](_mediaRemoteContentItem);
 }
 
 - (void)setPlaybackProgress:(float)playbackProgress
@@ -316,18 +316,18 @@ LABEL_7:
 
 - (float)playbackProgress
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  MEMORY[0x1EEE1CB10](v2);
+  MEMORY[0x1EEE1CB10](_mediaRemoteContentItem);
   return result;
 }
 
 - (void)setSubtitle:(NSString *)subtitle
 {
   v4 = subtitle;
-  v5 = [(MPContentItem *)self subtitle];
-  v6 = v5;
-  if (v5 != v4 && ![(NSString *)v5 isEqual:v4]|| !(v4 | v6))
+  subtitle = [(MPContentItem *)self subtitle];
+  v6 = subtitle;
+  if (subtitle != v4 && ![(NSString *)subtitle isEqual:v4]|| !(v4 | v6))
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetSubtitle();
@@ -342,17 +342,17 @@ LABEL_7:
 
 - (NSString)subtitle
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CB80](v2);
+  return MEMORY[0x1EEE1CB80](_mediaRemoteContentItem);
 }
 
 - (void)setTitle:(NSString *)title
 {
   v4 = title;
-  v5 = [(MPContentItem *)self title];
-  v6 = v5;
-  if (v5 != v4 && ![(NSString *)v5 isEqual:v4]|| !(v4 | v6))
+  title = [(MPContentItem *)self title];
+  v6 = title;
+  if (title != v4 && ![(NSString *)title isEqual:v4]|| !(v4 | v6))
   {
     [(MPContentItem *)self _mediaRemoteContentItem];
     MRContentItemSetTitle();
@@ -367,26 +367,26 @@ LABEL_7:
 
 - (NSString)title
 {
-  v2 = [(MPContentItem *)self _mediaRemoteContentItem];
+  _mediaRemoteContentItem = [(MPContentItem *)self _mediaRemoteContentItem];
 
-  return MEMORY[0x1EEE1CB88](v2);
+  return MEMORY[0x1EEE1CB88](_mediaRemoteContentItem);
 }
 
-- (void)postChangeNotificationImmediately:(BOOL)a3
+- (void)postChangeNotificationImmediately:(BOOL)immediately
 {
-  v3 = a3;
+  immediatelyCopy = immediately;
   v5 = MRContentItemGetIdentifier();
   if (v5)
   {
     v6 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:2];
     [v6 setObject:self->_mediaRemoteContentItem forKeyedSubscript:@"_MPContentItemDidChangeUserInfoKeyDeltaItem"];
-    if (v3)
+    if (immediatelyCopy)
     {
       [v6 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"_MPContentItemDidChangeUserInfoKeyImmediately"];
     }
 
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 postNotificationName:@"_MPContentItemDidChangeNotification" object:self userInfo:v6];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"_MPContentItemDidChangeNotification" object:self userInfo:v6];
   }
 
   else
@@ -400,10 +400,10 @@ LABEL_7:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -413,9 +413,9 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(MPContentItem *)self createExternalRepresentation];
-      v6 = [(MPContentItem *)v4 createExternalRepresentation];
-      v7 = [v5 isEqualToData:v6];
+      createExternalRepresentation = [(MPContentItem *)self createExternalRepresentation];
+      createExternalRepresentation2 = [(MPContentItem *)equalCopy createExternalRepresentation];
+      v7 = [createExternalRepresentation isEqualToData:createExternalRepresentation2];
     }
 
     else
@@ -438,34 +438,34 @@ LABEL_7:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MPContentItem *)self identifier];
-  v6 = [(MPContentItem *)self title];
-  v7 = [v3 stringWithFormat:@"<%@: %p id=%@ title=%@>", v4, self, v5, v6];
+  identifier = [(MPContentItem *)self identifier];
+  title = [(MPContentItem *)self title];
+  v7 = [v3 stringWithFormat:@"<%@: %p id=%@ title=%@>", v4, self, identifier, title];
 
   return v7;
 }
 
-- (id)_initWithMediaRemoteContentItem:(void *)a3
+- (id)_initWithMediaRemoteContentItem:(void *)item
 {
-  v3 = a3;
-  if (a3)
+  selfCopy = item;
+  if (item)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
-    v6 = [(MPContentItem *)self initWithIdentifier:v5];
+    null = [MEMORY[0x1E695DFB0] null];
+    v6 = [(MPContentItem *)self initWithIdentifier:null];
 
     if (v6)
     {
-      v6->_mediaRemoteContentItem = CFRetain(v3);
+      v6->_mediaRemoteContentItem = CFRetain(selfCopy);
     }
 
     self = v6;
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (MPContentItem)initWithExternalRepresentation:(id)a3
+- (MPContentItem)initWithExternalRepresentation:(id)representation
 {
   v4 = MRContentItemCreateFromExternalRepresentation();
 
@@ -474,30 +474,30 @@ LABEL_7:
 
 - (MPContentItem)initWithIdentifier:(NSString *)identifier
 {
-  v5 = identifier;
+  stringValue = identifier;
   v12.receiver = self;
   v12.super_class = MPContentItem;
   v6 = [(MPContentItem *)&v12 init];
-  if (!v5)
+  if (!stringValue)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:v6 file:@"MPContentItem.m" lineNumber:75 description:@"Can't create an MPContentItem object with a nil identifier."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:v6 file:@"MPContentItem.m" lineNumber:75 description:@"Can't create an MPContentItem object with a nil identifier."];
   }
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v7 = v5;
-    v5 = v7;
+    v7 = stringValue;
+    stringValue = v7;
     if (objc_opt_respondsToSelector())
     {
-      v5 = [(NSString *)v7 stringValue];
+      stringValue = [(NSString *)v7 stringValue];
     }
   }
 
   if (v6)
   {
-    v8 = v5 == 0;
+    v8 = stringValue == 0;
   }
 
   else
@@ -507,9 +507,9 @@ LABEL_7:
 
   if (!v8)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
 
-    if (v5 != v9)
+    if (stringValue != null)
     {
       v6->_mediaRemoteContentItem = MRContentItemCreate();
     }
@@ -520,65 +520,65 @@ LABEL_7:
 
 - (MPContentItem)init
 {
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [v3 UUIDString];
-  v5 = [(MPContentItem *)self initWithIdentifier:v4];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v5 = [(MPContentItem *)self initWithIdentifier:uUIDString];
 
   return v5;
 }
 
-+ (void)performChangeImmediately:(id)a3
++ (void)performChangeImmediately:(id)immediately
 {
-  v7 = a3;
-  v3 = [MEMORY[0x1E696AF00] currentThread];
-  v4 = [v3 threadDictionary];
+  immediatelyCopy = immediately;
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v5 = [v4 objectForKeyedSubscript:@"_MPContentItemNotificationsImmediateKey"];
-  v6 = [v5 BOOLValue];
+  v5 = [threadDictionary objectForKeyedSubscript:@"_MPContentItemNotificationsImmediateKey"];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
-    v7[2]();
+    immediatelyCopy[2]();
   }
 
   else
   {
-    [v4 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"_MPContentItemNotificationsImmediateKey"];
-    v7[2]();
-    [v4 setObject:MEMORY[0x1E695E110] forKeyedSubscript:@"_MPContentItemNotificationsImmediateKey"];
+    [threadDictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"_MPContentItemNotificationsImmediateKey"];
+    immediatelyCopy[2]();
+    [threadDictionary setObject:MEMORY[0x1E695E110] forKeyedSubscript:@"_MPContentItemNotificationsImmediateKey"];
   }
 }
 
-+ (void)performSuppressingChangeNotifications:(id)a3
++ (void)performSuppressingChangeNotifications:(id)notifications
 {
-  v7 = a3;
-  v3 = [MEMORY[0x1E696AF00] currentThread];
-  v4 = [v3 threadDictionary];
+  notificationsCopy = notifications;
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v5 = [v4 objectForKeyedSubscript:@"_MPContentItemNotificationsSuppressedKey"];
-  v6 = [v5 BOOLValue];
+  v5 = [threadDictionary objectForKeyedSubscript:@"_MPContentItemNotificationsSuppressedKey"];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
-    v7[2]();
+    notificationsCopy[2]();
   }
 
   else
   {
-    [v4 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"_MPContentItemNotificationsSuppressedKey"];
-    v7[2]();
-    [v4 setObject:MEMORY[0x1E695E110] forKeyedSubscript:@"_MPContentItemNotificationsSuppressedKey"];
+    [threadDictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"_MPContentItemNotificationsSuppressedKey"];
+    notificationsCopy[2]();
+    [threadDictionary setObject:MEMORY[0x1E695E110] forKeyedSubscript:@"_MPContentItemNotificationsSuppressedKey"];
   }
 }
 
 + (BOOL)isSuppressingChangeNotifications
 {
-  v2 = [MEMORY[0x1E696AF00] currentThread];
-  v3 = [v2 threadDictionary];
-  v4 = [v3 objectForKeyedSubscript:@"_MPContentItemNotificationsSuppressedKey"];
-  v5 = [v4 BOOLValue];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v4 = [threadDictionary objectForKeyedSubscript:@"_MPContentItemNotificationsSuppressedKey"];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 @end

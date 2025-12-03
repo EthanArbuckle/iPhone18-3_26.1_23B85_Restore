@@ -3,19 +3,19 @@
 + (id)weatherServiceClientInterface;
 + (id)weatherServiceInterface;
 - (WFServiceConnection)init;
-- (void)_callbackAllPendingTasksOnInvalidate:(id)a3;
+- (void)_callbackAllPendingTasksOnInvalidate:(id)invalidate;
 - (void)_cleanup;
-- (void)_handleRemoteObjectProxyError:(id)a3;
-- (void)_onQueueInvalidateConnection:(id)a3;
+- (void)_handleRemoteObjectProxyError:(id)error;
+- (void)_onQueueInvalidateConnection:(id)connection;
 - (void)_onQueueOpenConnection;
-- (void)accessServiceWithBlock:(id)a3;
-- (void)cancelRequestWithIdentifier:(id)a3;
+- (void)accessServiceWithBlock:(id)block;
+- (void)cancelRequestWithIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)enqueueRequest:(id)a3 waitUntilDone:(BOOL)a4;
+- (void)enqueueRequest:(id)request waitUntilDone:(BOOL)done;
 - (void)invalidate;
 - (void)invalidateCache;
-- (void)serviceDidReceiveResponse:(id)a3;
-- (void)taskIdentifier:(id)a3;
+- (void)serviceDidReceiveResponse:(id)response;
+- (void)taskIdentifier:(id)identifier;
 @end
 
 @implementation WFServiceConnection
@@ -87,7 +87,7 @@ uint64_t __51__WFServiceConnection_XPC__weatherServiceInterface__block_invoke()
   block[1] = 3221225472;
   block[2] = __57__WFServiceConnection_XPC__weatherServiceClientInterface__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (weatherServiceClientInterface_onceToken != -1)
   {
     dispatch_once(&weatherServiceClientInterface_onceToken, block);
@@ -128,9 +128,9 @@ void __57__WFServiceConnection_XPC__weatherServiceClientInterface__block_invoke(
     internalStateQueue = v2->_internalStateQueue;
     v2->_internalStateQueue = v7;
 
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     tasksPendingResponseForTaskIdentifier = v2->_tasksPendingResponseForTaskIdentifier;
-    v2->_tasksPendingResponseForTaskIdentifier = v9;
+    v2->_tasksPendingResponseForTaskIdentifier = dictionary;
 
     v11 = objc_opt_new();
     dispatchGroupForTaskIdentifier = v2->_dispatchGroupForTaskIdentifier;
@@ -152,25 +152,25 @@ void __57__WFServiceConnection_XPC__weatherServiceClientInterface__block_invoke(
   [(WFServiceConnection *)&v3 dealloc];
 }
 
-- (void)accessServiceWithBlock:(id)a3
+- (void)accessServiceWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7 = 0;
   v8 = &v7;
   v9 = 0x3032000000;
   v10 = __Block_byref_object_copy__3;
   v11 = __Block_byref_object_dispose__3;
   v12 = 0;
-  v5 = [(WFServiceConnection *)self queue];
+  queue = [(WFServiceConnection *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __46__WFServiceConnection_accessServiceWithBlock___block_invoke;
   v6[3] = &unk_279E6DB38;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v5, v6);
+  dispatch_sync(queue, v6);
 
-  v4[2](v4, v8[5]);
+  blockCopy[2](blockCopy, v8[5]);
   _Block_object_dispose(&v7, 8);
 }
 
@@ -191,10 +191,10 @@ uint64_t __46__WFServiceConnection_accessServiceWithBlock___block_invoke(uint64_
   return MEMORY[0x2821F96F8](v3, v5);
 }
 
-- (void)cancelRequestWithIdentifier:(id)a3
+- (void)cancelRequestWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [v4 UUID];
+  identifierCopy = identifier;
+  uUID = [identifierCopy UUID];
   v6 = WFLogForCategory(4uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -205,10 +205,10 @@ uint64_t __46__WFServiceConnection_accessServiceWithBlock___block_invoke(uint64_
   v9[1] = 3221225472;
   v9[2] = __51__WFServiceConnection_cancelRequestWithIdentifier___block_invoke;
   v9[3] = &unk_279E6FAE8;
-  v10 = v4;
-  v11 = v5;
-  v7 = v5;
-  v8 = v4;
+  v10 = identifierCopy;
+  v11 = uUID;
+  v7 = uUID;
+  v8 = identifierCopy;
   [(WFServiceConnection *)self accessServiceWithBlock:v9];
 }
 
@@ -222,55 +222,55 @@ void __51__WFServiceConnection_cancelRequestWithIdentifier___block_invoke(uint64
   }
 }
 
-- (void)enqueueRequest:(id)a3 waitUntilDone:(BOOL)a4
+- (void)enqueueRequest:(id)request waitUntilDone:(BOOL)done
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 isCancelled])
+  doneCopy = done;
+  requestCopy = request;
+  if ([requestCopy isCancelled])
   {
-    [v6 handleCancellation];
+    [requestCopy handleCancellation];
   }
 
   else
   {
-    v7 = [v6 identifier];
-    v8 = [v7 UUID];
+    identifier = [requestCopy identifier];
+    uUID = [identifier UUID];
 
     Current = CFAbsoluteTimeGetCurrent();
     v10 = WFLogForCategory(4uLL);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      [WFServiceConnection enqueueRequest:v6 waitUntilDone:?];
+      [WFServiceConnection enqueueRequest:requestCopy waitUntilDone:?];
     }
 
-    if ([v6 requiresResponse])
+    if ([requestCopy requiresResponse])
     {
-      v11 = [(WFServiceConnection *)self internalStateQueue];
+      internalStateQueue = [(WFServiceConnection *)self internalStateQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __52__WFServiceConnection_enqueueRequest_waitUntilDone___block_invoke;
       block[3] = &unk_279E6FB10;
       block[4] = self;
-      v25 = v6;
-      v26 = v8;
+      v25 = requestCopy;
+      v26 = uUID;
       v27 = Current;
-      dispatch_async(v11, block);
+      dispatch_async(internalStateQueue, block);
     }
 
-    if (v4)
+    if (doneCopy)
     {
       v12 = dispatch_group_create();
       dispatch_group_enter(v12);
-      v13 = [(WFServiceConnection *)self internalStateQueue];
+      internalStateQueue2 = [(WFServiceConnection *)self internalStateQueue];
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __52__WFServiceConnection_enqueueRequest_waitUntilDone___block_invoke_2;
       v21[3] = &unk_279E6E8A8;
       v21[4] = self;
-      v22 = v8;
+      v22 = uUID;
       v14 = v12;
       v23 = v14;
-      dispatch_async(v13, v21);
+      dispatch_async(internalStateQueue2, v21);
     }
 
     else
@@ -282,9 +282,9 @@ void __51__WFServiceConnection_cancelRequestWithIdentifier___block_invoke(uint64
     v19[1] = 3221225472;
     v19[2] = __52__WFServiceConnection_enqueueRequest_waitUntilDone___block_invoke_3;
     v19[3] = &unk_279E6FB38;
-    v20 = v6;
+    v20 = requestCopy;
     [(WFServiceConnection *)self accessServiceWithBlock:v19];
-    if (v4)
+    if (doneCopy)
     {
       v15 = dispatch_time(0, 30000000000);
       v16 = dispatch_group_wait(v14, v15);
@@ -294,13 +294,13 @@ void __51__WFServiceConnection_cancelRequestWithIdentifier___block_invoke(uint64
       {
         if (v18)
         {
-          [WFServiceConnection enqueueRequest:v8 waitUntilDone:?];
+          [WFServiceConnection enqueueRequest:uUID waitUntilDone:?];
         }
       }
 
       else if (v18)
       {
-        [WFServiceConnection enqueueRequest:v8 waitUntilDone:?];
+        [WFServiceConnection enqueueRequest:uUID waitUntilDone:?];
       }
     }
   }
@@ -331,13 +331,13 @@ void __52__WFServiceConnection_enqueueRequest_waitUntilDone___block_invoke_2(uin
     [WFServiceConnection invalidate];
   }
 
-  v4 = [(WFServiceConnection *)self queue];
+  queue = [(WFServiceConnection *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __33__WFServiceConnection_invalidate__block_invoke;
   block[3] = &unk_279E6D9A8;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(queue, block);
 }
 
 void __33__WFServiceConnection_invalidate__block_invoke(uint64_t a1)
@@ -359,24 +359,24 @@ void __33__WFServiceConnection_invalidate__block_invoke(uint64_t a1)
   [(WFServiceConnection *)self accessServiceWithBlock:v5];
 }
 
-- (void)_handleRemoteObjectProxyError:(id)a3
+- (void)_handleRemoteObjectProxyError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = WFLogForCategory(4uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     [WFServiceConnection _handleRemoteObjectProxyError:];
   }
 
-  v6 = [(WFServiceConnection *)self queue];
+  queue = [(WFServiceConnection *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __53__WFServiceConnection__handleRemoteObjectProxyError___block_invoke;
   v8[3] = &unk_279E6EA40;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_sync(v6, v8);
+  v9 = errorCopy;
+  v7 = errorCopy;
+  dispatch_sync(queue, v8);
 }
 
 - (void)_onQueueOpenConnection
@@ -399,58 +399,58 @@ void __33__WFServiceConnection_invalidate__block_invoke(uint64_t a1)
 
 - (void)_cleanup
 {
-  v3 = [(WFServiceConnection *)self serviceProxy];
-  [v3 removeClient:self];
+  serviceProxy = [(WFServiceConnection *)self serviceProxy];
+  [serviceProxy removeClient:self];
   [(WFServiceConnection *)self setServiceProxy:0];
   [(WFServiceConnection *)self _callbackAllPendingTasksOnInvalidate:0];
 }
 
-- (void)_onQueueInvalidateConnection:(id)a3
+- (void)_onQueueInvalidateConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(WFServiceConnection *)self serviceProxy];
-  [v5 removeClient:self];
+  connectionCopy = connection;
+  serviceProxy = [(WFServiceConnection *)self serviceProxy];
+  [serviceProxy removeClient:self];
   [(WFServiceConnection *)self setServiceProxy:0];
-  v6 = [(WFServiceConnection *)self internalStateQueue];
+  internalStateQueue = [(WFServiceConnection *)self internalStateQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __52__WFServiceConnection__onQueueInvalidateConnection___block_invoke;
   v8[3] = &unk_279E6EA40;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_sync(v6, v8);
+  v9 = connectionCopy;
+  v7 = connectionCopy;
+  dispatch_sync(internalStateQueue, v8);
 }
 
-- (void)_callbackAllPendingTasksOnInvalidate:(id)a3
+- (void)_callbackAllPendingTasksOnInvalidate:(id)invalidate
 {
-  v4 = a3;
+  invalidateCopy = invalidate;
   v5 = WFLogForCategory(4uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     [WFServiceConnection _callbackAllPendingTasksOnInvalidate:];
   }
 
-  v6 = [(WFServiceConnection *)self tasksPendingResponseForTaskIdentifier];
+  tasksPendingResponseForTaskIdentifier = [(WFServiceConnection *)self tasksPendingResponseForTaskIdentifier];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __60__WFServiceConnection__callbackAllPendingTasksOnInvalidate___block_invoke;
   v12[3] = &unk_279E6FB60;
-  v13 = v4;
-  v7 = v4;
-  [v6 enumerateKeysAndObjectsUsingBlock:v12];
+  v13 = invalidateCopy;
+  v7 = invalidateCopy;
+  [tasksPendingResponseForTaskIdentifier enumerateKeysAndObjectsUsingBlock:v12];
 
-  v8 = [(WFServiceConnection *)self tasksPendingResponseForTaskIdentifier];
-  [v8 removeAllObjects];
+  tasksPendingResponseForTaskIdentifier2 = [(WFServiceConnection *)self tasksPendingResponseForTaskIdentifier];
+  [tasksPendingResponseForTaskIdentifier2 removeAllObjects];
 
-  v9 = [(WFServiceConnection *)self dispatchGroupForTaskIdentifier];
-  [v9 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_31];
+  dispatchGroupForTaskIdentifier = [(WFServiceConnection *)self dispatchGroupForTaskIdentifier];
+  [dispatchGroupForTaskIdentifier enumerateKeysAndObjectsUsingBlock:&__block_literal_global_31];
 
-  v10 = [(WFServiceConnection *)self dispatchGroupForTaskIdentifier];
-  [v10 removeAllObjects];
+  dispatchGroupForTaskIdentifier2 = [(WFServiceConnection *)self dispatchGroupForTaskIdentifier];
+  [dispatchGroupForTaskIdentifier2 removeAllObjects];
 
-  v11 = [(WFServiceConnection *)self executionStartTimeForTaskIdentifier];
-  [v11 removeAllObjects];
+  executionStartTimeForTaskIdentifier = [(WFServiceConnection *)self executionStartTimeForTaskIdentifier];
+  [executionStartTimeForTaskIdentifier removeAllObjects];
 }
 
 void __60__WFServiceConnection__callbackAllPendingTasksOnInvalidate___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -462,18 +462,18 @@ void __60__WFServiceConnection__callbackAllPendingTasksOnInvalidate___block_invo
   [v5 handleError:v7 forResponseIdentifier:v6];
 }
 
-- (void)taskIdentifier:(id)a3
+- (void)taskIdentifier:(id)identifier
 {
   v3 = taskIdentifier__onceToken;
-  v4 = a3;
-  v5 = v4;
+  identifierCopy = identifier;
+  v5 = identifierCopy;
   if (v3 != -1)
   {
     [WFServiceConnection taskIdentifier:];
-    v4 = v5;
+    identifierCopy = v5;
   }
 
-  (*(v4 + 2))(v4, taskIdentifier__defaultTaskIdentifier);
+  (*(identifierCopy + 2))(identifierCopy, taskIdentifier__defaultTaskIdentifier);
 }
 
 uint64_t __38__WFServiceConnection_taskIdentifier___block_invoke()
@@ -485,10 +485,10 @@ uint64_t __38__WFServiceConnection_taskIdentifier___block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (void)serviceDidReceiveResponse:(id)a3
+- (void)serviceDidReceiveResponse:(id)response
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -507,37 +507,37 @@ uint64_t __38__WFServiceConnection_taskIdentifier___block_invoke()
   v28[3] = __Block_byref_object_copy__3;
   v28[4] = __Block_byref_object_dispose__3;
   v29 = 0;
-  v5 = [(WFServiceConnection *)self internalStateQueue];
+  internalStateQueue = [(WFServiceConnection *)self internalStateQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__WFServiceConnection_serviceDidReceiveResponse___block_invoke;
   block[3] = &unk_279E6FBA8;
   v25 = &v32;
   block[4] = self;
-  v6 = v4;
+  v6 = responseCopy;
   v24 = v6;
   v26 = v30;
   v27 = v28;
-  dispatch_sync(v5, block);
+  dispatch_sync(internalStateQueue, block);
 
   if (!v33[5])
   {
     v7 = WFLogForCategory(4uLL);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [v6 identifier];
-      [(WFServiceConnection *)v8 serviceDidReceiveResponse:buf, v7];
+      identifier = [v6 identifier];
+      [(WFServiceConnection *)identifier serviceDidReceiveResponse:buf, v7];
     }
   }
 
   v9 = WFLogForCategory(4uLL);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [v33[5] identifier];
-    [(WFServiceConnection *)v10 serviceDidReceiveResponse:v38, v9];
+    identifier2 = [v33[5] identifier];
+    [(WFServiceConnection *)identifier2 serviceDidReceiveResponse:v38, v9];
   }
 
-  v11 = [(WFServiceConnection *)self callbackQueue];
+  callbackQueue = [(WFServiceConnection *)self callbackQueue];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __49__WFServiceConnection_serviceDidReceiveResponse___block_invoke_17;
@@ -546,9 +546,9 @@ uint64_t __38__WFServiceConnection_taskIdentifier___block_invoke()
   v20 = v12;
   v21 = v28;
   v22 = &v32;
-  dispatch_sync(v11, v19);
+  dispatch_sync(callbackQueue, v19);
 
-  v13 = [(WFServiceConnection *)self internalStateQueue];
+  internalStateQueue2 = [(WFServiceConnection *)self internalStateQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __49__WFServiceConnection_serviceDidReceiveResponse___block_invoke_18;
@@ -558,7 +558,7 @@ uint64_t __38__WFServiceConnection_taskIdentifier___block_invoke()
   v17 = &v32;
   v18 = v30;
   v14 = v12;
-  dispatch_async(v13, v15);
+  dispatch_async(internalStateQueue2, v15);
 
   _Block_object_dispose(v28, 8);
   _Block_object_dispose(v30, 8);

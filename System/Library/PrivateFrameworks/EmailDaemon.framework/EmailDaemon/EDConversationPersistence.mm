@@ -2,33 +2,33 @@
 + (EFSQLTableSchema)conversationIDMessageIDTableSchema;
 + (EFSQLTableSchema)conversationsTableSchema;
 + (id)log;
-+ (id)tablesAndForeignKeysToResolve:(id *)a3 associationsToResolve:(id *)a4;
-+ (int64_t)conversationNotificationLevelForConversationFlags:(unint64_t)a3;
-+ (unint64_t)conversationFlagsForConversationNotificationLevel:(int64_t)a3;
++ (id)tablesAndForeignKeysToResolve:(id *)resolve associationsToResolve:(id *)toResolve;
++ (int64_t)conversationNotificationLevelForConversationFlags:(unint64_t)flags;
++ (unint64_t)conversationFlagsForConversationNotificationLevel:(int64_t)level;
 - (BOOL)hasSubscribedConversations;
-- (EDConversationPersistence)initWithDatabase:(id)a3 hookRegistry:(id)a4;
+- (EDConversationPersistence)initWithDatabase:(id)database hookRegistry:(id)registry;
 - (EDPersistenceDatabase)database;
-- (id)flaggedConversationsChangedBetweenStartAnchor:(int64_t)a3 endAnchor:(int64_t)a4;
-- (id)messageIDsForConversationID:(int64_t)a3 limit:(unint64_t)a4;
+- (id)flaggedConversationsChangedBetweenStartAnchor:(int64_t)anchor endAnchor:(int64_t)endAnchor;
+- (id)messageIDsForConversationID:(int64_t)d limit:(unint64_t)limit;
 - (id)syncedConversationIDsBySyncKey;
-- (int64_t)conversationIDForMessageIDs:(id)a3;
-- (int64_t)createConversationWithFlags:(unint64_t)a3;
+- (int64_t)conversationIDForMessageIDs:(id)ds;
+- (int64_t)createConversationWithFlags:(unint64_t)flags;
 - (int64_t)currentSyncAnchorForDailyExport;
 - (int64_t)previousSyncAnchorForDailyExport;
-- (unint64_t)persistenceConversationFlagsForConversationID:(int64_t)a3;
-- (void)_notifyOfFlagChangeForConversationID:(int64_t)a3 oldFlags:(unint64_t)a4 newFlags:(unint64_t)a5 reason:(int64_t)a6 generationWindow:(id)a7;
-- (void)_postChangeNotificationForConversationID:(int64_t)a3 flags:(unint64_t)a4 oldFlags:(unint64_t)a5 reason:(int64_t)a6;
-- (void)clearConversationFlagsAndSyncKeyForConversationIDs:(id)a3;
+- (unint64_t)persistenceConversationFlagsForConversationID:(int64_t)d;
+- (void)_notifyOfFlagChangeForConversationID:(int64_t)d oldFlags:(unint64_t)flags newFlags:(unint64_t)newFlags reason:(int64_t)reason generationWindow:(id)window;
+- (void)_postChangeNotificationForConversationID:(int64_t)d flags:(unint64_t)flags oldFlags:(unint64_t)oldFlags reason:(int64_t)reason;
+- (void)clearConversationFlagsAndSyncKeyForConversationIDs:(id)ds;
 - (void)initializeConversationManagerAndPerformInitialSync;
-- (void)markConversationWithIDs:(id)a3 mute:(BOOL)a4;
-- (void)pruneConversationTables:(double)a3;
-- (void)setNewPreviousSyncAnchorForDailyExport:(int64_t)a3;
-- (void)setPersistenceConversationFlags:(unint64_t)a3 forConversationIDs:(id)a4 reason:(int64_t)a5;
-- (void)setPersistenceConversationFlags:(unint64_t)a3 syncKey:(id)a4 forConversationID:(int64_t)a5 reason:(int64_t)a6;
-- (void)updateAssociationTableForMessageID:(id)a3 dateSent:(id)a4 conversationID:(int64_t)a5;
-- (void)updateAssociationTableForMessageIDs:(id)a3 conversationID:(int64_t)a4;
-- (void)updateAssociationTableForMessagePersistentIDs:(id)a3 conversationID:(int64_t)a4;
-- (void)updateConversationNotificationLevel:(int64_t)a3 forConversationIDs:(id)a4;
+- (void)markConversationWithIDs:(id)ds mute:(BOOL)mute;
+- (void)pruneConversationTables:(double)tables;
+- (void)setNewPreviousSyncAnchorForDailyExport:(int64_t)export;
+- (void)setPersistenceConversationFlags:(unint64_t)flags forConversationIDs:(id)ds reason:(int64_t)reason;
+- (void)setPersistenceConversationFlags:(unint64_t)flags syncKey:(id)key forConversationID:(int64_t)d reason:(int64_t)reason;
+- (void)updateAssociationTableForMessageID:(id)d dateSent:(id)sent conversationID:(int64_t)iD;
+- (void)updateAssociationTableForMessageIDs:(id)ds conversationID:(int64_t)d;
+- (void)updateAssociationTableForMessagePersistentIDs:(id)ds conversationID:(int64_t)d;
+- (void)updateConversationNotificationLevel:(int64_t)level forConversationIDs:(id)ds;
 @end
 
 @implementation EDConversationPersistence
@@ -39,7 +39,7 @@
   block[1] = 3221225472;
   block[2] = __32__EDConversationPersistence_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_30 != -1)
   {
     dispatch_once(&log_onceToken_30, block);
@@ -58,19 +58,19 @@ void __32__EDConversationPersistence_log__block_invoke(uint64_t a1)
   log_log_30 = v1;
 }
 
-+ (id)tablesAndForeignKeysToResolve:(id *)a3 associationsToResolve:(id *)a4
++ (id)tablesAndForeignKeysToResolve:(id *)resolve associationsToResolve:(id *)toResolve
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v7 = [a1 conversationsTableSchema];
-  v8 = [a1 conversationIDMessageIDTableSchema];
-  v9 = [v8 columnForName:@"conversation_id"];
-  [v9 setAsForeignKeyForTable:v7 onDelete:2 onUpdate:2];
+  conversationsTableSchema = [self conversationsTableSchema];
+  conversationIDMessageIDTableSchema = [self conversationIDMessageIDTableSchema];
+  v9 = [conversationIDMessageIDTableSchema columnForName:@"conversation_id"];
+  [v9 setAsForeignKeyForTable:conversationsTableSchema onDelete:2 onUpdate:2];
 
   v10 = MEMORY[0x1E695E0F0];
-  *a3 = MEMORY[0x1E695E0F0];
-  *a4 = v10;
-  v14[0] = v7;
-  v14[1] = v8;
+  *resolve = MEMORY[0x1E695E0F0];
+  *toResolve = v10;
+  v14[0] = conversationsTableSchema;
+  v14[1] = conversationIDMessageIDTableSchema;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
 
   v12 = *MEMORY[0x1E69E9840];
@@ -113,44 +113,44 @@ void __32__EDConversationPersistence_log__block_invoke(uint64_t a1)
   return v7;
 }
 
-+ (int64_t)conversationNotificationLevelForConversationFlags:(unint64_t)a3
++ (int64_t)conversationNotificationLevelForConversationFlags:(unint64_t)flags
 {
-  if ((a3 & 4) != 0)
+  if ((flags & 4) != 0)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (a3 & 1);
+    return 2 * (flags & 1);
   }
 }
 
-+ (unint64_t)conversationFlagsForConversationNotificationLevel:(int64_t)a3
++ (unint64_t)conversationFlagsForConversationNotificationLevel:(int64_t)level
 {
-  if (a3 == 1)
+  if (level == 1)
   {
     return 4;
   }
 
   else
   {
-    return a3 == 2;
+    return level == 2;
   }
 }
 
-- (EDConversationPersistence)initWithDatabase:(id)a3 hookRegistry:(id)a4
+- (EDConversationPersistence)initWithDatabase:(id)database hookRegistry:(id)registry
 {
-  v6 = a3;
-  v7 = a4;
+  databaseCopy = database;
+  registryCopy = registry;
   v13.receiver = self;
   v13.super_class = EDConversationPersistence;
   v8 = [(EDConversationPersistence *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_database, v6);
-    objc_storeStrong(&v9->_hookRegistry, a4);
+    objc_storeWeak(&v8->_database, databaseCopy);
+    objc_storeStrong(&v9->_hookRegistry, registry);
     v10 = dispatch_queue_create("com.apple.email.ConversationPersistenceNotification", MEMORY[0x1E69E96A8]);
     notificationQueue = v9->_notificationQueue;
     v9->_notificationQueue = v10;
@@ -167,25 +167,25 @@ void __32__EDConversationPersistence_log__block_invoke(uint64_t a1)
 
   [EDConversationDailyCloudExportActivityManager scheduleWithConversationExportDelegate:self conversationManager:self->_conversationManager];
   [EDConversationPruningActivityManager scheduleWithConversationManager:self->_conversationManager];
-  v5 = [(EDConversationPersistence *)self conversationManager];
-  [v5 performInitialSync];
+  conversationManager = [(EDConversationPersistence *)self conversationManager];
+  [conversationManager performInitialSync];
 
-  v6 = [(EDConversationPersistence *)self hookRegistry];
-  [v6 persistenceDidInitializeConversationSubscriptionProvider];
+  hookRegistry = [(EDConversationPersistence *)self hookRegistry];
+  [hookRegistry persistenceDidInitializeConversationSubscriptionProvider];
 }
 
 - (id)syncedConversationIDsBySyncKey
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(EDConversationPersistence *)self database];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  database = [(EDConversationPersistence *)self database];
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDConversationPersistence syncedConversationIDsBySyncKey]"];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __59__EDConversationPersistence_syncedConversationIDsBySyncKey__block_invoke;
   v8[3] = &unk_1E8251CB8;
-  v6 = v3;
+  v6 = dictionary;
   v9 = v6;
-  [v4 __performReadWithCaller:v5 usingBlock:v8];
+  [database __performReadWithCaller:v5 usingBlock:v8];
 
   return v6;
 }
@@ -222,7 +222,7 @@ void __59__EDConversationPersistence_syncedConversationIDsBySyncKey__block_invok
   }
 }
 
-- (id)messageIDsForConversationID:(int64_t)a3 limit:(unint64_t)a4
+- (id)messageIDsForConversationID:(int64_t)d limit:(unint64_t)limit
 {
   v12 = 0;
   v13 = &v12;
@@ -230,16 +230,16 @@ void __59__EDConversationPersistence_syncedConversationIDsBySyncKey__block_invok
   v15 = __Block_byref_object_copy__7;
   v16 = __Block_byref_object_dispose__7;
   v17 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v7 = [(EDConversationPersistence *)self database];
+  database = [(EDConversationPersistence *)self database];
   v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDConversationPersistence messageIDsForConversationID:limit:]"];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __63__EDConversationPersistence_messageIDsForConversationID_limit___block_invoke;
   v11[3] = &unk_1E8251CE0;
-  v11[5] = a3;
-  v11[6] = a4;
+  v11[5] = d;
+  v11[6] = limit;
   v11[4] = &v12;
-  [v7 __performReadWithCaller:v8 usingBlock:v11];
+  [database __performReadWithCaller:v8 usingBlock:v11];
 
   v9 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -282,23 +282,23 @@ void __63__EDConversationPersistence_messageIDsForConversationID_limit___block_i
   [*(*(*(a1 + 32) + 8) + 40) addObject:v4];
 }
 
-- (int64_t)conversationIDForMessageIDs:(id)a3
+- (int64_t)conversationIDForMessageIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = *MEMORY[0x1E699A728];
-  v5 = [(EDConversationPersistence *)self database];
+  database = [(EDConversationPersistence *)self database];
   v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDConversationPersistence conversationIDForMessageIDs:]"];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __57__EDConversationPersistence_conversationIDForMessageIDs___block_invoke;
   v10[3] = &unk_1E8250350;
-  v7 = v4;
+  v7 = dsCopy;
   v11 = v7;
   v12 = &v13;
-  [v5 __performReadWithCaller:v6 usingBlock:v10];
+  [database __performReadWithCaller:v6 usingBlock:v10];
 
   v8 = v14[3];
   _Block_object_dispose(&v13, 8);
@@ -351,21 +351,21 @@ void __57__EDConversationPersistence_conversationIDForMessageIDs___block_invoke_
   }
 }
 
-- (unint64_t)persistenceConversationFlagsForConversationID:(int64_t)a3
+- (unint64_t)persistenceConversationFlagsForConversationID:(int64_t)d
 {
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v4 = [(EDConversationPersistence *)self database];
+  database = [(EDConversationPersistence *)self database];
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDConversationPersistence persistenceConversationFlagsForConversationID:]"];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __75__EDConversationPersistence_persistenceConversationFlagsForConversationID___block_invoke;
   v8[3] = &unk_1E8250150;
   v8[4] = &v9;
-  v8[5] = a3;
-  [v4 __performReadWithCaller:v5 usingBlock:v8];
+  v8[5] = d;
+  [database __performReadWithCaller:v5 usingBlock:v8];
 
   v6 = v10[3];
   _Block_object_dispose(&v9, 8);
@@ -403,21 +403,21 @@ void __75__EDConversationPersistence_persistenceConversationFlagsForConversation
   *(*(*(a1 + 32) + 8) + 24) = [v4 unsignedIntegerValue];
 }
 
-- (int64_t)createConversationWithFlags:(unint64_t)a3
+- (int64_t)createConversationWithFlags:(unint64_t)flags
 {
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v4 = [(EDConversationPersistence *)self database];
+  database = [(EDConversationPersistence *)self database];
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDConversationPersistence createConversationWithFlags:]"];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __57__EDConversationPersistence_createConversationWithFlags___block_invoke;
   v8[3] = &unk_1E8250150;
   v8[4] = &v9;
-  v8[5] = a3;
-  [v4 __performWriteWithCaller:v5 usingBlock:v8];
+  v8[5] = flags;
+  [database __performWriteWithCaller:v5 usingBlock:v8];
 
   v6 = v10[3];
   _Block_object_dispose(&v9, 8);
@@ -448,9 +448,9 @@ uint64_t __57__EDConversationPersistence_createConversationWithFlags___block_inv
   return v7;
 }
 
-- (void)markConversationWithIDs:(id)a3 mute:(BOOL)a4
+- (void)markConversationWithIDs:(id)ds mute:(BOOL)mute
 {
-  if (a4)
+  if (mute)
   {
     v5 = 4;
   }
@@ -460,19 +460,19 @@ uint64_t __57__EDConversationPersistence_createConversationWithFlags___block_inv
     v5 = 0;
   }
 
-  [(EDConversationPersistence *)self setPersistenceConversationFlags:v5 forConversationIDs:a3 reason:4];
+  [(EDConversationPersistence *)self setPersistenceConversationFlags:v5 forConversationIDs:ds reason:4];
 }
 
-- (void)setPersistenceConversationFlags:(unint64_t)a3 forConversationIDs:(id)a4 reason:(int64_t)a5
+- (void)setPersistenceConversationFlags:(unint64_t)flags forConversationIDs:(id)ds reason:(int64_t)reason
 {
   v25 = *MEMORY[0x1E69E9840];
-  v17 = a4;
+  dsCopy = ds;
   v19 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = v17;
+  obj = dsCopy;
   v8 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
@@ -487,22 +487,22 @@ uint64_t __57__EDConversationPersistence_createConversationWithFlags___block_inv
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
-        v12 = [v11 longLongValue];
-        v13 = [(EDConversationPersistence *)self conversationManager];
-        v14 = [v13 syncKeyForUpdatedConversation:v12 flags:a3];
+        longLongValue = [v11 longLongValue];
+        conversationManager = [(EDConversationPersistence *)self conversationManager];
+        v14 = [conversationManager syncKeyForUpdatedConversation:longLongValue flags:flags];
 
         if (v14)
         {
           [v19 setObject:v11 forKeyedSubscript:v14];
         }
 
-        if (!a3)
+        if (!flags)
         {
 
           v14 = 0;
         }
 
-        [(EDConversationPersistence *)self setPersistenceConversationFlags:a3 syncKey:v14 forConversationID:v12 reason:a5];
+        [(EDConversationPersistence *)self setPersistenceConversationFlags:flags syncKey:v14 forConversationID:longLongValue reason:reason];
       }
 
       v8 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -511,29 +511,29 @@ uint64_t __57__EDConversationPersistence_createConversationWithFlags___block_inv
     while (v8);
   }
 
-  v15 = [(EDConversationPersistence *)self conversationManager];
-  [v15 setFlags:a3 forConversations:v19];
+  conversationManager2 = [(EDConversationPersistence *)self conversationManager];
+  [conversationManager2 setFlags:flags forConversations:v19];
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setPersistenceConversationFlags:(unint64_t)a3 syncKey:(id)a4 forConversationID:(int64_t)a5 reason:(int64_t)a6
+- (void)setPersistenceConversationFlags:(unint64_t)flags syncKey:(id)key forConversationID:(int64_t)d reason:(int64_t)reason
 {
   v27 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  if (!a5 || *MEMORY[0x1E699A728] == a5)
+  keyCopy = key;
+  if (!d || *MEMORY[0x1E699A728] == d)
   {
     v15 = +[EDConversationPersistence log];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
     {
       *buf = 134218754;
-      *&buf[4] = a5;
+      *&buf[4] = d;
       *&buf[12] = 2048;
-      *&buf[14] = a3;
+      *&buf[14] = flags;
       *&buf[22] = 2114;
-      v24 = v10;
+      v24 = keyCopy;
       v25 = 2048;
-      v26 = a6;
+      reasonCopy = reason;
       _os_log_fault_impl(&dword_1C61EF000, v15, OS_LOG_TYPE_FAULT, "Invalid conversation ID (%lld) when setting conversation flags (%llu) for sync key %{public}@ with reason: %lld", buf, 0x2Au);
     }
   }
@@ -545,7 +545,7 @@ uint64_t __57__EDConversationPersistence_createConversationWithFlags___block_inv
     *&buf[16] = 0x2020000000;
     v24 = 0;
     v11 = objc_alloc_init(EDPersistenceDatabaseGenerationWindow);
-    v12 = [(EDConversationPersistence *)self database];
+    database = [(EDConversationPersistence *)self database];
     v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDConversationPersistence setPersistenceConversationFlags:syncKey:forConversationID:reason:]"];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
@@ -554,12 +554,12 @@ uint64_t __57__EDConversationPersistence_createConversationWithFlags___block_inv
     v14 = v11;
     v18 = v14;
     v20 = buf;
-    v21 = a5;
-    v22 = a3;
-    v19 = v10;
-    [v12 __performWriteWithCaller:v13 usingBlock:v17];
+    dCopy = d;
+    flagsCopy = flags;
+    v19 = keyCopy;
+    [database __performWriteWithCaller:v13 usingBlock:v17];
 
-    [(EDConversationPersistence *)self _notifyOfFlagChangeForConversationID:a5 oldFlags:*(*&buf[8] + 24) newFlags:a3 reason:a6 generationWindow:v14];
+    [(EDConversationPersistence *)self _notifyOfFlagChangeForConversationID:d oldFlags:*(*&buf[8] + 24) newFlags:flags reason:reason generationWindow:v14];
     _Block_object_dispose(buf, 8);
   }
 
@@ -626,20 +626,20 @@ void __94__EDConversationPersistence_setPersistenceConversationFlags_syncKey_for
   *(*(*(a1 + 32) + 8) + 24) = [v4 unsignedLongLongValue];
 }
 
-- (void)updateAssociationTableForMessagePersistentIDs:(id)a3 conversationID:(int64_t)a4
+- (void)updateAssociationTableForMessagePersistentIDs:(id)ds conversationID:(int64_t)d
 {
-  v6 = a3;
-  v7 = [(EDConversationPersistence *)self database];
+  dsCopy = ds;
+  database = [(EDConversationPersistence *)self database];
   v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDConversationPersistence updateAssociationTableForMessagePersistentIDs:conversationID:]"];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __90__EDConversationPersistence_updateAssociationTableForMessagePersistentIDs_conversationID___block_invoke;
   v10[3] = &unk_1E82502B0;
-  v9 = v6;
+  v9 = dsCopy;
   v11 = v9;
-  v12 = self;
-  v13 = a4;
-  [v7 __performWriteWithCaller:v8 usingBlock:v10];
+  selfCopy = self;
+  dCopy = d;
+  [database __performWriteWithCaller:v8 usingBlock:v10];
 }
 
 uint64_t __90__EDConversationPersistence_updateAssociationTableForMessagePersistentIDs_conversationID___block_invoke(uint64_t a1, void *a2)
@@ -688,15 +688,15 @@ void __90__EDConversationPersistence_updateAssociationTableForMessagePersistentI
   }
 }
 
-- (void)updateAssociationTableForMessageIDs:(id)a3 conversationID:(int64_t)a4
+- (void)updateAssociationTableForMessageIDs:(id)ds conversationID:(int64_t)d
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = a3;
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  dsCopy = ds;
+  v7 = [dsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = *v12;
@@ -707,14 +707,14 @@ void __90__EDConversationPersistence_updateAssociationTableForMessagePersistentI
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(dsCopy);
         }
 
-        [(EDConversationPersistence *)self updateAssociationTableForMessageID:*(*(&v11 + 1) + 8 * v9++) dateSent:0 conversationID:a4, v11];
+        [(EDConversationPersistence *)self updateAssociationTableForMessageID:*(*(&v11 + 1) + 8 * v9++) dateSent:0 conversationID:d, v11];
       }
 
       while (v7 != v9);
-      v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [dsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -723,22 +723,22 @@ void __90__EDConversationPersistence_updateAssociationTableForMessagePersistentI
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateAssociationTableForMessageID:(id)a3 dateSent:(id)a4 conversationID:(int64_t)a5
+- (void)updateAssociationTableForMessageID:(id)d dateSent:(id)sent conversationID:(int64_t)iD
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(EDConversationPersistence *)self database];
+  dCopy = d;
+  sentCopy = sent;
+  database = [(EDConversationPersistence *)self database];
   v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDConversationPersistence updateAssociationTableForMessageID:dateSent:conversationID:]"];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __88__EDConversationPersistence_updateAssociationTableForMessageID_dateSent_conversationID___block_invoke;
   v14[3] = &unk_1E82502B0;
-  v17 = a5;
-  v12 = v8;
+  iDCopy = iD;
+  v12 = dCopy;
   v15 = v12;
-  v13 = v9;
+  v13 = sentCopy;
   v16 = v13;
-  [v10 __performWriteWithCaller:v11 usingBlock:v14];
+  [database __performWriteWithCaller:v11 usingBlock:v14];
 }
 
 uint64_t __88__EDConversationPersistence_updateAssociationTableForMessageID_dateSent_conversationID___block_invoke(void *a1, void *a2)
@@ -811,22 +811,22 @@ uint64_t __88__EDConversationPersistence_updateAssociationTableForMessageID_date
   return result;
 }
 
-- (void)updateConversationNotificationLevel:(int64_t)a3 forConversationIDs:(id)a4
+- (void)updateConversationNotificationLevel:(int64_t)level forConversationIDs:(id)ds
 {
-  v6 = a4;
-  [(EDConversationPersistence *)self setPersistenceConversationFlags:[EDConversationPersistence conversationFlagsForConversationNotificationLevel:?], v6, 4];
+  dsCopy = ds;
+  [(EDConversationPersistence *)self setPersistenceConversationFlags:[EDConversationPersistence conversationFlagsForConversationNotificationLevel:?], dsCopy, 4];
 }
 
-- (void)pruneConversationTables:(double)a3
+- (void)pruneConversationTables:(double)tables
 {
-  v4 = [(EDConversationPersistence *)self database];
+  database = [(EDConversationPersistence *)self database];
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDConversationPersistence pruneConversationTables:]"];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53__EDConversationPersistence_pruneConversationTables___block_invoke;
   v6[3] = &__block_descriptor_40_e41_B16__0__EDPersistenceDatabaseConnection_8l;
-  *&v6[4] = a3;
-  [v4 __performWriteWithCaller:v5 usingBlock:v6];
+  *&v6[4] = tables;
+  [database __performWriteWithCaller:v5 usingBlock:v6];
 }
 
 uint64_t __53__EDConversationPersistence_pruneConversationTables___block_invoke(uint64_t a1, void *a2)
@@ -851,22 +851,22 @@ uint64_t __53__EDConversationPersistence_pruneConversationTables___block_invoke(
   return v7;
 }
 
-- (void)clearConversationFlagsAndSyncKeyForConversationIDs:(id)a3
+- (void)clearConversationFlagsAndSyncKeyForConversationIDs:(id)ds
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   v19 = objc_alloc_init(EDPersistenceDatabaseGenerationWindow);
-  v5 = [(EDConversationPersistence *)self database];
+  database = [(EDConversationPersistence *)self database];
   v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDConversationPersistence clearConversationFlagsAndSyncKeyForConversationIDs:]"];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __80__EDConversationPersistence_clearConversationFlagsAndSyncKeyForConversationIDs___block_invoke;
   v24[3] = &unk_1E8250328;
-  v7 = v4;
+  v7 = dsCopy;
   v25 = v7;
   v8 = v19;
   v26 = v8;
-  [v5 __performWriteWithCaller:v6 usingBlock:v24];
+  [database __performWriteWithCaller:v6 usingBlock:v24];
 
   v22 = 0u;
   v23 = 0u;
@@ -887,11 +887,11 @@ uint64_t __53__EDConversationPersistence_pruneConversationTables___block_invoke(
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v20 + 1) + 8 * i) longLongValue];
-        v15 = v14;
-        if (v14)
+        longLongValue = [*(*(&v20 + 1) + 8 * i) longLongValue];
+        v15 = longLongValue;
+        if (longLongValue)
         {
-          v16 = v14 == v12;
+          v16 = longLongValue == v12;
         }
 
         else
@@ -912,7 +912,7 @@ uint64_t __53__EDConversationPersistence_pruneConversationTables___block_invoke(
 
         else
         {
-          [(EDConversationPersistence *)self _notifyOfFlagChangeForConversationID:v14 oldFlags:0 newFlags:0 reason:0 generationWindow:v8];
+          [(EDConversationPersistence *)self _notifyOfFlagChangeForConversationID:longLongValue oldFlags:0 newFlags:0 reason:0 generationWindow:v8];
         }
       }
 
@@ -945,17 +945,17 @@ uint64_t __80__EDConversationPersistence_clearConversationFlagsAndSyncKeyForConv
   return v8;
 }
 
-- (void)_notifyOfFlagChangeForConversationID:(int64_t)a3 oldFlags:(unint64_t)a4 newFlags:(unint64_t)a5 reason:(int64_t)a6 generationWindow:(id)a7
+- (void)_notifyOfFlagChangeForConversationID:(int64_t)d oldFlags:(unint64_t)flags newFlags:(unint64_t)newFlags reason:(int64_t)reason generationWindow:(id)window
 {
-  v14 = a7;
-  v12 = [EDConversationPersistence conversationNotificationLevelForConversationFlags:a5];
-  v13 = [(EDConversationPersistence *)self hookRegistry];
-  [v13 persistenceDidChangeConversationNotificationLevel:v12 conversationID:a3 generationWindow:v14];
+  windowCopy = window;
+  v12 = [EDConversationPersistence conversationNotificationLevelForConversationFlags:newFlags];
+  hookRegistry = [(EDConversationPersistence *)self hookRegistry];
+  [hookRegistry persistenceDidChangeConversationNotificationLevel:v12 conversationID:d generationWindow:windowCopy];
 
-  [(EDConversationPersistence *)self _postChangeNotificationForConversationID:a3 flags:a5 oldFlags:a4 reason:a6];
+  [(EDConversationPersistence *)self _postChangeNotificationForConversationID:d flags:newFlags oldFlags:flags reason:reason];
 }
 
-- (void)_postChangeNotificationForConversationID:(int64_t)a3 flags:(unint64_t)a4 oldFlags:(unint64_t)a5 reason:(int64_t)a6
+- (void)_postChangeNotificationForConversationID:(int64_t)d flags:(unint64_t)flags oldFlags:(unint64_t)oldFlags reason:(int64_t)reason
 {
   notificationQueue = self->_notificationQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -963,10 +963,10 @@ uint64_t __80__EDConversationPersistence_clearConversationFlagsAndSyncKeyForConv
   block[2] = __92__EDConversationPersistence__postChangeNotificationForConversationID_flags_oldFlags_reason___block_invoke;
   block[3] = &unk_1E8251D78;
   block[4] = self;
-  block[5] = a4;
-  block[6] = a3;
-  block[7] = a5;
-  block[8] = a6;
+  block[5] = flags;
+  block[6] = d;
+  block[7] = oldFlags;
+  block[8] = reason;
   dispatch_async(notificationQueue, block);
 }
 
@@ -1007,10 +1007,10 @@ void __92__EDConversationPersistence__postChangeNotificationForConversationID_fl
 
 - (BOOL)hasSubscribedConversations
 {
-  v2 = [(EDConversationPersistence *)self conversationManager];
-  v3 = [v2 hasSubscribedConversations];
+  conversationManager = [(EDConversationPersistence *)self conversationManager];
+  hasSubscribedConversations = [conversationManager hasSubscribedConversations];
 
-  return v3;
+  return hasSubscribedConversations;
 }
 
 - (int64_t)previousSyncAnchorForDailyExport
@@ -1019,14 +1019,14 @@ void __92__EDConversationPersistence__postChangeNotificationForConversationID_fl
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = *MEMORY[0x1E699A728];
-  v2 = [(EDConversationPersistence *)self database];
+  database = [(EDConversationPersistence *)self database];
   v3 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDConversationPersistence previousSyncAnchorForDailyExport]"];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __61__EDConversationPersistence_previousSyncAnchorForDailyExport__block_invoke;
   v6[3] = &unk_1E8251DA0;
   v6[4] = &v7;
-  [v2 __performReadWithCaller:v3 usingBlock:v6];
+  [database __performReadWithCaller:v3 usingBlock:v6];
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -1065,14 +1065,14 @@ void __61__EDConversationPersistence_previousSyncAnchorForDailyExport__block_inv
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = *MEMORY[0x1E699A728];
-  v2 = [(EDConversationPersistence *)self database];
+  database = [(EDConversationPersistence *)self database];
   v3 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDConversationPersistence currentSyncAnchorForDailyExport]"];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __60__EDConversationPersistence_currentSyncAnchorForDailyExport__block_invoke;
   v6[3] = &unk_1E8251DA0;
   v6[4] = &v7;
-  [v2 __performReadWithCaller:v3 usingBlock:v6];
+  [database __performReadWithCaller:v3 usingBlock:v6];
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -1103,16 +1103,16 @@ void __60__EDConversationPersistence_currentSyncAnchorForDailyExport__block_invo
   *(*(*(a1 + 32) + 8) + 24) = [v3 databaseIDValue];
 }
 
-- (void)setNewPreviousSyncAnchorForDailyExport:(int64_t)a3
+- (void)setNewPreviousSyncAnchorForDailyExport:(int64_t)export
 {
-  v4 = [(EDConversationPersistence *)self database];
+  database = [(EDConversationPersistence *)self database];
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDConversationPersistence setNewPreviousSyncAnchorForDailyExport:]"];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __68__EDConversationPersistence_setNewPreviousSyncAnchorForDailyExport___block_invoke;
   v6[3] = &__block_descriptor_40_e41_B16__0__EDPersistenceDatabaseConnection_8l;
-  v6[4] = a3;
-  [v4 __performWriteWithCaller:v5 usingBlock:v6];
+  v6[4] = export;
+  [database __performWriteWithCaller:v5 usingBlock:v6];
 }
 
 uint64_t __68__EDConversationPersistence_setNewPreviousSyncAnchorForDailyExport___block_invoke(uint64_t a1, void *a2)
@@ -1135,7 +1135,7 @@ uint64_t __68__EDConversationPersistence_setNewPreviousSyncAnchorForDailyExport_
   return v7;
 }
 
-- (id)flaggedConversationsChangedBetweenStartAnchor:(int64_t)a3 endAnchor:(int64_t)a4
+- (id)flaggedConversationsChangedBetweenStartAnchor:(int64_t)anchor endAnchor:(int64_t)endAnchor
 {
   v12 = 0;
   v13 = &v12;
@@ -1143,16 +1143,16 @@ uint64_t __68__EDConversationPersistence_setNewPreviousSyncAnchorForDailyExport_
   v15 = __Block_byref_object_copy__7;
   v16 = __Block_byref_object_dispose__7;
   v17 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v7 = [(EDConversationPersistence *)self database];
+  database = [(EDConversationPersistence *)self database];
   v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDConversationPersistence flaggedConversationsChangedBetweenStartAnchor:endAnchor:]"];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __85__EDConversationPersistence_flaggedConversationsChangedBetweenStartAnchor_endAnchor___block_invoke;
   v11[3] = &unk_1E8251CE0;
-  v11[5] = a3;
-  v11[6] = a4;
+  v11[5] = anchor;
+  v11[6] = endAnchor;
   v11[4] = &v12;
-  [v7 __performReadWithCaller:v8 usingBlock:v11];
+  [database __performReadWithCaller:v8 usingBlock:v11];
 
   v9 = v13[5];
   _Block_object_dispose(&v12, 8);

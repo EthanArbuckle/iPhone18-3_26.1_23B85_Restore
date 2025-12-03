@@ -1,23 +1,23 @@
 @interface NBServer
 + (id)legacyContactPreferenceKeys;
-+ (id)retrieveGizmoWithPairingID:(id)a3;
-+ (unint64_t)recursiveDirectorySize:(id)a3;
-- (BOOL)isDevice:(id)a3 mirroringDomain:(id)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
++ (id)retrieveGizmoWithPairingID:(id)d;
++ (unint64_t)recursiveDirectorySize:(id)size;
+- (BOOL)isDevice:(id)device mirroringDomain:(id)domain;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (NBServer)init;
-- (void)createLocalBackupForPairingID:(id)a3 completionHandler:(id)a4;
-- (void)createManualBackupWithCompletion:(id)a3;
+- (void)createLocalBackupForPairingID:(id)d completionHandler:(id)handler;
+- (void)createManualBackupWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)deleteBackupID:(id)a3 backupType:(unint64_t)a4 completionHandler:(id)a5;
-- (void)listBackupsOfType:(unint64_t)a3 timeout:(int64_t)a4 completionHandler:(id)a5;
+- (void)deleteBackupID:(id)d backupType:(unint64_t)type completionHandler:(id)handler;
+- (void)listBackupsOfType:(unint64_t)type timeout:(int64_t)timeout completionHandler:(id)handler;
 - (void)migrateBreathePreferences;
-- (void)migrateBreathePreferencesFromBackup:(id)a3;
-- (void)migrateBreathePreferencesFromDevice:(id)a3;
-- (void)migrateFitnessPreferencesFromBackup:(id)a3 device:(id)a4;
-- (void)migrateLegacyContactPreferencesFromBackup:(id)a3 device:(id)a4;
-- (void)migrateLegacyDigitalTouchPreferencesFromBackup:(id)a3 device:(id)a4;
-- (void)restoreFromBackupID:(id)a3 backupType:(unint64_t)a4 forPairingID:(id)a5 completionHandler:(id)a6;
-- (void)restoreFromPairingID:(id)a3 forPairingID:(id)a4 completionHandler:(id)a5;
+- (void)migrateBreathePreferencesFromBackup:(id)backup;
+- (void)migrateBreathePreferencesFromDevice:(id)device;
+- (void)migrateFitnessPreferencesFromBackup:(id)backup device:(id)device;
+- (void)migrateLegacyContactPreferencesFromBackup:(id)backup device:(id)device;
+- (void)migrateLegacyDigitalTouchPreferencesFromBackup:(id)backup device:(id)device;
+- (void)restoreFromBackupID:(id)d backupType:(unint64_t)type forPairingID:(id)iD completionHandler:(id)handler;
+- (void)restoreFromPairingID:(id)d forPairingID:(id)iD completionHandler:(id)handler;
 @end
 
 @implementation NBServer
@@ -62,21 +62,21 @@
   [(NBServer *)&v3 dealloc];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = nb_daemon_log;
   if (os_log_type_enabled(nb_daemon_log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v16 = v6;
+    v16 = listenerCopy;
     v17 = 2048;
-    v18 = v7;
+    v18 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "listener: (%p); connection: (%p)", buf, 0x16u);
   }
 
-  v9 = [(__CFString *)v7 valueForEntitlement:@"com.apple.nanobackup"];
+  v9 = [(__CFString *)connectionCopy valueForEntitlement:@"com.apple.nanobackup"];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && ([v9 BOOLValue])
   {
@@ -85,17 +85,17 @@
       sub_10001D778();
     }
 
-    [(__CFString *)v7 setExportedInterface:qword_100034AE0];
-    [(__CFString *)v7 setExportedObject:self];
-    objc_initWeak(buf, v7);
+    [(__CFString *)connectionCopy setExportedInterface:qword_100034AE0];
+    [(__CFString *)connectionCopy setExportedObject:self];
+    objc_initWeak(buf, connectionCopy);
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100006744;
     v13[3] = &unk_10002CAB0;
     objc_copyWeak(&v14, buf);
-    [(__CFString *)v7 setInvalidationHandler:v13];
-    [(__CFString *)v7 setInterruptionHandler:0];
-    [(__CFString *)v7 resume];
+    [(__CFString *)connectionCopy setInvalidationHandler:v13];
+    [(__CFString *)connectionCopy setInterruptionHandler:0];
+    [(__CFString *)connectionCopy resume];
     objc_destroyWeak(&v14);
     objc_destroyWeak(buf);
     v10 = 1;
@@ -108,7 +108,7 @@
     if (os_log_type_enabled(nb_daemon_log, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v16 = v7;
+      v16 = connectionCopy;
       v17 = 2112;
       v18 = @"com.apple.nanobackup";
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Connection (%@) refused; Missing entitlement (%@)", buf, 0x16u);
@@ -119,19 +119,19 @@
   return v10;
 }
 
-+ (id)retrieveGizmoWithPairingID:(id)a3
++ (id)retrieveGizmoWithPairingID:(id)d
 {
-  v3 = a3;
-  if (v3)
+  dCopy = d;
+  if (dCopy)
   {
     v4 = +[NRPairedDeviceRegistry sharedInstance];
-    v5 = [v4 getAllDevicesWithArchivedDevices];
+    getAllDevicesWithArchivedDevices = [v4 getAllDevicesWithArchivedDevices];
 
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = v5;
+    v6 = getAllDevicesWithArchivedDevices;
     v7 = [v6 countByEnumeratingWithState:&v19 objects:v27 count:16];
     if (v7)
     {
@@ -149,7 +149,7 @@
 
           v12 = *(*(&v19 + 1) + 8 * i);
           v13 = [v12 valueForProperty:{v10, v19}];
-          if ([v3 isEqual:v13])
+          if ([dCopy isEqual:v13])
           {
             v14 = v12;
 
@@ -174,11 +174,11 @@ LABEL_12:
     if (os_log_type_enabled(nb_daemon_log, OS_LOG_TYPE_DEFAULT))
     {
       v16 = v15;
-      v17 = [v3 UUIDString];
+      uUIDString = [dCopy UUIDString];
       *buf = 134218242;
       v24 = v14;
       v25 = 2112;
-      v26 = v17;
+      v26 = uUIDString;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "NanoRegistry returned matching device (%p) for pairingID (%@)", buf, 0x16u);
     }
   }
@@ -191,18 +191,18 @@ LABEL_12:
   return v14;
 }
 
-+ (unint64_t)recursiveDirectorySize:(id)a3
++ (unint64_t)recursiveDirectorySize:(id)size
 {
-  v4 = a3;
+  sizeCopy = size;
   v5 = +[NSFileManager defaultManager];
-  v6 = [NSURL fileURLWithPath:v4 isDirectory:1];
+  v6 = [NSURL fileURLWithPath:sizeCopy isDirectory:1];
   v24 = NSURLFileSizeKey;
   v7 = [NSArray arrayWithObjects:&v24 count:1];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_100006C30;
   v22[3] = &unk_10002CAF0;
-  v22[4] = a1;
+  v22[4] = self;
   v8 = [v5 enumeratorAtURL:v6 includingPropertiesForKeys:v7 options:0 errorHandler:v22];
 
   v20 = 0u;
@@ -247,34 +247,34 @@ LABEL_12:
   return v12;
 }
 
-- (void)listBackupsOfType:(unint64_t)a3 timeout:(int64_t)a4 completionHandler:(id)a5
+- (void)listBackupsOfType:(unint64_t)type timeout:(int64_t)timeout completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v9 = nb_daemon_log;
   if (os_log_type_enabled(nb_daemon_log, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = objc_retainBlock(v8);
+    v11 = objc_retainBlock(handlerCopy);
     *buf = 134217984;
     v25 = v11;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "replyBlock listBackupsOfType: (%p)", buf, 0xCu);
   }
 
-  if (v8)
+  if (handlerCopy)
   {
     v12 = +[NRPairedDeviceRegistry sharedInstance];
     v13 = +[NRPairedDeviceRegistry activeDeviceSelectorBlock];
     v14 = [v12 getAllDevicesWithArchivedAltAccountDevicesMatching:v13];
-    v15 = [v14 firstObject];
+    firstObject = [v14 firstObject];
 
-    v16 = [v15 valueForProperty:NRDevicePropertyIsAltAccount];
-    v17 = [v16 BOOLValue];
+    v16 = [firstObject valueForProperty:NRDevicePropertyIsAltAccount];
+    bOOLValue = [v16 BOOLValue];
 
     v18 = nb_daemon_log;
     if (os_log_type_enabled(nb_daemon_log, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      LODWORD(v25) = v17;
+      LODWORD(v25) = bOOLValue;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Tinker device is: %d", buf, 8u);
     }
 
@@ -283,26 +283,26 @@ LABEL_12:
     v20[1] = 3221225472;
     v20[2] = sub_100006F5C;
     v20[3] = &unk_10002CB68;
-    v22 = a3;
-    v23 = a4;
+    typeCopy = type;
+    timeoutCopy = timeout;
     v20[4] = self;
-    v21 = v8;
+    v21 = handlerCopy;
     dispatch_async(workQueue, v20);
   }
 }
 
-- (void)deleteBackupID:(id)a3 backupType:(unint64_t)a4 completionHandler:(id)a5
+- (void)deleteBackupID:(id)d backupType:(unint64_t)type completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  dCopy = d;
+  handlerCopy = handler;
   v9 = nb_daemon_log;
   if (os_log_type_enabled(nb_daemon_log, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = [v7 UUIDString];
-    v12 = objc_retainBlock(v8);
+    uUIDString = [dCopy UUIDString];
+    v12 = objc_retainBlock(handlerCopy);
     *buf = 138412546;
-    v24 = v11;
+    v24 = uUIDString;
     v25 = 2048;
     v26 = v12;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "deleteBackupID - backupID: (%@); replyBlock: (%p)", buf, 0x16u);
@@ -312,10 +312,10 @@ LABEL_12:
   v21[1] = 3221225472;
   v21[2] = sub_1000074B0;
   v21[3] = &unk_10002C960;
-  v13 = v8;
+  v13 = handlerCopy;
   v22 = v13;
   v14 = objc_retainBlock(v21);
-  if (v7)
+  if (dCopy)
   {
     workQueue = self->_workQueue;
     v18[0] = _NSConcreteStackBlock;
@@ -323,7 +323,7 @@ LABEL_12:
     v18[2] = sub_1000074C8;
     v18[3] = &unk_10002C848;
     v18[4] = self;
-    v19 = v7;
+    v19 = dCopy;
     v20 = v14;
     dispatch_async(workQueue, v18);
   }
@@ -343,9 +343,9 @@ LABEL_12:
   }
 }
 
-- (void)createManualBackupWithCompletion:(id)a3
+- (void)createManualBackupWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   iCloudBackup = self->_iCloudBackup;
   if (!iCloudBackup)
   {
@@ -360,27 +360,27 @@ LABEL_12:
   v9[1] = 3221225472;
   v9[2] = sub_100007A14;
   v9[3] = &unk_10002C960;
-  v10 = v4;
-  v8 = v4;
+  v10 = completionCopy;
+  v8 = completionCopy;
   [(NBBackupiCloud *)iCloudBackup createManualBackupWithCompletion:v9];
 }
 
-- (void)restoreFromBackupID:(id)a3 backupType:(unint64_t)a4 forPairingID:(id)a5 completionHandler:(id)a6
+- (void)restoreFromBackupID:(id)d backupType:(unint64_t)type forPairingID:(id)iD completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  handlerCopy = handler;
   v12 = nb_daemon_log;
   if (os_log_type_enabled(nb_daemon_log, OS_LOG_TYPE_DEFAULT))
   {
     v13 = v12;
-    v14 = [v9 UUIDString];
-    v15 = [v10 UUIDString];
-    v16 = objc_retainBlock(v11);
+    uUIDString = [dCopy UUIDString];
+    uUIDString2 = [iDCopy UUIDString];
+    v16 = objc_retainBlock(handlerCopy);
     *buf = 138412802;
-    v29 = v14;
+    v29 = uUIDString;
     v30 = 2112;
-    v31 = v15;
+    v31 = uUIDString2;
     v32 = 2048;
     v33 = v16;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "backupID: (%@); pairingID: (%@); replyBlock: (%p)", buf, 0x20u);
@@ -390,10 +390,10 @@ LABEL_12:
   v26[1] = 3221225472;
   v26[2] = sub_100007CE8;
   v26[3] = &unk_10002C960;
-  v17 = v11;
+  v17 = handlerCopy;
   v27 = v17;
   v18 = objc_retainBlock(v26);
-  if (v9 && v10)
+  if (dCopy && iDCopy)
   {
     workQueue = self->_workQueue;
     block[0] = _NSConcreteStackBlock;
@@ -401,9 +401,9 @@ LABEL_12:
     block[2] = sub_100007D00;
     block[3] = &unk_10002CC58;
     block[4] = self;
-    v23 = v9;
+    v23 = dCopy;
     v25 = v18;
-    v24 = v10;
+    v24 = iDCopy;
     dispatch_async(workQueue, block);
   }
 
@@ -413,9 +413,9 @@ LABEL_12:
     if (os_log_type_enabled(nb_daemon_log, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v29 = v9;
+      v29 = dCopy;
       v30 = 2112;
-      v31 = v10;
+      v31 = iDCopy;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Invalid parameters; backupID: (%@); pairingID: (%@)", buf, 0x16u);
     }
 
@@ -424,22 +424,22 @@ LABEL_12:
   }
 }
 
-- (void)restoreFromPairingID:(id)a3 forPairingID:(id)a4 completionHandler:(id)a5
+- (void)restoreFromPairingID:(id)d forPairingID:(id)iD completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  handlerCopy = handler;
   v11 = nb_daemon_log;
   if (os_log_type_enabled(nb_daemon_log, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    v13 = [v8 UUIDString];
-    v14 = [v9 UUIDString];
-    v15 = objc_retainBlock(v10);
+    uUIDString = [dCopy UUIDString];
+    uUIDString2 = [iDCopy UUIDString];
+    v15 = objc_retainBlock(handlerCopy);
     *buf = 138412802;
-    v28 = v13;
+    v28 = uUIDString;
     v29 = 2112;
-    v30 = v14;
+    v30 = uUIDString2;
     v31 = 2048;
     v32 = v15;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "existingPairingID: (%@); pairingID: (%@); replyBlock: (%p)", buf, 0x20u);
@@ -449,10 +449,10 @@ LABEL_12:
   v25[1] = 3221225472;
   v25[2] = sub_10000923C;
   v25[3] = &unk_10002C960;
-  v16 = v10;
+  v16 = handlerCopy;
   v26 = v16;
   v17 = objc_retainBlock(v25);
-  if (v8 && v9)
+  if (dCopy && iDCopy)
   {
     workQueue = self->_workQueue;
     block[0] = _NSConcreteStackBlock;
@@ -460,8 +460,8 @@ LABEL_12:
     block[2] = sub_100009254;
     block[3] = &unk_10002CCF8;
     block[4] = self;
-    v22 = v8;
-    v23 = v9;
+    v22 = dCopy;
+    v23 = iDCopy;
     v24 = v17;
     dispatch_async(workQueue, block);
   }
@@ -472,9 +472,9 @@ LABEL_12:
     if (os_log_type_enabled(nb_daemon_log, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v28 = v8;
+      v28 = dCopy;
       v29 = 2112;
-      v30 = v9;
+      v30 = iDCopy;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Invalid parameters; existingPairingID: (%@); pairingID: (%@)", buf, 0x16u);
     }
 
@@ -483,18 +483,18 @@ LABEL_12:
   }
 }
 
-- (void)createLocalBackupForPairingID:(id)a3 completionHandler:(id)a4
+- (void)createLocalBackupForPairingID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v8 = nb_daemon_log;
   if (os_log_type_enabled(nb_daemon_log, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [v6 UUIDString];
-    v11 = objc_retainBlock(v7);
+    uUIDString = [dCopy UUIDString];
+    v11 = objc_retainBlock(handlerCopy);
     *buf = 138412546;
-    v23 = v10;
+    v23 = uUIDString;
     v24 = 2048;
     v25 = v11;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "pairingID: (%@); replyBlock: (%p)", buf, 0x16u);
@@ -504,10 +504,10 @@ LABEL_12:
   v20[1] = 3221225472;
   v20[2] = sub_10000A310;
   v20[3] = &unk_10002C960;
-  v12 = v7;
+  v12 = handlerCopy;
   v21 = v12;
   v13 = objc_retainBlock(v20);
-  if (v6)
+  if (dCopy)
   {
     workQueue = self->_workQueue;
     v17[0] = _NSConcreteStackBlock;
@@ -515,7 +515,7 @@ LABEL_12:
     v17[2] = sub_10000A330;
     v17[3] = &unk_10002C848;
     v17[4] = self;
-    v18 = v6;
+    v18 = dCopy;
     v19 = v12;
     dispatch_async(workQueue, v17);
   }
@@ -547,31 +547,31 @@ LABEL_12:
   return v3;
 }
 
-- (BOOL)isDevice:(id)a3 mirroringDomain:(id)a4
+- (BOOL)isDevice:(id)device mirroringDomain:(id)domain
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.bulletinboard.apps" pairedDevice:v6];
+  domainCopy = domain;
+  deviceCopy = device;
+  v7 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.bulletinboard.apps" pairedDevice:deviceCopy];
 
-  v8 = [v7 synchronize];
-  v9 = [v7 objectForKey:v5];
+  synchronize = [v7 synchronize];
+  v9 = [v7 objectForKey:domainCopy];
 
   v10 = [v9 objectForKeyedSubscript:@"BPSNanoBulletinShowsCustomSettings"];
-  v11 = [v10 BOOLValue];
+  bOOLValue = [v10 BOOLValue];
 
-  return v11 ^ 1;
+  return bOOLValue ^ 1;
 }
 
-- (void)migrateLegacyContactPreferencesFromBackup:(id)a3 device:(id)a4
+- (void)migrateLegacyContactPreferencesFromBackup:(id)backup device:(id)device
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 productName];
+  backupCopy = backup;
+  deviceCopy = device;
+  productName = [backupCopy productName];
 
-  if (v8)
+  if (productName)
   {
-    v9 = [v6 productName];
-    v10 = [v6 systemVersion];
+    productName2 = [backupCopy productName];
+    systemVersion = [backupCopy systemVersion];
     NRWatchOSVersion();
 
     if (NRVersionIsGreaterThanOrEqual())
@@ -582,10 +582,10 @@ LABEL_12:
 LABEL_5:
     NRWatchOSVersionForRemoteDevice();
     IsGreaterThanOrEqual = NRVersionIsGreaterThanOrEqual();
-    v14 = [(NBServer *)self isDevice:v7 mirroringDomain:@"com.apple.PeoplePicker"];
-    v15 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.PeoplePicker" pairedDevice:v7];
+    v14 = [(NBServer *)self isDevice:deviceCopy mirroringDomain:@"com.apple.PeoplePicker"];
+    v15 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.PeoplePicker" pairedDevice:deviceCopy];
     v16 = [NPSDomainAccessor alloc];
-    v36 = [v16 initWithDomain:NSPersonNameDefaultNamePreferencesDomain pairedDevice:v7];
+    v36 = [v16 initWithDomain:NSPersonNameDefaultNamePreferencesDomain pairedDevice:deviceCopy];
     if ((IsGreaterThanOrEqual & 1) != 0 || !v14)
     {
       v21 = +[NSMutableDictionary dictionary];
@@ -593,8 +593,8 @@ LABEL_5:
       v42 = 0u;
       v43 = 0u;
       v44 = 0u;
-      v26 = [objc_opt_class() legacyContactPreferenceKeys];
-      v27 = [v26 countByEnumeratingWithState:&v41 objects:v47 count:16];
+      legacyContactPreferenceKeys = [objc_opt_class() legacyContactPreferenceKeys];
+      v27 = [legacyContactPreferenceKeys countByEnumeratingWithState:&v41 objects:v47 count:16];
       if (v27)
       {
         v28 = v27;
@@ -605,7 +605,7 @@ LABEL_5:
           {
             if (*v42 != v29)
             {
-              objc_enumerationMutation(v26);
+              objc_enumerationMutation(legacyContactPreferenceKeys);
             }
 
             v31 = *(*(&v41 + 1) + 8 * i);
@@ -620,7 +620,7 @@ LABEL_5:
             }
           }
 
-          v28 = [v26 countByEnumeratingWithState:&v41 objects:v47 count:16];
+          v28 = [legacyContactPreferenceKeys countByEnumeratingWithState:&v41 objects:v47 count:16];
         }
 
         while (v28);
@@ -628,16 +628,16 @@ LABEL_5:
 
       if (![v21 count])
       {
-        v7 = v35;
+        deviceCopy = v35;
         v25 = v36;
         goto LABEL_23;
       }
 
-      v7 = v35;
+      deviceCopy = v35;
       v25 = v36;
       if (IsGreaterThanOrEqual)
       {
-        v33 = [v15 synchronize];
+        synchronize = [v15 synchronize];
       }
 
       v22 = [NSPersonNameComponentsFormatterPreferences mappedPreferencesForPreferences:v21 from:2 to:0];
@@ -679,14 +679,14 @@ LABEL_5:
       v25 = v36;
     }
 
-    v34 = [v24 synchronize];
+    synchronize2 = [v24 synchronize];
 
 LABEL_23:
     goto LABEL_24;
   }
 
-  v11 = [v6 systemBuildVersion];
-  v12 = [v11 hasPrefix:@"12S"];
+  systemBuildVersion = [backupCopy systemBuildVersion];
+  v12 = [systemBuildVersion hasPrefix:@"12S"];
 
   if (v12)
   {
@@ -696,16 +696,16 @@ LABEL_23:
 LABEL_24:
 }
 
-- (void)migrateLegacyDigitalTouchPreferencesFromBackup:(id)a3 device:(id)a4
+- (void)migrateLegacyDigitalTouchPreferencesFromBackup:(id)backup device:(id)device
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 productName];
+  backupCopy = backup;
+  deviceCopy = device;
+  productName = [backupCopy productName];
 
-  if (v7)
+  if (productName)
   {
-    v8 = [v5 productName];
-    v9 = [v5 systemVersion];
+    productName2 = [backupCopy productName];
+    systemVersion = [backupCopy systemVersion];
     NRWatchOSVersion();
 
     if (NRVersionIsGreaterThanOrEqual())
@@ -716,15 +716,15 @@ LABEL_24:
 
   else
   {
-    v10 = [v5 systemBuildVersion];
-    if ([v10 hasPrefix:@"12S"])
+    systemBuildVersion = [backupCopy systemBuildVersion];
+    if ([systemBuildVersion hasPrefix:@"12S"])
     {
     }
 
     else
     {
-      v11 = [v5 systemBuildVersion];
-      v12 = [v11 hasPrefix:@"13S"];
+      systemBuildVersion2 = [backupCopy systemBuildVersion];
+      v12 = [systemBuildVersion2 hasPrefix:@"13S"];
 
       if (!v12)
       {
@@ -740,7 +740,7 @@ LABEL_24:
     v14 = CFPreferencesCopyAppValue(@"ETFriendGroupTitles", @"com.apple.ET");
     keyExistsAndHasValidFormat = 0;
     CFPreferencesGetAppBooleanValue(@"DidNormalizeFriendListDestinations", @"com.apple.ET", &keyExistsAndHasValidFormat);
-    v15 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.ET" pairedDevice:v6];
+    v15 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.ET" pairedDevice:deviceCopy];
     v16 = [v15 arrayForKey:@"FriendList"];
     v17 = [v15 arrayForKey:@"ETFriendGroupTitles"];
     v25 = 0;
@@ -798,7 +798,7 @@ LABEL_25:
         if (!v20)
         {
 LABEL_27:
-          v22 = [v15 synchronize];
+          synchronize = [v15 synchronize];
 LABEL_28:
 
           goto LABEL_29;
@@ -827,16 +827,16 @@ LABEL_26:
 LABEL_29:
 }
 
-- (void)migrateFitnessPreferencesFromBackup:(id)a3 device:(id)a4
+- (void)migrateFitnessPreferencesFromBackup:(id)backup device:(id)device
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 productName];
+  backupCopy = backup;
+  deviceCopy = device;
+  productName = [backupCopy productName];
 
-  if (v7)
+  if (productName)
   {
-    v8 = [v5 productName];
-    v9 = [v5 systemVersion];
+    productName2 = [backupCopy productName];
+    systemVersion = [backupCopy systemVersion];
     NRWatchOSVersion();
 
     if (NRVersionIsGreaterThanOrEqual())
@@ -847,15 +847,15 @@ LABEL_29:
 
   else
   {
-    v10 = [v5 systemBuildVersion];
-    if ([v10 hasPrefix:@"12S"])
+    systemBuildVersion = [backupCopy systemBuildVersion];
+    if ([systemBuildVersion hasPrefix:@"12S"])
     {
     }
 
     else
     {
-      v11 = [v5 systemBuildVersion];
-      v12 = [v11 hasPrefix:@"13S"];
+      systemBuildVersion2 = [backupCopy systemBuildVersion];
+      v12 = [systemBuildVersion2 hasPrefix:@"13S"];
 
       if (!v12)
       {
@@ -870,7 +870,7 @@ LABEL_29:
     keyExistsAndHasValidFormat = 0;
     CFPreferencesGetAppBooleanValue(@"EnableHeartRate", @"com.apple.nanolifestyle.privacy", &keyExistsAndHasValidFormat);
     CFPreferencesGetAppBooleanValue(@"EnableFitnessTracking", @"com.apple.nanolifestyle.privacy", &keyExistsAndHasValidFormat);
-    v13 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.nanolifestyle.privacy" pairedDevice:v6];
+    v13 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.nanolifestyle.privacy" pairedDevice:deviceCopy];
     v23 = 0;
     v14 = [v13 BOOLForKey:@"EnableHeartRate" keyExistsAndHasValidFormat:&v23];
     v22 = 0;
@@ -897,7 +897,7 @@ LABEL_29:
           v19 = @"EnableHeartRate";
 LABEL_23:
           [v13 removeObjectForKey:v19];
-          v21 = [v13 synchronize];
+          synchronize = [v13 synchronize];
         }
 
 LABEL_24:
@@ -939,22 +939,22 @@ LABEL_24:
 LABEL_25:
 }
 
-- (void)migrateBreathePreferencesFromBackup:(id)a3
+- (void)migrateBreathePreferencesFromBackup:(id)backup
 {
-  v10 = a3;
-  v4 = [v10 productName];
+  backupCopy = backup;
+  productName = [backupCopy productName];
 
-  if (!v4)
+  if (!productName)
   {
-    v7 = [v10 systemBuildVersion];
-    if ([v7 hasPrefix:@"12S"])
+    systemBuildVersion = [backupCopy systemBuildVersion];
+    if ([systemBuildVersion hasPrefix:@"12S"])
     {
     }
 
     else
     {
-      v8 = [v10 systemBuildVersion];
-      v9 = [v8 hasPrefix:@"13S"];
+      systemBuildVersion2 = [backupCopy systemBuildVersion];
+      v9 = [systemBuildVersion2 hasPrefix:@"13S"];
 
       if (!v9)
       {
@@ -965,8 +965,8 @@ LABEL_25:
     goto LABEL_7;
   }
 
-  v5 = [v10 productName];
-  v6 = [v10 systemVersion];
+  productName2 = [backupCopy productName];
+  systemVersion = [backupCopy systemVersion];
   NRWatchOSVersion();
 
   if ((NRVersionIsGreaterThanOrEqual() & 1) == 0)
@@ -978,11 +978,11 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)migrateBreathePreferencesFromDevice:(id)a3
+- (void)migrateBreathePreferencesFromDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = [[NSUUID alloc] initWithUUIDString:@"2A51E7B3-1B80-4981-9F09-F725BC3A8065"];
-  v6 = [v4 supportsCapability:v5];
+  v6 = [deviceCopy supportsCapability:v5];
 
   if ((v6 & 1) == 0)
   {
@@ -1014,7 +1014,7 @@ LABEL_8:
     [v4 setObject:@"com.apple.Mind" forKeyedSubscript:@"BPSNanoBulletinSectionId"];
     [v2 setObject:v4 forKey:@"com.apple.Mind"];
     [v2 removeObjectForKey:@"com.apple.DeepBreathing"];
-    v8 = [v2 synchronize];
+    synchronize = [v2 synchronize];
     v9 = nb_daemon_log;
     if (os_log_type_enabled(nb_daemon_log, OS_LOG_TYPE_DEFAULT))
     {

@@ -1,27 +1,27 @@
 @interface STReactorDirectiveProcessorResult
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToReactorDirectiveProcessorResult:(id)a3;
-- (STReactorDirectiveProcessorResult)initWithOutput:(id)a3 processedDirective:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToReactorDirectiveProcessorResult:(id)result;
+- (STReactorDirectiveProcessorResult)initWithOutput:(id)output processedDirective:(id)directive;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation STReactorDirectiveProcessorResult
 
-- (STReactorDirectiveProcessorResult)initWithOutput:(id)a3 processedDirective:(id)a4
+- (STReactorDirectiveProcessorResult)initWithOutput:(id)output processedDirective:(id)directive
 {
   v13.receiver = self;
   v13.super_class = STReactorDirectiveProcessorResult;
-  v5 = a4;
-  v6 = a3;
+  directiveCopy = directive;
+  outputCopy = output;
   v7 = [(STReactorDirectiveProcessorResult *)&v13 init];
-  v8 = [v6 copy];
+  v8 = [outputCopy copy];
 
   output = v7->_output;
   v7->_output = v8;
 
-  v10 = [v5 copy];
+  v10 = [directiveCopy copy];
   processedDirective = v7->_processedDirective;
   v7->_processedDirective = v10;
 
@@ -32,8 +32,8 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(STReactorDirectiveProcessorResult *)self processedDirective];
-  v6 = [v5 type] - 1;
+  processedDirective = [(STReactorDirectiveProcessorResult *)self processedDirective];
+  v6 = [processedDirective type] - 1;
   if (v6 > 0x10)
   {
     v7 = @"DoNothing";
@@ -44,25 +44,25 @@
     v7 = *(&off_1001A5550 + v6);
   }
 
-  v8 = [(STReactorDirectiveProcessorResult *)self output];
-  v9 = [NSString stringWithFormat:@"<%p:%@ { Directive: %@, Output: %@ }>", self, v4, v7, v8];
+  output = [(STReactorDirectiveProcessorResult *)self output];
+  v9 = [NSString stringWithFormat:@"<%p:%@ { Directive: %@, Output: %@ }>", self, v4, v7, output];
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   processedDirective = self->_processedDirective;
   output = self->_output;
 
   return [v4 initWithOutput:output processedDirective:processedDirective];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -72,7 +72,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(STReactorDirectiveProcessorResult *)self isEqualToReactorDirectiveProcessorResult:v4];
+      v5 = [(STReactorDirectiveProcessorResult *)self isEqualToReactorDirectiveProcessorResult:equalCopy];
     }
 
     else
@@ -84,21 +84,21 @@
   return v5;
 }
 
-- (BOOL)isEqualToReactorDirectiveProcessorResult:(id)a3
+- (BOOL)isEqualToReactorDirectiveProcessorResult:(id)result
 {
-  v7 = a3;
-  if (self == v7)
+  resultCopy = result;
+  if (self == resultCopy)
   {
     v10 = 1;
     goto LABEL_14;
   }
 
-  v8 = [(STReactorDirectiveProcessorResult *)self output];
-  if (v8 || ([(STReactorDirectiveProcessorResult *)v7 output], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  output = [(STReactorDirectiveProcessorResult *)self output];
+  if (output || ([(STReactorDirectiveProcessorResult *)resultCopy output], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v4 = [(STReactorDirectiveProcessorResult *)self output];
-    v5 = [(STReactorDirectiveProcessorResult *)v7 output];
-    if (![v4 isEqual:v5])
+    output2 = [(STReactorDirectiveProcessorResult *)self output];
+    output3 = [(STReactorDirectiveProcessorResult *)resultCopy output];
+    if (![output2 isEqual:output3])
     {
       v10 = 0;
 LABEL_10:
@@ -114,9 +114,9 @@ LABEL_10:
     v9 = 0;
   }
 
-  v11 = [(STReactorDirectiveProcessorResult *)self processedDirective];
-  v12 = [(STReactorDirectiveProcessorResult *)v7 processedDirective];
-  v10 = [v11 isEqualToReactorDirective:v12];
+  processedDirective = [(STReactorDirectiveProcessorResult *)self processedDirective];
+  processedDirective2 = [(STReactorDirectiveProcessorResult *)resultCopy processedDirective];
+  v10 = [processedDirective isEqualToReactorDirective:processedDirective2];
 
   if (v9)
   {
@@ -124,7 +124,7 @@ LABEL_10:
   }
 
 LABEL_11:
-  if (!v8)
+  if (!output)
   {
   }
 
@@ -134,10 +134,10 @@ LABEL_14:
 
 - (unint64_t)hash
 {
-  v3 = [(STReactorDirectiveProcessorResult *)self output];
-  v4 = [v3 hash];
-  v5 = [(STReactorDirectiveProcessorResult *)self processedDirective];
-  v6 = [v5 hash];
+  output = [(STReactorDirectiveProcessorResult *)self output];
+  v4 = [output hash];
+  processedDirective = [(STReactorDirectiveProcessorResult *)self processedDirective];
+  v6 = [processedDirective hash];
 
   return v6 ^ v4;
 }

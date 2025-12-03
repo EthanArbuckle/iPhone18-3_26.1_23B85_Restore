@@ -1,30 +1,30 @@
 @interface AMSDFraudReportBlindedTransaction
-- (AMSDFraudReportBlindedTransaction)initWithTDMToken:(id)a3 pks:(id)a4 keyID:(id)a5;
+- (AMSDFraudReportBlindedTransaction)initWithTDMToken:(id)token pks:(id)pks keyID:(id)d;
 @end
 
 @implementation AMSDFraudReportBlindedTransaction
 
-- (AMSDFraudReportBlindedTransaction)initWithTDMToken:(id)a3 pks:(id)a4 keyID:(id)a5
+- (AMSDFraudReportBlindedTransaction)initWithTDMToken:(id)token pks:(id)pks keyID:(id)d
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9 || !v10)
+  tokenCopy = token;
+  pksCopy = pks;
+  dCopy = d;
+  if (!tokenCopy || !pksCopy)
   {
     v23 = [NSException exceptionWithName:NSInvalidArgumentException reason:@"tdmToken and pks must both be non-nil" userInfo:0];
     objc_exception_throw(v23);
   }
 
-  v12 = v11;
+  v12 = dCopy;
   v24.receiver = self;
   v24.super_class = AMSDFraudReportBlindedTransaction;
   v13 = [(AMSDFraudReportBlindedTransaction *)&v24 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_tdmToken, a3);
-    v15 = [v9 blindedElement];
-    v16 = [v15 base64EncodedStringWithOptions:0];
+    objc_storeStrong(&v13->_tdmToken, token);
+    blindedElement = [tokenCopy blindedElement];
+    v16 = [blindedElement base64EncodedStringWithOptions:0];
     blindedMessage = v14->_blindedMessage;
     v14->_blindedMessage = v16;
 
@@ -32,7 +32,7 @@
     keyID = v14->_keyID;
     v14->_keyID = v18;
 
-    v20 = [v10 copy];
+    v20 = [pksCopy copy];
     pks = v14->_pks;
     v14->_pks = v20;
   }

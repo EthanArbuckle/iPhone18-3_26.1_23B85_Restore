@@ -1,15 +1,15 @@
 @interface OrgApacheLuceneIndexMultiDocValues_OrdinalMap
 + (void)initialize;
 - (id)getChildResources;
-- (int)getFirstSegmentNumberWithLong:(int64_t)a3;
-- (int64_t)getFirstSegmentOrdWithLong:(int64_t)a3;
+- (int)getFirstSegmentNumberWithLong:(int64_t)long;
+- (int64_t)getFirstSegmentOrdWithLong:(int64_t)long;
 - (int64_t)getValueCount;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneIndexMultiDocValues_OrdinalMap
 
-- (int64_t)getFirstSegmentOrdWithLong:(int64_t)a3
+- (int64_t)getFirstSegmentOrdWithLong:(int64_t)long
 {
   globalOrdDeltas = self->globalOrdDeltas_;
   if (!globalOrdDeltas)
@@ -17,10 +17,10 @@
     JreThrowNullPointerException();
   }
 
-  return a3 - [(OrgApacheLuceneUtilPackedPackedLongValues *)globalOrdDeltas getWithLong:?];
+  return long - [(OrgApacheLuceneUtilPackedPackedLongValues *)globalOrdDeltas getWithLong:?];
 }
 
-- (int)getFirstSegmentNumberWithLong:(int64_t)a3
+- (int)getFirstSegmentNumberWithLong:(int64_t)long
 {
   segmentMap = self->segmentMap_;
   if (!segmentMap || (firstSegments = self->firstSegments_) == 0)
@@ -28,7 +28,7 @@
     JreThrowNullPointerException();
   }
 
-  v5 = [(OrgApacheLuceneUtilPackedPackedLongValues *)firstSegments getWithLong:a3];
+  v5 = [(OrgApacheLuceneUtilPackedPackedLongValues *)firstSegments getWithLong:long];
 
   return [(OrgApacheLuceneIndexMultiDocValues_OrdinalMap_SegmentMap *)segmentMap newToOldWithInt:v5];
 }
@@ -62,7 +62,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = OrgApacheLuceneIndexMultiDocValues_OrdinalMap_class_();
     qword_1005548B0 = OrgApacheLuceneUtilRamUsageEstimator_shallowSizeOfInstanceWithIOSClass_(v2);

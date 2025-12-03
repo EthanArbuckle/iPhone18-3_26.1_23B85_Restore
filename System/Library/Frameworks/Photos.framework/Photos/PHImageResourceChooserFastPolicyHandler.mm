@@ -1,23 +1,23 @@
 @interface PHImageResourceChooserFastPolicyHandler
-+ (unint64_t)qualifyResourceInfo:(id)a3 againstPolicy:(int64_t)a4 requestInfo:(id)a5 reversed:(BOOL)a6 tooLargeForPolicy:(BOOL *)a7 disqualificationReason:(id *)a8;
++ (unint64_t)qualifyResourceInfo:(id)info againstPolicy:(int64_t)policy requestInfo:(id)requestInfo reversed:(BOOL)reversed tooLargeForPolicy:(BOOL *)forPolicy disqualificationReason:(id *)reason;
 @end
 
 @implementation PHImageResourceChooserFastPolicyHandler
 
-+ (unint64_t)qualifyResourceInfo:(id)a3 againstPolicy:(int64_t)a4 requestInfo:(id)a5 reversed:(BOOL)a6 tooLargeForPolicy:(BOOL *)a7 disqualificationReason:(id *)a8
++ (unint64_t)qualifyResourceInfo:(id)info againstPolicy:(int64_t)policy requestInfo:(id)requestInfo reversed:(BOOL)reversed tooLargeForPolicy:(BOOL *)forPolicy disqualificationReason:(id *)reason
 {
-  v10 = a6;
-  v14 = a3;
-  v15 = a5;
-  v34.receiver = a1;
+  reversedCopy = reversed;
+  infoCopy = info;
+  requestInfoCopy = requestInfo;
+  v34.receiver = self;
   v34.super_class = &OBJC_METACLASS___PHImageResourceChooserFastPolicyHandler;
-  v16 = objc_msgSendSuper2(&v34, sel_qualifyResourceInfo_againstPolicy_requestInfo_reversed_tooLargeForPolicy_disqualificationReason_, v14, a4, v15, v10, a7, a8);
-  v17 = [v14 store];
-  v18 = [objc_opt_class() storeClassID];
+  v16 = objc_msgSendSuper2(&v34, sel_qualifyResourceInfo_againstPolicy_requestInfo_reversed_tooLargeForPolicy_disqualificationReason_, infoCopy, policy, requestInfoCopy, reversedCopy, forPolicy, reason);
+  store = [infoCopy store];
+  storeClassID = [objc_opt_class() storeClassID];
 
   if (v16)
   {
-    if (v18 == 1 || !a4 && ([v15 behaviorSpec], v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "isNetworkAccessAllowed"), v20, (v21 & 1) != 0))
+    if (storeClassID == 1 || !policy && ([requestInfoCopy behaviorSpec], v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "isNetworkAccessAllowed"), v20, (v21 & 1) != 0))
     {
       v19 = 1;
     }
@@ -25,8 +25,8 @@
     else
     {
       v19 = 0;
-      *a8 = @"not fast";
-      *a7 = 1;
+      *reason = @"not fast";
+      *forPolicy = 1;
     }
   }
 
@@ -35,8 +35,8 @@
     v19 = 0;
   }
 
-  v22 = [v15 asset];
-  [v14 approximateSizeFromAsset:v22];
+  asset = [requestInfoCopy asset];
+  [infoCopy approximateSizeFromAsset:asset];
   v24 = v23;
   v26 = v25;
 
@@ -46,8 +46,8 @@
     goto LABEL_17;
   }
 
-  v27 = [v15 behaviorSpec];
-  [v27 minimumTableThumbnailLongSide];
+  behaviorSpec = [requestInfoCopy behaviorSpec];
+  [behaviorSpec minimumTableThumbnailLongSide];
   if (v28 <= 0.0)
   {
 
@@ -61,8 +61,8 @@ LABEL_16:
     v26 = v24;
   }
 
-  v29 = [v15 behaviorSpec];
-  [v29 minimumTableThumbnailLongSide];
+  behaviorSpec2 = [requestInfoCopy behaviorSpec];
+  [behaviorSpec2 minimumTableThumbnailLongSide];
   v31 = v30;
 
   if (v26 >= v31)
@@ -71,7 +71,7 @@ LABEL_16:
   }
 
   v32 = 0;
-  *a8 = @"failed minimumTableThumbnailLongSide test";
+  *reason = @"failed minimumTableThumbnailLongSide test";
 LABEL_17:
 
   return v32;

@@ -1,14 +1,14 @@
 @interface CSLPRFAppViewImageCache
-+ (id)getImageForLauncherMode:(int64_t)a3;
-+ (void)storeImage:(id)a3 forLauncherMode:(int64_t)a4;
++ (id)getImageForLauncherMode:(int64_t)mode;
++ (void)storeImage:(id)image forLauncherMode:(int64_t)mode;
 @end
 
 @implementation CSLPRFAppViewImageCache
 
-+ (id)getImageForLauncherMode:(int64_t)a3
++ (id)getImageForLauncherMode:(int64_t)mode
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = CSLPRFCachedAppViewImageURL(a3);
+  v3 = CSLPRFCachedAppViewImageURL(mode);
   if (!v3)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -51,10 +51,10 @@ LABEL_11:
   return v6;
 }
 
-+ (void)storeImage:(id)a3 forLauncherMode:(int64_t)a4
++ (void)storeImage:(id)image forLauncherMode:(int64_t)mode
 {
-  image = a3;
-  v5 = CSLPRFCachedAppViewImageURL(a4);
+  image = image;
+  v5 = CSLPRFCachedAppViewImageURL(mode);
   if (v5)
   {
     v6 = UIImagePNGRepresentation(image);

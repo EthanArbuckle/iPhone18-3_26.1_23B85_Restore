@@ -1,5 +1,5 @@
 @interface FBKSCampaign
-- (FBKSCampaign)initWithSwiftObject:(id)a3;
+- (FBKSCampaign)initWithSwiftObject:(id)object;
 - (NSDate)updatedAt;
 - (id)description;
 - (int64_t)state;
@@ -7,10 +7,10 @@
 
 @implementation FBKSCampaign
 
-- (FBKSCampaign)initWithSwiftObject:(id)a3
+- (FBKSCampaign)initWithSwiftObject:(id)object
 {
-  v5 = a3;
-  if (v5)
+  objectCopy = object;
+  if (objectCopy)
   {
     v10.receiver = self;
     v10.super_class = FBKSCampaign;
@@ -18,41 +18,41 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_swiftObject, a3);
+      objc_storeStrong(&v6->_swiftObject, object);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (NSDate)updatedAt
 {
-  v2 = [(FBKSCampaign *)self swiftObject];
-  v3 = [v2 updatedAt];
+  swiftObject = [(FBKSCampaign *)self swiftObject];
+  updatedAt = [swiftObject updatedAt];
 
-  return v3;
+  return updatedAt;
 }
 
 - (int64_t)state
 {
-  v2 = [(FBKSCampaign *)self swiftObject];
-  v3 = [v2 state];
+  swiftObject = [(FBKSCampaign *)self swiftObject];
+  state = [swiftObject state];
 
-  return v3;
+  return state;
 }
 
 - (id)description
 {
-  v2 = [(FBKSCampaign *)self swiftObject];
-  v3 = [v2 description];
+  swiftObject = [(FBKSCampaign *)self swiftObject];
+  v3 = [swiftObject description];
 
   return v3;
 }

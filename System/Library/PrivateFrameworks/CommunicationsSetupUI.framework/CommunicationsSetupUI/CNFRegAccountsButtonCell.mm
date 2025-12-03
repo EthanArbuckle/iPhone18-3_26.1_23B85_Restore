@@ -9,11 +9,11 @@
   v7.receiver = self;
   v7.super_class = CNFRegAccountsButtonCell;
   [(PSTableCell *)&v7 layoutSubviews];
-  v3 = [(PSTableCell *)self valueLabel];
-  v4 = [v3 text];
-  v5 = [v4 _appearsToBePhoneNumber];
+  valueLabel = [(PSTableCell *)self valueLabel];
+  text = [valueLabel text];
+  _appearsToBePhoneNumber = [text _appearsToBePhoneNumber];
 
-  if (v5)
+  if (_appearsToBePhoneNumber)
   {
     v6 = 3;
   }
@@ -23,9 +23,9 @@
     v6 = 4;
   }
 
-  [v3 setLineBreakMode:v6];
-  [v3 setAdjustsFontSizeToFitWidth:1];
-  [v3 setMinimumScaleFactor:0.75];
+  [valueLabel setLineBreakMode:v6];
+  [valueLabel setAdjustsFontSizeToFitWidth:1];
+  [valueLabel setMinimumScaleFactor:0.75];
 }
 
 @end

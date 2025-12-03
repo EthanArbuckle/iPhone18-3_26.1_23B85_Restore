@@ -1,22 +1,22 @@
 @interface PhoneSettingsReplyWithMessageBundleController
-- (BOOL)isStateDrivenNavigationPossibleWithParentController:(id)a3;
+- (BOOL)isStateDrivenNavigationPossibleWithParentController:(id)controller;
 - (id)parentListController;
-- (id)specifiersWithSpecifier:(id)a3;
-- (void)handleUserDidTapOnMainSpecifier:(id)a3 parentController:(id)a4;
-- (void)performButtonActionForSpecifier:(id)a3;
+- (id)specifiersWithSpecifier:(id)specifier;
+- (void)handleUserDidTapOnMainSpecifier:(id)specifier parentController:(id)controller;
+- (void)performButtonActionForSpecifier:(id)specifier;
 @end
 
 @implementation PhoneSettingsReplyWithMessageBundleController
 
-- (id)specifiersWithSpecifier:(id)a3
+- (id)specifiersWithSpecifier:(id)specifier
 {
-  v4 = [(PhoneSettingsReplyWithMessageBundleController *)self specifiersArray];
+  specifiersArray = [(PhoneSettingsReplyWithMessageBundleController *)self specifiersArray];
 
-  if (!v4)
+  if (!specifiersArray)
   {
     v5 = [NSMutableArray arrayWithCapacity:2];
-    v6 = [(PhoneSettingsReplyWithMessageBundleController *)self parentListController];
-    v7 = [(PhoneSettingsReplyWithMessageBundleController *)self isStateDrivenNavigationPossibleWithParentController:v6];
+    parentListController = [(PhoneSettingsReplyWithMessageBundleController *)self parentListController];
+    v7 = [(PhoneSettingsReplyWithMessageBundleController *)self isStateDrivenNavigationPossibleWithParentController:parentListController];
 
     v8 = [NSBundle bundleForClass:objc_opt_class()];
     v9 = [v8 localizedStringForKey:@"REPLY_WITH_MESSAGE_CELL_TITLE" value:&stru_85E0 table:@"Reply With Message"];
@@ -52,14 +52,14 @@
   return WeakRetained;
 }
 
-- (void)performButtonActionForSpecifier:(id)a3
+- (void)performButtonActionForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(PhoneSettingsReplyWithMessageBundleController *)self parentListController];
-  [(PhoneSettingsReplyWithMessageBundleController *)self handleUserDidTapOnMainSpecifier:v4 parentController:v5];
+  specifierCopy = specifier;
+  parentListController = [(PhoneSettingsReplyWithMessageBundleController *)self parentListController];
+  [(PhoneSettingsReplyWithMessageBundleController *)self handleUserDidTapOnMainSpecifier:specifierCopy parentController:parentListController];
 }
 
-- (BOOL)isStateDrivenNavigationPossibleWithParentController:(id)a3
+- (BOOL)isStateDrivenNavigationPossibleWithParentController:(id)controller
 {
   v4 = sub_2D84();
   v5 = *(v4 - 8);
@@ -74,17 +74,17 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v9 = a3;
-  v10 = [v9 traitCollection];
+  controllerCopy = controller;
+  traitCollection = [controllerCopy traitCollection];
   sub_2DD4();
 
-  LOBYTE(v10) = sub_2D64();
+  LOBYTE(traitCollection) = sub_2D64();
   (*(v5 + 8))(v8, v4);
 
-  return v10 & 1;
+  return traitCollection & 1;
 }
 
-- (void)handleUserDidTapOnMainSpecifier:(id)a3 parentController:(id)a4
+- (void)handleUserDidTapOnMainSpecifier:(id)specifier parentController:(id)controller
 {
   v18 = sub_2D84();
   v5 = *(v18 - 8);
@@ -106,10 +106,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v15 = a4;
+  controllerCopy = controller;
   sub_2DE4();
   sub_2D44();
-  v16 = [v15 traitCollection];
+  traitCollection = [controllerCopy traitCollection];
   sub_2DD4();
 
   sub_2680();

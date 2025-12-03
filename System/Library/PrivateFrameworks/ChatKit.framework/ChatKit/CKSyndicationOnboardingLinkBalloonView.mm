@@ -2,26 +2,26 @@
 + (id)musicSpecialization;
 + (id)podcastSpecialization;
 + (id)tvSpecialization;
-- (CKSyndicationOnboardingLinkBalloonView)initWithFrame:(CGRect)a3 withURL:(id)a4;
-- (void)setPluginViewToURL:(id)a3;
+- (CKSyndicationOnboardingLinkBalloonView)initWithFrame:(CGRect)frame withURL:(id)l;
+- (void)setPluginViewToURL:(id)l;
 @end
 
 @implementation CKSyndicationOnboardingLinkBalloonView
 
-- (CKSyndicationOnboardingLinkBalloonView)initWithFrame:(CGRect)a3 withURL:(id)a4
+- (CKSyndicationOnboardingLinkBalloonView)initWithFrame:(CGRect)frame withURL:(id)l
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  lCopy = l;
   v14.receiver = self;
   v14.super_class = CKSyndicationOnboardingLinkBalloonView;
-  v10 = [(CKTranscriptPluginBalloonView *)&v14 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(CKTranscriptPluginBalloonView *)&v14 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    [(CKSyndicationOnboardingLinkBalloonView *)v10 setPluginViewToURL:v9];
+    [(CKSyndicationOnboardingLinkBalloonView *)height setPluginViewToURL:lCopy];
     [(CKTranscriptPluginBalloonView *)v11 setIsSyndicationOnboarding:1];
     [(CKTranscriptPluginBalloonView *)v11 setHasTail:1];
     v12 = +[CKUIBehavior sharedBehaviors];
@@ -32,23 +32,23 @@
   return v11;
 }
 
-- (void)setPluginViewToURL:(id)a3
+- (void)setPluginViewToURL:(id)l
 {
   v4 = MEMORY[0x1E696ECA0];
-  v5 = a3;
+  lCopy = l;
   v11 = objc_alloc_init(v4);
-  [v11 setOriginalURL:v5];
-  [v11 setURL:v5];
-  v6 = [v5 absoluteString];
+  [v11 setOriginalURL:lCopy];
+  [v11 setURL:lCopy];
+  absoluteString = [lCopy absoluteString];
 
-  if ([v6 hasPrefix:@"https://tv"])
+  if ([absoluteString hasPrefix:@"https://tv"])
   {
     v7 = +[CKSyndicationOnboardingLinkBalloonView tvSpecialization];
   }
 
   else
   {
-    if ([v6 hasPrefix:@"https://podcasts"])
+    if ([absoluteString hasPrefix:@"https://podcasts"])
     {
       +[CKSyndicationOnboardingLinkBalloonView podcastSpecialization];
     }
@@ -65,8 +65,8 @@
 
   v9 = [objc_alloc(MEMORY[0x1E696ECC8]) initWithMetadata:v11];
   [(CKTranscriptPluginBalloonView *)self setPluginView:v9 pluginController:0];
-  v10 = [v9 _resolvedBackgroundColor];
-  [v10 ck_imColorComponents];
+  _resolvedBackgroundColor = [v9 _resolvedBackgroundColor];
+  [_resolvedBackgroundColor ck_imColorComponents];
   [(CKBalloonView *)self setDynamicFillColor:?];
 }
 

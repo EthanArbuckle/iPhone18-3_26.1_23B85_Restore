@@ -1,15 +1,15 @@
 @interface IDSPACStateTracker
 + (id)sharedInstance;
-- (id)_pacRemovalReasonToString:(int64_t)a3;
-- (id)_simTypeString:(unint64_t)a3;
+- (id)_pacRemovalReasonToString:(int64_t)string;
+- (id)_simTypeString:(unint64_t)string;
 - (id)fetchCurrentPACState;
-- (id)underlyingErrorForPACState:(id)a3;
+- (id)underlyingErrorForPACState:(id)state;
 - (void)noteAuthenticationFinished;
 - (void)noteAuthenticationStarted;
-- (void)notePNRError:(int64_t)a3;
+- (void)notePNRError:(int64_t)error;
 - (void)notePNRSuccess;
 - (void)notePhoneAuthCertGained;
-- (void)notePhoneAuthCertLost:(int64_t)a3;
+- (void)notePhoneAuthCertLost:(int64_t)lost;
 @end
 
 @implementation IDSPACStateTracker
@@ -83,8 +83,8 @@
   else
   {
     v15 = +[IDSDaemon sharedInstance];
-    v16 = [v15 registrationConductor];
-    v45 = [v16 userStore];
+    registrationConductor = [v15 registrationConductor];
+    userStore = [registrationConductor userStore];
 
     v17 = +[IMRGLog sms];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -116,30 +116,30 @@
           }
 
           v20 = *(*(&v49 + 1) + 8 * i);
-          v21 = [v4[209] sharedInstance];
-          v22 = [v21 CTPNRForSIM:v20];
+          sharedInstance = [v4[209] sharedInstance];
+          v22 = [sharedInstance CTPNRForSIM:v20];
 
-          v48 = [v22 isPNRSupported];
-          if (v48)
+          isPNRSupported = [v22 isPNRSupported];
+          if (isPNRSupported)
           {
             [(IDSPACState *)v3 setIsAnySIMPNRCapable:1];
           }
 
-          v47 = [v22 isSIMReady];
-          if (v47)
+          isSIMReady = [v22 isSIMReady];
+          if (isSIMReady)
           {
             [(IDSPACState *)v3 setIsAnySIMPNRReady:1];
           }
 
           v23 = v3;
-          v24 = [v20 SIMIdentifier];
-          v25 = [v45 userWithUniqueIdentifier:v24];
+          sIMIdentifier = [v20 SIMIdentifier];
+          v25 = [userStore userWithUniqueIdentifier:sIMIdentifier];
 
           v26 = +[IDSDaemon sharedInstance];
-          v27 = [v26 registrationConductor];
-          v28 = [v27 phoneUserRegistry];
-          v29 = [v25 uniqueIdentifier];
-          v30 = [v28 validatorForUniqueID:v29 withServiceType:1];
+          registrationConductor2 = [v26 registrationConductor];
+          phoneUserRegistry = [registrationConductor2 phoneUserRegistry];
+          uniqueIdentifier = [v25 uniqueIdentifier];
+          v30 = [phoneUserRegistry validatorForUniqueID:uniqueIdentifier withServiceType:1];
 
           if (v30)
           {
@@ -165,12 +165,12 @@
           v32 = +[IMRGLog sms];
           if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
           {
-            v33 = [v20 SIMIdentifier];
+            sIMIdentifier2 = [v20 SIMIdentifier];
             v34 = -[IDSPACStateTracker _simTypeString:](self, "_simTypeString:", [v20 hardwareType]);
             v35 = v34;
             *buf = 138413314;
             v36 = @"NO";
-            if (v48)
+            if (isPNRSupported)
             {
               v37 = @"YES";
             }
@@ -180,8 +180,8 @@
               v37 = @"NO";
             }
 
-            v55 = v33;
-            if (v47)
+            v55 = sIMIdentifier2;
+            if (isSIMReady)
             {
               v36 = @"YES";
             }
@@ -223,9 +223,9 @@
   return v3;
 }
 
-- (id)underlyingErrorForPACState:(id)a3
+- (id)underlyingErrorForPACState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = objc_alloc_init(NSMutableDictionary);
   if (qword_100CBD3F0)
   {
@@ -246,35 +246,35 @@
     [v5 setObject:v11 forKeyedSubscript:NSUnderlyingErrorKey];
   }
 
-  if (([v4 isAnySIMInserted] & 1) == 0)
+  if (([stateCopy isAnySIMInserted] & 1) == 0)
   {
     [v5 setObject:@"This device has no inserted SIM" forKeyedSubscript:NSDebugDescriptionErrorKey];
     v12 = -5100;
     goto LABEL_15;
   }
 
-  if (([v4 isAnySIMUsable] & 1) == 0)
+  if (([stateCopy isAnySIMUsable] & 1) == 0)
   {
     [v5 setObject:@"This device has atleast one inserted SIM but none are usable" forKeyedSubscript:NSDebugDescriptionErrorKey];
     v12 = -5200;
     goto LABEL_15;
   }
 
-  if (([v4 isAnySIMPNRCapable] & 1) == 0)
+  if (([stateCopy isAnySIMPNRCapable] & 1) == 0)
   {
     [v5 setObject:@"This device has no SIM capable of PNR" forKeyedSubscript:NSDebugDescriptionErrorKey];
     v12 = -5300;
     goto LABEL_15;
   }
 
-  if (([v4 isAnySIMPNRReady] & 1) == 0)
+  if (([stateCopy isAnySIMPNRReady] & 1) == 0)
   {
     [v5 setObject:@"This device has atleast one PNR capable SIM but none are ready for PNR" forKeyedSubscript:NSDebugDescriptionErrorKey];
     v12 = -5400;
     goto LABEL_15;
   }
 
-  if ([v4 isAnyPNRInFlight])
+  if ([stateCopy isAnyPNRInFlight])
   {
     [v5 setObject:@"There is currently a PNR in flight" forKeyedSubscript:NSDebugDescriptionErrorKey];
     v12 = -5500;
@@ -283,28 +283,28 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if ([v4 isAwaitingAuthentication])
+  if ([stateCopy isAwaitingAuthentication])
   {
     [v5 setObject:@"PNR is complete forKeyedSubscript:{but we have not yet kicked off authentication", NSDebugDescriptionErrorKey}];
     v12 = -5600;
     goto LABEL_15;
   }
 
-  if ([v4 isAuthenticationInFlight])
+  if ([stateCopy isAuthenticationInFlight])
   {
     [v5 setObject:@"PNR is complete forKeyedSubscript:{but authentication is still in flight", NSDebugDescriptionErrorKey}];
     v12 = -5700;
     goto LABEL_15;
   }
 
-  if (([v4 isSMSSupported] & 1) == 0)
+  if (([stateCopy isSMSSupported] & 1) == 0)
   {
     [v5 setObject:@"Device does not support SMS; PNR cannot occur" forKeyedSubscript:NSDebugDescriptionErrorKey];
     v12 = -5800;
     goto LABEL_15;
   }
 
-  if (([v4 isIdentificationSupported] & 1) == 0)
+  if (([stateCopy isIdentificationSupported] & 1) == 0)
   {
     [v5 setObject:@"Device does not support identification; PNR cannot occur" forKeyedSubscript:NSDebugDescriptionErrorKey];
     v12 = -5900;
@@ -318,12 +318,12 @@ LABEL_16:
   return v14;
 }
 
-- (void)notePhoneAuthCertLost:(int64_t)a3
+- (void)notePhoneAuthCertLost:(int64_t)lost
 {
   v5 = +[IMRGLog sms];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(IDSPACStateTracker *)self _pacRemovalReasonToString:a3];
+    v6 = [(IDSPACStateTracker *)self _pacRemovalReasonToString:lost];
     v9 = 138412290;
     v10 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Noting phone auth cert removal! Reason: %@", &v9, 0xCu);
@@ -333,31 +333,31 @@ LABEL_16:
   v8 = qword_100CBD3E0;
   qword_100CBD3E0 = v7;
 
-  qword_100CBD3F0 = a3;
+  qword_100CBD3F0 = lost;
 }
 
-- (id)_pacRemovalReasonToString:(int64_t)a3
+- (id)_pacRemovalReasonToString:(int64_t)string
 {
-  if ((a3 - 1) > 8)
+  if ((string - 1) > 8)
   {
     return @"NoTrackedRemoval";
   }
 
   else
   {
-    return off_100BDCBB0[a3 - 1];
+    return off_100BDCBB0[string - 1];
   }
 }
 
-- (id)_simTypeString:(unint64_t)a3
+- (id)_simTypeString:(unint64_t)string
 {
   v3 = @"unknown";
-  if (a3 == 1)
+  if (string == 1)
   {
     v3 = @"physical";
   }
 
-  if (a3 == 2)
+  if (string == 2)
   {
     return @"eSIM";
   }
@@ -393,7 +393,7 @@ LABEL_16:
   }
 }
 
-- (void)notePNRError:(int64_t)a3
+- (void)notePNRError:(int64_t)error
 {
   v3 = +[IMRGLog sms];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))

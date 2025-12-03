@@ -1,30 +1,30 @@
 @interface XPCAppRemovalService
 - (id)_deleteAllUserDefaults;
-- (void)removeAppWithReply:(id)a3;
+- (void)removeAppWithReply:(id)reply;
 @end
 
 @implementation XPCAppRemovalService
 
-- (void)removeAppWithReply:(id)a3
+- (void)removeAppWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = sub_100000D2C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     sub_100001318();
   }
 
-  v6 = [(XPCAppRemovalService *)self _deleteAllUserDefaults];
+  _deleteAllUserDefaults = [(XPCAppRemovalService *)self _deleteAllUserDefaults];
   v7 = sub_100000D2C();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_ERROR);
-  if (v6)
+  if (_deleteAllUserDefaults)
   {
     if (v8)
     {
       sub_10000139C();
     }
 
-    v4[2](v4, v6);
+    replyCopy[2](replyCopy, _deleteAllUserDefaults);
   }
 
   else
@@ -45,19 +45,19 @@
     v15[0] = @"Unable to connect to RCSSavedRecordingService.  Aborting.";
     v15[1] = RCVoiceMemosBundleID;
     v10 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:2];
-    v6 = [NSError errorWithDomain:@"com.apple.VoiceMemos.appremoval.errorDomain" code:-1 userInfo:v10];
+    _deleteAllUserDefaults = [NSError errorWithDomain:@"com.apple.VoiceMemos.appremoval.errorDomain" code:-1 userInfo:v10];
 
-    if (!v6)
+    if (!_deleteAllUserDefaults)
     {
 LABEL_10:
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_100001034;
       v12[3] = &unk_100004160;
-      v13 = v4;
+      v13 = replyCopy;
       [v9 removeAllUserDataWithCompletion:v12];
 
-      v6 = 0;
+      _deleteAllUserDefaults = 0;
     }
 
     else
@@ -68,7 +68,7 @@ LABEL_10:
         sub_10000139C();
       }
 
-      v4[2](v4, v6);
+      replyCopy[2](replyCopy, _deleteAllUserDefaults);
     }
   }
 }
@@ -80,10 +80,10 @@ LABEL_10:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [v2 dictionaryRepresentation];
-  v4 = [v3 allKeys];
+  dictionaryRepresentation = [v2 dictionaryRepresentation];
+  allKeys = [dictionaryRepresentation allKeys];
 
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v22 count:16];
+  v5 = [allKeys countByEnumeratingWithState:&v14 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -95,7 +95,7 @@ LABEL_10:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v14 + 1) + 8 * v8);
@@ -112,7 +112,7 @@ LABEL_10:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v22 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v14 objects:v22 count:16];
     }
 
     while (v6);

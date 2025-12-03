@@ -1,20 +1,20 @@
 @interface CRDisplayScaleInfo
-+ (id)displayScaleInfoWithDictionary:(id)a3 screenType:(unint64_t)a4 zoomFactor:(id)a5 error:(id *)a6;
++ (id)displayScaleInfoWithDictionary:(id)dictionary screenType:(unint64_t)type zoomFactor:(id)factor error:(id *)error;
 - (BOOL)allowsSmartZoom;
 - (CGSize)_heuristicPixelSize;
 - (CGSize)_minHeightDisplaySize;
 - (CGSize)_minWidthDisplaySize;
-- (CGSize)_pixelSizeByClampingToMinSize:(CGSize)a3 pointScale:(unint64_t)a4;
-- (CGSize)canvasPixelSizeForDisplayScaleMode:(int64_t)a3;
+- (CGSize)_pixelSizeByClampingToMinSize:(CGSize)size pointScale:(unint64_t)scale;
+- (CGSize)canvasPixelSizeForDisplayScaleMode:(int64_t)mode;
 - (CGSize)physicalSize;
 - (CGSize)pixelSize;
 - (CGSize)squaredPixelSize;
-- (CRDisplayScaleInfo)initWithPhysicalSize:(CGSize)a3 pixelSize:(CGSize)a4 viewAreas:(id)a5 screenType:(unint64_t)a6 zoomFactor:(id)a7;
-- (CRDisplayScaleInfo)initWithScreenInfo:(id)a3;
-- (double)_optimalScaleFactorWithPointScale:(unint64_t)a3;
+- (CRDisplayScaleInfo)initWithPhysicalSize:(CGSize)size pixelSize:(CGSize)pixelSize viewAreas:(id)areas screenType:(unint64_t)type zoomFactor:(id)factor;
+- (CRDisplayScaleInfo)initWithScreenInfo:(id)info;
+- (double)_optimalScaleFactorWithPointScale:(unint64_t)scale;
 - (id)_allowedScaleModes;
 - (id)description;
-- (id)displayScaleModesForCanvasPixelSize:(CGSize)a3;
+- (id)displayScaleModesForCanvasPixelSize:(CGSize)size;
 - (int64_t)_scaleMode;
 - (int64_t)defaultDisplayMode;
 - (unint64_t)optimizedPointScale;
@@ -24,28 +24,28 @@
 
 @implementation CRDisplayScaleInfo
 
-+ (id)displayScaleInfoWithDictionary:(id)a3 screenType:(unint64_t)a4 zoomFactor:(id)a5 error:(id *)a6
++ (id)displayScaleInfoWithDictionary:(id)dictionary screenType:(unint64_t)type zoomFactor:(id)factor error:(id *)error
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
+  dictionaryCopy = dictionary;
+  factorCopy = factor;
   v36.width = 0.0;
   v36.height = 0.0;
-  if ((CRSizeFromAirPlayDictionaryForKey(v9, *MEMORY[0x1E6962438], &v36) & 1) == 0)
+  if ((CRSizeFromAirPlayDictionaryForKey(dictionaryCopy, *MEMORY[0x1E6962438], &v36) & 1) == 0)
   {
     v13 = CarDisplayScaleLogging();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
     {
-      [(CRDisplayScaleInfo *)v9 displayScaleInfoWithDictionary:v13 screenType:v14 zoomFactor:v15 error:v16, v17, v18, v19];
+      [(CRDisplayScaleInfo *)dictionaryCopy displayScaleInfoWithDictionary:v13 screenType:v14 zoomFactor:v15 error:v16, v17, v18, v19];
     }
 
-    if (a6)
+    if (error)
     {
       v20 = MEMORY[0x1E696ABC0];
       v39 = *MEMORY[0x1E696A578];
       v40[0] = @"Unable to parse display physical size";
       v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v40 forKeys:&v39 count:1];
-      *a6 = [v20 errorWithDomain:@"com.apple.carkit" code:-10001 userInfo:v21];
+      *error = [v20 errorWithDomain:@"com.apple.carkit" code:-10001 userInfo:v21];
     }
 
     goto LABEL_14;
@@ -53,10 +53,10 @@
 
   v35.width = 0.0;
   v35.height = 0.0;
-  if (CRSizeFromAirPlayDictionaryForKey(v9, *MEMORY[0x1E6962440], &v35))
+  if (CRSizeFromAirPlayDictionaryForKey(dictionaryCopy, *MEMORY[0x1E6962440], &v35))
   {
     objc_opt_class();
-    v11 = [v9 objectForKey:@"ViewAreas"];
+    v11 = [dictionaryCopy objectForKey:@"ViewAreas"];
     if (v11 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v12 = v11;
@@ -68,23 +68,23 @@
     }
 
     v31 = [v12 bs_map:&__block_literal_global];
-    if (!v10)
+    if (!factorCopy)
     {
       objc_opt_class();
-      v32 = [v9 objectForKeyedSubscript:@"ZoomFactor"];
+      v32 = [dictionaryCopy objectForKeyedSubscript:@"ZoomFactor"];
       if (v32 && (objc_opt_isKindOfClass() & 1) != 0)
       {
-        v10 = v32;
+        factorCopy = v32;
       }
 
       else
       {
-        v10 = 0;
+        factorCopy = 0;
       }
     }
 
     v33 = [CRDisplayScaleInfo alloc];
-    v30 = [(CRDisplayScaleInfo *)v33 initWithPhysicalSize:v31 pixelSize:a4 viewAreas:v10 screenType:v36.width zoomFactor:v36.height, v35.width, v35.height];
+    v30 = [(CRDisplayScaleInfo *)v33 initWithPhysicalSize:v31 pixelSize:type viewAreas:factorCopy screenType:v36.width zoomFactor:v36.height, v35.width, v35.height];
 
     goto LABEL_23;
   }
@@ -92,10 +92,10 @@
   v22 = CarDisplayScaleLogging();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
   {
-    [(CRDisplayScaleInfo *)v9 displayScaleInfoWithDictionary:v22 screenType:v23 zoomFactor:v24 error:v25, v26, v27, v28];
+    [(CRDisplayScaleInfo *)dictionaryCopy displayScaleInfoWithDictionary:v22 screenType:v23 zoomFactor:v24 error:v25, v26, v27, v28];
   }
 
-  if (!a6)
+  if (!error)
   {
 LABEL_14:
     v30 = 0;
@@ -107,7 +107,7 @@ LABEL_14:
   v38 = @"Unable to parse display pixel size";
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
   [v29 errorWithDomain:@"com.apple.carkit" code:-10001 userInfo:v12];
-  *a6 = v30 = 0;
+  *error = v30 = 0;
 LABEL_23:
 
 LABEL_24:
@@ -123,30 +123,30 @@ CRViewArea *__81__CRDisplayScaleInfo_displayScaleInfoWithDictionary_screenType_z
   return v3;
 }
 
-- (CRDisplayScaleInfo)initWithScreenInfo:(id)a3
+- (CRDisplayScaleInfo)initWithScreenInfo:(id)info
 {
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
-  v6 = [v4 array];
-  v7 = [v5 viewAreas];
+  infoCopy = info;
+  array = [v4 array];
+  viewAreas = [infoCopy viewAreas];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __41__CRDisplayScaleInfo_initWithScreenInfo___block_invoke;
   v21[3] = &unk_1E82FBDE8;
-  v22 = v6;
-  v8 = v6;
-  [v7 enumerateObjectsUsingBlock:v21];
+  v22 = array;
+  v8 = array;
+  [viewAreas enumerateObjectsUsingBlock:v21];
 
-  [v5 physicalSize];
+  [infoCopy physicalSize];
   v10 = v9;
   v12 = v11;
-  [v5 pixelSize];
+  [infoCopy pixelSize];
   v14 = v13;
   v16 = v15;
-  v17 = [v5 screenType];
-  v18 = [v5 zoomFactor];
+  screenType = [infoCopy screenType];
+  zoomFactor = [infoCopy zoomFactor];
 
-  v19 = [(CRDisplayScaleInfo *)self initWithPhysicalSize:v8 pixelSize:v17 viewAreas:v18 screenType:v10 zoomFactor:v12, v14, v16];
+  v19 = [(CRDisplayScaleInfo *)self initWithPhysicalSize:v8 pixelSize:screenType viewAreas:zoomFactor screenType:v10 zoomFactor:v12, v14, v16];
   return v19;
 }
 
@@ -170,15 +170,15 @@ void __41__CRDisplayScaleInfo_initWithScreenInfo___block_invoke(uint64_t a1, voi
   [v2 addObject:v21];
 }
 
-- (CRDisplayScaleInfo)initWithPhysicalSize:(CGSize)a3 pixelSize:(CGSize)a4 viewAreas:(id)a5 screenType:(unint64_t)a6 zoomFactor:(id)a7
+- (CRDisplayScaleInfo)initWithPhysicalSize:(CGSize)size pixelSize:(CGSize)pixelSize viewAreas:(id)areas screenType:(unint64_t)type zoomFactor:(id)factor
 {
-  height = a4.height;
-  width = a4.width;
-  v11 = a3.height;
-  v12 = a3.width;
+  height = pixelSize.height;
+  width = pixelSize.width;
+  v11 = size.height;
+  v12 = size.width;
   v59 = *MEMORY[0x1E69E9840];
-  v14 = a5;
-  v15 = a7;
+  areasCopy = areas;
+  factorCopy = factor;
   v52.receiver = self;
   v52.super_class = CRDisplayScaleInfo;
   v16 = [(CRDisplayScaleInfo *)&v52 init];
@@ -187,7 +187,7 @@ void __41__CRDisplayScaleInfo_initWithScreenInfo___block_invoke(uint64_t a1, voi
     goto LABEL_51;
   }
 
-  v17 = v14;
+  v17 = areasCopy;
   v18 = v12 - *MEMORY[0x1E695F060];
   v19 = -v18;
   if (v18 >= 0.0)
@@ -263,7 +263,7 @@ LABEL_21:
 
     v30 = CGSizeSquaredPixelSizeWithPhysicalSize(width, height, v12, v11);
     v32 = v31;
-    v33 = 1.0 / CRPointScaleWithSize(a6, v17, width, height, v12, v11);
+    v33 = 1.0 / CRPointScaleWithSize(type, v17, width, height, v12, v11);
     v12 = v30 * v33 * 0.376647834;
     v11 = v32 * v33 * 0.376647834;
     v26 = CarDisplayScaleLogging();
@@ -284,7 +284,7 @@ LABEL_21:
     goto LABEL_24;
   }
 
-  v25 = 1.0 / CRPointScaleWithSize(a6, v17, width, height, v12, v11);
+  v25 = 1.0 / CRPointScaleWithSize(type, v17, width, height, v12, v11);
   v12 = width * v25 * 0.376647834;
   v11 = height * v25 * 0.376647834;
   v26 = CarDisplayScaleLogging();
@@ -316,13 +316,13 @@ LABEL_25:
   viewAreas = v16->_viewAreas;
   v16->_viewAreas = v35;
 
-  v16->_screenType = a6;
+  v16->_screenType = type;
   objc_opt_class();
   v37 = +[CARPrototypePref zoomFactor];
-  v38 = [v37 internalSettingsValue];
-  if (v38 && (objc_opt_isKindOfClass() & 1) != 0)
+  internalSettingsValue = [v37 internalSettingsValue];
+  if (internalSettingsValue && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v39 = v38;
+    v39 = internalSettingsValue;
   }
 
   else
@@ -346,7 +346,7 @@ LABEL_25:
 
   else
   {
-    [v15 floatValue];
+    [factorCopy floatValue];
     v41 = v42;
   }
 
@@ -377,7 +377,7 @@ LABEL_25:
   v16->_zoomFactor = v45;
   if (![(CRDisplayScaleInfo *)v16 _customZoomEnabled])
   {
-    [_TtC6CarKit14DisplayScaling zoomFactorHeuristicsWithScreenType:a6 physicalSize:v12 pixelSize:v11, width, height];
+    [_TtC6CarKit14DisplayScaling zoomFactorHeuristicsWithScreenType:type physicalSize:v12 pixelSize:v11, width, height];
     v16->_zoomFactor = v50;
   }
 
@@ -385,25 +385,25 @@ LABEL_51:
   return v16;
 }
 
-- (CGSize)canvasPixelSizeForDisplayScaleMode:(int64_t)a3
+- (CGSize)canvasPixelSizeForDisplayScaleMode:(int64_t)mode
 {
   v62 = *MEMORY[0x1E69E9840];
-  v5 = [(CRDisplayScaleInfo *)self screenType];
-  if (v5 != 1)
+  screenType = [(CRDisplayScaleInfo *)self screenType];
+  if (screenType != 1)
   {
-    if (v5)
+    if (screenType)
     {
       v25 = *MEMORY[0x1E695F060];
       v27 = *(MEMORY[0x1E695F060] + 8);
       goto LABEL_30;
     }
 
-    if (!a3)
+    if (!mode)
     {
-      a3 = [(CRDisplayScaleInfo *)self defaultDisplayMode];
+      mode = [(CRDisplayScaleInfo *)self defaultDisplayMode];
     }
 
-    if (a3 == 2)
+    if (mode == 2)
     {
       if ([(CRDisplayScaleInfo *)self _customZoomEnabled])
       {
@@ -478,7 +478,7 @@ LABEL_20:
 
     else
     {
-      if (a3 != 1)
+      if (mode != 1)
       {
         v11 = *MEMORY[0x1E695F060];
         v12 = *(MEMORY[0x1E695F060] + 8);
@@ -587,10 +587,10 @@ LABEL_30:
   return result;
 }
 
-- (id)displayScaleModesForCanvasPixelSize:(CGSize)a3
+- (id)displayScaleModesForCanvasPixelSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = [MEMORY[0x1E695DFA8] set];
   v7 = floor(width);
   v8 = floor(height);
@@ -672,8 +672,8 @@ LABEL_30:
 
 - (BOOL)allowsSmartZoom
 {
-  v2 = [(CRDisplayScaleInfo *)self _allowedScaleModes];
-  v3 = [v2 count] > 1;
+  _allowedScaleModes = [(CRDisplayScaleInfo *)self _allowedScaleModes];
+  v3 = [_allowedScaleModes count] > 1;
 
   return v3;
 }
@@ -731,9 +731,9 @@ LABEL_30:
     [(CRDisplayScaleInfo *)self physicalSize];
     v27 = v26;
     v29 = v28;
-    v30 = [(CRDisplayScaleInfo *)self screenType];
-    v31 = [(CRDisplayScaleInfo *)self viewAreas];
-    v32 = CRPointScaleWithSize(v30, v31, v8, v9, v27, v29);
+    screenType = [(CRDisplayScaleInfo *)self screenType];
+    viewAreas = [(CRDisplayScaleInfo *)self viewAreas];
+    v32 = CRPointScaleWithSize(screenType, viewAreas, v8, v9, v27, v29);
 
     return v32;
   }
@@ -741,8 +741,8 @@ LABEL_30:
 
 - (unint64_t)preferredPointScale
 {
-  v3 = [(CRDisplayScaleInfo *)self optimizedPointScale];
-  if (v3 <= [(CRDisplayScaleInfo *)self originalPointScale])
+  optimizedPointScale = [(CRDisplayScaleInfo *)self optimizedPointScale];
+  if (optimizedPointScale <= [(CRDisplayScaleInfo *)self originalPointScale])
   {
 
     return [(CRDisplayScaleInfo *)self originalPointScale];
@@ -779,15 +779,15 @@ LABEL_30:
   v5 = BSStringFromCGSize();
   [(CRDisplayScaleInfo *)self squaredPixelSize];
   v6 = BSStringFromCGSize();
-  v7 = [(CRDisplayScaleInfo *)self viewAreas];
-  v8 = [(CRDisplayScaleInfo *)self screenType];
+  viewAreas = [(CRDisplayScaleInfo *)self viewAreas];
+  screenType = [(CRDisplayScaleInfo *)self screenType];
   v9 = @"Unknown";
-  if (v8 == 1)
+  if (screenType == 1)
   {
     v9 = @"Secondary";
   }
 
-  if (!v8)
+  if (!screenType)
   {
     v9 = @"Primary";
   }
@@ -800,15 +800,15 @@ LABEL_30:
   [(CRDisplayScaleInfo *)self zoomFactor];
   v14 = [v13 numberWithDouble:?];
   v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CRDisplayScaleInfo preferredPointScale](self, "preferredPointScale")}];
-  v16 = [v3 stringWithFormat:@"DisplayInfo: physicalSize: %@ pixelSize: %@; squaredPixelSize: %@; viewAreas: %@; screenType: %@; Scale Information = PreferredToOriginalScaleRatio(%@)/ZoomFactor(%@) at PointScale(%@);", v4, v5, v6, v7, v11, v12, v14, v15];;
+  v16 = [v3 stringWithFormat:@"DisplayInfo: physicalSize: %@ pixelSize: %@; squaredPixelSize: %@; viewAreas: %@; screenType: %@; Scale Information = PreferredToOriginalScaleRatio(%@)/ZoomFactor(%@) at PointScale(%@);", v4, v5, v6, viewAreas, v11, v12, v14, v15];;
 
   return v16;
 }
 
-- (double)_optimalScaleFactorWithPointScale:(unint64_t)a3
+- (double)_optimalScaleFactorWithPointScale:(unint64_t)scale
 {
   [(CRDisplayScaleInfo *)self pixelSize];
-  v5 = 1.0 / a3;
+  v5 = 1.0 / scale;
   v7 = v5 * v6;
   v9 = v5 * v8;
   [(CRDisplayScaleInfo *)self physicalSize];
@@ -831,21 +831,21 @@ LABEL_30:
 
 - (unint64_t)originalPointScale
 {
-  v3 = [(CRDisplayScaleInfo *)self screenType];
-  if (v3 == 1)
+  screenType = [(CRDisplayScaleInfo *)self screenType];
+  if (screenType == 1)
   {
     goto LABEL_8;
   }
 
-  if (v3)
+  if (screenType)
   {
     return 1;
   }
 
-  v4 = [(CRDisplayScaleInfo *)self _scaleMode];
-  if ((v4 - 1) >= 3)
+  _scaleMode = [(CRDisplayScaleInfo *)self _scaleMode];
+  if ((_scaleMode - 1) >= 3)
   {
-    if (!v4)
+    if (!_scaleMode)
     {
       [(CRDisplayScaleInfo *)self squaredPixelSize];
       v7 = v6;
@@ -853,26 +853,26 @@ LABEL_30:
       [(CRDisplayScaleInfo *)self physicalSize];
       v11 = v10;
       v13 = v12;
-      v14 = [(CRDisplayScaleInfo *)self screenType];
-      v15 = [(CRDisplayScaleInfo *)self viewAreas];
-      v5 = CRPointScaleWithSize(v14, v15, v7, v9, v11, v13);
+      screenType2 = [(CRDisplayScaleInfo *)self screenType];
+      viewAreas = [(CRDisplayScaleInfo *)self viewAreas];
+      v5 = CRPointScaleWithSize(screenType2, viewAreas, v7, v9, v11, v13);
       goto LABEL_12;
     }
 
 LABEL_8:
-    v16 = [(CRDisplayScaleInfo *)self screenType];
+    screenType3 = [(CRDisplayScaleInfo *)self screenType];
     [(CRDisplayScaleInfo *)self physicalSize];
     v18 = v17;
     v20 = v19;
     [(CRDisplayScaleInfo *)self pixelSize];
-    v5 = [_TtC6CarKit14DisplayScaling exceptionPointScaleWithScreenType:v16 physicalSize:v18 pixelSize:v20, v21, v22];
+    v5 = [_TtC6CarKit14DisplayScaling exceptionPointScaleWithScreenType:screenType3 physicalSize:v18 pixelSize:v20, v21, v22];
     if (v5 > 0)
     {
       return v5;
     }
 
-    v15 = +[CARPrototypePref force3xCluster];
-    if ([v15 valueBool])
+    viewAreas = +[CARPrototypePref force3xCluster];
+    if ([viewAreas valueBool])
     {
       v5 = 3;
     }
@@ -890,16 +890,16 @@ LABEL_12:
   return 3;
 }
 
-- (CGSize)_pixelSizeByClampingToMinSize:(CGSize)a3 pointScale:(unint64_t)a4
+- (CGSize)_pixelSizeByClampingToMinSize:(CGSize)size pointScale:(unint64_t)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(CRDisplayScaleInfo *)self _minHeightDisplaySize];
-  v10 = (((v8 * a4) + 1) & 0xFFFFFFFE);
-  v11 = (((v9 * a4) + 1) & 0xFFFFFFFE);
+  v10 = (((v8 * scale) + 1) & 0xFFFFFFFE);
+  v11 = (((v9 * scale) + 1) & 0xFFFFFFFE);
   [(CRDisplayScaleInfo *)self _minWidthDisplaySize];
-  v14 = (((v12 * a4) + 1) & 0xFFFFFFFE);
-  v15 = (((v13 * a4) + 1) & 0xFFFFFFFE);
+  v14 = (((v12 * scale) + 1) & 0xFFFFFFFE);
+  v15 = (((v13 * scale) + 1) & 0xFFFFFFFE);
   if (v10 >= v14 && v11 >= v15)
   {
     v14 = v10;
@@ -924,8 +924,8 @@ LABEL_12:
   [(CRDisplayScaleInfo *)self squaredPixelSize];
   v6 = v5;
   v8 = v7;
-  v9 = [(CRDisplayScaleInfo *)self viewAreas];
-  CRMinViewAreaPixelSize(v9, v6, v8);
+  viewAreas = [(CRDisplayScaleInfo *)self viewAreas];
+  CRMinViewAreaPixelSize(viewAreas, v6, v8);
   v11 = v4 / v10;
 
   v12 = v11 * 240.0;
@@ -946,8 +946,8 @@ LABEL_12:
   [(CRDisplayScaleInfo *)self squaredPixelSize];
   v6 = v5;
   v8 = v7;
-  v9 = [(CRDisplayScaleInfo *)self viewAreas];
-  v10 = v4 / CRMinViewAreaPixelSize(v9, v6, v8);
+  viewAreas = [(CRDisplayScaleInfo *)self viewAreas];
+  v10 = v4 / CRMinViewAreaPixelSize(viewAreas, v6, v8);
 
   v11 = v10 * 355.0;
   [(CRDisplayScaleInfo *)self squaredPixelSize];
@@ -962,10 +962,10 @@ LABEL_12:
 
 - (CGSize)_heuristicPixelSize
 {
-  v3 = [(CRDisplayScaleInfo *)self _scaleMode];
-  if (v3 > 1)
+  _scaleMode = [(CRDisplayScaleInfo *)self _scaleMode];
+  if (_scaleMode > 1)
   {
-    if (v3 == 2)
+    if (_scaleMode == 2)
     {
       [(CRDisplayScaleInfo *)self physicalSize];
       v8 = v10;
@@ -973,7 +973,7 @@ LABEL_12:
       goto LABEL_10;
     }
 
-    if (v3 == 3)
+    if (_scaleMode == 3)
     {
       [(CRDisplayScaleInfo *)self physicalSize];
       v8 = v9;
@@ -982,9 +982,9 @@ LABEL_12:
     }
   }
 
-  else if (v3)
+  else if (_scaleMode)
   {
-    if (v3 == 1)
+    if (_scaleMode == 1)
     {
       [(CRDisplayScaleInfo *)self physicalSize];
       v8 = v7;

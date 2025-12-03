@@ -1,24 +1,24 @@
 @interface AFUIPanel
 - (AFUIModalUIDelegate)delegate;
 - (id)_presentingWindow;
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3 traitCollection:(id)a4;
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller traitCollection:(id)collection;
 - (void)_applyPanelState;
 - (void)_hide;
-- (void)_monitorDocumentProcessVisibility:(int)a3;
-- (void)authenticationDidEndForSessionUUID:(id)a3 completion:(id)a4;
-- (void)authenticationWillBeginForSessionUUID:(id)a3 completion:(id)a4;
-- (void)contactsUIDidEndForSessionUUID:(id)a3 completion:(id)a4;
-- (void)contactsUIWillBeginForSessionUUID:(id)a3 completion:(id)a4;
-- (void)creditCardsUIDidEndForSessionUUID:(id)a3 completion:(id)a4;
-- (void)creditCardsUIWillBeginForSessionUUID:(id)a3 completion:(id)a4;
+- (void)_monitorDocumentProcessVisibility:(int)visibility;
+- (void)authenticationDidEndForSessionUUID:(id)d completion:(id)completion;
+- (void)authenticationWillBeginForSessionUUID:(id)d completion:(id)completion;
+- (void)contactsUIDidEndForSessionUUID:(id)d completion:(id)completion;
+- (void)contactsUIWillBeginForSessionUUID:(id)d completion:(id)completion;
+- (void)creditCardsUIDidEndForSessionUUID:(id)d completion:(id)completion;
+- (void)creditCardsUIWillBeginForSessionUUID:(id)d completion:(id)completion;
 - (void)dealloc;
 - (void)dismissMenu;
-- (void)displayForDocumentTraits:(id)a3 documentState:(id)a4 textOperationsHandler:(id)a5;
-- (void)documentStateChanged:(id)a3;
+- (void)displayForDocumentTraits:(id)traits documentState:(id)state textOperationsHandler:(id)handler;
+- (void)documentStateChanged:(id)changed;
 - (void)hide;
-- (void)passwordsUIDidEndForSessionUUID:(id)a3 completion:(id)a4;
-- (void)passwordsUIWillBeginForSessionUUID:(id)a3 completion:(id)a4;
-- (void)presentationControllerDidDismiss:(id)a3;
+- (void)passwordsUIDidEndForSessionUUID:(id)d completion:(id)completion;
+- (void)passwordsUIWillBeginForSessionUUID:(id)d completion:(id)completion;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 - (void)transientHide;
 - (void)transientUnhide;
 @end
@@ -27,8 +27,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DE360] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE360] object:0];
 
   [(RBSProcessMonitor *)self->_processMonitor invalidate];
   v4.receiver = self;
@@ -36,7 +36,7 @@
   [(AFUIPanel *)&v4 dealloc];
 }
 
-- (void)_monitorDocumentProcessVisibility:(int)a3
+- (void)_monitorDocumentProcessVisibility:(int)visibility
 {
   objc_initWeak(&location, self);
   v5 = MEMORY[0x1E69C75F8];
@@ -44,7 +44,7 @@
   v8[1] = 3221225472;
   v8[2] = __47__AFUIPanel__monitorDocumentProcessVisibility___block_invoke;
   v8[3] = &unk_1E8424D98;
-  v10 = a3;
+  visibilityCopy = visibility;
   objc_copyWeak(&v9, &location);
   v6 = [v5 monitorWithConfiguration:v8];
   processMonitor = self->_processMonitor;
@@ -154,30 +154,30 @@ void __29__AFUIPanel__applyPanelState__block_invoke(uint64_t a1)
   }
 }
 
-- (void)displayForDocumentTraits:(id)a3 documentState:(id)a4 textOperationsHandler:(id)a5
+- (void)displayForDocumentTraits:(id)traits documentState:(id)state textOperationsHandler:(id)handler
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  traitsCopy = traits;
+  stateCopy = state;
+  handlerCopy = handler;
   v11 = AFUIPanelOSLogFacility();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [v8 appId];
-    v14 = [v12 stringWithFormat:@"%s appId:%@", "-[AFUIPanel displayForDocumentTraits:documentState:textOperationsHandler:]", v13];
+    appId = [traitsCopy appId];
+    v14 = [v12 stringWithFormat:@"%s appId:%@", "-[AFUIPanel displayForDocumentTraits:documentState:textOperationsHandler:]", appId];
     *buf = 138412290;
     v31 = v14;
     _os_log_impl(&dword_1D2F0D000, v11, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
   }
 
-  v15 = [[AFUIPanelState alloc] initDisplayed:1 documentTraits:v8 documentState:v9 textOperationsHandler:v10];
+  v15 = [[AFUIPanelState alloc] initDisplayed:1 documentTraits:traitsCopy documentState:stateCopy textOperationsHandler:handlerCopy];
   [(AFUIPanel *)self setPanelState:v15];
 
   if ([MEMORY[0x1E69DCBB8] usesInputSystemUIForAutoFillOnly])
   {
-    v16 = [(AFUIPanel *)self clientSession];
-    v17 = v16 == 0;
+    clientSession = [(AFUIPanel *)self clientSession];
+    v17 = clientSession == 0;
 
     if (v17)
     {
@@ -185,39 +185,39 @@ void __29__AFUIPanel__applyPanelState__block_invoke(uint64_t a1)
       [(AFUIPanel *)self setClientSession:v18];
     }
 
-    v19 = [(AFUIPanel *)self clientSession];
+    clientSession2 = [(AFUIPanel *)self clientSession];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __74__AFUIPanel_displayForDocumentTraits_documentState_textOperationsHandler___block_invoke;
     v28[3] = &unk_1E8424DE8;
-    v29 = v10;
-    [v19 displayForDocumentTraits:v8 documentState:v9 textOperationsHandler:v28];
+    v29 = handlerCopy;
+    [clientSession2 displayForDocumentTraits:traitsCopy documentState:stateCopy textOperationsHandler:v28];
 
-    v20 = v29;
+    _presentingWindow = v29;
   }
 
   else
   {
-    v20 = [(AFUIPanel *)self _presentingWindow];
-    if (v20)
+    _presentingWindow = [(AFUIPanel *)self _presentingWindow];
+    if (_presentingWindow)
     {
       [(AFUIPanel *)self _hide];
-      if ([v8 _isExplicitAutoFillInvocation])
+      if ([traitsCopy _isExplicitAutoFillInvocation])
       {
-        v21 = [[AFUIExplicitAutoFillController alloc] initWithDocumentTraits:v8 documentState:v9 textOperationsHandler:v10];
+        v21 = [[AFUIExplicitAutoFillController alloc] initWithDocumentTraits:traitsCopy documentState:stateCopy textOperationsHandler:handlerCopy];
         explicitAutoFillController = self->_explicitAutoFillController;
         self->_explicitAutoFillController = v21;
 
         [(AFUIExplicitAutoFillController *)self->_explicitAutoFillController setDelegate:self];
         v23 = self->_explicitAutoFillController;
-        v24 = [v20 rootViewController];
-        [(AFUIExplicitAutoFillController *)v23 presentFromViewController:v24];
+        rootViewController = [_presentingWindow rootViewController];
+        [(AFUIExplicitAutoFillController *)v23 presentFromViewController:rootViewController];
       }
 
       else
       {
         objc_initWeak(buf, self);
-        v25 = [AFUIAutoFillPopoverController presentAsPopoverFromWindow:v20 documentTraits:v8 documentState:v9 modalUIDelegate:self textOperationsHandler:v10];
+        v25 = [AFUIAutoFillPopoverController presentAsPopoverFromWindow:_presentingWindow documentTraits:traitsCopy documentState:stateCopy modalUIDelegate:self textOperationsHandler:handlerCopy];
         WeakRetained = objc_loadWeakRetained(buf);
         [WeakRetained setPopoverController:v25];
 
@@ -243,24 +243,24 @@ void __74__AFUIPanel_displayForDocumentTraits_documentState_textOperationsHandle
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-- (void)documentStateChanged:(id)a3
+- (void)documentStateChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(AFUIPanel *)self panelState];
+  changedCopy = changed;
+  panelState = [(AFUIPanel *)self panelState];
   v6 = AFUIPanelOSLogFacility();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [AFUIPanel documentStateChanged:v5];
+    [AFUIPanel documentStateChanged:panelState];
   }
 
-  if (v5)
+  if (panelState)
   {
     v7 = [AFUIPanelState alloc];
-    v8 = [v5 isDisplayed];
-    v9 = [v5 documentTraits];
-    v10 = [v5 documentState];
-    v11 = [v5 textOperationsHandler];
-    v12 = [(AFUIPanelState *)v7 initDisplayed:v8 documentTraits:v9 documentState:v10 textOperationsHandler:v11];
+    isDisplayed = [panelState isDisplayed];
+    documentTraits = [panelState documentTraits];
+    documentState = [panelState documentState];
+    textOperationsHandler = [panelState textOperationsHandler];
+    v12 = [(AFUIPanelState *)v7 initDisplayed:isDisplayed documentTraits:documentTraits documentState:documentState textOperationsHandler:textOperationsHandler];
     [(AFUIPanel *)self setPanelState:v12];
   }
 
@@ -274,7 +274,7 @@ void __74__AFUIPanel_displayForDocumentTraits_documentState_textOperationsHandle
     [(AFUIPanel *)self popoverController];
   }
   v13 = ;
-  [v13 documentStateChanged:v4];
+  [v13 documentStateChanged:changedCopy];
 }
 
 - (void)transientHide
@@ -284,10 +284,10 @@ void __74__AFUIPanel_displayForDocumentTraits_documentState_textOperationsHandle
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = [(AFUIPanel *)self panelState];
-    v6 = [v5 documentTraits];
-    v7 = [v6 appId];
-    v8 = [v4 stringWithFormat:@"%s appId:%@", "-[AFUIPanel transientHide]", v7];
+    panelState = [(AFUIPanel *)self panelState];
+    documentTraits = [panelState documentTraits];
+    appId = [documentTraits appId];
+    v8 = [v4 stringWithFormat:@"%s appId:%@", "-[AFUIPanel transientHide]", appId];
     *buf = 138412290;
     v15 = v8;
     _os_log_impl(&dword_1D2F0D000, v3, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
@@ -298,11 +298,11 @@ void __74__AFUIPanel_displayForDocumentTraits_documentState_textOperationsHandle
     goto LABEL_7;
   }
 
-  v9 = [(AFUIPanel *)self _presentingWindow];
-  v10 = [v9 rootViewController];
-  v11 = [v10 presentedViewController];
+  _presentingWindow = [(AFUIPanel *)self _presentingWindow];
+  rootViewController = [_presentingWindow rootViewController];
+  presentedViewController = [rootViewController presentedViewController];
 
-  if (![AFUIPasswordsController isPasswordPickerViewControllerAuthenticating:v11])
+  if (![AFUIPasswordsController isPasswordPickerViewControllerAuthenticating:presentedViewController])
   {
     v12 = +[AFUIExplicitAutoFillController isCreditCardViewControllerAuthenticating];
 
@@ -327,10 +327,10 @@ LABEL_8:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = [(AFUIPanel *)self panelState];
-    v6 = [v5 documentTraits];
-    v7 = [v6 appId];
-    v8 = [v4 stringWithFormat:@"%s appId:%@", "-[AFUIPanel transientUnhide]", v7];
+    panelState = [(AFUIPanel *)self panelState];
+    documentTraits = [panelState documentTraits];
+    appId = [documentTraits appId];
+    v8 = [v4 stringWithFormat:@"%s appId:%@", "-[AFUIPanel transientUnhide]", appId];
     *buf = 138412290;
     v11 = v8;
     _os_log_impl(&dword_1D2F0D000, v3, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
@@ -342,17 +342,17 @@ LABEL_8:
 - (void)hide
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [[AFUIPanelState alloc] initNotDisplayed];
-  [(AFUIPanel *)self setPanelState:v3];
+  initNotDisplayed = [[AFUIPanelState alloc] initNotDisplayed];
+  [(AFUIPanel *)self setPanelState:initNotDisplayed];
 
   v4 = AFUIPanelOSLogFacility();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = MEMORY[0x1E696AEC0];
-    v6 = [(AFUIPanel *)self panelState];
-    v7 = [v6 documentTraits];
-    v8 = [v7 appId];
-    v9 = [v5 stringWithFormat:@"%s appId:%@", "-[AFUIPanel hide]", v8];
+    panelState = [(AFUIPanel *)self panelState];
+    documentTraits = [panelState documentTraits];
+    appId = [documentTraits appId];
+    v9 = [v5 stringWithFormat:@"%s appId:%@", "-[AFUIPanel hide]", appId];
     *buf = 138412290;
     v13 = v9;
     _os_log_impl(&dword_1D2F0D000, v4, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
@@ -360,8 +360,8 @@ LABEL_8:
 
   if ([MEMORY[0x1E69DCBB8] usesInputSystemUIForAutoFillOnly])
   {
-    v10 = [(AFUIPanel *)self clientSession];
-    [v10 hide];
+    clientSession = [(AFUIPanel *)self clientSession];
+    [clientSession hide];
 
     [(AFUIPanel *)self setClientSession:0];
   }
@@ -374,22 +374,22 @@ LABEL_8:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = [(AFUIPanel *)self popoverController];
-  v6 = [v5 presentationController];
+  dismissCopy = dismiss;
+  popoverController = [(AFUIPanel *)self popoverController];
+  presentationController = [popoverController presentationController];
 
-  if (v6 == v4)
+  if (presentationController == dismissCopy)
   {
 
     [(AFUIPanel *)self setPopoverController:0];
   }
 }
 
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3 traitCollection:(id)a4
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller traitCollection:(id)collection
 {
-  if ([a4 userInterfaceIdiom] == 1)
+  if ([collection userInterfaceIdiom] == 1)
   {
     return -1;
   }
@@ -408,14 +408,14 @@ LABEL_8:
   v10 = __Block_byref_object_copy__3;
   v11 = __Block_byref_object_dispose__3;
   v12 = 0;
-  v2 = [MEMORY[0x1E69DC668] sharedApplication];
-  v3 = [v2 connectedScenes];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  connectedScenes = [mEMORY[0x1E69DC668] connectedScenes];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __30__AFUIPanel__presentingWindow__block_invoke;
   v6[3] = &unk_1E8424E10;
   v6[4] = &v7;
-  [v3 enumerateObjectsUsingBlock:v6];
+  [connectedScenes enumerateObjectsUsingBlock:v6];
 
   v4 = [MEMORY[0x1E69DD0A8] sharedTextEffectsWindowForWindowScene:v8[5]];
   _Block_object_dispose(&v7, 8);
@@ -438,9 +438,9 @@ void __30__AFUIPanel__presentingWindow__block_invoke(uint64_t a1, void *a2, _BYT
 {
   if (self->_explicitAutoFillController)
   {
-    v3 = [(AFUIPanel *)self _presentingWindow];
-    v4 = [v3 rootViewController];
-    [v4 dismissViewControllerAnimated:1 completion:0];
+    _presentingWindow = [(AFUIPanel *)self _presentingWindow];
+    rootViewController = [_presentingWindow rootViewController];
+    [rootViewController dismissViewControllerAnimated:1 completion:0];
 
     explicitAutoFillController = self->_explicitAutoFillController;
     self->_explicitAutoFillController = 0;
@@ -448,18 +448,18 @@ void __30__AFUIPanel__presentingWindow__block_invoke(uint64_t a1, void *a2, _BYT
 
   else
   {
-    v6 = [(AFUIPanel *)self popoverController];
-    [v6 dismissMenu];
+    popoverController = [(AFUIPanel *)self popoverController];
+    [popoverController dismissMenu];
 
-    v7 = [(AFUIPanel *)self popoverController];
-    [v7 dismissViewControllerAnimated:1 completion:0];
+    popoverController2 = [(AFUIPanel *)self popoverController];
+    [popoverController2 dismissViewControllerAnimated:1 completion:0];
 
-    v8 = [(AFUIPanel *)self popoverController];
-    v9 = [v8 view];
-    [v9 removeFromSuperview];
+    popoverController3 = [(AFUIPanel *)self popoverController];
+    view = [popoverController3 view];
+    [view removeFromSuperview];
 
-    v10 = [(AFUIPanel *)self popoverController];
-    [v10 removeFromParentViewController];
+    popoverController4 = [(AFUIPanel *)self popoverController];
+    [popoverController4 removeFromParentViewController];
 
     [(AFUIPanel *)self setPopoverController:0];
   }
@@ -467,75 +467,75 @@ void __30__AFUIPanel__presentingWindow__block_invoke(uint64_t a1, void *a2, _BYT
 
 - (void)dismissMenu
 {
-  v2 = [(AFUIPanel *)self popoverController];
-  [v2 dismissMenu];
+  popoverController = [(AFUIPanel *)self popoverController];
+  [popoverController dismissMenu];
 }
 
-- (void)authenticationWillBeginForSessionUUID:(id)a3 completion:(id)a4
+- (void)authenticationWillBeginForSessionUUID:(id)d completion:(id)completion
 {
-  v5 = a4;
-  v7 = [(AFUIPanel *)self delegate];
-  v6 = [(AFUIPanel *)self sessionUUID];
-  [v7 authenticationWillBeginForSessionUUID:v6 completion:v5];
+  completionCopy = completion;
+  delegate = [(AFUIPanel *)self delegate];
+  sessionUUID = [(AFUIPanel *)self sessionUUID];
+  [delegate authenticationWillBeginForSessionUUID:sessionUUID completion:completionCopy];
 }
 
-- (void)authenticationDidEndForSessionUUID:(id)a3 completion:(id)a4
+- (void)authenticationDidEndForSessionUUID:(id)d completion:(id)completion
 {
-  v5 = a4;
-  v7 = [(AFUIPanel *)self delegate];
-  v6 = [(AFUIPanel *)self sessionUUID];
-  [v7 authenticationDidEndForSessionUUID:v6 completion:v5];
+  completionCopy = completion;
+  delegate = [(AFUIPanel *)self delegate];
+  sessionUUID = [(AFUIPanel *)self sessionUUID];
+  [delegate authenticationDidEndForSessionUUID:sessionUUID completion:completionCopy];
 }
 
-- (void)contactsUIWillBeginForSessionUUID:(id)a3 completion:(id)a4
+- (void)contactsUIWillBeginForSessionUUID:(id)d completion:(id)completion
 {
-  v5 = a4;
-  v7 = [(AFUIPanel *)self delegate];
-  v6 = [(AFUIPanel *)self sessionUUID];
-  [v7 contactsUIWillBeginForSessionUUID:v6 completion:v5];
+  completionCopy = completion;
+  delegate = [(AFUIPanel *)self delegate];
+  sessionUUID = [(AFUIPanel *)self sessionUUID];
+  [delegate contactsUIWillBeginForSessionUUID:sessionUUID completion:completionCopy];
 }
 
-- (void)contactsUIDidEndForSessionUUID:(id)a3 completion:(id)a4
+- (void)contactsUIDidEndForSessionUUID:(id)d completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   [(AFUIPanel *)self hide];
-  v7 = [(AFUIPanel *)self delegate];
-  v6 = [(AFUIPanel *)self sessionUUID];
-  [v7 contactsUIDidEndForSessionUUID:v6 completion:v5];
+  delegate = [(AFUIPanel *)self delegate];
+  sessionUUID = [(AFUIPanel *)self sessionUUID];
+  [delegate contactsUIDidEndForSessionUUID:sessionUUID completion:completionCopy];
 }
 
-- (void)passwordsUIWillBeginForSessionUUID:(id)a3 completion:(id)a4
+- (void)passwordsUIWillBeginForSessionUUID:(id)d completion:(id)completion
 {
-  v5 = a4;
-  v7 = [(AFUIPanel *)self delegate];
-  v6 = [(AFUIPanel *)self sessionUUID];
-  [v7 passwordsUIWillBeginForSessionUUID:v6 completion:v5];
+  completionCopy = completion;
+  delegate = [(AFUIPanel *)self delegate];
+  sessionUUID = [(AFUIPanel *)self sessionUUID];
+  [delegate passwordsUIWillBeginForSessionUUID:sessionUUID completion:completionCopy];
 }
 
-- (void)passwordsUIDidEndForSessionUUID:(id)a3 completion:(id)a4
+- (void)passwordsUIDidEndForSessionUUID:(id)d completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   [(AFUIPanel *)self hide];
-  v7 = [(AFUIPanel *)self delegate];
-  v6 = [(AFUIPanel *)self sessionUUID];
-  [v7 passwordsUIDidEndForSessionUUID:v6 completion:v5];
+  delegate = [(AFUIPanel *)self delegate];
+  sessionUUID = [(AFUIPanel *)self sessionUUID];
+  [delegate passwordsUIDidEndForSessionUUID:sessionUUID completion:completionCopy];
 }
 
-- (void)creditCardsUIWillBeginForSessionUUID:(id)a3 completion:(id)a4
+- (void)creditCardsUIWillBeginForSessionUUID:(id)d completion:(id)completion
 {
-  v5 = a4;
-  v7 = [(AFUIPanel *)self delegate];
-  v6 = [(AFUIPanel *)self sessionUUID];
-  [v7 creditCardsUIWillBeginForSessionUUID:v6 completion:v5];
+  completionCopy = completion;
+  delegate = [(AFUIPanel *)self delegate];
+  sessionUUID = [(AFUIPanel *)self sessionUUID];
+  [delegate creditCardsUIWillBeginForSessionUUID:sessionUUID completion:completionCopy];
 }
 
-- (void)creditCardsUIDidEndForSessionUUID:(id)a3 completion:(id)a4
+- (void)creditCardsUIDidEndForSessionUUID:(id)d completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   [(AFUIPanel *)self hide];
-  v7 = [(AFUIPanel *)self delegate];
-  v6 = [(AFUIPanel *)self sessionUUID];
-  [v7 creditCardsUIDidEndForSessionUUID:v6 completion:v5];
+  delegate = [(AFUIPanel *)self delegate];
+  sessionUUID = [(AFUIPanel *)self sessionUUID];
+  [delegate creditCardsUIDidEndForSessionUUID:sessionUUID completion:completionCopy];
 }
 
 - (AFUIModalUIDelegate)delegate

@@ -1,38 +1,38 @@
 @interface HSPCNameIdentifyServiceRow
-- (HSPCNameIdentifyServiceRow)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HSPCNameIdentifyServiceRow)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)identify;
 - (void)updateConstraints;
-- (void)updateUIWithService:(id)a3 suggestedName:(id)a4;
+- (void)updateUIWithService:(id)service suggestedName:(id)name;
 @end
 
 @implementation HSPCNameIdentifyServiceRow
 
-- (HSPCNameIdentifyServiceRow)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HSPCNameIdentifyServiceRow)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v16.receiver = self;
   v16.super_class = HSPCNameIdentifyServiceRow;
-  v4 = [(HSPCNameToggleServiceRow *)&v16 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HSPCNameToggleServiceRow *)&v16 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(HSPCRow *)v4 textField];
-    [v6 setClearButtonMode:1];
+    textField = [(HSPCRow *)v4 textField];
+    [textField setClearButtonMode:1];
 
     v7 = [PRXButton buttonWithProximityType:0];
     v8 = HULocalizedString();
     [(UIButton *)v7 setTitle:v8 forState:0];
 
     [(UIButton *)v7 addTarget:v5 action:"identify" forControlEvents:64];
-    v9 = [(HSPCNameIdentifyServiceRow *)v5 contentView];
-    [v9 addSubview:v7];
+    contentView = [(HSPCNameIdentifyServiceRow *)v5 contentView];
+    [contentView addSubview:v7];
 
     identifyButton = v5->_identifyButton;
     v5->_identifyButton = v7;
     v11 = v7;
 
     v12 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
-    v13 = [(HSPCNameIdentifyServiceRow *)v5 contentView];
-    [v13 addSubview:v12];
+    contentView2 = [(HSPCNameIdentifyServiceRow *)v5 contentView];
+    [contentView2 addSubview:v12];
 
     [(UIActivityIndicatorView *)v12 setHidesWhenStopped:1];
     spinner = v5->_spinner;
@@ -46,130 +46,130 @@
 {
   if (![(HSPCRow *)self constraintsSet])
   {
-    v3 = [(HSPCRow *)self leftView];
-    [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+    leftView = [(HSPCRow *)self leftView];
+    [leftView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v88 = [(HSPCRow *)self leftView];
-    v80 = [v88 leadingAnchor];
-    v84 = [(HSPCNameIdentifyServiceRow *)self contentView];
-    v76 = [v84 leadingAnchor];
+    leftView2 = [(HSPCRow *)self leftView];
+    leadingAnchor = [leftView2 leadingAnchor];
+    contentView = [(HSPCNameIdentifyServiceRow *)self contentView];
+    leadingAnchor2 = [contentView leadingAnchor];
     +[HSPCRow horizontalLeadingMargin];
-    v72 = [v80 constraintEqualToAnchor:v76 constant:?];
+    v72 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
     v96[0] = v72;
-    v68 = [(HSPCRow *)self leftView];
-    v59 = [v68 centerYAnchor];
-    v62 = [(HSPCNameIdentifyServiceRow *)self contentView];
-    v4 = [v62 centerYAnchor];
-    v5 = [v59 constraintEqualToAnchor:v4];
+    leftView3 = [(HSPCRow *)self leftView];
+    centerYAnchor = [leftView3 centerYAnchor];
+    contentView2 = [(HSPCNameIdentifyServiceRow *)self contentView];
+    centerYAnchor2 = [contentView2 centerYAnchor];
+    v5 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v96[1] = v5;
-    v6 = [(HSPCRow *)self leftView];
-    v7 = [v6 heightAnchor];
+    leftView4 = [(HSPCRow *)self leftView];
+    heightAnchor = [leftView4 heightAnchor];
     +[HSPCRow leftImageSize];
-    v9 = [v7 constraintEqualToConstant:v8];
+    v9 = [heightAnchor constraintEqualToConstant:v8];
     v96[2] = v9;
-    v10 = [(HSPCRow *)self leftView];
-    v11 = [v10 widthAnchor];
+    leftView5 = [(HSPCRow *)self leftView];
+    widthAnchor = [leftView5 widthAnchor];
     +[HSPCRow leftImageSize];
-    v12 = [v11 constraintEqualToConstant:?];
+    v12 = [widthAnchor constraintEqualToConstant:?];
     v96[3] = v12;
     v13 = [NSArray arrayWithObjects:v96 count:4];
     [NSLayoutConstraint activateConstraints:v13];
 
-    v14 = [(HSPCNameIdentifyServiceRow *)self identifyButton];
-    [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
+    identifyButton = [(HSPCNameIdentifyServiceRow *)self identifyButton];
+    [identifyButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v15 = [(HSPCNameIdentifyServiceRow *)self identifyButton];
+    identifyButton2 = [(HSPCNameIdentifyServiceRow *)self identifyButton];
     LODWORD(v16) = 1148846080;
-    [v15 setContentHuggingPriority:0 forAxis:v16];
+    [identifyButton2 setContentHuggingPriority:0 forAxis:v16];
 
-    v89 = [(HSPCNameIdentifyServiceRow *)self identifyButton];
-    v81 = [v89 topAnchor];
-    v85 = [(HSPCNameIdentifyServiceRow *)self contentView];
-    v77 = [v85 topAnchor];
-    v73 = [v81 constraintEqualToAnchor:v77];
+    identifyButton3 = [(HSPCNameIdentifyServiceRow *)self identifyButton];
+    topAnchor = [identifyButton3 topAnchor];
+    contentView3 = [(HSPCNameIdentifyServiceRow *)self contentView];
+    topAnchor2 = [contentView3 topAnchor];
+    v73 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v95[0] = v73;
-    v69 = [(HSPCNameIdentifyServiceRow *)self identifyButton];
-    v63 = [v69 trailingAnchor];
-    v17 = [(HSPCNameIdentifyServiceRow *)self contentView];
-    v18 = [v17 trailingAnchor];
+    identifyButton4 = [(HSPCNameIdentifyServiceRow *)self identifyButton];
+    trailingAnchor = [identifyButton4 trailingAnchor];
+    contentView4 = [(HSPCNameIdentifyServiceRow *)self contentView];
+    trailingAnchor2 = [contentView4 trailingAnchor];
     +[HSPCRow horizontalSpacing];
-    v20 = [v63 constraintEqualToAnchor:v18 constant:-v19];
+    v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v19];
     v95[1] = v20;
-    v21 = [(HSPCNameIdentifyServiceRow *)self identifyButton];
-    v22 = [v21 bottomAnchor];
-    v23 = [(HSPCNameIdentifyServiceRow *)self contentView];
-    v24 = [v23 bottomAnchor];
-    v25 = [v22 constraintEqualToAnchor:v24];
+    identifyButton5 = [(HSPCNameIdentifyServiceRow *)self identifyButton];
+    bottomAnchor = [identifyButton5 bottomAnchor];
+    contentView5 = [(HSPCNameIdentifyServiceRow *)self contentView];
+    bottomAnchor2 = [contentView5 bottomAnchor];
+    v25 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v95[2] = v25;
     v26 = [NSArray arrayWithObjects:v95 count:3];
     [NSLayoutConstraint activateConstraints:v26];
 
-    v27 = [(HSPCNameIdentifyServiceRow *)self spinner];
-    [v27 setTranslatesAutoresizingMaskIntoConstraints:0];
+    spinner = [(HSPCNameIdentifyServiceRow *)self spinner];
+    [spinner setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v28 = [(HSPCNameIdentifyServiceRow *)self spinner];
+    spinner2 = [(HSPCNameIdentifyServiceRow *)self spinner];
     LODWORD(v29) = 1148846080;
-    [v28 setContentHuggingPriority:0 forAxis:v29];
+    [spinner2 setContentHuggingPriority:0 forAxis:v29];
 
-    v90 = [(HSPCNameIdentifyServiceRow *)self spinner];
-    v82 = [v90 topAnchor];
-    v86 = [(HSPCNameIdentifyServiceRow *)self contentView];
-    v78 = [v86 topAnchor];
-    v74 = [v82 constraintEqualToAnchor:v78];
+    spinner3 = [(HSPCNameIdentifyServiceRow *)self spinner];
+    topAnchor3 = [spinner3 topAnchor];
+    contentView6 = [(HSPCNameIdentifyServiceRow *)self contentView];
+    topAnchor4 = [contentView6 topAnchor];
+    v74 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v94[0] = v74;
-    v70 = [(HSPCNameIdentifyServiceRow *)self spinner];
-    v64 = [v70 bottomAnchor];
-    v66 = [(HSPCNameIdentifyServiceRow *)self contentView];
-    v60 = [v66 bottomAnchor];
-    v57 = [v64 constraintEqualToAnchor:v60];
+    spinner4 = [(HSPCNameIdentifyServiceRow *)self spinner];
+    bottomAnchor3 = [spinner4 bottomAnchor];
+    contentView7 = [(HSPCNameIdentifyServiceRow *)self contentView];
+    bottomAnchor4 = [contentView7 bottomAnchor];
+    v57 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v94[1] = v57;
-    v55 = [(HSPCNameIdentifyServiceRow *)self spinner];
-    v53 = [v55 centerXAnchor];
-    v30 = [(HSPCNameIdentifyServiceRow *)self identifyButton];
-    v31 = [v30 centerXAnchor];
-    v32 = [v53 constraintEqualToAnchor:v31];
+    spinner5 = [(HSPCNameIdentifyServiceRow *)self spinner];
+    centerXAnchor = [spinner5 centerXAnchor];
+    identifyButton6 = [(HSPCNameIdentifyServiceRow *)self identifyButton];
+    centerXAnchor2 = [identifyButton6 centerXAnchor];
+    v32 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v94[2] = v32;
-    v33 = [(HSPCNameIdentifyServiceRow *)self spinner];
-    v34 = [v33 centerYAnchor];
-    v35 = [(HSPCNameIdentifyServiceRow *)self identifyButton];
-    v36 = [v35 centerYAnchor];
-    v37 = [v34 constraintEqualToAnchor:v36];
+    spinner6 = [(HSPCNameIdentifyServiceRow *)self spinner];
+    centerYAnchor3 = [spinner6 centerYAnchor];
+    identifyButton7 = [(HSPCNameIdentifyServiceRow *)self identifyButton];
+    centerYAnchor4 = [identifyButton7 centerYAnchor];
+    v37 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v94[3] = v37;
     v38 = [NSArray arrayWithObjects:v94 count:4];
     [NSLayoutConstraint activateConstraints:v38];
 
-    v39 = [(HSPCRow *)self textField];
-    [v39 setTranslatesAutoresizingMaskIntoConstraints:0];
+    textField = [(HSPCRow *)self textField];
+    [textField setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v91 = [(HSPCRow *)self textField];
-    v83 = [v91 leadingAnchor];
-    v87 = [(HSPCRow *)self leftView];
-    v79 = [v87 trailingAnchor];
+    textField2 = [(HSPCRow *)self textField];
+    leadingAnchor3 = [textField2 leadingAnchor];
+    leftView6 = [(HSPCRow *)self leftView];
+    trailingAnchor3 = [leftView6 trailingAnchor];
     +[HSPCRow horizontalSpacing];
-    v75 = [v83 constraintEqualToAnchor:v79 constant:?];
+    v75 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor3 constant:?];
     v93[0] = v75;
-    v71 = [(HSPCRow *)self textField];
-    v65 = [v71 topAnchor];
-    v67 = [(HSPCNameIdentifyServiceRow *)self contentView];
-    v61 = [v67 topAnchor];
-    v58 = [v65 constraintEqualToAnchor:v61];
+    textField3 = [(HSPCRow *)self textField];
+    topAnchor5 = [textField3 topAnchor];
+    contentView8 = [(HSPCNameIdentifyServiceRow *)self contentView];
+    topAnchor6 = [contentView8 topAnchor];
+    v58 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
     v93[1] = v58;
-    v56 = [(HSPCRow *)self textField];
-    v52 = [v56 trailingAnchor];
-    v54 = [(HSPCNameIdentifyServiceRow *)self identifyButton];
-    v51 = [v54 leadingAnchor];
+    textField4 = [(HSPCRow *)self textField];
+    trailingAnchor4 = [textField4 trailingAnchor];
+    identifyButton8 = [(HSPCNameIdentifyServiceRow *)self identifyButton];
+    leadingAnchor4 = [identifyButton8 leadingAnchor];
     +[HSPCRow horizontalTrailingMargin];
-    v50 = [v52 constraintEqualToAnchor:v51 constant:-v40];
+    v50 = [trailingAnchor4 constraintEqualToAnchor:leadingAnchor4 constant:-v40];
     v93[2] = v50;
-    v41 = [(HSPCRow *)self textField];
-    v42 = [v41 bottomAnchor];
-    v43 = [(HSPCNameIdentifyServiceRow *)self contentView];
-    v44 = [v43 bottomAnchor];
-    v45 = [v42 constraintEqualToAnchor:v44];
+    textField5 = [(HSPCRow *)self textField];
+    bottomAnchor5 = [textField5 bottomAnchor];
+    contentView9 = [(HSPCNameIdentifyServiceRow *)self contentView];
+    bottomAnchor6 = [contentView9 bottomAnchor];
+    v45 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
     v93[3] = v45;
-    v46 = [(HSPCRow *)self textField];
-    v47 = [v46 heightAnchor];
-    v48 = [v47 constraintEqualToConstant:44.0];
+    textField6 = [(HSPCRow *)self textField];
+    heightAnchor2 = [textField6 heightAnchor];
+    v48 = [heightAnchor2 constraintEqualToConstant:44.0];
     v93[4] = v48;
     v49 = [NSArray arrayWithObjects:v93 count:5];
     [NSLayoutConstraint activateConstraints:v49];
@@ -182,36 +182,36 @@
   [(HSPCNameServiceRow *)&v92 updateConstraints];
 }
 
-- (void)updateUIWithService:(id)a3 suggestedName:(id)a4
+- (void)updateUIWithService:(id)service suggestedName:(id)name
 {
   v6.receiver = self;
   v6.super_class = HSPCNameIdentifyServiceRow;
-  [(HSPCNameServiceRow *)&v6 updateUIWithService:a3 suggestedName:a4];
-  v5 = [(HSPCRow *)self textField];
-  [v5 setClearButtonMode:0];
+  [(HSPCNameServiceRow *)&v6 updateUIWithService:service suggestedName:name];
+  textField = [(HSPCRow *)self textField];
+  [textField setClearButtonMode:0];
 }
 
 - (void)identify
 {
-  v3 = [(HSPCNameIdentifyServiceRow *)self identifyButton];
-  [v3 setHighlighted:1];
+  identifyButton = [(HSPCNameIdentifyServiceRow *)self identifyButton];
+  [identifyButton setHighlighted:1];
 
-  v4 = [(HSPCNameIdentifyServiceRow *)self identifyButton];
-  [v4 setHidden:1];
+  identifyButton2 = [(HSPCNameIdentifyServiceRow *)self identifyButton];
+  [identifyButton2 setHidden:1];
 
-  v5 = [(HSPCNameIdentifyServiceRow *)self spinner];
-  [v5 startAnimating];
+  spinner = [(HSPCNameIdentifyServiceRow *)self spinner];
+  [spinner startAnimating];
 
-  v6 = [(HSPCNameServiceRow *)self service];
-  v7 = [v6 accessory];
+  service = [(HSPCNameServiceRow *)self service];
+  accessory = [service accessory];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100055D5C;
   v9[3] = &unk_1000C6D88;
   v9[4] = self;
-  v10 = v7;
-  v8 = v7;
+  v10 = accessory;
+  v8 = accessory;
   [v8 identifyWithCompletionHandler:v9];
 }
 

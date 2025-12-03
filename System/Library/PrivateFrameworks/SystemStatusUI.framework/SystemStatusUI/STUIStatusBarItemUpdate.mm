@@ -1,14 +1,14 @@
 @interface STUIStatusBarItemUpdate
-- (id)_descriptionBuilderWithMultilinePrefix:(id)a3 forDebug:(BOOL)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)_descriptionBuilderWithMultilinePrefix:(id)prefix forDebug:(BOOL)debug;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 @end
 
 @implementation STUIStatusBarItemUpdate
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(STUIStatusBarItemUpdate);
   [(STUIStatusBarItemUpdate *)v4 setEnablementChanged:self->_enablementChanged];
@@ -23,45 +23,45 @@
 
 - (id)succinctDescription
 {
-  v2 = [(STUIStatusBarItemUpdate *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STUIStatusBarItemUpdate *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STUIStatusBarItemUpdate *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STUIStatusBarItemUpdate *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STUIStatusBarItemUpdate *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STUIStatusBarItemUpdate *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(id)a3 forDebug:(BOOL)a4
+- (id)_descriptionBuilderWithMultilinePrefix:(id)prefix forDebug:(BOOL)debug
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(STUIStatusBarItemUpdate *)self succinctDescriptionBuilder];
-  [v7 setUseDebugDescription:v4];
-  [v7 setActiveMultilinePrefix:v6];
+  debugCopy = debug;
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(STUIStatusBarItemUpdate *)self succinctDescriptionBuilder];
+  [succinctDescriptionBuilder setUseDebugDescription:debugCopy];
+  [succinctDescriptionBuilder setActiveMultilinePrefix:prefixCopy];
 
-  v8 = [v7 activeMultilinePrefix];
+  activeMultilinePrefix = [succinctDescriptionBuilder activeMultilinePrefix];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __75__STUIStatusBarItemUpdate__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke;
   v12[3] = &unk_279D38150;
-  v9 = v7;
+  v9 = succinctDescriptionBuilder;
   v13 = v9;
-  v14 = self;
-  [v9 appendBodySectionWithName:0 multilinePrefix:v8 block:v12];
+  selfCopy = self;
+  [v9 appendBodySectionWithName:0 multilinePrefix:activeMultilinePrefix block:v12];
 
   v10 = v9;
   return v9;

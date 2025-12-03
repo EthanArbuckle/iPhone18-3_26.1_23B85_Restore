@@ -1,18 +1,18 @@
 @interface MTLCountersCommandQueue
-- (MTLCountersCommandQueue)initWithCommandQueue:(id)a3 device:(id)a4;
+- (MTLCountersCommandQueue)initWithCommandQueue:(id)queue device:(id)device;
 - (id)commandBuffer;
-- (id)commandBufferWithDescriptor:(id)a3;
+- (id)commandBufferWithDescriptor:(id)descriptor;
 - (id)commandBufferWithUnretainedReferences;
 @end
 
 @implementation MTLCountersCommandQueue
 
-- (MTLCountersCommandQueue)initWithCommandQueue:(id)a3 device:(id)a4
+- (MTLCountersCommandQueue)initWithCommandQueue:(id)queue device:(id)device
 {
   v36 = *MEMORY[0x277D85DE8];
   v34.receiver = self;
   v34.super_class = MTLCountersCommandQueue;
-  v5 = [(MTLToolsCommandQueue *)&v34 initWithBaseObject:a3 parent:?];
+  v5 = [(MTLToolsCommandQueue *)&v34 initWithBaseObject:queue parent:?];
   if (v5)
   {
     v6 = getenv("MTL_XML_DUMP_COUNTERS");
@@ -67,7 +67,7 @@
       }
 
       v18 = [objc_msgSend(v15 stringWithUTF8String:{v17), "componentsSeparatedByString:", @", "}];
-      v19 = [(MTLToolsCommandQueue *)v5 availableCounters];
+      availableCounters = [(MTLToolsCommandQueue *)v5 availableCounters];
       v20 = objc_opt_new();
       v29 = 0u;
       v30 = 0u;
@@ -88,7 +88,7 @@
             }
 
             v25 = *(*(&v29 + 1) + 8 * i);
-            if ([v19 containsObject:v25])
+            if ([availableCounters containsObject:v25])
             {
               [v20 addObject:v25];
             }
@@ -176,13 +176,13 @@ uint64_t __55__MTLCountersCommandQueue_initWithCommandQueue_device___block_invok
   }
 }
 
-- (id)commandBufferWithDescriptor:(id)a3
+- (id)commandBufferWithDescriptor:(id)descriptor
 {
   v5 = objc_autoreleasePoolPush();
   v6 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (v6)
   {
-    v7 = [[MTLCountersCommandBuffer alloc] initWithCommandBuffer:v6 commandQueue:self descriptor:a3];
+    v7 = [[MTLCountersCommandBuffer alloc] initWithCommandBuffer:v6 commandQueue:self descriptor:descriptor];
     objc_autoreleasePoolPop(v5);
 
     return v7;

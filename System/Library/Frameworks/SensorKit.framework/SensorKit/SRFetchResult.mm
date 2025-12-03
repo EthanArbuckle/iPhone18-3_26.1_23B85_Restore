@@ -1,9 +1,9 @@
 @interface SRFetchResult
 + (void)initialize;
 - (SRFetchResult)init;
-- (SRFetchResult)initWithBytes:(void *)a3 length:(unint64_t)a4 timestamp:(double)a5 metadata:(id)a6 configuration:(id)a7 cursor:(id)a8 sampleClass:(Class)a9;
-- (SRFetchResult)initWithData:(id)a3 timestamp:(double)a4 metadata:(id)a5 configuration:(id)a6 cursor:(id)a7 sampleClass:(Class)a8;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SRFetchResult)initWithBytes:(void *)bytes length:(unint64_t)length timestamp:(double)timestamp metadata:(id)metadata configuration:(id)configuration cursor:(id)cursor sampleClass:(Class)class;
+- (SRFetchResult)initWithData:(id)data timestamp:(double)timestamp metadata:(id)metadata configuration:(id)configuration cursor:(id)cursor sampleClass:(Class)class;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)sample;
 - (void)dealloc;
 @end
@@ -12,7 +12,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     SRLogFetchRequest = os_log_create("com.apple.SensorKit", "SRFetchRequest");
   }
@@ -25,7 +25,7 @@
   return 0;
 }
 
-- (SRFetchResult)initWithData:(id)a3 timestamp:(double)a4 metadata:(id)a5 configuration:(id)a6 cursor:(id)a7 sampleClass:(Class)a8
+- (SRFetchResult)initWithData:(id)data timestamp:(double)timestamp metadata:(id)metadata configuration:(id)configuration cursor:(id)cursor sampleClass:(Class)class
 {
   v17.receiver = self;
   v17.super_class = SRFetchResult;
@@ -33,26 +33,26 @@
   v15 = v14;
   if (v14)
   {
-    v14->_timestamp = a4;
-    v14->_sampleData = a3;
-    v15->_metadata = a5;
-    v15->_configuration = a6;
-    v15->_sampleClass = a8;
-    v15->__cursor = a7;
+    v14->_timestamp = timestamp;
+    v14->_sampleData = data;
+    v15->_metadata = metadata;
+    v15->_configuration = configuration;
+    v15->_sampleClass = class;
+    v15->__cursor = cursor;
   }
 
   return v15;
 }
 
-- (SRFetchResult)initWithBytes:(void *)a3 length:(unint64_t)a4 timestamp:(double)a5 metadata:(id)a6 configuration:(id)a7 cursor:(id)a8 sampleClass:(Class)a9
+- (SRFetchResult)initWithBytes:(void *)bytes length:(unint64_t)length timestamp:(double)timestamp metadata:(id)metadata configuration:(id)configuration cursor:(id)cursor sampleClass:(Class)class
 {
-  v15 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:a3 length:a4 freeWhenDone:0];
-  v16 = [(SRFetchResult *)self initWithData:v15 timestamp:a6 metadata:a7 configuration:a8 cursor:a9 sampleClass:a5];
+  v15 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:bytes length:length freeWhenDone:0];
+  v16 = [(SRFetchResult *)self initWithData:v15 timestamp:metadata metadata:configuration configuration:cursor cursor:class sampleClass:timestamp];
 
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [(NSData *)self->_sampleData copy];
   v5 = [[SRFetchResult alloc] initWithData:v4 timestamp:self->_metadata metadata:self->_configuration configuration:self->__cursor cursor:self->_sampleClass sampleClass:self->_timestamp];

@@ -1,28 +1,28 @@
 @interface ICSearchResultConfiguration
-- (BOOL)isEqual:(id)a3;
-- (ICSearchResultConfiguration)initWithSearchString:(id)a3 searchSuggestionType:(unint64_t)a4 isTopHit:(BOOL)a5 foundAttachmentObjectID:(id)a6 sortableSearchableItem:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (ICSearchResultConfiguration)initWithSearchString:(id)string searchSuggestionType:(unint64_t)type isTopHit:(BOOL)hit foundAttachmentObjectID:(id)d sortableSearchableItem:(id)item;
 - (unint64_t)hash;
 @end
 
 @implementation ICSearchResultConfiguration
 
-- (ICSearchResultConfiguration)initWithSearchString:(id)a3 searchSuggestionType:(unint64_t)a4 isTopHit:(BOOL)a5 foundAttachmentObjectID:(id)a6 sortableSearchableItem:(id)a7
+- (ICSearchResultConfiguration)initWithSearchString:(id)string searchSuggestionType:(unint64_t)type isTopHit:(BOOL)hit foundAttachmentObjectID:(id)d sortableSearchableItem:(id)item
 {
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
+  stringCopy = string;
+  dCopy = d;
+  itemCopy = item;
   v19.receiver = self;
   v19.super_class = ICSearchResultConfiguration;
   v16 = [(ICSearchResultConfiguration *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_searchString, a3);
-    v17->_searchStringLength = [v13 length];
-    v17->_searchSuggestionType = a4;
-    v17->_isTopHit = a5;
-    objc_storeStrong(&v17->_foundAttachmentObjectID, a6);
-    objc_storeStrong(&v17->_sortableSearchableItem, a7);
+    objc_storeStrong(&v16->_searchString, string);
+    v17->_searchStringLength = [stringCopy length];
+    v17->_searchSuggestionType = type;
+    v17->_isTopHit = hit;
+    objc_storeStrong(&v17->_foundAttachmentObjectID, d);
+    objc_storeStrong(&v17->_sortableSearchableItem, item);
   }
 
   return v17;
@@ -33,15 +33,15 @@
   result = self->_hash;
   if (!result)
   {
-    v4 = [(ICSearchResultConfiguration *)self searchString];
-    v5 = [v4 hash];
-    v6 = [(ICSearchResultConfiguration *)self searchSuggestionType];
+    searchString = [(ICSearchResultConfiguration *)self searchString];
+    v5 = [searchString hash];
+    searchSuggestionType = [(ICSearchResultConfiguration *)self searchSuggestionType];
     [(ICSearchResultConfiguration *)self isTopHit];
-    v7 = [(ICSearchResultConfiguration *)self foundAttachmentObjectID];
-    [v7 hash];
-    v8 = [(ICSearchResultConfiguration *)self sortableSearchableItem];
-    [v8 hash];
-    self->_hash = ICHashWithHashKeys(v5, v9, v10, v11, v12, v13, v14, v15, v6);
+    foundAttachmentObjectID = [(ICSearchResultConfiguration *)self foundAttachmentObjectID];
+    [foundAttachmentObjectID hash];
+    sortableSearchableItem = [(ICSearchResultConfiguration *)self sortableSearchableItem];
+    [sortableSearchableItem hash];
+    self->_hash = ICHashWithHashKeys(v5, v9, v10, v11, v12, v13, v14, v15, searchSuggestionType);
 
     return self->_hash;
   }
@@ -49,12 +49,12 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v24.receiver = self;
   v24.super_class = ICSearchResultConfiguration;
-  v4 = a3;
-  v5 = [(ICSearchResultConfiguration *)&v24 isEqual:v4];
+  equalCopy = equal;
+  v5 = [(ICSearchResultConfiguration *)&v24 isEqual:equalCopy];
   objc_opt_class();
   v6 = ICDynamicCast();
 
@@ -74,48 +74,48 @@
   }
 
   v8 = [(ICSearchResultConfiguration *)self searchString:v24.receiver];
-  v9 = [v6 searchString];
-  v10 = [v8 isEqualToString:v9];
+  searchString = [v6 searchString];
+  v10 = [v8 isEqualToString:searchString];
 
   if (!v10)
   {
     goto LABEL_8;
   }
 
-  v11 = [(ICSearchResultConfiguration *)self searchSuggestionType];
-  if (v11 != [v6 searchSuggestionType])
+  searchSuggestionType = [(ICSearchResultConfiguration *)self searchSuggestionType];
+  if (searchSuggestionType != [v6 searchSuggestionType])
   {
     goto LABEL_8;
   }
 
-  v12 = [(ICSearchResultConfiguration *)self isTopHit];
-  if (v12 != [v6 isTopHit])
+  isTopHit = [(ICSearchResultConfiguration *)self isTopHit];
+  if (isTopHit != [v6 isTopHit])
   {
     goto LABEL_8;
   }
 
-  v15 = [(ICSearchResultConfiguration *)self foundAttachmentObjectID];
-  v16 = [v6 foundAttachmentObjectID];
+  foundAttachmentObjectID = [(ICSearchResultConfiguration *)self foundAttachmentObjectID];
+  foundAttachmentObjectID2 = [v6 foundAttachmentObjectID];
   v17 = *MEMORY[0x1E695E738];
-  if (*MEMORY[0x1E695E738] == v15)
+  if (*MEMORY[0x1E695E738] == foundAttachmentObjectID)
   {
     v18 = 0;
   }
 
   else
   {
-    v18 = v15;
+    v18 = foundAttachmentObjectID;
   }
 
   v19 = v18;
-  if (v17 == v16)
+  if (v17 == foundAttachmentObjectID2)
   {
     v20 = 0;
   }
 
   else
   {
-    v20 = v16;
+    v20 = foundAttachmentObjectID2;
   }
 
   v21 = v20;
@@ -138,9 +138,9 @@
   if (v23)
   {
 LABEL_22:
-    v15 = [(ICSearchResultConfiguration *)self sortableSearchableItem];
-    v16 = [v6 sortableSearchableItem];
-    v13 = [v15 isEqual:v16];
+    foundAttachmentObjectID = [(ICSearchResultConfiguration *)self sortableSearchableItem];
+    foundAttachmentObjectID2 = [v6 sortableSearchableItem];
+    v13 = [foundAttachmentObjectID isEqual:foundAttachmentObjectID2];
 LABEL_24:
 
     goto LABEL_9;

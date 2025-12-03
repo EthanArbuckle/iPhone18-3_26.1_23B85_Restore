@@ -1,14 +1,14 @@
 @interface GKInviteSession
 - (BOOL)shouldBeCleared;
 - (GKInviteSession)init;
-- (GKInviteSession)initWithSessionToken:(id)a3;
-- (id)referencesForInvitee:(id)a3;
-- (void)addInvitee:(id)a3 reference:(id)a4;
-- (void)addResponse:(id)a3;
-- (void)performAsync:(id)a3;
+- (GKInviteSession)initWithSessionToken:(id)token;
+- (id)referencesForInvitee:(id)invitee;
+- (void)addInvitee:(id)invitee reference:(id)reference;
+- (void)addResponse:(id)response;
+- (void)performAsync:(id)async;
 - (void)removeAllInvitees;
 - (void)removeAllResponses;
-- (void)removeInvitee:(id)a3 reference:(id)a4;
+- (void)removeInvitee:(id)invitee reference:(id)reference;
 @end
 
 @implementation GKInviteSession
@@ -45,22 +45,22 @@
   return v2;
 }
 
-- (GKInviteSession)initWithSessionToken:(id)a3
+- (GKInviteSession)initWithSessionToken:(id)token
 {
-  v5 = a3;
+  tokenCopy = token;
   v6 = [(GKInviteSession *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sessionToken, a3);
+    objc_storeStrong(&v6->_sessionToken, token);
   }
 
   return v7;
 }
 
-- (void)performAsync:(id)a3
+- (void)performAsync:(id)async
 {
-  v4 = a3;
+  asyncCopy = async;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -73,38 +73,38 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "GKInviteSession: performAsync", v7, 2u);
   }
 
-  dispatch_async(self->_syncQueue, v4);
+  dispatch_async(self->_syncQueue, asyncCopy);
 }
 
-- (void)addInvitee:(id)a3 reference:(id)a4
+- (void)addInvitee:(id)invitee reference:(id)reference
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [v11 playerID];
-  if (v7)
+  inviteeCopy = invitee;
+  referenceCopy = reference;
+  playerID = [inviteeCopy playerID];
+  if (playerID)
   {
-    v8 = [(NSMutableDictionary *)self->_invitees objectForKey:v7];
+    v8 = [(NSMutableDictionary *)self->_invitees objectForKey:playerID];
     if (!v8)
     {
       v8 = [NSMutableSet setWithCapacity:0];
-      [(NSMutableDictionary *)self->_invitees setObject:v8 forKey:v7];
-      [(NSMutableArray *)self->_invitedPlayers addObject:v11];
+      [(NSMutableDictionary *)self->_invitees setObject:v8 forKey:playerID];
+      [(NSMutableArray *)self->_invitedPlayers addObject:inviteeCopy];
       v9 = +[GKDataRequestManager sharedManager];
-      v10 = [NSString stringWithFormat:@"inviteInvitee.%@", v7];
+      v10 = [NSString stringWithFormat:@"inviteInvitee.%@", playerID];
       [v9 beginTransaction:v10];
     }
 
-    if (v6)
+    if (referenceCopy)
     {
-      [v8 addObject:v6];
+      [v8 addObject:referenceCopy];
     }
   }
 }
 
-- (void)removeInvitee:(id)a3 reference:(id)a4
+- (void)removeInvitee:(id)invitee reference:(id)reference
 {
-  v6 = a3;
-  v7 = a4;
+  inviteeCopy = invitee;
+  referenceCopy = reference;
   if (!os_log_GKGeneral)
   {
     v8 = GKOSLoggers();
@@ -114,25 +114,25 @@
   if (os_log_type_enabled(os_log_GKTrace, OS_LOG_TYPE_INFO))
   {
     v10 = v9;
-    v11 = [v6 debugDescription];
+    v11 = [inviteeCopy debugDescription];
     *buf = 138412546;
     v36 = v11;
     v37 = 2112;
-    v38 = v7;
+    v38 = referenceCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "GKInviteSession: removeInvitee: %@ refrence: %@", buf, 0x16u);
   }
 
-  v12 = [v6 playerID];
-  if (v12)
+  playerID = [inviteeCopy playerID];
+  if (playerID)
   {
-    v13 = [(NSMutableDictionary *)self->_invitees objectForKey:v12];
+    v13 = [(NSMutableDictionary *)self->_invitees objectForKey:playerID];
     v14 = v13;
     if (v13)
     {
-      if (!v7 || ([v13 removeObject:v7], !objc_msgSend(v14, "count")))
+      if (!referenceCopy || ([v13 removeObject:referenceCopy], !objc_msgSend(v14, "count")))
       {
-        [(NSMutableDictionary *)self->_invitees removeObjectForKey:v12];
-        [(NSMutableArray *)self->_invitedPlayers removeObject:v6];
+        [(NSMutableDictionary *)self->_invitees removeObjectForKey:playerID];
+        [(NSMutableArray *)self->_invitedPlayers removeObject:inviteeCopy];
         if (!os_log_GKGeneral)
         {
           v15 = GKOSLoggers();
@@ -146,7 +146,7 @@
         }
 
         v17 = +[GKDataRequestManager sharedManager];
-        v18 = [NSString stringWithFormat:@"inviteInvitee.%@", v12];
+        v18 = [NSString stringWithFormat:@"inviteInvitee.%@", playerID];
         [v17 endTransaction:v18];
       }
     }
@@ -162,9 +162,9 @@
       if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
       {
         v21 = v20;
-        v22 = [(GKInviteSession *)self sessionToken];
+        sessionToken = [(GKInviteSession *)self sessionToken];
         *buf = 138412290;
-        v36 = v22;
+        v36 = sessionToken;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "GKInviteSession - Still have invitees in invite session, %@", buf, 0xCu);
       }
 
@@ -177,9 +177,9 @@
       if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
       {
         v25 = v24;
-        v26 = [(GKInviteSession *)self invitees];
+        invitees = [(GKInviteSession *)self invitees];
         *buf = 138412290;
-        v36 = v26;
+        v36 = invitees;
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "invitees %@", buf, 0xCu);
       }
 
@@ -192,9 +192,9 @@
       if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
       {
         v29 = v28;
-        v30 = [(GKInviteSession *)self shareInvitees];
+        shareInvitees = [(GKInviteSession *)self shareInvitees];
         *buf = 138412290;
-        v36 = v30;
+        v36 = shareInvitees;
         _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "shareInvitees %@", buf, 0xCu);
       }
     }
@@ -210,9 +210,9 @@
       if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
       {
         v33 = v32;
-        v34 = [(GKInviteSession *)self sessionToken];
+        sessionToken2 = [(GKInviteSession *)self sessionToken];
         *buf = 138412290;
-        v36 = v34;
+        v36 = sessionToken2;
         _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_INFO, "No more invitees, clearing session token %@", buf, 0xCu);
       }
 
@@ -221,11 +221,11 @@
   }
 }
 
-- (id)referencesForInvitee:(id)a3
+- (id)referencesForInvitee:(id)invitee
 {
   invitees = self->_invitees;
-  v4 = [a3 playerID];
-  v5 = [(NSMutableDictionary *)invitees objectForKey:v4];
+  playerID = [invitee playerID];
+  v5 = [(NSMutableDictionary *)invitees objectForKey:playerID];
 
   return v5;
 }
@@ -265,8 +265,8 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) conciseDescription];
-        v12 = [NSString stringWithFormat:@"inviteInvitee.%@", v11];
+        conciseDescription = [*(*(&v13 + 1) + 8 * v10) conciseDescription];
+        v12 = [NSString stringWithFormat:@"inviteInvitee.%@", conciseDescription];
         [v5 endTransaction:v12];
 
         v10 = v10 + 1;
@@ -284,9 +284,9 @@
   [(NSMutableArray *)self->_shareInvitees removeAllObjects];
 }
 
-- (void)addResponse:(id)a3
+- (void)addResponse:(id)response
 {
-  v4 = [(NSArray *)self->_responses arrayByAddingObject:a3];
+  v4 = [(NSArray *)self->_responses arrayByAddingObject:response];
   [(GKInviteSession *)self setResponses:v4];
 }
 

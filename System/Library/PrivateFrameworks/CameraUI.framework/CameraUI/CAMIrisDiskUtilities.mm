@@ -1,8 +1,8 @@
 @interface CAMIrisDiskUtilities
 + (BOOL)hasPendingWork;
-+ (BOOL)parseVideoDestinationPath:(id)a3 forStillImagePersistenceUUID:(id *)a4 videoPersistenceUUID:(id *)a5 captureDevice:(int64_t *)a6 captureOrientation:(int64_t *)a7 captureTime:(double *)a8 persistenceOptions:(int64_t *)a9 temporaryPersistenceOptions:(int64_t *)a10 bundleIdentifier:(id *)a11 filterName:(id *)a12;
-+ (id)irisVideoDirectoryPathCreateIfNeeded:(BOOL)a3;
-+ (id)videoDestinationPathForStillImageRequest:(id)a3 captureTime:(double)a4 isEV0ForHDR:(BOOL)a5 bundleIdentifier:(id)a6;
++ (BOOL)parseVideoDestinationPath:(id)path forStillImagePersistenceUUID:(id *)d videoPersistenceUUID:(id *)iD captureDevice:(int64_t *)device captureOrientation:(int64_t *)orientation captureTime:(double *)time persistenceOptions:(int64_t *)options temporaryPersistenceOptions:(int64_t *)self0 bundleIdentifier:(id *)self1 filterName:(id *)self2;
++ (id)irisVideoDirectoryPathCreateIfNeeded:(BOOL)needed;
++ (id)videoDestinationPathForStillImageRequest:(id)request captureTime:(double)time isEV0ForHDR:(BOOL)r bundleIdentifier:(id)identifier;
 @end
 
 @implementation CAMIrisDiskUtilities
@@ -10,16 +10,16 @@
 + (BOOL)hasPendingWork
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 irisVideoDirectoryPathCreateIfNeeded:0];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [v3 fileExistsAtPath:v2];
+  v2 = [self irisVideoDirectoryPathCreateIfNeeded:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v4 = [defaultManager fileExistsAtPath:v2];
 
   v5 = 0;
   if (v4)
   {
-    v6 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
     v11 = 0;
-    v7 = [v6 contentsOfDirectoryAtPath:v2 error:&v11];
+    v7 = [defaultManager2 contentsOfDirectoryAtPath:v2 error:&v11];
     v8 = v11;
 
     if (v8)
@@ -41,123 +41,123 @@
   return v5;
 }
 
-+ (id)irisVideoDirectoryPathCreateIfNeeded:(BOOL)a3
++ (id)irisVideoDirectoryPathCreateIfNeeded:(BOOL)needed
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69BF168] photoDCIMDirectory];
-  v5 = [v4 stringByAppendingPathComponent:@".MISC/Iris"];
+  neededCopy = needed;
+  photoDCIMDirectory = [MEMORY[0x1E69BF168] photoDCIMDirectory];
+  v5 = [photoDCIMDirectory stringByAppendingPathComponent:@".MISC/Iris"];
 
-  if (v3)
+  if (neededCopy)
   {
-    v6 = [MEMORY[0x1E696AC08] defaultManager];
-    [v6 createDirectoryAtPath:v5 withIntermediateDirectories:1 attributes:0 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager createDirectoryAtPath:v5 withIntermediateDirectories:1 attributes:0 error:0];
   }
 
   return v5;
 }
 
-+ (id)videoDestinationPathForStillImageRequest:(id)a3 captureTime:(double)a4 isEV0ForHDR:(BOOL)a5 bundleIdentifier:(id)a6
++ (id)videoDestinationPathForStillImageRequest:(id)request captureTime:(double)time isEV0ForHDR:(BOOL)r bundleIdentifier:(id)identifier
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a6;
-  v29 = [v10 irisStillImagePersistenceUUIDForEV0:v7];
-  if ([v10 isCTMVideo])
+  rCopy = r;
+  requestCopy = request;
+  identifierCopy = identifier;
+  v29 = [requestCopy irisStillImagePersistenceUUIDForEV0:rCopy];
+  if ([requestCopy isCTMVideo])
   {
-    [v10 persistenceUUID];
+    [requestCopy persistenceUUID];
   }
 
   else
   {
-    [v10 irisVideoPersistenceUUIDForEV0:v7];
+    [requestCopy irisVideoPersistenceUUIDForEV0:rCopy];
   }
   v12 = ;
-  v27 = [v10 captureDevice];
-  v13 = [v10 captureOrientation];
-  v14 = [v10 persistenceOptions];
-  v15 = [v10 temporaryPersistenceOptions];
-  v16 = +[CAMEffectFilterManager ciFilterNameForFilterType:](CAMEffectFilterManager, "ciFilterNameForFilterType:", [v10 effectFilterType]);
-  v17 = [a1 _substituteForDotInBundleIdentifier];
-  v18 = [v11 stringByReplacingOccurrencesOfString:@"." withString:v17];
+  captureDevice = [requestCopy captureDevice];
+  captureOrientation = [requestCopy captureOrientation];
+  persistenceOptions = [requestCopy persistenceOptions];
+  temporaryPersistenceOptions = [requestCopy temporaryPersistenceOptions];
+  v16 = +[CAMEffectFilterManager ciFilterNameForFilterType:](CAMEffectFilterManager, "ciFilterNameForFilterType:", [requestCopy effectFilterType]);
+  _substituteForDotInBundleIdentifier = [self _substituteForDotInBundleIdentifier];
+  v18 = [identifierCopy stringByReplacingOccurrencesOfString:@"." withString:_substituteForDotInBundleIdentifier];
 
-  v19 = [a1 _delimiterForFilenames];
+  _delimiterForFilenames = [self _delimiterForFilenames];
   v28 = v18;
-  v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@%@%ld%@%ld%@%.f%@%ld%@%ld%@%@", v29, v19, v12, v19, v27, v19, v13, v19, a4 * 100.0, v19, v14, v19, v15, v19, v18];
+  v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@%@%ld%@%ld%@%.f%@%ld%@%ld%@%@", v29, _delimiterForFilenames, v12, _delimiterForFilenames, captureDevice, _delimiterForFilenames, captureOrientation, _delimiterForFilenames, time * 100.0, _delimiterForFilenames, persistenceOptions, _delimiterForFilenames, temporaryPersistenceOptions, _delimiterForFilenames, v18];
   if (v16)
   {
-    v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", v20, v19, v16];
+    v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", v20, _delimiterForFilenames, v16];
 
     v20 = v21;
   }
 
-  v22 = [a1 irisVideoDirectoryPath];
-  v23 = [v22 stringByAppendingPathComponent:v20];
-  v24 = [a1 videoPathExtension];
-  v25 = [v23 stringByAppendingPathExtension:v24];
+  irisVideoDirectoryPath = [self irisVideoDirectoryPath];
+  v23 = [irisVideoDirectoryPath stringByAppendingPathComponent:v20];
+  videoPathExtension = [self videoPathExtension];
+  v25 = [v23 stringByAppendingPathExtension:videoPathExtension];
 
   return v25;
 }
 
-+ (BOOL)parseVideoDestinationPath:(id)a3 forStillImagePersistenceUUID:(id *)a4 videoPersistenceUUID:(id *)a5 captureDevice:(int64_t *)a6 captureOrientation:(int64_t *)a7 captureTime:(double *)a8 persistenceOptions:(int64_t *)a9 temporaryPersistenceOptions:(int64_t *)a10 bundleIdentifier:(id *)a11 filterName:(id *)a12
++ (BOOL)parseVideoDestinationPath:(id)path forStillImagePersistenceUUID:(id *)d videoPersistenceUUID:(id *)iD captureDevice:(int64_t *)device captureOrientation:(int64_t *)orientation captureTime:(double *)time persistenceOptions:(int64_t *)options temporaryPersistenceOptions:(int64_t *)self0 bundleIdentifier:(id *)self1 filterName:(id *)self2
 {
-  v13 = a3;
+  pathCopy = path;
   v56 = 0;
   v57 = 0;
   v54 = 0;
   v55 = 0;
-  v14 = [v13 lastPathComponent];
-  v15 = [v13 pathExtension];
-  v16 = v14;
-  v17 = 0;
-  v48 = v16;
+  lastPathComponent = [pathCopy lastPathComponent];
+  pathExtension = [pathCopy pathExtension];
+  stringByDeletingPathExtension = lastPathComponent;
+  pathExtension2 = 0;
+  v48 = stringByDeletingPathExtension;
   do
   {
-    v18 = v17;
-    v19 = v16;
-    v16 = [v16 stringByDeletingPathExtension];
+    v18 = pathExtension2;
+    v19 = stringByDeletingPathExtension;
+    stringByDeletingPathExtension = [stringByDeletingPathExtension stringByDeletingPathExtension];
 
-    v17 = [v16 pathExtension];
+    pathExtension2 = [stringByDeletingPathExtension pathExtension];
   }
 
-  while ([v17 length]);
-  v20 = [MEMORY[0x1E696AE88] scannerWithString:v16];
-  v21 = [a1 _delimiterForFilenames];
-  v22 = [a1 videoPathExtension];
-  v23 = [v15 isEqualToString:v22];
+  while ([pathExtension2 length]);
+  v20 = [MEMORY[0x1E696AE88] scannerWithString:stringByDeletingPathExtension];
+  _delimiterForFilenames = [self _delimiterForFilenames];
+  videoPathExtension = [self videoPathExtension];
+  v23 = [pathExtension isEqualToString:videoPathExtension];
 
-  v47 = v15;
+  v47 = pathExtension;
   if (v23)
   {
     v53 = 0;
-    v24 = [v20 scanUpToString:v21 intoString:&v53];
+    v24 = [v20 scanUpToString:_delimiterForFilenames intoString:&v53];
     v25 = v53;
-    if (v24 && [v20 scanString:v21 intoString:0])
+    if (v24 && [v20 scanString:_delimiterForFilenames intoString:0])
     {
       v52 = 0;
-      v26 = [v20 scanUpToString:v21 intoString:&v52];
+      v26 = [v20 scanUpToString:_delimiterForFilenames intoString:&v52];
       v27 = v52;
       if (v26)
       {
-        if ([v20 scanString:v21 intoString:0])
+        if ([v20 scanString:_delimiterForFilenames intoString:0])
         {
           if ([v20 scanInteger:&v57])
           {
-            if ([v20 scanString:v21 intoString:0])
+            if ([v20 scanString:_delimiterForFilenames intoString:0])
             {
               if ([v20 scanInteger:&v56])
               {
-                if ([v20 scanString:v21 intoString:0])
+                if ([v20 scanString:_delimiterForFilenames intoString:0])
                 {
                   v51 = 0;
                   if ([v20 scanLongLong:&v51])
                   {
                     v28 = v51;
-                    if ([v20 scanString:v21 intoString:0])
+                    if ([v20 scanString:_delimiterForFilenames intoString:0])
                     {
                       if ([v20 scanInteger:&v55])
                       {
                         v41 = v27;
-                        if (![v20 scanString:v21 intoString:0])
+                        if (![v20 scanString:_delimiterForFilenames intoString:0])
                         {
                           v36 = 0;
                           v31 = 0;
@@ -168,7 +168,7 @@ LABEL_48:
                         }
 
                         v40 = v25;
-                        if (![v20 scanInteger:&v54] || !objc_msgSend(v20, "scanString:intoString:", v21, 0))
+                        if (![v20 scanInteger:&v54] || !objc_msgSend(v20, "scanString:intoString:", _delimiterForFilenames, 0))
                         {
                           v36 = 0;
                           v31 = 0;
@@ -179,7 +179,7 @@ LABEL_47:
                         }
 
                         v50 = 0;
-                        v29 = [v20 scanUpToString:v21 intoString:&v50];
+                        v29 = [v20 scanUpToString:_delimiterForFilenames intoString:&v50];
                         v30 = v50;
                         if (v29)
                         {
@@ -189,11 +189,11 @@ LABEL_47:
                             goto LABEL_21;
                           }
 
-                          if ([v20 scanString:v21 intoString:0])
+                          if ([v20 scanString:_delimiterForFilenames intoString:0])
                           {
-                            v38 = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
+                            alphanumericCharacterSet = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
                             v49 = 0;
-                            v39 = [v20 scanCharactersFromSet:v38 intoString:&v49];
+                            v39 = [v20 scanCharactersFromSet:alphanumericCharacterSet intoString:&v49];
                             v31 = v49;
 
                             if (!v39)
@@ -206,54 +206,54 @@ LABEL_51:
 LABEL_21:
                             if ([v20 isAtEnd])
                             {
-                              if (a4)
+                              if (d)
                               {
-                                *a4 = v40;
+                                *d = v40;
                               }
 
-                              if (a5)
+                              if (iD)
                               {
-                                *a5 = v41;
+                                *iD = v41;
                               }
 
-                              if (a6)
+                              if (device)
                               {
-                                *a6 = v57;
+                                *device = v57;
                               }
 
-                              if (a7)
+                              if (orientation)
                               {
-                                *a7 = v56;
+                                *orientation = v56;
                               }
 
-                              if (a8)
+                              if (time)
                               {
-                                *a8 = v28 / 100.0;
+                                *time = v28 / 100.0;
                               }
 
-                              if (a9)
+                              if (options)
                               {
-                                *a9 = v55;
+                                *options = v55;
                               }
 
-                              if (a10)
+                              if (persistenceOptions)
                               {
-                                *a10 = v54;
+                                *persistenceOptions = v54;
                               }
 
-                              if (a11)
+                              if (identifier)
                               {
-                                v32 = [a1 _substituteForDotInBundleIdentifier];
-                                v33 = [v30 stringByReplacingOccurrencesOfString:v32 withString:@"."];
+                                _substituteForDotInBundleIdentifier = [self _substituteForDotInBundleIdentifier];
+                                v33 = [v30 stringByReplacingOccurrencesOfString:_substituteForDotInBundleIdentifier withString:@"."];
 
                                 v34 = v33;
-                                *a11 = v33;
+                                *identifier = v33;
                               }
 
-                              if (a12)
+                              if (name)
                               {
                                 v35 = v31;
-                                *a12 = v31;
+                                *name = v31;
                               }
 
                               v36 = 1;

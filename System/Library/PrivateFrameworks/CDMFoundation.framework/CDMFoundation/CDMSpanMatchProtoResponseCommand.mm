@@ -1,28 +1,28 @@
 @interface CDMSpanMatchProtoResponseCommand
-- (CDMSpanMatchProtoResponseCommand)initWithResponse:(id)a3;
+- (CDMSpanMatchProtoResponseCommand)initWithResponse:(id)response;
 @end
 
 @implementation CDMSpanMatchProtoResponseCommand
 
-- (CDMSpanMatchProtoResponseCommand)initWithResponse:(id)a3
+- (CDMSpanMatchProtoResponseCommand)initWithResponse:(id)response
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  responseCopy = response;
   v27.receiver = self;
   v27.super_class = CDMSpanMatchProtoResponseCommand;
   v6 = [(CDMBaseCommand *)&v27 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_spanMatchResponse, a3);
-    v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "matchingSpansCount")}];
-    v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "matchingSpansCount")}];
+    objc_storeStrong(&v6->_spanMatchResponse, response);
+    v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(responseCopy, "matchingSpansCount")}];
+    v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(responseCopy, "matchingSpansCount")}];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v10 = [v5 matchingSpans];
-    v11 = [v10 countByEnumeratingWithState:&v23 objects:v32 count:16];
+    matchingSpans = [responseCopy matchingSpans];
+    v11 = [matchingSpans countByEnumeratingWithState:&v23 objects:v32 count:16];
     if (v11)
     {
       v12 = v11;
@@ -33,7 +33,7 @@
         {
           if (*v24 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(matchingSpans);
           }
 
           v15 = *(*(&v23 + 1) + 8 * i);
@@ -50,7 +50,7 @@
           [(NSArray *)v16 addObject:v15];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v23 objects:v32 count:16];
+        v12 = [matchingSpans countByEnumeratingWithState:&v23 objects:v32 count:16];
       }
 
       while (v12);

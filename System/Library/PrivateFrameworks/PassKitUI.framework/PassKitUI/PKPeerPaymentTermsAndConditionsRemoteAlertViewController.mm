@@ -2,10 +2,10 @@
 - (PKPeerPaymentTermsAndConditionsRemoteAlertViewController)init;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_dismiss;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PKPeerPaymentTermsAndConditionsRemoteAlertViewController
@@ -17,34 +17,34 @@
   return [(PKPeerPaymentTermsAndConditionsRemoteAlertViewController *)&v3 init];
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v4 = a4;
-  v6 = a3;
+  disappearCopy = disappear;
+  windowCopy = window;
   v8.receiver = self;
   v8.super_class = PKPeerPaymentTermsAndConditionsRemoteAlertViewController;
-  [(PKPeerPaymentTermsAndConditionsRemoteAlertViewController *)&v8 viewDidMoveToWindow:v6 shouldAppearOrDisappear:v4];
-  if (v6)
+  [(PKPeerPaymentTermsAndConditionsRemoteAlertViewController *)&v8 viewDidMoveToWindow:windowCopy shouldAppearOrDisappear:disappearCopy];
+  if (windowCopy)
   {
-    [v6 bounds];
-    v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v7 scale];
+    [windowCopy bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     PKSetDisplayProperties();
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = PKPeerPaymentTermsAndConditionsRemoteAlertViewController;
-  [(PKPeerPaymentTermsAndConditionsRemoteAlertViewController *)&v3 viewDidAppear:a3];
+  [(PKPeerPaymentTermsAndConditionsRemoteAlertViewController *)&v3 viewDidAppear:appear];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKPeerPaymentTermsAndConditionsRemoteAlertViewController;
-  [(PKPeerPaymentTermsAndConditionsRemoteAlertViewController *)&v4 viewWillDisappear:a3];
+  [(PKPeerPaymentTermsAndConditionsRemoteAlertViewController *)&v4 viewWillDisappear:disappear];
   [(PKPeerPaymentTermsAndConditionsRemoteAlertViewController *)self _dismiss];
 }
 
@@ -61,22 +61,22 @@
   }
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v22 = v6;
-  v8 = [v6 userInfo];
-  v9 = [(PKPeerPaymentTermsAndConditionsRemoteAlertViewController *)self _remoteViewControllerProxy];
-  v10 = 1;
-  [v9 setAllowsAlertItems:1];
-  [v9 setAllowsSiri:0];
-  [v9 setAllowsBanners:1];
-  [v9 setDesiredHardwareButtonEvents:16];
-  [v9 setSwipeDismissalStyle:0];
-  [v9 setDismissalAnimationStyle:1];
-  [v9 setWallpaperStyle:0 withDuration:0.0];
-  v11 = [v8 objectForKeyedSubscript:*MEMORY[0x1E69BBFF8]];
+  contextCopy = context;
+  completionCopy = completion;
+  v22 = contextCopy;
+  userInfo = [contextCopy userInfo];
+  _remoteViewControllerProxy = [(PKPeerPaymentTermsAndConditionsRemoteAlertViewController *)self _remoteViewControllerProxy];
+  integerValue = 1;
+  [_remoteViewControllerProxy setAllowsAlertItems:1];
+  [_remoteViewControllerProxy setAllowsSiri:0];
+  [_remoteViewControllerProxy setAllowsBanners:1];
+  [_remoteViewControllerProxy setDesiredHardwareButtonEvents:16];
+  [_remoteViewControllerProxy setSwipeDismissalStyle:0];
+  [_remoteViewControllerProxy setDismissalAnimationStyle:1];
+  [_remoteViewControllerProxy setWallpaperStyle:0 withDuration:0.0];
+  v11 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69BBFF8]];
   if ([(UIViewController *)self pkui_userInterfaceIdiomSupportsLargeLayouts])
   {
     if (!v11)
@@ -84,24 +84,24 @@
       goto LABEL_5;
     }
 
-    v10 = [v11 integerValue];
+    integerValue = [v11 integerValue];
   }
 
-  [v9 setLaunchingInterfaceOrientation:v10];
+  [_remoteViewControllerProxy setLaunchingInterfaceOrientation:integerValue];
 LABEL_5:
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
   v12 = MEMORY[0x1E695DFF8];
-  v13 = [v8 objectForKey:{@"termsURL", v11}];
+  v13 = [userInfo objectForKey:{@"termsURL", v11}];
   v14 = [v12 URLWithString:v13];
 
-  v15 = [v8 objectForKey:@"termsIdentifier"];
-  v16 = [v8 objectForKey:@"passUniqueID"];
-  v17 = [MEMORY[0x1E69B9020] sharedService];
-  v18 = [[PKPeerPaymentTermsController alloc] initWithTermsURL:v14 termsIdentifier:v15 passUniqueID:v16 webService:v17];
+  v15 = [userInfo objectForKey:@"termsIdentifier"];
+  v16 = [userInfo objectForKey:@"passUniqueID"];
+  mEMORY[0x1E69B9020] = [MEMORY[0x1E69B9020] sharedService];
+  v18 = [[PKPeerPaymentTermsController alloc] initWithTermsURL:v14 termsIdentifier:v15 passUniqueID:v16 webService:mEMORY[0x1E69B9020]];
   termsController = self->_termsController;
   self->_termsController = v18;
 

@@ -1,19 +1,19 @@
 @interface CSShakableView
-- (CSShakableView)initWithFrame:(CGRect)a3;
+- (CSShakableView)initWithFrame:(CGRect)frame;
 - (id)_defaultSpringAnimations;
 - (void)_invokeCompletionBlockIfNecessary;
-- (void)beginShakingWithCompletion:(id)a3;
+- (void)beginShakingWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)layoutSubviews;
 @end
 
 @implementation CSShakableView
 
-- (CSShakableView)initWithFrame:(CGRect)a3
+- (CSShakableView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = CSShakableView;
-  v3 = [(CSShakableView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CSShakableView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D65F80]);
@@ -22,8 +22,8 @@
 
     [(SBFTouchPassThroughView *)v3->_containerView setAutoresizingMask:2];
     [(CSShakableView *)v3 setShakeDistance:75.0];
-    v6 = [(CSShakableView *)v3 _defaultSpringAnimations];
-    [(CSShakableView *)v3 setPrototypeSpringAnimations:v6];
+    _defaultSpringAnimations = [(CSShakableView *)v3 _defaultSpringAnimations];
+    [(CSShakableView *)v3 setPrototypeSpringAnimations:_defaultSpringAnimations];
 
     [(CSShakableView *)v3 addSubview:v3->_containerView];
   }
@@ -53,7 +53,7 @@
 
 - (id)_defaultSpringAnimations
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = [MEMORY[0x277CD9FA0] animationWithKeyPath:@"position.x"];
   [v4 setMass:1.20000005];
   [v4 setStiffness:1200.0];
@@ -70,7 +70,7 @@
   v10 = *MEMORY[0x277CDA228];
   [v4 setFillMode:*MEMORY[0x277CDA228]];
   [v4 setDelegate:self];
-  [v3 addObject:v4];
+  [array addObject:v4];
   v11 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"position.x"];
   LODWORD(v12) = 1036831949;
   LODWORD(v13) = 0.25;
@@ -81,9 +81,9 @@
 
   [v11 setDuration:0.0700000003];
   [v11 setFillMode:v10];
-  [v3 addObject:v11];
+  [array addObject:v11];
 
-  return v3;
+  return array;
 }
 
 - (void)_invokeCompletionBlockIfNecessary
@@ -97,21 +97,21 @@
   }
 }
 
-- (void)beginShakingWithCompletion:(id)a3
+- (void)beginShakingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(CSShakableView *)self _invokeCompletionBlockIfNecessary];
-  v5 = MEMORY[0x223D698D0](v4);
+  v5 = MEMORY[0x223D698D0](completionCopy);
 
   shakeCompletionBlock = self->_shakeCompletionBlock;
   self->_shakeCompletionBlock = v5;
 
-  v7 = [(CSShakableView *)self layer];
-  [v7 position];
+  layer = [(CSShakableView *)self layer];
+  [layer position];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(CSShakableView *)self prototypeSpringAnimations];
+  prototypeSpringAnimations = [(CSShakableView *)self prototypeSpringAnimations];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __45__CSShakableView_beginShakingWithCompletion___block_invoke;
@@ -119,7 +119,7 @@
   v13[5] = v9;
   v13[6] = v11;
   v13[4] = self;
-  [v12 enumerateObjectsUsingBlock:v13];
+  [prototypeSpringAnimations enumerateObjectsUsingBlock:v13];
 }
 
 void __45__CSShakableView_beginShakingWithCompletion___block_invoke(uint64_t a1, void *a2, uint64_t a3)

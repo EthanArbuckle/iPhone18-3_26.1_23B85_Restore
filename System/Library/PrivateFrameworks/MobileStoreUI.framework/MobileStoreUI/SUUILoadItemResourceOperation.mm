@@ -1,47 +1,47 @@
 @interface SUUILoadItemResourceOperation
 - (SSVPlatformRequestOperation)underlyingOperation;
-- (SUUILoadItemResourceOperation)initWithResourceRequest:(id)a3;
+- (SUUILoadItemResourceOperation)initWithResourceRequest:(id)request;
 - (void)cancel;
 - (void)main;
 @end
 
 @implementation SUUILoadItemResourceOperation
 
-- (SUUILoadItemResourceOperation)initWithResourceRequest:(id)a3
+- (SUUILoadItemResourceOperation)initWithResourceRequest:(id)request
 {
   v4.receiver = self;
   v4.super_class = SUUILoadItemResourceOperation;
-  return [(SUUILoadResourceOperation *)&v4 initWithResourceRequest:a3];
+  return [(SUUILoadResourceOperation *)&v4 initWithResourceRequest:request];
 }
 
 - (void)main
 {
-  v3 = [(SUUILoadResourceOperation *)self clientContext];
+  clientContext = [(SUUILoadResourceOperation *)self clientContext];
   v4 = objc_alloc(MEMORY[0x277D69CF0]);
-  v5 = [v3 platformContext];
-  v6 = [v4 initWithPlatformContext:v5];
+  platformContext = [clientContext platformContext];
+  v6 = [v4 initWithPlatformContext:platformContext];
 
-  v7 = [(SUUILoadResourceOperation *)self resourceRequest];
-  v8 = [v7 imageProfile];
-  [v6 setImageProfile:v8];
+  resourceRequest = [(SUUILoadResourceOperation *)self resourceRequest];
+  imageProfile = [resourceRequest imageProfile];
+  [v6 setImageProfile:imageProfile];
 
-  v9 = [v7 keyProfile];
-  [v6 setKeyProfile:v9];
+  keyProfile = [resourceRequest keyProfile];
+  [v6 setKeyProfile:keyProfile];
 
-  v10 = [v3 valueForConfigurationKey:@"sfsuffix"];
+  v10 = [clientContext valueForConfigurationKey:@"sfsuffix"];
   [v6 setStoreFrontSuffix:v10];
 
-  v11 = [v7 itemIdentifiers];
-  [v6 setItemIdentifiers:v11];
-  v12 = [(SUUILoadResourceOperation *)self outputBlock];
+  itemIdentifiers = [resourceRequest itemIdentifiers];
+  [v6 setItemIdentifiers:itemIdentifiers];
+  outputBlock = [(SUUILoadResourceOperation *)self outputBlock];
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __37__SUUILoadItemResourceOperation_main__block_invoke;
   v18 = &unk_2798F9378;
-  v19 = v11;
-  v20 = v12;
-  v13 = v11;
-  v14 = v12;
+  v19 = itemIdentifiers;
+  v20 = outputBlock;
+  v13 = itemIdentifiers;
+  v14 = outputBlock;
   [v6 setResponseBlock:&v15];
   [(SUUILoadItemResourceOperation *)self setUnderlyingOperation:v6, v15, v16, v17, v18];
   [v6 main];
@@ -124,8 +124,8 @@ void __37__SUUILoadItemResourceOperation_main__block_invoke(uint64_t a1, void *a
   v4.receiver = self;
   v4.super_class = SUUILoadItemResourceOperation;
   [(SUUILoadResourceOperation *)&v4 cancel];
-  v3 = [(SUUILoadItemResourceOperation *)self underlyingOperation];
-  [v3 cancel];
+  underlyingOperation = [(SUUILoadItemResourceOperation *)self underlyingOperation];
+  [underlyingOperation cancel];
 }
 
 - (SSVPlatformRequestOperation)underlyingOperation

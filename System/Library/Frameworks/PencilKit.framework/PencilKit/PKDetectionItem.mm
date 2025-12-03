@@ -1,9 +1,9 @@
 @interface PKDetectionItem
-- (BOOL)_hitTest:(CGPoint)a3;
+- (BOOL)_hitTest:(CGPoint)test;
 - (CGAffineTransform)drawingToItemTransform;
 - (CGRect)_frame;
 - (CGRect)strokeBounds;
-- (PKDetectionItem)initWithSessionManager:(id)a3;
+- (PKDetectionItem)initWithSessionManager:(id)manager;
 - (PKDrawing)drawing;
 - (PKRecognitionSessionManager)sessionManager;
 - (UIBezierPath)itemSpaceBaselinePath;
@@ -12,23 +12,23 @@
 - (id)UUID;
 - (id)_strokes;
 - (id)image;
-- (id)setUUID:(id)a3;
+- (id)setUUID:(id)d;
 - (void)_generatePaths;
-- (void)handleTapForMenuForInteraction:(id)a3 location:(CGPoint)a4 view:(id)a5 viewTransform:(CGAffineTransform *)a6 drawingTransform:(CGAffineTransform *)a7;
+- (void)handleTapForMenuForInteraction:(id)interaction location:(CGPoint)location view:(id)view viewTransform:(CGAffineTransform *)transform drawingTransform:(CGAffineTransform *)drawingTransform;
 @end
 
 @implementation PKDetectionItem
 
-- (PKDetectionItem)initWithSessionManager:(id)a3
+- (PKDetectionItem)initWithSessionManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v13.receiver = self;
   v13.super_class = PKDetectionItem;
   v5 = [(PKDetectionItem *)&v13 init];
-  v6 = [MEMORY[0x1E696AFB0] UUID];
-  v7 = [v6 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
   identifier = v5->_identifier;
-  v5->_identifier = v7;
+  v5->_identifier = uUIDString;
 
   v9 = *MEMORY[0x1E695F050];
   v10 = *(MEMORY[0x1E695F050] + 16);
@@ -40,7 +40,7 @@
   v5->__strokeWidth = 0.0;
   v5->_inkColor = 0;
 
-  objc_storeWeak(&v5->_sessionManager, v4);
+  objc_storeWeak(&v5->_sessionManager, managerCopy);
   return v5;
 }
 
@@ -54,10 +54,10 @@
   return CGAffineTransformMakeTranslation(retstr, v6, v8);
 }
 
-- (BOOL)_hitTest:(CGPoint)a3
+- (BOOL)_hitTest:(CGPoint)test
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   [(PKDetectionItem *)self _frame];
   v15.x = x;
   v15.y = y;
@@ -67,8 +67,8 @@
   }
 
   [(PKDetectionItem *)self drawingToItemTransform];
-  v6 = [(PKDetectionItem *)self itemSpaceBoundsPath];
-  v7 = [v6 containsPoint:{v13 + y * v11 + v9 * x, v14 + y * v12 + v10 * x}];
+  itemSpaceBoundsPath = [(PKDetectionItem *)self itemSpaceBoundsPath];
+  v7 = [itemSpaceBoundsPath containsPoint:{v13 + y * v11 + v9 * x, v14 + y * v12 + v10 * x}];
 
   return v7;
 }
@@ -76,15 +76,15 @@
 - (id)_strokes
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(PKDetectionItem *)self queryItem];
-  v5 = [v4 strokeIdentifiers];
+  queryItem = [(PKDetectionItem *)self queryItem];
+  strokeIdentifiers = [queryItem strokeIdentifiers];
 
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [strokeIdentifiers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -94,27 +94,27 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(strokeIdentifiers);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [(PKDetectionItem *)self drawing];
-        v11 = [v9 strokeUUID];
-        v12 = [v10 _visibleStrokeForIdentifier:v11];
+        drawing = [(PKDetectionItem *)self drawing];
+        strokeUUID = [v9 strokeUUID];
+        v12 = [drawing _visibleStrokeForIdentifier:strokeUUID];
 
         if (v12)
         {
-          [v3 addObject:v12];
+          [array addObject:v12];
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [strokeIdentifiers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 - (void)_generatePaths
@@ -168,9 +168,9 @@
         if (!self->_inkColor)
         {
           v18 = [v7 ink];
-          v19 = [v18 sdrColor];
+          sdrColor = [v18 sdrColor];
           inkColor = self->_inkColor;
-          self->_inkColor = v19;
+          self->_inkColor = sdrColor;
         }
       }
 
@@ -202,9 +202,9 @@
     v22 = self->_itemSpaceBoundsPath;
     self->_itemSpaceBoundsPath = v21;
 
-    v23 = [(PKDetectionItem *)self _baselinePath];
+    _baselinePath = [(PKDetectionItem *)self _baselinePath];
     v24 = self->_itemSpaceBaselinePath;
-    self->_itemSpaceBaselinePath = v23;
+    self->_itemSpaceBaselinePath = _baselinePath;
 
     [(UIBezierPath *)self->_itemSpaceBoundsPath bounds];
     v26 = v25;
@@ -306,18 +306,18 @@
 
 - (id)image
 {
-  v3 = [(PKDetectionItem *)self sessionManager];
-  v4 = [(PKRecognitionSessionManager *)v3 drawing];
+  sessionManager = [(PKDetectionItem *)self sessionManager];
+  drawing = [(PKRecognitionSessionManager *)sessionManager drawing];
   v5 = objc_opt_class();
 
   v6 = [v5 alloc];
-  v7 = [(PKDetectionItem *)self _strokes];
-  v8 = [(PKDetectionItem *)self sessionManager];
-  v9 = [(PKRecognitionSessionManager *)v8 drawing];
-  v10 = [v6 initWithStrokes:v7 fromDrawing:v9];
+  _strokes = [(PKDetectionItem *)self _strokes];
+  sessionManager2 = [(PKDetectionItem *)self sessionManager];
+  drawing2 = [(PKRecognitionSessionManager *)sessionManager2 drawing];
+  v10 = [v6 initWithStrokes:_strokes fromDrawing:drawing2];
 
-  v11 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v11 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
 
   [(PKDetectionItem *)self _frame];
   v12 = [v10 imageFromRect:? scale:?];
@@ -330,8 +330,8 @@
   v25 = *MEMORY[0x1E69E9840];
   if (!self->_validCachedUUID)
   {
-    v3 = [(PKDetectionItem *)self _strokes];
-    if ([v3 count])
+    _strokes = [(PKDetectionItem *)self _strokes];
+    if ([_strokes count])
     {
       cachedUUID = self->_cachedUUID;
       self->_cachedUUID = 0;
@@ -341,10 +341,10 @@
       v21 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v5 = [(PKDetectionItem *)self queryItem];
-      v6 = [v5 strokeIdentifiers];
+      queryItem = [(PKDetectionItem *)self queryItem];
+      strokeIdentifiers = [queryItem strokeIdentifiers];
 
-      v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v7 = [strokeIdentifiers countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v7)
       {
         v8 = *v21;
@@ -354,31 +354,31 @@
           {
             if (*v21 != v8)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(strokeIdentifiers);
             }
 
             v10 = *(*(&v20 + 1) + 8 * i);
-            v11 = [(PKDetectionItem *)self drawing];
-            v12 = [v10 strokeUUID];
-            v13 = [v11 _visibleStrokeForIdentifier:v12];
+            drawing = [(PKDetectionItem *)self drawing];
+            strokeUUID = [v10 strokeUUID];
+            v13 = [drawing _visibleStrokeForIdentifier:strokeUUID];
 
-            v14 = [v13 _groupID];
-            if (v14)
+            _groupID = [v13 _groupID];
+            if (_groupID)
             {
               v15 = [v13 _shapeType] == 0;
 
               if (v15)
               {
-                v16 = [v13 _groupID];
+                _groupID2 = [v13 _groupID];
                 v17 = self->_cachedUUID;
-                self->_cachedUUID = v16;
+                self->_cachedUUID = _groupID2;
 
                 goto LABEL_14;
               }
             }
           }
 
-          v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+          v7 = [strokeIdentifiers countByEnumeratingWithState:&v20 objects:v24 count:16];
           if (v7)
           {
             continue;
@@ -397,30 +397,30 @@ LABEL_14:
   return v18;
 }
 
-- (id)setUUID:(id)a3
+- (id)setUUID:(id)d
 {
-  v5 = a3;
-  v6 = [(PKDetectionItem *)self UUID];
-  v7 = v6;
-  if (self->_validCachedUUID && (v6 == v5 || ([v5 isEqual:v6] & 1) != 0))
+  dCopy = d;
+  uUID = [(PKDetectionItem *)self UUID];
+  v7 = uUID;
+  if (self->_validCachedUUID && (uUID == dCopy || ([dCopy isEqual:uUID] & 1) != 0))
   {
     v8 = 0;
   }
 
   else
   {
-    objc_storeStrong(&self->_cachedUUID, a3);
+    objc_storeStrong(&self->_cachedUUID, d);
     self->_validCachedUUID = 1;
-    v9 = [(PKDetectionItem *)self _actionNameForActivation:v5 != 0];
-    v10 = [(PKDetectionItem *)self _strokes];
-    v11 = [(PKDetectionItem *)self drawing];
-    v12 = [PKModifyStrokesGroupIDCommand commandForModifyingStrokes:v10 drawing:v11 groupID:v5 actionName:v9];
+    v9 = [(PKDetectionItem *)self _actionNameForActivation:dCopy != 0];
+    _strokes = [(PKDetectionItem *)self _strokes];
+    drawing = [(PKDetectionItem *)self drawing];
+    v12 = [PKModifyStrokesGroupIDCommand commandForModifyingStrokes:_strokes drawing:drawing groupID:dCopy actionName:v9];
 
-    v13 = [(PKDetectionItem *)self drawing];
-    [v12 applyToDrawing:v13];
+    drawing2 = [(PKDetectionItem *)self drawing];
+    [v12 applyToDrawing:drawing2];
 
-    v14 = [(PKDetectionItem *)self drawing];
-    v8 = [v12 invertedInDrawing:v14];
+    drawing3 = [(PKDetectionItem *)self drawing];
+    v8 = [v12 invertedInDrawing:drawing3];
   }
 
   return v8;
@@ -453,13 +453,13 @@ LABEL_14:
   return WeakRetained;
 }
 
-- (void)handleTapForMenuForInteraction:(id)a3 location:(CGPoint)a4 view:(id)a5 viewTransform:(CGAffineTransform *)a6 drawingTransform:(CGAffineTransform *)a7
+- (void)handleTapForMenuForInteraction:(id)interaction location:(CGPoint)location view:(id)view viewTransform:(CGAffineTransform *)transform drawingTransform:(CGAffineTransform *)drawingTransform
 {
-  y = a4.y;
-  x = a4.x;
-  v10 = a3;
-  [a5 convertPoint:0 toView:{x, y}];
-  [v10 _presentMenuAtLocation:?];
+  y = location.y;
+  x = location.x;
+  interactionCopy = interaction;
+  [view convertPoint:0 toView:{x, y}];
+  [interactionCopy _presentMenuAtLocation:?];
 }
 
 @end

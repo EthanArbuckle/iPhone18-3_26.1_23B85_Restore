@@ -1,9 +1,9 @@
 @interface CalAssistantEventCommit
-- (id)_commitEvent:(id)a3 serviceHelper:(id)a4;
-- (id)_validateEvent:(id)a3;
+- (id)_commitEvent:(id)event serviceHelper:(id)helper;
+- (id)_validateEvent:(id)event;
 - (id)eventStore;
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4;
-- (void)setEventStore:(id)a3;
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper;
+- (void)setEventStore:(id)store;
 @end
 
 @implementation CalAssistantEventCommit
@@ -23,21 +23,21 @@
   return eventStore;
 }
 
-- (void)setEventStore:(id)a3
+- (void)setEventStore:(id)store
 {
-  v5 = a3;
-  if (self->_eventStore != v5)
+  storeCopy = store;
+  if (self->_eventStore != storeCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_eventStore, a3);
-    v5 = v6;
+    v6 = storeCopy;
+    objc_storeStrong(&self->_eventStore, store);
+    storeCopy = v6;
   }
 }
 
-- (id)_validateEvent:(id)a3
+- (id)_validateEvent:(id)event
 {
-  v3 = a3;
-  v7 = objc_msgSend_title(v3, v4, v5, v6);
+  eventCopy = event;
+  v7 = objc_msgSend_title(eventCopy, v4, v5, v6);
 
   if (!v7)
   {
@@ -46,8 +46,8 @@
     goto LABEL_11;
   }
 
-  v11 = objc_msgSend_startDate(v3, v8, v9, v10);
-  v15 = objc_msgSend_endDate(v3, v12, v13, v14);
+  v11 = objc_msgSend_startDate(eventCopy, v8, v9, v10);
+  v15 = objc_msgSend_endDate(eventCopy, v12, v13, v14);
   v18 = v15;
   if (v11)
   {
@@ -82,11 +82,11 @@ LABEL_11:
   return v23;
 }
 
-- (id)_commitEvent:(id)a3 serviceHelper:(id)a4
+- (id)_commitEvent:(id)event serviceHelper:(id)helper
 {
   v419 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  eventCopy = event;
+  helperCopy = helper;
   sub_2334B11EC();
   v7 = qword_27DE0DD38;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -100,7 +100,7 @@ LABEL_11:
     sub_2334B5628();
   }
 
-  v12 = objc_msgSend_timeZoneId(v5, v9, v10, v11);
+  v12 = objc_msgSend_timeZoneId(eventCopy, v9, v10, v11);
   if (v12)
   {
     v13 = CFTimeZoneCreateWithName(0, v12, 1u);
@@ -123,8 +123,8 @@ LABEL_11:
   cf = v17;
   objc_msgSend_setTimeZone_(v18, v19, v17, v20);
 
-  v24 = objc_msgSend_startDate(v5, v21, v22, v23);
-  v392 = objc_msgSend_endDate(v5, v25, v26, v27);
+  v24 = objc_msgSend_startDate(eventCopy, v21, v22, v23);
+  v392 = objc_msgSend_endDate(eventCopy, v25, v26, v27);
   sub_2334B11EC();
   v28 = qword_27DE0DD38;
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
@@ -154,7 +154,7 @@ LABEL_11:
     _os_log_debug_impl(&dword_2334AF000, v29, OS_LOG_TYPE_DEBUG, "%s [%@] - Giving event start date %@ and end date %@", &units, 0x2Au);
   }
 
-  v33 = objc_msgSend_identifier(v5, v30, v31, v32);
+  v33 = objc_msgSend_identifier(eventCopy, v30, v31, v32);
   v37 = objc_msgSend_scheme(v33, v34, v35, v36);
   if (!v37)
   {
@@ -186,7 +186,7 @@ LABEL_28:
   }
 
   v41 = v37;
-  v42 = objc_msgSend_identifier(v5, v38, v39, v40);
+  v42 = objc_msgSend_identifier(eventCopy, v38, v39, v40);
   v46 = objc_msgSend_scheme(v42, v43, v44, v45);
   v48 = objc_msgSend_compare_options_(v46, v47, *MEMORY[0x277CC5B20], 1);
 
@@ -209,7 +209,7 @@ LABEL_28:
   }
 
   v57 = objc_msgSend_eventStore(self, v54, v55, v56);
-  v61 = objc_msgSend_identifier(v5, v58, v59, v60);
+  v61 = objc_msgSend_identifier(eventCopy, v58, v59, v60);
   v63 = objc_msgSend__eventWithURI_checkValid_(v57, v62, v61, 1);
 
   sub_2334B11EC();
@@ -253,11 +253,11 @@ LABEL_28:
 
   v69 = 1;
 LABEL_33:
-  v90 = objc_msgSend_title(v5, v66, v67, v68);
+  v90 = objc_msgSend_title(eventCopy, v66, v67, v68);
 
   if (v90)
   {
-    v94 = objc_msgSend_title(v5, v91, v92, v93);
+    v94 = objc_msgSend_title(eventCopy, v91, v92, v93);
     objc_msgSend_setTitle_(v63, v95, v94, v96);
 
     sub_2334B11EC();
@@ -274,11 +274,11 @@ LABEL_33:
     }
   }
 
-  v99 = objc_msgSend_location(v5, v91, v92, v93);
+  v99 = objc_msgSend_location(eventCopy, v91, v92, v93);
 
   if (v99)
   {
-    v103 = objc_msgSend_location(v5, v100, v101, v102);
+    v103 = objc_msgSend_location(eventCopy, v100, v101, v102);
     objc_msgSend_setLocation_(v63, v104, v103, v105);
 
     sub_2334B11EC();
@@ -295,11 +295,11 @@ LABEL_33:
     }
   }
 
-  v108 = objc_msgSend_notes(v5, v100, v101, v102);
+  v108 = objc_msgSend_notes(eventCopy, v100, v101, v102);
 
   if (v108)
   {
-    v112 = objc_msgSend_notes(v5, v109, v110, v111);
+    v112 = objc_msgSend_notes(eventCopy, v109, v110, v111);
     objc_msgSend_setNotes_(v63, v113, v112, v114);
 
     sub_2334B11EC();
@@ -342,7 +342,7 @@ LABEL_33:
   v392 = v120;
   objc_msgSend_setEndDate_(v63, v117, v120, v119);
   objc_msgSend_setTimeZone_(v63, v128, cf, v129);
-  v133 = objc_msgSend_allDay(v5, v130, v131, v132);
+  v133 = objc_msgSend_allDay(eventCopy, v130, v131, v132);
   objc_msgSend_setAllDay_(v63, v134, v133, v135);
   sub_2334B11EC();
   v136 = qword_27DE0DD38;
@@ -357,11 +357,11 @@ LABEL_33:
     sub_2334B617C(self, v63);
   }
 
-  v390 = objc_msgSend_attendees(v5, v138, v139, v140);
+  v390 = objc_msgSend_attendees(eventCopy, v138, v139, v140);
   v387 = v12;
-  v388 = v6;
+  v388 = helperCopy;
   v386 = v24;
-  v389 = v5;
+  v389 = eventCopy;
   if (objc_msgSend_count(v390, v141, v142, v143))
   {
     sub_2334B11EC();
@@ -560,7 +560,7 @@ LABEL_33:
     v408 = 0u;
     v252 = obj;
     v254 = objc_msgSend_countByEnumeratingWithState_objects_count_(v252, v253, &v405, v414, 16);
-    v5 = v389;
+    eventCopy = v389;
     if (v254)
     {
       v258 = v254;
@@ -630,14 +630,14 @@ LABEL_33:
     v63 = v396;
   }
 
-  v293 = objc_msgSend_recurrences(v5, v144, v145, v146);
+  v293 = objc_msgSend_recurrences(eventCopy, v144, v145, v146);
   v297 = objc_msgSend_count(v293, v294, v295, v296);
 
   if (v297)
   {
     if (v297 == 1)
     {
-      v301 = objc_msgSend_recurrences(v5, v298, v299, v300);
+      v301 = objc_msgSend_recurrences(eventCopy, v298, v299, v300);
       v304 = objc_msgSend_objectAtIndex_(v301, v302, 0, v303);
       v305 = sub_2334B2068(v304);
 
@@ -693,7 +693,7 @@ LABEL_33:
   v404 = 0u;
   v401 = 0u;
   v402 = 0u;
-  v319 = objc_msgSend_alerts(v5, v298, v299, v300);
+  v319 = objc_msgSend_alerts(eventCopy, v298, v299, v300);
   v321 = objc_msgSend_countByEnumeratingWithState_objects_count_(v319, v320, &v401, v413, 16);
   if (v321)
   {
@@ -760,8 +760,8 @@ LABEL_33:
     sub_2334B11EC();
     v348 = qword_27DE0DD38;
     v349 = v348;
-    v6 = v388;
-    v5 = v389;
+    helperCopy = v388;
+    eventCopy = v389;
     v24 = v386;
     v12 = v387;
     v350 = cf;
@@ -829,8 +829,8 @@ LABEL_165:
     goto LABEL_166;
   }
 
-  v6 = v388;
-  v5 = v389;
+  helperCopy = v388;
+  eventCopy = v389;
   v24 = v386;
   v12 = v387;
   v350 = cf;
@@ -847,10 +847,10 @@ LABEL_168:
   return v73;
 }
 
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper
 {
-  v22 = a4;
-  v6 = a3;
+  helperCopy = helper;
+  completionCopy = completion;
   sub_2334B11EC();
   v10 = objc_msgSend_identifier(self, v7, v8, v9);
   objc_opt_class();
@@ -862,7 +862,7 @@ LABEL_168:
       goto LABEL_6;
     }
 
-    v17 = objc_msgSend__commitEvent_serviceHelper_(self, v13, v10, v22);
+    v17 = objc_msgSend__commitEvent_serviceHelper_(self, v13, v10, helperCopy);
   }
 
   else
@@ -874,7 +874,7 @@ LABEL_168:
   v16 = v17;
 LABEL_6:
   v21 = objc_msgSend_dictionary(v16, v13, v14, v15);
-  v6[2](v6, v21);
+  completionCopy[2](completionCopy, v21);
 }
 
 @end

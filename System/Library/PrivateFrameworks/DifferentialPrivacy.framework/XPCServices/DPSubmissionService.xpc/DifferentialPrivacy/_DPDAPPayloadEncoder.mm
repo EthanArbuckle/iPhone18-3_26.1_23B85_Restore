@@ -1,34 +1,34 @@
 @interface _DPDAPPayloadEncoder
-+ (id)encoderForDonation:(id)a3 keys:(id)a4 error:(id *)a5;
++ (id)encoderForDonation:(id)donation keys:(id)keys error:(id *)error;
 + (unint64_t)secondsSinceEpochWithPrecision;
-- (BOOL)encryptHelperSharesWithError:(id *)a3;
-- (BOOL)encryptLeaderSharesWithError:(id *)a3;
-- (BOOL)isDonationValidWithError:(id *)a3;
+- (BOOL)encryptHelperSharesWithError:(id *)error;
+- (BOOL)encryptLeaderSharesWithError:(id *)error;
+- (BOOL)isDonationValidWithError:(id *)error;
 - (_DPDAPPayloadEncoder)init;
-- (_DPDAPPayloadEncoder)initWithDonation:(id)a3 keys:(id)a4 error:(id *)a5;
-- (_DPDAPPayloadEncoder)initWithDonation:(id)a3 keys:(id)a4 taskProv:(id)a5 error:(id *)a6;
-- (id)dediscoPayloadWithError:(id *)a3;
-- (id)encodedInfoForServerRole:(unsigned __int8)a3;
-- (id)encodedReportAuthExtensionDataWithError:(id *)a3;
-- (id)encodedTaskProvExtensionDataWithError:(id *)a3;
+- (_DPDAPPayloadEncoder)initWithDonation:(id)donation keys:(id)keys error:(id *)error;
+- (_DPDAPPayloadEncoder)initWithDonation:(id)donation keys:(id)keys taskProv:(id)prov error:(id *)error;
+- (id)dediscoPayloadWithError:(id *)error;
+- (id)encodedInfoForServerRole:(unsigned __int8)role;
+- (id)encodedReportAuthExtensionDataWithError:(id *)error;
+- (id)encodedTaskProvExtensionDataWithError:(id *)error;
 - (id)inputShareInfoString;
-- (id)taskIDWithError:(id *)a3;
+- (id)taskIDWithError:(id *)error;
 - (void)encodePublicShare;
 - (void)encodeReportID;
 @end
 
 @implementation _DPDAPPayloadEncoder
 
-+ (id)encoderForDonation:(id)a3 keys:(id)a4 error:(id *)a5
++ (id)encoderForDonation:(id)donation keys:(id)keys error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [_DPDediscoUtils dediscoVersionForDonation:v7];
+  donationCopy = donation;
+  keysCopy = keys;
+  v9 = [_DPDediscoUtils dediscoVersionForDonation:donationCopy];
   if (v9 - 3 < 2)
   {
     v10 = _DPDAP09PayloadEncoder;
 LABEL_5:
-    v11 = [[v10 alloc] initWithDonation:v7 keys:v8 error:a5];
+    v11 = [[v10 alloc] initWithDonation:donationCopy keys:keysCopy error:error];
     goto LABEL_7;
   }
 
@@ -41,30 +41,30 @@ LABEL_5:
   v12 = [NSString stringWithFormat:@"Failed to find matching DAP version from PPM version %lu.", v9];
   v13 = [_DPDediscoError errorWithCode:400 description:v12];
 
-  [v13 logAndStoreInError:a5];
+  [v13 logAndStoreInError:error];
   v11 = 0;
 LABEL_7:
 
   return v11;
 }
 
-- (id)taskIDWithError:(id *)a3
+- (id)taskIDWithError:(id *)error
 {
-  v4 = [(_DPDAPPayloadEncoder *)self taskProv];
-  v5 = [v4 taskIDWithError:a3];
+  taskProv = [(_DPDAPPayloadEncoder *)self taskProv];
+  v5 = [taskProv taskIDWithError:error];
 
   return v5;
 }
 
-- (id)encodedTaskProvExtensionDataWithError:(id *)a3
+- (id)encodedTaskProvExtensionDataWithError:(id *)error
 {
-  v4 = [(_DPDAPPayloadEncoder *)self taskProv];
-  v5 = [v4 encodedTaskConfigWithError:a3];
+  taskProv = [(_DPDAPPayloadEncoder *)self taskProv];
+  v5 = [taskProv encodedTaskConfigWithError:error];
 
   return v5;
 }
 
-- (id)dediscoPayloadWithError:(id *)a3
+- (id)dediscoPayloadWithError:(id *)error
 {
   v5 = objc_autoreleasePoolPush();
   v14 = 0;
@@ -74,16 +74,16 @@ LABEL_7:
   if (v6)
   {
     v8 = [_DPDediscoPayload alloc];
-    v9 = [(_DPDAPPayloadEncoder *)self taskProv];
-    v10 = [v9 collectionID];
-    v11 = [(_DPDediscoPayload *)v8 initWithCollectionId:v10 algorithm:&stru_1000741F0 algorithmParameters:0 fsEncryptedShare:0 dsEncryptedShare:0 fsPublicKey:&stru_1000741F0 dsPublicKey:&stru_1000741F0 versionHash:&stru_1000741F0 report:v6];
+    taskProv = [(_DPDAPPayloadEncoder *)self taskProv];
+    collectionID = [taskProv collectionID];
+    v11 = [(_DPDediscoPayload *)v8 initWithCollectionId:collectionID algorithm:&stru_1000741F0 algorithmParameters:0 fsEncryptedShare:0 dsEncryptedShare:0 fsPublicKey:&stru_1000741F0 dsPublicKey:&stru_1000741F0 versionHash:&stru_1000741F0 report:v6];
   }
 
-  else if (a3)
+  else if (error)
   {
     v12 = v7;
     v11 = 0;
-    *a3 = v7;
+    *error = v7;
   }
 
   else
@@ -94,7 +94,7 @@ LABEL_7:
   return v11;
 }
 
-- (id)encodedReportAuthExtensionDataWithError:(id *)a3
+- (id)encodedReportAuthExtensionDataWithError:(id *)error
 {
   v3 = +[_DPLog framework];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
@@ -105,51 +105,51 @@ LABEL_7:
   return 0;
 }
 
-- (_DPDAPPayloadEncoder)initWithDonation:(id)a3 keys:(id)a4 error:(id *)a5
+- (_DPDAPPayloadEncoder)initWithDonation:(id)donation keys:(id)keys error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 leaderURL];
-  v11 = [v9 helperURL];
-  v12 = [_DPTaskProv taskProvFromDonation:v8 leaderURL:v10 helperURL:v11 error:a5];
+  donationCopy = donation;
+  keysCopy = keys;
+  leaderURL = [keysCopy leaderURL];
+  helperURL = [keysCopy helperURL];
+  v12 = [_DPTaskProv taskProvFromDonation:donationCopy leaderURL:leaderURL helperURL:helperURL error:error];
 
   if (v12)
   {
-    self = [(_DPDAPPayloadEncoder *)self initWithDonation:v8 keys:v9 taskProv:v12 error:a5];
-    v13 = self;
+    self = [(_DPDAPPayloadEncoder *)self initWithDonation:donationCopy keys:keysCopy taskProv:v12 error:error];
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (_DPDAPPayloadEncoder)initWithDonation:(id)a3 keys:(id)a4 taskProv:(id)a5 error:(id *)a6
+- (_DPDAPPayloadEncoder)initWithDonation:(id)donation keys:(id)keys taskProv:(id)prov error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  donationCopy = donation;
+  keysCopy = keys;
+  provCopy = prov;
   v24.receiver = self;
   v24.super_class = _DPDAPPayloadEncoder;
   v14 = [(_DPDAPPayloadEncoder *)&v24 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_donation, a3);
-    objc_storeStrong(&v15->_keys, a4);
-    objc_storeStrong(&v15->_taskProv, a5);
-    if (![(_DPDAPPayloadEncoder *)v15 isDonationValidWithError:a6])
+    objc_storeStrong(&v14->_donation, donation);
+    objc_storeStrong(&v15->_keys, keys);
+    objc_storeStrong(&v15->_taskProv, prov);
+    if (![(_DPDAPPayloadEncoder *)v15 isDonationValidWithError:error])
     {
       v22 = 0;
       goto LABEL_6;
     }
 
-    v16 = [objc_opt_class() secondsSinceEpochWithPrecision];
+    secondsSinceEpochWithPrecision = [objc_opt_class() secondsSinceEpochWithPrecision];
     reportID = v15->_reportID;
-    v15->_time = v16;
+    v15->_time = secondsSinceEpochWithPrecision;
     v15->_reportID = 0;
 
     publicShare = v15->_publicShare;
@@ -182,14 +182,14 @@ LABEL_6:
 
 - (void)encodeReportID
 {
-  v3 = [(_DPDAPPayloadEncoder *)self reportID];
+  reportID = [(_DPDAPPayloadEncoder *)self reportID];
 
-  if (!v3)
+  if (!reportID)
   {
-    v4 = [(_DPDAPPayloadEncoder *)self taskProv];
-    v5 = [v4 vdafType];
+    taskProv = [(_DPDAPPayloadEncoder *)self taskProv];
+    vdafType = [taskProv vdafType];
 
-    if (v5 == -65536)
+    if (vdafType == -65536)
     {
       v9 = [NSMutableData dataWithLength:16];
       arc4random_buf([v9 mutableBytes], 0x10uLL);
@@ -197,9 +197,9 @@ LABEL_6:
 
     else
     {
-      v6 = [(_DPDAPPayloadEncoder *)self donation];
-      v7 = [v6 metadata];
-      v8 = [v7 objectForKeyedSubscript:kDPMetadataVDAF];
+      donation = [(_DPDAPPayloadEncoder *)self donation];
+      metadata = [donation metadata];
+      v8 = [metadata objectForKeyedSubscript:kDPMetadataVDAF];
       v9 = [v8 objectForKeyedSubscript:kDPMetadataVDAFNonce];
     }
 
@@ -209,88 +209,88 @@ LABEL_6:
 
 - (void)encodePublicShare
 {
-  v3 = [(_DPDAPPayloadEncoder *)self publicShare];
+  publicShare = [(_DPDAPPayloadEncoder *)self publicShare];
 
-  if (!v3)
+  if (!publicShare)
   {
-    v4 = [(_DPDAPPayloadEncoder *)self taskProv];
-    v5 = [v4 vdafType];
+    taskProv = [(_DPDAPPayloadEncoder *)self taskProv];
+    vdafType = [taskProv vdafType];
 
-    if (v5 == -65536)
+    if (vdafType == -65536)
     {
-      v9 = +[NSData data];
+      donation = +[NSData data];
       [(_DPDAPPayloadEncoder *)self setPublicShare:?];
     }
 
     else
     {
-      v9 = [(_DPDAPPayloadEncoder *)self donation];
-      v6 = [v9 metadata];
-      v7 = [v6 objectForKeyedSubscript:kDPMetadataVDAF];
+      donation = [(_DPDAPPayloadEncoder *)self donation];
+      metadata = [donation metadata];
+      v7 = [metadata objectForKeyedSubscript:kDPMetadataVDAF];
       v8 = [v7 objectForKeyedSubscript:kDPMetadataVDAFPublicShare];
       [(_DPDAPPayloadEncoder *)self setPublicShare:v8];
     }
   }
 }
 
-- (id)encodedInfoForServerRole:(unsigned __int8)a3
+- (id)encodedInfoForServerRole:(unsigned __int8)role
 {
-  v8 = a3;
+  roleCopy = role;
   v7 = 1;
-  v3 = [(_DPDAPPayloadEncoder *)self inputShareInfoString];
-  v4 = [v3 dataUsingEncoding:4];
+  inputShareInfoString = [(_DPDAPPayloadEncoder *)self inputShareInfoString];
+  v4 = [inputShareInfoString dataUsingEncoding:4];
   v5 = +[NSMutableData dataWithCapacity:](NSMutableData, "dataWithCapacity:", [v4 length] + 2);
   [v5 appendData:v4];
   [v5 appendBytes:&v7 length:1];
-  [v5 appendBytes:&v8 length:1];
+  [v5 appendBytes:&roleCopy length:1];
 
   return v5;
 }
 
-- (BOOL)encryptLeaderSharesWithError:(id *)a3
+- (BOOL)encryptLeaderSharesWithError:(id *)error
 {
-  v5 = [(_DPDAPPayloadEncoder *)self encryptedLeaderShares];
+  encryptedLeaderShares = [(_DPDAPPayloadEncoder *)self encryptedLeaderShares];
 
-  if (!v5)
+  if (!encryptedLeaderShares)
   {
-    v6 = [(_DPDAPPayloadEncoder *)self keys];
-    v7 = [v6 destinationPublicKey];
-    v8 = [(_DPDAPPayloadEncoder *)self encryptedShareForServerRole:2 publicKey:v7 error:a3];
+    keys = [(_DPDAPPayloadEncoder *)self keys];
+    destinationPublicKey = [keys destinationPublicKey];
+    v8 = [(_DPDAPPayloadEncoder *)self encryptedShareForServerRole:2 publicKey:destinationPublicKey error:error];
     [(_DPDAPPayloadEncoder *)self setEncryptedLeaderShares:v8];
   }
 
-  return v5 == 0;
+  return encryptedLeaderShares == 0;
 }
 
-- (BOOL)encryptHelperSharesWithError:(id *)a3
+- (BOOL)encryptHelperSharesWithError:(id *)error
 {
-  v5 = [(_DPDAPPayloadEncoder *)self encryptedHelperShares];
+  encryptedHelperShares = [(_DPDAPPayloadEncoder *)self encryptedHelperShares];
 
-  if (!v5)
+  if (!encryptedHelperShares)
   {
-    v6 = [(_DPDAPPayloadEncoder *)self keys];
-    v7 = [v6 facilitatorPublicKey];
-    v8 = [(_DPDAPPayloadEncoder *)self encryptedShareForServerRole:3 publicKey:v7 error:a3];
+    keys = [(_DPDAPPayloadEncoder *)self keys];
+    facilitatorPublicKey = [keys facilitatorPublicKey];
+    v8 = [(_DPDAPPayloadEncoder *)self encryptedShareForServerRole:3 publicKey:facilitatorPublicKey error:error];
     [(_DPDAPPayloadEncoder *)self setEncryptedHelperShares:v8];
   }
 
-  return v5 == 0;
+  return encryptedHelperShares == 0;
 }
 
 - (id)inputShareInfoString
 {
-  v2 = [(_DPDAPPayloadEncoder *)self dapVersion];
-  v3 = [NSString stringWithFormat:@"dap-%@ input share", v2];
+  dapVersion = [(_DPDAPPayloadEncoder *)self dapVersion];
+  v3 = [NSString stringWithFormat:@"dap-%@ input share", dapVersion];
 
   return v3;
 }
 
-- (BOOL)isDonationValidWithError:(id *)a3
+- (BOOL)isDonationValidWithError:(id *)error
 {
-  v4 = [(_DPDAPPayloadEncoder *)self taskProv];
-  v5 = [v4 vdafType];
+  taskProv = [(_DPDAPPayloadEncoder *)self taskProv];
+  vdafType = [taskProv vdafType];
 
-  if (v5 == -65536)
+  if (vdafType == -65536)
   {
     return 1;
   }
@@ -306,7 +306,7 @@ LABEL_6:
   if (v7)
   {
     v8 = v7;
-    v21 = a3;
+    errorCopy = error;
     v9 = *v25;
     v10 = kDPMetadataVDAF;
     while (2)
@@ -319,9 +319,9 @@ LABEL_6:
         }
 
         v12 = *(*(&v24 + 1) + 8 * i);
-        v13 = [(_DPDAPPayloadEncoder *)self donation];
-        v14 = [v13 metadata];
-        v15 = [v14 objectForKeyedSubscript:v10];
+        donation = [(_DPDAPPayloadEncoder *)self donation];
+        metadata = [donation metadata];
+        v15 = [metadata objectForKeyedSubscript:v10];
         v16 = [v15 objectForKeyedSubscript:v12];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
@@ -331,7 +331,7 @@ LABEL_6:
           v18 = [NSString stringWithFormat:@"Invalid VDAF parameter(%@) in metadata.", v12];
           v19 = [_DPDediscoError errorWithCode:701 description:v18];
 
-          [v19 logAndStoreInError:v21];
+          [v19 logAndStoreInError:errorCopy];
           v6 = 0;
           goto LABEL_13;
         }

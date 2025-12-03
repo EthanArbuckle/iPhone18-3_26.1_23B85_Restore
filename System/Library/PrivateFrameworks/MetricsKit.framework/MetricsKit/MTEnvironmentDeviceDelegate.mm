@@ -20,16 +20,16 @@
 - (id)app
 {
   v2 = +[MTFrameworkEnvironment sharedEnvironment];
-  v3 = [v2 hostProcessBundleIdentifier];
+  hostProcessBundleIdentifier = [v2 hostProcessBundleIdentifier];
 
-  return v3;
+  return hostProcessBundleIdentifier;
 }
 
 - (id)appVersion
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 infoDictionary];
-  v4 = [v3 objectForKeyedSubscript:@"CFBundleShortVersionString"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  infoDictionary = [mainBundle infoDictionary];
+  v4 = [infoDictionary objectForKeyedSubscript:@"CFBundleShortVersionString"];
 
   return v4;
 }
@@ -149,8 +149,8 @@ void *__41__MTEnvironmentDeviceDelegate__diskUsage__block_invoke()
 
 - (id)capacityData
 {
-  v2 = [(MTEnvironmentDeviceDelegate *)self _diskUsage];
-  v3 = [v2 thenWithBlock:&__block_literal_global_44];
+  _diskUsage = [(MTEnvironmentDeviceDelegate *)self _diskUsage];
+  v3 = [_diskUsage thenWithBlock:&__block_literal_global_44];
 
   return v3;
 }
@@ -178,8 +178,8 @@ id __43__MTEnvironmentDeviceDelegate_capacityData__block_invoke(uint64_t a1, voi
 
 - (id)capacityDataAvailable
 {
-  v2 = [(MTEnvironmentDeviceDelegate *)self _diskUsage];
-  v3 = [v2 thenWithBlock:&__block_literal_global_48];
+  _diskUsage = [(MTEnvironmentDeviceDelegate *)self _diskUsage];
+  v3 = [_diskUsage thenWithBlock:&__block_literal_global_48];
 
   return v3;
 }
@@ -207,8 +207,8 @@ id __52__MTEnvironmentDeviceDelegate_capacityDataAvailable__block_invoke(uint64_
 
 - (id)capacityDisk
 {
-  v2 = [(MTEnvironmentDeviceDelegate *)self _diskUsage];
-  v3 = [v2 thenWithBlock:&__block_literal_global_50];
+  _diskUsage = [(MTEnvironmentDeviceDelegate *)self _diskUsage];
+  v3 = [_diskUsage thenWithBlock:&__block_literal_global_50];
 
   return v3;
 }
@@ -236,8 +236,8 @@ id __43__MTEnvironmentDeviceDelegate_capacityDisk__block_invoke(uint64_t a1, voi
 
 - (id)capacitySystem
 {
-  v2 = [(MTEnvironmentDeviceDelegate *)self _diskUsage];
-  v3 = [v2 thenWithBlock:&__block_literal_global_52];
+  _diskUsage = [(MTEnvironmentDeviceDelegate *)self _diskUsage];
+  v3 = [_diskUsage thenWithBlock:&__block_literal_global_52];
 
   return v3;
 }
@@ -265,8 +265,8 @@ id __45__MTEnvironmentDeviceDelegate_capacitySystem__block_invoke(uint64_t a1, v
 
 - (id)capacitySystemAvailable
 {
-  v2 = [(MTEnvironmentDeviceDelegate *)self _diskUsage];
-  v3 = [v2 thenWithBlock:&__block_literal_global_54];
+  _diskUsage = [(MTEnvironmentDeviceDelegate *)self _diskUsage];
+  v3 = [_diskUsage thenWithBlock:&__block_literal_global_54];
 
   return v3;
 }

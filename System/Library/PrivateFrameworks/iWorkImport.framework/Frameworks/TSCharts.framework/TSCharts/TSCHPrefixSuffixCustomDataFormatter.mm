@@ -1,42 +1,42 @@
 @interface TSCHPrefixSuffixCustomDataFormatter
-+ (id)dataFormatterWithCustomFormat:(id)a3 customFormatListKey:(id)a4 formatType:(unsigned int)a5 prefixString:(id)a6 suffixString:(id)a7;
-- (TSCHPrefixSuffixCustomDataFormatter)initWithCustomFormat:(id)a3 customFormatListKey:(id)a4 formatType:(unsigned int)a5 prefixString:(id)a6 suffixString:(id)a7;
-- (id)chartFormattedStringForValue:(id)a3 locale:(id)a4;
++ (id)dataFormatterWithCustomFormat:(id)format customFormatListKey:(id)key formatType:(unsigned int)type prefixString:(id)string suffixString:(id)suffixString;
+- (TSCHPrefixSuffixCustomDataFormatter)initWithCustomFormat:(id)format customFormatListKey:(id)key formatType:(unsigned int)type prefixString:(id)string suffixString:(id)suffixString;
+- (id)chartFormattedStringForValue:(id)value locale:(id)locale;
 - (id)convertToPersistableStyleObject;
-- (id)convertToSupportedClientFormatObjectWithLocale:(id)a3;
-- (id)p_formattedStringWithBodyString:(id)a3;
+- (id)convertToSupportedClientFormatObjectWithLocale:(id)locale;
+- (id)p_formattedStringWithBodyString:(id)string;
 @end
 
 @implementation TSCHPrefixSuffixCustomDataFormatter
 
-+ (id)dataFormatterWithCustomFormat:(id)a3 customFormatListKey:(id)a4 formatType:(unsigned int)a5 prefixString:(id)a6 suffixString:(id)a7
++ (id)dataFormatterWithCustomFormat:(id)format customFormatListKey:(id)key formatType:(unsigned int)type prefixString:(id)string suffixString:(id)suffixString
 {
-  v8 = *&a5;
-  v12 = a7;
-  v13 = a6;
-  v14 = a4;
-  v15 = a3;
-  v16 = [a1 alloc];
-  v21 = objc_msgSend_initWithCustomFormat_customFormatListKey_formatType_prefixString_suffixString_(v16, v17, v18, v19, v20, v15, v14, v8, v13, v12);
+  v8 = *&type;
+  suffixStringCopy = suffixString;
+  stringCopy = string;
+  keyCopy = key;
+  formatCopy = format;
+  v16 = [self alloc];
+  v21 = objc_msgSend_initWithCustomFormat_customFormatListKey_formatType_prefixString_suffixString_(v16, v17, v18, v19, v20, formatCopy, keyCopy, v8, stringCopy, suffixStringCopy);
 
   return v21;
 }
 
-- (TSCHPrefixSuffixCustomDataFormatter)initWithCustomFormat:(id)a3 customFormatListKey:(id)a4 formatType:(unsigned int)a5 prefixString:(id)a6 suffixString:(id)a7
+- (TSCHPrefixSuffixCustomDataFormatter)initWithCustomFormat:(id)format customFormatListKey:(id)key formatType:(unsigned int)type prefixString:(id)string suffixString:(id)suffixString
 {
-  v8 = *&a5;
-  v12 = a6;
-  v13 = a7;
+  v8 = *&type;
+  stringCopy = string;
+  suffixStringCopy = suffixString;
   v28.receiver = self;
   v28.super_class = TSCHPrefixSuffixCustomDataFormatter;
-  v15 = [(TSCHCustomDataFormatter *)&v28 initWithCustomFormat:a3 customFormatListKey:a4 formatType:v8];
+  v15 = [(TSCHCustomDataFormatter *)&v28 initWithCustomFormat:format customFormatListKey:key formatType:v8];
   if (v15)
   {
-    v19 = objc_msgSend_copy(v12, v14, v16, v17, v18);
+    v19 = objc_msgSend_copy(stringCopy, v14, v16, v17, v18);
     prefixString = v15->_prefixString;
     v15->_prefixString = v19;
 
-    v25 = objc_msgSend_copy(v13, v21, v22, v23, v24);
+    v25 = objc_msgSend_copy(suffixStringCopy, v21, v22, v23, v24);
     suffixString = v15->_suffixString;
     v15->_suffixString = v25;
   }
@@ -44,9 +44,9 @@
   return v15;
 }
 
-- (id)p_formattedStringWithBodyString:(id)a3
+- (id)p_formattedStringWithBodyString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v9 = objc_msgSend_string(MEMORY[0x277CCAB68], v5, v6, v7, v8);
   v14 = v9;
   if (self->_prefixString)
@@ -54,9 +54,9 @@
     objc_msgSend_appendString_(v9, v10, v11, v12, v13);
   }
 
-  if (v4)
+  if (stringCopy)
   {
-    objc_msgSend_appendString_(v14, v10, v11, v12, v13, v4);
+    objc_msgSend_appendString_(v14, v10, v11, v12, v13, stringCopy);
   }
 
   if (self->_suffixString)
@@ -69,11 +69,11 @@
   return v15;
 }
 
-- (id)chartFormattedStringForValue:(id)a3 locale:(id)a4
+- (id)chartFormattedStringForValue:(id)value locale:(id)locale
 {
   v12.receiver = self;
   v12.super_class = TSCHPrefixSuffixCustomDataFormatter;
-  v5 = [(TSCHCustomDataFormatter *)&v12 chartFormattedStringForValue:a3 locale:a4];
+  v5 = [(TSCHCustomDataFormatter *)&v12 chartFormattedStringForValue:value locale:locale];
   v10 = objc_msgSend_p_formattedStringWithBodyString_(self, v6, v7, v8, v9, v5);
 
   return v10;
@@ -88,9 +88,9 @@
   return v12;
 }
 
-- (id)convertToSupportedClientFormatObjectWithLocale:(id)a3
+- (id)convertToSupportedClientFormatObjectWithLocale:(id)locale
 {
-  v5 = a3;
+  localeCopy = locale;
   formatType = self->super._formatType;
   if (formatType != 270 && formatType != 274)
   {

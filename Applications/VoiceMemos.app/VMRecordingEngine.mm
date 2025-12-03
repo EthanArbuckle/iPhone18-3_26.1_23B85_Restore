@@ -1,25 +1,25 @@
 @interface VMRecordingEngine
-- (BOOL)configureWithAudioSettings:(id)a3 error:(id *)a4;
-- (BOOL)handleWillTerminate:(id *)a3;
-- (BOOL)sampleRecordingTime:(double *)a3;
-- (BOOL)startAndReturnError:(id *)a3;
+- (BOOL)configureWithAudioSettings:(id)settings error:(id *)error;
+- (BOOL)handleWillTerminate:(id *)terminate;
+- (BOOL)sampleRecordingTime:(double *)time;
+- (BOOL)startAndReturnError:(id *)error;
 - (NSURL)outputFileURL;
 - (VMRecordingController)controller;
 - (VMRecordingEngine)init;
-- (id)inputNode:(id *)a3;
+- (id)inputNode:(id *)node;
 - (id)outputFileSettings;
-- (void)_handleRecordingError:(id)a3;
+- (void)_handleRecordingError:(id)error;
 - (void)_scheduleFirstBuffer;
 - (void)_signalOverdubPlaybackHasStarted;
 - (void)_startRecording;
 - (void)dealloc;
-- (void)handleConfigurationChangeNotification:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)handleConfigurationChangeNotification:(id)notification;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)pause;
 - (void)reset;
-- (void)setController:(id)a3;
+- (void)setController:(id)controller;
 - (void)stop;
-- (void)stopRecordingAtTime:(double)a3 completion:(id)a4;
+- (void)stopRecordingAtTime:(double)time completion:(id)completion;
 @end
 
 @implementation VMRecordingEngine
@@ -66,9 +66,9 @@
   [(VMRecordingEngine *)&v5 dealloc];
 }
 
-- (void)setController:(id)a3
+- (void)setController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_controller);
   v5 = WeakRetained;
   if (WeakRetained)
@@ -85,36 +85,36 @@
   sub_1001B5844(&self->super.super.isa);
 }
 
-- (BOOL)sampleRecordingTime:(double *)a3
+- (BOOL)sampleRecordingTime:(double *)time
 {
   startTime = self->_startTime;
   if (startTime)
   {
-    v5 = self;
+    selfCopy = self;
     recordingTime = self->_recordingTime;
     hostTime = recordingTime->hostTime;
     frameCount = recordingTime->frameCount;
     v9 = startTime;
     [(AVAudioTime *)v9 sampleRate];
-    v11 = frameCount / v10 + v5->_punchInTime;
-    LODWORD(v5) = [(VMRecordingEngine *)v5 isRunning];
+    v11 = frameCount / v10 + selfCopy->_punchInTime;
+    LODWORD(selfCopy) = [(VMRecordingEngine *)selfCopy isRunning];
 
-    if (v5)
+    if (selfCopy)
     {
       [AVAudioTime secondsForHostTime:mach_absolute_time() - hostTime];
       v11 = v11 + v12;
     }
 
-    *a3 = v11;
+    *time = v11;
   }
 
   return startTime != 0;
 }
 
-- (void)stopRecordingAtTime:(double)a3 completion:(id)a4
+- (void)stopRecordingAtTime:(double)time completion:(id)completion
 {
-  v6 = a4;
-  v7 = objc_retainBlock(v6);
+  completionCopy = completion;
+  v7 = objc_retainBlock(completionCopy);
   v8 = self->_assetWriter;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
@@ -123,11 +123,11 @@
   v13[4] = self;
   v9 = v8;
   v14 = v9;
-  v10 = v6;
+  v10 = completionCopy;
   v15 = v10;
   v11 = objc_retainBlock(v13);
 
-  if (self->_startTime && (self->_stopTime = a3, (stopGroup = self->_stopGroup) != 0))
+  if (self->_startTime && (self->_stopTime = time, (stopGroup = self->_stopGroup) != 0))
   {
     dispatch_group_notify(stopGroup, &_dispatch_main_q, v11);
   }
@@ -138,16 +138,16 @@
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == @"targetState")
+  if (context == @"targetState")
   {
     WeakRetained = objc_loadWeakRetained(&self->_controller);
-    v8 = [WeakRetained targetState];
+    targetState = [WeakRetained targetState];
 
-    if (v8)
+    if (targetState)
     {
-      v9 = v8 == 3;
+      v9 = targetState == 3;
     }
 
     else
@@ -162,24 +162,24 @@
       [v10 stopRecordingWithController:v11 error:0];
     }
 
-    else if (v8 == 2)
+    else if (targetState == 2)
     {
       [(VMRecordingEngine *)self startAndReturnError:0];
     }
 
     v12 = objc_loadWeakRetained(&self->_controller);
-    [v12 setCurrentState:v8];
+    [v12 setCurrentState:targetState];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = VMRecordingEngine;
-    [(VMRecordingEngine *)&v13 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(VMRecordingEngine *)&v13 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-- (void)handleConfigurationChangeNotification:(id)a3
+- (void)handleConfigurationChangeNotification:(id)notification
 {
   if (([(VMRecordingEngine *)self isRunning]& 1) == 0)
   {
@@ -192,13 +192,13 @@
   }
 }
 
-- (id)inputNode:(id *)a3
+- (id)inputNode:(id *)node
 {
   v5.receiver = self;
   v5.super_class = VMRecordingEngine;
-  v3 = [(VMRecordingEngine *)&v5 inputNode];
+  inputNode = [(VMRecordingEngine *)&v5 inputNode];
 
-  return v3;
+  return inputNode;
 }
 
 - (void)_startRecording
@@ -207,10 +207,10 @@
   self->_recordingBlock = &stru_10028A598;
 }
 
-- (BOOL)configureWithAudioSettings:(id)a3 error:(id *)a4
+- (BOOL)configureWithAudioSettings:(id)settings error:(id *)error
 {
-  v6 = a3;
-  v7 = [(VMRecordingEngine *)self inputNode:a4];
+  settingsCopy = settings;
+  v7 = [(VMRecordingEngine *)self inputNode:error];
   v8 = v7;
   if (v7)
   {
@@ -230,7 +230,7 @@
 
     if (v11 == 0.0 || ![v9 channelCount])
     {
-      if (!a4)
+      if (!error)
       {
         v15 = 0;
 LABEL_27:
@@ -238,11 +238,11 @@ LABEL_27:
         goto LABEL_28;
       }
 
-      *a4 = [NSError errorWithDomain:@"VMAudioServiceErrorDomain" code:5 userInfo:0];
+      *error = [NSError errorWithDomain:@"VMAudioServiceErrorDomain" code:5 userInfo:0];
       WeakRetained = OSLogForCategory();
       if (os_log_type_enabled(WeakRetained, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = *a4;
+        v14 = *error;
         *buf = 136315394;
         v59 = "[VMRecordingEngine configureWithAudioSettings:error:]";
         v60 = 2112;
@@ -255,8 +255,8 @@ LABEL_27:
 
     else
     {
-      v16 = [v9 channelCount];
-      v17 = [v6 objectForKeyedSubscript:AVSampleRateKey];
+      channelCount = [v9 channelCount];
+      v17 = [settingsCopy objectForKeyedSubscript:AVSampleRateKey];
       [v17 doubleValue];
       v19 = v18;
       self->_outputSampleRate = v18;
@@ -271,12 +271,12 @@ LABEL_27:
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%s -- outputSampleRate = %g Hz", buf, 0x16u);
       }
 
-      v21 = [v6 objectForKeyedSubscript:AVNumberOfChannelsKey];
-      v22 = [v21 intValue];
+      v21 = [settingsCopy objectForKeyedSubscript:AVNumberOfChannelsKey];
+      intValue = [v21 intValue];
 
-      if (v11 != v19 || v16 != v22)
+      if (v11 != v19 || channelCount != intValue)
       {
-        v23 = [[AVAudioFormat alloc] initStandardFormatWithSampleRate:v22 channels:v19];
+        v23 = [[AVAudioFormat alloc] initStandardFormatWithSampleRate:intValue channels:v19];
         v24 = [[AVAudioConverter alloc] initFromFormat:v9 toFormat:v23];
         audioConverter = self->_audioConverter;
         self->_audioConverter = v24;
@@ -292,41 +292,41 @@ LABEL_27:
       WeakRetained = objc_loadWeakRetained(&self->_controller);
       if ([WeakRetained overdubbing])
       {
-        v30 = [(RCAssetWriter *)self->_assetWriter processingFormat];
-        v31 = [WeakRetained recordingComposition];
+        processingFormat = [(RCAssetWriter *)self->_assetWriter processingFormat];
+        recordingComposition = [WeakRetained recordingComposition];
         [WeakRetained targetTime];
         v33 = v32;
-        [v31 composedDuration];
+        [recordingComposition composedDuration];
         if (v33 >= v34)
         {
-          v35 = [[AVAudioPCMBuffer alloc] initWithPCMFormat:v30 frameCapacity:1024];
-          [v35 setFrameLength:1024];
-          v57[0] = v35;
-          v57[1] = v35;
+          recordingComposition2 = [[AVAudioPCMBuffer alloc] initWithPCMFormat:processingFormat frameCapacity:1024];
+          [recordingComposition2 setFrameLength:1024];
+          v57[0] = recordingComposition2;
+          v57[1] = recordingComposition2;
           v39 = [NSArray arrayWithObjects:v57 count:2];
-          v36 = [v39 objectEnumerator];
+          objectEnumerator = [v39 objectEnumerator];
         }
 
         else
         {
-          v35 = [WeakRetained recordingComposition];
+          recordingComposition2 = [WeakRetained recordingComposition];
           [WeakRetained targetTime];
           v56 = 0;
-          v36 = [v35 bufferEnumerator:v30 startTime:&v56 error:?];
+          objectEnumerator = [recordingComposition2 bufferEnumerator:processingFormat startTime:&v56 error:?];
         }
 
-        if (v36)
+        if (objectEnumerator)
         {
           v40 = objc_opt_new();
           [(VMRecordingEngine *)self attachNode:v40];
-          v41 = [(VMRecordingEngine *)self outputNode];
-          [(VMRecordingEngine *)self connect:v40 to:v41 format:v30];
+          outputNode = [(VMRecordingEngine *)self outputNode];
+          [(VMRecordingEngine *)self connect:v40 to:outputNode format:processingFormat];
 
           playerNode = self->_playerNode;
           self->_playerNode = v40;
           v43 = v40;
 
-          objc_storeStrong(&self->_playerBuffers, v36);
+          objc_storeStrong(&self->_playerBuffers, objectEnumerator);
           v44 = objc_opt_new();
           overdubBuffers = self->_overdubBuffers;
           self->_overdubBuffers = v44;
@@ -342,7 +342,7 @@ LABEL_27:
         [v37 inputLatency];
         self->_inputLatency = v38;
 
-        v30 = self->_recordingBlock;
+        processingFormat = self->_recordingBlock;
         self->_recordingBlock = &stru_10028A600;
       }
 
@@ -375,22 +375,22 @@ LABEL_28:
   return v15;
 }
 
-- (void)_handleRecordingError:(id)a3
+- (void)_handleRecordingError:(id)error
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100039408;
   v4[3] = &unk_10028A650;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  errorCopy = error;
+  v3 = errorCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
 - (void)_signalOverdubPlaybackHasStarted
 {
-  v3 = [(AVAudioPlayerNode *)self->_playerNode lastRenderTime];
-  [v3 sampleRate];
+  lastRenderTime = [(AVAudioPlayerNode *)self->_playerNode lastRenderTime];
+  [lastRenderTime sampleRate];
   v4 = [AVAudioTime timeWithSampleTime:0 atRate:?];
   v5 = [(AVAudioPlayerNode *)self->_playerNode nodeTimeForPlayerTime:v4];
   v6 = +[AVAudioSession sharedInstance];
@@ -427,11 +427,11 @@ LABEL_28:
 - (void)_scheduleFirstBuffer
 {
   v3 = self->_playerNode;
-  v4 = [(NSEnumerator *)self->_playerBuffers nextObject];
-  v5 = v4;
+  nextObject = [(NSEnumerator *)self->_playerBuffers nextObject];
+  v5 = nextObject;
   if (v3)
   {
-    v6 = v4 == 0;
+    v6 = nextObject == 0;
   }
 
   else
@@ -456,27 +456,27 @@ LABEL_28:
 
 - (NSURL)outputFileURL
 {
-  v2 = [(VMRecordingEngine *)self assetWriter];
-  v3 = [v2 url];
+  assetWriter = [(VMRecordingEngine *)self assetWriter];
+  v3 = [assetWriter url];
 
   return v3;
 }
 
 - (id)outputFileSettings
 {
-  v2 = [(VMRecordingEngine *)self assetWriter];
-  v3 = [v2 settings];
+  assetWriter = [(VMRecordingEngine *)self assetWriter];
+  settings = [assetWriter settings];
 
-  return v3;
+  return settings;
 }
 
-- (BOOL)handleWillTerminate:(id *)a3
+- (BOOL)handleWillTerminate:(id *)terminate
 {
-  v4 = [(VMRecordingEngine *)self assetWriter];
-  v5 = v4;
-  if (v4)
+  assetWriter = [(VMRecordingEngine *)self assetWriter];
+  v5 = assetWriter;
+  if (assetWriter)
   {
-    v6 = [v4 finishWritingWithError:a3];
+    v6 = [assetWriter finishWritingWithError:terminate];
   }
 
   else
@@ -494,11 +494,11 @@ LABEL_28:
   return WeakRetained;
 }
 
-- (BOOL)startAndReturnError:(id *)a3
+- (BOOL)startAndReturnError:(id *)error
 {
   v9.receiver = self;
   v9.super_class = VMRecordingEngine;
-  v4 = [(VMRecordingEngine *)&v9 startAndReturnError:a3];
+  v4 = [(VMRecordingEngine *)&v9 startAndReturnError:error];
   if (v4)
   {
     v5 = OSLogForCategory();

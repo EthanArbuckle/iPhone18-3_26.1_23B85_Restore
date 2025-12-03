@@ -1,30 +1,30 @@
 @interface NTKCFaceDetailUltraCubeSectionController
-+ (BOOL)hasUltraCubeSectionForFace:(id)a3 forEditMode:(int64_t)a4;
-- (BOOL)_handleDidSelectActionRowForOption:(id)a3;
++ (BOOL)hasUltraCubeSectionForFace:(id)face forEditMode:(int64_t)mode;
+- (BOOL)_handleDidSelectActionRowForOption:(id)option;
 - (BOOL)canAddFace;
-- (NTKCFaceDetailUltraCubeSectionController)initWithTableViewController:(id)a3 face:(id)a4 inGallery:(BOOL)a5 editOptionCollection:(id)a6 faceView:(id)a7 externalAssets:(id)a8;
+- (NTKCFaceDetailUltraCubeSectionController)initWithTableViewController:(id)controller face:(id)face inGallery:(BOOL)gallery editOptionCollection:(id)collection faceView:(id)view externalAssets:(id)assets;
 - (UIViewController)parentViewController;
-- (id)_actionNameForOption:(id)a3;
-- (void)_customizeActionRow:(id)a3 withEditOption:(id)a4;
-- (void)_setPhotos:(id)a3;
+- (id)_actionNameForOption:(id)option;
+- (void)_customizeActionRow:(id)row withEditOption:(id)option;
+- (void)_setPhotos:(id)photos;
 - (void)_updateUltraCubeSection;
-- (void)customUltraCubeControllerDidFinish:(id)a3;
+- (void)customUltraCubeControllerDidFinish:(id)finish;
 - (void)faceDidChange;
 - (void)faceDidChangeResourceDirectory;
-- (void)saveChangesWithCompletion:(id)a3;
-- (void)setSelectedOptions:(id)a3;
+- (void)saveChangesWithCompletion:(id)completion;
+- (void)setSelectedOptions:(id)options;
 @end
 
 @implementation NTKCFaceDetailUltraCubeSectionController
 
-+ (BOOL)hasUltraCubeSectionForFace:(id)a3 forEditMode:(int64_t)a4
++ (BOOL)hasUltraCubeSectionForFace:(id)face forEditMode:(int64_t)mode
 {
-  v5 = a3;
+  faceCopy = face;
   v6 = +[NTKUltraCubeFaceBundle identifier];
-  v7 = [v5 bundleIdentifier];
+  bundleIdentifier = [faceCopy bundleIdentifier];
 
-  v8 = [v7 isEqualToString:v6];
-  if (a4 == 12)
+  v8 = [bundleIdentifier isEqualToString:v6];
+  if (mode == 12)
   {
     v9 = v8;
   }
@@ -37,32 +37,32 @@
   return v9;
 }
 
-- (NTKCFaceDetailUltraCubeSectionController)initWithTableViewController:(id)a3 face:(id)a4 inGallery:(BOOL)a5 editOptionCollection:(id)a6 faceView:(id)a7 externalAssets:(id)a8
+- (NTKCFaceDetailUltraCubeSectionController)initWithTableViewController:(id)controller face:(id)face inGallery:(BOOL)gallery editOptionCollection:(id)collection faceView:(id)view externalAssets:(id)assets
 {
-  v11 = a5;
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  if (v18)
+  galleryCopy = gallery;
+  controllerCopy = controller;
+  faceCopy = face;
+  collectionCopy = collection;
+  viewCopy = view;
+  assetsCopy = assets;
+  if (assetsCopy)
   {
-    v19 = [v16 filteredCollectionWithObjectsPassingTest:&stru_494D0];
+    v19 = [collectionCopy filteredCollectionWithObjectsPassingTest:&stru_494D0];
   }
 
   else
   {
-    v19 = v16;
+    v19 = collectionCopy;
   }
 
   v20 = v19;
   v24.receiver = self;
   v24.super_class = NTKCFaceDetailUltraCubeSectionController;
-  v21 = [(NTKCFaceDetailUltraCubeSectionController *)&v24 initWithTableViewController:v14 face:v15 inGallery:v11 editOptionCollection:v19 faceView:v17];
+  v21 = [(NTKCFaceDetailUltraCubeSectionController *)&v24 initWithTableViewController:controllerCopy face:faceCopy inGallery:galleryCopy editOptionCollection:v19 faceView:viewCopy];
   v22 = v21;
   if (v21)
   {
-    [(NTKCFaceDetailUltraCubeSectionController *)v21 setExternalAssets:v18];
+    [(NTKCFaceDetailUltraCubeSectionController *)v21 setExternalAssets:assetsCopy];
   }
 
   return v22;
@@ -70,10 +70,10 @@
 
 - (BOOL)canAddFace
 {
-  v3 = [(NTKCFaceDetailUltraCubeSectionController *)self selectedOptions];
-  v4 = [(NTKCFaceDetailUltraCubeSectionController *)self collection];
-  v5 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 mode]);
-  v6 = [v3 objectForKeyedSubscript:v5];
+  selectedOptions = [(NTKCFaceDetailUltraCubeSectionController *)self selectedOptions];
+  collection = [(NTKCFaceDetailUltraCubeSectionController *)self collection];
+  v5 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [collection mode]);
+  v6 = [selectedOptions objectForKeyedSubscript:v5];
 
   if ([v6 ultracubeContent])
   {
@@ -82,10 +82,10 @@
 
   else
   {
-    v8 = [(NTKCFaceDetailUltraCubeSectionController *)self face];
-    v9 = [v8 hasSampleResourceDirectory];
+    face = [(NTKCFaceDetailUltraCubeSectionController *)self face];
+    hasSampleResourceDirectory = [face hasSampleResourceDirectory];
 
-    v7 = ([(NTKCompanionUltraCubePhotosEditor *)self->_ultracubePhotosEditor photosCount]!= 0) & ~v9;
+    v7 = ([(NTKCompanionUltraCubePhotosEditor *)self->_ultracubePhotosEditor photosCount]!= 0) & ~hasSampleResourceDirectory;
   }
 
   return v7;
@@ -107,22 +107,22 @@
   [(NTKCFaceDetailUltraCubeSectionController *)self _updateUltraCubeSection];
 }
 
-- (void)setSelectedOptions:(id)a3
+- (void)setSelectedOptions:(id)options
 {
   v56.receiver = self;
   v56.super_class = NTKCFaceDetailUltraCubeSectionController;
-  v4 = a3;
-  [(NTKCFaceDetailUltraCubeSectionController *)&v56 setSelectedOptions:v4];
+  optionsCopy = options;
+  [(NTKCFaceDetailUltraCubeSectionController *)&v56 setSelectedOptions:optionsCopy];
   ultracubePhotosEditor = self->_ultracubePhotosEditor;
-  v6 = [(NTKCFaceDetailUltraCubeSectionController *)self collection];
-  v7 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v6 mode]);
-  v8 = [v4 objectForKeyedSubscript:v7];
+  collection = [(NTKCFaceDetailUltraCubeSectionController *)self collection];
+  v7 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [collection mode]);
+  v8 = [optionsCopy objectForKeyedSubscript:v7];
 
   if (!ultracubePhotosEditor || (currentContent = self->_currentContent, currentContent != [v8 ultracubeContent]))
   {
-    v10 = [v8 ultracubeContent];
-    self->_currentContent = v10;
-    if (v10)
+    ultracubeContent = [v8 ultracubeContent];
+    self->_currentContent = ultracubeContent;
+    if (ultracubeContent)
     {
 LABEL_4:
       [(NTKCFaceDetailUltraCubeSectionController *)self reloadActionRow];
@@ -138,9 +138,9 @@ LABEL_4:
       if (externalAssets && ([(NSArray *)externalAssets firstObject], v23 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v23, (isKindOfClass & 1) != 0))
       {
         v25 = [NTKCompanionUltraCubePhotosEditor alloc];
-        v26 = [(NTKCFaceDetailUltraCubeSectionController *)self face];
-        v27 = [v26 device];
-        v28 = [(NTKCompanionUltraCubePhotosEditor *)v25 initWithResourceDirectory:0 forDevice:v27];
+        face = [(NTKCFaceDetailUltraCubeSectionController *)self face];
+        device = [face device];
+        v28 = [(NTKCompanionUltraCubePhotosEditor *)v25 initWithResourceDirectory:0 forDevice:device];
         v29 = self->_ultracubePhotosEditor;
         self->_ultracubePhotosEditor = v28;
 
@@ -156,35 +156,35 @@ LABEL_4:
 
       else
       {
-        v37 = [(NTKCFaceDetailUltraCubeSectionController *)self face];
-        v38 = [v37 resourceDirectory];
+        face2 = [(NTKCFaceDetailUltraCubeSectionController *)self face];
+        resourceDirectory = [face2 resourceDirectory];
 
-        v39 = [(NTKCFaceDetailUltraCubeSectionController *)self face];
-        v40 = [v39 hasSampleResourceDirectory];
+        face3 = [(NTKCFaceDetailUltraCubeSectionController *)self face];
+        hasSampleResourceDirectory = [face3 hasSampleResourceDirectory];
 
-        if (v40)
+        if (hasSampleResourceDirectory)
         {
           v41 = _NTKLoggingObjectForDomain();
           if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
           {
-            v42 = [(NTKCFaceDetailUltraCubeSectionController *)self face];
+            face4 = [(NTKCFaceDetailUltraCubeSectionController *)self face];
             *buf = 138412290;
-            v58 = v42;
+            v58 = face4;
             _os_log_impl(&dword_0, v41, OS_LOG_TYPE_DEFAULT, "setSelectedOptions: face %@ has sample resource directory; switching to nil for directory editor", buf, 0xCu);
           }
 
-          v43 = [(NTKCFaceDetailUltraCubeSectionController *)self face];
-          v44 = [v43 resourceDirectory];
+          face5 = [(NTKCFaceDetailUltraCubeSectionController *)self face];
+          resourceDirectory2 = [face5 resourceDirectory];
           savedGalleryResourceDirectory = self->_savedGalleryResourceDirectory;
-          self->_savedGalleryResourceDirectory = v44;
+          self->_savedGalleryResourceDirectory = resourceDirectory2;
 
-          v38 = 0;
+          resourceDirectory = 0;
         }
 
         v46 = [NTKCompanionUltraCubePhotosEditor alloc];
-        v47 = [(NTKCFaceDetailUltraCubeSectionController *)self face];
-        v48 = [v47 device];
-        v49 = [(NTKCompanionUltraCubePhotosEditor *)v46 initWithResourceDirectory:v38 forDevice:v48];
+        face6 = [(NTKCFaceDetailUltraCubeSectionController *)self face];
+        device2 = [face6 device];
+        v49 = [(NTKCompanionUltraCubePhotosEditor *)v46 initWithResourceDirectory:resourceDirectory forDevice:device2];
         v50 = self->_ultracubePhotosEditor;
         self->_ultracubePhotosEditor = v49;
       }
@@ -192,36 +192,36 @@ LABEL_4:
       goto LABEL_4;
     }
 
-    v12 = [(NTKCFaceDetailUltraCubeSectionController *)self inGallery];
+    inGallery = [(NTKCFaceDetailUltraCubeSectionController *)self inGallery];
     v13 = self->_ultracubePhotosEditor;
-    if (v12)
+    if (inGallery)
     {
       if (!v13)
       {
         v14 = [NTKCompanionUltraCubePhotosEditor alloc];
-        v15 = [(NTKCFaceDetailUltraCubeSectionController *)self face];
-        v16 = [v15 device];
-        v17 = [(NTKCompanionUltraCubePhotosEditor *)v14 initWithResourceDirectory:0 forDevice:v16];
+        face7 = [(NTKCFaceDetailUltraCubeSectionController *)self face];
+        device3 = [face7 device];
+        v17 = [(NTKCompanionUltraCubePhotosEditor *)v14 initWithResourceDirectory:0 forDevice:device3];
         v18 = self->_ultracubePhotosEditor;
         self->_ultracubePhotosEditor = v17;
 
         v13 = self->_ultracubePhotosEditor;
       }
 
-      v19 = [(NTKCompanionUltraCubePhotosEditor *)v13 galleryPreviewResourceDirectory];
+      galleryPreviewResourceDirectory = [(NTKCompanionUltraCubePhotosEditor *)v13 galleryPreviewResourceDirectory];
 
       v20 = self->_ultracubePhotosEditor;
-      if (v19)
+      if (galleryPreviewResourceDirectory)
       {
-        v21 = [(NTKCompanionUltraCubePhotosEditor *)v20 galleryPreviewResourceDirectory];
+        galleryPreviewResourceDirectory2 = [(NTKCompanionUltraCubePhotosEditor *)v20 galleryPreviewResourceDirectory];
       }
 
       else
       {
-        v51 = [(NTKCompanionUltraCubePhotosEditor *)v20 resourceDirectory];
+        resourceDirectory3 = [(NTKCompanionUltraCubePhotosEditor *)v20 resourceDirectory];
 
         v52 = self->_ultracubePhotosEditor;
-        if (!v51)
+        if (!resourceDirectory3)
         {
           v54[0] = _NSConcreteStackBlock;
           v54[1] = 3221225472;
@@ -238,12 +238,12 @@ LABEL_27:
           goto LABEL_4;
         }
 
-        v21 = [(NTKCompanionUltraCubePhotosEditor *)v52 resourceDirectory];
+        galleryPreviewResourceDirectory2 = [(NTKCompanionUltraCubePhotosEditor *)v52 resourceDirectory];
       }
 
-      v36 = v21;
-      v53 = [(NTKCFaceDetailUltraCubeSectionController *)self face];
-      [v53 setResourceDirectory:v36];
+      face10 = galleryPreviewResourceDirectory2;
+      face8 = [(NTKCFaceDetailUltraCubeSectionController *)self face];
+      [face8 setResourceDirectory:face10];
     }
 
     else
@@ -251,15 +251,15 @@ LABEL_27:
       if (!v13)
       {
         v31 = [NTKCompanionUltraCubePhotosEditor alloc];
-        v32 = [(NTKCFaceDetailUltraCubeSectionController *)self face];
-        v33 = [v32 device];
-        v34 = [(NTKCompanionUltraCubePhotosEditor *)v31 initWithResourceDirectory:0 forDevice:v33];
+        face9 = [(NTKCFaceDetailUltraCubeSectionController *)self face];
+        device4 = [face9 device];
+        v34 = [(NTKCompanionUltraCubePhotosEditor *)v31 initWithResourceDirectory:0 forDevice:device4];
         v35 = self->_ultracubePhotosEditor;
         self->_ultracubePhotosEditor = v34;
       }
 
-      v36 = [(NTKCFaceDetailUltraCubeSectionController *)self face];
-      [v36 setResourceDirectory:0];
+      face10 = [(NTKCFaceDetailUltraCubeSectionController *)self face];
+      [face10 setResourceDirectory:0];
     }
 
     goto LABEL_27;
@@ -268,48 +268,48 @@ LABEL_27:
 LABEL_5:
 }
 
-- (BOOL)_handleDidSelectActionRowForOption:(id)a3
+- (BOOL)_handleDidSelectActionRowForOption:(id)option
 {
-  v4 = [a3 ultracubeContent];
-  if (!v4)
+  ultracubeContent = [option ultracubeContent];
+  if (!ultracubeContent)
   {
     if ([(NTKCompanionUltraCubePhotosEditor *)self->_ultracubePhotosEditor photosCount])
     {
       v5 = [NTKCUltraCubePhotoListViewController alloc];
       ultracubePhotosEditor = self->_ultracubePhotosEditor;
-      v7 = [(NTKCFaceDetailUltraCubeSectionController *)self face];
-      v8 = [(NTKCFaceDetailUltraCubeSectionController *)self inGallery];
-      v9 = [(NTKCFaceDetailUltraCubeSectionController *)self faceView];
-      v10 = [(NTKCUltraCubePhotoListViewController *)v5 initWithUltraCubePhotosEditor:ultracubePhotosEditor forFace:v7 inGallery:v8 faceView:v9];
+      face = [(NTKCFaceDetailUltraCubeSectionController *)self face];
+      inGallery = [(NTKCFaceDetailUltraCubeSectionController *)self inGallery];
+      faceView = [(NTKCFaceDetailUltraCubeSectionController *)self faceView];
+      v10 = [(NTKCUltraCubePhotoListViewController *)v5 initWithUltraCubePhotosEditor:ultracubePhotosEditor forFace:face inGallery:inGallery faceView:faceView];
 
       [(NTKCUltraCubePhotoListViewController *)v10 setDelegate:self];
-      v11 = [(NTKCFaceDetailUltraCubeSectionController *)self parentViewController];
-      [v11 presentViewController:v10 animated:1 completion:0];
+      parentViewController = [(NTKCFaceDetailUltraCubeSectionController *)self parentViewController];
+      [parentViewController presentViewController:v10 animated:1 completion:0];
     }
 
     else
     {
       v10 = [NTKCPhotosAddController ultraCubeConfigurationWithLimit:24];
-      v12 = [(NTKCFaceDetailUltraCubeSectionController *)self parentViewController];
+      parentViewController2 = [(NTKCFaceDetailUltraCubeSectionController *)self parentViewController];
       v14[0] = _NSConcreteStackBlock;
       v14[1] = 3221225472;
       v14[2] = sub_27200;
       v14[3] = &unk_48EB0;
       v14[4] = self;
-      [NTKCPhotosAddController presentPhotosAddControllerFromViewController:v12 configuration:v10 withCompletion:v14];
+      [NTKCPhotosAddController presentPhotosAddControllerFromViewController:parentViewController2 configuration:v10 withCompletion:v14];
     }
   }
 
-  return v4 != 0;
+  return ultracubeContent != 0;
 }
 
-- (id)_actionNameForOption:(id)a3
+- (id)_actionNameForOption:(id)option
 {
-  v4 = a3;
+  optionCopy = option;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = optionCopy;
     if ([v5 ultracubeContent])
     {
       v6 = 0;
@@ -317,10 +317,10 @@ LABEL_5:
 
     else
     {
-      v7 = [(NTKCompanionUltraCubePhotosEditor *)self->_ultracubePhotosEditor photosCount];
-      if (v7)
+      photosCount = [(NTKCompanionUltraCubePhotosEditor *)self->_ultracubePhotosEditor photosCount];
+      if (photosCount)
       {
-        v8 = v7;
+        v8 = photosCount;
         v9 = NTKCCustomizationLocalizedFormat();
         v6 = [NSString localizedStringWithFormat:v9, v8];
       }
@@ -338,22 +338,22 @@ LABEL_5:
   {
     v12.receiver = self;
     v12.super_class = NTKCFaceDetailUltraCubeSectionController;
-    v6 = [(NTKCFaceDetailUltraCubeSectionController *)&v12 _actionNameForOption:v4];
+    v6 = [(NTKCFaceDetailUltraCubeSectionController *)&v12 _actionNameForOption:optionCopy];
   }
 
   return v6;
 }
 
-- (void)_customizeActionRow:(id)a3 withEditOption:(id)a4
+- (void)_customizeActionRow:(id)row withEditOption:(id)option
 {
-  v12 = a3;
-  v6 = a4;
+  rowCopy = row;
+  optionCopy = option;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(NTKCFaceDetailUltraCubeSectionController *)self _actionNameForOption:v6];
-    v8 = [v12 textLabel];
-    [v8 setText:v7];
+    v7 = [(NTKCFaceDetailUltraCubeSectionController *)self _actionNameForOption:optionCopy];
+    textLabel = [rowCopy textLabel];
+    [textLabel setText:v7];
 
     if ([(NTKCompanionUltraCubePhotosEditor *)self->_ultracubePhotosEditor photosCount])
     {
@@ -367,16 +367,16 @@ LABEL_5:
       v10 = 0;
     }
 
-    v11 = [v12 textLabel];
-    [v11 setTextColor:v9];
+    textLabel2 = [rowCopy textLabel];
+    [textLabel2 setTextColor:v9];
 
-    [v12 setAccessoryType:v10];
+    [rowCopy setAccessoryType:v10];
   }
 }
 
-- (void)_setPhotos:(id)a3
+- (void)_setPhotos:(id)photos
 {
-  [(NTKCompanionUltraCubePhotosEditor *)self->_ultracubePhotosEditor addPhotosFromUIImagePicker:a3];
+  [(NTKCompanionUltraCubePhotosEditor *)self->_ultracubePhotosEditor addPhotosFromUIImagePicker:photos];
   [(NTKCFaceDetailUltraCubeSectionController *)self _updateUltraCubeSection];
   if ([(NTKCFaceDetailUltraCubeSectionController *)self inGallery])
   {
@@ -400,9 +400,9 @@ LABEL_5:
 {
   if (!self->_currentContent)
   {
-    v3 = [(NTKCFaceDetailUltraCubeSectionController *)self actionRow];
+    actionRow = [(NTKCFaceDetailUltraCubeSectionController *)self actionRow];
 
-    if (v3)
+    if (actionRow)
     {
       if (self->_externalAssets && ![(NTKCompanionUltraCubePhotosEditor *)self->_ultracubePhotosEditor photosCount])
       {
@@ -416,13 +416,13 @@ LABEL_5:
     }
   }
 
-  v4 = [(NTKCFaceDetailUltraCubeSectionController *)self delegate];
-  [v4 ultracubeSectionDidUpdate:self];
+  delegate = [(NTKCFaceDetailUltraCubeSectionController *)self delegate];
+  [delegate ultracubeSectionDidUpdate:self];
 }
 
-- (void)saveChangesWithCompletion:(id)a3
+- (void)saveChangesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(NTKCFaceDetailUltraCubeSectionController *)self hasChanges]&& (ultracubePhotosEditor = self->_ultracubePhotosEditor) != 0)
   {
     v6[0] = _NSConcreteStackBlock;
@@ -430,27 +430,27 @@ LABEL_5:
     v6[2] = sub_278A8;
     v6[3] = &unk_49520;
     v6[4] = self;
-    v7 = v4;
+    v7 = completionCopy;
     [(NTKCompanionUltraCubePhotosEditor *)ultracubePhotosEditor finalizeWithCompletion:v6];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)customUltraCubeControllerDidFinish:(id)a3
+- (void)customUltraCubeControllerDidFinish:(id)finish
 {
-  v4 = a3;
+  finishCopy = finish;
   [(NTKCFaceDetailUltraCubeSectionController *)self _updateUltraCubeSection];
   if (![(NTKCompanionUltraCubePhotosEditor *)self->_ultracubePhotosEditor photosCount])
   {
     savedGalleryResourceDirectory = self->_savedGalleryResourceDirectory;
     if (savedGalleryResourceDirectory)
     {
-      v6 = [(NTKCFaceDetailUltraCubeSectionController *)self face];
-      [v6 setResourceDirectory:savedGalleryResourceDirectory];
+      face = [(NTKCFaceDetailUltraCubeSectionController *)self face];
+      [face setResourceDirectory:savedGalleryResourceDirectory];
 
       v7 = _NTKLoggingObjectForDomain();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -463,7 +463,7 @@ LABEL_5:
     }
   }
 
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  [finishCopy dismissViewControllerAnimated:1 completion:0];
 }
 
 - (UIViewController)parentViewController

@@ -1,16 +1,16 @@
 @interface SXLineComponentSizer
-- (double)calculateHeightForWidth:(double)a3 layoutContext:(id)a4;
+- (double)calculateHeightForWidth:(double)width layoutContext:(id)context;
 @end
 
 @implementation SXLineComponentSizer
 
-- (double)calculateHeightForWidth:(double)a3 layoutContext:(id)a4
+- (double)calculateHeightForWidth:(double)width layoutContext:(id)context
 {
-  v5 = [a4 unitConverter];
-  v6 = [(SXComponentSizer *)self component];
-  v7 = [v6 stroke];
-  v8 = [v7 width];
-  [v5 convertValueToPoints:{v8, v9}];
+  unitConverter = [context unitConverter];
+  component = [(SXComponentSizer *)self component];
+  stroke = [component stroke];
+  width = [stroke width];
+  [unitConverter convertValueToPoints:{width, v9}];
   v11 = v10;
 
   result = 1.0;

@@ -5,9 +5,9 @@
 - (id)bccRecipients;
 - (id)composeWebView;
 - (id)sendingAccountProxy;
-- (void)addSignature:(BOOL)a3;
-- (void)didInsertAttachment:(id)a3;
-- (void)setSendingEmailAddress:(id)a3;
+- (void)addSignature:(BOOL)signature;
+- (void)didInsertAttachment:(id)attachment;
+- (void)setSendingEmailAddress:(id)address;
 @end
 
 @implementation MFNanoServerMessageSenderComposeDelegate
@@ -36,8 +36,8 @@
     self->_bodyField = v4;
 
     v6 = self->_bodyField;
-    v7 = [(_MFMailCompositionContext *)self->_compositionContext contextID];
-    [(MFComposeWebView *)v6 setCompositionContextID:v7];
+    contextID = [(_MFMailCompositionContext *)self->_compositionContext contextID];
+    [(MFComposeWebView *)v6 setCompositionContextID:contextID];
 
     [(MFComposeWebView *)self->_bodyField setMailComposeViewDelegate:self];
     bodyField = self->_bodyField;
@@ -54,37 +54,37 @@
 
   if (v5)
   {
-    v6 = [(MFNanoServerMessageSenderComposeDelegate *)self sendingEmailAddress];
-    v7 = [MailAccount accountContainingEmailAddress:v6 includingInactive:1];
+    sendingEmailAddress = [(MFNanoServerMessageSenderComposeDelegate *)self sendingEmailAddress];
+    v7 = [MailAccount accountContainingEmailAddress:sendingEmailAddress includingInactive:1];
 
     if (v7 || (+[MailAccount defaultMailAccountForDelivery], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v8 = [v7 emailAddressStrings];
-      v9 = [v8 count];
+      emailAddressStrings = [v7 emailAddressStrings];
+      stringValue = [emailAddressStrings count];
 
-      if (v9)
+      if (stringValue)
       {
-        v10 = [v7 emailAddressStrings];
-        v11 = [v10 objectAtIndexedSubscript:0];
-        v12 = [v11 emailAddressValue];
-        v13 = [ECEmailAddressComponents componentsWithEmailAddress:v12];
+        emailAddressStrings2 = [v7 emailAddressStrings];
+        v11 = [emailAddressStrings2 objectAtIndexedSubscript:0];
+        emailAddressValue = [v11 emailAddressValue];
+        v13 = [ECEmailAddressComponents componentsWithEmailAddress:emailAddressValue];
 
-        v14 = [v7 fullUserName];
-        [v13 setDisplayName:v14];
+        fullUserName = [v7 fullUserName];
+        [v13 setDisplayName:fullUserName];
 
-        v9 = [v13 stringValue];
+        stringValue = [v13 stringValue];
       }
     }
 
     else
     {
-      v9 = 0;
+      stringValue = 0;
     }
 
-    if ([v9 length] && (objc_msgSend(v3, "containsObject:", v9) & 1) == 0)
+    if ([stringValue length] && (objc_msgSend(v3, "containsObject:", stringValue) & 1) == 0)
     {
       v15 = [NSMutableArray arrayWithArray:v3];
-      [v15 addObject:v9];
+      [v15 addObject:stringValue];
     }
 
     else
@@ -98,24 +98,24 @@
   return v3;
 }
 
-- (void)setSendingEmailAddress:(id)a3
+- (void)setSendingEmailAddress:(id)address
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  addressCopy = address;
+  v4 = [addressCopy copy];
   sendingEmailAddress = self->_sendingEmailAddress;
   self->_sendingEmailAddress = v4;
 }
 
 - (id)attachments
 {
-  v3 = [(MFNanoServerMessageSenderComposeDelegate *)self compositionContext];
-  v4 = [v3 contextID];
+  compositionContext = [(MFNanoServerMessageSenderComposeDelegate *)self compositionContext];
+  contextID = [compositionContext contextID];
 
-  if ([v4 length])
+  if ([contextID length])
   {
-    v5 = [(MFNanoServerMessageSenderComposeDelegate *)self compositionContext];
-    v6 = [v5 attachmentManager];
-    v7 = [v6 attachmentsForContext:v4];
+    compositionContext2 = [(MFNanoServerMessageSenderComposeDelegate *)self compositionContext];
+    attachmentManager = [compositionContext2 attachmentManager];
+    v7 = [attachmentManager attachmentsForContext:contextID];
   }
 
   else
@@ -143,56 +143,56 @@
 
 - (id)sendingAccountProxy
 {
-  v3 = [(MFNanoServerMessageSenderComposeDelegate *)self accountProxyGenerator];
-  v4 = [v3 accountProxyContainingEmailAddress:self->_sendingEmailAddress includingInactive:0 originatingBundleID:0 sourceAccountManagement:0];
+  accountProxyGenerator = [(MFNanoServerMessageSenderComposeDelegate *)self accountProxyGenerator];
+  v4 = [accountProxyGenerator accountProxyContainingEmailAddress:self->_sendingEmailAddress includingInactive:0 originatingBundleID:0 sourceAccountManagement:0];
 
   return v4;
 }
 
-- (void)addSignature:(BOOL)a3
+- (void)addSignature:(BOOL)signature
 {
-  v3 = a3;
+  signatureCopy = signature;
   v5 = +[MFNanoBridgeSettingsManager sharedInstance];
-  v8 = [v5 signature];
+  signature = [v5 signature];
 
-  if ([v8 length])
+  if ([signature length])
   {
     bodyField = self->_bodyField;
-    if (v3)
+    if (signatureCopy)
     {
-      v7 = [NSString stringWithFormat:@"<br/><br/>%@<br/><br/>", v8];
+      v7 = [NSString stringWithFormat:@"<br/><br/>%@<br/><br/>", signature];
       [(MFComposeWebView *)bodyField prependMarkupString:v7 quote:0];
     }
 
     else
     {
-      v7 = [NSString stringWithFormat:@"<br/><br/>%@", v8];
+      v7 = [NSString stringWithFormat:@"<br/><br/>%@", signature];
       [(MFComposeWebView *)bodyField appendMarkupString:v7 quote:0];
     }
   }
 }
 
-- (void)didInsertAttachment:(id)a3
+- (void)didInsertAttachment:(id)attachment
 {
-  v10 = a3;
-  v4 = [(MFNanoServerMessageSenderComposeDelegate *)self attachmentsAdded];
-  v5 = [v10 contentID];
-  [v4 addObject:v5];
+  attachmentCopy = attachment;
+  attachmentsAdded = [(MFNanoServerMessageSenderComposeDelegate *)self attachmentsAdded];
+  contentID = [attachmentCopy contentID];
+  [attachmentsAdded addObject:contentID];
 
-  v6 = [(MFNanoServerMessageSenderComposeDelegate *)self attachmentsAdded];
-  v7 = [v6 count];
-  v8 = [(MFNanoServerMessageSenderComposeDelegate *)self attachments];
-  if (v7 == [v8 count])
+  attachmentsAdded2 = [(MFNanoServerMessageSenderComposeDelegate *)self attachmentsAdded];
+  v7 = [attachmentsAdded2 count];
+  attachments = [(MFNanoServerMessageSenderComposeDelegate *)self attachments];
+  if (v7 == [attachments count])
   {
-    v9 = [(MFNanoServerMessageSenderComposeDelegate *)self attachmentConfigCompletion];
+    attachmentConfigCompletion = [(MFNanoServerMessageSenderComposeDelegate *)self attachmentConfigCompletion];
 
-    if (!v9)
+    if (!attachmentConfigCompletion)
     {
       goto LABEL_6;
     }
 
-    v6 = [(MFNanoServerMessageSenderComposeDelegate *)self attachmentConfigCompletion];
-    v6[2]();
+    attachmentsAdded2 = [(MFNanoServerMessageSenderComposeDelegate *)self attachmentConfigCompletion];
+    attachmentsAdded2[2]();
   }
 
   else

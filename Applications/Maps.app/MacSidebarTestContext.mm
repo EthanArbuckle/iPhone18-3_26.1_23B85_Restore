@@ -6,8 +6,8 @@
 - (void)_popSidebarController;
 - (void)_pushSidebarController;
 - (void)_toggleWantsControl;
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
 @end
 
 @implementation MacSidebarTestContext
@@ -22,54 +22,54 @@
 - (void)_popSidebarController
 {
   [(NSMutableArray *)self->_controllers removeLastObject];
-  v3 = [(MacSidebarTestContext *)self macChromeViewController];
-  [v3 setNeedsUpdateComponent:@"sidebar" animated:1];
+  macChromeViewController = [(MacSidebarTestContext *)self macChromeViewController];
+  [macChromeViewController setNeedsUpdateComponent:@"sidebar" animated:1];
 }
 
 - (void)_pushSidebarController
 {
   controllers = self->_controllers;
-  v4 = [(MacSidebarTestContext *)self _createContainee];
-  [(NSMutableArray *)controllers addObject:v4];
+  _createContainee = [(MacSidebarTestContext *)self _createContainee];
+  [(NSMutableArray *)controllers addObject:_createContainee];
 
-  v5 = [(MacSidebarTestContext *)self macChromeViewController];
-  [v5 setNeedsUpdateComponent:@"sidebar" animated:1];
+  macChromeViewController = [(MacSidebarTestContext *)self macChromeViewController];
+  [macChromeViewController setNeedsUpdateComponent:@"sidebar" animated:1];
 }
 
 - (void)_toggleWantsControl
 {
   [(MKCatalystButton *)self->_wantsControlButton setSelected:[(MKCatalystButton *)self->_wantsControlButton isSelected]^ 1];
-  v3 = [(MacSidebarTestContext *)self macChromeViewController];
-  [v3 setNeedsUpdateComponent:@"sidebar" animated:1];
+  macChromeViewController = [(MacSidebarTestContext *)self macChromeViewController];
+  [macChromeViewController setNeedsUpdateComponent:@"sidebar" animated:1];
 }
 
 - (void)_pop
 {
-  v2 = [(MacSidebarTestContext *)self macChromeViewController];
-  [v2 popContextAnimated:1 completion:0];
+  macChromeViewController = [(MacSidebarTestContext *)self macChromeViewController];
+  [macChromeViewController popContextAnimated:1 completion:0];
 }
 
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10097A10C;
   v4[3] = &unk_101661B18;
   v4[4] = self;
-  [a4 addAnimations:v4];
+  [animation addAnimations:v4];
 }
 
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v6 = a4;
-  [a3 viewport];
+  animationCopy = animation;
+  [controller viewport];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10097A208;
   v8[3] = &unk_101661A90;
   v9 = v8[4] = self;
   v7 = v9;
-  [v6 addPreparation:v8];
+  [animationCopy addPreparation:v8];
 }
 
 - (id)_createContainee
@@ -84,8 +84,8 @@
   }
 
   v7 = [UIColor colorWithHue:(v6 * 0.1) saturation:1.0 brightness:0.800000012 alpha:1.0];
-  v8 = [(ContaineeViewController *)v3 view];
-  [v8 setBackgroundColor:v7];
+  view = [(ContaineeViewController *)v3 view];
+  [view setBackgroundColor:v7];
 
   return v3;
 }

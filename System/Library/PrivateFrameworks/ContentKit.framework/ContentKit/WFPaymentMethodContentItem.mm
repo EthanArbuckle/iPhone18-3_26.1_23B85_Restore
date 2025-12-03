@@ -1,29 +1,29 @@
 @interface WFPaymentMethodContentItem
 + (id)contentCategories;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)outputTypes;
 + (id)ownedTypes;
 - (INPaymentMethod)paymentMethod;
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5;
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error;
 @end
 
 @implementation WFPaymentMethodContentItem
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Payment Methods", @"Payment Methods");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Payment Method", @"Payment Method");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -55,13 +55,13 @@
   return v4;
 }
 
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
-    v7 = [(WFPaymentMethodContentItem *)self paymentMethod];
-    v8 = [v7 name];
-    v6 = [WFObjectRepresentation object:v8];
+    paymentMethod = [(WFPaymentMethodContentItem *)self paymentMethod];
+    name = [paymentMethod name];
+    v6 = [WFObjectRepresentation object:name];
   }
 
   else

@@ -1,13 +1,13 @@
 @interface RatingView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC23ShelfKitCollectionViews10RatingView)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC23ShelfKitCollectionViews10RatingView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation RatingView
 
-- (_TtC23ShelfKitCollectionViews10RatingView)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews10RatingView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews10RatingView_rating) = 1080033280;
   v4 = OBJC_IVAR____TtC23ShelfKitCollectionViews10RatingView_color;
@@ -21,9 +21,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(RatingView *)self intrinsicContentSize:a3.width];
+  [(RatingView *)self intrinsicContentSize:fits.width];
   result.height = v4;
   result.width = v3;
   return result;
@@ -31,7 +31,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_2B8814();
   v4 = v3;
   v6 = v5;

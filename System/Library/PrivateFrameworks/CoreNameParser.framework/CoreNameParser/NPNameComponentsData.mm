@@ -1,8 +1,8 @@
 @interface NPNameComponentsData
-- (BOOL)collectionForEntry:(unint64_t)a3 contains:(id)a4;
+- (BOOL)collectionForEntry:(unint64_t)entry contains:(id)contains;
 - (NPNameComponentsData)init;
-- (id)_keyForDataEntry:(unint64_t)a3;
-- (id)objectValueForEntry:(unint64_t)a3;
+- (id)_keyForDataEntry:(unint64_t)entry;
+- (id)objectValueForEntry:(unint64_t)entry;
 @end
 
 @implementation NPNameComponentsData
@@ -41,22 +41,22 @@ LABEL_6:
   return v10;
 }
 
-- (id)_keyForDataEntry:(unint64_t)a3
+- (id)_keyForDataEntry:(unint64_t)entry
 {
-  if (a3 > 8)
+  if (entry > 8)
   {
     return 0;
   }
 
   else
   {
-    return off_278E97FD0[a3];
+    return off_278E97FD0[entry];
   }
 }
 
-- (id)objectValueForEntry:(unint64_t)a3
+- (id)objectValueForEntry:(unint64_t)entry
 {
-  v4 = [(NPNameComponentsData *)self _keyForDataEntry:a3];
+  v4 = [(NPNameComponentsData *)self _keyForDataEntry:entry];
   if (v4)
   {
     v5 = [(NSDictionary *)self->_nameComponents objectForKeyedSubscript:v4];
@@ -70,14 +70,14 @@ LABEL_6:
   return v5;
 }
 
-- (BOOL)collectionForEntry:(unint64_t)a3 contains:(id)a4
+- (BOOL)collectionForEntry:(unint64_t)entry contains:(id)contains
 {
-  v6 = a4;
-  if (v6)
+  containsCopy = contains;
+  if (containsCopy)
   {
-    v7 = [(NPNameComponentsData *)self objectValueForEntry:a3];
+    v7 = [(NPNameComponentsData *)self objectValueForEntry:entry];
     objc_opt_class();
-    v8 = (objc_opt_isKindOfClass() & 1) != 0 && [v7 indexOfObject:v6 inSortedRange:0 options:objc_msgSend(v7 usingComparator:{"count"), 256, &__block_literal_global}] != 0x7FFFFFFFFFFFFFFFLL;
+    v8 = (objc_opt_isKindOfClass() & 1) != 0 && [v7 indexOfObject:containsCopy inSortedRange:0 options:objc_msgSend(v7 usingComparator:{"count"), 256, &__block_literal_global}] != 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else

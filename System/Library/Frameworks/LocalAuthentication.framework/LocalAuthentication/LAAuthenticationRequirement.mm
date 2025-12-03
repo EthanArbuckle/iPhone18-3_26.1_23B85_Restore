@@ -3,13 +3,13 @@
 + (LAAuthenticationRequirement)biometryRequirement;
 + (LAAuthenticationRequirement)biometryRequirementWithFallback:(LABiometryFallbackRequirement *)fallback;
 + (LAAuthenticationRequirement)defaultRequirement;
-+ (id)biometryCurrentSetRequirementWithFallback:(id)a3;
-+ (id)biometryRefreshableSetRequirementWithFallback:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)biometryCurrentSetRequirementWithFallback:(id)fallback;
++ (id)biometryRefreshableSetRequirementWithFallback:(id)fallback;
+- (BOOL)isEqual:(id)equal;
 - (id)key;
-- (id)requirementByAddingExtendedRequirement:(id)a3;
-- (void)encodeWithACLCoder:(id)a3;
-- (void)initWithAuthenticationType:(void *)a1;
+- (id)requirementByAddingExtendedRequirement:(id)requirement;
+- (void)encodeWithACLCoder:(id)coder;
+- (void)initWithAuthenticationType:(void *)type;
 @end
 
 @implementation LAAuthenticationRequirement
@@ -48,11 +48,11 @@ void __34__LAAuthenticationRequirement_key__block_invoke(uint64_t a1)
   *(v4 + 40) = v3;
 }
 
-- (void)encodeWithACLCoder:(id)a3
+- (void)encodeWithACLCoder:(id)coder
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 setAuthenticationType:self->_authType];
+  coderCopy = coder;
+  [coderCopy setAuthenticationType:self->_authType];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
@@ -73,7 +73,7 @@ void __34__LAAuthenticationRequirement_key__block_invoke(uint64_t a1)
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) encodeWithACLCoder:{v4, v11}];
+        [*(*(&v11 + 1) + 8 * v9++) encodeWithACLCoder:{coderCopy, v11}];
       }
 
       while (v7 != v9);
@@ -86,13 +86,13 @@ void __34__LAAuthenticationRequirement_key__block_invoke(uint64_t a1)
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     v8 = 0;
     if (v5[1] == self->_authType)
@@ -113,14 +113,14 @@ void __34__LAAuthenticationRequirement_key__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)initWithAuthenticationType:(void *)a1
+- (void)initWithAuthenticationType:(void *)type
 {
-  if (!a1)
+  if (!type)
   {
     return 0;
   }
 
-  v8.receiver = a1;
+  v8.receiver = type;
   v8.super_class = LAAuthenticationRequirement;
   v3 = objc_msgSendSuper2(&v8, sel_init);
   v4 = v3;
@@ -166,9 +166,9 @@ void __34__LAAuthenticationRequirement_key__block_invoke(uint64_t a1)
   return LAAuthenticationRequirement;
 }
 
-+ (id)biometryCurrentSetRequirementWithFallback:(id)a3
++ (id)biometryCurrentSetRequirementWithFallback:(id)fallback
 {
-  v4 = a3;
+  fallbackCopy = fallback;
   v5 = objc_alloc(OUTLINED_FUNCTION_0());
   v6 = [(LAAuthenticationRequirement *)v5 initWithAuthenticationType:?];
   OUTLINED_FUNCTION_1(v6);
@@ -176,9 +176,9 @@ void __34__LAAuthenticationRequirement_key__block_invoke(uint64_t a1)
   return LAAuthenticationRequirement;
 }
 
-+ (id)biometryRefreshableSetRequirementWithFallback:(id)a3
++ (id)biometryRefreshableSetRequirementWithFallback:(id)fallback
 {
-  v4 = a3;
+  fallbackCopy = fallback;
   v5 = objc_alloc(OUTLINED_FUNCTION_0());
   v6 = [(LAAuthenticationRequirement *)v5 initWithAuthenticationType:?];
   OUTLINED_FUNCTION_1(v6);
@@ -186,15 +186,15 @@ void __34__LAAuthenticationRequirement_key__block_invoke(uint64_t a1)
   return LAAuthenticationRequirement;
 }
 
-- (id)requirementByAddingExtendedRequirement:(id)a3
+- (id)requirementByAddingExtendedRequirement:(id)requirement
 {
-  v4 = a3;
+  requirementCopy = requirement;
   v5 = [[LAAuthenticationRequirement alloc] initWithAuthenticationType:?];
   v6 = [(NSMutableSet *)self->_subrequirements mutableCopy];
   v7 = v5[2];
   v5[2] = v6;
 
-  [v5[2] addObject:v4];
+  [v5[2] addObject:requirementCopy];
 
   return v5;
 }

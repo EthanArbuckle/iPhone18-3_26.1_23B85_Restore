@@ -1,15 +1,15 @@
 @interface SUUIMenuBarSectionsViewController
-- (SUUIMenuBarSectionsViewController)initWithLayoutStyle:(int64_t)a3;
-- (id)defaultSectionForComponent:(id)a3;
+- (SUUIMenuBarSectionsViewController)initWithLayoutStyle:(int64_t)style;
+- (id)defaultSectionForComponent:(id)component;
 @end
 
 @implementation SUUIMenuBarSectionsViewController
 
-- (SUUIMenuBarSectionsViewController)initWithLayoutStyle:(int64_t)a3
+- (SUUIMenuBarSectionsViewController)initWithLayoutStyle:(int64_t)style
 {
   v4.receiver = self;
   v4.super_class = SUUIMenuBarSectionsViewController;
-  result = [(SUUIStorePageSectionsViewController *)&v4 initWithLayoutStyle:a3];
+  result = [(SUUIStorePageSectionsViewController *)&v4 initWithLayoutStyle:style];
   if (result)
   {
     result->_numberOfIterationsForShelfPageSections = 1;
@@ -18,22 +18,22 @@
   return result;
 }
 
-- (id)defaultSectionForComponent:(id)a3
+- (id)defaultSectionForComponent:(id)component
 {
-  v4 = a3;
-  if ([v4 componentType] == 22)
+  componentCopy = component;
+  if ([componentCopy componentType] == 22)
   {
     v5 = [[SUUIMenuBarTemplateShelfPageSectionConfiguration alloc] initWithNumberOfIterations:[(SUUIMenuBarSectionsViewController *)self numberOfIterationsForShelfPageSections]];
     v6 = objc_opt_class();
-    v7 = [v4 viewElement];
-    v8 = [v7 isDynamicContainer];
+    viewElement = [componentCopy viewElement];
+    isDynamicContainer = [viewElement isDynamicContainer];
 
-    if (v8)
+    if (isDynamicContainer)
     {
       v6 = objc_opt_class();
     }
 
-    v9 = [[v6 alloc] initWithPageComponent:v4 configuration:v5];
+    v9 = [[v6 alloc] initWithPageComponent:componentCopy configuration:v5];
   }
 
   else

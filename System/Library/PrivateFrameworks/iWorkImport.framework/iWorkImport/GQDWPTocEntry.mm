@@ -1,5 +1,5 @@
 @interface GQDWPTocEntry
-- (int)readAttributesFromReader:(_xmlTextReader *)a3 processor:(id)a4;
+- (int)readAttributesFromReader:(_xmlTextReader *)reader processor:(id)processor;
 - (void)dealloc;
 @end
 
@@ -18,9 +18,9 @@
   [(GQDWPBlockList *)&v4 dealloc];
 }
 
-- (int)readAttributesFromReader:(_xmlTextReader *)a3 processor:(id)a4
+- (int)readAttributesFromReader:(_xmlTextReader *)reader processor:(id)processor
 {
-  v5 = sub_4294C(a3, qword_A35E8, "bookmark");
+  v5 = sub_4294C(reader, qword_A35E8, "bookmark");
   self->mBookmark = v5;
   if (v5)
   {

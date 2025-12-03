@@ -1,19 +1,19 @@
 @interface TSCardContainerController
 - (BOOL)accessibilityPerformEscape;
-- (TSCardContainerController)initWithNibName:(id)a3 bundle:(id)a4;
+- (TSCardContainerController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)childViewControllerForStatusBarHidden;
-- (void)collapseCards:(id)a3;
-- (void)expandCards:(id)a3;
+- (void)collapseCards:(id)cards;
+- (void)expandCards:(id)cards;
 - (void)popCards;
-- (void)pushCardWithViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)pushCardWithViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewLayoutMarginsDidChange;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -21,80 +21,80 @@
 
 - (id)childViewControllerForStatusBarHidden
 {
-  v1 = a1;
+  selfCopy = self;
   v2 = sub_1D7F47234();
 
   return v2;
 }
 
-- (TSCardContainerController)initWithNibName:(id)a3 bundle:(id)a4
+- (TSCardContainerController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1D8190F14();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   CardContainerController.init(nibName:bundle:)();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   CardContainerController.viewDidLoad()();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  CardContainerController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  CardContainerController.viewWillAppear(_:)(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  CardContainerController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  CardContainerController.viewDidAppear(_:)(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  CardContainerController.viewWillDisappear(_:)(a3);
+  selfCopy = self;
+  CardContainerController.viewWillDisappear(_:)(disappear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  CardContainerController.viewDidDisappear(_:)(a3);
+  selfCopy = self;
+  CardContainerController.viewDidDisappear(_:)(disappear);
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   CardContainerController.viewWillLayoutSubviews()();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   CardContainerController.viewDidLayoutSubviews()();
 }
 
 - (void)viewLayoutMarginsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   CardContainerController.viewLayoutMarginsDidChange()();
 }
 
 - (void)viewSafeAreaInsetsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   CardContainerController.viewSafeAreaInsetsDidChange()();
 }
 
-- (void)collapseCards:(id)a3
+- (void)collapseCards:(id)cards
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(cards);
   if (v4)
   {
     *(swift_allocObject() + 16) = v4;
@@ -106,14 +106,14 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   CardContainerController.collapseCards(completion:)();
   sub_1D7E0E10C(v5);
 }
 
-- (void)expandCards:(id)a3
+- (void)expandCards:(id)cards
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(cards);
   if (v4)
   {
     *(swift_allocObject() + 16) = v4;
@@ -125,35 +125,35 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   CardContainerController.expandCards(completion:)();
   sub_1D7E0E10C(v5);
 }
 
-- (void)pushCardWithViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)pushCardWithViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(completion);
   if (v7)
   {
     *(swift_allocObject() + 16) = v7;
     v7 = sub_1D7F52DB4;
   }
 
-  v8 = a3;
-  v9 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   CardContainerController.pushCard(_:animated:completion:)();
   sub_1D7E0E10C(v7);
 }
 
 - (void)popCards
 {
-  v2 = self;
+  selfCopy = self;
   CardContainerController.popCards()();
 }
 
 - (BOOL)accessibilityPerformEscape
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CardContainerController.accessibilityPerformEscape()();
 
   return v3;

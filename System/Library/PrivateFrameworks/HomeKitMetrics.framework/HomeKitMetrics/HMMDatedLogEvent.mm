@@ -38,9 +38,9 @@
   v2 = [(HMMLogEvent *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     startDate = v2->_startDate;
-    v2->_startDate = v3;
+    v2->_startDate = date;
   }
 
   return v2;

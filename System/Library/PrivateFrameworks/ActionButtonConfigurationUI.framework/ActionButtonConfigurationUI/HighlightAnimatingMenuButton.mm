@@ -1,5 +1,5 @@
 @interface HighlightAnimatingMenuButton
-- (_TtC27ActionButtonConfigurationUI28HighlightAnimatingMenuButton)initWithFrame:(CGRect)a3;
+- (_TtC27ActionButtonConfigurationUI28HighlightAnimatingMenuButton)initWithFrame:(CGRect)frame;
 - (void)setNeedsLayout;
 @end
 
@@ -7,16 +7,16 @@
 
 - (void)setNeedsLayout
 {
-  v2 = self;
+  selfCopy = self;
   sub_23DDDB2DC();
 }
 
-- (_TtC27ActionButtonConfigurationUI28HighlightAnimatingMenuButton)initWithFrame:(CGRect)a3
+- (_TtC27ActionButtonConfigurationUI28HighlightAnimatingMenuButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC27ActionButtonConfigurationUI28HighlightAnimatingMenuButton_isAnimating) = 0;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC27ActionButtonConfigurationUI28HighlightAnimatingMenuButton_hasPendingLayout) = 0;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC27ActionButtonConfigurationUI28HighlightAnimatingMenuButton_previousState) = 0;

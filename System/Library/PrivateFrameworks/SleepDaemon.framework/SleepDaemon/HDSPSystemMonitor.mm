@@ -1,50 +1,50 @@
 @interface HDSPSystemMonitor
-+ (id)_platformSpecificReadyProviderForEnvironment:(id)a3;
++ (id)_platformSpecificReadyProviderForEnvironment:(id)environment;
 - (BOOL)isSystemReady;
 - (HDSPEnvironment)environment;
-- (HDSPSystemMonitor)initWithEnvironment:(id)a3;
-- (HDSPSystemMonitor)initWithEnvironment:(id)a3 watchOnWristMonitor:(id)a4 devicePowerMonitor:(id)a5 deviceUnlockMonitor:(id)a6;
-- (HDSPSystemMonitor)initWithEnvironment:(id)a3 watchOnWristMonitor:(id)a4 devicePowerMonitor:(id)a5 deviceUnlockMonitor:(id)a6 systemReadyProvider:(id)a7 applicationWorkspaceMonitor:(id)a8;
+- (HDSPSystemMonitor)initWithEnvironment:(id)environment;
+- (HDSPSystemMonitor)initWithEnvironment:(id)environment watchOnWristMonitor:(id)monitor devicePowerMonitor:(id)powerMonitor deviceUnlockMonitor:(id)unlockMonitor;
+- (HDSPSystemMonitor)initWithEnvironment:(id)environment watchOnWristMonitor:(id)monitor devicePowerMonitor:(id)powerMonitor deviceUnlockMonitor:(id)unlockMonitor systemReadyProvider:(id)provider applicationWorkspaceMonitor:(id)workspaceMonitor;
 - (HDSPSystemReadyDelegate)delegate;
 - (id)diagnosticDescription;
-- (void)environmentWillBecomeReady:(id)a3;
+- (void)environmentWillBecomeReady:(id)ready;
 - (void)systemDidBecomeReady;
 @end
 
 @implementation HDSPSystemMonitor
 
-+ (id)_platformSpecificReadyProviderForEnvironment:(id)a3
++ (id)_platformSpecificReadyProviderForEnvironment:(id)environment
 {
-  v3 = a3;
-  v4 = [v3 behavior];
-  v5 = [v4 isAppleWatch];
+  environmentCopy = environment;
+  behavior = [environmentCopy behavior];
+  isAppleWatch = [behavior isAppleWatch];
   v6 = off_279C7A850;
-  if (!v5)
+  if (!isAppleWatch)
   {
     v6 = off_279C7A6B8;
   }
 
-  v7 = [objc_alloc(*v6) initWithEnvironment:v3];
+  v7 = [objc_alloc(*v6) initWithEnvironment:environmentCopy];
 
   return v7;
 }
 
-- (HDSPSystemMonitor)initWithEnvironment:(id)a3
+- (HDSPSystemMonitor)initWithEnvironment:(id)environment
 {
-  v4 = a3;
-  v5 = [v4 behavior];
-  v6 = [v5 isAppleWatch];
+  environmentCopy = environment;
+  behavior = [environmentCopy behavior];
+  isAppleWatch = [behavior isAppleWatch];
 
-  if (v6)
+  if (isAppleWatch)
   {
     v7 = [HDSPWatchOnWristMonitor alloc];
-    v8 = [v4 userDefaults];
-    v9 = [v4 defaultCallbackScheduler];
-    v10 = [(HDSPWatchOnWristMonitor *)v7 initWithUserDefaults:v8 callbackScheduler:v9];
+    userDefaults = [environmentCopy userDefaults];
+    defaultCallbackScheduler = [environmentCopy defaultCallbackScheduler];
+    v10 = [(HDSPWatchOnWristMonitor *)v7 initWithUserDefaults:userDefaults callbackScheduler:defaultCallbackScheduler];
 
     v11 = [HDSPDevicePowerMonitor alloc];
-    v12 = [v4 defaultCallbackScheduler];
-    v13 = [(HDSPDevicePowerMonitor *)v11 initWithCallbackScheduler:v12];
+    defaultCallbackScheduler2 = [environmentCopy defaultCallbackScheduler];
+    v13 = [(HDSPDevicePowerMonitor *)v11 initWithCallbackScheduler:defaultCallbackScheduler2];
   }
 
   else
@@ -54,35 +54,35 @@
   }
 
   v14 = [HDSPDeviceUnlockMonitor alloc];
-  v15 = [v4 defaultCallbackScheduler];
-  v16 = [(HDSPDeviceUnlockMonitor *)v14 initWithCallbackScheduler:v15];
-  v17 = [(HDSPSystemMonitor *)self initWithEnvironment:v4 watchOnWristMonitor:v10 devicePowerMonitor:v13 deviceUnlockMonitor:v16];
+  defaultCallbackScheduler3 = [environmentCopy defaultCallbackScheduler];
+  v16 = [(HDSPDeviceUnlockMonitor *)v14 initWithCallbackScheduler:defaultCallbackScheduler3];
+  v17 = [(HDSPSystemMonitor *)self initWithEnvironment:environmentCopy watchOnWristMonitor:v10 devicePowerMonitor:v13 deviceUnlockMonitor:v16];
 
   return v17;
 }
 
-- (HDSPSystemMonitor)initWithEnvironment:(id)a3 watchOnWristMonitor:(id)a4 devicePowerMonitor:(id)a5 deviceUnlockMonitor:(id)a6
+- (HDSPSystemMonitor)initWithEnvironment:(id)environment watchOnWristMonitor:(id)monitor devicePowerMonitor:(id)powerMonitor deviceUnlockMonitor:(id)unlockMonitor
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [objc_opt_class() _platformSpecificReadyProviderForEnvironment:v13];
+  unlockMonitorCopy = unlockMonitor;
+  powerMonitorCopy = powerMonitor;
+  monitorCopy = monitor;
+  environmentCopy = environment;
+  v14 = [objc_opt_class() _platformSpecificReadyProviderForEnvironment:environmentCopy];
   v15 = objc_alloc_init(HDSPApplicationWorkspaceMonitor);
-  v16 = [(HDSPSystemMonitor *)self initWithEnvironment:v13 watchOnWristMonitor:v12 devicePowerMonitor:v11 deviceUnlockMonitor:v10 systemReadyProvider:v14 applicationWorkspaceMonitor:v15];
+  v16 = [(HDSPSystemMonitor *)self initWithEnvironment:environmentCopy watchOnWristMonitor:monitorCopy devicePowerMonitor:powerMonitorCopy deviceUnlockMonitor:unlockMonitorCopy systemReadyProvider:v14 applicationWorkspaceMonitor:v15];
 
   return v16;
 }
 
-- (HDSPSystemMonitor)initWithEnvironment:(id)a3 watchOnWristMonitor:(id)a4 devicePowerMonitor:(id)a5 deviceUnlockMonitor:(id)a6 systemReadyProvider:(id)a7 applicationWorkspaceMonitor:(id)a8
+- (HDSPSystemMonitor)initWithEnvironment:(id)environment watchOnWristMonitor:(id)monitor devicePowerMonitor:(id)powerMonitor deviceUnlockMonitor:(id)unlockMonitor systemReadyProvider:(id)provider applicationWorkspaceMonitor:(id)workspaceMonitor
 {
   v37 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v30 = a6;
-  v31 = a7;
-  v29 = a8;
+  environmentCopy = environment;
+  monitorCopy = monitor;
+  powerMonitorCopy = powerMonitor;
+  unlockMonitorCopy = unlockMonitor;
+  providerCopy = provider;
+  workspaceMonitorCopy = workspaceMonitor;
   v32.receiver = self;
   v32.super_class = HDSPSystemMonitor;
   v17 = [(HDSPSystemMonitor *)&v32 init];
@@ -95,25 +95,25 @@
       *buf = 138543618;
       v34 = v19;
       v35 = 2114;
-      v36 = v31;
-      v28 = v16;
-      v20 = v15;
+      v36 = providerCopy;
+      v28 = powerMonitorCopy;
+      v20 = monitorCopy;
       v21 = v19;
       _os_log_impl(&dword_269B11000, v18, OS_LOG_TYPE_DEFAULT, "[%{public}@] initializing with %{public}@", buf, 0x16u);
 
-      v15 = v20;
-      v16 = v28;
+      monitorCopy = v20;
+      powerMonitorCopy = v28;
     }
 
-    objc_storeWeak(&v17->_environment, v14);
-    objc_storeStrong(&v17->_systemReadyProvider, a7);
+    objc_storeWeak(&v17->_environment, environmentCopy);
+    objc_storeStrong(&v17->_systemReadyProvider, provider);
     [(HDSPSystemReadyProvider *)v17->_systemReadyProvider setDelegate:v17];
-    objc_storeStrong(&v17->_deviceUnlockMonitor, a6);
-    objc_storeStrong(&v17->_devicePowerMonitor, a5);
-    objc_storeStrong(&v17->_watchOnWristMonitor, a4);
-    objc_storeStrong(&v17->_applicationWorkspaceMonitor, a8);
-    v22 = [v14 mutexGenerator];
-    v23 = v22[2]();
+    objc_storeStrong(&v17->_deviceUnlockMonitor, unlockMonitor);
+    objc_storeStrong(&v17->_devicePowerMonitor, powerMonitor);
+    objc_storeStrong(&v17->_watchOnWristMonitor, monitor);
+    objc_storeStrong(&v17->_applicationWorkspaceMonitor, workspaceMonitor);
+    mutexGenerator = [environmentCopy mutexGenerator];
+    v23 = mutexGenerator[2]();
     mutexProvider = v17->_mutexProvider;
     v17->_mutexProvider = v23;
 
@@ -124,18 +124,18 @@
   return v17;
 }
 
-- (void)environmentWillBecomeReady:(id)a3
+- (void)environmentWillBecomeReady:(id)ready
 {
-  v4 = a3;
-  v5 = [v4 diagnostics];
-  [v5 addProvider:self];
+  readyCopy = ready;
+  diagnostics = [readyCopy diagnostics];
+  [diagnostics addProvider:self];
 
-  v6 = [v4 notificationListener];
-  [v6 addObserver:self->_deviceUnlockMonitor];
+  notificationListener = [readyCopy notificationListener];
+  [notificationListener addObserver:self->_deviceUnlockMonitor];
 
-  v7 = [v4 notificationListener];
+  notificationListener2 = [readyCopy notificationListener];
 
-  [v7 addObserver:self->_devicePowerMonitor];
+  [notificationListener2 addObserver:self->_devicePowerMonitor];
 }
 
 - (BOOL)isSystemReady
@@ -209,23 +209,23 @@ uint64_t __34__HDSPSystemMonitor_isSystemReady__block_invoke(uint64_t result)
 - (id)diagnosticDescription
 {
   v3 = MEMORY[0x277CCAB68];
-  v4 = [(HDSPSystemMonitor *)self isSystemReady];
-  v5 = [(HDSPSystemMonitor *)self deviceUnlockMonitor];
-  v6 = [v3 stringWithFormat:@"Ready: %d\nHas Been Unlocked: %d\n", v4, objc_msgSend(v5, "hasBeenUnlockedSinceBoot")];
+  isSystemReady = [(HDSPSystemMonitor *)self isSystemReady];
+  deviceUnlockMonitor = [(HDSPSystemMonitor *)self deviceUnlockMonitor];
+  v6 = [v3 stringWithFormat:@"Ready: %d\nHas Been Unlocked: %d\n", isSystemReady, objc_msgSend(deviceUnlockMonitor, "hasBeenUnlockedSinceBoot")];
 
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v8 = [WeakRetained behavior];
-  v9 = [v8 isAppleWatch];
+  behavior = [WeakRetained behavior];
+  isAppleWatch = [behavior isAppleWatch];
 
-  if (v9)
+  if (isAppleWatch)
   {
-    v10 = [(HDSPSystemMonitor *)self devicePowerMonitor];
-    v11 = [v10 isCharging];
-    v12 = [(HDSPSystemMonitor *)self devicePowerMonitor];
-    [v12 batteryLevel];
+    devicePowerMonitor = [(HDSPSystemMonitor *)self devicePowerMonitor];
+    isCharging = [devicePowerMonitor isCharging];
+    devicePowerMonitor2 = [(HDSPSystemMonitor *)self devicePowerMonitor];
+    [devicePowerMonitor2 batteryLevel];
     v14 = v13;
-    v15 = [(HDSPSystemMonitor *)self watchOnWristMonitor];
-    [v6 appendFormat:@"Charging: %d\nBattery: %f\nOn Wrist: %d\n", v11, *&v14, objc_msgSend(v15, "isOnWrist")];
+    watchOnWristMonitor = [(HDSPSystemMonitor *)self watchOnWristMonitor];
+    [v6 appendFormat:@"Charging: %d\nBattery: %f\nOn Wrist: %d\n", isCharging, *&v14, objc_msgSend(watchOnWristMonitor, "isOnWrist")];
   }
 
   return v6;

@@ -1,10 +1,10 @@
 @interface CLPOutdoorEstimatorLogEntryNotification
 - (CLPOutdoorEstimatorLogEntryNotification)init;
-- (CLPOutdoorEstimatorLogEntryNotification)initWithCoder:(id)a3;
+- (CLPOutdoorEstimatorLogEntryNotification)initWithCoder:(id)coder;
 - (CLPOutdoorEstimatorLogEntryNotification)initWithSerializedOutdoorEstimatorLogEntry:()basic_string<char;
 - (basic_string<char,)serializedOutdoorEstimatorLogEntry;
 - (id).cxx_construct;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLPOutdoorEstimatorLogEntryNotification
@@ -31,16 +31,16 @@
   return v5;
 }
 
-- (CLPOutdoorEstimatorLogEntryNotification)initWithCoder:(id)a3
+- (CLPOutdoorEstimatorLogEntryNotification)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = CLPOutdoorEstimatorLogEntryNotification;
   v5 = [(CLPOutdoorEstimatorLogEntryNotification *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"outdoorEstimatorLogEntry"];
-    v7 = [v6 bytes];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"outdoorEstimatorLogEntry"];
+    bytes = [v6 bytes];
     v8 = [v6 length];
     v9 = v8;
     if (v8 >= 0x7FFFFFFFFFFFFFF8)
@@ -56,7 +56,7 @@
     HIBYTE(v13) = v8;
     if (v8)
     {
-      memmove(&__dst, v7, v8);
+      memmove(&__dst, bytes, v8);
       *(&__dst + v9) = 0;
       if ((*(&v5->_serializedOutdoorEstimatorLogEntry.__rep_.__l + 23) & 0x80000000) == 0)
       {
@@ -87,9 +87,9 @@ LABEL_7:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   size = *(&self->_serializedOutdoorEstimatorLogEntry.__rep_.__l + 23);
   if ((size & 0x8000000000000000) != 0)
   {
@@ -103,7 +103,7 @@ LABEL_7:
   }
 
   v6 = [NSData dataWithBytes:data length:size];
-  [v7 encodeObject:v6 forKey:@"outdoorEstimatorLogEntry"];
+  [coderCopy encodeObject:v6 forKey:@"outdoorEstimatorLogEntry"];
 }
 
 - (basic_string<char,)serializedOutdoorEstimatorLogEntry

@@ -2,10 +2,10 @@
 - (CLKCompanionWatchFaceLibraryService)init;
 - (void)_popTransaction;
 - (void)_pushTransaction;
-- (void)openResourceOperation:(id)a3 didFailWithError:(id)a4;
-- (void)openResourceOperationDidComplete:(id)a3;
-- (void)openWatchFaceURLWithSecurityScopedURL:(id)a3 sourceApplicationBundleIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)validateFaceType:(id)a3 faceBundleId:(id)a4 completionHandler:(id)a5;
+- (void)openResourceOperation:(id)operation didFailWithError:(id)error;
+- (void)openResourceOperationDidComplete:(id)complete;
+- (void)openWatchFaceURLWithSecurityScopedURL:(id)l sourceApplicationBundleIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)validateFaceType:(id)type faceBundleId:(id)id completionHandler:(id)handler;
 @end
 
 @implementation CLKCompanionWatchFaceLibraryService
@@ -32,11 +32,11 @@
   return v2;
 }
 
-- (void)openWatchFaceURLWithSecurityScopedURL:(id)a3 sourceApplicationBundleIdentifier:(id)a4 completionHandler:(id)a5
+- (void)openWatchFaceURLWithSecurityScopedURL:(id)l sourceApplicationBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  lCopy = l;
   v11 = CLKLoggingObjectForDomain();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -44,7 +44,7 @@
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "CLKCompanionWatchFaceLibraryService: Received XPC call from openWatchFace.", buf, 2u);
   }
 
-  v12 = [v10 url];
+  v12 = [lCopy url];
 
   if ([v12 startAccessingSecurityScopedResource])
   {
@@ -61,13 +61,13 @@
       v31 = 0u;
     }
 
-    v26 = [v12 fileSystemRepresentation];
+    fileSystemRepresentation = [v12 fileSystemRepresentation];
     v17 = sandbox_check_by_audit_token();
 
-    if (v9 && v17)
+    if (handlerCopy && v17)
     {
-      v18 = [CLKWatchFaceLibrary errorWithCode:3, v26];
-      v9[2](v9, v18);
+      v18 = [CLKWatchFaceLibrary errorWithCode:3, fileSystemRepresentation];
+      handlerCopy[2](handlerCopy, v18);
     }
 
     v27[0] = _NSConcreteStackBlock;
@@ -76,7 +76,7 @@
     v27[3] = &unk_100004160;
     v19 = v12;
     v28 = v19;
-    v29 = v9;
+    v29 = handlerCopy;
     [(CLKCompanionWatchFaceLibraryService *)self setCompletionHandler:v27];
     v20 = CLKLoggingObjectForDomain();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -89,9 +89,9 @@
     [(CLKCompanionWatchFaceLibraryService *)self _pushTransaction];
     v21 = objc_opt_new();
     v22 = v21;
-    if (v8)
+    if (identifierCopy)
     {
-      [v21 setObject:v8 forKey:UIApplicationOpenURLOptionsSourceApplicationKey];
+      [v21 setObject:identifierCopy forKey:UIApplicationOpenURLOptionsSourceApplicationKey];
     }
 
     v23 = +[LSApplicationWorkspace defaultWorkspace];
@@ -113,17 +113,17 @@
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "CLKCompanionWatchFaceLibraryService: encountered error accessing security-scoped resource: %@", buf, 0xCu);
     }
 
-    if (v9)
+    if (handlerCopy)
     {
-      v9[2](v9, v15);
+      handlerCopy[2](handlerCopy, v15);
     }
   }
 }
 
-- (void)validateFaceType:(id)a3 faceBundleId:(id)a4 completionHandler:(id)a5
+- (void)validateFaceType:(id)type faceBundleId:(id)id completionHandler:(id)handler
 {
-  v8 = a5;
-  if (([NTKGreenfieldUtilities validateFaceType:a3 faceBundleId:a4]& 1) != 0)
+  handlerCopy = handler;
+  if (([NTKGreenfieldUtilities validateFaceType:type faceBundleId:id]& 1) != 0)
   {
     v7 = 0;
   }
@@ -133,26 +133,26 @@
     v7 = [CLKWatchFaceLibrary errorWithCode:4];
   }
 
-  v8[2](v8, v7);
+  handlerCopy[2](handlerCopy, v7);
 }
 
-- (void)openResourceOperation:(id)a3 didFailWithError:(id)a4
+- (void)openResourceOperation:(id)operation didFailWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = CLKLoggingObjectForDomain();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v5;
+    v10 = errorCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "CLKCompanionWatchFaceLibraryService: didFailWithError: %@", &v9, 0xCu);
   }
 
-  v7 = [(CLKCompanionWatchFaceLibraryService *)self completionHandler];
+  completionHandler = [(CLKCompanionWatchFaceLibraryService *)self completionHandler];
 
-  if (v7)
+  if (completionHandler)
   {
-    v8 = [(CLKCompanionWatchFaceLibraryService *)self completionHandler];
-    (v8)[2](v8, v5);
+    completionHandler2 = [(CLKCompanionWatchFaceLibraryService *)self completionHandler];
+    (completionHandler2)[2](completionHandler2, errorCopy);
 
     [(CLKCompanionWatchFaceLibraryService *)self setCompletionHandler:0];
   }
@@ -160,7 +160,7 @@
   [(CLKCompanionWatchFaceLibraryService *)self _popTransaction];
 }
 
-- (void)openResourceOperationDidComplete:(id)a3
+- (void)openResourceOperationDidComplete:(id)complete
 {
   v4 = CLKLoggingObjectForDomain();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -169,12 +169,12 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "CLKCompanionWatchFaceLibraryService: openResourceOperationDidComplete", v7, 2u);
   }
 
-  v5 = [(CLKCompanionWatchFaceLibraryService *)self completionHandler];
+  completionHandler = [(CLKCompanionWatchFaceLibraryService *)self completionHandler];
 
-  if (v5)
+  if (completionHandler)
   {
-    v6 = [(CLKCompanionWatchFaceLibraryService *)self completionHandler];
-    v6[2](v6, 0);
+    completionHandler2 = [(CLKCompanionWatchFaceLibraryService *)self completionHandler];
+    completionHandler2[2](completionHandler2, 0);
 
     [(CLKCompanionWatchFaceLibraryService *)self setCompletionHandler:0];
   }

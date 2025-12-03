@@ -2,13 +2,13 @@
 - (MPCPlaybackEngineEventConsumer)consumer;
 - (MPCPlaybackEngineEventStream)eventStream;
 - (NSString)debugDescription;
-- (_MPCPlaybackEngineEventStreamSubscription)initWithConsumer:(id)a3 eventStream:(id)a4;
-- (void)_locked_onQueue_eventEmitted:(id)a3;
+- (_MPCPlaybackEngineEventStreamSubscription)initWithConsumer:(id)consumer eventStream:(id)stream;
+- (void)_locked_onQueue_eventEmitted:(id)emitted;
 - (void)_onQueue_enqueueIncrementalFlush;
-- (void)_onQueue_flush:(uint64_t)a1;
+- (void)_onQueue_flush:(uint64_t)queue_flush;
 - (void)cancelSubscription;
-- (void)flushEventsWithCompletion:(id)a3;
-- (void)subscribeToEventType:(id)a3 options:(unint64_t)a4 handler:(id)a5;
+- (void)flushEventsWithCompletion:(id)completion;
+- (void)subscribeToEventType:(id)type options:(unint64_t)options handler:(id)handler;
 @end
 
 @implementation _MPCPlaybackEngineEventStreamSubscription
@@ -35,12 +35,12 @@
     v4 = objc_opt_class();
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v4 preferredQoSClass];
+      preferredQoSClass = [v4 preferredQoSClass];
     }
 
     else
     {
-      v5 = QOS_CLASS_UTILITY;
+      preferredQoSClass = QOS_CLASS_UTILITY;
     }
 
     v6 = objc_loadWeakRetained(&self->_eventStream);
@@ -64,30 +64,30 @@
     v12[2] = __77___MPCPlaybackEngineEventStreamSubscription__onQueue_enqueueIncrementalFlush__block_invoke;
     v12[3] = &unk_1E82392C0;
     v13 = v7;
-    v14 = self;
+    selfCopy = self;
     v9 = v7;
     v10 = v8;
-    v11 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v5, 0, v12);
+    v11 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, preferredQoSClass, 0, v12);
     dispatch_async(v10, v11);
   }
 }
 
-- (void)_onQueue_flush:(uint64_t)a1
+- (void)_onQueue_flush:(uint64_t)queue_flush
 {
   v73 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!queue_flush)
   {
     return;
   }
 
-  WeakRetained = objc_loadWeakRetained((a1 + 16));
-  if (!WeakRetained || *(a1 + 13) != 1)
+  WeakRetained = objc_loadWeakRetained((queue_flush + 16));
+  if (!WeakRetained || *(queue_flush + 13) != 1)
   {
     goto LABEL_55;
   }
 
-  v51 = [objc_opt_class() identifier];
-  isa = objc_loadWeakRetained((a1 + 24));
+  identifier = [objc_opt_class() identifier];
+  isa = objc_loadWeakRetained((queue_flush + 24));
   v4 = isa;
   if (isa)
   {
@@ -100,11 +100,11 @@
     v5 = os_log_create("com.apple.amp.mediaplaybackcore", "PlaybackEventStream");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      v6 = [v4 engineID];
+      engineID = [v4 engineID];
       *buf = 138543874;
-      v66 = v6;
+      v66 = engineID;
       v67 = 2114;
-      v68 = v51;
+      v68 = identifier;
       v69 = 2048;
       v70 = WeakRetained;
       _os_log_impl(&dword_1C5C61000, v5, OS_LOG_TYPE_DEBUG, "[EVS:%{public}@:%{public}@:%p] _onQueue_flush | yield without processing any event", buf, 0x20u);
@@ -113,7 +113,7 @@
     goto LABEL_54;
   }
 
-  v7 = *(a1 + 48);
+  v7 = *(queue_flush + 48);
   if (v7)
   {
     v8 = @"SELECT identifier, type, monoAbsolute, monoContinuous, monoTimebaseNS, userNS, threadPriority, payload, _ns FROM events WHERE _ns > @lastNS && _ns < @maximumNS ORDER BY _ns";
@@ -129,7 +129,7 @@
   v10 = [v9 statementWithString:v8 error:&v60];
   v5 = v60;
 
-  [v10 bindUInt64Value:*(a1 + 40) toParameterNamed:@"@lastNS"];
+  [v10 bindUInt64Value:*(queue_flush + 40) toParameterNamed:@"@lastNS"];
   if (v7)
   {
     [v10 bindUInt64Value:v7 toParameterNamed:@"@maximumNS"];
@@ -138,12 +138,12 @@
   v11 = os_log_create("com.apple.amp.mediaplaybackcore", "PlaybackEventStream");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [v4 engineID];
-    v13 = *(a1 + 40);
+    engineID2 = [v4 engineID];
+    v13 = *(queue_flush + 40);
     *buf = 138544130;
-    v66 = v12;
+    v66 = engineID2;
     v67 = 2114;
-    v68 = v51;
+    v68 = identifier;
     v69 = 2048;
     v70 = WeakRetained;
     v71 = 2048;
@@ -199,10 +199,10 @@
       v22 = objc_autoreleasePoolPush();
       v23 = [v21 stringValueAtColumnIndex:1];
       v24 = [v21 uint64ValueAtColumnIndex:8];
-      os_unfair_lock_lock((a1 + 8));
+      os_unfair_lock_lock((queue_flush + 8));
       v55 = v23;
-      v25 = [*(a1 + 64) objectForKeyedSubscript:v23];
-      os_unfair_lock_unlock((a1 + 8));
+      v25 = [*(queue_flush + 64) objectForKeyedSubscript:v23];
+      os_unfair_lock_unlock((queue_flush + 8));
       if (v25)
       {
         v26 = [MPCPlaybackEngineEvent eventFromRowResult:v21];
@@ -210,32 +210,32 @@
         {
           v27 = [[_MPCPlaybackEngineEventStreamCursor alloc] initWithEventStream:v4 startEvent:v26 endEvent:0];
           v28 = (v25)[2](v25, v26, v27);
-          *(a1 + 14) = v28;
+          *(queue_flush + 14) = v28;
           v50 = v28;
           if (!v28)
           {
             goto LABEL_50;
           }
 
-          v29 = [v4 testingDelegate];
+          testingDelegate = [v4 testingDelegate];
 
-          if (!v29)
+          if (!testingDelegate)
           {
             _MPCPlaybackEngineEventStreamValidateSystemTime(v55, v24);
           }
 
-          v30 = *(a1 + 40);
+          v30 = *(queue_flush + 40);
           if (v30 && v24 - v30 >= 0x34630B8A001)
           {
             v31 = os_log_create("com.apple.amp.mediaplaybackcore", "PlaybackEventStream");
             if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
             {
-              v32 = [v4 engineID];
-              v33 = v24 - *(a1 + 40);
+              engineID3 = [v4 engineID];
+              v33 = v24 - *(queue_flush + 40);
               *buf = 138544130;
-              v66 = v32;
+              v66 = engineID3;
               v67 = 2114;
-              v68 = v51;
+              v68 = identifier;
               v69 = 2048;
               v70 = WeakRetained;
               v71 = 2048;
@@ -246,15 +246,15 @@
             }
           }
 
-          *(a1 + 40) = v24;
+          *(queue_flush + 40) = v24;
           v34 = os_log_create("com.apple.amp.mediaplaybackcore", "PlaybackEventStream");
           if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
           {
-            v35 = [v4 engineID];
+            engineID4 = [v4 engineID];
             *buf = 138544130;
-            v66 = v35;
+            v66 = engineID4;
             v67 = 2114;
-            v68 = v51;
+            v68 = identifier;
             v69 = 2048;
             v70 = WeakRetained;
             v71 = 2048;
@@ -269,11 +269,11 @@
             v37 = os_log_create("com.apple.amp.mediaplaybackcore", "PlaybackEventStream");
             if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
             {
-              v38 = [v4 engineID];
+              engineID5 = [v4 engineID];
               *buf = 138543874;
-              v66 = v38;
+              v66 = engineID5;
               v67 = 2114;
-              v68 = v51;
+              v68 = identifier;
               v69 = 2048;
               v70 = WeakRetained;
               _os_log_impl(&dword_1C5C61000, v37, OS_LOG_TYPE_DEBUG, "[EVS:%{public}@:%{public}@:%p] _onQueue_flush | yield without processing all events", buf, 0x20u);
@@ -295,20 +295,20 @@ LABEL_50:
 
       else
       {
-        if (*(a1 + 14) != 1)
+        if (*(queue_flush + 14) != 1)
         {
           goto LABEL_43;
         }
 
-        *(a1 + 40) = v24;
+        *(queue_flush + 40) = v24;
         v26 = os_log_create("com.apple.amp.mediaplaybackcore", "PlaybackEventStream");
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
         {
-          v36 = [v4 engineID];
+          engineID6 = [v4 engineID];
           *buf = 138544130;
-          v66 = v36;
+          v66 = engineID6;
           v67 = 2114;
-          v68 = v51;
+          v68 = identifier;
           v69 = 2048;
           v70 = WeakRetained;
           v71 = 2048;
@@ -352,25 +352,25 @@ LABEL_51:
     v42 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v62 forKeys:&v61 count:1];
     v63 = v42;
     v43 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v63 count:1];
-    [v39 snapshotWithDomain:v40 type:@"Bug" subType:@"LargeEVSFlushWindow" context:v51 triggerThresholdValues:&stru_1F454A698 events:v43 completion:0];
+    [v39 snapshotWithDomain:v40 type:@"Bug" subType:@"LargeEVSFlushWindow" context:identifier triggerThresholdValues:&stru_1F454A698 events:v43 completion:0];
 
     v4 = v49;
   }
 
-  *(a1 + 13) = v50;
+  *(queue_flush + 13) = v50;
 
 LABEL_54:
 LABEL_55:
 }
 
-- (void)_locked_onQueue_eventEmitted:(id)a3
+- (void)_locked_onQueue_eventEmitted:(id)emitted
 {
-  v4 = a3;
-  v5 = v4;
+  emittedCopy = emitted;
+  v5 = emittedCopy;
   if (!self->_hasUnhandledEvents)
   {
-    v7 = v4;
-    v6 = [(NSMutableDictionary *)self->_eventHandlers objectForKeyedSubscript:v4];
+    v7 = emittedCopy;
+    v6 = [(NSMutableDictionary *)self->_eventHandlers objectForKeyedSubscript:emittedCopy];
 
     v5 = v7;
     if (v6)
@@ -379,52 +379,52 @@ LABEL_55:
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](emittedCopy, v5);
 }
 
-- (void)subscribeToEventType:(id)a3 options:(unint64_t)a4 handler:(id)a5
+- (void)subscribeToEventType:(id)type options:(unint64_t)options handler:(id)handler
 {
   v33 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  aBlock = a5;
+  typeCopy = type;
+  aBlock = handler;
   WeakRetained = objc_loadWeakRetained(&self->_consumer);
   v11 = objc_loadWeakRetained(&self->_eventStream);
-  v12 = [objc_opt_class() identifier];
+  identifier = [objc_opt_class() identifier];
   v13 = os_log_create("com.apple.amp.mediaplaybackcore", "PlaybackEventStream");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    v14 = [v11 engineID];
+    engineID = [v11 engineID];
     *buf = 138544386;
-    v24 = v14;
+    v24 = engineID;
     v25 = 2114;
-    v26 = v12;
+    v26 = identifier;
     v27 = 2048;
     v28 = WeakRetained;
     v29 = 2114;
-    v30 = v9;
+    v30 = typeCopy;
     v31 = 2048;
-    v32 = a4;
+    optionsCopy = options;
     _os_log_impl(&dword_1C5C61000, v13, OS_LOG_TYPE_DEBUG, "[EVS:%{public}@:%{public}@:%p] subscribeToEventType:%{public}@ options:%llu | adding handlers", buf, 0x34u);
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v15 = [(NSMutableDictionary *)self->_mutatingEventHandlers objectForKeyedSubscript:v9];
+  v15 = [(NSMutableDictionary *)self->_mutatingEventHandlers objectForKeyedSubscript:typeCopy];
 
   if (v15)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"MPCPlaybackEngineEventStream.m" lineNumber:898 description:{@"Consumer %@ already has a mutating subscription to %@", v12, v9}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCPlaybackEngineEventStream.m" lineNumber:898 description:{@"Consumer %@ already has a mutating subscription to %@", identifier, typeCopy}];
   }
 
-  v16 = [(NSMutableDictionary *)self->_eventHandlers objectForKeyedSubscript:v9];
+  v16 = [(NSMutableDictionary *)self->_eventHandlers objectForKeyedSubscript:typeCopy];
 
   if (v16)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"MPCPlaybackEngineEventStream.m" lineNumber:899 description:{@"Consumer %@ already has a subscription to %@", v12, v9}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"MPCPlaybackEngineEventStream.m" lineNumber:899 description:{@"Consumer %@ already has a subscription to %@", identifier, typeCopy}];
   }
 
-  v17 = ~a4;
+  v17 = ~options;
   v18 = _Block_copy(aBlock);
   if ((v17 & 0x101) != 0)
   {
@@ -436,26 +436,26 @@ LABEL_55:
     p_eventHandlers = &self->_mutatingEventHandlers;
   }
 
-  [(NSMutableDictionary *)*p_eventHandlers setObject:v18 forKeyedSubscript:v9];
+  [(NSMutableDictionary *)*p_eventHandlers setObject:v18 forKeyedSubscript:typeCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)flushEventsWithCompletion:(id)a3
+- (void)flushEventsWithCompletion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_consumer);
   v6 = objc_loadWeakRetained(&self->_eventStream);
   v7 = os_log_create("com.apple.amp.mediaplaybackcore", "PlaybackEventStream");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v8 = [v6 engineID];
-    v9 = [objc_opt_class() identifier];
+    engineID = [v6 engineID];
+    identifier = [objc_opt_class() identifier];
     *buf = 138543874;
-    v19 = v8;
+    v19 = engineID;
     v20 = 2114;
-    v21 = v9;
+    v21 = identifier;
     v22 = 2048;
     v23 = WeakRetained;
     _os_log_impl(&dword_1C5C61000, v7, OS_LOG_TYPE_DEBUG, "[EVS:%{public}@:%{public}@:%p] flushEventsWithCompletion:… | flushing events async", buf, 0x20u);
@@ -478,8 +478,8 @@ LABEL_55:
   v14[4] = self;
   v15 = v6;
   v16 = WeakRetained;
-  v17 = v4;
-  v11 = v4;
+  v17 = completionCopy;
+  v11 = completionCopy;
   v12 = WeakRetained;
   v13 = v6;
   dispatch_async(v10, v14);
@@ -494,12 +494,12 @@ LABEL_55:
   v5 = os_log_create("com.apple.amp.mediaplaybackcore", "PlaybackEventStream");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [v4 engineID];
-    v7 = [objc_opt_class() identifier];
+    engineID = [v4 engineID];
+    identifier = [objc_opt_class() identifier];
     v8 = 138543874;
-    v9 = v6;
+    v9 = engineID;
     v10 = 2114;
-    v11 = v7;
+    v11 = identifier;
     v12 = 2048;
     v13 = WeakRetained;
     _os_log_impl(&dword_1C5C61000, v5, OS_LOG_TYPE_DEBUG, "[EVS:%{public}@:%{public}@:%p] cancelSubscription | removing handlers", &v8, 0x20u);
@@ -512,34 +512,34 @@ LABEL_55:
 
 - (NSString)debugDescription
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(NSMutableDictionary *)self->_mutatingEventHandlers allKeys];
-  [v3 addObjectsFromArray:v4];
+  array = [MEMORY[0x1E695DF70] array];
+  allKeys = [(NSMutableDictionary *)self->_mutatingEventHandlers allKeys];
+  [array addObjectsFromArray:allKeys];
 
-  v5 = [(NSMutableDictionary *)self->_eventHandlers allKeys];
-  [v3 addObjectsFromArray:v5];
+  allKeys2 = [(NSMutableDictionary *)self->_eventHandlers allKeys];
+  [array addObjectsFromArray:allKeys2];
 
   v6 = MEMORY[0x1E696AEC0];
   v7 = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->_consumer);
-  v9 = [objc_opt_class() identifier];
-  v10 = [v6 stringWithFormat:@"<%@: %p consumer=%@ events=%@>", v7, self, v9, v3];
+  identifier = [objc_opt_class() identifier];
+  v10 = [v6 stringWithFormat:@"<%@: %p consumer=%@ events=%@>", v7, self, identifier, array];
 
   return v10;
 }
 
-- (_MPCPlaybackEngineEventStreamSubscription)initWithConsumer:(id)a3 eventStream:(id)a4
+- (_MPCPlaybackEngineEventStreamSubscription)initWithConsumer:(id)consumer eventStream:(id)stream
 {
-  v6 = a3;
-  v7 = a4;
+  consumerCopy = consumer;
+  streamCopy = stream;
   v20.receiver = self;
   v20.super_class = _MPCPlaybackEngineEventStreamSubscription;
   v8 = [(_MPCPlaybackEngineEventStreamSubscription *)&v20 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_consumer, v6);
-    objc_storeWeak(&v9->_eventStream, v7);
+    objc_storeWeak(&v8->_consumer, consumerCopy);
+    objc_storeWeak(&v9->_eventStream, streamCopy);
     v10 = MEMORY[0x1E696AEC0];
     objc_opt_self();
     if (processID_onceToken != -1)
@@ -548,18 +548,18 @@ LABEL_55:
     }
 
     v11 = processID_processID;
-    v12 = [v7 engineID];
-    v13 = [v10 stringWithFormat:@"%@:%@", v11, v12];
+    engineID = [streamCopy engineID];
+    v13 = [v10 stringWithFormat:@"%@:%@", v11, engineID];
     streamID = v9->_streamID;
     v9->_streamID = v13;
 
-    v15 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     mutatingEventHandlers = v9->_mutatingEventHandlers;
-    v9->_mutatingEventHandlers = v15;
+    v9->_mutatingEventHandlers = dictionary;
 
-    v17 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     eventHandlers = v9->_eventHandlers;
-    v9->_eventHandlers = v17;
+    v9->_eventHandlers = dictionary2;
   }
 
   return v9;

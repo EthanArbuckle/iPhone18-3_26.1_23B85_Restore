@@ -1,16 +1,16 @@
 @interface CAMSharedLibraryBadge
-- (CAMSharedLibraryBadge)initWithFrame:(CGRect)a3;
+- (CAMSharedLibraryBadge)initWithFrame:(CGRect)frame;
 - (void)_updateTextAndColors;
-- (void)setSharedLibraryMode:(int64_t)a3;
+- (void)setSharedLibraryMode:(int64_t)mode;
 @end
 
 @implementation CAMSharedLibraryBadge
 
-- (CAMSharedLibraryBadge)initWithFrame:(CGRect)a3
+- (CAMSharedLibraryBadge)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CAMSharedLibraryBadge;
-  v3 = [(CEKBadgeTextView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CEKBadgeTextView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -21,11 +21,11 @@
   return v4;
 }
 
-- (void)setSharedLibraryMode:(int64_t)a3
+- (void)setSharedLibraryMode:(int64_t)mode
 {
-  if (self->_sharedLibraryMode != a3)
+  if (self->_sharedLibraryMode != mode)
   {
-    self->_sharedLibraryMode = a3;
+    self->_sharedLibraryMode = mode;
     [(CAMSharedLibraryBadge *)self _updateTextAndColors];
   }
 }

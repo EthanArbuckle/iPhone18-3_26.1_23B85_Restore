@@ -1,9 +1,9 @@
 @interface TCCDIdsMessageController
 - (TCCDIdsMessageController)init;
 - (void)_makeReadyToReceiveMessages;
-- (void)_sendMessage:(id)a3 handler:(id)a4;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7;
+- (void)_sendMessage:(id)message handler:(id)handler;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context;
 @end
 
 @implementation TCCDIdsMessageController
@@ -47,16 +47,16 @@
   [(IDSService *)idsService addDelegate:self queue:v4];
 }
 
-- (void)_sendMessage:(id)a3 handler:(id)a4
+- (void)_sendMessage:(id)message handler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   idsService = self->_idsService;
   v8 = IDSDefaultPairedDevice;
-  v9 = a3;
+  messageCopy = message;
   v10 = [NSSet setWithObject:v8];
   v21 = 0;
   v22 = 0;
-  v11 = [(IDSService *)idsService sendMessage:v9 toDestinations:v10 priority:200 options:0 identifier:&v22 error:&v21];
+  v11 = [(IDSService *)idsService sendMessage:messageCopy toDestinations:v10 priority:200 options:0 identifier:&v22 error:&v21];
 
   v12 = v22;
   v13 = v21;
@@ -89,7 +89,7 @@
     }
 
 LABEL_8:
-    v6[2](v6, v13);
+    handlerCopy[2](handlerCopy, v13);
     goto LABEL_9;
   }
 
@@ -99,43 +99,43 @@ LABEL_8:
   }
 
 LABEL_3:
-  v15 = [(TCCDMessageController *)self queue];
+  queue = [(TCCDMessageController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100014270;
   block[3] = &unk_1000A53B8;
   block[4] = self;
   v19 = v12;
-  v20 = v6;
-  dispatch_async(v15, block);
+  v20 = handlerCopy;
+  dispatch_async(queue, block);
 
 LABEL_9:
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  serviceCopy = service;
+  accountCopy = account;
+  messageCopy = message;
+  dCopy = d;
+  contextCopy = context;
   if (os_log_type_enabled(qword_1000C12F8, OS_LOG_TYPE_DEBUG))
   {
     sub_100060CE0();
   }
 
-  v17 = [v14 objectForKeyedSubscript:@"TCCDMessageTypeKey"];
+  v17 = [messageCopy objectForKeyedSubscript:@"TCCDMessageTypeKey"];
   if (v17)
   {
-    v18 = [(TCCDMessageController *)self queue];
+    queue = [(TCCDMessageController *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100014458;
     block[3] = &unk_1000A5098;
     block[4] = self;
     v20 = v17;
-    v21 = v14;
-    dispatch_async(v18, block);
+    v21 = messageCopy;
+    dispatch_async(queue, block);
   }
 
   else if (os_log_type_enabled(qword_1000C12F8, OS_LOG_TYPE_ERROR))
@@ -144,27 +144,27 @@ LABEL_9:
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v10 = a5;
-  v11 = a7;
+  identifierCopy = identifier;
+  errorCopy = error;
   if (os_log_type_enabled(qword_1000C12F8, OS_LOG_TYPE_DEBUG))
   {
     sub_100060E60();
   }
 
-  v12 = [(TCCDMessageController *)self queue];
+  queue = [(TCCDMessageController *)self queue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10001460C;
   v15[3] = &unk_1000A53E0;
   v15[4] = self;
-  v16 = v10;
-  v18 = a6;
-  v17 = v11;
-  v13 = v11;
-  v14 = v10;
-  dispatch_async(v12, v15);
+  v16 = identifierCopy;
+  successCopy = success;
+  v17 = errorCopy;
+  v13 = errorCopy;
+  v14 = identifierCopy;
+  dispatch_async(queue, v15);
 }
 
 @end

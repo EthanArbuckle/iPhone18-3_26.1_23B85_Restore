@@ -1,19 +1,19 @@
 @interface NIServerBluetoothSampleConsumer
-- (NIServerBluetoothSampleConsumer)initWithConsumerBlock:(id)a3;
-- (void)consumeBluetoothSample:(id)a3;
+- (NIServerBluetoothSampleConsumer)initWithConsumerBlock:(id)block;
+- (void)consumeBluetoothSample:(id)sample;
 @end
 
 @implementation NIServerBluetoothSampleConsumer
 
-- (NIServerBluetoothSampleConsumer)initWithConsumerBlock:(id)a3
+- (NIServerBluetoothSampleConsumer)initWithConsumerBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v11.receiver = self;
   v11.super_class = NIServerBluetoothSampleConsumer;
   v5 = [(NIServerBluetoothSampleConsumer *)&v11 init];
   if (v5)
   {
-    v6 = objc_retainBlock(v4);
+    v6 = objc_retainBlock(blockCopy);
     consumerBlock = v5->_consumerBlock;
     v5->_consumerBlock = v6;
 
@@ -25,13 +25,13 @@
   return v5;
 }
 
-- (void)consumeBluetoothSample:(id)a3
+- (void)consumeBluetoothSample:(id)sample
 {
-  v5 = a3;
+  sampleCopy = sample;
   consumerBlock = self->_consumerBlock;
   if (consumerBlock)
   {
-    consumerBlock[2](consumerBlock, v5);
+    consumerBlock[2](consumerBlock, sampleCopy);
   }
 }
 

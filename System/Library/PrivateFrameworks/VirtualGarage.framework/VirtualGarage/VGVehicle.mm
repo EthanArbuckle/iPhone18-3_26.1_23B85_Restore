@@ -1,32 +1,32 @@
 @interface VGVehicle
-- (BOOL)_canBeUpdatedFromState:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_canBeUpdatedFromState:(id)state;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPureElectricVehicle;
-- (VGVehicle)initWithCoder:(id)a3;
-- (VGVehicle)initWithDisplayName:(id)a3 year:(id)a4 manufacturer:(id)a5 model:(id)a6 colorHex:(id)a7 headUnitIdentifier:(id)a8 headUnitBluetoothIdentifier:(id)a9 supportedConnectors:(unint64_t)a10 powerByConnector:(id)a11;
-- (VGVehicle)initWithIdentifier:(id)a3 displayName:(id)a4 year:(id)a5 manufacturer:(id)a6 model:(id)a7 colorHex:(id)a8 licensePlate:(id)a9 lprVehicleType:(id)a10 lprPowerType:(id)a11;
-- (VGVehicle)initWithLicensePlate:(id)a3 lprVehicleType:(id)a4 lprPowerType:(id)a5;
-- (VGVehicle)initWithMapsSyncVehicle:(id)a3;
+- (VGVehicle)initWithCoder:(id)coder;
+- (VGVehicle)initWithDisplayName:(id)name year:(id)year manufacturer:(id)manufacturer model:(id)model colorHex:(id)hex headUnitIdentifier:(id)identifier headUnitBluetoothIdentifier:(id)bluetoothIdentifier supportedConnectors:(unint64_t)self0 powerByConnector:(id)self1;
+- (VGVehicle)initWithIdentifier:(id)identifier displayName:(id)name year:(id)year manufacturer:(id)manufacturer model:(id)model colorHex:(id)hex licensePlate:(id)plate lprVehicleType:(id)self0 lprPowerType:(id)self1;
+- (VGVehicle)initWithLicensePlate:(id)plate lprVehicleType:(id)type lprPowerType:(id)powerType;
+- (VGVehicle)initWithMapsSyncVehicle:(id)vehicle;
 - (double)batteryPercentageBasedOfCapacity;
-- (id)_identifierForVehicleStateOrigin:(int64_t)a3;
-- (id)_vehicleByUpdatingUsesPreferredNetworksForRouting:(BOOL)a3;
-- (id)_vehicleByUpdatingWithVehicle:(id)a3;
+- (id)_identifierForVehicleStateOrigin:(int64_t)origin;
+- (id)_vehicleByUpdatingUsesPreferredNetworksForRouting:(BOOL)routing;
+- (id)_vehicleByUpdatingWithVehicle:(id)vehicle;
 - (id)combinedDisplayName;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)displayedBatteryPercentage;
-- (void)_setVehicleState:(id)a3;
-- (void)_updateWithVehicleState:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)pairToIapIdentifier:(id)a3 bluetoothIdentifier:(id)a4;
+- (void)_setVehicleState:(id)state;
+- (void)_updateWithVehicleState:(id)state;
+- (void)encodeWithCoder:(id)coder;
+- (void)pairToIapIdentifier:(id)identifier bluetoothIdentifier:(id)bluetoothIdentifier;
 @end
 
 @implementation VGVehicle
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v95 = 1;
   }
@@ -36,7 +36,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       identifier = v5->_identifier;
       v7 = self->_identifier;
       v8 = identifier;
@@ -301,29 +301,29 @@ LABEL_43:
 
 - (id)description
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v26 = MEMORY[0x277CCACA8];
   v25 = objc_opt_class();
-  identifier = v2->_identifier;
-  iapIdentifier = v2->_iapIdentifier;
-  creationDate = v2->_creationDate;
-  siriIntentsIdentifier = v2->_siriIntentsIdentifier;
-  displayName = v2->_displayName;
-  lastStateUpdateDate = v2->_lastStateUpdateDate;
-  manufacturer = v2->_manufacturer;
-  year = v2->_year;
-  colorHex = v2->_colorHex;
-  model = v2->_model;
-  headUnitBluetoothIdentifier = v2->_headUnitBluetoothIdentifier;
-  headUnitIdentifier = v2->_headUnitIdentifier;
-  licensePlate = v2->_licensePlate;
-  lprVehicleType = v2->_lprVehicleType;
-  lprPowerType = v2->_lprPowerType;
-  v8 = NSStringFromVGChargingConnectorTypeOptions(v2->_supportedConnectors);
-  powerByConnector = v2->_powerByConnector;
-  preferredChargingNetworks = v2->_preferredChargingNetworks;
-  if (v2->_usesPreferredNetworksForRouting)
+  identifier = selfCopy->_identifier;
+  iapIdentifier = selfCopy->_iapIdentifier;
+  creationDate = selfCopy->_creationDate;
+  siriIntentsIdentifier = selfCopy->_siriIntentsIdentifier;
+  displayName = selfCopy->_displayName;
+  lastStateUpdateDate = selfCopy->_lastStateUpdateDate;
+  manufacturer = selfCopy->_manufacturer;
+  year = selfCopy->_year;
+  colorHex = selfCopy->_colorHex;
+  model = selfCopy->_model;
+  headUnitBluetoothIdentifier = selfCopy->_headUnitBluetoothIdentifier;
+  headUnitIdentifier = selfCopy->_headUnitIdentifier;
+  licensePlate = selfCopy->_licensePlate;
+  lprVehicleType = selfCopy->_lprVehicleType;
+  lprPowerType = selfCopy->_lprPowerType;
+  v8 = NSStringFromVGChargingConnectorTypeOptions(selfCopy->_supportedConnectors);
+  powerByConnector = selfCopy->_powerByConnector;
+  preferredChargingNetworks = selfCopy->_preferredChargingNetworks;
+  if (selfCopy->_usesPreferredNetworksForRouting)
   {
     v11 = @"YES";
   }
@@ -334,16 +334,16 @@ LABEL_43:
   }
 
   v12 = v11;
-  v13 = [v26 stringWithFormat:@"<%@:%p, \n identifier: %@, \n iapIdentifier: %@, \n siriIntentsIdentifier: %@, \n creationDate: %@, \n lastStateUpdateDate: %@, \n displayName: %@, \n year: %@, \n manufacturer: %@, \n model: %@, \n colorHex: %@, \n headUnitBluetoothIdentifier: %@, \n headUnitIdentifier: %@, \n license plate: %@, \n lprVehicleType: %@, \n lprPowerType: %@, \n supportedConnectors: %@, \n powerByConnector: %@, \n preferredChargingNetworks: %@, \n usesPreferredNetworksForRouting: %@, \n currentState: %@, \n pairedAppIdentifier: %@, \n pairedAppInstallDeviceIdentifier: %@, \n pairedAppInstallSessionIdentifier: %@\n>", v25, v2, identifier, iapIdentifier, siriIntentsIdentifier, creationDate, lastStateUpdateDate, displayName, year, manufacturer, model, colorHex, headUnitBluetoothIdentifier, headUnitIdentifier, licensePlate, lprVehicleType, lprPowerType, v8, powerByConnector, preferredChargingNetworks, v12, v2->_currentVehicleState, v2->_pairedAppIdentifier, v2->_pairedAppInstallDeviceIdentifier, v2->_pairedAppInstallSessionIdentifier];
+  v13 = [v26 stringWithFormat:@"<%@:%p, \n identifier: %@, \n iapIdentifier: %@, \n siriIntentsIdentifier: %@, \n creationDate: %@, \n lastStateUpdateDate: %@, \n displayName: %@, \n year: %@, \n manufacturer: %@, \n model: %@, \n colorHex: %@, \n headUnitBluetoothIdentifier: %@, \n headUnitIdentifier: %@, \n license plate: %@, \n lprVehicleType: %@, \n lprPowerType: %@, \n supportedConnectors: %@, \n powerByConnector: %@, \n preferredChargingNetworks: %@, \n usesPreferredNetworksForRouting: %@, \n currentState: %@, \n pairedAppIdentifier: %@, \n pairedAppInstallDeviceIdentifier: %@, \n pairedAppInstallSessionIdentifier: %@\n>", v25, selfCopy, identifier, iapIdentifier, siriIntentsIdentifier, creationDate, lastStateUpdateDate, displayName, year, manufacturer, model, colorHex, headUnitBluetoothIdentifier, headUnitIdentifier, licensePlate, lprVehicleType, lprPowerType, v8, powerByConnector, preferredChargingNetworks, v12, selfCopy->_currentVehicleState, selfCopy->_pairedAppIdentifier, selfCopy->_pairedAppInstallDeviceIdentifier, selfCopy->_pairedAppInstallSessionIdentifier];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v39 = [VGVehicle allocWithZone:a3];
+  v39 = [VGVehicle allocWithZone:zone];
   v38 = [(NSString *)self->_identifier copy];
   v4 = [(NSString *)self->_displayName copy];
   v5 = [(NSString *)self->_year copy];
@@ -417,7 +417,7 @@ LABEL_43:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       v22 = 136315906;
-      v23 = "[VGVehicle batteryPercentageBasedOfCapacity]";
+      selfCopy = "[VGVehicle batteryPercentageBasedOfCapacity]";
       v24 = 2080;
       v25 = "VGVehicle.m";
       v26 = 1024;
@@ -432,9 +432,9 @@ LABEL_43:
       v20 = VGGetAssertLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        v21 = [MEMORY[0x277CCACC8] callStackSymbols];
+        callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
         v22 = 138412290;
-        v23 = v21;
+        selfCopy = callStackSymbols;
         _os_log_impl(&dword_270EC1000, v20, OS_LOG_TYPE_ERROR, "%@", &v22, 0xCu);
       }
     }
@@ -442,17 +442,17 @@ LABEL_43:
 
   if ([(VGVehicle *)self isPureElectricVehicle])
   {
-    v3 = [(VGVehicle *)self currentVehicleState];
-    v4 = [v3 minBatteryCapacity];
-    [v4 doubleValue];
+    currentVehicleState = [(VGVehicle *)self currentVehicleState];
+    minBatteryCapacity = [currentVehicleState minBatteryCapacity];
+    [minBatteryCapacity doubleValue];
     v6 = v5;
 
-    v7 = [v3 maxBatteryCapacity];
-    [v7 doubleValue];
+    maxBatteryCapacity = [currentVehicleState maxBatteryCapacity];
+    [maxBatteryCapacity doubleValue];
     v9 = v8 - v6;
 
-    v10 = [v3 currentBatteryCapacity];
-    [v10 doubleValue];
+    currentBatteryCapacity = [currentVehicleState currentBatteryCapacity];
+    [currentBatteryCapacity doubleValue];
     v12 = v11 - v6;
 
     if (v12 < 0.0 || v12 > v9 || v9 <= 2.22044605e-16)
@@ -461,7 +461,7 @@ LABEL_43:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         v22 = 138412290;
-        v23 = v3;
+        selfCopy = currentVehicleState;
         _os_log_impl(&dword_270EC1000, v15, OS_LOG_TYPE_ERROR, "Vehicle provided invalid battery state: %@", &v22, 0xCu);
       }
 
@@ -476,13 +476,13 @@ LABEL_43:
 
   else
   {
-    v3 = VGGetVirtualGarageLog();
+    currentVehicleState = VGGetVirtualGarageLog();
     v16 = 0.0;
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(currentVehicleState, OS_LOG_TYPE_ERROR))
     {
       v22 = 138412290;
-      v23 = self;
-      _os_log_impl(&dword_270EC1000, v3, OS_LOG_TYPE_ERROR, "Querried a vehicle for battery state that is not an EV. Vehicle: %@", &v22, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&dword_270EC1000, currentVehicleState, OS_LOG_TYPE_ERROR, "Querried a vehicle for battery state that is not an EV. Vehicle: %@", &v22, 0xCu);
     }
   }
 
@@ -499,7 +499,7 @@ LABEL_43:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v17 = 136315906;
-      v18 = "[VGVehicle displayedBatteryPercentage]";
+      selfCopy = "[VGVehicle displayedBatteryPercentage]";
       v19 = 2080;
       v20 = "VGVehicle.m";
       v21 = 1024;
@@ -514,9 +514,9 @@ LABEL_43:
       v15 = VGGetAssertLog();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        v16 = [MEMORY[0x277CCACC8] callStackSymbols];
+        callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
         v17 = 138412290;
-        v18 = v16;
+        selfCopy = callStackSymbols;
         _os_log_impl(&dword_270EC1000, v15, OS_LOG_TYPE_ERROR, "%@", &v17, 0xCu);
       }
     }
@@ -524,14 +524,14 @@ LABEL_43:
 
   if ([(VGVehicle *)self isPureElectricVehicle])
   {
-    v3 = [(VGVehicle *)self currentVehicleState];
-    v4 = [v3 batteryPercentage];
+    currentVehicleState = [(VGVehicle *)self currentVehicleState];
+    batteryPercentage = [currentVehicleState batteryPercentage];
 
-    if (v4)
+    if (batteryPercentage)
     {
-      v5 = [(VGVehicle *)self currentVehicleState];
-      v6 = [v5 batteryPercentage];
-      [v6 doubleValue];
+      currentVehicleState2 = [(VGVehicle *)self currentVehicleState];
+      batteryPercentage2 = [currentVehicleState2 batteryPercentage];
+      [batteryPercentage2 doubleValue];
       v8 = v7;
     }
 
@@ -556,7 +556,7 @@ LABEL_43:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v17 = 138412290;
-      v18 = self;
+      selfCopy = self;
       _os_log_impl(&dword_270EC1000, v9, OS_LOG_TYPE_ERROR, "Querried a vehicle for battery state that is not an EV. Vehicle: %@", &v17, 0xCu);
     }
 
@@ -589,28 +589,28 @@ LABEL_5:
   return v6;
 }
 
-- (BOOL)_canBeUpdatedFromState:(id)a3
+- (BOOL)_canBeUpdatedFromState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v4 origin];
+  stateCopy = state;
+  identifier = [stateCopy identifier];
+  origin = [stateCopy origin];
 
-  v7 = [(VGVehicle *)self _identifierForVehicleStateOrigin:v6];
-  LOBYTE(v4) = [v5 isEqualToString:v7];
+  v7 = [(VGVehicle *)self _identifierForVehicleStateOrigin:origin];
+  LOBYTE(stateCopy) = [identifier isEqualToString:v7];
 
-  return v4;
+  return stateCopy;
 }
 
-- (id)_identifierForVehicleStateOrigin:(int64_t)a3
+- (id)_identifierForVehicleStateOrigin:(int64_t)origin
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (a3 == 2)
+  if (origin == 2)
   {
     siriIntentsIdentifier = self->_siriIntentsIdentifier;
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (origin == 1)
   {
     siriIntentsIdentifier = self->_iapIdentifier;
 LABEL_5:
@@ -635,9 +635,9 @@ LABEL_5:
     v6 = VGGetAssertLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [MEMORY[0x277CCACC8] callStackSymbols];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
       v10 = 138412290;
-      v11 = v7;
+      v11 = callStackSymbols;
       _os_log_impl(&dword_270EC1000, v6, OS_LOG_TYPE_ERROR, "%@", &v10, 0xCu);
     }
   }
@@ -649,11 +649,11 @@ LABEL_13:
   return v4;
 }
 
-- (void)pairToIapIdentifier:(id)a3 bluetoothIdentifier:(id)a4
+- (void)pairToIapIdentifier:(id)identifier bluetoothIdentifier:(id)bluetoothIdentifier
 {
   v24[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  bluetoothIdentifierCopy = bluetoothIdentifier;
   if (!self->_iapIdentifier)
   {
     goto LABEL_2;
@@ -663,7 +663,7 @@ LABEL_13:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
   {
     v19 = 136315906;
-    v20 = "[VGVehicle pairToIapIdentifier:bluetoothIdentifier:]";
+    selfCopy = "[VGVehicle pairToIapIdentifier:bluetoothIdentifier:]";
     v21 = 2080;
     v22 = "VGVehicle.m";
     v23 = 1024;
@@ -678,9 +678,9 @@ LABEL_13:
     v17 = VGGetAssertLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v18 = [MEMORY[0x277CCACC8] callStackSymbols];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
       v19 = 138412290;
-      v20 = v18;
+      selfCopy = callStackSymbols;
       _os_log_impl(&dword_270EC1000, v17, OS_LOG_TYPE_ERROR, "%@", &v19, 0xCu);
     }
   }
@@ -691,11 +691,11 @@ LABEL_13:
     if (os_log_type_enabled(headUnitBluetoothIdentifier, OS_LOG_TYPE_FAULT))
     {
       v19 = 138412802;
-      v20 = self;
+      selfCopy = self;
       v21 = 2112;
-      v22 = v6;
+      v22 = identifierCopy;
       v23 = 2112;
-      v24[0] = v7;
+      v24[0] = bluetoothIdentifierCopy;
       _os_log_impl(&dword_270EC1000, headUnitBluetoothIdentifier, OS_LOG_TYPE_FAULT, "Tried to pair a vehicle: (%@) to iapID: %@, bluetoothID: %@, but it was already paired.", &v19, 0x20u);
     }
   }
@@ -707,21 +707,21 @@ LABEL_2:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v19 = 138412546;
-      v20 = v6;
+      selfCopy = identifierCopy;
       v21 = 2112;
-      v22 = v7;
+      v22 = bluetoothIdentifierCopy;
       _os_log_impl(&dword_270EC1000, v8, OS_LOG_TYPE_INFO, "Pairing vehicle to iapIdentifier: %@, bluetoothIdentifier: %@", &v19, 0x16u);
     }
 
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     iapIdentifier = self->_iapIdentifier;
     self->_iapIdentifier = v9;
 
-    v11 = [v6 copy];
+    v11 = [identifierCopy copy];
     headUnitIdentifier = self->_headUnitIdentifier;
     self->_headUnitIdentifier = v11;
 
-    v13 = [v7 copy];
+    v13 = [bluetoothIdentifierCopy copy];
     headUnitBluetoothIdentifier = self->_headUnitBluetoothIdentifier;
     self->_headUnitBluetoothIdentifier = v13;
   }
@@ -729,103 +729,103 @@ LABEL_2:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_vehicleByUpdatingUsesPreferredNetworksForRouting:(BOOL)a3
+- (id)_vehicleByUpdatingUsesPreferredNetworksForRouting:(BOOL)routing
 {
   v4 = [(VGVehicle *)self copy];
-  v4[8] = a3;
+  v4[8] = routing;
 
   return v4;
 }
 
-- (id)_vehicleByUpdatingWithVehicle:(id)a3
+- (id)_vehicleByUpdatingWithVehicle:(id)vehicle
 {
-  v4 = a3;
+  vehicleCopy = vehicle;
   v5 = [(VGVehicle *)self copy];
-  v5[15] = [v4 supportedConnectors];
-  v6 = [v4 powerByConnector];
-  v7 = [v6 copy];
+  v5[15] = [vehicleCopy supportedConnectors];
+  powerByConnector = [vehicleCopy powerByConnector];
+  v7 = [powerByConnector copy];
   v8 = v5[16];
   v5[16] = v7;
 
-  v9 = [v4 currentVehicleState];
-  [v5 _updateWithVehicleState:v9];
+  currentVehicleState = [vehicleCopy currentVehicleState];
+  [v5 _updateWithVehicleState:currentVehicleState];
 
-  v10 = [v5 displayName];
+  displayName = [v5 displayName];
 
-  if (!v10)
+  if (!displayName)
   {
-    v11 = [v4 displayName];
-    v12 = [v11 copy];
+    displayName2 = [vehicleCopy displayName];
+    v12 = [displayName2 copy];
     v13 = v5[5];
     v5[5] = v12;
   }
 
-  v14 = [v5 colorHex];
+  colorHex = [v5 colorHex];
 
-  if (!v14)
+  if (!colorHex)
   {
-    v15 = [v4 colorHex];
-    v16 = [v15 copy];
+    colorHex2 = [vehicleCopy colorHex];
+    v16 = [colorHex2 copy];
     v17 = v5[9];
     v5[9] = v16;
   }
 
-  v18 = [v5 model];
+  model = [v5 model];
 
-  if (!v18)
+  if (!model)
   {
-    v19 = [v4 model];
-    v20 = [v19 copy];
+    model2 = [vehicleCopy model];
+    v20 = [model2 copy];
     v21 = v5[8];
     v5[8] = v20;
   }
 
-  v22 = [v5 manufacturer];
+  manufacturer = [v5 manufacturer];
 
-  if (!v22)
+  if (!manufacturer)
   {
-    v23 = [v4 manufacturer];
-    v24 = [v23 copy];
+    manufacturer2 = [vehicleCopy manufacturer];
+    v24 = [manufacturer2 copy];
     v25 = v5[7];
     v5[7] = v24;
   }
 
-  v26 = [v5 year];
+  year = [v5 year];
 
-  if (!v26)
+  if (!year)
   {
-    v27 = [v4 year];
-    v28 = [v27 copy];
+    year2 = [vehicleCopy year];
+    v28 = [year2 copy];
     v29 = v5[6];
     v5[6] = v28;
   }
 
-  v30 = [v5 headUnitIdentifier];
+  headUnitIdentifier = [v5 headUnitIdentifier];
 
-  if (!v30)
+  if (!headUnitIdentifier)
   {
-    v31 = [v4 headUnitIdentifier];
-    v32 = [v31 copy];
+    headUnitIdentifier2 = [vehicleCopy headUnitIdentifier];
+    v32 = [headUnitIdentifier2 copy];
     v33 = v5[11];
     v5[11] = v32;
   }
 
-  v34 = [v5 headUnitBluetoothIdentifier];
+  headUnitBluetoothIdentifier = [v5 headUnitBluetoothIdentifier];
 
-  if (!v34)
+  if (!headUnitBluetoothIdentifier)
   {
-    v35 = [v4 headUnitBluetoothIdentifier];
-    v36 = [v35 copy];
+    headUnitBluetoothIdentifier2 = [vehicleCopy headUnitBluetoothIdentifier];
+    v36 = [headUnitBluetoothIdentifier2 copy];
     v37 = v5[10];
     v5[10] = v36;
   }
 
-  v38 = [v5 iapIdentifier];
+  iapIdentifier = [v5 iapIdentifier];
 
-  if (!v38)
+  if (!iapIdentifier)
   {
-    v39 = [v4 iapIdentifier];
-    v40 = [v39 copy];
+    iapIdentifier2 = [vehicleCopy iapIdentifier];
+    v40 = [iapIdentifier2 copy];
     v41 = v5[20];
     v5[20] = v40;
   }
@@ -833,29 +833,29 @@ LABEL_2:
   return v5;
 }
 
-- (void)_setVehicleState:(id)a3
+- (void)_setVehicleState:(id)state
 {
-  v9 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v9 copy];
-  currentVehicleState = v4->_currentVehicleState;
-  v4->_currentVehicleState = v5;
+  stateCopy = state;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [stateCopy copy];
+  currentVehicleState = selfCopy->_currentVehicleState;
+  selfCopy->_currentVehicleState = v5;
 
-  v7 = [MEMORY[0x277CBEAA8] date];
-  lastStateUpdateDate = v4->_lastStateUpdateDate;
-  v4->_lastStateUpdateDate = v7;
+  date = [MEMORY[0x277CBEAA8] date];
+  lastStateUpdateDate = selfCopy->_lastStateUpdateDate;
+  selfCopy->_lastStateUpdateDate = date;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_updateWithVehicleState:(id)a3
+- (void)_updateWithVehicleState:(id)state
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(VGVehicle *)self _canBeUpdatedFromState:v4])
+  stateCopy = state;
+  if ([(VGVehicle *)self _canBeUpdatedFromState:stateCopy])
   {
-    [(VGVehicle *)self _setVehicleState:v4];
+    [(VGVehicle *)self _setVehicleState:stateCopy];
   }
 
   else
@@ -864,7 +864,7 @@ LABEL_2:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v13 = 136315906;
-      v14 = "[VGVehicle _updateWithVehicleState:]";
+      selfCopy = "[VGVehicle _updateWithVehicleState:]";
       v15 = 2080;
       v16 = "VGVehicle.m";
       v17 = 1024;
@@ -879,9 +879,9 @@ LABEL_2:
       v7 = VGGetAssertLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        v8 = [MEMORY[0x277CCACC8] callStackSymbols];
+        callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
         v13 = 138412290;
-        v14 = v8;
+        selfCopy = callStackSymbols;
         _os_log_impl(&dword_270EC1000, v7, OS_LOG_TYPE_ERROR, "%@", &v13, 0xCu);
       }
     }
@@ -889,19 +889,19 @@ LABEL_2:
     v9 = VGGetDataCoordinatorLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
-      v10 = [v4 identifier];
-      v11 = [v4 origin];
+      identifier = [stateCopy identifier];
+      origin = [stateCopy origin];
       v12 = @"Unknown";
-      if (v11 == 1)
+      if (origin == 1)
       {
         v12 = @"iAP2";
       }
 
       v13 = 138412802;
-      v14 = self;
+      selfCopy = self;
       v15 = 2112;
-      v16 = v10;
-      if (v11 == 2)
+      v16 = identifier;
+      if (origin == 2)
       {
         v12 = @"SiriIntents";
       }
@@ -917,11 +917,11 @@ LABEL_2:
 
 - (BOOL)isPureElectricVehicle
 {
-  v3 = [(VGVehicleState *)self->_currentVehicleState consumptionArguments];
-  if ([v3 length])
+  consumptionArguments = [(VGVehicleState *)self->_currentVehicleState consumptionArguments];
+  if ([consumptionArguments length])
   {
-    v4 = [(VGVehicleState *)self->_currentVehicleState chargingArguments];
-    v5 = [v4 length] != 0;
+    chargingArguments = [(VGVehicleState *)self->_currentVehicleState chargingArguments];
+    v5 = [chargingArguments length] != 0;
   }
 
   else
@@ -932,139 +932,139 @@ LABEL_2:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [v6 encodeObject:v4->_identifier forKey:@"_identifier"];
-  [v6 encodeObject:v4->_iapIdentifier forKey:@"_iapIdentifier"];
-  [v6 encodeObject:v4->_siriIntentsIdentifier forKey:@"_siriIntentsIdentifier"];
-  [v6 encodeObject:v4->_creationDate forKey:@"_creationDate"];
-  [v6 encodeObject:v4->_lastStateUpdateDate forKey:@"_lastStateUpdateDate"];
-  [v6 encodeObject:v4->_displayName forKey:@"_displayName"];
-  [v6 encodeObject:v4->_year forKey:@"_year"];
-  [v6 encodeObject:v4->_manufacturer forKey:@"_manufacturer"];
-  [v6 encodeObject:v4->_model forKey:@"_model"];
-  [v6 encodeObject:v4->_colorHex forKey:@"_colorHex"];
-  [v6 encodeObject:v4->_headUnitIdentifier forKey:@"_headUnitIdentifier"];
-  [v6 encodeObject:v4->_headUnitBluetoothIdentifier forKey:@"_headUnitBluetoothIdentifier"];
-  [v6 encodeObject:v4->_licensePlate forKey:@"_licensePlate"];
-  [v6 encodeObject:v4->_lprVehicleType forKey:@"_lprVehicleType"];
-  [v6 encodeObject:v4->_lprPowerType forKey:@"_lprPowerType"];
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v4->_supportedConnectors];
-  [v6 encodeObject:v5 forKey:@"_supportedConnectors"];
+  coderCopy = coder;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [coderCopy encodeObject:selfCopy->_identifier forKey:@"_identifier"];
+  [coderCopy encodeObject:selfCopy->_iapIdentifier forKey:@"_iapIdentifier"];
+  [coderCopy encodeObject:selfCopy->_siriIntentsIdentifier forKey:@"_siriIntentsIdentifier"];
+  [coderCopy encodeObject:selfCopy->_creationDate forKey:@"_creationDate"];
+  [coderCopy encodeObject:selfCopy->_lastStateUpdateDate forKey:@"_lastStateUpdateDate"];
+  [coderCopy encodeObject:selfCopy->_displayName forKey:@"_displayName"];
+  [coderCopy encodeObject:selfCopy->_year forKey:@"_year"];
+  [coderCopy encodeObject:selfCopy->_manufacturer forKey:@"_manufacturer"];
+  [coderCopy encodeObject:selfCopy->_model forKey:@"_model"];
+  [coderCopy encodeObject:selfCopy->_colorHex forKey:@"_colorHex"];
+  [coderCopy encodeObject:selfCopy->_headUnitIdentifier forKey:@"_headUnitIdentifier"];
+  [coderCopy encodeObject:selfCopy->_headUnitBluetoothIdentifier forKey:@"_headUnitBluetoothIdentifier"];
+  [coderCopy encodeObject:selfCopy->_licensePlate forKey:@"_licensePlate"];
+  [coderCopy encodeObject:selfCopy->_lprVehicleType forKey:@"_lprVehicleType"];
+  [coderCopy encodeObject:selfCopy->_lprPowerType forKey:@"_lprPowerType"];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:selfCopy->_supportedConnectors];
+  [coderCopy encodeObject:v5 forKey:@"_supportedConnectors"];
 
-  [v6 encodeObject:v4->_powerByConnector forKey:@"_powerByConnector"];
-  [v6 encodeObject:v4->_preferredChargingNetworks forKey:@"_preferredChargingNetworks"];
-  [v6 encodeBool:v4->_usesPreferredNetworksForRouting forKey:@"_usesPreferredNetworksForRouting"];
-  [v6 encodeObject:v4->_currentVehicleState forKey:@"_currentVehicleState"];
-  [v6 encodeObject:v4->_pairedAppIdentifier forKey:@"_pairedAppIdentifier"];
-  [v6 encodeObject:v4->_pairedAppInstallDeviceIdentifier forKey:@"_pairedAppInstallDeviceIdentifier"];
-  [v6 encodeObject:v4->_pairedAppInstallSessionIdentifier forKey:@"_pairedAppInstallSessionIdentifier"];
-  objc_sync_exit(v4);
+  [coderCopy encodeObject:selfCopy->_powerByConnector forKey:@"_powerByConnector"];
+  [coderCopy encodeObject:selfCopy->_preferredChargingNetworks forKey:@"_preferredChargingNetworks"];
+  [coderCopy encodeBool:selfCopy->_usesPreferredNetworksForRouting forKey:@"_usesPreferredNetworksForRouting"];
+  [coderCopy encodeObject:selfCopy->_currentVehicleState forKey:@"_currentVehicleState"];
+  [coderCopy encodeObject:selfCopy->_pairedAppIdentifier forKey:@"_pairedAppIdentifier"];
+  [coderCopy encodeObject:selfCopy->_pairedAppInstallDeviceIdentifier forKey:@"_pairedAppInstallDeviceIdentifier"];
+  [coderCopy encodeObject:selfCopy->_pairedAppInstallSessionIdentifier forKey:@"_pairedAppInstallSessionIdentifier"];
+  objc_sync_exit(selfCopy);
 }
 
-- (VGVehicle)initWithCoder:(id)a3
+- (VGVehicle)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v57.receiver = self;
   v57.super_class = VGVehicle;
   v5 = [(VGVehicle *)&v57 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_iapIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_iapIdentifier"];
     iapIdentifier = v5->_iapIdentifier;
     v5->_iapIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_siriIntentsIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_siriIntentsIdentifier"];
     siriIntentsIdentifier = v5->_siriIntentsIdentifier;
     v5->_siriIntentsIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_creationDate"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_creationDate"];
     creationDate = v5->_creationDate;
     v5->_creationDate = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_lastStateUpdateDate"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_lastStateUpdateDate"];
     lastStateUpdateDate = v5->_lastStateUpdateDate;
     v5->_lastStateUpdateDate = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_displayName"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_displayName"];
     displayName = v5->_displayName;
     v5->_displayName = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_year"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_year"];
     year = v5->_year;
     v5->_year = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_manufacturer"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_manufacturer"];
     manufacturer = v5->_manufacturer;
     v5->_manufacturer = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_model"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_model"];
     model = v5->_model;
     v5->_model = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_colorHex"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_colorHex"];
     colorHex = v5->_colorHex;
     v5->_colorHex = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_headUnitIdentifier"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_headUnitIdentifier"];
     headUnitIdentifier = v5->_headUnitIdentifier;
     v5->_headUnitIdentifier = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_headUnitBluetoothIdentifier"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_headUnitBluetoothIdentifier"];
     headUnitBluetoothIdentifier = v5->_headUnitBluetoothIdentifier;
     v5->_headUnitBluetoothIdentifier = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_licensePlate"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_licensePlate"];
     licensePlate = v5->_licensePlate;
     v5->_licensePlate = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_lprVehicleType"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_lprVehicleType"];
     lprVehicleType = v5->_lprVehicleType;
     v5->_lprVehicleType = v32;
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_lprPowerType"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_lprPowerType"];
     lprPowerType = v5->_lprPowerType;
     v5->_lprPowerType = v34;
 
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_supportedConnectors"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_supportedConnectors"];
     v5->_supportedConnectors = [v36 unsignedIntegerValue];
 
     v37 = objc_alloc(MEMORY[0x277CBEB98]);
     v38 = objc_opt_class();
     v39 = objc_opt_class();
     v40 = [v37 initWithObjects:{v38, v39, objc_opt_class(), 0}];
-    v41 = [v4 decodeObjectOfClasses:v40 forKey:@"_powerByConnector"];
+    v41 = [coderCopy decodeObjectOfClasses:v40 forKey:@"_powerByConnector"];
     powerByConnector = v5->_powerByConnector;
     v5->_powerByConnector = v41;
 
     v43 = objc_alloc(MEMORY[0x277CBEB98]);
     v44 = objc_opt_class();
     v45 = [v43 initWithObjects:{v44, objc_opt_class(), 0}];
-    v46 = [v4 decodeObjectOfClasses:v45 forKey:@"_preferredChargingNetworks"];
+    v46 = [coderCopy decodeObjectOfClasses:v45 forKey:@"_preferredChargingNetworks"];
     preferredChargingNetworks = v5->_preferredChargingNetworks;
     v5->_preferredChargingNetworks = v46;
 
-    v5->_usesPreferredNetworksForRouting = [v4 decodeBoolForKey:@"_usesPreferredNetworksForRouting"];
-    v48 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_currentVehicleState"];
+    v5->_usesPreferredNetworksForRouting = [coderCopy decodeBoolForKey:@"_usesPreferredNetworksForRouting"];
+    v48 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_currentVehicleState"];
     currentVehicleState = v5->_currentVehicleState;
     v5->_currentVehicleState = v48;
 
-    v50 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_pairedAppIdentifier"];
+    v50 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_pairedAppIdentifier"];
     pairedAppIdentifier = v5->_pairedAppIdentifier;
     v5->_pairedAppIdentifier = v50;
 
-    v52 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_pairedAppInstallDeviceIdentifier"];
+    v52 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_pairedAppInstallDeviceIdentifier"];
     pairedAppInstallDeviceIdentifier = v5->_pairedAppInstallDeviceIdentifier;
     v5->_pairedAppInstallDeviceIdentifier = v52;
 
-    v54 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_pairedAppInstallSessionIdentifier"];
+    v54 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_pairedAppInstallSessionIdentifier"];
     pairedAppInstallSessionIdentifier = v5->_pairedAppInstallSessionIdentifier;
     v5->_pairedAppInstallSessionIdentifier = v54;
   }
@@ -1072,113 +1072,113 @@ LABEL_2:
   return v5;
 }
 
-- (VGVehicle)initWithMapsSyncVehicle:(id)a3
+- (VGVehicle)initWithMapsSyncVehicle:(id)vehicle
 {
   v104 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  vehicleCopy = vehicle;
   v97.receiver = self;
   v97.super_class = VGVehicle;
   v5 = [(VGVehicle *)&v97 init];
   if (v5)
   {
-    v6 = [v4 vehicleIdentifier];
-    v7 = [v6 copy];
+    vehicleIdentifier = [vehicleCopy vehicleIdentifier];
+    v7 = [vehicleIdentifier copy];
     identifier = v5->_identifier;
     v5->_identifier = v7;
 
-    v9 = [v4 iapIdentifier];
-    v10 = [v9 copy];
+    iapIdentifier = [vehicleCopy iapIdentifier];
+    v10 = [iapIdentifier copy];
     iapIdentifier = v5->_iapIdentifier;
     v5->_iapIdentifier = v10;
 
-    v12 = [v4 siriIntentsIdentifier];
-    v13 = [v12 copy];
+    siriIntentsIdentifier = [vehicleCopy siriIntentsIdentifier];
+    v13 = [siriIntentsIdentifier copy];
     siriIntentsIdentifier = v5->_siriIntentsIdentifier;
     v5->_siriIntentsIdentifier = v13;
 
-    v15 = [v4 dateOfVehicleIngestion];
-    v16 = [v15 copy];
+    dateOfVehicleIngestion = [vehicleCopy dateOfVehicleIngestion];
+    v16 = [dateOfVehicleIngestion copy];
     creationDate = v5->_creationDate;
     v5->_creationDate = v16;
 
-    v18 = [v4 lastStateUpdateDate];
-    v19 = [v18 copy];
+    lastStateUpdateDate = [vehicleCopy lastStateUpdateDate];
+    v19 = [lastStateUpdateDate copy];
     lastStateUpdateDate = v5->_lastStateUpdateDate;
     v5->_lastStateUpdateDate = v19;
 
-    v21 = [v4 displayName];
-    v22 = [v21 copy];
+    displayName = [vehicleCopy displayName];
+    v22 = [displayName copy];
     displayName = v5->_displayName;
     v5->_displayName = v22;
 
-    v24 = [v4 year];
-    v25 = [v24 stringValue];
+    year = [vehicleCopy year];
+    stringValue = [year stringValue];
     year = v5->_year;
-    v5->_year = v25;
+    v5->_year = stringValue;
 
-    v27 = [v4 manufacturer];
-    v28 = [v27 copy];
+    manufacturer = [vehicleCopy manufacturer];
+    v28 = [manufacturer copy];
     manufacturer = v5->_manufacturer;
     v5->_manufacturer = v28;
 
-    v30 = [v4 model];
-    v31 = [v30 copy];
+    model = [vehicleCopy model];
+    v31 = [model copy];
     model = v5->_model;
     v5->_model = v31;
 
-    v33 = [v4 colorHex];
-    v34 = [v33 copy];
+    colorHex = [vehicleCopy colorHex];
+    v34 = [colorHex copy];
     colorHex = v5->_colorHex;
     v5->_colorHex = v34;
 
-    v36 = [v4 licensePlate];
-    v37 = [v36 copy];
+    licensePlate = [vehicleCopy licensePlate];
+    v37 = [licensePlate copy];
     licensePlate = v5->_licensePlate;
     v5->_licensePlate = v37;
 
-    v39 = [v4 lprVehicleType];
-    v40 = [v39 copy];
+    lprVehicleType = [vehicleCopy lprVehicleType];
+    v40 = [lprVehicleType copy];
     lprVehicleType = v5->_lprVehicleType;
     v5->_lprVehicleType = v40;
 
-    v42 = [v4 lprPowerType];
-    v43 = [v42 copy];
+    lprPowerType = [vehicleCopy lprPowerType];
+    v43 = [lprPowerType copy];
     lprPowerType = v5->_lprPowerType;
     v5->_lprPowerType = v43;
 
-    v45 = [v4 headUnitMacAddress];
-    v46 = [v45 copy];
+    headUnitMacAddress = [vehicleCopy headUnitMacAddress];
+    v46 = [headUnitMacAddress copy];
     headUnitIdentifier = v5->_headUnitIdentifier;
     v5->_headUnitIdentifier = v46;
 
-    v48 = [v4 headUnitBluetoothIdentifier];
-    v49 = [v48 copy];
+    headUnitBluetoothIdentifier = [vehicleCopy headUnitBluetoothIdentifier];
+    v49 = [headUnitBluetoothIdentifier copy];
     headUnitBluetoothIdentifier = v5->_headUnitBluetoothIdentifier;
     v5->_headUnitBluetoothIdentifier = v49;
 
-    v51 = [v4 supportedConnectors];
-    v5->_supportedConnectors = [v51 unsignedIntegerValue];
+    supportedConnectors = [vehicleCopy supportedConnectors];
+    v5->_supportedConnectors = [supportedConnectors unsignedIntegerValue];
 
     v95[0] = MEMORY[0x277D85DD0];
     v95[1] = 3221225472;
     v95[2] = __37__VGVehicle_initWithMapsSyncVehicle___block_invoke;
     v95[3] = &unk_279E26630;
-    v52 = v4;
+    v52 = vehicleCopy;
     v96 = v52;
     v53 = MEMORY[0x2743B8310](v95);
-    v54 = [v52 powerByConnector];
-    v55 = (v53)[2](v53, v54);
+    powerByConnector = [v52 powerByConnector];
+    v55 = (v53)[2](v53, powerByConnector);
     powerByConnector = v5->_powerByConnector;
     v5->_powerByConnector = v55;
 
     v57 = [VGChargingNetworksStorage alloc];
-    v58 = [v52 preferredChargingNetworks];
-    v59 = [(VGChargingNetworksStorage *)v57 initWithData:v58];
+    preferredChargingNetworks = [v52 preferredChargingNetworks];
+    v59 = [(VGChargingNetworksStorage *)v57 initWithData:preferredChargingNetworks];
 
     v60 = objc_alloc(MEMORY[0x277CBEB98]);
-    v61 = [(VGChargingNetworksStorage *)v59 networks];
+    networks = [(VGChargingNetworksStorage *)v59 networks];
     v62 = &__block_literal_global_55;
-    if (v61)
+    if (networks)
     {
       v91 = v60;
       v93 = v52;
@@ -1188,8 +1188,8 @@ LABEL_2:
       v99 = 0u;
       v100 = 0u;
       v101 = 0u;
-      v92 = v61;
-      v64 = v61;
+      v92 = networks;
+      v64 = networks;
       v65 = [v64 countByEnumeratingWithState:&v98 objects:buf count:16];
       if (v65)
       {
@@ -1222,7 +1222,7 @@ LABEL_2:
 
       v71 = [v63 copy];
       v53 = v94;
-      v61 = v92;
+      networks = v92;
       v52 = v93;
       v60 = v91;
     }
@@ -1238,8 +1238,8 @@ LABEL_2:
 
     v5->_usesPreferredNetworksForRouting = [(VGChargingNetworksStorage *)v59 usesPreferredNetworksForRouting];
     v74 = [VGVehicleStateStorage alloc];
-    v75 = [v52 currentVehicleState];
-    v76 = [(VGVehicleStateStorage *)v74 initWithData:v75];
+    currentVehicleState = [v52 currentVehicleState];
+    v76 = [(VGVehicleStateStorage *)v74 initWithData:currentVehicleState];
 
     if (v76)
     {
@@ -1262,18 +1262,18 @@ LABEL_2:
     currentVehicleState = v5->_currentVehicleState;
     v5->_currentVehicleState = v77;
 
-    v80 = [v52 pairedAppIdentifier];
-    v81 = [v80 copy];
+    pairedAppIdentifier = [v52 pairedAppIdentifier];
+    v81 = [pairedAppIdentifier copy];
     pairedAppIdentifier = v5->_pairedAppIdentifier;
     v5->_pairedAppIdentifier = v81;
 
-    v83 = [(VGVehicleStateStorage *)v76 pairedAppInstallDeviceIdentifier];
-    v84 = [v83 copy];
+    pairedAppInstallDeviceIdentifier = [(VGVehicleStateStorage *)v76 pairedAppInstallDeviceIdentifier];
+    v84 = [pairedAppInstallDeviceIdentifier copy];
     pairedAppInstallDeviceIdentifier = v5->_pairedAppInstallDeviceIdentifier;
     v5->_pairedAppInstallDeviceIdentifier = v84;
 
-    v86 = [(VGVehicleStateStorage *)v76 pairedAppInstallSessionIdentifier];
-    v87 = [v86 copy];
+    pairedAppInstallSessionIdentifier = [(VGVehicleStateStorage *)v76 pairedAppInstallSessionIdentifier];
+    v87 = [pairedAppInstallSessionIdentifier copy];
     pairedAppInstallSessionIdentifier = v5->_pairedAppInstallSessionIdentifier;
     v5->_pairedAppInstallSessionIdentifier = v87;
   }
@@ -1426,59 +1426,59 @@ VGChargingNetwork *__37__VGVehicle_initWithMapsSyncVehicle___block_invoke_13(uin
   return v3;
 }
 
-- (VGVehicle)initWithIdentifier:(id)a3 displayName:(id)a4 year:(id)a5 manufacturer:(id)a6 model:(id)a7 colorHex:(id)a8 licensePlate:(id)a9 lprVehicleType:(id)a10 lprPowerType:(id)a11
+- (VGVehicle)initWithIdentifier:(id)identifier displayName:(id)name year:(id)year manufacturer:(id)manufacturer model:(id)model colorHex:(id)hex licensePlate:(id)plate lprVehicleType:(id)self0 lprPowerType:(id)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v46 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
+  identifierCopy = identifier;
+  nameCopy = name;
+  yearCopy = year;
+  manufacturerCopy = manufacturer;
+  modelCopy = model;
+  hexCopy = hex;
+  plateCopy = plate;
+  typeCopy = type;
+  powerTypeCopy = powerType;
   v47.receiver = self;
   v47.super_class = VGVehicle;
   v25 = [(VGVehicle *)&v47 init];
   if (v25)
   {
-    v26 = [v17 copy];
+    v26 = [identifierCopy copy];
     identifier = v25->_identifier;
     v25->_identifier = v26;
 
-    v28 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     creationDate = v25->_creationDate;
-    v25->_creationDate = v28;
+    v25->_creationDate = date;
 
     lastStateUpdateDate = v25->_lastStateUpdateDate;
     v25->_lastStateUpdateDate = 0;
 
-    v31 = [v18 copy];
+    v31 = [nameCopy copy];
     displayName = v25->_displayName;
     v25->_displayName = v31;
 
-    objc_storeStrong(&v25->_year, a5);
-    v33 = [v19 copy];
+    objc_storeStrong(&v25->_year, year);
+    v33 = [manufacturerCopy copy];
     manufacturer = v25->_manufacturer;
     v25->_manufacturer = v33;
 
-    v35 = [v20 copy];
+    v35 = [modelCopy copy];
     model = v25->_model;
     v25->_model = v35;
 
-    v37 = [v21 copy];
+    v37 = [hexCopy copy];
     colorHex = v25->_colorHex;
     v25->_colorHex = v37;
 
-    v39 = [v22 copy];
+    v39 = [plateCopy copy];
     licensePlate = v25->_licensePlate;
     v25->_licensePlate = v39;
 
-    v41 = [v23 copy];
+    v41 = [typeCopy copy];
     lprVehicleType = v25->_lprVehicleType;
     v25->_lprVehicleType = v41;
 
-    v43 = [v24 copy];
+    v43 = [powerTypeCopy copy];
     lprPowerType = v25->_lprPowerType;
     v25->_lprPowerType = v43;
   }
@@ -1486,41 +1486,41 @@ VGChargingNetwork *__37__VGVehicle_initWithMapsSyncVehicle___block_invoke_13(uin
   return v25;
 }
 
-- (VGVehicle)initWithLicensePlate:(id)a3 lprVehicleType:(id)a4 lprPowerType:(id)a5
+- (VGVehicle)initWithLicensePlate:(id)plate lprVehicleType:(id)type lprPowerType:(id)powerType
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  plateCopy = plate;
+  typeCopy = type;
+  powerTypeCopy = powerType;
   v27.receiver = self;
   v27.super_class = VGVehicle;
   v11 = [(VGVehicle *)&v27 init];
   if (v11)
   {
     v12 = objc_alloc_init(MEMORY[0x277CCAD78]);
-    v13 = [v12 UUIDString];
+    uUIDString = [v12 UUIDString];
     identifier = v11->_identifier;
-    v11->_identifier = v13;
+    v11->_identifier = uUIDString;
 
-    v15 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     creationDate = v11->_creationDate;
-    v11->_creationDate = v15;
+    v11->_creationDate = date;
 
     lastStateUpdateDate = v11->_lastStateUpdateDate;
     v11->_lastStateUpdateDate = 0;
 
-    v18 = [v8 copy];
+    v18 = [plateCopy copy];
     displayName = v11->_displayName;
     v11->_displayName = v18;
 
-    v20 = [v8 copy];
+    v20 = [plateCopy copy];
     licensePlate = v11->_licensePlate;
     v11->_licensePlate = v20;
 
-    v22 = [v9 copy];
+    v22 = [typeCopy copy];
     lprVehicleType = v11->_lprVehicleType;
     v11->_lprVehicleType = v22;
 
-    v24 = [v10 copy];
+    v24 = [powerTypeCopy copy];
     lprPowerType = v11->_lprPowerType;
     v11->_lprPowerType = v24;
   }
@@ -1528,67 +1528,67 @@ VGChargingNetwork *__37__VGVehicle_initWithMapsSyncVehicle___block_invoke_13(uin
   return v11;
 }
 
-- (VGVehicle)initWithDisplayName:(id)a3 year:(id)a4 manufacturer:(id)a5 model:(id)a6 colorHex:(id)a7 headUnitIdentifier:(id)a8 headUnitBluetoothIdentifier:(id)a9 supportedConnectors:(unint64_t)a10 powerByConnector:(id)a11
+- (VGVehicle)initWithDisplayName:(id)name year:(id)year manufacturer:(id)manufacturer model:(id)model colorHex:(id)hex headUnitIdentifier:(id)identifier headUnitBluetoothIdentifier:(id)bluetoothIdentifier supportedConnectors:(unint64_t)self0 powerByConnector:(id)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
-  v24 = a11;
+  nameCopy = name;
+  yearCopy = year;
+  manufacturerCopy = manufacturer;
+  modelCopy = model;
+  hexCopy = hex;
+  identifierCopy = identifier;
+  bluetoothIdentifierCopy = bluetoothIdentifier;
+  connectorCopy = connector;
   v51.receiver = self;
   v51.super_class = VGVehicle;
   v25 = [(VGVehicle *)&v51 init];
   if (v25)
   {
-    v26 = [MEMORY[0x277CCAD78] UUID];
-    v27 = [v26 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v25->_identifier;
-    v25->_identifier = v27;
+    v25->_identifier = uUIDString;
 
-    v29 = [v22 copy];
+    v29 = [identifierCopy copy];
     iapIdentifier = v25->_iapIdentifier;
     v25->_iapIdentifier = v29;
 
-    v31 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     creationDate = v25->_creationDate;
-    v25->_creationDate = v31;
+    v25->_creationDate = date;
 
     lastStateUpdateDate = v25->_lastStateUpdateDate;
     v25->_lastStateUpdateDate = 0;
 
-    v34 = [v17 copy];
+    v34 = [nameCopy copy];
     displayName = v25->_displayName;
     v25->_displayName = v34;
 
-    v36 = [v18 copy];
+    v36 = [yearCopy copy];
     year = v25->_year;
     v25->_year = v36;
 
-    v38 = [v19 copy];
+    v38 = [manufacturerCopy copy];
     manufacturer = v25->_manufacturer;
     v25->_manufacturer = v38;
 
-    v40 = [v20 copy];
+    v40 = [modelCopy copy];
     model = v25->_model;
     v25->_model = v40;
 
-    v42 = [v21 copy];
+    v42 = [hexCopy copy];
     colorHex = v25->_colorHex;
     v25->_colorHex = v42;
 
-    v44 = [v22 copy];
+    v44 = [identifierCopy copy];
     headUnitIdentifier = v25->_headUnitIdentifier;
     v25->_headUnitIdentifier = v44;
 
-    v46 = [v23 copy];
+    v46 = [bluetoothIdentifierCopy copy];
     headUnitBluetoothIdentifier = v25->_headUnitBluetoothIdentifier;
     v25->_headUnitBluetoothIdentifier = v46;
 
-    v25->_supportedConnectors = a10;
-    v48 = [v24 copy];
+    v25->_supportedConnectors = connectors;
+    v48 = [connectorCopy copy];
     powerByConnector = v25->_powerByConnector;
     v25->_powerByConnector = v48;
   }

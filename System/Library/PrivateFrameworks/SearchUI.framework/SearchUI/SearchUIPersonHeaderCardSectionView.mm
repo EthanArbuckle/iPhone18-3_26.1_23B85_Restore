@@ -2,10 +2,10 @@
 - (UIEdgeInsets)layoutMargins;
 - (id)contact;
 - (id)setupContentView;
-- (void)sendCommandEngagementFeedbackWithType:(id)a3 didSelectFromOptionsMenu:(BOOL)a4 didDisplayHandleOptions:(BOOL)a5;
-- (void)updateWithContact:(id)a3 person:(id)a4;
-- (void)updateWithPerson:(id)a3;
-- (void)updateWithRowModel:(id)a3;
+- (void)sendCommandEngagementFeedbackWithType:(id)type didSelectFromOptionsMenu:(BOOL)menu didDisplayHandleOptions:(BOOL)options;
+- (void)updateWithContact:(id)contact person:(id)person;
+- (void)updateWithPerson:(id)person;
+- (void)updateWithRowModel:(id)model;
 @end
 
 @implementation SearchUIPersonHeaderCardSectionView
@@ -22,31 +22,31 @@
   [(SearchUIPersonHeaderCardSectionView *)self setViewControllerWithDowntimeButton:v5];
 
   [(SearchUIPersonHeaderCardSectionView *)self setViewControllerWithPayButton:v4];
-  v6 = [v4 view];
-  v11[0] = v6;
+  view = [v4 view];
+  v11[0] = view;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-  v8 = [(SearchUIPersonHeaderCardSectionView *)self boxView];
-  [v8 setArrangedSubviews:v7];
+  boxView = [(SearchUIPersonHeaderCardSectionView *)self boxView];
+  [boxView setArrangedSubviews:v7];
 
   [(SearchUIPersonHeaderCardSectionView *)self setViewController:v4];
-  v9 = [(SearchUIPersonHeaderCardSectionView *)self boxView];
+  boxView2 = [(SearchUIPersonHeaderCardSectionView *)self boxView];
 
-  return v9;
+  return boxView2;
 }
 
-- (void)updateWithContact:(id)a3 person:(id)a4
+- (void)updateWithContact:(id)contact person:(id)person
 {
-  v6 = a3;
-  v7 = a4;
+  contactCopy = contact;
+  personCopy = person;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __64__SearchUIPersonHeaderCardSectionView_updateWithContact_person___block_invoke;
   v10[3] = &unk_1E85B26A8;
-  v11 = v6;
-  v12 = v7;
-  v13 = self;
-  v8 = v7;
-  v9 = v6;
+  v11 = contactCopy;
+  v12 = personCopy;
+  selfCopy = self;
+  v8 = personCopy;
+  v9 = contactCopy;
   [SearchUIUtilities dispatchAsyncIfNecessary:v10];
 }
 
@@ -138,16 +138,16 @@ void __64__SearchUIPersonHeaderCardSectionView_updateWithContact_person___block_
   }
 }
 
-- (void)updateWithPerson:(id)a3
+- (void)updateWithPerson:(id)person
 {
-  v4 = a3;
+  personCopy = person;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __56__SearchUIPersonHeaderCardSectionView_updateWithPerson___block_invoke;
   v6[3] = &unk_1E85B2540;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = personCopy;
+  selfCopy = self;
+  v5 = personCopy;
   [SearchUIUtilities dispatchAsyncIfNecessary:v6];
 }
 
@@ -163,25 +163,25 @@ void __56__SearchUIPersonHeaderCardSectionView_updateWithPerson___block_invoke(i
   [v2 fetchContactForPerson:v3.i64[0] completionHandler:v4];
 }
 
-- (void)updateWithRowModel:(id)a3
+- (void)updateWithRowModel:(id)model
 {
   v14.receiver = self;
   v14.super_class = SearchUIPersonHeaderCardSectionView;
-  [(SearchUICardSectionView *)&v14 updateWithRowModel:a3];
-  v4 = [(SearchUIPersonHeaderCardSectionView *)self contact];
-  v5 = [(SearchUICardSectionView *)self section];
-  v6 = [v5 person];
+  [(SearchUICardSectionView *)&v14 updateWithRowModel:model];
+  contact = [(SearchUIPersonHeaderCardSectionView *)self contact];
+  section = [(SearchUICardSectionView *)self section];
+  person = [section person];
 
-  v7 = [v6 contactIdentifier];
-  v8 = [v4 identifier];
-  v9 = [v7 isEqual:v8];
+  contactIdentifier = [person contactIdentifier];
+  identifier = [contact identifier];
+  v9 = [contactIdentifier isEqual:identifier];
 
   if ((v9 & 1) == 0)
   {
-    v10 = [(SearchUIPersonHeaderCardSectionView *)self viewController];
-    [v10 updateWithContact:0 isActualContact:0];
+    viewController = [(SearchUIPersonHeaderCardSectionView *)self viewController];
+    [viewController updateWithContact:0 isActualContact:0];
 
-    if (v7)
+    if (contactIdentifier)
     {
       v11 = +[SearchUIContactCache sharedCache];
       v12[0] = MEMORY[0x1E69E9820];
@@ -189,13 +189,13 @@ void __56__SearchUIPersonHeaderCardSectionView_updateWithPerson___block_invoke(i
       v12[2] = __58__SearchUIPersonHeaderCardSectionView_updateWithRowModel___block_invoke;
       v12[3] = &unk_1E85B34D8;
       v12[4] = self;
-      v13 = v6;
-      [v11 fetchContactForIdentifier:v7 completionHandler:v12];
+      v13 = person;
+      [v11 fetchContactForIdentifier:contactIdentifier completionHandler:v12];
     }
 
     else
     {
-      [(SearchUIPersonHeaderCardSectionView *)self updateWithPerson:v6];
+      [(SearchUIPersonHeaderCardSectionView *)self updateWithPerson:person];
     }
   }
 }
@@ -259,63 +259,63 @@ void __58__SearchUIPersonHeaderCardSectionView_updateWithRowModel___block_invoke
 
 - (id)contact
 {
-  v2 = [(SearchUIPersonHeaderCardSectionView *)self viewController];
-  v3 = [v2 group];
-  v4 = [v3 contacts];
-  v5 = [v4 firstObject];
+  viewController = [(SearchUIPersonHeaderCardSectionView *)self viewController];
+  group = [viewController group];
+  contacts = [group contacts];
+  firstObject = [contacts firstObject];
 
-  return v5;
+  return firstObject;
 }
 
-- (void)sendCommandEngagementFeedbackWithType:(id)a3 didSelectFromOptionsMenu:(BOOL)a4 didDisplayHandleOptions:(BOOL)a5
+- (void)sendCommandEngagementFeedbackWithType:(id)type didSelectFromOptionsMenu:(BOOL)menu didDisplayHandleOptions:(BOOL)options
 {
-  v5 = a5;
-  v6 = a4;
-  v17 = a3;
+  optionsCopy = options;
+  menuCopy = menu;
+  typeCopy = type;
   v8 = objc_opt_new();
-  [v8 setDidSelectFromOptionsMenu:v6];
-  [v8 setDidDisplayHandleOptions:v5];
-  if ([v17 isEqual:*MEMORY[0x1E695C170]])
+  [v8 setDidSelectFromOptionsMenu:menuCopy];
+  [v8 setDidDisplayHandleOptions:optionsCopy];
+  if ([typeCopy isEqual:*MEMORY[0x1E695C170]])
   {
     v9 = 1;
   }
 
-  else if ([v17 isEqual:*MEMORY[0x1E695C178]])
+  else if ([typeCopy isEqual:*MEMORY[0x1E695C178]])
   {
     v9 = 2;
   }
 
-  else if ([v17 isEqual:*MEMORY[0x1E695C1B8]])
+  else if ([typeCopy isEqual:*MEMORY[0x1E695C1B8]])
   {
     v9 = 3;
   }
 
-  else if ([v17 isEqual:*MEMORY[0x1E695C150]])
+  else if ([typeCopy isEqual:*MEMORY[0x1E695C150]])
   {
     v9 = 4;
   }
 
-  else if ([v17 isEqual:*MEMORY[0x1E695C190]])
+  else if ([typeCopy isEqual:*MEMORY[0x1E695C190]])
   {
     v9 = 5;
   }
 
-  else if ([v17 isEqual:*MEMORY[0x1E695C1A8]])
+  else if ([typeCopy isEqual:*MEMORY[0x1E695C1A8]])
   {
     v9 = 6;
   }
 
-  else if ([v17 isEqual:*MEMORY[0x1E695C188]])
+  else if ([typeCopy isEqual:*MEMORY[0x1E695C188]])
   {
     v9 = 7;
   }
 
-  else if ([v17 isEqual:*MEMORY[0x1E695C160]])
+  else if ([typeCopy isEqual:*MEMORY[0x1E695C160]])
   {
     v9 = 8;
   }
 
-  else if ([v17 isEqual:*MEMORY[0x1E695C168]])
+  else if ([typeCopy isEqual:*MEMORY[0x1E695C168]])
   {
     v9 = 9;
   }
@@ -328,12 +328,12 @@ void __58__SearchUIPersonHeaderCardSectionView_updateWithRowModel___block_invoke
   [v8 setContactActionType:v9];
   v10 = objc_opt_new();
   [v10 setCommand:v8];
-  v11 = [(SearchUICardSectionView *)self rowModel];
-  v12 = [(SearchUICardSectionView *)self feedbackDelegate];
-  v13 = [SearchUIUtilities environmentForDelegate:v12];
-  v14 = [SearchUICommandHandler handlerForButton:v10 rowModel:v11 environment:v13];
+  rowModel = [(SearchUICardSectionView *)self rowModel];
+  feedbackDelegate = [(SearchUICardSectionView *)self feedbackDelegate];
+  v13 = [SearchUIUtilities environmentForDelegate:feedbackDelegate];
+  v14 = [SearchUICommandHandler handlerForButton:v10 rowModel:rowModel environment:v13];
   v15 = v14;
-  if (v5)
+  if (optionsCopy)
   {
     v16 = 3;
   }

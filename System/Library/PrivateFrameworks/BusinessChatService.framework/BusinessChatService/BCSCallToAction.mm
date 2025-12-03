@@ -1,12 +1,12 @@
 @interface BCSCallToAction
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BCSCallToAction
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = BCSCallToAction;
   v4 = [(BCSCallToAction *)&v8 description];
-  v5 = [(BCSCallToAction *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BCSCallToAction *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   language = self->_language;
   if (language)
   {
-    [v3 setObject:language forKey:@"language"];
+    [dictionary setObject:language forKey:@"language"];
   }
 
   title = self->_title;
@@ -60,89 +60,89 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_language)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_title)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_subtitle)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     isDefault = self->_isDefault;
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_body)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_language)
   {
-    [v4 setLanguage:?];
-    v4 = v5;
+    [toCopy setLanguage:?];
+    toCopy = v5;
   }
 
   if (self->_title)
   {
     [v5 setTitle:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_subtitle)
   {
     [v5 setSubtitle:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    v4[40] = self->_isDefault;
-    v4[44] |= 1u;
+    toCopy[40] = self->_isDefault;
+    toCopy[44] |= 1u;
   }
 
   if (self->_body)
   {
     [v5 setBody:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_language copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_language copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(NSString *)self->_title copyWithZone:a3];
+  v8 = [(NSString *)self->_title copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
-  v10 = [(NSString *)self->_subtitle copyWithZone:a3];
+  v10 = [(NSString *)self->_subtitle copyWithZone:zone];
   v11 = *(v5 + 24);
   *(v5 + 24) = v10;
 
@@ -152,23 +152,23 @@
     *(v5 + 44) |= 1u;
   }
 
-  v12 = [(NSString *)self->_body copyWithZone:a3];
+  v12 = [(NSString *)self->_body copyWithZone:zone];
   v13 = *(v5 + 8);
   *(v5 + 8) = v12;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   language = self->_language;
-  if (language | *(v4 + 2))
+  if (language | *(equalCopy + 2))
   {
     if (![(NSString *)language isEqual:?])
     {
@@ -177,7 +177,7 @@
   }
 
   title = self->_title;
-  if (title | *(v4 + 4))
+  if (title | *(equalCopy + 4))
   {
     if (![(NSString *)title isEqual:?])
     {
@@ -186,7 +186,7 @@
   }
 
   subtitle = self->_subtitle;
-  if (subtitle | *(v4 + 3))
+  if (subtitle | *(equalCopy + 3))
   {
     if (![(NSString *)subtitle isEqual:?])
     {
@@ -194,18 +194,18 @@
     }
   }
 
-  v8 = *(v4 + 44);
+  v8 = *(equalCopy + 44);
   if ((*&self->_has & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  if ((*(v4 + 44) & 1) == 0)
+  if ((*(equalCopy + 44) & 1) == 0)
   {
     goto LABEL_13;
   }
 
-  v8 = *(v4 + 40);
+  v8 = *(equalCopy + 40);
   if (!self->_isDefault)
   {
 LABEL_9:
@@ -219,14 +219,14 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if ((*(v4 + 40) & 1) == 0)
+  if ((*(equalCopy + 40) & 1) == 0)
   {
     goto LABEL_13;
   }
 
 LABEL_10:
   body = self->_body;
-  if (body | *(v4 + 1))
+  if (body | *(equalCopy + 1))
   {
     v10 = [(NSString *)body isEqual:?];
   }
@@ -259,38 +259,38 @@ LABEL_14:
   return v4 ^ v3 ^ v5 ^ v6 ^ [(NSString *)self->_body hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(BCSCallToAction *)self setLanguage:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(BCSCallToAction *)self setTitle:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(BCSCallToAction *)self setSubtitle:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[44])
+  if (fromCopy[44])
   {
-    self->_isDefault = v4[40];
+    self->_isDefault = fromCopy[40];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(BCSCallToAction *)self setBody:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

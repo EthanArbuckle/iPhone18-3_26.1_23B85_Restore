@@ -1,17 +1,17 @@
 @interface THWReviewTextAnswerRep
-- (BOOL)handleGesture:(id)a3;
+- (BOOL)handleGesture:(id)gesture;
 - (id)p_answerAccessibilityDescription;
 - (id)p_answerText;
 - (id)p_questionHost;
 - (id)p_questionRep;
 - (unint64_t)p_choiceIndex;
-- (void)addAdditionalChildLayersToArray:(id)a3;
+- (void)addAdditionalChildLayersToArray:(id)array;
 - (void)dealloc;
 - (void)p_selectAnswer;
-- (void)setPressTarget:(int)a3;
-- (void)setPressed:(BOOL)a3;
-- (void)setRadioState:(int)a3;
-- (void)setState:(int)a3;
+- (void)setPressTarget:(int)target;
+- (void)setPressed:(BOOL)pressed;
+- (void)setRadioState:(int)state;
+- (void)setState:(int)state;
 - (void)updateRadioState;
 @end
 
@@ -31,14 +31,14 @@
   [(THWReviewTextAnswerRep *)self setRadioState:v3];
 }
 
-- (void)setRadioState:(int)a3
+- (void)setRadioState:(int)state
 {
-  if (self->_radioState != a3)
+  if (self->_radioState != state)
   {
-    self->_radioState = a3;
-    v5 = [(THWReviewTextAnswerRep *)self canvas];
+    self->_radioState = state;
+    canvas = [(THWReviewTextAnswerRep *)self canvas];
 
-    [v5 invalidateLayers];
+    [canvas invalidateLayers];
   }
 }
 
@@ -50,27 +50,27 @@
   return [v3 indexForChoice:v4];
 }
 
-- (void)addAdditionalChildLayersToArray:(id)a3
+- (void)addAdditionalChildLayersToArray:(id)array
 {
-  v5 = [(THWReviewTextAnswerRep *)self layout];
-  v6 = [(THWReviewTextAnswerRep *)self p_questionRep];
-  v7 = [(THWReviewTextAnswerRep *)self p_questionHost];
+  layout = [(THWReviewTextAnswerRep *)self layout];
+  p_questionRep = [(THWReviewTextAnswerRep *)self p_questionRep];
+  p_questionHost = [(THWReviewTextAnswerRep *)self p_questionHost];
   if (!self->_radioButtonLayer)
   {
     self->_radioButtonLayer = objc_alloc_init(TSDNoDefaultImplicitActionLayer);
     [(CALayer *)self->_radioButtonLayer setDelegate:[(THWReviewTextAnswerRep *)self interactiveCanvasController]];
   }
 
-  v8 = [v7 reviewQuestion:v6 cachedImageNamed:*(&off_45E660[4 * self->_state] + self->_radioState)];
+  v8 = [p_questionHost reviewQuestion:p_questionRep cachedImageNamed:*(&off_45E660[4 * self->_state] + self->_radioState)];
   [(CALayer *)self->_radioButtonLayer setBounds:0.0, 0.0, 46.0, 46.0];
   [-[THWReviewTextAnswerRep canvas](self "canvas")];
   v10 = v9;
-  [v5 labelFrame];
+  [layout labelFrame];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  [v5 horizontalOffset];
+  [layout horizontalOffset];
   v20 = v10 * (v19 + 46.0 * 0.5);
   v34.origin.x = v12;
   v34.origin.y = v14;
@@ -100,23 +100,23 @@
     v30 = v29;
     TSDFloorForScale();
     [(CALayer *)self->_radioButtonLayer setFrame:v30, v31, v26, v28];
-    [a3 addObject:self->_radioButtonLayer];
+    [array addObject:self->_radioButtonLayer];
   }
 }
 
-- (BOOL)handleGesture:(id)a3
+- (BOOL)handleGesture:(id)gesture
 {
-  [a3 naturalLocationForRep:self];
+  [gesture naturalLocationForRep:self];
   v6 = v5;
   v8 = v7;
   [(THWReviewTextAnswerRep *)self naturalBounds];
   v15.x = v6;
   v15.y = v8;
   v9 = CGRectContainsPoint(v16, v15);
-  v10 = [a3 gestureState];
-  if (v10 > 3)
+  gestureState = [gesture gestureState];
+  if (gestureState > 3)
   {
-    if ((v10 - 4) >= 2)
+    if ((gestureState - 4) >= 2)
     {
       return 1;
     }
@@ -124,16 +124,16 @@
     goto LABEL_8;
   }
 
-  switch(v10)
+  switch(gestureState)
   {
     case 1:
       goto LABEL_12;
     case 2:
       if (([objc_msgSend(-[THWReviewTextAnswerRep interactiveCanvasController](self "interactiveCanvasController")] & 1) == 0)
       {
-        v12 = [(THWReviewTextAnswerRep *)self pressed];
+        pressed = [(THWReviewTextAnswerRep *)self pressed];
         [(THWReviewTextAnswerRep *)self setPressed:v9];
-        if (v9 == v12)
+        if (v9 == pressed)
         {
           return 1;
         }
@@ -173,16 +173,16 @@ LABEL_15:
   return 1;
 }
 
-- (void)setPressTarget:(int)a3
+- (void)setPressTarget:(int)target
 {
-  if (self->_pressTarget == a3)
+  if (self->_pressTarget == target)
   {
     return;
   }
 
-  self->_pressTarget = a3;
-  v4 = [(THWReviewTextAnswerRep *)self interactiveCanvasController];
-  v5 = [v4 layerForRep:{objc_msgSend(v4, "repForLayout:", objc_msgSend(-[THWReviewTextAnswerRep layout](self, "layout"), "textLayout"))}];
+  self->_pressTarget = target;
+  interactiveCanvasController = [(THWReviewTextAnswerRep *)self interactiveCanvasController];
+  v5 = [interactiveCanvasController layerForRep:{objc_msgSend(interactiveCanvasController, "repForLayout:", objc_msgSend(-[THWReviewTextAnswerRep layout](self, "layout"), "textLayout"))}];
   [v5 frame];
   v7 = v6;
   v9 = v8;
@@ -240,38 +240,38 @@ LABEL_15:
 
   [CALayer addPressAnimationFromPoint:"addPressAnimationFromPoint:scale:" scale:?];
 LABEL_9:
-  v19 = [(THWReviewTextAnswerRep *)self canvas];
+  canvas = [(THWReviewTextAnswerRep *)self canvas];
 
-  [v19 invalidateLayers];
+  [canvas invalidateLayers];
 }
 
-- (void)setPressed:(BOOL)a3
+- (void)setPressed:(BOOL)pressed
 {
-  if (self->_pressed != a3)
+  if (self->_pressed != pressed)
   {
-    self->_pressed = a3;
+    self->_pressed = pressed;
     [(THWReviewTextAnswerRep *)self updateRadioState];
   }
 }
 
-- (void)setState:(int)a3
+- (void)setState:(int)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
-    v5 = [(THWReviewTextAnswerRep *)self canvas];
+    self->_state = state;
+    canvas = [(THWReviewTextAnswerRep *)self canvas];
 
-    [v5 invalidateLayers];
+    [canvas invalidateLayers];
   }
 }
 
 - (void)p_selectAnswer
 {
-  v3 = [(THWReviewTextAnswerRep *)self p_questionRep];
-  v4 = [(THWReviewTextAnswerRep *)self p_questionHost];
-  v5 = [objc_msgSend(objc_msgSend(v3 "questionLayout")];
+  p_questionRep = [(THWReviewTextAnswerRep *)self p_questionRep];
+  p_questionHost = [(THWReviewTextAnswerRep *)self p_questionHost];
+  v5 = [objc_msgSend(objc_msgSend(p_questionRep "questionLayout")];
 
-  [v4 reviewQuestion:v3 selectChoice:v5];
+  [p_questionHost reviewQuestion:p_questionRep selectChoice:v5];
 }
 
 - (id)p_answerText
@@ -290,16 +290,16 @@ LABEL_9:
 
 - (id)p_questionRep
 {
-  v3 = [(THWReviewTextAnswerRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWReviewTextAnswerRep *)self interactiveCanvasController];
 
-  return [v3 ancestorRepOfRep:self orDelegateConformingToProtocol:&OBJC_PROTOCOL___THWReviewQuestionRep];
+  return [interactiveCanvasController ancestorRepOfRep:self orDelegateConformingToProtocol:&OBJC_PROTOCOL___THWReviewQuestionRep];
 }
 
 - (id)p_questionHost
 {
-  v3 = [(THWReviewTextAnswerRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWReviewTextAnswerRep *)self interactiveCanvasController];
 
-  return [v3 ancestorRepOfRep:self orDelegateConformingToProtocol:&OBJC_PROTOCOL___THWReviewQuestionHosting];
+  return [interactiveCanvasController ancestorRepOfRep:self orDelegateConformingToProtocol:&OBJC_PROTOCOL___THWReviewQuestionHosting];
 }
 
 @end

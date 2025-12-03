@@ -1,5 +1,5 @@
 @interface ATXUserEducationSuggestionExploreFacesServer
-- (ATXUserEducationSuggestionExploreFacesServer)initWithConnector:(id)a3;
+- (ATXUserEducationSuggestionExploreFacesServer)initWithConnector:(id)connector;
 - (BOOL)shouldNeverShowSuggestionAgain;
 - (id)backlightEventSink;
 - (id)suggestion;
@@ -8,10 +8,10 @@
 - (int64_t)minHour;
 - (int64_t)numBacklightOffEventsBeforeDismissSuggestion;
 - (int64_t)tryAgainIntervalSeconds;
-- (void)backlightEventHandler:(id)a3;
+- (void)backlightEventHandler:(id)handler;
 - (void)cancelBacklightEventSubscription;
 - (void)scheduleNextTry;
-- (void)sendSuggestionWithEventType:(unint64_t)a3;
+- (void)sendSuggestionWithEventType:(unint64_t)type;
 - (void)startUpSubscriberToBacklightBiomeStreamForTheFirstTime;
 - (void)startUpSubscriberToBacklightBiomeStreamIfSubscribed;
 - (void)tryToSendSuggestion;
@@ -19,10 +19,10 @@
 
 @implementation ATXUserEducationSuggestionExploreFacesServer
 
-- (ATXUserEducationSuggestionExploreFacesServer)initWithConnector:(id)a3
+- (ATXUserEducationSuggestionExploreFacesServer)initWithConnector:(id)connector
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  connectorCopy = connector;
   v15.receiver = self;
   v15.super_class = ATXUserEducationSuggestionExploreFacesServer;
   v6 = [(ATXUserEducationSuggestionBaseServer *)&v15 init];
@@ -36,15 +36,15 @@
       _os_log_impl(&dword_2263AA000, v7, OS_LOG_TYPE_DEFAULT, "%s: starting server", buf, 0xCu);
     }
 
-    objc_storeStrong(&v6->_connector, a3);
+    objc_storeStrong(&v6->_connector, connector);
     v8 = objc_alloc(MEMORY[0x277CBEBD0]);
     v9 = [v8 initWithSuiteName:*MEMORY[0x277CEBD00]];
     defaults = v6->_defaults;
     v6->_defaults = v9;
 
-    v11 = [MEMORY[0x277CEB710] sharedInstance];
+    mEMORY[0x277CEB710] = [MEMORY[0x277CEB710] sharedInstance];
     constants = v6->_constants;
-    v6->_constants = v11;
+    v6->_constants = mEMORY[0x277CEB710];
 
     [(ATXUserEducationSuggestionExploreFacesServer *)v6 scheduleNextTry];
     [(ATXUserEducationSuggestionExploreFacesServer *)v6 startUpSubscriberToBacklightBiomeStreamIfSubscribed];
@@ -57,10 +57,10 @@
 - (BOOL)shouldNeverShowSuggestionAgain
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(ATXUserEducationSuggestionExploreFacesServer *)self suggestion];
-  v4 = [v3 suggestionWasAlreadyShown];
+  suggestion = [(ATXUserEducationSuggestionExploreFacesServer *)self suggestion];
+  suggestionWasAlreadyShown = [suggestion suggestionWasAlreadyShown];
 
-  if (v4)
+  if (suggestionWasAlreadyShown)
   {
     v5 = __atxlog_handle_context_user_education_suggestions();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -102,9 +102,9 @@ LABEL_8:
   suggestion = self->_suggestion;
   if (!suggestion)
   {
-    v4 = [objc_alloc(MEMORY[0x277CEB940]) initWithRandomUUID];
+    initWithRandomUUID = [objc_alloc(MEMORY[0x277CEB940]) initWithRandomUUID];
     v5 = self->_suggestion;
-    self->_suggestion = v4;
+    self->_suggestion = initWithRandomUUID;
 
     suggestion = self->_suggestion;
   }
@@ -504,12 +504,12 @@ void __67__ATXUserEducationSuggestionExploreFacesServer_tryToSendSuggestion__blo
   }
 }
 
-- (void)sendSuggestionWithEventType:(unint64_t)a3
+- (void)sendSuggestionWithEventType:(unint64_t)type
 {
   v15 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc(MEMORY[0x277CEB938]);
-  v6 = [(ATXUserEducationSuggestionExploreFacesServer *)self suggestion];
-  v7 = [v5 initWithUserEducationSuggestion:v6 userEducationSuggestionEventType:a3];
+  suggestion = [(ATXUserEducationSuggestionExploreFacesServer *)self suggestion];
+  v7 = [v5 initWithUserEducationSuggestion:suggestion userEducationSuggestionEventType:type];
 
   v8 = __atxlog_handle_context_user_education_suggestions();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -521,8 +521,8 @@ void __67__ATXUserEducationSuggestionExploreFacesServer_tryToSendSuggestion__blo
     _os_log_impl(&dword_2263AA000, v8, OS_LOG_TYPE_DEFAULT, "%s: Sending suggestion event: %{public}@", &v11, 0x16u);
   }
 
-  v9 = [(ATXUserEducationSuggestionConnector *)self->_connector remoteObjectProxy];
-  [v9 didReceiveUserEducationSuggestionEvent:v7];
+  remoteObjectProxy = [(ATXUserEducationSuggestionConnector *)self->_connector remoteObjectProxy];
+  [remoteObjectProxy didReceiveUserEducationSuggestionEvent:v7];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -648,16 +648,16 @@ void __99__ATXUserEducationSuggestionExploreFacesServer_startUpSubscriberToBackl
 
     objc_initWeak(buf, self);
     v6 = objc_alloc(MEMORY[0x277CF1918]);
-    v7 = [(ATXUserEducationSuggestionBaseServer *)self serialQueue];
-    v8 = [v6 initWithIdentifier:@"ATXUserEducationSuggestionExploreFacesServer.Backlight" targetQueue:v7];
+    serialQueue = [(ATXUserEducationSuggestionBaseServer *)self serialQueue];
+    v8 = [v6 initWithIdentifier:@"ATXUserEducationSuggestionExploreFacesServer.Backlight" targetQueue:serialQueue];
     backlightEventScheduler = self->_backlightEventScheduler;
     self->_backlightEventScheduler = v8;
 
     v10 = BiomeLibrary();
-    v11 = [v10 Device];
-    v12 = [v11 ScreenLocked];
-    v13 = [v12 atx_DSLPublisher];
-    v14 = [v13 filterWithKeyPath:@"eventBody.starting" value:MEMORY[0x277CBEC28]];
+    device = [v10 Device];
+    screenLocked = [device ScreenLocked];
+    atx_DSLPublisher = [screenLocked atx_DSLPublisher];
+    v14 = [atx_DSLPublisher filterWithKeyPath:@"eventBody.starting" value:MEMORY[0x277CBEC28]];
     v15 = [v14 subscribeOn:self->_backlightEventScheduler];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
@@ -710,25 +710,25 @@ void __66__ATXUserEducationSuggestionExploreFacesServer_backlightEventSink__bloc
   [WeakRetained backlightEventHandler:v3];
 }
 
-- (void)backlightEventHandler:(id)a3
+- (void)backlightEventHandler:(id)handler
 {
   *&v35[13] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   if ([(ATXUserEducationSuggestionExploreFacesServer *)self isSubscribedForBacklightEvents])
   {
-    v5 = [v4 eventBody];
-    v6 = v5;
-    if (v5)
+    eventBody = [handlerCopy eventBody];
+    v6 = eventBody;
+    if (eventBody)
     {
-      if (([v5 hasStarting]& 1) != 0)
+      if (([eventBody hasStarting]& 1) != 0)
       {
         [(NSUserDefaults *)self->_defaults doubleForKey:@"DiscoverySuggestions.ATXUserEducationSuggestionExploreFacesServer_TimestampFirstSubscribedToBackLightStream"];
         v8 = v7;
-        [v4 timestamp];
+        [handlerCopy timestamp];
         if (v9 >= v8)
         {
           v25 = MEMORY[0x277CBEAA8];
-          [v4 timestamp];
+          [handlerCopy timestamp];
           v10 = [v25 dateWithTimeIntervalSinceReferenceDate:?];
           v26 = __atxlog_handle_context_user_education_suggestions();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -744,9 +744,9 @@ void __66__ATXUserEducationSuggestionExploreFacesServer_backlightEventSink__bloc
 
           v27 = [(NSUserDefaults *)self->_defaults integerForKey:@"DiscoverySuggestions.ATXUserEducationSuggestionExploreFacesServer_BacklightOffCount"]+ 1;
           [(NSUserDefaults *)self->_defaults setInteger:v27 forKey:@"DiscoverySuggestions.ATXUserEducationSuggestionExploreFacesServer_BacklightOffCount"];
-          v28 = [(ATXUserEducationSuggestionExploreFacesServer *)self numBacklightOffEventsBeforeDismissSuggestion];
-          v29 = v28 - v27;
-          if (v28 <= v27)
+          numBacklightOffEventsBeforeDismissSuggestion = [(ATXUserEducationSuggestionExploreFacesServer *)self numBacklightOffEventsBeforeDismissSuggestion];
+          v29 = numBacklightOffEventsBeforeDismissSuggestion - v27;
+          if (numBacklightOffEventsBeforeDismissSuggestion <= v27)
           {
             [(ATXUserEducationSuggestionExploreFacesServer *)self cancelBacklightEventSubscription];
             [(ATXUserEducationSuggestionExploreFacesServer *)self setIsSubscribedForBacklightEvents:0];
@@ -842,15 +842,15 @@ void __80__ATXUserEducationSuggestionExploreFacesServer_cancelBacklightEventSubs
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v5 = [(ATXNotificationManagementMAConstants *)self->_constants ATXUserEducationSuggestionExploreFacesServer_minHour];
+    integerValue = [(ATXNotificationManagementMAConstants *)self->_constants ATXUserEducationSuggestionExploreFacesServer_minHour];
   }
 
-  v6 = v5;
+  v6 = integerValue;
 
   return v6;
 }
@@ -861,15 +861,15 @@ void __80__ATXUserEducationSuggestionExploreFacesServer_cancelBacklightEventSubs
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v5 = [(ATXNotificationManagementMAConstants *)self->_constants ATXUserEducationSuggestionExploreFacesServer_maxHour];
+    integerValue = [(ATXNotificationManagementMAConstants *)self->_constants ATXUserEducationSuggestionExploreFacesServer_maxHour];
   }
 
-  v6 = v5;
+  v6 = integerValue;
 
   return v6;
 }
@@ -880,15 +880,15 @@ void __80__ATXUserEducationSuggestionExploreFacesServer_cancelBacklightEventSubs
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v5 = [(ATXNotificationManagementMAConstants *)self->_constants ATXUserEducationSuggestionExploreFacesServer_tryAgainIntervalSeconds];
+    integerValue = [(ATXNotificationManagementMAConstants *)self->_constants ATXUserEducationSuggestionExploreFacesServer_tryAgainIntervalSeconds];
   }
 
-  v6 = v5;
+  v6 = integerValue;
 
   return v6;
 }
@@ -899,15 +899,15 @@ void __80__ATXUserEducationSuggestionExploreFacesServer_cancelBacklightEventSubs
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v5 = [(ATXNotificationManagementMAConstants *)self->_constants ATXUserEducationSuggestionExploreFacesServer_gracePeriod];
+    integerValue = [(ATXNotificationManagementMAConstants *)self->_constants ATXUserEducationSuggestionExploreFacesServer_gracePeriod];
   }
 
-  v6 = v5;
+  v6 = integerValue;
 
   return v6;
 }
@@ -918,15 +918,15 @@ void __80__ATXUserEducationSuggestionExploreFacesServer_cancelBacklightEventSubs
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v5 = [(ATXNotificationManagementMAConstants *)self->_constants ATXUserEducationSuggestionExploreFacesServer_numBacklightOffEventsBeforeDismissSuggestion];
+    integerValue = [(ATXNotificationManagementMAConstants *)self->_constants ATXUserEducationSuggestionExploreFacesServer_numBacklightOffEventsBeforeDismissSuggestion];
   }
 
-  v6 = v5;
+  v6 = integerValue;
 
   return v6;
 }

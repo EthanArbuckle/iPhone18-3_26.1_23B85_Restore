@@ -1,11 +1,11 @@
 @interface DBIconImageView
 - (CPUIDimmingEffectView)dimmingView;
-- (_TtC9DashBoard15DBIconImageView)initWithFrame:(CGRect)a3;
+- (_TtC9DashBoard15DBIconImageView)initWithFrame:(CGRect)frame;
 - (void)cleanupMaskViewAfterCrossfade;
 - (void)iconImageInfoDidChange;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setDimmingView:(id)a3;
+- (void)setDimmingView:(id)view;
 - (void)setupMaskForCrossfade;
 @end
 
@@ -18,21 +18,21 @@
   return *(&self->super.super.super.super.isa + v3);
 }
 
-- (void)setDimmingView:(id)a3
+- (void)setDimmingView:(id)view
 {
   v5 = OBJC_IVAR____TtC9DashBoard15DBIconImageView_dimmingView;
   swift_beginAccess();
   v6 = *(&self->super.super.super.super.isa + v5);
-  *(&self->super.super.super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.super.super.isa + v5) = view;
+  viewCopy = view;
 }
 
 - (void)setupMaskForCrossfade
 {
   v3 = OBJC_IVAR____TtC9DashBoard15DBIconImageView_crossfadeMaskView;
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC9DashBoard15DBIconImageView_crossfadeMaskView);
-  v5 = self;
-  [(DBIconImageView *)v5 addSubview:v4];
+  selfCopy = self;
+  [(DBIconImageView *)selfCopy addSubview:v4];
   [*(&self->super.super.super.super.isa + v3) setHidden_];
 }
 
@@ -40,7 +40,7 @@
 {
   v3 = OBJC_IVAR____TtC9DashBoard15DBIconImageView_crossfadeMaskView;
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC9DashBoard15DBIconImageView_crossfadeMaskView);
-  v5 = self;
+  selfCopy = self;
   [v4 setHidden_];
   [*(&self->super.super.super.super.isa + v3) removeFromSuperview];
 }
@@ -70,9 +70,9 @@
   [(SBIconImageView *)&v6 iconImageInfoDidChange];
   v3 = OBJC_IVAR____TtC9DashBoard15DBIconImageView_dimmingView;
   swift_beginAccess();
-  v4 = [*&v2[v3] layer];
+  layer = [*&v2[v3] layer];
   [v2 iconImageInfo];
-  [v4 setCornerRadius_];
+  [layer setCornerRadius_];
 }
 
 - (void)prepareForReuse
@@ -87,7 +87,7 @@
   [v4 setHidden_];
 }
 
-- (_TtC9DashBoard15DBIconImageView)initWithFrame:(CGRect)a3
+- (_TtC9DashBoard15DBIconImageView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

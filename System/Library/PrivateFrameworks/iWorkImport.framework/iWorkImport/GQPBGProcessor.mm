@@ -11,8 +11,8 @@
   v3 = [(GQPProcessor *)&v8 go];
   if (self->mGenerator)
   {
-    v4 = [(GQSDocument *)self->super.mDocumentState generatorBeginWasCalled];
-    if ((v4 & v3) == 1)
+    generatorBeginWasCalled = [(GQSDocument *)self->super.mDocumentState generatorBeginWasCalled];
+    if ((generatorBeginWasCalled & v3) == 1)
     {
       v5 = [(objc_class *)self->mGenerator endPresentation:[(GQSDocument *)self->super.mDocumentState root] state:self->super.mDocumentState];
       if (!v5)
@@ -23,7 +23,7 @@
       goto LABEL_7;
     }
 
-    v3 &= v4 ^ 1;
+    v3 &= generatorBeginWasCalled ^ 1;
   }
 
   if (!v3)

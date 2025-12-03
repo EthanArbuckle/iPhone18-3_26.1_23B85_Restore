@@ -1,7 +1,7 @@
 @interface CoreDAVCalendarServerPushTransportsItem
 + (id)copyParseRules;
 - (id)description;
-- (void)addTransport:(id)a3;
+- (void)addTransport:(id)transport;
 @end
 
 @implementation CoreDAVCalendarServerPushTransportsItem
@@ -14,8 +14,8 @@
   v4 = [(CoreDAVItem *)&v7 description];
   [v3 appendFormat:@"[%@]", v4];
 
-  v5 = [(CoreDAVCalendarServerPushTransportsItem *)self transports];
-  [v3 appendFormat:@"\n  Number of transports: [%lu]", objc_msgSend(v5, "count")];
+  transports = [(CoreDAVCalendarServerPushTransportsItem *)self transports];
+  [v3 appendFormat:@"\n  Number of transports: [%lu]", objc_msgSend(transports, "count")];
 
   return v3;
 }
@@ -23,7 +23,7 @@
 + (id)copyParseRules
 {
   v3 = +[CoreDAVItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -34,26 +34,26 @@
     v5 = [v6 initWithObjectsAndKeys:{v7, v8, 0}];
 
     v9 = +[CoreDAVItem parseRuleCache];
-    v10 = NSStringFromClass(a1);
+    v10 = NSStringFromClass(self);
     [v9 setObject:v5 forKey:v10];
   }
 
   return v5;
 }
 
-- (void)addTransport:(id)a3
+- (void)addTransport:(id)transport
 {
-  v4 = a3;
-  v5 = [(CoreDAVCalendarServerPushTransportsItem *)self transports];
+  transportCopy = transport;
+  transports = [(CoreDAVCalendarServerPushTransportsItem *)self transports];
 
-  if (!v5)
+  if (!transports)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
     [(CoreDAVCalendarServerPushTransportsItem *)self setTransports:v6];
   }
 
-  v7 = [(CoreDAVCalendarServerPushTransportsItem *)self transports];
-  [v7 addObject:v4];
+  transports2 = [(CoreDAVCalendarServerPushTransportsItem *)self transports];
+  [transports2 addObject:transportCopy];
 }
 
 @end

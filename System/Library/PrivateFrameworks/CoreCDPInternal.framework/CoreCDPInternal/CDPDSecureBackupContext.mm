@@ -7,9 +7,9 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(CDPDSecureBackupContext *)self localSecret];
+  localSecret = [(CDPDSecureBackupContext *)self localSecret];
   v5 = @"YES";
-  if (v4)
+  if (localSecret)
   {
     v6 = @"YES";
   }
@@ -19,14 +19,14 @@
     v6 = @"NO";
   }
 
-  v7 = [(CDPDSecureBackupContext *)self recoverySecret];
-  if (!v7)
+  recoverySecret = [(CDPDSecureBackupContext *)self recoverySecret];
+  if (!recoverySecret)
   {
     v5 = @"NO";
   }
 
-  v8 = [(CDPDSecureBackupContext *)self preRecordUUID];
-  v9 = [v3 stringWithFormat:@"<CDPDSecureBackupContext: local: %@ remote: %@ preRecord: %@>", v6, v5, v8];
+  preRecordUUID = [(CDPDSecureBackupContext *)self preRecordUUID];
+  v9 = [v3 stringWithFormat:@"<CDPDSecureBackupContext: local: %@ remote: %@ preRecord: %@>", v6, v5, preRecordUUID];
 
   return v9;
 }

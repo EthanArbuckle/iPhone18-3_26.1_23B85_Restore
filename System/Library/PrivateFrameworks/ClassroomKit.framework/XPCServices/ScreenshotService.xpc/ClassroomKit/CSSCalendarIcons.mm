@@ -1,20 +1,20 @@
 @interface CSSCalendarIcons
 - (NSBundle)classroomKitBundle;
-- (id)classroomKitImageNamed:(id)a3;
+- (id)classroomKitImageNamed:(id)named;
 @end
 
 @implementation CSSCalendarIcons
 
-- (id)classroomKitImageNamed:(id)a3
+- (id)classroomKitImageNamed:(id)named
 {
-  v5 = a3;
+  namedCopy = named;
   if (!+[NSThread isMainThread])
   {
     sub_100005DF0(a2, self);
   }
 
-  v6 = [(CSSCalendarIcons *)self classroomKitBundle];
-  v7 = [UIImage imageNamed:v5 inBundle:v6];
+  classroomKitBundle = [(CSSCalendarIcons *)self classroomKitBundle];
+  v7 = [UIImage imageNamed:namedCopy inBundle:classroomKitBundle];
 
   if (v7)
   {

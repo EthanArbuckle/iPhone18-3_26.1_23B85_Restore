@@ -1,11 +1,11 @@
 @interface CNMemojiPosterConfigurationReader
-+ (id)memojiPosterConfigurationDataFromUserInfo:(id)a3;
++ (id)memojiPosterConfigurationDataFromUserInfo:(id)info;
 - (NSData)avatarImageData;
 - (NSData)avatarPoseData;
 - (NSData)avatarRecordData;
 - (UIColor)backgroundColor;
 - (_TtC10ContactsUI33CNMemojiPosterConfigurationReader)init;
-- (_TtC10ContactsUI33CNMemojiPosterConfigurationReader)initWithPosterConfigurationUserInfo:(id)a3;
+- (_TtC10ContactsUI33CNMemojiPosterConfigurationReader)initWithPosterConfigurationUserInfo:(id)info;
 @end
 
 @implementation CNMemojiPosterConfigurationReader
@@ -28,7 +28,7 @@
 
   else
   {
-    v3 = self;
+    selfCopy = self;
     v4 = sub_199DF71DC();
 
     v2 = v4;
@@ -46,7 +46,7 @@
 
   else
   {
-    v3 = self;
+    selfCopy = self;
     v4 = sub_199DF71DC();
 
     v2 = v4;
@@ -64,7 +64,7 @@
 
   else
   {
-    v3 = self;
+    selfCopy = self;
     v4 = sub_199DF71DC();
 
     v2 = v4;
@@ -73,7 +73,7 @@
   return v2;
 }
 
-- (_TtC10ContactsUI33CNMemojiPosterConfigurationReader)initWithPosterConfigurationUserInfo:(id)a3
+- (_TtC10ContactsUI33CNMemojiPosterConfigurationReader)initWithPosterConfigurationUserInfo:(id)info
 {
   v4 = sub_199DF9E9C();
   sub_199A9E99C(v4, &v9);
@@ -104,7 +104,7 @@
   }
 }
 
-+ (id)memojiPosterConfigurationDataFromUserInfo:(id)a3
++ (id)memojiPosterConfigurationDataFromUserInfo:(id)info
 {
   v3 = sub_199DF9E9C();
   v4 = sub_199A9ED44(v3);

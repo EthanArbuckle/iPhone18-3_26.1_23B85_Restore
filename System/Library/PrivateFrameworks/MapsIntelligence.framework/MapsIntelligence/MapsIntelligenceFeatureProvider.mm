@@ -1,7 +1,7 @@
 @interface MapsIntelligenceFeatureProvider
 - (NSSet)featureNames;
-- (id)featureValueForName:(id)a3;
-- (void)setFeatureNames:(id)a3;
+- (id)featureValueForName:(id)name;
+- (void)setFeatureNames:(id)names;
 @end
 
 @implementation MapsIntelligenceFeatureProvider
@@ -16,7 +16,7 @@
   return v4;
 }
 
-- (void)setFeatureNames:(id)a3
+- (void)setFeatureNames:(id)names
 {
   v4 = sub_22616FA38();
   swift_beginAccess();
@@ -24,7 +24,7 @@
   *(self + 2) = v4;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
   v3 = sub_22616F828();
   v5 = v4;

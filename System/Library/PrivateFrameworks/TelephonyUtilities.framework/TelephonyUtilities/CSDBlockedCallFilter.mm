@@ -1,19 +1,19 @@
 @interface CSDBlockedCallFilter
-- (CSDBlockedCallFilter)initWithQueue:(id)a3;
+- (CSDBlockedCallFilter)initWithQueue:(id)queue;
 @end
 
 @implementation CSDBlockedCallFilter
 
-- (CSDBlockedCallFilter)initWithQueue:(id)a3
+- (CSDBlockedCallFilter)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = CSDBlockedCallFilter;
   v6 = [(CSDBlockedCallFilter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
   }
 
   return v7;

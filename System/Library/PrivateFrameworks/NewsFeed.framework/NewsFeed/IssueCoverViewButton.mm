@@ -1,10 +1,10 @@
 @interface IssueCoverViewButton
 - (BOOL)isHighlighted;
 - (CGRect)frame;
-- (_TtC8NewsFeed20IssueCoverViewButton)initWithCoder:(id)a3;
-- (_TtC8NewsFeed20IssueCoverViewButton)initWithFrame:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (_TtC8NewsFeed20IssueCoverViewButton)initWithCoder:(id)coder;
+- (_TtC8NewsFeed20IssueCoverViewButton)initWithFrame:(CGRect)frame;
+- (void)setFrame:(CGRect)frame;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation IssueCoverViewButton
@@ -16,13 +16,13 @@
   return [(IssueCoverViewButton *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v9.receiver = self;
   v9.super_class = swift_getObjectType();
   v4 = v9.receiver;
-  [(IssueCoverViewButton *)&v9 setHighlighted:v3];
+  [(IssueCoverViewButton *)&v9 setHighlighted:highlightedCopy];
   v5 = objc_opt_self();
   v6 = swift_allocObject();
   swift_unknownObjectWeakInit();
@@ -50,12 +50,12 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v9.receiver = self;
   v9.super_class = swift_getObjectType();
   v7 = v9.receiver;
@@ -65,7 +65,7 @@
   [v8 setFrame_];
 }
 
-- (_TtC8NewsFeed20IssueCoverViewButton)initWithCoder:(id)a3
+- (_TtC8NewsFeed20IssueCoverViewButton)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8NewsFeed20IssueCoverViewButton_onTap;
   sub_1D5BFDBB4();
@@ -75,7 +75,7 @@
   return result;
 }
 
-- (_TtC8NewsFeed20IssueCoverViewButton)initWithFrame:(CGRect)a3
+- (_TtC8NewsFeed20IssueCoverViewButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

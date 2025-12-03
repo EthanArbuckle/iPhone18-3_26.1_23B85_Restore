@@ -1,7 +1,7 @@
 @interface CACApplicationUtilities
 + (id)installedApplications;
-+ (void)launchApplicationWithIdentifier:(id)a3;
-+ (void)terminateApplicationWithIdentifier:(id)a3;
++ (void)launchApplicationWithIdentifier:(id)identifier;
++ (void)terminateApplicationWithIdentifier:(id)identifier;
 @end
 
 @implementation CACApplicationUtilities
@@ -9,9 +9,9 @@
 + (id)installedApplications
 {
   v34 = *MEMORY[0x277D85DE8];
-  v22 = [MEMORY[0x277CBEB18] array];
-  v2 = [MEMORY[0x277CE6BA0] systemApplication];
-  [v2 updateCache:1508];
+  array = [MEMORY[0x277CBEB18] array];
+  systemApplication = [MEMORY[0x277CE6BA0] systemApplication];
+  [systemApplication updateCache:1508];
 
   if (installedApplications_onceToken != -1)
   {
@@ -19,27 +19,27 @@
   }
 
   v3 = +[CACDisplayManager sharedManager];
-  v4 = [v3 carPlayConnected];
+  carPlayConnected = [v3 carPlayConnected];
 
-  if (v4)
+  if (carPlayConnected)
   {
     v5 = +[CACDisplayManager sharedManager];
-    v6 = [v5 carPlayApplications];
+    carPlayApplications = [v5 carPlayApplications];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __48__CACApplicationUtilities_installedApplications__block_invoke_2;
     v27[3] = &unk_279CEB8F0;
-    v28 = v22;
-    [v6 enumerateKeysAndObjectsUsingBlock:v27];
+    v28 = array;
+    [carPlayApplications enumerateKeysAndObjectsUsingBlock:v27];
 
     v7 = v28;
   }
 
   else
   {
-    v8 = [MEMORY[0x277CE6BA0] systemApplication];
-    v9 = [v8 uiElement];
-    v10 = [v9 objectWithAXAttribute:1508];
+    systemApplication2 = [MEMORY[0x277CE6BA0] systemApplication];
+    uiElement = [systemApplication2 uiElement];
+    v10 = [uiElement objectWithAXAttribute:1508];
 
     if (![v10 count])
     {
@@ -75,7 +75,7 @@
           if (([v18 isEqualToString:@"com.apple.siri"] & 1) == 0)
           {
             v19 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{v17, @"TargetAppName", v18, @"TargetAppIdentifier", 0}];
-            [v22 addObject:v19];
+            [array addObject:v19];
           }
         }
 
@@ -89,14 +89,14 @@
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v30 = v22;
+      v30 = array;
       v31 = 2112;
       v32 = v7;
       _os_log_impl(&dword_26B354000, v20, OS_LOG_TYPE_INFO, "Installed applications: %@ \n From dictionary: %@", buf, 0x16u);
     }
   }
 
-  return v22;
+  return array;
 }
 
 void __48__CACApplicationUtilities_installedApplications__block_invoke()
@@ -125,15 +125,15 @@ void __48__CACApplicationUtilities_installedApplications__block_invoke_2(uint64_
   [*(a1 + 32) addObject:v8];
 }
 
-+ (void)launchApplicationWithIdentifier:(id)a3
++ (void)launchApplicationWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__CACApplicationUtilities_launchApplicationWithIdentifier___block_invoke;
   block[3] = &unk_279CEB2D0;
-  v6 = v3;
-  v4 = v3;
+  v6 = identifierCopy;
+  v4 = identifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -260,15 +260,15 @@ void __59__CACApplicationUtilities_launchApplicationWithIdentifier___block_invok
   }
 }
 
-+ (void)terminateApplicationWithIdentifier:(id)a3
++ (void)terminateApplicationWithIdentifier:(id)identifier
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = CACLogGeneral();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v9 = v3;
+    v9 = identifierCopy;
     _os_log_impl(&dword_26B354000, v4, OS_LOG_TYPE_INFO, "Asking system application to terminate app with identifier: %@", buf, 0xCu);
   }
 
@@ -276,8 +276,8 @@ void __59__CACApplicationUtilities_launchApplicationWithIdentifier___block_invok
   block[1] = 3221225472;
   block[2] = __62__CACApplicationUtilities_terminateApplicationWithIdentifier___block_invoke;
   block[3] = &unk_279CEB2D0;
-  v7 = v3;
-  v5 = v3;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 

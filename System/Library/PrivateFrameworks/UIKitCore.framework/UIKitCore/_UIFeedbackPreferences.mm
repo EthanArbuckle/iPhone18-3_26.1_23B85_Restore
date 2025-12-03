@@ -1,18 +1,18 @@
 @interface _UIFeedbackPreferences
 + (id)sharedPreferences;
 - (_UIFeedbackPreferences)init;
-- (id)_categoryForNullableCategory:(id)a3;
-- (id)_categoryKeyForCategory:(id)a3 type:(unint64_t)a4;
-- (id)_defaultKeyForCategoryKey:(id)a3 type:(unint64_t)a4;
-- (unint64_t)_defaultFeedbackTypesForCategory:(id)a3;
-- (unint64_t)_enabledFeedbackTypesForCategory:(id)a3;
-- (unint64_t)enabledFeedbackTypesForCategory:(id)a3;
+- (id)_categoryForNullableCategory:(id)category;
+- (id)_categoryKeyForCategory:(id)category type:(unint64_t)type;
+- (id)_defaultKeyForCategoryKey:(id)key type:(unint64_t)type;
+- (unint64_t)_defaultFeedbackTypesForCategory:(id)category;
+- (unint64_t)_enabledFeedbackTypesForCategory:(id)category;
+- (unint64_t)enabledFeedbackTypesForCategory:(id)category;
 - (void)_invalidate;
-- (void)_setEnabledFeedbackTypes:(unint64_t)a3 forCategory:(id)a4 postNotification:(BOOL)a5;
+- (void)_setEnabledFeedbackTypes:(unint64_t)types forCategory:(id)category postNotification:(BOOL)notification;
 - (void)_startObservingDefaults;
-- (void)_updateEnabledFeedbackTypes:(unint64_t *)a3 forKey:(id)a4 type:(unint64_t)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setUserDefaults:(id)a3;
+- (void)_updateEnabledFeedbackTypes:(unint64_t *)types forKey:(id)key type:(unint64_t)type;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setUserDefaults:(id)defaults;
 @end
 
 @implementation _UIFeedbackPreferences
@@ -27,9 +27,9 @@
   if (v2)
   {
     [(_UIFeedbackPreferences *)v2 setUserDefaults:0];
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     enabledFeedbackTypes = v3->_enabledFeedbackTypes;
-    v3->_enabledFeedbackTypes = v4;
+    v3->_enabledFeedbackTypes = dictionary;
 
     v11[0] = @"effects";
     v11[1] = @"keyboard";
@@ -56,7 +56,7 @@
   block[1] = 3221225472;
   block[2] = __43___UIFeedbackPreferences_sharedPreferences__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_MergedGlobals_1083 != -1)
   {
     dispatch_once(&_MergedGlobals_1083, block);
@@ -111,21 +111,21 @@
     while (v6);
   }
 
-  v10 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v10 addObserver:self selector:sel__accessibilityForceTouchChanged_ name:@"UIAccessibilityForceTouchStatusChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__accessibilityForceTouchChanged_ name:@"UIAccessibilityForceTouchStatusChangedNotification" object:0];
 }
 
-- (unint64_t)_defaultFeedbackTypesForCategory:(id)a3
+- (unint64_t)_defaultFeedbackTypesForCategory:(id)category
 {
-  v4 = [(_UIFeedbackPreferences *)self _categoryForNullableCategory:a3];
+  v4 = [(_UIFeedbackPreferences *)self _categoryForNullableCategory:category];
   v17 = [(_UIFeedbackPreferences *)self _categoryKeyForCategory:v4 type:1];
   v5 = [(_UIFeedbackPreferences *)self _categoryKeyForCategory:v4 type:2];
   v6 = [(_UIFeedbackPreferences *)self _categoryKeyForCategory:v4 type:4];
   v7 = [(_UIFeedbackPreferences *)self _categoryKeyForCategory:v4 type:8];
   v8 = [(NSDictionary *)self->_defaultFeedbackTypes objectForKeyedSubscript:v17];
-  v9 = [v8 unsignedIntegerValue];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
   v10 = [(NSDictionary *)self->_defaultFeedbackTypes objectForKeyedSubscript:v6];
-  v11 = [v10 unsignedIntegerValue] & 4 | v9 & 1;
+  v11 = [v10 unsignedIntegerValue] & 4 | unsignedIntegerValue & 1;
   v12 = [(NSDictionary *)self->_defaultFeedbackTypes objectForKeyedSubscript:v7];
   v13 = [v12 unsignedIntegerValue] & 8;
   v14 = [(NSDictionary *)self->_defaultFeedbackTypes objectForKeyedSubscript:v5];
@@ -134,23 +134,23 @@
   return v11 | v15;
 }
 
-- (void)setUserDefaults:(id)a3
+- (void)setUserDefaults:(id)defaults
 {
-  v4 = a3;
-  if (!v4)
+  defaultsCopy = defaults;
+  if (!defaultsCopy)
   {
-    v4 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.preferences.sounds"];
+    defaultsCopy = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.preferences.sounds"];
   }
 
   userDefaults = self->_userDefaults;
-  self->_userDefaults = v4;
+  self->_userDefaults = defaultsCopy;
 }
 
-- (id)_categoryForNullableCategory:(id)a3
+- (id)_categoryForNullableCategory:(id)category
 {
-  if (a3)
+  if (category)
   {
-    return a3;
+    return category;
   }
 
   else
@@ -159,23 +159,23 @@
   }
 }
 
-- (id)_categoryKeyForCategory:(id)a3 type:(unint64_t)a4
+- (id)_categoryKeyForCategory:(id)category type:(unint64_t)type
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 == @"3DTouch")
+  categoryCopy = category;
+  v6 = categoryCopy;
+  if (categoryCopy == @"3DTouch")
   {
     v8 = @"effects";
   }
 
   else
   {
-    if (!v5)
+    if (!categoryCopy)
     {
       goto LABEL_10;
     }
 
-    v7 = [(__CFString *)v5 isEqual:@"3DTouch"];
+    v7 = [(__CFString *)categoryCopy isEqual:@"3DTouch"];
 
     v8 = @"effects";
     if (v7)
@@ -186,7 +186,7 @@
     v9 = v6;
     if (v9 == @"effects-keyboardclicks" || (v10 = v9, v11 = [(__CFString *)v9 isEqual:@"effects-keyboardclicks"], v10, v11))
     {
-      if (a4 == 1)
+      if (type == 1)
       {
         v8 = @"keyboard";
       }
@@ -204,31 +204,31 @@ LABEL_11:
   return v8;
 }
 
-- (id)_defaultKeyForCategoryKey:(id)a3 type:(unint64_t)a4
+- (id)_defaultKeyForCategoryKey:(id)key type:(unint64_t)type
 {
   v4 = @"pencil-haptic";
   v5 = @"haptic";
-  if (a4 == 8)
+  if (type == 8)
   {
     v5 = @"trackpad-haptic";
   }
 
-  if (a4 != 4)
+  if (type != 4)
   {
     v4 = v5;
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
     v4 = @"audio";
   }
 
-  return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", a3, v4];
+  return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", key, v4];
 }
 
-- (unint64_t)enabledFeedbackTypesForCategory:(id)a3
+- (unint64_t)enabledFeedbackTypesForCategory:(id)category
 {
-  v4 = [(_UIFeedbackPreferences *)self _categoryForNullableCategory:a3];
+  v4 = [(_UIFeedbackPreferences *)self _categoryForNullableCategory:category];
   v5 = [(NSMutableDictionary *)self->_enabledFeedbackTypes objectForKeyedSubscript:v4];
 
   if (!v5)
@@ -237,34 +237,34 @@ LABEL_11:
   }
 
   v6 = [(NSMutableDictionary *)self->_enabledFeedbackTypes objectForKeyedSubscript:v4];
-  v7 = [v6 unsignedIntegerValue];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
-- (unint64_t)_enabledFeedbackTypesForCategory:(id)a3
+- (unint64_t)_enabledFeedbackTypesForCategory:(id)category
 {
-  v4 = a3;
-  v5 = [(_UIFeedbackPreferences *)self _categoryKeyForCategory:v4 type:1];
-  v6 = [(_UIFeedbackPreferences *)self _categoryKeyForCategory:v4 type:2];
-  v7 = [(_UIFeedbackPreferences *)self _categoryKeyForCategory:v4 type:4];
-  v8 = [(_UIFeedbackPreferences *)self _categoryKeyForCategory:v4 type:8];
-  v20 = [(_UIFeedbackPreferences *)self _defaultFeedbackTypesForCategory:v4];
+  categoryCopy = category;
+  v5 = [(_UIFeedbackPreferences *)self _categoryKeyForCategory:categoryCopy type:1];
+  v6 = [(_UIFeedbackPreferences *)self _categoryKeyForCategory:categoryCopy type:2];
+  v7 = [(_UIFeedbackPreferences *)self _categoryKeyForCategory:categoryCopy type:4];
+  v8 = [(_UIFeedbackPreferences *)self _categoryKeyForCategory:categoryCopy type:8];
+  v20 = [(_UIFeedbackPreferences *)self _defaultFeedbackTypesForCategory:categoryCopy];
   [(NSUserDefaults *)self->_userDefaults synchronize];
   [(_UIFeedbackPreferences *)self _updateEnabledFeedbackTypes:&v20 forKey:v5 type:1];
   [(_UIFeedbackPreferences *)self _updateEnabledFeedbackTypes:&v20 forKey:v6 type:2];
   [(_UIFeedbackPreferences *)self _updateEnabledFeedbackTypes:&v20 forKey:v7 type:4];
   [(_UIFeedbackPreferences *)self _updateEnabledFeedbackTypes:&v20 forKey:v8 type:8];
   v9 = +[UIDevice currentDevice];
-  v10 = [v9 _feedbackSupportLevel];
+  _feedbackSupportLevel = [v9 _feedbackSupportLevel];
   v11 = v20;
 
-  if (v10 <= 1 && (v11 & 1) == 0)
+  if (_feedbackSupportLevel <= 1 && (v11 & 1) == 0)
   {
     v20 = 0;
   }
 
-  v12 = v4;
+  v12 = categoryCopy;
   v13 = v12;
   if (v12 == @"3DTouch")
   {
@@ -317,59 +317,59 @@ LABEL_14:
   return v18;
 }
 
-- (void)_updateEnabledFeedbackTypes:(unint64_t *)a3 forKey:(id)a4 type:(unint64_t)a5
+- (void)_updateEnabledFeedbackTypes:(unint64_t *)types forKey:(id)key type:(unint64_t)type
 {
-  v8 = a4;
-  v15 = v8;
-  if (a5 != 1 || (v9 = v8, v8 = v15, v9 != @"effects") && ((v10 = v9) == 0 || (v11 = [(__CFString *)v9 isEqual:@"effects"], v10, v8 = v15, (v11 & 1) == 0)))
+  keyCopy = key;
+  v15 = keyCopy;
+  if (type != 1 || (v9 = keyCopy, keyCopy = v15, v9 != @"effects") && ((v10 = v9) == 0 || (v11 = [(__CFString *)v9 isEqual:@"effects"], v10, keyCopy = v15, (v11 & 1) == 0)))
   {
-    v12 = [(_UIFeedbackPreferences *)self _defaultKeyForCategoryKey:v8 type:a5];
+    v12 = [(_UIFeedbackPreferences *)self _defaultKeyForCategoryKey:keyCopy type:type];
     v13 = [(NSUserDefaults *)self->_userDefaults objectForKey:v12];
 
     if (v13)
     {
       if ([(NSUserDefaults *)self->_userDefaults BOOLForKey:v12])
       {
-        v14 = *a3 | a5;
+        v14 = *types | type;
       }
 
       else
       {
-        v14 = *a3 & ~a5;
+        v14 = *types & ~type;
       }
 
-      *a3 = v14;
+      *types = v14;
     }
 
-    v8 = v15;
+    keyCopy = v15;
   }
 }
 
-- (void)_setEnabledFeedbackTypes:(unint64_t)a3 forCategory:(id)a4 postNotification:(BOOL)a5
+- (void)_setEnabledFeedbackTypes:(unint64_t)types forCategory:(id)category postNotification:(BOOL)notification
 {
-  v5 = a5;
+  notificationCopy = notification;
   v8 = MEMORY[0x1E696AD98];
-  v9 = a4;
-  v10 = [v8 numberWithUnsignedInteger:a3];
-  [(NSMutableDictionary *)self->_enabledFeedbackTypes setObject:v10 forKeyedSubscript:v9];
+  categoryCopy = category;
+  v10 = [v8 numberWithUnsignedInteger:types];
+  [(NSMutableDictionary *)self->_enabledFeedbackTypes setObject:v10 forKeyedSubscript:categoryCopy];
 
-  if (v5)
+  if (notificationCopy)
   {
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 postNotificationName:@"_UIFeedbackPreferencesDidChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"_UIFeedbackPreferencesDidChangeNotification" object:self];
   }
 }
 
 - (void)_invalidate
 {
   [(NSMutableDictionary *)self->_enabledFeedbackTypes removeAllObjects];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"_UIFeedbackPreferencesDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"_UIFeedbackPreferencesDidChangeNotification" object:self];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (self->_userDefaults == a4)
+  if (self->_userDefaults == object)
   {
 
     [(_UIFeedbackPreferences *)self _invalidate];
@@ -381,7 +381,7 @@ LABEL_14:
     v10 = v7;
     v8.receiver = self;
     v8.super_class = _UIFeedbackPreferences;
-    [_UIFeedbackPreferences observeValueForKeyPath:sel_observeValueForKeyPath_ofObject_change_context_ ofObject:a3 change:? context:?];
+    [_UIFeedbackPreferences observeValueForKeyPath:sel_observeValueForKeyPath_ofObject_change_context_ ofObject:path change:? context:?];
   }
 }
 

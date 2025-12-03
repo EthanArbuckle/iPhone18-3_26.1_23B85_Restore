@@ -1,20 +1,20 @@
 @interface ABSPBLinkTo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsName:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsName:(BOOL)name;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ABSPBLinkTo
 
-- (void)setHasIsName:(BOOL)a3
+- (void)setHasIsName:(BOOL)name
 {
-  if (a3)
+  if (name)
   {
     v3 = 2;
   }
@@ -32,8 +32,8 @@
   v7.receiver = self;
   v7.super_class = ABSPBLinkTo;
   v3 = [(ABSPBLinkTo *)&v7 description];
-  v4 = [(ABSPBLinkTo *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(ABSPBLinkTo *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -66,14 +66,14 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_toGuid)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -81,7 +81,7 @@
   {
     isImage = self->_isImage;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -89,39 +89,39 @@
   {
     isName = self->_isName;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_toGuid)
   {
-    v6 = v4;
-    [v4 setToGuid:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setToGuid:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    v4[16] = self->_isImage;
-    v4[20] |= 1u;
+    toCopy[16] = self->_isImage;
+    toCopy[20] |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v4[17] = self->_isName;
-    v4[20] |= 2u;
+    toCopy[17] = self->_isName;
+    toCopy[20] |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_toGuid copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_toGuid copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -142,16 +142,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
   toGuid = self->_toGuid;
-  if (toGuid | *(v4 + 1))
+  if (toGuid | *(equalCopy + 1))
   {
     if (![(NSString *)toGuid isEqual:?])
     {
@@ -161,7 +161,7 @@
 
   if ((*&self->_has & 1) == 0)
   {
-    if ((*(v4 + 20) & 1) == 0)
+    if ((*(equalCopy + 20) & 1) == 0)
     {
       goto LABEL_6;
     }
@@ -171,40 +171,40 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if ((*(v4 + 20) & 1) == 0)
+  if ((*(equalCopy + 20) & 1) == 0)
   {
     goto LABEL_12;
   }
 
-  v8 = *(v4 + 16);
+  v8 = *(equalCopy + 16);
   if (self->_isImage)
   {
-    if ((*(v4 + 16) & 1) == 0)
+    if ((*(equalCopy + 16) & 1) == 0)
     {
       goto LABEL_12;
     }
   }
 
-  else if (*(v4 + 16))
+  else if (*(equalCopy + 16))
   {
     goto LABEL_12;
   }
 
 LABEL_6:
-  v6 = (*(v4 + 20) & 2) == 0;
+  v6 = (*(equalCopy + 20) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 20) & 2) != 0)
+    if ((*(equalCopy + 20) & 2) != 0)
     {
       if (self->_isName)
       {
-        if (*(v4 + 17))
+        if (*(equalCopy + 17))
         {
           goto LABEL_20;
         }
       }
 
-      else if (!*(v4 + 17))
+      else if (!*(equalCopy + 17))
       {
 LABEL_20:
         v6 = 1;
@@ -247,27 +247,27 @@ LABEL_3:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(ABSPBLinkTo *)self setToGuid:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = v4[20];
+  v5 = fromCopy[20];
   if (v5)
   {
-    self->_isImage = v4[16];
+    self->_isImage = fromCopy[16];
     *&self->_has |= 1u;
-    v5 = v4[20];
+    v5 = fromCopy[20];
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_isName = v4[17];
+    self->_isName = fromCopy[17];
     *&self->_has |= 2u;
   }
 }

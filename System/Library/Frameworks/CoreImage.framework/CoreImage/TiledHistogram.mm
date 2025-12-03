@@ -1,27 +1,27 @@
 @interface TiledHistogram
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6;
-+ (id)roiTileArrayForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5;
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error;
++ (id)roiTileArrayForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect;
 @end
 
 @implementation TiledHistogram
 
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error
 {
   v41[4095] = *MEMORY[0x1E69E9840];
-  v9 = [objc_msgSend(a4 objectForKeyedSubscript:{@"binCount", "unsignedLongValue"}];
-  v10 = [objc_msgSend(a4 objectForKeyedSubscript:{@"areaW", "longValue"}];
-  v11 = [objc_msgSend(a4 objectForKeyedSubscript:{@"areaH", "longValue"}];
-  [objc_msgSend(a4 objectForKeyedSubscript:{@"scale", "floatValue"}];
+  v9 = [objc_msgSend(arguments objectForKeyedSubscript:{@"binCount", "unsignedLongValue"}];
+  v10 = [objc_msgSend(arguments objectForKeyedSubscript:{@"areaW", "longValue"}];
+  v11 = [objc_msgSend(arguments objectForKeyedSubscript:{@"areaH", "longValue"}];
+  [objc_msgSend(arguments objectForKeyedSubscript:{@"scale", "floatValue"}];
   v13 = v12;
-  v14 = [a3 objectAtIndexedSubscript:0];
+  v14 = [inputs objectAtIndexedSubscript:0];
   [v14 region];
   v16 = v15;
   v18 = v17;
   bzero(v40, 0x8000uLL);
-  v19 = [v14 baseAddress];
+  baseAddress = [v14 baseAddress];
   if (v18)
   {
-    v20 = v19;
+    v20 = baseAddress;
     for (i = 0; i != v18; ++i)
     {
       if (v16)
@@ -50,17 +50,17 @@
     }
   }
 
-  v33 = [a5 baseAddress];
+  baseAddress2 = [output baseAddress];
   if (![v14 roiTileIndex])
   {
-    bzero(v33, 16 * v9);
+    bzero(baseAddress2, 16 * v9);
   }
 
   if (v9)
   {
     *v34.i32 = v13 / (v11 * v10);
     v35 = vdup_lane_s32(v34, 0);
-    v36 = v33 + 2;
+    v36 = baseAddress2 + 2;
     v37 = v41;
     do
     {
@@ -78,15 +78,15 @@
   return 1;
 }
 
-+ (id)roiTileArrayForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5
++ (id)roiTileArrayForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect
 {
-  v6 = [objc_msgSend(a4 objectForKeyedSubscript:{@"tileSize", a5.origin.x, a5.origin.y, a5.size.width, a5.size.height), "longValue"}];
-  v7 = [objc_msgSend(a4 objectForKeyedSubscript:{@"areaX", "longValue"}];
-  v8 = [objc_msgSend(a4 objectForKeyedSubscript:{@"areaY", "longValue"}];
-  v9 = [objc_msgSend(a4 objectForKeyedSubscript:{@"areaW", "longValue"}];
-  v10 = [objc_msgSend(a4 objectForKeyedSubscript:{@"areaH", "longValue"}];
+  v6 = [objc_msgSend(arguments objectForKeyedSubscript:{@"tileSize", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height), "longValue"}];
+  v7 = [objc_msgSend(arguments objectForKeyedSubscript:{@"areaX", "longValue"}];
+  v8 = [objc_msgSend(arguments objectForKeyedSubscript:{@"areaY", "longValue"}];
+  v9 = [objc_msgSend(arguments objectForKeyedSubscript:{@"areaW", "longValue"}];
+  v10 = [objc_msgSend(arguments objectForKeyedSubscript:{@"areaH", "longValue"}];
   v11 = (v6 - 1 + v10) / v6;
-  v12 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (v11 >= 1)
   {
     for (i = 0; i != v11; ++i)
@@ -106,7 +106,7 @@
           v19.size.width = v9;
           v19.size.height = v10;
           v18 = CGRectIntersection(v17, v19);
-          [v12 addObject:{+[CIVector vectorWithCGRect:](CIVector, "vectorWithCGRect:", v18.origin.x, v18.origin.y, v18.size.width, v18.size.height)}];
+          [array addObject:{+[CIVector vectorWithCGRect:](CIVector, "vectorWithCGRect:", v18.origin.x, v18.origin.y, v18.size.width, v18.size.height)}];
           v15 += v6;
           --v14;
         }
@@ -116,7 +116,7 @@
     }
   }
 
-  return v12;
+  return array;
 }
 
 @end

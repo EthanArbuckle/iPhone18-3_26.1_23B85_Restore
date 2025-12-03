@@ -1,11 +1,11 @@
 @interface VideoFrameWriterQueue
 - (BOOL)WaitForFinish;
 - (VideoFrameWriterProgressRecipient)frameWriterUpdateCallback;
-- (VideoFrameWriterQueue)initWithOutputURL:(id)a3 forMovieDimensions:(CGSize)a4 outputTransform:(CGAffineTransform *)a5 startTime:(id *)a6 endTime:(id *)a7;
-- (id)FindFrameWithIndex:(int64_t)a3;
+- (VideoFrameWriterQueue)initWithOutputURL:(id)l forMovieDimensions:(CGSize)dimensions outputTransform:(CGAffineTransform *)transform startTime:(id *)time endTime:(id *)endTime;
+- (id)FindFrameWithIndex:(int64_t)index;
 - (unint64_t)FramesInQueue;
-- (void)AddAFrame:(id)a3;
-- (void)DrainIfAbove:(unsigned int)a3 downTo:(unsigned int)a4;
+- (void)AddAFrame:(id)frame;
+- (void)DrainIfAbove:(unsigned int)above downTo:(unsigned int)to;
 - (void)FrameRequestCallback;
 - (void)StartWatchingForFrames;
 - (void)dealloc;
@@ -13,19 +13,19 @@
 
 @implementation VideoFrameWriterQueue
 
-- (VideoFrameWriterQueue)initWithOutputURL:(id)a3 forMovieDimensions:(CGSize)a4 outputTransform:(CGAffineTransform *)a5 startTime:(id *)a6 endTime:(id *)a7
+- (VideoFrameWriterQueue)initWithOutputURL:(id)l forMovieDimensions:(CGSize)dimensions outputTransform:(CGAffineTransform *)transform startTime:(id *)time endTime:(id *)endTime
 {
-  height = a4.height;
-  width = a4.width;
+  height = dimensions.height;
+  width = dimensions.width;
   v49.receiver = self;
   v49.super_class = VideoFrameWriterQueue;
-  v12 = a3;
+  lCopy = l;
   v13 = [(VideoFrameWriterQueue *)&v49 init];
-  v42 = *&a6->var0;
-  *&v43 = a6->var3;
+  v42 = *&time->var0;
+  *&v43 = time->var3;
   [v13 setStartTime:&v42];
-  v42 = *&a7->var0;
-  *&v43 = a7->var3;
+  v42 = *&endTime->var0;
+  *&v43 = endTime->var3;
   [v13 setEndTime:&v42];
   v14 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:32];
   [v13 setFrameArray:v14];
@@ -50,7 +50,7 @@
   v23 = objc_alloc(MEMORY[0x277CE6460]);
   v24 = *MEMORY[0x277CE5DA8];
   v48 = 0;
-  v25 = [v23 initWithURL:v12 fileType:v24 error:&v48];
+  v25 = [v23 initWithURL:lCopy fileType:v24 error:&v48];
 
   v26 = v48;
   [v13 setVideoWriter:v25];
@@ -71,15 +71,15 @@
   v34 = [MEMORY[0x277CE6468] assetWriterInputWithMediaType:*MEMORY[0x277CE5EA8] outputSettings:v33];
   [v13 setWriterInput:v34];
 
-  v35 = *&a5->c;
-  v45 = *&a5->a;
+  v35 = *&transform->c;
+  v45 = *&transform->a;
   v46 = v35;
-  v47 = *&a5->tx;
-  v36 = [v13 writerInput];
+  v47 = *&transform->tx;
+  writerInput = [v13 writerInput];
   v42 = v45;
   v43 = v46;
   v44 = v47;
-  [v36 setTransform:&v42];
+  [writerInput setTransform:&v42];
 
   v37 = MEMORY[0x277CBEAC0];
   v38 = [MEMORY[0x277CCABB0] numberWithInt:1111970369];
@@ -99,12 +99,12 @@
   [(VideoFrameWriterQueue *)&v2 dealloc];
 }
 
-- (void)AddAFrame:(id)a3
+- (void)AddAFrame:(id)frame
 {
   frameArrayLock = self->frameArrayLock;
-  v5 = a3;
+  frameCopy = frame;
   [(NSLock *)frameArrayLock lock];
-  [(NSMutableArray *)self->frameArray addObject:v5];
+  [(NSMutableArray *)self->frameArray addObject:frameCopy];
 
   [(NSLock *)self->frameArrayLock unlock];
   drainMinimum = self->_drainMinimum;
@@ -170,7 +170,7 @@
   return writeSuccess;
 }
 
-- (id)FindFrameWithIndex:(int64_t)a3
+- (id)FindFrameWithIndex:(int64_t)index
 {
   [(NSLock *)self->frameArrayLock lock];
   v5 = [(NSMutableArray *)self->frameArray count];
@@ -181,7 +181,7 @@
     while (1)
     {
       v8 = [(NSMutableArray *)self->frameArray objectAtIndex:v7];
-      if ([v8 frameNumber] == a3)
+      if ([v8 frameNumber] == index)
       {
         break;
       }
@@ -223,9 +223,9 @@ LABEL_5:
           {
             v6 = v5;
             inputAdaptor = self->inputAdaptor;
-            v8 = [v5 pixelBuffer];
+            pixelBuffer = [v5 pixelBuffer];
             [v6 frameTime];
-            LOBYTE(inputAdaptor) = [(AVAssetWriterInputPixelBufferAdaptor *)inputAdaptor appendPixelBuffer:v8 withPresentationTime:v14];
+            LOBYTE(inputAdaptor) = [(AVAssetWriterInputPixelBufferAdaptor *)inputAdaptor appendPixelBuffer:pixelBuffer withPresentationTime:v14];
             WeakRetained = objc_loadWeakRetained(&self->frameWriterUpdateCallback);
             [WeakRetained updateCallbackForFrameIndex:-[VideoFrameWriterQueue nextFrameIndex](self withPixelBuffer:{"nextFrameIndex"), objc_msgSend(v6, "pixelBuffer")}];
 
@@ -236,11 +236,11 @@ LABEL_5:
             {
               self->writeSuccess = 0;
               NSLog(&cfstr_FailedToAppend.isa);
-              v11 = [(AVAssetWriter *)self->videoWriter error];
-              v12 = v11;
-              if (v11)
+              error = [(AVAssetWriter *)self->videoWriter error];
+              v12 = error;
+              if (error)
               {
-                NSLog(&cfstr_ErrorCodeD.isa, [v11 code]);
+                NSLog(&cfstr_ErrorCodeD.isa, [error code]);
                 v13 = [v12 description];
                 NSLog(&cfstr_ErrorDescripti.isa, [v13 UTF8String]);
 
@@ -334,12 +334,12 @@ LABEL_25:
   [(AVAssetWriterInput *)writerInput requestMediaDataWhenReadyOnQueue:frameWriteQueue usingBlock:v6];
 }
 
-- (void)DrainIfAbove:(unsigned int)a3 downTo:(unsigned int)a4
+- (void)DrainIfAbove:(unsigned int)above downTo:(unsigned int)to
 {
-  if ([(VideoFrameWriterQueue *)self FramesInQueue]> a3)
+  if ([(VideoFrameWriterQueue *)self FramesInQueue]> above)
   {
     [(NSConditionLock *)self->_drainConditionLock lock];
-    self->_drainTarget = a4;
+    self->_drainTarget = to;
     [(NSConditionLock *)self->_drainConditionLock unlockWithCondition:1];
     v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:5.0];
     if ([(NSConditionLock *)self->_drainConditionLock lockWhenCondition:2 beforeDate:?])

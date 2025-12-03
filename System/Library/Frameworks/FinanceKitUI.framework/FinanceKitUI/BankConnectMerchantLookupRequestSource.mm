@@ -9,7 +9,7 @@
 
 - (id)mapsMerchantLookupRequest
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2384991D4();
 
   return v3;
@@ -29,7 +29,7 @@
   v13 = *(v12 + 64);
   MEMORY[0x28223BE20](v11);
   v15 = &v21 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v16 = self;
+  selfCopy = self;
   sub_23875A300();
   sub_238758F30();
 
@@ -66,7 +66,7 @@
   v10 = *(v9 + 64);
   MEMORY[0x28223BE20](v8);
   v12 = &v16 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v13 = self;
+  selfCopy = self;
   sub_23875A300();
   sub_238758F10();
   (*(v9 + 8))(v12, v8);

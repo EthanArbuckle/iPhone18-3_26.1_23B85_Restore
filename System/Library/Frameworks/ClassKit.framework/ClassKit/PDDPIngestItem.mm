@@ -1,18 +1,18 @@
 @interface PDDPIngestItem
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAction:(id)a3;
-- (int)StringAsSyncType:(id)a3;
+- (int)StringAsAction:(id)action;
+- (int)StringAsSyncType:(id)type;
 - (int)action;
 - (int)syncType;
 - (unint64_t)hash;
-- (void)addHandoutAuthorizedMetaInfo:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSyncType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addHandoutAuthorizedMetaInfo:(id)info;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSyncType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPIngestItem
@@ -30,20 +30,20 @@
   }
 }
 
-- (int)StringAsAction:(id)a3
+- (int)StringAsAction:(id)action
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_TYPE"])
+  actionCopy = action;
+  if ([actionCopy isEqualToString:@"UNKNOWN_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"UPDATE"])
+  else if ([actionCopy isEqualToString:@"UPDATE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"DELETE"])
+  else if ([actionCopy isEqualToString:@"DELETE"])
   {
     v4 = 2;
   }
@@ -69,9 +69,9 @@
   }
 }
 
-- (void)setHasSyncType:(BOOL)a3
+- (void)setHasSyncType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -84,30 +84,30 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsSyncType:(id)a3
+- (int)StringAsSyncType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_SYNC_TYPE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_SYNC_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"TIME_INTERVAL_TYPE"])
+  else if ([typeCopy isEqualToString:@"TIME_INTERVAL_TYPE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ACTIVITY_TYPE"])
+  else if ([typeCopy isEqualToString:@"ACTIVITY_TYPE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ACTIVITY_ITEM_TYPE"])
+  else if ([typeCopy isEqualToString:@"ACTIVITY_ITEM_TYPE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"RANGE_TYPE"])
+  else if ([typeCopy isEqualToString:@"RANGE_TYPE"])
   {
     v4 = 4;
   }
@@ -120,22 +120,22 @@
   return v4;
 }
 
-- (void)addHandoutAuthorizedMetaInfo:(id)a3
+- (void)addHandoutAuthorizedMetaInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   handoutAuthorizedMetaInfos = self->_handoutAuthorizedMetaInfos;
-  v8 = v4;
+  v8 = infoCopy;
   if (!handoutAuthorizedMetaInfos)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_handoutAuthorizedMetaInfos;
     self->_handoutAuthorizedMetaInfos = v6;
 
-    v4 = v8;
+    infoCopy = v8;
     handoutAuthorizedMetaInfos = self->_handoutAuthorizedMetaInfos;
   }
 
-  [(NSMutableArray *)handoutAuthorizedMetaInfos addObject:v4];
+  [(NSMutableArray *)handoutAuthorizedMetaInfos addObject:infoCopy];
 }
 
 - (id)description
@@ -143,8 +143,8 @@
   v7.receiver = self;
   v7.super_class = PDDPIngestItem;
   v3 = [(PDDPIngestItem *)&v7 description];
-  v4 = [(PDDPIngestItem *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPIngestItem *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -177,8 +177,8 @@
   progressEntity = self->_progressEntity;
   if (progressEntity)
   {
-    v8 = [(PDDPProgressEntity *)progressEntity dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"progress_entity"];
+    dictionaryRepresentation = [(PDDPProgressEntity *)progressEntity dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"progress_entity"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -219,8 +219,8 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          [v11 addObject:v17];
+          dictionaryRepresentation2 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          [v11 addObject:dictionaryRepresentation2];
         }
 
         v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -235,9 +235,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     action = self->_action;
@@ -293,41 +293,41 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[2] = self->_action;
-    *(v4 + 44) |= 1u;
+    toCopy[2] = self->_action;
+    *(toCopy + 44) |= 1u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if (self->_objectId)
   {
-    [v4 setObjectId:?];
-    v4 = v9;
+    [toCopy setObjectId:?];
+    toCopy = v9;
   }
 
   if (self->_progressEntity)
   {
     [v9 setProgressEntity:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    v4[10] = self->_syncType;
-    *(v4 + 44) |= 2u;
+    toCopy[10] = self->_syncType;
+    *(toCopy + 44) |= 2u;
   }
 
   if ([(PDDPIngestItem *)self handoutAuthorizedMetaInfosCount])
   {
     [v9 clearHandoutAuthorizedMetaInfos];
-    v5 = [(PDDPIngestItem *)self handoutAuthorizedMetaInfosCount];
-    if (v5)
+    handoutAuthorizedMetaInfosCount = [(PDDPIngestItem *)self handoutAuthorizedMetaInfosCount];
+    if (handoutAuthorizedMetaInfosCount)
     {
-      v6 = v5;
+      v6 = handoutAuthorizedMetaInfosCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(PDDPIngestItem *)self handoutAuthorizedMetaInfoAtIndex:i];
@@ -337,9 +337,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -347,11 +347,11 @@
     *(v5 + 44) |= 1u;
   }
 
-  v7 = [(NSString *)self->_objectId copyWithZone:a3];
+  v7 = [(NSString *)self->_objectId copyWithZone:zone];
   v8 = v6[3];
   v6[3] = v7;
 
-  v9 = [(PDDPProgressEntity *)self->_progressEntity copyWithZone:a3];
+  v9 = [(PDDPProgressEntity *)self->_progressEntity copyWithZone:zone];
   v10 = v6[4];
   v6[4] = v9;
 
@@ -380,7 +380,7 @@
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v18 + 1) + 8 * i) copyWithZone:{a3, v18}];
+        v16 = [*(*(&v18 + 1) + 8 * i) copyWithZone:{zone, v18}];
         [v6 addHandoutAuthorizedMetaInfo:v16];
       }
 
@@ -393,24 +393,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
-  v5 = *(v4 + 44);
+  v5 = *(equalCopy + 44);
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_action != *(v4 + 2))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_action != *(equalCopy + 2))
     {
       goto LABEL_18;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
 LABEL_18:
     v10 = 0;
@@ -418,13 +418,13 @@ LABEL_18:
   }
 
   objectId = self->_objectId;
-  if (objectId | *(v4 + 3) && ![(NSString *)objectId isEqual:?])
+  if (objectId | *(equalCopy + 3) && ![(NSString *)objectId isEqual:?])
   {
     goto LABEL_18;
   }
 
   progressEntity = self->_progressEntity;
-  if (progressEntity | *(v4 + 4))
+  if (progressEntity | *(equalCopy + 4))
   {
     if (![(PDDPProgressEntity *)progressEntity isEqual:?])
     {
@@ -432,22 +432,22 @@ LABEL_18:
     }
   }
 
-  v8 = *(v4 + 44);
+  v8 = *(equalCopy + 44);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0 || self->_syncType != *(v4 + 10))
+    if ((*(equalCopy + 44) & 2) == 0 || self->_syncType != *(equalCopy + 10))
     {
       goto LABEL_18;
     }
   }
 
-  else if ((*(v4 + 44) & 2) != 0)
+  else if ((*(equalCopy + 44) & 2) != 0)
   {
     goto LABEL_18;
   }
 
   handoutAuthorizedMetaInfos = self->_handoutAuthorizedMetaInfos;
-  if (handoutAuthorizedMetaInfos | *(v4 + 2))
+  if (handoutAuthorizedMetaInfos | *(equalCopy + 2))
   {
     v10 = [(NSMutableArray *)handoutAuthorizedMetaInfos isEqual:?];
   }
@@ -489,17 +489,17 @@ LABEL_19:
   return v4 ^ v3 ^ v5 ^ v6 ^ [(NSMutableArray *)self->_handoutAuthorizedMetaInfos hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[11])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[11])
   {
-    self->_action = v4[2];
+    self->_action = fromCopy[2];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(PDDPIngestItem *)self setObjectId:?];
   }

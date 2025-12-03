@@ -1,22 +1,22 @@
 @interface BFSDirectory
-+ (id)BFSDirectoryWithURL:(id)a3 withDepth:(unint64_t)a4;
++ (id)BFSDirectoryWithURL:(id)l withDepth:(unint64_t)depth;
 - (id)description;
 @end
 
 @implementation BFSDirectory
 
-+ (id)BFSDirectoryWithURL:(id)a3 withDepth:(unint64_t)a4
++ (id)BFSDirectoryWithURL:(id)l withDepth:(unint64_t)depth
 {
-  v5 = a3;
+  lCopy = l;
   v6 = objc_alloc_init(BFSDirectory);
   v7 = v6;
   if (v6)
   {
-    [(BFSDirectory *)v6 setUrl:v5];
+    [(BFSDirectory *)v6 setUrl:lCopy];
     v8 = +[NSFileManager defaultManager];
     v16 = 0;
-    v9 = [v5 path];
-    v10 = [v8 fileExistsAtPath:v9 isDirectory:&v16];
+    path = [lCopy path];
+    v10 = [v8 fileExistsAtPath:path isDirectory:&v16];
     v11 = v16;
 
     if (v10 && (v11 & 1) != 0)
@@ -27,7 +27,7 @@
       [(BFSDirectory *)v7 setUrlEnumerator:v14];
     }
 
-    [(BFSDirectory *)v7 setRemainingDepth:a4];
+    [(BFSDirectory *)v7 setRemainingDepth:depth];
   }
 
   return v7;
@@ -35,9 +35,9 @@
 
 - (id)description
 {
-  v3 = [(BFSDirectory *)self remainingDepth];
-  v4 = [(BFSDirectory *)self urlEnumerator];
-  v5 = [NSString stringWithFormat:@"%lu %@", v3, v4];
+  remainingDepth = [(BFSDirectory *)self remainingDepth];
+  urlEnumerator = [(BFSDirectory *)self urlEnumerator];
+  v5 = [NSString stringWithFormat:@"%lu %@", remainingDepth, urlEnumerator];
 
   return v5;
 }

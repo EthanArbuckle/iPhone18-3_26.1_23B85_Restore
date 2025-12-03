@@ -1,35 +1,35 @@
 @interface HMImmutableSettingsProtoLanguageValueEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMImmutableSettingsProtoLanguageValueEvent
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[1])
+  fromCopy = from;
+  if (fromCopy[1])
   {
     [(HMImmutableSettingsProtoLanguageValueEvent *)self setInputLanguageCode:?];
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(HMImmutableSettingsProtoLanguageValueEvent *)self setOutputVoiceLanguageCode:?];
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(HMImmutableSettingsProtoLanguageValueEvent *)self setOutputVoiceGenderCode:?];
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(HMImmutableSettingsProtoLanguageValueEvent *)self setVoiceName:?];
   }
@@ -43,13 +43,13 @@
   return v4 ^ v5 ^ [(NSString *)self->_voiceName hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((inputLanguageCode = self->_inputLanguageCode, !(inputLanguageCode | v4[1])) || -[NSString isEqual:](inputLanguageCode, "isEqual:")) && ((outputVoiceLanguageCode = self->_outputVoiceLanguageCode, !(outputVoiceLanguageCode | v4[3])) || -[NSString isEqual:](outputVoiceLanguageCode, "isEqual:")) && ((outputVoiceGenderCode = self->_outputVoiceGenderCode, !(outputVoiceGenderCode | v4[2])) || -[NSString isEqual:](outputVoiceGenderCode, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((inputLanguageCode = self->_inputLanguageCode, !(inputLanguageCode | equalCopy[1])) || -[NSString isEqual:](inputLanguageCode, "isEqual:")) && ((outputVoiceLanguageCode = self->_outputVoiceLanguageCode, !(outputVoiceLanguageCode | equalCopy[3])) || -[NSString isEqual:](outputVoiceLanguageCode, "isEqual:")) && ((outputVoiceGenderCode = self->_outputVoiceGenderCode, !(outputVoiceGenderCode | equalCopy[2])) || -[NSString isEqual:](outputVoiceGenderCode, "isEqual:")))
   {
     voiceName = self->_voiceName;
-    if (voiceName | v4[4])
+    if (voiceName | equalCopy[4])
     {
       v9 = [(NSString *)voiceName isEqual:?];
     }
@@ -68,94 +68,94 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_inputLanguageCode copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_inputLanguageCode copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_outputVoiceLanguageCode copyWithZone:a3];
+  v8 = [(NSString *)self->_outputVoiceLanguageCode copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(NSString *)self->_outputVoiceGenderCode copyWithZone:a3];
+  v10 = [(NSString *)self->_outputVoiceGenderCode copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
-  v12 = [(NSString *)self->_voiceName copyWithZone:a3];
+  v12 = [(NSString *)self->_voiceName copyWithZone:zone];
   v13 = v5[4];
   v5[4] = v12;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_inputLanguageCode)
   {
-    [v4 setInputLanguageCode:?];
-    v4 = v5;
+    [toCopy setInputLanguageCode:?];
+    toCopy = v5;
   }
 
   if (self->_outputVoiceLanguageCode)
   {
     [v5 setOutputVoiceLanguageCode:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_outputVoiceGenderCode)
   {
     [v5 setOutputVoiceGenderCode:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_voiceName)
   {
     [v5 setVoiceName:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_inputLanguageCode)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_outputVoiceLanguageCode)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_outputVoiceGenderCode)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_voiceName)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   inputLanguageCode = self->_inputLanguageCode;
   if (inputLanguageCode)
   {
-    [v3 setObject:inputLanguageCode forKey:@"inputLanguageCode"];
+    [dictionary setObject:inputLanguageCode forKey:@"inputLanguageCode"];
   }
 
   outputVoiceLanguageCode = self->_outputVoiceLanguageCode;
@@ -185,8 +185,8 @@
   v8.receiver = self;
   v8.super_class = HMImmutableSettingsProtoLanguageValueEvent;
   v4 = [(HMImmutableSettingsProtoLanguageValueEvent *)&v8 description];
-  v5 = [(HMImmutableSettingsProtoLanguageValueEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMImmutableSettingsProtoLanguageValueEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

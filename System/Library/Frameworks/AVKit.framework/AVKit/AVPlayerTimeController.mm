@@ -1,29 +1,29 @@
 @interface AVPlayerTimeController
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)forwardPlaybackEndTime;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)reversePlaybackEndTime;
-- (AVPlayerTimeController)initWithPlayer:(id)a3 useIntegratedTimeline:(BOOL)a4;
+- (AVPlayerTimeController)initWithPlayer:(id)player useIntegratedTimeline:(BOOL)timeline;
 - (NSArray)seekableTimeRanges;
 - (double)contentDuration;
 - (double)contentDurationWithinEndTimes;
 - (double)maxTime;
-- (id)initForIFramesWithPlayerItem:(id)a3 useIntegratedTimeline:(BOOL)a4;
+- (id)initForIFramesWithPlayerItem:(id)item useIntegratedTimeline:(BOOL)timeline;
 - (void)_actuallySeekToTime;
 - (void)_commonInit;
 - (void)_updateMinAndMaxTiming;
 - (void)_updateTiming;
 - (void)dealloc;
-- (void)seekToTime:(double)a3 toleranceBefore:(double)a4 toleranceAfter:(double)a5;
-- (void)setSeekToTimeInternal:(id *)a3;
+- (void)seekToTime:(double)time toleranceBefore:(double)before toleranceAfter:(double)after;
+- (void)setSeekToTimeInternal:(id *)internal;
 - (void)startTimingObservation;
 - (void)stopTimingObservation;
 @end
 
 @implementation AVPlayerTimeController
 
-- (void)setSeekToTimeInternal:(id *)a3
+- (void)setSeekToTimeInternal:(id *)internal
 {
-  v3 = *&a3->var0;
-  *&self->_seekToTimeInternal.timescale = a3->var3;
+  v3 = *&internal->var0;
+  *&self->_seekToTimeInternal.timescale = internal->var3;
   *&self->_observationController = v3;
 }
 
@@ -57,11 +57,11 @@
       v10 = EffectiveRate;
       +[AVValueTiming currentTimeStamp];
       v12 = v11;
-      v13 = [*&self->_useIntegratedTimeline currentItem];
-      v14 = v13;
-      if (v13)
+      currentItem = [*&self->_useIntegratedTimeline currentItem];
+      v14 = currentItem;
+      if (currentItem)
       {
-        [v13 currentTime];
+        [currentItem currentTime];
       }
 
       else
@@ -89,7 +89,7 @@
   [(AVPlayerTimeController *)self setTiming:v9];
 }
 
-- (void)seekToTime:(double)a3 toleranceBefore:(double)a4 toleranceAfter:(double)a5
+- (void)seekToTime:(double)time toleranceBefore:(double)before toleranceAfter:(double)after
 {
   if ([*&self->_useIntegratedTimeline _isInterstitialPlayer])
   {
@@ -108,9 +108,9 @@
   v11[2] = __68__AVPlayerTimeController_seekToTime_toleranceBefore_toleranceAfter___block_invoke;
   v11[3] = &unk_1E7208538;
   objc_copyWeak(v12, location);
-  v12[1] = *&a3;
-  v12[2] = *&a4;
-  v12[3] = *&a5;
+  v12[1] = *&time;
+  v12[2] = *&before;
+  v12[3] = *&after;
   dispatch_async(seekQueue, v11);
   objc_destroyWeak(v12);
   objc_destroyWeak(location);
@@ -143,38 +143,38 @@ void __68__AVPlayerTimeController_seekToTime_toleranceBefore_toleranceAfter___bl
 
 - (void)_actuallySeekToTime
 {
-  if (a1)
+  if (self)
   {
-    [a1 setSeekingInternal:1];
-    objc_initWeak(&location, a1);
+    [self setSeekingInternal:1];
+    objc_initWeak(&location, self);
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __45__AVPlayerTimeController__actuallySeekToTime__block_invoke;
     aBlock[3] = &unk_1E7209A88;
     objc_copyWeak(&v12, &location);
     v2 = _Block_copy(aBlock);
-    if (*(a1 + 68) == 1)
+    if (*(self + 68) == 1)
     {
-      v3 = [a1 player];
-      v4 = [v3 currentItem];
-      v5 = [v4 integratedTimeline];
-      [a1 seekToTimeInternal];
-      v8 = *(a1 + 20);
-      v9 = *(a1 + 36);
-      v6 = *(a1 + 44);
-      v7 = *(a1 + 60);
-      [v5 seekToTime:v10 toleranceBefore:&v8 toleranceAfter:&v6 completionHandler:v2];
+      player = [self player];
+      currentItem = [player currentItem];
+      integratedTimeline = [currentItem integratedTimeline];
+      [self seekToTimeInternal];
+      v8 = *(self + 20);
+      v9 = *(self + 36);
+      v6 = *(self + 44);
+      v7 = *(self + 60);
+      [integratedTimeline seekToTime:v10 toleranceBefore:&v8 toleranceAfter:&v6 completionHandler:v2];
     }
 
     else
     {
-      v3 = [a1 player];
-      [a1 seekToTimeInternal];
-      v8 = *(a1 + 20);
-      v9 = *(a1 + 36);
-      v6 = *(a1 + 44);
-      v7 = *(a1 + 60);
-      [v3 seekToTime:v10 toleranceBefore:&v8 toleranceAfter:&v6 completionHandler:v2];
+      player = [self player];
+      [self seekToTimeInternal];
+      v8 = *(self + 20);
+      v9 = *(self + 36);
+      v6 = *(self + 44);
+      v7 = *(self + 60);
+      [player seekToTime:v10 toleranceBefore:&v8 toleranceAfter:&v6 completionHandler:v2];
     }
 
     objc_destroyWeak(&v12);
@@ -226,10 +226,10 @@ void __45__AVPlayerTimeController__actuallySeekToTime__block_invoke_2(uint64_t a
 
 - (NSArray)seekableTimeRanges
 {
-  v2 = [*&self->_useIntegratedTimeline currentItem];
-  v3 = [v2 seekableTimeRanges];
+  currentItem = [*&self->_useIntegratedTimeline currentItem];
+  seekableTimeRanges = [currentItem seekableTimeRanges];
 
-  return v3;
+  return seekableTimeRanges;
 }
 
 - (double)contentDurationWithinEndTimes
@@ -242,11 +242,11 @@ void __45__AVPlayerTimeController__actuallySeekToTime__block_invoke_2(uint64_t a
 
 - (double)contentDuration
 {
-  v2 = [*&self->_useIntegratedTimeline currentItem];
-  v3 = v2;
-  if (v2)
+  currentItem = [*&self->_useIntegratedTimeline currentItem];
+  v3 = currentItem;
+  if (currentItem)
   {
-    [v2 duration];
+    [currentItem duration];
   }
 
   else
@@ -261,12 +261,12 @@ void __45__AVPlayerTimeController__actuallySeekToTime__block_invoke_2(uint64_t a
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)forwardPlaybackEndTime
 {
-  v7 = [(AVPlayerTimeController *)self player];
-  v4 = [v7 currentItem];
-  v5 = v4;
-  if (v4)
+  player = [(AVPlayerTimeController *)self player];
+  currentItem = [player currentItem];
+  v5 = currentItem;
+  if (currentItem)
   {
-    [v4 forwardPlaybackEndTime];
+    [currentItem forwardPlaybackEndTime];
   }
 
   else
@@ -281,11 +281,11 @@ void __45__AVPlayerTimeController__actuallySeekToTime__block_invoke_2(uint64_t a
 
 - (double)maxTime
 {
-  v2 = [*&self->_useIntegratedTimeline currentItem];
-  v3 = v2;
-  if (v2)
+  currentItem = [*&self->_useIntegratedTimeline currentItem];
+  v3 = currentItem;
+  if (currentItem)
   {
-    [v2 duration];
+    [currentItem duration];
   }
 
   else
@@ -300,12 +300,12 @@ void __45__AVPlayerTimeController__actuallySeekToTime__block_invoke_2(uint64_t a
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)reversePlaybackEndTime
 {
-  v7 = [(AVPlayerTimeController *)self player];
-  v4 = [v7 currentItem];
-  v5 = v4;
-  if (v4)
+  player = [(AVPlayerTimeController *)self player];
+  currentItem = [player currentItem];
+  v5 = currentItem;
+  if (currentItem)
   {
-    [v4 reversePlaybackEndTime];
+    [currentItem reversePlaybackEndTime];
   }
 
   else
@@ -389,9 +389,9 @@ void __48__AVPlayerTimeController_startTimingObservation__block_invoke_3(uint64_
   self->_seekQueue = v3;
 }
 
-- (id)initForIFramesWithPlayerItem:(id)a3 useIntegratedTimeline:(BOOL)a4
+- (id)initForIFramesWithPlayerItem:(id)item useIntegratedTimeline:(BOOL)timeline
 {
-  v6 = a3;
+  itemCopy = item;
   v12.receiver = self;
   v12.super_class = AVPlayerTimeController;
   v7 = [(AVPlayerTimeController *)&v12 init];
@@ -404,16 +404,16 @@ void __48__AVPlayerTimeController_startTimingObservation__block_invoke_3(uint64_
     *&v8->_useIntegratedTimeline = v9;
 
     [*&v8->_useIntegratedTimeline setPlayerRole:*MEMORY[0x1E6987AB8]];
-    [*&v8->_useIntegratedTimeline replaceCurrentItemWithPlayerItem:v6];
-    BYTE4(v8->_toleranceAfter.epoch) = a4;
+    [*&v8->_useIntegratedTimeline replaceCurrentItemWithPlayerItem:itemCopy];
+    BYTE4(v8->_toleranceAfter.epoch) = timeline;
   }
 
   return v8;
 }
 
-- (AVPlayerTimeController)initWithPlayer:(id)a3 useIntegratedTimeline:(BOOL)a4
+- (AVPlayerTimeController)initWithPlayer:(id)player useIntegratedTimeline:(BOOL)timeline
 {
-  v7 = a3;
+  playerCopy = player;
   v13.receiver = self;
   v13.super_class = AVPlayerTimeController;
   v8 = [(AVPlayerTimeController *)&v13 init];
@@ -421,12 +421,12 @@ void __48__AVPlayerTimeController_startTimingObservation__block_invoke_3(uint64_
   if (v8)
   {
     [(AVPlayerTimeController *)v8 _commonInit];
-    objc_storeStrong(&v9->_useIntegratedTimeline, a3);
+    objc_storeStrong(&v9->_useIntegratedTimeline, player);
     v10 = [[AVObservationController alloc] initWithOwner:v9];
     maxTiming = v9->_maxTiming;
     v9->_maxTiming = v10;
 
-    BYTE4(v9->_toleranceAfter.epoch) = a4;
+    BYTE4(v9->_toleranceAfter.epoch) = timeline;
   }
 
   return v9;

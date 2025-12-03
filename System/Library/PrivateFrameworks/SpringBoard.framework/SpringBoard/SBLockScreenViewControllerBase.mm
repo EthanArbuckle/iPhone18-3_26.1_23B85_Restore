@@ -2,19 +2,19 @@
 - (SBBiometricUnlockBehaviorDelegate)biometricUnlockBehaviorDelegate;
 - (SBIdleTimerCoordinating)idleTimerCoordinator;
 - (UIVisualEffectView)wakeEffectView;
-- (id)coordinatorRequestedIdleTimerBehavior:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)coordinatorRequestedIdleTimerBehavior:(id)behavior;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (int64_t)backlightLuminance;
 - (void)jiggleLockIcon;
 - (void)prepareForUILock;
 - (void)prepareForUIUnlock;
-- (void)setCustomLockScreenActionContext:(id)a3;
-- (void)setInScreenOffMode:(BOOL)a3 forAutoUnlock:(BOOL)a4 fromUnlockSource:(int)a5;
-- (void)setPasscodeLockVisible:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setPasscodeLockVisible:(BOOL)a3 intent:(int)a4 ignoringPreflightRequirementsForPresentation:(BOOL)a5 animated:(BOOL)a6 completion:(id)a7;
+- (void)setCustomLockScreenActionContext:(id)context;
+- (void)setInScreenOffMode:(BOOL)mode forAutoUnlock:(BOOL)unlock fromUnlockSource:(int)source;
+- (void)setPasscodeLockVisible:(BOOL)visible animated:(BOOL)animated completion:(id)completion;
+- (void)setPasscodeLockVisible:(BOOL)visible intent:(int)intent ignoringPreflightRequirementsForPresentation:(BOOL)presentation animated:(BOOL)animated completion:(id)completion;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SBLockScreenViewControllerBase
@@ -24,13 +24,13 @@
   v8.receiver = self;
   v8.super_class = SBLockScreenViewControllerBase;
   [(SBLockScreenViewControllerBase *)&v8 viewDidLoad];
-  v3 = [(SBLockScreenViewControllerBase *)self view];
+  view = [(SBLockScreenViewControllerBase *)self view];
   v4 = objc_alloc(MEMORY[0x277D75D68]);
-  [v3 bounds];
+  [view bounds];
   v5 = [v4 initWithFrame:?];
   [v5 setAutoresizingMask:18];
-  [v3 addSubview:v5];
-  [v3 sendSubviewToBack:v5];
+  [view addSubview:v5];
+  [view sendSubviewToBack:v5];
   v6 = objc_alloc_init(MEMORY[0x277D65E88]);
   legacyWallpaperWakeAnimator = self->_legacyWallpaperWakeAnimator;
   self->_legacyWallpaperWakeAnimator = v6;
@@ -38,34 +38,34 @@
   [(SBFLegacyWallpaperWakeAnimator *)self->_legacyWallpaperWakeAnimator setWakeEffectView:v5];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v14.receiver = self;
   v14.super_class = SBLockScreenViewControllerBase;
-  v6 = a4;
-  [(SBLockScreenViewControllerBase *)&v14 viewWillTransitionToSize:v6 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(SBLockScreenViewControllerBase *)&v14 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v7 = SBFWindowForViewControllerTransition();
-  v8 = [v7 _toWindowOrientation];
+  _toWindowOrientation = [v7 _toWindowOrientation];
 
-  [v6 transitionDuration];
+  [coordinatorCopy transitionDuration];
   v10 = v9;
   v11 = +[SBWallpaperController sharedInstance];
-  [v11 orientationSource:3 willRotateToInterfaceOrientation:v8 duration:v10];
+  [v11 orientationSource:3 willRotateToInterfaceOrientation:_toWindowOrientation duration:v10];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __85__SBLockScreenViewControllerBase_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v13[3] = &__block_descriptor_48_e56_v16__0___UIViewControllerTransitionCoordinatorContext__8l;
-  v13[4] = v8;
+  v13[4] = _toWindowOrientation;
   *&v13[5] = v10;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __85__SBLockScreenViewControllerBase_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2;
   v12[3] = &__block_descriptor_40_e56_v16__0___UIViewControllerTransitionCoordinatorContext__8l;
-  v12[4] = v8;
-  [v6 animateAlongsideTransition:v13 completion:v12];
+  v12[4] = _toWindowOrientation;
+  [coordinatorCopy animateAlongsideTransition:v13 completion:v12];
 }
 
 void __85__SBLockScreenViewControllerBase_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -82,33 +82,33 @@ void __85__SBLockScreenViewControllerBase_viewWillTransitionToSize_withTransitio
 
 - (id)succinctDescription
 {
-  v2 = [(SBLockScreenViewControllerBase *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBLockScreenViewControllerBase *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBLockScreenViewControllerBase *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBLockScreenViewControllerBase *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (void)setPasscodeLockVisible:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setPasscodeLockVisible:(BOOL)visible animated:(BOOL)animated completion:(id)completion
 {
-  if (a5)
+  if (completion)
   {
-    (*(a5 + 2))(a5);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)setPasscodeLockVisible:(BOOL)a3 intent:(int)a4 ignoringPreflightRequirementsForPresentation:(BOOL)a5 animated:(BOOL)a6 completion:(id)a7
+- (void)setPasscodeLockVisible:(BOOL)visible intent:(int)intent ignoringPreflightRequirementsForPresentation:(BOOL)presentation animated:(BOOL)animated completion:(id)completion
 {
-  if (a7)
+  if (completion)
   {
-    (*(a7 + 2))(a7);
+    (*(completion + 2))(completion);
   }
 }
 
@@ -121,9 +121,9 @@ void __85__SBLockScreenViewControllerBase_viewWillTransitionToSize_withTransitio
 - (void)prepareForUILock
 {
   v3 = +[SBBacklightController sharedInstance];
-  v4 = [v3 screenIsOn];
+  screenIsOn = [v3 screenIsOn];
 
-  if (v4)
+  if (screenIsOn)
   {
     v5 = +[SBIdleTimerGlobalCoordinator sharedInstance];
     [v5 resetIdleTimerForReason:@"LS:PrepareForUILock"];
@@ -135,12 +135,12 @@ void __85__SBLockScreenViewControllerBase_viewWillTransitionToSize_withTransitio
   [v6 convertUnlockedAlertsToLockedAlerts];
 }
 
-- (void)setInScreenOffMode:(BOOL)a3 forAutoUnlock:(BOOL)a4 fromUnlockSource:(int)a5
+- (void)setInScreenOffMode:(BOOL)mode forAutoUnlock:(BOOL)unlock fromUnlockSource:(int)source
 {
-  v5 = a3;
-  if (a3)
+  modeCopy = mode;
+  if (mode)
   {
-    [MEMORY[0x277D75D18] _performWithAnimation:{&__block_literal_global_448, a4, *&a5}];
+    [MEMORY[0x277D75D18] _performWithAnimation:{&__block_literal_global_448, unlock, *&source}];
     v6 = SBLockScreenDimmedNotification;
     v7 = MEMORY[0x277D66F88];
   }
@@ -152,13 +152,13 @@ void __85__SBLockScreenViewControllerBase_viewWillTransitionToSize_withTransitio
   }
 
   v8 = +[SBEventObserverRegistry sharedInstance];
-  [v8 setValue:v5 forState:*MEMORY[0x277D66FA8]];
+  [v8 setValue:modeCopy forState:*MEMORY[0x277D66FA8]];
 
   v9 = +[SBEventObserverRegistry sharedInstance];
   [v9 postEventToInterestedObservers:*v7];
 
-  v10 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v10 postNotificationName:*v6 object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:*v6 object:0];
 }
 
 void __84__SBLockScreenViewControllerBase_setInScreenOffMode_forAutoUnlock_fromUnlockSource___block_invoke()
@@ -169,30 +169,30 @@ void __84__SBLockScreenViewControllerBase_setInScreenOffMode_forAutoUnlock_fromU
 
 - (int64_t)backlightLuminance
 {
-  v2 = [(SBLockScreenViewControllerBase *)self traitCollection];
-  v3 = [v2 _backlightLuminance];
+  traitCollection = [(SBLockScreenViewControllerBase *)self traitCollection];
+  _backlightLuminance = [traitCollection _backlightLuminance];
 
-  return v3;
+  return _backlightLuminance;
 }
 
-- (void)setCustomLockScreenActionContext:(id)a3
+- (void)setCustomLockScreenActionContext:(id)context
 {
-  v5 = a3;
-  if (self->_customLockScreenActionContext != v5)
+  contextCopy = context;
+  if (self->_customLockScreenActionContext != contextCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_customLockScreenActionContext, a3);
-    v5 = v6;
+    v6 = contextCopy;
+    objc_storeStrong(&self->_customLockScreenActionContext, context);
+    contextCopy = v6;
   }
 }
 
 - (void)jiggleLockIcon
 {
-  v2 = [(UIViewController *)self _sbWindowScene];
-  v4 = [v2 statusBarManager];
+  _sbWindowScene = [(UIViewController *)self _sbWindowScene];
+  statusBarManager = [_sbWindowScene statusBarManager];
 
-  v3 = [v4 statusBar];
-  [v3 jiggleLockIcon];
+  statusBar = [statusBarManager statusBar];
+  [statusBar jiggleLockIcon];
 }
 
 - (SBIdleTimerCoordinating)idleTimerCoordinator
@@ -216,7 +216,7 @@ void __84__SBLockScreenViewControllerBase_setInScreenOffMode_forAutoUnlock_fromU
   return WeakRetained;
 }
 
-- (id)coordinatorRequestedIdleTimerBehavior:(id)a3
+- (id)coordinatorRequestedIdleTimerBehavior:(id)behavior
 {
   objc_opt_class();
   NSRequestConcreteImplementation();

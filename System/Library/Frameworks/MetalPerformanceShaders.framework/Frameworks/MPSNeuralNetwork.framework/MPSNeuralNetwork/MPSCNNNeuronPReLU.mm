@@ -1,7 +1,7 @@
 @interface MPSCNNNeuronPReLU
-- (MPSCNNNeuronPReLU)initWithDevice:(id)a3 neuronDescriptor:(id)a4;
-- (MPSCNNNeuronPReLU)initWithDevice:(id)a3 neuronDescriptor:(id)a4 aArray:(const float *)a5;
 - (MPSCNNNeuronPReLU)initWithDevice:(id)device a:(const float *)a count:(NSUInteger)count;
+- (MPSCNNNeuronPReLU)initWithDevice:(id)device neuronDescriptor:(id)descriptor;
+- (MPSCNNNeuronPReLU)initWithDevice:(id)device neuronDescriptor:(id)descriptor aArray:(const float *)array;
 @end
 
 @implementation MPSCNNNeuronPReLU
@@ -13,9 +13,9 @@
   return [(MPSCNNNeuron *)&v6 privateInitWithDevice:device a:a count:count type:10];
 }
 
-- (MPSCNNNeuronPReLU)initWithDevice:(id)a3 neuronDescriptor:(id)a4
+- (MPSCNNNeuronPReLU)initWithDevice:(id)device neuronDescriptor:(id)descriptor
 {
-  objc_msgSend_init(self, a2, a3, a4, v4, v5, v6, v7);
+  objc_msgSend_init(self, a2, device, descriptor, v4, v5, v6, v7);
   if (MTLReportFailureTypeEnabled())
   {
     MTLReportFailure();
@@ -24,9 +24,9 @@
   return 0;
 }
 
-- (MPSCNNNeuronPReLU)initWithDevice:(id)a3 neuronDescriptor:(id)a4 aArray:(const float *)a5
+- (MPSCNNNeuronPReLU)initWithDevice:(id)device neuronDescriptor:(id)descriptor aArray:(const float *)array
 {
-  objc_msgSend_init(self, a2, a3, a4, a5, v5, v6, v7);
+  objc_msgSend_init(self, a2, device, descriptor, array, v5, v6, v7);
   if (MTLReportFailureTypeEnabled())
   {
     MTLReportFailure();

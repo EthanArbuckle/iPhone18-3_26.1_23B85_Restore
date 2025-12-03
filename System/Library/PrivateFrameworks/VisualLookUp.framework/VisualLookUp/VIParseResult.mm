@@ -1,19 +1,19 @@
 @interface VIParseResult
-- (BOOL)isEqual:(id)a3;
-- (VIParseResult)initWithVisualUnderstanding:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (VIParseResult)initWithVisualUnderstanding:(id)understanding;
 @end
 
 @implementation VIParseResult
 
-- (VIParseResult)initWithVisualUnderstanding:(id)a3
+- (VIParseResult)initWithVisualUnderstanding:(id)understanding
 {
-  v4 = a3;
+  understandingCopy = understanding;
   v9.receiver = self;
   v9.super_class = VIParseResult;
   v5 = [(VIParseResult *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [understandingCopy copy];
     visualUnderstanding = v5->_visualUnderstanding;
     v5->_visualUnderstanding = v6;
   }
@@ -21,20 +21,20 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   v15 = v5;
   v16 = v3;
-  v10 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v10;
+    v11 = equalCopy;
   }
 
   else
@@ -43,8 +43,8 @@
   }
 
   visualUnderstanding = self->_visualUnderstanding;
-  v13 = [v11 visualUnderstanding];
-  LOBYTE(visualUnderstanding) = VIObjectIsEqual(visualUnderstanding, v13);
+  visualUnderstanding = [v11 visualUnderstanding];
+  LOBYTE(visualUnderstanding) = VIObjectIsEqual(visualUnderstanding, visualUnderstanding);
 
   return visualUnderstanding;
 }

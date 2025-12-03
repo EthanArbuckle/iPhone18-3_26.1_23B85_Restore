@@ -1,14 +1,14 @@
 @interface MSDAppLauncherTerminator
-+ (BOOL)launchApp:(id)a3 withOptions:(id)a4 outError:(id *)a5;
-+ (BOOL)terminateApp:(id)a3 outError:(id *)a4;
++ (BOOL)launchApp:(id)app withOptions:(id)options outError:(id *)error;
++ (BOOL)terminateApp:(id)app outError:(id *)error;
 @end
 
 @implementation MSDAppLauncherTerminator
 
-+ (BOOL)launchApp:(id)a3 withOptions:(id)a4 outError:(id *)a5
++ (BOOL)launchApp:(id)app withOptions:(id)options outError:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  appCopy = app;
+  optionsCopy = options;
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
@@ -27,9 +27,9 @@
   v12 = [NSDictionary dictionaryWithObjects:&v40 forKeys:&v39 count:1];
   v13 = [NSMutableDictionary dictionaryWithDictionary:v12];
 
-  if (v8)
+  if (optionsCopy)
   {
-    [v13 addEntriesFromDictionary:v8];
+    [v13 addEntriesFromDictionary:optionsCopy];
   }
 
   v14 = [FBSOpenApplicationOptions optionsWithDictionary:v13];
@@ -37,7 +37,7 @@
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v38 = v7;
+    v38 = appCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Launching app: %{public}@", buf, 0xCu);
   }
 
@@ -52,7 +52,7 @@
   v22[2] = sub_100017160;
   v22[3] = &unk_10016A108;
   v25 = &v27;
-  v17 = v7;
+  v17 = appCopy;
   v23 = v17;
   v26 = &v33;
   v18 = v9;
@@ -67,9 +67,9 @@
     }
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = v28[5];
+    *error = v28[5];
   }
 
   v20 = *(v34 + 24);
@@ -80,17 +80,17 @@
   return v20 & 1;
 }
 
-+ (BOOL)terminateApp:(id)a3 outError:(id *)a4
++ (BOOL)terminateApp:(id)app outError:(id *)error
 {
-  v5 = a3;
-  v6 = [RBSProcessPredicate predicateMatchingBundleIdentifier:v5];
+  appCopy = app;
+  v6 = [RBSProcessPredicate predicateMatchingBundleIdentifier:appCopy];
   v7 = [[RBSTerminateContext alloc] initWithExplanation:@"Terminated by demod"];
   v8 = [[RBSTerminateRequest alloc] initWithPredicate:v6 context:v7];
   v9 = sub_100063A54();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v16 = v5;
+    v16 = appCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Terminating app: %{public}@", buf, 0xCu);
   }
 
@@ -99,8 +99,8 @@
   v11 = v14;
   if ((v10 & 1) == 0)
   {
-    sub_1000C8D24(v5, v11);
-    if (!a4)
+    sub_1000C8D24(appCopy, v11);
+    if (!error)
     {
       goto LABEL_6;
     }
@@ -108,11 +108,11 @@
     goto LABEL_5;
   }
 
-  if (a4)
+  if (error)
   {
 LABEL_5:
     v12 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
 LABEL_6:

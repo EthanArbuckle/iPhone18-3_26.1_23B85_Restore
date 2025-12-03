@@ -1,6 +1,6 @@
 @interface AppRecordObserver
 - (_TtC21SeymourClientServices17AppRecordObserver)init;
-- (void)appQuery:(id)a3 resultsDidChange:(id)a4;
+- (void)appQuery:(id)query resultsDidChange:(id)change;
 @end
 
 @implementation AppRecordObserver
@@ -12,12 +12,12 @@
   return result;
 }
 
-- (void)appQuery:(id)a3 resultsDidChange:(id)a4
+- (void)appQuery:(id)query resultsDidChange:(id)change
 {
   sub_265B5C6B8(0, &qword_280035BE8, 0x277CEC328);
   v6 = sub_265B77140();
-  v7 = a3;
-  v8 = self;
+  queryCopy = query;
+  selfCopy = self;
   sub_265B634C4(v6);
 }
 

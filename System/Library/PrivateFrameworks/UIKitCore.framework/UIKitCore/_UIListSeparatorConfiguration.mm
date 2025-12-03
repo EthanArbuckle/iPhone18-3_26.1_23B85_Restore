@@ -1,16 +1,16 @@
 @interface _UIListSeparatorConfiguration
-+ (id)_configurationForAppearanceStyle:(int64_t)a3 inLayoutEnvironment:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)_configurationForAppearanceStyle:(int64_t)style inLayoutEnvironment:(id)environment;
+- (BOOL)isEqual:(id)equal;
 - (NSDirectionalEdgeInsets)_insets;
 - (NSDirectionalEdgeInsets)_insetsForBoundarySeparators;
 - (UIColor)_color;
 - (UIColor)_multipleSelectionColor;
-- (_UIListSeparatorConfiguration)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_setColor:(id)a3;
-- (void)_setInsets:(NSDirectionalEdgeInsets)a3;
-- (void)_setMultipleSelectionColor:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_UIListSeparatorConfiguration)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_setColor:(id)color;
+- (void)_setInsets:(NSDirectionalEdgeInsets)insets;
+- (void)_setMultipleSelectionColor:(id)color;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIListSeparatorConfiguration
@@ -28,29 +28,29 @@
   return result;
 }
 
-+ (id)_configurationForAppearanceStyle:(int64_t)a3 inLayoutEnvironment:(id)a4
++ (id)_configurationForAppearanceStyle:(int64_t)style inLayoutEnvironment:(id)environment
 {
-  v5 = [a1 alloc];
-  if ((a3 - 1) >= 4)
+  v5 = [self alloc];
+  if ((style - 1) >= 4)
   {
-    v6 = 0;
+    styleCopy = 0;
   }
 
   else
   {
-    v6 = a3;
+    styleCopy = style;
   }
 
-  v7 = [v5 initWithListAppearance:v6];
+  v7 = [v5 initWithListAppearance:styleCopy];
 
   return v7;
 }
 
-- (void)_setInsets:(NSDirectionalEdgeInsets)a3
+- (void)_setInsets:(NSDirectionalEdgeInsets)insets
 {
   v3.receiver = self;
   v3.super_class = _UIListSeparatorConfiguration;
-  [(UIListSeparatorConfiguration *)&v3 setBottomSeparatorInsets:a3.top, a3.leading, a3.bottom, a3.trailing];
+  [(UIListSeparatorConfiguration *)&v3 setBottomSeparatorInsets:insets.top, insets.leading, insets.bottom, insets.trailing];
 }
 
 - (NSDirectionalEdgeInsets)_insets
@@ -65,43 +65,43 @@
   return result;
 }
 
-- (void)_setColor:(id)a3
+- (void)_setColor:(id)color
 {
   v3.receiver = self;
   v3.super_class = _UIListSeparatorConfiguration;
-  [(UIListSeparatorConfiguration *)&v3 setColor:a3];
+  [(UIListSeparatorConfiguration *)&v3 setColor:color];
 }
 
 - (UIColor)_color
 {
   v4.receiver = self;
   v4.super_class = _UIListSeparatorConfiguration;
-  v2 = [(UIListSeparatorConfiguration *)&v4 color];
+  color = [(UIListSeparatorConfiguration *)&v4 color];
 
-  return v2;
+  return color;
 }
 
-- (void)_setMultipleSelectionColor:(id)a3
+- (void)_setMultipleSelectionColor:(id)color
 {
   v3.receiver = self;
   v3.super_class = _UIListSeparatorConfiguration;
-  [(UIListSeparatorConfiguration *)&v3 setMultipleSelectionColor:a3];
+  [(UIListSeparatorConfiguration *)&v3 setMultipleSelectionColor:color];
 }
 
 - (UIColor)_multipleSelectionColor
 {
   v4.receiver = self;
   v4.super_class = _UIListSeparatorConfiguration;
-  v2 = [(UIListSeparatorConfiguration *)&v4 multipleSelectionColor];
+  multipleSelectionColor = [(UIListSeparatorConfiguration *)&v4 multipleSelectionColor];
 
-  return v2;
+  return multipleSelectionColor;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = _UIListSeparatorConfiguration;
-  result = [(UIListSeparatorConfiguration *)&v6 copyWithZone:a3];
+  result = [(UIListSeparatorConfiguration *)&v6 copyWithZone:zone];
   if (result)
   {
     *(result + 16) = self->_hidingBehavior;
@@ -114,14 +114,14 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -134,27 +134,27 @@
 
   v8.receiver = self;
   v8.super_class = _UIListSeparatorConfiguration;
-  if (![(UIListSeparatorConfiguration *)&v8 isEqual:a3])
+  if (![(UIListSeparatorConfiguration *)&v8 isEqual:equal])
   {
     return 0;
   }
 
-  v5 = a3;
-  v6 = self->_hidingBehavior == *(v5 + 16) && self->_insetAdjustmentBehavior == *(v5 + 17) && (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_insetsForBoundarySeparators.top, *(v5 + 9)), vceqq_f64(*&self->_insetsForBoundarySeparators.bottom, *(v5 + 10))))) & 1) != 0;
+  equalCopy = equal;
+  v6 = self->_hidingBehavior == *(equalCopy + 16) && self->_insetAdjustmentBehavior == *(equalCopy + 17) && (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_insetsForBoundarySeparators.top, *(equalCopy + 9)), vceqq_f64(*&self->_insetsForBoundarySeparators.bottom, *(equalCopy + 10))))) & 1) != 0;
 
   return v6;
 }
 
-- (_UIListSeparatorConfiguration)initWithCoder:(id)a3
+- (_UIListSeparatorConfiguration)initWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = _UIListSeparatorConfiguration;
   v4 = [(UIListSeparatorConfiguration *)&v10 initWithCoder:?];
   if (v4)
   {
-    v4->_hidingBehavior = [a3 decodeIntegerForKey:@"hidingBehavior"];
-    v4->_insetAdjustmentBehavior = [a3 decodeIntegerForKey:@"insetAdjustmentBehavior"];
-    [a3 decodeDirectionalEdgeInsetsForKey:@"insetsForBoundarySeparators"];
+    v4->_hidingBehavior = [coder decodeIntegerForKey:@"hidingBehavior"];
+    v4->_insetAdjustmentBehavior = [coder decodeIntegerForKey:@"insetAdjustmentBehavior"];
+    [coder decodeDirectionalEdgeInsetsForKey:@"insetsForBoundarySeparators"];
     v4->_insetsForBoundarySeparators.top = v5;
     v4->_insetsForBoundarySeparators.leading = v6;
     v4->_insetsForBoundarySeparators.bottom = v7;
@@ -164,14 +164,14 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _UIListSeparatorConfiguration;
   [(UIListSeparatorConfiguration *)&v5 encodeWithCoder:?];
-  [a3 encodeInteger:self->_hidingBehavior forKey:@"hidingBehavior"];
-  [a3 encodeInteger:self->_insetAdjustmentBehavior forKey:@"insetAdjustmentBehavior"];
-  [a3 encodeDirectionalEdgeInsets:@"insetsForBoundarySeparators" forKey:{self->_insetsForBoundarySeparators.top, self->_insetsForBoundarySeparators.leading, self->_insetsForBoundarySeparators.bottom, self->_insetsForBoundarySeparators.trailing}];
+  [coder encodeInteger:self->_hidingBehavior forKey:@"hidingBehavior"];
+  [coder encodeInteger:self->_insetAdjustmentBehavior forKey:@"insetAdjustmentBehavior"];
+  [coder encodeDirectionalEdgeInsets:@"insetsForBoundarySeparators" forKey:{self->_insetsForBoundarySeparators.top, self->_insetsForBoundarySeparators.leading, self->_insetsForBoundarySeparators.bottom, self->_insetsForBoundarySeparators.trailing}];
 }
 
 @end

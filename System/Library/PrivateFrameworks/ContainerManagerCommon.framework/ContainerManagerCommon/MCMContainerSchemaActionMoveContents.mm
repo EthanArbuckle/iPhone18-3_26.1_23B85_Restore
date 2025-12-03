@@ -1,24 +1,24 @@
 @interface MCMContainerSchemaActionMoveContents
 + (id)actionIdentifier;
-- (BOOL)performWithError:(id *)a3;
-- (MCMContainerSchemaActionMoveContents)initWithSourcePathArgument:(id)a3 destinationPathArgument:(id)a4 destFinalPathArgument:(id)a5 context:(id)a6;
+- (BOOL)performWithError:(id *)error;
+- (MCMContainerSchemaActionMoveContents)initWithSourcePathArgument:(id)argument destinationPathArgument:(id)pathArgument destFinalPathArgument:(id)finalPathArgument context:(id)context;
 - (NSString)description;
 @end
 
 @implementation MCMContainerSchemaActionMoveContents
 
-- (BOOL)performWithError:(id *)a3
+- (BOOL)performWithError:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = [(NSURL *)self->_sourceURL path];
-  v6 = [(NSURL *)self->_destURL path];
-  if ([v5 isEqualToString:v6])
+  path = [(NSURL *)self->_sourceURL path];
+  path2 = [(NSURL *)self->_destURL path];
+  if ([path isEqualToString:path2])
   {
     v7 = container_log_handle_for_category();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v20 = v5;
+      v20 = path;
       v21 = 2112;
       v22 = 0;
       _os_log_error_impl(&dword_1DF2C3000, v7, OS_LOG_TYPE_ERROR, "ignoring attempt to move [%@] to itself: %@", buf, 0x16u);
@@ -43,11 +43,11 @@
     v9 = [(MCMContainerSchemaActionBase *)self fixAndRetryIfPermissionsErrorWithURL:destURL error:&v18 duringBlock:v16];
     v8 = v18;
 
-    if (a3 && !v9)
+    if (error && !v9)
     {
       v13 = v8;
       v9 = 0;
-      *a3 = v8;
+      *error = v8;
     }
   }
 
@@ -264,33 +264,33 @@ uint64_t __57__MCMContainerSchemaActionMoveContents_performWithError___block_inv
 - (NSString)description
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = [objc_opt_class() actionIdentifier];
-  v4 = [(NSURL *)self->_sourceURL path];
-  v5 = [(NSURL *)self->_destURL path];
-  v6 = [v3 stringByAppendingFormat:@" [%@] → [%@]", v4, v5];
+  actionIdentifier = [objc_opt_class() actionIdentifier];
+  path = [(NSURL *)self->_sourceURL path];
+  path2 = [(NSURL *)self->_destURL path];
+  v6 = [actionIdentifier stringByAppendingFormat:@" [%@] → [%@]", path, path2];
 
   v7 = *MEMORY[0x1E69E9840];
 
   return v6;
 }
 
-- (MCMContainerSchemaActionMoveContents)initWithSourcePathArgument:(id)a3 destinationPathArgument:(id)a4 destFinalPathArgument:(id)a5 context:(id)a6
+- (MCMContainerSchemaActionMoveContents)initWithSourcePathArgument:(id)argument destinationPathArgument:(id)pathArgument destFinalPathArgument:(id)finalPathArgument context:(id)context
 {
   v19 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  argumentCopy = argument;
+  pathArgumentCopy = pathArgument;
   v18.receiver = self;
   v18.super_class = MCMContainerSchemaActionMoveContents;
-  v11 = [(MCMContainerSchemaActionBase *)&v18 initWithContext:a6];
+  v11 = [(MCMContainerSchemaActionBase *)&v18 initWithContext:context];
   if (v11)
   {
-    v12 = [v9 fileURL];
+    fileURL = [argumentCopy fileURL];
     sourceURL = v11->_sourceURL;
-    v11->_sourceURL = v12;
+    v11->_sourceURL = fileURL;
 
-    v14 = [v10 fileURL];
+    fileURL2 = [pathArgumentCopy fileURL];
     destURL = v11->_destURL;
-    v11->_destURL = v14;
+    v11->_destURL = fileURL2;
 
     if (!v11->_sourceURL || !v11->_destURL)
     {

@@ -1,28 +1,28 @@
 @interface MRDApplicationConnection
-- (MRDApplicationConnection)initWithContext:(id)a3;
+- (MRDApplicationConnection)initWithContext:(id)context;
 - (id)installInvalidationObserversAndCheckForPostActivationInvalidations;
 - (void)activate;
 - (void)dealloc;
-- (void)handleClientBoundMessage:(id)a3;
-- (void)handleClientInvalidation:(id)a3;
-- (void)handlePlayerInvalidation:(id)a3;
-- (void)handleRemoteExternalDeviceInvalidation:(id)a3;
-- (void)handleServerBoundMessage:(id)a3;
-- (void)handleXPCClientInvalidation:(id)a3;
-- (void)invalidate:(id)a3;
-- (void)setClientBoundMessageHandler:(id)a3;
-- (void)setLocalHostedInvalidationPlayerPath:(id)a3;
-- (void)setLocalInvalidationXPCClient:(id)a3;
-- (void)setRemoteInvalidationExternalDevice:(id)a3;
-- (void)setServerBoundMessageHandler:(id)a3;
-- (void)setType:(unint64_t)a3;
+- (void)handleClientBoundMessage:(id)message;
+- (void)handleClientInvalidation:(id)invalidation;
+- (void)handlePlayerInvalidation:(id)invalidation;
+- (void)handleRemoteExternalDeviceInvalidation:(id)invalidation;
+- (void)handleServerBoundMessage:(id)message;
+- (void)handleXPCClientInvalidation:(id)invalidation;
+- (void)invalidate:(id)invalidate;
+- (void)setClientBoundMessageHandler:(id)handler;
+- (void)setLocalHostedInvalidationPlayerPath:(id)path;
+- (void)setLocalInvalidationXPCClient:(id)client;
+- (void)setRemoteInvalidationExternalDevice:(id)device;
+- (void)setServerBoundMessageHandler:(id)handler;
+- (void)setType:(unint64_t)type;
 @end
 
 @implementation MRDApplicationConnection
 
-- (MRDApplicationConnection)initWithContext:(id)a3
+- (MRDApplicationConnection)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = MRDApplicationConnection;
   v6 = [(MRDApplicationConnection *)&v9 init];
@@ -30,7 +30,7 @@
   if (v6)
   {
     v6->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
   }
 
   return v7;
@@ -42,7 +42,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[MRDApplicationConnection]<%p> dealloc", buf, 0xCu);
   }
 
@@ -51,18 +51,18 @@
   [(MRDApplicationConnection *)&v4 dealloc];
 }
 
-- (void)handleServerBoundMessage:(id)a3
+- (void)handleServerBoundMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   os_unfair_lock_lock(&self->_lock);
   state = self->_state;
   if (state == 1)
   {
-    v10 = [(MRDApplicationConnection *)self serverBoundMessageHandler];
+    serverBoundMessageHandler = [(MRDApplicationConnection *)self serverBoundMessageHandler];
     os_unfair_lock_unlock(&self->_lock);
-    if (v10)
+    if (serverBoundMessageHandler)
     {
-      (v10)[2](v10, self, v4);
+      (serverBoundMessageHandler)[2](serverBoundMessageHandler, self, messageCopy);
     }
   }
 
@@ -83,7 +83,7 @@
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 134217984;
-        v13 = self;
+        selfCopy = self;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[MRDApplicationConnection]<%p> handleServerBoundMessage - state: .initial -> enqueuing", &v12, 0xCu);
       }
 
@@ -97,25 +97,25 @@
         pendingMessages = self->_pendingMessages;
       }
 
-      [(NSMutableArray *)pendingMessages addObject:v4];
+      [(NSMutableArray *)pendingMessages addObject:messageCopy];
     }
 
     os_unfair_lock_unlock(&self->_lock);
   }
 }
 
-- (void)handleClientBoundMessage:(id)a3
+- (void)handleClientBoundMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   os_unfair_lock_lock(&self->_lock);
   state = self->_state;
   if (state == 1)
   {
-    v7 = [(MRDApplicationConnection *)self clientBoundMessageHandler];
+    clientBoundMessageHandler = [(MRDApplicationConnection *)self clientBoundMessageHandler];
     os_unfair_lock_unlock(&self->_lock);
-    if (v7)
+    if (clientBoundMessageHandler)
     {
-      (v7)[2](v7, self, v4);
+      (clientBoundMessageHandler)[2](clientBoundMessageHandler, self, messageCopy);
     }
   }
 
@@ -154,11 +154,11 @@
     self->_pendingMessages = 0;
 
     v6 = objc_retainBlock(self->_serverBoundMessageHandler);
-    v7 = [(MRDApplicationConnection *)self installInvalidationObserversAndCheckForPostActivationInvalidations];
+    installInvalidationObserversAndCheckForPostActivationInvalidations = [(MRDApplicationConnection *)self installInvalidationObserversAndCheckForPostActivationInvalidations];
     os_unfair_lock_unlock(&self->_lock);
-    if (v7)
+    if (installInvalidationObserversAndCheckForPostActivationInvalidations)
     {
-      [(MRDApplicationConnection *)self invalidate:v7];
+      [(MRDApplicationConnection *)self invalidate:installInvalidationObserversAndCheckForPostActivationInvalidations];
     }
 
     else
@@ -214,29 +214,29 @@
 LABEL_17:
 }
 
-- (void)setClientBoundMessageHandler:(id)a3
+- (void)setClientBoundMessageHandler:(id)handler
 {
-  v8 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
   if (self->_state)
   {
-    v4 = objc_retainBlock(v8);
+    v4 = objc_retainBlock(handlerCopy);
     clientBoundMessageHandler = self->_clientBoundMessageHandler;
     self->_clientBoundMessageHandler = v4;
   }
 
-  v6 = objc_retainBlock(v8);
+  v6 = objc_retainBlock(handlerCopy);
   v7 = self->_clientBoundMessageHandler;
   self->_clientBoundMessageHandler = v6;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setServerBoundMessageHandler:(id)a3
+- (void)setServerBoundMessageHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
-  v5 = objc_retainBlock(v4);
+  v5 = objc_retainBlock(handlerCopy);
 
   serverBoundMessageHandler = self->_serverBoundMessageHandler;
   self->_serverBoundMessageHandler = v5;
@@ -244,17 +244,17 @@ LABEL_17:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setType:(unint64_t)a3
+- (void)setType:(unint64_t)type
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_type = a3;
+  self->_type = type;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)invalidate:(id)a3
+- (void)invalidate:(id)invalidate
 {
-  v4 = a3;
+  invalidateCopy = invalidate;
   os_unfair_lock_lock(&self->_lock);
   if (self->_state == 2)
   {
@@ -273,15 +273,15 @@ LABEL_17:
     self->_serverBoundMessageHandler = 0;
 
     v9 = [MRInvalidateApplicationConnectionMessage alloc];
-    v10 = [(MRDApplicationConnection *)self context];
-    v11 = [v9 initWithConnectionContext:v10 error:v4];
+    context = [(MRDApplicationConnection *)self context];
+    v11 = [v9 initWithConnectionContext:context error:invalidateCopy];
 
-    if ([v4 code] == 181)
+    if ([invalidateCopy code] == 181)
     {
       v12 = @"ClosedByClient";
     }
 
-    else if ([v4 code] == 182)
+    else if ([invalidateCopy code] == 182)
     {
       v12 = @"ClosedByServer";
     }
@@ -295,11 +295,11 @@ LABEL_17:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218498;
-      v21 = self;
+      selfCopy3 = self;
       v22 = 2112;
       v23 = v12;
       v24 = 2112;
-      v25 = v4;
+      v25 = invalidateCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[MRDApplicationConnection]<%p> invalidate - reason: %@, error: %@", buf, 0x20u);
     }
 
@@ -310,7 +310,7 @@ LABEL_17:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v21 = self;
+        selfCopy3 = self;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[MRDApplicationConnection]<%p> invalidate - notify client", buf, 0xCu);
       }
 
@@ -323,7 +323,7 @@ LABEL_17:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v21 = self;
+        selfCopy3 = self;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "[MRDApplicationConnection]<%p> invalidate - notify server", buf, 0xCu);
       }
 
@@ -342,32 +342,32 @@ LABEL_17:
   }
 }
 
-- (void)setRemoteInvalidationExternalDevice:(id)a3
+- (void)setRemoteInvalidationExternalDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   os_unfair_lock_lock(&self->_lock);
   invalidationExternalDevice = self->_invalidationExternalDevice;
-  self->_invalidationExternalDevice = v4;
+  self->_invalidationExternalDevice = deviceCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setLocalHostedInvalidationPlayerPath:(id)a3
+- (void)setLocalHostedInvalidationPlayerPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   os_unfair_lock_lock(&self->_lock);
   invalidationPlayerPath = self->_invalidationPlayerPath;
-  self->_invalidationPlayerPath = v4;
+  self->_invalidationPlayerPath = pathCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setLocalInvalidationXPCClient:(id)a3
+- (void)setLocalInvalidationXPCClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   os_unfair_lock_lock(&self->_lock);
   invalidationXPCClient = self->_invalidationXPCClient;
-  self->_invalidationXPCClient = v4;
+  self->_invalidationXPCClient = clientCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -383,17 +383,17 @@ LABEL_17:
     v6 = +[NSNotificationCenter defaultCenter];
     [v6 addObserver:self selector:"handleClientInvalidation:" name:kMRMediaRemoteNowPlayingApplicationDidUnregister object:0];
 
-    v7 = [(MRPlayerPath *)v4 player];
+    player = [(MRPlayerPath *)v4 player];
 
-    if (v7)
+    if (player)
     {
       v8 = +[NSNotificationCenter defaultCenter];
       [v8 addObserver:self selector:"handlePlayerInvalidation:" name:kMRMediaRemoteNowPlayingPlayerDidUnregister object:0];
     }
 
     v9 = +[MRDMediaRemoteServer server];
-    v10 = [v9 nowPlayingServer];
-    v11 = [v10 queryExistingPlayerPath:v4];
+    nowPlayingServer = [v9 nowPlayingServer];
+    v11 = [nowPlayingServer queryExistingPlayerPath:v4];
 
     if ([v11 error])
     {
@@ -420,8 +420,8 @@ LABEL_17:
     [v14 addObserver:self selector:"handleXPCClientInvalidation:" name:@"MRDMediaRemoteServerClientInvalidatedNotification" object:v5];
 
     v15 = +[MRDMediaRemoteServer server];
-    v16 = [v15 allClients];
-    v17 = [v16 containsObject:v5];
+    allClients = [v15 allClients];
+    v17 = [allClients containsObject:v5];
 
     if (v17)
     {
@@ -440,40 +440,40 @@ LABEL_15:
   return v12;
 }
 
-- (void)handleXPCClientInvalidation:(id)a3
+- (void)handleXPCClientInvalidation:(id)invalidation
 {
   v4 = [[NSError alloc] initWithMRError:179];
   [(MRDApplicationConnection *)self invalidate:v4];
 }
 
-- (void)handleRemoteExternalDeviceInvalidation:(id)a3
+- (void)handleRemoteExternalDeviceInvalidation:(id)invalidation
 {
   os_unfair_lock_lock(&self->_lock);
   v4 = self->_invalidationExternalDevice;
   os_unfair_lock_unlock(&self->_lock);
-  v5 = [(MRExternalDevice *)v4 isConnected];
+  isConnected = [(MRExternalDevice *)v4 isConnected];
 
-  if ((v5 & 1) == 0)
+  if ((isConnected & 1) == 0)
   {
     v6 = [[NSError alloc] initWithMRError:176];
     [(MRDApplicationConnection *)self invalidate:v6];
   }
 }
 
-- (void)handleClientInvalidation:(id)a3
+- (void)handleClientInvalidation:(id)invalidation
 {
-  v4 = [a3 userInfo];
+  userInfo = [invalidation userInfo];
   v12 = MRGetPlayerPathFromUserInfo();
 
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(MRPlayerPath *)self->_invalidationPlayerPath client];
+  client = [(MRPlayerPath *)self->_invalidationPlayerPath client];
   type = self->_type;
   os_unfair_lock_unlock(&self->_lock);
-  v7 = [v12 origin];
-  if ([v7 isLocallyHosted])
+  origin = [v12 origin];
+  if ([origin isLocallyHosted])
   {
-    v8 = [v12 client];
-    v9 = [v8 isEqual:v5];
+    client2 = [v12 client];
+    v9 = [client2 isEqual:client];
 
     if (!v9)
     {
@@ -491,38 +491,38 @@ LABEL_15:
       v11 = 179;
     }
 
-    v7 = [v10 initWithMRError:v11];
-    [(MRDApplicationConnection *)self invalidate:v7];
+    origin = [v10 initWithMRError:v11];
+    [(MRDApplicationConnection *)self invalidate:origin];
   }
 
 LABEL_8:
 }
 
-- (void)handlePlayerInvalidation:(id)a3
+- (void)handlePlayerInvalidation:(id)invalidation
 {
-  v4 = [a3 userInfo];
+  userInfo = [invalidation userInfo];
   v11 = MRGetPlayerPathFromUserInfo();
 
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(MRPlayerPath *)self->_invalidationPlayerPath client];
-  v6 = [(MRPlayerPath *)self->_invalidationPlayerPath player];
+  client = [(MRPlayerPath *)self->_invalidationPlayerPath client];
+  player = [(MRPlayerPath *)self->_invalidationPlayerPath player];
   os_unfair_lock_unlock(&self->_lock);
-  v7 = [v11 origin];
-  if ([v7 isLocallyHosted])
+  origin = [v11 origin];
+  if ([origin isLocallyHosted])
   {
-    v8 = [v11 client];
-    if ([v8 isEqual:v5])
+    client2 = [v11 client];
+    if ([client2 isEqual:client])
     {
-      v9 = [v11 player];
-      v10 = [v9 isEqual:v6];
+      player2 = [v11 player];
+      v10 = [player2 isEqual:player];
 
       if (!v10)
       {
         goto LABEL_7;
       }
 
-      v7 = [[NSError alloc] initWithMRError:178];
-      [(MRDApplicationConnection *)self invalidate:v7];
+      origin = [[NSError alloc] initWithMRError:178];
+      [(MRDApplicationConnection *)self invalidate:origin];
     }
 
     else

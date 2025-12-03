@@ -1,15 +1,15 @@
 @interface VTUIEnrollTrainingViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_accessibilitySetAccessibilityElementsIfNeeded;
-- (void)_axAnnounceInstructionWithNumber:(int64_t)a3;
-- (void)_axAnnounceString:(id)a3;
-- (void)_axHandleAnnouncementDidFinishNotification:(id)a3;
-- (void)_axHandleElementFocusedNotification:(id)a3;
-- (void)_axHandleVoiceOverStatusChangedNotification:(id)a3;
+- (void)_axAnnounceInstructionWithNumber:(int64_t)number;
+- (void)_axAnnounceString:(id)string;
+- (void)_axHandleAnnouncementDidFinishNotification:(id)notification;
+- (void)_axHandleElementFocusedNotification:(id)notification;
+- (void)_axHandleVoiceOverStatusChangedNotification:(id)notification;
 - (void)_axRemoveNotificationObservers;
-- (void)_axSetShowTrainingInstructionBlock:(id)a3;
-- (void)_axSuspendAudio:(BOOL)a3;
+- (void)_axSetShowTrainingInstructionBlock:(id)block;
+- (void)_axSuspendAudio:(BOOL)audio;
 - (void)_continueToTrainingFromIntro;
 - (void)_setLanguageOptionsAndContinue;
 - (void)_setupEnrollTrainingView;
@@ -17,59 +17,59 @@
 - (void)_showEnrollmentSuccessView;
 - (void)_showGMIntroView;
 - (void)_showSiriDataSharingOptIn;
-- (void)_showStatusMessage:(id)a3 afterDelay:(double)a4 completion:(id)a5;
-- (void)_showVoiceSelectionViewForRecognitionLanguage:(id)a3;
+- (void)_showStatusMessage:(id)message afterDelay:(double)delay completion:(id)completion;
+- (void)_showVoiceSelectionViewForRecognitionLanguage:(id)language;
 - (void)_startEnrollment;
 - (void)dealloc;
 @end
 
 @implementation VTUIEnrollTrainingViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VTUIEnrollTrainingViewController" hasInstanceMethod:@"_continueToTrainingFromIntro" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"VTUIEnrollTrainingViewController" hasInstanceMethod:@"_showTrainingInstruction: afterDelay: isRetry: animate:" withFullSignature:{"v", "q", "d", "B", "B", 0}];
-  [v3 validateClass:@"VTUIEnrollTrainingViewController" hasInstanceMethod:@"_showStatusMessage: afterDelay: completion:" withFullSignature:{"v", "@", "d", "@?", 0}];
-  [v3 validateClass:@"VTUIEnrollTrainingViewController" hasInstanceMethod:@"_showEnrollmentSuccessView" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"VTUIEnrollTrainingViewController" hasInstanceMethod:@"_showSiriDataSharingOptIn" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"VTUIEnrollTrainingViewController" hasInstanceMethod:@"_setupEnrollTrainingView" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"VTUIEnrollTrainingViewController" hasInstanceMethod:@"trainingViewMediator" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VTUIEnrollTrainingViewController" hasInstanceVariable:@"_trainingPageInstructions" withType:"NSArray"];
-  [v3 validateClass:@"VTUIEnrollTrainingViewController" hasInstanceVariable:@"_trainingManager" withType:"SSRVTUITrainingManager"];
-  [v3 validateClass:@"VTUIEnrollTrainingViewController" hasInstanceVariable:@"_currentTrainingState" withType:"NSInteger"];
-  [v3 validateClass:@"VTUIEnrollmentSuccessView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"VTUIPagedLabel" hasInstanceVariable:@"_instructionLabelLeft" withType:"UILabel"];
-  [v3 validateClass:@"VTUIPagedLabel" hasInstanceVariable:@"_instructionLabelRight" withType:"UILabel"];
-  [v3 validateClass:@"VTUIPagedLabel" hasInstanceVariable:@"_instructionLabelRight" withType:"UILabel"];
-  [v3 validateClass:@"SSRVTUITrainingManager" hasInstanceMethod:@"setSuspendAudio:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"VTUIStyle"];
-  [v3 validateClass:@"VTUIStyle" hasClassMethod:@"sharedStyle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VTUIStyle" hasInstanceMethod:@"VTUIDeviceSpecificString:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"VTUIEnrollTrainingViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"VTUIEnrollTrainingViewController" hasInstanceVariable:@"_introViewController" withType:"UIViewController<VTUIEnrollmentSetupIntroViewControlling>"];
-  [v3 validateClass:@"VTUIEnrollTrainingViewController" hasInstanceVariable:@"_educationViewController" withType:"VTUISiriEducationViewController"];
-  [v3 validateClass:@"VTUIEnrollTrainingViewController" hasInstanceVariable:@"_siriDataSharingViewController" withType:"UIViewController"];
-  [v3 validateClass:@"VTUISiriEducationViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"VTUIEnrollTrainingViewController" hasInstanceMethod:@"_showEducationView" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"VTUIEnrollTrainingViewController" hasInstanceMethod:@"_startEnrollment" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"VTUIEnrollTrainingViewController" hasInstanceMethod:@"_setLanguageOptionsAndContinue" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"VTUIEnrollTrainingViewMediatorGM" hasInstanceMethod:@"trainingView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VTUIEnrollTrainingViewController" hasInstanceMethod:@"_showVoiceSelectionViewForRecognitionLanguage:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"VTUIEnrollTrainingViewController" hasInstanceVariable:@"_siriDataSharingOptInView" withType:"UIView"];
-  [v3 validateClass:@"VTUIEnrollTrainingView" hasInstanceMethod:@"orbView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VTUIEnrollTrainingViewController" hasInstanceMethod:@"_continueToTrainingFromIntro" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"VTUIEnrollTrainingViewController" hasInstanceMethod:@"_showTrainingInstruction: afterDelay: isRetry: animate:" withFullSignature:{"v", "q", "d", "B", "B", 0}];
+  [validationsCopy validateClass:@"VTUIEnrollTrainingViewController" hasInstanceMethod:@"_showStatusMessage: afterDelay: completion:" withFullSignature:{"v", "@", "d", "@?", 0}];
+  [validationsCopy validateClass:@"VTUIEnrollTrainingViewController" hasInstanceMethod:@"_showEnrollmentSuccessView" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"VTUIEnrollTrainingViewController" hasInstanceMethod:@"_showSiriDataSharingOptIn" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"VTUIEnrollTrainingViewController" hasInstanceMethod:@"_setupEnrollTrainingView" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"VTUIEnrollTrainingViewController" hasInstanceMethod:@"trainingViewMediator" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VTUIEnrollTrainingViewController" hasInstanceVariable:@"_trainingPageInstructions" withType:"NSArray"];
+  [validationsCopy validateClass:@"VTUIEnrollTrainingViewController" hasInstanceVariable:@"_trainingManager" withType:"SSRVTUITrainingManager"];
+  [validationsCopy validateClass:@"VTUIEnrollTrainingViewController" hasInstanceVariable:@"_currentTrainingState" withType:"NSInteger"];
+  [validationsCopy validateClass:@"VTUIEnrollmentSuccessView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"VTUIPagedLabel" hasInstanceVariable:@"_instructionLabelLeft" withType:"UILabel"];
+  [validationsCopy validateClass:@"VTUIPagedLabel" hasInstanceVariable:@"_instructionLabelRight" withType:"UILabel"];
+  [validationsCopy validateClass:@"VTUIPagedLabel" hasInstanceVariable:@"_instructionLabelRight" withType:"UILabel"];
+  [validationsCopy validateClass:@"SSRVTUITrainingManager" hasInstanceMethod:@"setSuspendAudio:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"VTUIStyle"];
+  [validationsCopy validateClass:@"VTUIStyle" hasClassMethod:@"sharedStyle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VTUIStyle" hasInstanceMethod:@"VTUIDeviceSpecificString:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"VTUIEnrollTrainingViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"VTUIEnrollTrainingViewController" hasInstanceVariable:@"_introViewController" withType:"UIViewController<VTUIEnrollmentSetupIntroViewControlling>"];
+  [validationsCopy validateClass:@"VTUIEnrollTrainingViewController" hasInstanceVariable:@"_educationViewController" withType:"VTUISiriEducationViewController"];
+  [validationsCopy validateClass:@"VTUIEnrollTrainingViewController" hasInstanceVariable:@"_siriDataSharingViewController" withType:"UIViewController"];
+  [validationsCopy validateClass:@"VTUISiriEducationViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"VTUIEnrollTrainingViewController" hasInstanceMethod:@"_showEducationView" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"VTUIEnrollTrainingViewController" hasInstanceMethod:@"_startEnrollment" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"VTUIEnrollTrainingViewController" hasInstanceMethod:@"_setLanguageOptionsAndContinue" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"VTUIEnrollTrainingViewMediatorGM" hasInstanceMethod:@"trainingView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VTUIEnrollTrainingViewController" hasInstanceMethod:@"_showVoiceSelectionViewForRecognitionLanguage:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"VTUIEnrollTrainingViewController" hasInstanceVariable:@"_siriDataSharingOptInView" withType:"UIView"];
+  [validationsCopy validateClass:@"VTUIEnrollTrainingView" hasInstanceMethod:@"orbView" withFullSignature:{"@", 0}];
 }
 
 - (void)_axRemoveNotificationObservers
 {
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x29EDC7E98] object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x29EDC7E98] object:0];
 
-  v4 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x29EDC8000] object:0];
+  defaultCenter2 = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x29EDC8000] object:0];
 
-  v5 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v5 removeObserver:self name:*MEMORY[0x29EDC7EB8] object:0];
+  defaultCenter3 = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter3 removeObserver:self name:*MEMORY[0x29EDC7EB8] object:0];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -86,14 +86,14 @@
   }
 
   [(VTUIEnrollTrainingViewControllerAccessibility *)self _axRemoveNotificationObservers];
-  v6 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v6 addObserver:self selector:sel__axHandleElementFocusedNotification_ name:*MEMORY[0x29EDC7EB8] object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__axHandleElementFocusedNotification_ name:*MEMORY[0x29EDC7EB8] object:0];
 
-  v7 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v7 addObserver:self selector:sel__axHandleAnnouncementDidFinishNotification_ name:*MEMORY[0x29EDC7E98] object:0];
+  defaultCenter2 = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__axHandleAnnouncementDidFinishNotification_ name:*MEMORY[0x29EDC7E98] object:0];
 
-  v8 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v8 addObserver:self selector:sel__axHandleVoiceOverStatusChangedNotification_ name:*MEMORY[0x29EDC8000] object:0];
+  defaultCenter3 = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel__axHandleVoiceOverStatusChangedNotification_ name:*MEMORY[0x29EDC8000] object:0];
 
   VoiceOverStatus = UIAccessibilityIsVoiceOverRunning();
   v9 = [(VTUIEnrollTrainingViewControllerAccessibility *)self safeValueForKey:@"_educationViewController"];
@@ -166,9 +166,9 @@
   UIAccessibilityPostNotification(v4, v6);
 }
 
-- (void)_axSetShowTrainingInstructionBlock:(id)a3
+- (void)_axSetShowTrainingInstructionBlock:(id)block
 {
-  v3 = MEMORY[0x29ED409B0](a3, a2);
+  v3 = MEMORY[0x29ED409B0](block, a2);
   __UIAccessibilitySetAssociatedObject();
 }
 
@@ -178,15 +178,15 @@ void __101__VTUIEnrollTrainingViewControllerAccessibility__showTrainingInstructi
   [WeakRetained _accessibilitySuperShowTrainingInstruction:*(a1 + 40) afterDelay:*(a1 + 56) isRetry:*(a1 + 57) animate:*(a1 + 48)];
 }
 
-- (void)_showStatusMessage:(id)a3 afterDelay:(double)a4 completion:(id)a5
+- (void)_showStatusMessage:(id)message afterDelay:(double)delay completion:(id)completion
 {
-  v8 = a3;
+  messageCopy = message;
   v9.receiver = self;
   v9.super_class = VTUIEnrollTrainingViewControllerAccessibility;
-  [(VTUIEnrollTrainingViewControllerAccessibility *)&v9 _showStatusMessage:v8 afterDelay:a5 completion:a4];
-  if (v8)
+  [(VTUIEnrollTrainingViewControllerAccessibility *)&v9 _showStatusMessage:messageCopy afterDelay:completion completion:delay];
+  if (messageCopy)
   {
-    [(VTUIEnrollTrainingViewControllerAccessibility *)self _axAnnounceString:v8];
+    [(VTUIEnrollTrainingViewControllerAccessibility *)self _axAnnounceString:messageCopy];
     [(VTUIEnrollTrainingViewControllerAccessibility *)self _axSetSiriDidRetry:1];
   }
 }
@@ -227,19 +227,19 @@ void __101__VTUIEnrollTrainingViewControllerAccessibility__showTrainingInstructi
   [(VTUIEnrollTrainingViewControllerAccessibility *)self _accessibilitySetAccessibilityElementsIfNeeded];
 }
 
-- (void)_showVoiceSelectionViewForRecognitionLanguage:(id)a3
+- (void)_showVoiceSelectionViewForRecognitionLanguage:(id)language
 {
   v4.receiver = self;
   v4.super_class = VTUIEnrollTrainingViewControllerAccessibility;
-  [(VTUIEnrollTrainingViewControllerAccessibility *)&v4 _showVoiceSelectionViewForRecognitionLanguage:a3];
+  [(VTUIEnrollTrainingViewControllerAccessibility *)&v4 _showVoiceSelectionViewForRecognitionLanguage:language];
   [(VTUIEnrollTrainingViewControllerAccessibility *)self _accessibilitySetAccessibilityElementsIfNeeded];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7F10], 0);
 }
 
-- (void)_axAnnounceInstructionWithNumber:(int64_t)a3
+- (void)_axAnnounceInstructionWithNumber:(int64_t)number
 {
   v5 = [(VTUIEnrollTrainingViewControllerAccessibility *)self safeArrayForKey:@"_trainingPageInstructions"];
-  if ([v5 count] > a3)
+  if ([v5 count] > number)
   {
     v6 = MEMORY[0x29EDBA0F8];
     v7 = accessibilityLocalizedString(@"step.announcement");
@@ -268,7 +268,7 @@ void __101__VTUIEnrollTrainingViewControllerAccessibility__showTrainingInstructi
     v27 = __Block_byref_object_dispose_;
     v28 = 0;
     objc_opt_class();
-    v12 = [v5 axSafeObjectAtIndex:a3];
+    v12 = [v5 axSafeObjectAtIndex:number];
     v13 = __UIAccessibilityCastAsClass();
 
     v14 = [v13 objectForKeyedSubscript:@"Instruction"];
@@ -334,18 +334,18 @@ uint64_t __82__VTUIEnrollTrainingViewControllerAccessibility__axAnnounceInstruct
   return MEMORY[0x2A1C71028]();
 }
 
-- (void)_axAnnounceString:(id)a3
+- (void)_axAnnounceString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   IsVoiceOverRunning = UIAccessibilityIsVoiceOverRunning();
-  if (v5 && IsVoiceOverRunning)
+  if (stringCopy && IsVoiceOverRunning)
   {
     [(VTUIEnrollTrainingViewControllerAccessibility *)self _axSuspendAudio:1];
     UIAccessibilitySpeakAndDoNotBeInterrupted();
   }
 }
 
-- (void)_axHandleAnnouncementDidFinishNotification:(id)a3
+- (void)_axHandleAnnouncementDidFinishNotification:(id)notification
 {
   if ([(VTUIEnrollTrainingViewControllerAccessibility *)self _axSiriDidRetry])
   {
@@ -355,12 +355,12 @@ uint64_t __82__VTUIEnrollTrainingViewControllerAccessibility__axAnnounceInstruct
 
   else
   {
-    v4 = [(VTUIEnrollTrainingViewControllerAccessibility *)self _axShowTrainingInstructionBlock];
+    _axShowTrainingInstructionBlock = [(VTUIEnrollTrainingViewControllerAccessibility *)self _axShowTrainingInstructionBlock];
 
-    if (v4)
+    if (_axShowTrainingInstructionBlock)
     {
-      v5 = [(VTUIEnrollTrainingViewControllerAccessibility *)self _axShowTrainingInstructionBlock];
-      v5[2]();
+      _axShowTrainingInstructionBlock2 = [(VTUIEnrollTrainingViewControllerAccessibility *)self _axShowTrainingInstructionBlock];
+      _axShowTrainingInstructionBlock2[2]();
 
       [(VTUIEnrollTrainingViewControllerAccessibility *)self _axSetShowTrainingInstructionBlock:0];
     }
@@ -369,7 +369,7 @@ uint64_t __82__VTUIEnrollTrainingViewControllerAccessibility__axAnnounceInstruct
   }
 }
 
-- (void)_axHandleVoiceOverStatusChangedNotification:(id)a3
+- (void)_axHandleVoiceOverStatusChangedNotification:(id)notification
 {
   if (VoiceOverStatus == 1 && !UIAccessibilityIsVoiceOverRunning())
   {
@@ -379,11 +379,11 @@ uint64_t __82__VTUIEnrollTrainingViewControllerAccessibility__axAnnounceInstruct
   VoiceOverStatus = UIAccessibilityIsVoiceOverRunning();
 }
 
-- (void)_axHandleElementFocusedNotification:(id)a3
+- (void)_axHandleElementFocusedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x29EDC7EC0]];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x29EDC7EC0]];
 
   MEMORY[0x29ED40740](@"SwiftUI.AccessibilityNode");
   isKindOfClass = objc_opt_isKindOfClass();
@@ -399,12 +399,12 @@ uint64_t __82__VTUIEnrollTrainingViewControllerAccessibility__axAnnounceInstruct
   v9 = v16[5];
 
   _Block_object_dispose(&v15, 8);
-  v10 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
 
   v11 = [v8 _accessibilityValueForKey:@"AXIsInstructionLabel"];
-  v12 = [v11 BOOLValue];
+  bOOLValue2 = [v11 BOOLValue];
 
-  if (v12 & 1) != 0 || (isKindOfClass & v10)
+  if (bOOLValue2 & 1) != 0 || (isKindOfClass & bOOLValue)
   {
     [(VTUIEnrollTrainingViewControllerAccessibility *)self _axSuspendAudio:1];
     v13 = [MEMORY[0x29EDB8E68] scheduledTimerWithTimeInterval:self target:sel__axHandleSuspendAudioTimerFired_ selector:0 userInfo:0 repeats:2.5];
@@ -422,13 +422,13 @@ uint64_t __85__VTUIEnrollTrainingViewControllerAccessibility__axHandleElementFoc
   return MEMORY[0x2A1C71028]();
 }
 
-- (void)_axSuspendAudio:(BOOL)a3
+- (void)_axSuspendAudio:(BOOL)audio
 {
-  v3 = a3;
-  v4 = [(VTUIEnrollTrainingViewControllerAccessibility *)self AXSuspendAudioTimer];
-  [v4 invalidate];
+  audioCopy = audio;
+  aXSuspendAudioTimer = [(VTUIEnrollTrainingViewControllerAccessibility *)self AXSuspendAudioTimer];
+  [aXSuspendAudioTimer invalidate];
 
-  if (!v3 || UIAccessibilityIsVoiceOverRunning())
+  if (!audioCopy || UIAccessibilityIsVoiceOverRunning())
   {
     AXPerformSafeBlock();
   }

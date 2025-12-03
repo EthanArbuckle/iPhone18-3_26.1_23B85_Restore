@@ -1,7 +1,7 @@
 @interface TNChartReferenceSummaryDescriptor
 - (TNChartReferenceSummaryDescriptor)init;
 - (TSKUIDStruct)tableUID;
-- (id)tableNameWithCalcEngine:(id)a3;
+- (id)tableNameWithCalcEngine:(id)engine;
 - (unsigned)aggregateIndex;
 - (unsigned)columnLevel;
 - (unsigned)rowLevel;
@@ -48,9 +48,9 @@
   return result;
 }
 
-- (id)tableNameWithCalcEngine:(id)a3
+- (id)tableNameWithCalcEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v7 = objc_msgSend_viewTractRef(self, v5, v6);
 
   if (v7)
@@ -59,7 +59,7 @@
     v13 = objc_msgSend_tableUID(v10, v11, v12);
     v15 = v14;
 
-    v17 = objc_msgSend_tableInfoForTableUID_withCalcEngine_(MEMORY[0x277D80D40], v16, v13, v15, v4);
+    v17 = objc_msgSend_tableInfoForTableUID_withCalcEngine_(MEMORY[0x277D80D40], v16, v13, v15, engineCopy);
     v20 = v17;
     if (v17)
     {

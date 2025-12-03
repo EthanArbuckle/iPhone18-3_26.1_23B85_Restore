@@ -1,14 +1,14 @@
 @interface NUTitleViewStyler
 - (NUTitleViewStyler)init;
-- (NUTitleViewStyler)initWithTextColor:(id)a3;
+- (NUTitleViewStyler)initWithTextColor:(id)color;
 - (id)messageLargeFont;
 - (id)messageParagraphStyle;
 - (id)messageSmallFont;
-- (id)styleTextAsMessage:(id)a3 boundingSize:(CGSize)a4;
-- (id)styleTextAsTitle:(id)a3 boundingSize:(CGSize)a4;
-- (id)styleTitleText:(id)a3 styleType:(unint64_t)a4 boundingSize:(CGSize)a5;
+- (id)styleTextAsMessage:(id)message boundingSize:(CGSize)size;
+- (id)styleTextAsTitle:(id)title boundingSize:(CGSize)size;
+- (id)styleTitleText:(id)text styleType:(unint64_t)type boundingSize:(CGSize)size;
 - (id)titleLargeFont;
-- (id)titleParagraphStyleWithWrapping:(BOOL)a3;
+- (id)titleParagraphStyleWithWrapping:(BOOL)wrapping;
 - (id)titleSmallFont;
 @end
 
@@ -16,72 +16,72 @@
 
 - (NUTitleViewStyler)init
 {
-  v3 = [MEMORY[0x277D75348] nu_defaultTitleTextColor];
-  v4 = [(NUTitleViewStyler *)self initWithTextColor:v3];
+  nu_defaultTitleTextColor = [MEMORY[0x277D75348] nu_defaultTitleTextColor];
+  v4 = [(NUTitleViewStyler *)self initWithTextColor:nu_defaultTitleTextColor];
 
   return v4;
 }
 
-- (NUTitleViewStyler)initWithTextColor:(id)a3
+- (NUTitleViewStyler)initWithTextColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   v9.receiver = self;
   v9.super_class = NUTitleViewStyler;
   v6 = [(NUTitleViewStyler *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_textColor, a3);
+    objc_storeStrong(&v6->_textColor, color);
   }
 
   return v7;
 }
 
-- (id)styleTitleText:(id)a3 styleType:(unint64_t)a4 boundingSize:(CGSize)a5
+- (id)styleTitleText:(id)text styleType:(unint64_t)type boundingSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a3;
-  if (a4)
+  height = size.height;
+  width = size.width;
+  textCopy = text;
+  if (type)
   {
-    if (a4 == 1)
+    if (type == 1)
     {
-      v10 = [(NUTitleViewStyler *)self styleTextAsMessage:v9 boundingSize:width, height];
+      height = [(NUTitleViewStyler *)self styleTextAsMessage:textCopy boundingSize:width, height];
     }
 
     else
     {
-      if (a4 != 2)
+      if (type != 2)
       {
         goto LABEL_8;
       }
 
-      v10 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v9];
+      height = [objc_alloc(MEMORY[0x277CCA898]) initWithString:textCopy];
     }
   }
 
   else
   {
-    v10 = [(NUTitleViewStyler *)self styleTextAsTitle:v9 boundingSize:width, height];
+    height = [(NUTitleViewStyler *)self styleTextAsTitle:textCopy boundingSize:width, height];
   }
 
-  self = v10;
+  self = height;
 LABEL_8:
 
   return self;
 }
 
-- (id)styleTextAsMessage:(id)a3 boundingSize:(CGSize)a4
+- (id)styleTextAsMessage:(id)message boundingSize:(CGSize)size
 {
-  width = a4.width;
+  width = size.width;
   v22[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  messageCopy = message;
   v21 = *MEMORY[0x277D740A8];
   v7 = v21;
-  v8 = [(NUTitleViewStyler *)self messageLargeFont];
-  v22[0] = v8;
+  messageLargeFont = [(NUTitleViewStyler *)self messageLargeFont];
+  v22[0] = messageLargeFont;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:&v21 count:1];
-  [v6 sizeWithAttributes:v9];
+  [messageCopy sizeWithAttributes:v9];
   v11 = v10;
 
   v19[0] = v7;
@@ -97,30 +97,30 @@ LABEL_8:
   v12 = ;
   v20[0] = v12;
   v19[1] = *MEMORY[0x277D74118];
-  v13 = [(NUTitleViewStyler *)self messageParagraphStyle];
-  v20[1] = v13;
+  messageParagraphStyle = [(NUTitleViewStyler *)self messageParagraphStyle];
+  v20[1] = messageParagraphStyle;
   v19[2] = *MEMORY[0x277D740C0];
-  v14 = [(NUTitleViewStyler *)self textColor];
-  v20[2] = v14;
+  textColor = [(NUTitleViewStyler *)self textColor];
+  v20[2] = textColor;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:3];
 
-  v16 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v6 attributes:v15];
+  v16 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:messageCopy attributes:v15];
   v17 = *MEMORY[0x277D85DE8];
 
   return v16;
 }
 
-- (id)styleTextAsTitle:(id)a3 boundingSize:(CGSize)a4
+- (id)styleTextAsTitle:(id)title boundingSize:(CGSize)size
 {
-  width = a4.width;
+  width = size.width;
   v22[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  titleCopy = title;
   v21 = *MEMORY[0x277D740A8];
   v7 = v21;
-  v8 = [(NUTitleViewStyler *)self titleLargeFont];
-  v22[0] = v8;
+  titleLargeFont = [(NUTitleViewStyler *)self titleLargeFont];
+  v22[0] = titleLargeFont;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:&v21 count:1];
-  [v6 sizeWithAttributes:v9];
+  [titleCopy sizeWithAttributes:v9];
   v11 = v10;
 
   v19[0] = v7;
@@ -136,16 +136,16 @@ LABEL_8:
   v12 = ;
   v20[0] = v12;
   v19[1] = *MEMORY[0x277D74118];
-  v13 = [(NUTitleViewStyler *)self titleParagraphStyleWithWrapping:v11 > width];
-  v20[1] = v13;
+  width = [(NUTitleViewStyler *)self titleParagraphStyleWithWrapping:v11 > width];
+  v20[1] = width;
   v19[2] = *MEMORY[0x277D740C0];
-  v14 = [(NUTitleViewStyler *)self textColor];
+  textColor = [(NUTitleViewStyler *)self textColor];
   v19[3] = *MEMORY[0x277D740D0];
-  v20[2] = v14;
+  v20[2] = textColor;
   v20[3] = &unk_286E12E68;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:4];
 
-  v16 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v6 attributes:v15];
+  v16 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:titleCopy attributes:v15];
   v17 = *MEMORY[0x277D85DE8];
 
   return v16;
@@ -193,8 +193,8 @@ void __37__NUTitleViewStyler_messageSmallFont__block_invoke()
 
 - (id)messageParagraphStyle
 {
-  v2 = [MEMORY[0x277D74240] defaultParagraphStyle];
-  v3 = [v2 mutableCopy];
+  defaultParagraphStyle = [MEMORY[0x277D74240] defaultParagraphStyle];
+  v3 = [defaultParagraphStyle mutableCopy];
 
   [v3 setAlignment:1];
   v4 = [v3 copy];
@@ -270,15 +270,15 @@ void __35__NUTitleViewStyler_titleSmallFont__block_invoke()
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)titleParagraphStyleWithWrapping:(BOOL)a3
+- (id)titleParagraphStyleWithWrapping:(BOOL)wrapping
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D74240] defaultParagraphStyle];
-  v5 = [v4 mutableCopy];
+  wrappingCopy = wrapping;
+  defaultParagraphStyle = [MEMORY[0x277D74240] defaultParagraphStyle];
+  v5 = [defaultParagraphStyle mutableCopy];
 
   [v5 setLineBreakMode:4];
   [v5 setAlignment:1];
-  if (v3)
+  if (wrappingCopy)
   {
     [v5 setMinimumLineHeight:20.0];
     [v5 setMaximumLineHeight:21.0];

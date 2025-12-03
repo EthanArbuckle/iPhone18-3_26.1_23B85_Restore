@@ -1,20 +1,20 @@
 @interface OrgApacheLuceneUtilPackedPackedInts_FormatEnum
 + (void)initialize;
-- (OrgApacheLuceneUtilPackedPackedInts_FormatEnum)initWithInt:(int)a3 withNSString:(id)a4 withInt:(int)a5;
+- (OrgApacheLuceneUtilPackedPackedInts_FormatEnum)initWithInt:(int)int withNSString:(id)string withInt:(int)withInt;
 @end
 
 @implementation OrgApacheLuceneUtilPackedPackedInts_FormatEnum
 
-- (OrgApacheLuceneUtilPackedPackedInts_FormatEnum)initWithInt:(int)a3 withNSString:(id)a4 withInt:(int)a5
+- (OrgApacheLuceneUtilPackedPackedInts_FormatEnum)initWithInt:(int)int withNSString:(id)string withInt:(int)withInt
 {
-  JavaLangEnum_initWithNSString_withInt_(self, a4, a5);
-  *(&self->super.ordinal_ + 1) = a3;
+  JavaLangEnum_initWithNSString_withInt_(self, string, withInt);
+  *(&self->super.ordinal_ + 1) = int;
   return self;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [OrgApacheLuceneUtilPackedPackedInts_Format__1Enum alloc];
     JavaLangEnum_initWithNSString_withInt_(v2, @"PACKED", 0);

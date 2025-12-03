@@ -3,24 +3,24 @@
 - (NCOData)init;
 - (double)expirationTimeInterval;
 - (unsigned)wifiOverride;
-- (void)fetchNCOStatusWithCompletion:(id)a3;
-- (void)fetchPrefer5GEnabledWithCompletion:(id)a3;
-- (void)setWifiOverride:(unsigned int)a3 completion:(id)a4;
+- (void)fetchNCOStatusWithCompletion:(id)completion;
+- (void)fetchPrefer5GEnabledWithCompletion:(id)completion;
+- (void)setWifiOverride:(unsigned int)override completion:(id)completion;
 @end
 
 @implementation NCOData
 
-- (void)fetchNCOStatusWithCompletion:(id)a3
+- (void)fetchNCOStatusWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [(NCOData *)self isCellularInexpensive]|| [(NCOData *)self wifiOverride]!= 0;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_F0EC;
   v7[3] = &unk_3D510;
-  v8 = v4;
+  v8 = completionCopy;
   v9 = v5;
-  v6 = v4;
+  v6 = completionCopy;
   [(NCOData *)self fetchPrefer5GEnabledWithCompletion:v7];
 }
 
@@ -87,15 +87,15 @@ LABEL_10:
         return v2;
       }
 
-      v10 = v9;
-      v11 = [v9 localizedDescription];
-      NSLog(@"NCO Cellular: Error getting isHighDataModeSupported: %@", v11);
+      localizedDescription2 = v9;
+      localizedDescription = [v9 localizedDescription];
+      NSLog(@"NCO Cellular: Error getting isHighDataModeSupported: %@", localizedDescription);
     }
 
     else
     {
-      v10 = [0 localizedDescription];
-      NSLog(@"NCO Cellular: Unable to get CurrentDataServiceDescriptorSync: %@", v10);
+      localizedDescription2 = [0 localizedDescription];
+      NSLog(@"NCO Cellular: Unable to get CurrentDataServiceDescriptorSync: %@", localizedDescription2);
     }
 
     goto LABEL_9;
@@ -118,19 +118,19 @@ LABEL_10:
 
 - (BOOL)isCellularInexpensive
 {
-  v3 = [(NCOData *)self ctClient];
+  ctClient = [(NCOData *)self ctClient];
 
-  if (v3)
+  if (ctClient)
   {
-    v4 = [(NCOData *)self ctClient];
+    ctClient2 = [(NCOData *)self ctClient];
     v9 = 0;
-    v5 = [v4 overriddenInterfaceCostInexpensive:&v9];
+    v5 = [ctClient2 overriddenInterfaceCostInexpensive:&v9];
     v6 = v9;
 
     if (v6)
     {
-      v7 = [v6 localizedDescription];
-      NSLog(@"NCO Cellular: Error getting override %@", v7);
+      localizedDescription = [v6 localizedDescription];
+      NSLog(@"NCO Cellular: Error getting override %@", localizedDescription);
     }
   }
 
@@ -143,9 +143,9 @@ LABEL_10:
   return v5;
 }
 
-- (void)fetchPrefer5GEnabledWithCompletion:(id)a3
+- (void)fetchPrefer5GEnabledWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v13 = kSymptomForcePreferCellOverWiFiEnableKey;
   v5 = +[NSNull null];
   v14 = v5;
@@ -158,8 +158,8 @@ LABEL_10:
   v10[3] = &unk_3D560;
   v10[4] = self;
   v11 = v6;
-  v12 = v4;
-  v8 = v4;
+  v12 = completionCopy;
+  v8 = completionCopy;
   v9 = v6;
   dispatch_async(symptomsReplyQueue, v10);
 }
@@ -182,9 +182,9 @@ LABEL_10:
   }
 }
 
-- (void)setWifiOverride:(unsigned int)a3 completion:(id)a4
+- (void)setWifiOverride:(unsigned int)override completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = SCPreferencesCreateWithAuthorization(kCFAllocatorDefault, @"com.apple.Preferences", 0, 0);
   if (v7)
   {
@@ -194,17 +194,17 @@ LABEL_10:
     block[2] = sub_FBE4;
     block[3] = &unk_3D588;
     v11 = v7;
-    v10 = v6;
-    v12 = a3;
+    v10 = completionCopy;
+    overrideCopy = override;
     dispatch_async(wifiPrefsQueue, block);
   }
 
   else
   {
     NSLog(@"NCO WiFi: Error - Unable to create SCPreferencesRef");
-    if (v6)
+    if (completionCopy)
     {
-      (*(v6 + 2))(v6, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }

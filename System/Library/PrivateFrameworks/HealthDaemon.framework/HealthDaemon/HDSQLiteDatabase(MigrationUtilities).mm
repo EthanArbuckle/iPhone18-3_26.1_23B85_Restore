@@ -12,8 +12,8 @@
   aBlock[16] = *MEMORY[0x277D85DE8];
   v7 = a3;
   v8 = a4;
-  v31 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"DELETE FROM metadata_values WHERE object_id IN (SELECT data_id FROM %@)", v7];
@@ -63,7 +63,7 @@
 
   v17 = v7;
   v18 = v17;
-  if (!v31)
+  if (!selfCopy)
   {
 
     goto LABEL_27;
@@ -79,7 +79,7 @@
   aBlock[4] = &v36;
   v19 = _Block_copy(aBlock);
   v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT COUNT(*) FROM correlations WHERE correlation IN (SELECT data_id FROM %@) OR object IN (SELECT data_id FROM %@)", v18, v18];
-  v21 = [v31 executeSQL:v20 error:a5 bindingHandler:0 enumerationHandler:v19];
+  v21 = [selfCopy executeSQL:v20 error:a5 bindingHandler:0 enumerationHandler:v19];
   v22 = (v21 & 1) == 0 || *(*(&v36 + 1) + 24) == 0;
 
   _Block_object_dispose(&v36, 8);
@@ -114,7 +114,7 @@ LABEL_27:
           objc_enumerationMutation(v23);
         }
 
-        if (![v31 executeUncachedSQL:*(*(&v32 + 1) + 8 * j) error:a5 bindingHandler:0 enumerationHandler:0])
+        if (![selfCopy executeUncachedSQL:*(*(&v32 + 1) + 8 * j) error:a5 bindingHandler:0 enumerationHandler:0])
         {
           v27 = 0;
           goto LABEL_30;
@@ -142,10 +142,10 @@ LABEL_28:
 - (uint64_t)deleteDataEntitySubclassTable:()MigrationUtilities intermediateTables:error:
 {
   v8 = a3;
-  if ([a1 deleteRowsFromDataEntitySubclassTable:v8 intermediateTables:a4 error:a5])
+  if ([self deleteRowsFromDataEntitySubclassTable:v8 intermediateTables:a4 error:a5])
   {
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"DROP TABLE %@", v8];
-    v10 = [a1 executeUncachedSQL:v9 error:a5 bindingHandler:0 enumerationHandler:0];
+    v10 = [self executeUncachedSQL:v9 error:a5 bindingHandler:0 enumerationHandler:0];
   }
 
   else
@@ -161,7 +161,7 @@ LABEL_28:
   v29 = *MEMORY[0x277D85DE8];
   v8 = a3;
   v9 = a4;
-  v10 = [a1 dumpSchemaWithError:a5];
+  v10 = [self dumpSchemaWithError:a5];
   if (v10)
   {
     v24 = 0u;
@@ -187,7 +187,7 @@ LABEL_28:
           v16 = *(*(&v22 + 1) + 8 * i);
           if ([objc_opt_class() databaseSchemas:v10 containTable:v16])
           {
-            if (![a1 deleteDataEntitySubclassTable:v16 intermediateTables:v9 error:a5])
+            if (![self deleteDataEntitySubclassTable:v16 intermediateTables:v9 error:a5])
             {
               v18 = 0;
               goto LABEL_16;
@@ -250,8 +250,8 @@ LABEL_16:
   }
 
   v10 = [v5 objectForKeyedSubscript:v8];
-  v11 = [v10 tables];
-  v12 = [v11 objectForKeyedSubscript:v6];
+  tables = [v10 tables];
+  v12 = [tables objectForKeyedSubscript:v6];
   v13 = v12 != 0;
 
   return v13;

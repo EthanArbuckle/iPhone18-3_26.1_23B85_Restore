@@ -1,18 +1,18 @@
 @interface _UISectionFocusContainerGuidePackage
 - (void)_updateFocusGuidesArray;
-- (void)setSectionEndFocusGuide:(id)a3;
-- (void)setSectionFocusGuide:(id)a3;
+- (void)setSectionEndFocusGuide:(id)guide;
+- (void)setSectionFocusGuide:(id)guide;
 @end
 
 @implementation _UISectionFocusContainerGuidePackage
 
 - (void)_updateFocusGuidesArray
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   if (self->_sectionFocusGuide)
   {
-    [(NSArray *)v3 addObject:?];
+    [(NSArray *)array addObject:?];
   }
 
   if (self->_sectionEndFocusGuide)
@@ -24,27 +24,27 @@
   self->_focusGuides = v4;
 }
 
-- (void)setSectionFocusGuide:(id)a3
+- (void)setSectionFocusGuide:(id)guide
 {
-  v5 = a3;
-  if (self->_sectionFocusGuide != v5)
+  guideCopy = guide;
+  if (self->_sectionFocusGuide != guideCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_sectionFocusGuide, a3);
+    v6 = guideCopy;
+    objc_storeStrong(&self->_sectionFocusGuide, guide);
     [(_UISectionFocusContainerGuidePackage *)self _updateFocusGuidesArray];
-    v5 = v6;
+    guideCopy = v6;
   }
 }
 
-- (void)setSectionEndFocusGuide:(id)a3
+- (void)setSectionEndFocusGuide:(id)guide
 {
-  v5 = a3;
-  if (self->_sectionEndFocusGuide != v5)
+  guideCopy = guide;
+  if (self->_sectionEndFocusGuide != guideCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_sectionEndFocusGuide, a3);
+    v6 = guideCopy;
+    objc_storeStrong(&self->_sectionEndFocusGuide, guide);
     [(_UISectionFocusContainerGuidePackage *)self _updateFocusGuidesArray];
-    v5 = v6;
+    guideCopy = v6;
   }
 }
 

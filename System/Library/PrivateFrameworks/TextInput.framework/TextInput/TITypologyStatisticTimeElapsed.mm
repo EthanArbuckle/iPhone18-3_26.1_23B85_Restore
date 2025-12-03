@@ -4,7 +4,7 @@
 - (double)elapsedTime;
 - (id)aggregateReport;
 - (id)structuredReport;
-- (void)visitRecordKeyboardInput:(id)a3;
+- (void)visitRecordKeyboardInput:(id)input;
 @end
 
 @implementation TITypologyStatisticTimeElapsed
@@ -32,45 +32,45 @@
 
 - (id)aggregateReport
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   [(TITypologyStatisticTimeElapsed *)self adjustedElapsedTime];
   *&v4 = v4;
   if (*&v4 > 0.0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithFloat:?];
-    [v3 setObject:v5 forKey:@"typingDuration.distr"];
+    [dictionary setObject:v5 forKey:@"typingDuration.distr"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (double)adjustedElapsedTime
 {
-  v2 = [(TITypologyStatisticTimeElapsed *)self adjustedTimer];
-  [v2 elapsedTime];
+  adjustedTimer = [(TITypologyStatisticTimeElapsed *)self adjustedTimer];
+  [adjustedTimer elapsedTime];
   v4 = v3;
 
   return v4;
 }
 
-- (void)visitRecordKeyboardInput:(id)a3
+- (void)visitRecordKeyboardInput:(id)input
 {
-  v4 = a3;
-  v5 = [(TITypologyStatisticTimeElapsed *)self timer];
-  [v4 timestamp];
-  [v5 addInputEventWithTimestamp:?];
+  inputCopy = input;
+  timer = [(TITypologyStatisticTimeElapsed *)self timer];
+  [inputCopy timestamp];
+  [timer addInputEventWithTimestamp:?];
 
-  v8 = [(TITypologyStatisticTimeElapsed *)self adjustedTimer];
-  [v4 timestamp];
+  adjustedTimer = [(TITypologyStatisticTimeElapsed *)self adjustedTimer];
+  [inputCopy timestamp];
   v7 = v6;
 
-  [v8 addInputEventWithTimestamp:v7];
+  [adjustedTimer addInputEventWithTimestamp:v7];
 }
 
 - (double)elapsedTime
 {
-  v2 = [(TITypologyStatisticTimeElapsed *)self timer];
-  [v2 elapsedTime];
+  timer = [(TITypologyStatisticTimeElapsed *)self timer];
+  [timer elapsedTime];
   v4 = v3;
 
   return v4;

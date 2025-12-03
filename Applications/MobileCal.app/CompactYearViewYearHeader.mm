@@ -1,16 +1,16 @@
 @interface CompactYearViewYearHeader
-+ (double)headerDaySpacingForWindowSize:(CGSize)a3;
-+ (double)headerYInsetForWindowSize:(CGSize)a3;
-+ (double)middleHeightForWindowSize:(CGSize)a3;
++ (double)headerDaySpacingForWindowSize:(CGSize)size;
++ (double)headerYInsetForWindowSize:(CGSize)size;
++ (double)middleHeightForWindowSize:(CGSize)size;
 - (double)heightBetweenLineAndNumber;
 - (id)yearNumberFont;
 @end
 
 @implementation CompactYearViewYearHeader
 
-+ (double)headerYInsetForWindowSize:(CGSize)a3
++ (double)headerYInsetForWindowSize:(CGSize)size
 {
-  width = a3.width;
+  width = size.width;
   if (qword_100251B48 != -1)
   {
     sub_1001707E4();
@@ -43,9 +43,9 @@ LABEL_11:
   return v4;
 }
 
-+ (double)middleHeightForWindowSize:(CGSize)a3
++ (double)middleHeightForWindowSize:(CGSize)size
 {
-  width = a3.width;
+  width = size.width;
   if (qword_100251B58 != -1)
   {
     sub_1001707F8();
@@ -57,9 +57,9 @@ LABEL_11:
   return result;
 }
 
-+ (double)headerDaySpacingForWindowSize:(CGSize)a3
++ (double)headerDaySpacingForWindowSize:(CGSize)size
 {
-  width = a3.width;
+  width = size.width;
   if (qword_100251B68 != -1)
   {
     sub_10017080C();

@@ -1,12 +1,12 @@
 @interface BDSAutomaticPinningListUpdater
 - (BDSAutomaticPinningListUpdater)init;
-- (BOOL)_updateCloudDataWithManager:(id)a3;
-- (BOOL)startUpdateWithManager:(id)a3 jaliscoUpdateSuccessful:(BOOL)a4;
-- (void)_l_cancelWithManagers:(id)a3;
-- (void)_l_finishWithError:(id)a3;
-- (void)_l_finishedFetchingCollectionsWithManager:(BOOL)a3;
-- (void)_updateAttachmentCompletedFromObserver:(unint64_t)a3 attached:(BOOL)a4;
-- (void)cancelWithManager:(id)a3;
+- (BOOL)_updateCloudDataWithManager:(id)manager;
+- (BOOL)startUpdateWithManager:(id)manager jaliscoUpdateSuccessful:(BOOL)successful;
+- (void)_l_cancelWithManagers:(id)managers;
+- (void)_l_finishWithError:(id)error;
+- (void)_l_finishedFetchingCollectionsWithManager:(BOOL)manager;
+- (void)_updateAttachmentCompletedFromObserver:(unint64_t)observer attached:(BOOL)attached;
+- (void)cancelWithManager:(id)manager;
 @end
 
 @implementation BDSAutomaticPinningListUpdater
@@ -28,11 +28,11 @@
   return v3;
 }
 
-- (BOOL)startUpdateWithManager:(id)a3 jaliscoUpdateSuccessful:(BOOL)a4
+- (BOOL)startUpdateWithManager:(id)manager jaliscoUpdateSuccessful:(BOOL)successful
 {
-  v6 = a3;
+  managerCopy = manager;
   os_unfair_lock_assert_not_owner(&self->_stateLock);
-  if (v6)
+  if (managerCopy)
   {
     v7 = sub_10000DC90();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -45,12 +45,12 @@
     v11 = 3221225472;
     v12 = sub_1000436CC;
     v13 = &unk_10023FAC0;
-    v14 = self;
-    v15 = a4;
+    selfCopy = self;
+    successfulCopy = successful;
     os_unfair_lock_lock(&self->_stateLock);
     sub_1000436CC(&v10);
     os_unfair_lock_unlock(&self->_stateLock);
-    v8 = [(BDSAutomaticPinningListUpdater *)self _updateCloudDataWithManager:v6, v10, v11];
+    v8 = [(BDSAutomaticPinningListUpdater *)self _updateCloudDataWithManager:managerCopy, v10, v11];
   }
 
   else
@@ -61,36 +61,36 @@
   return v8;
 }
 
-- (void)cancelWithManager:(id)a3
+- (void)cancelWithManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   os_unfair_lock_assert_not_owner(&self->_stateLock);
-  if (v4)
+  if (managerCopy)
   {
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_100043794;
     v5[3] = &unk_10023F938;
     v5[4] = self;
-    v6 = v4;
+    v6 = managerCopy;
     os_unfair_lock_lock(&self->_stateLock);
     sub_100043794(v5);
     os_unfair_lock_unlock(&self->_stateLock);
   }
 }
 
-- (void)_l_cancelWithManagers:(id)a3
+- (void)_l_cancelWithManagers:(id)managers
 {
-  v4 = a3;
+  managersCopy = managers;
   os_unfair_lock_assert_owner(&self->_stateLock);
-  if ([v4 count])
+  if ([managersCopy count])
   {
     v5 = +[NSMutableArray array];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v6 = v4;
+    v6 = managersCopy;
     v7 = [v6 countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (v7)
     {
@@ -106,8 +106,8 @@
           }
 
           v11 = *(*(&v31 + 1) + 8 * i);
-          v12 = [(BDSAutomaticPinningListUpdater *)self managers];
-          v13 = [v12 containsObject:v11];
+          managers = [(BDSAutomaticPinningListUpdater *)self managers];
+          v13 = [managers containsObject:v11];
 
           if (v13)
           {
@@ -123,19 +123,19 @@
 
     if ([v5 count])
     {
-      v14 = [(BDSAutomaticPinningListUpdater *)self managers];
-      v15 = [v14 allObjects];
-      v16 = [v15 count];
+      managers2 = [(BDSAutomaticPinningListUpdater *)self managers];
+      allObjects = [managers2 allObjects];
+      v16 = [allObjects count];
       v17 = [v5 count];
 
       if (v16 == v17)
       {
-        v18 = [(BDSAutomaticPinningListUpdater *)self currentProgress];
-        [v18 cancel];
+        currentProgress = [(BDSAutomaticPinningListUpdater *)self currentProgress];
+        [currentProgress cancel];
 
-        v19 = [(BDSAutomaticPinningListUpdater *)self observer];
+        observer = [(BDSAutomaticPinningListUpdater *)self observer];
 
-        if (v19)
+        if (observer)
         {
           [(BDSAutomaticPinningListUpdater *)self setObserver:0];
         }
@@ -162,8 +162,8 @@
 
             v25 = *(*(&v27 + 1) + 8 * j);
             [v25 listUpdater:self updateDidCompleteWithError:0 wasCancelled:{1, v27}];
-            v26 = [(BDSAutomaticPinningListUpdater *)self managers];
-            [v26 removeObject:v25];
+            managers3 = [(BDSAutomaticPinningListUpdater *)self managers];
+            [managers3 removeObject:v25];
           }
 
           v22 = [v20 countByEnumeratingWithState:&v27 objects:v35 count:16];
@@ -175,11 +175,11 @@
   }
 }
 
-- (BOOL)_updateCloudDataWithManager:(id)a3
+- (BOOL)_updateCloudDataWithManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   os_unfair_lock_assert_not_owner(&self->_stateLock);
-  if (v4)
+  if (managerCopy)
   {
     v14 = 0;
     v15 = &v14;
@@ -189,9 +189,9 @@
     v8[1] = 3221225472;
     v9 = sub_100043BD0;
     v10 = &unk_100240860;
-    v11 = self;
+    selfCopy = self;
     v13 = &v14;
-    v12 = v4;
+    v12 = managerCopy;
     v5 = v8;
     os_unfair_lock_lock(&self->_stateLock);
     v9(v5);
@@ -209,16 +209,16 @@
   return v6 & 1;
 }
 
-- (void)_updateAttachmentCompletedFromObserver:(unint64_t)a3 attached:(BOOL)a4
+- (void)_updateAttachmentCompletedFromObserver:(unint64_t)observer attached:(BOOL)attached
 {
-  v4 = a4;
+  attachedCopy = attached;
   v7 = sub_10000DC90();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v11 = a3;
+    observerCopy = observer;
     v12 = 2048;
-    v13 = v4;
+    v13 = attachedCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "BDSAutomaticPinningListUpdater updateAttachmentCompleted %lu, attached %lu", buf, 0x16u);
   }
 
@@ -228,22 +228,22 @@
   v8[2] = sub_100044238;
   v8[3] = &unk_100240F20;
   v8[4] = self;
-  v8[5] = a3;
-  v9 = v4;
+  v8[5] = observer;
+  v9 = attachedCopy;
   os_unfair_lock_lock(&self->_stateLock);
   sub_100044238(v8);
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (void)_l_finishedFetchingCollectionsWithManager:(BOOL)a3
+- (void)_l_finishedFetchingCollectionsWithManager:(BOOL)manager
 {
-  v3 = a3;
+  managerCopy = manager;
   os_unfair_lock_assert_owner(&self->_stateLock);
   v5 = +[BCCloudCollectionsManager sharedManager];
   [v5 setEnableCloudSync:0];
 
   objc_initWeak(&location, self);
-  if (v3)
+  if (managerCopy)
   {
     v6 = sub_10000DC90();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -253,13 +253,13 @@
     }
 
     v7 = +[BDSNBPinningManager sharedManager];
-    v8 = [(BDSAutomaticPinningListUpdater *)self jaliscoUpdateSuccessful];
+    jaliscoUpdateSuccessful = [(BDSAutomaticPinningListUpdater *)self jaliscoUpdateSuccessful];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_10004456C;
     v11[3] = &unk_100240F48;
     objc_copyWeak(&v12, &location);
-    v9 = [v7 updateWantToReadAndReadingNowWithJaliscoUpdateSuccessful:v8 completion:v11];
+    v9 = [v7 updateWantToReadAndReadingNowWithJaliscoUpdateSuccessful:jaliscoUpdateSuccessful completion:v11];
     [(BDSAutomaticPinningListUpdater *)self setCurrentProgress:v9];
 
     objc_destroyWeak(&v12);
@@ -274,53 +274,53 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_l_finishWithError:(id)a3
+- (void)_l_finishWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(BDSAutomaticPinningListUpdater *)self currentProgress];
-  v6 = [v5 isCancelled];
+  errorCopy = error;
+  currentProgress = [(BDSAutomaticPinningListUpdater *)self currentProgress];
+  isCancelled = [currentProgress isCancelled];
 
   v7 = sub_10000DC90();
-  v8 = v7;
-  if (v6)
+  managers2 = v7;
+  if (isCancelled)
   {
-    if (v4)
+    if (errorCopy)
     {
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        sub_1001C0598(v4, v8);
+        sub_1001C0598(errorCopy, managers2);
       }
     }
 
     else if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Updating wantToReadAndReadingNow completed but we were already cancelled.", buf, 2u);
+      _os_log_impl(&_mh_execute_header, managers2, OS_LOG_TYPE_DEFAULT, "Updating wantToReadAndReadingNow completed but we were already cancelled.", buf, 2u);
     }
   }
 
   else
   {
-    if (v4)
+    if (errorCopy)
     {
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        sub_1001C0520(v4, v8);
+        sub_1001C0520(errorCopy, managers2);
       }
     }
 
     else if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Updating wantToReadAndReadingNow completed and we were not cancelled.", buf, 2u);
+      _os_log_impl(&_mh_execute_header, managers2, OS_LOG_TYPE_DEFAULT, "Updating wantToReadAndReadingNow completed and we were not cancelled.", buf, 2u);
     }
 
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v9 = [(BDSAutomaticPinningListUpdater *)self managers];
-    v10 = [v9 countByEnumeratingWithState:&v14 objects:v19 count:16];
+    managers = [(BDSAutomaticPinningListUpdater *)self managers];
+    v10 = [managers countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v10)
     {
       v11 = v10;
@@ -332,22 +332,22 @@
         {
           if (*v15 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(managers);
           }
 
-          [*(*(&v14 + 1) + 8 * v13) listUpdater:self updateDidCompleteWithError:v4 wasCancelled:0];
+          [*(*(&v14 + 1) + 8 * v13) listUpdater:self updateDidCompleteWithError:errorCopy wasCancelled:0];
           v13 = v13 + 1;
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v14 objects:v19 count:16];
+        v11 = [managers countByEnumeratingWithState:&v14 objects:v19 count:16];
       }
 
       while (v11);
     }
 
-    v8 = [(BDSAutomaticPinningListUpdater *)self managers];
-    [v8 removeAllObjects];
+    managers2 = [(BDSAutomaticPinningListUpdater *)self managers];
+    [managers2 removeAllObjects];
   }
 
   [(BDSAutomaticPinningListUpdater *)self setCurrentProgress:0];

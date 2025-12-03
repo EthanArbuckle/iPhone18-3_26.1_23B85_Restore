@@ -6,7 +6,7 @@
 
 + (id)ic_dataWithFairPlayBytes:()ICFairPlayUtilityAdditions length:
 {
-  v4 = [[a1 alloc] initWithBytesNoCopy:a3 length:a4 deallocator:&__block_literal_global_17983];
+  v4 = [[self alloc] initWithBytesNoCopy:a3 length:a4 deallocator:&__block_literal_global_17983];
 
   return v4;
 }

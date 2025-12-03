@@ -1,20 +1,20 @@
 @interface SOServiceConnection
 - (BOOL)_connectToService;
-- (SOServiceConnection)initWithQueue:(id)a3;
-- (id)_doConnectWithOptions:(unint64_t)a3;
+- (SOServiceConnection)initWithQueue:(id)queue;
+- (id)_doConnectWithOptions:(unint64_t)options;
 - (void)_connectToService;
-- (void)beginAuthorizationWithRequestParameters:(id)a3 completion:(id)a4;
-- (void)cancelAuthorization:(id)a3 completion:(id)a4;
-- (void)configurationWithCompletion:(id)a3;
+- (void)beginAuthorizationWithRequestParameters:(id)parameters completion:(id)completion;
+- (void)cancelAuthorization:(id)authorization completion:(id)completion;
+- (void)configurationWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)debugHintsWithCompletion:(id)a3;
-- (void)finishAuthorization:(id)a3 completion:(id)a4;
-- (void)getAuthorizationHintsWithURL:(id)a3 responseCode:(int64_t)a4 completion:(id)a5;
-- (void)isConfigurationActiveForExtensionIdentifier:(id)a3 completion:(id)a4;
-- (void)isExtensionProcessWithAuditToken:(id *)a3 completion:(id)a4;
-- (void)performAuthorizationWithRequestParameters:(id)a3 completion:(id)a4;
-- (void)profilesWithExtensionBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)realmsWithCompletion:(id)a3;
+- (void)debugHintsWithCompletion:(id)completion;
+- (void)finishAuthorization:(id)authorization completion:(id)completion;
+- (void)getAuthorizationHintsWithURL:(id)l responseCode:(int64_t)code completion:(id)completion;
+- (void)isConfigurationActiveForExtensionIdentifier:(id)identifier completion:(id)completion;
+- (void)isExtensionProcessWithAuditToken:(id *)token completion:(id)completion;
+- (void)performAuthorizationWithRequestParameters:(id)parameters completion:(id)completion;
+- (void)profilesWithExtensionBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)realmsWithCompletion:(id)completion;
 @end
 
 @implementation SOServiceConnection
@@ -22,9 +22,9 @@
 - (BOOL)_connectToService
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(SOServiceConnection *)self xpcConnection];
+  xpcConnection = [(SOServiceConnection *)self xpcConnection];
 
-  if (v3)
+  if (xpcConnection)
   {
     v4 = SO_LOG_SOServiceConnection();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -40,13 +40,13 @@ LABEL_9:
   v5 = [(SOServiceConnection *)self _doConnectWithOptions:4096];
   [(SOServiceConnection *)self setXpcConnection:v5];
 
-  v6 = [(SOServiceConnection *)self xpcConnection];
+  xpcConnection2 = [(SOServiceConnection *)self xpcConnection];
 
-  if (v6)
+  if (xpcConnection2)
   {
     v7 = [SOInternalProtocols interfaceWithInternalProtocol:&unk_1F49ECAE0];
-    v8 = [(SOServiceConnection *)self xpcConnection];
-    [v8 setRemoteObjectInterface:v7];
+    xpcConnection3 = [(SOServiceConnection *)self xpcConnection];
+    [xpcConnection3 setRemoteObjectInterface:v7];
 
     objc_initWeak(&location, self);
     v20[0] = MEMORY[0x1E69E9820];
@@ -54,29 +54,29 @@ LABEL_9:
     v20[2] = __40__SOServiceConnection__connectToService__block_invoke;
     v20[3] = &unk_1E836CBB8;
     objc_copyWeak(&v21, &location);
-    v9 = [(SOServiceConnection *)self xpcConnection];
-    [v9 setInvalidationHandler:v20];
+    xpcConnection4 = [(SOServiceConnection *)self xpcConnection];
+    [xpcConnection4 setInvalidationHandler:v20];
 
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __40__SOServiceConnection__connectToService__block_invoke_71;
     v18[3] = &unk_1E836CBB8;
     objc_copyWeak(&v19, &location);
-    v10 = [(SOServiceConnection *)self xpcConnection];
-    [v10 setInterruptionHandler:v18];
+    xpcConnection5 = [(SOServiceConnection *)self xpcConnection];
+    [xpcConnection5 setInterruptionHandler:v18];
 
-    v11 = [(SOServiceConnection *)self xpcConnection];
-    v12 = [(SOServiceConnection *)self queue];
-    [v11 _setQueue:v12];
+    xpcConnection6 = [(SOServiceConnection *)self xpcConnection];
+    queue = [(SOServiceConnection *)self queue];
+    [xpcConnection6 _setQueue:queue];
 
-    v13 = [(SOServiceConnection *)self xpcConnection];
-    [v13 resume];
+    xpcConnection7 = [(SOServiceConnection *)self xpcConnection];
+    [xpcConnection7 resume];
 
     v14 = SO_LOG_SOServiceConnection();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v24 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1CA238000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@: new XPC connection", buf, 0xCu);
     }
 
@@ -98,16 +98,16 @@ LABEL_10:
   return result;
 }
 
-- (SOServiceConnection)initWithQueue:(id)a3
+- (SOServiceConnection)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v8.receiver = self;
   v8.super_class = SOServiceConnection;
   v5 = [(SOServiceConnection *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(SOServiceConnection *)v5 setQueue:v4];
+    [(SOServiceConnection *)v5 setQueue:queueCopy];
     [(SOServiceConnection *)v6 _connectToService];
   }
 
@@ -116,35 +116,35 @@ LABEL_10:
 
 - (void)dealloc
 {
-  v3 = [(SOServiceConnection *)self xpcConnection];
-  [v3 invalidate];
+  xpcConnection = [(SOServiceConnection *)self xpcConnection];
+  [xpcConnection invalidate];
 
   v4.receiver = self;
   v4.super_class = SOServiceConnection;
   [(SOServiceConnection *)&v4 dealloc];
 }
 
-- (void)getAuthorizationHintsWithURL:(id)a3 responseCode:(int64_t)a4 completion:(id)a5
+- (void)getAuthorizationHintsWithURL:(id)l responseCode:(int64_t)code completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  lCopy = l;
+  completionCopy = completion;
   if ([(SOServiceConnection *)self _connectToService])
   {
-    v10 = [(SOServiceConnection *)self xpcConnection];
+    xpcConnection = [(SOServiceConnection *)self xpcConnection];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __76__SOServiceConnection_getAuthorizationHintsWithURL_responseCode_completion___block_invoke;
     v14[3] = &unk_1E836CB70;
-    v11 = v9;
+    v11 = completionCopy;
     v15 = v11;
-    v12 = [v10 synchronousRemoteObjectProxyWithErrorHandler:v14];
-    [v12 getAuthorizationHintsWithURL:v8 responseCode:a4 completion:v11];
+    v12 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v14];
+    [v12 getAuthorizationHintsWithURL:lCopy responseCode:code completion:v11];
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
     v13 = [SOErrorHelper internalErrorWithMessage:@"Failed to connect to AppSSO service"];
-    (*(v9 + 2))(v9, 0, v13);
+    (*(completionCopy + 2))(completionCopy, 0, v13);
   }
 }
 
@@ -164,27 +164,27 @@ void __76__SOServiceConnection_getAuthorizationHintsWithURL_responseCode_complet
   }
 }
 
-- (void)performAuthorizationWithRequestParameters:(id)a3 completion:(id)a4
+- (void)performAuthorizationWithRequestParameters:(id)parameters completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  completionCopy = completion;
   if ([(SOServiceConnection *)self _connectToService])
   {
-    v8 = [(SOServiceConnection *)self xpcConnection];
+    xpcConnection = [(SOServiceConnection *)self xpcConnection];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __76__SOServiceConnection_performAuthorizationWithRequestParameters_completion___block_invoke;
     v12[3] = &unk_1E836CB70;
-    v9 = v7;
+    v9 = completionCopy;
     v13 = v9;
-    v10 = [v8 remoteObjectProxyWithErrorHandler:v12];
-    [v10 performAuthorizationWithRequestParameters:v6 completion:v9];
+    v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v12];
+    [v10 performAuthorizationWithRequestParameters:parametersCopy completion:v9];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     v11 = [SOErrorHelper internalErrorWithMessage:@"Failed to connect to AppSSO service"];
-    (*(v7 + 2))(v7, 0, v11);
+    (*(completionCopy + 2))(completionCopy, 0, v11);
   }
 }
 
@@ -204,27 +204,27 @@ void __76__SOServiceConnection_performAuthorizationWithRequestParameters_complet
   }
 }
 
-- (void)beginAuthorizationWithRequestParameters:(id)a3 completion:(id)a4
+- (void)beginAuthorizationWithRequestParameters:(id)parameters completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  completionCopy = completion;
   if ([(SOServiceConnection *)self _connectToService])
   {
-    v8 = [(SOServiceConnection *)self xpcConnection];
+    xpcConnection = [(SOServiceConnection *)self xpcConnection];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __74__SOServiceConnection_beginAuthorizationWithRequestParameters_completion___block_invoke;
     v12[3] = &unk_1E836CB70;
-    v9 = v7;
+    v9 = completionCopy;
     v13 = v9;
-    v10 = [v8 remoteObjectProxyWithErrorHandler:v12];
-    [v10 beginAuthorizationWithRequestParameters:v6 completion:v9];
+    v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v12];
+    [v10 beginAuthorizationWithRequestParameters:parametersCopy completion:v9];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     v11 = [SOErrorHelper internalErrorWithMessage:@"Failed to connect to AppSSO service"];
-    (*(v7 + 2))(v7, 0, 0, v11);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v11);
   }
 }
 
@@ -244,26 +244,26 @@ void __74__SOServiceConnection_beginAuthorizationWithRequestParameters_completio
   }
 }
 
-- (void)cancelAuthorization:(id)a3 completion:(id)a4
+- (void)cancelAuthorization:(id)authorization completion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
+  authorizationCopy = authorization;
+  completionCopy = completion;
   if ([(SOServiceConnection *)self _connectToService])
   {
-    v7 = [(SOServiceConnection *)self xpcConnection];
-    v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_1];
-    [v8 cancelAuthorization:v9 completion:v6];
+    xpcConnection = [(SOServiceConnection *)self xpcConnection];
+    v8 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_1];
+    [v8 cancelAuthorization:authorizationCopy completion:completionCopy];
   }
 
   else
   {
-    if (!v6)
+    if (!completionCopy)
     {
       goto LABEL_6;
     }
 
-    v7 = [SOErrorHelper internalErrorWithMessage:@"Failed to connect to AppSSO service"];
-    v6[2](v6, 0, v7);
+    xpcConnection = [SOErrorHelper internalErrorWithMessage:@"Failed to connect to AppSSO service"];
+    completionCopy[2](completionCopy, 0, xpcConnection);
   }
 
 LABEL_6:
@@ -279,26 +279,26 @@ void __54__SOServiceConnection_cancelAuthorization_completion___block_invoke(uin
   }
 }
 
-- (void)configurationWithCompletion:(id)a3
+- (void)configurationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(SOServiceConnection *)self _connectToService])
   {
-    v5 = [(SOServiceConnection *)self xpcConnection];
+    xpcConnection = [(SOServiceConnection *)self xpcConnection];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __51__SOServiceConnection_configurationWithCompletion___block_invoke;
     v9[3] = &unk_1E836CB70;
-    v6 = v4;
+    v6 = completionCopy;
     v10 = v6;
-    v7 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v9];
+    v7 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v9];
     [v7 configurationWithCompletion:v6];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
     v8 = [SOErrorHelper internalErrorWithMessage:@"Failed to connect to AppSSO service"];
-    (*(v4 + 2))(v4, 0, v8);
+    (*(completionCopy + 2))(completionCopy, 0, v8);
   }
 }
 
@@ -318,30 +318,30 @@ void __51__SOServiceConnection_configurationWithCompletion___block_invoke(uint64
   }
 }
 
-- (void)realmsWithCompletion:(id)a3
+- (void)realmsWithCompletion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = SO_LOG_SOServiceConnection();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v14 = "[SOServiceConnection realmsWithCompletion:]";
     v15 = 2112;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1CA238000, v5, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
   if ([(SOServiceConnection *)self _connectToService])
   {
-    v6 = [(SOServiceConnection *)self xpcConnection];
+    xpcConnection = [(SOServiceConnection *)self xpcConnection];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __44__SOServiceConnection_realmsWithCompletion___block_invoke;
     v11[3] = &unk_1E836CB70;
-    v7 = v4;
+    v7 = completionCopy;
     v12 = v7;
-    v8 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v11];
+    v8 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v11];
     [v8 realmsWithCompletion:v7];
 
     v9 = v12;
@@ -350,10 +350,10 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (v4)
+  if (completionCopy)
   {
     v9 = [SOErrorHelper internalErrorWithMessage:@"Failed to connect to AppSSO service"];
-    (*(v4 + 2))(v4, 0, v9);
+    (*(completionCopy + 2))(completionCopy, 0, v9);
     goto LABEL_7;
   }
 
@@ -378,30 +378,30 @@ void __44__SOServiceConnection_realmsWithCompletion___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)debugHintsWithCompletion:(id)a3
+- (void)debugHintsWithCompletion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = SO_LOG_SOServiceConnection();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v14 = "[SOServiceConnection debugHintsWithCompletion:]";
     v15 = 2112;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1CA238000, v5, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
   if ([(SOServiceConnection *)self _connectToService])
   {
-    v6 = [(SOServiceConnection *)self xpcConnection];
+    xpcConnection = [(SOServiceConnection *)self xpcConnection];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __48__SOServiceConnection_debugHintsWithCompletion___block_invoke;
     v11[3] = &unk_1E836CB70;
-    v7 = v4;
+    v7 = completionCopy;
     v12 = v7;
-    v8 = [v6 remoteObjectProxyWithErrorHandler:v11];
+    v8 = [xpcConnection remoteObjectProxyWithErrorHandler:v11];
     [v8 debugHintsWithCompletion:v7];
 
     v9 = v12;
@@ -410,10 +410,10 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (v4)
+  if (completionCopy)
   {
     v9 = [SOErrorHelper internalErrorWithMessage:@"Failed to connect to AppSSO service"];
-    (*(v4 + 2))(v4, 0, v9);
+    (*(completionCopy + 2))(completionCopy, 0, v9);
     goto LABEL_7;
   }
 
@@ -438,32 +438,32 @@ void __48__SOServiceConnection_debugHintsWithCompletion___block_invoke(uint64_t 
   }
 }
 
-- (void)finishAuthorization:(id)a3 completion:(id)a4
+- (void)finishAuthorization:(id)authorization completion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  authorizationCopy = authorization;
+  completionCopy = completion;
   v8 = SO_LOG_SOServiceConnection();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v17 = "[SOServiceConnection finishAuthorization:completion:]";
     v18 = 2112;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1CA238000, v8, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
   if ([(SOServiceConnection *)self _connectToService])
   {
-    v9 = [(SOServiceConnection *)self xpcConnection];
+    xpcConnection = [(SOServiceConnection *)self xpcConnection];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __54__SOServiceConnection_finishAuthorization_completion___block_invoke;
     v14[3] = &unk_1E836CB70;
-    v10 = v7;
+    v10 = completionCopy;
     v15 = v10;
-    v11 = [v9 remoteObjectProxyWithErrorHandler:v14];
-    [v11 finishAuthorization:v6 completion:v10];
+    v11 = [xpcConnection remoteObjectProxyWithErrorHandler:v14];
+    [v11 finishAuthorization:authorizationCopy completion:v10];
 
     v12 = v15;
 LABEL_7:
@@ -471,10 +471,10 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v12 = [SOErrorHelper internalErrorWithMessage:@"Failed to connect to AppSSO service"];
-    (*(v7 + 2))(v7, 0, v12);
+    (*(completionCopy + 2))(completionCopy, 0, v12);
     goto LABEL_7;
   }
 
@@ -499,10 +499,10 @@ void __54__SOServiceConnection_finishAuthorization_completion___block_invoke(uin
   }
 }
 
-- (void)isExtensionProcessWithAuditToken:(id *)a3 completion:(id)a4
+- (void)isExtensionProcessWithAuditToken:(id *)token completion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   v7 = SO_LOG_SOServiceConnection();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -515,16 +515,16 @@ void __54__SOServiceConnection_finishAuthorization_completion___block_invoke(uin
 
   if ([(SOServiceConnection *)self _connectToService])
   {
-    v8 = [(SOServiceConnection *)self xpcConnection];
+    xpcConnection = [(SOServiceConnection *)self xpcConnection];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __67__SOServiceConnection_isExtensionProcessWithAuditToken_completion___block_invoke;
     v14[3] = &unk_1E836CB70;
-    v9 = v6;
+    v9 = completionCopy;
     v15 = v9;
-    v10 = [v8 remoteObjectProxyWithErrorHandler:v14];
-    v11 = *&a3->var0[4];
-    *buf = *a3->var0;
+    v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v14];
+    v11 = *&token->var0[4];
+    *buf = *token->var0;
     *&buf[16] = v11;
     [v10 isExtensionProcessWithAuditToken:buf completion:v9];
 
@@ -534,10 +534,10 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (v6)
+  if (completionCopy)
   {
     v12 = [SOErrorHelper internalErrorWithMessage:@"Failed to connect to AppSSO service"];
-    (*(v6 + 2))(v6, 0, v12);
+    (*(completionCopy + 2))(completionCopy, 0, v12);
     goto LABEL_7;
   }
 
@@ -562,32 +562,32 @@ void __67__SOServiceConnection_isExtensionProcessWithAuditToken_completion___blo
   }
 }
 
-- (void)profilesWithExtensionBundleIdentifier:(id)a3 completion:(id)a4
+- (void)profilesWithExtensionBundleIdentifier:(id)identifier completion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = SO_LOG_SOServiceConnection();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v17 = "[SOServiceConnection profilesWithExtensionBundleIdentifier:completion:]";
     v18 = 2112;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1CA238000, v8, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
   if ([(SOServiceConnection *)self _connectToService])
   {
-    v9 = [(SOServiceConnection *)self xpcConnection];
+    xpcConnection = [(SOServiceConnection *)self xpcConnection];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __72__SOServiceConnection_profilesWithExtensionBundleIdentifier_completion___block_invoke;
     v14[3] = &unk_1E836CB70;
-    v10 = v7;
+    v10 = completionCopy;
     v15 = v10;
-    v11 = [v9 synchronousRemoteObjectProxyWithErrorHandler:v14];
-    [v11 profilesWithExtensionBundleIdentifier:v6 completion:v10];
+    v11 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v14];
+    [v11 profilesWithExtensionBundleIdentifier:identifierCopy completion:v10];
 
     v12 = v15;
 LABEL_7:
@@ -595,10 +595,10 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v12 = [SOErrorHelper internalErrorWithMessage:@"Failed to connect to AppSSO service"];
-    (*(v7 + 2))(v7, 0, v12);
+    (*(completionCopy + 2))(completionCopy, 0, v12);
     goto LABEL_7;
   }
 
@@ -623,27 +623,27 @@ void __72__SOServiceConnection_profilesWithExtensionBundleIdentifier_completion_
   }
 }
 
-- (void)isConfigurationActiveForExtensionIdentifier:(id)a3 completion:(id)a4
+- (void)isConfigurationActiveForExtensionIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if ([(SOServiceConnection *)self _connectToService])
   {
-    v8 = [(SOServiceConnection *)self xpcConnection];
+    xpcConnection = [(SOServiceConnection *)self xpcConnection];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __78__SOServiceConnection_isConfigurationActiveForExtensionIdentifier_completion___block_invoke;
     v12[3] = &unk_1E836CB70;
-    v9 = v7;
+    v9 = completionCopy;
     v13 = v9;
-    v10 = [v8 remoteObjectProxyWithErrorHandler:v12];
-    [v10 isConfigurationActiveForExtensionIdentifier:v6 completion:v9];
+    v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v12];
+    [v10 isConfigurationActiveForExtensionIdentifier:identifierCopy completion:v9];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     v11 = [SOErrorHelper internalErrorWithMessage:@"Failed to connect to AppSSO service"];
-    (*(v7 + 2))(v7, 0, v11);
+    (*(completionCopy + 2))(completionCopy, 0, v11);
   }
 }
 
@@ -691,9 +691,9 @@ void __40__SOServiceConnection__connectToService__block_invoke_71(uint64_t a1)
   }
 }
 
-- (id)_doConnectWithOptions:(unint64_t)a3
+- (id)_doConnectWithOptions:(unint64_t)options
 {
-  v3 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.AppSSO.service-xpc" options:a3];
+  v3 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.AppSSO.service-xpc" options:options];
 
   return v3;
 }

@@ -1,11 +1,11 @@
 @interface INGetAvailableRestaurantReservationBookingsIntent
 + (id)intentDescription;
-- (BOOL)isEqual:(id)a3;
-- (INGetAvailableRestaurantReservationBookingsIntent)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INGetAvailableRestaurantReservationBookingsIntent)initWithCoder:(id)coder;
 - (INGetAvailableRestaurantReservationBookingsIntent)initWithRestaurant:(INRestaurant *)restaurant partySize:(NSUInteger)partySize preferredBookingDateComponents:(NSDateComponents *)preferredBookingDateComponents maximumNumberOfResults:(NSNumber *)maximumNumberOfResults earliestBookingDateForResults:(NSDate *)earliestBookingDateForResults latestBookingDateForResults:(NSDate *)latestBookingDateForResults;
 - (id)_dictionaryRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INGetAvailableRestaurantReservationBookingsIntent
@@ -15,53 +15,53 @@
   v19[6] = *MEMORY[0x1E69E9840];
   v18[0] = @"restaurant";
   restaurant = self->_restaurant;
-  v4 = restaurant;
+  null = restaurant;
   if (!restaurant)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16 = v4;
-  v19[0] = v4;
+  v16 = null;
+  v19[0] = null;
   v18[1] = @"partySize";
   v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_partySize];
   v19[1] = v17;
   v18[2] = @"preferredBookingDateComponents";
   preferredBookingDateComponents = self->_preferredBookingDateComponents;
-  v6 = preferredBookingDateComponents;
+  null2 = preferredBookingDateComponents;
   if (!preferredBookingDateComponents)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[2] = v6;
+  v19[2] = null2;
   v18[3] = @"maximumNumberOfResults";
   maximumNumberOfResults = self->_maximumNumberOfResults;
-  v8 = maximumNumberOfResults;
+  null3 = maximumNumberOfResults;
   if (!maximumNumberOfResults)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[3] = v8;
+  v19[3] = null3;
   v18[4] = @"earliestBookingDateForResults";
   earliestBookingDateForResults = self->_earliestBookingDateForResults;
-  v10 = earliestBookingDateForResults;
+  null4 = earliestBookingDateForResults;
   if (!earliestBookingDateForResults)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[4] = v10;
+  v19[4] = null4;
   v18[5] = @"latestBookingDateForResults";
   latestBookingDateForResults = self->_latestBookingDateForResults;
-  v12 = latestBookingDateForResults;
+  null5 = latestBookingDateForResults;
   if (!latestBookingDateForResults)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[5] = v12;
+  v19[5] = null5;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:6];
   if (latestBookingDateForResults)
   {
@@ -116,81 +116,81 @@ LABEL_15:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = INGetAvailableRestaurantReservationBookingsIntent;
-  v4 = [(INIntent *)&v12 copyWithZone:a3];
-  v5 = [(INGetAvailableRestaurantReservationBookingsIntent *)self restaurant];
-  [v4 setRestaurant:v5];
+  v4 = [(INIntent *)&v12 copyWithZone:zone];
+  restaurant = [(INGetAvailableRestaurantReservationBookingsIntent *)self restaurant];
+  [v4 setRestaurant:restaurant];
 
   [v4 setPartySize:{-[INGetAvailableRestaurantReservationBookingsIntent partySize](self, "partySize")}];
-  v6 = [(INGetAvailableRestaurantReservationBookingsIntent *)self maximumNumberOfResults];
-  [v4 setMaximumNumberOfResults:v6];
+  maximumNumberOfResults = [(INGetAvailableRestaurantReservationBookingsIntent *)self maximumNumberOfResults];
+  [v4 setMaximumNumberOfResults:maximumNumberOfResults];
 
-  v7 = [(INGetAvailableRestaurantReservationBookingsIntent *)self earliestBookingDateForResults];
-  [v4 setEarliestBookingDateForResults:v7];
+  earliestBookingDateForResults = [(INGetAvailableRestaurantReservationBookingsIntent *)self earliestBookingDateForResults];
+  [v4 setEarliestBookingDateForResults:earliestBookingDateForResults];
 
-  v8 = [(INGetAvailableRestaurantReservationBookingsIntent *)self latestBookingDateForResults];
-  [v4 setLatestBookingDateForResults:v8];
+  latestBookingDateForResults = [(INGetAvailableRestaurantReservationBookingsIntent *)self latestBookingDateForResults];
+  [v4 setLatestBookingDateForResults:latestBookingDateForResults];
 
-  v9 = [(INGetAvailableRestaurantReservationBookingsIntent *)self preferredBookingDateComponents];
-  [v4 setPreferredBookingDateComponents:v9];
+  preferredBookingDateComponents = [(INGetAvailableRestaurantReservationBookingsIntent *)self preferredBookingDateComponents];
+  [v4 setPreferredBookingDateComponents:preferredBookingDateComponents];
 
-  v10 = [(INGetAvailableRestaurantReservationBookingsIntent *)self preferredBookingDate];
-  [v4 setPreferredBookingDate:v10];
+  preferredBookingDate = [(INGetAvailableRestaurantReservationBookingsIntent *)self preferredBookingDate];
+  [v4 setPreferredBookingDate:preferredBookingDate];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (self == v5)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (self == equalCopy)
   {
     LOBYTE(v10) = 1;
     goto LABEL_34;
   }
 
-  if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (!equalCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     LOBYTE(v10) = 0;
     goto LABEL_34;
   }
 
   v7 = v6;
-  v8 = [(INGetAvailableRestaurantReservationBookingsIntent *)v7 preferredBookingDateComponents];
-  if (v8)
+  preferredBookingDateComponents = [(INGetAvailableRestaurantReservationBookingsIntent *)v7 preferredBookingDateComponents];
+  if (preferredBookingDateComponents)
   {
     v9 = 0;
   }
 
   else
   {
-    v11 = [(INGetAvailableRestaurantReservationBookingsIntent *)self preferredBookingDateComponents];
-    v9 = v11 == 0;
+    preferredBookingDateComponents2 = [(INGetAvailableRestaurantReservationBookingsIntent *)self preferredBookingDateComponents];
+    v9 = preferredBookingDateComponents2 == 0;
   }
 
-  v12 = [(INGetAvailableRestaurantReservationBookingsIntent *)v7 preferredBookingDateComponents];
-  if (v12)
+  preferredBookingDateComponents3 = [(INGetAvailableRestaurantReservationBookingsIntent *)v7 preferredBookingDateComponents];
+  if (preferredBookingDateComponents3)
   {
-    v13 = v12;
-    v14 = [(INGetAvailableRestaurantReservationBookingsIntent *)self preferredBookingDateComponents];
+    v13 = preferredBookingDateComponents3;
+    preferredBookingDateComponents4 = [(INGetAvailableRestaurantReservationBookingsIntent *)self preferredBookingDateComponents];
 
-    if (v14)
+    if (preferredBookingDateComponents4)
     {
-      v15 = [(INGetAvailableRestaurantReservationBookingsIntent *)v7 preferredBookingDateComponents];
-      v16 = [(INGetAvailableRestaurantReservationBookingsIntent *)self preferredBookingDateComponents];
-      v9 = [v15 isEqual:v16];
+      preferredBookingDateComponents5 = [(INGetAvailableRestaurantReservationBookingsIntent *)v7 preferredBookingDateComponents];
+      preferredBookingDateComponents6 = [(INGetAvailableRestaurantReservationBookingsIntent *)self preferredBookingDateComponents];
+      v9 = [preferredBookingDateComponents5 isEqual:preferredBookingDateComponents6];
     }
   }
 
-  v17 = [(INGetAvailableRestaurantReservationBookingsIntent *)v7 maximumNumberOfResults];
-  if (!v17)
+  maximumNumberOfResults = [(INGetAvailableRestaurantReservationBookingsIntent *)v7 maximumNumberOfResults];
+  if (!maximumNumberOfResults)
   {
-    v3 = [(INGetAvailableRestaurantReservationBookingsIntent *)self maximumNumberOfResults];
-    if (!v3)
+    maximumNumberOfResults2 = [(INGetAvailableRestaurantReservationBookingsIntent *)self maximumNumberOfResults];
+    if (!maximumNumberOfResults2)
     {
       v20 = 1;
 LABEL_17:
@@ -199,75 +199,75 @@ LABEL_17:
     }
   }
 
-  v18 = [(INGetAvailableRestaurantReservationBookingsIntent *)v7 maximumNumberOfResults];
-  v19 = [(INGetAvailableRestaurantReservationBookingsIntent *)self maximumNumberOfResults];
-  v20 = [v18 isEqual:v19];
+  maximumNumberOfResults3 = [(INGetAvailableRestaurantReservationBookingsIntent *)v7 maximumNumberOfResults];
+  maximumNumberOfResults4 = [(INGetAvailableRestaurantReservationBookingsIntent *)self maximumNumberOfResults];
+  v20 = [maximumNumberOfResults3 isEqual:maximumNumberOfResults4];
 
-  if (!v17)
+  if (!maximumNumberOfResults)
   {
     goto LABEL_17;
   }
 
 LABEL_18:
 
-  v21 = [(INGetAvailableRestaurantReservationBookingsIntent *)v7 earliestBookingDateForResults];
-  if (v21)
+  earliestBookingDateForResults = [(INGetAvailableRestaurantReservationBookingsIntent *)v7 earliestBookingDateForResults];
+  if (earliestBookingDateForResults)
   {
     v22 = 0;
   }
 
   else
   {
-    v23 = [(INGetAvailableRestaurantReservationBookingsIntent *)self earliestBookingDateForResults];
-    v22 = v23 == 0;
+    earliestBookingDateForResults2 = [(INGetAvailableRestaurantReservationBookingsIntent *)self earliestBookingDateForResults];
+    v22 = earliestBookingDateForResults2 == 0;
   }
 
-  v24 = [(INGetAvailableRestaurantReservationBookingsIntent *)v7 earliestBookingDateForResults];
-  if (v24)
+  earliestBookingDateForResults3 = [(INGetAvailableRestaurantReservationBookingsIntent *)v7 earliestBookingDateForResults];
+  if (earliestBookingDateForResults3)
   {
-    v25 = v24;
-    v26 = [(INGetAvailableRestaurantReservationBookingsIntent *)self earliestBookingDateForResults];
+    v25 = earliestBookingDateForResults3;
+    earliestBookingDateForResults4 = [(INGetAvailableRestaurantReservationBookingsIntent *)self earliestBookingDateForResults];
 
-    if (v26)
+    if (earliestBookingDateForResults4)
     {
-      v27 = [(INGetAvailableRestaurantReservationBookingsIntent *)v7 earliestBookingDateForResults];
-      v28 = [(INGetAvailableRestaurantReservationBookingsIntent *)self earliestBookingDateForResults];
-      v22 = [v27 isEqualToDate:v28];
+      earliestBookingDateForResults5 = [(INGetAvailableRestaurantReservationBookingsIntent *)v7 earliestBookingDateForResults];
+      earliestBookingDateForResults6 = [(INGetAvailableRestaurantReservationBookingsIntent *)self earliestBookingDateForResults];
+      v22 = [earliestBookingDateForResults5 isEqualToDate:earliestBookingDateForResults6];
     }
   }
 
-  v29 = [(INGetAvailableRestaurantReservationBookingsIntent *)v7 latestBookingDateForResults];
-  if (v29)
+  latestBookingDateForResults = [(INGetAvailableRestaurantReservationBookingsIntent *)v7 latestBookingDateForResults];
+  if (latestBookingDateForResults)
   {
     v30 = 0;
   }
 
   else
   {
-    v31 = [(INGetAvailableRestaurantReservationBookingsIntent *)self latestBookingDateForResults];
-    v30 = v31 == 0;
+    latestBookingDateForResults2 = [(INGetAvailableRestaurantReservationBookingsIntent *)self latestBookingDateForResults];
+    v30 = latestBookingDateForResults2 == 0;
   }
 
-  v32 = [(INGetAvailableRestaurantReservationBookingsIntent *)v7 latestBookingDateForResults];
-  if (v32)
+  latestBookingDateForResults3 = [(INGetAvailableRestaurantReservationBookingsIntent *)v7 latestBookingDateForResults];
+  if (latestBookingDateForResults3)
   {
-    v33 = v32;
-    v34 = [(INGetAvailableRestaurantReservationBookingsIntent *)self latestBookingDateForResults];
+    v33 = latestBookingDateForResults3;
+    latestBookingDateForResults4 = [(INGetAvailableRestaurantReservationBookingsIntent *)self latestBookingDateForResults];
 
-    if (v34)
+    if (latestBookingDateForResults4)
     {
-      v35 = [(INGetAvailableRestaurantReservationBookingsIntent *)v7 latestBookingDateForResults];
-      v36 = [(INGetAvailableRestaurantReservationBookingsIntent *)self latestBookingDateForResults];
-      v30 = [v35 isEqualToDate:v36];
+      latestBookingDateForResults5 = [(INGetAvailableRestaurantReservationBookingsIntent *)v7 latestBookingDateForResults];
+      latestBookingDateForResults6 = [(INGetAvailableRestaurantReservationBookingsIntent *)self latestBookingDateForResults];
+      v30 = [latestBookingDateForResults5 isEqualToDate:latestBookingDateForResults6];
     }
   }
 
-  v37 = [(INGetAvailableRestaurantReservationBookingsIntent *)self restaurant];
-  v38 = [(INGetAvailableRestaurantReservationBookingsIntent *)v7 restaurant];
-  if ([v37 isEqual:v38])
+  restaurant = [(INGetAvailableRestaurantReservationBookingsIntent *)self restaurant];
+  restaurant2 = [(INGetAvailableRestaurantReservationBookingsIntent *)v7 restaurant];
+  if ([restaurant isEqual:restaurant2])
   {
-    v39 = [(INGetAvailableRestaurantReservationBookingsIntent *)self partySize];
-    v10 = (v39 == [(INGetAvailableRestaurantReservationBookingsIntent *)v7 partySize]) & v9 & v20 & v22 & v30;
+    partySize = [(INGetAvailableRestaurantReservationBookingsIntent *)self partySize];
+    v10 = (partySize == [(INGetAvailableRestaurantReservationBookingsIntent *)v7 partySize]) & v9 & v20 & v22 & v30;
   }
 
   else
@@ -279,57 +279,57 @@ LABEL_34:
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = INGetAvailableRestaurantReservationBookingsIntent;
-  v4 = a3;
-  [(INIntent *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_preferredBookingDate forKey:{@"preferredBookingDate", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_restaurant forKey:@"restaurant"];
-  [v4 encodeInteger:self->_partySize forKey:@"partySize"];
-  [v4 encodeObject:self->_preferredBookingDateComponents forKey:@"preferredBookingDateComponents"];
-  [v4 encodeObject:self->_maximumNumberOfResults forKey:@"maximumNumberOfResults"];
-  [v4 encodeObject:self->_earliestBookingDateForResults forKey:@"earliestBookingDateForResults"];
-  [v4 encodeObject:self->_latestBookingDateForResults forKey:@"latestBookingDateForResults"];
+  coderCopy = coder;
+  [(INIntent *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_preferredBookingDate forKey:{@"preferredBookingDate", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_restaurant forKey:@"restaurant"];
+  [coderCopy encodeInteger:self->_partySize forKey:@"partySize"];
+  [coderCopy encodeObject:self->_preferredBookingDateComponents forKey:@"preferredBookingDateComponents"];
+  [coderCopy encodeObject:self->_maximumNumberOfResults forKey:@"maximumNumberOfResults"];
+  [coderCopy encodeObject:self->_earliestBookingDateForResults forKey:@"earliestBookingDateForResults"];
+  [coderCopy encodeObject:self->_latestBookingDateForResults forKey:@"latestBookingDateForResults"];
 }
 
-- (INGetAvailableRestaurantReservationBookingsIntent)initWithCoder:(id)a3
+- (INGetAvailableRestaurantReservationBookingsIntent)initWithCoder:(id)coder
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = INGetAvailableRestaurantReservationBookingsIntent;
-  v5 = [(INIntent *)&v22 initWithCoder:v4];
+  v5 = [(INIntent *)&v22 initWithCoder:coderCopy];
   if (!v5)
   {
     goto LABEL_4;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"restaurant"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"restaurant"];
   if (v6)
   {
     restaurant = v5->_restaurant;
     v5->_restaurant = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"preferredBookingDate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"preferredBookingDate"];
     preferredBookingDate = v5->_preferredBookingDate;
     v5->_preferredBookingDate = v8;
 
-    v5->_partySize = [v4 decodeIntegerForKey:@"partySize"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"preferredBookingDateComponents"];
+    v5->_partySize = [coderCopy decodeIntegerForKey:@"partySize"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"preferredBookingDateComponents"];
     preferredBookingDateComponents = v5->_preferredBookingDateComponents;
     v5->_preferredBookingDateComponents = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"maximumNumberOfResults"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"maximumNumberOfResults"];
     maximumNumberOfResults = v5->_maximumNumberOfResults;
     v5->_maximumNumberOfResults = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"earliestBookingDateForResults"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"earliestBookingDateForResults"];
     earliestBookingDateForResults = v5->_earliestBookingDateForResults;
     v5->_earliestBookingDateForResults = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"latestBookingDateForResults"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"latestBookingDateForResults"];
     latestBookingDateForResults = v5->_latestBookingDateForResults;
     v5->_latestBookingDateForResults = v16;
 
@@ -385,7 +385,7 @@ LABEL_8:
   block[1] = 3221225472;
   block[2] = __70__INGetAvailableRestaurantReservationBookingsIntent_intentDescription__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (intentDescription_onceToken_42689 != -1)
   {
     dispatch_once(&intentDescription_onceToken_42689, block);

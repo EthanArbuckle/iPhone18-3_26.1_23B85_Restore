@@ -1,21 +1,21 @@
 @interface LNBundleMetadataGeneratorDescription
-- (BOOL)isEqual:(id)a3;
-- (LNBundleMetadataGeneratorDescription)initWithCoder:(id)a3;
-- (LNBundleMetadataGeneratorDescription)initWithName:(id)a3 version:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (LNBundleMetadataGeneratorDescription)initWithCoder:(id)coder;
+- (LNBundleMetadataGeneratorDescription)initWithName:(id)name version:(id)version;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNBundleMetadataGeneratorDescription
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -24,10 +24,10 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v7 = [(LNBundleMetadataGeneratorDescription *)self name];
-    v8 = [(LNBundleMetadataGeneratorDescription *)v6 name];
-    v9 = v7;
-    v10 = v8;
+    name = [(LNBundleMetadataGeneratorDescription *)self name];
+    name2 = [(LNBundleMetadataGeneratorDescription *)v6 name];
+    v9 = name;
+    v10 = name2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -54,10 +54,10 @@ LABEL_19:
       }
     }
 
-    v15 = [(LNBundleMetadataGeneratorDescription *)self version];
-    v16 = [(LNBundleMetadataGeneratorDescription *)v6 version];
-    v14 = v15;
-    v17 = v16;
+    version = [(LNBundleMetadataGeneratorDescription *)self version];
+    version2 = [(LNBundleMetadataGeneratorDescription *)v6 version];
+    v14 = version;
+    v17 = version2;
     v13 = v17;
     if (v14 == v17)
     {
@@ -84,10 +84,10 @@ LABEL_21:
 
 - (unint64_t)hash
 {
-  v3 = [(LNBundleMetadataGeneratorDescription *)self name];
-  v4 = [v3 hash];
-  v5 = [(LNBundleMetadataGeneratorDescription *)self version];
-  v6 = [v5 hash];
+  name = [(LNBundleMetadataGeneratorDescription *)self name];
+  v4 = [name hash];
+  version = [(LNBundleMetadataGeneratorDescription *)self version];
+  v6 = [version hash];
 
   return v6 ^ v4;
 }
@@ -97,18 +97,18 @@ LABEL_21:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNBundleMetadataGeneratorDescription *)self name];
-  v7 = [(LNBundleMetadataGeneratorDescription *)self version];
-  v8 = [v3 stringWithFormat:@"<%@: %p, name: %@, version: %@>", v5, self, v6, v7];
+  name = [(LNBundleMetadataGeneratorDescription *)self name];
+  version = [(LNBundleMetadataGeneratorDescription *)self version];
+  v8 = [v3 stringWithFormat:@"<%@: %p, name: %@, version: %@>", v5, self, name, version];
 
   return v8;
 }
 
-- (LNBundleMetadataGeneratorDescription)initWithCoder:(id)a3
+- (LNBundleMetadataGeneratorDescription)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"version"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"version"];
 
   if (v5)
   {
@@ -122,36 +122,36 @@ LABEL_21:
 
   if (v7)
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(LNBundleMetadataGeneratorDescription *)self initWithName:v5 version:v6];
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNBundleMetadataGeneratorDescription *)self name];
-  [v4 encodeObject:v5 forKey:@"name"];
+  coderCopy = coder;
+  name = [(LNBundleMetadataGeneratorDescription *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v6 = [(LNBundleMetadataGeneratorDescription *)self version];
-  [v4 encodeObject:v6 forKey:@"version"];
+  version = [(LNBundleMetadataGeneratorDescription *)self version];
+  [coderCopy encodeObject:version forKey:@"version"];
 }
 
-- (LNBundleMetadataGeneratorDescription)initWithName:(id)a3 version:(id)a4
+- (LNBundleMetadataGeneratorDescription)initWithName:(id)name version:(id)version
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  nameCopy = name;
+  versionCopy = version;
+  v9 = versionCopy;
+  if (nameCopy)
   {
-    if (v8)
+    if (versionCopy)
     {
       goto LABEL_3;
     }
@@ -159,8 +159,8 @@ LABEL_21:
 
   else
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"LNBundleMetadataGeneratorDescription.m" lineNumber:17 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNBundleMetadataGeneratorDescription.m" lineNumber:17 description:{@"Invalid parameter not satisfying: %@", @"name"}];
 
     if (v9)
     {
@@ -168,8 +168,8 @@ LABEL_21:
     }
   }
 
-  v18 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"LNBundleMetadataGeneratorDescription.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"version"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNBundleMetadataGeneratorDescription.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"version"}];
 
 LABEL_3:
   v19.receiver = self;
@@ -177,7 +177,7 @@ LABEL_3:
   v10 = [(LNBundleMetadataGeneratorDescription *)&v19 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [nameCopy copy];
     name = v10->_name;
     v10->_name = v11;
 

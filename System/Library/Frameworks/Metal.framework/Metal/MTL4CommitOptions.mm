@@ -1,8 +1,8 @@
 @interface MTL4CommitOptions
 - (MTL4CommitOptions)init;
-- (void)addFeedbackHandler:(id)a3;
+- (void)addFeedbackHandler:(id)handler;
 - (void)dealloc;
-- (void)setCommitFeedbackDispatch:(id)a3;
+- (void)setCommitFeedbackDispatch:(id)dispatch;
 @end
 
 @implementation MTL4CommitOptions
@@ -27,9 +27,9 @@
   [(MTL4CommitOptions *)&v3 dealloc];
 }
 
-- (void)addFeedbackHandler:(id)a3
+- (void)addFeedbackHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
     commitFeedbackDispatch = self->_commitFeedbackDispatch;
     if (!commitFeedbackDispatch)
@@ -38,15 +38,15 @@
       self->_commitFeedbackDispatch = commitFeedbackDispatch;
     }
 
-    [(_MTL4CommitFeedbackDispatch *)commitFeedbackDispatch addFeedbackHandler:a3];
+    [(_MTL4CommitFeedbackDispatch *)commitFeedbackDispatch addFeedbackHandler:handler];
   }
 }
 
-- (void)setCommitFeedbackDispatch:(id)a3
+- (void)setCommitFeedbackDispatch:(id)dispatch
 {
-  v5 = a3;
+  dispatchCopy = dispatch;
 
-  self->_commitFeedbackDispatch = a3;
+  self->_commitFeedbackDispatch = dispatch;
 }
 
 @end

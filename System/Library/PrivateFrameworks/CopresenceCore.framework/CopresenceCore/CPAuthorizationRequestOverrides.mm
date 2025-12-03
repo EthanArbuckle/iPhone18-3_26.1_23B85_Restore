@@ -1,18 +1,18 @@
 @interface CPAuthorizationRequestOverrides
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CPAuthorizationRequestOverrides)init;
-- (CPAuthorizationRequestOverrides)initWithCoder:(id)a3;
+- (CPAuthorizationRequestOverrides)initWithCoder:(id)coder;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPAuthorizationRequestOverrides
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -21,7 +21,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = AuthorizationRequestOverrides.isEqual(_:)(v8);
@@ -32,25 +32,25 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AuthorizationRequestOverrides.hash.getter();
 
   return v3;
 }
 
-- (CPAuthorizationRequestOverrides)initWithCoder:(id)a3
+- (CPAuthorizationRequestOverrides)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = specialized AuthorizationRequestOverrides.init(coder:)(v3);
+  coderCopy = coder;
+  v4 = specialized AuthorizationRequestOverrides.init(coder:)(coderCopy);
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  AuthorizationRequestOverrides.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  AuthorizationRequestOverrides.encode(with:)(coderCopy);
 }
 
 - (CPAuthorizationRequestOverrides)init

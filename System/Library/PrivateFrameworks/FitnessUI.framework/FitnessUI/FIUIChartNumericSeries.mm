@@ -1,5 +1,5 @@
 @interface FIUIChartNumericSeries
-- (CGPoint)_CGPointFromChartPoint:(id)a3;
+- (CGPoint)_CGPointFromChartPoint:(id)point;
 - (id)CGPointsFromDataSet;
 @end
 
@@ -8,15 +8,15 @@
 - (id)CGPointsFromDataSet
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(FIUIChartSeries *)self dataSet];
-  v5 = [v4 points];
+  dataSet = [(FIUIChartSeries *)self dataSet];
+  points = [dataSet points];
 
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [points countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -27,31 +27,31 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(points);
         }
 
         [(FIUIChartNumericSeries *)self _CGPointFromChartPoint:*(*(&v12 + 1) + 8 * i)];
         v10 = [MEMORY[0x1E696B098] valueWithCGPoint:?];
-        [v3 addObject:v10];
+        [array addObject:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [points countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 
-  return v3;
+  return array;
 }
 
-- (CGPoint)_CGPointFromChartPoint:(id)a3
+- (CGPoint)_CGPointFromChartPoint:(id)point
 {
-  v4 = a3;
-  [(FIUIChartSeries *)self xValueForPointFromChartPoint:v4];
+  pointCopy = point;
+  [(FIUIChartSeries *)self xValueForPointFromChartPoint:pointCopy];
   v6 = v5;
-  v7 = [v4 yValue];
+  yValue = [pointCopy yValue];
 
-  [(FIUIChartSeries *)self yValueForPointFromChartPointValue:v7];
+  [(FIUIChartSeries *)self yValueForPointFromChartPointValue:yValue];
   v9 = v8;
 
   v10 = v6;

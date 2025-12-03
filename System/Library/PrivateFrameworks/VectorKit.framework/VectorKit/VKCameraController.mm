@@ -1,34 +1,34 @@
 @interface VKCameraController
 - ($F24F406B2B787EFB06265DBA3D28CBD5)centerCoordinate;
-- (BOOL)canZoomInForTileSize:(int64_t)a3;
-- (BOOL)canZoomOutForTileSize:(int64_t)a3;
+- (BOOL)canZoomInForTileSize:(int64_t)size;
+- (BOOL)canZoomOutForTileSize:(int64_t)size;
 - (BOOL)isAnimating;
 - (BOOL)isChangingRegion;
 - (CGPoint)centerScreenPoint;
-- (CGPoint)scaledScreenPointForPoint:(CGPoint)a3;
+- (CGPoint)scaledScreenPointForPoint:(CGPoint)point;
 - (GEOMapRegion)mapRegion;
 - (GEOMapRegion)mapRegionIgnoringEdgeInsets;
-- (Matrix<int,)cursorFromScreenPoint:(CGPoint)a3;
-- (VKCameraController)initWithMapDataAccess:(void *)a3 animationRunner:(AnimationRunner *)a4 runLoopController:(RunLoopController *)a5 cameraDelegate:(id)a6;
+- (Matrix<int,)cursorFromScreenPoint:(CGPoint)point;
+- (VKCameraController)initWithMapDataAccess:(void *)access animationRunner:(AnimationRunner *)runner runLoopController:(RunLoopController *)controller cameraDelegate:(id)delegate;
 - (VKEdgeInsets)edgeInsets;
-- (double)currentZoomLevelForTileSize:(int64_t)a3;
-- (double)maximumZoomLevelForTileSize:(int64_t)a3;
-- (double)minimumZoomLevelForTileSize:(int64_t)a3;
-- (double)topDownMinimumZoomLevelForTileSize:(int64_t)a3;
+- (double)currentZoomLevelForTileSize:(int64_t)size;
+- (double)maximumZoomLevelForTileSize:(int64_t)size;
+- (double)minimumZoomLevelForTileSize:(int64_t)size;
+- (double)topDownMinimumZoomLevelForTileSize:(int64_t)size;
 - (id).cxx_construct;
 - (id)cameraDelegate;
 - (id)canvas;
-- (id)getCameraType:(unsigned __int8)a3;
-- (id)getMapEngineModeType:(unsigned __int8)a3;
-- (id)getWorldType:(unsigned __int8)a3;
+- (id)getCameraType:(unsigned __int8)type;
+- (id)getMapEngineModeType:(unsigned __int8)type;
+- (id)getWorldType:(unsigned __int8)type;
 - (shared_ptr<gdc::Camera>)camera;
 - (unint64_t)regionChangeCount;
-- (void)populateDebugNode:(void *)a3 withOptions:(const void *)a4;
-- (void)setCamera:(shared_ptr<gdc::Camera>)a3;
-- (void)setCameraDelegate:(id)a3;
-- (void)setCanvas:(id)a3;
-- (void)setVkCamera:(id)a3;
-- (void)transferStatesWithCameraController:(id)a3;
+- (void)populateDebugNode:(void *)node withOptions:(const void *)options;
+- (void)setCamera:(shared_ptr<gdc::Camera>)camera;
+- (void)setCameraDelegate:(id)delegate;
+- (void)setCanvas:(id)canvas;
+- (void)setVkCamera:(id)camera;
+- (void)transferStatesWithCameraController:(id)controller;
 @end
 
 @implementation VKCameraController
@@ -64,10 +64,10 @@
 
 - (unint64_t)regionChangeCount
 {
-  v2 = [(VKCameraController *)self cameraDelegate];
-  v3 = [v2 regionChangeCount];
+  cameraDelegate = [(VKCameraController *)self cameraDelegate];
+  regionChangeCount = [cameraDelegate regionChangeCount];
 
-  return v3;
+  return regionChangeCount;
 }
 
 - (id)cameraDelegate
@@ -112,48 +112,48 @@
 
 - (GEOMapRegion)mapRegion
 {
-  v3 = [(VKCameraController *)self canvas];
-  [v3 size];
+  canvas = [(VKCameraController *)self canvas];
+  [canvas size];
   if (v4 == 0.0)
   {
   }
 
   else
   {
-    v5 = [(VKCameraController *)self canvas];
-    [v5 size];
+    canvas2 = [(VKCameraController *)self canvas];
+    [canvas2 size];
     v7 = v6;
 
     if (v7 != 0.0)
     {
       [(VKCameraController *)self edgeInsets];
       v9 = v8;
-      v10 = [(VKCameraController *)self canvas];
-      [v10 size];
+      canvas3 = [(VKCameraController *)self canvas];
+      [canvas3 size];
       v12 = v11;
       [(VKCameraController *)self edgeInsets];
       v14 = v13;
-      v15 = [(VKCameraController *)self canvas];
-      [v15 size];
+      canvas4 = [(VKCameraController *)self canvas];
+      [canvas4 size];
       v17 = v16;
       [(VKCameraController *)self edgeInsets];
       v19 = v18;
-      v20 = [(VKCameraController *)self canvas];
-      [v20 size];
+      canvas5 = [(VKCameraController *)self canvas];
+      [canvas5 size];
       v22 = v21;
       [(VKCameraController *)self edgeInsets];
       v24 = v23;
-      v25 = [(VKCameraController *)self canvas];
-      [v25 size];
+      canvas6 = [(VKCameraController *)self canvas];
+      [canvas6 size];
       v27 = v26;
 
-      v28 = [(VKCameraController *)self vkCamera];
+      vkCamera = [(VKCameraController *)self vkCamera];
       v29 = (v24 + v24) / v27;
       v30 = (v19 + v19) / v22;
       v31 = (v14 + v14) / v17;
       v32 = (v9 + v9) / v12;
       v35 = 0;
-      VKCameraCalculateEnclosingRegion(v28, &v35, 0, v32, v31, v30, v29);
+      VKCameraCalculateEnclosingRegion(vkCamera, &v35, 0, v32, v31, v30, v29);
       v33 = v35;
 
       goto LABEL_6;
@@ -181,23 +181,23 @@ LABEL_6:
 
 - (GEOMapRegion)mapRegionIgnoringEdgeInsets
 {
-  v3 = [(VKCameraController *)self canvas];
-  [v3 size];
+  canvas = [(VKCameraController *)self canvas];
+  [canvas size];
   if (v4 == 0.0)
   {
   }
 
   else
   {
-    v5 = [(VKCameraController *)self canvas];
-    [v5 size];
+    canvas2 = [(VKCameraController *)self canvas];
+    [canvas2 size];
     v7 = v6;
 
     if (v7 != 0.0)
     {
-      v8 = [(VKCameraController *)self vkCamera];
+      vkCamera = [(VKCameraController *)self vkCamera];
       v11 = 0;
-      VKCameraCalculateEnclosingRegion(v8, &v11, 0, 0.0, 0.0, 0.0, 0.0);
+      VKCameraCalculateEnclosingRegion(vkCamera, &v11, 0, 0.0, 0.0, 0.0, 0.0);
       v9 = v11;
 
       goto LABEL_6;
@@ -210,11 +210,11 @@ LABEL_6:
   return v9;
 }
 
-- (void)populateDebugNode:(void *)a3 withOptions:(const void *)a4
+- (void)populateDebugNode:(void *)node withOptions:(const void *)options
 {
   std::string::basic_string[abi:nn200100]<0>(&v63, "Animating");
   gdc::DebugTreeValue::DebugTreeValue(v60, [(VKCameraController *)self isAnimating]);
-  gdc::DebugTreeNode::addProperty(a3, &v63, v60);
+  gdc::DebugTreeNode::addProperty(node, &v63, v60);
   if (v62 < 0)
   {
     operator delete(v61);
@@ -227,7 +227,7 @@ LABEL_6:
 
   std::string::basic_string[abi:nn200100]<0>(&v63, "Gesturing");
   gdc::DebugTreeValue::DebugTreeValue(v57, [(VKCameraController *)self isGesturing]);
-  gdc::DebugTreeNode::addProperty(a3, &v63, v57);
+  gdc::DebugTreeNode::addProperty(node, &v63, v57);
   if (v59 < 0)
   {
     operator delete(v58);
@@ -240,7 +240,7 @@ LABEL_6:
 
   std::string::basic_string[abi:nn200100]<0>(&v63, "RegionChangeCount");
   gdc::DebugTreeValue::DebugTreeValue(v54, [(VKCameraController *)self regionChangeCount]);
-  gdc::DebugTreeNode::addProperty(a3, &v63, v54);
+  gdc::DebugTreeNode::addProperty(node, &v63, v54);
   if (v56 < 0)
   {
     operator delete(__p);
@@ -252,9 +252,9 @@ LABEL_6:
   }
 
   std::string::basic_string[abi:nn200100]<0>(&v63, "VKCamera Detailed Description");
-  v6 = [(VKCamera *)self->_vkCamera detailedDescription];
-  gdc::DebugTreeValue::DebugTreeValue(v51, [v6 UTF8String]);
-  gdc::DebugTreeNode::addProperty(a3, &v63, v51);
+  detailedDescription = [(VKCamera *)self->_vkCamera detailedDescription];
+  gdc::DebugTreeValue::DebugTreeValue(v51, [detailedDescription UTF8String]);
+  gdc::DebugTreeNode::addProperty(node, &v63, v51);
   if (v53 < 0)
   {
     operator delete(v52);
@@ -268,7 +268,7 @@ LABEL_6:
   std::string::basic_string[abi:nn200100]<0>(&v63, "Distance From Target");
   [(VKCameraController *)self distanceFromCenterCoordinate];
   gdc::DebugTreeValue::DebugTreeValue(v48, v7);
-  gdc::DebugTreeNode::addProperty(a3, &v63, v48);
+  gdc::DebugTreeNode::addProperty(node, &v63, v48);
   if (v50 < 0)
   {
     operator delete(v49);
@@ -280,7 +280,7 @@ LABEL_6:
   }
 
   std::string::basic_string[abi:nn200100]<0>(&v63, "Camera Target");
-  v8 = gdc::DebugTreeNode::createChildNode(a3, &v63);
+  v8 = gdc::DebugTreeNode::createChildNode(node, &v63);
   if (v64 < 0)
   {
     operator delete(v63);
@@ -334,7 +334,7 @@ LABEL_6:
   }
 
   std::string::basic_string[abi:nn200100]<0>(&v63, "Camera Position");
-  v18 = gdc::DebugTreeNode::createChildNode(a3, &v63);
+  v18 = gdc::DebugTreeNode::createChildNode(node, &v63);
   if (v64 < 0)
   {
     operator delete(v63);
@@ -398,78 +398,78 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)canZoomOutForTileSize:(int64_t)a3
+- (BOOL)canZoomOutForTileSize:(int64_t)size
 {
   [(VKCameraController *)self minimumZoomLevelForTileSize:?];
   v6 = v5;
-  [(VKCameraController *)self currentZoomLevelForTileSize:a3];
+  [(VKCameraController *)self currentZoomLevelForTileSize:size];
   return vabdd_f64(v7, v6) >= 0.8;
 }
 
-- (BOOL)canZoomInForTileSize:(int64_t)a3
+- (BOOL)canZoomInForTileSize:(int64_t)size
 {
   [(VKCameraController *)self maximumZoomLevelForTileSize:?];
   v6 = v5;
-  [(VKCameraController *)self currentZoomLevelForTileSize:a3];
+  [(VKCameraController *)self currentZoomLevelForTileSize:size];
   return vabdd_f64(v7, v6) >= 0.8;
 }
 
-- (double)topDownMinimumZoomLevelForTileSize:(int64_t)a3
+- (double)topDownMinimumZoomLevelForTileSize:(int64_t)size
 {
   [(VKCameraController *)self topDownMinimumZoomLevel];
   v6 = v5;
-  [(VKCameraController *)self zoomLevelAdjustmentForTileSize:a3];
+  [(VKCameraController *)self zoomLevelAdjustmentForTileSize:size];
   return v7 + v6;
 }
 
-- (double)currentZoomLevelForTileSize:(int64_t)a3
+- (double)currentZoomLevelForTileSize:(int64_t)size
 {
   [(VKCameraController *)self currentZoomLevel];
   v6 = v5;
-  [(VKCameraController *)self zoomLevelAdjustmentForTileSize:a3];
+  [(VKCameraController *)self zoomLevelAdjustmentForTileSize:size];
   return v7 + v6;
 }
 
-- (double)maximumZoomLevelForTileSize:(int64_t)a3
+- (double)maximumZoomLevelForTileSize:(int64_t)size
 {
   [(VKCameraController *)self maximumZoomLevel];
   v6 = v5;
-  [(VKCameraController *)self zoomLevelAdjustmentForTileSize:a3];
+  [(VKCameraController *)self zoomLevelAdjustmentForTileSize:size];
   return v7 + v6;
 }
 
-- (double)minimumZoomLevelForTileSize:(int64_t)a3
+- (double)minimumZoomLevelForTileSize:(int64_t)size
 {
   [(VKCameraController *)self minimumZoomLevel];
   v6 = v5;
-  [(VKCameraController *)self zoomLevelAdjustmentForTileSize:a3];
+  [(VKCameraController *)self zoomLevelAdjustmentForTileSize:size];
   return v7 + v6;
 }
 
-- (Matrix<int,)cursorFromScreenPoint:(CGPoint)a3
+- (Matrix<int,)cursorFromScreenPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(VKCameraController *)self canvas];
-  [v6 contentScale];
+  y = point.y;
+  x = point.x;
+  canvas = [(VKCameraController *)self canvas];
+  [canvas contentScale];
   v8 = v7;
 
-  v9 = [(VKCameraController *)self canvas];
-  [v9 size];
+  canvas2 = [(VKCameraController *)self canvas];
+  [canvas2 size];
   v11 = v10;
-  v12 = [(VKCameraController *)self canvas];
-  [v12 size];
+  canvas3 = [(VKCameraController *)self canvas];
+  [canvas3 size];
   v14 = ((v8 - y * v8) * v13);
 
   return ((v8 * x * v11) | (v14 << 32));
 }
 
-- (CGPoint)scaledScreenPointForPoint:(CGPoint)a3
+- (CGPoint)scaledScreenPointForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(VKCameraController *)self canvas];
-  [v5 size];
+  y = point.y;
+  x = point.x;
+  canvas = [(VKCameraController *)self canvas];
+  [canvas size];
   v7 = v6;
   v9 = v8;
 
@@ -484,13 +484,13 @@ LABEL_6:
 
 - (BOOL)isChangingRegion
 {
-  v2 = [(VKCameraController *)self cameraDelegate];
-  v3 = [v2 regionChangeState];
+  cameraDelegate = [(VKCameraController *)self cameraDelegate];
+  regionChangeState = [cameraDelegate regionChangeState];
 
   result = 0;
-  if (*v3)
+  if (*regionChangeState)
   {
-    v4 = v3[1];
+    v4 = regionChangeState[1];
     if (v4)
     {
       if (*(v4 + 8) != -1 && *(v4 + 8))
@@ -505,16 +505,16 @@ LABEL_6:
 
 - (BOOL)isAnimating
 {
-  v2 = [(VKCameraController *)self cameraDelegate];
-  v3 = [v2 regionChangeState];
+  cameraDelegate = [(VKCameraController *)self cameraDelegate];
+  regionChangeState = [cameraDelegate regionChangeState];
 
   result = 0;
-  if (*v3)
+  if (*regionChangeState)
   {
-    v4 = *(v3 + 8);
+    v4 = *(regionChangeState + 8);
     if (v4)
     {
-      if (*(v4 + 8) != -1 && *(v4 + 8) && (**v3 & 1) != 0)
+      if (*(v4 + 8) != -1 && *(v4 + 8) && (**regionChangeState & 1) != 0)
       {
         return 1;
       }
@@ -524,50 +524,50 @@ LABEL_6:
   return result;
 }
 
-- (id)getMapEngineModeType:(unsigned __int8)a3
+- (id)getMapEngineModeType:(unsigned __int8)type
 {
-  if (a3 > 0x11u)
+  if (type > 0x11u)
   {
     v3 = "<Invalid>";
   }
 
   else
   {
-    v3 = off_1E7B38AA0[a3];
+    v3 = off_1E7B38AA0[type];
   }
 
   return [MEMORY[0x1E696AEC0] stringWithUTF8String:v3];
 }
 
-- (id)getCameraType:(unsigned __int8)a3
+- (id)getCameraType:(unsigned __int8)type
 {
-  if (a3 > 3u)
+  if (type > 3u)
   {
     return @"Unknown";
   }
 
   else
   {
-    return *(&off_1E7B31FA0 + a3);
+    return *(&off_1E7B31FA0 + type);
   }
 }
 
-- (id)getWorldType:(unsigned __int8)a3
+- (id)getWorldType:(unsigned __int8)type
 {
-  if (a3 > 5u)
+  if (type > 5u)
   {
     return @"Unknown";
   }
 
   else
   {
-    return *(&off_1E7B31F70 + a3);
+    return *(&off_1E7B31F70 + type);
   }
 }
 
-- (void)setCameraDelegate:(id)a3
+- (void)setCameraDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_cameraDelegate);
 
   v5 = obj;
@@ -578,9 +578,9 @@ LABEL_6:
   }
 }
 
-- (void)setCanvas:(id)a3
+- (void)setCanvas:(id)canvas
 {
-  obj = a3;
+  obj = canvas;
   WeakRetained = objc_loadWeakRetained(&self->_canvas);
 
   v5 = obj;
@@ -591,10 +591,10 @@ LABEL_6:
   }
 }
 
-- (void)setCamera:(shared_ptr<gdc::Camera>)a3
+- (void)setCamera:(shared_ptr<gdc::Camera>)camera
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *camera.__ptr_;
+  v3 = *(camera.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);
@@ -609,47 +609,47 @@ LABEL_6:
   }
 }
 
-- (void)setVkCamera:(id)a3
+- (void)setVkCamera:(id)camera
 {
-  v5 = a3;
+  cameraCopy = camera;
   vkCamera = self->_vkCamera;
   p_vkCamera = &self->_vkCamera;
-  if (vkCamera != v5)
+  if (vkCamera != cameraCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_vkCamera, a3);
-    v5 = v8;
+    v8 = cameraCopy;
+    objc_storeStrong(p_vkCamera, camera);
+    cameraCopy = v8;
   }
 }
 
-- (void)transferStatesWithCameraController:(id)a3
+- (void)transferStatesWithCameraController:(id)controller
 {
-  v4 = a3;
-  -[VKCameraController setStaysCenteredDuringRotation:](self, "setStaysCenteredDuringRotation:", [v4 staysCenteredDuringRotation]);
-  -[VKCameraController setStaysCenteredDuringPinch:](self, "setStaysCenteredDuringPinch:", [v4 staysCenteredDuringPinch]);
-  -[VKCameraController setGesturing:](self, "setGesturing:", [v4 isGesturing]);
-  -[VKCameraController setIsPitchEnabled:](self, "setIsPitchEnabled:", [v4 isPitchEnabled]);
-  -[VKCameraController setEdgeInsetsAnimating:](self, "setEdgeInsetsAnimating:", [v4 edgeInsetsAnimating]);
+  controllerCopy = controller;
+  -[VKCameraController setStaysCenteredDuringRotation:](self, "setStaysCenteredDuringRotation:", [controllerCopy staysCenteredDuringRotation]);
+  -[VKCameraController setStaysCenteredDuringPinch:](self, "setStaysCenteredDuringPinch:", [controllerCopy staysCenteredDuringPinch]);
+  -[VKCameraController setGesturing:](self, "setGesturing:", [controllerCopy isGesturing]);
+  -[VKCameraController setIsPitchEnabled:](self, "setIsPitchEnabled:", [controllerCopy isPitchEnabled]);
+  -[VKCameraController setEdgeInsetsAnimating:](self, "setEdgeInsetsAnimating:", [controllerCopy edgeInsetsAnimating]);
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 vkCamera];
+    vkCamera = [controllerCopy vkCamera];
 
-    if (v5)
+    if (vkCamera)
     {
-      v6 = [v4 vkCamera];
-      v7 = [v6 regionRestriction];
-      [(VKCameraController *)self setRegionRestriction:v7];
+      vkCamera2 = [controllerCopy vkCamera];
+      regionRestriction = [vkCamera2 regionRestriction];
+      [(VKCameraController *)self setRegionRestriction:regionRestriction];
     }
   }
 
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
-    v8 = v4;
-    v9 = self;
-    v10 = [v8 trackingAnnotation];
-    if (v10)
+    v8 = controllerCopy;
+    selfCopy = self;
+    trackingAnnotation = [v8 trackingAnnotation];
+    if (trackingAnnotation)
     {
-      v11 = [v8 isTrackingHeading];
+      isTrackingHeading = [v8 isTrackingHeading];
       [v8 stopTrackingAnnotation];
       if (v8)
       {
@@ -661,33 +661,33 @@ LABEL_6:
         memset(v12, 0, sizeof(v12));
       }
 
-      [(VKCameraController *)v9 setAnnotationTrackingBehavior:v12];
-      [(VKCameraController *)v9 startTrackingAnnotation:v10 trackHeading:v11 animated:0 duration:0 timingFunction:-1.0];
+      [(VKCameraController *)selfCopy setAnnotationTrackingBehavior:v12];
+      [(VKCameraController *)selfCopy startTrackingAnnotation:trackingAnnotation trackHeading:isTrackingHeading animated:0 duration:0 timingFunction:-1.0];
     }
   }
 }
 
-- (VKCameraController)initWithMapDataAccess:(void *)a3 animationRunner:(AnimationRunner *)a4 runLoopController:(RunLoopController *)a5 cameraDelegate:(id)a6
+- (VKCameraController)initWithMapDataAccess:(void *)access animationRunner:(AnimationRunner *)runner runLoopController:(RunLoopController *)controller cameraDelegate:(id)delegate
 {
-  v10 = a6;
-  if (v10 && (v14.receiver = self, v14.super_class = VKCameraController, v11 = [(VKCameraController *)&v14 init], (self = v11) != 0))
+  delegateCopy = delegate;
+  if (delegateCopy && (v14.receiver = self, v14.super_class = VKCameraController, v11 = [(VKCameraController *)&v14 init], (self = v11) != 0))
   {
-    v11->_mapDataAccess = a3;
-    v11->_animationRunner = a4;
-    v11->_runLoopController = a5;
-    objc_storeWeak(&v11->_cameraDelegate, v10);
+    v11->_mapDataAccess = access;
+    v11->_animationRunner = runner;
+    v11->_runLoopController = controller;
+    objc_storeWeak(&v11->_cameraDelegate, delegateCopy);
     self->_baseDisplayRate = -1;
     self->_maxDisplayRate = -1;
     self = self;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 @end

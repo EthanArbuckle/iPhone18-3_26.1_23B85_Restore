@@ -1,15 +1,15 @@
 @interface SiriTTSTrainingAgent
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (SiriTTSTrainerAgentDelegate)delegate;
 - (SiriTTSTrainingAgent)init;
-- (int64_t)trainerTaskEvent:(int64_t)a3 currentValue:(int64_t)a4 totalValue:(int64_t)a5;
-- (void)cancelTask:(id)a3 reply:(id)a4;
-- (void)cleanUpTaskQueue:(id)a3;
-- (void)getAllTasksWithReply:(id)a3;
-- (void)getCurrentAssetVersion:(id)a3 name:(id)a4 reply:(id)a5;
-- (void)getRecordingMetadata:(id)a3 name:(id)a4 reply:(id)a5;
-- (void)getTaskById:(id)a3 reply:(id)a4;
-- (void)startRequest:(id)a3 reply:(id)a4;
+- (int64_t)trainerTaskEvent:(int64_t)event currentValue:(int64_t)value totalValue:(int64_t)totalValue;
+- (void)cancelTask:(id)task reply:(id)reply;
+- (void)cleanUpTaskQueue:(id)queue;
+- (void)getAllTasksWithReply:(id)reply;
+- (void)getCurrentAssetVersion:(id)version name:(id)name reply:(id)reply;
+- (void)getRecordingMetadata:(id)metadata name:(id)name reply:(id)reply;
+- (void)getTaskById:(id)id reply:(id)reply;
+- (void)startRequest:(id)request reply:(id)reply;
 @end
 
 @implementation SiriTTSTrainingAgent
@@ -40,12 +40,12 @@
   [(NSXPCListener *)v2->_xpcListener setDelegate:v2];
   v2->_agentDeferred = 0;
   v13 = +[TrainingTaskDatabase sharedInstance];
-  v14 = [v13 getSubmittedTasks];
+  getSubmittedTasks = [v13 getSubmittedTasks];
 
   v15 = SiriTTSTrainerGetLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v14 count];
+    v16 = [getSubmittedTasks count];
     *buf = 67109120;
     v30 = v16;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Existing training task count: %d", buf, 8u);
@@ -55,7 +55,7 @@
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v17 = v14;
+  v17 = getSubmittedTasks;
   v18 = [v17 countByEnumeratingWithState:&v25 objects:buf count:16];
   if (v18)
   {
@@ -95,25 +95,25 @@
   return v2;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [v5 valueForEntitlement:@"com.apple.SiriTTSTrainingAgent.training"];
+  connectionCopy = connection;
+  v6 = [connectionCopy valueForEntitlement:@"com.apple.SiriTTSTrainingAgent.training"];
   if (objc_opt_respondsToSelector() & 1) != 0 && ([v6 BOOLValue])
   {
     v7 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___SiriTTSTrainerAgentDelegate];
-    [v5 setRemoteObjectInterface:v7];
+    [connectionCopy setRemoteObjectInterface:v7];
     v8 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___SiriTTSTrainerAgentProtocol];
     v14 = objc_opt_class();
     v9 = [NSArray arrayWithObjects:&v14 count:1];
     v10 = [NSSet setWithArray:v9];
 
     [v8 setClasses:v10 forSelector:"startRequest:reply:" argumentIndex:0 ofReply:0];
-    [v5 setExportedInterface:v8];
-    [v5 setExportedObject:self];
-    [v5 setInvalidationHandler:&stru_100025310];
-    objc_storeWeak(&self->_connection, v5);
-    [v5 resume];
+    [connectionCopy setExportedInterface:v8];
+    [connectionCopy setExportedObject:self];
+    [connectionCopy setInvalidationHandler:&stru_100025310];
+    objc_storeWeak(&self->_connection, connectionCopy);
+    [connectionCopy resume];
 
     v11 = 1;
   }
@@ -136,22 +136,22 @@
 - (SiriTTSTrainerAgentDelegate)delegate
 {
   WeakRetained = objc_loadWeakRetained(&self->_connection);
-  v3 = [WeakRetained remoteObjectProxy];
+  remoteObjectProxy = [WeakRetained remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
-- (void)getRecordingMetadata:(id)a3 name:(id)a4 reply:(id)a5
+- (void)getRecordingMetadata:(id)metadata name:(id)name reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = sub_10000E02C(self, v8, v9, 1);
+  metadataCopy = metadata;
+  nameCopy = name;
+  replyCopy = reply;
+  v11 = sub_10000E02C(self, metadataCopy, nameCopy, 1);
   if (!v11)
   {
     v12 = +[NSBundle mainBundle];
-    v13 = [v12 resourcePath];
-    v31 = v13;
+    resourcePath = [v12 resourcePath];
+    v31 = resourcePath;
     v14 = [NSArray arrayWithObjects:&v31 count:1];
     v11 = [NSString pathWithComponents:v14];
   }
@@ -190,50 +190,50 @@
       _os_log_error_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "Recording metadata file doesn't exist. path=%@", buf, 0xCu);
     }
 
-    v10[2](v10, v23, 0);
+    replyCopy[2](replyCopy, v23, 0);
   }
 
   else
   {
-    (v10)[2](v10, 0, v16);
+    (replyCopy)[2](replyCopy, 0, v16);
   }
 }
 
-- (void)getCurrentAssetVersion:(id)a3 name:(id)a4 reply:(id)a5
+- (void)getCurrentAssetVersion:(id)version name:(id)name reply:(id)reply
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10000E2EC;
   v9[3] = &unk_100025338;
-  v10 = a5;
-  v8 = v10;
-  [(SiriTTSTrainingAgent *)self installedTrainingAssetsForLanguage:a3 name:a4 type:0 reply:v9];
+  replyCopy = reply;
+  v8 = replyCopy;
+  [(SiriTTSTrainingAgent *)self installedTrainingAssetsForLanguage:version name:name type:0 reply:v9];
 }
 
-- (void)startRequest:(id)a3 reply:(id)a4
+- (void)startRequest:(id)request reply:(id)reply
 {
-  v5 = a3;
-  v49 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   v6 = SiriTTSTrainerGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 taskId];
-    v8 = [v5 assetLanguage];
-    v9 = [v5 trainingAssetPath];
-    v10 = [v5 dataAssetPath];
-    v11 = [v5 inferenceAssetPath];
-    v12 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v5 forceToStart]);
-    v13 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v5 taskMode]);
+    taskId = [requestCopy taskId];
+    assetLanguage = [requestCopy assetLanguage];
+    trainingAssetPath = [requestCopy trainingAssetPath];
+    dataAssetPath = [requestCopy dataAssetPath];
+    inferenceAssetPath = [requestCopy inferenceAssetPath];
+    v12 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [requestCopy forceToStart]);
+    v13 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [requestCopy taskMode]);
     *buf = 138413826;
-    v53 = v7;
+    v53 = taskId;
     v54 = 2112;
-    v55 = v8;
+    v55 = assetLanguage;
     v56 = 2112;
-    v57 = v9;
+    v57 = trainingAssetPath;
     v58 = 2112;
-    v59 = v10;
+    v59 = dataAssetPath;
     v60 = 2112;
-    v61 = v11;
+    v61 = inferenceAssetPath;
     v62 = 2112;
     v63 = v12;
     v64 = 2112;
@@ -241,52 +241,52 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Received request: taskId=%@ assetLanguage=%@ trainingAssetPath=%@ dataAssetPath=%@ inferenceAssetPath=%@ forceToStart=%@ taskMode=%@", buf, 0x48u);
   }
 
-  v14 = [[SiriTTSTrainerTaskInternal alloc] initWithTask:v5];
+  v14 = [[SiriTTSTrainerTaskInternal alloc] initWithTask:requestCopy];
   v15 = +[NSDate now];
   [(SiriTTSTrainerTaskInternal *)v14 setTaskSubmissionDate:v15];
 
-  v16 = [v5 taskId];
-  v17 = v16 == 0;
+  taskId2 = [requestCopy taskId];
+  v17 = taskId2 == 0;
 
   if (v17)
   {
     v26 = +[NSUUID UUID];
-    v27 = [v26 UUIDString];
-    [(SiriTTSTrainerTaskInternal *)v14 setTaskId:v27];
+    uUIDString = [v26 UUIDString];
+    [(SiriTTSTrainerTaskInternal *)v14 setTaskId:uUIDString];
   }
 
   else
   {
-    v18 = [v5 taskId];
-    [(SiriTTSTrainerTaskInternal *)v14 setTaskId:v18];
+    taskId3 = [requestCopy taskId];
+    [(SiriTTSTrainerTaskInternal *)v14 setTaskId:taskId3];
 
     v19 = +[TrainingTaskDatabase sharedInstance];
-    v20 = [(SiriTTSTrainerTaskInternal *)v14 taskId];
-    v21 = [v19 getTaskById:v20];
+    taskId4 = [(SiriTTSTrainerTaskInternal *)v14 taskId];
+    error = [v19 getTaskById:taskId4];
 
-    if (v21)
+    if (error)
     {
       v22 = SiriTTSTrainerGetLog();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [v5 taskId];
+        taskId5 = [requestCopy taskId];
         *buf = 138412290;
-        v53 = v23;
+        v53 = taskId5;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Found task in submit queue: taskId=%@", buf, 0xCu);
       }
 
       v24 = +[STTCoreAnalyticsService sharedInstance];
-      [v24 reportRequest:v5];
+      [v24 reportRequest:requestCopy];
 
-      v25 = [v21 getSuperTask];
-      v49[2](v49, 0, v25);
+      getSuperTask = [error getSuperTask];
+      replyCopy[2](replyCopy, 0, getSuperTask);
 
       goto LABEL_23;
     }
   }
 
-  v28 = [(SiriTTSTrainerTaskInternal *)v14 trainingAssetPath];
-  v29 = [v28 length] == 0;
+  trainingAssetPath2 = [(SiriTTSTrainerTaskInternal *)v14 trainingAssetPath];
+  v29 = [trainingAssetPath2 length] == 0;
 
   if (v29 && (-[SiriTTSTrainerTaskInternal assetLanguage](v14, "assetLanguage"), v30 = objc_claimAutoreleasedReturnValue(), v31 = [v30 length] == 0, v30, v31))
   {
@@ -298,13 +298,13 @@
     }
 
     v43 = [NSError errorWithDomain:@"com.apple.SiriTTSTrainingAgent" code:300 userInfo:0];
-    [v5 setError:v43];
+    [requestCopy setError:v43];
 
     v44 = +[STTCoreAnalyticsService sharedInstance];
-    [v44 reportRequest:v5];
+    [v44 reportRequest:requestCopy];
 
-    v21 = [v5 error];
-    (v49)[2](v49, v21, 0);
+    error = [requestCopy error];
+    (replyCopy)[2](replyCopy, error, 0);
   }
 
   else
@@ -315,9 +315,9 @@
     v33 = SiriTTSTrainerGetLog();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
-      v34 = [v5 taskId];
+      taskId6 = [requestCopy taskId];
       *buf = 138412290;
-      v53 = v34;
+      v53 = taskId6;
       _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "Task submitted: taskId=%@", buf, 0xCu);
     }
 
@@ -330,9 +330,9 @@
       if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
       {
         v45 = +[TrainingTaskDatabase sharedInstance];
-        v46 = [v45 getSubmittedTaskQueueSize];
+        getSubmittedTaskQueueSize = [v45 getSubmittedTaskQueueSize];
         *buf = 134218240;
-        v53 = v46;
+        v53 = getSubmittedTaskQueueSize;
         v54 = 2048;
         v55 = 1;
         _os_log_error_impl(&_mh_execute_header, v37, OS_LOG_TYPE_ERROR, "Training task queue size exceeds the maximum, current_size=%ld, max_size=%ld", buf, 0x16u);
@@ -344,15 +344,15 @@
       v39 = +[TrainingTaskDatabase sharedInstance];
       [v39 addFailedTaskToFinishQueue:v14 errorCode:1005 description:@"Current task queue exceeds the maximum"];
 
-      v21 = [(SiriTTSTrainerTaskInternal *)v14 error];
-      (v49)[2](v49, v21, 0);
+      error = [(SiriTTSTrainerTaskInternal *)v14 error];
+      (replyCopy)[2](replyCopy, error, 0);
     }
 
     else
     {
-      v21 = [(SiriTTSTrainerTaskInternal *)v14 getSuperTask];
+      error = [(SiriTTSTrainerTaskInternal *)v14 getSuperTask];
       v40 = +[STTCoreAnalyticsService sharedInstance];
-      [v40 reportRequest:v21];
+      [v40 reportRequest:error];
 
       if ([(SiriTTSTrainerTaskInternal *)v14 forceToStart])
       {
@@ -364,13 +364,13 @@
         block[4] = v48;
         v51 = v14;
         dispatch_async(v41, block);
-        v49[2](v49, 0, v21);
+        replyCopy[2](replyCopy, 0, error);
       }
 
       else
       {
         sub_10000F9F0(v48, v14, 600.0);
-        v49[2](v49, 0, v21);
+        replyCopy[2](replyCopy, 0, error);
       }
     }
   }
@@ -378,33 +378,33 @@
 LABEL_23:
 }
 
-- (void)getTaskById:(id)a3 reply:(id)a4
+- (void)getTaskById:(id)id reply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
+  idCopy = id;
+  replyCopy = reply;
   v7 = SiriTTSTrainerGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = v5;
+    v18 = idCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "getTaskById: taskId=%@", buf, 0xCu);
   }
 
   v8 = +[TrainingTaskDatabase sharedInstance];
-  v9 = [v8 getTaskById:v5];
+  v9 = [v8 getTaskById:idCopy];
 
   if (v9)
   {
-    v10 = [v9 getSuperTask];
+    getSuperTask = [v9 getSuperTask];
     v11 = SiriTTSTrainerGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v18 = v10;
+      v18 = getSuperTask;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Found task %@", buf, 0xCu);
     }
 
-    v6[2](v6, 0, v10);
+    replyCopy[2](replyCopy, 0, getSuperTask);
   }
 
   else
@@ -413,7 +413,7 @@ LABEL_23:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v18 = v5;
+      v18 = idCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Unable to find task of id %@", buf, 0xCu);
     }
 
@@ -421,24 +421,24 @@ LABEL_23:
     v15 = NSLocalizedDescriptionKey;
     v16 = @"Can't find corresponding taskId";
     v14 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
-    v10 = [v13 initWithDomain:@"com.apple.SiriTTSTrainingAgent" code:300 userInfo:v14];
+    getSuperTask = [v13 initWithDomain:@"com.apple.SiriTTSTrainingAgent" code:300 userInfo:v14];
 
-    (v6)[2](v6, v10, 0);
+    (replyCopy)[2](replyCopy, getSuperTask, 0);
   }
 }
 
-- (void)getAllTasksWithReply:(id)a3
+- (void)getAllTasksWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v4 = +[TrainingTaskDatabase sharedInstance];
-  v5 = [v4 getAllTasks];
+  getAllTasks = [v4 getAllTasks];
 
   v6 = +[NSMutableArray array];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = v5;
+  v7 = getAllTasks;
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
@@ -453,8 +453,8 @@ LABEL_23:
           objc_enumerationMutation(v7);
         }
 
-        v11 = [*(*(&v12 + 1) + 8 * v10) getSuperTask];
-        [v6 addObject:v11];
+        getSuperTask = [*(*(&v12 + 1) + 8 * v10) getSuperTask];
+        [v6 addObject:getSuperTask];
 
         v10 = v10 + 1;
       }
@@ -466,12 +466,12 @@ LABEL_23:
     while (v8);
   }
 
-  v3[2](v3, v6);
+  replyCopy[2](replyCopy, v6);
 }
 
-- (void)cleanUpTaskQueue:(id)a3
+- (void)cleanUpTaskQueue:(id)queue
 {
-  v3 = a3;
+  queueCopy = queue;
   v4 = SiriTTSTrainerGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -482,25 +482,25 @@ LABEL_23:
   v5 = +[TrainingTaskDatabase sharedInstance];
   [v5 cleanUpQueue];
 
-  v3[2](v3, 0);
+  queueCopy[2](queueCopy, 0);
 }
 
-- (void)cancelTask:(id)a3 reply:(id)a4
+- (void)cancelTask:(id)task reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  replyCopy = reply;
   v8 = SiriTTSTrainerGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 taskId];
+    taskId = [taskCopy taskId];
     *buf = 138412290;
-    v35 = v9;
+    v35 = taskId;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "cancelTask: taskId=%@", buf, 0xCu);
   }
 
   v10 = +[TrainingTaskDatabase sharedInstance];
-  v11 = [v6 taskId];
-  v12 = [v10 getTaskById:v11];
+  taskId2 = [taskCopy taskId];
+  v12 = [v10 getTaskById:taskId2];
 
   if (!v12)
   {
@@ -510,7 +510,7 @@ LABEL_23:
     v26 = [NSDictionary dictionaryWithObjects:&v31 forKeys:&v30 count:1];
     v27 = [v25 initWithDomain:@"com.apple.SiriTTSTrainingAgent" code:300 userInfo:v26];
 
-    v7[2](v7, v27);
+    replyCopy[2](replyCopy, v27);
 LABEL_14:
 
     goto LABEL_15;
@@ -524,7 +524,7 @@ LABEL_14:
     v29 = [NSDictionary dictionaryWithObjects:&v33 forKeys:&v32 count:1];
     v27 = [v28 initWithDomain:@"com.apple.SiriTTSTrainingAgent" code:300 userInfo:v29];
 
-    v7[2](v7, v27);
+    replyCopy[2](replyCopy, v27);
     goto LABEL_14;
   }
 
@@ -532,23 +532,23 @@ LABEL_14:
   if (WeakRetained)
   {
     v14 = objc_loadWeakRetained(&self->_currentTrainingTask);
-    v15 = [v14 taskId];
-    v16 = [v6 taskId];
-    v17 = [v15 isEqualToString:v16];
+    taskId3 = [v14 taskId];
+    taskId4 = [taskCopy taskId];
+    v17 = [taskId3 isEqualToString:taskId4];
 
     if (v17)
     {
       v18 = objc_loadWeakRetained(&self->_currentTrainingTask);
 
       v19 = objc_loadWeakRetained(&self->_currentTrainingTask);
-      v20 = [v19 currentTrainer];
-      v21 = v20 == 0;
+      currentTrainer = [v19 currentTrainer];
+      v21 = currentTrainer == 0;
 
       if (!v21)
       {
         v22 = objc_loadWeakRetained(&self->_currentTrainingTask);
-        v23 = [v22 currentTrainer];
-        [v23 stop];
+        currentTrainer2 = [v22 currentTrainer];
+        [currentTrainer2 stop];
       }
 
       v12 = v18;
@@ -558,20 +558,20 @@ LABEL_14:
   v24 = +[TrainingTaskDatabase sharedInstance];
   [v24 addTaskToFinishedQueueWithStatus:v12 status:3];
 
-  v7[2](v7, 0);
+  replyCopy[2](replyCopy, 0);
 LABEL_15:
 }
 
-- (int64_t)trainerTaskEvent:(int64_t)a3 currentValue:(int64_t)a4 totalValue:(int64_t)a5
+- (int64_t)trainerTaskEvent:(int64_t)event currentValue:(int64_t)value totalValue:(int64_t)totalValue
 {
-  if (a3 <= 0x12)
+  if (event <= 0x12)
   {
-    if (((1 << a3) & 0x2DB6F) != 0)
+    if (((1 << event) & 0x2DB6F) != 0)
     {
       return 0;
     }
 
-    if (a3 == 18)
+    if (event == 18)
     {
       [SiriTTSTrainerDiagnostics collectTailspin:0];
       return 0;
@@ -579,17 +579,17 @@ LABEL_15:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_currentTrainingTask);
-  v11 = [WeakRetained taskMode];
+  taskMode = [WeakRetained taskMode];
 
-  if (v11 != 2)
+  if (taskMode != 2)
   {
-    switch(a3)
+    switch(event)
     {
       case 7:
-        a4 += 2 * a5;
+        value += 2 * totalValue;
         break;
       case 10:
-        a4 += a5;
+        value += totalValue;
         break;
       case 13:
         break;
@@ -597,24 +597,24 @@ LABEL_15:
         goto LABEL_22;
     }
 
-    a5 *= 3;
+    totalValue *= 3;
 LABEL_22:
     v12 = objc_loadWeakRetained(&self->_currentTrainingTask);
-    v13 = [v12 trainingStatus];
-    v14 = self;
-    v15 = a4;
-    v16 = a5;
+    trainingStatus = [v12 trainingStatus];
+    selfCopy2 = self;
+    valueCopy2 = value;
+    totalValueCopy2 = totalValue;
     v17 = 1;
     goto LABEL_23;
   }
 
-  switch(a3)
+  switch(event)
   {
     case 4:
-      a4 += 2 * a5;
+      value += 2 * totalValue;
       break;
     case 10:
-      a4 += a5;
+      value += totalValue;
       break;
     case 13:
       break;
@@ -622,28 +622,28 @@ LABEL_22:
       goto LABEL_19;
   }
 
-  a5 *= 3;
+  totalValue *= 3;
 LABEL_19:
   v12 = objc_loadWeakRetained(&self->_currentTrainingTask);
-  v13 = [v12 trainingStatus];
-  v14 = self;
-  v15 = a4;
-  v16 = a5;
+  trainingStatus = [v12 trainingStatus];
+  selfCopy2 = self;
+  valueCopy2 = value;
+  totalValueCopy2 = totalValue;
   v17 = 2;
 LABEL_23:
-  v18 = sub_100011084(v14, v13, v15, v16, v17);
+  v18 = sub_100011084(selfCopy2, trainingStatus, valueCopy2, totalValueCopy2, v17);
   v19 = *&v18;
 
   v20 = SiriTTSTrainerGetLog();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = [NSNumber numberWithInteger:a3];
+    v21 = [NSNumber numberWithInteger:event];
     v26 = 138413058;
     v27 = v21;
     v28 = 2048;
-    v29 = a4;
+    valueCopy3 = value;
     v30 = 2048;
-    v31 = a5;
+    totalValueCopy3 = totalValue;
     v32 = 2048;
     v33 = v19;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "event=%@, currentValue=%ld, totalValue=%ld, normalizedProgressValue=%f", &v26, 0x2Au);
@@ -651,9 +651,9 @@ LABEL_23:
 
   v22 = +[TrainingTaskDatabase sharedInstance];
   v23 = objc_loadWeakRetained(&self->_currentTrainingTask);
-  v24 = [v23 trainingStatus];
+  trainingStatus2 = [v23 trainingStatus];
   *&v25 = v19;
-  [v22 updateTaskWithTrainingStatusToSubmittedQueue:v23 trainingStatus:v24 currentProgressValue:a4 totalProgressValue:a5 normalizedProgressValue:v25];
+  [v22 updateTaskWithTrainingStatusToSubmittedQueue:v23 trainingStatus:trainingStatus2 currentProgressValue:value totalProgressValue:totalValue normalizedProgressValue:v25];
 
   return 0;
 }

@@ -1,11 +1,11 @@
 @interface PLLocationOfInterestVisit
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PLLocationOfInterest)locationOfInterest;
-- (PLLocationOfInterestVisit)initWithCoder:(id)a3;
-- (PLLocationOfInterestVisit)initWithIdentifier:(id)a3 visitInterval:(id)a4 confidence:(double)a5;
+- (PLLocationOfInterestVisit)initWithCoder:(id)coder;
+- (PLLocationOfInterestVisit)initWithIdentifier:(id)identifier visitInterval:(id)interval confidence:(double)confidence;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setLocationOfInterest:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setLocationOfInterest:(id)interest;
 @end
 
 @implementation PLLocationOfInterestVisit
@@ -28,10 +28,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -42,8 +42,8 @@
     if (objc_opt_isKindOfClass())
     {
       identifier = self->_identifier;
-      v6 = [(PLLocationOfInterestVisit *)v4 identifier];
-      v7 = [(NSUUID *)identifier isEqual:v6];
+      identifier = [(PLLocationOfInterestVisit *)equalCopy identifier];
+      v7 = [(NSUUID *)identifier isEqual:identifier];
     }
 
     else
@@ -55,9 +55,9 @@
   return v7;
 }
 
-- (void)setLocationOfInterest:(id)a3
+- (void)setLocationOfInterest:(id)interest
 {
-  obj = a3;
+  obj = interest;
   WeakRetained = objc_loadWeakRetained(&self->_locationOfInterest);
   if (WeakRetained != obj || ([obj isEqual:WeakRetained] & 1) == 0)
   {
@@ -67,41 +67,41 @@
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_visitInterval forKey:@"visitInterval"];
-  [v5 encodeDouble:@"confidence" forKey:self->_confidence];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_visitInterval forKey:@"visitInterval"];
+  [coderCopy encodeDouble:@"confidence" forKey:self->_confidence];
   WeakRetained = objc_loadWeakRetained(&self->_locationOfInterest);
-  [v5 encodeObject:WeakRetained forKey:@"locationOfInterest"];
+  [coderCopy encodeObject:WeakRetained forKey:@"locationOfInterest"];
 }
 
-- (PLLocationOfInterestVisit)initWithCoder:(id)a3
+- (PLLocationOfInterestVisit)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"visitInterval"];
-  [v4 decodeDoubleForKey:@"confidence"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"visitInterval"];
+  [coderCopy decodeDoubleForKey:@"confidence"];
   v7 = [(PLLocationOfInterestVisit *)self initWithIdentifier:v5 visitInterval:v6 confidence:?];
   if (v7)
   {
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"locationOfInterest"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"locationOfInterest"];
     [v8 addVisit:v7];
   }
 
   return v7;
 }
 
-- (PLLocationOfInterestVisit)initWithIdentifier:(id)a3 visitInterval:(id)a4 confidence:(double)a5
+- (PLLocationOfInterestVisit)initWithIdentifier:(id)identifier visitInterval:(id)interval confidence:(double)confidence
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = v11;
-  if (v10)
+  identifierCopy = identifier;
+  intervalCopy = interval;
+  v12 = intervalCopy;
+  if (identifierCopy)
   {
-    if (v11)
+    if (intervalCopy)
     {
       goto LABEL_3;
     }
@@ -109,8 +109,8 @@
 
   else
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PLLocationOfInterestVisit.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"identifier != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLLocationOfInterestVisit.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"identifier != nil"}];
 
     if (v12)
     {
@@ -118,8 +118,8 @@
     }
   }
 
-  v17 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"PLLocationOfInterestVisit.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"visitInterval != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLLocationOfInterestVisit.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"visitInterval != nil"}];
 
 LABEL_3:
   v18.receiver = self;
@@ -128,9 +128,9 @@ LABEL_3:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_identifier, a3);
-    objc_storeStrong(&v14->_visitInterval, a4);
-    v14->_confidence = a5;
+    objc_storeStrong(&v13->_identifier, identifier);
+    objc_storeStrong(&v14->_visitInterval, interval);
+    v14->_confidence = confidence;
   }
 
   return v14;

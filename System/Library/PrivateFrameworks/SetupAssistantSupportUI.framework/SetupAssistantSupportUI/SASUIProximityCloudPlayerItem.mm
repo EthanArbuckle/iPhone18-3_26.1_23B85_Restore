@@ -1,13 +1,13 @@
 @interface SASUIProximityCloudPlayerItem
-+ (id)configuredPlayerForLightMode:(BOOL)a3;
++ (id)configuredPlayerForLightMode:(BOOL)mode;
 @end
 
 @implementation SASUIProximityCloudPlayerItem
 
-+ (id)configuredPlayerForLightMode:(BOOL)a3
++ (id)configuredPlayerForLightMode:(BOOL)mode
 {
   v3 = @"ProximityPairingLoopDark";
-  if (a3)
+  if (mode)
   {
     v3 = @"ProximityPairingLoop";
   }

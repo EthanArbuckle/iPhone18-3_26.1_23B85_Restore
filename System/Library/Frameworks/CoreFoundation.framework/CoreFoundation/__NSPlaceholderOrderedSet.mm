@@ -1,13 +1,13 @@
 @interface __NSPlaceholderOrderedSet
 - (__NSPlaceholderOrderedSet)init;
-- (__NSPlaceholderOrderedSet)initWithCapacity:(unint64_t)a3;
-- (__NSPlaceholderOrderedSet)initWithObjects:(const void *)a3 count:(unint64_t)a4;
-- (id)objectAtIndex:(unint64_t)a3;
+- (__NSPlaceholderOrderedSet)initWithCapacity:(unint64_t)capacity;
+- (__NSPlaceholderOrderedSet)initWithObjects:(const void *)objects count:(unint64_t)count;
+- (id)objectAtIndex:(unint64_t)index;
 - (unint64_t)count;
-- (unint64_t)indexOfObject:(id)a3;
-- (void)insertObject:(id)a3 atIndex:(unint64_t)a4;
-- (void)removeObjectAtIndex:(unint64_t)a3;
-- (void)replaceObjectAtIndex:(unint64_t)a3 withObject:(id)a4;
+- (unint64_t)indexOfObject:(id)object;
+- (void)insertObject:(id)object atIndex:(unint64_t)index;
+- (void)removeObjectAtIndex:(unint64_t)index;
+- (void)replaceObjectAtIndex:(unint64_t)index withObject:(id)object;
 @end
 
 @implementation __NSPlaceholderOrderedSet
@@ -28,10 +28,10 @@
   return self;
 }
 
-- (__NSPlaceholderOrderedSet)initWithObjects:(const void *)a3 count:(unint64_t)a4
+- (__NSPlaceholderOrderedSet)initWithObjects:(const void *)objects count:(unint64_t)count
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  if (!a3 && a4)
+  if (!objects && count)
   {
     v10 = _os_log_pack_size();
     v12 = v22 - ((MEMORY[0x1EEE9AC00](v10, v17) + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -39,12 +39,12 @@
     *v18 = 136315394;
     *(v18 + 4) = "[__NSPlaceholderOrderedSet initWithObjects:count:]";
     *(v18 + 12) = 2048;
-    *(v18 + 14) = a4;
-    v14 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: pointer to objects array is NULL but length is %lu", "[__NSPlaceholderOrderedSet initWithObjects:count:]", a4);
+    *(v18 + 14) = count;
+    v14 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: pointer to objects array is NULL but length is %lu", "[__NSPlaceholderOrderedSet initWithObjects:count:]", count);
     goto LABEL_23;
   }
 
-  if (a4 >> 61)
+  if (count >> 61)
   {
     v10 = _os_log_pack_size();
     v12 = v22 - ((MEMORY[0x1EEE9AC00](v10, v20) + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -52,23 +52,23 @@
     *v21 = 136315394;
     *(v21 + 4) = "[__NSPlaceholderOrderedSet initWithObjects:count:]";
     *(v21 + 12) = 2048;
-    *(v21 + 14) = a4;
-    v14 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[__NSPlaceholderOrderedSet initWithObjects:count:]", a4);
+    *(v21 + 14) = count;
+    v14 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[__NSPlaceholderOrderedSet initWithObjects:count:]", count);
     goto LABEL_23;
   }
 
-  if (a4)
+  if (count)
   {
     v4 = 0;
-    while (a3[v4])
+    while (objects[v4])
     {
-      if (a4 == ++v4)
+      if (count == ++v4)
       {
         if (self == &___immutablePlaceholderOrderedSet)
         {
           v5 = *MEMORY[0x1E69E9840];
 
-          return __NSOrderedSetI_new(a3, a4, 0);
+          return __NSOrderedSetI_new(objects, count, 0);
         }
 
 LABEL_13:
@@ -76,7 +76,7 @@ LABEL_13:
         {
           v6 = *MEMORY[0x1E69E9840];
 
-          return __NSOrderedSetM_new(a3, a4, 0);
+          return __NSOrderedSetM_new(objects, count, 0);
         }
 
         else
@@ -118,18 +118,18 @@ LABEL_23:
   return v7;
 }
 
-- (__NSPlaceholderOrderedSet)initWithCapacity:(unint64_t)a3
+- (__NSPlaceholderOrderedSet)initWithCapacity:(unint64_t)capacity
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  if (a3 >> 61)
+  if (capacity >> 61)
   {
     v6 = _os_log_pack_size();
     v7 = _os_log_pack_fill();
     *v7 = 136315394;
     *(v7 + 4) = "[__NSPlaceholderOrderedSet initWithCapacity:]";
     *(v7 + 12) = 2048;
-    *(v7 + 14) = a3;
-    v8 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: capacity (%lu) is ridiculous", "[__NSPlaceholderOrderedSet initWithCapacity:]", a3);
+    *(v7 + 14) = capacity;
+    v8 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: capacity (%lu) is ridiculous", "[__NSPlaceholderOrderedSet initWithCapacity:]", capacity);
     v9 = [NSException exceptionWithName:@"NSInvalidArgumentException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v8) osLogPack:0 size:v10 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0), v6];
     objc_exception_throw(v9);
   }
@@ -148,7 +148,7 @@ LABEL_9:
 
   v3 = *MEMORY[0x1E69E9840];
 
-  return __NSOrderedSetM_new(0, a3, 0);
+  return __NSOrderedSetM_new(0, capacity, 0);
 }
 
 - (unint64_t)count
@@ -188,7 +188,7 @@ LABEL_9:
   objc_exception_throw(v11);
 }
 
-- (unint64_t)indexOfObject:(id)a3
+- (unint64_t)indexOfObject:(id)object
 {
   v5 = "mutable";
   v6 = "NSMutableOrderedSet";
@@ -225,7 +225,7 @@ LABEL_9:
   objc_exception_throw(v12);
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
   v5 = "mutable";
   v6 = "NSMutableOrderedSet";
@@ -262,7 +262,7 @@ LABEL_9:
   objc_exception_throw(v12);
 }
 
-- (void)insertObject:(id)a3 atIndex:(unint64_t)a4
+- (void)insertObject:(id)object atIndex:(unint64_t)index
 {
   v6 = "mutable";
   v7 = "NSMutableOrderedSet";
@@ -299,7 +299,7 @@ LABEL_9:
   objc_exception_throw(v13);
 }
 
-- (void)removeObjectAtIndex:(unint64_t)a3
+- (void)removeObjectAtIndex:(unint64_t)index
 {
   v5 = "mutable";
   v6 = "NSMutableOrderedSet";
@@ -336,7 +336,7 @@ LABEL_9:
   objc_exception_throw(v12);
 }
 
-- (void)replaceObjectAtIndex:(unint64_t)a3 withObject:(id)a4
+- (void)replaceObjectAtIndex:(unint64_t)index withObject:(id)object
 {
   v6 = "mutable";
   v7 = "NSMutableOrderedSet";

@@ -1,22 +1,22 @@
 @interface BSRelativeDateTimerFireInfo
-- (BSRelativeDateTimerFireInfo)initWithValue:(unint64_t)a3 resolution:(unint64_t)a4 comparedToNow:(int64_t)a5 fireDate:(id)a6;
+- (BSRelativeDateTimerFireInfo)initWithValue:(unint64_t)value resolution:(unint64_t)resolution comparedToNow:(int64_t)now fireDate:(id)date;
 @end
 
 @implementation BSRelativeDateTimerFireInfo
 
-- (BSRelativeDateTimerFireInfo)initWithValue:(unint64_t)a3 resolution:(unint64_t)a4 comparedToNow:(int64_t)a5 fireDate:(id)a6
+- (BSRelativeDateTimerFireInfo)initWithValue:(unint64_t)value resolution:(unint64_t)resolution comparedToNow:(int64_t)now fireDate:(id)date
 {
-  v10 = a6;
+  dateCopy = date;
   v16.receiver = self;
   v16.super_class = BSRelativeDateTimerFireInfo;
   v11 = [(BSRelativeDateTimerFireInfo *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    v11->_value = a3;
-    v11->_resolution = a4;
-    v11->_comparedToNow = a5;
-    v13 = [v10 copy];
+    v11->_value = value;
+    v11->_resolution = resolution;
+    v11->_comparedToNow = now;
+    v13 = [dateCopy copy];
     fireDate = v12->_fireDate;
     v12->_fireDate = v13;
   }

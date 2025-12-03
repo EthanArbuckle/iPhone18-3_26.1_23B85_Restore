@@ -1,5 +1,5 @@
 @interface PUPhotoSceneHUD
-- (PUPhotoSceneHUD)initWithPhoto:(id)a3;
+- (PUPhotoSceneHUD)initWithPhoto:(id)photo;
 - (void)update;
 @end
 
@@ -8,22 +8,22 @@
 - (void)update
 {
   v86 = *MEMORY[0x1E69E9840];
-  v3 = [(PUPhotoSceneHUD *)self hudView];
-  v4 = [(PUPhotoSceneHUD *)self mdataURL];
+  hudView = [(PUPhotoSceneHUD *)self hudView];
+  mdataURL = [(PUPhotoSceneHUD *)self mdataURL];
 
-  if (!v4)
+  if (!mdataURL)
   {
     v22 = @"Could not find MDATA file.";
 LABEL_16:
     v7 = objc_alloc_init(MEMORY[0x1E69C35E0]);
     [v7 setTitle:v22];
-    [v3 addVisualization:v7];
+    [hudView addVisualization:v7];
     goto LABEL_39;
   }
 
   v5 = MEMORY[0x1E695DEF0];
-  v6 = [(PUPhotoSceneHUD *)self mdataURL];
-  v7 = [v5 dataWithContentsOfURL:v6 options:2 error:0];
+  mdataURL2 = [(PUPhotoSceneHUD *)self mdataURL];
+  v7 = [v5 dataWithContentsOfURL:mdataURL2 options:2 error:0];
 
   if (!v7)
   {
@@ -42,18 +42,18 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v11 = [v8 semanticDevelopmentGatingObservations];
+  semanticDevelopmentGatingObservations = [v8 semanticDevelopmentGatingObservations];
   v68 = v10;
   v69 = v7;
-  v66 = v11;
+  v66 = semanticDevelopmentGatingObservations;
   v67 = v8;
-  if ([v11 count])
+  if ([semanticDevelopmentGatingObservations count])
   {
     v80 = 0u;
     v81 = 0u;
     v78 = 0u;
     v79 = 0u;
-    v12 = v11;
+    v12 = semanticDevelopmentGatingObservations;
     v13 = [v12 countByEnumeratingWithState:&v78 objects:v85 count:16];
     if (v13)
     {
@@ -70,15 +70,15 @@ LABEL_16:
 
           v17 = *(*(&v78 + 1) + 8 * i);
           v18 = objc_alloc_init(MEMORY[0x1E69C35C8]);
-          v19 = [v17 identifier];
-          [v18 setTitle:v19];
+          identifier = [v17 identifier];
+          [v18 setTitle:identifier];
 
           v20 = MEMORY[0x1E696AD98];
           [v17 confidence];
           v21 = [v20 numberWithFloat:?];
           [v18 setValue:v21];
 
-          [v3 addVisualization:v18];
+          [hudView addVisualization:v18];
         }
 
         v14 = [v12 countByEnumeratingWithState:&v78 objects:v85 count:16];
@@ -86,7 +86,7 @@ LABEL_16:
 
       while (v14);
       v7 = v69;
-      v11 = v66;
+      semanticDevelopmentGatingObservations = v66;
       v8 = v67;
     }
   }
@@ -95,22 +95,22 @@ LABEL_16:
   {
     v12 = objc_alloc_init(MEMORY[0x1E69C35E0]);
     [v12 setTitle:@"No scene detected"];
-    [v3 addVisualization:v12];
+    [hudView addVisualization:v12];
   }
 
-  v23 = [v8 foodAndDrinkObservations];
-  if ([v23 count])
+  foodAndDrinkObservations = [v8 foodAndDrinkObservations];
+  if ([foodAndDrinkObservations count])
   {
     v76 = 0u;
     v77 = 0u;
     v74 = 0u;
     v75 = 0u;
-    v24 = v23;
+    v24 = foodAndDrinkObservations;
     v25 = [v24 countByEnumeratingWithState:&v74 objects:v84 count:16];
     if (v25)
     {
       v26 = v25;
-      v64 = v23;
+      v64 = foodAndDrinkObservations;
       v27 = *v75;
       do
       {
@@ -123,10 +123,10 @@ LABEL_16:
 
           v29 = *(*(&v74 + 1) + 8 * j);
           v30 = objc_alloc_init(MEMORY[0x1E69C35C8]);
-          v31 = [v29 labels];
-          v32 = [v31 firstObject];
-          v33 = [v32 identifier];
-          [v30 setTitle:v33];
+          labels = [v29 labels];
+          firstObject = [labels firstObject];
+          identifier2 = [firstObject identifier];
+          [v30 setTitle:identifier2];
 
           v34 = MEMORY[0x1E696AEC0];
           [v29 boundingBox];
@@ -141,7 +141,7 @@ LABEL_16:
           v44 = [v34 stringWithFormat:@"(%.3f, %.3f, %.3f, %.3f) %.3f", v36, v38, v40, v42, v43];
           [v30 setValue:v44];
 
-          [v3 addVisualization:v30];
+          [hudView addVisualization:v30];
         }
 
         v26 = [v24 countByEnumeratingWithState:&v74 objects:v84 count:16];
@@ -150,9 +150,9 @@ LABEL_16:
       while (v26);
       v10 = v68;
       v7 = v69;
-      v11 = v66;
+      semanticDevelopmentGatingObservations = v66;
       v8 = v67;
-      v23 = v64;
+      foodAndDrinkObservations = v64;
     }
   }
 
@@ -160,22 +160,22 @@ LABEL_16:
   {
     v24 = objc_alloc_init(MEMORY[0x1E69C35E0]);
     [v24 setTitle:@"No food/drink detected"];
-    [v3 addVisualization:v24];
+    [hudView addVisualization:v24];
   }
 
-  v45 = [v8 faceObservations];
-  if ([v45 count])
+  faceObservations = [v8 faceObservations];
+  if ([faceObservations count])
   {
     v72 = 0u;
     v73 = 0u;
     v70 = 0u;
     v71 = 0u;
-    v46 = v45;
+    v46 = faceObservations;
     v47 = [v46 countByEnumeratingWithState:&v70 objects:v83 count:16];
     if (v47)
     {
       v48 = v47;
-      v65 = v23;
+      v65 = foodAndDrinkObservations;
       v49 = *v71;
       do
       {
@@ -202,7 +202,7 @@ LABEL_16:
           v63 = [v53 stringWithFormat:@"(%.3f, %.3f, %.3f, %.3f) %.3f", v55, v57, v59, v61, v62];
           [v52 setValue:v63];
 
-          [v3 addVisualization:v52];
+          [hudView addVisualization:v52];
         }
 
         v48 = [v46 countByEnumeratingWithState:&v70 objects:v83 count:16];
@@ -211,9 +211,9 @@ LABEL_16:
       while (v48);
       v10 = v68;
       v7 = v69;
-      v11 = v66;
+      semanticDevelopmentGatingObservations = v66;
       v8 = v67;
-      v23 = v65;
+      foodAndDrinkObservations = v65;
     }
   }
 
@@ -221,28 +221,28 @@ LABEL_16:
   {
     v46 = objc_alloc_init(MEMORY[0x1E69C35E0]);
     [v46 setTitle:@"No faces detected"];
-    [v3 addVisualization:v46];
+    [hudView addVisualization:v46];
   }
 
 LABEL_39:
 }
 
-- (PUPhotoSceneHUD)initWithPhoto:(id)a3
+- (PUPhotoSceneHUD)initWithPhoto:(id)photo
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  photoCopy = photo;
   v32.receiver = self;
   v32.super_class = PUPhotoSceneHUD;
   v5 = [(PUPhotoSceneHUD *)&v32 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v6 = objc_alloc_init(MEMORY[0x1E69C35D8]);
   [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v7 = [v6 layer];
-  [v7 setBorderWidth:1.0];
+  layer = [v6 layer];
+  [layer setBorderWidth:1.0];
 
-  v8 = [MEMORY[0x1E69DC888] redColor];
-  v9 = [v8 CGColor];
-  v10 = [v6 layer];
-  [v10 setBorderColor:v9];
+  redColor = [MEMORY[0x1E69DC888] redColor];
+  cGColor = [redColor CGColor];
+  layer2 = [v6 layer];
+  [layer2 setBorderColor:cGColor];
 
   [(PUPhotoSceneHUD *)v5 addSubview:v6];
   objc_storeStrong(&v5->_hudView, v6);
@@ -250,17 +250,17 @@ LABEL_39:
   if (objc_opt_isKindOfClass())
   {
     v25 = v6;
-    v26 = v4;
+    v26 = photoCopy;
     v27 = v5;
-    v11 = v4;
-    v12 = [MEMORY[0x1E696AC08] defaultManager];
+    v11 = photoCopy;
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v24 = v11;
-    v13 = [v11 fileURLsForDiagnosticFiles];
-    v14 = [v13 countByEnumeratingWithState:&v28 objects:v33 count:16];
+    fileURLsForDiagnosticFiles = [v11 fileURLsForDiagnosticFiles];
+    v14 = [fileURLsForDiagnosticFiles countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v14)
     {
       v15 = v14;
@@ -271,16 +271,16 @@ LABEL_39:
         {
           if (*v29 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(fileURLsForDiagnosticFiles);
           }
 
           v18 = *(*(&v28 + 1) + 8 * i);
-          v19 = [v18 path];
-          if ([v12 fileExistsAtPath:v19])
+          path = [v18 path];
+          if ([defaultManager fileExistsAtPath:path])
           {
-            v20 = [v18 path];
-            v21 = [v20 lowercaseString];
-            v22 = [v21 hasSuffix:@"mdata"];
+            path2 = [v18 path];
+            lowercaseString = [path2 lowercaseString];
+            v22 = [lowercaseString hasSuffix:@"mdata"];
 
             if (v22)
             {
@@ -294,7 +294,7 @@ LABEL_39:
           }
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v28 objects:v33 count:16];
+        v15 = [fileURLsForDiagnosticFiles countByEnumeratingWithState:&v28 objects:v33 count:16];
       }
 
       while (v15);
@@ -302,7 +302,7 @@ LABEL_39:
 
 LABEL_13:
 
-    v4 = v26;
+    photoCopy = v26;
     v5 = v27;
     v6 = v25;
   }

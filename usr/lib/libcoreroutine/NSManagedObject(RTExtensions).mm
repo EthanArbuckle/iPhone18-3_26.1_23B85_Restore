@@ -6,10 +6,10 @@
 
 + (id)entityName
 {
-  v1 = [a1 entity];
-  v2 = [v1 name];
+  entity = [self entity];
+  name = [entity name];
 
-  return v2;
+  return name;
 }
 
 @end

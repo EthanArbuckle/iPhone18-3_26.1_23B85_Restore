@@ -1,11 +1,11 @@
 @interface AMSAccountIdentity
-- (AMSAccountIdentity)initWithCoder:(id)a3;
-- (AMSAccountIdentity)initWithDSID:(id)a3 altDSID:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (AMSAccountIdentity)initWithCoder:(id)coder;
+- (AMSAccountIdentity)initWithDSID:(id)d altDSID:(id)iD;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSAccountIdentity
@@ -22,18 +22,18 @@
 
 - (unint64_t)hash
 {
-  v3 = [(AMSAccountIdentity *)self altDSID];
-  v4 = [v3 hash];
-  v5 = [(AMSAccountIdentity *)self dsid];
-  v6 = [v5 hash];
+  altDSID = [(AMSAccountIdentity *)self altDSID];
+  v4 = [altDSID hash];
+  dsid = [(AMSAccountIdentity *)self dsid];
+  v6 = [dsid hash];
 
   return v6 ^ v4;
 }
 
-- (AMSAccountIdentity)initWithDSID:(id)a3 altDSID:(id)a4
+- (AMSAccountIdentity)initWithDSID:(id)d altDSID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v15.receiver = self;
   v15.super_class = AMSAccountIdentity;
   v8 = [(AMSAccountIdentity *)&v15 init];
@@ -43,13 +43,13 @@
   }
 
   v9 = 0;
-  if (v6 && v7)
+  if (dCopy && iDCopy)
   {
-    v10 = [v6 copy];
+    v10 = [dCopy copy];
     dsid = v8->_dsid;
     v8->_dsid = v10;
 
-    v12 = [v7 copy];
+    v12 = [iDCopy copy];
     altDSID = v8->_altDSID;
     v8->_altDSID = v12;
 
@@ -60,31 +60,31 @@ LABEL_5:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v5 = 0;
     v10 = 0;
-    v6 = v4;
+    altDSID = equalCopy;
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
 
   if (v5)
   {
-    v6 = [v5 altDSID];
-    v7 = [(AMSAccountIdentity *)self altDSID];
-    if ([v6 isEqualToString:v7])
+    altDSID = [v5 altDSID];
+    altDSID2 = [(AMSAccountIdentity *)self altDSID];
+    if ([altDSID isEqualToString:altDSID2])
     {
-      v8 = [v5 dsid];
-      v9 = [(AMSAccountIdentity *)self dsid];
-      v10 = [v8 isEqualToNumber:v9];
+      dsid = [v5 dsid];
+      dsid2 = [(AMSAccountIdentity *)self dsid];
+      v10 = [dsid isEqualToNumber:dsid2];
     }
 
     else
@@ -101,29 +101,29 @@ LABEL_10:
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AMSAccountIdentity *)self altDSID];
-  [v4 encodeObject:v5 forKey:@"kCodingKeyAltDSID"];
+  coderCopy = coder;
+  altDSID = [(AMSAccountIdentity *)self altDSID];
+  [coderCopy encodeObject:altDSID forKey:@"kCodingKeyAltDSID"];
 
-  v6 = [(AMSAccountIdentity *)self dsid];
-  [v4 encodeObject:v6 forKey:@"kCodingKeyDSID"];
+  dsid = [(AMSAccountIdentity *)self dsid];
+  [coderCopy encodeObject:dsid forKey:@"kCodingKeyDSID"];
 }
 
-- (AMSAccountIdentity)initWithCoder:(id)a3
+- (AMSAccountIdentity)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = AMSAccountIdentity;
   v5 = [(AMSAccountIdentity *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyAltDSID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyAltDSID"];
     altDSID = v5->_altDSID;
     v5->_altDSID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyDSID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyDSID"];
     dsid = v5->_dsid;
     v5->_dsid = v8;
   }
@@ -131,14 +131,14 @@ LABEL_10:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_altDSID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_altDSID copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSNumber *)self->_dsid copyWithZone:a3];
+  v8 = [(NSNumber *)self->_dsid copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 

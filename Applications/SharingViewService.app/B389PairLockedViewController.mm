@@ -1,34 +1,34 @@
 @interface B389PairLockedViewController
-- (_TtC18SharingViewService28B389PairLockedViewController)initWithMainController:(id)a3;
+- (_TtC18SharingViewService28B389PairLockedViewController)initWithMainController:(id)controller;
 - (void)dismissPressed;
 - (void)learnMorePressed;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation B389PairLockedViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10005A8A8(a3);
+  selfCopy = self;
+  sub_10005A8A8(appear);
 }
 
 - (void)learnMorePressed
 {
-  v2 = self;
+  selfCopy = self;
   sub_10005B794();
 }
 
 - (void)dismissPressed
 {
-  v2 = self;
+  selfCopy = self;
   sub_10005BC08();
 }
 
-- (_TtC18SharingViewService28B389PairLockedViewController)initWithMainController:(id)a3
+- (_TtC18SharingViewService28B389PairLockedViewController)initWithMainController:(id)controller
 {
-  v3 = a3;
-  v4 = sub_10006691C(v3);
+  controllerCopy = controller;
+  v4 = sub_10006691C(controllerCopy);
 
   return v4;
 }

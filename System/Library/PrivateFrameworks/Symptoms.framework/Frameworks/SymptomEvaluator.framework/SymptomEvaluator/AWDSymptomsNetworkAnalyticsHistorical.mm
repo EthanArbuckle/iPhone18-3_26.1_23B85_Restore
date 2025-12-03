@@ -1,34 +1,34 @@
 @interface AWDSymptomsNetworkAnalyticsHistorical
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsNetworkType:(id)a3;
+- (int)StringAsNetworkType:(id)type;
 - (int)networkType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBytesOut:(BOOL)a3;
-- (void)setHasConnAttempts:(BOOL)a3;
-- (void)setHasConnSuccess:(BOOL)a3;
-- (void)setHasDnsCompleteFailures:(BOOL)a3;
-- (void)setHasDnsPartialFailures:(BOOL)a3;
-- (void)setHasEpochs:(BOOL)a3;
-- (void)setHasFaultyStaySecs:(BOOL)a3;
-- (void)setHasNetworkType:(BOOL)a3;
-- (void)setHasPacketsIn:(BOOL)a3;
-- (void)setHasPacketsOut:(BOOL)a3;
-- (void)setHasSecsSinceLastTrimmed:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasTotalStaySecs:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasBytesOut:(BOOL)out;
+- (void)setHasConnAttempts:(BOOL)attempts;
+- (void)setHasConnSuccess:(BOOL)success;
+- (void)setHasDnsCompleteFailures:(BOOL)failures;
+- (void)setHasDnsPartialFailures:(BOOL)failures;
+- (void)setHasEpochs:(BOOL)epochs;
+- (void)setHasFaultyStaySecs:(BOOL)secs;
+- (void)setHasNetworkType:(BOOL)type;
+- (void)setHasPacketsIn:(BOOL)in;
+- (void)setHasPacketsOut:(BOOL)out;
+- (void)setHasSecsSinceLastTrimmed:(BOOL)trimmed;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasTotalStaySecs:(BOOL)secs;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDSymptomsNetworkAnalyticsHistorical
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2048;
   }
@@ -54,9 +54,9 @@
   }
 }
 
-- (void)setHasNetworkType:(BOOL)a3
+- (void)setHasNetworkType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 0x2000;
   }
@@ -69,20 +69,20 @@
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (int)StringAsNetworkType:(id)a3
+- (int)StringAsNetworkType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"WIFI"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"WIFI"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CELLULAR"])
+  else if ([typeCopy isEqualToString:@"CELLULAR"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"WIRED_ETHERNET"])
+  else if ([typeCopy isEqualToString:@"WIRED_ETHERNET"])
   {
     v4 = 3;
   }
@@ -95,9 +95,9 @@
   return v4;
 }
 
-- (void)setHasEpochs:(BOOL)a3
+- (void)setHasEpochs:(BOOL)epochs
 {
-  if (a3)
+  if (epochs)
   {
     v3 = 64;
   }
@@ -110,9 +110,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasTotalStaySecs:(BOOL)a3
+- (void)setHasTotalStaySecs:(BOOL)secs
 {
-  if (a3)
+  if (secs)
   {
     v3 = 4096;
   }
@@ -125,9 +125,9 @@
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasFaultyStaySecs:(BOOL)a3
+- (void)setHasFaultyStaySecs:(BOOL)secs
 {
-  if (a3)
+  if (secs)
   {
     v3 = 128;
   }
@@ -140,9 +140,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasConnAttempts:(BOOL)a3
+- (void)setHasConnAttempts:(BOOL)attempts
 {
-  if (a3)
+  if (attempts)
   {
     v3 = 4;
   }
@@ -155,9 +155,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasConnSuccess:(BOOL)a3
+- (void)setHasConnSuccess:(BOOL)success
 {
-  if (a3)
+  if (success)
   {
     v3 = 8;
   }
@@ -170,9 +170,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasPacketsIn:(BOOL)a3
+- (void)setHasPacketsIn:(BOOL)in
 {
-  if (a3)
+  if (in)
   {
     v3 = 256;
   }
@@ -185,9 +185,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasPacketsOut:(BOOL)a3
+- (void)setHasPacketsOut:(BOOL)out
 {
-  if (a3)
+  if (out)
   {
     v3 = 512;
   }
@@ -200,9 +200,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasBytesOut:(BOOL)a3
+- (void)setHasBytesOut:(BOOL)out
 {
-  if (a3)
+  if (out)
   {
     v3 = 2;
   }
@@ -215,9 +215,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasSecsSinceLastTrimmed:(BOOL)a3
+- (void)setHasSecsSinceLastTrimmed:(BOOL)trimmed
 {
-  if (a3)
+  if (trimmed)
   {
     v3 = 1024;
   }
@@ -230,9 +230,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasDnsPartialFailures:(BOOL)a3
+- (void)setHasDnsPartialFailures:(BOOL)failures
 {
-  if (a3)
+  if (failures)
   {
     v3 = 32;
   }
@@ -245,9 +245,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasDnsCompleteFailures:(BOOL)a3
+- (void)setHasDnsCompleteFailures:(BOOL)failures
 {
-  if (a3)
+  if (failures)
   {
     v3 = 16;
   }
@@ -266,25 +266,25 @@
   v8.receiver = self;
   v8.super_class = AWDSymptomsNetworkAnalyticsHistorical;
   v4 = [(AWDSymptomsNetworkAnalyticsHistorical *)&v8 description];
-  v5 = [(AWDSymptomsNetworkAnalyticsHistorical *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDSymptomsNetworkAnalyticsHistorical *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ((*&self->_has & 0x800) != 0)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v4 forKey:@"timestamp"];
+    [dictionary setObject:v4 forKey:@"timestamp"];
   }
 
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   has = self->_has;
@@ -301,7 +301,7 @@
       v10 = off_27898CC00[v9];
     }
 
-    [v3 setObject:v10 forKey:@"networkType"];
+    [dictionary setObject:v10 forKey:@"networkType"];
 
     has = self->_has;
     if ((has & 0x40) == 0)
@@ -322,7 +322,7 @@ LABEL_7:
   }
 
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_epochs];
-  [v3 setObject:v11 forKey:@"epochs"];
+  [dictionary setObject:v11 forKey:@"epochs"];
 
   has = self->_has;
   if ((has & 0x1000) == 0)
@@ -338,7 +338,7 @@ LABEL_8:
 
 LABEL_27:
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_totalStaySecs];
-  [v3 setObject:v12 forKey:@"totalStaySecs"];
+  [dictionary setObject:v12 forKey:@"totalStaySecs"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -354,7 +354,7 @@ LABEL_9:
 
 LABEL_28:
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_faultyStaySecs];
-  [v3 setObject:v13 forKey:@"faultyStaySecs"];
+  [dictionary setObject:v13 forKey:@"faultyStaySecs"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -370,7 +370,7 @@ LABEL_10:
 
 LABEL_29:
   v14 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_connAttempts];
-  [v3 setObject:v14 forKey:@"connAttempts"];
+  [dictionary setObject:v14 forKey:@"connAttempts"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -386,7 +386,7 @@ LABEL_11:
 
 LABEL_30:
   v15 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_connSuccess];
-  [v3 setObject:v15 forKey:@"connSuccess"];
+  [dictionary setObject:v15 forKey:@"connSuccess"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -402,7 +402,7 @@ LABEL_12:
 
 LABEL_31:
   v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_packetsIn];
-  [v3 setObject:v16 forKey:@"packetsIn"];
+  [dictionary setObject:v16 forKey:@"packetsIn"];
 
   has = self->_has;
   if ((has & 0x200) == 0)
@@ -418,7 +418,7 @@ LABEL_13:
 
 LABEL_32:
   v17 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_packetsOut];
-  [v3 setObject:v17 forKey:@"packetsOut"];
+  [dictionary setObject:v17 forKey:@"packetsOut"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -434,7 +434,7 @@ LABEL_14:
 
 LABEL_33:
   v18 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_bytesIn];
-  [v3 setObject:v18 forKey:@"bytesIn"];
+  [dictionary setObject:v18 forKey:@"bytesIn"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -450,7 +450,7 @@ LABEL_15:
 
 LABEL_34:
   v19 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_bytesOut];
-  [v3 setObject:v19 forKey:@"bytesOut"];
+  [dictionary setObject:v19 forKey:@"bytesOut"];
 
   has = self->_has;
   if ((has & 0x400) == 0)
@@ -466,7 +466,7 @@ LABEL_16:
 
 LABEL_35:
   v20 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_secsSinceLastTrimmed];
-  [v3 setObject:v20 forKey:@"secsSinceLastTrimmed"];
+  [dictionary setObject:v20 forKey:@"secsSinceLastTrimmed"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -482,23 +482,23 @@ LABEL_17:
 
 LABEL_36:
   v21 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_dnsPartialFailures];
-  [v3 setObject:v21 forKey:@"dnsPartialFailures"];
+  [dictionary setObject:v21 forKey:@"dnsPartialFailures"];
 
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_18:
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_dnsCompleteFailures];
-    [v3 setObject:v7 forKey:@"dnsCompleteFailures"];
+    [dictionary setObject:v7 forKey:@"dnsCompleteFailures"];
   }
 
 LABEL_19:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v19 = a3;
+  toCopy = to;
   if ((*&self->_has & 0x800) != 0)
   {
     timestamp = self->_timestamp;
@@ -695,27 +695,27 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 0x800) != 0)
   {
-    v4[12] = self->_timestamp;
-    *(v4 + 62) |= 0x800u;
+    toCopy[12] = self->_timestamp;
+    *(toCopy + 62) |= 0x800u;
   }
 
   if (self->_identifier)
   {
-    v6 = v4;
-    [v4 setIdentifier:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setIdentifier:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 0x2000) != 0)
   {
-    *(v4 + 30) = self->_networkType;
-    *(v4 + 62) |= 0x2000u;
+    *(toCopy + 30) = self->_networkType;
+    *(toCopy + 62) |= 0x2000u;
     has = self->_has;
     if ((has & 0x40) == 0)
     {
@@ -734,8 +734,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v4[7] = self->_epochs;
-  *(v4 + 62) |= 0x40u;
+  toCopy[7] = self->_epochs;
+  *(toCopy + 62) |= 0x40u;
   has = self->_has;
   if ((has & 0x1000) == 0)
   {
@@ -749,8 +749,8 @@ LABEL_8:
   }
 
 LABEL_24:
-  v4[13] = self->_totalStaySecs;
-  *(v4 + 62) |= 0x1000u;
+  toCopy[13] = self->_totalStaySecs;
+  *(toCopy + 62) |= 0x1000u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -764,8 +764,8 @@ LABEL_9:
   }
 
 LABEL_25:
-  v4[8] = self->_faultyStaySecs;
-  *(v4 + 62) |= 0x80u;
+  toCopy[8] = self->_faultyStaySecs;
+  *(toCopy + 62) |= 0x80u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -779,8 +779,8 @@ LABEL_10:
   }
 
 LABEL_26:
-  v4[3] = self->_connAttempts;
-  *(v4 + 62) |= 4u;
+  toCopy[3] = self->_connAttempts;
+  *(toCopy + 62) |= 4u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -794,8 +794,8 @@ LABEL_11:
   }
 
 LABEL_27:
-  v4[4] = self->_connSuccess;
-  *(v4 + 62) |= 8u;
+  toCopy[4] = self->_connSuccess;
+  *(toCopy + 62) |= 8u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -809,8 +809,8 @@ LABEL_12:
   }
 
 LABEL_28:
-  v4[9] = self->_packetsIn;
-  *(v4 + 62) |= 0x100u;
+  toCopy[9] = self->_packetsIn;
+  *(toCopy + 62) |= 0x100u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -824,8 +824,8 @@ LABEL_13:
   }
 
 LABEL_29:
-  v4[10] = self->_packetsOut;
-  *(v4 + 62) |= 0x200u;
+  toCopy[10] = self->_packetsOut;
+  *(toCopy + 62) |= 0x200u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -839,8 +839,8 @@ LABEL_14:
   }
 
 LABEL_30:
-  v4[1] = self->_bytesIn;
-  *(v4 + 62) |= 1u;
+  toCopy[1] = self->_bytesIn;
+  *(toCopy + 62) |= 1u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -854,8 +854,8 @@ LABEL_15:
   }
 
 LABEL_31:
-  v4[2] = self->_bytesOut;
-  *(v4 + 62) |= 2u;
+  toCopy[2] = self->_bytesOut;
+  *(toCopy + 62) |= 2u;
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -869,8 +869,8 @@ LABEL_16:
   }
 
 LABEL_32:
-  v4[11] = self->_secsSinceLastTrimmed;
-  *(v4 + 62) |= 0x400u;
+  toCopy[11] = self->_secsSinceLastTrimmed;
+  *(toCopy + 62) |= 0x400u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -884,21 +884,21 @@ LABEL_17:
   }
 
 LABEL_33:
-  v4[6] = self->_dnsPartialFailures;
-  *(v4 + 62) |= 0x20u;
+  toCopy[6] = self->_dnsPartialFailures;
+  *(toCopy + 62) |= 0x20u;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_18:
-    v4[5] = self->_dnsCompleteFailures;
-    *(v4 + 62) |= 0x10u;
+    toCopy[5] = self->_dnsCompleteFailures;
+    *(toCopy + 62) |= 0x10u;
   }
 
 LABEL_19:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 0x800) != 0)
   {
@@ -906,7 +906,7 @@ LABEL_19:
     *(v5 + 124) |= 0x800u;
   }
 
-  v7 = [(NSString *)self->_identifier copyWithZone:a3];
+  v7 = [(NSString *)self->_identifier copyWithZone:zone];
   v8 = *(v6 + 112);
   *(v6 + 112) = v7;
 
@@ -1095,31 +1095,31 @@ LABEL_16:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_75;
   }
 
   has = self->_has;
-  v6 = *(v4 + 62);
+  v6 = *(equalCopy + 62);
   if ((has & 0x800) != 0)
   {
-    if ((*(v4 + 62) & 0x800) == 0 || self->_timestamp != *(v4 + 12))
+    if ((*(equalCopy + 62) & 0x800) == 0 || self->_timestamp != *(equalCopy + 12))
     {
       goto LABEL_75;
     }
   }
 
-  else if ((*(v4 + 62) & 0x800) != 0)
+  else if ((*(equalCopy + 62) & 0x800) != 0)
   {
     goto LABEL_75;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 14))
+  if (identifier | *(equalCopy + 14))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -1131,23 +1131,23 @@ LABEL_75:
     has = self->_has;
   }
 
-  v8 = *(v4 + 62);
+  v8 = *(equalCopy + 62);
   if ((has & 0x2000) != 0)
   {
-    if ((*(v4 + 62) & 0x2000) == 0 || self->_networkType != *(v4 + 30))
+    if ((*(equalCopy + 62) & 0x2000) == 0 || self->_networkType != *(equalCopy + 30))
     {
       goto LABEL_75;
     }
   }
 
-  else if ((*(v4 + 62) & 0x2000) != 0)
+  else if ((*(equalCopy + 62) & 0x2000) != 0)
   {
     goto LABEL_75;
   }
 
   if ((has & 0x40) != 0)
   {
-    if ((v8 & 0x40) == 0 || self->_epochs != *(v4 + 7))
+    if ((v8 & 0x40) == 0 || self->_epochs != *(equalCopy + 7))
     {
       goto LABEL_75;
     }
@@ -1160,20 +1160,20 @@ LABEL_75:
 
   if ((has & 0x1000) != 0)
   {
-    if ((*(v4 + 62) & 0x1000) == 0 || self->_totalStaySecs != *(v4 + 13))
+    if ((*(equalCopy + 62) & 0x1000) == 0 || self->_totalStaySecs != *(equalCopy + 13))
     {
       goto LABEL_75;
     }
   }
 
-  else if ((*(v4 + 62) & 0x1000) != 0)
+  else if ((*(equalCopy + 62) & 0x1000) != 0)
   {
     goto LABEL_75;
   }
 
   if ((has & 0x80) != 0)
   {
-    if ((v8 & 0x80) == 0 || self->_faultyStaySecs != *(v4 + 8))
+    if ((v8 & 0x80) == 0 || self->_faultyStaySecs != *(equalCopy + 8))
     {
       goto LABEL_75;
     }
@@ -1186,7 +1186,7 @@ LABEL_75:
 
   if ((has & 4) != 0)
   {
-    if ((v8 & 4) == 0 || self->_connAttempts != *(v4 + 3))
+    if ((v8 & 4) == 0 || self->_connAttempts != *(equalCopy + 3))
     {
       goto LABEL_75;
     }
@@ -1199,7 +1199,7 @@ LABEL_75:
 
   if ((has & 8) != 0)
   {
-    if ((v8 & 8) == 0 || self->_connSuccess != *(v4 + 4))
+    if ((v8 & 8) == 0 || self->_connSuccess != *(equalCopy + 4))
     {
       goto LABEL_75;
     }
@@ -1212,33 +1212,33 @@ LABEL_75:
 
   if ((has & 0x100) != 0)
   {
-    if ((*(v4 + 62) & 0x100) == 0 || self->_packetsIn != *(v4 + 9))
+    if ((*(equalCopy + 62) & 0x100) == 0 || self->_packetsIn != *(equalCopy + 9))
     {
       goto LABEL_75;
     }
   }
 
-  else if ((*(v4 + 62) & 0x100) != 0)
+  else if ((*(equalCopy + 62) & 0x100) != 0)
   {
     goto LABEL_75;
   }
 
   if ((has & 0x200) != 0)
   {
-    if ((*(v4 + 62) & 0x200) == 0 || self->_packetsOut != *(v4 + 10))
+    if ((*(equalCopy + 62) & 0x200) == 0 || self->_packetsOut != *(equalCopy + 10))
     {
       goto LABEL_75;
     }
   }
 
-  else if ((*(v4 + 62) & 0x200) != 0)
+  else if ((*(equalCopy + 62) & 0x200) != 0)
   {
     goto LABEL_75;
   }
 
   if (has)
   {
-    if ((v8 & 1) == 0 || self->_bytesIn != *(v4 + 1))
+    if ((v8 & 1) == 0 || self->_bytesIn != *(equalCopy + 1))
     {
       goto LABEL_75;
     }
@@ -1251,7 +1251,7 @@ LABEL_75:
 
   if ((has & 2) != 0)
   {
-    if ((v8 & 2) == 0 || self->_bytesOut != *(v4 + 2))
+    if ((v8 & 2) == 0 || self->_bytesOut != *(equalCopy + 2))
     {
       goto LABEL_75;
     }
@@ -1264,20 +1264,20 @@ LABEL_75:
 
   if ((has & 0x400) != 0)
   {
-    if ((*(v4 + 62) & 0x400) == 0 || self->_secsSinceLastTrimmed != *(v4 + 11))
+    if ((*(equalCopy + 62) & 0x400) == 0 || self->_secsSinceLastTrimmed != *(equalCopy + 11))
     {
       goto LABEL_75;
     }
   }
 
-  else if ((*(v4 + 62) & 0x400) != 0)
+  else if ((*(equalCopy + 62) & 0x400) != 0)
   {
     goto LABEL_75;
   }
 
   if ((has & 0x20) != 0)
   {
-    if ((v8 & 0x20) == 0 || self->_dnsPartialFailures != *(v4 + 6))
+    if ((v8 & 0x20) == 0 || self->_dnsPartialFailures != *(equalCopy + 6))
     {
       goto LABEL_75;
     }
@@ -1290,7 +1290,7 @@ LABEL_75:
 
   if ((has & 0x10) != 0)
   {
-    if ((v8 & 0x10) == 0 || self->_dnsCompleteFailures != *(v4 + 5))
+    if ((v8 & 0x10) == 0 || self->_dnsCompleteFailures != *(equalCopy + 5))
     {
       goto LABEL_75;
     }
@@ -1500,28 +1500,28 @@ LABEL_17:
   return v4 ^ v3 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if ((*(v4 + 62) & 0x800) != 0)
+  fromCopy = from;
+  if ((*(fromCopy + 62) & 0x800) != 0)
   {
-    self->_timestamp = *(v4 + 12);
+    self->_timestamp = *(fromCopy + 12);
     *&self->_has |= 0x800u;
   }
 
-  if (*(v4 + 14))
+  if (*(fromCopy + 14))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(AWDSymptomsNetworkAnalyticsHistorical *)self setIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 62);
+  v5 = *(fromCopy + 62);
   if ((v5 & 0x2000) != 0)
   {
-    self->_networkType = *(v4 + 30);
+    self->_networkType = *(fromCopy + 30);
     *&self->_has |= 0x2000u;
-    v5 = *(v4 + 62);
+    v5 = *(fromCopy + 62);
     if ((v5 & 0x40) == 0)
     {
 LABEL_7:
@@ -1539,9 +1539,9 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  self->_epochs = *(v4 + 7);
+  self->_epochs = *(fromCopy + 7);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 62);
+  v5 = *(fromCopy + 62);
   if ((v5 & 0x1000) == 0)
   {
 LABEL_8:
@@ -1554,9 +1554,9 @@ LABEL_8:
   }
 
 LABEL_24:
-  self->_totalStaySecs = *(v4 + 13);
+  self->_totalStaySecs = *(fromCopy + 13);
   *&self->_has |= 0x1000u;
-  v5 = *(v4 + 62);
+  v5 = *(fromCopy + 62);
   if ((v5 & 0x80) == 0)
   {
 LABEL_9:
@@ -1569,9 +1569,9 @@ LABEL_9:
   }
 
 LABEL_25:
-  self->_faultyStaySecs = *(v4 + 8);
+  self->_faultyStaySecs = *(fromCopy + 8);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 62);
+  v5 = *(fromCopy + 62);
   if ((v5 & 4) == 0)
   {
 LABEL_10:
@@ -1584,9 +1584,9 @@ LABEL_10:
   }
 
 LABEL_26:
-  self->_connAttempts = *(v4 + 3);
+  self->_connAttempts = *(fromCopy + 3);
   *&self->_has |= 4u;
-  v5 = *(v4 + 62);
+  v5 = *(fromCopy + 62);
   if ((v5 & 8) == 0)
   {
 LABEL_11:
@@ -1599,9 +1599,9 @@ LABEL_11:
   }
 
 LABEL_27:
-  self->_connSuccess = *(v4 + 4);
+  self->_connSuccess = *(fromCopy + 4);
   *&self->_has |= 8u;
-  v5 = *(v4 + 62);
+  v5 = *(fromCopy + 62);
   if ((v5 & 0x100) == 0)
   {
 LABEL_12:
@@ -1614,9 +1614,9 @@ LABEL_12:
   }
 
 LABEL_28:
-  self->_packetsIn = *(v4 + 9);
+  self->_packetsIn = *(fromCopy + 9);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 62);
+  v5 = *(fromCopy + 62);
   if ((v5 & 0x200) == 0)
   {
 LABEL_13:
@@ -1629,9 +1629,9 @@ LABEL_13:
   }
 
 LABEL_29:
-  self->_packetsOut = *(v4 + 10);
+  self->_packetsOut = *(fromCopy + 10);
   *&self->_has |= 0x200u;
-  v5 = *(v4 + 62);
+  v5 = *(fromCopy + 62);
   if ((v5 & 1) == 0)
   {
 LABEL_14:
@@ -1644,9 +1644,9 @@ LABEL_14:
   }
 
 LABEL_30:
-  self->_bytesIn = *(v4 + 1);
+  self->_bytesIn = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v5 = *(v4 + 62);
+  v5 = *(fromCopy + 62);
   if ((v5 & 2) == 0)
   {
 LABEL_15:
@@ -1659,9 +1659,9 @@ LABEL_15:
   }
 
 LABEL_31:
-  self->_bytesOut = *(v4 + 2);
+  self->_bytesOut = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v5 = *(v4 + 62);
+  v5 = *(fromCopy + 62);
   if ((v5 & 0x400) == 0)
   {
 LABEL_16:
@@ -1674,9 +1674,9 @@ LABEL_16:
   }
 
 LABEL_32:
-  self->_secsSinceLastTrimmed = *(v4 + 11);
+  self->_secsSinceLastTrimmed = *(fromCopy + 11);
   *&self->_has |= 0x400u;
-  v5 = *(v4 + 62);
+  v5 = *(fromCopy + 62);
   if ((v5 & 0x20) == 0)
   {
 LABEL_17:
@@ -1689,12 +1689,12 @@ LABEL_17:
   }
 
 LABEL_33:
-  self->_dnsPartialFailures = *(v4 + 6);
+  self->_dnsPartialFailures = *(fromCopy + 6);
   *&self->_has |= 0x20u;
-  if ((*(v4 + 62) & 0x10) != 0)
+  if ((*(fromCopy + 62) & 0x10) != 0)
   {
 LABEL_18:
-    self->_dnsCompleteFailures = *(v4 + 5);
+    self->_dnsCompleteFailures = *(fromCopy + 5);
     *&self->_has |= 0x10u;
   }
 

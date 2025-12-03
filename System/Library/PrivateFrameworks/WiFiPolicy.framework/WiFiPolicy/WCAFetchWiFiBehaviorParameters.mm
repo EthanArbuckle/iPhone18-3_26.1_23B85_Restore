@@ -1,13 +1,13 @@
 @interface WCAFetchWiFiBehaviorParameters
-+ (void)fetchWiFiBehaviorWithCompletion:(id)a3;
++ (void)fetchWiFiBehaviorWithCompletion:(id)completion;
 @end
 
 @implementation WCAFetchWiFiBehaviorParameters
 
-+ (void)fetchWiFiBehaviorWithCompletion:(id)a3
++ (void)fetchWiFiBehaviorWithCompletion:(id)completion
 {
   v15[8] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  completionCopy = completion;
   v4 = objc_alloc_init(WCAFetchKeyValuesRequest);
   v15[0] = @"WiFiInternalSSIDs";
   v15[1] = @"MacRandomization";
@@ -27,8 +27,8 @@
   v11 = 3221225472;
   v12 = __66__WCAFetchWiFiBehaviorParameters_fetchWiFiBehaviorWithCompletion___block_invoke;
   v13 = &unk_2789C81A8;
-  v14 = v3;
-  v7 = v3;
+  v14 = completionCopy;
+  v7 = completionCopy;
   [(WCAFetchRequest *)v4 setCompletionHandler:&v10];
   v8 = [WCAClient sharedClient:v10];
   [v8 executeFetchRequest:v4];

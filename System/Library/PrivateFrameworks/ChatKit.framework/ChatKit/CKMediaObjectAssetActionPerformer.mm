@@ -1,19 +1,19 @@
 @interface CKMediaObjectAssetActionPerformer
-+ (BOOL)canPerformWithActionManager:(id)a3;
-+ (id)createBarButtonItemWithTarget:(id)a3 action:(SEL)a4 actionManager:(id)a5;
-+ (id)createPreviewActionWithActionManager:(id)a3 handler:(id)a4;
++ (BOOL)canPerformWithActionManager:(id)manager;
++ (id)createBarButtonItemWithTarget:(id)target action:(SEL)action actionManager:(id)manager;
++ (id)createPreviewActionWithActionManager:(id)manager handler:(id)handler;
 - (CKMediaObjectAssetActionHelper)chatActionHelper;
 @end
 
 @implementation CKMediaObjectAssetActionPerformer
 
-+ (BOOL)canPerformWithActionManager:(id)a3
++ (BOOL)canPerformWithActionManager:(id)manager
 {
-  v4 = a3;
-  v5 = [v4 _selectionSnapshotForPerformerClass:a1];
+  managerCopy = manager;
+  v5 = [managerCopy _selectionSnapshotForPerformerClass:self];
   if (v5)
   {
-    v6 = [a1 canPerformWithActionManager:v4 selectionSnapshot:v5];
+    v6 = [self canPerformWithActionManager:managerCopy selectionSnapshot:v5];
   }
 
   else
@@ -24,14 +24,14 @@
   return v6;
 }
 
-+ (id)createBarButtonItemWithTarget:(id)a3 action:(SEL)a4 actionManager:(id)a5
++ (id)createBarButtonItemWithTarget:(id)target action:(SEL)action actionManager:(id)manager
 {
-  v8 = a3;
-  v9 = [a1 systemImageNameForActionManager:a5];
+  targetCopy = target;
+  v9 = [self systemImageNameForActionManager:manager];
   if ([v9 length])
   {
     v10 = [MEMORY[0x1E69DCAB8] systemImageNamed:v9];
-    v11 = [objc_alloc(MEMORY[0x1E69DC708]) initWithImage:v10 style:0 target:v8 action:a4];
+    v11 = [objc_alloc(MEMORY[0x1E69DC708]) initWithImage:v10 style:0 target:targetCopy action:action];
   }
 
   else
@@ -42,18 +42,18 @@
   return v11;
 }
 
-+ (id)createPreviewActionWithActionManager:(id)a3 handler:(id)a4
++ (id)createPreviewActionWithActionManager:(id)manager handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 localizedTitleForUseCase:0 actionManager:v6];
+  managerCopy = manager;
+  handlerCopy = handler;
+  v8 = [self localizedTitleForUseCase:0 actionManager:managerCopy];
   if ([v8 length])
   {
-    v9 = [a1 systemImageNameForActionManager:v6];
+    v9 = [self systemImageNameForActionManager:managerCopy];
     if ([v9 length])
     {
       v10 = MEMORY[0x1E69DCAB8];
-      v11 = [a1 systemImageNameForActionManager:v6];
+      v11 = [self systemImageNameForActionManager:managerCopy];
       v12 = [v10 systemImageNamed:v11];
     }
 
@@ -62,7 +62,7 @@
       v12 = 0;
     }
 
-    v13 = [MEMORY[0x1E69DC628] actionWithTitle:v8 image:v12 identifier:0 handler:v7];
+    v13 = [MEMORY[0x1E69DC628] actionWithTitle:v8 image:v12 identifier:0 handler:handlerCopy];
   }
 
   else

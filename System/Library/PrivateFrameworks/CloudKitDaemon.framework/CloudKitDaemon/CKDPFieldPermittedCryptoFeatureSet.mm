@@ -1,17 +1,17 @@
 @interface CKDPFieldPermittedCryptoFeatureSet
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)assetKeyEncryptionTypeAtIndex:(unint64_t)a3;
-- (int)encryptedFieldContextTypeAtIndex:(unint64_t)a3;
+- (int)assetKeyEncryptionTypeAtIndex:(unint64_t)index;
+- (int)encryptedFieldContextTypeAtIndex:(unint64_t)index;
 - (int)minimumSchemaVersion;
-- (int)mmcsVersionAtIndex:(unint64_t)a3;
+- (int)mmcsVersionAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPFieldPermittedCryptoFeatureSet
@@ -39,52 +39,52 @@
   }
 }
 
-- (int)mmcsVersionAtIndex:(unint64_t)a3
+- (int)mmcsVersionAtIndex:(unint64_t)index
 {
   p_mmcsVersions = &self->_mmcsVersions;
   count = self->_mmcsVersions.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"idx (%lu) is out of range (%lu)", a3, count);
+    v8 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"idx (%lu) is out of range (%lu)", index, count);
     v10 = objc_msgSend_exceptionWithName_reason_userInfo_(v6, v9, v7, v8, 0);
     objc_msgSend_raise(v10, v11, v12);
   }
 
-  return p_mmcsVersions->list[a3];
+  return p_mmcsVersions->list[index];
 }
 
-- (int)encryptedFieldContextTypeAtIndex:(unint64_t)a3
+- (int)encryptedFieldContextTypeAtIndex:(unint64_t)index
 {
   p_encryptedFieldContextTypes = &self->_encryptedFieldContextTypes;
   count = self->_encryptedFieldContextTypes.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"idx (%lu) is out of range (%lu)", a3, count);
+    v8 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"idx (%lu) is out of range (%lu)", index, count);
     v10 = objc_msgSend_exceptionWithName_reason_userInfo_(v6, v9, v7, v8, 0);
     objc_msgSend_raise(v10, v11, v12);
   }
 
-  return p_encryptedFieldContextTypes->list[a3];
+  return p_encryptedFieldContextTypes->list[index];
 }
 
-- (int)assetKeyEncryptionTypeAtIndex:(unint64_t)a3
+- (int)assetKeyEncryptionTypeAtIndex:(unint64_t)index
 {
   p_assetKeyEncryptionTypes = &self->_assetKeyEncryptionTypes;
   count = self->_assetKeyEncryptionTypes.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"idx (%lu) is out of range (%lu)", a3, count);
+    v8 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"idx (%lu) is out of range (%lu)", index, count);
     v10 = objc_msgSend_exceptionWithName_reason_userInfo_(v6, v9, v7, v8, 0);
     objc_msgSend_raise(v10, v11, v12);
   }
 
-  return p_assetKeyEncryptionTypes->list[a3];
+  return p_assetKeyEncryptionTypes->list[index];
 }
 
 - (id)description
@@ -120,15 +120,15 @@
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v13 = v4;
+  toCopy = to;
+  v13 = toCopy;
   if (*&self->_has)
   {
     minimumSchemaVersion = self->_minimumSchemaVersion;
     PBDataWriterWriteInt32Field();
-    v4 = v13;
+    toCopy = v13;
   }
 
   if (self->_mmcsVersions.count)
@@ -138,7 +138,7 @@
     {
       v7 = self->_mmcsVersions.list[v6];
       PBDataWriterWriteInt32Field();
-      v4 = v13;
+      toCopy = v13;
       ++v6;
     }
 
@@ -152,7 +152,7 @@
     {
       v9 = self->_encryptedFieldContextTypes.list[v8];
       PBDataWriterWriteInt32Field();
-      v4 = v13;
+      toCopy = v13;
       ++v8;
     }
 
@@ -167,7 +167,7 @@
     {
       v12 = p_assetKeyEncryptionTypes->list[v11];
       PBDataWriterWriteInt32Field();
-      v4 = v13;
+      toCopy = v13;
       ++v11;
     }
 
@@ -175,16 +175,16 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[20] = self->_minimumSchemaVersion;
-    *(v4 + 84) |= 1u;
+    toCopy[20] = self->_minimumSchemaVersion;
+    *(toCopy + 84) |= 1u;
   }
 
-  v35 = v4;
+  v35 = toCopy;
   if (objc_msgSend_mmcsVersionsCount(self, v5, v6))
   {
     objc_msgSend_clearMmcsVersions(v35, v7, v8);
@@ -231,10 +231,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v11 = v10;
   if (*&self->_has)
@@ -249,25 +249,25 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_10;
   }
 
-  v7 = *(v4 + 84);
+  v7 = *(equalCopy + 84);
   if (*&self->_has)
   {
-    if ((*(v4 + 84) & 1) == 0 || self->_minimumSchemaVersion != *(v4 + 20))
+    if ((*(equalCopy + 84) & 1) == 0 || self->_minimumSchemaVersion != *(equalCopy + 20))
     {
       goto LABEL_10;
     }
   }
 
-  else if (*(v4 + 84))
+  else if (*(equalCopy + 84))
   {
 LABEL_10:
     IsEqual = 0;
@@ -302,17 +302,17 @@ LABEL_11:
   return v3 ^ v4 ^ PBRepeatedInt32Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[21])
+  fromCopy = from;
+  if (fromCopy[21])
   {
-    self->_minimumSchemaVersion = v4[20];
+    self->_minimumSchemaVersion = fromCopy[20];
     *&self->_has |= 1u;
   }
 
-  v27 = v4;
-  v7 = objc_msgSend_mmcsVersionsCount(v4, v5, v6);
+  v27 = fromCopy;
+  v7 = objc_msgSend_mmcsVersionsCount(fromCopy, v5, v6);
   if (v7)
   {
     v10 = v7;

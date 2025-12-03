@@ -1,9 +1,9 @@
 @interface PKJob
 + (id)currentJob;
-+ (id)jobForJobID:(int64_t)a3;
++ (id)jobForJobID:(int64_t)d;
 + (id)jobs;
-+ (void)currentJobCompletionHandler:(id)a3;
-+ (void)jobsCompletionHandler:(id)a3;
++ (void)currentJobCompletionHandler:(id)handler;
++ (void)jobsCompletionHandler:(id)handler;
 - (NSArray)jobPrinterStateReasons;
 - (NSArray)jobStateReasons;
 - (NSData)printerEndpointData;
@@ -18,12 +18,12 @@
 - (NSString)localizedStatusString;
 - (NSString)printerDisplayName;
 - (NSString)printerLocation;
-- (PKJob)initWithCoder:(id)a3;
-- (PKJob)initWithJobID:(int)a3 updateState:(id)a4;
-- (PKJob)initWithUserCodableDictionary:(id)a3;
+- (PKJob)initWithCoder:(id)coder;
+- (PKJob)initWithJobID:(int)d updateState:(id)state;
+- (PKJob)initWithUserCodableDictionary:(id)dictionary;
 - (PKPrintSettings)settings;
 - (PKPrinter)printer;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)userCodableDictionary;
 - (int64_t)localJobID;
 - (int64_t)mediaProgress;
@@ -33,41 +33,41 @@
 - (int64_t)remoteJobId;
 - (int64_t)state;
 - (int64_t)update;
-- (void)_updateJobState:(id)a3;
-- (void)_withPrinterAsync:(id)a3;
+- (void)_updateJobState:(id)state;
+- (void)_withPrinterAsync:(id)async;
 - (void)cancel;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateCompletionHandler:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateCompletionHandler:(id)handler;
 @end
 
 @implementation PKJob
 
-- (PKJob)initWithJobID:(int)a3 updateState:(id)a4
+- (PKJob)initWithJobID:(int)d updateState:(id)state
 {
-  v7 = a4;
+  stateCopy = state;
   v11.receiver = self;
   v11.super_class = PKJob;
   v8 = [(PKJob *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_localJobID = a3;
-    objc_storeStrong(&v8->_updatableState, a4);
+    v8->_localJobID = d;
+    objc_storeStrong(&v8->_updatableState, state);
   }
 
   return v9;
 }
 
-- (PKJob)initWithCoder:(id)a3
+- (PKJob)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKJob;
   v5 = [(PKJob *)&v9 init];
   if (v5)
   {
-    v5->_localJobID = [v4 decodeIntForKey:@"_localJobID"];
-    v6 = [v4 decodeObjectForKey:@"_updatableState"];
+    v5->_localJobID = [coderCopy decodeIntForKey:@"_localJobID"];
+    v6 = [coderCopy decodeObjectForKey:@"_updatableState"];
     updatableState = v5->_updatableState;
     v5->_updatableState = v6;
   }
@@ -75,11 +75,11 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt:self->_localJobID forKey:@"_localJobID"];
-  [v4 encodeObject:self->_updatableState forKey:@"_updatableState"];
+  coderCopy = coder;
+  [coderCopy encodeInt:self->_localJobID forKey:@"_localJobID"];
+  [coderCopy encodeObject:self->_updatableState forKey:@"_updatableState"];
 }
 
 - (id)userCodableDictionary
@@ -89,26 +89,26 @@
   v3 = [MEMORY[0x277CCABB0] numberWithInt:self->_localJobID];
   v7[1] = @"updatableState";
   v8[0] = v3;
-  v4 = [(PKMutableJobState *)self->_updatableState userCodableDictionary];
-  v8[1] = v4;
+  userCodableDictionary = [(PKMutableJobState *)self->_updatableState userCodableDictionary];
+  v8[1] = userCodableDictionary;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:v7 count:2];
 
   return v5;
 }
 
-- (PKJob)initWithUserCodableDictionary:(id)a3
+- (PKJob)initWithUserCodableDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = PKJob;
   v5 = [(PKJob *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"localJobID"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"localJobID"];
     v5->_localJobID = [v6 intValue];
 
     v7 = [PKMutableJobState alloc];
-    v8 = [v4 objectForKeyedSubscript:@"updatableState"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"updatableState"];
     v9 = [(PKMutableJobState *)v7 initWithUserCodableDictionary:v8];
     updatableState = v5->_updatableState;
     v5->_updatableState = v9;
@@ -117,7 +117,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   localJobID = self->_localJobID;
@@ -127,21 +127,21 @@
   return v7;
 }
 
-- (void)_withPrinterAsync:(id)a3
+- (void)_withPrinterAsync:(id)async
 {
-  v7 = a3;
-  v4 = [(PKJob *)self updatableState];
-  v5 = [v4 printerEndpointData];
+  asyncCopy = async;
+  updatableState = [(PKJob *)self updatableState];
+  printerEndpointData = [updatableState printerEndpointData];
 
-  if (v5)
+  if (printerEndpointData)
   {
-    v6 = [PKPrinterBonjourEndpoint endpointWithData:v5];
-    [PKPrinter printerWithBonjourEndpoint:v6 discoveryTimeout:v7 completionHandler:1.0];
+    v6 = [PKPrinterBonjourEndpoint endpointWithData:printerEndpointData];
+    [PKPrinter printerWithBonjourEndpoint:v6 discoveryTimeout:asyncCopy completionHandler:1.0];
   }
 
   else
   {
-    v7[2](v7, 0);
+    asyncCopy[2](asyncCopy, 0);
   }
 }
 
@@ -150,15 +150,15 @@
   cachedPrinter = self->_cachedPrinter;
   if (!cachedPrinter)
   {
-    v4 = self;
-    if (object_isClass(v4))
+    selfCopy = self;
+    if (object_isClass(selfCopy))
     {
       [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PKJob printer]"];
     }
 
     else
     {
-      [MEMORY[0x277CCACA8] stringWithFormat:@"%@<%p>: %s", objc_opt_class(), v4, "-[PKJob printer]"];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"%@<%p>: %s", objc_opt_class(), selfCopy, "-[PKJob printer]"];
     }
     v5 = ;
 
@@ -166,7 +166,7 @@
     v9[1] = 3221225472;
     v9[2] = __16__PKJob_printer__block_invoke;
     v9[3] = &unk_279A92228;
-    v9[4] = v4;
+    v9[4] = selfCopy;
     v6 = withDebuggableSemaphore<PKPrinter * {__strong}>(v5, v9, 3.0);
     v7 = self->_cachedPrinter;
     self->_cachedPrinter = v6;
@@ -177,17 +177,17 @@
   return cachedPrinter;
 }
 
-+ (id)jobForJobID:(int64_t)a3
++ (id)jobForJobID:(int64_t)d
 {
-  v4 = a1;
-  if (object_isClass(v4))
+  selfCopy = self;
+  if (object_isClass(selfCopy))
   {
     [MEMORY[0x277CCACA8] stringWithUTF8String:"+[PKJob jobForJobID:]"];
   }
 
   else
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"%@<%p>: %s", objc_opt_class(), v4, "+[PKJob jobForJobID:]"];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"%@<%p>: %s", objc_opt_class(), selfCopy, "+[PKJob jobForJobID:]"];
   }
   v5 = ;
 
@@ -195,8 +195,8 @@
   v8[1] = 3221225472;
   v8[2] = __21__PKJob_jobForJobID___block_invoke;
   v8[3] = &__block_descriptor_48_e22_v16__0___v____PKJob__8l;
-  v8[4] = v4;
-  v8[5] = a3;
+  v8[4] = selfCopy;
+  v8[5] = d;
   v6 = withDebuggableSemaphore<PKJob * {__strong}>(v5, v8, 3.0);
 
   return v6;
@@ -261,9 +261,9 @@ LABEL_11:
   (*(*(a1 + 32) + 16))();
 }
 
-+ (void)jobsCompletionHandler:(id)a3
++ (void)jobsCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   if (_initPrintKitNotificiations(void)::sOnce != -1)
   {
     +[PKJob jobsCompletionHandler:];
@@ -271,7 +271,7 @@ LABEL_11:
 
   if (printd_running_token < 0 || (state64 = 0, notify_get_state(printd_running_token, &state64)) || !state64)
   {
-    v3[2](v3, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
@@ -281,7 +281,7 @@ LABEL_11:
     v5[1] = 3221225472;
     v5[2] = __31__PKJob_jobsCompletionHandler___block_invoke;
     v5[3] = &unk_279A922B8;
-    v6 = v3;
+    v6 = handlerCopy;
     [v4 getRecentJobsCompletionHandler:v5];
   }
 }
@@ -378,16 +378,16 @@ uint64_t __31__PKJob_jobsCompletionHandler___block_invoke_26(uint64_t a1, void *
   return v11;
 }
 
-+ (void)currentJobCompletionHandler:(id)a3
++ (void)currentJobCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __37__PKJob_currentJobCompletionHandler___block_invoke;
   v6[3] = &unk_279A92308;
-  v7 = v4;
-  v5 = v4;
-  [a1 jobsCompletionHandler:v6];
+  v7 = handlerCopy;
+  v5 = handlerCopy;
+  [self jobsCompletionHandler:v6];
 }
 
 void __37__PKJob_currentJobCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -450,15 +450,15 @@ LABEL_11:
 
 + (id)jobs
 {
-  v2 = a1;
-  if (object_isClass(v2))
+  selfCopy = self;
+  if (object_isClass(selfCopy))
   {
     [MEMORY[0x277CCACA8] stringWithUTF8String:"+[PKJob jobs]"];
   }
 
   else
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"%@<%p>: %s", objc_opt_class(), v2, "+[PKJob jobs]"];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"%@<%p>: %s", objc_opt_class(), selfCopy, "+[PKJob jobs]"];
   }
   v3 = ;
 
@@ -466,7 +466,7 @@ LABEL_11:
   v6[1] = 3221225472;
   v6[2] = __13__PKJob_jobs__block_invoke;
   v6[3] = &__block_descriptor_40_e24_v16__0___v____NSArray__8l;
-  v6[4] = v2;
+  v6[4] = selfCopy;
   v4 = withDebuggableSemaphore<NSArray * {__strong}>(v3, v6, 3.0);
 
   return v4;
@@ -474,15 +474,15 @@ LABEL_11:
 
 + (id)currentJob
 {
-  v2 = a1;
-  if (object_isClass(v2))
+  selfCopy = self;
+  if (object_isClass(selfCopy))
   {
     [MEMORY[0x277CCACA8] stringWithUTF8String:"+[PKJob currentJob]"];
   }
 
   else
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"%@<%p>: %s", objc_opt_class(), v2, "+[PKJob currentJob]"];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"%@<%p>: %s", objc_opt_class(), selfCopy, "+[PKJob currentJob]"];
   }
   v3 = ;
 
@@ -490,7 +490,7 @@ LABEL_11:
   v6[1] = 3221225472;
   v6[2] = __19__PKJob_currentJob__block_invoke;
   v6[3] = &__block_descriptor_40_e22_v16__0___v____PKJob__8l;
-  v6[4] = v2;
+  v6[4] = selfCopy;
   v4 = withDebuggableSemaphore<PKJob * {__strong}>(v3, v6, 3.0);
 
   return v4;
@@ -502,35 +502,35 @@ LABEL_11:
   [v3 cancelJob:{-[PKJob localJobID](self, "localJobID")}];
 }
 
-- (void)_updateJobState:(id)a3
+- (void)_updateJobState:(id)state
 {
-  v9 = a3;
+  stateCopy = state;
   updatableState = self->_updatableState;
   p_updatableState = &self->_updatableState;
-  v7 = [(PKMutableJobState *)updatableState thumbnailImage];
-  objc_storeStrong(p_updatableState, a3);
-  v8 = [(PKMutableJobState *)*p_updatableState thumbnailImage];
+  thumbnailImage = [(PKMutableJobState *)updatableState thumbnailImage];
+  objc_storeStrong(p_updatableState, state);
+  thumbnailImage2 = [(PKMutableJobState *)*p_updatableState thumbnailImage];
 
-  if (!v8)
+  if (!thumbnailImage2)
   {
-    [(PKMutableJobState *)*p_updatableState setThumbnailImage:v7];
+    [(PKMutableJobState *)*p_updatableState setThumbnailImage:thumbnailImage];
   }
 }
 
-- (void)updateCompletionHandler:(id)a3
+- (void)updateCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[PKPrinterTool_Client sharedClient];
-  v6 = [(PKJob *)self localJobID];
-  v7 = [(PKMutableJobState *)self->_updatableState thumbnailImage];
+  localJobID = [(PKJob *)self localJobID];
+  thumbnailImage = [(PKMutableJobState *)self->_updatableState thumbnailImage];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __33__PKJob_updateCompletionHandler___block_invoke;
   v9[3] = &unk_279A92350;
-  v8 = v4;
+  v8 = handlerCopy;
   v9[4] = self;
   v10 = v8;
-  [v5 getJobUpdateStatus:v6 includeThumbnail:v7 == 0 completionHandler:v9];
+  [v5 getJobUpdateStatus:localJobID includeThumbnail:thumbnailImage == 0 completionHandler:v9];
 }
 
 void __33__PKJob_updateCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -547,15 +547,15 @@ void __33__PKJob_updateCompletionHandler___block_invoke(uint64_t a1, void *a2)
 
 - (int64_t)update
 {
-  v2 = self;
-  if (object_isClass(v2))
+  selfCopy = self;
+  if (object_isClass(selfCopy))
   {
     [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PKJob update]"];
   }
 
   else
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"%@<%p>: %s", objc_opt_class(), v2, "-[PKJob update]"];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"%@<%p>: %s", objc_opt_class(), selfCopy, "-[PKJob update]"];
   }
   v3 = ;
 
@@ -563,7 +563,7 @@ void __33__PKJob_updateCompletionHandler___block_invoke(uint64_t a1, void *a2)
   v6[1] = 3221225472;
   v6[2] = __15__PKJob_update__block_invoke;
   v6[3] = &unk_279A92378;
-  v6[4] = v2;
+  v6[4] = selfCopy;
   v4 = withDebuggableSemaphore<PKStatus>(v3, v6, 3.0);
 
   return v4;
@@ -571,180 +571,180 @@ void __33__PKJob_updateCompletionHandler___block_invoke(uint64_t a1, void *a2)
 
 - (int64_t)localJobID
 {
-  v2 = [(PKJob *)self updatableState];
-  v3 = [v2 localJobID];
+  updatableState = [(PKJob *)self updatableState];
+  localJobID = [updatableState localJobID];
 
-  return v3;
+  return localJobID;
 }
 
 - (NSString)printerDisplayName
 {
-  v2 = [(PKJob *)self updatableState];
-  v3 = [v2 printerDisplayName];
+  updatableState = [(PKJob *)self updatableState];
+  printerDisplayName = [updatableState printerDisplayName];
 
-  return v3;
+  return printerDisplayName;
 }
 
 - (NSString)printerLocation
 {
-  v2 = [(PKJob *)self updatableState];
-  v3 = [v2 printerLocation];
+  updatableState = [(PKJob *)self updatableState];
+  printerLocation = [updatableState printerLocation];
 
-  return v3;
+  return printerLocation;
 }
 
 - (int64_t)printerKind
 {
-  v2 = [(PKJob *)self updatableState];
-  v3 = [v2 printerKind];
+  updatableState = [(PKJob *)self updatableState];
+  printerKind = [updatableState printerKind];
 
-  return v3;
+  return printerKind;
 }
 
 - (PKPrintSettings)settings
 {
-  v2 = [(PKJob *)self updatableState];
-  v3 = [v2 settings];
+  updatableState = [(PKJob *)self updatableState];
+  settings = [updatableState settings];
 
-  return v3;
+  return settings;
 }
 
 - (NSDate)timeAtCreation
 {
-  v2 = [(PKJob *)self updatableState];
-  v3 = [v2 timeAtCreation];
+  updatableState = [(PKJob *)self updatableState];
+  timeAtCreation = [updatableState timeAtCreation];
 
-  return v3;
+  return timeAtCreation;
 }
 
 - (int64_t)state
 {
-  v2 = [(PKJob *)self updatableState];
-  v3 = [v2 state];
+  updatableState = [(PKJob *)self updatableState];
+  state = [updatableState state];
 
-  return v3;
+  return state;
 }
 
 - (int64_t)mediaSheetsCompleted
 {
-  v2 = [(PKJob *)self updatableState];
-  v3 = [v2 mediaSheetsCompleted];
+  updatableState = [(PKJob *)self updatableState];
+  mediaSheetsCompleted = [updatableState mediaSheetsCompleted];
 
-  return v3;
+  return mediaSheetsCompleted;
 }
 
 - (NSDate)timeAtProcessing
 {
-  v2 = [(PKJob *)self updatableState];
-  v3 = [v2 timeAtProcessing];
+  updatableState = [(PKJob *)self updatableState];
+  timeAtProcessing = [updatableState timeAtProcessing];
 
-  return v3;
+  return timeAtProcessing;
 }
 
 - (NSDate)timeAtCompleted
 {
-  v2 = [(PKJob *)self updatableState];
-  v3 = [v2 timeAtCompleted];
+  updatableState = [(PKJob *)self updatableState];
+  timeAtCompleted = [updatableState timeAtCompleted];
 
-  return v3;
+  return timeAtCompleted;
 }
 
 - (int64_t)mediaSheets
 {
-  v2 = [(PKJob *)self updatableState];
-  v3 = [v2 mediaSheets];
+  updatableState = [(PKJob *)self updatableState];
+  mediaSheets = [updatableState mediaSheets];
 
-  return v3;
+  return mediaSheets;
 }
 
 - (int64_t)mediaProgress
 {
-  v2 = [(PKJob *)self updatableState];
-  v3 = [v2 mediaProgress];
+  updatableState = [(PKJob *)self updatableState];
+  mediaProgress = [updatableState mediaProgress];
 
-  return v3;
+  return mediaProgress;
 }
 
 - (int64_t)remoteJobId
 {
-  v2 = [(PKJob *)self updatableState];
-  v3 = [v2 remoteJobId];
+  updatableState = [(PKJob *)self updatableState];
+  remoteJobId = [updatableState remoteJobId];
 
-  return v3;
+  return remoteJobId;
 }
 
 - (NSString)PIN
 {
-  v2 = [(PKJob *)self updatableState];
-  v3 = [v2 PIN];
+  updatableState = [(PKJob *)self updatableState];
+  v3 = [updatableState PIN];
 
   return v3;
 }
 
 - (NSString)jobPrinterStateMessage
 {
-  v2 = [(PKJob *)self updatableState];
-  v3 = [v2 jobPrinterStateMessage];
+  updatableState = [(PKJob *)self updatableState];
+  jobPrinterStateMessage = [updatableState jobPrinterStateMessage];
 
-  return v3;
+  return jobPrinterStateMessage;
 }
 
 - (NSArray)jobPrinterStateReasons
 {
-  v2 = [(PKJob *)self updatableState];
-  v3 = [v2 jobPrinterStateReasons];
+  updatableState = [(PKJob *)self updatableState];
+  jobPrinterStateReasons = [updatableState jobPrinterStateReasons];
 
-  return v3;
+  return jobPrinterStateReasons;
 }
 
 - (NSString)jobStateMessage
 {
-  v2 = [(PKJob *)self updatableState];
-  v3 = [v2 jobStateMessage];
+  updatableState = [(PKJob *)self updatableState];
+  jobStateMessage = [updatableState jobStateMessage];
 
-  return v3;
+  return jobStateMessage;
 }
 
 - (NSArray)jobStateReasons
 {
-  v2 = [(PKJob *)self updatableState];
-  v3 = [v2 jobStateReasons];
+  updatableState = [(PKJob *)self updatableState];
+  jobStateReasons = [updatableState jobStateReasons];
 
-  return v3;
+  return jobStateReasons;
 }
 
 - (NSData)thumbnailImage
 {
-  v2 = [(PKJob *)self updatableState];
-  v3 = [v2 thumbnailImage];
+  updatableState = [(PKJob *)self updatableState];
+  thumbnailImage = [updatableState thumbnailImage];
 
-  return v3;
+  return thumbnailImage;
 }
 
 - (NSData)printerEndpointData
 {
-  v2 = [(PKJob *)self updatableState];
-  v3 = [v2 printerEndpointData];
+  updatableState = [(PKJob *)self updatableState];
+  printerEndpointData = [updatableState printerEndpointData];
 
-  return v3;
+  return printerEndpointData;
 }
 
 - (NSString)localizedStatusString
 {
-  v3 = [(PKJob *)self state];
-  v4 = v3;
-  if (v3 == 10 || v3 == 5)
+  state = [(PKJob *)self state];
+  v4 = state;
+  if (state == 10 || state == 5)
   {
-    v5 = self;
-    v6 = [(PKJob *)v5 mediaSheetsCompleted];
-    v7 = (v6 & ~(v6 >> 63)) + 1;
-    if ([(PKJob *)v5 mediaSheets]>= 1 && v7 >= [(PKJob *)v5 mediaSheets])
+    selfCopy = self;
+    mediaSheetsCompleted = [(PKJob *)selfCopy mediaSheetsCompleted];
+    mediaSheets = (mediaSheetsCompleted & ~(mediaSheetsCompleted >> 63)) + 1;
+    if ([(PKJob *)selfCopy mediaSheets]>= 1 && mediaSheets >= [(PKJob *)selfCopy mediaSheets])
     {
-      v7 = [(PKJob *)v5 mediaSheets];
+      mediaSheets = [(PKJob *)selfCopy mediaSheets];
     }
 
     v8 = MEMORY[0x277CCABB8];
-    v9 = [MEMORY[0x277CCABB0] numberWithInteger:v7];
+    v9 = [MEMORY[0x277CCABB0] numberWithInteger:mediaSheets];
     v10 = [v8 localizedStringFromNumber:v9 numberStyle:0];
   }
 
@@ -798,17 +798,17 @@ LABEL_20:
 
     else
     {
-      v14 = self;
-      if ([(PKJob *)v14 mediaSheets]< 1)
+      selfCopy2 = self;
+      if ([(PKJob *)selfCopy2 mediaSheets]< 1)
       {
         v18 = 0;
       }
 
       else
       {
-        v15 = [(PKJob *)v14 mediaSheets];
+        mediaSheets2 = [(PKJob *)selfCopy2 mediaSheets];
         v16 = MEMORY[0x277CCABB8];
-        v17 = [MEMORY[0x277CCABB0] numberWithInteger:v15];
+        v17 = [MEMORY[0x277CCABB0] numberWithInteger:mediaSheets2];
         v18 = [v16 localizedStringFromNumber:v17 numberStyle:0];
       }
 
@@ -878,13 +878,13 @@ LABEL_29:
 {
   v45[3] = *MEMORY[0x277D85DE8];
   v38 = [MEMORY[0x277CBEB18] arrayWithCapacity:0];
-  v3 = [(PKJob *)self settings];
-  v4 = [v3 duplex];
-  if (v4)
+  settings = [(PKJob *)self settings];
+  duplex = [settings duplex];
+  if (duplex)
   {
-    v5 = [(PKJob *)self settings];
-    v6 = [v5 duplex];
-    v7 = [v6 isEqualToString:@"one-sided"];
+    settings2 = [(PKJob *)self settings];
+    duplex2 = [settings2 duplex];
+    v7 = [duplex2 isEqualToString:@"one-sided"];
 
     if ((v7 & 1) == 0)
     {
@@ -901,19 +901,19 @@ LABEL_29:
   v39 = PKLocalizedString(&cfstr_SingleSided.isa, "Label for single sided printing");
   [v38 addObject:v39];
 LABEL_6:
-  v8 = [(PKJob *)self settings];
-  v9 = [v8 outputMode];
+  settings3 = [(PKJob *)self settings];
+  outputMode = [settings3 outputMode];
 
-  if (v9)
+  if (outputMode)
   {
-    v10 = [(PKJob *)self settings];
-    v11 = [v10 outputMode];
+    settings4 = [(PKJob *)self settings];
+    outputMode2 = [settings4 outputMode];
 
     v45[0] = @"monochrome";
     v45[1] = @"auto-monochrome";
     v45[2] = @"process-monochrome";
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v45 count:3];
-    if ([v12 containsObject:v11])
+    if ([v12 containsObject:outputMode2])
     {
       PKLocalizedString(&cfstr_BlackWhite.isa, "Label for black & white (grayscale) printing");
     }
@@ -928,24 +928,24 @@ LABEL_6:
     v39 = v13;
   }
 
-  v14 = [(PKJob *)self settings];
-  v15 = [v14 finishings];
-  v16 = v15 == 0;
+  settings5 = [(PKJob *)self settings];
+  finishings = [settings5 finishings];
+  v16 = finishings == 0;
 
   if (!v16)
   {
-    v17 = [(PKJob *)self settings];
-    v18 = [v17 finishings];
+    settings6 = [(PKJob *)self settings];
+    finishings2 = [settings6 finishings];
 
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v19 = v18;
+    v19 = finishings2;
     v20 = [v19 countByEnumeratingWithState:&v40 objects:v44 count:16];
     if (v20)
     {
-      v37 = self;
+      selfCopy = self;
       v21 = 0;
       v22 = 0;
       v23 = *v41;
@@ -968,7 +968,7 @@ LABEL_6:
 
       while (v20);
 
-      self = v37;
+      self = selfCopy;
       if (v21)
       {
         v26 = PKLocalizedString(&cfstr_Staple.isa, "The printer will staple the job");
@@ -991,19 +991,19 @@ LABEL_6:
     }
   }
 
-  v28 = [(PKJob *)self settings];
-  v29 = [v28 paper];
-  v30 = v29 == 0;
+  settings7 = [(PKJob *)self settings];
+  paper = [settings7 paper];
+  v30 = paper == 0;
 
   if (!v30)
   {
-    v31 = [(PKJob *)self settings];
-    v32 = [v31 paper];
+    settings8 = [(PKJob *)self settings];
+    paper2 = [settings8 paper];
 
-    v33 = [v32 localizedName];
-    if (v33)
+    localizedName = [paper2 localizedName];
+    if (localizedName)
     {
-      [v38 addObject:v33];
+      [v38 addObject:localizedName];
     }
   }
 

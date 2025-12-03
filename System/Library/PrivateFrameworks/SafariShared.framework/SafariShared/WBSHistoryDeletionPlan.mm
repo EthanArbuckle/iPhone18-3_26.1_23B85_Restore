@@ -2,28 +2,28 @@
 - (NSMapTable)allVisitsToDeleteByItemExcludingItemsBeingDeleted;
 - (NSSet)allItemsToDelete;
 - (NSSet)allVisitsToDeleteExcludingVisitsFromItemsBeingDeleted;
-- (WBSHistoryDeletionPlan)initWithSQLiteStore:(id)a3 discoveredItemsToDelete:(id)a4;
-- (WBSHistoryDeletionPlan)initWithSQLiteStore:(id)a3 triggeringItems:(id)a4 excludingItems:(id)a5 visits:(id)a6 reason:(int64_t)a7;
-- (WBSHistoryDeletionPlan)initWithSQLiteStore:(id)a3 triggeringVisits:(id)a4 excludingItems:(id)a5 visits:(id)a6;
-- (WBSHistoryDeletionPlan)initWithSQLiteStore:(id)a3 triggeringVisits:(id)a4 updatedLastVisitsByItem:(id)a5;
+- (WBSHistoryDeletionPlan)initWithSQLiteStore:(id)store discoveredItemsToDelete:(id)delete;
+- (WBSHistoryDeletionPlan)initWithSQLiteStore:(id)store triggeringItems:(id)items excludingItems:(id)excludingItems visits:(id)visits reason:(int64_t)reason;
+- (WBSHistoryDeletionPlan)initWithSQLiteStore:(id)store triggeringVisits:(id)visits excludingItems:(id)items visits:(id)a6;
+- (WBSHistoryDeletionPlan)initWithSQLiteStore:(id)store triggeringVisits:(id)visits updatedLastVisitsByItem:(id)item;
 @end
 
 @implementation WBSHistoryDeletionPlan
 
-- (WBSHistoryDeletionPlan)initWithSQLiteStore:(id)a3 triggeringItems:(id)a4 excludingItems:(id)a5 visits:(id)a6 reason:(int64_t)a7
+- (WBSHistoryDeletionPlan)initWithSQLiteStore:(id)store triggeringItems:(id)items excludingItems:(id)excludingItems visits:(id)visits reason:(int64_t)reason
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  storeCopy = store;
+  itemsCopy = items;
+  excludingItemsCopy = excludingItems;
+  visitsCopy = visits;
   v31.receiver = self;
   v31.super_class = WBSHistoryDeletionPlan;
   v17 = [(WBSHistoryDeletionPlan *)&v31 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_store, a3);
-    v19 = [v14 copy];
+    objc_storeStrong(&v17->_store, store);
+    v19 = [itemsCopy copy];
     triggeringItems = v18->_triggeringItems;
     v18->_triggeringItems = v19;
 
@@ -31,17 +31,17 @@
     triggeringVisits = v18->_triggeringVisits;
     v18->_triggeringVisits = v21;
 
-    v23 = [v15 copy];
+    v23 = [excludingItemsCopy copy];
     excludedItems = v18->_excludedItems;
     v18->_excludedItems = v23;
 
-    v25 = [v16 copy];
+    v25 = [visitsCopy copy];
     excludedVisits = v18->_excludedVisits;
     v18->_excludedVisits = v25;
 
-    if (a7 == 1)
+    if (reason == 1)
     {
-      v27 = [v14 mutableCopy];
+      v27 = [itemsCopy mutableCopy];
     }
 
     else
@@ -58,11 +58,11 @@
   return v18;
 }
 
-- (WBSHistoryDeletionPlan)initWithSQLiteStore:(id)a3 triggeringVisits:(id)a4 excludingItems:(id)a5 visits:(id)a6
+- (WBSHistoryDeletionPlan)initWithSQLiteStore:(id)store triggeringVisits:(id)visits excludingItems:(id)items visits:(id)a6
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  storeCopy = store;
+  visitsCopy = visits;
+  itemsCopy = items;
   v14 = a6;
   v29.receiver = self;
   v29.super_class = WBSHistoryDeletionPlan;
@@ -70,16 +70,16 @@
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_store, a3);
+    objc_storeStrong(&v15->_store, store);
     v17 = [MEMORY[0x1E695DFD8] set];
     triggeringItems = v16->_triggeringItems;
     v16->_triggeringItems = v17;
 
-    v19 = [v12 copy];
+    v19 = [visitsCopy copy];
     triggeringVisits = v16->_triggeringVisits;
     v16->_triggeringVisits = v19;
 
-    v21 = [v13 copy];
+    v21 = [itemsCopy copy];
     excludedItems = v16->_excludedItems;
     v16->_excludedItems = v21;
 
@@ -97,17 +97,17 @@
   return v16;
 }
 
-- (WBSHistoryDeletionPlan)initWithSQLiteStore:(id)a3 discoveredItemsToDelete:(id)a4
+- (WBSHistoryDeletionPlan)initWithSQLiteStore:(id)store discoveredItemsToDelete:(id)delete
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  deleteCopy = delete;
   v25.receiver = self;
   v25.super_class = WBSHistoryDeletionPlan;
   v9 = [(WBSHistoryDeletionPlan *)&v25 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_store, a3);
+    objc_storeStrong(&v9->_store, store);
     v11 = [MEMORY[0x1E695DFD8] set];
     triggeringItems = v10->_triggeringItems;
     v10->_triggeringItems = v11;
@@ -124,14 +124,14 @@
     excludedVisits = v10->_excludedVisits;
     v10->_excludedVisits = v17;
 
-    v19 = [v8 mutableCopy];
+    v19 = [deleteCopy mutableCopy];
     discoveredItemsToDelete = v10->_discoveredItemsToDelete;
     v10->_discoveredItemsToDelete = v19;
 
     v10->_wasPrepared = 1;
-    v21 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     updatedLastVisitsByItem = v10->_updatedLastVisitsByItem;
-    v10->_updatedLastVisitsByItem = v21;
+    v10->_updatedLastVisitsByItem = strongToStrongObjectsMapTable;
 
     v23 = v10;
   }
@@ -139,23 +139,23 @@
   return v10;
 }
 
-- (WBSHistoryDeletionPlan)initWithSQLiteStore:(id)a3 triggeringVisits:(id)a4 updatedLastVisitsByItem:(id)a5
+- (WBSHistoryDeletionPlan)initWithSQLiteStore:(id)store triggeringVisits:(id)visits updatedLastVisitsByItem:(id)item
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storeCopy = store;
+  visitsCopy = visits;
+  itemCopy = item;
   v28.receiver = self;
   v28.super_class = WBSHistoryDeletionPlan;
   v12 = [(WBSHistoryDeletionPlan *)&v28 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_store, a3);
+    objc_storeStrong(&v12->_store, store);
     v14 = [MEMORY[0x1E695DFD8] set];
     triggeringItems = v13->_triggeringItems;
     v13->_triggeringItems = v14;
 
-    v16 = [v10 copy];
+    v16 = [visitsCopy copy];
     triggeringVisits = v13->_triggeringVisits;
     v13->_triggeringVisits = v16;
 
@@ -172,7 +172,7 @@
     v13->_discoveredItemsToDelete = v22;
 
     v13->_wasPrepared = 1;
-    v24 = [v11 copy];
+    v24 = [itemCopy copy];
     updatedLastVisitsByItem = v13->_updatedLastVisitsByItem;
     v13->_updatedLastVisitsByItem = v24;
 
@@ -198,8 +198,8 @@
 
   [v4 minusSet:self->_excludedVisits];
   v5 = MEMORY[0x1E696AE18];
-  v6 = [(WBSHistoryDeletionPlan *)self allItemsToDelete];
-  v7 = [v5 predicateWithFormat:@"NOT (item IN %@)", v6];
+  allItemsToDelete = [(WBSHistoryDeletionPlan *)self allItemsToDelete];
+  v7 = [v5 predicateWithFormat:@"NOT (item IN %@)", allItemsToDelete];
   v8 = [v4 filteredSetUsingPredicate:v7];
 
   return v8;
@@ -208,13 +208,13 @@
 - (NSMapTable)allVisitsToDeleteByItemExcludingItemsBeingDeleted
 {
   v19 = *MEMORY[0x1E69E9840];
-  v2 = [(WBSHistoryDeletionPlan *)self allVisitsToDeleteExcludingVisitsFromItemsBeingDeleted];
-  v3 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  allVisitsToDeleteExcludingVisitsFromItemsBeingDeleted = [(WBSHistoryDeletionPlan *)self allVisitsToDeleteExcludingVisitsFromItemsBeingDeleted];
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = v2;
+  v4 = allVisitsToDeleteExcludingVisitsFromItemsBeingDeleted;
   v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
@@ -229,10 +229,10 @@
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
-        v9 = [v8 item];
-        if (v9)
+        item = [v8 item];
+        if (item)
         {
-          v10 = [v3 objectForKey:v9];
+          v10 = [strongToStrongObjectsMapTable objectForKey:item];
           v11 = v10;
           if (v10)
           {
@@ -242,7 +242,7 @@
           else
           {
             v12 = [MEMORY[0x1E695DF70] arrayWithObject:v8];
-            [v3 setObject:v12 forKey:v9];
+            [strongToStrongObjectsMapTable setObject:v12 forKey:item];
           }
         }
       }
@@ -253,7 +253,7 @@
     while (v5);
   }
 
-  return v3;
+  return strongToStrongObjectsMapTable;
 }
 
 @end

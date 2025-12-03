@@ -1,43 +1,43 @@
 @interface EFSQLColumnExpression
-+ (id)column:(id)a3;
-+ (id)table:(id)a3 column:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (EFSQLColumnExpression)initWithName:(id)a3 table:(id)a4;
++ (id)column:(id)column;
++ (id)table:(id)table column:(id)column;
+- (BOOL)isEqual:(id)equal;
+- (EFSQLColumnExpression)initWithName:(id)name table:(id)table;
 - (EFSQLDisqualifiedColumnExpression)disqualified;
 - (NSString)ef_SQLExpression;
-- (id)beginsWith:(id)a3 caseSensitive:(BOOL)a4;
-- (id)between:(id)a3;
+- (id)beginsWith:(id)with caseSensitive:(BOOL)sensitive;
+- (id)between:(id)between;
 - (id)cachedSelf;
-- (id)concatenate:(id)a3;
-- (id)contains:(id)a3 caseSensitive:(BOOL)a4;
-- (id)doesNotContain:(id)a3 caseSensitive:(BOOL)a4;
-- (id)doesNotMatchMask:(id)a3;
-- (id)endsWith:(id)a3 caseSensitive:(BOOL)a4;
-- (id)equalTo:(id)a3;
-- (id)expressionForPredicateOperatorType:(unint64_t)a3 constantValue:(id)a4;
-- (id)glob:(id)a3;
-- (id)greaterThan:(id)a3;
-- (id)greaterThanEqualTo:(id)a3;
-- (id)in:(id)a3;
-- (id)is:(id)a3;
-- (id)isNot:(id)a3;
+- (id)concatenate:(id)concatenate;
+- (id)contains:(id)contains caseSensitive:(BOOL)sensitive;
+- (id)doesNotContain:(id)contain caseSensitive:(BOOL)sensitive;
+- (id)doesNotMatchMask:(id)mask;
+- (id)endsWith:(id)with caseSensitive:(BOOL)sensitive;
+- (id)equalTo:(id)to;
+- (id)expressionForPredicateOperatorType:(unint64_t)type constantValue:(id)value;
+- (id)glob:(id)glob;
+- (id)greaterThan:(id)than;
+- (id)greaterThanEqualTo:(id)to;
+- (id)in:(id)in;
+- (id)is:(id)is;
+- (id)isNot:(id)not;
 - (id)isNotNull;
 - (id)isNull;
-- (id)lessThan:(id)a3;
-- (id)lessThanEqualTo:(id)a3;
-- (id)like:(id)a3;
-- (id)like:(id)a3 patternType:(unint64_t)a4;
-- (id)matchesMask:(id)a3;
-- (id)minus:(id)a3;
-- (id)notBetween:(id)a3;
-- (id)notEqualTo:(id)a3;
-- (id)notGlob:(id)a3;
-- (id)notIn:(id)a3;
-- (id)notLike:(id)a3;
-- (id)notLike:(id)a3 patternType:(unint64_t)a4;
-- (id)plus:(id)a3;
+- (id)lessThan:(id)than;
+- (id)lessThanEqualTo:(id)to;
+- (id)like:(id)like;
+- (id)like:(id)like patternType:(unint64_t)type;
+- (id)matchesMask:(id)mask;
+- (id)minus:(id)minus;
+- (id)notBetween:(id)between;
+- (id)notEqualTo:(id)to;
+- (id)notGlob:(id)glob;
+- (id)notIn:(id)in;
+- (id)notLike:(id)like;
+- (id)notLike:(id)like patternType:(unint64_t)type;
+- (id)plus:(id)plus;
 - (unint64_t)hash;
-- (void)ef_renderSQLExpressionInto:(id)a3;
+- (void)ef_renderSQLExpressionInto:(id)into;
 @end
 
 @implementation EFSQLColumnExpression
@@ -58,19 +58,19 @@
 
 - (unint64_t)hash
 {
-  v3 = [(EFSQLColumnExpression *)self name];
-  v4 = [v3 hash];
+  name = [(EFSQLColumnExpression *)self name];
+  v4 = [name hash];
 
-  v5 = [(EFSQLColumnExpression *)self tableName];
-  v6 = [v5 hash] + 5859909;
+  tableName = [(EFSQLColumnExpression *)self tableName];
+  v6 = [tableName hash] + 5859909;
 
   return 33 * v4 + v6;
 }
 
 - (id)isNotNull
 {
-  v3 = [MEMORY[0x1E695DFB0] null];
-  v4 = [(EFSQLColumnExpression *)self isNot:v3];
+  null = [MEMORY[0x1E695DFB0] null];
+  v4 = [(EFSQLColumnExpression *)self isNot:null];
 
   return v4;
 }
@@ -83,27 +83,27 @@ void __48__EFSQLColumnExpression_EFCacheable__cachedSelf__block_invoke()
   cachedSelf_sUniqueObjectIDs = v0;
 }
 
-+ (id)table:(id)a3 column:(id)a4
++ (id)table:(id)table column:(id)column
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[a1 alloc] initWithName:v7 table:v6];
+  tableCopy = table;
+  columnCopy = column;
+  v8 = [[self alloc] initWithName:columnCopy table:tableCopy];
 
   return v8;
 }
 
-+ (id)column:(id)a3
++ (id)column:(id)column
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithName:v4];
+  columnCopy = column;
+  v5 = [[self alloc] initWithName:columnCopy];
 
   return v5;
 }
 
-- (EFSQLColumnExpression)initWithName:(id)a3 table:(id)a4
+- (EFSQLColumnExpression)initWithName:(id)name table:(id)table
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  tableCopy = table;
   v14.receiver = self;
   v14.super_class = EFSQLColumnExpression;
   v9 = [(EFSQLColumnExpression *)&v14 init];
@@ -111,33 +111,33 @@ void __48__EFSQLColumnExpression_EFCacheable__cachedSelf__block_invoke()
   v11 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_name, a3);
-    objc_storeStrong(&v10->_tableName, a4);
+    objc_storeStrong(&v9->_name, name);
+    objc_storeStrong(&v10->_tableName, table);
   }
 
-  v12 = [(EFSQLColumnExpression *)v11 cachedSelf];
+  cachedSelf = [(EFSQLColumnExpression *)v11 cachedSelf];
 
-  return v12;
+  return cachedSelf;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
 
-  else if (([(EFSQLColumnExpression *)v4 isMemberOfClass:objc_opt_class()]& 1) != 0)
+  else if (([(EFSQLColumnExpression *)equalCopy isMemberOfClass:objc_opt_class()]& 1) != 0)
   {
-    v5 = v4;
-    v6 = [(EFSQLColumnExpression *)self name];
-    v7 = [(EFSQLColumnExpression *)v5 name];
-    if ([v6 isEqualToString:v7])
+    v5 = equalCopy;
+    name = [(EFSQLColumnExpression *)self name];
+    name2 = [(EFSQLColumnExpression *)v5 name];
+    if ([name isEqualToString:name2])
     {
-      v8 = [(EFSQLColumnExpression *)self tableName];
-      v9 = [(EFSQLColumnExpression *)v5 tableName];
-      v10 = EFObjectsAreEqual(v8, v9);
+      tableName = [(EFSQLColumnExpression *)self tableName];
+      tableName2 = [(EFSQLColumnExpression *)v5 tableName];
+      v10 = EFObjectsAreEqual(tableName, tableName2);
     }
 
     else
@@ -156,41 +156,41 @@ void __48__EFSQLColumnExpression_EFCacheable__cachedSelf__block_invoke()
 
 - (NSString)ef_SQLExpression
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  [(EFSQLColumnExpression *)self ef_renderSQLExpressionInto:v3];
+  string = [MEMORY[0x1E696AD60] string];
+  [(EFSQLColumnExpression *)self ef_renderSQLExpressionInto:string];
 
-  return v3;
+  return string;
 }
 
-- (void)ef_renderSQLExpressionInto:(id)a3
+- (void)ef_renderSQLExpressionInto:(id)into
 {
-  v4 = a3;
+  intoCopy = into;
   if (self->_tableName)
   {
-    [v4 appendFormat:@"%@.", self->_tableName];
+    [intoCopy appendFormat:@"%@.", self->_tableName];
   }
 
-  [v4 appendString:self->_name];
+  [intoCopy appendString:self->_name];
 }
 
 - (EFSQLDisqualifiedColumnExpression)disqualified
 {
   v3 = [EFSQLDisqualifiedColumnExpression alloc];
-  v4 = [(EFSQLColumnExpression *)self name];
-  v5 = [(EFSQLColumnExpression *)self tableName];
-  v6 = [(EFSQLColumnExpression *)v3 initWithName:v4 table:v5];
+  name = [(EFSQLColumnExpression *)self name];
+  tableName = [(EFSQLColumnExpression *)self tableName];
+  v6 = [(EFSQLColumnExpression *)v3 initWithName:name table:tableName];
 
   return v6;
 }
 
-- (id)equalTo:(id)a3
+- (id)equalTo:(id)to
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DFB0] null];
+  toCopy = to;
+  null = [MEMORY[0x1E695DFB0] null];
 
   v6 = [EFSQLBinaryExpression alloc];
-  [v4 ef_SQLIsolatedExpression];
-  if (v5 == v4)
+  [toCopy ef_SQLIsolatedExpression];
+  if (null == toCopy)
     v7 = {;
     v8 = [(EFSQLBinaryExpression *)v6 initWithLeft:self operator:12 right:v7];
   }
@@ -205,14 +205,14 @@ void __48__EFSQLColumnExpression_EFCacheable__cachedSelf__block_invoke()
   return v9;
 }
 
-- (id)notEqualTo:(id)a3
+- (id)notEqualTo:(id)to
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DFB0] null];
+  toCopy = to;
+  null = [MEMORY[0x1E695DFB0] null];
 
   v6 = [EFSQLBinaryExpression alloc];
-  [v4 ef_SQLIsolatedExpression];
-  if (v5 == v4)
+  [toCopy ef_SQLIsolatedExpression];
+  if (null == toCopy)
     v7 = {;
     v8 = [(EFSQLBinaryExpression *)v6 initWithLeft:self operator:13 right:v7];
   }
@@ -227,317 +227,317 @@ void __48__EFSQLColumnExpression_EFCacheable__cachedSelf__block_invoke()
   return v9;
 }
 
-- (id)greaterThan:(id)a3
+- (id)greaterThan:(id)than
 {
-  v4 = a3;
+  thanCopy = than;
   v5 = [EFSQLBinaryExpression alloc];
-  v6 = [v4 ef_SQLIsolatedExpression];
-  v7 = [(EFSQLBinaryExpression *)v5 initWithLeft:self operator:2 right:v6];
+  ef_SQLIsolatedExpression = [thanCopy ef_SQLIsolatedExpression];
+  v7 = [(EFSQLBinaryExpression *)v5 initWithLeft:self operator:2 right:ef_SQLIsolatedExpression];
 
   return v7;
 }
 
-- (id)greaterThanEqualTo:(id)a3
+- (id)greaterThanEqualTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = [EFSQLBinaryExpression alloc];
-  v6 = [v4 ef_SQLIsolatedExpression];
-  v7 = [(EFSQLBinaryExpression *)v5 initWithLeft:self operator:3 right:v6];
+  ef_SQLIsolatedExpression = [toCopy ef_SQLIsolatedExpression];
+  v7 = [(EFSQLBinaryExpression *)v5 initWithLeft:self operator:3 right:ef_SQLIsolatedExpression];
 
   return v7;
 }
 
-- (id)lessThan:(id)a3
+- (id)lessThan:(id)than
 {
-  v4 = a3;
+  thanCopy = than;
   v5 = [EFSQLBinaryExpression alloc];
-  v6 = [v4 ef_SQLIsolatedExpression];
-  v7 = [(EFSQLBinaryExpression *)v5 initWithLeft:self operator:4 right:v6];
+  ef_SQLIsolatedExpression = [thanCopy ef_SQLIsolatedExpression];
+  v7 = [(EFSQLBinaryExpression *)v5 initWithLeft:self operator:4 right:ef_SQLIsolatedExpression];
 
   return v7;
 }
 
-- (id)lessThanEqualTo:(id)a3
+- (id)lessThanEqualTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = [EFSQLBinaryExpression alloc];
-  v6 = [v4 ef_SQLIsolatedExpression];
-  v7 = [(EFSQLBinaryExpression *)v5 initWithLeft:self operator:5 right:v6];
+  ef_SQLIsolatedExpression = [toCopy ef_SQLIsolatedExpression];
+  v7 = [(EFSQLBinaryExpression *)v5 initWithLeft:self operator:5 right:ef_SQLIsolatedExpression];
 
   return v7;
 }
 
-- (id)like:(id)a3
+- (id)like:(id)like
 {
-  v4 = a3;
-  v5 = [[EFSQLLikeEscapedExpression alloc] initWithValue:v4];
+  likeCopy = like;
+  v5 = [[EFSQLLikeEscapedExpression alloc] initWithValue:likeCopy];
   v6 = [[EFSQLBinaryExpression alloc] initWithLeft:self operator:6 right:v5];
 
   return v6;
 }
 
-- (id)like:(id)a3 patternType:(unint64_t)a4
+- (id)like:(id)like patternType:(unint64_t)type
 {
-  v6 = a3;
-  v7 = [[EFSQLLikeEscapedExpression alloc] initWithValue:v6 pattern:a4];
+  likeCopy = like;
+  v7 = [[EFSQLLikeEscapedExpression alloc] initWithValue:likeCopy pattern:type];
   v8 = [[EFSQLBinaryExpression alloc] initWithLeft:self operator:6 right:v7];
 
   return v8;
 }
 
-- (id)notLike:(id)a3
+- (id)notLike:(id)like
 {
-  v4 = a3;
-  v5 = [[EFSQLLikeEscapedExpression alloc] initWithValue:v4];
+  likeCopy = like;
+  v5 = [[EFSQLLikeEscapedExpression alloc] initWithValue:likeCopy];
   v6 = [[EFSQLBinaryExpression alloc] initWithLeft:self operator:7 right:v5];
 
   return v6;
 }
 
-- (id)notLike:(id)a3 patternType:(unint64_t)a4
+- (id)notLike:(id)like patternType:(unint64_t)type
 {
-  v6 = a3;
-  v7 = [[EFSQLLikeEscapedExpression alloc] initWithValue:v6 pattern:a4];
+  likeCopy = like;
+  v7 = [[EFSQLLikeEscapedExpression alloc] initWithValue:likeCopy pattern:type];
   v8 = [[EFSQLBinaryExpression alloc] initWithLeft:self operator:7 right:v7];
 
   return v8;
 }
 
-- (id)glob:(id)a3
+- (id)glob:(id)glob
 {
-  v4 = a3;
-  v5 = [[EFSQLBinaryExpression alloc] initWithLeft:self operator:8 right:v4];
+  globCopy = glob;
+  v5 = [[EFSQLBinaryExpression alloc] initWithLeft:self operator:8 right:globCopy];
 
   return v5;
 }
 
-- (id)notGlob:(id)a3
+- (id)notGlob:(id)glob
 {
-  v4 = a3;
-  v5 = [[EFSQLBinaryExpression alloc] initWithLeft:self operator:9 right:v4];
+  globCopy = glob;
+  v5 = [[EFSQLBinaryExpression alloc] initWithLeft:self operator:9 right:globCopy];
 
   return v5;
 }
 
-- (id)beginsWith:(id)a3 caseSensitive:(BOOL)a4
+- (id)beginsWith:(id)with caseSensitive:(BOOL)sensitive
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  sensitiveCopy = sensitive;
+  withCopy = with;
+  if (sensitiveCopy)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@*", v6];
-    v8 = [(EFSQLColumnExpression *)self glob:v7];
+    withCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@*", withCopy];
+    v8 = [(EFSQLColumnExpression *)self glob:withCopy];
   }
 
   else
   {
-    v8 = [(EFSQLColumnExpression *)self like:v6 patternType:0];
+    v8 = [(EFSQLColumnExpression *)self like:withCopy patternType:0];
   }
 
   return v8;
 }
 
-- (id)contains:(id)a3 caseSensitive:(BOOL)a4
+- (id)contains:(id)contains caseSensitive:(BOOL)sensitive
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  sensitiveCopy = sensitive;
+  containsCopy = contains;
+  if (sensitiveCopy)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"*%@*", v6];
-    v8 = [(EFSQLColumnExpression *)self glob:v7];
+    containsCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"*%@*", containsCopy];
+    v8 = [(EFSQLColumnExpression *)self glob:containsCopy];
   }
 
   else
   {
-    v8 = [(EFSQLColumnExpression *)self like:v6 patternType:1];
+    v8 = [(EFSQLColumnExpression *)self like:containsCopy patternType:1];
   }
 
   return v8;
 }
 
-- (id)doesNotContain:(id)a3 caseSensitive:(BOOL)a4
+- (id)doesNotContain:(id)contain caseSensitive:(BOOL)sensitive
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  sensitiveCopy = sensitive;
+  containCopy = contain;
+  if (sensitiveCopy)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"*%@*", v6];
-    v8 = [(EFSQLColumnExpression *)self notGlob:v7];
+    containCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"*%@*", containCopy];
+    v8 = [(EFSQLColumnExpression *)self notGlob:containCopy];
   }
 
   else
   {
-    v8 = [(EFSQLColumnExpression *)self notLike:v6 patternType:1];
+    v8 = [(EFSQLColumnExpression *)self notLike:containCopy patternType:1];
   }
 
   return v8;
 }
 
-- (id)endsWith:(id)a3 caseSensitive:(BOOL)a4
+- (id)endsWith:(id)with caseSensitive:(BOOL)sensitive
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  sensitiveCopy = sensitive;
+  withCopy = with;
+  if (sensitiveCopy)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"*%@", v6];
-    v8 = [(EFSQLColumnExpression *)self glob:v7];
+    withCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"*%@", withCopy];
+    v8 = [(EFSQLColumnExpression *)self glob:withCopy];
   }
 
   else
   {
-    v8 = [(EFSQLColumnExpression *)self like:v6 patternType:2];
+    v8 = [(EFSQLColumnExpression *)self like:withCopy patternType:2];
   }
 
   return v8;
 }
 
-- (id)in:(id)a3
+- (id)in:(id)in
 {
-  v4 = a3;
+  inCopy = in;
   v5 = [EFSQLBinaryExpression alloc];
-  v6 = [v4 ef_SQLIsolatedExpression];
-  v7 = [(EFSQLBinaryExpression *)v5 initWithLeft:self operator:10 right:v6];
+  ef_SQLIsolatedExpression = [inCopy ef_SQLIsolatedExpression];
+  v7 = [(EFSQLBinaryExpression *)v5 initWithLeft:self operator:10 right:ef_SQLIsolatedExpression];
 
   return v7;
 }
 
-- (id)notIn:(id)a3
+- (id)notIn:(id)in
 {
-  v4 = a3;
+  inCopy = in;
   v5 = [EFSQLBinaryExpression alloc];
-  v6 = [v4 ef_SQLIsolatedExpression];
-  v7 = [(EFSQLBinaryExpression *)v5 initWithLeft:self operator:11 right:v6];
+  ef_SQLIsolatedExpression = [inCopy ef_SQLIsolatedExpression];
+  v7 = [(EFSQLBinaryExpression *)v5 initWithLeft:self operator:11 right:ef_SQLIsolatedExpression];
 
   return v7;
 }
 
-- (id)between:(id)a3
+- (id)between:(id)between
 {
-  v4 = a3;
+  betweenCopy = between;
   v5 = [EFSQLBetweenExpression alloc];
-  v6 = [v4 first];
-  v7 = [v6 ef_SQLIsolatedExpression];
-  v8 = [v4 second];
-  v9 = [v8 ef_SQLIsolatedExpression];
-  v10 = [(EFSQLBetweenExpression *)v5 initWithLeft:self firstValue:v7 secondValue:v9 between:1];
+  first = [betweenCopy first];
+  ef_SQLIsolatedExpression = [first ef_SQLIsolatedExpression];
+  second = [betweenCopy second];
+  ef_SQLIsolatedExpression2 = [second ef_SQLIsolatedExpression];
+  v10 = [(EFSQLBetweenExpression *)v5 initWithLeft:self firstValue:ef_SQLIsolatedExpression secondValue:ef_SQLIsolatedExpression2 between:1];
 
   return v10;
 }
 
-- (id)notBetween:(id)a3
+- (id)notBetween:(id)between
 {
-  v4 = a3;
+  betweenCopy = between;
   v5 = [EFSQLBetweenExpression alloc];
-  v6 = [v4 first];
-  v7 = [v6 ef_SQLIsolatedExpression];
-  v8 = [v4 second];
-  v9 = [v8 ef_SQLIsolatedExpression];
-  v10 = [(EFSQLBetweenExpression *)v5 initWithLeft:self firstValue:v7 secondValue:v9 between:0];
+  first = [betweenCopy first];
+  ef_SQLIsolatedExpression = [first ef_SQLIsolatedExpression];
+  second = [betweenCopy second];
+  ef_SQLIsolatedExpression2 = [second ef_SQLIsolatedExpression];
+  v10 = [(EFSQLBetweenExpression *)v5 initWithLeft:self firstValue:ef_SQLIsolatedExpression secondValue:ef_SQLIsolatedExpression2 between:0];
 
   return v10;
 }
 
-- (id)is:(id)a3
+- (id)is:(id)is
 {
-  v4 = a3;
+  isCopy = is;
   v5 = [EFSQLBinaryExpression alloc];
-  v6 = [v4 ef_SQLIsolatedExpression];
-  v7 = [(EFSQLBinaryExpression *)v5 initWithLeft:self operator:12 right:v6];
+  ef_SQLIsolatedExpression = [isCopy ef_SQLIsolatedExpression];
+  v7 = [(EFSQLBinaryExpression *)v5 initWithLeft:self operator:12 right:ef_SQLIsolatedExpression];
 
   return v7;
 }
 
-- (id)isNot:(id)a3
+- (id)isNot:(id)not
 {
-  v4 = a3;
+  notCopy = not;
   v5 = [EFSQLBinaryExpression alloc];
-  v6 = [v4 ef_SQLIsolatedExpression];
-  v7 = [(EFSQLBinaryExpression *)v5 initWithLeft:self operator:13 right:v6];
+  ef_SQLIsolatedExpression = [notCopy ef_SQLIsolatedExpression];
+  v7 = [(EFSQLBinaryExpression *)v5 initWithLeft:self operator:13 right:ef_SQLIsolatedExpression];
 
   return v7;
 }
 
 - (id)isNull
 {
-  v3 = [MEMORY[0x1E695DFB0] null];
-  v4 = [(EFSQLColumnExpression *)self is:v3];
+  null = [MEMORY[0x1E695DFB0] null];
+  v4 = [(EFSQLColumnExpression *)self is:null];
 
   return v4;
 }
 
-- (id)plus:(id)a3
+- (id)plus:(id)plus
 {
-  v4 = a3;
-  v5 = [[EFSQLBinaryExpression alloc] initWithLeft:self operator:14 right:v4];
+  plusCopy = plus;
+  v5 = [[EFSQLBinaryExpression alloc] initWithLeft:self operator:14 right:plusCopy];
 
   return v5;
 }
 
-- (id)minus:(id)a3
+- (id)minus:(id)minus
 {
-  v4 = a3;
-  v5 = [[EFSQLBinaryExpression alloc] initWithLeft:self operator:15 right:v4];
+  minusCopy = minus;
+  v5 = [[EFSQLBinaryExpression alloc] initWithLeft:self operator:15 right:minusCopy];
 
   return v5;
 }
 
-- (id)concatenate:(id)a3
+- (id)concatenate:(id)concatenate
 {
-  v4 = a3;
-  v5 = [[EFSQLBinaryExpression alloc] initWithLeft:self operator:16 right:v4];
+  concatenateCopy = concatenate;
+  v5 = [[EFSQLBinaryExpression alloc] initWithLeft:self operator:16 right:concatenateCopy];
 
   return v5;
 }
 
-- (id)matchesMask:(id)a3
+- (id)matchesMask:(id)mask
 {
-  v4 = a3;
+  maskCopy = mask;
   v5 = [EFSQLBinaryExpression alloc];
-  v6 = [EFSQLBitExpression and:self with:v4];
-  v7 = [(EFSQLBinaryExpression *)v5 initWithLeft:v6 operator:0 right:v4];
+  v6 = [EFSQLBitExpression and:self with:maskCopy];
+  v7 = [(EFSQLBinaryExpression *)v5 initWithLeft:v6 operator:0 right:maskCopy];
 
   return v7;
 }
 
-- (id)doesNotMatchMask:(id)a3
+- (id)doesNotMatchMask:(id)mask
 {
-  v4 = a3;
+  maskCopy = mask;
   v5 = [EFSQLBinaryExpression alloc];
-  v6 = [EFSQLBitExpression and:self with:v4];
+  v6 = [EFSQLBitExpression and:self with:maskCopy];
   v7 = [(EFSQLBinaryExpression *)v5 initWithLeft:v6 operator:0 right:&unk_1F45AD088];
 
   return v7;
 }
 
-- (id)expressionForPredicateOperatorType:(unint64_t)a3 constantValue:(id)a4
+- (id)expressionForPredicateOperatorType:(unint64_t)type constantValue:(id)value
 {
-  v8 = a4;
-  if (a3 > 6)
+  valueCopy = value;
+  if (type > 6)
   {
-    if (a3 <= 9)
+    if (type <= 9)
     {
-      if (a3 == 7)
+      if (type == 7)
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v15 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v15 handleFailureInMethod:a2 object:self file:@"EFSQLObjectPropertyMapper.m" lineNumber:178 description:@"constantValue must be of class NSString"];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"EFSQLObjectPropertyMapper.m" lineNumber:178 description:@"constantValue must be of class NSString"];
         }
 
-        v9 = [(EFSQLColumnExpression *)self like:v8];
+        v9 = [(EFSQLColumnExpression *)self like:valueCopy];
       }
 
-      else if (a3 == 8)
+      else if (type == 8)
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v17 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v17 handleFailureInMethod:a2 object:self file:@"EFSQLObjectPropertyMapper.m" lineNumber:181 description:@"constantValue must be of class NSString"];
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler2 handleFailureInMethod:a2 object:self file:@"EFSQLObjectPropertyMapper.m" lineNumber:181 description:@"constantValue must be of class NSString"];
         }
 
-        v9 = [(EFSQLColumnExpression *)self beginsWith:v8 caseSensitive:0];
+        v9 = [(EFSQLColumnExpression *)self beginsWith:valueCopy caseSensitive:0];
       }
 
       else
@@ -545,32 +545,32 @@ void __48__EFSQLColumnExpression_EFCacheable__cachedSelf__block_invoke()
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v18 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v18 handleFailureInMethod:a2 object:self file:@"EFSQLObjectPropertyMapper.m" lineNumber:184 description:@"constantValue must be of class NSString"];
+          currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler3 handleFailureInMethod:a2 object:self file:@"EFSQLObjectPropertyMapper.m" lineNumber:184 description:@"constantValue must be of class NSString"];
         }
 
-        v9 = [(EFSQLColumnExpression *)self endsWith:v8 caseSensitive:0];
+        v9 = [(EFSQLColumnExpression *)self endsWith:valueCopy caseSensitive:0];
       }
 
       goto LABEL_44;
     }
 
-    if (a3 > 98)
+    if (type > 98)
     {
-      if (a3 == 99)
+      if (type == 99)
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v14 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v14 handleFailureInMethod:a2 object:self file:@"EFSQLObjectPropertyMapper.m" lineNumber:192 description:@"constantValue must be of class NSString"];
+          currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler4 handleFailureInMethod:a2 object:self file:@"EFSQLObjectPropertyMapper.m" lineNumber:192 description:@"constantValue must be of class NSString"];
         }
 
-        v9 = [(EFSQLColumnExpression *)self contains:v8 caseSensitive:0];
+        v9 = [(EFSQLColumnExpression *)self contains:valueCopy caseSensitive:0];
         goto LABEL_44;
       }
 
-      if (a3 != 100)
+      if (type != 100)
       {
         goto LABEL_45;
       }
@@ -578,89 +578,89 @@ void __48__EFSQLColumnExpression_EFCacheable__cachedSelf__block_invoke()
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v16 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v16 handleFailureInMethod:a2 object:self file:@"EFSQLObjectPropertyMapper.m" lineNumber:195 description:@"constantValue must be of class NSArray"];
+        currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler5 handleFailureInMethod:a2 object:self file:@"EFSQLObjectPropertyMapper.m" lineNumber:195 description:@"constantValue must be of class NSArray"];
       }
 
-      v10 = [v8 objectAtIndexedSubscript:0];
-      v11 = [v8 objectAtIndexedSubscript:1];
-      v12 = [EFPair pairWithFirst:v10 second:v11];
+      currentHandler6 = [valueCopy objectAtIndexedSubscript:0];
+      v11 = [valueCopy objectAtIndexedSubscript:1];
+      v12 = [EFPair pairWithFirst:currentHandler6 second:v11];
       v4 = [(EFSQLColumnExpression *)self between:v12];
 
 LABEL_29:
       goto LABEL_45;
     }
 
-    if (a3 != 10)
+    if (type != 10)
     {
-      if (a3 != 11)
+      if (type != 11)
       {
         goto LABEL_45;
       }
 
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"EFSQLObjectPropertyMapper.m" lineNumber:189 description:@"NSCustomSelectorPredicateOperatorType currently has no EFSQLExpressable counterpart"];
+      currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler6 handleFailureInMethod:a2 object:self file:@"EFSQLObjectPropertyMapper.m" lineNumber:189 description:@"NSCustomSelectorPredicateOperatorType currently has no EFSQLExpressable counterpart"];
       goto LABEL_23;
     }
 
-    v9 = [(EFSQLColumnExpression *)self in:v8];
+    v9 = [(EFSQLColumnExpression *)self in:valueCopy];
   }
 
   else
   {
-    if (a3 <= 2)
+    if (type <= 2)
     {
-      if (a3)
+      if (type)
       {
-        if (a3 == 1)
+        if (type == 1)
         {
-          v9 = [(EFSQLColumnExpression *)self lessThanEqualTo:v8];
+          v9 = [(EFSQLColumnExpression *)self lessThanEqualTo:valueCopy];
         }
 
         else
         {
-          if (a3 != 2)
+          if (type != 2)
           {
             goto LABEL_45;
           }
 
-          v9 = [(EFSQLColumnExpression *)self greaterThan:v8];
+          v9 = [(EFSQLColumnExpression *)self greaterThan:valueCopy];
         }
       }
 
       else
       {
-        v9 = [(EFSQLColumnExpression *)self lessThan:v8];
+        v9 = [(EFSQLColumnExpression *)self lessThan:valueCopy];
       }
 
       goto LABEL_44;
     }
 
-    if (a3 <= 4)
+    if (type <= 4)
     {
-      if (a3 == 3)
+      if (type == 3)
       {
-        [(EFSQLColumnExpression *)self greaterThanEqualTo:v8];
+        [(EFSQLColumnExpression *)self greaterThanEqualTo:valueCopy];
       }
 
       else
       {
-        [(EFSQLColumnExpression *)self equalTo:v8];
+        [(EFSQLColumnExpression *)self equalTo:valueCopy];
       }
       v9 = ;
       goto LABEL_44;
     }
 
-    if (a3 != 5)
+    if (type != 5)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"EFSQLObjectPropertyMapper.m" lineNumber:175 description:@"NSMatchesPredicateOperatorType currently has no EFSQLExpressable counterpart"];
+      currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler6 handleFailureInMethod:a2 object:self file:@"EFSQLObjectPropertyMapper.m" lineNumber:175 description:@"NSMatchesPredicateOperatorType currently has no EFSQLExpressable counterpart"];
 LABEL_23:
       v4 = 0;
       goto LABEL_29;
     }
 
-    v9 = [(EFSQLColumnExpression *)self notEqualTo:v8];
+    v9 = [(EFSQLColumnExpression *)self notEqualTo:valueCopy];
   }
 
 LABEL_44:

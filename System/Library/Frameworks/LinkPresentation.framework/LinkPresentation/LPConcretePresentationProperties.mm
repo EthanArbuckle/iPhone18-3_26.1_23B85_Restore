@@ -1,14 +1,14 @@
 @interface LPConcretePresentationProperties
 - (BOOL)hasMedia;
-- (LPConcretePresentationProperties)initWithParameters:(id)a3 properties:(id)a4;
+- (LPConcretePresentationProperties)initWithParameters:(id)parameters properties:(id)properties;
 @end
 
 @implementation LPConcretePresentationProperties
 
-- (LPConcretePresentationProperties)initWithParameters:(id)a3 properties:(id)a4
+- (LPConcretePresentationProperties)initWithParameters:(id)parameters properties:(id)properties
 {
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  propertiesCopy = properties;
   v157.receiver = self;
   v157.super_class = LPConcretePresentationProperties;
   v8 = [(LPConcretePresentationProperties *)&v157 init];
@@ -18,17 +18,17 @@
     goto LABEL_185;
   }
 
-  v9 = [v6 captionButton];
+  captionButton = [parametersCopy captionButton];
   captionButton = v8->_captionButton;
-  v8->_captionButton = v9;
+  v8->_captionButton = captionButton;
 
-  v11 = [v6 captionTextButton];
+  captionTextButton = [parametersCopy captionTextButton];
   captionTextButton = v8->_captionTextButton;
-  v8->_captionTextButton = v11;
+  v8->_captionTextButton = captionTextButton;
 
-  v13 = [v6 secondaryCaptionButton];
+  secondaryCaptionButton = [parametersCopy secondaryCaptionButton];
   secondaryCaptionButton = v8->_secondaryCaptionButton;
-  v8->_secondaryCaptionButton = v13;
+  v8->_secondaryCaptionButton = secondaryCaptionButton;
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -37,22 +37,22 @@
   v15 = v8;
   v156 = v15;
   v152 = _Block_copy(aBlock);
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ([v7 overrideURL], v16 = objc_claimAutoreleasedReturnValue(), v16, v16))
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ([propertiesCopy overrideURL], v16 = objc_claimAutoreleasedReturnValue(), v16, v16))
   {
     v148 = v16;
     [(LPWebLinkPresentationProperties *)v15 setOverrideURL:v16];
     v17 = objc_opt_respondsToSelector();
     if (v17)
     {
-      v18 = [v7 overrideAllowOpeningSensitiveURLs];
+      overrideAllowOpeningSensitiveURLs = [propertiesCopy overrideAllowOpeningSensitiveURLs];
     }
 
     else
     {
-      v18 = 0;
+      overrideAllowOpeningSensitiveURLs = 0;
     }
 
-    [(LPWebLinkPresentationProperties *)v15 setOverrideAllowOpeningSensitiveURLs:v18];
+    [(LPWebLinkPresentationProperties *)v15 setOverrideAllowOpeningSensitiveURLs:overrideAllowOpeningSensitiveURLs];
     if (v17)
     {
     }
@@ -65,62 +65,62 @@
 
   if (objc_opt_respondsToSelector())
   {
-    v19 = [v7 isPreliminary];
+    isPreliminary = [propertiesCopy isPreliminary];
   }
 
   else
   {
-    v19 = 0;
+    isPreliminary = 0;
   }
 
-  [(LPWebLinkPresentationProperties *)v15 setPreliminary:v19];
+  [(LPWebLinkPresentationProperties *)v15 setPreliminary:isPreliminary];
   if (objc_opt_respondsToSelector())
   {
-    v20 = [v7 style];
+    style = [propertiesCopy style];
   }
 
   else
   {
-    v20 = 0;
+    style = 0;
   }
 
-  [(LPWebLinkPresentationProperties *)v15 setStyle:v20];
+  [(LPWebLinkPresentationProperties *)v15 setStyle:style];
   if (objc_opt_respondsToSelector())
   {
-    v21 = [v7 topCaption];
+    topCaption = [propertiesCopy topCaption];
   }
 
   else
   {
-    v21 = 0;
+    topCaption = 0;
   }
 
-  v150 = v21;
+  v150 = topCaption;
   if (objc_opt_respondsToSelector())
   {
-    v154 = [v7 bottomCaption];
+    bottomCaption = [propertiesCopy bottomCaption];
   }
 
   else
   {
-    v154 = 0;
+    bottomCaption = 0;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v153 = [v7 trailingTopCaption];
+    trailingTopCaption = [propertiesCopy trailingTopCaption];
   }
 
   else
   {
-    v153 = 0;
+    trailingTopCaption = 0;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v151 = [v7 trailingBottomCaption];
+    trailingBottomCaption = [propertiesCopy trailingBottomCaption];
 
-    if (v21)
+    if (topCaption)
     {
       goto LABEL_31;
     }
@@ -128,39 +128,39 @@
 
   else
   {
-    v151 = 0;
-    if (v21)
+    trailingBottomCaption = 0;
+    if (topCaption)
     {
 LABEL_31:
       v24 = objc_alloc_init(LPCaptionBarPresentationProperties);
       [(LPWebLinkPresentationProperties *)v15 setCaptionBar:v24];
 
-      v25 = [(LPWebLinkPresentationProperties *)v15 captionBar];
-      v26 = [v25 top];
-      v27 = [v26 leading];
-      [v27 setText:v150];
+      captionBar = [(LPWebLinkPresentationProperties *)v15 captionBar];
+      v26 = [captionBar top];
+      leading = [v26 leading];
+      [leading setText:v150];
 
-      v28 = [(LPWebLinkPresentationProperties *)v15 captionBar];
-      v29 = [v28 bottom];
-      v30 = [v29 leading];
-      [v30 setText:v154];
+      captionBar2 = [(LPWebLinkPresentationProperties *)v15 captionBar];
+      bottom = [captionBar2 bottom];
+      leading2 = [bottom leading];
+      [leading2 setText:bottomCaption];
 
-      v31 = [(LPWebLinkPresentationProperties *)v15 captionBar];
-      v32 = [v31 top];
-      v33 = [v32 trailing];
-      [v33 setText:v153];
+      captionBar3 = [(LPWebLinkPresentationProperties *)v15 captionBar];
+      v32 = [captionBar3 top];
+      trailing = [v32 trailing];
+      [trailing setText:trailingTopCaption];
 
-      v23 = [(LPWebLinkPresentationProperties *)v15 captionBar];
-      v34 = [v23 bottom];
-      v35 = [v34 trailing];
-      [v35 setText:v151];
+      captionBar4 = [(LPWebLinkPresentationProperties *)v15 captionBar];
+      bottom2 = [captionBar4 bottom];
+      trailing2 = [bottom2 trailing];
+      [trailing2 setText:trailingBottomCaption];
 
 LABEL_34:
       goto LABEL_35;
     }
   }
 
-  if (v154 || v153 || v151)
+  if (bottomCaption || trailingTopCaption || trailingBottomCaption)
   {
     goto LABEL_31;
   }
@@ -168,36 +168,36 @@ LABEL_34:
   v22 = objc_opt_respondsToSelector();
   if (v22)
   {
-    v23 = [v7 captionBar];
+    captionBar4 = [propertiesCopy captionBar];
   }
 
   else
   {
-    v23 = 0;
+    captionBar4 = 0;
   }
 
-  [(LPWebLinkPresentationProperties *)v15 setCaptionBar:v23];
+  [(LPWebLinkPresentationProperties *)v15 setCaptionBar:captionBar4];
   if (v22)
   {
     goto LABEL_34;
   }
 
 LABEL_35:
-  v36 = [v6 overrideSubtitle];
+  overrideSubtitle = [parametersCopy overrideSubtitle];
 
-  if (v36)
+  if (overrideSubtitle)
   {
-    v37 = [v6 overrideSubtitle];
-    v38 = [(LPWebLinkPresentationProperties *)v15 captionBar];
-    v39 = [v38 bottom];
-    v40 = [v39 leading];
-    [v40 setAttributedText:v37];
+    overrideSubtitle2 = [parametersCopy overrideSubtitle];
+    captionBar5 = [(LPWebLinkPresentationProperties *)v15 captionBar];
+    bottom3 = [captionBar5 bottom];
+    leading3 = [bottom3 leading];
+    [leading3 setAttributedText:overrideSubtitle2];
   }
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ([v7 icon], v41 = objc_claimAutoreleasedReturnValue(), v41, (v149 = v41) != 0))
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ([propertiesCopy icon], v41 = objc_claimAutoreleasedReturnValue(), v41, (v149 = v41) != 0))
   {
-    v42 = [(LPWebLinkPresentationProperties *)v15 captionBar];
-    [v42 setTrailingIcon:v149];
+    captionBar6 = [(LPWebLinkPresentationProperties *)v15 captionBar];
+    [captionBar6 setTrailingIcon:v149];
   }
 
   else
@@ -205,59 +205,59 @@ LABEL_35:
     v149 = 0;
   }
 
-  if (([v6 usesComputedPresentationProperties] & 1) == 0 && -[LPWebLinkPresentationProperties style](v15, "style") == 44)
+  if (([parametersCopy usesComputedPresentationProperties] & 1) == 0 && -[LPWebLinkPresentationProperties style](v15, "style") == 44)
   {
     v43 = +[LPWalletPresentationSpecialization captionButtonPropertiesForPasses];
     v152[2](v152, v43, 1);
   }
 
-  if (([v6 usesComputedPresentationProperties] & 1) == 0 && -[LPWebLinkPresentationProperties style](v15, "style") == 53)
+  if (([parametersCopy usesComputedPresentationProperties] & 1) == 0 && -[LPWebLinkPresentationProperties style](v15, "style") == 53)
   {
     v44 = +[LPWalletPresentationSpecialization captionButtonPropertiesForOrders];
     v152[2](v152, v44, 1);
   }
 
-  if (sizeClassAllowsPillButtonFromSpecialization([v6 effectiveSizeClass]))
+  if (sizeClassAllowsPillButtonFromSpecialization([parametersCopy effectiveSizeClass]))
   {
     if ([(LPWebLinkPresentationProperties *)v15 style]== 46)
     {
       v45 = +[LPFaceTimeInvitePresentationSpecialization captionButtonProperties];
-      v152[2](v152, v45, [v6 allowsTapping]);
+      v152[2](v152, v45, [parametersCopy allowsTapping]);
     }
 
     if ([(LPWebLinkPresentationProperties *)v15 style]== 61)
     {
       v46 = +[LPGameActivityPresentationSpecialization captionButtonProperties];
-      v152[2](v152, v46, [v6 allowsTapping]);
+      v152[2](v152, v46, [parametersCopy allowsTapping]);
     }
 
     if ([(LPWebLinkPresentationProperties *)v15 style]== 48)
     {
       v47 = +[LPPasswordsInvitePresentationSpecialization captionButtonProperties];
-      v152[2](v152, v47, [v6 allowsTapping]);
+      v152[2](v152, v47, [parametersCopy allowsTapping]);
     }
   }
 
-  if (([v6 inComposeContext] & 1) == 0 && sizeClassAllowsPillButtonFromSpecialization(objc_msgSend(v6, "effectiveSizeClass")) && -[LPWebLinkPresentationProperties style](v15, "style") == 50 && (objc_msgSend(v6, "inSenderContext") & 1) == 0)
+  if (([parametersCopy inComposeContext] & 1) == 0 && sizeClassAllowsPillButtonFromSpecialization(objc_msgSend(parametersCopy, "effectiveSizeClass")) && -[LPWebLinkPresentationProperties style](v15, "style") == 50 && (objc_msgSend(parametersCopy, "inSenderContext") & 1) == 0)
   {
     v48 = +[LPApplePhotosSharedLibraryInvitationPresentationSpecialization captionButtonProperties];
     v152[2](v152, v48, 1);
   }
 
-  v49 = [(LPWebLinkPresentationProperties *)v15 captionBar];
-  v50 = [v49 playButton];
+  captionBar7 = [(LPWebLinkPresentationProperties *)v15 captionBar];
+  playButton = [captionBar7 playButton];
 
-  if (!v50)
+  if (!playButton)
   {
     v51 = objc_alloc_init(LPPlayButtonPresentationProperties);
-    v52 = [(LPWebLinkPresentationProperties *)v15 captionBar];
-    [v52 setPlayButton:v51];
+    captionBar8 = [(LPWebLinkPresentationProperties *)v15 captionBar];
+    [captionBar8 setPlayButton:v51];
   }
 
-  v53 = [v6 allowsTapping];
-  v54 = [(LPWebLinkPresentationProperties *)v15 captionBar];
-  v55 = [v54 playButton];
-  [v55 setDisabled:v53 ^ 1u];
+  allowsTapping = [parametersCopy allowsTapping];
+  captionBar9 = [(LPWebLinkPresentationProperties *)v15 captionBar];
+  playButton2 = [captionBar9 playButton];
+  [playButton2 setDisabled:allowsTapping ^ 1u];
 
   if ([(LPWebLinkPresentationProperties *)v15 style]== 47)
   {
@@ -266,8 +266,8 @@ LABEL_35:
       goto LABEL_72;
     }
 
-    v56 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(LPCaptionButtonPresentationProperties *)v8->_captionTextButton setForegroundColor:v56];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(LPCaptionButtonPresentationProperties *)v8->_captionTextButton setForegroundColor:secondaryLabelColor];
   }
 
   v57 = v8->_captionTextButton;
@@ -275,134 +275,134 @@ LABEL_35:
   {
     if ([(LPCaptionButtonPresentationProperties *)v57 type]== 2)
     {
-      v58 = [(LPWebLinkPresentationProperties *)v15 captionBar];
-      v59 = [v58 bottom];
-      v60 = [v59 leading];
-      [v60 setText:0];
+      captionBar10 = [(LPWebLinkPresentationProperties *)v15 captionBar];
+      bottom4 = [captionBar10 bottom];
+      leading4 = [bottom4 leading];
+      [leading4 setText:0];
 
-      v61 = [(LPWebLinkPresentationProperties *)v15 captionBar];
-      v62 = [v61 bottom];
-      v63 = [v62 trailing];
-      [v63 setText:0];
+      captionBar11 = [(LPWebLinkPresentationProperties *)v15 captionBar];
+      bottom5 = [captionBar11 bottom];
+      trailing3 = [bottom5 trailing];
+      [trailing3 setText:0];
 
-      v64 = [(LPWebLinkPresentationProperties *)v15 captionBar];
-      v65 = [v64 belowBottom];
-      v66 = [v65 leading];
-      [v66 setText:0];
+      captionBar12 = [(LPWebLinkPresentationProperties *)v15 captionBar];
+      belowBottom = [captionBar12 belowBottom];
+      leading5 = [belowBottom leading];
+      [leading5 setText:0];
 
-      v67 = [(LPWebLinkPresentationProperties *)v15 captionBar];
-      v68 = [v67 belowBottom];
-      v69 = [v68 trailing];
-      [v69 setText:0];
+      captionBar13 = [(LPWebLinkPresentationProperties *)v15 captionBar];
+      belowBottom2 = [captionBar13 belowBottom];
+      trailing4 = [belowBottom2 trailing];
+      [trailing4 setText:0];
     }
 
-    v70 = [v6 overrideSubtitleButtonColor];
+    overrideSubtitleButtonColor = [parametersCopy overrideSubtitleButtonColor];
 
-    if (v70)
+    if (overrideSubtitleButtonColor)
     {
-      v71 = [v6 overrideSubtitleButtonColor];
-      [(LPCaptionButtonPresentationProperties *)v8->_captionTextButton setBackgroundColor:v71];
+      overrideSubtitleButtonColor2 = [parametersCopy overrideSubtitleButtonColor];
+      [(LPCaptionButtonPresentationProperties *)v8->_captionTextButton setBackgroundColor:overrideSubtitleButtonColor2];
     }
 
-    v72 = [(LPWebLinkPresentationProperties *)v15 captionBar];
-    v73 = [v72 bottom];
+    captionBar14 = [(LPWebLinkPresentationProperties *)v15 captionBar];
+    bottom6 = [captionBar14 bottom];
 
-    if (([v73 hasAnyContent] & 1) == 0)
+    if (([bottom6 hasAnyContent] & 1) == 0)
     {
-      v74 = [v73 leading];
-      [v74 setText:@"​"];
+      leading6 = [bottom6 leading];
+      [leading6 setText:@"​"];
     }
 
-    [v73 setButton:v8->_captionTextButton];
+    [bottom6 setButton:v8->_captionTextButton];
   }
 
 LABEL_72:
   if (v8->_captionButton)
   {
-    v75 = [v6 overrideActionButtonColor];
+    overrideActionButtonColor = [parametersCopy overrideActionButtonColor];
 
-    if (v75)
+    if (overrideActionButtonColor)
     {
-      v76 = [v6 overrideActionButtonColor];
-      [(LPCaptionButtonPresentationProperties *)v8->_captionButton setBackgroundColor:v76];
+      overrideActionButtonColor2 = [parametersCopy overrideActionButtonColor];
+      [(LPCaptionButtonPresentationProperties *)v8->_captionButton setBackgroundColor:overrideActionButtonColor2];
     }
 
-    if ((sizeClassAllowsPillButton([v6 effectiveSizeClass]) & 1) != 0 || sizeClassAllowsButtonActions(objc_msgSend(v6, "effectiveSizeClass")) && (-[LPConcretePresentationProperties captionButton](v15, "captionButton"), v77 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v77, "actions"), v78 = objc_claimAutoreleasedReturnValue(), v78, v77, v78))
+    if ((sizeClassAllowsPillButton([parametersCopy effectiveSizeClass]) & 1) != 0 || sizeClassAllowsButtonActions(objc_msgSend(parametersCopy, "effectiveSizeClass")) && (-[LPConcretePresentationProperties captionButton](v15, "captionButton"), v77 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v77, "actions"), v78 = objc_claimAutoreleasedReturnValue(), v78, v77, v78))
     {
       v79 = v8->_captionButton;
-      v80 = [(LPWebLinkPresentationProperties *)v15 captionBar];
-      [v80 setButton:v79];
+      captionBar15 = [(LPWebLinkPresentationProperties *)v15 captionBar];
+      [captionBar15 setButton:v79];
 
-      if (sizeClassAllowsSecondaryButton([v6 effectiveSizeClass]))
+      if (sizeClassAllowsSecondaryButton([parametersCopy effectiveSizeClass]))
       {
         v81 = v8->_secondaryCaptionButton;
-        v82 = [(LPWebLinkPresentationProperties *)v15 captionBar];
-        [v82 setSecondaryButton:v81];
+        captionBar16 = [(LPWebLinkPresentationProperties *)v15 captionBar];
+        [captionBar16 setSecondaryButton:v81];
       }
 
-      if ([v6 effectiveSizeClass] == 12)
+      if ([parametersCopy effectiveSizeClass] == 12)
       {
-        v83 = [(LPConcretePresentationProperties *)v15 captionButton];
-        v84 = [v83 actions];
-        if ([v84 count] >= 2)
+        captionButton2 = [(LPConcretePresentationProperties *)v15 captionButton];
+        actions = [captionButton2 actions];
+        if ([actions count] >= 2)
         {
         }
 
         else
         {
-          v85 = [(LPConcretePresentationProperties *)v15 captionButton];
-          v86 = [v85 actions];
-          if ([v86 count] != 1)
+          captionButton3 = [(LPConcretePresentationProperties *)v15 captionButton];
+          actions2 = [captionButton3 actions];
+          if ([actions2 count] != 1)
           {
 
 LABEL_92:
             goto LABEL_93;
           }
 
-          v147 = [(LPConcretePresentationProperties *)v15 captionButton];
-          v146 = [v147 actions];
-          v87 = [v146 firstObject];
-          v88 = [v87 handler];
+          captionButton4 = [(LPConcretePresentationProperties *)v15 captionButton];
+          actions3 = [captionButton4 actions];
+          firstObject = [actions3 firstObject];
+          handler = [firstObject handler];
 
-          if (v88)
+          if (handler)
           {
             goto LABEL_93;
           }
         }
 
-        v89 = [(LPWebLinkPresentationProperties *)v15 captionBar];
-        v90 = [v89 bottom];
-        v91 = [v90 leading];
-        [v91 setText:0];
+        captionBar17 = [(LPWebLinkPresentationProperties *)v15 captionBar];
+        bottom7 = [captionBar17 bottom];
+        leading7 = [bottom7 leading];
+        [leading7 setText:0];
 
-        v92 = [(LPWebLinkPresentationProperties *)v15 captionBar];
-        v93 = [v92 bottom];
-        v94 = [v93 trailing];
-        [v94 setText:0];
+        captionBar18 = [(LPWebLinkPresentationProperties *)v15 captionBar];
+        bottom8 = [captionBar18 bottom];
+        trailing5 = [bottom8 trailing];
+        [trailing5 setText:0];
 
-        v95 = [(LPWebLinkPresentationProperties *)v15 captionBar];
-        v96 = [v95 belowBottom];
-        v97 = [v96 leading];
-        [v97 setText:0];
+        captionBar19 = [(LPWebLinkPresentationProperties *)v15 captionBar];
+        belowBottom3 = [captionBar19 belowBottom];
+        leading8 = [belowBottom3 leading];
+        [leading8 setText:0];
 
-        v98 = [(LPWebLinkPresentationProperties *)v15 captionBar];
-        v99 = [v98 belowBottom];
-        v100 = [v99 trailing];
-        [v100 setText:0];
+        captionBar20 = [(LPWebLinkPresentationProperties *)v15 captionBar];
+        belowBottom4 = [captionBar20 belowBottom];
+        trailing6 = [belowBottom4 trailing];
+        [trailing6 setText:0];
 
-        v101 = [(LPWebLinkPresentationProperties *)v15 captionBar];
-        v102 = [v101 top];
-        LOBYTE(v100) = [v102 hasAnyContent];
+        captionBar21 = [(LPWebLinkPresentationProperties *)v15 captionBar];
+        v102 = [captionBar21 top];
+        LOBYTE(trailing6) = [v102 hasAnyContent];
 
-        if (v100)
+        if (trailing6)
         {
           goto LABEL_93;
         }
 
-        v83 = [(LPWebLinkPresentationProperties *)v15 captionBar];
-        v84 = [v83 top];
-        v85 = [v84 leading];
-        [v85 setText:@"​"];
+        captionButton2 = [(LPWebLinkPresentationProperties *)v15 captionBar];
+        actions = [captionButton2 top];
+        captionButton3 = [actions leading];
+        [captionButton3 setText:@"​"];
         goto LABEL_92;
       }
     }
@@ -411,38 +411,38 @@ LABEL_92:
 LABEL_93:
   if (objc_opt_respondsToSelector())
   {
-    v103 = [v7 mediaTopCaption];
+    mediaTopCaption = [propertiesCopy mediaTopCaption];
   }
 
   else
   {
-    v103 = 0;
+    mediaTopCaption = 0;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v104 = [v7 mediaBottomCaption];
+    mediaBottomCaption = [propertiesCopy mediaBottomCaption];
   }
 
   else
   {
-    v104 = 0;
+    mediaBottomCaption = 0;
   }
 
-  if (v103 | v104)
+  if (mediaTopCaption | mediaBottomCaption)
   {
     v105 = objc_alloc_init(LPCaptionBarPresentationProperties);
     [(LPWebLinkPresentationProperties *)v15 setMediaBottomCaptionBar:v105];
 
-    v106 = [(LPWebLinkPresentationProperties *)v15 mediaBottomCaptionBar];
-    v107 = [v106 top];
-    v108 = [v107 leading];
-    [v108 setText:v103];
+    mediaBottomCaptionBar = [(LPWebLinkPresentationProperties *)v15 mediaBottomCaptionBar];
+    v107 = [mediaBottomCaptionBar top];
+    leading9 = [v107 leading];
+    [leading9 setText:mediaTopCaption];
 
-    v109 = [(LPWebLinkPresentationProperties *)v15 mediaBottomCaptionBar];
-    v110 = [v109 bottom];
-    v111 = [v110 leading];
-    [v111 setText:v104];
+    mediaBottomCaptionBar2 = [(LPWebLinkPresentationProperties *)v15 mediaBottomCaptionBar];
+    bottom9 = [mediaBottomCaptionBar2 bottom];
+    leading10 = [bottom9 leading];
+    [leading10 setText:mediaBottomCaption];
   }
 
   else
@@ -450,15 +450,15 @@ LABEL_93:
     v112 = objc_opt_respondsToSelector();
     if (v112)
     {
-      v109 = [v7 mediaBottomCaptionBar];
+      mediaBottomCaptionBar2 = [propertiesCopy mediaBottomCaptionBar];
     }
 
     else
     {
-      v109 = 0;
+      mediaBottomCaptionBar2 = 0;
     }
 
-    [(LPWebLinkPresentationProperties *)v15 setMediaBottomCaptionBar:v109];
+    [(LPWebLinkPresentationProperties *)v15 setMediaBottomCaptionBar:mediaBottomCaptionBar2];
     if ((v112 & 1) == 0)
     {
       goto LABEL_106;
@@ -469,15 +469,15 @@ LABEL_106:
   v113 = objc_opt_respondsToSelector();
   if (v113)
   {
-    v114 = [v7 mediaTopCaptionBar];
+    mediaTopCaptionBar = [propertiesCopy mediaTopCaptionBar];
   }
 
   else
   {
-    v114 = 0;
+    mediaTopCaptionBar = 0;
   }
 
-  [(LPWebLinkPresentationProperties *)v15 setMediaTopCaptionBar:v114];
+  [(LPWebLinkPresentationProperties *)v15 setMediaTopCaptionBar:mediaTopCaptionBar];
   if (v113)
   {
   }
@@ -485,15 +485,15 @@ LABEL_106:
   v115 = objc_opt_respondsToSelector();
   if (v115)
   {
-    v116 = [v7 quotedText];
+    quotedText = [propertiesCopy quotedText];
   }
 
   else
   {
-    v116 = 0;
+    quotedText = 0;
   }
 
-  [(LPWebLinkPresentationProperties *)v15 setQuotedText:v116];
+  [(LPWebLinkPresentationProperties *)v15 setQuotedText:quotedText];
   if (v115)
   {
   }
@@ -501,15 +501,15 @@ LABEL_106:
   v117 = objc_opt_respondsToSelector();
   if (v117)
   {
-    v118 = [v7 image];
+    image = [propertiesCopy image];
   }
 
   else
   {
-    v118 = 0;
+    image = 0;
   }
 
-  [(LPWebLinkPresentationProperties *)v15 setImage:v118];
+  [(LPWebLinkPresentationProperties *)v15 setImage:image];
   if (v117)
   {
   }
@@ -517,15 +517,15 @@ LABEL_106:
   v119 = objc_opt_respondsToSelector();
   if (v119)
   {
-    v120 = [v7 imageProperties];
+    imageProperties = [propertiesCopy imageProperties];
   }
 
   else
   {
-    v120 = 0;
+    imageProperties = 0;
   }
 
-  [(LPWebLinkPresentationProperties *)v15 setImageProperties:v120];
+  [(LPWebLinkPresentationProperties *)v15 setImageProperties:imageProperties];
   if (v119)
   {
   }
@@ -533,15 +533,15 @@ LABEL_106:
   v121 = objc_opt_respondsToSelector();
   if (v121)
   {
-    v122 = [v7 alternateImages];
+    alternateImages = [propertiesCopy alternateImages];
   }
 
   else
   {
-    v122 = 0;
+    alternateImages = 0;
   }
 
-  [(LPWebLinkPresentationProperties *)v15 setAlternateImages:v122];
+  [(LPWebLinkPresentationProperties *)v15 setAlternateImages:alternateImages];
   if (v121)
   {
   }
@@ -549,15 +549,15 @@ LABEL_106:
   v123 = objc_opt_respondsToSelector();
   if (v123)
   {
-    v124 = [v7 arAsset];
+    arAsset = [propertiesCopy arAsset];
   }
 
   else
   {
-    v124 = 0;
+    arAsset = 0;
   }
 
-  [(LPWebLinkPresentationProperties *)v15 setArAsset:v124];
+  [(LPWebLinkPresentationProperties *)v15 setArAsset:arAsset];
   if (v123)
   {
   }
@@ -565,15 +565,15 @@ LABEL_106:
   v125 = objc_opt_respondsToSelector();
   if (v125)
   {
-    v126 = [v7 video];
+    video = [propertiesCopy video];
   }
 
   else
   {
-    v126 = 0;
+    video = 0;
   }
 
-  [(LPWebLinkPresentationProperties *)v15 setVideo:v126];
+  [(LPWebLinkPresentationProperties *)v15 setVideo:video];
   if (v125)
   {
   }
@@ -581,15 +581,15 @@ LABEL_106:
   v127 = objc_opt_respondsToSelector();
   if (v127)
   {
-    v128 = [v7 inlinePlaybackInformation];
+    inlinePlaybackInformation = [propertiesCopy inlinePlaybackInformation];
   }
 
   else
   {
-    v128 = 0;
+    inlinePlaybackInformation = 0;
   }
 
-  [(LPWebLinkPresentationProperties *)v15 setInlinePlaybackInformation:v128];
+  [(LPWebLinkPresentationProperties *)v15 setInlinePlaybackInformation:inlinePlaybackInformation];
   if (v127)
   {
   }
@@ -597,15 +597,15 @@ LABEL_106:
   v129 = objc_opt_respondsToSelector();
   if (v129)
   {
-    v130 = [v7 backgroundColor];
+    backgroundColor = [propertiesCopy backgroundColor];
   }
 
   else
   {
-    v130 = 0;
+    backgroundColor = 0;
   }
 
-  [(LPWebLinkPresentationProperties *)v15 setBackgroundColor:v130];
+  [(LPWebLinkPresentationProperties *)v15 setBackgroundColor:backgroundColor];
   if (v129)
   {
   }
@@ -613,42 +613,42 @@ LABEL_106:
   v131 = objc_opt_respondsToSelector();
   if (v131)
   {
-    v132 = [v7 dominantImageBackgroundColor];
+    dominantImageBackgroundColor = [propertiesCopy dominantImageBackgroundColor];
   }
 
   else
   {
-    v132 = 0;
+    dominantImageBackgroundColor = 0;
   }
 
-  [(LPWebLinkPresentationProperties *)v15 setDominantImageBackgroundColor:v132];
+  [(LPWebLinkPresentationProperties *)v15 setDominantImageBackgroundColor:dominantImageBackgroundColor];
   if (v131)
   {
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v133 = [v7 allowsDominantImageBackgroundColorAsCaptionBackground];
+    allowsDominantImageBackgroundColorAsCaptionBackground = [propertiesCopy allowsDominantImageBackgroundColorAsCaptionBackground];
   }
 
   else
   {
-    v133 = 0;
+    allowsDominantImageBackgroundColorAsCaptionBackground = 0;
   }
 
-  [(LPWebLinkPresentationProperties *)v15 setAllowsDominantImageBackgroundColorAsCaptionBackground:v133];
+  [(LPWebLinkPresentationProperties *)v15 setAllowsDominantImageBackgroundColorAsCaptionBackground:allowsDominantImageBackgroundColorAsCaptionBackground];
   v134 = objc_opt_respondsToSelector();
   if (v134)
   {
-    v135 = [v7 minimumHeight];
+    minimumHeight = [propertiesCopy minimumHeight];
   }
 
   else
   {
-    v135 = 0;
+    minimumHeight = 0;
   }
 
-  [(LPWebLinkPresentationProperties *)v15 setMinimumHeight:v135];
+  [(LPWebLinkPresentationProperties *)v15 setMinimumHeight:minimumHeight];
   if (v134)
   {
   }
@@ -656,15 +656,15 @@ LABEL_106:
   v136 = objc_opt_respondsToSelector();
   if (v136)
   {
-    v137 = [v7 domainNameForIndicator];
+    domainNameForIndicator = [propertiesCopy domainNameForIndicator];
   }
 
   else
   {
-    v137 = 0;
+    domainNameForIndicator = 0;
   }
 
-  [(LPWebLinkPresentationProperties *)v15 setDomainNameForIndicator:v137];
+  [(LPWebLinkPresentationProperties *)v15 setDomainNameForIndicator:domainNameForIndicator];
   if (v136)
   {
   }
@@ -672,15 +672,15 @@ LABEL_106:
   v138 = objc_opt_respondsToSelector();
   if (v138)
   {
-    v139 = [v7 backgroundImage];
+    backgroundImage = [propertiesCopy backgroundImage];
   }
 
   else
   {
-    v139 = 0;
+    backgroundImage = 0;
   }
 
-  [(LPWebLinkPresentationProperties *)v15 setBackgroundImage:v139];
+  [(LPWebLinkPresentationProperties *)v15 setBackgroundImage:backgroundImage];
   if (v138)
   {
   }
@@ -688,15 +688,15 @@ LABEL_106:
   v140 = objc_opt_respondsToSelector();
   if (v140)
   {
-    v141 = [v7 backgroundImageProperties];
+    backgroundImageProperties = [propertiesCopy backgroundImageProperties];
   }
 
   else
   {
-    v141 = 0;
+    backgroundImageProperties = 0;
   }
 
-  [(LPWebLinkPresentationProperties *)v15 setBackgroundImageProperties:v141];
+  [(LPWebLinkPresentationProperties *)v15 setBackgroundImageProperties:backgroundImageProperties];
   if (v140)
   {
   }
@@ -704,15 +704,15 @@ LABEL_106:
   v142 = objc_opt_respondsToSelector();
   if (v142)
   {
-    v143 = [v7 progressSpinner];
+    progressSpinner = [propertiesCopy progressSpinner];
   }
 
   else
   {
-    v143 = 0;
+    progressSpinner = 0;
   }
 
-  [(LPWebLinkPresentationProperties *)v15 setProgressSpinner:v143];
+  [(LPWebLinkPresentationProperties *)v15 setProgressSpinner:progressSpinner];
   if (v142)
   {
   }
@@ -742,24 +742,24 @@ void __66__LPConcretePresentationProperties_initWithParameters_properties___bloc
 
 - (BOOL)hasMedia
 {
-  v3 = [(LPWebLinkPresentationProperties *)self image];
-  if (v3)
+  image = [(LPWebLinkPresentationProperties *)self image];
+  if (image)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(LPWebLinkPresentationProperties *)self video];
-    if (v5)
+    video = [(LPWebLinkPresentationProperties *)self video];
+    if (video)
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(LPWebLinkPresentationProperties *)self arAsset];
-      if (v6)
+      arAsset = [(LPWebLinkPresentationProperties *)self arAsset];
+      if (arAsset)
       {
         v4 = 1;
       }

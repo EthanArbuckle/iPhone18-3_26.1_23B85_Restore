@@ -1,19 +1,19 @@
 @interface RestaurantReservationAnalyticsBookedSession
-+ (id)currentAnalyticsBookedSessionForMuid:(unint64_t)a3 createIfNotPresent:(BOOL)a4;
-+ (void)removeAnalyticsBookedSession:(id)a3;
-+ (void)removeAnalyticsBookedSessionsFromProactiveTrayIfNotInListOfMuids:(id)a3;
++ (id)currentAnalyticsBookedSessionForMuid:(unint64_t)muid createIfNotPresent:(BOOL)present;
++ (void)removeAnalyticsBookedSession:(id)session;
++ (void)removeAnalyticsBookedSessionsFromProactiveTrayIfNotInListOfMuids:(id)muids;
 - (RestaurantReservationAnalyticsBookedSession)init;
 - (id)description;
 - (void)_captureSession;
 - (void)endSession;
-- (void)setAppID:(id)a3;
-- (void)setBookedUsingMaps:(BOOL)a3;
-- (void)setMuid:(unint64_t)a3;
-- (void)setTappedChangeReservation:(BOOL)a3;
-- (void)setTappedProactiveTrayItem:(BOOL)a3;
-- (void)setViewedDetailsFromPlacecard:(BOOL)a3;
-- (void)setViewedInPlacecard:(BOOL)a3;
-- (void)setViewedInProactiveTray:(BOOL)a3;
+- (void)setAppID:(id)d;
+- (void)setBookedUsingMaps:(BOOL)maps;
+- (void)setMuid:(unint64_t)muid;
+- (void)setTappedChangeReservation:(BOOL)reservation;
+- (void)setTappedProactiveTrayItem:(BOOL)item;
+- (void)setViewedDetailsFromPlacecard:(BOOL)placecard;
+- (void)setViewedInPlacecard:(BOOL)placecard;
+- (void)setViewedInProactiveTray:(BOOL)tray;
 @end
 
 @implementation RestaurantReservationAnalyticsBookedSession
@@ -29,103 +29,103 @@
   }
 }
 
-- (void)setViewedDetailsFromPlacecard:(BOOL)a3
+- (void)setViewedDetailsFromPlacecard:(BOOL)placecard
 {
-  if (a3)
+  if (placecard)
   {
     [(RestaurantReservationAnalyticsBookedSession *)self _restartSession];
   }
 
-  self->_viewedDetailsFromPlacecard = a3;
+  self->_viewedDetailsFromPlacecard = placecard;
 }
 
-- (void)setTappedChangeReservation:(BOOL)a3
+- (void)setTappedChangeReservation:(BOOL)reservation
 {
-  if (a3)
+  if (reservation)
   {
     [(RestaurantReservationAnalyticsBookedSession *)self _restartSession];
   }
 
-  self->_tappedChangeReservation = a3;
+  self->_tappedChangeReservation = reservation;
 }
 
-- (void)setTappedProactiveTrayItem:(BOOL)a3
+- (void)setTappedProactiveTrayItem:(BOOL)item
 {
-  if (a3)
+  if (item)
   {
     [(RestaurantReservationAnalyticsBookedSession *)self _restartSession];
   }
 
-  self->_tappedProactiveTrayItem = a3;
+  self->_tappedProactiveTrayItem = item;
 }
 
-- (void)setViewedInProactiveTray:(BOOL)a3
+- (void)setViewedInProactiveTray:(BOOL)tray
 {
-  if (a3)
+  if (tray)
   {
     [(RestaurantReservationAnalyticsBookedSession *)self _restartSession];
   }
 
-  self->_viewedInProactiveTray = a3;
+  self->_viewedInProactiveTray = tray;
 }
 
-- (void)setViewedInPlacecard:(BOOL)a3
+- (void)setViewedInPlacecard:(BOOL)placecard
 {
-  if (a3)
+  if (placecard)
   {
     [(RestaurantReservationAnalyticsBookedSession *)self _restartSession];
   }
 
-  self->_viewedInPlacecard = a3;
+  self->_viewedInPlacecard = placecard;
 }
 
-- (void)setBookedUsingMaps:(BOOL)a3
+- (void)setBookedUsingMaps:(BOOL)maps
 {
-  if (a3)
+  if (maps)
   {
     [(RestaurantReservationAnalyticsBookedSession *)self _restartSession];
   }
 
-  self->_bookedUsingMaps = a3;
+  self->_bookedUsingMaps = maps;
 }
 
-- (void)setMuid:(unint64_t)a3
+- (void)setMuid:(unint64_t)muid
 {
-  if (a3)
+  if (muid)
   {
     [(RestaurantReservationAnalyticsBookedSession *)self _restartSession];
   }
 
-  self->_muid = a3;
+  self->_muid = muid;
 }
 
-- (void)setAppID:(id)a3
+- (void)setAppID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     [(RestaurantReservationAnalyticsBookedSession *)self _restartSession];
   }
 
   appID = self->_appID;
-  self->_appID = v4;
+  self->_appID = dCopy;
 }
 
 - (void)_captureSession
 {
-  v12 = [(RestaurantReservationAnalyticsBookedSession *)self sessionID];
-  v3 = [(RestaurantReservationAnalyticsBookedSession *)self bookedUsingMaps];
-  v4 = [(RestaurantReservationAnalyticsBookedSession *)self viewedInProactiveTray];
-  v5 = [(RestaurantReservationAnalyticsBookedSession *)self tappedProactiveTrayItem];
-  v6 = [(RestaurantReservationAnalyticsBookedSession *)self viewedInPlacecard];
-  v7 = [(RestaurantReservationAnalyticsBookedSession *)self viewedDetailsFromPlacecard];
-  v8 = [(RestaurantReservationAnalyticsBookedSession *)self appID];
-  v9 = [(RestaurantReservationAnalyticsBookedSession *)self muid];
+  sessionID = [(RestaurantReservationAnalyticsBookedSession *)self sessionID];
+  bookedUsingMaps = [(RestaurantReservationAnalyticsBookedSession *)self bookedUsingMaps];
+  viewedInProactiveTray = [(RestaurantReservationAnalyticsBookedSession *)self viewedInProactiveTray];
+  tappedProactiveTrayItem = [(RestaurantReservationAnalyticsBookedSession *)self tappedProactiveTrayItem];
+  viewedInPlacecard = [(RestaurantReservationAnalyticsBookedSession *)self viewedInPlacecard];
+  viewedDetailsFromPlacecard = [(RestaurantReservationAnalyticsBookedSession *)self viewedDetailsFromPlacecard];
+  appID = [(RestaurantReservationAnalyticsBookedSession *)self appID];
+  muid = [(RestaurantReservationAnalyticsBookedSession *)self muid];
   BYTE3(v11) = 0;
   BYTE2(v11) = [(RestaurantReservationAnalyticsBookedSession *)self tappedChangeReservation];
   LOWORD(v11) = 0;
-  LOWORD(v10) = v7;
-  [GEOAPPortal captureTableBookedEventWithSessionId:"captureTableBookedEventWithSessionId:bookedUsingMaps:cancelled:viewedInProactiveTray:tappedProactiveTrayItem:viewedInPlacecard:viewedDetailsInPlacecard:isAsync:bookedAppId:muid:called:routed:tappedChangeReservation:tappedCancelReservation:" bookedUsingMaps:v12 cancelled:v3 viewedInProactiveTray:0 tappedProactiveTrayItem:v4 viewedInPlacecard:v5 viewedDetailsInPlacecard:v6 isAsync:v10 bookedAppId:v8 muid:v9 called:v11 routed:? tappedChangeReservation:? tappedCancelReservation:?];
+  LOWORD(v10) = viewedDetailsFromPlacecard;
+  [GEOAPPortal captureTableBookedEventWithSessionId:"captureTableBookedEventWithSessionId:bookedUsingMaps:cancelled:viewedInProactiveTray:tappedProactiveTrayItem:viewedInPlacecard:viewedDetailsInPlacecard:isAsync:bookedAppId:muid:called:routed:tappedChangeReservation:tappedCancelReservation:" bookedUsingMaps:sessionID cancelled:bookedUsingMaps viewedInProactiveTray:0 tappedProactiveTrayItem:viewedInProactiveTray viewedInPlacecard:tappedProactiveTrayItem viewedDetailsInPlacecard:viewedInPlacecard isAsync:v10 bookedAppId:appID muid:muid called:v11 routed:? tappedChangeReservation:? tappedCancelReservation:?];
 }
 
 - (id)description
@@ -136,11 +136,11 @@
   v4 = [(RestaurantReservationAnalyticsBookedSession *)&v10 description];
   v5 = [v3 initWithFormat:@"%@\n", v4];
 
-  v6 = [(RestaurantReservationAnalyticsBookedSession *)self sessionID];
-  [v5 appendFormat:@" sessionID: %@\n", v6];
+  sessionID = [(RestaurantReservationAnalyticsBookedSession *)self sessionID];
+  [v5 appendFormat:@" sessionID: %@\n", sessionID];
 
-  v7 = [(RestaurantReservationAnalyticsBookedSession *)self appID];
-  [v5 appendFormat:@" appID: %@\n", v7];
+  appID = [(RestaurantReservationAnalyticsBookedSession *)self appID];
+  [v5 appendFormat:@" appID: %@\n", appID];
 
   [v5 appendFormat:@" muid: %llu\n", -[RestaurantReservationAnalyticsBookedSession muid](self, "muid")];
   [v5 appendFormat:@" tappedChangeReservation: %d\n", -[RestaurantReservationAnalyticsBookedSession tappedChangeReservation](self, "tappedChangeReservation")];
@@ -164,9 +164,9 @@
   if (v2)
   {
     v3 = +[NSUUID UUID];
-    v4 = [v3 UUIDString];
+    uUIDString = [v3 UUIDString];
     sessionID = v2->_sessionID;
-    v2->_sessionID = v4;
+    v2->_sessionID = uUIDString;
 
     v6 = +[NSNotificationCenter defaultCenter];
     [v6 addObserver:v2 selector:"_mapsBackgrounded" name:UIApplicationDidEnterBackgroundNotification object:0];
@@ -178,9 +178,9 @@
   return v2;
 }
 
-+ (void)removeAnalyticsBookedSessionsFromProactiveTrayIfNotInListOfMuids:(id)a3
++ (void)removeAnalyticsBookedSessionsFromProactiveTrayIfNotInListOfMuids:(id)muids
 {
-  v24 = a3;
+  muidsCopy = muids;
   v23 = +[NSMutableArray array];
   v34 = 0u;
   v35 = 0u;
@@ -211,7 +211,7 @@
           v33 = 0u;
           v30 = 0u;
           v31 = 0u;
-          v8 = v24;
+          v8 = muidsCopy;
           v9 = [v8 countByEnumeratingWithState:&v30 objects:v39 count:16];
           if (!v9)
           {
@@ -293,26 +293,26 @@ LABEL_18:
   }
 }
 
-+ (void)removeAnalyticsBookedSession:(id)a3
++ (void)removeAnalyticsBookedSession:(id)session
 {
   v3 = qword_10195F4E0;
-  v4 = a3;
+  sessionCopy = session;
   if (v3 != -1)
   {
     dispatch_once(&qword_10195F4E0, &stru_101657700);
   }
 
   [qword_10195F4D0 lock];
-  [qword_10195F4D8 removeObject:v4];
+  [qword_10195F4D8 removeObject:sessionCopy];
 
   v5 = qword_10195F4D0;
 
   [v5 unlock];
 }
 
-+ (id)currentAnalyticsBookedSessionForMuid:(unint64_t)a3 createIfNotPresent:(BOOL)a4
++ (id)currentAnalyticsBookedSessionForMuid:(unint64_t)muid createIfNotPresent:(BOOL)present
 {
-  v4 = a4;
+  presentCopy = present;
   if (qword_10195F4C8 != -1)
   {
     dispatch_once(&qword_10195F4C8, &stru_1016576E0);
@@ -340,7 +340,7 @@ LABEL_18:
           }
 
           v10 = *(*(&v15 + 1) + 8 * i);
-          if ([v10 muid] == a3)
+          if ([v10 muid] == muid)
           {
             v7 = v10;
             goto LABEL_14;
@@ -376,13 +376,13 @@ LABEL_14:
 
   else
   {
-    v13 = !v4;
+    v13 = !presentCopy;
   }
 
   if (!v13)
   {
     v7 = objc_alloc_init(RestaurantReservationAnalyticsBookedSession);
-    [(RestaurantReservationAnalyticsBookedSession *)v7 setMuid:a3];
+    [(RestaurantReservationAnalyticsBookedSession *)v7 setMuid:muid];
     [qword_10195F4D8 addObject:v7];
   }
 

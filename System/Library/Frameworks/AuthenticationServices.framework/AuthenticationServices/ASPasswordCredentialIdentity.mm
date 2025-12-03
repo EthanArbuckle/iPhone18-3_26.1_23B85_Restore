@@ -1,10 +1,10 @@
 @interface ASPasswordCredentialIdentity
 + (ASPasswordCredentialIdentity)identityWithServiceIdentifier:(ASCredentialServiceIdentifier *)serviceIdentifier user:(NSString *)user recordIdentifier:(NSString *)recordIdentifier;
-- (ASPasswordCredentialIdentity)initWithCoder:(id)a3;
-- (ASPasswordCredentialIdentity)initWithFoundationCredentialIdentity:(id)a3;
+- (ASPasswordCredentialIdentity)initWithCoder:(id)coder;
+- (ASPasswordCredentialIdentity)initWithFoundationCredentialIdentity:(id)identity;
 - (ASPasswordCredentialIdentity)initWithServiceIdentifier:(ASCredentialServiceIdentifier *)serviceIdentifier user:(NSString *)user recordIdentifier:(NSString *)recordIdentifier;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASPasswordCredentialIdentity
@@ -14,7 +14,7 @@
   v8 = recordIdentifier;
   v9 = user;
   v10 = serviceIdentifier;
-  v11 = [[a1 alloc] initWithServiceIdentifier:v10 user:v9 recordIdentifier:v8];
+  v11 = [[self alloc] initWithServiceIdentifier:v10 user:v9 recordIdentifier:v8];
 
   return v11;
 }
@@ -45,35 +45,35 @@
   return v13;
 }
 
-- (ASPasswordCredentialIdentity)initWithFoundationCredentialIdentity:(id)a3
+- (ASPasswordCredentialIdentity)initWithFoundationCredentialIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = [v4 serviceIdentifierType] == 1;
+  identityCopy = identity;
+  v5 = [identityCopy serviceIdentifierType] == 1;
   v6 = [ASCredentialServiceIdentifier alloc];
-  v7 = [v4 serviceIdentifier];
-  v8 = [(ASCredentialServiceIdentifier *)v6 initWithIdentifier:v7 type:v5];
+  serviceIdentifier = [identityCopy serviceIdentifier];
+  v8 = [(ASCredentialServiceIdentifier *)v6 initWithIdentifier:serviceIdentifier type:v5];
 
-  v9 = [v4 user];
-  v10 = [v4 externalRecordIdentifier];
-  v11 = [(ASPasswordCredentialIdentity *)self initWithServiceIdentifier:v8 user:v9 recordIdentifier:v10];
+  user = [identityCopy user];
+  externalRecordIdentifier = [identityCopy externalRecordIdentifier];
+  v11 = [(ASPasswordCredentialIdentity *)self initWithServiceIdentifier:v8 user:user recordIdentifier:externalRecordIdentifier];
 
   if (v11)
   {
-    v12 = [v4 owningExtensionState];
-    v13 = [v12 credentialIdentityStoreIdentifier];
+    owningExtensionState = [identityCopy owningExtensionState];
+    credentialIdentityStoreIdentifier = [owningExtensionState credentialIdentityStoreIdentifier];
     credentialIdentityStoreIdentifier = v11->_credentialIdentityStoreIdentifier;
-    v11->_credentialIdentityStoreIdentifier = v13;
+    v11->_credentialIdentityStoreIdentifier = credentialIdentityStoreIdentifier;
 
-    v11->_rank = [v4 rank];
+    v11->_rank = [identityCopy rank];
     v15 = v11;
   }
 
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithServiceIdentifier:user:recordIdentifier:", self->_serviceIdentifier, self->_user, self->_recordIdentifier}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithServiceIdentifier:user:recordIdentifier:", self->_serviceIdentifier, self->_user, self->_recordIdentifier}];
   [v4 setRank:self->_rank];
   if (v4)
   {
@@ -83,14 +83,14 @@
   return v4;
 }
 
-- (ASPasswordCredentialIdentity)initWithCoder:(id)a3
+- (ASPasswordCredentialIdentity)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serviceIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"user"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recordIdentifier"];
-  v8 = [v4 decodeIntegerForKey:@"rank"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"credentialIdentityStoreIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serviceIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"user"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recordIdentifier"];
+  v8 = [coderCopy decodeIntegerForKey:@"rank"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"credentialIdentityStoreIdentifier"];
 
   v10 = [(ASPasswordCredentialIdentity *)self initWithServiceIdentifier:v5 user:v6 recordIdentifier:v7];
   v11 = v10;
@@ -104,15 +104,15 @@
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   serviceIdentifier = self->_serviceIdentifier;
-  v5 = a3;
-  [v5 encodeObject:serviceIdentifier forKey:@"serviceIdentifier"];
-  [v5 encodeObject:self->_user forKey:@"user"];
-  [v5 encodeObject:self->_recordIdentifier forKey:@"recordIdentifier"];
-  [v5 encodeInteger:self->_rank forKey:@"rank"];
-  [v5 encodeObject:self->_credentialIdentityStoreIdentifier forKey:@"credentialIdentityStoreIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:serviceIdentifier forKey:@"serviceIdentifier"];
+  [coderCopy encodeObject:self->_user forKey:@"user"];
+  [coderCopy encodeObject:self->_recordIdentifier forKey:@"recordIdentifier"];
+  [coderCopy encodeInteger:self->_rank forKey:@"rank"];
+  [coderCopy encodeObject:self->_credentialIdentityStoreIdentifier forKey:@"credentialIdentityStoreIdentifier"];
 }
 
 @end

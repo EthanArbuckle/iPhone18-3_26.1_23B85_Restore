@@ -1,34 +1,34 @@
 @interface CKConstantValueExpressionValidator
-- (BOOL)validate:(id)a3 error:(id *)a4;
-- (CKConstantValueExpressionValidator)initWithValidator:(id)a3;
+- (BOOL)validate:(id)validate error:(id *)error;
+- (CKConstantValueExpressionValidator)initWithValidator:(id)validator;
 - (id)CKPropertiesDescription;
 @end
 
 @implementation CKConstantValueExpressionValidator
 
-- (CKConstantValueExpressionValidator)initWithValidator:(id)a3
+- (CKConstantValueExpressionValidator)initWithValidator:(id)validator
 {
   v7.receiver = self;
   v7.super_class = CKConstantValueExpressionValidator;
-  v3 = a3;
+  validatorCopy = validator;
   v4 = [(CKConstantValueExpressionValidator *)&v7 init];
-  objc_msgSend_setValidator_(v4, v5, v3, v7.receiver, v7.super_class);
+  objc_msgSend_setValidator_(v4, v5, validatorCopy, v7.receiver, v7.super_class);
 
   return v4;
 }
 
-- (BOOL)validate:(id)a3 error:(id *)a4
+- (BOOL)validate:(id)validate error:(id *)error
 {
   v38[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  validateCopy = validate;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
       v11 = MEMORY[0x1E696ABC0];
       v37[0] = *MEMORY[0x1E696A578];
-      v12 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v7, @"<%@> is not an expression", v6);
+      v12 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v7, @"<%@> is not an expression", validateCopy);
       v37[1] = @"ck_isComparisonError";
       v38[0] = v12;
       v38[1] = MEMORY[0x1E695E118];
@@ -39,13 +39,13 @@
     goto LABEL_15;
   }
 
-  if (objc_msgSend_expressionType(v6, v7, v8))
+  if (objc_msgSend_expressionType(validateCopy, v7, v8))
   {
-    if (a4)
+    if (error)
     {
       v11 = MEMORY[0x1E696ABC0];
       v35[0] = *MEMORY[0x1E696A578];
-      v12 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v9, @"<%@> is not a constantValue expression", v6);
+      v12 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v9, @"<%@> is not a constantValue expression", validateCopy);
       v35[1] = @"ck_isComparisonError";
       v36[0] = v12;
       v36[1] = MEMORY[0x1E695E118];
@@ -59,15 +59,15 @@
     goto LABEL_15;
   }
 
-  v20 = objc_msgSend_constantValue(v6, v9, v10);
+  v20 = objc_msgSend_constantValue(validateCopy, v9, v10);
 
   if (!v20)
   {
-    if (a4)
+    if (error)
     {
       v11 = MEMORY[0x1E696ABC0];
       v33[0] = *MEMORY[0x1E696A578];
-      v12 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v21, @"%@ is not a valid constant value", v6);
+      v12 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v21, @"%@ is not a valid constant value", validateCopy);
       v33[1] = @"ck_isComparisonError";
       v34[0] = v12;
       v34[1] = MEMORY[0x1E695E118];
@@ -83,8 +83,8 @@ LABEL_16:
   }
 
   v23 = objc_msgSend_validator(self, v21, v22);
-  v27 = objc_msgSend_constantValue(v6, v24, v25);
-  if (!a4)
+  v27 = objc_msgSend_constantValue(validateCopy, v24, v25);
+  if (!error)
   {
     v19 = objc_msgSend_validate_error_(v23, v26, v27, 0);
 
@@ -104,7 +104,7 @@ LABEL_16:
 LABEL_8:
   v18 = v17;
   v19 = 0;
-  *a4 = v17;
+  *error = v17;
 LABEL_17:
 
   v30 = *MEMORY[0x1E69E9840];

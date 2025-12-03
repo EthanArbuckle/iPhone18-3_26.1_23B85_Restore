@@ -1,31 +1,31 @@
 @interface FMOOSClientCrowdsourcedPrediction
-- (id)initLastOosRate:(id)a3 minOosRate:(id)a4 maxOosRate:(id)a5 maxCount:(unsigned int)a6 isSent:(BOOL)a7 latitude:(double)a8 longitude:(double)a9 oosRecoveryParametersForPopularPLMN:(id)a10 oosRecoveryParametersForHomePLMN:(id)a11;
+- (id)initLastOosRate:(id)rate minOosRate:(id)oosRate maxOosRate:(id)maxOosRate maxCount:(unsigned int)count isSent:(BOOL)sent latitude:(double)latitude longitude:(double)longitude oosRecoveryParametersForPopularPLMN:(id)self0 oosRecoveryParametersForHomePLMN:(id)self1;
 @end
 
 @implementation FMOOSClientCrowdsourcedPrediction
 
-- (id)initLastOosRate:(id)a3 minOosRate:(id)a4 maxOosRate:(id)a5 maxCount:(unsigned int)a6 isSent:(BOOL)a7 latitude:(double)a8 longitude:(double)a9 oosRecoveryParametersForPopularPLMN:(id)a10 oosRecoveryParametersForHomePLMN:(id)a11
+- (id)initLastOosRate:(id)rate minOosRate:(id)oosRate maxOosRate:(id)maxOosRate maxCount:(unsigned int)count isSent:(BOOL)sent latitude:(double)latitude longitude:(double)longitude oosRecoveryParametersForPopularPLMN:(id)self0 oosRecoveryParametersForHomePLMN:(id)self1
 {
-  v28 = a3;
-  v27 = a4;
-  v19 = a5;
-  v20 = a10;
-  v21 = a11;
+  rateCopy = rate;
+  oosRateCopy = oosRate;
+  maxOosRateCopy = maxOosRate;
+  nCopy = n;
+  mNCopy = mN;
   v29.receiver = self;
   v29.super_class = FMOOSClientCrowdsourcedPrediction;
   v22 = [(FMOOSClientCrowdsourcedPrediction *)&v29 init];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_lastOosRate, a3);
-    objc_storeStrong(&v23->_minOosRate, a4);
-    objc_storeStrong(&v23->_maxOosRate, a5);
-    v23->_maxCount = a6;
-    v23->_isSent = a7;
-    v23->_latitude = a8;
-    v23->_longitude = a9;
-    objc_storeStrong(&v23->_oosRecoveryParametersForPopularPLMN, a10);
-    objc_storeStrong(&v23->_oosRecoveryParametersForHomePLMN, a11);
+    objc_storeStrong(&v22->_lastOosRate, rate);
+    objc_storeStrong(&v23->_minOosRate, oosRate);
+    objc_storeStrong(&v23->_maxOosRate, maxOosRate);
+    v23->_maxCount = count;
+    v23->_isSent = sent;
+    v23->_latitude = latitude;
+    v23->_longitude = longitude;
+    objc_storeStrong(&v23->_oosRecoveryParametersForPopularPLMN, n);
+    objc_storeStrong(&v23->_oosRecoveryParametersForHomePLMN, mN);
     v24 = v23;
   }
 

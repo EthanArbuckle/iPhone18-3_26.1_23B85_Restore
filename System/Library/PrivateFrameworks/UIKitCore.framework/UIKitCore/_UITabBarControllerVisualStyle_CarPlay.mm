@@ -1,9 +1,9 @@
 @interface _UITabBarControllerVisualStyle_CarPlay
-- (BOOL)shouldSuppressPresses:(id)a3 withEvent:(id)a4;
+- (BOOL)shouldSuppressPresses:(id)presses withEvent:(id)event;
 - (BOOL)supportsFocusGestures;
-- (CGRect)adjustedTabBarFrame:(CGRect)a3;
-- (void)_performLeftGesture:(id)a3;
-- (void)_performRightGesture:(id)a3;
+- (CGRect)adjustedTabBarFrame:(CGRect)frame;
+- (void)_performLeftGesture:(id)gesture;
+- (void)_performRightGesture:(id)gesture;
 - (void)updateGestureRecognizers;
 @end
 
@@ -14,15 +14,15 @@
   v15.receiver = self;
   v15.super_class = _UITabBarControllerVisualStyle_CarPlay;
   [(_UITabBarControllerVisualStyle *)&v15 updateGestureRecognizers];
-  v3 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  v4 = [v3 _containerView];
+  tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  _containerView = [tabBarController _containerView];
 
-  v5 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  v6 = [v5 traitCollection];
+  tabBarController2 = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  traitCollection = [tabBarController2 traitCollection];
 
-  v7 = [(_UITabBarControllerVisualStyle_CarPlay *)self supportsFocusGestures];
+  supportsFocusGestures = [(_UITabBarControllerVisualStyle_CarPlay *)self supportsFocusGestures];
   nudgeLeftGestureRecognizer = self->_nudgeLeftGestureRecognizer;
-  if (v7)
+  if (supportsFocusGestures)
   {
     if (!nudgeLeftGestureRecognizer)
     {
@@ -32,24 +32,24 @@
 
       [(UIGestureRecognizer *)self->_nudgeLeftGestureRecognizer setDelegate:self];
       [(UITapGestureRecognizer *)self->_nudgeLeftGestureRecognizer setAllowedPressTypes:&unk_1EFE2DBE8];
-      [v4 addGestureRecognizer:self->_nudgeLeftGestureRecognizer];
+      [_containerView addGestureRecognizer:self->_nudgeLeftGestureRecognizer];
       v11 = [[UITapGestureRecognizer alloc] initWithTarget:self action:sel__performRightGesture_];
       nudgeRightGestureRecognizer = self->_nudgeRightGestureRecognizer;
       self->_nudgeRightGestureRecognizer = v11;
 
       [(UIGestureRecognizer *)self->_nudgeRightGestureRecognizer setDelegate:self];
       [(UITapGestureRecognizer *)self->_nudgeRightGestureRecognizer setAllowedPressTypes:&unk_1EFE2DC00];
-      [v4 addGestureRecognizer:self->_nudgeRightGestureRecognizer];
+      [_containerView addGestureRecognizer:self->_nudgeRightGestureRecognizer];
     }
   }
 
   else if (nudgeLeftGestureRecognizer)
   {
-    [v4 removeGestureRecognizer:?];
+    [_containerView removeGestureRecognizer:?];
     v13 = self->_nudgeLeftGestureRecognizer;
     self->_nudgeLeftGestureRecognizer = 0;
 
-    [v4 removeGestureRecognizer:self->_nudgeRightGestureRecognizer];
+    [_containerView removeGestureRecognizer:self->_nudgeRightGestureRecognizer];
     v14 = self->_nudgeRightGestureRecognizer;
     self->_nudgeRightGestureRecognizer = 0;
   }
@@ -57,18 +57,18 @@
 
 - (BOOL)supportsFocusGestures
 {
-  v2 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  v3 = [v2 traitCollection];
+  tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  traitCollection = [tabBarController traitCollection];
 
-  v4 = ([v3 interactionModel] & 2) != 0 || objc_msgSend(v3, "primaryInteractionModel") == 8;
+  v4 = ([traitCollection interactionModel] & 2) != 0 || objc_msgSend(traitCollection, "primaryInteractionModel") == 8;
   return v4;
 }
 
-- (BOOL)shouldSuppressPresses:(id)a3 withEvent:(id)a4
+- (BOOL)shouldSuppressPresses:(id)presses withEvent:(id)event
 {
   if (self->_nudgeLeftGestureRecognizer)
   {
-    return _UIPressesContainsPressTypes(a3, &unk_1EFE2DC18);
+    return _UIPressesContainsPressTypes(presses, &unk_1EFE2DC18);
   }
 
   else
@@ -77,25 +77,25 @@
   }
 }
 
-- (void)_performLeftGesture:(id)a3
+- (void)_performLeftGesture:(id)gesture
 {
-  v3 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  [v3 _performFocusGesture:4];
+  tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  [tabBarController _performFocusGesture:4];
 }
 
-- (void)_performRightGesture:(id)a3
+- (void)_performRightGesture:(id)gesture
 {
-  v3 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  [v3 _performFocusGesture:8];
+  tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  [tabBarController _performFocusGesture:8];
 }
 
-- (CGRect)adjustedTabBarFrame:(CGRect)a3
+- (CGRect)adjustedTabBarFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  v5 = [(_UITabBarControllerVisualStyle *)self tabBarController:a3.origin.x];
-  v6 = [v5 view];
-  [v6 safeAreaInsets];
+  height = frame.size.height;
+  width = frame.size.width;
+  v5 = [(_UITabBarControllerVisualStyle *)self tabBarController:frame.origin.x];
+  view = [v5 view];
+  [view safeAreaInsets];
   v8 = v7;
   v10 = v9;
   v12 = v11;

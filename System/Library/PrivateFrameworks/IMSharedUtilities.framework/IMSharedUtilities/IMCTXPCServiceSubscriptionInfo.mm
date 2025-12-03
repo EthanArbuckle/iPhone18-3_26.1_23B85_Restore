@@ -1,43 +1,43 @@
 @interface IMCTXPCServiceSubscriptionInfo
-- (BOOL)__im_containsPhoneNumber:(id)a3;
+- (BOOL)__im_containsPhoneNumber:(id)number;
 - (BOOL)__im_hasMultipleSubscriptions;
 - (BOOL)__im_onlyHasActiveSlots;
-- (IMCTXPCServiceSubscriptionInfo)initWithSubscriptionInfo:(id)a3;
+- (IMCTXPCServiceSubscriptionInfo)initWithSubscriptionInfo:(id)info;
 - (NSArray)phoneNumbersOfActiveSubscriptions;
-- (id)__imSIMIDForSubscriptionSlot:(int64_t)a3;
-- (id)__im_contactPreferredSubscriptionContextForChatHandleIDs:(id)a3;
-- (id)__im_labelForPhoneNumber:(id)a3 simID:(id)a4;
-- (id)__im_phoneNumberForSlotID:(int64_t)a3;
-- (id)__im_phoneNumberForSlotIDOrDefault:(int64_t)a3;
+- (id)__imSIMIDForSubscriptionSlot:(int64_t)slot;
+- (id)__im_contactPreferredSubscriptionContextForChatHandleIDs:(id)ds;
+- (id)__im_labelForPhoneNumber:(id)number simID:(id)d;
+- (id)__im_phoneNumberForSlotID:(int64_t)d;
+- (id)__im_phoneNumberForSlotIDOrDefault:(int64_t)default;
 - (id)__im_preferredDataSubscriptionContext;
 - (id)__im_preferredSubscriptionContext;
-- (id)__im_subscriptionContextForForSimID:(id)a3;
-- (id)__im_subscriptionContextForForSimID:(id)a3 phoneNumber:(id)a4;
-- (id)__im_subscriptionContextForForSlotID:(int64_t)a3;
-- (id)__im_subscriptionContextForPhoneNumber:(id)a3;
-- (id)__im_subscriptionContextForPhoneNumberOrDefault:(id)a3;
-- (id)__im_subscriptionContextForSenderIdentity:(id)a3;
-- (id)__im_subscriptionContextOrDefaultForForSimID:(id)a3 phoneNumber:(id)a4;
-- (id)__im_subscriptionContextOrDefaultForForSlotID:(int64_t)a3;
+- (id)__im_subscriptionContextForForSimID:(id)d;
+- (id)__im_subscriptionContextForForSimID:(id)d phoneNumber:(id)number;
+- (id)__im_subscriptionContextForForSlotID:(int64_t)d;
+- (id)__im_subscriptionContextForPhoneNumber:(id)number;
+- (id)__im_subscriptionContextForPhoneNumberOrDefault:(id)default;
+- (id)__im_subscriptionContextForSenderIdentity:(id)identity;
+- (id)__im_subscriptionContextOrDefaultForForSimID:(id)d phoneNumber:(id)number;
+- (id)__im_subscriptionContextOrDefaultForForSlotID:(int64_t)d;
 - (id)__im_subscriptionsWithMMSSupport;
 - (id)__im_subscriptionsWithRCSSupport;
-- (id)__im_switchSubscriptionContextFromPhoneNumber:(id)a3 simID:(id)a4;
-- (id)__im_switchSubscriptionContextFromSubscriptionContext:(id)a3;
+- (id)__im_switchSubscriptionContextFromPhoneNumber:(id)number simID:(id)d;
+- (id)__im_switchSubscriptionContextFromSubscriptionContext:(id)context;
 - (id)allSubscriptions;
 - (id)description;
 - (id)preferredOrDefaultSubscriptionContext;
 - (id)subscriptions;
-- (int64_t)__imSlotIDSForPhoneNumber:(id)a3;
+- (int64_t)__imSlotIDSForPhoneNumber:(id)number;
 @end
 
 @implementation IMCTXPCServiceSubscriptionInfo
 
 - (id)subscriptions
 {
-  v3 = [(IMCTXPCServiceSubscriptionInfo *)self subscriptionInfo];
-  v4 = [v3 subscriptionsInUse];
-  v5 = [(IMCTXPCServiceSubscriptionInfo *)self subscriptionFilterPredicate];
-  v6 = [v4 filteredArrayUsingPredicate:v5];
+  subscriptionInfo = [(IMCTXPCServiceSubscriptionInfo *)self subscriptionInfo];
+  subscriptionsInUse = [subscriptionInfo subscriptionsInUse];
+  subscriptionFilterPredicate = [(IMCTXPCServiceSubscriptionInfo *)self subscriptionFilterPredicate];
+  v6 = [subscriptionsInUse filteredArrayUsingPredicate:subscriptionFilterPredicate];
   v7 = v6;
   if (v6)
   {
@@ -56,10 +56,10 @@
 
 - (id)allSubscriptions
 {
-  v3 = [(IMCTXPCServiceSubscriptionInfo *)self subscriptionInfo];
-  v4 = [v3 subscriptions];
-  v5 = [(IMCTXPCServiceSubscriptionInfo *)self subscriptionFilterPredicate];
-  v6 = [v4 filteredArrayUsingPredicate:v5];
+  subscriptionInfo = [(IMCTXPCServiceSubscriptionInfo *)self subscriptionInfo];
+  subscriptions = [subscriptionInfo subscriptions];
+  subscriptionFilterPredicate = [(IMCTXPCServiceSubscriptionInfo *)self subscriptionFilterPredicate];
+  v6 = [subscriptions filteredArrayUsingPredicate:subscriptionFilterPredicate];
   v7 = v6;
   if (v6)
   {
@@ -78,16 +78,16 @@
 
 - (BOOL)__im_hasMultipleSubscriptions
 {
-  v2 = [(IMCTXPCServiceSubscriptionInfo *)self allSubscriptions];
-  v3 = [v2 count] == 2;
+  allSubscriptions = [(IMCTXPCServiceSubscriptionInfo *)self allSubscriptions];
+  v3 = [allSubscriptions count] == 2;
 
   return v3;
 }
 
 - (BOOL)__im_onlyHasActiveSlots
 {
-  v2 = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
-  v3 = [v2 count] == 2;
+  subscriptions = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
+  v3 = [subscriptions count] == 2;
 
   return v3;
 }
@@ -100,8 +100,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  subscriptions = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
+  v4 = [subscriptions countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -112,14 +112,14 @@
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subscriptions);
         }
 
         v8 = *(*(&v15 + 1) + 8 * i);
         v9 = +[IMCTRCSUtilitiesManager sharedManager];
-        v10 = [v8 phoneNumber];
-        v11 = [v8 labelID];
-        v12 = [v9 supportedForPhoneNumber:v10 simID:v11];
+        phoneNumber = [v8 phoneNumber];
+        labelID = [v8 labelID];
+        v12 = [v9 supportedForPhoneNumber:phoneNumber simID:labelID];
 
         if (v12)
         {
@@ -127,7 +127,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [subscriptions countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v5);
@@ -139,15 +139,15 @@
 - (id)preferredOrDefaultSubscriptionContext
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(IMCTXPCServiceSubscriptionInfo *)self __im_preferredSubscriptionContext];
-  if (!v3)
+  __im_preferredSubscriptionContext = [(IMCTXPCServiceSubscriptionInfo *)self __im_preferredSubscriptionContext];
+  if (!__im_preferredSubscriptionContext)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v4 = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
-    v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    subscriptions = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
+    v5 = [subscriptions countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v5)
     {
       v6 = v5;
@@ -158,21 +158,21 @@
         {
           if (*v15 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(subscriptions);
           }
 
           v9 = *(*(&v14 + 1) + 8 * i);
-          v10 = [v9 phoneNumber];
-          if ([v10 length])
+          phoneNumber = [v9 phoneNumber];
+          if ([phoneNumber length])
           {
 
 LABEL_14:
-            v3 = v9;
+            __im_preferredSubscriptionContext = v9;
             goto LABEL_15;
           }
 
-          v11 = [v9 labelID];
-          v12 = [v11 length];
+          labelID = [v9 labelID];
+          v12 = [labelID length];
 
           if (v12)
           {
@@ -180,8 +180,8 @@ LABEL_14:
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
-        v3 = 0;
+        v6 = [subscriptions countByEnumeratingWithState:&v14 objects:v18 count:16];
+        __im_preferredSubscriptionContext = 0;
         if (v6)
         {
           continue;
@@ -193,13 +193,13 @@ LABEL_14:
 
     else
     {
-      v3 = 0;
+      __im_preferredSubscriptionContext = 0;
     }
 
 LABEL_15:
   }
 
-  return v3;
+  return __im_preferredSubscriptionContext;
 }
 
 - (id)__im_preferredSubscriptionContext
@@ -209,8 +209,8 @@ LABEL_15:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  subscriptions = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
+  v4 = [subscriptions countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = *v14;
@@ -220,21 +220,21 @@ LABEL_15:
       {
         if (*v14 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subscriptions);
         }
 
         v7 = *(*(&v13 + 1) + 8 * i);
-        v8 = [v7 phoneNumber];
-        v9 = [v8 length];
+        phoneNumber = [v7 phoneNumber];
+        v9 = [phoneNumber length];
         if (v9 || ([v7 labelID], v2 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v2, "length")))
         {
-          v10 = [v7 userDefaultVoice];
-          v11 = [v10 BOOLValue];
+          userDefaultVoice = [v7 userDefaultVoice];
+          bOOLValue = [userDefaultVoice BOOLValue];
 
           if (v9)
           {
 
-            if (v11)
+            if (bOOLValue)
             {
               goto LABEL_17;
             }
@@ -243,7 +243,7 @@ LABEL_15:
           else
           {
 
-            if (v11)
+            if (bOOLValue)
             {
 LABEL_17:
               v4 = v7;
@@ -257,7 +257,7 @@ LABEL_17:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v4 = [subscriptions countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v4)
       {
         continue;
@@ -275,25 +275,25 @@ LABEL_18:
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
-  v5 = [v4 __im_logCTXPCServiceSubscriptionContext];
-  v6 = [(IMCTXPCServiceSubscriptionInfo *)self allSubscriptions];
-  v7 = [v6 __im_logCTXPCServiceSubscriptionContext];
-  v8 = [v3 stringWithFormat:@"IMCTXPCServiceSubscriptionInfo: activeSubscriptions %@ allSubscriptions: %@", v5, v7];
+  subscriptions = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
+  __im_logCTXPCServiceSubscriptionContext = [subscriptions __im_logCTXPCServiceSubscriptionContext];
+  allSubscriptions = [(IMCTXPCServiceSubscriptionInfo *)self allSubscriptions];
+  __im_logCTXPCServiceSubscriptionContext2 = [allSubscriptions __im_logCTXPCServiceSubscriptionContext];
+  v8 = [v3 stringWithFormat:@"IMCTXPCServiceSubscriptionInfo: activeSubscriptions %@ allSubscriptions: %@", __im_logCTXPCServiceSubscriptionContext, __im_logCTXPCServiceSubscriptionContext2];
 
   return v8;
 }
 
-- (IMCTXPCServiceSubscriptionInfo)initWithSubscriptionInfo:(id)a3
+- (IMCTXPCServiceSubscriptionInfo)initWithSubscriptionInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v9.receiver = self;
   v9.super_class = IMCTXPCServiceSubscriptionInfo;
   v6 = [(IMCTXPCServiceSubscriptionInfo *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_subscriptionInfo, a3);
+    objc_storeStrong(&v6->_subscriptionInfo, info);
   }
 
   return v7;
@@ -307,8 +307,8 @@ LABEL_18:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  subscriptions = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
+  v5 = [subscriptions countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -319,13 +319,13 @@ LABEL_18:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subscriptions);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 phoneNumber];
-        v11 = [v9 labelID];
-        v12 = [IMCTSMSUtilities IMMMSSupportedAndConfiguredForPhoneNumber:v10 simID:v11];
+        phoneNumber = [v9 phoneNumber];
+        labelID = [v9 labelID];
+        v12 = [IMCTSMSUtilities IMMMSSupportedAndConfiguredForPhoneNumber:phoneNumber simID:labelID];
 
         if (v12)
         {
@@ -333,7 +333,7 @@ LABEL_18:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [subscriptions countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -342,18 +342,18 @@ LABEL_18:
   return v3;
 }
 
-- (BOOL)__im_containsPhoneNumber:(id)a3
+- (BOOL)__im_containsPhoneNumber:(id)number
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 length])
+  numberCopy = number;
+  if ([numberCopy length])
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
-    v6 = [v5 countByEnumeratingWithState:&v15 objects:v23 count:16];
+    subscriptions = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
+    v6 = [subscriptions countByEnumeratingWithState:&v15 objects:v23 count:16];
     if (v6)
     {
       v7 = *v16;
@@ -363,15 +363,15 @@ LABEL_18:
         {
           if (*v16 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(subscriptions);
           }
 
           v9 = *(*(&v15 + 1) + 8 * i);
-          v10 = [v9 phoneNumber];
-          if ([v10 length])
+          phoneNumber = [v9 phoneNumber];
+          if ([phoneNumber length])
           {
-            v11 = [v9 phoneNumber];
-            v12 = MEMORY[0x1AC570E30](v11, v4);
+            phoneNumber2 = [v9 phoneNumber];
+            v12 = MEMORY[0x1AC570E30](phoneNumber2, numberCopy);
 
             if (v12)
             {
@@ -385,7 +385,7 @@ LABEL_18:
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v15 objects:v23 count:16];
+        v6 = [subscriptions countByEnumeratingWithState:&v15 objects:v23 count:16];
       }
 
       while (v6);
@@ -402,9 +402,9 @@ LABEL_19:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v20 = v4;
+        v20 = numberCopy;
         v21 = 2112;
-        v22 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1A85E5000, v13, OS_LOG_TYPE_INFO, "Phone number given is nil %@ so cannot check if context %@ contains it", buf, 0x16u);
       }
     }
@@ -422,15 +422,15 @@ LABEL_19:
   if (!phoneNumbersOfActiveSubscriptions)
   {
     v4 = objc_alloc(MEMORY[0x1E695DF70]);
-    v5 = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
-    v6 = [v4 initWithCapacity:{objc_msgSend(v5, "count")}];
+    subscriptions = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
+    v6 = [v4 initWithCapacity:{objc_msgSend(subscriptions, "count")}];
 
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v7 = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
-    v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    subscriptions2 = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
+    v8 = [subscriptions2 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v8)
     {
       v9 = v8;
@@ -441,32 +441,32 @@ LABEL_19:
         {
           if (*v21 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(subscriptions2);
           }
 
           v12 = *(*(&v20 + 1) + 8 * i);
-          v13 = [v12 phoneNumber];
-          if ([v13 length])
+          phoneNumber = [v12 phoneNumber];
+          if ([phoneNumber length])
           {
-            v14 = [v12 phoneNumber];
-            v15 = IMChatCanonicalIDSIDsForAddress(v14);
-            v16 = [v15 _stripFZIDPrefix];
+            phoneNumber2 = [v12 phoneNumber];
+            v15 = IMChatCanonicalIDSIDsForAddress(phoneNumber2);
+            _stripFZIDPrefix = [v15 _stripFZIDPrefix];
 
-            if (v16)
+            if (_stripFZIDPrefix)
             {
-              v17 = v16;
+              v17 = _stripFZIDPrefix;
             }
 
             else
             {
-              v17 = v13;
+              v17 = phoneNumber;
             }
 
             [(NSArray *)v6 addObject:v17];
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v9 = [subscriptions2 countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v9);
@@ -488,8 +488,8 @@ LABEL_19:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  subscriptions = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
+  v4 = [subscriptions countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = *v14;
@@ -499,21 +499,21 @@ LABEL_19:
       {
         if (*v14 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subscriptions);
         }
 
         v7 = *(*(&v13 + 1) + 8 * i);
-        v8 = [v7 phoneNumber];
-        v9 = [v8 length];
+        phoneNumber = [v7 phoneNumber];
+        v9 = [phoneNumber length];
         if (v9 || ([v7 labelID], v2 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v2, "length")))
         {
-          v10 = [v7 userDataPreferred];
-          v11 = [v10 BOOLValue];
+          userDataPreferred = [v7 userDataPreferred];
+          bOOLValue = [userDataPreferred BOOLValue];
 
           if (v9)
           {
 
-            if (v11)
+            if (bOOLValue)
             {
               goto LABEL_17;
             }
@@ -522,7 +522,7 @@ LABEL_19:
           else
           {
 
-            if (v11)
+            if (bOOLValue)
             {
 LABEL_17:
               v4 = v7;
@@ -536,7 +536,7 @@ LABEL_17:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v4 = [subscriptions countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v4)
       {
         continue;
@@ -551,11 +551,11 @@ LABEL_18:
   return v4;
 }
 
-- (id)__im_switchSubscriptionContextFromSubscriptionContext:(id)a3
+- (id)__im_switchSubscriptionContextFromSubscriptionContext:(id)context
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  contextCopy = context;
+  if (!contextCopy)
   {
     goto LABEL_14;
   }
@@ -564,17 +564,17 @@ LABEL_18:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v23 count:16];
+  subscriptions = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
+  v6 = [subscriptions countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (!v6)
   {
 
 LABEL_14:
-    v7 = [(IMCTXPCServiceSubscriptionInfo *)self preferredOrDefaultSubscriptionContext];
+    preferredOrDefaultSubscriptionContext = [(IMCTXPCServiceSubscriptionInfo *)self preferredOrDefaultSubscriptionContext];
     goto LABEL_15;
   }
 
-  v7 = 0;
+  preferredOrDefaultSubscriptionContext = 0;
   v8 = *v16;
   do
   {
@@ -582,25 +582,25 @@ LABEL_14:
     {
       if (*v16 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(subscriptions);
       }
 
       v10 = *(*(&v15 + 1) + 8 * i);
-      v11 = [v10 slotID];
-      if (v11 != [v4 slotID])
+      slotID = [v10 slotID];
+      if (slotID != [contextCopy slotID])
       {
         v12 = v10;
 
-        v7 = v12;
+        preferredOrDefaultSubscriptionContext = v12;
       }
     }
 
-    v6 = [v5 countByEnumeratingWithState:&v15 objects:v23 count:16];
+    v6 = [subscriptions countByEnumeratingWithState:&v15 objects:v23 count:16];
   }
 
   while (v6);
 
-  if (!v7)
+  if (!preferredOrDefaultSubscriptionContext)
   {
     goto LABEL_14;
   }
@@ -612,22 +612,22 @@ LABEL_15:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v20 = v7;
+      v20 = preferredOrDefaultSubscriptionContext;
       v21 = 2112;
-      v22 = v4;
+      v22 = contextCopy;
       _os_log_impl(&dword_1A85E5000, v13, OS_LOG_TYPE_INFO, "Found context to switch to %@ from %@", buf, 0x16u);
     }
   }
 
-  return v7;
+  return preferredOrDefaultSubscriptionContext;
 }
 
-- (id)__im_switchSubscriptionContextFromPhoneNumber:(id)a3 simID:(id)a4
+- (id)__im_switchSubscriptionContextFromPhoneNumber:(id)number simID:(id)d
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IMCTXPCServiceSubscriptionInfo *)self __im_subscriptionContextForForSimID:v7 phoneNumber:v6];
+  numberCopy = number;
+  dCopy = d;
+  v8 = [(IMCTXPCServiceSubscriptionInfo *)self __im_subscriptionContextForForSimID:dCopy phoneNumber:numberCopy];
   v9 = [(IMCTXPCServiceSubscriptionInfo *)self __im_switchSubscriptionContextFromSubscriptionContext:v8];
   if (IMOSLoggingEnabled())
   {
@@ -637,9 +637,9 @@ LABEL_15:
       v12 = 138412802;
       v13 = v9;
       v14 = 2112;
-      v15 = v6;
+      v15 = numberCopy;
       v16 = 2112;
-      v17 = v7;
+      v17 = dCopy;
       _os_log_impl(&dword_1A85E5000, v10, OS_LOG_TYPE_INFO, "Found context to switch to %@ from phone number %@ simID %@", &v12, 0x20u);
     }
   }
@@ -647,15 +647,15 @@ LABEL_15:
   return v9;
 }
 
-- (id)__im_phoneNumberForSlotID:(int64_t)a3
+- (id)__im_phoneNumberForSlotID:(int64_t)d
 {
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  subscriptions = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
+  v5 = [subscriptions countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -666,21 +666,21 @@ LABEL_15:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subscriptions);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        if ([v9 slotID] == a3)
+        if ([v9 slotID] == d)
         {
-          v11 = [v9 phoneNumber];
-          v12 = IMChatCanonicalIDSIDsForAddress(v11);
-          v10 = [v12 _stripFZIDPrefix];
+          phoneNumber = [v9 phoneNumber];
+          v12 = IMChatCanonicalIDSIDsForAddress(phoneNumber);
+          _stripFZIDPrefix = [v12 _stripFZIDPrefix];
 
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [subscriptions countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -690,58 +690,58 @@ LABEL_15:
     }
   }
 
-  v10 = 0;
+  _stripFZIDPrefix = 0;
 LABEL_11:
 
-  return v10;
+  return _stripFZIDPrefix;
 }
 
-- (id)__im_phoneNumberForSlotIDOrDefault:(int64_t)a3
+- (id)__im_phoneNumberForSlotIDOrDefault:(int64_t)default
 {
-  v4 = [(IMCTXPCServiceSubscriptionInfo *)self __im_phoneNumberForSlotID:a3];
+  v4 = [(IMCTXPCServiceSubscriptionInfo *)self __im_phoneNumberForSlotID:default];
   if (![v4 length])
   {
-    v5 = [(IMCTXPCServiceSubscriptionInfo *)self preferredOrDefaultSubscriptionContext];
-    v6 = [v5 phoneNumber];
-    v7 = IMChatCanonicalIDSIDsForAddress(v6);
-    v8 = [v7 _stripFZIDPrefix];
+    preferredOrDefaultSubscriptionContext = [(IMCTXPCServiceSubscriptionInfo *)self preferredOrDefaultSubscriptionContext];
+    phoneNumber = [preferredOrDefaultSubscriptionContext phoneNumber];
+    v7 = IMChatCanonicalIDSIDsForAddress(phoneNumber);
+    _stripFZIDPrefix = [v7 _stripFZIDPrefix];
 
-    v4 = v8;
+    v4 = _stripFZIDPrefix;
   }
 
   return v4;
 }
 
-- (id)__im_labelForPhoneNumber:(id)a3 simID:(id)a4
+- (id)__im_labelForPhoneNumber:(id)number simID:(id)d
 {
-  v4 = [(IMCTXPCServiceSubscriptionInfo *)self __im_subscriptionContextForForSimID:a4 phoneNumber:a3];
-  v5 = [v4 label];
-  v6 = [v5 length];
+  v4 = [(IMCTXPCServiceSubscriptionInfo *)self __im_subscriptionContextForForSimID:d phoneNumber:number];
+  label = [v4 label];
+  v6 = [label length];
 
   if (v6)
   {
-    v7 = [v4 label];
+    label2 = [v4 label];
   }
 
   else
   {
-    v7 = 0;
+    label2 = 0;
   }
 
-  return v7;
+  return label2;
 }
 
-- (int64_t)__imSlotIDSForPhoneNumber:(id)a3
+- (int64_t)__imSlotIDSForPhoneNumber:(id)number
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  numberCopy = number;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
-  v6 = 0;
-  v7 = [v5 countByEnumeratingWithState:&v16 objects:v24 count:16];
+  subscriptions = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
+  slotID = 0;
+  v7 = [subscriptions countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v7)
   {
     v8 = *v17;
@@ -751,7 +751,7 @@ LABEL_11:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subscriptions);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
@@ -760,47 +760,47 @@ LABEL_11:
           v11 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
           {
-            v12 = [v10 phoneNumber];
+            phoneNumber = [v10 phoneNumber];
             *buf = 138412546;
-            v21 = v12;
+            v21 = phoneNumber;
             v22 = 2112;
-            v23 = v4;
+            v23 = numberCopy;
             _os_log_impl(&dword_1A85E5000, v11, OS_LOG_TYPE_INFO, "getSlotFromContextInfo: comparing %@ with current number %@", buf, 0x16u);
           }
         }
 
-        if (v4)
+        if (numberCopy)
         {
-          v13 = [v10 phoneNumber];
-          v14 = IMSharedHelperAreObjectsLogicallySame(v13, v4);
+          phoneNumber2 = [v10 phoneNumber];
+          v14 = IMSharedHelperAreObjectsLogicallySame(phoneNumber2, numberCopy);
 
           if (v14)
           {
-            v6 = [v10 slotID];
+            slotID = [v10 slotID];
           }
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v24 count:16];
+      v7 = [subscriptions countByEnumeratingWithState:&v16 objects:v24 count:16];
     }
 
     while (v7);
   }
 
-  return v6;
+  return slotID;
 }
 
-- (id)__imSIMIDForSubscriptionSlot:(int64_t)a3
+- (id)__imSIMIDForSubscriptionSlot:(int64_t)slot
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (slot)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
-    v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    subscriptions = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
+    v5 = [subscriptions countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v5)
     {
       v6 = v5;
@@ -812,19 +812,19 @@ LABEL_11:
         {
           if (*v14 != v8)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(subscriptions);
           }
 
           v10 = *(*(&v13 + 1) + 8 * i);
-          if ([v10 slotID] == a3)
+          if ([v10 slotID] == slot)
           {
-            v11 = [v10 labelID];
+            labelID = [v10 labelID];
 
-            v7 = v11;
+            v7 = labelID;
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v6 = [subscriptions countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v6);
@@ -844,17 +844,17 @@ LABEL_11:
   return v7;
 }
 
-- (id)__im_subscriptionContextForForSlotID:(int64_t)a3
+- (id)__im_subscriptionContextForForSlotID:(int64_t)d
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (d)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
-    v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    subscriptions = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
+    v5 = [subscriptions countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v5)
     {
       v6 = *v14;
@@ -864,18 +864,18 @@ LABEL_11:
         {
           if (*v14 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(subscriptions);
           }
 
           v8 = *(*(&v13 + 1) + 8 * i);
-          if ([v8 slotID] == a3)
+          if ([v8 slotID] == d)
           {
             v9 = v8;
             goto LABEL_12;
           }
         }
 
-        v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v5 = [subscriptions countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v5)
         {
           continue;
@@ -907,37 +907,37 @@ LABEL_12:
   return v9;
 }
 
-- (id)__im_subscriptionContextOrDefaultForForSlotID:(int64_t)a3
+- (id)__im_subscriptionContextOrDefaultForForSlotID:(int64_t)d
 {
-  v4 = [(IMCTXPCServiceSubscriptionInfo *)self __im_subscriptionContextForForSlotID:a3];
+  v4 = [(IMCTXPCServiceSubscriptionInfo *)self __im_subscriptionContextForForSlotID:d];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    preferredOrDefaultSubscriptionContext = v4;
   }
 
   else
   {
-    v6 = [(IMCTXPCServiceSubscriptionInfo *)self preferredOrDefaultSubscriptionContext];
+    preferredOrDefaultSubscriptionContext = [(IMCTXPCServiceSubscriptionInfo *)self preferredOrDefaultSubscriptionContext];
   }
 
-  v7 = v6;
+  v7 = preferredOrDefaultSubscriptionContext;
 
   return v7;
 }
 
-- (id)__im_subscriptionContextForPhoneNumber:(id)a3
+- (id)__im_subscriptionContextForPhoneNumber:(id)number
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 length])
+  numberCopy = number;
+  if ([numberCopy length])
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
-    v6 = [v5 countByEnumeratingWithState:&v15 objects:v21 count:16];
+    subscriptions = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
+    v6 = [subscriptions countByEnumeratingWithState:&v15 objects:v21 count:16];
     if (v6)
     {
       v7 = *v16;
@@ -947,15 +947,15 @@ LABEL_12:
         {
           if (*v16 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(subscriptions);
           }
 
           v9 = *(*(&v15 + 1) + 8 * i);
-          v10 = [v9 phoneNumber];
-          if ([v10 length])
+          phoneNumber = [v9 phoneNumber];
+          if ([phoneNumber length])
           {
-            v11 = [v9 phoneNumber];
-            v12 = MEMORY[0x1AC570E30](v11, v4);
+            phoneNumber2 = [v9 phoneNumber];
+            v12 = MEMORY[0x1AC570E30](phoneNumber2, numberCopy);
 
             if (v12)
             {
@@ -969,7 +969,7 @@ LABEL_12:
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v15 objects:v21 count:16];
+        v6 = [subscriptions countByEnumeratingWithState:&v15 objects:v21 count:16];
       }
 
       while (v6);
@@ -986,7 +986,7 @@ LABEL_19:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v20 = v4;
+        v20 = numberCopy;
         _os_log_impl(&dword_1A85E5000, v13, OS_LOG_TYPE_INFO, "Phone number given is nil %@ ", buf, 0xCu);
       }
     }
@@ -997,18 +997,18 @@ LABEL_19:
   return v6;
 }
 
-- (id)__im_subscriptionContextForForSimID:(id)a3
+- (id)__im_subscriptionContextForForSimID:(id)d
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
-    v6 = [v5 countByEnumeratingWithState:&v15 objects:v21 count:16];
+    subscriptions = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
+    v6 = [subscriptions countByEnumeratingWithState:&v15 objects:v21 count:16];
     if (v6)
     {
       v7 = *v16;
@@ -1018,15 +1018,15 @@ LABEL_19:
         {
           if (*v16 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(subscriptions);
           }
 
           v9 = *(*(&v15 + 1) + 8 * i);
-          v10 = [v9 labelID];
-          if ([v10 length])
+          labelID = [v9 labelID];
+          if ([labelID length])
           {
-            v11 = [v9 labelID];
-            v12 = [v11 isEqualToString:v4];
+            labelID2 = [v9 labelID];
+            v12 = [labelID2 isEqualToString:dCopy];
 
             if (v12)
             {
@@ -1040,7 +1040,7 @@ LABEL_19:
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v15 objects:v21 count:16];
+        v6 = [subscriptions countByEnumeratingWithState:&v15 objects:v21 count:16];
       }
 
       while (v6);
@@ -1057,7 +1057,7 @@ LABEL_19:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v20 = v4;
+        v20 = dCopy;
         _os_log_impl(&dword_1A85E5000, v13, OS_LOG_TYPE_INFO, "SIM ID given is nil %@ ", buf, 0xCu);
       }
     }
@@ -1068,19 +1068,19 @@ LABEL_19:
   return v6;
 }
 
-- (id)__im_subscriptionContextForPhoneNumberOrDefault:(id)a3
+- (id)__im_subscriptionContextForPhoneNumberOrDefault:(id)default
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 length])
+  defaultCopy = default;
+  if ([defaultCopy length])
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v17 = self;
-    v5 = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
-    v6 = [v5 countByEnumeratingWithState:&v18 objects:v26 count:16];
+    selfCopy = self;
+    subscriptions = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
+    v6 = [subscriptions countByEnumeratingWithState:&v18 objects:v26 count:16];
     if (v6)
     {
       v7 = *v19;
@@ -1090,25 +1090,25 @@ LABEL_4:
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subscriptions);
         }
 
         v9 = *(*(&v18 + 1) + 8 * v8);
-        if (MEMORY[0x1AC570A50](v4))
+        if (MEMORY[0x1AC570A50](defaultCopy))
         {
-          v10 = [v9 phoneNumber];
-          if ([v10 length])
+          phoneNumber = [v9 phoneNumber];
+          if ([phoneNumber length])
           {
             v11 = MEMORY[0x1E69A51E8];
-            v12 = [v9 phoneNumber];
-            LOBYTE(v11) = [v11 isPhoneNumber:v12 equivalentToExistingPhoneNumber:v4];
+            phoneNumber2 = [v9 phoneNumber];
+            LOBYTE(v11) = [v11 isPhoneNumber:phoneNumber2 equivalentToExistingPhoneNumber:defaultCopy];
 
             if (v11)
             {
-              v13 = v9;
+              preferredOrDefaultSubscriptionContext = v9;
 
-              self = v17;
-              if (v13)
+              self = selfCopy;
+              if (preferredOrDefaultSubscriptionContext)
               {
                 goto LABEL_20;
               }
@@ -1124,7 +1124,7 @@ LABEL_4:
 
         if (v6 == ++v8)
         {
-          v6 = [v5 countByEnumeratingWithState:&v18 objects:v26 count:16];
+          v6 = [subscriptions countByEnumeratingWithState:&v18 objects:v26 count:16];
           if (v6)
           {
             goto LABEL_4;
@@ -1135,58 +1135,58 @@ LABEL_4:
       }
     }
 
-    self = v17;
+    self = selfCopy;
   }
 
 LABEL_16:
-  v13 = [(IMCTXPCServiceSubscriptionInfo *)self preferredOrDefaultSubscriptionContext];
+  preferredOrDefaultSubscriptionContext = [(IMCTXPCServiceSubscriptionInfo *)self preferredOrDefaultSubscriptionContext];
   if (IMOSLoggingEnabled())
   {
     v14 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
-      v15 = [v13 phoneNumber];
+      phoneNumber3 = [preferredOrDefaultSubscriptionContext phoneNumber];
       *buf = 138412546;
-      v23 = v4;
+      v23 = defaultCopy;
       v24 = 2112;
-      v25 = v15;
+      v25 = phoneNumber3;
       _os_log_impl(&dword_1A85E5000, v14, OS_LOG_TYPE_INFO, "Phone number given is nil %@ or no context was found, defaulting to preferred %@", buf, 0x16u);
     }
   }
 
 LABEL_20:
 
-  return v13;
+  return preferredOrDefaultSubscriptionContext;
 }
 
-- (id)__im_subscriptionContextForForSimID:(id)a3 phoneNumber:(id)a4
+- (id)__im_subscriptionContextForForSimID:(id)d phoneNumber:(id)number
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v30 = a4;
+  dCopy = d;
+  numberCopy = number;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v37 = v6;
+      v37 = dCopy;
       v38 = 2112;
-      v39 = v30;
+      v39 = numberCopy;
       _os_log_impl(&dword_1A85E5000, v7, OS_LOG_TYPE_INFO, "Trying to find subscription context for simID %@ phoneNumber %@", buf, 0x16u);
     }
   }
 
-  if ([v30 length] || objc_msgSend(v6, "length"))
+  if ([numberCopy length] || objc_msgSend(dCopy, "length"))
   {
     if (IMOSLoggingEnabled())
     {
       v8 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
-        v9 = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
+        subscriptions = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
         *buf = 138412290;
-        v37 = v9;
+        v37 = subscriptions;
         _os_log_impl(&dword_1A85E5000, v8, OS_LOG_TYPE_INFO, "Attempting to identify matching context from subscriptions: %@", buf, 0xCu);
       }
     }
@@ -1195,9 +1195,9 @@ LABEL_20:
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v10 = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
+    subscriptions2 = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
     v11 = 0;
-    v12 = [v10 countByEnumeratingWithState:&v31 objects:v35 count:16];
+    v12 = [subscriptions2 countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v12)
     {
       v14 = *v32;
@@ -1209,15 +1209,15 @@ LABEL_20:
         {
           if (*v32 != v14)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(subscriptions2);
           }
 
           v16 = *(*(&v31 + 1) + 8 * i);
-          v17 = [v16 phoneNumber];
-          if ([v17 length] && objc_msgSend(v30, "length"))
+          phoneNumber = [v16 phoneNumber];
+          if ([phoneNumber length] && objc_msgSend(numberCopy, "length"))
           {
-            v18 = [v16 phoneNumber];
-            v19 = MEMORY[0x1AC570E30](v18, v30);
+            phoneNumber2 = [v16 phoneNumber];
+            v19 = MEMORY[0x1AC570E30](phoneNumber2, numberCopy);
           }
 
           else
@@ -1225,10 +1225,10 @@ LABEL_20:
             v19 = 0;
           }
 
-          if ([v6 length])
+          if ([dCopy length])
           {
-            v20 = [v16 labelID];
-            v21 = [v20 isEqualToString:v6];
+            labelID = [v16 labelID];
+            v21 = [labelID isEqualToString:dCopy];
 
             if (v19)
             {
@@ -1273,7 +1273,7 @@ LABEL_32:
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v31 objects:v35 count:16];
+        v12 = [subscriptions2 countByEnumeratingWithState:&v31 objects:v35 count:16];
         if (v12)
         {
           continue;
@@ -1317,44 +1317,44 @@ LABEL_36:
   return v25;
 }
 
-- (id)__im_subscriptionContextOrDefaultForForSimID:(id)a3 phoneNumber:(id)a4
+- (id)__im_subscriptionContextOrDefaultForForSimID:(id)d phoneNumber:(id)number
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IMCTXPCServiceSubscriptionInfo *)self __im_subscriptionContextForForSimID:v6 phoneNumber:v7];
-  if (!v8)
+  dCopy = d;
+  numberCopy = number;
+  preferredOrDefaultSubscriptionContext = [(IMCTXPCServiceSubscriptionInfo *)self __im_subscriptionContextForForSimID:dCopy phoneNumber:numberCopy];
+  if (!preferredOrDefaultSubscriptionContext)
   {
-    v8 = [(IMCTXPCServiceSubscriptionInfo *)self preferredOrDefaultSubscriptionContext];
+    preferredOrDefaultSubscriptionContext = [(IMCTXPCServiceSubscriptionInfo *)self preferredOrDefaultSubscriptionContext];
     if (IMOSLoggingEnabled())
     {
       v9 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
-        v10 = [v8 phoneNumber];
-        v11 = [v8 labelID];
+        phoneNumber = [preferredOrDefaultSubscriptionContext phoneNumber];
+        labelID = [preferredOrDefaultSubscriptionContext labelID];
         v13 = 138412546;
-        v14 = v10;
+        v14 = phoneNumber;
         v15 = 2112;
-        v16 = v11;
+        v16 = labelID;
         _os_log_impl(&dword_1A85E5000, v9, OS_LOG_TYPE_INFO, "Phone number given and simID are nil, defaulting to preferred phoneNumber %@ simID %@", &v13, 0x16u);
       }
     }
   }
 
-  return v8;
+  return preferredOrDefaultSubscriptionContext;
 }
 
-- (id)__im_subscriptionContextForSenderIdentity:(id)a3
+- (id)__im_subscriptionContextForSenderIdentity:(id)identity
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identityCopy = identity;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  subscriptions = [(IMCTXPCServiceSubscriptionInfo *)self subscriptions];
+  v6 = [subscriptions countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = *v12;
@@ -1364,18 +1364,18 @@ LABEL_36:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subscriptions);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        if ([IMSenderIdentityManager isTUSenderIdentity:v4 equalToSubscriptionContext:v9])
+        if ([IMSenderIdentityManager isTUSenderIdentity:identityCopy equalToSubscriptionContext:v9])
         {
           v6 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [subscriptions countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -1390,25 +1390,25 @@ LABEL_11:
   return v6;
 }
 
-- (id)__im_contactPreferredSubscriptionContextForChatHandleIDs:(id)a3
+- (id)__im_contactPreferredSubscriptionContextForChatHandleIDs:(id)ds
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v12 = 138412290;
-      v13 = v4;
+      v13 = dsCopy;
       _os_log_impl(&dword_1A85E5000, v5, OS_LOG_TYPE_INFO, "Trying to find contact-preferred subscription context for chat handle IDs %@", &v12, 0xCu);
     }
   }
 
-  if ([v4 count])
+  if ([dsCopy count])
   {
-    v6 = [(IMCTXPCServiceSubscriptionInfo *)self _senderIdentityManager];
-    v7 = [v6 bestSenderIdentityForHandleIDs:v4];
+    _senderIdentityManager = [(IMCTXPCServiceSubscriptionInfo *)self _senderIdentityManager];
+    v7 = [_senderIdentityManager bestSenderIdentityForHandleIDs:dsCopy];
 
     if (v7)
     {
@@ -1421,7 +1421,7 @@ LABEL_11:
           v12 = 138412546;
           v13 = v8;
           v14 = 2112;
-          v15 = v4;
+          v15 = dsCopy;
           _os_log_impl(&dword_1A85E5000, v9, OS_LOG_TYPE_INFO, "Found contact preferred context %@ for handleIDs %@", &v12, 0x16u);
         }
       }

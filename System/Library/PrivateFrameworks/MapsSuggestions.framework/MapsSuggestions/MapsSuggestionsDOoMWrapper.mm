@@ -1,27 +1,27 @@
 @interface MapsSuggestionsDOoMWrapper
-- (MapsSuggestionsDOoMWrapper)initWithResourceDepot:(id)a3 triggers:(id)a4 conditions:(id)a5 engine:(id)a6;
+- (MapsSuggestionsDOoMWrapper)initWithResourceDepot:(id)depot triggers:(id)triggers conditions:(id)conditions engine:(id)engine;
 - (MapsSuggestionsDOoMWrapperNotificationDelegate)notificationDelegate;
 - (void)commuteWindowUpdated;
-- (void)doomNotificationReadyWith:(id)a3 forLOI:(id)a4;
+- (void)doomNotificationReadyWith:(id)with forLOI:(id)i;
 @end
 
 @implementation MapsSuggestionsDOoMWrapper
 
-- (MapsSuggestionsDOoMWrapper)initWithResourceDepot:(id)a3 triggers:(id)a4 conditions:(id)a5 engine:(id)a6
+- (MapsSuggestionsDOoMWrapper)initWithResourceDepot:(id)depot triggers:(id)triggers conditions:(id)conditions engine:(id)engine
 {
   v25 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  depotCopy = depot;
+  triggersCopy = triggers;
+  conditionsCopy = conditions;
+  engineCopy = engine;
   v22.receiver = self;
   v22.super_class = MapsSuggestionsDOoMWrapper;
   v14 = [(MapsSuggestionsDOoMWrapper *)&v22 init];
   if (v14)
   {
     v15 = [_TtC15MapsSuggestions19MapsSuggestionsDOoM alloc];
-    v16 = [v13 doomEngine];
-    v17 = [(MapsSuggestionsDOoM *)v15 initWithResourceDepot:v10 triggers:v11 conditions:v12 engine:v16];
+    doomEngine = [engineCopy doomEngine];
+    v17 = [(MapsSuggestionsDOoM *)v15 initWithResourceDepot:depotCopy triggers:triggersCopy conditions:conditionsCopy engine:doomEngine];
     doom = v14->_doom;
     v14->_doom = v17;
 
@@ -39,17 +39,17 @@
   return v14;
 }
 
-- (void)doomNotificationReadyWith:(id)a3 forLOI:(id)a4
+- (void)doomNotificationReadyWith:(id)with forLOI:(id)i
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MapsSuggestionsDOoMWrapper *)self notificationDelegate];
-  if (v8)
+  withCopy = with;
+  iCopy = i;
+  notificationDelegate = [(MapsSuggestionsDOoMWrapper *)self notificationDelegate];
+  if (notificationDelegate)
   {
     if (objc_opt_respondsToSelector())
     {
-      [v8 doomNotificationReceivedWithDetails:v6 forLOI:v7];
+      [notificationDelegate doomNotificationReceivedWithDetails:withCopy forLOI:iCopy];
     }
   }
 
@@ -72,12 +72,12 @@
 - (void)commuteWindowUpdated
 {
   v10 = *MEMORY[0x1E69E9840];
-  v2 = [(MapsSuggestionsDOoMWrapper *)self notificationDelegate];
-  if (v2)
+  notificationDelegate = [(MapsSuggestionsDOoMWrapper *)self notificationDelegate];
+  if (notificationDelegate)
   {
     if (objc_opt_respondsToSelector())
     {
-      [v2 commuteWindowUpdated];
+      [notificationDelegate commuteWindowUpdated];
     }
   }
 

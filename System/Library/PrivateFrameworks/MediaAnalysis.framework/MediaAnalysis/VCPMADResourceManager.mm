@@ -1,19 +1,19 @@
 @interface VCPMADResourceManager
 + (id)sharedManager;
 - (VCPMADResourceManager)init;
-- (id)activateResource:(id)a3;
-- (id)entryForResource:(id)a3;
+- (id)activateResource:(id)resource;
+- (id)entryForResource:(id)resource;
 - (int64_t)currentBudget;
-- (int64_t)validateCost:(int64_t)a3;
+- (int64_t)validateCost:(int64_t)cost;
 - (void)_purgeAllResources;
-- (void)_reserveBudget:(int64_t)a3;
-- (void)_setBudget:(int64_t)a3;
+- (void)_reserveBudget:(int64_t)budget;
+- (void)_setBudget:(int64_t)budget;
 - (void)checkTimeout;
-- (void)deactivateResource:(id)a3;
+- (void)deactivateResource:(id)resource;
 - (void)dealloc;
 - (void)purgeAllResources;
 - (void)purgeInactiveResources;
-- (void)reserveBudget:(int64_t)a3;
+- (void)reserveBudget:(int64_t)budget;
 @end
 
 @implementation VCPMADResourceManager
@@ -31,9 +31,9 @@
     queue = v3->_queue;
     v3->_queue = v4;
 
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     resources = v3->_resources;
-    v3->_resources = v6;
+    v3->_resources = array;
   }
 
   return v3;
@@ -64,18 +64,18 @@ VCPMADResourceManager *__38__VCPMADResourceManager_sharedManager__block_invoke()
   [(VCPMADResourceManager *)&v3 dealloc];
 }
 
-- (int64_t)validateCost:(int64_t)a3
+- (int64_t)validateCost:(int64_t)cost
 {
-  v3 = 100;
-  if (a3 < 100)
+  costCopy = 100;
+  if (cost < 100)
   {
-    v3 = a3;
+    costCopy = cost;
   }
 
-  v4 = v3 & ~(v3 >> 63);
-  if (v4 != a3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
+  v4 = costCopy & ~(costCopy >> 63);
+  if (v4 != cost && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
   {
-    [(VCPMADResourceManager *)a3 validateCost:v4];
+    [(VCPMADResourceManager *)cost validateCost:v4];
   }
 
   return v4;
@@ -100,20 +100,20 @@ VCPMADResourceManager *__38__VCPMADResourceManager_sharedManager__block_invoke()
   return v3;
 }
 
-- (void)_setBudget:(int64_t)a3
+- (void)_setBudget:(int64_t)budget
 {
   v10 = *MEMORY[0x1E69E9840];
   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     budget = self->_budget;
     v6 = 134218240;
-    v7 = budget;
+    budgetCopy = budget;
     v8 = 2048;
-    v9 = a3;
+    budgetCopy2 = budget;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[ResourceManager] Updating budget (%ld --> %ld)", &v6, 0x16u);
   }
 
-  self->_budget = a3;
+  self->_budget = budget;
 }
 
 - (void)checkTimeout
@@ -148,10 +148,10 @@ void __37__VCPMADResourceManager_checkTimeout__block_invoke(uint64_t a1)
   }
 }
 
-- (id)entryForResource:(id)a3
+- (id)entryForResource:(id)resource
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resourceCopy = resource;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -171,9 +171,9 @@ void __37__VCPMADResourceManager_checkTimeout__block_invoke(uint64_t a1)
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v9 resource];
+        resource = [v9 resource];
 
-        if (v10 == v4)
+        if (resource == resourceCopy)
         {
           v6 = v9;
           goto LABEL_11;
@@ -195,20 +195,20 @@ LABEL_11:
   return v6;
 }
 
-- (void)_reserveBudget:(int64_t)a3
+- (void)_reserveBudget:(int64_t)budget
 {
   v39 = *MEMORY[0x1E69E9840];
   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     budget = self->_budget;
     *buf = 134218240;
-    v36 = budget;
+    budgetCopy = budget;
     v37 = 2048;
-    v38 = a3;
+    budgetCopy3 = budget;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[ResourceManager] Request to reserve budget [Budget: %ld][Target: %ld]", buf, 0x16u);
   }
 
-  if (self->_budget < a3)
+  if (self->_budget < budget)
   {
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
@@ -216,7 +216,7 @@ LABEL_11:
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[ResourceManager] Pruning inactive resources", buf, 2u);
     }
 
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
@@ -239,7 +239,7 @@ LABEL_11:
           v12 = *(*(&v29 + 1) + 8 * i);
           if (![v12 activeCount])
           {
-            [v6 addObject:v12];
+            [array addObject:v12];
           }
         }
 
@@ -249,13 +249,13 @@ LABEL_11:
       while (v9);
     }
 
-    [v6 sortUsingComparator:&__block_literal_global_47];
-    v13 = [MEMORY[0x1E695DF70] array];
+    [array sortUsingComparator:&__block_literal_global_47];
+    array2 = [MEMORY[0x1E695DF70] array];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v14 = v6;
+    v14 = array;
     v15 = [v14 countByEnumeratingWithState:&v25 objects:v33 count:16];
     if (v15)
     {
@@ -275,18 +275,18 @@ LABEL_19:
         v20 = *(*(&v25 + 1) + 8 * v19);
         if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
         {
-          v21 = [v20 resource];
+          resource = [v20 resource];
           *buf = v24;
-          v36 = v21;
+          budgetCopy = resource;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[ResourceManager] Purging inactive resource (%@)", buf, 0xCu);
         }
 
-        v22 = [v20 resource];
-        [v22 purge];
+        resource2 = [v20 resource];
+        [resource2 purge];
 
-        [v13 addObject:v20];
+        [array2 addObject:v20];
         -[VCPMADResourceManager _setBudget:](self, "_setBudget:", [v20 currentCost] + self->_budget);
-        if (self->_budget >= a3)
+        if (self->_budget >= budget)
         {
           break;
         }
@@ -304,14 +304,14 @@ LABEL_19:
       }
     }
 
-    [(NSMutableArray *)self->_resources removeObjectsInArray:v13];
-    if (self->_budget < a3 && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+    [(NSMutableArray *)self->_resources removeObjectsInArray:array2];
+    if (self->_budget < budget && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v23 = self->_budget;
       *buf = 134218240;
-      v36 = v23;
+      budgetCopy = v23;
       v37 = 2048;
-      v38 = a3;
+      budgetCopy3 = budget;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[ResourceManager] Failed to reserve budget [Budget: %ld][Target: %ld]", buf, 0x16u);
     }
   }
@@ -344,17 +344,17 @@ uint64_t __40__VCPMADResourceManager__reserveBudget___block_invoke(uint64_t a1, 
   return v7;
 }
 
-- (id)activateResource:(id)a3
+- (id)activateResource:(id)resource
 {
-  v4 = a3;
+  resourceCopy = resource;
   queue = self->_queue;
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __42__VCPMADResourceManager_activateResource___block_invoke;
   v13 = &unk_1E834C3D0;
-  v14 = v4;
-  v15 = self;
-  v6 = v4;
+  v14 = resourceCopy;
+  selfCopy = self;
+  v6 = resourceCopy;
   dispatch_sync(queue, &v10);
   v7 = [VCPMADResourceLock alloc];
   v8 = [(VCPMADResourceLock *)v7 initWithResourceManager:self andResource:v6, v10, v11, v12, v13];
@@ -512,17 +512,17 @@ void __42__VCPMADResourceManager_activateResource___block_invoke_50(uint64_t a1)
   }
 }
 
-- (void)deactivateResource:(id)a3
+- (void)deactivateResource:(id)resource
 {
-  v4 = a3;
+  resourceCopy = resource;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__VCPMADResourceManager_deactivateResource___block_invoke;
   v7[3] = &unk_1E834C3D0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = resourceCopy;
+  selfCopy = self;
+  v6 = resourceCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -617,9 +617,9 @@ void __44__VCPMADResourceManager_deactivateResource___block_invoke(uint64_t a1)
 LABEL_24:
 }
 
-- (void)reserveBudget:(int64_t)a3
+- (void)reserveBudget:(int64_t)budget
 {
-  v4 = [(VCPMADResourceManager *)self validateCost:a3];
+  v4 = [(VCPMADResourceManager *)self validateCost:budget];
   queue = self->_queue;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -736,10 +736,10 @@ void __47__VCPMADResourceManager_purgeInactiveResources__block_invoke(uint64_t a
 
 - (void)_purgeAllResources
 {
-  v5 = [a2 resource];
-  *a1 = 138412290;
-  *a3 = v5;
-  _os_log_fault_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT, "[ResourceManager] Purging active resource (%@)", a1, 0xCu);
+  resource = [a2 resource];
+  *self = 138412290;
+  *a3 = resource;
+  _os_log_fault_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT, "[ResourceManager] Purging active resource (%@)", self, 0xCu);
 }
 
 - (void)purgeAllResources

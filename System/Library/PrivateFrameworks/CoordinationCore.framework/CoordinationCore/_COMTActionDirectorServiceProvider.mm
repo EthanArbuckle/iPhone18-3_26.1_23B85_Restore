@@ -1,25 +1,25 @@
 @interface _COMTActionDirectorServiceProvider
-- (id)clusterRoleMonitorWithCluster:(id)a3;
-- (id)messageChannelWithTopic:(id)a3 cluster:(id)a4;
+- (id)clusterRoleMonitorWithCluster:(id)cluster;
+- (id)messageChannelWithTopic:(id)topic cluster:(id)cluster;
 @end
 
 @implementation _COMTActionDirectorServiceProvider
 
-- (id)clusterRoleMonitorWithCluster:(id)a3
+- (id)clusterRoleMonitorWithCluster:(id)cluster
 {
   v3 = MEMORY[0x277CFD0A8];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithCluster:v4];
+  clusterCopy = cluster;
+  v5 = [[v3 alloc] initWithCluster:clusterCopy];
 
   return v5;
 }
 
-- (id)messageChannelWithTopic:(id)a3 cluster:(id)a4
+- (id)messageChannelWithTopic:(id)topic cluster:(id)cluster
 {
   v5 = MEMORY[0x277CFD0D0];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithTopic:v7 cluster:v6];
+  clusterCopy = cluster;
+  topicCopy = topic;
+  v8 = [[v5 alloc] initWithTopic:topicCopy cluster:clusterCopy];
 
   return v8;
 }

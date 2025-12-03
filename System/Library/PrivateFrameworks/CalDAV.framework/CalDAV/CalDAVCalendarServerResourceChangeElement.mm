@@ -8,8 +8,8 @@
 
 - (CalDAVCalendarServerResourceChangeElement)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"CalDAVCalendarServerResourceChangeElement.m" lineNumber:19 description:{@"Don't initialize CalDAVCalendarServerResourceChange directly. Use a subclass, dude."}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CalDAVCalendarServerResourceChangeElement.m" lineNumber:19 description:{@"Don't initialize CalDAVCalendarServerResourceChange directly. Use a subclass, dude."}];
 
   return 0;
 }
@@ -18,10 +18,10 @@
 {
   v5.receiver = self;
   v5.super_class = CalDAVCalendarServerResourceChangeElement;
-  v2 = [(CoreDAVItemWithHrefChildItem *)&v5 href];
-  v3 = [v2 payloadAsFullURL];
+  href = [(CoreDAVItemWithHrefChildItem *)&v5 href];
+  payloadAsFullURL = [href payloadAsFullURL];
 
-  return v3;
+  return payloadAsFullURL;
 }
 
 - (id)copyParseRules

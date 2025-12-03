@@ -1,25 +1,25 @@
 @interface _DPReportFileManager
 + (id)submittedReports;
-+ (id)submittedReportsInDirectory:(id)a3;
++ (id)submittedReportsInDirectory:(id)directory;
 - (_DPReportFileManager)init;
-- (_DPReportFileManager)initWithDirectoryPath:(id)a3;
+- (_DPReportFileManager)initWithDirectoryPath:(id)path;
 - (id)reportsNotYetSubmitted;
 - (void)dealloc;
-- (void)retireReports:(id)a3;
+- (void)retireReports:(id)reports;
 @end
 
 @implementation _DPReportFileManager
 
-- (_DPReportFileManager)initWithDirectoryPath:(id)a3
+- (_DPReportFileManager)initWithDirectoryPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v10.receiver = self;
   v10.super_class = _DPReportFileManager;
   v6 = [(_DPReportFileManager *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_reportsDirectoryPath, a3);
+    objc_storeStrong(&v6->_reportsDirectoryPath, path);
     connection = v7->_connection;
     v7->_connection = 0;
   }
@@ -51,17 +51,17 @@
 + (id)submittedReports
 {
   v3 = +[_DPStrings transparencyLogDirectoryPath];
-  v4 = [a1 submittedReportsInDirectory:v3];
+  v4 = [self submittedReportsInDirectory:v3];
 
   return v4;
 }
 
-+ (id)submittedReportsInDirectory:(id)a3
++ (id)submittedReportsInDirectory:(id)directory
 {
-  v3 = a3;
+  directoryCopy = directory;
   v4 = objc_autoreleasePoolPush();
-  v5 = [_DPReportFilesMaintainer reportsInDirectory:v3];
-  v6 = [_DPReportFilesMaintainer retiredReportsPath:v3];
+  v5 = [_DPReportFilesMaintainer reportsInDirectory:directoryCopy];
+  v6 = [_DPReportFilesMaintainer retiredReportsPath:directoryCopy];
   v7 = [_DPReportFilesMaintainer reportsInDirectory:v6];
   v8 = [MEMORY[0x277CBEB18] arrayWithArray:v5];
   [v8 addObjectsFromArray:v7];
@@ -77,8 +77,8 @@
   connection = self->_connection;
   if (!connection)
   {
-    v5 = self;
-    objc_sync_enter(v5);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     if (!self->_connection)
     {
       v6 = +[_DPDaemonConnection daemonConnection];
@@ -86,7 +86,7 @@
       self->_connection = v6;
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
 
     connection = self->_connection;
   }
@@ -111,14 +111,14 @@
   return v8;
 }
 
-- (void)retireReports:(id)a3
+- (void)retireReports:(id)reports
 {
-  v5 = a3;
+  reportsCopy = reports;
   connection = self->_connection;
   if (!connection)
   {
-    v7 = self;
-    objc_sync_enter(v7);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     if (!self->_connection)
     {
       v8 = +[_DPDaemonConnection daemonConnection];
@@ -126,7 +126,7 @@
       self->_connection = v8;
     }
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
 
     connection = self->_connection;
   }
@@ -135,10 +135,10 @@
   v11[1] = 3221225472;
   v11[2] = __38___DPReportFileManager_retireReports___block_invoke;
   v11[3] = &unk_27858AC58;
-  v12 = v5;
+  v12 = reportsCopy;
   v13 = a2;
   v11[4] = self;
-  v10 = v5;
+  v10 = reportsCopy;
   [(_DPDaemonConnection *)connection retireReports:v10 withReply:v11];
 }
 

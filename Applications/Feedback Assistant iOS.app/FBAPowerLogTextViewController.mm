@@ -1,6 +1,6 @@
 @interface FBAPowerLogTextViewController
 - (UITextView)textView;
-- (void)displayText:(id)a3;
+- (void)displayText:(id)text;
 - (void)viewDidLoad;
 @end
 
@@ -11,21 +11,21 @@
   v5.receiver = self;
   v5.super_class = FBAPowerLogTextViewController;
   [(FBAPowerLogTextViewController *)&v5 viewDidLoad];
-  v3 = [(FBAPowerLogTextViewController *)self contents];
-  v4 = [(FBAPowerLogTextViewController *)self textView];
-  [v4 setText:v3];
+  contents = [(FBAPowerLogTextViewController *)self contents];
+  textView = [(FBAPowerLogTextViewController *)self textView];
+  [textView setText:contents];
 }
 
-- (void)displayText:(id)a3
+- (void)displayText:(id)text
 {
-  [(FBAPowerLogTextViewController *)self setContents:a3];
-  v4 = [(FBAPowerLogTextViewController *)self textView];
+  [(FBAPowerLogTextViewController *)self setContents:text];
+  textView = [(FBAPowerLogTextViewController *)self textView];
 
-  if (v4)
+  if (textView)
   {
-    v6 = [(FBAPowerLogTextViewController *)self contents];
-    v5 = [(FBAPowerLogTextViewController *)self textView];
-    [v5 setText:v6];
+    contents = [(FBAPowerLogTextViewController *)self contents];
+    textView2 = [(FBAPowerLogTextViewController *)self textView];
+    [textView2 setText:contents];
   }
 }
 

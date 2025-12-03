@@ -7,10 +7,10 @@
 
 - (CGRect)accessibilityFrame
 {
-  v3 = [(VOTImageExplorerElement *)self accessibilityContainer];
-  v4 = [(VOTImageExplorerElement *)self feature];
-  [v4 normalizedFrame];
-  [v3 frame];
+  accessibilityContainer = [(VOTImageExplorerElement *)self accessibilityContainer];
+  feature = [(VOTImageExplorerElement *)self feature];
+  [feature normalizedFrame];
+  [accessibilityContainer frame];
   [(VOTImageExplorerElement *)self flippedYAxis];
 
   UIAccessibilityFrameForBounds();
@@ -32,8 +32,8 @@
 
 - (id)_accessibilityScrollStatus
 {
-  v3 = [(VOTImageExplorerElement *)self feature];
-  v4 = +[AXMVisionFeature localizedStringForLocation:isSubjectImplicit:](AXMVisionFeature, "localizedStringForLocation:isSubjectImplicit:", [v3 locationUsingThirds:0 withFlippedYAxis:{-[VOTImageExplorerElement flippedYAxis](self, "flippedYAxis")}], 1);
+  feature = [(VOTImageExplorerElement *)self feature];
+  v4 = +[AXMVisionFeature localizedStringForLocation:isSubjectImplicit:](AXMVisionFeature, "localizedStringForLocation:isSubjectImplicit:", [feature locationUsingThirds:0 withFlippedYAxis:{-[VOTImageExplorerElement flippedYAxis](self, "flippedYAxis")}], 1);
 
   return v4;
 }

@@ -1,16 +1,16 @@
 @interface _CATProxyWaitToken
-- (_CATProxyWaitToken)initWithExclusive:(BOOL)a3 group:(id)a4;
+- (_CATProxyWaitToken)initWithExclusive:(BOOL)exclusive group:(id)group;
 - (void)dealloc;
 - (void)invalidate;
-- (void)notifyWithResourceProxy:(id)a3;
+- (void)notifyWithResourceProxy:(id)proxy;
 @end
 
 @implementation _CATProxyWaitToken
 
-- (_CATProxyWaitToken)initWithExclusive:(BOOL)a3 group:(id)a4
+- (_CATProxyWaitToken)initWithExclusive:(BOOL)exclusive group:(id)group
 {
-  v7 = a4;
-  if (!v7)
+  groupCopy = group;
+  if (!groupCopy)
   {
     [_CATProxyWaitToken initWithExclusive:group:];
   }
@@ -21,8 +21,8 @@
   v9 = v8;
   if (v8)
   {
-    v8->_isExclusive = a3;
-    objc_storeStrong(&v8->mGroup, a4);
+    v8->_isExclusive = exclusive;
+    objc_storeStrong(&v8->mGroup, group);
     dispatch_group_enter(v9->mGroup);
   }
 
@@ -37,20 +37,20 @@
   [(_CATProxyWaitToken *)&v3 dealloc];
 }
 
-- (void)notifyWithResourceProxy:(id)a3
+- (void)notifyWithResourceProxy:(id)proxy
 {
-  v5 = a3;
+  proxyCopy = proxy;
   v6 = 0;
   atomic_compare_exchange_strong(&self->mFinished, &v6, 1u);
   if (!v6)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_resourceProxy, a3);
+    v8 = proxyCopy;
+    objc_storeStrong(&self->_resourceProxy, proxy);
     dispatch_group_leave(self->mGroup);
     mGroup = self->mGroup;
     self->mGroup = 0;
 
-    v5 = v8;
+    proxyCopy = v8;
   }
 }
 

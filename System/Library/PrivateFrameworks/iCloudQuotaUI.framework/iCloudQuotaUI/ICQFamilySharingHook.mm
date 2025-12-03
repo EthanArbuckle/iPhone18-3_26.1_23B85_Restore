@@ -1,49 +1,49 @@
 @interface ICQFamilySharingHook
-- (BOOL)shouldMatchElement:(id)a3;
-- (BOOL)shouldMatchModel:(id)a3;
-- (ICQFamilySharingHook)initWithFlowDelegate:(id)a3;
+- (BOOL)shouldMatchElement:(id)element;
+- (BOOL)shouldMatchModel:(id)model;
+- (ICQFamilySharingHook)initWithFlowDelegate:(id)delegate;
 - (ICQServerHookDelegate)flowDelegate;
 - (RUIServerHookDelegate)delegate;
-- (void)_beginFamilySharingFlowWithCompletion:(id)a3;
+- (void)_beginFamilySharingFlowWithCompletion:(id)completion;
 @end
 
 @implementation ICQFamilySharingHook
 
-- (ICQFamilySharingHook)initWithFlowDelegate:(id)a3
+- (ICQFamilySharingHook)initWithFlowDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = ICQFamilySharingHook;
   v5 = [(ICQFamilySharingHook *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_flowDelegate, v4);
+    objc_storeWeak(&v5->_flowDelegate, delegateCopy);
   }
 
   return v6;
 }
 
-- (BOOL)shouldMatchElement:(id)a3
+- (BOOL)shouldMatchElement:(id)element
 {
-  v3 = [a3 name];
-  v4 = [v3 isEqualToString:@"ICQActionFamilySetup"];
+  name = [element name];
+  v4 = [name isEqualToString:@"ICQActionFamilySetup"];
 
   return v4;
 }
 
-- (BOOL)shouldMatchModel:(id)a3
+- (BOOL)shouldMatchModel:(id)model
 {
-  v3 = [a3 clientInfo];
-  v4 = [v3 objectForKey:@"action"];
+  clientInfo = [model clientInfo];
+  v4 = [clientInfo objectForKey:@"action"];
   v5 = [v4 isEqualToString:@"OPEN_FAMILY_SETUP"];
 
   return v5;
 }
 
-- (void)_beginFamilySharingFlowWithCompletion:(id)a3
+- (void)_beginFamilySharingFlowWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = [WeakRetained presentationContextForHook:self];
 
@@ -124,7 +124,7 @@
   v21[2] = __62__ICQFamilySharingHook__beginFamilySharingFlowWithCompletion___block_invoke;
   v21[3] = &unk_27A65B6E8;
   objc_copyWeak(&v23, &location);
-  v19 = v4;
+  v19 = completionCopy;
   v22 = v19;
   [(FACircleStateController *)v18 performOperationWithContext:v17 completion:v21];
 

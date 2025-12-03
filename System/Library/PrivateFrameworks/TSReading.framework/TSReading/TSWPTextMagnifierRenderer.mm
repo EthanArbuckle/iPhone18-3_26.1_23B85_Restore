@@ -1,21 +1,21 @@
 @interface TSWPTextMagnifierRenderer
-- (TSWPTextMagnifierRenderer)initWithFrame:(CGRect)a3;
+- (TSWPTextMagnifierRenderer)initWithFrame:(CGRect)frame;
 - (id)p_createChildLayer;
 - (void)dealloc;
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4;
+- (void)drawLayer:(id)layer inContext:(CGContext *)context;
 - (void)layoutSubviews;
-- (void)setAutoscrollDirections:(int)a3;
+- (void)setAutoscrollDirections:(int)directions;
 - (void)setNeedsDisplay;
 - (void)tearDown;
 @end
 
 @implementation TSWPTextMagnifierRenderer
 
-- (TSWPTextMagnifierRenderer)initWithFrame:(CGRect)a3
+- (TSWPTextMagnifierRenderer)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = TSWPTextMagnifierRenderer;
-  v3 = [(TSWPTextMagnifierRenderer *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TSWPTextMagnifierRenderer *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -55,14 +55,14 @@
   self->_overlayLayer = 0;
 }
 
-- (void)setAutoscrollDirections:(int)a3
+- (void)setAutoscrollDirections:(int)directions
 {
-  if (self->_autoscrollDirections != a3)
+  if (self->_autoscrollDirections != directions)
   {
     v9 = v3;
-    self->_autoscrollDirections = a3;
+    self->_autoscrollDirections = directions;
     v8 = 0.800000012;
-    if (!a3)
+    if (!directions)
     {
       v8 = 1.0;
     }
@@ -139,14 +139,14 @@
   [(TSWPTextMagnifierRenderer *)self setNeedsDisplay];
 }
 
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4
+- (void)drawLayer:(id)layer inContext:(CGContext *)context
 {
   canvasLayer = self->_canvasLayer;
-  if (canvasLayer == a3 && ![(CALayer *)canvasLayer isHidden])
+  if (canvasLayer == layer && ![(CALayer *)canvasLayer isHidden])
   {
     delegate = self->_delegate;
 
-    [(TSWPTextMagnifierRendererDelegate *)delegate drawMagnifierClippedCanvasLayer:a3 inContext:a4];
+    [(TSWPTextMagnifierRendererDelegate *)delegate drawMagnifierClippedCanvasLayer:layer inContext:context];
   }
 }
 

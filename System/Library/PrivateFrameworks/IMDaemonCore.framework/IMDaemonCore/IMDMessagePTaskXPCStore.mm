@@ -1,16 +1,16 @@
 @interface IMDMessagePTaskXPCStore
-- (BOOL)storePTask:(id)a3;
-- (BOOL)updateTaskFlagsForPTask:(id)a3;
+- (BOOL)storePTask:(id)task;
+- (BOOL)updateTaskFlagsForPTask:(id)task;
 - (id)loadMostRecentMessagePTasks;
 @end
 
 @implementation IMDMessagePTaskXPCStore
 
-- (BOOL)storePTask:(id)a3
+- (BOOL)storePTask:(id)task
 {
-  if (a3)
+  if (task)
   {
-    v3 = -[IMDMessagePTaskXPCStore _networkCall_InsertRowGuid:taskFlags:](self, "_networkCall_InsertRowGuid:taskFlags:", [a3 guid], objc_msgSend(a3, "taskFlags"));
+    v3 = -[IMDMessagePTaskXPCStore _networkCall_InsertRowGuid:taskFlags:](self, "_networkCall_InsertRowGuid:taskFlags:", [task guid], objc_msgSend(task, "taskFlags"));
     if (v3)
     {
       [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
@@ -77,15 +77,15 @@
   return result;
 }
 
-- (BOOL)updateTaskFlagsForPTask:(id)a3
+- (BOOL)updateTaskFlagsForPTask:(id)task
 {
-  if (!a3)
+  if (!task)
   {
     return 0;
   }
 
-  [a3 guid];
-  [a3 taskFlags];
+  [task guid];
+  [task taskFlags];
 
   return MEMORY[0x2821F9670](self, sel__networkCall_IMDMessagePTaskUpdateTaskFlagsForGUID_taskFlags_);
 }

@@ -1,23 +1,23 @@
 @interface _UITextInsertionRanges
 - (_NSRange)rangeToBeReplaced;
-- (_UITextInsertionRanges)initWithSelectedRanges:(id)a3;
+- (_UITextInsertionRanges)initWithSelectedRanges:(id)ranges;
 @end
 
 @implementation _UITextInsertionRanges
 
-- (_UITextInsertionRanges)initWithSelectedRanges:(id)a3
+- (_UITextInsertionRanges)initWithSelectedRanges:(id)ranges
 {
-  v4 = a3;
+  rangesCopy = ranges;
   v12.receiver = self;
   v12.super_class = _UITextInsertionRanges;
   v5 = [(_UITextInsertionRanges *)&v12 init];
   if (v5)
   {
-    v6 = [v4 bs_reverse];
-    v7 = [v6 mutableCopy];
+    bs_reverse = [rangesCopy bs_reverse];
+    v7 = [bs_reverse mutableCopy];
 
-    v8 = [(NSArray *)v7 lastObject];
-    v5->_rangeToBeReplaced.location = [v8 rangeValue];
+    lastObject = [(NSArray *)v7 lastObject];
+    v5->_rangeToBeReplaced.location = [lastObject rangeValue];
     v5->_rangeToBeReplaced.length = v9;
 
     [(NSArray *)v7 removeLastObject];

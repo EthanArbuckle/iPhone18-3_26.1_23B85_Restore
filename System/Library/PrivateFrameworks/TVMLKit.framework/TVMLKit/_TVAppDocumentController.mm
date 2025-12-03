@@ -1,93 +1,93 @@
 @interface _TVAppDocumentController
 - (BOOL)_isFlowcaseStack;
 - (BOOL)automaticallyAdjustsScrollViewInsets;
-- (BOOL)document:(id)a3 evaluateStyleMediaQuery:(id)a4;
+- (BOOL)document:(id)document evaluateStyleMediaQuery:(id)query;
 - (BOOL)ppt_isLoading;
 - (CGSize)formSize;
-- (CGSize)tv_adjustedWindowSizeForDocument:(id)a3;
+- (CGSize)tv_adjustedWindowSizeForDocument:(id)document;
 - (NSArray)preferredFocusEnvironments;
 - (UITapGestureRecognizer)menuGestureRecognizer;
-- (_TVAppDocumentController)initWithAppDocument:(id)a3;
+- (_TVAppDocumentController)initWithAppDocument:(id)document;
 - (_TVAppDocumentControllerDelegate)appDelegate;
-- (id)_alertControllerWithError:(id)a3;
+- (id)_alertControllerWithError:(id)error;
 - (id)_mediaQueryEvaluator;
 - (id)activeDocument;
 - (id)childViewControllerForHomeIndicatorAutoHidden;
 - (id)currentImpressionableElements;
-- (id)customAnimatorForNavigationControllerOperation:(int64_t)a3 fromViewController:(id)a4;
-- (id)customAnimatorForNavigationControllerOperation:(int64_t)a3 toViewController:(id)a4;
-- (id)impressionableViewElementsForDocument:(id)a3;
-- (id)overrideTraitCollectionForChildViewController:(id)a3;
+- (id)customAnimatorForNavigationControllerOperation:(int64_t)operation fromViewController:(id)controller;
+- (id)customAnimatorForNavigationControllerOperation:(int64_t)operation toViewController:(id)controller;
+- (id)impressionableViewElementsForDocument:(id)document;
+- (id)overrideTraitCollectionForChildViewController:(id)controller;
 - (int64_t)preferredStatusBarStyle;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_didHostTemplateViewController:(id)a3 usedTransitions:(BOOL)a4;
+- (void)_didHostTemplateViewController:(id)controller usedTransitions:(BOOL)transitions;
 - (void)_markAndNotifyStylesDirty;
-- (void)_menuGestureHandler:(id)a3;
+- (void)_menuGestureHandler:(id)handler;
 - (void)_updateIdleModeStatus;
-- (void)_updateModalPresentationStateWithTemplateView:(id)a3;
+- (void)_updateModalPresentationStateWithTemplateView:(id)view;
 - (void)_updateTemplateViewController;
-- (void)_willHostTemplateViewController:(id)a3 usesTransitions:(BOOL *)a4;
+- (void)_willHostTemplateViewController:(id)controller usesTransitions:(BOOL *)transitions;
 - (void)dealloc;
-- (void)documentDidUpdate:(id)a3;
-- (void)documentDidUpdateImplicitly:(id)a3;
-- (void)documentNeedsUpdate:(id)a3;
+- (void)documentDidUpdate:(id)update;
+- (void)documentDidUpdateImplicitly:(id)implicitly;
+- (void)documentNeedsUpdate:(id)update;
 - (void)loadView;
-- (void)pagePerformanceController:(id)a3 didUpdateMetrics:(id)a4;
+- (void)pagePerformanceController:(id)controller didUpdateMetrics:(id)metrics;
 - (void)reload;
-- (void)replaceAppDocumentWithAppDocument:(id)a3;
+- (void)replaceAppDocumentWithAppDocument:(id)document;
 - (void)scrollToTop;
-- (void)setAppDelegate:(id)a3;
-- (void)setMenuGestureHandler:(id)a3;
-- (void)setOpaque:(BOOL)a3;
+- (void)setAppDelegate:(id)delegate;
+- (void)setMenuGestureHandler:(id)handler;
+- (void)setOpaque:(BOOL)opaque;
 - (void)snapshotImpressions;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updatePreferredFocusedViewStateForFocus:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updatePreferredFocusedViewStateForFocus:(BOOL)focus;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation _TVAppDocumentController
 
-- (_TVAppDocumentController)initWithAppDocument:(id)a3
+- (_TVAppDocumentController)initWithAppDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   v12.receiver = self;
   v12.super_class = _TVAppDocumentController;
   v5 = [(TVDocumentViewController *)&v12 tvdvc_initWithNibName:0 bundle:0];
 
   if (v5)
   {
-    [(_TVAppDocumentController *)v5 setAppDocument:v4];
-    v6 = [(_TVAppDocumentController *)v5 appDocument];
-    [v6 setDelegate:v5];
+    [(_TVAppDocumentController *)v5 setAppDocument:documentCopy];
+    appDocument = [(_TVAppDocumentController *)v5 appDocument];
+    [appDocument setDelegate:v5];
 
     v5->_opaque = 1;
     v7 = objc_alloc_init(_TVPagePerformanceController);
     [(_TVAppDocumentController *)v5 setPagePerformance:v7];
 
-    v8 = [(_TVAppDocumentController *)v5 pagePerformance];
-    [v8 setDelegate:v5];
+    pagePerformance = [(_TVAppDocumentController *)v5 pagePerformance];
+    [pagePerformance setDelegate:v5];
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:v5 selector:sel__darkerSystemColorStatusChanged_ name:*MEMORY[0x277D76460] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__darkerSystemColorStatusChanged_ name:*MEMORY[0x277D76460] object:0];
 
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:v5 selector:sel__boldTextStatusChanged_ name:*MEMORY[0x277D76448] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v5 selector:sel__boldTextStatusChanged_ name:*MEMORY[0x277D76448] object:0];
   }
 
   return v5;
 }
 
-- (void)replaceAppDocumentWithAppDocument:(id)a3
+- (void)replaceAppDocumentWithAppDocument:(id)document
 {
   v5 = TVMLKitSignpostLogObject;
   v6 = TVMLKitSignpostLogObject;
-  v7 = a3;
+  documentCopy = document;
   v8 = os_signpost_id_make_with_pointer(v6, self);
   if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
@@ -99,55 +99,55 @@
     }
   }
 
-  v10 = [(_TVAppDocumentController *)self appDocument];
-  [v10 setDelegate:0];
-  [(_TVAppDocumentController *)self setAppDocument:v7];
+  appDocument = [(_TVAppDocumentController *)self appDocument];
+  [appDocument setDelegate:0];
+  [(_TVAppDocumentController *)self setAppDocument:documentCopy];
 
-  v11 = [(_TVAppDocumentController *)self appDocument];
-  [v11 setDelegate:self];
+  appDocument2 = [(_TVAppDocumentController *)self appDocument];
+  [appDocument2 setDelegate:self];
 
   if ([(_TVAppDocumentController *)self isViewLoaded])
   {
     [(_TVAppDocumentController *)self _updateTemplateViewController];
     [(_TVAppDocumentController *)self _updateIdleModeStatus];
-    v12 = [(_TVAppDocumentController *)self appDocument];
-    [v12 onLoad];
+    appDocument3 = [(_TVAppDocumentController *)self appDocument];
+    [appDocument3 onLoad];
 
-    v13 = [(_TVAppDocumentController *)self appDocument];
-    [v13 onAppear];
+    appDocument4 = [(_TVAppDocumentController *)self appDocument];
+    [appDocument4 onAppear];
 
-    [v10 onDisappear];
-    [v10 onUnload];
+    [appDocument onDisappear];
+    [appDocument onUnload];
   }
 }
 
 - (void)dealloc
 {
-  v3 = [(_TVAppDocumentController *)self appDocument];
-  [v3 onUnload];
+  appDocument = [(_TVAppDocumentController *)self appDocument];
+  [appDocument onUnload];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v5 = [(_TVAppDocumentController *)self templateViewController];
-  v6 = [v5 view];
-  [v6 removeFromSuperview];
+  templateViewController = [(_TVAppDocumentController *)self templateViewController];
+  view = [templateViewController view];
+  [view removeFromSuperview];
 
-  v7 = [(_TVAppDocumentController *)self templateViewController];
-  [v7 willMoveToParentViewController:0];
+  templateViewController2 = [(_TVAppDocumentController *)self templateViewController];
+  [templateViewController2 willMoveToParentViewController:0];
 
-  v8 = [(_TVAppDocumentController *)self templateViewController];
-  [v8 removeFromParentViewController];
+  templateViewController3 = [(_TVAppDocumentController *)self templateViewController];
+  [templateViewController3 removeFromParentViewController];
 
   [(_TVAppDocumentController *)self setTemplateViewController:0];
-  v9 = [(_TVAppDocumentController *)self appDocument];
-  [v9 setDelegate:0];
+  appDocument2 = [(_TVAppDocumentController *)self appDocument];
+  [appDocument2 setDelegate:0];
 
   if ([(_TVAppDocumentController *)self isVisualEffectDisablementNeeded])
   {
-    v10 = [(_TVAppDocumentController *)self templateViewController];
-    v11 = [v10 view];
-    [_TVVisualEffectView removeHostView:v11];
+    templateViewController4 = [(_TVAppDocumentController *)self templateViewController];
+    view2 = [templateViewController4 view];
+    [_TVVisualEffectView removeHostView:view2];
   }
 
   v12.receiver = self;
@@ -155,9 +155,9 @@
   [(_TVAppDocumentController *)&v12 dealloc];
 }
 
-- (void)setAppDelegate:(id)a3
+- (void)setAppDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_appDelegate);
 
   v6 = obj;
@@ -167,14 +167,14 @@
     v5 = [obj conformsToProtocol:&unk_287EA7140];
     if (v5)
     {
-      v7 = [(_TVAppDocumentController *)self appDelegate];
+      appDelegate = [(_TVAppDocumentController *)self appDelegate];
       p_delegateFlags = &self->_delegateFlags;
       self->_delegateFlags.hasMediaQueryEvaluator = objc_opt_respondsToSelector() & 1;
 
-      v9 = [(_TVAppDocumentController *)self appDelegate];
+      appDelegate2 = [(_TVAppDocumentController *)self appDelegate];
       self->_delegateFlags.hasWillHostTemplateViewController = objc_opt_respondsToSelector() & 1;
 
-      v10 = [(_TVAppDocumentController *)self appDelegate];
+      appDelegate3 = [(_TVAppDocumentController *)self appDelegate];
       p_delegateFlags->hasDidHostTemplateViewController = objc_opt_respondsToSelector() & 1;
     }
 
@@ -193,22 +193,22 @@
 - (NSArray)preferredFocusEnvironments
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v3 = [(_TVAppDocumentController *)self templateViewController];
-  v4 = [v3 parentViewController];
-  if (v4 && ![(_TVAppDocumentController *)self isTransitioning])
+  templateViewController = [(_TVAppDocumentController *)self templateViewController];
+  parentViewController = [templateViewController parentViewController];
+  if (parentViewController && ![(_TVAppDocumentController *)self isTransitioning])
   {
-    v6 = [(_TVAppDocumentController *)self templateViewController];
+    templateViewController2 = [(_TVAppDocumentController *)self templateViewController];
   }
 
   else
   {
-    v5 = [(_TVAppDocumentController *)self childViewControllers];
-    v6 = [v5 firstObject];
+    childViewControllers = [(_TVAppDocumentController *)self childViewControllers];
+    templateViewController2 = [childViewControllers firstObject];
   }
 
-  if (v6)
+  if (templateViewController2)
   {
-    v9[0] = v6;
+    v9[0] = templateViewController2;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
   }
 
@@ -222,12 +222,12 @@
 
 - (void)loadView
 {
-  v3 = [(_TVAppDocumentController *)self pagePerformance];
-  [v3 markViewWillLoad];
+  pagePerformance = [(_TVAppDocumentController *)self pagePerformance];
+  [pagePerformance markViewWillLoad];
 
   v4 = objc_alloc(MEMORY[0x277D75D18]);
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  [v5 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v7 = [v4 initWithFrame:?];
 
   if (self->_opaque)
@@ -250,26 +250,26 @@
   v20.receiver = self;
   v20.super_class = _TVAppDocumentController;
   [(_TVAppDocumentController *)&v20 viewDidLoad];
-  v3 = [(_TVAppDocumentController *)self appDocument];
+  appDocument = [(_TVAppDocumentController *)self appDocument];
 
-  if (v3)
+  if (appDocument)
   {
     [(_TVAppDocumentController *)self _updateTemplateViewController];
-    v4 = [(_TVAppDocumentController *)self appDocument];
-    [v4 onLoad];
+    appDocument2 = [(_TVAppDocumentController *)self appDocument];
+    [appDocument2 onLoad];
   }
 
   else
   {
-    v4 = [(_TVAppDocumentController *)self view];
+    appDocument2 = [(_TVAppDocumentController *)self view];
     v5 = objc_alloc_init(_TVLoadingViewController);
-    v6 = [(_TVAppDocumentController *)self navigationItem];
-    v7 = [v6 title];
+    navigationItem = [(_TVAppDocumentController *)self navigationItem];
+    title = [navigationItem title];
 
-    if (v7)
+    if (title)
     {
-      v8 = [(_TVLoadingViewController *)v5 navigationItem];
-      [v8 setTitle:v7];
+      navigationItem2 = [(_TVLoadingViewController *)v5 navigationItem];
+      [navigationItem2 setTitle:title];
     }
 
     [(_TVAppDocumentController *)self setTemplateViewController:v5];
@@ -281,120 +281,120 @@
     }
 
     [(_TVAppDocumentController *)self addChildViewController:v5];
-    v12 = [(_TVLoadingViewController *)v5 view];
-    [v4 addSubview:v12];
+    view = [(_TVLoadingViewController *)v5 view];
+    [appDocument2 addSubview:view];
     [(_TVLoadingViewController *)v5 didMoveToParentViewController:self];
   }
 
-  v13 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v14 = [v13 BOOLForKey:@"enableTVMLRefresh"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v14 = [standardUserDefaults BOOLForKey:@"enableTVMLRefresh"];
 
   if (v14)
   {
     v15 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:13 target:self action:sel_reload];
-    v16 = [(_TVAppDocumentController *)self navigationItem];
-    [v16 setRightBarButtonItem:v15];
+    navigationItem3 = [(_TVAppDocumentController *)self navigationItem];
+    [navigationItem3 setRightBarButtonItem:v15];
   }
 
-  v17 = [(_TVAppDocumentController *)self navigationController];
-  v18 = [v17 interactivePopGestureRecognizer];
-  [v18 setDelegate:self];
+  navigationController = [(_TVAppDocumentController *)self navigationController];
+  interactivePopGestureRecognizer = [navigationController interactivePopGestureRecognizer];
+  [interactivePopGestureRecognizer setDelegate:self];
 
   [(_TVAppDocumentController *)self setDefinesPresentationContext:1];
-  v19 = [(_TVAppDocumentController *)self pagePerformance];
-  [v19 markViewDidLoad];
+  pagePerformance = [(_TVAppDocumentController *)self pagePerformance];
+  [pagePerformance markViewDidLoad];
 }
 
 - (void)reload
 {
-  v2 = [MEMORY[0x277D75128] sharedApplication];
-  v3 = [v2 delegate];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  delegate = [mEMORY[0x277D75128] delegate];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v3 reload];
+    [delegate reload];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(_TVAppDocumentController *)self pagePerformance];
-  [v5 markViewWillAppear];
+  appearCopy = appear;
+  pagePerformance = [(_TVAppDocumentController *)self pagePerformance];
+  [pagePerformance markViewWillAppear];
 
   v9.receiver = self;
   v9.super_class = _TVAppDocumentController;
-  [(_TVAppDocumentController *)&v9 viewWillAppear:v3];
+  [(_TVAppDocumentController *)&v9 viewWillAppear:appearCopy];
   if (![(_TVAppDocumentController *)self isTransitioning]&& [(_TVAppDocumentController *)self isVisualEffectDisablementNeeded])
   {
-    v6 = [(_TVAppDocumentController *)self templateViewController];
-    v7 = [v6 view];
-    [_TVVisualEffectView disableForHostView:v7];
+    templateViewController = [(_TVAppDocumentController *)self templateViewController];
+    view = [templateViewController view];
+    [_TVVisualEffectView disableForHostView:view];
   }
 
   [(_TVAppDocumentController *)self _updateIdleModeStatus];
-  v8 = [(_TVAppDocumentController *)self appDocument];
-  [v8 onAppear];
+  appDocument = [(_TVAppDocumentController *)self appDocument];
+  [appDocument onAppear];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v12.receiver = self;
   v12.super_class = _TVAppDocumentController;
-  [(_TVAppDocumentController *)&v12 viewDidAppear:a3];
+  [(_TVAppDocumentController *)&v12 viewDidAppear:appear];
   if (![(_TVAppDocumentController *)self isTransitioning]&& [(_TVAppDocumentController *)self isVisualEffectDisablementNeeded])
   {
-    v4 = [(_TVAppDocumentController *)self templateViewController];
-    v5 = [v4 view];
-    [_TVVisualEffectView enableForHostView:v5];
+    templateViewController = [(_TVAppDocumentController *)self templateViewController];
+    view = [templateViewController view];
+    [_TVVisualEffectView enableForHostView:view];
   }
 
-  v6 = [(_TVAppDocumentController *)self navigationController];
-  v7 = [v6 viewControllers];
-  v8 = [v7 count] != 1;
+  navigationController = [(_TVAppDocumentController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  v8 = [viewControllers count] != 1;
 
-  v9 = [(_TVAppDocumentController *)self navigationController];
-  v10 = [v9 interactivePopGestureRecognizer];
-  [v10 setEnabled:v8];
+  navigationController2 = [(_TVAppDocumentController *)self navigationController];
+  interactivePopGestureRecognizer = [navigationController2 interactivePopGestureRecognizer];
+  [interactivePopGestureRecognizer setEnabled:v8];
 
-  v11 = [(_TVAppDocumentController *)self pagePerformance];
-  [v11 markViewDidAppear];
+  pagePerformance = [(_TVAppDocumentController *)self pagePerformance];
+  [pagePerformance markViewDidAppear];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [(_TVAppDocumentController *)self pagePerformance];
-  [v5 markViewWillDisappear];
+  disappearCopy = disappear;
+  pagePerformance = [(_TVAppDocumentController *)self pagePerformance];
+  [pagePerformance markViewWillDisappear];
 
   v8.receiver = self;
   v8.super_class = _TVAppDocumentController;
-  [(_TVAppDocumentController *)&v8 viewWillDisappear:v3];
+  [(_TVAppDocumentController *)&v8 viewWillDisappear:disappearCopy];
   if (![(_TVAppDocumentController *)self isTransitioning])
   {
     if ([(_TVAppDocumentController *)self isVisualEffectDisablementNeeded])
     {
-      v6 = [(_TVAppDocumentController *)self templateViewController];
-      v7 = [v6 view];
-      [_TVVisualEffectView disableForHostView:v7];
+      templateViewController = [(_TVAppDocumentController *)self templateViewController];
+      view = [templateViewController view];
+      [_TVVisualEffectView disableForHostView:view];
     }
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = _TVAppDocumentController;
-  [(_TVAppDocumentController *)&v7 viewDidDisappear:a3];
-  v4 = [(_TVAppDocumentController *)self pagePerformance];
-  [v4 markViewDidDisappear];
+  [(_TVAppDocumentController *)&v7 viewDidDisappear:disappear];
+  pagePerformance = [(_TVAppDocumentController *)self pagePerformance];
+  [pagePerformance markViewDidDisappear];
 
-  v5 = [(_TVAppDocumentController *)self pagePerformanceView];
-  [v5 removeFromSuperview];
+  pagePerformanceView = [(_TVAppDocumentController *)self pagePerformanceView];
+  [pagePerformanceView removeFromSuperview];
 
-  v6 = [(_TVAppDocumentController *)self appDocument];
-  [v6 onDisappear];
+  appDocument = [(_TVAppDocumentController *)self appDocument];
+  [appDocument onDisappear];
 }
 
 - (void)viewDidLayoutSubviews
@@ -402,21 +402,21 @@
   v12.receiver = self;
   v12.super_class = _TVAppDocumentController;
   [(_TVAppDocumentController *)&v12 viewDidLayoutSubviews];
-  v3 = [(_TVAppDocumentController *)self templateViewController];
-  v4 = [v3 parentViewController];
+  templateViewController = [(_TVAppDocumentController *)self templateViewController];
+  parentViewController = [templateViewController parentViewController];
 
-  if (v4 == self)
+  if (parentViewController == self)
   {
-    v5 = [(_TVAppDocumentController *)self view];
-    [v5 bounds];
+    view = [(_TVAppDocumentController *)self view];
+    [view bounds];
     v7 = v6;
     v9 = v8;
 
-    v10 = [(_TVAppDocumentController *)self templateViewController];
-    v11 = [v10 view];
+    templateViewController2 = [(_TVAppDocumentController *)self templateViewController];
+    view2 = [templateViewController2 view];
 
-    [v11 setCenter:{v7 * 0.5, v9 * 0.5}];
-    [v11 setBounds:{0.0, 0.0, v7, v9}];
+    [view2 setCenter:{v7 * 0.5, v9 * 0.5}];
+    [view2 setBounds:{0.0, 0.0, v7, v9}];
   }
 
   if (self->_shouldMarkStylesDirtyBeforeLayout)
@@ -428,46 +428,46 @@
 
 - (int64_t)preferredStatusBarStyle
 {
-  v3 = [(_TVAppDocumentController *)self templateViewController];
-  if (v3)
+  templateViewController = [(_TVAppDocumentController *)self templateViewController];
+  if (templateViewController)
   {
-    v4 = [(_TVAppDocumentController *)self templateViewController];
-    v5 = [v4 preferredStatusBarStyle];
+    templateViewController2 = [(_TVAppDocumentController *)self templateViewController];
+    preferredStatusBarStyle = [templateViewController2 preferredStatusBarStyle];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = _TVAppDocumentController;
-    v5 = [(_TVAppDocumentController *)&v7 preferredStatusBarStyle];
+    preferredStatusBarStyle = [(_TVAppDocumentController *)&v7 preferredStatusBarStyle];
   }
 
-  return v5;
+  return preferredStatusBarStyle;
 }
 
 - (id)childViewControllerForHomeIndicatorAutoHidden
 {
-  v2 = [(_TVAppDocumentController *)self childViewControllers];
-  v3 = [v2 lastObject];
+  childViewControllers = [(_TVAppDocumentController *)self childViewControllers];
+  lastObject = [childViewControllers lastObject];
 
-  return v3;
+  return lastObject;
 }
 
-- (id)customAnimatorForNavigationControllerOperation:(int64_t)a3 fromViewController:(id)a4
+- (id)customAnimatorForNavigationControllerOperation:(int64_t)operation fromViewController:(id)controller
 {
-  v6 = a4;
+  controllerCopy = controller;
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 appDocument];
-    v8 = [v7 templateElement];
+    appDocument = [controllerCopy appDocument];
+    templateElement = [appDocument templateElement];
 
-    v9 = [(_TVAppDocumentController *)self appDocument];
-    v10 = [v9 templateElement];
+    appDocument2 = [(_TVAppDocumentController *)self appDocument];
+    templateElement2 = [appDocument2 templateElement];
 
-    if (v10)
+    if (templateElement2)
     {
       v11 = +[TVInterfaceFactory sharedInterfaceFactory];
-      v12 = [v11 _controllerTransitionFromElement:v10 toElement:v8 forNavigationControllerOperation:a3 relativeToFrom:0];
+      v12 = [v11 _controllerTransitionFromElement:templateElement2 toElement:templateElement forNavigationControllerOperation:operation relativeToFrom:0];
 
       if (v12)
       {
@@ -478,13 +478,13 @@ LABEL_8:
     }
   }
 
-  v13 = [(_TVAppDocumentController *)self templateViewController];
+  templateViewController = [(_TVAppDocumentController *)self templateViewController];
   v14 = objc_opt_respondsToSelector();
 
   if (v14)
   {
-    v8 = [(_TVAppDocumentController *)self templateViewController];
-    v12 = [v8 customAnimatorForNavigationControllerOperation:a3 fromViewController:v6];
+    templateElement = [(_TVAppDocumentController *)self templateViewController];
+    v12 = [templateElement customAnimatorForNavigationControllerOperation:operation fromViewController:controllerCopy];
     goto LABEL_8;
   }
 
@@ -494,21 +494,21 @@ LABEL_10:
   return v12;
 }
 
-- (id)customAnimatorForNavigationControllerOperation:(int64_t)a3 toViewController:(id)a4
+- (id)customAnimatorForNavigationControllerOperation:(int64_t)operation toViewController:(id)controller
 {
-  v6 = a4;
+  controllerCopy = controller;
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 appDocument];
-    v8 = [v7 templateElement];
+    appDocument = [controllerCopy appDocument];
+    templateElement = [appDocument templateElement];
 
-    v9 = [(_TVAppDocumentController *)self appDocument];
-    v10 = [v9 templateElement];
+    appDocument2 = [(_TVAppDocumentController *)self appDocument];
+    templateElement2 = [appDocument2 templateElement];
 
-    if (v10)
+    if (templateElement2)
     {
       v11 = +[TVInterfaceFactory sharedInterfaceFactory];
-      v12 = [v11 _controllerTransitionFromElement:v10 toElement:v8 forNavigationControllerOperation:a3 relativeToFrom:1];
+      v12 = [v11 _controllerTransitionFromElement:templateElement2 toElement:templateElement forNavigationControllerOperation:operation relativeToFrom:1];
 
       if (v12)
       {
@@ -519,13 +519,13 @@ LABEL_8:
     }
   }
 
-  v13 = [(_TVAppDocumentController *)self templateViewController];
+  templateViewController = [(_TVAppDocumentController *)self templateViewController];
   v14 = objc_opt_respondsToSelector();
 
   if (v14)
   {
-    v8 = [(_TVAppDocumentController *)self templateViewController];
-    v12 = [v8 customAnimatorForNavigationControllerOperation:a3 toViewController:v6];
+    templateElement = [(_TVAppDocumentController *)self templateViewController];
+    v12 = [templateElement customAnimatorForNavigationControllerOperation:operation toViewController:controllerCopy];
     goto LABEL_8;
   }
 
@@ -537,66 +537,66 @@ LABEL_10:
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v3 = [(_TVAppDocumentController *)self childViewControllers];
-  v4 = [v3 lastObject];
+  childViewControllers = [(_TVAppDocumentController *)self childViewControllers];
+  lastObject = [childViewControllers lastObject];
 
-  if (v4)
+  if (lastObject)
   {
-    v5 = [v4 supportedInterfaceOrientations];
+    supportedInterfaceOrientations = [lastObject supportedInterfaceOrientations];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = _TVAppDocumentController;
-    v5 = [(_TVAppDocumentController *)&v8 supportedInterfaceOrientations];
+    supportedInterfaceOrientations = [(_TVAppDocumentController *)&v8 supportedInterfaceOrientations];
   }
 
-  v6 = v5;
+  v6 = supportedInterfaceOrientations;
 
   return v6;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   if (os_log_type_enabled(TVMLKitLogObject, OS_LOG_TYPE_DEBUG))
   {
     [_TVAppDocumentController viewWillTransitionToSize:withTransitionCoordinator:];
   }
 
-  v8 = [(_TVAppDocumentController *)self appDocument];
+  appDocument = [(_TVAppDocumentController *)self appDocument];
 
-  if (v8)
+  if (appDocument)
   {
     self->_shouldMarkStylesDirtyBeforeLayout = 1;
   }
 
   v9.receiver = self;
   v9.super_class = _TVAppDocumentController;
-  [(_TVAppDocumentController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(_TVAppDocumentController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
-- (id)overrideTraitCollectionForChildViewController:(id)a3
+- (id)overrideTraitCollectionForChildViewController:(id)controller
 {
   v19[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   v18.receiver = self;
   v18.super_class = _TVAppDocumentController;
-  v5 = [(_TVAppDocumentController *)&v18 overrideTraitCollectionForChildViewController:v4];
-  v6 = [(_TVAppDocumentController *)self templateViewController];
-  if (v6)
+  v5 = [(_TVAppDocumentController *)&v18 overrideTraitCollectionForChildViewController:controllerCopy];
+  templateViewController = [(_TVAppDocumentController *)self templateViewController];
+  if (templateViewController)
   {
-    v7 = v6;
-    v8 = [(_TVAppDocumentController *)self templateViewController];
+    v7 = templateViewController;
+    templateViewController2 = [(_TVAppDocumentController *)self templateViewController];
 
-    if (v8 == v4)
+    if (templateViewController2 == controllerCopy)
     {
-      v9 = [(_TVAppDocumentController *)self appDocument];
-      v10 = [v9 templateElement];
-      v11 = [TVMLUtilities overrideInterfaceStyleForTemplateElement:v10];
+      appDocument = [(_TVAppDocumentController *)self appDocument];
+      templateElement = [appDocument templateElement];
+      v11 = [TVMLUtilities overrideInterfaceStyleForTemplateElement:templateElement];
 
       if (v11)
       {
@@ -624,22 +624,22 @@ LABEL_10:
   return v5;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(_TVAppDocumentController *)self templateViewController];
+  changeCopy = change;
+  templateViewController = [(_TVAppDocumentController *)self templateViewController];
 
-  if (v5)
+  if (templateViewController)
   {
-    v6 = [(_TVAppDocumentController *)self traitCollection];
-    v7 = [(_TVAppDocumentController *)self appDocument];
-    v8 = [v7 templateElement];
-    v9 = [TVMLUtilities overrideInterfaceStyleForTemplateElement:v8];
+    traitCollection = [(_TVAppDocumentController *)self traitCollection];
+    appDocument = [(_TVAppDocumentController *)self appDocument];
+    templateElement = [appDocument templateElement];
+    v9 = [TVMLUtilities overrideInterfaceStyleForTemplateElement:templateElement];
 
-    if (v9 || ![v4 userInterfaceStyle])
+    if (v9 || ![changeCopy userInterfaceStyle])
     {
       v10 = 0;
-      if (!v4)
+      if (!changeCopy)
       {
         goto LABEL_8;
       }
@@ -647,14 +647,14 @@ LABEL_10:
 
     else
     {
-      v14 = [v4 userInterfaceStyle];
-      v10 = v14 != [v6 userInterfaceStyle];
-      if (!v4)
+      userInterfaceStyle = [changeCopy userInterfaceStyle];
+      v10 = userInterfaceStyle != [traitCollection userInterfaceStyle];
+      if (!changeCopy)
       {
 LABEL_8:
-        v15 = [(_TVAppDocumentController *)self mediaQueryEvaluator];
-        v16 = [v15 windowSizeAdaptor];
-        v17 = [v16 update];
+        mediaQueryEvaluator = [(_TVAppDocumentController *)self mediaQueryEvaluator];
+        windowSizeAdaptor = [mediaQueryEvaluator windowSizeAdaptor];
+        update = [windowSizeAdaptor update];
 
         if (!v10)
         {
@@ -665,11 +665,11 @@ LABEL_8:
       }
     }
 
-    v11 = [v4 horizontalSizeClass];
-    if (v11 == [v6 horizontalSizeClass])
+    horizontalSizeClass = [changeCopy horizontalSizeClass];
+    if (horizontalSizeClass == [traitCollection horizontalSizeClass])
     {
-      v12 = [v4 verticalSizeClass];
-      v13 = v12 != [v6 verticalSizeClass];
+      verticalSizeClass = [changeCopy verticalSizeClass];
+      v13 = verticalSizeClass != [traitCollection verticalSizeClass];
     }
 
     else
@@ -677,14 +677,14 @@ LABEL_8:
       v13 = 1;
     }
 
-    v18 = [v4 preferredContentSizeCategory];
-    v19 = [v6 preferredContentSizeCategory];
+    preferredContentSizeCategory = [changeCopy preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [traitCollection preferredContentSizeCategory];
 
-    v17 = v18 != v19 || v13;
+    update = preferredContentSizeCategory != preferredContentSizeCategory2 || v13;
     if (!v10)
     {
 LABEL_9:
-      if (v17)
+      if (update)
       {
         self->_shouldMarkStylesDirtyBeforeLayout = 1;
       }
@@ -697,33 +697,33 @@ LABEL_16:
 LABEL_17:
   }
 
-  v20 = [(_TVAppDocumentController *)self navigationController];
+  navigationController = [(_TVAppDocumentController *)self navigationController];
   v21 = +[_TVModalPresenter presenter];
-  v22 = [v21 modalRootViewController];
-  v23 = [v20 isEqual:v22];
+  modalRootViewController = [v21 modalRootViewController];
+  v23 = [navigationController isEqual:modalRootViewController];
 
   if (v23)
   {
-    v24 = [(_TVAppDocumentController *)self navigationController];
-    v25 = [v24 navigationBar];
-    [v25 traitCollectionDidChange:v4];
+    navigationController2 = [(_TVAppDocumentController *)self navigationController];
+    navigationBar = [navigationController2 navigationBar];
+    [navigationBar traitCollectionDidChange:changeCopy];
   }
 
   v26.receiver = self;
   v26.super_class = _TVAppDocumentController;
-  [(_TVAppDocumentController *)&v26 traitCollectionDidChange:v4];
+  [(_TVAppDocumentController *)&v26 traitCollectionDidChange:changeCopy];
 }
 
-- (CGSize)tv_adjustedWindowSizeForDocument:(id)a3
+- (CGSize)tv_adjustedWindowSizeForDocument:(id)document
 {
-  v4 = [(_TVAppDocumentController *)self mediaQueryEvaluator];
-  v5 = [v4 windowSizeAdaptor];
-  [v5 adjustedWindowSize];
+  mediaQueryEvaluator = [(_TVAppDocumentController *)self mediaQueryEvaluator];
+  windowSizeAdaptor = [mediaQueryEvaluator windowSizeAdaptor];
+  [windowSizeAdaptor adjustedWindowSize];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(_TVAppDocumentController *)self parentViewController];
-  if (!v10 || (v11 = v10, -[_TVAppDocumentController parentViewController](self, "parentViewController"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 isViewLoaded], v12, v11, !v13) || (-[_TVAppDocumentController parentViewController](self, "parentViewController"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "view"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "frame"), v17 = v16, v19 = v18, v15, v14, v17 >= v7) && v19 >= v9)
+  parentViewController = [(_TVAppDocumentController *)self parentViewController];
+  if (!parentViewController || (v11 = parentViewController, -[_TVAppDocumentController parentViewController](self, "parentViewController"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 isViewLoaded], v12, v11, !v13) || (-[_TVAppDocumentController parentViewController](self, "parentViewController"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "view"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "frame"), v17 = v16, v19 = v18, v15, v14, v17 >= v7) && v19 >= v9)
   {
     v17 = v7;
     v19 = v9;
@@ -736,113 +736,113 @@ LABEL_17:
   return result;
 }
 
-- (void)documentNeedsUpdate:(id)a3
+- (void)documentNeedsUpdate:(id)update
 {
-  v3 = a3;
+  updateCopy = update;
   if (os_log_type_enabled(TVMLKitLogObject, OS_LOG_TYPE_DEBUG))
   {
     [_TVAppDocumentController documentNeedsUpdate:];
   }
 }
 
-- (void)documentDidUpdate:(id)a3
+- (void)documentDidUpdate:(id)update
 {
-  v30 = a3;
+  updateCopy = update;
   if (([(_TVAppDocumentController *)self isViewLoaded]& 1) != 0)
   {
-    if (([v30 isUpdated] & 1) != 0 || !objc_msgSend(v30, "isSubtreeUpdated"))
+    if (([updateCopy isUpdated] & 1) != 0 || !objc_msgSend(updateCopy, "isSubtreeUpdated"))
     {
       [(_TVAppDocumentController *)self _updateTemplateViewController];
-      v7 = [(_TVAppDocumentController *)self appDocument];
-      v9 = [v7 templateElement];
-      [v9 resetProperty:1];
+      appDocument = [(_TVAppDocumentController *)self appDocument];
+      templateElement = [appDocument templateElement];
+      [templateElement resetProperty:1];
     }
 
     else
     {
-      v4 = [(_TVAppDocumentController *)self pagePerformance];
-      v5 = [(_TVAppDocumentController *)self appDocument];
-      v6 = [v5 templateElement];
-      v7 = [v4 getEntryForTemplate:v6];
+      pagePerformance = [(_TVAppDocumentController *)self pagePerformance];
+      appDocument2 = [(_TVAppDocumentController *)self appDocument];
+      templateElement2 = [appDocument2 templateElement];
+      appDocument = [pagePerformance getEntryForTemplate:templateElement2];
 
-      [v7 markTemplateWillRender];
-      v8 = [(_TVAppDocumentController *)self appDocument];
-      v9 = [v8 templateElement];
+      [appDocument markTemplateWillRender];
+      appDocument3 = [(_TVAppDocumentController *)self appDocument];
+      templateElement = [appDocument3 templateElement];
 
-      if ([v9 updateType] == 4)
+      if ([templateElement updateType] == 4)
       {
-        v10 = [(_TVAppDocumentController *)self mediaQueryEvaluator];
-        [v10 setTemplateElement:v9];
+        mediaQueryEvaluator = [(_TVAppDocumentController *)self mediaQueryEvaluator];
+        [mediaQueryEvaluator setTemplateElement:templateElement];
       }
 
       v11 = +[TVInterfaceFactory sharedInterfaceFactory];
-      [v11 _willParseAppDocument:v30 forImplicitUpdates:0];
+      [v11 _willParseAppDocument:updateCopy forImplicitUpdates:0];
 
       v12 = +[TVInterfaceFactory sharedInterfaceFactory];
-      v13 = [(_TVAppDocumentController *)self appDocument];
-      v14 = [v13 templateElement];
-      v15 = [(_TVAppDocumentController *)self templateViewController];
-      v16 = [v12 _viewControllerFromElement:v14 existingController:v15];
+      appDocument4 = [(_TVAppDocumentController *)self appDocument];
+      templateElement3 = [appDocument4 templateElement];
+      templateViewController = [(_TVAppDocumentController *)self templateViewController];
+      v16 = [v12 _viewControllerFromElement:templateElement3 existingController:templateViewController];
 
-      [v7 markTemplateDidRender];
-      [v7 markTemplateWillTransition];
-      [v7 markTemplateDidTransition];
-      v17 = [(_TVAppDocumentController *)self appDocument];
-      v18 = [v17 templateElement];
-      [v18 resetProperty:1];
+      [appDocument markTemplateDidRender];
+      [appDocument markTemplateWillTransition];
+      [appDocument markTemplateDidTransition];
+      appDocument5 = [(_TVAppDocumentController *)self appDocument];
+      templateElement4 = [appDocument5 templateElement];
+      [templateElement4 resetProperty:1];
 
-      v19 = [(_TVAppDocumentController *)self tabBarController];
-      if (v19)
+      tabBarController = [(_TVAppDocumentController *)self tabBarController];
+      if (tabBarController)
       {
         if ([(_TVAppDocumentController *)self _isFlowcaseStack])
         {
-          v20 = [(_TVAppDocumentController *)self templateViewController];
-          v21 = [v20 view];
-          [v21 setClipsToBounds:0];
+          templateViewController2 = [(_TVAppDocumentController *)self templateViewController];
+          view = [templateViewController2 view];
+          [view setClipsToBounds:0];
 
-          v22 = [(_TVAppDocumentController *)self templateViewController];
-          v23 = [v22 view];
-          v24 = [v23 subviews];
-          v25 = [v24 firstObject];
-          [v25 setClipsToBounds:0];
+          templateViewController3 = [(_TVAppDocumentController *)self templateViewController];
+          view2 = [templateViewController3 view];
+          subviews = [view2 subviews];
+          firstObject = [subviews firstObject];
+          [firstObject setClipsToBounds:0];
         }
 
-        [v19 _setSelectedViewControllerNeedsLayout];
+        [tabBarController _setSelectedViewControllerNeedsLayout];
       }
 
-      v26 = [v16 view];
-      [(_TVAppDocumentController *)self _updateModalPresentationStateWithTemplateView:v26];
+      view3 = [v16 view];
+      [(_TVAppDocumentController *)self _updateModalPresentationStateWithTemplateView:view3];
     }
 
     [(_TVAppDocumentController *)self _updateIdleModeStatus];
-    v29 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v29 postNotificationName:@"_TVAppDocumentDidUpdateNotification" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"_TVAppDocumentDidUpdateNotification" object:self];
 
-    [v30 onUpdate];
+    [updateCopy onUpdate];
   }
 
   else
   {
-    v27 = [(_TVAppDocumentController *)self appDocument];
-    v28 = [v27 templateElement];
-    [v28 resetProperty:1];
+    appDocument6 = [(_TVAppDocumentController *)self appDocument];
+    templateElement5 = [appDocument6 templateElement];
+    [templateElement5 resetProperty:1];
   }
 }
 
-- (BOOL)document:(id)a3 evaluateStyleMediaQuery:(id)a4
+- (BOOL)document:(id)document evaluateStyleMediaQuery:(id)query
 {
-  v5 = a4;
-  v6 = [(_TVAppDocumentController *)self mediaQueryEvaluator];
-  v7 = [v6 evaluateMediaQuery:v5];
+  queryCopy = query;
+  mediaQueryEvaluator = [(_TVAppDocumentController *)self mediaQueryEvaluator];
+  v7 = [mediaQueryEvaluator evaluateMediaQuery:queryCopy];
 
   return v7;
 }
 
-- (id)impressionableViewElementsForDocument:(id)a3
+- (id)impressionableViewElementsForDocument:(id)document
 {
-  v4 = a3;
-  v5 = [(_TVAppDocumentController *)self templateViewController];
-  v6 = [v5 tv_impressionableElementsForDocument:v4];
+  documentCopy = document;
+  templateViewController = [(_TVAppDocumentController *)self templateViewController];
+  v6 = [templateViewController tv_impressionableElementsForDocument:documentCopy];
 
   if ([v6 count])
   {
@@ -857,19 +857,19 @@ LABEL_17:
   return v7;
 }
 
-- (void)documentDidUpdateImplicitly:(id)a3
+- (void)documentDidUpdateImplicitly:(id)implicitly
 {
   v5 = +[TVInterfaceFactory sharedInterfaceFactory];
-  v4 = [(_TVAppDocumentController *)self appDocument];
-  [v5 _willParseAppDocument:v4 forImplicitUpdates:1];
+  appDocument = [(_TVAppDocumentController *)self appDocument];
+  [v5 _willParseAppDocument:appDocument forImplicitUpdates:1];
 }
 
-- (void)setOpaque:(BOOL)a3
+- (void)setOpaque:(BOOL)opaque
 {
-  if (self->_opaque != a3)
+  if (self->_opaque != opaque)
   {
-    self->_opaque = a3;
-    v5 = [(_TVAppDocumentController *)self view];
+    self->_opaque = opaque;
+    view = [(_TVAppDocumentController *)self view];
     if (self->_opaque)
     {
       [MEMORY[0x277D75348] systemBackgroundColor];
@@ -880,81 +880,81 @@ LABEL_17:
       [MEMORY[0x277D75348] clearColor];
     }
     v4 = ;
-    [v5 setBackgroundColor:v4];
+    [view setBackgroundColor:v4];
   }
 }
 
 - (void)scrollToTop
 {
-  v3 = [(_TVAppDocumentController *)self templateViewController];
+  templateViewController = [(_TVAppDocumentController *)self templateViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(_TVAppDocumentController *)self templateViewController];
-    [v5 scrollToTop];
+    templateViewController2 = [(_TVAppDocumentController *)self templateViewController];
+    [templateViewController2 scrollToTop];
   }
 }
 
 - (void)_markAndNotifyStylesDirty
 {
-  v3 = [(_TVAppDocumentController *)self appDocument];
+  appDocument = [(_TVAppDocumentController *)self appDocument];
 
-  if (v3)
+  if (appDocument)
   {
-    v4 = [(_TVAppDocumentController *)self view];
-    [v4 bounds];
+    view = [(_TVAppDocumentController *)self view];
+    [view bounds];
 
     if (os_log_type_enabled(TVMLKitLogObject, OS_LOG_TYPE_DEBUG))
     {
       [_TVAppDocumentController _markAndNotifyStylesDirty];
     }
 
-    v5 = [(_TVAppDocumentController *)self appDocument];
-    v6 = [v5 templateElement];
-    [v5 setViewElementStylesDirty];
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 postNotificationName:@"TVAppDocumentDidMarkStylesDirtyNotification" object:v5];
+    appDocument2 = [(_TVAppDocumentController *)self appDocument];
+    templateElement = [appDocument2 templateElement];
+    [appDocument2 setViewElementStylesDirty];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"TVAppDocumentDidMarkStylesDirtyNotification" object:appDocument2];
 
     v8 = +[TVInterfaceFactory sharedInterfaceFactory];
-    [v8 _willParseAppDocument:v5 forImplicitUpdates:0];
+    [v8 _willParseAppDocument:appDocument2 forImplicitUpdates:0];
 
     v9 = +[TVInterfaceFactory sharedInterfaceFactory];
-    v10 = [(_TVAppDocumentController *)self templateViewController];
-    v11 = [v9 _viewControllerFromElement:v6 existingController:v10];
+    templateViewController = [(_TVAppDocumentController *)self templateViewController];
+    v11 = [v9 _viewControllerFromElement:templateElement existingController:templateViewController];
 
-    [v6 resetProperty:1];
+    [templateElement resetProperty:1];
   }
 }
 
 - (void)_updateIdleModeStatus
 {
-  v3 = [(_TVAppDocumentController *)self appDocument];
-  v4 = [v3 templateElement];
-  v5 = [v4 tv_elementType];
+  appDocument = [(_TVAppDocumentController *)self appDocument];
+  templateElement = [appDocument templateElement];
+  tv_elementType = [templateElement tv_elementType];
 
-  v6 = [*MEMORY[0x277D76620] delegate];
-  if (v5 != 28)
+  delegate = [*MEMORY[0x277D76620] delegate];
+  if (tv_elementType != 28)
   {
-    v11 = v6;
+    v11 = delegate;
     if (objc_opt_respondsToSelector())
     {
-      v7 = ((v5 - 65) < 0xA) & (0x241u >> (v5 - 65));
-      v8 = [(_TVAppDocumentController *)self templateViewController];
-      if ([v8 conformsToProtocol:&unk_287E63AE0])
+      supportsIdleModeVisualEffects = ((tv_elementType - 65) < 0xA) & (0x241u >> (tv_elementType - 65));
+      templateViewController = [(_TVAppDocumentController *)self templateViewController];
+      if ([templateViewController conformsToProtocol:&unk_287E63AE0])
       {
-        v9 = [(_TVAppDocumentController *)self templateViewController];
+        templateViewController2 = [(_TVAppDocumentController *)self templateViewController];
         v10 = objc_opt_respondsToSelector();
 
         if ((v10 & 1) == 0)
         {
 LABEL_7:
-          [v11 updateIdleModeVisualEffectsStatus:v7];
+          [v11 updateIdleModeVisualEffectsStatus:supportsIdleModeVisualEffects];
           goto LABEL_8;
         }
 
-        v8 = [(_TVAppDocumentController *)self templateViewController];
-        v7 = [v8 supportsIdleModeVisualEffects];
+        templateViewController = [(_TVAppDocumentController *)self templateViewController];
+        supportsIdleModeVisualEffects = [templateViewController supportsIdleModeVisualEffects];
       }
 
       goto LABEL_7;
@@ -966,11 +966,11 @@ LABEL_8:
   MEMORY[0x2821F9730]();
 }
 
-- (id)_alertControllerWithError:(id)a3
+- (id)_alertControllerWithError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 localizedDescription];
-  v6 = [MEMORY[0x277D75110] alertControllerWithTitle:@"Cannot Connect to iTunes Store." message:v5 preferredStyle:1];
+  errorCopy = error;
+  localizedDescription = [errorCopy localizedDescription];
+  v6 = [MEMORY[0x277D75110] alertControllerWithTitle:@"Cannot Connect to iTunes Store." message:localizedDescription preferredStyle:1];
   objc_initWeak(&location, self);
   v7 = MEMORY[0x277D750F8];
   v10 = MEMORY[0x277D85DD0];
@@ -989,48 +989,48 @@ LABEL_8:
 
 - (BOOL)automaticallyAdjustsScrollViewInsets
 {
-  v2 = [(_TVAppDocumentController *)self templateViewController];
-  v3 = v2;
-  if (v2)
+  templateViewController = [(_TVAppDocumentController *)self templateViewController];
+  v3 = templateViewController;
+  if (templateViewController)
   {
-    v4 = [v2 automaticallyAdjustsScrollViewInsets];
+    automaticallyAdjustsScrollViewInsets = [templateViewController automaticallyAdjustsScrollViewInsets];
   }
 
   else
   {
-    v4 = 1;
+    automaticallyAdjustsScrollViewInsets = 1;
   }
 
-  return v4;
+  return automaticallyAdjustsScrollViewInsets;
 }
 
-- (void)_updateModalPresentationStateWithTemplateView:(id)a3
+- (void)_updateModalPresentationStateWithTemplateView:(id)view
 {
   v47 = *MEMORY[0x277D85DE8];
-  v30 = a3;
+  viewCopy = view;
   val = self;
-  v4 = [(_TVAppDocumentController *)self navigationController];
+  navigationController = [(_TVAppDocumentController *)self navigationController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v29 = [(_TVAppDocumentController *)val navigationController];
+    navigationController2 = [(_TVAppDocumentController *)val navigationController];
 
-    if (v29)
+    if (navigationController2)
     {
-      v28 = [v29 configuration];
-      v5 = [v28 type];
-      v27 = [v29 containingAlertController];
-      if (v27 && (v5 - 1001) <= 1)
+      configuration = [navigationController2 configuration];
+      type = [configuration type];
+      containingAlertController = [navigationController2 containingAlertController];
+      if (containingAlertController && (type - 1001) <= 1)
       {
         v43 = 0u;
         v44 = 0u;
         v42 = 0u;
         v41 = 0u;
-        v6 = [(_TVAppDocumentController *)val appDocument];
-        v7 = [v6 templateElement];
-        v8 = [v7 children];
+        appDocument = [(_TVAppDocumentController *)val appDocument];
+        templateElement = [appDocument templateElement];
+        children = [templateElement children];
 
-        v9 = [v8 countByEnumeratingWithState:&v41 objects:v46 count:16];
+        v9 = [children countByEnumeratingWithState:&v41 objects:v46 count:16];
         if (v9)
         {
           v10 = *v42;
@@ -1040,7 +1040,7 @@ LABEL_8:
             {
               if (*v42 != v10)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(children);
               }
 
               v12 = *(*(&v41 + 1) + 8 * i);
@@ -1051,7 +1051,7 @@ LABEL_8:
               }
             }
 
-            v9 = [v8 countByEnumeratingWithState:&v41 objects:v46 count:16];
+            v9 = [children countByEnumeratingWithState:&v41 objects:v46 count:16];
             if (v9)
             {
               continue;
@@ -1065,8 +1065,8 @@ LABEL_8:
 LABEL_16:
 
         v13 = MEMORY[0x277CBEB18];
-        v14 = [v26 children];
-        v31 = [v13 arrayWithCapacity:{objc_msgSend(v14, "count")}];
+        children2 = [v26 children];
+        v31 = [v13 arrayWithCapacity:{objc_msgSend(children2, "count")}];
 
         v39 = 0u;
         v40 = 0u;
@@ -1090,11 +1090,11 @@ LABEL_16:
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v19 = [v18 text];
-                v20 = [v19 string];
+                text = [v18 text];
+                string = [text string];
 
-                v21 = [v18 attributes];
-                v22 = [v21 objectForKey:@"actionStyle"];
+                attributes = [v18 attributes];
+                v22 = [attributes objectForKey:@"actionStyle"];
 
                 if ([v22 isEqualToString:@"cancel"])
                 {
@@ -1119,7 +1119,7 @@ LABEL_16:
                 v34[3] = &unk_279D6EED8;
                 objc_copyWeak(&v35, &location);
                 v34[4] = v18;
-                v25 = [v24 actionWithTitle:v20 style:v23 handler:v34];
+                v25 = [v24 actionWithTitle:string style:v23 handler:v34];
                 [v31 addObject:v25];
 
                 objc_destroyWeak(&v35);
@@ -1133,11 +1133,11 @@ LABEL_16:
           while (v15);
         }
 
-        [v28 setAlertActions:v31];
-        [v28 _applyAlertActionsForController:v27];
+        [configuration setAlertActions:v31];
+        [configuration _applyAlertActionsForController:containingAlertController];
       }
 
-      [v30 tv_sizeThatFits:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8), v26}];
+      [viewCopy tv_sizeThatFits:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8), v26}];
       [(_TVAppDocumentController *)val setPreferredContentSize:?];
     }
   }
@@ -1150,32 +1150,32 @@ LABEL_16:
 - (void)_updateTemplateViewController
 {
   *buf = 138412290;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   _os_log_debug_impl(&dword_26CD9A000, log, OS_LOG_TYPE_DEBUG, "Template element: %@", buf, 0xCu);
 }
 
-- (void)_willHostTemplateViewController:(id)a3 usesTransitions:(BOOL *)a4
+- (void)_willHostTemplateViewController:(id)controller usesTransitions:(BOOL *)transitions
 {
-  v7 = a3;
+  controllerCopy = controller;
   [_TVAppDocumentController willHostTemplateViewController:"willHostTemplateViewController:usesTransitions:" usesTransitions:?];
   if (self->_delegateFlags.hasWillHostTemplateViewController)
   {
-    v6 = [(_TVAppDocumentController *)self appDelegate];
-    [v6 appDocumentController:self willHostTemplateViewController:v7 usesTransitions:a4];
+    appDelegate = [(_TVAppDocumentController *)self appDelegate];
+    [appDelegate appDocumentController:self willHostTemplateViewController:controllerCopy usesTransitions:transitions];
   }
 
   [(TVDocumentViewController *)self willUpdateDocument];
 }
 
-- (void)_didHostTemplateViewController:(id)a3 usedTransitions:(BOOL)a4
+- (void)_didHostTemplateViewController:(id)controller usedTransitions:(BOOL)transitions
 {
-  v4 = a4;
-  v7 = a3;
+  transitionsCopy = transitions;
+  controllerCopy = controller;
   [_TVAppDocumentController didHostTemplateViewController:"didHostTemplateViewController:usedTransitions:" usedTransitions:?];
   if (self->_delegateFlags.hasDidHostTemplateViewController)
   {
-    v6 = [(_TVAppDocumentController *)self appDelegate];
-    [v6 appDocumentController:self didHostTemplateViewController:v7 usedTransitions:v4];
+    appDelegate = [(_TVAppDocumentController *)self appDelegate];
+    [appDelegate appDocumentController:self didHostTemplateViewController:controllerCopy usedTransitions:transitionsCopy];
   }
 
   [(TVDocumentViewController *)self didUpdateDocument];
@@ -1183,9 +1183,9 @@ LABEL_16:
 
 - (BOOL)_isFlowcaseStack
 {
-  v2 = [(_TVAppDocumentController *)self appDocument];
-  v3 = [v2 templateElement];
-  v4 = [TVMLUtilities isFlowcaseAtTopOfStackFromElement:v3];
+  appDocument = [(_TVAppDocumentController *)self appDocument];
+  templateElement = [appDocument templateElement];
+  v4 = [TVMLUtilities isFlowcaseAtTopOfStackFromElement:templateElement];
 
   return v4;
 }
@@ -1194,49 +1194,49 @@ LABEL_16:
 {
   if (!self->_delegateFlags.hasMediaQueryEvaluator || (-[_TVAppDocumentController appDelegate](self, "appDelegate"), v3 = objc_claimAutoreleasedReturnValue(), [v3 mediaQueryEvaluatorForAppDocumentController:self], v4 = objc_claimAutoreleasedReturnValue(), v3, !v4))
   {
-    v5 = [(_TVAppDocumentController *)self appDocument];
-    v6 = [v5 appContext];
-    v7 = [v6 app];
+    appDocument = [(_TVAppDocumentController *)self appDocument];
+    appContext = [appDocument appContext];
+    v7 = [appContext app];
     if ([v7 conformsToProtocol:&unk_287E5ED28])
     {
-      v8 = [(_TVAppDocumentController *)self appDocument];
-      v9 = [v8 appContext];
-      v10 = [v9 app];
-      v11 = [v10 keyTraitEnvironment];
+      appDocument2 = [(_TVAppDocumentController *)self appDocument];
+      appContext2 = [appDocument2 appContext];
+      v10 = [appContext2 app];
+      keyTraitEnvironment = [v10 keyTraitEnvironment];
     }
 
     else
     {
-      v11 = 0;
+      keyTraitEnvironment = 0;
     }
 
-    v12 = [(_TVAppDocumentController *)self view];
-    v13 = [v12 window];
+    view = [(_TVAppDocumentController *)self view];
+    window = [view window];
 
-    if (!v13)
+    if (!window)
     {
-      v14 = [(_TVAppDocumentController *)self parentViewController];
+      parentViewController = [(_TVAppDocumentController *)self parentViewController];
 
-      if (!v14 || (-[_TVAppDocumentController parentViewController](self, "parentViewController"), v15 = objc_claimAutoreleasedReturnValue(), [v15 view], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "window"), v13 = objc_claimAutoreleasedReturnValue(), v16, v15, !v13))
+      if (!parentViewController || (-[_TVAppDocumentController parentViewController](self, "parentViewController"), v15 = objc_claimAutoreleasedReturnValue(), [v15 view], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "window"), window = objc_claimAutoreleasedReturnValue(), v16, v15, !window))
       {
         v17 = MEMORY[0x277D76620];
-        v18 = [*MEMORY[0x277D76620] delegate];
+        delegate = [*MEMORY[0x277D76620] delegate];
         if (objc_opt_respondsToSelector())
         {
-          v19 = [*v17 delegate];
-          v13 = [v19 window];
+          delegate2 = [*v17 delegate];
+          window = [delegate2 window];
         }
 
         else
         {
-          v13 = 0;
+          window = 0;
         }
       }
     }
 
-    v20 = [(_TVAppDocumentController *)self appDocument];
-    v21 = [v20 templateElement];
-    v4 = [TVMediaQueryEvaluator evaluatorForTemplateElement:v21 inWindow:v13 traitEnvironment:v11];
+    appDocument3 = [(_TVAppDocumentController *)self appDocument];
+    templateElement = [appDocument3 templateElement];
+    v4 = [TVMediaQueryEvaluator evaluatorForTemplateElement:templateElement inWindow:window traitEnvironment:keyTraitEnvironment];
   }
 
   return v4;
@@ -1244,8 +1244,8 @@ LABEL_16:
 
 - (CGSize)formSize
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v4 = v3;
   v6 = v5;
 
@@ -1256,13 +1256,13 @@ LABEL_16:
   return result;
 }
 
-- (void)updatePreferredFocusedViewStateForFocus:(BOOL)a3
+- (void)updatePreferredFocusedViewStateForFocus:(BOOL)focus
 {
-  v3 = a3;
-  v4 = [(_TVAppDocumentController *)self templateViewController];
-  if ([v4 conformsToProtocol:&unk_287E7C098])
+  focusCopy = focus;
+  templateViewController = [(_TVAppDocumentController *)self templateViewController];
+  if ([templateViewController conformsToProtocol:&unk_287E7C098])
   {
-    [v4 updatePreferredFocusedViewStateForFocus:v3];
+    [templateViewController updatePreferredFocusedViewStateForFocus:focusCopy];
   }
 
   else
@@ -1272,28 +1272,28 @@ LABEL_16:
     v15[1] = 3221225472;
     v15[2] = __68___TVAppDocumentController_updatePreferredFocusedViewStateForFocus___block_invoke;
     v15[3] = &unk_279D6E7F8;
-    v6 = v4;
+    v6 = templateViewController;
     v16 = v6;
     [v5 performWithoutAnimation:v15];
-    v7 = [v6 preferredFocusEnvironments];
-    v8 = [v7 firstObject];
+    preferredFocusEnvironments = [v6 preferredFocusEnvironments];
+    firstObject = [preferredFocusEnvironments firstObject];
 
-    v9 = [v8 preferredFocusEnvironments];
-    v10 = [v9 firstObject];
+    preferredFocusEnvironments2 = [firstObject preferredFocusEnvironments];
+    firstObject2 = [preferredFocusEnvironments2 firstObject];
 
-    while (v8 != v10 && v10)
+    while (firstObject != firstObject2 && firstObject2)
     {
-      v11 = v8;
-      v8 = v10;
+      v11 = firstObject;
+      firstObject = firstObject2;
 
-      v12 = [v8 preferredFocusEnvironments];
-      v10 = [v12 firstObject];
+      preferredFocusEnvironments3 = [firstObject preferredFocusEnvironments];
+      firstObject2 = [preferredFocusEnvironments3 firstObject];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = v8;
+      v13 = firstObject;
     }
 
     else
@@ -1303,13 +1303,13 @@ LABEL_16:
 
     v14 = v13;
 
-    [v14 setSelected:v3 animated:0];
+    [v14 setSelected:focusCopy animated:0];
   }
 }
 
-- (void)setMenuGestureHandler:(id)a3
+- (void)setMenuGestureHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   menuGestureHandler = self->_menuGestureHandler;
   self->_menuGestureHandler = v4;
 
@@ -1319,28 +1319,28 @@ LABEL_16:
     [v10 setDelegate:self];
     [v10 setAllowedPressTypes:&unk_287E486F0];
     [(_TVAppDocumentController *)self setMenuGestureRecognizer:v10];
-    v6 = [(_TVAppDocumentController *)self view];
-    [v6 addGestureRecognizer:v10];
+    view = [(_TVAppDocumentController *)self view];
+    [view addGestureRecognizer:v10];
   }
 
   else
   {
-    v7 = [(_TVAppDocumentController *)self menuGestureRecognizer];
+    menuGestureRecognizer = [(_TVAppDocumentController *)self menuGestureRecognizer];
 
-    if (v7)
+    if (menuGestureRecognizer)
     {
-      v8 = [(_TVAppDocumentController *)self view];
-      v9 = [(_TVAppDocumentController *)self menuGestureRecognizer];
-      [v8 removeGestureRecognizer:v9];
+      view2 = [(_TVAppDocumentController *)self view];
+      menuGestureRecognizer2 = [(_TVAppDocumentController *)self menuGestureRecognizer];
+      [view2 removeGestureRecognizer:menuGestureRecognizer2];
 
       [(_TVAppDocumentController *)self setMenuGestureRecognizer:0];
     }
   }
 }
 
-- (void)_menuGestureHandler:(id)a3
+- (void)_menuGestureHandler:(id)handler
 {
-  if ([a3 state] == 3)
+  if ([handler state] == 3)
   {
     menuGestureHandler = self->_menuGestureHandler;
     if (menuGestureHandler)
@@ -1352,26 +1352,26 @@ LABEL_16:
   }
 }
 
-- (void)pagePerformanceController:(id)a3 didUpdateMetrics:(id)a4
+- (void)pagePerformanceController:(id)controller didUpdateMetrics:(id)metrics
 {
-  v7 = a4;
-  if (([a3 pageWasUpdated] & 1) == 0)
+  metricsCopy = metrics;
+  if (([controller pageWasUpdated] & 1) == 0)
   {
-    v6 = [(_TVAppDocumentController *)self appDocument];
-    [v6 onPerformanceMetricsChange:v7];
+    appDocument = [(_TVAppDocumentController *)self appDocument];
+    [appDocument onPerformanceMetricsChange:metricsCopy];
   }
 }
 
 - (BOOL)ppt_isLoading
 {
-  v3 = [(_TVAppDocumentController *)self templateViewController];
+  templateViewController = [(_TVAppDocumentController *)self templateViewController];
 
-  if (!v3)
+  if (!templateViewController)
   {
     return 1;
   }
 
-  v4 = [(_TVAppDocumentController *)self templateViewController];
+  templateViewController2 = [(_TVAppDocumentController *)self templateViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1385,59 +1385,59 @@ LABEL_16:
     return 1;
   }
 
-  v6 = [(_TVAppDocumentController *)self transitionCoordinator];
+  transitionCoordinator = [(_TVAppDocumentController *)self transitionCoordinator];
 
-  if (v6)
+  if (transitionCoordinator)
   {
     return 1;
   }
 
-  v8 = [(_TVAppDocumentController *)self templateViewController];
-  v9 = [v8 ppt_isLoading];
+  templateViewController3 = [(_TVAppDocumentController *)self templateViewController];
+  ppt_isLoading = [templateViewController3 ppt_isLoading];
 
-  return v9;
+  return ppt_isLoading;
 }
 
 - (id)activeDocument
 {
-  v3 = [(_TVAppDocumentController *)self appDocument];
-  v4 = [(_TVAppDocumentController *)self templateViewController];
-  v5 = [v4 conformsToProtocol:&unk_287E7C190];
-  if (v4 && v5)
+  appDocument = [(_TVAppDocumentController *)self appDocument];
+  templateViewController = [(_TVAppDocumentController *)self templateViewController];
+  v5 = [templateViewController conformsToProtocol:&unk_287E7C190];
+  if (templateViewController && v5)
   {
-    v6 = [v4 activeDocument];
-    v7 = v6;
-    if (v6)
+    activeDocument = [templateViewController activeDocument];
+    v7 = activeDocument;
+    if (activeDocument)
     {
-      v8 = v6;
+      v8 = activeDocument;
     }
 
     else
     {
-      v8 = v3;
+      v8 = appDocument;
     }
 
     v9 = v8;
 
-    v3 = v9;
+    appDocument = v9;
   }
 
-  return v3;
+  return appDocument;
 }
 
 - (id)currentImpressionableElements
 {
-  v3 = [(_TVAppDocumentController *)self appDocument];
-  v4 = [(_TVAppDocumentController *)self impressionableViewElementsForDocument:v3];
+  appDocument = [(_TVAppDocumentController *)self appDocument];
+  v4 = [(_TVAppDocumentController *)self impressionableViewElementsForDocument:appDocument];
 
   return v4;
 }
 
 - (void)snapshotImpressions
 {
-  v4 = [(_TVAppDocumentController *)self currentImpressionableElements];
-  v3 = [(_TVAppDocumentController *)self appDocument];
-  [v3 snapshotImpressionsForViewElements:v4];
+  currentImpressionableElements = [(_TVAppDocumentController *)self currentImpressionableElements];
+  appDocument = [(_TVAppDocumentController *)self appDocument];
+  [appDocument snapshotImpressionsForViewElements:currentImpressionableElements];
 }
 
 - (_TVAppDocumentControllerDelegate)appDelegate

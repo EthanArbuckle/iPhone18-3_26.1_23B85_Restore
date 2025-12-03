@@ -1,15 +1,15 @@
 @interface MPStoreModelGenericObjectBuilder
-- (id)_modelObjectWithUniqueContainerIDForModelObject:(id)a3;
-- (id)modelObjectWithStoreItemMetadata:(id)a3 sourceModelObject:(id)a4 userIdentity:(id)a5;
-- (void)setPreventStoreItemMetadataCaching:(BOOL)a3;
+- (id)_modelObjectWithUniqueContainerIDForModelObject:(id)object;
+- (id)modelObjectWithStoreItemMetadata:(id)metadata sourceModelObject:(id)object userIdentity:(id)identity;
+- (void)setPreventStoreItemMetadataCaching:(BOOL)caching;
 @end
 
 @implementation MPStoreModelGenericObjectBuilder
 
-- (id)_modelObjectWithUniqueContainerIDForModelObject:(id)a3
+- (id)_modelObjectWithUniqueContainerIDForModelObject:(id)object
 {
-  v4 = a3;
-  v5 = [v4 identifiers];
+  objectCopy = object;
+  identifiers = [objectCopy identifiers];
   v26[0] = 0;
   v26[1] = v26;
   v26[2] = 0x2020000000;
@@ -21,7 +21,7 @@
     v23[1] = 3221225472;
     v23[2] = __84__MPStoreModelGenericObjectBuilder__modelObjectWithUniqueContainerIDForModelObject___block_invoke;
     v23[3] = &unk_1E76819F0;
-    v24 = v4;
+    v24 = objectCopy;
     v25 = v26;
     [MPModelObject performWithoutEnforcement:v23];
   }
@@ -33,7 +33,7 @@
     v20[1] = 3221225472;
     v20[2] = __84__MPStoreModelGenericObjectBuilder__modelObjectWithUniqueContainerIDForModelObject___block_invoke_2;
     v20[3] = &unk_1E76819F0;
-    v21 = v4;
+    v21 = objectCopy;
     v22 = v26;
     [MPModelObject performWithoutEnforcement:v20];
   }
@@ -45,7 +45,7 @@
     v17[1] = 3221225472;
     v17[2] = __84__MPStoreModelGenericObjectBuilder__modelObjectWithUniqueContainerIDForModelObject___block_invoke_3;
     v17[3] = &unk_1E76819F0;
-    v18 = v4;
+    v18 = objectCopy;
     v19 = v26;
     [MPModelObject performWithoutEnforcement:v17];
   }
@@ -57,12 +57,12 @@
     v14[1] = 3221225472;
     v14[2] = __84__MPStoreModelGenericObjectBuilder__modelObjectWithUniqueContainerIDForModelObject___block_invoke_4;
     v14[3] = &unk_1E76819F0;
-    v15 = v4;
+    v15 = objectCopy;
     v16 = v26;
     [MPModelObject performWithoutEnforcement:v14];
   }
 
-  v6 = MPContainerUniqueIDPrefix(v5);
+  v6 = MPContainerUniqueIDPrefix(identifiers);
   [(NSCountedSet *)self->_baseContentItemIDToOccurrenceCount countForObject:v6];
   v7 = ML3ContainerItemOccurrenceID();
   [(NSCountedSet *)self->_baseContentItemIDToOccurrenceCount addObject:v6];
@@ -72,8 +72,8 @@
   v12[3] = &unk_1E7680B28;
   v8 = v7;
   v13 = v8;
-  v9 = [v5 copyWithSource:@"StorePlatform-ContainerUniqueID" block:v12];
-  v10 = [v4 copyWithIdentifiers:v9 block:&__block_literal_global_71_44788];
+  v9 = [identifiers copyWithSource:@"StorePlatform-ContainerUniqueID" block:v12];
+  v10 = [objectCopy copyWithIdentifiers:v9 block:&__block_literal_global_71_44788];
 
   _Block_object_dispose(v26, 8);
 
@@ -123,26 +123,26 @@ void __84__MPStoreModelGenericObjectBuilder__modelObjectWithUniqueContainerIDFor
 LABEL_8:
 }
 
-- (id)modelObjectWithStoreItemMetadata:(id)a3 sourceModelObject:(id)a4 userIdentity:(id)a5
+- (id)modelObjectWithStoreItemMetadata:(id)metadata sourceModelObject:(id)object userIdentity:(id)identity
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 itemKind];
-  v12 = [v11 isEqualToString:@"musicVideo"];
-  v13 = [v11 isEqualToString:@"tvEpisode"];
-  v14 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v15 = [v14 BOOLForKey:@"MusicShouldFakeTVEpisodes"];
+  metadataCopy = metadata;
+  objectCopy = object;
+  identityCopy = identity;
+  itemKind = [metadataCopy itemKind];
+  v12 = [itemKind isEqualToString:@"musicVideo"];
+  v13 = [itemKind isEqualToString:@"tvEpisode"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v15 = [standardUserDefaults BOOLForKey:@"MusicShouldFakeTVEpisodes"];
 
-  v16 = [v9 identifiers];
-  v179 = [v16 modelKind];
+  identifiers = [objectCopy identifiers];
+  modelKind = [identifiers modelKind];
 
-  IsArtistUploadedContent = MPStoreItemMetadataItemKindIsArtistUploadedContent(v11);
-  if ([v11 isEqualToString:@"song"] & 1) != 0 || (v18 = v15 & v12, ((v15 & v12 ^ 1) & v12) || (IsArtistUploadedContent & 1) != 0 || objc_msgSend(v9, "type") == 1 || objc_msgSend(v9, "type") == 5 || (+[MPModelSongKind identityKind](MPModelSongKind, "identityKind"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v179, "isEqual:", v19), v19, v20))
+  IsArtistUploadedContent = MPStoreItemMetadataItemKindIsArtistUploadedContent(itemKind);
+  if ([itemKind isEqualToString:@"song"] & 1) != 0 || (v18 = v15 & v12, ((v15 & v12 ^ 1) & v12) || (IsArtistUploadedContent & 1) != 0 || objc_msgSend(objectCopy, "type") == 1 || objc_msgSend(objectCopy, "type") == 5 || (+[MPModelSongKind identityKind](MPModelSongKind, "identityKind"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(modelKind, "isEqual:", v19), v19, v20))
   {
     if (self->_songBuilder)
     {
-      if (!v9)
+      if (!objectCopy)
       {
         goto LABEL_20;
       }
@@ -150,9 +150,9 @@ LABEL_8:
 
     else
     {
-      v21 = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
-      v22 = [v21 relationships];
-      v23 = [v22 objectForKey:@"MPModelRelationshipGenericSong"];
+      requestedPropertySet = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
+      relationships = [requestedPropertySet relationships];
+      v23 = [relationships objectForKey:@"MPModelRelationshipGenericSong"];
       v24 = v23;
       if (v23)
       {
@@ -171,36 +171,36 @@ LABEL_8:
       self->_songBuilder = v27;
 
       [(MPStoreModelObjectBuilder *)self->_songBuilder setPreventStoreItemMetadataCaching:[(MPStoreModelObjectBuilder *)self preventStoreItemMetadataCaching]];
-      if (!v9)
+      if (!objectCopy)
       {
         goto LABEL_20;
       }
     }
 
-    if ([v9 type] == 1)
+    if ([objectCopy type] == 1)
     {
-      v29 = [v9 song];
+      song = [objectCopy song];
       goto LABEL_31;
     }
 
-    if ([v9 type] == 5)
+    if ([objectCopy type] == 5)
     {
-      v30 = [v9 playlistEntry];
-      if (![v30 hasLoadedValueForKey:@"MPModelRelationshipPlaylistEntrySong"])
+      playlistEntry = [objectCopy playlistEntry];
+      if (![playlistEntry hasLoadedValueForKey:@"MPModelRelationshipPlaylistEntrySong"])
       {
         v32 = [MPModelSong alloc];
-        v33 = [v30 identifiers];
-        v29 = [(MPModelObject *)v32 initWithIdentifiers:v33 block:&__block_literal_global_44797];
+        identifiers2 = [playlistEntry identifiers];
+        song = [(MPModelObject *)v32 initWithIdentifiers:identifiers2 block:&__block_literal_global_44797];
 
 LABEL_30:
 LABEL_31:
-        v42 = [(MPStoreModelSongBuilder *)self->_songBuilder modelObjectWithStoreItemMetadata:v8 sourceModelObject:v29 userIdentity:v10, v179];
-        if (v42)
+        v179 = [(MPStoreModelSongBuilder *)self->_songBuilder modelObjectWithStoreItemMetadata:metadataCopy sourceModelObject:song userIdentity:identityCopy, modelKind];
+        if (v179)
         {
-          v43 = v42;
+          v43 = v179;
           if (self->_shouldUsePlaylistEntry)
           {
-            v44 = [(MPStoreModelGenericObjectBuilder *)self _modelObjectWithUniqueContainerIDForModelObject:v42];
+            v44 = [(MPStoreModelGenericObjectBuilder *)self _modelObjectWithUniqueContainerIDForModelObject:v179];
 
             v45 = [MPModelGenericObject alloc];
             v46 = +[MPIdentifierSet emptyIdentifierSet];
@@ -210,7 +210,7 @@ LABEL_31:
             v206[3] = &unk_1E767E6E0;
             v47 = &v207;
             v207 = v44;
-            v48 = v44;
+            v1794 = v44;
             v49 = v206;
 LABEL_34:
             v50 = v45;
@@ -231,7 +231,7 @@ LABEL_87:
           v204[3] = &unk_1E767E6E0;
           v47 = &v205;
           v205 = v43;
-          v48 = v43;
+          v1794 = v43;
           v49 = v204;
           goto LABEL_36;
         }
@@ -239,34 +239,34 @@ LABEL_87:
         goto LABEL_86;
       }
 
-      v31 = [v30 song];
+      song2 = [playlistEntry song];
     }
 
     else
     {
-      if ([v9 type])
+      if ([objectCopy type])
       {
 LABEL_20:
-        v29 = 0;
+        song = 0;
         goto LABEL_31;
       }
 
       v41 = [MPModelSong alloc];
-      v30 = [v9 identifiers];
-      v31 = [(MPModelObject *)v41 initWithIdentifiers:v30 block:&__block_literal_global_7_44798];
+      playlistEntry = [objectCopy identifiers];
+      song2 = [(MPModelObject *)v41 initWithIdentifiers:playlistEntry block:&__block_literal_global_7_44798];
     }
 
-    v29 = v31;
+    song = song2;
     goto LABEL_30;
   }
 
-  if (((v18 | v13) & 1) != 0 || [v9 type] == 6 || (+[MPModelTVEpisodeKind identityKind](MPModelTVEpisodeKind, "identityKind"), v34 = objc_claimAutoreleasedReturnValue(), v35 = objc_msgSend(v179, "isEqual:", v34), v34, v35))
+  if (((v18 | v13) & 1) != 0 || [objectCopy type] == 6 || (+[MPModelTVEpisodeKind identityKind](MPModelTVEpisodeKind, "identityKind"), v34 = objc_claimAutoreleasedReturnValue(), v35 = objc_msgSend(modelKind, "isEqual:", v34), v34, v35))
   {
     if (!self->_tvEpisodeBuilder)
     {
-      v36 = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
-      v37 = [v36 relationships];
-      v38 = [v37 objectForKey:@"MPModelRelationshipGenericTVEpisode"];
+      requestedPropertySet2 = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
+      relationships2 = [requestedPropertySet2 relationships];
+      v38 = [relationships2 objectForKey:@"MPModelRelationshipGenericTVEpisode"];
       v39 = v38;
       if (v38)
       {
@@ -287,32 +287,32 @@ LABEL_20:
       [(MPStoreModelObjectBuilder *)self->_tvEpisodeBuilder setPreventStoreItemMetadataCaching:[(MPStoreModelObjectBuilder *)self preventStoreItemMetadataCaching]];
     }
 
-    if (v9)
+    if (objectCopy)
     {
-      if ([v9 type] == 6)
+      if ([objectCopy type] == 6)
       {
-        v29 = [v9 tvEpisode];
+        song = [objectCopy tvEpisode];
         goto LABEL_59;
       }
 
-      if ([v9 type] == 5)
+      if ([objectCopy type] == 5)
       {
-        v63 = [v9 playlistEntry];
-        if (![v63 hasLoadedValueForKey:@"MPModelRelationshipPlaylistEntryTVEpisode"])
+        playlistEntry2 = [objectCopy playlistEntry];
+        if (![playlistEntry2 hasLoadedValueForKey:@"MPModelRelationshipPlaylistEntryTVEpisode"])
         {
           v65 = [MPModelTVEpisode alloc];
-          v66 = [v63 identifiers];
-          v29 = [(MPModelObject *)v65 initWithIdentifiers:v66 block:&__block_literal_global_17];
+          identifiers3 = [playlistEntry2 identifiers];
+          song = [(MPModelObject *)v65 initWithIdentifiers:identifiers3 block:&__block_literal_global_17];
 
 LABEL_58:
 LABEL_59:
-          v68 = [(MPStoreModelTVEpisodeBuilder *)self->_tvEpisodeBuilder modelObjectWithStoreItemMetadata:v8 sourceModelObject:v29 userIdentity:v10, v179];
-          if (v68)
+          v1792 = [(MPStoreModelTVEpisodeBuilder *)self->_tvEpisodeBuilder modelObjectWithStoreItemMetadata:metadataCopy sourceModelObject:song userIdentity:identityCopy, modelKind];
+          if (v1792)
           {
-            v69 = v68;
+            v69 = v1792;
             if (self->_shouldUsePlaylistEntry)
             {
-              v70 = [(MPStoreModelGenericObjectBuilder *)self _modelObjectWithUniqueContainerIDForModelObject:v68];
+              v70 = [(MPStoreModelGenericObjectBuilder *)self _modelObjectWithUniqueContainerIDForModelObject:v1792];
 
               v45 = [MPModelGenericObject alloc];
               v46 = +[MPIdentifierSet emptyIdentifierSet];
@@ -322,7 +322,7 @@ LABEL_59:
               v202[3] = &unk_1E767E6E0;
               v47 = &v203;
               v203 = v70;
-              v48 = v70;
+              v1794 = v70;
               v49 = v202;
               goto LABEL_34;
             }
@@ -335,7 +335,7 @@ LABEL_59:
             v200[3] = &unk_1E767E6E0;
             v47 = &v201;
             v201 = v69;
-            v48 = v69;
+            v1794 = v69;
             v49 = v200;
 LABEL_36:
             v50 = v51;
@@ -347,32 +347,32 @@ LABEL_86:
           goto LABEL_87;
         }
 
-        v64 = [v63 tvEpisode];
+        tvEpisode = [playlistEntry2 tvEpisode];
 LABEL_57:
-        v29 = v64;
+        song = tvEpisode;
         goto LABEL_58;
       }
 
-      if (![v9 type])
+      if (![objectCopy type])
       {
         v67 = [MPModelTVEpisode alloc];
-        v63 = [v9 identifiers];
-        v64 = [(MPModelObject *)v67 initWithIdentifiers:v63 block:&__block_literal_global_19_44803];
+        playlistEntry2 = [objectCopy identifiers];
+        tvEpisode = [(MPModelObject *)v67 initWithIdentifiers:playlistEntry2 block:&__block_literal_global_19_44803];
         goto LABEL_57;
       }
     }
 
-    v29 = 0;
+    song = 0;
     goto LABEL_59;
   }
 
-  if (([v11 isEqualToString:@"movie"] & 1) != 0 || objc_msgSend(v9, "type") == 9 || (+[MPModelMovieKind identityKind](MPModelMovieKind, "identityKind"), v53 = objc_claimAutoreleasedReturnValue(), v54 = objc_msgSend(v179, "isEqual:", v53), v53, v54))
+  if (([itemKind isEqualToString:@"movie"] & 1) != 0 || objc_msgSend(objectCopy, "type") == 9 || (+[MPModelMovieKind identityKind](MPModelMovieKind, "identityKind"), v53 = objc_claimAutoreleasedReturnValue(), v54 = objc_msgSend(modelKind, "isEqual:", v53), v53, v54))
   {
     if (!self->_movieBuilder)
     {
-      v55 = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
-      v56 = [v55 relationships];
-      v57 = [v56 objectForKey:@"MPModelRelationshipGenericMovie"];
+      requestedPropertySet3 = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
+      relationships3 = [requestedPropertySet3 relationships];
+      v57 = [relationships3 objectForKey:@"MPModelRelationshipGenericMovie"];
       v58 = v57;
       if (v57)
       {
@@ -393,32 +393,32 @@ LABEL_57:
       [(MPStoreModelObjectBuilder *)self->_movieBuilder setPreventStoreItemMetadataCaching:[(MPStoreModelObjectBuilder *)self preventStoreItemMetadataCaching]];
     }
 
-    if (v9)
+    if (objectCopy)
     {
-      if ([v9 type] == 9)
+      if ([objectCopy type] == 9)
       {
-        v29 = [v9 movie];
+        song = [objectCopy movie];
         goto LABEL_83;
       }
 
-      if ([v9 type] == 5)
+      if ([objectCopy type] == 5)
       {
-        v81 = [v9 playlistEntry];
-        if (![v81 hasLoadedValueForKey:@"MPModelRelationshipPlaylistEntryMovie"])
+        playlistEntry3 = [objectCopy playlistEntry];
+        if (![playlistEntry3 hasLoadedValueForKey:@"MPModelRelationshipPlaylistEntryMovie"])
         {
           v83 = [MPModelMovie alloc];
-          v84 = [v81 identifiers];
-          v29 = [(MPModelObject *)v83 initWithIdentifiers:v84 block:&__block_literal_global_24];
+          identifiers4 = [playlistEntry3 identifiers];
+          song = [(MPModelObject *)v83 initWithIdentifiers:identifiers4 block:&__block_literal_global_24];
 
 LABEL_82:
 LABEL_83:
-          v86 = [(MPStoreModelMovieBuilder *)self->_movieBuilder modelObjectWithStoreItemMetadata:v8 sourceModelObject:v29 userIdentity:v10, v179];
-          if (v86)
+          v1793 = [(MPStoreModelMovieBuilder *)self->_movieBuilder modelObjectWithStoreItemMetadata:metadataCopy sourceModelObject:song userIdentity:identityCopy, modelKind];
+          if (v1793)
           {
-            v87 = v86;
+            v87 = v1793;
             if (self->_shouldUsePlaylistEntry)
             {
-              v88 = [(MPStoreModelGenericObjectBuilder *)self _modelObjectWithUniqueContainerIDForModelObject:v86];
+              v88 = [(MPStoreModelGenericObjectBuilder *)self _modelObjectWithUniqueContainerIDForModelObject:v1793];
 
               v45 = [MPModelGenericObject alloc];
               v46 = +[MPIdentifierSet emptyIdentifierSet];
@@ -428,7 +428,7 @@ LABEL_83:
               v198[3] = &unk_1E767E6E0;
               v47 = &v199;
               v199 = v88;
-              v48 = v88;
+              v1794 = v88;
               v49 = v198;
               goto LABEL_34;
             }
@@ -441,7 +441,7 @@ LABEL_83:
             v196[3] = &unk_1E767E6E0;
             v47 = &v197;
             v197 = v87;
-            v48 = v87;
+            v1794 = v87;
             v49 = v196;
             goto LABEL_36;
           }
@@ -449,32 +449,32 @@ LABEL_83:
           goto LABEL_86;
         }
 
-        v82 = [v81 movie];
+        movie = [playlistEntry3 movie];
 LABEL_81:
-        v29 = v82;
+        song = movie;
         goto LABEL_82;
       }
 
-      if (![v9 type])
+      if (![objectCopy type])
       {
         v85 = [MPModelMovie alloc];
-        v81 = [v9 identifiers];
-        v82 = [(MPModelObject *)v85 initWithIdentifiers:v81 block:&__block_literal_global_26_44806];
+        playlistEntry3 = [objectCopy identifiers];
+        movie = [(MPModelObject *)v85 initWithIdentifiers:playlistEntry3 block:&__block_literal_global_26_44806];
         goto LABEL_81;
       }
     }
 
-    v29 = 0;
+    song = 0;
     goto LABEL_83;
   }
 
-  if (([v11 isEqualToString:@"album"] & 1) != 0 || objc_msgSend(v9, "type") == 2 || (+[MPModelAlbumKind identityKind](MPModelAlbumKind, "identityKind"), v71 = objc_claimAutoreleasedReturnValue(), v72 = objc_msgSend(v179, "isEqual:", v71), v71, v72))
+  if (([itemKind isEqualToString:@"album"] & 1) != 0 || objc_msgSend(objectCopy, "type") == 2 || (+[MPModelAlbumKind identityKind](MPModelAlbumKind, "identityKind"), v71 = objc_claimAutoreleasedReturnValue(), v72 = objc_msgSend(modelKind, "isEqual:", v71), v71, v72))
   {
     if (!self->_albumBuilder)
     {
-      v73 = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
-      v74 = [v73 relationships];
-      v75 = [v74 objectForKey:@"MPModelRelationshipGenericAlbum"];
+      requestedPropertySet4 = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
+      relationships4 = [requestedPropertySet4 relationships];
+      v75 = [relationships4 objectForKey:@"MPModelRelationshipGenericAlbum"];
       v76 = v75;
       if (v75)
       {
@@ -495,33 +495,33 @@ LABEL_81:
       [(MPStoreModelObjectBuilder *)self->_albumBuilder setPreventStoreItemMetadataCaching:[(MPStoreModelObjectBuilder *)self preventStoreItemMetadataCaching]];
     }
 
-    if (!v9)
+    if (!objectCopy)
     {
       goto LABEL_104;
     }
 
-    if ([v9 type] == 2)
+    if ([objectCopy type] == 2)
     {
-      v29 = [v9 album];
+      song = [objectCopy album];
       goto LABEL_105;
     }
 
-    if (![v9 type])
+    if (![objectCopy type])
     {
       v100 = [MPModelAlbum alloc];
-      v101 = [v9 identifiers];
-      v29 = [(MPModelObject *)v100 initWithIdentifiers:v101 block:&__block_literal_global_31_44810];
+      identifiers5 = [objectCopy identifiers];
+      song = [(MPModelObject *)v100 initWithIdentifiers:identifiers5 block:&__block_literal_global_31_44810];
     }
 
     else
     {
 LABEL_104:
-      v29 = 0;
+      song = 0;
     }
 
 LABEL_105:
-    v48 = [(MPStoreModelAlbumBuilder *)self->_albumBuilder modelObjectWithStoreItemMetadata:v8 sourceModelObject:v29 userIdentity:v10, v179];
-    if (v48)
+    v1794 = [(MPStoreModelAlbumBuilder *)self->_albumBuilder modelObjectWithStoreItemMetadata:metadataCopy sourceModelObject:song userIdentity:identityCopy, modelKind];
+    if (v1794)
     {
       v51 = [MPModelGenericObject alloc];
       v46 = +[MPIdentifierSet emptyIdentifierSet];
@@ -530,8 +530,8 @@ LABEL_105:
       v194[2] = __100__MPStoreModelGenericObjectBuilder_modelObjectWithStoreItemMetadata_sourceModelObject_userIdentity___block_invoke_17;
       v194[3] = &unk_1E767E6E0;
       v47 = &v195;
-      v48 = v48;
-      v195 = v48;
+      v1794 = v1794;
+      v195 = v1794;
       v49 = v194;
       goto LABEL_36;
     }
@@ -541,13 +541,13 @@ LABEL_215:
     goto LABEL_38;
   }
 
-  if (([v11 isEqualToString:@"playlist"] & 1) != 0 || objc_msgSend(v9, "type") == 4 || (+[MPModelPlaylistKind identityKind](MPModelPlaylistKind, "identityKind"), v90 = objc_claimAutoreleasedReturnValue(), v91 = objc_msgSend(v179, "isEqual:", v90), v90, v91))
+  if (([itemKind isEqualToString:@"playlist"] & 1) != 0 || objc_msgSend(objectCopy, "type") == 4 || (+[MPModelPlaylistKind identityKind](MPModelPlaylistKind, "identityKind"), v90 = objc_claimAutoreleasedReturnValue(), v91 = objc_msgSend(modelKind, "isEqual:", v90), v90, v91))
   {
     if (!self->_playlistBuilder)
     {
-      v92 = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
-      v93 = [v92 relationships];
-      v94 = [v93 objectForKey:@"MPModelRelationshipGenericPlaylist"];
+      requestedPropertySet5 = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
+      relationships5 = [requestedPropertySet5 relationships];
+      v94 = [relationships5 objectForKey:@"MPModelRelationshipGenericPlaylist"];
       v95 = v94;
       if (v94)
       {
@@ -568,33 +568,33 @@ LABEL_215:
       [(MPStoreModelObjectBuilder *)self->_playlistBuilder setPreventStoreItemMetadataCaching:[(MPStoreModelObjectBuilder *)self preventStoreItemMetadataCaching]];
     }
 
-    if (!v9)
+    if (!objectCopy)
     {
       goto LABEL_120;
     }
 
-    if ([v9 type] == 4)
+    if ([objectCopy type] == 4)
     {
-      v29 = [v9 playlist];
+      song = [objectCopy playlist];
       goto LABEL_121;
     }
 
-    if (![v9 type])
+    if (![objectCopy type])
     {
       v112 = [MPModelPlaylist alloc];
-      v113 = [v9 identifiers];
-      v29 = [(MPModelObject *)v112 initWithIdentifiers:v113 block:&__block_literal_global_36_44814];
+      identifiers6 = [objectCopy identifiers];
+      song = [(MPModelObject *)v112 initWithIdentifiers:identifiers6 block:&__block_literal_global_36_44814];
     }
 
     else
     {
 LABEL_120:
-      v29 = 0;
+      song = 0;
     }
 
 LABEL_121:
-    v48 = [(MPStoreModelPlaylistBuilder *)self->_playlistBuilder modelObjectWithStoreItemMetadata:v8 sourceModelObject:v29 userIdentity:v10, v179];
-    if (v48)
+    v1794 = [(MPStoreModelPlaylistBuilder *)self->_playlistBuilder modelObjectWithStoreItemMetadata:metadataCopy sourceModelObject:song userIdentity:identityCopy, modelKind];
+    if (v1794)
     {
       v51 = [MPModelGenericObject alloc];
       v46 = +[MPIdentifierSet emptyIdentifierSet];
@@ -603,8 +603,8 @@ LABEL_121:
       v192[2] = __100__MPStoreModelGenericObjectBuilder_modelObjectWithStoreItemMetadata_sourceModelObject_userIdentity___block_invoke_19;
       v192[3] = &unk_1E767E6E0;
       v47 = &v193;
-      v48 = v48;
-      v193 = v48;
+      v1794 = v1794;
+      v193 = v1794;
       v49 = v192;
       goto LABEL_36;
     }
@@ -612,13 +612,13 @@ LABEL_121:
     goto LABEL_215;
   }
 
-  if (([v11 isEqualToString:@"artist"] & 1) != 0 || objc_msgSend(v9, "type") == 3 || (+[MPModelArtistKind identityKind](MPModelArtistKind, "identityKind"), v102 = objc_claimAutoreleasedReturnValue(), v103 = objc_msgSend(v179, "isEqual:", v102), v102, v103))
+  if (([itemKind isEqualToString:@"artist"] & 1) != 0 || objc_msgSend(objectCopy, "type") == 3 || (+[MPModelArtistKind identityKind](MPModelArtistKind, "identityKind"), v102 = objc_claimAutoreleasedReturnValue(), v103 = objc_msgSend(modelKind, "isEqual:", v102), v102, v103))
   {
     if (!self->_artistBuilder)
     {
-      v104 = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
-      v105 = [v104 relationships];
-      v106 = [v105 objectForKey:@"MPModelRelationshipGenericArtist"];
+      requestedPropertySet6 = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
+      relationships6 = [requestedPropertySet6 relationships];
+      v106 = [relationships6 objectForKey:@"MPModelRelationshipGenericArtist"];
       v107 = v106;
       if (v106)
       {
@@ -639,33 +639,33 @@ LABEL_121:
       [(MPStoreModelObjectBuilder *)self->_artistBuilder setPreventStoreItemMetadataCaching:[(MPStoreModelObjectBuilder *)self preventStoreItemMetadataCaching]];
     }
 
-    if (!v9)
+    if (!objectCopy)
     {
       goto LABEL_136;
     }
 
-    if ([v9 type] == 3)
+    if ([objectCopy type] == 3)
     {
-      v29 = [v9 artist];
+      song = [objectCopy artist];
       goto LABEL_137;
     }
 
-    if (![v9 type])
+    if (![objectCopy type])
     {
       v124 = [MPModelArtist alloc];
-      v125 = [v9 identifiers];
-      v29 = [(MPModelObject *)v124 initWithIdentifiers:v125 block:&__block_literal_global_41_44818];
+      identifiers7 = [objectCopy identifiers];
+      song = [(MPModelObject *)v124 initWithIdentifiers:identifiers7 block:&__block_literal_global_41_44818];
     }
 
     else
     {
 LABEL_136:
-      v29 = 0;
+      song = 0;
     }
 
 LABEL_137:
-    v48 = [(MPStoreModelArtistBuilder *)self->_artistBuilder modelObjectWithStoreItemMetadata:v8 sourceModelObject:v29 userIdentity:v10, v179];
-    if (v48)
+    v1794 = [(MPStoreModelArtistBuilder *)self->_artistBuilder modelObjectWithStoreItemMetadata:metadataCopy sourceModelObject:song userIdentity:identityCopy, modelKind];
+    if (v1794)
     {
       v51 = [MPModelGenericObject alloc];
       v46 = +[MPIdentifierSet emptyIdentifierSet];
@@ -674,8 +674,8 @@ LABEL_137:
       v190[2] = __100__MPStoreModelGenericObjectBuilder_modelObjectWithStoreItemMetadata_sourceModelObject_userIdentity___block_invoke_21;
       v190[3] = &unk_1E767E6E0;
       v47 = &v191;
-      v48 = v48;
-      v191 = v48;
+      v1794 = v1794;
+      v191 = v1794;
       v49 = v190;
       goto LABEL_36;
     }
@@ -683,13 +683,13 @@ LABEL_137:
     goto LABEL_215;
   }
 
-  if (([v11 isEqualToString:@"creditsArtist"] & 1) != 0 || objc_msgSend(v9, "type") == 19 || (+[MPModelRecordLabelKind identityKind](MPModelRecordLabelKind, "identityKind"), v114 = objc_claimAutoreleasedReturnValue(), v115 = objc_msgSend(v179, "isEqual:", v114), v114, v115))
+  if (([itemKind isEqualToString:@"creditsArtist"] & 1) != 0 || objc_msgSend(objectCopy, "type") == 19 || (+[MPModelRecordLabelKind identityKind](MPModelRecordLabelKind, "identityKind"), v114 = objc_claimAutoreleasedReturnValue(), v115 = objc_msgSend(modelKind, "isEqual:", v114), v114, v115))
   {
     if (!self->_recordLabelBuilder)
     {
-      v116 = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
-      v117 = [v116 relationships];
-      v118 = [v117 objectForKey:@"MPModelRelationshipGenericRecordLabel"];
+      requestedPropertySet7 = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
+      relationships7 = [requestedPropertySet7 relationships];
+      v118 = [relationships7 objectForKey:@"MPModelRelationshipGenericRecordLabel"];
       v119 = v118;
       if (v118)
       {
@@ -710,33 +710,33 @@ LABEL_137:
       [(MPStoreModelObjectBuilder *)self->_recordLabelBuilder setPreventStoreItemMetadataCaching:[(MPStoreModelObjectBuilder *)self preventStoreItemMetadataCaching]];
     }
 
-    if (!v179)
+    if (!modelKind)
     {
       goto LABEL_152;
     }
 
-    if ([v9 type] == 19)
+    if ([objectCopy type] == 19)
     {
-      v29 = [v9 recordLabel];
+      song = [objectCopy recordLabel];
       goto LABEL_153;
     }
 
-    if (![v9 type])
+    if (![objectCopy type])
     {
       v136 = [MPModelRecordLabel alloc];
-      v137 = [v9 identifiers];
-      v29 = [(MPModelObject *)v136 initWithIdentifiers:v137 block:&__block_literal_global_46_44822];
+      identifiers8 = [objectCopy identifiers];
+      song = [(MPModelObject *)v136 initWithIdentifiers:identifiers8 block:&__block_literal_global_46_44822];
     }
 
     else
     {
 LABEL_152:
-      v29 = 0;
+      song = 0;
     }
 
 LABEL_153:
-    v48 = [(MPStoreModelRecordLabelBuilder *)self->_recordLabelBuilder modelObjectWithStoreItemMetadata:v8 sourceModelObject:v29 userIdentity:v10, v179];
-    if (v48)
+    v1794 = [(MPStoreModelRecordLabelBuilder *)self->_recordLabelBuilder modelObjectWithStoreItemMetadata:metadataCopy sourceModelObject:song userIdentity:identityCopy, modelKind];
+    if (v1794)
     {
       v51 = [MPModelGenericObject alloc];
       v46 = +[MPIdentifierSet emptyIdentifierSet];
@@ -745,8 +745,8 @@ LABEL_153:
       v188[2] = __100__MPStoreModelGenericObjectBuilder_modelObjectWithStoreItemMetadata_sourceModelObject_userIdentity___block_invoke_23;
       v188[3] = &unk_1E767E6E0;
       v47 = &v189;
-      v48 = v48;
-      v189 = v48;
+      v1794 = v1794;
+      v189 = v1794;
       v49 = v188;
       goto LABEL_36;
     }
@@ -754,13 +754,13 @@ LABEL_153:
     goto LABEL_215;
   }
 
-  if (([v11 isEqualToString:@"tvShow"] & 1) != 0 || objc_msgSend(v9, "type") == 8 || (+[MPModelTVShowKind identityKind](MPModelTVShowKind, "identityKind"), v126 = objc_claimAutoreleasedReturnValue(), v127 = objc_msgSend(v179, "isEqual:", v126), v126, v127))
+  if (([itemKind isEqualToString:@"tvShow"] & 1) != 0 || objc_msgSend(objectCopy, "type") == 8 || (+[MPModelTVShowKind identityKind](MPModelTVShowKind, "identityKind"), v126 = objc_claimAutoreleasedReturnValue(), v127 = objc_msgSend(modelKind, "isEqual:", v126), v126, v127))
   {
     if (!self->_tvShowBuilder)
     {
-      v128 = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
-      v129 = [v128 relationships];
-      v130 = [v129 objectForKey:@"MPModelRelationshipGenericTVShow"];
+      requestedPropertySet8 = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
+      relationships8 = [requestedPropertySet8 relationships];
+      v130 = [relationships8 objectForKey:@"MPModelRelationshipGenericTVShow"];
       v131 = v130;
       if (v130)
       {
@@ -781,33 +781,33 @@ LABEL_153:
       [(MPStoreModelObjectBuilder *)self->_tvShowBuilder setPreventStoreItemMetadataCaching:[(MPStoreModelObjectBuilder *)self preventStoreItemMetadataCaching]];
     }
 
-    if (!v9)
+    if (!objectCopy)
     {
       goto LABEL_168;
     }
 
-    if ([v9 type] == 8)
+    if ([objectCopy type] == 8)
     {
-      v29 = [v9 show];
+      song = [objectCopy show];
       goto LABEL_169;
     }
 
-    if (![v9 type])
+    if (![objectCopy type])
     {
       v148 = [MPModelTVShow alloc];
-      v149 = [v9 identifiers];
-      v29 = [(MPModelObject *)v148 initWithIdentifiers:v149 block:&__block_literal_global_51];
+      identifiers9 = [objectCopy identifiers];
+      song = [(MPModelObject *)v148 initWithIdentifiers:identifiers9 block:&__block_literal_global_51];
     }
 
     else
     {
 LABEL_168:
-      v29 = 0;
+      song = 0;
     }
 
 LABEL_169:
-    v48 = [(MPStoreModelTVShowBuilder *)self->_tvShowBuilder modelObjectWithStoreItemMetadata:v8 sourceModelObject:v29 userIdentity:v10, v179];
-    if (v48)
+    v1794 = [(MPStoreModelTVShowBuilder *)self->_tvShowBuilder modelObjectWithStoreItemMetadata:metadataCopy sourceModelObject:song userIdentity:identityCopy, modelKind];
+    if (v1794)
     {
       v51 = [MPModelGenericObject alloc];
       v46 = +[MPIdentifierSet emptyIdentifierSet];
@@ -816,8 +816,8 @@ LABEL_169:
       v186[2] = __100__MPStoreModelGenericObjectBuilder_modelObjectWithStoreItemMetadata_sourceModelObject_userIdentity___block_invoke_25;
       v186[3] = &unk_1E767E6E0;
       v47 = &v187;
-      v48 = v48;
-      v187 = v48;
+      v1794 = v1794;
+      v187 = v1794;
       v49 = v186;
       goto LABEL_36;
     }
@@ -825,13 +825,13 @@ LABEL_169:
     goto LABEL_215;
   }
 
-  if (([v11 isEqualToString:@"tvSeason"] & 1) != 0 || objc_msgSend(v9, "type") == 7 || (+[MPModelTVSeasonKind identityKind](MPModelTVSeasonKind, "identityKind"), v138 = objc_claimAutoreleasedReturnValue(), v139 = objc_msgSend(v179, "isEqual:", v138), v138, v139))
+  if (([itemKind isEqualToString:@"tvSeason"] & 1) != 0 || objc_msgSend(objectCopy, "type") == 7 || (+[MPModelTVSeasonKind identityKind](MPModelTVSeasonKind, "identityKind"), v138 = objc_claimAutoreleasedReturnValue(), v139 = objc_msgSend(modelKind, "isEqual:", v138), v138, v139))
   {
     if (!self->_tvSeasonBuilder)
     {
-      v140 = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
-      v141 = [v140 relationships];
-      v142 = [v141 objectForKey:@"MPModelRelationshipGenericTVSeason"];
+      requestedPropertySet9 = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
+      relationships9 = [requestedPropertySet9 relationships];
+      v142 = [relationships9 objectForKey:@"MPModelRelationshipGenericTVSeason"];
       v143 = v142;
       if (v142)
       {
@@ -852,33 +852,33 @@ LABEL_169:
       [(MPStoreModelObjectBuilder *)self->_tvSeasonBuilder setPreventStoreItemMetadataCaching:[(MPStoreModelObjectBuilder *)self preventStoreItemMetadataCaching]];
     }
 
-    if (!v9)
+    if (!objectCopy)
     {
       goto LABEL_185;
     }
 
-    if ([v9 type] == 7)
+    if ([objectCopy type] == 7)
     {
-      v29 = [v9 season];
+      song = [objectCopy season];
       goto LABEL_186;
     }
 
-    if (![v9 type])
+    if (![objectCopy type])
     {
       v160 = [MPModelTVSeason alloc];
-      v161 = [v9 identifiers];
-      v29 = [(MPModelObject *)v160 initWithIdentifiers:v161 block:&__block_literal_global_56];
+      identifiers10 = [objectCopy identifiers];
+      song = [(MPModelObject *)v160 initWithIdentifiers:identifiers10 block:&__block_literal_global_56];
     }
 
     else
     {
 LABEL_185:
-      v29 = 0;
+      song = 0;
     }
 
 LABEL_186:
-    v48 = [(MPStoreModelObjectBuilder *)self->_tvSeasonBuilder modelObjectWithStoreItemMetadata:v8 sourceModelObject:v29 userIdentity:v10, v179];
-    if (v48)
+    v1794 = [(MPStoreModelObjectBuilder *)self->_tvSeasonBuilder modelObjectWithStoreItemMetadata:metadataCopy sourceModelObject:song userIdentity:identityCopy, modelKind];
+    if (v1794)
     {
       v51 = [MPModelGenericObject alloc];
       v46 = +[MPIdentifierSet emptyIdentifierSet];
@@ -887,8 +887,8 @@ LABEL_186:
       v184[2] = __100__MPStoreModelGenericObjectBuilder_modelObjectWithStoreItemMetadata_sourceModelObject_userIdentity___block_invoke_27;
       v184[3] = &unk_1E767E6E0;
       v47 = &v185;
-      v48 = v48;
-      v185 = v48;
+      v1794 = v1794;
+      v185 = v1794;
       v49 = v184;
       goto LABEL_36;
     }
@@ -896,13 +896,13 @@ LABEL_186:
     goto LABEL_215;
   }
 
-  if (([v11 isEqualToString:@"recordLabel"] & 1) != 0 || (objc_msgSend(v11, "isEqualToString:", @"record-labels") & 1) != 0 || objc_msgSend(v9, "type") == 19 || (+[MPModelRecordLabelKind identityKind](MPModelRecordLabelKind, "identityKind"), v150 = objc_claimAutoreleasedReturnValue(), v151 = objc_msgSend(v179, "isEqual:", v150), v150, v151))
+  if (([itemKind isEqualToString:@"recordLabel"] & 1) != 0 || (objc_msgSend(itemKind, "isEqualToString:", @"record-labels") & 1) != 0 || objc_msgSend(objectCopy, "type") == 19 || (+[MPModelRecordLabelKind identityKind](MPModelRecordLabelKind, "identityKind"), v150 = objc_claimAutoreleasedReturnValue(), v151 = objc_msgSend(modelKind, "isEqual:", v150), v150, v151))
   {
     if (!self->_recordLabelBuilder)
     {
-      v152 = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
-      v153 = [v152 relationships];
-      v154 = [v153 objectForKey:@"MPModelRelationshipGenericRecordLabel"];
+      requestedPropertySet10 = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
+      relationships10 = [requestedPropertySet10 relationships];
+      v154 = [relationships10 objectForKey:@"MPModelRelationshipGenericRecordLabel"];
       v155 = v154;
       if (v154)
       {
@@ -923,33 +923,33 @@ LABEL_186:
       [(MPStoreModelObjectBuilder *)self->_recordLabelBuilder setPreventStoreItemMetadataCaching:[(MPStoreModelObjectBuilder *)self preventStoreItemMetadataCaching]];
     }
 
-    if (!v179)
+    if (!modelKind)
     {
       goto LABEL_195;
     }
 
-    if ([v9 type] == 19)
+    if ([objectCopy type] == 19)
     {
-      v29 = [v9 recordLabel];
+      song = [objectCopy recordLabel];
       goto LABEL_196;
     }
 
-    if (![v9 type])
+    if (![objectCopy type])
     {
       v165 = [MPModelRecordLabel alloc];
-      v166 = [v9 identifiers];
-      v29 = [(MPModelObject *)v165 initWithIdentifiers:v166 block:&__block_literal_global_58];
+      identifiers11 = [objectCopy identifiers];
+      song = [(MPModelObject *)v165 initWithIdentifiers:identifiers11 block:&__block_literal_global_58];
     }
 
     else
     {
 LABEL_195:
-      v29 = 0;
+      song = 0;
     }
 
 LABEL_196:
-    v48 = [(MPStoreModelRecordLabelBuilder *)self->_recordLabelBuilder modelObjectWithStoreItemMetadata:v8 sourceModelObject:v29 userIdentity:v10, v179];
-    if (v48)
+    v1794 = [(MPStoreModelRecordLabelBuilder *)self->_recordLabelBuilder modelObjectWithStoreItemMetadata:metadataCopy sourceModelObject:song userIdentity:identityCopy, modelKind];
+    if (v1794)
     {
       v51 = [MPModelGenericObject alloc];
       v46 = +[MPIdentifierSet emptyIdentifierSet];
@@ -958,8 +958,8 @@ LABEL_196:
       v182[2] = __100__MPStoreModelGenericObjectBuilder_modelObjectWithStoreItemMetadata_sourceModelObject_userIdentity___block_invoke_29;
       v182[3] = &unk_1E767E6E0;
       v47 = &v183;
-      v48 = v48;
-      v183 = v48;
+      v1794 = v1794;
+      v183 = v1794;
       v49 = v182;
       goto LABEL_36;
     }
@@ -967,13 +967,13 @@ LABEL_196:
     goto LABEL_215;
   }
 
-  if (([v11 isEqualToString:@"radioStation"] & 1) != 0 || objc_msgSend(v9, "type") == 13 || (+[MPModelRadioStationKind identityKind](MPModelRadioStationKind, "identityKind"), v167 = objc_claimAutoreleasedReturnValue(), v168 = objc_msgSend(v179, "isEqual:", v167), v167, v168))
+  if (([itemKind isEqualToString:@"radioStation"] & 1) != 0 || objc_msgSend(objectCopy, "type") == 13 || (+[MPModelRadioStationKind identityKind](MPModelRadioStationKind, "identityKind"), v167 = objc_claimAutoreleasedReturnValue(), v168 = objc_msgSend(modelKind, "isEqual:", v167), v167, v168))
   {
     if (!self->_radioStationBuilder)
     {
-      v169 = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
-      v170 = [v169 relationships];
-      v171 = [v170 objectForKey:@"MPModelRelationshipGenericRadioStation"];
+      requestedPropertySet11 = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
+      relationships11 = [requestedPropertySet11 relationships];
+      v171 = [relationships11 objectForKey:@"MPModelRelationshipGenericRadioStation"];
       v172 = v171;
       if (v171)
       {
@@ -994,33 +994,33 @@ LABEL_196:
       [(MPStoreModelObjectBuilder *)self->_radioStationBuilder setPreventStoreItemMetadataCaching:[(MPStoreModelObjectBuilder *)self preventStoreItemMetadataCaching]];
     }
 
-    if (!v179)
+    if (!modelKind)
     {
       goto LABEL_212;
     }
 
-    if ([v9 type] == 13)
+    if ([objectCopy type] == 13)
     {
-      v29 = [v9 radioStation];
+      song = [objectCopy radioStation];
       goto LABEL_213;
     }
 
-    if (![v9 type])
+    if (![objectCopy type])
     {
       v177 = [MPModelRadioStation alloc];
-      v178 = [v9 identifiers];
-      v29 = [(MPModelObject *)v177 initWithIdentifiers:v178 block:&__block_literal_global_63_44832];
+      identifiers12 = [objectCopy identifiers];
+      song = [(MPModelObject *)v177 initWithIdentifiers:identifiers12 block:&__block_literal_global_63_44832];
     }
 
     else
     {
 LABEL_212:
-      v29 = 0;
+      song = 0;
     }
 
 LABEL_213:
-    v48 = [(MPStoreModelRadioStationBuilder *)self->_radioStationBuilder modelObjectWithStoreItemMetadata:v8 sourceModelObject:v29 userIdentity:v10, v179];
-    if (v48)
+    v1794 = [(MPStoreModelRadioStationBuilder *)self->_radioStationBuilder modelObjectWithStoreItemMetadata:metadataCopy sourceModelObject:song userIdentity:identityCopy, modelKind];
+    if (v1794)
     {
       v51 = [MPModelGenericObject alloc];
       v46 = +[MPIdentifierSet emptyIdentifierSet];
@@ -1029,8 +1029,8 @@ LABEL_213:
       v180[2] = __100__MPStoreModelGenericObjectBuilder_modelObjectWithStoreItemMetadata_sourceModelObject_userIdentity___block_invoke_31;
       v180[3] = &unk_1E767E6E0;
       v47 = &v181;
-      v48 = v48;
-      v181 = v48;
+      v1794 = v1794;
+      v181 = v1794;
       v49 = v180;
       goto LABEL_36;
     }
@@ -1086,22 +1086,22 @@ void __100__MPStoreModelGenericObjectBuilder_modelObjectWithStoreItemMetadata_so
   [v3 setPlaylistEntry:v6];
 }
 
-- (void)setPreventStoreItemMetadataCaching:(BOOL)a3
+- (void)setPreventStoreItemMetadataCaching:(BOOL)caching
 {
-  v3 = a3;
+  cachingCopy = caching;
   v5.receiver = self;
   v5.super_class = MPStoreModelGenericObjectBuilder;
   [(MPStoreModelObjectBuilder *)&v5 setPreventStoreItemMetadataCaching:?];
-  [(MPStoreModelObjectBuilder *)self->_albumBuilder setPreventStoreItemMetadataCaching:v3];
-  [(MPStoreModelObjectBuilder *)self->_artistBuilder setPreventStoreItemMetadataCaching:v3];
-  [(MPStoreModelObjectBuilder *)self->_movieBuilder setPreventStoreItemMetadataCaching:v3];
-  [(MPStoreModelObjectBuilder *)self->_playlistBuilder setPreventStoreItemMetadataCaching:v3];
-  [(MPStoreModelObjectBuilder *)self->_songBuilder setPreventStoreItemMetadataCaching:v3];
-  [(MPStoreModelObjectBuilder *)self->_tvEpisodeBuilder setPreventStoreItemMetadataCaching:v3];
-  [(MPStoreModelObjectBuilder *)self->_tvSeasonBuilder setPreventStoreItemMetadataCaching:v3];
-  [(MPStoreModelObjectBuilder *)self->_tvShowBuilder setPreventStoreItemMetadataCaching:v3];
-  [(MPStoreModelObjectBuilder *)self->_recordLabelBuilder setPreventStoreItemMetadataCaching:v3];
-  [(MPStoreModelObjectBuilder *)self->_radioStationBuilder setPreventStoreItemMetadataCaching:v3];
+  [(MPStoreModelObjectBuilder *)self->_albumBuilder setPreventStoreItemMetadataCaching:cachingCopy];
+  [(MPStoreModelObjectBuilder *)self->_artistBuilder setPreventStoreItemMetadataCaching:cachingCopy];
+  [(MPStoreModelObjectBuilder *)self->_movieBuilder setPreventStoreItemMetadataCaching:cachingCopy];
+  [(MPStoreModelObjectBuilder *)self->_playlistBuilder setPreventStoreItemMetadataCaching:cachingCopy];
+  [(MPStoreModelObjectBuilder *)self->_songBuilder setPreventStoreItemMetadataCaching:cachingCopy];
+  [(MPStoreModelObjectBuilder *)self->_tvEpisodeBuilder setPreventStoreItemMetadataCaching:cachingCopy];
+  [(MPStoreModelObjectBuilder *)self->_tvSeasonBuilder setPreventStoreItemMetadataCaching:cachingCopy];
+  [(MPStoreModelObjectBuilder *)self->_tvShowBuilder setPreventStoreItemMetadataCaching:cachingCopy];
+  [(MPStoreModelObjectBuilder *)self->_recordLabelBuilder setPreventStoreItemMetadataCaching:cachingCopy];
+  [(MPStoreModelObjectBuilder *)self->_radioStationBuilder setPreventStoreItemMetadataCaching:cachingCopy];
 }
 
 @end

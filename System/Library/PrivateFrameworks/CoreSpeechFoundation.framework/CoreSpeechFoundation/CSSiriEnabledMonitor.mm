@@ -2,9 +2,9 @@
 + (id)sharedInstance;
 - (BOOL)fetchIsEnabled;
 - (CSSiriEnabledMonitor)init;
-- (void)_didReceiveSiriSettingChanged:(BOOL)a3;
-- (void)_notifyObserver:(id)a3;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_didReceiveSiriSettingChanged:(BOOL)changed;
+- (void)_notifyObserver:(id)observer;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
 @end
 
@@ -37,19 +37,19 @@
   return result;
 }
 
-- (void)_notifyObserver:(id)a3
+- (void)_notifyObserver:(id)observer
 {
-  v4 = a3;
-  [(CSEventMonitor *)self notifyObserver:v4];
+  observerCopy = observer;
+  [(CSEventMonitor *)self notifyObserver:observerCopy];
   if (objc_opt_respondsToSelector())
   {
-    [v4 CSSiriEnabledMonitor:self didReceiveEnabled:self->_isSiriSettingEnabled];
+    [observerCopy CSSiriEnabledMonitor:self didReceiveEnabled:self->_isSiriSettingEnabled];
   }
 }
 
-- (void)_didReceiveSiriSettingChanged:(BOOL)a3
+- (void)_didReceiveSiriSettingChanged:(BOOL)changed
 {
-  self->_isSiriSettingEnabled = a3;
+  self->_isSiriSettingEnabled = changed;
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __54__CSSiriEnabledMonitor__didReceiveSiriSettingChanged___block_invoke;
@@ -74,7 +74,7 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   v13 = *MEMORY[0x1E69E9840];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();

@@ -1,19 +1,19 @@
 @interface NCNotificationViewController
 + (id)_primaryTextFont;
 - (BOOL)_canPan;
-- (BOOL)_setDelegate:(id)a3;
-- (BOOL)_setNotificationRequest:(id)a3;
+- (BOOL)_setDelegate:(id)delegate;
+- (BOOL)_setNotificationRequest:(id)request;
 - (BOOL)adjustForContentSizeCategoryChange;
-- (BOOL)didForwardNotificationRequestToCustomContent:(id)a3;
+- (BOOL)didForwardNotificationRequestToCustomContent:(id)content;
 - (BOOL)isHighlighted;
 - (BOOL)restoreInputViews;
 - (BOOL)shouldAutorotate;
 - (CGAffineTransform)contentTransform;
-- (CGSize)_preferredCustomContentSizeForSize:(CGSize)a3 parentContentContainerBounds:(CGRect)a4;
-- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)a3 containerSize:(CGSize)a4;
+- (CGSize)_preferredCustomContentSizeForSize:(CGSize)size parentContentContainerBounds:(CGRect)bounds;
+- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)size containerSize:(CGSize)containerSize;
 - (NCDimmableView)_notificationViewControllerView;
 - (NCNotificationListCellDynamicHeightTraits)currentTraits;
-- (NCNotificationViewController)initWithNotificationRequest:(id)a3 revealingAdditionalContentOnPresentation:(BOOL)a4;
+- (NCNotificationViewController)initWithNotificationRequest:(id)request revealingAdditionalContentOnPresentation:(BOOL)presentation;
 - (NCNotificationViewControllerDelegate)delegate;
 - (NSDictionary)notificationUsageTrackingState;
 - (NSSet)activeTransitionBlockingAssertions;
@@ -21,33 +21,33 @@
 - (UIView)associatedView;
 - (id)_contentSizeManagingView;
 - (id)_customContentProvidingViewControllerCreateIfNecessary;
-- (id)_initWithNotificationRequest:(id)a3 revealingAdditionalContentOnPresentation:(BOOL)a4;
-- (id)_lookViewLoadingIfNecessary:(BOOL)a3;
+- (id)_initWithNotificationRequest:(id)request revealingAdditionalContentOnPresentation:(BOOL)presentation;
+- (id)_lookViewLoadingIfNecessary:(BOOL)necessary;
 - (id)_staticContentProviderLoadingIfNecessary;
-- (id)activeTransitionBlockingAssertionForReason:(id)a3;
+- (id)activeTransitionBlockingAssertionForReason:(id)reason;
 - (id)containerViewForExpandedContent;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)expandedPlatterPresentationController:(id)a3 keyboardAssertionForGestureWindow:(id)a4;
-- (id)hideHomeAffordanceAnimationSettingsForExpandedPlatterPresentationController:(id)a3;
-- (id)requestTransitionBlockingAssertionWithReason:(id)a3;
-- (id)settleHomeAffordanceAnimationBehaviorDescriptionForExpandedPlatterPresentationController:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)expandedPlatterPresentationController:(id)controller keyboardAssertionForGestureWindow:(id)window;
+- (id)hideHomeAffordanceAnimationSettingsForExpandedPlatterPresentationController:(id)controller;
+- (id)requestTransitionBlockingAssertionWithReason:(id)reason;
+- (id)settleHomeAffordanceAnimationBehaviorDescriptionForExpandedPlatterPresentationController:(id)controller;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (id)unhideHomeAffordanceAnimationSettingsForExpandedPlatterPresentationController:(id)a3;
+- (id)unhideHomeAffordanceAnimationSettingsForExpandedPlatterPresentationController:(id)controller;
 - (int64_t)_dateFormatStyle;
 - (unint64_t)_maximumNumberOfPrimaryTextLinesForProvidedStaticContent;
 - (unint64_t)_maximumNumberOfSecondaryTextLinesForProvidedStaticContent;
-- (void)_askDelegateToExecuteAction:(id)a3 withParameters:(id)a4 animated:(BOOL)a5;
-- (void)_executeCancelAction:(BOOL)a3;
-- (void)_executeClearAction:(BOOL)a3;
-- (void)_executeCloseAction:(BOOL)a3;
-- (void)_executeDefaultAction:(BOOL)a3;
-- (void)_executeNilAction:(BOOL)a3;
+- (void)_askDelegateToExecuteAction:(id)action withParameters:(id)parameters animated:(BOOL)animated;
+- (void)_executeCancelAction:(BOOL)action;
+- (void)_executeClearAction:(BOOL)action;
+- (void)_executeCloseAction:(BOOL)action;
+- (void)_executeDefaultAction:(BOOL)action;
+- (void)_executeNilAction:(BOOL)action;
 - (void)_notificationViewControllerViewDidLoad;
-- (void)_notifyObserversWithBlock:(id)a3;
-- (void)_setCustomContentProvidingViewController:(id)a3;
-- (void)_setPreferredCustomContentSize:(CGSize)a3;
+- (void)_notifyObserversWithBlock:(id)block;
+- (void)_setCustomContentProvidingViewController:(id)controller;
+- (void)_setPreferredCustomContentSize:(CGSize)size;
 - (void)_setupAuxiliaryOptionsContentProvider;
 - (void)_setupCustomContentProvider;
 - (void)_setupStaticContentProvider;
@@ -55,42 +55,42 @@
 - (void)_updateScreenCaptureProhibited;
 - (void)_updateWithProvidedAuxiliaryOptionsContent;
 - (void)_updateWithProvidedStaticContent;
-- (void)addObserver:(id)a3;
-- (void)configureStackDimmingForTransform:(CGAffineTransform *)a3;
-- (void)contentProvider:(id)a3 performAction:(id)a4 animated:(BOOL)a5;
-- (void)customContent:(id)a3 requestPermissionToExecuteAction:(id)a4 forNotification:(id)a5 withUserInfo:(id)a6 completionHandler:(id)a7;
-- (void)dismissViewControllerWithTransition:(int)a3 completion:(id)a4;
+- (void)addObserver:(id)observer;
+- (void)configureStackDimmingForTransform:(CGAffineTransform *)transform;
+- (void)contentProvider:(id)provider performAction:(id)action animated:(BOOL)animated;
+- (void)customContent:(id)content requestPermissionToExecuteAction:(id)action forNotification:(id)notification withUserInfo:(id)info completionHandler:(id)handler;
+- (void)dismissViewControllerWithTransition:(int)transition completion:(id)completion;
 - (void)invalidateContentProviders;
 - (void)loadView;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)presentLongLookAnimated:(BOOL)a3 trigger:(int64_t)a4 completion:(id)a5;
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)presentLongLookAnimated:(BOOL)animated trigger:(int64_t)trigger completion:(id)completion;
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
 - (void)preserveInputViews;
-- (void)removeObserver:(id)a3;
-- (void)setAllowContentToCrossFade:(BOOL)a3;
-- (void)setApparentZDistanceToUser:(int64_t)a3;
-- (void)setAuxiliaryOptionsContentProvider:(id)a3;
-- (void)setBackgroundAlpha:(double)a3;
-- (void)setBackgroundHidden:(BOOL)a3;
-- (void)setCompositeAlpha:(double)a3;
-- (void)setContentAlpha:(double)a3;
-- (void)setContentTransform:(CGAffineTransform *)a3;
-- (void)setDateAlpha:(double)a3;
-- (void)setDisableDimming:(BOOL)a3;
-- (void)setGlassMode:(unint64_t)a3;
+- (void)removeObserver:(id)observer;
+- (void)setAllowContentToCrossFade:(BOOL)fade;
+- (void)setApparentZDistanceToUser:(int64_t)user;
+- (void)setAuxiliaryOptionsContentProvider:(id)provider;
+- (void)setBackgroundAlpha:(double)alpha;
+- (void)setBackgroundHidden:(BOOL)hidden;
+- (void)setCompositeAlpha:(double)alpha;
+- (void)setContentAlpha:(double)alpha;
+- (void)setContentTransform:(CGAffineTransform *)transform;
+- (void)setDateAlpha:(double)alpha;
+- (void)setDisableDimming:(BOOL)dimming;
+- (void)setGlassMode:(unint64_t)mode;
 - (void)setHasUpdatedContent;
-- (void)setHideDate:(BOOL)a3;
-- (void)setInteractionEnabled:(BOOL)a3;
-- (void)setRootScrollVelocity:(double)a3;
-- (void)setStaticContentProvider:(id)a3;
-- (void)setUnmanagedBackdropContrast:(BOOL)a3;
+- (void)setHideDate:(BOOL)date;
+- (void)setInteractionEnabled:(BOOL)enabled;
+- (void)setRootScrollVelocity:(double)velocity;
+- (void)setStaticContentProvider:(id)provider;
+- (void)setUnmanagedBackdropContrast:(BOOL)contrast;
 - (void)updateContent;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -126,11 +126,11 @@
 {
   if (!self->_auxiliaryOptionsContentProvider)
   {
-    v3 = [(NCNotificationViewController *)self delegate];
+    delegate = [(NCNotificationViewController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v4 = [(NCNotificationViewController *)self notificationRequest];
-      v5 = [v3 notificationViewController:self auxiliaryOptionsContentProviderForNotificationRequest:v4 withLongLook:{-[NCNotificationViewController isShortLook](self, "isShortLook") ^ 1}];
+      notificationRequest = [(NCNotificationViewController *)self notificationRequest];
+      v5 = [delegate notificationViewController:self auxiliaryOptionsContentProviderForNotificationRequest:notificationRequest withLongLook:{-[NCNotificationViewController isShortLook](self, "isShortLook") ^ 1}];
     }
 
     else
@@ -138,15 +138,15 @@
       v5 = 0;
     }
 
-    v6 = [(NCNotificationViewController *)self notificationRequest];
-    v7 = [v6 options];
-    v8 = [v7 displaysActionsInline];
+    notificationRequest2 = [(NCNotificationViewController *)self notificationRequest];
+    options = [notificationRequest2 options];
+    displaysActionsInline = [options displaysActionsInline];
 
-    v9 = [(NCNotificationViewController *)self notificationRequest];
-    v10 = [v9 defaultEnvironmentActions];
-    v11 = [v10 count];
+    notificationRequest3 = [(NCNotificationViewController *)self notificationRequest];
+    defaultEnvironmentActions = [notificationRequest3 defaultEnvironmentActions];
+    v11 = [defaultEnvironmentActions count];
 
-    if (v8 && v11)
+    if (displaysActionsInline && v11)
     {
       if (v5)
       {
@@ -157,8 +157,8 @@
       }
 
       v12 = [NCNotificationRequestInlineActionsProvider alloc];
-      v13 = [(NCNotificationViewController *)self notificationRequest];
-      v14 = [(NCNotificationRequestInlineActionsProvider *)v12 initWithNotificationRequest:v13 delegate:self];
+      notificationRequest4 = [(NCNotificationViewController *)self notificationRequest];
+      v14 = [(NCNotificationRequestInlineActionsProvider *)v12 initWithNotificationRequest:notificationRequest4 delegate:self];
 
       v5 = v14;
     }
@@ -172,10 +172,10 @@
   WeakRetained = objc_loadWeakRetained(&self->_contentSizeManagingView);
   if (!WeakRetained)
   {
-    v4 = [(NCNotificationViewController *)self viewIfLoaded];
+    viewIfLoaded = [(NCNotificationViewController *)self viewIfLoaded];
     if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
     {
-      WeakRetained = v4;
+      WeakRetained = viewIfLoaded;
       objc_storeWeak(&self->_contentSizeManagingView, WeakRetained);
     }
 
@@ -192,14 +192,14 @@
 {
   [(NCNotificationViewController *)self setStaticContentProvider:0];
   [(NCNotificationViewController *)self setAuxiliaryOptionsContentProvider:0];
-  v3 = [(NCNotificationViewController *)self view];
-  [v3 setNeedsLayout];
+  view = [(NCNotificationViewController *)self view];
+  [view setNeedsLayout];
 }
 
 - (void)updateContent
 {
-  v2 = [(NCNotificationViewController *)self view];
-  [v2 layoutIfNeeded];
+  view = [(NCNotificationViewController *)self view];
+  [view layoutIfNeeded];
 }
 
 - (void)_setupStaticContentProvider
@@ -208,8 +208,8 @@
   if ((objc_opt_respondsToSelector() & 1) == 0 || (-[NCNotificationViewController notificationRequest](self, "notificationRequest"), v4 = objc_claimAutoreleasedReturnValue(), [WeakRetained notificationRequestPresenter:self staticContentProviderForNotificationRequest:v4], v7 = objc_claimAutoreleasedReturnValue(), v4, !v7))
   {
     v5 = [NCNotificationRequestContentProvider alloc];
-    v6 = [(NCNotificationViewController *)self notificationRequest];
-    v7 = [(NCNotificationRequestContentProvider *)v5 initWithNotificationRequest:v6];
+    notificationRequest = [(NCNotificationViewController *)self notificationRequest];
+    v7 = [(NCNotificationRequestContentProvider *)v5 initWithNotificationRequest:notificationRequest];
 
     [(NCNotificationRequestContentProvider *)v7 setDelegate:self];
   }
@@ -219,63 +219,63 @@
 
 - (void)_updateWithProvidedStaticContent
 {
-  v3 = [(NCNotificationViewController *)self _lookViewIfLoaded];
-  if (v3)
+  _lookViewIfLoaded = [(NCNotificationViewController *)self _lookViewIfLoaded];
+  if (_lookViewIfLoaded)
   {
-    v4 = [(NCNotificationStaticContentProviding *)self->_staticContentProvider title];
-    [(NCNotificationViewController *)self _updateLookView:v3 withTitleFromProvidedStaticContent:v4];
+    title = [(NCNotificationStaticContentProviding *)self->_staticContentProvider title];
+    [(NCNotificationViewController *)self _updateLookView:_lookViewIfLoaded withTitleFromProvidedStaticContent:title];
 
     if (objc_opt_respondsToSelector())
     {
-      v5 = [(NCNotificationStaticContentProviding *)self->_staticContentProvider badgedIconDescription];
-      [v3 setBadgedIconDescription:v5];
+      badgedIconDescription = [(NCNotificationStaticContentProviding *)self->_staticContentProvider badgedIconDescription];
+      [_lookViewIfLoaded setBadgedIconDescription:badgedIconDescription];
     }
 
-    v6 = [(NCNotificationStaticContentProviding *)self->_staticContentProvider date];
-    [v3 setDate:v6];
+    date = [(NCNotificationStaticContentProviding *)self->_staticContentProvider date];
+    [_lookViewIfLoaded setDate:date];
 
-    [v3 setDateAllDay:{-[NCNotificationStaticContentProviding isDateAllDay](self->_staticContentProvider, "isDateAllDay")}];
-    v7 = [(NCNotificationStaticContentProviding *)self->_staticContentProvider timeZone];
-    [v3 setTimeZone:v7];
+    [_lookViewIfLoaded setDateAllDay:{-[NCNotificationStaticContentProviding isDateAllDay](self->_staticContentProvider, "isDateAllDay")}];
+    timeZone = [(NCNotificationStaticContentProviding *)self->_staticContentProvider timeZone];
+    [_lookViewIfLoaded setTimeZone:timeZone];
 
-    [v3 setDateFormatStyle:{-[NCNotificationViewController _dateFormatStyle](self, "_dateFormatStyle")}];
-    v8 = [(NCNotificationStaticContentProviding *)self->_staticContentProvider primaryText];
-    [v3 setPrimaryText:v8];
-    v9 = [(NCNotificationStaticContentProviding *)self->_staticContentProvider primarySubtitleText];
-    [v3 setPrimarySubtitleText:v9];
+    [_lookViewIfLoaded setDateFormatStyle:{-[NCNotificationViewController _dateFormatStyle](self, "_dateFormatStyle")}];
+    primaryText = [(NCNotificationStaticContentProviding *)self->_staticContentProvider primaryText];
+    [_lookViewIfLoaded setPrimaryText:primaryText];
+    primarySubtitleText = [(NCNotificationStaticContentProviding *)self->_staticContentProvider primarySubtitleText];
+    [_lookViewIfLoaded setPrimarySubtitleText:primarySubtitleText];
 
-    v10 = [(NCNotificationStaticContentProviding *)self->_staticContentProvider secondaryText];
-    [v3 setSecondaryText:v10];
+    secondaryText = [(NCNotificationStaticContentProviding *)self->_staticContentProvider secondaryText];
+    [_lookViewIfLoaded setSecondaryText:secondaryText];
 
     if (objc_opt_respondsToSelector())
     {
-      v11 = [(NCNotificationStaticContentProviding *)self->_staticContentProvider secondaryTextCompact];
-      [v3 setSecondaryTextCompact:v11];
+      secondaryTextCompact = [(NCNotificationStaticContentProviding *)self->_staticContentProvider secondaryTextCompact];
+      [_lookViewIfLoaded setSecondaryTextCompact:secondaryTextCompact];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v12 = [(NCNotificationStaticContentProviding *)self->_staticContentProvider secondaryTextGroupCollapsed];
-      [v3 setSecondaryTextGroupCollapsed:v12];
+      secondaryTextGroupCollapsed = [(NCNotificationStaticContentProviding *)self->_staticContentProvider secondaryTextGroupCollapsed];
+      [_lookViewIfLoaded setSecondaryTextGroupCollapsed:secondaryTextGroupCollapsed];
     }
 
-    v13 = [(NCNotificationStaticContentProviding *)self->_staticContentProvider inlineAction];
-    v14 = [v13 title];
+    inlineAction = [(NCNotificationStaticContentProviding *)self->_staticContentProvider inlineAction];
+    title2 = [inlineAction title];
 
     objc_initWeak(&location, self);
     if (objc_opt_respondsToSelector())
     {
-      if ([v14 length])
+      if ([title2 length])
       {
         v15 = MEMORY[0x277D750C8];
-        v16 = [(NCNotificationStaticContentProviding *)self->_staticContentProvider inlineAction];
-        v17 = [v16 identifier];
+        inlineAction2 = [(NCNotificationStaticContentProviding *)self->_staticContentProvider inlineAction];
+        identifier = [inlineAction2 identifier];
         v34 = MEMORY[0x277D85DD0];
         v35 = 3221225472;
         v36 = __64__NCNotificationViewController__updateWithProvidedStaticContent__block_invoke;
         v37 = &unk_27836F428;
         objc_copyWeak(&v38, &location);
-        v18 = [v15 actionWithTitle:v14 image:0 identifier:v17 handler:&v34];
+        v18 = [v15 actionWithTitle:title2 image:0 identifier:identifier handler:&v34];
 
         objc_destroyWeak(&v38);
       }
@@ -285,28 +285,28 @@
         v18 = 0;
       }
 
-      [v3 setInlineAction:{v18, v34, v35, v36, v37}];
+      [_lookViewIfLoaded setInlineAction:{v18, v34, v35, v36, v37}];
     }
 
     if (objc_opt_respondsToSelector())
     {
       v19 = MEMORY[0x277CCA898];
-      v20 = [(NCNotificationStaticContentProviding *)self->_staticContentProvider footerText];
-      v21 = [v19 nc_safeAttributedStringWithString:v20];
+      footerText = [(NCNotificationStaticContentProviding *)self->_staticContentProvider footerText];
+      v21 = [v19 nc_safeAttributedStringWithString:footerText];
 
-      [v3 setFooterText:v21];
+      [_lookViewIfLoaded setFooterText:v21];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v22 = [(NCNotificationStaticContentProviding *)self->_staticContentProvider contentSummaryAttributionText];
-      [v3 setFooterSummaryAttributionText:v22];
+      contentSummaryAttributionText = [(NCNotificationStaticContentProviding *)self->_staticContentProvider contentSummaryAttributionText];
+      [_lookViewIfLoaded setFooterSummaryAttributionText:contentSummaryAttributionText];
     }
 
-    v23 = [(NCNotificationViewController *)self delegate];
-    if (v23 && (objc_opt_respondsToSelector() & 1) != 0)
+    delegate = [(NCNotificationViewController *)self delegate];
+    if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v24 = [v23 importantAdornmentEligibleOptionsForNotificationViewController:self];
+      v24 = [delegate importantAdornmentEligibleOptionsForNotificationViewController:self];
     }
 
     else
@@ -316,19 +316,19 @@
 
     if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
     {
-      v25 = [v23 notificationViewControllerRequestCustomPlatterBackgroundView:self];
-      [v3 setCustomPlatterBackgroundView:v25];
+      v25 = [delegate notificationViewControllerRequestCustomPlatterBackgroundView:self];
+      [_lookViewIfLoaded setCustomPlatterBackgroundView:v25];
     }
 
     if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
     {
       staticContentProvider = self->_staticContentProvider;
-      v27 = [v3 importantTextImageConfiguration];
-      v28 = [(NCNotificationStaticContentProviding *)staticContentProvider importantAttributedTextWithImageConfiguration:v27 importantAdornmentEligibleOptions:v24];
+      importantTextImageConfiguration = [_lookViewIfLoaded importantTextImageConfiguration];
+      v28 = [(NCNotificationStaticContentProviding *)staticContentProvider importantAttributedTextWithImageConfiguration:importantTextImageConfiguration importantAdornmentEligibleOptions:v24];
 
-      [v3 setImportantAttributedText:v28];
-      v29 = [(NCNotificationStaticContentProviding *)self->_staticContentProvider importantTextVisualStylingProvider];
-      [v3 setImportantTextVisualStylingProvider:v29];
+      [_lookViewIfLoaded setImportantAttributedText:v28];
+      importantTextVisualStylingProvider = [(NCNotificationStaticContentProviding *)self->_staticContentProvider importantTextVisualStylingProvider];
+      [_lookViewIfLoaded setImportantTextVisualStylingProvider:importantTextVisualStylingProvider];
     }
 
     else
@@ -338,28 +338,28 @@
 
     if (![v28 length] && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v30 = [(NCNotificationStaticContentProviding *)self->_staticContentProvider importantText];
-      [v3 setImportantText:v30];
+      importantText = [(NCNotificationStaticContentProviding *)self->_staticContentProvider importantText];
+      [_lookViewIfLoaded setImportantText:importantText];
 
-      v31 = [(NCNotificationStaticContentProviding *)self->_staticContentProvider importantTextVisualStylingProvider];
-      [v3 setImportantTextVisualStylingProvider:v31];
+      importantTextVisualStylingProvider2 = [(NCNotificationStaticContentProviding *)self->_staticContentProvider importantTextVisualStylingProvider];
+      [_lookViewIfLoaded setImportantTextVisualStylingProvider:importantTextVisualStylingProvider2];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v32 = [(NCNotificationStaticContentProviding *)self->_staticContentProvider thumbnail];
-      [v3 setThumbnail:v32];
+      thumbnail = [(NCNotificationStaticContentProviding *)self->_staticContentProvider thumbnail];
+      [_lookViewIfLoaded setThumbnail:thumbnail];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v3 setSupportsGlass:{-[NCNotificationStaticContentProviding supportsGlass](self->_staticContentProvider, "supportsGlass")}];
+      [_lookViewIfLoaded setSupportsGlass:{-[NCNotificationStaticContentProviding supportsGlass](self->_staticContentProvider, "supportsGlass")}];
     }
 
-    [v3 setMaximumNumberOfPrimaryTextLines:{-[NCNotificationViewController _maximumNumberOfPrimaryTextLinesForProvidedStaticContent](self, "_maximumNumberOfPrimaryTextLinesForProvidedStaticContent")}];
-    [v3 setMaximumNumberOfSecondaryTextLines:{-[NCNotificationViewController _maximumNumberOfSecondaryTextLinesForProvidedStaticContent](self, "_maximumNumberOfSecondaryTextLinesForProvidedStaticContent")}];
-    v33 = [(NCNotificationViewController *)self view];
-    [v33 setNeedsLayout];
+    [_lookViewIfLoaded setMaximumNumberOfPrimaryTextLines:{-[NCNotificationViewController _maximumNumberOfPrimaryTextLinesForProvidedStaticContent](self, "_maximumNumberOfPrimaryTextLinesForProvidedStaticContent")}];
+    [_lookViewIfLoaded setMaximumNumberOfSecondaryTextLines:{-[NCNotificationViewController _maximumNumberOfSecondaryTextLinesForProvidedStaticContent](self, "_maximumNumberOfSecondaryTextLinesForProvidedStaticContent")}];
+    view = [(NCNotificationViewController *)self view];
+    [view setNeedsLayout];
 
     objc_destroyWeak(&location);
   }
@@ -383,9 +383,9 @@
 
 - (unint64_t)_maximumNumberOfPrimaryTextLinesForProvidedStaticContent
 {
-  v2 = [MEMORY[0x277D75128] sharedApplication];
-  v3 = [v2 preferredContentSizeCategory];
-  if (UIContentSizeCategoryIsAccessibilityCategory(v3))
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
     v4 = 2;
   }
@@ -400,9 +400,9 @@
 
 - (unint64_t)_maximumNumberOfSecondaryTextLinesForProvidedStaticContent
 {
-  v2 = [MEMORY[0x277D75128] sharedApplication];
-  v3 = [v2 preferredContentSizeCategory];
-  UIContentSizeCategoryIsAccessibilityCategory(v3);
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
+  UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   return 2;
 }
@@ -420,12 +420,12 @@
 {
   if ([(NCNotificationViewController *)self isViewLoaded])
   {
-    v3 = [(UIViewController *)self nc_presentationControllerIfPresented];
-    v24 = [v3 containerView];
+    nc_presentationControllerIfPresented = [(UIViewController *)self nc_presentationControllerIfPresented];
+    containerView = [nc_presentationControllerIfPresented containerView];
 
-    if (v24)
+    if (containerView)
     {
-      [v24 bounds];
+      [containerView bounds];
       v5 = v4;
       v7 = v6;
       v9 = v8;
@@ -434,16 +434,16 @@
 
     else
     {
-      v12 = [MEMORY[0x277D759A0] mainScreen];
-      [v12 nc_bounds];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen nc_bounds];
       v5 = v13;
       v7 = v14;
       v9 = v15;
       v11 = v16;
     }
 
-    v17 = [(NCNotificationViewController *)self view];
-    [v17 bounds];
+    view = [(NCNotificationViewController *)self view];
+    [view bounds];
     [(NCNotificationViewController *)self _preferredCustomContentSizeForSize:v18 parentContentContainerBounds:v19, v5, v7, v9, v11];
     v21 = v20;
     v23 = v22;
@@ -461,19 +461,19 @@
   [(NCNotificationViewController *)self _updatePreferredContentSize];
 }
 
-- (id)_initWithNotificationRequest:(id)a3 revealingAdditionalContentOnPresentation:(BOOL)a4
+- (id)_initWithNotificationRequest:(id)request revealingAdditionalContentOnPresentation:(BOOL)presentation
 {
-  v7 = a3;
+  requestCopy = request;
   v13.receiver = self;
   v13.super_class = NCNotificationViewController;
   v8 = [(NCNotificationViewController *)&v13 initWithNibName:0 bundle:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_notificationRequest, a3);
+    objc_storeStrong(&v8->_notificationRequest, request);
     v9->_didQueryCanPan = 0;
     v9->_interactionEnabled = 1;
-    v9->_revealAdditionalContentOnPresentation = a4;
+    v9->_revealAdditionalContentOnPresentation = presentation;
     v9->_backgroundAlpha = 1.0;
     v9->_disableDimming = 0;
     v9->_dateAlpha = 1.0;
@@ -497,23 +497,23 @@
   return v9;
 }
 
-- (NCNotificationViewController)initWithNotificationRequest:(id)a3 revealingAdditionalContentOnPresentation:(BOOL)a4
+- (NCNotificationViewController)initWithNotificationRequest:(id)request revealingAdditionalContentOnPresentation:(BOOL)presentation
 {
-  v4 = a4;
-  v6 = a3;
+  presentationCopy = presentation;
+  requestCopy = request;
   if ([(NCNotificationViewController *)self isMemberOfClass:objc_opt_class()])
   {
-    if (v4)
+    if (presentationCopy)
     {
       v7 = [NCNotificationLongLookViewController alloc];
-      v8 = v6;
+      v8 = requestCopy;
       v9 = 1;
     }
 
     else
     {
       v7 = [NCNotificationShortLookViewController alloc];
-      v8 = v6;
+      v8 = requestCopy;
       v9 = 0;
     }
 
@@ -522,160 +522,160 @@
 
   else
   {
-    v10 = [(NCNotificationViewController *)self _initWithNotificationRequest:v6 revealingAdditionalContentOnPresentation:v4];
+    v10 = [(NCNotificationViewController *)self _initWithNotificationRequest:requestCopy revealingAdditionalContentOnPresentation:presentationCopy];
   }
 
   return v10;
 }
 
-- (BOOL)_setDelegate:(id)a3
+- (BOOL)_setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != delegateCopy)
   {
-    objc_storeWeak(&self->_delegate, v4);
+    objc_storeWeak(&self->_delegate, delegateCopy);
     [(NCNotificationViewController *)self setStaticContentProvider:0];
     [(NCNotificationViewController *)self setAuxiliaryOptionsContentProvider:0];
-    v6 = [(NCNotificationViewController *)self view];
-    [v6 setNeedsLayout];
+    view = [(NCNotificationViewController *)self view];
+    [view setNeedsLayout];
   }
 
-  return WeakRetained != v4;
+  return WeakRetained != delegateCopy;
 }
 
-- (void)setBackgroundAlpha:(double)a3
+- (void)setBackgroundAlpha:(double)alpha
 {
-  if (self->_backgroundAlpha != a3)
+  if (self->_backgroundAlpha != alpha)
   {
-    self->_backgroundAlpha = a3;
+    self->_backgroundAlpha = alpha;
     [(NCNotificationLookView *)self->_lookView setBackgroundAlpha:?];
   }
 }
 
-- (void)setContentAlpha:(double)a3
+- (void)setContentAlpha:(double)alpha
 {
-  if (self->_contentAlpha != a3)
+  if (self->_contentAlpha != alpha)
   {
-    self->_contentAlpha = a3;
+    self->_contentAlpha = alpha;
     [(NCNotificationLookView *)self->_lookView setContentAlpha:?];
   }
 }
 
-- (void)setCompositeAlpha:(double)a3
+- (void)setCompositeAlpha:(double)alpha
 {
-  if (self->_compositeAlpha != a3)
+  if (self->_compositeAlpha != alpha)
   {
-    self->_compositeAlpha = a3;
+    self->_compositeAlpha = alpha;
     [(NCNotificationLookView *)self->_lookView setCompositeAlpha:?];
   }
 }
 
-- (void)setDisableDimming:(BOOL)a3
+- (void)setDisableDimming:(BOOL)dimming
 {
-  if (self->_disableDimming != a3)
+  if (self->_disableDimming != dimming)
   {
-    self->_disableDimming = a3;
+    self->_disableDimming = dimming;
     [(NCNotificationLookView *)self->_lookView setDisableDimming:?];
   }
 }
 
-- (void)setHideDate:(BOOL)a3
+- (void)setHideDate:(BOOL)date
 {
-  if (self->_hideDate != a3)
+  if (self->_hideDate != date)
   {
-    self->_hideDate = a3;
+    self->_hideDate = date;
     [(NCNotificationLookView *)self->_lookView setHideDate:?];
   }
 }
 
-- (void)setDateAlpha:(double)a3
+- (void)setDateAlpha:(double)alpha
 {
-  if (self->_dateAlpha != a3)
+  if (self->_dateAlpha != alpha)
   {
-    self->_dateAlpha = a3;
+    self->_dateAlpha = alpha;
     [(NCNotificationLookView *)self->_lookView setDateAlpha:?];
   }
 }
 
-- (void)setAllowContentToCrossFade:(BOOL)a3
+- (void)setAllowContentToCrossFade:(BOOL)fade
 {
-  if (self->_allowContentToCrossFade != a3)
+  if (self->_allowContentToCrossFade != fade)
   {
-    self->_allowContentToCrossFade = a3;
+    self->_allowContentToCrossFade = fade;
     [(NCNotificationLookView *)self->_lookView setAllowContentToCrossFade:?];
   }
 }
 
-- (void)setContentTransform:(CGAffineTransform *)a3
+- (void)setContentTransform:(CGAffineTransform *)transform
 {
   p_contentTransform = &self->_contentTransform;
   v6 = *&self->_contentTransform.c;
   *&t1.a = *&self->_contentTransform.a;
   *&t1.c = v6;
   *&t1.tx = *&self->_contentTransform.tx;
-  v7 = *&a3->c;
-  *&v12.a = *&a3->a;
+  v7 = *&transform->c;
+  *&v12.a = *&transform->a;
   *&v12.c = v7;
-  *&v12.tx = *&a3->tx;
+  *&v12.tx = *&transform->tx;
   if (!CGAffineTransformEqualToTransform(&t1, &v12))
   {
-    v8 = *&a3->a;
-    v9 = *&a3->tx;
-    *&p_contentTransform->c = *&a3->c;
+    v8 = *&transform->a;
+    v9 = *&transform->tx;
+    *&p_contentTransform->c = *&transform->c;
     *&p_contentTransform->tx = v9;
     *&p_contentTransform->a = v8;
     lookView = self->_lookView;
-    v11 = *&a3->c;
-    *&t1.a = *&a3->a;
+    v11 = *&transform->c;
+    *&t1.a = *&transform->a;
     *&t1.c = v11;
-    *&t1.tx = *&a3->tx;
+    *&t1.tx = *&transform->tx;
     [(NCNotificationLookView *)lookView setContentTransform:&t1];
   }
 }
 
-- (void)setApparentZDistanceToUser:(int64_t)a3
+- (void)setApparentZDistanceToUser:(int64_t)user
 {
-  if (self->_apparentZDistanceToUser != a3)
+  if (self->_apparentZDistanceToUser != user)
   {
-    self->_apparentZDistanceToUser = a3;
+    self->_apparentZDistanceToUser = user;
     [(NCNotificationLookView *)self->_lookView setApparentZDistanceToUser:?];
   }
 }
 
-- (void)setRootScrollVelocity:(double)a3
+- (void)setRootScrollVelocity:(double)velocity
 {
-  if (self->_rootScrollVelocity != a3)
+  if (self->_rootScrollVelocity != velocity)
   {
-    self->_rootScrollVelocity = a3;
+    self->_rootScrollVelocity = velocity;
     [(NCNotificationLookView *)self->_lookView setRootScrollVelocity:?];
   }
 }
 
-- (void)setGlassMode:(unint64_t)a3
+- (void)setGlassMode:(unint64_t)mode
 {
-  if (self->_glassMode != a3)
+  if (self->_glassMode != mode)
   {
-    self->_glassMode = a3;
+    self->_glassMode = mode;
     [(NCNotificationLookView *)self->_lookView setGlassMode:?];
   }
 }
 
-- (void)setUnmanagedBackdropContrast:(BOOL)a3
+- (void)setUnmanagedBackdropContrast:(BOOL)contrast
 {
-  if (self->_unmanagedBackdropContrast != a3)
+  if (self->_unmanagedBackdropContrast != contrast)
   {
-    self->_unmanagedBackdropContrast = a3;
+    self->_unmanagedBackdropContrast = contrast;
     [(NCNotificationLookView *)self->_lookView setUnmanagedBackdropContrast:?];
   }
 }
 
-- (void)setBackgroundHidden:(BOOL)a3
+- (void)setBackgroundHidden:(BOOL)hidden
 {
-  if (self->_backgroundHidden != a3)
+  if (self->_backgroundHidden != hidden)
   {
-    self->_backgroundHidden = a3;
+    self->_backgroundHidden = hidden;
     [(NCNotificationLookView *)self->_lookView setBackgroundHidden:?];
   }
 }
@@ -693,37 +693,37 @@
   return v3;
 }
 
-- (BOOL)_setNotificationRequest:(id)a3
+- (BOOL)_setNotificationRequest:(id)request
 {
-  v5 = a3;
-  v6 = v5;
+  requestCopy = request;
+  v6 = requestCopy;
   notificationRequest = self->_notificationRequest;
-  if (notificationRequest != v5)
+  if (notificationRequest != requestCopy)
   {
-    v8 = [(NCNotificationRequest *)v5 matchesRequest:self->_notificationRequest];
-    objc_storeStrong(&self->_notificationRequest, a3);
+    v8 = [(NCNotificationRequest *)requestCopy matchesRequest:self->_notificationRequest];
+    objc_storeStrong(&self->_notificationRequest, request);
     if (!v8 || ![(NCNotificationViewController *)self _isPresentingCustomContentProvidingViewController])
     {
-      v9 = [(NCNotificationViewController *)self _lookViewIfLoaded];
-      [v9 setHidden:0];
+      _lookViewIfLoaded = [(NCNotificationViewController *)self _lookViewIfLoaded];
+      [_lookViewIfLoaded setHidden:0];
     }
 
     [(NCNotificationViewController *)self setStaticContentProvider:0];
     [(NCNotificationViewController *)self setAuxiliaryOptionsContentProvider:0];
     [(NCNotificationViewController *)self _updateScreenCaptureProhibited];
-    v10 = [(NCNotificationViewController *)self view];
-    [v10 setNeedsLayout];
+    view = [(NCNotificationViewController *)self view];
+    [view setNeedsLayout];
   }
 
   return notificationRequest != v6;
 }
 
-- (void)setStaticContentProvider:(id)a3
+- (void)setStaticContentProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_staticContentProvider != v5)
+  providerCopy = provider;
+  if (self->_staticContentProvider != providerCopy)
   {
-    objc_storeStrong(&self->_staticContentProvider, a3);
+    objc_storeStrong(&self->_staticContentProvider, provider);
     if (self->_staticContentProvider)
     {
       [(NCNotificationViewController *)self _updateWithProvidedStaticContent];
@@ -742,9 +742,9 @@
     staticContentProvider = self->_staticContentProvider;
   }
 
-  v4 = [(NCNotificationStaticContentProviding *)staticContentProvider delegate];
+  delegate = [(NCNotificationStaticContentProviding *)staticContentProvider delegate];
 
-  if (!v4)
+  if (!delegate)
   {
     if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_ERROR))
     {
@@ -765,43 +765,43 @@
   [(NCNotificationViewController *)self setCustomContentProvider:v3];
 }
 
-- (void)setAuxiliaryOptionsContentProvider:(id)a3
+- (void)setAuxiliaryOptionsContentProvider:(id)provider
 {
-  v6 = a3;
-  v5 = [(NCNotificationViewController *)self auxiliaryOptionsContentProvider];
+  providerCopy = provider;
+  auxiliaryOptionsContentProvider = [(NCNotificationViewController *)self auxiliaryOptionsContentProvider];
 
-  if (v5 != v6)
+  if (auxiliaryOptionsContentProvider != providerCopy)
   {
-    objc_storeStrong(&self->_auxiliaryOptionsContentProvider, a3);
+    objc_storeStrong(&self->_auxiliaryOptionsContentProvider, provider);
     [(NCNotificationViewController *)self _updateWithProvidedAuxiliaryOptionsContent];
   }
 }
 
 - (id)_customContentProvidingViewControllerCreateIfNecessary
 {
-  v3 = [(NCNotificationViewController *)self _customContentProvidingViewController];
-  if (!v3)
+  _customContentProvidingViewController = [(NCNotificationViewController *)self _customContentProvidingViewController];
+  if (!_customContentProvidingViewController)
   {
-    v4 = [(NCNotificationViewController *)self customContentProvider];
-    v5 = [(NCNotificationViewController *)self notificationRequest];
-    v3 = [v4 customContentViewControllerForNotificationRequest:v5];
+    customContentProvider = [(NCNotificationViewController *)self customContentProvider];
+    notificationRequest = [(NCNotificationViewController *)self notificationRequest];
+    _customContentProvidingViewController = [customContentProvider customContentViewControllerForNotificationRequest:notificationRequest];
 
-    [(NCNotificationViewController *)self _setCustomContentProvidingViewController:v3];
+    [(NCNotificationViewController *)self _setCustomContentProvidingViewController:_customContentProvidingViewController];
   }
 
-  return v3;
+  return _customContentProvidingViewController;
 }
 
-- (void)_setCustomContentProvidingViewController:(id)a3
+- (void)_setCustomContentProvidingViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   customContentProvidingViewController = self->_customContentProvidingViewController;
-  v8 = v5;
-  if (customContentProvidingViewController != v5)
+  v8 = controllerCopy;
+  if (customContentProvidingViewController != controllerCopy)
   {
     [(NCNotificationCustomContent *)customContentProvidingViewController willMoveToParentViewController:0];
     [(NCNotificationCustomContent *)self->_customContentProvidingViewController removeFromParentViewController];
-    objc_storeStrong(&self->_customContentProvidingViewController, a3);
+    objc_storeStrong(&self->_customContentProvidingViewController, controller);
     v7 = self->_customContentProvidingViewController;
     if (v7)
     {
@@ -812,13 +812,13 @@
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
     observers = self->_observers;
-    v8 = v4;
+    v8 = observerCopy;
     if (!observers)
     {
       v6 = [MEMORY[0x277CCAA50] hashTableWithOptions:517];
@@ -834,9 +834,9 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     observers = self->_observers;
     if (observers)
@@ -846,11 +846,11 @@
   }
 }
 
-- (void)_notifyObserversWithBlock:(id)a3
+- (void)_notifyObserversWithBlock:(id)block
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     observers = self->_observers;
     if (observers)
@@ -875,7 +875,7 @@
 
             v10 = *(*(&v13 + 1) + 8 * i);
             v11 = objc_initWeak(&location, self);
-            v4[2](v4, self, v10);
+            blockCopy[2](blockCopy, self, v10);
 
             objc_destroyWeak(&location);
           }
@@ -889,14 +889,14 @@
   }
 }
 
-- (BOOL)didForwardNotificationRequestToCustomContent:(id)a3
+- (BOOL)didForwardNotificationRequestToCustomContent:(id)content
 {
-  v4 = a3;
-  v5 = [(NCNotificationViewController *)self _customContentProvidingViewController];
-  if (v5)
+  contentCopy = content;
+  _customContentProvidingViewController = [(NCNotificationViewController *)self _customContentProvidingViewController];
+  if (_customContentProvidingViewController)
   {
-    v6 = [(NCNotificationViewController *)self _customContentProvidingViewController];
-    v7 = [v6 didReceiveNotificationRequest:v4];
+    _customContentProvidingViewController2 = [(NCNotificationViewController *)self _customContentProvidingViewController];
+    v7 = [_customContentProvidingViewController2 didReceiveNotificationRequest:contentCopy];
   }
 
   else
@@ -909,16 +909,16 @@
 
 - (void)preserveInputViews
 {
-  v2 = [(NCNotificationViewController *)self _presentedLongLookViewController];
-  [v2 preserveInputViews];
+  _presentedLongLookViewController = [(NCNotificationViewController *)self _presentedLongLookViewController];
+  [_presentedLongLookViewController preserveInputViews];
 }
 
 - (BOOL)restoreInputViews
 {
-  v2 = [(NCNotificationViewController *)self _presentedLongLookViewController];
-  v3 = [v2 restoreInputViews];
+  _presentedLongLookViewController = [(NCNotificationViewController *)self _presentedLongLookViewController];
+  restoreInputViews = [_presentedLongLookViewController restoreInputViews];
 
-  return v3;
+  return restoreInputViews;
 }
 
 - (BOOL)_canPan
@@ -943,33 +943,33 @@
   return self->_canPan;
 }
 
-- (void)setInteractionEnabled:(BOOL)a3
+- (void)setInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = *MEMORY[0x277D77DB0];
   if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEBUG))
   {
-    [(NCNotificationViewController *)v3 setInteractionEnabled:v5];
+    [(NCNotificationViewController *)enabledCopy setInteractionEnabled:v5];
   }
 
-  self->_interactionEnabled = v3;
-  v6 = [(NCNotificationViewController *)self view];
-  [v6 setUserInteractionEnabled:v3];
+  self->_interactionEnabled = enabledCopy;
+  view = [(NCNotificationViewController *)self view];
+  [view setUserInteractionEnabled:enabledCopy];
 }
 
 - (id)containerViewForExpandedContent
 {
-  v2 = [(UIViewController *)self nc_presentationContextDefiningViewController];
-  v3 = [v2 view];
-  v4 = [v3 superview];
+  nc_presentationContextDefiningViewController = [(UIViewController *)self nc_presentationContextDefiningViewController];
+  view = [nc_presentationContextDefiningViewController view];
+  superview = [view superview];
 
-  return v4;
+  return superview;
 }
 
-- (id)_lookViewLoadingIfNecessary:(BOOL)a3
+- (id)_lookViewLoadingIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
-  if (([(NCNotificationViewController *)self isViewLoaded]& 1) != 0 || v3)
+  necessaryCopy = necessary;
+  if (([(NCNotificationViewController *)self isViewLoaded]& 1) != 0 || necessaryCopy)
   {
     [(NCNotificationViewController *)self loadViewIfNeeded];
     v5 = self->_lookView;
@@ -1042,7 +1042,7 @@ void __64__NCNotificationViewController__updateWithProvidedStaticContent__block_
 - (NCDimmableView)_notificationViewControllerView
 {
   objc_opt_class();
-  v3 = [(NCNotificationViewController *)self view];
+  view = [(NCNotificationViewController *)self view];
   v4 = UNSafeCast();
 
   return v4;
@@ -1050,19 +1050,19 @@ void __64__NCNotificationViewController__updateWithProvidedStaticContent__block_
 
 - (void)_notificationViewControllerViewDidLoad
 {
-  v4 = [(NCNotificationViewController *)self view];
-  [v4 setAutoresizesSubviews:1];
+  view = [(NCNotificationViewController *)self view];
+  [view setAutoresizesSubviews:1];
   [(NCNotificationViewController *)self _loadLookView];
   [(NCNotificationLookView *)self->_lookView setAdjustsFontForContentSizeCategory:1];
-  v3 = [(NCNotificationViewController *)self _notificationViewControllerView];
-  [v3 setContentView:self->_lookView];
+  _notificationViewControllerView = [(NCNotificationViewController *)self _notificationViewControllerView];
+  [_notificationViewControllerView setContentView:self->_lookView];
 }
 
-- (CGSize)_preferredCustomContentSizeForSize:(CGSize)a3 parentContentContainerBounds:(CGRect)a4
+- (CGSize)_preferredCustomContentSizeForSize:(CGSize)size parentContentContainerBounds:(CGRect)bounds
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(NCNotificationViewController *)self _lookViewIfLoaded:a3.width];
+  height = size.height;
+  width = size.width;
+  v6 = [(NCNotificationViewController *)self _lookViewIfLoaded:size.width];
   v7 = v6;
   if (v6)
   {
@@ -1078,12 +1078,12 @@ void __64__NCNotificationViewController__updateWithProvidedStaticContent__block_
   return result;
 }
 
-- (void)_setPreferredCustomContentSize:(CGSize)a3
+- (void)_setPreferredCustomContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(NCNotificationViewController *)self _contentSizeManagingView];
-  [v6 sizeThatFitsContentWithSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  _contentSizeManagingView = [(NCNotificationViewController *)self _contentSizeManagingView];
+  [_contentSizeManagingView sizeThatFitsContentWithSize:{width, height}];
   v8 = v7;
   v10 = v9;
 
@@ -1098,9 +1098,9 @@ void __64__NCNotificationViewController__updateWithProvidedStaticContent__block_
 - (void)_updateScreenCaptureProhibited
 {
   lookView = self->_lookView;
-  v4 = [(NCNotificationViewController *)self notificationRequest];
-  v3 = [v4 options];
-  -[NCNotificationLookView setScreenCaptureProhibited:](lookView, "setScreenCaptureProhibited:", [v3 screenCaptureProhibited]);
+  notificationRequest = [(NCNotificationViewController *)self notificationRequest];
+  options = [notificationRequest options];
+  -[NCNotificationLookView setScreenCaptureProhibited:](lookView, "setScreenCaptureProhibited:", [options screenCaptureProhibited]);
 }
 
 - (NSDictionary)notificationUsageTrackingState
@@ -1122,14 +1122,14 @@ void __64__NCNotificationViewController__updateWithProvidedStaticContent__block_
 - (NSSet)activeTransitionBlockingAssertions
 {
   v15 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = v2->_reasonsToTransitionBlockingAssertions;
+  v4 = selfCopy->_reasonsToTransitionBlockingAssertions;
   v5 = [(NSMapTable *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
@@ -1143,7 +1143,7 @@ void __64__NCNotificationViewController__updateWithProvidedStaticContent__block_
           objc_enumerationMutation(v4);
         }
 
-        v8 = [(NSMapTable *)v2->_reasonsToTransitionBlockingAssertions objectForKey:*(*(&v10 + 1) + 8 * i), v10];
+        v8 = [(NSMapTable *)selfCopy->_reasonsToTransitionBlockingAssertions objectForKey:*(*(&v10 + 1) + 8 * i), v10];
         if ([v8 isValid])
         {
           [v3 addObject:v8];
@@ -1156,61 +1156,61 @@ void __64__NCNotificationViewController__updateWithProvidedStaticContent__block_
     while (v5);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (id)requestTransitionBlockingAssertionWithReason:(id)a3
+- (id)requestTransitionBlockingAssertionWithReason:(id)reason
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 length])
+  reasonCopy = reason;
+  if ([reasonCopy length])
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [(NCNotificationViewController *)v5 activeTransitionBlockingAssertionForReason:v4];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v6 = [(NCNotificationViewController *)selfCopy activeTransitionBlockingAssertionForReason:reasonCopy];
     if (!v6)
     {
       v7 = *MEMORY[0x277D77DB0];
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(NCNotificationRequest *)v5->_notificationRequest notificationIdentifier];
-        v9 = [v8 un_logDigest];
+        notificationIdentifier = [(NCNotificationRequest *)selfCopy->_notificationRequest notificationIdentifier];
+        un_logDigest = [notificationIdentifier un_logDigest];
         *buf = 138543618;
-        v17 = v9;
+        v17 = un_logDigest;
         v18 = 2114;
-        v19 = v4;
+        v19 = reasonCopy;
         _os_log_impl(&dword_21E77E000, v7, OS_LOG_TYPE_DEFAULT, "New transition blocking assertion requested for notification view controller for request '%{public}@' with reason '%{public}@'", buf, 0x16u);
       }
 
-      if (!v5->_reasonsToTransitionBlockingAssertions)
+      if (!selfCopy->_reasonsToTransitionBlockingAssertions)
       {
-        v10 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
-        reasonsToTransitionBlockingAssertions = v5->_reasonsToTransitionBlockingAssertions;
-        v5->_reasonsToTransitionBlockingAssertions = v10;
+        strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+        reasonsToTransitionBlockingAssertions = selfCopy->_reasonsToTransitionBlockingAssertions;
+        selfCopy->_reasonsToTransitionBlockingAssertions = strongToWeakObjectsMapTable;
       }
 
-      v6 = [[NCAssertion alloc] initWithInstantiationReason:v4];
-      objc_initWeak(buf, v5);
+      v6 = [[NCAssertion alloc] initWithInstantiationReason:reasonCopy];
+      objc_initWeak(buf, selfCopy);
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __77__NCNotificationViewController_requestTransitionBlockingAssertionWithReason___block_invoke;
       v14[3] = &unk_27836F450;
       objc_copyWeak(&v15, buf);
       [(NCAssertion *)v6 addInvalidationBlock:v14];
-      [(NSMapTable *)v5->_reasonsToTransitionBlockingAssertions setObject:v6 forKey:v4];
-      WeakRetained = objc_loadWeakRetained(&v5->_delegate);
+      [(NSMapTable *)selfCopy->_reasonsToTransitionBlockingAssertions setObject:v6 forKey:reasonCopy];
+      WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
       if (objc_opt_respondsToSelector())
       {
-        [WeakRetained notificationRequestPresenter:v5 didVendTransitionBlockingAssertion:v6];
+        [WeakRetained notificationRequestPresenter:selfCopy didVendTransitionBlockingAssertion:v6];
       }
 
       objc_destroyWeak(&v15);
       objc_destroyWeak(buf);
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -1241,15 +1241,15 @@ void __77__NCNotificationViewController_requestTransitionBlockingAssertionWithRe
   }
 }
 
-- (id)activeTransitionBlockingAssertionForReason:(id)a3
+- (id)activeTransitionBlockingAssertionForReason:(id)reason
 {
-  v4 = a3;
-  if ([v4 length])
+  reasonCopy = reason;
+  if ([reasonCopy length])
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [(NSMapTable *)v5->_reasonsToTransitionBlockingAssertions objectForKey:v4];
-    objc_sync_exit(v5);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v6 = [(NSMapTable *)selfCopy->_reasonsToTransitionBlockingAssertions objectForKey:reasonCopy];
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -1275,11 +1275,11 @@ void __77__NCNotificationViewController_requestTransitionBlockingAssertionWithRe
   [(NCNotificationViewController *)self setHasUpdatedContent];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = NCNotificationViewController;
-  [(NCNotificationViewController *)&v7 viewWillAppear:a3];
+  [(NCNotificationViewController *)&v7 viewWillAppear:appear];
   if ([(NCNotificationViewController *)self isBeingPresented])
   {
     [(NCNotificationViewController *)self _notifyObserversWithBlock:&__block_literal_global_78];
@@ -1321,11 +1321,11 @@ void __47__NCNotificationViewController_viewWillAppear___block_invoke_3(uint64_t
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = NCNotificationViewController;
-  [(NCNotificationViewController *)&v6 viewDidAppear:a3];
+  [(NCNotificationViewController *)&v6 viewDidAppear:appear];
   pendingPresentationTransitionDidEndBlock = self->_pendingPresentationTransitionDidEndBlock;
   if (pendingPresentationTransitionDidEndBlock)
   {
@@ -1335,11 +1335,11 @@ void __47__NCNotificationViewController_viewWillAppear___block_invoke_3(uint64_t
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = NCNotificationViewController;
-  [(NCNotificationViewController *)&v7 viewWillDisappear:a3];
+  [(NCNotificationViewController *)&v7 viewWillDisappear:disappear];
   if ([(NCNotificationViewController *)self isBeingDismissed])
   {
     [(NCNotificationViewController *)self _notifyObserversWithBlock:&__block_literal_global_90];
@@ -1381,20 +1381,20 @@ void __50__NCNotificationViewController_viewWillDisappear___block_invoke_3(uint6
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v17 = *MEMORY[0x277D85DE8];
   v15.receiver = self;
   v15.super_class = NCNotificationViewController;
-  [(NCNotificationViewController *)&v15 viewDidDisappear:a3];
-  v4 = self;
-  objc_sync_enter(v4);
+  [(NCNotificationViewController *)&v15 viewDidDisappear:disappear];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(NCNotificationViewController *)v4 activeTransitionBlockingAssertions];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+  activeTransitionBlockingAssertions = [(NCNotificationViewController *)selfCopy activeTransitionBlockingAssertions];
+  v6 = [activeTransitionBlockingAssertions countByEnumeratingWithState:&v11 objects:v16 count:16];
   if (v6)
   {
     v7 = *v12;
@@ -1405,34 +1405,34 @@ void __50__NCNotificationViewController_viewWillDisappear___block_invoke_3(uint6
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(activeTransitionBlockingAssertions);
         }
 
         [*(*(&v11 + 1) + 8 * v8++) invalidateWithReason:@"notificationViewController.invalidationReason.dismissed"];
       }
 
       while (v6 != v8);
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+      v6 = [activeTransitionBlockingAssertions countByEnumeratingWithState:&v11 objects:v16 count:16];
     }
 
     while (v6);
   }
 
-  objc_sync_exit(v4);
-  pendingPresentationTransitionDidEndBlock = v4->_pendingPresentationTransitionDidEndBlock;
+  objc_sync_exit(selfCopy);
+  pendingPresentationTransitionDidEndBlock = selfCopy->_pendingPresentationTransitionDidEndBlock;
   if (pendingPresentationTransitionDidEndBlock)
   {
     v10 = _Block_copy(pendingPresentationTransitionDidEndBlock);
-    [(NCNotificationViewController *)v4 _setPendingPresentationTransitionDidEndBlock:0];
+    [(NCNotificationViewController *)selfCopy _setPendingPresentationTransitionDidEndBlock:0];
     v10[2](v10);
   }
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = NCNotificationViewController;
-  [(NCNotificationViewController *)&v5 viewDidMoveToWindow:a3 shouldAppearOrDisappear:a4];
+  [(NCNotificationViewController *)&v5 viewDidMoveToWindow:window shouldAppearOrDisappear:disappear];
   [(NCNotificationViewController *)self _notifyObserversWithBlock:&__block_literal_global_104];
 }
 
@@ -1448,28 +1448,28 @@ void __76__NCNotificationViewController_viewDidMoveToWindow_shouldAppearOrDisapp
 
 - (BOOL)shouldAutorotate
 {
-  v3 = [(NCNotificationViewController *)self presentingViewController];
-  if (v3)
+  presentingViewController = [(NCNotificationViewController *)self presentingViewController];
+  if (presentingViewController)
   {
-    v4 = [(NCNotificationViewController *)self presentingViewController];
-    v5 = [v4 shouldAutorotate];
+    presentingViewController2 = [(NCNotificationViewController *)self presentingViewController];
+    shouldAutorotate = [presentingViewController2 shouldAutorotate];
   }
 
   else
   {
-    v5 = 1;
+    shouldAutorotate = 1;
   }
 
-  return v5;
+  return shouldAutorotate;
 }
 
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
   v10 = 1;
-  if (!v6)
+  if (!animatedCopy)
   {
     v10 = 2;
   }
@@ -1481,11 +1481,11 @@ void __76__NCNotificationViewController_viewDidMoveToWindow_shouldAppearOrDisapp
   v13[2] = __74__NCNotificationViewController_presentViewController_animated_completion___block_invoke;
   v13[3] = &unk_27836F4C0;
   objc_copyWeak(&v15, &location);
-  v11 = v9;
+  v11 = completionCopy;
   v14 = v11;
   v12.receiver = self;
   v12.super_class = NCNotificationViewController;
-  [(NCNotificationViewController *)&v12 presentViewController:v8 animated:1 completion:v13];
+  [(NCNotificationViewController *)&v12 presentViewController:controllerCopy animated:1 completion:v13];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -1502,11 +1502,11 @@ void __74__NCNotificationViewController_presentViewController_animated_completio
   }
 }
 
-- (void)dismissViewControllerWithTransition:(int)a3 completion:(id)a4
+- (void)dismissViewControllerWithTransition:(int)transition completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = 1;
-  if (!a3)
+  if (!transition)
   {
     v7 = 2;
   }
@@ -1518,7 +1518,7 @@ void __74__NCNotificationViewController_presentViewController_animated_completio
   v10[2] = __79__NCNotificationViewController_dismissViewControllerWithTransition_completion___block_invoke;
   v10[3] = &unk_27836F4C0;
   objc_copyWeak(&v12, &location);
-  v8 = v6;
+  v8 = completionCopy;
   v11 = v8;
   v9.receiver = self;
   v9.super_class = NCNotificationViewController;
@@ -1539,16 +1539,16 @@ void __79__NCNotificationViewController_dismissViewControllerWithTransition_comp
   }
 }
 
-- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)a3 containerSize:(CGSize)a4
+- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)size containerSize:(CGSize)containerSize
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   BSRectWithSize();
   [(NCNotificationViewController *)self _preferredCustomContentSizeForSize:width parentContentContainerBounds:height, v7, v8, v9, v10];
   v12 = v11;
   v14 = v13;
-  v15 = [(NCNotificationViewController *)self _contentSizeManagingView];
-  [v15 sizeThatFitsContentWithSize:{v12, v14}];
+  _contentSizeManagingView = [(NCNotificationViewController *)self _contentSizeManagingView];
+  [_contentSizeManagingView sizeThatFitsContentWithSize:{v12, v14}];
   v17 = v16;
   v19 = v18;
 
@@ -1559,21 +1559,21 @@ void __79__NCNotificationViewController_dismissViewControllerWithTransition_comp
   return result;
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v12.receiver = self;
   v12.super_class = NCNotificationViewController;
-  [(NCNotificationViewController *)&v12 preferredContentSizeDidChangeForChildContentContainer:v4];
-  v5 = [(NCNotificationViewController *)self _customContentProvidingViewController];
+  [(NCNotificationViewController *)&v12 preferredContentSizeDidChangeForChildContentContainer:containerCopy];
+  _customContentProvidingViewController = [(NCNotificationViewController *)self _customContentProvidingViewController];
 
-  if (v5 == v4)
+  if (_customContentProvidingViewController == containerCopy)
   {
-    v6 = [v4 transitionCoordinator];
-    v7 = v6;
-    if (v6)
+    transitionCoordinator = [containerCopy transitionCoordinator];
+    v7 = transitionCoordinator;
+    if (transitionCoordinator)
     {
-      if ([v6 presentationStyle] == -1)
+      if ([transitionCoordinator presentationStyle] == -1)
       {
 LABEL_7:
 
@@ -1593,8 +1593,8 @@ LABEL_7:
 
     [(NCAnimationCoordinator *)v8 setAnimationOptions:4];
     [(NCNotificationViewController *)self preferredContentSize];
-    [(NCNotificationViewController *)self sizeForChildContentContainer:v4 withParentContainerSize:?];
-    [(NCAnimationCoordinator *)v8 viewOfChildContainer:v4 willChangeToSize:?];
+    [(NCNotificationViewController *)self sizeForChildContentContainer:containerCopy withParentContainerSize:?];
+    [(NCAnimationCoordinator *)v8 viewOfChildContainer:containerCopy willChangeToSize:?];
     objc_initWeak(&location, self);
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
@@ -1621,29 +1621,29 @@ void __86__NCNotificationViewController_preferredContentSizeDidChangeForChildCon
   [v2 layoutIfNeeded];
 }
 
-- (void)_executeDefaultAction:(BOOL)a3
+- (void)_executeDefaultAction:(BOOL)action
 {
-  v3 = a3;
+  actionCopy = action;
   v15 = *MEMORY[0x277D85DE8];
-  v5 = [(NCNotificationViewController *)self _staticContentProviderLoadingIfNecessary];
-  v6 = [v5 defaultAction];
+  _staticContentProviderLoadingIfNecessary = [(NCNotificationViewController *)self _staticContentProviderLoadingIfNecessary];
+  defaultAction = [_staticContentProviderLoadingIfNecessary defaultAction];
 
   v7 = *MEMORY[0x277D77DD0];
   v8 = *MEMORY[0x277D77DD0];
-  if (v6)
+  if (defaultAction)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = v7;
-      v10 = [(NCNotificationViewController *)self notificationRequest];
-      v11 = [v10 notificationIdentifier];
-      v12 = [v11 un_logDigest];
+      notificationRequest = [(NCNotificationViewController *)self notificationRequest];
+      notificationIdentifier = [notificationRequest notificationIdentifier];
+      un_logDigest = [notificationIdentifier un_logDigest];
       v13 = 138543362;
-      v14 = v12;
+      v14 = un_logDigest;
       _os_log_impl(&dword_21E77E000, v9, OS_LOG_TYPE_DEFAULT, "Executing default action for %{public}@", &v13, 0xCu);
     }
 
-    v6[2](v6, v3);
+    defaultAction[2](defaultAction, actionCopy);
   }
 
   else if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -1652,67 +1652,67 @@ void __86__NCNotificationViewController_preferredContentSizeDidChangeForChildCon
   }
 }
 
-- (void)_executeClearAction:(BOOL)a3
+- (void)_executeClearAction:(BOOL)action
 {
-  v3 = a3;
-  v4 = [(NCNotificationViewController *)self _staticContentProviderLoadingIfNecessary];
-  v6 = [v4 clearAction];
+  actionCopy = action;
+  _staticContentProviderLoadingIfNecessary = [(NCNotificationViewController *)self _staticContentProviderLoadingIfNecessary];
+  clearAction = [_staticContentProviderLoadingIfNecessary clearAction];
 
-  v5 = v6;
-  if (v6)
+  v5 = clearAction;
+  if (clearAction)
   {
-    (*(v6 + 16))(v6, v3);
-    v5 = v6;
+    (*(clearAction + 16))(clearAction, actionCopy);
+    v5 = clearAction;
   }
 }
 
-- (void)_executeCloseAction:(BOOL)a3
+- (void)_executeCloseAction:(BOOL)action
 {
-  v3 = a3;
-  v5 = [(NCNotificationViewController *)self _staticContentProviderLoadingIfNecessary];
-  v6 = [v5 closeAction];
+  actionCopy = action;
+  _staticContentProviderLoadingIfNecessary = [(NCNotificationViewController *)self _staticContentProviderLoadingIfNecessary];
+  closeAction = [_staticContentProviderLoadingIfNecessary closeAction];
 
-  if (v6)
-  {
-    [(NCNotificationViewController *)self _setShouldRestorePresentingShortLookOnDismiss:1];
-    v6[2](v6, v3);
-  }
-}
-
-- (void)_executeCancelAction:(BOOL)a3
-{
-  v3 = a3;
-  v5 = [(NCNotificationViewController *)self _staticContentProviderLoadingIfNecessary];
-  v6 = [v5 cancelAction];
-
-  if (v6)
+  if (closeAction)
   {
     [(NCNotificationViewController *)self _setShouldRestorePresentingShortLookOnDismiss:1];
-    v6[2](v6, v3);
+    closeAction[2](closeAction, actionCopy);
   }
 }
 
-- (void)_executeNilAction:(BOOL)a3
+- (void)_executeCancelAction:(BOOL)action
 {
-  v3 = a3;
-  v5 = [(NCNotificationViewController *)self _staticContentProviderLoadingIfNecessary];
-  v6 = [v5 nilAction];
+  actionCopy = action;
+  _staticContentProviderLoadingIfNecessary = [(NCNotificationViewController *)self _staticContentProviderLoadingIfNecessary];
+  cancelAction = [_staticContentProviderLoadingIfNecessary cancelAction];
 
-  if (v6)
+  if (cancelAction)
   {
     [(NCNotificationViewController *)self _setShouldRestorePresentingShortLookOnDismiss:1];
-    v6[2](v6, v3);
+    cancelAction[2](cancelAction, actionCopy);
   }
 }
 
-- (void)_askDelegateToExecuteAction:(id)a3 withParameters:(id)a4 animated:(BOOL)a5
+- (void)_executeNilAction:(BOOL)action
 {
-  v32 = a5;
+  actionCopy = action;
+  _staticContentProviderLoadingIfNecessary = [(NCNotificationViewController *)self _staticContentProviderLoadingIfNecessary];
+  nilAction = [_staticContentProviderLoadingIfNecessary nilAction];
+
+  if (nilAction)
+  {
+    [(NCNotificationViewController *)self _setShouldRestorePresentingShortLookOnDismiss:1];
+    nilAction[2](nilAction, actionCopy);
+  }
+}
+
+- (void)_askDelegateToExecuteAction:(id)action withParameters:(id)parameters animated:(BOOL)animated
+{
+  animatedCopy = animated;
   v48 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(NCNotificationRequest *)self->_notificationRequest notificationIdentifier];
-  v10 = [v9 un_logDigest];
+  actionCopy = action;
+  parametersCopy = parameters;
+  notificationIdentifier = [(NCNotificationRequest *)self->_notificationRequest notificationIdentifier];
+  un_logDigest = [notificationIdentifier un_logDigest];
 
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -1720,33 +1720,33 @@ void __86__NCNotificationViewController_preferredContentSizeDidChangeForChildCon
   aBlock[2] = __84__NCNotificationViewController__askDelegateToExecuteAction_withParameters_animated___block_invoke;
   aBlock[3] = &unk_27836F510;
   objc_copyWeak(&v42, &location);
-  v11 = v10;
+  v11 = un_logDigest;
   v41 = v11;
   v12 = _Block_copy(aBlock);
-  if (v7)
+  if (actionCopy)
   {
-    v13 = [(NCNotificationRequest *)self->_notificationRequest userNotification];
-    if (v13)
+    userNotification = [(NCNotificationRequest *)self->_notificationRequest userNotification];
+    if (userNotification)
     {
-      v14 = [v8 mutableCopy];
+      v14 = [parametersCopy mutableCopy];
       v15 = v14;
       if (v14)
       {
-        v16 = v14;
+        dictionary = v14;
       }
 
       else
       {
-        v16 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
       }
 
-      v21 = v16;
+      v21 = dictionary;
 
-      v22 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v13 requiringSecureCoding:1 error:0];
+      v22 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:userNotification requiringSecureCoding:1 error:0];
       [v21 setValue:v22 forKey:*MEMORY[0x277CE2178]];
       v23 = [v21 copy];
 
-      v8 = v23;
+      parametersCopy = v23;
     }
 
     else if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_ERROR))
@@ -1754,22 +1754,22 @@ void __86__NCNotificationViewController_preferredContentSizeDidChangeForChildCon
       [NCNotificationViewController _askDelegateToExecuteAction:withParameters:animated:];
     }
 
-    -[NCNotificationViewController _setShouldRestorePresentingShortLookOnDismiss:](self, "_setShouldRestorePresentingShortLookOnDismiss:", [v7 shouldDismissNotification] ^ 1);
+    -[NCNotificationViewController _setShouldRestorePresentingShortLookOnDismiss:](self, "_setShouldRestorePresentingShortLookOnDismiss:", [actionCopy shouldDismissNotification] ^ 1);
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __84__NCNotificationViewController__askDelegateToExecuteAction_withParameters_animated___block_invoke_118;
     v34[3] = &unk_27836F538;
     v35 = v11;
     objc_copyWeak(&v38, &location);
-    v24 = v7;
+    v24 = actionCopy;
     v36 = v24;
     v37 = v12;
-    v39 = v32;
+    v39 = animatedCopy;
     v25 = _Block_copy(v34);
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
-      [WeakRetained notificationRequestPresenter:self executeAction:v24 withParameters:v8 completion:v25];
+      [WeakRetained notificationRequestPresenter:self executeAction:v24 withParameters:parametersCopy completion:v25];
     }
 
     else
@@ -1777,9 +1777,9 @@ void __86__NCNotificationViewController_preferredContentSizeDidChangeForChildCon
       v27 = *MEMORY[0x277D77DD0];
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
-        v31 = [(NCNotificationViewController *)self notificationRequest];
-        v30 = [v31 notificationIdentifier];
-        v33 = [v30 un_logDigest];
+        notificationRequest = [(NCNotificationViewController *)self notificationRequest];
+        notificationIdentifier2 = [notificationRequest notificationIdentifier];
+        un_logDigest2 = [notificationIdentifier2 un_logDigest];
         if (WeakRetained)
         {
           v29 = objc_opt_class();
@@ -1792,7 +1792,7 @@ void __86__NCNotificationViewController_preferredContentSizeDidChangeForChildCon
         }
 
         *buf = 138543618;
-        v45 = v33;
+        v45 = un_logDigest2;
         v46 = 2114;
         v47 = v28;
         _os_log_error_impl(&dword_21E77E000, v27, OS_LOG_TYPE_ERROR, "NotificationVC delegate is not responding for request %{public}@; delegate: %{public}@", buf, 0x16u);
@@ -1810,22 +1810,22 @@ void __86__NCNotificationViewController_preferredContentSizeDidChangeForChildCon
     v17 = *MEMORY[0x277D77DD0];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [(NCNotificationViewController *)self notificationRequest];
-      v19 = [v18 notificationIdentifier];
-      v20 = [v19 un_logDigest];
+      notificationRequest2 = [(NCNotificationViewController *)self notificationRequest];
+      notificationIdentifier3 = [notificationRequest2 notificationIdentifier];
+      un_logDigest3 = [notificationIdentifier3 un_logDigest];
       *buf = 138543362;
-      v45 = v20;
+      v45 = un_logDigest3;
       _os_log_impl(&dword_21E77E000, v17, OS_LOG_TYPE_DEFAULT, "NotificationVC was asked to execute nil action for %{public}@; dismissing long look if possible", buf, 0xCu);
     }
 
     [(NCNotificationViewController *)self _setShouldRestorePresentingShortLookOnDismiss:1];
-    v13 = objc_loadWeakRetained(&self->_delegate);
+    userNotification = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
-      [v13 notificationViewControllerWillDismissForCancelAction:self];
+      [userNotification notificationViewControllerWillDismissForCancelAction:self];
     }
 
-    (*(v12 + 2))(v12, v32);
+    (*(v12 + 2))(v12, animatedCopy);
   }
 
   objc_destroyWeak(&v42);
@@ -1885,17 +1885,17 @@ void __84__NCNotificationViewController__askDelegateToExecuteAction_withParamete
   }
 }
 
-- (void)contentProvider:(id)a3 performAction:(id)a4 animated:(BOOL)a5
+- (void)contentProvider:(id)provider performAction:(id)action animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (v9)
+  providerCopy = provider;
+  actionCopy = action;
+  if (actionCopy)
   {
-    v10 = [(NCNotificationViewController *)self _customContentProvidingViewController];
-    v11 = [(NCNotificationViewController *)self notificationRequest];
-    v12 = [v10 performAction:v9 forNotification:v11];
+    _customContentProvidingViewController = [(NCNotificationViewController *)self _customContentProvidingViewController];
+    notificationRequest = [(NCNotificationViewController *)self notificationRequest];
+    v12 = [_customContentProvidingViewController performAction:actionCopy forNotification:notificationRequest];
 
     v13 = v12 ^ 1;
   }
@@ -1905,12 +1905,12 @@ void __84__NCNotificationViewController__askDelegateToExecuteAction_withParamete
     v13 = 1;
   }
 
-  v14 = [v9 identifier];
-  v15 = [v14 isEqual:*MEMORY[0x277CE20F0]];
+  identifier = [actionCopy identifier];
+  v15 = [identifier isEqual:*MEMORY[0x277CE20F0]];
 
   if ((v13 & 1) != 0 || v15)
   {
-    [(NCNotificationViewController *)self _askDelegateToExecuteAction:v9 withParameters:MEMORY[0x277CBEC10] animated:v5];
+    [(NCNotificationViewController *)self _askDelegateToExecuteAction:actionCopy withParameters:MEMORY[0x277CBEC10] animated:animatedCopy];
   }
 
   else
@@ -1919,11 +1919,11 @@ void __84__NCNotificationViewController__askDelegateToExecuteAction_withParamete
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v17 = v16;
-      v18 = [(NCNotificationViewController *)self notificationRequest];
-      v19 = [v18 notificationIdentifier];
-      v20 = [v19 un_logDigest];
+      notificationRequest2 = [(NCNotificationViewController *)self notificationRequest];
+      notificationIdentifier = [notificationRequest2 notificationIdentifier];
+      un_logDigest = [notificationIdentifier un_logDigest];
       v21 = 138543874;
-      v22 = v20;
+      v22 = un_logDigest;
       v23 = 1024;
       v24 = 1;
       v25 = 1024;
@@ -1933,22 +1933,22 @@ void __84__NCNotificationViewController__askDelegateToExecuteAction_withParamete
   }
 }
 
-- (void)customContent:(id)a3 requestPermissionToExecuteAction:(id)a4 forNotification:(id)a5 withUserInfo:(id)a6 completionHandler:(id)a7
+- (void)customContent:(id)content requestPermissionToExecuteAction:(id)action forNotification:(id)notification withUserInfo:(id)info completionHandler:(id)handler
 {
-  v10 = a7;
-  v11 = a6;
-  v12 = a4;
-  v13 = [(NCNotificationViewController *)self delegate];
-  [v13 notificationViewController:self requestPermissionToExecuteAction:v12 withParameters:v11 completion:v10];
+  handlerCopy = handler;
+  infoCopy = info;
+  actionCopy = action;
+  delegate = [(NCNotificationViewController *)self delegate];
+  [delegate notificationViewController:self requestPermissionToExecuteAction:actionCopy withParameters:infoCopy completion:handlerCopy];
 }
 
-- (id)expandedPlatterPresentationController:(id)a3 keyboardAssertionForGestureWindow:(id)a4
+- (id)expandedPlatterPresentationController:(id)controller keyboardAssertionForGestureWindow:(id)window
 {
-  v5 = a4;
-  v6 = [(NCNotificationViewController *)self delegate];
+  windowCopy = window;
+  delegate = [(NCNotificationViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 notificationViewController:self keyboardAssertionForGestureWindow:v5];
+    v7 = [delegate notificationViewController:self keyboardAssertionForGestureWindow:windowCopy];
   }
 
   else
@@ -1959,12 +1959,12 @@ void __84__NCNotificationViewController__askDelegateToExecuteAction_withParamete
   return v7;
 }
 
-- (id)hideHomeAffordanceAnimationSettingsForExpandedPlatterPresentationController:(id)a3
+- (id)hideHomeAffordanceAnimationSettingsForExpandedPlatterPresentationController:(id)controller
 {
-  v4 = [(NCNotificationViewController *)self delegate];
+  delegate = [(NCNotificationViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 hideHomeAffordanceAnimationSettingsForNotificationViewController:self];
+    v5 = [delegate hideHomeAffordanceAnimationSettingsForNotificationViewController:self];
   }
 
   else
@@ -1975,12 +1975,12 @@ void __84__NCNotificationViewController__askDelegateToExecuteAction_withParamete
   return v5;
 }
 
-- (id)unhideHomeAffordanceAnimationSettingsForExpandedPlatterPresentationController:(id)a3
+- (id)unhideHomeAffordanceAnimationSettingsForExpandedPlatterPresentationController:(id)controller
 {
-  v4 = [(NCNotificationViewController *)self delegate];
+  delegate = [(NCNotificationViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 unhideHomeAffordanceAnimationSettingsForNotificationViewController:self];
+    v5 = [delegate unhideHomeAffordanceAnimationSettingsForNotificationViewController:self];
   }
 
   else
@@ -1991,12 +1991,12 @@ void __84__NCNotificationViewController__askDelegateToExecuteAction_withParamete
   return v5;
 }
 
-- (id)settleHomeAffordanceAnimationBehaviorDescriptionForExpandedPlatterPresentationController:(id)a3
+- (id)settleHomeAffordanceAnimationBehaviorDescriptionForExpandedPlatterPresentationController:(id)controller
 {
-  v4 = [(NCNotificationViewController *)self delegate];
+  delegate = [(NCNotificationViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 settleHomeAffordanceAnimationBehaviorDescriptionForNotificationViewController:self];
+    v5 = [delegate settleHomeAffordanceAnimationBehaviorDescriptionForNotificationViewController:self];
   }
 
   else
@@ -2009,41 +2009,41 @@ void __84__NCNotificationViewController__askDelegateToExecuteAction_withParamete
 
 - (BOOL)adjustForContentSizeCategoryChange
 {
-  v3 = [(NCNotificationViewController *)self _lookViewIfLoaded];
-  v4 = v3;
-  if (v3)
+  _lookViewIfLoaded = [(NCNotificationViewController *)self _lookViewIfLoaded];
+  v4 = _lookViewIfLoaded;
+  if (_lookViewIfLoaded)
   {
-    [v3 adjustForContentSizeCategoryChange];
+    [_lookViewIfLoaded adjustForContentSizeCategoryChange];
     [(NCNotificationViewController *)self setHasUpdatedContent];
-    v5 = [(NCNotificationViewController *)self view];
-    [v5 setNeedsLayout];
+    view = [(NCNotificationViewController *)self view];
+    [view setNeedsLayout];
   }
 
   return 1;
 }
 
-- (void)configureStackDimmingForTransform:(CGAffineTransform *)a3
+- (void)configureStackDimmingForTransform:(CGAffineTransform *)transform
 {
-  v4 = [(NCNotificationViewController *)self _notificationViewControllerView];
-  v5 = *&a3->c;
-  v6[0] = *&a3->a;
+  _notificationViewControllerView = [(NCNotificationViewController *)self _notificationViewControllerView];
+  v5 = *&transform->c;
+  v6[0] = *&transform->a;
   v6[1] = v5;
-  v6[2] = *&a3->tx;
-  [v4 configureStackDimmingForTransform:v6];
+  v6[2] = *&transform->tx;
+  [_notificationViewControllerView configureStackDimmingForTransform:v6];
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(NCNotificationViewController *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(NCNotificationViewController *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = MEMORY[0x277CF0C00];
-  v5 = a3;
+  prefixCopy = prefix;
   v6 = [v4 builderWithObject:self];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -2051,8 +2051,8 @@ void __84__NCNotificationViewController__askDelegateToExecuteAction_withParamete
   v10[3] = &unk_27836F560;
   v7 = v6;
   v11 = v7;
-  v12 = self;
-  [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:v10];
+  selfCopy = self;
+  [v7 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v10];
 
   v8 = v7;
   return v7;
@@ -2107,24 +2107,24 @@ void __70__NCNotificationViewController_descriptionBuilderWithMultilinePrefix___
 
 - (id)succinctDescription
 {
-  v2 = [(NCNotificationViewController *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(NCNotificationViewController *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(NCNotificationViewController *)self notificationRequest];
-  v5 = [v4 notificationIdentifier];
-  v6 = [v5 un_logDigest];
-  [v3 appendString:v6 withName:@"notificationID" skipIfEmpty:1];
+  notificationRequest = [(NCNotificationViewController *)self notificationRequest];
+  notificationIdentifier = [notificationRequest notificationIdentifier];
+  un_logDigest = [notificationIdentifier un_logDigest];
+  [v3 appendString:un_logDigest withName:@"notificationID" skipIfEmpty:1];
 
   if (([(NCNotificationViewController *)self isViewLoaded]& 1) != 0)
   {
-    v7 = [(NCNotificationViewController *)self view];
-    v8 = [v3 appendObject:v7 withName:@"view"];
+    view = [(NCNotificationViewController *)self view];
+    v8 = [v3 appendObject:view withName:@"view"];
   }
 
   else
@@ -2158,11 +2158,11 @@ void __70__NCNotificationViewController_descriptionBuilderWithMultilinePrefix___
   return WeakRetained;
 }
 
-- (void)presentLongLookAnimated:(BOOL)a3 trigger:(int64_t)a4 completion:(id)a5
+- (void)presentLongLookAnimated:(BOOL)animated trigger:(int64_t)trigger completion:(id)completion
 {
-  if (a5)
+  if (completion)
   {
-    (*(a5 + 2))(a5, 0);
+    (*(completion + 2))(completion, 0);
   }
 }
 

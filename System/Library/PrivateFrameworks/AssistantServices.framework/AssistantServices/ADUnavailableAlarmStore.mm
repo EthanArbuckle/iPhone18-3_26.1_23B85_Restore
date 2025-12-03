@@ -1,73 +1,73 @@
 @interface ADUnavailableAlarmStore
-- (void)addAlarm:(id)a3 completionHandler:(id)a4;
-- (void)deleteAlarmsWithIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)dismissAlarmsWithURLs:(id)a3 completionHandler:(id)a4;
-- (void)fetchAlarmsMatchingAnyOfQueries:(id)a3 completionHandler:(id)a4;
-- (void)fetchAlarmsMeetingCriteria:(id)a3 searchOptions:(int64_t)a4 completionHandler:(id)a5;
-- (void)fetchAlarmsWithIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)updateAlarms:(id)a3 completionHandler:(id)a4;
+- (void)addAlarm:(id)alarm completionHandler:(id)handler;
+- (void)deleteAlarmsWithIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)dismissAlarmsWithURLs:(id)ls completionHandler:(id)handler;
+- (void)fetchAlarmsMatchingAnyOfQueries:(id)queries completionHandler:(id)handler;
+- (void)fetchAlarmsMeetingCriteria:(id)criteria searchOptions:(int64_t)options completionHandler:(id)handler;
+- (void)fetchAlarmsWithIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)updateAlarms:(id)alarms completionHandler:(id)handler;
 @end
 
 @implementation ADUnavailableAlarmStore
 
-- (void)dismissAlarmsWithURLs:(id)a3 completionHandler:(id)a4
+- (void)dismissAlarmsWithURLs:(id)ls completionHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    v6 = a4;
-    v7 = [(ADUnavailableAlarmStore *)self _createUnavailableError];
-    (*(a4 + 2))(v6, v7);
+    handlerCopy = handler;
+    _createUnavailableError = [(ADUnavailableAlarmStore *)self _createUnavailableError];
+    (*(handler + 2))(handlerCopy, _createUnavailableError);
   }
 }
 
-- (void)fetchAlarmsWithIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)fetchAlarmsWithIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(ADUnavailableAlarmStore *)self _createUnavailableError];
-  (*(a4 + 2))(v6, 0, v7);
+  handlerCopy = handler;
+  _createUnavailableError = [(ADUnavailableAlarmStore *)self _createUnavailableError];
+  (*(handler + 2))(handlerCopy, 0, _createUnavailableError);
 }
 
-- (void)fetchAlarmsMeetingCriteria:(id)a3 searchOptions:(int64_t)a4 completionHandler:(id)a5
+- (void)fetchAlarmsMeetingCriteria:(id)criteria searchOptions:(int64_t)options completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = [(ADUnavailableAlarmStore *)self _createUnavailableError];
-  (*(a5 + 2))(v7, 0, v8);
+  handlerCopy = handler;
+  _createUnavailableError = [(ADUnavailableAlarmStore *)self _createUnavailableError];
+  (*(handler + 2))(handlerCopy, 0, _createUnavailableError);
 }
 
-- (void)fetchAlarmsMatchingAnyOfQueries:(id)a3 completionHandler:(id)a4
+- (void)fetchAlarmsMatchingAnyOfQueries:(id)queries completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(ADUnavailableAlarmStore *)self _createUnavailableError];
-  (*(a4 + 2))(v6, 0, v7);
+  handlerCopy = handler;
+  _createUnavailableError = [(ADUnavailableAlarmStore *)self _createUnavailableError];
+  (*(handler + 2))(handlerCopy, 0, _createUnavailableError);
 }
 
-- (void)updateAlarms:(id)a3 completionHandler:(id)a4
+- (void)updateAlarms:(id)alarms completionHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    v6 = a4;
-    v7 = [(ADUnavailableAlarmStore *)self _createUnavailableError];
-    (*(a4 + 2))(v6, 0, v7);
+    handlerCopy = handler;
+    _createUnavailableError = [(ADUnavailableAlarmStore *)self _createUnavailableError];
+    (*(handler + 2))(handlerCopy, 0, _createUnavailableError);
   }
 }
 
-- (void)deleteAlarmsWithIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)deleteAlarmsWithIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    v6 = a4;
-    v7 = [(ADUnavailableAlarmStore *)self _createUnavailableError];
-    (*(a4 + 2))(v6, v7);
+    handlerCopy = handler;
+    _createUnavailableError = [(ADUnavailableAlarmStore *)self _createUnavailableError];
+    (*(handler + 2))(handlerCopy, _createUnavailableError);
   }
 }
 
-- (void)addAlarm:(id)a3 completionHandler:(id)a4
+- (void)addAlarm:(id)alarm completionHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    v6 = a4;
-    v7 = [(ADUnavailableAlarmStore *)self _createUnavailableError];
-    (*(a4 + 2))(v6, 0, v7);
+    handlerCopy = handler;
+    _createUnavailableError = [(ADUnavailableAlarmStore *)self _createUnavailableError];
+    (*(handler + 2))(handlerCopy, 0, _createUnavailableError);
   }
 }
 

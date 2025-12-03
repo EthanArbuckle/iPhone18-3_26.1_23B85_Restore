@@ -2,9 +2,9 @@
 - (void)_createProgressViewController;
 - (void)clearErrorState;
 - (void)loadView;
-- (void)reportProgress:(double)a3 stage:(unint64_t)a4;
-- (void)setErrorState:(id)a3;
-- (void)setIsiPadConfiguration:(BOOL)a3;
+- (void)reportProgress:(double)progress stage:(unint64_t)stage;
+- (void)setErrorState:(id)state;
+- (void)setIsiPadConfiguration:(BOOL)configuration;
 @end
 
 @implementation PXModelDeliveryProgressObjCViewController
@@ -12,78 +12,78 @@
 - (void)clearErrorState
 {
   [(PXModelDeliveryProgressObjCViewController *)self setErrorToReport:0];
-  v3 = [(PXModelDeliveryProgressObjCViewController *)self mdpvc];
+  mdpvc = [(PXModelDeliveryProgressObjCViewController *)self mdpvc];
 
-  if (v3)
+  if (mdpvc)
   {
-    v4 = [(PXModelDeliveryProgressObjCViewController *)self mdpvc];
-    [v4 setErrorState:0];
+    mdpvc2 = [(PXModelDeliveryProgressObjCViewController *)self mdpvc];
+    [mdpvc2 setErrorState:0];
   }
 }
 
-- (void)setErrorState:(id)a3
+- (void)setErrorState:(id)state
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stateCopy = state;
   v5 = PLPhotoEditGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(PXModelDeliveryProgressObjCViewController *)self mdpvc];
+    mdpvc = [(PXModelDeliveryProgressObjCViewController *)self mdpvc];
     v10 = 138412546;
-    v11 = v4;
+    v11 = stateCopy;
     v12 = 2112;
-    v13 = v6;
+    v13 = mdpvc;
     _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEFAULT, "PXModelDeliveryProgressObjCViewController setErrorState: %@ / mdpvc: %@", &v10, 0x16u);
   }
 
-  [(PXModelDeliveryProgressObjCViewController *)self setErrorToReport:v4];
-  v7 = [(PXModelDeliveryProgressObjCViewController *)self mdpvc];
+  [(PXModelDeliveryProgressObjCViewController *)self setErrorToReport:stateCopy];
+  mdpvc2 = [(PXModelDeliveryProgressObjCViewController *)self mdpvc];
 
-  if (v7)
+  if (mdpvc2)
   {
-    v8 = [(PXModelDeliveryProgressObjCViewController *)self mdpvc];
-    if (v4)
+    mdpvc3 = [(PXModelDeliveryProgressObjCViewController *)self mdpvc];
+    if (stateCopy)
     {
-      v9 = [v4 code];
+      code = [stateCopy code];
     }
 
     else
     {
-      v9 = 0;
+      code = 0;
     }
 
-    [v8 setErrorState:v9];
+    [mdpvc3 setErrorState:code];
   }
 }
 
-- (void)reportProgress:(double)a3 stage:(unint64_t)a4
+- (void)reportProgress:(double)progress stage:(unint64_t)stage
 {
   [(PXModelDeliveryProgressObjCViewController *)self setProgress:?];
-  [(PXModelDeliveryProgressObjCViewController *)self setStage:a4];
-  v7 = [(PXModelDeliveryProgressObjCViewController *)self mdpvc];
+  [(PXModelDeliveryProgressObjCViewController *)self setStage:stage];
+  mdpvc = [(PXModelDeliveryProgressObjCViewController *)self mdpvc];
 
-  if (v7)
+  if (mdpvc)
   {
-    v8 = [(PXModelDeliveryProgressObjCViewController *)self mdpvc];
-    [v8 reportProgress:a4 stage:a3];
+    mdpvc2 = [(PXModelDeliveryProgressObjCViewController *)self mdpvc];
+    [mdpvc2 reportProgress:stage stage:progress];
   }
 }
 
-- (void)setIsiPadConfiguration:(BOOL)a3
+- (void)setIsiPadConfiguration:(BOOL)configuration
 {
-  if (self->_isiPadConfiguration != a3)
+  if (self->_isiPadConfiguration != configuration)
   {
-    self->_isiPadConfiguration = a3;
-    v4 = [(PXModelDeliveryProgressObjCViewController *)self mdpvc];
+    self->_isiPadConfiguration = configuration;
+    mdpvc = [(PXModelDeliveryProgressObjCViewController *)self mdpvc];
 
-    if (v4)
+    if (mdpvc)
     {
-      v5 = [(PXModelDeliveryProgressObjCViewController *)self mdpvc];
-      [v5 removeFromParentViewController];
+      mdpvc2 = [(PXModelDeliveryProgressObjCViewController *)self mdpvc];
+      [mdpvc2 removeFromParentViewController];
 
-      v6 = [(PXModelDeliveryProgressObjCViewController *)self mdpvc];
-      v7 = [v6 view];
-      [v7 removeFromSuperview];
+      mdpvc3 = [(PXModelDeliveryProgressObjCViewController *)self mdpvc];
+      view = [mdpvc3 view];
+      [view removeFromSuperview];
 
       [(PXModelDeliveryProgressObjCViewController *)self setMdpvc:0];
 
@@ -96,45 +96,45 @@
 {
   v26[4] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(_TtC12PhotosUICore37PXModelDeliveryProgressViewController);
-  v4 = [(PXModelDeliveryProgressObjCViewController *)self view];
+  view = [(PXModelDeliveryProgressObjCViewController *)self view];
   [(PXModelDeliveryProgressViewController *)v3 setIsiPadConfiguration:[(PXModelDeliveryProgressObjCViewController *)self isiPadConfiguration]];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
   [(PXModelDeliveryProgressObjCViewController *)self addChildViewController:v3];
-  v5 = [(PXModelDeliveryProgressViewController *)v3 view];
-  [v4 addSubview:v5];
+  view2 = [(PXModelDeliveryProgressViewController *)v3 view];
+  [view addSubview:view2];
 
-  v24 = [v4 leadingAnchor];
-  v25 = [(PXModelDeliveryProgressViewController *)v3 view];
-  v23 = [v25 leadingAnchor];
-  v22 = [v24 constraintEqualToAnchor:v23];
+  leadingAnchor = [view leadingAnchor];
+  view3 = [(PXModelDeliveryProgressViewController *)v3 view];
+  leadingAnchor2 = [view3 leadingAnchor];
+  v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v26[0] = v22;
-  v20 = [v4 trailingAnchor];
-  v21 = [(PXModelDeliveryProgressViewController *)v3 view];
-  v19 = [v21 trailingAnchor];
-  v18 = [v20 constraintEqualToAnchor:v19];
+  trailingAnchor = [view trailingAnchor];
+  view4 = [(PXModelDeliveryProgressViewController *)v3 view];
+  trailingAnchor2 = [view4 trailingAnchor];
+  v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v26[1] = v18;
-  v16 = [v4 topAnchor];
-  v17 = [(PXModelDeliveryProgressViewController *)v3 view];
-  v6 = [v17 topAnchor];
-  v7 = [v16 constraintEqualToAnchor:v6];
+  topAnchor = [view topAnchor];
+  view5 = [(PXModelDeliveryProgressViewController *)v3 view];
+  topAnchor2 = [view5 topAnchor];
+  v7 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v26[2] = v7;
-  v8 = [v4 bottomAnchor];
-  v9 = [(PXModelDeliveryProgressViewController *)v3 view];
-  v10 = [v9 bottomAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  bottomAnchor = [view bottomAnchor];
+  view6 = [(PXModelDeliveryProgressViewController *)v3 view];
+  bottomAnchor2 = [view6 bottomAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v26[3] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:4];
 
-  [v4 addConstraints:v12];
+  [view addConstraints:v12];
   objc_storeStrong(&self->_mdpvc, v3);
   [(PXModelDeliveryProgressObjCViewController *)self progress];
   [(PXModelDeliveryProgressViewController *)v3 reportProgress:[(PXModelDeliveryProgressObjCViewController *)self stage] stage:v13];
-  v14 = [(PXModelDeliveryProgressObjCViewController *)self errorToReport];
+  errorToReport = [(PXModelDeliveryProgressObjCViewController *)self errorToReport];
 
-  if (v14)
+  if (errorToReport)
   {
-    v15 = [(PXModelDeliveryProgressObjCViewController *)self errorToReport];
-    -[PXModelDeliveryProgressViewController setErrorState:](v3, "setErrorState:", [v15 code]);
+    errorToReport2 = [(PXModelDeliveryProgressObjCViewController *)self errorToReport];
+    -[PXModelDeliveryProgressViewController setErrorState:](v3, "setErrorState:", [errorToReport2 code]);
   }
 }
 

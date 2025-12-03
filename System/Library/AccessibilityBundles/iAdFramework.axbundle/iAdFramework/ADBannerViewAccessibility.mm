@@ -9,9 +9,9 @@
 {
   if (!_AXSAutomationEnabled())
   {
-    v5 = [(ADBannerViewAccessibility *)self accessibilityUserDefinedLabel];
+    accessibilityUserDefinedLabel = [(ADBannerViewAccessibility *)self accessibilityUserDefinedLabel];
 
-    if (v5)
+    if (accessibilityUserDefinedLabel)
     {
       return 1;
     }

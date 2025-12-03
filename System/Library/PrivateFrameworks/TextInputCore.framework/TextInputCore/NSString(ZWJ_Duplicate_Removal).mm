@@ -7,14 +7,14 @@
 
 - (uint64_t)hasDoubleZWJ
 {
-  result = [a1 length];
+  result = [self length];
   if (result)
   {
     v3 = 0;
     v4 = 0;
     while (1)
     {
-      v5 = [a1 characterAtIndex:v3];
+      v5 = [self characterAtIndex:v3];
       v6 = v5;
       v7 = v4 == 8205 && v5 == 8205;
       result = v7;
@@ -25,7 +25,7 @@
 
       ++v3;
       v4 = v6;
-      if (v3 >= [a1 length])
+      if (v3 >= [self length])
       {
         return 0;
       }
@@ -37,14 +37,14 @@
 
 - (id)stringRemovingDoubleZWJ
 {
-  v2 = [MEMORY[0x277CCAB68] stringWithCapacity:{objc_msgSend(a1, "length")}];
-  if ([a1 length])
+  v2 = [MEMORY[0x277CCAB68] stringWithCapacity:{objc_msgSend(self, "length")}];
+  if ([self length])
   {
     v3 = 0;
     v4 = 0;
     do
     {
-      v5 = [a1 characterAtIndex:v4];
+      v5 = [self characterAtIndex:v4];
       v6 = v5;
       if (v3 != 8205 || v5 != 8205)
       {
@@ -55,7 +55,7 @@
       v3 = v6;
     }
 
-    while (v4 < [a1 length]);
+    while (v4 < [self length]);
   }
 
   v7 = [MEMORY[0x277CCACA8] stringWithString:v2];

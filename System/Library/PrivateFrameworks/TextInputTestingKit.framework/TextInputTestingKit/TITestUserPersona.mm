@@ -1,28 +1,28 @@
 @interface TITestUserPersona
-- (CGPoint)userPointForKey:(id)a3;
-- (TITestUserPersona)initWithPersonaName:(id)a3;
-- (void)updateFromKeyplane:(id)a3;
+- (CGPoint)userPointForKey:(id)key;
+- (TITestUserPersona)initWithPersonaName:(id)name;
+- (void)updateFromKeyplane:(id)keyplane;
 @end
 
 @implementation TITestUserPersona
 
-- (CGPoint)userPointForKey:(id)a3
+- (CGPoint)userPointForKey:(id)key
 {
   keyInfo = self->_keyInfo;
-  v4 = [a3 name];
-  v5 = [(NSMutableDictionary *)keyInfo objectForKey:v4];
+  name = [key name];
+  v5 = [(NSMutableDictionary *)keyInfo objectForKey:name];
 
-  v6 = [v5 errorGenerator];
-  [v6 randomPointInDistribution];
+  errorGenerator = [v5 errorGenerator];
+  [errorGenerator randomPointInDistribution];
   v8 = v7;
   v10 = v9;
 
-  v11 = [v5 rotationMatrix];
+  rotationMatrix = [v5 rotationMatrix];
 
-  if (v11)
+  if (rotationMatrix)
   {
-    v12 = [v5 rotationMatrix];
-    [v12 transformedPoint:{v8, v10}];
+    rotationMatrix2 = [v5 rotationMatrix];
+    [rotationMatrix2 transformedPoint:{v8, v10}];
     v8 = v13;
     v10 = v14;
   }
@@ -39,25 +39,25 @@
   return result;
 }
 
-- (void)updateFromKeyplane:(id)a3
+- (void)updateFromKeyplane:(id)keyplane
 {
-  v5 = a3;
-  if (self->_currentKeyplane != v5)
+  keyplaneCopy = keyplane;
+  if (self->_currentKeyplane != keyplaneCopy)
   {
-    objc_storeStrong(&self->_currentKeyplane, a3);
+    objc_storeStrong(&self->_currentKeyplane, keyplane);
     cachedKeyInfo = self->_cachedKeyInfo;
-    v7 = [(UIKBTree *)self->_currentKeyplane name];
-    v8 = [(NSMutableDictionary *)cachedKeyInfo objectForKey:v7];
+    name = [(UIKBTree *)self->_currentKeyplane name];
+    v8 = [(NSMutableDictionary *)cachedKeyInfo objectForKey:name];
 
     if (!v8)
     {
-      v50 = v5;
+      v50 = keyplaneCopy;
       v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
       v10 = self->_cachedKeyInfo;
-      v11 = [(UIKBTree *)self->_currentKeyplane name];
-      [(NSMutableDictionary *)v10 setObject:v9 forKey:v11];
+      name2 = [(UIKBTree *)self->_currentKeyplane name];
+      [(NSMutableDictionary *)v10 setObject:v9 forKey:name2];
 
-      v47 = [(UIKBTree *)v5 keys];
+      keys = [(UIKBTree *)keyplaneCopy keys];
       v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
       v89[0] = 0;
       v89[1] = v89;
@@ -77,7 +77,7 @@
       v49 = v12;
       v87 = v49;
       v88 = v89;
-      [v47 enumerateObjectsUsingBlock:v85];
+      [keys enumerateObjectsUsingBlock:v85];
       v79 = 0;
       v80 = &v79;
       v81 = 0x3032000000;
@@ -89,15 +89,15 @@
       v76[1] = 3221225472;
       v76[2] = __40__TITestUserPersona_updateFromKeyplane___block_invoke_34;
       v76[3] = &unk_279DA0708;
-      v77 = v5;
+      v77 = keyplaneCopy;
       v78 = &v79;
       [(NSDictionary *)personaData enumerateKeysAndObjectsUsingBlock:v76];
       v42 = objc_alloc_init(MEMORY[0x277CBEB38]);
       v51 = [v80[5] objectForKey:@"KEYGROUPS"];
       v48 = objc_alloc_init(MEMORY[0x277CBEB38]);
       v16 = objc_alloc(MEMORY[0x277CBEB58]);
-      v17 = [v14 allKeys];
-      v18 = [v16 initWithArray:v17];
+      allKeys = [v14 allKeys];
+      v18 = [v16 initWithArray:allKeys];
 
       v70[0] = MEMORY[0x277D85DD0];
       v70[1] = 3221225472;
@@ -120,14 +120,14 @@
       }
 
       v41 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      v22 = [v21 allKeys];
+      allKeys2 = [v21 allKeys];
       v68[0] = MEMORY[0x277D85DD0];
       v68[1] = 3221225472;
       v68[2] = __40__TITestUserPersona_updateFromKeyplane___block_invoke_5;
       v68[3] = &unk_279DA07A8;
       v23 = v41;
       v69 = v23;
-      [v22 enumerateObjectsUsingBlock:v68];
+      [allKeys2 enumerateObjectsUsingBlock:v68];
 
       v24 = [v80[5] objectForKey:@"AFFINES"];
       v64[0] = MEMORY[0x277D85DD0];
@@ -183,7 +183,7 @@
       _Block_object_dispose(&v79, 8);
       _Block_object_dispose(v89, 8);
 
-      v5 = v50;
+      keyplaneCopy = v50;
     }
 
     self->_keyInfo = v8;
@@ -761,16 +761,16 @@ void __40__TITestUserPersona_updateFromKeyplane___block_invoke_4(uint64_t a1, vo
   }
 }
 
-- (TITestUserPersona)initWithPersonaName:(id)a3
+- (TITestUserPersona)initWithPersonaName:(id)name
 {
   v33 = *MEMORY[0x277D85DE8];
-  v25 = a3;
+  nameCopy = name;
   v27.receiver = self;
   v27.super_class = TITestUserPersona;
   v26 = [(TITestUserPersona *)&v27 init];
   if (v26)
   {
-    v4 = v25;
+    v4 = nameCopy;
     v5 = objc_alloc_init(MEMORY[0x277CCAA00]);
     v30 = 0u;
     v31 = 0u;
@@ -790,11 +790,11 @@ LABEL_4:
         }
 
         v9 = *(*(&v28 + 1) + 8 * v8);
-        v10 = [MEMORY[0x277CCA8D8] mainBundle];
-        v11 = [v10 URLForResource:v4 withExtension:v9 subdirectory:@"TestPersonas"];
+        mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+        v11 = [mainBundle URLForResource:v4 withExtension:v9 subdirectory:@"TestPersonas"];
 
-        v12 = [v11 path];
-        v13 = [v5 fileExistsAtPath:v12];
+        path = [v11 path];
+        v13 = [v5 fileExistsAtPath:path];
 
         if (v13)
         {
@@ -820,8 +820,8 @@ LABEL_10:
       v11 = 0;
     }
 
-    v14 = [v11 pathExtension];
-    v15 = [v14 isEqualToString:@"plist"];
+    pathExtension = [v11 pathExtension];
+    v15 = [pathExtension isEqualToString:@"plist"];
 
     if (v15)
     {
@@ -832,8 +832,8 @@ LABEL_10:
 
     else
     {
-      v18 = [v11 pathExtension];
-      v19 = [v18 isEqualToString:@"json"];
+      pathExtension2 = [v11 pathExtension];
+      v19 = [pathExtension2 isEqualToString:@"json"];
 
       if (!v19)
       {

@@ -1,27 +1,27 @@
 @interface AMSBiometricsSignatureResult
-- (AMSBiometricsSignatureResult)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (AMSBiometricsSignatureResult)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSBiometricsSignatureResult
 
-- (AMSBiometricsSignatureResult)initWithCoder:(id)a3
+- (AMSBiometricsSignatureResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = AMSBiometricsSignatureResult;
   v5 = [(AMSBiometricsSignatureResult *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kPublicKeyKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kPublicKeyKey"];
     publicKey = v5->_publicKey;
     v5->_publicKey = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kSignatureKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kSignatureKey"];
     signature = v5->_signature;
     v5->_signature = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kOriginalRequestKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kOriginalRequestKey"];
     originalRequest = v5->_originalRequest;
     v5->_originalRequest = v10;
   }
@@ -29,17 +29,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AMSBiometricsSignatureResult *)self publicKey];
-  [v4 encodeObject:v5 forKey:@"kPublicKeyKey"];
+  coderCopy = coder;
+  publicKey = [(AMSBiometricsSignatureResult *)self publicKey];
+  [coderCopy encodeObject:publicKey forKey:@"kPublicKeyKey"];
 
-  v6 = [(AMSBiometricsSignatureResult *)self signature];
-  [v4 encodeObject:v6 forKey:@"kSignatureKey"];
+  signature = [(AMSBiometricsSignatureResult *)self signature];
+  [coderCopy encodeObject:signature forKey:@"kSignatureKey"];
 
-  v7 = [(AMSBiometricsSignatureResult *)self originalRequest];
-  [v4 encodeObject:v7 forKey:@"kOriginalRequestKey"];
+  originalRequest = [(AMSBiometricsSignatureResult *)self originalRequest];
+  [coderCopy encodeObject:originalRequest forKey:@"kOriginalRequestKey"];
 }
 
 @end

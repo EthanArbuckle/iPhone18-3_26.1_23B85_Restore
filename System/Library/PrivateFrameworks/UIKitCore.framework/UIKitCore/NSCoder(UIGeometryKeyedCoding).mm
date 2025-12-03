@@ -25,7 +25,7 @@
   v11.x = a2;
   v11.y = a3;
   v9 = NSStringFromCGPoint(v11);
-  [a1 encodeObject:v9 forKey:v8];
+  [self encodeObject:v9 forKey:v8];
 }
 
 - (void)encodeCGVector:()UIGeometryKeyedCoding forKey:
@@ -34,7 +34,7 @@
   v11.dx = a2;
   v11.dy = a3;
   v9 = NSStringFromCGVector(v11);
-  [a1 encodeObject:v9 forKey:v8];
+  [self encodeObject:v9 forKey:v8];
 }
 
 - (void)encodeCGSize:()UIGeometryKeyedCoding forKey:
@@ -43,7 +43,7 @@
   v11.width = a2;
   v11.height = a3;
   v9 = NSStringFromCGSize(v11);
-  [a1 encodeObject:v9 forKey:v8];
+  [self encodeObject:v9 forKey:v8];
 }
 
 - (void)encodeCGRect:()UIGeometryKeyedCoding forKey:
@@ -54,7 +54,7 @@
   v15.size.width = a4;
   v15.size.height = a5;
   v13 = NSStringFromCGRect(v15);
-  [a1 encodeObject:v13 forKey:v12];
+  [self encodeObject:v13 forKey:v12];
 }
 
 - (void)encodeCGAffineTransform:()UIGeometryKeyedCoding forKey:
@@ -65,7 +65,7 @@
   *&transform.tx = a3[2];
   v6 = a4;
   v7 = NSStringFromCGAffineTransform(&transform);
-  [a1 encodeObject:v7 forKey:v6];
+  [self encodeObject:v7 forKey:v6];
 }
 
 - (void)encodeUIEdgeInsets:()UIGeometryKeyedCoding forKey:
@@ -76,7 +76,7 @@
   v15.bottom = a4;
   v15.right = a5;
   v13 = NSStringFromUIEdgeInsets(v15);
-  [a1 encodeObject:v13 forKey:v12];
+  [self encodeObject:v13 forKey:v12];
 }
 
 - (void)encodeDirectionalEdgeInsets:()UIGeometryKeyedCoding forKey:
@@ -87,7 +87,7 @@
   v15.bottom = a4;
   v15.trailing = a5;
   v13 = NSStringFromDirectionalEdgeInsets(v15);
-  [a1 encodeObject:v13 forKey:v12];
+  [self encodeObject:v13 forKey:v12];
 }
 
 - (void)encodeUIOffset:()UIGeometryKeyedCoding forKey:
@@ -96,13 +96,13 @@
   v11.horizontal = a2;
   v11.vertical = a3;
   v9 = NSStringFromUIOffset(v11);
-  [a1 encodeObject:v9 forKey:v8];
+  [self encodeObject:v9 forKey:v8];
 }
 
 - (double)decodeCGPointForKey:()UIGeometryKeyedCoding
 {
   v4 = a3;
-  v5 = [a1 decodeObjectOfClass:objc_opt_class() forKey:v4];
+  v5 = [self decodeObjectOfClass:objc_opt_class() forKey:v4];
 
   if (v5)
   {
@@ -120,7 +120,7 @@
 - (double)decodeCGVectorForKey:()UIGeometryKeyedCoding
 {
   v4 = a3;
-  v5 = [a1 decodeObjectOfClass:objc_opt_class() forKey:v4];
+  v5 = [self decodeObjectOfClass:objc_opt_class() forKey:v4];
 
   if (v5)
   {
@@ -138,7 +138,7 @@
 - (double)decodeCGSizeForKey:()UIGeometryKeyedCoding
 {
   v4 = a3;
-  v5 = [a1 decodeObjectOfClass:objc_opt_class() forKey:v4];
+  v5 = [self decodeObjectOfClass:objc_opt_class() forKey:v4];
 
   if (v5)
   {
@@ -156,7 +156,7 @@
 - (double)decodeCGRectForKey:()UIGeometryKeyedCoding
 {
   v4 = a3;
-  v5 = [a1 decodeObjectOfClass:objc_opt_class() forKey:v4];
+  v5 = [self decodeObjectOfClass:objc_opt_class() forKey:v4];
 
   if (v5)
   {
@@ -174,7 +174,7 @@
 - (void)decodeCGAffineTransformForKey:()UIGeometryKeyedCoding
 {
   v5 = a2;
-  string = [a1 decodeObjectOfClass:objc_opt_class() forKey:v5];
+  string = [self decodeObjectOfClass:objc_opt_class() forKey:v5];
 
   v6 = string;
   if (string)
@@ -196,7 +196,7 @@
 - (double)decodeUIEdgeInsetsForKey:()UIGeometryKeyedCoding
 {
   v4 = a3;
-  v5 = [a1 decodeObjectOfClass:objc_opt_class() forKey:v4];
+  v5 = [self decodeObjectOfClass:objc_opt_class() forKey:v4];
 
   if (v5)
   {
@@ -214,7 +214,7 @@
 - (double)decodeDirectionalEdgeInsetsForKey:()UIGeometryKeyedCoding
 {
   v4 = a3;
-  v5 = [a1 decodeObjectOfClass:objc_opt_class() forKey:v4];
+  v5 = [self decodeObjectOfClass:objc_opt_class() forKey:v4];
 
   if (v5)
   {
@@ -232,7 +232,7 @@
 - (double)decodeUIOffsetForKey:()UIGeometryKeyedCoding
 {
   v4 = a3;
-  v5 = [a1 decodeObjectOfClass:objc_opt_class() forKey:v4];
+  v5 = [self decodeObjectOfClass:objc_opt_class() forKey:v4];
 
   if (v5)
   {

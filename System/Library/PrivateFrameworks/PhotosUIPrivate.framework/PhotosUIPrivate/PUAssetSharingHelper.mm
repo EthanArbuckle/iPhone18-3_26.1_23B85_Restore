@@ -1,14 +1,14 @@
 @interface PUAssetSharingHelper
-+ (void)_prepareAssets:(id)a3 forActivityType:(id)a4 window:(id)a5 completion:(id)a6;
-+ (void)copyAssets:(id)a3 completionHandler:(id)a4;
-+ (void)prepareAssets:(id)a3 forActivityType:(id)a4 completion:(id)a5;
++ (void)_prepareAssets:(id)assets forActivityType:(id)type window:(id)window completion:(id)completion;
++ (void)copyAssets:(id)assets completionHandler:(id)handler;
++ (void)prepareAssets:(id)assets forActivityType:(id)type completion:(id)completion;
 - (PXAssetsSharingHelperDelegate)delegate;
-- (void)_presentViewController:(id)a3;
-- (void)copyAssets:(id)a3;
-- (void)ensureLocalAssetsForCloudPhotoSharing:(id)a3 completion:(id)a4;
-- (void)ensureLocalAssetsForRendering:(id)a3 completion:(id)a4;
-- (void)ensureLocalAssetsForSyndicationSave:(id)a3 completion:(id)a4;
-- (void)ensureRenderingForAssetsWithDeferredProcessingInCollection:(id)a3 completion:(id)a4;
+- (void)_presentViewController:(id)controller;
+- (void)copyAssets:(id)assets;
+- (void)ensureLocalAssetsForCloudPhotoSharing:(id)sharing completion:(id)completion;
+- (void)ensureLocalAssetsForRendering:(id)rendering completion:(id)completion;
+- (void)ensureLocalAssetsForSyndicationSave:(id)save completion:(id)completion;
+- (void)ensureRenderingForAssetsWithDeferredProcessingInCollection:(id)collection completion:(id)completion;
 @end
 
 @implementation PUAssetSharingHelper
@@ -20,20 +20,20 @@
   return WeakRetained;
 }
 
-- (void)ensureRenderingForAssetsWithDeferredProcessingInCollection:(id)a3 completion:(id)a4
+- (void)ensureRenderingForAssetsWithDeferredProcessingInCollection:(id)collection completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  collectionCopy = collection;
   v8 = objc_opt_new();
   v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"deferredProcessingNeeded != 0"];
   [v8 setInternalPredicate:v9];
 
-  v10 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:v7 options:v8];
+  v10 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:collectionCopy options:v8];
 
   if ([v10 count])
   {
-    v11 = [v10 fetchedObjects];
-    [(PUAssetSharingHelper *)self ensureLocalAssetsForRendering:v11 completion:v6];
+    fetchedObjects = [v10 fetchedObjects];
+    [(PUAssetSharingHelper *)self ensureLocalAssetsForRendering:fetchedObjects completion:completionCopy];
   }
 
   else
@@ -45,24 +45,24 @@
       _os_log_impl(&dword_1B36F3000, v12, OS_LOG_TYPE_DEFAULT, "PUAssetSharingHelper: No assets to render", v13, 2u);
     }
 
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 }
 
-- (void)ensureLocalAssetsForRendering:(id)a3 completion:(id)a4
+- (void)ensureLocalAssetsForRendering:(id)rendering completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PUAssetSharingHelper *)self delegate];
+  renderingCopy = rendering;
+  completionCopy = completion;
+  delegate = [(PUAssetSharingHelper *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(PUAssetSharingHelper *)self delegate];
-    v11 = [v10 windowForProgressPresentationInAssetsSharingHelper:self];
+    delegate2 = [(PUAssetSharingHelper *)self delegate];
+    v11 = [delegate2 windowForProgressPresentationInAssetsSharingHelper:self];
   }
 
   else
@@ -75,11 +75,11 @@
   v15[1] = 3221225472;
   v15[2] = __65__PUAssetSharingHelper_ensureLocalAssetsForRendering_completion___block_invoke;
   v15[3] = &unk_1E7B7E4A8;
-  v16 = v6;
-  v17 = self;
-  v18 = v7;
-  v13 = v7;
-  v14 = v6;
+  v16 = renderingCopy;
+  selfCopy = self;
+  v18 = completionCopy;
+  v13 = completionCopy;
+  v14 = renderingCopy;
   [PUAssetSharingHelper _prepareAssets:v14 forActivityType:v12 window:v11 completion:v15];
 }
 
@@ -118,20 +118,20 @@ void __65__PUAssetSharingHelper_ensureLocalAssetsForRendering_completion___block
   }
 }
 
-- (void)ensureLocalAssetsForSyndicationSave:(id)a3 completion:(id)a4
+- (void)ensureLocalAssetsForSyndicationSave:(id)save completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  saveCopy = save;
+  completionCopy = completion;
   v8 = *MEMORY[0x1E69C3EC0];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __71__PUAssetSharingHelper_ensureLocalAssetsForSyndicationSave_completion___block_invoke;
   v11[3] = &unk_1E7B7E4D0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = saveCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = saveCopy;
   [PUAssetSharingHelper prepareAssets:v10 forActivityType:v8 completion:v11];
 }
 
@@ -170,20 +170,20 @@ void __71__PUAssetSharingHelper_ensureLocalAssetsForSyndicationSave_completion__
   }
 }
 
-- (void)ensureLocalAssetsForCloudPhotoSharing:(id)a3 completion:(id)a4
+- (void)ensureLocalAssetsForCloudPhotoSharing:(id)sharing completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  sharingCopy = sharing;
+  completionCopy = completion;
   v8 = *MEMORY[0x1E69C3CF8];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __73__PUAssetSharingHelper_ensureLocalAssetsForCloudPhotoSharing_completion___block_invoke;
   v11[3] = &unk_1E7B7E4A8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = sharingCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = sharingCopy;
   [PUAssetSharingHelper prepareAssets:v10 forActivityType:v8 completion:v11];
 }
 
@@ -224,14 +224,14 @@ void __73__PUAssetSharingHelper_ensureLocalAssetsForCloudPhotoSharing_completion
   }
 }
 
-- (void)copyAssets:(id)a3
+- (void)copyAssets:(id)assets
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __35__PUAssetSharingHelper_copyAssets___block_invoke;
   v3[3] = &unk_1E7B80280;
   v3[4] = self;
-  [PUAssetSharingHelper copyAssets:a3 completionHandler:v3];
+  [PUAssetSharingHelper copyAssets:assets completionHandler:v3];
 }
 
 void __35__PUAssetSharingHelper_copyAssets___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -250,30 +250,30 @@ void __35__PUAssetSharingHelper_copyAssets___block_invoke(uint64_t a1, uint64_t 
   }
 }
 
-- (void)_presentViewController:(id)a3
+- (void)_presentViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(PUAssetSharingHelper *)self delegate];
-  [v5 assetsSharingHelper:self presentViewController:v4];
+  controllerCopy = controller;
+  delegate = [(PUAssetSharingHelper *)self delegate];
+  [delegate assetsSharingHelper:self presentViewController:controllerCopy];
 }
 
-+ (void)_prepareAssets:(id)a3 forActivityType:(id)a4 window:(id)a5 completion:(id)a6
++ (void)_prepareAssets:(id)assets forActivityType:(id)type window:(id)window completion:(id)completion
 {
   v46 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if ([v9 count])
+  assetsCopy = assets;
+  typeCopy = type;
+  windowCopy = window;
+  completionCopy = completion;
+  if ([assetsCopy count])
   {
     v13 = objc_alloc_init(PUActivityItemSourceController);
-    v14 = [MEMORY[0x1E695DFB8] orderedSetWithArray:v9];
+    v14 = [MEMORY[0x1E695DFB8] orderedSetWithArray:assetsCopy];
     v15 = [PUActivityAssetItem itemsForAssets:v14];
 
     v16 = *MEMORY[0x1E69CDA90];
-    if ([v10 isEqualToString:*MEMORY[0x1E69CDA90]] && PLIsLockdownMode())
+    if ([typeCopy isEqualToString:*MEMORY[0x1E69CDA90]] && PLIsLockdownMode())
     {
-      v32 = v11;
+      v32 = windowCopy;
       v17 = PLUIGetLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
@@ -313,33 +313,33 @@ void __35__PUAssetSharingHelper_copyAssets___block_invoke(uint64_t a1, uint64_t 
       }
 
       v15 = v31;
-      v11 = v32;
+      windowCopy = v32;
     }
 
     [(PUActivityItemSourceController *)v13 setAssetItems:v15, v31];
     v24 = objc_alloc_init(MEMORY[0x1E69C3308]);
     v25 = v24;
-    if (v11)
+    if (windowCopy)
     {
-      [v24 setWindow:v11];
+      [v24 setWindow:windowCopy];
     }
 
-    if ([v10 isEqualToString:v16])
+    if ([typeCopy isEqualToString:v16])
     {
       v26 = @"COPY_TO_PASTEBOARD_PREPARATION_TITLE";
     }
 
-    else if ([v10 isEqualToString:*MEMORY[0x1E69C3CF8]])
+    else if ([typeCopy isEqualToString:*MEMORY[0x1E69C3CF8]])
     {
       v26 = @"POST_TO_SHARED_ALBUM_PREPARATION_TITLE";
     }
 
-    else if ([v10 isEqualToString:*MEMORY[0x1E69C3EC0]])
+    else if ([typeCopy isEqualToString:*MEMORY[0x1E69C3EC0]])
     {
       v26 = @"SYNDICATION_SAVE_PREPARATION_TITLE";
     }
 
-    else if ([v10 isEqualToString:*MEMORY[0x1E69C3E40]])
+    else if ([typeCopy isEqualToString:*MEMORY[0x1E69C3E40]])
     {
       v26 = @"RENDER_PREPARATION_TITLE";
     }
@@ -371,14 +371,14 @@ void __35__PUAssetSharingHelper_copyAssets___block_invoke(uint64_t a1, uint64_t 
     v33[2] = __73__PUAssetSharingHelper__prepareAssets_forActivityType_window_completion___block_invoke_4;
     v33[3] = &unk_1E7B7E520;
     v34 = v28;
-    v35 = v12;
+    v35 = completionCopy;
     v30 = v28;
-    [(PUActivityItemSourceController *)v29 runExplicitly:1 withActivityType:v10 completionHandler:v33];
+    [(PUActivityItemSourceController *)v29 runExplicitly:1 withActivityType:typeCopy completionHandler:v33];
   }
 
-  else if (v12)
+  else if (completionCopy)
   {
-    (*(v12 + 2))(v12, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
@@ -443,25 +443,25 @@ void __73__PUAssetSharingHelper__prepareAssets_forActivityType_window_completion
   }
 }
 
-+ (void)prepareAssets:(id)a3 forActivityType:(id)a4 completion:(id)a5
++ (void)prepareAssets:(id)assets forActivityType:(id)type completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  [objc_opt_class() _prepareAssets:v9 forActivityType:v8 window:0 completion:v7];
+  completionCopy = completion;
+  typeCopy = type;
+  assetsCopy = assets;
+  [objc_opt_class() _prepareAssets:assetsCopy forActivityType:typeCopy window:0 completion:completionCopy];
 }
 
-+ (void)copyAssets:(id)a3 completionHandler:(id)a4
++ (void)copyAssets:(id)assets completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = *MEMORY[0x1E69CDA90];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __53__PUAssetSharingHelper_copyAssets_completionHandler___block_invoke;
   v8[3] = &unk_1E7B7E480;
-  v9 = v5;
-  v7 = v5;
-  [PUAssetSharingHelper prepareAssets:a3 forActivityType:v6 completion:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [PUAssetSharingHelper prepareAssets:assets forActivityType:v6 completion:v8];
 }
 
 void __53__PUAssetSharingHelper_copyAssets_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)

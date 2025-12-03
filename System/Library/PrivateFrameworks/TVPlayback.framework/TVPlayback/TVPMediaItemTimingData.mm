@@ -1,16 +1,16 @@
 @interface TVPMediaItemTimingData
-- (void)setInitialLoadingComplete:(BOOL)a3;
+- (void)setInitialLoadingComplete:(BOOL)complete;
 @end
 
 @implementation TVPMediaItemTimingData
 
-- (void)setInitialLoadingComplete:(BOOL)a3
+- (void)setInitialLoadingComplete:(BOOL)complete
 {
-  if (self->_initialLoadingComplete != a3)
+  if (self->_initialLoadingComplete != complete)
   {
-    self->_initialLoadingComplete = a3;
+    self->_initialLoadingComplete = complete;
     v5 = 0.0;
-    if (a3)
+    if (complete)
     {
       [(TVPMediaItemTimingData *)self endTimeForPreparingForLoading];
       v7 = v6;

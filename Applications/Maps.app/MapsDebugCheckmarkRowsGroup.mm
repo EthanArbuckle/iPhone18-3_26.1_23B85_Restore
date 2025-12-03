@@ -1,26 +1,26 @@
 @interface MapsDebugCheckmarkRowsGroup
-+ (id)rowsGroupContainingRows:(id *)a3 withContent:(id)a4 backingGeoConfigKey:(id)a5 get:(id)a6 set:(id)a7;
++ (id)rowsGroupContainingRows:(id *)rows withContent:(id)content backingGeoConfigKey:(id)key get:(id)get set:(id)set;
 - (MapsDebugCheckmarkRowsGroup)init;
 - (NSArray)rows;
 - (NSString)groupIdentifier;
 - (id)_initWithHeldRows;
 - (id)_relinquishOwnershipOfHeldRows;
-- (id)addRowWithTitle:(id)a3 subtitle:(id)a4 value:(id)a5;
+- (id)addRowWithTitle:(id)title subtitle:(id)subtitle value:(id)value;
 - (unint64_t)selectedRowsCount;
-- (void)addRow:(id)a3;
-- (void)checkmarkRowDidChangeChecked:(id)a3;
-- (void)checkmarkRowWillInvalidate:(id)a3;
+- (void)addRow:(id)row;
+- (void)checkmarkRowDidChangeChecked:(id)checked;
+- (void)checkmarkRowWillInvalidate:(id)invalidate;
 - (void)dealloc;
-- (void)setGeoConfigKey:(id)a3;
+- (void)setGeoConfigKey:(id)key;
 - (void)update;
 @end
 
 @implementation MapsDebugCheckmarkRowsGroup
 
-- (void)setGeoConfigKey:(id)a3
+- (void)setGeoConfigKey:(id)key
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = key.var1;
+  var0 = key.var0;
   GEOConfigRemoveDelegateListenerForAllKeys();
   if (var0 && var1)
   {
@@ -46,11 +46,11 @@
 
 - (void)update
 {
-  v3 = [(MapsDebugCheckmarkRowsGroup *)self rows];
-  [v3 makeObjectsPerformSelector:"updateChecked"];
+  rows = [(MapsDebugCheckmarkRowsGroup *)self rows];
+  [rows makeObjectsPerformSelector:"updateChecked"];
 
-  v4 = [(MapsDebugCheckmarkRowsGroup *)self rows];
-  [v4 makeObjectsPerformSelector:"updateConfiguration"];
+  rows2 = [(MapsDebugCheckmarkRowsGroup *)self rows];
+  [rows2 makeObjectsPerformSelector:"updateConfiguration"];
 }
 
 - (unint64_t)selectedRowsCount
@@ -59,8 +59,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(MapsDebugCheckmarkRowsGroup *)self rows];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  rows = [(MapsDebugCheckmarkRowsGroup *)self rows];
+  v3 = [rows countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -72,13 +72,13 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(rows);
         }
 
         v5 += [*(*(&v9 + 1) + 8 * i) isChecked];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [rows countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
@@ -94,51 +94,51 @@
 
 - (NSArray)rows
 {
-  v2 = [(MapsDebugCheckmarkRowsGroup *)self weakRows];
-  v3 = [v2 copy];
+  weakRows = [(MapsDebugCheckmarkRowsGroup *)self weakRows];
+  v3 = [weakRows copy];
 
   return v3;
 }
 
-- (void)checkmarkRowWillInvalidate:(id)a3
+- (void)checkmarkRowWillInvalidate:(id)invalidate
 {
-  v4 = a3;
-  v5 = [(MapsDebugCheckmarkRowsGroup *)self weakRows];
-  [v5 removeObject:v4];
+  invalidateCopy = invalidate;
+  weakRows = [(MapsDebugCheckmarkRowsGroup *)self weakRows];
+  [weakRows removeObject:invalidateCopy];
 }
 
-- (void)checkmarkRowDidChangeChecked:(id)a3
+- (void)checkmarkRowDidChangeChecked:(id)checked
 {
-  v6 = a3;
-  v4 = [(MapsDebugCheckmarkRowsGroup *)self selectionChanged];
+  checkedCopy = checked;
+  selectionChanged = [(MapsDebugCheckmarkRowsGroup *)self selectionChanged];
 
-  if (v4)
+  if (selectionChanged)
   {
-    v5 = [(MapsDebugCheckmarkRowsGroup *)self selectionChanged];
-    (v5)[2](v5, v6);
+    selectionChanged2 = [(MapsDebugCheckmarkRowsGroup *)self selectionChanged];
+    (selectionChanged2)[2](selectionChanged2, checkedCopy);
   }
 }
 
-- (void)addRow:(id)a3
+- (void)addRow:(id)row
 {
-  v5 = a3;
-  [v5 setRowsGroup:self];
-  v4 = [(MapsDebugCheckmarkRowsGroup *)self weakRows];
-  [v4 addObject:v5];
+  rowCopy = row;
+  [rowCopy setRowsGroup:self];
+  weakRows = [(MapsDebugCheckmarkRowsGroup *)self weakRows];
+  [weakRows addObject:rowCopy];
 
-  [(NSMutableArray *)self->_heldRows addObject:v5];
+  [(NSMutableArray *)self->_heldRows addObject:rowCopy];
 }
 
-- (id)addRowWithTitle:(id)a3 subtitle:(id)a4 value:(id)a5
+- (id)addRowWithTitle:(id)title subtitle:(id)subtitle value:(id)value
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  valueCopy = value;
+  subtitleCopy = subtitle;
+  titleCopy = title;
   v11 = objc_alloc_init(MapsDebugCheckmarkRow);
-  [(MapsDebugTableRow *)v11 setTitle:v10];
+  [(MapsDebugTableRow *)v11 setTitle:titleCopy];
 
-  [(MapsDebugTableRow *)v11 setSubtitle:v9];
-  [(MapsDebugCheckmarkRow *)v11 setValue:v8];
+  [(MapsDebugTableRow *)v11 setSubtitle:subtitleCopy];
+  [(MapsDebugCheckmarkRow *)v11 setValue:valueCopy];
 
   [(MapsDebugCheckmarkRowsGroup *)self addRow:v11];
 
@@ -195,16 +195,16 @@
   return v3;
 }
 
-+ (id)rowsGroupContainingRows:(id *)a3 withContent:(id)a4 backingGeoConfigKey:(id)a5 get:(id)a6 set:(id)a7
++ (id)rowsGroupContainingRows:(id *)rows withContent:(id)content backingGeoConfigKey:(id)key get:(id)get set:(id)set
 {
-  var1 = a5.var1;
-  v9 = *&a5.var0;
-  v11 = a4;
-  v12 = a6;
-  v13 = a7;
-  v14 = [[MapsDebugCheckmarkRowsGroup alloc] _initWithHeldRows];
-  v11[2](v11, v14);
-  [v14 _relinquishOwnershipOfHeldRows];
+  var1 = key.var1;
+  v9 = *&key.var0;
+  contentCopy = content;
+  getCopy = get;
+  setCopy = set;
+  _initWithHeldRows = [[MapsDebugCheckmarkRowsGroup alloc] _initWithHeldRows];
+  contentCopy[2](contentCopy, _initWithHeldRows);
+  [_initWithHeldRows _relinquishOwnershipOfHeldRows];
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
@@ -222,7 +222,7 @@
           objc_enumerationMutation(v15);
         }
 
-        [*(*(&v30 + 1) + 8 * i) setGet:{v12, var1}];
+        [*(*(&v30 + 1) + 8 * i) setGet:{getCopy, var1}];
       }
 
       v16 = [v15 countByEnumeratingWithState:&v30 objects:v34 count:16];
@@ -231,28 +231,28 @@
     while (v16);
   }
 
-  objc_initWeak(&location, v14);
+  objc_initWeak(&location, _initWithHeldRows);
   v23 = _NSConcreteStackBlock;
   v24 = 3221225472;
   v25 = sub_1005B3E94;
   v26 = &unk_101622C50;
   objc_copyWeak(&v28, &location);
-  v19 = v13;
+  v19 = setCopy;
   v27 = v19;
-  [v14 setSelectionChanged:&v23];
-  [v14 update];
-  if (a3)
+  [_initWithHeldRows setSelectionChanged:&v23];
+  [_initWithHeldRows update];
+  if (rows)
   {
     v20 = v15;
-    *a3 = v15;
+    *rows = v15;
   }
 
-  [v14 setGeoConfigKey:{v9, var1, var1, v23, v24, v25, v26}];
+  [_initWithHeldRows setGeoConfigKey:{v9, var1, var1, v23, v24, v25, v26}];
 
   objc_destroyWeak(&v28);
   objc_destroyWeak(&location);
 
-  return v14;
+  return _initWithHeldRows;
 }
 
 @end

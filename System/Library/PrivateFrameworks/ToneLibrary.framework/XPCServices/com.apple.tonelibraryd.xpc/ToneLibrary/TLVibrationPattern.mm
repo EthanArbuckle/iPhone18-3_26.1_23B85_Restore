@@ -1,25 +1,25 @@
 @interface TLVibrationPattern
-+ (BOOL)isValidVibrationPatternPropertyListRepresentation:(id)a3;
-+ (id)complexVibrationPatternWithDurationsForVibrationsAndPauses:(double)a3;
++ (BOOL)isValidVibrationPatternPropertyListRepresentation:(id)representation;
++ (id)complexVibrationPatternWithDurationsForVibrationsAndPauses:(double)pauses;
 + (id)noneVibrationPattern;
-+ (id)simpleVibrationPatternWithVibrationDuration:(double)a3 pauseDuration:(double)a4;
++ (id)simpleVibrationPatternWithVibrationDuration:(double)duration pauseDuration:(double)pauseDuration;
 - (TLVibrationPattern)init;
 - (double)_computedDuration;
 - (id)_artificiallyRepeatingPropertyListRepresentation;
-- (id)_initWithPropertyListRepresentation:(id)a3 skipValidation:(BOOL)a4;
+- (id)_initWithPropertyListRepresentation:(id)representation skipValidation:(BOOL)validation;
 - (id)propertyListRepresentation;
-- (void)appendVibrationComponentWithDuration:(double)a3 isPause:(BOOL)a4;
+- (void)appendVibrationComponentWithDuration:(double)duration isPause:(BOOL)pause;
 @end
 
 @implementation TLVibrationPattern
 
-+ (BOOL)isValidVibrationPatternPropertyListRepresentation:(id)a3
++ (BOOL)isValidVibrationPatternPropertyListRepresentation:(id)representation
 {
-  v3 = a3;
+  representationCopy = representation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 objectForKey:@"Atoms"];
+    v4 = [representationCopy objectForKey:@"Atoms"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v4 count])
     {
@@ -28,14 +28,14 @@
 
     else
     {
-      v6 = [v3 objectForKey:@"Intensity"];
+      v6 = [representationCopy objectForKey:@"Intensity"];
       if (sub_10000388C(v6, "f", v7, v8, v9, v10, v11, v12, "d"))
       {
         [v6 floatValue];
         v5 = 0;
         if (v13 > 0.00000011921 && v13 < 1.0)
         {
-          v14 = [v3 objectForKey:@"VibePattern"];
+          v14 = [representationCopy objectForKey:@"VibePattern"];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -109,8 +109,8 @@ LABEL_26:
 
           else
           {
-            v29 = [v3 objectForKey:@"OnDuration"];
-            v30 = [v3 objectForKey:@"OffDuration"];
+            v29 = [representationCopy objectForKey:@"OnDuration"];
+            v30 = [representationCopy objectForKey:@"OffDuration"];
             v5 = sub_10000388C(v29, "f", v31, v32, v33, v34, v35, v36, "d") && sub_10000388C(v30, "f", v37, v38, v39, v40, v41, v42, "d");
           }
         }
@@ -131,24 +131,24 @@ LABEL_26:
   return v5;
 }
 
-+ (id)simpleVibrationPatternWithVibrationDuration:(double)a3 pauseDuration:(double)a4
++ (id)simpleVibrationPatternWithVibrationDuration:(double)duration pauseDuration:(double)pauseDuration
 {
-  if (a3 <= 2.22044605e-16 || a4 <= 2.22044605e-16)
+  if (duration <= 2.22044605e-16 || pauseDuration <= 2.22044605e-16)
   {
     v13 = 0;
   }
 
   else
   {
-    v7 = [a1 alloc];
+    v7 = [self alloc];
     v16[0] = &off_100008818;
     v15[0] = @"Intensity";
     v15[1] = @"OnDuration";
-    *&v8 = a3;
+    *&v8 = duration;
     v9 = [NSNumber numberWithFloat:v8];
     v16[1] = v9;
     v15[2] = @"OffDuration";
-    *&v10 = a4;
+    *&v10 = pauseDuration;
     v11 = [NSNumber numberWithFloat:v10];
     v16[2] = v11;
     v12 = [NSDictionary dictionaryWithObjects:v16 forKeys:v15 count:3];
@@ -158,10 +158,10 @@ LABEL_26:
   return v13;
 }
 
-+ (id)complexVibrationPatternWithDurationsForVibrationsAndPauses:(double)a3
++ (id)complexVibrationPatternWithDurationsForVibrationsAndPauses:(double)pauses
 {
-  v3 = a3;
-  if (a3 <= 2.22044605e-16)
+  pausesCopy = pauses;
+  if (pauses <= 2.22044605e-16)
   {
     v13 = 0;
   }
@@ -179,19 +179,19 @@ LABEL_26:
         v7 = [NSNumber numberWithBool:v6 & 1, v15];
         [v5 addObject:v7];
 
-        v8 = [NSNumber numberWithInt:(v3 * 1000.0)];
+        v8 = [NSNumber numberWithInt:(pausesCopy * 1000.0)];
         [v5 addObject:v8];
 
         v9 = v16;
         v15 = (v16 + 8);
-        v3 = *v9;
+        pausesCopy = *v9;
       }
 
       while (*v9 > 2.22044605e-16);
       v10 = [v5 copy];
       if (v10)
       {
-        v11 = [a1 alloc];
+        v11 = [self alloc];
         v17[0] = @"Intensity";
         v17[1] = @"VibePattern";
         v18[0] = &off_100008818;
@@ -217,7 +217,7 @@ LABEL_26:
 
 + (id)noneVibrationPattern
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v6[0] = @"Intensity";
   v6[1] = @"VibePattern";
   v7[0] = &off_100008818;
@@ -238,17 +238,17 @@ LABEL_26:
   return v4;
 }
 
-- (id)_initWithPropertyListRepresentation:(id)a3 skipValidation:(BOOL)a4
+- (id)_initWithPropertyListRepresentation:(id)representation skipValidation:(BOOL)validation
 {
-  v6 = a3;
+  representationCopy = representation;
   v11.receiver = self;
   v11.super_class = TLVibrationPattern;
   v7 = [(TLVibrationPattern *)&v11 init];
   if (v7)
   {
-    if (a4 || [objc_opt_class() isValidVibrationPatternPropertyListRepresentation:v6])
+    if (validation || [objc_opt_class() isValidVibrationPatternPropertyListRepresentation:representationCopy])
     {
-      v8 = [v6 copy];
+      v8 = [representationCopy copy];
       propertyListRepresentation = v7->_propertyListRepresentation;
       v7->_propertyListRepresentation = v8;
     }
@@ -283,19 +283,19 @@ LABEL_26:
 
 - (id)_artificiallyRepeatingPropertyListRepresentation
 {
-  v3 = [(TLVibrationPattern *)self propertyListRepresentation];
-  v4 = [v3 objectForKey:@"Atoms"];
+  propertyListRepresentation = [(TLVibrationPattern *)self propertyListRepresentation];
+  v4 = [propertyListRepresentation objectForKey:@"Atoms"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v4 count])
   {
-    v5 = [v3 mutableCopy];
+    v5 = [propertyListRepresentation mutableCopy];
     [v5 setObject:&__kCFBooleanTrue forKey:@"Looped"];
     v6 = [v5 copy];
   }
 
   else
   {
-    v5 = [v3 objectForKey:@"VibePattern"];
+    v5 = [propertyListRepresentation objectForKey:@"VibePattern"];
     if (!v5)
     {
       goto LABEL_12;
@@ -324,23 +324,23 @@ LABEL_26:
     }
 
     while (v11);
-    v13 = [v3 mutableCopy];
+    v13 = [propertyListRepresentation mutableCopy];
     [v13 setObject:v12 forKey:@"VibePattern"];
     v6 = [v13 copy];
 
-    v3 = v12;
+    propertyListRepresentation = v12;
   }
 
-  v3 = v6;
+  propertyListRepresentation = v6;
 LABEL_12:
 
-  return v3;
+  return propertyListRepresentation;
 }
 
 - (double)_computedDuration
 {
-  v2 = [(TLVibrationPattern *)self propertyListRepresentation];
-  v3 = [v2 objectForKey:@"Atoms"];
+  propertyListRepresentation = [(TLVibrationPattern *)self propertyListRepresentation];
+  v3 = [propertyListRepresentation objectForKey:@"Atoms"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v3 count])
   {
@@ -350,7 +350,7 @@ LABEL_12:
 
   else
   {
-    v5 = [v2 objectForKey:@"VibePattern"];
+    v5 = [propertyListRepresentation objectForKey:@"VibePattern"];
     v6 = v5;
     if (v5)
     {
@@ -401,11 +401,11 @@ LABEL_12:
 
     else
     {
-      v13 = [v2 objectForKey:@"OnDuration"];
+      v13 = [propertyListRepresentation objectForKey:@"OnDuration"];
       [v13 floatValue];
       v15 = v14 + 0.0;
 
-      v16 = [v2 objectForKey:@"OffDuration"];
+      v16 = [propertyListRepresentation objectForKey:@"OffDuration"];
       [v16 floatValue];
       v4 = v15 + v17;
     }
@@ -414,9 +414,9 @@ LABEL_12:
   return v4;
 }
 
-- (void)appendVibrationComponentWithDuration:(double)a3 isPause:(BOOL)a4
+- (void)appendVibrationComponentWithDuration:(double)duration isPause:(BOOL)pause
 {
-  v4 = a4;
+  pauseCopy = pause;
   p_complexPatternDescription = &self->_complexPatternDescription;
   v8 = self->_complexPatternDescription;
   if (!v8)
@@ -443,13 +443,13 @@ LABEL_12:
     v8 = obja;
   }
 
-  if (a3 > 2.22044605e-16)
+  if (duration > 2.22044605e-16)
   {
     objb = v8;
-    v14 = [NSNumber numberWithBool:!v4];
+    v14 = [NSNumber numberWithBool:!pauseCopy];
     [(NSMutableArray *)objb addObject:v14];
 
-    v15 = [NSNumber numberWithInt:(a3 * 1000.0)];
+    v15 = [NSNumber numberWithInt:(duration * 1000.0)];
     [(NSMutableArray *)objb addObject:v15];
   }
 

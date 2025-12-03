@@ -4,31 +4,31 @@
 - (CGRect)firstLineRect;
 - (CGRect)lastLineRect;
 - (NSArray)rects;
-- (_UIBoundingTextRectsSolver)initWithTextContainer:(id)a3 range:(id)a4 unifyRects:(BOOL)a5;
+- (_UIBoundingTextRectsSolver)initWithTextContainer:(id)container range:(id)range unifyRects:(BOOL)rects;
 - (id)description;
 - (void)_calculate;
-- (void)_calculateRectsUsingLayoutManager:(id)a3;
-- (void)_calculateRectsUsingTextLayoutManager:(id)a3;
+- (void)_calculateRectsUsingLayoutManager:(id)manager;
+- (void)_calculateRectsUsingTextLayoutManager:(id)manager;
 - (void)_calculateTotalRect;
-- (void)_coalesceRectsForRects:(id)a3;
+- (void)_coalesceRectsForRects:(id)rects;
 @end
 
 @implementation _UIBoundingTextRectsSolver
 
-- (_UIBoundingTextRectsSolver)initWithTextContainer:(id)a3 range:(id)a4 unifyRects:(BOOL)a5
+- (_UIBoundingTextRectsSolver)initWithTextContainer:(id)container range:(id)range unifyRects:(BOOL)rects
 {
-  v9 = a3;
-  v10 = a4;
+  containerCopy = container;
+  rangeCopy = range;
   v14.receiver = self;
   v14.super_class = _UIBoundingTextRectsSolver;
   v11 = [(_UIBoundingTextRectsSolver *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_textContainer, a3);
-    objc_storeStrong(&v12->_range, a4);
+    objc_storeStrong(&v11->_textContainer, container);
+    objc_storeStrong(&v12->_range, range);
     v12->_calculated = 0;
-    v12->_unifyRects = a5;
+    v12->_unifyRects = rects;
   }
 
   return v12;
@@ -106,58 +106,58 @@
     self->_lastRect.size = v5;
     self->_totalRect.origin = v4;
     self->_totalRect.size = v5;
-    v6 = [(NSTextContainer *)self->_textContainer textLayoutManager];
-    if (v6)
+    textLayoutManager = [(NSTextContainer *)self->_textContainer textLayoutManager];
+    if (textLayoutManager)
     {
-      [(_UIBoundingTextRectsSolver *)self _calculateRectsUsingTextLayoutManager:v6];
+      [(_UIBoundingTextRectsSolver *)self _calculateRectsUsingTextLayoutManager:textLayoutManager];
     }
 
     else
     {
-      v7 = [(NSTextContainer *)self->_textContainer layoutManager];
+      layoutManager = [(NSTextContainer *)self->_textContainer layoutManager];
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __40___UIBoundingTextRectsSolver__calculate__block_invoke;
       v8[3] = &unk_1E7127820;
       v8[4] = self;
-      [v7 coordinateAccess:v8];
+      [layoutManager coordinateAccess:v8];
     }
 
     [(_UIBoundingTextRectsSolver *)self _calculateTotalRect];
   }
 }
 
-- (void)_calculateRectsUsingTextLayoutManager:(id)a3
+- (void)_calculateRectsUsingTextLayoutManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v5 = objc_opt_new();
   [(NSTextContainer *)self->_textContainer textContainerOrigin];
   v7 = v6;
   v9 = v8;
-  v10 = [(UITextRange *)self->_range unionTextRange];
+  unionTextRange = [(UITextRange *)self->_range unionTextRange];
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __68___UIBoundingTextRectsSolver__calculateRectsUsingTextLayoutManager___block_invoke;
   v15 = &unk_1E7127848;
   v18 = v7;
   v19 = v9;
-  v16 = self;
+  selfCopy = self;
   v17 = v5;
   v11 = v5;
-  [v4 enumerateTextSegmentsInRange:v10 type:0 options:0 usingBlock:&v12];
+  [managerCopy enumerateTextSegmentsInRange:unionTextRange type:0 options:0 usingBlock:&v12];
 
-  [(_UIBoundingTextRectsSolver *)self _coalesceRectsForRects:v11, v12, v13, v14, v15, v16];
+  [(_UIBoundingTextRectsSolver *)self _coalesceRectsForRects:v11, v12, v13, v14, v15, selfCopy];
 }
 
-- (void)_calculateRectsUsingLayoutManager:(id)a3
+- (void)_calculateRectsUsingLayoutManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v5 = objc_opt_new();
   [(NSTextContainer *)self->_textContainer textContainerOrigin];
   v7 = v6;
   v9 = v8;
-  v10 = [(UITextRange *)self->_range asRange];
-  v12 = [v4 glyphRangeForCharacterRange:v10 actualCharacterRange:{v11, 0}];
+  asRange = [(UITextRange *)self->_range asRange];
+  v12 = [managerCopy glyphRangeForCharacterRange:asRange actualCharacterRange:{v11, 0}];
   v14 = v13;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -166,46 +166,46 @@
   v20 = v12;
   v21 = v13;
   v17[4] = self;
-  v18 = v4;
+  v18 = managerCopy;
   v22 = v7;
   v23 = v9;
   v19 = v5;
   v15 = v5;
-  v16 = v4;
+  v16 = managerCopy;
   [v16 enumerateLineFragmentsForGlyphRange:v12 usingBlock:{v14, v17}];
   [(_UIBoundingTextRectsSolver *)self _coalesceRectsForRects:v15];
 }
 
-- (void)_coalesceRectsForRects:(id)a3
+- (void)_coalesceRectsForRects:(id)rects
 {
-  v35 = a3;
-  if ([v35 count] == 1)
+  rectsCopy = rects;
+  if ([rectsCopy count] == 1)
   {
-    v4 = [v35 firstObject];
-    [v4 CGRectValue];
+    firstObject = [rectsCopy firstObject];
+    [firstObject CGRectValue];
     self->_middleRect.origin.x = v5;
     self->_middleRect.origin.y = v6;
     self->_middleRect.size.width = v7;
     self->_middleRect.size.height = v8;
   }
 
-  else if ([v35 count])
+  else if ([rectsCopy count])
   {
-    v9 = [v35 firstObject];
-    [v9 CGRectValue];
+    firstObject2 = [rectsCopy firstObject];
+    [firstObject2 CGRectValue];
     self->_firstRect.origin.x = v10;
     self->_firstRect.origin.y = v11;
     self->_firstRect.size.width = v12;
     self->_firstRect.size.height = v13;
 
-    v14 = [v35 lastObject];
-    [v14 CGRectValue];
+    lastObject = [rectsCopy lastObject];
+    [lastObject CGRectValue];
     self->_lastRect.origin.x = v15;
     self->_lastRect.origin.y = v16;
     self->_lastRect.size.width = v17;
     self->_lastRect.size.height = v18;
 
-    if ([v35 count] < 3)
+    if ([rectsCopy count] < 3)
     {
       if (self->_unifyRects)
       {
@@ -225,19 +225,19 @@
 
     else
     {
-      v19 = [v35 objectAtIndexedSubscript:1];
+      v19 = [rectsCopy objectAtIndexedSubscript:1];
       [v19 CGRectValue];
       self->_middleRect.origin.x = v20;
       self->_middleRect.origin.y = v21;
       self->_middleRect.size.width = v22;
       self->_middleRect.size.height = v23;
 
-      if (([v35 count] - 4) <= 0xFFFFFFFFFFFFFFFCLL)
+      if (([rectsCopy count] - 4) <= 0xFFFFFFFFFFFFFFFCLL)
       {
         v24 = 2;
         do
         {
-          v25 = [v35 objectAtIndexedSubscript:v24];
+          v25 = [rectsCopy objectAtIndexedSubscript:v24];
           [v25 CGRectValue];
           v37.origin.x = v26;
           v37.origin.y = v27;
@@ -248,7 +248,7 @@
           ++v24;
         }
 
-        while (v24 < [v35 count] - 1);
+        while (v24 < [rectsCopy count] - 1);
       }
 
       if (self->_unifyRects)
@@ -358,8 +358,8 @@
 
   if (calculated)
   {
-    v10 = [(_UIBoundingTextRectsSolver *)self rects];
-    v11 = [v10 componentsJoinedByString:{@", "}];
+    rects = [(_UIBoundingTextRectsSolver *)self rects];
+    v11 = [rects componentsJoinedByString:{@", "}];
     v12 = [v4 stringWithFormat:@"<%@:%p (%@, %@) = (%@)", v7, self, range, v9, v11];
   }
 

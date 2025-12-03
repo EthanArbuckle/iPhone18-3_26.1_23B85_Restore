@@ -1,45 +1,45 @@
 @interface OKMediaImportedItem
-+ (id)urlForMediaObject:(id)a3;
-- (BOOL)hasDiskCachedMetadata:(id *)a3;
-- (BOOL)hasDiskCachedThumbnailImage:(id *)a3 forResolution:(unint64_t)a4;
-- (OKMediaImportedItem)initWithImportedResourceURL:(id)a3;
-- (id)createMetadataWithCompletionHandler:(id)a3;
-- (id)createThumbnailImageForResolution:(unint64_t)a3 withMetadata:(id)a4 completionHandler:(id)a5;
++ (id)urlForMediaObject:(id)object;
+- (BOOL)hasDiskCachedMetadata:(id *)metadata;
+- (BOOL)hasDiskCachedThumbnailImage:(id *)image forResolution:(unint64_t)resolution;
+- (OKMediaImportedItem)initWithImportedResourceURL:(id)l;
+- (id)createMetadataWithCompletionHandler:(id)handler;
+- (id)createThumbnailImageForResolution:(unint64_t)resolution withMetadata:(id)metadata completionHandler:(id)handler;
 - (id)diskCachedMetadata;
-- (id)diskCachedThumbnailImageForResolution:(unint64_t)a3;
-- (id)importMediaToDirectoryURL:(id)a3 completionHandler:(id)a4;
-- (id)resourceURLWithCompletionHandler:(id)a3;
-- (void)setDiskCachedThumbnailImage:(id)a3 forResolution:(unint64_t)a4;
+- (id)diskCachedThumbnailImageForResolution:(unint64_t)resolution;
+- (id)importMediaToDirectoryURL:(id)l completionHandler:(id)handler;
+- (id)resourceURLWithCompletionHandler:(id)handler;
+- (void)setDiskCachedThumbnailImage:(id)image forResolution:(unint64_t)resolution;
 @end
 
 @implementation OKMediaImportedItem
 
-+ (id)urlForMediaObject:(id)a3
++ (id)urlForMediaObject:(id)object
 {
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ([objc_msgSend(a3 "scheme")] & 1) == 0)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ([objc_msgSend(object "scheme")] & 1) == 0)
   {
     return 0;
   }
 
-  return a3;
+  return object;
 }
 
-- (OKMediaImportedItem)initWithImportedResourceURL:(id)a3
+- (OKMediaImportedItem)initWithImportedResourceURL:(id)l
 {
   v4.receiver = self;
   v4.super_class = OKMediaImportedItem;
-  return [(OKMediaItem *)&v4 initWithUniqueURL:a3];
+  return [(OKMediaItem *)&v4 initWithUniqueURL:l];
 }
 
-- (id)createMetadataWithCompletionHandler:(id)a3
+- (id)createMetadataWithCompletionHandler:(id)handler
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __59__OKMediaImportedItem_createMetadataWithCompletionHandler___block_invoke;
   v4[3] = &unk_279C8F720;
   v4[4] = self;
-  return [(OKMediaItem *)self operationWithBlock:v4 completionHandlerWithObject:a3];
+  return [(OKMediaItem *)self operationWithBlock:v4 completionHandlerWithObject:handler];
 }
 
 uint64_t __59__OKMediaImportedItem_createMetadataWithCompletionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -49,15 +49,15 @@ uint64_t __59__OKMediaImportedItem_createMetadataWithCompletionHandler___block_i
   return [a2 finish];
 }
 
-- (id)createThumbnailImageForResolution:(unint64_t)a3 withMetadata:(id)a4 completionHandler:(id)a5
+- (id)createThumbnailImageForResolution:(unint64_t)resolution withMetadata:(id)metadata completionHandler:(id)handler
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __88__OKMediaImportedItem_createThumbnailImageForResolution_withMetadata_completionHandler___block_invoke;
   v6[3] = &unk_279C8F8B8;
   v6[4] = self;
-  v6[5] = a3;
-  return [(OKMediaItem *)self operationWithBlock:v6 completionHandlerWithObject:a5];
+  v6[5] = resolution;
+  return [(OKMediaItem *)self operationWithBlock:v6 completionHandlerWithObject:handler];
 }
 
 uint64_t __88__OKMediaImportedItem_createThumbnailImageForResolution_withMetadata_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -99,15 +99,15 @@ uint64_t __88__OKMediaImportedItem_createThumbnailImageForResolution_withMetadat
   return [a2 finish];
 }
 
-- (id)importMediaToDirectoryURL:(id)a3 completionHandler:(id)a4
+- (id)importMediaToDirectoryURL:(id)l completionHandler:(id)handler
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __67__OKMediaImportedItem_importMediaToDirectoryURL_completionHandler___block_invoke;
   v5[3] = &unk_279C8F930;
-  v5[4] = a3;
+  v5[4] = l;
   v5[5] = self;
-  return [(OKMediaItem *)self operationWithBlock:v5 completionHandlerWithObject:a4];
+  return [(OKMediaItem *)self operationWithBlock:v5 completionHandlerWithObject:handler];
 }
 
 void __67__OKMediaImportedItem_importMediaToDirectoryURL_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -192,14 +192,14 @@ uint64_t __67__OKMediaImportedItem_importMediaToDirectoryURL_completionHandler__
   return result;
 }
 
-- (id)resourceURLWithCompletionHandler:(id)a3
+- (id)resourceURLWithCompletionHandler:(id)handler
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __56__OKMediaImportedItem_resourceURLWithCompletionHandler___block_invoke;
   v4[3] = &unk_279C8F720;
   v4[4] = self;
-  return [(OKMediaItem *)self operationWithBlock:v4 completionHandlerWithObject:a3];
+  return [(OKMediaItem *)self operationWithBlock:v4 completionHandlerWithObject:handler];
 }
 
 uint64_t __56__OKMediaImportedItem_resourceURLWithCompletionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -209,13 +209,13 @@ uint64_t __56__OKMediaImportedItem_resourceURLWithCompletionHandler___block_invo
   return [a2 finish];
 }
 
-- (BOOL)hasDiskCachedMetadata:(id *)a3
+- (BOOL)hasDiskCachedMetadata:(id *)metadata
 {
   v4 = [(OKDocument *)[(OKPresentation *)[(OKMediaItem *)self presentation] document] _metadataForImportedResourceURL:[(OKMediaItem *)self uniqueURL]];
   v5 = v4;
-  if (a3 && v4)
+  if (metadata && v4)
   {
-    *a3 = [[OKMediaItemMetadata alloc] initWithDictionary:v4];
+    *metadata = [[OKMediaItemMetadata alloc] initWithDictionary:v4];
   }
 
   return v5 != 0;
@@ -234,43 +234,43 @@ uint64_t __56__OKMediaImportedItem_resourceURLWithCompletionHandler___block_invo
   return result;
 }
 
-- (BOOL)hasDiskCachedThumbnailImage:(id *)a3 forResolution:(unint64_t)a4
+- (BOOL)hasDiskCachedThumbnailImage:(id *)image forResolution:(unint64_t)resolution
 {
-  if (a4 == 1)
+  if (resolution == 1)
   {
     v6 = [(OKDocument *)[(OKPresentation *)[(OKMediaItem *)self presentation] document] _hasThumbnailForImportedResourceURL:[(OKMediaItem *)self uniqueURL]];
     v7 = v6;
-    if (a3 && v6)
+    if (image && v6)
     {
-      v8 = [(OKDocument *)[(OKPresentation *)[(OKMediaItem *)self presentation] document] _thumbnailForImportedResourceURL:[(OKMediaItem *)self uniqueURL]];
+      resolutionCopy = [(OKDocument *)[(OKPresentation *)[(OKMediaItem *)self presentation] document] _thumbnailForImportedResourceURL:[(OKMediaItem *)self uniqueURL]];
 LABEL_12:
-      *a3 = v8;
+      *image = resolutionCopy;
     }
   }
 
   else
   {
-    v10 = [(OKPresentation *)[(OKMediaItem *)self presentation] document];
-    v11 = [(OKMediaItem *)self uniqueURL];
-    if (a4 == -1)
+    document = [(OKPresentation *)[(OKMediaItem *)self presentation] document];
+    uniqueURL = [(OKMediaItem *)self uniqueURL];
+    if (resolution == -1)
     {
-      v12 = [(OKDocument *)v10 _hasThumbnailFromMediaForImportedResourceURL:v11];
+      v12 = [(OKDocument *)document _hasThumbnailFromMediaForImportedResourceURL:uniqueURL];
       v7 = v12;
-      if (a3 && v12)
+      if (image && v12)
       {
-        v8 = [(OKDocument *)[(OKPresentation *)[(OKMediaItem *)self presentation] document] _thumbnailFromMediaForImportedResourceURL:[(OKMediaItem *)self uniqueURL]];
+        resolutionCopy = [(OKDocument *)[(OKPresentation *)[(OKMediaItem *)self presentation] document] _thumbnailFromMediaForImportedResourceURL:[(OKMediaItem *)self uniqueURL]];
         goto LABEL_12;
       }
     }
 
     else
     {
-      v13 = a4;
-      v14 = [(OKDocument *)v10 _hasThumbnailForImportedResourceURL:v11 size:a4, a4];
-      v7 = v14;
-      if (a3 && v14)
+      resolutionCopy = resolution;
+      resolution = [(OKDocument *)document _hasThumbnailForImportedResourceURL:uniqueURL size:resolution, resolution];
+      v7 = resolution;
+      if (image && resolution)
       {
-        v8 = [(OKDocument *)[(OKPresentation *)[(OKMediaItem *)self presentation] document] _thumbnailForImportedResourceURL:[(OKMediaItem *)self uniqueURL] size:v13, v13];
+        resolutionCopy = [(OKDocument *)[(OKPresentation *)[(OKMediaItem *)self presentation] document] _thumbnailForImportedResourceURL:[(OKMediaItem *)self uniqueURL] size:resolutionCopy, resolutionCopy];
         goto LABEL_12;
       }
     }
@@ -279,39 +279,39 @@ LABEL_12:
   return v7;
 }
 
-- (id)diskCachedThumbnailImageForResolution:(unint64_t)a3
+- (id)diskCachedThumbnailImageForResolution:(unint64_t)resolution
 {
-  if (a3 == 1)
+  if (resolution == 1)
   {
-    v4 = [(OKDocument *)[(OKPresentation *)[(OKMediaItem *)self presentation] document] _thumbnailForImportedResourceURL:[(OKMediaItem *)self uniqueURL]];
+    resolution = [(OKDocument *)[(OKPresentation *)[(OKMediaItem *)self presentation] document] _thumbnailForImportedResourceURL:[(OKMediaItem *)self uniqueURL]];
   }
 
   else
   {
-    v6 = [(OKPresentation *)[(OKMediaItem *)self presentation] document];
-    v7 = [(OKMediaItem *)self uniqueURL];
-    if (a3 == -1)
+    document = [(OKPresentation *)[(OKMediaItem *)self presentation] document];
+    uniqueURL = [(OKMediaItem *)self uniqueURL];
+    if (resolution == -1)
     {
-      v4 = [(OKDocument *)v6 _thumbnailFromMediaForImportedResourceURL:v7];
+      resolution = [(OKDocument *)document _thumbnailFromMediaForImportedResourceURL:uniqueURL];
     }
 
     else
     {
-      v4 = [(OKDocument *)v6 _thumbnailForImportedResourceURL:v7 size:a3, a3];
+      resolution = [(OKDocument *)document _thumbnailForImportedResourceURL:uniqueURL size:resolution, resolution];
     }
   }
 
-  return v4;
+  return resolution;
 }
 
-- (void)setDiskCachedThumbnailImage:(id)a3 forResolution:(unint64_t)a4
+- (void)setDiskCachedThumbnailImage:(id)image forResolution:(unint64_t)resolution
 {
-  if ([(OKMediaImportedItem *)self wantsDiskCachedThumbnailForResolution:a4])
+  if ([(OKMediaImportedItem *)self wantsDiskCachedThumbnailForResolution:resolution])
   {
-    v7 = [(OKPresentation *)[(OKMediaItem *)self presentation] document];
-    v8 = [(OKMediaItem *)self uniqueURL];
+    document = [(OKPresentation *)[(OKMediaItem *)self presentation] document];
+    uniqueURL = [(OKMediaItem *)self uniqueURL];
 
-    [(OKDocument *)v7 _saveThumbnailToDisk:a3 forImportedResourceURL:v8 size:a4, a4];
+    [(OKDocument *)document _saveThumbnailToDisk:image forImportedResourceURL:uniqueURL size:resolution, resolution];
   }
 }
 

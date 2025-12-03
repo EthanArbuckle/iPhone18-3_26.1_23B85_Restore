@@ -2,10 +2,10 @@
 - (TKVibratorController)init;
 - (unint64_t)vibratorState;
 - (void)_turnOffIfAppropriate;
-- (void)_vibrationDidCompleteWithPlayRequestIdentifier:(id)a3;
+- (void)_vibrationDidCompleteWithPlayRequestIdentifier:(id)identifier;
 - (void)dealloc;
 - (void)turnOff;
-- (void)turnOnWithVibrationPattern:(id)a3;
+- (void)turnOnWithVibrationPattern:(id)pattern;
 @end
 
 @implementation TKVibratorController
@@ -86,17 +86,17 @@ uint64_t __37__TKVibratorController_vibratorState__block_invoke(uint64_t result)
   return result;
 }
 
-- (void)turnOnWithVibrationPattern:(id)a3
+- (void)turnOnWithVibrationPattern:(id)pattern
 {
-  v4 = a3;
+  patternCopy = pattern;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__TKVibratorController_turnOnWithVibrationPattern___block_invoke;
   v7[3] = &unk_2783165C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = patternCopy;
+  v6 = patternCopy;
   [(TLAccessQueue *)accessQueue performSynchronousBlock:v7];
 }
 
@@ -166,17 +166,17 @@ void __51__TKVibratorController_turnOnWithVibrationPattern___block_invoke_7(uint
   }
 }
 
-- (void)_vibrationDidCompleteWithPlayRequestIdentifier:(id)a3
+- (void)_vibrationDidCompleteWithPlayRequestIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__TKVibratorController__vibrationDidCompleteWithPlayRequestIdentifier___block_invoke;
   v7[3] = &unk_2783165C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   [(TLAccessQueue *)accessQueue performSynchronousBlock:v7];
 }
 

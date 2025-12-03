@@ -1,20 +1,20 @@
 @interface VideoEffects
-- (VideoEffects)initWithVideoEffectsModule:(id)a3;
-- (void)postNotificationWithBundleID:(id)a3;
-- (void)setIntensity:(float)a3 withBundleID:(id)a4;
-- (void)setState:(BOOL)a3 withBundleID:(id)a4;
-- (void)updateAvailabilityWithBundleID:(id)a3;
-- (void)updateControlModeWithBundleID:(id)a3;
-- (void)updateEnabledWithBundleID:(id)a3;
-- (void)updateIntensityWithBundleID:(id)a3;
-- (void)updateVideoEffectStatesWithBundleID:(id)a3;
+- (VideoEffects)initWithVideoEffectsModule:(id)module;
+- (void)postNotificationWithBundleID:(id)d;
+- (void)setIntensity:(float)intensity withBundleID:(id)d;
+- (void)setState:(BOOL)state withBundleID:(id)d;
+- (void)updateAvailabilityWithBundleID:(id)d;
+- (void)updateControlModeWithBundleID:(id)d;
+- (void)updateEnabledWithBundleID:(id)d;
+- (void)updateIntensityWithBundleID:(id)d;
+- (void)updateVideoEffectStatesWithBundleID:(id)d;
 @end
 
 @implementation VideoEffects
 
-- (VideoEffects)initWithVideoEffectsModule:(id)a3
+- (VideoEffects)initWithVideoEffectsModule:(id)module
 {
-  v5 = a3;
+  moduleCopy = module;
   v9.receiver = self;
   v9.super_class = VideoEffects;
   v6 = [(VideoEffects *)&v9 init];
@@ -24,15 +24,15 @@
     *&v6->_isAvailable = 0;
     v6->_intensity = 0.0;
     v6->_controlMode = 0;
-    objc_storeStrong(&v6->_videoEffect, a3);
+    objc_storeStrong(&v6->_videoEffect, module);
   }
 
   return v7;
 }
 
-- (void)updateVideoEffectStatesWithBundleID:(id)a3
+- (void)updateVideoEffectStatesWithBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 136446466;
@@ -42,15 +42,15 @@
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d ", &v5, 0x12u);
   }
 
-  [(VideoEffects *)self updateControlModeWithBundleID:v4];
-  [(VideoEffects *)self updateEnabledWithBundleID:v4];
-  [(VideoEffects *)self updateAvailabilityWithBundleID:v4];
-  [(VideoEffects *)self updateIntensityWithBundleID:v4];
+  [(VideoEffects *)self updateControlModeWithBundleID:dCopy];
+  [(VideoEffects *)self updateEnabledWithBundleID:dCopy];
+  [(VideoEffects *)self updateAvailabilityWithBundleID:dCopy];
+  [(VideoEffects *)self updateIntensityWithBundleID:dCopy];
 }
 
-- (void)updateControlModeWithBundleID:(id)a3
+- (void)updateControlModeWithBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136446466;
@@ -64,9 +64,9 @@
   self->_controlMode = AVControlCenterVideoEffectsModuleGetEffectControlModeForBundleID();
 }
 
-- (void)updateEnabledWithBundleID:(id)a3
+- (void)updateEnabledWithBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136446466;
@@ -80,9 +80,9 @@
   self->_enabled = AVControlCenterVideoEffectsModuleIsEffectEnabledForBundleID();
 }
 
-- (void)updateAvailabilityWithBundleID:(id)a3
+- (void)updateAvailabilityWithBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136446466;
@@ -96,9 +96,9 @@
   self->_isAvailable = AVControlCenterVideoEffectsModuleIsEffectSupportedForBundleID();
 }
 
-- (void)updateIntensityWithBundleID:(id)a3
+- (void)updateIntensityWithBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     videoEffect = self->_videoEffect;
@@ -143,17 +143,17 @@ LABEL_10:
   }
 }
 
-- (void)setIntensity:(float)a3 withBundleID:(id)a4
+- (void)setIntensity:(float)intensity withBundleID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   videoEffect = self->_videoEffect;
   AVControlCenterVideoEffectsModuleGetEffectIntensityRangeForBundleID();
   v9 = v8;
   v11 = v10;
   v12 = v10 - v8;
-  v13 = v8 + (v10 - v8) * a3;
+  v13 = v8 + (v10 - v8) * intensity;
   v14 = [(NSString *)self->_videoEffect isEqualToString:AVControlCenterVideoEffectBackgroundBlur];
-  v15 = v11 - v12 * a3;
+  v15 = v11 - v12 * intensity;
   if (!v14)
   {
     v15 = v13;
@@ -188,14 +188,14 @@ LABEL_10:
 
   v21 = self->_videoEffect;
   AVControlCenterVideoEffectsModuleSetEffectIntensityForBundleID();
-  self->_intensity = a3;
-  [(VideoEffects *)self postNotificationWithBundleID:v6];
+  self->_intensity = intensity;
+  [(VideoEffects *)self postNotificationWithBundleID:dCopy];
 }
 
-- (void)setState:(BOOL)a3 withBundleID:(id)a4
+- (void)setState:(BOOL)state withBundleID:(id)d
 {
-  v4 = a3;
-  v6 = a4;
+  stateCopy = state;
+  dCopy = d;
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136446978;
@@ -203,20 +203,20 @@ LABEL_10:
     v10 = 1024;
     v11 = 82;
     v12 = 1024;
-    v13 = v4;
+    v13 = stateCopy;
     v14 = 2112;
-    v15 = v6;
+    v15 = dCopy;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d state=%d bundleID=%@", &v8, 0x22u);
   }
 
   videoEffect = self->_videoEffect;
   AVControlCenterVideoEffectsModuleSetEffectEnabledForBundleID();
-  [(VideoEffects *)self postNotificationWithBundleID:v6];
+  [(VideoEffects *)self postNotificationWithBundleID:dCopy];
 }
 
-- (void)postNotificationWithBundleID:(id)a3
+- (void)postNotificationWithBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -227,7 +227,7 @@ LABEL_10:
   }
 
   v8 = AVControlCenterModulesNotificationBundleIdentifierKey;
-  v9 = v3;
+  v9 = dCopy;
   v4 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
   v5 = [NSNotification alloc];
   v6 = [v5 initWithName:AVControlCenterVideoEffectsModuleEffectEnabledDidChangeNotification object:0 userInfo:v4];

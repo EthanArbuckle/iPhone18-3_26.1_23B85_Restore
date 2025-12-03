@@ -1,74 +1,74 @@
 @interface MPCModelStorePlaybackItemsRequestPaginatedOperation
-- (MPCModelStorePlaybackItemsRequestPaginatedOperation)initWithRequest:(id)a3 responseHandler:(id)a4 accumulator:(id)a5;
-- (void)_finishWithResponse:(id)a3 error:(id)a4;
+- (MPCModelStorePlaybackItemsRequestPaginatedOperation)initWithRequest:(id)request responseHandler:(id)handler accumulator:(id)accumulator;
+- (void)_finishWithResponse:(id)response error:(id)error;
 - (void)execute;
 - (void)finish;
-- (void)finishWithError:(id)a3;
-- (void)loadNextPageForAccumulator:(id)a3;
-- (void)refreshEligibilityForResponse:(id)a3;
-- (void)repersonalizeContentDescriptors:(id)a3 accumulator:(id)a4 isFinalResponse:(BOOL)a5;
+- (void)finishWithError:(id)error;
+- (void)loadNextPageForAccumulator:(id)accumulator;
+- (void)refreshEligibilityForResponse:(id)response;
+- (void)repersonalizeContentDescriptors:(id)descriptors accumulator:(id)accumulator isFinalResponse:(BOOL)response;
 @end
 
 @implementation MPCModelStorePlaybackItemsRequestPaginatedOperation
 
-- (void)_finishWithResponse:(id)a3 error:(id)a4
+- (void)_finishWithResponse:(id)response error:(id)error
 {
-  v15 = a3;
-  v7 = a4;
-  if (v15 && v7)
+  responseCopy = response;
+  errorCopy = error;
+  if (responseCopy && errorCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    v10 = v9;
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v10 = currentHandler;
     v11 = @"Must not have both response and error";
     v12 = a2;
-    v13 = self;
+    selfCopy2 = self;
     v14 = 317;
   }
 
   else
   {
-    if (v15 | v7)
+    if (responseCopy | errorCopy)
     {
       goto LABEL_4;
     }
 
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    v10 = v9;
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v10 = currentHandler;
     v11 = @"Must have either response or error";
     v12 = a2;
-    v13 = self;
+    selfCopy2 = self;
     v14 = 318;
   }
 
-  [v9 handleFailureInMethod:v12 object:v13 file:@"MPCModelStorePlaybackItemsRequestPaginatedOperation.m" lineNumber:v14 description:v11];
+  [currentHandler handleFailureInMethod:v12 object:selfCopy2 file:@"MPCModelStorePlaybackItemsRequestPaginatedOperation.m" lineNumber:v14 description:v11];
 
 LABEL_4:
-  v8 = [(MPCModelStorePlaybackItemsRequestPaginatedOperation *)self responseHandler];
-  v8[2](v8, v15, v7);
+  responseHandler = [(MPCModelStorePlaybackItemsRequestPaginatedOperation *)self responseHandler];
+  responseHandler[2](responseHandler, responseCopy, errorCopy);
 
-  [(MPCModelStorePlaybackItemsRequestPaginatedOperation *)self finishWithError:v7];
+  [(MPCModelStorePlaybackItemsRequestPaginatedOperation *)self finishWithError:errorCopy];
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   if ([(MPAsyncOperation *)self isFinished])
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"MPCModelStorePlaybackItemsRequestPaginatedOperation.m" lineNumber:312 description:@"Attempt to finish more than once"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCModelStorePlaybackItemsRequestPaginatedOperation.m" lineNumber:312 description:@"Attempt to finish more than once"];
   }
 
   v7.receiver = self;
   v7.super_class = MPCModelStorePlaybackItemsRequestPaginatedOperation;
-  [(MPAsyncOperation *)&v7 finishWithError:v5];
+  [(MPAsyncOperation *)&v7 finishWithError:errorCopy];
 }
 
 - (void)finish
 {
   if ([(MPAsyncOperation *)self isFinished])
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"MPCModelStorePlaybackItemsRequestPaginatedOperation.m" lineNumber:307 description:@"Attempt to finish more than once"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCModelStorePlaybackItemsRequestPaginatedOperation.m" lineNumber:307 description:@"Attempt to finish more than once"];
   }
 
   v5.receiver = self;
@@ -79,11 +79,11 @@ LABEL_4:
 - (void)execute
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = [(MPCModelStorePlaybackItemsRequestPaginatedOperation *)self request];
-  if (([v4 supportsPaginatedResults] & 1) == 0)
+  request = [(MPCModelStorePlaybackItemsRequestPaginatedOperation *)self request];
+  if (([request supportsPaginatedResults] & 1) == 0)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"MPCModelStorePlaybackItemsRequestPaginatedOperation.m" lineNumber:134 description:{@"Attempt to run PaginatedOperation for non-paginated request: %@", v4}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCModelStorePlaybackItemsRequestPaginatedOperation.m" lineNumber:134 description:{@"Attempt to run PaginatedOperation for non-paginated request: %@", request}];
   }
 
   v5 = self->_accumulator;
@@ -97,13 +97,13 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (([v4 isValid] & 1) == 0)
+  if (([request isValid] & 1) == 0)
   {
     v9 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109120;
-      v18 = [(MPCModelStorePlaybackItemsRequestAccumulator *)v5 piaTag];
+      piaTag = [(MPCModelStorePlaybackItemsRequestAccumulator *)v5 piaTag];
       _os_log_impl(&dword_1C5C61000, v9, OS_LOG_TYPE_ERROR, "[SPIR:%{sonic:fourCC}u] execute | failing with error [request missing both storeIDs and sectionedModelObjects]", buf, 8u);
     }
 
@@ -119,7 +119,7 @@ LABEL_10:
   v12[4] = self;
   v13 = v7;
   v14 = v5;
-  v15 = v4;
+  v15 = request;
   v16 = a2;
   v8 = v7;
   [v8 performAfterLoadingAccounts:v12];
@@ -586,20 +586,20 @@ LABEL_45:
 LABEL_28:
 }
 
-- (void)loadNextPageForAccumulator:(id)a3
+- (void)loadNextPageForAccumulator:(id)accumulator
 {
-  v4 = a3;
-  v5 = [v4 nextPaginatedStoreItemMetadataRequest];
-  [v5 setShouldIgnoreExpiration:1];
-  v6 = [MEMORY[0x1E69709D0] sharedStoreItemMetadataRequestController];
+  accumulatorCopy = accumulator;
+  nextPaginatedStoreItemMetadataRequest = [accumulatorCopy nextPaginatedStoreItemMetadataRequest];
+  [nextPaginatedStoreItemMetadataRequest setShouldIgnoreExpiration:1];
+  mEMORY[0x1E69709D0] = [MEMORY[0x1E69709D0] sharedStoreItemMetadataRequestController];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __82__MPCModelStorePlaybackItemsRequestPaginatedOperation_loadNextPageForAccumulator___block_invoke;
   v9[3] = &unk_1E8233D18;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
-  v8 = [v6 getStoreItemMetadataForRequest:v5 includeBatchResponseError:1 responseHandler:v9];
+  v10 = accumulatorCopy;
+  v7 = accumulatorCopy;
+  v8 = [mEMORY[0x1E69709D0] getStoreItemMetadataForRequest:nextPaginatedStoreItemMetadataRequest includeBatchResponseError:1 responseHandler:v9];
 }
 
 void __82__MPCModelStorePlaybackItemsRequestPaginatedOperation_loadNextPageForAccumulator___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -704,53 +704,53 @@ void __82__MPCModelStorePlaybackItemsRequestPaginatedOperation_loadNextPageForAc
   }
 }
 
-- (void)refreshEligibilityForResponse:(id)a3
+- (void)refreshEligibilityForResponse:(id)response
 {
   v5 = self->_accumulator;
-  v6 = a3;
+  responseCopy = response;
   if ([objc_opt_class() useAccumulatedResults])
   {
     v10 = [[_MPCModelStorePlaybackItemsRequestAccumulator_Modern alloc] initWithRequest:self->_request];
 
-    v7 = [[MPCModelStorePlaybackItemsResponse alloc] initWithRequest:self->_request accumulator:v10];
-    v8 = [v6 isFinalResponse];
+    unpersonalizedContentDescriptors = [[MPCModelStorePlaybackItemsResponse alloc] initWithRequest:self->_request accumulator:v10];
+    isFinalResponse = [responseCopy isFinalResponse];
 
-    [(MPCModelStorePlaybackItemsResponse *)v7 setFinalResponse:v8];
-    [(MPCModelStorePlaybackItemsRequestPaginatedOperation *)self _finishWithResponse:v7 error:0];
+    [(MPCModelStorePlaybackItemsResponse *)unpersonalizedContentDescriptors setFinalResponse:isFinalResponse];
+    [(MPCModelStorePlaybackItemsRequestPaginatedOperation *)self _finishWithResponse:unpersonalizedContentDescriptors error:0];
   }
 
   else
   {
     v10 = [[_MPCModelStorePlaybackItemsRequestAccumulator_Legacy alloc] initWithRequest:self->_request];
 
-    v7 = [(_MPCModelStorePlaybackItemsRequestAccumulator_Modern *)v10 unpersonalizedContentDescriptors];
-    v9 = [v6 isFinalResponse];
+    unpersonalizedContentDescriptors = [(_MPCModelStorePlaybackItemsRequestAccumulator_Modern *)v10 unpersonalizedContentDescriptors];
+    isFinalResponse2 = [responseCopy isFinalResponse];
 
-    [(MPCModelStorePlaybackItemsRequestPaginatedOperation *)self repersonalizeContentDescriptors:v7 accumulator:v10 isFinalResponse:v9];
+    [(MPCModelStorePlaybackItemsRequestPaginatedOperation *)self repersonalizeContentDescriptors:unpersonalizedContentDescriptors accumulator:v10 isFinalResponse:isFinalResponse2];
   }
 }
 
-- (void)repersonalizeContentDescriptors:(id)a3 accumulator:(id)a4 isFinalResponse:(BOOL)a5
+- (void)repersonalizeContentDescriptors:(id)descriptors accumulator:(id)accumulator isFinalResponse:(BOOL)response
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(MPCModelStorePlaybackItemsRequestPaginatedOperation *)self request];
-  v11 = [objc_alloc(MEMORY[0x1E69709E0]) initWithUnpersonalizedRequest:v10 unpersonalizedContentDescriptors:v9];
+  accumulatorCopy = accumulator;
+  descriptorsCopy = descriptors;
+  request = [(MPCModelStorePlaybackItemsRequestPaginatedOperation *)self request];
+  v11 = [objc_alloc(MEMORY[0x1E69709E0]) initWithUnpersonalizedRequest:request unpersonalizedContentDescriptors:descriptorsCopy];
 
-  v12 = [(MPCPlaybackAccount *)self->_account userIdentity];
-  [v11 setUserIdentity:v12];
+  userIdentity = [(MPCPlaybackAccount *)self->_account userIdentity];
+  [v11 setUserIdentity:userIdentity];
 
   [v11 setMatchAlbumArtistsOnNameAndStoreID:0];
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
   v18 = __115__MPCModelStorePlaybackItemsRequestPaginatedOperation_repersonalizeContentDescriptors_accumulator_isFinalResponse___block_invoke;
   v19 = &unk_1E8233CF0;
-  v20 = v10;
-  v21 = v8;
-  v23 = a5;
-  v22 = self;
-  v13 = v8;
-  v14 = v10;
+  v20 = request;
+  v21 = accumulatorCopy;
+  responseCopy = response;
+  selfCopy = self;
+  v13 = accumulatorCopy;
+  v14 = request;
   v15 = [v11 newOperationWithResponseHandler:&v16];
   [v15 start];
 }
@@ -771,23 +771,23 @@ void __115__MPCModelStorePlaybackItemsRequestPaginatedOperation_repersonalizeCon
   [*(a1 + 48) _finishWithResponse:v4 error:0];
 }
 
-- (MPCModelStorePlaybackItemsRequestPaginatedOperation)initWithRequest:(id)a3 responseHandler:(id)a4 accumulator:(id)a5
+- (MPCModelStorePlaybackItemsRequestPaginatedOperation)initWithRequest:(id)request responseHandler:(id)handler accumulator:(id)accumulator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  handlerCopy = handler;
+  accumulatorCopy = accumulator;
   v11 = [(MPAsyncOperation *)self init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [requestCopy copy];
     request = v11->_request;
     v11->_request = v12;
 
-    v14 = [v9 copy];
+    v14 = [handlerCopy copy];
     responseHandler = v11->_responseHandler;
     v11->_responseHandler = v14;
 
-    objc_storeStrong(&v11->_accumulator, a5);
+    objc_storeStrong(&v11->_accumulator, accumulator);
     if (!v11->_responseHandler)
     {
       v11->_responseHandler = &__block_literal_global_11915;

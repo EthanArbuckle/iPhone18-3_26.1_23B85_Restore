@@ -1,19 +1,19 @@
 @interface PXPhotosGridHideAssetAnimationHelper
-+ (id)_createDecorationAnimationsForLayout:(id)a3 scope:(int64_t)a4;
-+ (id)createDecorationAnimationsForLayout:(id)a3 animationType:(int64_t)a4;
++ (id)_createDecorationAnimationsForLayout:(id)layout scope:(int64_t)scope;
++ (id)createDecorationAnimationsForLayout:(id)layout animationType:(int64_t)type;
 @end
 
 @implementation PXPhotosGridHideAssetAnimationHelper
 
-+ (id)createDecorationAnimationsForLayout:(id)a3 animationType:(int64_t)a4
++ (id)createDecorationAnimationsForLayout:(id)layout animationType:(int64_t)type
 {
-  v7 = a3;
-  if ((a4 - 1) >= 2)
+  layoutCopy = layout;
+  if ((type - 1) >= 2)
   {
-    if (a4)
+    if (type)
     {
-      v10 = [MEMORY[0x277CCA890] currentHandler];
-      [v10 handleFailureInMethod:a2 object:a1 file:@"PXPhotosGridHideAssetAnimationHelper.m" lineNumber:53 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosGridHideAssetAnimationHelper.m" lineNumber:53 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
@@ -23,25 +23,25 @@
 
   else
   {
-    v8 = [a1 _createDecorationAnimationsForLayout:v7 scope:a4];
+    v8 = [self _createDecorationAnimationsForLayout:layoutCopy scope:type];
   }
 
   return v8;
 }
 
-+ (id)_createDecorationAnimationsForLayout:(id)a3 scope:(int64_t)a4
++ (id)_createDecorationAnimationsForLayout:(id)layout scope:(int64_t)scope
 {
   v5 = MEMORY[0x277CBEB18];
-  v6 = a3;
-  v7 = [v5 array];
+  layoutCopy = layout;
+  array = [v5 array];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __83__PXPhotosGridHideAssetAnimationHelper__createDecorationAnimationsForLayout_scope___block_invoke;
   v10[3] = &unk_278298E10;
-  v12 = a4;
-  v8 = v7;
+  scopeCopy = scope;
+  v8 = array;
   v11 = v8;
-  _CreateAnimationOnDecoratingLayouts(v6, v10);
+  _CreateAnimationOnDecoratingLayouts(layoutCopy, v10);
 
   return v8;
 }

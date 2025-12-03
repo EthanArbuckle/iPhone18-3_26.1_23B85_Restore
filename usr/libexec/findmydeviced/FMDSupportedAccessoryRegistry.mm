@@ -1,33 +1,33 @@
 @interface FMDSupportedAccessoryRegistry
 + (id)defaultStorageLocation;
-- (BOOL)isAccessorySupported:(id)a3;
+- (BOOL)isAccessorySupported:(id)supported;
 - (FMDAssetRegistry)assetRegistry;
-- (FMDSupportedAccessoryRegistry)initWithDelegate:(id)a3;
+- (FMDSupportedAccessoryRegistry)initWithDelegate:(id)delegate;
 - (FMDSupportedAccessoryRegistryDelegate)delegate;
-- (double)locateDesiredAccuracyForAccessory:(id)a3;
-- (double)locateTimeoutForAccessory:(id)a3;
-- (double)locationThrottleTimeIntervalForAccessory:(id)a3 speed:(double)a4;
-- (id)advertisementStatusKeyForProfile:(int64_t)a3;
-- (id)assetForProfile:(int64_t)a3;
-- (id)assetsForAccessory:(id)a3;
-- (id)channelNamesForProfile:(int64_t)a3;
-- (id)defaultSupportedAccessoriesIfEnabled:(BOOL)a3;
-- (id)locatorForAccessory:(id)a3;
-- (id)longTermLocationExpiryTimeIntervalForAccessory:(id)a3;
-- (id)maximumHistoricalLocationsForAccessory:(id)a3;
-- (id)playbackChannelNamesForAccessory:(id)a3 commandChannels:(id)a4;
-- (id)shortTermLocationExpiryTimeIntervalForAccessory:(id)a3;
+- (double)locateDesiredAccuracyForAccessory:(id)accessory;
+- (double)locateTimeoutForAccessory:(id)accessory;
+- (double)locationThrottleTimeIntervalForAccessory:(id)accessory speed:(double)speed;
+- (id)advertisementStatusKeyForProfile:(int64_t)profile;
+- (id)assetForProfile:(int64_t)profile;
+- (id)assetsForAccessory:(id)accessory;
+- (id)channelNamesForProfile:(int64_t)profile;
+- (id)defaultSupportedAccessoriesIfEnabled:(BOOL)enabled;
+- (id)locatorForAccessory:(id)accessory;
+- (id)longTermLocationExpiryTimeIntervalForAccessory:(id)accessory;
+- (id)maximumHistoricalLocationsForAccessory:(id)accessory;
+- (id)playbackChannelNamesForAccessory:(id)accessory commandChannels:(id)channels;
+- (id)shortTermLocationExpiryTimeIntervalForAccessory:(id)accessory;
 - (id)supportedAccessoriesVersion;
-- (id)supportedAccessoryForAccessory:(id)a3;
-- (id)supportedAccessoryForIdentifier:(id)a3;
-- (int64_t)profileForAccessoryIdentifier:(id)a3;
-- (unint64_t)defaultTimeoutAudioSafetyStatusForAccessory:(id)a3;
-- (unint64_t)defaultTimeoutAudioSafetyStatusForProfile:(int64_t)a3;
+- (id)supportedAccessoryForAccessory:(id)accessory;
+- (id)supportedAccessoryForIdentifier:(id)identifier;
+- (int64_t)profileForAccessoryIdentifier:(id)identifier;
+- (unint64_t)defaultTimeoutAudioSafetyStatusForAccessory:(id)accessory;
+- (unint64_t)defaultTimeoutAudioSafetyStatusForProfile:(int64_t)profile;
 - (void)clearSupportedAccessoryRegistry;
-- (void)downloadAssetsIfNeededForAccessory:(id)a3;
+- (void)downloadAssetsIfNeededForAccessory:(id)accessory;
 - (void)readSupportedAccessoriesFromDisk;
 - (void)resetSupportedAccessoriesVersion;
-- (void)updateSupportedAccessories:(id)a3 completion:(id)a4;
+- (void)updateSupportedAccessories:(id)accessories completion:(id)completion;
 @end
 
 @implementation FMDSupportedAccessoryRegistry
@@ -40,14 +40,14 @@
   v10 = sub_10000ABA4;
   v11 = sub_100002B9C;
   v12 = 0;
-  v3 = [(FMDSupportedAccessoryRegistry *)self serialQueue];
+  serialQueue = [(FMDSupportedAccessoryRegistry *)self serialQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10000AFE8;
   v6[3] = &unk_1002CD260;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(serialQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -64,9 +64,9 @@
   return v4;
 }
 
-- (FMDSupportedAccessoryRegistry)initWithDelegate:(id)a3
+- (FMDSupportedAccessoryRegistry)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v24.receiver = self;
   v24.super_class = FMDSupportedAccessoryRegistry;
   v5 = [(FMDSupportedAccessoryRegistry *)&v24 init];
@@ -76,26 +76,26 @@
     [(FMDSupportedAccessoryRegistry *)v5 setSerialQueue:v6];
 
     [(FMDSupportedAccessoryRegistry *)v5 setSupportedAccessories:&__NSDictionary0__struct];
-    [(FMDSupportedAccessoryRegistry *)v5 setDelegate:v4];
+    [(FMDSupportedAccessoryRegistry *)v5 setDelegate:delegateCopy];
     v7 = [FMDataArchiver alloc];
-    v8 = [objc_opt_class() defaultStorageLocation];
-    v9 = [v7 initWithFileURL:v8];
+    defaultStorageLocation = [objc_opt_class() defaultStorageLocation];
+    v9 = [v7 initWithFileURL:defaultStorageLocation];
     [(FMDSupportedAccessoryRegistry *)v5 setDataArchiver:v9];
 
-    v10 = [(FMDSupportedAccessoryRegistry *)v5 dataArchiver];
-    [v10 setDataProtectionClass:4];
+    dataArchiver = [(FMDSupportedAccessoryRegistry *)v5 dataArchiver];
+    [dataArchiver setDataProtectionClass:4];
 
-    v11 = [(FMDSupportedAccessoryRegistry *)v5 dataArchiver];
-    [v11 setBackedUp:0];
+    dataArchiver2 = [(FMDSupportedAccessoryRegistry *)v5 dataArchiver];
+    [dataArchiver2 setBackedUp:0];
 
-    v12 = [(FMDSupportedAccessoryRegistry *)v5 dataArchiver];
-    [v12 setCreateDirectories:1];
+    dataArchiver3 = [(FMDSupportedAccessoryRegistry *)v5 dataArchiver];
+    [dataArchiver3 setCreateDirectories:1];
 
     [(FMDSupportedAccessoryRegistry *)v5 setDefaultAccessoriesEnabled:1];
     [(FMDSupportedAccessoryRegistry *)v5 readSupportedAccessoriesFromDisk];
     v13 = [(FMDSupportedAccessoryRegistry *)v5 defaultSupportedAccessoriesIfEnabled:[(FMDSupportedAccessoryRegistry *)v5 defaultAccessoriesEnabled]];
     objc_initWeak(&location, v5);
-    v14 = [(FMDSupportedAccessoryRegistry *)v5 serialQueue];
+    serialQueue = [(FMDSupportedAccessoryRegistry *)v5 serialQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1001ECA04;
@@ -103,8 +103,8 @@
     objc_copyWeak(&v22, &location);
     v15 = v13;
     v20 = v15;
-    v21 = v4;
-    dispatch_async(v14, block);
+    v21 = delegateCopy;
+    dispatch_async(serialQueue, block);
 
     v16 = sub_100002880();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -120,24 +120,24 @@
   return v5;
 }
 
-- (id)defaultSupportedAccessoriesIfEnabled:(BOOL)a3
+- (id)defaultSupportedAccessoriesIfEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = objc_alloc_init(NSMutableDictionary);
   v30 = @"FMDSupportedAccessoryRegistryLocalVersionKey";
   v31 = @"2";
   v6 = [NSDictionary dictionaryWithObjects:&v31 forKeys:&v30 count:1];
   [v5 setDictionary:v6];
 
-  if (v3)
+  if (enabledCopy)
   {
     v25 = [[FMDSupportedAccessory alloc] initWithVendorID:76 productID:8194 profile:1];
     v7 = [[FMDSupportedAccessory alloc] initWithVendorID:76 productID:8207 profile:1];
-    v8 = [(FMDSupportedAccessory *)v25 accessoryIdentifier];
-    v28[0] = v8;
+    accessoryIdentifier = [(FMDSupportedAccessory *)v25 accessoryIdentifier];
+    v28[0] = accessoryIdentifier;
     v29[0] = v25;
-    v9 = [(FMDSupportedAccessory *)v7 accessoryIdentifier];
-    v28[1] = v9;
+    accessoryIdentifier2 = [(FMDSupportedAccessory *)v7 accessoryIdentifier];
+    v28[1] = accessoryIdentifier2;
     v28[2] = @"FMDSupportedAccessoryRegistryLocalVersionKey";
     v29[1] = v7;
     v29[2] = @"7";
@@ -145,8 +145,8 @@
     [v5 addEntriesFromDictionary:v10];
 
     v11 = [[FMDSupportedAccessory alloc] initWithVendorID:76 productID:8206 profile:1];
-    v12 = [(FMDSupportedAccessory *)v11 accessoryIdentifier];
-    [v5 setObject:v11 forKey:v12];
+    accessoryIdentifier3 = [(FMDSupportedAccessory *)v11 accessoryIdentifier];
+    [v5 setObject:v11 forKey:accessoryIdentifier3];
 
     [v5 setObject:@"8" forKey:@"FMDSupportedAccessoryRegistryLocalVersionKey"];
     v13 = [(FMDSupportedAccessoryRegistry *)self assetForProfile:2];
@@ -155,8 +155,8 @@
     v15 = [NSArray arrayWithObjects:&v27 count:1];
     v16 = [(FMDSupportedAccessory *)v14 initWithVendorID:76 productID:8202 profile:2 assets:v15];
 
-    v17 = [(FMDSupportedAccessory *)v16 accessoryIdentifier];
-    [v5 setObject:v16 forKey:v17];
+    accessoryIdentifier4 = [(FMDSupportedAccessory *)v16 accessoryIdentifier];
+    [v5 setObject:v16 forKey:accessoryIdentifier4];
 
     [v5 setObject:@"9" forKey:@"FMDSupportedAccessoryRegistryLocalVersionKey"];
     v18 = [(FMDSupportedAccessoryRegistry *)self assetForProfile:2];
@@ -165,8 +165,8 @@
     v20 = [NSArray arrayWithObjects:&v26 count:1];
     v21 = [(FMDSupportedAccessory *)v19 initWithVendorID:76 productID:8223 profile:2 assets:v20];
 
-    v22 = [(FMDSupportedAccessory *)v21 accessoryIdentifier];
-    [v5 setObject:v21 forKey:v22];
+    accessoryIdentifier5 = [(FMDSupportedAccessory *)v21 accessoryIdentifier];
+    [v5 setObject:v21 forKey:accessoryIdentifier5];
 
     [v5 setObject:@"9" forKey:@"FMDSupportedAccessoryRegistryLocalVersionKey"];
   }
@@ -176,22 +176,22 @@
   return v23;
 }
 
-- (void)updateSupportedAccessories:(id)a3 completion:(id)a4
+- (void)updateSupportedAccessories:(id)accessories completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  accessoriesCopy = accessories;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(FMDSupportedAccessoryRegistry *)self serialQueue];
+  serialQueue = [(FMDSupportedAccessoryRegistry *)self serialQueue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1001ED0E8;
   v11[3] = &unk_1002D0B08;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = accessoriesCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = accessoriesCopy;
+  dispatch_async(serialQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -200,26 +200,26 @@
 - (void)resetSupportedAccessoriesVersion
 {
   objc_initWeak(&location, self);
-  v3 = [(FMDSupportedAccessoryRegistry *)self serialQueue];
+  serialQueue = [(FMDSupportedAccessoryRegistry *)self serialQueue];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1001ED598;
   v4[3] = &unk_1002CD518;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(serialQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
 }
 
-- (BOOL)isAccessorySupported:(id)a3
+- (BOOL)isAccessorySupported:(id)supported
 {
-  v4 = a3;
-  if ([v4 category] != 2)
+  supportedCopy = supported;
+  if ([supportedCopy category] != 2)
   {
-    if ([v4 category] != 3)
+    if ([supportedCopy category] != 3)
     {
-      v9 = [(FMDSupportedAccessoryRegistry *)self supportedAccessoryForAccessory:v4];
+      v9 = [(FMDSupportedAccessoryRegistry *)self supportedAccessoryForAccessory:supportedCopy];
       v8 = v9 != 0;
 
       goto LABEL_8;
@@ -228,12 +228,12 @@
     v5 = sub_100002880();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v4 name];
-      v7 = [v4 baUUID];
+      name = [supportedCopy name];
+      baUUID = [supportedCopy baUUID];
       v11 = 138412546;
-      v12 = v6;
+      v12 = name;
       v13 = 2112;
-      v14 = v7;
+      v14 = baUUID;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "isAccessorySupported - Accessory (name: %@, baUUID: %@) of category extension is supported", &v11, 0x16u);
     }
   }
@@ -244,61 +244,61 @@ LABEL_8:
   return v8;
 }
 
-- (int64_t)profileForAccessoryIdentifier:(id)a3
+- (int64_t)profileForAccessoryIdentifier:(id)identifier
 {
-  v3 = [(FMDSupportedAccessoryRegistry *)self supportedAccessoryForIdentifier:a3];
-  v4 = [v3 profile];
+  v3 = [(FMDSupportedAccessoryRegistry *)self supportedAccessoryForIdentifier:identifier];
+  profile = [v3 profile];
 
-  return v4;
+  return profile;
 }
 
-- (id)maximumHistoricalLocationsForAccessory:(id)a3
+- (id)maximumHistoricalLocationsForAccessory:(id)accessory
 {
-  v3 = [(FMDSupportedAccessoryRegistry *)self supportedAccessoryForAccessory:a3];
-  v4 = [v3 maximumHistoricalLocations];
+  v3 = [(FMDSupportedAccessoryRegistry *)self supportedAccessoryForAccessory:accessory];
+  maximumHistoricalLocations = [v3 maximumHistoricalLocations];
 
-  return v4;
+  return maximumHistoricalLocations;
 }
 
-- (id)shortTermLocationExpiryTimeIntervalForAccessory:(id)a3
+- (id)shortTermLocationExpiryTimeIntervalForAccessory:(id)accessory
 {
-  v3 = [(FMDSupportedAccessoryRegistry *)self supportedAccessoryForAccessory:a3];
-  v4 = [v3 shortTermlocationExpiryTimeInterval];
+  v3 = [(FMDSupportedAccessoryRegistry *)self supportedAccessoryForAccessory:accessory];
+  shortTermlocationExpiryTimeInterval = [v3 shortTermlocationExpiryTimeInterval];
 
-  return v4;
+  return shortTermlocationExpiryTimeInterval;
 }
 
-- (id)longTermLocationExpiryTimeIntervalForAccessory:(id)a3
+- (id)longTermLocationExpiryTimeIntervalForAccessory:(id)accessory
 {
-  v3 = [(FMDSupportedAccessoryRegistry *)self supportedAccessoryForAccessory:a3];
-  v4 = [v3 longTermlocationExpiryTimeInterval];
+  v3 = [(FMDSupportedAccessoryRegistry *)self supportedAccessoryForAccessory:accessory];
+  longTermlocationExpiryTimeInterval = [v3 longTermlocationExpiryTimeInterval];
 
-  return v4;
+  return longTermlocationExpiryTimeInterval;
 }
 
-- (double)locateTimeoutForAccessory:(id)a3
+- (double)locateTimeoutForAccessory:(id)accessory
 {
-  v3 = [(FMDSupportedAccessoryRegistry *)self supportedAccessoryForAccessory:a3];
-  v4 = [v3 locateTimeout];
-  [v4 doubleValue];
+  v3 = [(FMDSupportedAccessoryRegistry *)self supportedAccessoryForAccessory:accessory];
+  locateTimeout = [v3 locateTimeout];
+  [locateTimeout doubleValue];
   v6 = v5;
 
   return v6;
 }
 
-- (double)locateDesiredAccuracyForAccessory:(id)a3
+- (double)locateDesiredAccuracyForAccessory:(id)accessory
 {
-  v3 = [(FMDSupportedAccessoryRegistry *)self supportedAccessoryForAccessory:a3];
-  v4 = [v3 desiredAccuracy];
-  [v4 doubleValue];
+  v3 = [(FMDSupportedAccessoryRegistry *)self supportedAccessoryForAccessory:accessory];
+  desiredAccuracy = [v3 desiredAccuracy];
+  [desiredAccuracy doubleValue];
   v6 = v5;
 
   return v6;
 }
 
-- (id)advertisementStatusKeyForProfile:(int64_t)a3
+- (id)advertisementStatusKeyForProfile:(int64_t)profile
 {
-  if ((a3 - 1) >= 2)
+  if ((profile - 1) >= 2)
   {
     return &stru_1002DCE08;
   }
@@ -309,9 +309,9 @@ LABEL_8:
   }
 }
 
-- (unint64_t)defaultTimeoutAudioSafetyStatusForAccessory:(id)a3
+- (unint64_t)defaultTimeoutAudioSafetyStatusForAccessory:(id)accessory
 {
-  v4 = [(FMDSupportedAccessoryRegistry *)self supportedAccessoryForAccessory:a3];
+  v4 = [(FMDSupportedAccessoryRegistry *)self supportedAccessoryForAccessory:accessory];
   v5 = v4;
   if (v4)
   {
@@ -326,17 +326,17 @@ LABEL_8:
   return v6;
 }
 
-- (id)playbackChannelNamesForAccessory:(id)a3 commandChannels:(id)a4
+- (id)playbackChannelNamesForAccessory:(id)accessory commandChannels:(id)channels
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 category] == 3)
+  accessoryCopy = accessory;
+  channelsCopy = channels;
+  if ([accessoryCopy category] == 3)
   {
-    self = v7;
+    self = channelsCopy;
     goto LABEL_10;
   }
 
-  v8 = [(FMDSupportedAccessoryRegistry *)self supportedAccessoryForAccessory:v6];
+  v8 = [(FMDSupportedAccessoryRegistry *)self supportedAccessoryForAccessory:accessoryCopy];
   v9 = v8;
   if (!v8)
   {
@@ -344,10 +344,10 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v10 = [v8 profile];
-  if (v10 == 2)
+  profile = [v8 profile];
+  if (profile == 2)
   {
-    if (!v7 || ![v7 count])
+    if (!channelsCopy || ![channelsCopy count])
     {
       self = &__NSArray0__struct;
       goto LABEL_9;
@@ -358,9 +358,9 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if (v10 <= 1)
+  if (profile <= 1)
   {
-    v11 = v7;
+    v11 = channelsCopy;
 LABEL_8:
     self = v11;
   }
@@ -372,9 +372,9 @@ LABEL_10:
   return self;
 }
 
-- (id)channelNamesForProfile:(int64_t)a3
+- (id)channelNamesForProfile:(int64_t)profile
 {
-  if (a3 == 2)
+  if (profile == 2)
   {
     v7 = @"monaural";
     v3 = &v7;
@@ -382,7 +382,7 @@ LABEL_10:
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (profile == 1)
   {
     v8 = @"left";
     v9 = @"right";
@@ -399,36 +399,36 @@ LABEL_7:
   return v5;
 }
 
-- (id)locatorForAccessory:(id)a3
+- (id)locatorForAccessory:(id)accessory
 {
-  v3 = [(FMDSupportedAccessoryRegistry *)self supportedAccessoryForAccessory:a3];
+  v3 = [(FMDSupportedAccessoryRegistry *)self supportedAccessoryForAccessory:accessory];
   if (v3)
   {
     v4 = [FMDLocator alloc];
     v5 = +[FMDLocationManagerFactory sharedInstance];
-    v6 = [v5 newLocationManager];
-    v7 = [(FMDLocator *)v4 initWithLocationManager:v6];
+    newLocationManager = [v5 newLocationManager];
+    v7 = [(FMDLocator *)v4 initWithLocationManager:newLocationManager];
 
-    v8 = [v3 desiredAccuracy];
-    [v8 doubleValue];
+    desiredAccuracy = [v3 desiredAccuracy];
+    [desiredAccuracy doubleValue];
     [(FMDLocator *)v7 setDesiredAccuracy:?];
 
-    v9 = [v3 locateTimeout];
-    [v9 doubleValue];
+    locateTimeout = [v3 locateTimeout];
+    [locateTimeout doubleValue];
     [(FMDLocator *)v7 setDuration:?];
 
     v10 = objc_alloc_init(FMDConservativeLocatorPublisher);
-    v11 = [v3 startThreshold];
-    [(FMDConservativeLocatorPublisher *)v10 setStartThreshold:v11];
+    startThreshold = [v3 startThreshold];
+    [(FMDConservativeLocatorPublisher *)v10 setStartThreshold:startThreshold];
 
-    v12 = [v3 endThreshold];
-    [(FMDConservativeLocatorPublisher *)v10 setEndThreshold:v12];
+    endThreshold = [v3 endThreshold];
+    [(FMDConservativeLocatorPublisher *)v10 setEndThreshold:endThreshold];
 
-    v13 = [v3 decayFactor];
-    [(FMDConservativeLocatorPublisher *)v10 setDecayFactor:v13];
+    decayFactor = [v3 decayFactor];
+    [(FMDConservativeLocatorPublisher *)v10 setDecayFactor:decayFactor];
 
-    v14 = [v3 cachedLocValidityDuration];
-    [(FMDConservativeLocatorPublisher *)v10 setCachedLocationValidityTimeInterval:v14];
+    cachedLocValidityDuration = [v3 cachedLocValidityDuration];
+    [(FMDConservativeLocatorPublisher *)v10 setCachedLocationValidityTimeInterval:cachedLocValidityDuration];
 
     [(FMDLocator *)v7 setLocatorPublisher:v10];
   }
@@ -441,44 +441,44 @@ LABEL_7:
   return v7;
 }
 
-- (double)locationThrottleTimeIntervalForAccessory:(id)a3 speed:(double)a4
+- (double)locationThrottleTimeIntervalForAccessory:(id)accessory speed:(double)speed
 {
-  v5 = [(FMDSupportedAccessoryRegistry *)self supportedAccessoryForAccessory:a3];
-  v6 = [v5 locationThrottleRatio];
-  [v6 doubleValue];
+  v5 = [(FMDSupportedAccessoryRegistry *)self supportedAccessoryForAccessory:accessory];
+  locationThrottleRatio = [v5 locationThrottleRatio];
+  [locationThrottleRatio doubleValue];
   v8 = v7;
 
   result = 0.0;
   if (v8 > 0.0)
   {
-    return 60.0 / (fmax(a4, 1.0) * v8);
+    return 60.0 / (fmax(speed, 1.0) * v8);
   }
 
   return result;
 }
 
-- (id)assetsForAccessory:(id)a3
+- (id)assetsForAccessory:(id)accessory
 {
-  v3 = [(FMDSupportedAccessoryRegistry *)self supportedAccessoryForAccessory:a3];
-  v4 = [v3 assets];
+  v3 = [(FMDSupportedAccessoryRegistry *)self supportedAccessoryForAccessory:accessory];
+  assets = [v3 assets];
 
-  return v4;
+  return assets;
 }
 
 - (void)clearSupportedAccessoryRegistry
 {
-  v3 = [(FMDSupportedAccessoryRegistry *)self serialQueue];
+  serialQueue = [(FMDSupportedAccessoryRegistry *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001EDEB0;
   block[3] = &unk_1002CD4C8;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(serialQueue, block);
 }
 
-- (id)assetForProfile:(int64_t)a3
+- (id)assetForProfile:(int64_t)profile
 {
-  if (a3 == 2)
+  if (profile == 2)
   {
     v3 = [NSBundle bundleWithPath:@"/System/Library/PrivateFrameworks/FindMyDevice.framework"];
     v4 = [v3 pathForResource:@"accessory_locateSound_lg-B515" ofType:@"wav"];
@@ -509,9 +509,9 @@ LABEL_7:
   return v6;
 }
 
-- (void)downloadAssetsIfNeededForAccessory:(id)a3
+- (void)downloadAssetsIfNeededForAccessory:(id)accessory
 {
-  v4 = [(FMDSupportedAccessoryRegistry *)self assetsForAccessory:a3];
+  v4 = [(FMDSupportedAccessoryRegistry *)self assetsForAccessory:accessory];
   +[NSMutableArray array];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
@@ -519,29 +519,29 @@ LABEL_7:
   v8 = v7[3] = &unk_1002D0718;
   v5 = v8;
   [v4 enumerateObjectsUsingBlock:v7];
-  v6 = [(FMDSupportedAccessoryRegistry *)self assetRegistry];
-  [v6 downloadAssets:v5];
+  assetRegistry = [(FMDSupportedAccessoryRegistry *)self assetRegistry];
+  [assetRegistry downloadAssets:v5];
 }
 
-- (id)supportedAccessoryForAccessory:(id)a3
+- (id)supportedAccessoryForAccessory:(id)accessory
 {
-  v4 = a3;
-  if ([v4 category] == 1)
+  accessoryCopy = accessory;
+  if ([accessoryCopy category] == 1)
   {
-    if ([v4 conformsToProtocol:&OBJC_PROTOCOL___FMDDynamicAccessoryAdressable])
+    if ([accessoryCopy conformsToProtocol:&OBJC_PROTOCOL___FMDDynamicAccessoryAdressable])
     {
-      v5 = v4;
+      v5 = accessoryCopy;
       v6 = [[FMDAccessoryIdentifier alloc] initWithVendorID:objc_msgSend(v5 productID:{"vendorID"), objc_msgSend(v5, "productID")}];
       v7 = sub_100002880();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [v5 name];
+        name = [v5 name];
         v16 = 138412802;
-        v17 = v8;
+        v17 = name;
         v18 = 1024;
-        v19 = [v5 vendorID];
+        vendorID = [v5 vendorID];
         v20 = 1024;
-        v21 = [v5 productID];
+        productID = [v5 productID];
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "supportedAccessoryForAccessory - accessory (name: %@) addressableAccessory (vendorID: %d, productID: %d)", &v16, 0x18u);
       }
 
@@ -551,69 +551,69 @@ LABEL_7:
 LABEL_10:
     v6 = 0;
 LABEL_11:
-    v14 = [(FMDSupportedAccessoryRegistry *)self supportedAccessoryForIdentifier:v6];
+    supportedAccessory2 = [(FMDSupportedAccessoryRegistry *)self supportedAccessoryForIdentifier:v6];
     goto LABEL_12;
   }
 
-  if ([v4 category] != 3)
+  if ([accessoryCopy category] != 3)
   {
     goto LABEL_10;
   }
 
-  v6 = v4;
+  v6 = accessoryCopy;
   v9 = +[FMDExtConfigurationRegistry sharedInstance];
-  v10 = [v6 accessoryType];
-  v11 = [v9 configForAccessoryType:v10];
+  accessoryType = [v6 accessoryType];
+  v11 = [v9 configForAccessoryType:accessoryType];
 
   v12 = sub_100002880();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v11 supportedAccessory];
+    supportedAccessory = [v11 supportedAccessory];
     v16 = 67109120;
-    LODWORD(v17) = [v13 productID];
+    LODWORD(v17) = [supportedAccessory productID];
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "supportedAccessoryForAccessory - Accessory (productID: %d) of category extension is supported", &v16, 8u);
   }
 
-  v14 = [v11 supportedAccessory];
+  supportedAccessory2 = [v11 supportedAccessory];
 
 LABEL_12:
 
-  return v14;
+  return supportedAccessory2;
 }
 
-- (id)supportedAccessoryForIdentifier:(id)a3
+- (id)supportedAccessoryForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
   v23 = sub_10000ABA4;
   v24 = sub_100002B9C;
   v25 = 0;
-  if (v4 && (v5 = [[FMDAccessoryIdentifier alloc] initWithString:@"0_0"], v6 = objc_msgSend(v4, "isEqual:", v5), v5, (v6 & 1) == 0))
+  if (identifierCopy && (v5 = [[FMDAccessoryIdentifier alloc] initWithString:@"0_0"], v6 = objc_msgSend(identifierCopy, "isEqual:", v5), v5, (v6 & 1) == 0))
   {
-    v8 = [(FMDSupportedAccessoryRegistry *)self serialQueue];
+    serialQueue = [(FMDSupportedAccessoryRegistry *)self serialQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1001EE7CC;
     block[3] = &unk_1002D01E0;
-    v9 = v4;
-    v18 = self;
+    v9 = identifierCopy;
+    selfCopy = self;
     v19 = &v20;
     v17 = v9;
-    dispatch_sync(v8, block);
+    dispatch_sync(serialQueue, block);
 
     if (v21[5])
     {
       v10 = sub_100002880();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [v21[5] vendorID];
-        v12 = [v21[5] productID];
+        vendorID = [v21[5] vendorID];
+        productID = [v21[5] productID];
         *buf = 67109634;
-        *v27 = v11;
+        *v27 = vendorID;
         *&v27[4] = 1024;
-        *&v27[6] = v12;
+        *&v27[6] = productID;
         *v28 = 2112;
         *&v28[2] = v9;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "FMDSupportedAccessoryRegistry accessory (vendorID: %d, productID: %d) is supported %@", buf, 0x18u);
@@ -625,11 +625,11 @@ LABEL_12:
       v10 = sub_100002880();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [(FMDSupportedAccessoryRegistry *)self supportedAccessories];
+        supportedAccessories = [(FMDSupportedAccessoryRegistry *)self supportedAccessories];
         *buf = 138412546;
         *v27 = v9;
         *&v27[8] = 2112;
-        *v28 = v13;
+        *v28 = supportedAccessories;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "FMDSupportedAccessoryRegistry accessory %@ is NOT in the listed of supportedAccessories %@", buf, 0x16u);
       }
     }
@@ -675,28 +675,28 @@ LABEL_12:
 - (void)readSupportedAccessoriesFromDisk
 {
   objc_initWeak(&location, self);
-  v3 = [(FMDSupportedAccessoryRegistry *)self serialQueue];
+  serialQueue = [(FMDSupportedAccessoryRegistry *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001EE9B4;
   block[3] = &unk_1002CD288;
   objc_copyWeak(&v5, &location);
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(serialQueue, block);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
 }
 
-- (unint64_t)defaultTimeoutAudioSafetyStatusForProfile:(int64_t)a3
+- (unint64_t)defaultTimeoutAudioSafetyStatusForProfile:(int64_t)profile
 {
   v3 = 5;
-  if (a3 != 2)
+  if (profile != 2)
   {
     v3 = 0;
   }
 
-  if (a3 == 1)
+  if (profile == 1)
   {
     return 3;
   }

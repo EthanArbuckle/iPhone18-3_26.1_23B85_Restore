@@ -2,29 +2,29 @@
 - (UILabel)promptLabel;
 - (UILabel)responseLabel;
 - (void)_createTextView;
-- (void)configureCellForLinkText:(id)a3;
+- (void)configureCellForLinkText:(id)text;
 @end
 
 @implementation FBAFollowupTableCell
 
-- (void)configureCellForLinkText:(id)a3
+- (void)configureCellForLinkText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   textView = self->_textView;
-  v8 = v4;
+  v8 = textCopy;
   if (!textView)
   {
     [(FBAFollowupTableCell *)self _createTextView];
-    v4 = v8;
+    textCopy = v8;
     textView = self->_textView;
   }
 
-  [(UITextView *)textView setText:v4];
-  v6 = [(FBAFollowupTableCell *)self promptLabel];
-  [v6 setText:0];
+  [(UITextView *)textView setText:textCopy];
+  promptLabel = [(FBAFollowupTableCell *)self promptLabel];
+  [promptLabel setText:0];
 
-  v7 = [(FBAFollowupTableCell *)self promptLabel];
-  [v7 setAttributedText:0];
+  promptLabel2 = [(FBAFollowupTableCell *)self promptLabel];
+  [promptLabel2 setAttributedText:0];
 }
 
 - (void)_createTextView
@@ -41,28 +41,28 @@
 
   [(UITextView *)self->_textView setAdjustsFontForContentSizeCategory:1];
   [(UITextView *)self->_textView setDataDetectorTypes:2];
-  v6 = [(FBAFollowupTableCell *)self contentView];
-  [v6 addSubview:self->_textView];
+  contentView = [(FBAFollowupTableCell *)self contentView];
+  [contentView addSubview:self->_textView];
 
-  v22 = [(UITextView *)self->_textView topAnchor];
-  v23 = [(FBAFollowupTableCell *)self contentView];
-  v21 = [v23 topAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  topAnchor = [(UITextView *)self->_textView topAnchor];
+  contentView2 = [(FBAFollowupTableCell *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v24[0] = v20;
-  v18 = [(UITextView *)self->_textView bottomAnchor];
-  v19 = [(FBAFollowupTableCell *)self contentView];
-  v17 = [v19 bottomAnchor];
-  v7 = [v18 constraintEqualToAnchor:v17];
+  bottomAnchor = [(UITextView *)self->_textView bottomAnchor];
+  contentView3 = [(FBAFollowupTableCell *)self contentView];
+  bottomAnchor2 = [contentView3 bottomAnchor];
+  v7 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v24[1] = v7;
-  v8 = [(UITextView *)self->_textView leadingAnchor];
-  v9 = [(FBAFollowupTableCell *)self contentView];
-  v10 = [v9 leadingAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10 constant:16.0];
+  leadingAnchor = [(UITextView *)self->_textView leadingAnchor];
+  contentView4 = [(FBAFollowupTableCell *)self contentView];
+  leadingAnchor2 = [contentView4 leadingAnchor];
+  v11 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   v24[2] = v11;
-  v12 = [(UITextView *)self->_textView trailingAnchor];
-  v13 = [(FBAFollowupTableCell *)self contentView];
-  v14 = [v13 trailingAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14 constant:-16.0];
+  trailingAnchor = [(UITextView *)self->_textView trailingAnchor];
+  contentView5 = [(FBAFollowupTableCell *)self contentView];
+  trailingAnchor2 = [contentView5 trailingAnchor];
+  v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
   v24[3] = v15;
   v16 = [NSArray arrayWithObjects:v24 count:4];
 

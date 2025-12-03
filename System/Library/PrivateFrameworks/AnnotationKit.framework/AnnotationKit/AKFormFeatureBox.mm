@@ -1,45 +1,45 @@
 @interface AKFormFeatureBox
-+ (id)boxWithRect:(CGRect)a3 onPage:(id)a4 flags:(unint64_t)a5 baseline:(id)a6;
-- (AKFormFeatureBox)initWithRect:(CGRect)a3 onPage:(id)a4 flags:(unint64_t)a5 baseline:(id)a6;
++ (id)boxWithRect:(CGRect)rect onPage:(id)page flags:(unint64_t)flags baseline:(id)baseline;
+- (AKFormFeatureBox)initWithRect:(CGRect)rect onPage:(id)page flags:(unint64_t)flags baseline:(id)baseline;
 - (CGRect)enclosingRegionRect;
 @end
 
 @implementation AKFormFeatureBox
 
-+ (id)boxWithRect:(CGRect)a3 onPage:(id)a4 flags:(unint64_t)a5 baseline:(id)a6
++ (id)boxWithRect:(CGRect)rect onPage:(id)page flags:(unint64_t)flags baseline:(id)baseline
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = a6;
-  v14 = a4;
-  v15 = [[a1 alloc] initWithRect:v14 onPage:a5 flags:v13 baseline:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  baselineCopy = baseline;
+  pageCopy = page;
+  v15 = [[self alloc] initWithRect:pageCopy onPage:flags flags:baselineCopy baseline:{x, y, width, height}];
 
   return v15;
 }
 
-- (AKFormFeatureBox)initWithRect:(CGRect)a3 onPage:(id)a4 flags:(unint64_t)a5 baseline:(id)a6
+- (AKFormFeatureBox)initWithRect:(CGRect)rect onPage:(id)page flags:(unint64_t)flags baseline:(id)baseline
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = a6;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  baselineCopy = baseline;
   v19.receiver = self;
   v19.super_class = AKFormFeatureBox;
-  v14 = [(AKFormFeature *)&v19 initWithRect:a4 onPage:x, y, width, height];
-  v15 = v14;
-  if (v14)
+  height = [(AKFormFeature *)&v19 initWithRect:page onPage:x, y, width, height];
+  v15 = height;
+  if (height)
   {
-    v14->_flags = a5;
-    v14->_widthExpands = a5 & 1;
-    v14->_multiline = (a5 & 2) != 0;
-    v16 = [v13 copy];
+    height->_flags = flags;
+    height->_widthExpands = flags & 1;
+    height->_multiline = (flags & 2) != 0;
+    v16 = [baselineCopy copy];
     baseline = v15->_baseline;
     v15->_baseline = v16;
 
-    if ((a5 & 4) != 0 || (a5 & 8) == 0)
+    if ((flags & 4) != 0 || (flags & 8) == 0)
     {
       v15->_alignment = 0;
     }

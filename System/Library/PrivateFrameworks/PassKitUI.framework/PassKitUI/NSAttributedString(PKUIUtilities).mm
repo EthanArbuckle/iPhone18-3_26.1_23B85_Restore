@@ -36,15 +36,15 @@
 {
   if (a6)
   {
-    v10 = [a1 mutableCopy];
-    v11 = [a1 length];
+    v10 = [self mutableCopy];
+    v11 = [self length];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __87__NSAttributedString_PKUIUtilities__pkui_sizeThatFits_withNumberOfLines_forceWordWrap___block_invoke;
     v25[3] = &unk_1E8014BF8;
     v12 = v10;
     v26 = v12;
-    [a1 enumerateAttributesInRange:0 options:v11 usingBlock:{0, v25}];
+    [self enumerateAttributesInRange:0 options:v11 usingBlock:{0, v25}];
   }
 
   else
@@ -56,15 +56,15 @@
   [v13 setMaximumNumberOfLines:a5];
   if (v12)
   {
-    v14 = v12;
+    selfCopy = v12;
   }
 
   else
   {
-    v14 = a1;
+    selfCopy = self;
   }
 
-  [v14 boundingRectWithSize:33 options:v13 context:{a2, a3}];
+  [selfCopy boundingRectWithSize:33 options:v13 context:{a2, a3}];
   v16.n128_u64[0] = v15;
   v18 = v17;
   PKFloatCeilToPixel(v16, v19);

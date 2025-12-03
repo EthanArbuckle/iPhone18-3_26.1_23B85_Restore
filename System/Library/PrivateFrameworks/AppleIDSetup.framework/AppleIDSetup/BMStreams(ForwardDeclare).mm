@@ -13,11 +13,11 @@
   }
 
   v1 = BiomeLibrary();
-  v2 = [v1 AppleID];
-  v3 = [v2 ChildSetup];
-  v4 = [v3 source];
+  appleID = [v1 AppleID];
+  childSetup = [appleID ChildSetup];
+  source = [childSetup source];
 
-  return v4;
+  return source;
 }
 
 @end

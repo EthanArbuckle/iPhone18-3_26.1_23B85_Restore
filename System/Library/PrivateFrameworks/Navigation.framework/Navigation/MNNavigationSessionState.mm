@@ -1,17 +1,17 @@
 @interface MNNavigationSessionState
-- (BOOL)areRoutesSame:(id)a3;
+- (BOOL)areRoutesSame:(id)same;
 - (BOOL)isOnLastLeg;
 - (GEOComposedRouteLeg)nextLeg;
 - (GEOComposedRouteLeg)targetLeg;
 - (GEOComposedWaypoint)currentWaypoint;
 - (GEOComposedWaypoint)destination;
 - (MNNavigationSessionState)init;
-- (MNNavigationSessionState)initWithLocation:(id)a3 currentRouteInfo:(id)a4 alternateRouteInfos:(id)a5 targetLegIndex:(unint64_t)a6;
+- (MNNavigationSessionState)initWithLocation:(id)location currentRouteInfo:(id)info alternateRouteInfos:(id)infos targetLegIndex:(unint64_t)index;
 - (NSArray)userIncidentReports;
-- (id)_locationStateAsString:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_locationStateAsString:(unint64_t)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)addUserIncidentReport:(id)a3;
+- (void)addUserIncidentReport:(id)report;
 @end
 
 @implementation MNNavigationSessionState
@@ -41,9 +41,9 @@
     return 0;
   }
 
-  v4 = [(MNActiveRouteInfo *)self->_currentRouteInfo route];
-  v5 = [v4 legs];
-  v3 = targetLegIndex >= [v5 count] - 1;
+  route = [(MNActiveRouteInfo *)self->_currentRouteInfo route];
+  legs = [route legs];
+  v3 = targetLegIndex >= [legs count] - 1;
 
   return v3;
 }
@@ -57,15 +57,15 @@
   }
 
   targetLegIndex = self->_targetLegIndex;
-  v5 = [(MNActiveRouteInfo *)currentRouteInfo route];
-  v6 = [v5 legs];
-  v7 = [v6 count];
+  route = [(MNActiveRouteInfo *)currentRouteInfo route];
+  legs = [route legs];
+  v7 = [legs count];
 
   if (targetLegIndex < v7)
   {
-    v8 = [(MNActiveRouteInfo *)self->_currentRouteInfo route];
-    v9 = [v8 legs];
-    v10 = [v9 objectAtIndexedSubscript:self->_targetLegIndex];
+    route2 = [(MNActiveRouteInfo *)self->_currentRouteInfo route];
+    legs2 = [route2 legs];
+    v10 = [legs2 objectAtIndexedSubscript:self->_targetLegIndex];
   }
 
   else
@@ -89,10 +89,10 @@ LABEL_7:
 
 - (GEOComposedWaypoint)destination
 {
-  v2 = [(MNActiveRouteInfo *)self->_currentRouteInfo route];
-  v3 = [v2 destination];
+  route = [(MNActiveRouteInfo *)self->_currentRouteInfo route];
+  destination = [route destination];
 
-  return v3;
+  return destination;
 }
 
 - (GEOComposedWaypoint)currentWaypoint
@@ -110,42 +110,42 @@ LABEL_7:
       targetLegIndex = self->_targetLegIndex;
     }
 
-    v5 = [(MNActiveRouteInfo *)currentRouteInfo route];
-    v6 = [v5 legs];
-    v7 = [v6 count];
+    route = [(MNActiveRouteInfo *)currentRouteInfo route];
+    legs = [route legs];
+    v7 = [legs count];
 
-    v8 = [(MNActiveRouteInfo *)self->_currentRouteInfo route];
-    v9 = v8;
+    route2 = [(MNActiveRouteInfo *)self->_currentRouteInfo route];
+    v9 = route2;
     if (targetLegIndex >= v7)
     {
-      v12 = [v8 destination];
+      destination = [route2 destination];
     }
 
     else
     {
-      v10 = [v8 legs];
-      v11 = [v10 objectAtIndexedSubscript:targetLegIndex];
-      v12 = [v11 destination];
+      legs2 = [route2 legs];
+      v11 = [legs2 objectAtIndexedSubscript:targetLegIndex];
+      destination = [v11 destination];
     }
   }
 
   else
   {
-    v12 = 0;
+    destination = 0;
   }
 
-  return v12;
+  return destination;
 }
 
-- (id)_locationStateAsString:(unint64_t)a3
+- (id)_locationStateAsString:(unint64_t)string
 {
   v3 = @"On route";
-  if (a3 == 2)
+  if (string == 2)
   {
     v3 = @"Off route, on road";
   }
 
-  if (a3)
+  if (string)
   {
     return v3;
   }
@@ -184,10 +184,10 @@ LABEL_7:
   [v3 addObject:v13];
 
   v14 = MEMORY[0x1E696AEC0];
-  v15 = [(MNActiveRouteInfo *)self->_currentRouteInfo route];
-  v16 = [v15 name];
-  v17 = [(MNActiveRouteInfo *)self->_currentRouteInfo routeID];
-  v18 = [v14 stringWithFormat:@"Current route: %@ (%@)", v16, v17];
+  route = [(MNActiveRouteInfo *)self->_currentRouteInfo route];
+  name = [route name];
+  routeID = [(MNActiveRouteInfo *)self->_currentRouteInfo routeID];
+  v18 = [v14 stringWithFormat:@"Current route: %@ (%@)", name, routeID];
   v43 = v3;
   [v3 addObject:v18];
 
@@ -196,7 +196,7 @@ LABEL_7:
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v42 = self;
+  selfCopy = self;
   v19 = self->_alternateRouteInfos;
   v20 = [(NSArray *)v19 countByEnumeratingWithState:&v45 objects:v49 count:16];
   if (v20)
@@ -215,10 +215,10 @@ LABEL_7:
         v24 = *(*(&v45 + 1) + 8 * i);
         v25 = v5;
         v26 = *(v5 + 3776);
-        v27 = [v24 route];
-        v28 = [v27 name];
-        v29 = [v24 routeID];
-        v30 = [v26 stringWithFormat:@"%@ (%@)", v28, v29];
+        route2 = [v24 route];
+        name2 = [route2 name];
+        routeID2 = [v24 routeID];
+        v30 = [v26 stringWithFormat:@"%@ (%@)", name2, routeID2];
         [v44 addObject:v30];
 
         v5 = v25;
@@ -235,10 +235,10 @@ LABEL_7:
   v33 = [v31 stringWithFormat:@"Alternate routes: %@", v32];
   [v43 addObject:v33];
 
-  v34 = [*(v5 + 3776) stringWithFormat:@"Target leg index: %d", v42->_targetLegIndex];
+  v34 = [*(v5 + 3776) stringWithFormat:@"Target leg index: %d", selfCopy->_targetLegIndex];
   [v43 addObject:v34];
 
-  arrivalState = v42->_arrivalState;
+  arrivalState = selfCopy->_arrivalState;
   if (arrivalState > 6)
   {
     v36 = @"MNArrivalState_Unknown";
@@ -252,7 +252,7 @@ LABEL_7:
   v37 = [*(v5 + 3776) stringWithFormat:@"Arrival state: %@", v36];
   [v43 addObject:v37];
 
-  v38 = [*(v5 + 3776) stringWithFormat:@"Displaying nav tray: %d", v42->_isDisplayingNavigationTray];
+  v38 = [*(v5 + 3776) stringWithFormat:@"Displaying nav tray: %d", selfCopy->_isDisplayingNavigationTray];
   [v43 addObject:v38];
 
   v39 = [v43 componentsJoinedByString:@"\n"];
@@ -262,7 +262,7 @@ LABEL_7:
   return v39;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[MNNavigationSessionState allocWithZone:?]];
   objc_storeStrong(&v4->_auditToken, self->_auditToken);
@@ -290,22 +290,22 @@ LABEL_7:
   return v8;
 }
 
-- (void)addUserIncidentReport:(id)a3
+- (void)addUserIncidentReport:(id)report
 {
-  v4 = a3;
+  reportCopy = report;
   v8 = self->_userIncidentReportsIsolater;
   _geo_isolate_lock_data();
   userIncidentReports = self->_userIncidentReports;
   if (!userIncidentReports)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_userIncidentReports;
-    self->_userIncidentReports = v6;
+    self->_userIncidentReports = array;
 
     userIncidentReports = self->_userIncidentReports;
   }
 
-  [(NSMutableArray *)userIncidentReports addObject:v4];
+  [(NSMutableArray *)userIncidentReports addObject:reportCopy];
   _geo_isolate_unlock();
 }
 
@@ -318,42 +318,42 @@ LABEL_7:
 
   else
   {
-    v3 = [(MNActiveRouteInfo *)self->_currentRouteInfo route];
-    v4 = [v3 legs];
-    v5 = [v4 objectAtIndexedSubscript:self->_targetLegIndex + 1];
+    route = [(MNActiveRouteInfo *)self->_currentRouteInfo route];
+    legs = [route legs];
+    v5 = [legs objectAtIndexedSubscript:self->_targetLegIndex + 1];
   }
 
   return v5;
 }
 
-- (MNNavigationSessionState)initWithLocation:(id)a3 currentRouteInfo:(id)a4 alternateRouteInfos:(id)a5 targetLegIndex:(unint64_t)a6
+- (MNNavigationSessionState)initWithLocation:(id)location currentRouteInfo:(id)info alternateRouteInfos:(id)infos targetLegIndex:(unint64_t)index
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  locationCopy = location;
+  infoCopy = info;
+  infosCopy = infos;
   v14 = [(MNNavigationSessionState *)self init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_location, a3);
-    objc_storeStrong(&v15->_currentRouteInfo, a4);
-    v15->_targetLegIndex = a6;
+    objc_storeStrong(&v14->_location, location);
+    objc_storeStrong(&v15->_currentRouteInfo, info);
+    v15->_targetLegIndex = index;
     v15->_upcomingAnchorPointIndex = 0x7FFFFFFFFFFFFFFFLL;
-    objc_storeStrong(&v15->_alternateRouteInfos, a5);
+    objc_storeStrong(&v15->_alternateRouteInfos, infos);
     v16 = v15;
   }
 
   return v15;
 }
 
-- (BOOL)areRoutesSame:(id)a3
+- (BOOL)areRoutesSame:(id)same
 {
-  v4 = a3;
-  v5 = [(MNActiveRouteInfo *)self->_currentRouteInfo routeID];
-  v6 = [v4 currentRouteInfo];
-  v7 = [v6 routeID];
-  v8 = v5;
-  v9 = v7;
+  sameCopy = same;
+  routeID = [(MNActiveRouteInfo *)self->_currentRouteInfo routeID];
+  currentRouteInfo = [sameCopy currentRouteInfo];
+  routeID2 = [currentRouteInfo routeID];
+  v8 = routeID;
+  v9 = routeID2;
   if (v8 | v9)
   {
     v10 = v9;
@@ -372,8 +372,8 @@ LABEL_7:
   }
 
   v12 = [(NSArray *)self->_alternateRouteInfos count];
-  v13 = [v4 alternateRouteInfos];
-  v14 = [v13 count];
+  alternateRouteInfos = [sameCopy alternateRouteInfos];
+  v14 = [alternateRouteInfos count];
 
   if (v12 != v14)
   {
@@ -385,8 +385,8 @@ LABEL_7:
   v17 = [v15 setWithArray:v16];
 
   v18 = MEMORY[0x1E695DFD8];
-  v19 = [v4 alternateRouteInfos];
-  v20 = [v19 _geo_map:&__block_literal_global_11122];
+  alternateRouteInfos2 = [sameCopy alternateRouteInfos];
+  v20 = [alternateRouteInfos2 _geo_map:&__block_literal_global_11122];
   v21 = [v18 setWithArray:v20];
 
   v22 = [v17 isEqualToSet:v21];

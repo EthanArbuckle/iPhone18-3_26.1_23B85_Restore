@@ -3,9 +3,9 @@
 - (id)detailString;
 - (id)suggestedButtonTitle;
 - (id)titleString;
-- (void)suggestedButtonPressed:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)suggestedButtonPressed:(id)pressed;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation COSMigrationConnectionFailed
@@ -24,26 +24,26 @@
   return v3;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(COSMigrationConnectionFailed *)self navigationController];
-  [v5 setNavigationBarHidden:1];
+  appearCopy = appear;
+  navigationController = [(COSMigrationConnectionFailed *)self navigationController];
+  [navigationController setNavigationBarHidden:1];
 
   v6.receiver = self;
   v6.super_class = COSMigrationConnectionFailed;
-  [(COSMigrationConnectionFailed *)&v6 viewWillAppear:v3];
+  [(COSMigrationConnectionFailed *)&v6 viewWillAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [(COSMigrationConnectionFailed *)self navigationController];
-  [v5 setNavigationBarHidden:0];
+  disappearCopy = disappear;
+  navigationController = [(COSMigrationConnectionFailed *)self navigationController];
+  [navigationController setNavigationBarHidden:0];
 
   v6.receiver = self;
   v6.super_class = COSMigrationConnectionFailed;
-  [(COSMigrationConnectionFailed *)&v6 viewWillDisappear:v3];
+  [(COSMigrationConnectionFailed *)&v6 viewWillDisappear:disappearCopy];
 }
 
 - (id)titleString
@@ -70,7 +70,7 @@
   return v3;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
   v4 = pbb_setup_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))

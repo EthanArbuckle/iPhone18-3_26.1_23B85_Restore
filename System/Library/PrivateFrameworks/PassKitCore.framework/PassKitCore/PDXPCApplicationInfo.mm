@@ -1,83 +1,83 @@
 @interface PDXPCApplicationInfo
-- (PDXPCApplicationInfo)initWithPID:(int)a3;
+- (PDXPCApplicationInfo)initWithPID:(int)d;
 @end
 
 @implementation PDXPCApplicationInfo
 
-- (PDXPCApplicationInfo)initWithPID:(int)a3
+- (PDXPCApplicationInfo)initWithPID:(int)d
 {
-  v4 = [MEMORY[0x1E69C75E0] identifierWithPid:*&a3];
+  v4 = [MEMORY[0x1E69C75E0] identifierWithPid:*&d];
   if (v4)
   {
     v5 = [MEMORY[0x1E69C75D0] handleForIdentifier:v4 error:0];
     v6 = v5;
     if (v5)
     {
-      v7 = [v5 currentState];
-      if (v7)
+      currentState = [v5 currentState];
+      if (currentState)
       {
         v22.receiver = self;
         v22.super_class = PDXPCApplicationInfo;
         v8 = [(PDXPCApplicationInfo *)&v22 init];
         if (v8)
         {
-          v8->_running = [v7 taskState] == 4;
-          v9 = [v7 endowmentNamespaces];
-          v8->_visible = [v9 containsObject:*MEMORY[0x1E699F9D0]];
+          v8->_running = [currentState taskState] == 4;
+          endowmentNamespaces = [currentState endowmentNamespaces];
+          v8->_visible = [endowmentNamespaces containsObject:*MEMORY[0x1E699F9D0]];
 
-          v10 = [v6 identity];
-          v11 = [v10 embeddedApplicationIdentifier];
-          v12 = v11;
-          if (v11)
+          identity = [v6 identity];
+          embeddedApplicationIdentifier = [identity embeddedApplicationIdentifier];
+          v12 = embeddedApplicationIdentifier;
+          if (embeddedApplicationIdentifier)
           {
-            v13 = v11;
+            v13 = embeddedApplicationIdentifier;
             displayID = v8->_displayID;
             v8->_displayID = v13;
           }
 
           else
           {
-            v16 = [v10 xpcServiceIdentifier];
-            displayID = v16;
-            if (v16)
+            xpcServiceIdentifier = [identity xpcServiceIdentifier];
+            displayID = xpcServiceIdentifier;
+            if (xpcServiceIdentifier)
             {
-              v17 = v16;
-              v18 = v8->_displayID;
+              v17 = xpcServiceIdentifier;
+              bundle = v8->_displayID;
               v8->_displayID = v17;
             }
 
             else
             {
-              v18 = [v6 bundle];
-              v19 = [v18 identifier];
+              bundle = [v6 bundle];
+              identifier = [bundle identifier];
               v20 = v8->_displayID;
-              v8->_displayID = v19;
+              v8->_displayID = identifier;
             }
           }
         }
 
         self = v8;
-        v15 = self;
+        selfCopy = self;
       }
 
       else
       {
-        v15 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v15 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 @end

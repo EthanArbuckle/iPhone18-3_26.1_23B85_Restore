@@ -1,5 +1,5 @@
 @interface _SVXSpeechSynthesisAudioMutation
-- (_SVXSpeechSynthesisAudioMutation)initWithBaseModel:(id)a3;
+- (_SVXSpeechSynthesisAudioMutation)initWithBaseModel:(id)model;
 - (id)generate;
 @end
 
@@ -14,38 +14,38 @@
     {
       if ((*&self->_mutationFlags & 2) != 0)
       {
-        v6 = self->_data;
+        data = self->_data;
       }
 
       else
       {
-        v6 = [(SVXSpeechSynthesisAudio *)baseModel data];
+        data = [(SVXSpeechSynthesisAudio *)baseModel data];
       }
 
-      v7 = v6;
+      v7 = data;
       if ((*&self->_mutationFlags & 4) != 0)
       {
-        v8 = self->_decoderASBD;
+        decoderASBD = self->_decoderASBD;
       }
 
       else
       {
-        v8 = [(SVXSpeechSynthesisAudio *)self->_baseModel decoderASBD];
+        decoderASBD = [(SVXSpeechSynthesisAudio *)self->_baseModel decoderASBD];
       }
 
-      v9 = v8;
+      v9 = decoderASBD;
       if ((*&self->_mutationFlags & 8) != 0)
       {
-        v10 = self->_playerASBD;
+        playerASBD = self->_playerASBD;
       }
 
       else
       {
-        v10 = [(SVXSpeechSynthesisAudio *)self->_baseModel playerASBD];
+        playerASBD = [(SVXSpeechSynthesisAudio *)self->_baseModel playerASBD];
       }
 
-      v11 = v10;
-      v5 = [[SVXSpeechSynthesisAudio alloc] initWithData:v7 decoderASBD:v9 playerASBD:v10];
+      v11 = playerASBD;
+      v5 = [[SVXSpeechSynthesisAudio alloc] initWithData:v7 decoderASBD:v9 playerASBD:playerASBD];
 
       goto LABEL_16;
     }
@@ -64,16 +64,16 @@ LABEL_16:
   return v5;
 }
 
-- (_SVXSpeechSynthesisAudioMutation)initWithBaseModel:(id)a3
+- (_SVXSpeechSynthesisAudioMutation)initWithBaseModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = _SVXSpeechSynthesisAudioMutation;
   v6 = [(_SVXSpeechSynthesisAudioMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_baseModel, a3);
+    objc_storeStrong(&v6->_baseModel, model);
   }
 
   return v7;

@@ -2,17 +2,17 @@
 - (_TtC20CoreSpeechFoundation38CSEnhancedEndpointerInputVectorDefault)init;
 - (_TtP20CoreSpeechFoundation29CSEnhancedEndpointerModelType_)modelType;
 - (id)modelName;
-- (id)multiArrayWithContext:(void *)a3;
-- (void)setMultiArray:(id)a3;
+- (id)multiArrayWithContext:(void *)context;
+- (void)setMultiArray:(id)array;
 @end
 
 @implementation CSEnhancedEndpointerInputVectorDefault
 
-- (id)multiArrayWithContext:(void *)a3
+- (id)multiArrayWithContext:(void *)context
 {
-  v4 = a3;
-  v5 = a1;
-  v6 = sub_1DDA557AC(v4);
+  contextCopy = context;
+  selfCopy = self;
+  v6 = sub_1DDA557AC(contextCopy);
 
   return v6;
 }
@@ -25,18 +25,18 @@
   return v3;
 }
 
-- (void)setMultiArray:(id)a3
+- (void)setMultiArray:(id)array
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC20CoreSpeechFoundation38CSEnhancedEndpointerInputVectorDefault_multiArray);
-  *(&self->super.isa + OBJC_IVAR____TtC20CoreSpeechFoundation38CSEnhancedEndpointerInputVectorDefault_multiArray) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC20CoreSpeechFoundation38CSEnhancedEndpointerInputVectorDefault_multiArray) = array;
+  arrayCopy = array;
 }
 
 - (id)modelName
 {
-  v2 = [*(&self->super.isa + OBJC_IVAR____TtC20CoreSpeechFoundation38CSEnhancedEndpointerInputVectorDefault_modelType) modelName];
+  modelName = [*(&self->super.isa + OBJC_IVAR____TtC20CoreSpeechFoundation38CSEnhancedEndpointerInputVectorDefault_modelType) modelName];
 
-  return v2;
+  return modelName;
 }
 
 - (_TtC20CoreSpeechFoundation38CSEnhancedEndpointerInputVectorDefault)init

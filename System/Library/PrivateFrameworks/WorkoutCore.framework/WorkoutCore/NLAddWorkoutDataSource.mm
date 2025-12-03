@@ -1,17 +1,17 @@
 @interface NLAddWorkoutDataSource
-+ (id)NLAddWorkoutAllSortedRowsIsWheelchairUser:(BOOL)a3 supportsPairedWatchFeatures:(BOOL)a4 supportsExternalHeartRateSensorFeatures:(BOOL)a5;
-+ (id)addWorkoutPopularRows:(int64_t)a3;
++ (id)NLAddWorkoutAllSortedRowsIsWheelchairUser:(BOOL)user supportsPairedWatchFeatures:(BOOL)features supportsExternalHeartRateSensorFeatures:(BOOL)sensorFeatures;
++ (id)addWorkoutPopularRows:(int64_t)rows;
 @end
 
 @implementation NLAddWorkoutDataSource
 
-+ (id)addWorkoutPopularRows:(int64_t)a3
++ (id)addWorkoutPopularRows:(int64_t)rows
 {
   v20 = *MEMORY[0x277D85DE8];
-  v18[3] = a1;
+  v18[3] = self;
   v18[2] = a2;
-  v18[1] = a3;
-  v18[0] = _NLPopularAddWorkoutTypes(a3);
+  v18[1] = rows;
+  v18[0] = _NLPopularAddWorkoutTypes(rows);
   location = 0;
   v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
   memset(__b, 0, sizeof(__b));
@@ -35,8 +35,8 @@
       v13 = [(WOStandardWorkoutAddWorkoutRow *)v3 initWithActivityType:v15];
       if ([v15 identifier] == 3000)
       {
-        v4 = [v15 auxiliaryTypeIdentifier];
-        if (v4 == *MEMORY[0x277CCE1E0])
+        auxiliaryTypeIdentifier = [v15 auxiliaryTypeIdentifier];
+        if (auxiliaryTypeIdentifier == *MEMORY[0x277CCE1E0])
         {
           objc_storeStrong(&location, v13);
         }
@@ -91,18 +91,18 @@ uint64_t __48__NLAddWorkoutDataSource_addWorkoutPopularRows___block_invoke(void 
   return v7;
 }
 
-+ (id)NLAddWorkoutAllSortedRowsIsWheelchairUser:(BOOL)a3 supportsPairedWatchFeatures:(BOOL)a4 supportsExternalHeartRateSensorFeatures:(BOOL)a5
++ (id)NLAddWorkoutAllSortedRowsIsWheelchairUser:(BOOL)user supportsPairedWatchFeatures:(BOOL)features supportsExternalHeartRateSensorFeatures:(BOOL)sensorFeatures
 {
   v57 = *MEMORY[0x277D85DE8];
-  v53 = a1;
+  selfCopy = self;
   v52 = a2;
-  v51 = a3;
-  v50 = a4;
-  v49 = a5;
-  v48 = [MEMORY[0x277D0A810] otherWorkoutActivityTypes];
+  userCopy = user;
+  featuresCopy = features;
+  sensorFeaturesCopy = sensorFeatures;
+  otherWorkoutActivityTypes = [MEMORY[0x277D0A810] otherWorkoutActivityTypes];
   v47 = objc_alloc_init(MEMORY[0x277CBEB18]);
   memset(__b, 0, sizeof(__b));
-  obj = MEMORY[0x277D82BE0](v48);
+  obj = MEMORY[0x277D82BE0](otherWorkoutActivityTypes);
   v31 = [obj countByEnumeratingWithState:__b objects:v56 count:16];
   if (v31)
   {
@@ -118,9 +118,9 @@ uint64_t __48__NLAddWorkoutDataSource_addWorkoutPopularRows___block_invoke(void 
       }
 
       v46 = *(__b[1] + 8 * v28);
-      v44 = [v46 integerValue];
+      integerValue = [v46 integerValue];
       v24 = v47;
-      v25 = [MEMORY[0x277D0A810] activityTypeWithHKWorkoutActivityTypeIdentifier:v44 isIndoor:0 metadata:0];
+      v25 = [MEMORY[0x277D0A810] activityTypeWithHKWorkoutActivityTypeIdentifier:integerValue isIndoor:0 metadata:0];
       [v24 addObject:?];
       MEMORY[0x277D82BD8](v25);
       ++v28;
@@ -137,7 +137,7 @@ uint64_t __48__NLAddWorkoutDataSource_addWorkoutPopularRows___block_invoke(void 
   }
 
   v5 = MEMORY[0x277D82BD8](obj);
-  v43 = [MEMORY[0x277D0A810] optimizedActivityTypesWithIsWheelchairUser:v51 isSwimmingSupported:MEMORY[0x20F2E82F0](v5)];
+  v43 = [MEMORY[0x277D0A810] optimizedActivityTypesWithIsWheelchairUser:userCopy isSwimmingSupported:MEMORY[0x20F2E82F0](v5)];
   v42 = [v47 arrayByAddingObjectsFromArray:v43];
   v41 = objc_alloc_init(MEMORY[0x277CBEB18]);
   memset(v39, 0, sizeof(v39));
@@ -160,8 +160,8 @@ uint64_t __48__NLAddWorkoutDataSource_addWorkoutPopularRows___block_invoke(void 
       if ([MEMORY[0x277D0A810] shouldDisambiguateOnLocationType:{objc_msgSend(v40, "effectiveTypeIdentifier")}])
       {
         v17 = objc_alloc(MEMORY[0x277D0A810]);
-        v16 = [v40 effectiveTypeIdentifier];
-        location = [v17 initWithActivityTypeIdentifier:v16 isIndoor:{objc_msgSend(v40, "isIndoor") ^ 1}];
+        effectiveTypeIdentifier = [v40 effectiveTypeIdentifier];
+        location = [v17 initWithActivityTypeIdentifier:effectiveTypeIdentifier isIndoor:{objc_msgSend(v40, "isIndoor") ^ 1}];
         if (([v42 containsObject:location] & 1) == 0)
         {
           [v41 addObject:location];
@@ -187,7 +187,7 @@ uint64_t __48__NLAddWorkoutDataSource_addWorkoutPopularRows___block_invoke(void 
   v13 = [v42 arrayByAddingObjectsFromArray:v41];
   v37 = [v13 mutableCopy];
   MEMORY[0x277D82BD8](v13);
-  v36 = [MEMORY[0x277D0A810] unsupportedActivityTypesWithIsWheelchairUser:v51 isSwimmingSupported:1 supportsPairedWatchFeatures:v50 supportsExternalHeartRateSensorFeatures:v49];
+  v36 = [MEMORY[0x277D0A810] unsupportedActivityTypesWithIsWheelchairUser:userCopy isSwimmingSupported:1 supportsPairedWatchFeatures:featuresCopy supportsExternalHeartRateSensorFeatures:sensorFeaturesCopy];
   [v37 removeObjectsInArray:v36];
   v35 = objc_alloc_init(MEMORY[0x277CBEB18]);
   memset(v33, 0, sizeof(v33));
@@ -234,7 +234,7 @@ uint64_t __48__NLAddWorkoutDataSource_addWorkoutPopularRows___block_invoke(void 
   objc_storeStrong(&v42, 0);
   objc_storeStrong(&v43, 0);
   objc_storeStrong(&v47, 0);
-  objc_storeStrong(&v48, 0);
+  objc_storeStrong(&otherWorkoutActivityTypes, 0);
   *MEMORY[0x277D85DE8];
 
   return v8;

@@ -1,26 +1,26 @@
 @interface WFSpotlightSearchResultTypePickerParameter
-- (id)accessoryImageForPossibleState:(id)a3;
-- (id)defaultSerializedRepresentationForEnumeration:(id)a3;
-- (id)enumeration:(id)a3 localizedLabelForPossibleState:(id)a4;
-- (id)loadPossibleStatesForEnumeration:(id)a3;
+- (id)accessoryImageForPossibleState:(id)state;
+- (id)defaultSerializedRepresentationForEnumeration:(id)enumeration;
+- (id)enumeration:(id)enumeration localizedLabelForPossibleState:(id)state;
+- (id)loadPossibleStatesForEnumeration:(id)enumeration;
 @end
 
 @implementation WFSpotlightSearchResultTypePickerParameter
 
-- (id)accessoryImageForPossibleState:(id)a3
+- (id)accessoryImageForPossibleState:(id)state
 {
-  v4 = a3;
-  v5 = self;
+  stateCopy = state;
+  selfCopy = self;
   v6 = sub_23DE62B70();
 
   return v6;
 }
 
-- (id)enumeration:(id)a3 localizedLabelForPossibleState:(id)a4
+- (id)enumeration:(id)enumeration localizedLabelForPossibleState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  enumerationCopy = enumeration;
+  stateCopy = state;
+  selfCopy = self;
   sub_23DE63198();
   v10 = v9;
 
@@ -37,19 +37,19 @@
   return v11;
 }
 
-- (id)loadPossibleStatesForEnumeration:(id)a3
+- (id)loadPossibleStatesForEnumeration:(id)enumeration
 {
-  v4 = a3;
-  v5 = self;
+  enumerationCopy = enumeration;
+  selfCopy = self;
   v6 = sub_23DE633B0();
 
   return v6;
 }
 
-- (id)defaultSerializedRepresentationForEnumeration:(id)a3
+- (id)defaultSerializedRepresentationForEnumeration:(id)enumeration
 {
-  v4 = a3;
-  v5 = self;
+  enumerationCopy = enumeration;
+  selfCopy = self;
   sub_23DE637D8(v14);
 
   v6 = v15;

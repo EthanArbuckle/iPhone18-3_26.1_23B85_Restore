@@ -10,19 +10,19 @@
 - (void)endDeviceToDeviceMigration;
 - (void)endPairing;
 - (void)endSIMSetupExternalAuthentication;
-- (void)hasConnection:(id)a3;
+- (void)hasConnection:(id)connection;
 - (void)proximityConnectionInitiated;
-- (void)proximityConnectionPreparing:(id)a3;
+- (void)proximityConnectionPreparing:(id)preparing;
 - (void)proximityConnectionReconnected;
 - (void)proximityConnectionTerminated;
-- (void)proximitySetupCompleted:(id)a3;
-- (void)receivedLanguages:(id)a3 locale:(id)a4 model:(id)a5 deviceClass:(id)a6 accessibilitySettings:(id)a7;
-- (void)resumeProximitySetup:(id)a3;
-- (void)sendData:(id)a3;
+- (void)proximitySetupCompleted:(id)completed;
+- (void)receivedLanguages:(id)languages locale:(id)locale model:(id)model deviceClass:(id)class accessibilitySettings:(id)settings;
+- (void)resumeProximitySetup:(id)setup;
+- (void)sendData:(id)data;
 - (void)showMigrationInterfaceOnSource;
-- (void)storeHandshake:(id)a3;
-- (void)storeInformation:(id)a3;
-- (void)suspendConnectionForSoftwareUpdate:(id)a3;
+- (void)storeHandshake:(id)handshake;
+- (void)storeInformation:(id)information;
+- (void)suspendConnectionForSoftwareUpdate:(id)update;
 @end
 
 @implementation BYBuddyDaemonProximityTargetClient
@@ -47,24 +47,24 @@
   [(BYBuddyDaemonProximityTargetClient *)self setConnection:v3];
 
   v4 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F30B4C98];
-  v5 = [(BYBuddyDaemonProximityTargetClient *)self connection];
-  [v5 setRemoteObjectInterface:v4];
+  connection = [(BYBuddyDaemonProximityTargetClient *)self connection];
+  [connection setRemoteObjectInterface:v4];
 
-  v6 = [objc_opt_class() proximityTargetClientInterface];
-  v7 = [(BYBuddyDaemonProximityTargetClient *)self connection];
-  [v7 setExportedInterface:v6];
+  proximityTargetClientInterface = [objc_opt_class() proximityTargetClientInterface];
+  connection2 = [(BYBuddyDaemonProximityTargetClient *)self connection];
+  [connection2 setExportedInterface:proximityTargetClientInterface];
 
-  v8 = [(BYBuddyDaemonProximityTargetClient *)self connection];
-  [v8 setExportedObject:self];
+  connection3 = [(BYBuddyDaemonProximityTargetClient *)self connection];
+  [connection3 setExportedObject:self];
 
-  v9 = [(BYBuddyDaemonProximityTargetClient *)self connection];
-  [v9 setInvalidationHandler:&__block_literal_global_4];
+  connection4 = [(BYBuddyDaemonProximityTargetClient *)self connection];
+  [connection4 setInvalidationHandler:&__block_literal_global_4];
 
-  v10 = [(BYBuddyDaemonProximityTargetClient *)self connection];
-  [v10 setInterruptionHandler:&__block_literal_global_96];
+  connection5 = [(BYBuddyDaemonProximityTargetClient *)self connection];
+  [connection5 setInterruptionHandler:&__block_literal_global_96];
 
-  v11 = [(BYBuddyDaemonProximityTargetClient *)self connection];
-  [v11 resume];
+  connection6 = [(BYBuddyDaemonProximityTargetClient *)self connection];
+  [connection6 resume];
 }
 
 void __53__BYBuddyDaemonProximityTargetClient_connectToDaemon__block_invoke()
@@ -89,45 +89,45 @@ void __53__BYBuddyDaemonProximityTargetClient_connectToDaemon__block_invoke_94()
 
 - (void)beginAdvertisingProximitySetup
 {
-  v3 = [(BYBuddyDaemonProximityTargetClient *)self connection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 beginAdvertisingProximitySetup];
+  connection = [(BYBuddyDaemonProximityTargetClient *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy beginAdvertisingProximitySetup];
 }
 
 - (void)endAdvertisingProximitySetup
 {
-  v3 = [(BYBuddyDaemonProximityTargetClient *)self connection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 endAdvertisingProximitySetup];
+  connection = [(BYBuddyDaemonProximityTargetClient *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy endAdvertisingProximitySetup];
 }
 
 - (void)endPairing
 {
-  v3 = [(BYBuddyDaemonProximityTargetClient *)self connection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 endPairing];
+  connection = [(BYBuddyDaemonProximityTargetClient *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy endPairing];
 }
 
-- (void)sendData:(id)a3
+- (void)sendData:(id)data
 {
-  v4 = a3;
-  v6 = [(BYBuddyDaemonProximityTargetClient *)self connection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 sendData:v4];
+  dataCopy = data;
+  connection = [(BYBuddyDaemonProximityTargetClient *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy sendData:dataCopy];
 }
 
-- (void)hasConnection:(id)a3
+- (void)hasConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(BYBuddyDaemonProximityTargetClient *)self connection];
-  v6 = [v5 remoteObjectProxy];
+  connectionCopy = connection;
+  connection = [(BYBuddyDaemonProximityTargetClient *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __52__BYBuddyDaemonProximityTargetClient_hasConnection___block_invoke;
   v8[3] = &unk_1E7D029E0;
-  v9 = v4;
-  v7 = v4;
-  [v6 hasConnection:v8];
+  v9 = connectionCopy;
+  v7 = connectionCopy;
+  [remoteObjectProxy hasConnection:v8];
 }
 
 uint64_t __52__BYBuddyDaemonProximityTargetClient_hasConnection___block_invoke(uint64_t a1)
@@ -141,18 +141,18 @@ uint64_t __52__BYBuddyDaemonProximityTargetClient_hasConnection___block_invoke(u
   return result;
 }
 
-- (void)resumeProximitySetup:(id)a3
+- (void)resumeProximitySetup:(id)setup
 {
-  v4 = a3;
-  v5 = [(BYBuddyDaemonProximityTargetClient *)self connection];
-  v6 = [v5 remoteObjectProxy];
+  setupCopy = setup;
+  connection = [(BYBuddyDaemonProximityTargetClient *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __59__BYBuddyDaemonProximityTargetClient_resumeProximitySetup___block_invoke;
   v8[3] = &unk_1E7D02A08;
-  v9 = v4;
-  v7 = v4;
-  [v6 resumeProximitySetup:v8];
+  v9 = setupCopy;
+  v7 = setupCopy;
+  [remoteObjectProxy resumeProximitySetup:v8];
 }
 
 uint64_t __59__BYBuddyDaemonProximityTargetClient_resumeProximitySetup___block_invoke(uint64_t a1)
@@ -166,12 +166,12 @@ uint64_t __59__BYBuddyDaemonProximityTargetClient_resumeProximitySetup___block_i
   return result;
 }
 
-- (void)storeInformation:(id)a3
+- (void)storeInformation:(id)information
 {
-  v4 = a3;
-  v6 = [(BYBuddyDaemonProximityTargetClient *)self connection];
-  v5 = [v6 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_101];
-  [v5 storeInformation:v4];
+  informationCopy = information;
+  connection = [(BYBuddyDaemonProximityTargetClient *)self connection];
+  v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_101];
+  [v5 storeInformation:informationCopy];
 }
 
 void __55__BYBuddyDaemonProximityTargetClient_storeInformation___block_invoke(uint64_t a1, void *a2)
@@ -212,12 +212,12 @@ void __55__BYBuddyDaemonProximityTargetClient_storeInformation___block_invoke(ui
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)storeHandshake:(id)a3
+- (void)storeHandshake:(id)handshake
 {
-  v4 = a3;
-  v6 = [(BYBuddyDaemonProximityTargetClient *)self connection];
-  v5 = [v6 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_107];
-  [v5 storeHandshake:v4];
+  handshakeCopy = handshake;
+  connection = [(BYBuddyDaemonProximityTargetClient *)self connection];
+  v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_107];
+  [v5 storeHandshake:handshakeCopy];
 }
 
 void __53__BYBuddyDaemonProximityTargetClient_storeHandshake___block_invoke(uint64_t a1, void *a2)
@@ -266,8 +266,8 @@ void __53__BYBuddyDaemonProximityTargetClient_storeHandshake___block_invoke(uint
   v10 = __Block_byref_object_copy__0;
   v11 = __Block_byref_object_dispose__0;
   v12 = 0;
-  v2 = [(BYBuddyDaemonProximityTargetClient *)self connection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_109];
+  connection = [(BYBuddyDaemonProximityTargetClient *)self connection];
+  v3 = [connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_109];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __65__BYBuddyDaemonProximityTargetClient_fileTransferSessionTemplate__block_invoke_110;
@@ -321,87 +321,87 @@ void __65__BYBuddyDaemonProximityTargetClient_fileTransferSessionTemplate__block
 
 - (void)endDeviceToDeviceMigration
 {
-  v3 = [(BYBuddyDaemonProximityTargetClient *)self connection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 endDeviceToDeviceMigration];
+  connection = [(BYBuddyDaemonProximityTargetClient *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy endDeviceToDeviceMigration];
 }
 
 - (void)showMigrationInterfaceOnSource
 {
-  v3 = [(BYBuddyDaemonProximityTargetClient *)self connection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 showMigrationInterfaceOnSource];
+  connection = [(BYBuddyDaemonProximityTargetClient *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy showMigrationInterfaceOnSource];
 }
 
-- (void)suspendConnectionForSoftwareUpdate:(id)a3
+- (void)suspendConnectionForSoftwareUpdate:(id)update
 {
-  v4 = a3;
-  v6 = [(BYBuddyDaemonProximityTargetClient *)self connection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 suspendConnectionForSoftwareUpdate:v4];
+  updateCopy = update;
+  connection = [(BYBuddyDaemonProximityTargetClient *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy suspendConnectionForSoftwareUpdate:updateCopy];
 }
 
 - (void)beginSIMSetupExternalAuthentication
 {
-  v3 = [(BYBuddyDaemonProximityTargetClient *)self connection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 beginSIMSetupExternalAuthentication];
+  connection = [(BYBuddyDaemonProximityTargetClient *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy beginSIMSetupExternalAuthentication];
 }
 
 - (void)endSIMSetupExternalAuthentication
 {
-  v3 = [(BYBuddyDaemonProximityTargetClient *)self connection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 endSIMSetupExternalAuthentication];
+  connection = [(BYBuddyDaemonProximityTargetClient *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy endSIMSetupExternalAuthentication];
 }
 
-- (void)proximitySetupCompleted:(id)a3
+- (void)proximitySetupCompleted:(id)completed
 {
-  v4 = a3;
-  v5 = [(BYBuddyDaemonProximityTargetClient *)self delegate];
-  [v5 proximitySetupCompleted:v4];
+  completedCopy = completed;
+  delegate = [(BYBuddyDaemonProximityTargetClient *)self delegate];
+  [delegate proximitySetupCompleted:completedCopy];
 }
 
 - (void)dismissProximityPinCode
 {
-  v2 = [(BYBuddyDaemonProximityTargetClient *)self delegate];
-  [v2 dismissProximityPinCode];
+  delegate = [(BYBuddyDaemonProximityTargetClient *)self delegate];
+  [delegate dismissProximityPinCode];
 }
 
-- (void)proximityConnectionPreparing:(id)a3
+- (void)proximityConnectionPreparing:(id)preparing
 {
-  v4 = a3;
-  v5 = [(BYBuddyDaemonProximityTargetClient *)self delegate];
-  [v5 proximityConnectionPreparing:v4];
+  preparingCopy = preparing;
+  delegate = [(BYBuddyDaemonProximityTargetClient *)self delegate];
+  [delegate proximityConnectionPreparing:preparingCopy];
 }
 
 - (void)proximityConnectionInitiated
 {
-  v2 = [(BYBuddyDaemonProximityTargetClient *)self delegate];
-  [v2 proximityConnectionInitiated];
+  delegate = [(BYBuddyDaemonProximityTargetClient *)self delegate];
+  [delegate proximityConnectionInitiated];
 }
 
 - (void)proximityConnectionTerminated
 {
-  v2 = [(BYBuddyDaemonProximityTargetClient *)self delegate];
-  [v2 proximityConnectionTerminated];
+  delegate = [(BYBuddyDaemonProximityTargetClient *)self delegate];
+  [delegate proximityConnectionTerminated];
 }
 
 - (void)proximityConnectionReconnected
 {
-  v2 = [(BYBuddyDaemonProximityTargetClient *)self delegate];
-  [v2 proximityConnectionReconnected];
+  delegate = [(BYBuddyDaemonProximityTargetClient *)self delegate];
+  [delegate proximityConnectionReconnected];
 }
 
-- (void)receivedLanguages:(id)a3 locale:(id)a4 model:(id)a5 deviceClass:(id)a6 accessibilitySettings:(id)a7
+- (void)receivedLanguages:(id)languages locale:(id)locale model:(id)model deviceClass:(id)class accessibilitySettings:(id)settings
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [(BYBuddyDaemonProximityTargetClient *)self delegate];
-  [v17 receivedLanguages:v16 locale:v15 model:v14 deviceClass:v13 accessibilitySettings:v12];
+  settingsCopy = settings;
+  classCopy = class;
+  modelCopy = model;
+  localeCopy = locale;
+  languagesCopy = languages;
+  delegate = [(BYBuddyDaemonProximityTargetClient *)self delegate];
+  [delegate receivedLanguages:languagesCopy locale:localeCopy model:modelCopy deviceClass:classCopy accessibilitySettings:settingsCopy];
 }
 
 - (BYBuddyDaemonProximityTargetProtocol)delegate

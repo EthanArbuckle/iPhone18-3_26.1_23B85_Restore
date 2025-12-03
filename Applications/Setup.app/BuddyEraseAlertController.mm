@@ -1,22 +1,22 @@
 @interface BuddyEraseAlertController
-+ (id)alertControllerWithWindow:(id)a3 navigationController:(id)a4 proximitySetupController:(id)a5 analyticsManager:(id)a6;
-+ (void)eraseWithWindow:(id)a3 navigationController:(id)a4 proximitySetupController:(id)a5 analyticsManager:(id)a6;
++ (id)alertControllerWithWindow:(id)window navigationController:(id)controller proximitySetupController:(id)setupController analyticsManager:(id)manager;
++ (void)eraseWithWindow:(id)window navigationController:(id)controller proximitySetupController:(id)setupController analyticsManager:(id)manager;
 @end
 
 @implementation BuddyEraseAlertController
 
-+ (id)alertControllerWithWindow:(id)a3 navigationController:(id)a4 proximitySetupController:(id)a5 analyticsManager:(id)a6
++ (id)alertControllerWithWindow:(id)window navigationController:(id)controller proximitySetupController:(id)setupController analyticsManager:(id)manager
 {
-  v39 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, window);
   v37 = 0;
-  objc_storeStrong(&v37, a4);
+  objc_storeStrong(&v37, controller);
   v36 = 0;
-  objc_storeStrong(&v36, a5);
+  objc_storeStrong(&v36, setupController);
   v35 = 0;
-  objc_storeStrong(&v35, a6);
+  objc_storeStrong(&v35, manager);
   v9 = +[NSBundle mainBundle];
   v10 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"ERASE_START_OVER"];
   v11 = [(NSBundle *)v9 localizedStringForKey:v10 value:&stru_10032F900 table:@"Localizable"];
@@ -33,7 +33,7 @@
   v27 = 3221225472;
   v28 = sub_1000B7CF4;
   v29 = &unk_10032C218;
-  v33[1] = v39;
+  v33[1] = selfCopy;
   v30 = location[0];
   v31 = v37;
   v32 = v36;
@@ -60,18 +60,18 @@
   return v24;
 }
 
-+ (void)eraseWithWindow:(id)a3 navigationController:(id)a4 proximitySetupController:(id)a5 analyticsManager:(id)a6
++ (void)eraseWithWindow:(id)window navigationController:(id)controller proximitySetupController:(id)setupController analyticsManager:(id)manager
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, window);
   v21 = 0;
-  objc_storeStrong(&v21, a4);
+  objc_storeStrong(&v21, controller);
   v20 = 0;
-  objc_storeStrong(&v20, a5);
+  objc_storeStrong(&v20, setupController);
   v19 = 0;
-  objc_storeStrong(&v19, a6);
+  objc_storeStrong(&v19, manager);
   [location[0] setUserInteractionEnabled:0];
   v9 = dispatch_get_global_queue(2, 0);
   v10 = _NSConcreteStackBlock;

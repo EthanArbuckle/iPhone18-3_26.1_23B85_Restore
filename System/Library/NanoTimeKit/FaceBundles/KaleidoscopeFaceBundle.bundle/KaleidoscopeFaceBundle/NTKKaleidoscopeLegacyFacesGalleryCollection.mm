@@ -10,8 +10,8 @@
   {
     v6.receiver = self;
     v6.super_class = NTKKaleidoscopeLegacyFacesGalleryCollection;
-    v3 = [(NTKKaleidoscopeFacesGalleryCollection *)&v6 title];
-    v4 = [NSString stringWithFormat:@"%@ (Legacy)", v3];
+    title = [(NTKKaleidoscopeFacesGalleryCollection *)&v6 title];
+    v4 = [NSString stringWithFormat:@"%@ (Legacy)", title];
   }
 
   else

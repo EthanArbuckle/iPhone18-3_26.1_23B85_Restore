@@ -1,7 +1,7 @@
 @interface ArticleThumbnailComponentView
-- (_TtC12NewsArticles29ArticleThumbnailComponentView)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegate:(id)a5 componentStyleRendererFactory:(id)a6;
+- (_TtC12NewsArticles29ArticleThumbnailComponentView)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegate:(id)delegate componentStyleRendererFactory:(id)factory;
 - (void)discardContents;
-- (void)presentComponentWithChanges:(id)a3;
+- (void)presentComponentWithChanges:(id)changes;
 - (void)renderContents;
 @end
 
@@ -18,18 +18,18 @@
 
 - (void)discardContents
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D79F431C();
 }
 
-- (void)presentComponentWithChanges:(id)a3
+- (void)presentComponentWithChanges:(id)changes
 {
-  v3 = *&a3.var0;
-  v4 = self;
+  v3 = *&changes.var0;
+  selfCopy = self;
   sub_1D79F444C(v3 & 0x10101);
 }
 
-- (_TtC12NewsArticles29ArticleThumbnailComponentView)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegate:(id)a5 componentStyleRendererFactory:(id)a6
+- (_TtC12NewsArticles29ArticleThumbnailComponentView)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegate:(id)delegate componentStyleRendererFactory:(id)factory
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

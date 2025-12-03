@@ -1,16 +1,16 @@
 @interface _CPCardSectionForFeedback
-- (BOOL)isEqual:(id)a3;
-- (_CPCardSectionForFeedback)initWithFacade:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_CPCardSectionForFeedback)initWithFacade:(id)facade;
 - (unint64_t)hash;
-- (void)addButtons:(id)a3;
-- (void)addCardSections:(id)a3;
-- (void)addLeadingSwipeButtonItems:(id)a3;
-- (void)addTrailingSwipeButtonItems:(id)a3;
-- (void)setButtons:(id)a3;
-- (void)setCardSections:(id)a3;
-- (void)setLeadingSwipeButtonItems:(id)a3;
-- (void)setTrailingSwipeButtonItems:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addButtons:(id)buttons;
+- (void)addCardSections:(id)sections;
+- (void)addLeadingSwipeButtonItems:(id)items;
+- (void)addTrailingSwipeButtonItems:(id)items;
+- (void)setButtons:(id)buttons;
+- (void)setCardSections:(id)sections;
+- (void)setLeadingSwipeButtonItems:(id)items;
+- (void)setTrailingSwipeButtonItems:(id)items;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPCardSectionForFeedback
@@ -32,28 +32,28 @@
   return v11 ^ v14 ^ [(NSString *)self->_applicationBundleIdentifier hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_59;
   }
 
-  v5 = [(_CPCardSectionForFeedback *)self cardSectionId];
-  v6 = [v4 cardSectionId];
-  if ((v5 != 0) == (v6 == 0))
+  cardSectionId = [(_CPCardSectionForFeedback *)self cardSectionId];
+  cardSectionId2 = [equalCopy cardSectionId];
+  if ((cardSectionId != 0) == (cardSectionId2 == 0))
   {
     goto LABEL_58;
   }
 
-  v7 = [(_CPCardSectionForFeedback *)self cardSectionId];
-  if (v7)
+  cardSectionId3 = [(_CPCardSectionForFeedback *)self cardSectionId];
+  if (cardSectionId3)
   {
-    v8 = v7;
-    v9 = [(_CPCardSectionForFeedback *)self cardSectionId];
-    v10 = [v4 cardSectionId];
-    v11 = [v9 isEqual:v10];
+    v8 = cardSectionId3;
+    cardSectionId4 = [(_CPCardSectionForFeedback *)self cardSectionId];
+    cardSectionId5 = [equalCopy cardSectionId];
+    v11 = [cardSectionId4 isEqual:cardSectionId5];
 
     if (!v11)
     {
@@ -65,20 +65,20 @@
   {
   }
 
-  v5 = [(_CPCardSectionForFeedback *)self actionTarget];
-  v6 = [v4 actionTarget];
-  if ((v5 != 0) == (v6 == 0))
+  cardSectionId = [(_CPCardSectionForFeedback *)self actionTarget];
+  cardSectionId2 = [equalCopy actionTarget];
+  if ((cardSectionId != 0) == (cardSectionId2 == 0))
   {
     goto LABEL_58;
   }
 
-  v12 = [(_CPCardSectionForFeedback *)self actionTarget];
-  if (v12)
+  actionTarget = [(_CPCardSectionForFeedback *)self actionTarget];
+  if (actionTarget)
   {
-    v13 = v12;
-    v14 = [(_CPCardSectionForFeedback *)self actionTarget];
-    v15 = [v4 actionTarget];
-    v16 = [v14 isEqual:v15];
+    v13 = actionTarget;
+    actionTarget2 = [(_CPCardSectionForFeedback *)self actionTarget];
+    actionTarget3 = [equalCopy actionTarget];
+    v16 = [actionTarget2 isEqual:actionTarget3];
 
     if (!v16)
     {
@@ -90,20 +90,20 @@
   {
   }
 
-  v5 = [(_CPCardSectionForFeedback *)self actionDestination];
-  v6 = [v4 actionDestination];
-  if ((v5 != 0) == (v6 == 0))
+  cardSectionId = [(_CPCardSectionForFeedback *)self actionDestination];
+  cardSectionId2 = [equalCopy actionDestination];
+  if ((cardSectionId != 0) == (cardSectionId2 == 0))
   {
     goto LABEL_58;
   }
 
-  v17 = [(_CPCardSectionForFeedback *)self actionDestination];
-  if (v17)
+  actionDestination = [(_CPCardSectionForFeedback *)self actionDestination];
+  if (actionDestination)
   {
-    v18 = v17;
-    v19 = [(_CPCardSectionForFeedback *)self actionDestination];
-    v20 = [v4 actionDestination];
-    v21 = [v19 isEqual:v20];
+    v18 = actionDestination;
+    actionDestination2 = [(_CPCardSectionForFeedback *)self actionDestination];
+    actionDestination3 = [equalCopy actionDestination];
+    v21 = [actionDestination2 isEqual:actionDestination3];
 
     if (!v21)
     {
@@ -115,20 +115,20 @@
   {
   }
 
-  v5 = [(_CPCardSectionForFeedback *)self resultId];
-  v6 = [v4 resultId];
-  if ((v5 != 0) == (v6 == 0))
+  cardSectionId = [(_CPCardSectionForFeedback *)self resultId];
+  cardSectionId2 = [equalCopy resultId];
+  if ((cardSectionId != 0) == (cardSectionId2 == 0))
   {
     goto LABEL_58;
   }
 
-  v22 = [(_CPCardSectionForFeedback *)self resultId];
-  if (v22)
+  resultId = [(_CPCardSectionForFeedback *)self resultId];
+  if (resultId)
   {
-    v23 = v22;
-    v24 = [(_CPCardSectionForFeedback *)self resultId];
-    v25 = [v4 resultId];
-    v26 = [v24 isEqual:v25];
+    v23 = resultId;
+    resultId2 = [(_CPCardSectionForFeedback *)self resultId];
+    resultId3 = [equalCopy resultId];
+    v26 = [resultId2 isEqual:resultId3];
 
     if (!v26)
     {
@@ -141,25 +141,25 @@
   }
 
   commandType = self->_commandType;
-  if (commandType != [v4 commandType])
+  if (commandType != [equalCopy commandType])
   {
     goto LABEL_59;
   }
 
-  v5 = [(_CPCardSectionForFeedback *)self commandDetail];
-  v6 = [v4 commandDetail];
-  if ((v5 != 0) == (v6 == 0))
+  cardSectionId = [(_CPCardSectionForFeedback *)self commandDetail];
+  cardSectionId2 = [equalCopy commandDetail];
+  if ((cardSectionId != 0) == (cardSectionId2 == 0))
   {
     goto LABEL_58;
   }
 
-  v28 = [(_CPCardSectionForFeedback *)self commandDetail];
-  if (v28)
+  commandDetail = [(_CPCardSectionForFeedback *)self commandDetail];
+  if (commandDetail)
   {
-    v29 = v28;
-    v30 = [(_CPCardSectionForFeedback *)self commandDetail];
-    v31 = [v4 commandDetail];
-    v32 = [v30 isEqual:v31];
+    v29 = commandDetail;
+    commandDetail2 = [(_CPCardSectionForFeedback *)self commandDetail];
+    commandDetail3 = [equalCopy commandDetail];
+    v32 = [commandDetail2 isEqual:commandDetail3];
 
     if (!v32)
     {
@@ -171,20 +171,20 @@
   {
   }
 
-  v5 = [(_CPCardSectionForFeedback *)self cardSections];
-  v6 = [v4 cardSections];
-  if ((v5 != 0) == (v6 == 0))
+  cardSectionId = [(_CPCardSectionForFeedback *)self cardSections];
+  cardSectionId2 = [equalCopy cardSections];
+  if ((cardSectionId != 0) == (cardSectionId2 == 0))
   {
     goto LABEL_58;
   }
 
-  v33 = [(_CPCardSectionForFeedback *)self cardSections];
-  if (v33)
+  cardSections = [(_CPCardSectionForFeedback *)self cardSections];
+  if (cardSections)
   {
-    v34 = v33;
-    v35 = [(_CPCardSectionForFeedback *)self cardSections];
-    v36 = [v4 cardSections];
-    v37 = [v35 isEqual:v36];
+    v34 = cardSections;
+    cardSections2 = [(_CPCardSectionForFeedback *)self cardSections];
+    cardSections3 = [equalCopy cardSections];
+    v37 = [cardSections2 isEqual:cardSections3];
 
     if (!v37)
     {
@@ -197,25 +197,25 @@
   }
 
   cardSectionType = self->_cardSectionType;
-  if (cardSectionType != [v4 cardSectionType])
+  if (cardSectionType != [equalCopy cardSectionType])
   {
     goto LABEL_59;
   }
 
-  v5 = [(_CPCardSectionForFeedback *)self cardSectionDetail];
-  v6 = [v4 cardSectionDetail];
-  if ((v5 != 0) == (v6 == 0))
+  cardSectionId = [(_CPCardSectionForFeedback *)self cardSectionDetail];
+  cardSectionId2 = [equalCopy cardSectionDetail];
+  if ((cardSectionId != 0) == (cardSectionId2 == 0))
   {
     goto LABEL_58;
   }
 
-  v39 = [(_CPCardSectionForFeedback *)self cardSectionDetail];
-  if (v39)
+  cardSectionDetail = [(_CPCardSectionForFeedback *)self cardSectionDetail];
+  if (cardSectionDetail)
   {
-    v40 = v39;
-    v41 = [(_CPCardSectionForFeedback *)self cardSectionDetail];
-    v42 = [v4 cardSectionDetail];
-    v43 = [v41 isEqual:v42];
+    v40 = cardSectionDetail;
+    cardSectionDetail2 = [(_CPCardSectionForFeedback *)self cardSectionDetail];
+    cardSectionDetail3 = [equalCopy cardSectionDetail];
+    v43 = [cardSectionDetail2 isEqual:cardSectionDetail3];
 
     if (!v43)
     {
@@ -227,20 +227,20 @@
   {
   }
 
-  v5 = [(_CPCardSectionForFeedback *)self buttons];
-  v6 = [v4 buttons];
-  if ((v5 != 0) == (v6 == 0))
+  cardSectionId = [(_CPCardSectionForFeedback *)self buttons];
+  cardSectionId2 = [equalCopy buttons];
+  if ((cardSectionId != 0) == (cardSectionId2 == 0))
   {
     goto LABEL_58;
   }
 
-  v44 = [(_CPCardSectionForFeedback *)self buttons];
-  if (v44)
+  buttons = [(_CPCardSectionForFeedback *)self buttons];
+  if (buttons)
   {
-    v45 = v44;
-    v46 = [(_CPCardSectionForFeedback *)self buttons];
-    v47 = [v4 buttons];
-    v48 = [v46 isEqual:v47];
+    v45 = buttons;
+    buttons2 = [(_CPCardSectionForFeedback *)self buttons];
+    buttons3 = [equalCopy buttons];
+    v48 = [buttons2 isEqual:buttons3];
 
     if (!v48)
     {
@@ -252,20 +252,20 @@
   {
   }
 
-  v5 = [(_CPCardSectionForFeedback *)self leadingSwipeButtonItems];
-  v6 = [v4 leadingSwipeButtonItems];
-  if ((v5 != 0) == (v6 == 0))
+  cardSectionId = [(_CPCardSectionForFeedback *)self leadingSwipeButtonItems];
+  cardSectionId2 = [equalCopy leadingSwipeButtonItems];
+  if ((cardSectionId != 0) == (cardSectionId2 == 0))
   {
     goto LABEL_58;
   }
 
-  v49 = [(_CPCardSectionForFeedback *)self leadingSwipeButtonItems];
-  if (v49)
+  leadingSwipeButtonItems = [(_CPCardSectionForFeedback *)self leadingSwipeButtonItems];
+  if (leadingSwipeButtonItems)
   {
-    v50 = v49;
-    v51 = [(_CPCardSectionForFeedback *)self leadingSwipeButtonItems];
-    v52 = [v4 leadingSwipeButtonItems];
-    v53 = [v51 isEqual:v52];
+    v50 = leadingSwipeButtonItems;
+    leadingSwipeButtonItems2 = [(_CPCardSectionForFeedback *)self leadingSwipeButtonItems];
+    leadingSwipeButtonItems3 = [equalCopy leadingSwipeButtonItems];
+    v53 = [leadingSwipeButtonItems2 isEqual:leadingSwipeButtonItems3];
 
     if (!v53)
     {
@@ -277,20 +277,20 @@
   {
   }
 
-  v5 = [(_CPCardSectionForFeedback *)self trailingSwipeButtonItems];
-  v6 = [v4 trailingSwipeButtonItems];
-  if ((v5 != 0) == (v6 == 0))
+  cardSectionId = [(_CPCardSectionForFeedback *)self trailingSwipeButtonItems];
+  cardSectionId2 = [equalCopy trailingSwipeButtonItems];
+  if ((cardSectionId != 0) == (cardSectionId2 == 0))
   {
     goto LABEL_58;
   }
 
-  v54 = [(_CPCardSectionForFeedback *)self trailingSwipeButtonItems];
-  if (v54)
+  trailingSwipeButtonItems = [(_CPCardSectionForFeedback *)self trailingSwipeButtonItems];
+  if (trailingSwipeButtonItems)
   {
-    v55 = v54;
-    v56 = [(_CPCardSectionForFeedback *)self trailingSwipeButtonItems];
-    v57 = [v4 trailingSwipeButtonItems];
-    v58 = [v56 isEqual:v57];
+    v55 = trailingSwipeButtonItems;
+    trailingSwipeButtonItems2 = [(_CPCardSectionForFeedback *)self trailingSwipeButtonItems];
+    trailingSwipeButtonItems3 = [equalCopy trailingSwipeButtonItems];
+    v58 = [trailingSwipeButtonItems2 isEqual:trailingSwipeButtonItems3];
 
     if (!v58)
     {
@@ -302,17 +302,17 @@
   {
   }
 
-  v5 = [(_CPCardSectionForFeedback *)self applicationBundleIdentifier];
-  v6 = [v4 applicationBundleIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  cardSectionId = [(_CPCardSectionForFeedback *)self applicationBundleIdentifier];
+  cardSectionId2 = [equalCopy applicationBundleIdentifier];
+  if ((cardSectionId != 0) == (cardSectionId2 == 0))
   {
 LABEL_58:
 
     goto LABEL_59;
   }
 
-  v59 = [(_CPCardSectionForFeedback *)self applicationBundleIdentifier];
-  if (!v59)
+  applicationBundleIdentifier = [(_CPCardSectionForFeedback *)self applicationBundleIdentifier];
+  if (!applicationBundleIdentifier)
   {
 
 LABEL_62:
@@ -320,10 +320,10 @@ LABEL_62:
     goto LABEL_60;
   }
 
-  v60 = v59;
-  v61 = [(_CPCardSectionForFeedback *)self applicationBundleIdentifier];
-  v62 = [v4 applicationBundleIdentifier];
-  v63 = [v61 isEqual:v62];
+  v60 = applicationBundleIdentifier;
+  applicationBundleIdentifier2 = [(_CPCardSectionForFeedback *)self applicationBundleIdentifier];
+  applicationBundleIdentifier3 = [equalCopy applicationBundleIdentifier];
+  v63 = [applicationBundleIdentifier2 isEqual:applicationBundleIdentifier3];
 
   if (v63)
   {
@@ -337,37 +337,37 @@ LABEL_60:
   return v64;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v66 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_CPCardSectionForFeedback *)self cardSectionId];
+  toCopy = to;
+  cardSectionId = [(_CPCardSectionForFeedback *)self cardSectionId];
 
-  if (v5)
+  if (cardSectionId)
   {
     cardSectionId = self->_cardSectionId;
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(_CPCardSectionForFeedback *)self actionTarget];
+  actionTarget = [(_CPCardSectionForFeedback *)self actionTarget];
 
-  if (v7)
+  if (actionTarget)
   {
     actionTarget = self->_actionTarget;
     PBDataWriterWriteStringField();
   }
 
-  v9 = [(_CPCardSectionForFeedback *)self actionDestination];
+  actionDestination = [(_CPCardSectionForFeedback *)self actionDestination];
 
-  if (v9)
+  if (actionDestination)
   {
     actionDestination = self->_actionDestination;
     PBDataWriterWriteStringField();
   }
 
-  v11 = [(_CPCardSectionForFeedback *)self resultId];
+  resultId = [(_CPCardSectionForFeedback *)self resultId];
 
-  if (v11)
+  if (resultId)
   {
     resultId = self->_resultId;
     PBDataWriterWriteStringField();
@@ -379,9 +379,9 @@ LABEL_60:
     PBDataWriterWriteInt32Field();
   }
 
-  v14 = [(_CPCardSectionForFeedback *)self commandDetail];
+  commandDetail = [(_CPCardSectionForFeedback *)self commandDetail];
 
-  if (v14)
+  if (commandDetail)
   {
     commandDetail = self->_commandDetail;
     PBDataWriterWriteStringField();
@@ -425,9 +425,9 @@ LABEL_60:
     PBDataWriterWriteInt32Field();
   }
 
-  v23 = [(_CPCardSectionForFeedback *)self cardSectionDetail];
+  cardSectionDetail = [(_CPCardSectionForFeedback *)self cardSectionDetail];
 
-  if (v23)
+  if (cardSectionDetail)
   {
     cardSectionDetail = self->_cardSectionDetail;
     PBDataWriterWriteStringField();
@@ -529,9 +529,9 @@ LABEL_60:
     while (v39);
   }
 
-  v43 = [(_CPCardSectionForFeedback *)self applicationBundleIdentifier];
+  applicationBundleIdentifier = [(_CPCardSectionForFeedback *)self applicationBundleIdentifier];
 
-  if (v43)
+  if (applicationBundleIdentifier)
   {
     applicationBundleIdentifier = self->_applicationBundleIdentifier;
     PBDataWriterWriteStringField();
@@ -540,155 +540,155 @@ LABEL_60:
   v45 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addTrailingSwipeButtonItems:(id)a3
+- (void)addTrailingSwipeButtonItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   trailingSwipeButtonItems = self->_trailingSwipeButtonItems;
-  v8 = v4;
+  v8 = itemsCopy;
   if (!trailingSwipeButtonItems)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_trailingSwipeButtonItems;
-    self->_trailingSwipeButtonItems = v6;
+    self->_trailingSwipeButtonItems = array;
 
-    v4 = v8;
+    itemsCopy = v8;
     trailingSwipeButtonItems = self->_trailingSwipeButtonItems;
   }
 
-  [(NSArray *)trailingSwipeButtonItems addObject:v4];
+  [(NSArray *)trailingSwipeButtonItems addObject:itemsCopy];
 }
 
-- (void)setTrailingSwipeButtonItems:(id)a3
+- (void)setTrailingSwipeButtonItems:(id)items
 {
-  v4 = [a3 mutableCopy];
+  v4 = [items mutableCopy];
   trailingSwipeButtonItems = self->_trailingSwipeButtonItems;
   self->_trailingSwipeButtonItems = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addLeadingSwipeButtonItems:(id)a3
+- (void)addLeadingSwipeButtonItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   leadingSwipeButtonItems = self->_leadingSwipeButtonItems;
-  v8 = v4;
+  v8 = itemsCopy;
   if (!leadingSwipeButtonItems)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_leadingSwipeButtonItems;
-    self->_leadingSwipeButtonItems = v6;
+    self->_leadingSwipeButtonItems = array;
 
-    v4 = v8;
+    itemsCopy = v8;
     leadingSwipeButtonItems = self->_leadingSwipeButtonItems;
   }
 
-  [(NSArray *)leadingSwipeButtonItems addObject:v4];
+  [(NSArray *)leadingSwipeButtonItems addObject:itemsCopy];
 }
 
-- (void)setLeadingSwipeButtonItems:(id)a3
+- (void)setLeadingSwipeButtonItems:(id)items
 {
-  v4 = [a3 mutableCopy];
+  v4 = [items mutableCopy];
   leadingSwipeButtonItems = self->_leadingSwipeButtonItems;
   self->_leadingSwipeButtonItems = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addButtons:(id)a3
+- (void)addButtons:(id)buttons
 {
-  v4 = a3;
+  buttonsCopy = buttons;
   buttons = self->_buttons;
-  v8 = v4;
+  v8 = buttonsCopy;
   if (!buttons)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_buttons;
-    self->_buttons = v6;
+    self->_buttons = array;
 
-    v4 = v8;
+    buttonsCopy = v8;
     buttons = self->_buttons;
   }
 
-  [(NSArray *)buttons addObject:v4];
+  [(NSArray *)buttons addObject:buttonsCopy];
 }
 
-- (void)setButtons:(id)a3
+- (void)setButtons:(id)buttons
 {
-  v4 = [a3 mutableCopy];
+  v4 = [buttons mutableCopy];
   buttons = self->_buttons;
   self->_buttons = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addCardSections:(id)a3
+- (void)addCardSections:(id)sections
 {
-  v4 = a3;
+  sectionsCopy = sections;
   cardSections = self->_cardSections;
-  v8 = v4;
+  v8 = sectionsCopy;
   if (!cardSections)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_cardSections;
-    self->_cardSections = v6;
+    self->_cardSections = array;
 
-    v4 = v8;
+    sectionsCopy = v8;
     cardSections = self->_cardSections;
   }
 
-  [(NSArray *)cardSections addObject:v4];
+  [(NSArray *)cardSections addObject:sectionsCopy];
 }
 
-- (void)setCardSections:(id)a3
+- (void)setCardSections:(id)sections
 {
-  v4 = [a3 mutableCopy];
+  v4 = [sections mutableCopy];
   cardSections = self->_cardSections;
   self->_cardSections = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (_CPCardSectionForFeedback)initWithFacade:(id)a3
+- (_CPCardSectionForFeedback)initWithFacade:(id)facade
 {
   v92[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_CPCardSectionForFeedback *)self init];
   if (v5)
   {
-    v6 = [v4 cardSectionId];
-    [(_CPCardSectionForFeedback *)v5 setCardSectionId:v6];
+    cardSectionId = [facadeCopy cardSectionId];
+    [(_CPCardSectionForFeedback *)v5 setCardSectionId:cardSectionId];
 
-    v7 = [v4 resultIdentifier];
-    [(_CPCardSectionForFeedback *)v5 setResultId:v7];
+    resultIdentifier = [facadeCopy resultIdentifier];
+    [(_CPCardSectionForFeedback *)v5 setResultId:resultIdentifier];
 
-    v8 = [v4 punchoutOptions];
-    v9 = [v8 firstObject];
-    v10 = [v9 preferredOpenableURL];
-    v11 = [v10 absoluteString];
-    [(_CPCardSectionForFeedback *)v5 setActionDestination:v11];
+    punchoutOptions = [facadeCopy punchoutOptions];
+    firstObject = [punchoutOptions firstObject];
+    preferredOpenableURL = [firstObject preferredOpenableURL];
+    absoluteString = [preferredOpenableURL absoluteString];
+    [(_CPCardSectionForFeedback *)v5 setActionDestination:absoluteString];
 
-    if ([v4 isMemberOfClass:objc_opt_class()] || objc_msgSend(v4, "isMemberOfClass:", objc_opt_class()))
+    if ([facadeCopy isMemberOfClass:objc_opt_class()] || objc_msgSend(facadeCopy, "isMemberOfClass:", objc_opt_class()))
     {
       goto LABEL_4;
     }
 
-    if ([v4 isMemberOfClass:objc_opt_class()])
+    if ([facadeCopy isMemberOfClass:objc_opt_class()])
     {
-      v12 = [v4 buttons];
+      buttons = [facadeCopy buttons];
       goto LABEL_5;
     }
 
-    if ([v4 isMemberOfClass:objc_opt_class()])
+    if ([facadeCopy isMemberOfClass:objc_opt_class()])
     {
-      v55 = [v4 buttonItem];
+      buttonItem = [facadeCopy buttonItem];
 
-      if (v55)
+      if (buttonItem)
       {
-        v56 = [v4 buttonItem];
-        v92[0] = v56;
-        v57 = [MEMORY[0x1E695DEC8] arrayWithObjects:v92 count:1];
+        buttonItem2 = [facadeCopy buttonItem];
+        v92[0] = buttonItem2;
+        buttonItems2 = [MEMORY[0x1E695DEC8] arrayWithObjects:v92 count:1];
 LABEL_149:
-        v13 = v57;
+        v13 = buttonItems2;
 
 LABEL_6:
         v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -699,20 +699,20 @@ LABEL_6:
         }
 
 LABEL_8:
-        v16 = [v4 leadingSwipeButtonItems];
+        leadingSwipeButtonItems = [facadeCopy leadingSwipeButtonItems];
 
-        if (v16)
+        if (leadingSwipeButtonItems)
         {
-          v17 = [v4 leadingSwipeButtonItems];
-          [v15 addObjectsFromArray:v17];
+          leadingSwipeButtonItems2 = [facadeCopy leadingSwipeButtonItems];
+          [v15 addObjectsFromArray:leadingSwipeButtonItems2];
         }
 
-        v18 = [v4 trailingSwipeButtonItems];
+        trailingSwipeButtonItems = [facadeCopy trailingSwipeButtonItems];
 
-        if (v18)
+        if (trailingSwipeButtonItems)
         {
-          v19 = [v4 trailingSwipeButtonItems];
-          [v15 addObjectsFromArray:v19];
+          trailingSwipeButtonItems2 = [facadeCopy trailingSwipeButtonItems];
+          [v15 addObjectsFromArray:trailingSwipeButtonItems2];
         }
 
         v67 = v15;
@@ -766,7 +766,7 @@ LABEL_8:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v28 = [v4 buttonCardSections];
+          buttonCardSections = [facadeCopy buttonCardSections];
         }
 
         else
@@ -775,11 +775,11 @@ LABEL_8:
           if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
           {
 LABEL_24:
-            v28 = [v4 cardSections];
+            buttonCardSections = [facadeCopy cardSections];
             goto LABEL_27;
           }
 
-          v28 = 0;
+          buttonCardSections = 0;
         }
 
 LABEL_27:
@@ -787,7 +787,7 @@ LABEL_27:
         v83 = 0u;
         v80 = 0u;
         v81 = 0u;
-        v29 = v28;
+        v29 = buttonCardSections;
         v30 = [v29 countByEnumeratingWithState:&v80 objects:v90 count:16];
         if (v30)
         {
@@ -816,8 +816,8 @@ LABEL_27:
         if (objc_opt_isKindOfClass())
         {
           v65 = v29;
-          v66 = v4;
-          v35 = v4;
+          v66 = facadeCopy;
+          v35 = facadeCopy;
           v76 = 0u;
           v77 = 0u;
           v78 = 0u;
@@ -843,8 +843,8 @@ LABEL_27:
                 v73 = 0u;
                 v74 = 0u;
                 v75 = 0u;
-                v38 = [v37 values];
-                v39 = [v38 countByEnumeratingWithState:&v72 objects:v88 count:16];
+                values = [v37 values];
+                v39 = [values countByEnumeratingWithState:&v72 objects:v88 count:16];
                 if (v39)
                 {
                   v40 = v39;
@@ -855,25 +855,25 @@ LABEL_27:
                     {
                       if (*v73 != v41)
                       {
-                        objc_enumerationMutation(v38);
+                        objc_enumerationMutation(values);
                       }
 
                       v43 = *(*(&v72 + 1) + 8 * k);
                       v44 = objc_opt_new();
-                      v45 = [v35 cardSectionId];
-                      [v44 setCardSectionId:v45];
+                      cardSectionId2 = [v35 cardSectionId];
+                      [v44 setCardSectionId:cardSectionId2];
 
-                      v46 = [v43 command];
-                      [v44 setCommandType:{objc_msgSend(v46, "_cpCommandType")}];
+                      command = [v43 command];
+                      [v44 setCommandType:{objc_msgSend(command, "_cpCommandType")}];
 
-                      v47 = [v43 command];
-                      v48 = [v47 commandDetail];
-                      [v44 setCommandDetail:v48];
+                      command2 = [v43 command];
+                      commandDetail = [command2 commandDetail];
+                      [v44 setCommandDetail:commandDetail];
 
                       [(_CPCardSectionForFeedback *)v5 addCardSections:v44];
                     }
 
-                    v40 = [v38 countByEnumeratingWithState:&v72 objects:v88 count:16];
+                    v40 = [values countByEnumeratingWithState:&v72 objects:v88 count:16];
                   }
 
                   while (v40);
@@ -889,180 +889,180 @@ LABEL_27:
             while (v70);
           }
 
-          v4 = v66;
+          facadeCopy = v66;
           v15 = v67;
           v29 = v65;
         }
 
-        v49 = [v4 command];
-        -[_CPCardSectionForFeedback setCommandType:](v5, "setCommandType:", [v49 _cpCommandType]);
+        command3 = [facadeCopy command];
+        -[_CPCardSectionForFeedback setCommandType:](v5, "setCommandType:", [command3 _cpCommandType]);
 
-        v50 = [v4 commandDetail];
-        [(_CPCardSectionForFeedback *)v5 setCommandDetail:v50];
+        commandDetail2 = [facadeCopy commandDetail];
+        [(_CPCardSectionForFeedback *)v5 setCommandDetail:commandDetail2];
 
-        v51 = [v4 type];
+        type = [facadeCopy type];
 
-        if (v51)
+        if (type)
         {
-          v52 = [v4 type];
-          if ([v52 compare:@"none" options:3])
+          type2 = [facadeCopy type];
+          if ([type2 compare:@"none" options:3])
           {
-            if ([v52 compare:@"app_link" options:3])
+            if ([type2 compare:@"app_link" options:3])
             {
-              if ([v52 compare:@"description" options:3])
+              if ([type2 compare:@"description" options:3])
               {
                 v53 = 3;
-                if ([v52 compare:@"key_value_data" options:3])
+                if ([type2 compare:@"key_value_data" options:3])
                 {
-                  if ([v52 compare:@"map" options:3])
+                  if ([type2 compare:@"map" options:3])
                   {
-                    if ([v52 compare:@"media_info" options:3])
+                    if ([type2 compare:@"media_info" options:3])
                     {
-                      if ([v52 compare:@"media_player" options:3])
+                      if ([type2 compare:@"media_player" options:3])
                       {
-                        if ([v52 compare:@"now_playing" options:3])
+                        if ([type2 compare:@"now_playing" options:3])
                         {
-                          if ([v52 compare:@"rich_title" options:3])
+                          if ([type2 compare:@"rich_title" options:3])
                           {
-                            if ([v52 compare:@"row" options:3])
+                            if ([type2 compare:@"row" options:3])
                             {
-                              if ([v52 compare:@"scoreboard" options:3])
+                              if ([type2 compare:@"scoreboard" options:3])
                               {
-                                if ([v52 compare:@"social_media_post" options:3])
+                                if ([type2 compare:@"social_media_post" options:3])
                                 {
-                                  if ([v52 compare:@"stock_chart" options:3])
+                                  if ([type2 compare:@"stock_chart" options:3])
                                   {
-                                    if ([v52 compare:@"table_header_row" options:3])
+                                    if ([type2 compare:@"table_header_row" options:3])
                                     {
-                                      if ([v52 compare:@"table_row" options:3])
+                                      if ([type2 compare:@"table_row" options:3])
                                       {
-                                        if ([v52 compare:@"text_columns" options:3])
+                                        if ([type2 compare:@"text_columns" options:3])
                                         {
-                                          if ([v52 compare:@"title" options:3])
+                                          if ([type2 compare:@"title" options:3])
                                           {
-                                            if ([v52 compare:@"track_list" options:3])
+                                            if ([type2 compare:@"track_list" options:3])
                                             {
-                                              if ([v52 compare:@"audio_playback" options:3])
+                                              if ([type2 compare:@"audio_playback" options:3])
                                               {
-                                                if ([v52 compare:@"flight" options:3])
+                                                if ([type2 compare:@"flight" options:3])
                                                 {
-                                                  if ([v52 compare:@"activity_indicator" options:3])
+                                                  if ([type2 compare:@"activity_indicator" options:3])
                                                   {
-                                                    if ([v52 compare:@"web" options:3])
+                                                    if ([type2 compare:@"web" options:3])
                                                     {
-                                                      if ([v52 compare:@"message" options:3])
+                                                      if ([type2 compare:@"message" options:3])
                                                       {
-                                                        if ([v52 compare:@"detailed_row" options:3])
+                                                        if ([type2 compare:@"detailed_row" options:3])
                                                         {
-                                                          if ([v52 compare:@"images" options:3])
+                                                          if ([type2 compare:@"images" options:3])
                                                           {
-                                                            if ([v52 compare:@"suggestion" options:3])
+                                                            if ([type2 compare:@"suggestion" options:3])
                                                             {
-                                                              if ([v52 compare:@"selectable_grid" options:3])
+                                                              if ([type2 compare:@"selectable_grid" options:3])
                                                               {
-                                                                if ([v52 compare:@"section_header" options:3])
+                                                                if ([type2 compare:@"section_header" options:3])
                                                                 {
-                                                                  if ([v52 compare:@"meta_info" options:3])
+                                                                  if ([type2 compare:@"meta_info" options:3])
                                                                   {
-                                                                    if ([v52 compare:@"watch_list" options:3])
+                                                                    if ([type2 compare:@"watch_list" options:3])
                                                                     {
-                                                                      if ([v52 compare:@"maps_detailed_row" options:3])
+                                                                      if ([type2 compare:@"maps_detailed_row" options:3])
                                                                       {
-                                                                        if ([v52 compare:@"button" options:3])
+                                                                        if ([type2 compare:@"button" options:3])
                                                                         {
-                                                                          if ([v52 compare:@"horizontal_button" options:3])
+                                                                          if ([type2 compare:@"horizontal_button" options:3])
                                                                           {
-                                                                            if ([v52 compare:@"vertical_layout" options:3])
+                                                                            if ([type2 compare:@"vertical_layout" options:3])
                                                                             {
-                                                                              if ([v52 compare:@"product" options:3])
+                                                                              if ([type2 compare:@"product" options:3])
                                                                               {
-                                                                                if ([v52 compare:@"horizontal_scroll" options:3])
+                                                                                if ([type2 compare:@"horizontal_scroll" options:3])
                                                                                 {
-                                                                                  if ([v52 compare:@"media_remote_control" options:3])
+                                                                                  if ([type2 compare:@"media_remote_control" options:3])
                                                                                   {
-                                                                                    if ([v52 compare:@"map_place" options:3])
+                                                                                    if ([type2 compare:@"map_place" options:3])
                                                                                     {
-                                                                                      if ([v52 compare:@"compact_row" options:3])
+                                                                                      if ([type2 compare:@"compact_row" options:3])
                                                                                       {
-                                                                                        if ([v52 compare:@"world_map" options:3])
+                                                                                        if ([type2 compare:@"world_map" options:3])
                                                                                         {
-                                                                                          if ([v52 compare:@"attribution_footer" options:3])
+                                                                                          if ([type2 compare:@"attribution_footer" options:3])
                                                                                           {
-                                                                                            if ([v52 compare:@"grid" options:3])
+                                                                                            if ([type2 compare:@"grid" options:3])
                                                                                             {
-                                                                                              if ([v52 compare:@"person_header" options:3])
+                                                                                              if ([type2 compare:@"person_header" options:3])
                                                                                               {
-                                                                                                if ([v52 compare:@"color_bar" options:3])
+                                                                                                if ([type2 compare:@"color_bar" options:3])
                                                                                                 {
-                                                                                                  if ([v52 compare:@"split" options:3])
+                                                                                                  if ([type2 compare:@"split" options:3])
                                                                                                   {
-                                                                                                    if ([v52 compare:@"link_presentation" options:3])
+                                                                                                    if ([type2 compare:@"link_presentation" options:3])
                                                                                                     {
-                                                                                                      if ([v52 compare:@"find_my" options:3])
+                                                                                                      if ([type2 compare:@"find_my" options:3])
                                                                                                       {
-                                                                                                        if ([v52 compare:@"hero" options:3])
+                                                                                                        if ([type2 compare:@"hero" options:3])
                                                                                                         {
-                                                                                                          if ([v52 compare:@"news" options:3])
+                                                                                                          if ([type2 compare:@"news" options:3])
                                                                                                           {
-                                                                                                            if ([v52 compare:@"mini" options:3])
+                                                                                                            if ([type2 compare:@"mini" options:3])
                                                                                                             {
-                                                                                                              if ([v52 compare:@"info" options:3])
+                                                                                                              if ([type2 compare:@"info" options:3])
                                                                                                               {
-                                                                                                                if ([v52 compare:@"collection" options:3])
+                                                                                                                if ([type2 compare:@"collection" options:3])
                                                                                                                 {
-                                                                                                                  if ([v52 compare:@"combined" options:3])
+                                                                                                                  if ([type2 compare:@"combined" options:3])
                                                                                                                   {
-                                                                                                                    if ([v52 compare:@"response_wrapper" options:3])
+                                                                                                                    if ([type2 compare:@"response_wrapper" options:3])
                                                                                                                     {
-                                                                                                                      if ([v52 compare:@"listen_to" options:3])
+                                                                                                                      if ([type2 compare:@"listen_to" options:3])
                                                                                                                       {
-                                                                                                                        if ([v52 compare:@"watch_now" options:3])
+                                                                                                                        if ([type2 compare:@"watch_now" options:3])
                                                                                                                         {
-                                                                                                                          if ([v52 compare:@"stroke_animation" options:3])
+                                                                                                                          if ([type2 compare:@"stroke_animation" options:3])
                                                                                                                           {
-                                                                                                                            if ([v52 compare:@"button_list" options:3])
+                                                                                                                            if ([type2 compare:@"button_list" options:3])
                                                                                                                             {
-                                                                                                                              if ([v52 compare:@"command_row" options:3])
+                                                                                                                              if ([type2 compare:@"command_row" options:3])
                                                                                                                               {
-                                                                                                                                if ([v52 compare:@"leading_trailing" options:3])
+                                                                                                                                if ([type2 compare:@"leading_trailing" options:3])
                                                                                                                                 {
-                                                                                                                                  if ([v52 compare:@"hero_title" options:3])
+                                                                                                                                  if ([type2 compare:@"hero_title" options:3])
                                                                                                                                   {
-                                                                                                                                    if ([v52 compare:@"archive_view" options:3])
+                                                                                                                                    if ([type2 compare:@"archive_view" options:3])
                                                                                                                                     {
-                                                                                                                                      if ([v52 compare:@"app_icon" options:3])
+                                                                                                                                      if ([type2 compare:@"app_icon" options:3])
                                                                                                                                       {
-                                                                                                                                        if ([v52 compare:@"large_title_detailed_row" options:3])
+                                                                                                                                        if ([type2 compare:@"large_title_detailed_row" options:3])
                                                                                                                                         {
-                                                                                                                                          if ([v52 compare:@"rf_summary_item_short_number" options:3])
+                                                                                                                                          if ([type2 compare:@"rf_summary_item_short_number" options:3])
                                                                                                                                           {
-                                                                                                                                            if ([v52 compare:@"rf_summary_item_text" options:3])
+                                                                                                                                            if ([type2 compare:@"rf_summary_item_text" options:3])
                                                                                                                                             {
-                                                                                                                                              if ([v52 compare:@"rf_summary_item_standard" options:3])
+                                                                                                                                              if ([type2 compare:@"rf_summary_item_standard" options:3])
                                                                                                                                               {
-                                                                                                                                                if ([v52 compare:@"rf_fact_item_short_number" options:3])
+                                                                                                                                                if ([type2 compare:@"rf_fact_item_short_number" options:3])
                                                                                                                                                 {
-                                                                                                                                                  if ([v52 compare:@"rf_fact_item_standard" options:3])
+                                                                                                                                                  if ([type2 compare:@"rf_fact_item_standard" options:3])
                                                                                                                                                   {
-                                                                                                                                                    if ([v52 compare:@"rf_long_item_standard" options:3])
+                                                                                                                                                    if ([type2 compare:@"rf_long_item_standard" options:3])
                                                                                                                                                     {
-                                                                                                                                                      if ([v52 compare:@"rf_primary_header_rich" options:3])
+                                                                                                                                                      if ([type2 compare:@"rf_primary_header_rich" options:3])
                                                                                                                                                       {
-                                                                                                                                                        if ([v52 compare:@"rf_primary_header_standard" options:3])
+                                                                                                                                                        if ([type2 compare:@"rf_primary_header_standard" options:3])
                                                                                                                                                         {
-                                                                                                                                                          if ([v52 compare:@"rf_reference_footnote" options:3])
+                                                                                                                                                          if ([type2 compare:@"rf_reference_footnote" options:3])
                                                                                                                                                           {
-                                                                                                                                                            if ([v52 compare:@"rf_reference_rich" options:3])
+                                                                                                                                                            if ([type2 compare:@"rf_reference_rich" options:3])
                                                                                                                                                             {
-                                                                                                                                                              if ([v52 compare:@"rf_simple_item_rich" options:3])
+                                                                                                                                                              if ([type2 compare:@"rf_simple_item_rich" options:3])
                                                                                                                                                               {
-                                                                                                                                                                if ([v52 compare:@"rf_simple_item_standard" options:3])
+                                                                                                                                                                if ([type2 compare:@"rf_simple_item_standard" options:3])
                                                                                                                                                                 {
-                                                                                                                                                                  if ([v52 compare:@"rf_summary_item_aligned_text" options:3])
+                                                                                                                                                                  if ([type2 compare:@"rf_summary_item_aligned_text" options:3])
                                                                                                                                                                   {
-                                                                                                                                                                    if ([v52 compare:@"rf_expandable_standard" options:3])
+                                                                                                                                                                    if ([type2 compare:@"rf_expandable_standard" options:3])
                                                                                                                                                                     {
-                                                                                                                                                                      if ([v52 compare:@"rf_fact_item_button" options:3])
+                                                                                                                                                                      if ([type2 compare:@"rf_fact_item_button" options:3])
                                                                                                                                                                       {
                                                                                                                                                                         v53 = 0;
                                                                                                                                                                       }
@@ -1456,164 +1456,164 @@ LABEL_156:
         else
         {
           v54 = objc_opt_class();
-          v52 = NSStringFromClass(v54);
-          if (([v52 isEqualToString:@"SFNoneCardSection"] & 1) == 0)
+          type2 = NSStringFromClass(v54);
+          if (([type2 isEqualToString:@"SFNoneCardSection"] & 1) == 0)
           {
-            if (([v52 isEqualToString:@"SFAppLinkCardSection"] & 1) == 0)
+            if (([type2 isEqualToString:@"SFAppLinkCardSection"] & 1) == 0)
             {
-              if (([v52 isEqualToString:@"SFDescriptionCardSection"] & 1) == 0)
+              if (([type2 isEqualToString:@"SFDescriptionCardSection"] & 1) == 0)
               {
-                if (([v52 isEqualToString:@"SFKeyValueDataCardSection"] & 1) == 0)
+                if (([type2 isEqualToString:@"SFKeyValueDataCardSection"] & 1) == 0)
                 {
-                  if (([v52 isEqualToString:@"SFMapCardSection"] & 1) == 0)
+                  if (([type2 isEqualToString:@"SFMapCardSection"] & 1) == 0)
                   {
-                    if (([v52 isEqualToString:@"SFMediaInfoCardSection"] & 1) == 0)
+                    if (([type2 isEqualToString:@"SFMediaInfoCardSection"] & 1) == 0)
                     {
-                      if (([v52 isEqualToString:@"SFMediaPlayerCardSection"] & 1) == 0)
+                      if (([type2 isEqualToString:@"SFMediaPlayerCardSection"] & 1) == 0)
                       {
-                        if (([v52 isEqualToString:@"SFNowPlayingCardSection"] & 1) == 0)
+                        if (([type2 isEqualToString:@"SFNowPlayingCardSection"] & 1) == 0)
                         {
-                          if (([v52 isEqualToString:@"SFRichTitleCardSection"] & 1) == 0)
+                          if (([type2 isEqualToString:@"SFRichTitleCardSection"] & 1) == 0)
                           {
-                            if (([v52 isEqualToString:@"SFRowCardSection"] & 1) == 0)
+                            if (([type2 isEqualToString:@"SFRowCardSection"] & 1) == 0)
                             {
-                              if (([v52 isEqualToString:@"SFScoreboardCardSection"] & 1) == 0)
+                              if (([type2 isEqualToString:@"SFScoreboardCardSection"] & 1) == 0)
                               {
-                                if (([v52 isEqualToString:@"SFSocialMediaPostCardSection"] & 1) == 0)
+                                if (([type2 isEqualToString:@"SFSocialMediaPostCardSection"] & 1) == 0)
                                 {
-                                  if (([v52 isEqualToString:@"SFStockChartCardSection"] & 1) == 0)
+                                  if (([type2 isEqualToString:@"SFStockChartCardSection"] & 1) == 0)
                                   {
-                                    if (([v52 isEqualToString:@"SFTableHeaderRowCardSection"] & 1) == 0)
+                                    if (([type2 isEqualToString:@"SFTableHeaderRowCardSection"] & 1) == 0)
                                     {
-                                      if (([v52 isEqualToString:@"SFTableRowCardSection"] & 1) == 0)
+                                      if (([type2 isEqualToString:@"SFTableRowCardSection"] & 1) == 0)
                                       {
-                                        if (([v52 isEqualToString:@"SFTextColumnsCardSection"] & 1) == 0)
+                                        if (([type2 isEqualToString:@"SFTextColumnsCardSection"] & 1) == 0)
                                         {
-                                          if (([v52 isEqualToString:@"SFTitleCardSection"] & 1) == 0)
+                                          if (([type2 isEqualToString:@"SFTitleCardSection"] & 1) == 0)
                                           {
-                                            if (([v52 isEqualToString:@"SFTrackListCardSection"] & 1) == 0)
+                                            if (([type2 isEqualToString:@"SFTrackListCardSection"] & 1) == 0)
                                             {
-                                              if (([v52 isEqualToString:@"SFAudioPlaybackCardSection"] & 1) == 0)
+                                              if (([type2 isEqualToString:@"SFAudioPlaybackCardSection"] & 1) == 0)
                                               {
-                                                if (([v52 isEqualToString:@"SFFlightCardSection"] & 1) == 0)
+                                                if (([type2 isEqualToString:@"SFFlightCardSection"] & 1) == 0)
                                                 {
-                                                  if (([v52 isEqualToString:@"SFActivityIndicatorCardSection"] & 1) == 0)
+                                                  if (([type2 isEqualToString:@"SFActivityIndicatorCardSection"] & 1) == 0)
                                                   {
-                                                    if (([v52 isEqualToString:@"SFWebCardSection"] & 1) == 0)
+                                                    if (([type2 isEqualToString:@"SFWebCardSection"] & 1) == 0)
                                                     {
-                                                      if (([v52 isEqualToString:@"SFMessageCardSection"] & 1) == 0)
+                                                      if (([type2 isEqualToString:@"SFMessageCardSection"] & 1) == 0)
                                                       {
-                                                        if (([v52 isEqualToString:@"SFDetailedRowCardSection"] & 1) == 0)
+                                                        if (([type2 isEqualToString:@"SFDetailedRowCardSection"] & 1) == 0)
                                                         {
-                                                          if (([v52 isEqualToString:@"SFImagesCardSection"] & 1) == 0)
+                                                          if (([type2 isEqualToString:@"SFImagesCardSection"] & 1) == 0)
                                                           {
-                                                            if (([v52 isEqualToString:@"SFSuggestionCardSection"] & 1) == 0)
+                                                            if (([type2 isEqualToString:@"SFSuggestionCardSection"] & 1) == 0)
                                                             {
-                                                              if (([v52 isEqualToString:@"SFSelectableGridCardSection"] & 1) == 0)
+                                                              if (([type2 isEqualToString:@"SFSelectableGridCardSection"] & 1) == 0)
                                                               {
-                                                                if (([v52 isEqualToString:@"SFSectionHeaderCardSection"] & 1) == 0)
+                                                                if (([type2 isEqualToString:@"SFSectionHeaderCardSection"] & 1) == 0)
                                                                 {
-                                                                  if (([v52 isEqualToString:@"SFMetaInfoCardSection"] & 1) == 0)
+                                                                  if (([type2 isEqualToString:@"SFMetaInfoCardSection"] & 1) == 0)
                                                                   {
-                                                                    if (([v52 isEqualToString:@"SFWatchListCardSection"] & 1) == 0)
+                                                                    if (([type2 isEqualToString:@"SFWatchListCardSection"] & 1) == 0)
                                                                     {
-                                                                      if (([v52 isEqualToString:@"SFMapsDetailedRowCardSection"] & 1) == 0)
+                                                                      if (([type2 isEqualToString:@"SFMapsDetailedRowCardSection"] & 1) == 0)
                                                                       {
-                                                                        if (([v52 isEqualToString:@"SFButtonCardSection"] & 1) == 0)
+                                                                        if (([type2 isEqualToString:@"SFButtonCardSection"] & 1) == 0)
                                                                         {
-                                                                          if (([v52 isEqualToString:@"SFHorizontalButtonCardSection"] & 1) == 0)
+                                                                          if (([type2 isEqualToString:@"SFHorizontalButtonCardSection"] & 1) == 0)
                                                                           {
-                                                                            if (([v52 isEqualToString:@"SFVerticalLayoutCardSection"] & 1) == 0)
+                                                                            if (([type2 isEqualToString:@"SFVerticalLayoutCardSection"] & 1) == 0)
                                                                             {
-                                                                              if (([v52 isEqualToString:@"SFProductCardSection"] & 1) == 0)
+                                                                              if (([type2 isEqualToString:@"SFProductCardSection"] & 1) == 0)
                                                                               {
-                                                                                if (([v52 isEqualToString:@"SFHorizontalScrollCardSection"] & 1) == 0)
+                                                                                if (([type2 isEqualToString:@"SFHorizontalScrollCardSection"] & 1) == 0)
                                                                                 {
-                                                                                  if (([v52 isEqualToString:@"SFMediaRemoteControlCardSection"] & 1) == 0)
+                                                                                  if (([type2 isEqualToString:@"SFMediaRemoteControlCardSection"] & 1) == 0)
                                                                                   {
-                                                                                    if (([v52 isEqualToString:@"SFMapPlaceCardSection"] & 1) == 0)
+                                                                                    if (([type2 isEqualToString:@"SFMapPlaceCardSection"] & 1) == 0)
                                                                                     {
-                                                                                      if (([v52 isEqualToString:@"SFCompactRowCardSection"] & 1) == 0)
+                                                                                      if (([type2 isEqualToString:@"SFCompactRowCardSection"] & 1) == 0)
                                                                                       {
-                                                                                        if (([v52 isEqualToString:@"SFWorldMapCardSection"] & 1) == 0)
+                                                                                        if (([type2 isEqualToString:@"SFWorldMapCardSection"] & 1) == 0)
                                                                                         {
-                                                                                          if (([v52 isEqualToString:@"SFAttributionFooterCardSection"] & 1) == 0)
+                                                                                          if (([type2 isEqualToString:@"SFAttributionFooterCardSection"] & 1) == 0)
                                                                                           {
-                                                                                            if (([v52 isEqualToString:@"SFGridCardSection"] & 1) == 0)
+                                                                                            if (([type2 isEqualToString:@"SFGridCardSection"] & 1) == 0)
                                                                                             {
-                                                                                              if (([v52 isEqualToString:@"SFPersonHeaderCardSection"] & 1) == 0)
+                                                                                              if (([type2 isEqualToString:@"SFPersonHeaderCardSection"] & 1) == 0)
                                                                                               {
-                                                                                                if (([v52 isEqualToString:@"SFColorBarCardSection"] & 1) == 0)
+                                                                                                if (([type2 isEqualToString:@"SFColorBarCardSection"] & 1) == 0)
                                                                                                 {
-                                                                                                  if (([v52 isEqualToString:@"SFSplitCardSection"] & 1) == 0)
+                                                                                                  if (([type2 isEqualToString:@"SFSplitCardSection"] & 1) == 0)
                                                                                                   {
-                                                                                                    if (([v52 isEqualToString:@"SFLinkPresentationCardSection"] & 1) == 0)
+                                                                                                    if (([type2 isEqualToString:@"SFLinkPresentationCardSection"] & 1) == 0)
                                                                                                     {
-                                                                                                      if (([v52 isEqualToString:@"SFFindMyCardSection"] & 1) == 0)
+                                                                                                      if (([type2 isEqualToString:@"SFFindMyCardSection"] & 1) == 0)
                                                                                                       {
-                                                                                                        if (([v52 isEqualToString:@"SFHeroCardSection"] & 1) == 0)
+                                                                                                        if (([type2 isEqualToString:@"SFHeroCardSection"] & 1) == 0)
                                                                                                         {
-                                                                                                          if (([v52 isEqualToString:@"SFNewsCardSection"] & 1) == 0)
+                                                                                                          if (([type2 isEqualToString:@"SFNewsCardSection"] & 1) == 0)
                                                                                                           {
-                                                                                                            if (([v52 isEqualToString:@"SFMiniCardSection"] & 1) == 0)
+                                                                                                            if (([type2 isEqualToString:@"SFMiniCardSection"] & 1) == 0)
                                                                                                             {
-                                                                                                              if (([v52 isEqualToString:@"SFInfoCardSection"] & 1) == 0)
+                                                                                                              if (([type2 isEqualToString:@"SFInfoCardSection"] & 1) == 0)
                                                                                                               {
-                                                                                                                if (([v52 isEqualToString:@"SFCollectionCardSection"] & 1) == 0)
+                                                                                                                if (([type2 isEqualToString:@"SFCollectionCardSection"] & 1) == 0)
                                                                                                                 {
-                                                                                                                  if (([v52 isEqualToString:@"SFCombinedCardSection"] & 1) == 0)
+                                                                                                                  if (([type2 isEqualToString:@"SFCombinedCardSection"] & 1) == 0)
                                                                                                                   {
-                                                                                                                    if (([v52 isEqualToString:@"SFResponseWrapperCardSection"] & 1) == 0)
+                                                                                                                    if (([type2 isEqualToString:@"SFResponseWrapperCardSection"] & 1) == 0)
                                                                                                                     {
-                                                                                                                      if (([v52 isEqualToString:@"SFListenToCardSection"] & 1) == 0)
+                                                                                                                      if (([type2 isEqualToString:@"SFListenToCardSection"] & 1) == 0)
                                                                                                                       {
-                                                                                                                        if (([v52 isEqualToString:@"SFWatchNowCardSection"] & 1) == 0)
+                                                                                                                        if (([type2 isEqualToString:@"SFWatchNowCardSection"] & 1) == 0)
                                                                                                                         {
-                                                                                                                          if (([v52 isEqualToString:@"SFStrokeAnimationCardSection"] & 1) == 0)
+                                                                                                                          if (([type2 isEqualToString:@"SFStrokeAnimationCardSection"] & 1) == 0)
                                                                                                                           {
-                                                                                                                            if (([v52 isEqualToString:@"SFButtonListCardSection"] & 1) == 0)
+                                                                                                                            if (([type2 isEqualToString:@"SFButtonListCardSection"] & 1) == 0)
                                                                                                                             {
-                                                                                                                              if (([v52 isEqualToString:@"SFCommandRowCardSection"] & 1) == 0)
+                                                                                                                              if (([type2 isEqualToString:@"SFCommandRowCardSection"] & 1) == 0)
                                                                                                                               {
-                                                                                                                                if (([v52 isEqualToString:@"SFLeadingTrailingCardSection"] & 1) == 0)
+                                                                                                                                if (([type2 isEqualToString:@"SFLeadingTrailingCardSection"] & 1) == 0)
                                                                                                                                 {
-                                                                                                                                  if (([v52 isEqualToString:@"SFHeroTitleCardSection"] & 1) == 0)
+                                                                                                                                  if (([type2 isEqualToString:@"SFHeroTitleCardSection"] & 1) == 0)
                                                                                                                                   {
-                                                                                                                                    if (([v52 isEqualToString:@"SFArchiveViewCardSection"] & 1) == 0)
+                                                                                                                                    if (([type2 isEqualToString:@"SFArchiveViewCardSection"] & 1) == 0)
                                                                                                                                     {
-                                                                                                                                      if (([v52 isEqualToString:@"SFAppIconCardSection"] & 1) == 0)
+                                                                                                                                      if (([type2 isEqualToString:@"SFAppIconCardSection"] & 1) == 0)
                                                                                                                                       {
-                                                                                                                                        if (([v52 isEqualToString:@"SFLargeTitleDetailedRowCardSection"] & 1) == 0)
+                                                                                                                                        if (([type2 isEqualToString:@"SFLargeTitleDetailedRowCardSection"] & 1) == 0)
                                                                                                                                         {
-                                                                                                                                          if (([v52 isEqualToString:@"RFSummaryItemShortNumberCardSection"] & 1) == 0)
+                                                                                                                                          if (([type2 isEqualToString:@"RFSummaryItemShortNumberCardSection"] & 1) == 0)
                                                                                                                                           {
-                                                                                                                                            if (([v52 isEqualToString:@"RFSummaryItemTextCardSection"] & 1) == 0)
+                                                                                                                                            if (([type2 isEqualToString:@"RFSummaryItemTextCardSection"] & 1) == 0)
                                                                                                                                             {
-                                                                                                                                              if (([v52 isEqualToString:@"RFSummaryItemStandardCardSection"] & 1) == 0)
+                                                                                                                                              if (([type2 isEqualToString:@"RFSummaryItemStandardCardSection"] & 1) == 0)
                                                                                                                                               {
-                                                                                                                                                if (([v52 isEqualToString:@"RFFactItemShortNumberCardSection"] & 1) == 0)
+                                                                                                                                                if (([type2 isEqualToString:@"RFFactItemShortNumberCardSection"] & 1) == 0)
                                                                                                                                                 {
-                                                                                                                                                  if (([v52 isEqualToString:@"RFFactItemStandardCardSection"] & 1) == 0)
+                                                                                                                                                  if (([type2 isEqualToString:@"RFFactItemStandardCardSection"] & 1) == 0)
                                                                                                                                                   {
-                                                                                                                                                    if (([v52 isEqualToString:@"RFLongItemStandardCardSection"] & 1) == 0)
+                                                                                                                                                    if (([type2 isEqualToString:@"RFLongItemStandardCardSection"] & 1) == 0)
                                                                                                                                                     {
-                                                                                                                                                      if (([v52 isEqualToString:@"RFPrimaryHeaderRichCardSection"] & 1) == 0)
+                                                                                                                                                      if (([type2 isEqualToString:@"RFPrimaryHeaderRichCardSection"] & 1) == 0)
                                                                                                                                                       {
-                                                                                                                                                        if (([v52 isEqualToString:@"RFPrimaryHeaderStandardCardSection"] & 1) == 0)
+                                                                                                                                                        if (([type2 isEqualToString:@"RFPrimaryHeaderStandardCardSection"] & 1) == 0)
                                                                                                                                                         {
-                                                                                                                                                          if (([v52 isEqualToString:@"RFReferenceFootnoteCardSection"] & 1) == 0)
+                                                                                                                                                          if (([type2 isEqualToString:@"RFReferenceFootnoteCardSection"] & 1) == 0)
                                                                                                                                                           {
-                                                                                                                                                            if (([v52 isEqualToString:@"RFReferenceRichCardSection"] & 1) == 0)
+                                                                                                                                                            if (([type2 isEqualToString:@"RFReferenceRichCardSection"] & 1) == 0)
                                                                                                                                                             {
-                                                                                                                                                              if (([v52 isEqualToString:@"RFSimpleItemRichCardSection"] & 1) == 0)
+                                                                                                                                                              if (([type2 isEqualToString:@"RFSimpleItemRichCardSection"] & 1) == 0)
                                                                                                                                                               {
-                                                                                                                                                                if (([v52 isEqualToString:@"RFSimpleItemStandardCardSection"] & 1) == 0)
+                                                                                                                                                                if (([type2 isEqualToString:@"RFSimpleItemStandardCardSection"] & 1) == 0)
                                                                                                                                                                 {
-                                                                                                                                                                  if (([v52 isEqualToString:@"RFSummaryItemAlignedTextCardSection"] & 1) == 0)
+                                                                                                                                                                  if (([type2 isEqualToString:@"RFSummaryItemAlignedTextCardSection"] & 1) == 0)
                                                                                                                                                                   {
-                                                                                                                                                                    if (([v52 isEqualToString:@"RFExpandableStandardCardSection"] & 1) == 0)
+                                                                                                                                                                    if (([type2 isEqualToString:@"RFExpandableStandardCardSection"] & 1) == 0)
                                                                                                                                                                     {
-                                                                                                                                                                      if ([v52 isEqualToString:@"RFFactItemButtonCardSection"])
+                                                                                                                                                                      if ([type2 isEqualToString:@"RFFactItemButtonCardSection"])
                                                                                                                                                                       {
                                                                                                                                                                         v53 = 214;
                                                                                                                                                                       }
@@ -1854,8 +1854,8 @@ LABEL_302:
 LABEL_306:
 
                 [(_CPCardSectionForFeedback *)v5 setCardSectionType:v53];
-                v61 = [v4 cardSectionDetail];
-                [(_CPCardSectionForFeedback *)v5 setCardSectionDetail:v61];
+                cardSectionDetail = [facadeCopy cardSectionDetail];
+                [(_CPCardSectionForFeedback *)v5 setCardSectionDetail:cardSectionDetail];
 
                 v62 = v5;
                 goto LABEL_307;
@@ -1877,29 +1877,29 @@ LABEL_140:
       }
     }
 
-    else if ([v4 isMemberOfClass:objc_opt_class()])
+    else if ([facadeCopy isMemberOfClass:objc_opt_class()])
     {
-      v58 = [v4 internalDetailedRowCardSection];
-      v59 = [v58 buttonItems];
+      internalDetailedRowCardSection = [facadeCopy internalDetailedRowCardSection];
+      buttonItems = [internalDetailedRowCardSection buttonItems];
 
-      if (v59)
+      if (buttonItems)
       {
-        v56 = [v4 internalDetailedRowCardSection];
-        v57 = [v56 buttonItems];
+        buttonItem2 = [facadeCopy internalDetailedRowCardSection];
+        buttonItems2 = [buttonItem2 buttonItems];
         goto LABEL_149;
       }
     }
 
-    else if ([v4 isMemberOfClass:objc_opt_class()])
+    else if ([facadeCopy isMemberOfClass:objc_opt_class()])
     {
-      v60 = [v4 buttonItems];
+      buttonItems3 = [facadeCopy buttonItems];
 
-      if (v60)
+      if (buttonItems3)
       {
 LABEL_4:
-        v12 = [v4 buttonItems];
+        buttons = [facadeCopy buttonItems];
 LABEL_5:
-        v13 = v12;
+        v13 = buttons;
         goto LABEL_6;
       }
     }

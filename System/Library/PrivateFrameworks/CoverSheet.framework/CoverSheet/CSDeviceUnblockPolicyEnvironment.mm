@@ -1,23 +1,23 @@
 @interface CSDeviceUnblockPolicyEnvironment
-- (BOOL)isEqual:(id)a3;
-- (CSDeviceUnblockPolicyEnvironment)initWithBuilder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (CSDeviceUnblockPolicyEnvironment)initWithBuilder:(id)builder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation CSDeviceUnblockPolicyEnvironment
 
-- (CSDeviceUnblockPolicyEnvironment)initWithBuilder:(id)a3
+- (CSDeviceUnblockPolicyEnvironment)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v8.receiver = self;
   v8.super_class = CSDeviceUnblockPolicyEnvironment;
   v5 = [(CSDeviceUnblockPolicyEnvironment *)&v8 init];
   if (v5)
   {
     v6 = objc_alloc_init(CSDeviceUnblockPolicyEnvironmentBuilder);
-    v4[2](v4, v6);
+    builderCopy[2](builderCopy, v6);
     v5->_isUserRequestedEraseEnabled = [(CSDeviceUnblockPolicyEnvironmentBuilder *)v6 isUserRequestedEraseEnabled];
     v5->_isUserFindMyAccountPresent = [(CSDeviceUnblockPolicyEnvironmentBuilder *)v6 isUserFindMyAccountPresent];
     v5->_isDeviceInternetConnectionActive = [(CSDeviceUnblockPolicyEnvironmentBuilder *)v6 isDeviceInternetConnectionActive];
@@ -27,7 +27,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CSDeviceUnblockPolicyEnvironment alloc];
   v6[0] = MEMORY[0x277D85DD0];
@@ -99,18 +99,18 @@
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(CSDeviceUnblockPolicyEnvironment *)self isUserRequestedEraseEnabled];
-    if (v6 == [v5 isUserRequestedEraseEnabled] && (v7 = -[CSDeviceUnblockPolicyEnvironment isUserFindMyAccountPresent](self, "isUserFindMyAccountPresent"), v7 == objc_msgSend(v5, "isUserFindMyAccountPresent")) && (v8 = -[CSDeviceUnblockPolicyEnvironment isDeviceInternetConnectionActive](self, "isDeviceInternetConnectionActive"), v8 == objc_msgSend(v5, "isDeviceInternetConnectionActive")))
+    v5 = equalCopy;
+    isUserRequestedEraseEnabled = [(CSDeviceUnblockPolicyEnvironment *)self isUserRequestedEraseEnabled];
+    if (isUserRequestedEraseEnabled == [v5 isUserRequestedEraseEnabled] && (v7 = -[CSDeviceUnblockPolicyEnvironment isUserFindMyAccountPresent](self, "isUserFindMyAccountPresent"), v7 == objc_msgSend(v5, "isUserFindMyAccountPresent")) && (v8 = -[CSDeviceUnblockPolicyEnvironment isDeviceInternetConnectionActive](self, "isDeviceInternetConnectionActive"), v8 == objc_msgSend(v5, "isDeviceInternetConnectionActive")))
     {
-      v11 = [(CSDeviceUnblockPolicyEnvironment *)self isPasscodeGracePeriodUsable];
-      v9 = v11 ^ [v5 isPasscodeGracePeriodUsable] ^ 1;
+      isPasscodeGracePeriodUsable = [(CSDeviceUnblockPolicyEnvironment *)self isPasscodeGracePeriodUsable];
+      v9 = isPasscodeGracePeriodUsable ^ [v5 isPasscodeGracePeriodUsable] ^ 1;
     }
 
     else

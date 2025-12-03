@@ -2,7 +2,7 @@
 + (id)DailyStatus;
 + (id)configurationForDailyStatus;
 + (id)storeConfigurationForDailyStatus;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -11,7 +11,7 @@
 + (id)DailyStatus
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForDailyStatus];
+  configurationForDailyStatus = [self configurationForDailyStatus];
   v3 = +[BMAssetDeliveryDailyStatus columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -23,7 +23,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"AssetDelivery.UAF.DailyStatus" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"AssetDelivery.UAF.DailyStatus" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"AssetDelivery.UAF.DailyStatus" schema:v9 configuration:configurationForDailyStatus];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -32,13 +32,13 @@
 
 + (id)configurationForDailyStatus
 {
-  v3 = [a1 storeConfigurationForDailyStatus];
-  v4 = [a1 syncPolicyForDailyStatus];
+  storeConfigurationForDailyStatus = [self storeConfigurationForDailyStatus];
+  syncPolicyForDailyStatus = [self syncPolicyForDailyStatus];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"6BC437ED-3E06-4ECC-9114-B5E3AA2EDE09"];
   BYTE2(v9) = 0;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"AssetDelivery.UAF.DailyStatus" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"AssetDelivery.UAF.DailyStatus" eventClass:objc_opt_class() storeConfig:storeConfigurationForDailyStatus syncPolicy:syncPolicyForDailyStatus legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -52,19 +52,19 @@
   return v4;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"DailyStatus"])
+  if ([name isEqualToString:@"DailyStatus"])
   {
-    v4 = [a1 DailyStatus];
+    dailyStatus = [self DailyStatus];
   }
 
   else
   {
-    v4 = 0;
+    dailyStatus = 0;
   }
 
-  return v4;
+  return dailyStatus;
 }
 
 + (id)validKeyPaths

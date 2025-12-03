@@ -1,39 +1,39 @@
 @interface HMDBulletinNotificationRegistrationUtilities
-+ (id)accessoryRegistrationFromLocalRegistration:(id)a3;
-+ (id)accessoryRegistrationFromMKFRegistration:(id)a3;
-+ (id)adjustedOffsetFromMKFLocalElementTimePeriodSunriseSunSet:(id)a3;
-+ (id)audioAnalysisNotificationRegistrationFromRemoteRegistration:(id)a3;
-+ (id)cameraAccessModeRegistrationFromLocalRegistration:(id)a3;
-+ (id)cameraAccessModeRegistrationFromMKFRegistration:(id)a3;
-+ (id)cameraReachabilityRegistrationFromLocalRegistration:(id)a3;
-+ (id)cameraReachabilityRegistrationFromMKFRegistration:(id)a3;
-+ (id)cameraSignificantEventRegistrationFromLocalRegistration:(id)a3;
-+ (id)cameraSignificantEventRegistrationFromMKFRegistration:(id)a3;
-+ (id)conditionsFromLocalConditions:(id)a3;
-+ (id)conditionsFromMKFConditions:(id)a3;
-+ (id)createAndAddLocalConditionsToRegistration:(id)a3 moc:(id)a4 conditions:(id)a5;
-+ (id)createAndAddLocalPresenceConditionToRegistration:(id)a3 moc:(id)a4 condition:(id)a5;
-+ (id)createAndAddLocalTimePeriodConditionToRegistration:(id)a3 moc:(id)a4 condition:(id)a5;
-+ (id)createLocalElementFromSunriseSunset:(id)a3 moc:(id)a4;
-+ (id)createLocalElementFromTimeOfDay:(id)a3 moc:(id)a4;
-+ (id)endpointRegistrationFromLocalRegistration:(id)a3;
-+ (id)matterRegistrationFromLocalRegistration:(id)a3 home:(id)a4;
-+ (id)matterRegistrationFromMKFRegistration:(id)a3 home:(id)a4;
-+ (id)presenceConditionFromLocalCondition:(id)a3;
-+ (id)serviceRegistrationFromLocalRegistration:(id)a3;
-+ (id)timePeriodConditionFromLocalCondition:(id)a3;
++ (id)accessoryRegistrationFromLocalRegistration:(id)registration;
++ (id)accessoryRegistrationFromMKFRegistration:(id)registration;
++ (id)adjustedOffsetFromMKFLocalElementTimePeriodSunriseSunSet:(id)set;
++ (id)audioAnalysisNotificationRegistrationFromRemoteRegistration:(id)registration;
++ (id)cameraAccessModeRegistrationFromLocalRegistration:(id)registration;
++ (id)cameraAccessModeRegistrationFromMKFRegistration:(id)registration;
++ (id)cameraReachabilityRegistrationFromLocalRegistration:(id)registration;
++ (id)cameraReachabilityRegistrationFromMKFRegistration:(id)registration;
++ (id)cameraSignificantEventRegistrationFromLocalRegistration:(id)registration;
++ (id)cameraSignificantEventRegistrationFromMKFRegistration:(id)registration;
++ (id)conditionsFromLocalConditions:(id)conditions;
++ (id)conditionsFromMKFConditions:(id)conditions;
++ (id)createAndAddLocalConditionsToRegistration:(id)registration moc:(id)moc conditions:(id)conditions;
++ (id)createAndAddLocalPresenceConditionToRegistration:(id)registration moc:(id)moc condition:(id)condition;
++ (id)createAndAddLocalTimePeriodConditionToRegistration:(id)registration moc:(id)moc condition:(id)condition;
++ (id)createLocalElementFromSunriseSunset:(id)sunset moc:(id)moc;
++ (id)createLocalElementFromTimeOfDay:(id)day moc:(id)moc;
++ (id)endpointRegistrationFromLocalRegistration:(id)registration;
++ (id)matterRegistrationFromLocalRegistration:(id)registration home:(id)home;
++ (id)matterRegistrationFromMKFRegistration:(id)registration home:(id)home;
++ (id)presenceConditionFromLocalCondition:(id)condition;
++ (id)serviceRegistrationFromLocalRegistration:(id)registration;
++ (id)timePeriodConditionFromLocalCondition:(id)condition;
 @end
 
 @implementation HMDBulletinNotificationRegistrationUtilities
 
-+ (id)conditionsFromMKFConditions:(id)a3
++ (id)conditionsFromMKFConditions:(id)conditions
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __76__HMDBulletinNotificationRegistrationUtilities_conditionsFromMKFConditions___block_invoke;
   v5[3] = &__block_descriptor_40_e32__16__0___MKFBulletinCondition__8l;
-  v5[4] = a1;
-  v3 = [a3 na_map:v5];
+  v5[4] = self;
+  v3 = [conditions na_map:v5];
 
   return v3;
 }
@@ -181,49 +181,49 @@ id __76__HMDBulletinNotificationRegistrationUtilities_conditionsFromMKFCondition
   return v3;
 }
 
-+ (id)cameraAccessModeRegistrationFromMKFRegistration:(id)a3
++ (id)cameraAccessModeRegistrationFromMKFRegistration:(id)registration
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 conditions];
-  v6 = [a1 conditionsFromMKFConditions:v5];
+  registrationCopy = registration;
+  conditions = [registrationCopy conditions];
+  v6 = [self conditionsFromMKFConditions:conditions];
 
-  v7 = [v4 accessory];
-  v8 = [v7 modelID];
+  accessory = [registrationCopy accessory];
+  modelID = [accessory modelID];
 
   v9 = [HMDCameraAccessModeBulletinNotificationRegistration alloc];
   v10 = [MEMORY[0x277CBEB98] setWithArray:v6];
-  v11 = [(HMDCameraAccessModeBulletinNotificationRegistration *)v9 initWithAccessoryUUID:v8 conditions:v10];
+  v11 = [(HMDCameraAccessModeBulletinNotificationRegistration *)v9 initWithAccessoryUUID:modelID conditions:v10];
 
-  v12 = [v4 deviceIdsIdentifier];
-  v13 = [v4 deviceIdsDestination];
-  v14 = [v4 user];
-  v15 = [v14 modelID];
+  deviceIdsIdentifier = [registrationCopy deviceIdsIdentifier];
+  deviceIdsDestination = [registrationCopy deviceIdsDestination];
+  user = [registrationCopy user];
+  modelID2 = [user modelID];
 
-  v27 = v13;
-  v28 = v12;
-  v16 = [[HMDDeviceAddress alloc] initWithIDSIdentifier:v12 idsDestination:v13];
-  v17 = [[HMDBulletinNotificationRegistrationSource alloc] initWithUserUUID:v15 deviceAddress:v16];
+  v27 = deviceIdsDestination;
+  v28 = deviceIdsIdentifier;
+  v16 = [[HMDDeviceAddress alloc] initWithIDSIdentifier:deviceIdsIdentifier idsDestination:deviceIdsDestination];
+  v17 = [[HMDBulletinNotificationRegistrationSource alloc] initWithUserUUID:modelID2 deviceAddress:v16];
   v29 = [[HMDCameraAccessModeBulletinNotificationRegistrationRemote alloc] initWithCameraAccessModeBulletinNotificationRegistration:v11 source:v17];
   v18 = objc_autoreleasePoolPush();
-  v19 = a1;
+  selfCopy = self;
   v20 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {
     HMFGetLogIdentifier();
     v26 = v11;
-    v21 = v8;
+    v21 = modelID;
     v23 = v22 = v6;
     *buf = 138543874;
     v31 = v23;
     v32 = 2112;
     v33 = v29;
     v34 = 2112;
-    v35 = v4;
+    v35 = registrationCopy;
     _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_DEBUG, "%{public}@Initialized registration: %@ from MKF registration: %@", buf, 0x20u);
 
     v6 = v22;
-    v8 = v21;
+    modelID = v21;
     v11 = v26;
   }
 
@@ -233,50 +233,50 @@ id __76__HMDBulletinNotificationRegistrationUtilities_conditionsFromMKFCondition
   return v29;
 }
 
-+ (id)audioAnalysisNotificationRegistrationFromRemoteRegistration:(id)a3
++ (id)audioAnalysisNotificationRegistrationFromRemoteRegistration:(id)registration
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  registrationCopy = registration;
   v5 = MEMORY[0x277CBEB98];
-  v6 = [v4 conditions];
-  v7 = [a1 conditionsFromMKFConditions:v6];
+  conditions = [registrationCopy conditions];
+  v7 = [self conditionsFromMKFConditions:conditions];
   v8 = [v5 setWithArray:v7];
 
   v9 = [HMDAudioAnalysisEventBulletinNotificationRegistration alloc];
-  v10 = [v4 classifierOptions];
-  v11 = [v10 unsignedIntegerValue];
-  v12 = [v4 accessory];
-  v13 = [v12 modelID];
+  classifierOptions = [registrationCopy classifierOptions];
+  unsignedIntegerValue = [classifierOptions unsignedIntegerValue];
+  accessory = [registrationCopy accessory];
+  modelID = [accessory modelID];
   v31 = v8;
-  v14 = [(HMDAudioAnalysisEventBulletinNotificationRegistration *)v9 initWithConditions:v8 audioAnalysisClassifierOptions:v11 accessoryUUID:v13];
+  v14 = [(HMDAudioAnalysisEventBulletinNotificationRegistration *)v9 initWithConditions:v8 audioAnalysisClassifierOptions:unsignedIntegerValue accessoryUUID:modelID];
 
-  v15 = [v4 deviceIdsIdentifier];
-  v16 = [v4 deviceIdsDestination];
-  v17 = [v4 user];
-  v18 = [v17 modelID];
+  deviceIdsIdentifier = [registrationCopy deviceIdsIdentifier];
+  deviceIdsDestination = [registrationCopy deviceIdsDestination];
+  user = [registrationCopy user];
+  modelID2 = [user modelID];
 
-  v30 = v16;
-  v19 = [[HMDDeviceAddress alloc] initWithIDSIdentifier:v15 idsDestination:v16];
-  v20 = [[HMDBulletinNotificationRegistrationSource alloc] initWithUserUUID:v18 deviceAddress:v19];
+  v30 = deviceIdsDestination;
+  v19 = [[HMDDeviceAddress alloc] initWithIDSIdentifier:deviceIdsIdentifier idsDestination:deviceIdsDestination];
+  v20 = [[HMDBulletinNotificationRegistrationSource alloc] initWithUserUUID:modelID2 deviceAddress:v19];
   v21 = [[HMDAudioAnalysisEventBulletinNotificationRegistrationRemote alloc] initWithAudioAnalysisEventBulletinNotificationRegistration:v14 source:v20];
   v22 = objc_autoreleasePoolPush();
-  v23 = a1;
+  selfCopy = self;
   v24 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
   {
     HMFGetLogIdentifier();
-    v29 = v15;
+    v29 = deviceIdsIdentifier;
     v26 = v25 = v14;
     *buf = 138543874;
     v33 = v26;
     v34 = 2112;
     v35 = v21;
     v36 = 2112;
-    v37 = v4;
+    v37 = registrationCopy;
     _os_log_impl(&dword_229538000, v24, OS_LOG_TYPE_DEBUG, "%{public}@Initialized registration: %@ from MKF registration: %@", buf, 0x20u);
 
     v14 = v25;
-    v15 = v29;
+    deviceIdsIdentifier = v29;
   }
 
   objc_autoreleasePoolPop(v22);
@@ -285,49 +285,49 @@ id __76__HMDBulletinNotificationRegistrationUtilities_conditionsFromMKFCondition
   return v21;
 }
 
-+ (id)cameraReachabilityRegistrationFromMKFRegistration:(id)a3
++ (id)cameraReachabilityRegistrationFromMKFRegistration:(id)registration
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 conditions];
-  v6 = [a1 conditionsFromMKFConditions:v5];
+  registrationCopy = registration;
+  conditions = [registrationCopy conditions];
+  v6 = [self conditionsFromMKFConditions:conditions];
 
-  v7 = [v4 accessory];
-  v8 = [v7 modelID];
+  accessory = [registrationCopy accessory];
+  modelID = [accessory modelID];
 
   v9 = [HMDCameraReachabilityBulletinNotificationRegistration alloc];
   v10 = [MEMORY[0x277CBEB98] setWithArray:v6];
-  v11 = [(HMDCameraReachabilityBulletinNotificationRegistration *)v9 initWithAccessoryUUID:v8 conditions:v10];
+  v11 = [(HMDCameraReachabilityBulletinNotificationRegistration *)v9 initWithAccessoryUUID:modelID conditions:v10];
 
-  v12 = [v4 deviceIdsIdentifier];
-  v13 = [v4 deviceIdsDestination];
-  v14 = [v4 user];
-  v15 = [v14 modelID];
+  deviceIdsIdentifier = [registrationCopy deviceIdsIdentifier];
+  deviceIdsDestination = [registrationCopy deviceIdsDestination];
+  user = [registrationCopy user];
+  modelID2 = [user modelID];
 
-  v27 = v13;
-  v28 = v12;
-  v16 = [[HMDDeviceAddress alloc] initWithIDSIdentifier:v12 idsDestination:v13];
-  v17 = [[HMDBulletinNotificationRegistrationSource alloc] initWithUserUUID:v15 deviceAddress:v16];
+  v27 = deviceIdsDestination;
+  v28 = deviceIdsIdentifier;
+  v16 = [[HMDDeviceAddress alloc] initWithIDSIdentifier:deviceIdsIdentifier idsDestination:deviceIdsDestination];
+  v17 = [[HMDBulletinNotificationRegistrationSource alloc] initWithUserUUID:modelID2 deviceAddress:v16];
   v29 = [[HMDCameraReachabilityBulletinNotificationRegistrationRemote alloc] initWithCameraReachabilityBulletinNotificationRegistration:v11 source:v17];
   v18 = objc_autoreleasePoolPush();
-  v19 = a1;
+  selfCopy = self;
   v20 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {
     HMFGetLogIdentifier();
     v26 = v11;
-    v21 = v8;
+    v21 = modelID;
     v23 = v22 = v6;
     *buf = 138543874;
     v31 = v23;
     v32 = 2112;
     v33 = v29;
     v34 = 2112;
-    v35 = v4;
+    v35 = registrationCopy;
     _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_DEBUG, "%{public}@Initialized registration: %@ from MKF registration: %@", buf, 0x20u);
 
     v6 = v22;
-    v8 = v21;
+    modelID = v21;
     v11 = v26;
   }
 
@@ -337,59 +337,59 @@ id __76__HMDBulletinNotificationRegistrationUtilities_conditionsFromMKFCondition
   return v29;
 }
 
-+ (id)cameraSignificantEventRegistrationFromMKFRegistration:(id)a3
++ (id)cameraSignificantEventRegistrationFromMKFRegistration:(id)registration
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 conditions];
-  v6 = [a1 conditionsFromMKFConditions:v5];
+  registrationCopy = registration;
+  conditions = [registrationCopy conditions];
+  v6 = [self conditionsFromMKFConditions:conditions];
 
-  v7 = [v4 accessory];
-  v8 = [v7 modelID];
+  accessory = [registrationCopy accessory];
+  modelID = [accessory modelID];
 
-  v9 = [v4 notificationModes];
-  v10 = [v9 unsignedIntegerValue];
+  notificationModes = [registrationCopy notificationModes];
+  unsignedIntegerValue = [notificationModes unsignedIntegerValue];
 
-  v11 = [v4 significantEventTypes];
-  v12 = [v11 unsignedIntegerValue];
+  significantEventTypes = [registrationCopy significantEventTypes];
+  unsignedIntegerValue2 = [significantEventTypes unsignedIntegerValue];
 
-  v13 = [v4 personFamiliarityOptions];
-  v14 = [v13 unsignedIntegerValue];
+  personFamiliarityOptions = [registrationCopy personFamiliarityOptions];
+  unsignedIntegerValue3 = [personFamiliarityOptions unsignedIntegerValue];
 
   v15 = [HMDCameraSignificantEventBulletinNotificationRegistration alloc];
   v34 = v6;
   v16 = [MEMORY[0x277CBEB98] setWithArray:v6];
-  v33 = v8;
-  v17 = [(HMDCameraSignificantEventBulletinNotificationRegistration *)v15 initWithCameraIdentifier:v8 notificationModes:v10 significantEventTypes:v12 personFamiliarityOptions:v14 conditions:v16];
+  v33 = modelID;
+  v17 = [(HMDCameraSignificantEventBulletinNotificationRegistration *)v15 initWithCameraIdentifier:modelID notificationModes:unsignedIntegerValue significantEventTypes:unsignedIntegerValue2 personFamiliarityOptions:unsignedIntegerValue3 conditions:v16];
 
-  v18 = [v4 deviceIdsIdentifier];
-  v19 = [v4 deviceIdsDestination];
-  v20 = [v4 user];
-  v21 = [v20 modelID];
+  deviceIdsIdentifier = [registrationCopy deviceIdsIdentifier];
+  deviceIdsDestination = [registrationCopy deviceIdsDestination];
+  user = [registrationCopy user];
+  modelID2 = [user modelID];
 
-  v22 = [[HMDDeviceAddress alloc] initWithIDSIdentifier:v18 idsDestination:v19];
-  v23 = [[HMDBulletinNotificationRegistrationSource alloc] initWithUserUUID:v21 deviceAddress:v22];
+  v22 = [[HMDDeviceAddress alloc] initWithIDSIdentifier:deviceIdsIdentifier idsDestination:deviceIdsDestination];
+  v23 = [[HMDBulletinNotificationRegistrationSource alloc] initWithUserUUID:modelID2 deviceAddress:v22];
   v35 = [[HMDCameraSignificantEventBulletinNotificationRegistrationRemote alloc] initWithCameraCameraSignificantEventBulletinNotificationRegistration:v17 source:v23];
   v24 = objc_autoreleasePoolPush();
-  v25 = a1;
+  selfCopy = self;
   v26 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
   {
     HMFGetLogIdentifier();
-    v32 = v19;
-    v27 = v18;
+    v32 = deviceIdsDestination;
+    v27 = deviceIdsIdentifier;
     v29 = v28 = v17;
     *buf = 138543874;
     v37 = v29;
     v38 = 2112;
     v39 = v35;
     v40 = 2112;
-    v41 = v4;
+    v41 = registrationCopy;
     _os_log_impl(&dword_229538000, v26, OS_LOG_TYPE_DEBUG, "%{public}@Initialized registration: %@ from MKF registration: %@", buf, 0x20u);
 
     v17 = v28;
-    v18 = v27;
-    v19 = v32;
+    deviceIdsIdentifier = v27;
+    deviceIdsDestination = v32;
   }
 
   objc_autoreleasePoolPop(v24);
@@ -398,60 +398,60 @@ id __76__HMDBulletinNotificationRegistrationUtilities_conditionsFromMKFCondition
   return v35;
 }
 
-+ (id)matterRegistrationFromMKFRegistration:(id)a3 home:(id)a4
++ (id)matterRegistrationFromMKFRegistration:(id)registration home:(id)home
 {
   v49 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  registrationCopy = registration;
+  homeCopy = home;
   v8 = +[HMDCoreData featuresDataSource];
-  v9 = [v8 isRVCEnabled];
+  isRVCEnabled = [v8 isRVCEnabled];
 
-  if (v9)
+  if (isRVCEnabled)
   {
-    v10 = [v6 conditions];
-    v11 = [a1 conditionsFromMKFConditions:v10];
+    conditions = [registrationCopy conditions];
+    v11 = [self conditionsFromMKFConditions:conditions];
 
-    v12 = [v6 matterPaths];
+    matterPaths = [registrationCopy matterPaths];
     v39[0] = MEMORY[0x277D85DD0];
     v39[1] = 3221225472;
     v39[2] = __91__HMDBulletinNotificationRegistrationUtilities_matterRegistrationFromMKFRegistration_home___block_invoke;
     v39[3] = &unk_27867C680;
-    v40 = v7;
-    v42 = a1;
-    v13 = v6;
+    v40 = homeCopy;
+    selfCopy = self;
+    v13 = registrationCopy;
     v41 = v13;
-    v37 = v12;
-    v14 = [v12 na_map:v39];
+    v37 = matterPaths;
+    v14 = [matterPaths na_map:v39];
     v15 = [HMDMatterBulletinNotificationRegistration alloc];
     v38 = v11;
     v16 = [MEMORY[0x277CBEB98] setWithArray:v11];
     v36 = v14;
     v17 = [(HMDMatterBulletinNotificationRegistration *)v15 initWithMatterPaths:v14 conditions:v16];
 
-    v18 = [v13 deviceIdsIdentifier];
-    v19 = [v13 deviceIdsDestination];
-    v20 = [v13 user];
-    v21 = [v20 modelID];
+    deviceIdsIdentifier = [v13 deviceIdsIdentifier];
+    deviceIdsDestination = [v13 deviceIdsDestination];
+    user = [v13 user];
+    modelID = [user modelID];
 
-    if (!v21)
+    if (!modelID)
     {
-      v22 = [v13 guest];
-      v21 = [v22 modelID];
+      guest = [v13 guest];
+      modelID = [guest modelID];
     }
 
-    v33 = v19;
-    v34 = v18;
-    v23 = [[HMDDeviceAddress alloc] initWithIDSIdentifier:v18 idsDestination:v19];
-    v24 = [[HMDBulletinNotificationRegistrationSource alloc] initWithUserUUID:v21 deviceAddress:v23];
+    v33 = deviceIdsDestination;
+    v34 = deviceIdsIdentifier;
+    v23 = [[HMDDeviceAddress alloc] initWithIDSIdentifier:deviceIdsIdentifier idsDestination:deviceIdsDestination];
+    v24 = [[HMDBulletinNotificationRegistrationSource alloc] initWithUserUUID:modelID deviceAddress:v23];
     v35 = v17;
     v25 = [[HMDMatterBulletinNotificationRegistrationRemote alloc] initWithMatterBulletinNotificationRegistration:v17 source:v24];
     v26 = objc_autoreleasePoolPush();
-    v27 = a1;
+    selfCopy2 = self;
     v28 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
     {
       HMFGetLogIdentifier();
-      v29 = v32 = v7;
+      v29 = v32 = homeCopy;
       *buf = 138543874;
       v44 = v29;
       v45 = 2112;
@@ -460,7 +460,7 @@ id __76__HMDBulletinNotificationRegistrationUtilities_conditionsFromMKFCondition
       v48 = v13;
       _os_log_impl(&dword_229538000, v28, OS_LOG_TYPE_DEBUG, "%{public}@Initialized registration: %@ from MKF registration: %@", buf, 0x20u);
 
-      v7 = v32;
+      homeCopy = v32;
     }
 
     objc_autoreleasePoolPop(v26);
@@ -533,66 +533,66 @@ LABEL_6:
   return v14;
 }
 
-+ (id)accessoryRegistrationFromMKFRegistration:(id)a3
++ (id)accessoryRegistrationFromMKFRegistration:(id)registration
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 conditions];
-  v6 = [a1 conditionsFromMKFConditions:v5];
+  registrationCopy = registration;
+  conditions = [registrationCopy conditions];
+  v6 = [self conditionsFromMKFConditions:conditions];
 
-  v7 = [v4 characteristic];
-  v8 = [v7 service];
-  v9 = [v8 accessory];
-  v10 = [v9 modelID];
+  characteristic = [registrationCopy characteristic];
+  service = [characteristic service];
+  accessory = [service accessory];
+  modelID = [accessory modelID];
 
-  v11 = [v4 characteristic];
-  v12 = [v11 service];
-  v13 = [v12 instanceID];
+  characteristic2 = [registrationCopy characteristic];
+  service2 = [characteristic2 service];
+  instanceID = [service2 instanceID];
 
-  v14 = [v4 characteristic];
-  v15 = [v14 instanceID];
+  characteristic3 = [registrationCopy characteristic];
+  instanceID2 = [characteristic3 instanceID];
 
   v16 = [HMDAccessoryBulletinNotificationRegistration alloc];
   v17 = [MEMORY[0x277CBEB98] setWithArray:v6];
-  v38 = v15;
-  v39 = v13;
-  v18 = [(HMDAccessoryBulletinNotificationRegistration *)v16 initWithAccessoryUUID:v10 serviceInstanceID:v13 characteristicInstanceID:v15 conditions:v17];
+  v38 = instanceID2;
+  v39 = instanceID;
+  v18 = [(HMDAccessoryBulletinNotificationRegistration *)v16 initWithAccessoryUUID:modelID serviceInstanceID:instanceID characteristicInstanceID:instanceID2 conditions:v17];
 
-  v19 = [v4 deviceIdsIdentifier];
-  v20 = [v4 deviceIdsDestination];
-  v21 = [v4 user];
-  v22 = [v21 modelID];
+  deviceIdsIdentifier = [registrationCopy deviceIdsIdentifier];
+  deviceIdsDestination = [registrationCopy deviceIdsDestination];
+  user = [registrationCopy user];
+  modelID2 = [user modelID];
 
-  if (!v22)
+  if (!modelID2)
   {
-    v23 = [v4 guest];
-    v22 = [v23 modelID];
+    guest = [registrationCopy guest];
+    modelID2 = [guest modelID];
   }
 
-  v35 = v20;
-  v36 = v19;
-  v24 = [[HMDDeviceAddress alloc] initWithIDSIdentifier:v19 idsDestination:v20];
-  v25 = [[HMDBulletinNotificationRegistrationSource alloc] initWithUserUUID:v22 deviceAddress:v24];
+  v35 = deviceIdsDestination;
+  v36 = deviceIdsIdentifier;
+  v24 = [[HMDDeviceAddress alloc] initWithIDSIdentifier:deviceIdsIdentifier idsDestination:deviceIdsDestination];
+  v25 = [[HMDBulletinNotificationRegistrationSource alloc] initWithUserUUID:modelID2 deviceAddress:v24];
   v37 = v18;
   v26 = [[HMDAccessoryBulletinNotificationRegistrationRemote alloc] initWithAccessoryBulletinNotificationRegistration:v18 source:v25];
   v27 = objc_autoreleasePoolPush();
-  v28 = a1;
+  selfCopy = self;
   v29 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
   {
     HMFGetLogIdentifier();
-    v34 = v10;
+    v34 = modelID;
     v31 = v30 = v6;
     *buf = 138543874;
     v41 = v31;
     v42 = 2112;
     v43 = v26;
     v44 = 2112;
-    v45 = v4;
+    v45 = registrationCopy;
     _os_log_impl(&dword_229538000, v29, OS_LOG_TYPE_DEBUG, "%{public}@Initialized registration: %@ from MKF registration: %@", buf, 0x20u);
 
     v6 = v30;
-    v10 = v34;
+    modelID = v34;
   }
 
   objc_autoreleasePoolPop(v27);
@@ -601,17 +601,17 @@ LABEL_6:
   return v26;
 }
 
-+ (id)cameraAccessModeRegistrationFromLocalRegistration:(id)a3
++ (id)cameraAccessModeRegistrationFromLocalRegistration:(id)registration
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 accessoryModelID];
-  v6 = [v4 conditions];
-  v7 = [a1 conditionsFromLocalConditions:v6];
+  registrationCopy = registration;
+  accessoryModelID = [registrationCopy accessoryModelID];
+  conditions = [registrationCopy conditions];
+  v7 = [self conditionsFromLocalConditions:conditions];
 
-  v8 = [[HMDCameraAccessModeBulletinNotificationRegistration alloc] initWithAccessoryUUID:v5 conditions:v7];
+  v8 = [[HMDCameraAccessModeBulletinNotificationRegistration alloc] initWithAccessoryUUID:accessoryModelID conditions:v7];
   v9 = objc_autoreleasePoolPush();
-  v10 = a1;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -621,7 +621,7 @@ LABEL_6:
     v17 = 2112;
     v18 = v8;
     v19 = 2112;
-    v20 = v4;
+    v20 = registrationCopy;
     _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_DEBUG, "%{public}@Initialized registration: %@ from local registration: %@", &v15, 0x20u);
   }
 
@@ -631,17 +631,17 @@ LABEL_6:
   return v8;
 }
 
-+ (id)cameraReachabilityRegistrationFromLocalRegistration:(id)a3
++ (id)cameraReachabilityRegistrationFromLocalRegistration:(id)registration
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 accessoryModelID];
-  v6 = [v4 conditions];
-  v7 = [a1 conditionsFromLocalConditions:v6];
+  registrationCopy = registration;
+  accessoryModelID = [registrationCopy accessoryModelID];
+  conditions = [registrationCopy conditions];
+  v7 = [self conditionsFromLocalConditions:conditions];
 
-  v8 = [[HMDCameraReachabilityBulletinNotificationRegistration alloc] initWithAccessoryUUID:v5 conditions:v7];
+  v8 = [[HMDCameraReachabilityBulletinNotificationRegistration alloc] initWithAccessoryUUID:accessoryModelID conditions:v7];
   v9 = objc_autoreleasePoolPush();
-  v10 = a1;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -651,7 +651,7 @@ LABEL_6:
     v17 = 2112;
     v18 = v8;
     v19 = 2112;
-    v20 = v4;
+    v20 = registrationCopy;
     _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_DEBUG, "%{public}@Initialized registration: %@ from local registration: %@", &v15, 0x20u);
   }
 
@@ -661,26 +661,26 @@ LABEL_6:
   return v8;
 }
 
-+ (id)cameraSignificantEventRegistrationFromLocalRegistration:(id)a3
++ (id)cameraSignificantEventRegistrationFromLocalRegistration:(id)registration
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 accessoryModelID];
-  v6 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v4, "notificationModes")}];
-  v7 = [v6 unsignedIntegerValue];
+  registrationCopy = registration;
+  accessoryModelID = [registrationCopy accessoryModelID];
+  v6 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(registrationCopy, "notificationModes")}];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  v8 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v4, "significantEventTypes")}];
-  v9 = [v8 unsignedIntegerValue];
+  v8 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(registrationCopy, "significantEventTypes")}];
+  unsignedIntegerValue2 = [v8 unsignedIntegerValue];
 
-  v10 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v4, "personFamiliarityOptions")}];
-  v11 = [v10 unsignedIntegerValue];
+  v10 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(registrationCopy, "personFamiliarityOptions")}];
+  unsignedIntegerValue3 = [v10 unsignedIntegerValue];
 
-  v12 = [v4 conditions];
-  v13 = [a1 conditionsFromLocalConditions:v12];
+  conditions = [registrationCopy conditions];
+  v13 = [self conditionsFromLocalConditions:conditions];
 
-  v14 = [[HMDCameraSignificantEventBulletinNotificationRegistration alloc] initWithCameraIdentifier:v5 notificationModes:v7 significantEventTypes:v9 personFamiliarityOptions:v11 conditions:v13];
+  v14 = [[HMDCameraSignificantEventBulletinNotificationRegistration alloc] initWithCameraIdentifier:accessoryModelID notificationModes:unsignedIntegerValue significantEventTypes:unsignedIntegerValue2 personFamiliarityOptions:unsignedIntegerValue3 conditions:v13];
   v15 = objc_autoreleasePoolPush();
-  v16 = a1;
+  selfCopy = self;
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
@@ -690,7 +690,7 @@ LABEL_6:
     v23 = 2112;
     v24 = v14;
     v25 = 2112;
-    v26 = v4;
+    v26 = registrationCopy;
     _os_log_impl(&dword_229538000, v17, OS_LOG_TYPE_DEBUG, "%{public}@Initialized registration: %@ from local registration: %@", &v21, 0x20u);
   }
 
@@ -700,23 +700,23 @@ LABEL_6:
   return v14;
 }
 
-+ (id)endpointRegistrationFromLocalRegistration:(id)a3
++ (id)endpointRegistrationFromLocalRegistration:(id)registration
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  registrationCopy = registration;
   v5 = +[HMDCoreData featuresDataSource];
-  v6 = [v5 isRVCEnabled];
+  isRVCEnabled = [v5 isRVCEnabled];
 
-  if (v6)
+  if (isRVCEnabled)
   {
-    v7 = [v4 accessoryModelID];
-    v8 = [v4 endpointID];
-    v9 = [v4 conditions];
-    v10 = [a1 conditionsFromLocalConditions:v9];
+    accessoryModelID = [registrationCopy accessoryModelID];
+    endpointID = [registrationCopy endpointID];
+    conditions = [registrationCopy conditions];
+    v10 = [self conditionsFromLocalConditions:conditions];
 
-    v11 = [[HMDEndpointBulletinNotificationRegistration alloc] initWithAccessoryUUID:v7 endpointID:v8 conditions:v10];
+    v11 = [[HMDEndpointBulletinNotificationRegistration alloc] initWithAccessoryUUID:accessoryModelID endpointID:endpointID conditions:v10];
     v12 = objc_autoreleasePoolPush();
-    v13 = a1;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
@@ -726,7 +726,7 @@ LABEL_6:
       v20 = 2112;
       v21 = v11;
       v22 = 2112;
-      v23 = v4;
+      v23 = registrationCopy;
       _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_DEBUG, "%{public}@Initialized registration: %@ from local registration: %@", &v18, 0x20u);
     }
 
@@ -743,18 +743,18 @@ LABEL_6:
   return v11;
 }
 
-+ (id)serviceRegistrationFromLocalRegistration:(id)a3
++ (id)serviceRegistrationFromLocalRegistration:(id)registration
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 accessoryModelID];
-  v6 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v4, "serviceInstanceID")}];
-  v7 = [v4 conditions];
-  v8 = [a1 conditionsFromLocalConditions:v7];
+  registrationCopy = registration;
+  accessoryModelID = [registrationCopy accessoryModelID];
+  v6 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(registrationCopy, "serviceInstanceID")}];
+  conditions = [registrationCopy conditions];
+  v8 = [self conditionsFromLocalConditions:conditions];
 
-  v9 = [[HMDServiceBulletinNotificationRegistration alloc] initWithAccessoryUUID:v5 serviceInstanceID:v6 conditions:v8];
+  v9 = [[HMDServiceBulletinNotificationRegistration alloc] initWithAccessoryUUID:accessoryModelID serviceInstanceID:v6 conditions:v8];
   v10 = objc_autoreleasePoolPush();
-  v11 = a1;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
@@ -764,7 +764,7 @@ LABEL_6:
     v18 = 2112;
     v19 = v9;
     v20 = 2112;
-    v21 = v4;
+    v21 = registrationCopy;
     _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_DEBUG, "%{public}@Initialized registration: %@ from local registration: %@", &v16, 0x20u);
   }
 
@@ -774,40 +774,40 @@ LABEL_6:
   return v9;
 }
 
-+ (id)matterRegistrationFromLocalRegistration:(id)a3 home:(id)a4
++ (id)matterRegistrationFromLocalRegistration:(id)registration home:(id)home
 {
   v45[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  registrationCopy = registration;
+  homeCopy = home;
   v8 = +[HMDCoreData featuresDataSource];
-  v9 = [v8 isRVCEnabled];
+  isRVCEnabled = [v8 isRVCEnabled];
 
-  if (!v9)
+  if (!isRVCEnabled)
   {
     v16 = 0;
     goto LABEL_11;
   }
 
-  v10 = [(HMDMatterBulletinNotificationRegistration *)v6 endpointID];
-  v11 = [(HMDMatterBulletinNotificationRegistration *)v6 clusterID];
-  v12 = [(HMDMatterBulletinNotificationRegistration *)v6 attributeID];
-  v13 = [(HMDMatterBulletinNotificationRegistration *)v6 eventID];
-  v38 = [(HMDMatterBulletinNotificationRegistration *)v6 accessoryModelID];
-  v14 = [v7 accessoryWithUUID:?];
+  endpointID = [(HMDMatterBulletinNotificationRegistration *)registrationCopy endpointID];
+  clusterID = [(HMDMatterBulletinNotificationRegistration *)registrationCopy clusterID];
+  attributeID = [(HMDMatterBulletinNotificationRegistration *)registrationCopy attributeID];
+  eventID = [(HMDMatterBulletinNotificationRegistration *)registrationCopy eventID];
+  accessoryModelID = [(HMDMatterBulletinNotificationRegistration *)registrationCopy accessoryModelID];
+  v14 = [homeCopy accessoryWithUUID:?];
   v37 = v14;
-  if (v12)
+  if (attributeID)
   {
-    v35 = v13;
-    v36 = v12;
-    v15 = [HMDMatterPath PathWithAttributeID:v12 endpointID:v10 clusterID:v11 accessory:v14];
+    v35 = eventID;
+    v36 = attributeID;
+    v15 = [HMDMatterPath PathWithAttributeID:attributeID endpointID:endpointID clusterID:clusterID accessory:v14];
   }
 
   else
   {
-    if (!v13)
+    if (!eventID)
     {
       v30 = objc_autoreleasePoolPush();
-      v31 = a1;
+      selfCopy = self;
       v32 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
@@ -815,10 +815,10 @@ LABEL_6:
         *buf = 138543618;
         v40 = v33;
         v41 = 2112;
-        v42 = v6;
+        v42 = registrationCopy;
         _os_log_impl(&dword_229538000, v32, OS_LOG_TYPE_ERROR, "%{public}@No attributeID or eventID found for local Matter registration=%@", buf, 0x16u);
 
-        v13 = 0;
+        eventID = 0;
       }
 
       objc_autoreleasePoolPop(v30);
@@ -826,14 +826,14 @@ LABEL_6:
       goto LABEL_10;
     }
 
-    v35 = v13;
+    v35 = eventID;
     v36 = 0;
-    v15 = [HMDMatterPath PathWithEventID:v13 endpointID:v10 clusterID:v11 accessory:v14];
+    v15 = [HMDMatterPath PathWithEventID:eventID endpointID:endpointID clusterID:clusterID accessory:v14];
   }
 
   v17 = v15;
-  v18 = [(HMDBulletinNotificationRegistration *)v6 conditions];
-  v19 = [a1 conditionsFromLocalConditions:v18];
+  conditions = [(HMDBulletinNotificationRegistration *)registrationCopy conditions];
+  v19 = [self conditionsFromLocalConditions:conditions];
 
   v20 = [HMDMatterBulletinNotificationRegistration alloc];
   v45[0] = v17;
@@ -841,30 +841,30 @@ LABEL_6:
   v16 = [(HMDMatterBulletinNotificationRegistration *)v20 initWithMatterPaths:v21 conditions:v19];
 
   v22 = objc_autoreleasePoolPush();
-  v23 = a1;
+  selfCopy2 = self;
   v24 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
   {
     HMFGetLogIdentifier();
-    v34 = v7;
-    v25 = v11;
-    v27 = v26 = v10;
+    v34 = homeCopy;
+    v25 = clusterID;
+    v27 = v26 = endpointID;
     *buf = 138543874;
     v40 = v27;
     v41 = 2112;
     v42 = v16;
     v43 = 2112;
-    v44 = v6;
+    v44 = registrationCopy;
     _os_log_impl(&dword_229538000, v24, OS_LOG_TYPE_DEBUG, "%{public}@Initialized registration: %@ from local registration: %@", buf, 0x20u);
 
-    v10 = v26;
-    v11 = v25;
-    v7 = v34;
+    endpointID = v26;
+    clusterID = v25;
+    homeCopy = v34;
   }
 
   objc_autoreleasePoolPop(v22);
-  v13 = v35;
-  v12 = v36;
+  eventID = v35;
+  attributeID = v36;
 LABEL_10:
 
 LABEL_11:
@@ -873,19 +873,19 @@ LABEL_11:
   return v16;
 }
 
-+ (id)accessoryRegistrationFromLocalRegistration:(id)a3
++ (id)accessoryRegistrationFromLocalRegistration:(id)registration
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 accessoryModelID];
-  v6 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v4, "serviceInstanceID")}];
-  v7 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v4, "characteristicInstanceID")}];
-  v8 = [v4 conditions];
-  v9 = [a1 conditionsFromLocalConditions:v8];
+  registrationCopy = registration;
+  accessoryModelID = [registrationCopy accessoryModelID];
+  v6 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(registrationCopy, "serviceInstanceID")}];
+  v7 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(registrationCopy, "characteristicInstanceID")}];
+  conditions = [registrationCopy conditions];
+  v9 = [self conditionsFromLocalConditions:conditions];
 
-  v10 = [[HMDAccessoryBulletinNotificationRegistration alloc] initWithAccessoryUUID:v5 serviceInstanceID:v6 characteristicInstanceID:v7 conditions:v9];
+  v10 = [[HMDAccessoryBulletinNotificationRegistration alloc] initWithAccessoryUUID:accessoryModelID serviceInstanceID:v6 characteristicInstanceID:v7 conditions:v9];
   v11 = objc_autoreleasePoolPush();
-  v12 = a1;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
@@ -895,7 +895,7 @@ LABEL_11:
     v19 = 2112;
     v20 = v10;
     v21 = 2112;
-    v22 = v4;
+    v22 = registrationCopy;
     _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_DEBUG, "%{public}@Initialized registration: %@ from local registration: %@", &v17, 0x20u);
   }
 
@@ -905,39 +905,39 @@ LABEL_11:
   return v10;
 }
 
-+ (id)adjustedOffsetFromMKFLocalElementTimePeriodSunriseSunSet:(id)a3
++ (id)adjustedOffsetFromMKFLocalElementTimePeriodSunriseSunSet:(id)set
 {
-  v3 = [a3 offset];
-  v4 = [v3 hour];
+  offset = [set offset];
+  hour = [offset hour];
   v5 = objc_alloc_init(MEMORY[0x277CBEAB8]);
   v6 = v5;
-  if (v4 && v4 != 0x7FFFFFFFFFFFFFFFLL)
+  if (hour && hour != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v5 setHour:v4];
+    [v5 setHour:hour];
   }
 
-  v7 = [v3 minute];
-  if (v7 && v7 != 0x7FFFFFFFFFFFFFFFLL)
+  minute = [offset minute];
+  if (minute && minute != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v6 setMinute:v7];
+    [v6 setMinute:minute];
   }
 
   return v6;
 }
 
-+ (id)timePeriodConditionFromLocalCondition:(id)a3
++ (id)timePeriodConditionFromLocalCondition:(id)condition
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 startElement];
-  v6 = [v4 endElement];
+  conditionCopy = condition;
+  startElement = [conditionCopy startElement];
+  endElement = [conditionCopy endElement];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v5;
+      v7 = startElement;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -951,7 +951,7 @@ LABEL_11:
 
       v9 = v8;
 
-      v10 = v6;
+      v10 = endElement;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -966,16 +966,16 @@ LABEL_11:
       v12 = v11;
 
       v13 = [HMDTimeOfDayTimePeriodElement alloc];
-      v14 = [v9 hour];
-      v15 = [v14 unsignedIntegerValue];
-      v16 = [v9 minute];
-      v17 = -[HMDTimeOfDayTimePeriodElement initWithHour:minute:](v13, "initWithHour:minute:", v15, [v16 unsignedIntegerValue]);
+      hour = [v9 hour];
+      unsignedIntegerValue = [hour unsignedIntegerValue];
+      minute = [v9 minute];
+      v17 = -[HMDTimeOfDayTimePeriodElement initWithHour:minute:](v13, "initWithHour:minute:", unsignedIntegerValue, [minute unsignedIntegerValue]);
 
       v18 = [HMDTimeOfDayTimePeriodElement alloc];
-      v19 = [v12 hour];
-      v20 = [v19 unsignedIntegerValue];
-      v21 = [v12 minute];
-      v22 = -[HMDTimeOfDayTimePeriodElement initWithHour:minute:](v18, "initWithHour:minute:", v20, [v21 unsignedIntegerValue]);
+      hour2 = [v12 hour];
+      unsignedIntegerValue2 = [hour2 unsignedIntegerValue];
+      minute2 = [v12 minute];
+      v22 = -[HMDTimeOfDayTimePeriodElement initWithHour:minute:](v18, "initWithHour:minute:", unsignedIntegerValue2, [minute2 unsignedIntegerValue]);
 
       v23 = [HMDTimePeriodNotificationCondition alloc];
       v24 = [(HMDTimePeriodNotificationCondition *)v23 initWithStartElement:v17 endElement:v22];
@@ -991,7 +991,7 @@ LABEL_19:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v25 = v5;
+      v25 = startElement;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -1005,7 +1005,7 @@ LABEL_19:
 
       v27 = v26;
 
-      v28 = v6;
+      v28 = endElement;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -1019,15 +1019,15 @@ LABEL_19:
 
       v30 = v29;
 
-      v17 = [a1 adjustedOffsetFromMKFLocalElementTimePeriodSunriseSunSet:v27];
-      v31 = [a1 adjustedOffsetFromMKFLocalElementTimePeriodSunriseSunSet:v30];
+      v17 = [self adjustedOffsetFromMKFLocalElementTimePeriodSunriseSunSet:v27];
+      v31 = [self adjustedOffsetFromMKFLocalElementTimePeriodSunriseSunSet:v30];
       v32 = [HMDSunriseSunsetTimePeriodElement alloc];
-      v33 = [v27 significantEvent];
-      v34 = [(HMDSunriseSunsetTimePeriodElement *)v32 initWithSignificantEvent:v33 offset:v17];
+      significantEvent = [v27 significantEvent];
+      v34 = [(HMDSunriseSunsetTimePeriodElement *)v32 initWithSignificantEvent:significantEvent offset:v17];
 
       v35 = [HMDSunriseSunsetTimePeriodElement alloc];
-      v36 = [v30 significantEvent];
-      v37 = [(HMDSunriseSunsetTimePeriodElement *)v35 initWithSignificantEvent:v36 offset:v31];
+      significantEvent2 = [v30 significantEvent];
+      v37 = [(HMDSunriseSunsetTimePeriodElement *)v35 initWithSignificantEvent:significantEvent2 offset:v31];
 
       v38 = [HMDTimePeriodNotificationCondition alloc];
       v24 = [(HMDTimePeriodNotificationCondition *)v38 initWithStartElement:v34 endElement:v37];
@@ -1037,7 +1037,7 @@ LABEL_19:
   }
 
   v39 = objc_autoreleasePoolPush();
-  v40 = a1;
+  selfCopy = self;
   v41 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
   {
@@ -1045,9 +1045,9 @@ LABEL_19:
     v45 = 138543874;
     v46 = v42;
     v47 = 2112;
-    v48 = v5;
+    v48 = startElement;
     v49 = 2112;
-    v50 = v6;
+    v50 = endElement;
     _os_log_impl(&dword_229538000, v41, OS_LOG_TYPE_ERROR, "%{public}@Unrecognized local time period start element: %@ end element: %@, unable to convert", &v45, 0x20u);
   }
 
@@ -1060,25 +1060,25 @@ LABEL_23:
   return v24;
 }
 
-+ (id)presenceConditionFromLocalCondition:(id)a3
++ (id)presenceConditionFromLocalCondition:(id)condition
 {
-  v3 = a3;
-  v4 = [v3 userModelIDs];
+  conditionCopy = condition;
+  userModelIDs = [conditionCopy userModelIDs];
   v5 = [MEMORY[0x277CBEB98] set];
-  if ([v4 count])
+  if ([userModelIDs count])
   {
-    v6 = [v4 anyObject];
+    anyObject = [userModelIDs anyObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    if ((isKindOfClass & 1) != 0 && v6)
+    if ((isKindOfClass & 1) != 0 && anyObject)
     {
-      v8 = [v4 na_map:&__block_literal_global_164559];
+      v8 = [userModelIDs na_map:&__block_literal_global_164559];
     }
 
     else
     {
-      v8 = v4;
+      v8 = userModelIDs;
     }
 
     v9 = v8;
@@ -1087,13 +1087,13 @@ LABEL_23:
   }
 
   v10 = [HMDPresenceNotificationCondition alloc];
-  v11 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v3, "presenceEventType")}];
-  v12 = [v11 unsignedIntegerValue];
+  v11 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(conditionCopy, "presenceEventType")}];
+  unsignedIntegerValue = [v11 unsignedIntegerValue];
   v13 = MEMORY[0x277CCABB0];
-  v14 = [v3 presenceEventUserType];
+  presenceEventUserType = [conditionCopy presenceEventUserType];
 
-  v15 = [v13 numberWithLongLong:v14];
-  v16 = -[HMDPresenceNotificationCondition initWithPresenceEventType:presenceEventUserType:userUUIDs:](v10, "initWithPresenceEventType:presenceEventUserType:userUUIDs:", v12, [v15 unsignedIntegerValue], v5);
+  v15 = [v13 numberWithLongLong:presenceEventUserType];
+  v16 = -[HMDPresenceNotificationCondition initWithPresenceEventType:presenceEventUserType:userUUIDs:](v10, "initWithPresenceEventType:presenceEventUserType:userUUIDs:", unsignedIntegerValue, [v15 unsignedIntegerValue], v5);
 
   return v16;
 }
@@ -1107,14 +1107,14 @@ id __84__HMDBulletinNotificationRegistrationUtilities_presenceConditionFromLocal
   return v4;
 }
 
-+ (id)conditionsFromLocalConditions:(id)a3
++ (id)conditionsFromLocalConditions:(id)conditions
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __78__HMDBulletinNotificationRegistrationUtilities_conditionsFromLocalConditions___block_invoke;
   v5[3] = &__block_descriptor_40_e35__16__0__MKFLocalBulletinCondition_8l;
-  v5[4] = a1;
-  v3 = [a3 na_map:v5];
+  v5[4] = self;
+  v3 = [conditions na_map:v5];
 
   return v3;
 }
@@ -1190,71 +1190,71 @@ LABEL_15:
   return v10;
 }
 
-+ (id)createLocalElementFromSunriseSunset:(id)a3 moc:(id)a4
++ (id)createLocalElementFromSunriseSunset:(id)sunset moc:(id)moc
 {
   v5 = MEMORY[0x277CBE408];
-  v6 = a4;
-  v7 = a3;
+  mocCopy = moc;
+  sunsetCopy = sunset;
   v8 = +[MKFLocalElementTimePeriodSunriseSunSet entity];
-  v9 = [v8 name];
-  v10 = [v5 insertNewObjectForEntityForName:v9 inManagedObjectContext:v6];
+  name = [v8 name];
+  v10 = [v5 insertNewObjectForEntityForName:name inManagedObjectContext:mocCopy];
 
-  v11 = [v7 significantEvent];
-  [v10 setSignificantEvent:v11];
+  significantEvent = [sunsetCopy significantEvent];
+  [v10 setSignificantEvent:significantEvent];
 
-  v12 = [v7 offset];
+  offset = [sunsetCopy offset];
 
-  [v10 setOffset:v12];
+  [v10 setOffset:offset];
 
   return v10;
 }
 
-+ (id)createLocalElementFromTimeOfDay:(id)a3 moc:(id)a4
++ (id)createLocalElementFromTimeOfDay:(id)day moc:(id)moc
 {
   v5 = MEMORY[0x277CBE408];
-  v6 = a4;
-  v7 = a3;
+  mocCopy = moc;
+  dayCopy = day;
   v8 = +[MKFLocalElementTimePeriodTimeOfDay entity];
-  v9 = [v8 name];
-  v10 = [v5 insertNewObjectForEntityForName:v9 inManagedObjectContext:v6];
+  name = [v8 name];
+  v10 = [v5 insertNewObjectForEntityForName:name inManagedObjectContext:mocCopy];
 
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v7, "hour")}];
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(dayCopy, "hour")}];
   [v10 setHour:v11];
 
   v12 = MEMORY[0x277CCABB0];
-  v13 = [v7 minute];
+  minute = [dayCopy minute];
 
-  v14 = [v12 numberWithUnsignedInteger:v13];
+  v14 = [v12 numberWithUnsignedInteger:minute];
   [v10 setMinute:v14];
 
   return v10;
 }
 
-+ (id)createAndAddLocalTimePeriodConditionToRegistration:(id)a3 moc:(id)a4 condition:(id)a5
++ (id)createAndAddLocalTimePeriodConditionToRegistration:(id)registration moc:(id)moc condition:(id)condition
 {
-  v8 = a4;
-  v9 = a5;
+  mocCopy = moc;
+  conditionCopy = condition;
   v10 = MEMORY[0x277CBE408];
-  v11 = a3;
+  registrationCopy = registration;
   v12 = +[MKFLocalBulletinConditionTimePeriod entity];
-  v13 = [v12 name];
-  v14 = [v10 insertNewObjectForEntityForName:v13 inManagedObjectContext:v8];
+  name = [v12 name];
+  v14 = [v10 insertNewObjectForEntityForName:name inManagedObjectContext:mocCopy];
 
-  v15 = [v9 startElement];
+  startElement = [conditionCopy startElement];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = [v9 endElement];
+    endElement = [conditionCopy endElement];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v18 = [v9 startElement];
+      startElement2 = [conditionCopy startElement];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v19 = v18;
+        v19 = startElement2;
       }
 
       else
@@ -1264,11 +1264,11 @@ LABEL_15:
 
       v20 = v19;
 
-      v21 = [v9 endElement];
+      endElement2 = [conditionCopy endElement];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v22 = v21;
+        v22 = endElement2;
       }
 
       else
@@ -1278,14 +1278,14 @@ LABEL_15:
 
       v23 = v22;
 
-      v24 = [a1 createLocalElementFromTimeOfDay:v20 moc:v8];
+      v24 = [self createLocalElementFromTimeOfDay:v20 moc:mocCopy];
 
       [v14 setStartElement:v24];
-      v25 = [a1 createLocalElementFromTimeOfDay:v23 moc:v8];
+      v25 = [self createLocalElementFromTimeOfDay:v23 moc:mocCopy];
 LABEL_20:
-      v26 = v25;
+      startElement3 = v25;
 
-      [v14 setEndElement:v26];
+      [v14 setEndElement:startElement3];
       goto LABEL_21;
     }
   }
@@ -1294,11 +1294,11 @@ LABEL_20:
   {
   }
 
-  v26 = [v9 startElement];
+  startElement3 = [conditionCopy startElement];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v27 = [v9 endElement];
+    endElement3 = [conditionCopy endElement];
     objc_opt_class();
     v28 = objc_opt_isKindOfClass();
 
@@ -1307,11 +1307,11 @@ LABEL_20:
       goto LABEL_22;
     }
 
-    v29 = [v9 startElement];
+    startElement4 = [conditionCopy startElement];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v30 = v29;
+      v30 = startElement4;
     }
 
     else
@@ -1321,11 +1321,11 @@ LABEL_20:
 
     v31 = v30;
 
-    v32 = [v9 endElement];
+    endElement4 = [conditionCopy endElement];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v33 = v32;
+      v33 = endElement4;
     }
 
     else
@@ -1335,57 +1335,57 @@ LABEL_20:
 
     v23 = v33;
 
-    v34 = [a1 createLocalElementFromSunriseSunset:v31 moc:v8];
+    v34 = [self createLocalElementFromSunriseSunset:v31 moc:mocCopy];
 
     [v14 setStartElement:v34];
-    v25 = [a1 createLocalElementFromSunriseSunset:v23 moc:v8];
+    v25 = [self createLocalElementFromSunriseSunset:v23 moc:mocCopy];
     goto LABEL_20;
   }
 
 LABEL_21:
 
 LABEL_22:
-  [v14 setRegistration:v11];
-  [v11 addConditionsObject:v14];
+  [v14 setRegistration:registrationCopy];
+  [registrationCopy addConditionsObject:v14];
 
   return v14;
 }
 
-+ (id)createAndAddLocalPresenceConditionToRegistration:(id)a3 moc:(id)a4 condition:(id)a5
++ (id)createAndAddLocalPresenceConditionToRegistration:(id)registration moc:(id)moc condition:(id)condition
 {
   v7 = MEMORY[0x277CBE408];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  conditionCopy = condition;
+  mocCopy = moc;
+  registrationCopy = registration;
   v11 = +[MKFLocalBulletinConditionPresence entity];
-  v12 = [v11 name];
-  v13 = [v7 insertNewObjectForEntityForName:v12 inManagedObjectContext:v9];
+  name = [v11 name];
+  v13 = [v7 insertNewObjectForEntityForName:name inManagedObjectContext:mocCopy];
 
-  [v13 setPresenceEventType:{objc_msgSend(v8, "presenceEventType")}];
-  [v13 setPresenceEventUserType:{objc_msgSend(v8, "presenceEventUserType")}];
-  v14 = [v8 userUUIDs];
+  [v13 setPresenceEventType:{objc_msgSend(conditionCopy, "presenceEventType")}];
+  [v13 setPresenceEventUserType:{objc_msgSend(conditionCopy, "presenceEventUserType")}];
+  userUUIDs = [conditionCopy userUUIDs];
 
-  [v13 setUserModelIDs:v14];
-  [v13 setRegistration:v10];
-  [v10 addConditionsObject:v13];
+  [v13 setUserModelIDs:userUUIDs];
+  [v13 setRegistration:registrationCopy];
+  [registrationCopy addConditionsObject:v13];
 
   return v13;
 }
 
-+ (id)createAndAddLocalConditionsToRegistration:(id)a3 moc:(id)a4 conditions:(id)a5
++ (id)createAndAddLocalConditionsToRegistration:(id)registration moc:(id)moc conditions:(id)conditions
 {
-  v8 = a3;
-  v9 = a4;
+  registrationCopy = registration;
+  mocCopy = moc;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __105__HMDBulletinNotificationRegistrationUtilities_createAndAddLocalConditionsToRegistration_moc_conditions___block_invoke;
   v14[3] = &unk_27867C638;
-  v16 = v9;
-  v17 = a1;
-  v15 = v8;
-  v10 = v9;
-  v11 = v8;
-  v12 = [a5 na_map:v14];
+  v16 = mocCopy;
+  selfCopy = self;
+  v15 = registrationCopy;
+  v10 = mocCopy;
+  v11 = registrationCopy;
+  v12 = [conditions na_map:v14];
 
   return v12;
 }

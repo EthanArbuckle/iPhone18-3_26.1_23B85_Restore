@@ -1,8 +1,8 @@
 @interface NEPathEventObserver
-- (NEPathEventObserver)initWithQueue:(id)a3 eventHandler:(id)a4;
+- (NEPathEventObserver)initWithQueue:(id)queue eventHandler:(id)handler;
 - (void)cancel;
 - (void)dealloc;
-- (void)handleEvent:(void *)a3 forPID:(void *)a4 UUID:;
+- (void)handleEvent:(void *)event forPID:(void *)d UUID:;
 @end
 
 @implementation NEPathEventObserver
@@ -42,17 +42,17 @@
   }
 }
 
-- (NEPathEventObserver)initWithQueue:(id)a3 eventHandler:(id)a4
+- (NEPathEventObserver)initWithQueue:(id)queue eventHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  handlerCopy = handler;
   v16.receiver = self;
   v16.super_class = NEPathEventObserver;
   v8 = [(NEPathEventObserver *)&v16 init];
   v10 = v8;
   if (v8)
   {
-    objc_setProperty_atomic_copy(v8, v9, v7, 32);
+    objc_setProperty_atomic_copy(v8, v9, handlerCopy, 32);
     objc_initWeak(&location, v10);
     v13[1] = MEMORY[0x1E69E9820];
     v13[2] = 3221225472;
@@ -101,24 +101,24 @@ void __50__NEPathEventObserver_initWithQueue_eventHandler___block_invoke_3(uint6
   [(NEPathEventObserver *)WeakRetained handleEvent:v6 forPID:v5 UUID:?];
 }
 
-- (void)handleEvent:(void *)a3 forPID:(void *)a4 UUID:
+- (void)handleEvent:(void *)event forPID:(void *)d UUID:
 {
   v38 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!a1)
+  eventCopy = event;
+  dCopy = d;
+  if (!self)
   {
     goto LABEL_27;
   }
 
-  if (v7 && MEMORY[0x1BFAFC5E0](v7) == MEMORY[0x1E69E9F18])
+  if (eventCopy && MEMORY[0x1BFAFC5E0](eventCopy) == MEMORY[0x1E69E9F18])
   {
-    value = xpc_uint64_get_value(v7);
-    if (v8)
+    value = xpc_uint64_get_value(eventCopy);
+    if (dCopy)
     {
-      if (MEMORY[0x1BFAFC5E0](v8) == MEMORY[0x1E69E9F20])
+      if (MEMORY[0x1BFAFC5E0](dCopy) == MEMORY[0x1E69E9F20])
       {
-        bytes = xpc_uuid_get_bytes(v8);
+        bytes = xpc_uuid_get_bytes(dCopy);
         v37 = 0;
         memset(out, 0, sizeof(out));
         if (proc_pidinfo(value, 17, 1uLL, out, 56) == 56)
@@ -169,18 +169,18 @@ void __50__NEPathEventObserver_initWithQueue_eventHandler___block_invoke_3(uint6
     }
   }
 
-  if (!v8)
+  if (!dCopy)
   {
     goto LABEL_27;
   }
 
 LABEL_5:
-  if (MEMORY[0x1BFAFC5E0](v8) != MEMORY[0x1E69E9F20])
+  if (MEMORY[0x1BFAFC5E0](dCopy) != MEMORY[0x1E69E9F20])
   {
     goto LABEL_27;
   }
 
-  v9 = xpc_uuid_get_bytes(v8);
+  v9 = xpc_uuid_get_bytes(dCopy);
   memset(out, 0, 37);
   uuid_unparse(v9, out);
   v10 = NEHelperCacheCopySigningIdentifierMapping();
@@ -219,7 +219,7 @@ LABEL_5:
   if (v21)
   {
 LABEL_26:
-    Property = objc_getProperty(a1, v22, 32, 1);
+    Property = objc_getProperty(self, v22, 32, 1);
     Property[2](Property, v21);
   }
 

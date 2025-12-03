@@ -1,30 +1,30 @@
 @interface PGMeaningActionCriteria
-+ (PGMeaningActionCriteria)criteriaWithDictionary:(id)a3;
-+ (double)actionHighRecallThresholdForAssetMediaAnalysisVersion:(unint64_t)a3 usingActionCriteriaByValidPersonActivityMeaningLabel:(id)a4 andValidPersonActivity:(id)a5;
-+ (id)actionValueStringUsingActionCriteriaByValidPersonActivityMeaningLabel:(id)a3 withPersonActivityMeaningLabel:(id)a4;
-+ (id)descendingSortedMediaAnalysisVersionFromCriteriaDictionary:(id)a3 usingActionThresholdKey:(id)a4;
-+ (id)parseThresholdFromCriteriaDictionary:(id)a3 usingActionThresholdKey:(id)a4;
-- (BOOL)passesCriteriaWithTrait:(id)a3 withHighPrecisionThreshold:(double)a4;
-- (BOOL)passesForAssets:(id)a3;
++ (PGMeaningActionCriteria)criteriaWithDictionary:(id)dictionary;
++ (double)actionHighRecallThresholdForAssetMediaAnalysisVersion:(unint64_t)version usingActionCriteriaByValidPersonActivityMeaningLabel:(id)label andValidPersonActivity:(id)activity;
++ (id)actionValueStringUsingActionCriteriaByValidPersonActivityMeaningLabel:(id)label withPersonActivityMeaningLabel:(id)meaningLabel;
++ (id)descendingSortedMediaAnalysisVersionFromCriteriaDictionary:(id)dictionary usingActionThresholdKey:(id)key;
++ (id)parseThresholdFromCriteriaDictionary:(id)dictionary usingActionThresholdKey:(id)key;
+- (BOOL)passesCriteriaWithTrait:(id)trait withHighPrecisionThreshold:(double)threshold;
+- (BOOL)passesForAssets:(id)assets;
 - (NSString)description;
-- (double)actionThresholdForAssetMediaAnalysisVersion:(unint64_t)a3 withActionThresholdByMediaAnalysisVersion:(id)a4;
+- (double)actionThresholdForAssetMediaAnalysisVersion:(unint64_t)version withActionThresholdByMediaAnalysisVersion:(id)analysisVersion;
 @end
 
 @implementation PGMeaningActionCriteria
 
-+ (double)actionHighRecallThresholdForAssetMediaAnalysisVersion:(unint64_t)a3 usingActionCriteriaByValidPersonActivityMeaningLabel:(id)a4 andValidPersonActivity:(id)a5
++ (double)actionHighRecallThresholdForAssetMediaAnalysisVersion:(unint64_t)version usingActionCriteriaByValidPersonActivityMeaningLabel:(id)label andValidPersonActivity:(id)activity
 {
-  v7 = a4;
-  v8 = a5;
-  if (v8)
+  labelCopy = label;
+  activityCopy = activity;
+  if (activityCopy)
   {
-    v9 = [v7 objectForKeyedSubscript:v8];
-    v10 = [v9 highRecallThresholdByMediaAnalysisVersion];
+    v9 = [labelCopy objectForKeyedSubscript:activityCopy];
+    highRecallThresholdByMediaAnalysisVersion = [v9 highRecallThresholdByMediaAnalysisVersion];
 
-    if (v10)
+    if (highRecallThresholdByMediaAnalysisVersion)
     {
-      v11 = [v9 highRecallThresholdByMediaAnalysisVersion];
-      [v9 actionThresholdForAssetMediaAnalysisVersion:a3 withActionThresholdByMediaAnalysisVersion:v11];
+      highRecallThresholdByMediaAnalysisVersion2 = [v9 highRecallThresholdByMediaAnalysisVersion];
+      [v9 actionThresholdForAssetMediaAnalysisVersion:version withActionThresholdByMediaAnalysisVersion:highRecallThresholdByMediaAnalysisVersion2];
       v13 = v12;
     }
 
@@ -42,15 +42,15 @@
   return v13;
 }
 
-+ (id)actionValueStringUsingActionCriteriaByValidPersonActivityMeaningLabel:(id)a3 withPersonActivityMeaningLabel:(id)a4
++ (id)actionValueStringUsingActionCriteriaByValidPersonActivityMeaningLabel:(id)label withPersonActivityMeaningLabel:(id)meaningLabel
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKeyedSubscript:v6];
+  labelCopy = label;
+  meaningLabelCopy = meaningLabel;
+  v7 = [labelCopy objectForKeyedSubscript:meaningLabelCopy];
 
   if (v7)
   {
-    v8 = [v5 objectForKeyedSubscript:v6];
+    v8 = [labelCopy objectForKeyedSubscript:meaningLabelCopy];
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", objc_msgSend(v8, "actionValue")];
   }
 
@@ -62,10 +62,10 @@
   return v9;
 }
 
-+ (id)descendingSortedMediaAnalysisVersionFromCriteriaDictionary:(id)a3 usingActionThresholdKey:(id)a4
++ (id)descendingSortedMediaAnalysisVersionFromCriteriaDictionary:(id)dictionary usingActionThresholdKey:(id)key
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = [a3 objectForKeyedSubscript:{@"operatingPoints", a4}];
+  v4 = [dictionary objectForKeyedSubscript:{@"operatingPoints", key}];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   if (v4)
   {
@@ -76,8 +76,8 @@
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = [v4 allKeys];
-    v9 = [v8 countByEnumeratingWithState:&v19 objects:v24 count:16];
+    allKeys = [v4 allKeys];
+    v9 = [allKeys countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v9)
     {
       v10 = v9;
@@ -88,14 +88,14 @@
         {
           if (*v20 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allKeys);
           }
 
           v13 = [v7 numberFromString:*(*(&v19 + 1) + 8 * i)];
           [v6 addObject:v13];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v19 objects:v24 count:16];
+        v10 = [allKeys countByEnumeratingWithState:&v19 objects:v24 count:16];
       }
 
       while (v10);
@@ -114,22 +114,22 @@
   return v5;
 }
 
-+ (id)parseThresholdFromCriteriaDictionary:(id)a3 usingActionThresholdKey:(id)a4
++ (id)parseThresholdFromCriteriaDictionary:(id)dictionary usingActionThresholdKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKeyedSubscript:@"operatingPoints"];
+  dictionaryCopy = dictionary;
+  keyCopy = key;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"operatingPoints"];
   v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __88__PGMeaningActionCriteria_parseThresholdFromCriteriaDictionary_usingActionThresholdKey___block_invoke;
   v15[3] = &unk_278886108;
-  v16 = v6;
+  v16 = keyCopy;
   v9 = v8;
   v17 = v9;
-  v18 = v5;
-  v10 = v5;
-  v11 = v6;
+  v18 = dictionaryCopy;
+  v10 = dictionaryCopy;
+  v11 = keyCopy;
   [v7 enumerateKeysAndObjectsUsingBlock:v15];
   v12 = v18;
   v13 = v9;
@@ -174,46 +174,46 @@ void __88__PGMeaningActionCriteria_parseThresholdFromCriteriaDictionary_usingAct
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (PGMeaningActionCriteria)criteriaWithDictionary:(id)a3
++ (PGMeaningActionCriteria)criteriaWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  v6 = [v4 objectForKeyedSubscript:@"actionValue"];
+  dictionaryCopy = dictionary;
+  v5 = objc_alloc_init(self);
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"actionValue"];
   [v5 setActionValue:{objc_msgSend(v6, "intValue")}];
 
-  v7 = [v4 objectForKeyedSubscript:@"actionName"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"actionName"];
   [v5 setActionName:v7];
 
-  v8 = [a1 parseThresholdFromCriteriaDictionary:v4 usingActionThresholdKey:@"confidenceHighPrecisionThreshold"];
+  v8 = [self parseThresholdFromCriteriaDictionary:dictionaryCopy usingActionThresholdKey:@"confidenceHighPrecisionThreshold"];
   [v5 setHighPrecisionThresholdByMediaAnalysisVersion:v8];
 
-  v9 = [a1 parseThresholdFromCriteriaDictionary:v4 usingActionThresholdKey:@"confidenceHighRecallThreshold"];
+  v9 = [self parseThresholdFromCriteriaDictionary:dictionaryCopy usingActionThresholdKey:@"confidenceHighRecallThreshold"];
   [v5 setHighRecallThresholdByMediaAnalysisVersion:v9];
 
-  v10 = [a1 descendingSortedMediaAnalysisVersionFromCriteriaDictionary:v4 usingActionThresholdKey:@"confidenceHighPrecisionThreshold"];
+  v10 = [self descendingSortedMediaAnalysisVersionFromCriteriaDictionary:dictionaryCopy usingActionThresholdKey:@"confidenceHighPrecisionThreshold"];
 
   [v5 setDescendingSortedMediaAnalysisVersion:v10];
 
   return v5;
 }
 
-- (double)actionThresholdForAssetMediaAnalysisVersion:(unint64_t)a3 withActionThresholdByMediaAnalysisVersion:(id)a4
+- (double)actionThresholdForAssetMediaAnalysisVersion:(unint64_t)version withActionThresholdByMediaAnalysisVersion:(id)analysisVersion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(PGMeaningActionCriteria *)self descendingSortedMediaAnalysisVersion];
-  v8 = [v7 lastObject];
+  analysisVersionCopy = analysisVersion;
+  descendingSortedMediaAnalysisVersion = [(PGMeaningActionCriteria *)self descendingSortedMediaAnalysisVersion];
+  lastObject = [descendingSortedMediaAnalysisVersion lastObject];
 
   v9 = 1.0;
-  if (v8 && [v8 unsignedIntValue] <= a3)
+  if (lastObject && [lastObject unsignedIntValue] <= version)
   {
-    v10 = v8;
+    v10 = lastObject;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v11 = [(PGMeaningActionCriteria *)self descendingSortedMediaAnalysisVersion];
-    v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    descendingSortedMediaAnalysisVersion2 = [(PGMeaningActionCriteria *)self descendingSortedMediaAnalysisVersion];
+    v12 = [descendingSortedMediaAnalysisVersion2 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v12)
     {
       v13 = v12;
@@ -224,11 +224,11 @@ void __88__PGMeaningActionCriteria_parseThresholdFromCriteriaDictionary_usingAct
         {
           if (*v24 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(descendingSortedMediaAnalysisVersion2);
           }
 
           v16 = *(*(&v23 + 1) + 8 * i);
-          if ([v16 unsignedIntValue] <= a3)
+          if ([v16 unsignedIntValue] <= version)
           {
             v17 = v16;
 
@@ -237,7 +237,7 @@ void __88__PGMeaningActionCriteria_parseThresholdFromCriteriaDictionary_usingAct
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v13 = [descendingSortedMediaAnalysisVersion2 countByEnumeratingWithState:&v23 objects:v27 count:16];
         if (v13)
         {
           continue;
@@ -249,8 +249,8 @@ void __88__PGMeaningActionCriteria_parseThresholdFromCriteriaDictionary_usingAct
 
 LABEL_13:
 
-    v18 = [v10 stringValue];
-    v19 = [v6 objectForKeyedSubscript:v18];
+    stringValue = [v10 stringValue];
+    v19 = [analysisVersionCopy objectForKeyedSubscript:stringValue];
 
     if (v19)
     {
@@ -271,19 +271,19 @@ LABEL_13:
 - (NSString)description
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB68] string];
-  v4 = [(PGMeaningActionCriteria *)self actionName];
-  [v3 appendFormat:@"%@: %@\n", @"actionName", v4];
+  string = [MEMORY[0x277CCAB68] string];
+  actionName = [(PGMeaningActionCriteria *)self actionName];
+  [string appendFormat:@"%@: %@\n", @"actionName", actionName];
 
-  [v3 appendFormat:@"%@: %lu\n", @"actionValue", -[PGMeaningActionCriteria actionValue](self, "actionValue")];
+  [string appendFormat:@"%@: %lu\n", @"actionValue", -[PGMeaningActionCriteria actionValue](self, "actionValue")];
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v5 = [(PGMeaningActionCriteria *)self highPrecisionThresholdByMediaAnalysisVersion];
-  v6 = [v5 allKeys];
+  highPrecisionThresholdByMediaAnalysisVersion = [(PGMeaningActionCriteria *)self highPrecisionThresholdByMediaAnalysisVersion];
+  allKeys = [highPrecisionThresholdByMediaAnalysisVersion allKeys];
 
-  v7 = [v6 countByEnumeratingWithState:&v29 objects:v34 count:16];
+  v7 = [allKeys countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v7)
   {
     v8 = v7;
@@ -294,16 +294,16 @@ LABEL_13:
       {
         if (*v30 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v29 + 1) + 8 * i);
-        v12 = [(PGMeaningActionCriteria *)self highPrecisionThresholdByMediaAnalysisVersion];
-        v13 = [v12 objectForKey:v11];
-        [v3 appendFormat:@"High Precision Threshold for version %@: %@\n", v11, v13];
+        highPrecisionThresholdByMediaAnalysisVersion2 = [(PGMeaningActionCriteria *)self highPrecisionThresholdByMediaAnalysisVersion];
+        v13 = [highPrecisionThresholdByMediaAnalysisVersion2 objectForKey:v11];
+        [string appendFormat:@"High Precision Threshold for version %@: %@\n", v11, v13];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v29 objects:v34 count:16];
     }
 
     while (v8);
@@ -313,10 +313,10 @@ LABEL_13:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v14 = [(PGMeaningActionCriteria *)self highRecallThresholdByMediaAnalysisVersion];
-  v15 = [v14 allKeys];
+  highRecallThresholdByMediaAnalysisVersion = [(PGMeaningActionCriteria *)self highRecallThresholdByMediaAnalysisVersion];
+  allKeys2 = [highRecallThresholdByMediaAnalysisVersion allKeys];
 
-  v16 = [v15 countByEnumeratingWithState:&v25 objects:v33 count:16];
+  v16 = [allKeys2 countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v16)
   {
     v17 = v16;
@@ -327,16 +327,16 @@ LABEL_13:
       {
         if (*v26 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(allKeys2);
         }
 
         v20 = *(*(&v25 + 1) + 8 * j);
-        v21 = [(PGMeaningActionCriteria *)self highRecallThresholdByMediaAnalysisVersion];
-        v22 = [v21 objectForKey:v20];
-        [v3 appendFormat:@"High Recall Threshold for version %@: %@\n", v20, v22];
+        highRecallThresholdByMediaAnalysisVersion2 = [(PGMeaningActionCriteria *)self highRecallThresholdByMediaAnalysisVersion];
+        v22 = [highRecallThresholdByMediaAnalysisVersion2 objectForKey:v20];
+        [string appendFormat:@"High Recall Threshold for version %@: %@\n", v20, v22];
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v25 objects:v33 count:16];
+      v17 = [allKeys2 countByEnumeratingWithState:&v25 objects:v33 count:16];
     }
 
     while (v17);
@@ -344,16 +344,16 @@ LABEL_13:
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return string;
 }
 
-- (BOOL)passesCriteriaWithTrait:(id)a3 withHighPrecisionThreshold:(double)a4
+- (BOOL)passesCriteriaWithTrait:(id)trait withHighPrecisionThreshold:(double)threshold
 {
-  v6 = a3;
-  if ([v6 type] == 1 && self->_actionValue == objc_msgSend(v6, "value"))
+  traitCopy = trait;
+  if ([traitCopy type] == 1 && self->_actionValue == objc_msgSend(traitCopy, "value"))
   {
-    [v6 score];
-    v8 = v7 >= a4;
+    [traitCopy score];
+    v8 = v7 >= threshold;
   }
 
   else
@@ -364,21 +364,21 @@ LABEL_13:
   return v8;
 }
 
-- (BOOL)passesForAssets:(id)a3
+- (BOOL)passesForAssets:(id)assets
 {
   v28 = *MEMORY[0x277D85DE8];
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 0;
-  v17 = a3;
-  if ([v17 count])
+  assetsCopy = assets;
+  if ([assetsCopy count])
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v4 = v17;
+    v4 = assetsCopy;
     v5 = [v4 countByEnumeratingWithState:&v19 objects:v27 count:16];
     if (v5)
     {
@@ -393,15 +393,15 @@ LABEL_13:
           }
 
           v8 = *(*(&v19 + 1) + 8 * i);
-          v9 = [v8 clsFaceInformationSummary];
-          v10 = [v9 faceInformationByPersonLocalIdentifier];
+          clsFaceInformationSummary = [v8 clsFaceInformationSummary];
+          faceInformationByPersonLocalIdentifier = [clsFaceInformationSummary faceInformationByPersonLocalIdentifier];
 
-          v11 = [v8 mediaAnalysisProperties];
-          v12 = [v11 mediaAnalysisVersion];
+          mediaAnalysisProperties = [v8 mediaAnalysisProperties];
+          mediaAnalysisVersion = [mediaAnalysisProperties mediaAnalysisVersion];
 
-          if (v12)
+          if (mediaAnalysisVersion)
           {
-            [(PGMeaningActionCriteria *)self actionThresholdForAssetMediaAnalysisVersion:v12 withActionThresholdByMediaAnalysisVersion:self->_highPrecisionThresholdByMediaAnalysisVersion];
+            [(PGMeaningActionCriteria *)self actionThresholdForAssetMediaAnalysisVersion:mediaAnalysisVersion withActionThresholdByMediaAnalysisVersion:self->_highPrecisionThresholdByMediaAnalysisVersion];
             v18[0] = MEMORY[0x277D85DD0];
             v18[1] = 3221225472;
             v18[2] = __43__PGMeaningActionCriteria_passesForAssets___block_invoke;
@@ -409,7 +409,7 @@ LABEL_13:
             v18[4] = self;
             v18[5] = &v23;
             v18[6] = v13;
-            [v10 enumerateKeysAndObjectsUsingBlock:v18];
+            [faceInformationByPersonLocalIdentifier enumerateKeysAndObjectsUsingBlock:v18];
             if (v24[3])
             {
 

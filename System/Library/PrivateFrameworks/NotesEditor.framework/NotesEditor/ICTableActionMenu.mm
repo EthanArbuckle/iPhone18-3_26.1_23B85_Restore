@@ -1,21 +1,21 @@
 @interface ICTableActionMenu
-+ (ICTableActionMenu)menuWithTableAttachmentViewController:(id)a3 presentingViewController:(id)a4 presentingBarButtonItem:(id)a5 completion:(id)a6;
-+ (ICTableActionMenu)menuWithTableAttachmentViewController:(id)a3 presentingViewController:(id)a4 presentingBarButtonItem:(id)a5 deferredChildren:(BOOL)a6 completion:(id)a7;
++ (ICTableActionMenu)menuWithTableAttachmentViewController:(id)controller presentingViewController:(id)viewController presentingBarButtonItem:(id)item completion:(id)completion;
++ (ICTableActionMenu)menuWithTableAttachmentViewController:(id)controller presentingViewController:(id)viewController presentingBarButtonItem:(id)item deferredChildren:(BOOL)children completion:(id)completion;
 - (ICTableActionMenu)init;
-- (ICTableActionMenu)initWithTableAttachmentViewController:(id)a3 presentingViewController:(id)a4 presentingBarButtonItem:(id)a5 completion:(id)a6;
+- (ICTableActionMenu)initWithTableAttachmentViewController:(id)controller presentingViewController:(id)viewController presentingBarButtonItem:(id)item completion:(id)completion;
 - (UIBarButtonItem)presentingBarButtonItem;
 - (id)completion;
 - (id)makeMenu;
 - (id)menuSections;
-- (void)setCompletion:(id)a3;
-- (void)setPresentingBarButtonItem:(id)a3;
+- (void)setCompletion:(id)completion;
+- (void)setPresentingBarButtonItem:(id)item;
 @end
 
 @implementation ICTableActionMenu
 
-- (ICTableActionMenu)initWithTableAttachmentViewController:(id)a3 presentingViewController:(id)a4 presentingBarButtonItem:(id)a5 completion:(id)a6
+- (ICTableActionMenu)initWithTableAttachmentViewController:(id)controller presentingViewController:(id)viewController presentingBarButtonItem:(id)item completion:(id)completion
 {
-  v9 = _Block_copy(a6);
+  v9 = _Block_copy(completion);
   if (v9)
   {
     v10 = swift_allocObject();
@@ -28,19 +28,19 @@
     v10 = 0;
   }
 
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = sub_2153A6A9C(a3, v12, a5, v9, v10);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  itemCopy = item;
+  v14 = sub_2153A6A9C(controller, viewControllerCopy, item, v9, v10);
   sub_2151AF750(v9);
 
   return v14;
 }
 
-+ (ICTableActionMenu)menuWithTableAttachmentViewController:(id)a3 presentingViewController:(id)a4 presentingBarButtonItem:(id)a5 deferredChildren:(BOOL)a6 completion:(id)a7
++ (ICTableActionMenu)menuWithTableAttachmentViewController:(id)controller presentingViewController:(id)viewController presentingBarButtonItem:(id)item deferredChildren:(BOOL)children completion:(id)completion
 {
-  v7 = a6;
-  v11 = _Block_copy(a7);
+  childrenCopy = children;
+  v11 = _Block_copy(completion);
   if (v11)
   {
     v12 = swift_allocObject();
@@ -53,18 +53,18 @@
     v12 = 0;
   }
 
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = _s11NotesEditor15TableActionMenuC4menu29tableAttachmentViewController010presentingiJ00K13BarButtonItem16deferredChildren10completionSo6UIMenuCSo07ICTablehiJ0CSg_So06UIViewJ0CSo05UIBarmN0CSgSbySb_SStcSgtFZ_0(a3, v14, a5, v7, v11, v12);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  itemCopy = item;
+  v16 = _s11NotesEditor15TableActionMenuC4menu29tableAttachmentViewController010presentingiJ00K13BarButtonItem16deferredChildren10completionSo6UIMenuCSo07ICTablehiJ0CSg_So06UIViewJ0CSo05UIBarmN0CSgSbySb_SStcSgtFZ_0(controller, viewControllerCopy, item, childrenCopy, v11, v12);
   sub_2151AF750(v11);
 
   return v16;
 }
 
-+ (ICTableActionMenu)menuWithTableAttachmentViewController:(id)a3 presentingViewController:(id)a4 presentingBarButtonItem:(id)a5 completion:(id)a6
++ (ICTableActionMenu)menuWithTableAttachmentViewController:(id)controller presentingViewController:(id)viewController presentingBarButtonItem:(id)item completion:(id)completion
 {
-  v9 = _Block_copy(a6);
+  v9 = _Block_copy(completion);
   if (v9)
   {
     v10 = swift_allocObject();
@@ -77,10 +77,10 @@
     v10 = 0;
   }
 
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = _s11NotesEditor15TableActionMenuC4menu29tableAttachmentViewController010presentingiJ00K13BarButtonItem10completionSo6UIMenuCSo07ICTablehiJ0CSg_So06UIViewJ0CSo05UIBarmN0CSgySb_SStcSgtFZ_0(a3, v12, a5, v9, v10);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  itemCopy = item;
+  v14 = _s11NotesEditor15TableActionMenuC4menu29tableAttachmentViewController010presentingiJ00K13BarButtonItem10completionSo6UIMenuCSo07ICTablehiJ0CSg_So06UIViewJ0CSo05UIBarmN0CSgySb_SStcSgtFZ_0(controller, viewControllerCopy, item, v9, v10);
   sub_2151AF750(v9);
 
   return v14;
@@ -110,9 +110,9 @@
   return v4;
 }
 
-- (void)setCompletion:(id)a3
+- (void)setCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -130,7 +130,7 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   sub_2151AF750(v7);
 }
 
@@ -141,13 +141,13 @@
   return *(self + v3);
 }
 
-- (void)setPresentingBarButtonItem:(id)a3
+- (void)setPresentingBarButtonItem:(id)item
 {
   v5 = OBJC_IVAR___ICTableActionMenu_presentingBarButtonItem;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = item;
+  itemCopy = item;
 }
 
 - (id)menuSections
@@ -155,7 +155,7 @@
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27CA5AA00);
   v3 = swift_allocObject();
   *(v3 + 16) = xmmword_2154BDB20;
-  v4 = self;
+  selfCopy = self;
   *(v3 + 32) = sub_2153A5D30();
 
   sub_2153A7284();
@@ -168,7 +168,7 @@
 {
   type metadata accessor for TableActionMenu();
   sub_2153A6F0C();
-  v3 = self;
+  selfCopy = self;
   v4 = sub_21549F4FC();
 
   return v4;

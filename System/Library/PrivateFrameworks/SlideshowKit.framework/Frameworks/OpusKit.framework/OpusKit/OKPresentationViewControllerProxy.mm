@@ -1,21 +1,21 @@
 @interface OKPresentationViewControllerProxy
-+ (void)setupJavascriptContext:(id)a3;
-- (BOOL)_prepareNavigationOffscreenWithProgressBlock:(id)a3 colorSpace:(id)a4 error:(id *)a5;
-- (BOOL)_registerProducerPlugin:(id)a3;
-- (BOOL)canEditTextInWidget:(id)a3;
-- (BOOL)canPanMediaInWidget:(id)a3;
++ (void)setupJavascriptContext:(id)context;
+- (BOOL)_prepareNavigationOffscreenWithProgressBlock:(id)block colorSpace:(id)space error:(id *)error;
+- (BOOL)_registerProducerPlugin:(id)plugin;
+- (BOOL)canEditTextInWidget:(id)widget;
+- (BOOL)canPanMediaInWidget:(id)widget;
 - (BOOL)canStartCouchPotatoPlayback;
-- (BOOL)couchController:(id)a3 thingsAreReadyForNextStep:(id)a4 withProgress:(double *)a5;
-- (BOOL)couchControllerCanStartPlayback:(id)a3;
-- (BOOL)sendAction:(id)a3 toTarget:(id)a4;
-- (BOOL)thingsAreReadyInCurrentPageForCouchController:(id)a3;
-- (BOOL)validateChangingTextInWidget:(id)a3 toSettings:(id)a4;
-- (BOOL)validatePanningMediaInWidget:(id)a3 toState:(id)a4;
-- (CGPoint)convertLocationInWindow:(CGPoint)a3 toPage:(id)a4;
-- (CGPoint)convertLocationInWindow:(CGPoint)a3 toWidget:(id)a4;
-- (CGPoint)convertPointToBackingLayout:(CGPoint)a3 fromPage:(id)a4;
-- (CGPoint)convertPointToBackingLayout:(CGPoint)a3 fromWidget:(id)a4;
-- (CGSize)_fitDisplaySizeForRenderSize:(CGSize)a3;
+- (BOOL)couchController:(id)controller thingsAreReadyForNextStep:(id)step withProgress:(double *)progress;
+- (BOOL)couchControllerCanStartPlayback:(id)playback;
+- (BOOL)sendAction:(id)action toTarget:(id)target;
+- (BOOL)thingsAreReadyInCurrentPageForCouchController:(id)controller;
+- (BOOL)validateChangingTextInWidget:(id)widget toSettings:(id)settings;
+- (BOOL)validatePanningMediaInWidget:(id)widget toState:(id)state;
+- (CGPoint)convertLocationInWindow:(CGPoint)window toPage:(id)page;
+- (CGPoint)convertLocationInWindow:(CGPoint)window toWidget:(id)widget;
+- (CGPoint)convertPointToBackingLayout:(CGPoint)layout fromPage:(id)page;
+- (CGPoint)convertPointToBackingLayout:(CGPoint)layout fromWidget:(id)widget;
+- (CGSize)_fitDisplaySizeForRenderSize:(CGSize)size;
 - (CGSize)displaySize;
 - (CGSize)layoutFactor;
 - (CGSize)resolutionSize;
@@ -23,130 +23,130 @@
 - (OKCouchController)couchController;
 - (OKJavaScriptContext)jsContext;
 - (OKPageViewController)currentPageViewController;
-- (OKPresentationViewControllerProxy)initWithPresentation:(id)a3 andMainNavigatorName:(id)a4;
-- (OKPresentationViewControllerProxy)initWithPreset:(id)a3 guidelines:(id)a4 mediaFeeder:(id)a5;
+- (OKPresentationViewControllerProxy)initWithPresentation:(id)presentation andMainNavigatorName:(id)name;
+- (OKPresentationViewControllerProxy)initWithPreset:(id)preset guidelines:(id)guidelines mediaFeeder:(id)feeder;
 - (OKProducer)producer;
 - (double)presentationViewScale;
-- (id)_registeredProducerPluginWithIdentifier:(id)a3;
-- (id)allKeysForDictionaryProxy:(id)a3;
-- (id)beginAudioForController:(id)a3 withAVAsset:(id)a4 andVolume:(float)a5;
+- (id)_registeredProducerPluginWithIdentifier:(id)identifier;
+- (id)allKeysForDictionaryProxy:(id)proxy;
+- (id)beginAudioForController:(id)controller withAVAsset:(id)asset andVolume:(float)volume;
 - (id)cachedNavigatorPageViewControllers;
 - (id)colorSpace;
 - (id)deepestDisplayedPageViewController;
-- (id)evaluateScript:(id)a3 withInfoDictionary:(id)a4 andCompletionBlock:(id)a5 forNavigatorViewController:(id)a6 pageViewController:(id)a7 andWidgetView:(id)a8;
-- (id)navigatorViewControllerForNavigatorWithName:(id)a3;
-- (id)valueForUndefinedKey:(id)a3;
+- (id)evaluateScript:(id)script withInfoDictionary:(id)dictionary andCompletionBlock:(id)block forNavigatorViewController:(id)controller pageViewController:(id)viewController andWidgetView:(id)view;
+- (id)navigatorViewControllerForNavigatorWithName:(id)name;
+- (id)valueForUndefinedKey:(id)key;
 - (id)visibleItemKeyPaths;
 - (id)visibleMediaItems;
 - (id)visibleMediaObjects;
 - (id)visibleWidgets;
-- (id)widgetViewFromWidget:(id)a3;
-- (unint64_t)countOfDictionaryProxy:(id)a3;
-- (void)_addSubWidgetViewsFromSubWidgets:(id)a3 toWidgetView:(id)a4;
+- (id)widgetViewFromWidget:(id)widget;
+- (unint64_t)countOfDictionaryProxy:(id)proxy;
+- (void)_addSubWidgetViewsFromSubWidgets:(id)widgets toWidgetView:(id)view;
 - (void)_beginCARenderLogging;
 - (void)_cleanupIfNecessary;
 - (void)_delayedPrepareForRefresh;
-- (void)_doArrowKeyDownForDirection:(unint64_t)a3 atTimestamp:(double)a4;
-- (void)_doArrowKeyUpForDirection:(unint64_t)a3 atTimestamp:(double)a4;
+- (void)_doArrowKeyDownForDirection:(unint64_t)direction atTimestamp:(double)timestamp;
+- (void)_doArrowKeyUpForDirection:(unint64_t)direction atTimestamp:(double)timestamp;
 - (void)_endCARenderLogging;
 - (void)_loadMainNavigatorIfNeeded;
 - (void)_prepareInitialCouchPotatoPlayback;
-- (void)_reachabilityChanged:(id)a3;
-- (void)_repeatArrowKeyForDirection:(id)a3;
-- (void)_rootNavigatorDidAppear:(BOOL)a3;
+- (void)_reachabilityChanged:(id)changed;
+- (void)_repeatArrowKeyForDirection:(id)direction;
+- (void)_rootNavigatorDidAppear:(BOOL)appear;
 - (void)_rootNavigatorPrepareForDisplay;
-- (void)_rootNavigatorWillAppear:(BOOL)a3;
+- (void)_rootNavigatorWillAppear:(BOOL)appear;
 - (void)_startPresentation;
-- (void)_stopActivityIndicator:(id)a3;
-- (void)_stopActivityIndicatorWithCompletionBlock:(id)a3;
+- (void)_stopActivityIndicator:(id)indicator;
+- (void)_stopActivityIndicatorWithCompletionBlock:(id)block;
 - (void)_stopPresentation;
 - (void)_unloadContent;
 - (void)allowCouchPlayback;
-- (void)audioFinishedPlayingForTrackID:(id)a3;
-- (void)audioStartedPlayingForTrackID:(id)a3 withAVAsset:(id)a4 andVolume:(float)a5;
-- (void)beginEditingTextInWidget:(id)a3;
-- (void)beginPanningMediaInWidget:(id)a3;
-- (void)cancelCouchPotatoIfNeededWithAction:(id)a3;
+- (void)audioFinishedPlayingForTrackID:(id)d;
+- (void)audioStartedPlayingForTrackID:(id)d withAVAsset:(id)asset andVolume:(float)volume;
+- (void)beginEditingTextInWidget:(id)widget;
+- (void)beginPanningMediaInWidget:(id)widget;
+- (void)cancelCouchPotatoIfNeededWithAction:(id)action;
 - (void)cancelCouchPotatoPlayback;
-- (void)clickWheelViewClosePressed:(id)a3;
+- (void)clickWheelViewClosePressed:(id)pressed;
 - (void)commonInit;
-- (void)couchControllerPlaybackCompleted:(id)a3;
-- (void)couchControllerPlaybackLooped:(id)a3;
-- (void)couchControllerStartsWaitingForReadiness:(id)a3;
-- (void)couchControllerStopsWaitingForReadiness:(id)a3;
-- (void)couchControllerWaitingForReadiness:(id)a3 withProgress:(double)a4;
+- (void)couchControllerPlaybackCompleted:(id)completed;
+- (void)couchControllerPlaybackLooped:(id)looped;
+- (void)couchControllerStartsWaitingForReadiness:(id)readiness;
+- (void)couchControllerStopsWaitingForReadiness:(id)readiness;
+- (void)couchControllerWaitingForReadiness:(id)readiness withProgress:(double)progress;
 - (void)dealloc;
-- (void)didMoveToParentViewController:(id)a3;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)didReceiveMemoryWarning;
-- (void)displayPresentation:(BOOL)a3 withCompletionBlock:(id)a4;
-- (void)endAudioForController:(id)a3 andTrackID:(id)a4;
-- (void)endEditingTextInWidget:(id)a3 finalSettings:(id)a4;
-- (void)endPanningMediaInWidget:(id)a3 finalState:(id)a4;
-- (void)fadeAllAudioTracksWithDuration:(double)a3;
-- (void)fadeMainNavigatorTracksWithDuration:(double)a3;
+- (void)displayPresentation:(BOOL)presentation withCompletionBlock:(id)block;
+- (void)endAudioForController:(id)controller andTrackID:(id)d;
+- (void)endEditingTextInWidget:(id)widget finalSettings:(id)settings;
+- (void)endPanningMediaInWidget:(id)widget finalState:(id)state;
+- (void)fadeAllAudioTracksWithDuration:(double)duration;
+- (void)fadeMainNavigatorTracksWithDuration:(double)duration;
 - (void)forceCleanup;
 - (void)initSynopsisView;
 - (void)initWheelController;
 - (void)instantPause;
 - (void)instantPlay;
 - (void)instantResume;
-- (void)navigateToItemAtKeyPath:(id)a3 animated:(BOOL)a4 completionHandler:(id)a5;
+- (void)navigateToItemAtKeyPath:(id)path animated:(BOOL)animated completionHandler:(id)handler;
 - (void)prepareCouchPotatoPlayback;
-- (void)prepareForRefreshWithDelay:(double)a3;
+- (void)prepareForRefreshWithDelay:(double)delay;
 - (void)preventCouchPlayback;
-- (void)producer:(id)a3 didProcessLiveAuthoringKeyPaths:(id)a4;
-- (void)renderingTimeLogMessage:(id)a3 withTimestamp:(double)a4;
+- (void)producer:(id)producer didProcessLiveAuthoringKeyPaths:(id)paths;
+- (void)renderingTimeLogMessage:(id)message withTimestamp:(double)timestamp;
 - (void)restart;
-- (void)setAllowsResizing:(BOOL)a3;
-- (void)setAudioURLs:(id)a3;
-- (void)setAudioVolume:(double)a3;
-- (void)setCouchModeDefaultStepDuration:(double)a3;
-- (void)setCouchModeIsReadySpinnerDelay:(double)a3;
-- (void)setCouchModeLoops:(BOOL)a3;
-- (void)setInteractiveTransitionProgressThreshold:(double)a3;
-- (void)setInteractiveTransitionProgressThresholdFromNumber:(id)a3;
-- (void)setInteractiveTransitionTrackingBoxRadius:(double)a3;
-- (void)setInteractiveTransitionTrackingBoxRadiusFromNumber:(id)a3;
-- (void)setInteractiveTransitionVelocityThreshold:(double)a3;
-- (void)setInteractiveTransitionVelocityThresholdFromNumber:(id)a3;
-- (void)setPropertyWithValue:(id)a3 forKey:(id)a4 inJSObject:(OpaqueJSValue *)a5;
+- (void)setAllowsResizing:(BOOL)resizing;
+- (void)setAudioURLs:(id)ls;
+- (void)setAudioVolume:(double)volume;
+- (void)setCouchModeDefaultStepDuration:(double)duration;
+- (void)setCouchModeIsReadySpinnerDelay:(double)delay;
+- (void)setCouchModeLoops:(BOOL)loops;
+- (void)setInteractiveTransitionProgressThreshold:(double)threshold;
+- (void)setInteractiveTransitionProgressThresholdFromNumber:(id)number;
+- (void)setInteractiveTransitionTrackingBoxRadius:(double)radius;
+- (void)setInteractiveTransitionTrackingBoxRadiusFromNumber:(id)number;
+- (void)setInteractiveTransitionVelocityThreshold:(double)threshold;
+- (void)setInteractiveTransitionVelocityThresholdFromNumber:(id)number;
+- (void)setPropertyWithValue:(id)value forKey:(id)key inJSObject:(OpaqueJSValue *)object;
 - (void)startCouchPotatoPlayback;
-- (void)synopsisView:(id)a3 didSelectItem:(id)a4;
-- (void)synopsisViewDidBegin:(id)a3;
-- (void)synopsisViewDidEnd:(id)a3;
-- (void)synopsisViewUpdated:(id)a3 withProgress:(double)a4;
-- (void)synopsisViewWillBegin:(id)a3;
+- (void)synopsisView:(id)view didSelectItem:(id)item;
+- (void)synopsisViewDidBegin:(id)begin;
+- (void)synopsisViewDidEnd:(id)end;
+- (void)synopsisViewUpdated:(id)updated withProgress:(double)progress;
+- (void)synopsisViewWillBegin:(id)begin;
 - (void)updateDisplayResolution;
 - (void)updateTimeLeft;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation OKPresentationViewControllerProxy
 
-- (void)setInteractiveTransitionTrackingBoxRadiusFromNumber:(id)a3
+- (void)setInteractiveTransitionTrackingBoxRadiusFromNumber:(id)number
 {
-  [a3 doubleValue];
+  [number doubleValue];
 
   [(OKPresentationViewControllerProxy *)self setInteractiveTransitionTrackingBoxRadius:?];
 }
 
-- (void)setInteractiveTransitionProgressThresholdFromNumber:(id)a3
+- (void)setInteractiveTransitionProgressThresholdFromNumber:(id)number
 {
-  [a3 doubleValue];
+  [number doubleValue];
 
   [(OKPresentationViewControllerProxy *)self setInteractiveTransitionProgressThreshold:?];
 }
 
-- (void)setInteractiveTransitionVelocityThresholdFromNumber:(id)a3
+- (void)setInteractiveTransitionVelocityThresholdFromNumber:(id)number
 {
-  [a3 doubleValue];
+  [number doubleValue];
 
   [(OKPresentationViewControllerProxy *)self setInteractiveTransitionVelocityThreshold:?];
 }
@@ -218,55 +218,55 @@
   v6 = [MEMORY[0x277D627E0] reachabilityWithHostName:@"www.apple.com"];
   self->_reachability = v6;
   self->_reachabilityStatus = [(OFReachability *)v6 currentNetworkStatus];
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 addObserver:self selector:sel__reachabilityChanged_ name:*MEMORY[0x277D62810] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__reachabilityChanged_ name:*MEMORY[0x277D62810] object:0];
 }
 
-- (void)_reachabilityChanged:(id)a3
+- (void)_reachabilityChanged:(id)changed
 {
-  v5 = [a3 name];
-  if ([v5 isEqualToString:*MEMORY[0x277D62810]])
+  name = [changed name];
+  if ([name isEqualToString:*MEMORY[0x277D62810]])
   {
-    v6 = [objc_msgSend(a3 "object")];
+    v6 = [objc_msgSend(changed "object")];
     if (v6 != -1)
     {
       v7 = v6;
       if (v6 != self->_reachabilityStatus)
       {
         self->_reachabilityStatus = v6;
-        v8 = [(OKPresentationViewControllerProxy *)self mainNavigatorViewController];
+        mainNavigatorViewController = [(OKPresentationViewControllerProxy *)self mainNavigatorViewController];
 
-        [(OKNavigatorViewControllerProxy *)v8 networkStatusDidChange:v7];
+        [(OKNavigatorViewControllerProxy *)mainNavigatorViewController networkStatusDidChange:v7];
       }
     }
   }
 }
 
-- (OKPresentationViewControllerProxy)initWithPresentation:(id)a3 andMainNavigatorName:(id)a4
+- (OKPresentationViewControllerProxy)initWithPresentation:(id)presentation andMainNavigatorName:(id)name
 {
   v6 = [(OFUIViewController *)self init];
   if (v6)
   {
-    v6->_presentation = a3;
+    v6->_presentation = presentation;
     v6->_couchModeDefaultStepDuration = -1.0;
-    v6->_mainNavigatorName = [a4 copy];
-    [objc_msgSend(a3 "info")];
+    v6->_mainNavigatorName = [name copy];
+    [objc_msgSend(presentation "info")];
     v6->_couchInitialDelay = v7;
   }
 
   return v6;
 }
 
-- (OKPresentationViewControllerProxy)initWithPreset:(id)a3 guidelines:(id)a4 mediaFeeder:(id)a5
+- (OKPresentationViewControllerProxy)initWithPreset:(id)preset guidelines:(id)guidelines mediaFeeder:(id)feeder
 {
   v8 = [(OKPresentationViewControllerProxy *)self initWithPresentation:0 andMainNavigatorName:0];
   if (v8)
   {
     v9 = objc_alloc_init(OKProducerSettings);
     v8->_producerSettings = v9;
-    [(OKProducerSettings *)v9 setPreset:a3];
-    [(OKProducerSettings *)v8->_producerSettings setGuidelines:a4];
-    [(OKProducerSettings *)v8->_producerSettings setMediaFeeder:a5];
+    [(OKProducerSettings *)v9 setPreset:preset];
+    [(OKProducerSettings *)v8->_producerSettings setGuidelines:guidelines];
+    [(OKProducerSettings *)v8->_producerSettings setMediaFeeder:feeder];
   }
 
   return v8;
@@ -503,7 +503,7 @@
   block[1] = 3221225472;
   v3 = __49__OKPresentationViewControllerProxy_forceCleanup__block_invoke;
   v4 = &unk_279C8E818;
-  v5 = self;
+  selfCopy = self;
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
     v3(block);
@@ -551,36 +551,36 @@
   }
 }
 
-- (void)_stopActivityIndicator:(id)a3
+- (void)_stopActivityIndicator:(id)indicator
 {
   [(OKPresentationViewControllerProxy *)self setActivityIndicatorVisible:0];
-  if (a3)
+  if (indicator)
   {
-    v4 = *(a3 + 2);
+    v4 = *(indicator + 2);
 
-    v4(a3);
+    v4(indicator);
   }
 }
 
-- (void)_stopActivityIndicatorWithCompletionBlock:(id)a3
+- (void)_stopActivityIndicatorWithCompletionBlock:(id)block
 {
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel__startActivityIndicator object:0];
   if ([(OKPresentationViewControllerProxy *)self isActivityIndicatorVisible])
   {
-    v5 = [a3 copy];
+    v5 = [block copy];
 
     [(OKPresentationViewControllerProxy *)self performSelector:sel__stopActivityIndicator_ withObject:v5 afterDelay:0.15];
   }
 
-  else if (a3)
+  else if (block)
   {
-    v6 = *(a3 + 2);
+    v6 = *(block + 2);
 
-    v6(a3);
+    v6(block);
   }
 }
 
-- (BOOL)_prepareNavigationOffscreenWithProgressBlock:(id)a3 colorSpace:(id)a4 error:(id *)a5
+- (BOOL)_prepareNavigationOffscreenWithProgressBlock:(id)block colorSpace:(id)space error:(id *)error
 {
   v33 = 0;
   v34 = &v33;
@@ -593,16 +593,16 @@
   v29 = __Block_byref_object_copy__5;
   v30 = __Block_byref_object_dispose__5;
   v31 = 0;
-  if ([(OKPresentationInfo *)[(OKPresentation *)self->_presentation info:a3] requiresProducer])
+  if ([(OKPresentationInfo *)[(OKPresentation *)self->_presentation info:block] requiresProducer])
   {
     v8 = dispatch_semaphore_create(0);
     v9 = +[OKProducerManager defaultManager];
-    v10 = [(OKPresentationInfo *)[(OKPresentation *)self->_presentation info] producerIdentifier];
+    producerIdentifier = [(OKPresentationInfo *)[(OKPresentation *)self->_presentation info] producerIdentifier];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __99__OKPresentationViewControllerProxy__prepareNavigationOffscreenWithProgressBlock_colorSpace_error___block_invoke;
     v25[3] = &unk_279C8FEE0;
-    v25[4] = a3;
+    v25[4] = block;
     v25[5] = &v33;
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
@@ -611,29 +611,29 @@
     v24[5] = v8;
     v24[6] = &v26;
     v24[4] = self;
-    [v9 pluginWithIdentifier:v10 progressBlock:v25 completionBlock:v24];
+    [v9 pluginWithIdentifier:producerIdentifier progressBlock:v25 completionBlock:v24];
     dispatch_semaphore_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
     if (v8)
     {
       dispatch_release(v8);
     }
 
-    if (a3)
+    if (block)
     {
-      (*(a3 + 2))(a3, &v32, v34[6]);
+      (*(block + 2))(block, &v32, v34[6]);
     }
 
     if ((v32 & 1) == 0 && !v27[5])
     {
       v23 = 0;
-      v11 = [(OKPresentationViewControllerProxy *)self producer];
+      producer = [(OKPresentationViewControllerProxy *)self producer];
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
       v22[2] = __99__OKPresentationViewControllerProxy__prepareNavigationOffscreenWithProgressBlock_colorSpace_error___block_invoke_3;
       v22[3] = &unk_279C8FEE0;
-      v22[4] = a3;
+      v22[4] = block;
       v22[5] = &v33;
-      [(OKProducer *)v11 migratePresentation:v22 error:&v23];
+      [(OKProducer *)producer migratePresentation:v22 error:&v23];
       v12 = v23;
       v27[5] = v12;
     }
@@ -644,9 +644,9 @@
     v34[6] = 0.4;
   }
 
-  if (a3)
+  if (block)
   {
-    (*(a3 + 2))(a3, &v32, v34[6]);
+    (*(block + 2))(block, &v32, v34[6]);
   }
 
   if ((v32 & 1) == 0)
@@ -660,14 +660,14 @@
           if ([(OKProducer *)[(OKPresentationViewControllerProxy *)self producer] supportsLiveAuthoring])
           {
             v23 = 0;
-            v13 = [(OKPresentationViewControllerProxy *)self producer];
+            producer2 = [(OKPresentationViewControllerProxy *)self producer];
             v21[0] = MEMORY[0x277D85DD0];
             v21[1] = 3221225472;
             v21[2] = __99__OKPresentationViewControllerProxy__prepareNavigationOffscreenWithProgressBlock_colorSpace_error___block_invoke_4;
             v21[3] = &unk_279C8FEE0;
-            v21[4] = a3;
+            v21[4] = block;
             v21[5] = &v33;
-            if ([(OKProducer *)v13 prepareLiveAuthoringIfNeeded:v21 error:&v23])
+            if ([(OKProducer *)producer2 prepareLiveAuthoringIfNeeded:v21 error:&v23])
             {
               v14 = v23;
               v27[5] = v14;
@@ -677,33 +677,33 @@
       }
 
       v34[6] = 0.8;
-      if (a3)
+      if (block)
       {
-        (*(a3 + 2))(a3, &v32, 0.8);
+        (*(block + 2))(block, &v32, 0.8);
       }
     }
 
     if (!v32 && !v27[5])
     {
-      v15 = [[(OKPresentationViewControllerProxy *)self presentation] rootMediaFeeder];
+      rootMediaFeeder = [[(OKPresentationViewControllerProxy *)self presentation] rootMediaFeeder];
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __99__OKPresentationViewControllerProxy__prepareNavigationOffscreenWithProgressBlock_colorSpace_error___block_invoke_5;
       v20[3] = &unk_279C90158;
       v20[4] = self;
-      v20[5] = a3;
+      v20[5] = block;
       v20[6] = &v33;
-      [v15 enumerateObjectsUsingBlock:v20];
+      [rootMediaFeeder enumerateObjectsUsingBlock:v20];
       v34[6] = 1.0;
-      if (a3)
+      if (block)
       {
-        (*(a3 + 2))(a3, &v32, 1.0);
+        (*(block + 2))(block, &v32, 1.0);
       }
     }
   }
 
   v16 = v32;
-  if (a5)
+  if (error)
   {
     if (v32)
     {
@@ -715,7 +715,7 @@
       v17 = v27[5];
     }
 
-    *a5 = v17;
+    *error = v17;
     v16 = v32;
   }
 
@@ -845,9 +845,9 @@ intptr_t __99__OKPresentationViewControllerProxy__prepareNavigationOffscreenWith
       [-[OKNavigatorViewController view](-[OKPresentationViewControllerProxy mainNavigatorViewController](self "mainNavigatorViewController")];
       [-[OKNavigatorViewController view](-[OKPresentationViewControllerProxy mainNavigatorViewController](self "mainNavigatorViewController")];
       [-[OKPresentationViewControllerProxy view](self "view")];
-      v4 = [(OKPresentationViewControllerProxy *)self mainNavigatorViewController];
+      mainNavigatorViewController = [(OKPresentationViewControllerProxy *)self mainNavigatorViewController];
 
-      [(OKNavigatorViewControllerProxy *)v4 didMoveToParentViewController:self];
+      [(OKNavigatorViewControllerProxy *)mainNavigatorViewController didMoveToParentViewController:self];
     }
   }
 }
@@ -861,7 +861,7 @@ intptr_t __99__OKPresentationViewControllerProxy__prepareNavigationOffscreenWith
   v3 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:1.0];
   if ([(OKPresentationViewControllerProxy *)self presentation])
   {
-    v4 = [[(OKPresentationViewControllerProxy *)self presentation] info];
+    info = [[(OKPresentationViewControllerProxy *)self presentation] info];
   }
 
   else
@@ -872,13 +872,13 @@ intptr_t __99__OKPresentationViewControllerProxy__prepareNavigationOffscreenWith
       goto LABEL_7;
     }
 
-    v4 = [(OKProducerSettings *)producerSettings preset];
+    info = [(OKProducerSettings *)producerSettings preset];
   }
 
-  v6 = [(OKPresentationInfo *)v4 backgroundColor];
-  if (v6)
+  backgroundColor = [(OKPresentationInfo *)info backgroundColor];
+  if (backgroundColor)
   {
-    v3 = v6;
+    v3 = backgroundColor;
   }
 
 LABEL_7:
@@ -896,20 +896,20 @@ LABEL_7:
 
 - (void)_rootNavigatorPrepareForDisplay
 {
-  v2 = [(OKPresentationViewControllerProxy *)self mainNavigatorViewController];
+  mainNavigatorViewController = [(OKPresentationViewControllerProxy *)self mainNavigatorViewController];
 
-  [(OKNavigatorViewControllerProxy *)v2 prepareForDisplay];
+  [(OKNavigatorViewControllerProxy *)mainNavigatorViewController prepareForDisplay];
 }
 
-- (void)_rootNavigatorWillAppear:(BOOL)a3
+- (void)_rootNavigatorWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v4 = [(OKPresentationViewControllerProxy *)self mainNavigatorViewController];
+  appearCopy = appear;
+  mainNavigatorViewController = [(OKPresentationViewControllerProxy *)self mainNavigatorViewController];
 
-  [(OKNavigatorViewControllerProxy *)v4 navigatorWillAppear:v3];
+  [(OKNavigatorViewControllerProxy *)mainNavigatorViewController navigatorWillAppear:appearCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   hasBeenHidden = self->_hasBeenHidden;
   v5 = !self->_hasBeenHidden;
@@ -922,10 +922,10 @@ LABEL_7:
   [-[OKPresentationViewControllerProxy view](self "view")];
   if (self->_rootNavigatorIsReady)
   {
-    v6 = [(OKPresentationInfo *)[(OKPresentation *)self->_presentation info] producerIdentifier];
-    if (v6)
+    producerIdentifier = [(OKPresentationInfo *)[(OKPresentation *)self->_presentation info] producerIdentifier];
+    if (producerIdentifier)
     {
-      v7 = [(OKPresentationViewControllerProxy *)self _registeredProducerPluginWithIdentifier:v6];
+      v7 = [(OKPresentationViewControllerProxy *)self _registeredProducerPluginWithIdentifier:producerIdentifier];
       if (v7)
       {
         [v7 setupJavascriptContext:{-[OKPresentationViewControllerProxy jsContext](self, "jsContext")}];
@@ -938,9 +938,9 @@ LABEL_7:
   }
 }
 
-- (void)_rootNavigatorDidAppear:(BOOL)a3
+- (void)_rootNavigatorDidAppear:(BOOL)appear
 {
-  [(OKNavigatorViewControllerProxy *)[(OKPresentationViewControllerProxy *)self mainNavigatorViewController] navigatorDidAppear:a3];
+  [(OKNavigatorViewControllerProxy *)[(OKPresentationViewControllerProxy *)self mainNavigatorViewController] navigatorDidAppear:appear];
   if (![(OKAudioPlaylist *)[(OKNavigatorViewControllerProxy *)[(OKPresentationViewControllerProxy *)self mainNavigatorViewController] audioPlaylist] isPlaying])
   {
     if (self->_audioURLs && !self->_hasBeenHidden)
@@ -977,9 +977,9 @@ LABEL_7:
 
   if ([(OKPresentationInfo *)[(OKPresentation *)self->_presentation info] requiresProducer]&& [[(OKPresentationViewControllerProxy *)self presentation] guidelineLiveAuthoringEnabled]&& [(OKProducer *)[(OKPresentationViewControllerProxy *)self producer] supportsLiveAuthoring])
   {
-    v3 = [(OKPresentationViewControllerProxy *)self producer];
+    producer = [(OKPresentationViewControllerProxy *)self producer];
 
-    [(OKProducer *)v3 performSelector:sel_startLiveAuthoringIfNeeded withObject:0 afterDelay:0.5];
+    [(OKProducer *)producer performSelector:sel_startLiveAuthoringIfNeeded withObject:0 afterDelay:0.5];
   }
 }
 
@@ -989,13 +989,13 @@ LABEL_7:
   if ([(OKPresentationInfo *)[(OKPresentation *)self->_presentation info] requiresProducer]&& [[(OKPresentationViewControllerProxy *)self presentation] guidelineLiveAuthoringEnabled]&& [(OKProducer *)[(OKPresentationViewControllerProxy *)self producer] supportsLiveAuthoring])
   {
     [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:-[OKPresentationViewControllerProxy producer](self selector:"producer") object:{sel_startLiveAuthoringIfNeeded, 0}];
-    v3 = [(OKPresentationViewControllerProxy *)self producer];
+    producer = [(OKPresentationViewControllerProxy *)self producer];
 
-    [(OKProducer *)v3 cancelLiveAuthoring:0];
+    [(OKProducer *)producer cancelLiveAuthoring:0];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   hasBeenHidden = self->_hasBeenHidden;
   v5 = !self->_hasBeenHidden;
@@ -1014,21 +1014,21 @@ LABEL_7:
     if (self->_downloadIndicatorEnabled)
     {
       [(OKPresentationViewControllerProxy *)self _startActivityIndicatorWithDelay];
-      v7 = [MEMORY[0x277CBEB88] currentRunLoop];
-      [v7 runUntilDate:{objc_msgSend(MEMORY[0x277CBEAA8], "dateWithTimeIntervalSinceNow:", 0.00999999978)}];
+      currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+      [currentRunLoop runUntilDate:{objc_msgSend(MEMORY[0x277CBEAA8], "dateWithTimeIntervalSinceNow:", 0.00999999978)}];
     }
 
     v8 = objc_alloc_init(MEMORY[0x277CCA8C8]);
     v9 = [MEMORY[0x277D62800] weakReferenceHolderWithObject:v8];
     v10 = [MEMORY[0x277D62800] weakReferenceHolderWithObject:self];
-    v11 = [(OKPresentationViewControllerProxy *)self colorSpace];
+    colorSpace = [(OKPresentationViewControllerProxy *)self colorSpace];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __51__OKPresentationViewControllerProxy_viewDidAppear___block_invoke;
     v12[3] = &unk_279C901D0;
     v12[4] = v10;
     v12[5] = v9;
-    v12[6] = v11;
+    v12[6] = colorSpace;
     v13 = v6;
     [v8 addExecutionBlock:v12];
     [v8 setQualityOfService:{-[NSOperationQueue qualityOfService](self->_preparationOperationQueue, "qualityOfService")}];
@@ -1239,25 +1239,25 @@ uint64_t __51__OKPresentationViewControllerProxy_viewDidAppear___block_invoke_9(
   return [v2 _stopActivityIndicatorWithCompletionBlock:0];
 }
 
-- (void)displayPresentation:(BOOL)a3 withCompletionBlock:(id)a4
+- (void)displayPresentation:(BOOL)presentation withCompletionBlock:(id)block
 {
-  v5 = a3;
+  presentationCopy = presentation;
   self->_rootNavigatorIsReady = 1;
   [(OKPresentationViewControllerProxy *)self mainNavigatorViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(OKPresentationViewControllerProxy *)self mainNavigatorViewController];
-    v8 = v7;
+    mainNavigatorViewController = [(OKPresentationViewControllerProxy *)self mainNavigatorViewController];
+    v8 = mainNavigatorViewController;
     if (self->_interactiveTransitionTrackingBoxRadius == -1.0)
     {
-      [(OKNavigatorViewController *)v7 interactiveTransitionTrackingBoxRadius];
+      [(OKNavigatorViewController *)mainNavigatorViewController interactiveTransitionTrackingBoxRadius];
       self->_interactiveTransitionTrackingBoxRadius = v9;
     }
 
     else
     {
-      [(OKNavigatorViewController *)v7 setInteractiveTransitionTrackingBoxRadius:?];
+      [(OKNavigatorViewController *)mainNavigatorViewController setInteractiveTransitionTrackingBoxRadius:?];
     }
 
     if (self->_interactiveTransitionProgressThreshold == -1.0)
@@ -1288,13 +1288,13 @@ uint64_t __51__OKPresentationViewControllerProxy_viewDidAppear___block_invoke_9(
     [(OKPresentationViewControllerDelegate *)self->_delegate presentationViewControllerDidPrepare:self];
   }
 
-  [(OKPresentationViewControllerProxy *)self _rootNavigatorWillAppear:v5];
+  [(OKPresentationViewControllerProxy *)self _rootNavigatorWillAppear:presentationCopy];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __77__OKPresentationViewControllerProxy_displayPresentation_withCompletionBlock___block_invoke;
   v12[3] = &unk_279C8E818;
   v12[4] = self;
-  [MEMORY[0x277D75D18] animateWithDuration:v12 animations:a4 completion:0.2];
+  [MEMORY[0x277D75D18] animateWithDuration:v12 animations:block completion:0.2];
 }
 
 uint64_t __77__OKPresentationViewControllerProxy_displayPresentation_withCompletionBlock___block_invoke(uint64_t a1)
@@ -1304,7 +1304,7 @@ uint64_t __77__OKPresentationViewControllerProxy_displayPresentation_withComplet
   return [v1 setAlpha:1.0];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   self->_hasAppeared = 0;
   hasBeenHidden = self->_hasBeenHidden;
@@ -1321,7 +1321,7 @@ uint64_t __77__OKPresentationViewControllerProxy_displayPresentation_withComplet
   self->_hasBeenHidden = 1;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4 = !self->_hasBeenHidden;
   v5.receiver = self;
@@ -1337,11 +1337,11 @@ uint64_t __77__OKPresentationViewControllerProxy_displayPresentation_withComplet
   [(OFUIViewController *)&v2 didReceiveMemoryWarning];
 }
 
-- (CGSize)_fitDisplaySizeForRenderSize:(CGSize)a3
+- (CGSize)_fitDisplaySizeForRenderSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = a3.width / a3.height;
+  height = size.height;
+  width = size.width;
+  v6 = size.width / size.height;
   [-[OKPresentationViewControllerProxy view](self "view")];
   v8 = v7;
   [-[OKPresentationViewControllerProxy view](self "view")];
@@ -1380,9 +1380,9 @@ LABEL_6:
 - (void)updateDisplayResolution
 {
   v23 = 0;
-  v3 = [(OKPresentationViewControllerProxy *)self presentation];
+  presentation = [(OKPresentationViewControllerProxy *)self presentation];
   [-[OKPresentationViewControllerProxy view](self "view")];
-  [(OKPresentation *)v3 bestResolutionSizeForDisplaySize:&v23 keepAspectRatio:v4, v5];
+  [(OKPresentation *)presentation bestResolutionSizeForDisplaySize:&v23 keepAspectRatio:v4, v5];
   v7 = v6;
   v9 = v8;
   resolution = self->_resolution;
@@ -1416,9 +1416,9 @@ LABEL_6:
       v15 = v14;
       v16 = 1024.0;
       v17 = 1024.0 / v15;
-      v18 = self;
+      selfCopy2 = self;
 LABEL_15:
-      [(OKPresentationViewControllerProxy *)v18 _fitDisplaySizeForRenderSize:v16, v17];
+      [(OKPresentationViewControllerProxy *)selfCopy2 _fitDisplaySizeForRenderSize:v16, v17];
       p_displaySize->width = v19;
       p_displaySize->height = v20;
       self->_keepAspectRatio = 1;
@@ -1428,7 +1428,7 @@ LABEL_15:
     if (!self->_allowsResizing || v23 == 1)
     {
       p_displaySize = &self->_displaySize;
-      v18 = self;
+      selfCopy2 = self;
       v16 = v7;
       v17 = v9;
       goto LABEL_15;
@@ -1468,15 +1468,15 @@ LABEL_15:
 {
   if ([objc_msgSend(-[OKPresentationViewControllerProxy view](self "view")])
   {
-    v3 = [objc_msgSend(-[OKPresentationViewControllerProxy view](self "view")];
+    mainScreen = [objc_msgSend(-[OKPresentationViewControllerProxy view](self "view")];
   }
 
   else
   {
-    v3 = [MEMORY[0x277D759A0] mainScreen];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
   }
 
-  [v3 scale];
+  [mainScreen scale];
   if (v4 <= 1.0)
   {
     return 1.0;
@@ -1484,45 +1484,45 @@ LABEL_15:
 
   if ([objc_msgSend(-[OKPresentationViewControllerProxy view](self "view")])
   {
-    v5 = [objc_msgSend(-[OKPresentationViewControllerProxy view](self "view")];
+    mainScreen2 = [objc_msgSend(-[OKPresentationViewControllerProxy view](self "view")];
   }
 
   else
   {
-    v5 = [MEMORY[0x277D759A0] mainScreen];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
   }
 
-  [v5 scale];
+  [mainScreen2 scale];
   return result;
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v3.receiver = self;
   v3.super_class = OKPresentationViewControllerProxy;
-  [(OKPresentationViewControllerProxy *)&v3 willMoveToParentViewController:a3];
+  [(OKPresentationViewControllerProxy *)&v3 willMoveToParentViewController:controller];
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v3.receiver = self;
   v3.super_class = OKPresentationViewControllerProxy;
-  [(OKPresentationViewControllerProxy *)&v3 didMoveToParentViewController:a3];
+  [(OKPresentationViewControllerProxy *)&v3 didMoveToParentViewController:controller];
 }
 
 - (void)_delayedPrepareForRefresh
 {
-  v2 = [(OKPresentationViewControllerProxy *)self mainNavigatorViewController];
+  mainNavigatorViewController = [(OKPresentationViewControllerProxy *)self mainNavigatorViewController];
 
-  [(OKNavigatorViewControllerProxy *)v2 prepareForRefresh];
+  [(OKNavigatorViewControllerProxy *)mainNavigatorViewController prepareForRefresh];
 }
 
-- (void)prepareForRefreshWithDelay:(double)a3
+- (void)prepareForRefreshWithDelay:(double)delay
 {
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel__delayedPrepareForRefresh object:0];
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:{*MEMORY[0x277CBF048], 0}];
 
-  [(OKPresentationViewControllerProxy *)self performSelector:sel__delayedPrepareForRefresh withObject:0 afterDelay:v5 inModes:a3];
+  [(OKPresentationViewControllerProxy *)self performSelector:sel__delayedPrepareForRefresh withObject:0 afterDelay:v5 inModes:delay];
 }
 
 - (NSString)description
@@ -1535,7 +1535,7 @@ LABEL_15:
   return [v3 stringWithFormat:@"PRESENTATION %@: %@", v5, -[OKPresentationViewControllerProxy description](&v7, sel_description)];
 }
 
-- (id)_registeredProducerPluginWithIdentifier:(id)a3
+- (id)_registeredProducerPluginWithIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
   producerPlugins = self->_producerPlugins;
@@ -1582,20 +1582,20 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)_registerProducerPlugin:(id)a3
+- (BOOL)_registerProducerPlugin:(id)plugin
 {
   producerPlugins = self->_producerPlugins;
   objc_sync_enter(producerPlugins);
-  if (([(NSMutableArray *)self->_producerPlugins containsObject:a3]& 1) == 0)
+  if (([(NSMutableArray *)self->_producerPlugins containsObject:plugin]& 1) == 0)
   {
-    [(NSMutableArray *)self->_producerPlugins addObject:a3];
-    if (([a3 loadRetain] & 1) == 0)
+    [(NSMutableArray *)self->_producerPlugins addObject:plugin];
+    if (([plugin loadRetain] & 1) == 0)
     {
       v6 = 0;
       goto LABEL_6;
     }
 
-    [a3 setupJavascriptContext:{-[OKPresentationViewControllerProxy jsContext](self, "jsContext")}];
+    [plugin setupJavascriptContext:{-[OKPresentationViewControllerProxy jsContext](self, "jsContext")}];
   }
 
   v6 = 1;
@@ -1642,23 +1642,23 @@ LABEL_6:
   return jsContext;
 }
 
-- (void)setAllowsResizing:(BOOL)a3
+- (void)setAllowsResizing:(BOOL)resizing
 {
-  if (self->_allowsResizing != a3)
+  if (self->_allowsResizing != resizing)
   {
-    self->_allowsResizing = a3;
+    self->_allowsResizing = resizing;
     if ([(OKPresentationViewControllerProxy *)self isViewLoaded])
     {
-      v4 = [(OKPresentationViewControllerProxy *)self view];
+      view = [(OKPresentationViewControllerProxy *)self view];
 
-      [v4 setNeedsLayout];
+      [view setNeedsLayout];
     }
   }
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  if ([a3 isEqualToString:@"navigators"])
+  if ([key isEqualToString:@"navigators"])
   {
     v5 = objc_opt_new();
     [v5 setDataSource:self];
@@ -1666,18 +1666,18 @@ LABEL_6:
     return v5;
   }
 
-  else if ([a3 isEqualToString:@"mainNavigator"])
+  else if ([key isEqualToString:@"mainNavigator"])
   {
     return self->_mainNavigatorViewController;
   }
 
-  else if ([a3 isEqualToString:@"displayedPages"])
+  else if ([key isEqualToString:@"displayedPages"])
   {
 
     return [(OKPresentationViewControllerProxy *)self displayedPageViewControllers];
   }
 
-  else if ([a3 isEqualToString:@"deepestDisplayedPage"])
+  else if ([key isEqualToString:@"deepestDisplayedPage"])
   {
 
     return [(OKPresentationViewControllerProxy *)self deepestDisplayedPageViewController];
@@ -1687,17 +1687,17 @@ LABEL_6:
   {
     v7.receiver = self;
     v7.super_class = OKPresentationViewControllerProxy;
-    return [(OKPresentationViewControllerProxy *)&v7 valueForUndefinedKey:a3];
+    return [(OKPresentationViewControllerProxy *)&v7 valueForUndefinedKey:key];
   }
 }
 
-- (void)producer:(id)a3 didProcessLiveAuthoringKeyPaths:(id)a4
+- (void)producer:(id)producer didProcessLiveAuthoringKeyPaths:(id)paths
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __78__OKPresentationViewControllerProxy_producer_didProcessLiveAuthoringKeyPaths___block_invoke;
   v4[3] = &unk_279C90078;
-  v4[4] = a4;
+  v4[4] = paths;
   v4[5] = self;
   dispatch_async(MEMORY[0x277D85CD0], v4);
 }
@@ -1745,11 +1745,11 @@ uint64_t __78__OKPresentationViewControllerProxy_producer_didProcessLiveAuthorin
   return result;
 }
 
-- (id)navigatorViewControllerForNavigatorWithName:(id)a3
+- (id)navigatorViewControllerForNavigatorWithName:(id)name
 {
   navigatorViewControllers = self->_navigatorViewControllers;
   objc_sync_enter(navigatorViewControllers);
-  v6 = [(NSMutableDictionary *)self->_navigatorViewControllers objectForKey:a3];
+  v6 = [(NSMutableDictionary *)self->_navigatorViewControllers objectForKey:name];
   if (v6)
   {
     v7 = v6;
@@ -1758,22 +1758,22 @@ uint64_t __78__OKPresentationViewControllerProxy_producer_didProcessLiveAuthorin
   }
 
   objc_sync_exit(navigatorViewControllers);
-  v9 = [(OKPresentation *)self->_presentation navigatorWithName:a3];
+  v9 = [(OKPresentation *)self->_presentation navigatorWithName:name];
   if (!v9)
   {
     if (*MEMORY[0x277D62808] >= 4)
     {
-      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Presentation/OKPresentationViewController.m" line:1449 andFormat:@"Navigator name %@ does not exist", a3];
+      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Presentation/OKPresentationViewController.m" line:1449 andFormat:@"Navigator name %@ does not exist", name];
     }
 
     goto LABEL_13;
   }
 
   v10 = v9;
-  v11 = [v9 className];
+  className = [v9 className];
   if (([objc_msgSend(v10 "className")] & 1) == 0)
   {
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ViewController", v11];
+    className = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ViewController", className];
   }
 
   v12 = [+[OKProducerManager defaultManager](OKProducerManager "defaultManager")];
@@ -1781,7 +1781,7 @@ uint64_t __78__OKPresentationViewControllerProxy_producer_didProcessLiveAuthorin
   {
     if (*MEMORY[0x277D62808] >= 4)
     {
-      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Presentation/OKPresentationViewController.m" line:1444 andFormat:@"Class %@ is invalid for creating navigator", v11];
+      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Presentation/OKPresentationViewController.m" line:1444 andFormat:@"Class %@ is invalid for creating navigator", className];
     }
 
 LABEL_13:
@@ -1793,7 +1793,7 @@ LABEL_13:
   [v14 setPresentationViewController:self];
   v15 = self->_navigatorViewControllers;
   objc_sync_enter(v15);
-  [(NSMutableDictionary *)self->_navigatorViewControllers setObject:v14 forKey:a3];
+  [(NSMutableDictionary *)self->_navigatorViewControllers setObject:v14 forKey:name];
   objc_sync_exit(v15);
 LABEL_14:
 
@@ -1809,69 +1809,69 @@ LABEL_14:
   return v4;
 }
 
-- (void)navigateToItemAtKeyPath:(id)a3 animated:(BOOL)a4 completionHandler:(id)a5
+- (void)navigateToItemAtKeyPath:(id)path animated:(BOOL)animated completionHandler:(id)handler
 {
-  v6 = a4;
+  animatedCopy = animated;
   self->_isFinished = 0;
   [(OKPresentationViewControllerProxy *)self cancelCouchPotatoPlayback];
-  [(OKNavigatorViewControllerProxy *)[(OKPresentationViewControllerProxy *)self mainNavigatorViewController] navigateToItemAtKeyPath:a3 animated:v6 completionHandler:a5];
+  [(OKNavigatorViewControllerProxy *)[(OKPresentationViewControllerProxy *)self mainNavigatorViewController] navigateToItemAtKeyPath:path animated:animatedCopy completionHandler:handler];
 
   [(OKPresentationViewControllerProxy *)self prepareCouchPotatoPlayback];
 }
 
 - (id)deepestDisplayedPageViewController
 {
-  v2 = [(OKPresentationViewControllerProxy *)self displayedPageViewControllers];
+  displayedPageViewControllers = [(OKPresentationViewControllerProxy *)self displayedPageViewControllers];
 
-  return [v2 lastObject];
+  return [displayedPageViewControllers lastObject];
 }
 
-- (BOOL)sendAction:(id)a3 toTarget:(id)a4
+- (BOOL)sendAction:(id)action toTarget:(id)target
 {
   [(OKPresentationViewControllerProxy *)self cancelCouchPotatoIfNeededWithAction:?];
-  if (a4)
+  if (target)
   {
-    v7 = [(OKPresentationViewControllerProxy *)self valueForKeyPath:a4];
+    deepestDisplayedPageViewController = [(OKPresentationViewControllerProxy *)self valueForKeyPath:target];
   }
 
   else
   {
-    v7 = [(OKPresentationViewControllerProxy *)self deepestDisplayedPageViewController];
+    deepestDisplayedPageViewController = [(OKPresentationViewControllerProxy *)self deepestDisplayedPageViewController];
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = deepestDisplayedPageViewController;
+  if (!deepestDisplayedPageViewController)
   {
     return 0;
   }
 
-  [a3 convertFromResponder:self toResponder:v7];
+  [action convertFromResponder:self toResponder:deepestDisplayedPageViewController];
 
-  return [v8 sendAction:a3 toTarget:0];
+  return [v8 sendAction:action toTarget:0];
 }
 
-- (void)_repeatArrowKeyForDirection:(id)a3
+- (void)_repeatArrowKeyForDirection:(id)direction
 {
-  v4 = [a3 integerValue];
+  integerValue = [direction integerValue];
   Current = CFAbsoluteTimeGetCurrent();
 
-  [(OKPresentationViewControllerProxy *)self _doArrowKeyDownForDirection:v4 atTimestamp:Current];
+  [(OKPresentationViewControllerProxy *)self _doArrowKeyDownForDirection:integerValue atTimestamp:Current];
 }
 
-- (void)_doArrowKeyDownForDirection:(unint64_t)a3 atTimestamp:(double)a4
+- (void)_doArrowKeyDownForDirection:(unint64_t)direction atTimestamp:(double)timestamp
 {
   v7 = MEMORY[0x277CBF348];
   if (!self->_arrowKeyIsRepeating)
   {
-    v8 = +[OKActionPan panActionWithState:location:touchCount:translation:velocity:direction:context:](OKActionPan, "panActionWithState:location:touchCount:translation:velocity:direction:context:", 1, 1, a3, [MEMORY[0x277CBEB38] dictionary], *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8));
+    v8 = +[OKActionPan panActionWithState:location:touchCount:translation:velocity:direction:context:](OKActionPan, "panActionWithState:location:touchCount:translation:velocity:direction:context:", 1, 1, direction, [MEMORY[0x277CBEB38] dictionary], *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8));
     self->_arrowKeyIsRepeating = 1;
     self->_arrowKeyCurrentPanVelocity = *v7;
-    self->_lastArrowKeyTimestamp = a4;
+    self->_lastArrowKeyTimestamp = timestamp;
     [(OKPresentationViewControllerProxy *)self sendAction:v8 toTarget:0];
   }
 
-  v9 = a4 - self->_lastArrowKeyTimestamp;
-  v10 = __ROR8__(a3 - 2, 1);
+  v9 = timestamp - self->_lastArrowKeyTimestamp;
+  v10 = __ROR8__(direction - 2, 1);
   if (v10 > 2)
   {
     if (v10 == 3)
@@ -1917,54 +1917,54 @@ LABEL_14:
 LABEL_15:
   v14 = vbslq_s8(vcgtq_f64(self->_arrowKeyMaxPanVelocity, self->_arrowKeyCurrentPanVelocity), self->_arrowKeyCurrentPanVelocity, self->_arrowKeyMaxPanVelocity);
   self->_arrowKeyCurrentPanVelocity = v14;
-  v15 = [MEMORY[0x277CBEB38] dictionary];
-  v16 = [OKActionPan panActionWithState:2 location:1 touchCount:a3 translation:v15 velocity:v7->x direction:v7->y context:v17, v18, self->_arrowKeyCurrentPanVelocity.x, self->_arrowKeyCurrentPanVelocity.y];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v16 = [OKActionPan panActionWithState:2 location:1 touchCount:direction translation:dictionary velocity:v7->x direction:v7->y context:v17, v18, self->_arrowKeyCurrentPanVelocity.x, self->_arrowKeyCurrentPanVelocity.y];
   [v16 setShouldPropagate:1];
   [(OKPresentationViewControllerProxy *)self sendAction:v16 toTarget:0];
-  -[OKPresentationViewControllerProxy performSelector:withObject:afterDelay:](self, "performSelector:withObject:afterDelay:", sel__repeatArrowKeyForDirection_, [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3], 0.0333333333);
-  self->_lastArrowKeyTimestamp = a4;
+  -[OKPresentationViewControllerProxy performSelector:withObject:afterDelay:](self, "performSelector:withObject:afterDelay:", sel__repeatArrowKeyForDirection_, [MEMORY[0x277CCABB0] numberWithUnsignedInteger:direction], 0.0333333333);
+  self->_lastArrowKeyTimestamp = timestamp;
 }
 
-- (void)_doArrowKeyUpForDirection:(unint64_t)a3 atTimestamp:(double)a4
+- (void)_doArrowKeyUpForDirection:(unint64_t)direction atTimestamp:(double)timestamp
 {
   if (self->_arrowKeyIsRepeating)
   {
     [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self];
-    v7 = a4 - self->_lastArrowKeyTimestamp;
+    v7 = timestamp - self->_lastArrowKeyTimestamp;
     v8 = v7 * self->_arrowKeyCurrentPanVelocity.x;
     v9 = v7 * self->_arrowKeyCurrentPanVelocity.y;
-    v10 = [MEMORY[0x277CBEB38] dictionary];
-    [(OKPresentationViewControllerProxy *)self sendAction:[OKActionPan toTarget:"panActionWithState:location:touchCount:translation:velocity:direction:context:" panActionWithState:1 location:a3 touchCount:v10 translation:*MEMORY[0x277CBF348] velocity:*(MEMORY[0x277CBF348] + 8) direction:v8 context:v9, self->_arrowKeyCurrentPanVelocity.x, self->_arrowKeyCurrentPanVelocity.y], 0];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(OKPresentationViewControllerProxy *)self sendAction:[OKActionPan toTarget:"panActionWithState:location:touchCount:translation:velocity:direction:context:" panActionWithState:1 location:direction touchCount:dictionary translation:*MEMORY[0x277CBF348] velocity:*(MEMORY[0x277CBF348] + 8) direction:v8 context:v9, self->_arrowKeyCurrentPanVelocity.x, self->_arrowKeyCurrentPanVelocity.y], 0];
     self->_arrowKeyIsRepeating = 0;
   }
 
   else
   {
     v11 = [OKActionSwipe alloc];
-    v12 = [MEMORY[0x277CBEB38] dictionary];
-    v13 = [(OKAction *)v11 initWithLocation:1 touchCount:v12 context:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
-    [(OKActionSwipe *)v13 setDirection:a3];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+    v13 = [(OKAction *)v11 initWithLocation:1 touchCount:dictionary2 context:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
+    [(OKActionSwipe *)v13 setDirection:direction];
     [(OKAction *)v13 setShouldPropagate:1];
     [(OKPresentationViewControllerProxy *)self sendAction:v13 toTarget:0];
   }
 }
 
-- (id)widgetViewFromWidget:(id)a3
+- (id)widgetViewFromWidget:(id)widget
 {
-  [a3 resolveIfNeeded];
-  v5 = [a3 className];
-  if (([v5 hasSuffix:@"View"] & 1) == 0)
+  [widget resolveIfNeeded];
+  className = [widget className];
+  if (([className hasSuffix:@"View"] & 1) == 0)
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@View", v5];
+    className = [MEMORY[0x277CCACA8] stringWithFormat:@"%@View", className];
   }
 
   v6 = [+[OKProducerManager defaultManager](OKProducerManager "defaultManager")];
   if (v6 && (v7 = v6, [(objc_class *)v6 isSubclassOfClass:objc_opt_class()]))
   {
-    v8 = [[v7 alloc] initWithWidget:a3];
-    if (v8 && [objc_msgSend(a3 "subWidgets")])
+    v8 = [[v7 alloc] initWithWidget:widget];
+    if (v8 && [objc_msgSend(widget "subWidgets")])
     {
-      -[OKPresentationViewControllerProxy _addSubWidgetViewsFromSubWidgets:toWidgetView:](self, "_addSubWidgetViewsFromSubWidgets:toWidgetView:", [a3 subWidgets], v8);
+      -[OKPresentationViewControllerProxy _addSubWidgetViewsFromSubWidgets:toWidgetView:](self, "_addSubWidgetViewsFromSubWidgets:toWidgetView:", [widget subWidgets], v8);
     }
 
     return v8;
@@ -1974,22 +1974,22 @@ LABEL_15:
   {
     if (*MEMORY[0x277D62808] >= 4)
     {
-      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Presentation/OKPresentationViewController.m" line:1668 andFormat:@"Class %@ is invalid for creating widget views from page", v5];
+      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Presentation/OKPresentationViewController.m" line:1668 andFormat:@"Class %@ is invalid for creating widget views from page", className];
     }
 
     return 0;
   }
 }
 
-- (void)_addSubWidgetViewsFromSubWidgets:(id)a3 toWidgetView:(id)a4
+- (void)_addSubWidgetViewsFromSubWidgets:(id)widgets toWidgetView:(id)view
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [a3 reverseObjectEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  reverseObjectEnumerator = [widgets reverseObjectEnumerator];
+  v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2001,23 +2001,23 @@ LABEL_15:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v11 = [(OKPresentationViewControllerProxy *)self widgetViewFromWidget:*(*(&v13 + 1) + 8 * v10)];
         if (v11)
         {
           v12 = v11;
-          [v11 setParentWidgetView:a4];
-          [objc_msgSend(a4 "contentView")];
-          [objc_msgSend(a4 "subWidgetViews")];
+          [v11 setParentWidgetView:view];
+          [objc_msgSend(view "contentView")];
+          [objc_msgSend(view "subWidgetViews")];
         }
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -2063,9 +2063,9 @@ LABEL_15:
     else if (self->_hasAppeared)
     {
       [(OKNavigatorViewControllerProxy *)self->_mainNavigatorViewController instantResume];
-      v3 = [(OKPresentationViewControllerProxy *)self couchController];
+      couchController = [(OKPresentationViewControllerProxy *)self couchController];
 
-      [(OKCouchController *)v3 startPlayback];
+      [(OKCouchController *)couchController startPlayback];
     }
   }
 }
@@ -2093,39 +2093,39 @@ uint64_t __44__OKPresentationViewControllerProxy_restart__block_invoke(uint64_t 
   return [v2 prepareCouchPotatoPlayback];
 }
 
-- (void)setPropertyWithValue:(id)a3 forKey:(id)a4 inJSObject:(OpaqueJSValue *)a5
+- (void)setPropertyWithValue:(id)value forKey:(id)key inJSObject:(OpaqueJSValue *)object
 {
-  Private = JSObjectGetPrivate(a5);
-  v10 = [MEMORY[0x277CD4658] valueWithObject:a3 inContext:{-[OKPresentationViewControllerProxy jsContext](self, "jsContext")}];
-  v11 = JSStringCreateWithCFString(a4);
+  Private = JSObjectGetPrivate(object);
+  v10 = [MEMORY[0x277CD4658] valueWithObject:value inContext:{-[OKPresentationViewControllerProxy jsContext](self, "jsContext")}];
+  v11 = JSStringCreateWithCFString(key);
   exception = 0;
-  JSObjectSetProperty(-[OKJavaScriptContext JSGlobalContextRef](-[OKPresentationViewControllerProxy jsContext](self, "jsContext"), "JSGlobalContextRef"), a5, v11, [v10 JSValueRef], 0, &exception);
-  [Private addObject:a3];
+  JSObjectSetProperty(-[OKJavaScriptContext JSGlobalContextRef](-[OKPresentationViewControllerProxy jsContext](self, "jsContext"), "JSGlobalContextRef"), object, v11, [v10 JSValueRef], 0, &exception);
+  [Private addObject:value];
   JSStringRelease(v11);
 }
 
-- (id)evaluateScript:(id)a3 withInfoDictionary:(id)a4 andCompletionBlock:(id)a5 forNavigatorViewController:(id)a6 pageViewController:(id)a7 andWidgetView:(id)a8
+- (id)evaluateScript:(id)script withInfoDictionary:(id)dictionary andCompletionBlock:(id)block forNavigatorViewController:(id)controller pageViewController:(id)viewController andWidgetView:(id)view
 {
-  if (a3 && [a3 length])
+  if (script && [script length])
   {
-    v32 = a4;
+    dictionaryCopy = dictionary;
     context = objc_autoreleasePoolPush();
     [(NSRecursiveLock *)self->_jsEvaluationInitRecursiveLock lock];
     if (!self->_jsEvaluationInit)
     {
-      v15 = [(OKPresentationViewControllerProxy *)self jsContext];
-      -[OKJavaScriptContext evaluateScript:](v15, "evaluateScript:", [MEMORY[0x277CCACA8] stringWithContentsOfURL:objc_msgSend(+[OKRuntime opusKitBundle](OKRuntime encoding:"opusKitBundle") error:{"URLForResource:withExtension:", @"Opus", @"js", 4, 0}]);
-      v16 = [[(OKPresentationViewControllerProxy *)self presentation] mainScript];
-      if (v16)
+      jsContext = [(OKPresentationViewControllerProxy *)self jsContext];
+      -[OKJavaScriptContext evaluateScript:](jsContext, "evaluateScript:", [MEMORY[0x277CCACA8] stringWithContentsOfURL:objc_msgSend(+[OKRuntime opusKitBundle](OKRuntime encoding:"opusKitBundle") error:{"URLForResource:withExtension:", @"Opus", @"js", 4, 0}]);
+      mainScript = [[(OKPresentationViewControllerProxy *)self presentation] mainScript];
+      if (mainScript)
       {
-        [(OKJavaScriptContext *)[(OKPresentationViewControllerProxy *)self jsContext] evaluateScript:v16];
+        [(OKJavaScriptContext *)[(OKPresentationViewControllerProxy *)self jsContext] evaluateScript:mainScript];
       }
 
       self->_jsEvaluationInit = 1;
     }
 
     [(NSRecursiveLock *)self->_jsEvaluationInitRecursiveLock unlock];
-    v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", arc4random() % 0x28757B3];
+    0x28757B3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", arc4random() % 0x28757B3];
     v18 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v19 = *(MEMORY[0x277CD4678] + 80);
     *&definition.getProperty = *(MEMORY[0x277CD4678] + 64);
@@ -2144,30 +2144,30 @@ uint64_t __44__OKPresentationViewControllerProxy_restart__block_invoke(uint64_t 
     v24 = JSObjectMake([(OKJavaScriptContext *)[(OKPresentationViewControllerProxy *)self jsContext] JSGlobalContextRef], v23, v18);
     JSClassRelease(v23);
     [(OKPresentationViewControllerProxy *)self setPropertyWithValue:self forKey:@"document" inJSObject:v24];
-    if (a7)
+    if (viewController)
     {
-      [(OKPresentationViewControllerProxy *)self setPropertyWithValue:a7 forKey:@"page" inJSObject:v24];
+      [(OKPresentationViewControllerProxy *)self setPropertyWithValue:viewController forKey:@"page" inJSObject:v24];
     }
 
-    if (a6)
+    if (controller)
     {
-      [(OKPresentationViewControllerProxy *)self setPropertyWithValue:a6 forKey:@"navigator" inJSObject:v24];
+      [(OKPresentationViewControllerProxy *)self setPropertyWithValue:controller forKey:@"navigator" inJSObject:v24];
     }
 
-    if (a8)
+    if (view)
     {
-      [(OKPresentationViewControllerProxy *)self setPropertyWithValue:a8 forKey:@"widget" inJSObject:v24];
+      [(OKPresentationViewControllerProxy *)self setPropertyWithValue:view forKey:@"widget" inJSObject:v24];
     }
 
-    if (v32)
+    if (dictionaryCopy)
     {
-      [(OKPresentationViewControllerProxy *)self setPropertyWithValue:v32 forKey:@"info" inJSObject:v24];
+      [(OKPresentationViewControllerProxy *)self setPropertyWithValue:dictionaryCopy forKey:@"info" inJSObject:v24];
     }
 
-    v25 = [MEMORY[0x277CCAB68] stringWithFormat:@"function script%@(document, page, navigator, widget, info) {", v17];
-    [(__CFString *)v25 appendString:a3];
+    v25 = [MEMORY[0x277CCAB68] stringWithFormat:@"function script%@(document, page, navigator, widget, info) {", 0x28757B3];
+    [(__CFString *)v25 appendString:script];
     [(__CFString *)v25 appendString:@"}\n"];
-    [(__CFString *)v25 appendFormat:@"script%@(this.document, this.page, this.navigator, this.widget, this.info);", v17];
+    [(__CFString *)v25 appendFormat:@"script%@(this.document, this.page, this.navigator, this.widget, this.info);", 0x28757B3];
     exception = 0;
     v26 = JSStringCreateWithCFString(v25);
     v27 = JSEvaluateScript([(OKJavaScriptContext *)[(OKPresentationViewControllerProxy *)self jsContext] JSGlobalContextRef], v26, v24, 0, 0, &exception);
@@ -2176,8 +2176,8 @@ uint64_t __44__OKPresentationViewControllerProxy_restart__block_invoke(uint64_t 
     JSStringRelease(v26);
     if (exception)
     {
-      v28 = [(OKPresentationViewControllerProxy *)self jsContext];
-      v29 = [(OKJavaScriptContext *)v28 valueFromNotifyException:exception];
+      jsContext2 = [(OKPresentationViewControllerProxy *)self jsContext];
+      v29 = [(OKJavaScriptContext *)jsContext2 valueFromNotifyException:exception];
     }
 
     else
@@ -2185,32 +2185,32 @@ uint64_t __44__OKPresentationViewControllerProxy_restart__block_invoke(uint64_t 
       v29 = [MEMORY[0x277CD4658] valueWithJSValueRef:v27 inContext:{-[OKPresentationViewControllerProxy jsContext](self, "jsContext")}];
     }
 
-    v31 = [v29 toObject];
-    if (a5)
+    toObject = [v29 toObject];
+    if (block)
     {
-      (*(a5 + 2))(a5, 1, v31);
+      (*(block + 2))(block, 1, toObject);
     }
 
     objc_autoreleasePoolPop(context);
-    return v31;
+    return toObject;
   }
 
   else
   {
-    if (a5)
+    if (block)
     {
-      (*(a5 + 2))(a5, 0, 0, a4, a5, a6, a7, a8);
+      (*(block + 2))(block, 0, 0, dictionary, block, controller, viewController, view);
     }
 
     return 0;
   }
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
   v62[3] = *MEMORY[0x277D85DE8];
-  [a3 setObject:objc_opt_class() forKeyedSubscript:@"OKPresentationViewController"];
-  v4 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKPresentationViewController", "objectForKeyedSubscript:", @"prototype"}];
+  [context setObject:objc_opt_class() forKeyedSubscript:@"OKPresentationViewController"];
+  v4 = [objc_msgSend(context objectForKeyedSubscript:{@"OKPresentationViewController", "objectForKeyedSubscript:", @"prototype"}];
   v6 = *MEMORY[0x277CD4618];
   v60[0] = *MEMORY[0x277CD4620];
   v5 = v60[0];
@@ -2223,7 +2223,7 @@ uint64_t __44__OKPresentationViewControllerProxy_restart__block_invoke(uint64_t 
   v62[2] = MEMORY[0x277CBEC38];
   v9 = MEMORY[0x277CBEC38];
   [v4 defineProperty:@"mainNavigator" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v62, v60, 3)}];
-  v10 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKPresentationViewController", "objectForKeyedSubscript:", @"prototype"}];
+  v10 = [objc_msgSend(context objectForKeyedSubscript:{@"OKPresentationViewController", "objectForKeyedSubscript:", @"prototype"}];
   v58[0] = v5;
   v58[1] = v6;
   v59[0] = &__block_literal_global_240;
@@ -2231,7 +2231,7 @@ uint64_t __44__OKPresentationViewControllerProxy_restart__block_invoke(uint64_t 
   v58[2] = v8;
   v59[2] = v9;
   [v10 defineProperty:@"displayedPages" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v59, v58, 3)}];
-  v11 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKPresentationViewController", "objectForKeyedSubscript:", @"prototype"}];
+  v11 = [objc_msgSend(context objectForKeyedSubscript:{@"OKPresentationViewController", "objectForKeyedSubscript:", @"prototype"}];
   v56[0] = v5;
   v56[1] = v6;
   v57[0] = &__block_literal_global_243;
@@ -2239,7 +2239,7 @@ uint64_t __44__OKPresentationViewControllerProxy_restart__block_invoke(uint64_t 
   v56[2] = v8;
   v57[2] = v9;
   [v11 defineProperty:@"deepestDisplayedPage" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v57, v56, 3)}];
-  v12 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKPresentationViewController", "objectForKeyedSubscript:", @"prototype"}];
+  v12 = [objc_msgSend(context objectForKeyedSubscript:{@"OKPresentationViewController", "objectForKeyedSubscript:", @"prototype"}];
   v54[0] = v5;
   v54[1] = v6;
   v55[0] = &__block_literal_global_246_0;
@@ -2248,9 +2248,9 @@ uint64_t __44__OKPresentationViewControllerProxy_restart__block_invoke(uint64_t 
   v55[2] = v9;
   v13 = v9;
   [v12 defineProperty:@"navigators" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v55, v54, 3)}];
-  [a3 setObject:&unk_287AF0290 forKeyedSubscript:@"kPlaybackModeInteractive"];
-  [a3 setObject:&unk_287AF02A8 forKeyedSubscript:@"kPlaybackModeCouchPotato"];
-  v14 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKPresentationViewController", "objectForKeyedSubscript:", @"prototype"}];
+  [context setObject:&unk_287AF0290 forKeyedSubscript:@"kPlaybackModeInteractive"];
+  [context setObject:&unk_287AF02A8 forKeyedSubscript:@"kPlaybackModeCouchPotato"];
+  v14 = [objc_msgSend(context objectForKeyedSubscript:{@"OKPresentationViewController", "objectForKeyedSubscript:", @"prototype"}];
   v52[0] = v5;
   v52[1] = v6;
   v53[0] = &__block_literal_global_262;
@@ -2259,7 +2259,7 @@ uint64_t __44__OKPresentationViewControllerProxy_restart__block_invoke(uint64_t 
   v52[2] = v8;
   v53[2] = v13;
   [v14 defineProperty:@"playbackMode" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v53, v52, 3)}];
-  v16 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKPresentationViewController", "objectForKeyedSubscript:", @"prototype"}];
+  v16 = [objc_msgSend(context objectForKeyedSubscript:{@"OKPresentationViewController", "objectForKeyedSubscript:", @"prototype"}];
   v50[0] = v5;
   v50[1] = v6;
   v51[0] = &__block_literal_global_269;
@@ -2267,7 +2267,7 @@ uint64_t __44__OKPresentationViewControllerProxy_restart__block_invoke(uint64_t 
   v50[2] = v8;
   v51[2] = v13;
   [v16 defineProperty:@"displaySize" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v51, v50, 3)}];
-  v17 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKPresentationViewController", "objectForKeyedSubscript:", @"prototype"}];
+  v17 = [objc_msgSend(context objectForKeyedSubscript:{@"OKPresentationViewController", "objectForKeyedSubscript:", @"prototype"}];
   v48[0] = v5;
   v48[1] = v6;
   v49[0] = &__block_literal_global_276;
@@ -2275,7 +2275,7 @@ uint64_t __44__OKPresentationViewControllerProxy_restart__block_invoke(uint64_t 
   v48[2] = v8;
   v49[2] = v13;
   [v17 defineProperty:@"resolution" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v49, v48, 3)}];
-  v18 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKPresentationViewController", "objectForKeyedSubscript:", @"prototype"}];
+  v18 = [objc_msgSend(context objectForKeyedSubscript:{@"OKPresentationViewController", "objectForKeyedSubscript:", @"prototype"}];
   v46[0] = v5;
   v46[1] = v6;
   v47[0] = &__block_literal_global_283;
@@ -2283,7 +2283,7 @@ uint64_t __44__OKPresentationViewControllerProxy_restart__block_invoke(uint64_t 
   v46[2] = v8;
   v47[2] = v13;
   [v18 defineProperty:@"bounds" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v47, v46, 3)}];
-  v19 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKPresentationViewController", "objectForKeyedSubscript:", @"prototype"}];
+  v19 = [objc_msgSend(context objectForKeyedSubscript:{@"OKPresentationViewController", "objectForKeyedSubscript:", @"prototype"}];
   v44[0] = v5;
   v44[1] = v6;
   v45[0] = &__block_literal_global_288;
@@ -2291,7 +2291,7 @@ uint64_t __44__OKPresentationViewControllerProxy_restart__block_invoke(uint64_t 
   v44[2] = v8;
   v45[2] = v13;
   [v19 defineProperty:@"layoutFactor" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v45, v44, 3)}];
-  v20 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKPresentationViewController", "objectForKeyedSubscript:", @"prototype"}];
+  v20 = [objc_msgSend(context objectForKeyedSubscript:{@"OKPresentationViewController", "objectForKeyedSubscript:", @"prototype"}];
   v22 = *MEMORY[0x277CD4638];
   v42[0] = *MEMORY[0x277CD4630];
   v21 = v42[0];
@@ -2304,7 +2304,7 @@ uint64_t __44__OKPresentationViewControllerProxy_restart__block_invoke(uint64_t 
   v43[2] = MEMORY[0x277CBEC28];
   v43[3] = v13;
   [v20 defineProperty:@"navigateToPage" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v43, v42, 4)}];
-  v24 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKPresentationViewController", "objectForKeyedSubscript:"}];
+  v24 = [objc_msgSend(context objectForKeyedSubscript:{@"OKPresentationViewController", "objectForKeyedSubscript:"}];
   v40[0] = v21;
   v40[1] = v22;
   v41[0] = &__block_literal_global_300;
@@ -2314,7 +2314,7 @@ uint64_t __44__OKPresentationViewControllerProxy_restart__block_invoke(uint64_t 
   v41[2] = v23;
   v41[3] = v13;
   [v24 defineProperty:@"gotoNextStep" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v41, v40, 4)}];
-  v25 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKPresentationViewController", "objectForKeyedSubscript:", @"prototype"}];
+  v25 = [objc_msgSend(context objectForKeyedSubscript:{@"OKPresentationViewController", "objectForKeyedSubscript:", @"prototype"}];
   v38[0] = v21;
   v38[1] = v22;
   v39[0] = &__block_literal_global_305;
@@ -2324,7 +2324,7 @@ uint64_t __44__OKPresentationViewControllerProxy_restart__block_invoke(uint64_t 
   v39[2] = v23;
   v39[3] = v13;
   [v25 defineProperty:@"gotoNextMainStep" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v39, v38, 4)}];
-  v26 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKPresentationViewController", "objectForKeyedSubscript:", @"prototype"}];
+  v26 = [objc_msgSend(context objectForKeyedSubscript:{@"OKPresentationViewController", "objectForKeyedSubscript:", @"prototype"}];
   v36[0] = v21;
   v36[1] = v22;
   v37[0] = &__block_literal_global_310;
@@ -2334,7 +2334,7 @@ uint64_t __44__OKPresentationViewControllerProxy_restart__block_invoke(uint64_t 
   v37[2] = v23;
   v37[3] = v13;
   [v26 defineProperty:@"replayStep" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v37, v36, 4)}];
-  v27 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKPresentationViewController", "objectForKeyedSubscript:", @"prototype"}];
+  v27 = [objc_msgSend(context objectForKeyedSubscript:{@"OKPresentationViewController", "objectForKeyedSubscript:", @"prototype"}];
   v34[0] = v21;
   v34[1] = v6;
   v35[0] = &__block_literal_global_316;
@@ -2342,7 +2342,7 @@ uint64_t __44__OKPresentationViewControllerProxy_restart__block_invoke(uint64_t 
   v34[2] = v8;
   v35[2] = v13;
   [v27 defineProperty:@"currentCouchStepDuration" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v35, v34, 3)}];
-  v28 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKPresentationViewController", "objectForKeyedSubscript:", @"prototype"}];
+  v28 = [objc_msgSend(context objectForKeyedSubscript:{@"OKPresentationViewController", "objectForKeyedSubscript:", @"prototype"}];
   v32[0] = v21;
   v32[1] = v6;
   v33[0] = &__block_literal_global_322;
@@ -2350,7 +2350,7 @@ uint64_t __44__OKPresentationViewControllerProxy_restart__block_invoke(uint64_t 
   v32[2] = v8;
   v33[2] = v13;
   [v28 defineProperty:@"playSoundEffect" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v33, v32, 3)}];
-  v29 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKPresentationViewController", "objectForKeyedSubscript:", @"prototype"}];
+  v29 = [objc_msgSend(context objectForKeyedSubscript:{@"OKPresentationViewController", "objectForKeyedSubscript:", @"prototype"}];
   v30[0] = v21;
   v30[1] = v22;
   v31[0] = &__block_literal_global_330;
@@ -2360,10 +2360,10 @@ uint64_t __44__OKPresentationViewControllerProxy_restart__block_invoke(uint64_t 
   v31[2] = v23;
   v31[3] = v13;
   [v29 defineProperty:@"sendAction" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v31, v30, 4)}];
-  [a3 setObject:&unk_287AF02C0 forKeyedSubscript:@"kPrepareModeUnknown"];
-  [a3 setObject:&unk_287AF0290 forKeyedSubscript:@"kPrepareModeDisplay"];
-  [a3 setObject:&unk_287AF02A8 forKeyedSubscript:@"kPrepareModeWarmup"];
-  [a3 setObject:&unk_287AF02D8 forKeyedSubscript:@"kPrepareModeUnload"];
+  [context setObject:&unk_287AF02C0 forKeyedSubscript:@"kPrepareModeUnknown"];
+  [context setObject:&unk_287AF0290 forKeyedSubscript:@"kPrepareModeDisplay"];
+  [context setObject:&unk_287AF02A8 forKeyedSubscript:@"kPrepareModeWarmup"];
+  [context setObject:&unk_287AF02D8 forKeyedSubscript:@"kPrepareModeUnload"];
 }
 
 uint64_t __60__OKPresentationViewControllerProxy_setupJavascriptContext___block_invoke()
@@ -2492,33 +2492,33 @@ uint64_t __60__OKPresentationViewControllerProxy_setupJavascriptContext___block_
   return [v3 sendAction:a2 toTarget:0];
 }
 
-- (CGPoint)convertLocationInWindow:(CGPoint)a3 toPage:(id)a4
+- (CGPoint)convertLocationInWindow:(CGPoint)window toPage:(id)page
 {
-  [objc_msgSend(a4 "view")];
+  [objc_msgSend(page "view")];
 
-  [(OKPresentationViewControllerProxy *)self convertPointToBackingLayout:a4 fromPage:?];
+  [(OKPresentationViewControllerProxy *)self convertPointToBackingLayout:page fromPage:?];
   result.y = v7;
   result.x = v6;
   return result;
 }
 
-- (CGPoint)convertLocationInWindow:(CGPoint)a3 toWidget:(id)a4
+- (CGPoint)convertLocationInWindow:(CGPoint)window toWidget:(id)widget
 {
-  [a4 convertPoint:0 fromView:{a3.x, a3.y}];
+  [widget convertPoint:0 fromView:{window.x, window.y}];
 
-  [(OKPresentationViewControllerProxy *)self convertPointToBackingLayout:a4 fromWidget:?];
+  [(OKPresentationViewControllerProxy *)self convertPointToBackingLayout:widget fromWidget:?];
   result.y = v7;
   result.x = v6;
   return result;
 }
 
-- (CGPoint)convertPointToBackingLayout:(CGPoint)a3 fromPage:(id)a4
+- (CGPoint)convertPointToBackingLayout:(CGPoint)layout fromPage:(id)page
 {
-  y = a3.y;
-  x = a3.x;
-  [a4 layoutFactor];
+  y = layout.y;
+  x = layout.x;
+  [page layoutFactor];
   v8 = x / v7;
-  [a4 layoutFactor];
+  [page layoutFactor];
   v10 = y / v9;
   v11 = v8;
   result.y = v10;
@@ -2526,13 +2526,13 @@ uint64_t __60__OKPresentationViewControllerProxy_setupJavascriptContext___block_
   return result;
 }
 
-- (CGPoint)convertPointToBackingLayout:(CGPoint)a3 fromWidget:(id)a4
+- (CGPoint)convertPointToBackingLayout:(CGPoint)layout fromWidget:(id)widget
 {
-  y = a3.y;
-  x = a3.x;
-  [a4 layoutFactor];
+  y = layout.y;
+  x = layout.x;
+  [widget layoutFactor];
   v8 = x / v7;
-  [a4 layoutFactor];
+  [widget layoutFactor];
   v10 = y / v9;
   v11 = v8;
   result.y = v10;
@@ -2540,30 +2540,30 @@ uint64_t __60__OKPresentationViewControllerProxy_setupJavascriptContext___block_
   return result;
 }
 
-- (unint64_t)countOfDictionaryProxy:(id)a3
+- (unint64_t)countOfDictionaryProxy:(id)proxy
 {
-  v3 = [[(OKPresentationViewControllerProxy *)self presentation] navigatorsNames];
+  navigatorsNames = [[(OKPresentationViewControllerProxy *)self presentation] navigatorsNames];
 
-  return [v3 count];
+  return [navigatorsNames count];
 }
 
-- (id)allKeysForDictionaryProxy:(id)a3
+- (id)allKeysForDictionaryProxy:(id)proxy
 {
-  v3 = [(OKPresentationViewControllerProxy *)self presentation];
+  presentation = [(OKPresentationViewControllerProxy *)self presentation];
 
-  return [(OKPresentation *)v3 navigatorsNames];
+  return [(OKPresentation *)presentation navigatorsNames];
 }
 
 - (OKPageViewController)currentPageViewController
 {
-  v2 = [(OKPresentationViewControllerProxy *)self displayedPageViewControllers];
+  displayedPageViewControllers = [(OKPresentationViewControllerProxy *)self displayedPageViewControllers];
 
-  return [v2 lastObject];
+  return [displayedPageViewControllers lastObject];
 }
 
-- (BOOL)couchControllerCanStartPlayback:(id)a3
+- (BOOL)couchControllerCanStartPlayback:(id)playback
 {
-  if ([(OKPresentationViewControllerProxy *)self couchController]== a3 && self->_playbackMode == 1)
+  if ([(OKPresentationViewControllerProxy *)self couchController]== playback && self->_playbackMode == 1)
   {
     return ![(OKSynopsisView *)self->_synopsisView isDisplay];
   }
@@ -2574,22 +2574,22 @@ uint64_t __60__OKPresentationViewControllerProxy_setupJavascriptContext___block_
   }
 }
 
-- (BOOL)thingsAreReadyInCurrentPageForCouchController:(id)a3
+- (BOOL)thingsAreReadyInCurrentPageForCouchController:(id)controller
 {
-  v3 = [(OKPresentationViewControllerProxy *)self currentPageViewController];
+  currentPageViewController = [(OKPresentationViewControllerProxy *)self currentPageViewController];
 
-  return [(OKPageViewController *)v3 isReady:1];
+  return [(OKPageViewController *)currentPageViewController isReady:1];
 }
 
-- (BOOL)couchController:(id)a3 thingsAreReadyForNextStep:(id)a4 withProgress:(double *)a5
+- (BOOL)couchController:(id)controller thingsAreReadyForNextStep:(id)step withProgress:(double *)progress
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [a4 dependencies];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  dependencies = [step dependencies];
+  v7 = [dependencies countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2601,7 +2601,7 @@ uint64_t __60__OKPresentationViewControllerProxy_setupJavascriptContext___block_
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(dependencies);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
@@ -2623,13 +2623,13 @@ uint64_t __60__OKPresentationViewControllerProxy_setupJavascriptContext___block_
           {
             [v13 readyProgress:1];
             result = 0;
-            *a5 = v15;
+            *progress = v15;
             return result;
           }
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [dependencies countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v8)
       {
         continue;
@@ -2639,12 +2639,12 @@ uint64_t __60__OKPresentationViewControllerProxy_setupJavascriptContext___block_
     }
   }
 
-  *a5 = 1.0;
+  *progress = 1.0;
   [(OKPresentationViewControllerProxy *)self _stopActivityIndicatorWithCompletionBlock:0];
   return ![(OKPresentationViewControllerProxy *)self isActivityIndicatorVisible];
 }
 
-- (void)couchControllerStartsWaitingForReadiness:(id)a3
+- (void)couchControllerStartsWaitingForReadiness:(id)readiness
 {
   if (![(OKPresentationViewControllerProxy *)self isActivityIndicatorVisible])
   {
@@ -2657,7 +2657,7 @@ uint64_t __60__OKPresentationViewControllerProxy_setupJavascriptContext___block_
   }
 }
 
-- (void)couchControllerStopsWaitingForReadiness:(id)a3
+- (void)couchControllerStopsWaitingForReadiness:(id)readiness
 {
   if ([(OKPresentationViewControllerProxy *)self isActivityIndicatorVisible])
   {
@@ -2670,7 +2670,7 @@ uint64_t __60__OKPresentationViewControllerProxy_setupJavascriptContext___block_
   }
 }
 
-- (void)couchControllerWaitingForReadiness:(id)a3 withProgress:(double)a4
+- (void)couchControllerWaitingForReadiness:(id)readiness withProgress:(double)progress
 {
   if ([(OKPresentationViewControllerProxy *)self isActivityIndicatorVisible])
   {
@@ -2679,12 +2679,12 @@ uint64_t __60__OKPresentationViewControllerProxy_setupJavascriptContext___block_
     v6[2] = __85__OKPresentationViewControllerProxy_couchControllerWaitingForReadiness_withProgress___block_invoke;
     v6[3] = &unk_279C903C0;
     v6[4] = self;
-    *&v6[5] = a4;
+    *&v6[5] = progress;
     dispatch_async(MEMORY[0x277D85CD0], v6);
   }
 }
 
-- (void)couchControllerPlaybackLooped:(id)a3
+- (void)couchControllerPlaybackLooped:(id)looped
 {
   if (self->_rewindAudioOnCouchPotatoLoop)
   {
@@ -2692,13 +2692,13 @@ uint64_t __60__OKPresentationViewControllerProxy_setupJavascriptContext___block_
   }
 }
 
-- (void)couchControllerPlaybackCompleted:(id)a3
+- (void)couchControllerPlaybackCompleted:(id)completed
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   v8 = __70__OKPresentationViewControllerProxy_couchControllerPlaybackCompleted___block_invoke;
   v9 = &unk_279C8E818;
-  v10 = self;
+  selfCopy = self;
   [(OKPresentationViewControllerProxy *)self audioFadeOutDuration];
   if (v4 <= 0.0)
   {
@@ -2732,16 +2732,16 @@ uint64_t __70__OKPresentationViewControllerProxy_couchControllerPlaybackComplete
 
 - (void)allowCouchPlayback
 {
-  v2 = [(OKPresentationViewControllerProxy *)self couchController];
+  couchController = [(OKPresentationViewControllerProxy *)self couchController];
 
-  [(OKCouchController *)v2 allowPlayback];
+  [(OKCouchController *)couchController allowPlayback];
 }
 
 - (void)preventCouchPlayback
 {
-  v2 = [(OKPresentationViewControllerProxy *)self couchController];
+  couchController = [(OKPresentationViewControllerProxy *)self couchController];
 
-  [(OKCouchController *)v2 preventPlayback];
+  [(OKCouchController *)couchController preventPlayback];
 }
 
 - (BOOL)canStartCouchPotatoPlayback
@@ -2751,19 +2751,19 @@ uint64_t __70__OKPresentationViewControllerProxy_couchControllerPlaybackComplete
     return 0;
   }
 
-  v3 = [(OKPresentationViewControllerProxy *)self couchController];
+  couchController = [(OKPresentationViewControllerProxy *)self couchController];
 
-  return [(OKCouchController *)v3 canStartPlayback];
+  return [(OKCouchController *)couchController canStartPlayback];
 }
 
 - (void)_prepareInitialCouchPotatoPlayback
 {
   if (self->_hasAppeared && [(OKPresentationViewControllerProxy *)self couchController]&& !self->_isPaused)
   {
-    v3 = [(OKPresentationViewControllerProxy *)self couchController];
+    couchController = [(OKPresentationViewControllerProxy *)self couchController];
     couchInitialDelay = self->_couchInitialDelay;
 
-    [(OKCouchController *)v3 startPlaybackAfterDelay:couchInitialDelay];
+    [(OKCouchController *)couchController startPlaybackAfterDelay:couchInitialDelay];
   }
 }
 
@@ -2771,10 +2771,10 @@ uint64_t __70__OKPresentationViewControllerProxy_couchControllerPlaybackComplete
 {
   if (self->_hasAppeared && [(OKPresentationViewControllerProxy *)self couchController]&& !self->_isPaused)
   {
-    v3 = [(OKPresentationViewControllerProxy *)self couchController];
+    couchController = [(OKPresentationViewControllerProxy *)self couchController];
     [(OKPresentationInfo *)[[(OKPresentationViewControllerProxy *)self presentation] info] couchPotatoDelay];
 
-    [(OKCouchController *)v3 startPlaybackAfterDelay:?];
+    [(OKCouchController *)couchController startPlaybackAfterDelay:?];
   }
 }
 
@@ -2782,9 +2782,9 @@ uint64_t __70__OKPresentationViewControllerProxy_couchControllerPlaybackComplete
 {
   if (self->_hasAppeared && [(OKPresentationViewControllerProxy *)self couchController]&& !self->_isPaused)
   {
-    v3 = [(OKPresentationViewControllerProxy *)self couchController];
+    couchController = [(OKPresentationViewControllerProxy *)self couchController];
 
-    [(OKCouchController *)v3 startPlayback];
+    [(OKCouchController *)couchController startPlayback];
   }
 }
 
@@ -2799,34 +2799,34 @@ uint64_t __70__OKPresentationViewControllerProxy_couchControllerPlaybackComplete
   }
 }
 
-- (void)cancelCouchPotatoIfNeededWithAction:(id)a3
+- (void)cancelCouchPotatoIfNeededWithAction:(id)action
 {
-  if (self->_isPaused || ![a3 shouldCancelCouchPotato])
+  if (self->_isPaused || ![action shouldCancelCouchPotato])
   {
     return;
   }
 
-  v5 = [a3 isInstantaneous];
-  v6 = [a3 state];
-  if (v5)
+  isInstantaneous = [action isInstantaneous];
+  state = [action state];
+  if (isInstantaneous)
   {
-    if (v6 != 3)
+    if (state != 3)
     {
       return;
     }
 
 LABEL_12:
     [(OKCouchController *)[(OKPresentationViewControllerProxy *)self couchController] stopPlayback];
-    v8 = [(OKPresentationViewControllerProxy *)self couchController];
+    couchController = [(OKPresentationViewControllerProxy *)self couchController];
     [(OKPresentationInfo *)[[(OKPresentationViewControllerProxy *)self presentation] info] couchPotatoDelay];
 
-    [(OKCouchController *)v8 startPlaybackAfterDelay:?];
+    [(OKCouchController *)couchController startPlaybackAfterDelay:?];
     return;
   }
 
-  if (v6 != 1)
+  if (state != 1)
   {
-    if ([a3 state] != 3 && objc_msgSend(a3, "state") != 4)
+    if ([action state] != 3 && objc_msgSend(action, "state") != 4)
     {
       return;
     }
@@ -2834,23 +2834,23 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v7 = [(OKPresentationViewControllerProxy *)self couchController];
+  couchController2 = [(OKPresentationViewControllerProxy *)self couchController];
 
-  [(OKCouchController *)v7 stopPlayback];
+  [(OKCouchController *)couchController2 stopPlayback];
 }
 
 - (OKCouchController)couchController
 {
   if ([(OKPresentationInfo *)[(OKPresentation *)self->_presentation info] couchPotatoSupported]&& !self->_couchController)
   {
-    v3 = [(OKPresentationViewControllerProxy *)self presentation];
+    presentation = [(OKPresentationViewControllerProxy *)self presentation];
     mainNavigatorName = self->_mainNavigatorName;
     if (!mainNavigatorName)
     {
       mainNavigatorName = [(OKPresentationInfo *)[[(OKPresentationViewControllerProxy *)self presentation] info] mainNavigatorName];
     }
 
-    v5 = [[OKCouchController alloc] initWithCouch:[(OKPresentation *)v3 couchWithName:mainNavigatorName] andDelegate:self];
+    v5 = [[OKCouchController alloc] initWithCouch:[(OKPresentation *)presentation couchWithName:mainNavigatorName] andDelegate:self];
     self->_couchController = v5;
     [(OKCouchController *)v5 setLoops:self->_couchModeLoops];
     [(OKCouchController *)self->_couchController setDelayForReadinessWaitNotification:self->_couchModeIsReadySpinnerDelay];
@@ -2866,7 +2866,7 @@ LABEL_12:
   return self->_couchController;
 }
 
-- (void)setAudioURLs:(id)a3
+- (void)setAudioURLs:(id)ls
 {
   if (([(NSArray *)self->_audioURLs isEqual:?]& 1) == 0)
   {
@@ -2877,48 +2877,48 @@ LABEL_12:
       self->_audioURLs = 0;
     }
 
-    self->_audioURLs = a3;
-    v6 = [(OKPresentationViewControllerProxy *)self mainNavigatorViewController];
+    self->_audioURLs = ls;
+    mainNavigatorViewController = [(OKPresentationViewControllerProxy *)self mainNavigatorViewController];
 
-    [(OKNavigatorViewControllerProxy *)v6 _setAudioURLs:a3];
+    [(OKNavigatorViewControllerProxy *)mainNavigatorViewController _setAudioURLs:ls];
   }
 }
 
-- (void)setCouchModeLoops:(BOOL)a3
+- (void)setCouchModeLoops:(BOOL)loops
 {
-  v3 = a3;
-  self->_couchModeLoops = a3;
-  v4 = [(OKPresentationViewControllerProxy *)self couchController];
+  loopsCopy = loops;
+  self->_couchModeLoops = loops;
+  couchController = [(OKPresentationViewControllerProxy *)self couchController];
 
-  [(OKCouchController *)v4 setLoops:v3];
+  [(OKCouchController *)couchController setLoops:loopsCopy];
 }
 
-- (void)setCouchModeDefaultStepDuration:(double)a3
+- (void)setCouchModeDefaultStepDuration:(double)duration
 {
-  self->_couchModeDefaultStepDuration = a3;
-  v4 = [(OKPresentationViewControllerProxy *)self couchController];
+  self->_couchModeDefaultStepDuration = duration;
+  couchController = [(OKPresentationViewControllerProxy *)self couchController];
 
-  [(OKCouchController *)v4 setDefaultStepDuration:a3];
+  [(OKCouchController *)couchController setDefaultStepDuration:duration];
 }
 
-- (void)setCouchModeIsReadySpinnerDelay:(double)a3
+- (void)setCouchModeIsReadySpinnerDelay:(double)delay
 {
-  self->_couchModeIsReadySpinnerDelay = a3;
-  v4 = [(OKPresentationViewControllerProxy *)self couchController];
+  self->_couchModeIsReadySpinnerDelay = delay;
+  couchController = [(OKPresentationViewControllerProxy *)self couchController];
 
-  [(OKCouchController *)v4 setDelayForReadinessWaitNotification:a3];
+  [(OKCouchController *)couchController setDelayForReadinessWaitNotification:delay];
 }
 
-- (void)setAudioVolume:(double)a3
+- (void)setAudioVolume:(double)volume
 {
   v14 = *MEMORY[0x277D85DE8];
-  self->_audioVolume = a3;
+  self->_audioVolume = volume;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(NSMutableArray *)self->_audioDuckingStack objectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  objectEnumerator = [(NSMutableArray *)self->_audioDuckingStack objectEnumerator];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2930,29 +2930,29 @@ LABEL_12:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [*(*(&v9 + 1) + 8 * v8++) setPlaybackAudioVolume:self->_audioVolume];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)fadeAllAudioTracksWithDuration:(double)a3
+- (void)fadeAllAudioTracksWithDuration:(double)duration
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(NSMutableArray *)self->_audioDuckingStack objectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  objectEnumerator = [(NSMutableArray *)self->_audioDuckingStack objectEnumerator];
+  v6 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2964,13 +2964,13 @@ LABEL_12:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
         if (!self->_isExporting)
         {
-          [*(*(&v13 + 1) + 8 * v9) beginFadingWithDuration:a3];
+          [*(*(&v13 + 1) + 8 * v9) beginFadingWithDuration:duration];
         }
 
         [(OKPresentationViewControllerProxy *)self delegate];
@@ -2983,7 +2983,7 @@ LABEL_12:
           v12[3] = &unk_279C903E8;
           v12[4] = v10;
           v12[5] = self;
-          *&v12[6] = a3;
+          *&v12[6] = duration;
           [(NSMutableDictionary *)controllerAudioTrackIDs enumerateKeysAndObjectsUsingBlock:v12];
         }
 
@@ -2991,7 +2991,7 @@ LABEL_12:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -3012,11 +3012,11 @@ uint64_t __68__OKPresentationViewControllerProxy_fadeAllAudioTracksWithDuration_
   return result;
 }
 
-- (void)fadeMainNavigatorTracksWithDuration:(double)a3
+- (void)fadeMainNavigatorTracksWithDuration:(double)duration
 {
   if (!self->_isExporting)
   {
-    [(OKNavigatorViewControllerProxy *)self->_mainNavigatorViewController beginFadingWithDuration:a3];
+    [(OKNavigatorViewControllerProxy *)self->_mainNavigatorViewController beginFadingWithDuration:duration];
   }
 
   [(OKPresentationViewControllerProxy *)self delegate];
@@ -3028,7 +3028,7 @@ uint64_t __68__OKPresentationViewControllerProxy_fadeAllAudioTracksWithDuration_
     v6[2] = __73__OKPresentationViewControllerProxy_fadeMainNavigatorTracksWithDuration___block_invoke;
     v6[3] = &unk_279C90410;
     v6[4] = self;
-    *&v6[5] = a3;
+    *&v6[5] = duration;
     [(NSMutableDictionary *)controllerAudioTrackIDs enumerateKeysAndObjectsUsingBlock:v6];
   }
 }
@@ -3047,53 +3047,53 @@ void *__73__OKPresentationViewControllerProxy_fadeMainNavigatorTracksWithDuratio
   return result;
 }
 
-- (id)beginAudioForController:(id)a3 withAVAsset:(id)a4 andVolume:(float)a5
+- (id)beginAudioForController:(id)controller withAVAsset:(id)asset andVolume:(float)volume
 {
   v30 = *MEMORY[0x277D85DE8];
-  v9 = [MEMORY[0x277CCACA8] generateUUID];
+  generateUUID = [MEMORY[0x277CCACA8] generateUUID];
   obj = self->_audioDuckingStack;
   objc_sync_enter(obj);
-  v10 = [(NSMutableArray *)self->_audioDuckingStack containsObject:a3];
-  v11 = [(NSMutableArray *)self->_audioDuckingStack lastObject];
+  v10 = [(NSMutableArray *)self->_audioDuckingStack containsObject:controller];
+  lastObject = [(NSMutableArray *)self->_audioDuckingStack lastObject];
   audioVolume = 0.0;
   if (!self->_isExporting)
   {
     audioVolume = self->_audioVolume;
   }
 
-  [a3 setPlaybackAudioVolume:audioVolume];
-  [(NSMutableDictionary *)self->_controllerAudioTrackIDs setObject:a3 forKeyedSubscript:v9];
-  *&v13 = a5;
-  [(OKPresentationViewControllerProxy *)self audioStartedPlayingForTrackID:v9 withAVAsset:a4 andVolume:v13];
+  [controller setPlaybackAudioVolume:audioVolume];
+  [(NSMutableDictionary *)self->_controllerAudioTrackIDs setObject:controller forKeyedSubscript:generateUUID];
+  *&v13 = volume;
+  [(OKPresentationViewControllerProxy *)self audioStartedPlayingForTrackID:generateUUID withAVAsset:asset andVolume:v13];
   if (v10)
   {
-    if (v11 != a3)
+    if (lastObject != controller)
     {
       if (!self->_isExporting)
       {
-        [v11 requiredDuckLevel];
-        [a3 beginDuckingToLevel:? fadeDuration:?];
+        [lastObject requiredDuckLevel];
+        [controller beginDuckingToLevel:? fadeDuration:?];
       }
 
       [(OKPresentationViewControllerProxy *)self delegate];
       if (objc_opt_respondsToSelector())
       {
-        v14 = [(OKPresentationViewControllerProxy *)self delegate];
-        [v11 requiredDuckLevel];
-        [OKPresentationViewControllerDelegate beginDuckingForTrackID:v14 toDuckLevel:"beginDuckingForTrackID:toDuckLevel:fadeDuration:" fadeDuration:v9];
+        delegate = [(OKPresentationViewControllerProxy *)self delegate];
+        [lastObject requiredDuckLevel];
+        [OKPresentationViewControllerDelegate beginDuckingForTrackID:delegate toDuckLevel:"beginDuckingForTrackID:toDuckLevel:fadeDuration:" fadeDuration:generateUUID];
       }
     }
   }
 
   else
   {
-    v22 = v9;
+    v22 = generateUUID;
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v15 = [(NSMutableArray *)self->_audioDuckingStack objectEnumerator];
-    v16 = [v15 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    objectEnumerator = [(NSMutableArray *)self->_audioDuckingStack objectEnumerator];
+    v16 = [objectEnumerator countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v16)
     {
       v17 = *v26;
@@ -3103,13 +3103,13 @@ void *__73__OKPresentationViewControllerProxy_fadeMainNavigatorTracksWithDuratio
         {
           if (*v26 != v17)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           v19 = *(*(&v25 + 1) + 8 * i);
           if (!self->_isExporting)
           {
-            [a3 requiredDuckLevel];
+            [controller requiredDuckLevel];
             [v19 beginDuckingToLevel:? fadeDuration:?];
           }
 
@@ -3123,23 +3123,23 @@ void *__73__OKPresentationViewControllerProxy_fadeMainNavigatorTracksWithDuratio
             v24[3] = &unk_279C90438;
             v24[4] = v19;
             v24[5] = self;
-            v24[6] = a3;
+            v24[6] = controller;
             [(NSMutableDictionary *)controllerAudioTrackIDs enumerateKeysAndObjectsUsingBlock:v24];
           }
         }
 
-        v16 = [v15 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v16 = [objectEnumerator countByEnumeratingWithState:&v25 objects:v29 count:16];
       }
 
       while (v16);
     }
 
-    [(NSMutableArray *)self->_audioDuckingStack addObject:a3];
-    v9 = v22;
+    [(NSMutableArray *)self->_audioDuckingStack addObject:controller];
+    generateUUID = v22;
   }
 
   objc_sync_exit(obj);
-  return v9;
+  return generateUUID;
 }
 
 uint64_t __83__OKPresentationViewControllerProxy_beginAudioForController_withAVAsset_andVolume___block_invoke(uint64_t result, uint64_t a2, uint64_t a3)
@@ -3156,44 +3156,44 @@ uint64_t __83__OKPresentationViewControllerProxy_beginAudioForController_withAVA
   return result;
 }
 
-- (void)endAudioForController:(id)a3 andTrackID:(id)a4
+- (void)endAudioForController:(id)controller andTrackID:(id)d
 {
   v31 = *MEMORY[0x277D85DE8];
   audioDuckingStack = self->_audioDuckingStack;
   objc_sync_enter(audioDuckingStack);
-  if (a4)
+  if (d)
   {
-    if ([(NSMutableDictionary *)self->_controllerAudioTrackIDs objectForKey:a4])
+    if ([(NSMutableDictionary *)self->_controllerAudioTrackIDs objectForKey:d])
     {
-      [(OKPresentationViewControllerProxy *)self audioFinishedPlayingForTrackID:a4];
+      [(OKPresentationViewControllerProxy *)self audioFinishedPlayingForTrackID:d];
       if ([(NSMutableArray *)self->_audioDuckingStack count])
       {
-        v8 = [(NSMutableArray *)self->_audioDuckingStack lastObject];
+        lastObject = [(NSMutableArray *)self->_audioDuckingStack lastObject];
         v26 = 0;
         v27 = &v26;
         v28 = 0x2020000000;
         v29 = 0;
-        [(NSMutableDictionary *)self->_controllerAudioTrackIDs removeObjectForKey:a4];
+        [(NSMutableDictionary *)self->_controllerAudioTrackIDs removeObjectForKey:d];
         controllerAudioTrackIDs = self->_controllerAudioTrackIDs;
         v25[0] = MEMORY[0x277D85DD0];
         v25[1] = 3221225472;
         v25[2] = __70__OKPresentationViewControllerProxy_endAudioForController_andTrackID___block_invoke;
         v25[3] = &unk_279C90460;
-        v25[4] = a3;
+        v25[4] = controller;
         v25[5] = &v26;
         [(NSMutableDictionary *)controllerAudioTrackIDs enumerateKeysAndObjectsUsingBlock:v25];
         if ((v27[3] & 1) == 0)
         {
-          [(NSMutableArray *)self->_audioDuckingStack removeObject:a3];
-          if (v8 == a3)
+          [(NSMutableArray *)self->_audioDuckingStack removeObject:controller];
+          if (lastObject == controller)
           {
             if ([(NSMutableArray *)self->_audioDuckingStack count])
             {
-              v10 = [(NSMutableArray *)self->_audioDuckingStack lastObject];
-              v11 = v10;
+              lastObject2 = [(NSMutableArray *)self->_audioDuckingStack lastObject];
+              v11 = lastObject2;
               if (!self->_isExporting)
               {
-                [v10 endDucking];
+                [lastObject2 endDucking];
               }
 
               [(OKPresentationViewControllerProxy *)self delegate];
@@ -3262,7 +3262,7 @@ uint64_t __83__OKPresentationViewControllerProxy_beginAudioForController_withAVA
 
           else
           {
-            [a3 endDucking];
+            [controller endDucking];
           }
         }
 
@@ -3311,35 +3311,35 @@ uint64_t __70__OKPresentationViewControllerProxy_endAudioForController_andTrackI
   return result;
 }
 
-- (void)audioStartedPlayingForTrackID:(id)a3 withAVAsset:(id)a4 andVolume:(float)a5
+- (void)audioStartedPlayingForTrackID:(id)d withAVAsset:(id)asset andVolume:(float)volume
 {
-  if (a3)
+  if (d)
   {
     [(OKPresentationViewControllerProxy *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(OKPresentationViewControllerProxy *)self delegate];
+      delegate = [(OKPresentationViewControllerProxy *)self delegate];
 
-      [(OKPresentationViewControllerDelegate *)v9 audioStartedPlayingForTrackID:a3 withAVAsset:a4 atVolume:a5];
+      [(OKPresentationViewControllerDelegate *)delegate audioStartedPlayingForTrackID:d withAVAsset:asset atVolume:volume];
     }
   }
 }
 
-- (void)audioFinishedPlayingForTrackID:(id)a3
+- (void)audioFinishedPlayingForTrackID:(id)d
 {
-  if (a3)
+  if (d)
   {
     [(OKPresentationViewControllerProxy *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v5 = [(OKPresentationViewControllerProxy *)self delegate];
+      delegate = [(OKPresentationViewControllerProxy *)self delegate];
 
-      [(OKPresentationViewControllerDelegate *)v5 audioFinishedPlayingForTrackID:a3];
+      [(OKPresentationViewControllerDelegate *)delegate audioFinishedPlayingForTrackID:d];
     }
   }
 }
 
-- (BOOL)canPanMediaInWidget:(id)a3
+- (BOOL)canPanMediaInWidget:(id)widget
 {
   [(OKPresentationViewControllerProxy *)self editingDelegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -3347,23 +3347,23 @@ uint64_t __70__OKPresentationViewControllerProxy_endAudioForController_andTrackI
     return 0;
   }
 
-  v5 = [(OKPresentationViewControllerProxy *)self editingDelegate];
+  editingDelegate = [(OKPresentationViewControllerProxy *)self editingDelegate];
 
-  return [(OKPresentationViewControllerEditingDelegate *)v5 presentationViewController:self canPanMediaInWidget:a3];
+  return [(OKPresentationViewControllerEditingDelegate *)editingDelegate presentationViewController:self canPanMediaInWidget:widget];
 }
 
-- (void)beginPanningMediaInWidget:(id)a3
+- (void)beginPanningMediaInWidget:(id)widget
 {
   [(OKPresentationViewControllerProxy *)self editingDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(OKPresentationViewControllerProxy *)self editingDelegate];
+    editingDelegate = [(OKPresentationViewControllerProxy *)self editingDelegate];
 
-    [(OKPresentationViewControllerEditingDelegate *)v5 presentationViewController:self beginPanningMediaInWidget:a3];
+    [(OKPresentationViewControllerEditingDelegate *)editingDelegate presentationViewController:self beginPanningMediaInWidget:widget];
   }
 }
 
-- (BOOL)validatePanningMediaInWidget:(id)a3 toState:(id)a4
+- (BOOL)validatePanningMediaInWidget:(id)widget toState:(id)state
 {
   [(OKPresentationViewControllerProxy *)self editingDelegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -3371,23 +3371,23 @@ uint64_t __70__OKPresentationViewControllerProxy_endAudioForController_andTrackI
     return 0;
   }
 
-  v7 = [(OKPresentationViewControllerProxy *)self editingDelegate];
+  editingDelegate = [(OKPresentationViewControllerProxy *)self editingDelegate];
 
-  return [(OKPresentationViewControllerEditingDelegate *)v7 presentationViewController:self validatePanningMediaInWidget:a3 toState:a4];
+  return [(OKPresentationViewControllerEditingDelegate *)editingDelegate presentationViewController:self validatePanningMediaInWidget:widget toState:state];
 }
 
-- (void)endPanningMediaInWidget:(id)a3 finalState:(id)a4
+- (void)endPanningMediaInWidget:(id)widget finalState:(id)state
 {
   [(OKPresentationViewControllerProxy *)self editingDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [(OKPresentationViewControllerProxy *)self editingDelegate];
+    editingDelegate = [(OKPresentationViewControllerProxy *)self editingDelegate];
 
-    [(OKPresentationViewControllerEditingDelegate *)v7 presentationViewController:self endPanningMediaInWidget:a3 finalState:a4];
+    [(OKPresentationViewControllerEditingDelegate *)editingDelegate presentationViewController:self endPanningMediaInWidget:widget finalState:state];
   }
 }
 
-- (BOOL)canEditTextInWidget:(id)a3
+- (BOOL)canEditTextInWidget:(id)widget
 {
   [(OKPresentationViewControllerProxy *)self editingDelegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -3395,23 +3395,23 @@ uint64_t __70__OKPresentationViewControllerProxy_endAudioForController_andTrackI
     return 0;
   }
 
-  v5 = [(OKPresentationViewControllerProxy *)self editingDelegate];
+  editingDelegate = [(OKPresentationViewControllerProxy *)self editingDelegate];
 
-  return [(OKPresentationViewControllerEditingDelegate *)v5 presentationViewController:self canEditTextInWidget:a3];
+  return [(OKPresentationViewControllerEditingDelegate *)editingDelegate presentationViewController:self canEditTextInWidget:widget];
 }
 
-- (void)beginEditingTextInWidget:(id)a3
+- (void)beginEditingTextInWidget:(id)widget
 {
   [(OKPresentationViewControllerProxy *)self editingDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(OKPresentationViewControllerProxy *)self editingDelegate];
+    editingDelegate = [(OKPresentationViewControllerProxy *)self editingDelegate];
 
-    [(OKPresentationViewControllerEditingDelegate *)v5 presentationViewController:self beginEditingTextInWidget:a3];
+    [(OKPresentationViewControllerEditingDelegate *)editingDelegate presentationViewController:self beginEditingTextInWidget:widget];
   }
 }
 
-- (BOOL)validateChangingTextInWidget:(id)a3 toSettings:(id)a4
+- (BOOL)validateChangingTextInWidget:(id)widget toSettings:(id)settings
 {
   [(OKPresentationViewControllerProxy *)self editingDelegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -3419,32 +3419,32 @@ uint64_t __70__OKPresentationViewControllerProxy_endAudioForController_andTrackI
     return 0;
   }
 
-  v7 = [(OKPresentationViewControllerProxy *)self editingDelegate];
+  editingDelegate = [(OKPresentationViewControllerProxy *)self editingDelegate];
 
-  return [(OKPresentationViewControllerEditingDelegate *)v7 presentationViewController:self validateChangingTextInWidget:a3 toSettings:a4];
+  return [(OKPresentationViewControllerEditingDelegate *)editingDelegate presentationViewController:self validateChangingTextInWidget:widget toSettings:settings];
 }
 
-- (void)endEditingTextInWidget:(id)a3 finalSettings:(id)a4
+- (void)endEditingTextInWidget:(id)widget finalSettings:(id)settings
 {
   [(OKPresentationViewControllerProxy *)self editingDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [(OKPresentationViewControllerProxy *)self editingDelegate];
+    editingDelegate = [(OKPresentationViewControllerProxy *)self editingDelegate];
 
-    [(OKPresentationViewControllerEditingDelegate *)v7 presentationViewController:self endEditingTextInWidget:a3 finalSettings:a4];
+    [(OKPresentationViewControllerEditingDelegate *)editingDelegate presentationViewController:self endEditingTextInWidget:widget finalSettings:settings];
   }
 }
 
-- (void)renderingTimeLogMessage:(id)a3 withTimestamp:(double)a4
+- (void)renderingTimeLogMessage:(id)message withTimestamp:(double)timestamp
 {
   if (self->_isRenderLoggingActive)
   {
     [(OKPresentationViewControllerProxy *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(OKPresentationViewControllerProxy *)self delegate];
+      delegate = [(OKPresentationViewControllerProxy *)self delegate];
 
-      [(OKPresentationViewControllerDelegate *)v7 presentationViewController:self renderingTimeLogMessage:a3 withTimestamp:a4];
+      [(OKPresentationViewControllerDelegate *)delegate presentationViewController:self renderingTimeLogMessage:message withTimestamp:timestamp];
     }
   }
 }
@@ -3487,14 +3487,14 @@ uint64_t __70__OKPresentationViewControllerProxy_endAudioForController_andTrackI
   return 0;
 }
 
-- (void)clickWheelViewClosePressed:(id)a3
+- (void)clickWheelViewClosePressed:(id)pressed
 {
   [(OKPresentationViewControllerProxy *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(OKPresentationViewControllerProxy *)self delegate];
+    delegate = [(OKPresentationViewControllerProxy *)self delegate];
 
-    [(OKPresentationViewControllerDelegate *)v4 dismissPresentationViewController:self];
+    [(OKPresentationViewControllerDelegate *)delegate dismissPresentationViewController:self];
   }
 }
 
@@ -3640,10 +3640,10 @@ OKWidgetMapView *__53__OKPresentationViewControllerProxy_initSynopsisView__block
   return v3;
 }
 
-- (void)synopsisView:(id)a3 didSelectItem:(id)a4
+- (void)synopsisView:(id)view didSelectItem:(id)item
 {
-  [a3 hide];
-  v6 = [a4 key];
+  [view hide];
+  v6 = [item key];
 
   [(OKPresentationViewControllerProxy *)self navigateToItemAtKeyPath:v6 animated:0 completionHandler:&__block_literal_global_418];
 }
@@ -3651,13 +3651,13 @@ OKWidgetMapView *__53__OKPresentationViewControllerProxy_initSynopsisView__block
 - (id)visibleItemKeyPaths
 {
   v14 = *MEMORY[0x277D85DE8];
-  v2 = [(OKPresentationViewControllerProxy *)self visibleWidgets];
-  v3 = [MEMORY[0x277CBEB18] array];
+  visibleWidgets = [(OKPresentationViewControllerProxy *)self visibleWidgets];
+  array = [MEMORY[0x277CBEB18] array];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [visibleWidgets countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3669,32 +3669,32 @@ OKWidgetMapView *__53__OKPresentationViewControllerProxy_initSynopsisView__block
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(visibleWidgets);
         }
 
-        [v3 addObject:{objc_msgSend(objc_msgSend(*(*(&v9 + 1) + 8 * v7++), "widget"), "keyPath")}];
+        [array addObject:{objc_msgSend(objc_msgSend(*(*(&v9 + 1) + 8 * v7++), "widget"), "keyPath")}];
       }
 
       while (v5 != v7);
-      v5 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [visibleWidgets countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)visibleMediaItems
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(OKPresentationViewControllerProxy *)self visibleWidgets];
-  v4 = [MEMORY[0x277CBEB18] array];
+  visibleWidgets = [(OKPresentationViewControllerProxy *)self visibleWidgets];
+  array = [MEMORY[0x277CBEB18] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [visibleWidgets countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3706,126 +3706,126 @@ OKWidgetMapView *__53__OKPresentationViewControllerProxy_initSynopsisView__block
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(visibleWidgets);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v4 addObject:{-[OKPresentation mediaItemForURL:](-[OKPresentationViewControllerProxy presentation](self, "presentation"), "mediaItemForURL:", objc_msgSend(v9, "settingUrl"))}];
+          [array addObject:{-[OKPresentation mediaItemForURL:](-[OKPresentationViewControllerProxy presentation](self, "presentation"), "mediaItemForURL:", objc_msgSend(v9, "settingUrl"))}];
         }
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [visibleWidgets countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  return v4;
+  return array;
 }
 
 - (id)visibleMediaObjects
 {
-  v2 = [(OKPresentationViewControllerProxy *)self visibleMediaItems];
+  visibleMediaItems = [(OKPresentationViewControllerProxy *)self visibleMediaItems];
 
-  return [v2 valueForKey:@"mediaObject"];
+  return [visibleMediaItems valueForKey:@"mediaObject"];
 }
 
 - (id)visibleWidgets
 {
-  v2 = [(OKNavigatorViewControllerProxy *)[(OKPresentationViewControllerProxy *)self mainNavigatorViewController] currentPageViewController];
+  currentPageViewController = [(OKNavigatorViewControllerProxy *)[(OKPresentationViewControllerProxy *)self mainNavigatorViewController] currentPageViewController];
 
-  return [(OKPageViewController *)v2 visibleWidgets];
+  return [(OKPageViewController *)currentPageViewController visibleWidgets];
 }
 
-- (void)synopsisViewWillBegin:(id)a3
+- (void)synopsisViewWillBegin:(id)begin
 {
-  v3 = [(OKPresentationViewControllerProxy *)self mainNavigatorViewController];
+  mainNavigatorViewController = [(OKPresentationViewControllerProxy *)self mainNavigatorViewController];
 
-  [(OKNavigatorViewControllerProxy *)v3 beginDuckingToLevel:0.1 fadeDuration:0.3];
+  [(OKNavigatorViewControllerProxy *)mainNavigatorViewController beginDuckingToLevel:0.1 fadeDuration:0.3];
 }
 
-- (void)synopsisViewDidBegin:(id)a3
+- (void)synopsisViewDidBegin:(id)begin
 {
-  v3 = [(OKPresentationViewControllerProxy *)self mainNavigatorViewController];
+  mainNavigatorViewController = [(OKPresentationViewControllerProxy *)self mainNavigatorViewController];
 
-  [(OKNavigatorViewControllerProxy *)v3 beginDuckingToLevel:0.1 fadeDuration:0.3];
+  [(OKNavigatorViewControllerProxy *)mainNavigatorViewController beginDuckingToLevel:0.1 fadeDuration:0.3];
 }
 
-- (void)synopsisViewDidEnd:(id)a3
+- (void)synopsisViewDidEnd:(id)end
 {
-  v4 = [(OKPresentationViewControllerProxy *)self mainNavigatorViewController];
+  mainNavigatorViewController = [(OKPresentationViewControllerProxy *)self mainNavigatorViewController];
   audioVolume = self->_audioVolume;
 
-  [(OKNavigatorViewControllerProxy *)v4 beginDuckingToLevel:audioVolume fadeDuration:0.3];
+  [(OKNavigatorViewControllerProxy *)mainNavigatorViewController beginDuckingToLevel:audioVolume fadeDuration:0.3];
 }
 
-- (void)synopsisViewUpdated:(id)a3 withProgress:(double)a4
+- (void)synopsisViewUpdated:(id)updated withProgress:(double)progress
 {
-  if (a4 <= 0.8)
+  if (progress <= 0.8)
   {
-    v4 = a4;
+    progressCopy = progress;
   }
 
   else
   {
-    v4 = 0.8;
+    progressCopy = 0.8;
   }
 
-  v5 = [(OKPresentationViewControllerProxy *)self mainNavigatorViewController];
+  mainNavigatorViewController = [(OKPresentationViewControllerProxy *)self mainNavigatorViewController];
 
-  [(OKNavigatorViewControllerProxy *)v5 beginDuckingToLevel:1.0 - v4 fadeDuration:0.0];
+  [(OKNavigatorViewControllerProxy *)mainNavigatorViewController beginDuckingToLevel:1.0 - progressCopy fadeDuration:0.0];
 }
 
-- (void)setInteractiveTransitionTrackingBoxRadius:(double)a3
+- (void)setInteractiveTransitionTrackingBoxRadius:(double)radius
 {
-  self->_interactiveTransitionTrackingBoxRadius = a3;
+  self->_interactiveTransitionTrackingBoxRadius = radius;
   if (self->_rootNavigatorIsReady)
   {
     [(OKPresentationViewControllerProxy *)self mainNavigatorViewController];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(OKPresentationViewControllerProxy *)self mainNavigatorViewController];
+      mainNavigatorViewController = [(OKPresentationViewControllerProxy *)self mainNavigatorViewController];
 
-      [(OKNavigatorViewController *)v5 setInteractiveTransitionTrackingBoxRadius:a3];
+      [(OKNavigatorViewController *)mainNavigatorViewController setInteractiveTransitionTrackingBoxRadius:radius];
     }
   }
 }
 
-- (void)setInteractiveTransitionProgressThreshold:(double)a3
+- (void)setInteractiveTransitionProgressThreshold:(double)threshold
 {
-  self->_interactiveTransitionProgressThreshold = a3;
+  self->_interactiveTransitionProgressThreshold = threshold;
   if (self->_rootNavigatorIsReady)
   {
     [(OKPresentationViewControllerProxy *)self mainNavigatorViewController];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(OKPresentationViewControllerProxy *)self mainNavigatorViewController];
+      mainNavigatorViewController = [(OKPresentationViewControllerProxy *)self mainNavigatorViewController];
 
-      [(OKNavigatorViewController *)v5 setInteractiveTransitionProgressThreshold:a3];
+      [(OKNavigatorViewController *)mainNavigatorViewController setInteractiveTransitionProgressThreshold:threshold];
     }
   }
 }
 
-- (void)setInteractiveTransitionVelocityThreshold:(double)a3
+- (void)setInteractiveTransitionVelocityThreshold:(double)threshold
 {
-  self->_interactiveTransitionVelocityThreshold = a3;
+  self->_interactiveTransitionVelocityThreshold = threshold;
   if (self->_rootNavigatorIsReady)
   {
     [(OKPresentationViewControllerProxy *)self mainNavigatorViewController];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(OKPresentationViewControllerProxy *)self mainNavigatorViewController];
+      mainNavigatorViewController = [(OKPresentationViewControllerProxy *)self mainNavigatorViewController];
 
-      [(OKNavigatorViewController *)v5 setInteractiveTransitionVelocityThreshold:a3];
+      [(OKNavigatorViewController *)mainNavigatorViewController setInteractiveTransitionVelocityThreshold:threshold];
     }
   }
 }

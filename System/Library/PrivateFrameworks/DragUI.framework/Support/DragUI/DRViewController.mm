@@ -1,40 +1,40 @@
 @interface DRViewController
 - (BOOL)hasActiveDragSession;
-- (CATransform3D)transformToLocalWindowForCoordinateSpaceTransformToDisplay:(SEL)a3;
+- (CATransform3D)transformToLocalWindowForCoordinateSpaceTransformToDisplay:(SEL)display;
 - (CGRect)_defaultInitialViewFrame;
-- (DRViewController)initWithDelegate:(id)a3 initialFrame:(CGRect)a4;
+- (DRViewController)initWithDelegate:(id)delegate initialFrame:(CGRect)frame;
 - (DRViewControllerDelegate)delegate;
-- (id)sessionViewModelForAddingTouch:(id)a3;
-- (id)sessionViewModelForBeginningDragManipulationAtLocation:(CGPoint)a3;
-- (unsigned)sessionIDForViewModel:(id)a3;
-- (void)addSession:(id)a3 withSourceClient:(id)a4 touchIDs:(id)a5 itemCount:(unint64_t)a6 centroid:(CAPoint3D)a7 sourceContextID:(unsigned int)a8 initialCentroidInSourceContext:(CAPoint3D)a9 preferredPreviewIndexes:(id)a10;
-- (void)configurePortalViewForDragSessionOriginatingFromViewController:(id)a3;
+- (id)sessionViewModelForAddingTouch:(id)touch;
+- (id)sessionViewModelForBeginningDragManipulationAtLocation:(CGPoint)location;
+- (unsigned)sessionIDForViewModel:(id)model;
+- (void)addSession:(id)session withSourceClient:(id)client touchIDs:(id)ds itemCount:(unint64_t)count centroid:(CAPoint3D)centroid sourceContextID:(unsigned int)d initialCentroidInSourceContext:(CAPoint3D)context preferredPreviewIndexes:(id)self0;
+- (void)configurePortalViewForDragSessionOriginatingFromViewController:(id)controller;
 - (void)dealloc;
 - (void)loadView;
 - (void)observeInterfaceOrientationUpdates;
-- (void)orientationObserver:(id)a3 orientationDidChange:(id)a4;
-- (void)removeTouches:(id)a3;
-- (void)sessionController:(id)a3 didUpdatePresentation:(id)a4;
-- (void)sessionController:(id)a3 requestImagesForClient:(id)a4 itemIndexes:(id)a5;
-- (void)sessionController:(id)a3 setTouchOffset:(CGPoint)a4;
-- (void)teardownPortalViewForDragSessionOriginatingFromViewController:(id)a3;
-- (void)updateWithTouches:(id)a3;
+- (void)orientationObserver:(id)observer orientationDidChange:(id)change;
+- (void)removeTouches:(id)touches;
+- (void)sessionController:(id)controller didUpdatePresentation:(id)presentation;
+- (void)sessionController:(id)controller requestImagesForClient:(id)client itemIndexes:(id)indexes;
+- (void)sessionController:(id)controller setTouchOffset:(CGPoint)offset;
+- (void)teardownPortalViewForDragSessionOriginatingFromViewController:(id)controller;
+- (void)updateWithTouches:(id)touches;
 @end
 
 @implementation DRViewController
 
-- (DRViewController)initWithDelegate:(id)a3 initialFrame:(CGRect)a4
+- (DRViewController)initWithDelegate:(id)delegate initialFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  delegateCopy = delegate;
   v10 = [(DRViewController *)self init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_delegate, v9);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
     v12 = objc_opt_new();
     controllers = v11->_controllers;
     v11->_controllers = v12;
@@ -63,14 +63,14 @@
   v7.super_class = DRViewController;
   [(DRViewController *)&v7 loadView];
   v3 = objc_opt_new();
-  v4 = [(DRViewController *)self view];
-  [v4 frame];
+  view = [(DRViewController *)self view];
+  [view frame];
   [(UIView *)v3 setFrame:?];
 
   [(UIView *)v3 setAutoresizingMask:18];
   [(UIView *)v3 setMultipleTouchEnabled:1];
-  v5 = [(DRViewController *)self view];
-  [v5 addSubview:v3];
+  view2 = [(DRViewController *)self view];
+  [view2 addSubview:v3];
 
   contentView = self->_contentView;
   self->_contentView = v3;
@@ -91,52 +91,52 @@
 
 - (BOOL)hasActiveDragSession
 {
-  v2 = [(DRViewController *)self controllers];
-  v3 = [v2 count] != 0;
+  controllers = [(DRViewController *)self controllers];
+  v3 = [controllers count] != 0;
 
   return v3;
 }
 
-- (void)addSession:(id)a3 withSourceClient:(id)a4 touchIDs:(id)a5 itemCount:(unint64_t)a6 centroid:(CAPoint3D)a7 sourceContextID:(unsigned int)a8 initialCentroidInSourceContext:(CAPoint3D)a9 preferredPreviewIndexes:(id)a10
+- (void)addSession:(id)session withSourceClient:(id)client touchIDs:(id)ds itemCount:(unint64_t)count centroid:(CAPoint3D)centroid sourceContextID:(unsigned int)d initialCentroidInSourceContext:(CAPoint3D)context preferredPreviewIndexes:(id)self0
 {
-  z = a9.z;
-  y = a9.y;
-  x = a9.x;
-  v17 = a7.z;
-  v18 = a7.y;
-  v19 = a7.x;
-  v21 = a3;
-  v22 = a4;
-  v23 = a5;
-  v101 = a10;
-  v24 = [(DRViewController *)self controllers];
-  v25 = [v24 count];
+  z = context.z;
+  y = context.y;
+  x = context.x;
+  v17 = centroid.z;
+  v18 = centroid.y;
+  v19 = centroid.x;
+  sessionCopy = session;
+  clientCopy = client;
+  dsCopy = ds;
+  indexesCopy = indexes;
+  controllers = [(DRViewController *)self controllers];
+  v25 = [controllers count];
 
   if (!v25)
   {
     _UIUpdateRequestActivate();
   }
 
-  v26 = -[DRViewController newSessionControllerForSession:](self, "newSessionControllerForSession:", [v21 identifier]);
+  v26 = -[DRViewController newSessionControllerForSession:](self, "newSessionControllerForSession:", [sessionCopy identifier]);
   [v26 setOrientation:self->_currentOrientation withDuration:0 direction:0.0];
   controllers = self->_controllers;
-  v28 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v21 identifier]);
+  v28 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [sessionCopy identifier]);
   [(NSMutableDictionary *)controllers setObject:v26 forKeyedSubscript:v28];
 
-  v29 = [v26 model];
-  v100 = v22;
-  v30 = [v29 addClientModelForClient:v22 isSource:1];
+  model = [v26 model];
+  v100 = clientCopy;
+  v30 = [model addClientModelForClient:clientCopy isSource:1];
 
-  if ([v23 count])
+  if ([dsCopy count])
   {
-    v97 = a6;
-    v98 = self;
+    countCopy = count;
+    selfCopy = self;
     v108 = 0u;
     v109 = 0u;
     v106 = 0u;
     v107 = 0u;
-    v31 = v23;
-    v32 = v23;
+    v31 = dsCopy;
+    v32 = dsCopy;
     v33 = [v32 countByEnumeratingWithState:&v106 objects:v111 count:16];
     if (v33)
     {
@@ -152,8 +152,8 @@
           }
 
           v37 = *(*(&v106 + 1) + 8 * i);
-          v38 = [v26 model];
-          [v38 addTouchID:v37];
+          model2 = [v26 model];
+          [model2 addTouchID:v37];
         }
 
         v34 = [v32 countByEnumeratingWithState:&v106 objects:v111 count:16];
@@ -162,89 +162,89 @@
       while (v34);
     }
 
-    v23 = v31;
-    a6 = v97;
-    self = v98;
+    dsCopy = v31;
+    count = countCopy;
+    self = selfCopy;
   }
 
   else
   {
-    v39 = [v26 model];
-    [v39 setUsesSynthesizedTouch:1];
+    model3 = [v26 model];
+    [model3 setUsesSynthesizedTouch:1];
   }
 
-  v40 = [v21 rotatable];
-  v41 = [v26 model];
-  [v41 setRotatable:v40];
+  rotatable = [sessionCopy rotatable];
+  model4 = [v26 model];
+  [model4 setRotatable:rotatable];
 
-  v42 = [v21 resizable];
-  v43 = [v26 model];
-  [v43 setResizable:v42];
+  resizable = [sessionCopy resizable];
+  model5 = [v26 model];
+  [model5 setResizable:resizable];
 
-  [v21 minimumResizableSize];
+  [sessionCopy minimumResizableSize];
   v45 = v44;
   v47 = v46;
-  v48 = [v26 model];
-  [v48 setMinimumResizableSize:{v45, v47}];
+  model6 = [v26 model];
+  [model6 setMinimumResizableSize:{v45, v47}];
 
-  [v21 maximumResizableSize];
+  [sessionCopy maximumResizableSize];
   v50 = v49;
   v52 = v51;
-  v53 = [v26 model];
-  [v53 setMaximumResizableSize:{v50, v52}];
+  model7 = [v26 model];
+  [model7 setMaximumResizableSize:{v50, v52}];
 
-  v54 = [v21 wantsElasticEffects];
-  v55 = [v26 model];
-  [v55 setWantsElasticEffects:v54];
+  wantsElasticEffects = [sessionCopy wantsElasticEffects];
+  model8 = [v26 model];
+  [model8 setWantsElasticEffects:wantsElasticEffects];
 
-  [v21 originalRotation];
+  [sessionCopy originalRotation];
   v57 = v56;
-  v58 = [v26 model];
-  [v58 setOriginalRotation:v57];
+  model9 = [v26 model];
+  [model9 setOriginalRotation:v57];
 
-  [v21 originalScale];
+  [sessionCopy originalScale];
   v60 = v59;
   v62 = v61;
-  v63 = [v26 model];
-  [v63 setOriginalScale:{v60, v62}];
+  model10 = [v26 model];
+  [model10 setOriginalScale:{v60, v62}];
 
-  v64 = [v26 model];
-  [v64 setSourceContextID:a8];
+  model11 = [v26 model];
+  [model11 setSourceContextID:d];
 
-  v65 = [v26 model];
-  [v65 setInitialCentroidInSourceContext:{x, y, z}];
+  model12 = [v26 model];
+  [model12 setInitialCentroidInSourceContext:{x, y, z}];
 
-  v66 = [v21 continuityDisplayWantsDragsHidden];
-  v67 = [v26 model];
-  [v67 setContinuityDisplayWantsDragsHidden:v66];
+  continuityDisplayWantsDragsHidden = [sessionCopy continuityDisplayWantsDragsHidden];
+  model13 = [v26 model];
+  [model13 setContinuityDisplayWantsDragsHidden:continuityDisplayWantsDragsHidden];
 
-  v68 = [v21 associatedObjectManipulationSessionID];
-  v69 = [v26 model];
-  [v69 setAssociatedObjectManipulationSessionIdentifier:v68];
+  associatedObjectManipulationSessionID = [sessionCopy associatedObjectManipulationSessionID];
+  model14 = [v26 model];
+  [model14 setAssociatedObjectManipulationSessionIdentifier:associatedObjectManipulationSessionID];
 
-  [v21 associatedObjectManipulationDragItemSize];
+  [sessionCopy associatedObjectManipulationDragItemSize];
   v71 = v70;
   v73 = v72;
   v75 = v74;
-  v76 = [v26 model];
-  [v76 setAssociatedObjectManipulationDragItemSize:{v71, v73, v75}];
+  model15 = [v26 model];
+  [model15 setAssociatedObjectManipulationDragItemSize:{v71, v73, v75}];
 
-  v77 = [v21 sourceRestrictsDragToSelf];
-  v78 = [v26 model];
-  [v78 setSourceRestrictsDragToSelf:v77];
+  sourceRestrictsDragToSelf = [sessionCopy sourceRestrictsDragToSelf];
+  model16 = [v26 model];
+  [model16 setSourceRestrictsDragToSelf:sourceRestrictsDragToSelf];
 
-  v79 = [v21 sourceRestrictsDragToLocalDevice];
-  v80 = [v26 model];
-  [v80 setSourceRestrictsDragToLocalDevice:v79];
+  sourceRestrictsDragToLocalDevice = [sessionCopy sourceRestrictsDragToLocalDevice];
+  model17 = [v26 model];
+  [model17 setSourceRestrictsDragToLocalDevice:sourceRestrictsDragToLocalDevice];
 
-  v81 = [v26 model];
-  [v81 addInitialItemsWithCount:a6];
+  model18 = [v26 model];
+  [model18 addInitialItemsWithCount:count];
 
-  v82 = [v26 model];
-  [v82 setPreferredPreviewIndexes:v101];
+  model19 = [v26 model];
+  [model19 setPreferredPreviewIndexes:indexesCopy];
 
-  v83 = [v26 model];
-  [v83 updateLocationWithoutTouches:{v19, v18, v17}];
+  model20 = [v26 model];
+  [model20 updateLocationWithoutTouches:{v19, v18, v17}];
 
   v104 = 0u;
   v105 = 0u;
@@ -270,8 +270,8 @@
         [v89 locationInView:0];
         v92 = v91;
         v94 = v93;
-        v95 = [v26 model];
-        [v95 updateLocation:v90 ofTouchID:{v92, v94, 0.0}];
+        model21 = [v26 model];
+        [model21 updateLocation:v90 ofTouchID:{v92, v94, 0.0}];
       }
 
       v86 = [(NSMutableSet *)v84 countByEnumeratingWithState:&v102 objects:v110 count:16];
@@ -280,19 +280,19 @@
     while (v86);
   }
 
-  v96 = [v26 model];
-  [v26 viewModelInvalidated:v96];
+  model22 = [v26 model];
+  [v26 viewModelInvalidated:model22];
 }
 
-- (unsigned)sessionIDForViewModel:(id)a3
+- (unsigned)sessionIDForViewModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(NSMutableDictionary *)self->_controllers allValues];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allValues = [(NSMutableDictionary *)self->_controllers allValues];
+  v6 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -302,20 +302,20 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v9 model];
+        model = [v9 model];
 
-        if (v10 == v4)
+        if (model == modelCopy)
         {
           LODWORD(v6) = [v9 sessionID];
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -330,15 +330,15 @@ LABEL_11:
   return v6;
 }
 
-- (void)updateWithTouches:(id)a3
+- (void)updateWithTouches:(id)touches
 {
-  v4 = a3;
-  [(NSMutableSet *)self->_activeTouches unionSet:v4];
+  touchesCopy = touches;
+  [(NSMutableSet *)self->_activeTouches unionSet:touchesCopy];
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v4;
+  obj = touchesCopy;
   v5 = [obj countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v5)
   {
@@ -362,10 +362,10 @@ LABEL_11:
         v24 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v15 = [(DRViewController *)self controllers];
-        v16 = [v15 objectEnumerator];
+        controllers = [(DRViewController *)self controllers];
+        objectEnumerator = [controllers objectEnumerator];
 
-        v17 = [v16 countByEnumeratingWithState:&v23 objects:v31 count:16];
+        v17 = [objectEnumerator countByEnumeratingWithState:&v23 objects:v31 count:16];
         if (v17)
         {
           v18 = v17;
@@ -376,14 +376,14 @@ LABEL_11:
             {
               if (*v24 != v19)
               {
-                objc_enumerationMutation(v16);
+                objc_enumerationMutation(objectEnumerator);
               }
 
-              v21 = [*(*(&v23 + 1) + 8 * j) model];
-              [v21 updateLocation:v10 ofTouchID:{v12, v14, 0.0}];
+              model = [*(*(&v23 + 1) + 8 * j) model];
+              [model updateLocation:v10 ofTouchID:{v12, v14, 0.0}];
             }
 
-            v18 = [v16 countByEnumeratingWithState:&v23 objects:v31 count:16];
+            v18 = [objectEnumerator countByEnumeratingWithState:&v23 objects:v31 count:16];
           }
 
           while (v18);
@@ -397,38 +397,38 @@ LABEL_11:
   }
 }
 
-- (id)sessionViewModelForAddingTouch:(id)a3
+- (id)sessionViewModelForAddingTouch:(id)touch
 {
-  v4 = a3;
-  if ([v4 _edgeType])
+  touchCopy = touch;
+  if ([touchCopy _edgeType])
   {
-    v5 = 0;
+    model = 0;
   }
 
   else
   {
-    [v4 locationInView:0];
+    [touchCopy locationInView:0];
     v7 = v6;
-    v8 = [v4 window];
-    v9 = [v8 screen];
-    v10 = [(DRViewController *)self view];
-    v11 = [v10 window];
-    v12 = [v11 screen];
-    v13 = sub_100002024(v9, v12, v7);
+    window = [touchCopy window];
+    screen = [window screen];
+    view = [(DRViewController *)self view];
+    window2 = [view window];
+    screen2 = [window2 screen];
+    v13 = sub_100002024(screen, screen2, v7);
     v15 = v14;
 
-    v16 = [v4 window];
-    v17 = [v16 windowScene];
-    v18 = sub_100001F60(v17);
+    window3 = [touchCopy window];
+    windowScene = [window3 windowScene];
+    v18 = sub_100001F60(windowScene);
 
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v19 = [(DRViewController *)self controllers];
-    v20 = [v19 objectEnumerator];
+    controllers = [(DRViewController *)self controllers];
+    objectEnumerator = [controllers objectEnumerator];
 
-    v21 = [v20 countByEnumeratingWithState:&v40 objects:v45 count:16];
+    v21 = [objectEnumerator countByEnumeratingWithState:&v40 objects:v45 count:16];
     if (v21)
     {
       v22 = v21;
@@ -439,18 +439,18 @@ LABEL_5:
       {
         if (*v41 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        v5 = [*(*(&v40 + 1) + 8 * v24) model];
-        if ([v5 acceptsSynthesizedTouchAtLocation:v18 displayIdentifier:{v13, v15}])
+        model = [*(*(&v40 + 1) + 8 * v24) model];
+        if ([model acceptsSynthesizedTouchAtLocation:v18 displayIdentifier:{v13, v15}])
         {
           break;
         }
 
         if (v22 == ++v24)
         {
-          v22 = [v20 countByEnumeratingWithState:&v40 objects:v45 count:16];
+          v22 = [objectEnumerator countByEnumeratingWithState:&v40 objects:v45 count:16];
           if (v22)
           {
             goto LABEL_5;
@@ -469,10 +469,10 @@ LABEL_11:
       v39 = 0u;
       v36 = 0u;
       v37 = 0u;
-      v25 = [(DRViewController *)self controllers];
-      v20 = [v25 objectEnumerator];
+      controllers2 = [(DRViewController *)self controllers];
+      objectEnumerator = [controllers2 objectEnumerator];
 
-      v26 = [v20 countByEnumeratingWithState:&v36 objects:v44 count:16];
+      v26 = [objectEnumerator countByEnumeratingWithState:&v36 objects:v44 count:16];
       if (v26)
       {
         v27 = v26;
@@ -483,22 +483,22 @@ LABEL_11:
           {
             if (*v37 != v28)
             {
-              objc_enumerationMutation(v20);
+              objc_enumerationMutation(objectEnumerator);
             }
 
             v30 = *(*(&v36 + 1) + 8 * i);
-            v5 = [v30 model];
-            v31 = [v30 view];
-            v32 = [v31 _window];
+            model = [v30 model];
+            view2 = [v30 view];
+            _window = [view2 _window];
 
-            if (v32)
+            if (_window)
             {
-              [v31 setUserInteractionEnabled:1];
-              v33 = [v31 hitTest:0 withEvent:{v13, v15}];
-              [v31 setUserInteractionEnabled:0];
+              [view2 setUserInteractionEnabled:1];
+              v33 = [view2 hitTest:0 withEvent:{v13, v15}];
+              [view2 setUserInteractionEnabled:0];
               if (v33)
               {
-                v34 = v33 == v31;
+                v34 = v33 == view2;
               }
 
               else
@@ -506,7 +506,7 @@ LABEL_11:
                 v34 = 1;
               }
 
-              if (!v34 && ([v5 canAddTouches] & 1) != 0)
+              if (!v34 && ([model canAddTouches] & 1) != 0)
               {
 
                 goto LABEL_27;
@@ -514,7 +514,7 @@ LABEL_11:
             }
           }
 
-          v27 = [v20 countByEnumeratingWithState:&v36 objects:v44 count:16];
+          v27 = [objectEnumerator countByEnumeratingWithState:&v36 objects:v44 count:16];
           if (v27)
           {
             continue;
@@ -524,27 +524,27 @@ LABEL_11:
         }
       }
 
-      v5 = 0;
+      model = 0;
     }
 
 LABEL_27:
   }
 
-  return v5;
+  return model;
 }
 
-- (id)sessionViewModelForBeginningDragManipulationAtLocation:(CGPoint)a3
+- (id)sessionViewModelForBeginningDragManipulationAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [(DRViewController *)self controllers];
-  v6 = [v5 objectEnumerator];
+  controllers = [(DRViewController *)self controllers];
+  objectEnumerator = [controllers objectEnumerator];
 
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v7 = [objectEnumerator countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -555,22 +555,22 @@ LABEL_27:
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 model];
-        v13 = [v11 view];
-        v14 = [v13 _window];
+        model = [v11 model];
+        view = [v11 view];
+        _window = [view _window];
 
-        if (v14)
+        if (_window)
         {
-          [v13 setUserInteractionEnabled:1];
-          v15 = [v13 hitTest:0 withEvent:{x, y}];
-          [v13 setUserInteractionEnabled:0];
+          [view setUserInteractionEnabled:1];
+          v15 = [view hitTest:0 withEvent:{x, y}];
+          [view setUserInteractionEnabled:0];
           if (v15)
           {
-            v16 = v15 == v13;
+            v16 = v15 == view;
           }
 
           else
@@ -578,7 +578,7 @@ LABEL_27:
             v16 = 1;
           }
 
-          if (!v16 && [v12 canAddManipulatedTouch] && !objc_msgSend(v12, "isManipulatingTransform"))
+          if (!v16 && [model canAddManipulatedTouch] && !objc_msgSend(model, "isManipulatingTransform"))
           {
 
             goto LABEL_18;
@@ -586,7 +586,7 @@ LABEL_27:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [objectEnumerator countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v8)
       {
         continue;
@@ -596,19 +596,19 @@ LABEL_27:
     }
   }
 
-  v12 = 0;
+  model = 0;
 LABEL_18:
 
-  return v12;
+  return model;
 }
 
-- (void)configurePortalViewForDragSessionOriginatingFromViewController:(id)a3
+- (void)configurePortalViewForDragSessionOriginatingFromViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 view];
-  v6 = [v5 window];
-  v7 = [v6 windowScene];
-  v8 = sub_100001F60(v7);
+  controllerCopy = controller;
+  view = [controllerCopy view];
+  window = [view window];
+  windowScene = [window windowScene];
+  v8 = sub_100001F60(windowScene);
 
   portalViewByDisplayIdentifiers = self->_portalViewByDisplayIdentifiers;
   if (!portalViewByDisplayIdentifiers)
@@ -624,17 +624,17 @@ LABEL_18:
   if (!v12)
   {
     v13 = [_UIPortalView alloc];
-    v14 = [v4 contentView];
-    v12 = [v13 initWithSourceView:v14];
+    contentView = [controllerCopy contentView];
+    v12 = [v13 initWithSourceView:contentView];
 
     [v12 setUserInteractionEnabled:0];
-    v15 = [v12 portalLayer];
-    [v15 setCrossDisplay:1];
+    portalLayer = [v12 portalLayer];
+    [portalLayer setCrossDisplay:1];
 
     [(NSMutableDictionary *)self->_portalViewByDisplayIdentifiers setObject:v12 forKey:v8];
   }
 
-  v16 = v4[2];
+  v16 = controllerCopy[2];
   v17 = 0.0;
   v18 = 0.0;
   if (v16 != 1)
@@ -688,23 +688,23 @@ LABEL_18:
   CGAffineTransformInvert(&v27, &v26);
   v26 = v27;
   [v12 setTransform:&v26];
-  v20 = [v4 view];
-  [v20 bounds];
+  view2 = [controllerCopy view];
+  [view2 bounds];
   v22 = v21;
-  v23 = [v4 _screen];
-  v24 = [(DRViewController *)self _screen];
-  [v12 setFrame:{sub_100002334(v23, v24, v22)}];
+  _screen = [controllerCopy _screen];
+  _screen2 = [(DRViewController *)self _screen];
+  [v12 setFrame:{sub_100002334(_screen, _screen2, v22)}];
 
-  v25 = [(DRViewController *)self view];
-  [v25 addSubview:v12];
+  view3 = [(DRViewController *)self view];
+  [view3 addSubview:v12];
 }
 
-- (void)teardownPortalViewForDragSessionOriginatingFromViewController:(id)a3
+- (void)teardownPortalViewForDragSessionOriginatingFromViewController:(id)controller
 {
-  v4 = [a3 view];
-  v5 = [v4 window];
-  v6 = [v5 windowScene];
-  v9 = sub_100001F60(v6);
+  view = [controller view];
+  window = [view window];
+  windowScene = [window windowScene];
+  v9 = sub_100001F60(windowScene);
 
   v7 = [(NSMutableDictionary *)self->_portalViewByDisplayIdentifiers objectForKey:v9];
   v8 = v7;
@@ -715,19 +715,19 @@ LABEL_18:
   }
 }
 
-- (void)removeTouches:(id)a3
+- (void)removeTouches:(id)touches
 {
-  v18 = a3;
+  touchesCopy = touches;
   [(NSMutableSet *)self->_activeTouches minusSet:?];
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v4 = [(DRViewController *)self controllers];
-  v5 = [v4 objectEnumerator];
+  controllers = [(DRViewController *)self controllers];
+  objectEnumerator = [controllers objectEnumerator];
 
-  obj = v5;
-  v19 = [v5 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  obj = objectEnumerator;
+  v19 = [objectEnumerator countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v19)
   {
     v17 = *v25;
@@ -746,7 +746,7 @@ LABEL_18:
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v8 = v18;
+        v8 = touchesCopy;
         v9 = [v8 countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v9)
         {
@@ -763,9 +763,9 @@ LABEL_18:
               }
 
               v13 = *(*(&v20 + 1) + 8 * v12);
-              v14 = [v7 model];
+              model = [v7 model];
               v15 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v13 _touchIdentifier]);
-              [v14 removeTouchID:v15];
+              [model removeTouchID:v15];
 
               v12 = v12 + 1;
             }
@@ -788,50 +788,50 @@ LABEL_18:
   }
 }
 
-- (void)sessionController:(id)a3 requestImagesForClient:(id)a4 itemIndexes:(id)a5
+- (void)sessionController:(id)controller requestImagesForClient:(id)client itemIndexes:(id)indexes
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v12 = [(DRViewController *)self delegate];
-  v11 = [v10 sessionID];
+  indexesCopy = indexes;
+  clientCopy = client;
+  controllerCopy = controller;
+  delegate = [(DRViewController *)self delegate];
+  sessionID = [controllerCopy sessionID];
 
-  [v12 viewController:self requestImagesForSessionID:v11 client:v9 itemIndexes:v8];
+  [delegate viewController:self requestImagesForSessionID:sessionID client:clientCopy itemIndexes:indexesCopy];
 }
 
-- (void)sessionController:(id)a3 setTouchOffset:(CGPoint)a4
+- (void)sessionController:(id)controller setTouchOffset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v9 = [(DRViewController *)self delegate];
-  v8 = [v7 sessionID];
+  y = offset.y;
+  x = offset.x;
+  controllerCopy = controller;
+  delegate = [(DRViewController *)self delegate];
+  sessionID = [controllerCopy sessionID];
 
-  [v9 viewController:self setTouchOffset:v8 forSession:{x, y}];
+  [delegate viewController:self setTouchOffset:sessionID forSession:{x, y}];
 }
 
-- (void)sessionController:(id)a3 didUpdatePresentation:(id)a4
+- (void)sessionController:(id)controller didUpdatePresentation:(id)presentation
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(DRViewController *)self delegate];
-  v8 = [v7 sessionID];
+  presentationCopy = presentation;
+  controllerCopy = controller;
+  delegate = [(DRViewController *)self delegate];
+  sessionID = [controllerCopy sessionID];
 
-  [v9 viewController:self didUpdatePresentation:v6 forSession:v8];
+  [delegate viewController:self didUpdatePresentation:presentationCopy forSession:sessionID];
 }
 
-- (CATransform3D)transformToLocalWindowForCoordinateSpaceTransformToDisplay:(SEL)a3
+- (CATransform3D)transformToLocalWindowForCoordinateSpaceTransformToDisplay:(SEL)display
 {
-  v6 = [(DRViewController *)self view];
-  v7 = [v6 window];
-  v8 = [v7 screen];
+  view = [(DRViewController *)self view];
+  window = [view window];
+  screen = [window screen];
 
-  [v8 scale];
+  [screen scale];
   v10 = v9;
-  [v8 _referenceBounds];
+  [screen _referenceBounds];
   v12 = v11;
   v14 = v13;
-  [v8 _rotation];
+  [screen _rotation];
   v27 = 0u;
   v28 = 0u;
   v26 = 0u;
@@ -923,22 +923,22 @@ LABEL_18:
   [(DRViewController *)&v4 dealloc];
 }
 
-- (void)orientationObserver:(id)a3 orientationDidChange:(id)a4
+- (void)orientationObserver:(id)observer orientationDidChange:(id)change
 {
-  v5 = a4;
-  v6 = [v5 orientation];
-  if (v6 != self->_currentOrientation)
+  changeCopy = change;
+  orientation = [changeCopy orientation];
+  if (orientation != self->_currentOrientation)
   {
-    v7 = v6;
-    self->_currentOrientation = v6;
+    v7 = orientation;
+    self->_currentOrientation = orientation;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v8 = [(DRViewController *)self controllers];
-    v9 = [v8 objectEnumerator];
+    controllers = [(DRViewController *)self controllers];
+    objectEnumerator = [controllers objectEnumerator];
 
-    v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v10 = [objectEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v10)
     {
       v11 = v10;
@@ -949,15 +949,15 @@ LABEL_18:
         {
           if (*v17 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           v14 = *(*(&v16 + 1) + 8 * i);
-          [v5 duration];
-          [v14 setOrientation:v7 withDuration:objc_msgSend(v5 direction:{"rotationDirection"), v15}];
+          [changeCopy duration];
+          [v14 setOrientation:v7 withDuration:objc_msgSend(changeCopy direction:{"rotationDirection"), v15}];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v11 = [objectEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v11);

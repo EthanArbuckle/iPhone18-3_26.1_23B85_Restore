@@ -1,25 +1,25 @@
 @interface VNDetectionprintTensor
-+ (id)tensorFromCSUBuffer:(id)a3 originatingRequestSpecifier:(id)a4 error:(id *)a5;
-+ (id)tensorFromEspressoBuffer:(id *)a3 originatingRequestSpecifier:(id)a4 error:(id *)a5;
-- (VNDetectionprintTensor)initWithCoder:(id)a3;
-- (VNDetectionprintTensor)initWithDescriptorData:(id)a3 elementType:(unint64_t)a4 elementCount:(unint64_t)a5 originatingRequestSpecifier:(id)a6;
-- (id)VNEspressoModelImageprintMLMultiArrayWithConstraint:(id)a3 error:(id *)a4;
-- (void)encodeWithCoder:(id)a3;
++ (id)tensorFromCSUBuffer:(id)buffer originatingRequestSpecifier:(id)specifier error:(id *)error;
++ (id)tensorFromEspressoBuffer:(id *)buffer originatingRequestSpecifier:(id)specifier error:(id *)error;
+- (VNDetectionprintTensor)initWithCoder:(id)coder;
+- (VNDetectionprintTensor)initWithDescriptorData:(id)data elementType:(unint64_t)type elementCount:(unint64_t)count originatingRequestSpecifier:(id)specifier;
+- (id)VNEspressoModelImageprintMLMultiArrayWithConstraint:(id)constraint error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNDetectionprintTensor
 
-- (VNDetectionprintTensor)initWithCoder:(id)a3
+- (VNDetectionprintTensor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = VNDetectionprintTensor;
-  v5 = [(VNEspressoModelImageprint *)&v18 initWithCoder:v4];
+  v5 = [(VNEspressoModelImageprint *)&v18 initWithCoder:coderCopy];
   if (v5)
   {
-    if ([v4 containsValueForKey:@"shape"])
+    if ([coderCopy containsValueForKey:@"shape"])
     {
-      v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shape"];
+      v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shape"];
       shape = v5->_shape;
       v5->_shape = v6;
 
@@ -31,8 +31,8 @@
 
     else
     {
-      v8 = [(VNEspressoModelImageprint *)v5 elementCount];
-      if (v8 == 221952)
+      elementCount = [(VNEspressoModelImageprint *)v5 elementCount];
+      if (elementCount == 221952)
       {
         v9 = objc_alloc(MEMORY[0x1E69DF900]);
         v10 = 17;
@@ -41,11 +41,11 @@
 
       else
       {
-        if (v8 != 352800)
+        if (elementCount != 352800)
         {
           v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unsupported %@", v5];
           v16 = [VNError errorForOperationFailedErrorWithLocalizedDescription:v15];
-          [v4 failWithError:v16];
+          [coderCopy failWithError:v16];
 
 LABEL_12:
           v14 = 0;
@@ -69,24 +69,24 @@ LABEL_13:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = VNDetectionprintTensor;
-  [(VNEspressoModelImageprint *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_shape forKey:@"shape"];
+  [(VNEspressoModelImageprint *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_shape forKey:@"shape"];
 }
 
-- (VNDetectionprintTensor)initWithDescriptorData:(id)a3 elementType:(unint64_t)a4 elementCount:(unint64_t)a5 originatingRequestSpecifier:(id)a6
+- (VNDetectionprintTensor)initWithDescriptorData:(id)data elementType:(unint64_t)type elementCount:(unint64_t)count originatingRequestSpecifier:(id)specifier
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v11.receiver = self;
   v11.super_class = VNDetectionprintTensor;
-  v7 = [(VNEspressoModelImageprint *)&v11 initWithDescriptorData:a3 elementType:a4 elementCount:a5 originatingRequestSpecifier:a6];
+  v7 = [(VNEspressoModelImageprint *)&v11 initWithDescriptorData:data elementType:type elementCount:count originatingRequestSpecifier:specifier];
   if (v7)
   {
-    v12[0] = a5;
+    v12[0] = count;
     v8 = [objc_alloc(MEMORY[0x1E69DF900]) initWithSizes:v12 rank:1];
     shape = v7->_shape;
     v7->_shape = v8;
@@ -95,41 +95,41 @@ LABEL_13:
   return v7;
 }
 
-+ (id)tensorFromEspressoBuffer:(id *)a3 originatingRequestSpecifier:(id)a4 error:(id *)a5
++ (id)tensorFromEspressoBuffer:(id *)buffer originatingRequestSpecifier:(id)specifier error:(id *)error
 {
-  v7 = a4;
-  if (a3->var14 == 65568)
+  specifierCopy = specifier;
+  if (buffer->var14 == 65568)
   {
-    v8 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:a3->var0 length:4 * a3->var13];
-    a5 = [objc_opt_class() printWithDescriptorData:v8 elementType:1 elementCount:a3->var13 originatingRequestSpecifier:v7 error:a5];
-    if (a5)
+    v8 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:buffer->var0 length:4 * buffer->var13];
+    error = [objc_opt_class() printWithDescriptorData:v8 elementType:1 elementCount:buffer->var13 originatingRequestSpecifier:specifierCopy error:error];
+    if (error)
     {
       v15 = 0;
-      v9 = *&a3->var6;
-      v16 = *&a3->var4;
+      v9 = *&buffer->var6;
+      v16 = *&buffer->var4;
       v17 = v9;
       v10 = [MEMORY[0x1E69DF900] shapeForBlobDimensions:&v15];
-      v11 = a5[8];
-      a5[8] = v10;
+      v11 = error[8];
+      error[8] = v10;
 
-      v12 = a5;
+      errorCopy = error;
     }
   }
 
-  else if (a5)
+  else if (error)
   {
-    v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unsupported element storage type of 0x%04X", a3->var14];
-    *a5 = [VNError errorForInvalidOperationWithLocalizedDescription:v13];
+    v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unsupported element storage type of 0x%04X", buffer->var14];
+    *error = [VNError errorForInvalidOperationWithLocalizedDescription:v13];
 
-    a5 = 0;
+    error = 0;
   }
 
-  return a5;
+  return error;
 }
 
-+ (id)tensorFromCSUBuffer:(id)a3 originatingRequestSpecifier:(id)a4 error:(id *)a5
++ (id)tensorFromCSUBuffer:(id)buffer originatingRequestSpecifier:(id)specifier error:(id *)error
 {
-  v8 = a4;
+  specifierCopy = specifier;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -147,20 +147,20 @@ LABEL_13:
   v13[2] = __80__VNDetectionprintTensor_tensorFromCSUBuffer_originatingRequestSpecifier_error___block_invoke;
   v13[3] = &unk_1E77B4508;
   v15 = &v24;
-  v17 = a1;
-  v9 = v8;
+  selfCopy = self;
+  v9 = specifierCopy;
   v14 = v9;
   v16 = &v18;
-  [a3 accessDataUsingBlock:v13];
+  [buffer accessDataUsingBlock:v13];
   v10 = v25[5];
   if (v10)
   {
     v11 = v10;
   }
 
-  else if (a5)
+  else if (error)
   {
-    *a5 = v19[5];
+    *error = v19[5];
   }
 
   _Block_object_dispose(&v18, 8);
@@ -207,54 +207,54 @@ void __80__VNDetectionprintTensor_tensorFromCSUBuffer_originatingRequestSpecifie
   }
 }
 
-- (id)VNEspressoModelImageprintMLMultiArrayWithConstraint:(id)a3 error:(id *)a4
+- (id)VNEspressoModelImageprintMLMultiArrayWithConstraint:(id)constraint error:(id *)error
 {
   v26[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(VNDetectionprintTensor *)self shape];
-  if ([v7 rank] == 4 && objc_msgSend(v7, "batchNumber") == 1)
+  constraintCopy = constraint;
+  shape = [(VNDetectionprintTensor *)self shape];
+  if ([shape rank] == 4 && objc_msgSend(shape, "batchNumber") == 1)
   {
-    v8 = [v6 shape];
-    if ([v8 count] != 3)
+    shape2 = [constraintCopy shape];
+    if ([shape2 count] != 3)
     {
-      if (!a4)
+      if (!error)
       {
         goto LABEL_17;
       }
 
       v18 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v19 = [v8 componentsJoinedByString:{@", "}];
+      v19 = [shape2 componentsJoinedByString:{@", "}];
       v20 = [v18 initWithFormat:@"MLMultiArrayConstraint has an unexpected shape of [ %@ ]", v19];
 
       v21 = [VNError errorForInvalidModelWithLocalizedDescription:v20];
 LABEL_16:
-      *a4 = v21;
+      *error = v21;
 
-      a4 = 0;
+      error = 0;
       goto LABEL_17;
     }
 
-    v9 = [v7 sizes];
-    v10 = [v8 objectAtIndexedSubscript:0];
-    if ([v10 integerValue] == v9[1])
+    sizes = [shape sizes];
+    v10 = [shape2 objectAtIndexedSubscript:0];
+    if ([v10 integerValue] == sizes[1])
     {
-      v11 = [v8 objectAtIndexedSubscript:1];
-      if ([v11 integerValue] == v9[2])
+      v11 = [shape2 objectAtIndexedSubscript:1];
+      if ([v11 integerValue] == sizes[2])
       {
-        v12 = [v8 objectAtIndexedSubscript:2];
-        v25 = [v12 integerValue];
-        v13 = v9[3];
+        v12 = [shape2 objectAtIndexedSubscript:2];
+        integerValue = [v12 integerValue];
+        v13 = sizes[3];
 
-        if (v25 == v13)
+        if (integerValue == v13)
         {
-          v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v9[3] * v9[2]];
+          v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:sizes[3] * sizes[2]];
           v26[0] = v14;
-          v15 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v9[3]];
+          v15 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:sizes[3]];
           v26[1] = v15;
           v26[2] = &unk_1F19C15E8;
           v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:3];
 
-          a4 = -[VNEspressoModelImageprint _VNEspressoModelImageprintMLMultiArrayWithDataType:shape:strides:error:](self, "_VNEspressoModelImageprintMLMultiArrayWithDataType:shape:strides:error:", [v6 dataType], v8, v16, a4);
+          error = -[VNEspressoModelImageprint _VNEspressoModelImageprintMLMultiArrayWithDataType:shape:strides:error:](self, "_VNEspressoModelImageprintMLMultiArrayWithDataType:shape:strides:error:", [constraintCopy dataType], shape2, v16, error);
 
 LABEL_17:
           goto LABEL_18;
@@ -265,30 +265,30 @@ LABEL_17:
     }
 
 LABEL_14:
-    if (!a4)
+    if (!error)
     {
       goto LABEL_17;
     }
 
     v22 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v23 = [v8 componentsJoinedByString:{@", "}];
-    v20 = [v22 initWithFormat:@"MLMultiArrayConstraint sizes of [ %@ ] does not align with tensor shape of %@", v23, v7];
+    v23 = [shape2 componentsJoinedByString:{@", "}];
+    v20 = [v22 initWithFormat:@"MLMultiArrayConstraint sizes of [ %@ ] does not align with tensor shape of %@", v23, shape];
 
     v21 = [VNError errorForInvalidModelWithLocalizedDescription:v20];
     goto LABEL_16;
   }
 
-  if (a4)
+  if (error)
   {
-    v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ has an unsupported shape of %@", self, v7];
-    *a4 = [VNError errorForOperationFailedErrorWithLocalizedDescription:v17];
+    v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ has an unsupported shape of %@", self, shape];
+    *error = [VNError errorForOperationFailedErrorWithLocalizedDescription:v17];
 
-    a4 = 0;
+    error = 0;
   }
 
 LABEL_18:
 
-  return a4;
+  return error;
 }
 
 @end

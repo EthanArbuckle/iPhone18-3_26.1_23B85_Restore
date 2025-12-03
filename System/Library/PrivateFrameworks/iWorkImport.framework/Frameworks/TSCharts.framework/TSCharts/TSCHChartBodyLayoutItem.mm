@@ -1,37 +1,37 @@
 @interface TSCHChartBodyLayoutItem
-- (BOOL)layoutSpacePointIsInChartBody:(CGPoint)a3;
-- (CGPath)newDragAndDropHighlightPathForSelection:(id)a3;
+- (BOOL)layoutSpacePointIsInChartBody:(CGPoint)body;
+- (CGPath)newDragAndDropHighlightPathForSelection:(id)selection;
 - (CGRect)calcDrawingRect;
 - (CGRect)calcOverhangRect;
-- (CGRect)p_calcDrawingRectForModel:(id)a3;
-- (CGRect)p_calcDrawingRectForReferenceLinesForModel:(id)a3;
-- (CGRect)p_exactLabelsDrawingRectForSeries:(id)a3;
-- (CGRect)p_exactSummaryLabelsDrawingRectForSeries:(id)a3;
-- (TSCHChartBodyLayoutItem)initWithParent:(id)a3;
-- (id)p_errorBarSubselectionKnobsForSeries:(id)a3 axisID:(id)a4;
-- (id)p_refLineSubselectionKnobsForStyleSwapIndex:(unint64_t)a3;
-- (id)p_trendLineEquationSubselectionKnobsForSeries:(id)a3;
-- (id)p_trendLineR2SubselectionKnobsForSeries:(id)a3;
-- (id)p_trendLineSubselectionKnobsForSeries:(id)a3;
-- (id)p_valueLabelSubselectionKnobsForSeries:(id)a3;
+- (CGRect)p_calcDrawingRectForModel:(id)model;
+- (CGRect)p_calcDrawingRectForReferenceLinesForModel:(id)model;
+- (CGRect)p_exactLabelsDrawingRectForSeries:(id)series;
+- (CGRect)p_exactSummaryLabelsDrawingRectForSeries:(id)series;
+- (TSCHChartBodyLayoutItem)initWithParent:(id)parent;
+- (id)p_errorBarSubselectionKnobsForSeries:(id)series axisID:(id)d;
+- (id)p_refLineSubselectionKnobsForStyleSwapIndex:(unint64_t)index;
+- (id)p_trendLineEquationSubselectionKnobsForSeries:(id)series;
+- (id)p_trendLineR2SubselectionKnobsForSeries:(id)series;
+- (id)p_trendLineSubselectionKnobsForSeries:(id)series;
+- (id)p_valueLabelSubselectionKnobsForSeries:(id)series;
 - (id)p_valueSummaryLabelSubselectionKnobs;
-- (id)renderersWithRep:(id)a3;
-- (id)subselectionKnobPositionsForSelection:(id)a3;
-- (unint64_t)countOfElementsForModel:(id)a3 series:(id)a4 forGroupsBySeries:(id)a5 outNewElementBounds:(CGRect *)a6 outNewClipRects:(CGRect *)a7 outNewElementPaths:(const CGPath *)a8;
-- (void)iterateHitChartElements:(CGPoint)a3 withBlock:(id)a4;
+- (id)renderersWithRep:(id)rep;
+- (id)subselectionKnobPositionsForSelection:(id)selection;
+- (unint64_t)countOfElementsForModel:(id)model series:(id)series forGroupsBySeries:(id)bySeries outNewElementBounds:(CGRect *)bounds outNewClipRects:(CGRect *)rects outNewElementPaths:(const CGPath *)paths;
+- (void)iterateHitChartElements:(CGPoint)elements withBlock:(id)block;
 - (void)layoutOutward;
-- (void)p_addRendererOfClass:(Class)a3 andRep:(id)a4 toArray:(id)a5;
-- (void)p_nudgeBarElementFrame:(CGRect *)a3 usingBarModelCache:(id)a4 unitSpaceValueBegin:(double)a5 unitSpaceValueEnd:(double)a6;
+- (void)p_addRendererOfClass:(Class)class andRep:(id)rep toArray:(id)array;
+- (void)p_nudgeBarElementFrame:(CGRect *)frame usingBarModelCache:(id)cache unitSpaceValueBegin:(double)begin unitSpaceValueEnd:(double)end;
 @end
 
 @implementation TSCHChartBodyLayoutItem
 
-- (TSCHChartBodyLayoutItem)initWithParent:(id)a3
+- (TSCHChartBodyLayoutItem)initWithParent:(id)parent
 {
   v38 = *MEMORY[0x277D85DE8];
   v36.receiver = self;
   v36.super_class = TSCHChartBodyLayoutItem;
-  v3 = [(TSCHChartLayoutItem *)&v36 initWithParent:a3];
+  v3 = [(TSCHChartLayoutItem *)&v36 initWithParent:parent];
   v7 = v3;
   if (v3)
   {
@@ -158,17 +158,17 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)p_calcDrawingRectForReferenceLinesForModel:(id)a3
+- (CGRect)p_calcDrawingRectForReferenceLinesForModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   objc_msgSend_rootedLayoutRect(self, v5, v6, v7, v8);
   v10 = v9;
   v12 = v11;
   width = v13;
   height = v15;
-  if (objc_msgSend_numberOfSeries(v4, v17, v9, v11, v13))
+  if (objc_msgSend_numberOfSeries(modelCopy, v17, v9, v11, v13))
   {
-    v22 = objc_msgSend_seriesAtIndex_(v4, v18, v19, v20, v21, 0);
+    v22 = objc_msgSend_seriesAtIndex_(modelCopy, v18, v19, v20, v21, 0);
     v27 = objc_msgSend_seriesType(v22, v23, v24, v25, v26);
   }
 
@@ -183,7 +183,7 @@ LABEL_12:
   v42 = *(MEMORY[0x277CBF398] + 16);
   v53.origin = *MEMORY[0x277CBF398];
   v53.size = v42;
-  if (objc_msgSend_countOfReferenceLinesForAxisID_model_forBodyLayout_outClipRect_outNewClipRects_outNewLineDescriptors_outReferenceLines_includeOutsideChartBodyBounds_outOutsideChartBodyBounds_(v41, v43, v53.origin.x, v42.width, v44, 0, v4, self, &v53, 0, 0, 0, 0, 0) && !CGRectIsNull(v53))
+  if (objc_msgSend_countOfReferenceLinesForAxisID_model_forBodyLayout_outClipRect_outNewClipRects_outNewLineDescriptors_outReferenceLines_includeOutsideChartBodyBounds_outOutsideChartBodyBounds_(v41, v43, v53.origin.x, v42.width, v44, 0, modelCopy, self, &v53, 0, 0, 0, 0, 0) && !CGRectIsNull(v53))
   {
     v54.origin.x = v10;
     v54.origin.y = v12;
@@ -209,9 +209,9 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)p_exactLabelsDrawingRectForSeries:(id)a3
+- (CGRect)p_exactLabelsDrawingRectForSeries:(id)series
 {
-  v4 = a3;
+  seriesCopy = series;
   objc_msgSend_rootedLayoutRect(self, v5, v6, v7, v8);
   x = *MEMORY[0x277CBF398];
   y = *(MEMORY[0x277CBF398] + 8);
@@ -220,11 +220,11 @@ LABEL_12:
   v42 = 0;
   v43 = 0;
   objc_opt_class();
-  v17 = objc_msgSend_seriesType(v4, v13, v14, v15, v16);
+  v17 = objc_msgSend_seriesType(seriesCopy, v13, v14, v15, v16);
   v22 = objc_msgSend_elementBuilder(v17, v18, v19, v20, v21);
   v23 = TSUDynamicCast();
 
-  v28 = objc_msgSend_countOfLabelsForSeries_forGroups_forBodyLayout_outNewTransforms_outNewElementSizes_outNewClipRects_outNewStrings_(v23, v24, v25, v26, v27, v4, 0, self, &v42, 0, &v43, 0);
+  v28 = objc_msgSend_countOfLabelsForSeries_forGroups_forBodyLayout_outNewTransforms_outNewElementSizes_outNewClipRects_outNewStrings_(v23, v24, v25, v26, v27, seriesCopy, 0, self, &v42, 0, &v43, 0);
   if (v28)
   {
     v29 = 0;
@@ -275,9 +275,9 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)p_exactSummaryLabelsDrawingRectForSeries:(id)a3
+- (CGRect)p_exactSummaryLabelsDrawingRectForSeries:(id)series
 {
-  v4 = a3;
+  seriesCopy = series;
   objc_msgSend_rootedLayoutRect(self, v5, v6, v7, v8);
   x = *MEMORY[0x277CBF398];
   y = *(MEMORY[0x277CBF398] + 8);
@@ -286,7 +286,7 @@ LABEL_12:
   v42 = 0;
   v43 = 0;
   objc_opt_class();
-  v17 = objc_msgSend_seriesType(v4, v13, v14, v15, v16);
+  v17 = objc_msgSend_seriesType(seriesCopy, v13, v14, v15, v16);
   v22 = objc_msgSend_elementBuilder(v17, v18, v19, v20, v21);
   v23 = TSUDynamicCast();
 
@@ -341,17 +341,17 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)p_calcDrawingRectForModel:(id)a3
+- (CGRect)p_calcDrawingRectForModel:(id)model
 {
   v170 = *MEMORY[0x277D85DE8];
-  v150 = a3;
+  modelCopy = model;
   objc_msgSend_rootedLayoutRect(self, v4, v5, v6, v7);
   v153 = v9;
   v154 = v8;
   v151 = v11;
   v152 = v10;
   v167 = 0;
-  v14 = objc_msgSend_countOfElementsForModel_series_forGroupsBySeries_outNewElementBounds_outNewClipRects_outNewElementPaths_(self, v12, v8, v9, v10, v150, 0, 0, 0, &v167, 0);
+  v14 = objc_msgSend_countOfElementsForModel_series_forGroupsBySeries_outNewElementBounds_outNewClipRects_outNewElementPaths_(self, v12, v8, v9, v10, modelCopy, 0, 0, 0, &v167, 0);
   y = v153;
   x = v154;
   height = v151;
@@ -406,7 +406,7 @@ LABEL_12:
   v166 = 0u;
   v163 = 0u;
   v164 = 0u;
-  v28 = objc_msgSend_seriesList(v150, v13, 0.0, v15, v16);
+  v28 = objc_msgSend_seriesList(modelCopy, v13, 0.0, v15, v16);
   v34 = objc_msgSend_countByEnumeratingWithState_objects_count_(v28, v29, v30, v31, v32, &v163, v169, 16);
   if (v34)
   {
@@ -558,7 +558,7 @@ LABEL_12:
   v156 = 0u;
   v157 = 0u;
   v158 = 0u;
-  v88 = objc_msgSend_seriesList(v150, v87, 0.0, v81, v83);
+  v88 = objc_msgSend_seriesList(modelCopy, v87, 0.0, v81, v83);
   v94 = objc_msgSend_countByEnumeratingWithState_objects_count_(v88, v89, v90, v91, v92, &v155, v168, 16);
   if (v94)
   {
@@ -629,12 +629,12 @@ LABEL_12:
     while (v94);
   }
 
-  v122 = objc_msgSend_chart(v150, v118, v119, v120, v121);
+  v122 = objc_msgSend_chart(modelCopy, v118, v119, v120, v121);
   v127 = objc_msgSend_intValueForProperty_defaultValue_(v122, v123, v124, v125, v126, 1122, 0) == 0;
 
   if (!v127)
   {
-    v132 = objc_msgSend_seriesList(v150, v128, v129, v130, v131);
+    v132 = objc_msgSend_seriesList(modelCopy, v128, v129, v130, v131);
     v137 = objc_msgSend_lastObject(v132, v133, v134, v135, v136);
     objc_msgSend_p_exactSummaryLabelsDrawingRectForSeries_(self, v138, v139, v140, v141, v137);
     v189.origin.x = v142;
@@ -848,22 +848,22 @@ LABEL_31:
   [(TSCHChartLayoutItem *)&v2 layoutOutward];
 }
 
-- (void)p_addRendererOfClass:(Class)a3 andRep:(id)a4 toArray:(id)a5
+- (void)p_addRendererOfClass:(Class)class andRep:(id)rep toArray:(id)array
 {
-  v19 = a4;
-  v8 = a5;
-  if (a3)
+  repCopy = rep;
+  arrayCopy = array;
+  if (class)
   {
-    v9 = [a3 alloc];
-    v14 = objc_msgSend_initWithChartRep_layoutItem_(v9, v10, v11, v12, v13, v19, self);
-    objc_msgSend_addObject_(v8, v15, v16, v17, v18, v14);
+    v9 = [class alloc];
+    v14 = objc_msgSend_initWithChartRep_layoutItem_(v9, v10, v11, v12, v13, repCopy, self);
+    objc_msgSend_addObject_(arrayCopy, v15, v16, v17, v18, v14);
   }
 }
 
-- (id)renderersWithRep:(id)a3
+- (id)renderersWithRep:(id)rep
 {
   v151 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  repCopy = rep;
   v9 = objc_msgSend_model(self, v5, v6, v7, v8);
   v130 = objc_msgSend_seriesList(v9, v10, v11, v12, v13);
 
@@ -972,7 +972,7 @@ LABEL_31:
               }
 
               v120 = objc_msgSend_pointerValue(*(*(&v136 + 1) + 8 * j), v113, v115, v116, v117);
-              objc_msgSend_p_addRendererOfClass_andRep_toArray_(self, v121, v122, v123, v124, v120, v4, v95);
+              objc_msgSend_p_addRendererOfClass_andRep_toArray_(self, v121, v122, v123, v124, v120, repCopy, v95);
             }
 
             v114 = objc_msgSend_countByEnumeratingWithState_objects_count_(v108, v113, v115, v116, v117, &v136, v148, 16);
@@ -995,18 +995,18 @@ LABEL_31:
   return v95;
 }
 
-- (void)p_nudgeBarElementFrame:(CGRect *)a3 usingBarModelCache:(id)a4 unitSpaceValueBegin:(double)a5 unitSpaceValueEnd:(double)a6
+- (void)p_nudgeBarElementFrame:(CGRect *)frame usingBarModelCache:(id)cache unitSpaceValueBegin:(double)begin unitSpaceValueEnd:(double)end
 {
-  v60 = a4;
+  cacheCopy = cache;
   objc_msgSend_rootedLayoutRect(self, v10, v11, v12, v13);
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
-  objc_msgSend_unitSpaceIntercept(v60, v22, v14, v16, v18);
+  objc_msgSend_unitSpaceIntercept(cacheCopy, v22, v14, v16, v18);
   v27 = v24;
   v28 = v24 < 1.0 && v24 > 0.0;
-  v29 = objc_msgSend_valueAxis(v60, v23, 1.0, v25, v26);
+  v29 = objc_msgSend_valueAxis(cacheCopy, v23, 1.0, v25, v26);
   objc_msgSend_modelMin(v29, v30, v31, v32, v33);
   objc_msgSend_unitSpaceValueForDataSpaceValue_(v29, v34, v35, v36, v37);
   v39 = v38;
@@ -1014,17 +1014,17 @@ LABEL_31:
   objc_msgSend_unitSpaceValueForDataSpaceValue_(v29, v43, v44, v45, v46);
   if (self->_vertical)
   {
-    if (v28 && (v27 == a5 || vabdd_f64(v27, a5) < fabs(a5 * 1.0e-10)))
+    if (v28 && (v27 == begin || vabdd_f64(v27, begin) < fabs(begin * 1.0e-10)))
     {
-      height = a3->size.height;
-      if (v27 > a6)
+      height = frame->size.height;
+      if (v27 > end)
       {
         if (height <= 0.5)
         {
           goto LABEL_22;
         }
 
-        a3->origin.y = a3->origin.y + 0.5;
+        frame->origin.y = frame->origin.y + 0.5;
       }
 
       else if (height <= 0.5)
@@ -1033,100 +1033,100 @@ LABEL_22:
         if (fabs(height) <= 0.5)
         {
           v50 = *(MEMORY[0x277CBF398] + 16);
-          a3->origin = *MEMORY[0x277CBF398];
-          a3->size = v50;
+          frame->origin = *MEMORY[0x277CBF398];
+          frame->size = v50;
         }
 
         goto LABEL_24;
       }
 
-      a3->size.height = height + -0.5;
+      frame->size.height = height + -0.5;
     }
 
 LABEL_24:
-    if (v27 > a6 && (v39 == a6 || (vabdd_f64(v39, a6) >= fabs(a6 * 1.0e-10) ? (v51 = v39 <= a6) : (v51 = 0), !v51)) || v27 <= a6 && (v47 == a6 || (vabdd_f64(v47, a6) >= fabs(a6 * 1.0e-10) ? (v52 = v47 < a6) : (v52 = 1), v52)))
+    if (v27 > end && (v39 == end || (vabdd_f64(v39, end) >= fabs(end * 1.0e-10) ? (v51 = v39 <= end) : (v51 = 0), !v51)) || v27 <= end && (v47 == end || (vabdd_f64(v47, end) >= fabs(end * 1.0e-10) ? (v52 = v47 < end) : (v52 = 1), v52)))
     {
-      if (CGRectGetMinY(*a3) - v17 < 0.5)
+      if (CGRectGetMinY(*frame) - v17 < 0.5)
       {
-        v53 = v17 + 0.5 - a3->origin.y;
-        a3->origin.y = v17 + 0.5;
-        a3->size.height = a3->size.height - v53;
+        v53 = v17 + 0.5 - frame->origin.y;
+        frame->origin.y = v17 + 0.5;
+        frame->size.height = frame->size.height - v53;
       }
     }
 
-    if ((v27 == a5 || vabdd_f64(v27, a5) < fabs(a5 * 1.0e-10)) && v17 + v21 - CGRectGetMaxY(*a3) < 0.5)
+    if ((v27 == begin || vabdd_f64(v27, begin) < fabs(begin * 1.0e-10)) && v17 + v21 - CGRectGetMaxY(*frame) < 0.5)
     {
-      a3->size.height = v17 + v21 + -0.5 - a3->origin.y;
+      frame->size.height = v17 + v21 + -0.5 - frame->origin.y;
     }
 
-    v54 = a3->size.height;
+    v54 = frame->size.height;
     goto LABEL_69;
   }
 
-  if (v28 && (v27 == a5 || vabdd_f64(v27, a5) < fabs(a5 * 1.0e-10)))
+  if (v28 && (v27 == begin || vabdd_f64(v27, begin) < fabs(begin * 1.0e-10)))
   {
-    width = a3->size.width;
-    if (v27 > a6)
+    width = frame->size.width;
+    if (v27 > end)
     {
       if (width > 0.5)
       {
         goto LABEL_21;
       }
 
-      width = a3->size.height;
+      width = frame->size.height;
     }
 
     else if (width > 0.5)
     {
-      a3->origin.x = a3->origin.x + 0.5;
+      frame->origin.x = frame->origin.x + 0.5;
 LABEL_21:
-      a3->size.width = width + -0.5;
+      frame->size.width = width + -0.5;
       goto LABEL_48;
     }
 
     if (fabs(width) <= 0.5)
     {
       v55 = *(MEMORY[0x277CBF398] + 16);
-      a3->origin = *MEMORY[0x277CBF398];
-      a3->size = v55;
+      frame->origin = *MEMORY[0x277CBF398];
+      frame->size = v55;
     }
   }
 
 LABEL_48:
-  if (v27 > a6 && (v39 == a6 || (vabdd_f64(v39, a6) >= fabs(a6 * 1.0e-10) ? (v56 = v39 <= a6) : (v56 = 0), !v56)) || v27 <= a6 && (v47 == a6 || (vabdd_f64(v47, a6) >= fabs(a6 * 1.0e-10) ? (v57 = v47 < a6) : (v57 = 1), v57)))
+  if (v27 > end && (v39 == end || (vabdd_f64(v39, end) >= fabs(end * 1.0e-10) ? (v56 = v39 <= end) : (v56 = 0), !v56)) || v27 <= end && (v47 == end || (vabdd_f64(v47, end) >= fabs(end * 1.0e-10) ? (v57 = v47 < end) : (v57 = 1), v57)))
   {
-    if (v15 + v19 - CGRectGetMaxX(*a3) < 0.5)
+    if (v15 + v19 - CGRectGetMaxX(*frame) < 0.5)
     {
-      a3->size.width = v15 + v19 + -0.5 - a3->origin.x;
+      frame->size.width = v15 + v19 + -0.5 - frame->origin.x;
     }
   }
 
-  if ((v27 == a5 || vabdd_f64(v27, a5) < fabs(a5 * 1.0e-10)) && CGRectGetMinX(*a3) - v15 < 0.5)
+  if ((v27 == begin || vabdd_f64(v27, begin) < fabs(begin * 1.0e-10)) && CGRectGetMinX(*frame) - v15 < 0.5)
   {
-    v58 = v15 + 0.5 - a3->origin.x;
-    a3->origin.x = v15 + 0.5;
-    a3->size.width = a3->size.width - v58;
+    v58 = v15 + 0.5 - frame->origin.x;
+    frame->origin.x = v15 + 0.5;
+    frame->size.width = frame->size.width - v58;
   }
 
-  v54 = a3->size.width;
+  v54 = frame->size.width;
 LABEL_69:
   if (fabs(v54) < 0.5)
   {
     v59 = *(MEMORY[0x277CBF398] + 16);
-    a3->origin = *MEMORY[0x277CBF398];
-    a3->size = v59;
+    frame->origin = *MEMORY[0x277CBF398];
+    frame->size = v59;
   }
 }
 
-- (unint64_t)countOfElementsForModel:(id)a3 series:(id)a4 forGroupsBySeries:(id)a5 outNewElementBounds:(CGRect *)a6 outNewClipRects:(CGRect *)a7 outNewElementPaths:(const CGPath *)a8
+- (unint64_t)countOfElementsForModel:(id)model series:(id)series forGroupsBySeries:(id)bySeries outNewElementBounds:(CGRect *)bounds outNewClipRects:(CGRect *)rects outNewElementPaths:(const CGPath *)paths
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v21 = objc_msgSend_numberOfSeries(v14, v17, v18, v19, v20);
-  if (v15)
+  modelCopy = model;
+  seriesCopy = series;
+  bySeriesCopy = bySeries;
+  v21 = objc_msgSend_numberOfSeries(modelCopy, v17, v18, v19, v20);
+  if (seriesCopy)
   {
-    v74 = v15;
+    v74 = seriesCopy;
   }
 
   else
@@ -1161,19 +1161,19 @@ LABEL_69:
   v93 = 0;
   v94 = 0;
   __p = 0;
-  v26 = objc_msgSend_count(v16, v22, COERCE_DOUBLE(0x4812000000), v24, v25);
+  v26 = objc_msgSend_count(bySeriesCopy, v22, COERCE_DOUBLE(0x4812000000), v24, v25);
   v75[0] = MEMORY[0x277D85DD0];
   v75[1] = 3221225472;
   v75[2] = sub_27627D46C;
   v75[3] = &unk_27A6B7270;
-  v27 = v14;
+  v27 = modelCopy;
   v76 = v27;
-  v28 = v16;
+  v28 = bySeriesCopy;
   v77 = v28;
-  v78 = self;
-  v83 = a6;
-  v84 = a7;
-  v85 = a8;
+  selfCopy = self;
+  boundsCopy = bounds;
+  rectsCopy = rects;
+  pathsCopy = paths;
   v79 = &v104;
   v80 = &v95;
   v81 = &v86;
@@ -1190,11 +1190,11 @@ LABEL_69:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v49, v50, v51, v52);
   }
 
-  if (a8)
+  if (paths)
   {
     v54 = v105[6];
     v53 = v105[7];
-    *a8 = malloc_type_calloc(8uLL, (v53 - v54) >> 3, 0x6004044C4A2DFuLL);
+    *paths = malloc_type_calloc(8uLL, (v53 - v54) >> 3, 0x6004044C4A2DFuLL);
     if (v53 != v54)
     {
       v55 = 0;
@@ -1210,7 +1210,7 @@ LABEL_69:
 
       do
       {
-        (*a8)[v55] = *(v105[6] + 8 * v55);
+        (*paths)[v55] = *(v105[6] + 8 * v55);
         ++v55;
       }
 
@@ -1218,11 +1218,11 @@ LABEL_69:
     }
   }
 
-  if (a6)
+  if (bounds)
   {
     v58 = v96[6];
     v57 = v96[7];
-    *a6 = malloc_type_calloc(0x20uLL, (v57 - v58) >> 5, 0x1000040E0EAB150uLL);
+    *bounds = malloc_type_calloc(0x20uLL, (v57 - v58) >> 5, 0x1000040E0EAB150uLL);
     if (v57 != v58)
     {
       v59 = 0;
@@ -1239,7 +1239,7 @@ LABEL_69:
       do
       {
         v61 = (v96[6] + v59 * 32);
-        v62 = &(*a6)[v59];
+        v62 = &(*bounds)[v59];
         v63 = v61[1];
         v62->origin = *v61;
         v62->size = v63;
@@ -1251,11 +1251,11 @@ LABEL_69:
     }
   }
 
-  if (a7)
+  if (rects)
   {
     v65 = v87[6];
     v64 = v87[7];
-    *a7 = malloc_type_calloc(0x20uLL, (v64 - v65) >> 5, 0x1000040E0EAB150uLL);
+    *rects = malloc_type_calloc(0x20uLL, (v64 - v65) >> 5, 0x1000040E0EAB150uLL);
     if (v64 != v65)
     {
       v66 = 0;
@@ -1272,7 +1272,7 @@ LABEL_69:
       do
       {
         v68 = (v87[6] + v66 * 32);
-        v69 = &(*a7)[v66];
+        v69 = &(*rects)[v66];
         v70 = v68[1];
         v69->origin = *v68;
         v69->size = v70;
@@ -1311,20 +1311,20 @@ LABEL_69:
   return (v71 - v72) >> 3;
 }
 
-- (void)iterateHitChartElements:(CGPoint)a3 withBlock:(id)a4
+- (void)iterateHitChartElements:(CGPoint)elements withBlock:(id)block
 {
   v857 = *MEMORY[0x277D85DE8];
-  v766 = a4;
-  if (v766)
+  blockCopy = block;
+  if (blockCopy)
   {
     v839 = 0;
-    v788 = self;
+    selfCopy = self;
     v9 = objc_msgSend_model(self, v5, v6, v7, v8);
     v14 = objc_msgSend_seriesList(v9, v10, v11, v12, v13);
 
     v749 = v14;
     v751 = objc_msgSend_sortedArrayUsingComparator_(v14, v15, v16, v17, v18, &unk_28851DDE0);
-    v23 = objc_msgSend_chartInfo(v788, v19, v20, v21, v22);
+    v23 = objc_msgSend_chartInfo(selfCopy, v19, v20, v21, v22);
     v28 = objc_msgSend_chartType(v23, v24, v25, v26, v27);
     v750 = objc_msgSend_valueAxisIDs(v28, v29, v30, v31, v32);
 
@@ -1336,7 +1336,7 @@ LABEL_69:
     v836 = 0u;
     v837 = 0u;
     v835 = 0u;
-    v50 = objc_msgSend_model(v788, v47, 0.0, v48, v49);
+    v50 = objc_msgSend_model(selfCopy, v47, 0.0, v48, v49);
     v55 = objc_msgSend_axisList(v50, v51, v52, v53, v54);
 
     obj = v55;
@@ -1361,10 +1361,10 @@ LABEL_69:
           recta.size = v65;
           v819.a = 0.0;
           v66 = objc_msgSend_axisID(v64, v61, recta.origin.x, v65.width, v62);
-          v71 = objc_msgSend_model(v788, v67, v68, v69, v70);
+          v71 = objc_msgSend_model(selfCopy, v67, v68, v69, v70);
           v834 = 0;
           LOBYTE(v746) = 0;
-          v76 = objc_msgSend_countOfReferenceLinesForAxisID_model_forBodyLayout_outClipRect_outNewClipRects_outNewLineDescriptors_outReferenceLines_includeOutsideChartBodyBounds_outOutsideChartBodyBounds_(v765, v72, v73, v74, v75, v66, v71, v788, &recta, 0, &v819, &v834, v746, 0);
+          v76 = objc_msgSend_countOfReferenceLinesForAxisID_model_forBodyLayout_outClipRect_outNewClipRects_outNewLineDescriptors_outReferenceLines_includeOutsideChartBodyBounds_outOutsideChartBodyBounds_(v765, v72, v73, v74, v75, v66, v71, selfCopy, &recta, 0, &v819, &v834, v746, 0);
           v77 = v834;
 
           if (v76 && !CGRectIsNull(recta))
@@ -1397,7 +1397,7 @@ LABEL_69:
                   v118 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v114, v115, v116, v117, &v855, 1);
                   v123 = objc_msgSend_selectionPathWithPathType_arguments_(TSCHSelectionPath, v119, v120, v121, v122, v108, v118);
 
-                  v766[2](v766, v123, &v839);
+                  blockCopy[2](blockCopy, v123, &v839);
                 }
 
                 v124 = v839;
@@ -1451,7 +1451,7 @@ LABEL_69:
             v142 = objc_msgSend_seriesType(v138, v131, recta.origin.x, v141.width, v135);
             v147 = objc_msgSend_elementBuilder(v142, v143, v144, v145, v146);
             v829 = 0;
-            objc_msgSend_trendlineElementForSeries_forBodyLayout_outElementBounds_outElementClipRect_outElementPath_(v147, v148, v149, v150, v151, v138, v788, 0, &recta, &v829);
+            objc_msgSend_trendlineElementForSeries_forBodyLayout_outElementBounds_outElementClipRect_outElementPath_(v147, v148, v149, v150, v151, v138, selfCopy, 0, &recta, &v829);
             v152 = v829;
             if (v152 && !CGRectIsNull(recta) && (objc_msgSend_isEmpty(v152, v153, v154, v155, v156) & 1) == 0)
             {
@@ -1472,7 +1472,7 @@ LABEL_69:
                 v193 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v189, v190, v191, v192, &v853, 1);
                 v198 = objc_msgSend_selectionPathWithPathType_arguments_(TSCHSelectionPath, v194, v195, v196, v197, v177, v193);
 
-                v766[2](v766, v198, &v839);
+                blockCopy[2](blockCopy, v198, &v839);
               }
 
               if (v839)
@@ -1517,7 +1517,7 @@ LABEL_69:
             v213 = objc_msgSend_seriesType(v210, v203, v205, v206, v207);
             v218 = objc_msgSend_elementBuilder(v213, v214, v215, v216, v217);
             objc_opt_class();
-            v223 = objc_msgSend_parent(v788, v219, v220, v221, v222);
+            v223 = objc_msgSend_parent(selfCopy, v219, v220, v221, v222);
             v224 = TSUDynamicCast();
 
             v227 = *(MEMORY[0x277CBF398] + 16);
@@ -1550,8 +1550,8 @@ LABEL_69:
             height = v862.size.height;
             if (!CGRectIsNull(v862))
             {
-              v858.x = tx + a3.y * c + a * a3.x;
-              v858.y = ty + a3.y * d + b * a3.x;
+              v858.x = tx + elements.y * c + a * elements.x;
+              v858.y = ty + elements.y * d + b * elements.x;
               v863.origin.x = x;
               v863.origin.y = y;
               v863.size.width = width;
@@ -1566,7 +1566,7 @@ LABEL_69:
                 v258 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v254, v255, v256, v257, &v851, 1);
                 v263 = objc_msgSend_selectionPathWithPathType_arguments_(TSCHSelectionPath, v259, v260, v261, v262, v242, v258);
 
-                v766[2](v766, v263, &v839);
+                blockCopy[2](blockCopy, v263, &v839);
               }
             }
 
@@ -1613,7 +1613,7 @@ LABEL_69:
             v279 = objc_msgSend_seriesType(v276, v269, v271, v272, v273);
             v284 = objc_msgSend_elementBuilder(v279, v280, v281, v282, v283);
             objc_opt_class();
-            v289 = objc_msgSend_parent(v788, v285, v286, v287, v288);
+            v289 = objc_msgSend_parent(selfCopy, v285, v286, v287, v288);
             v290 = TSUDynamicCast();
 
             v293 = *(MEMORY[0x277CBF398] + 16);
@@ -1646,8 +1646,8 @@ LABEL_69:
             v303 = v864.size.height;
             if (!CGRectIsNull(v864))
             {
-              v859.x = v297 + a3.y * v295 + v773 * a3.x;
-              v859.y = v298 + a3.y * v296 + v782 * a3.x;
+              v859.x = v297 + elements.y * v295 + v773 * elements.x;
+              v859.y = v298 + elements.y * v296 + v782 * elements.x;
               v865.origin.x = v300;
               v865.origin.y = v301;
               v865.size.width = v302;
@@ -1662,7 +1662,7 @@ LABEL_69:
                 v324 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v320, v321, v322, v323, &v849, 1);
                 v329 = objc_msgSend_selectionPathWithPathType_arguments_(TSCHSelectionPath, v325, v326, v327, v328, v308, v324);
 
-                v766[2](v766, v329, &v839);
+                blockCopy[2](blockCopy, v329, &v839);
               }
             }
 
@@ -1733,8 +1733,8 @@ LABEL_69:
                 recta.origin = *v342;
                 recta.size = v361;
                 v819.a = 0.0;
-                v362 = objc_msgSend_countOfErrorBarsInSeries_forGroups_forAxisID_forBodyLayout_outClipRect_outNewErrorBarDescriptors_(v349, v355, recta.origin.x, v361.width, v357, v344, 0, v360, v788, &recta, &v819);
-                if (v362 && !CGRectIsNull(recta) && CGRectContainsPoint(recta, a3) && sub_276348654(v344, v360, *&v819.a, v362, recta.origin.x, recta.origin.y, recta.size.width, recta.size.height, a3.x, a3.y))
+                v362 = objc_msgSend_countOfErrorBarsInSeries_forGroups_forAxisID_forBodyLayout_outClipRect_outNewErrorBarDescriptors_(v349, v355, recta.origin.x, v361.width, v357, v344, 0, v360, selfCopy, &recta, &v819);
+                if (v362 && !CGRectIsNull(recta) && CGRectContainsPoint(recta, elements) && sub_276348654(v344, v360, *&v819.a, v362, recta.origin.x, recta.origin.y, recta.size.width, recta.size.height, elements.x, elements.y))
                 {
                   v365 = objc_msgSend_errorBarType(TSCHSelectionPathType, v355, v363, v364, v357);
                   v366 = MEMORY[0x277CBEA60];
@@ -1744,7 +1744,7 @@ LABEL_69:
                   v382 = objc_msgSend_arrayWithObjects_(v366, v378, v379, v380, v381, v377, v360, 0);
                   v387 = objc_msgSend_selectionPathWithPathType_arguments_(TSCHSelectionPath, v383, v384, v385, v386, v365, v382);
 
-                  v766[2](v766, v387, &v839);
+                  blockCopy[2](blockCopy, v387, &v839);
                   v350 = v783;
                   v342 = MEMORY[0x277CBF398];
                 }
@@ -1805,7 +1805,7 @@ LABEL_69:
           v823[0] = 0;
           v822[0] = 0;
           v801 = 0;
-          v409 = objc_msgSend_countOfLabelsForSeries_forGroups_forBodyLayout_outNewTransforms_outNewElementSizes_outNewClipRects_outNewStrings_(v404, v405, v406, v407, v408, v399, 0, v788, v823, &v801, v822, 0);
+          v409 = objc_msgSend_countOfLabelsForSeries_forGroups_forBodyLayout_outNewTransforms_outNewElementSizes_outNewClipRects_outNewStrings_(v404, v405, v406, v407, v408, v399, 0, selfCopy, v823, &v801, v822, 0);
           v410 = v823[0];
           v411 = v822[0];
           if (v823[0] && v822[0] && v409)
@@ -1836,8 +1836,8 @@ LABEL_69:
               v424 = v866.size.height;
               if (!CGRectIsNull(v866))
               {
-                v860.x = v418 + a3.y * v416 + v775 * a3.x;
-                v860.y = v419 + a3.y * v417 + v784 * a3.x;
+                v860.x = v418 + elements.y * v416 + v775 * elements.x;
+                v860.y = v419 + elements.y * v417 + v784 * elements.x;
                 v867.origin.x = v421;
                 v867.origin.y = v422;
                 v867.size.width = v423;
@@ -1846,7 +1846,7 @@ LABEL_69:
                 {
                   v429 = objc_msgSend_seriesIndex(v399, v425, v426, v427, v428);
                   v434 = objc_msgSend_seriesValueLabelSelectionPathWithSeriesIndex_(TSCHSelectionPath, v430, v431, v432, v433, v429);
-                  v766[2](v766, v434, &v839);
+                  blockCopy[2](blockCopy, v434, &v839);
 
                   p_superclass = (TSCHChartRadialElementsRenderer + 8);
                 }
@@ -1915,7 +1915,7 @@ LABEL_101:
     v823[0] = 0;
     v822[0] = 0;
     v801 = 0;
-    v440 = objc_msgSend_countOfSummaryLabelsForGroups_forBodyLayout_outNewTransforms_outNewElementSizes_outNewClipRects_outNewStrings_(v765, v436, v437, v438, v439, 0, v788, v823, v822, &v801, 0);
+    v440 = objc_msgSend_countOfSummaryLabelsForGroups_forBodyLayout_outNewTransforms_outNewElementSizes_outNewClipRects_outNewStrings_(v765, v436, v437, v438, v439, 0, selfCopy, v823, v822, &v801, 0);
     v441 = v823[0];
     if (v823[0])
     {
@@ -1957,8 +1957,8 @@ LABEL_101:
             v457 = v868.size.height;
             if (!CGRectIsNull(v868))
             {
-              v861.x = v451 + a3.y * v449 + v776 * a3.x;
-              v861.y = v452 + a3.y * v450 + v785 * a3.x;
+              v861.x = v451 + elements.y * v449 + v776 * elements.x;
+              v861.y = v452 + elements.y * v450 + v785 * elements.x;
               v869.origin.x = v454;
               v869.origin.y = v455;
               v869.size.width = v456;
@@ -1966,7 +1966,7 @@ LABEL_101:
               if (CGRectContainsPoint(v869, v861))
               {
                 v462 = objc_msgSend_seriesValueSummaryLabelSelectionPath(TSCHSelectionPath, v458, v459, v460, v461);
-                v766[2](v766, v462, &v839);
+                blockCopy[2](blockCopy, v462, &v839);
               }
             }
 
@@ -2015,7 +2015,7 @@ LABEL_101:
           v473 = *(*(&v797 + 1) + 8 * kk);
           v474 = objc_msgSend_seriesType(v473, v468, v469, v470, v471);
           v479 = objc_msgSend_elementBuilder(v474, v475, v476, v477, v478);
-          v482 = objc_msgSend_hitCheckPoint_inSeries_withBodyLayout_(v479, v480, a3.x, a3.y, v481, v473, v788);
+          v482 = objc_msgSend_hitCheckPoint_inSeries_withBodyLayout_(v479, v480, elements.x, elements.y, v481, v473, selfCopy);
           if (v482 == -1)
           {
             goto LABEL_131;
@@ -2025,12 +2025,12 @@ LABEL_101:
           {
             v487 = objc_msgSend_seriesIndex(v473, v483, v484, v485, v486);
             v492 = objc_msgSend_seriesSymbolsSelectionPathWithSeriesIndex_(TSCHSelectionPath, v488, v489, v490, v491, v487);
-            v766[2](v766, v492, &v839);
+            blockCopy[2](blockCopy, v492, &v839);
 
 LABEL_129:
             v493 = objc_msgSend_seriesIndex(v473, v483, v484, v485, v486);
             v498 = objc_msgSend_seriesSelectionPathWithSeriesIndex_(TSCHSelectionPath, v494, v495, v496, v497, v493);
-            v766[2](v766, v498, &v839);
+            blockCopy[2](blockCopy, v498, &v839);
 
             goto LABEL_130;
           }
@@ -2042,7 +2042,7 @@ LABEL_129:
 
           if (!v482)
           {
-            objc_msgSend_hitCheckPoint_inSeries_withBodyLayout_(v479, v483, a3.x, a3.y, v486, v473, v788);
+            objc_msgSend_hitCheckPoint_inSeries_withBodyLayout_(v479, v483, elements.x, elements.y, v486, v473, selfCopy);
             recta.origin.x = 0.0;
             v503 = objc_msgSend_model(v473, v499, v500, v501, v502);
             v508 = objc_msgSend_chartInfo(v503, v504, v505, v506, v507);
@@ -2063,7 +2063,7 @@ LABEL_129:
               }
             }
 
-            v538 = objc_msgSend_countOfHitCheckRegionsInSeries_forGroups_forBodyLayout_outNewElementPaths_outSelectionKnobLocations_withInnerRadius_(v479, v519, v520, v521, v522, v473, 0, v788, &recta, 0, v523);
+            v538 = objc_msgSend_countOfHitCheckRegionsInSeries_forGroups_forBodyLayout_outNewElementPaths_outSelectionKnobLocations_withInnerRadius_(v479, v519, v520, v521, v522, v473, 0, selfCopy, &recta, 0, v523);
             v539 = recta.origin.x;
             v540 = *&recta.origin.x != 0;
             if (*&recta.origin.x && v538)
@@ -2087,14 +2087,14 @@ LABEL_129:
                       {
                         v559 = objc_msgSend_seriesIndex(v473, v549, v550, v551, v552);
                         v564 = objc_msgSend_seriesSymbolsSelectionPathWithSeriesIndex_(TSCHSelectionPath, v560, v561, v562, v563, v559);
-                        v766[2](v766, v564, &v839);
+                        blockCopy[2](blockCopy, v564, &v839);
                       }
                     }
                   }
 
                   v565 = objc_msgSend_seriesIndex(v473, v549, v550, v551, v552);
                   v570 = objc_msgSend_seriesSelectionPathWithSeriesIndex_(TSCHSelectionPath, v566, v567, v568, v569, v565);
-                  v766[2](v766, v570, &v839);
+                  blockCopy[2](blockCopy, v570, &v839);
                 }
 
                 CGPathRelease(v543);
@@ -2144,7 +2144,7 @@ LABEL_131:
     v796 = 0u;
     v793 = 0u;
     v794 = 0u;
-    v575 = objc_msgSend_model(v788, v572, 0.0, v573, v574);
+    v575 = objc_msgSend_model(selfCopy, v572, 0.0, v573, v574);
     v759 = objc_msgSend_axisList(v575, v576, v577, v578, v579);
 
     v585 = objc_msgSend_countByEnumeratingWithState_objects_count_(v759, v580, v581, v582, v583, &v793, v844, 16);
@@ -2164,7 +2164,7 @@ LABEL_131:
 
           v590 = *(*(&v793 + 1) + 8 * v589);
           recta.origin.x = 0.0;
-          v591 = objc_msgSend_countOfGridLinesInBody_forAxis_minor_outNewLineDescriptors_(v765, v584, v586, v587, v588, v788, v590, 0, &recta);
+          v591 = objc_msgSend_countOfGridLinesInBody_forAxis_minor_outNewLineDescriptors_(v765, v584, v586, v587, v588, selfCopy, v590, 0, &recta);
           objc_msgSend_objectValueForProperty_(v590, v592, v593, v594, v595, 1038);
           v786 = v778 = v589;
           objc_msgSend_width(v786, v596, v597, v598, v599);
@@ -2189,7 +2189,7 @@ LABEL_131:
             {
               TSURectWithPoints();
               v871 = CGRectInset(v870, v604, v604);
-              if (CGRectContainsPoint(v871, a3))
+              if (CGRectContainsPoint(v871, elements))
               {
                 v610 = objc_msgSend_gridLineType(TSCHSelectionPathType, v606, v607, v608, v609);
                 v615 = objc_msgSend_axisID(v590, v611, v612, v613, v614);
@@ -2198,7 +2198,7 @@ LABEL_131:
                 v620 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v616, v617, v618, v619, v843, 2);
                 v625 = objc_msgSend_selectionPathWithPathType_arguments_(TSCHSelectionPath, v621, v622, v623, v624, v610, v620);
 
-                (v766)[2](v766, v625, &v819);
+                (blockCopy)[2](blockCopy, v625, &v819);
               }
 
               if (LOBYTE(v819.a))
@@ -2225,7 +2225,7 @@ LABEL_213:
           }
 
           recta.origin.x = 0.0;
-          v631 = objc_msgSend_countOfGridLinesInBody_forAxis_minor_outNewLineDescriptors_(v765, v627, v628, v629, v630, v788, v590, 1, &recta);
+          v631 = objc_msgSend_countOfGridLinesInBody_forAxis_minor_outNewLineDescriptors_(v765, v627, v628, v629, v630, selfCopy, v590, 1, &recta);
           v636 = objc_msgSend_objectValueForProperty_(v590, v632, v633, v634, v635, 1041);
           objc_msgSend_width(v636, v637, v638, v639, v640);
           LOBYTE(v819.a) = 0;
@@ -2250,7 +2250,7 @@ LABEL_213:
             {
               TSURectWithPoints();
               v873 = CGRectInset(v872, v645, v645);
-              if (CGRectContainsPoint(v873, a3))
+              if (CGRectContainsPoint(v873, elements))
               {
                 v651 = objc_msgSend_gridLineType(TSCHSelectionPathType, v647, v648, v649, v650);
                 v656 = objc_msgSend_axisID(v590, v652, v653, v654, v655);
@@ -2259,7 +2259,7 @@ LABEL_213:
                 v661 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v657, v658, v659, v660, v842, 2);
                 v666 = objc_msgSend_selectionPathWithPathType_arguments_(TSCHSelectionPath, v662, v663, v664, v665, v651, v661);
 
-                (v766)[2](v766, v666, &v819);
+                (blockCopy)[2](blockCopy, v666, &v819);
               }
 
               v667 = LOBYTE(v819.a);
@@ -2302,7 +2302,7 @@ LABEL_213:
     v792 = 0u;
     v789 = 0u;
     v790 = 0u;
-    v671 = objc_msgSend_model(v788, v668, 0.0, v669, v670);
+    v671 = objc_msgSend_model(selfCopy, v668, 0.0, v669, v670);
     v676 = objc_msgSend_axisList(v671, v672, v673, v674, v675);
 
     v682 = objc_msgSend_countByEnumeratingWithState_objects_count_(v676, v677, v678, v679, v680, &v789, v841, 16);
@@ -2325,7 +2325,7 @@ LABEL_213:
           recta.origin = *v685;
           recta.size = v688;
           v821 = *(v685 + 32);
-          if (objc_msgSend_hasAxisLineInBody_forAxis_outTransform_outLine_(v765, v681, *&v821, v688.width, v683, v788, v687, &recta, &v819))
+          if (objc_msgSend_hasAxisLineInBody_forAxis_outTransform_outLine_(v765, v681, *&v821, v688.width, v683, selfCopy, v687, &recta, &v819))
           {
             v691 = objc_msgSend_model(v687, v681, v689, v690, v683);
             v696 = objc_msgSend_chartInfo(v691, v692, v693, v694, v695);
@@ -2342,7 +2342,7 @@ LABEL_213:
             }
 
             v874 = CGRectInset(*&v709, v713, v713);
-            if (CGRectContainsPoint(v874, a3))
+            if (CGRectContainsPoint(v874, elements))
             {
               v718 = objc_msgSend_axisLineType(TSCHSelectionPathType, v714, v715, v716, v717);
               v723 = objc_msgSend_axisID(v687, v719, v720, v721, v722);
@@ -2350,7 +2350,7 @@ LABEL_213:
               v728 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v724, v725, v726, v727, &v840, 1);
               v733 = objc_msgSend_selectionPathWithPathType_arguments_(TSCHSelectionPath, v729, v730, v731, v732, v718, v728);
 
-              (v766)[2](v766, v733, &v818);
+              (blockCopy)[2](blockCopy, v733, &v818);
             }
           }
 
@@ -2371,40 +2371,40 @@ LABEL_213:
       }
     }
 
-    if (objc_msgSend_layoutSpacePointIsInChartBody_(v788, v734, a3.x, a3.y, v735))
+    if (objc_msgSend_layoutSpacePointIsInChartBody_(selfCopy, v734, elements.x, elements.y, v735))
     {
       LOBYTE(recta.origin.x) = 0;
       v740 = objc_msgSend_chartBodyType(TSCHSelectionPathType, v736, v737, v738, v739);
       v745 = objc_msgSend_selectionPathWithPathType_arguments_(TSCHSelectionPath, v741, v742, v743, v744, v740, 0);
 
-      (v766)[2](v766, v745, &recta);
+      (blockCopy)[2](blockCopy, v745, &recta);
     }
 
 LABEL_215:
   }
 }
 
-- (BOOL)layoutSpacePointIsInChartBody:(CGPoint)a3
+- (BOOL)layoutSpacePointIsInChartBody:(CGPoint)body
 {
-  y = a3.y;
-  x = a3.x;
-  objc_msgSend_rootedLayoutRect(self, a2, a3.x, a3.y, v3);
+  y = body.y;
+  x = body.x;
+  objc_msgSend_rootedLayoutRect(self, a2, body.x, body.y, v3);
   v10 = x;
   v11 = y;
 
   return CGRectContainsPoint(*&v6, *&v10);
 }
 
-- (id)p_valueLabelSubselectionKnobsForSeries:(id)a3
+- (id)p_valueLabelSubselectionKnobsForSeries:(id)series
 {
-  v4 = a3;
+  seriesCopy = series;
   v9 = objc_msgSend_array(MEMORY[0x277CBEB18], v5, v6, v7, v8);
-  v14 = objc_msgSend_seriesType(v4, v10, v11, v12, v13);
+  v14 = objc_msgSend_seriesType(seriesCopy, v10, v11, v12, v13);
   v19 = objc_msgSend_elementBuilder(v14, v15, v16, v17, v18);
   v45 = 0;
   v46 = 0;
   v44 = 0;
-  v25 = objc_msgSend_countOfLabelsForSeries_forGroups_forBodyLayout_outNewTransforms_outNewElementSizes_outNewClipRects_outNewStrings_(v19, v20, v21, v22, v23, v4, 0, self, &v46, &v44, &v45, 0);
+  v25 = objc_msgSend_countOfLabelsForSeries_forGroups_forBodyLayout_outNewTransforms_outNewElementSizes_outNewClipRects_outNewStrings_(v19, v20, v21, v22, v23, seriesCopy, 0, self, &v46, &v44, &v45, 0);
   v26 = v45;
   v27 = v46;
   if (v46 && v45 && v25)
@@ -2536,11 +2536,11 @@ LABEL_215:
   return v6;
 }
 
-- (id)p_errorBarSubselectionKnobsForSeries:(id)a3 axisID:(id)a4
+- (id)p_errorBarSubselectionKnobsForSeries:(id)series axisID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v12 = objc_msgSend_seriesType(v6, v8, v9, v10, v11);
+  seriesCopy = series;
+  dCopy = d;
+  v12 = objc_msgSend_seriesType(seriesCopy, v8, v9, v10, v11);
   v17 = objc_msgSend_elementBuilder(v12, v13, v14, v15, v16);
   v49 = 0;
   objc_msgSend_rootedDrawingRect(self, v18, v19, v20, v21);
@@ -2549,7 +2549,7 @@ LABEL_215:
   y = v52.origin.y;
   width = v52.size.width;
   height = v52.size.height;
-  v27 = objc_msgSend_countOfErrorBarsInSeries_forGroups_forAxisID_forBodyLayout_outClipRect_outNewErrorBarDescriptors_(v17, v26, v52.origin.x, v52.origin.y, v52.size.width, v6, 0, v7, self, 0, &v49);
+  v27 = objc_msgSend_countOfErrorBarsInSeries_forGroups_forAxisID_forBodyLayout_outClipRect_outNewErrorBarDescriptors_(v17, v26, v52.origin.x, v52.origin.y, v52.size.width, seriesCopy, 0, dCopy, self, 0, &v49);
   v32 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], v28, v29, v30, v31, v27);
   if (v27)
   {
@@ -2588,11 +2588,11 @@ LABEL_215:
   return v32;
 }
 
-- (id)p_trendLineSubselectionKnobsForSeries:(id)a3
+- (id)p_trendLineSubselectionKnobsForSeries:(id)series
 {
   v78 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v9 = objc_msgSend_trendLineData(v4, v5, v6, v7, v8);
+  seriesCopy = series;
+  v9 = objc_msgSend_trendLineData(seriesCopy, v5, v6, v7, v8);
 
   if (!v9)
   {
@@ -2604,10 +2604,10 @@ LABEL_215:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v25, v26, v27, v28);
   }
 
-  v29 = objc_msgSend_seriesType(v4, v10, v11, v12, v13);
+  v29 = objc_msgSend_seriesType(seriesCopy, v10, v11, v12, v13);
   v34 = objc_msgSend_elementBuilder(v29, v30, v31, v32, v33);
   v75 = 0;
-  objc_msgSend_trendlineElementForSeries_forBodyLayout_outElementBounds_outElementClipRect_outElementPath_(v34, v35, v36, v37, v38, v4, self, 0, 0, &v75);
+  objc_msgSend_trendlineElementForSeries_forBodyLayout_outElementBounds_outElementClipRect_outElementPath_(v34, v35, v36, v37, v38, seriesCopy, self, 0, 0, &v75);
   v39 = v75;
   v45 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], v40, v41, v42, v43, 2);
   if (v39 && (objc_msgSend_isEmpty(v39, v44, v46, v47, v48) & 1) == 0)
@@ -2629,11 +2629,11 @@ LABEL_215:
   return v45;
 }
 
-- (id)p_trendLineEquationSubselectionKnobsForSeries:(id)a3
+- (id)p_trendLineEquationSubselectionKnobsForSeries:(id)series
 {
-  v4 = a3;
+  seriesCopy = series;
   v9 = objc_msgSend_array(MEMORY[0x277CBEB18], v5, v6, v7, v8);
-  v14 = objc_msgSend_seriesType(v4, v10, v11, v12, v13);
+  v14 = objc_msgSend_seriesType(seriesCopy, v10, v11, v12, v13);
   v19 = objc_msgSend_elementBuilder(v14, v15, v16, v17, v18);
   objc_opt_class();
   v24 = objc_msgSend_parent(self, v20, v21, v22, v23);
@@ -2649,7 +2649,7 @@ LABEL_215:
   v37 = 0u;
   if (v19)
   {
-    objc_msgSend_transformForRenderingTrendlineTextForSeries_forAreaLayout_outElementSize_outClipRect_outParagraphStyle_outNewString_(v19, v26, 0.0, *&v29, v27, v4, v25, &v39, &v40, 0, 0);
+    objc_msgSend_transformForRenderingTrendlineTextForSeries_forAreaLayout_outElementSize_outClipRect_outParagraphStyle_outNewString_(v19, v26, 0.0, *&v29, v27, seriesCopy, v25, &v39, &v40, 0, 0);
   }
 
   objc_msgSend_labelRectFromClipRect_elementSize_(TSCHRenderUtilities, v26, *&v40, *(&v40 + 1), *&v41, *(&v41 + 1), v39);
@@ -2661,11 +2661,11 @@ LABEL_215:
   return v9;
 }
 
-- (id)p_trendLineR2SubselectionKnobsForSeries:(id)a3
+- (id)p_trendLineR2SubselectionKnobsForSeries:(id)series
 {
-  v4 = a3;
+  seriesCopy = series;
   v9 = objc_msgSend_array(MEMORY[0x277CBEB18], v5, v6, v7, v8);
-  v14 = objc_msgSend_seriesType(v4, v10, v11, v12, v13);
+  v14 = objc_msgSend_seriesType(seriesCopy, v10, v11, v12, v13);
   v19 = objc_msgSend_elementBuilder(v14, v15, v16, v17, v18);
   objc_opt_class();
   v24 = objc_msgSend_parent(self, v20, v21, v22, v23);
@@ -2681,7 +2681,7 @@ LABEL_215:
   v37 = 0u;
   if (v19)
   {
-    objc_msgSend_transformForRenderingR2TextForSeries_forAreaLayout_outElementSize_outClipRect_outParagraphStyle_outString_(v19, v26, 0.0, *&v29, v27, v4, v25, &v39, &v40, 0, 0);
+    objc_msgSend_transformForRenderingR2TextForSeries_forAreaLayout_outElementSize_outClipRect_outParagraphStyle_outString_(v19, v26, 0.0, *&v29, v27, seriesCopy, v25, &v39, &v40, 0, 0);
   }
 
   objc_msgSend_labelRectFromClipRect_elementSize_(TSCHRenderUtilities, v26, *&v40, *(&v40 + 1), *&v41, *(&v41 + 1), v39);
@@ -2693,12 +2693,12 @@ LABEL_215:
   return v9;
 }
 
-- (id)p_refLineSubselectionKnobsForStyleSwapIndex:(unint64_t)a3
+- (id)p_refLineSubselectionKnobsForStyleSwapIndex:(unint64_t)index
 {
   v94[2] = *MEMORY[0x277D85DE8];
   v8 = objc_msgSend_axisIDFromStyleSwapOrStyleOwnerIndex_(TSCHReferenceLine, a2, v3, v4, v5);
   v13 = objc_msgSend_model(self, v9, v10, v11, v12);
-  v18 = objc_msgSend_referenceLineForStyleSwapIndex_(v13, v14, v15, v16, v17, a3);
+  v18 = objc_msgSend_referenceLineForStyleSwapIndex_(v13, v14, v15, v16, v17, index);
 
   if (!v18)
   {
@@ -2749,12 +2749,12 @@ LABEL_215:
   return v90;
 }
 
-- (id)subselectionKnobPositionsForSelection:(id)a3
+- (id)subselectionKnobPositionsForSelection:(id)selection
 {
   v290 = *MEMORY[0x277D85DE8];
   v288.receiver = self;
   v288.super_class = TSCHChartBodyLayoutItem;
-  v273 = a3;
+  selectionCopy = selection;
   v3 = [(TSCHChartLayoutItem *)&v288 subselectionKnobPositionsForSelection:?];
   v272 = v3;
   if (v3)
@@ -2775,7 +2775,7 @@ LABEL_215:
   v287 = 0u;
   v284 = 0u;
   v285 = 0u;
-  obj = v273;
+  obj = selectionCopy;
   v280 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v21, v22, v23, v24, &v284, v289, 16);
   if (v280)
   {
@@ -2989,15 +2989,15 @@ LABEL_32:
   return v278;
 }
 
-- (CGPath)newDragAndDropHighlightPathForSelection:(id)a3
+- (CGPath)newDragAndDropHighlightPathForSelection:(id)selection
 {
   v408 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v395 = self;
+  selectionCopy = selection;
+  selfCopy = self;
   v406.receiver = self;
   v406.super_class = TSCHChartBodyLayoutItem;
-  path = [(TSCHChartLayoutItem *)&v406 newDragAndDropHighlightPathForSelection:v4];
-  if (objc_msgSend_count(v4, v5, v6, v7, v8))
+  path = [(TSCHChartLayoutItem *)&v406 newDragAndDropHighlightPathForSelection:selectionCopy];
+  if (objc_msgSend_count(selectionCopy, v5, v6, v7, v8))
   {
     if (path)
     {
@@ -3011,19 +3011,19 @@ LABEL_32:
       path = CGPathCreateMutable();
     }
 
-    v14 = objc_msgSend_model(v395, v10, v11, v12, v13);
+    v14 = objc_msgSend_model(selfCopy, v10, v11, v12, v13);
     v392 = objc_msgSend_numberOfSeries(v14, v15, v16, v17, v18);
 
     v404 = 0u;
     v405 = 0u;
     v402 = 0u;
     v403 = 0u;
-    obj = v4;
+    obj = selectionCopy;
     v23 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v19, v20, v21, v22, &v402, v407, 16);
     if (v23)
     {
       v393 = *v403;
-      v390 = v4;
+      v390 = selectionCopy;
       do
       {
         v394 = v23;
@@ -3051,13 +3051,13 @@ LABEL_32:
               v75 = v70;
               if (v70 != 0x7FFFFFFFFFFFFFFFLL && v70 < v392)
               {
-                v76 = objc_msgSend_model(v395, v71, v72, v73, v74);
+                v76 = objc_msgSend_model(selfCopy, v71, v72, v73, v74);
                 v81 = objc_msgSend_seriesAtIndex_(v76, v77, v78, v79, v80, v75);
 
                 v86 = objc_msgSend_seriesType(v81, v82, v83, v84, v85);
                 v91 = objc_msgSend_elementBuilder(v86, v87, v88, v89, v90);
                 v397[0] = 0;
-                v97 = objc_msgSend_countOfHitCheckRegionsInSeries_forGroups_forBodyLayout_outNewElementPaths_outSelectionKnobLocations_forHighlightPath_(v91, v92, v93, v94, v95, v81, 0, v395, v397, 0, 1);
+                v97 = objc_msgSend_countOfHitCheckRegionsInSeries_forGroups_forBodyLayout_outNewElementPaths_outSelectionKnobLocations_forHighlightPath_(v91, v92, v93, v94, v95, v81, 0, selfCopy, v397, 0, 1);
                 if (isEqual)
                 {
                   v101 = 1;
@@ -3101,7 +3101,7 @@ LABEL_32:
 
                 free(v397[0]);
 
-                v4 = v390;
+                selectionCopy = v390;
               }
             }
           }
@@ -3112,7 +3112,7 @@ LABEL_32:
 
           if (v124)
           {
-            objc_msgSend_rootedLayoutRect(v395, v125, v126, v127, v128);
+            objc_msgSend_rootedLayoutRect(selfCopy, v125, v126, v127, v128);
             CGPathAddRectSafe();
           }
 
@@ -3144,13 +3144,13 @@ LABEL_45:
 
           if (v139 < v392)
           {
-            v158 = objc_msgSend_model(v395, v154, v155, v156, v157);
+            v158 = objc_msgSend_model(selfCopy, v154, v155, v156, v157);
             v140 = objc_msgSend_seriesAtIndex_(v158, v159, v160, v161, v162, v139);
 
             v145 = objc_msgSend_seriesType(v140, v163, v164, v165, v166);
             v171 = objc_msgSend_elementBuilder(v145, v167, v168, v169, v170);
             objc_opt_class();
-            v176 = objc_msgSend_parent(v395, v172, v173, v174, v175);
+            v176 = objc_msgSend_parent(selfCopy, v172, v173, v174, v175);
             v177 = TSUDynamicCast();
 
             v180 = *(MEMORY[0x277CBF398] + 16);
@@ -3185,11 +3185,11 @@ LABEL_55:
               goto LABEL_67;
             }
 
-            v200 = objc_msgSend_model(v395, v196, v197, v198, v199);
+            v200 = objc_msgSend_model(selfCopy, v196, v197, v198, v199);
             v182 = objc_msgSend_seriesAtIndex_(v200, v201, v202, v203, v204, v139);
 
             objc_opt_class();
-            v209 = objc_msgSend_parent(v395, v205, v206, v207, v208);
+            v209 = objc_msgSend_parent(selfCopy, v205, v206, v207, v208);
             v187 = TSUDynamicCast();
 
             v214 = objc_msgSend_seriesType(v182, v210, v211, v212, v213);
@@ -3227,7 +3227,7 @@ LABEL_67:
               goto LABEL_76;
             }
 
-            v244 = objc_msgSend_model(v395, v240, v241, v242, v243);
+            v244 = objc_msgSend_model(selfCopy, v240, v241, v242, v243);
             v249 = objc_msgSend_seriesList(v244, v245, v246, v247, v248);
             v254 = objc_msgSend_firstObject(v249, v250, v251, v252, v253);
             v259 = objc_msgSend_seriesType(v254, v255, v256, v257, v258);
@@ -3239,11 +3239,11 @@ LABEL_67:
             v273 = TSUCheckedDynamicCast();
             v278 = objc_msgSend_BOOLValue(v273, v274, v275, v276, v277);
 
-            v283 = objc_msgSend_model(v395, v279, v280, v281, v282);
+            v283 = objc_msgSend_model(selfCopy, v279, v280, v281, v282);
             v288 = objc_msgSend_axisForID_(v283, v284, v285, v286, v287, v230);
 
             v397[0] = 0;
-            v293 = objc_msgSend_countOfGridLinesInBody_forAxis_minor_outNewLineDescriptors_(v225, v289, v290, v291, v292, v395, v288, v278, v397);
+            v293 = objc_msgSend_countOfGridLinesInBody_forAxis_minor_outNewLineDescriptors_(v225, v289, v290, v291, v292, selfCopy, v288, v278, v397);
             v298 = objc_msgSend_objectValueForProperty_(v288, v294, v295, v296, v297, 1038);
             objc_msgSend_width(v298, v299, v300, v301, v302);
             if (v293)
@@ -3286,14 +3286,14 @@ LABEL_76:
               goto LABEL_84;
             }
 
-            v325 = objc_msgSend_model(v395, v321, v322, v323, v324);
+            v325 = objc_msgSend_model(selfCopy, v321, v322, v323, v324);
             v330 = objc_msgSend_seriesList(v325, v326, v327, v328, v329);
             v335 = objc_msgSend_firstObject(v330, v331, v332, v333, v334);
             v340 = objc_msgSend_seriesType(v335, v336, v337, v338, v339);
             v306 = objc_msgSend_elementBuilder(v340, v341, v342, v343, v344);
 
             v311 = objc_msgSend_argumentAtIndex_(v29, v345, v346, v347, v348, 0);
-            v353 = objc_msgSend_model(v395, v349, v350, v351, v352);
+            v353 = objc_msgSend_model(selfCopy, v349, v350, v351, v352);
             v358 = objc_msgSend_axisForID_(v353, v354, v355, v356, v357, v311);
 
             v363 = objc_msgSend_model(v358, v359, v360, v361, v362);
@@ -3306,7 +3306,7 @@ LABEL_76:
             *v397 = *MEMORY[0x277CBF2C0];
             v398 = v380;
             v399 = *(MEMORY[0x277CBF2C0] + 32);
-            if (objc_msgSend_hasAxisLineInBody_forAxis_outTransform_outLine_(v306, v381, *&v399, *&v380, v382, v395, v358, v397, &v401))
+            if (objc_msgSend_hasAxisLineInBody_forAxis_outTransform_outLine_(v306, v381, *&v399, *&v380, v382, selfCopy, v358, v397, &v401))
             {
               v383 = v379 * 0.5;
               TSURectWithPoints();

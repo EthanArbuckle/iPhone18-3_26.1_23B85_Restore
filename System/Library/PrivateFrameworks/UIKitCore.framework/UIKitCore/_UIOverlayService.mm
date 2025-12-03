@@ -1,11 +1,11 @@
 @interface _UIOverlayService
 - (_UIOverlayService)init;
 - (_UIOverlayServiceDelegate)delegate;
-- (void)_asyncTargetWithHandler:(id)a3;
-- (void)_makeConnectionIfNecessaryWithConnectionHandler:(id)a3;
+- (void)_asyncTargetWithHandler:(id)handler;
+- (void)_makeConnectionIfNecessaryWithConnectionHandler:(id)handler;
 - (void)dealloc;
-- (void)performOverlayClientAction:(id)a3;
-- (void)sendOverlayAction:(id)a3;
+- (void)performOverlayClientAction:(id)action;
+- (void)sendOverlayAction:(id)action;
 @end
 
 @implementation _UIOverlayService
@@ -33,59 +33,59 @@
   [(_UIOverlayService *)&v3 dealloc];
 }
 
-- (void)_makeConnectionIfNecessaryWithConnectionHandler:(id)a3
+- (void)_makeConnectionIfNecessaryWithConnectionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v5 = [(_UIOverlayService *)self connectionQueue];
+  connectionQueue = [(_UIOverlayService *)self connectionQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __69___UIOverlayService__makeConnectionIfNecessaryWithConnectionHandler___block_invoke;
   v7[3] = &unk_1E71177E8;
   objc_copyWeak(&v9, &location);
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(connectionQueue, v7);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)_asyncTargetWithHandler:(id)a3
+- (void)_asyncTargetWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __45___UIOverlayService__asyncTargetWithHandler___block_invoke;
   v6[3] = &unk_1E712B6D8;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(_UIOverlayService *)self _makeConnectionIfNecessaryWithConnectionHandler:v6];
 }
 
-- (void)sendOverlayAction:(id)a3
+- (void)sendOverlayAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __39___UIOverlayService_sendOverlayAction___block_invoke;
   v6[3] = &unk_1E7118240;
-  v7 = v4;
-  v5 = v4;
+  v7 = actionCopy;
+  v5 = actionCopy;
   [(_UIOverlayService *)self _asyncTargetWithHandler:v6];
 }
 
-- (void)performOverlayClientAction:(id)a3
+- (void)performOverlayClientAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __48___UIOverlayService_performOverlayClientAction___block_invoke;
   v6[3] = &unk_1E70F35B8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = actionCopy;
+  selfCopy = self;
+  v5 = actionCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 

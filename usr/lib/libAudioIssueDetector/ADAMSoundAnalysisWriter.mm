@@ -6,16 +6,16 @@
 - (BOOL)verifyStateInit;
 - (BOOL)verifyStateOn;
 - (id).cxx_construct;
-- (int)write:(id)a3 withMetadata:(const Metadata *)a4;
+- (int)write:(id)write withMetadata:(const Metadata *)metadata;
 - (void)_initializeSoundAnalyzer;
-- (void)_setProcessing:(BOOL)a3;
+- (void)_setProcessing:(BOOL)processing;
 - (void)createAndLogOSTransaction;
 - (void)destroyAndLogOSTransaction;
 - (void)logResultCountAndFirstTimeStamp;
 - (void)reinitializeSpeechEmotionRequest;
-- (void)request:(id)a3 didFailWithError:(id)a4;
-- (void)request:(id)a3 didProduceResult:(id)a4;
-- (void)requestDidComplete:(id)a3;
+- (void)request:(id)request didFailWithError:(id)error;
+- (void)request:(id)request didProduceResult:(id)result;
+- (void)requestDidComplete:(id)complete;
 - (void)sendCachedDetectionResultsToSensorKit;
 @end
 
@@ -51,25 +51,25 @@
   ADAM::Parameters::instance(self);
   if (ADAM::Parameters::GetParamValue<BOOL>(5u))
   {
-    LOBYTE(v3) = 1;
+    LOBYTE(isValidSRSensorWriterPresent) = 1;
   }
 
   else
   {
-    v3 = [(ADAMSRSensorWriter *)self->_speechEmotionSRWriter isValidSRSensorWriterPresent];
-    if (v3)
+    isValidSRSensorWriterPresent = [(ADAMSRSensorWriter *)self->_speechEmotionSRWriter isValidSRSensorWriterPresent];
+    if (isValidSRSensorWriterPresent)
     {
-      v3 = [(ADAMSRSensorWriter *)self->_speechEmotionSRWriter isMonitoring];
-      if (v3)
+      isValidSRSensorWriterPresent = [(ADAMSRSensorWriter *)self->_speechEmotionSRWriter isMonitoring];
+      if (isValidSRSensorWriterPresent)
       {
         speechEmotionSRWriter = self->_speechEmotionSRWriter;
 
-        LOBYTE(v3) = [(ADAMSRSensorWriter *)speechEmotionSRWriter isBundleIdentifierEligible];
+        LOBYTE(isValidSRSensorWriterPresent) = [(ADAMSRSensorWriter *)speechEmotionSRWriter isBundleIdentifierEligible];
       }
     }
   }
 
-  return v3;
+  return isValidSRSensorWriterPresent;
 }
 
 - (BOOL)_isMonitoringSoundDetection
@@ -77,25 +77,25 @@
   ADAM::Parameters::instance(self);
   if (ADAM::Parameters::GetParamValue<BOOL>(5u))
   {
-    LOBYTE(v3) = 1;
+    LOBYTE(isValidSRSensorWriterPresent) = 1;
   }
 
   else
   {
-    v3 = [(ADAMSRSensorWriter *)self->_soundDetectionSRWriter isValidSRSensorWriterPresent];
-    if (v3)
+    isValidSRSensorWriterPresent = [(ADAMSRSensorWriter *)self->_soundDetectionSRWriter isValidSRSensorWriterPresent];
+    if (isValidSRSensorWriterPresent)
     {
-      v3 = [(ADAMSRSensorWriter *)self->_soundDetectionSRWriter isMonitoring];
-      if (v3)
+      isValidSRSensorWriterPresent = [(ADAMSRSensorWriter *)self->_soundDetectionSRWriter isMonitoring];
+      if (isValidSRSensorWriterPresent)
       {
         soundDetectionSRWriter = self->_soundDetectionSRWriter;
 
-        LOBYTE(v3) = [(ADAMSRSensorWriter *)soundDetectionSRWriter isBundleIdentifierEligible];
+        LOBYTE(isValidSRSensorWriterPresent) = [(ADAMSRSensorWriter *)soundDetectionSRWriter isBundleIdentifierEligible];
       }
     }
   }
 
-  return v3;
+  return isValidSRSensorWriterPresent;
 }
 
 - (BOOL)_isMonitoringSpeechMetrics
@@ -103,25 +103,25 @@
   ADAM::Parameters::instance(self);
   if (ADAM::Parameters::GetParamValue<BOOL>(5u))
   {
-    LOBYTE(v3) = 1;
+    LOBYTE(isValidSRSensorWriterPresent) = 1;
   }
 
   else
   {
-    v3 = [(ADAMSRSensorWriter *)self->_speechMetricsSRWriter isValidSRSensorWriterPresent];
-    if (v3)
+    isValidSRSensorWriterPresent = [(ADAMSRSensorWriter *)self->_speechMetricsSRWriter isValidSRSensorWriterPresent];
+    if (isValidSRSensorWriterPresent)
     {
-      v3 = [(ADAMSRSensorWriter *)self->_speechMetricsSRWriter isMonitoring];
-      if (v3)
+      isValidSRSensorWriterPresent = [(ADAMSRSensorWriter *)self->_speechMetricsSRWriter isMonitoring];
+      if (isValidSRSensorWriterPresent)
       {
         speechMetricsSRWriter = self->_speechMetricsSRWriter;
 
-        LOBYTE(v3) = [(ADAMSRSensorWriter *)speechMetricsSRWriter isBundleIdentifierEligible];
+        LOBYTE(isValidSRSensorWriterPresent) = [(ADAMSRSensorWriter *)speechMetricsSRWriter isBundleIdentifierEligible];
       }
     }
   }
 
-  return v3;
+  return isValidSRSensorWriterPresent;
 }
 
 - (void)sendCachedDetectionResultsToSensorKit
@@ -251,8 +251,8 @@ LABEL_5:
         goto LABEL_28;
       }
 
-      v16 = [v9 identifier];
-      v56 = v16;
+      identifier = [v9 identifier];
+      v56 = identifier;
       v17 = MEMORY[0x29EDBA070];
       [v9 confidence];
       v18 = [v17 numberWithDouble:?];
@@ -415,7 +415,7 @@ LABEL_45:
       v20 = 2080;
       v21 = "ADAMSoundAnalysisWriter]";
       v22 = 2048;
-      v23 = self;
+      selfCopy4 = self;
       v24 = 1024;
       LODWORD(v25) = detectionResultCounterPerMinute;
       _os_log_impl(&dword_296C34000, v3, OS_LOG_TYPE_DEFAULT, "[%s:%-5d %.*s:%p] # detection results sent previous minute : %d", &v14, 0x32u);
@@ -445,7 +445,7 @@ LABEL_45:
       v20 = 2080;
       v21 = "ADAMSoundAnalysisWriter]";
       v22 = 2048;
-      v23 = self;
+      selfCopy4 = self;
       v24 = 2048;
       v25 = val;
       v26 = 2048;
@@ -478,7 +478,7 @@ LABEL_45:
       v20 = 2080;
       v21 = "ADAMSoundAnalysisWriter]";
       v22 = 2048;
-      v23 = self;
+      selfCopy4 = self;
       v24 = 1024;
       LODWORD(v25) = emotionResultCounterPerMinute;
       _os_log_impl(&dword_296C34000, v8, OS_LOG_TYPE_DEFAULT, "[%s:%-5d %.*s:%p] # emotion results sent previous minute : %d", &v14, 0x32u);
@@ -508,7 +508,7 @@ LABEL_45:
       v20 = 2080;
       v21 = "ADAMSoundAnalysisWriter]";
       v22 = 2048;
-      v23 = self;
+      selfCopy4 = self;
       v24 = 2048;
       v25 = v11;
       v26 = 2048;
@@ -527,36 +527,36 @@ LABEL_45:
 
 - (BOOL)verifyStateOn
 {
-  v3 = [(ADAMSRSensorWriter *)self->_speechEmotionSRWriter isValidSRSensorWriterPresent];
-  if (v3)
+  isValidSRSensorWriterPresent = [(ADAMSRSensorWriter *)self->_speechEmotionSRWriter isValidSRSensorWriterPresent];
+  if (isValidSRSensorWriterPresent)
   {
     soundDetectionSRWriter = self->_soundDetectionSRWriter;
 
-    LOBYTE(v3) = [(ADAMSRSensorWriter *)soundDetectionSRWriter isValidSRSensorWriterPresent];
+    LOBYTE(isValidSRSensorWriterPresent) = [(ADAMSRSensorWriter *)soundDetectionSRWriter isValidSRSensorWriterPresent];
   }
 
-  return v3;
+  return isValidSRSensorWriterPresent;
 }
 
 - (BOOL)verifyStateInit
 {
-  v3 = [(ADAMSRSensorWriter *)self->_speechEmotionSRWriter isValidSRSensorWriterPresent];
-  if (v3)
+  isValidSRSensorWriterPresent = [(ADAMSRSensorWriter *)self->_speechEmotionSRWriter isValidSRSensorWriterPresent];
+  if (isValidSRSensorWriterPresent)
   {
-    v3 = [(ADAMSRSensorWriter *)self->_soundDetectionSRWriter isValidSRSensorWriterPresent];
-    if (v3)
+    isValidSRSensorWriterPresent = [(ADAMSRSensorWriter *)self->_soundDetectionSRWriter isValidSRSensorWriterPresent];
+    if (isValidSRSensorWriterPresent)
     {
-      LOBYTE(v3) = self->_SNAnalyzer == 0;
+      LOBYTE(isValidSRSensorWriterPresent) = self->_SNAnalyzer == 0;
     }
   }
 
-  return v3;
+  return isValidSRSensorWriterPresent;
 }
 
-- (void)requestDidComplete:(id)a3
+- (void)requestDidComplete:(id)complete
 {
   v15 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  completeCopy = complete;
   if (ADAM::ADAMLogScope(void)::once != -1)
   {
     dispatch_once(&ADAM::ADAMLogScope(void)::once, &__block_literal_global_107);
@@ -584,12 +584,12 @@ LABEL_45:
     v11 = 1024;
     v12 = 542;
     v13 = 2112;
-    v14 = v4;
+    v14 = completeCopy;
     _os_log_impl(&dword_296C34000, v5, OS_LOG_TYPE_DEFAULT, "%25s:%-5d SN Request: %@ did complete", &v9, 0x1Cu);
   }
 
 LABEL_10:
-  [(NSMutableArray *)self->_requests removeObject:v4];
+  [(NSMutableArray *)self->_requests removeObject:completeCopy];
   if (![(NSMutableArray *)self->_requests count])
   {
     completeHandler = self->_completeHandler;
@@ -602,11 +602,11 @@ LABEL_10:
   v8 = *MEMORY[0x29EDCA608];
 }
 
-- (void)request:(id)a3 didFailWithError:(id)a4
+- (void)request:(id)request didFailWithError:(id)error
 {
   v18 = *MEMORY[0x29EDCA608];
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  errorCopy = error;
   if (ADAM::ADAMLogScope(void)::once != -1)
   {
     dispatch_once(&ADAM::ADAMLogScope(void)::once, &__block_literal_global_107);
@@ -634,9 +634,9 @@ LABEL_10:
     v12 = 1024;
     v13 = 535;
     v14 = 2112;
-    v15 = v5;
+    v15 = requestCopy;
     v16 = 2112;
-    v17 = v6;
+    v17 = errorCopy;
     _os_log_impl(&dword_296C34000, v7, OS_LOG_TYPE_DEFAULT, "%25s:%-5d SN Request: %@ failed with error: %@", &v10, 0x26u);
   }
 
@@ -644,10 +644,10 @@ LABEL_10:
   v9 = *MEMORY[0x29EDCA608];
 }
 
-- (void)request:(id)a3 didProduceResult:(id)a4
+- (void)request:(id)request didProduceResult:(id)result
 {
   v112 = *MEMORY[0x29EDCA608];
-  v5 = a4;
+  resultCopy = result;
   if (ADAM::isXCTest(void)::once != -1)
   {
     dispatch_once(&ADAM::isXCTest(void)::once, &__block_literal_global_61);
@@ -666,7 +666,7 @@ LABEL_10:
       goto LABEL_82;
     }
 
-    v6 = v5;
+    v6 = resultCopy;
     speechEmotionTimestamp = self->_speechEmotionTimestamp;
     cont = 0;
     *buf = 0;
@@ -892,7 +892,7 @@ LABEL_78:
         *&buf[34] = 2048;
         *&buf[36] = self;
         *&buf[44] = 2112;
-        *&buf[46] = v5;
+        *&buf[46] = resultCopy;
         _os_log_impl(&dword_296C34000, v21, OS_LOG_TYPE_ERROR, "[%s:%-5d %.*s:%p] Unknown SN result: %@", buf, 0x36u);
       }
 
@@ -904,7 +904,7 @@ LABEL_78:
       goto LABEL_82;
     }
 
-    v18 = v5;
+    v18 = resultCopy;
     audioLevelTimestamp = self->_audioLevelTimestamp;
     cont = 0;
     *buf = 0;
@@ -1021,11 +1021,11 @@ LABEL_93:
     goto LABEL_82;
   }
 
-  v12 = v5;
-  v13 = self;
+  v12 = resultCopy;
+  selfCopy = self;
   v14 = v12;
-  v15 = [v14 identifier];
-  v16 = [v15 isEqualToString:*MEMORY[0x29EDBBE10]];
+  identifier = [v14 identifier];
+  v16 = [identifier isEqualToString:*MEMORY[0x29EDBBE10]];
 
   if (v16)
   {
@@ -1034,8 +1034,8 @@ LABEL_93:
 
   else
   {
-    v22 = [v14 identifier];
-    v23 = [v22 isEqualToString:*MEMORY[0x29EDBBE18]];
+    identifier2 = [v14 identifier];
+    v23 = [identifier2 isEqualToString:*MEMORY[0x29EDBBE18]];
 
     if (v23)
     {
@@ -1044,8 +1044,8 @@ LABEL_93:
 
     else
     {
-      v24 = [v14 identifier];
-      v25 = [v24 isEqualToString:*MEMORY[0x29EDBBE20]];
+      identifier3 = [v14 identifier];
+      v25 = [identifier3 isEqualToString:*MEMORY[0x29EDBBE20]];
 
       if (!v25)
       {
@@ -1061,7 +1061,7 @@ LABEL_93:
           *&buf[24] = 2080;
           *&buf[26] = "ADAMSoundAnalysisWriter]";
           *&buf[34] = 2048;
-          *&buf[36] = v13;
+          *&buf[36] = selfCopy;
           *&buf[44] = 2112;
           *&buf[46] = v14;
           _os_log_impl(&dword_296C34000, v95, OS_LOG_TYPE_ERROR, "[%s:%-5d %.*s:%p] Unknown SNDetection result: %@", buf, 0x36u);
@@ -1074,18 +1074,18 @@ LABEL_93:
     }
   }
 
-  v27 = *(&v13->super.isa + v17);
+  v27 = *(&selfCopy->super.isa + v17);
   *buf = 0;
   mach_get_times();
   v28 = v27;
   cont = v27;
-  left = v13->_detectionCachedTimestamps.__tree_.__end_node_.__left_;
+  left = selfCopy->_detectionCachedTimestamps.__tree_.__end_node_.__left_;
   if (!left)
   {
     goto LABEL_41;
   }
 
-  p_end_node = &v13->_detectionCachedTimestamps.__tree_.__end_node_;
+  p_end_node = &selfCopy->_detectionCachedTimestamps.__tree_.__end_node_;
   do
   {
     frameCnt = left->_frameCnt;
@@ -1100,12 +1100,12 @@ LABEL_93:
   }
 
   while (left);
-  if (p_end_node == &v13->_detectionCachedTimestamps.__tree_.__end_node_ || v27 < p_end_node->_frameCnt)
+  if (p_end_node == &selfCopy->_detectionCachedTimestamps.__tree_.__end_node_ || v27 < p_end_node->_frameCnt)
   {
 LABEL_41:
     v34 = [MEMORY[0x29EDB8DE8] arrayWithCapacity:3];
     *buf = &cont;
-    v35 = std::__tree<std::__value_type<unsigned long long,NSMutableArray * {__strong}>,std::__map_value_compare<unsigned long long,std::__value_type<unsigned long long,NSMutableArray * {__strong}>,std::less<unsigned long long>,true>,std::allocator<std::__value_type<unsigned long long,NSMutableArray * {__strong}>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(&v13->_detectionCachedResultMap, cont);
+    v35 = std::__tree<std::__value_type<unsigned long long,NSMutableArray * {__strong}>,std::__map_value_compare<unsigned long long,std::__value_type<unsigned long long,NSMutableArray * {__strong}>,std::less<unsigned long long>,true>,std::allocator<std::__value_type<unsigned long long,NSMutableArray * {__strong}>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(&selfCopy->_detectionCachedResultMap, cont);
     v36 = v35[5];
     v35[5] = v34;
 
@@ -1113,8 +1113,8 @@ LABEL_41:
   }
 
   *buf = &cont;
-  [std::__tree<std::__value_type<unsigned long long NSMutableArray * {:std::__map_value_compare<unsigned long long :{std::__value_type<unsigned long long, NSMutableArray * {__strong}>, std::less<unsigned long long>, true>, std::allocator<std::__value_type<unsigned long long, NSMutableArray * {__strong}>>>::__emplace_unique_key_args<unsigned long long, std::piecewise_construct_t const&, std::tuple<unsigned long long const&>, std::tuple<>>(&v13->_detectionCachedResultMap, v28)[5], "addObject:", v14}strong}>];
-  v39 = v13->_detectionCachedTimestamps.__tree_.__end_node_.__left_;
+  [std::__tree<std::__value_type<unsigned long long NSMutableArray * {:std::__map_value_compare<unsigned long long :{std::__value_type<unsigned long long, NSMutableArray * {__strong}>, std::less<unsigned long long>, true>, std::allocator<std::__value_type<unsigned long long, NSMutableArray * {__strong}>>>::__emplace_unique_key_args<unsigned long long, std::piecewise_construct_t const&, std::tuple<unsigned long long const&>, std::tuple<>>(&selfCopy->_detectionCachedResultMap, v28)[5], "addObject:", v14}strong}>];
+  v39 = selfCopy->_detectionCachedTimestamps.__tree_.__end_node_.__left_;
   if (!v39)
   {
 LABEL_48:
@@ -1151,7 +1151,7 @@ LABEL_48:
     }
   }
 
-  v42 = *(&v13->super.isa + v17);
+  v42 = *(&selfCopy->super.isa + v17);
   if (v14)
   {
     [v14 timeRange];
@@ -1167,30 +1167,30 @@ LABEL_48:
     memset(buf, 0, 48);
   }
 
-  *(&v13->super.isa + v17) = ADAM::absoluteTimeFromCMTimeRange(v42, v44, v45, v43, v37, v38);
-  if (!v13->_detectionFirstContinuousTimeStampPerMinute.__engaged_)
+  *(&selfCopy->super.isa + v17) = ADAM::absoluteTimeFromCMTimeRange(v42, v44, v45, v43, v37, v38);
+  if (!selfCopy->_detectionFirstContinuousTimeStampPerMinute.__engaged_)
   {
-    v13->_detectionFirstAbsoluteTimestampPerMinute = SRAbsoluteTimeFromContinuousTime(cont);
-    v13->_detectionFirstContinuousTimeStampPerMinute.var0.__val_ = cont;
-    v13->_detectionFirstContinuousTimeStampPerMinute.__engaged_ = 1;
+    selfCopy->_detectionFirstAbsoluteTimestampPerMinute = SRAbsoluteTimeFromContinuousTime(cont);
+    selfCopy->_detectionFirstContinuousTimeStampPerMinute.var0.__val_ = cont;
+    selfCopy->_detectionFirstContinuousTimeStampPerMinute.__engaged_ = 1;
   }
 
 LABEL_82:
   v78 = *MEMORY[0x29EDCA608];
 }
 
-- (void)_setProcessing:(BOOL)a3
+- (void)_setProcessing:(BOOL)processing
 {
   os_unfair_lock_lock(&self->_statusLock);
-  self->_processing = a3;
+  self->_processing = processing;
 
   os_unfair_lock_unlock(&self->_statusLock);
 }
 
-- (int)write:(id)a3 withMetadata:(const Metadata *)a4
+- (int)write:(id)write withMetadata:(const Metadata *)metadata
 {
   v23 = *MEMORY[0x29EDCA608];
-  v6 = a3;
+  writeCopy = write;
   if ([(ADAMSoundAnalysisWriter *)self _isMonitoringEmotion]|| [(ADAMSoundAnalysisWriter *)self _isMonitoringSoundDetection]|| [(ADAMSoundAnalysisWriter *)self _isMonitoringSpeechMetrics])
   {
     if (!self->_transaction)
@@ -1198,8 +1198,8 @@ LABEL_82:
       [(ADAMSoundAnalysisWriter *)self createAndLogOSTransaction];
     }
 
-    v7 = a4->var2 != 0;
-    mHostTime = a4->var0.mHostTime;
+    v7 = metadata->var2 != 0;
+    mHostTime = metadata->var0.mHostTime;
     queue = self->_queue;
     block[0] = MEMORY[0x29EDCA5F8];
     block[1] = 3221225472;
@@ -1207,8 +1207,8 @@ LABEL_82:
     block[3] = &unk_29EE525A0;
     block[4] = self;
     v16 = mHostTime;
-    v15 = v6;
-    v17 = a4;
+    v15 = writeCopy;
+    metadataCopy = metadata;
     v18 = v7;
     dispatch_async(queue, block);
   }
@@ -1533,7 +1533,7 @@ LABEL_11:
       *&v37[4] = 2080;
       *&v37[6] = "ADAMSoundAnalysisWriter]";
       v38 = 2048;
-      v39 = self;
+      selfCopy2 = self;
       v25 = "[%s:%-5d %.*s:%p] failed to add SNMeasureAudioLevelRequest";
       v26 = v24;
       v27 = OS_LOG_TYPE_ERROR;
@@ -1560,7 +1560,7 @@ LABEL_11:
       *&v37[4] = 2080;
       *&v37[6] = "ADAMSoundAnalysisWriter]";
       v38 = 2048;
-      v39 = self;
+      selfCopy2 = self;
       v25 = "[%s:%-5d %.*s:%p] added SNMeasureAudioLevelRequest";
       v26 = v28;
       v27 = OS_LOG_TYPE_DEBUG;

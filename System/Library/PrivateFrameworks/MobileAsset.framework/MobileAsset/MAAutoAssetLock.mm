@@ -1,26 +1,26 @@
 @interface MAAutoAssetLock
-- (MAAutoAssetLock)initWithCoder:(id)a3;
-- (id)initForSelector:(id)a3 withLocalContentURL:(id)a4 withAssetAttributes:(id)a5;
+- (MAAutoAssetLock)initWithCoder:(id)coder;
+- (id)initForSelector:(id)selector withLocalContentURL:(id)l withAssetAttributes:(id)attributes;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MAAutoAssetLock
 
-- (id)initForSelector:(id)a3 withLocalContentURL:(id)a4 withAssetAttributes:(id)a5
+- (id)initForSelector:(id)selector withLocalContentURL:(id)l withAssetAttributes:(id)attributes
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  selectorCopy = selector;
+  lCopy = l;
+  attributesCopy = attributes;
   v17.receiver = self;
   v17.super_class = MAAutoAssetLock;
   v12 = [(MAAutoAssetLock *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_fullAssetSelector, a3);
-    objc_storeStrong(&v13->_localContentURL, a4);
-    objc_storeStrong(&v13->_assetAttributes, a5);
+    objc_storeStrong(&v12->_fullAssetSelector, selector);
+    objc_storeStrong(&v13->_localContentURL, l);
+    objc_storeStrong(&v13->_assetAttributes, attributes);
     v13->_inhibitedFromEmergencyRemoval = 0;
     v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
     lockReasons = v13->_lockReasons;
@@ -30,10 +30,10 @@
   return v13;
 }
 
-- (MAAutoAssetLock)initWithCoder:(id)a3
+- (MAAutoAssetLock)initWithCoder:(id)coder
 {
   v18[8] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = MAAutoAssetLock;
   v5 = [(MAAutoAssetLock *)&v17 init];
@@ -51,16 +51,16 @@
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:8];
     v8 = [v6 setWithArray:v7];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fullAssetSelector"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fullAssetSelector"];
     fullAssetSelector = v5->_fullAssetSelector;
     v5->_fullAssetSelector = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localContentURL"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localContentURL"];
     localContentURL = v5->_localContentURL;
     v5->_localContentURL = v11;
 
-    v5->_inhibitedFromEmergencyRemoval = [v4 decodeBoolForKey:@"inhibitedFromEmergencyRemoval"];
-    v13 = [v4 decodeObjectOfClasses:v8 forKey:@"lockReasons"];
+    v5->_inhibitedFromEmergencyRemoval = [coderCopy decodeBoolForKey:@"inhibitedFromEmergencyRemoval"];
+    v13 = [coderCopy decodeObjectOfClasses:v8 forKey:@"lockReasons"];
     lockReasons = v5->_lockReasons;
     v5->_lockReasons = v13;
   }
@@ -69,29 +69,29 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MAAutoAssetLock *)self fullAssetSelector];
-  [v4 encodeObject:v5 forKey:@"fullAssetSelector"];
+  coderCopy = coder;
+  fullAssetSelector = [(MAAutoAssetLock *)self fullAssetSelector];
+  [coderCopy encodeObject:fullAssetSelector forKey:@"fullAssetSelector"];
 
-  v6 = [(MAAutoAssetLock *)self localContentURL];
-  [v4 encodeObject:v6 forKey:@"localContentURL"];
+  localContentURL = [(MAAutoAssetLock *)self localContentURL];
+  [coderCopy encodeObject:localContentURL forKey:@"localContentURL"];
 
-  [v4 encodeBool:-[MAAutoAssetLock inhibitedFromEmergencyRemoval](self forKey:{"inhibitedFromEmergencyRemoval"), @"inhibitedFromEmergencyRemoval"}];
-  v7 = [(MAAutoAssetLock *)self lockReasons];
-  [v4 encodeObject:v7 forKey:@"lockReasons"];
+  [coderCopy encodeBool:-[MAAutoAssetLock inhibitedFromEmergencyRemoval](self forKey:{"inhibitedFromEmergencyRemoval"), @"inhibitedFromEmergencyRemoval"}];
+  lockReasons = [(MAAutoAssetLock *)self lockReasons];
+  [coderCopy encodeObject:lockReasons forKey:@"lockReasons"];
 }
 
 - (id)summary
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(MAAutoAssetLock *)self fullAssetSelector];
-  v5 = [v4 summary];
-  v6 = [(MAAutoAssetLock *)self localContentURL];
-  v7 = [v6 path];
-  v8 = [(MAAutoAssetLock *)self assetAttributes];
-  v9 = [v8 safeSummary];
+  fullAssetSelector = [(MAAutoAssetLock *)self fullAssetSelector];
+  summary = [fullAssetSelector summary];
+  localContentURL = [(MAAutoAssetLock *)self localContentURL];
+  path = [localContentURL path];
+  assetAttributes = [(MAAutoAssetLock *)self assetAttributes];
+  safeSummary = [assetAttributes safeSummary];
   if ([(MAAutoAssetLock *)self inhibitedFromEmergencyRemoval])
   {
     v10 = @"Y";
@@ -102,9 +102,9 @@
     v10 = @"N";
   }
 
-  v11 = [(MAAutoAssetLock *)self lockReasons];
-  v12 = [v11 safeSummary];
-  v13 = [v3 stringWithFormat:@"selector:%@|localURL:%@|attributes:%@|inhibitedRemoval:%@|reasons:%@", v5, v7, v9, v10, v12];
+  lockReasons = [(MAAutoAssetLock *)self lockReasons];
+  safeSummary2 = [lockReasons safeSummary];
+  v13 = [v3 stringWithFormat:@"selector:%@|localURL:%@|attributes:%@|inhibitedRemoval:%@|reasons:%@", summary, path, safeSummary, v10, safeSummary2];
 
   return v13;
 }

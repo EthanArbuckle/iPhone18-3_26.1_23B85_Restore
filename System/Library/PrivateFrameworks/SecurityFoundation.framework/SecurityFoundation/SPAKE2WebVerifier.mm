@@ -1,31 +1,31 @@
 @interface SPAKE2WebVerifier
-+ (id)generateCodeWithError:(id *)a3;
++ (id)generateCodeWithError:(id *)error;
 - (BOOL)hasKey;
 - (BOOL)isVerified;
-- (BOOL)keyMatchesWith:(id)a3;
-- (BOOL)processMsg1:(id)a3 error:(id *)a4;
-- (BOOL)processMsg2:(id)a3 error:(id *)a4;
-- (SPAKE2WebVerifier)initWithSalt:(id)a3 code:(id)a4 error:(id *)a5;
-- (SPAKE2WebVerifier)initWithSalt:(id)a3 code:(id)a4 rng:(ccrng_state *)a5 error:(id *)a6;
-- (id)_decodeBase64:(id)a3 withKey:(id)a4 error:(id *)a5;
-- (id)_decodeBinary:(id)a3 withKey:(id)a4 error:(id *)a5;
-- (id)_encodeBase64:(id)a3 withKey:(id)a4 error:(id *)a5;
-- (id)_encodeBinary:(id)a3 withKey:(id)a4 error:(id *)a5;
-- (id)decryptMessageInBase64:(id)a3 error:(id *)a4;
-- (id)decryptMessageInBinary:(id)a3 error:(id *)a4;
-- (id)encryptMessageAsBase64:(id)a3 error:(id *)a4;
-- (id)encryptMessageAsBinary:(id)a3 error:(id *)a4;
+- (BOOL)keyMatchesWith:(id)with;
+- (BOOL)processMsg1:(id)msg1 error:(id *)error;
+- (BOOL)processMsg2:(id)msg2 error:(id *)error;
+- (SPAKE2WebVerifier)initWithSalt:(id)salt code:(id)code error:(id *)error;
+- (SPAKE2WebVerifier)initWithSalt:(id)salt code:(id)code rng:(ccrng_state *)rng error:(id *)error;
+- (id)_decodeBase64:(id)base64 withKey:(id)key error:(id *)error;
+- (id)_decodeBinary:(id)binary withKey:(id)key error:(id *)error;
+- (id)_encodeBase64:(id)base64 withKey:(id)key error:(id *)error;
+- (id)_encodeBinary:(id)binary withKey:(id)key error:(id *)error;
+- (id)decryptMessageInBase64:(id)base64 error:(id *)error;
+- (id)decryptMessageInBinary:(id)binary error:(id *)error;
+- (id)encryptMessageAsBase64:(id)base64 error:(id *)error;
+- (id)encryptMessageAsBinary:(id)binary error:(id *)error;
 - (id)getCode;
 - (id)getKey;
-- (id)getMsg1WithError:(id *)a3;
-- (id)getMsg2WithError:(id *)a3;
+- (id)getMsg1WithError:(id *)error;
+- (id)getMsg2WithError:(id *)error;
 - (id)testGetW0;
 - (id)testGetW1;
 @end
 
 @implementation SPAKE2WebVerifier
 
-+ (id)generateCodeWithError:(id *)a3
++ (id)generateCodeWithError:(id *)error
 {
   v4 = SecPasswordCreateWithRandomDigits();
   v5 = v4;
@@ -34,18 +34,18 @@
     v6 = v4;
   }
 
-  else if (a3)
+  else if (error)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
   return v5;
 }
 
-- (SPAKE2WebVerifier)initWithSalt:(id)a3 code:(id)a4 rng:(ccrng_state *)a5 error:(id *)a6
+- (SPAKE2WebVerifier)initWithSalt:(id)salt code:(id)code rng:(ccrng_state *)rng error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  saltCopy = salt;
+  codeCopy = code;
   v20.receiver = self;
   v20.super_class = SPAKE2WebVerifier;
   v12 = [(SPAKE2WebVerifier *)&v20 init];
@@ -54,19 +54,19 @@
     goto LABEL_4;
   }
 
-  v13 = [[SPAKE2Common alloc] initWithSalt:v10 code:v11 rng:a5 cp:ccspake_cp_256_rfc()];
+  v13 = [[SPAKE2Common alloc] initWithSalt:saltCopy code:codeCopy rng:rng cp:ccspake_cp_256_rfc()];
   [(SPAKE2WebVerifier *)v12 setCommon:v13];
 
-  v14 = [(SPAKE2WebVerifier *)v12 common];
-  v15 = [v14 generateStateWithError:a6];
+  common = [(SPAKE2WebVerifier *)v12 common];
+  v15 = [common generateStateWithError:error];
 
   if (!v15)
   {
     goto LABEL_5;
   }
 
-  v16 = [(SPAKE2WebVerifier *)v12 common];
-  v17 = [v16 setupRFCVerifier:a6];
+  common2 = [(SPAKE2WebVerifier *)v12 common];
+  v17 = [common2 setupRFCVerifier:error];
 
   if (v17)
   {
@@ -83,178 +83,178 @@ LABEL_5:
   return v18;
 }
 
-- (SPAKE2WebVerifier)initWithSalt:(id)a3 code:(id)a4 error:(id *)a5
+- (SPAKE2WebVerifier)initWithSalt:(id)salt code:(id)code error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(SPAKE2WebVerifier *)self initWithSalt:v9 code:v8 rng:ccrng() error:a5];
+  codeCopy = code;
+  saltCopy = salt;
+  v10 = [(SPAKE2WebVerifier *)self initWithSalt:saltCopy code:codeCopy rng:ccrng() error:error];
 
   return v10;
 }
 
 - (id)getCode
 {
-  v2 = [(SPAKE2WebVerifier *)self common];
-  v3 = [v2 code];
+  common = [(SPAKE2WebVerifier *)self common];
+  code = [common code];
 
-  return v3;
+  return code;
 }
 
-- (id)getMsg1WithError:(id *)a3
+- (id)getMsg1WithError:(id *)error
 {
-  v4 = [(SPAKE2WebVerifier *)self common];
-  v5 = [v4 getMsg1WithError:a3];
+  common = [(SPAKE2WebVerifier *)self common];
+  v5 = [common getMsg1WithError:error];
 
   return v5;
 }
 
-- (BOOL)processMsg1:(id)a3 error:(id *)a4
+- (BOOL)processMsg1:(id)msg1 error:(id *)error
 {
-  v6 = a3;
-  v7 = [(SPAKE2WebVerifier *)self common];
-  LOBYTE(a4) = [v7 processMsg1:v6 error:a4];
+  msg1Copy = msg1;
+  common = [(SPAKE2WebVerifier *)self common];
+  LOBYTE(error) = [common processMsg1:msg1Copy error:error];
 
-  return a4;
+  return error;
 }
 
-- (id)getMsg2WithError:(id *)a3
+- (id)getMsg2WithError:(id *)error
 {
-  v4 = [(SPAKE2WebVerifier *)self common];
-  v5 = [v4 getMsg2WithError:a3];
+  common = [(SPAKE2WebVerifier *)self common];
+  v5 = [common getMsg2WithError:error];
 
   return v5;
 }
 
-- (BOOL)processMsg2:(id)a3 error:(id *)a4
+- (BOOL)processMsg2:(id)msg2 error:(id *)error
 {
-  v6 = a3;
-  v7 = [(SPAKE2WebVerifier *)self common];
-  LOBYTE(a4) = [v7 processMsg2Web:v6 error:a4];
+  msg2Copy = msg2;
+  common = [(SPAKE2WebVerifier *)self common];
+  LOBYTE(error) = [common processMsg2Web:msg2Copy error:error];
 
-  return a4;
+  return error;
 }
 
 - (BOOL)isVerified
 {
-  v2 = [(SPAKE2WebVerifier *)self common];
-  v3 = [v2 isVerified];
+  common = [(SPAKE2WebVerifier *)self common];
+  isVerified = [common isVerified];
 
-  return v3;
+  return isVerified;
 }
 
 - (id)getKey
 {
-  v2 = [(SPAKE2WebVerifier *)self common];
-  v3 = [v2 getRawSessionKey];
+  common = [(SPAKE2WebVerifier *)self common];
+  getRawSessionKey = [common getRawSessionKey];
 
-  return v3;
+  return getRawSessionKey;
 }
 
-- (id)encryptMessageAsBinary:(id)a3 error:(id *)a4
+- (id)encryptMessageAsBinary:(id)binary error:(id *)error
 {
-  v6 = a3;
-  v7 = [(SPAKE2WebVerifier *)self common];
-  v8 = [v7 _encryptMessageAsBinary:v6 info:@"webVerifier" error:a4];
+  binaryCopy = binary;
+  common = [(SPAKE2WebVerifier *)self common];
+  v8 = [common _encryptMessageAsBinary:binaryCopy info:@"webVerifier" error:error];
 
   return v8;
 }
 
-- (id)decryptMessageInBinary:(id)a3 error:(id *)a4
+- (id)decryptMessageInBinary:(id)binary error:(id *)error
 {
-  v6 = a3;
-  v7 = [(SPAKE2WebVerifier *)self common];
-  v8 = [v7 _decryptMessageInBinary:v6 info:@"webProver" error:a4];
+  binaryCopy = binary;
+  common = [(SPAKE2WebVerifier *)self common];
+  v8 = [common _decryptMessageInBinary:binaryCopy info:@"webProver" error:error];
 
   return v8;
 }
 
-- (id)encryptMessageAsBase64:(id)a3 error:(id *)a4
+- (id)encryptMessageAsBase64:(id)base64 error:(id *)error
 {
-  v6 = a3;
-  v7 = [(SPAKE2WebVerifier *)self common];
-  v8 = [v7 _encryptMessageAsBase64:v6 info:@"webVerifier" error:a4];
+  base64Copy = base64;
+  common = [(SPAKE2WebVerifier *)self common];
+  v8 = [common _encryptMessageAsBase64:base64Copy info:@"webVerifier" error:error];
 
   return v8;
 }
 
-- (id)decryptMessageInBase64:(id)a3 error:(id *)a4
+- (id)decryptMessageInBase64:(id)base64 error:(id *)error
 {
-  v6 = a3;
-  v7 = [(SPAKE2WebVerifier *)self common];
-  v8 = [v7 _decryptMessageInBase64:v6 info:@"webProver" error:a4];
+  base64Copy = base64;
+  common = [(SPAKE2WebVerifier *)self common];
+  v8 = [common _decryptMessageInBase64:base64Copy info:@"webProver" error:error];
 
   return v8;
 }
 
-- (id)_encodeBinary:(id)a3 withKey:(id)a4 error:(id *)a5
+- (id)_encodeBinary:(id)binary withKey:(id)key error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(SPAKE2WebVerifier *)self common];
-  v11 = [v10 _encodeBinary:v9 withKey:v8 info:@"webVerifier" error:a5];
+  keyCopy = key;
+  binaryCopy = binary;
+  common = [(SPAKE2WebVerifier *)self common];
+  v11 = [common _encodeBinary:binaryCopy withKey:keyCopy info:@"webVerifier" error:error];
 
   return v11;
 }
 
-- (id)_decodeBinary:(id)a3 withKey:(id)a4 error:(id *)a5
+- (id)_decodeBinary:(id)binary withKey:(id)key error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(SPAKE2WebVerifier *)self common];
-  v11 = [v10 _decodeBinary:v9 withKey:v8 info:@"webProver" error:a5];
+  keyCopy = key;
+  binaryCopy = binary;
+  common = [(SPAKE2WebVerifier *)self common];
+  v11 = [common _decodeBinary:binaryCopy withKey:keyCopy info:@"webProver" error:error];
 
   return v11;
 }
 
-- (id)_encodeBase64:(id)a3 withKey:(id)a4 error:(id *)a5
+- (id)_encodeBase64:(id)base64 withKey:(id)key error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(SPAKE2WebVerifier *)self common];
-  v11 = [v10 _encodeBase64:v9 withKey:v8 info:@"webVerifier" error:a5];
+  keyCopy = key;
+  base64Copy = base64;
+  common = [(SPAKE2WebVerifier *)self common];
+  v11 = [common _encodeBase64:base64Copy withKey:keyCopy info:@"webVerifier" error:error];
 
   return v11;
 }
 
-- (id)_decodeBase64:(id)a3 withKey:(id)a4 error:(id *)a5
+- (id)_decodeBase64:(id)base64 withKey:(id)key error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(SPAKE2WebVerifier *)self common];
-  v11 = [v10 _decodeBase64:v9 withKey:v8 info:@"webProver" error:a5];
+  keyCopy = key;
+  base64Copy = base64;
+  common = [(SPAKE2WebVerifier *)self common];
+  v11 = [common _decodeBase64:base64Copy withKey:keyCopy info:@"webProver" error:error];
 
   return v11;
 }
 
 - (id)testGetW0
 {
-  v2 = [(SPAKE2WebVerifier *)self common];
-  v3 = [v2 w0];
+  common = [(SPAKE2WebVerifier *)self common];
+  v3 = [common w0];
 
   return v3;
 }
 
 - (id)testGetW1
 {
-  v2 = [(SPAKE2WebVerifier *)self common];
-  v3 = [v2 w1];
+  common = [(SPAKE2WebVerifier *)self common];
+  v3 = [common w1];
 
   return v3;
 }
 
-- (BOOL)keyMatchesWith:(id)a3
+- (BOOL)keyMatchesWith:(id)with
 {
-  v4 = a3;
+  withCopy = with;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(SPAKE2WebVerifier *)self common];
-    v7 = [v6 raw_session_key];
-    v8 = [v5 common];
+    v5 = withCopy;
+    common = [(SPAKE2WebVerifier *)self common];
+    raw_session_key = [common raw_session_key];
+    common2 = [v5 common];
 
-    v9 = [v8 raw_session_key];
-    v10 = [v7 isEqualToData:v9];
+    raw_session_key2 = [common2 raw_session_key];
+    v10 = [raw_session_key isEqualToData:raw_session_key2];
   }
 
   else
@@ -267,9 +267,9 @@ LABEL_5:
 
 - (BOOL)hasKey
 {
-  v2 = [(SPAKE2WebVerifier *)self common];
-  v3 = [v2 raw_session_key];
-  v4 = v3 != 0;
+  common = [(SPAKE2WebVerifier *)self common];
+  raw_session_key = [common raw_session_key];
+  v4 = raw_session_key != 0;
 
   return v4;
 }

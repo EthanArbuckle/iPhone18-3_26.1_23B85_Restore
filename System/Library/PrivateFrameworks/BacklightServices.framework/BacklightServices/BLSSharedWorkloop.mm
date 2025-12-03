@@ -1,7 +1,7 @@
 @interface BLSSharedWorkloop
-+ (id)serialQueueWithQOSClass:(unsigned int)a3 label:(const char *)a4;
++ (id)serialQueueWithQOSClass:(unsigned int)class label:(const char *)label;
 + (id)workloop;
-+ (void)dispatchWithQOSClass:(unsigned int)a3 block:(id)a4;
++ (void)dispatchWithQOSClass:(unsigned int)class block:(id)block;
 @end
 
 @implementation BLSSharedWorkloop
@@ -25,18 +25,18 @@ uint64_t __29__BLSSharedWorkloop_workloop__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (void)dispatchWithQOSClass:(unsigned int)a3 block:(id)a4
++ (void)dispatchWithQOSClass:(unsigned int)class block:(id)block
 {
-  block = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, a3, 0, a4);
+  block = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, class, 0, block);
   v4 = +[BLSSharedWorkloop workloop];
   dispatch_async(v4, block);
 }
 
-+ (id)serialQueueWithQOSClass:(unsigned int)a3 label:(const char *)a4
++ (id)serialQueueWithQOSClass:(unsigned int)class label:(const char *)label
 {
-  v5 = dispatch_queue_attr_make_with_qos_class(0, a3, 0);
+  v5 = dispatch_queue_attr_make_with_qos_class(0, class, 0);
   v6 = +[BLSSharedWorkloop workloop];
-  v7 = dispatch_queue_create_with_target_V2(a4, v5, v6);
+  v7 = dispatch_queue_create_with_target_V2(label, v5, v6);
 
   return v7;
 }

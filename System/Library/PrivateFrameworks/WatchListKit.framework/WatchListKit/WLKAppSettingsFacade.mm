@@ -1,36 +1,36 @@
 @interface WLKAppSettingsFacade
-- (WLKAppSettingsFacade)initWithSettings:(id)a3;
+- (WLKAppSettingsFacade)initWithSettings:(id)settings;
 - (id)accessStatus;
-- (void)setAccessStatus:(id)a3;
+- (void)setAccessStatus:(id)status;
 @end
 
 @implementation WLKAppSettingsFacade
 
-- (WLKAppSettingsFacade)initWithSettings:(id)a3
+- (WLKAppSettingsFacade)initWithSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   v9.receiver = self;
   v9.super_class = WLKAppSettingsFacade;
   v6 = [(WLKAppSettingsFacade *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_settings, a3);
+    objc_storeStrong(&v6->_settings, settings);
   }
 
   return v7;
 }
 
-- (void)setAccessStatus:(id)a3
+- (void)setAccessStatus:(id)status
 {
-  v4 = [a3 unsignedIntegerValue];
-  [(WLKAppSettings *)self->_settings setAccessStatus:v4];
+  unsignedIntegerValue = [status unsignedIntegerValue];
+  [(WLKAppSettings *)self->_settings setAccessStatus:unsignedIntegerValue];
   v5 = +[WLKSettingsStore sharedSettings];
-  v6 = [(WLKAppSettings *)self->_settings channelID];
-  v7 = [(WLKAppSettings *)self->_settings externalID];
-  [v5 setStatus:v4 forChannelID:v6 externalID:v7];
+  channelID = [(WLKAppSettings *)self->_settings channelID];
+  externalID = [(WLKAppSettings *)self->_settings externalID];
+  [v5 setStatus:unsignedIntegerValue forChannelID:channelID externalID:externalID];
 
-  if (v4)
+  if (unsignedIntegerValue)
   {
     settings = self->_settings;
 
@@ -41,9 +41,9 @@
 - (id)accessStatus
 {
   v3 = +[WLKSettingsStore sharedSettings];
-  v4 = [(WLKAppSettings *)self->_settings channelID];
-  v5 = [(WLKAppSettings *)self->_settings externalID];
-  v6 = [v3 settingsForChannelID:v4 externalID:v5];
+  channelID = [(WLKAppSettings *)self->_settings channelID];
+  externalID = [(WLKAppSettings *)self->_settings externalID];
+  v6 = [v3 settingsForChannelID:channelID externalID:externalID];
 
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "accessStatus")}];
 

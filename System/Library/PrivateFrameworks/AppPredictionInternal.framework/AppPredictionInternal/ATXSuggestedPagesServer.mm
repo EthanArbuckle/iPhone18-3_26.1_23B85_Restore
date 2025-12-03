@@ -1,11 +1,11 @@
 @interface ATXSuggestedPagesServer
 + (id)sharedInstance;
 - (ATXSuggestedPagesServer)init;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (int64_t)_fetchPageTypeForModeUUID:(id)a3;
-- (void)prewarmCachedSuggestedPagesWithActivity:(id)a3;
-- (void)suggestedPagesWithFilter:(id)a3 layoutOptions:(id)a4 completionHandler:(id)a5;
-- (void)updateSuggestedPagesWithCompletionHandler:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (int64_t)_fetchPageTypeForModeUUID:(id)d;
+- (void)prewarmCachedSuggestedPagesWithActivity:(id)activity;
+- (void)suggestedPagesWithFilter:(id)filter layoutOptions:(id)options completionHandler:(id)handler;
+- (void)updateSuggestedPagesWithCompletionHandler:(id)handler;
 @end
 
 @implementation ATXSuggestedPagesServer
@@ -90,21 +90,21 @@ void __31__ATXSuggestedPagesServer_init__block_invoke_3()
   [v0 evictCachedSuggestedPages];
 }
 
-- (void)suggestedPagesWithFilter:(id)a3 layoutOptions:(id)a4 completionHandler:(id)a5
+- (void)suggestedPagesWithFilter:(id)filter layoutOptions:(id)options completionHandler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  filterCopy = filter;
+  optionsCopy = options;
+  handlerCopy = handler;
   v11 = os_transaction_create();
-  if ([v8 pageType] == 2 || !objc_msgSend(v8, "pageType"))
+  if ([filterCopy pageType] == 2 || !objc_msgSend(filterCopy, "pageType"))
   {
-    v13 = [v8 modeUUID];
+    modeUUID = [filterCopy modeUUID];
 
-    if (!v13)
+    if (!modeUUID)
     {
 LABEL_10:
-      (*(v10 + 2))(v10, MEMORY[0x277CBEBF8], 0);
+      (*(handlerCopy + 2))(handlerCopy, MEMORY[0x277CBEBF8], 0);
       goto LABEL_11;
     }
 
@@ -115,22 +115,22 @@ LABEL_10:
       _os_log_impl(&dword_2263AA000, v14, OS_LOG_TYPE_DEFAULT, "ATXSuggestedPagesServer: looking up mode type via DND", &v26, 2u);
     }
 
-    v15 = [v8 modeUUID];
-    v12 = [(ATXSuggestedPagesServer *)self _fetchPageTypeForModeUUID:v15];
+    modeUUID2 = [filterCopy modeUUID];
+    pageType = [(ATXSuggestedPagesServer *)self _fetchPageTypeForModeUUID:modeUUID2];
   }
 
   else
   {
-    v12 = [v8 pageType];
+    pageType = [filterCopy pageType];
   }
 
-  if (v12 < 4 || v12 == 12)
+  if (pageType < 4 || pageType == 12)
   {
     goto LABEL_10;
   }
 
   v17 = objc_opt_new();
-  v18 = [v17 cachedSuggestedPagesForPageType:v12];
+  v18 = [v17 cachedSuggestedPagesForPageType:pageType];
   v19 = [v18 count];
   v20 = __atxlog_handle_modes();
   v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT);
@@ -144,7 +144,7 @@ LABEL_10:
       _os_log_impl(&dword_2263AA000, v20, OS_LOG_TYPE_DEFAULT, "ATXSuggestedPagesServer: using cached pages for page type: %{public}@", &v26, 0xCu);
     }
 
-    (*(v10 + 2))(v10, v18, 0);
+    (*(handlerCopy + 2))(handlerCopy, v18, 0);
   }
 
   else
@@ -158,26 +158,26 @@ LABEL_10:
     }
 
     v24 = objc_opt_new();
-    v25 = [v24 generateSuggestedPagesForPageType:v12 layoutOptions:v9];
-    [v17 cacheSuggestedPages:v25 forPageType:v12];
-    (*(v10 + 2))(v10, v25, 0);
+    v25 = [v24 generateSuggestedPagesForPageType:pageType layoutOptions:optionsCopy];
+    [v17 cacheSuggestedPages:v25 forPageType:pageType];
+    (*(handlerCopy + 2))(handlerCopy, v25, 0);
   }
 
 LABEL_11:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateSuggestedPagesWithCompletionHandler:(id)a3
+- (void)updateSuggestedPagesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(ATXSuggestedPagesServer *)self prewarmCachedSuggestedPagesWithActivity:0];
-  v4[2](v4, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)prewarmCachedSuggestedPagesWithActivity:(id)a3
+- (void)prewarmCachedSuggestedPagesWithActivity:(id)activity
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  activityCopy = activity;
   v4 = os_transaction_create();
   v5 = objc_opt_new();
   v6 = objc_opt_new();
@@ -186,7 +186,7 @@ LABEL_11:
   while (1)
   {
     v9 = objc_autoreleasePoolPush();
-    if ([v3 didDefer])
+    if ([activityCopy didDefer])
     {
       break;
     }
@@ -215,14 +215,14 @@ LABEL_8:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)_fetchPageTypeForModeUUID:(id)a3
+- (int64_t)_fetchPageTypeForModeUUID:(id)d
 {
   v3 = MEMORY[0x277CEB440];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
-  v6 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v4];
+  dCopy = d;
+  sharedInstance = [v3 sharedInstance];
+  v6 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:dCopy];
 
-  v7 = [v5 dndModeForDNDModeWithUUID:v6];
+  v7 = [sharedInstance dndModeForDNDModeWithUUID:v6];
 
   if (!v7)
   {
@@ -231,8 +231,8 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v8 = [v7 semanticType];
-  if ((v8 + 1) >= 0xB)
+  semanticType = [v7 semanticType];
+  if ((semanticType + 1) >= 0xB)
   {
     v10 = __atxlog_handle_modes();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -243,15 +243,15 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v9 = v8 + 3;
+  v9 = semanticType + 3;
 LABEL_8:
 
   return v9;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = __atxlog_handle_modes();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -259,16 +259,16 @@ LABEL_8:
     _os_log_impl(&dword_2263AA000, v6, OS_LOG_TYPE_DEFAULT, "ATXSuggestedPagesServer: connection attempted", v12, 2u);
   }
 
-  v7 = [v5 valueForEntitlement:@"com.apple.proactive.SuggestedPages"];
+  v7 = [connectionCopy valueForEntitlement:@"com.apple.proactive.SuggestedPages"];
   if (v7 && (objc_opt_respondsToSelector() & 1) != 0 && ([v7 BOOLValue] & 1) != 0)
   {
     v8 = ATXSuggestedPagesInterface();
-    [v5 setExportedInterface:v8];
+    [connectionCopy setExportedInterface:v8];
 
-    [v5 setExportedObject:self];
-    [v5 setInterruptionHandler:&__block_literal_global_46_0];
-    [v5 setInvalidationHandler:&__block_literal_global_49_1];
-    [v5 resume];
+    [connectionCopy setExportedObject:self];
+    [connectionCopy setInterruptionHandler:&__block_literal_global_46_0];
+    [connectionCopy setInvalidationHandler:&__block_literal_global_49_1];
+    [connectionCopy resume];
     v9 = 1;
   }
 
@@ -277,7 +277,7 @@ LABEL_8:
     v10 = __atxlog_handle_modes();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [ATXSuggestedPagesServer listener:v5 shouldAcceptNewConnection:v10];
+      [ATXSuggestedPagesServer listener:connectionCopy shouldAcceptNewConnection:v10];
     }
 
     v9 = 0;

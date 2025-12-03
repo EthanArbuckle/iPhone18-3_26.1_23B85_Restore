@@ -1,13 +1,13 @@
 @interface HeadphoneSpecifier
-- (_TtC20HeadphoneCommonUIKit18HeadphoneSpecifier)initWithName:(id)a3 target:(id)a4 set:(SEL)a5 get:(SEL)a6 detail:(Class)a7 cell:(int64_t)a8 edit:(Class)a9;
-- (id)specifierEnabledWithSpecifier:(id)a3;
-- (void)buttonTappedWithSender:(id)a3;
-- (void)setSepcifierEnabledWithEnabled:(id)a3 sepcifier:(id)a4;
+- (_TtC20HeadphoneCommonUIKit18HeadphoneSpecifier)initWithName:(id)name target:(id)target set:(SEL)set get:(SEL)get detail:(Class)detail cell:(int64_t)cell edit:(Class)edit;
+- (id)specifierEnabledWithSpecifier:(id)specifier;
+- (void)buttonTappedWithSender:(id)sender;
+- (void)setSepcifierEnabledWithEnabled:(id)enabled sepcifier:(id)sepcifier;
 @end
 
 @implementation HeadphoneSpecifier
 
-- (void)buttonTappedWithSender:(id)a3
+- (void)buttonTappedWithSender:(id)sender
 {
   swift_unknownObjectRetain();
   MEMORY[0x1E69E5928](self);
@@ -18,39 +18,39 @@
   MEMORY[0x1E69E5920](self);
 }
 
-- (id)specifierEnabledWithSpecifier:(id)a3
+- (id)specifierEnabledWithSpecifier:(id)specifier
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](specifier);
   MEMORY[0x1E69E5928](self);
-  v7 = sub_1AC3A1C34(a3);
+  v7 = sub_1AC3A1C34(specifier);
   MEMORY[0x1E69E5920](self);
-  MEMORY[0x1E69E5920](a3);
+  MEMORY[0x1E69E5920](specifier);
 
   return v7;
 }
 
-- (void)setSepcifierEnabledWithEnabled:(id)a3 sepcifier:(id)a4
+- (void)setSepcifierEnabledWithEnabled:(id)enabled sepcifier:(id)sepcifier
 {
   swift_unknownObjectRetain();
-  MEMORY[0x1E69E5928](a4);
+  MEMORY[0x1E69E5928](sepcifier);
   MEMORY[0x1E69E5928](self);
-  sub_1AC3A1DAC(a3, a4);
+  sub_1AC3A1DAC(enabled, sepcifier);
   MEMORY[0x1E69E5920](self);
-  MEMORY[0x1E69E5920](a4);
+  MEMORY[0x1E69E5920](sepcifier);
   swift_unknownObjectRelease();
 }
 
-- (_TtC20HeadphoneCommonUIKit18HeadphoneSpecifier)initWithName:(id)a3 target:(id)a4 set:(SEL)a5 get:(SEL)a6 detail:(Class)a7 cell:(int64_t)a8 edit:(Class)a9
+- (_TtC20HeadphoneCommonUIKit18HeadphoneSpecifier)initWithName:(id)name target:(id)target set:(SEL)set get:(SEL)get detail:(Class)detail cell:(int64_t)cell edit:(Class)edit
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](name);
   swift_unknownObjectRetain();
-  if (a3)
+  if (name)
   {
     sub_1AC3B7EF4();
-    MEMORY[0x1E69E5920](a3);
+    MEMORY[0x1E69E5920](name);
   }
 
-  if (a4)
+  if (target)
   {
     sub_1AC3B8384();
     sub_1AC377D20(v13, v14);
@@ -62,12 +62,12 @@
     memset(v14, 0, sizeof(v14));
   }
 
-  if (a7)
+  if (detail)
   {
     swift_getObjCClassMetadata();
   }
 
-  if (a9)
+  if (edit)
   {
     ObjCClassMetadata = swift_getObjCClassMetadata();
   }

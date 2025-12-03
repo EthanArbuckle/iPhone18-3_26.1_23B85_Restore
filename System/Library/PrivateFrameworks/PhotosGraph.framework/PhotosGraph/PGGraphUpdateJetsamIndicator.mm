@@ -1,7 +1,7 @@
 @interface PGGraphUpdateJetsamIndicator
 - (BOOL)updateDidCauseJetsam;
-- (PGGraphUpdateJetsamIndicator)initWithIndicatorDirectoryURL:(id)a3;
-- (PGGraphUpdateJetsamIndicator)initWithPhotoLibrary:(id)a3;
+- (PGGraphUpdateJetsamIndicator)initWithIndicatorDirectoryURL:(id)l;
+- (PGGraphUpdateJetsamIndicator)initWithPhotoLibrary:(id)library;
 - (id)description;
 - (void)_readIndicator;
 - (void)_removeIndicator;
@@ -14,15 +14,15 @@
 - (void)_removeIndicator
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(PGGraphUpdateJetsamIndicator *)self indicatorURL];
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v3 path];
-  v6 = [v4 fileExistsAtPath:v5];
+  indicatorURL = [(PGGraphUpdateJetsamIndicator *)self indicatorURL];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [indicatorURL path];
+  v6 = [defaultManager fileExistsAtPath:path];
 
   if (v6)
   {
     v10 = 0;
-    v7 = [v4 removeItemAtURL:v3 error:&v10];
+    v7 = [defaultManager removeItemAtURL:indicatorURL error:&v10];
     v8 = v10;
     if ((v7 & 1) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
     {
@@ -46,8 +46,8 @@
 - (void)_readIndicator
 {
   v3 = MEMORY[0x277CBEA90];
-  v4 = [(PGGraphUpdateJetsamIndicator *)self indicatorURL];
-  v5 = [v3 dataWithContentsOfURL:v4];
+  indicatorURL = [(PGGraphUpdateJetsamIndicator *)self indicatorURL];
+  v5 = [v3 dataWithContentsOfURL:indicatorURL];
 
   if (v5)
   {
@@ -58,22 +58,22 @@
     if (v6)
     {
       v9 = [v6 objectForKeyedSubscript:@"retryCount"];
-      v10 = [v9 integerValue];
+      integerValue = [v9 integerValue];
     }
 
     else
     {
-      v10 = 0;
+      integerValue = 0;
     }
   }
 
   else
   {
     v8 = 0;
-    v10 = 0;
+    integerValue = 0;
   }
 
-  [(PGGraphUpdateJetsamIndicator *)self setRetryCount:v10];
+  [(PGGraphUpdateJetsamIndicator *)self setRetryCount:integerValue];
   [(PGGraphUpdateJetsamIndicator *)self setIndicatorExists:v8];
 }
 
@@ -99,9 +99,9 @@
   v7 = v6;
   if (v5)
   {
-    v8 = [(PGGraphUpdateJetsamIndicator *)self indicatorURL];
+    indicatorURL = [(PGGraphUpdateJetsamIndicator *)self indicatorURL];
     v12 = v7;
-    v9 = [v5 writeToURL:v8 options:1073741825 error:&v12];
+    v9 = [v5 writeToURL:indicatorURL options:1073741825 error:&v12];
     v10 = v12;
 
     if ((v9 & 1) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
@@ -125,8 +125,8 @@
 - (BOOL)updateDidCauseJetsam
 {
   [(PGGraphUpdateJetsamIndicator *)self _readIndicator];
-  v3 = [(PGGraphUpdateJetsamIndicator *)self retryCount];
-  if (v3 < [(PGGraphUpdateJetsamIndicator *)self maxRetryCount])
+  retryCount = [(PGGraphUpdateJetsamIndicator *)self retryCount];
+  if (retryCount < [(PGGraphUpdateJetsamIndicator *)self maxRetryCount])
   {
     return 0;
   }
@@ -143,21 +143,21 @@
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:{-[PGGraphUpdateJetsamIndicator retryCount](self, "retryCount")}];
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:{-[PGGraphUpdateJetsamIndicator maxRetryCount](self, "maxRetryCount")}];
   v7 = [MEMORY[0x277CCABB0] numberWithBool:{-[PGGraphUpdateJetsamIndicator indicatorExists](self, "indicatorExists")}];
-  v8 = [(PGGraphUpdateJetsamIndicator *)self indicatorURL];
-  v9 = [v3 stringWithFormat:@"%@ - retryCount: %@ (maxRetryCount: %@), indicatorExists: %@, indicator URL: %@", v4, v5, v6, v7, v8];
+  indicatorURL = [(PGGraphUpdateJetsamIndicator *)self indicatorURL];
+  v9 = [v3 stringWithFormat:@"%@ - retryCount: %@ (maxRetryCount: %@), indicatorExists: %@, indicator URL: %@", v4, v5, v6, v7, indicatorURL];
 
   return v9;
 }
 
-- (PGGraphUpdateJetsamIndicator)initWithIndicatorDirectoryURL:(id)a3
+- (PGGraphUpdateJetsamIndicator)initWithIndicatorDirectoryURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = PGGraphUpdateJetsamIndicator;
   v5 = [(PGGraphUpdateJetsamIndicator *)&v9 init];
   if (v5)
   {
-    v6 = [v4 URLByAppendingPathComponent:@"updatejetsam.plist"];
+    v6 = [lCopy URLByAppendingPathComponent:@"updatejetsam.plist"];
     indicatorURL = v5->_indicatorURL;
     v5->_indicatorURL = v6;
 
@@ -167,10 +167,10 @@
   return v5;
 }
 
-- (PGGraphUpdateJetsamIndicator)initWithPhotoLibrary:(id)a3
+- (PGGraphUpdateJetsamIndicator)initWithPhotoLibrary:(id)library
 {
-  v4 = [a3 pg_urlForGraphApplicationData];
-  v5 = [(PGGraphUpdateJetsamIndicator *)self initWithIndicatorDirectoryURL:v4];
+  pg_urlForGraphApplicationData = [library pg_urlForGraphApplicationData];
+  v5 = [(PGGraphUpdateJetsamIndicator *)self initWithIndicatorDirectoryURL:pg_urlForGraphApplicationData];
 
   return v5;
 }

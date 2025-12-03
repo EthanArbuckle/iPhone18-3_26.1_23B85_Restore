@@ -1,22 +1,22 @@
 @interface MPHSBrowserDelegate
-- (void)browser:(id)a3 didAddLibrary:(id)a4;
-- (void)browser:(id)a3 didRemoveLibrary:(id)a4;
+- (void)browser:(id)browser didAddLibrary:(id)library;
+- (void)browser:(id)browser didRemoveLibrary:(id)library;
 @end
 
 @implementation MPHSBrowserDelegate
 
-- (void)browser:(id)a3 didRemoveLibrary:(id)a4
+- (void)browser:(id)browser didRemoveLibrary:(id)library
 {
-  v5 = a3;
-  v6 = a4;
+  browserCopy = browser;
+  libraryCopy = library;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __48__MPHSBrowserDelegate_browser_didRemoveLibrary___block_invoke;
   v9[3] = &unk_1E76823C0;
-  v10 = v6;
-  v11 = v5;
-  v7 = v5;
-  v8 = v6;
+  v10 = libraryCopy;
+  v11 = browserCopy;
+  v7 = browserCopy;
+  v8 = libraryCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v9);
 }
 
@@ -83,15 +83,15 @@ void __48__MPHSBrowserDelegate_browser_didRemoveLibrary___block_invoke(uint64_t 
 LABEL_14:
 }
 
-- (void)browser:(id)a3 didAddLibrary:(id)a4
+- (void)browser:(id)browser didAddLibrary:(id)library
 {
-  v4 = a4;
+  libraryCopy = library;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __45__MPHSBrowserDelegate_browser_didAddLibrary___block_invoke;
   block[3] = &unk_1E7682518;
-  v7 = v4;
-  v5 = v4;
+  v7 = libraryCopy;
+  v5 = libraryCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 

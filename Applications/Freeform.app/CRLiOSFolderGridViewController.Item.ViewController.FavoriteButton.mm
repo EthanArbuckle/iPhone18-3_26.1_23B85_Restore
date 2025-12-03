@@ -1,6 +1,6 @@
 @interface CRLiOSFolderGridViewController.Item.ViewController.FavoriteButton
 - (CGSize)intrinsicContentSize;
-- (_TtCCCC8Freeform30CRLiOSFolderGridViewController4Item14ViewController14FavoriteButton)initWithFrame:(CGRect)a3;
+- (_TtCCCC8Freeform30CRLiOSFolderGridViewController4Item14ViewController14FavoriteButton)initWithFrame:(CGRect)frame;
 @end
 
 @implementation CRLiOSFolderGridViewController.Item.ViewController.FavoriteButton
@@ -14,7 +14,7 @@
   return result;
 }
 
-- (_TtCCCC8Freeform30CRLiOSFolderGridViewController4Item14ViewController14FavoriteButton)initWithFrame:(CGRect)a3
+- (_TtCCCC8Freeform30CRLiOSFolderGridViewController4Item14ViewController14FavoriteButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

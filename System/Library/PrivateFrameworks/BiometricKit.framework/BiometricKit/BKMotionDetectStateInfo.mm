@@ -1,14 +1,14 @@
 @interface BKMotionDetectStateInfo
-- (BKMotionDetectStateInfo)initWithMotionMatrix:(id)a3 motionDetectState:(id)a4;
+- (BKMotionDetectStateInfo)initWithMotionMatrix:(id)matrix motionDetectState:(id)state;
 @end
 
 @implementation BKMotionDetectStateInfo
 
-- (BKMotionDetectStateInfo)initWithMotionMatrix:(id)a3 motionDetectState:(id)a4
+- (BKMotionDetectStateInfo)initWithMotionMatrix:(id)matrix motionDetectState:(id)state
 {
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  matrixCopy = matrix;
+  stateCopy = state;
   v16.receiver = self;
   v16.super_class = BKMotionDetectStateInfo;
   v9 = [(BKMotionDetectStateInfo *)&v16 init];
@@ -18,16 +18,16 @@
     goto LABEL_9;
   }
 
-  objc_storeStrong(&v9->_motionMatrix, a3);
+  objc_storeStrong(&v9->_motionMatrix, matrix);
   v10->_motionDetectState = 0;
-  v11 = [v8 unsignedIntValue];
-  if (v11 == 2)
+  unsignedIntValue = [stateCopy unsignedIntValue];
+  if (unsignedIntValue == 2)
   {
     v12 = 2;
     goto LABEL_8;
   }
 
-  if (v11 == 1)
+  if (unsignedIntValue == 1)
   {
     v12 = 1;
 LABEL_8:
@@ -35,7 +35,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (v11)
+  if (unsignedIntValue)
   {
     if (__osLog)
     {

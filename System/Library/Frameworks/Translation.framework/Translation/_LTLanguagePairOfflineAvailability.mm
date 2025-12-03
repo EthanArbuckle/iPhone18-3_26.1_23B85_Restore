@@ -1,22 +1,22 @@
 @interface _LTLanguagePairOfflineAvailability
-- (_LTLanguagePairOfflineAvailability)initWithCoder:(id)a3;
-- (_LTLanguagePairOfflineAvailability)initWithLocales:(id)a3;
+- (_LTLanguagePairOfflineAvailability)initWithCoder:(id)coder;
+- (_LTLanguagePairOfflineAvailability)initWithLocales:(id)locales;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _LTLanguagePairOfflineAvailability
 
-- (_LTLanguagePairOfflineAvailability)initWithLocales:(id)a3
+- (_LTLanguagePairOfflineAvailability)initWithLocales:(id)locales
 {
-  v5 = a3;
+  localesCopy = locales;
   v14.receiver = self;
   v14.super_class = _LTLanguagePairOfflineAvailability;
   v6 = [(_LTLanguagePairOfflineAvailability *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pair, a3);
+    objc_storeStrong(&v6->_pair, locales);
     v7->_pairState = 3;
     sourceASRState = v7->_sourceASRState;
     v7->_sourceASRState = @"Unknown";
@@ -41,13 +41,13 @@
 
 - (id)description
 {
-  v3 = [(_LTLanguagePairOfflineAvailability *)self pair];
-  v4 = [v3 sourceLocale];
-  v5 = [v4 localeIdentifier];
+  pair = [(_LTLanguagePairOfflineAvailability *)self pair];
+  sourceLocale = [pair sourceLocale];
+  localeIdentifier = [sourceLocale localeIdentifier];
 
-  v6 = [(_LTLanguagePairOfflineAvailability *)self pair];
-  v7 = [v6 targetLocale];
-  v8 = [v7 localeIdentifier];
+  pair2 = [(_LTLanguagePairOfflineAvailability *)self pair];
+  targetLocale = [pair2 targetLocale];
+  localeIdentifier2 = [targetLocale localeIdentifier];
 
   pairState = self->_pairState;
   if (pairState > 2)
@@ -70,63 +70,63 @@
     v11 = &stru_284DBB9B8;
   }
 
-  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ <-> %@ | pair: %@ MT: %@ ASR-%@ : %@ ASR-%@: %@ %@", v5, v8, v10, self->_mtState, v5, self->_sourceASRState, v8, self->_targetASRState, v11];
+  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ <-> %@ | pair: %@ MT: %@ ASR-%@ : %@ ASR-%@: %@ %@", localeIdentifier, localeIdentifier2, v10, self->_mtState, localeIdentifier, self->_sourceASRState, localeIdentifier2, self->_targetASRState, v11];
 
   return v12;
 }
 
-- (_LTLanguagePairOfflineAvailability)initWithCoder:(id)a3
+- (_LTLanguagePairOfflineAvailability)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = _LTLanguagePairOfflineAvailability;
   v5 = [(_LTLanguagePairOfflineAvailability *)&v20 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pair"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pair"];
     pair = v5->_pair;
     v5->_pair = v6;
 
-    v5->_pairState = [v4 decodeIntegerForKey:@"pairState"];
-    v8 = [v4 decodeObjectForKey:@"sourceASRState"];
+    v5->_pairState = [coderCopy decodeIntegerForKey:@"pairState"];
+    v8 = [coderCopy decodeObjectForKey:@"sourceASRState"];
     sourceASRState = v5->_sourceASRState;
     v5->_sourceASRState = v8;
 
-    v10 = [v4 decodeObjectForKey:@"targetASRState"];
+    v10 = [coderCopy decodeObjectForKey:@"targetASRState"];
     targetASRState = v5->_targetASRState;
     v5->_targetASRState = v10;
 
-    v12 = [v4 decodeObjectForKey:@"sourceTTSState"];
+    v12 = [coderCopy decodeObjectForKey:@"sourceTTSState"];
     sourceTTSState = v5->_sourceTTSState;
     v5->_sourceTTSState = v12;
 
-    v14 = [v4 decodeObjectForKey:@"targetTTSState"];
+    v14 = [coderCopy decodeObjectForKey:@"targetTTSState"];
     targetTTSState = v5->_targetTTSState;
     v5->_targetTTSState = v14;
 
-    v16 = [v4 decodeObjectForKey:@"mtState"];
+    v16 = [coderCopy decodeObjectForKey:@"mtState"];
     mtState = v5->_mtState;
     v5->_mtState = v16;
 
-    v5->_needsUpdate = [v4 decodeBoolForKey:@"needsUpdate"];
+    v5->_needsUpdate = [coderCopy decodeBoolForKey:@"needsUpdate"];
     v18 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   pair = self->_pair;
-  v5 = a3;
-  [v5 encodeObject:pair forKey:@"pair"];
-  [v5 encodeInteger:self->_pairState forKey:@"pairState"];
-  [v5 encodeObject:self->_sourceASRState forKey:@"sourceASRState"];
-  [v5 encodeObject:self->_targetASRState forKey:@"targetASRState"];
-  [v5 encodeObject:self->_sourceTTSState forKey:@"sourceTTSState"];
-  [v5 encodeObject:self->_targetTTSState forKey:@"targetTTSState"];
-  [v5 encodeObject:self->_mtState forKey:@"mtState"];
-  [v5 encodeBool:self->_needsUpdate forKey:@"needsUpdate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:pair forKey:@"pair"];
+  [coderCopy encodeInteger:self->_pairState forKey:@"pairState"];
+  [coderCopy encodeObject:self->_sourceASRState forKey:@"sourceASRState"];
+  [coderCopy encodeObject:self->_targetASRState forKey:@"targetASRState"];
+  [coderCopy encodeObject:self->_sourceTTSState forKey:@"sourceTTSState"];
+  [coderCopy encodeObject:self->_targetTTSState forKey:@"targetTTSState"];
+  [coderCopy encodeObject:self->_mtState forKey:@"mtState"];
+  [coderCopy encodeBool:self->_needsUpdate forKey:@"needsUpdate"];
 }
 
 @end

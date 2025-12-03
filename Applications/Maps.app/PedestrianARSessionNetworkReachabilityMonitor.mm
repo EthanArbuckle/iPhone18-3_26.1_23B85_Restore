@@ -1,6 +1,6 @@
 @interface PedestrianARSessionNetworkReachabilityMonitor
 + ($6E15C01CA1BE37A4936191A84F7075E2)enablementGEOConfigKey;
-- (PedestrianARSessionNetworkReachabilityMonitor)initWithObserver:(id)a3;
+- (PedestrianARSessionNetworkReachabilityMonitor)initWithObserver:(id)observer;
 - (id)debugDescription;
 - (void)dealloc;
 - (void)updateState;
@@ -10,33 +10,33 @@
 
 - (id)debugDescription
 {
-  v3 = [objc_opt_class() friendlyName];
-  v4 = [(PedestrianARSessionNetworkReachabilityMonitor *)self networkObserver];
-  v5 = [v4 isNetworkReachable];
+  friendlyName = [objc_opt_class() friendlyName];
+  networkObserver = [(PedestrianARSessionNetworkReachabilityMonitor *)self networkObserver];
+  isNetworkReachable = [networkObserver isNetworkReachable];
   v6 = @"NO";
-  if (v5)
+  if (isNetworkReachable)
   {
     v6 = @"YES";
   }
 
-  v7 = [NSString stringWithFormat:@"%@\nnetwork reachable: %@\n", v3, v6];
+  v7 = [NSString stringWithFormat:@"%@\nnetwork reachable: %@\n", friendlyName, v6];
 
   return v7;
 }
 
 - (void)updateState
 {
-  v3 = [(PedestrianARSessionNetworkReachabilityMonitor *)self networkObserver];
-  v4 = [v3 isNetworkReachable];
+  networkObserver = [(PedestrianARSessionNetworkReachabilityMonitor *)self networkObserver];
+  isNetworkReachable = [networkObserver isNetworkReachable];
 
   v5 = sub_100A6A3CC();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_INFO);
-  if (v4)
+  if (isNetworkReachable)
   {
     if (v6)
     {
       v8 = 134349056;
-      v9 = self;
+      selfCopy2 = self;
       v7 = "[%{public}p] Detected that network is reachable; updating state";
 LABEL_6:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, v7, &v8, 0xCu);
@@ -46,12 +46,12 @@ LABEL_6:
   else if (v6)
   {
     v8 = 134349056;
-    v9 = self;
+    selfCopy2 = self;
     v7 = "[%{public}p] Detected that network is not reachable; updating state";
     goto LABEL_6;
   }
 
-  [(PedestrianARSessionMonitor *)self setShouldShowPedestrianAR:v4];
+  [(PedestrianARSessionMonitor *)self setShouldShowPedestrianAR:isNetworkReachable];
 }
 
 - (void)dealloc
@@ -60,7 +60,7 @@ LABEL_6:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}p] Dealloc", buf, 0xCu);
   }
 
@@ -70,11 +70,11 @@ LABEL_6:
   [(PedestrianARSessionMonitor *)&v4 dealloc];
 }
 
-- (PedestrianARSessionNetworkReachabilityMonitor)initWithObserver:(id)a3
+- (PedestrianARSessionNetworkReachabilityMonitor)initWithObserver:(id)observer
 {
   v8.receiver = self;
   v8.super_class = PedestrianARSessionNetworkReachabilityMonitor;
-  v3 = [(PedestrianARSessionMonitor *)&v8 initWithObserver:a3];
+  v3 = [(PedestrianARSessionMonitor *)&v8 initWithObserver:observer];
   if (v3)
   {
     v4 = sub_100A6A3CC();

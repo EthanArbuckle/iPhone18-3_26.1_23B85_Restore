@@ -1,34 +1,34 @@
 @interface SSSCropControllerRootView
 - (BOOL)_layoutShouldShowCroppedContents;
 - (BOOL)_scrollViewIsInLiveUserEvent;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGAffineTransform)_transformToConvertFromRect:(SEL)a3 toRect:(CGRect)a4;
-- (CGRect)_cropRectFromOverlayView:(id)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGAffineTransform)_transformToConvertFromRect:(SEL)rect toRect:(CGRect)toRect;
+- (CGRect)_cropRectFromOverlayView:(id)view;
 - (CGRect)_currentScrollViewCropRect;
 - (CGRect)cropOverlayViewRectInWindow;
 - (CGRect)cropRect;
 - (CGSize)_minimumSizeForOverlayViewInUnitSpace;
 - (NSArray)gestureRecognizers;
-- (SSSCropControllerRootView)initWithFrame:(CGRect)a3;
+- (SSSCropControllerRootView)initWithFrame:(CGRect)frame;
 - (SSSCropControllerRootViewDelegate)delegate;
-- (UIEdgeInsets)_contentInsetForUnitRect:(CGRect)a3;
+- (UIEdgeInsets)_contentInsetForUnitRect:(CGRect)rect;
 - (double)_maximumZoomScale;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)unitRectCoordinateSpace;
 - (void)_aboutToChangeSize;
 - (void)_didChangeSize;
 - (void)_emitCropRectChangeMessage;
 - (void)_emitCropRectWillBeginChangingMessage;
-- (void)_handleOverlayViewResize:(id)a3;
-- (void)_layoutOccludingView:(id)a3 viewToCrop:(id)a4 overlayView:(id)a5;
-- (void)_layoutOccludingViewContainerView:(id)a3 occludingView:(id)a4 scrollViewMaskView:(id)a5;
-- (void)_layoutOverlayView:(id)a3 viewToCrop:(id)a4;
-- (void)_layoutScrollView:(id)a3;
-- (void)_layoutScrollViewContainerView:(id)a3 scrollView:(id)a4 overlayView:(id)a5;
-- (void)_layoutUpdateScrollViewContentLayout:(id)a3 viewToCrop:(id)a4;
-- (void)_layoutViewToCrop:(id)a3 scrollView:(id)a4;
-- (void)_moveToUnitRect:(CGRect)a3 animated:(BOOL)a4;
-- (void)_prolongZoomTimerStartingIfNotRunning:(BOOL)a3;
+- (void)_handleOverlayViewResize:(id)resize;
+- (void)_layoutOccludingView:(id)view viewToCrop:(id)crop overlayView:(id)overlayView;
+- (void)_layoutOccludingViewContainerView:(id)view occludingView:(id)occludingView scrollViewMaskView:(id)maskView;
+- (void)_layoutOverlayView:(id)view viewToCrop:(id)crop;
+- (void)_layoutScrollView:(id)view;
+- (void)_layoutScrollViewContainerView:(id)view scrollView:(id)scrollView overlayView:(id)overlayView;
+- (void)_layoutUpdateScrollViewContentLayout:(id)layout viewToCrop:(id)crop;
+- (void)_layoutViewToCrop:(id)crop scrollView:(id)view;
+- (void)_moveToUnitRect:(CGRect)rect animated:(BOOL)animated;
+- (void)_prolongZoomTimerStartingIfNotRunning:(BOOL)running;
 - (void)_scrollViewTerminalUserEventOccurred;
 - (void)_updateForScrollViewLiveUserEvent;
 - (void)_updateForScrollViewNonLiveUserEvent;
@@ -40,37 +40,37 @@
 - (void)commitInflightEdits;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)notifyScrollViewChanged:(id)a3;
-- (void)notifyZoomScaleChanged:(id)a3;
-- (void)prepareForFullscreenExperience:(BOOL)a3;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndZooming:(id)a3 withView:(id)a4 atScale:(double)a5;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewDidZoom:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillBeginZooming:(id)a3 withView:(id)a4;
-- (void)setBounds:(CGRect)a3;
-- (void)setCropEnabled:(BOOL)a3;
-- (void)setCropRect:(CGRect)a3;
-- (void)setEditMode:(int64_t)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setNumberOfTouchesRequiredForPanningCrop:(int64_t)a3;
-- (void)setOverlayViewUnitRect:(CGRect)a3;
-- (void)setPageCropRect:(CGRect)a3;
-- (void)setSnapRects:(id)a3;
-- (void)setState:(unint64_t)a3;
-- (void)setUndoCropRect:(CGRect)a3;
-- (void)setViewToCrop:(id)a3;
+- (void)notifyScrollViewChanged:(id)changed;
+- (void)notifyZoomScaleChanged:(id)changed;
+- (void)prepareForFullscreenExperience:(BOOL)experience;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndZooming:(id)zooming withView:(id)view atScale:(double)scale;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewDidZoom:(id)zoom;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillBeginZooming:(id)zooming withView:(id)view;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCropEnabled:(BOOL)enabled;
+- (void)setCropRect:(CGRect)rect;
+- (void)setEditMode:(int64_t)mode;
+- (void)setFrame:(CGRect)frame;
+- (void)setNumberOfTouchesRequiredForPanningCrop:(int64_t)crop;
+- (void)setOverlayViewUnitRect:(CGRect)rect;
+- (void)setPageCropRect:(CGRect)rect;
+- (void)setSnapRects:(id)rects;
+- (void)setState:(unint64_t)state;
+- (void)setUndoCropRect:(CGRect)rect;
+- (void)setViewToCrop:(id)crop;
 @end
 
 @implementation SSSCropControllerRootView
 
-- (SSSCropControllerRootView)initWithFrame:(CGRect)a3
+- (SSSCropControllerRootView)initWithFrame:(CGRect)frame
 {
   v17.receiver = self;
   v17.super_class = SSSCropControllerRootView;
-  v3 = [(SSSCropControllerRootView *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SSSCropControllerRootView *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [v3 setAutoresizesSubviews:0];
   [v3 setAccessibilityIdentifier:@"Screenshots-Crop-Root-View"];
   *(v3 + 43) = 0x3FF0000000000000;
@@ -130,17 +130,17 @@
   [(SSSCropControllerRootView *)&v3 dealloc];
 }
 
-- (void)prepareForFullscreenExperience:(BOOL)a3
+- (void)prepareForFullscreenExperience:(BOOL)experience
 {
-  v3 = a3;
-  if ([(SSSCropControllerRootView *)self cropEnabled]|| v3)
+  experienceCopy = experience;
+  if ([(SSSCropControllerRootView *)self cropEnabled]|| experienceCopy)
   {
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_10000B3C4;
     v5[3] = &unk_1000BA0B8;
     v5[4] = self;
-    v6 = v3;
+    v6 = experienceCopy;
     [UIView performWithoutAnimation:v5];
   }
 }
@@ -190,12 +190,12 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(SSSCropControllerRootView *)self frame];
   if (v9 == width && v8 == height)
   {
@@ -214,12 +214,12 @@
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(SSSCropControllerRootView *)self bounds];
   if (v9 == width && v8 == height)
   {
@@ -295,8 +295,8 @@
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v35 = [(SSSCropControllerRootView *)self gestureRecognizers];
-    v36 = [v35 countByEnumeratingWithState:&v40 objects:v44 count:16];
+    gestureRecognizers = [(SSSCropControllerRootView *)self gestureRecognizers];
+    v36 = [gestureRecognizers countByEnumeratingWithState:&v40 objects:v44 count:16];
     if (v36)
     {
       v37 = v36;
@@ -308,7 +308,7 @@
         {
           if (*v41 != v38)
           {
-            objc_enumerationMutation(v35);
+            objc_enumerationMutation(gestureRecognizers);
           }
 
           [*(*(&v40 + 1) + 8 * v39) setEnabled:{-[SSSCropControllerRootView cropEnabled](self, "cropEnabled")}];
@@ -316,7 +316,7 @@
         }
 
         while (v37 != v39);
-        v37 = [v35 countByEnumeratingWithState:&v40 objects:v44 count:16];
+        v37 = [gestureRecognizers countByEnumeratingWithState:&v40 objects:v44 count:16];
       }
 
       while (v37);
@@ -339,29 +339,29 @@
   return self->_editMode == 1;
 }
 
-- (void)_layoutScrollView:(id)a3
+- (void)_layoutScrollView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(SSSCropControllerRootView *)self bounds];
-  [v4 sss_setFrameUnanimatingIfChangingFromCGSizeZero:?];
-  v5 = [v4 panGestureRecognizer];
-  [v5 setMinimumNumberOfTouches:{-[SSSCropControllerRootView numberOfTouchesRequiredForPanningCrop](self, "numberOfTouchesRequiredForPanningCrop")}];
+  [viewCopy sss_setFrameUnanimatingIfChangingFromCGSizeZero:?];
+  panGestureRecognizer = [viewCopy panGestureRecognizer];
+  [panGestureRecognizer setMinimumNumberOfTouches:{-[SSSCropControllerRootView numberOfTouchesRequiredForPanningCrop](self, "numberOfTouchesRequiredForPanningCrop")}];
 
-  v6 = [v4 panGestureRecognizer];
+  panGestureRecognizer2 = [viewCopy panGestureRecognizer];
 
-  [v6 setMaximumNumberOfTouches:{-[SSSCropControllerRootView numberOfTouchesRequiredForPanningCrop](self, "numberOfTouchesRequiredForPanningCrop")}];
+  [panGestureRecognizer2 setMaximumNumberOfTouches:{-[SSSCropControllerRootView numberOfTouchesRequiredForPanningCrop](self, "numberOfTouchesRequiredForPanningCrop")}];
 }
 
-- (void)_layoutViewToCrop:(id)a3 scrollView:(id)a4
+- (void)_layoutViewToCrop:(id)crop scrollView:(id)view
 {
-  v23 = a3;
-  v6 = a4;
+  cropCopy = crop;
+  viewCopy = view;
   if (self->_showingPDF)
   {
     if (self->_editMode == 2)
     {
-      [v23 intrinsicContentSize];
-      [v6 convertSize:v23 fromView:?];
+      [cropCopy intrinsicContentSize];
+      [viewCopy convertSize:cropCopy fromView:?];
       v8 = v7;
       v10 = v9;
       x = CGPointZero.x;
@@ -373,7 +373,7 @@
     {
       viewToCrop = self->_viewToCrop;
       [(SSSCropControllerRootView *)self bounds];
-      [v6 convertRect:self fromView:?];
+      [viewCopy convertRect:self fromView:?];
     }
 
     [(SSSScreenshotContainerView *)viewToCrop sss_setFrameUnanimatingIfChangingFromCGSizeZero:x, y, v8, v10];
@@ -391,11 +391,11 @@
   }
 }
 
-- (void)_layoutOverlayView:(id)a3 viewToCrop:(id)a4
+- (void)_layoutOverlayView:(id)view viewToCrop:(id)crop
 {
-  v20 = a3;
-  v5 = [(SSSCropControllerRootView *)self unitRectCoordinateSpace];
-  [v5 convertRect:self toCoordinateSpace:{self->_overlayViewUnitRect.origin.x, self->_overlayViewUnitRect.origin.y, self->_overlayViewUnitRect.size.width, self->_overlayViewUnitRect.size.height}];
+  viewCopy = view;
+  unitRectCoordinateSpace = [(SSSCropControllerRootView *)self unitRectCoordinateSpace];
+  [unitRectCoordinateSpace convertRect:self toCoordinateSpace:{self->_overlayViewUnitRect.origin.x, self->_overlayViewUnitRect.origin.y, self->_overlayViewUnitRect.size.width, self->_overlayViewUnitRect.size.height}];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -414,22 +414,22 @@
     v13 = v17;
   }
 
-  [v20 sss_setFrameUnanimatingIfChangingFromCGSizeZero:{v7, v9, v11, v13}];
-  v18 = [(SSSCropControllerRootView *)self cropEnabled];
+  [viewCopy sss_setFrameUnanimatingIfChangingFromCGSizeZero:{v7, v9, v11, v13}];
+  cropEnabled = [(SSSCropControllerRootView *)self cropEnabled];
   v19 = 0.0;
-  if (v18)
+  if (cropEnabled)
   {
     v19 = 1.0;
   }
 
-  [v20 setAlpha:v19];
+  [viewCopy setAlpha:v19];
 }
 
-- (void)_layoutScrollViewContainerView:(id)a3 scrollView:(id)a4 overlayView:(id)a5
+- (void)_layoutScrollViewContainerView:(id)view scrollView:(id)scrollView overlayView:(id)overlayView
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  scrollViewCopy = scrollView;
+  overlayViewCopy = overlayView;
   if (self->_viewToCrop)
   {
     if ([(SSSCropControllerRootView *)self _layoutShouldShowCroppedContents])
@@ -442,21 +442,21 @@
 
     else
     {
-      [(SSSCropControllerRootView *)self _cropRectFromOverlayView:v10];
+      [(SSSCropControllerRootView *)self _cropRectFromOverlayView:overlayViewCopy];
       v12 = v20;
       v13 = v21;
       v11 = v22;
       v14 = v23;
     }
 
-    v24 = [(SSSCropControllerRootView *)self unitRectCoordinateSpace];
-    [v24 convertRect:self toCoordinateSpace:{v12, v13, v11, v14}];
+    unitRectCoordinateSpace = [(SSSCropControllerRootView *)self unitRectCoordinateSpace];
+    [unitRectCoordinateSpace convertRect:self toCoordinateSpace:{v12, v13, v11, v14}];
     v26 = v25;
     v28 = v27;
     v30 = v29;
     v32 = v31;
 
-    v19 = v8;
+    v19 = viewCopy;
     v15 = v26;
     v16 = v28;
     v17 = v30;
@@ -465,22 +465,22 @@
 
   else
   {
-    [v9 frame];
-    v19 = v8;
+    [scrollViewCopy frame];
+    v19 = viewCopy;
   }
 
   [v19 sss_setFrameUnanimatingIfChangingFromCGSizeZero:{v15, v16, v17, v18}];
 }
 
-- (void)_layoutOccludingView:(id)a3 viewToCrop:(id)a4 overlayView:(id)a5
+- (void)_layoutOccludingView:(id)view viewToCrop:(id)crop overlayView:(id)overlayView
 {
-  v18 = a3;
-  v8 = a5;
-  v9 = a4;
+  viewCopy = view;
+  overlayViewCopy = overlayView;
+  cropCopy = crop;
   [(SSSCropControllerRootView *)self bounds];
-  [v18 sss_setFrameUnanimatingIfChangingFromCGSizeZero:?];
-  [v9 bounds];
-  [(SSSCropControllerRootView *)self convertRect:v9 fromView:?];
+  [viewCopy sss_setFrameUnanimatingIfChangingFromCGSizeZero:?];
+  [cropCopy bounds];
+  [(SSSCropControllerRootView *)self convertRect:cropCopy fromView:?];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -499,37 +499,37 @@
     v24.size.width = v15;
     v24.size.height = v17;
     v22 = CGRectIntersection(v21, v24);
-    [v18 sss_setFrameUnanimatingIfChangingFromCGSizeZero:{v22.origin.x, v22.origin.y, v22.size.width, v22.size.height}];
-    [v8 bounds];
-    [v18 convertRect:v8 fromView:?];
-    [v18 setUnoccludedRect:?];
+    [viewCopy sss_setFrameUnanimatingIfChangingFromCGSizeZero:{v22.origin.x, v22.origin.y, v22.size.width, v22.size.height}];
+    [overlayViewCopy bounds];
+    [viewCopy convertRect:overlayViewCopy fromView:?];
+    [viewCopy setUnoccludedRect:?];
   }
 }
 
-- (void)_layoutOccludingViewContainerView:(id)a3 occludingView:(id)a4 scrollViewMaskView:(id)a5
+- (void)_layoutOccludingViewContainerView:(id)view occludingView:(id)occludingView scrollViewMaskView:(id)maskView
 {
-  v9 = a3;
-  v8 = a5;
-  [a4 frame];
+  viewCopy = view;
+  maskViewCopy = maskView;
+  [occludingView frame];
   if (self->_viewToCrop)
   {
-    [v8 bounds];
-    [(SSSCropControllerRootView *)self convertRect:v8 fromView:?];
+    [maskViewCopy bounds];
+    [(SSSCropControllerRootView *)self convertRect:maskViewCopy fromView:?];
   }
 
-  [v9 sss_setFrameUnanimatingIfChangingFromCGSizeZero:?];
+  [viewCopy sss_setFrameUnanimatingIfChangingFromCGSizeZero:?];
 }
 
-- (void)_layoutUpdateScrollViewContentLayout:(id)a3 viewToCrop:(id)a4
+- (void)_layoutUpdateScrollViewContentLayout:(id)layout viewToCrop:(id)crop
 {
-  v6 = a3;
-  if (a4)
+  layoutCopy = layout;
+  if (crop)
   {
-    v18 = v6;
-    v7 = a4;
+    v18 = layoutCopy;
+    cropCopy = crop;
     [v18 minimumZoomScale];
     v9 = v8;
-    [v7 intrinsicContentSize];
+    [cropCopy intrinsicContentSize];
     v11 = v10;
     v13 = v12;
 
@@ -554,18 +554,18 @@
     [(SSSCropControllerRootView *)self _contentInsetForUnitRect:x, y, width, height];
     [v18 setContentInset:?];
     [(SSSCropControllerRootView *)self notifyScrollViewChanged:v18];
-    v6 = v18;
+    layoutCopy = v18;
   }
 }
 
-- (void)setViewToCrop:(id)a3
+- (void)setViewToCrop:(id)crop
 {
-  v4 = a3;
+  cropCopy = crop;
   [(SSSCropControllerRootView *)self layoutIfNeeded];
   [(SSSScreenshotContainerView *)self->_viewToCrop removeFromSuperview];
   viewToCrop = self->_viewToCrop;
-  self->_viewToCrop = v4;
-  v6 = v4;
+  self->_viewToCrop = cropCopy;
+  v6 = cropCopy;
 
   [(SSSScrollView *)self->_scrollView addSubview:self->_viewToCrop];
 
@@ -606,24 +606,24 @@
   }
 }
 
-- (void)setEditMode:(int64_t)a3
+- (void)setEditMode:(int64_t)mode
 {
-  if (self->_editMode != a3)
+  if (self->_editMode != mode)
   {
-    self->_editMode = a3;
-    self->_showingPDF = (a3 - 1) < 2;
+    self->_editMode = mode;
+    self->_showingPDF = (mode - 1) < 2;
     [(SSSCropControllerRootView *)self _updatePDFViewForEditModeChangeIfNecessary];
     overlayView = self->_overlayView;
 
-    [(SSSCropOverlayView *)overlayView setEditMode:a3];
+    [(SSSCropOverlayView *)overlayView setEditMode:mode];
   }
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     [(SSSCropControllerRootView *)self _updateOverlayView];
     overlayView = self->_overlayView;
     editMode = self->_editMode;
@@ -726,8 +726,8 @@ LABEL_15:
 
     else
     {
-      v20 = [(SSSCropControllerRootView *)self traitCollection];
-      [v20 displayCornerRadius];
+      traitCollection = [(SSSCropControllerRootView *)self traitCollection];
+      [traitCollection displayCornerRadius];
       v14 = v21;
     }
   }
@@ -735,26 +735,26 @@ LABEL_15:
   if (vabdd_f64(self->_lastScrollViewContainerCornerRadius, v14) > 0.09)
   {
     self->_lastScrollViewContainerCornerRadius = v14;
-    v22 = [(UIView *)self->_scrollViewContainerView layer];
-    [v22 setCornerRadius:+[UIView areAnimationsEnabled](UIView animated:{"areAnimationsEnabled"), v14}];
+    layer = [(UIView *)self->_scrollViewContainerView layer];
+    [layer setCornerRadius:+[UIView areAnimationsEnabled](UIView animated:{"areAnimationsEnabled"), v14}];
   }
 }
 
-- (void)setOverlayViewUnitRect:(CGRect)a3
+- (void)setOverlayViewUnitRect:(CGRect)rect
 {
   v5.origin.x = 0.0;
   v5.origin.y = 0.0;
   v5.size.width = 1.0;
   v5.size.height = 1.0;
-  self->_overlayViewUnitRect = CGRectIntersection(a3, v5);
+  self->_overlayViewUnitRect = CGRectIntersection(rect, v5);
 
   [(SSSCropControllerRootView *)self setNeedsLayout];
 }
 
-- (void)_handleOverlayViewResize:(id)a3
+- (void)_handleOverlayViewResize:(id)resize
 {
-  v34 = a3;
-  [v34 locationInView:self];
+  resizeCopy = resize;
+  [resizeCopy locationInView:self];
   if (v4 >= 0.0)
   {
     v6 = v4;
@@ -797,12 +797,12 @@ LABEL_15:
     v11 = v7;
   }
 
-  v12 = [(SSSCropControllerRootView *)self unitRectCoordinateSpace];
-  [v12 convertPoint:self fromCoordinateSpace:{v9, v11}];
+  unitRectCoordinateSpace = [(SSSCropControllerRootView *)self unitRectCoordinateSpace];
+  [unitRectCoordinateSpace convertPoint:self fromCoordinateSpace:{v9, v11}];
   v14 = v13;
   v16 = v15;
 
-  if ([v34 state] == 1)
+  if ([resizeCopy state] == 1)
   {
     self->_overlayViewResizeGestureIsTracking = 1;
     size = self->_overlayViewUnitRect.size;
@@ -814,8 +814,8 @@ LABEL_15:
     v21 = v20;
     if (sub_100035CB0(v19, v20))
     {
-      [v34 setEnabled:0];
-      [v34 setEnabled:1];
+      [resizeCopy setEnabled:0];
+      [resizeCopy setEnabled:1];
       self->_overlayViewResizeGestureIsTracking = 0;
     }
 
@@ -832,13 +832,13 @@ LABEL_15:
     goto LABEL_25;
   }
 
-  if ([v34 state] == 2)
+  if ([resizeCopy state] == 2)
   {
     [(SSSCropControllerRootView *)self _minimumSizeForOverlayViewInUnitSpace];
     v23 = v22;
     v25 = v24;
-    v26 = [(SSSCropControllerRootView *)self snapRects];
-    v27 = sub_100033E74(self->_grabPositionForResize.edge, self->_grabPositionForResize.corner, v26, self->_overlayViewUnitRectWhenResizeBegan.origin.x, self->_overlayViewUnitRectWhenResizeBegan.origin.y, self->_overlayViewUnitRectWhenResizeBegan.size.width, self->_overlayViewUnitRectWhenResizeBegan.size.height, self->_locationOfResizeGestureInUsWhenResizeBegan.x, self->_locationOfResizeGestureInUsWhenResizeBegan.y, v14, v16, v23, v25);
+    snapRects = [(SSSCropControllerRootView *)self snapRects];
+    v27 = sub_100033E74(self->_grabPositionForResize.edge, self->_grabPositionForResize.corner, snapRects, self->_overlayViewUnitRectWhenResizeBegan.origin.x, self->_overlayViewUnitRectWhenResizeBegan.origin.y, self->_overlayViewUnitRectWhenResizeBegan.size.width, self->_overlayViewUnitRectWhenResizeBegan.size.height, self->_locationOfResizeGestureInUsWhenResizeBegan.x, self->_locationOfResizeGestureInUsWhenResizeBegan.y, v14, v16, v23, v25);
     v29 = v28;
     v31 = v30;
     v33 = v32;
@@ -847,7 +847,7 @@ LABEL_15:
     goto LABEL_25;
   }
 
-  if ([v34 state] == 3)
+  if ([resizeCopy state] == 3)
   {
     [(SSSCropControllerRootView *)self _prolongZoomTimerStartingIfNotRunning:1];
 LABEL_24:
@@ -855,7 +855,7 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  if ([v34 state] == 5 || objc_msgSend(v34, "state") == 4)
+  if ([resizeCopy state] == 5 || objc_msgSend(resizeCopy, "state") == 4)
   {
     [(SSSCropControllerRootView *)self setOverlayViewUnitRect:self->_overlayViewUnitRectWhenResizeBegan.origin.x, self->_overlayViewUnitRectWhenResizeBegan.origin.y, self->_overlayViewUnitRectWhenResizeBegan.size.width, self->_overlayViewUnitRectWhenResizeBegan.size.height];
     goto LABEL_24;
@@ -871,8 +871,8 @@ LABEL_25:
   v3 = sub_100034278();
   v5 = v4;
   y = CGRectZero.origin.y;
-  v7 = [(SSSCropControllerRootView *)self unitRectCoordinateSpace];
-  [v7 convertRect:self->_viewToCrop fromCoordinateSpace:{CGRectZero.origin.x, y, v3, v5}];
+  unitRectCoordinateSpace = [(SSSCropControllerRootView *)self unitRectCoordinateSpace];
+  [unitRectCoordinateSpace convertRect:self->_viewToCrop fromCoordinateSpace:{CGRectZero.origin.x, y, v3, v5}];
   v9 = v8;
   v11 = v10;
 
@@ -892,10 +892,10 @@ LABEL_25:
   [(SSSCropControllerRootView *)self _moveToUnitRect:1 animated:?];
 }
 
-- (void)_prolongZoomTimerStartingIfNotRunning:(BOOL)a3
+- (void)_prolongZoomTimerStartingIfNotRunning:(BOOL)running
 {
-  v5 = [(SSSCropControllerRootView *)self _zoomTimerRunning];
-  if (a3 || v5)
+  _zoomTimerRunning = [(SSSCropControllerRootView *)self _zoomTimerRunning];
+  if (running || _zoomTimerRunning)
   {
     [(SSSCropControllerRootView *)self _cancelZoomTimer];
     self->_zoomInTimer = [NSTimer scheduledTimerWithTimeInterval:self target:"_zoomTimerFired" selector:0 userInfo:0 repeats:1.0];
@@ -904,11 +904,11 @@ LABEL_25:
   }
 }
 
-- (UIEdgeInsets)_contentInsetForUnitRect:(CGRect)a3
+- (UIEdgeInsets)_contentInsetForUnitRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  [(SSSScrollView *)self->_scrollView bounds:a3.origin.x];
+  height = rect.size.height;
+  width = rect.size.width;
+  [(SSSScrollView *)self->_scrollView bounds:rect.origin.x];
   v7 = v6;
   v9 = v8;
   [(SSSScreenshotContainerView *)self->_viewToCrop intrinsicContentSize];
@@ -938,17 +938,17 @@ LABEL_25:
   return result;
 }
 
-- (void)_moveToUnitRect:(CGRect)a3 animated:(BOOL)a4
+- (void)_moveToUnitRect:(CGRect)rect animated:(BOOL)animated
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  animatedCopy = animated;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(SSSCropControllerRootView *)self layoutIfNeeded];
   [(SSSCropControllerRootView *)self setOverlayViewUnitRect:x, y, width, height];
-  v10 = [(SSSCropControllerRootView *)self unitRectCoordinateSpace];
-  [v10 convertRect:self->_viewToCrop toCoordinateSpace:{x, y, width, height}];
+  unitRectCoordinateSpace = [(SSSCropControllerRootView *)self unitRectCoordinateSpace];
+  [unitRectCoordinateSpace convertRect:self->_viewToCrop toCoordinateSpace:{x, y, width, height}];
   v19 = v11;
   v13 = v12;
   v15 = v14;
@@ -968,7 +968,7 @@ LABEL_25:
   v21[11] = v15;
   v21[12] = v17;
   v18 = objc_retainBlock(v21);
-  if (v4)
+  if (animatedCopy)
   {
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
@@ -984,12 +984,12 @@ LABEL_25:
   }
 }
 
-- (void)setCropRect:(CGRect)a3
+- (void)setCropRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(SSSCropControllerRootView *)self _cancelZoomTimer];
   self->_cropRect.origin.x = x;
   self->_cropRect.origin.y = y;
@@ -1000,12 +1000,12 @@ LABEL_25:
   [(SSSCropControllerRootView *)self setNeedsLayout];
 }
 
-- (void)setPageCropRect:(CGRect)a3
+- (void)setPageCropRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(SSSCropControllerRootView *)self _cancelZoomTimer];
   [(SSSCropControllerRootView *)self _aboutToChangeSize];
   self->_cropRect.origin.x = x;
@@ -1022,12 +1022,12 @@ LABEL_25:
   [(SSSCropControllerRootView *)self _moveToUnitRect:0 animated:v8, v9, v10, v11];
 }
 
-- (void)setUndoCropRect:(CGRect)a3
+- (void)setUndoCropRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(SSSCropControllerRootView *)self _cancelZoomTimer];
   self->_cropRect.origin.x = x;
   self->_cropRect.origin.y = y;
@@ -1080,17 +1080,17 @@ LABEL_25:
 
 - (void)_updateScrollViewZoomScaleEndpoints
 {
-  v3 = [(SSSCropControllerRootView *)self viewToCrop];
-  if (v3)
+  viewToCrop = [(SSSCropControllerRootView *)self viewToCrop];
+  if (viewToCrop)
   {
-    v4 = v3;
+    v4 = viewToCrop;
     [(SSSCropControllerRootView *)self bounds];
     IsEmpty = CGRectIsEmpty(v23);
 
     if (!IsEmpty)
     {
-      v6 = [(SSSCropControllerRootView *)self viewToCrop];
-      [v6 intrinsicContentSize];
+      viewToCrop2 = [(SSSCropControllerRootView *)self viewToCrop];
+      [viewToCrop2 intrinsicContentSize];
       v8 = v7;
       v10 = v9;
 
@@ -1138,9 +1138,9 @@ LABEL_25:
 
 - (CGRect)_currentScrollViewCropRect
 {
-  v3 = [(SSSCropControllerRootView *)self unitRectCoordinateSpace];
+  unitRectCoordinateSpace = [(SSSCropControllerRootView *)self unitRectCoordinateSpace];
   [(SSSCropControllerRootView *)self bounds];
-  [v3 convertRect:self fromCoordinateSpace:?];
+  [unitRectCoordinateSpace convertRect:self fromCoordinateSpace:?];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1157,14 +1157,14 @@ LABEL_25:
   return result;
 }
 
-- (CGRect)_cropRectFromOverlayView:(id)a3
+- (CGRect)_cropRectFromOverlayView:(id)view
 {
-  if (a3)
+  if (view)
   {
-    v4 = a3;
-    v5 = [(SSSCropControllerRootView *)self unitRectCoordinateSpace];
-    [v4 bounds];
-    [v5 convertRect:v4 fromCoordinateSpace:?];
+    viewCopy = view;
+    unitRectCoordinateSpace = [(SSSCropControllerRootView *)self unitRectCoordinateSpace];
+    [viewCopy bounds];
+    [unitRectCoordinateSpace convertRect:viewCopy fromCoordinateSpace:?];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -1199,8 +1199,8 @@ LABEL_25:
 
 - (void)_emitCropRectWillBeginChangingMessage
 {
-  v3 = [(SSSCropControllerRootView *)self delegate];
-  [v3 cropControllerRootViewWillBeginChangingCropRect:self];
+  delegate = [(SSSCropControllerRootView *)self delegate];
+  [delegate cropControllerRootViewWillBeginChangingCropRect:self];
 }
 
 - (void)_emitCropRectChangeMessage
@@ -1214,8 +1214,8 @@ LABEL_25:
   self->_cropRect.origin.y = v5;
   self->_cropRect.size.width = v7;
   self->_cropRect.size.height = v9;
-  v11 = [(SSSCropControllerRootView *)self delegate];
-  [v11 cropControllerRootView:self changedToCropRect:{v4, v6, v8, v10}];
+  delegate = [(SSSCropControllerRootView *)self delegate];
+  [delegate cropControllerRootView:self changedToCropRect:{v4, v6, v8, v10}];
 
   scrollView = self->_scrollView;
 
@@ -1231,16 +1231,16 @@ LABEL_25:
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
   [(SSSCropControllerRootView *)self _scrollViewTerminalUserEventOccurred];
 
   [(SSSCropControllerRootView *)self _updateForScrollViewNonLiveUserEvent];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
     [(SSSCropControllerRootView *)self _scrollViewTerminalUserEventOccurred];
   }
@@ -1301,16 +1301,16 @@ LABEL_25:
   [(SSSCropControllerRootView *)self setNeedsLayout];
 }
 
-- (CGAffineTransform)_transformToConvertFromRect:(SEL)a3 toRect:(CGRect)a4
+- (CGAffineTransform)_transformToConvertFromRect:(SEL)rect toRect:(CGRect)toRect
 {
   y = a5.origin.y;
   x = a5.origin.x;
-  height = a4.size.height;
-  width = a4.size.width;
-  v9 = a4.origin.y;
-  v10 = a4.origin.x;
+  height = toRect.size.height;
+  width = toRect.size.width;
+  v9 = toRect.origin.y;
+  v10 = toRect.origin.x;
   memset(&v16, 0, sizeof(v16));
-  CGAffineTransformMakeScale(&v16, a5.size.width / a4.size.width, a5.size.width / a4.size.width);
+  CGAffineTransformMakeScale(&v16, a5.size.width / toRect.size.width, a5.size.width / toRect.size.width);
   v15 = v16;
   v17.origin.x = v10;
   v17.origin.y = v9;
@@ -1349,7 +1349,7 @@ LABEL_25:
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   [(UILongPressGestureRecognizer *)self->_overlayViewResizeGesture setEnabled:0];
   [(SSSCropControllerRootView *)self _emitCropRectWillBeginChangingMessage];
@@ -1357,21 +1357,21 @@ LABEL_25:
   [(SSSCropControllerRootView *)self _updateForScrollViewLiveUserEvent];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
+  scrollCopy = scroll;
   if ([(SSSCropControllerRootView *)self _scrollViewIsInLiveUserEvent])
   {
     [(SSSCropControllerRootView *)self _updateForScrollViewLiveUserEvent];
     [(SSSCropControllerRootView *)self setNeedsLayout];
   }
 
-  [(SSSCropControllerRootView *)self notifyScrollViewChanged:v4];
+  [(SSSCropControllerRootView *)self notifyScrollViewChanged:scrollCopy];
 }
 
-- (void)scrollViewDidZoom:(id)a3
+- (void)scrollViewDidZoom:(id)zoom
 {
-  v4 = a3;
+  zoomCopy = zoom;
   if ([(SSSCropControllerRootView *)self _scrollViewIsInLiveUserEvent])
   {
     [(SSSCropControllerRootView *)self _updateForScrollViewLiveUserEvent];
@@ -1382,10 +1382,10 @@ LABEL_25:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(SSSCropControllerRootView *)self scrollView];
-  v6 = [v5 subviews];
+  scrollView = [(SSSCropControllerRootView *)self scrollView];
+  subviews = [scrollView subviews];
 
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v7 = [subviews countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1397,7 +1397,7 @@ LABEL_25:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subviews);
         }
 
         v11 = *(*(&v12 + 1) + 8 * v10);
@@ -1410,7 +1410,7 @@ LABEL_25:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [subviews countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -1418,34 +1418,34 @@ LABEL_25:
 
   if (!self->_scrollViewIsInUserInitiatedZoom)
   {
-    [(SSSCropControllerRootView *)self notifyZoomScaleChanged:v4];
+    [(SSSCropControllerRootView *)self notifyZoomScaleChanged:zoomCopy];
   }
 
-  [(SSSCropControllerRootView *)self notifyScrollViewChanged:v4];
+  [(SSSCropControllerRootView *)self notifyScrollViewChanged:zoomCopy];
 }
 
-- (void)notifyScrollViewChanged:(id)a3
+- (void)notifyScrollViewChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   if (objc_opt_respondsToSelector())
   {
-    [(SSSScreenshotContainerView *)self->_viewToCrop cropControllerDidUpdateScrollView:v4];
+    [(SSSScreenshotContainerView *)self->_viewToCrop cropControllerDidUpdateScrollView:changedCopy];
   }
 }
 
-- (void)notifyZoomScaleChanged:(id)a3
+- (void)notifyZoomScaleChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   if (objc_opt_respondsToSelector())
   {
-    [(SSSScreenshotContainerView *)self->_viewToCrop cropControllerDidZoomInScrollView:v4];
+    [(SSSScreenshotContainerView *)self->_viewToCrop cropControllerDidZoomInScrollView:changedCopy];
   }
 }
 
-- (void)scrollViewWillBeginZooming:(id)a3 withView:(id)a4
+- (void)scrollViewWillBeginZooming:(id)zooming withView:(id)view
 {
-  v5 = [a3 pinchGestureRecognizer];
-  self->_scrollViewIsInUserInitiatedZoom = [v5 state] == 1;
+  pinchGestureRecognizer = [zooming pinchGestureRecognizer];
+  self->_scrollViewIsInUserInitiatedZoom = [pinchGestureRecognizer state] == 1;
 
   if (self->_scrollViewIsInUserInitiatedZoom)
   {
@@ -1454,15 +1454,15 @@ LABEL_25:
   }
 }
 
-- (void)scrollViewDidEndZooming:(id)a3 withView:(id)a4 atScale:(double)a5
+- (void)scrollViewDidEndZooming:(id)zooming withView:(id)view atScale:(double)scale
 {
   if (self->_scrollViewIsInUserInitiatedZoom)
   {
-    v6 = a3;
+    zoomingCopy = zooming;
     [(SSSCropControllerRootView *)self _updateForScrollViewLiveUserEvent];
     self->_scrollViewIsInUserInitiatedZoom = 0;
     [(SSSCropControllerRootView *)self _scrollViewTerminalUserEventOccurred];
-    [(SSSCropControllerRootView *)self notifyZoomScaleChanged:v6];
+    [(SSSCropControllerRootView *)self notifyZoomScaleChanged:zoomingCopy];
 
     [(SSSCropControllerRootView *)self _updateOverlayView];
   }
@@ -1477,87 +1477,87 @@ LABEL_25:
     [v3 addObject:?];
   }
 
-  v5 = [(SSSScrollView *)self->_scrollView panGestureRecognizer];
+  panGestureRecognizer = [(SSSScrollView *)self->_scrollView panGestureRecognizer];
 
-  if (v5)
+  if (panGestureRecognizer)
   {
-    v6 = [(SSSScrollView *)self->_scrollView panGestureRecognizer];
-    [v4 addObject:v6];
+    panGestureRecognizer2 = [(SSSScrollView *)self->_scrollView panGestureRecognizer];
+    [v4 addObject:panGestureRecognizer2];
   }
 
-  v7 = [(SSSScrollView *)self->_scrollView pinchGestureRecognizer];
+  pinchGestureRecognizer = [(SSSScrollView *)self->_scrollView pinchGestureRecognizer];
 
-  if (v7)
+  if (pinchGestureRecognizer)
   {
-    v8 = [(SSSScrollView *)self->_scrollView pinchGestureRecognizer];
-    [v4 addObject:v8];
+    pinchGestureRecognizer2 = [(SSSScrollView *)self->_scrollView pinchGestureRecognizer];
+    [v4 addObject:pinchGestureRecognizer2];
   }
 
   return v4;
 }
 
-- (void)setNumberOfTouchesRequiredForPanningCrop:(int64_t)a3
+- (void)setNumberOfTouchesRequiredForPanningCrop:(int64_t)crop
 {
-  if (self->_numberOfTouchesRequiredForPanningCrop != a3)
+  if (self->_numberOfTouchesRequiredForPanningCrop != crop)
   {
-    self->_numberOfTouchesRequiredForPanningCrop = a3;
+    self->_numberOfTouchesRequiredForPanningCrop = crop;
     [(SSSCropControllerRootView *)self setNeedsLayout];
   }
 }
 
-- (void)setCropEnabled:(BOOL)a3
+- (void)setCropEnabled:(BOOL)enabled
 {
-  if ([(SSSCropControllerRootView *)self cropEnabled]!= a3)
+  if ([(SSSCropControllerRootView *)self cropEnabled]!= enabled)
   {
-    self->_cropEnabled = a3;
+    self->_cropEnabled = enabled;
 
     [(SSSCropControllerRootView *)self setNeedsLayout];
   }
 }
 
-- (void)setSnapRects:(id)a3
+- (void)setSnapRects:(id)rects
 {
-  v5 = a3;
+  rectsCopy = rects;
   if (([(NSArray *)self->_snapRects isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_snapRects, a3);
+    objc_storeStrong(&self->_snapRects, rects);
     [(SSSCropControllerRootView *)self setNeedsLayout];
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   [(SSSCropOverlayView *)self->_overlayView convertPoint:self fromView:x, y];
   v9 = v8;
   v11 = v10;
   v14.receiver = self;
   v14.super_class = SSSCropControllerRootView;
-  if ([(SSSCropControllerRootView *)&v14 pointInside:v7 withEvent:x, y])
+  if ([(SSSCropControllerRootView *)&v14 pointInside:eventCopy withEvent:x, y])
   {
     v12 = 1;
   }
 
   else
   {
-    v12 = [(SSSCropOverlayView *)self->_overlayView pointInside:v7 withEvent:v9, v11];
+    v12 = [(SSSCropOverlayView *)self->_overlayView pointInside:eventCopy withEvent:v9, v11];
   }
 
   return v12;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v14.receiver = self;
   v14.super_class = SSSCropControllerRootView;
-  v7 = a4;
-  v8 = [(SSSCropControllerRootView *)&v14 hitTest:v7 withEvent:x, y];
+  eventCopy = event;
+  v8 = [(SSSCropControllerRootView *)&v14 hitTest:eventCopy withEvent:x, y];
   [(SSSCropOverlayView *)self->_overlayView convertPoint:self fromView:x, y, v14.receiver, v14.super_class];
-  v9 = [(SSSCropOverlayView *)self->_overlayView hitTest:v7 withEvent:?];
+  v9 = [(SSSCropOverlayView *)self->_overlayView hitTest:eventCopy withEvent:?];
 
   v10 = v9;
   if (v9 || ([(SSSUncroppedOccludingView *)self->_occludingView convertPoint:self fromView:x, y], v11 = [(SSSUncroppedOccludingView *)self->_occludingView pointCanPassthrough:?], v10 = v8, v11))
@@ -1575,9 +1575,9 @@ LABEL_25:
 
 - (CGRect)cropOverlayViewRectInWindow
 {
-  v3 = [(SSSCropControllerRootView *)self window];
+  window = [(SSSCropControllerRootView *)self window];
   [(SSSCropOverlayView *)self->_overlayView bounds];
-  [v3 convertRect:self->_overlayView fromView:?];
+  [window convertRect:self->_overlayView fromView:?];
   v5 = v4;
   v7 = v6;
   v9 = v8;

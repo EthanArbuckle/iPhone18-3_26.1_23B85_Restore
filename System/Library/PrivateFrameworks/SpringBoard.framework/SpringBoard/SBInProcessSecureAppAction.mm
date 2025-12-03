@@ -1,41 +1,41 @@
 @interface SBInProcessSecureAppAction
-- (SBInProcessSecureAppAction)initWithType:(unint64_t)a3 applicationSceneEntity:(id)a4 handler:(id)a5;
-- (SBInProcessSecureAppAction)initWithType:(unint64_t)a3 hostableEntity:(id)a4 handler:(id)a5;
+- (SBInProcessSecureAppAction)initWithType:(unint64_t)type applicationSceneEntity:(id)entity handler:(id)handler;
+- (SBInProcessSecureAppAction)initWithType:(unint64_t)type hostableEntity:(id)entity handler:(id)handler;
 @end
 
 @implementation SBInProcessSecureAppAction
 
-- (SBInProcessSecureAppAction)initWithType:(unint64_t)a3 applicationSceneEntity:(id)a4 handler:(id)a5
+- (SBInProcessSecureAppAction)initWithType:(unint64_t)type applicationSceneEntity:(id)entity handler:(id)handler
 {
-  v7 = a4;
+  entityCopy = entity;
   v8 = *MEMORY[0x277D67008];
-  v9 = a5;
+  handlerCopy = handler;
   v10 = SBSIdentifierForSecureAppType();
   v13.receiver = self;
   v13.super_class = SBInProcessSecureAppAction;
-  v11 = [(SBInProcessSecureAppAction *)&v13 initWithType:1 slot:v8 identifier:v10 configurationObject:0 handler:v9];
+  v11 = [(SBInProcessSecureAppAction *)&v13 initWithType:1 slot:v8 identifier:v10 configurationObject:0 handler:handlerCopy];
 
   if (v11)
   {
-    [(SBInProcessSecureAppAction *)v11 setApplicationSceneEntity:v7];
+    [(SBInProcessSecureAppAction *)v11 setApplicationSceneEntity:entityCopy];
   }
 
   return v11;
 }
 
-- (SBInProcessSecureAppAction)initWithType:(unint64_t)a3 hostableEntity:(id)a4 handler:(id)a5
+- (SBInProcessSecureAppAction)initWithType:(unint64_t)type hostableEntity:(id)entity handler:(id)handler
 {
-  v7 = a4;
+  entityCopy = entity;
   v8 = *MEMORY[0x277D67008];
-  v9 = a5;
+  handlerCopy = handler;
   v10 = SBSIdentifierForSecureAppType();
   v13.receiver = self;
   v13.super_class = SBInProcessSecureAppAction;
-  v11 = [(SBInProcessSecureAppAction *)&v13 initWithType:1 slot:v8 identifier:v10 configurationObject:0 handler:v9];
+  v11 = [(SBInProcessSecureAppAction *)&v13 initWithType:1 slot:v8 identifier:v10 configurationObject:0 handler:handlerCopy];
 
   if (v11)
   {
-    [(SBInProcessSecureAppAction *)v11 setHostableEntity:v7];
+    [(SBInProcessSecureAppAction *)v11 setHostableEntity:entityCopy];
   }
 
   return v11;

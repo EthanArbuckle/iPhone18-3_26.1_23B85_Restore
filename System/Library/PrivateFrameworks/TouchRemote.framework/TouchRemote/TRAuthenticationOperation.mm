@@ -1,6 +1,6 @@
 @interface TRAuthenticationOperation
-- (BOOL)_canDoMagicAuthForAccount:(id)a3;
-- (void)_reportAuthMetrics:(id)a3 durationSeconds:(double)a4 authType:(int)a5 deviceType:(int)a6 sessionID:(id)a7 authServiceType:(int)a8;
+- (BOOL)_canDoMagicAuthForAccount:(id)account;
+- (void)_reportAuthMetrics:(id)metrics durationSeconds:(double)seconds authType:(int)type deviceType:(int)deviceType sessionID:(id)d authServiceType:(int)serviceType;
 - (void)execute;
 @end
 
@@ -11,7 +11,7 @@
   v107 = *MEMORY[0x277D85DE8];
   if ([(TRAuthenticationOperation *)self isCancelled])
   {
-    v94 = [objc_opt_class() userCancelledError];
+    userCancelledError = [objc_opt_class() userCancelledError];
     [(TROperation *)self finishWithError:?];
     v3 = *MEMORY[0x277D85DE8];
 
@@ -19,8 +19,8 @@
   }
 
   v4 = MEMORY[0x277CBEB58];
-  v5 = [(TRAuthenticationOperation *)self targetedServices];
-  v6 = [v4 setWithSet:v5];
+  targetedServices = [(TRAuthenticationOperation *)self targetedServices];
+  v6 = [v4 setWithSet:targetedServices];
 
   v91 = [MEMORY[0x277CBEB58] set];
   v7 = [MEMORY[0x277CCA9B8] errorWithDomain:? code:? userInfo:?];
@@ -29,16 +29,16 @@
     v8 = TRLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(TRAuthenticationOperation *)self shouldForceInteractiveAuth];
-      v10 = [(TRAuthenticationOperation *)self presentingViewController];
+      shouldForceInteractiveAuth = [(TRAuthenticationOperation *)self shouldForceInteractiveAuth];
+      presentingViewController = [(TRAuthenticationOperation *)self presentingViewController];
       *buf = 136315906;
       v101 = "[TRAuthenticationOperation execute]";
       v102 = 2112;
       v103 = v6;
       v104 = 1024;
-      *v105 = v9;
+      *v105 = shouldForceInteractiveAuth;
       *&v105[4] = 2112;
-      *&v105[6] = v10;
+      *&v105[6] = presentingViewController;
       _os_log_impl(&dword_26F2A2000, v8, OS_LOG_TYPE_DEFAULT, "%s: services: %@, shouldForceInteractiveAuth? %d, presentingViewController? %@", buf, 0x26u);
     }
   }
@@ -80,27 +80,27 @@ LABEL_125:
   v92 = v6;
   while (1)
   {
-    v13 = [v6 anyObject];
-    v14 = [v13 unsignedIntegerValue];
+    anyObject = [v6 anyObject];
+    unsignedIntegerValue = [anyObject unsignedIntegerValue];
 
-    v15 = [*(v12 + 1568) idmsAccountForAccountService:v14];
+    v15 = [*(v12 + 1568) idmsAccountForAccountService:unsignedIntegerValue];
     if (!v15)
     {
       break;
     }
 
     v16 = v15;
-    v17 = [MEMORY[0x277CF0130] sharedInstance];
-    v18 = [v17 transportableAuthKitAccount:v16];
+    mEMORY[0x277CF0130] = [MEMORY[0x277CF0130] sharedInstance];
+    v18 = [mEMORY[0x277CF0130] transportableAuthKitAccount:v16];
 
     v93 = [*(v12 + 1568) associatedAccountServicesForIDMSAccount:v18];
     v19 = [objc_alloc(MEMORY[0x277CBEB58]) initWithSet:v93];
     [v19 intersectSet:v6];
     [v6 minusSet:v19];
     v20 = v19;
-    v21 = [(TRAuthenticationOperation *)self shouldForceInteractiveAuth];
-    v22 = [(TRAuthenticationOperation *)self presentingViewController];
-    if (v22)
+    shouldForceInteractiveAuth2 = [(TRAuthenticationOperation *)self shouldForceInteractiveAuth];
+    presentingViewController2 = [(TRAuthenticationOperation *)self presentingViewController];
+    if (presentingViewController2)
     {
       v23 = 1;
     }
@@ -113,7 +113,7 @@ LABEL_125:
     v95 = v20;
     if ([(TRAuthenticationOperation *)self _canDoMagicAuthForAccount:v18])
     {
-      v26 = !v21;
+      v26 = !shouldForceInteractiveAuth2;
     }
 
     else
@@ -173,8 +173,8 @@ LABEL_64:
         }
 
         self->_authType = v50;
-        v51 = [v20 anyObject];
-        v52 = [v51 intValue];
+        anyObject2 = [v20 anyObject];
+        intValue = [anyObject2 intValue];
 
         if (_TRLogEnabled == 1)
         {
@@ -188,13 +188,13 @@ LABEL_64:
         }
 
         v54 = [TRProxyAuthOperation alloc];
-        v55 = [(TROperation *)self session];
-        v56 = [(TROperation *)v54 initWithSession:v55];
+        session = [(TROperation *)self session];
+        v56 = [(TROperation *)v54 initWithSession:session];
 
         [(TRProxyAuthOperation *)v56 setAccount:v18];
         [(TRProxyAuthOperation *)v56 setTargetedServices:v20];
-        v57 = [(TRAuthenticationOperation *)self presentingViewController];
-        [(TRProxyAuthOperation *)v56 setPresentingViewController:v57];
+        presentingViewController3 = [(TRAuthenticationOperation *)self presentingViewController];
+        [(TRProxyAuthOperation *)v56 setPresentingViewController:presentingViewController3];
 
         [(TRProxyAuthOperation *)v56 setShouldUseAIDA:[(TRAuthenticationOperation *)self shouldUseAIDA]];
         [(TRProxyAuthOperation *)v56 setIsForHomePod:self->_shouldSetupHomePod];
@@ -229,11 +229,11 @@ LABEL_64:
         proxyAuthStartTicks = self->_proxyAuthStartTicks;
         UpTicksToSecondsF();
         v62 = v61;
-        v63 = [(TROperation *)v56 result];
-        v64 = [(TROperation *)v56 error];
-        if (!v64)
+        result = [(TROperation *)v56 result];
+        error = [(TROperation *)v56 error];
+        if (!error)
         {
-          v64 = [v63 objectForKey:@"TRProxyAuthOperationErrorKey"];
+          error = [result objectForKey:@"TRProxyAuthOperationErrorKey"];
         }
 
         if (self->_shouldSetupHomePod)
@@ -246,7 +246,7 @@ LABEL_64:
           v65 = 2;
         }
 
-        [(TRAuthenticationOperation *)self _reportAuthMetrics:v64 durationSeconds:2 authType:v65 deviceType:self->_sessionID sessionID:v52 authServiceType:v62];
+        [(TRAuthenticationOperation *)self _reportAuthMetrics:error durationSeconds:2 authType:v65 deviceType:self->_sessionID sessionID:intValue authServiceType:v62];
         if (_TRLogEnabled == 1)
         {
           v66 = TRLogHandle();
@@ -255,14 +255,14 @@ LABEL_64:
             *buf = 136315394;
             v101 = "[TRAuthenticationOperation execute]";
             v102 = 2112;
-            v103 = v63;
+            v103 = result;
             _os_log_impl(&dword_26F2A2000, v66, OS_LOG_TYPE_DEFAULT, "%s Proxy auth finished with results %@", buf, 0x16u);
           }
         }
 
-        if (!v63)
+        if (!result)
         {
-          v86 = [(TROperation *)v56 error];
+          error2 = [(TROperation *)v56 error];
           if (_TRLogEnabled == 1)
           {
             v87 = TRLogHandle();
@@ -271,20 +271,20 @@ LABEL_64:
               *buf = 136315394;
               v101 = "[TRAuthenticationOperation execute]";
               v102 = 2112;
-              v103 = v86;
+              v103 = error2;
               _os_log_impl(&dword_26F2A2000, v87, OS_LOG_TYPE_DEFAULT, "%s Proxy auth failed with error: %@", buf, 0x16u);
             }
           }
 
-          [(TROperation *)self finishWithError:v86];
+          [(TROperation *)self finishWithError:error2];
 
           v6 = v92;
           goto LABEL_146;
         }
 
-        v67 = [v63 objectForKey:@"TRProxyAuthOperationUnauthenticatedServicesKey"];
+        v67 = [result objectForKey:@"TRProxyAuthOperationUnauthenticatedServicesKey"];
 
-        v68 = [v63 objectForKey:@"TRProxyAuthOperationErrorKey"];
+        v68 = [result objectForKey:@"TRProxyAuthOperationErrorKey"];
 
         v20 = v67;
         v7 = v68;
@@ -293,7 +293,7 @@ LABEL_64:
 
       if ([v20 count])
       {
-        v69 = [MEMORY[0x277CCAB68] string];
+        string = [MEMORY[0x277CCAB68] string];
         v96 = 0u;
         v97 = 0u;
         v98 = 0u;
@@ -314,7 +314,7 @@ LABEL_64:
               }
 
               v75 = StringFromTRAccountService([*(*(&v96 + 1) + 8 * i) unsignedIntegerValue]);
-              [v69 appendString:v75];
+              [string appendString:v75];
             }
 
             v72 = [v70 countByEnumeratingWithState:&v96 objects:v106 count:16];
@@ -332,7 +332,7 @@ LABEL_64:
             *buf = v89;
             v101 = "[TRAuthenticationOperation execute]";
             v102 = 2112;
-            v103 = v69;
+            v103 = string;
             v104 = 2112;
             *v105 = v20;
             *&v105[8] = 2112;
@@ -373,8 +373,8 @@ LABEL_105:
     }
 
     self->_authType = 1;
-    v30 = [v20 anyObject];
-    v31 = [v30 intValue];
+    anyObject3 = [v20 anyObject];
+    intValue2 = [anyObject3 intValue];
 
     if (_TRLogEnabled == 1)
     {
@@ -388,14 +388,14 @@ LABEL_105:
     }
 
     v33 = [TRCompanionAuthOperation alloc];
-    v34 = [(TROperation *)self session];
-    v29 = [(TROperation *)v33 initWithSession:v34];
+    session2 = [(TROperation *)self session];
+    v29 = [(TROperation *)v33 initWithSession:session2];
 
     [v29 setAccount:v18];
     [v29 setTargetedServices:v95];
     [v29 setShouldUseAIDA:[(TRAuthenticationOperation *)self shouldUseAIDA]];
-    v35 = [(TRAuthenticationOperation *)self presentingViewController];
-    [v29 setPresentingViewController:v35];
+    presentingViewController4 = [(TRAuthenticationOperation *)self presentingViewController];
+    [v29 setPresentingViewController:presentingViewController4];
 
     [v29 setIsForHomePod:self->_shouldSetupHomePod];
     [v29 setIsCLIMode:self->_isCLIMode];
@@ -429,11 +429,11 @@ LABEL_105:
     companionAuthStartTicks = self->_companionAuthStartTicks;
     UpTicksToSecondsF();
     v40 = v39;
-    v41 = [v29 result];
-    v42 = [v29 error];
-    if (!v42)
+    result2 = [v29 result];
+    error3 = [v29 error];
+    if (!error3)
     {
-      v42 = [v41 objectForKey:@"TRCompanionAuthOperationErrorKey"];
+      error3 = [result2 objectForKey:@"TRCompanionAuthOperationErrorKey"];
     }
 
     if (self->_shouldSetupHomePod)
@@ -446,7 +446,7 @@ LABEL_105:
       v43 = 2;
     }
 
-    [(TRAuthenticationOperation *)self _reportAuthMetrics:v42 durationSeconds:1 authType:v43 deviceType:self->_sessionID sessionID:v31 authServiceType:v40];
+    [(TRAuthenticationOperation *)self _reportAuthMetrics:error3 durationSeconds:1 authType:v43 deviceType:self->_sessionID sessionID:intValue2 authServiceType:v40];
     v20 = v95;
     if (_TRLogEnabled == 1)
     {
@@ -456,14 +456,14 @@ LABEL_105:
         *buf = 136315394;
         v101 = "[TRAuthenticationOperation execute]";
         v102 = 2112;
-        v103 = v41;
+        v103 = result2;
         _os_log_impl(&dword_26F2A2000, v44, OS_LOG_TYPE_DEFAULT, "%s companion auth finished with results %@", buf, 0x16u);
       }
     }
 
-    if (!v41)
+    if (!result2)
     {
-      v77 = [v29 error];
+      error4 = [v29 error];
       if (_TRLogEnabled == 1)
       {
         v78 = TRLogHandle();
@@ -473,7 +473,7 @@ LABEL_118:
           *buf = 136315394;
           v101 = "[TRAuthenticationOperation execute]";
           v102 = 2112;
-          v103 = v77;
+          v103 = error4;
           _os_log_impl(&dword_26F2A2000, v78, OS_LOG_TYPE_DEFAULT, "%s Companion auth failed with error: %@", buf, 0x16u);
         }
 
@@ -481,25 +481,25 @@ LABEL_119:
       }
 
 LABEL_120:
-      v90 = v41;
-      v79 = v42;
-      [(TROperation *)self finishWithError:v77];
+      v90 = result2;
+      v79 = error3;
+      [(TROperation *)self finishWithError:error4];
       v80 = 0;
       goto LABEL_121;
     }
 
     if (self->_shouldSetupHomePod)
     {
-      v45 = [v29 error];
-      if (v45)
+      error5 = [v29 error];
+      if (error5)
       {
-        v46 = v45;
-        v47 = [v29 error];
-        v48 = [v47 ak_isEligibleForProxiedAuthFallback];
+        v46 = error5;
+        error6 = [v29 error];
+        ak_isEligibleForProxiedAuthFallback = [error6 ak_isEligibleForProxiedAuthFallback];
 
-        if ((v48 & 1) == 0)
+        if ((ak_isEligibleForProxiedAuthFallback & 1) == 0)
         {
-          v77 = [v29 error];
+          error4 = [v29 error];
           v20 = v95;
           if (_TRLogEnabled == 1)
           {
@@ -517,9 +517,9 @@ LABEL_120:
       }
     }
 
-    v20 = [v41 objectForKey:@"TRCompanionAuthOperationUnauthenticatedServicesKey"];
+    v20 = [result2 objectForKey:@"TRCompanionAuthOperationUnauthenticatedServicesKey"];
 
-    v49 = [v41 objectForKey:@"TRCompanionAuthOperationErrorKey"];
+    v49 = [result2 objectForKey:@"TRCompanionAuthOperationErrorKey"];
 
     if ([v20 count])
     {
@@ -529,21 +529,21 @@ LABEL_120:
       goto LABEL_63;
     }
 
-    v90 = v41;
+    v90 = result2;
     if (_TRLogEnabled != 1)
     {
-      v79 = v42;
+      v79 = error3;
       v80 = 1;
       goto LABEL_122;
     }
 
-    v77 = TRLogHandle();
-    v79 = v42;
-    if (os_log_type_enabled(v77, OS_LOG_TYPE_DEFAULT))
+    error4 = TRLogHandle();
+    v79 = error3;
+    if (os_log_type_enabled(error4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315138;
       v101 = "[TRAuthenticationOperation execute]";
-      _os_log_impl(&dword_26F2A2000, v77, OS_LOG_TYPE_DEFAULT, "%s Companion auth successful. Authenticating remaining services", buf, 0xCu);
+      _os_log_impl(&dword_26F2A2000, error4, OS_LOG_TYPE_DEFAULT, "%s Companion auth successful. Authenticating remaining services", buf, 0xCu);
     }
 
     v80 = 1;
@@ -573,7 +573,7 @@ LABEL_106:
     v24 = TRLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
-      v25 = StringFromTRAccountService(v14);
+      v25 = StringFromTRAccountService(unsignedIntegerValue);
       *buf = 136315394;
       v101 = "[TRAuthenticationOperation execute]";
       v102 = 2112;
@@ -584,7 +584,7 @@ LABEL_106:
 
   if (!self->_shouldSetupHomePod)
   {
-    v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v14];
+    v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
     [v6 removeObject:v18];
     goto LABEL_105;
   }
@@ -612,53 +612,53 @@ LABEL_148:
   v88 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_canDoMagicAuthForAccount:(id)a3
+- (BOOL)_canDoMagicAuthForAccount:(id)account
 {
   v3 = MEMORY[0x277CF0130];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
-  v6 = [v5 passwordResetTokenForAccount:v4];
+  accountCopy = account;
+  sharedInstance = [v3 sharedInstance];
+  v6 = [sharedInstance passwordResetTokenForAccount:accountCopy];
 
   return v6 != 0;
 }
 
-- (void)_reportAuthMetrics:(id)a3 durationSeconds:(double)a4 authType:(int)a5 deviceType:(int)a6 sessionID:(id)a7 authServiceType:(int)a8
+- (void)_reportAuthMetrics:(id)metrics durationSeconds:(double)seconds authType:(int)type deviceType:(int)deviceType sessionID:(id)d authServiceType:(int)serviceType
 {
   v70[18] = *MEMORY[0x277D85DE8];
-  v55 = a7;
-  v49 = a3;
-  v64 = [v49 code];
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v64];
-  v11 = [v49 domain];
-  v12 = [v49 underlyingErrors];
+  dCopy = d;
+  metricsCopy = metrics;
+  code = [metricsCopy code];
+  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", code];
+  domain = [metricsCopy domain];
+  underlyingErrors = [metricsCopy underlyingErrors];
 
-  v13 = [v12 firstObject];
+  firstObject = [underlyingErrors firstObject];
 
-  v60 = [v13 code];
-  v66 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v60];
-  v14 = [v13 domain];
-  v62 = v13;
-  v15 = [v13 underlyingErrors];
-  v16 = [v15 firstObject];
+  code2 = [firstObject code];
+  v66 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", code2];
+  domain2 = [firstObject domain];
+  v62 = firstObject;
+  underlyingErrors2 = [firstObject underlyingErrors];
+  firstObject2 = [underlyingErrors2 firstObject];
 
-  v57 = [v16 code];
-  v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v16];
-  v18 = [v16 domain];
-  v59 = v16;
-  v19 = [v16 underlyingErrors];
-  v20 = [v19 firstObject];
+  code3 = [firstObject2 code];
+  v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", firstObject2];
+  domain3 = [firstObject2 domain];
+  v59 = firstObject2;
+  underlyingErrors3 = [firstObject2 underlyingErrors];
+  firstObject3 = [underlyingErrors3 firstObject];
 
-  v53 = [v20 code];
-  v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v20];
-  v56 = v20;
-  v22 = [v20 domain];
+  code4 = [firstObject3 code];
+  v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", firstObject3];
+  v56 = firstObject3;
+  domain4 = [firstObject3 domain];
   v69[0] = @"duration";
-  v48 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:(a4 * 1000.0)];
+  v48 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:(seconds * 1000.0)];
   v70[0] = v48;
   v69[1] = @"errorCode";
-  v23 = [MEMORY[0x277CCABB0] numberWithInteger:v64];
+  v23 = [MEMORY[0x277CCABB0] numberWithInteger:code];
   v47 = v23;
-  v63 = v11;
+  v63 = domain;
   v65 = v10;
   if (v10)
   {
@@ -674,9 +674,9 @@ LABEL_148:
   v70[2] = v24;
   v69[2] = @"errorCodeString";
   v69[3] = @"errorDomain";
-  if (v11)
+  if (domain)
   {
-    v25 = v11;
+    v25 = domain;
   }
 
   else
@@ -686,7 +686,7 @@ LABEL_148:
 
   v70[3] = v25;
   v69[4] = @"underlyingErrorCode0";
-  v26 = [MEMORY[0x277CCABB0] numberWithInteger:v60];
+  v26 = [MEMORY[0x277CCABB0] numberWithInteger:code2];
   v46 = v26;
   if (v66)
   {
@@ -702,10 +702,10 @@ LABEL_148:
   v70[5] = v27;
   v69[5] = @"underlyingErrorCodeString0";
   v69[6] = @"underlyingErrorDomain0";
-  v61 = v14;
-  if (v14)
+  v61 = domain2;
+  if (domain2)
   {
-    v28 = v14;
+    v28 = domain2;
   }
 
   else
@@ -715,7 +715,7 @@ LABEL_148:
 
   v70[6] = v28;
   v69[7] = @"underlyingErrorCode1";
-  v29 = [MEMORY[0x277CCABB0] numberWithInteger:v57];
+  v29 = [MEMORY[0x277CCABB0] numberWithInteger:code3];
   v30 = v29;
   v58 = v17;
   if (v17)
@@ -732,9 +732,9 @@ LABEL_148:
   v70[8] = v31;
   v69[8] = @"underlyingErrorCodeString1";
   v69[9] = @"underlyingErrorDomain1";
-  if (v18)
+  if (domain3)
   {
-    v32 = v18;
+    v32 = domain3;
   }
 
   else
@@ -744,7 +744,7 @@ LABEL_148:
 
   v70[9] = v32;
   v69[10] = @"underlyingErrorCode2";
-  v33 = [MEMORY[0x277CCABB0] numberWithInteger:v53];
+  v33 = [MEMORY[0x277CCABB0] numberWithInteger:code4];
   v34 = v33;
   v54 = v21;
   if (v21)
@@ -761,9 +761,9 @@ LABEL_148:
   v70[11] = v35;
   v69[11] = @"underlyingErrorCodeString2";
   v69[12] = @"underlyingErrorDomain2";
-  if (v22)
+  if (domain4)
   {
-    v36 = v22;
+    v36 = domain4;
   }
 
   else
@@ -773,22 +773,22 @@ LABEL_148:
 
   v70[12] = v36;
   v69[13] = @"authType";
-  v37 = [MEMORY[0x277CCABB0] numberWithInt:a5];
+  v37 = [MEMORY[0x277CCABB0] numberWithInt:type];
   v70[13] = v37;
   v69[14] = @"deviceAuthType";
-  v38 = [MEMORY[0x277CCABB0] numberWithInt:a6];
+  v38 = [MEMORY[0x277CCABB0] numberWithInt:deviceType];
   v70[14] = v38;
   v69[15] = @"authServiceType";
-  v39 = [MEMORY[0x277CCABB0] numberWithInt:a8];
+  v39 = [MEMORY[0x277CCABB0] numberWithInt:serviceType];
   v70[15] = v39;
   v69[16] = @"success";
-  v40 = [MEMORY[0x277CCABB0] numberWithInt:v49 == 0];
+  v40 = [MEMORY[0x277CCABB0] numberWithInt:metricsCopy == 0];
   v41 = v40;
   v69[17] = @"sessionID";
   v42 = @"nil";
-  if (v55)
+  if (dCopy)
   {
-    v42 = v55;
+    v42 = dCopy;
   }
 
   v70[16] = v40;

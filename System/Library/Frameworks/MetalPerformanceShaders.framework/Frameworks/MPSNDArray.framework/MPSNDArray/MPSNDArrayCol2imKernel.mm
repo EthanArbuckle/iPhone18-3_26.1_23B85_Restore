@@ -1,38 +1,38 @@
 @interface MPSNDArrayCol2imKernel
-- (MPSNDArrayCol2imKernel)initWithCoder:(id)a3 device:(id)a4;
-- (MPSNDArrayCol2imKernel)initWithDevice:(id)a3 ndArrayIm2colDescriptor:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (MPSNDArrayCol2imKernel)initWithCoder:(id)coder device:(id)device;
+- (MPSNDArrayCol2imKernel)initWithDevice:(id)device ndArrayIm2colDescriptor:(id)descriptor;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSNDArrayCol2imKernel
 
-- (MPSNDArrayCol2imKernel)initWithDevice:(id)a3 ndArrayIm2colDescriptor:(id)a4
+- (MPSNDArrayCol2imKernel)initWithDevice:(id)device ndArrayIm2colDescriptor:(id)descriptor
 {
   v7.receiver = self;
   v7.super_class = MPSNDArrayCol2imKernel;
-  v5 = [(MPSNDArrayUnaryKernel *)&v7 initWithDevice:a3];
+  v5 = [(MPSNDArrayUnaryKernel *)&v7 initWithDevice:device];
   v5->super.super._encode = EncodeArrayCol2im;
   v5->super.super.super._encodeData = v5;
-  v5->_kernelWidth = [a4 kernelWidth];
-  v5->_kernelHeight = [a4 kernelHeight];
-  v5->_paddingTop = [a4 paddingTop];
-  v5->_paddingBottom = [a4 paddingBottom];
-  v5->_paddingLeft = [a4 paddingLeft];
-  v5->_paddingRight = [a4 paddingRight];
-  v5->_strideWidth = [a4 strideInPixelsX];
-  v5->_strideHeight = [a4 strideInPixelsY];
-  v5->_dilationWidth = [a4 dilationRateInX];
-  v5->_dilationHeight = [a4 dilationRateInY];
-  v5->_dataLayout = [a4 dataLayout];
+  v5->_kernelWidth = [descriptor kernelWidth];
+  v5->_kernelHeight = [descriptor kernelHeight];
+  v5->_paddingTop = [descriptor paddingTop];
+  v5->_paddingBottom = [descriptor paddingBottom];
+  v5->_paddingLeft = [descriptor paddingLeft];
+  v5->_paddingRight = [descriptor paddingRight];
+  v5->_strideWidth = [descriptor strideInPixelsX];
+  v5->_strideHeight = [descriptor strideInPixelsY];
+  v5->_dilationWidth = [descriptor dilationRateInX];
+  v5->_dilationHeight = [descriptor dilationRateInY];
+  v5->_dataLayout = [descriptor dataLayout];
   return v5;
 }
 
-- (MPSNDArrayCol2imKernel)initWithCoder:(id)a3 device:(id)a4
+- (MPSNDArrayCol2imKernel)initWithCoder:(id)coder device:(id)device
 {
   v5.receiver = self;
   v5.super_class = MPSNDArrayCol2imKernel;
-  result = [(MPSNDArrayUnaryKernel *)&v5 initWithCoder:a3 device:a4];
+  result = [(MPSNDArrayUnaryKernel *)&v5 initWithCoder:coder device:device];
   if (result)
   {
     result->super.super._encode = EncodeArrayCol2im;
@@ -42,18 +42,18 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = MPSNDArrayCol2imKernel;
-  [(MPSNDArrayMultiaryBase *)&v3 encodeWithCoder:a3];
+  [(MPSNDArrayMultiaryBase *)&v3 encodeWithCoder:coder];
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v6.receiver = self;
   v6.super_class = MPSNDArrayCol2imKernel;
-  result = [(MPSNDArrayMultiaryKernel *)&v6 copyWithZone:a3 device:a4];
+  result = [(MPSNDArrayMultiaryKernel *)&v6 copyWithZone:zone device:device];
   if (result)
   {
     self->super.super._encode = EncodeArrayCol2im;

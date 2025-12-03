@@ -8,24 +8,24 @@
 - (uint64_t)compareToPerson:()PGPersonResult
 {
   v4 = a3;
-  v5 = [objc_opt_class() type];
-  if (v5 == [objc_opt_class() type])
+  type = [objc_opt_class() type];
+  if (type == [objc_opt_class() type])
   {
     v6 = v4;
-    v7 = [a1 faceCount];
-    v8 = [v6 faceCount];
-    if (v7 <= v8)
+    faceCount = [self faceCount];
+    faceCount2 = [v6 faceCount];
+    if (faceCount <= faceCount2)
     {
-      if (v7 < v8)
+      if (faceCount < faceCount2)
       {
         v9 = 1;
       }
 
       else
       {
-        v10 = [a1 uuid];
-        v11 = [v6 uuid];
-        v9 = [v10 compare:v11];
+        uuid = [self uuid];
+        uuid2 = [v6 uuid];
+        v9 = [uuid compare:uuid2];
       }
     }
 
@@ -45,21 +45,21 @@
 
 - (id)keywordDescription
 {
-  v2 = [a1 name];
-  if ([v2 length])
+  name = [self name];
+  if ([name length])
   {
-    v3 = v2;
+    localIdentifier = name;
   }
 
   else
   {
-    v3 = [a1 localIdentifier];
+    localIdentifier = [self localIdentifier];
   }
 
-  v4 = v3;
-  if (v3)
+  v4 = localIdentifier;
+  if (localIdentifier)
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"[%@] %@", @"PHPerson", v3];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"[%@] %@", @"PHPerson", localIdentifier];
   }
 
   else

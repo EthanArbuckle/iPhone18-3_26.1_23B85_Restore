@@ -1,18 +1,18 @@
 @interface LNVisibleAppManager
 - (LNVisibleAppManager)init;
-- (void)_getLayoutsWithCompletionHandler:(id)a3;
-- (void)getCurrentAppWithCompletionHandler:(id)a3;
+- (void)_getLayoutsWithCompletionHandler:(id)handler;
+- (void)getCurrentAppWithCompletionHandler:(id)handler;
 @end
 
 @implementation LNVisibleAppManager
 
-- (void)_getLayoutsWithCompletionHandler:(id)a3
+- (void)_getLayoutsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_alloc_init(MEMORY[0x1E69AA870]);
   [v5 resume];
-  v6 = [(LNVisibleAppManager *)self monitorPool];
-  [v6 addObject:v5];
+  monitorPool = [(LNVisibleAppManager *)self monitorPool];
+  [monitorPool addObject:v5];
 
   v7 = dispatch_time(0, 50000000);
   block[0] = MEMORY[0x1E69E9820];
@@ -20,9 +20,9 @@
   block[2] = __56__LNVisibleAppManager__getLayoutsWithCompletionHandler___block_invoke;
   block[3] = &unk_1E74B2580;
   v11 = v5;
-  v12 = self;
-  v13 = v4;
-  v8 = v4;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v8 = handlerCopy;
   v9 = v5;
   dispatch_after(v7, MEMORY[0x1E69E96A0], block);
 }
@@ -37,15 +37,15 @@ void __56__LNVisibleAppManager__getLayoutsWithCompletionHandler___block_invoke(u
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)getCurrentAppWithCompletionHandler:(id)a3
+- (void)getCurrentAppWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __58__LNVisibleAppManager_getCurrentAppWithCompletionHandler___block_invoke;
   v6[3] = &unk_1E74B18C0;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(LNVisibleAppManager *)self _getLayoutsWithCompletionHandler:v6];
 }
 

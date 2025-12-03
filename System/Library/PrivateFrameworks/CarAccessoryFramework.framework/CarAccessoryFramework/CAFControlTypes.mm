@@ -1,8 +1,8 @@
 @interface CAFControlTypes
 + (NSDictionary)controlNameByType;
 + (NSDictionary)controlTypeByName;
-+ (id)controlNameFor:(id)a3;
-+ (id)controlNameForType:(id)a3;
++ (id)controlNameFor:(id)for;
++ (id)controlNameForType:(id)type;
 @end
 
 @implementation CAFControlTypes
@@ -175,24 +175,24 @@ void __36__CAFControlTypes_controlNameByType__block_invoke()
   v2 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)controlNameForType:(id)a3
++ (id)controlNameForType:(id)type
 {
-  v4 = a3;
-  v5 = [a1 controlNameByType];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  typeCopy = type;
+  controlNameByType = [self controlNameByType];
+  v6 = [controlNameByType objectForKeyedSubscript:typeCopy];
 
   if (!v6)
   {
-    v6 = v4;
+    v6 = typeCopy;
   }
 
   return v6;
 }
 
-+ (id)controlNameFor:(id)a3
++ (id)controlNameFor:(id)for
 {
-  v4 = [a1 controlTypeFor:a3];
-  v5 = [a1 controlNameForType:v4];
+  v4 = [self controlTypeFor:for];
+  v5 = [self controlNameForType:v4];
 
   return v5;
 }

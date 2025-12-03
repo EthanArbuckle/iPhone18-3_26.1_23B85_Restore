@@ -1,36 +1,36 @@
 @interface _UIImageViewStorage
-+ (id)storageForImageView:(id)a3;
++ (id)storageForImageView:(id)view;
 - (id)extendedStorage;
 - (id)simpleStorage;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)setAdjustsImageSizeForAccessibilityContentSizeCategory:(BOOL)a3;
-- (void)setAnimationDuration:(double)a3;
-- (void)setAnimationImages:(id)a3;
-- (void)setAnimationPresetManager:(id)a3;
-- (void)setAnimationRepeatCount:(int64_t)a3;
-- (void)setCIRenderer:(id)a3;
-- (void)setDefaultRenderingMode:(int64_t)a3;
-- (void)setDrawMode:(unsigned int)a3;
-- (void)setEnqueueingLoad:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setHighlightedAnimationImages:(id)a3;
-- (void)setHighlightedImage:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setImageBeingSetByLoader:(id)a3;
-- (void)setImageContentGuide:(id)a3;
-- (void)setImageLoader:(id)a3;
-- (void)setLayouts:(id)a3;
-- (void)setLoadingDelegate:(id)a3;
-- (void)setMasksTemplateImages:(BOOL)a3;
-- (void)setOverridingSymbolConfiguration:(id)a3;
-- (void)setPlaceholderView:(id)a3;
-- (void)setPreferredSymbolConfiguration:(id)a3;
-- (void)setPreferredSymbolVariant:(id)a3;
-- (void)setResolvedHighlightedImage:(id)a3;
-- (void)setResolvedImage:(id)a3;
-- (void)setStartingLoad:(BOOL)a3;
-- (void)setStoppingLoad:(BOOL)a3;
-- (void)setSystemIconAppearanceTraitRegistration:(id)a3;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
+- (void)setAdjustsImageSizeForAccessibilityContentSizeCategory:(BOOL)category;
+- (void)setAnimationDuration:(double)duration;
+- (void)setAnimationImages:(id)images;
+- (void)setAnimationPresetManager:(id)manager;
+- (void)setAnimationRepeatCount:(int64_t)count;
+- (void)setCIRenderer:(id)renderer;
+- (void)setDefaultRenderingMode:(int64_t)mode;
+- (void)setDrawMode:(unsigned int)mode;
+- (void)setEnqueueingLoad:(BOOL)load;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setHighlightedAnimationImages:(id)images;
+- (void)setHighlightedImage:(id)image;
+- (void)setImage:(id)image;
+- (void)setImageBeingSetByLoader:(id)loader;
+- (void)setImageContentGuide:(id)guide;
+- (void)setImageLoader:(id)loader;
+- (void)setLayouts:(id)layouts;
+- (void)setLoadingDelegate:(id)delegate;
+- (void)setMasksTemplateImages:(BOOL)images;
+- (void)setOverridingSymbolConfiguration:(id)configuration;
+- (void)setPlaceholderView:(id)view;
+- (void)setPreferredSymbolConfiguration:(id)configuration;
+- (void)setPreferredSymbolVariant:(id)variant;
+- (void)setResolvedHighlightedImage:(id)image;
+- (void)setResolvedImage:(id)image;
+- (void)setStartingLoad:(BOOL)load;
+- (void)setStoppingLoad:(BOOL)load;
+- (void)setSystemIconAppearanceTraitRegistration:(id)registration;
 @end
 
 @implementation _UIImageViewStorage
@@ -64,10 +64,10 @@
       goto LABEL_6;
     }
 
-    v7 = [(_UIImageViewStorage *)self simpleStorage];
-    v8 = [_UIImageViewExtendedStorage storageFromSimpleStorage:v7];
+    simpleStorage = [(_UIImageViewStorage *)self simpleStorage];
+    v8 = [_UIImageViewExtendedStorage storageFromSimpleStorage:simpleStorage];
 
-    v4 = v7;
+    v4 = simpleStorage;
   }
 
   else
@@ -82,332 +82,332 @@ LABEL_6:
   return v4;
 }
 
-+ (id)storageForImageView:(id)a3
++ (id)storageForImageView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v4 = objc_opt_new();
-  objc_storeWeak(v4 + 1, v3);
+  objc_storeWeak(v4 + 1, viewCopy);
 
   return v4;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v6 = a3;
-  v4 = [(_UIImageViewStorage *)self image];
+  imageCopy = image;
+  image = [(_UIImageViewStorage *)self image];
 
-  if (v4 != v6)
+  if (image != imageCopy)
   {
-    v5 = [(_UIImageViewStorage *)self simpleStorage];
-    [v5 setImage:v6];
+    simpleStorage = [(_UIImageViewStorage *)self simpleStorage];
+    [simpleStorage setImage:imageCopy];
   }
 }
 
-- (void)setResolvedImage:(id)a3
+- (void)setResolvedImage:(id)image
 {
-  v6 = a3;
-  v4 = [(_UIImageViewStorage *)self resolvedImage];
+  imageCopy = image;
+  resolvedImage = [(_UIImageViewStorage *)self resolvedImage];
 
-  if (v4 != v6)
+  if (resolvedImage != imageCopy)
   {
-    v5 = [(_UIImageViewStorage *)self simpleStorage];
-    [v5 setResolvedImage:v6];
+    simpleStorage = [(_UIImageViewStorage *)self simpleStorage];
+    [simpleStorage setResolvedImage:imageCopy];
   }
 }
 
-- (void)setHighlightedImage:(id)a3
+- (void)setHighlightedImage:(id)image
 {
-  v6 = a3;
-  v4 = [(_UIImageViewStorage *)self highlightedImage];
+  imageCopy = image;
+  highlightedImage = [(_UIImageViewStorage *)self highlightedImage];
 
-  if (v4 != v6)
+  if (highlightedImage != imageCopy)
   {
-    v5 = [(_UIImageViewStorage *)self extendedStorage];
-    [v5 setHighlightedImage:v6];
+    extendedStorage = [(_UIImageViewStorage *)self extendedStorage];
+    [extendedStorage setHighlightedImage:imageCopy];
   }
 }
 
-- (void)setResolvedHighlightedImage:(id)a3
+- (void)setResolvedHighlightedImage:(id)image
 {
-  v6 = a3;
-  v4 = [(_UIImageViewStorage *)self resolvedHighlightedImage];
+  imageCopy = image;
+  resolvedHighlightedImage = [(_UIImageViewStorage *)self resolvedHighlightedImage];
 
-  if (v4 != v6)
+  if (resolvedHighlightedImage != imageCopy)
   {
-    v5 = [(_UIImageViewStorage *)self extendedStorage];
-    [v5 setResolvedHighlightedImage:v6];
+    extendedStorage = [(_UIImageViewStorage *)self extendedStorage];
+    [extendedStorage setResolvedHighlightedImage:imageCopy];
   }
 }
 
-- (void)setPreferredSymbolConfiguration:(id)a3
+- (void)setPreferredSymbolConfiguration:(id)configuration
 {
-  v6 = a3;
-  v4 = [(_UIImageViewStorage *)self preferredSymbolConfiguration];
+  configurationCopy = configuration;
+  preferredSymbolConfiguration = [(_UIImageViewStorage *)self preferredSymbolConfiguration];
 
-  if (v4 != v6)
+  if (preferredSymbolConfiguration != configurationCopy)
   {
-    v5 = [(_UIImageViewStorage *)self extendedStorage];
-    [v5 setPreferredSymbolConfiguration:v6];
+    extendedStorage = [(_UIImageViewStorage *)self extendedStorage];
+    [extendedStorage setPreferredSymbolConfiguration:configurationCopy];
   }
 }
 
-- (void)setOverridingSymbolConfiguration:(id)a3
+- (void)setOverridingSymbolConfiguration:(id)configuration
 {
-  v6 = a3;
-  v4 = [(_UIImageViewStorage *)self overridingSymbolConfiguration];
+  configurationCopy = configuration;
+  overridingSymbolConfiguration = [(_UIImageViewStorage *)self overridingSymbolConfiguration];
 
-  if (v4 != v6)
+  if (overridingSymbolConfiguration != configurationCopy)
   {
-    v5 = [(_UIImageViewStorage *)self extendedStorage];
-    [v5 setOverridingSymbolConfiguration:v6];
+    extendedStorage = [(_UIImageViewStorage *)self extendedStorage];
+    [extendedStorage setOverridingSymbolConfiguration:configurationCopy];
   }
 }
 
-- (void)setPreferredSymbolVariant:(id)a3
+- (void)setPreferredSymbolVariant:(id)variant
 {
-  v6 = a3;
-  v4 = [(_UIImageViewStorage *)self preferredSymbolVariant];
+  variantCopy = variant;
+  preferredSymbolVariant = [(_UIImageViewStorage *)self preferredSymbolVariant];
 
-  if (v4 != v6)
+  if (preferredSymbolVariant != variantCopy)
   {
-    v5 = [(_UIImageViewStorage *)self extendedStorage];
-    [v5 setPreferredSymbolVariant:v6];
+    extendedStorage = [(_UIImageViewStorage *)self extendedStorage];
+    [extendedStorage setPreferredSymbolVariant:variantCopy];
   }
 }
 
-- (void)setAnimationImages:(id)a3
+- (void)setAnimationImages:(id)images
 {
-  v6 = a3;
-  v4 = [(_UIImageViewStorage *)self animationImages];
+  imagesCopy = images;
+  animationImages = [(_UIImageViewStorage *)self animationImages];
 
-  if (v4 != v6)
+  if (animationImages != imagesCopy)
   {
-    v5 = [(_UIImageViewStorage *)self extendedStorage];
-    [v5 setAnimationImages:v6];
+    extendedStorage = [(_UIImageViewStorage *)self extendedStorage];
+    [extendedStorage setAnimationImages:imagesCopy];
   }
 }
 
-- (void)setHighlightedAnimationImages:(id)a3
+- (void)setHighlightedAnimationImages:(id)images
 {
-  v6 = a3;
-  v4 = [(_UIImageViewStorage *)self highlightedAnimationImages];
+  imagesCopy = images;
+  highlightedAnimationImages = [(_UIImageViewStorage *)self highlightedAnimationImages];
 
-  if (v4 != v6)
+  if (highlightedAnimationImages != imagesCopy)
   {
-    v5 = [(_UIImageViewStorage *)self extendedStorage];
-    [v5 setHighlightedAnimationImages:v6];
+    extendedStorage = [(_UIImageViewStorage *)self extendedStorage];
+    [extendedStorage setHighlightedAnimationImages:imagesCopy];
   }
 }
 
-- (void)setAnimationDuration:(double)a3
+- (void)setAnimationDuration:(double)duration
 {
   [(_UIImageViewStorage *)self animationDuration];
-  if (v5 != a3)
+  if (v5 != duration)
   {
-    v6 = [(_UIImageViewStorage *)self extendedStorage];
-    [v6 setAnimationDuration:a3];
+    extendedStorage = [(_UIImageViewStorage *)self extendedStorage];
+    [extendedStorage setAnimationDuration:duration];
   }
 }
 
-- (void)setAnimationRepeatCount:(int64_t)a3
+- (void)setAnimationRepeatCount:(int64_t)count
 {
-  if ([(_UIImageViewStorage *)self animationRepeatCount]!= a3)
+  if ([(_UIImageViewStorage *)self animationRepeatCount]!= count)
   {
-    v5 = [(_UIImageViewStorage *)self extendedStorage];
-    [v5 setAnimationRepeatCount:a3];
+    extendedStorage = [(_UIImageViewStorage *)self extendedStorage];
+    [extendedStorage setAnimationRepeatCount:count];
   }
 }
 
-- (void)setDefaultRenderingMode:(int64_t)a3
+- (void)setDefaultRenderingMode:(int64_t)mode
 {
-  if ([(_UIImageViewStorage *)self defaultRenderingMode]!= a3)
+  if ([(_UIImageViewStorage *)self defaultRenderingMode]!= mode)
   {
-    v5 = [(_UIImageViewStorage *)self extendedStorage];
-    [v5 setDefaultRenderingMode:a3];
+    extendedStorage = [(_UIImageViewStorage *)self extendedStorage];
+    [extendedStorage setDefaultRenderingMode:mode];
   }
 }
 
-- (void)setSystemIconAppearanceTraitRegistration:(id)a3
+- (void)setSystemIconAppearanceTraitRegistration:(id)registration
 {
-  v6 = a3;
-  v4 = [(_UIImageViewStorage *)self systemIconAppearanceTraitRegistration];
+  registrationCopy = registration;
+  systemIconAppearanceTraitRegistration = [(_UIImageViewStorage *)self systemIconAppearanceTraitRegistration];
 
-  if (v4 != v6)
+  if (systemIconAppearanceTraitRegistration != registrationCopy)
   {
-    v5 = [(_UIImageViewStorage *)self extendedStorage];
-    [v5 setSystemIconAppearanceTraitRegistration:v6];
+    extendedStorage = [(_UIImageViewStorage *)self extendedStorage];
+    [extendedStorage setSystemIconAppearanceTraitRegistration:registrationCopy];
   }
 }
 
-- (void)setCIRenderer:(id)a3
+- (void)setCIRenderer:(id)renderer
 {
-  v6 = a3;
-  v4 = [(_UIImageViewStorage *)self CIRenderer];
+  rendererCopy = renderer;
+  cIRenderer = [(_UIImageViewStorage *)self CIRenderer];
 
-  if (v4 != v6)
+  if (cIRenderer != rendererCopy)
   {
-    v5 = [(_UIImageViewStorage *)self extendedStorage];
-    [v5 setCIRenderer:v6];
+    extendedStorage = [(_UIImageViewStorage *)self extendedStorage];
+    [extendedStorage setCIRenderer:rendererCopy];
   }
 }
 
-- (void)setImageContentGuide:(id)a3
+- (void)setImageContentGuide:(id)guide
 {
-  v6 = a3;
-  v4 = [(_UIImageViewStorage *)self imageContentGuide];
+  guideCopy = guide;
+  imageContentGuide = [(_UIImageViewStorage *)self imageContentGuide];
 
-  if (v4 != v6)
+  if (imageContentGuide != guideCopy)
   {
-    v5 = [(_UIImageViewStorage *)self extendedStorage];
-    [v5 setImageContentGuide:v6];
+    extendedStorage = [(_UIImageViewStorage *)self extendedStorage];
+    [extendedStorage setImageContentGuide:guideCopy];
   }
 }
 
-- (void)setAnimationPresetManager:(id)a3
+- (void)setAnimationPresetManager:(id)manager
 {
-  v6 = a3;
-  v4 = [(_UIImageViewStorage *)self animationPresetManager];
+  managerCopy = manager;
+  animationPresetManager = [(_UIImageViewStorage *)self animationPresetManager];
 
-  if (v4 != v6)
+  if (animationPresetManager != managerCopy)
   {
-    v5 = [(_UIImageViewStorage *)self extendedStorage];
-    [v5 setAnimationPresetManager:v6];
+    extendedStorage = [(_UIImageViewStorage *)self extendedStorage];
+    [extendedStorage setAnimationPresetManager:managerCopy];
   }
 }
 
-- (void)setLayouts:(id)a3
+- (void)setLayouts:(id)layouts
 {
-  v6 = a3;
-  v4 = [(_UIImageViewStorage *)self layouts];
+  layoutsCopy = layouts;
+  layouts = [(_UIImageViewStorage *)self layouts];
 
-  if (v4 != v6)
+  if (layouts != layoutsCopy)
   {
-    v5 = [(_UIImageViewStorage *)self simpleStorage];
-    [v5 setLayouts:v6];
+    simpleStorage = [(_UIImageViewStorage *)self simpleStorage];
+    [simpleStorage setLayouts:layoutsCopy];
   }
 }
 
-- (void)setDrawMode:(unsigned int)a3
+- (void)setDrawMode:(unsigned int)mode
 {
-  v3 = *&a3;
-  if ([(_UIImageViewStorage *)self drawMode]!= a3)
+  v3 = *&mode;
+  if ([(_UIImageViewStorage *)self drawMode]!= mode)
   {
-    v5 = [(_UIImageViewStorage *)self extendedStorage];
-    [v5 setDrawMode:v3];
+    extendedStorage = [(_UIImageViewStorage *)self extendedStorage];
+    [extendedStorage setDrawMode:v3];
   }
 }
 
-- (void)setImageLoader:(id)a3
+- (void)setImageLoader:(id)loader
 {
-  v6 = a3;
-  v4 = [(_UIImageViewStorage *)self imageLoader];
+  loaderCopy = loader;
+  imageLoader = [(_UIImageViewStorage *)self imageLoader];
 
-  if (v4 != v6)
+  if (imageLoader != loaderCopy)
   {
-    v5 = [(_UIImageViewStorage *)self extendedStorage];
-    [v5 setImageLoader:v6];
+    extendedStorage = [(_UIImageViewStorage *)self extendedStorage];
+    [extendedStorage setImageLoader:loaderCopy];
   }
 }
 
-- (void)setLoadingDelegate:(id)a3
+- (void)setLoadingDelegate:(id)delegate
 {
-  v6 = a3;
-  v4 = [(_UIImageViewStorage *)self loadingDelegate];
+  delegateCopy = delegate;
+  loadingDelegate = [(_UIImageViewStorage *)self loadingDelegate];
 
-  if (v4 != v6)
+  if (loadingDelegate != delegateCopy)
   {
-    v5 = [(_UIImageViewStorage *)self extendedStorage];
-    [v5 setLoadingDelegate:v6];
+    extendedStorage = [(_UIImageViewStorage *)self extendedStorage];
+    [extendedStorage setLoadingDelegate:delegateCopy];
   }
 }
 
-- (void)setImageBeingSetByLoader:(id)a3
+- (void)setImageBeingSetByLoader:(id)loader
 {
-  v6 = a3;
-  v4 = [(_UIImageViewStorage *)self imageBeingSetByLoader];
+  loaderCopy = loader;
+  imageBeingSetByLoader = [(_UIImageViewStorage *)self imageBeingSetByLoader];
 
-  if (v4 != v6)
+  if (imageBeingSetByLoader != loaderCopy)
   {
-    v5 = [(_UIImageViewStorage *)self extendedStorage];
-    [v5 setImageBeingSetByLoader:v6];
+    extendedStorage = [(_UIImageViewStorage *)self extendedStorage];
+    [extendedStorage setImageBeingSetByLoader:loaderCopy];
   }
 }
 
-- (void)setPlaceholderView:(id)a3
+- (void)setPlaceholderView:(id)view
 {
-  v6 = a3;
-  v4 = [(_UIImageViewStorage *)self placeholderView];
+  viewCopy = view;
+  placeholderView = [(_UIImageViewStorage *)self placeholderView];
 
-  if (v4 != v6)
+  if (placeholderView != viewCopy)
   {
-    v5 = [(_UIImageViewStorage *)self extendedStorage];
-    [v5 setPlaceholderView:v6];
+    extendedStorage = [(_UIImageViewStorage *)self extendedStorage];
+    [extendedStorage setPlaceholderView:viewCopy];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  if ([(_UIImageViewStorage *)self isHighlighted]!= a3)
+  highlightedCopy = highlighted;
+  if ([(_UIImageViewStorage *)self isHighlighted]!= highlighted)
   {
-    v5 = [(_UIImageViewStorage *)self extendedStorage];
-    [v5 setHighlighted:v3];
+    extendedStorage = [(_UIImageViewStorage *)self extendedStorage];
+    [extendedStorage setHighlighted:highlightedCopy];
   }
 }
 
-- (void)setMasksTemplateImages:(BOOL)a3
+- (void)setMasksTemplateImages:(BOOL)images
 {
-  v3 = a3;
-  if ([(_UIImageViewStorage *)self masksTemplateImages]!= a3)
+  imagesCopy = images;
+  if ([(_UIImageViewStorage *)self masksTemplateImages]!= images)
   {
-    v5 = [(_UIImageViewStorage *)self extendedStorage];
-    [v5 setMasksTemplateImages:v3];
+    extendedStorage = [(_UIImageViewStorage *)self extendedStorage];
+    [extendedStorage setMasksTemplateImages:imagesCopy];
   }
 }
 
-- (void)setAdjustsImageSizeForAccessibilityContentSizeCategory:(BOOL)a3
+- (void)setAdjustsImageSizeForAccessibilityContentSizeCategory:(BOOL)category
 {
-  v3 = a3;
-  if ([(_UIImageViewStorage *)self adjustsImageSizeForAccessibilityContentSizeCategory]!= a3)
+  categoryCopy = category;
+  if ([(_UIImageViewStorage *)self adjustsImageSizeForAccessibilityContentSizeCategory]!= category)
   {
-    v5 = [(_UIImageViewStorage *)self extendedStorage];
-    [v5 setAdjustsImageSizeForAccessibilityContentSizeCategory:v3];
+    extendedStorage = [(_UIImageViewStorage *)self extendedStorage];
+    [extendedStorage setAdjustsImageSizeForAccessibilityContentSizeCategory:categoryCopy];
   }
 }
 
-- (void)setStartingLoad:(BOOL)a3
+- (void)setStartingLoad:(BOOL)load
 {
-  v3 = a3;
-  if ([(_UIImageViewStorage *)self isStartingLoad]!= a3)
+  loadCopy = load;
+  if ([(_UIImageViewStorage *)self isStartingLoad]!= load)
   {
-    v5 = [(_UIImageViewStorage *)self extendedStorage];
-    [v5 setStartingLoad:v3];
+    extendedStorage = [(_UIImageViewStorage *)self extendedStorage];
+    [extendedStorage setStartingLoad:loadCopy];
   }
 }
 
-- (void)setEnqueueingLoad:(BOOL)a3
+- (void)setEnqueueingLoad:(BOOL)load
 {
-  v3 = a3;
-  if ([(_UIImageViewStorage *)self isEnqueueingLoad]!= a3)
+  loadCopy = load;
+  if ([(_UIImageViewStorage *)self isEnqueueingLoad]!= load)
   {
-    v5 = [(_UIImageViewStorage *)self extendedStorage];
-    [v5 setEnqueueingLoad:v3];
+    extendedStorage = [(_UIImageViewStorage *)self extendedStorage];
+    [extendedStorage setEnqueueingLoad:loadCopy];
   }
 }
 
-- (void)setStoppingLoad:(BOOL)a3
+- (void)setStoppingLoad:(BOOL)load
 {
-  v3 = a3;
-  if ([(_UIImageViewStorage *)self isStoppingLoad]!= a3)
+  loadCopy = load;
+  if ([(_UIImageViewStorage *)self isStoppingLoad]!= load)
   {
-    v5 = [(_UIImageViewStorage *)self extendedStorage];
-    [v5 setStoppingLoad:v3];
+    extendedStorage = [(_UIImageViewStorage *)self extendedStorage];
+    [extendedStorage setStoppingLoad:loadCopy];
   }
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  if ([(_UIImageViewStorage *)self animationRepeatCount:a3]>= 1)
+  if ([(_UIImageViewStorage *)self animationRepeatCount:stop]>= 1)
   {
     WeakRetained = objc_loadWeakRetained(&self->_imageView);
     [WeakRetained _cleanUpForStopAnimating];

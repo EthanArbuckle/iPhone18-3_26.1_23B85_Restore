@@ -1,5 +1,5 @@
 @interface _AFCommandExecutionInfoMutation
-- (_AFCommandExecutionInfoMutation)initWithBase:(id)a3;
+- (_AFCommandExecutionInfoMutation)initWithBase:(id)base;
 - (id)getCurrentHomeInfo;
 - (id)getDeviceRestrictions;
 - (id)getEndpointInfo;
@@ -19,177 +19,177 @@
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_executionID;
+    executionID = self->_executionID;
   }
 
   else
   {
-    v2 = [(AFCommandExecutionInfo *)self->_base executionID];
+    executionID = [(AFCommandExecutionInfo *)self->_base executionID];
   }
 
-  return v2;
+  return executionID;
 }
 
 - (id)getRequestID
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_requestID;
+    requestID = self->_requestID;
   }
 
   else
   {
-    v2 = [(AFCommandExecutionInfo *)self->_base requestID];
+    requestID = [(AFCommandExecutionInfo *)self->_base requestID];
   }
 
-  return v2;
+  return requestID;
 }
 
 - (id)getOriginPeerInfo
 {
   if ((*&self->_mutationFlags & 0x10) != 0)
   {
-    v2 = self->_originPeerInfo;
+    originPeerInfo = self->_originPeerInfo;
   }
 
   else
   {
-    v2 = [(AFCommandExecutionInfo *)self->_base originPeerInfo];
+    originPeerInfo = [(AFCommandExecutionInfo *)self->_base originPeerInfo];
   }
 
-  return v2;
+  return originPeerInfo;
 }
 
 - (id)getCurrentHomeInfo
 {
   if ((*&self->_mutationFlags & 0x20) != 0)
   {
-    v2 = self->_currentHomeInfo;
+    currentHomeInfo = self->_currentHomeInfo;
   }
 
   else
   {
-    v2 = [(AFCommandExecutionInfo *)self->_base currentHomeInfo];
+    currentHomeInfo = [(AFCommandExecutionInfo *)self->_base currentHomeInfo];
   }
 
-  return v2;
+  return currentHomeInfo;
 }
 
 - (id)getTurnId
 {
   if ((*&self->_mutationFlags & 8) != 0)
   {
-    v2 = self->_turnId;
+    turnId = self->_turnId;
   }
 
   else
   {
-    v2 = [(AFCommandExecutionInfo *)self->_base turnId];
+    turnId = [(AFCommandExecutionInfo *)self->_base turnId];
   }
 
-  return v2;
+  return turnId;
 }
 
 - (id)getEndpointInfo
 {
   if ((*&self->_mutationFlags & 0x40) != 0)
   {
-    v2 = self->_endpointInfo;
+    endpointInfo = self->_endpointInfo;
   }
 
   else
   {
-    v2 = [(AFCommandExecutionInfo *)self->_base endpointInfo];
+    endpointInfo = [(AFCommandExecutionInfo *)self->_base endpointInfo];
   }
 
-  return v2;
+  return endpointInfo;
 }
 
 - (id)getSpeechInfo
 {
   if ((*&self->_mutationFlags & 0x100) != 0)
   {
-    v2 = self->_speechInfo;
+    speechInfo = self->_speechInfo;
   }
 
   else
   {
-    v2 = [(AFCommandExecutionInfo *)self->_base speechInfo];
+    speechInfo = [(AFCommandExecutionInfo *)self->_base speechInfo];
   }
 
-  return v2;
+  return speechInfo;
 }
 
 - (id)getDeviceRestrictions
 {
   if ((*&self->_mutationFlags & 0x400) != 0)
   {
-    v2 = self->_deviceRestrictions;
+    deviceRestrictions = self->_deviceRestrictions;
   }
 
   else
   {
-    v2 = [(AFCommandExecutionInfo *)self->_base deviceRestrictions];
+    deviceRestrictions = [(AFCommandExecutionInfo *)self->_base deviceRestrictions];
   }
 
-  return v2;
+  return deviceRestrictions;
 }
 
 - (id)getInstanceInfo
 {
   if ((*&self->_mutationFlags & 0x80) != 0)
   {
-    v2 = self->_instanceInfo;
+    instanceInfo = self->_instanceInfo;
   }
 
   else
   {
-    v2 = [(AFCommandExecutionInfo *)self->_base instanceInfo];
+    instanceInfo = [(AFCommandExecutionInfo *)self->_base instanceInfo];
   }
 
-  return v2;
+  return instanceInfo;
 }
 
 - (id)getRequestHandlingContextSnapshot
 {
   if ((*&self->_mutationFlags & 0x200) != 0)
   {
-    v2 = self->_requestHandlingContextSnapshot;
+    requestHandlingContextSnapshot = self->_requestHandlingContextSnapshot;
   }
 
   else
   {
-    v2 = [(AFCommandExecutionInfo *)self->_base requestHandlingContextSnapshot];
+    requestHandlingContextSnapshot = [(AFCommandExecutionInfo *)self->_base requestHandlingContextSnapshot];
   }
 
-  return v2;
+  return requestHandlingContextSnapshot;
 }
 
 - (id)getUserInfo
 {
   if ((*&self->_mutationFlags & 0x800) != 0)
   {
-    v2 = self->_userInfo;
+    userInfo = self->_userInfo;
   }
 
   else
   {
-    v2 = [(AFCommandExecutionInfo *)self->_base userInfo];
+    userInfo = [(AFCommandExecutionInfo *)self->_base userInfo];
   }
 
-  return v2;
+  return userInfo;
 }
 
-- (_AFCommandExecutionInfoMutation)initWithBase:(id)a3
+- (_AFCommandExecutionInfoMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFCommandExecutionInfoMutation;
   v6 = [(_AFCommandExecutionInfoMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

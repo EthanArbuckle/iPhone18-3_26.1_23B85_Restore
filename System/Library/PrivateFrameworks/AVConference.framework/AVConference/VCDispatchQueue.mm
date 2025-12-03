@@ -1,7 +1,7 @@
 @interface VCDispatchQueue
 + (id)defaultManager;
 - (VCDispatchQueue)init;
-- (id)getCustomRootQueueWithPriority:(int)a3 isFixedPriority:(BOOL)a4;
+- (id)getCustomRootQueueWithPriority:(int)priority isFixedPriority:(BOOL)fixedPriority;
 - (void)dealloc;
 @end
 
@@ -85,9 +85,9 @@ VCDispatchQueue *__33__VCDispatchQueue_defaultManager__block_invoke()
   [(VCDispatchQueue *)&v8 dealloc];
 }
 
-- (id)getCustomRootQueueWithPriority:(int)a3 isFixedPriority:(BOOL)a4
+- (id)getCustomRootQueueWithPriority:(int)priority isFixedPriority:(BOOL)fixedPriority
 {
-  v4 = a4;
+  fixedPriorityCopy = fixedPriority;
   v29 = *MEMORY[0x1E69E9840];
   pthread_mutex_lock(&self->_lock);
   v25 = 0u;
@@ -113,7 +113,7 @@ LABEL_3:
       v23.__sig = 0xAAAAAAAAAAAAAAAALL;
       *v23.__opaque = 0xAAAAAAAAAAAAAAAALL;
       [v12 getValue:&v23];
-      if (LODWORD(v23.__sig) == a3 && BYTE4(v23.__sig) == v4)
+      if (LODWORD(v23.__sig) == priority && BYTE4(v23.__sig) == fixedPriorityCopy)
       {
         break;
       }
@@ -147,18 +147,18 @@ LABEL_14:
   pthread_attr_init(&v23);
   v22 = 0xAAAAAAAAAAAAAAAALL;
   pthread_attr_getschedparam(&v23, &v22);
-  v22.sched_priority = a3;
+  v22.sched_priority = priority;
   pthread_attr_setschedparam(&v23, &v22);
   pthread_attr_setschedpolicy(&v23, 4);
   v20 = -1431655766;
-  v19 = a3;
-  LOBYTE(v20) = v4;
+  priorityCopy = priority;
+  LOBYTE(v20) = fixedPriorityCopy;
   v17 = MEMORY[0x1E69E9820];
-  LOBYTE(v18) = v4;
+  LOBYTE(v18) = fixedPriorityCopy;
   v21 = dispatch_pthread_root_queue_create();
   if (v21)
   {
-    -[NSMutableArray addObject:](self->_rootQueues, "addObject:", [MEMORY[0x1E696B098] value:&v19 withObjCType:{"{?=iB@}", v17, 3221225472, __66__VCDispatchQueue_getCustomRootQueueWithPriority_isFixedPriority___block_invoke, &__block_descriptor_33_e5_v8__0l, v18}]);
+    -[NSMutableArray addObject:](self->_rootQueues, "addObject:", [MEMORY[0x1E696B098] value:&priorityCopy withObjCType:{"{?=iB@}", v17, 3221225472, __66__VCDispatchQueue_getCustomRootQueueWithPriority_isFixedPriority___block_invoke, &__block_descriptor_33_e5_v8__0l, v18}]);
   }
 
   pthread_attr_destroy(&v23);

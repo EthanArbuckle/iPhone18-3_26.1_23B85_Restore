@@ -1,11 +1,11 @@
 @interface SearchResultsViewController
-- (_TtC10CallsAppUI27SearchResultsViewController)initWithCoder:(id)a3;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (_TtC10CallsAppUI27SearchResultsViewController)initWithCoder:(id)coder;
+- (void)updateSearchResultsForSearchController:(id)controller;
 @end
 
 @implementation SearchResultsViewController
 
-- (_TtC10CallsAppUI27SearchResultsViewController)initWithCoder:(id)a3
+- (_TtC10CallsAppUI27SearchResultsViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super._responderFlags + OBJC_IVAR____TtC10CallsAppUI27SearchResultsViewController_delegate) = 0;
   swift_unknownObjectWeakInit();
@@ -25,11 +25,11 @@
   return result;
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  sub_1CFC71E94(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1CFC71E94(controllerCopy);
 }
 
 @end

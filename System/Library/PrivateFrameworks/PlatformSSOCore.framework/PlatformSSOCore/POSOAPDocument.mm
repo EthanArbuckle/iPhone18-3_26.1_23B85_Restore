@@ -1,11 +1,11 @@
 @interface POSOAPDocument
 + (id)definition;
-- (id)XMLStringWithOptions:(unint64_t)a3;
-- (void)_XMLAttributeStringWithPrefix:(id)a3 name:(id)a4 value:(id)a5 options:(unint64_t)a6 appendingToString:(id)a7;
-- (void)_XMLAttributesStringWithComplexType:(id)a3 options:(unint64_t)a4 appendingToString:(id)a5;
-- (void)_XMLQualifiedNameForNamespace:(id)a3 elementName:(id)a4 options:(unint64_t)a5 appendingToString:(id)a6;
-- (void)_XMLStringWithComplexType:(id)a3 options:(unint64_t)a4 appendingToString:(id)a5;
-- (void)_XMLStringWithOptions:(unint64_t)a3 appendingToString:(id)a4;
+- (id)XMLStringWithOptions:(unint64_t)options;
+- (void)_XMLAttributeStringWithPrefix:(id)prefix name:(id)name value:(id)value options:(unint64_t)options appendingToString:(id)string;
+- (void)_XMLAttributesStringWithComplexType:(id)type options:(unint64_t)options appendingToString:(id)string;
+- (void)_XMLQualifiedNameForNamespace:(id)namespace elementName:(id)name options:(unint64_t)options appendingToString:(id)string;
+- (void)_XMLStringWithComplexType:(id)type options:(unint64_t)options appendingToString:(id)string;
+- (void)_XMLStringWithOptions:(unint64_t)options appendingToString:(id)string;
 @end
 
 @implementation POSOAPDocument
@@ -18,64 +18,64 @@
   return v2;
 }
 
-- (id)XMLStringWithOptions:(unint64_t)a3
+- (id)XMLStringWithOptions:(unint64_t)options
 {
-  v5 = [MEMORY[0x277CCAB68] string];
-  [(POSOAPDocument *)self _XMLStringWithOptions:a3 appendingToString:v5];
+  string = [MEMORY[0x277CCAB68] string];
+  [(POSOAPDocument *)self _XMLStringWithOptions:options appendingToString:string];
 
-  return v5;
+  return string;
 }
 
-- (void)_XMLQualifiedNameForNamespace:(id)a3 elementName:(id)a4 options:(unint64_t)a5 appendingToString:(id)a6
+- (void)_XMLQualifiedNameForNamespace:(id)namespace elementName:(id)name options:(unint64_t)options appendingToString:(id)string
 {
-  v10 = a4;
-  v8 = a6;
-  v9 = [POXSNamespaces prefixForNamespaceURI:a3];
+  nameCopy = name;
+  stringCopy = string;
+  v9 = [POXSNamespaces prefixForNamespaceURI:namespace];
   if ([v9 length])
   {
-    [v8 appendString:v9];
-    [v8 appendString:@":"];
+    [stringCopy appendString:v9];
+    [stringCopy appendString:@":"];
   }
 
-  [v8 appendString:v10];
+  [stringCopy appendString:nameCopy];
 }
 
-- (void)_XMLAttributeStringWithPrefix:(id)a3 name:(id)a4 value:(id)a5 options:(unint64_t)a6 appendingToString:(id)a7
+- (void)_XMLAttributeStringWithPrefix:(id)prefix name:(id)name value:(id)value options:(unint64_t)options appendingToString:(id)string
 {
-  v13 = a3;
-  v10 = a4;
-  v11 = a7;
-  v12 = a5;
-  [v11 appendString:@" "];
-  if ([v13 length])
+  prefixCopy = prefix;
+  nameCopy = name;
+  stringCopy = string;
+  valueCopy = value;
+  [stringCopy appendString:@" "];
+  if ([prefixCopy length])
   {
-    [v11 appendString:v13];
-    if (![v10 length])
+    [stringCopy appendString:prefixCopy];
+    if (![nameCopy length])
     {
       goto LABEL_6;
     }
 
-    [v11 appendString:@":"];
+    [stringCopy appendString:@":"];
   }
 
-  else if (![v10 length])
+  else if (![nameCopy length])
   {
     goto LABEL_6;
   }
 
-  [v11 appendString:v10];
+  [stringCopy appendString:nameCopy];
 LABEL_6:
-  [v11 appendString:@"="];
-  [v11 appendString:v12];
+  [stringCopy appendString:@"="];
+  [stringCopy appendString:valueCopy];
 
-  [v11 appendString:@""];
+  [stringCopy appendString:@""];
 }
 
-- (void)_XMLAttributesStringWithComplexType:(id)a3 options:(unint64_t)a4 appendingToString:(id)a5
+- (void)_XMLAttributesStringWithComplexType:(id)type options:(unint64_t)options appendingToString:(id)string
 {
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v29 = a5;
+  typeCopy = type;
+  stringCopy = string;
   [POXSDefinitions definitionForType:objc_opt_class()];
   v39 = 0u;
   v40 = 0u;
@@ -83,7 +83,7 @@ LABEL_6:
   v34 = v42 = 0u;
   obj = [v34 attributes];
   v7 = [obj countByEnumeratingWithState:&v39 objects:v44 count:16];
-  v32 = v6;
+  v32 = typeCopy;
   if (v7)
   {
     v8 = v7;
@@ -98,11 +98,11 @@ LABEL_6:
         }
 
         v11 = *(*(&v39 + 1) + 8 * i);
-        v12 = [v6 valueForKey:{v11, v29}];
+        v12 = [typeCopy valueForKey:{v11, stringCopy}];
         if (v12)
         {
           v13 = [v34 isSpecifiedKeyForAttributeName:v11];
-          if (!v13 || ([v6 valueForKey:v13], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "BOOLValue"), v14, v15))
+          if (!v13 || ([typeCopy valueForKey:v13], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "BOOLValue"), v14, v15))
           {
             v16 = +[POXSDefinitions definitionForType:](POXSDefinitions, "definitionForType:", [v34 typeForName:v11]);
             v17 = [v34 namespaceForAttributeName:v11];
@@ -110,9 +110,9 @@ LABEL_6:
             if (v18)
             {
               v19 = [POXSNamespaces prefixForNamespaceURI:v17];
-              [(POSOAPDocument *)self _XMLAttributeStringWithPrefix:v19 name:v11 value:v18 options:a4 appendingToString:v29];
+              [(POSOAPDocument *)self _XMLAttributeStringWithPrefix:v19 name:v11 value:v18 options:options appendingToString:stringCopy];
 
-              v6 = v32;
+              typeCopy = v32;
             }
           }
         }
@@ -128,9 +128,9 @@ LABEL_6:
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v20 = [v34 namespaces];
-  v21 = [v20 countByEnumeratingWithState:&v35 objects:v43 count:16];
-  v22 = v29;
+  namespaces = [v34 namespaces];
+  v21 = [namespaces countByEnumeratingWithState:&v35 objects:v43 count:16];
+  v22 = stringCopy;
   if (v21)
   {
     v23 = v21;
@@ -141,15 +141,15 @@ LABEL_6:
       {
         if (*v36 != v24)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(namespaces);
         }
 
         v26 = *(*(&v35 + 1) + 8 * j);
-        v27 = [POXSNamespaces prefixForNamespaceURI:v26, v29];
-        [(POSOAPDocument *)self _XMLAttributeStringWithPrefix:@"xmlns" name:v27 value:v26 options:a4 appendingToString:v22];
+        stringCopy = [POXSNamespaces prefixForNamespaceURI:v26, stringCopy];
+        [(POSOAPDocument *)self _XMLAttributeStringWithPrefix:@"xmlns" name:stringCopy value:v26 options:options appendingToString:v22];
       }
 
-      v23 = [v20 countByEnumeratingWithState:&v35 objects:v43 count:16];
+      v23 = [namespaces countByEnumeratingWithState:&v35 objects:v43 count:16];
     }
 
     while (v23);
@@ -158,11 +158,11 @@ LABEL_6:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_XMLStringWithComplexType:(id)a3 options:(unint64_t)a4 appendingToString:(id)a5
+- (void)_XMLStringWithComplexType:(id)type options:(unint64_t)options appendingToString:(id)string
 {
   v121 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  typeCopy = type;
+  stringCopy = string;
   v10 = [POXSDefinitions definitionForType:objc_opt_class()];
   v115 = 0u;
   v116 = 0u;
@@ -173,9 +173,9 @@ LABEL_6:
   if (v98)
   {
     v97 = *v116;
-    v92 = v8;
+    v92 = typeCopy;
     v93 = v10;
-    v103 = self;
+    selfCopy = self;
     do
     {
       v11 = 0;
@@ -188,19 +188,19 @@ LABEL_6:
 
         v100 = v11;
         v12 = *(*(&v115 + 1) + 8 * v11);
-        v13 = [v12 elementName];
-        v14 = [v8 valueForKey:v13];
+        elementName = [v12 elementName];
+        v14 = [typeCopy valueForKey:elementName];
 
         v101 = v14;
         if (v14)
         {
           v109 = v12;
-          v15 = [v12 elementName];
-          v16 = [v10 typeForName:v15];
+          elementName2 = [v12 elementName];
+          v16 = [v10 typeForName:elementName2];
           v105 = [POXSDefinitions definitionForType:v16];
-          v99 = v15;
-          v17 = [v10 isSpecifiedKeyForElementName:v15];
-          if (v17 && ([v8 valueForKey:v17], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "BOOLValue"), v18, !v19))
+          v99 = elementName2;
+          v17 = [v10 isSpecifiedKeyForElementName:elementName2];
+          if (v17 && ([typeCopy valueForKey:v17], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "BOOLValue"), v18, !v19))
           {
             v31 = v105;
           }
@@ -224,12 +224,12 @@ LABEL_6:
 
                 else
                 {
-                  [v9 appendString:@"<"];
-                  v38 = [v109 namespaceURI];
-                  v39 = [v109 elementName];
-                  [(POSOAPDocument *)self _XMLQualifiedNameForNamespace:v38 elementName:v39 options:a4 appendingToString:v9];
+                  [stringCopy appendString:@"<"];
+                  namespaceURI = [v109 namespaceURI];
+                  elementName3 = [v109 elementName];
+                  [(POSOAPDocument *)self _XMLQualifiedNameForNamespace:namespaceURI elementName:elementName3 options:options appendingToString:stringCopy];
 
-                  [v9 appendString:@">"];
+                  [stringCopy appendString:@">"];
                   v94 = 1;
                 }
               }
@@ -269,8 +269,8 @@ LABEL_6:
                   {
                     v44 = [v105 elementForValue:v41];
 
-                    v45 = [v44 elementName];
-                    v46 = [v105 typeForName:v45];
+                    elementName4 = [v44 elementName];
+                    v46 = [v105 typeForName:elementName4];
 
                     v42 = v44;
                   }
@@ -280,10 +280,10 @@ LABEL_6:
                     v46 = v43;
                   }
 
-                  [v9 appendString:@"<"];
-                  v47 = [v42 namespaceURI];
-                  v48 = [v42 elementName];
-                  [(POSOAPDocument *)self _XMLQualifiedNameForNamespace:v47 elementName:v48 options:a4 appendingToString:v9];
+                  [stringCopy appendString:@"<"];
+                  namespaceURI2 = [v42 namespaceURI];
+                  elementName5 = [v42 elementName];
+                  [(POSOAPDocument *)self _XMLQualifiedNameForNamespace:namespaceURI2 elementName:elementName5 options:options appendingToString:stringCopy];
 
                   v49 = [POXSDefinitions definitionForType:v46];
                   objc_opt_class();
@@ -292,20 +292,20 @@ LABEL_6:
                     objc_opt_class();
                     if (objc_opt_isKindOfClass())
                     {
-                      v52 = v9;
+                      v52 = stringCopy;
                       if (v41)
                       {
-                        [v9 appendString:@">"];
+                        [stringCopy appendString:@">"];
                         v53 = [v49 stringFromValue:v41];
-                        [v9 appendString:v53];
+                        [stringCopy appendString:v53];
 
 LABEL_38:
-                        [v9 appendString:@"</"];
-                        v54 = [v42 namespaceURI];
-                        v55 = [v42 elementName];
-                        [(POSOAPDocument *)self _XMLQualifiedNameForNamespace:v54 elementName:v55 options:a4 appendingToString:v9];
+                        [stringCopy appendString:@"</"];
+                        namespaceURI3 = [v42 namespaceURI];
+                        elementName6 = [v42 elementName];
+                        [(POSOAPDocument *)self _XMLQualifiedNameForNamespace:namespaceURI3 elementName:elementName6 options:options appendingToString:stringCopy];
 
-                        v52 = v9;
+                        v52 = stringCopy;
                         v56 = @">";
                       }
 
@@ -319,54 +319,54 @@ LABEL_38:
                     }
 
 LABEL_43:
-                    [v9 appendString:@"/>"];
+                    [stringCopy appendString:@"/>"];
                     goto LABEL_47;
                   }
 
-                  [(POSOAPDocument *)self _XMLAttributesStringWithComplexType:v41 options:a4 appendingToString:v9];
-                  v50 = [v49 elements];
-                  v51 = [v50 count];
+                  [(POSOAPDocument *)self _XMLAttributesStringWithComplexType:v41 options:options appendingToString:stringCopy];
+                  elements = [v49 elements];
+                  v51 = [elements count];
 
                   if (v51)
                   {
-                    [v9 appendString:@">"];
-                    [(POSOAPDocument *)self _XMLStringWithComplexType:v41 options:a4 appendingToString:v9];
+                    [stringCopy appendString:@">"];
+                    [(POSOAPDocument *)self _XMLStringWithComplexType:v41 options:options appendingToString:stringCopy];
                     goto LABEL_38;
                   }
 
-                  v57 = [v49 contentPropertyName];
+                  contentPropertyName = [v49 contentPropertyName];
 
-                  if (!v57)
+                  if (!contentPropertyName)
                   {
                     goto LABEL_43;
                   }
 
                   v58 = [POXSDefinitions definitionForType:v46];
-                  v59 = [v58 contentPropertyName];
+                  contentPropertyName2 = [v58 contentPropertyName];
                   v104 = v58;
-                  v60 = [v58 typeForName:v59];
-                  v61 = [v41 valueForKey:v59];
+                  v60 = [v58 typeForName:contentPropertyName2];
+                  v61 = [v41 valueForKey:contentPropertyName2];
                   v62 = [POXSDefinitions definitionForType:v60];
                   v63 = [v62 stringFromValue:v61];
                   if (v63)
                   {
-                    [v9 appendString:@">"];
-                    [v9 appendString:v63];
-                    [v9 appendString:@"</"];
-                    v64 = [v42 namespaceURI];
+                    [stringCopy appendString:@">"];
+                    [stringCopy appendString:v63];
+                    [stringCopy appendString:@"</"];
+                    namespaceURI4 = [v42 namespaceURI];
                     [v42 elementName];
-                    v102 = v59;
+                    v102 = contentPropertyName2;
                     v65 = v62;
                     v66 = v61;
-                    v68 = v67 = a4;
-                    [(POSOAPDocument *)v103 _XMLQualifiedNameForNamespace:v64 elementName:v68 options:v67 appendingToString:v9];
+                    v68 = v67 = options;
+                    [(POSOAPDocument *)selfCopy _XMLQualifiedNameForNamespace:namespaceURI4 elementName:v68 options:v67 appendingToString:stringCopy];
 
-                    a4 = v67;
+                    options = v67;
                     v61 = v66;
                     v62 = v65;
-                    v59 = v102;
+                    contentPropertyName2 = v102;
 
-                    self = v103;
+                    self = selfCopy;
                     v69 = @">";
                   }
 
@@ -375,7 +375,7 @@ LABEL_43:
                     v69 = @"/>";
                   }
 
-                  [v9 appendString:v69];
+                  [stringCopy appendString:v69];
 
 LABEL_47:
                   v21 = v109;
@@ -388,16 +388,16 @@ LABEL_49:
 
                   if (v94)
                   {
-                    [v9 appendString:@"</"];
-                    v70 = [v21 namespaceURI];
-                    v71 = [v21 elementName];
-                    [(POSOAPDocument *)self _XMLQualifiedNameForNamespace:v70 elementName:v71 options:a4 appendingToString:v9];
+                    [stringCopy appendString:@"</"];
+                    namespaceURI5 = [v21 namespaceURI];
+                    elementName7 = [v21 elementName];
+                    [(POSOAPDocument *)self _XMLQualifiedNameForNamespace:namespaceURI5 elementName:elementName7 options:options appendingToString:stringCopy];
 
-                    [v9 appendString:@">"];
+                    [stringCopy appendString:@">"];
                   }
 
                   v31 = v105;
-                  v8 = v92;
+                  typeCopy = v92;
                   goto LABEL_52;
                 }
               }
@@ -407,48 +407,48 @@ LABEL_49:
             v22 = v105;
             if (objc_opt_isKindOfClass())
             {
-              [v9 appendString:@"<"];
-              v23 = [v109 namespaceURI];
-              v24 = [v109 elementName];
-              [(POSOAPDocument *)self _XMLQualifiedNameForNamespace:v23 elementName:v24 options:a4 appendingToString:v9];
+              [stringCopy appendString:@"<"];
+              namespaceURI6 = [v109 namespaceURI];
+              elementName8 = [v109 elementName];
+              [(POSOAPDocument *)self _XMLQualifiedNameForNamespace:namespaceURI6 elementName:elementName8 options:options appendingToString:stringCopy];
 
-              [(POSOAPDocument *)self _XMLAttributesStringWithComplexType:v101 options:a4 appendingToString:v9];
-              v25 = [v105 elements];
-              v26 = [v25 count];
+              [(POSOAPDocument *)self _XMLAttributesStringWithComplexType:v101 options:options appendingToString:stringCopy];
+              elements2 = [v105 elements];
+              v26 = [elements2 count];
 
               if (v26)
               {
-                [v9 appendString:@">"];
-                [(POSOAPDocument *)self _XMLStringWithComplexType:v101 options:a4 appendingToString:v9];
-                [v9 appendString:@"</"];
-                v27 = [v109 namespaceURI];
-                v28 = [v109 elementName];
-                [(POSOAPDocument *)self _XMLQualifiedNameForNamespace:v27 elementName:v28 options:a4 appendingToString:v9];
+                [stringCopy appendString:@">"];
+                [(POSOAPDocument *)self _XMLStringWithComplexType:v101 options:options appendingToString:stringCopy];
+                [stringCopy appendString:@"</"];
+                namespaceURI7 = [v109 namespaceURI];
+                elementName9 = [v109 elementName];
+                [(POSOAPDocument *)self _XMLQualifiedNameForNamespace:namespaceURI7 elementName:elementName9 options:options appendingToString:stringCopy];
 
-                v29 = v9;
+                v29 = stringCopy;
                 v30 = @">";
               }
 
               else
               {
-                v78 = [v105 contentPropertyName];
+                contentPropertyName3 = [v105 contentPropertyName];
 
-                if (v78)
+                if (contentPropertyName3)
                 {
-                  v79 = [v105 contentPropertyName];
-                  v80 = [v105 typeForName:v79];
-                  v81 = [v101 valueForKey:v79];
+                  contentPropertyName4 = [v105 contentPropertyName];
+                  v80 = [v105 typeForName:contentPropertyName4];
+                  v81 = [v101 valueForKey:contentPropertyName4];
                   v82 = [POXSDefinitions definitionForType:v80];
                   v83 = [v82 stringFromValue:v81];
-                  v8 = v92;
+                  typeCopy = v92;
                   if (v83)
                   {
-                    [v9 appendString:@">"];
-                    [v9 appendString:v83];
-                    [v9 appendString:@"</"];
-                    v84 = [v109 namespaceURI];
-                    v85 = [v109 elementName];
-                    [(POSOAPDocument *)v103 _XMLQualifiedNameForNamespace:v84 elementName:v85 options:a4 appendingToString:v9];
+                    [stringCopy appendString:@">"];
+                    [stringCopy appendString:v83];
+                    [stringCopy appendString:@"</"];
+                    namespaceURI8 = [v109 namespaceURI];
+                    elementName10 = [v109 elementName];
+                    [(POSOAPDocument *)selfCopy _XMLQualifiedNameForNamespace:namespaceURI8 elementName:elementName10 options:options appendingToString:stringCopy];
 
                     v22 = v105;
                     v86 = @">";
@@ -459,20 +459,20 @@ LABEL_49:
                     v86 = @"/>";
                   }
 
-                  [v9 appendString:v86];
+                  [stringCopy appendString:v86];
 
                   v31 = v22;
                   goto LABEL_52;
                 }
 
-                v29 = v9;
+                v29 = stringCopy;
                 v30 = @"/>";
               }
 
               [v29 appendString:v30];
               v31 = v105;
               v17 = v96;
-              v8 = v92;
+              typeCopy = v92;
               goto LABEL_54;
             }
 
@@ -480,24 +480,24 @@ LABEL_49:
             if (objc_opt_isKindOfClass())
             {
               v32 = [v105 elementForValue:v101];
-              v33 = [v32 namespaceURI];
-              v34 = [v32 elementName];
-              [v9 appendString:@"<"];
-              [(POSOAPDocument *)self _XMLQualifiedNameForNamespace:v33 elementName:v34 options:a4 appendingToString:v9];
-              [(POSOAPDocument *)self _XMLAttributesStringWithComplexType:v101 options:a4 appendingToString:v9];
+              namespaceURI9 = [v32 namespaceURI];
+              elementName11 = [v32 elementName];
+              [stringCopy appendString:@"<"];
+              [(POSOAPDocument *)self _XMLQualifiedNameForNamespace:namespaceURI9 elementName:elementName11 options:options appendingToString:stringCopy];
+              [(POSOAPDocument *)self _XMLAttributesStringWithComplexType:v101 options:options appendingToString:stringCopy];
               v31 = +[POXSDefinitions definitionForType:](POXSDefinitions, "definitionForType:", [v32 type]);
 
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v35 = [v31 elements];
-                v36 = [v35 count];
+                elements3 = [v31 elements];
+                v36 = [elements3 count];
 
                 if (v36)
                 {
-                  [v9 appendString:@">"];
-                  v37 = v103;
-                  [(POSOAPDocument *)v103 _XMLStringWithComplexType:v101 options:a4 appendingToString:v9];
+                  [stringCopy appendString:@">"];
+                  v37 = selfCopy;
+                  [(POSOAPDocument *)selfCopy _XMLStringWithComplexType:v101 options:options appendingToString:stringCopy];
                   goto LABEL_66;
                 }
               }
@@ -506,13 +506,13 @@ LABEL_49:
               if ((objc_opt_isKindOfClass() & 1) != 0 && ([v31 stringFromValue:v101], (v87 = objc_claimAutoreleasedReturnValue()) != 0))
               {
                 v88 = v87;
-                [v9 appendString:@">"];
-                [v9 appendString:v88];
+                [stringCopy appendString:@">"];
+                [stringCopy appendString:v88];
 
-                v37 = v103;
+                v37 = selfCopy;
 LABEL_66:
-                [v9 appendString:@"</"];
-                [(POSOAPDocument *)v37 _XMLQualifiedNameForNamespace:v33 elementName:v34 options:a4 appendingToString:v9];
+                [stringCopy appendString:@"</"];
+                [(POSOAPDocument *)v37 _XMLQualifiedNameForNamespace:namespaceURI9 elementName:elementName11 options:options appendingToString:stringCopy];
                 v89 = @">";
               }
 
@@ -521,7 +521,7 @@ LABEL_66:
                 v89 = @"/>";
               }
 
-              [v9 appendString:v89];
+              [stringCopy appendString:v89];
 
               v10 = v93;
             }
@@ -532,19 +532,19 @@ LABEL_66:
               v73 = [v72 stringFromValue:v101];
               if (v73)
               {
-                [v9 appendString:@"<"];
-                v74 = [v109 namespaceURI];
-                v75 = [v109 elementName];
-                [(POSOAPDocument *)self _XMLQualifiedNameForNamespace:v74 elementName:v75 options:a4 appendingToString:v9];
+                [stringCopy appendString:@"<"];
+                namespaceURI10 = [v109 namespaceURI];
+                elementName12 = [v109 elementName];
+                [(POSOAPDocument *)self _XMLQualifiedNameForNamespace:namespaceURI10 elementName:elementName12 options:options appendingToString:stringCopy];
 
-                [v9 appendString:@">"];
-                [v9 appendString:v73];
-                [v9 appendString:@"</"];
-                v76 = [v109 namespaceURI];
-                v77 = [v109 elementName];
-                [(POSOAPDocument *)self _XMLQualifiedNameForNamespace:v76 elementName:v77 options:a4 appendingToString:v9];
+                [stringCopy appendString:@">"];
+                [stringCopy appendString:v73];
+                [stringCopy appendString:@"</"];
+                namespaceURI11 = [v109 namespaceURI];
+                elementName13 = [v109 elementName];
+                [(POSOAPDocument *)self _XMLQualifiedNameForNamespace:namespaceURI11 elementName:elementName13 options:options appendingToString:stringCopy];
 
-                [v9 appendString:@">"];
+                [stringCopy appendString:@">"];
               }
 
               v31 = v105;
@@ -557,7 +557,7 @@ LABEL_52:
 
 LABEL_54:
 
-          self = v103;
+          self = selfCopy;
         }
 
         v11 = v100 + 1;
@@ -574,18 +574,18 @@ LABEL_54:
   v91 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_XMLStringWithOptions:(unint64_t)a3 appendingToString:(id)a4
+- (void)_XMLStringWithOptions:(unint64_t)options appendingToString:(id)string
 {
-  v6 = a4;
-  v7 = v6;
-  v8 = v6;
-  if ((a3 & 1) == 0)
+  stringCopy = string;
+  v7 = stringCopy;
+  v8 = stringCopy;
+  if ((options & 1) == 0)
   {
-    [v6 appendString:@"<?xml version=1.0 encoding=utf-8?>"];
+    [stringCopy appendString:@"<?xml version=1.0 encoding=utf-8?>"];
     v7 = v8;
   }
 
-  [(POSOAPDocument *)self _XMLStringWithComplexType:self options:a3 appendingToString:v7];
+  [(POSOAPDocument *)self _XMLStringWithComplexType:self options:options appendingToString:v7];
 }
 
 @end

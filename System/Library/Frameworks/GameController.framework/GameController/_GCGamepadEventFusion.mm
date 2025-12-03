@@ -1,32 +1,32 @@
 @interface _GCGamepadEventFusion
 - (_GCGamepadEventFusion)init;
-- (_GCGamepadEventFusion)initWithConfiguration:(id)a3 sources:(id)a4;
-- (id)observeGamepadEvents:(id)a3;
+- (_GCGamepadEventFusion)initWithConfiguration:(id)configuration sources:(id)sources;
+- (id)observeGamepadEvents:(id)events;
 - (void)dealloc;
 @end
 
 @implementation _GCGamepadEventFusion
 
-- (_GCGamepadEventFusion)initWithConfiguration:(id)a3 sources:(id)a4
+- (_GCGamepadEventFusion)initWithConfiguration:(id)configuration sources:(id)sources
 {
-  v8 = a3;
-  v9 = a4;
+  configurationCopy = configuration;
+  sourcesCopy = sources;
   v26.receiver = self;
   v26.super_class = _GCGamepadEventFusion;
   v10 = [(_GCGamepadEventFusion *)&v26 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_config, a3);
-    v11->_lastEvent = malloc_type_calloc([v9 count], 8uLL, 0x80040B8603338uLL);
-    v12 = [v8 sourceCount];
-    if (v12 != [v9 count])
+    objc_storeStrong(&v10->_config, configuration);
+    v11->_lastEvent = malloc_type_calloc([sourcesCopy count], 8uLL, 0x80040B8603338uLL);
+    sourceCount = [configurationCopy sourceCount];
+    if (sourceCount != [sourcesCopy count])
     {
       [_GCGamepadEventFusion initWithConfiguration:a2 sources:v11];
     }
 
-    v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v9, "count")}];
-    if ([v9 count])
+    v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(sourcesCopy, "count")}];
+    if ([sourcesCopy count])
     {
       v14 = 0;
       do
@@ -36,7 +36,7 @@
         v17 = lastEvent[v14];
         lastEvent[v14] = v15;
 
-        v18 = [v9 objectAtIndexedSubscript:v14];
+        v18 = [sourcesCopy objectAtIndexedSubscript:v14];
         v25[0] = MEMORY[0x1E69E9820];
         v25[1] = 3221225472;
         v25[2] = __55___GCGamepadEventFusion_initWithConfiguration_sources___block_invoke;
@@ -49,7 +49,7 @@
         ++v14;
       }
 
-      while (v14 < [v9 count]);
+      while (v14 < [sourcesCopy count]);
     }
 
     v20 = [v13 copy];
@@ -97,27 +97,27 @@
   [(_GCGamepadEventFusion *)&v7 dealloc];
 }
 
-- (id)observeGamepadEvents:(id)a3
+- (id)observeGamepadEvents:(id)events
 {
-  v4 = [a3 copy];
-  v5 = [(_GCGamepadEventFusion *)self observers];
+  v4 = [events copy];
+  observers = [(_GCGamepadEventFusion *)self observers];
   v6 = _Block_copy(v4);
-  v7 = [v5 containsObject:v6];
+  v7 = [observers containsObject:v6];
 
   if ((v7 & 1) == 0)
   {
     do
     {
-      v8 = [(_GCGamepadEventFusion *)self observers];
-      v9 = [v8 mutableCopy];
+      observers2 = [(_GCGamepadEventFusion *)self observers];
+      v9 = [observers2 mutableCopy];
 
       v10 = _Block_copy(v4);
       [v9 addObject:v10];
 
       [(_GCGamepadEventFusion *)self setObservers:v9];
-      v11 = [(_GCGamepadEventFusion *)self observers];
+      observers3 = [(_GCGamepadEventFusion *)self observers];
       v12 = _Block_copy(v4);
-      v13 = [v11 containsObject:v12];
+      v13 = [observers3 containsObject:v12];
     }
 
     while (!v13);

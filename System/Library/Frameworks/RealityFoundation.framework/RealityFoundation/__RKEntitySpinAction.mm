@@ -1,10 +1,10 @@
 @interface __RKEntitySpinAction
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation __RKEntitySpinAction
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
 
   __RKEntitySpinAction.copy(with:)(v5);

@@ -11,36 +11,36 @@
 - (NSString)realm;
 - (NSString)requestedOperation;
 - (POLoginManager)loginManager;
-- (SOAuthorizationRequest)initWithRequestParameters:(id)a3 remoteExtensionContext:(id)a4;
-- (id)_createSecKeyProxiesForSecKeys:(id)a3 error:(id *)a4;
+- (SOAuthorizationRequest)initWithRequestParameters:(id)parameters remoteExtensionContext:(id)context;
+- (id)_createSecKeyProxiesForSecKeys:(id)keys error:(id *)error;
 - (id)_hostExtensionContext;
-- (void)_completeFinishAuthorizationWithRequestIdentifier:(id)a3 error:(id)a4;
+- (void)_completeFinishAuthorizationWithRequestIdentifier:(id)identifier error:(id)error;
 - (void)_hostExtensionContext;
 - (void)_invalidateLoginManager;
 - (void)cancel;
 - (void)complete;
-- (void)completeWithAuthorizationResult:(id)a3;
-- (void)completeWithError:(id)a3;
-- (void)completeWithHTTPAuthorizationHeaders:(id)a3;
-- (void)completeWithHTTPResponse:(id)a3 httpBody:(id)a4;
+- (void)completeWithAuthorizationResult:(id)result;
+- (void)completeWithError:(id)error;
+- (void)completeWithHTTPAuthorizationHeaders:(id)headers;
+- (void)completeWithHTTPResponse:(id)response httpBody:(id)body;
 - (void)doNotHandle;
-- (void)presentAuthorizationViewControllerWithHints:(id)a3 completion:(id)a4;
+- (void)presentAuthorizationViewControllerWithHints:(id)hints completion:(id)completion;
 @end
 
 @implementation SOAuthorizationRequest
 
-- (SOAuthorizationRequest)initWithRequestParameters:(id)a3 remoteExtensionContext:(id)a4
+- (SOAuthorizationRequest)initWithRequestParameters:(id)parameters remoteExtensionContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  parametersCopy = parameters;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = SOAuthorizationRequest;
   v9 = [(SOAuthorizationRequest *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_requestParameters, a3);
-    objc_storeWeak(&v10->_remoteExtensionContext, v8);
+    objc_storeStrong(&v9->_requestParameters, parameters);
+    objc_storeWeak(&v10->_remoteExtensionContext, contextCopy);
   }
 
   return v10;
@@ -70,34 +70,34 @@
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)completeWithHTTPAuthorizationHeaders:(id)a3
+- (void)completeWithHTTPAuthorizationHeaders:(id)headers
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  headersCopy = headers;
   v5 = SO_LOG_SOAuthorizationRequest();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(SOAuthorizationRequestParameters *)self->_requestParameters identifier];
+    identifier = [(SOAuthorizationRequestParameters *)self->_requestParameters identifier];
     *buf = 136316163;
     v28 = "[SOAuthorizationRequest completeWithHTTPAuthorizationHeaders:]";
     v29 = 2114;
-    v30 = v6;
+    v30 = identifier;
     v31 = 2160;
     v32 = 1752392040;
     v33 = 2117;
-    v34 = v4;
+    v34 = headersCopy;
     v35 = 2112;
-    v36 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v5, OS_LOG_TYPE_DEFAULT, "%s extension API called, identifier = %{public}@, httpAuthorizationHeaders = %{sensitive, mask.hash}@ on %@", buf, 0x34u);
   }
 
   [(SOAuthorizationRequest *)self _invalidateLoginManager];
-  v7 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = v4;
+  v8 = headersCopy;
   v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v9)
   {
@@ -116,7 +116,7 @@
         v14 = [v8 objectForKeyedSubscript:{v13, v22}];
         v15 = [v14 description];
         v16 = [v13 description];
-        [v7 setObject:v15 forKeyedSubscript:v16];
+        [dictionary setObject:v15 forKeyedSubscript:v16];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -126,7 +126,7 @@
   }
 
   v17 = objc_alloc_init(getSOAuthorizationCredentialClass());
-  [v17 setHttpAuthorizationHeaders:v7];
+  [v17 setHttpAuthorizationHeaders:dictionary];
   if ([(SOAuthorizationRequest *)self isAuthorizationCanceled])
   {
     v18 = SO_LOG_SOAuthorizationRequest();
@@ -143,18 +143,18 @@
   else
   {
     canceledAuthorizationError = [(SOAuthorizationRequest *)self _hostExtensionContext];
-    v20 = [(SOAuthorizationRequestParameters *)self->_requestParameters identifier];
-    [canceledAuthorizationError authorization:v20 didCompleteWithCredential:v17 error:0];
+    identifier2 = [(SOAuthorizationRequestParameters *)self->_requestParameters identifier];
+    [canceledAuthorizationError authorization:identifier2 didCompleteWithCredential:v17 error:0];
   }
 
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)completeWithHTTPResponse:(id)a3 httpBody:(id)a4
+- (void)completeWithHTTPResponse:(id)response httpBody:(id)body
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  bodyCopy = body;
   v8 = SO_LOG_SOAuthorizationRequest();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -163,22 +163,22 @@
     v17 = 2160;
     v18 = 1752392040;
     v19 = 2117;
-    v20 = v6;
+    v20 = responseCopy;
     v21 = 2160;
     v22 = 1752392040;
     v23 = 2117;
-    v24 = v7;
+    v24 = bodyCopy;
     v25 = 2112;
-    v26 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v8, OS_LOG_TYPE_DEFAULT, "%s extension API called, httpResponse = %{sensitive, mask.hash}@, httpBody = %{sensitive, mask.hash}@ on %@", &v15, 0x3Eu);
   }
 
   [(SOAuthorizationRequest *)self _invalidateLoginManager];
   v9 = objc_alloc_init(getSOAuthorizationCredentialClass());
-  [v9 setHttpResponse:v6];
-  if (v7)
+  [v9 setHttpResponse:responseCopy];
+  if (bodyCopy)
   {
-    [v9 setHttpBody:v7];
+    [v9 setHttpBody:bodyCopy];
   }
 
   else
@@ -203,49 +203,49 @@
   else
   {
     canceledAuthorizationError = [(SOAuthorizationRequest *)self _hostExtensionContext];
-    v13 = [(SOAuthorizationRequestParameters *)self->_requestParameters identifier];
-    [canceledAuthorizationError authorization:v13 didCompleteWithCredential:v9 error:0];
+    identifier = [(SOAuthorizationRequestParameters *)self->_requestParameters identifier];
+    [canceledAuthorizationError authorization:identifier didCompleteWithCredential:v9 error:0];
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)completeWithAuthorizationResult:(id)a3
+- (void)completeWithAuthorizationResult:(id)result
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultCopy = result;
   v5 = SO_LOG_SOAuthorizationRequest();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315651;
     v33 = "[SOAuthorizationRequest completeWithAuthorizationResult:]";
     v34 = 2113;
-    v35 = v4;
+    v35 = resultCopy;
     v36 = 2112;
-    v37 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v5, OS_LOG_TYPE_DEFAULT, "%s extension API called, completeWithAuthorizationResult = %{private}@ on %@", buf, 0x20u);
   }
 
   [(SOAuthorizationRequest *)self _invalidateLoginManager];
-  v6 = [objc_alloc(getSOAuthorizationCredentialClass()) initWithAuthorizationResult:v4];
-  v7 = [v4 privateKeys];
-  v8 = [v7 count];
+  v6 = [objc_alloc(getSOAuthorizationCredentialClass()) initWithAuthorizationResult:resultCopy];
+  privateKeys = [resultCopy privateKeys];
+  v8 = [privateKeys count];
 
   if (!v8)
   {
     goto LABEL_13;
   }
 
-  v9 = [v4 privateKeys];
+  privateKeys2 = [resultCopy privateKeys];
   v30 = 0;
-  v10 = [(SOAuthorizationRequest *)self _createSecKeyProxiesForSecKeys:v9 error:&v30];
+  v10 = [(SOAuthorizationRequest *)self _createSecKeyProxiesForSecKeys:privateKeys2 error:&v30];
   canceledAuthorizationError = v30;
   secKeyProxies = self->_secKeyProxies;
   self->_secKeyProxies = v10;
 
   if (self->_secKeyProxies)
   {
-    v13 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
@@ -266,8 +266,8 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v26 + 1) + 8 * v18) endpoint];
-          [v13 addObject:v19];
+          endpoint = [*(*(&v26 + 1) + 8 * v18) endpoint];
+          [array addObject:endpoint];
 
           ++v18;
         }
@@ -279,7 +279,7 @@
       while (v16);
     }
 
-    [v6 setSecKeyProxyEndpoints:v13];
+    [v6 setSecKeyProxyEndpoints:array];
 LABEL_13:
     if ([(SOAuthorizationRequest *)self isAuthorizationCanceled])
     {
@@ -297,8 +297,8 @@ LABEL_13:
     else
     {
       canceledAuthorizationError = [(SOAuthorizationRequest *)self _hostExtensionContext];
-      v21 = [(SOAuthorizationRequestParameters *)self->_requestParameters identifier];
-      [canceledAuthorizationError authorization:v21 didCompleteWithCredential:v6 error:0];
+      identifier = [(SOAuthorizationRequestParameters *)self->_requestParameters identifier];
+      [canceledAuthorizationError authorization:identifier didCompleteWithCredential:v6 error:0];
     }
 
     goto LABEL_21;
@@ -310,27 +310,27 @@ LABEL_13:
     [SOAuthorizationRequest completeWithAuthorizationResult:];
   }
 
-  v23 = [(SOAuthorizationRequest *)self _hostExtensionContext];
-  v24 = [(SOAuthorizationRequestParameters *)self->_requestParameters identifier];
-  [v23 authorization:v24 didCompleteWithCredential:0 error:canceledAuthorizationError];
+  _hostExtensionContext = [(SOAuthorizationRequest *)self _hostExtensionContext];
+  identifier2 = [(SOAuthorizationRequestParameters *)self->_requestParameters identifier];
+  [_hostExtensionContext authorization:identifier2 didCompleteWithCredential:0 error:canceledAuthorizationError];
 
 LABEL_21:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)completeWithError:(id)a3
+- (void)completeWithError:(id)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = SO_LOG_SOAuthorizationRequest();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 136315650;
     v13 = "[SOAuthorizationRequest completeWithError:]";
     v14 = 2114;
-    v15 = v4;
+    v15 = errorCopy;
     v16 = 2112;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v5, OS_LOG_TYPE_DEFAULT, "%s extension API called, error = %{public}@ on %@", &v12, 0x20u);
   }
 
@@ -346,7 +346,7 @@ LABEL_21:
     canceledAuthorizationCredential = self->_canceledAuthorizationCredential;
     self->_canceledAuthorizationCredential = 0;
 
-    v8 = v4;
+    v8 = errorCopy;
     canceledAuthorizationError = self->_canceledAuthorizationError;
     self->_canceledAuthorizationError = v8;
   }
@@ -354,25 +354,25 @@ LABEL_21:
   else
   {
     canceledAuthorizationError = [(SOAuthorizationRequest *)self _hostExtensionContext];
-    v10 = [(SOAuthorizationRequestParameters *)self->_requestParameters identifier];
-    [canceledAuthorizationError authorization:v10 didCompleteWithCredential:0 error:v4];
+    identifier = [(SOAuthorizationRequestParameters *)self->_requestParameters identifier];
+    [canceledAuthorizationError authorization:identifier didCompleteWithCredential:0 error:errorCopy];
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)presentAuthorizationViewControllerWithHints:(id)a3 completion:(id)a4
+- (void)presentAuthorizationViewControllerWithHints:(id)hints completion:(id)completion
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  hintsCopy = hints;
+  completionCopy = completion;
   v8 = SO_LOG_SOAuthorizationRequest();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v27 = "[SOAuthorizationRequest presentAuthorizationViewControllerWithHints:completion:]";
     v28 = 2112;
-    v29 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v8, OS_LOG_TYPE_DEFAULT, "%s extension API called on %@", buf, 0x16u);
   }
 
@@ -384,10 +384,10 @@ LABEL_21:
       [SOAuthorizationRequest presentAuthorizationViewControllerWithHints:completion:];
     }
 
-    if (v7)
+    if (completionCopy)
     {
       v10 = [getSOErrorHelperClass_1() internalErrorWithMessage:@"Authorization has been already canceled"];
-      v7[2](v7, 0, v10);
+      completionCopy[2](completionCopy, 0, v10);
 LABEL_22:
     }
   }
@@ -402,12 +402,12 @@ LABEL_22:
         [SOAuthorizationRequest presentAuthorizationViewControllerWithHints:completion:];
       }
 
-      if (v7)
+      if (completionCopy)
       {
         v14 = MEMORY[0x1E696ABC0];
         v15 = getASAuthorizationErrorDomain();
         v16 = [v14 errorWithDomain:v15 code:1005 userInfo:0];
-        v7[2](v7, 0, v16);
+        completionCopy[2](completionCopy, 0, v16);
       }
 
       v10 = [getSOErrorHelperClass_1() errorWithCode:-12];
@@ -419,24 +419,24 @@ LABEL_22:
         _os_log_impl(&dword_1C1317000, v17, OS_LOG_TYPE_DEFAULT, "finish authorization with error: %{public}@", buf, 0xCu);
       }
 
-      v18 = [(SOAuthorizationRequest *)self _hostExtensionContext];
-      v19 = [(SOAuthorizationRequestParameters *)self->_requestParameters identifier];
-      [v18 authorization:v19 didCompleteWithCredential:0 error:v10];
+      _hostExtensionContext = [(SOAuthorizationRequest *)self _hostExtensionContext];
+      identifier = [(SOAuthorizationRequestParameters *)self->_requestParameters identifier];
+      [_hostExtensionContext authorization:identifier didCompleteWithCredential:0 error:v10];
 
       goto LABEL_22;
     }
 
     if ([(SOAuthorizationRequest *)self _isUserInterfaceAllowed])
     {
-      v11 = [(SOAuthorizationRequest *)self _hostExtensionContext];
-      v12 = [(SOAuthorizationRequestParameters *)self->_requestParameters identifier];
+      _hostExtensionContext2 = [(SOAuthorizationRequest *)self _hostExtensionContext];
+      identifier2 = [(SOAuthorizationRequestParameters *)self->_requestParameters identifier];
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __81__SOAuthorizationRequest_presentAuthorizationViewControllerWithHints_completion___block_invoke;
       v24[3] = &unk_1E813EA28;
       v24[4] = self;
-      v25 = v7;
-      [v11 presentAuthorizationViewControllerWithHints:v6 requestIdentifier:v12 completion:v24];
+      v25 = completionCopy;
+      [_hostExtensionContext2 presentAuthorizationViewControllerWithHints:hintsCopy requestIdentifier:identifier2 completion:v24];
 
       v10 = v25;
       goto LABEL_22;
@@ -448,12 +448,12 @@ LABEL_22:
       [SOAuthorizationRequest presentAuthorizationViewControllerWithHints:completion:];
     }
 
-    if (v7)
+    if (completionCopy)
     {
       v21 = MEMORY[0x1E696ABC0];
       v10 = getASAuthorizationErrorDomain();
       v22 = [v21 errorWithDomain:v10 code:1001 userInfo:0];
-      v7[2](v7, 0, v22);
+      completionCopy[2](completionCopy, 0, v22);
 
       goto LABEL_22;
     }
@@ -495,7 +495,7 @@ void __81__SOAuthorizationRequest_presentAuthorizationViewControllerWithHints_co
 
 - (BOOL)_isUserInterfaceAllowed
 {
-  v2 = [(SOAuthorizationRequest *)self authorizationOptions];
+  authorizationOptions = [(SOAuthorizationRequest *)self authorizationOptions];
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -517,10 +517,10 @@ void __81__SOAuthorizationRequest_presentAuthorizationViewControllerWithHints_co
     _Unwind_Resume(ASAuthorizationErrorDomain_cold_1);
   }
 
-  v5 = [v2 objectForKeyedSubscript:*v3];
-  v6 = [v5 BOOLValue];
+  v5 = [authorizationOptions objectForKeyedSubscript:*v3];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6 ^ 1;
+  return bOOLValue ^ 1;
 }
 
 - (id)_hostExtensionContext
@@ -556,15 +556,15 @@ void __81__SOAuthorizationRequest_presentAuthorizationViewControllerWithHints_co
   return v4;
 }
 
-- (void)_completeFinishAuthorizationWithRequestIdentifier:(id)a3 error:(id)a4
+- (void)_completeFinishAuthorizationWithRequestIdentifier:(id)identifier error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_remoteExtensionContext);
   v9 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained completeFinishAuthorization:v6 error:v7];
+    [WeakRetained completeFinishAuthorization:identifierCopy error:errorCopy];
   }
 
   else
@@ -577,16 +577,16 @@ void __81__SOAuthorizationRequest_presentAuthorizationViewControllerWithHints_co
   }
 }
 
-- (id)_createSecKeyProxiesForSecKeys:(id)a3 error:(id *)a4
+- (id)_createSecKeyProxiesForSecKeys:(id)keys error:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E695DF70] array];
+  keysCopy = keys;
+  array = [MEMORY[0x1E695DF70] array];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v5;
+  obj = keysCopy;
   v7 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v7)
   {
@@ -612,11 +612,11 @@ void __81__SOAuthorizationRequest_presentAuthorizationViewControllerWithHints_co
           }
 
           v14 = obj;
-          if (a4)
+          if (error)
           {
             v17 = MEMORY[0x1E696ABC0];
             v18 = getASAuthorizationErrorDomain();
-            *a4 = [v17 errorWithDomain:v18 code:1002 userInfo:0];
+            *error = [v17 errorWithDomain:v18 code:1002 userInfo:0];
           }
 
           v15 = 0;
@@ -636,7 +636,7 @@ void __81__SOAuthorizationRequest_presentAuthorizationViewControllerWithHints_co
         v23[3] = &unk_1E813EA50;
         v23[4] = self;
         [v13 setClientDisconnectionHandler:v23];
-        [v6 addObject:v13];
+        [array addObject:v13];
       }
 
       v8 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -651,7 +651,7 @@ void __81__SOAuthorizationRequest_presentAuthorizationViewControllerWithHints_co
 
   v14 = obj;
 
-  v15 = v6;
+  v15 = array;
 LABEL_15:
 
   v19 = *MEMORY[0x1E69E9840];
@@ -713,11 +713,11 @@ void __63__SOAuthorizationRequest__createSecKeyProxiesForSecKeys_error___block_i
 
 - (NSString)requestedOperation
 {
-  v2 = [(SOAuthorizationRequestParameters *)self->_requestParameters requestedOperation];
-  v3 = v2;
-  if (v2)
+  requestedOperation = [(SOAuthorizationRequestParameters *)self->_requestParameters requestedOperation];
+  v3 = requestedOperation;
+  if (requestedOperation)
   {
-    v4 = v2;
+    v4 = requestedOperation;
   }
 
   else
@@ -732,11 +732,11 @@ void __63__SOAuthorizationRequest__createSecKeyProxiesForSecKeys_error___block_i
 
 - (NSDictionary)httpHeaders
 {
-  v2 = [(SOAuthorizationRequestParameters *)self->_requestParameters httpHeaders];
-  v3 = v2;
-  if (v2)
+  httpHeaders = [(SOAuthorizationRequestParameters *)self->_requestParameters httpHeaders];
+  v3 = httpHeaders;
+  if (httpHeaders)
   {
-    v4 = v2;
+    v4 = httpHeaders;
   }
 
   else
@@ -751,11 +751,11 @@ void __63__SOAuthorizationRequest__createSecKeyProxiesForSecKeys_error___block_i
 
 - (NSData)httpBody
 {
-  v2 = [(SOAuthorizationRequestParameters *)self->_requestParameters httpBody];
-  v3 = v2;
-  if (v2)
+  httpBody = [(SOAuthorizationRequestParameters *)self->_requestParameters httpBody];
+  v3 = httpBody;
+  if (httpBody)
   {
-    v4 = v2;
+    v4 = httpBody;
   }
 
   else
@@ -770,11 +770,11 @@ void __63__SOAuthorizationRequest__createSecKeyProxiesForSecKeys_error___block_i
 
 - (NSString)realm
 {
-  v2 = [(SOAuthorizationRequestParameters *)self->_requestParameters realm];
-  v3 = v2;
-  if (v2)
+  realm = [(SOAuthorizationRequestParameters *)self->_requestParameters realm];
+  v3 = realm;
+  if (realm)
   {
-    v4 = v2;
+    v4 = realm;
   }
 
   else
@@ -789,11 +789,11 @@ void __63__SOAuthorizationRequest__createSecKeyProxiesForSecKeys_error___block_i
 
 - (NSDictionary)extensionData
 {
-  v2 = [(SOAuthorizationRequestParameters *)self->_requestParameters extensionData];
-  v3 = v2;
-  if (v2)
+  extensionData = [(SOAuthorizationRequestParameters *)self->_requestParameters extensionData];
+  v3 = extensionData;
+  if (extensionData)
   {
-    v4 = v2;
+    v4 = extensionData;
   }
 
   else
@@ -808,11 +808,11 @@ void __63__SOAuthorizationRequest__createSecKeyProxiesForSecKeys_error___block_i
 
 - (NSString)callerBundleIdentifier
 {
-  v2 = [(SOAuthorizationRequestParameters *)self->_requestParameters callerBundleIdentifier];
-  v3 = v2;
-  if (v2)
+  callerBundleIdentifier = [(SOAuthorizationRequestParameters *)self->_requestParameters callerBundleIdentifier];
+  v3 = callerBundleIdentifier;
+  if (callerBundleIdentifier)
   {
-    v4 = v2;
+    v4 = callerBundleIdentifier;
   }
 
   else
@@ -827,11 +827,11 @@ void __63__SOAuthorizationRequest__createSecKeyProxiesForSecKeys_error___block_i
 
 - (NSData)auditTokenData
 {
-  v2 = [(SOAuthorizationRequestParameters *)self->_requestParameters auditTokenData];
-  v3 = v2;
-  if (v2)
+  auditTokenData = [(SOAuthorizationRequestParameters *)self->_requestParameters auditTokenData];
+  v3 = auditTokenData;
+  if (auditTokenData)
   {
-    v4 = v2;
+    v4 = auditTokenData;
   }
 
   else
@@ -846,11 +846,11 @@ void __63__SOAuthorizationRequest__createSecKeyProxiesForSecKeys_error___block_i
 
 - (NSDictionary)authorizationOptions
 {
-  v2 = [(SOAuthorizationRequestParameters *)self->_requestParameters authorizationOptions];
-  v3 = v2;
-  if (v2)
+  authorizationOptions = [(SOAuthorizationRequestParameters *)self->_requestParameters authorizationOptions];
+  v3 = authorizationOptions;
+  if (authorizationOptions)
   {
-    v4 = v2;
+    v4 = authorizationOptions;
   }
 
   else
@@ -865,11 +865,11 @@ void __63__SOAuthorizationRequest__createSecKeyProxiesForSecKeys_error___block_i
 
 - (NSString)callerTeamIdentifier
 {
-  v2 = [(SOAuthorizationRequestParameters *)self->_requestParameters callerTeamIdentifier];
-  v3 = v2;
-  if (v2)
+  callerTeamIdentifier = [(SOAuthorizationRequestParameters *)self->_requestParameters callerTeamIdentifier];
+  v3 = callerTeamIdentifier;
+  if (callerTeamIdentifier)
   {
-    v4 = v2;
+    v4 = callerTeamIdentifier;
   }
 
   else
@@ -884,11 +884,11 @@ void __63__SOAuthorizationRequest__createSecKeyProxiesForSecKeys_error___block_i
 
 - (NSString)localizedCallerDisplayName
 {
-  v2 = [(SOAuthorizationRequestParameters *)self->_requestParameters localizedCallerDisplayName];
-  v3 = v2;
-  if (v2)
+  localizedCallerDisplayName = [(SOAuthorizationRequestParameters *)self->_requestParameters localizedCallerDisplayName];
+  v3 = localizedCallerDisplayName;
+  if (localizedCallerDisplayName)
   {
-    v4 = v2;
+    v4 = localizedCallerDisplayName;
   }
 
   else
@@ -935,14 +935,14 @@ void __63__SOAuthorizationRequest__createSecKeyProxiesForSecKeys_error___block_i
       self->_loginManager = v6;
     }
 
-    v8 = [(SOAuthorizationRequest *)self _hostExtensionContext];
-    [(POLoginManager *)self->_loginManager setHostExtensionContext:v8];
+    _hostExtensionContext = [(SOAuthorizationRequest *)self _hostExtensionContext];
+    [(POLoginManager *)self->_loginManager setHostExtensionContext:_hostExtensionContext];
 
-    v9 = [(SOAuthorizationRequestParameters *)self->_requestParameters identifier];
-    [(POLoginManager *)self->_loginManager setRequestIdentifier:v9];
+    identifier = [(SOAuthorizationRequestParameters *)self->_requestParameters identifier];
+    [(POLoginManager *)self->_loginManager setRequestIdentifier:identifier];
 
-    v10 = [(SOAuthorizationRequestParameters *)self->_requestParameters extensionData];
-    [(POLoginManager *)self->_loginManager setExtensionData:v10];
+    extensionData = [(SOAuthorizationRequestParameters *)self->_requestParameters extensionData];
+    [(POLoginManager *)self->_loginManager setExtensionData:extensionData];
 
     v3 = self->_loginManager;
   }

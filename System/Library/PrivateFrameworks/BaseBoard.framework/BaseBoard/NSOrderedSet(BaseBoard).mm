@@ -15,7 +15,7 @@
 
 - (id)bs_set
 {
-  v1 = [a1 set];
+  v1 = [self set];
   v2 = [v1 copy];
 
   return v2;
@@ -23,15 +23,15 @@
 
 - (id)bs_array
 {
-  v1 = [a1 array];
-  v2 = [v1 copy];
+  array = [self array];
+  v2 = [array copy];
 
   return v2;
 }
 
 - (id)bs_orderedSet
 {
-  v1 = [a1 copy];
+  v1 = [self copy];
 
   return v1;
 }
@@ -40,7 +40,7 @@
 {
   v4 = a3;
   v5 = objc_opt_class();
-  v6 = BSCollectionFilter(v5, a1, v4);
+  v6 = BSCollectionFilter(v5, self, v4);
 
   return v6;
 }
@@ -49,7 +49,7 @@
 {
   v4 = a3;
   v5 = objc_opt_class();
-  v6 = BSCollectionMap(v5, a1, v4);
+  v6 = BSCollectionMap(v5, self, v4);
 
   return v6;
 }
@@ -58,28 +58,28 @@
 {
   v4 = a3;
   v5 = objc_opt_class();
-  v6 = BSCollectionCompactMap(v5, a1, v4);
+  v6 = BSCollectionCompactMap(v5, self, v4);
 
   return v6;
 }
 
 - (id)bs_reduce:()BaseBoard block:
 {
-  v4 = BSCollectionReduce(a1, a3, a4);
+  v4 = BSCollectionReduce(self, a3, a4);
 
   return v4;
 }
 
 - (id)bs_firstObjectPassingTest:()BaseBoard
 {
-  v3 = BSCollectionFind(a1, a3);
+  v3 = BSCollectionFind(self, a3);
 
   return v3;
 }
 
 - (BOOL)bs_containsObjectPassingTest:()BaseBoard
 {
-  v3 = BSCollectionFind(a1, a3);
+  v3 = BSCollectionFind(self, a3);
   v4 = v3 != 0;
 
   return v4;
@@ -89,7 +89,7 @@
 {
   v4 = a3;
   v5 = objc_opt_class();
-  v6 = BSCollectionPartition(v5, a1, v4);
+  v6 = BSCollectionPartition(v5, self, v4);
 
   return v6;
 }

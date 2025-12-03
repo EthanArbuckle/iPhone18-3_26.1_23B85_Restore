@@ -1,10 +1,10 @@
 @interface WKStylusDeviceObserver
 + (id)sharedInstance;
 - (WKStylusDeviceObserver)init;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setHasStylusDevice:(BOOL)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setHasStylusDevice:(BOOL)device;
 - (void)start;
-- (void)startChangeTimer:(double)a3;
+- (void)startChangeTimer:(double)timer;
 - (void)stop;
 @end
 
@@ -74,12 +74,12 @@
   }
 }
 
-- (void)setHasStylusDevice:(BOOL)a3
+- (void)setHasStylusDevice:(BOOL)device
 {
-  if (self->_hasStylusDevice != a3)
+  if (self->_hasStylusDevice != device)
   {
-    self->_hasStylusDevice = a3;
-    WebKit::WebProcessProxy::notifyHasStylusDeviceChanged(a3);
+    self->_hasStylusDevice = device;
+    WebKit::WebProcessProxy::notifyHasStylusDeviceChanged(device);
   }
 
   [(NSTimer *)self->_changeTimer.m_ptr invalidate];
@@ -90,7 +90,7 @@
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   if ([MEMORY[0x1E69DCEC8] isPencilInputExpected])
   {
@@ -106,10 +106,10 @@
   }
 }
 
-- (void)startChangeTimer:(double)a3
+- (void)startChangeTimer:(double)timer
 {
   [(NSTimer *)self->_changeTimer.m_ptr invalidate];
-  v5 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel_changeTimerFired_ selector:0 userInfo:0 repeats:a3];
+  v5 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel_changeTimerFired_ selector:0 userInfo:0 repeats:timer];
   v6 = v5;
   if (v5)
   {

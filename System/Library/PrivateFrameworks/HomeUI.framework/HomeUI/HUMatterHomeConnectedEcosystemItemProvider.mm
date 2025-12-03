@@ -1,21 +1,21 @@
 @interface HUMatterHomeConnectedEcosystemItemProvider
-- (HUMatterHomeConnectedEcosystemItemProvider)initWithHome:(id)a3;
+- (HUMatterHomeConnectedEcosystemItemProvider)initWithHome:(id)home;
 - (NAFuture)ecosystemAccessoryUUIDMapFuture;
 - (id)reloadItems;
 @end
 
 @implementation HUMatterHomeConnectedEcosystemItemProvider
 
-- (HUMatterHomeConnectedEcosystemItemProvider)initWithHome:(id)a3
+- (HUMatterHomeConnectedEcosystemItemProvider)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v11.receiver = self;
   v11.super_class = HUMatterHomeConnectedEcosystemItemProvider;
   v6 = [(HFItemProvider *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_home, a3);
+    objc_storeStrong(&v6->_home, home);
     v8 = [MEMORY[0x277CBEB58] set];
     connectedEcosystemItems = v7->_connectedEcosystemItems;
     v7->_connectedEcosystemItems = v8;
@@ -29,10 +29,10 @@
   ecosystemAccessoryUUIDMapFuture = self->_ecosystemAccessoryUUIDMapFuture;
   if (!ecosystemAccessoryUUIDMapFuture)
   {
-    v4 = [(HUMatterHomeConnectedEcosystemItemProvider *)self home];
-    v5 = [v4 hf_ecosystemAccessoryUUIDMapFuture];
+    home = [(HUMatterHomeConnectedEcosystemItemProvider *)self home];
+    hf_ecosystemAccessoryUUIDMapFuture = [home hf_ecosystemAccessoryUUIDMapFuture];
     v6 = self->_ecosystemAccessoryUUIDMapFuture;
-    self->_ecosystemAccessoryUUIDMapFuture = v5;
+    self->_ecosystemAccessoryUUIDMapFuture = hf_ecosystemAccessoryUUIDMapFuture;
 
     ecosystemAccessoryUUIDMapFuture = self->_ecosystemAccessoryUUIDMapFuture;
   }
@@ -43,8 +43,8 @@
 - (id)reloadItems
 {
   objc_initWeak(&location, self);
-  v3 = [(HUMatterHomeConnectedEcosystemItemProvider *)self ecosystemAccessoryUUIDMapFuture];
-  v4 = [(HUMatterConnectedEcosystemItemProvider *)self futureFilteringOutSystemCommissionerEcosystem:v3];
+  ecosystemAccessoryUUIDMapFuture = [(HUMatterHomeConnectedEcosystemItemProvider *)self ecosystemAccessoryUUIDMapFuture];
+  v4 = [(HUMatterConnectedEcosystemItemProvider *)self futureFilteringOutSystemCommissionerEcosystem:ecosystemAccessoryUUIDMapFuture];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__HUMatterHomeConnectedEcosystemItemProvider_reloadItems__block_invoke;

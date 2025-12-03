@@ -1,16 +1,16 @@
 @interface MapsSuggestionsBlockAction
-- (MapsSuggestionsBlockAction)initWithName:(id)a3 block:(id)a4;
+- (MapsSuggestionsBlockAction)initWithName:(id)name block:(id)block;
 @end
 
 @implementation MapsSuggestionsBlockAction
 
-- (MapsSuggestionsBlockAction)initWithName:(id)a3 block:(id)a4
+- (MapsSuggestionsBlockAction)initWithName:(id)name block:(id)block
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  nameCopy = name;
+  blockCopy = block;
+  v8 = blockCopy;
+  if (!nameCopy)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -30,11 +30,11 @@ LABEL_10:
 
 LABEL_11:
 
-    v12 = 0;
+    selfCopy = 0;
     goto LABEL_12;
   }
 
-  if (!v7)
+  if (!blockCopy)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -56,7 +56,7 @@ LABEL_11:
 
   v16.receiver = self;
   v16.super_class = MapsSuggestionsBlockAction;
-  v9 = [(MapsSuggestionsBaseAction *)&v16 initWithName:v6];
+  v9 = [(MapsSuggestionsBaseAction *)&v16 initWithName:nameCopy];
   if (v9)
   {
     v10 = [v8 copy];
@@ -65,10 +65,10 @@ LABEL_11:
   }
 
   self = v9;
-  v12 = self;
+  selfCopy = self;
 LABEL_12:
 
-  return v12;
+  return selfCopy;
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface SRTapToEditView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SRTapToEditView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SRTapToEditView)initWithFrame:(CGRect)frame;
 - (double)_circleToLabelHeightDifference;
 - (double)baselineOffsetFromBottom;
 - (double)firstLineBaselineOffsetFromTop;
-- (void)_setHighlighted:(BOOL)a3;
+- (void)_setHighlighted:(BOOL)highlighted;
 - (void)layoutSubviews;
 @end
 
 @implementation SRTapToEditView
 
-- (SRTapToEditView)initWithFrame:(CGRect)a3
+- (SRTapToEditView)initWithFrame:(CGRect)frame
 {
   v29.receiver = self;
   v29.super_class = SRTapToEditView;
-  v3 = [(SRTapToEditView *)&v29 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SRTapToEditView *)&v29 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [NSBundle bundleForClass:objc_opt_class()];
@@ -54,9 +54,9 @@
 
     if (SiriLanguageIsRTL())
     {
-      v21 = [v20 imageWithHorizontallyFlippedOrientation];
+      imageWithHorizontallyFlippedOrientation = [v20 imageWithHorizontallyFlippedOrientation];
 
-      v20 = v21;
+      v20 = imageWithHorizontallyFlippedOrientation;
     }
 
     v22 = [SiriUIContentButton buttonWithImageTemplate:v20 style:0];
@@ -81,10 +81,10 @@
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(UILabel *)self->_tapToEditLabel sizeThatFits:?];
   v7 = v6;
   v9 = v8 + 10.0;
@@ -184,8 +184,8 @@
 {
   [(SRTapToEditView *)self _circleToLabelHeightDifference];
   v4 = v3;
-  v5 = [(UILabel *)self->_tapToEditLabel font];
-  [v5 ascender];
+  font = [(UILabel *)self->_tapToEditLabel font];
+  [font ascender];
   v7 = v6;
 
   result = v4 * 0.5 + v7;
@@ -201,8 +201,8 @@
 {
   [(SRTapToEditView *)self _circleToLabelHeightDifference];
   v4 = v3;
-  v5 = [(UILabel *)self->_tapToEditLabel font];
-  [v5 descender];
+  font = [(UILabel *)self->_tapToEditLabel font];
+  [font descender];
   v7 = v6;
   v8 = -v6;
 
@@ -215,11 +215,11 @@
   return result;
 }
 
-- (void)_setHighlighted:(BOOL)a3
+- (void)_setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   tapToEditLabel = self->_tapToEditLabel;
-  if (a3)
+  if (highlighted)
   {
     +[UIColor siriui_tapToEditMaskingColor];
   }
@@ -231,10 +231,10 @@
   v6 = ;
   [(UILabel *)tapToEditLabel setTextColor:v6];
 
-  [(SiriUIContentButton *)self->_circleButton setHighlighted:v3];
+  [(SiriUIContentButton *)self->_circleButton setHighlighted:highlightedCopy];
   chevronButton = self->_chevronButton;
 
-  [(SiriUIContentButton *)chevronButton setHighlighted:v3];
+  [(SiriUIContentButton *)chevronButton setHighlighted:highlightedCopy];
 }
 
 - (double)_circleToLabelHeightDifference

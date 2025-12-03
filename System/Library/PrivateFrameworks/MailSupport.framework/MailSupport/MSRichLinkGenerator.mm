@@ -1,7 +1,7 @@
 @interface MSRichLinkGenerator
 + (MSRichLinkGenerator)linkGenerator;
 + (id)log;
-- (void)createRichLinkWithURL:(id)a3 completionHandler:(id)a4;
+- (void)createRichLinkWithURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation MSRichLinkGenerator
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __26__MSRichLinkGenerator_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_1 != -1)
   {
     dispatch_once(&log_onceToken_1, block);
@@ -50,27 +50,27 @@ void __36__MSRichLinkGenerator_linkGenerator__block_invoke()
   linkGenerator_linkGenerator = v0;
 }
 
-- (void)createRichLinkWithURL:(id)a3 completionHandler:(id)a4
+- (void)createRichLinkWithURL:(id)l completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   if (createRichLinkWithURL_completionHandler__onceToken[0] != -1)
   {
     [MSRichLinkGenerator createRichLinkWithURL:completionHandler:];
   }
 
-  v7 = [v5 ef_urlByAddingSchemeIfNeeded];
+  ef_urlByAddingSchemeIfNeeded = [lCopy ef_urlByAddingSchemeIfNeeded];
   v8 = objc_alloc_init(NSClassFromString(&cfstr_Lpmetadataprov.isa));
   [v8 setTimeout:5.0];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __63__MSRichLinkGenerator_createRichLinkWithURL_completionHandler___block_invoke_2;
   v12[3] = &unk_27985BAF8;
-  v9 = v7;
+  v9 = ef_urlByAddingSchemeIfNeeded;
   v13 = v9;
-  v10 = v5;
+  v10 = lCopy;
   v14 = v10;
-  v11 = v6;
+  v11 = handlerCopy;
   v15 = v11;
   [v8 startFetchingMetadataForURL:v9 completionHandler:v12];
 }

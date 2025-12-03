@@ -1,75 +1,75 @@
 @interface BaseModeController
 - (ActionCoordination)actionCoordinator;
 - (BOOL)canDropPin;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (BOOL)hasDroppedPin;
-- (BOOL)isShowingSharedTrip:(id)a3;
-- (BOOL)mapQuickActionMenuPresenter:(id)a3 shouldBeginOrbGestureForLabelMarkerOnMap:(id)a4;
+- (BOOL)isShowingSharedTrip:(id)trip;
+- (BOOL)mapQuickActionMenuPresenter:(id)presenter shouldBeginOrbGestureForLabelMarkerOnMap:(id)map;
 - (BOOL)permitsLookAroundShowing;
 - (BOOL)permitsWeatherShowing;
 - (BOOL)prefersStatusBarHidden;
-- (BOOL)shouldQuickActionMenuPresenter:(id)a3 presentAtLocation:(CGPoint)a4 inView:(id)a5;
-- (BOOL)shouldQuickActionMenuPresenter:(id)a3 showDirectionsToPlace:(id)a4;
+- (BOOL)shouldQuickActionMenuPresenter:(id)presenter presentAtLocation:(CGPoint)location inView:(id)view;
+- (BOOL)shouldQuickActionMenuPresenter:(id)presenter showDirectionsToPlace:(id)place;
 - (BOOL)shouldResizingCardDimFloatingControls;
-- (BOOL)shouldShowAddStopForDirectionsInQuickActionMenuPresenter:(id)a3;
+- (BOOL)shouldShowAddStopForDirectionsInQuickActionMenuPresenter:(id)presenter;
 - (BOOL)wantsLookAroundShowing;
 - (BOOL)wantsStatusBarControl;
 - (BOOL)wantsWeatherShowing;
-- (BaseModeController)initWithPlatformController:(id)a3;
+- (BaseModeController)initWithPlatformController:(id)controller;
 - (IOSBasedChromeViewController)chromeViewController;
 - (PlaceCardItem)placeCardItemForLookAroundButton;
 - (RouteAnnotationsConfiguration)routeAnnotationsConfiguration;
 - (id)containerViewController;
 - (id)homeActionDelegate;
-- (id)mapServiceTraitsForQuickActionPresenter:(id)a3;
+- (id)mapServiceTraitsForQuickActionPresenter:(id)presenter;
 - (id)personalizedItemSources;
 - (id)routeAnnotationsProvider;
 - (id)searchDataSourceDelegate;
 - (id)searchDataSourceLogContextDelegate;
 - (int)currentMapViewTargetForAnalytics;
 - (int)currentUITargetForAnalytics;
-- (int)floorOrdinalAtCoordinate:(CLLocationCoordinate2D)a3;
+- (int)floorOrdinalAtCoordinate:(CLLocationCoordinate2D)coordinate;
 - (int64_t)desiredFloatingControls;
 - (int64_t)preferredStatusBarStyle;
-- (void)_addRecentPlaceForSearchResult:(id)a3;
-- (void)_becomeTopContextInChromeViewController:(id)a3;
+- (void)_addRecentPlaceForSearchResult:(id)result;
+- (void)_becomeTopContextInChromeViewController:(id)controller;
 - (void)_cleanupSharedTripIfNeeded;
 - (void)_clearCustomSearchResult;
-- (void)_handleFeedbackPreWarmGesture:(id)a3;
-- (void)_handleLongPress:(id)a3;
+- (void)_handleFeedbackPreWarmGesture:(id)gesture;
+- (void)_handleLongPress:(id)press;
 - (void)_loadExpensiveItemSources;
-- (void)_resignTopContextInChromeViewController:(id)a3;
+- (void)_resignTopContextInChromeViewController:(id)controller;
 - (void)_setupMapView;
 - (void)_setupUserLocationAnnotation;
-- (void)_showCustomSearchResult:(id)a3 shouldSelectOnMap:(BOOL)a4;
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)cancelQuickActionMenuPresentation:(id)a3;
+- (void)_showCustomSearchResult:(id)result shouldSelectOnMap:(BOOL)map;
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)cancelQuickActionMenuPresentation:(id)presentation;
 - (void)createCustomSearchResultForDroppedPinAtCenterPoint;
-- (void)createCustomSearchResultForDroppedPinAtPoint:(CLLocationCoordinate2D)a3 floorOrdinal:(int)a4 animated:(BOOL)a5;
-- (void)customSearchManager:(id)a3 didModifyCustomSearchResult:(id)a4 coordinateChanged:(BOOL)a5;
+- (void)createCustomSearchResultForDroppedPinAtPoint:(CLLocationCoordinate2D)point floorOrdinal:(int)ordinal animated:(BOOL)animated;
+- (void)customSearchManager:(id)manager didModifyCustomSearchResult:(id)result coordinateChanged:(BOOL)changed;
 - (void)enterPedestrianAR;
-- (void)getCurrentSceneTitleWithCompletion:(id)a3;
-- (void)mapCameraControllerWillChangeVisibleRect:(id)a3;
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4;
-- (void)mapView:(id)a3 regionWillChangeAnimated:(BOOL)a4;
-- (void)mapView:(id)a3 willStartRespondingToGesture:(int64_t)a4 animated:(BOOL)a5;
-- (void)quickActionMenuPresenter:(id)a3 selectedCall:(id)a4;
-- (void)quickActionMenuPresenter:(id)a3 selectedDirectionsTo:(id)a4;
-- (void)quickActionMenuPresenter:(id)a3 selectedRemoveDroppedPinOf:(id)a4;
-- (void)quickActionMenuPresenter:(id)a3 selectedShareLocationOf:(id)a4;
-- (void)quickActionMenuPresenter:(id)a3 selectedShowPlaceCard:(id)a4;
-- (void)quickActionMenuPresenter:(id)a3 selectedViewTransitLinesOnMap:(id)a4;
-- (void)quickActionMenuPresenter:(id)a3 selectedViewWebsiteFor:(id)a4;
-- (void)quickActionMenuWillPresent:(id)a3;
+- (void)getCurrentSceneTitleWithCompletion:(id)completion;
+- (void)mapCameraControllerWillChangeVisibleRect:(id)rect;
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated;
+- (void)mapView:(id)view regionWillChangeAnimated:(BOOL)animated;
+- (void)mapView:(id)view willStartRespondingToGesture:(int64_t)gesture animated:(BOOL)animated;
+- (void)quickActionMenuPresenter:(id)presenter selectedCall:(id)call;
+- (void)quickActionMenuPresenter:(id)presenter selectedDirectionsTo:(id)to;
+- (void)quickActionMenuPresenter:(id)presenter selectedRemoveDroppedPinOf:(id)of;
+- (void)quickActionMenuPresenter:(id)presenter selectedShareLocationOf:(id)of;
+- (void)quickActionMenuPresenter:(id)presenter selectedShowPlaceCard:(id)card;
+- (void)quickActionMenuPresenter:(id)presenter selectedViewTransitLinesOnMap:(id)map;
+- (void)quickActionMenuPresenter:(id)presenter selectedViewWebsiteFor:(id)for;
+- (void)quickActionMenuWillPresent:(id)present;
 - (void)radarAuthorizationChanged;
 - (void)removeDroppedPin;
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)setChromeViewController:(id)a3;
-- (void)setCustomSearchResult:(id)a3 animated:(BOOL)a4;
-- (void)setMapView:(id)a3;
-- (void)showSharedTrip:(id)a3;
-- (void)updateViewMode:(int64_t)a3 animated:(BOOL)a4;
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)setChromeViewController:(id)controller;
+- (void)setCustomSearchResult:(id)result animated:(BOOL)animated;
+- (void)setMapView:(id)view;
+- (void)showSharedTrip:(id)trip;
+- (void)updateViewMode:(int64_t)mode animated:(BOOL)animated;
 @end
 
 @implementation BaseModeController
@@ -80,10 +80,10 @@
   if (!containerViewController)
   {
     v4 = +[UIDevice currentDevice];
-    v5 = [v4 userInterfaceIdiom];
+    userInterfaceIdiom = [v4 userInterfaceIdiom];
 
     v6 = off_1015F62B0;
-    if (v5 != 5)
+    if (userInterfaceIdiom != 5)
     {
       v6 = off_1015F61C0;
     }
@@ -94,8 +94,8 @@
 
     [(ContainerViewController *)self->_containerViewController setAllowOnlyStandardStyle:0];
     [(ControlContainerViewController *)self->_containerViewController setChromeContext:self];
-    v9 = [(ControlContainerViewController *)self->_containerViewController coordinator];
-    if (([v9 conformsToProtocol:&OBJC_PROTOCOL___ChromeMapSelectionDelegate] & 1) == 0)
+    coordinator = [(ControlContainerViewController *)self->_containerViewController coordinator];
+    if (([coordinator conformsToProtocol:&OBJC_PROTOCOL___ChromeMapSelectionDelegate] & 1) == 0)
     {
       v11 = sub_10006D178();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -132,10 +132,10 @@
 
 - (ActionCoordination)actionCoordinator
 {
-  v2 = [(BaseModeController *)self containerViewController];
-  v3 = [v2 coordinator];
+  containerViewController = [(BaseModeController *)self containerViewController];
+  coordinator = [containerViewController coordinator];
 
-  return v3;
+  return coordinator;
 }
 
 - (IOSBasedChromeViewController)chromeViewController
@@ -147,14 +147,14 @@
 
 - (int64_t)desiredFloatingControls
 {
-  v2 = [(BaseModeController *)self containerViewController];
-  v3 = [v2 floatingControlsOptions];
+  containerViewController = [(BaseModeController *)self containerViewController];
+  floatingControlsOptions = [containerViewController floatingControlsOptions];
 
-  if (v3)
+  if (floatingControlsOptions)
   {
     if (+[MapsRadarButtonHelper shouldShowButton])
     {
-      v3 |= 0x200uLL;
+      floatingControlsOptions |= 0x200uLL;
     }
 
     v4 = +[GEOPlatform sharedPlatform];
@@ -164,7 +164,7 @@
 
       if (BOOL)
       {
-        return v3 | 0x400;
+        return floatingControlsOptions | 0x400;
       }
     }
 
@@ -173,15 +173,15 @@
     }
   }
 
-  return v3;
+  return floatingControlsOptions;
 }
 
 - (BOOL)wantsStatusBarControl
 {
-  v3 = [(ContainerViewController *)self->_containerViewController currentViewController];
-  if (v3)
+  currentViewController = [(ContainerViewController *)self->_containerViewController currentViewController];
+  if (currentViewController)
   {
-    v4 = [(ContainerViewController *)self->_containerViewController currentViewController];
+    currentViewController2 = [(ContainerViewController *)self->_containerViewController currentViewController];
     if (objc_opt_respondsToSelector())
     {
       v5 = 1;
@@ -189,7 +189,7 @@
 
     else
     {
-      v6 = [(ContainerViewController *)self->_containerViewController currentViewController];
+      currentViewController3 = [(ContainerViewController *)self->_containerViewController currentViewController];
       if (objc_opt_respondsToSelector())
       {
         v5 = 1;
@@ -197,7 +197,7 @@
 
       else
       {
-        v7 = [(ContainerViewController *)self->_containerViewController currentViewController];
+        currentViewController4 = [(ContainerViewController *)self->_containerViewController currentViewController];
         v5 = objc_opt_respondsToSelector();
       }
     }
@@ -213,10 +213,10 @@
 
 - (BOOL)prefersStatusBarHidden
 {
-  v2 = [(ContainerViewController *)self->_containerViewController currentViewController];
+  currentViewController = [(ContainerViewController *)self->_containerViewController currentViewController];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 prefersStatusBarHidden];
+    prefersStatusBarHidden = [currentViewController prefersStatusBarHidden];
   }
 
   else
@@ -224,7 +224,7 @@
     v4 = +[UIDevice currentDevice];
     if ([v4 userInterfaceIdiom] == 1)
     {
-      v3 = 0;
+      prefersStatusBarHidden = 0;
     }
 
     else
@@ -232,48 +232,48 @@
       v5 = +[UIDevice currentDevice];
       if ([v5 userInterfaceIdiom] == 5)
       {
-        v3 = 0;
+        prefersStatusBarHidden = 0;
       }
 
       else
       {
-        v6 = [v2 traitCollection];
-        v3 = [v6 verticalSizeClass] == 1;
+        traitCollection = [currentViewController traitCollection];
+        prefersStatusBarHidden = [traitCollection verticalSizeClass] == 1;
       }
     }
   }
 
-  return v3;
+  return prefersStatusBarHidden;
 }
 
 - (int64_t)preferredStatusBarStyle
 {
-  v2 = [(ContainerViewController *)self->_containerViewController currentViewController];
+  currentViewController = [(ContainerViewController *)self->_containerViewController currentViewController];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 preferredStatusBarStyle];
+    preferredStatusBarStyle = [currentViewController preferredStatusBarStyle];
   }
 
   else
   {
-    v3 = 0;
+    preferredStatusBarStyle = 0;
   }
 
-  return v3;
+  return preferredStatusBarStyle;
 }
 
 - (BOOL)permitsLookAroundShowing
 {
   v3 = +[MapsOfflineUIHelper sharedHelper];
-  v4 = [v3 isUsingOfflineMaps];
+  isUsingOfflineMaps = [v3 isUsingOfflineMaps];
 
-  if (v4)
+  if (isUsingOfflineMaps)
   {
     return 0;
   }
 
-  v6 = [(BaseModeController *)self chromeViewController];
-  if (v6)
+  chromeViewController = [(BaseModeController *)self chromeViewController];
+  if (chromeViewController)
   {
     if (_UISolariumEnabled())
     {
@@ -282,8 +282,8 @@
 
     else
     {
-      v7 = [(BaseModeController *)self chromeViewController];
-      v5 = sub_10000FA08(v7) != 5;
+      chromeViewController2 = [(BaseModeController *)self chromeViewController];
+      v5 = sub_10000FA08(chromeViewController2) != 5;
     }
   }
 
@@ -302,10 +302,10 @@
     return 0;
   }
 
-  v3 = [(BaseModeController *)self actionCoordinator];
-  v4 = [v3 isRoutePlanningPresented];
+  actionCoordinator = [(BaseModeController *)self actionCoordinator];
+  isRoutePlanningPresented = [actionCoordinator isRoutePlanningPresented];
 
-  if ((v4 & 1) != 0 || ([(ControlContainerViewController *)self->_containerViewController floatingControlsOptions]& 0x80) == 0)
+  if ((isRoutePlanningPresented & 1) != 0 || ([(ControlContainerViewController *)self->_containerViewController floatingControlsOptions]& 0x80) == 0)
   {
     return 0;
   }
@@ -315,33 +315,33 @@
     return 1;
   }
 
-  v7 = [(BaseModeController *)self placeCardItemForLookAroundButton];
-  v8 = [v7 mapItem];
-  v5 = v8 != 0;
+  placeCardItemForLookAroundButton = [(BaseModeController *)self placeCardItemForLookAroundButton];
+  mapItem = [placeCardItemForLookAroundButton mapItem];
+  v5 = mapItem != 0;
 
   return v5;
 }
 
 - (PlaceCardItem)placeCardItemForLookAroundButton
 {
-  v3 = [(BaseModeController *)self actionCoordinator];
-  v4 = [v3 isRoutePlanningPresented];
+  actionCoordinator = [(BaseModeController *)self actionCoordinator];
+  isRoutePlanningPresented = [actionCoordinator isRoutePlanningPresented];
 
-  if (v4)
+  if (isRoutePlanningPresented)
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [(BaseModeController *)self actionCoordinator];
-    v7 = [v6 currentPlaceCardItem];
+    actionCoordinator2 = [(BaseModeController *)self actionCoordinator];
+    currentPlaceCardItem = [actionCoordinator2 currentPlaceCardItem];
 
-    v8 = [v7 mapItem];
-    v9 = v8;
-    if (v8 && (([v8 _hasLookAroundStorefront] & 1) != 0 || +[LookAroundButtonContainerViewController isIncompleteMapItem:](LookAroundButtonContainerViewController, "isIncompleteMapItem:", v9)))
+    mapItem = [currentPlaceCardItem mapItem];
+    v9 = mapItem;
+    if (mapItem && (([mapItem _hasLookAroundStorefront] & 1) != 0 || +[LookAroundButtonContainerViewController isIncompleteMapItem:](LookAroundButtonContainerViewController, "isIncompleteMapItem:", v9)))
     {
-      v5 = v7;
+      v5 = currentPlaceCardItem;
     }
 
     else
@@ -355,40 +355,40 @@
 
 - (void)_setupUserLocationAnnotation
 {
-  v2 = [(BaseModeController *)self chromeViewController];
-  v3 = [v2 userLocationView];
+  chromeViewController = [(BaseModeController *)self chromeViewController];
+  userLocationView = [chromeViewController userLocationView];
 
-  [v3 setMode:0 animated:1];
+  [userLocationView setMode:0 animated:1];
 }
 
 - (void)_setupMapView
 {
-  v3 = [(BaseModeController *)self chromeViewController];
-  v4 = [v3 shouldUseModernMap];
+  chromeViewController = [(BaseModeController *)self chromeViewController];
+  shouldUseModernMap = [chromeViewController shouldUseModernMap];
 
-  if ((v4 & 1) == 0)
+  if ((shouldUseModernMap & 1) == 0)
   {
     mapView = self->_mapView;
-    v6 = [(BaseModeController *)self chromeViewController];
-    v7 = [v6 displayedViewMode];
+    chromeViewController2 = [(BaseModeController *)self chromeViewController];
+    displayedViewMode = [chromeViewController2 displayedViewMode];
     v21 = 0u;
     v23 = 0u;
     v24 = 0;
     _MKCartographicConfigurationDefault();
     v22 = vdupq_n_s64(1uLL);
     *&v23 = 0;
-    if (v7 > 4)
+    if (displayedViewMode > 4)
     {
-      if (v7 == 5)
+      if (displayedViewMode == 5)
       {
         v8 = vdupq_n_s64(1uLL);
       }
 
       else
       {
-        if (v7 != 6)
+        if (displayedViewMode != 6)
         {
-          if (v7 == 7)
+          if (displayedViewMode == 7)
           {
             v21.i64[1] = 2;
           }
@@ -404,7 +404,7 @@
 
     else
     {
-      switch(v7)
+      switch(displayedViewMode)
       {
         case 1:
           v21 = vdupq_n_s64(1uLL);
@@ -428,14 +428,14 @@ LABEL_16:
   v9 = [(MKMapView *)self->_mapView _mapLayer:*&v21];
   [v9 setDesiredMapMode:0];
 
-  v10 = [(MKMapView *)self->_mapView _mapLayer];
-  [v10 setCanonicalSkyHeight:0.0520833321];
+  _mapLayer = [(MKMapView *)self->_mapView _mapLayer];
+  [_mapLayer setCanonicalSkyHeight:0.0520833321];
 
   [(MKMapView *)self->_mapView _setCanSelectPOIs:1];
   [(MKMapView *)self->_mapView _setShowsTrafficIncidents:1];
   [(MKMapView *)self->_mapView setShowsUserLocation:1];
-  v11 = [(MKMapView *)self->_mapView _longPressGestureRecognizer];
-  [v11 setEnabled:0];
+  _longPressGestureRecognizer = [(MKMapView *)self->_mapView _longPressGestureRecognizer];
+  [_longPressGestureRecognizer setEnabled:0];
 
   longPress = self->_longPress;
   if (!longPress)
@@ -487,8 +487,8 @@ LABEL_24:
   self->_feedbackBehavior = v18;
 
   [(UILongPressGestureRecognizer *)self->_longPress addTarget:self action:"cancelQuickActionMenuPresentation:"];
-  v20 = [(MKMapView *)self->_mapView _longPressGestureRecognizer];
-  [v20 addTarget:self action:"cancelQuickActionMenuPresentation:"];
+  _longPressGestureRecognizer2 = [(MKMapView *)self->_mapView _longPressGestureRecognizer];
+  [_longPressGestureRecognizer2 addTarget:self action:"cancelQuickActionMenuPresentation:"];
 
   [(MKMapView *)self->_mapView _setAlwaysShowHeadingIndicatorIfSupported:1];
   [(MKMapView *)self->_mapView _setUseBalloonCalloutsForLabels:1];
@@ -500,13 +500,13 @@ LABEL_24:
   if (sub_10000FA08(WeakRetained) == 5)
   {
     v4 = objc_loadWeakRetained(&self->_chromeViewController);
-    v5 = [v4 sharedTripsAnnotationsController];
-    v6 = [v5 sharedTrip];
+    sharedTripsAnnotationsController = [v4 sharedTripsAnnotationsController];
+    sharedTrip = [sharedTripsAnnotationsController sharedTrip];
 
-    if (v6)
+    if (sharedTrip)
     {
-      v7 = objc_loadWeakRetained(&self->_chromeViewController);
-      v8 = [v7 sharedTripsAnnotationsController];
+      actionCoordinator = objc_loadWeakRetained(&self->_chromeViewController);
+      sharedTripsAnnotationsController2 = [actionCoordinator sharedTripsAnnotationsController];
       goto LABEL_6;
     }
   }
@@ -515,10 +515,10 @@ LABEL_24:
   {
   }
 
-  v7 = [(BaseModeController *)self actionCoordinator];
-  v8 = [v7 routeAnnotationsProvider];
+  actionCoordinator = [(BaseModeController *)self actionCoordinator];
+  sharedTripsAnnotationsController2 = [actionCoordinator routeAnnotationsProvider];
 LABEL_6:
-  v9 = v8;
+  v9 = sharedTripsAnnotationsController2;
 
   return v9;
 }
@@ -532,10 +532,10 @@ LABEL_6:
 
 - (id)personalizedItemSources
 {
-  v3 = [(BaseModeController *)self chromeViewController];
-  v4 = [v3 searchPinsManager];
+  chromeViewController = [(BaseModeController *)self chromeViewController];
+  searchPinsManager = [chromeViewController searchPinsManager];
 
-  if (v4)
+  if (searchPinsManager)
   {
     if (!self->_collectionPlaceItemSource)
     {
@@ -552,16 +552,16 @@ LABEL_6:
     }
 
     v24 = [NSMutableArray alloc];
-    v23 = [v4 searchResultsItemSource];
-    v22 = [v4 singleSearchResultItemSource];
-    v9 = [v4 droppedPinsItemSource];
-    v10 = [v4 collectionPinsItemSource];
-    v11 = [v4 routeStartEndItemSource];
-    v12 = [v4 placeCardLinkedPlacesItemSource];
-    v13 = [v4 searchDotPlacesItemSource];
+    searchResultsItemSource = [searchPinsManager searchResultsItemSource];
+    singleSearchResultItemSource = [searchPinsManager singleSearchResultItemSource];
+    droppedPinsItemSource = [searchPinsManager droppedPinsItemSource];
+    collectionPinsItemSource = [searchPinsManager collectionPinsItemSource];
+    routeStartEndItemSource = [searchPinsManager routeStartEndItemSource];
+    placeCardLinkedPlacesItemSource = [searchPinsManager placeCardLinkedPlacesItemSource];
+    searchDotPlacesItemSource = [searchPinsManager searchDotPlacesItemSource];
     v14 = self->_collectionPlaceItemSource;
-    v15 = [v4 parkedCarItemSource];
-    v16 = [v24 initWithObjects:{v23, v22, v9, v10, v11, v12, v13, v14, v15, 0}];
+    parkedCarItemSource = [searchPinsManager parkedCarItemSource];
+    v16 = [v24 initWithObjects:{searchResultsItemSource, singleSearchResultItemSource, droppedPinsItemSource, collectionPinsItemSource, routeStartEndItemSource, placeCardLinkedPlacesItemSource, searchDotPlacesItemSource, v14, parkedCarItemSource, 0}];
 
     if (self->_favoritePlaceItemSource)
     {
@@ -573,12 +573,12 @@ LABEL_6:
 
     if (self->_includeExpensiveItemSources)
     {
-      v18 = [(BaseModeController *)self actionCoordinator];
-      v19 = [v18 suggestionsItemSource];
+      actionCoordinator = [(BaseModeController *)self actionCoordinator];
+      suggestionsItemSource = [actionCoordinator suggestionsItemSource];
 
-      if (v19)
+      if (suggestionsItemSource)
       {
-        [v16 addObject:v19];
+        [v16 addObject:suggestionsItemSource];
       }
 
       if (self->_calendarItemSource)
@@ -611,9 +611,9 @@ LABEL_6:
 - (BOOL)permitsWeatherShowing
 {
   v2 = +[MapsOfflineUIHelper sharedHelper];
-  v3 = [v2 isUsingOfflineMaps];
+  isUsingOfflineMaps = [v2 isUsingOfflineMaps];
 
-  return v3 ^ 1;
+  return isUsingOfflineMaps ^ 1;
 }
 
 - (BOOL)wantsWeatherShowing
@@ -629,66 +629,66 @@ LABEL_6:
 
 - (int)currentMapViewTargetForAnalytics
 {
-  v2 = [(BaseModeController *)self mapViewDelegate];
-  if ([v2 conformsToProtocol:&OBJC_PROTOCOL___GEOLogContextDelegate])
+  mapViewDelegate = [(BaseModeController *)self mapViewDelegate];
+  if ([mapViewDelegate conformsToProtocol:&OBJC_PROTOCOL___GEOLogContextDelegate])
   {
-    v3 = v2;
+    v3 = mapViewDelegate;
     if (objc_opt_respondsToSelector())
     {
-      v4 = [v3 currentMapViewTargetForAnalytics];
+      currentMapViewTargetForAnalytics = [v3 currentMapViewTargetForAnalytics];
     }
 
     else
     {
-      v4 = 0;
+      currentMapViewTargetForAnalytics = 0;
     }
   }
 
   else
   {
-    v4 = 0;
+    currentMapViewTargetForAnalytics = 0;
   }
 
-  return v4;
+  return currentMapViewTargetForAnalytics;
 }
 
 - (int)currentUITargetForAnalytics
 {
-  v2 = [(BaseModeController *)self mapViewDelegate];
-  if ([v2 conformsToProtocol:&OBJC_PROTOCOL___GEOLogContextDelegate])
+  mapViewDelegate = [(BaseModeController *)self mapViewDelegate];
+  if ([mapViewDelegate conformsToProtocol:&OBJC_PROTOCOL___GEOLogContextDelegate])
   {
-    v3 = v2;
+    v3 = mapViewDelegate;
     if (objc_opt_respondsToSelector())
     {
-      v4 = [v3 currentUITargetForAnalytics];
+      currentUITargetForAnalytics = [v3 currentUITargetForAnalytics];
     }
 
     else
     {
-      v4 = 0;
+      currentUITargetForAnalytics = 0;
     }
   }
 
   else
   {
-    v4 = 0;
+    currentUITargetForAnalytics = 0;
   }
 
-  return v4;
+  return currentUITargetForAnalytics;
 }
 
-- (BOOL)shouldQuickActionMenuPresenter:(id)a3 showDirectionsToPlace:(id)a4
+- (BOOL)shouldQuickActionMenuPresenter:(id)presenter showDirectionsToPlace:(id)place
 {
-  v5 = a4;
-  v6 = [(BaseModeController *)self chromeViewController];
-  v7 = [v6 venuesManager];
-  v8 = [v5 mapItem];
+  placeCopy = place;
+  chromeViewController = [(BaseModeController *)self chromeViewController];
+  venuesManager = [chromeViewController venuesManager];
+  mapItem = [placeCopy mapItem];
 
-  LOBYTE(v5) = [v7 isUserAtSameVenueAsMapItem:v8];
-  return v5 ^ 1;
+  LOBYTE(placeCopy) = [venuesManager isUserAtSameVenueAsMapItem:mapItem];
+  return placeCopy ^ 1;
 }
 
-- (void)quickActionMenuWillPresent:(id)a3
+- (void)quickActionMenuWillPresent:(id)present
 {
   if ([(UILongPressGestureRecognizer *)self->_longPress isEnabled])
   {
@@ -696,64 +696,64 @@ LABEL_6:
     [(UILongPressGestureRecognizer *)self->_longPress setEnabled:1];
   }
 
-  v4 = [(MKMapView *)self->_mapView _longPressGestureRecognizer];
-  v5 = [v4 isEnabled];
+  _longPressGestureRecognizer = [(MKMapView *)self->_mapView _longPressGestureRecognizer];
+  isEnabled = [_longPressGestureRecognizer isEnabled];
 
-  if (v5)
+  if (isEnabled)
   {
-    v6 = [(MKMapView *)self->_mapView _longPressGestureRecognizer];
-    [v6 setEnabled:0];
+    _longPressGestureRecognizer2 = [(MKMapView *)self->_mapView _longPressGestureRecognizer];
+    [_longPressGestureRecognizer2 setEnabled:0];
 
-    v7 = [(MKMapView *)self->_mapView _longPressGestureRecognizer];
-    [v7 setEnabled:1];
+    _longPressGestureRecognizer3 = [(MKMapView *)self->_mapView _longPressGestureRecognizer];
+    [_longPressGestureRecognizer3 setEnabled:1];
   }
 }
 
-- (void)quickActionMenuPresenter:(id)a3 selectedViewTransitLinesOnMap:(id)a4
+- (void)quickActionMenuPresenter:(id)presenter selectedViewTransitLinesOnMap:(id)map
 {
-  v5 = a4;
-  v7 = [(BaseModeController *)self actionCoordinator];
-  v6 = [v7 mapSelectionManager];
-  [v6 selectLabelMarker:v5 animated:1];
+  mapCopy = map;
+  actionCoordinator = [(BaseModeController *)self actionCoordinator];
+  mapSelectionManager = [actionCoordinator mapSelectionManager];
+  [mapSelectionManager selectLabelMarker:mapCopy animated:1];
 }
 
-- (void)quickActionMenuPresenter:(id)a3 selectedRemoveDroppedPinOf:(id)a4
+- (void)quickActionMenuPresenter:(id)presenter selectedRemoveDroppedPinOf:(id)of
 {
-  v5 = [a3 searchResult];
-  if (v5)
+  searchResult = [presenter searchResult];
+  if (searchResult)
   {
-    v7 = v5;
-    v6 = [(BaseModeController *)self actionCoordinator];
-    [v6 viewController:0 removeDroppedPin:v7];
+    v7 = searchResult;
+    actionCoordinator = [(BaseModeController *)self actionCoordinator];
+    [actionCoordinator viewController:0 removeDroppedPin:v7];
 
-    v5 = v7;
+    searchResult = v7;
   }
 }
 
-- (id)mapServiceTraitsForQuickActionPresenter:(id)a3
+- (id)mapServiceTraitsForQuickActionPresenter:(id)presenter
 {
-  v3 = [(BaseModeController *)self actionCoordinator];
-  v4 = [v3 newTraits];
+  actionCoordinator = [(BaseModeController *)self actionCoordinator];
+  newTraits = [actionCoordinator newTraits];
 
-  return v4;
+  return newTraits;
 }
 
-- (BOOL)shouldQuickActionMenuPresenter:(id)a3 presentAtLocation:(CGPoint)a4 inView:(id)a5
+- (BOOL)shouldQuickActionMenuPresenter:(id)presenter presentAtLocation:(CGPoint)location inView:(id)view
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a5;
-  v9 = [(BaseModeController *)self actionCoordinator];
-  v10 = [v9 currentViewController];
+  y = location.y;
+  x = location.x;
+  viewCopy = view;
+  actionCoordinator = [(BaseModeController *)self actionCoordinator];
+  currentViewController = [actionCoordinator currentViewController];
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ![v10 allowsQuickActionMenuInMap])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ![currentViewController allowsQuickActionMenuInMap])
   {
     LOBYTE(v12) = 0;
   }
 
   else
   {
-    [(MKMapView *)self->_mapView convertPoint:v8 fromView:x, y];
+    [(MKMapView *)self->_mapView convertPoint:viewCopy fromView:x, y];
     v11 = [(MKMapView *)self->_mapView _labelMarkerAtPoint:?];
     v12 = [v11 isFlyoverTour] ^ 1;
   }
@@ -761,51 +761,51 @@ LABEL_6:
   return v12;
 }
 
-- (void)quickActionMenuPresenter:(id)a3 selectedShowPlaceCard:(id)a4
+- (void)quickActionMenuPresenter:(id)presenter selectedShowPlaceCard:(id)card
 {
-  v12 = [a3 searchResult];
-  v5 = [(QuickActionMenuPresenter *)self->_quickActionMenuPresenter labelMarker];
+  searchResult = [presenter searchResult];
+  labelMarker = [(QuickActionMenuPresenter *)self->_quickActionMenuPresenter labelMarker];
 
-  if (v5)
+  if (labelMarker)
   {
-    v6 = [(BaseModeController *)self actionCoordinator];
-    v7 = [v6 mapSelectionManager];
-    v8 = [(QuickActionMenuPresenter *)self->_quickActionMenuPresenter labelMarker];
-    [v7 selectLabelMarker:v8 animated:1];
+    actionCoordinator = [(BaseModeController *)self actionCoordinator];
+    mapSelectionManager = [actionCoordinator mapSelectionManager];
+    labelMarker2 = [(QuickActionMenuPresenter *)self->_quickActionMenuPresenter labelMarker];
+    [mapSelectionManager selectLabelMarker:labelMarker2 animated:1];
 
-    [(BaseModeController *)self _addRecentPlaceForSearchResult:v12];
+    [(BaseModeController *)self _addRecentPlaceForSearchResult:searchResult];
   }
 
   else
   {
-    v9 = [(MapQuickActionMenuPresenter *)self->_quickActionMenuPresenter annotation];
+    annotation = [(MapQuickActionMenuPresenter *)self->_quickActionMenuPresenter annotation];
 
-    if (v9)
+    if (annotation)
     {
       mapView = self->_mapView;
-      v11 = [(MapQuickActionMenuPresenter *)self->_quickActionMenuPresenter annotation];
-      [(MKMapView *)mapView selectAnnotation:v11 animated:1];
+      annotation2 = [(MapQuickActionMenuPresenter *)self->_quickActionMenuPresenter annotation];
+      [(MKMapView *)mapView selectAnnotation:annotation2 animated:1];
     }
   }
 }
 
-- (void)quickActionMenuPresenter:(id)a3 selectedShareLocationOf:(id)a4
+- (void)quickActionMenuPresenter:(id)presenter selectedShareLocationOf:(id)of
 {
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1007EC4E8;
   v13[3] = &unk_10162AC48;
   v13[4] = self;
-  v4 = a3;
+  presenterCopy = presenter;
   v5 = objc_retainBlock(v13);
-  v6 = [v4 searchResult];
+  searchResult = [presenterCopy searchResult];
 
   v7 = +[MKLocationManager sharedLocationManager];
-  v8 = [v7 isAuthorizedForPreciseLocation];
+  isAuthorizedForPreciseLocation = [v7 isAuthorizedForPreciseLocation];
 
-  if (v8)
+  if (isAuthorizedForPreciseLocation)
   {
-    (v5[2])(v5, v6);
+    (v5[2])(v5, searchResult);
   }
 
   else
@@ -823,46 +823,46 @@ LABEL_6:
   }
 }
 
-- (void)quickActionMenuPresenter:(id)a3 selectedViewWebsiteFor:(id)a4
+- (void)quickActionMenuPresenter:(id)presenter selectedViewWebsiteFor:(id)for
 {
-  v5 = [a3 searchResult];
-  if (v5)
+  searchResult = [presenter searchResult];
+  if (searchResult)
   {
-    v7 = v5;
-    v6 = [(BaseModeController *)self actionCoordinator];
-    [v6 viewController:0 openWebsiteForSearchResult:v7];
+    v7 = searchResult;
+    actionCoordinator = [(BaseModeController *)self actionCoordinator];
+    [actionCoordinator viewController:0 openWebsiteForSearchResult:v7];
 
     [(BaseModeController *)self _addRecentPlaceForSearchResult:v7];
-    v5 = v7;
+    searchResult = v7;
   }
 }
 
-- (void)quickActionMenuPresenter:(id)a3 selectedCall:(id)a4
+- (void)quickActionMenuPresenter:(id)presenter selectedCall:(id)call
 {
-  v5 = [a3 searchResult];
-  if (v5)
+  searchResult = [presenter searchResult];
+  if (searchResult)
   {
-    v7 = v5;
-    v6 = [(BaseModeController *)self actionCoordinator];
-    [v6 viewController:0 doAudioCallToSearchResult:v7];
+    v7 = searchResult;
+    actionCoordinator = [(BaseModeController *)self actionCoordinator];
+    [actionCoordinator viewController:0 doAudioCallToSearchResult:v7];
 
     [(BaseModeController *)self _addRecentPlaceForSearchResult:v7];
-    v5 = v7;
+    searchResult = v7;
   }
 }
 
-- (void)quickActionMenuPresenter:(id)a3 selectedDirectionsTo:(id)a4
+- (void)quickActionMenuPresenter:(id)presenter selectedDirectionsTo:(id)to
 {
-  v5 = a3;
-  v6 = [v5 searchResult];
-  if (v6)
+  presenterCopy = presenter;
+  searchResult = [presenterCopy searchResult];
+  if (searchResult)
   {
-    v7 = [v5 isAdditionalStop];
+    isAdditionalStop = [presenterCopy isAdditionalStop];
     v8 = objc_alloc_init(SearchFieldItem);
     v9 = v8;
-    if (v7)
+    if (isAdditionalStop)
     {
-      [(SearchFieldItem *)v8 setSearchResult:v6];
+      [(SearchFieldItem *)v8 setSearchResult:searchResult];
       v20 = v9;
       v10 = [NSArray arrayWithObjects:&v20 count:1];
     }
@@ -873,94 +873,94 @@ LABEL_6:
       [(SearchFieldItem *)v9 setSearchResult:v11];
 
       v12 = objc_alloc_init(SearchFieldItem);
-      [(SearchFieldItem *)v12 setSearchResult:v6];
+      [(SearchFieldItem *)v12 setSearchResult:searchResult];
       v19[0] = v9;
       v19[1] = v12;
       v10 = [NSArray arrayWithObjects:v19 count:2];
     }
 
     v13 = [[DirectionItem alloc] initWithItems:v10 transportType:0];
-    v14 = [NSNumber numberWithBool:v7, @"DirectionsSessionInitiatorKey", @"DirectionsAppendContentsOfItem", &off_1016E6FE0];
+    v14 = [NSNumber numberWithBool:isAdditionalStop, @"DirectionsSessionInitiatorKey", @"DirectionsAppendContentsOfItem", &off_1016E6FE0];
     v18[1] = v14;
     v15 = [NSDictionary dictionaryWithObjects:v18 forKeys:&v17 count:2];
 
-    v16 = [(BaseModeController *)self actionCoordinator];
-    [v16 viewController:0 doDirectionItem:v13 withUserInfo:v15];
+    actionCoordinator = [(BaseModeController *)self actionCoordinator];
+    [actionCoordinator viewController:0 doDirectionItem:v13 withUserInfo:v15];
 
-    [(BaseModeController *)self _addRecentPlaceForSearchResult:v6];
+    [(BaseModeController *)self _addRecentPlaceForSearchResult:searchResult];
   }
 }
 
-- (void)_addRecentPlaceForSearchResult:(id)a3
+- (void)_addRecentPlaceForSearchResult:(id)result
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  resultCopy = result;
+  v4 = resultCopy;
+  if (resultCopy)
   {
-    v8 = v3;
-    v5 = [v3 isHomeOrWork];
+    v8 = resultCopy;
+    isHomeOrWork = [resultCopy isHomeOrWork];
     v4 = v8;
-    if ((v5 & 1) == 0)
+    if ((isHomeOrWork & 1) == 0)
     {
-      v6 = [v8 mapItem];
-      v7 = [v8 searchToSupersedeIfRecordedInHistory];
-      [HistoryEntryRecentsItem saveMapItem:v6 superseedUUID:v7];
+      mapItem = [v8 mapItem];
+      searchToSupersedeIfRecordedInHistory = [v8 searchToSupersedeIfRecordedInHistory];
+      [HistoryEntryRecentsItem saveMapItem:mapItem superseedUUID:searchToSupersedeIfRecordedInHistory];
 
       v4 = v8;
     }
   }
 }
 
-- (BOOL)shouldShowAddStopForDirectionsInQuickActionMenuPresenter:(id)a3
+- (BOOL)shouldShowAddStopForDirectionsInQuickActionMenuPresenter:(id)presenter
 {
-  v3 = [(BaseModeController *)self actionCoordinator];
-  v4 = [v3 shouldAddStopInRoutePlanning];
+  actionCoordinator = [(BaseModeController *)self actionCoordinator];
+  shouldAddStopInRoutePlanning = [actionCoordinator shouldAddStopInRoutePlanning];
 
-  return v4;
+  return shouldAddStopInRoutePlanning;
 }
 
 - (id)searchDataSourceLogContextDelegate
 {
-  v2 = [(ControlContainerViewController *)self->_containerViewController coordinator];
-  v3 = [v2 searchDataSourceLogContextDelegate];
+  coordinator = [(ControlContainerViewController *)self->_containerViewController coordinator];
+  searchDataSourceLogContextDelegate = [coordinator searchDataSourceLogContextDelegate];
 
-  return v3;
+  return searchDataSourceLogContextDelegate;
 }
 
 - (id)searchDataSourceDelegate
 {
-  v2 = [(ControlContainerViewController *)self->_containerViewController coordinator];
-  v3 = [v2 searchDataSourceDelegate];
+  coordinator = [(ControlContainerViewController *)self->_containerViewController coordinator];
+  searchDataSourceDelegate = [coordinator searchDataSourceDelegate];
 
-  return v3;
+  return searchDataSourceDelegate;
 }
 
 - (id)homeActionDelegate
 {
-  v2 = [(ControlContainerViewController *)self->_containerViewController coordinator];
-  v3 = [v2 homeActionDelegate];
+  coordinator = [(ControlContainerViewController *)self->_containerViewController coordinator];
+  homeActionDelegate = [coordinator homeActionDelegate];
 
-  return v3;
+  return homeActionDelegate;
 }
 
-- (BOOL)mapQuickActionMenuPresenter:(id)a3 shouldBeginOrbGestureForLabelMarkerOnMap:(id)a4
+- (BOOL)mapQuickActionMenuPresenter:(id)presenter shouldBeginOrbGestureForLabelMarkerOnMap:(id)map
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v7)
+  presenterCopy = presenter;
+  mapCopy = map;
+  v8 = mapCopy;
+  if (!mapCopy)
   {
 LABEL_9:
     LOBYTE(v10) = 0;
     goto LABEL_10;
   }
 
-  if (![v7 isTransitLine])
+  if (![mapCopy isTransitLine])
   {
     if (([v8 isFlyoverTour] & 1) == 0 && (objc_msgSend(v8, "isTrafficIncident") & 1) == 0 && (objc_msgSend(v8, "isOneWayArrow") & 1) == 0 && (objc_msgSend(v8, "isRouteAnnotation") & 1) == 0 && (objc_msgSend(v8, "isCluster") & 1) == 0)
     {
-      v12 = [v8 featureType];
-      if (v12 - 5 < 2 || v12 == 3 && ([v8 businessID] || !objc_msgSend(v8, "featureID")))
+      featureType = [v8 featureType];
+      if (featureType - 5 < 2 || featureType == 3 && ([v8 businessID] || !objc_msgSend(v8, "featureID")))
       {
         LOBYTE(v10) = 1;
         goto LABEL_10;
@@ -970,23 +970,23 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v9 = [(BaseModeController *)self actionCoordinator];
-  v10 = [v9 isRoutePlanningPresented] ^ 1;
+  actionCoordinator = [(BaseModeController *)self actionCoordinator];
+  v10 = [actionCoordinator isRoutePlanningPresented] ^ 1;
 
 LABEL_10:
   return v10;
 }
 
-- (void)getCurrentSceneTitleWithCompletion:(id)a3
+- (void)getCurrentSceneTitleWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BaseModeController *)self actionCoordinator];
-  [v5 getCurrentSceneTitleWithCompletion:v4];
+  completionCopy = completion;
+  actionCoordinator = [(BaseModeController *)self actionCoordinator];
+  [actionCoordinator getCurrentSceneTitleWithCompletion:completionCopy];
 }
 
-- (void)_resignTopContextInChromeViewController:(id)a3
+- (void)_resignTopContextInChromeViewController:(id)controller
 {
-  v14 = a3;
+  controllerCopy = controller;
   mapView = self->_mapView;
   if (mapView)
   {
@@ -1006,39 +1006,39 @@ LABEL_10:
   v9 = +[NSNotificationCenter defaultCenter];
   [v9 removeObserver:self name:@"AddressBookManagerDidUpdateAddressesNotification" object:0];
 
-  v10 = [(BaseModeController *)self chromeViewController];
-  v11 = [v10 customSearchManager];
-  [v11 removeObserver:self];
+  chromeViewController = [(BaseModeController *)self chromeViewController];
+  customSearchManager = [chromeViewController customSearchManager];
+  [customSearchManager removeObserver:self];
 
-  v12 = [(BaseModeController *)self chromeViewController];
-  v13 = [v12 mapCameraController];
-  [v13 addObserver:self];
+  chromeViewController2 = [(BaseModeController *)self chromeViewController];
+  mapCameraController = [chromeViewController2 mapCameraController];
+  [mapCameraController addObserver:self];
 }
 
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  animationCopy = animation;
   objc_initWeak(&location, self);
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1007ECFB0;
   v9[3] = &unk_101661340;
   objc_copyWeak(&v11, &location);
-  v8 = v6;
+  v8 = controllerCopy;
   v10 = v8;
-  [v7 addPreparation:v9];
+  [animationCopy addPreparation:v9];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
 }
 
-- (void)_becomeTopContextInChromeViewController:(id)a3
+- (void)_becomeTopContextInChromeViewController:(id)controller
 {
-  v23 = a3;
+  controllerCopy = controller;
   [(BaseModeController *)self _setupUserLocationAnnotation];
   [UIFont setPlacecardShouldUseSmallFont:_MKPlaceCardUseSmallerFont()];
-  v4 = [v23 previousTopContext];
+  previousTopContext = [controllerCopy previousTopContext];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1049,27 +1049,27 @@ LABEL_10:
     self->_previousRegion.span = v6;
   }
 
-  v7 = [(BaseModeController *)self chromeViewController];
-  v8 = [v7 mapView];
-  [(BaseModeController *)self setMapView:v8];
+  chromeViewController = [(BaseModeController *)self chromeViewController];
+  mapView = [chromeViewController mapView];
+  [(BaseModeController *)self setMapView:mapView];
 
-  if ([v23 hasDuplicatesOfContext:self])
+  if ([controllerCopy hasDuplicatesOfContext:self])
   {
     goto LABEL_4;
   }
 
-  v15 = [v23 previousTopContext];
-  if (sub_100010C34(v15, &OBJC_PROTOCOL___IOSBasedChromeContext))
+  previousTopContext2 = [controllerCopy previousTopContext];
+  if (sub_100010C34(previousTopContext2, &OBJC_PROTOCOL___IOSBasedChromeContext))
   {
-    v16 = [v23 previousTopContext];
+    previousTopContext3 = [controllerCopy previousTopContext];
     v17 = objc_opt_respondsToSelector();
 
     if (v17)
     {
-      v18 = [v23 previousTopContext];
-      v19 = [v18 shouldResetStateAfterResigning];
+      previousTopContext4 = [controllerCopy previousTopContext];
+      shouldResetStateAfterResigning = [previousTopContext4 shouldResetStateAfterResigning];
 
-      if (!v19)
+      if (!shouldResetStateAfterResigning)
       {
 LABEL_4:
         v9 = MKCoordinateRegionInvalid[1];
@@ -1103,31 +1103,31 @@ LABEL_4:
   }
 
 LABEL_5:
-  v10 = [(BaseModeController *)self chromeViewController];
-  v11 = [v10 customSearchManager];
-  [v11 addObserver:self];
+  chromeViewController2 = [(BaseModeController *)self chromeViewController];
+  customSearchManager = [chromeViewController2 customSearchManager];
+  [customSearchManager addObserver:self];
 
-  v12 = [(BaseModeController *)self chromeViewController];
-  v13 = [v12 mapCameraController];
-  [v13 addObserver:self];
+  chromeViewController3 = [(BaseModeController *)self chromeViewController];
+  mapCameraController = [chromeViewController3 mapCameraController];
+  [mapCameraController addObserver:self];
 
-  v14 = [(BaseModeController *)self chromeViewController];
-  [v14 updateMapViewDisplayOptions];
+  chromeViewController4 = [(BaseModeController *)self chromeViewController];
+  [chromeViewController4 updateMapViewDisplayOptions];
 }
 
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  animationCopy = animation;
   objc_initWeak(&location, self);
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1007ED398;
   v9[3] = &unk_101661340;
   objc_copyWeak(&v11, &location);
-  v8 = v6;
+  v8 = controllerCopy;
   v10 = v8;
-  [v7 addPreparation:v9];
+  [animationCopy addPreparation:v9];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -1135,29 +1135,29 @@ LABEL_5:
 
 - (void)enterPedestrianAR
 {
-  v2 = [(BaseModeController *)self actionCoordinator];
-  [v2 enterPedestrianAR];
+  actionCoordinator = [(BaseModeController *)self actionCoordinator];
+  [actionCoordinator enterPedestrianAR];
 }
 
 - (BOOL)shouldResizingCardDimFloatingControls
 {
-  v2 = [(BaseModeController *)self containerViewController];
-  v3 = [v2 currentViewController];
+  containerViewController = [(BaseModeController *)self containerViewController];
+  currentViewController = [containerViewController currentViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return (isKindOfClass & 1) == 0;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  v7 = v6;
+  gestureRecognizerCopy = gestureRecognizer;
+  v7 = gestureRecognizerCopy;
   longPress = self->_longPress;
   feedbackPreWarmGestureRecognizer = self->_feedbackPreWarmGestureRecognizer;
-  v11 = feedbackPreWarmGestureRecognizer == a3 || feedbackPreWarmGestureRecognizer == v6;
-  v13 = longPress == a3 || longPress == v6;
-  v14 = a3;
+  v11 = feedbackPreWarmGestureRecognizer == recognizer || feedbackPreWarmGestureRecognizer == gestureRecognizerCopy;
+  v13 = longPress == recognizer || longPress == gestureRecognizerCopy;
+  recognizerCopy = recognizer;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1185,17 +1185,17 @@ LABEL_5:
   return v17;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  [a4 locationInView:self->_mapView];
+  [touch locationInView:self->_mapView];
   v6 = v5;
   v8 = v7;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v9 = [(MKMapView *)self->_mapView subviews];
-  v10 = [v9 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  subviews = [(MKMapView *)self->_mapView subviews];
+  v10 = [subviews countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1206,7 +1206,7 @@ LABEL_5:
       {
         if (*v30 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(subviews);
         }
 
         v14 = *(*(&v29 + 1) + 8 * i);
@@ -1237,7 +1237,7 @@ LABEL_5:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v11 = [subviews countByEnumeratingWithState:&v29 objects:v33 count:16];
       if (v11)
       {
         continue;
@@ -1253,9 +1253,9 @@ LABEL_12:
   return v27;
 }
 
-- (void)_handleFeedbackPreWarmGesture:(id)a3
+- (void)_handleFeedbackPreWarmGesture:(id)gesture
 {
-  if ([a3 state] == 1)
+  if ([gesture state] == 1)
   {
     feedbackBehavior = self->_feedbackBehavior;
 
@@ -1263,14 +1263,14 @@ LABEL_12:
   }
 }
 
-- (void)_handleLongPress:(id)a3
+- (void)_handleLongPress:(id)press
 {
-  v7 = a3;
+  pressCopy = press;
   if ([(BaseModeController *)self canDropPin])
   {
-    if ([v7 state] == 1)
+    if ([pressCopy state] == 1)
     {
-      [v7 locationInView:self->_mapView];
+      [pressCopy locationInView:self->_mapView];
       [(MKMapView *)self->_mapView convertPoint:self->_mapView toCoordinateFromView:?];
       if (fabs(v5) <= 180.0 && v4 >= -90.0 && v4 <= 90.0)
       {
@@ -1283,13 +1283,13 @@ LABEL_12:
   }
 }
 
-- (int)floorOrdinalAtCoordinate:(CLLocationCoordinate2D)a3
+- (int)floorOrdinalAtCoordinate:(CLLocationCoordinate2D)coordinate
 {
   VKLocationCoordinate2DMake();
   v5 = v4;
   v7 = v6;
-  v8 = [(MKMapView *)self->_mapView _mapLayer];
-  v9 = [v8 venueAtLocation:{v5, v7}];
+  _mapLayer = [(MKMapView *)self->_mapView _mapLayer];
+  v9 = [_mapLayer venueAtLocation:{v5, v7}];
 
   if (v9)
   {
@@ -1304,9 +1304,9 @@ LABEL_12:
   return v10;
 }
 
-- (void)cancelQuickActionMenuPresentation:(id)a3
+- (void)cancelQuickActionMenuPresentation:(id)presentation
 {
-  if ([a3 state] == 1)
+  if ([presentation state] == 1)
   {
     quickActionMenuPresenter = self->_quickActionMenuPresenter;
 
@@ -1314,91 +1314,91 @@ LABEL_12:
   }
 }
 
-- (void)mapView:(id)a3 willStartRespondingToGesture:(int64_t)a4 animated:(BOOL)a5
+- (void)mapView:(id)view willStartRespondingToGesture:(int64_t)gesture animated:(BOOL)animated
 {
-  [(MapQuickActionMenuPresenter *)self->_quickActionMenuPresenter invalidateIfNeeded:a3];
+  [(MapQuickActionMenuPresenter *)self->_quickActionMenuPresenter invalidateIfNeeded:view];
   WeakRetained = objc_loadWeakRetained(&self->_chromeViewController);
-  v7 = [WeakRetained sharedTripsAnnotationsController];
-  v8 = [v7 automaticallyRecenters];
+  weakRetained = [WeakRetained sharedTripsAnnotationsController];
+  automaticallyRecenters = [weakRetained automaticallyRecenters];
 
-  if ((v8 & 1) == 0)
+  if ((automaticallyRecenters & 1) == 0)
   {
     v10 = objc_loadWeakRetained(&self->_chromeViewController);
-    v9 = [v10 sharedTripsAnnotationsController];
-    [v9 setAutomaticallyRecenter:0];
+    sharedTripsAnnotationsController = [v10 sharedTripsAnnotationsController];
+    [sharedTripsAnnotationsController setAutomaticallyRecenter:0];
   }
 }
 
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated
 {
   favoritePlaceItemSource = self->_favoritePlaceItemSource;
-  v6 = a3;
-  [(PersonalizedFavoriteItemSource *)favoritePlaceItemSource mapViewRegionDidChange:v6];
-  [(PersonalizedCollectionPlaceItemSource *)self->_collectionPlaceItemSource mapViewRegionDidChange:v6];
+  viewCopy = view;
+  [(PersonalizedFavoriteItemSource *)favoritePlaceItemSource mapViewRegionDidChange:viewCopy];
+  [(PersonalizedCollectionPlaceItemSource *)self->_collectionPlaceItemSource mapViewRegionDidChange:viewCopy];
 }
 
-- (void)mapView:(id)a3 regionWillChangeAnimated:(BOOL)a4
+- (void)mapView:(id)view regionWillChangeAnimated:(BOOL)animated
 {
   favoritePlaceItemSource = self->_favoritePlaceItemSource;
-  v6 = a3;
-  [(PersonalizedFavoriteItemSource *)favoritePlaceItemSource mapViewRegionWillChange:v6];
-  [(PersonalizedCollectionPlaceItemSource *)self->_collectionPlaceItemSource mapViewRegionWillChange:v6];
+  viewCopy = view;
+  [(PersonalizedFavoriteItemSource *)favoritePlaceItemSource mapViewRegionWillChange:viewCopy];
+  [(PersonalizedCollectionPlaceItemSource *)self->_collectionPlaceItemSource mapViewRegionWillChange:viewCopy];
 }
 
-- (void)mapCameraControllerWillChangeVisibleRect:(id)a3
+- (void)mapCameraControllerWillChangeVisibleRect:(id)rect
 {
-  v3 = [(BaseModeController *)self actionCoordinator];
-  [v3 setUserTrackingViewUserTrackingMode:0];
+  actionCoordinator = [(BaseModeController *)self actionCoordinator];
+  [actionCoordinator setUserTrackingViewUserTrackingMode:0];
 }
 
-- (void)customSearchManager:(id)a3 didModifyCustomSearchResult:(id)a4 coordinateChanged:(BOOL)a5
+- (void)customSearchManager:(id)manager didModifyCustomSearchResult:(id)result coordinateChanged:(BOOL)changed
 {
-  if (a5)
+  if (changed)
   {
-    [(BaseModeController *)self _showCustomSearchResult:a4 shouldSelectOnMap:0];
+    [(BaseModeController *)self _showCustomSearchResult:result shouldSelectOnMap:0];
   }
 }
 
 - (void)_cleanupSharedTripIfNeeded
 {
   WeakRetained = objc_loadWeakRetained(&self->_chromeViewController);
-  v4 = [WeakRetained sharedTripsAnnotationsController];
-  [v4 setActive:0];
+  weakRetained = [WeakRetained sharedTripsAnnotationsController];
+  [weakRetained setActive:0];
 
   v6 = objc_loadWeakRetained(&self->_chromeViewController);
-  v5 = [v6 sharedTripsAnnotationsController];
-  [v5 setSharedTrip:0];
+  sharedTripsAnnotationsController = [v6 sharedTripsAnnotationsController];
+  [sharedTripsAnnotationsController setSharedTrip:0];
 }
 
-- (BOOL)isShowingSharedTrip:(id)a3
+- (BOOL)isShowingSharedTrip:(id)trip
 {
-  v4 = [a3 groupIdentifier];
+  groupIdentifier = [trip groupIdentifier];
   WeakRetained = objc_loadWeakRetained(&self->_chromeViewController);
-  v6 = [WeakRetained sharedTripsAnnotationsController];
-  v7 = [v6 sharedTrip];
-  v8 = [v7 groupIdentifier];
+  weakRetained = [WeakRetained sharedTripsAnnotationsController];
+  sharedTrip = [weakRetained sharedTrip];
+  groupIdentifier2 = [sharedTrip groupIdentifier];
 
   v9 = 0;
-  if (v4 && v8)
+  if (groupIdentifier && groupIdentifier2)
   {
-    v9 = [v4 isEqualToString:v8];
+    v9 = [groupIdentifier isEqualToString:groupIdentifier2];
   }
 
   return v9;
 }
 
-- (void)showSharedTrip:(id)a3
+- (void)showSharedTrip:(id)trip
 {
-  v8 = a3;
-  if (v8)
+  tripCopy = trip;
+  if (tripCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_chromeViewController);
-    v5 = [WeakRetained sharedTripsAnnotationsController];
-    [v5 setSharedTrip:v8];
+    weakRetained = [WeakRetained sharedTripsAnnotationsController];
+    [weakRetained setSharedTrip:tripCopy];
 
     v6 = objc_loadWeakRetained(&self->_chromeViewController);
-    v7 = [v6 sharedTripsAnnotationsController];
-    [v7 setActive:1];
+    sharedTripsAnnotationsController = [v6 sharedTripsAnnotationsController];
+    [sharedTripsAnnotationsController setActive:1];
   }
 
   else
@@ -1409,20 +1409,20 @@ LABEL_12:
 
 - (BOOL)canDropPin
 {
-  v2 = [(BaseModeController *)self actionCoordinator];
-  v3 = [v2 currentViewController];
+  actionCoordinator = [(BaseModeController *)self actionCoordinator];
+  currentViewController = [actionCoordinator currentViewController];
 
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 allowsLongPressToMarkLocation];
+    allowsLongPressToMarkLocation = [currentViewController allowsLongPressToMarkLocation];
   }
 
   else
   {
-    v4 = 1;
+    allowsLongPressToMarkLocation = 1;
   }
 
-  return v4;
+  return allowsLongPressToMarkLocation;
 }
 
 - (void)createCustomSearchResultForDroppedPinAtCenterPoint
@@ -1436,25 +1436,25 @@ LABEL_12:
   }
 }
 
-- (void)createCustomSearchResultForDroppedPinAtPoint:(CLLocationCoordinate2D)a3 floorOrdinal:(int)a4 animated:(BOOL)a5
+- (void)createCustomSearchResultForDroppedPinAtPoint:(CLLocationCoordinate2D)point floorOrdinal:(int)ordinal animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = *&a4;
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  animatedCopy = animated;
+  v6 = *&ordinal;
+  longitude = point.longitude;
+  latitude = point.latitude;
   [(BaseModeController *)self _clearCustomSearchResult];
-  v10 = [SearchResult customSearchResultWithCoordinate:v6 floorOrdinal:latitude, longitude];
-  [v10 setHasIncompleteMetadata:1];
-  [(BaseModeController *)self setCustomSearchResult:v10 animated:v5];
+  longitude = [SearchResult customSearchResultWithCoordinate:v6 floorOrdinal:latitude, longitude];
+  [longitude setHasIncompleteMetadata:1];
+  [(BaseModeController *)self setCustomSearchResult:longitude animated:animatedCopy];
 }
 
 - (void)_clearCustomSearchResult
 {
-  v3 = [(BaseModeController *)self chromeViewController];
-  v4 = [v3 customSearchManager];
-  v5 = [v4 customSearchResult];
+  chromeViewController = [(BaseModeController *)self chromeViewController];
+  customSearchManager = [chromeViewController customSearchManager];
+  customSearchResult = [customSearchManager customSearchResult];
 
-  if (v5)
+  if (customSearchResult)
   {
     [(BaseModeController *)self setCustomSearchResult:0 animated:0];
   }
@@ -1462,69 +1462,69 @@ LABEL_12:
 
 - (void)removeDroppedPin
 {
-  v3 = [(BaseModeController *)self chromeViewController];
-  v4 = [v3 searchPinsManager];
-  v6 = [v4 droppedPin];
+  chromeViewController = [(BaseModeController *)self chromeViewController];
+  searchPinsManager = [chromeViewController searchPinsManager];
+  droppedPin = [searchPinsManager droppedPin];
 
-  if (v6)
+  if (droppedPin)
   {
-    v5 = [(BaseModeController *)self actionCoordinator];
-    [v5 viewController:0 removeDroppedPin:v6];
+    actionCoordinator = [(BaseModeController *)self actionCoordinator];
+    [actionCoordinator viewController:0 removeDroppedPin:droppedPin];
   }
 }
 
 - (BOOL)hasDroppedPin
 {
-  v2 = [(BaseModeController *)self chromeViewController];
-  v3 = [v2 searchPinsManager];
-  v4 = [v3 droppedPin];
-  v5 = v4 != 0;
+  chromeViewController = [(BaseModeController *)self chromeViewController];
+  searchPinsManager = [chromeViewController searchPinsManager];
+  droppedPin = [searchPinsManager droppedPin];
+  v5 = droppedPin != 0;
 
   return v5;
 }
 
-- (void)_showCustomSearchResult:(id)a3 shouldSelectOnMap:(BOOL)a4
+- (void)_showCustomSearchResult:(id)result shouldSelectOnMap:(BOOL)map
 {
-  v4 = a4;
-  v10 = a3;
-  v6 = [(BaseModeController *)self chromeViewController];
-  v7 = [v6 searchPinsManager];
-  v8 = v7;
-  if (v10)
+  mapCopy = map;
+  resultCopy = result;
+  chromeViewController = [(BaseModeController *)self chromeViewController];
+  searchPinsManager = [chromeViewController searchPinsManager];
+  actionCoordinator = searchPinsManager;
+  if (resultCopy)
   {
-    [v7 setDroppedPin:v10 animated:1 shouldSelect:v4];
+    [searchPinsManager setDroppedPin:resultCopy animated:1 shouldSelect:mapCopy];
 
-    v6 = +[CustomLocationManager sharedManager];
-    v8 = [(BaseModeController *)self actionCoordinator];
-    v9 = [v8 newTraits];
-    [v6 processSearchResult:v10 traits:v9];
+    chromeViewController = +[CustomLocationManager sharedManager];
+    actionCoordinator = [(BaseModeController *)self actionCoordinator];
+    newTraits = [actionCoordinator newTraits];
+    [chromeViewController processSearchResult:resultCopy traits:newTraits];
   }
 
   else
   {
-    [v7 clearDroppedPin];
+    [searchPinsManager clearDroppedPin];
   }
 }
 
-- (void)setCustomSearchResult:(id)a3 animated:(BOOL)a4
+- (void)setCustomSearchResult:(id)result animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v8 = [(BaseModeController *)self chromeViewController];
-  v7 = [v8 customSearchManager];
-  [v7 setCustomSearchResult:v6 animated:v4 shouldSelectOnMap:self->_mapView];
+  animatedCopy = animated;
+  resultCopy = result;
+  chromeViewController = [(BaseModeController *)self chromeViewController];
+  customSearchManager = [chromeViewController customSearchManager];
+  [customSearchManager setCustomSearchResult:resultCopy animated:animatedCopy shouldSelectOnMap:self->_mapView];
 }
 
-- (void)setMapView:(id)a3
+- (void)setMapView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   mapView = self->_mapView;
-  if (mapView != v5)
+  if (mapView != viewCopy)
   {
-    v25 = v5;
+    v25 = viewCopy;
     [(MKMapView *)mapView removeGestureRecognizer:self->_longPress];
     [(MKMapView *)self->_mapView removeGestureRecognizer:self->_feedbackPreWarmGestureRecognizer];
-    objc_storeStrong(&self->_mapView, a3);
+    objc_storeStrong(&self->_mapView, view);
     if (!self->_mapView)
     {
       quickActionMenuPresenter = self->_quickActionMenuPresenter;
@@ -1538,8 +1538,8 @@ LABEL_12:
       mapViewDragSource = self->_mapViewDragSource;
       self->_mapViewDragSource = 0;
 
-      v22 = [(MKMapView *)self->_mapView superview];
-      [v22 removeInteraction:self->_dropInteraction];
+      superview = [(MKMapView *)self->_mapView superview];
+      [superview removeInteraction:self->_dropInteraction];
       goto LABEL_15;
     }
 
@@ -1553,18 +1553,18 @@ LABEL_12:
       self->_quickActionMenuPresenter = v8;
 
       [(QuickActionMenuPresenter *)self->_quickActionMenuPresenter setDelegate:self];
-      v10 = [(BaseModeController *)self containerViewController];
-      [(QuickActionMenuPresenter *)self->_quickActionMenuPresenter setContainerViewController:v10];
+      containerViewController = [(BaseModeController *)self containerViewController];
+      [(QuickActionMenuPresenter *)self->_quickActionMenuPresenter setContainerViewController:containerViewController];
 
       v7 = self->_quickActionMenuPresenter;
     }
 
     [(QuickActionMenuPresenter *)v7 setEnabled:1];
     v11 = +[MapsDragAndDropManager sharedManager];
-    v12 = [v11 deviceSupportsDragAndDrop];
+    deviceSupportsDragAndDrop = [v11 deviceSupportsDragAndDrop];
 
-    v5 = v25;
-    if (v12)
+    viewCopy = v25;
+    if (deviceSupportsDragAndDrop)
     {
       if (!self->_mapViewDragSource)
       {
@@ -1594,15 +1594,15 @@ LABEL_12:
         dropInteraction = self->_dropInteraction;
         self->_dropInteraction = v19;
 
-        v21 = [(BaseModeController *)self actionCoordinator];
-        [(MapsDragDestinationHandler *)self->_mapsDragDestinationHandler setDelegate:v21];
+        actionCoordinator = [(BaseModeController *)self actionCoordinator];
+        [(MapsDragDestinationHandler *)self->_mapsDragDestinationHandler setDelegate:actionCoordinator];
       }
 
-      v22 = [(MKMapView *)self->_mapView superview];
-      [v22 addInteraction:self->_dropInteraction];
+      superview = [(MKMapView *)self->_mapView superview];
+      [superview addInteraction:self->_dropInteraction];
 LABEL_15:
 
-      v5 = v25;
+      viewCopy = v25;
     }
   }
 }
@@ -1612,56 +1612,56 @@ LABEL_15:
   if (!self->_includeExpensiveItemSources)
   {
     self->_includeExpensiveItemSources = 1;
-    v4 = [(BaseModeController *)self actionCoordinator];
-    v8 = [v4 suggestionsItemSource];
+    actionCoordinator = [(BaseModeController *)self actionCoordinator];
+    suggestionsItemSource = [actionCoordinator suggestionsItemSource];
 
-    if (v8)
+    if (suggestionsItemSource)
     {
       v5 = objc_alloc_init(CalendarItemSource);
       calendarItemSource = self->_calendarItemSource;
       self->_calendarItemSource = v5;
 
-      [(CalendarItemSource *)self->_calendarItemSource excludeItemsFromSource:v8];
+      [(CalendarItemSource *)self->_calendarItemSource excludeItemsFromSource:suggestionsItemSource];
       [(CalendarItemSource *)self->_calendarItemSource loadCalendarItems];
-      v7 = [(BaseModeController *)self chromeViewController];
-      [v7 setNeedsUpdateComponent:@"personalizedItemSources" animated:1];
+      chromeViewController = [(BaseModeController *)self chromeViewController];
+      [chromeViewController setNeedsUpdateComponent:@"personalizedItemSources" animated:1];
     }
   }
 }
 
-- (void)updateViewMode:(int64_t)a3 animated:(BOOL)a4
+- (void)updateViewMode:(int64_t)mode animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [(BaseModeController *)self actionCoordinator];
-  [v6 updateViewMode:a3 animated:v4];
+  animatedCopy = animated;
+  actionCoordinator = [(BaseModeController *)self actionCoordinator];
+  [actionCoordinator updateViewMode:mode animated:animatedCopy];
 }
 
-- (void)setChromeViewController:(id)a3
+- (void)setChromeViewController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_chromeViewController);
 
   v5 = obj;
   if (WeakRetained != obj)
   {
     objc_storeWeak(&self->_chromeViewController, obj);
-    v6 = [(BaseModeController *)self chromeViewController];
-    [(ControlContainerViewController *)self->_containerViewController setChromeViewController:v6];
+    chromeViewController = [(BaseModeController *)self chromeViewController];
+    [(ControlContainerViewController *)self->_containerViewController setChromeViewController:chromeViewController];
 
     v5 = obj;
   }
 }
 
-- (BaseModeController)initWithPlatformController:(id)a3
+- (BaseModeController)initWithPlatformController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = BaseModeController;
   v6 = [(BaseModeController *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_platformController, a3);
+    objc_storeStrong(&v6->_platformController, controller);
     v8 = +[NSNotificationCenter defaultCenter];
     [v8 addObserver:v7 selector:"radarAuthorizationChanged" name:@"TapToRadarAuthorizationChangedNotification" object:0];
   }

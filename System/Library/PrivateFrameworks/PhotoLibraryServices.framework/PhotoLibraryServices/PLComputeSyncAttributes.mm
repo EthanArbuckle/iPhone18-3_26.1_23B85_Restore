@@ -1,70 +1,70 @@
 @interface PLComputeSyncAttributes
-+ (BOOL)resetLocalComputeSyncAttributesForAsset:(id)a3;
-+ (BOOL)updateCloudComputeSyncAttributesForAsset:(id)a3 cloudVersion:(id)a4 cloudAdjustmentFingerprint:(id)a5 cloudLastUpdatedDate:(id)a6;
-+ (BOOL)updateLocalComputeSyncAttributesForAsset:(id)a3 cloudRecordComputeState:(id)a4 originatedFromPrefetch:(BOOL)a5;
-+ (id)_computeSyncAttributesForAsset:(id)a3;
-+ (void)updateLocalComputeSyncStageAfterProcessingForAsset:(id)a3 stage:(signed __int16)a4;
++ (BOOL)resetLocalComputeSyncAttributesForAsset:(id)asset;
++ (BOOL)updateCloudComputeSyncAttributesForAsset:(id)asset cloudVersion:(id)version cloudAdjustmentFingerprint:(id)fingerprint cloudLastUpdatedDate:(id)date;
++ (BOOL)updateLocalComputeSyncAttributesForAsset:(id)asset cloudRecordComputeState:(id)state originatedFromPrefetch:(BOOL)prefetch;
++ (id)_computeSyncAttributesForAsset:(id)asset;
++ (void)updateLocalComputeSyncStageAfterProcessingForAsset:(id)asset stage:(signed __int16)stage;
 - (BOOL)isSyncableChange;
 - (BOOL)supportsCloudUpload;
-- (void)_updateLocalAnalysisStageHistoryWithStage:(signed __int16)a3 changeSource:(signed __int16)a4;
+- (void)_updateLocalAnalysisStageHistoryWithStage:(signed __int16)stage changeSource:(signed __int16)source;
 @end
 
 @implementation PLComputeSyncAttributes
 
-- (void)_updateLocalAnalysisStageHistoryWithStage:(signed __int16)a3 changeSource:(signed __int16)a4
+- (void)_updateLocalAnalysisStageHistoryWithStage:(signed __int16)stage changeSource:(signed __int16)source
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(PLComputeSyncAttributes *)self localAnalysisStageHistory];
-  if (v5 <= 909)
+  sourceCopy = source;
+  stageCopy = stage;
+  localAnalysisStageHistory = [(PLComputeSyncAttributes *)self localAnalysisStageHistory];
+  if (stageCopy <= 909)
   {
-    if (!v5)
+    if (!stageCopy)
     {
       return;
     }
 
-    v13 = v7 | 4;
-    v14 = v7 | 2;
-    v15 = v7 | 1;
-    if (v4)
+    v13 = localAnalysisStageHistory | 4;
+    v14 = localAnalysisStageHistory | 2;
+    v15 = localAnalysisStageHistory | 1;
+    if (sourceCopy)
     {
-      v15 = v7;
+      v15 = localAnalysisStageHistory;
     }
 
-    if (v4 != 1)
+    if (sourceCopy != 1)
     {
       v14 = v15;
     }
 
-    if (v4 != 2)
+    if (sourceCopy != 2)
     {
       v13 = v14;
     }
 
-    v16 = v7 | 0x20;
-    v17 = v7 | 0x10;
-    v18 = v7 | 8;
-    if (v4)
+    v16 = localAnalysisStageHistory | 0x20;
+    v17 = localAnalysisStageHistory | 0x10;
+    v18 = localAnalysisStageHistory | 8;
+    if (sourceCopy)
     {
-      v18 = v7;
+      v18 = localAnalysisStageHistory;
     }
 
-    if (v4 != 1)
+    if (sourceCopy != 1)
     {
       v17 = v18;
     }
 
-    if (v4 != 2)
+    if (sourceCopy != 2)
     {
       v16 = v17;
     }
 
-    if (v5 != 200)
+    if (stageCopy != 200)
     {
-      v16 = v7;
+      v16 = localAnalysisStageHistory;
     }
 
-    if (v5 == 100)
+    if (stageCopy == 100)
     {
       v12 = v13;
     }
@@ -77,42 +77,42 @@
 
   else
   {
-    v8 = v7 | 0x100;
-    v9 = v7 | 0x80;
-    v10 = v7 | 0x40;
-    if (v4)
+    v8 = localAnalysisStageHistory | 0x100;
+    v9 = localAnalysisStageHistory | 0x80;
+    v10 = localAnalysisStageHistory | 0x40;
+    if (sourceCopy)
     {
-      v10 = v7;
+      v10 = localAnalysisStageHistory;
     }
 
-    if (v4 != 1)
+    if (sourceCopy != 1)
     {
       v9 = v10;
     }
 
-    if (v4 != 2)
+    if (sourceCopy != 2)
     {
       v8 = v9;
     }
 
-    if (((1 << (v5 + 114)) & 0x10040100401) != 0)
+    if (((1 << (stageCopy + 114)) & 0x10040100401) != 0)
     {
       v11 = v8;
     }
 
     else
     {
-      v11 = v7;
+      v11 = localAnalysisStageHistory;
     }
 
-    if ((v5 - 910) <= 0x28)
+    if ((stageCopy - 910) <= 0x28)
     {
       v12 = v11;
     }
 
     else
     {
-      v12 = v7;
+      v12 = localAnalysisStageHistory;
     }
   }
 
@@ -122,7 +122,7 @@
 - (BOOL)isSyncableChange
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(PLComputeSyncAttributes *)self changedValues];
+  changedValues = [(PLComputeSyncAttributes *)self changedValues];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -144,7 +144,7 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [v3 objectForKey:*(*(&v12 + 1) + 8 * i)];
+        v9 = [changedValues objectForKey:*(*(&v12 + 1) + 8 * i)];
 
         if (v9 && [(PLComputeSyncAttributes *)self hasValidLocalProperties])
         {
@@ -171,24 +171,24 @@ LABEL_12:
 
 - (BOOL)supportsCloudUpload
 {
-  v3 = [(PLComputeSyncAttributes *)self asset];
-  if ([v3 supportsCloudUpload])
+  asset = [(PLComputeSyncAttributes *)self asset];
+  if ([asset supportsCloudUpload])
   {
-    v4 = [(PLComputeSyncAttributes *)self asset];
-    v5 = [v4 shouldPushComputeSync];
+    asset2 = [(PLComputeSyncAttributes *)self asset];
+    shouldPushComputeSync = [asset2 shouldPushComputeSync];
   }
 
   else
   {
-    v5 = 0;
+    shouldPushComputeSync = 0;
   }
 
-  return v5;
+  return shouldPushComputeSync;
 }
 
-+ (BOOL)resetLocalComputeSyncAttributesForAsset:(id)a3
++ (BOOL)resetLocalComputeSyncAttributesForAsset:(id)asset
 {
-  v3 = [a1 _computeSyncAttributesForAsset:a3];
+  v3 = [self _computeSyncAttributesForAsset:asset];
   [v3 setLocalAnalysisMajorVersion:0];
   [v3 setLocalAnalysisStage:0];
   [v3 setLocalAnalysisStageHistory:0];
@@ -196,80 +196,80 @@ LABEL_12:
   return 1;
 }
 
-+ (BOOL)updateLocalComputeSyncAttributesForAsset:(id)a3 cloudRecordComputeState:(id)a4 originatedFromPrefetch:(BOOL)a5
++ (BOOL)updateLocalComputeSyncAttributesForAsset:(id)asset cloudRecordComputeState:(id)state originatedFromPrefetch:(BOOL)prefetch
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 version];
-  v11 = [v9 adjustmentFingerprint];
-  v12 = [v9 lastUpdatedDate];
-  v13 = [a1 updateCloudComputeSyncAttributesForAsset:v8 cloudVersion:v10 cloudAdjustmentFingerprint:v11 cloudLastUpdatedDate:v12];
+  prefetchCopy = prefetch;
+  assetCopy = asset;
+  stateCopy = state;
+  version = [stateCopy version];
+  adjustmentFingerprint = [stateCopy adjustmentFingerprint];
+  lastUpdatedDate = [stateCopy lastUpdatedDate];
+  v13 = [self updateCloudComputeSyncAttributesForAsset:assetCopy cloudVersion:version cloudAdjustmentFingerprint:adjustmentFingerprint cloudLastUpdatedDate:lastUpdatedDate];
 
   if (v13)
   {
-    v14 = [a1 _computeSyncAttributesForAsset:v8];
+    v14 = [self _computeSyncAttributesForAsset:assetCopy];
     v15 = objc_alloc(MEMORY[0x1E6994B78]);
-    v16 = [v9 version];
-    v17 = [v15 initWithString:v16];
+    version2 = [stateCopy version];
+    v17 = [v15 initWithString:version2];
 
-    LODWORD(v16) = [v14 localAnalysisStage];
+    LODWORD(version2) = [v14 localAnalysisStage];
     [v14 setLocalAnalysisMajorVersion:{objc_msgSend(v17, "majorVersion")}];
     [v14 setLocalAnalysisStage:{objc_msgSend(v17, "stage")}];
-    if (v16 != [v14 localAnalysisStage])
+    if (version2 != [v14 localAnalysisStage])
     {
-      [v14 _updateLocalAnalysisStageHistoryWithStage:objc_msgSend(v14 changeSource:{"localAnalysisStage"), !v5}];
+      [v14 _updateLocalAnalysisStageHistoryWithStage:objc_msgSend(v14 changeSource:{"localAnalysisStage"), !prefetchCopy}];
     }
   }
 
   return v13;
 }
 
-+ (BOOL)updateCloudComputeSyncAttributesForAsset:(id)a3 cloudVersion:(id)a4 cloudAdjustmentFingerprint:(id)a5 cloudLastUpdatedDate:(id)a6
++ (BOOL)updateCloudComputeSyncAttributesForAsset:(id)asset cloudVersion:(id)version cloudAdjustmentFingerprint:(id)fingerprint cloudLastUpdatedDate:(id)date
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [a1 _computeSyncAttributesForAsset:a3];
-  v14 = [objc_alloc(MEMORY[0x1E6994B78]) initWithString:v10];
-  v15 = [v14 majorVersion];
-  if (v15)
+  versionCopy = version;
+  fingerprintCopy = fingerprint;
+  dateCopy = date;
+  v13 = [self _computeSyncAttributesForAsset:asset];
+  v14 = [objc_alloc(MEMORY[0x1E6994B78]) initWithString:versionCopy];
+  majorVersion = [v14 majorVersion];
+  if (majorVersion)
   {
-    [v13 setCloudComputeStateVersion:v10];
-    [v13 setCloudComputeStateAdjustmentFingerprint:v11];
-    [v13 setCloudComputeStateLastUpdatedDate:v12];
+    [v13 setCloudComputeStateVersion:versionCopy];
+    [v13 setCloudComputeStateAdjustmentFingerprint:fingerprintCopy];
+    [v13 setCloudComputeStateLastUpdatedDate:dateCopy];
   }
 
-  return v15 != 0;
+  return majorVersion != 0;
 }
 
-+ (void)updateLocalComputeSyncStageAfterProcessingForAsset:(id)a3 stage:(signed __int16)a4
++ (void)updateLocalComputeSyncStageAfterProcessingForAsset:(id)asset stage:(signed __int16)stage
 {
-  v4 = a4;
-  v6 = [a1 _computeSyncAttributesForAsset:a3];
-  v5 = [v6 localAnalysisStage];
+  stageCopy = stage;
+  v6 = [self _computeSyncAttributesForAsset:asset];
+  localAnalysisStage = [v6 localAnalysisStage];
   [v6 setLocalAnalysisMajorVersion:2];
-  [v6 setLocalAnalysisStage:v4];
-  if (v5 != [v6 localAnalysisStage])
+  [v6 setLocalAnalysisStage:stageCopy];
+  if (localAnalysisStage != [v6 localAnalysisStage])
   {
     [v6 _updateLocalAnalysisStageHistoryWithStage:objc_msgSend(v6 changeSource:{"localAnalysisStage"), 2}];
   }
 }
 
-+ (id)_computeSyncAttributesForAsset:(id)a3
++ (id)_computeSyncAttributesForAsset:(id)asset
 {
-  v3 = a3;
-  v4 = [v3 computeSyncAttributes];
-  if (!v4)
+  assetCopy = asset;
+  computeSyncAttributes = [assetCopy computeSyncAttributes];
+  if (!computeSyncAttributes)
   {
-    v5 = [v3 managedObjectContext];
+    managedObjectContext = [assetCopy managedObjectContext];
     v6 = +[PLComputeSyncAttributes entityName];
-    v4 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(v6, v5, 0);
+    computeSyncAttributes = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(v6, managedObjectContext, 0);
 
-    [v4 setAsset:v3];
+    [computeSyncAttributes setAsset:assetCopy];
   }
 
-  return v4;
+  return computeSyncAttributes;
 }
 
 @end

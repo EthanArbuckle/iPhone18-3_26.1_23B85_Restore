@@ -1,25 +1,25 @@
 @interface COAlarmAddOnProvider
 - (COAlarmAddOnProvider)init;
-- (COAlarmAddOnProvider)initWithAlarmManager:(id)a3 homekitAdapter:(id)a4 hubAdapter:(id)a5;
+- (COAlarmAddOnProvider)initWithAlarmManager:(id)manager homekitAdapter:(id)adapter hubAdapter:(id)hubAdapter;
 - (id)serviceAddOn;
 @end
 
 @implementation COAlarmAddOnProvider
 
-- (COAlarmAddOnProvider)initWithAlarmManager:(id)a3 homekitAdapter:(id)a4 hubAdapter:(id)a5
+- (COAlarmAddOnProvider)initWithAlarmManager:(id)manager homekitAdapter:(id)adapter hubAdapter:(id)hubAdapter
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  managerCopy = manager;
+  adapterCopy = adapter;
+  hubAdapterCopy = hubAdapter;
   v15.receiver = self;
   v15.super_class = COAlarmAddOnProvider;
   v12 = [(COAlarmAddOnProvider *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_alarmManager, a3);
-    objc_storeStrong(&v13->_homekit, a4);
-    objc_storeStrong(&v13->_homehub, a5);
+    objc_storeStrong(&v12->_alarmManager, manager);
+    objc_storeStrong(&v13->_homekit, adapter);
+    objc_storeStrong(&v13->_homehub, hubAdapter);
   }
 
   return v13;
@@ -38,10 +38,10 @@
 - (id)serviceAddOn
 {
   v3 = [COMeshAlarmAddOn alloc];
-  v4 = [(COAlarmAddOnProvider *)self alarmManager];
-  v5 = [(COAlarmAddOnProvider *)self homekit];
-  v6 = [(COAlarmAddOnProvider *)self homehub];
-  v7 = [(COMeshAlarmAddOn *)v3 initWithAlarmManager:v4 homekitAdapter:v5 hubAdapter:v6];
+  alarmManager = [(COAlarmAddOnProvider *)self alarmManager];
+  homekit = [(COAlarmAddOnProvider *)self homekit];
+  homehub = [(COAlarmAddOnProvider *)self homehub];
+  v7 = [(COMeshAlarmAddOn *)v3 initWithAlarmManager:alarmManager homekitAdapter:homekit hubAdapter:homehub];
 
   return v7;
 }

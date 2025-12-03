@@ -1,16 +1,16 @@
 @interface BuddyMigrationCancelAlertController
-+ (id)alertControllerForSource:(id)a3;
-+ (id)alertControllerForTargetWithNeedsErase:(BOOL)a3 completion:(id)a4;
++ (id)alertControllerForSource:(id)source;
++ (id)alertControllerForTargetWithNeedsErase:(BOOL)erase completion:(id)completion;
 @end
 
 @implementation BuddyMigrationCancelAlertController
 
-+ (id)alertControllerForSource:(id)a3
++ (id)alertControllerForSource:(id)source
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, source);
   v3 = +[NSBundle mainBundle];
   v4 = [(NSBundle *)v3 localizedStringForKey:@"MIGRATION_CANCEL_CONFIRM_ALERT_TITLE" value:&stru_10032F900 table:@"Migration"];
   v20 = [UIAlertController alertControllerWithTitle:v4 message:0 preferredStyle:1];
@@ -39,17 +39,17 @@
   return v12;
 }
 
-+ (id)alertControllerForTargetWithNeedsErase:(BOOL)a3 completion:(id)a4
++ (id)alertControllerForTargetWithNeedsErase:(BOOL)erase completion:(id)completion
 {
-  v45 = a1;
+  selfCopy = self;
   v44 = a2;
-  v43 = a3;
+  eraseCopy = erase;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, completion);
   v41 = 0;
   v40 = 0;
   v39 = 0;
-  if (v43)
+  if (eraseCopy)
   {
     v4 = +[NSBundle mainBundle];
     v5 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"MIGRATION_CANCEL_CONFIRM_ALERT_DETAIL"];

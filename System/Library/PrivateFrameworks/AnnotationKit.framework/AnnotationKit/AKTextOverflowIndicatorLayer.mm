@@ -33,11 +33,11 @@
 
     [(AKTextOverflowIndicatorLayer *)v2 setPath:Mutable];
     [(AKTextOverflowIndicatorLayer *)v2 setLineWidth:1.0];
-    v5 = [MEMORY[0x277D75348] blackColor];
-    -[AKTextOverflowIndicatorLayer setStrokeColor:](v2, "setStrokeColor:", [v5 CGColor]);
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    -[AKTextOverflowIndicatorLayer setStrokeColor:](v2, "setStrokeColor:", [blackColor CGColor]);
 
-    v6 = [MEMORY[0x277D75348] whiteColor];
-    -[AKTextOverflowIndicatorLayer setFillColor:](v2, "setFillColor:", [v6 CGColor]);
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    -[AKTextOverflowIndicatorLayer setFillColor:](v2, "setFillColor:", [whiteColor CGColor]);
 
     [(AKTextOverflowIndicatorLayer *)v2 setBounds:0.0, 0.0, 12.0, 12.0];
     [(AKTextOverflowIndicatorLayer *)v2 setAnchorPoint:0.5, 0.5];

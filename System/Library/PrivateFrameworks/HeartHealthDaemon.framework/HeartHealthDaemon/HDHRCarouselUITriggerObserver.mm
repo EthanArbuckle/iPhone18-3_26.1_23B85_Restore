@@ -1,21 +1,21 @@
 @interface HDHRCarouselUITriggerObserver
-- (HDHRCarouselUITriggerObserver)initWithProfile:(id)a3;
-- (void)_postHypertensionNotificationWithCompletion:(id)a3;
+- (HDHRCarouselUITriggerObserver)initWithProfile:(id)profile;
+- (void)_postHypertensionNotificationWithCompletion:(id)completion;
 - (void)dealloc;
 @end
 
 @implementation HDHRCarouselUITriggerObserver
 
-- (HDHRCarouselUITriggerObserver)initWithProfile:(id)a3
+- (HDHRCarouselUITriggerObserver)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v8.receiver = self;
   v8.super_class = HDHRCarouselUITriggerObserver;
   v5 = [(HDHRCarouselUITriggerObserver *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
   }
 
   return v6;
@@ -28,20 +28,20 @@
   [(HDHRCarouselUITriggerObserver *)&v2 dealloc];
 }
 
-- (void)_postHypertensionNotificationWithCompletion:(id)a3
+- (void)_postHypertensionNotificationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = HDHRHypertensionNotificationRequestForEvent(0);
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v7 = [WeakRetained notificationManager];
+  notificationManager = [WeakRetained notificationManager];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __77__HDHRCarouselUITriggerObserver__postHypertensionNotificationWithCompletion___block_invoke;
   v9[3] = &unk_27865FD68;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  [v7 postNotificationWithRequest:v5 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [notificationManager postNotificationWithRequest:v5 completion:v9];
 }
 
 void __77__HDHRCarouselUITriggerObserver__postHypertensionNotificationWithCompletion___block_invoke(uint64_t a1, uint64_t a2, void *a3)

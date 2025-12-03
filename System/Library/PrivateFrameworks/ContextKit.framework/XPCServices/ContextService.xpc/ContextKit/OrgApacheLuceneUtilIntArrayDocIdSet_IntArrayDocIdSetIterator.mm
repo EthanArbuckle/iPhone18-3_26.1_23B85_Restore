@@ -1,19 +1,19 @@
 @interface OrgApacheLuceneUtilIntArrayDocIdSet_IntArrayDocIdSetIterator
-- (OrgApacheLuceneUtilIntArrayDocIdSet_IntArrayDocIdSetIterator)initWithIntArray:(id)a3 withInt:(int)a4;
-- (int)advanceWithInt:(int)a3;
+- (OrgApacheLuceneUtilIntArrayDocIdSet_IntArrayDocIdSetIterator)initWithIntArray:(id)array withInt:(int)int;
+- (int)advanceWithInt:(int)int;
 - (int)nextDoc;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneUtilIntArrayDocIdSet_IntArrayDocIdSetIterator
 
-- (OrgApacheLuceneUtilIntArrayDocIdSet_IntArrayDocIdSetIterator)initWithIntArray:(id)a3 withInt:(int)a4
+- (OrgApacheLuceneUtilIntArrayDocIdSet_IntArrayDocIdSetIterator)initWithIntArray:(id)array withInt:(int)int
 {
   OrgApacheLuceneSearchDocIdSetIterator_init(self, a2);
   self->i_ = -1;
   self->doc_ = -1;
-  JreStrongAssign(&self->docs_, a3);
-  self->length_ = a4;
+  JreStrongAssign(&self->docs_, array);
+  self->length_ = int;
   return self;
 }
 
@@ -39,9 +39,9 @@
   return result;
 }
 
-- (int)advanceWithInt:(int)a3
+- (int)advanceWithInt:(int)int
 {
-  v4 = JavaUtilArrays_binarySearchWithIntArray_withInt_withInt_withInt_(self->docs_, (self->i_ + 1), self->length_, a3);
+  v4 = JavaUtilArrays_binarySearchWithIntArray_withInt_withInt_withInt_(self->docs_, (self->i_ + 1), self->length_, int);
   v5 = v4 ^ (v4 >> 31);
   self->i_ = v5;
   docs = self->docs_;

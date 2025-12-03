@@ -1,38 +1,38 @@
 @interface HMDThreadOperation
 + (id)logCategory;
-- (HMDThreadOperation)initWithQueue:(id)a3 threadOperationType:(int64_t)a4 completion:(id)a5;
-- (void)cancelWithError:(id)a3;
-- (void)dispatchAfter:(unint64_t)a3 block:(id)a4;
-- (void)dispatchBlock:(id)a3;
-- (void)executeWithTimeout:(id)a3 completion:(id)a4;
+- (HMDThreadOperation)initWithQueue:(id)queue threadOperationType:(int64_t)type completion:(id)completion;
+- (void)cancelWithError:(id)error;
+- (void)dispatchAfter:(unint64_t)after block:(id)block;
+- (void)dispatchBlock:(id)block;
+- (void)executeWithTimeout:(id)timeout completion:(id)completion;
 @end
 
 @implementation HMDThreadOperation
 
-- (void)dispatchAfter:(unint64_t)a3 block:(id)a4
+- (void)dispatchAfter:(unint64_t)after block:(id)block
 {
-  v6 = a4;
-  v7 = [(HMDThreadOperation *)self workQueue];
-  dispatch_after(a3, v7, v6);
+  blockCopy = block;
+  workQueue = [(HMDThreadOperation *)self workQueue];
+  dispatch_after(after, workQueue, blockCopy);
 }
 
-- (void)dispatchBlock:(id)a3
+- (void)dispatchBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(HMDThreadOperation *)self workQueue];
-  dispatch_async(v5, v4);
+  blockCopy = block;
+  workQueue = [(HMDThreadOperation *)self workQueue];
+  dispatch_async(workQueue, blockCopy);
 }
 
-- (void)cancelWithError:(id)a3
+- (void)cancelWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __38__HMDThreadOperation_cancelWithError___block_invoke;
   v6[3] = &unk_27868A750;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = errorCopy;
+  v5 = errorCopy;
   [(HMDThreadOperation *)self dispatchBlock:v6];
 }
 
@@ -42,10 +42,10 @@ void __38__HMDThreadOperation_cancelWithError___block_invoke(uint64_t a1)
   v2[2](v2, *(a1 + 40), &__block_literal_global_150854);
 }
 
-- (void)executeWithTimeout:(id)a3 completion:(id)a4
+- (void)executeWithTimeout:(id)timeout completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  timeoutCopy = timeout;
+  completionCopy = completion;
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x2020000000;
@@ -57,12 +57,12 @@ void __38__HMDThreadOperation_cancelWithError___block_invoke(uint64_t a1)
   aBlock[3] = &unk_27867B828;
   objc_copyWeak(&v19, &location);
   v18 = v21;
-  v8 = v7;
+  v8 = completionCopy;
   v17 = v8;
   v9 = _Block_copy(aBlock);
-  if (v6)
+  if (timeoutCopy)
   {
-    v10 = dispatch_time(0, [v6 longLongValue]);
+    v10 = dispatch_time(0, [timeoutCopy longLongValue]);
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __52__HMDThreadOperation_executeWithTimeout_completion___block_invoke_1;
@@ -166,22 +166,22 @@ void __52__HMDThreadOperation_executeWithTimeout_completion___block_invoke_2(uin
   (v2)[2](v2, 0, v3);
 }
 
-- (HMDThreadOperation)initWithQueue:(id)a3 threadOperationType:(int64_t)a4 completion:(id)a5
+- (HMDThreadOperation)initWithQueue:(id)queue threadOperationType:(int64_t)type completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
+  queueCopy = queue;
+  completionCopy = completion;
   v16.receiver = self;
   v16.super_class = HMDThreadOperation;
   v11 = [(HMDThreadOperation *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_workQueue, a3);
-    v13 = _Block_copy(v10);
+    objc_storeStrong(&v11->_workQueue, queue);
+    v13 = _Block_copy(completionCopy);
     operation = v12->_operation;
     v12->_operation = v13;
 
-    v12->_operationType = a4;
+    v12->_operationType = type;
   }
 
   return v12;

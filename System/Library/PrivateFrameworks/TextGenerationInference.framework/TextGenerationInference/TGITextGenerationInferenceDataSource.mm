@@ -1,16 +1,16 @@
 @interface TGITextGenerationInferenceDataSource
-- (id)createInferenceRunnerWithQueue:(id)a3 executionUUID:(id)a4 operation:(id)a5 session:(id)a6;
-- (shared_ptr<TGITextGenerationInferenceModelInterface>)createModelWithConfiguration:(id)a3;
+- (id)createInferenceRunnerWithQueue:(id)queue executionUUID:(id)d operation:(id)operation session:(id)session;
+- (shared_ptr<TGITextGenerationInferenceModelInterface>)createModelWithConfiguration:(id)configuration;
 @end
 
 @implementation TGITextGenerationInferenceDataSource
 
-- (shared_ptr<TGITextGenerationInferenceModelInterface>)createModelWithConfiguration:(id)a3
+- (shared_ptr<TGITextGenerationInferenceModelInterface>)createModelWithConfiguration:(id)configuration
 {
-  v3 = a3;
-  if (v3)
+  configurationCopy = configuration;
+  if (configurationCopy)
   {
-    [v3 modelConfiguration];
+    [configurationCopy modelConfiguration];
   }
 
   else
@@ -25,13 +25,13 @@
   TGITextGenerationInferenceModel::createWithConfiguration(v5, v4);
 }
 
-- (id)createInferenceRunnerWithQueue:(id)a3 executionUUID:(id)a4 operation:(id)a5 session:(id)a6
+- (id)createInferenceRunnerWithQueue:(id)queue executionUUID:(id)d operation:(id)operation session:(id)session
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [[TGITextGenerationInferenceRunner alloc] initWithQueue:v9 executionUUID:v10 operation:v11 session:v12];
+  queueCopy = queue;
+  dCopy = d;
+  operationCopy = operation;
+  sessionCopy = session;
+  v13 = [[TGITextGenerationInferenceRunner alloc] initWithQueue:queueCopy executionUUID:dCopy operation:operationCopy session:sessionCopy];
 
   return v13;
 }

@@ -1,15 +1,15 @@
 @interface PKProvisioningSEStorageSnapshot
-+ (void)getCurrentSnapshot:(id)a3;
-- (PKProvisioningSEStorageSnapshot)initWithCoder:(id)a3;
-- (PKProvisioningSEStorageSnapshot)initWithSnapshot:(id)a3;
++ (void)getCurrentSnapshot:(id)snapshot;
+- (PKProvisioningSEStorageSnapshot)initWithCoder:(id)coder;
+- (PKProvisioningSEStorageSnapshot)initWithSnapshot:(id)snapshot;
 @end
 
 @implementation PKProvisioningSEStorageSnapshot
 
-- (PKProvisioningSEStorageSnapshot)initWithSnapshot:(id)a3
+- (PKProvisioningSEStorageSnapshot)initWithSnapshot:(id)snapshot
 {
-  v5 = a3;
-  if (v5)
+  snapshotCopy = snapshot;
+  if (snapshotCopy)
   {
     v9.receiver = self;
     v9.super_class = PKProvisioningSEStorageSnapshot;
@@ -17,7 +17,7 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_snapshot, a3);
+      objc_storeStrong(&v6->_snapshot, snapshot);
     }
   }
 
@@ -30,17 +30,17 @@
   return v7;
 }
 
-+ (void)getCurrentSnapshot:(id)a3
++ (void)getCurrentSnapshot:(id)snapshot
 {
-  v3 = a3;
+  snapshotCopy = snapshot;
   v4 = objc_alloc_init(_PKProvisioningSEStorageManager);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54__PKProvisioningSEStorageSnapshot_getCurrentSnapshot___block_invoke;
   v7[3] = &unk_1E79C4A40;
   v8 = v4;
-  v9 = v3;
-  v5 = v3;
+  v9 = snapshotCopy;
+  v5 = snapshotCopy;
   v6 = v4;
   [(_PKProvisioningSEStorageManager *)v6 deleteExpiredReservationsWithCompletion:v7];
 }
@@ -71,15 +71,15 @@ void __54__PKProvisioningSEStorageSnapshot_getCurrentSnapshot___block_invoke_2(u
   }
 }
 
-- (PKProvisioningSEStorageSnapshot)initWithCoder:(id)a3
+- (PKProvisioningSEStorageSnapshot)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKProvisioningSEStorageSnapshot;
   v5 = [(PKProvisioningSEStorageSnapshot *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"snapshot"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"snapshot"];
     snapshot = v5->_snapshot;
     v5->_snapshot = v6;
   }

@@ -1,23 +1,23 @@
 @interface UARPBundleIdentityChipEntry
-- (UARPBundleIdentityChipEntry)initWithChipName:(id)a3 boardID:(id)a4 chipID:(id)a5 securityDomain:(id)a6 manifest:(id)a7;
-- (id)descriptionWithTabDepth:(unint64_t)a3;
+- (UARPBundleIdentityChipEntry)initWithChipName:(id)name boardID:(id)d chipID:(id)iD securityDomain:(id)domain manifest:(id)manifest;
+- (id)descriptionWithTabDepth:(unint64_t)depth;
 - (void)dealloc;
 @end
 
 @implementation UARPBundleIdentityChipEntry
 
-- (UARPBundleIdentityChipEntry)initWithChipName:(id)a3 boardID:(id)a4 chipID:(id)a5 securityDomain:(id)a6 manifest:(id)a7
+- (UARPBundleIdentityChipEntry)initWithChipName:(id)name boardID:(id)d chipID:(id)iD securityDomain:(id)domain manifest:(id)manifest
 {
   v14.receiver = self;
   v14.super_class = UARPBundleIdentityChipEntry;
   v12 = [(UARPBundleIdentityChipEntry *)&v14 init];
   if (v12)
   {
-    v12->_chipName = [a3 copy];
-    v12->_boardID = a4;
-    v12->_chipID = a5;
-    v12->_securityDomain = a6;
-    v12->_manifest = a7;
+    v12->_chipName = [name copy];
+    v12->_boardID = d;
+    v12->_chipID = iD;
+    v12->_securityDomain = domain;
+    v12->_manifest = manifest;
   }
 
   return v12;
@@ -30,10 +30,10 @@
   [(UARPBundleIdentityChipEntry *)&v3 dealloc];
 }
 
-- (id)descriptionWithTabDepth:(unint64_t)a3
+- (id)descriptionWithTabDepth:(unint64_t)depth
 {
-  v5 = sub_10002D978(a3);
-  v6 = sub_10002D978(a3 + 1);
+  v5 = sub_10002D978(depth);
+  v6 = sub_10002D978(depth + 1);
   v7 = +[NSMutableString string];
   v8 = objc_opt_class();
   [v7 appendFormat:@"%@%@\n", v5, NSStringFromClass(v8)];
@@ -70,7 +70,7 @@
           objc_enumerationMutation(manifest);
         }
 
-        [v7 appendFormat:@"%@\n", objc_msgSend(*(*(&v16 + 1) + 8 * v14), "descriptionWithTabDepth:", a3 + 2)];
+        [v7 appendFormat:@"%@\n", objc_msgSend(*(*(&v16 + 1) + 8 * v14), "descriptionWithTabDepth:", depth + 2)];
         v14 = v14 + 1;
       }
 

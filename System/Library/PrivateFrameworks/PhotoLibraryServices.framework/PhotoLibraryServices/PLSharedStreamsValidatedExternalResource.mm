@@ -1,6 +1,6 @@
 @interface PLSharedStreamsValidatedExternalResource
 - (id)description;
-- (void)setSharedStreamsType:(unsigned int)a3;
+- (void)setSharedStreamsType:(unsigned int)type;
 @end
 
 @implementation PLSharedStreamsValidatedExternalResource
@@ -15,17 +15,17 @@
   return v6;
 }
 
-- (void)setSharedStreamsType:(unsigned int)a3
+- (void)setSharedStreamsType:(unsigned int)type
 {
-  self->_sharedStreamsType = a3;
-  if (a3 > 9)
+  self->_sharedStreamsType = type;
+  if (type > 9)
   {
     v3 = 65741;
   }
 
   else
   {
-    v3 = dword_19C60B898[a3];
+    v3 = dword_19C60B898[type];
   }
 
   [(PLValidatedExternalResource *)self setRecipeID:v3];

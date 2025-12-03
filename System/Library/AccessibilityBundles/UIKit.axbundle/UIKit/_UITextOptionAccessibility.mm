@@ -1,18 +1,18 @@
 @interface _UITextOptionAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation _UITextOptionAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v4 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"_UITextOption" hasInstanceMethod:@"textChoice" withFullSignature:{"@", 0}];
   objc_storeStrong(v4, obj);
 }
@@ -20,10 +20,10 @@
 - (id)accessibilityLabel
 {
   v18 = *MEMORY[0x29EDCA608];
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
   v13 = [(_UITextOptionAccessibility *)self safeIntegerForKey:@"type"];
-  v12 = [(_UITextOptionAccessibility *)v15 safeStringForKey:@"textChoice"];
+  v12 = [(_UITextOptionAccessibility *)selfCopy safeStringForKey:@"textChoice"];
   if (v13)
   {
     if (v13 == 1)
@@ -56,17 +56,17 @@
 
       else
       {
-        v7.receiver = v15;
+        v7.receiver = selfCopy;
         v7.super_class = _UITextOptionAccessibility;
-        v6 = [(_UITextOptionAccessibility *)&v7 accessibilityLabel];
+        accessibilityLabel = [(_UITextOptionAccessibility *)&v7 accessibilityLabel];
         v5 = 1;
-        v2 = MEMORY[0x29EDC9748](v6);
+        v2 = MEMORY[0x29EDC9748](accessibilityLabel);
       }
 
       v16 = v2;
       if (v5)
       {
-        MEMORY[0x29EDC9740](v6);
+        MEMORY[0x29EDC9740](accessibilityLabel);
       }
 
       v11 = 1;

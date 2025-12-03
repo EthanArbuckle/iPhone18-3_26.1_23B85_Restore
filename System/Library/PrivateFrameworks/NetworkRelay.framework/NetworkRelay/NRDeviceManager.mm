@@ -2,26 +2,26 @@
 + (id)copySharedDeviceManager;
 - (id)copyIDSDeviceID;
 - (id)initInternal;
-- (void)disableDevice:(id)a3;
-- (void)disableDevice:(id)a3 queue:(id)a4 completionBlock:(id)a5;
-- (void)enableDevice:(id)a3;
-- (void)enableDevice:(id)a3 queue:(id)a4 completionBlock:(id)a5;
-- (void)registerDevice:(id)a3 properties:(id)a4 operationalproperties:(id)a5 queue:(id)a6 completionBlock:(id)a7;
-- (void)registerDevice:(id)a3 properties:(id)a4 queue:(id)a5 completionBlock:(id)a6;
-- (void)scrubAllDevicesWithQueue:(id)a3 completionBlock:(id)a4;
-- (void)scrubDevice:(id)a3 queue:(id)a4 completionBlock:(id)a5;
-- (void)unregisterAllDevicesWithQueue:(id)a3 completionBlock:(id)a4;
-- (void)unregisterDevice:(id)a3;
-- (void)unregisterDevice:(id)a3 queue:(id)a4 completionBlock:(id)a5;
+- (void)disableDevice:(id)device;
+- (void)disableDevice:(id)device queue:(id)queue completionBlock:(id)block;
+- (void)enableDevice:(id)device;
+- (void)enableDevice:(id)device queue:(id)queue completionBlock:(id)block;
+- (void)registerDevice:(id)device properties:(id)properties operationalproperties:(id)operationalproperties queue:(id)queue completionBlock:(id)block;
+- (void)registerDevice:(id)device properties:(id)properties queue:(id)queue completionBlock:(id)block;
+- (void)scrubAllDevicesWithQueue:(id)queue completionBlock:(id)block;
+- (void)scrubDevice:(id)device queue:(id)queue completionBlock:(id)block;
+- (void)unregisterAllDevicesWithQueue:(id)queue completionBlock:(id)block;
+- (void)unregisterDevice:(id)device;
+- (void)unregisterDevice:(id)device queue:(id)queue completionBlock:(id)block;
 @end
 
 @implementation NRDeviceManager
 
-- (void)disableDevice:(id)a3
+- (void)disableDevice:(id)device
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  deviceCopy = device;
+  if (!deviceCopy)
   {
     v8 = nrCopyLogObj_1876();
     if (sNRCopyLogToStdErr == 1)
@@ -69,8 +69,8 @@ LABEL_9:
   v22[1] = 3221225472;
   v22[2] = __33__NRDeviceManager_disableDevice___block_invoke;
   v22[3] = &unk_27996B3A8;
-  v23 = v4;
-  v6 = v4;
+  v23 = deviceCopy;
+  v6 = deviceCopy;
   [(NRDeviceManager *)self disableDevice:v6 queue:queue completionBlock:v22];
 
   v7 = *MEMORY[0x277D85DE8];
@@ -108,11 +108,11 @@ void __33__NRDeviceManager_disableDevice___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)enableDevice:(id)a3
+- (void)enableDevice:(id)device
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  deviceCopy = device;
+  if (!deviceCopy)
   {
     v8 = nrCopyLogObj_1876();
     if (sNRCopyLogToStdErr == 1)
@@ -160,8 +160,8 @@ LABEL_9:
   v22[1] = 3221225472;
   v22[2] = __32__NRDeviceManager_enableDevice___block_invoke;
   v22[3] = &unk_27996B3A8;
-  v23 = v4;
-  v6 = v4;
+  v23 = deviceCopy;
+  v6 = deviceCopy;
   [(NRDeviceManager *)self enableDevice:v6 queue:queue completionBlock:v22];
 
   v7 = *MEMORY[0x277D85DE8];
@@ -199,11 +199,11 @@ void __32__NRDeviceManager_enableDevice___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)unregisterDevice:(id)a3
+- (void)unregisterDevice:(id)device
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  deviceCopy = device;
+  if (!deviceCopy)
   {
     v8 = nrCopyLogObj_1876();
     if (sNRCopyLogToStdErr == 1)
@@ -251,8 +251,8 @@ LABEL_9:
   v22[1] = 3221225472;
   v22[2] = __36__NRDeviceManager_unregisterDevice___block_invoke;
   v22[3] = &unk_27996B3A8;
-  v23 = v4;
-  v6 = v4;
+  v23 = deviceCopy;
+  v6 = deviceCopy;
   [(NRDeviceManager *)self unregisterDevice:v6 queue:queue completionBlock:v22];
 
   v7 = *MEMORY[0x277D85DE8];
@@ -290,25 +290,25 @@ void __36__NRDeviceManager_unregisterDevice___block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (void)registerDevice:(id)a3 properties:(id)a4 queue:(id)a5 completionBlock:(id)a6
+- (void)registerDevice:(id)device properties:(id)properties queue:(id)queue completionBlock:(id)block
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  blockCopy = block;
+  queueCopy = queue;
+  propertiesCopy = properties;
+  deviceCopy = device;
   v14 = +[NRDeviceOperationalProperties copyPropertiesForDefaultPairedPhone];
-  [(NRDeviceManager *)self registerDevice:v13 properties:v12 operationalproperties:v14 queue:v11 completionBlock:v10];
+  [(NRDeviceManager *)self registerDevice:deviceCopy properties:propertiesCopy operationalproperties:v14 queue:queueCopy completionBlock:blockCopy];
 }
 
-- (void)registerDevice:(id)a3 properties:(id)a4 operationalproperties:(id)a5 queue:(id)a6 completionBlock:(id)a7
+- (void)registerDevice:(id)device properties:(id)properties operationalproperties:(id)operationalproperties queue:(id)queue completionBlock:(id)block
 {
   v199 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (!v11)
+  deviceCopy = device;
+  propertiesCopy = properties;
+  operationalpropertiesCopy = operationalproperties;
+  queueCopy = queue;
+  blockCopy = block;
+  if (!deviceCopy)
   {
     v55 = nrCopyLogObj_1876();
     if (sNRCopyLogToStdErr == 1)
@@ -332,7 +332,7 @@ void __36__NRDeviceManager_unregisterDevice___block_invoke(uint64_t a1, void *a2
     goto LABEL_59;
   }
 
-  if (!v12)
+  if (!propertiesCopy)
   {
     v56 = nrCopyLogObj_1876();
     if (sNRCopyLogToStdErr == 1)
@@ -356,7 +356,7 @@ void __36__NRDeviceManager_unregisterDevice___block_invoke(uint64_t a1, void *a2
     goto LABEL_59;
   }
 
-  if (!v13)
+  if (!operationalpropertiesCopy)
   {
     v57 = nrCopyLogObj_1876();
     if (sNRCopyLogToStdErr == 1)
@@ -380,7 +380,7 @@ void __36__NRDeviceManager_unregisterDevice___block_invoke(uint64_t a1, void *a2
     goto LABEL_59;
   }
 
-  if (!v14)
+  if (!queueCopy)
   {
     v58 = nrCopyLogObj_1876();
     if (sNRCopyLogToStdErr == 1)
@@ -404,8 +404,8 @@ void __36__NRDeviceManager_unregisterDevice___block_invoke(uint64_t a1, void *a2
     goto LABEL_59;
   }
 
-  v16 = v15;
-  if (!v15)
+  v16 = blockCopy;
+  if (!blockCopy)
   {
     v59 = nrCopyLogObj_1876();
     if (sNRCopyLogToStdErr == 1)
@@ -429,8 +429,8 @@ void __36__NRDeviceManager_unregisterDevice___block_invoke(uint64_t a1, void *a2
     goto LABEL_59;
   }
 
-  v17 = [v11 copy];
-  v23 = [v12 copy];
+  v17 = [deviceCopy copy];
+  v23 = [propertiesCopy copy];
   if (nrCopyLogObj_onceToken_1880 != -1)
   {
     dispatch_once(&nrCopyLogObj_onceToken_1880, &__block_literal_global_78);
@@ -443,12 +443,12 @@ void __36__NRDeviceManager_unregisterDevice___block_invoke(uint64_t a1, void *a2
 
   if (([v23 wasInitiallySetupUsingIDSPairing] & 1) == 0)
   {
-    v24 = [v23 outOfBandKey];
-    if (v24)
+    outOfBandKey = [v23 outOfBandKey];
+    if (outOfBandKey)
     {
     }
 
-    else if (([v12 isExternalPairing] & 1) == 0)
+    else if (([propertiesCopy isExternalPairing] & 1) == 0)
     {
       v165 = nrCopyLogObj_1876();
       v166 = v165;
@@ -474,7 +474,7 @@ void __36__NRDeviceManager_unregisterDevice___block_invoke(uint64_t a1, void *a2
   }
 
   v192 = v16;
-  v194 = v14;
+  v194 = queueCopy;
   if ([v23 pairingProtocolVersion] < 0)
   {
     v127 = nrCopyLogObj_1876();
@@ -507,12 +507,12 @@ LABEL_78:
   }
 
   [v23 peerNetworkRelayVersion];
-  v25 = [v23 outOfBandKey];
-  if (v25)
+  outOfBandKey2 = [v23 outOfBandKey];
+  if (outOfBandKey2)
   {
-    v26 = v25;
-    v27 = [v23 outOfBandKey];
-    v28 = [v27 length];
+    v26 = outOfBandKey2;
+    outOfBandKey3 = [v23 outOfBandKey];
+    v28 = [outOfBandKey3 length];
 
     if (!v28)
     {
@@ -529,9 +529,9 @@ LABEL_78:
       v34 = [@"Apple Watch Pairing Bluetooth PIN!" dataUsingEncoding:4];
       [v23 setOutOfBandKey:v34];
 
-      v35 = [v23 outOfBandKey];
+      outOfBandKey4 = [v23 outOfBandKey];
 
-      if (!v35)
+      if (!outOfBandKey4)
       {
         v105 = nrCopyLogObj_1876();
         if (sNRCopyLogToStdErr == 1)
@@ -555,8 +555,8 @@ LABEL_78:
         goto LABEL_70;
       }
 
-      v36 = [v23 outOfBandKey];
-      v37 = [v36 length];
+      outOfBandKey5 = [v23 outOfBandKey];
+      v37 = [outOfBandKey5 length];
 
       if (v37 == 34)
       {
@@ -598,9 +598,9 @@ LABEL_60:
 LABEL_25:
   if ([v23 pairWithSPPLink])
   {
-    v38 = [v23 bluetoothMACAddress];
+    bluetoothMACAddress = [v23 bluetoothMACAddress];
 
-    if (!v38)
+    if (!bluetoothMACAddress)
     {
       v142 = nrCopyLogObj_1876();
       v143 = v142;
@@ -625,12 +625,12 @@ LABEL_25:
     }
   }
 
-  v39 = [v23 bluetoothMACAddress];
-  if (v39)
+  bluetoothMACAddress2 = [v23 bluetoothMACAddress];
+  if (bluetoothMACAddress2)
   {
-    v40 = v39;
-    v41 = [v23 bluetoothMACAddress];
-    v42 = [v41 length];
+    v40 = bluetoothMACAddress2;
+    bluetoothMACAddress3 = [v23 bluetoothMACAddress];
+    v42 = [bluetoothMACAddress3 length];
 
     if (v42 != 6)
     {
@@ -651,8 +651,8 @@ LABEL_83:
           MEMORY[0x28223BE20](v152, v153);
           v154 = *__error();
           v155 = _os_log_pack_fill();
-          v156 = [v23 bluetoothMACAddress];
-          __os_log_helper_1_2_3_8_34_8_32_8_0(v155, [v156 length]);
+          bluetoothMACAddress4 = [v23 bluetoothMACAddress];
+          __os_log_helper_1_2_3_8_34_8_32_8_0(v155, [bluetoothMACAddress4 length]);
 
 LABEL_84:
           v157 = nrCopyLogObj_1876();
@@ -661,8 +661,8 @@ LABEL_84:
       }
 
       v145 = nrCopyLogObj_1876();
-      v146 = [v23 bluetoothMACAddress];
-      [v146 length];
+      bluetoothMACAddress5 = [v23 bluetoothMACAddress];
+      [bluetoothMACAddress5 length];
       _NRLogWithArgs(v145, 16, "%s%.30s:%-4d ABORTING: BUG IN CLIENT OF NetworkRelay: %s called with Device pairing bluetoothMACAddress length %lu != 6", v147, v148, v149, v150, v151, "");
 
       goto LABEL_83;
@@ -673,8 +673,8 @@ LABEL_84:
   {
     if (![v23 psm])
     {
-      v43 = [v13 allowedLinkTypes];
-      v44 = [v43 containsObject:&unk_286D2D0E8];
+      allowedLinkTypes = [operationalpropertiesCopy allowedLinkTypes];
+      v44 = [allowedLinkTypes containsObject:&unk_286D2D0E8];
 
       if (v44)
       {
@@ -711,20 +711,20 @@ LABEL_59:
     }
   }
 
-  v190 = v13;
+  v190 = operationalpropertiesCopy;
   v45 = v17;
-  v46 = [v17 nrDeviceIdentifier];
-  v189 = [v23 pairingProtocolVersion];
-  v188 = [v23 peerNetworkRelayVersion];
-  v187 = [v23 wasInitiallySetupUsingIDSPairing];
-  v47 = [v23 outOfBandKey];
-  v186 = [v23 pairWithSPPLink];
-  v185 = [v23 isAltAccountPairing];
-  v184 = [v23 isExternalPairing];
+  nrDeviceIdentifier = [v17 nrDeviceIdentifier];
+  pairingProtocolVersion = [v23 pairingProtocolVersion];
+  peerNetworkRelayVersion = [v23 peerNetworkRelayVersion];
+  wasInitiallySetupUsingIDSPairing = [v23 wasInitiallySetupUsingIDSPairing];
+  outOfBandKey6 = [v23 outOfBandKey];
+  pairWithSPPLink = [v23 pairWithSPPLink];
+  isAltAccountPairing = [v23 isAltAccountPairing];
+  isExternalPairing = [v23 isExternalPairing];
   v183 = [v23 psm];
-  v48 = [v23 bluetoothMACAddress];
-  v49 = [v23 peerEndpointDictionary];
-  v191 = v11;
+  bluetoothMACAddress6 = [v23 bluetoothMACAddress];
+  peerEndpointDictionary = [v23 peerEndpointDictionary];
+  v191 = deviceCopy;
   if (v17)
   {
     v50 = v17[8];
@@ -735,7 +735,7 @@ LABEL_59:
     v50 = 0;
   }
 
-  v51 = [v23 candidateService];
+  candidateService = [v23 candidateService];
   v195[0] = MEMORY[0x277D85DD0];
   v195[1] = 3221225472;
   v195[2] = __89__NRDeviceManager_registerDevice_properties_operationalproperties_queue_completionBlock___block_invoke;
@@ -746,7 +746,7 @@ LABEL_59:
   v193 = v192;
   v52 = v23;
   v53 = v45;
-  nrXPCRegisterDeviceByNRUUID(v46, v189, v188, v187, v47, v186, v185, v184, v183, v48, v194, v190, v49, v50 & 1, v51, v195);
+  nrXPCRegisterDeviceByNRUUID(nrDeviceIdentifier, pairingProtocolVersion, peerNetworkRelayVersion, wasInitiallySetupUsingIDSPairing, outOfBandKey6, pairWithSPPLink, isAltAccountPairing, isExternalPairing, v183, bluetoothMACAddress6, v194, v190, peerEndpointDictionary, v50 & 1, candidateService, v195);
 
   v54 = *MEMORY[0x277D85DE8];
 }
@@ -830,13 +830,13 @@ uint64_t __42__NRDeviceManager_copySharedDeviceManager__block_invoke()
 - (id)initInternal
 {
   v29 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!self)
   {
     v2 = 0;
     goto LABEL_6;
   }
 
-  v28.receiver = a1;
+  v28.receiver = self;
   v28.super_class = NRDeviceManager;
   v1 = objc_msgSendSuper2(&v28, sel_init);
   if (!v1)
@@ -941,13 +941,13 @@ uint64_t __44__NRDeviceManager_Internal__copyIDSDeviceID__block_invoke(uint64_t 
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (void)disableDevice:(id)a3 queue:(id)a4 completionBlock:(id)a5
+- (void)disableDevice:(id)device queue:(id)queue completionBlock:(id)block
 {
   v53 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v7)
+  deviceCopy = device;
+  queueCopy = queue;
+  blockCopy = block;
+  if (!deviceCopy)
   {
     v20 = nrCopyLogObj_1876();
     if (sNRCopyLogToStdErr == 1)
@@ -981,12 +981,12 @@ LABEL_20:
     _NRLogAbortWithPack(v35);
   }
 
-  v10 = v9;
-  if (v8)
+  v10 = blockCopy;
+  if (queueCopy)
   {
-    if (v9)
+    if (blockCopy)
     {
-      v16 = [v7 copy];
+      v16 = [deviceCopy copy];
       if (nrCopyLogObj_onceToken_1880 != -1)
       {
         dispatch_once(&nrCopyLogObj_onceToken_1880, &__block_literal_global_78);
@@ -997,7 +997,7 @@ LABEL_20:
         _NRLogWithArgs(nrCopyLogObj_sNRLogObj_1881, 0, "%s%.30s:%-4d Disabling device %@", v11, v12, v13, v14, v15, "");
       }
 
-      v17 = [v16 nrDeviceIdentifier];
+      nrDeviceIdentifier = [v16 nrDeviceIdentifier];
       v50[0] = MEMORY[0x277D85DD0];
       v50[1] = 3221225472;
       v50[2] = __65__NRDeviceManager_Internal__disableDevice_queue_completionBlock___block_invoke;
@@ -1005,7 +1005,7 @@ LABEL_20:
       v51 = v16;
       v52 = v10;
       v18 = v16;
-      nrXPCDisableDeviceByNRUUID(v17, v8, v50);
+      nrXPCDisableDeviceByNRUUID(nrDeviceIdentifier, queueCopy, v50);
     }
 
     else
@@ -1110,13 +1110,13 @@ void __65__NRDeviceManager_Internal__disableDevice_queue_completionBlock___block
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enableDevice:(id)a3 queue:(id)a4 completionBlock:(id)a5
+- (void)enableDevice:(id)device queue:(id)queue completionBlock:(id)block
 {
   v53 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v7)
+  deviceCopy = device;
+  queueCopy = queue;
+  blockCopy = block;
+  if (!deviceCopy)
   {
     v20 = nrCopyLogObj_1876();
     if (sNRCopyLogToStdErr == 1)
@@ -1150,12 +1150,12 @@ LABEL_20:
     _NRLogAbortWithPack(v35);
   }
 
-  v10 = v9;
-  if (v8)
+  v10 = blockCopy;
+  if (queueCopy)
   {
-    if (v9)
+    if (blockCopy)
     {
-      v16 = [v7 copy];
+      v16 = [deviceCopy copy];
       if (nrCopyLogObj_onceToken_1880 != -1)
       {
         dispatch_once(&nrCopyLogObj_onceToken_1880, &__block_literal_global_78);
@@ -1166,7 +1166,7 @@ LABEL_20:
         _NRLogWithArgs(nrCopyLogObj_sNRLogObj_1881, 0, "%s%.30s:%-4d Enabling device %@", v11, v12, v13, v14, v15, "");
       }
 
-      v17 = [v16 nrDeviceIdentifier];
+      nrDeviceIdentifier = [v16 nrDeviceIdentifier];
       v50[0] = MEMORY[0x277D85DD0];
       v50[1] = 3221225472;
       v50[2] = __64__NRDeviceManager_Internal__enableDevice_queue_completionBlock___block_invoke;
@@ -1174,7 +1174,7 @@ LABEL_20:
       v51 = v16;
       v52 = v10;
       v18 = v16;
-      nrXPCEnableDeviceByNRUUID(v17, v8, v50);
+      nrXPCEnableDeviceByNRUUID(nrDeviceIdentifier, queueCopy, v50);
     }
 
     else
@@ -1279,12 +1279,12 @@ void __64__NRDeviceManager_Internal__enableDevice_queue_completionBlock___block_
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scrubAllDevicesWithQueue:(id)a3 completionBlock:(id)a4
+- (void)scrubAllDevicesWithQueue:(id)queue completionBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
-  v12 = v6;
-  if (!v5)
+  queueCopy = queue;
+  blockCopy = block;
+  v12 = blockCopy;
+  if (!queueCopy)
   {
     v13 = nrCopyLogObj_1876();
     if (sNRCopyLogToStdErr == 1)
@@ -1309,7 +1309,7 @@ LABEL_18:
     goto LABEL_9;
   }
 
-  if (!v6)
+  if (!blockCopy)
   {
     v14 = nrCopyLogObj_1876();
     if (sNRCopyLogToStdErr == 1)
@@ -1347,7 +1347,7 @@ LABEL_18:
   v30[2] = __70__NRDeviceManager_Internal__scrubAllDevicesWithQueue_completionBlock___block_invoke;
   v30[3] = &unk_27996B3F8;
   v31 = v12;
-  nrXPCScrubAllDevices(v5, v30);
+  nrXPCScrubAllDevices(queueCopy, v30);
 
 LABEL_9:
 }
@@ -1403,13 +1403,13 @@ void __70__NRDeviceManager_Internal__scrubAllDevicesWithQueue_completionBlock___
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scrubDevice:(id)a3 queue:(id)a4 completionBlock:(id)a5
+- (void)scrubDevice:(id)device queue:(id)queue completionBlock:(id)block
 {
   v53 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v7)
+  deviceCopy = device;
+  queueCopy = queue;
+  blockCopy = block;
+  if (!deviceCopy)
   {
     v20 = nrCopyLogObj_1876();
     if (sNRCopyLogToStdErr == 1)
@@ -1443,12 +1443,12 @@ LABEL_20:
     _NRLogAbortWithPack(v35);
   }
 
-  v10 = v9;
-  if (v8)
+  v10 = blockCopy;
+  if (queueCopy)
   {
-    if (v9)
+    if (blockCopy)
     {
-      v16 = [v7 copy];
+      v16 = [deviceCopy copy];
       if (nrCopyLogObj_onceToken_1880 != -1)
       {
         dispatch_once(&nrCopyLogObj_onceToken_1880, &__block_literal_global_78);
@@ -1459,7 +1459,7 @@ LABEL_20:
         _NRLogWithArgs(nrCopyLogObj_sNRLogObj_1881, 0, "%s%.30s:%-4d Scrubbing device %@", v11, v12, v13, v14, v15, "");
       }
 
-      v17 = [v16 nrDeviceIdentifier];
+      nrDeviceIdentifier = [v16 nrDeviceIdentifier];
       v50[0] = MEMORY[0x277D85DD0];
       v50[1] = 3221225472;
       v50[2] = __63__NRDeviceManager_Internal__scrubDevice_queue_completionBlock___block_invoke;
@@ -1467,7 +1467,7 @@ LABEL_20:
       v51 = v16;
       v52 = v10;
       v18 = v16;
-      nrXPCScrubDeviceByNRUUID(v17, v8, v50);
+      nrXPCScrubDeviceByNRUUID(nrDeviceIdentifier, queueCopy, v50);
     }
 
     else
@@ -1572,12 +1572,12 @@ void __63__NRDeviceManager_Internal__scrubDevice_queue_completionBlock___block_i
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unregisterAllDevicesWithQueue:(id)a3 completionBlock:(id)a4
+- (void)unregisterAllDevicesWithQueue:(id)queue completionBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
-  v12 = v6;
-  if (!v5)
+  queueCopy = queue;
+  blockCopy = block;
+  v12 = blockCopy;
+  if (!queueCopy)
   {
     v13 = nrCopyLogObj_1876();
     if (sNRCopyLogToStdErr == 1)
@@ -1602,7 +1602,7 @@ LABEL_18:
     goto LABEL_9;
   }
 
-  if (!v6)
+  if (!blockCopy)
   {
     v14 = nrCopyLogObj_1876();
     if (sNRCopyLogToStdErr == 1)
@@ -1640,7 +1640,7 @@ LABEL_18:
   v30[2] = __75__NRDeviceManager_Internal__unregisterAllDevicesWithQueue_completionBlock___block_invoke;
   v30[3] = &unk_27996B3F8;
   v31 = v12;
-  nrXPCUnregisterAllDevices(v5, v30);
+  nrXPCUnregisterAllDevices(queueCopy, v30);
 
 LABEL_9:
 }
@@ -1696,13 +1696,13 @@ void __75__NRDeviceManager_Internal__unregisterAllDevicesWithQueue_completionBlo
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unregisterDevice:(id)a3 queue:(id)a4 completionBlock:(id)a5
+- (void)unregisterDevice:(id)device queue:(id)queue completionBlock:(id)block
 {
   v53 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v7)
+  deviceCopy = device;
+  queueCopy = queue;
+  blockCopy = block;
+  if (!deviceCopy)
   {
     v20 = nrCopyLogObj_1876();
     if (sNRCopyLogToStdErr == 1)
@@ -1736,12 +1736,12 @@ LABEL_20:
     _NRLogAbortWithPack(v35);
   }
 
-  v10 = v9;
-  if (v8)
+  v10 = blockCopy;
+  if (queueCopy)
   {
-    if (v9)
+    if (blockCopy)
     {
-      v16 = [v7 copy];
+      v16 = [deviceCopy copy];
       if (nrCopyLogObj_onceToken_1880 != -1)
       {
         dispatch_once(&nrCopyLogObj_onceToken_1880, &__block_literal_global_78);
@@ -1752,7 +1752,7 @@ LABEL_20:
         _NRLogWithArgs(nrCopyLogObj_sNRLogObj_1881, 0, "%s%.30s:%-4d Unregistering device %@", v11, v12, v13, v14, v15, "");
       }
 
-      v17 = [v16 nrDeviceIdentifier];
+      nrDeviceIdentifier = [v16 nrDeviceIdentifier];
       v50[0] = MEMORY[0x277D85DD0];
       v50[1] = 3221225472;
       v50[2] = __68__NRDeviceManager_Internal__unregisterDevice_queue_completionBlock___block_invoke;
@@ -1760,7 +1760,7 @@ LABEL_20:
       v51 = v16;
       v52 = v10;
       v18 = v16;
-      nrXPCUnregisterDeviceByNRUUID(v17, v8, v50);
+      nrXPCUnregisterDeviceByNRUUID(nrDeviceIdentifier, queueCopy, v50);
     }
 
     else

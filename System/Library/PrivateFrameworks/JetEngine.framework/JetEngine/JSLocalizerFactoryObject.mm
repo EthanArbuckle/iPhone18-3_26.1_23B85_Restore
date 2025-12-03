@@ -1,15 +1,15 @@
 @interface JSLocalizerFactoryObject
 - (_TtC9JetEngine24JSLocalizerFactoryObject)init;
-- (id)localizerForLanguage:(id)a3;
+- (id)localizerForLanguage:(id)language;
 @end
 
 @implementation JSLocalizerFactoryObject
 
-- (id)localizerForLanguage:(id)a3
+- (id)localizerForLanguage:(id)language
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1AB1A8C00(v4);
+  languageCopy = language;
+  selfCopy = self;
+  v6 = sub_1AB1A8C00(languageCopy);
 
   return v6;
 }

@@ -9,8 +9,8 @@
 - (id)popObjectForKey:()DIExtension
 {
   v4 = a3;
-  v5 = [a1 objectForKey:v4];
-  [a1 removeObjectForKey:v4];
+  v5 = [self objectForKey:v4];
+  [self removeObjectForKey:v4];
 
   return v5;
 }
@@ -18,8 +18,8 @@
 - (uint64_t)validateAndPopObjectForKey:()DIExtension className:isOptional:error:
 {
   v10 = a3;
-  v11 = [a1 validateObjWithKey:v10 className:a4 isOptional:a5 error:a6];
-  v12 = [a1 popObjectForKey:v10];
+  v11 = [self validateObjWithKey:v10 className:a4 isOptional:a5 error:a6];
+  v12 = [self popObjectForKey:v10];
 
   return v11;
 }
@@ -27,7 +27,7 @@
 - (uint64_t)validateObjWithKey:()DIExtension className:isOptional:error:
 {
   v9 = a3;
-  v10 = [a1 objectForKey:v9];
+  v10 = [self objectForKey:v9];
   if (v10)
   {
     isKindOfClass = objc_opt_isKindOfClass();

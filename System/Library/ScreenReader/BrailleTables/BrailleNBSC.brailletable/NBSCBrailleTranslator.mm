@@ -1,8 +1,8 @@
 @interface NBSCBrailleTranslator
 + (id)sharedInstance;
 - (NBSCBrailleTranslator)init;
-- (id)printBrailleForText:(id)a3 mode:(unint64_t)a4 locations:(id *)a5 textPositionsRange:(_NSRange)a6 textFormattingRanges:(id)a7;
-- (id)textForPrintBraille:(id)a3 mode:(unint64_t)a4 locations:(id *)a5;
+- (id)printBrailleForText:(id)text mode:(unint64_t)mode locations:(id *)locations textPositionsRange:(_NSRange)range textFormattingRanges:(id)ranges;
+- (id)textForPrintBraille:(id)braille mode:(unint64_t)mode locations:(id *)locations;
 @end
 
 @implementation NBSCBrailleTranslator
@@ -32,11 +32,11 @@
   {
     _initialized = 1;
     v3 = [NSBundle bundleForClass:objc_opt_class()];
-    v4 = [v3 resourcePath];
-    v5 = [v4 stringByAppendingString:@"/"];
-    v6 = [v5 UTF8String];
+    resourcePath = [v3 resourcePath];
+    v5 = [resourcePath stringByAppendingString:@"/"];
+    uTF8String = [v5 UTF8String];
 
-    if (Init(v6))
+    if (Init(uTF8String))
     {
       _initialized = 0;
       v7 = NBSCLog();
@@ -65,9 +65,9 @@
 
     v13 = [NSBundle bundleForClass:objc_opt_class()];
     v14 = [v13 pathForResource:@"kan" ofType:@"dat"];
-    v15 = [v14 UTF8String];
+    uTF8String2 = [v14 UTF8String];
 
-    if (CToText::Init(&v2->_brlToText, v15))
+    if (CToText::Init(&v2->_brlToText, uTF8String2))
     {
       _initialized = 0;
       v16 = NBSCLog();
@@ -91,14 +91,14 @@
   return v2;
 }
 
-- (id)printBrailleForText:(id)a3 mode:(unint64_t)a4 locations:(id *)a5 textPositionsRange:(_NSRange)a6 textFormattingRanges:(id)a7
+- (id)printBrailleForText:(id)text mode:(unint64_t)mode locations:(id *)locations textPositionsRange:(_NSRange)range textFormattingRanges:(id)ranges
 {
-  v26 = a3;
-  v24 = a7;
+  textCopy = text;
+  rangesCopy = ranges;
   if (_initialized)
   {
-    v8 = [[NSMutableData alloc] initWithCapacity:{8 * objc_msgSend(v26, "length")}];
-    for (i = 0; i < [v26 length]; ++i)
+    v8 = [[NSMutableData alloc] initWithCapacity:{8 * objc_msgSend(textCopy, "length")}];
+    for (i = 0; i < [textCopy length]; ++i)
     {
       v32[0] = i;
       [v8 appendBytes:v32 length:8];
@@ -108,7 +108,7 @@
     v23 = objc_opt_new();
     v10 = [[NSArray alloc] initWithObjects:{v22, v23, 0, v8}];
     v25 = v8;
-    v11 = v26;
+    v11 = textCopy;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
@@ -173,16 +173,16 @@
   return &stru_2C358;
 }
 
-- (id)textForPrintBraille:(id)a3 mode:(unint64_t)a4 locations:(id *)a5
+- (id)textForPrintBraille:(id)braille mode:(unint64_t)mode locations:(id *)locations
 {
-  v6 = a3;
+  brailleCopy = braille;
   v29 = objc_opt_new();
-  for (i = 0; i < [v6 length]; ++i)
+  for (i = 0; i < [brailleCopy length]; ++i)
   {
-    LOWORD(v35[0]) = [v6 characterAtIndex:i];
+    LOWORD(v35[0]) = [brailleCopy characterAtIndex:i];
     v8 = [NSString stringWithCharacters:v35 length:1];
     [v29 appendString:v8];
-    if (i == [v6 length] - 1)
+    if (i == [brailleCopy length] - 1)
     {
       if ([&off_2C480 containsObject:v8])
       {
@@ -266,10 +266,10 @@ LABEL_18:
     }
   }
 
-  if (a5)
+  if (locations)
   {
     v25 = v9;
-    *a5 = v9;
+    *locations = v9;
   }
 
   return v30;

@@ -2,35 +2,35 @@
 - (CGColor)backgroundColor;
 - (CGColor)textColor;
 - (void)dealloc;
-- (void)updateWithTheme:(id)a3 traitCollection:(id)a4;
+- (void)updateWithTheme:(id)theme traitCollection:(id)collection;
 @end
 
 @implementation THiOSThemeProvider
 
-- (void)updateWithTheme:(id)a3 traitCollection:(id)a4
+- (void)updateWithTheme:(id)theme traitCollection:(id)collection
 {
-  -[THiOSThemeProvider setThemeIdentifier:](self, "setThemeIdentifier:", [a3 themeIdentifier]);
-  v7 = [a3 themeIdentifier];
-  if ([v7 isEqualToString:kIMThemeIdentifierGrayPageTheme])
+  -[THiOSThemeProvider setThemeIdentifier:](self, "setThemeIdentifier:", [theme themeIdentifier]);
+  themeIdentifier = [theme themeIdentifier];
+  if ([themeIdentifier isEqualToString:kIMThemeIdentifierGrayPageTheme])
   {
     v8 = &dword_0 + 1;
   }
 
   else
   {
-    v9 = [a3 themeIdentifier];
-    v8 = [v9 isEqualToString:kIMThemeIdentifierNightPageTheme];
+    themeIdentifier2 = [theme themeIdentifier];
+    v8 = [themeIdentifier2 isEqualToString:kIMThemeIdentifierNightPageTheme];
   }
 
   [(THiOSThemeProvider *)self setForceThemeColors:v8];
-  -[THiOSThemeProvider setShouldInvertContent:](self, "setShouldInvertContent:", [a3 shouldInvertContent]);
-  -[THiOSThemeProvider setUiBackgroundColor:](self, "setUiBackgroundColor:", [a3 backgroundColorForTraitCollection:a4]);
-  -[THiOSThemeProvider setUiTextColor:](self, "setUiTextColor:", [objc_msgSend(a3 "contentTextColor")]);
-  -[THiOSThemeProvider setAnnotationPageTheme:](self, "setAnnotationPageTheme:", [a3 annotationPageTheme]);
-  -[THiOSThemeProvider setAnnotationBlendMode:](self, "setAnnotationBlendMode:", [a3 annotationBlendMode]);
-  v10 = [a3 userInterfaceStyle];
+  -[THiOSThemeProvider setShouldInvertContent:](self, "setShouldInvertContent:", [theme shouldInvertContent]);
+  -[THiOSThemeProvider setUiBackgroundColor:](self, "setUiBackgroundColor:", [theme backgroundColorForTraitCollection:collection]);
+  -[THiOSThemeProvider setUiTextColor:](self, "setUiTextColor:", [objc_msgSend(theme "contentTextColor")]);
+  -[THiOSThemeProvider setAnnotationPageTheme:](self, "setAnnotationPageTheme:", [theme annotationPageTheme]);
+  -[THiOSThemeProvider setAnnotationBlendMode:](self, "setAnnotationBlendMode:", [theme annotationBlendMode]);
+  userInterfaceStyle = [theme userInterfaceStyle];
 
-  [(THiOSThemeProvider *)self setUserInterfaceStyle:v10];
+  [(THiOSThemeProvider *)self setUserInterfaceStyle:userInterfaceStyle];
 }
 
 - (void)dealloc
@@ -46,16 +46,16 @@
 
 - (CGColor)backgroundColor
 {
-  v2 = [(THiOSThemeProvider *)self uiBackgroundColor];
+  uiBackgroundColor = [(THiOSThemeProvider *)self uiBackgroundColor];
 
-  return [(UIColor *)v2 CGColor];
+  return [(UIColor *)uiBackgroundColor CGColor];
 }
 
 - (CGColor)textColor
 {
-  v2 = [(THiOSThemeProvider *)self uiTextColor];
+  uiTextColor = [(THiOSThemeProvider *)self uiTextColor];
 
-  return [(UIColor *)v2 CGColor];
+  return [(UIColor *)uiTextColor CGColor];
 }
 
 @end

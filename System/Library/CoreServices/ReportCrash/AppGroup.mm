@@ -1,11 +1,11 @@
 @interface AppGroup
-+ (BOOL)isALE:(id)a3;
++ (BOOL)isALE:(id)e;
 - (_TtC11ReportCrash8AppGroup)init;
 @end
 
 @implementation AppGroup
 
-+ (BOOL)isALE:(id)a3
++ (BOOL)isALE:(id)e
 {
   v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = v4;

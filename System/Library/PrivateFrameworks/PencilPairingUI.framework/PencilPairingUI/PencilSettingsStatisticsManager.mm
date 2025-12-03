@@ -1,20 +1,20 @@
 @interface PencilSettingsStatisticsManager
 + (id)sharedInstance;
-- (id)stringForElementType:(int64_t)a3;
-- (id)stringForHandwritingElementType:(int64_t)a3;
-- (void)recordDrawPencilForTextInputToggle:(BOOL)a3;
-- (void)recordEducationPanelChanged:(int64_t)a3;
-- (void)recordEducationPencilDidShow:(double)a3;
-- (void)recordEducationPencilInputInteraction:(int64_t)a3;
-- (void)recordHandwritingEducationPanelChanged:(int64_t)a3;
-- (void)recordHandwritingEducationPencilInputInteraction:(int64_t)a3;
-- (void)recordHoverDoubleTap:(BOOL)a3;
-- (void)recordHoverPreview:(BOOL)a3;
-- (void)recordHoverShadow:(BOOL)a3;
-- (void)recordOnlyUsePencilToggle:(BOOL)a3;
-- (void)recordPaperFromCornerToggle:(BOOL)a3;
-- (void)recordScreenshotFromCornerToggle:(BOOL)a3;
-- (void)recordSetPencilPerferredAction:(int64_t)a3;
+- (id)stringForElementType:(int64_t)type;
+- (id)stringForHandwritingElementType:(int64_t)type;
+- (void)recordDrawPencilForTextInputToggle:(BOOL)toggle;
+- (void)recordEducationPanelChanged:(int64_t)changed;
+- (void)recordEducationPencilDidShow:(double)show;
+- (void)recordEducationPencilInputInteraction:(int64_t)interaction;
+- (void)recordHandwritingEducationPanelChanged:(int64_t)changed;
+- (void)recordHandwritingEducationPencilInputInteraction:(int64_t)interaction;
+- (void)recordHoverDoubleTap:(BOOL)tap;
+- (void)recordHoverPreview:(BOOL)preview;
+- (void)recordHoverShadow:(BOOL)shadow;
+- (void)recordOnlyUsePencilToggle:(BOOL)toggle;
+- (void)recordPaperFromCornerToggle:(BOOL)toggle;
+- (void)recordScreenshotFromCornerToggle:(BOOL)toggle;
+- (void)recordSetPencilPerferredAction:(int64_t)action;
 @end
 
 @implementation PencilSettingsStatisticsManager
@@ -40,16 +40,16 @@ uint64_t __49__PencilSettingsStatisticsManager_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (void)recordSetPencilPerferredAction:(int64_t)a3
+- (void)recordSetPencilPerferredAction:(int64_t)action
 {
-  if (a3 > 4)
+  if (action > 4)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = off_279A0A710[a3];
+    v3 = off_279A0A710[action];
   }
 
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.PencilPairingAndSettings.%@", @"action"];
@@ -67,7 +67,7 @@ id __66__PencilSettingsStatisticsManager_recordSetPencilPerferredAction___block_
   return v2;
 }
 
-- (void)recordOnlyUsePencilToggle:(BOOL)a3
+- (void)recordOnlyUsePencilToggle:(BOOL)toggle
 {
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.PencilPairingAndSettings.%@", @"OnlyUsePencilToggle"];
   AnalyticsSendEventLazy();
@@ -84,7 +84,7 @@ id __61__PencilSettingsStatisticsManager_recordOnlyUsePencilToggle___block_invok
   return v2;
 }
 
-- (void)recordDrawPencilForTextInputToggle:(BOOL)a3
+- (void)recordDrawPencilForTextInputToggle:(BOOL)toggle
 {
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.PencilPairingAndSettings.%@", @"PencilForTextInputToggle"];
   AnalyticsSendEventLazy();
@@ -101,9 +101,9 @@ id __70__PencilSettingsStatisticsManager_recordDrawPencilForTextInputToggle___bl
   return v2;
 }
 
-- (void)recordEducationPanelChanged:(int64_t)a3
+- (void)recordEducationPanelChanged:(int64_t)changed
 {
-  v3 = [(PencilSettingsStatisticsManager *)self stringForElementType:a3];
+  v3 = [(PencilSettingsStatisticsManager *)self stringForElementType:changed];
   if (v3)
   {
     v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.PencilPairingAndSettings.%@", @"PencilEducationInteraction.panelChange"];
@@ -123,9 +123,9 @@ id __63__PencilSettingsStatisticsManager_recordEducationPanelChanged___block_inv
   return v2;
 }
 
-- (void)recordEducationPencilInputInteraction:(int64_t)a3
+- (void)recordEducationPencilInputInteraction:(int64_t)interaction
 {
-  v3 = [(PencilSettingsStatisticsManager *)self stringForElementType:a3];
+  v3 = [(PencilSettingsStatisticsManager *)self stringForElementType:interaction];
   if (v3)
   {
     v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.PencilPairingAndSettings.%@", @"PencilEducationInteraction.pencilInput"];
@@ -145,9 +145,9 @@ id __73__PencilSettingsStatisticsManager_recordEducationPencilInputInteraction__
   return v2;
 }
 
-- (void)recordHandwritingEducationPanelChanged:(int64_t)a3
+- (void)recordHandwritingEducationPanelChanged:(int64_t)changed
 {
-  v3 = [(PencilSettingsStatisticsManager *)self stringForHandwritingElementType:a3];
+  v3 = [(PencilSettingsStatisticsManager *)self stringForHandwritingElementType:changed];
   if (v3)
   {
     v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.PencilPairingAndSettings.%@", @"PencilHandwritingEducationInteraction.panelChange"];
@@ -167,9 +167,9 @@ id __74__PencilSettingsStatisticsManager_recordHandwritingEducationPanelChanged_
   return v2;
 }
 
-- (void)recordHandwritingEducationPencilInputInteraction:(int64_t)a3
+- (void)recordHandwritingEducationPencilInputInteraction:(int64_t)interaction
 {
-  v3 = [(PencilSettingsStatisticsManager *)self stringForHandwritingElementType:a3];
+  v3 = [(PencilSettingsStatisticsManager *)self stringForHandwritingElementType:interaction];
   if (v3)
   {
     v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.PencilPairingAndSettings.%@", @"PencilHandwritingEducationInteraction.pencilInput"];
@@ -189,7 +189,7 @@ id __84__PencilSettingsStatisticsManager_recordHandwritingEducationPencilInputIn
   return v2;
 }
 
-- (void)recordEducationPencilDidShow:(double)a3
+- (void)recordEducationPencilDidShow:(double)show
 {
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.PencilPairingAndSettings.%@", @"PencilEducation.didShow"];
   AnalyticsSendEventLazy();
@@ -209,7 +209,7 @@ id __64__PencilSettingsStatisticsManager_recordEducationPencilDidShow___block_in
   return v3;
 }
 
-- (void)recordScreenshotFromCornerToggle:(BOOL)a3
+- (void)recordScreenshotFromCornerToggle:(BOOL)toggle
 {
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.PencilPairingAndSettings.%@", @"ScreenshotFromCornerToggle"];
   AnalyticsSendEventLazy();
@@ -226,7 +226,7 @@ id __68__PencilSettingsStatisticsManager_recordScreenshotFromCornerToggle___bloc
   return v2;
 }
 
-- (void)recordPaperFromCornerToggle:(BOOL)a3
+- (void)recordPaperFromCornerToggle:(BOOL)toggle
 {
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.PencilPairingAndSettings.%@", @"PaperFromCornerToggle"];
   AnalyticsSendEventLazy();
@@ -243,7 +243,7 @@ id __63__PencilSettingsStatisticsManager_recordPaperFromCornerToggle___block_inv
   return v2;
 }
 
-- (void)recordHoverPreview:(BOOL)a3
+- (void)recordHoverPreview:(BOOL)preview
 {
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.PencilPairingAndSettings.%@", @"HoverPreviewToggle"];
   AnalyticsSendEventLazy();
@@ -260,7 +260,7 @@ id __54__PencilSettingsStatisticsManager_recordHoverPreview___block_invoke(uint6
   return v2;
 }
 
-- (void)recordHoverShadow:(BOOL)a3
+- (void)recordHoverShadow:(BOOL)shadow
 {
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.PencilPairingAndSettings.%@", @"HoverShadowToggle"];
   AnalyticsSendEventLazy();
@@ -277,7 +277,7 @@ id __53__PencilSettingsStatisticsManager_recordHoverShadow___block_invoke(uint64
   return v2;
 }
 
-- (void)recordHoverDoubleTap:(BOOL)a3
+- (void)recordHoverDoubleTap:(BOOL)tap
 {
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.PencilPairingAndSettings.%@", @"HoverDoubleTapToggle"];
   AnalyticsSendEventLazy();
@@ -294,22 +294,22 @@ id __56__PencilSettingsStatisticsManager_recordHoverDoubleTap___block_invoke(uin
   return v2;
 }
 
-- (id)stringForElementType:(int64_t)a3
+- (id)stringForElementType:(int64_t)type
 {
-  if (a3 > 4)
+  if (type > 4)
   {
     return 0;
   }
 
   else
   {
-    return off_279A0A738[a3];
+    return off_279A0A738[type];
   }
 }
 
-- (id)stringForHandwritingElementType:(int64_t)a3
+- (id)stringForHandwritingElementType:(int64_t)type
 {
-  if (a3)
+  if (type)
   {
     return 0;
   }

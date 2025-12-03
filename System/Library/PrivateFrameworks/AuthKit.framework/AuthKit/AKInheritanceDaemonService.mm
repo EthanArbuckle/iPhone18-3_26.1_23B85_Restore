@@ -1,21 +1,21 @@
 @interface AKInheritanceDaemonService
-- (void)_executeRequestWithContext:(id)a3 urlBagKey:(id)a4 shouldSignWithIdentityToken:(BOOL)a5 completion:(id)a6;
-- (void)_setupBeneficiaryAliasWithInheritanceContext:(id)a3 completion:(id)a4;
-- (void)configureExportedInterface:(id)a3;
-- (void)fetchManifestOptionsWithInheritanceContext:(id)a3 completion:(id)a4;
-- (void)removeBeneficiaryWithInheritanceContext:(id)a3 completion:(id)a4;
-- (void)setupBeneficiaryWithInheritanceContext:(id)a3 completion:(id)a4;
-- (void)updateBeneficiaryWithInheritanceContext:(id)a3 completion:(id)a4;
+- (void)_executeRequestWithContext:(id)context urlBagKey:(id)key shouldSignWithIdentityToken:(BOOL)token completion:(id)completion;
+- (void)_setupBeneficiaryAliasWithInheritanceContext:(id)context completion:(id)completion;
+- (void)configureExportedInterface:(id)interface;
+- (void)fetchManifestOptionsWithInheritanceContext:(id)context completion:(id)completion;
+- (void)removeBeneficiaryWithInheritanceContext:(id)context completion:(id)completion;
+- (void)setupBeneficiaryWithInheritanceContext:(id)context completion:(id)completion;
+- (void)updateBeneficiaryWithInheritanceContext:(id)context completion:(id)completion;
 @end
 
 @implementation AKInheritanceDaemonService
 
-- (void)configureExportedInterface:(id)a3
+- (void)configureExportedInterface:(id)interface
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, interface);
   v9[0] = objc_opt_class();
   v9[1] = objc_opt_class();
   v9[2] = objc_opt_class();
@@ -56,15 +56,15 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchManifestOptionsWithInheritanceContext:(id)a3 completion:(id)a4
+- (void)fetchManifestOptionsWithInheritanceContext:(id)context completion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  v7 = v16;
+  objc_storeStrong(&v14, completion);
+  v7 = selfCopy;
   v5 = location[0];
   v6 = AKURLBagKeyInheritanceFetchDataSelectionOptionsKey;
   v8 = _NSConcreteStackBlock;
@@ -79,19 +79,19 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)setupBeneficiaryWithInheritanceContext:(id)a3 completion:(id)a4
+- (void)setupBeneficiaryWithInheritanceContext:(id)context completion:(id)completion
 {
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v24 = 0;
-  objc_storeStrong(&v24, a4);
-  v12 = [location[0] beneficiarySetupToken];
-  _objc_release(v12);
-  if (v12)
+  objc_storeStrong(&v24, completion);
+  beneficiarySetupToken = [location[0] beneficiarySetupToken];
+  _objc_release(beneficiarySetupToken);
+  if (beneficiarySetupToken)
   {
-    v6 = v26;
+    v6 = selfCopy;
     v4 = location[0];
     v5 = AKURLBagKeyInheritanceSetupBeneficiaryKey;
     v13 = _NSConcreteStackBlock;
@@ -135,15 +135,15 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)removeBeneficiaryWithInheritanceContext:(id)a3 completion:(id)a4
+- (void)removeBeneficiaryWithInheritanceContext:(id)context completion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
-  v7 = v17;
+  objc_storeStrong(&v15, completion);
+  v7 = selfCopy;
   v5 = location[0];
   v6 = AKURLBagKeyInheritanceRemoveBeneficiaryKey;
   v8 = _NSConcreteStackBlock;
@@ -160,15 +160,15 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)updateBeneficiaryWithInheritanceContext:(id)a3 completion:(id)a4
+- (void)updateBeneficiaryWithInheritanceContext:(id)context completion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
-  v7 = v17;
+  objc_storeStrong(&v15, completion);
+  v7 = selfCopy;
   v5 = location[0];
   v6 = AKURLBagKeyInheritanceUpdateBeneficiaryKey;
   v8 = _NSConcreteStackBlock;
@@ -185,14 +185,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_setupBeneficiaryAliasWithInheritanceContext:(id)a3 completion:(id)a4
+- (void)_setupBeneficiaryAliasWithInheritanceContext:(id)context completion:(id)completion
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
+  objc_storeStrong(&v17, completion);
   v16 = _AKLogSystem();
   v15 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -202,7 +202,7 @@
   }
 
   objc_storeStrong(&v16, 0);
-  v6 = v19;
+  v6 = selfCopy;
   v4 = location[0];
   v5 = AKURLBagKeyInheritanceSetupBeneficiaryAliasKey;
   v8 = _NSConcreteStackBlock;
@@ -219,20 +219,20 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_executeRequestWithContext:(id)a3 urlBagKey:(id)a4 shouldSignWithIdentityToken:(BOOL)a5 completion:(id)a6
+- (void)_executeRequestWithContext:(id)context urlBagKey:(id)key shouldSignWithIdentityToken:(BOOL)token completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v30 = 0;
-  objc_storeStrong(&v30, a4);
-  v29 = a5;
+  objc_storeStrong(&v30, key);
+  tokenCopy = token;
   v28 = 0;
-  objc_storeStrong(&v28, a6);
+  objc_storeStrong(&v28, completion);
   v6 = [AKInheritanceRequestProvider alloc];
   v27 = [(AKInheritanceRequestProvider *)v6 initWithContext:location[0] urlBagKey:v30];
-  [v27 setSignWithIdentityToken:v29];
+  [v27 setSignWithIdentityToken:tokenCopy];
   v21[0] = 0;
   v21[1] = v21;
   v22 = 838860800;

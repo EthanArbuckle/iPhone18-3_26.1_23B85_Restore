@@ -3,10 +3,10 @@
 + (id)_figAssetPropertiesForKeys;
 + (id)_figAssetTrackMediaSelectionPropertiesArray;
 + (id)_figAssetTrackPropertiesForKeys;
-+ (void)_mapAssetKeys:(id)a3 toFigAssetPropertySet:(id)a4 figAssetTrackPropertySet:(id)a5 callerName:(id)a6;
++ (void)_mapAssetKeys:(id)keys toFigAssetPropertySet:(id)set figAssetTrackPropertySet:(id)propertySet callerName:(id)name;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)duration;
-- (AVFigAssetInspectorLoader)initWithFigAsset:(OpaqueFigAsset *)a3 forAsset:(id)a4;
-- (AVFigAssetInspectorLoader)initWithURL:(id)a3 figAssetCreationFlags:(unint64_t)a4 figAssetCreationOptions:(id)a5 avAssetInitializationOptions:(id)a6 forAsset:(id)a7 figErr:(int *)a8;
+- (AVFigAssetInspectorLoader)initWithFigAsset:(OpaqueFigAsset *)asset forAsset:(id)forAsset;
+- (AVFigAssetInspectorLoader)initWithURL:(id)l figAssetCreationFlags:(unint64_t)flags figAssetCreationOptions:(id)options avAssetInitializationOptions:(id)initializationOptions forAsset:(id)asset figErr:(int *)err;
 - (BOOL)_isStreaming;
 - (BOOL)hasProtectedContent;
 - (BOOL)isCompatibleWithSavedPhotosAlbum;
@@ -24,20 +24,20 @@
 - (id)originalNetworkContentURL;
 - (id)resolvedURL;
 - (id)variants;
-- (int64_t)_loadStatusForProperty:(id)a3 figAsset:(OpaqueFigAsset *)a4 error:(id *)a5;
-- (int64_t)_statusOfValueForKey:(id)a3 error:(id *)a4 firstNonLoadedDependencyKey:(id *)a5;
+- (int64_t)_loadStatusForProperty:(id)property figAsset:(OpaqueFigAsset *)asset error:(id *)error;
+- (int64_t)_statusOfValueForKey:(id)key error:(id *)error firstNonLoadedDependencyKey:(id *)dependencyKey;
 - (int64_t)firstFragmentSequenceNumber;
 - (int64_t)fragmentCount;
 - (unint64_t)downloadToken;
 - (void)_addFigAssetNotifications;
-- (void)_ensureAllDependenciesOfKeyAreLoaded:(id)a3;
-- (void)_invokeCompletionHandlerForLoadingBatches:(id)a3;
+- (void)_ensureAllDependenciesOfKeyAreLoaded:(id)loaded;
+- (void)_invokeCompletionHandlerForLoadingBatches:(id)batches;
 - (void)_removeFigAssetNotifications;
-- (void)_setFragmentMindingInterval:(double)a3;
-- (void)_setIsAssociatedWithFragmentMinder:(BOOL)a3;
+- (void)_setFragmentMindingInterval:(double)interval;
+- (void)_setIsAssociatedWithFragmentMinder:(BOOL)minder;
 - (void)cancelLoading;
 - (void)dealloc;
-- (void)loadValuesAsynchronouslyForKeys:(id)a3 keysForCollectionKeys:(id)a4 completionHandler:(id)a5;
+- (void)loadValuesAsynchronouslyForKeys:(id)keys keysForCollectionKeys:(id)collectionKeys completionHandler:(id)handler;
 @end
 
 @implementation AVFigAssetInspectorLoader
@@ -59,15 +59,15 @@
     if (!self->_registeredForFigAssetNotifications)
     {
       v3 = [AVCMNotificationDispatcher notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
-      v4 = [(AVAssetInspectorLoader *)self _weakReference];
-      CFRetain(v4);
-      [v3 addListenerWithWeakReference:v4 callback:handleFigAssetLoadingNotification name:*MEMORY[0x1E6970E88] object:self->_figAsset flags:0];
-      [v3 addListenerWithWeakReference:v4 callback:handleAndReflectFigAssetNotification name:*MEMORY[0x1E6970EA8] object:self->_figAsset flags:0];
-      [v3 addListenerWithWeakReference:v4 callback:handleAndReflectFigAssetNotification name:*MEMORY[0x1E6970EA0] object:self->_figAsset flags:0];
-      [v3 addListenerWithWeakReference:v4 callback:handleAndReflectFigAssetNotification name:*MEMORY[0x1E6970EC8] object:self->_figAsset flags:0];
-      [v3 addListenerWithWeakReference:v4 callback:handleAndReflectFigAssetNotification name:*MEMORY[0x1E6970ED0] object:self->_figAsset flags:0];
-      [v3 addListenerWithWeakReference:v4 callback:handleAndReflectFigAssetNotification name:*MEMORY[0x1E6970EC0] object:self->_figAsset flags:0];
-      [v3 addListenerWithWeakReference:v4 callback:handleAndReflectFigAssetNotification name:*MEMORY[0x1E6970EB8] object:self->_figAsset flags:0];
+      _weakReference = [(AVAssetInspectorLoader *)self _weakReference];
+      CFRetain(_weakReference);
+      [v3 addListenerWithWeakReference:_weakReference callback:handleFigAssetLoadingNotification name:*MEMORY[0x1E6970E88] object:self->_figAsset flags:0];
+      [v3 addListenerWithWeakReference:_weakReference callback:handleAndReflectFigAssetNotification name:*MEMORY[0x1E6970EA8] object:self->_figAsset flags:0];
+      [v3 addListenerWithWeakReference:_weakReference callback:handleAndReflectFigAssetNotification name:*MEMORY[0x1E6970EA0] object:self->_figAsset flags:0];
+      [v3 addListenerWithWeakReference:_weakReference callback:handleAndReflectFigAssetNotification name:*MEMORY[0x1E6970EC8] object:self->_figAsset flags:0];
+      [v3 addListenerWithWeakReference:_weakReference callback:handleAndReflectFigAssetNotification name:*MEMORY[0x1E6970ED0] object:self->_figAsset flags:0];
+      [v3 addListenerWithWeakReference:_weakReference callback:handleAndReflectFigAssetNotification name:*MEMORY[0x1E6970EC0] object:self->_figAsset flags:0];
+      [v3 addListenerWithWeakReference:_weakReference callback:handleAndReflectFigAssetNotification name:*MEMORY[0x1E6970EB8] object:self->_figAsset flags:0];
       self->_registeredForFigAssetNotifications = 1;
     }
   }
@@ -143,21 +143,21 @@ AVFigAssetInspector *__43__AVFigAssetInspectorLoader_assetInspector__block_invok
 
 - (BOOL)_isStreaming
 {
-  v2 = [(AVFigAssetInspectorLoader *)self assetInspector];
+  assetInspector = [(AVFigAssetInspectorLoader *)self assetInspector];
 
-  return [v2 _isStreaming];
+  return [assetInspector _isStreaming];
 }
 
-- (AVFigAssetInspectorLoader)initWithURL:(id)a3 figAssetCreationFlags:(unint64_t)a4 figAssetCreationOptions:(id)a5 avAssetInitializationOptions:(id)a6 forAsset:(id)a7 figErr:(int *)a8
+- (AVFigAssetInspectorLoader)initWithURL:(id)l figAssetCreationFlags:(unint64_t)flags figAssetCreationOptions:(id)options avAssetInitializationOptions:(id)initializationOptions forAsset:(id)asset figErr:(int *)err
 {
-  v12 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:a5];
-  if ([a7 _hasResourceLoaderDelegate])
+  v12 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:options];
+  if ([asset _hasResourceLoaderDelegate])
   {
     v13 = [MEMORY[0x1E696AD98] numberWithBool:1];
     [v12 setObject:v13 forKey:*MEMORY[0x1E6970F58]];
   }
 
-  v14 = [a6 objectForKey:@"AVAssetRequiresInProcessOperationKey"];
+  v14 = [initializationOptions objectForKey:@"AVAssetRequiresInProcessOperationKey"];
   if (v14 && ([v14 BOOLValue] & 1) != 0)
   {
     v15 = FigAssetCreateWithURL();
@@ -170,15 +170,15 @@ AVFigAssetInspector *__43__AVFigAssetInspectorLoader_assetInspector__block_invok
 
   v16 = v15;
 
-  if (a8)
+  if (err)
   {
-    *a8 = v16;
+    *err = v16;
   }
 
   return 0;
 }
 
-- (AVFigAssetInspectorLoader)initWithFigAsset:(OpaqueFigAsset *)a3 forAsset:(id)a4
+- (AVFigAssetInspectorLoader)initWithFigAsset:(OpaqueFigAsset *)asset forAsset:(id)forAsset
 {
   v37[1] = *MEMORY[0x1E69E9840];
   v34.receiver = self;
@@ -188,10 +188,10 @@ AVFigAssetInspector *__43__AVFigAssetInspectorLoader_assetInspector__block_invok
   if (v6)
   {
     v6->_assetInspectorOnce = objc_alloc_init(AVDispatchOnce);
-    v6->_weakReferenceToAsset = [a4 _weakReference];
-    if (a3)
+    v6->_weakReferenceToAsset = [forAsset _weakReference];
+    if (asset)
     {
-      v7 = CFRetain(a3);
+      v7 = CFRetain(asset);
     }
 
     else
@@ -309,15 +309,15 @@ AVFigAssetInspector *__43__AVFigAssetInspectorLoader_assetInspector__block_invok
     if (self->_registeredForFigAssetNotifications)
     {
       v3 = [AVCMNotificationDispatcher notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
-      v4 = [(AVAssetInspectorLoader *)self _weakReference];
-      [v3 removeListenerWithWeakReference:v4 callback:handleFigAssetLoadingNotification name:*MEMORY[0x1E6970E88] object:self->_figAsset];
-      [v3 removeListenerWithWeakReference:v4 callback:handleAndReflectFigAssetNotification name:*MEMORY[0x1E6970EA8] object:self->_figAsset];
-      [v3 removeListenerWithWeakReference:v4 callback:handleAndReflectFigAssetNotification name:*MEMORY[0x1E6970EA0] object:self->_figAsset];
-      [v3 removeListenerWithWeakReference:v4 callback:handleAndReflectFigAssetNotification name:*MEMORY[0x1E6970EC8] object:self->_figAsset];
-      [v3 removeListenerWithWeakReference:v4 callback:handleAndReflectFigAssetNotification name:*MEMORY[0x1E6970ED0] object:self->_figAsset];
-      [v3 removeListenerWithWeakReference:v4 callback:handleAndReflectFigAssetNotification name:*MEMORY[0x1E6970EC0] object:self->_figAsset];
-      [v3 removeListenerWithWeakReference:v4 callback:handleAndReflectFigAssetNotification name:*MEMORY[0x1E6970EB8] object:self->_figAsset];
-      CFRelease(v4);
+      _weakReference = [(AVAssetInspectorLoader *)self _weakReference];
+      [v3 removeListenerWithWeakReference:_weakReference callback:handleFigAssetLoadingNotification name:*MEMORY[0x1E6970E88] object:self->_figAsset];
+      [v3 removeListenerWithWeakReference:_weakReference callback:handleAndReflectFigAssetNotification name:*MEMORY[0x1E6970EA8] object:self->_figAsset];
+      [v3 removeListenerWithWeakReference:_weakReference callback:handleAndReflectFigAssetNotification name:*MEMORY[0x1E6970EA0] object:self->_figAsset];
+      [v3 removeListenerWithWeakReference:_weakReference callback:handleAndReflectFigAssetNotification name:*MEMORY[0x1E6970EC8] object:self->_figAsset];
+      [v3 removeListenerWithWeakReference:_weakReference callback:handleAndReflectFigAssetNotification name:*MEMORY[0x1E6970ED0] object:self->_figAsset];
+      [v3 removeListenerWithWeakReference:_weakReference callback:handleAndReflectFigAssetNotification name:*MEMORY[0x1E6970EC0] object:self->_figAsset];
+      [v3 removeListenerWithWeakReference:_weakReference callback:handleAndReflectFigAssetNotification name:*MEMORY[0x1E6970EB8] object:self->_figAsset];
+      CFRelease(_weakReference);
       self->_registeredForFigAssetNotifications = 0;
     }
   }
@@ -351,19 +351,19 @@ AVFigAssetInspector *__43__AVFigAssetInspectorLoader_assetInspector__block_invok
 
 - (OpaqueFigFormatReader)_copyFormatReader
 {
-  v2 = [(AVFigAssetInspectorLoader *)self assetInspector];
+  assetInspector = [(AVFigAssetInspectorLoader *)self assetInspector];
 
-  return [v2 _copyFormatReader];
+  return [assetInspector _copyFormatReader];
 }
 
-- (int64_t)_loadStatusForProperty:(id)a3 figAsset:(OpaqueFigAsset *)a4 error:(id *)a5
+- (int64_t)_loadStatusForProperty:(id)property figAsset:(OpaqueFigAsset *)asset error:(id *)error
 {
   v17 = 0;
   v18 = 0;
   v9 = *(*(CMBaseObjectGetVTable() + 16) + 8);
   if (v9)
   {
-    v10 = v9(a4, a3, &v18 + 4, &v18, &v17);
+    v10 = v9(asset, property, &v18 + 4, &v18, &v17);
     v11 = v17;
   }
 
@@ -384,7 +384,7 @@ AVFigAssetInspector *__43__AVFigAssetInspectorLoader_assetInspector__block_invok
     v13 = HIDWORD(v18);
   }
 
-  if (a5 && v13 == 3)
+  if (error && v13 == 3)
   {
     if (HIDWORD(v18) == 3)
     {
@@ -406,18 +406,18 @@ AVFigAssetInspector *__43__AVFigAssetInspectorLoader_assetInspector__block_invok
       v15 = v14;
     }
 
-    *a5 = [(AVAssetInspectorLoader *)self _createAVErrorForError:v12 andFigErrorCode:v15, v17];
+    *error = [(AVAssetInspectorLoader *)self _createAVErrorForError:v12 andFigErrorCode:v15, v17];
   }
 
   return v13;
 }
 
-- (int64_t)_statusOfValueForKey:(id)a3 error:(id *)a4 firstNonLoadedDependencyKey:(id *)a5
+- (int64_t)_statusOfValueForKey:(id)key error:(id *)error firstNonLoadedDependencyKey:(id *)dependencyKey
 {
   v51 = *MEMORY[0x1E69E9840];
   v48 = 0;
   FigSimpleMutexLock();
-  v9 = [(AVFigAssetInspectorLoader *)self _figAsset];
+  _figAsset = [(AVFigAssetInspectorLoader *)self _figAsset];
   if (self->_loadingCanceled)
   {
     v10 = 0;
@@ -425,8 +425,8 @@ AVFigAssetInspector *__43__AVFigAssetInspectorLoader_assetInspector__block_invok
     goto LABEL_49;
   }
 
-  v12 = v9;
-  if (!v9)
+  v12 = _figAsset;
+  if (!_figAsset)
   {
     v29 = [(AVAssetInspectorLoader *)self _createAVErrorForError:0 andFigErrorCode:self->_figAssetCreationStatus];
     v10 = 0;
@@ -434,17 +434,17 @@ AVFigAssetInspector *__43__AVFigAssetInspectorLoader_assetInspector__block_invok
   }
 
   v13 = [objc_msgSend(objc_opt_class() "_figAssetPropertiesForKeys")];
-  v14 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (!v13)
   {
-    NSLog(&cfstr_AvassetStatuso.isa, a3);
+    NSLog(&cfstr_AvassetStatuso.isa, key);
     v11 = [(AVFigAssetInspectorLoader *)self _loadStatusForProperty:*MEMORY[0x1E6971228] figAsset:v12 error:&v48];
     v10 = 0;
     goto LABEL_49;
   }
 
-  v15 = v14;
-  v37 = a4;
+  v15 = array;
+  errorCopy = error;
   v46 = 0u;
   v47 = 0u;
   v44 = 0u;
@@ -458,7 +458,7 @@ AVFigAssetInspector *__43__AVFigAssetInspectorLoader_assetInspector__block_invok
   }
 
   v17 = v16;
-  v36 = a5;
+  dependencyKeyCopy = dependencyKey;
   v18 = *v45;
   v11 = 2;
   v38 = *v45;
@@ -545,10 +545,10 @@ LABEL_31:
   while (v17);
   v10 = 0;
 LABEL_36:
-  a5 = v36;
+  dependencyKey = dependencyKeyCopy;
 LABEL_39:
-  a4 = v37;
-  if (v37)
+  error = errorCopy;
+  if (errorCopy)
   {
     v30 = v11 != 3 || v48 == 0;
     if (!v30 && v15 != 0)
@@ -556,8 +556,8 @@ LABEL_39:
       v32 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:{objc_msgSend(v48, "userInfo")}];
       [v32 setObject:v15 forKey:@"AVErrorFailedDependenciesKey"];
       v33 = MEMORY[0x1E696ABC0];
-      v34 = [v48 domain];
-      v29 = [v33 errorWithDomain:v34 code:objc_msgSend(v48 userInfo:{"code"), v32}];
+      domain = [v48 domain];
+      v29 = [v33 errorWithDomain:domain code:objc_msgSend(v48 userInfo:{"code"), v32}];
 LABEL_48:
       v48 = v29;
       v11 = 3;
@@ -566,37 +566,37 @@ LABEL_48:
 
 LABEL_49:
   FigSimpleMutexUnlock();
-  if (a4 && v11 == 3)
+  if (error && v11 == 3)
   {
-    *a4 = v48;
+    *error = v48;
   }
 
-  if (a5)
+  if (dependencyKey)
   {
-    *a5 = v10;
+    *dependencyKey = v10;
   }
 
   return v11;
 }
 
-+ (void)_mapAssetKeys:(id)a3 toFigAssetPropertySet:(id)a4 figAssetTrackPropertySet:(id)a5 callerName:(id)a6
++ (void)_mapAssetKeys:(id)keys toFigAssetPropertySet:(id)set figAssetTrackPropertySet:(id)propertySet callerName:(id)name
 {
-  v11 = [a1 _figAssetPropertiesForKeys];
-  v12 = [a1 _figAssetTrackPropertiesForKeys];
+  _figAssetPropertiesForKeys = [self _figAssetPropertiesForKeys];
+  _figAssetTrackPropertiesForKeys = [self _figAssetTrackPropertiesForKeys];
   v13 = [MEMORY[0x1E695DFA8] setWithCapacity:0];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __101__AVFigAssetInspectorLoader__mapAssetKeys_toFigAssetPropertySet_figAssetTrackPropertySet_callerName___block_invoke;
   v14[3] = &unk_1E7464E90;
-  v14[4] = v11;
-  v14[5] = v12;
+  v14[4] = _figAssetPropertiesForKeys;
+  v14[5] = _figAssetTrackPropertiesForKeys;
   v14[6] = v13;
-  v14[7] = a4;
-  v14[8] = a5;
-  [a3 enumerateObjectsUsingBlock:v14];
+  v14[7] = set;
+  v14[8] = propertySet;
+  [keys enumerateObjectsUsingBlock:v14];
   if ([v13 count])
   {
-    NSLog(&cfstr_InvokedWithUnr.isa, a6, [v13 allObjects]);
+    NSLog(&cfstr_InvokedWithUnr.isa, name, [v13 allObjects]);
   }
 }
 
@@ -632,7 +632,7 @@ uint64_t __101__AVFigAssetInspectorLoader__mapAssetKeys_toFigAssetPropertySet_fi
   return result;
 }
 
-- (void)loadValuesAsynchronouslyForKeys:(id)a3 keysForCollectionKeys:(id)a4 completionHandler:(id)a5
+- (void)loadValuesAsynchronouslyForKeys:(id)keys keysForCollectionKeys:(id)collectionKeys completionHandler:(id)handler
 {
   v66 = *MEMORY[0x1E69E9840];
   if (dword_1ED5AC2D8)
@@ -643,7 +643,7 @@ uint64_t __101__AVFigAssetInspectorLoader__mapAssetKeys_toFigAssetPropertySet_fi
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  if (a3)
+  if (keys)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -655,7 +655,7 @@ uint64_t __101__AVFigAssetInspectorLoader__mapAssetKeys_toFigAssetPropertySet_fi
     }
   }
 
-  if (!a4)
+  if (!collectionKeys)
   {
     goto LABEL_15;
   }
@@ -675,7 +675,7 @@ LABEL_67:
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v15 = [a4 countByEnumeratingWithState:&v56 objects:v61 count:16];
+  v15 = [collectionKeys countByEnumeratingWithState:&v56 objects:v61 count:16];
   if (!v15)
   {
     goto LABEL_15;
@@ -689,10 +689,10 @@ LABEL_67:
     {
       if (*v57 != v17)
       {
-        objc_enumerationMutation(a4);
+        objc_enumerationMutation(collectionKeys);
       }
 
-      [a4 objectForKey:{*(*(&v56 + 1) + 8 * i), v50, v52}];
+      [collectionKeys objectForKey:{*(*(&v56 + 1) + 8 * i), v50, v52}];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -703,16 +703,16 @@ LABEL_67:
       }
     }
 
-    v16 = [a4 countByEnumeratingWithState:&v56 objects:v61 count:16];
+    v16 = [collectionKeys countByEnumeratingWithState:&v56 objects:v61 count:16];
   }
 
   while (v16);
 LABEL_15:
   FigSimpleMutexLock();
-  v19 = [(AVFigAssetInspectorLoader *)self _figAsset];
-  if ([a3 count])
+  _figAsset = [(AVFigAssetInspectorLoader *)self _figAsset];
+  if ([keys count])
   {
-    if (!v19)
+    if (!_figAsset)
     {
 LABEL_21:
       v20 = 0;
@@ -727,18 +727,18 @@ LABEL_20:
 
     v20 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:0];
     v25 = [MEMORY[0x1E695DFA8] setWithCapacity:0];
-    [v25 addObjectsFromArray:a3];
-    if (a4)
+    [v25 addObjectsFromArray:keys];
+    if (collectionKeys)
     {
-      [v25 addObjectsFromArray:{objc_msgSend(a4, "allKeys")}];
+      [v25 addObjectsFromArray:{objc_msgSend(collectionKeys, "allKeys")}];
     }
 
     v26 = [MEMORY[0x1E695DFA8] setWithCapacity:{0, v50}];
     v27 = [MEMORY[0x1E695DFA8] setWithCapacity:0];
     [objc_opt_class() _mapAssetKeys:v25 toFigAssetPropertySet:v26 figAssetTrackPropertySet:v27 callerName:@"-[AVAsset loadValuesAsynchronouslyForKeys:completionHandler:]"];
-    if (a4)
+    if (collectionKeys)
     {
-      v28 = [a4 objectForKey:@"tracks"];
+      v28 = [collectionKeys objectForKey:@"tracks"];
       if (v28)
       {
         v29 = v28;
@@ -759,8 +759,8 @@ LABEL_20:
       }
     }
 
-    v32 = [v26 allObjects];
-    if ([v32 count])
+    allObjects = [v26 allObjects];
+    if ([allObjects count])
     {
       valuePtr = 0;
       v54 = 0;
@@ -774,7 +774,7 @@ LABEL_20:
       v34 = *(*(CMBaseObjectGetVTable() + 16) + 16);
       if (v34)
       {
-        v35 = v34(v19, v32, &v54, &valuePtr);
+        v35 = v34(_figAsset, allObjects, &v54, &valuePtr);
       }
 
       else
@@ -801,8 +801,8 @@ LABEL_20:
       }
     }
 
-    v39 = [v27 allObjects];
-    if ([v39 count])
+    allObjects2 = [v27 allObjects];
+    if ([allObjects2 count])
     {
       valuePtr = 0;
       v54 = 0;
@@ -816,7 +816,7 @@ LABEL_20:
       v41 = *(*(CMBaseObjectGetVTable() + 16) + 80);
       if (v41)
       {
-        v42 = v41(v19, 0, v39, &v54, &valuePtr);
+        v42 = v41(_figAsset, 0, allObjects2, &v54, &valuePtr);
       }
 
       else
@@ -847,7 +847,7 @@ LABEL_20:
   else
   {
     v20 = 0;
-    if ([a4 count] && v19)
+    if ([collectionKeys count] && _figAsset)
     {
       goto LABEL_20;
     }
@@ -856,9 +856,9 @@ LABEL_20:
 LABEL_22:
   if ([v20 count])
   {
-    if (a5)
+    if (handler)
     {
-      v21 = [a5 copy];
+      v21 = [handler copy];
       [v20 setObject:v21 forKey:@"AVAsynchronousLoadingCompletionHandlerKey"];
     }
 
@@ -869,7 +869,7 @@ LABEL_22:
   else
   {
     FigSimpleMutexUnlock();
-    if (a5)
+    if (handler)
     {
       if (dword_1ED5AC2D8)
       {
@@ -898,7 +898,7 @@ LABEL_22:
         fig_log_call_emit_and_clean_up_after_send_and_compose();
       }
 
-      (*(a5 + 2))(a5);
+      (*(handler + 2))(handler);
     }
   }
 }
@@ -966,17 +966,17 @@ uint64_t __101__AVFigAssetInspectorLoader_loadValuesAsynchronouslyForKeys_keysFo
   }
 }
 
-- (void)_ensureAllDependenciesOfKeyAreLoaded:(id)a3
+- (void)_ensureAllDependenciesOfKeyAreLoaded:(id)loaded
 {
   v17 = *MEMORY[0x1E69E9840];
-  if ([(AVFigAssetInspectorLoader *)self statusOfValueForKey:a3 error:0]<= 1)
+  if ([(AVFigAssetInspectorLoader *)self statusOfValueForKey:loaded error:0]<= 1)
   {
     v13 = 0;
     v14 = &v13;
     v15 = 0x2020000000;
     v16 = 0;
     v5 = objc_alloc_init(MEMORY[0x1E696AB30]);
-    v6 = [MEMORY[0x1E695DEC8] arrayWithObject:a3];
+    v6 = [MEMORY[0x1E695DEC8] arrayWithObject:loaded];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __66__AVFigAssetInspectorLoader__ensureAllDependenciesOfKeyAreLoaded___block_invoke;
@@ -998,7 +998,7 @@ uint64_t __101__AVFigAssetInspectorLoader_loadValuesAsynchronouslyForKeys_keysFo
         }
 
         v11 = 0;
-        [(AVFigAssetInspectorLoader *)self _statusOfValueForKey:a3 error:0 firstNonLoadedDependencyKey:&v11];
+        [(AVFigAssetInspectorLoader *)self _statusOfValueForKey:loaded error:0 firstNonLoadedDependencyKey:&v11];
         if (dword_1ED5AC2D8)
         {
           os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -1030,124 +1030,124 @@ uint64_t __66__AVFigAssetInspectorLoader__ensureAllDependenciesOfKeyAreLoaded___
 
 - (id)variants
 {
-  v2 = [(AVFigAssetInspectorLoader *)self assetInspector];
+  assetInspector = [(AVFigAssetInspectorLoader *)self assetInspector];
 
-  return [v2 variants];
+  return [assetInspector variants];
 }
 
 - (id)lyrics
 {
-  v2 = [(AVFigAssetInspectorLoader *)self assetInspector];
+  assetInspector = [(AVFigAssetInspectorLoader *)self assetInspector];
 
-  return [v2 lyrics];
+  return [assetInspector lyrics];
 }
 
 - (BOOL)isPlayable
 {
-  v2 = [(AVFigAssetInspectorLoader *)self assetInspector];
+  assetInspector = [(AVFigAssetInspectorLoader *)self assetInspector];
 
-  return [v2 isPlayable];
+  return [assetInspector isPlayable];
 }
 
 - (BOOL)isExportable
 {
-  v3 = [(AVFigAssetInspectorLoader *)self _isStreaming];
+  _isStreaming = [(AVFigAssetInspectorLoader *)self _isStreaming];
   v4 = [-[AVFigAssetInspectorLoader assetInspector](self "assetInspector")];
-  return ([(AVFigAssetInspectorLoader *)self statusOfValueForKey:@"exportable" error:0]== 2) & !v3 & v4;
+  return ([(AVFigAssetInspectorLoader *)self statusOfValueForKey:@"exportable" error:0]== 2) & !_isStreaming & v4;
 }
 
 - (BOOL)isReadable
 {
-  v3 = [(AVFigAssetInspectorLoader *)self _isStreaming];
+  _isStreaming = [(AVFigAssetInspectorLoader *)self _isStreaming];
   v4 = [-[AVFigAssetInspectorLoader assetInspector](self "assetInspector")];
-  return ([(AVFigAssetInspectorLoader *)self statusOfValueForKey:@"readable" error:0]== 2) & !v3 & v4;
+  return ([(AVFigAssetInspectorLoader *)self statusOfValueForKey:@"readable" error:0]== 2) & !_isStreaming & v4;
 }
 
 - (BOOL)isComposable
 {
-  v3 = [(AVFigAssetInspectorLoader *)self _isStreaming];
+  _isStreaming = [(AVFigAssetInspectorLoader *)self _isStreaming];
   v4 = [-[AVFigAssetInspectorLoader assetInspector](self "assetInspector")];
-  return ([(AVFigAssetInspectorLoader *)self statusOfValueForKey:@"composable" error:0]== 2) & !v3 & v4;
+  return ([(AVFigAssetInspectorLoader *)self statusOfValueForKey:@"composable" error:0]== 2) & !_isStreaming & v4;
 }
 
 - (BOOL)isCompatibleWithSavedPhotosAlbum
 {
-  v2 = [(AVFigAssetInspectorLoader *)self assetInspector];
+  assetInspector = [(AVFigAssetInspectorLoader *)self assetInspector];
 
-  return [v2 isCompatibleWithSavedPhotosAlbum];
+  return [assetInspector isCompatibleWithSavedPhotosAlbum];
 }
 
 - (id)figChapterGroupInfo
 {
-  v2 = [(AVFigAssetInspectorLoader *)self assetInspector];
+  assetInspector = [(AVFigAssetInspectorLoader *)self assetInspector];
 
-  return [v2 figChapterGroupInfo];
+  return [assetInspector figChapterGroupInfo];
 }
 
 - (id)figChapters
 {
-  v2 = [(AVFigAssetInspectorLoader *)self assetInspector];
+  assetInspector = [(AVFigAssetInspectorLoader *)self assetInspector];
 
-  return [v2 figChapters];
+  return [assetInspector figChapters];
 }
 
 - (id)resolvedURL
 {
-  v2 = [(AVFigAssetInspectorLoader *)self assetInspector];
+  assetInspector = [(AVFigAssetInspectorLoader *)self assetInspector];
 
-  return [v2 resolvedURL];
+  return [assetInspector resolvedURL];
 }
 
 - (id)originalNetworkContentURL
 {
-  v2 = [(AVFigAssetInspectorLoader *)self assetInspector];
+  assetInspector = [(AVFigAssetInspectorLoader *)self assetInspector];
 
-  return [v2 originalNetworkContentURL];
+  return [assetInspector originalNetworkContentURL];
 }
 
 - (unint64_t)downloadToken
 {
-  v2 = [(AVFigAssetInspectorLoader *)self assetInspector];
+  assetInspector = [(AVFigAssetInspectorLoader *)self assetInspector];
 
-  return [v2 downloadToken];
+  return [assetInspector downloadToken];
 }
 
 - (id)contentKeySpecifiersEligibleForPreloading
 {
-  v2 = [(AVFigAssetInspectorLoader *)self assetInspector];
+  assetInspector = [(AVFigAssetInspectorLoader *)self assetInspector];
 
-  return [v2 contentKeySpecifiersEligibleForPreloading];
+  return [assetInspector contentKeySpecifiersEligibleForPreloading];
 }
 
 - (BOOL)hasProtectedContent
 {
-  v2 = [(AVFigAssetInspectorLoader *)self assetInspector];
+  assetInspector = [(AVFigAssetInspectorLoader *)self assetInspector];
 
-  return [v2 hasProtectedContent];
+  return [assetInspector hasProtectedContent];
 }
 
 - (int64_t)firstFragmentSequenceNumber
 {
-  v2 = [(AVFigAssetInspectorLoader *)self assetInspector];
+  assetInspector = [(AVFigAssetInspectorLoader *)self assetInspector];
 
-  return [v2 firstFragmentSequenceNumber];
+  return [assetInspector firstFragmentSequenceNumber];
 }
 
 - (int64_t)fragmentCount
 {
-  v2 = [(AVFigAssetInspectorLoader *)self assetInspector];
+  assetInspector = [(AVFigAssetInspectorLoader *)self assetInspector];
 
-  return [v2 fragmentCount];
+  return [assetInspector fragmentCount];
 }
 
-- (void)_invokeCompletionHandlerForLoadingBatches:(id)a3
+- (void)_invokeCompletionHandlerForLoadingBatches:(id)batches
 {
   v25 = *MEMORY[0x1E69E9840];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v3 = [a3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v3 = [batches countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1160,7 +1160,7 @@ uint64_t __66__AVFigAssetInspectorLoader__ensureAllDependenciesOfKeyAreLoaded___
       {
         if (*v21 != v19)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(batches);
         }
 
         v6 = *(*(&v20 + 1) + 8 * v5);
@@ -1202,13 +1202,13 @@ uint64_t __66__AVFigAssetInspectorLoader__ensureAllDependenciesOfKeyAreLoaded___
       }
 
       while (v4 != v5);
-      v4 = [a3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v4 = [batches countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v4);
   }
 
-  if (![a3 count])
+  if (![batches count])
   {
     if (dword_1ED5AC2D8)
     {
@@ -1241,10 +1241,10 @@ uint64_t __66__AVFigAssetInspectorLoader__ensureAllDependenciesOfKeyAreLoaded___
   return 0.0;
 }
 
-- (void)_setFragmentMindingInterval:(double)a3
+- (void)_setFragmentMindingInterval:(double)interval
 {
   [(AVFigAssetInspectorLoader *)self _figAsset];
-  valuePtr = (a3 * 1000.0);
+  valuePtr = (interval * 1000.0);
   v4 = CFNumberCreate(*MEMORY[0x1E695E480], kCFNumberSInt64Type, &valuePtr);
   CMBaseObject = FigAssetGetCMBaseObject();
   v6 = *(*(CMBaseObjectGetVTable() + 8) + 56);
@@ -1259,10 +1259,10 @@ uint64_t __66__AVFigAssetInspectorLoader__ensureAllDependenciesOfKeyAreLoaded___
   }
 }
 
-- (void)_setIsAssociatedWithFragmentMinder:(BOOL)a3
+- (void)_setIsAssociatedWithFragmentMinder:(BOOL)minder
 {
   fragmentMinderAssociationCount = self->_fragmentMinderAssociationCount;
-  if (a3)
+  if (minder)
   {
     v4 = fragmentMinderAssociationCount + 1;
   }

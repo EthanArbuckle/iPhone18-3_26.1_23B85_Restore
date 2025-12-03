@@ -45,8 +45,8 @@
     v13[2] = sub_100139668;
     v13[3] = &unk_1002CD518;
     objc_copyWeak(&v14, &location);
-    v9 = [(FMDBLEStateOwner *)v3 btAdvertiser];
-    [v9 setBluetoothStateChangedHandler:v13];
+    btAdvertiser = [(FMDBLEStateOwner *)v3 btAdvertiser];
+    [btAdvertiser setBluetoothStateChangedHandler:v13];
 
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -64,8 +64,8 @@
 
 - (void)dealloc
 {
-  v3 = [(FMDBLEStateOwner *)self btAdvertiser];
-  [v3 invalidate];
+  btAdvertiser = [(FMDBLEStateOwner *)self btAdvertiser];
+  [btAdvertiser invalidate];
 
   v4.receiver = self;
   v4.super_class = FMDBLEStateOwner;
@@ -74,26 +74,26 @@
 
 - (void)_monitorWatchBLEStatus
 {
-  v3 = [(FMDBLEStateOwner *)self btAdvertiser];
+  btAdvertiser = [(FMDBLEStateOwner *)self btAdvertiser];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100139888;
   v4[3] = &unk_1002CD868;
   v4[4] = self;
-  [v3 activateWithCompletion:v4];
+  [btAdvertiser activateWithCompletion:v4];
 }
 
 - (void)_updateBLEStatus
 {
   if (+[NSThread isMainThread])
   {
-    v3 = [(FMDBLEStateOwner *)self btController];
+    btController = [(FMDBLEStateOwner *)self btController];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100139A20;
     v7[3] = &unk_1002CD960;
     v7[4] = self;
-    [v3 getControllerInfoWithCompletion:v7];
+    [btController getControllerInfoWithCompletion:v7];
   }
 
   else

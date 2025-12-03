@@ -1,39 +1,39 @@
 @interface _UIMenuLeafKeyboardShortcut
-+ (_UIMenuLeafKeyboardShortcut)shortcutWithBaseKeyCombination:(id)a3;
++ (_UIMenuLeafKeyboardShortcut)shortcutWithBaseKeyCombination:(id)combination;
 - (BOOL)_isKeyEquivalentOrKeyCodeSpecialKey;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_UIMenuLeafKeyCombination)currentLocalizedKeyCombination;
-- (_UIMenuLeafKeyboardShortcut)initWithBaseKeyCombination:(id)a3;
-- (_UIMenuLeafKeyboardShortcut)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_UIMenuLeafKeyboardShortcut)initWithBaseKeyCombination:(id)combination;
+- (_UIMenuLeafKeyboardShortcut)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)shortcutAddingModifierFlags:(int64_t)a3;
+- (id)shortcutAddingModifierFlags:(int64_t)flags;
 - (void)_clearLocalizedKeyCombination;
-- (void)_localizeWithGSKeyboard:(__GSKeyboard *)a3 automatically:(BOOL)a4 force:(BOOL)a5 forDefaultShortcut:(BOOL)a6 action:(SEL)a7;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAutomaticLocalizationEnabled:(BOOL)a3;
-- (void)setAutomaticMirroringEnabled:(BOOL)a3;
+- (void)_localizeWithGSKeyboard:(__GSKeyboard *)keyboard automatically:(BOOL)automatically force:(BOOL)force forDefaultShortcut:(BOOL)shortcut action:(SEL)action;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAutomaticLocalizationEnabled:(BOOL)enabled;
+- (void)setAutomaticMirroringEnabled:(BOOL)enabled;
 @end
 
 @implementation _UIMenuLeafKeyboardShortcut
 
-+ (_UIMenuLeafKeyboardShortcut)shortcutWithBaseKeyCombination:(id)a3
++ (_UIMenuLeafKeyboardShortcut)shortcutWithBaseKeyCombination:(id)combination
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithBaseKeyCombination:v4];
+  combinationCopy = combination;
+  v5 = [[self alloc] initWithBaseKeyCombination:combinationCopy];
 
   return v5;
 }
 
-- (_UIMenuLeafKeyboardShortcut)initWithBaseKeyCombination:(id)a3
+- (_UIMenuLeafKeyboardShortcut)initWithBaseKeyCombination:(id)combination
 {
-  v4 = a3;
+  combinationCopy = combination;
   v11.receiver = self;
   v11.super_class = _UIMenuLeafKeyboardShortcut;
   v5 = [(_UIMenuLeafKeyboardShortcut *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [combinationCopy copy];
     baseKeyCombination = v5->_baseKeyCombination;
     v5->_baseKeyCombination = v6;
 
@@ -50,22 +50,22 @@
   return v5;
 }
 
-- (id)shortcutAddingModifierFlags:(int64_t)a3
+- (id)shortcutAddingModifierFlags:(int64_t)flags
 {
-  v4 = [(_UIMenuLeafKeyCombination *)self->_baseKeyCombination combinationAddingModifierFlags:a3];
+  v4 = [(_UIMenuLeafKeyCombination *)self->_baseKeyCombination combinationAddingModifierFlags:flags];
   if (self->_baseKeyCombination == v4)
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = [(_UIMenuLeafKeyboardShortcut *)self copy];
-    objc_storeStrong(&v5->_baseKeyCombination, v4);
-    [(_UIMenuLeafKeyboardShortcut *)v5 _clearLocalizedKeyCombination];
+    selfCopy = [(_UIMenuLeafKeyboardShortcut *)self copy];
+    objc_storeStrong(&selfCopy->_baseKeyCombination, v4);
+    [(_UIMenuLeafKeyboardShortcut *)selfCopy _clearLocalizedKeyCombination];
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (_UIMenuLeafKeyCombination)currentLocalizedKeyCombination
@@ -79,24 +79,24 @@
   return localizedKeyCombination;
 }
 
-- (void)setAutomaticLocalizationEnabled:(BOOL)a3
+- (void)setAutomaticLocalizationEnabled:(BOOL)enabled
 {
-  if (self->_automaticLocalizationEnabled != a3)
+  if (self->_automaticLocalizationEnabled != enabled)
   {
-    self->_automaticLocalizationEnabled = a3;
-    if (!a3)
+    self->_automaticLocalizationEnabled = enabled;
+    if (!enabled)
     {
       [(_UIMenuLeafKeyboardShortcut *)self _clearLocalizedKeyCombination];
     }
   }
 }
 
-- (void)setAutomaticMirroringEnabled:(BOOL)a3
+- (void)setAutomaticMirroringEnabled:(BOOL)enabled
 {
-  if (self->_automaticMirroringEnabled != a3)
+  if (self->_automaticMirroringEnabled != enabled)
   {
-    self->_automaticMirroringEnabled = a3;
-    if (!a3)
+    self->_automaticMirroringEnabled = enabled;
+    if (!enabled)
     {
       [(_UIMenuLeafKeyboardShortcut *)self _clearLocalizedKeyCombination];
     }
@@ -114,50 +114,50 @@
   self->_lastKeyboardType = 0;
 }
 
-- (void)_localizeWithGSKeyboard:(__GSKeyboard *)a3 automatically:(BOOL)a4 force:(BOOL)a5 forDefaultShortcut:(BOOL)a6 action:(SEL)a7
+- (void)_localizeWithGSKeyboard:(__GSKeyboard *)keyboard automatically:(BOOL)automatically force:(BOOL)force forDefaultShortcut:(BOOL)shortcut action:(SEL)action
 {
   v58 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (keyboard)
   {
-    v8 = a6;
-    v10 = a4;
+    shortcutCopy = shortcut;
+    automaticallyCopy = automatically;
     Layout = GSKeyboardGetLayout();
     v13 = GSKeyboardGetHWKeyboardType() - 202;
     v14 = v13 > 5 ? -1 : dword_18A679980[v13];
-    if (![(NSString *)self->_lastLayout isEqualToString:Layout]|| a5 || self->_lastKeyboardType != v14)
+    if (![(NSString *)self->_lastLayout isEqualToString:Layout]|| force || self->_lastKeyboardType != v14)
     {
-      v15 = [(_UIMenuLeafKeyCombination *)self->_baseKeyCombination keyEquivalent];
-      v16 = [v15 length];
+      keyEquivalent = [(_UIMenuLeafKeyCombination *)self->_baseKeyCombination keyEquivalent];
+      v16 = [keyEquivalent length];
 
       if (v16)
       {
-        if (((_UIMenuLeafShouldAutomaticallyLocalizeKeyboardShortcuts | v8) & 1) != 0 && [(_UIMenuLeafKeyboardShortcut *)self isAutomaticLocalizationEnabled])
+        if (((_UIMenuLeafShouldAutomaticallyLocalizeKeyboardShortcuts | shortcutCopy) & 1) != 0 && [(_UIMenuLeafKeyboardShortcut *)self isAutomaticLocalizationEnabled])
         {
           v17 = [Layout copy];
           lastLayout = self->_lastLayout;
           self->_lastLayout = v17;
 
           self->_lastKeyboardType = v14;
-          v19 = [(_UIMenuLeafKeyboardShortcut *)self baseKeyCombination];
-          v20 = [v19 keyEquivalent];
+          baseKeyCombination = [(_UIMenuLeafKeyboardShortcut *)self baseKeyCombination];
+          keyEquivalent2 = [baseKeyCombination keyEquivalent];
 
-          v21 = [(_UIMenuLeafKeyboardShortcut *)self baseKeyCombination];
-          v22 = [v21 modifierFlags];
+          baseKeyCombination2 = [(_UIMenuLeafKeyboardShortcut *)self baseKeyCombination];
+          modifierFlags = [baseKeyCombination2 modifierFlags];
 
-          v23 = [(_UIMenuLeafKeyboardShortcut *)self baseKeyCombination];
-          v24 = [v23 keyCodes];
+          baseKeyCombination3 = [(_UIMenuLeafKeyboardShortcut *)self baseKeyCombination];
+          keyCodes = [baseKeyCombination3 keyCodes];
 
           localizedKeyCombination = self->_localizedKeyCombination;
           self->_localizedKeyCombination = 0;
 
-          v26 = v20;
-          v54 = v24;
-          if (!v10)
+          v26 = keyEquivalent2;
+          v54 = keyCodes;
+          if (!automaticallyCopy)
           {
-            v30 = [MEMORY[0x1E69D9658] shortcutWithKeyEquivalent:v26 modifierFlags:v22];
-            if (a7)
+            v30 = [MEMORY[0x1E69D9658] shortcutWithKeyEquivalent:v26 modifierFlags:modifierFlags];
+            if (action)
             {
-              v31 = NSStringFromSelector(a7);
+              v31 = NSStringFromSelector(action);
             }
 
             else
@@ -184,15 +184,15 @@
             {
               v27 = 0;
               v29 = v54;
-              v53 = v22;
+              modifierFlags2 = modifierFlags;
               v39 = v26;
             }
 
             else
             {
-              v53 = [v38 modifierFlags];
-              v40 = [v38 keyEquivalent];
-              v39 = [v40 copy];
+              modifierFlags2 = [v38 modifierFlags];
+              keyEquivalent3 = [v38 keyEquivalent];
+              v39 = [keyEquivalent3 copy];
 
               v29 = v54;
               if (v54)
@@ -204,8 +204,8 @@
                 }
               }
 
-              v42 = [v38 displayStringOverride];
-              v27 = [v42 copy];
+              displayStringOverride = [v38 displayStringOverride];
+              v27 = [displayStringOverride copy];
             }
 
 LABEL_45:
@@ -230,7 +230,7 @@ LABEL_45:
               v46 = [v44 isEqual:v45];
             }
 
-            if (!v46 || v22 != v53)
+            if (!v46 || modifierFlags != modifierFlags2)
             {
               goto LABEL_61;
             }
@@ -266,7 +266,7 @@ LABEL_60:
 LABEL_58:
 
 LABEL_61:
-            v50 = [[_UIMenuLeafKeyCombination alloc] initWithModifierFlags:v53 keyEquivalent:v43 keyCodes:v29 displayKeyEquivalentOverride:v27];
+            v50 = [[_UIMenuLeafKeyCombination alloc] initWithModifierFlags:modifierFlags2 keyEquivalent:v43 keyCodes:v29 displayKeyEquivalentOverride:v27];
             v51 = self->_localizedKeyCombination;
             self->_localizedKeyCombination = v50;
 
@@ -274,7 +274,7 @@ LABEL_61:
           }
 
           [v26 characterAtIndex:0];
-          if (GSKeyboardGetKeyCodeForChar() == -1 && ((v22 & 0x20000) != 0 || GSKeyboardGetKeyCodeForChar() == -1) && ((v22 & 0xFFFFFFFFFFFDFFFFLL) == 0 || GSKeyboardGetKeyCodeForChar() == -1))
+          if (GSKeyboardGetKeyCodeForChar() == -1 && ((modifierFlags & 0x20000) != 0 || GSKeyboardGetKeyCodeForChar() == -1) && ((modifierFlags & 0xFFFFFFFFFFFDFFFFLL) == 0 || GSKeyboardGetKeyCodeForChar() == -1))
           {
             GSKeyboardGetHWKeyboardType();
             v28 = v54;
@@ -283,7 +283,7 @@ LABEL_61:
 LABEL_25:
               if (GSKeyboardGetKeyCodeForChar() != -1)
               {
-                v53 = v22;
+                modifierFlags2 = modifierFlags;
 LABEL_42:
                 GSKeyboardTranslateKeyWithModifiers();
                 v39 = [MEMORY[0x1E696AEC0] stringWithCharacters:v57 length:0];
@@ -297,13 +297,13 @@ LABEL_44:
 
               if (GSKeyboardGetKeyCodeForChar() != -1)
               {
-                v53 = v22 | 0x20000;
+                modifierFlags2 = modifierFlags | 0x20000;
                 goto LABEL_42;
               }
 
 LABEL_43:
               v39 = v26;
-              v53 = v22;
+              modifierFlags2 = modifierFlags;
               goto LABEL_44;
             }
           }
@@ -346,67 +346,67 @@ LABEL_62:
 
 - (BOOL)_isKeyEquivalentOrKeyCodeSpecialKey
 {
-  v3 = [(_UIMenuLeafKeyboardShortcut *)self currentLocalizedKeyCombination];
-  v4 = [v3 keyEquivalent];
+  currentLocalizedKeyCombination = [(_UIMenuLeafKeyboardShortcut *)self currentLocalizedKeyCombination];
+  keyEquivalent = [currentLocalizedKeyCombination keyEquivalent];
 
-  v5 = [(_UIMenuLeafKeyboardShortcut *)self currentLocalizedKeyCombination];
-  v6 = [v5 keyCodes];
+  currentLocalizedKeyCombination2 = [(_UIMenuLeafKeyboardShortcut *)self currentLocalizedKeyCombination];
+  keyCodes = [currentLocalizedKeyCombination2 keyCodes];
 
-  if (!v4 || v6)
+  if (!keyEquivalent || keyCodes)
   {
-    if (v4 || [v6 count] != 1)
+    if (keyEquivalent || [keyCodes count] != 1)
     {
       v7 = 0;
     }
 
     else
     {
-      v8 = _UISpecialKeyEquivalentFromHIDUsage([v6 firstIndex]);
+      v8 = _UISpecialKeyEquivalentFromHIDUsage([keyCodes firstIndex]);
       v7 = v8 != 0;
     }
   }
 
   else
   {
-    v7 = _UIHIDUsageFromSpecialKeyEquivalent(v4) != 0;
+    v7 = _UIHIDUsageFromSpecialKeyEquivalent(keyEquivalent) != 0;
   }
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   baseKeyCombination = self->_baseKeyCombination;
-  v5 = a3;
-  [v5 encodeObject:baseKeyCombination forKey:@"BaseKeyCombination"];
-  [v5 encodeBool:self->_automaticLocalizationEnabled forKey:@"AutomaticLocalizationEnabled"];
-  [v5 encodeBool:self->_automaticMirroringEnabled forKey:@"AutomaticMirroringEnabled"];
+  coderCopy = coder;
+  [coderCopy encodeObject:baseKeyCombination forKey:@"BaseKeyCombination"];
+  [coderCopy encodeBool:self->_automaticLocalizationEnabled forKey:@"AutomaticLocalizationEnabled"];
+  [coderCopy encodeBool:self->_automaticMirroringEnabled forKey:@"AutomaticMirroringEnabled"];
 }
 
-- (_UIMenuLeafKeyboardShortcut)initWithCoder:(id)a3
+- (_UIMenuLeafKeyboardShortcut)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = _UIMenuLeafKeyboardShortcut;
   v5 = [(_UIMenuLeafKeyboardShortcut *)&v10 init];
   if (v5)
   {
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"BaseKeyCombination"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"BaseKeyCombination"];
     baseKeyCombination = v5->_baseKeyCombination;
     v5->_baseKeyCombination = v7;
 
-    v5->_automaticLocalizationEnabled = [v4 decodeBoolForKey:@"AutomaticLocalizationEnabled"];
-    v5->_automaticMirroringEnabled = [v4 decodeBoolForKey:@"AutomaticMirroringEnabled"];
+    v5->_automaticLocalizationEnabled = [coderCopy decodeBoolForKey:@"AutomaticLocalizationEnabled"];
+    v5->_automaticMirroringEnabled = [coderCopy decodeBoolForKey:@"AutomaticMirroringEnabled"];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -418,7 +418,7 @@ LABEL_62:
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       baseKeyCombination = v7->_baseKeyCombination;
       v9 = self->_baseKeyCombination;
       v10 = baseKeyCombination;
@@ -447,7 +447,7 @@ LABEL_62:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[_UIMenuLeafKeyboardShortcut alloc] initWithBaseKeyCombination:self->_baseKeyCombination];
   objc_storeStrong(&v4->_localizedKeyCombination, self->_localizedKeyCombination);
@@ -464,9 +464,9 @@ LABEL_62:
   v4 = [v3 appendObject:self->_baseKeyCombination withName:@"baseKeyCombination"];
   v5 = [v3 appendBool:self->_automaticLocalizationEnabled withName:@"automaticLocalizationEnabled"];
   v6 = [v3 appendBool:self->_automaticMirroringEnabled withName:@"automaticMirroringEnabled"];
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 @end

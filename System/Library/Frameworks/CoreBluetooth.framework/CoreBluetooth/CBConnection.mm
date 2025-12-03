@@ -1,68 +1,68 @@
 @interface CBConnection
-- (BOOL)_prepareWriteRequest:(id)a3 error:(id *)a4;
+- (BOOL)_prepareWriteRequest:(id)request error:(id *)error;
 - (BOOL)_processReadStatus;
 - (BOOL)_runConnectStart;
 - (BOOL)_runSetupChannel;
-- (BOOL)_setupIOAndReturnError:(id *)a3;
-- (BOOL)_startConnectingAndReturnError:(id *)a3;
-- (BOOL)activateDirectAndReturnError:(id *)a3;
-- (BOOL)updateWithXPCSubscriberInfo:(id)a3;
+- (BOOL)_setupIOAndReturnError:(id *)error;
+- (BOOL)_startConnectingAndReturnError:(id *)error;
+- (BOOL)activateDirectAndReturnError:(id *)error;
+- (BOOL)updateWithXPCSubscriberInfo:(id)info;
 - (CBConnection)init;
-- (CBConnection)initWithXPCEventRepresentation:(id)a3 error:(id *)a4;
-- (CBConnection)initWithXPCObject:(id)a3 error:(id *)a4;
+- (CBConnection)initWithXPCEventRepresentation:(id)representation error:(id *)error;
+- (CBConnection)initWithXPCObject:(id)object error:(id *)error;
 - (NSString)description;
 - (id)_ensureXPCStarted;
 - (uint64_t)dealloc;
-- (void)_abortReadsWithError:(id)a3;
-- (void)_abortWritesWithError:(id)a3;
-- (void)_activateWithCompletion:(id)a3;
-- (void)_activateXPCCompleted:(id)a3;
-- (void)_activateXPCStart:(BOOL)a3;
-- (void)_completeReadRequest:(id)a3 error:(id)a4;
-- (void)_completeWriteRequest:(id)a3 error:(id)a4;
+- (void)_abortReadsWithError:(id)error;
+- (void)_abortWritesWithError:(id)error;
+- (void)_activateWithCompletion:(id)completion;
+- (void)_activateXPCCompleted:(id)completed;
+- (void)_activateXPCStart:(BOOL)start;
+- (void)_completeReadRequest:(id)request error:(id)error;
+- (void)_completeWriteRequest:(id)request error:(id)error;
 - (void)_interrupted;
 - (void)_invalidate;
 - (void)_invalidated;
-- (void)_pairWithOOBData:(id)a3;
-- (void)_pairingGenerateOOBDataWithCompletionHandler:(id)a3;
-- (void)_pairingPerformActionBLE:(int)a3 withOptions:(id)a4 completionHandler:(id)a5;
-- (void)_pairingPerformActionClassic:(int)a3 completionHandler:(id)a4;
-- (void)_pairingPerformActionClassic:(int)a3 withOptions:(id)a4 completionHandler:(id)a5;
-- (void)_prepareReadRequest:(id)a3;
-- (void)_processReads:(BOOL)a3;
+- (void)_pairWithOOBData:(id)data;
+- (void)_pairingGenerateOOBDataWithCompletionHandler:(id)handler;
+- (void)_pairingPerformActionBLE:(int)e withOptions:(id)options completionHandler:(id)handler;
+- (void)_pairingPerformActionClassic:(int)classic completionHandler:(id)handler;
+- (void)_pairingPerformActionClassic:(int)classic withOptions:(id)options completionHandler:(id)handler;
+- (void)_prepareReadRequest:(id)request;
+- (void)_processReads:(BOOL)reads;
 - (void)_processWrites;
-- (void)_reportError:(id)a3;
+- (void)_reportError:(id)error;
 - (void)_run;
-- (void)_xpcReceivedMessage:(id)a3;
-- (void)activateWithCompletion:(id)a3;
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4;
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManagerDidUpdateState:(id)a3;
+- (void)_xpcReceivedMessage:(id)message;
+- (void)activateWithCompletion:(id)completion;
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManagerDidUpdateState:(id)state;
 - (void)dealloc;
-- (void)disconnectWithCompletion:(id)a3;
-- (void)encodeWithXPCObject:(id)a3;
+- (void)disconnectWithCompletion:(id)completion;
+- (void)encodeWithXPCObject:(id)object;
 - (void)invalidate;
-- (void)pairWithOOBData:(id)a3;
-- (void)pairingAgent:(id)a3 peerDidCompletePairing:(id)a4;
-- (void)pairingAgent:(id)a3 peerDidFailToCompletePairing:(id)a4 error:(id)a5;
-- (void)pairingAgent:(id)a3 peerDidRequestPairing:(id)a4 type:(int64_t)a5 passkey:(id)a6;
-- (void)pairingAgent:(id)a3 peerDidUnpair:(id)a4;
-- (void)pairingGenerateOOBDataWithCompletionHandler:(id)a3;
-- (void)pairingPerformAction:(int)a3 completionHandler:(id)a4;
-- (void)pairingPerformAction:(int)a3 withOptions:(id)a4 completionHandler:(id)a5;
-- (void)pairingSetOOBEnabled:(BOOL)a3 completionHandler:(id)a4;
-- (void)peripheral:(id)a3 didOpenL2CAPChannel:(id)a4 error:(id)a5;
-- (void)readWithCBReadRequest:(id)a3;
-- (void)readWithRequest:(id)a3;
-- (void)setLabel:(id)a3;
-- (void)writeEndOfDataWithCompletion:(id)a3;
-- (void)writeWithCBWriteRequest:(id)a3;
-- (void)writeWithRequest:(id)a3;
-- (void)xpcForwardMessage:(id)a3;
-- (void)xpcReceivedForwardedEvent:(id)a3;
-- (void)xpcReceivedMessage:(id)a3;
-- (void)xpcReceivedPairingCompleted:(id)a3;
-- (void)xpcReceivedPairingPrompt:(id)a3;
+- (void)pairWithOOBData:(id)data;
+- (void)pairingAgent:(id)agent peerDidCompletePairing:(id)pairing;
+- (void)pairingAgent:(id)agent peerDidFailToCompletePairing:(id)pairing error:(id)error;
+- (void)pairingAgent:(id)agent peerDidRequestPairing:(id)pairing type:(int64_t)type passkey:(id)passkey;
+- (void)pairingAgent:(id)agent peerDidUnpair:(id)unpair;
+- (void)pairingGenerateOOBDataWithCompletionHandler:(id)handler;
+- (void)pairingPerformAction:(int)action completionHandler:(id)handler;
+- (void)pairingPerformAction:(int)action withOptions:(id)options completionHandler:(id)handler;
+- (void)pairingSetOOBEnabled:(BOOL)enabled completionHandler:(id)handler;
+- (void)peripheral:(id)peripheral didOpenL2CAPChannel:(id)channel error:(id)error;
+- (void)readWithCBReadRequest:(id)request;
+- (void)readWithRequest:(id)request;
+- (void)setLabel:(id)label;
+- (void)writeEndOfDataWithCompletion:(id)completion;
+- (void)writeWithCBWriteRequest:(id)request;
+- (void)writeWithRequest:(id)request;
+- (void)xpcForwardMessage:(id)message;
+- (void)xpcReceivedForwardedEvent:(id)event;
+- (void)xpcReceivedMessage:(id)message;
+- (void)xpcReceivedPairingCompleted:(id)completed;
+- (void)xpcReceivedPairingPrompt:(id)prompt;
 @end
 
 @implementation CBConnection
@@ -100,11 +100,11 @@
     {
       if ((ucat->var3 & 0x40000) != 0)
       {
-        v3 = self;
+        selfCopy = self;
         v4 = self->_ucat;
         LogCategory_Remove();
-        self = v3;
-        v3->_ucat = 0;
+        self = selfCopy;
+        selfCopy->_ucat = 0;
       }
     }
 
@@ -114,14 +114,14 @@
   }
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   clientID = self->_clientID;
-  xdict = v4;
+  xdict = objectCopy;
   if (clientID)
   {
-    xpc_dictionary_set_uint64(v4, "cid", clientID);
+    xpc_dictionary_set_uint64(objectCopy, "cid", clientID);
   }
 
   connectionFlags = self->_connectionFlags;
@@ -183,20 +183,20 @@
 
   else
   {
-    v5 = [(CBL2CAPChannel *)self->_l2capChannel peer];
-    v6 = [v5 identifier];
-    v7 = v6;
-    if (v6)
+    peer = [(CBL2CAPChannel *)self->_l2capChannel peer];
+    identifier = [peer identifier];
+    v7 = identifier;
+    if (identifier)
     {
-      v8 = v6;
+      identifier2 = identifier;
     }
 
     else
     {
-      v8 = [(CBDevice *)self->_peerDevice identifier];
+      identifier2 = [(CBDevice *)self->_peerDevice identifier];
     }
 
-    v4 = v8;
+    v4 = identifier2;
   }
 
   NSAppendPrintF_safe();
@@ -326,18 +326,18 @@
   return v14;
 }
 
-- (CBConnection)initWithXPCEventRepresentation:(id)a3 error:(id *)a4
+- (CBConnection)initWithXPCEventRepresentation:(id)representation error:(id *)error
 {
-  v6 = a3;
+  representationCopy = representation;
   v13 = [(CBConnection *)self init];
   if (!v13)
   {
-    if (a4)
+    if (error)
     {
       v27 = "CBConnection init failed";
 LABEL_20:
       CBErrorF(-6756, v27, v7, v8, v9, v10, v11, v12, v29);
-      *a4 = v25 = 0;
+      *error = v25 = 0;
       goto LABEL_15;
     }
 
@@ -346,9 +346,9 @@ LABEL_21:
     goto LABEL_15;
   }
 
-  if (MEMORY[0x1C68DFDD0](v6) != MEMORY[0x1E69E9E80])
+  if (MEMORY[0x1C68DFDD0](representationCopy) != MEMORY[0x1E69E9E80])
   {
-    if (a4)
+    if (error)
     {
       v27 = "XPC non-dict";
       goto LABEL_20;
@@ -357,7 +357,7 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  string = xpc_dictionary_get_string(v6, "deviceID");
+  string = xpc_dictionary_get_string(representationCopy, "deviceID");
   if (string)
   {
     v15 = string;
@@ -369,19 +369,19 @@ LABEL_21:
 
     if (!v13->_blePeerUUID)
     {
-      [(CBConnection *)a4 initWithXPCEventRepresentation:v15 error:&v30];
+      [(CBConnection *)error initWithXPCEventRepresentation:v15 error:&v30];
       v25 = v30;
       goto LABEL_15;
     }
   }
 
-  int64 = xpc_dictionary_get_int64(v6, "psm");
+  int64 = xpc_dictionary_get_int64(representationCopy, "psm");
   if (int64)
   {
     v13->_blePSM = int64;
   }
 
-  v21 = xpc_dictionary_get_value(v6, "socketFD");
+  v21 = xpc_dictionary_get_value(representationCopy, "socketFD");
   v22 = v21;
   if (!v21)
   {
@@ -420,32 +420,32 @@ LABEL_15:
   return v25;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v5 = a3;
-  v4 = v5;
-  [v5 UTF8String];
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
+  v4 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF();
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __39__CBConnection_activateWithCompletion___block_invoke;
   v7[3] = &unk_1E811E440;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -458,7 +458,7 @@ LABEL_15:
   v16[3] = &unk_1E811D350;
   v18 = &v19;
   v16[4] = self;
-  v5 = v4;
+  v5 = completionCopy;
   v17 = v5;
   v6 = MEMORY[0x1C68DF720](v16);
   if (self->_activateCalled || self->_invalidateCalled)
@@ -574,7 +574,7 @@ LABEL_7:
   return v7();
 }
 
-- (BOOL)activateDirectAndReturnError:(id *)a3
+- (BOOL)activateDirectAndReturnError:(id *)error
 {
   v60 = 0;
   v61 = &v60;
@@ -588,15 +588,15 @@ LABEL_7:
   v59[3] = &unk_1E811D4B8;
   v59[4] = self;
   v59[5] = &v60;
-  v59[6] = a3;
+  v59[6] = error;
   v5 = MEMORY[0x1C68DF720](v59, a2);
   l2capChannel = self->_l2capChannel;
   if (l2capChannel)
   {
-    v7 = [(CBL2CAPChannel *)l2capChannel peer];
-    v8 = [v7 identifier];
+    peer = [(CBL2CAPChannel *)l2capChannel peer];
+    identifier = [peer identifier];
     blePeerUUID = self->_blePeerUUID;
-    self->_blePeerUUID = v8;
+    self->_blePeerUUID = identifier;
 
     self->_blePSM = [(CBL2CAPChannel *)self->_l2capChannel PSM];
     if (self->_peerDevice)
@@ -607,9 +607,9 @@ LABEL_7:
 LABEL_20:
         v20 = (v61 + 5);
         obj = v61[5];
-        v21 = [(CBConnection *)self _setupIOAndReturnError:&obj, v52, blePSM];
+        blePSM = [(CBConnection *)self _setupIOAndReturnError:&obj, v52, blePSM];
         objc_storeStrong(v20, obj);
-        if (v21)
+        if (blePSM)
         {
           writeRequests = MEMORY[0x1C68DF720](self->_activateCompletion);
           activateCompletion = self->_activateCompletion;
@@ -632,8 +632,8 @@ LABEL_44:
     else
     {
       v12 = objc_alloc_init(CBDevice);
-      v13 = [(NSUUID *)self->_blePeerUUID UUIDString];
-      [(CBDevice *)v12 setIdentifier:v13];
+      uUIDString = [(NSUUID *)self->_blePeerUUID UUIDString];
+      [(CBDevice *)v12 setIdentifier:uUIDString];
 
       peerDevice = self->_peerDevice;
       self->_peerDevice = v12;
@@ -671,9 +671,9 @@ LABEL_44:
 LABEL_33:
         v30 = (v61 + 5);
         v57 = v61[5];
-        v31 = [(CBConnection *)self _setupIOAndReturnError:&v57, v52, blePSM, socketFD];
+        socketFD = [(CBConnection *)self _setupIOAndReturnError:&v57, v52, blePSM, socketFD];
         objc_storeStrong(v30, v57);
-        if (v31)
+        if (socketFD)
         {
           writeRequests = MEMORY[0x1C68DF720](self->_activateCompletion);
           v32 = self->_activateCompletion;
@@ -694,8 +694,8 @@ LABEL_33:
     else
     {
       v23 = objc_alloc_init(CBDevice);
-      v24 = [(NSUUID *)self->_blePeerUUID UUIDString];
-      [(CBDevice *)v23 setIdentifier:v24];
+      uUIDString2 = [(NSUUID *)self->_blePeerUUID UUIDString];
+      [(CBDevice *)v23 setIdentifier:uUIDString2];
 
       v25 = self->_peerDevice;
       self->_peerDevice = v23;
@@ -736,8 +736,8 @@ LABEL_33:
   }
 
   writeRequests = v15;
-  v17 = [(CBDevice *)v15 identifier];
-  if (!v17)
+  identifier2 = [(CBDevice *)v15 identifier];
+  if (!identifier2)
   {
     v42 = *MEMORY[0x1E696A768];
     v43 = NSErrorF_safe();
@@ -748,7 +748,7 @@ LABEL_33:
     goto LABEL_37;
   }
 
-  v18 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v17];
+  v18 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:identifier2];
   if (!v18)
   {
     v45 = *MEMORY[0x1E696A768];
@@ -783,10 +783,10 @@ LABEL_18:
 
 LABEL_27:
   v56 = 0;
-  v26 = [(CBConnection *)self _startConnectingAndReturnError:&v56, v52, blePSM];
+  blePSM2 = [(CBConnection *)self _startConnectingAndReturnError:&v56, v52, blePSM];
   v27 = v56;
   v28 = v27;
-  if (!v26)
+  if (!blePSM2)
   {
     v29 = self->_ucat->var0;
     if (v29 <= 90)
@@ -807,10 +807,10 @@ LABEL_27:
     }
 
 LABEL_40:
-    if (a3)
+    if (error)
     {
       v39 = v28;
-      *a3 = v28;
+      *error = v28;
     }
 
     goto LABEL_43;
@@ -869,10 +869,10 @@ LABEL_6:
   }
 }
 
-- (void)_activateXPCStart:(BOOL)a3
+- (void)_activateXPCStart:(BOOL)start
 {
   var0 = self->_ucat->var0;
-  if (a3)
+  if (start)
   {
     if (var0 <= 30)
     {
@@ -914,17 +914,17 @@ LABEL_12:
   v6 = xpc_dictionary_create(0, 0, 0);
   [(CBConnection *)self encodeWithXPCObject:v6];
   xpc_dictionary_set_string(v6, "mTyp", "CnxA");
-  v7 = [(CBConnection *)self _ensureXPCStarted];
+  _ensureXPCStarted = [(CBConnection *)self _ensureXPCStarted];
   dispatchQueue = self->_dispatchQueue;
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __34__CBConnection__activateXPCStart___block_invoke;
   handler[3] = &unk_1E811D158;
   handler[4] = self;
-  xpc_connection_send_message_with_reply(v7, v6, dispatchQueue, handler);
+  xpc_connection_send_message_with_reply(_ensureXPCStarted, v6, dispatchQueue, handler);
 }
 
-- (void)_activateXPCCompleted:(id)a3
+- (void)_activateXPCCompleted:(id)completed
 {
   v4 = CUXPCDecodeNSErrorIfNeeded();
   var0 = self->_ucat->var0;
@@ -993,17 +993,17 @@ LABEL_11:
   }
 }
 
-- (void)disconnectWithCompletion:(id)a3
+- (void)disconnectWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __41__CBConnection_disconnectWithCompletion___block_invoke;
   v7[3] = &unk_1E811E440;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1295,11 +1295,11 @@ LABEL_6:
 LABEL_18:
 }
 
-- (BOOL)updateWithXPCSubscriberInfo:(id)a3
+- (BOOL)updateWithXPCSubscriberInfo:(id)info
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || MEMORY[0x1C68DFDD0](v4) != MEMORY[0x1E69E9E80])
+  infoCopy = info;
+  v5 = infoCopy;
+  if (!infoCopy || MEMORY[0x1C68DFDD0](infoCopy) != MEMORY[0x1E69E9E80])
   {
     LOBYTE(v8) = 0;
     goto LABEL_30;
@@ -1459,17 +1459,17 @@ uint64_t __44__CBConnection_updateWithXPCSubscriberInfo___block_invoke(uint64_t 
   return 1;
 }
 
-- (void)xpcForwardMessage:(id)a3
+- (void)xpcForwardMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __34__CBConnection_xpcForwardMessage___block_invoke;
   v7[3] = &unk_1E811CF50;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = messageCopy;
+  selfCopy = self;
+  v6 = messageCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1514,9 +1514,9 @@ LABEL_5:
   }
 }
 
-- (void)xpcReceivedForwardedEvent:(id)a3
+- (void)xpcReceivedForwardedEvent:(id)event
 {
-  v4 = xpc_dictionary_get_value(a3, "fwdM");
+  v4 = xpc_dictionary_get_value(event, "fwdM");
   v9 = v4;
   if (v4)
   {
@@ -1557,11 +1557,11 @@ LABEL_6:
 LABEL_9:
 }
 
-- (void)xpcReceivedMessage:(id)a3
+- (void)xpcReceivedMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   var0 = self->_ucat->var0;
-  v27 = v4;
+  v27 = messageCopy;
   if (var0 <= 9)
   {
     if (var0 != -1)
@@ -1570,12 +1570,12 @@ LABEL_3:
       v25 = CUPrintXPC();
       LogPrintF_safe();
 
-      v4 = v27;
+      messageCopy = v27;
       goto LABEL_5;
     }
 
     v6 = _LogCategory_Initialize();
-    v4 = v27;
+    messageCopy = v27;
     if (v6)
     {
       ucat = self->_ucat;
@@ -1584,7 +1584,7 @@ LABEL_3:
   }
 
 LABEL_5:
-  if (MEMORY[0x1C68DFDD0](v4) == MEMORY[0x1E69E9E80])
+  if (MEMORY[0x1C68DFDD0](messageCopy) == MEMORY[0x1E69E9E80])
   {
     [(CBConnection *)self _xpcReceivedMessage:v27];
     goto LABEL_26;
@@ -1677,10 +1677,10 @@ LABEL_21:
 LABEL_26:
 }
 
-- (void)_xpcReceivedMessage:(id)a3
+- (void)_xpcReceivedMessage:(id)message
 {
-  v11 = a3;
-  string = xpc_dictionary_get_string(v11, "mTyp");
+  messageCopy = message;
+  string = xpc_dictionary_get_string(messageCopy, "mTyp");
   if (!string)
   {
     var0 = self->_ucat->var0;
@@ -1702,7 +1702,7 @@ LABEL_10:
     }
 
 LABEL_11:
-    v8 = v11;
+    v8 = messageCopy;
 
     goto LABEL_13;
   }
@@ -1710,14 +1710,14 @@ LABEL_11:
   v5 = string;
   if (!strcmp(string, "CnxF"))
   {
-    [(CBConnection *)self xpcReceivedForwardedEvent:v11];
-    v8 = v11;
+    [(CBConnection *)self xpcReceivedForwardedEvent:messageCopy];
+    v8 = messageCopy;
   }
 
   else if (!strcmp(v5, "PrCm"))
   {
-    [(CBConnection *)self xpcReceivedPairingCompleted:v11];
-    v8 = v11;
+    [(CBConnection *)self xpcReceivedPairingCompleted:messageCopy];
+    v8 = messageCopy;
   }
 
   else
@@ -1744,16 +1744,16 @@ LABEL_11:
       goto LABEL_11;
     }
 
-    [(CBConnection *)self xpcReceivedPairingPrompt:v11];
-    v8 = v11;
+    [(CBConnection *)self xpcReceivedPairingPrompt:messageCopy];
+    v8 = messageCopy;
   }
 
 LABEL_13:
 }
 
-- (void)xpcReceivedPairingCompleted:(id)a3
+- (void)xpcReceivedPairingCompleted:(id)completed
 {
-  v4 = a3;
+  completedCopy = completed;
   if (MEMORY[0x1C68DFDD0]() != MEMORY[0x1E69E9E80])
   {
     [CBConnection xpcReceivedPairingCompleted:?];
@@ -1786,9 +1786,9 @@ LABEL_3:
 LABEL_4:
 }
 
-- (void)xpcReceivedPairingPrompt:(id)a3
+- (void)xpcReceivedPairingPrompt:(id)prompt
 {
-  v4 = a3;
+  promptCopy = prompt;
   if (MEMORY[0x1C68DFDD0]() == MEMORY[0x1E69E9E80])
   {
     objc_opt_class();
@@ -1825,19 +1825,19 @@ LABEL_3:
   [CBConnection xpcReceivedPairingPrompt:?];
 }
 
-- (BOOL)_startConnectingAndReturnError:(id *)a3
+- (BOOL)_startConnectingAndReturnError:(id *)error
 {
   v25[1] = *MEMORY[0x1E69E9840];
   if (!self->_blePeerUUID)
   {
-    if (a3)
+    if (error)
     {
       v18 = *MEMORY[0x1E696A768];
 LABEL_14:
       v20 = NSErrorF_safe();
       v21 = v20;
       result = 0;
-      *a3 = v20;
+      *error = v20;
       goto LABEL_9;
     }
 
@@ -1858,7 +1858,7 @@ LABEL_15:
   v10 = self->_centralManager;
   if (!v10)
   {
-    if (a3)
+    if (error)
     {
       v19 = *MEMORY[0x1E696A768];
       goto LABEL_14;
@@ -1869,8 +1869,8 @@ LABEL_15:
 
   if ((self->_connectionFlags & 0x80) != 0 || (internalFlags = self->_internalFlags, (internalFlags & 0x100) != 0))
   {
-    v12 = [(CBManager *)v10 sharedPairingAgent];
-    [v12 setDelegate:self];
+    sharedPairingAgent = [(CBManager *)v10 sharedPairingAgent];
+    [sharedPairingAgent setDelegate:self];
 
     internalFlags = self->_internalFlags;
   }
@@ -1937,7 +1937,7 @@ LABEL_6:
   [*(v4 + 32) didReceiveForwardedMessageForCBManager:{v3, v8, v9}];
 }
 
-- (BOOL)_setupIOAndReturnError:(id *)a3
+- (BOOL)_setupIOAndReturnError:(id *)error
 {
   l2capChannel = self->_l2capChannel;
   if (!l2capChannel)
@@ -1949,7 +1949,7 @@ LABEL_6:
     }
 
 LABEL_12:
-    if (!a3)
+    if (!error)
     {
       return 0;
     }
@@ -1958,7 +1958,7 @@ LABEL_12:
     v21 = self->_l2capChannel;
 LABEL_16:
     NSErrorF_safe();
-    *a3 = v14 = 0;
+    *error = v14 = 0;
     return v14;
   }
 
@@ -1973,7 +1973,7 @@ LABEL_3:
   v26 = 1;
   if (setsockopt(socketFD, 0xFFFF, 4130, &v26, 4u) && (!*__error() || *__error()))
   {
-    if (!a3)
+    if (!error)
     {
       return 0;
     }
@@ -1984,7 +1984,7 @@ LABEL_3:
 
   if (SocketSetNonBlocking())
   {
-    if (!a3)
+    if (!error)
     {
       return 0;
     }
@@ -2000,7 +2000,7 @@ LABEL_3:
   v9 = self->_readSource;
   if (!v9)
   {
-    if (a3)
+    if (error)
     {
       v20 = *MEMORY[0x1E696A768];
       goto LABEL_16;
@@ -2049,7 +2049,7 @@ LABEL_3:
 
   else
   {
-    [CBConnection _setupIOAndReturnError:a3];
+    [CBConnection _setupIOAndReturnError:error];
   }
 
   return v14;
@@ -2077,9 +2077,9 @@ uint64_t __39__CBConnection__setupIOAndReturnError___block_invoke_4(uint64_t a1)
   return [v4 _invalidated];
 }
 
-- (void)_reportError:(id)a3
+- (void)_reportError:(id)error
 {
-  v12 = a3;
+  errorCopy = error;
   if (!self->_invalidateCalled)
   {
     var0 = self->_ucat->var0;
@@ -2111,7 +2111,7 @@ LABEL_6:
 
   if (v6)
   {
-    (v6)[2](v6, v12);
+    (v6)[2](v6, errorCopy);
   }
 
   else
@@ -2122,12 +2122,12 @@ LABEL_6:
 
     if (v8)
     {
-      (v8)[2](v8, v12);
+      (v8)[2](v8, errorCopy);
     }
   }
 
-  [(CBConnection *)self _abortReadsWithError:v12, v11];
-  [(CBConnection *)self _abortWritesWithError:v12];
+  [(CBConnection *)self _abortReadsWithError:errorCopy, v11];
+  [(CBConnection *)self _abortWritesWithError:errorCopy];
 }
 
 - (void)_run
@@ -2226,8 +2226,8 @@ LABEL_36:
             goto LABEL_37;
           }
 
-          v6 = [(CBManager *)self->_centralManager state];
-          if (v6 != 10 && v6 != CBManagerStatePoweredOn)
+          state = [(CBManager *)self->_centralManager state];
+          if (state != 10 && state != CBManagerStatePoweredOn)
           {
             goto LABEL_37;
           }
@@ -2311,8 +2311,8 @@ LABEL_42:
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
   v6 = [(CBCentralManager *)centralManager retrievePeripheralsWithIdentifiers:v5];
 
-  v7 = [v6 firstObject];
-  if (!v7)
+  firstObject = [v6 firstObject];
+  if (!firstObject)
   {
     v16 = *MEMORY[0x1E696A768];
     v9 = NSErrorF_safe();
@@ -2320,7 +2320,7 @@ LABEL_42:
     goto LABEL_24;
   }
 
-  objc_storeStrong(&self->_peripheral, v7);
+  objc_storeStrong(&self->_peripheral, firstObject);
   [(CBPeripheral *)self->_peripheral setDelegate:self];
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v9 = v8;
@@ -2386,7 +2386,7 @@ LABEL_19:
   }
 
 LABEL_22:
-  [(CBCentralManager *)self->_centralManager connectPeripheral:v7 options:v9, v24, v25];
+  [(CBCentralManager *)self->_centralManager connectPeripheral:firstObject options:v9, v24, v25];
   if (self->_connectTimeoutSeconds > 0.0)
   {
     v18 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, self->_dispatchQueue);
@@ -2408,7 +2408,7 @@ LABEL_22:
 LABEL_24:
 
   v21 = *MEMORY[0x1E69E9840];
-  return v7 != 0;
+  return firstObject != 0;
 }
 
 void __32__CBConnection__runConnectStart__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6, uint64_t a7, uint64_t a8)
@@ -2445,23 +2445,23 @@ void __32__CBConnection__runConnectStart__block_invoke(uint64_t a1, uint64_t a2,
   return v3;
 }
 
-- (void)pairingGenerateOOBDataWithCompletionHandler:(id)a3
+- (void)pairingGenerateOOBDataWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__CBConnection_pairingGenerateOOBDataWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E811E440;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_pairingGenerateOOBDataWithCompletionHandler:(id)a3
+- (void)_pairingGenerateOOBDataWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v54 = 0;
   v55 = &v54;
   v56 = 0x3032000000;
@@ -2474,14 +2474,14 @@ void __32__CBConnection__runConnectStart__block_invoke(uint64_t a1, uint64_t a2,
   v51[3] = &unk_1E811D350;
   v53 = &v54;
   v51[4] = self;
-  v5 = v4;
+  v5 = handlerCopy;
   v52 = v5;
   v12 = MEMORY[0x1C68DF720](v51);
   if (self->_invalidateCalled)
   {
     v43 = CBErrorF(-71148, "Use after invalidate", v6, v7, v8, v9, v10, v11, v47);
 LABEL_21:
-    v20 = v55[5];
+    peer = v55[5];
     v55[5] = v43;
     goto LABEL_18;
   }
@@ -2489,12 +2489,12 @@ LABEL_21:
   peripheral = self->_peripheral;
   if (peripheral)
   {
-    v20 = peripheral;
+    peer = peripheral;
     goto LABEL_5;
   }
 
-  v20 = [(CBL2CAPChannel *)self->_l2capChannel peer];
-  if (!v20)
+  peer = [(CBL2CAPChannel *)self->_l2capChannel peer];
+  if (!peer)
   {
     v43 = CBErrorF(-6705, "No peer", v14, v15, v16, v17, v18, v19, v47);
     goto LABEL_21;
@@ -2504,11 +2504,11 @@ LABEL_5:
   centralManager = self->_centralManager;
   if (centralManager)
   {
-    v22 = [(CBManager *)centralManager sharedPairingAgent];
-    v29 = v22;
-    if (v22)
+    sharedPairingAgent = [(CBManager *)centralManager sharedPairingAgent];
+    v29 = sharedPairingAgent;
+    if (sharedPairingAgent)
     {
-      v36 = [v22 retrieveOOBDataForPeer:v20];
+      v36 = [sharedPairingAgent retrieveOOBDataForPeer:peer];
       if (!v36)
       {
         v44 = CBErrorF(-6700, "Generate OOB data failed", v30, v31, v32, v33, v34, v35, v47);
@@ -2533,7 +2533,7 @@ LABEL_5:
           v46 = self->_ucat;
         }
 
-        v38 = [(CBPeer *)v20 identifier];
+        identifier = [(CBPeer *)peer identifier];
         v48 = CUPrintNSDataHex();
         LogPrintF_safe();
       }
@@ -2566,7 +2566,7 @@ LABEL_14:
   v49[3] = &unk_1E81204E0;
   v49[4] = self;
   v50 = v5;
-  [(CBServer *)server pairingGenerateOOBDataForPeer:v20 completionHandler:v49];
+  [(CBServer *)server pairingGenerateOOBDataForPeer:peer completionHandler:v49];
 
 LABEL_18:
   v12[2](v12);
@@ -2627,18 +2627,18 @@ void __61__CBConnection__pairingGenerateOOBDataWithCompletionHandler___block_inv
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)pairingSetOOBEnabled:(BOOL)a3 completionHandler:(id)a4
+- (void)pairingSetOOBEnabled:(BOOL)enabled completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __55__CBConnection_pairingSetOOBEnabled_completionHandler___block_invoke;
   block[3] = &unk_1E8120508;
-  v11 = a3;
+  enabledCopy = enabled;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -2685,18 +2685,18 @@ LABEL_7:
   return v8();
 }
 
-- (void)pairingPerformAction:(int)a3 completionHandler:(id)a4
+- (void)pairingPerformAction:(int)action completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __55__CBConnection_pairingPerformAction_completionHandler___block_invoke;
   block[3] = &unk_1E811E3A8;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = handlerCopy;
+  actionCopy = action;
+  v8 = handlerCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -2728,21 +2728,21 @@ void __55__CBConnection_pairingPerformAction_completionHandler___block_invoke(ui
   }
 }
 
-- (void)pairingPerformAction:(int)a3 withOptions:(id)a4 completionHandler:(id)a5
+- (void)pairingPerformAction:(int)action withOptions:(id)options completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  optionsCopy = options;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __67__CBConnection_pairingPerformAction_withOptions_completionHandler___block_invoke;
   v13[3] = &unk_1E8120558;
-  v14 = v8;
-  v15 = v9;
-  v16 = a3;
+  v14 = optionsCopy;
+  v15 = handlerCopy;
+  actionCopy = action;
   v13[4] = self;
-  v11 = v8;
-  v12 = v9;
+  v11 = optionsCopy;
+  v12 = handlerCopy;
   dispatch_async(dispatchQueue, v13);
 }
 
@@ -2773,10 +2773,10 @@ void __67__CBConnection_pairingPerformAction_withOptions_completionHandler___blo
   }
 }
 
-- (void)_pairingPerformActionBLE:(int)a3 withOptions:(id)a4 completionHandler:(id)a5
+- (void)_pairingPerformActionBLE:(int)e withOptions:(id)options completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  optionsCopy = options;
+  handlerCopy = handler;
   v51 = 0;
   v52 = &v51;
   v53 = 0x3032000000;
@@ -2789,12 +2789,12 @@ void __67__CBConnection_pairingPerformAction_withOptions_completionHandler___blo
   v47[3] = &unk_1E8120580;
   v49 = &v51;
   v47[4] = self;
-  v50 = a3;
-  v10 = v9;
+  eCopy = e;
+  v10 = handlerCopy;
   v48 = v10;
   v11 = MEMORY[0x1C68DF720](v47);
-  v18 = [(CBManager *)self->_centralManager sharedPairingAgent];
-  if (!v18)
+  sharedPairingAgent = [(CBManager *)self->_centralManager sharedPairingAgent];
+  if (!sharedPairingAgent)
   {
     v44 = CBErrorF(-6705, "No pairing agent", v12, v13, v14, v15, v16, v17, v46);
     v25 = v52[5];
@@ -2811,14 +2811,14 @@ void __67__CBConnection_pairingPerformAction_withOptions_completionHandler___blo
       if (var0 != -1)
       {
 LABEL_5:
-        v27 = [(CBPeer *)v25 identifier];
-        v28 = v27;
-        if (a3 <= 3)
+        identifier = [(CBPeer *)v25 identifier];
+        v28 = identifier;
+        if (e <= 3)
         {
-          v29 = off_1E8120660[a3];
+          v29 = off_1E8120660[e];
         }
 
-        v46 = v27;
+        v46 = identifier;
         LogPrintF_safe();
 
         goto LABEL_10;
@@ -2834,15 +2834,15 @@ LABEL_5:
 
 LABEL_10:
     v32 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    if ([v8 count])
+    if ([optionsCopy count])
     {
       v39 = MEMORY[0x1E696AD98];
-      v40 = [v8 objectForKeyedSubscript:@"kCBMsgArgPairingPasskey"];
+      v40 = [optionsCopy objectForKeyedSubscript:@"kCBMsgArgPairingPasskey"];
       v41 = [v39 numberWithInteger:{objc_msgSend(v40, "integerValue")}];
       [v32 setObject:v41 forKeyedSubscript:@"kCBMsgArgPairingPasskey"];
     }
 
-    if ((a3 - 1) > 2)
+    if ((e - 1) > 2)
     {
       v42 = CBErrorF(-6705, "Bad pairing action", v33, v34, v35, v36, v37, v38, v46);
       v43 = v52[5];
@@ -2851,7 +2851,7 @@ LABEL_10:
 
     else
     {
-      [v18 respondToPairingRequest:v25 type:self->_pairingType accept:1u >> ((a3 - 1) & 7) data:v32];
+      [sharedPairingAgent respondToPairingRequest:v25 type:self->_pairingType accept:1u >> ((e - 1) & 7) data:v32];
       if (v10)
       {
         (*(v10 + 2))(v10, 0);
@@ -2932,17 +2932,17 @@ LABEL_8:
   return result;
 }
 
-- (void)_pairingPerformActionClassic:(int)a3 completionHandler:(id)a4
+- (void)_pairingPerformActionClassic:(int)classic completionHandler:(id)handler
 {
-  v12 = a4;
-  if (a3 == 1)
+  handlerCopy = handler;
+  if (classic == 1)
   {
     v15 = 0;
   }
 
   else
   {
-    if (a3 == 3)
+    if (classic == 3)
     {
       v13 = "User canceled pairing";
       v14 = -6723;
@@ -2950,10 +2950,10 @@ LABEL_8:
 
     else
     {
-      if (a3 != 2)
+      if (classic != 2)
       {
         v15 = CBErrorF(-6705, "Bad pairing action", v6, v7, v8, v9, v10, v11, v20);
-        v12[2](v12, v15);
+        handlerCopy[2](handlerCopy, v15);
         goto LABEL_10;
       }
 
@@ -2970,14 +2970,14 @@ LABEL_8:
   [(CBPairingInfo *)v17 setDevice:self->_peerDevice];
   [(CBPairingInfo *)v17 setError:v15];
   CUXPCEncodeObject();
-  v18 = [(CBConnection *)self _ensureXPCStarted];
+  _ensureXPCStarted = [(CBConnection *)self _ensureXPCStarted];
   dispatchQueue = self->_dispatchQueue;
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __63__CBConnection__pairingPerformActionClassic_completionHandler___block_invoke;
   handler[3] = &unk_1E811D1B0;
-  v22 = v12;
-  xpc_connection_send_message_with_reply(v18, v16, dispatchQueue, handler);
+  v22 = handlerCopy;
+  xpc_connection_send_message_with_reply(_ensureXPCStarted, v16, dispatchQueue, handler);
 
 LABEL_10:
 }
@@ -2989,18 +2989,18 @@ void __63__CBConnection__pairingPerformActionClassic_completionHandler___block_i
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)_pairingPerformActionClassic:(int)a3 withOptions:(id)a4 completionHandler:(id)a5
+- (void)_pairingPerformActionClassic:(int)classic withOptions:(id)options completionHandler:(id)handler
 {
-  v8 = a4;
-  v15 = a5;
-  if (a3 == 1)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (classic == 1)
   {
     v18 = 0;
   }
 
   else
   {
-    if (a3 == 3)
+    if (classic == 3)
     {
       v16 = "User canceled pairing";
       v17 = -6723;
@@ -3008,10 +3008,10 @@ void __63__CBConnection__pairingPerformActionClassic_completionHandler___block_i
 
     else
     {
-      if (a3 != 2)
+      if (classic != 2)
       {
         v18 = CBErrorF(-6705, "Bad pairing action", v9, v10, v11, v12, v13, v14, v24);
-        v15[2](v15, v18);
+        handlerCopy[2](handlerCopy, v18);
         goto LABEL_12;
       }
 
@@ -3027,21 +3027,21 @@ void __63__CBConnection__pairingPerformActionClassic_completionHandler___block_i
   v20 = objc_alloc_init(CBPairingInfo);
   [(CBPairingInfo *)v20 setDevice:self->_peerDevice];
   [(CBPairingInfo *)v20 setError:v18];
-  if (v8)
+  if (optionsCopy)
   {
-    v21 = [v8 objectForKeyedSubscript:@"kCBMsgArgPairingPasskey"];
+    v21 = [optionsCopy objectForKeyedSubscript:@"kCBMsgArgPairingPasskey"];
     [(CBPairingInfo *)v20 setPin:v21];
   }
 
   CUXPCEncodeObject();
-  v22 = [(CBConnection *)self _ensureXPCStarted];
+  _ensureXPCStarted = [(CBConnection *)self _ensureXPCStarted];
   dispatchQueue = self->_dispatchQueue;
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __75__CBConnection__pairingPerformActionClassic_withOptions_completionHandler___block_invoke;
   handler[3] = &unk_1E811D1B0;
-  v26 = v15;
-  xpc_connection_send_message_with_reply(v22, v19, dispatchQueue, handler);
+  v26 = handlerCopy;
+  xpc_connection_send_message_with_reply(_ensureXPCStarted, v19, dispatchQueue, handler);
 
 LABEL_12:
 }
@@ -3053,9 +3053,9 @@ void __75__CBConnection__pairingPerformActionClassic_withOptions_completionHandl
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)pairWithOOBData:(id)a3
+- (void)pairWithOOBData:(id)data
 {
-  v4 = [a3 copy];
+  v4 = [data copy];
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -3067,9 +3067,9 @@ void __75__CBConnection__pairingPerformActionClassic_withOptions_completionHandl
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_pairWithOOBData:(id)a3
+- (void)_pairWithOOBData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v39 = 0;
   v40 = &v39;
   v41 = 0x3032000000;
@@ -3100,9 +3100,9 @@ void __75__CBConnection__pairingPerformActionClassic_withOptions_completionHandl
     goto LABEL_9;
   }
 
-  v20 = [(CBManager *)self->_centralManager sharedPairingAgent];
-  v27 = v20;
-  if (!v20)
+  sharedPairingAgent = [(CBManager *)self->_centralManager sharedPairingAgent];
+  v27 = sharedPairingAgent;
+  if (!sharedPairingAgent)
   {
     v33 = CBErrorF(-6705, "No pairing agent", v21, v22, v23, v24, v25, v26, v36);
     v34 = v40[5];
@@ -3111,7 +3111,7 @@ void __75__CBConnection__pairingPerformActionClassic_withOptions_completionHandl
     goto LABEL_9;
   }
 
-  [v20 setDelegate:self];
+  [sharedPairingAgent setDelegate:self];
   var0 = self->_ucat->var0;
   if (var0 <= 30)
   {
@@ -3126,13 +3126,13 @@ void __75__CBConnection__pairingPerformActionClassic_withOptions_completionHandl
       v35 = self->_ucat;
     }
 
-    v29 = [(CBPeer *)v19 identifier];
+    identifier = [(CBPeer *)v19 identifier];
     v37 = CUPrintNSDataHex();
     LogPrintF_safe();
   }
 
 LABEL_8:
-  objc_storeStrong(&self->_pairingOOBData, a3);
+  objc_storeStrong(&self->_pairingOOBData, data);
   [v27 pairPeer:v19];
 LABEL_9:
 
@@ -3167,17 +3167,17 @@ void __33__CBConnection__pairWithOOBData___block_invoke(uint64_t a1)
   }
 }
 
-- (void)readWithCBReadRequest:(id)a3
+- (void)readWithCBReadRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__CBConnection_readWithCBReadRequest___block_invoke;
   v7[3] = &unk_1E811CF50;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = requestCopy;
+  v6 = requestCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -3205,9 +3205,9 @@ void __38__CBConnection_readWithCBReadRequest___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_processReads:(BOOL)a3
+- (void)_processReads:(BOOL)reads
 {
-  v35 = a3;
+  readsCopy = reads;
   v4 = 0;
   v5 = &OBJC_IVAR___CBReadRequest__length;
   while (1)
@@ -3218,10 +3218,10 @@ void __38__CBConnection_readWithCBReadRequest___block_invoke(uint64_t a1)
       goto LABEL_5;
     }
 
-    v7 = [(NSMutableArray *)self->_readRequests firstObject];
-    if (!v7)
+    firstObject = [(NSMutableArray *)self->_readRequests firstObject];
+    if (!firstObject)
     {
-      if (v35)
+      if (readsCopy)
       {
         if (v4)
         {
@@ -3233,9 +3233,9 @@ void __38__CBConnection_readWithCBReadRequest___block_invoke(uint64_t a1)
           goto LABEL_34;
         }
 
-        v27 = [(CBConnection *)self _processReadStatus];
+        _processReadStatus = [(CBConnection *)self _processReadStatus];
         readSuspended = self->_readSuspended;
-        if (v27)
+        if (_processReadStatus)
         {
           if (!self->_readSuspended)
           {
@@ -3259,7 +3259,7 @@ LABEL_35:
       goto LABEL_18;
     }
 
-    obja = v7;
+    obja = firstObject;
     [(NSMutableArray *)self->_readRequests removeObjectAtIndex:0];
     [(CBConnection *)self _prepareReadRequest:obja];
     objc_storeStrong(&self->_readRequestCurrent, obja);
@@ -3290,17 +3290,17 @@ LABEL_5:
       v22 = self->_ucat;
 LABEL_7:
       v36 = self->_socketFD;
-      v14 = [(CBReadRequest *)obj minLength];
-      v15 = [(CBReadRequest *)obj maxLength];
+      minLength = [(CBReadRequest *)obj minLength];
+      maxLength = [(CBReadRequest *)obj maxLength];
       v16 = v5;
       v17 = *(&obj->super.isa + *v5);
       CUPrintErrorCode();
       v34 = v33 = v17;
       v5 = v16;
-      v31 = v15;
+      v31 = maxLength;
       v32 = v8;
       v29 = v36;
-      v30 = v14;
+      v30 = minLength;
       LogPrintF_safe();
     }
 
@@ -3311,8 +3311,8 @@ LABEL_9:
     }
 
     v19 = *(&obj->super.isa + *v5);
-    v20 = [(CBReadRequest *)obj bufferData];
-    [v20 setLength:v19];
+    bufferData = [(CBReadRequest *)obj bufferData];
+    [bufferData setLength:v19];
 
     readRequestCurrent = self->_readRequestCurrent;
     self->_readRequestCurrent = 0;
@@ -3352,26 +3352,26 @@ LABEL_9:
 LABEL_18:
 }
 
-- (void)_prepareReadRequest:(id)a3
+- (void)_prepareReadRequest:(id)request
 {
-  v13 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:{objc_msgSend(v13, "maxLength")}];
-  [v13 setBufferData:v4];
+  requestCopy = request;
+  v4 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:{objc_msgSend(requestCopy, "maxLength")}];
+  [requestCopy setBufferData:v4];
 
-  v5 = [v13 bufferData];
-  v13[1] = [v5 mutableBytes];
+  bufferData = [requestCopy bufferData];
+  requestCopy[1] = [bufferData mutableBytes];
 
-  v6 = [v13 bufferData];
-  [v13 setData:v6];
+  bufferData2 = [requestCopy bufferData];
+  [requestCopy setData:bufferData2];
 
-  v13[3] = 0;
-  v7 = v13[2];
-  v13[2] = 0;
+  requestCopy[3] = 0;
+  v7 = requestCopy[2];
+  requestCopy[2] = 0;
 
   var0 = self->_ucat->var0;
   if (var0 <= 9)
   {
-    v9 = v13;
+    v9 = requestCopy;
     if (var0 != -1)
     {
       goto LABEL_3;
@@ -3381,26 +3381,26 @@ LABEL_18:
     if (_LogCategory_Initialize())
     {
       v12 = self->_ucat;
-      v9 = v13;
+      v9 = requestCopy;
 LABEL_3:
       [v9 minLength];
-      [v13 maxLength];
+      [requestCopy maxLength];
       LogPrintF_safe();
-      v10 = v13;
+      v10 = requestCopy;
 
       goto LABEL_5;
     }
   }
 
-  v10 = v13;
+  v10 = requestCopy;
 
 LABEL_5:
 }
 
-- (void)_abortReadsWithError:(id)a3
+- (void)_abortReadsWithError:(id)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self->_readRequestCurrent || [(NSMutableArray *)self->_readRequests count])
   {
     var0 = self->_ucat->var0;
@@ -3431,7 +3431,7 @@ LABEL_7:
     readRequestCurrent = self->_readRequestCurrent;
     self->_readRequestCurrent = 0;
 
-    [(CBConnection *)self _completeReadRequest:v7 error:v4];
+    [(CBConnection *)self _completeReadRequest:v7 error:errorCopy];
   }
 
   v23 = 0u;
@@ -3457,7 +3457,7 @@ LABEL_7:
 
         v7 = *(*(&v21 + 1) + 8 * v13);
 
-        [(CBConnection *)self _completeReadRequest:v7 error:v4];
+        [(CBConnection *)self _completeReadRequest:v7 error:errorCopy];
         ++v13;
         v14 = v7;
       }
@@ -3483,7 +3483,7 @@ LABEL_7:
 
   if (v16)
   {
-    (v16)[2](v16, v4);
+    (v16)[2](v16, errorCopy);
   }
 
   [(CBConnection *)self _invalidated];
@@ -3552,14 +3552,14 @@ LABEL_9:
   return 1;
 }
 
-- (void)_completeReadRequest:(id)a3 error:(id)a4
+- (void)_completeReadRequest:(id)request error:(id)error
 {
-  v14 = a3;
-  v6 = a4;
+  requestCopy = request;
+  errorCopy = error;
   var0 = self->_ucat->var0;
   if (var0 <= 9)
   {
-    v8 = v14;
+    v8 = requestCopy;
     if (var0 != -1)
     {
 LABEL_3:
@@ -3574,34 +3574,34 @@ LABEL_3:
     if (_LogCategory_Initialize())
     {
       v12 = self->_ucat;
-      v8 = v14;
+      v8 = requestCopy;
       goto LABEL_3;
     }
   }
 
 LABEL_5:
-  v10 = v14[2];
-  v14[2] = v6;
+  v10 = requestCopy[2];
+  requestCopy[2] = errorCopy;
 
-  v11 = [v14 completion];
-  [v14 setCompletion:0];
-  if (v11)
+  completion = [requestCopy completion];
+  [requestCopy setCompletion:0];
+  if (completion)
   {
-    v11[2](v11);
+    completion[2](completion);
   }
 }
 
-- (void)writeWithCBWriteRequest:(id)a3
+- (void)writeWithCBWriteRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__CBConnection_writeWithCBWriteRequest___block_invoke;
   v7[3] = &unk_1E811CF50;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = requestCopy;
+  v6 = requestCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -3629,19 +3629,19 @@ void __40__CBConnection_writeWithCBWriteRequest___block_invoke(uint64_t a1)
   }
 }
 
-- (void)writeEndOfDataWithCompletion:(id)a3
+- (void)writeEndOfDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(CBWriteRequest);
   [(CBWriteRequest *)v5 setEndOfData:1];
-  if (v4)
+  if (completionCopy)
   {
     v6 = MEMORY[0x1E69E9820];
     v7 = 3221225472;
     v8 = __45__CBConnection_writeEndOfDataWithCompletion___block_invoke;
     v9 = &unk_1E811CFA0;
     v10 = v5;
-    v11 = v4;
+    v11 = completionCopy;
     [(CBWriteRequest *)v5 setCompletion:&v6];
   }
 
@@ -3667,8 +3667,8 @@ void __45__CBConnection_writeEndOfDataWithCompletion___block_invoke(uint64_t a1)
       goto LABEL_6;
     }
 
-    v13 = [(NSMutableArray *)self->_writeRequests firstObject];
-    if (!v13)
+    firstObject = [(NSMutableArray *)self->_writeRequests firstObject];
+    if (!firstObject)
     {
       if (!self->_writeSuspended)
       {
@@ -3680,7 +3680,7 @@ void __45__CBConnection_writeEndOfDataWithCompletion___block_invoke(uint64_t a1)
       goto LABEL_35;
     }
 
-    v6 = v13;
+    v6 = firstObject;
     [(NSMutableArray *)self->_writeRequests removeObjectAtIndex:0];
     v25 = 0;
     [(CBConnection *)self _prepareWriteRequest:v6 error:&v25];
@@ -3793,26 +3793,26 @@ LABEL_4:
   }
 }
 
-- (BOOL)_prepareWriteRequest:(id)a3 error:(id *)a4
+- (BOOL)_prepareWriteRequest:(id)request error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 dataArray];
-  v8 = [v7 count];
+  requestCopy = request;
+  dataArray = [requestCopy dataArray];
+  v8 = [dataArray count];
   if (v8 >= 0x11)
   {
-    [CBConnection _prepareWriteRequest:a4 error:?];
+    [CBConnection _prepareWriteRequest:error error:?];
   }
 
   else
   {
-    v19 = self;
-    v9 = v6 + 16;
+    selfCopy = self;
+    v9 = requestCopy + 16;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v10 = v7;
+    v10 = dataArray;
     v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v11)
     {
@@ -3839,15 +3839,15 @@ LABEL_4:
       while (v12);
     }
 
-    *(v6 + 34) = v6 + 16;
-    *(v6 + 70) = (v9 - (v6 + 16)) >> 4;
-    *(v6 + 36) = 0;
-    v16 = *(v6 + 1);
-    *(v6 + 1) = 0;
+    *(requestCopy + 34) = requestCopy + 16;
+    *(requestCopy + 70) = (v9 - (requestCopy + 16)) >> 4;
+    *(requestCopy + 36) = 0;
+    v16 = *(requestCopy + 1);
+    *(requestCopy + 1) = 0;
 
     if (gLogCategory_CBConnection <= 9 && (gLogCategory_CBConnection != -1 || _LogCategory_Initialize()))
     {
-      [CBConnection _prepareWriteRequest:v6 error:v19];
+      [CBConnection _prepareWriteRequest:requestCopy error:selfCopy];
     }
   }
 
@@ -3855,10 +3855,10 @@ LABEL_4:
   return v8 < 0x11;
 }
 
-- (void)_abortWritesWithError:(id)a3
+- (void)_abortWritesWithError:(id)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self->_writeRequestCurrent || [(NSMutableArray *)self->_writeRequests count])
   {
     var0 = self->_ucat->var0;
@@ -3889,7 +3889,7 @@ LABEL_7:
     writeRequestCurrent = self->_writeRequestCurrent;
     self->_writeRequestCurrent = 0;
 
-    [(CBConnection *)self _completeWriteRequest:v7 error:v4];
+    [(CBConnection *)self _completeWriteRequest:v7 error:errorCopy];
   }
 
   v23 = 0u;
@@ -3915,7 +3915,7 @@ LABEL_7:
 
         v7 = *(*(&v21 + 1) + 8 * v13);
 
-        [(CBConnection *)self _completeWriteRequest:v7 error:v4];
+        [(CBConnection *)self _completeWriteRequest:v7 error:errorCopy];
         ++v13;
         v14 = v7;
       }
@@ -3941,7 +3941,7 @@ LABEL_7:
 
   if (v16)
   {
-    (v16)[2](v16, v4);
+    (v16)[2](v16, errorCopy);
   }
 
   [(CBConnection *)self _invalidated];
@@ -3949,10 +3949,10 @@ LABEL_7:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_completeWriteRequest:(id)a3 error:(id)a4
+- (void)_completeWriteRequest:(id)request error:(id)error
 {
-  v13 = a3;
-  v6 = a4;
+  requestCopy = request;
+  errorCopy = error;
   var0 = self->_ucat->var0;
   if (var0 <= 9)
   {
@@ -3974,36 +3974,36 @@ LABEL_3:
   }
 
 LABEL_5:
-  v9 = v13[1];
-  v13[1] = v6;
+  v9 = requestCopy[1];
+  requestCopy[1] = errorCopy;
 
-  v10 = [v13 completion];
-  [v13 setCompletion:0];
-  if (v10)
+  completion = [requestCopy completion];
+  [requestCopy setCompletion:0];
+  if (completion)
   {
-    v10[2](v10);
+    completion[2](completion);
   }
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v13 = a3;
+  stateCopy = state;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (self->_invalidateCalled)
   {
     goto LABEL_13;
   }
 
-  v4 = [v13 state];
+  state = [stateCopy state];
   var0 = self->_ucat->var0;
   if (var0 <= 30)
   {
     if (var0 != -1)
     {
-      if (v4 <= 0xA)
+      if (state <= 0xA)
       {
 LABEL_5:
-        v6 = off_1E8120680[v4];
+        v6 = off_1E8120680[state];
         goto LABEL_18;
       }
 
@@ -4012,7 +4012,7 @@ LABEL_17:
 LABEL_18:
       v12 = v6;
       LogPrintF_safe();
-      if (v4 > 4)
+      if (state > 4)
       {
         goto LABEL_19;
       }
@@ -4023,7 +4023,7 @@ LABEL_18:
     if (_LogCategory_Initialize())
     {
       ucat = self->_ucat;
-      if (v4 <= 0xA)
+      if (state <= 0xA)
       {
         goto LABEL_5;
       }
@@ -4032,13 +4032,13 @@ LABEL_18:
     }
   }
 
-  if (v4 > 4)
+  if (state > 4)
   {
 LABEL_19:
-    if (v4 == 10 || v4 == 5)
+    if (state == 10 || state == 5)
     {
       [(CBConnection *)self _run];
-      v10 = v13;
+      v10 = stateCopy;
 
       goto LABEL_15;
     }
@@ -4047,14 +4047,14 @@ LABEL_19:
   }
 
 LABEL_8:
-  if (v4 == 1)
+  if (state == 1)
   {
     v8 = *MEMORY[0x1E696A768];
   }
 
   else
   {
-    if (v4 != 4)
+    if (state != 4)
     {
       goto LABEL_13;
     }
@@ -4066,21 +4066,21 @@ LABEL_8:
   [(CBConnection *)self _reportError:v9];
 
 LABEL_13:
-  v10 = v13;
+  v10 = stateCopy;
 
 LABEL_15:
 }
 
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral
 {
-  v29 = a3;
-  v6 = a4;
+  managerCopy = manager;
+  peripheralCopy = peripheral;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (!self->_invalidateCalled)
   {
-    v7 = [v6 identifier];
+    identifier = [peripheralCopy identifier];
     blePeerUUID = self->_blePeerUUID;
-    v9 = v7;
+    v9 = identifier;
     v10 = blePeerUUID;
     if (v9 == v10)
     {
@@ -4128,7 +4128,7 @@ LABEL_15:
 LABEL_20:
               v28 = CBCentralManagerConnectionLatencyToString(connectionLatency);
               LogPrintF_safe();
-              [v29 setDesiredConnectionLatency:self->_connectionLatency forPeripheral:{v6, v9, v28}];
+              [managerCopy setDesiredConnectionLatency:self->_connectionLatency forPeripheral:{peripheralCopy, v9, v28}];
 LABEL_25:
               self->_guardConnected = 1;
               [(CBConnection *)self _run];
@@ -4145,7 +4145,7 @@ LABEL_25:
             }
           }
 
-          [v29 setDesiredConnectionLatency:connectionLatency forPeripheral:{v6, v25, v26}];
+          [managerCopy setDesiredConnectionLatency:connectionLatency forPeripheral:{peripheralCopy, v25, v26}];
           goto LABEL_25;
         }
 
@@ -4191,16 +4191,16 @@ LABEL_26:
   }
 }
 
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error
 {
-  v24 = a4;
-  v7 = a5;
+  peripheralCopy = peripheral;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (!self->_invalidateCalled)
   {
-    v8 = [v24 identifier];
+    identifier = [peripheralCopy identifier];
     blePeerUUID = self->_blePeerUUID;
-    v10 = v8;
+    v10 = identifier;
     v11 = blePeerUUID;
     if (v10 == v11)
     {
@@ -4225,9 +4225,9 @@ LABEL_26:
         if (var0 > 90)
         {
 LABEL_15:
-          if (v7)
+          if (errorCopy)
           {
-            [(CBConnection *)self _reportError:v7];
+            [(CBConnection *)self _reportError:errorCopy];
           }
 
           else
@@ -4285,15 +4285,15 @@ LABEL_19:
   }
 }
 
-- (void)pairingAgent:(id)a3 peerDidRequestPairing:(id)a4 type:(int64_t)a5 passkey:(id)a6
+- (void)pairingAgent:(id)agent peerDidRequestPairing:(id)pairing type:(int64_t)type passkey:(id)passkey
 {
   v71[1] = *MEMORY[0x1E69E9840];
-  v56 = a3;
-  v10 = a4;
-  v11 = a6;
+  agentCopy = agent;
+  pairingCopy = pairing;
+  passkeyCopy = passkey;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v57 = v10;
-  v12 = [v10 identifier];
+  v57 = pairingCopy;
+  identifier = [pairingCopy identifier];
   v62 = 0;
   v63 = &v62;
   v64 = 0x3032000000;
@@ -4305,26 +4305,26 @@ LABEL_19:
   v58[2] = __64__CBConnection_pairingAgent_peerDidRequestPairing_type_passkey___block_invoke;
   v58[3] = &unk_1E81205A8;
   v58[4] = self;
-  v58[5] = v12;
+  v58[5] = identifier;
   v60 = &v62;
-  v61 = a5;
-  v13 = v11;
+  typeCopy = type;
+  v13 = passkeyCopy;
   v59 = v13;
   v14 = MEMORY[0x1C68DF720](v58);
-  v15 = [(CBPeer *)self->_peripheral identifier];
-  v16 = v15;
-  if (v15)
+  identifier2 = [(CBPeer *)self->_peripheral identifier];
+  v16 = identifier2;
+  if (identifier2)
   {
-    v17 = v15;
+    identifier3 = identifier2;
   }
 
   else
   {
-    v18 = [(CBL2CAPChannel *)self->_l2capChannel peer];
-    v17 = [v18 identifier];
+    peer = [(CBL2CAPChannel *)self->_l2capChannel peer];
+    identifier3 = [peer identifier];
   }
 
-  if (([v12 isEqual:v17] & 1) == 0)
+  if (([identifier isEqual:identifier3] & 1) == 0)
   {
     v48 = CBErrorF(-6727, "peer not found", v19, v20, v21, v22, v23, v24, v52);
     v31 = v63[5];
@@ -4345,10 +4345,10 @@ LABEL_19:
       }
 
       v36 = self->_ucat;
-      if (a5 <= 5)
+      if (type <= 5)
       {
 LABEL_8:
-        v33 = off_1E81206D8[a5];
+        v33 = off_1E81206D8[type];
         if (v31)
         {
 LABEL_9:
@@ -4361,7 +4361,7 @@ LABEL_13:
 LABEL_14:
         v54 = v13;
         v55 = v34;
-        v52 = v12;
+        v52 = identifier;
         v53 = v33;
         LogPrintF_safe();
         if (v31)
@@ -4372,7 +4372,7 @@ LABEL_14:
       }
     }
 
-    else if (a5 <= 5)
+    else if (type <= 5)
     {
       goto LABEL_8;
     }
@@ -4387,8 +4387,8 @@ LABEL_14:
   }
 
 LABEL_16:
-  self->_pairingType = a5;
-  if (!a5)
+  self->_pairingType = type;
+  if (!type)
   {
     if ((self->_connectionFlags & 0x80) == 0)
     {
@@ -4411,7 +4411,7 @@ LABEL_16:
       {
 LABEL_32:
         LogPrintF_safe();
-        [v56 respondToPairingRequest:v57 type:0 accept:1 data:{MEMORY[0x1E695E0F8], v12, "JustWorks", v54, v55}];
+        [agentCopy respondToPairingRequest:v57 type:0 accept:1 data:{MEMORY[0x1E695E0F8], identifier, "JustWorks", v54, v55}];
         goto LABEL_47;
       }
 
@@ -4422,11 +4422,11 @@ LABEL_32:
       }
     }
 
-    [v56 respondToPairingRequest:v57 type:0 accept:1 data:{MEMORY[0x1E695E0F8], v52, v53, v54, v55}];
+    [agentCopy respondToPairingRequest:v57 type:0 accept:1 data:{MEMORY[0x1E695E0F8], v52, v53, v54, v55}];
     goto LABEL_47;
   }
 
-  if (a5 == 5)
+  if (type == 5)
   {
     if (v31)
     {
@@ -4446,7 +4446,7 @@ LABEL_32:
 
         CUPrintNSDataHex();
         v54 = v53 = "OOB";
-        v52 = v12;
+        v52 = identifier;
         LogPrintF_safe();
       }
 
@@ -4454,7 +4454,7 @@ LABEL_43:
       v70 = @"kCBMsgArgPairingData";
       v71[0] = v31;
       v38 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v71 forKeys:&v70 count:{1, v52, v53, v54, v55}];
-      [v56 respondToPairingRequest:v57 type:5 accept:1 data:v38];
+      [agentCopy respondToPairingRequest:v57 type:5 accept:1 data:v38];
       goto LABEL_44;
     }
 
@@ -4467,7 +4467,7 @@ LABEL_44:
     goto LABEL_47;
   }
 
-  if (a5 > 4 || ((1 << a5) & 0x16) == 0)
+  if (type > 4 || ((1 << type) & 0x16) == 0)
   {
     v43 = CBErrorF(-6735, "Unsupported pairing type", v25, v26, v27, v28, v29, v30, v52);
     goto LABEL_34;
@@ -4478,7 +4478,7 @@ LABEL_44:
   {
     v41 = objc_alloc_init(CBPairingInfo);
     [(CBPairingInfo *)v41 setDevice:self->_peerDevice];
-    [(CBPairingInfo *)v41 setPairingType:a5];
+    [(CBPairingInfo *)v41 setPairingType:type];
     if (log10([v13 intValue]) < 4.0)
     {
       [MEMORY[0x1E696AEC0] stringWithFormat:@"%04d", objc_msgSend(v13, "intValue")];
@@ -4494,7 +4494,7 @@ LABEL_44:
     (v40)[2](v40, v41);
   }
 
-  if (a5 == 1 && (self->_connectionFlags & 0x200) != 0)
+  if (type == 1 && (self->_connectionFlags & 0x200) != 0)
   {
     v45 = self->_ucat->var0;
     if (v45 <= 30)
@@ -4509,7 +4509,7 @@ LABEL_44:
         v51 = self->_ucat;
       }
 
-      v52 = v12;
+      v52 = identifier;
       v53 = "Display";
       LogPrintF_safe();
     }
@@ -4527,7 +4527,7 @@ LABEL_49:
       v38 = MEMORY[0x1E695E0F8];
     }
 
-    [v56 respondToPairingRequest:v57 type:1 accept:1 data:{v38, v52, v53, v54, v55}];
+    [agentCopy respondToPairingRequest:v57 type:1 accept:1 data:{v38, v52, v53, v54, v55}];
     goto LABEL_44;
   }
 
@@ -4588,27 +4588,27 @@ LABEL_9:
   LogPrintF_safe();
 }
 
-- (void)pairingAgent:(id)a3 peerDidCompletePairing:(id)a4
+- (void)pairingAgent:(id)agent peerDidCompletePairing:(id)pairing
 {
   dispatchQueue = self->_dispatchQueue;
-  v6 = a4;
+  pairingCopy = pairing;
   dispatch_assert_queue_V2(dispatchQueue);
-  v20 = [v6 identifier];
+  identifier = [pairingCopy identifier];
 
-  v7 = [(CBPeer *)self->_peripheral identifier];
-  v8 = v7;
-  if (v7)
+  identifier2 = [(CBPeer *)self->_peripheral identifier];
+  v8 = identifier2;
+  if (identifier2)
   {
-    v9 = v7;
+    identifier3 = identifier2;
   }
 
   else
   {
-    v10 = [(CBL2CAPChannel *)self->_l2capChannel peer];
-    v9 = [v10 identifier];
+    peer = [(CBL2CAPChannel *)self->_l2capChannel peer];
+    identifier3 = [peer identifier];
   }
 
-  v11 = [v20 isEqual:v9];
+  v11 = [identifier isEqual:identifier3];
   var0 = self->_ucat->var0;
   if ((v11 & 1) == 0)
   {
@@ -4644,8 +4644,8 @@ LABEL_9:
     if (!v16)
     {
       v16 = objc_alloc_init(CBDevice);
-      v17 = [v20 UUIDString];
-      [(CBDevice *)v16 setIdentifier:v17];
+      uUIDString = [identifier UUIDString];
+      [(CBDevice *)v16 setIdentifier:uUIDString];
     }
 
     (v15)[2](v15, v16, 0);
@@ -4654,28 +4654,28 @@ LABEL_9:
 LABEL_14:
 }
 
-- (void)pairingAgent:(id)a3 peerDidFailToCompletePairing:(id)a4 error:(id)a5
+- (void)pairingAgent:(id)agent peerDidFailToCompletePairing:(id)pairing error:(id)error
 {
-  v24 = a5;
+  errorCopy = error;
   dispatchQueue = self->_dispatchQueue;
-  v8 = a4;
+  pairingCopy = pairing;
   dispatch_assert_queue_V2(dispatchQueue);
-  v9 = [v8 identifier];
+  identifier = [pairingCopy identifier];
 
-  v10 = [(CBPeer *)self->_peripheral identifier];
-  v11 = v10;
-  if (v10)
+  identifier2 = [(CBPeer *)self->_peripheral identifier];
+  v11 = identifier2;
+  if (identifier2)
   {
-    v12 = v10;
+    identifier3 = identifier2;
   }
 
   else
   {
-    v13 = [(CBL2CAPChannel *)self->_l2capChannel peer];
-    v12 = [v13 identifier];
+    peer = [(CBL2CAPChannel *)self->_l2capChannel peer];
+    identifier3 = [peer identifier];
   }
 
-  v14 = [v9 isEqual:v12];
+  v14 = [identifier isEqual:identifier3];
   var0 = self->_ucat->var0;
   if ((v14 & 1) == 0)
   {
@@ -4712,37 +4712,37 @@ LABEL_9:
     if (!v19)
     {
       v19 = objc_alloc_init(CBDevice);
-      v20 = [v9 UUIDString];
-      [(CBDevice *)v19 setIdentifier:v20];
+      uUIDString = [identifier UUIDString];
+      [(CBDevice *)v19 setIdentifier:uUIDString];
     }
 
-    (v18)[2](v18, v19, v24);
+    (v18)[2](v18, v19, errorCopy);
   }
 
 LABEL_14:
 }
 
-- (void)pairingAgent:(id)a3 peerDidUnpair:(id)a4
+- (void)pairingAgent:(id)agent peerDidUnpair:(id)unpair
 {
   dispatchQueue = self->_dispatchQueue;
-  v6 = a4;
+  unpairCopy = unpair;
   dispatch_assert_queue_V2(dispatchQueue);
-  v16 = [v6 identifier];
+  identifier = [unpairCopy identifier];
 
-  v7 = [(CBPeer *)self->_peripheral identifier];
-  v8 = v7;
-  if (v7)
+  identifier2 = [(CBPeer *)self->_peripheral identifier];
+  v8 = identifier2;
+  if (identifier2)
   {
-    v9 = v7;
+    identifier3 = identifier2;
   }
 
   else
   {
-    v10 = [(CBL2CAPChannel *)self->_l2capChannel peer];
-    v9 = [v10 identifier];
+    peer = [(CBL2CAPChannel *)self->_l2capChannel peer];
+    identifier3 = [peer identifier];
   }
 
-  v11 = [v16 isEqual:v9];
+  v11 = [identifier isEqual:identifier3];
   var0 = self->_ucat->var0;
   if (v11)
   {
@@ -4774,11 +4774,11 @@ LABEL_7:
 LABEL_9:
 }
 
-- (void)peripheral:(id)a3 didOpenL2CAPChannel:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didOpenL2CAPChannel:(id)channel error:(id)error
 {
-  v41 = a3;
-  v8 = a4;
-  v9 = a5;
+  peripheralCopy = peripheral;
+  channelCopy = channel;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (self->_invalidateCalled)
   {
@@ -4804,7 +4804,7 @@ LABEL_9:
       v20 = self->_ucat;
     }
 
-    v11 = CUPrintNSError();
+    identifier3 = CUPrintNSError();
 LABEL_6:
     LogPrintF_safe();
 LABEL_24:
@@ -4812,9 +4812,9 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v12 = [v41 identifier];
+  identifier = [peripheralCopy identifier];
   blePeerUUID = self->_blePeerUUID;
-  v14 = v12;
+  v14 = identifier;
   v15 = blePeerUUID;
   if (v14 == v15)
   {
@@ -4845,15 +4845,15 @@ LABEL_12:
       if (!_LogCategory_Initialize())
       {
 LABEL_22:
-        if (v9)
+        if (errorCopy)
         {
-          v11 = NSErrorNestedF();
-          [(CBConnection *)self _reportError:v11];
+          identifier3 = NSErrorNestedF();
+          [(CBConnection *)self _reportError:identifier3];
           goto LABEL_24;
         }
 
-        v24 = v8;
-        v11 = v24;
+        v24 = channelCopy;
+        identifier3 = v24;
         if (!v24)
         {
           v29 = *MEMORY[0x1E696A768];
@@ -4882,12 +4882,12 @@ LABEL_22:
             v34 = self->_ucat;
           }
 
-          [v11 PSM];
+          [identifier3 PSM];
           blePSM = self->_blePSM;
           goto LABEL_6;
         }
 
-        objc_storeStrong(&self->_l2capChannel, a4);
+        objc_storeStrong(&self->_l2capChannel, channel);
         v25 = self->_ucat->var0;
         if (v25 <= 30)
         {
@@ -4902,14 +4902,14 @@ LABEL_22:
             v36 = self->_ucat;
           }
 
-          v26 = [v11 peer];
-          v37 = [v26 identifier];
-          v38 = [v11 PSM];
+          peer = [identifier3 peer];
+          identifier2 = [peer identifier];
+          v38 = [identifier3 PSM];
           LogPrintF_safe();
         }
 
 LABEL_40:
-        [(CBConnection *)self _run:v37];
+        [(CBConnection *)self _run:identifier2];
         goto LABEL_24;
       }
 
@@ -4917,7 +4917,7 @@ LABEL_40:
     }
 
     CUPrintNSError();
-    v38 = v37 = v8;
+    v38 = identifier2 = channelCopy;
     LogPrintF_safe();
 
     goto LABEL_22;
@@ -4940,7 +4940,7 @@ LABEL_18:
   {
     v28 = self->_ucat;
 LABEL_20:
-    v11 = [v41 identifier];
+    identifier3 = [peripheralCopy identifier];
     v22 = self->_blePeerUUID;
     v40 = CUPrintNSError();
     LogPrintF_safe();
@@ -4951,19 +4951,19 @@ LABEL_20:
 LABEL_25:
 }
 
-- (void)readWithRequest:(id)a3
+- (void)readWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_alloc_init(CBReadRequest);
-  -[CBReadRequest setMinLength:](v5, "setMinLength:", [v4 minLength]);
-  -[CBReadRequest setMaxLength:](v5, "setMaxLength:", [v4 maxLength]);
+  -[CBReadRequest setMinLength:](v5, "setMinLength:", [requestCopy minLength]);
+  -[CBReadRequest setMaxLength:](v5, "setMaxLength:", [requestCopy maxLength]);
   v7 = MEMORY[0x1E69E9820];
   v8 = 3221225472;
   v9 = __32__CBConnection_readWithRequest___block_invoke;
   v10 = &unk_1E811CF50;
-  v11 = v4;
+  v11 = requestCopy;
   v12 = v5;
-  v6 = v4;
+  v6 = requestCopy;
   [(CBReadRequest *)v5 setCompletion:&v7];
   [(CBConnection *)self readWithCBReadRequest:v5, v7, v8, v9, v10];
 }
@@ -4991,21 +4991,21 @@ void __32__CBConnection_readWithRequest___block_invoke(uint64_t a1)
   }
 }
 
-- (void)writeWithRequest:(id)a3
+- (void)writeWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_alloc_init(CBWriteRequest);
-  v6 = [v4 dataArray];
-  [(CBWriteRequest *)v5 setDataArray:v6];
+  dataArray = [requestCopy dataArray];
+  [(CBWriteRequest *)v5 setDataArray:dataArray];
 
-  -[CBWriteRequest setEndOfData:](v5, "setEndOfData:", [v4 endOfData]);
+  -[CBWriteRequest setEndOfData:](v5, "setEndOfData:", [requestCopy endOfData]);
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __33__CBConnection_writeWithRequest___block_invoke;
   v11 = &unk_1E811CF50;
-  v12 = v4;
+  v12 = requestCopy;
   v13 = v5;
-  v7 = v4;
+  v7 = requestCopy;
   [(CBWriteRequest *)v5 setCompletion:&v8];
   [(CBConnection *)self writeWithCBWriteRequest:v5, v8, v9, v10, v11];
 }
@@ -5028,13 +5028,13 @@ void __33__CBConnection_writeWithRequest___block_invoke(uint64_t a1)
   }
 }
 
-- (CBConnection)initWithXPCObject:(id)a3 error:(id *)a4
+- (CBConnection)initWithXPCObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v13 = [(CBConnection *)self init];
   if (!v13)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_35;
     }
@@ -5042,13 +5042,13 @@ void __33__CBConnection_writeWithRequest___block_invoke(uint64_t a1)
     v23 = "CBConnection init failed";
 LABEL_34:
     CBErrorF(-6756, v23, v7, v8, v9, v10, v11, v12, v24);
-    *a4 = v21 = 0;
+    *error = v21 = 0;
     goto LABEL_29;
   }
 
-  if (MEMORY[0x1C68DFDD0](v6) != MEMORY[0x1E69E9E80])
+  if (MEMORY[0x1C68DFDD0](objectCopy) != MEMORY[0x1E69E9E80])
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_35;
     }
@@ -5168,7 +5168,7 @@ LABEL_29:
 
 - (uint64_t)dealloc
 {
-  v1 = *(a1 + 152);
+  v1 = *(self + 152);
   v2 = CUFatalErrorF();
   return [CBConnection initWithXPCEventRepresentation:v2 error:?];
 }

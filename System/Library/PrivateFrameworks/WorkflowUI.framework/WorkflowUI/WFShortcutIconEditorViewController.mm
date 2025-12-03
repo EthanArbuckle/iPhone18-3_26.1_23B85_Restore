@@ -1,9 +1,9 @@
 @interface WFShortcutIconEditorViewController
-- (WFShortcutIconEditorViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (WFShortcutIconEditorViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (WFShortcutIconEditorViewControllerDelegate)delegate;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation WFShortcutIconEditorViewController
@@ -15,33 +15,33 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   ShortcutIconEditorViewController.delegate.setter();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   ShortcutIconEditorViewController.viewDidLoad()();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  ShortcutIconEditorViewController.viewWillDisappear(_:)(a3);
+  selfCopy = self;
+  ShortcutIconEditorViewController.viewWillDisappear(_:)(disappear);
 }
 
-- (WFShortcutIconEditorViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (WFShortcutIconEditorViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     _sSo32WFShortcutConcerningReportReasona10WorkflowUIE2idSSvg_0();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   ShortcutIconEditorViewController.init(nibName:bundle:)();
 }
 

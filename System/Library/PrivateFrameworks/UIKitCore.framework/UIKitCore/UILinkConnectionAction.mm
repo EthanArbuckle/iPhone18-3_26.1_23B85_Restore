@@ -1,41 +1,41 @@
 @interface UILinkConnectionAction
 - (LNConnectionAction)action;
-- (UILinkConnectionAction)initWithAction:(id)a3 responseQueue:(id)a4 responseHandler:(id)a5;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
+- (UILinkConnectionAction)initWithAction:(id)action responseQueue:(id)queue responseHandler:(id)handler;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
 @end
 
 @implementation UILinkConnectionAction
 
 - (LNConnectionAction)action
 {
-  v2 = [(UILinkConnectionAction *)self info];
-  v3 = [v2 objectForSetting:0];
+  info = [(UILinkConnectionAction *)self info];
+  v3 = [info objectForSetting:0];
 
   return v3;
 }
 
-- (UILinkConnectionAction)initWithAction:(id)a3 responseQueue:(id)a4 responseHandler:(id)a5
+- (UILinkConnectionAction)initWithAction:(id)action responseQueue:(id)queue responseHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  queueCopy = queue;
+  handlerCopy = handler;
   v10 = MEMORY[0x1E698E700];
-  v11 = a3;
+  actionCopy = action;
   v12 = objc_alloc_init(v10);
-  [v12 setObject:v11 forSetting:0];
+  [v12 setObject:actionCopy forSetting:0];
 
-  if (v9)
+  if (handlerCopy)
   {
     v13 = MEMORY[0x1E698E5F8];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __71__UILinkConnectionAction_initWithAction_responseQueue_responseHandler___block_invoke;
     v18[3] = &unk_1E7108B40;
-    v19 = v9;
+    v19 = handlerCopy;
     v14 = [v13 responderWithHandler:v18];
     v15 = v14;
-    if (v8)
+    if (queueCopy)
     {
-      [v14 setQueue:v8];
+      [v14 setQueue:queueCopy];
     }
 
     [v15 setTimeout:{dispatch_time(0, 60000000000)}];
@@ -63,9 +63,9 @@ void __71__UILinkConnectionAction_initWithAction_responseQueue_responseHandler__
   }
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3)
+  if (setting)
   {
     return 0;
   }

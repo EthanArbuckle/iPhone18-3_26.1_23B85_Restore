@@ -1,84 +1,84 @@
 @interface REMTemplateSectionsDataViewInvocationResult
-- (BOOL)isEqual:(id)a3;
-- (REMTemplateSectionsDataViewInvocationResult)initWithCoder:(id)a3;
-- (REMTemplateSectionsDataViewInvocationResult)initWithTemplateStorages:(id)a3 templateSectionStorages:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (REMTemplateSectionsDataViewInvocationResult)initWithCoder:(id)coder;
+- (REMTemplateSectionsDataViewInvocationResult)initWithTemplateStorages:(id)storages templateSectionStorages:(id)sectionStorages;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMTemplateSectionsDataViewInvocationResult
 
-- (REMTemplateSectionsDataViewInvocationResult)initWithTemplateStorages:(id)a3 templateSectionStorages:(id)a4
+- (REMTemplateSectionsDataViewInvocationResult)initWithTemplateStorages:(id)storages templateSectionStorages:(id)sectionStorages
 {
-  v7 = a3;
-  v8 = a4;
+  storagesCopy = storages;
+  sectionStoragesCopy = sectionStorages;
   v12.receiver = self;
   v12.super_class = REMTemplateSectionsDataViewInvocationResult;
   v9 = [(REMStoreInvocationValueStorage *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_templateStorages, a3);
-    objc_storeStrong(&v10->_templateSectionStorages, a4);
+    objc_storeStrong(&v9->_templateStorages, storages);
+    objc_storeStrong(&v10->_templateSectionStorages, sectionStorages);
   }
 
   return v10;
 }
 
-- (REMTemplateSectionsDataViewInvocationResult)initWithCoder:(id)a3
+- (REMTemplateSectionsDataViewInvocationResult)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"templateStorages"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"templateStorages"];
 
   v9 = MEMORY[0x1E695DFD8];
   v10 = objc_opt_class();
   v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-  v12 = [v5 decodeObjectOfClasses:v11 forKey:@"templateSectionStorages"];
+  v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"templateSectionStorages"];
 
-  v13 = 0;
+  selfCopy = 0;
   if (v8 && v12)
   {
     self = [(REMTemplateSectionsDataViewInvocationResult *)self initWithTemplateStorages:v8 templateSectionStorages:v12];
-    v13 = self;
+    selfCopy = self;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMTemplateSectionsDataViewInvocationResult *)self templateStorages];
-  [v4 encodeObject:v5 forKey:@"templateStorages"];
+  coderCopy = coder;
+  templateStorages = [(REMTemplateSectionsDataViewInvocationResult *)self templateStorages];
+  [coderCopy encodeObject:templateStorages forKey:@"templateStorages"];
 
-  v6 = [(REMTemplateSectionsDataViewInvocationResult *)self templateSectionStorages];
-  [v4 encodeObject:v6 forKey:@"templateSectionStorages"];
+  templateSectionStorages = [(REMTemplateSectionsDataViewInvocationResult *)self templateSectionStorages];
+  [coderCopy encodeObject:templateSectionStorages forKey:@"templateSectionStorages"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_4;
   }
 
-  v5 = [(REMTemplateSectionsDataViewInvocationResult *)self templateStorages];
-  v6 = [v4 templateStorages];
-  v7 = v6;
-  if (v5 == v6)
+  templateStorages = [(REMTemplateSectionsDataViewInvocationResult *)self templateStorages];
+  templateStorages2 = [equalCopy templateStorages];
+  v7 = templateStorages2;
+  if (templateStorages == templateStorages2)
   {
   }
 
   else
   {
-    v8 = [(REMTemplateSectionsDataViewInvocationResult *)self templateStorages];
-    v9 = [v4 templateStorages];
-    v10 = [v8 isEqual:v9];
+    templateStorages3 = [(REMTemplateSectionsDataViewInvocationResult *)self templateStorages];
+    templateStorages4 = [equalCopy templateStorages];
+    v10 = [templateStorages3 isEqual:templateStorages4];
 
     if (!v10)
     {
@@ -88,18 +88,18 @@ LABEL_4:
     }
   }
 
-  v12 = [(REMTemplateSectionsDataViewInvocationResult *)self templateSectionStorages];
-  v13 = [v4 templateSectionStorages];
-  if (v12 == v13)
+  templateSectionStorages = [(REMTemplateSectionsDataViewInvocationResult *)self templateSectionStorages];
+  templateSectionStorages2 = [equalCopy templateSectionStorages];
+  if (templateSectionStorages == templateSectionStorages2)
   {
     v11 = 1;
   }
 
   else
   {
-    v14 = [(REMTemplateSectionsDataViewInvocationResult *)self templateSectionStorages];
-    v15 = [v4 templateSectionStorages];
-    v11 = [v14 isEqual:v15];
+    templateSectionStorages3 = [(REMTemplateSectionsDataViewInvocationResult *)self templateSectionStorages];
+    templateSectionStorages4 = [equalCopy templateSectionStorages];
+    v11 = [templateSectionStorages3 isEqual:templateSectionStorages4];
   }
 
 LABEL_10:
@@ -108,10 +108,10 @@ LABEL_10:
 
 - (unint64_t)hash
 {
-  v3 = [(REMTemplateSectionsDataViewInvocationResult *)self templateStorages];
-  v4 = [v3 hash];
-  v5 = [(REMTemplateSectionsDataViewInvocationResult *)self templateSectionStorages];
-  v6 = [v5 hash];
+  templateStorages = [(REMTemplateSectionsDataViewInvocationResult *)self templateStorages];
+  v4 = [templateStorages hash];
+  templateSectionStorages = [(REMTemplateSectionsDataViewInvocationResult *)self templateSectionStorages];
+  v6 = [templateSectionStorages hash];
 
   return v6 ^ v4;
 }

@@ -1,9 +1,9 @@
 @interface KNAppDelegateBase
 + (KNAppPropertiesProvider)kn_sharedPropertiesProvider;
-- (BOOL)isValidURLForImportedHyperlink:(id)a3 targetDocumentRoot:(id)a4 forCrossDocumentPaste:(BOOL)a5;
+- (BOOL)isValidURLForImportedHyperlink:(id)hyperlink targetDocumentRoot:(id)root forCrossDocumentPaste:(BOOL)paste;
 - (KNAppDelegateBase)init;
 - (id)createCompatibilityDelegate;
-- (id)universalPreviewImageNameForDocumentType:(id)a3;
+- (id)universalPreviewImageNameForDocumentType:(id)type;
 - (void)registerAllowedElementKinds;
 - (void)registerClassTypeMappings;
 - (void)registerDrawableInfoClassMapping;
@@ -48,7 +48,7 @@
 + (KNAppPropertiesProvider)kn_sharedPropertiesProvider
 {
   objc_opt_class();
-  v5 = objc_msgSend_sharedPropertiesProvider(a1, v3, v4);
+  v5 = objc_msgSend_sharedPropertiesProvider(self, v3, v4);
   v6 = TSUCheckedDynamicCast();
 
   return v6;
@@ -71,14 +71,14 @@
   objc_msgSend_registerClassForUnarchiving_(v2, v4, v3);
 }
 
-- (id)universalPreviewImageNameForDocumentType:(id)a3
+- (id)universalPreviewImageNameForDocumentType:(id)type
 {
   v19[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  typeCopy = type;
   v19[0] = @"com.apple.iwork.keynote.kth";
   v19[1] = @"com.apple.iwork.keynote.sffkth";
   v5 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v4, v19, 2);
-  v7 = objc_msgSend_tsu_conformsToAnyUTI_(v3, v6, v5);
+  v7 = objc_msgSend_tsu_conformsToAnyUTI_(typeCopy, v6, v5);
 
   if (v7)
   {
@@ -90,7 +90,7 @@
     v9 = objc_opt_class();
     v12 = objc_msgSend_kn_sharedPropertiesProvider(v9, v10, v11);
     v15 = objc_msgSend_powerPointDocumentTypes(v12, v13, v14);
-    v17 = objc_msgSend_tsu_conformsToAnyUTI_(v3, v16, v15);
+    v17 = objc_msgSend_tsu_conformsToAnyUTI_(typeCopy, v16, v15);
 
     if (v17)
     {
@@ -149,21 +149,21 @@
   }
 }
 
-- (BOOL)isValidURLForImportedHyperlink:(id)a3 targetDocumentRoot:(id)a4 forCrossDocumentPaste:(BOOL)a5
+- (BOOL)isValidURLForImportedHyperlink:(id)hyperlink targetDocumentRoot:(id)root forCrossDocumentPaste:(BOOL)paste
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  pasteCopy = paste;
+  hyperlinkCopy = hyperlink;
+  rootCopy = root;
   v13.receiver = self;
   v13.super_class = KNAppDelegateBase;
-  if ([(TSWPApplicationDelegate *)&v13 isValidURLForImportedHyperlink:v8 targetDocumentRoot:v9 forCrossDocumentPaste:v5])
+  if ([(TSWPApplicationDelegate *)&v13 isValidURLForImportedHyperlink:hyperlinkCopy targetDocumentRoot:rootCopy forCrossDocumentPaste:pasteCopy])
   {
     v11 = 1;
   }
 
   else
   {
-    v11 = objc_msgSend_URLContainsKeynoteSpecificHyperlink_(KNHyperlinkController, v10, v8);
+    v11 = objc_msgSend_URLContainsKeynoteSpecificHyperlink_(KNHyperlinkController, v10, hyperlinkCopy);
   }
 
   return v11;

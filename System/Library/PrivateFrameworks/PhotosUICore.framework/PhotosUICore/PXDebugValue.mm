@@ -1,14 +1,14 @@
 @interface PXDebugValue
-- (PXDebugValue)initWithLabel:(id)a3;
+- (PXDebugValue)initWithLabel:(id)label;
 @end
 
 @implementation PXDebugValue
 
-- (PXDebugValue)initWithLabel:(id)a3
+- (PXDebugValue)initWithLabel:(id)label
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  labelCopy = label;
+  if (!labelCopy)
   {
     PXAssertGetLog();
   }
@@ -18,7 +18,7 @@
   v5 = [(PXDebugValue *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [labelCopy copy];
     label = v5->_label;
     v5->_label = v6;
   }

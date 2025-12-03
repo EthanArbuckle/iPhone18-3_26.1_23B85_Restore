@@ -1,24 +1,24 @@
 @interface INStartCallIntentResponse
-+ (int)_errorCodeFromCode:(int64_t)a3;
-+ (int)_typeFromCode:(int64_t)a3;
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5;
++ (int)_errorCodeFromCode:(int64_t)code;
++ (int)_typeFromCode:(int64_t)code;
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested;
 - (INConnectedCall)startedCall;
-- (INStartCallIntentResponse)initWithBackingStore:(id)a3;
+- (INStartCallIntentResponse)initWithBackingStore:(id)store;
 - (INStartCallIntentResponse)initWithCode:(INStartCallIntentResponseCode)code userActivity:(NSUserActivity *)userActivity;
-- (INStartCallIntentResponse)initWithCoder:(id)a3;
+- (INStartCallIntentResponse)initWithCoder:(id)coder;
 - (INStartCallIntentResponseCode)code;
 - (NSArray)restrictedContacts;
 - (NSNumber)shouldDoEmergencyCountdown;
 - (id)_dictionaryRepresentation;
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (int64_t)_codeWithName:(id)a3;
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity;
+- (int64_t)_codeWithName:(id)name;
 - (int64_t)_intentResponseCode;
 - (int64_t)confirmationReason;
-- (void)encodeWithCoder:(id)a3;
-- (void)setConfirmationReason:(int64_t)a3;
-- (void)setRestrictedContacts:(id)a3;
-- (void)setShouldDoEmergencyCountdown:(id)a3;
-- (void)setStartedCall:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setConfirmationReason:(int64_t)reason;
+- (void)setRestrictedContacts:(id)contacts;
+- (void)setShouldDoEmergencyCountdown:(id)countdown;
+- (void)setStartedCall:(id)call;
 @end
 
 @implementation INStartCallIntentResponse
@@ -28,13 +28,13 @@
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"code";
   v2 = INStartCallIntentResponseCodeGetName([(INStartCallIntentResponse *)self code]);
-  v3 = v2;
+  null = v2;
   if (!v2)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v8[0] = v3;
+  v8[0] = null;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
   if (!v2)
   {
@@ -45,120 +45,120 @@
   return v4;
 }
 
-- (void)setRestrictedContacts:(id)a3
+- (void)setRestrictedContacts:(id)contacts
 {
-  v4 = a3;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v6 = INIntentSlotValueTransformToContactValues(v4);
+  contactsCopy = contacts;
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  v6 = INIntentSlotValueTransformToContactValues(contactsCopy);
 
-  [v5 setRestrictedContacts:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setRestrictedContacts:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
-- (void)setStartedCall:(id)a3
+- (void)setStartedCall:(id)call
 {
-  v4 = a3;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v6 = INIntentSlotValueTransformToConnectedCall(v4);
+  callCopy = call;
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  v6 = INIntentSlotValueTransformToConnectedCall(callCopy);
 
-  [v5 setStartedCall:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setStartedCall:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
-- (void)setConfirmationReason:(int64_t)a3
+- (void)setConfirmationReason:(int64_t)reason
 {
-  if (a3 > 2)
+  if (reason > 2)
   {
-    if (a3 == 3)
+    if (reason == 3)
     {
       v4 = 3;
       goto LABEL_11;
     }
 
-    if (a3 == 1000)
+    if (reason == 1000)
     {
       v4 = 4;
       goto LABEL_11;
     }
 
 LABEL_8:
-    v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-    [v5 setHasConfirmationReason:0];
+    _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+    [_responseMessagePBRepresentation setHasConfirmationReason:0];
     goto LABEL_12;
   }
 
-  if (a3 == 1)
+  if (reason == 1)
   {
     v4 = 1;
     goto LABEL_11;
   }
 
-  if (a3 != 2)
+  if (reason != 2)
   {
     goto LABEL_8;
   }
 
   v4 = 2;
 LABEL_11:
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  [v5 setConfirmationReason:v4];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  [_responseMessagePBRepresentation setConfirmationReason:v4];
 LABEL_12:
 
-  v7 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v6 = [v7 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
-- (void)setShouldDoEmergencyCountdown:(id)a3
+- (void)setShouldDoEmergencyCountdown:(id)countdown
 {
-  v7 = a3;
-  v4 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  if (v7)
+  countdownCopy = countdown;
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  if (countdownCopy)
   {
-    [v4 setShouldDoEmergencyCountdown:{objc_msgSend(v7, "BOOLValue")}];
+    [_responseMessagePBRepresentation setShouldDoEmergencyCountdown:{objc_msgSend(countdownCopy, "BOOLValue")}];
   }
 
   else
   {
-    [v4 setHasShouldDoEmergencyCountdown:0];
+    [_responseMessagePBRepresentation setHasShouldDoEmergencyCountdown:0];
   }
 
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v6 = [v5 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (NSArray)restrictedContacts
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 restrictedContacts];
-  v4 = INIntentSlotValueTransformFromContactValues(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  restrictedContacts = [_responseMessagePBRepresentation restrictedContacts];
+  v4 = INIntentSlotValueTransformFromContactValues(restrictedContacts);
 
   return v4;
 }
 
 - (INConnectedCall)startedCall
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 startedCall];
-  v4 = INIntentSlotValueTransformFromConnectedCall(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  startedCall = [_responseMessagePBRepresentation startedCall];
+  v4 = INIntentSlotValueTransformFromConnectedCall(startedCall);
 
   return v4;
 }
 
 - (int64_t)confirmationReason
 {
-  v3 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v4 = [v3 hasConfirmationReason];
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v6 = [v5 confirmationReason];
-  if (v4 && (v6 - 1) <= 3)
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  hasConfirmationReason = [_responseMessagePBRepresentation hasConfirmationReason];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  confirmationReason = [_responseMessagePBRepresentation2 confirmationReason];
+  if (hasConfirmationReason && (confirmationReason - 1) <= 3)
   {
-    v7 = qword_18EE5F700[v6 - 1];
+    v7 = qword_18EE5F700[confirmationReason - 1];
   }
 
   else
@@ -171,12 +171,12 @@ LABEL_12:
 
 - (NSNumber)shouldDoEmergencyCountdown
 {
-  v3 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  if ([v3 hasShouldDoEmergencyCountdown])
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  if ([_responseMessagePBRepresentation hasShouldDoEmergencyCountdown])
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-    v6 = [v4 numberWithBool:{objc_msgSend(v5, "shouldDoEmergencyCountdown")}];
+    _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+    v6 = [v4 numberWithBool:{objc_msgSend(_responseMessagePBRepresentation2, "shouldDoEmergencyCountdown")}];
   }
 
   else
@@ -187,72 +187,72 @@ LABEL_12:
   return v6;
 }
 
-- (int64_t)_codeWithName:(id)a3
+- (int64_t)_codeWithName:(id)name
 {
-  v3 = a3;
-  [v3 isEqualToString:@"INStartCallIntentResponseCodeUnspecified"];
-  v4 = [v3 isEqualToString:@"INStartCallIntentResponseCodeReady"];
-  if ([v3 isEqualToString:@"INStartCallIntentResponseCodeContinueInApp"])
+  nameCopy = name;
+  [nameCopy isEqualToString:@"INStartCallIntentResponseCodeUnspecified"];
+  v4 = [nameCopy isEqualToString:@"INStartCallIntentResponseCodeReady"];
+  if ([nameCopy isEqualToString:@"INStartCallIntentResponseCodeContinueInApp"])
   {
     v4 = 2;
   }
 
-  if ([v3 isEqualToString:@"INStartCallIntentResponseCodeUserConfirmationRequired"])
+  if ([nameCopy isEqualToString:@"INStartCallIntentResponseCodeUserConfirmationRequired"])
   {
     v4 = 3;
   }
 
-  if ([v3 isEqualToString:@"INStartCallIntentResponseCodeFailure"])
+  if ([nameCopy isEqualToString:@"INStartCallIntentResponseCodeFailure"])
   {
     v4 = 4;
   }
 
-  if ([v3 isEqualToString:@"INStartCallIntentResponseCodeFailureRequiringAppLaunch"])
+  if ([nameCopy isEqualToString:@"INStartCallIntentResponseCodeFailureRequiringAppLaunch"])
   {
     v4 = 5;
   }
 
-  if ([v3 isEqualToString:@"INStartCallIntentResponseCodeFailureCallingServiceNotAvailable"])
+  if ([nameCopy isEqualToString:@"INStartCallIntentResponseCodeFailureCallingServiceNotAvailable"])
   {
     v4 = 6;
   }
 
-  if ([v3 isEqualToString:@"INStartCallIntentResponseCodeFailureContactNotSupportedByApp"])
+  if ([nameCopy isEqualToString:@"INStartCallIntentResponseCodeFailureContactNotSupportedByApp"])
   {
     v4 = 7;
   }
 
-  if ([v3 isEqualToString:@"INStartCallIntentResponseCodeFailureAirplaneModeEnabled"])
+  if ([nameCopy isEqualToString:@"INStartCallIntentResponseCodeFailureAirplaneModeEnabled"])
   {
     v4 = 8;
   }
 
-  if ([v3 isEqualToString:@"INStartCallIntentResponseCodeFailureUnableToHandOff"])
+  if ([nameCopy isEqualToString:@"INStartCallIntentResponseCodeFailureUnableToHandOff"])
   {
     v4 = 9;
   }
 
-  if ([v3 isEqualToString:@"INStartCallIntentResponseCodeFailureAppConfigurationRequired"])
+  if ([nameCopy isEqualToString:@"INStartCallIntentResponseCodeFailureAppConfigurationRequired"])
   {
     v4 = 10;
   }
 
-  if ([v3 isEqualToString:@"INStartCallIntentResponseCodeFailureCallInProgress"])
+  if ([nameCopy isEqualToString:@"INStartCallIntentResponseCodeFailureCallInProgress"])
   {
     v4 = 11;
   }
 
-  if ([v3 isEqualToString:@"INStartCallIntentResponseCodeFailureCallRinging"])
+  if ([nameCopy isEqualToString:@"INStartCallIntentResponseCodeFailureCallRinging"])
   {
     v4 = 12;
   }
 
-  if ([v3 isEqualToString:@"INStartCallIntentResponseCodeFailureScreenTimeRestrictionEnabled"])
+  if ([nameCopy isEqualToString:@"INStartCallIntentResponseCodeFailureScreenTimeRestrictionEnabled"])
   {
     v4 = 1000;
   }
 
-  if ([v3 isEqualToString:@"INStartCallIntentResponseCodeFailureDownTimeRestrictionEnabled"])
+  if ([nameCopy isEqualToString:@"INStartCallIntentResponseCodeFailureDownTimeRestrictionEnabled"])
   {
     v5 = 1001;
   }
@@ -262,7 +262,7 @@ LABEL_12:
     v5 = v4;
   }
 
-  v6 = [v3 isEqualToString:@"INStartCallIntentResponseCodeFailureRequiringInAppAuthentication"];
+  v6 = [nameCopy isEqualToString:@"INStartCallIntentResponseCodeFailureRequiringInAppAuthentication"];
 
   if (v6)
   {
@@ -323,18 +323,18 @@ LABEL_12:
   return result;
 }
 
-- (INStartCallIntentResponse)initWithCoder:(id)a3
+- (INStartCallIntentResponse)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = INStartCallIntentResponse;
-  return [(INIntentResponse *)&v4 initWithCoder:a3];
+  return [(INIntentResponse *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = INStartCallIntentResponse;
-  [(INIntentResponse *)&v3 encodeWithCoder:a3];
+  [(INIntentResponse *)&v3 encodeWithCoder:coder];
 }
 
 - (INStartCallIntentResponseCode)code
@@ -344,18 +344,18 @@ LABEL_12:
   return [(INIntentResponse *)&v3 code];
 }
 
-- (INStartCallIntentResponse)initWithBackingStore:(id)a3
+- (INStartCallIntentResponse)initWithBackingStore:(id)store
 {
   v4.receiver = self;
   v4.super_class = INStartCallIntentResponse;
-  return [(INIntentResponse *)&v4 initWithBackingStore:a3];
+  return [(INIntentResponse *)&v4 initWithBackingStore:store];
 }
 
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity
 {
   v5.receiver = self;
   v5.super_class = INStartCallIntentResponse;
-  return [(INIntentResponse *)&v5 _initWithCode:a3 userActivity:a4];
+  return [(INIntentResponse *)&v5 _initWithCode:code userActivity:activity];
 }
 
 - (INStartCallIntentResponse)initWithCode:(INStartCallIntentResponseCode)code userActivity:(NSUserActivity *)userActivity
@@ -386,9 +386,9 @@ LABEL_12:
   return v10;
 }
 
-+ (int)_errorCodeFromCode:(int64_t)a3
++ (int)_errorCodeFromCode:(int64_t)code
 {
-  if (a3 == 1001)
+  if (code == 1001)
   {
     v3 = 9;
   }
@@ -398,7 +398,7 @@ LABEL_12:
     v3 = 0x7FFFFFFF;
   }
 
-  if (a3 == 1000)
+  if (code == 1000)
   {
     v4 = 8;
   }
@@ -408,7 +408,7 @@ LABEL_12:
     v4 = v3;
   }
 
-  if (a3 == 13)
+  if (code == 13)
   {
     v5 = 10;
   }
@@ -418,7 +418,7 @@ LABEL_12:
     v5 = v4;
   }
 
-  if (a3 == 12)
+  if (code == 12)
   {
     v6 = 7;
   }
@@ -428,7 +428,7 @@ LABEL_12:
     v6 = 0x7FFFFFFF;
   }
 
-  if (a3 == 11)
+  if (code == 11)
   {
     v7 = 6;
   }
@@ -438,12 +438,12 @@ LABEL_12:
     v7 = v6;
   }
 
-  if (a3 <= 12)
+  if (code <= 12)
   {
     v5 = v7;
   }
 
-  if (a3 == 10)
+  if (code == 10)
   {
     v8 = 5;
   }
@@ -453,7 +453,7 @@ LABEL_12:
     v8 = 0x7FFFFFFF;
   }
 
-  if (a3 == 9)
+  if (code == 9)
   {
     v9 = 4;
   }
@@ -463,7 +463,7 @@ LABEL_12:
     v9 = v8;
   }
 
-  if (a3 == 8)
+  if (code == 8)
   {
     v10 = 3;
   }
@@ -473,7 +473,7 @@ LABEL_12:
     v10 = v9;
   }
 
-  if (a3 == 7)
+  if (code == 7)
   {
     v11 = 2;
   }
@@ -483,17 +483,17 @@ LABEL_12:
     v11 = 0x7FFFFFFF;
   }
 
-  if (a3 == 6)
+  if (code == 6)
   {
     v11 = 1;
   }
 
-  if (a3 > 7)
+  if (code > 7)
   {
     v11 = v10;
   }
 
-  if (a3 <= 10)
+  if (code <= 10)
   {
     return v11;
   }
@@ -504,12 +504,12 @@ LABEL_12:
   }
 }
 
-+ (int)_typeFromCode:(int64_t)a3
++ (int)_typeFromCode:(int64_t)code
 {
   result = 3;
-  if (a3 <= 3)
+  if (code <= 3)
   {
-    if (a3 == 3)
+    if (code == 3)
     {
       v4 = 7;
     }
@@ -519,7 +519,7 @@ LABEL_12:
       v4 = 3;
     }
 
-    if (a3 == 2)
+    if (code == 2)
     {
       v5 = 4;
     }
@@ -529,7 +529,7 @@ LABEL_12:
       v5 = v4;
     }
 
-    if (a3 == 1)
+    if (code == 1)
     {
       return 5;
     }
@@ -540,7 +540,7 @@ LABEL_12:
     }
   }
 
-  else if ((a3 - 4) < 0xA || (a3 - 1000) < 2)
+  else if ((code - 4) < 0xA || (code - 1000) < 2)
   {
     return 1;
   }
@@ -548,26 +548,26 @@ LABEL_12:
   return result;
 }
 
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested
 {
-  if (a3 > 4)
+  if (type > 4)
   {
-    if (a3 == 7)
+    if (type == 7)
     {
       return 3;
     }
 
     else
     {
-      return a3 == 5;
+      return type == 5;
     }
   }
 
-  else if (a3 == 1)
+  else if (type == 1)
   {
-    if ((a4 - 1) >= 0xA)
+    if ((code - 1) >= 0xA)
     {
-      if (a5)
+      if (requested)
       {
         return 5;
       }
@@ -580,11 +580,11 @@ LABEL_12:
 
     else
     {
-      return qword_18EE5F5C0[a4 - 1];
+      return qword_18EE5F5C0[code - 1];
     }
   }
 
-  else if (a3 == 4)
+  else if (type == 4)
   {
     return 2;
   }

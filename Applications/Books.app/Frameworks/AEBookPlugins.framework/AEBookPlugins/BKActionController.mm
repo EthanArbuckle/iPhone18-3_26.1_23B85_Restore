@@ -8,7 +8,7 @@
 - (void)_setActivities;
 - (void)cancelActions;
 - (void)dealloc;
-- (void)showActionControls:(id)a3;
+- (void)showActionControls:(id)controls;
 @end
 
 @implementation BKActionController
@@ -55,8 +55,8 @@
       v2 = NSClassFromString(@"UIPrintInteractionController");
       if (v2)
       {
-        v3 = [(objc_class *)v2 sharedPrintController];
-        [v3 dismissAnimated:1];
+        sharedPrintController = [(objc_class *)v2 sharedPrintController];
+        [sharedPrintController dismissAnimated:1];
       }
     }
   }
@@ -95,18 +95,18 @@
 - (id)activityItems
 {
   v3 = [BKActivityURLItemSource alloc];
-  v4 = [(BKActionController *)self bookInfo];
-  v5 = [v4 bookBundlePath];
-  v6 = [(BKActivityURLItemSource *)v3 initWithPath:v5];
+  bookInfo = [(BKActionController *)self bookInfo];
+  bookBundlePath = [bookInfo bookBundlePath];
+  v6 = [(BKActivityURLItemSource *)v3 initWithPath:bookBundlePath];
 
   v7 = [NSMutableArray arrayWithObject:v6];
 
   return v7;
 }
 
-- (void)showActionControls:(id)a3
+- (void)showActionControls:(id)controls
 {
-  v4 = a3;
+  controlsCopy = controls;
   [(NSMutableArray *)self->_includedActivityTypes removeAllObjects];
   [(NSMutableArray *)self->_excludedActivityTypes removeAllObjects];
   [(NSMutableArray *)self->_applicationActivities removeAllObjects];
@@ -117,7 +117,7 @@
   v11[2] = sub_40390;
   v11[3] = &unk_1E3B28;
   objc_copyWeak(&v13, &location);
-  v5 = v4;
+  v5 = controlsCopy;
   v12 = v5;
   v6 = objc_retainBlock(v11);
   v7 = +[BCProgressKitController sharedController];

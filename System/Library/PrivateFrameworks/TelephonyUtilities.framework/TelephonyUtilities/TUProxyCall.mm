@@ -1,58 +1,58 @@
 @interface TUProxyCall
-+ (id)proxyCallWithCall:(id)a3;
++ (id)proxyCallWithCall:(id)call;
 - (CGRect)remoteVideoContentRect;
-- (CGSize)localAspectRatioForOrientation:(int64_t)a3;
+- (CGSize)localAspectRatioForOrientation:(int64_t)orientation;
 - (CGSize)remoteAspectRatio;
 - (CGSize)remoteScreenAspectRatio;
 - (CGSize)remoteScreenLandscapeAspectRatio;
 - (CGSize)remoteScreenPortraitAspectRatio;
 - (TUCallServicesProxyCallActions)proxyCallActionsDelegate;
-- (TUProxyCall)initWithCoder:(id)a3;
-- (int)avcRemoteVideoModeForMode:(int64_t)a3;
-- (int64_t)_cameraTypeForVideoAttributeCamera:(int)a3;
-- (int64_t)_orientationForVideoAttributesOrientation:(int)a3;
+- (TUProxyCall)initWithCoder:(id)coder;
+- (int)avcRemoteVideoModeForMode:(int64_t)mode;
+- (int64_t)_cameraTypeForVideoAttributeCamera:(int)camera;
+- (int64_t)_orientationForVideoAttributesOrientation:(int)orientation;
 - (void)_createLocalVideoIfNecessary;
 - (void)_createRemoteVideoIfNecessary;
 - (void)_synchronizeLocalVideo;
 - (void)_synchronizeRemoteVideo;
-- (void)_updateVideoCallAttributes:(id)a3;
-- (void)_updateVideoStreamToken:(int64_t)a3;
-- (void)addScreenSharingType:(unint64_t)a3;
-- (void)answerWithRequest:(id)a3;
-- (void)disconnectWithReason:(int)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)remoteVideoClient:(id)a3 remoteMediaDidStall:(BOOL)a4;
-- (void)remoteVideoClient:(id)a3 remoteScreenAttributesDidChange:(id)a4;
-- (void)remoteVideoClient:(id)a3 remoteVideoAttributesDidChange:(id)a4;
-- (void)remoteVideoClient:(id)a3 remoteVideoDidPause:(BOOL)a4;
-- (void)remoteVideoClient:(id)a3 videoDidDegrade:(BOOL)a4;
+- (void)_updateVideoCallAttributes:(id)attributes;
+- (void)_updateVideoStreamToken:(int64_t)token;
+- (void)addScreenSharingType:(unint64_t)type;
+- (void)answerWithRequest:(id)request;
+- (void)disconnectWithReason:(int)reason;
+- (void)encodeWithCoder:(id)coder;
+- (void)remoteVideoClient:(id)client remoteMediaDidStall:(BOOL)stall;
+- (void)remoteVideoClient:(id)client remoteScreenAttributesDidChange:(id)change;
+- (void)remoteVideoClient:(id)client remoteVideoAttributesDidChange:(id)change;
+- (void)remoteVideoClient:(id)client remoteVideoDidPause:(BOOL)pause;
+- (void)remoteVideoClient:(id)client videoDidDegrade:(BOOL)degrade;
 - (void)sendHardPauseDigits;
-- (void)setBluetoothAudioFormat:(int64_t)a3;
+- (void)setBluetoothAudioFormat:(int64_t)format;
 - (void)setCallDisconnectedDueToComponentCrash;
-- (void)setDisconnectedReason:(int)a3;
-- (void)setDownlinkMuted:(BOOL)a3;
-- (void)setEmergencyMediaItems:(id)a3;
-- (void)setEndpointOnCurrentDevice:(BOOL)a3;
-- (void)setHasEmergencyVideoStream:(BOOL)a3;
-- (void)setIsSendingVideo:(BOOL)a3;
-- (void)setLocalVideoLayer:(id)a3 forMode:(int64_t)a4;
-- (void)setMediaStalled:(BOOL)a3;
-- (void)setMixesVoiceWithMedia:(BOOL)a3;
-- (void)setRemoteVideoLayer:(id)a3 forMode:(int64_t)a4;
-- (void)setRemoteVideoPresentationSize:(CGSize)a3;
-- (void)setRequiresRemoteVideo:(BOOL)a3;
-- (void)setScreenShareAttributes:(id)a3;
-- (void)setScreening:(BOOL)a3;
-- (void)setSharingScreen:(BOOL)a3;
-- (void)setSharingScreen:(BOOL)a3 attributes:(id)a4;
-- (void)setShouldSuppressRingtone:(BOOL)a3;
-- (void)setTransitionStatus:(int)a3;
-- (void)setUplinkMuted:(BOOL)a3;
-- (void)setVideoDegraded:(BOOL)a3;
-- (void)setVideoPaused:(BOOL)a3;
-- (void)setWantsHoldMusic:(BOOL)a3;
+- (void)setDisconnectedReason:(int)reason;
+- (void)setDownlinkMuted:(BOOL)muted;
+- (void)setEmergencyMediaItems:(id)items;
+- (void)setEndpointOnCurrentDevice:(BOOL)device;
+- (void)setHasEmergencyVideoStream:(BOOL)stream;
+- (void)setIsSendingVideo:(BOOL)video;
+- (void)setLocalVideoLayer:(id)layer forMode:(int64_t)mode;
+- (void)setMediaStalled:(BOOL)stalled;
+- (void)setMixesVoiceWithMedia:(BOOL)media;
+- (void)setRemoteVideoLayer:(id)layer forMode:(int64_t)mode;
+- (void)setRemoteVideoPresentationSize:(CGSize)size;
+- (void)setRequiresRemoteVideo:(BOOL)video;
+- (void)setScreenShareAttributes:(id)attributes;
+- (void)setScreening:(BOOL)screening;
+- (void)setSharingScreen:(BOOL)screen;
+- (void)setSharingScreen:(BOOL)screen attributes:(id)attributes;
+- (void)setShouldSuppressRingtone:(BOOL)ringtone;
+- (void)setTransitionStatus:(int)status;
+- (void)setUplinkMuted:(BOOL)muted;
+- (void)setVideoDegraded:(BOOL)degraded;
+- (void)setVideoPaused:(BOOL)paused;
+- (void)setWantsHoldMusic:(BOOL)music;
 - (void)updateProxyCallWithDaemon;
-- (void)updateWithCall:(id)a3;
+- (void)updateWithCall:(id)call;
 @end
 
 @implementation TUProxyCall
@@ -81,9 +81,9 @@
 
 - (CGSize)remoteScreenAspectRatio
 {
-  v3 = [(TUProxyCall *)self remoteScreenOrientation];
+  remoteScreenOrientation = [(TUProxyCall *)self remoteScreenOrientation];
 
-  [(TUProxyCall *)self localAspectRatioForOrientation:v3];
+  [(TUProxyCall *)self localAspectRatioForOrientation:remoteScreenOrientation];
   result.height = v5;
   result.width = v4;
   return result;
@@ -98,198 +98,198 @@
   return result;
 }
 
-+ (id)proxyCallWithCall:(id)a3
++ (id)proxyCallWithCall:(id)call
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithCall:v4];
+  callCopy = call;
+  v5 = [[self alloc] initWithCall:callCopy];
 
   return v5;
 }
 
-- (void)updateWithCall:(id)a3
+- (void)updateWithCall:(id)call
 {
   v74.receiver = self;
   v74.super_class = TUProxyCall;
-  v4 = a3;
-  [(TUCall *)&v74 updateWithCall:v4];
-  v5 = [v4 activeRemoteParticipant];
-  v6 = [v5 copy];
+  callCopy = call;
+  [(TUCall *)&v74 updateWithCall:callCopy];
+  activeRemoteParticipant = [callCopy activeRemoteParticipant];
+  v6 = [activeRemoteParticipant copy];
   activeRemoteParticipant = self->_activeRemoteParticipant;
   self->_activeRemoteParticipant = v6;
 
-  v8 = [v4 announceProviderIdentifier];
-  v9 = [v8 copy];
+  announceProviderIdentifier = [callCopy announceProviderIdentifier];
+  v9 = [announceProviderIdentifier copy];
   announceProviderIdentifier = self->_announceProviderIdentifier;
   self->_announceProviderIdentifier = v9;
 
-  v11 = [v4 handle];
+  handle = [callCopy handle];
   handle = self->_handle;
-  self->_handle = v11;
+  self->_handle = handle;
 
-  v13 = [v4 isoCountryCode];
-  v14 = [v13 copy];
+  isoCountryCode = [callCopy isoCountryCode];
+  v14 = [isoCountryCode copy];
   isoCountryCode = self->_isoCountryCode;
   self->_isoCountryCode = v14;
 
-  v16 = [v4 provider];
-  v17 = [v16 base];
+  provider = [callCopy provider];
+  base = [provider base];
   provider = self->_provider;
-  self->_provider = v17;
+  self->_provider = base;
 
-  v19 = [v4 initiator];
+  initiator = [callCopy initiator];
   initiator = self->_initiator;
-  self->_initiator = v19;
+  self->_initiator = initiator;
 
-  self->_callStatus = [v4 callStatus];
-  v21 = [v4 callerNameFromNetwork];
-  v22 = [v21 copy];
+  self->_callStatus = [callCopy callStatus];
+  callerNameFromNetwork = [callCopy callerNameFromNetwork];
+  v22 = [callerNameFromNetwork copy];
   callerNameFromNetwork = self->_callerNameFromNetwork;
   self->_callerNameFromNetwork = v22;
 
-  self->_outgoing = [v4 isOutgoing];
-  self->_voicemail = [v4 isVoicemail];
-  self->_hostedOnCurrentDevice = [v4 isHostedOnCurrentDevice];
-  v24 = [v4 callUUID];
-  v25 = [v24 copy];
+  self->_outgoing = [callCopy isOutgoing];
+  self->_voicemail = [callCopy isVoicemail];
+  self->_hostedOnCurrentDevice = [callCopy isHostedOnCurrentDevice];
+  callUUID = [callCopy callUUID];
+  v25 = [callUUID copy];
   callUUID = self->_callUUID;
   self->_callUUID = v25;
 
-  self->_isVideo = [v4 isVideo];
-  self->_thirdPartyVideo = [v4 isThirdPartyVideo];
-  self->_isSendingAudio = [v4 isSendingAudio];
-  self->_isSendingVideo = [v4 isSendingVideo];
-  self->_blocked = [v4 isBlocked];
-  self->_emergency = [v4 isEmergency];
-  self->_hasEmergencyVideoStream = [v4 hasEmergencyVideoStream];
-  v27 = [v4 emergencyMediaItems];
-  v28 = [v27 copy];
+  self->_isVideo = [callCopy isVideo];
+  self->_thirdPartyVideo = [callCopy isThirdPartyVideo];
+  self->_isSendingAudio = [callCopy isSendingAudio];
+  self->_isSendingVideo = [callCopy isSendingVideo];
+  self->_blocked = [callCopy isBlocked];
+  self->_emergency = [callCopy isEmergency];
+  self->_hasEmergencyVideoStream = [callCopy hasEmergencyVideoStream];
+  emergencyMediaItems = [callCopy emergencyMediaItems];
+  v28 = [emergencyMediaItems copy];
   emergencyMediaItems = self->_emergencyMediaItems;
   self->_emergencyMediaItems = v28;
 
-  self->_failureExpected = [v4 isFailureExpected];
-  self->_international = [v4 isInternational];
-  self->_domestic = [v4 isDomestic];
-  self->_sos = [v4 isSOS];
-  self->_supportsEmergencyFallback = [v4 supportsEmergencyFallback];
-  self->_usingBaseband = [v4 isUsingBaseband];
-  self->_ttyType = [v4 ttyType];
-  self->_bluetoothAudioFormat = [v4 bluetoothAudioFormat];
-  self->_mixesVoiceWithMedia = [v4 mixesVoiceWithMedia];
-  self->_supportsTTYWithVoice = [v4 supportsTTYWithVoice];
-  v30 = [v4 audioCategory];
+  self->_failureExpected = [callCopy isFailureExpected];
+  self->_international = [callCopy isInternational];
+  self->_domestic = [callCopy isDomestic];
+  self->_sos = [callCopy isSOS];
+  self->_supportsEmergencyFallback = [callCopy supportsEmergencyFallback];
+  self->_usingBaseband = [callCopy isUsingBaseband];
+  self->_ttyType = [callCopy ttyType];
+  self->_bluetoothAudioFormat = [callCopy bluetoothAudioFormat];
+  self->_mixesVoiceWithMedia = [callCopy mixesVoiceWithMedia];
+  self->_supportsTTYWithVoice = [callCopy supportsTTYWithVoice];
+  audioCategory = [callCopy audioCategory];
   audioCategory = self->_audioCategory;
-  self->_audioCategory = v30;
+  self->_audioCategory = audioCategory;
 
-  v32 = [v4 audioMode];
+  audioMode = [callCopy audioMode];
   audioMode = self->_audioMode;
-  self->_audioMode = v32;
+  self->_audioMode = audioMode;
 
-  self->_needsManualInCallSounds = [v4 needsManualInCallSounds];
-  v34 = [v4 endedReasonUserInfo];
-  v35 = [v34 copy];
+  self->_needsManualInCallSounds = [callCopy needsManualInCallSounds];
+  endedReasonUserInfo = [callCopy endedReasonUserInfo];
+  v35 = [endedReasonUserInfo copy];
   endedReasonUserInfo = self->_endedReasonUserInfo;
   self->_endedReasonUserInfo = v35;
 
-  v37 = [v4 endedErrorString];
-  v38 = [v37 copy];
+  endedErrorString = [callCopy endedErrorString];
+  v38 = [endedErrorString copy];
   endedErrorString = self->_endedErrorString;
   self->_endedErrorString = v38;
 
-  v40 = [v4 endedReasonString];
-  v41 = [v40 copy];
+  endedReasonString = [callCopy endedReasonString];
+  v41 = [endedReasonString copy];
   endedReasonString = self->_endedReasonString;
   self->_endedReasonString = v41;
 
-  self->_uplinkMuted = [v4 isUplinkMuted];
-  self->_downlinkMuted = [v4 isDownlinkMuted];
-  self->_callRelaySupport = [v4 callRelaySupport];
-  v43 = [v4 localFrequency];
+  self->_uplinkMuted = [callCopy isUplinkMuted];
+  self->_downlinkMuted = [callCopy isDownlinkMuted];
+  self->_callRelaySupport = [callCopy callRelaySupport];
+  localFrequency = [callCopy localFrequency];
   localFrequency = self->_localFrequency;
-  self->_localFrequency = v43;
+  self->_localFrequency = localFrequency;
 
-  v45 = [v4 remoteFrequency];
+  remoteFrequency = [callCopy remoteFrequency];
   remoteFrequency = self->_remoteFrequency;
-  self->_remoteFrequency = v45;
+  self->_remoteFrequency = remoteFrequency;
 
-  [v4 localMeterLevel];
+  [callCopy localMeterLevel];
   self->_localMeterLevel = v47;
-  [v4 remoteMeterLevel];
+  [callCopy remoteMeterLevel];
   self->_remoteMeterLevel = v48;
-  v49 = [v4 callGroupUUID];
+  callGroupUUID = [callCopy callGroupUUID];
   callGroupUUID = self->_callGroupUUID;
-  self->_callGroupUUID = v49;
+  self->_callGroupUUID = callGroupUUID;
 
-  v51 = [v4 providerContext];
-  v52 = [v51 copy];
+  providerContext = [callCopy providerContext];
+  v52 = [providerContext copy];
   providerContext = self->_providerContext;
   self->_providerContext = v52;
 
-  v54 = [v4 displayContext];
-  v55 = [v54 copy];
+  displayContext = [callCopy displayContext];
+  v55 = [displayContext copy];
   displayContext = self->_displayContext;
   self->_displayContext = v55;
 
-  v57 = [v4 remoteParticipantHandles];
-  v58 = [v57 copy];
+  remoteParticipantHandles = [callCopy remoteParticipantHandles];
+  v58 = [remoteParticipantHandles copy];
   remoteParticipantHandles = self->_remoteParticipantHandles;
   self->_remoteParticipantHandles = v58;
 
-  self->_remoteUplinkMuted = [v4 isRemoteUplinkMuted];
-  v60 = [v4 localSenderIdentityUUID];
+  self->_remoteUplinkMuted = [callCopy isRemoteUplinkMuted];
+  localSenderIdentityUUID = [callCopy localSenderIdentityUUID];
   localSenderIdentityUUID = self->_localSenderIdentityUUID;
-  self->_localSenderIdentityUUID = v60;
+  self->_localSenderIdentityUUID = localSenderIdentityUUID;
 
-  v62 = [v4 localSenderIdentityAccountUUID];
+  localSenderIdentityAccountUUID = [callCopy localSenderIdentityAccountUUID];
   localSenderIdentityAccountUUID = self->_localSenderIdentityAccountUUID;
-  self->_localSenderIdentityAccountUUID = v62;
+  self->_localSenderIdentityAccountUUID = localSenderIdentityAccountUUID;
 
-  self->_shouldSuppressInCallUI = [v4 shouldSuppressInCallUI];
-  self->_launchInBackground = [v4 launchInBackground];
-  self->_mutuallyExclusiveCall = [v4 isMutuallyExclusiveCall];
-  self->_wantsStagingArea = [v4 wantsStagingArea];
-  self->_inputAudioPowerSpectrumToken = [v4 inputAudioPowerSpectrumToken];
-  self->_outputAudioPowerSpectrumToken = [v4 outputAudioPowerSpectrumToken];
-  self->_isReRing = [v4 isReRing];
-  self->_originatingUIType = [v4 originatingUIType];
-  self->_sharingScreen = [v4 isSharingScreen];
-  self->_conversation = [v4 isConversation];
-  v64 = [v4 screenShareAttributes];
+  self->_shouldSuppressInCallUI = [callCopy shouldSuppressInCallUI];
+  self->_launchInBackground = [callCopy launchInBackground];
+  self->_mutuallyExclusiveCall = [callCopy isMutuallyExclusiveCall];
+  self->_wantsStagingArea = [callCopy wantsStagingArea];
+  self->_inputAudioPowerSpectrumToken = [callCopy inputAudioPowerSpectrumToken];
+  self->_outputAudioPowerSpectrumToken = [callCopy outputAudioPowerSpectrumToken];
+  self->_isReRing = [callCopy isReRing];
+  self->_originatingUIType = [callCopy originatingUIType];
+  self->_sharingScreen = [callCopy isSharingScreen];
+  self->_conversation = [callCopy isConversation];
+  screenShareAttributes = [callCopy screenShareAttributes];
   screenShareAttributes = self->_screenShareAttributes;
-  self->_screenShareAttributes = v64;
+  self->_screenShareAttributes = screenShareAttributes;
 
-  v66 = [v4 tokens];
+  tokens = [callCopy tokens];
   tokens = self->_tokens;
-  self->_tokens = v66;
+  self->_tokens = tokens;
 
-  v68 = [v4 localMemberHandleValue];
+  localMemberHandleValue = [callCopy localMemberHandleValue];
   localMemberHandleValue = self->_localMemberHandleValue;
-  self->_localMemberHandleValue = v68;
+  self->_localMemberHandleValue = localMemberHandleValue;
 
-  self->_serviceStatus = [v4 serviceStatus];
-  self->_transmissionMode = [v4 transmissionMode];
-  self->_accessoryButtonEventsEnabled = [v4 accessoryButtonEventsEnabled];
-  self->_receivingTransmission = [v4 isReceivingTransmission];
-  self->_sendingTransmission = [v4 isSendingTransmission];
-  self->_ptt = [v4 isPTT];
-  v70 = [v4 channelImageURL];
+  self->_serviceStatus = [callCopy serviceStatus];
+  self->_transmissionMode = [callCopy transmissionMode];
+  self->_accessoryButtonEventsEnabled = [callCopy accessoryButtonEventsEnabled];
+  self->_receivingTransmission = [callCopy isReceivingTransmission];
+  self->_sendingTransmission = [callCopy isSendingTransmission];
+  self->_ptt = [callCopy isPTT];
+  channelImageURL = [callCopy channelImageURL];
   channelImageURL = self->_channelImageURL;
-  self->_channelImageURL = v70;
+  self->_channelImageURL = channelImageURL;
 
-  self->_recordingAvailability = [v4 recordingAvailability];
-  self->_translationAvailability = [v4 translationAvailability];
-  self->_supportsScreening = [v4 supportsScreening];
-  self->_screenSharingIntention = [v4 screenSharingIntention];
-  self->_screenSharingType = [v4 screenSharingType];
-  self->_isSharePlayCapable = [v4 isSharePlayCapable];
-  self->_nearbyMode = [v4 nearbyMode];
-  v72 = [v4 videoCallAttributes];
-  [(TUProxyCall *)self _updateVideoCallAttributes:v72];
+  self->_recordingAvailability = [callCopy recordingAvailability];
+  self->_translationAvailability = [callCopy translationAvailability];
+  self->_supportsScreening = [callCopy supportsScreening];
+  self->_screenSharingIntention = [callCopy screenSharingIntention];
+  self->_screenSharingType = [callCopy screenSharingType];
+  self->_isSharePlayCapable = [callCopy isSharePlayCapable];
+  self->_nearbyMode = [callCopy nearbyMode];
+  videoCallAttributes = [callCopy videoCallAttributes];
+  [(TUProxyCall *)self _updateVideoCallAttributes:videoCallAttributes];
 
-  v73 = [v4 videoStreamToken];
-  [(TUProxyCall *)self _updateVideoStreamToken:v73];
+  videoStreamToken = [callCopy videoStreamToken];
+  [(TUProxyCall *)self _updateVideoStreamToken:videoStreamToken];
 }
 
-- (void)disconnectWithReason:(int)a3
+- (void)disconnectWithReason:(int)reason
 {
   v12 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -299,31 +299,31 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v11 = a3;
+    reasonCopy = reason;
     _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "disconnectWithReason: reason: %d", buf, 8u);
   }
 
-  v6 = [(TUProxyCall *)self proxyCallActionsDelegate];
-  v7 = [(TUCall *)self uniqueProxyIdentifier];
-  [v6 disconnectCallWithUniqueProxyIdentifier:v7];
+  proxyCallActionsDelegate = [(TUProxyCall *)self proxyCallActionsDelegate];
+  uniqueProxyIdentifier = [(TUCall *)self uniqueProxyIdentifier];
+  [proxyCallActionsDelegate disconnectCallWithUniqueProxyIdentifier:uniqueProxyIdentifier];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)answerWithRequest:(id)a3
+- (void)answerWithRequest:(id)request
 {
   v6.receiver = self;
   v6.super_class = TUProxyCall;
-  v4 = a3;
-  [(TUCall *)&v6 answerWithRequest:v4];
+  requestCopy = request;
+  [(TUCall *)&v6 answerWithRequest:requestCopy];
   v5 = [(TUProxyCall *)self proxyCallActionsDelegate:v6.receiver];
-  [v5 answerCallWithRequest:v4];
+  [v5 answerCallWithRequest:requestCopy];
 }
 
-- (void)setDisconnectedReason:(int)a3
+- (void)setDisconnectedReason:(int)reason
 {
   v18 = *MEMORY[0x1E69E9840];
-  if ([(TUCall *)self disconnectedReason]!= a3)
+  if ([(TUCall *)self disconnectedReason]!= reason)
   {
     v5 = TUDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -331,22 +331,22 @@
       *buf = 138413058;
       v11 = @"disconnectedReason";
       v12 = 1024;
-      v13 = [(TUCall *)self disconnectedReason];
+      disconnectedReason = [(TUCall *)self disconnectedReason];
       v14 = 1024;
-      v15 = a3;
+      reasonCopy = reason;
       v16 = 2112;
-      v17 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "Asked to set %@ from %d to %d for %@. Posting necessary notifications and updating daemon", buf, 0x22u);
     }
 
-    v6 = [(TUCall *)self callNotificationManager];
+    callNotificationManager = [(TUCall *)self callNotificationManager];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __37__TUProxyCall_setDisconnectedReason___block_invoke;
     v8[3] = &unk_1E74256D0;
-    v9 = a3;
+    reasonCopy2 = reason;
     v8[4] = self;
-    [v6 postNotificationsForCall:self afterUpdatesInBlock:v8];
+    [callNotificationManager postNotificationsForCall:self afterUpdatesInBlock:v8];
   }
 
   v7 = *MEMORY[0x1E69E9840];
@@ -371,11 +371,11 @@ void __37__TUProxyCall_setDisconnectedReason___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setShouldSuppressRingtone:(BOOL)a3
+- (void)setShouldSuppressRingtone:(BOOL)ringtone
 {
-  v3 = a3;
+  ringtoneCopy = ringtone;
   v18 = *MEMORY[0x1E69E9840];
-  if ([(TUCall *)self shouldSuppressRingtone]!= a3)
+  if ([(TUCall *)self shouldSuppressRingtone]!= ringtone)
   {
     v5 = TUDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -383,22 +383,22 @@ void __37__TUProxyCall_setDisconnectedReason___block_invoke(uint64_t a1)
       *buf = 138413058;
       v11 = @"shouldSuppressRingtone";
       v12 = 1024;
-      v13 = [(TUCall *)self shouldSuppressRingtone];
+      shouldSuppressRingtone = [(TUCall *)self shouldSuppressRingtone];
       v14 = 1024;
-      v15 = v3;
+      v15 = ringtoneCopy;
       v16 = 2112;
-      v17 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "Asked to set %@ from %d to %d for %@. Posting necessary notifications and updating daemon", buf, 0x22u);
     }
 
-    v6 = [(TUCall *)self callNotificationManager];
+    callNotificationManager = [(TUCall *)self callNotificationManager];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __41__TUProxyCall_setShouldSuppressRingtone___block_invoke;
     v8[3] = &unk_1E7425000;
-    v9 = v3;
+    v9 = ringtoneCopy;
     v8[4] = self;
-    [v6 postNotificationsForCall:self afterUpdatesInBlock:v8];
+    [callNotificationManager postNotificationsForCall:self afterUpdatesInBlock:v8];
   }
 
   v7 = *MEMORY[0x1E69E9840];
@@ -423,11 +423,11 @@ void __41__TUProxyCall_setShouldSuppressRingtone___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setWantsHoldMusic:(BOOL)a3
+- (void)setWantsHoldMusic:(BOOL)music
 {
-  v3 = a3;
+  musicCopy = music;
   v18 = *MEMORY[0x1E69E9840];
-  if ([(TUCall *)self wantsHoldMusic]!= a3)
+  if ([(TUCall *)self wantsHoldMusic]!= music)
   {
     v5 = TUDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -435,22 +435,22 @@ void __41__TUProxyCall_setShouldSuppressRingtone___block_invoke(uint64_t a1)
       *buf = 138413058;
       v11 = @"wantsHoldMusic";
       v12 = 1024;
-      v13 = [(TUCall *)self wantsHoldMusic];
+      wantsHoldMusic = [(TUCall *)self wantsHoldMusic];
       v14 = 1024;
-      v15 = v3;
+      v15 = musicCopy;
       v16 = 2112;
-      v17 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "Asked to set %@ from %d to %d for %@. Posting necessary notifications and updating daemon", buf, 0x22u);
     }
 
-    v6 = [(TUCall *)self callNotificationManager];
+    callNotificationManager = [(TUCall *)self callNotificationManager];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __33__TUProxyCall_setWantsHoldMusic___block_invoke;
     v8[3] = &unk_1E7425000;
-    v9 = v3;
+    v9 = musicCopy;
     v8[4] = self;
-    [v6 postNotificationsForCall:self afterUpdatesInBlock:v8];
+    [callNotificationManager postNotificationsForCall:self afterUpdatesInBlock:v8];
   }
 
   v7 = *MEMORY[0x1E69E9840];
@@ -475,11 +475,11 @@ void __33__TUProxyCall_setWantsHoldMusic___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setEndpointOnCurrentDevice:(BOOL)a3
+- (void)setEndpointOnCurrentDevice:(BOOL)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v18 = *MEMORY[0x1E69E9840];
-  if ([(TUCall *)self isEndpointOnCurrentDevice]!= a3)
+  if ([(TUCall *)self isEndpointOnCurrentDevice]!= device)
   {
     v5 = TUDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -487,22 +487,22 @@ void __33__TUProxyCall_setWantsHoldMusic___block_invoke(uint64_t a1)
       *buf = 138413058;
       v11 = @"isEndpointOnCurrentDevice";
       v12 = 1024;
-      v13 = [(TUCall *)self isEndpointOnCurrentDevice];
+      isEndpointOnCurrentDevice = [(TUCall *)self isEndpointOnCurrentDevice];
       v14 = 1024;
-      v15 = v3;
+      v15 = deviceCopy;
       v16 = 2112;
-      v17 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "Asked to set %@ from %d to %d for %@. Posting necessary notifications", buf, 0x22u);
     }
 
-    v6 = [(TUCall *)self callNotificationManager];
+    callNotificationManager = [(TUCall *)self callNotificationManager];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __42__TUProxyCall_setEndpointOnCurrentDevice___block_invoke;
     v8[3] = &unk_1E7425000;
-    v9 = v3;
+    v9 = deviceCopy;
     v8[4] = self;
-    [v6 postNotificationsForCall:self afterUpdatesInBlock:v8];
+    [callNotificationManager postNotificationsForCall:self afterUpdatesInBlock:v8];
   }
 
   v7 = *MEMORY[0x1E69E9840];
@@ -516,11 +516,11 @@ id __42__TUProxyCall_setEndpointOnCurrentDevice___block_invoke(uint64_t a1)
   return objc_msgSendSuper2(&v3, sel_setEndpointOnCurrentDevice_, v1);
 }
 
-- (void)setScreening:(BOOL)a3
+- (void)setScreening:(BOOL)screening
 {
-  v3 = a3;
+  screeningCopy = screening;
   v18 = *MEMORY[0x1E69E9840];
-  if ([(TUCall *)self isScreening]!= a3)
+  if ([(TUCall *)self isScreening]!= screening)
   {
     v5 = TUDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -528,22 +528,22 @@ id __42__TUProxyCall_setEndpointOnCurrentDevice___block_invoke(uint64_t a1)
       *buf = 138413058;
       v11 = @"isScreening";
       v12 = 1024;
-      v13 = [(TUCall *)self isScreening];
+      isScreening = [(TUCall *)self isScreening];
       v14 = 1024;
-      v15 = v3;
+      v15 = screeningCopy;
       v16 = 2112;
-      v17 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "Asked to set %@ from %d to %d for %@. Posting necessary notifications", buf, 0x22u);
     }
 
-    v6 = [(TUCall *)self callNotificationManager];
+    callNotificationManager = [(TUCall *)self callNotificationManager];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __28__TUProxyCall_setScreening___block_invoke;
     v8[3] = &unk_1E7425000;
-    v9 = v3;
+    v9 = screeningCopy;
     v8[4] = self;
-    [v6 postNotificationsForCall:self afterUpdatesInBlock:v8];
+    [callNotificationManager postNotificationsForCall:self afterUpdatesInBlock:v8];
   }
 
   v7 = *MEMORY[0x1E69E9840];
@@ -557,10 +557,10 @@ id __28__TUProxyCall_setScreening___block_invoke(uint64_t a1)
   return objc_msgSendSuper2(&v3, sel_setScreening_, v1);
 }
 
-- (void)setTransitionStatus:(int)a3
+- (void)setTransitionStatus:(int)status
 {
   v18 = *MEMORY[0x1E69E9840];
-  if ([(TUCall *)self transitionStatus]!= a3)
+  if ([(TUCall *)self transitionStatus]!= status)
   {
     v5 = TUDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -568,22 +568,22 @@ id __28__TUProxyCall_setScreening___block_invoke(uint64_t a1)
       *buf = 138413058;
       v11 = @"transitionStatus";
       v12 = 1024;
-      v13 = [(TUCall *)self transitionStatus];
+      transitionStatus = [(TUCall *)self transitionStatus];
       v14 = 1024;
-      v15 = a3;
+      statusCopy = status;
       v16 = 2112;
-      v17 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "Asked to set %@ from %d to %d for %@. Posting necessary notifications", buf, 0x22u);
     }
 
-    v6 = [(TUCall *)self callNotificationManager];
+    callNotificationManager = [(TUCall *)self callNotificationManager];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __35__TUProxyCall_setTransitionStatus___block_invoke;
     v8[3] = &unk_1E74256D0;
-    v9 = a3;
+    statusCopy2 = status;
     v8[4] = self;
-    [v6 postNotificationsForCall:self afterUpdatesInBlock:v8];
+    [callNotificationManager postNotificationsForCall:self afterUpdatesInBlock:v8];
   }
 
   v7 = *MEMORY[0x1E69E9840];
@@ -597,12 +597,12 @@ id __35__TUProxyCall_setTransitionStatus___block_invoke(uint64_t a1)
   return objc_msgSendSuper2(&v3, sel_setTransitionStatus_, v1);
 }
 
-- (void)setVideoPaused:(BOOL)a3
+- (void)setVideoPaused:(BOOL)paused
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (self->_videoPaused != a3)
+  if (self->_videoPaused != paused)
   {
-    v3 = a3;
+    pausedCopy = paused;
     v5 = TUDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -612,31 +612,31 @@ id __35__TUProxyCall_setTransitionStatus___block_invoke(uint64_t a1)
       v13 = 1024;
       v14 = videoPaused;
       v15 = 1024;
-      v16 = v3;
+      v16 = pausedCopy;
       v17 = 2112;
-      v18 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "Asked to set %@ from %d to %d for %@. Posting necessary notifications", buf, 0x22u);
     }
 
-    v7 = [(TUCall *)self callNotificationManager];
+    callNotificationManager = [(TUCall *)self callNotificationManager];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __30__TUProxyCall_setVideoPaused___block_invoke;
     v9[3] = &unk_1E7425000;
     v9[4] = self;
-    v10 = v3;
-    [v7 postNotificationsForCall:self afterUpdatesInBlock:v9];
+    v10 = pausedCopy;
+    [callNotificationManager postNotificationsForCall:self afterUpdatesInBlock:v9];
   }
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setMediaStalled:(BOOL)a3
+- (void)setMediaStalled:(BOOL)stalled
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (self->_mediaStalled != a3)
+  if (self->_mediaStalled != stalled)
   {
-    v3 = a3;
+    stalledCopy = stalled;
     v5 = TUDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -646,31 +646,31 @@ id __35__TUProxyCall_setTransitionStatus___block_invoke(uint64_t a1)
       v13 = 1024;
       v14 = mediaStalled;
       v15 = 1024;
-      v16 = v3;
+      v16 = stalledCopy;
       v17 = 2112;
-      v18 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "Asked to set %@ from %d to %d for %@. Posting necessary notifications", buf, 0x22u);
     }
 
-    v7 = [(TUCall *)self callNotificationManager];
+    callNotificationManager = [(TUCall *)self callNotificationManager];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __31__TUProxyCall_setMediaStalled___block_invoke;
     v9[3] = &unk_1E7425000;
     v9[4] = self;
-    v10 = v3;
-    [v7 postNotificationsForCall:self afterUpdatesInBlock:v9];
+    v10 = stalledCopy;
+    [callNotificationManager postNotificationsForCall:self afterUpdatesInBlock:v9];
   }
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setVideoDegraded:(BOOL)a3
+- (void)setVideoDegraded:(BOOL)degraded
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (self->_videoDegraded != a3)
+  if (self->_videoDegraded != degraded)
   {
-    v3 = a3;
+    degradedCopy = degraded;
     v5 = TUDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -680,51 +680,51 @@ id __35__TUProxyCall_setTransitionStatus___block_invoke(uint64_t a1)
       v13 = 1024;
       v14 = videoDegraded;
       v15 = 1024;
-      v16 = v3;
+      v16 = degradedCopy;
       v17 = 2112;
-      v18 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "Asked to set %@ from %d to %d for %@. Posting necessary notifications", buf, 0x22u);
     }
 
-    v7 = [(TUCall *)self callNotificationManager];
+    callNotificationManager = [(TUCall *)self callNotificationManager];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __32__TUProxyCall_setVideoDegraded___block_invoke;
     v9[3] = &unk_1E7425000;
     v9[4] = self;
-    v10 = v3;
-    [v7 postNotificationsForCall:self afterUpdatesInBlock:v9];
+    v10 = degradedCopy;
+    [callNotificationManager postNotificationsForCall:self afterUpdatesInBlock:v9];
   }
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setUplinkMuted:(BOOL)a3
+- (void)setUplinkMuted:(BOOL)muted
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (self->_uplinkMuted != a3)
+  if (self->_uplinkMuted != muted)
   {
-    v3 = a3;
+    mutedCopy = muted;
     v5 = TUDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109634;
-      v11 = [(TUProxyCall *)self isUplinkMuted];
+      isUplinkMuted = [(TUProxyCall *)self isUplinkMuted];
       v12 = 1024;
-      v13 = v3;
+      v13 = mutedCopy;
       v14 = 2112;
-      v15 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "Asked to set uplinkMuted from %d to %d for %@. Posting necessary notifications and updating daemon", buf, 0x18u);
     }
 
-    v6 = [(TUCall *)self callNotificationManager];
+    callNotificationManager = [(TUCall *)self callNotificationManager];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __30__TUProxyCall_setUplinkMuted___block_invoke;
     v8[3] = &unk_1E7425000;
     v8[4] = self;
-    v9 = v3;
-    [v6 postNotificationsForCall:self afterUpdatesInBlock:v8];
+    v9 = mutedCopy;
+    [callNotificationManager postNotificationsForCall:self afterUpdatesInBlock:v8];
   }
 
   v7 = *MEMORY[0x1E69E9840];
@@ -756,32 +756,32 @@ void __30__TUProxyCall_setUplinkMuted___block_invoke_2(uint64_t a1)
   [v4 setUplinkMuted:v2 forCallWithUniqueProxyIdentifier:v3];
 }
 
-- (void)setDownlinkMuted:(BOOL)a3
+- (void)setDownlinkMuted:(BOOL)muted
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (self->_downlinkMuted != a3)
+  if (self->_downlinkMuted != muted)
   {
-    v3 = a3;
+    mutedCopy = muted;
     v5 = TUDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109634;
-      v11 = [(TUProxyCall *)self isDownlinkMuted];
+      isDownlinkMuted = [(TUProxyCall *)self isDownlinkMuted];
       v12 = 1024;
-      v13 = v3;
+      v13 = mutedCopy;
       v14 = 2112;
-      v15 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "Asked to set downlinkMuted from %d to %d for %@. Posting necessary notifications and updating daemon", buf, 0x18u);
     }
 
-    v6 = [(TUCall *)self callNotificationManager];
+    callNotificationManager = [(TUCall *)self callNotificationManager];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __32__TUProxyCall_setDownlinkMuted___block_invoke;
     v8[3] = &unk_1E7425000;
     v8[4] = self;
-    v9 = v3;
-    [v6 postNotificationsForCall:self afterUpdatesInBlock:v8];
+    v9 = mutedCopy;
+    [callNotificationManager postNotificationsForCall:self afterUpdatesInBlock:v8];
   }
 
   v7 = *MEMORY[0x1E69E9840];
@@ -813,31 +813,31 @@ void __32__TUProxyCall_setDownlinkMuted___block_invoke_2(uint64_t a1)
   [v4 setDownlinkMuted:v2 forCallWithUniqueProxyIdentifier:v3];
 }
 
-- (void)addScreenSharingType:(unint64_t)a3
+- (void)addScreenSharingType:(unint64_t)type
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (self->_screenSharingType != a3)
+  if (self->_screenSharingType != type)
   {
     v5 = TUDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218498;
-      v10 = a3;
+      typeCopy = type;
       v11 = 2048;
-      v12 = [(TUProxyCall *)self screenSharingType];
+      screenSharingType = [(TUProxyCall *)self screenSharingType];
       v13 = 2112;
-      v14 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "Asked to add %lu to screenSharingType %lu for %@. Posting necessary notifications and updating daemon", buf, 0x20u);
     }
 
-    v6 = [(TUCall *)self callNotificationManager];
+    callNotificationManager = [(TUCall *)self callNotificationManager];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __36__TUProxyCall_addScreenSharingType___block_invoke;
     v8[3] = &unk_1E7425340;
     v8[4] = self;
-    v8[5] = a3;
-    [v6 postNotificationsForCall:self afterUpdatesInBlock:v8];
+    v8[5] = type;
+    [callNotificationManager postNotificationsForCall:self afterUpdatesInBlock:v8];
   }
 
   v7 = *MEMORY[0x1E69E9840];
@@ -869,32 +869,32 @@ void __36__TUProxyCall_addScreenSharingType___block_invoke_2(uint64_t a1)
   [v4 addScreenSharingType:v2 forCallWithUniqueProxyIdentifier:v3];
 }
 
-- (void)setIsSendingVideo:(BOOL)a3
+- (void)setIsSendingVideo:(BOOL)video
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (self->_isSendingVideo != a3)
+  if (self->_isSendingVideo != video)
   {
-    v3 = a3;
+    videoCopy = video;
     v5 = TUDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109634;
-      v11 = [(TUProxyCall *)self isSendingVideo];
+      isSendingVideo = [(TUProxyCall *)self isSendingVideo];
       v12 = 1024;
-      v13 = v3;
+      v13 = videoCopy;
       v14 = 2112;
-      v15 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "Asked to set isSendingVideo from %d to %d for %@. Posting necessary notifications and updating daemon", buf, 0x18u);
     }
 
-    v6 = [(TUCall *)self callNotificationManager];
+    callNotificationManager = [(TUCall *)self callNotificationManager];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __33__TUProxyCall_setIsSendingVideo___block_invoke;
     v8[3] = &unk_1E7425000;
     v8[4] = self;
-    v9 = v3;
-    [v6 postNotificationsForCall:self afterUpdatesInBlock:v8];
+    v9 = videoCopy;
+    [callNotificationManager postNotificationsForCall:self afterUpdatesInBlock:v8];
   }
 
   v7 = *MEMORY[0x1E69E9840];
@@ -926,12 +926,12 @@ void __33__TUProxyCall_setIsSendingVideo___block_invoke_2(uint64_t a1)
   [v4 setIsSendingVideo:v2 forCallWithUniqueProxyIdentifier:v3];
 }
 
-- (void)setSharingScreen:(BOOL)a3
+- (void)setSharingScreen:(BOOL)screen
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (self->_sharingScreen != a3)
+  if (self->_sharingScreen != screen)
   {
-    v3 = a3;
+    screenCopy = screen;
     v5 = TUDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -939,20 +939,20 @@ void __33__TUProxyCall_setIsSendingVideo___block_invoke_2(uint64_t a1)
       *buf = 67109634;
       v12 = sharingScreen;
       v13 = 1024;
-      v14 = v3;
+      v14 = screenCopy;
       v15 = 2112;
-      v16 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "Asked to set sharingScreen from %d to %d for %@. Posting necessary notifications and updating daemon", buf, 0x18u);
     }
 
-    v7 = [(TUCall *)self callNotificationManager];
+    callNotificationManager = [(TUCall *)self callNotificationManager];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __32__TUProxyCall_setSharingScreen___block_invoke;
     v9[3] = &unk_1E7425000;
     v9[4] = self;
-    v10 = v3;
-    [v7 postNotificationsForCall:self afterUpdatesInBlock:v9];
+    v10 = screenCopy;
+    [callNotificationManager postNotificationsForCall:self afterUpdatesInBlock:v9];
   }
 
   v8 = *MEMORY[0x1E69E9840];
@@ -984,19 +984,19 @@ void __32__TUProxyCall_setSharingScreen___block_invoke_2(uint64_t a1)
   [v4 setSharingScreen:v2 forCallWithUniqueProxyIdentifier:v3];
 }
 
-- (void)setMixesVoiceWithMedia:(BOOL)a3
+- (void)setMixesVoiceWithMedia:(BOOL)media
 {
-  v3 = a3;
+  mediaCopy = media;
   v18 = *MEMORY[0x1E69E9840];
   mixesVoiceWithMedia = self->_mixesVoiceWithMedia;
-  v6 = TUDefaultLog();
-  v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (mixesVoiceWithMedia == v3)
+  callNotificationManager = TUDefaultLog();
+  v7 = os_log_type_enabled(callNotificationManager, OS_LOG_TYPE_DEFAULT);
+  if (mixesVoiceWithMedia == mediaCopy)
   {
     if (v7)
     {
       *buf = 0;
-      _os_log_impl(&dword_1956FD000, v6, OS_LOG_TYPE_DEFAULT, "[WARN] Wrong use of API", buf, 2u);
+      _os_log_impl(&dword_1956FD000, callNotificationManager, OS_LOG_TYPE_DEFAULT, "[WARN] Wrong use of API", buf, 2u);
     }
   }
 
@@ -1008,20 +1008,20 @@ void __32__TUProxyCall_setSharingScreen___block_invoke_2(uint64_t a1)
       *buf = 67109634;
       v13 = v8;
       v14 = 1024;
-      v15 = v3;
+      v15 = mediaCopy;
       v16 = 2112;
-      v17 = self;
-      _os_log_impl(&dword_1956FD000, v6, OS_LOG_TYPE_DEFAULT, "Asked to set mixesVoiceWithMedia from %d to %d for self: %@. Posting necessary notifications and updating daemon", buf, 0x18u);
+      selfCopy = self;
+      _os_log_impl(&dword_1956FD000, callNotificationManager, OS_LOG_TYPE_DEFAULT, "Asked to set mixesVoiceWithMedia from %d to %d for self: %@. Posting necessary notifications and updating daemon", buf, 0x18u);
     }
 
-    v6 = [(TUCall *)self callNotificationManager];
+    callNotificationManager = [(TUCall *)self callNotificationManager];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __38__TUProxyCall_setMixesVoiceWithMedia___block_invoke;
     v10[3] = &unk_1E7425000;
     v10[4] = self;
-    v11 = v3;
-    [v6 postNotificationsForCall:self afterUpdatesInBlock:v10];
+    v11 = mediaCopy;
+    [callNotificationManager postNotificationsForCall:self afterUpdatesInBlock:v10];
   }
 
   v9 = *MEMORY[0x1E69E9840];
@@ -1053,12 +1053,12 @@ void __38__TUProxyCall_setMixesVoiceWithMedia___block_invoke_2(uint64_t a1)
   [v4 setMixesVoiceWithMedia:v2 forCallWithUniqueProxyIdentifier:v3];
 }
 
-- (void)setSharingScreen:(BOOL)a3 attributes:(id)a4
+- (void)setSharingScreen:(BOOL)screen attributes:(id)attributes
 {
-  v4 = a3;
+  screenCopy = screen;
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (v4 && !self->_sharingScreen)
+  attributesCopy = attributes;
+  if (screenCopy && !self->_sharingScreen)
   {
     v9 = TUDefaultLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1069,21 +1069,21 @@ void __38__TUProxyCall_setMixesVoiceWithMedia___block_invoke_2(uint64_t a1)
       v17 = 1024;
       v18 = 1;
       v19 = 2112;
-      v20 = v6;
+      v20 = attributesCopy;
       v21 = 2112;
-      v22 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1956FD000, v9, OS_LOG_TYPE_DEFAULT, "Asked to set sharingScreen from %d to %d attributes: %@ for %@. Posting necessary notifications and updating daemon", buf, 0x22u);
     }
 
-    v11 = [(TUCall *)self callNotificationManager];
+    callNotificationManager = [(TUCall *)self callNotificationManager];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __43__TUProxyCall_setSharingScreen_attributes___block_invoke;
     v12[3] = &unk_1E7425B78;
     v12[4] = self;
-    v14 = v4;
-    v13 = v6;
-    [v11 postNotificationsForCall:self afterUpdatesInBlock:v12];
+    v14 = screenCopy;
+    v13 = attributesCopy;
+    [callNotificationManager postNotificationsForCall:self afterUpdatesInBlock:v12];
   }
 
   else
@@ -1130,8 +1130,8 @@ void __43__TUProxyCall_setSharingScreen_attributes___block_invoke_2(uint64_t a1)
 
 - (void)updateProxyCallWithDaemon
 {
-  v3 = [(TUProxyCall *)self proxyCallActionsDelegate];
-  [v3 updateCallWithProxy:self];
+  proxyCallActionsDelegate = [(TUProxyCall *)self proxyCallActionsDelegate];
+  [proxyCallActionsDelegate updateCallWithProxy:self];
 }
 
 - (void)setCallDisconnectedDueToComponentCrash
@@ -1144,17 +1144,17 @@ void __43__TUProxyCall_setSharingScreen_attributes___block_invoke_2(uint64_t a1)
 
 - (void)sendHardPauseDigits
 {
-  v3 = [(TUProxyCall *)self proxyCallActionsDelegate];
-  v4 = [(TUCall *)self uniqueProxyIdentifier];
-  [v3 sendHardPauseDigitsForCallWithUniqueProxyIdentifier:v4];
+  proxyCallActionsDelegate = [(TUProxyCall *)self proxyCallActionsDelegate];
+  uniqueProxyIdentifier = [(TUCall *)self uniqueProxyIdentifier];
+  [proxyCallActionsDelegate sendHardPauseDigitsForCallWithUniqueProxyIdentifier:uniqueProxyIdentifier];
 
-  v5 = [(TUCall *)self callNotificationManager];
+  callNotificationManager = [(TUCall *)self callNotificationManager];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __34__TUProxyCall_sendHardPauseDigits__block_invoke;
   v6[3] = &unk_1E7424950;
   v6[4] = self;
-  [v5 postNotificationsForCall:self afterUpdatesInBlock:v6];
+  [callNotificationManager postNotificationsForCall:self afterUpdatesInBlock:v6];
 }
 
 uint64_t __34__TUProxyCall_sendHardPauseDigits__block_invoke(uint64_t a1)
@@ -1165,19 +1165,19 @@ uint64_t __34__TUProxyCall_sendHardPauseDigits__block_invoke(uint64_t a1)
   return [v2 setHardPauseDigits:0];
 }
 
-- (void)setHasEmergencyVideoStream:(BOOL)a3
+- (void)setHasEmergencyVideoStream:(BOOL)stream
 {
-  v3 = a3;
+  streamCopy = stream;
   v18 = *MEMORY[0x1E69E9840];
   hasEmergencyVideoStream = self->_hasEmergencyVideoStream;
-  v6 = TUDefaultLog();
-  v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (hasEmergencyVideoStream == v3)
+  callNotificationManager = TUDefaultLog();
+  v7 = os_log_type_enabled(callNotificationManager, OS_LOG_TYPE_DEFAULT);
+  if (hasEmergencyVideoStream == streamCopy)
   {
     if (v7)
     {
       *buf = 0;
-      _os_log_impl(&dword_1956FD000, v6, OS_LOG_TYPE_DEFAULT, "[WARN] Wrong use of API", buf, 2u);
+      _os_log_impl(&dword_1956FD000, callNotificationManager, OS_LOG_TYPE_DEFAULT, "[WARN] Wrong use of API", buf, 2u);
     }
   }
 
@@ -1189,20 +1189,20 @@ uint64_t __34__TUProxyCall_sendHardPauseDigits__block_invoke(uint64_t a1)
       *buf = 67109634;
       v13 = v8;
       v14 = 1024;
-      v15 = v3;
+      v15 = streamCopy;
       v16 = 2112;
-      v17 = self;
-      _os_log_impl(&dword_1956FD000, v6, OS_LOG_TYPE_DEFAULT, "Asked to set hasEmergencyVideoStream from %d to %d for self: %@. Posting necessary notifications and updating daemon", buf, 0x18u);
+      selfCopy = self;
+      _os_log_impl(&dword_1956FD000, callNotificationManager, OS_LOG_TYPE_DEFAULT, "Asked to set hasEmergencyVideoStream from %d to %d for self: %@. Posting necessary notifications and updating daemon", buf, 0x18u);
     }
 
-    v6 = [(TUCall *)self callNotificationManager];
+    callNotificationManager = [(TUCall *)self callNotificationManager];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __42__TUProxyCall_setHasEmergencyVideoStream___block_invoke;
     v10[3] = &unk_1E7425000;
     v10[4] = self;
-    v11 = v3;
-    [v6 postNotificationsForCall:self afterUpdatesInBlock:v10];
+    v11 = streamCopy;
+    [callNotificationManager postNotificationsForCall:self afterUpdatesInBlock:v10];
   }
 
   v9 = *MEMORY[0x1E69E9840];
@@ -1234,10 +1234,10 @@ void __42__TUProxyCall_setHasEmergencyVideoStream___block_invoke_2(uint64_t a1)
   [v4 setHasEmergencyVideoStream:v2 forCallWithUniqueProxyIdentifier:v3];
 }
 
-- (void)setEmergencyMediaItems:(id)a3
+- (void)setEmergencyMediaItems:(id)items
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   v5 = TUDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1245,21 +1245,21 @@ void __42__TUProxyCall_setHasEmergencyVideoStream___block_invoke_2(uint64_t a1)
     *buf = 138412802;
     v13 = emergencyMediaItems;
     v14 = 2112;
-    v15 = v4;
+    v15 = itemsCopy;
     v16 = 2112;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "Asked to set emergencyMediaItems from %@ to %@ for self: %@. Posting necessary notifications and updating daemon", buf, 0x20u);
   }
 
-  v7 = [(TUCall *)self callNotificationManager];
+  callNotificationManager = [(TUCall *)self callNotificationManager];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __38__TUProxyCall_setEmergencyMediaItems___block_invoke;
   v10[3] = &unk_1E7424898;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
-  [v7 postNotificationsForCall:self afterUpdatesInBlock:v10];
+  v11 = itemsCopy;
+  v8 = itemsCopy;
+  [callNotificationManager postNotificationsForCall:self afterUpdatesInBlock:v10];
 
   v9 = *MEMORY[0x1E69E9840];
 }
@@ -1290,9 +1290,9 @@ void __38__TUProxyCall_setEmergencyMediaItems___block_invoke_2(uint64_t a1)
   [v4 setEmergencyMediaItems:v2 forCallWithUniqueProxyIdentifier:v3];
 }
 
-- (int)avcRemoteVideoModeForMode:(int64_t)a3
+- (int)avcRemoteVideoModeForMode:(int64_t)mode
 {
-  if (a3 == 1)
+  if (mode == 1)
   {
     v3 = 0;
   }
@@ -1302,7 +1302,7 @@ void __38__TUProxyCall_setEmergencyMediaItems___block_invoke_2(uint64_t a1)
     v3 = -1;
   }
 
-  if (a3 == 2)
+  if (mode == 2)
   {
     return 1;
   }
@@ -1313,37 +1313,37 @@ void __38__TUProxyCall_setEmergencyMediaItems___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setRemoteVideoLayer:(id)a3 forMode:(int64_t)a4
+- (void)setRemoteVideoLayer:(id)layer forMode:(int64_t)mode
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(TUProxyCall *)self avcRemoteVideoModeForMode:a4];
-  v8 = [(TUProxyCall *)self remoteVideoModeToLayer];
+  layerCopy = layer;
+  v7 = [(TUProxyCall *)self avcRemoteVideoModeForMode:mode];
+  remoteVideoModeToLayer = [(TUProxyCall *)self remoteVideoModeToLayer];
 
-  if (!v8)
+  if (!remoteVideoModeToLayer)
   {
-    v9 = [MEMORY[0x1E695DF90] dictionary];
-    [(TUProxyCall *)self setRemoteVideoModeToLayer:v9];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [(TUProxyCall *)self setRemoteVideoModeToLayer:dictionary];
   }
 
   v10 = TUDefaultLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412546;
-    v16 = v6;
+    v16 = layerCopy;
     v17 = 2048;
     v18 = v7;
     _os_log_impl(&dword_1956FD000, v10, OS_LOG_TYPE_DEFAULT, "Asked to set remote video layer %@ for mode %ld", &v15, 0x16u);
   }
 
-  v11 = [(TUProxyCall *)self remoteVideoModeToLayer];
+  remoteVideoModeToLayer2 = [(TUProxyCall *)self remoteVideoModeToLayer];
   v12 = [MEMORY[0x1E696AD98] numberWithInt:v7];
-  [v11 setObject:v6 forKeyedSubscript:v12];
+  [remoteVideoModeToLayer2 setObject:layerCopy forKeyedSubscript:v12];
 
-  if (!v6)
+  if (!layerCopy)
   {
-    v13 = [(TUProxyCall *)self remoteVideo];
-    [v13 setVideoLayer:0 forMode:v7];
+    remoteVideo = [(TUProxyCall *)self remoteVideo];
+    [remoteVideo setVideoLayer:0 forMode:v7];
   }
 
   [(TUProxyCall *)self _synchronizeRemoteVideo];
@@ -1351,36 +1351,36 @@ void __38__TUProxyCall_setEmergencyMediaItems___block_invoke_2(uint64_t a1)
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setLocalVideoLayer:(id)a3 forMode:(int64_t)a4
+- (void)setLocalVideoLayer:(id)layer forMode:(int64_t)mode
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(TUProxyCall *)self localVideoModeToLayer];
+  layerCopy = layer;
+  localVideoModeToLayer = [(TUProxyCall *)self localVideoModeToLayer];
 
-  if (!v7)
+  if (!localVideoModeToLayer)
   {
-    v8 = [MEMORY[0x1E695DF90] dictionary];
-    [(TUProxyCall *)self setLocalVideoModeToLayer:v8];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [(TUProxyCall *)self setLocalVideoModeToLayer:dictionary];
   }
 
   v9 = TUDefaultLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412546;
-    v15 = v6;
+    v15 = layerCopy;
     v16 = 2048;
-    v17 = a4;
+    modeCopy = mode;
     _os_log_impl(&dword_1956FD000, v9, OS_LOG_TYPE_DEFAULT, "Asked to set local video layer %@ for mode %ld", &v14, 0x16u);
   }
 
-  v10 = [(TUProxyCall *)self localVideoModeToLayer];
-  v11 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  [v10 setObject:v6 forKeyedSubscript:v11];
+  localVideoModeToLayer2 = [(TUProxyCall *)self localVideoModeToLayer];
+  v11 = [MEMORY[0x1E696AD98] numberWithInteger:mode];
+  [localVideoModeToLayer2 setObject:layerCopy forKeyedSubscript:v11];
 
-  if (!v6)
+  if (!layerCopy)
   {
-    v12 = [(TUProxyCall *)self localVideo];
-    [v12 setVideoLayer:0 forMode:{-[TUProxyCall avcRemoteVideoModeForMode:](self, "avcRemoteVideoModeForMode:", a4)}];
+    localVideo = [(TUProxyCall *)self localVideo];
+    [localVideo setVideoLayer:0 forMode:{-[TUProxyCall avcRemoteVideoModeForMode:](self, "avcRemoteVideoModeForMode:", mode)}];
   }
 
   [(TUProxyCall *)self _synchronizeLocalVideo];
@@ -1388,57 +1388,57 @@ void __38__TUProxyCall_setEmergencyMediaItems___block_invoke_2(uint64_t a1)
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setRequiresRemoteVideo:(BOOL)a3
+- (void)setRequiresRemoteVideo:(BOOL)video
 {
-  if (self->_requiresRemoteVideo != a3)
+  if (self->_requiresRemoteVideo != video)
   {
-    self->_requiresRemoteVideo = a3;
+    self->_requiresRemoteVideo = video;
     [(TUProxyCall *)self _synchronizeRemoteVideo];
   }
 }
 
-- (void)_updateVideoCallAttributes:(id)a3
+- (void)_updateVideoCallAttributes:(id)attributes
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TUCall *)self videoCallAttributes];
-  v6 = [v5 isEqualToVideoCallAttributes:v4];
+  attributesCopy = attributes;
+  videoCallAttributes = [(TUCall *)self videoCallAttributes];
+  v6 = [videoCallAttributes isEqualToVideoCallAttributes:attributesCopy];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(TUCall *)self videoCallAttributes];
-    v8 = [v7 localVideoContextSlotIdentifier];
-    v9 = [v4 localVideoContextSlotIdentifier];
+    videoCallAttributes2 = [(TUCall *)self videoCallAttributes];
+    localVideoContextSlotIdentifier = [videoCallAttributes2 localVideoContextSlotIdentifier];
+    localVideoContextSlotIdentifier2 = [attributesCopy localVideoContextSlotIdentifier];
 
-    if (v8 != v9)
+    if (localVideoContextSlotIdentifier != localVideoContextSlotIdentifier2)
     {
       [(TUProxyCall *)self setLocalVideo:0];
     }
 
-    v10 = [(TUCall *)self videoCallAttributes];
-    v11 = [v10 remoteVideoContextSlotIdentifier];
-    v12 = [v4 remoteVideoContextSlotIdentifier];
+    videoCallAttributes3 = [(TUCall *)self videoCallAttributes];
+    remoteVideoContextSlotIdentifier = [videoCallAttributes3 remoteVideoContextSlotIdentifier];
+    remoteVideoContextSlotIdentifier2 = [attributesCopy remoteVideoContextSlotIdentifier];
 
-    if (v11 != v12)
+    if (remoteVideoContextSlotIdentifier != remoteVideoContextSlotIdentifier2)
     {
       [(TUProxyCall *)self setRemoteVideo:0];
     }
 
-    v13 = [(TUCall *)self videoCallAttributes];
-    v14 = [v13 remoteCameraOrientation];
-    v15 = [v4 remoteCameraOrientation];
+    videoCallAttributes4 = [(TUCall *)self videoCallAttributes];
+    remoteCameraOrientation = [videoCallAttributes4 remoteCameraOrientation];
+    remoteCameraOrientation2 = [attributesCopy remoteCameraOrientation];
 
-    if (v14 != v15)
+    if (remoteCameraOrientation != remoteCameraOrientation2)
     {
-      -[TUProxyCall setRemoteCameraOrientation:](self, "setRemoteCameraOrientation:", [v4 remoteCameraOrientation]);
+      -[TUProxyCall setRemoteCameraOrientation:](self, "setRemoteCameraOrientation:", [attributesCopy remoteCameraOrientation]);
     }
 
-    [(TUCall *)self setVideoCallAttributes:v4];
+    [(TUCall *)self setVideoCallAttributes:attributesCopy];
     v16 = TUDefaultLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v18 = 138412290;
-      v19 = v4;
+      v19 = attributesCopy;
       _os_log_impl(&dword_1956FD000, v16, OS_LOG_TYPE_DEFAULT, "Updating video call attributes %@", &v18, 0xCu);
     }
 
@@ -1449,11 +1449,11 @@ void __38__TUProxyCall_setEmergencyMediaItems___block_invoke_2(uint64_t a1)
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateVideoStreamToken:(int64_t)a3
+- (void)_updateVideoStreamToken:(int64_t)token
 {
-  if (self->_videoStreamToken != a3)
+  if (self->_videoStreamToken != token)
   {
-    self->_videoStreamToken = a3;
+    self->_videoStreamToken = token;
     [(TUProxyCall *)self setRemoteVideo:0];
 
     [(TUProxyCall *)self _synchronizeRemoteVideo];
@@ -1463,8 +1463,8 @@ void __38__TUProxyCall_setEmergencyMediaItems___block_invoke_2(uint64_t a1)
 - (void)_synchronizeLocalVideo
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = [(TUProxyCall *)self localVideoModeToLayer];
-  v4 = [v3 count];
+  localVideoModeToLayer = [(TUProxyCall *)self localVideoModeToLayer];
+  v4 = [localVideoModeToLayer count];
 
   if (v4)
   {
@@ -1473,8 +1473,8 @@ void __38__TUProxyCall_setEmergencyMediaItems___block_invoke_2(uint64_t a1)
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v5 = [(TUProxyCall *)self localVideoModeToLayer];
-    v6 = [v5 countByEnumeratingWithState:&v21 objects:v29 count:16];
+    localVideoModeToLayer2 = [(TUProxyCall *)self localVideoModeToLayer];
+    v6 = [localVideoModeToLayer2 countByEnumeratingWithState:&v21 objects:v29 count:16];
     if (v6)
     {
       v8 = v6;
@@ -1487,29 +1487,29 @@ void __38__TUProxyCall_setEmergencyMediaItems___block_invoke_2(uint64_t a1)
         {
           if (*v22 != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(localVideoModeToLayer2);
           }
 
           v11 = *(*(&v21 + 1) + 8 * i);
-          v12 = [(TUProxyCall *)self localVideoModeToLayer];
-          v13 = [v12 objectForKeyedSubscript:v11];
+          localVideoModeToLayer3 = [(TUProxyCall *)self localVideoModeToLayer];
+          v13 = [localVideoModeToLayer3 objectForKeyedSubscript:v11];
 
           v14 = TUDefaultLog();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
           {
-            v15 = [v11 intValue];
+            intValue = [v11 intValue];
             *buf = v20;
             v26 = v13;
             v27 = 1024;
-            v28 = v15;
+            v28 = intValue;
             _os_log_impl(&dword_1956FD000, v14, OS_LOG_TYPE_DEFAULT, "Setting video layer %@ for mode %d", buf, 0x12u);
           }
 
-          v16 = [(TUProxyCall *)self localVideo];
-          [v16 setVideoLayer:v13 forMode:{objc_msgSend(v11, "intValue")}];
+          localVideo = [(TUProxyCall *)self localVideo];
+          [localVideo setVideoLayer:v13 forMode:{objc_msgSend(v11, "intValue")}];
         }
 
-        v8 = [v5 countByEnumeratingWithState:&v21 objects:v29 count:16];
+        v8 = [localVideoModeToLayer2 countByEnumeratingWithState:&v21 objects:v29 count:16];
       }
 
       while (v8);
@@ -1518,9 +1518,9 @@ void __38__TUProxyCall_setEmergencyMediaItems___block_invoke_2(uint64_t a1)
 
   else
   {
-    v17 = [(TUProxyCall *)self localVideo];
+    localVideo2 = [(TUProxyCall *)self localVideo];
 
-    if (v17)
+    if (localVideo2)
     {
       v18 = TUDefaultLog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -1539,29 +1539,29 @@ void __38__TUProxyCall_setEmergencyMediaItems___block_invoke_2(uint64_t a1)
 - (void)_synchronizeRemoteVideo
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = [(TUProxyCall *)self remoteVideoModeToLayer];
-  if ([v3 count])
+  remoteVideoModeToLayer = [(TUProxyCall *)self remoteVideoModeToLayer];
+  if ([remoteVideoModeToLayer count])
   {
 
     goto LABEL_4;
   }
 
-  v4 = [(TUProxyCall *)self requiresRemoteVideo];
+  requiresRemoteVideo = [(TUProxyCall *)self requiresRemoteVideo];
 
-  if (v4)
+  if (requiresRemoteVideo)
   {
 LABEL_4:
     [(TUProxyCall *)self _createRemoteVideoIfNecessary];
-    v5 = [(TUProxyCall *)self remoteVideo];
+    remoteVideo = [(TUProxyCall *)self remoteVideo];
 
-    if (v5)
+    if (remoteVideo)
     {
       v25 = 0u;
       v26 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v6 = [(TUProxyCall *)self remoteVideoModeToLayer];
-      v7 = [v6 countByEnumeratingWithState:&v23 objects:v31 count:16];
+      remoteVideoModeToLayer2 = [(TUProxyCall *)self remoteVideoModeToLayer];
+      v7 = [remoteVideoModeToLayer2 countByEnumeratingWithState:&v23 objects:v31 count:16];
       if (v7)
       {
         v9 = v7;
@@ -1575,32 +1575,32 @@ LABEL_4:
           {
             if (*v24 != v10)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(remoteVideoModeToLayer2);
             }
 
             v12 = *(*(&v23 + 1) + 8 * v11);
-            v13 = [(TUProxyCall *)self remoteVideoModeToLayer];
-            v14 = [v13 objectForKeyedSubscript:v12];
+            remoteVideoModeToLayer3 = [(TUProxyCall *)self remoteVideoModeToLayer];
+            v14 = [remoteVideoModeToLayer3 objectForKeyedSubscript:v12];
 
             v15 = TUDefaultLog();
             if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
             {
-              v16 = [v12 intValue];
+              intValue = [v12 intValue];
               *buf = v22;
               v28 = v14;
               v29 = 1024;
-              v30 = v16;
+              v30 = intValue;
               _os_log_impl(&dword_1956FD000, v15, OS_LOG_TYPE_DEFAULT, "Setting video layer %@ for mode %d", buf, 0x12u);
             }
 
-            v17 = [(TUProxyCall *)self remoteVideo];
-            [v17 setVideoLayer:v14 forMode:{objc_msgSend(v12, "intValue")}];
+            remoteVideo2 = [(TUProxyCall *)self remoteVideo];
+            [remoteVideo2 setVideoLayer:v14 forMode:{objc_msgSend(v12, "intValue")}];
 
             ++v11;
           }
 
           while (v9 != v11);
-          v9 = [v6 countByEnumeratingWithState:&v23 objects:v31 count:16];
+          v9 = [remoteVideoModeToLayer2 countByEnumeratingWithState:&v23 objects:v31 count:16];
         }
 
         while (v9);
@@ -1620,9 +1620,9 @@ LABEL_4:
     goto LABEL_22;
   }
 
-  v19 = [(TUProxyCall *)self remoteVideo];
+  remoteVideo3 = [(TUProxyCall *)self remoteVideo];
 
-  if (v19)
+  if (remoteVideo3)
   {
     v20 = TUDefaultLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -1640,18 +1640,18 @@ LABEL_22:
 
 - (void)_createLocalVideoIfNecessary
 {
-  v3 = [(TUProxyCall *)self localVideo];
+  localVideo = [(TUProxyCall *)self localVideo];
 
-  if (!v3)
+  if (!localVideo)
   {
-    v4 = [(TUCall *)self videoCallAttributes];
-    v5 = [v4 localVideoContextSlotIdentifier];
+    videoCallAttributes = [(TUCall *)self videoCallAttributes];
+    localVideoContextSlotIdentifier = [videoCallAttributes localVideoContextSlotIdentifier];
 
-    if (v5)
+    if (localVideoContextSlotIdentifier)
     {
       v6 = [TURemoteVideoClient alloc];
-      v8 = [(TUCall *)self videoCallAttributes];
-      v7 = -[TURemoteVideoClient initWithVideoContextSlotIdentifier:](v6, "initWithVideoContextSlotIdentifier:", [v8 localVideoContextSlotIdentifier]);
+      videoCallAttributes2 = [(TUCall *)self videoCallAttributes];
+      v7 = -[TURemoteVideoClient initWithVideoContextSlotIdentifier:](v6, "initWithVideoContextSlotIdentifier:", [videoCallAttributes2 localVideoContextSlotIdentifier]);
       [(TUProxyCall *)self setLocalVideo:v7];
     }
   }
@@ -1660,18 +1660,18 @@ LABEL_22:
 - (void)_createRemoteVideoIfNecessary
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(TUProxyCall *)self remoteVideo];
+  remoteVideo = [(TUProxyCall *)self remoteVideo];
 
-  if (!v3)
+  if (!remoteVideo)
   {
-    v4 = [(TUCall *)self videoCallAttributes];
-    v5 = [v4 remoteVideoContextSlotIdentifier];
+    videoCallAttributes = [(TUCall *)self videoCallAttributes];
+    remoteVideoContextSlotIdentifier = [videoCallAttributes remoteVideoContextSlotIdentifier];
 
-    if (v5)
+    if (remoteVideoContextSlotIdentifier)
     {
       v6 = [TURemoteVideoClient alloc];
-      v7 = [(TUCall *)self videoCallAttributes];
-      v8 = -[TURemoteVideoClient initWithVideoContextSlotIdentifier:](v6, "initWithVideoContextSlotIdentifier:", [v7 remoteVideoContextSlotIdentifier]);
+      videoCallAttributes2 = [(TUCall *)self videoCallAttributes];
+      v8 = -[TURemoteVideoClient initWithVideoContextSlotIdentifier:](v6, "initWithVideoContextSlotIdentifier:", [videoCallAttributes2 remoteVideoContextSlotIdentifier]);
       [(TUProxyCall *)self setRemoteVideo:v8];
     }
 
@@ -1682,7 +1682,7 @@ LABEL_22:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v13 = 134217984;
-        v14 = [(TUProxyCall *)self videoStreamToken];
+        videoStreamToken = [(TUProxyCall *)self videoStreamToken];
         _os_log_impl(&dword_1956FD000, v10, OS_LOG_TYPE_DEFAULT, "Creating AVCRemoteVideoClient with stream token %ld", &v13, 0xCu);
       }
 
@@ -1697,20 +1697,20 @@ LABEL_22:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (CGSize)localAspectRatioForOrientation:(int64_t)a3
+- (CGSize)localAspectRatioForOrientation:(int64_t)orientation
 {
   if (__CUTWeakCGSizeZero__pred_CGSizeZeroCoreGraphics != -1)
   {
     [TUProxyCall localAspectRatioForOrientation:];
   }
 
-  if ((a3 - 3) < 2)
+  if ((orientation - 3) < 2)
   {
 
     [(TUProxyCall *)self remoteScreenLandscapeAspectRatio];
   }
 
-  else if ((a3 - 1) > 1)
+  else if ((orientation - 1) > 1)
   {
     v6 = *(&__CUTStaticWeak_CGSizeZero + 1);
     v5 = *&__CUTStaticWeak_CGSizeZero;
@@ -1727,20 +1727,20 @@ LABEL_22:
   return result;
 }
 
-- (void)setRemoteVideoPresentationSize:(CGSize)a3
+- (void)setRemoteVideoPresentationSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v16 = *MEMORY[0x1E69E9840];
   v6 = TUDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(TUProxyCall *)self videoStreamToken];
+    videoStreamToken = [(TUProxyCall *)self videoStreamToken];
     v17.width = width;
     v17.height = height;
     v8 = NSStringFromSize(v17);
     v12 = 134218242;
-    v13 = v7;
+    selfCopy = videoStreamToken;
     v14 = 2112;
     v15 = v8;
     _os_log_impl(&dword_1956FD000, v6, OS_LOG_TYPE_DEFAULT, "self.videoStreamToken: %ld remoteVideoPresentationSize: %@", &v12, 0x16u);
@@ -1748,72 +1748,72 @@ LABEL_22:
 
   if ([(TUProxyCall *)self isVideo])
   {
-    v9 = [(TUProxyCall *)self proxyCallActionsDelegate];
-    v10 = [(TUCall *)self uniqueProxyIdentifier];
-    [v9 setRemoteVideoPresentationSizeForCallWithUniqueProxyIdentifier:v10 size:width, height];
+    proxyCallActionsDelegate = [(TUProxyCall *)self proxyCallActionsDelegate];
+    uniqueProxyIdentifier = [(TUCall *)self uniqueProxyIdentifier];
+    [proxyCallActionsDelegate setRemoteVideoPresentationSizeForCallWithUniqueProxyIdentifier:uniqueProxyIdentifier size:width, height];
   }
 
   else
   {
-    v9 = TUDefaultLog();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    proxyCallActionsDelegate = TUDefaultLog();
+    if (os_log_type_enabled(proxyCallActionsDelegate, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412290;
-      v13 = self;
-      _os_log_impl(&dword_1956FD000, v9, OS_LOG_TYPE_DEFAULT, "[WARN] Ignoring request to set remote video presentation size because call is not a video call: %@", &v12, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&dword_1956FD000, proxyCallActionsDelegate, OS_LOG_TYPE_DEFAULT, "[WARN] Ignoring request to set remote video presentation size because call is not a video call: %@", &v12, 0xCu);
     }
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setScreenShareAttributes:(id)a3
+- (void)setScreenShareAttributes:(id)attributes
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  attributesCopy = attributes;
   v5 = TUDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = attributesCopy;
     _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "screenShareAttributes: %@", &v9, 0xCu);
   }
 
-  v6 = [(TUProxyCall *)self proxyCallActionsDelegate];
-  v7 = [(TUCall *)self uniqueProxyIdentifier];
-  [v6 setScreenShareAttributesForCallWithUniqueProxyIdentifier:v7 attributes:v4];
+  proxyCallActionsDelegate = [(TUProxyCall *)self proxyCallActionsDelegate];
+  uniqueProxyIdentifier = [(TUCall *)self uniqueProxyIdentifier];
+  [proxyCallActionsDelegate setScreenShareAttributesForCallWithUniqueProxyIdentifier:uniqueProxyIdentifier attributes:attributesCopy];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setBluetoothAudioFormat:(int64_t)a3
+- (void)setBluetoothAudioFormat:(int64_t)format
 {
   v11 = *MEMORY[0x1E69E9840];
   v5 = TUDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134217984;
-    v10 = a3;
+    formatCopy = format;
     _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "bluetoothAudioFormat: %ld", &v9, 0xCu);
   }
 
-  v6 = [(TUProxyCall *)self proxyCallActionsDelegate];
-  v7 = [(TUCall *)self uniqueProxyIdentifier];
-  [v6 setBluetoothAudioFormatForCallWithUniqueProxyIdentifier:v7 bluetoothAudioFormat:a3];
+  proxyCallActionsDelegate = [(TUProxyCall *)self proxyCallActionsDelegate];
+  uniqueProxyIdentifier = [(TUCall *)self uniqueProxyIdentifier];
+  [proxyCallActionsDelegate setBluetoothAudioFormatForCallWithUniqueProxyIdentifier:uniqueProxyIdentifier bluetoothAudioFormat:format];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)remoteVideoClient:(id)a3 remoteVideoDidPause:(BOOL)a4
+- (void)remoteVideoClient:(id)client remoteVideoDidPause:(BOOL)pause
 {
-  v6 = [(TUCall *)self queue];
+  queue = [(TUCall *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__TUProxyCall_remoteVideoClient_remoteVideoDidPause___block_invoke;
   v7[3] = &unk_1E7425000;
   v7[4] = self;
-  v8 = a4;
-  dispatch_async(v6, v7);
+  pauseCopy = pause;
+  dispatch_async(queue, v7);
 }
 
 uint64_t __53__TUProxyCall_remoteVideoClient_remoteVideoDidPause___block_invoke(uint64_t a1)
@@ -1836,16 +1836,16 @@ uint64_t __53__TUProxyCall_remoteVideoClient_remoteVideoDidPause___block_invoke(
   return result;
 }
 
-- (void)remoteVideoClient:(id)a3 remoteMediaDidStall:(BOOL)a4
+- (void)remoteVideoClient:(id)client remoteMediaDidStall:(BOOL)stall
 {
-  v6 = [(TUCall *)self queue];
+  queue = [(TUCall *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__TUProxyCall_remoteVideoClient_remoteMediaDidStall___block_invoke;
   v7[3] = &unk_1E7425000;
   v7[4] = self;
-  v8 = a4;
-  dispatch_async(v6, v7);
+  stallCopy = stall;
+  dispatch_async(queue, v7);
 }
 
 uint64_t __53__TUProxyCall_remoteVideoClient_remoteMediaDidStall___block_invoke(uint64_t a1)
@@ -1868,16 +1868,16 @@ uint64_t __53__TUProxyCall_remoteVideoClient_remoteMediaDidStall___block_invoke(
   return result;
 }
 
-- (void)remoteVideoClient:(id)a3 videoDidDegrade:(BOOL)a4
+- (void)remoteVideoClient:(id)client videoDidDegrade:(BOOL)degrade
 {
-  v6 = [(TUCall *)self queue];
+  queue = [(TUCall *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__TUProxyCall_remoteVideoClient_videoDidDegrade___block_invoke;
   v7[3] = &unk_1E7425000;
   v7[4] = self;
-  v8 = a4;
-  dispatch_async(v6, v7);
+  degradeCopy = degrade;
+  dispatch_async(queue, v7);
 }
 
 uint64_t __49__TUProxyCall_remoteVideoClient_videoDidDegrade___block_invoke(uint64_t a1)
@@ -1900,18 +1900,18 @@ uint64_t __49__TUProxyCall_remoteVideoClient_videoDidDegrade___block_invoke(uint
   return result;
 }
 
-- (void)remoteVideoClient:(id)a3 remoteScreenAttributesDidChange:(id)a4
+- (void)remoteVideoClient:(id)client remoteScreenAttributesDidChange:(id)change
 {
-  v5 = a4;
-  v6 = [(TUCall *)self queue];
+  changeCopy = change;
+  queue = [(TUCall *)self queue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __65__TUProxyCall_remoteVideoClient_remoteScreenAttributesDidChange___block_invoke;
   v8[3] = &unk_1E7424898;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = changeCopy;
+  v7 = changeCopy;
+  dispatch_async(queue, v8);
 }
 
 void __65__TUProxyCall_remoteVideoClient_remoteScreenAttributesDidChange___block_invoke(uint64_t a1)
@@ -1965,18 +1965,18 @@ uint64_t __65__TUProxyCall_remoteVideoClient_remoteScreenAttributesDidChange___b
   return result;
 }
 
-- (void)remoteVideoClient:(id)a3 remoteVideoAttributesDidChange:(id)a4
+- (void)remoteVideoClient:(id)client remoteVideoAttributesDidChange:(id)change
 {
-  v5 = a4;
-  v6 = [(TUCall *)self queue];
+  changeCopy = change;
+  queue = [(TUCall *)self queue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __64__TUProxyCall_remoteVideoClient_remoteVideoAttributesDidChange___block_invoke;
   v8[3] = &unk_1E7424898;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = changeCopy;
+  v7 = changeCopy;
+  dispatch_async(queue, v8);
 }
 
 void __64__TUProxyCall_remoteVideoClient_remoteVideoAttributesDidChange___block_invoke(uint64_t a1)
@@ -2028,24 +2028,24 @@ uint64_t __64__TUProxyCall_remoteVideoClient_remoteVideoAttributesDidChange___bl
   return result;
 }
 
-- (int64_t)_cameraTypeForVideoAttributeCamera:(int)a3
+- (int64_t)_cameraTypeForVideoAttributeCamera:(int)camera
 {
-  if (a3 > 2)
+  if (camera > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_19589E4C8[a3];
+    return qword_19589E4C8[camera];
   }
 }
 
-- (int64_t)_orientationForVideoAttributesOrientation:(int)a3
+- (int64_t)_orientationForVideoAttributesOrientation:(int)orientation
 {
-  if (a3 < 4)
+  if (orientation < 4)
   {
-    return a3 + 1;
+    return orientation + 1;
   }
 
   else
@@ -2054,107 +2054,107 @@ uint64_t __64__TUProxyCall_remoteVideoClient_remoteVideoAttributesDidChange___bl
   }
 }
 
-- (TUProxyCall)initWithCoder:(id)a3
+- (TUProxyCall)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v94.receiver = self;
   v94.super_class = TUProxyCall;
-  v5 = [(TUCall *)&v94 initWithCoder:v4];
+  v5 = [(TUCall *)&v94 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_activeRemoteParticipant);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     activeRemoteParticipant = v5->_activeRemoteParticipant;
     v5->_activeRemoteParticipant = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"announceProviderIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"announceProviderIdentifier"];
     announceProviderIdentifier = v5->_announceProviderIdentifier;
     v5->_announceProviderIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"initiator"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"initiator"];
     initiator = v5->_initiator;
     v5->_initiator = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"handle"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"handle"];
     handle = v5->_handle;
     v5->_handle = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isoCountryCode"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isoCountryCode"];
     isoCountryCode = v5->_isoCountryCode;
     v5->_isoCountryCode = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"callerNameFromNetwork"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"callerNameFromNetwork"];
     callerNameFromNetwork = v5->_callerNameFromNetwork;
     v5->_callerNameFromNetwork = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"callUUID"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"callUUID"];
     callUUID = v5->_callUUID;
     v5->_callUUID = v20;
 
-    v5->_callStatus = [v4 decodeInt32ForKey:@"callStatus"];
-    v5->_hostedOnCurrentDevice = [v4 decodeBoolForKey:@"hostedOnCurrentDevice"];
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"provider"];
+    v5->_callStatus = [coderCopy decodeInt32ForKey:@"callStatus"];
+    v5->_hostedOnCurrentDevice = [coderCopy decodeBoolForKey:@"hostedOnCurrentDevice"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"provider"];
     provider = v5->_provider;
     v5->_provider = v22;
 
-    v5->_outgoing = [v4 decodeBoolForKey:@"outgoing"];
-    v5->_voicemail = [v4 decodeBoolForKey:@"voicemail"];
-    v5->_isVideo = [v4 decodeBoolForKey:@"isVideo"];
-    v5->_thirdPartyVideo = [v4 decodeBoolForKey:@"thirdPartyVideo"];
-    v5->_isSendingAudio = [v4 decodeBoolForKey:@"isSendingAudio"];
-    v5->_isSendingVideo = [v4 decodeBoolForKey:@"isSendingVideo"];
-    v5->_blocked = [v4 decodeBoolForKey:@"blocked"];
-    v5->_emergency = [v4 decodeBoolForKey:@"emergency"];
-    v5->_hasEmergencyVideoStream = [v4 decodeBoolForKey:@"hasEmergencyVideoStream"];
+    v5->_outgoing = [coderCopy decodeBoolForKey:@"outgoing"];
+    v5->_voicemail = [coderCopy decodeBoolForKey:@"voicemail"];
+    v5->_isVideo = [coderCopy decodeBoolForKey:@"isVideo"];
+    v5->_thirdPartyVideo = [coderCopy decodeBoolForKey:@"thirdPartyVideo"];
+    v5->_isSendingAudio = [coderCopy decodeBoolForKey:@"isSendingAudio"];
+    v5->_isSendingVideo = [coderCopy decodeBoolForKey:@"isSendingVideo"];
+    v5->_blocked = [coderCopy decodeBoolForKey:@"blocked"];
+    v5->_emergency = [coderCopy decodeBoolForKey:@"emergency"];
+    v5->_hasEmergencyVideoStream = [coderCopy decodeBoolForKey:@"hasEmergencyVideoStream"];
     v24 = MEMORY[0x1E695DFD8];
     v25 = objc_opt_class();
     v26 = [v24 setWithObjects:{v25, objc_opt_class(), 0}];
-    v27 = [v4 decodeObjectOfClasses:v26 forKey:@"emergencyMediaItems"];
+    v27 = [coderCopy decodeObjectOfClasses:v26 forKey:@"emergencyMediaItems"];
     emergencyMediaItems = v5->_emergencyMediaItems;
     v5->_emergencyMediaItems = v27;
 
-    v5->_failureExpected = [v4 decodeBoolForKey:@"failureExpected"];
-    v5->_international = [v4 decodeBoolForKey:@"international"];
-    v5->_domestic = [v4 decodeBoolForKey:@"domestic"];
-    v5->_sos = [v4 decodeBoolForKey:@"sos"];
-    v5->_supportsEmergencyFallback = [v4 decodeBoolForKey:@"supportsEmergencyFallback"];
-    v5->_usingBaseband = [v4 decodeBoolForKey:@"usingBaseband"];
-    v5->_ttyType = [v4 decodeInt32ForKey:@"ttyType"];
-    v5->_supportsTTYWithVoice = [v4 decodeBoolForKey:@"supportsTTYWithVoice"];
-    v5->_bluetoothAudioFormat = [v4 decodeInt32ForKey:@"bluetoothAudioFormat"];
-    v5->_mixesVoiceWithMedia = [v4 decodeBoolForKey:@"mixesVoiceWithMedia"];
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"audioCategory"];
+    v5->_failureExpected = [coderCopy decodeBoolForKey:@"failureExpected"];
+    v5->_international = [coderCopy decodeBoolForKey:@"international"];
+    v5->_domestic = [coderCopy decodeBoolForKey:@"domestic"];
+    v5->_sos = [coderCopy decodeBoolForKey:@"sos"];
+    v5->_supportsEmergencyFallback = [coderCopy decodeBoolForKey:@"supportsEmergencyFallback"];
+    v5->_usingBaseband = [coderCopy decodeBoolForKey:@"usingBaseband"];
+    v5->_ttyType = [coderCopy decodeInt32ForKey:@"ttyType"];
+    v5->_supportsTTYWithVoice = [coderCopy decodeBoolForKey:@"supportsTTYWithVoice"];
+    v5->_bluetoothAudioFormat = [coderCopy decodeInt32ForKey:@"bluetoothAudioFormat"];
+    v5->_mixesVoiceWithMedia = [coderCopy decodeBoolForKey:@"mixesVoiceWithMedia"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"audioCategory"];
     audioCategory = v5->_audioCategory;
     v5->_audioCategory = v29;
 
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"audioMode"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"audioMode"];
     audioMode = v5->_audioMode;
     v5->_audioMode = v31;
 
-    v5->_needsManualInCallSounds = [v4 decodeBoolForKey:@"needsManualInCallSounds"];
+    v5->_needsManualInCallSounds = [coderCopy decodeBoolForKey:@"needsManualInCallSounds"];
     v33 = MEMORY[0x1E695DFD8];
     v34 = objc_opt_class();
     v35 = objc_opt_class();
     v36 = [v33 setWithObjects:{v34, v35, objc_opt_class(), 0}];
-    v37 = [v4 decodeObjectOfClasses:v36 forKey:@"endedReasonUserInfo"];
+    v37 = [coderCopy decodeObjectOfClasses:v36 forKey:@"endedReasonUserInfo"];
     v38 = [v37 copy];
     endedReasonUserInfo = v5->_endedReasonUserInfo;
     v5->_endedReasonUserInfo = v38;
 
-    v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endedReasonString"];
+    v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endedReasonString"];
     endedReasonString = v5->_endedReasonString;
     v5->_endedReasonString = v40;
 
-    v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endedErrorString"];
+    v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endedErrorString"];
     endedErrorString = v5->_endedErrorString;
     v5->_endedErrorString = v42;
 
-    v5->_uplinkMuted = [v4 decodeBoolForKey:@"uplinkMuted"];
-    v5->_downlinkMuted = [v4 decodeBoolForKey:@"downlinkMuted"];
-    v5->_callRelaySupport = [v4 decodeInt32ForKey:@"callRelaySupport"];
-    v5->_videoStreamToken = [v4 decodeIntegerForKey:@"videoStreamToken"];
-    v44 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"callGroupUUID"];
+    v5->_uplinkMuted = [coderCopy decodeBoolForKey:@"uplinkMuted"];
+    v5->_downlinkMuted = [coderCopy decodeBoolForKey:@"downlinkMuted"];
+    v5->_callRelaySupport = [coderCopy decodeInt32ForKey:@"callRelaySupport"];
+    v5->_videoStreamToken = [coderCopy decodeIntegerForKey:@"videoStreamToken"];
+    v44 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"callGroupUUID"];
     callGroupUUID = v5->_callGroupUUID;
     v5->_callGroupUUID = v44;
 
@@ -2164,12 +2164,12 @@ uint64_t __64__TUProxyCall_remoteVideoClient_remoteVideoAttributesDidChange___bl
     v49 = objc_opt_class();
     v50 = objc_opt_class();
     v51 = [v46 setWithObjects:{v47, v48, v49, v50, objc_opt_class(), 0}];
-    v52 = [v4 decodeObjectOfClasses:v51 forKey:@"providerContext"];
+    v52 = [coderCopy decodeObjectOfClasses:v51 forKey:@"providerContext"];
     v53 = [v52 copy];
     providerContext = v5->_providerContext;
     v5->_providerContext = v53;
 
-    v55 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayContext"];
+    v55 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayContext"];
     v56 = [v55 copy];
     displayContext = v5->_displayContext;
     v5->_displayContext = v56;
@@ -2177,212 +2177,212 @@ uint64_t __64__TUProxyCall_remoteVideoClient_remoteVideoAttributesDidChange___bl
     v58 = MEMORY[0x1E695DFD8];
     v59 = objc_opt_class();
     v60 = [v58 setWithObjects:{v59, objc_opt_class(), 0}];
-    v61 = [v4 decodeObjectOfClasses:v60 forKey:@"remoteParticipantHandles"];
+    v61 = [coderCopy decodeObjectOfClasses:v60 forKey:@"remoteParticipantHandles"];
     v62 = [v61 copy];
     remoteParticipantHandles = v5->_remoteParticipantHandles;
     v5->_remoteParticipantHandles = v62;
 
-    v5->_remoteUplinkMuted = [v4 decodeBoolForKey:@"remoteUplinkMuted"];
-    v64 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localSenderIdentityUUID"];
+    v5->_remoteUplinkMuted = [coderCopy decodeBoolForKey:@"remoteUplinkMuted"];
+    v64 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localSenderIdentityUUID"];
     localSenderIdentityUUID = v5->_localSenderIdentityUUID;
     v5->_localSenderIdentityUUID = v64;
 
-    v66 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localSenderIdentityAccountUUID"];
+    v66 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localSenderIdentityAccountUUID"];
     localSenderIdentityAccountUUID = v5->_localSenderIdentityAccountUUID;
     v5->_localSenderIdentityAccountUUID = v66;
 
-    v5->_shouldSuppressInCallUI = [v4 decodeBoolForKey:@"shouldSuppressInCallUI"];
-    v5->_launchInBackground = [v4 decodeBoolForKey:@"launchInBackground"];
-    v5->_mutuallyExclusiveCall = [v4 decodeBoolForKey:@"mutuallyExclusiveCall"];
-    v5->_screenSharingIntention = [v4 decodeIntegerForKey:@"screenSharingIntention"];
-    v5->_wantsStagingArea = [v4 decodeBoolForKey:@"wantsStagingArea"];
-    v5->_inputAudioPowerSpectrumToken = [v4 decodeIntegerForKey:@"inputAudioPowerSpectrumToken"];
-    v5->_outputAudioPowerSpectrumToken = [v4 decodeIntegerForKey:@"outputAudioPowerSpectrumToken"];
-    v5->_isReRing = [v4 decodeBoolForKey:@"isReRing"];
-    v5->_originatingUIType = [v4 decodeInt32ForKey:@"originatingUIType"];
-    v5->_sharingScreen = [v4 decodeBoolForKey:@"sharingScreen"];
-    v5->_conversation = [v4 decodeBoolForKey:@"conversation"];
-    v68 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"screenShareAttributes"];
+    v5->_shouldSuppressInCallUI = [coderCopy decodeBoolForKey:@"shouldSuppressInCallUI"];
+    v5->_launchInBackground = [coderCopy decodeBoolForKey:@"launchInBackground"];
+    v5->_mutuallyExclusiveCall = [coderCopy decodeBoolForKey:@"mutuallyExclusiveCall"];
+    v5->_screenSharingIntention = [coderCopy decodeIntegerForKey:@"screenSharingIntention"];
+    v5->_wantsStagingArea = [coderCopy decodeBoolForKey:@"wantsStagingArea"];
+    v5->_inputAudioPowerSpectrumToken = [coderCopy decodeIntegerForKey:@"inputAudioPowerSpectrumToken"];
+    v5->_outputAudioPowerSpectrumToken = [coderCopy decodeIntegerForKey:@"outputAudioPowerSpectrumToken"];
+    v5->_isReRing = [coderCopy decodeBoolForKey:@"isReRing"];
+    v5->_originatingUIType = [coderCopy decodeInt32ForKey:@"originatingUIType"];
+    v5->_sharingScreen = [coderCopy decodeBoolForKey:@"sharingScreen"];
+    v5->_conversation = [coderCopy decodeBoolForKey:@"conversation"];
+    v68 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"screenShareAttributes"];
     screenShareAttributes = v5->_screenShareAttributes;
     v5->_screenShareAttributes = v68;
 
     v70 = objc_opt_class();
     v71 = NSStringFromSelector(sel_tokens);
-    v72 = [v4 decodeObjectOfClass:v70 forKey:v71];
+    v72 = [coderCopy decodeObjectOfClass:v70 forKey:v71];
     tokens = v5->_tokens;
     v5->_tokens = v72;
 
     v74 = objc_opt_class();
     v75 = NSStringFromSelector(sel_localMemberHandleValue);
-    v76 = [v4 decodeObjectOfClass:v74 forKey:v75];
+    v76 = [coderCopy decodeObjectOfClass:v74 forKey:v75];
     localMemberHandleValue = v5->_localMemberHandleValue;
     v5->_localMemberHandleValue = v76;
 
     v78 = NSStringFromSelector(sel_serviceStatus);
-    v5->_serviceStatus = [v4 decodeIntegerForKey:v78];
+    v5->_serviceStatus = [coderCopy decodeIntegerForKey:v78];
 
     v79 = NSStringFromSelector(sel_transmissionMode);
-    v5->_transmissionMode = [v4 decodeIntegerForKey:v79];
+    v5->_transmissionMode = [coderCopy decodeIntegerForKey:v79];
 
     v80 = NSStringFromSelector(sel_accessoryButtonEventsEnabled);
-    v5->_accessoryButtonEventsEnabled = [v4 decodeBoolForKey:v80];
+    v5->_accessoryButtonEventsEnabled = [coderCopy decodeBoolForKey:v80];
 
     v81 = NSStringFromSelector(sel_isReceivingTransmission);
-    v5->_receivingTransmission = [v4 decodeBoolForKey:v81];
+    v5->_receivingTransmission = [coderCopy decodeBoolForKey:v81];
 
     v82 = NSStringFromSelector(sel_isSendingTransmission);
-    v5->_sendingTransmission = [v4 decodeBoolForKey:v82];
+    v5->_sendingTransmission = [coderCopy decodeBoolForKey:v82];
 
     v83 = NSStringFromSelector(sel_recordingAvailability);
-    v5->_recordingAvailability = [v4 decodeIntForKey:v83];
+    v5->_recordingAvailability = [coderCopy decodeIntForKey:v83];
 
     v84 = NSStringFromSelector(sel_translationAvailability);
-    v5->_translationAvailability = [v4 decodeIntForKey:v84];
+    v5->_translationAvailability = [coderCopy decodeIntForKey:v84];
 
     v85 = NSStringFromSelector(sel_supportsScreening);
-    v5->_supportsScreening = [v4 decodeBoolForKey:v85];
+    v5->_supportsScreening = [coderCopy decodeBoolForKey:v85];
 
-    v5->_ptt = [v4 decodeBoolForKey:@"ptt"];
+    v5->_ptt = [coderCopy decodeBoolForKey:@"ptt"];
     v86 = objc_opt_class();
     v87 = NSStringFromSelector(sel_channelImageURL);
-    v88 = [v4 decodeObjectOfClass:v86 forKey:v87];
+    v88 = [coderCopy decodeObjectOfClass:v86 forKey:v87];
     channelImageURL = v5->_channelImageURL;
     v5->_channelImageURL = v88;
 
     v90 = NSStringFromSelector(sel_screenSharingType);
-    v5->_screenSharingType = [v4 decodeIntegerForKey:v90];
+    v5->_screenSharingType = [coderCopy decodeIntegerForKey:v90];
 
     v91 = NSStringFromSelector(sel_isSharePlayCapable);
-    v5->_isSharePlayCapable = [v4 decodeBoolForKey:v91];
+    v5->_isSharePlayCapable = [coderCopy decodeBoolForKey:v91];
 
     v92 = NSStringFromSelector(sel_nearbyMode);
-    v5->_nearbyMode = [v4 decodeIntegerForKey:v92];
+    v5->_nearbyMode = [coderCopy decodeIntegerForKey:v92];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v33.receiver = self;
   v33.super_class = TUProxyCall;
-  v4 = a3;
-  [(TUCall *)&v33 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(TUCall *)&v33 encodeWithCoder:coderCopy];
   activeRemoteParticipant = self->_activeRemoteParticipant;
   v6 = NSStringFromSelector(sel_activeRemoteParticipant);
-  [v4 encodeObject:activeRemoteParticipant forKey:{v6, v33.receiver, v33.super_class}];
+  [coderCopy encodeObject:activeRemoteParticipant forKey:{v6, v33.receiver, v33.super_class}];
 
-  [v4 encodeObject:self->_announceProviderIdentifier forKey:@"announceProviderIdentifier"];
-  [v4 encodeObject:self->_callUUID forKey:@"callUUID"];
-  [v4 encodeObject:self->_initiator forKey:@"initiator"];
-  [v4 encodeObject:self->_handle forKey:@"handle"];
-  [v4 encodeObject:self->_isoCountryCode forKey:@"isoCountryCode"];
-  [v4 encodeObject:self->_callerNameFromNetwork forKey:@"callerNameFromNetwork"];
-  [v4 encodeInt32:self->_callStatus forKey:@"callStatus"];
-  [v4 encodeBool:self->_hostedOnCurrentDevice forKey:@"hostedOnCurrentDevice"];
-  [v4 encodeObject:self->_provider forKey:@"provider"];
-  [v4 encodeBool:self->_outgoing forKey:@"outgoing"];
-  [v4 encodeBool:self->_voicemail forKey:@"voicemail"];
-  [v4 encodeBool:self->_isVideo forKey:@"isVideo"];
-  [v4 encodeBool:self->_thirdPartyVideo forKey:@"thirdPartyVideo"];
-  [v4 encodeBool:self->_isSendingAudio forKey:@"isSendingAudio"];
-  [v4 encodeBool:self->_isSendingVideo forKey:@"isSendingVideo"];
-  [v4 encodeBool:self->_blocked forKey:@"blocked"];
-  [v4 encodeBool:self->_emergency forKey:@"emergency"];
-  [v4 encodeBool:self->_hasEmergencyVideoStream forKey:@"hasEmergencyVideoStream"];
-  [v4 encodeObject:self->_emergencyMediaItems forKey:@"emergencyMediaItems"];
-  [v4 encodeBool:self->_failureExpected forKey:@"failureExpected"];
-  [v4 encodeBool:self->_international forKey:@"international"];
-  [v4 encodeBool:self->_domestic forKey:@"domestic"];
-  [v4 encodeBool:self->_sos forKey:@"sos"];
-  [v4 encodeBool:self->_supportsEmergencyFallback forKey:@"supportsEmergencyFallback"];
-  [v4 encodeBool:self->_usingBaseband forKey:@"usingBaseband"];
-  [v4 encodeInt32:self->_ttyType forKey:@"ttyType"];
-  [v4 encodeBool:self->_supportsTTYWithVoice forKey:@"supportsTTYWithVoice"];
-  [v4 encodeInt32:LODWORD(self->_bluetoothAudioFormat) forKey:@"bluetoothAudioFormat"];
-  [v4 encodeBool:self->_mixesVoiceWithMedia forKey:@"mixesVoiceWithMedia"];
-  [v4 encodeObject:self->_audioCategory forKey:@"audioCategory"];
-  [v4 encodeObject:self->_audioMode forKey:@"audioMode"];
-  [v4 encodeBool:self->_needsManualInCallSounds forKey:@"needsManualInCallSounds"];
-  [v4 encodeObject:self->_endedReasonUserInfo forKey:@"endedReasonUserInfo"];
-  [v4 encodeObject:self->_endedReasonString forKey:@"endedReasonString"];
-  [v4 encodeObject:self->_endedErrorString forKey:@"endedErrorString"];
-  [v4 encodeBool:self->_uplinkMuted forKey:@"uplinkMuted"];
-  [v4 encodeBool:self->_downlinkMuted forKey:@"downlinkMuted"];
-  [v4 encodeInt32:self->_callRelaySupport forKey:@"callRelaySupport"];
-  [v4 encodeInteger:self->_videoStreamToken forKey:@"videoStreamToken"];
-  [v4 encodeObject:self->_callGroupUUID forKey:@"callGroupUUID"];
-  [v4 encodeObject:self->_providerContext forKey:@"providerContext"];
-  [v4 encodeObject:self->_displayContext forKey:@"displayContext"];
-  [v4 encodeObject:self->_remoteParticipantHandles forKey:@"remoteParticipantHandles"];
-  [v4 encodeBool:self->_remoteUplinkMuted forKey:@"remoteUplinkMuted"];
-  [v4 encodeObject:self->_localSenderIdentityUUID forKey:@"localSenderIdentityUUID"];
-  [v4 encodeObject:self->_localSenderIdentityAccountUUID forKey:@"localSenderIdentityAccountUUID"];
-  [v4 encodeBool:self->_shouldSuppressInCallUI forKey:@"shouldSuppressInCallUI"];
-  [v4 encodeBool:self->_launchInBackground forKey:@"launchInBackground"];
-  [v4 encodeBool:self->_mutuallyExclusiveCall forKey:@"mutuallyExclusiveCall"];
-  [v4 encodeBool:self->_wantsStagingArea forKey:@"wantsStagingArea"];
-  [v4 encodeInteger:self->_inputAudioPowerSpectrumToken forKey:@"inputAudioPowerSpectrumToken"];
-  [v4 encodeInteger:self->_outputAudioPowerSpectrumToken forKey:@"outputAudioPowerSpectrumToken"];
-  [v4 encodeBool:self->_isReRing forKey:@"isReRing"];
-  [v4 encodeInt32:self->_originatingUIType forKey:@"originatingUIType"];
-  [v4 encodeBool:self->_sharingScreen forKey:@"sharingScreen"];
-  [v4 encodeBool:self->_conversation forKey:@"conversation"];
-  [v4 encodeObject:self->_screenShareAttributes forKey:@"screenShareAttributes"];
-  [v4 encodeInteger:self->_screenSharingIntention forKey:@"screenSharingIntention"];
-  [v4 encodeObject:self->_tokens forKey:@"tokens"];
+  [coderCopy encodeObject:self->_announceProviderIdentifier forKey:@"announceProviderIdentifier"];
+  [coderCopy encodeObject:self->_callUUID forKey:@"callUUID"];
+  [coderCopy encodeObject:self->_initiator forKey:@"initiator"];
+  [coderCopy encodeObject:self->_handle forKey:@"handle"];
+  [coderCopy encodeObject:self->_isoCountryCode forKey:@"isoCountryCode"];
+  [coderCopy encodeObject:self->_callerNameFromNetwork forKey:@"callerNameFromNetwork"];
+  [coderCopy encodeInt32:self->_callStatus forKey:@"callStatus"];
+  [coderCopy encodeBool:self->_hostedOnCurrentDevice forKey:@"hostedOnCurrentDevice"];
+  [coderCopy encodeObject:self->_provider forKey:@"provider"];
+  [coderCopy encodeBool:self->_outgoing forKey:@"outgoing"];
+  [coderCopy encodeBool:self->_voicemail forKey:@"voicemail"];
+  [coderCopy encodeBool:self->_isVideo forKey:@"isVideo"];
+  [coderCopy encodeBool:self->_thirdPartyVideo forKey:@"thirdPartyVideo"];
+  [coderCopy encodeBool:self->_isSendingAudio forKey:@"isSendingAudio"];
+  [coderCopy encodeBool:self->_isSendingVideo forKey:@"isSendingVideo"];
+  [coderCopy encodeBool:self->_blocked forKey:@"blocked"];
+  [coderCopy encodeBool:self->_emergency forKey:@"emergency"];
+  [coderCopy encodeBool:self->_hasEmergencyVideoStream forKey:@"hasEmergencyVideoStream"];
+  [coderCopy encodeObject:self->_emergencyMediaItems forKey:@"emergencyMediaItems"];
+  [coderCopy encodeBool:self->_failureExpected forKey:@"failureExpected"];
+  [coderCopy encodeBool:self->_international forKey:@"international"];
+  [coderCopy encodeBool:self->_domestic forKey:@"domestic"];
+  [coderCopy encodeBool:self->_sos forKey:@"sos"];
+  [coderCopy encodeBool:self->_supportsEmergencyFallback forKey:@"supportsEmergencyFallback"];
+  [coderCopy encodeBool:self->_usingBaseband forKey:@"usingBaseband"];
+  [coderCopy encodeInt32:self->_ttyType forKey:@"ttyType"];
+  [coderCopy encodeBool:self->_supportsTTYWithVoice forKey:@"supportsTTYWithVoice"];
+  [coderCopy encodeInt32:LODWORD(self->_bluetoothAudioFormat) forKey:@"bluetoothAudioFormat"];
+  [coderCopy encodeBool:self->_mixesVoiceWithMedia forKey:@"mixesVoiceWithMedia"];
+  [coderCopy encodeObject:self->_audioCategory forKey:@"audioCategory"];
+  [coderCopy encodeObject:self->_audioMode forKey:@"audioMode"];
+  [coderCopy encodeBool:self->_needsManualInCallSounds forKey:@"needsManualInCallSounds"];
+  [coderCopy encodeObject:self->_endedReasonUserInfo forKey:@"endedReasonUserInfo"];
+  [coderCopy encodeObject:self->_endedReasonString forKey:@"endedReasonString"];
+  [coderCopy encodeObject:self->_endedErrorString forKey:@"endedErrorString"];
+  [coderCopy encodeBool:self->_uplinkMuted forKey:@"uplinkMuted"];
+  [coderCopy encodeBool:self->_downlinkMuted forKey:@"downlinkMuted"];
+  [coderCopy encodeInt32:self->_callRelaySupport forKey:@"callRelaySupport"];
+  [coderCopy encodeInteger:self->_videoStreamToken forKey:@"videoStreamToken"];
+  [coderCopy encodeObject:self->_callGroupUUID forKey:@"callGroupUUID"];
+  [coderCopy encodeObject:self->_providerContext forKey:@"providerContext"];
+  [coderCopy encodeObject:self->_displayContext forKey:@"displayContext"];
+  [coderCopy encodeObject:self->_remoteParticipantHandles forKey:@"remoteParticipantHandles"];
+  [coderCopy encodeBool:self->_remoteUplinkMuted forKey:@"remoteUplinkMuted"];
+  [coderCopy encodeObject:self->_localSenderIdentityUUID forKey:@"localSenderIdentityUUID"];
+  [coderCopy encodeObject:self->_localSenderIdentityAccountUUID forKey:@"localSenderIdentityAccountUUID"];
+  [coderCopy encodeBool:self->_shouldSuppressInCallUI forKey:@"shouldSuppressInCallUI"];
+  [coderCopy encodeBool:self->_launchInBackground forKey:@"launchInBackground"];
+  [coderCopy encodeBool:self->_mutuallyExclusiveCall forKey:@"mutuallyExclusiveCall"];
+  [coderCopy encodeBool:self->_wantsStagingArea forKey:@"wantsStagingArea"];
+  [coderCopy encodeInteger:self->_inputAudioPowerSpectrumToken forKey:@"inputAudioPowerSpectrumToken"];
+  [coderCopy encodeInteger:self->_outputAudioPowerSpectrumToken forKey:@"outputAudioPowerSpectrumToken"];
+  [coderCopy encodeBool:self->_isReRing forKey:@"isReRing"];
+  [coderCopy encodeInt32:self->_originatingUIType forKey:@"originatingUIType"];
+  [coderCopy encodeBool:self->_sharingScreen forKey:@"sharingScreen"];
+  [coderCopy encodeBool:self->_conversation forKey:@"conversation"];
+  [coderCopy encodeObject:self->_screenShareAttributes forKey:@"screenShareAttributes"];
+  [coderCopy encodeInteger:self->_screenSharingIntention forKey:@"screenSharingIntention"];
+  [coderCopy encodeObject:self->_tokens forKey:@"tokens"];
   localMemberHandleValue = self->_localMemberHandleValue;
   v8 = NSStringFromSelector(sel_localMemberHandleValue);
-  [v4 encodeObject:localMemberHandleValue forKey:v8];
+  [coderCopy encodeObject:localMemberHandleValue forKey:v8];
 
   serviceStatus = self->_serviceStatus;
   v10 = NSStringFromSelector(sel_serviceStatus);
-  [v4 encodeInteger:serviceStatus forKey:v10];
+  [coderCopy encodeInteger:serviceStatus forKey:v10];
 
   transmissionMode = self->_transmissionMode;
   v12 = NSStringFromSelector(sel_transmissionMode);
-  [v4 encodeInteger:transmissionMode forKey:v12];
+  [coderCopy encodeInteger:transmissionMode forKey:v12];
 
   accessoryButtonEventsEnabled = self->_accessoryButtonEventsEnabled;
   v14 = NSStringFromSelector(sel_accessoryButtonEventsEnabled);
-  [v4 encodeBool:accessoryButtonEventsEnabled forKey:v14];
+  [coderCopy encodeBool:accessoryButtonEventsEnabled forKey:v14];
 
   receivingTransmission = self->_receivingTransmission;
   v16 = NSStringFromSelector(sel_isReceivingTransmission);
-  [v4 encodeBool:receivingTransmission forKey:v16];
+  [coderCopy encodeBool:receivingTransmission forKey:v16];
 
   sendingTransmission = self->_sendingTransmission;
   v18 = NSStringFromSelector(sel_isSendingTransmission);
-  [v4 encodeBool:sendingTransmission forKey:v18];
+  [coderCopy encodeBool:sendingTransmission forKey:v18];
 
   recordingAvailability = self->_recordingAvailability;
   v20 = NSStringFromSelector(sel_recordingAvailability);
-  [v4 encodeInt:recordingAvailability forKey:v20];
+  [coderCopy encodeInt:recordingAvailability forKey:v20];
 
   translationAvailability = self->_translationAvailability;
   v22 = NSStringFromSelector(sel_translationAvailability);
-  [v4 encodeInt:translationAvailability forKey:v22];
+  [coderCopy encodeInt:translationAvailability forKey:v22];
 
   supportsScreening = self->_supportsScreening;
   v24 = NSStringFromSelector(sel_supportsScreening);
-  [v4 encodeBool:supportsScreening forKey:v24];
+  [coderCopy encodeBool:supportsScreening forKey:v24];
 
-  [v4 encodeBool:self->_ptt forKey:@"ptt"];
+  [coderCopy encodeBool:self->_ptt forKey:@"ptt"];
   channelImageURL = self->_channelImageURL;
   v26 = NSStringFromSelector(sel_channelImageURL);
-  [v4 encodeObject:channelImageURL forKey:v26];
+  [coderCopy encodeObject:channelImageURL forKey:v26];
 
   screenSharingType = self->_screenSharingType;
   v28 = NSStringFromSelector(sel_screenSharingType);
-  [v4 encodeInteger:screenSharingType forKey:v28];
+  [coderCopy encodeInteger:screenSharingType forKey:v28];
 
   isSharePlayCapable = self->_isSharePlayCapable;
   v30 = NSStringFromSelector(sel_isSharePlayCapable);
-  [v4 encodeBool:isSharePlayCapable forKey:v30];
+  [coderCopy encodeBool:isSharePlayCapable forKey:v30];
 
   nearbyMode = self->_nearbyMode;
   v32 = NSStringFromSelector(sel_nearbyMode);
-  [v4 encodeInteger:nearbyMode forKey:v32];
+  [coderCopy encodeInteger:nearbyMode forKey:v32];
 }
 
 - (TUCallServicesProxyCallActions)proxyCallActionsDelegate

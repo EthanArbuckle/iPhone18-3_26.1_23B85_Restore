@@ -1,10 +1,10 @@
 @interface RadioClusterNowPlayingViewController
-- (_TtC5Media36RadioClusterNowPlayingViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC5Media36RadioClusterNowPlayingViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)invalidate;
-- (void)nowPlayingManager:(id)a3 didReceiveArtworkResponse:(id)a4;
-- (void)nowPlayingManager:(id)a3 didUpdateSnapshot:(id)a4;
-- (void)nowPlayingManager:(id)a3 willStartLoadingArtworkForCatalog:(id)a4 bundleIdentifier:(id)a5;
-- (void)sessionDidConnect:(id)a3;
+- (void)nowPlayingManager:(id)manager didReceiveArtworkResponse:(id)response;
+- (void)nowPlayingManager:(id)manager didUpdateSnapshot:(id)snapshot;
+- (void)nowPlayingManager:(id)manager willStartLoadingArtworkForCatalog:(id)catalog bundleIdentifier:(id)identifier;
+- (void)sessionDidConnect:(id)connect;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -13,13 +13,13 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100033388();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10003386C();
 }
 
@@ -29,47 +29,47 @@
   swift_beginAccess();
   v4 = *(&self->super.super.super.isa + v3);
   *(&self->super.super.super.isa + v3) = &_swiftEmptySetSingleton;
-  v5 = self;
+  selfCopy = self;
 
-  *(&v5->super.super.super.isa + OBJC_IVAR____TtC5Media36RadioClusterNowPlayingViewController_hasSetContentReady) = 0;
+  *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC5Media36RadioClusterNowPlayingViewController_hasSetContentReady) = 0;
 }
 
-- (void)sessionDidConnect:(id)a3
+- (void)sessionDidConnect:(id)connect
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000342C4(v4);
+  connectCopy = connect;
+  selfCopy = self;
+  sub_1000342C4(connectCopy);
 }
 
-- (_TtC5Media36RadioClusterNowPlayingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5Media36RadioClusterNowPlayingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)nowPlayingManager:(id)a3 didUpdateSnapshot:(id)a4
+- (void)nowPlayingManager:(id)manager didUpdateSnapshot:(id)snapshot
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10003D038(v7);
+  managerCopy = manager;
+  snapshotCopy = snapshot;
+  selfCopy = self;
+  sub_10003D038(snapshotCopy);
 }
 
-- (void)nowPlayingManager:(id)a3 willStartLoadingArtworkForCatalog:(id)a4 bundleIdentifier:(id)a5
+- (void)nowPlayingManager:(id)manager willStartLoadingArtworkForCatalog:(id)catalog bundleIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
+  managerCopy = manager;
+  catalogCopy = catalog;
+  selfCopy = self;
   sub_10003D2D4();
 }
 
-- (void)nowPlayingManager:(id)a3 didReceiveArtworkResponse:(id)a4
+- (void)nowPlayingManager:(id)manager didReceiveArtworkResponse:(id)response
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10003D430(a4);
+  managerCopy = manager;
+  responseCopy = response;
+  selfCopy = self;
+  sub_10003D430(response);
 }
 
 @end

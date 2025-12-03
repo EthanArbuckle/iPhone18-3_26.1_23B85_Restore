@@ -1,25 +1,25 @@
 @interface RMObserverStore
-+ (void)storeWithIdentifier:(id)a3 scope:(int64_t)a4 completionHandler:(id)a5;
-+ (void)storesWithScope:(int64_t)a3 completionHandler:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToStore:(id)a3;
-- (void)displayPropertiesForConfigurationsWithCompletionHandler:(id)a3;
-- (void)displayableProfileConfigurationsWithCompletionHandler:(id)a3;
++ (void)storeWithIdentifier:(id)identifier scope:(int64_t)scope completionHandler:(id)handler;
++ (void)storesWithScope:(int64_t)scope completionHandler:(id)handler;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToStore:(id)store;
+- (void)displayPropertiesForConfigurationsWithCompletionHandler:(id)handler;
+- (void)displayableProfileConfigurationsWithCompletionHandler:(id)handler;
 @end
 
 @implementation RMObserverStore
 
-+ (void)storeWithIdentifier:(id)a3 scope:(int64_t)a4 completionHandler:(id)a5
++ (void)storeWithIdentifier:(id)identifier scope:(int64_t)scope completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [RMStoreXPCProxy newConnectionWithScope:a4];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  v9 = [RMStoreXPCProxy newConnectionWithScope:scope];
   [v9 resume];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __63__RMObserverStore_storeWithIdentifier_scope_completionHandler___block_invoke;
   v18[3] = &unk_279B05310;
-  v10 = v7;
+  v10 = handlerCopy;
   v19 = v10;
   v11 = [v9 remoteObjectProxyWithErrorHandler:v18];
   v12 = [RMStoreXPCConnection storeXPCConnection:v9];
@@ -31,7 +31,7 @@
   v17 = v10;
   v13 = v12;
   v14 = v10;
-  [v11 observerStoreWithIdentifier:v8 completionHandler:v15];
+  [v11 observerStoreWithIdentifier:identifierCopy completionHandler:v15];
 }
 
 void __63__RMObserverStore_storeWithIdentifier_scope_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -74,16 +74,16 @@ void __63__RMObserverStore_storeWithIdentifier_scope_completionHandler___block_i
   v7();
 }
 
-+ (void)storesWithScope:(int64_t)a3 completionHandler:(id)a4
++ (void)storesWithScope:(int64_t)scope completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = [RMStoreXPCProxy newConnectionWithScope:a3];
+  handlerCopy = handler;
+  v6 = [RMStoreXPCProxy newConnectionWithScope:scope];
   [v6 resume];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __53__RMObserverStore_storesWithScope_completionHandler___block_invoke;
   v15[3] = &unk_279B05310;
-  v7 = v5;
+  v7 = handlerCopy;
   v16 = v7;
   v8 = [v6 remoteObjectProxyWithErrorHandler:v15];
   v9 = [RMStoreXPCConnection storeXPCConnection:v6];
@@ -168,20 +168,20 @@ void __53__RMObserverStore_storesWithScope_completionHandler___block_invoke_5(ui
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)displayPropertiesForConfigurationsWithCompletionHandler:(id)a3
+- (void)displayPropertiesForConfigurationsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RMBaseStore *)self xpcConnection];
-  v6 = [v5 connection];
+  handlerCopy = handler;
+  xpcConnection = [(RMBaseStore *)self xpcConnection];
+  connection = [xpcConnection connection];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __75__RMObserverStore_displayPropertiesForConfigurationsWithCompletionHandler___block_invoke;
   v13[3] = &unk_279B05310;
-  v7 = v4;
+  v7 = handlerCopy;
   v14 = v7;
-  v8 = [v6 remoteObjectProxyWithErrorHandler:v13];
+  v8 = [connection remoteObjectProxyWithErrorHandler:v13];
 
-  v9 = [(RMBaseStore *)self identifier];
+  identifier = [(RMBaseStore *)self identifier];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __75__RMObserverStore_displayPropertiesForConfigurationsWithCompletionHandler___block_invoke_7;
@@ -189,7 +189,7 @@ void __53__RMObserverStore_storesWithScope_completionHandler___block_invoke_5(ui
   v11[4] = self;
   v12 = v7;
   v10 = v7;
-  [v8 configurationUIsForStoreIdentifier:v9 completionHandler:v11];
+  [v8 configurationUIsForStoreIdentifier:identifier completionHandler:v11];
 }
 
 void __75__RMObserverStore_displayPropertiesForConfigurationsWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -236,20 +236,20 @@ void __75__RMObserverStore_displayPropertiesForConfigurationsWithCompletionHandl
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)displayableProfileConfigurationsWithCompletionHandler:(id)a3
+- (void)displayableProfileConfigurationsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RMBaseStore *)self xpcConnection];
-  v6 = [v5 connection];
+  handlerCopy = handler;
+  xpcConnection = [(RMBaseStore *)self xpcConnection];
+  connection = [xpcConnection connection];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __73__RMObserverStore_displayableProfileConfigurationsWithCompletionHandler___block_invoke;
   v13[3] = &unk_279B05310;
-  v7 = v4;
+  v7 = handlerCopy;
   v14 = v7;
-  v8 = [v6 remoteObjectProxyWithErrorHandler:v13];
+  v8 = [connection remoteObjectProxyWithErrorHandler:v13];
 
-  v9 = [(RMBaseStore *)self identifier];
+  identifier = [(RMBaseStore *)self identifier];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __73__RMObserverStore_displayableProfileConfigurationsWithCompletionHandler___block_invoke_8;
@@ -257,7 +257,7 @@ void __75__RMObserverStore_displayPropertiesForConfigurationsWithCompletionHandl
   v11[4] = self;
   v12 = v7;
   v10 = v7;
-  [v8 displayableProfileConfigurationsForStoreIdentifier:v9 completionHandler:v11];
+  [v8 displayableProfileConfigurationsForStoreIdentifier:identifier completionHandler:v11];
 }
 
 void __73__RMObserverStore_displayableProfileConfigurationsWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -304,10 +304,10 @@ void __73__RMObserverStore_displayableProfileConfigurationsWithCompletionHandler
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -315,17 +315,17 @@ void __73__RMObserverStore_displayableProfileConfigurationsWithCompletionHandler
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(RMObserverStore *)self isEqualToStore:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(RMObserverStore *)self isEqualToStore:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToStore:(id)a3
+- (BOOL)isEqualToStore:(id)store
 {
   v4.receiver = self;
   v4.super_class = RMObserverStore;
-  return [(RMBaseStore *)&v4 isEqualToStore:a3];
+  return [(RMBaseStore *)&v4 isEqualToStore:store];
 }
 
 void __63__RMObserverStore_storeWithIdentifier_scope_completionHandler___block_invoke_cold_1()

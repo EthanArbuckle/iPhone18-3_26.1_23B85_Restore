@@ -1,28 +1,28 @@
 @interface MRDExternalDeviceAuthTokenRecord
-- (id)_copyWithZone:(_NSZone *)a3 usingConcreteClass:(Class)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_copyWithZone:(_NSZone *)zone usingConcreteClass:(Class)class;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MRDExternalDeviceAuthTokenRecord
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
 
-  return [(MRDExternalDeviceAuthTokenRecord *)self _copyWithZone:a3 usingConcreteClass:v5];
+  return [(MRDExternalDeviceAuthTokenRecord *)self _copyWithZone:zone usingConcreteClass:v5];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
 
-  return [(MRDExternalDeviceAuthTokenRecord *)self _copyWithZone:a3 usingConcreteClass:v5];
+  return [(MRDExternalDeviceAuthTokenRecord *)self _copyWithZone:zone usingConcreteClass:v5];
 }
 
-- (id)_copyWithZone:(_NSZone *)a3 usingConcreteClass:(Class)a4
+- (id)_copyWithZone:(_NSZone *)zone usingConcreteClass:(Class)class
 {
-  v5 = objc_alloc_init(a4);
+  v5 = objc_alloc_init(class);
   v6 = [(NSString *)self->_deviceID copy];
   v7 = *(v5 + 1);
   *(v5 + 1) = v6;

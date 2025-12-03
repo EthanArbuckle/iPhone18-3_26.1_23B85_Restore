@@ -1,21 +1,21 @@
 @interface AMSUIDebugMenu
-+ (void)presentDebugMenuWithPresentingVC:(id)a3 debugInfo:(id)a4;
++ (void)presentDebugMenuWithPresentingVC:(id)c debugInfo:(id)info;
 @end
 
 @implementation AMSUIDebugMenu
 
-+ (void)presentDebugMenuWithPresentingVC:(id)a3 debugInfo:(id)a4
++ (void)presentDebugMenuWithPresentingVC:(id)c debugInfo:(id)info
 {
-  v4 = a4;
-  if (a4)
+  infoCopy = info;
+  if (info)
   {
     __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EBC46050, &qword_1BB1F6210);
-    v4 = sub_1BB1DD538();
+    infoCopy = sub_1BB1DD538();
   }
 
   swift_getObjCClassMetadata();
-  v6 = a3;
-  static DebugMenu.presentDebugMenu(presentingVC:debugInfo:)(v6, v4);
+  cCopy = c;
+  static DebugMenu.presentDebugMenu(presentingVC:debugInfo:)(cCopy, infoCopy);
 }
 
 @end

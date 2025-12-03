@@ -1,54 +1,54 @@
 @interface MLViewerNodePropertyEnumSPI
-- (MLViewerNodePropertyEnumSPI)initWithCoder:(id)a3;
-- (MLViewerNodePropertyEnumSPI)initWithJSONDictionary:(id)a3;
-- (MLViewerNodePropertyEnumSPI)initWithName:(id)a3 type:(id)a4 cases:(id)a5 value:(unint64_t)a6;
+- (MLViewerNodePropertyEnumSPI)initWithCoder:(id)coder;
+- (MLViewerNodePropertyEnumSPI)initWithJSONDictionary:(id)dictionary;
+- (MLViewerNodePropertyEnumSPI)initWithName:(id)name type:(id)type cases:(id)cases value:(unint64_t)value;
 - (id)jsonDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MLViewerNodePropertyEnumSPI
 
-- (MLViewerNodePropertyEnumSPI)initWithName:(id)a3 type:(id)a4 cases:(id)a5 value:(unint64_t)a6
+- (MLViewerNodePropertyEnumSPI)initWithName:(id)name type:(id)type cases:(id)cases value:(unint64_t)value
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  nameCopy = name;
+  typeCopy = type;
+  casesCopy = cases;
   v17.receiver = self;
   v17.super_class = MLViewerNodePropertyEnumSPI;
   v14 = [(MLViewerNodePropertyEnumSPI *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_name, a3);
-    objc_storeStrong(&v15->_enumCases, a5);
-    objc_storeStrong(&v15->_enumType, a4);
-    v15->_enumValue = a6;
+    objc_storeStrong(&v14->_name, name);
+    objc_storeStrong(&v15->_enumCases, cases);
+    objc_storeStrong(&v15->_enumType, type);
+    v15->_enumValue = value;
   }
 
   return v15;
 }
 
-- (MLViewerNodePropertyEnumSPI)initWithJSONDictionary:(id)a3
+- (MLViewerNodePropertyEnumSPI)initWithJSONDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = MLViewerNodePropertyEnumSPI;
   v5 = [(MLViewerNodePropertyEnumSPI *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"name"];
+    v6 = [dictionaryCopy objectForKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 objectForKey:@"enumCases"];
+    v8 = [dictionaryCopy objectForKey:@"enumCases"];
     enumCases = v5->_enumCases;
     v5->_enumCases = v8;
 
-    v10 = [v4 objectForKey:@"enumType"];
+    v10 = [dictionaryCopy objectForKey:@"enumType"];
     enumType = v5->_enumType;
     v5->_enumType = v10;
 
-    v12 = [v4 objectForKey:@"enumValue"];
+    v12 = [dictionaryCopy objectForKey:@"enumValue"];
     v5->_enumValue = [v12 unsignedIntegerValue];
   }
 
@@ -58,24 +58,24 @@
 - (id)jsonDictionary
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = +[MLViewerNodePropertyEnumSPI type];
-  [v3 setObject:v4 forKey:@"type"];
+  [dictionary setObject:v4 forKey:@"type"];
 
-  v5 = [(MLViewerNodePropertyEnumSPI *)self name];
-  [v3 setObject:v5 forKey:@"name"];
+  name = [(MLViewerNodePropertyEnumSPI *)self name];
+  [dictionary setObject:name forKey:@"name"];
 
-  v6 = [(MLViewerNodePropertyEnumSPI *)self enumCases];
+  enumCases = [(MLViewerNodePropertyEnumSPI *)self enumCases];
 
-  if (v6)
+  if (enumCases)
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = [(MLViewerNodePropertyEnumSPI *)self enumCases];
-    v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    enumCases2 = [(MLViewerNodePropertyEnumSPI *)self enumCases];
+    v9 = [enumCases2 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v9)
     {
       v10 = *v20;
@@ -85,52 +85,52 @@
         {
           if (*v20 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(enumCases2);
           }
 
-          v12 = [*(*(&v19 + 1) + 8 * i) jsonDictionary];
-          [v7 addObject:v12];
+          jsonDictionary = [*(*(&v19 + 1) + 8 * i) jsonDictionary];
+          [v7 addObject:jsonDictionary];
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v9 = [enumCases2 countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v9);
     }
 
-    [v3 setObject:v7 forKey:@"enumCases"];
+    [dictionary setObject:v7 forKey:@"enumCases"];
   }
 
-  v13 = [(MLViewerNodePropertyEnumSPI *)self enumType];
-  v14 = v13 == 0;
+  enumType = [(MLViewerNodePropertyEnumSPI *)self enumType];
+  v14 = enumType == 0;
 
   if (!v14)
   {
-    v15 = [(MLViewerNodePropertyEnumSPI *)self enumType];
-    [v3 setObject:v15 forKey:@"enumType"];
+    enumType2 = [(MLViewerNodePropertyEnumSPI *)self enumType];
+    [dictionary setObject:enumType2 forKey:@"enumType"];
   }
 
   v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[MLViewerNodePropertyEnumSPI enumValue](self, "enumValue")}];
-  [v3 setObject:v16 forKey:@"enumValue"];
+  [dictionary setObject:v16 forKey:@"enumValue"];
 
-  v17 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v3];
+  v17 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:dictionary];
 
   return v17;
 }
 
-- (MLViewerNodePropertyEnumSPI)initWithCoder:(id)a3
+- (MLViewerNodePropertyEnumSPI)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = MLViewerNodePropertyEnumSPI;
   v5 = [(MLViewerNodePropertyEnumSPI *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     enumType = v5->_enumType;
     v5->_enumType = v8;
 
@@ -140,30 +140,30 @@
     }
 
     v10 = allowedClasses(void)::allowedClasses;
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"cases"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"cases"];
     enumCases = v5->_enumCases;
     v5->_enumCases = v11;
 
-    v5->_enumValue = [v4 decodeInt64ForKey:@"value"];
+    v5->_enumValue = [coderCopy decodeInt64ForKey:@"value"];
     v13 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(MLViewerNodePropertyEnumSPI *)self name];
-  [v7 encodeObject:v4 forKey:@"name"];
+  coderCopy = coder;
+  name = [(MLViewerNodePropertyEnumSPI *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v5 = [(MLViewerNodePropertyEnumSPI *)self enumType];
-  [v7 encodeObject:v5 forKey:@"type"];
+  enumType = [(MLViewerNodePropertyEnumSPI *)self enumType];
+  [coderCopy encodeObject:enumType forKey:@"type"];
 
-  v6 = [(MLViewerNodePropertyEnumSPI *)self enumCases];
-  [v7 encodeObject:v6 forKey:@"cases"];
+  enumCases = [(MLViewerNodePropertyEnumSPI *)self enumCases];
+  [coderCopy encodeObject:enumCases forKey:@"cases"];
 
-  [v7 encodeInt64:-[MLViewerNodePropertyEnumSPI enumValue](self forKey:{"enumValue"), @"value"}];
+  [coderCopy encodeInt64:-[MLViewerNodePropertyEnumSPI enumValue](self forKey:{"enumValue"), @"value"}];
 }
 
 @end

@@ -1,41 +1,41 @@
 @interface STSchemaSTSpotlightResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (STSchemaSTSpotlightResult)initWithDictionary:(id)a3;
-- (STSchemaSTSpotlightResult)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (STSchemaSTSpotlightResult)initWithDictionary:(id)dictionary;
+- (STSchemaSTSpotlightResult)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasEmbeddingSimilarity:(BOOL)a3;
-- (void)setHasFreshness:(BOOL)a3;
-- (void)setHasKeywordMatchScore:(BOOL)a3;
-- (void)setHasLikelihood:(BOOL)a3;
-- (void)setHasPommesAdjustedL1Score:(BOOL)a3;
-- (void)setHasPommesCalibratedL1Score:(BOOL)a3;
-- (void)setHasPommesL1Score:(BOOL)a3;
-- (void)setHasTopicality:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasEmbeddingSimilarity:(BOOL)similarity;
+- (void)setHasFreshness:(BOOL)freshness;
+- (void)setHasKeywordMatchScore:(BOOL)score;
+- (void)setHasLikelihood:(BOOL)likelihood;
+- (void)setHasPommesAdjustedL1Score:(BOOL)score;
+- (void)setHasPommesCalibratedL1Score:(BOOL)score;
+- (void)setHasPommesL1Score:(BOOL)score;
+- (void)setHasTopicality:(BOOL)topicality;
+- (void)writeTo:(id)to;
 @end
 
 @implementation STSchemaSTSpotlightResult
 
-- (STSchemaSTSpotlightResult)initWithDictionary:(id)a3
+- (STSchemaSTSpotlightResult)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v34.receiver = self;
   v34.super_class = STSchemaSTSpotlightResult;
   v5 = [(STSchemaSTSpotlightResult *)&v34 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"retrievalType"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"retrievalType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[STSchemaSTSpotlightResult setRetrievalType:](v5, "setRetrievalType:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"bundleId"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"bundleId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -43,7 +43,7 @@
       [(STSchemaSTSpotlightResult *)v5 setBundleId:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"likelihood"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"likelihood"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -51,7 +51,7 @@
       [(STSchemaSTSpotlightResult *)v5 setLikelihood:?];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"topicality"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"topicality"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -59,7 +59,7 @@
       [(STSchemaSTSpotlightResult *)v5 setTopicality:?];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"pommesL1Score"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"pommesL1Score"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -67,7 +67,7 @@
       [(STSchemaSTSpotlightResult *)v5 setPommesL1Score:?];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"pommesAdjustedL1Score"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"pommesAdjustedL1Score"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -75,7 +75,7 @@
       [(STSchemaSTSpotlightResult *)v5 setPommesAdjustedL1Score:?];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"pommesCalibratedL1Score"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"pommesCalibratedL1Score"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -85,7 +85,7 @@
 
     v27 = v13;
     v31 = v9;
-    v14 = [v4 objectForKeyedSubscript:@"embeddingSimilarity"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"embeddingSimilarity"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -94,7 +94,7 @@
     }
 
     v33 = v6;
-    v15 = [v4 objectForKeyedSubscript:@"keywordMatchScore"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"keywordMatchScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -104,7 +104,7 @@
 
     v28 = v12;
     v32 = v7;
-    v16 = [v4 objectForKeyedSubscript:@"freshness"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"freshness"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -113,7 +113,7 @@
     }
 
     v30 = v10;
-    v17 = [v4 objectForKeyedSubscript:@"queryAttributes"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"queryAttributes"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -122,7 +122,7 @@
     }
 
     v29 = v11;
-    v19 = [v4 objectForKeyedSubscript:@"quTokenParseInfo"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"quTokenParseInfo"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -130,7 +130,7 @@
       [(STSchemaSTSpotlightResult *)v5 setQuTokenParseInfo:v20];
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"documentAttributes"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"documentAttributes"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -138,7 +138,7 @@
       [(STSchemaSTSpotlightResult *)v5 setDocumentAttributes:v22];
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"topicalityAttributes"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"topicalityAttributes"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -152,30 +152,30 @@
   return v5;
 }
 
-- (STSchemaSTSpotlightResult)initWithJSON:(id)a3
+- (STSchemaSTSpotlightResult)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(STSchemaSTSpotlightResult *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(STSchemaSTSpotlightResult *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(STSchemaSTSpotlightResult *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -188,27 +188,27 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_bundleId)
   {
-    v4 = [(STSchemaSTSpotlightResult *)self bundleId];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"bundleId"];
+    bundleId = [(STSchemaSTSpotlightResult *)self bundleId];
+    v5 = [bundleId copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"bundleId"];
   }
 
   if (self->_documentAttributes)
   {
-    v6 = [(STSchemaSTSpotlightResult *)self documentAttributes];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    documentAttributes = [(STSchemaSTSpotlightResult *)self documentAttributes];
+    dictionaryRepresentation = [documentAttributes dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"documentAttributes"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"documentAttributes"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"documentAttributes"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"documentAttributes"];
     }
   }
 
@@ -218,7 +218,7 @@
     v14 = MEMORY[0x1E696AD98];
     [(STSchemaSTSpotlightResult *)self embeddingSimilarity];
     v15 = [v14 numberWithFloat:?];
-    [v3 setObject:v15 forKeyedSubscript:@"embeddingSimilarity"];
+    [dictionary setObject:v15 forKeyedSubscript:@"embeddingSimilarity"];
 
     has = self->_has;
     if ((has & 0x100) == 0)
@@ -241,7 +241,7 @@ LABEL_10:
   v16 = MEMORY[0x1E696AD98];
   [(STSchemaSTSpotlightResult *)self freshness];
   v17 = [v16 numberWithFloat:?];
-  [v3 setObject:v17 forKeyedSubscript:@"freshness"];
+  [dictionary setObject:v17 forKeyedSubscript:@"freshness"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -259,7 +259,7 @@ LABEL_21:
   v18 = MEMORY[0x1E696AD98];
   [(STSchemaSTSpotlightResult *)self keywordMatchScore];
   v19 = [v18 numberWithFloat:?];
-  [v3 setObject:v19 forKeyedSubscript:@"keywordMatchScore"];
+  [dictionary setObject:v19 forKeyedSubscript:@"keywordMatchScore"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -277,7 +277,7 @@ LABEL_22:
   v20 = MEMORY[0x1E696AD98];
   [(STSchemaSTSpotlightResult *)self likelihood];
   v21 = [v20 numberWithFloat:?];
-  [v3 setObject:v21 forKeyedSubscript:@"likelihood"];
+  [dictionary setObject:v21 forKeyedSubscript:@"likelihood"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -295,7 +295,7 @@ LABEL_23:
   v22 = MEMORY[0x1E696AD98];
   [(STSchemaSTSpotlightResult *)self pommesAdjustedL1Score];
   v23 = [v22 numberWithFloat:?];
-  [v3 setObject:v23 forKeyedSubscript:@"pommesAdjustedL1Score"];
+  [dictionary setObject:v23 forKeyedSubscript:@"pommesAdjustedL1Score"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -313,7 +313,7 @@ LABEL_24:
   v24 = MEMORY[0x1E696AD98];
   [(STSchemaSTSpotlightResult *)self pommesCalibratedL1Score];
   v25 = [v24 numberWithFloat:?];
-  [v3 setObject:v25 forKeyedSubscript:@"pommesCalibratedL1Score"];
+  [dictionary setObject:v25 forKeyedSubscript:@"pommesCalibratedL1Score"];
 
   if ((*&self->_has & 8) != 0)
   {
@@ -321,53 +321,53 @@ LABEL_15:
     v10 = MEMORY[0x1E696AD98];
     [(STSchemaSTSpotlightResult *)self pommesL1Score];
     v11 = [v10 numberWithFloat:?];
-    [v3 setObject:v11 forKeyedSubscript:@"pommesL1Score"];
+    [dictionary setObject:v11 forKeyedSubscript:@"pommesL1Score"];
   }
 
 LABEL_16:
   if (self->_quTokenParseInfo)
   {
-    v12 = [(STSchemaSTSpotlightResult *)self quTokenParseInfo];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    quTokenParseInfo = [(STSchemaSTSpotlightResult *)self quTokenParseInfo];
+    dictionaryRepresentation2 = [quTokenParseInfo dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"quTokenParseInfo"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"quTokenParseInfo"];
     }
 
     else
     {
-      v26 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v26 forKeyedSubscript:@"quTokenParseInfo"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"quTokenParseInfo"];
     }
   }
 
   if (self->_queryAttributes)
   {
-    v27 = [(STSchemaSTSpotlightResult *)self queryAttributes];
-    v28 = [v27 dictionaryRepresentation];
-    if (v28)
+    queryAttributes = [(STSchemaSTSpotlightResult *)self queryAttributes];
+    dictionaryRepresentation3 = [queryAttributes dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v28 forKeyedSubscript:@"queryAttributes"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"queryAttributes"];
     }
 
     else
     {
-      v29 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v29 forKeyedSubscript:@"queryAttributes"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"queryAttributes"];
     }
   }
 
   v30 = self->_has;
   if (v30)
   {
-    v31 = [(STSchemaSTSpotlightResult *)self retrievalType];
+    retrievalType = [(STSchemaSTSpotlightResult *)self retrievalType];
     v32 = @"STSPOTLIGHTSEARCHRETRIEVALTYPE_UNKNOWN";
-    if (v31 == 1)
+    if (retrievalType == 1)
     {
       v32 = @"STSPOTLIGHTSEARCHRETRIEVALTYPE_META";
     }
 
-    if (v31 == 2)
+    if (retrievalType == 2)
     {
       v33 = @"STSPOTLIGHTSEARCHRETRIEVALTYPE_SEMANTIC";
     }
@@ -377,7 +377,7 @@ LABEL_16:
       v33 = v32;
     }
 
-    [v3 setObject:v33 forKeyedSubscript:@"retrievalType"];
+    [dictionary setObject:v33 forKeyedSubscript:@"retrievalType"];
     v30 = self->_has;
   }
 
@@ -386,28 +386,28 @@ LABEL_16:
     v34 = MEMORY[0x1E696AD98];
     [(STSchemaSTSpotlightResult *)self topicality];
     v35 = [v34 numberWithFloat:?];
-    [v3 setObject:v35 forKeyedSubscript:@"topicality"];
+    [dictionary setObject:v35 forKeyedSubscript:@"topicality"];
   }
 
   if (self->_topicalityAttributes)
   {
-    v36 = [(STSchemaSTSpotlightResult *)self topicalityAttributes];
-    v37 = [v36 dictionaryRepresentation];
-    if (v37)
+    topicalityAttributes = [(STSchemaSTSpotlightResult *)self topicalityAttributes];
+    dictionaryRepresentation4 = [topicalityAttributes dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v37 forKeyedSubscript:@"topicalityAttributes"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"topicalityAttributes"];
     }
 
     else
     {
-      v38 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v38 forKeyedSubscript:@"topicalityAttributes"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"topicalityAttributes"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -741,15 +741,15 @@ LABEL_16:
   return v48 ^ v50 ^ [(STSchemaTopicalityAttributes *)self->_topicalityAttributes hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_61;
   }
 
-  if ((*&self->_has & 1) != (v4[44] & 1))
+  if ((*&self->_has & 1) != (equalCopy[44] & 1))
   {
     goto LABEL_61;
   }
@@ -757,26 +757,26 @@ LABEL_16:
   if (*&self->_has)
   {
     retrievalType = self->_retrievalType;
-    if (retrievalType != [v4 retrievalType])
+    if (retrievalType != [equalCopy retrievalType])
     {
       goto LABEL_61;
     }
   }
 
-  v6 = [(STSchemaSTSpotlightResult *)self bundleId];
-  v7 = [v4 bundleId];
-  if ((v6 != 0) == (v7 == 0))
+  bundleId = [(STSchemaSTSpotlightResult *)self bundleId];
+  bundleId2 = [equalCopy bundleId];
+  if ((bundleId != 0) == (bundleId2 == 0))
   {
     goto LABEL_60;
   }
 
-  v8 = [(STSchemaSTSpotlightResult *)self bundleId];
-  if (v8)
+  bundleId3 = [(STSchemaSTSpotlightResult *)self bundleId];
+  if (bundleId3)
   {
-    v9 = v8;
-    v10 = [(STSchemaSTSpotlightResult *)self bundleId];
-    v11 = [v4 bundleId];
-    v12 = [v10 isEqual:v11];
+    v9 = bundleId3;
+    bundleId4 = [(STSchemaSTSpotlightResult *)self bundleId];
+    bundleId5 = [equalCopy bundleId];
+    v12 = [bundleId4 isEqual:bundleId5];
 
     if (!v12)
     {
@@ -790,7 +790,7 @@ LABEL_16:
 
   has = self->_has;
   v14 = (*&has >> 1) & 1;
-  v15 = v4[44];
+  v15 = equalCopy[44];
   if (v14 != ((v15 >> 1) & 1))
   {
     goto LABEL_61;
@@ -799,14 +799,14 @@ LABEL_16:
   if (v14)
   {
     likelihood = self->_likelihood;
-    [v4 likelihood];
+    [equalCopy likelihood];
     if (likelihood != v17)
     {
       goto LABEL_61;
     }
 
     has = self->_has;
-    v15 = v4[44];
+    v15 = equalCopy[44];
   }
 
   v18 = (*&has >> 2) & 1;
@@ -818,14 +818,14 @@ LABEL_16:
   if (v18)
   {
     topicality = self->_topicality;
-    [v4 topicality];
+    [equalCopy topicality];
     if (topicality != v20)
     {
       goto LABEL_61;
     }
 
     has = self->_has;
-    v15 = v4[44];
+    v15 = equalCopy[44];
   }
 
   v21 = (*&has >> 3) & 1;
@@ -837,14 +837,14 @@ LABEL_16:
   if (v21)
   {
     pommesL1Score = self->_pommesL1Score;
-    [v4 pommesL1Score];
+    [equalCopy pommesL1Score];
     if (pommesL1Score != v23)
     {
       goto LABEL_61;
     }
 
     has = self->_has;
-    v15 = v4[44];
+    v15 = equalCopy[44];
   }
 
   v24 = (*&has >> 4) & 1;
@@ -856,14 +856,14 @@ LABEL_16:
   if (v24)
   {
     pommesAdjustedL1Score = self->_pommesAdjustedL1Score;
-    [v4 pommesAdjustedL1Score];
+    [equalCopy pommesAdjustedL1Score];
     if (pommesAdjustedL1Score != v26)
     {
       goto LABEL_61;
     }
 
     has = self->_has;
-    v15 = v4[44];
+    v15 = equalCopy[44];
   }
 
   v27 = (*&has >> 5) & 1;
@@ -875,14 +875,14 @@ LABEL_16:
   if (v27)
   {
     pommesCalibratedL1Score = self->_pommesCalibratedL1Score;
-    [v4 pommesCalibratedL1Score];
+    [equalCopy pommesCalibratedL1Score];
     if (pommesCalibratedL1Score != v29)
     {
       goto LABEL_61;
     }
 
     has = self->_has;
-    v15 = v4[44];
+    v15 = equalCopy[44];
   }
 
   v30 = (*&has >> 6) & 1;
@@ -894,14 +894,14 @@ LABEL_16:
   if (v30)
   {
     embeddingSimilarity = self->_embeddingSimilarity;
-    [v4 embeddingSimilarity];
+    [equalCopy embeddingSimilarity];
     if (embeddingSimilarity != v32)
     {
       goto LABEL_61;
     }
 
     has = self->_has;
-    v15 = v4[44];
+    v15 = equalCopy[44];
   }
 
   v33 = (*&has >> 7) & 1;
@@ -913,14 +913,14 @@ LABEL_16:
   if (v33)
   {
     keywordMatchScore = self->_keywordMatchScore;
-    [v4 keywordMatchScore];
+    [equalCopy keywordMatchScore];
     if (keywordMatchScore != v35)
     {
       goto LABEL_61;
     }
 
     has = self->_has;
-    v15 = v4[44];
+    v15 = equalCopy[44];
   }
 
   v36 = (*&has >> 8) & 1;
@@ -932,27 +932,27 @@ LABEL_16:
   if (v36)
   {
     freshness = self->_freshness;
-    [v4 freshness];
+    [equalCopy freshness];
     if (freshness != v38)
     {
       goto LABEL_61;
     }
   }
 
-  v6 = [(STSchemaSTSpotlightResult *)self queryAttributes];
-  v7 = [v4 queryAttributes];
-  if ((v6 != 0) == (v7 == 0))
+  bundleId = [(STSchemaSTSpotlightResult *)self queryAttributes];
+  bundleId2 = [equalCopy queryAttributes];
+  if ((bundleId != 0) == (bundleId2 == 0))
   {
     goto LABEL_60;
   }
 
-  v39 = [(STSchemaSTSpotlightResult *)self queryAttributes];
-  if (v39)
+  queryAttributes = [(STSchemaSTSpotlightResult *)self queryAttributes];
+  if (queryAttributes)
   {
-    v40 = v39;
-    v41 = [(STSchemaSTSpotlightResult *)self queryAttributes];
-    v42 = [v4 queryAttributes];
-    v43 = [v41 isEqual:v42];
+    v40 = queryAttributes;
+    queryAttributes2 = [(STSchemaSTSpotlightResult *)self queryAttributes];
+    queryAttributes3 = [equalCopy queryAttributes];
+    v43 = [queryAttributes2 isEqual:queryAttributes3];
 
     if (!v43)
     {
@@ -964,20 +964,20 @@ LABEL_16:
   {
   }
 
-  v6 = [(STSchemaSTSpotlightResult *)self quTokenParseInfo];
-  v7 = [v4 quTokenParseInfo];
-  if ((v6 != 0) == (v7 == 0))
+  bundleId = [(STSchemaSTSpotlightResult *)self quTokenParseInfo];
+  bundleId2 = [equalCopy quTokenParseInfo];
+  if ((bundleId != 0) == (bundleId2 == 0))
   {
     goto LABEL_60;
   }
 
-  v44 = [(STSchemaSTSpotlightResult *)self quTokenParseInfo];
-  if (v44)
+  quTokenParseInfo = [(STSchemaSTSpotlightResult *)self quTokenParseInfo];
+  if (quTokenParseInfo)
   {
-    v45 = v44;
-    v46 = [(STSchemaSTSpotlightResult *)self quTokenParseInfo];
-    v47 = [v4 quTokenParseInfo];
-    v48 = [v46 isEqual:v47];
+    v45 = quTokenParseInfo;
+    quTokenParseInfo2 = [(STSchemaSTSpotlightResult *)self quTokenParseInfo];
+    quTokenParseInfo3 = [equalCopy quTokenParseInfo];
+    v48 = [quTokenParseInfo2 isEqual:quTokenParseInfo3];
 
     if (!v48)
     {
@@ -989,20 +989,20 @@ LABEL_16:
   {
   }
 
-  v6 = [(STSchemaSTSpotlightResult *)self documentAttributes];
-  v7 = [v4 documentAttributes];
-  if ((v6 != 0) == (v7 == 0))
+  bundleId = [(STSchemaSTSpotlightResult *)self documentAttributes];
+  bundleId2 = [equalCopy documentAttributes];
+  if ((bundleId != 0) == (bundleId2 == 0))
   {
     goto LABEL_60;
   }
 
-  v49 = [(STSchemaSTSpotlightResult *)self documentAttributes];
-  if (v49)
+  documentAttributes = [(STSchemaSTSpotlightResult *)self documentAttributes];
+  if (documentAttributes)
   {
-    v50 = v49;
-    v51 = [(STSchemaSTSpotlightResult *)self documentAttributes];
-    v52 = [v4 documentAttributes];
-    v53 = [v51 isEqual:v52];
+    v50 = documentAttributes;
+    documentAttributes2 = [(STSchemaSTSpotlightResult *)self documentAttributes];
+    documentAttributes3 = [equalCopy documentAttributes];
+    v53 = [documentAttributes2 isEqual:documentAttributes3];
 
     if (!v53)
     {
@@ -1014,17 +1014,17 @@ LABEL_16:
   {
   }
 
-  v6 = [(STSchemaSTSpotlightResult *)self topicalityAttributes];
-  v7 = [v4 topicalityAttributes];
-  if ((v6 != 0) == (v7 == 0))
+  bundleId = [(STSchemaSTSpotlightResult *)self topicalityAttributes];
+  bundleId2 = [equalCopy topicalityAttributes];
+  if ((bundleId != 0) == (bundleId2 == 0))
   {
 LABEL_60:
 
     goto LABEL_61;
   }
 
-  v54 = [(STSchemaSTSpotlightResult *)self topicalityAttributes];
-  if (!v54)
+  topicalityAttributes = [(STSchemaSTSpotlightResult *)self topicalityAttributes];
+  if (!topicalityAttributes)
   {
 
 LABEL_64:
@@ -1032,10 +1032,10 @@ LABEL_64:
     goto LABEL_62;
   }
 
-  v55 = v54;
-  v56 = [(STSchemaSTSpotlightResult *)self topicalityAttributes];
-  v57 = [v4 topicalityAttributes];
-  v58 = [v56 isEqual:v57];
+  v55 = topicalityAttributes;
+  topicalityAttributes2 = [(STSchemaSTSpotlightResult *)self topicalityAttributes];
+  topicalityAttributes3 = [equalCopy topicalityAttributes];
+  v58 = [topicalityAttributes2 isEqual:topicalityAttributes3];
 
   if (v58)
   {
@@ -1049,17 +1049,17 @@ LABEL_62:
   return v59;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
   }
 
-  v4 = [(STSchemaSTSpotlightResult *)self bundleId];
+  bundleId = [(STSchemaSTSpotlightResult *)self bundleId];
 
-  if (v4)
+  if (bundleId)
   {
     PBDataWriterWriteStringField();
   }
@@ -1164,45 +1164,45 @@ LABEL_13:
   }
 
 LABEL_14:
-  v6 = [(STSchemaSTSpotlightResult *)self queryAttributes];
+  queryAttributes = [(STSchemaSTSpotlightResult *)self queryAttributes];
 
-  if (v6)
+  if (queryAttributes)
   {
-    v7 = [(STSchemaSTSpotlightResult *)self queryAttributes];
+    queryAttributes2 = [(STSchemaSTSpotlightResult *)self queryAttributes];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(STSchemaSTSpotlightResult *)self quTokenParseInfo];
+  quTokenParseInfo = [(STSchemaSTSpotlightResult *)self quTokenParseInfo];
 
-  if (v8)
+  if (quTokenParseInfo)
   {
-    v9 = [(STSchemaSTSpotlightResult *)self quTokenParseInfo];
+    quTokenParseInfo2 = [(STSchemaSTSpotlightResult *)self quTokenParseInfo];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(STSchemaSTSpotlightResult *)self documentAttributes];
+  documentAttributes = [(STSchemaSTSpotlightResult *)self documentAttributes];
 
-  if (v10)
+  if (documentAttributes)
   {
-    v11 = [(STSchemaSTSpotlightResult *)self documentAttributes];
+    documentAttributes2 = [(STSchemaSTSpotlightResult *)self documentAttributes];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(STSchemaSTSpotlightResult *)self topicalityAttributes];
+  topicalityAttributes = [(STSchemaSTSpotlightResult *)self topicalityAttributes];
 
-  v13 = v15;
-  if (v12)
+  v13 = toCopy;
+  if (topicalityAttributes)
   {
-    v14 = [(STSchemaSTSpotlightResult *)self topicalityAttributes];
+    topicalityAttributes2 = [(STSchemaSTSpotlightResult *)self topicalityAttributes];
     PBDataWriterWriteSubmessage();
 
-    v13 = v15;
+    v13 = toCopy;
   }
 }
 
-- (void)setHasFreshness:(BOOL)a3
+- (void)setHasFreshness:(BOOL)freshness
 {
-  if (a3)
+  if (freshness)
   {
     v3 = 256;
   }
@@ -1215,9 +1215,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasKeywordMatchScore:(BOOL)a3
+- (void)setHasKeywordMatchScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 128;
   }
@@ -1230,9 +1230,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasEmbeddingSimilarity:(BOOL)a3
+- (void)setHasEmbeddingSimilarity:(BOOL)similarity
 {
-  if (a3)
+  if (similarity)
   {
     v3 = 64;
   }
@@ -1245,9 +1245,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasPommesCalibratedL1Score:(BOOL)a3
+- (void)setHasPommesCalibratedL1Score:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 32;
   }
@@ -1260,9 +1260,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasPommesAdjustedL1Score:(BOOL)a3
+- (void)setHasPommesAdjustedL1Score:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 16;
   }
@@ -1275,9 +1275,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasPommesL1Score:(BOOL)a3
+- (void)setHasPommesL1Score:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 8;
   }
@@ -1290,9 +1290,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasTopicality:(BOOL)a3
+- (void)setHasTopicality:(BOOL)topicality
 {
-  if (a3)
+  if (topicality)
   {
     v3 = 4;
   }
@@ -1305,9 +1305,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasLikelihood:(BOOL)a3
+- (void)setHasLikelihood:(BOOL)likelihood
 {
-  if (a3)
+  if (likelihood)
   {
     v3 = 2;
   }
@@ -1320,49 +1320,49 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v19.receiver = self;
   v19.super_class = STSchemaSTSpotlightResult;
-  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:4])
+  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:4])
   {
     [(STSchemaSTSpotlightResult *)self deleteBundleId];
   }
 
-  v6 = [(STSchemaSTSpotlightResult *)self queryAttributes];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  queryAttributes = [(STSchemaSTSpotlightResult *)self queryAttributes];
+  v7 = [queryAttributes applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(STSchemaSTSpotlightResult *)self deleteQueryAttributes];
   }
 
-  v9 = [(STSchemaSTSpotlightResult *)self quTokenParseInfo];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  quTokenParseInfo = [(STSchemaSTSpotlightResult *)self quTokenParseInfo];
+  v10 = [quTokenParseInfo applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(STSchemaSTSpotlightResult *)self deleteQuTokenParseInfo];
   }
 
-  v12 = [(STSchemaSTSpotlightResult *)self documentAttributes];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  documentAttributes = [(STSchemaSTSpotlightResult *)self documentAttributes];
+  v13 = [documentAttributes applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(STSchemaSTSpotlightResult *)self deleteDocumentAttributes];
   }
 
-  v15 = [(STSchemaSTSpotlightResult *)self topicalityAttributes];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  topicalityAttributes = [(STSchemaSTSpotlightResult *)self topicalityAttributes];
+  v16 = [topicalityAttributes applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(STSchemaSTSpotlightResult *)self deleteTopicalityAttributes];
   }

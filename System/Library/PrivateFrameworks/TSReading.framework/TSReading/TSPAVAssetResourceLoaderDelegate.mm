@@ -1,24 +1,24 @@
 @interface TSPAVAssetResourceLoaderDelegate
-- (BOOL)resourceLoader:(id)a3 shouldWaitForLoadingOfRequestedResource:(id)a4;
-- (TSPAVAssetResourceLoaderDelegate)initWithTSPFileDataStorage:(id)a3 contentTypeUTI:(id)a4;
-- (void)_provideData:(id)a3 untilRequestCancelledForResourceLoadingRequest:(id)a4;
+- (BOOL)resourceLoader:(id)loader shouldWaitForLoadingOfRequestedResource:(id)resource;
+- (TSPAVAssetResourceLoaderDelegate)initWithTSPFileDataStorage:(id)storage contentTypeUTI:(id)i;
+- (void)_provideData:(id)data untilRequestCancelledForResourceLoadingRequest:(id)request;
 - (void)dealloc;
 @end
 
 @implementation TSPAVAssetResourceLoaderDelegate
 
-- (TSPAVAssetResourceLoaderDelegate)initWithTSPFileDataStorage:(id)a3 contentTypeUTI:(id)a4
+- (TSPAVAssetResourceLoaderDelegate)initWithTSPFileDataStorage:(id)storage contentTypeUTI:(id)i
 {
-  v7 = a3;
-  v8 = a4;
+  storageCopy = storage;
+  iCopy = i;
   v16.receiver = self;
   v16.super_class = TSPAVAssetResourceLoaderDelegate;
   v9 = [(TSPAVAssetResourceLoaderDelegate *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dataStorage, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_dataStorage, storage);
+    v11 = [iCopy copy];
     contentTypeUTI = v10->_contentTypeUTI;
     v10->_contentTypeUTI = v11;
 
@@ -30,18 +30,18 @@
   return v10;
 }
 
-- (void)_provideData:(id)a3 untilRequestCancelledForResourceLoadingRequest:(id)a4
+- (void)_provideData:(id)data untilRequestCancelledForResourceLoadingRequest:(id)request
 {
-  v5 = a3;
-  v6 = a4;
-  if (([v6 isCancelled] & 1) == 0)
+  dataCopy = data;
+  requestCopy = request;
+  if (([requestCopy isCancelled] & 1) == 0)
   {
     applier[0] = MEMORY[0x277D85DD0];
     applier[1] = 3221225472;
     applier[2] = __96__TSPAVAssetResourceLoaderDelegate__provideData_untilRequestCancelledForResourceLoadingRequest___block_invoke;
     applier[3] = &unk_279D473C8;
-    v8 = v6;
-    dispatch_data_apply(v5, applier);
+    v8 = requestCopy;
+    dispatch_data_apply(dataCopy, applier);
   }
 }
 
@@ -66,17 +66,17 @@ uint64_t __96__TSPAVAssetResourceLoaderDelegate__provideData_untilRequestCancell
   [(TSPAVAssetResourceLoaderDelegate *)&v3 dealloc];
 }
 
-- (BOOL)resourceLoader:(id)a3 shouldWaitForLoadingOfRequestedResource:(id)a4
+- (BOOL)resourceLoader:(id)loader shouldWaitForLoadingOfRequestedResource:(id)resource
 {
-  v5 = a4;
+  resourceCopy = resource;
   concurrentRequestQueue = self->_concurrentRequestQueue;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __91__TSPAVAssetResourceLoaderDelegate_resourceLoader_shouldWaitForLoadingOfRequestedResource___block_invoke;
   v9[3] = &unk_279D46A58;
-  v10 = v5;
-  v11 = self;
-  v7 = v5;
+  v10 = resourceCopy;
+  selfCopy = self;
+  v7 = resourceCopy;
   dispatch_async(concurrentRequestQueue, v9);
 
   return 1;

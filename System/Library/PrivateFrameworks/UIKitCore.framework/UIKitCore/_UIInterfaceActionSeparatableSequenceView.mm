@@ -1,43 +1,43 @@
 @interface _UIInterfaceActionSeparatableSequenceView
-- (CGRect)_stackViewFrameForViewBounds:(CGRect)a3;
-- (CGRect)_viewBoundsForStackViewFrame:(CGRect)a3;
-- (CGSize)_systemLayoutSizeFittingStackView:(CGSize)a3;
+- (CGRect)_stackViewFrameForViewBounds:(CGRect)bounds;
+- (CGRect)_viewBoundsForStackViewFrame:(CGRect)frame;
+- (CGSize)_systemLayoutSizeFittingStackView:(CGSize)view;
 - (CGSize)intrinsicContentSize;
-- (_UIInterfaceActionSeparatableSequenceView)initWithVisualStyle:(id)a3;
-- (double)fittingWidthForLayoutAxis:(int64_t)a3;
+- (_UIInterfaceActionSeparatableSequenceView)initWithVisualStyle:(id)style;
+- (double)fittingWidthForLayoutAxis:(int64_t)axis;
 - (int64_t)_dimensionAttributeToConstrainEqual;
-- (void)_addSeparatorToStackAndMutableArray:(id)a3 preferSectionStyle:(BOOL)a4;
-- (void)_markRoundedCornerPositionOnLeadingEdgeOfView:(id)a3;
-- (void)_markRoundedCornerPositionOnTrailingEdgeOfView:(id)a3;
+- (void)_addSeparatorToStackAndMutableArray:(id)array preferSectionStyle:(BOOL)style;
+- (void)_markRoundedCornerPositionOnLeadingEdgeOfView:(id)view;
+- (void)_markRoundedCornerPositionOnTrailingEdgeOfView:(id)view;
 - (void)_reloadContentDistributionConstraintsForArrangedContentViews;
 - (void)_reloadStackViewArrangement;
-- (void)_setLayoutDebuggingIdentifier:(id)a3;
-- (void)_setRoundedCornersOfView:(id)a3 toCornerPosition:(unint64_t)a4;
+- (void)_setLayoutDebuggingIdentifier:(id)identifier;
+- (void)_setRoundedCornersOfView:(id)view toCornerPosition:(unint64_t)position;
 - (void)_updateActionRepresentationViewsCanRemoveContentFromHierarchyWhenNotVisibleSetting;
 - (void)_updateActionSpacing;
 - (void)_updateLayoutWithStackFrameForActionSequenceEdgeInsets;
 - (void)_updateRoundedCornerPositionForActionRepViews;
 - (void)_updateSeparatorConstantSizedAxis;
-- (void)_withUnsatisfiableConstraintsLoggingSuspendedIfEngineDelegateExists:(id)a3;
-- (void)layoutSublayersOfLayer:(id)a3;
+- (void)_withUnsatisfiableConstraintsLoggingSuspendedIfEngineDelegateExists:(id)exists;
+- (void)layoutSublayersOfLayer:(id)layer;
 - (void)reloadDisplayedContentVisualStyle;
-- (void)setArrangedContentViews:(id)a3;
-- (void)setAxis:(int64_t)a3;
-- (void)setDistribution:(int64_t)a3;
-- (void)setVisualCornerForcedOverride:(BOOL)a3;
-- (void)setVisualCornerPosition:(unint64_t)a3;
-- (void)setVisualStyle:(id)a3;
+- (void)setArrangedContentViews:(id)views;
+- (void)setAxis:(int64_t)axis;
+- (void)setDistribution:(int64_t)distribution;
+- (void)setVisualCornerForcedOverride:(BOOL)override;
+- (void)setVisualCornerPosition:(unint64_t)position;
+- (void)setVisualStyle:(id)style;
 - (void)updateConstraints;
 - (void)updateContentLayoutGuideConstraints;
 @end
 
 @implementation _UIInterfaceActionSeparatableSequenceView
 
-- (_UIInterfaceActionSeparatableSequenceView)initWithVisualStyle:(id)a3
+- (_UIInterfaceActionSeparatableSequenceView)initWithVisualStyle:(id)style
 {
-  v5 = a3;
-  v6 = [objc_opt_self() mainScreen];
-  [v6 bounds];
+  styleCopy = style;
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -49,7 +49,7 @@
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_visualStyle, a3);
+    objc_storeStrong(&v15->_visualStyle, style);
     arrangedContentViews = v16->_arrangedContentViews;
     v18 = MEMORY[0x1E695E0F0];
     v16->_arrangedContentViews = MEMORY[0x1E695E0F0];
@@ -82,27 +82,27 @@
   return v16;
 }
 
-- (void)setVisualStyle:(id)a3
+- (void)setVisualStyle:(id)style
 {
-  v11 = a3;
-  if (([v11 isEqual:self->_visualStyle] & 1) == 0)
+  styleCopy = style;
+  if (([styleCopy isEqual:self->_visualStyle] & 1) == 0)
   {
-    v5 = [(UIInterfaceActionVisualStyle *)self->_visualStyle visualStyleOverride];
-    v6 = [v5 customSeparatorAttributes];
+    visualStyleOverride = [(UIInterfaceActionVisualStyle *)self->_visualStyle visualStyleOverride];
+    customSeparatorAttributes = [visualStyleOverride customSeparatorAttributes];
 
-    objc_storeStrong(&self->_visualStyle, a3);
+    objc_storeStrong(&self->_visualStyle, style);
     [(_UIInterfaceActionSeparatableSequenceView *)self reloadDisplayedContentVisualStyle];
-    v7 = [(UIInterfaceActionVisualStyle *)self->_visualStyle visualStyleOverride];
-    v8 = [v7 customSeparatorAttributes];
+    visualStyleOverride2 = [(UIInterfaceActionVisualStyle *)self->_visualStyle visualStyleOverride];
+    customSeparatorAttributes2 = [visualStyleOverride2 customSeparatorAttributes];
 
-    v9 = [(_UIInterfaceActionSeparatableSequenceView *)self arrangedContentViews];
-    if (![v9 count] || v6 == v8)
+    arrangedContentViews = [(_UIInterfaceActionSeparatableSequenceView *)self arrangedContentViews];
+    if (![arrangedContentViews count] || customSeparatorAttributes == customSeparatorAttributes2)
     {
     }
 
     else
     {
-      v10 = [v6 isEqual:v8];
+      v10 = [customSeparatorAttributes isEqual:customSeparatorAttributes2];
 
       if ((v10 & 1) == 0)
       {
@@ -112,12 +112,12 @@
   }
 }
 
-- (void)setAxis:(int64_t)a3
+- (void)setAxis:(int64_t)axis
 {
-  if ([(_UIInterfaceActionSeparatableSequenceView *)self axis]!= a3)
+  if ([(_UIInterfaceActionSeparatableSequenceView *)self axis]!= axis)
   {
-    self->_axis = a3;
-    [(UIStackView *)self->_stackView setAxis:a3];
+    self->_axis = axis;
+    [(UIStackView *)self->_stackView setAxis:axis];
     [(_UIInterfaceActionSeparatableSequenceView *)self _updateActionSpacing];
     [(_UIInterfaceActionSeparatableSequenceView *)self _updateSeparatorConstantSizedAxis];
 
@@ -125,39 +125,39 @@
   }
 }
 
-- (void)setDistribution:(int64_t)a3
+- (void)setDistribution:(int64_t)distribution
 {
-  if (self->_distribution != a3)
+  if (self->_distribution != distribution)
   {
-    self->_distribution = a3;
+    self->_distribution = distribution;
     [(UIView *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (void)setVisualCornerPosition:(unint64_t)a3
+- (void)setVisualCornerPosition:(unint64_t)position
 {
-  if (self->_visualCornerPosition != a3)
+  if (self->_visualCornerPosition != position)
   {
-    self->_visualCornerPosition = a3;
+    self->_visualCornerPosition = position;
     [(_UIInterfaceActionSeparatableSequenceView *)self _updateRoundedCornerPositionForActionRepViews];
   }
 }
 
-- (void)setVisualCornerForcedOverride:(BOOL)a3
+- (void)setVisualCornerForcedOverride:(BOOL)override
 {
-  if (self->_visualCornerForcedOverride != a3)
+  if (self->_visualCornerForcedOverride != override)
   {
-    self->_visualCornerForcedOverride = a3;
+    self->_visualCornerForcedOverride = override;
     [(_UIInterfaceActionSeparatableSequenceView *)self _updateRoundedCornerPositionForActionRepViews];
   }
 }
 
-- (void)setArrangedContentViews:(id)a3
+- (void)setArrangedContentViews:(id)views
 {
-  v5 = a3;
+  viewsCopy = views;
   if (([(NSArray *)self->_arrangedContentViews isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_arrangedContentViews, a3);
+    objc_storeStrong(&self->_arrangedContentViews, views);
     [(_UIInterfaceActionSeparatableSequenceView *)self _updateActionRepresentationViewsCanRemoveContentFromHierarchyWhenNotVisibleSetting];
     [(_UIInterfaceActionSeparatableSequenceView *)self _reloadStackViewArrangement];
   }
@@ -167,8 +167,8 @@
 {
   if ([(_UIInterfaceActionSeparatableSequenceView *)self _isVerticalLayout])
   {
-    v3 = [(_UIInterfaceActionSeparatableSequenceView *)self arrangedContentViews];
-    v4 = [v3 count];
+    arrangedContentViews = [(_UIInterfaceActionSeparatableSequenceView *)self arrangedContentViews];
+    v4 = [arrangedContentViews count];
 
     if (v4 < 6)
     {
@@ -177,14 +177,14 @@
 
     else
     {
-      v5 = [(NSArray *)self->_arrangedContentViews firstObject];
+      firstObject = [(NSArray *)self->_arrangedContentViews firstObject];
       if ([(NSArray *)self->_arrangedContentViews count]>= 2)
       {
         v7 = 1;
         do
         {
           v8 = [(NSArray *)self->_arrangedContentViews objectAtIndexedSubscript:v7];
-          v6 = [v5 hasLayoutHeightConstraintsIdenticalToRepresentationView:v8];
+          v6 = [firstObject hasLayoutHeightConstraintsIdenticalToRepresentationView:v8];
 
           if ((v6 & 1) == 0)
           {
@@ -209,8 +209,8 @@
     v6 = 0;
   }
 
-  v9 = [(NSArray *)self->_arrangedContentViews firstObject];
-  [v9 setCanRemoveContentFromHierarchyWhenNotVisible:0];
+  firstObject2 = [(NSArray *)self->_arrangedContentViews firstObject];
+  [firstObject2 setCanRemoveContentFromHierarchyWhenNotVisible:0];
 
   if ([(NSArray *)self->_arrangedContentViews count]>= 2)
   {
@@ -227,7 +227,7 @@
   }
 }
 
-- (double)fittingWidthForLayoutAxis:(int64_t)a3
+- (double)fittingWidthForLayoutAxis:(int64_t)axis
 {
   v34 = *MEMORY[0x1E69E9840];
   v5 = *MEMORY[0x1E695F060];
@@ -279,9 +279,9 @@
 
   if ([(NSArray *)self->_arrangedContentSeparatorViews count])
   {
-    v16 = [(_UIInterfaceActionSeparatableSequenceView *)self visualStyle];
-    v17 = [v16 groupViewState];
-    v18 = [v16 newActionSeparatorViewForGroupViewState:v17];
+    visualStyle = [(_UIInterfaceActionSeparatableSequenceView *)self visualStyle];
+    groupViewState = [visualStyle groupViewState];
+    v18 = [visualStyle newActionSeparatorViewForGroupViewState:groupViewState];
     [v18 setConstantSizedAxis:{-[_UIInterfaceActionSeparatableSequenceView _separatorConstantSizedAxis](self, "_separatorConstantSizedAxis")}];
     [v18 setNeedsUpdateConstraints];
     [v18 updateConstraintsIfNeeded];
@@ -289,7 +289,7 @@
     v20 = v19;
     v22 = v21;
     v23 = [(NSArray *)self->_arrangedContentSeparatorViews count];
-    if (a3)
+    if (axis)
     {
       v24 = v22;
     }
@@ -308,7 +308,7 @@
   }
 
   v26 = [(NSArray *)self->_arrangedContentViews count];
-  if (a3)
+  if (axis)
   {
     v27 = v9;
   }
@@ -338,14 +338,14 @@
   [(UIView *)stackView setFrame:?];
 }
 
-- (CGRect)_viewBoundsForStackViewFrame:(CGRect)a3
+- (CGRect)_viewBoundsForStackViewFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(_UIInterfaceActionSeparatableSequenceView *)self visualStyle];
-  [v8 actionSequenceEdgeInsets];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  visualStyle = [(_UIInterfaceActionSeparatableSequenceView *)self visualStyle];
+  [visualStyle actionSequenceEdgeInsets];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -383,14 +383,14 @@
   return result;
 }
 
-- (CGRect)_stackViewFrameForViewBounds:(CGRect)a3
+- (CGRect)_stackViewFrameForViewBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(_UIInterfaceActionSeparatableSequenceView *)self visualStyle];
-  [v7 actionSequenceEdgeInsets];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  visualStyle = [(_UIInterfaceActionSeparatableSequenceView *)self visualStyle];
+  [visualStyle actionSequenceEdgeInsets];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -407,29 +407,29 @@
   return result;
 }
 
-- (void)_setLayoutDebuggingIdentifier:(id)a3
+- (void)_setLayoutDebuggingIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = _UIInterfaceActionSeparatableSequenceView;
-  [(UIView *)&v7 _setLayoutDebuggingIdentifier:a3];
+  [(UIView *)&v7 _setLayoutDebuggingIdentifier:identifier];
   stackView = self->_stackView;
-  v5 = [(UIView *)self _layoutDebuggingIdentifier];
-  v6 = [v5 stringByAppendingString:@".stack"];
+  _layoutDebuggingIdentifier = [(UIView *)self _layoutDebuggingIdentifier];
+  v6 = [_layoutDebuggingIdentifier stringByAppendingString:@".stack"];
   [(UIView *)stackView _setLayoutDebuggingIdentifier:v6];
 }
 
-- (void)_withUnsatisfiableConstraintsLoggingSuspendedIfEngineDelegateExists:(id)a3
+- (void)_withUnsatisfiableConstraintsLoggingSuspendedIfEngineDelegateExists:(id)exists
 {
-  v4 = a3;
+  existsCopy = exists;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __113___UIInterfaceActionSeparatableSequenceView__withUnsatisfiableConstraintsLoggingSuspendedIfEngineDelegateExists___block_invoke;
   v7[3] = &unk_1E70F37C0;
   v7[4] = self;
-  v8 = v4;
+  v8 = existsCopy;
   v6.receiver = self;
   v6.super_class = _UIInterfaceActionSeparatableSequenceView;
-  v5 = v4;
+  v5 = existsCopy;
   [(UIView *)&v6 _withUnsatisfiableConstraintsLoggingSuspendedIfEngineDelegateExists:v7];
 }
 
@@ -441,21 +441,21 @@
     [MEMORY[0x1E69977A0] deactivateConstraints:?];
   }
 
-  v16 = [(UIView *)self->_stackView trailingAnchor];
-  v15 = [(UILayoutGuide *)self->_actionSequenceViewLayoutGuide trailingAnchor];
-  v14 = [v16 constraintEqualToAnchor:v15];
+  trailingAnchor = [(UIView *)self->_stackView trailingAnchor];
+  trailingAnchor2 = [(UILayoutGuide *)self->_actionSequenceViewLayoutGuide trailingAnchor];
+  v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v17[0] = v14;
-  v13 = [(UIView *)self->_stackView leadingAnchor];
-  v3 = [(UILayoutGuide *)self->_actionSequenceViewLayoutGuide leadingAnchor];
-  v4 = [v13 constraintEqualToAnchor:v3];
+  leadingAnchor = [(UIView *)self->_stackView leadingAnchor];
+  leadingAnchor2 = [(UILayoutGuide *)self->_actionSequenceViewLayoutGuide leadingAnchor];
+  v4 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v17[1] = v4;
-  v5 = [(UIView *)self->_stackView topAnchor];
-  v6 = [(UILayoutGuide *)self->_actionSequenceViewLayoutGuide topAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  topAnchor = [(UIView *)self->_stackView topAnchor];
+  topAnchor2 = [(UILayoutGuide *)self->_actionSequenceViewLayoutGuide topAnchor];
+  v7 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v17[2] = v7;
-  v8 = [(UIView *)self->_stackView bottomAnchor];
-  v9 = [(UILayoutGuide *)self->_actionSequenceViewLayoutGuide bottomAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  bottomAnchor = [(UIView *)self->_stackView bottomAnchor];
+  bottomAnchor2 = [(UILayoutGuide *)self->_actionSequenceViewLayoutGuide bottomAnchor];
+  v10 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v17[3] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:4];
   layoutGuideConstraints = self->_layoutGuideConstraints;
@@ -473,12 +473,12 @@
   [(_UIInterfaceActionSeparatableSequenceView *)self _reloadContentDistributionConstraintsForArrangedContentViews];
 }
 
-- (void)layoutSublayersOfLayer:(id)a3
+- (void)layoutSublayersOfLayer:(id)layer
 {
   [(_UIInterfaceActionSeparatableSequenceView *)self _updateLayoutWithStackFrameForActionSequenceEdgeInsets];
   v5.receiver = self;
   v5.super_class = _UIInterfaceActionSeparatableSequenceView;
-  [(UIView *)&v5 layoutSublayersOfLayer:a3];
+  [(UIView *)&v5 layoutSublayersOfLayer:layer];
 }
 
 - (CGSize)intrinsicContentSize
@@ -489,7 +489,7 @@
   return result;
 }
 
-- (CGSize)_systemLayoutSizeFittingStackView:(CGSize)a3
+- (CGSize)_systemLayoutSizeFittingStackView:(CGSize)view
 {
   [UIView systemLayoutSizeFittingSize:"systemLayoutSizeFittingSize:withHorizontalFittingPriority:verticalFittingPriority:" withHorizontalFittingPriority:? verticalFittingPriority:?];
   v5 = v4;
@@ -514,12 +514,12 @@
   arrangedContentViewsDistributionConstraints = self->_arrangedContentViewsDistributionConstraints;
   self->_arrangedContentViewsDistributionConstraints = MEMORY[0x1E695E0F0];
 
-  v14 = [MEMORY[0x1E695DF70] array];
-  v4 = [(_UIInterfaceActionSeparatableSequenceView *)self _dimensionAttributeToConstrainEqual];
-  if (v4)
+  array = [MEMORY[0x1E695DF70] array];
+  _dimensionAttributeToConstrainEqual = [(_UIInterfaceActionSeparatableSequenceView *)self _dimensionAttributeToConstrainEqual];
+  if (_dimensionAttributeToConstrainEqual)
   {
-    v6 = v4;
-    v7 = [(NSArray *)self->_arrangedContentViews firstObject];
+    v6 = _dimensionAttributeToConstrainEqual;
+    firstObject = [(NSArray *)self->_arrangedContentViews firstObject];
     if ([(NSArray *)self->_arrangedContentViews count]>= 2)
     {
       v8 = 1;
@@ -527,8 +527,8 @@
       {
         v9 = MEMORY[0x1E69977A0];
         v10 = [(NSArray *)self->_arrangedContentViews objectAtIndexedSubscript:v8];
-        v11 = [v9 constraintWithItem:v10 attribute:v6 relatedBy:0 toItem:v7 attribute:v6];
-        [v14 addObject:v11];
+        v11 = [v9 constraintWithItem:v10 attribute:v6 relatedBy:0 toItem:firstObject attribute:v6];
+        [array addObject:v11];
 
         ++v8;
       }
@@ -537,7 +537,7 @@
     }
   }
 
-  v12 = _UIConstraintsBySortingConstraintsForInsertionPerformance(v14, v5);
+  v12 = _UIConstraintsBySortingConstraintsForInsertionPerformance(array, v5);
   v13 = self->_arrangedContentViewsDistributionConstraints;
   self->_arrangedContentViewsDistributionConstraints = v12;
 
@@ -547,13 +547,13 @@
 - (int64_t)_dimensionAttributeToConstrainEqual
 {
   distribution = self->_distribution;
-  v4 = [(_UIInterfaceActionSeparatableSequenceView *)self _isVerticalLayout];
+  _isVerticalLayout = [(_UIInterfaceActionSeparatableSequenceView *)self _isVerticalLayout];
   if (distribution == 1)
   {
-    if (v4)
+    if (_isVerticalLayout)
     {
-      v5 = [(_UIInterfaceActionSeparatableSequenceView *)self visualStyle];
-      [v5 minimumActionContentSize];
+      visualStyle = [(_UIInterfaceActionSeparatableSequenceView *)self visualStyle];
+      [visualStyle minimumActionContentSize];
       v7 = 8 * (v6 <= 0.0);
     }
 
@@ -563,7 +563,7 @@
     }
   }
 
-  else if (v4)
+  else if (_isVerticalLayout)
   {
     return 8;
   }
@@ -579,8 +579,8 @@
 - (void)_reloadStackViewArrangement
 {
   v3 = [(NSArray *)self->_arrangedContentViews copy];
-  v4 = [(UIStackView *)self->_stackView arrangedSubviews];
-  v5 = [v4 mutableCopy];
+  arrangedSubviews = [(UIStackView *)self->_stackView arrangedSubviews];
+  v5 = [arrangedSubviews mutableCopy];
 
   [v5 removeObjectsInArray:v3];
   v21[0] = MEMORY[0x1E69E9820];
@@ -589,7 +589,7 @@
   v21[3] = &unk_1E70F3F18;
   v21[4] = self;
   [v5 enumerateObjectsUsingBlock:v21];
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v7 = [v3 count];
   v19[0] = 0;
   v19[1] = v19;
@@ -601,54 +601,54 @@
   v11 = 3221225472;
   v12 = __72___UIInterfaceActionSeparatableSequenceView__reloadStackViewArrangement__block_invoke_16;
   v13 = &unk_1E70F3F40;
-  v14 = self;
+  selfCopy = self;
   v18 = v7;
   v8 = v3;
   v15 = v8;
-  v9 = v6;
+  v9 = array;
   v16 = v9;
   v17 = v19;
   [v8 enumerateObjectsWithOptions:0 usingBlock:&v10];
   [(_UIInterfaceActionSeparatableSequenceView *)self _updateRoundedCornerPositionForActionRepViews:v10];
-  objc_storeStrong(&self->_arrangedContentSeparatorViews, v6);
+  objc_storeStrong(&self->_arrangedContentSeparatorViews, array);
   [(UIView *)self setNeedsUpdateConstraints];
   [(UIView *)self invalidateIntrinsicContentSize];
 
   _Block_object_dispose(v19, 8);
 }
 
-- (void)_addSeparatorToStackAndMutableArray:(id)a3 preferSectionStyle:(BOOL)a4
+- (void)_addSeparatorToStackAndMutableArray:(id)array preferSectionStyle:(BOOL)style
 {
-  v4 = a4;
-  v10 = a3;
-  v6 = [(_UIInterfaceActionSeparatableSequenceView *)self visualStyle];
-  v7 = [v6 groupViewState];
-  if (v4 && (v8 = [v6 newSectionSeparatorViewForGroupViewState:v7]) != 0 || (v8 = objc_msgSend(v6, "newActionSeparatorViewForGroupViewState:", v7)) != 0)
+  styleCopy = style;
+  arrayCopy = array;
+  visualStyle = [(_UIInterfaceActionSeparatableSequenceView *)self visualStyle];
+  groupViewState = [visualStyle groupViewState];
+  if (styleCopy && (v8 = [visualStyle newSectionSeparatorViewForGroupViewState:groupViewState]) != 0 || (v8 = objc_msgSend(visualStyle, "newActionSeparatorViewForGroupViewState:", groupViewState)) != 0)
   {
     v9 = v8;
     [v8 setConstantSizedAxis:{-[_UIInterfaceActionSeparatableSequenceView _separatorConstantSizedAxis](self, "_separatorConstantSizedAxis")}];
     [(UIStackView *)self->_stackView addArrangedSubview:v9];
-    [v10 addObject:v9];
+    [arrayCopy addObject:v9];
   }
 }
 
 - (void)_updateActionSpacing
 {
-  v4 = [(_UIInterfaceActionSeparatableSequenceView *)self visualStyle];
-  v3 = [v4 groupViewState];
-  [v4 actionSpacingForGroupViewState:v3];
+  visualStyle = [(_UIInterfaceActionSeparatableSequenceView *)self visualStyle];
+  groupViewState = [visualStyle groupViewState];
+  [visualStyle actionSpacingForGroupViewState:groupViewState];
   [(UIStackView *)self->_stackView setSpacing:?];
 }
 
 - (void)_updateSeparatorConstantSizedAxis
 {
-  v3 = [(_UIInterfaceActionSeparatableSequenceView *)self _separatorConstantSizedAxis];
+  _separatorConstantSizedAxis = [(_UIInterfaceActionSeparatableSequenceView *)self _separatorConstantSizedAxis];
   arrangedContentSeparatorViews = self->_arrangedContentSeparatorViews;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __78___UIInterfaceActionSeparatableSequenceView__updateSeparatorConstantSizedAxis__block_invoke;
   v5[3] = &__block_descriptor_40_e46_v32__0__UIView_UISeparatorDisplaying__8Q16_B24l;
-  v5[4] = v3;
+  v5[4] = _separatorConstantSizedAxis;
   [(NSArray *)arrangedContentSeparatorViews enumerateObjectsUsingBlock:v5];
 }
 
@@ -657,8 +657,8 @@
   v3 = self->_arrangedContentViews;
   if ([(NSArray *)v3 count]<= 1)
   {
-    v4 = [(NSArray *)v3 firstObject];
-    [(_UIInterfaceActionSeparatableSequenceView *)self _markRoundedCornerPositionOnAllCornersOfView:v4];
+    firstObject = [(NSArray *)v3 firstObject];
+    [(_UIInterfaceActionSeparatableSequenceView *)self _markRoundedCornerPositionOnAllCornersOfView:firstObject];
 LABEL_6:
 
     goto LABEL_7;
@@ -666,8 +666,8 @@ LABEL_6:
 
   if (!self->_visualCornerForcedOverride)
   {
-    v5 = [(NSArray *)v3 firstObject];
-    [(_UIInterfaceActionSeparatableSequenceView *)self _markRoundedCornerPositionOnLeadingEdgeOfView:v5];
+    firstObject2 = [(NSArray *)v3 firstObject];
+    [(_UIInterfaceActionSeparatableSequenceView *)self _markRoundedCornerPositionOnLeadingEdgeOfView:firstObject2];
 
     v6 = [(NSArray *)v3 subarrayWithRange:1, [(NSArray *)v3 count]- 2];
     v7[0] = MEMORY[0x1E69E9820];
@@ -677,8 +677,8 @@ LABEL_6:
     v7[4] = self;
     [v6 enumerateObjectsUsingBlock:v7];
 
-    v4 = [(NSArray *)v3 lastObject];
-    [(_UIInterfaceActionSeparatableSequenceView *)self _markRoundedCornerPositionOnTrailingEdgeOfView:v4];
+    firstObject = [(NSArray *)v3 lastObject];
+    [(_UIInterfaceActionSeparatableSequenceView *)self _markRoundedCornerPositionOnTrailingEdgeOfView:firstObject];
     goto LABEL_6;
   }
 
@@ -691,9 +691,9 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)_markRoundedCornerPositionOnLeadingEdgeOfView:(id)a3
+- (void)_markRoundedCornerPositionOnLeadingEdgeOfView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   if ([(_UIInterfaceActionSeparatableSequenceView *)self _isVerticalLayout])
   {
     v4 = 3;
@@ -704,12 +704,12 @@ LABEL_7:
     v4 = 5;
   }
 
-  [(_UIInterfaceActionSeparatableSequenceView *)self _setRoundedCornersOfView:v5 toCornerPosition:v4];
+  [(_UIInterfaceActionSeparatableSequenceView *)self _setRoundedCornersOfView:viewCopy toCornerPosition:v4];
 }
 
-- (void)_markRoundedCornerPositionOnTrailingEdgeOfView:(id)a3
+- (void)_markRoundedCornerPositionOnTrailingEdgeOfView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   if ([(_UIInterfaceActionSeparatableSequenceView *)self _isVerticalLayout])
   {
     v4 = 12;
@@ -720,13 +720,13 @@ LABEL_7:
     v4 = 10;
   }
 
-  [(_UIInterfaceActionSeparatableSequenceView *)self _setRoundedCornersOfView:v5 toCornerPosition:v4];
+  [(_UIInterfaceActionSeparatableSequenceView *)self _setRoundedCornersOfView:viewCopy toCornerPosition:v4];
 }
 
-- (void)_setRoundedCornersOfView:(id)a3 toCornerPosition:(unint64_t)a4
+- (void)_setRoundedCornersOfView:(id)view toCornerPosition:(unint64_t)position
 {
-  v6 = a3;
-  [v6 setVisualCornerPosition:{-[_UIInterfaceActionSeparatableSequenceView visualCornerPosition](self, "visualCornerPosition") & a4}];
+  viewCopy = view;
+  [viewCopy setVisualCornerPosition:{-[_UIInterfaceActionSeparatableSequenceView visualCornerPosition](self, "visualCornerPosition") & position}];
 }
 
 @end

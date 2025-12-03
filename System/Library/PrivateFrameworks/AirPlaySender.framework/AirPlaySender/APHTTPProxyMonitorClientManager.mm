@@ -1,22 +1,22 @@
 @interface APHTTPProxyMonitorClientManager
-+ (id)obtainSharedInstanceOrCreate:(BOOL)a3;
++ (id)obtainSharedInstanceOrCreate:(BOOL)create;
 - (APHTTPProxyMonitorClientManager)init;
-- (int)removeMonitorClientForKey:(void *)a3;
-- (int)setMonitorCallbackIfNotExists:(id)a3 forKey:(void *)a4 forLink:(unsigned __int8)a5 forIP:(__CFString *)a6;
+- (int)removeMonitorClientForKey:(void *)key;
+- (int)setMonitorCallbackIfNotExists:(id)exists forKey:(void *)key forLink:(unsigned __int8)link forIP:(__CFString *)p;
 - (void)dealloc;
 @end
 
 @implementation APHTTPProxyMonitorClientManager
 
-+ (id)obtainSharedInstanceOrCreate:(BOOL)a3
++ (id)obtainSharedInstanceOrCreate:(BOOL)create
 {
-  if (a3)
+  if (create)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __64__APHTTPProxyMonitorClientManager_obtainSharedInstanceOrCreate___block_invoke;
     block[3] = &unk_27849B1A8;
-    block[4] = a1;
+    block[4] = self;
     if (obtainSharedInstanceOrCreate__once != -1)
     {
       dispatch_once(&obtainSharedInstanceOrCreate__once, block);
@@ -47,9 +47,9 @@ id __64__APHTTPProxyMonitorClientManager_obtainSharedInstanceOrCreate___block_in
   [(APHTTPProxyMonitorClientManager *)&v4 dealloc];
 }
 
-- (int)setMonitorCallbackIfNotExists:(id)a3 forKey:(void *)a4 forLink:(unsigned __int8)a5 forIP:(__CFString *)a6
+- (int)setMonitorCallbackIfNotExists:(id)exists forKey:(void *)key forLink:(unsigned __int8)link forIP:(__CFString *)p
 {
-  if (!a4)
+  if (!key)
   {
     [APHTTPProxyMonitorClientManager setMonitorCallbackIfNotExists:forKey:forLink:forIP:];
 LABEL_10:
@@ -58,16 +58,16 @@ LABEL_10:
     goto LABEL_7;
   }
 
-  if (!a3)
+  if (!exists)
   {
     [APHTTPProxyMonitorClientManager setMonitorCallbackIfNotExists:forKey:forLink:forIP:];
     goto LABEL_10;
   }
 
-  v8 = a5;
+  linkCopy = link;
   FigSimpleMutexCheckIsNotLockedOnThisThread();
   FigSimpleMutexLock();
-  if (CFDictionaryContainsKey(self->_requesterDict, a4))
+  if (CFDictionaryContainsKey(self->_requesterDict, key))
   {
     [APHTTPProxyMonitorClientManager setMonitorCallbackIfNotExists:forKey:forLink:forIP:];
     v11 = 0;
@@ -76,10 +76,10 @@ LABEL_10:
 
   else
   {
-    v11 = [[APHTTPProxyMonitorClient alloc] initWithCallback:a3 forLink:v8 forIP:a6];
+    v11 = [[APHTTPProxyMonitorClient alloc] initWithCallback:exists forLink:linkCopy forIP:p];
     if (v11)
     {
-      CFDictionarySetValue(self->_requesterDict, a4, v11);
+      CFDictionarySetValue(self->_requesterDict, key, v11);
       v12 = 0;
     }
 
@@ -96,15 +96,15 @@ LABEL_7:
   return v12;
 }
 
-- (int)removeMonitorClientForKey:(void *)a3
+- (int)removeMonitorClientForKey:(void *)key
 {
-  if (a3)
+  if (key)
   {
     FigSimpleMutexCheckIsNotLockedOnThisThread();
     FigSimpleMutexLock();
-    if (CFDictionaryContainsKey(self->_requesterDict, a3))
+    if (CFDictionaryContainsKey(self->_requesterDict, key))
     {
-      CFDictionaryRemoveValue(self->_requesterDict, a3);
+      CFDictionaryRemoveValue(self->_requesterDict, key);
       v5 = 0;
     }
 

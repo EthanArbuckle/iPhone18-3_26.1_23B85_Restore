@@ -1,20 +1,20 @@
 @interface RTTUIActivityItemProvider
-- (id)activityViewControllerLinkMetadata:(id)a3;
-- (id)activityViewControllerPlaceholderItem:(id)a3;
+- (id)activityViewControllerLinkMetadata:(id)metadata;
+- (id)activityViewControllerPlaceholderItem:(id)item;
 @end
 
 @implementation RTTUIActivityItemProvider
 
-- (id)activityViewControllerPlaceholderItem:(id)a3
+- (id)activityViewControllerPlaceholderItem:(id)item
 {
   v3 = objc_opt_new();
 
   return v3;
 }
 
-- (id)activityViewControllerLinkMetadata:(id)a3
+- (id)activityViewControllerLinkMetadata:(id)metadata
 {
-  v3 = a3;
+  metadataCopy = metadata;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2050000000;

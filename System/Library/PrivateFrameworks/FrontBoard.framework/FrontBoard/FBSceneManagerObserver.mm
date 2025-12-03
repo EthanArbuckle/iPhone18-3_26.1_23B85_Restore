@@ -1,28 +1,28 @@
 @interface FBSceneManagerObserver
-- (BOOL)isEqual:(id)a3;
-- (FBSceneManagerObserver)initWithDelegate:(id)a3 workspace:(id)a4;
-- (id)_initWithObserver:(id)a3 workspace:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (FBSceneManagerObserver)initWithDelegate:(id)delegate workspace:(id)workspace;
+- (id)_initWithObserver:(id)observer workspace:(id)workspace;
 - (id)_privateDelegate;
 - (id)delegate;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)observer;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)sceneManager:(id)a3 clientDidConnectWithHandshake:(id)a4;
-- (void)sceneManager:(id)a3 didAddScene:(id)a4;
-- (void)sceneManager:(id)a3 didCommitUpdateForScene:(id)a4 transactionID:(unint64_t)a5;
-- (void)sceneManager:(id)a3 didCreateScene:(id)a4;
-- (void)sceneManager:(id)a3 didDestroyScene:(id)a4;
-- (void)sceneManager:(id)a3 interceptUpdateForScene:(id)a4 withNewSettings:(id)a5;
-- (void)sceneManager:(id)a3 willCommitUpdateForScene:(id)a4 transactionID:(unint64_t)a5;
-- (void)sceneManager:(id)a3 willRemoveScene:(id)a4;
-- (void)sceneManager:(id)a3 willUpdateScene:(id)a4 withSettings:(id)a5 transitionContext:(id)a6;
-- (void)workspace:(id)a3 clientDidConnectWithHandshake:(id)a4;
-- (void)workspace:(id)a3 didAddScene:(id)a4;
-- (void)workspace:(id)a3 didReceiveActions:(id)a4;
-- (void)workspace:(id)a3 didReceiveScene:(id)a4 withContext:(id)a5 fromProcess:(id)a6;
-- (void)workspace:(id)a3 didReceiveSceneRequestWithOptions:(id)a4 fromProcess:(id)a5 completion:(id)a6;
-- (void)workspace:(id)a3 willRemoveScene:(id)a4;
+- (void)sceneManager:(id)manager clientDidConnectWithHandshake:(id)handshake;
+- (void)sceneManager:(id)manager didAddScene:(id)scene;
+- (void)sceneManager:(id)manager didCommitUpdateForScene:(id)scene transactionID:(unint64_t)d;
+- (void)sceneManager:(id)manager didCreateScene:(id)scene;
+- (void)sceneManager:(id)manager didDestroyScene:(id)scene;
+- (void)sceneManager:(id)manager interceptUpdateForScene:(id)scene withNewSettings:(id)settings;
+- (void)sceneManager:(id)manager willCommitUpdateForScene:(id)scene transactionID:(unint64_t)d;
+- (void)sceneManager:(id)manager willRemoveScene:(id)scene;
+- (void)sceneManager:(id)manager willUpdateScene:(id)scene withSettings:(id)settings transitionContext:(id)context;
+- (void)workspace:(id)workspace clientDidConnectWithHandshake:(id)handshake;
+- (void)workspace:(id)workspace didAddScene:(id)scene;
+- (void)workspace:(id)workspace didReceiveActions:(id)actions;
+- (void)workspace:(id)workspace didReceiveScene:(id)scene withContext:(id)context fromProcess:(id)process;
+- (void)workspace:(id)workspace didReceiveSceneRequestWithOptions:(id)options fromProcess:(id)process completion:(id)completion;
+- (void)workspace:(id)workspace willRemoveScene:(id)scene;
 @end
 
 @implementation FBSceneManagerObserver
@@ -49,24 +49,24 @@
   return WeakRetained;
 }
 
-- (id)_initWithObserver:(id)a3 workspace:(id)a4
+- (id)_initWithObserver:(id)observer workspace:(id)workspace
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  workspaceCopy = workspace;
   v12.receiver = self;
   v12.super_class = FBSceneManagerObserver;
   v8 = [(FBSceneManagerObserver *)&v12 init];
   if (v8)
   {
     v9 = objc_opt_class();
-    v8->_observerAddress = v6;
+    v8->_observerAddress = observerCopy;
     v8->_observerClass = v9;
-    objc_storeWeak(&v8->_observer, v6);
+    objc_storeWeak(&v8->_observer, observerCopy);
     v8->_didAdd = objc_opt_respondsToSelector() & 1;
     v8->_willRemove = objc_opt_respondsToSelector() & 1;
-    v10 = [(FBSceneWorkspace *)v7 _legacyWorkspace];
+    _legacyWorkspace = [(FBSceneWorkspace *)workspaceCopy _legacyWorkspace];
 
-    if (v10)
+    if (_legacyWorkspace)
     {
       v8->_didAddLEGACY = objc_opt_respondsToSelector() & 1;
       v8->_willRemoveLEGACY = objc_opt_respondsToSelector() & 1;
@@ -80,11 +80,11 @@
   return v8;
 }
 
-- (FBSceneManagerObserver)initWithDelegate:(id)a3 workspace:(id)a4
+- (FBSceneManagerObserver)initWithDelegate:(id)delegate workspace:(id)workspace
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FBSceneManagerObserver *)self _initWithObserver:v6 workspace:v7];
+  delegateCopy = delegate;
+  workspaceCopy = workspace;
+  v8 = [(FBSceneManagerObserver *)self _initWithObserver:delegateCopy workspace:workspaceCopy];
   v9 = v8;
   if (v8)
   {
@@ -93,9 +93,9 @@
     v9->_didReceiveSceneRequest = objc_opt_respondsToSelector() & 1;
     v9->_didReceiveScene = objc_opt_respondsToSelector() & 1;
     v9->_didReceiveActions = objc_opt_respondsToSelector() & 1;
-    v10 = [(FBSceneWorkspace *)v7 _legacyWorkspace];
+    _legacyWorkspace = [(FBSceneWorkspace *)workspaceCopy _legacyWorkspace];
 
-    if (v10)
+    if (_legacyWorkspace)
     {
       v9->_clientDidConnectLEGACY = objc_opt_respondsToSelector() & 1;
       v9->_didReceiveSceneRequestLEGACY = objc_opt_respondsToSelector() & 1;
@@ -108,10 +108,10 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -119,9 +119,9 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && v4->_observerAddress == self->_observerAddress && v4->_observerClass == self->_observerClass)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && equalCopy->_observerAddress == self->_observerAddress && equalCopy->_observerClass == self->_observerClass)
     {
-      WeakRetained = objc_loadWeakRetained(&v4->_observer);
+      WeakRetained = objc_loadWeakRetained(&equalCopy->_observer);
       v8 = objc_loadWeakRetained(&self->_observer);
       v5 = WeakRetained == v8;
     }
@@ -135,21 +135,21 @@
   return v5;
 }
 
-- (void)workspace:(id)a3 clientDidConnectWithHandshake:(id)a4
+- (void)workspace:(id)workspace clientDidConnectWithHandshake:(id)handshake
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FBSceneManagerObserver *)self delegate];
-  v9 = v8;
-  if (!v8)
+  workspaceCopy = workspace;
+  handshakeCopy = handshake;
+  delegate = [(FBSceneManagerObserver *)self delegate];
+  v9 = delegate;
+  if (!delegate)
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v10 = [v7 remnants];
-    v11 = [v10 countByEnumeratingWithState:&v20 objects:v28 count:16];
+    remnants = [handshakeCopy remnants];
+    v11 = [remnants countByEnumeratingWithState:&v20 objects:v28 count:16];
     if (v11)
     {
       v12 = v11;
@@ -160,13 +160,13 @@
         {
           if (*v21 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(remnants);
           }
 
           [*(*(&v20 + 1) + 8 * i) invalidate];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        v12 = [remnants countByEnumeratingWithState:&v20 objects:v28 count:16];
       }
 
       while (v12);
@@ -179,8 +179,8 @@
   {
     if (self->_clientDidConnectLEGACY)
     {
-      v10 = [(FBSceneWorkspace *)v6 _legacyWorkspace];
-      [v9 sceneManager:v10 clientDidConnectWithHandshake:v7];
+      remnants = [(FBSceneWorkspace *)workspaceCopy _legacyWorkspace];
+      [v9 sceneManager:remnants clientDidConnectWithHandshake:handshakeCopy];
     }
 
     else
@@ -189,8 +189,8 @@
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v10 = [v7 remnants];
-      v15 = [v10 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      remnants = [handshakeCopy remnants];
+      v15 = [remnants countByEnumeratingWithState:&v24 objects:v29 count:16];
       if (v15)
       {
         v16 = v15;
@@ -201,13 +201,13 @@
           {
             if (*v25 != v17)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(remnants);
             }
 
             [*(*(&v24 + 1) + 8 * j) invalidate];
           }
 
-          v16 = [v10 countByEnumeratingWithState:&v24 objects:v29 count:16];
+          v16 = [remnants countByEnumeratingWithState:&v24 objects:v29 count:16];
         }
 
         while (v16);
@@ -219,115 +219,115 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  [v8 workspace:v6 clientDidConnectWithHandshake:v7];
+  [delegate workspace:workspaceCopy clientDidConnectWithHandshake:handshakeCopy];
 LABEL_22:
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)workspace:(id)a3 didReceiveSceneRequestWithOptions:(id)a4 fromProcess:(id)a5 completion:(id)a6
+- (void)workspace:(id)workspace didReceiveSceneRequestWithOptions:(id)options fromProcess:(id)process completion:(id)completion
 {
-  v16 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(FBSceneManagerObserver *)self delegate];
-  v14 = v13;
-  if (!v13)
+  workspaceCopy = workspace;
+  optionsCopy = options;
+  processCopy = process;
+  completionCopy = completion;
+  delegate = [(FBSceneManagerObserver *)self delegate];
+  v14 = delegate;
+  if (!delegate)
   {
     goto LABEL_7;
   }
 
   if (self->_didReceiveSceneRequest)
   {
-    [v13 workspace:v16 didReceiveSceneRequestWithOptions:v10 fromProcess:v11 completion:v12];
+    [delegate workspace:workspaceCopy didReceiveSceneRequestWithOptions:optionsCopy fromProcess:processCopy completion:completionCopy];
     goto LABEL_9;
   }
 
   if (self->_didReceiveSceneRequestLEGACY)
   {
-    v15 = [(FBSceneWorkspace *)v16 _legacyWorkspace];
-    [v14 sceneManager:v15 didReceiveSceneRequestWithOptions:v10 fromProcess:v11 completion:v12];
+    _legacyWorkspace = [(FBSceneWorkspace *)workspaceCopy _legacyWorkspace];
+    [v14 sceneManager:_legacyWorkspace didReceiveSceneRequestWithOptions:optionsCopy fromProcess:processCopy completion:completionCopy];
   }
 
   else
   {
 LABEL_7:
-    v15 = FBSWorkspaceErrorCreate();
-    v12[2](v12, 0, v15);
+    _legacyWorkspace = FBSWorkspaceErrorCreate();
+    completionCopy[2](completionCopy, 0, _legacyWorkspace);
   }
 
 LABEL_9:
 }
 
-- (void)workspace:(id)a3 didReceiveScene:(id)a4 withContext:(id)a5 fromProcess:(id)a6
+- (void)workspace:(id)workspace didReceiveScene:(id)scene withContext:(id)context fromProcess:(id)process
 {
-  v15 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(FBSceneManagerObserver *)self delegate];
-  v14 = v13;
-  if (v13 && self->_didReceiveScene)
+  workspaceCopy = workspace;
+  sceneCopy = scene;
+  contextCopy = context;
+  processCopy = process;
+  delegate = [(FBSceneManagerObserver *)self delegate];
+  v14 = delegate;
+  if (delegate && self->_didReceiveScene)
   {
-    [v13 workspace:v15 didReceiveScene:v10 withContext:v11 fromProcess:v12];
+    [delegate workspace:workspaceCopy didReceiveScene:sceneCopy withContext:contextCopy fromProcess:processCopy];
   }
 }
 
-- (void)workspace:(id)a3 didReceiveActions:(id)a4
+- (void)workspace:(id)workspace didReceiveActions:(id)actions
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(FBSceneManagerObserver *)self delegate];
-  v8 = v7;
-  if (v7 && self->_didReceiveActions)
+  workspaceCopy = workspace;
+  actionsCopy = actions;
+  delegate = [(FBSceneManagerObserver *)self delegate];
+  v8 = delegate;
+  if (delegate && self->_didReceiveActions)
   {
-    [v7 workspace:v9 didReceiveActions:v6];
+    [delegate workspace:workspaceCopy didReceiveActions:actionsCopy];
   }
 }
 
-- (void)workspace:(id)a3 didAddScene:(id)a4
+- (void)workspace:(id)workspace didAddScene:(id)scene
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(FBSceneManagerObserver *)self observer];
-  v8 = [(FBSceneWorkspace *)v9 _legacyWorkspace];
-  if (v8)
+  workspaceCopy = workspace;
+  sceneCopy = scene;
+  observer = [(FBSceneManagerObserver *)self observer];
+  _legacyWorkspace = [(FBSceneWorkspace *)workspaceCopy _legacyWorkspace];
+  if (_legacyWorkspace)
   {
     if (self->_didAddLEGACY)
     {
-      [v7 sceneManager:v8 didAddScene:v6];
+      [observer sceneManager:_legacyWorkspace didAddScene:sceneCopy];
     }
   }
 
   else if (self->_didAdd)
   {
-    [v7 workspace:v9 didAddScene:v6];
+    [observer workspace:workspaceCopy didAddScene:sceneCopy];
   }
 }
 
-- (void)workspace:(id)a3 willRemoveScene:(id)a4
+- (void)workspace:(id)workspace willRemoveScene:(id)scene
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(FBSceneManagerObserver *)self observer];
-  v8 = v7;
+  workspaceCopy = workspace;
+  sceneCopy = scene;
+  observer = [(FBSceneManagerObserver *)self observer];
+  v8 = observer;
   if (self->_willRemoveLEGACY)
   {
-    v9 = [(FBSceneWorkspace *)v10 _legacyWorkspace];
-    [v8 sceneManager:v9 willRemoveScene:v6];
+    _legacyWorkspace = [(FBSceneWorkspace *)workspaceCopy _legacyWorkspace];
+    [v8 sceneManager:_legacyWorkspace willRemoveScene:sceneCopy];
   }
 
   else if (self->_willRemove)
   {
-    [v7 workspace:v10 willRemoveScene:v6];
+    [observer workspace:workspaceCopy willRemoveScene:sceneCopy];
   }
 }
 
-- (void)sceneManager:(id)a3 didCreateScene:(id)a4
+- (void)sceneManager:(id)manager didCreateScene:(id)scene
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  sceneCopy = scene;
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"no longer used"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -339,7 +339,7 @@ LABEL_9:
     v15 = 2114;
     v16 = v12;
     v17 = 2048;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
     v20 = @"FBSceneManagerObserver.m";
     v21 = 1024;
@@ -354,64 +354,64 @@ LABEL_9:
   __break(0);
 }
 
-- (void)sceneManager:(id)a3 didDestroyScene:(id)a4
+- (void)sceneManager:(id)manager didDestroyScene:(id)scene
 {
   if (self->_didDestroyDEPRECATED)
   {
-    v7 = a4;
-    v8 = a3;
-    v9 = [(FBSceneManagerObserver *)self observer];
-    [v9 sceneManager:v8 didDestroyScene:v7];
+    sceneCopy = scene;
+    managerCopy = manager;
+    observer = [(FBSceneManagerObserver *)self observer];
+    [observer sceneManager:managerCopy didDestroyScene:sceneCopy];
   }
 }
 
-- (void)sceneManager:(id)a3 willUpdateScene:(id)a4 withSettings:(id)a5 transitionContext:(id)a6
+- (void)sceneManager:(id)manager willUpdateScene:(id)scene withSettings:(id)settings transitionContext:(id)context
 {
-  v16 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(FBSceneManagerObserver *)self observer];
+  managerCopy = manager;
+  sceneCopy = scene;
+  settingsCopy = settings;
+  contextCopy = context;
+  observer = [(FBSceneManagerObserver *)self observer];
   if (self->_willUpdateSceneDEPRECATED)
   {
-    v14 = [v12 updateContext];
-    v15 = [v14 transactionID];
+    updateContext = [contextCopy updateContext];
+    transactionID = [updateContext transactionID];
 
-    if (v15 >= 2)
+    if (transactionID >= 2)
     {
-      [v13 sceneManager:v16 willUpdateScene:v10 withSettings:v11 transitionContext:v12];
+      [observer sceneManager:managerCopy willUpdateScene:sceneCopy withSettings:settingsCopy transitionContext:contextCopy];
     }
   }
 }
 
-- (void)sceneManager:(id)a3 willCommitUpdateForScene:(id)a4 transactionID:(unint64_t)a5
+- (void)sceneManager:(id)manager willCommitUpdateForScene:(id)scene transactionID:(unint64_t)d
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = [(FBSceneManagerObserver *)self observer];
-  v10 = v9;
+  managerCopy = manager;
+  sceneCopy = scene;
+  observer = [(FBSceneManagerObserver *)self observer];
+  v10 = observer;
   if (self->_willCommitDEPRECATED)
   {
-    [v9 sceneManager:v11 willCommitUpdateForScene:v8 transactionID:a5];
+    [observer sceneManager:managerCopy willCommitUpdateForScene:sceneCopy transactionID:d];
   }
 }
 
-- (void)sceneManager:(id)a3 didCommitUpdateForScene:(id)a4 transactionID:(unint64_t)a5
+- (void)sceneManager:(id)manager didCommitUpdateForScene:(id)scene transactionID:(unint64_t)d
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = [(FBSceneManagerObserver *)self observer];
-  v10 = v9;
+  managerCopy = manager;
+  sceneCopy = scene;
+  observer = [(FBSceneManagerObserver *)self observer];
+  v10 = observer;
   if (self->_didCommitDEPRECATED)
   {
-    [v9 sceneManager:v11 didCommitUpdateForScene:v8 transactionID:a5];
+    [observer sceneManager:managerCopy didCommitUpdateForScene:sceneCopy transactionID:d];
   }
 }
 
-- (void)sceneManager:(id)a3 didAddScene:(id)a4
+- (void)sceneManager:(id)manager didAddScene:(id)scene
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  sceneCopy = scene;
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"no longer used"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -423,7 +423,7 @@ LABEL_9:
     v15 = 2114;
     v16 = v12;
     v17 = 2048;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
     v20 = @"FBSceneManagerObserver.m";
     v21 = 1024;
@@ -438,10 +438,10 @@ LABEL_9:
   __break(0);
 }
 
-- (void)sceneManager:(id)a3 willRemoveScene:(id)a4
+- (void)sceneManager:(id)manager willRemoveScene:(id)scene
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  sceneCopy = scene;
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"no longer used"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -453,7 +453,7 @@ LABEL_9:
     v15 = 2114;
     v16 = v12;
     v17 = 2048;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
     v20 = @"FBSceneManagerObserver.m";
     v21 = 1024;
@@ -468,10 +468,10 @@ LABEL_9:
   __break(0);
 }
 
-- (void)sceneManager:(id)a3 clientDidConnectWithHandshake:(id)a4
+- (void)sceneManager:(id)manager clientDidConnectWithHandshake:(id)handshake
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  handshakeCopy = handshake;
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"no longer used"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -483,7 +483,7 @@ LABEL_9:
     v15 = 2114;
     v16 = v12;
     v17 = 2048;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
     v20 = @"FBSceneManagerObserver.m";
     v21 = 1024;
@@ -498,25 +498,25 @@ LABEL_9:
   __break(0);
 }
 
-- (void)sceneManager:(id)a3 interceptUpdateForScene:(id)a4 withNewSettings:(id)a5
+- (void)sceneManager:(id)manager interceptUpdateForScene:(id)scene withNewSettings:(id)settings
 {
   v17 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  sceneCopy = scene;
   if (self->_interceptSceneUpdatesLEGACY)
   {
-    v9 = a5;
-    v10 = a3;
+    settingsCopy = settings;
+    managerCopy = manager;
     v11 = FBLogScene();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      v12 = [v8 identifier];
+      identifier = [sceneCopy identifier];
       v15 = 138543362;
-      v16 = v12;
+      v16 = identifier;
       _os_log_impl(&dword_1A89DD000, v11, OS_LOG_TYPE_INFO, "Client intercepting scene update for scene: %{public}@", &v15, 0xCu);
     }
 
-    v13 = [(FBSceneManagerObserver *)self _privateDelegate];
-    [v13 sceneManager:v10 interceptUpdateForScene:v8 withNewSettings:v9];
+    _privateDelegate = [(FBSceneManagerObserver *)self _privateDelegate];
+    [_privateDelegate sceneManager:managerCopy interceptUpdateForScene:sceneCopy withNewSettings:settingsCopy];
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -524,10 +524,10 @@ LABEL_9:
 
 - (id)succinctDescription
 {
-  v2 = [(FBSceneManagerObserver *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(FBSceneManagerObserver *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -544,27 +544,27 @@ LABEL_9:
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(FBSceneManagerObserver *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(FBSceneManagerObserver *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (id)_privateDelegate
 {
   if (self->_privateDelegate)
   {
-    v4 = [(FBSceneManagerObserver *)self delegate];
+    delegate = [(FBSceneManagerObserver *)self delegate];
   }
 
   else
   {
-    v4 = 0;
+    delegate = 0;
   }
 
-  return v4;
+  return delegate;
 }
 
 @end

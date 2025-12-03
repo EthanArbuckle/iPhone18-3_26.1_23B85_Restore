@@ -1,8 +1,8 @@
 @interface PhotosUIServiceDataAccessEducationViewController
 - (id)createEducationViewController;
-- (void)buttonTapped:(id)a3;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4;
+- (void)buttonTapped:(id)tapped;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion;
 - (void)viewDidLoad;
 @end
 
@@ -18,11 +18,11 @@
   [v7 setTitle:v5 forState:0];
   [v7 addTarget:self action:"buttonTapped:" forControlEvents:0x2000];
   v8 = [[OBWelcomeController alloc] initWithTitle:v3 detailText:v4 icon:v6];
-  v9 = [v8 headerView];
-  [v9 setAllowFullWidthIcon:1];
+  headerView = [v8 headerView];
+  [headerView setAllowFullWidthIcon:1];
 
-  v10 = [v8 buttonTray];
-  [v10 addButton:v7];
+  buttonTray = [v8 buttonTray];
+  [buttonTray addButton:v7];
 
   v11 = [UIKeyCommand keyCommandWithInput:@"\r" modifierFlags:0 action:"buttonTapped:"];
   [v8 addKeyCommand:v11];
@@ -33,9 +33,9 @@
   return v8;
 }
 
-- (void)buttonTapped:(id)a3
+- (void)buttonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   objc_initWeak(&location, self);
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
@@ -52,31 +52,31 @@
   v4.receiver = self;
   v4.super_class = PhotosUIServiceDataAccessEducationViewController;
   [(PhotosUIServiceDataAccessEducationViewController *)&v4 viewDidLoad];
-  v3 = [(PhotosUIServiceDataAccessEducationViewController *)self createEducationViewController];
-  [(PhotosUIServiceDataAccessEducationViewController *)self presentViewController:v3 animated:1 completion:0];
+  createEducationViewController = [(PhotosUIServiceDataAccessEducationViewController *)self createEducationViewController];
+  [(PhotosUIServiceDataAccessEducationViewController *)self presentViewController:createEducationViewController animated:1 completion:0];
 }
 
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v9 = a4;
-  v5 = [(PhotosUIServiceDataAccessEducationViewController *)self view];
-  v6 = [v5 window];
-  v7 = [v6 _rootSheetPresentationController];
-  [v7 _setShouldScaleDownBehindDescendantSheets:0];
+  completionCopy = completion;
+  view = [(PhotosUIServiceDataAccessEducationViewController *)self view];
+  window = [view window];
+  _rootSheetPresentationController = [window _rootSheetPresentationController];
+  [_rootSheetPresentationController _setShouldScaleDownBehindDescendantSheets:0];
 
-  v8 = v9;
-  if (v9)
+  v8 = completionCopy;
+  if (completionCopy)
   {
-    (*(v9 + 2))(v9);
-    v8 = v9;
+    (*(completionCopy + 2))(completionCopy);
+    v8 = completionCopy;
   }
 }
 

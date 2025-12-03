@@ -3,13 +3,13 @@
 - (BOOL)_runAddFile;
 - (BOOL)_runFinishStart;
 - (ENExposureDetectionClientSession)init;
-- (ENExposureDetectionClientSession)initWithXPCObject:(id)a3 error:(id *)a4;
-- (void)_reportError:(id)a3 where:(const char *)a4;
+- (ENExposureDetectionClientSession)initWithXPCObject:(id)object error:(id *)error;
+- (void)_reportError:(id)error where:(const char *)where;
 - (void)_run;
 - (void)_runAddFile;
 - (void)_runDetectionDone;
 - (void)activate;
-- (void)encodeWithXPCObject:(id)a3;
+- (void)encodeWithXPCObject:(id)object;
 - (void)invalidate;
 @end
 
@@ -30,13 +30,13 @@
   return v3;
 }
 
-- (ENExposureDetectionClientSession)initWithXPCObject:(id)a3 error:(id *)a4
+- (ENExposureDetectionClientSession)initWithXPCObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v7 = [(ENExposureDetectionClientSession *)self init];
   if (!v7)
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_8;
     }
@@ -44,13 +44,13 @@
     goto LABEL_9;
   }
 
-  if (MEMORY[0x2383EE9C0](v6) != MEMORY[0x277D86468])
+  if (MEMORY[0x2383EE9C0](objectCopy) != MEMORY[0x277D86468])
   {
-    if (a4)
+    if (error)
     {
 LABEL_8:
       ENErrorF(2);
-      *a4 = v8 = 0;
+      *error = v8 = 0;
       goto LABEL_4;
     }
 
@@ -59,24 +59,24 @@ LABEL_9:
     goto LABEL_4;
   }
 
-  [(ENExposureDetectionClientSession *)v6 initWithXPCObject:a4 error:v7, &v10];
+  [(ENExposureDetectionClientSession *)objectCopy initWithXPCObject:error error:v7, &v10];
   v8 = v10;
 LABEL_4:
 
   return v8;
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
   configuration = self->_configuration;
   if (configuration)
   {
     v5 = configuration;
-    v6 = a3;
+    objectCopy = object;
     value = xpc_dictionary_create(0, 0, 0);
     [(ENExposureConfiguration *)v5 encodeWithXPCObject:value];
 
-    xpc_dictionary_set_value(v6, "expC", value);
+    xpc_dictionary_set_value(objectCopy, "expC", value);
   }
 }
 
@@ -134,9 +134,9 @@ uint64_t __46__ENExposureDetectionClientSession_invalidate__block_invoke(uint64_
   return result;
 }
 
-- (void)_reportError:(id)a3 where:(const char *)a4
+- (void)_reportError:(id)error where:(const char *)where
 {
-  v7 = a3;
+  errorCopy = error;
   if (gLogCategory__ENExposureDetection <= 90 && (gLogCategory__ENExposureDetection != -1 || _LogCategory_Initialize()))
   {
     [ENExposureDetectionClientSession _reportError:where:];
@@ -149,7 +149,7 @@ uint64_t __46__ENExposureDetectionClientSession_invalidate__block_invoke(uint64_
 
   if (v5)
   {
-    (v5)[2](v5, 0, v7);
+    (v5)[2](v5, 0, errorCopy);
   }
 }
 
@@ -180,8 +180,8 @@ uint64_t __46__ENExposureDetectionClientSession_invalidate__block_invoke(uint64_
         }
 
         v10 = *(*(&v52 + 1) + 8 * i);
-        v11 = [v10 pathExtension];
-        v12 = [v11 caseInsensitiveCompare:@"sig"];
+        pathExtension = [v10 pathExtension];
+        v12 = [pathExtension caseInsensitiveCompare:@"sig"];
 
         if (v12)
         {
@@ -209,7 +209,7 @@ uint64_t __46__ENExposureDetectionClientSession_invalidate__block_invoke(uint64_
   {
     v16 = v15;
     v17 = *v49;
-    v42 = self;
+    selfCopy = self;
     v39 = *v49;
     do
     {
@@ -223,13 +223,13 @@ uint64_t __46__ENExposureDetectionClientSession_invalidate__block_invoke(uint64_
         }
 
         v19 = *(*(&v48 + 1) + 8 * v18);
-        v20 = [v19 pathExtension];
-        v21 = [v20 caseInsensitiveCompare:@"sig"];
+        pathExtension2 = [v19 pathExtension];
+        v21 = [pathExtension2 caseInsensitiveCompare:@"sig"];
 
         if (!v21)
         {
-          v22 = [v19 URLByDeletingPathExtension];
-          v23 = [v22 absoluteString];
+          uRLByDeletingPathExtension = [v19 URLByDeletingPathExtension];
+          absoluteString = [uRLByDeletingPathExtension absoluteString];
 
           v46 = 0u;
           v47 = 0u;
@@ -251,12 +251,12 @@ uint64_t __46__ENExposureDetectionClientSession_invalidate__block_invoke(uint64_
                 }
 
                 v29 = *(*(&v44 + 1) + 8 * j);
-                v30 = [v29 URLByDeletingPathExtension];
-                v31 = [v30 absoluteString];
+                uRLByDeletingPathExtension2 = [v29 URLByDeletingPathExtension];
+                absoluteString2 = [uRLByDeletingPathExtension2 absoluteString];
 
-                if (![v31 caseInsensitiveCompare:v23])
+                if (![absoluteString2 caseInsensitiveCompare:absoluteString])
                 {
-                  [(NSMutableDictionary *)v42->_signatureURLMap setObject:v19 forKeyedSubscript:v29];
+                  [(NSMutableDictionary *)selfCopy->_signatureURLMap setObject:v19 forKeyedSubscript:v29];
 
                   goto LABEL_26;
                 }
@@ -274,7 +274,7 @@ uint64_t __46__ENExposureDetectionClientSession_invalidate__block_invoke(uint64_
 
 LABEL_26:
 
-          self = v42;
+          self = selfCopy;
           v17 = v39;
           v16 = v40;
         }
@@ -429,7 +429,7 @@ void __51__ENExposureDetectionClientSession__runFinishStart__block_invoke(uint64
         case 0:
           goto LABEL_19;
         case 10:
-          v5 = [(ENExposureDetectionClientSession *)self _runActivateStart];
+          _runActivateStart = [(ENExposureDetectionClientSession *)self _runActivateStart];
           goto LABEL_15;
         case 11:
           if (self->_guardActivateDone)
@@ -449,10 +449,10 @@ void __51__ENExposureDetectionClientSession__runFinishStart__block_invoke(uint64
             goto LABEL_19;
           }
 
-          v5 = [(ENExposureDetectionClientSession *)self _runAddFile];
+          _runActivateStart = [(ENExposureDetectionClientSession *)self _runAddFile];
 LABEL_15:
           v4 = self->_runState;
-          if (v5)
+          if (_runActivateStart)
           {
             ++v4;
             goto LABEL_19;
@@ -473,7 +473,7 @@ LABEL_13:
           v4 = 16;
           goto LABEL_19;
         case 16:
-          v5 = [(ENExposureDetectionClientSession *)self _runFinishStart];
+          _runActivateStart = [(ENExposureDetectionClientSession *)self _runFinishStart];
           goto LABEL_15;
         case 17:
           if (self->_guardFinishDone)
@@ -549,10 +549,10 @@ LABEL_5:
 
 - (void)_runAddFile
 {
-  v5 = *a1;
+  v5 = *self;
   v6 = *(a2 + 48);
-  v8 = [a3 lastPathComponent];
-  v7 = [a4 lastPathComponent];
+  lastPathComponent = [a3 lastPathComponent];
+  lastPathComponent2 = [a4 lastPathComponent];
   LogPrintF_safe();
 }
 

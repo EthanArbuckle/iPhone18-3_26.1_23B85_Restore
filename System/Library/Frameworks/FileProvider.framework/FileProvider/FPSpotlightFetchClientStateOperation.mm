@@ -1,8 +1,8 @@
 @interface FPSpotlightFetchClientStateOperation
-- (FPSpotlightFetchClientStateOperation)initWithIndexer:(id)a3 index:(id)a4 indexName:(id)a5 spotlightDomainIdentifier:(id)a6 reason:(id)a7 supportURL:(id)a8;
+- (FPSpotlightFetchClientStateOperation)initWithIndexer:(id)indexer index:(id)index indexName:(id)name spotlightDomainIdentifier:(id)identifier reason:(id)reason supportURL:(id)l;
 - (id)_clientStateCurrentVersionIfNeedReset;
 - (void)_fetchClientState;
-- (void)_handleFetchedClientState:(id)a3 error:(id)a4;
+- (void)_handleFetchedClientState:(id)state error:(id)error;
 - (void)_markClientStateResetDone;
 - (void)main;
 @end
@@ -12,7 +12,7 @@
 - (void)main
 {
   *v4 = 134218242;
-  *&v4[4] = *a1;
+  *&v4[4] = *self;
   *&v4[12] = 2112;
   *&v4[14] = a2;
   OUTLINED_FUNCTION_1_0(&dword_1AAAE1000, a2, a3, "[DEBUG] ┳%llx client reset is needed from %@", *v4, *&v4[8], *&v4[16], *MEMORY[0x1E69E9840]);
@@ -40,7 +40,7 @@
     if (v6)
     {
       indexName = self->_indexName;
-      v8 = [objc_opt_class() _currentIndexerVersion];
+      _currentIndexerVersion = [objc_opt_class() _currentIndexerVersion];
       v16 = 138413058;
       v17 = @"com.apple.fileproviderd.spotlight-indexer-current-version";
       v18 = 2112;
@@ -48,12 +48,12 @@
       v20 = 2112;
       v21 = v4;
       v22 = 2112;
-      v23 = v8;
+      v23 = _currentIndexerVersion;
       _os_log_impl(&dword_1AAAE1000, v5, OS_LOG_TYPE_INFO, "[INFO] Fetched indexer version (%@ %@) %@ (current: %@)", &v16, 0x2Au);
     }
 
-    v9 = [objc_opt_class() _currentIndexerVersion];
-    v10 = [v4 isEqualToString:v9];
+    _currentIndexerVersion2 = [objc_opt_class() _currentIndexerVersion];
+    v10 = [v4 isEqualToString:_currentIndexerVersion2];
 
     if (v10)
     {
@@ -71,11 +71,11 @@
     if (v6)
     {
       v12 = self->_indexName;
-      v13 = [objc_opt_class() _currentIndexerVersion];
+      _currentIndexerVersion3 = [objc_opt_class() _currentIndexerVersion];
       v16 = 138412546;
       v17 = v12;
       v18 = 2112;
-      v19 = v13;
+      v19 = _currentIndexerVersion3;
       _os_log_impl(&dword_1AAAE1000, v5, OS_LOG_TYPE_INFO, "[INFO] Failed to fetch indexer version for index %@ (current: %@)", &v16, 0x16u);
     }
 
@@ -210,26 +210,26 @@ LABEL_14:
   v33 = *MEMORY[0x1E69E9840];
 }
 
-- (FPSpotlightFetchClientStateOperation)initWithIndexer:(id)a3 index:(id)a4 indexName:(id)a5 spotlightDomainIdentifier:(id)a6 reason:(id)a7 supportURL:(id)a8
+- (FPSpotlightFetchClientStateOperation)initWithIndexer:(id)indexer index:(id)index indexName:(id)name spotlightDomainIdentifier:(id)identifier reason:(id)reason supportURL:(id)l
 {
-  v14 = a3;
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  indexerCopy = indexer;
+  indexCopy = index;
+  nameCopy = name;
+  identifierCopy = identifier;
+  reasonCopy = reason;
+  lCopy = l;
   v23.receiver = self;
   v23.super_class = FPSpotlightFetchClientStateOperation;
   v18 = [(FPOperation *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeWeak(&v18->_indexer, v14);
-    objc_storeStrong(&v19->_index, a4);
-    objc_storeStrong(&v19->_indexName, a5);
-    objc_storeStrong(&v19->_spotlightDomainIdentifier, a6);
-    objc_storeStrong(&v19->_supportURL, a8);
-    objc_storeStrong(&v19->_reason, a7);
+    objc_storeWeak(&v18->_indexer, indexerCopy);
+    objc_storeStrong(&v19->_index, index);
+    objc_storeStrong(&v19->_indexName, name);
+    objc_storeStrong(&v19->_spotlightDomainIdentifier, identifier);
+    objc_storeStrong(&v19->_supportURL, l);
+    objc_storeStrong(&v19->_reason, reason);
   }
 
   return v19;
@@ -238,35 +238,35 @@ LABEL_14:
 - (void)_markClientStateResetDone
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = HIDWORD(*a1);
+  v9 = HIDWORD(*self);
   OUTLINED_FUNCTION_35(&dword_1AAAE1000, a2, a3, "[ERROR] failed to synchronize user defaults for %@", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleFetchedClientState:(id)a3 error:(id)a4
+- (void)_handleFetchedClientState:(id)state error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v8)
+  stateCopy = state;
+  errorCopy = error;
+  v9 = errorCopy;
+  if (!errorCopy)
   {
-    v19 = self;
-    v20 = v7;
+    selfCopy2 = self;
+    v20 = stateCopy;
     v21 = 0;
 LABEL_10:
-    [(FPOperation *)v19 completedWithResult:v20 error:v21];
+    [(FPOperation *)selfCopy2 completedWithResult:v20 error:v21];
     goto LABEL_14;
   }
 
-  v10 = [v8 domain];
+  domain = [errorCopy domain];
   v11 = getCSIndexErrorDomain();
-  v12 = [v10 isEqualToString:v11];
+  v12 = [domain isEqualToString:v11];
 
   if ((v12 & 1) == 0)
   {
-    v13 = [v9 domain];
+    domain2 = [v9 domain];
     v14 = getCSIndexErrorDomain();
-    v15 = [v13 isEqualToString:v14];
+    v15 = [domain2 isEqualToString:v14];
 
     if ((v15 & 1) == 0)
     {
@@ -274,17 +274,17 @@ LABEL_10:
     }
   }
 
-  v16 = [v9 code];
+  code = [v9 code];
   v17 = fp_current_or_default_log();
   v18 = os_log_type_enabled(v17, OS_LOG_TYPE_ERROR);
-  if (v16 == -1003)
+  if (code == -1003)
   {
     if (v18)
     {
       [FPSpotlightFetchClientStateOperation _handleFetchedClientState:v9 error:?];
     }
 
-    v19 = self;
+    selfCopy2 = self;
     v20 = 0;
     v21 = v9;
     goto LABEL_10;
@@ -298,14 +298,14 @@ LABEL_10:
   spotlightDomainIdentifier = self->_spotlightDomainIdentifier;
   index = self->_index;
   WeakRetained = objc_loadWeakRetained(&self->_indexer);
-  v25 = [WeakRetained dropIndexDelegate];
+  dropIndexDelegate = [WeakRetained dropIndexDelegate];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __72__FPSpotlightFetchClientStateOperation__handleFetchedClientState_error___block_invoke;
   v26[3] = &unk_1E793D0B0;
   v27 = v9;
-  v28 = self;
-  [FPSpotlightDropIndexOperation deleteSearchableItemsAndClearClientStateWithDomainIdentifier:spotlightDomainIdentifier index:index dropReason:7 delegate:v25 completionHandler:v26];
+  selfCopy3 = self;
+  [FPSpotlightDropIndexOperation deleteSearchableItemsAndClearClientStateWithDomainIdentifier:spotlightDomainIdentifier index:index dropReason:7 delegate:dropIndexDelegate completionHandler:v26];
 
 LABEL_14:
 }

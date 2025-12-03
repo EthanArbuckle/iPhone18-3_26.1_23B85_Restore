@@ -1,24 +1,24 @@
 @interface UARPAssetManagerServiceAssetCacheEntry
-- (BOOL)isEqual:(id)a3;
-- (UARPAssetManagerServiceAssetCacheEntry)initWithCoder:(id)a3;
-- (UARPAssetManagerServiceAssetCacheEntry)initWithSubscription:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (UARPAssetManagerServiceAssetCacheEntry)initWithCoder:(id)coder;
+- (UARPAssetManagerServiceAssetCacheEntry)initWithSubscription:(id)subscription;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UARPAssetManagerServiceAssetCacheEntry
 
-- (UARPAssetManagerServiceAssetCacheEntry)initWithSubscription:(id)a3
+- (UARPAssetManagerServiceAssetCacheEntry)initWithSubscription:(id)subscription
 {
-  v4 = a3;
+  subscriptionCopy = subscription;
   v12.receiver = self;
   v12.super_class = UARPAssetManagerServiceAssetCacheEntry;
   v5 = [(UARPAssetManagerServiceAssetCacheEntry *)&v12 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [subscriptionCopy copy];
     subscription = v5->_subscription;
     v5->_subscription = v6;
 
@@ -33,18 +33,18 @@
   return v5;
 }
 
-- (UARPAssetManagerServiceAssetCacheEntry)initWithCoder:(id)a3
+- (UARPAssetManagerServiceAssetCacheEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subscription"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subscription"];
   v6 = [(UARPAssetManagerServiceAssetCacheEntry *)self initWithSubscription:v5];
   if (v6)
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastSeen"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastSeen"];
     lastSeen = v6->_lastSeen;
     v6->_lastSeen = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"record"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"record"];
     cachedRecord = v6->_cachedRecord;
     v6->_cachedRecord = v9;
   }
@@ -52,16 +52,16 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   subscription = self->_subscription;
-  v5 = a3;
-  [v5 encodeObject:subscription forKey:@"subscription"];
-  [v5 encodeObject:self->_lastSeen forKey:@"lastSeen"];
-  [v5 encodeObject:self->_cachedRecord forKey:@"record"];
+  coderCopy = coder;
+  [coderCopy encodeObject:subscription forKey:@"subscription"];
+  [coderCopy encodeObject:self->_lastSeen forKey:@"lastSeen"];
+  [coderCopy encodeObject:self->_cachedRecord forKey:@"record"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[UARPAssetManagerServiceAssetCacheEntry alloc] initWithSubscription:self->_subscription];
   v5 = [(NSDate *)self->_lastSeen copy];
@@ -75,13 +75,13 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (self == v4)
+    if (self == equalCopy)
     {
       v7 = 1;
     }
@@ -89,8 +89,8 @@
     else
     {
       subscription = self->_subscription;
-      v6 = [(UARPAssetManagerServiceAssetCacheEntry *)v4 subscription];
-      v7 = [(UARPAssetSubscription *)subscription isEqual:v6];
+      subscription = [(UARPAssetManagerServiceAssetCacheEntry *)equalCopy subscription];
+      v7 = [(UARPAssetSubscription *)subscription isEqual:subscription];
     }
   }
 
@@ -104,8 +104,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(UARPAssetManagerServiceAssetCacheEntry *)self subscription];
-  v3 = [v2 hash];
+  subscription = [(UARPAssetManagerServiceAssetCacheEntry *)self subscription];
+  v3 = [subscription hash];
 
   return v3;
 }

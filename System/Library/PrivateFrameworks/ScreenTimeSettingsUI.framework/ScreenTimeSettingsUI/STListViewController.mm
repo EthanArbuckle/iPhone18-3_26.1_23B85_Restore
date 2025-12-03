@@ -1,17 +1,17 @@
 @interface STListViewController
 - (STListViewController)init;
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4;
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (id)visibleSpecifierProviders;
-- (void)addObserversForSpecifierProvider:(id)a3;
+- (void)addObserversForSpecifierProvider:(id)provider;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)removeObserversForSpecifierProvider:(id)a3;
-- (void)setSpecifierProviders:(id)a3;
-- (void)specifierProvider:(id)a3 reloadSectionHeaderFootersWithAnimation:(int64_t)a4;
-- (void)specifierProvider:(id)a3 reloadSpecifier:(id)a4 animated:(BOOL)a5;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)removeObserversForSpecifierProvider:(id)provider;
+- (void)setSpecifierProviders:(id)providers;
+- (void)specifierProvider:(id)provider reloadSectionHeaderFootersWithAnimation:(int64_t)animation;
+- (void)specifierProvider:(id)provider reloadSpecifier:(id)specifier animated:(BOOL)animated;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation STListViewController
@@ -31,7 +31,7 @@
     }
 
     self = v3;
-    v6 = self;
+    selfCopy = self;
   }
 
   else
@@ -41,10 +41,10 @@
       [STListViewController init];
     }
 
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -54,8 +54,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(STListViewController *)self specifierProviders];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  specifierProviders = [(STListViewController *)self specifierProviders];
+  v4 = [specifierProviders countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -66,7 +66,7 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(specifierProviders);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -74,7 +74,7 @@
         [v8 invalidate];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [specifierProviders countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -85,15 +85,15 @@
   [(STListViewController *)&v9 dealloc];
 }
 
-- (void)setSpecifierProviders:(id)a3
+- (void)setSpecifierProviders:(id)providers
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  providersCopy = providers;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [providersCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -104,7 +104,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(providersCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -112,22 +112,22 @@
         [v9 setDelegate:self];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [providersCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 
-  v10 = [v4 copy];
+  v10 = [providersCopy copy];
   specifierProviders = self->_specifierProviders;
   self->_specifierProviders = v10;
 }
 
 - (id)visibleSpecifierProviders
 {
-  v2 = [(STListViewController *)self specifierProviders];
+  specifierProviders = [(STListViewController *)self specifierProviders];
   v3 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K = %@", @"isHidden", MEMORY[0x277CBEC28]];
-  v4 = [v2 filteredArrayUsingPredicate:v3];
+  v4 = [specifierProviders filteredArrayUsingPredicate:v3];
 
   return v4;
 }
@@ -144,8 +144,8 @@
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = [(STListViewController *)self specifierProviders];
-    v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    specifierProviders = [(STListViewController *)self specifierProviders];
+    v7 = [specifierProviders countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v7)
     {
       v8 = v7;
@@ -156,21 +156,21 @@
         {
           if (*v17 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(specifierProviders);
           }
 
           v11 = *(*(&v16 + 1) + 8 * i);
           if (([v11 isHidden] & 1) == 0)
           {
-            v12 = [v11 groupSpecifier];
-            [v5 addObject:v12];
+            groupSpecifier = [v11 groupSpecifier];
+            [v5 addObject:groupSpecifier];
 
-            v13 = [v11 specifiers];
-            [v5 addObjectsFromArray:v13];
+            specifiers = [v11 specifiers];
+            [v5 addObjectsFromArray:specifiers];
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v8 = [specifierProviders countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v8);
@@ -185,42 +185,42 @@
   return v4;
 }
 
-- (void)addObserversForSpecifierProvider:(id)a3
+- (void)addObserversForSpecifierProvider:(id)provider
 {
-  v4 = a3;
-  [v4 addObserver:self forKeyPath:@"isHidden" options:0 context:"STListViewControllerObservationContext"];
-  [v4 addObserver:self forKeyPath:@"specifiers" options:3 context:"STListViewControllerObservationContext"];
+  providerCopy = provider;
+  [providerCopy addObserver:self forKeyPath:@"isHidden" options:0 context:"STListViewControllerObservationContext"];
+  [providerCopy addObserver:self forKeyPath:@"specifiers" options:3 context:"STListViewControllerObservationContext"];
 }
 
-- (void)removeObserversForSpecifierProvider:(id)a3
+- (void)removeObserversForSpecifierProvider:(id)provider
 {
-  v4 = a3;
-  [v4 removeObserver:self forKeyPath:@"specifiers" context:"STListViewControllerObservationContext"];
-  [v4 removeObserver:self forKeyPath:@"isHidden" context:"STListViewControllerObservationContext"];
+  providerCopy = provider;
+  [providerCopy removeObserver:self forKeyPath:@"specifiers" context:"STListViewControllerObservationContext"];
+  [providerCopy removeObserver:self forKeyPath:@"isHidden" context:"STListViewControllerObservationContext"];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v57[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (a6 != "STListViewControllerObservationContext")
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (context != "STListViewControllerObservationContext")
   {
     v55.receiver = self;
     v55.super_class = STListViewController;
-    [(STListViewController *)&v55 observeValueForKeyPath:v11 ofObject:v12 change:v13 context:a6];
+    [(STListViewController *)&v55 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
     goto LABEL_37;
   }
 
-  if ([v11 isEqualToString:@"isHidden"])
+  if ([pathCopy isEqualToString:@"isHidden"])
   {
-    v14 = v12;
-    v15 = [v14 groupSpecifier];
-    v57[0] = v15;
+    v14 = objectCopy;
+    groupSpecifier = [v14 groupSpecifier];
+    v57[0] = groupSpecifier;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v57 count:1];
-    v17 = [v14 specifiers];
-    v18 = [v16 arrayByAddingObjectsFromArray:v17];
+    specifiers = [v14 specifiers];
+    v18 = [v16 arrayByAddingObjectsFromArray:specifiers];
 
     if ([v14 isHidden])
     {
@@ -257,8 +257,8 @@
 
     else
     {
-      v30 = [(STListViewController *)self specifierProviders];
-      v31 = [v30 indexOfObject:v14];
+      specifierProviders = [(STListViewController *)self specifierProviders];
+      v31 = [specifierProviders indexOfObject:v14];
       v32 = v31;
       v49 = 0;
       v50 = &v49;
@@ -273,8 +273,8 @@
 
       if (v31 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v38 = [MEMORY[0x277CCA890] currentHandler];
-        [v38 handleFailureInMethod:a2 object:self file:@"STListViewController.m" lineNumber:115 description:{@"Unknown specifierProvider: %@ is not in: %@", v14, v30}];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"STListViewController.m" lineNumber:115 description:{@"Unknown specifierProvider: %@ is not in: %@", v14, specifierProviders}];
       }
 
       v33 = [objc_alloc(MEMORY[0x277CCAA78]) initWithIndexesInRange:{0, v32}];
@@ -283,7 +283,7 @@
       v48[2] = __71__STListViewController_observeValueForKeyPath_ofObject_change_context___block_invoke;
       v48[3] = &unk_279B7DAF8;
       v48[4] = &v49;
-      [v30 enumerateObjectsAtIndexes:v33 options:2 usingBlock:v48];
+      [specifierProviders enumerateObjectsAtIndexes:v33 options:2 usingBlock:v48];
 
       v34 = v50[5];
       if (v34)
@@ -303,12 +303,12 @@ LABEL_27:
     goto LABEL_37;
   }
 
-  if (![v11 isEqualToString:@"specifiers"])
+  if (![pathCopy isEqualToString:@"specifiers"])
   {
     goto LABEL_37;
   }
 
-  v23 = v12;
+  v23 = objectCopy;
   if ([v23 isHidden])
   {
 LABEL_31:
@@ -318,23 +318,23 @@ LABEL_31:
 
   if (!*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]))
   {
-    v35 = [(STListViewController *)self specifiers];
+    specifiers2 = [(STListViewController *)self specifiers];
     goto LABEL_31;
   }
 
-  v24 = [v23 specifiers];
-  v25 = [v23 groupSpecifier];
-  v26 = [(STListViewController *)self indexOfSpecifier:v25];
+  specifiers3 = [v23 specifiers];
+  groupSpecifier2 = [v23 groupSpecifier];
+  v26 = [(STListViewController *)self indexOfSpecifier:groupSpecifier2];
 
-  v27 = [v13 objectForKeyedSubscript:*MEMORY[0x277CCA2E8]];
-  v28 = [v27 unsignedIntegerValue];
+  v27 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2E8]];
+  unsignedIntegerValue = [v27 unsignedIntegerValue];
 
-  v29 = [v13 objectForKeyedSubscript:*MEMORY[0x277CCA2E0]];
-  switch(v28)
+  v29 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2E0]];
+  switch(unsignedIntegerValue)
   {
     case 4:
-      v36 = [v13 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-      v37 = [v13 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+      v36 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+      v37 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
       [(STListViewController *)self replaceContiguousSpecifiers:v36 withSpecifiers:v37 animated:1];
 
       break;
@@ -365,8 +365,8 @@ LABEL_31:
       v40[1] = 3221225472;
       v40[2] = __71__STListViewController_observeValueForKeyPath_ofObject_change_context___block_invoke_2;
       v40[3] = &unk_279B7DB20;
-      v41 = v24;
-      v42 = self;
+      v41 = specifiers3;
+      selfCopy = self;
       v43 = v26 + 1;
       [v29 enumerateRangesUsingBlock:v40];
       [(STListViewController *)self endUpdates];
@@ -420,11 +420,11 @@ void __71__STListViewController_observeValueForKeyPath_ofObject_change_context__
   [*(a1 + 32) removeContiguousSpecifiers:v5 animated:1];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = STListViewController;
-  v5 = [(STListViewController *)&v7 tableView:a3 cellForRowAtIndexPath:a4];
+  v5 = [(STListViewController *)&v7 tableView:view cellForRowAtIndexPath:path];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -434,12 +434,12 @@ void __71__STListViewController_observeValueForKeyPath_ofObject_change_context__
   return v5;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v7 = a4;
-  v20 = [(STListViewController *)self specifierAtIndexPath:a5];
+  cellCopy = cell;
+  v20 = [(STListViewController *)self specifierAtIndexPath:path];
   v8 = MEMORY[0x277CCABB0];
-  [v7 bounds];
+  [cellCopy bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -450,29 +450,29 @@ void __71__STListViewController_observeValueForKeyPath_ofObject_change_context__
   v22.size.width = v14;
   v22.size.height = v16;
   v17 = [v8 numberWithDouble:CGRectGetHeight(v22)];
-  v18 = [(STListViewController *)self cellHeightBySpecifierIdentifier];
-  v19 = [v20 identifier];
-  [v18 setObject:v17 forKeyedSubscript:v19];
+  cellHeightBySpecifierIdentifier = [(STListViewController *)self cellHeightBySpecifierIdentifier];
+  identifier = [v20 identifier];
+  [cellHeightBySpecifierIdentifier setObject:v17 forKeyedSubscript:identifier];
 }
 
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v17.receiver = self;
   v17.super_class = STListViewController;
-  [(STListViewController *)&v17 tableView:a3 estimatedHeightForRowAtIndexPath:v6];
+  [(STListViewController *)&v17 tableView:view estimatedHeightForRowAtIndexPath:pathCopy];
   v8 = v7;
   v9 = *MEMORY[0x277D76F30];
   if (v7 == *MEMORY[0x277D76F30])
   {
-    v10 = [(STListViewController *)self specifierAtIndexPath:v6];
+    v10 = [(STListViewController *)self specifierAtIndexPath:pathCopy];
     v11 = [v10 objectForKeyedSubscript:*MEMORY[0x277D40148]];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v12 = [(STListViewController *)self cellHeightBySpecifierIdentifier];
-      v13 = [v10 identifier];
-      v14 = [v12 objectForKeyedSubscript:v13];
+      cellHeightBySpecifierIdentifier = [(STListViewController *)self cellHeightBySpecifierIdentifier];
+      identifier = [v10 identifier];
+      v14 = [cellHeightBySpecifierIdentifier objectForKeyedSubscript:identifier];
 
       if (v14)
       {
@@ -487,19 +487,19 @@ void __71__STListViewController_observeValueForKeyPath_ofObject_change_context__
   return v8;
 }
 
-- (void)specifierProvider:(id)a3 reloadSpecifier:(id)a4 animated:(BOOL)a5
+- (void)specifierProvider:(id)provider reloadSpecifier:(id)specifier animated:(BOOL)animated
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277D40148]];
-  v9 = [v8 contentView];
-  [v9 frame];
+  animatedCopy = animated;
+  specifierCopy = specifier;
+  v8 = [specifierCopy objectForKeyedSubscript:*MEMORY[0x277D40148]];
+  contentView = [v8 contentView];
+  [contentView frame];
   v11 = ceil(v10);
   v13 = ceil(v12);
 
-  [(STListViewController *)self reloadSpecifier:v7 animated:v5];
-  v14 = [v8 contentView];
-  [v14 systemLayoutSizeFittingSize:{v11, *(MEMORY[0x277D76C78] + 8)}];
+  [(STListViewController *)self reloadSpecifier:specifierCopy animated:animatedCopy];
+  contentView2 = [v8 contentView];
+  [contentView2 systemLayoutSizeFittingSize:{v11, *(MEMORY[0x277D76C78] + 8)}];
   v16 = ceil(v15);
 
   if (v8)
@@ -515,11 +515,11 @@ void __71__STListViewController_observeValueForKeyPath_ofObject_change_context__
   if (!v17)
   {
     v18 = [MEMORY[0x277CCABB0] numberWithDouble:v16];
-    v19 = [(STListViewController *)self cellHeightBySpecifierIdentifier];
-    v20 = [v7 identifier];
-    [v19 setObject:v18 forKeyedSubscript:v20];
+    cellHeightBySpecifierIdentifier = [(STListViewController *)self cellHeightBySpecifierIdentifier];
+    identifier = [specifierCopy identifier];
+    [cellHeightBySpecifierIdentifier setObject:v18 forKeyedSubscript:identifier];
 
-    if (v5)
+    if (animatedCopy)
     {
       [(STListViewController *)self beginUpdates];
       [(STListViewController *)self endUpdates];
@@ -545,18 +545,18 @@ uint64_t __67__STListViewController_specifierProvider_reloadSpecifier_animated__
   return [v2 endUpdates];
 }
 
-- (void)specifierProvider:(id)a3 reloadSectionHeaderFootersWithAnimation:(int64_t)a4
+- (void)specifierProvider:(id)provider reloadSectionHeaderFootersWithAnimation:(int64_t)animation
 {
   v11 = 0;
-  v6 = [a3 groupSpecifier];
-  v7 = [(STListViewController *)self getGroup:&v11 row:0 ofSpecifier:v6];
+  groupSpecifier = [provider groupSpecifier];
+  v7 = [(STListViewController *)self getGroup:&v11 row:0 ofSpecifier:groupSpecifier];
 
   if (v7)
   {
     v8 = objc_alloc(MEMORY[0x277CCAA78]);
     v9 = [v8 initWithIndex:v11];
-    v10 = [(STListViewController *)self table];
-    [v10 _reloadSectionHeaderFooters:v9 withRowAnimation:a4];
+    table = [(STListViewController *)self table];
+    [table _reloadSectionHeaderFooters:v9 withRowAnimation:animation];
   }
 }
 

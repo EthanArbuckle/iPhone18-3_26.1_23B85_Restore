@@ -1,15 +1,15 @@
 @interface PUPhotosSharingProgressOverlay
-- (PUPhotosSharingProgressOverlay)initWithFrame:(CGRect)a3;
+- (PUPhotosSharingProgressOverlay)initWithFrame:(CGRect)frame;
 - (UIWindow)cachedMainWindow;
-- (id)_grayScaleImageFromImage:(id)a3;
+- (id)_grayScaleImageFromImage:(id)image;
 - (id)_mainWindow;
 - (id)_screenshotImage;
 - (void)_installInStatusBarWindow;
-- (void)_setupOverlayAnimated:(BOOL)a3;
-- (void)_tearDownOverlayAnimated:(BOOL)a3;
-- (void)addProgressView:(id)a3;
-- (void)setShowing:(BOOL)a3 animated:(BOOL)a4;
-- (void)willRemoveSubview:(id)a3;
+- (void)_setupOverlayAnimated:(BOOL)animated;
+- (void)_tearDownOverlayAnimated:(BOOL)animated;
+- (void)addProgressView:(id)view;
+- (void)setShowing:(BOOL)showing animated:(BOOL)animated;
+- (void)willRemoveSubview:(id)subview;
 @end
 
 @implementation PUPhotosSharingProgressOverlay
@@ -21,12 +21,12 @@
   return WeakRetained;
 }
 
-- (void)willRemoveSubview:(id)a3
+- (void)willRemoveSubview:(id)subview
 {
-  v4 = a3;
-  v5 = [(PUPhotosSharingProgressOverlay *)self progressView];
+  subviewCopy = subview;
+  progressView = [(PUPhotosSharingProgressOverlay *)self progressView];
 
-  if (v5 == v4)
+  if (progressView == subviewCopy)
   {
     v6 = dispatch_time(0, 0);
     block[0] = MEMORY[0x1E69E9820];
@@ -38,35 +38,35 @@
   }
 }
 
-- (void)setShowing:(BOOL)a3 animated:(BOOL)a4
+- (void)setShowing:(BOOL)showing animated:(BOOL)animated
 {
-  if (self->_isShowing != a3)
+  if (self->_isShowing != showing)
   {
-    self->_isShowing = a3;
-    if (a3)
+    self->_isShowing = showing;
+    if (showing)
     {
-      [(PUPhotosSharingProgressOverlay *)self _setupOverlayAnimated:a4];
+      [(PUPhotosSharingProgressOverlay *)self _setupOverlayAnimated:animated];
     }
 
     else
     {
-      [(PUPhotosSharingProgressOverlay *)self _tearDownOverlayAnimated:a4];
+      [(PUPhotosSharingProgressOverlay *)self _tearDownOverlayAnimated:animated];
     }
   }
 }
 
-- (void)addProgressView:(id)a3
+- (void)addProgressView:(id)view
 {
-  if (a3)
+  if (view)
   {
-    v15 = a3;
+    viewCopy = view;
     [(PUPhotosSharingProgressOverlay *)self _installInStatusBarWindow];
-    [v15 frame];
+    [viewCopy frame];
     v5 = v4;
     v7 = v6;
     v9 = v8;
-    v10 = [(PUPhotosSharingProgressOverlay *)self window];
-    [v10 bounds];
+    window = [(PUPhotosSharingProgressOverlay *)self window];
+    [window bounds];
     MaxY = CGRectGetMaxY(v17);
     v18.origin.x = 0.0;
     v18.origin.y = v5;
@@ -74,19 +74,19 @@
     v18.size.height = v9;
     v12 = MaxY - CGRectGetHeight(v18);
 
-    v13 = [(PUPhotosSharingProgressOverlay *)self window];
-    [v13 bounds];
+    window2 = [(PUPhotosSharingProgressOverlay *)self window];
+    [window2 bounds];
     Width = CGRectGetWidth(v19);
 
     [(PUPhotosSharingProgressOverlay *)self convertRect:0 fromView:0.0, v12, Width, v9];
-    [v15 setFrame:?];
-    [v15 setAutoresizingMask:10];
-    [(PUPhotosSharingProgressOverlay *)self addSubview:v15];
-    [(PUPhotosSharingProgressOverlay *)self setProgressView:v15];
+    [viewCopy setFrame:?];
+    [viewCopy setAutoresizingMask:10];
+    [(PUPhotosSharingProgressOverlay *)self addSubview:viewCopy];
+    [(PUPhotosSharingProgressOverlay *)self setProgressView:viewCopy];
   }
 }
 
-- (void)_tearDownOverlayAnimated:(BOOL)a3
+- (void)_tearDownOverlayAnimated:(BOOL)animated
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
@@ -108,16 +108,16 @@ void __59__PUPhotosSharingProgressOverlay__tearDownOverlayAnimated___block_invok
   [v2 endDisablingInterfaceAutorotation];
 }
 
-- (void)_setupOverlayAnimated:(BOOL)a3
+- (void)_setupOverlayAnimated:(BOOL)animated
 {
-  v4 = [(PUPhotosSharingProgressOverlay *)self cachedMainWindow];
-  [v4 beginDisablingInterfaceAutorotation];
+  cachedMainWindow = [(PUPhotosSharingProgressOverlay *)self cachedMainWindow];
+  [cachedMainWindow beginDisablingInterfaceAutorotation];
 
   [(PUPhotosSharingProgressOverlay *)self _installInStatusBarWindow];
-  v5 = [(PUPhotosSharingProgressOverlay *)self _screenshotImage];
-  if (v5)
+  _screenshotImage = [(PUPhotosSharingProgressOverlay *)self _screenshotImage];
+  if (_screenshotImage)
   {
-    v6 = [(PUPhotosSharingProgressOverlay *)self _grayScaleImageFromImage:v5];
+    v6 = [(PUPhotosSharingProgressOverlay *)self _grayScaleImageFromImage:_screenshotImage];
     if (v6)
     {
       v7 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v6];
@@ -133,8 +133,8 @@ void __59__PUPhotosSharingProgressOverlay__tearDownOverlayAnimated___block_invok
     }
   }
 
-  v11 = [(PUPhotosSharingProgressOverlay *)self progressView];
-  [(PUPhotosSharingProgressOverlay *)self bringSubviewToFront:v11];
+  progressView = [(PUPhotosSharingProgressOverlay *)self progressView];
+  [(PUPhotosSharingProgressOverlay *)self bringSubviewToFront:progressView];
 
   [(PUPhotosSharingProgressOverlay *)self setAlpha:0.0];
   v12[0] = MEMORY[0x1E69E9820];
@@ -145,28 +145,28 @@ void __59__PUPhotosSharingProgressOverlay__tearDownOverlayAnimated___block_invok
   [MEMORY[0x1E69DD250] pu_animateWithDuration:v12 animations:0.2];
 }
 
-- (id)_grayScaleImageFromImage:(id)a3
+- (id)_grayScaleImageFromImage:(id)image
 {
-  if (a3)
+  if (image)
   {
     v3 = *MEMORY[0x1E695EFF8];
     v4 = *(MEMORY[0x1E695EFF8] + 8);
-    v5 = a3;
-    [v5 size];
+    imageCopy = image;
+    [imageCopy size];
     v7 = v6;
     v9 = v8;
-    [v5 scale];
+    [imageCopy scale];
     v11 = v7 * v10;
     v12 = v9 * v10;
     DeviceGray = CGColorSpaceCreateDeviceGray();
     v14 = CGBitmapContextCreate(0, v11, v12, 8uLL, 0, DeviceGray, 0);
-    v15 = [v5 CGImage];
+    cGImage = [imageCopy CGImage];
 
     v20.origin.x = v3;
     v20.origin.y = v4;
     v20.size.width = v11;
     v20.size.height = v12;
-    CGContextDrawImage(v14, v20, v15);
+    CGContextDrawImage(v14, v20, cGImage);
     Image = CGBitmapContextCreateImage(v14);
     v17 = [MEMORY[0x1E69DCAB8] imageWithCGImage:Image];
     CGColorSpaceRelease(DeviceGray);
@@ -192,31 +192,31 @@ void __59__PUPhotosSharingProgressOverlay__tearDownOverlayAnimated___block_invok
 - (void)_installInStatusBarWindow
 {
   [(PUPhotosSharingProgressOverlay *)self setAlpha:0.0];
-  v3 = [(PUPhotosSharingProgressOverlay *)self _mainWindow];
-  [v3 addSubview:self];
+  _mainWindow = [(PUPhotosSharingProgressOverlay *)self _mainWindow];
+  [_mainWindow addSubview:self];
 }
 
 - (id)_mainWindow
 {
-  v4 = [(PUPhotosSharingProgressOverlay *)self cachedMainWindow];
+  cachedMainWindow = [(PUPhotosSharingProgressOverlay *)self cachedMainWindow];
 
-  if (!v4)
+  if (!cachedMainWindow)
   {
-    v5 = [*MEMORY[0x1E69DDA98] px_firstKeyWindow];
-    [(PUPhotosSharingProgressOverlay *)self setCachedMainWindow:v5];
-    if (!v5)
+    px_firstKeyWindow = [*MEMORY[0x1E69DDA98] px_firstKeyWindow];
+    [(PUPhotosSharingProgressOverlay *)self setCachedMainWindow:px_firstKeyWindow];
+    if (!px_firstKeyWindow)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:a2 object:self file:@"PUPhotosSharingProgressOverlay.m" lineNumber:63 description:@"Main window could not be determined for PUPhotosSharingProgressOverlay"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotosSharingProgressOverlay.m" lineNumber:63 description:@"Main window could not be determined for PUPhotosSharingProgressOverlay"];
     }
   }
 
   return [(PUPhotosSharingProgressOverlay *)self cachedMainWindow];
 }
 
-- (PUPhotosSharingProgressOverlay)initWithFrame:(CGRect)a3
+- (PUPhotosSharingProgressOverlay)initWithFrame:(CGRect)frame
 {
-  v4 = [(PUPhotosSharingProgressOverlay *)self _mainWindow:a3.origin.x];
+  v4 = [(PUPhotosSharingProgressOverlay *)self _mainWindow:frame.origin.x];
   [v4 bounds];
   v6 = v5;
   v8 = v7;

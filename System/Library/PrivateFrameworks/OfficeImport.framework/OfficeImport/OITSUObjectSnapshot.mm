@@ -1,6 +1,6 @@
 @interface OITSUObjectSnapshot
 - (OITSUObjectSnapshot)init;
-- (void)calibrate:(id)a3;
+- (void)calibrate:(id)calibrate;
 - (void)compare;
 - (void)dealloc;
 - (void)p_clear;
@@ -23,13 +23,13 @@
   return result;
 }
 
-- (void)calibrate:(id)a3
+- (void)calibrate:(id)calibrate
 {
   [(OITSUObjectSnapshot *)self p_clear];
-  self->mCompared = a3;
-  v5 = [a3 count];
+  self->mCompared = calibrate;
+  v5 = [calibrate count];
   self->mEntryCount = v5;
-  if (a3)
+  if (calibrate)
   {
     if (v5)
     {
@@ -39,11 +39,11 @@
         v6 = 0;
         do
         {
-          [a3 objectAtIndex:v6];
+          [calibrate objectAtIndex:v6];
           v7 = objc_opt_class();
           InstanceSize = class_getInstanceSize(v7);
           self->mSnapshot[v6] = malloc_type_malloc(InstanceSize, 0x2132A790uLL);
-          memcpy(self->mSnapshot[v6], [a3 objectAtIndex:v6], InstanceSize);
+          memcpy(self->mSnapshot[v6], [calibrate objectAtIndex:v6], InstanceSize);
           ++v6;
         }
 

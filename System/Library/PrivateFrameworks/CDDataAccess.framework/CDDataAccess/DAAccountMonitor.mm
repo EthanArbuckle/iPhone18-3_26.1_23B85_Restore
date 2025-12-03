@@ -2,8 +2,8 @@
 + (id)sharedMonitor;
 - (DAAccountMonitor)init;
 - (id)monitoredAccounts;
-- (void)monitorAccount:(id)a3;
-- (void)unmonitorAccount:(id)a3;
+- (void)monitorAccount:(id)account;
+- (void)unmonitorAccount:(id)account;
 @end
 
 @implementation DAAccountMonitor
@@ -34,8 +34,8 @@ uint64_t __33__DAAccountMonitor_sharedMonitor__block_invoke()
   v2 = [(DAAccountMonitor *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
-    [(DAAccountMonitor *)v2 setAccounts:v3];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    [(DAAccountMonitor *)v2 setAccounts:weakObjectsHashTable];
 
     v4 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v5 = dispatch_queue_create("com.apple.dataaccess.accountmonitor", v4);
@@ -45,18 +45,18 @@ uint64_t __33__DAAccountMonitor_sharedMonitor__block_invoke()
   return v2;
 }
 
-- (void)monitorAccount:(id)a3
+- (void)monitorAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(DAAccountMonitor *)self accountsQueue];
+  accountCopy = account;
+  accountsQueue = [(DAAccountMonitor *)self accountsQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__DAAccountMonitor_monitorAccount___block_invoke;
   v7[3] = &unk_278D4C540;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = accountCopy;
+  v6 = accountCopy;
+  dispatch_sync(accountsQueue, v7);
 }
 
 void __35__DAAccountMonitor_monitorAccount___block_invoke(uint64_t a1)
@@ -65,18 +65,18 @@ void __35__DAAccountMonitor_monitorAccount___block_invoke(uint64_t a1)
   [v2 addObject:*(a1 + 40)];
 }
 
-- (void)unmonitorAccount:(id)a3
+- (void)unmonitorAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(DAAccountMonitor *)self accountsQueue];
+  accountCopy = account;
+  accountsQueue = [(DAAccountMonitor *)self accountsQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__DAAccountMonitor_unmonitorAccount___block_invoke;
   v7[3] = &unk_278D4C540;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = accountCopy;
+  v6 = accountCopy;
+  dispatch_sync(accountsQueue, v7);
 }
 
 void __37__DAAccountMonitor_unmonitorAccount___block_invoke(uint64_t a1)
@@ -93,14 +93,14 @@ void __37__DAAccountMonitor_unmonitorAccount___block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy_;
   v11 = __Block_byref_object_dispose_;
   v12 = 0;
-  v3 = [(DAAccountMonitor *)self accountsQueue];
+  accountsQueue = [(DAAccountMonitor *)self accountsQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __37__DAAccountMonitor_monitoredAccounts__block_invoke;
   v6[3] = &unk_278D4C600;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(accountsQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);

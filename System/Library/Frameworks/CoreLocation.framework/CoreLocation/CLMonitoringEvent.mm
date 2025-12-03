@@ -1,26 +1,26 @@
 @interface CLMonitoringEvent
 - (BOOL)authorizationDenied;
-- (CLMonitoringEvent)initWithCoder:(id)a3;
-- (CLMonitoringEvent)initWithIdentifier:(id)a3 refinement:(id)a4 state:(unint64_t)a5 date:(id)a6 diagnostics:(unint64_t)a7;
+- (CLMonitoringEvent)initWithCoder:(id)coder;
+- (CLMonitoringEvent)initWithIdentifier:(id)identifier refinement:(id)refinement state:(unint64_t)state date:(id)date diagnostics:(unint64_t)diagnostics;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLMonitoringEvent
 
-- (CLMonitoringEvent)initWithIdentifier:(id)a3 refinement:(id)a4 state:(unint64_t)a5 date:(id)a6 diagnostics:(unint64_t)a7
+- (CLMonitoringEvent)initWithIdentifier:(id)identifier refinement:(id)refinement state:(unint64_t)state date:(id)date diagnostics:(unint64_t)diagnostics
 {
   v14.receiver = self;
   v14.super_class = CLMonitoringEvent;
   v12 = [(CLMonitoringEvent *)&v14 init];
   if (v12)
   {
-    v12->_identifier = [a3 copy];
-    v12->_refinement = a4;
-    v12->_state = a5;
-    v12->_date = a6;
-    v12->_diagnosticMask = a7;
+    v12->_identifier = [identifier copy];
+    v12->_refinement = refinement;
+    v12->_state = state;
+    v12->_date = date;
+    v12->_diagnosticMask = diagnostics;
   }
 
   return v12;
@@ -37,25 +37,25 @@
   [(CLMonitoringEvent *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 requiresSecureCoding] & 1) == 0)
+  if (([coder requiresSecureCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  [a3 encodeObject:-[CLMonitoringEvent identifier](self forKey:{"identifier"), @"kCLMonitoringEventIdentifier"}];
-  [a3 encodeObject:-[CLMonitoringEvent refinement](self forKey:{"refinement"), @"kCLMonitoringEventRefinement"}];
-  [a3 encodeInteger:-[CLMonitoringEvent state](self forKey:{"state"), @"kCLMonitoringEventState"}];
-  [a3 encodeObject:-[CLMonitoringEvent date](self forKey:{"date"), @"kCLMonitoringEventDate"}];
-  v6 = [(CLMonitoringEvent *)self diagnosticMask];
+  [coder encodeObject:-[CLMonitoringEvent identifier](self forKey:{"identifier"), @"kCLMonitoringEventIdentifier"}];
+  [coder encodeObject:-[CLMonitoringEvent refinement](self forKey:{"refinement"), @"kCLMonitoringEventRefinement"}];
+  [coder encodeInteger:-[CLMonitoringEvent state](self forKey:{"state"), @"kCLMonitoringEventState"}];
+  [coder encodeObject:-[CLMonitoringEvent date](self forKey:{"date"), @"kCLMonitoringEventDate"}];
+  diagnosticMask = [(CLMonitoringEvent *)self diagnosticMask];
 
-  [a3 encodeInteger:v6 forKey:@"kCLMonitoringEventDiagnosticMask"];
+  [coder encodeInteger:diagnosticMask forKey:@"kCLMonitoringEventDiagnosticMask"];
 }
 
-- (CLMonitoringEvent)initWithCoder:(id)a3
+- (CLMonitoringEvent)initWithCoder:(id)coder
 {
-  if (([a3 requiresSecureCoding] & 1) == 0)
+  if (([coder requiresSecureCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
@@ -65,21 +65,21 @@
   v8 = objc_opt_class();
   v9 = objc_opt_class();
   v10 = [v6 setWithObjects:{v7, v8, v9, objc_opt_class(), 0}];
-  self->_identifier = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"kCLMonitoringEventIdentifier"];
-  self->_refinement = [a3 decodeObjectOfClasses:v10 forKey:@"kCLMonitoringEventRefinement"];
-  self->_state = [a3 decodeIntegerForKey:@"kCLMonitoringEventState"];
-  self->_date = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"kCLMonitoringEventDate"];
-  self->_diagnosticMask = [a3 decodeIntegerForKey:@"kCLMonitoringEventDiagnosticMask"];
+  self->_identifier = [coder decodeObjectOfClass:objc_opt_class() forKey:@"kCLMonitoringEventIdentifier"];
+  self->_refinement = [coder decodeObjectOfClasses:v10 forKey:@"kCLMonitoringEventRefinement"];
+  self->_state = [coder decodeIntegerForKey:@"kCLMonitoringEventState"];
+  self->_date = [coder decodeObjectOfClass:objc_opt_class() forKey:@"kCLMonitoringEventDate"];
+  self->_diagnosticMask = [coder decodeIntegerForKey:@"kCLMonitoringEventDiagnosticMask"];
   return self;
 }
 
 - (id)description
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD60] string];
-  v4 = [(CLMonitoringEvent *)self identifier];
-  v5 = [(CLMonitoringEvent *)self state];
-  if (v5 >= 4)
+  string = [MEMORY[0x1E696AD60] string];
+  identifier = [(CLMonitoringEvent *)self identifier];
+  state = [(CLMonitoringEvent *)self state];
+  if (state >= 4)
   {
     if (qword_1ED519088 != -1)
     {
@@ -115,12 +115,12 @@
 
   else
   {
-    v6 = off_1E753D590[v5];
+    v6 = off_1E753D590[state];
   }
 
-  [v3 appendFormat:@"CLMonitoringEvent(identifier: %@, state: %@, refinement: %@, date: %@, diagnosticMask: %d)", v4, v6, -[CLCondition description](-[CLMonitoringEvent refinement](self, "refinement"), "description"), -[NSDate description](-[CLMonitoringEvent date](self, "date"), "description"), -[CLMonitoringEvent diagnosticMask](self, "diagnosticMask")];
+  [string appendFormat:@"CLMonitoringEvent(identifier: %@, state: %@, refinement: %@, date: %@, diagnosticMask: %d)", identifier, v6, -[CLCondition description](-[CLMonitoringEvent refinement](self, "refinement"), "description"), -[NSDate description](-[CLMonitoringEvent date](self, "date"), "description"), -[CLMonitoringEvent diagnosticMask](self, "diagnosticMask")];
   v9 = *MEMORY[0x1E69E9840];
-  return v3;
+  return string;
 }
 
 - (BOOL)authorizationDenied

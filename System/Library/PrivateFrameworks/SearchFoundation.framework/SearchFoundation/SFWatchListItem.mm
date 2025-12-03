@@ -1,112 +1,112 @@
 @interface SFWatchListItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFWatchListItem)initWithCoder:(id)a3;
-- (SFWatchListItem)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFWatchListItem)initWithCoder:(id)coder;
+- (SFWatchListItem)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFWatchListItem
 
-- (SFWatchListItem)initWithProtobuf:(id)a3
+- (SFWatchListItem)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v28.receiver = self;
   v28.super_class = SFWatchListItem;
   v5 = [(SFWatchListItem *)&v28 init];
   if (v5)
   {
-    v6 = [v4 watchListIdentifier];
+    watchListIdentifier = [protobufCopy watchListIdentifier];
 
-    if (v6)
+    if (watchListIdentifier)
     {
-      v7 = [v4 watchListIdentifier];
-      [(SFWatchListItem *)v5 setWatchListIdentifier:v7];
+      watchListIdentifier2 = [protobufCopy watchListIdentifier];
+      [(SFWatchListItem *)v5 setWatchListIdentifier:watchListIdentifier2];
     }
 
-    v8 = [v4 seasonEpisodeTextFormat];
+    seasonEpisodeTextFormat = [protobufCopy seasonEpisodeTextFormat];
 
-    if (v8)
+    if (seasonEpisodeTextFormat)
     {
-      v9 = [v4 seasonEpisodeTextFormat];
-      [(SFWatchListItem *)v5 setSeasonEpisodeTextFormat:v9];
+      seasonEpisodeTextFormat2 = [protobufCopy seasonEpisodeTextFormat];
+      [(SFWatchListItem *)v5 setSeasonEpisodeTextFormat:seasonEpisodeTextFormat2];
     }
 
-    v10 = [v4 continueInTextFormat];
+    continueInTextFormat = [protobufCopy continueInTextFormat];
 
-    if (v10)
+    if (continueInTextFormat)
     {
-      v11 = [v4 continueInTextFormat];
-      [(SFWatchListItem *)v5 setContinueInTextFormat:v11];
+      continueInTextFormat2 = [protobufCopy continueInTextFormat];
+      [(SFWatchListItem *)v5 setContinueInTextFormat:continueInTextFormat2];
     }
 
-    v12 = [v4 openButtonTitle];
+    openButtonTitle = [protobufCopy openButtonTitle];
 
-    if (v12)
+    if (openButtonTitle)
     {
-      v13 = [v4 openButtonTitle];
-      [(SFWatchListItem *)v5 setOpenButtonTitle:v13];
+      openButtonTitle2 = [protobufCopy openButtonTitle];
+      [(SFWatchListItem *)v5 setOpenButtonTitle:openButtonTitle2];
     }
 
-    v14 = [v4 installButtonTitle];
+    installButtonTitle = [protobufCopy installButtonTitle];
 
-    if (v14)
+    if (installButtonTitle)
     {
-      v15 = [v4 installButtonTitle];
-      [(SFWatchListItem *)v5 setInstallButtonTitle:v15];
+      installButtonTitle2 = [protobufCopy installButtonTitle];
+      [(SFWatchListItem *)v5 setInstallButtonTitle:installButtonTitle2];
     }
 
-    v16 = [v4 purchaseOfferTextFormat];
+    purchaseOfferTextFormat = [protobufCopy purchaseOfferTextFormat];
 
-    if (v16)
+    if (purchaseOfferTextFormat)
     {
-      v17 = [v4 purchaseOfferTextFormat];
-      [(SFWatchListItem *)v5 setPurchaseOfferTextFormat:v17];
+      purchaseOfferTextFormat2 = [protobufCopy purchaseOfferTextFormat];
+      [(SFWatchListItem *)v5 setPurchaseOfferTextFormat:purchaseOfferTextFormat2];
     }
 
-    v18 = [v4 inUpNextText];
+    inUpNextText = [protobufCopy inUpNextText];
 
-    if (v18)
+    if (inUpNextText)
     {
-      v19 = [v4 inUpNextText];
-      [(SFWatchListItem *)v5 setInUpNextText:v19];
+      inUpNextText2 = [protobufCopy inUpNextText];
+      [(SFWatchListItem *)v5 setInUpNextText:inUpNextText2];
     }
 
-    v20 = [v4 addToUpNextText];
+    addToUpNextText = [protobufCopy addToUpNextText];
 
-    if (v20)
+    if (addToUpNextText)
     {
-      v21 = [v4 addToUpNextText];
-      [(SFWatchListItem *)v5 setAddToUpNextText:v21];
+      addToUpNextText2 = [protobufCopy addToUpNextText];
+      [(SFWatchListItem *)v5 setAddToUpNextText:addToUpNextText2];
     }
 
-    v22 = [v4 addedToUpNextText];
+    addedToUpNextText = [protobufCopy addedToUpNextText];
 
-    if (v22)
+    if (addedToUpNextText)
     {
-      v23 = [v4 addedToUpNextText];
-      [(SFWatchListItem *)v5 setAddedToUpNextText:v23];
+      addedToUpNextText2 = [protobufCopy addedToUpNextText];
+      [(SFWatchListItem *)v5 setAddedToUpNextText:addedToUpNextText2];
     }
 
-    v24 = [v4 watchLiveTextFormat];
+    watchLiveTextFormat = [protobufCopy watchLiveTextFormat];
 
-    if (v24)
+    if (watchLiveTextFormat)
     {
-      v25 = [v4 watchLiveTextFormat];
-      [(SFWatchListItem *)v5 setWatchLiveTextFormat:v25];
+      watchLiveTextFormat2 = [protobufCopy watchLiveTextFormat];
+      [(SFWatchListItem *)v5 setWatchLiveTextFormat:watchLiveTextFormat2];
     }
 
-    if ([v4 isMediaContainer])
+    if ([protobufCopy isMediaContainer])
     {
-      -[SFWatchListItem setIsMediaContainer:](v5, "setIsMediaContainer:", [v4 isMediaContainer]);
+      -[SFWatchListItem setIsMediaContainer:](v5, "setIsMediaContainer:", [protobufCopy isMediaContainer]);
     }
 
-    if ([v4 type])
+    if ([protobufCopy type])
     {
-      -[SFWatchListItem setType:](v5, "setType:", [v4 type]);
+      -[SFWatchListItem setType:](v5, "setType:", [protobufCopy type]);
     }
 
     v26 = v5;
@@ -117,52 +117,52 @@
 
 - (unint64_t)hash
 {
-  v25 = [(SFWatchListItem *)self watchListIdentifier];
-  v3 = [v25 hash];
-  v24 = [(SFWatchListItem *)self seasonEpisodeTextFormat];
-  v4 = [v24 hash] ^ v3;
-  v23 = [(SFWatchListItem *)self continueInTextFormat];
-  v5 = [v23 hash];
-  v6 = [(SFWatchListItem *)self openButtonTitle];
-  v7 = v4 ^ v5 ^ [v6 hash];
-  v8 = [(SFWatchListItem *)self installButtonTitle];
-  v9 = [v8 hash];
-  v10 = [(SFWatchListItem *)self purchaseOfferTextFormat];
-  v11 = v9 ^ [v10 hash];
-  v12 = [(SFWatchListItem *)self inUpNextText];
-  v13 = v7 ^ v11 ^ [v12 hash];
-  v14 = [(SFWatchListItem *)self addToUpNextText];
-  v15 = [v14 hash];
-  v16 = [(SFWatchListItem *)self addedToUpNextText];
-  v17 = v15 ^ [v16 hash];
-  v18 = [(SFWatchListItem *)self watchLiveTextFormat];
-  v19 = v17 ^ [v18 hash];
+  watchListIdentifier = [(SFWatchListItem *)self watchListIdentifier];
+  v3 = [watchListIdentifier hash];
+  seasonEpisodeTextFormat = [(SFWatchListItem *)self seasonEpisodeTextFormat];
+  v4 = [seasonEpisodeTextFormat hash] ^ v3;
+  continueInTextFormat = [(SFWatchListItem *)self continueInTextFormat];
+  v5 = [continueInTextFormat hash];
+  openButtonTitle = [(SFWatchListItem *)self openButtonTitle];
+  v7 = v4 ^ v5 ^ [openButtonTitle hash];
+  installButtonTitle = [(SFWatchListItem *)self installButtonTitle];
+  v9 = [installButtonTitle hash];
+  purchaseOfferTextFormat = [(SFWatchListItem *)self purchaseOfferTextFormat];
+  v11 = v9 ^ [purchaseOfferTextFormat hash];
+  inUpNextText = [(SFWatchListItem *)self inUpNextText];
+  v13 = v7 ^ v11 ^ [inUpNextText hash];
+  addToUpNextText = [(SFWatchListItem *)self addToUpNextText];
+  v15 = [addToUpNextText hash];
+  addedToUpNextText = [(SFWatchListItem *)self addedToUpNextText];
+  v17 = v15 ^ [addedToUpNextText hash];
+  watchLiveTextFormat = [(SFWatchListItem *)self watchLiveTextFormat];
+  v19 = v17 ^ [watchLiveTextFormat hash];
   v20 = v13 ^ v19 ^ [(SFWatchListItem *)self isMediaContainer];
-  v21 = [(SFWatchListItem *)self type];
+  type = [(SFWatchListItem *)self type];
 
-  return v20 ^ v21;
+  return v20 ^ type;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v17 = 1;
     goto LABEL_120;
   }
 
-  if (![(SFWatchListItem *)v4 isMemberOfClass:objc_opt_class()])
+  if (![(SFWatchListItem *)equalCopy isMemberOfClass:objc_opt_class()])
   {
     v17 = 0;
     goto LABEL_120;
   }
 
-  v5 = v4;
-  v101 = [(SFWatchListItem *)self watchListIdentifier];
-  v100 = [(SFWatchListItem *)v5 watchListIdentifier];
-  v98 = v100 == 0;
-  v99 = v101 != 0;
+  v5 = equalCopy;
+  watchListIdentifier = [(SFWatchListItem *)self watchListIdentifier];
+  watchListIdentifier2 = [(SFWatchListItem *)v5 watchListIdentifier];
+  v98 = watchListIdentifier2 == 0;
+  v99 = watchListIdentifier != 0;
   if (v99 == v98)
   {
     v9 = 0;
@@ -180,15 +180,15 @@
     goto LABEL_132;
   }
 
-  v6 = [(SFWatchListItem *)self watchListIdentifier];
-  v7 = v6 != 0;
-  v95 = v6;
-  if (v6)
+  watchListIdentifier3 = [(SFWatchListItem *)self watchListIdentifier];
+  v7 = watchListIdentifier3 != 0;
+  v95 = watchListIdentifier3;
+  if (watchListIdentifier3)
   {
-    v8 = [(SFWatchListItem *)self watchListIdentifier];
-    v90 = [(SFWatchListItem *)v5 watchListIdentifier];
-    v91 = v8;
-    if (![v8 isEqual:?])
+    watchListIdentifier4 = [(SFWatchListItem *)self watchListIdentifier];
+    watchListIdentifier5 = [(SFWatchListItem *)v5 watchListIdentifier];
+    v91 = watchListIdentifier4;
+    if (![watchListIdentifier4 isEqual:?])
     {
       v9 = 0;
       memset(v97, 0, 56);
@@ -207,10 +207,10 @@
     }
   }
 
-  v93 = [(SFWatchListItem *)self seasonEpisodeTextFormat];
-  v92 = [(SFWatchListItem *)v5 seasonEpisodeTextFormat];
+  seasonEpisodeTextFormat = [(SFWatchListItem *)self seasonEpisodeTextFormat];
+  seasonEpisodeTextFormat2 = [(SFWatchListItem *)v5 seasonEpisodeTextFormat];
   *&v97[56] = v7;
-  if ((v93 != 0) == (v92 == 0))
+  if ((seasonEpisodeTextFormat != 0) == (seasonEpisodeTextFormat2 == 0))
   {
     v9 = 0;
     v10 = 0;
@@ -229,15 +229,15 @@
     goto LABEL_132;
   }
 
-  v18 = [(SFWatchListItem *)self seasonEpisodeTextFormat];
-  v19 = v18 != 0;
-  v89 = v18;
-  if (v18)
+  seasonEpisodeTextFormat3 = [(SFWatchListItem *)self seasonEpisodeTextFormat];
+  v19 = seasonEpisodeTextFormat3 != 0;
+  v89 = seasonEpisodeTextFormat3;
+  if (seasonEpisodeTextFormat3)
   {
-    v20 = [(SFWatchListItem *)self seasonEpisodeTextFormat];
-    v85 = [(SFWatchListItem *)v5 seasonEpisodeTextFormat];
-    v86 = v20;
-    if (![v20 isEqual:?])
+    seasonEpisodeTextFormat4 = [(SFWatchListItem *)self seasonEpisodeTextFormat];
+    seasonEpisodeTextFormat5 = [(SFWatchListItem *)v5 seasonEpisodeTextFormat];
+    v86 = seasonEpisodeTextFormat4;
+    if (![seasonEpisodeTextFormat4 isEqual:?])
     {
       v9 = 0;
       memset(v97, 0, 24);
@@ -265,9 +265,9 @@
     *&v97[52] = 0;
   }
 
-  v88 = [(SFWatchListItem *)self continueInTextFormat];
-  v87 = [(SFWatchListItem *)v5 continueInTextFormat];
-  if ((v88 != 0) == (v87 == 0))
+  continueInTextFormat = [(SFWatchListItem *)self continueInTextFormat];
+  continueInTextFormat2 = [(SFWatchListItem *)v5 continueInTextFormat];
+  if ((continueInTextFormat != 0) == (continueInTextFormat2 == 0))
   {
     *&v97[8] = 0;
     v9 = 0;
@@ -288,15 +288,15 @@
     goto LABEL_132;
   }
 
-  v21 = [(SFWatchListItem *)self continueInTextFormat];
-  v22 = v21 != 0;
-  v84 = v21;
-  if (v21)
+  continueInTextFormat3 = [(SFWatchListItem *)self continueInTextFormat];
+  v22 = continueInTextFormat3 != 0;
+  v84 = continueInTextFormat3;
+  if (continueInTextFormat3)
   {
-    v23 = [(SFWatchListItem *)self continueInTextFormat];
-    v80 = [(SFWatchListItem *)v5 continueInTextFormat];
-    v81 = v23;
-    if (![v23 isEqual:?])
+    continueInTextFormat4 = [(SFWatchListItem *)self continueInTextFormat];
+    continueInTextFormat5 = [(SFWatchListItem *)v5 continueInTextFormat];
+    v81 = continueInTextFormat4;
+    if (![continueInTextFormat4 isEqual:?])
     {
       *&v97[8] = 0;
       *&v97[40] = 0;
@@ -329,9 +329,9 @@
     *&v97[48] = 0;
   }
 
-  v83 = [(SFWatchListItem *)self openButtonTitle];
-  v82 = [(SFWatchListItem *)v5 openButtonTitle];
-  if ((v83 != 0) == (v82 == 0))
+  openButtonTitle = [(SFWatchListItem *)self openButtonTitle];
+  openButtonTitle2 = [(SFWatchListItem *)v5 openButtonTitle];
+  if ((openButtonTitle != 0) == (openButtonTitle2 == 0))
   {
     *&v97[40] = 0;
     v9 = 0;
@@ -356,15 +356,15 @@
     goto LABEL_132;
   }
 
-  v24 = [(SFWatchListItem *)self openButtonTitle];
-  v25 = v24 != 0;
-  v79 = v24;
-  if (v24)
+  openButtonTitle3 = [(SFWatchListItem *)self openButtonTitle];
+  v25 = openButtonTitle3 != 0;
+  v79 = openButtonTitle3;
+  if (openButtonTitle3)
   {
-    v26 = [(SFWatchListItem *)self openButtonTitle];
-    v75 = [(SFWatchListItem *)v5 openButtonTitle];
-    v76 = v26;
-    if (![v26 isEqual:?])
+    openButtonTitle4 = [(SFWatchListItem *)self openButtonTitle];
+    openButtonTitle5 = [(SFWatchListItem *)v5 openButtonTitle];
+    v76 = openButtonTitle4;
+    if (![openButtonTitle4 isEqual:?])
     {
       v9 = 0;
       *v97 = 0;
@@ -398,9 +398,9 @@
     *&v97[44] = 0;
   }
 
-  v78 = [(SFWatchListItem *)self installButtonTitle];
-  v77 = [(SFWatchListItem *)v5 installButtonTitle];
-  if ((v78 != 0) == (v77 == 0))
+  installButtonTitle = [(SFWatchListItem *)self installButtonTitle];
+  installButtonTitle2 = [(SFWatchListItem *)v5 installButtonTitle];
+  if ((installButtonTitle != 0) == (installButtonTitle2 == 0))
   {
     *v97 = 0;
     *&v97[36] = 0;
@@ -424,15 +424,15 @@
     goto LABEL_132;
   }
 
-  v27 = [(SFWatchListItem *)self installButtonTitle];
-  v28 = v27 != 0;
-  v74 = v27;
-  if (v27)
+  installButtonTitle3 = [(SFWatchListItem *)self installButtonTitle];
+  v28 = installButtonTitle3 != 0;
+  v74 = installButtonTitle3;
+  if (installButtonTitle3)
   {
-    v29 = [(SFWatchListItem *)self installButtonTitle];
-    v70 = [(SFWatchListItem *)v5 installButtonTitle];
-    v71 = v29;
-    if (![v29 isEqual:?])
+    installButtonTitle4 = [(SFWatchListItem *)self installButtonTitle];
+    installButtonTitle5 = [(SFWatchListItem *)v5 installButtonTitle];
+    v71 = installButtonTitle4;
+    if (![installButtonTitle4 isEqual:?])
     {
       v10 = 0;
       v11 = 0;
@@ -466,9 +466,9 @@
     *&v97[40] = 0;
   }
 
-  v73 = [(SFWatchListItem *)self purchaseOfferTextFormat];
-  v72 = [(SFWatchListItem *)v5 purchaseOfferTextFormat];
-  if ((v73 != 0) == (v72 == 0))
+  purchaseOfferTextFormat = [(SFWatchListItem *)self purchaseOfferTextFormat];
+  purchaseOfferTextFormat2 = [(SFWatchListItem *)v5 purchaseOfferTextFormat];
+  if ((purchaseOfferTextFormat != 0) == (purchaseOfferTextFormat2 == 0))
   {
     v11 = 0;
     *&v97[32] = 0;
@@ -493,15 +493,15 @@
     goto LABEL_132;
   }
 
-  v30 = [(SFWatchListItem *)self purchaseOfferTextFormat];
-  v31 = v30 != 0;
-  v69 = v30;
-  if (v30)
+  purchaseOfferTextFormat3 = [(SFWatchListItem *)self purchaseOfferTextFormat];
+  v31 = purchaseOfferTextFormat3 != 0;
+  v69 = purchaseOfferTextFormat3;
+  if (purchaseOfferTextFormat3)
   {
-    v32 = [(SFWatchListItem *)self purchaseOfferTextFormat];
-    v65 = [(SFWatchListItem *)v5 purchaseOfferTextFormat];
-    v66 = v32;
-    if (![v32 isEqual:?])
+    purchaseOfferTextFormat4 = [(SFWatchListItem *)self purchaseOfferTextFormat];
+    purchaseOfferTextFormat5 = [(SFWatchListItem *)v5 purchaseOfferTextFormat];
+    v66 = purchaseOfferTextFormat4;
+    if (![purchaseOfferTextFormat4 isEqual:?])
     {
       v96 = 0;
       v12 = 0;
@@ -535,9 +535,9 @@
     *&v97[36] = 0;
   }
 
-  v68 = [(SFWatchListItem *)self inUpNextText];
-  v67 = [(SFWatchListItem *)v5 inUpNextText];
-  if ((v68 != 0) == (v67 == 0))
+  inUpNextText = [(SFWatchListItem *)self inUpNextText];
+  inUpNextText2 = [(SFWatchListItem *)v5 inUpNextText];
+  if ((inUpNextText != 0) == (inUpNextText2 == 0))
   {
     v12 = 0;
     v96 = 0x100000000;
@@ -558,15 +558,15 @@
     goto LABEL_132;
   }
 
-  v33 = [(SFWatchListItem *)self inUpNextText];
-  v34 = v33 != 0;
-  v64 = v33;
-  if (v33)
+  inUpNextText3 = [(SFWatchListItem *)self inUpNextText];
+  v34 = inUpNextText3 != 0;
+  v64 = inUpNextText3;
+  if (inUpNextText3)
   {
-    v35 = [(SFWatchListItem *)self inUpNextText];
-    v60 = [(SFWatchListItem *)v5 inUpNextText];
-    v61 = v35;
-    if (![v35 isEqual:?])
+    inUpNextText4 = [(SFWatchListItem *)self inUpNextText];
+    inUpNextText5 = [(SFWatchListItem *)v5 inUpNextText];
+    v61 = inUpNextText4;
+    if (![inUpNextText4 isEqual:?])
     {
       v102 = 0;
       v13 = 0;
@@ -595,9 +595,9 @@
     *&v97[32] = 0;
   }
 
-  v63 = [(SFWatchListItem *)self addToUpNextText];
-  v62 = [(SFWatchListItem *)v5 addToUpNextText];
-  if ((v63 != 0) == (v62 == 0))
+  addToUpNextText = [(SFWatchListItem *)self addToUpNextText];
+  addToUpNextText2 = [(SFWatchListItem *)v5 addToUpNextText];
+  if ((addToUpNextText != 0) == (addToUpNextText2 == 0))
   {
     v102 = 0;
     v13 = 0;
@@ -617,16 +617,16 @@
     goto LABEL_132;
   }
 
-  v36 = [(SFWatchListItem *)self addToUpNextText];
-  HIDWORD(v102) = v36 != 0;
-  v59 = v36;
+  addToUpNextText3 = [(SFWatchListItem *)self addToUpNextText];
+  HIDWORD(v102) = addToUpNextText3 != 0;
+  v59 = addToUpNextText3;
   v47 = v5;
-  if (v36)
+  if (addToUpNextText3)
   {
-    v37 = [(SFWatchListItem *)self addToUpNextText];
-    v55 = [(SFWatchListItem *)v5 addToUpNextText];
-    v56 = v37;
-    if (![v37 isEqual:?])
+    addToUpNextText4 = [(SFWatchListItem *)self addToUpNextText];
+    addToUpNextText5 = [(SFWatchListItem *)v5 addToUpNextText];
+    v56 = addToUpNextText4;
+    if (![addToUpNextText4 isEqual:?])
     {
       v13 = 0;
       v14 = 0;
@@ -649,9 +649,9 @@ LABEL_67:
     }
   }
 
-  v58 = [(SFWatchListItem *)self addedToUpNextText];
-  v57 = [(SFWatchListItem *)v5 addedToUpNextText];
-  if ((v58 != 0) == (v57 == 0))
+  addedToUpNextText = [(SFWatchListItem *)self addedToUpNextText];
+  addedToUpNextText2 = [(SFWatchListItem *)v5 addedToUpNextText];
+  if ((addedToUpNextText != 0) == (addedToUpNextText2 == 0))
   {
     v14 = 0;
     LODWORD(v102) = 0;
@@ -671,15 +671,15 @@ LABEL_67:
     goto LABEL_67;
   }
 
-  v38 = [(SFWatchListItem *)self addedToUpNextText];
-  LODWORD(v102) = v38 != 0;
-  v54 = v38;
-  if (v38)
+  addedToUpNextText3 = [(SFWatchListItem *)self addedToUpNextText];
+  LODWORD(v102) = addedToUpNextText3 != 0;
+  v54 = addedToUpNextText3;
+  if (addedToUpNextText3)
   {
-    v39 = [(SFWatchListItem *)self addedToUpNextText];
-    v50 = [(SFWatchListItem *)v47 addedToUpNextText];
-    v51 = v39;
-    if (![v39 isEqual:?])
+    addedToUpNextText4 = [(SFWatchListItem *)self addedToUpNextText];
+    addedToUpNextText5 = [(SFWatchListItem *)v47 addedToUpNextText];
+    v51 = addedToUpNextText4;
+    if (![addedToUpNextText4 isEqual:?])
     {
       v15 = 0;
       v16 = 0;
@@ -700,9 +700,9 @@ LABEL_67:
     }
   }
 
-  v53 = [(SFWatchListItem *)self watchLiveTextFormat];
-  v52 = [(SFWatchListItem *)v47 watchLiveTextFormat];
-  if ((v53 != 0) == (v52 == 0))
+  watchLiveTextFormat = [(SFWatchListItem *)self watchLiveTextFormat];
+  watchLiveTextFormat2 = [(SFWatchListItem *)v47 watchLiveTextFormat];
+  if ((watchLiveTextFormat != 0) == (watchLiveTextFormat2 == 0))
   {
     v16 = 0;
     v17 = 0;
@@ -721,15 +721,15 @@ LABEL_67:
     goto LABEL_67;
   }
 
-  v40 = [(SFWatchListItem *)self watchLiveTextFormat];
-  v94 = v40 != 0;
-  v49 = v40;
-  if (v40)
+  watchLiveTextFormat3 = [(SFWatchListItem *)self watchLiveTextFormat];
+  v94 = watchLiveTextFormat3 != 0;
+  v49 = watchLiveTextFormat3;
+  if (watchLiveTextFormat3)
   {
-    v41 = [(SFWatchListItem *)self watchLiveTextFormat];
+    watchLiveTextFormat4 = [(SFWatchListItem *)self watchLiveTextFormat];
     [(SFWatchListItem *)v47 watchLiveTextFormat];
-    v46 = v48 = v41;
-    if (![v41 isEqual:?])
+    v46 = v48 = watchLiveTextFormat4;
+    if (![watchLiveTextFormat4 isEqual:?])
     {
       v17 = 0;
       *&v97[24] = 0x100000001;
@@ -752,8 +752,8 @@ LABEL_129:
     }
   }
 
-  v44 = [(SFWatchListItem *)self isMediaContainer];
-  if (v44 != [(SFWatchListItem *)v47 isMediaContainer])
+  isMediaContainer = [(SFWatchListItem *)self isMediaContainer];
+  if (isMediaContainer != [(SFWatchListItem *)v47 isMediaContainer])
   {
     v17 = 0;
     *&v97[24] = 0x100000001;
@@ -773,9 +773,9 @@ LABEL_129:
     goto LABEL_129;
   }
 
-  v45 = [(SFWatchListItem *)self type];
+  type = [(SFWatchListItem *)self type];
   v5 = v47;
-  v17 = v45 == [(SFWatchListItem *)v47 type];
+  v17 = type == [(SFWatchListItem *)v47 type];
   *&v97[24] = 0x100000001;
   *&v97[16] = 0x100000001;
   *&v97[8] = 0x100000001;
@@ -963,47 +963,47 @@ LABEL_120:
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(SFWatchListItem *)self watchListIdentifier];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  watchListIdentifier = [(SFWatchListItem *)self watchListIdentifier];
+  v6 = [watchListIdentifier copy];
   [v4 setWatchListIdentifier:v6];
 
-  v7 = [(SFWatchListItem *)self seasonEpisodeTextFormat];
-  v8 = [v7 copy];
+  seasonEpisodeTextFormat = [(SFWatchListItem *)self seasonEpisodeTextFormat];
+  v8 = [seasonEpisodeTextFormat copy];
   [v4 setSeasonEpisodeTextFormat:v8];
 
-  v9 = [(SFWatchListItem *)self continueInTextFormat];
-  v10 = [v9 copy];
+  continueInTextFormat = [(SFWatchListItem *)self continueInTextFormat];
+  v10 = [continueInTextFormat copy];
   [v4 setContinueInTextFormat:v10];
 
-  v11 = [(SFWatchListItem *)self openButtonTitle];
-  v12 = [v11 copy];
+  openButtonTitle = [(SFWatchListItem *)self openButtonTitle];
+  v12 = [openButtonTitle copy];
   [v4 setOpenButtonTitle:v12];
 
-  v13 = [(SFWatchListItem *)self installButtonTitle];
-  v14 = [v13 copy];
+  installButtonTitle = [(SFWatchListItem *)self installButtonTitle];
+  v14 = [installButtonTitle copy];
   [v4 setInstallButtonTitle:v14];
 
-  v15 = [(SFWatchListItem *)self purchaseOfferTextFormat];
-  v16 = [v15 copy];
+  purchaseOfferTextFormat = [(SFWatchListItem *)self purchaseOfferTextFormat];
+  v16 = [purchaseOfferTextFormat copy];
   [v4 setPurchaseOfferTextFormat:v16];
 
-  v17 = [(SFWatchListItem *)self inUpNextText];
-  v18 = [v17 copy];
+  inUpNextText = [(SFWatchListItem *)self inUpNextText];
+  v18 = [inUpNextText copy];
   [v4 setInUpNextText:v18];
 
-  v19 = [(SFWatchListItem *)self addToUpNextText];
-  v20 = [v19 copy];
+  addToUpNextText = [(SFWatchListItem *)self addToUpNextText];
+  v20 = [addToUpNextText copy];
   [v4 setAddToUpNextText:v20];
 
-  v21 = [(SFWatchListItem *)self addedToUpNextText];
-  v22 = [v21 copy];
+  addedToUpNextText = [(SFWatchListItem *)self addedToUpNextText];
+  v22 = [addedToUpNextText copy];
   [v4 setAddedToUpNextText:v22];
 
-  v23 = [(SFWatchListItem *)self watchLiveTextFormat];
-  v24 = [v23 copy];
+  watchLiveTextFormat = [(SFWatchListItem *)self watchLiveTextFormat];
+  v24 = [watchLiveTextFormat copy];
   [v4 setWatchLiveTextFormat:v24];
 
   [v4 setIsMediaContainer:{-[SFWatchListItem isMediaContainer](self, "isMediaContainer")}];
@@ -1014,31 +1014,31 @@ LABEL_120:
 - (NSData)jsonData
 {
   v2 = [[_SFPBWatchListItem alloc] initWithFacade:self];
-  v3 = [(_SFPBWatchListItem *)v2 jsonData];
+  jsonData = [(_SFPBWatchListItem *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBWatchListItem alloc] initWithFacade:self];
-  v3 = [(_SFPBWatchListItem *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBWatchListItem *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBWatchListItem alloc] initWithFacade:self];
-  v5 = [(_SFPBWatchListItem *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBWatchListItem *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFWatchListItem)initWithCoder:(id)a3
+- (SFWatchListItem)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBWatchListItem alloc] initWithData:v5];
   v7 = [(SFWatchListItem *)self initWithProtobuf:v6];

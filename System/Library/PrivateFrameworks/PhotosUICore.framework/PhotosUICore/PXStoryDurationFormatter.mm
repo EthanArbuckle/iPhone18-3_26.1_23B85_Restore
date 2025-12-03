@@ -1,45 +1,45 @@
 @interface PXStoryDurationFormatter
 - (NSDateComponentsFormatter)dateComponentsFormatter;
-- (id)stringFromTimeInterval:(double)a3;
+- (id)stringFromTimeInterval:(double)interval;
 @end
 
 @implementation PXStoryDurationFormatter
 
-- (id)stringFromTimeInterval:(double)a3
+- (id)stringFromTimeInterval:(double)interval
 {
-  if (fabs(a3) == INFINITY)
+  if (fabs(interval) == INFINITY)
   {
     v4 = @"<infinite duration>";
     goto LABEL_5;
   }
 
-  if (a3 == 0.0)
+  if (interval == 0.0)
   {
     v4 = @"0s";
     goto LABEL_5;
   }
 
-  if (a3 < 0.0)
+  if (interval < 0.0)
   {
-    v6 = [(PXStoryDurationFormatter *)self stringFromTimeInterval:-a3];
-    v4 = [@"-" stringByAppendingString:v6];
+    dateComponentsFormatter = [(PXStoryDurationFormatter *)self stringFromTimeInterval:-interval];
+    v4 = [@"-" stringByAppendingString:dateComponentsFormatter];
 LABEL_10:
 
     goto LABEL_5;
   }
 
-  if (a3 * 1000000.0 >= 10.0)
+  if (interval * 1000000.0 >= 10.0)
   {
-    if (a3 * 1000.0 >= 1.0)
+    if (interval * 1000.0 >= 1.0)
     {
-      if (a3 * 1000.0 >= 10.0)
+      if (interval * 1000.0 >= 10.0)
       {
-        if (a3 >= 1.0)
+        if (interval >= 1.0)
         {
-          if (a3 >= 10.0)
+          if (interval >= 10.0)
           {
-            v6 = [(PXStoryDurationFormatter *)self dateComponentsFormatter];
-            v8 = [v6 stringFromTimeInterval:a3];
+            dateComponentsFormatter = [(PXStoryDurationFormatter *)self dateComponentsFormatter];
+            v8 = [dateComponentsFormatter stringFromTimeInterval:interval];
             v9 = v8;
             v10 = @"?";
             if (v8)
@@ -52,30 +52,30 @@ LABEL_10:
             goto LABEL_10;
           }
 
-          v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%0.1fs", *&a3];
+          v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%0.1fs", *&interval];
         }
 
         else
         {
-          v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%0.0fms", a3 * 1000.0];
+          v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%0.0fms", interval * 1000.0];
         }
       }
 
       else
       {
-        v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%0.1fms", a3 * 1000.0];
+        v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%0.1fms", interval * 1000.0];
       }
     }
 
     else
     {
-      v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%0.0fµs", a3 * 1000000.0];
+      v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%0.0fµs", interval * 1000000.0];
     }
   }
 
   else
   {
-    v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%0.1fµs", a3 * 1000000.0];
+    v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%0.1fµs", interval * 1000000.0];
   }
 
   v4 = v7;
@@ -86,22 +86,22 @@ LABEL_5:
 
 - (NSDateComponentsFormatter)dateComponentsFormatter
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_dateComponentsFormatter)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_dateComponentsFormatter)
   {
     v3 = objc_alloc_init(MEMORY[0x1E696AB70]);
-    dateComponentsFormatter = v2->_dateComponentsFormatter;
-    v2->_dateComponentsFormatter = v3;
+    dateComponentsFormatter = selfCopy->_dateComponentsFormatter;
+    selfCopy->_dateComponentsFormatter = v3;
 
-    [(NSDateComponentsFormatter *)v2->_dateComponentsFormatter setAllowedUnits:224];
-    [(NSDateComponentsFormatter *)v2->_dateComponentsFormatter setUnitsStyle:1];
-    [(NSDateComponentsFormatter *)v2->_dateComponentsFormatter setZeroFormattingBehavior:1];
+    [(NSDateComponentsFormatter *)selfCopy->_dateComponentsFormatter setAllowedUnits:224];
+    [(NSDateComponentsFormatter *)selfCopy->_dateComponentsFormatter setUnitsStyle:1];
+    [(NSDateComponentsFormatter *)selfCopy->_dateComponentsFormatter setZeroFormattingBehavior:1];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v5 = v2->_dateComponentsFormatter;
+  v5 = selfCopy->_dateComponentsFormatter;
 
   return v5;
 }

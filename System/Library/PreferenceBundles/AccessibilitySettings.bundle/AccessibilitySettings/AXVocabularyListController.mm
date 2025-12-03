@@ -1,22 +1,22 @@
 @interface AXVocabularyListController
 - (Class)detailViewControllerClass;
 - (NSArray)items;
-- (id)_detailTextForSpecifier:(id)a3;
-- (id)detailTextForItem:(id)a3;
+- (id)_detailTextForSpecifier:(id)specifier;
+- (id)detailTextForItem:(id)item;
 - (id)specifiers;
-- (id)textForItem:(id)a3;
-- (void)_handleDoneButtonTapped:(id)a3;
-- (void)_handleEditButtonTapped:(id)a3;
+- (id)textForItem:(id)item;
+- (void)_handleDoneButtonTapped:(id)tapped;
+- (void)_handleEditButtonTapped:(id)tapped;
 - (void)_updateEditButton;
 - (void)addButtonTapped;
-- (void)deleteItem:(id)a3;
+- (void)deleteItem:(id)item;
 - (void)reloadSpecifiers;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation AXVocabularyListController
@@ -27,54 +27,54 @@
   v5.super_class = AXVocabularyListController;
   [(AXVocabularyListController *)&v5 viewDidLoad];
   [(AXVocabularyListController *)self _updateEditButton];
-  v3 = [(AXVocabularyListController *)self table];
-  [v3 setCountStringInsignificantRowCount:9];
+  table = [(AXVocabularyListController *)self table];
+  [table setCountStringInsignificantRowCount:9];
 
-  v4 = [(AXVocabularyListController *)self table];
-  [v4 setIndexHidden:0 animated:0];
+  table2 = [(AXVocabularyListController *)self table];
+  [table2 setIndexHidden:0 animated:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = AXVocabularyListController;
-  [(AXVocabularyListController *)&v7 viewWillAppear:a3];
+  [(AXVocabularyListController *)&v7 viewWillAppear:appear];
   v4 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:4 target:self action:"_addButtonTapped:"];
-  v5 = [(AXVocabularyListController *)self navigationItem];
-  [v5 setRightBarButtonItem:v4];
+  navigationItem = [(AXVocabularyListController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v4];
 
-  v6 = [(AXVocabularyListController *)self navigationController];
-  [v6 setToolbarHidden:0 animated:1];
+  navigationController = [(AXVocabularyListController *)self navigationController];
+  [navigationController setToolbarHidden:0 animated:1];
 
   [(AXVocabularyListController *)self _updateEditButton];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = AXVocabularyListController;
-  [(AXVocabularyListController *)&v6 viewDidAppear:a3];
+  [(AXVocabularyListController *)&v6 viewDidAppear:appear];
   v4 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:4 target:self action:"_addButtonTapped:"];
-  v5 = [(AXVocabularyListController *)self navigationItem];
-  [v5 setRightBarButtonItem:v4];
+  navigationItem = [(AXVocabularyListController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v4];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = AXVocabularyListController;
-  [(AXVocabularyListController *)&v5 viewWillDisappear:a3];
-  v4 = [(AXVocabularyListController *)self navigationController];
-  [v4 setToolbarHidden:1 animated:1];
+  [(AXVocabularyListController *)&v5 viewWillDisappear:disappear];
+  navigationController = [(AXVocabularyListController *)self navigationController];
+  [navigationController setToolbarHidden:1 animated:1];
 
   [(AXVocabularyListController *)self setToolbarItems:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = AXVocabularyListController;
-  [(AXVocabularyListController *)&v4 viewDidDisappear:a3];
+  [(AXVocabularyListController *)&v4 viewDidDisappear:disappear];
   [(AXVocabularyListController *)self setEditing:0 animated:0];
   [(AXVocabularyListController *)self _updateEditButton];
 }
@@ -93,8 +93,8 @@ LABEL_5:
     return;
   }
 
-  v5 = [(AXVocabularyListController *)self items];
-  v6 = [v5 count];
+  items = [(AXVocabularyListController *)self items];
+  v6 = [items count];
 
   if (v6)
   {
@@ -114,13 +114,13 @@ LABEL_5:
   {
     v19 = OBJC_IVAR___PSListController__specifiers;
     v4 = objc_alloc_init(NSMutableArray);
-    v5 = [(AXVocabularyListController *)self items];
+    items = [(AXVocabularyListController *)self items];
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = __40__AXVocabularyListController_specifiers__block_invoke;
     v25[3] = &unk_258908;
     v25[4] = self;
-    v6 = [v5 sortedArrayUsingComparator:v25];
+    v6 = [items sortedArrayUsingComparator:v25];
 
     v23 = 0u;
     v24 = 0u;
@@ -142,9 +142,9 @@ LABEL_5:
           }
 
           v11 = *(*(&v21 + 1) + 8 * i);
-          v12 = [(AXVocabularyListController *)self detailViewControllerClass];
+          detailViewControllerClass = [(AXVocabularyListController *)self detailViewControllerClass];
           v13 = [(AXVocabularyListController *)self textForItem:v11];
-          if (v12)
+          if (detailViewControllerClass)
           {
             v14 = 2;
           }
@@ -154,7 +154,7 @@ LABEL_5:
             v14 = 3;
           }
 
-          v15 = [PSSpecifier preferenceSpecifierNamed:v13 target:self set:0 get:"_detailTextForSpecifier:" detail:v12 cell:v14 edit:0];
+          v15 = [PSSpecifier preferenceSpecifierNamed:v13 target:self set:0 get:"_detailTextForSpecifier:" detail:detailViewControllerClass cell:v14 edit:0];
 
           [v15 setProperty:v11 forKey:@"AXVocabularyListItem"];
           [v4 addObject:v15];
@@ -187,9 +187,9 @@ id __40__AXVocabularyListController_specifiers__block_invoke(uint64_t a1, uint64
   return v9;
 }
 
-- (id)_detailTextForSpecifier:(id)a3
+- (id)_detailTextForSpecifier:(id)specifier
 {
-  v4 = [a3 propertyForKey:@"AXVocabularyListItem"];
+  v4 = [specifier propertyForKey:@"AXVocabularyListItem"];
   v5 = [(AXVocabularyListController *)self detailTextForItem:v4];
 
   return v5;
@@ -203,34 +203,34 @@ id __40__AXVocabularyListController_specifiers__block_invoke(uint64_t a1, uint64
   [(AXVocabularyListController *)self _updateEditButton];
 }
 
-- (void)_handleDoneButtonTapped:(id)a3
+- (void)_handleDoneButtonTapped:(id)tapped
 {
   [(AXVocabularyListController *)self setEditing:0 animated:1];
 
   [(AXVocabularyListController *)self _updateEditButton];
 }
 
-- (void)_handleEditButtonTapped:(id)a3
+- (void)_handleEditButtonTapped:(id)tapped
 {
   [(AXVocabularyListController *)self setEditing:1 animated:1];
 
   [(AXVocabularyListController *)self _updateEditButton];
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v13 = a3;
-  v8 = a5;
-  if (a4 == 1)
+  viewCopy = view;
+  pathCopy = path;
+  if (style == 1)
   {
-    v9 = [(AXVocabularyListController *)self specifierAtIndexPath:v8];
+    v9 = [(AXVocabularyListController *)self specifierAtIndexPath:pathCopy];
     v10 = [v9 propertyForKey:@"AXVocabularyListItem"];
     [(AXVocabularyListController *)self deleteItem:v10];
     [(AXVocabularyListController *)self removeSpecifier:v9 animated:1];
   }
 
-  v11 = [(AXVocabularyListController *)self items];
-  v12 = [v11 count];
+  items = [(AXVocabularyListController *)self items];
+  v12 = [items count];
 
   if (!v12)
   {
@@ -247,7 +247,7 @@ id __40__AXVocabularyListController_specifiers__block_invoke(uint64_t a1, uint64
   return 0;
 }
 
-- (id)textForItem:(id)a3
+- (id)textForItem:(id)item
 {
   OUTLINED_FUNCTION_1_2();
   objc_opt_class();
@@ -256,7 +256,7 @@ id __40__AXVocabularyListController_specifiers__block_invoke(uint64_t a1, uint64
   return &stru_25D420;
 }
 
-- (id)detailTextForItem:(id)a3
+- (id)detailTextForItem:(id)item
 {
   OUTLINED_FUNCTION_1_2();
   objc_opt_class();
@@ -274,7 +274,7 @@ id __40__AXVocabularyListController_specifiers__block_invoke(uint64_t a1, uint64
   return 0;
 }
 
-- (void)deleteItem:(id)a3
+- (void)deleteItem:(id)item
 {
   OUTLINED_FUNCTION_1_2();
   objc_opt_class();

@@ -1,10 +1,10 @@
 @interface ABPKMultiPerson2DTracking
 - (ABPKMultiPerson2DTracking)init;
-- (BOOL)overlayResult:(id)a3 OnImage:(__CVBuffer *)a4 andGenerateOverlayImage:(__CVBuffer *)a5;
-- (BOOL)overlayTrackedBodiesOnImage:(__CVBuffer *)a3 andGenerateOverlayImage:(__CVBuffer *)a4;
-- (CGRect)_rotateBoundingBoxToPortrait:(CGRect)a3 withImageRes:(CGSize)a4;
-- (int)runPoseEstimationWithInput:(__CVBuffer *)a3 abpkDeviceOrientation:(int64_t)a4 atTimeStamp:(double)a5 andOutput:(id)a6;
-- (int)runWithInput:(__CVBuffer *)a3 abpkDeviceOrientation:(int64_t)a4 atTimeStamp:(double)a5 andOutput:(id)a6;
+- (BOOL)overlayResult:(id)result OnImage:(__CVBuffer *)image andGenerateOverlayImage:(__CVBuffer *)overlayImage;
+- (BOOL)overlayTrackedBodiesOnImage:(__CVBuffer *)image andGenerateOverlayImage:(__CVBuffer *)overlayImage;
+- (CGRect)_rotateBoundingBoxToPortrait:(CGRect)portrait withImageRes:(CGSize)res;
+- (int)runPoseEstimationWithInput:(__CVBuffer *)input abpkDeviceOrientation:(int64_t)orientation atTimeStamp:(double)stamp andOutput:(id)output;
+- (int)runWithInput:(__CVBuffer *)input abpkDeviceOrientation:(int64_t)orientation atTimeStamp:(double)stamp andOutput:(id)output;
 @end
 
 @implementation ABPKMultiPerson2DTracking
@@ -93,14 +93,14 @@ LABEL_15:
   return v14;
 }
 
-- (int)runWithInput:(__CVBuffer *)a3 abpkDeviceOrientation:(int64_t)a4 atTimeStamp:(double)a5 andOutput:(id)a6
+- (int)runWithInput:(__CVBuffer *)input abpkDeviceOrientation:(int64_t)orientation atTimeStamp:(double)stamp andOutput:(id)output
 {
   v147 = *MEMORY[0x277D85DE8];
-  v127 = a6;
-  [(ABPKMultiPerson2DTracking *)self _startMultiPerson2DTrackingRunWithInputSignpostWithTimestamp:a5];
+  outputCopy = output;
+  [(ABPKMultiPerson2DTracking *)self _startMultiPerson2DTrackingRunWithInputSignpostWithTimestamp:stamp];
   [(NSMutableArray *)self->_trackedBodies removeAllObjects];
-  [(ABPKPersonIDTracker *)self->_abpkPersonIDTracker runWithInput:a3 atTimeStamp:self->_trackedBodies andOutput:a5];
-  v130 = self;
+  [(ABPKPersonIDTracker *)self->_abpkPersonIDTracker runWithInput:input atTimeStamp:self->_trackedBodies andOutput:stamp];
+  selfCopy = self;
   if ([(NSMutableArray *)self->_trackedBodies count])
   {
     v10 = __ABPKLogSharedInstance();
@@ -110,19 +110,19 @@ LABEL_15:
       _os_log_impl(&dword_23EDDC000, v10, OS_LOG_TYPE_DEBUG, " Found full bodies in the image ", buf, 2u);
     }
 
-    for (i = 0; [(NSMutableArray *)v130->_trackedBodies count]> i; ++i)
+    for (i = 0; [(NSMutableArray *)selfCopy->_trackedBodies count]> i; ++i)
     {
       v12 = __ABPKLogSharedInstance();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
-        v13 = [(NSMutableArray *)v130->_trackedBodies objectAtIndexedSubscript:i];
-        v14 = [v13 objectID];
+        v13 = [(NSMutableArray *)selfCopy->_trackedBodies objectAtIndexedSubscript:i];
+        objectID = [v13 objectID];
         *buf = 134217984;
-        *&buf[4] = v14;
+        *&buf[4] = objectID;
         _os_log_impl(&dword_23EDDC000, v12, OS_LOG_TYPE_DEBUG, " Person Tracking Id: %lu ", buf, 0xCu);
       }
 
-      v15 = [(NSMutableArray *)v130->_trackedBodies objectAtIndexedSubscript:i];
+      v15 = [(NSMutableArray *)selfCopy->_trackedBodies objectAtIndexedSubscript:i];
       [v15 boundingBox];
       v17 = v16;
       v19 = v18;
@@ -146,7 +146,7 @@ LABEL_15:
   }
 
   v129 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v126 = [(ABPKMultiPerson2DTracking *)v130 runPoseEstimationWithInput:a3 abpkDeviceOrientation:a4 atTimeStamp:a5 andOutput:?];
+  v126 = [(ABPKMultiPerson2DTracking *)selfCopy runPoseEstimationWithInput:input abpkDeviceOrientation:orientation atTimeStamp:stamp andOutput:?];
   v25 = __ABPKLogSharedInstance();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
   {
@@ -163,7 +163,7 @@ LABEL_15:
     _os_log_impl(&dword_23EDDC000, v27, OS_LOG_TYPE_DEBUG, " ANST Bounding boxes ", buf, 2u);
   }
 
-  for (j = 0; [(NSMutableArray *)v130->_trackedBodies count]> j; ++j)
+  for (j = 0; [(NSMutableArray *)selfCopy->_trackedBodies count]> j; ++j)
   {
     v29 = __ABPKLogSharedInstance();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
@@ -173,7 +173,7 @@ LABEL_15:
       _os_log_impl(&dword_23EDDC000, v29, OS_LOG_TYPE_DEBUG, " Person: %d ", buf, 8u);
     }
 
-    v30 = [(NSMutableArray *)v130->_trackedBodies objectAtIndexedSubscript:j];
+    v30 = [(NSMutableArray *)selfCopy->_trackedBodies objectAtIndexedSubscript:j];
     [v30 boundingBox];
     printCGRect(v31, v32, v33, v34);
   }
@@ -200,7 +200,7 @@ LABEL_15:
     printCGRect(v39, v40, v41, v42);
   }
 
-  [(ABPKMultiPerson2DTracking *)v130 _startMultiPerson2DTrackingPersonTrackingSignpostWithTimestamp:a5];
+  [(ABPKMultiPerson2DTracking *)selfCopy _startMultiPerson2DTrackingPersonTrackingSignpostWithTimestamp:stamp];
   v43 = __ABPKLogSharedInstance();
   if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
   {
@@ -226,17 +226,17 @@ LABEL_15:
     *&v46 = 0.0;
     *&v47 = NAN;
     v48 = -10000.0;
-    while (v46 < [(NSMutableArray *)v130->_trackedBodies count])
+    while (v46 < [(NSMutableArray *)selfCopy->_trackedBodies count])
     {
       v49 = __ABPKLogSharedInstance();
       if (os_log_type_enabled(v49, OS_LOG_TYPE_DEBUG))
       {
-        v50 = [(NSMutableArray *)v130->_trackedBodies objectAtIndexedSubscript:v46];
-        v51 = [v50 objectID];
+        v50 = [(NSMutableArray *)selfCopy->_trackedBodies objectAtIndexedSubscript:v46];
+        objectID2 = [v50 objectID];
         *v138 = 134218240;
         v139 = *&v46;
         v140 = 2048;
-        v141 = v51;
+        v141 = objectID2;
         _os_log_impl(&dword_23EDDC000, v49, OS_LOG_TYPE_DEBUG, " \t Comparing with ANST tracked body %lu with objec-id: %lu ", v138, 0x16u);
       }
 
@@ -244,8 +244,8 @@ LABEL_15:
       v132 = 0;
       v133 = 0;
       std::vector<unsigned long>::__init_with_size[abi:ne200100]<unsigned long *,unsigned long *>(&__p, __src, v135, (v135 - __src) >> 3);
-      v52 = [(NSMutableArray *)v130->_trackedBodies objectAtIndexedSubscript:v46];
-      v53 = [v52 objectID];
+      v52 = [(NSMutableArray *)selfCopy->_trackedBodies objectAtIndexedSubscript:v46];
+      objectID3 = [v52 objectID];
       if (v132 == __p)
       {
         v56 = 0;
@@ -264,7 +264,7 @@ LABEL_15:
           v55 = (v132 - __p) >> 3;
         }
 
-        if (*__p == v53)
+        if (*__p == objectID3)
         {
           v56 = 1;
         }
@@ -283,7 +283,7 @@ LABEL_15:
             v59 = *(__p + v57++);
           }
 
-          while (v59 != v53);
+          while (v59 != objectID3);
           v56 = v58 < v54;
         }
       }
@@ -312,7 +312,7 @@ LABEL_15:
       v65 = v64;
       v67 = v66;
       v69 = v68;
-      v70 = [(NSMutableArray *)v130->_trackedBodies objectAtIndexedSubscript:v46];
+      v70 = [(NSMutableArray *)selfCopy->_trackedBodies objectAtIndexedSubscript:v46];
       [v70 boundingBox];
       v75 = computeIOUbetweenRects(v63, v65, v67, v69, v71, v72, v73, v74);
 
@@ -326,7 +326,7 @@ LABEL_15:
 
       if (v75 > v48)
       {
-        v60 = [(NSMutableArray *)v130->_trackedBodies objectAtIndexedSubscript:v46];
+        v60 = [(NSMutableArray *)selfCopy->_trackedBodies objectAtIndexedSubscript:v46];
         *&v47 = COERCE_DOUBLE([v60 objectID]);
         v48 = v75;
 LABEL_57:
@@ -345,7 +345,7 @@ LABEL_57:
 
     if (v48 >= 0.0)
     {
-      v79 = v130;
+      v79 = selfCopy;
       if (*&v47 == NAN)
       {
         goto LABEL_66;
@@ -361,7 +361,7 @@ LABEL_57:
         _os_log_impl(&dword_23EDDC000, v78, OS_LOG_TYPE_DEBUG, " IOU is lower than threshold. No closest human found from the previous frame. Assigning new tracking id ", v138, 2u);
       }
 
-      v79 = v130;
+      v79 = selfCopy;
 LABEL_66:
       v47 = v79->_lastTrackingId + 1;
       v79->_lastTrackingId = v47;
@@ -427,15 +427,15 @@ LABEL_66:
 
     v135 = v82;
     v91 = [v129 objectAtIndexedSubscript:v44];
-    v92 = [v91 skeletonDefinition];
-    v93 = [v92 jointCount];
+    skeletonDefinition = [v91 skeletonDefinition];
+    jointCount = [skeletonDefinition jointCount];
 
     v94 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v95 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v96 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    if (v93)
+    if (jointCount)
     {
-      for (m = 0; m != v93; ++m)
+      for (m = 0; m != jointCount; ++m)
       {
         v98 = [v129 objectAtIndexedSubscript:v44];
         v128 = *([v98 keypoints2d] + 8 * m);
@@ -467,7 +467,7 @@ LABEL_66:
     ++v44;
   }
 
-  [(ABPKMultiPerson2DTracking *)v130 _endMultiPerson2DTrackingPersonTrackingSignpostWithTimestamp:a5];
+  [(ABPKMultiPerson2DTracking *)selfCopy _endMultiPerson2DTrackingPersonTrackingSignpostWithTimestamp:stamp];
   v110 = __ABPKLogSharedInstance();
   if (os_log_type_enabled(v110, OS_LOG_TYPE_DEBUG))
   {
@@ -484,13 +484,13 @@ LABEL_66:
       _os_log_impl(&dword_23EDDC000, v111, OS_LOG_TYPE_ERROR, " Pose not valid. Skipping ", v138, 2u);
     }
 
-    previousMultiPerson2DResult = v130->_previousMultiPerson2DResult;
-    v130->_previousMultiPerson2DResult = 0;
+    previousMultiPerson2DResult = selfCopy->_previousMultiPerson2DResult;
+    selfCopy->_previousMultiPerson2DResult = 0;
 
     v113 = __ABPKLogSharedInstance();
     if (os_log_type_enabled(v113, OS_LOG_TYPE_DEBUG))
     {
-      *&v114 = COERCE_DOUBLE([(NSMutableArray *)v130->_previousMultiPerson2DResult count]);
+      *&v114 = COERCE_DOUBLE([(NSMutableArray *)selfCopy->_previousMultiPerson2DResult count]);
       *v138 = 134217984;
       v139 = *&v114;
       _os_log_impl(&dword_23EDDC000, v113, OS_LOG_TYPE_DEBUG, " _previousMultiPerson2DResult count: %lu ", v138, 0xCu);
@@ -507,23 +507,23 @@ LABEL_66:
       v118 = *(*buf + 8 * n);
       v119 = objc_alloc_init(ABPKSinglePerson2DResult);
       [(ABPKSinglePerson2DResult *)v119 set2dSkeleton:v117 isPoseValid:1 trackingId:v118];
-      [v127 addObject:v119];
+      [outputCopy addObject:v119];
     }
 
-    v120 = [v127 mutableCopy];
-    v121 = v130->_previousMultiPerson2DResult;
-    v130->_previousMultiPerson2DResult = v120;
+    v120 = [outputCopy mutableCopy];
+    v121 = selfCopy->_previousMultiPerson2DResult;
+    selfCopy->_previousMultiPerson2DResult = v120;
 
     v122 = __ABPKLogSharedInstance();
     if (os_log_type_enabled(v122, OS_LOG_TYPE_DEBUG))
     {
-      *&v123 = COERCE_DOUBLE([(NSMutableArray *)v130->_previousMultiPerson2DResult count]);
+      *&v123 = COERCE_DOUBLE([(NSMutableArray *)selfCopy->_previousMultiPerson2DResult count]);
       *v138 = 134217984;
       v139 = *&v123;
       _os_log_impl(&dword_23EDDC000, v122, OS_LOG_TYPE_DEBUG, " _previousMultiPerson2DResult count: %lu ", v138, 0xCu);
     }
 
-    [(ABPKMultiPerson2DTracking *)v130 _endMultiPerson2DTrackingRunWithInputSignpostWithTimestamp:a5];
+    [(ABPKMultiPerson2DTracking *)selfCopy _endMultiPerson2DTrackingRunWithInputSignpostWithTimestamp:stamp];
     v115 = 0;
   }
 
@@ -543,13 +543,13 @@ LABEL_66:
   return v115;
 }
 
-- (int)runPoseEstimationWithInput:(__CVBuffer *)a3 abpkDeviceOrientation:(int64_t)a4 atTimeStamp:(double)a5 andOutput:(id)a6
+- (int)runPoseEstimationWithInput:(__CVBuffer *)input abpkDeviceOrientation:(int64_t)orientation atTimeStamp:(double)stamp andOutput:(id)output
 {
   v45 = *MEMORY[0x277D85DE8];
-  v10 = a6;
-  [(ABPKMultiPerson2DTracking *)self _startMultiPerson2DTrackingImagePreProcessingSignpostWithTimestamp:a5];
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  outputCopy = output;
+  [(ABPKMultiPerson2DTracking *)self _startMultiPerson2DTrackingImagePreProcessingSignpostWithTimestamp:stamp];
+  Width = CVPixelBufferGetWidth(input);
+  Height = CVPixelBufferGetHeight(input);
   v13 = __ABPKLogSharedInstance();
   v14 = Width;
   v15 = Height;
@@ -562,13 +562,13 @@ LABEL_66:
     _os_log_impl(&dword_23EDDC000, v13, OS_LOG_TYPE_DEBUG, " Sensor image resolution: (height,width):(%f,%f) ", buf, 0x16u);
   }
 
-  if ([(ABPK2DDetectionConfiguration *)self->_config2D abpkDeviceOrientation]!= a4)
+  if ([(ABPK2DDetectionConfiguration *)self->_config2D abpkDeviceOrientation]!= orientation)
   {
     v16 = __ABPKLogSharedInstance();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
       v17 = convertABPKDeviceOrientationEnumToString([(ABPK2DDetectionConfiguration *)self->_config2D abpkDeviceOrientation]);
-      convertABPKDeviceOrientationEnumToString(a4);
+      convertABPKDeviceOrientationEnumToString(orientation);
       v18 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
       *buf = 138412546;
       *&buf[4] = v17;
@@ -577,7 +577,7 @@ LABEL_66:
       _os_log_impl(&dword_23EDDC000, v16, OS_LOG_TYPE_DEBUG, " Device orientation changed from %@ to %@ ", buf, 0x16u);
     }
 
-    [(ABPK2DDetectionConfiguration *)self->_config2D setAbpkDeviceOrientation:a4];
+    [(ABPK2DDetectionConfiguration *)self->_config2D setAbpkDeviceOrientation:orientation];
   }
 
   [ABPK2DMLModelConfigSelector inputDimensionsForModelWithABPKNetworkConfig:self->_config2D];
@@ -622,12 +622,12 @@ LABEL_21:
 
     else
     {
-      v32 = [(ABPKImagePreProcessing *)v25 preprocessData:a3 outputBuffer:*buf];
+      v32 = [(ABPKImagePreProcessing *)v25 preprocessData:input outputBuffer:*buf];
       [(ABPKImagePreProcessing *)v25 logProfilingDetails];
       if (!v32)
       {
-        [(ABPKMultiPerson2DTracking *)self _endMultiPerson2DTrackingImagePreProcessingSignpostWithTimestamp:a5];
-        [(ABPKMultiPerson2DTracking *)self _startMultiPerson2DTracking2DDetectionMLSignpostWithTimestamp:a5];
+        [(ABPKMultiPerson2DTracking *)self _endMultiPerson2DTrackingImagePreProcessingSignpostWithTimestamp:stamp];
+        [(ABPKMultiPerson2DTracking *)self _startMultiPerson2DTracking2DDetectionMLSignpostWithTimestamp:stamp];
         v35 = __ABPKLogSharedInstance();
         if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
         {
@@ -643,7 +643,7 @@ LABEL_21:
         }
 
         v37 = [ABPKMLImageData alloc];
-        v28 = [(ABPKMLImageData *)v37 initWithPixelBuffer:*buf timestamp:a4 abpkDeviceOrientation:v24 preprocessingParameters:a5];
+        v28 = [(ABPKMLImageData *)v37 initWithPixelBuffer:*buf timestamp:orientation abpkDeviceOrientation:v24 preprocessingParameters:stamp];
         if ([(ABPK2DPoseEstimation *)self->_poseEstimation2D runWithMLImageData:v28 rotationOfResultTensor:0]== -6661)
         {
           v38 = __ABPKLogSharedInstance();
@@ -658,9 +658,9 @@ LABEL_21:
 
         else
         {
-          [(ABPK2DPoseEstimation *)self->_poseEstimation2D getRawTrackedHumanSkeletonVector:v10];
+          [(ABPK2DPoseEstimation *)self->_poseEstimation2D getRawTrackedHumanSkeletonVector:outputCopy];
           CVPixelBufferRelease(*buf);
-          [(ABPKMultiPerson2DTracking *)self _endMultiPerson2DTracking2DDetectionPostProcessingSignpostWithTimestamp:a5];
+          [(ABPKMultiPerson2DTracking *)self _endMultiPerson2DTracking2DDetectionPostProcessingSignpostWithTimestamp:stamp];
           v31 = 0;
         }
 
@@ -696,13 +696,13 @@ LABEL_24:
   return v31;
 }
 
-- (CGRect)_rotateBoundingBoxToPortrait:(CGRect)a3 withImageRes:(CGSize)a4
+- (CGRect)_rotateBoundingBoxToPortrait:(CGRect)portrait withImageRes:(CGSize)res
 {
-  width = a3.size.width;
-  v5 = a4.width * 0.5 - (a3.origin.y - a4.width * 0.5);
-  v6 = a4.height * 0.5 + a3.origin.x - a4.height * 0.5;
-  v7 = v5 - a3.size.height;
-  height = a3.size.height;
+  width = portrait.size.width;
+  v5 = res.width * 0.5 - (portrait.origin.y - res.width * 0.5);
+  v6 = res.height * 0.5 + portrait.origin.x - res.height * 0.5;
+  v7 = v5 - portrait.size.height;
+  height = portrait.size.height;
   v9 = width;
   result.size.height = v9;
   result.size.width = height;
@@ -711,7 +711,7 @@ LABEL_24:
   return result;
 }
 
-- (BOOL)overlayTrackedBodiesOnImage:(__CVBuffer *)a3 andGenerateOverlayImage:(__CVBuffer *)a4
+- (BOOL)overlayTrackedBodiesOnImage:(__CVBuffer *)image andGenerateOverlayImage:(__CVBuffer *)overlayImage
 {
   v47[1] = *MEMORY[0x277D85DE8];
   *buf = xmmword_23EE281B0;
@@ -734,8 +734,8 @@ LABEL_24:
   v35 = 0;
   __p = 0;
   _ZNSt3__16vectorIDv3_iNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPKS1_S7_EEvT_T0_m(&__p, buf, v47, 0xCuLL);
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  Width = CVPixelBufferGetWidth(image);
+  Height = CVPixelBufferGetHeight(image);
   v11 = __ABPKLogSharedInstance();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -755,15 +755,15 @@ LABEL_24:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
       v15 = [(NSMutableArray *)self->_trackedBodies objectAtIndexedSubscript:v12];
-      v16 = [v15 objectID];
+      objectID = [v15 objectID];
       *buf = v31;
-      *&buf[4] = v16;
+      *&buf[4] = objectID;
       _os_log_impl(&dword_23EDDC000, v14, OS_LOG_TYPE_DEBUG, " \x10Overlaying result for Tracked Body with iD: %lu ", buf, 0xCu);
     }
 
     v17 = [(NSMutableArray *)self->_trackedBodies objectAtIndexedSubscript:v12];
-    v18 = [v17 objectID];
-    v32 = *(__p + v18 % ((v34 - __p) >> 4));
+    objectID2 = [v17 objectID];
+    v32 = *(__p + objectID2 % ((v34 - __p) >> 4));
 
     v19 = [(NSMutableArray *)self->_trackedBodies objectAtIndexedSubscript:v12];
     [v19 boundingBox];
@@ -774,15 +774,15 @@ LABEL_24:
 
     if (v12)
     {
-      v28 = a4;
+      imageCopy = overlayImage;
     }
 
     else
     {
-      v28 = a3;
+      imageCopy = image;
     }
 
-    overlay2dBoundingBox(v28, a4, v21, v23, v25, v27, *&v32);
+    overlay2dBoundingBox(imageCopy, overlayImage, v21, v23, v25, v27, *&v32);
     ++v12;
   }
 
@@ -796,10 +796,10 @@ LABEL_24:
   return 1;
 }
 
-- (BOOL)overlayResult:(id)a3 OnImage:(__CVBuffer *)a4 andGenerateOverlayImage:(__CVBuffer *)a5
+- (BOOL)overlayResult:(id)result OnImage:(__CVBuffer *)image andGenerateOverlayImage:(__CVBuffer *)overlayImage
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  resultCopy = result;
   *buf = xmmword_23EE281B0;
   v23 = xmmword_23EE281C0;
   *&v8 = 255;
@@ -823,7 +823,7 @@ LABEL_24:
   v10 = 0;
   *&v11 = 134217984;
   v18 = v11;
-  while (v10 < [v7 count])
+  while (v10 < [resultCopy count])
   {
     v12 = __ABPKLogSharedInstance();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -833,19 +833,19 @@ LABEL_24:
       _os_log_impl(&dword_23EDDC000, v12, OS_LOG_TYPE_DEBUG, " \x10Overlaying result for Person: %lu ", buf, 0xCu);
     }
 
-    v13 = [v7 objectAtIndexedSubscript:v10];
-    v14 = [v13 trackingId];
+    v13 = [resultCopy objectAtIndexedSubscript:v10];
+    trackingId = [v13 trackingId];
     if (v10)
     {
-      v15 = a5;
+      imageCopy = overlayImage;
     }
 
     else
     {
-      v15 = a4;
+      imageCopy = image;
     }
 
-    [v13 overlayResultOnImage:v15 withResult:a5 withColor:*(__p + 2 * (v14 % ((v20 - __p) >> 4)))];
+    [v13 overlayResultOnImage:imageCopy withResult:overlayImage withColor:*(__p + 2 * (trackingId % ((v20 - __p) >> 4)))];
 
     ++v10;
   }

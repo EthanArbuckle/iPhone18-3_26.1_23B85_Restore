@@ -1,31 +1,31 @@
 @interface CNContactStoreFetchExecutor
 - (CNContactStoreFetchExecutor)init;
-- (CNContactStoreFetchExecutor)initWithContactStore:(id)a3;
-- (id)countForFetchRequest:(id)a3;
-- (id)executeFetchRequest:(id)a3;
-- (void)visitChangeHistoryFetchRequest:(id)a3;
-- (void)visitContactFetchRequest:(id)a3;
+- (CNContactStoreFetchExecutor)initWithContactStore:(id)store;
+- (id)countForFetchRequest:(id)request;
+- (id)executeFetchRequest:(id)request;
+- (void)visitChangeHistoryFetchRequest:(id)request;
+- (void)visitContactFetchRequest:(id)request;
 @end
 
 @implementation CNContactStoreFetchExecutor
 
 - (CNContactStoreFetchExecutor)init
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNInitializerUnavailableException();
   objc_exception_throw(v3);
 }
 
-- (CNContactStoreFetchExecutor)initWithContactStore:(id)a3
+- (CNContactStoreFetchExecutor)initWithContactStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v11.receiver = self;
   v11.super_class = CNContactStoreFetchExecutor;
   v6 = [(CNContactStoreFetchExecutor *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_store, a3);
+    objc_storeStrong(&v6->_store, store);
     v8 = v7->_result;
     v7->_result = 0;
 
@@ -35,44 +35,44 @@
   return v7;
 }
 
-- (id)executeFetchRequest:(id)a3
+- (id)executeFetchRequest:(id)request
 {
-  [a3 acceptVisitor:self];
-  v5 = [(CNContactStoreFetchExecutor *)self result];
-  if (!v5)
+  [request acceptVisitor:self];
+  result = [(CNContactStoreFetchExecutor *)self result];
+  if (!result)
   {
     v6 = MEMORY[0x1E6996810];
-    v7 = [(CNContactStoreFetchExecutor *)self store];
-    v8 = [CNErrorFactory errorObject:v7 doesNotImplementSelector:a2];
-    v5 = [v6 failureWithError:v8];
+    store = [(CNContactStoreFetchExecutor *)self store];
+    v8 = [CNErrorFactory errorObject:store doesNotImplementSelector:a2];
+    result = [v6 failureWithError:v8];
   }
 
-  return v5;
+  return result;
 }
 
-- (id)countForFetchRequest:(id)a3
+- (id)countForFetchRequest:(id)request
 {
-  [a3 acceptVisitor:self];
-  v5 = [(CNContactStoreFetchExecutor *)self result];
-  if (!v5)
+  [request acceptVisitor:self];
+  result = [(CNContactStoreFetchExecutor *)self result];
+  if (!result)
   {
     v6 = MEMORY[0x1E6996810];
-    v7 = [(CNContactStoreFetchExecutor *)self store];
-    v8 = [CNErrorFactory errorObject:v7 doesNotImplementSelector:a2];
-    v5 = [v6 failureWithError:v8];
+    store = [(CNContactStoreFetchExecutor *)self store];
+    v8 = [CNErrorFactory errorObject:store doesNotImplementSelector:a2];
+    result = [v6 failureWithError:v8];
   }
 
-  return v5;
+  return result;
 }
 
-- (void)visitContactFetchRequest:(id)a3
+- (void)visitContactFetchRequest:(id)request
 {
-  v4 = a3;
-  v5 = [[CNAPITriageSession alloc] initWithRequest:v4];
+  requestCopy = request;
+  v5 = [[CNAPITriageSession alloc] initWithRequest:requestCopy];
   [(CNAPITriageSession *)v5 open];
   v6 = [CNContactFetchExecutor alloc];
-  v7 = [(CNContactStoreFetchExecutor *)self store];
-  v8 = [(CNContactFetchExecutor *)v6 initWithRequest:v4 store:v7];
+  store = [(CNContactStoreFetchExecutor *)self store];
+  v8 = [(CNContactFetchExecutor *)v6 initWithRequest:requestCopy store:store];
 
   v14 = 0;
   v9 = [(CNContactFetchExecutor *)v8 run:&v14];
@@ -81,16 +81,16 @@
   result = self->_result;
   self->_result = v11;
 
-  v13 = [v9 value];
-  [(CNAPITriageSession *)v5 closeWithContacts:v13 orError:v10];
+  value = [v9 value];
+  [(CNAPITriageSession *)v5 closeWithContacts:value orError:v10];
 }
 
-- (void)visitChangeHistoryFetchRequest:(id)a3
+- (void)visitChangeHistoryFetchRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = [CNChangeHistoryFetchExecutor alloc];
-  v6 = [(CNContactStoreFetchExecutor *)self store];
-  v7 = [(CNChangeHistoryFetchExecutor *)v5 initWithRequest:v4 store:v6];
+  store = [(CNContactStoreFetchExecutor *)self store];
+  v7 = [(CNChangeHistoryFetchExecutor *)v5 initWithRequest:requestCopy store:store];
 
   v12 = 0;
   v8 = [(CNChangeHistoryFetchExecutor *)v7 run:&v12];

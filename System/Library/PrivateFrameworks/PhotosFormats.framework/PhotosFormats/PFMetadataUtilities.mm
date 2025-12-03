@@ -1,28 +1,28 @@
 @interface PFMetadataUtilities
-+ (BOOL)addMakerApplePropertyWithKey:(id)a3 value:(id)a4 toProperties:(id)a5;
-+ (BOOL)addQuickTimeMetadataItemsWithIdentifier:(id)a3 value:(id)a4 toItems:(id)a5;
-+ (id)itemsByRemovingMetadataItemForIdentifier:(id)a3 fromArray:(id)a4;
-+ (id)mutableImagePropertyDictionaryForMetadata:(id)a3;
++ (BOOL)addMakerApplePropertyWithKey:(id)key value:(id)value toProperties:(id)properties;
++ (BOOL)addQuickTimeMetadataItemsWithIdentifier:(id)identifier value:(id)value toItems:(id)items;
++ (id)itemsByRemovingMetadataItemForIdentifier:(id)identifier fromArray:(id)array;
++ (id)mutableImagePropertyDictionaryForMetadata:(id)metadata;
 @end
 
 @implementation PFMetadataUtilities
 
-+ (id)mutableImagePropertyDictionaryForMetadata:(id)a3
++ (id)mutableImagePropertyDictionaryForMetadata:(id)metadata
 {
-  v3 = [a3 cgImageProperties];
-  v4 = [v3 mutableCopy];
+  cgImageProperties = [metadata cgImageProperties];
+  v4 = [cgImageProperties mutableCopy];
 
   return v4;
 }
 
-+ (id)itemsByRemovingMetadataItemForIdentifier:(id)a3 fromArray:(id)a4
++ (id)itemsByRemovingMetadataItemForIdentifier:(id)identifier fromArray:(id)array
 {
-  v5 = a4;
-  v6 = [MEMORY[0x1E6987FE0] metadataItemsFromArray:v5 filteredByIdentifier:a3];
-  v7 = v5;
+  arrayCopy = array;
+  v6 = [MEMORY[0x1E6987FE0] metadataItemsFromArray:arrayCopy filteredByIdentifier:identifier];
+  v7 = arrayCopy;
   if ([v6 count])
   {
-    v8 = [v5 mutableCopy];
+    v8 = [arrayCopy mutableCopy];
     [v8 removeObjectsInArray:v6];
     v7 = [v8 copy];
   }
@@ -30,23 +30,23 @@
   return v7;
 }
 
-+ (BOOL)addQuickTimeMetadataItemsWithIdentifier:(id)a3 value:(id)a4 toItems:(id)a5
++ (BOOL)addQuickTimeMetadataItemsWithIdentifier:(id)identifier value:(id)value toItems:(id)items
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 count];
-  v11 = [MEMORY[0x1E6988050] metadataItem];
-  [v11 setIdentifier:v7];
-  [v11 setValue:v8];
-  if (v11)
+  identifierCopy = identifier;
+  valueCopy = value;
+  itemsCopy = items;
+  v10 = [itemsCopy count];
+  metadataItem = [MEMORY[0x1E6988050] metadataItem];
+  [metadataItem setIdentifier:identifierCopy];
+  [metadataItem setValue:valueCopy];
+  if (metadataItem)
   {
-    [v9 addObject:v11];
+    [itemsCopy addObject:metadataItem];
     ++v10;
   }
 
   v12 = +[PFMetadataIdentifier quickTimeMetadataVariationIdentifier];
-  if (![v7 isEqualToString:v12])
+  if (![identifierCopy isEqualToString:v12])
   {
     goto LABEL_11;
   }
@@ -57,13 +57,13 @@
     goto LABEL_11;
   }
 
-  if ([v8 isEqualToNumber:&unk_1F2AAB578])
+  if ([valueCopy isEqualToNumber:&unk_1F2AAB578])
   {
 
     goto LABEL_8;
   }
 
-  v13 = [v8 isEqualToNumber:&unk_1F2AAB590];
+  v13 = [valueCopy isEqualToNumber:&unk_1F2AAB590];
 
   if (v13)
   {
@@ -78,7 +78,7 @@ LABEL_8:
 
     if (v12)
     {
-      [v9 addObject:v12];
+      [itemsCopy addObject:v12];
       v10 = 3;
     }
 
@@ -90,42 +90,42 @@ LABEL_8:
 LABEL_11:
   }
 
-  v15 = [v9 count] == v10;
+  v15 = [itemsCopy count] == v10;
 
   return v15;
 }
 
-+ (BOOL)addMakerApplePropertyWithKey:(id)a3 value:(id)a4 toProperties:(id)a5
++ (BOOL)addMakerApplePropertyWithKey:(id)key value:(id)value toProperties:(id)properties
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  keyCopy = key;
+  valueCopy = value;
+  propertiesCopy = properties;
   v10 = *MEMORY[0x1E696DE30];
-  v11 = [v9 objectForKeyedSubscript:*MEMORY[0x1E696DE30]];
-  v12 = [v11 mutableCopy];
+  v11 = [propertiesCopy objectForKeyedSubscript:*MEMORY[0x1E696DE30]];
+  dictionary = [v11 mutableCopy];
 
-  if (!v12)
+  if (!dictionary)
   {
-    v12 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
-  [v9 setObject:v12 forKeyedSubscript:v10];
+  [propertiesCopy setObject:dictionary forKeyedSubscript:v10];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ([v8 isEqualToString:&stru_1F2A8EB68] & 1) == 0)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ([valueCopy isEqualToString:&stru_1F2A8EB68] & 1) == 0)
   {
-    if (v8)
+    if (valueCopy)
     {
-      [v12 setObject:v8 forKeyedSubscript:v7];
+      [dictionary setObject:valueCopy forKeyedSubscript:keyCopy];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E695DFB0] null];
-      [v12 setObject:v13 forKeyedSubscript:v7];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:keyCopy];
     }
   }
 
-  v14 = [v12 objectForKeyedSubscript:v7];
+  v14 = [dictionary objectForKeyedSubscript:keyCopy];
   v15 = v14 != 0;
 
   return v15;

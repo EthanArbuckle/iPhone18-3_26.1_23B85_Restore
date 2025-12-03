@@ -1,6 +1,6 @@
 @interface TSTCellRegionColMajorIterator
 - ($2F2D2FE54C0B9D2AA4EBD8788136C7D0)getNext;
-- (TSTCellRegionColMajorIterator)initWithCellRegion:(id)a3;
+- (TSTCellRegionColMajorIterator)initWithCellRegion:(id)region;
 - (id).cxx_construct;
 - (void)dealloc;
 - (void)terminate;
@@ -8,7 +8,7 @@
 
 @implementation TSTCellRegionColMajorIterator
 
-- (TSTCellRegionColMajorIterator)initWithCellRegion:(id)a3
+- (TSTCellRegionColMajorIterator)initWithCellRegion:(id)region
 {
   v7.receiver = self;
   v7.super_class = TSTCellRegionColMajorIterator;
@@ -16,8 +16,8 @@
   v5 = v4;
   if (v4)
   {
-    [a3 fillCellRangeColMajorSet:&v4->mCellRangeSet leftToRight:1];
-    v5->mBoundingCellRange = [a3 boundingCellRange];
+    [region fillCellRangeColMajorSet:&v4->mCellRangeSet leftToRight:1];
+    v5->mBoundingCellRange = [region boundingCellRange];
     v5->mCellID = *(v5->mCellRangeSet.__tree_.__begin_node_ + 26);
   }
 

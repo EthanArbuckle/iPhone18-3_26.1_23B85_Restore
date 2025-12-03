@@ -1,29 +1,29 @@
 @interface PGGraphMemoriesEnrichmentProcessor
 + (id)categoriesOfMemoriesToPrioritize;
-- (BOOL)runWithGraphManager:(id)a3 incrementalChange:(id)a4 progressReporter:(id)a5 error:(id *)a6;
-- (PGGraphMemoriesEnrichmentProcessor)initWithNumberOfMemoriesToEnrich:(unint64_t)a3;
-- (id)_memoryNodesSortedForEnrichment:(id)a3 localMemoryByUniqueIdentifier:(id)a4 graph:(id)a5;
-- (id)enrichMemoryNodes:(id)a3 localMemoryByUniqueIdentifier:(id)a4 workingContext:(id)a5 graph:(id)a6 progressReporter:(id)a7;
-- (id)enrichedMemoryFromMemoryNode:(id)a3 atCreationDate:(id)a4 configuration:(id)a5 curationContext:(id)a6 enrichedMemoryFactory:(id)a7 graph:(id)a8 progressReporter:(id)a9;
-- (id)runWithGraphManager:(id)a3 forMemoryCategory:(unint64_t)a4 progressReporter:(id)a5 error:(id *)a6;
-- (id)runWithGraphManager:(id)a3 forMemoryUUIDs:(id)a4 progressReporter:(id)a5 error:(id *)a6;
-- (id)sortedMemoryNodesToEnrichForIncrementalForMemoryNodes:(id)a3 localMemoryByUniqueIdentifier:(id)a4 graph:(id)a5;
-- (id)sortedMemoryNodesToEnrichForMemoryNodes:(id)a3 localMemoryByUniqueIdentifier:(id)a4 graph:(id)a5;
-- (id)uniqueMemoryIdentifiersToPrioritizeWithGraph:(id)a3;
-- (unint64_t)_targetNumberOfMemoriesToEnrichWithPhotoLibrary:(id)a3;
-- (void)deleteNoLongerExistingMemoryNodes:(id)a3 fromLocalMemoryByUniqueIdentifier:(id)a4 inPhotoLibrary:(id)a5 progressReporter:(id)a6;
-- (void)insertOrUpdateLocalMemoriesForEnrichedMemories:(id)a3 localMemoryByUniqueIdentifier:(id)a4 memoryPersister:(id)a5 progressReporter:(id)a6;
+- (BOOL)runWithGraphManager:(id)manager incrementalChange:(id)change progressReporter:(id)reporter error:(id *)error;
+- (PGGraphMemoriesEnrichmentProcessor)initWithNumberOfMemoriesToEnrich:(unint64_t)enrich;
+- (id)_memoryNodesSortedForEnrichment:(id)enrichment localMemoryByUniqueIdentifier:(id)identifier graph:(id)graph;
+- (id)enrichMemoryNodes:(id)nodes localMemoryByUniqueIdentifier:(id)identifier workingContext:(id)context graph:(id)graph progressReporter:(id)reporter;
+- (id)enrichedMemoryFromMemoryNode:(id)node atCreationDate:(id)date configuration:(id)configuration curationContext:(id)context enrichedMemoryFactory:(id)factory graph:(id)graph progressReporter:(id)reporter;
+- (id)runWithGraphManager:(id)manager forMemoryCategory:(unint64_t)category progressReporter:(id)reporter error:(id *)error;
+- (id)runWithGraphManager:(id)manager forMemoryUUIDs:(id)ds progressReporter:(id)reporter error:(id *)error;
+- (id)sortedMemoryNodesToEnrichForIncrementalForMemoryNodes:(id)nodes localMemoryByUniqueIdentifier:(id)identifier graph:(id)graph;
+- (id)sortedMemoryNodesToEnrichForMemoryNodes:(id)nodes localMemoryByUniqueIdentifier:(id)identifier graph:(id)graph;
+- (id)uniqueMemoryIdentifiersToPrioritizeWithGraph:(id)graph;
+- (unint64_t)_targetNumberOfMemoriesToEnrichWithPhotoLibrary:(id)library;
+- (void)deleteNoLongerExistingMemoryNodes:(id)nodes fromLocalMemoryByUniqueIdentifier:(id)identifier inPhotoLibrary:(id)library progressReporter:(id)reporter;
+- (void)insertOrUpdateLocalMemoriesForEnrichedMemories:(id)memories localMemoryByUniqueIdentifier:(id)identifier memoryPersister:(id)persister progressReporter:(id)reporter;
 @end
 
 @implementation PGGraphMemoriesEnrichmentProcessor
 
-- (void)insertOrUpdateLocalMemoriesForEnrichedMemories:(id)a3 localMemoryByUniqueIdentifier:(id)a4 memoryPersister:(id)a5 progressReporter:(id)a6
+- (void)insertOrUpdateLocalMemoriesForEnrichedMemories:(id)memories localMemoryByUniqueIdentifier:(id)identifier memoryPersister:(id)persister progressReporter:(id)reporter
 {
   v53 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v39 = a5;
-  v41 = a6;
+  memoriesCopy = memories;
+  identifierCopy = identifier;
+  persisterCopy = persister;
+  reporterCopy = reporter;
   v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v42 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -31,7 +31,7 @@
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v13 = v9;
+  v13 = memoriesCopy;
   v14 = [v13 countByEnumeratingWithState:&v44 objects:v52 count:16];
   if (v14)
   {
@@ -47,8 +47,8 @@
         }
 
         v18 = *(*(&v44 + 1) + 8 * i);
-        v19 = [v18 uniqueMemoryIdentifier];
-        v20 = [v10 objectForKeyedSubscript:v19];
+        uniqueMemoryIdentifier = [v18 uniqueMemoryIdentifier];
+        v20 = [identifierCopy objectForKeyedSubscript:uniqueMemoryIdentifier];
 
         v21 = v11;
         if (v20)
@@ -70,7 +70,7 @@
     while (v15);
   }
 
-  v24 = [objc_alloc(MEMORY[0x277D22C88]) initWithProgressReporter:v41];
+  v24 = [objc_alloc(MEMORY[0x277D22C88]) initWithProgressReporter:reporterCopy];
   v25 = [v24 childProgressReporterToCheckpoint:0.5];
   v26 = [v24 childProgressReporterToCheckpoint:1.0];
   v27 = [v11 count];
@@ -80,7 +80,7 @@
     v37 = v26;
     v38 = v25;
     v43 = 0;
-    v29 = [v39 persistLocalMemoriesFromEnrichedMemories:v11 localMemoriesToDelete:v42 progressReporter:v25 error:&v43];
+    v29 = [persisterCopy persistLocalMemoriesFromEnrichedMemories:v11 localMemoriesToDelete:v42 progressReporter:v25 error:&v43];
     v30 = v43;
     loggingConnection = self->_loggingConnection;
     if (v29)
@@ -110,7 +110,7 @@
   if (v32)
   {
     v33 = v32;
-    v34 = [v39 updateExistingMemories:v12 localMemoryByUniqueIdentifier:v10 progressReporter:v26];
+    v34 = [persisterCopy updateExistingMemories:v12 localMemoryByUniqueIdentifier:identifierCopy progressReporter:v26];
     v35 = self->_loggingConnection;
     if (v34)
     {
@@ -133,40 +133,40 @@
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteNoLongerExistingMemoryNodes:(id)a3 fromLocalMemoryByUniqueIdentifier:(id)a4 inPhotoLibrary:(id)a5 progressReporter:(id)a6
+- (void)deleteNoLongerExistingMemoryNodes:(id)nodes fromLocalMemoryByUniqueIdentifier:(id)identifier inPhotoLibrary:(id)library progressReporter:(id)reporter
 {
   v50 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nodesCopy = nodes;
+  identifierCopy = identifier;
+  libraryCopy = library;
+  reporterCopy = reporter;
   v39 = 0;
   v40 = &v39;
   v41 = 0x2020000000;
   v42 = 0;
-  if ([v11 count])
+  if ([identifierCopy count])
   {
     *v47 = 0;
     *&v48 = v47;
     *(&v48 + 1) = 0x2020000000;
     v49 = 0;
-    v14 = [v11 count];
-    v15 = [v10 uniqueMemoryIdentifiers];
+    v14 = [identifierCopy count];
+    uniqueMemoryIdentifiers = [nodesCopy uniqueMemoryIdentifiers];
     v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __138__PGGraphMemoriesEnrichmentProcessor_deleteNoLongerExistingMemoryNodes_fromLocalMemoryByUniqueIdentifier_inPhotoLibrary_progressReporter___block_invoke;
     v32[3] = &unk_278884700;
-    v17 = v15;
+    v17 = uniqueMemoryIdentifiers;
     v33 = v17;
     v18 = v16;
     v34 = v18;
     v36 = v47;
     v38 = 0.5 / v14;
     v37 = &v39;
-    v19 = v13;
+    v19 = reporterCopy;
     v35 = v19;
-    [v11 enumerateKeysAndObjectsUsingBlock:v32];
+    [identifierCopy enumerateKeysAndObjectsUsingBlock:v32];
     if (*(v40 + 24) == 1)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -193,7 +193,7 @@ LABEL_22:
         v30[3] = &unk_27888A660;
         v31 = v18;
         v29 = 0;
-        v23 = [v12 performChangesAndWait:v30 error:&v29];
+        v23 = [libraryCopy performChangesAndWait:v30 error:&v29];
         v28 = v29;
         loggingConnection = self->_loggingConnection;
         if (v23)
@@ -255,7 +255,7 @@ LABEL_23:
 
   else
   {
-    v25 = [v13 isCancelledWithProgress:1.0];
+    v25 = [reporterCopy isCancelledWithProgress:1.0];
     *(v40 + 24) = v25;
     if ((v25 & 1) == 0)
     {
@@ -306,15 +306,15 @@ void __138__PGGraphMemoriesEnrichmentProcessor_deleteNoLongerExistingMemoryNodes
   }
 }
 
-- (id)uniqueMemoryIdentifiersToPrioritizeWithGraph:(id)a3
+- (id)uniqueMemoryIdentifiersToPrioritizeWithGraph:(id)graph
 {
   uniqueMemoryIdentifiersToPrioritize = self->_uniqueMemoryIdentifiersToPrioritize;
   if (!uniqueMemoryIdentifiersToPrioritize)
   {
     v5 = MEMORY[0x277D3C818];
-    v6 = a3;
-    v7 = [v5 eventElectionMode];
-    v8 = [PGEventElector memoryUniqueIdentifiersToElectWithGraph:v6 electionMode:v7 error:0];
+    graphCopy = graph;
+    eventElectionMode = [v5 eventElectionMode];
+    v8 = [PGEventElector memoryUniqueIdentifiersToElectWithGraph:graphCopy electionMode:eventElectionMode error:0];
 
     v9 = self->_uniqueMemoryIdentifiersToPrioritize;
     self->_uniqueMemoryIdentifiersToPrioritize = v8;
@@ -325,25 +325,25 @@ void __138__PGGraphMemoriesEnrichmentProcessor_deleteNoLongerExistingMemoryNodes
   return uniqueMemoryIdentifiersToPrioritize;
 }
 
-- (id)_memoryNodesSortedForEnrichment:(id)a3 localMemoryByUniqueIdentifier:(id)a4 graph:(id)a5
+- (id)_memoryNodesSortedForEnrichment:(id)enrichment localMemoryByUniqueIdentifier:(id)identifier graph:(id)graph
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [objc_opt_class() categoriesOfMemoriesToPrioritize];
-  v12 = [(PGGraphMemoriesEnrichmentProcessor *)self uniqueMemoryIdentifiersToPrioritizeWithGraph:v9];
+  identifierCopy = identifier;
+  graphCopy = graph;
+  enrichmentCopy = enrichment;
+  categoriesOfMemoriesToPrioritize = [objc_opt_class() categoriesOfMemoriesToPrioritize];
+  v12 = [(PGGraphMemoriesEnrichmentProcessor *)self uniqueMemoryIdentifiersToPrioritizeWithGraph:graphCopy];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __106__PGGraphMemoriesEnrichmentProcessor__memoryNodesSortedForEnrichment_localMemoryByUniqueIdentifier_graph___block_invoke;
   v18[3] = &unk_2788846D8;
-  v19 = v8;
-  v20 = v11;
+  v19 = identifierCopy;
+  v20 = categoriesOfMemoriesToPrioritize;
   v21 = v12;
   v13 = v12;
-  v14 = v11;
-  v15 = v8;
-  v16 = [v10 sortedArrayUsingComparator:v18];
+  v14 = categoriesOfMemoriesToPrioritize;
+  v15 = identifierCopy;
+  v16 = [enrichmentCopy sortedArrayUsingComparator:v18];
 
   return v16;
 }
@@ -444,12 +444,12 @@ LABEL_13:
   return v13;
 }
 
-- (id)sortedMemoryNodesToEnrichForMemoryNodes:(id)a3 localMemoryByUniqueIdentifier:(id)a4 graph:(id)a5
+- (id)sortedMemoryNodesToEnrichForMemoryNodes:(id)nodes localMemoryByUniqueIdentifier:(id)identifier graph:(id)graph
 {
   v64 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v33 = a5;
+  nodesCopy = nodes;
+  identifierCopy = identifier;
+  graphCopy = graph;
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -469,7 +469,7 @@ LABEL_13:
   v36[1] = 3221225472;
   v36[2] = __114__PGGraphMemoriesEnrichmentProcessor_sortedMemoryNodesToEnrichForMemoryNodes_localMemoryByUniqueIdentifier_graph___block_invoke;
   v36[3] = &unk_278884688;
-  v13 = v9;
+  v13 = identifierCopy;
   v37 = v13;
   v14 = v11;
   v38 = v14;
@@ -477,12 +477,12 @@ LABEL_13:
   v41 = &v42;
   v15 = v12;
   v39 = v15;
-  v32 = v8;
-  [v8 enumerateNodesUsingBlock:v36];
+  v32 = nodesCopy;
+  [nodesCopy enumerateNodesUsingBlock:v36];
   v16 = [v15 count];
   if (v16)
   {
-    v17 = [(PGGraphMemoriesEnrichmentProcessor *)self _memoryNodesSortedForEnrichment:v15 localMemoryByUniqueIdentifier:0 graph:v33];
+    v17 = [(PGGraphMemoriesEnrichmentProcessor *)self _memoryNodesSortedForEnrichment:v15 localMemoryByUniqueIdentifier:0 graph:graphCopy];
     [v10 addObjectsFromArray:v17];
   }
 
@@ -499,7 +499,7 @@ LABEL_13:
     v21 = [v19 predicateWithBlock:v34];
     v22 = [v14 filteredArrayUsingPredicate:v21];
 
-    v23 = [(PGGraphMemoriesEnrichmentProcessor *)self _memoryNodesSortedForEnrichment:v22 localMemoryByUniqueIdentifier:v20 graph:v33];
+    v23 = [(PGGraphMemoriesEnrichmentProcessor *)self _memoryNodesSortedForEnrichment:v22 localMemoryByUniqueIdentifier:v20 graph:graphCopy];
     [v10 addObjectsFromArray:v23];
   }
 
@@ -604,13 +604,13 @@ BOOL __114__PGGraphMemoriesEnrichmentProcessor_sortedMemoryNodesToEnrichForMemor
   return v5;
 }
 
-- (id)sortedMemoryNodesToEnrichForIncrementalForMemoryNodes:(id)a3 localMemoryByUniqueIdentifier:(id)a4 graph:(id)a5
+- (id)sortedMemoryNodesToEnrichForIncrementalForMemoryNodes:(id)nodes localMemoryByUniqueIdentifier:(id)identifier graph:(id)graph
 {
   v44 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  identifierCopy = identifier;
   v9 = MEMORY[0x277CBEB18];
-  v10 = a5;
-  v11 = a3;
+  graphCopy = graph;
+  nodesCopy = nodes;
   v12 = objc_alloc_init(v9);
   v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -619,7 +619,7 @@ BOOL __114__PGGraphMemoriesEnrichmentProcessor_sortedMemoryNodesToEnrichForMemor
   v31 = 3221225472;
   v32 = __128__PGGraphMemoriesEnrichmentProcessor_sortedMemoryNodesToEnrichForIncrementalForMemoryNodes_localMemoryByUniqueIdentifier_graph___block_invoke;
   v33 = &unk_278884660;
-  v16 = v8;
+  v16 = identifierCopy;
   v34 = v16;
   v17 = v13;
   v35 = v17;
@@ -627,15 +627,15 @@ BOOL __114__PGGraphMemoriesEnrichmentProcessor_sortedMemoryNodesToEnrichForMemor
   v36 = v18;
   v19 = v14;
   v37 = v19;
-  [v11 enumerateNodesUsingBlock:&v30];
+  [nodesCopy enumerateNodesUsingBlock:&v30];
 
-  v20 = [(PGGraphMemoriesEnrichmentProcessor *)self _memoryNodesSortedForEnrichment:v17 localMemoryByUniqueIdentifier:0 graph:v10, v30, v31, v32, v33];
+  v20 = [(PGGraphMemoriesEnrichmentProcessor *)self _memoryNodesSortedForEnrichment:v17 localMemoryByUniqueIdentifier:0 graph:graphCopy, v30, v31, v32, v33];
   [v12 addObjectsFromArray:v20];
 
-  v21 = [(PGGraphMemoriesEnrichmentProcessor *)self _memoryNodesSortedForEnrichment:v18 localMemoryByUniqueIdentifier:v16 graph:v10];
+  v21 = [(PGGraphMemoriesEnrichmentProcessor *)self _memoryNodesSortedForEnrichment:v18 localMemoryByUniqueIdentifier:v16 graph:graphCopy];
   [v12 addObjectsFromArray:v21];
 
-  v22 = [(PGGraphMemoriesEnrichmentProcessor *)self _memoryNodesSortedForEnrichment:v19 localMemoryByUniqueIdentifier:v16 graph:v10];
+  v22 = [(PGGraphMemoriesEnrichmentProcessor *)self _memoryNodesSortedForEnrichment:v19 localMemoryByUniqueIdentifier:v16 graph:graphCopy];
 
   [v12 addObjectsFromArray:v22];
   loggingConnection = self->_loggingConnection;
@@ -697,10 +697,10 @@ void __128__PGGraphMemoriesEnrichmentProcessor_sortedMemoryNodesToEnrichForIncre
 LABEL_8:
 }
 
-- (unint64_t)_targetNumberOfMemoriesToEnrichWithPhotoLibrary:(id)a3
+- (unint64_t)_targetNumberOfMemoriesToEnrichWithPhotoLibrary:(id)library
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  libraryCopy = library;
   numberOfMemoriesToEnrich = self->_numberOfMemoriesToEnrich;
   if (numberOfMemoriesToEnrich)
   {
@@ -717,12 +717,12 @@ LABEL_8:
   else
   {
     v7 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-21600.0];
-    v8 = [v4 librarySpecificFetchOptions];
-    [v8 setIncludeLocalMemories:1];
+    librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+    [librarySpecificFetchOptions setIncludeLocalMemories:1];
     v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"lastEnrichmentDate > %@", v7];
-    [v8 setInternalPredicate:v9];
+    [librarySpecificFetchOptions setInternalPredicate:v9];
 
-    v10 = [MEMORY[0x277CD98D8] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:v8];
+    v10 = [MEMORY[0x277CD98D8] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:librarySpecificFetchOptions];
     v11 = [v10 count];
     v12 = v11;
     if (v11 >= 0xC8)
@@ -750,25 +750,25 @@ LABEL_8:
   return numberOfMemoriesToEnrich;
 }
 
-- (id)enrichedMemoryFromMemoryNode:(id)a3 atCreationDate:(id)a4 configuration:(id)a5 curationContext:(id)a6 enrichedMemoryFactory:(id)a7 graph:(id)a8 progressReporter:(id)a9
+- (id)enrichedMemoryFromMemoryNode:(id)node atCreationDate:(id)date configuration:(id)configuration curationContext:(id)context enrichedMemoryFactory:(id)factory graph:(id)graph progressReporter:(id)reporter
 {
   v44 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a5;
-  v16 = a7;
-  v17 = a9;
-  v18 = a6;
-  v19 = a4;
+  nodeCopy = node;
+  configurationCopy = configuration;
+  factoryCopy = factory;
+  reporterCopy = reporter;
+  contextCopy = context;
+  dateCopy = date;
   v20 = [PGTriggeredMemory alloc];
-  v21 = [(PGTriggeredMemory *)v20 initWithMemoryNode:v14 validityIntervalByTriggerType:MEMORY[0x277CBEC10] creationDate:v19];
+  v21 = [(PGTriggeredMemory *)v20 initWithMemoryNode:nodeCopy validityIntervalByTriggerType:MEMORY[0x277CBEC10] creationDate:dateCopy];
 
-  v22 = [v14 memoryFeatureNodes];
-  v23 = [v14 memoryMomentNodes];
-  v24 = +[PGMemoryFeatureBlocking blockableFeaturesForFeatureNodes:momentNodes:memoryCategory:](PGMemoryFeatureBlocking, "blockableFeaturesForFeatureNodes:momentNodes:memoryCategory:", v22, v23, [v14 memoryCategory]);
+  memoryFeatureNodes = [nodeCopy memoryFeatureNodes];
+  memoryMomentNodes = [nodeCopy memoryMomentNodes];
+  v24 = +[PGMemoryFeatureBlocking blockableFeaturesForFeatureNodes:momentNodes:memoryCategory:](PGMemoryFeatureBlocking, "blockableFeaturesForFeatureNodes:momentNodes:memoryCategory:", memoryFeatureNodes, memoryMomentNodes, [nodeCopy memoryCategory]);
 
-  v25 = [v18 userFeedbackCalculator];
+  userFeedbackCalculator = [contextCopy userFeedbackCalculator];
 
-  v26 = [v25 memoryFeaturesWithNegativeFeedbackForMemoryFeatures:v24];
+  v26 = [userFeedbackCalculator memoryFeaturesWithNegativeFeedbackForMemoryFeatures:v24];
 
   if ([(__CFString *)v26 count])
   {
@@ -777,7 +777,7 @@ LABEL_8:
     {
       v28 = MEMORY[0x277CD98D8];
       v29 = loggingConnection;
-      v30 = [v28 stringForCategory:{objc_msgSend(v14, "memoryCategory")}];
+      v30 = [v28 stringForCategory:{objc_msgSend(nodeCopy, "memoryCategory")}];
       v40 = 138412546;
       v41 = v30;
       v42 = 2112;
@@ -791,22 +791,22 @@ LABEL_8:
   else
   {
     [(PGTriggeredMemory *)v21 setBlockableFeatures:v24];
-    v31 = [v16 debugEnrichedMemoryWithTriggeredMemory:v21 withConfiguration:v15 progressReporter:v17];
+    v31 = [factoryCopy debugEnrichedMemoryWithTriggeredMemory:v21 withConfiguration:configurationCopy progressReporter:reporterCopy];
     if ([v31 failedEnrichment])
     {
       v32 = self->_loggingConnection;
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
       {
         v33 = v32;
-        v34 = [v31 failureReason];
-        if (v34 > 8)
+        failureReason = [v31 failureReason];
+        if (failureReason > 8)
         {
           v35 = @"PGEnrichedMemoryFailureReasonUnknown";
         }
 
         else
         {
-          v35 = off_278884C98[v34];
+          v35 = off_278884C98[failureReason];
         }
 
         v36 = v35;
@@ -817,8 +817,8 @@ LABEL_8:
         _os_log_impl(&dword_22F0FC000, v33, OS_LOG_TYPE_DEFAULT, "[PGGraphMemoriesEnrichmentProcessor] Failed to enrich memory %@ (%@): Persisting empty memory", &v40, 0x16u);
       }
 
-      v37 = [v31 uniqueMemoryIdentifier];
-      [v31 setTitle:v37];
+      uniqueMemoryIdentifier = [v31 uniqueMemoryIdentifier];
+      [v31 setTitle:uniqueMemoryIdentifier];
     }
   }
 
@@ -827,49 +827,49 @@ LABEL_8:
   return v31;
 }
 
-- (id)enrichMemoryNodes:(id)a3 localMemoryByUniqueIdentifier:(id)a4 workingContext:(id)a5 graph:(id)a6 progressReporter:(id)a7
+- (id)enrichMemoryNodes:(id)nodes localMemoryByUniqueIdentifier:(id)identifier workingContext:(id)context graph:(id)graph progressReporter:(id)reporter
 {
   v95 = *MEMORY[0x277D85DE8];
-  v83 = a3;
-  v72 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = [v12 photoLibrary];
-  v76 = [v83 count];
-  v86 = self;
-  v87 = [objc_alloc(MEMORY[0x277D22C88]) initWithProgressReporter:v14];
-  v75 = [(PGGraphMemoriesEnrichmentProcessor *)self _targetNumberOfMemoriesToEnrichWithPhotoLibrary:v15];
-  v16 = [objc_alloc(MEMORY[0x277D3C790]) initWithPhotoLibrary:v15];
-  v71 = [[PGMemoryPhotoKitPersister alloc] initWithPhotoLibrary:v15];
+  nodesCopy = nodes;
+  identifierCopy = identifier;
+  contextCopy = context;
+  graphCopy = graph;
+  reporterCopy = reporter;
+  photoLibrary = [contextCopy photoLibrary];
+  v76 = [nodesCopy count];
+  selfCopy = self;
+  v87 = [objc_alloc(MEMORY[0x277D22C88]) initWithProgressReporter:reporterCopy];
+  v75 = [(PGGraphMemoriesEnrichmentProcessor *)self _targetNumberOfMemoriesToEnrichWithPhotoLibrary:photoLibrary];
+  v16 = [objc_alloc(MEMORY[0x277D3C790]) initWithPhotoLibrary:photoLibrary];
+  v71 = [[PGMemoryPhotoKitPersister alloc] initWithPhotoLibrary:photoLibrary];
   v17 = objc_alloc_init(PGMemoryElectorConfiguration);
-  v18 = [[PGGraphLocationHelper alloc] initWithGraph:v13];
+  v18 = [[PGGraphLocationHelper alloc] initWithGraph:graphCopy];
   v19 = [PGMemoryCurationSession alloc];
-  v20 = [v12 curationManager];
+  curationManager = [contextCopy curationManager];
   v82 = v16;
   v69 = v18;
-  v21 = [(PGMemoryCurationSession *)v19 initWithCurationManager:v20 photoLibrary:v15 curationContext:v16 locationHelper:v18];
+  v21 = [(PGMemoryCurationSession *)v19 initWithCurationManager:curationManager photoLibrary:photoLibrary curationContext:v16 locationHelper:v18];
 
   v22 = [PGEnrichedMemoryFactory alloc];
-  v23 = [v12 serviceManager];
-  v80 = [(PGEnrichedMemoryFactory *)v22 initWithMemoryCurationSession:v21 graph:v13 serviceManager:v23];
+  serviceManager = [contextCopy serviceManager];
+  v80 = [(PGEnrichedMemoryFactory *)v22 initWithMemoryCurationSession:v21 graph:graphCopy serviceManager:serviceManager];
 
   v24 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v73 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v25 = [PGMemoryDate alloc];
-  v26 = [(PGMemoryElectorConfiguration *)v17 localDate];
-  v27 = [(PGMemoryDate *)v25 initWithLocalDate:v26];
+  localDate = [(PGMemoryElectorConfiguration *)v17 localDate];
+  v27 = [(PGMemoryDate *)v25 initWithLocalDate:localDate];
 
   v81 = v17;
-  v28 = [(PGMemoryElectorConfiguration *)v17 timeZone];
+  timeZone = [(PGMemoryElectorConfiguration *)v17 timeZone];
   v68 = v27;
-  v79 = [(PGMemoryDate *)v27 universalDateInTimeZone:v28];
+  v79 = [(PGMemoryDate *)v27 universalDateInTimeZone:timeZone];
 
   v90 = 0u;
   v91 = 0u;
   v88 = 0u;
   v89 = 0u;
-  v29 = v83;
+  v29 = nodesCopy;
   v78 = [v29 countByEnumeratingWithState:&v88 objects:v94 count:16];
   v30 = 0;
   if (v78)
@@ -878,9 +878,9 @@ LABEL_8:
     v77 = *v89;
     v32 = 0.0;
     v33 = v24;
-    v66 = v15;
-    v67 = v12;
-    v70 = v13;
+    v66 = photoLibrary;
+    v67 = contextCopy;
+    v70 = graphCopy;
     v65 = v21;
     obj = v29;
     while (2)
@@ -896,26 +896,26 @@ LABEL_8:
         v36 = objc_autoreleasePoolPush();
         v32 = v31 + v32;
         v37 = [v87 childProgressReporterToCheckpoint:v32];
-        v38 = [(PGGraphMemoriesEnrichmentProcessor *)v86 enrichedMemoryFromMemoryNode:v35 atCreationDate:v79 configuration:v81 curationContext:v82 enrichedMemoryFactory:v80 graph:v13 progressReporter:v37];
-        v39 = [v14 throughputReportBlock];
+        v38 = [(PGGraphMemoriesEnrichmentProcessor *)selfCopy enrichedMemoryFromMemoryNode:v35 atCreationDate:v79 configuration:v81 curationContext:v82 enrichedMemoryFactory:v80 graph:graphCopy progressReporter:v37];
+        throughputReportBlock = [reporterCopy throughputReportBlock];
 
-        if (v39)
+        if (throughputReportBlock)
         {
-          v40 = [v14 throughputReportBlock];
+          throughputReportBlock2 = [reporterCopy throughputReportBlock];
           v84 = i;
           v41 = v38;
           v42 = v37;
           v43 = v36;
           v44 = v30;
-          v45 = v14;
-          v46 = v13;
+          v45 = reporterCopy;
+          v46 = graphCopy;
           v47 = v33;
           v48 = [MEMORY[0x277CD98D8] stringForCategory:{objc_msgSend(v35, "memoryCategory")}];
-          (v40)[2](v40, 1, v48);
+          (throughputReportBlock2)[2](throughputReportBlock2, 1, v48);
 
           v33 = v47;
-          v13 = v46;
-          v14 = v45;
+          graphCopy = v46;
+          reporterCopy = v45;
           v30 = v44;
           v36 = v43;
           v37 = v42;
@@ -923,15 +923,15 @@ LABEL_8:
           i = v84;
         }
 
-        if ([v14 isCancelled])
+        if ([reporterCopy isCancelled])
         {
 
           objc_autoreleasePoolPop(v36);
           v57 = obj;
 
           v58 = 0;
-          v15 = v66;
-          v12 = v67;
+          photoLibrary = v66;
+          contextCopy = v67;
           v21 = v65;
           goto LABEL_34;
         }
@@ -940,10 +940,10 @@ LABEL_8:
         {
           v30 += [v38 failedEnrichment] ^ 1;
           [v33 addObject:v38];
-          v49 = [v35 uniqueMemoryIdentifier];
-          if (v49)
+          uniqueMemoryIdentifier = [v35 uniqueMemoryIdentifier];
+          if (uniqueMemoryIdentifier)
           {
-            [v73 addObject:v49];
+            [v73 addObject:uniqueMemoryIdentifier];
             v32 = v31 + v32;
             v50 = [v33 count];
             if (v50 > 0x18 || v30 >= v75)
@@ -952,25 +952,25 @@ LABEL_8:
               v52 = v33;
               v53 = v51;
               v85 = v52;
-              [PGGraphMemoriesEnrichmentProcessor insertOrUpdateLocalMemoriesForEnrichedMemories:v86 localMemoryByUniqueIdentifier:"insertOrUpdateLocalMemoriesForEnrichedMemories:localMemoryByUniqueIdentifier:memoryPersister:progressReporter:" memoryPersister:? progressReporter:?];
-              v54 = [v14 throughputReportBlock];
+              [PGGraphMemoriesEnrichmentProcessor insertOrUpdateLocalMemoriesForEnrichedMemories:selfCopy localMemoryByUniqueIdentifier:"insertOrUpdateLocalMemoriesForEnrichedMemories:localMemoryByUniqueIdentifier:memoryPersister:progressReporter:" memoryPersister:? progressReporter:?];
+              throughputReportBlock3 = [reporterCopy throughputReportBlock];
 
-              if (v54)
+              if (throughputReportBlock3)
               {
-                v55 = [v14 throughputReportBlock];
-                (v55)[2](v55, v50, @"persisting");
+                throughputReportBlock4 = [reporterCopy throughputReportBlock];
+                (throughputReportBlock4)[2](throughputReportBlock4, v50, @"persisting");
               }
 
-              if ([v14 isCancelled])
+              if ([reporterCopy isCancelled])
               {
 
                 objc_autoreleasePoolPop(v36);
                 v57 = obj;
 
                 v58 = 0;
-                v15 = v66;
-                v12 = v67;
-                v13 = v70;
+                photoLibrary = v66;
+                contextCopy = v67;
+                graphCopy = v70;
                 v21 = v65;
                 v33 = v85;
                 goto LABEL_34;
@@ -979,15 +979,15 @@ LABEL_8:
               v56 = objc_alloc_init(MEMORY[0x277CBEB18]);
 
               v33 = v56;
-              v13 = v70;
+              graphCopy = v70;
             }
 
             if (v30 >= v75)
             {
 
               objc_autoreleasePoolPop(v36);
-              v15 = v66;
-              v12 = v67;
+              photoLibrary = v66;
+              contextCopy = v67;
               v21 = v65;
               v29 = obj;
               goto LABEL_27;
@@ -1005,8 +1005,8 @@ LABEL_8:
       }
 
       v29 = obj;
-      v15 = v66;
-      v12 = v67;
+      photoLibrary = v66;
+      contextCopy = v67;
       v21 = v65;
       v78 = [obj countByEnumeratingWithState:&v88 objects:v94 count:16];
       if (v78)
@@ -1026,7 +1026,7 @@ LABEL_8:
 LABEL_27:
   v57 = v29;
 
-  if ([v33 count] && (objc_msgSend(v87, "childProgressReporterToCheckpoint:", 0.7), v59 = objc_claimAutoreleasedReturnValue(), -[PGGraphMemoriesEnrichmentProcessor insertOrUpdateLocalMemoriesForEnrichedMemories:localMemoryByUniqueIdentifier:memoryPersister:progressReporter:](v86, "insertOrUpdateLocalMemoriesForEnrichedMemories:localMemoryByUniqueIdentifier:memoryPersister:progressReporter:", v33, v72, v71, v59), v60 = objc_msgSend(v14, "isCancelled"), v59, (v60 & 1) != 0))
+  if ([v33 count] && (objc_msgSend(v87, "childProgressReporterToCheckpoint:", 0.7), v59 = objc_claimAutoreleasedReturnValue(), -[PGGraphMemoriesEnrichmentProcessor insertOrUpdateLocalMemoriesForEnrichedMemories:localMemoryByUniqueIdentifier:memoryPersister:progressReporter:](selfCopy, "insertOrUpdateLocalMemoriesForEnrichedMemories:localMemoryByUniqueIdentifier:memoryPersister:progressReporter:", v33, identifierCopy, v71, v59), v60 = objc_msgSend(reporterCopy, "isCancelled"), v59, (v60 & 1) != 0))
   {
     v58 = 0;
 LABEL_34:
@@ -1035,7 +1035,7 @@ LABEL_34:
 
   else
   {
-    loggingConnection = v86->_loggingConnection;
+    loggingConnection = selfCopy->_loggingConnection;
     if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
@@ -1052,15 +1052,15 @@ LABEL_34:
   return v58;
 }
 
-- (id)runWithGraphManager:(id)a3 forMemoryUUIDs:(id)a4 progressReporter:(id)a5 error:(id *)a6
+- (id)runWithGraphManager:(id)manager forMemoryUUIDs:(id)ds progressReporter:(id)reporter error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v10 workingContextForMemories];
-  v14 = [v13 photoLibrary];
-  v15 = [MEMORY[0x277CBEB98] setWithArray:v11];
-  v16 = [PGGraphMemoryProcessorHelper localMemoryByUniqueIdentifierForMemoryUUIDs:v15 inPhotoLibrary:v14];
+  managerCopy = manager;
+  dsCopy = ds;
+  reporterCopy = reporter;
+  workingContextForMemories = [managerCopy workingContextForMemories];
+  photoLibrary = [workingContextForMemories photoLibrary];
+  v15 = [MEMORY[0x277CBEB98] setWithArray:dsCopy];
+  v16 = [PGGraphMemoryProcessorHelper localMemoryByUniqueIdentifierForMemoryUUIDs:v15 inPhotoLibrary:photoLibrary];
 
   v42 = 0;
   v43 = &v42;
@@ -1078,19 +1078,19 @@ LABEL_34:
   v26 = 3221225472;
   v27 = __96__PGGraphMemoriesEnrichmentProcessor_runWithGraphManager_forMemoryUUIDs_progressReporter_error___block_invoke;
   v28 = &unk_278884638;
-  v29 = self;
+  selfCopy = self;
   v17 = v16;
   v30 = v17;
   v34 = &v36;
-  v18 = v11;
+  v18 = dsCopy;
   v31 = v18;
   v35 = &v42;
-  v19 = v13;
+  v19 = workingContextForMemories;
   v32 = v19;
-  v20 = v12;
+  v20 = reporterCopy;
   v33 = v20;
   [v19 performSynchronousConcurrentGraphReadUsingBlock:&v25];
-  if (a6)
+  if (error)
   {
     v21 = v37[5];
     if (v21)
@@ -1108,7 +1108,7 @@ LABEL_34:
       v22 = [PGError errorForCode:-4];
     }
 
-    *a6 = v22;
+    *error = v22;
   }
 
 LABEL_7:
@@ -1193,12 +1193,12 @@ void __96__PGGraphMemoriesEnrichmentProcessor_runWithGraphManager_forMemoryUUIDs
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (id)runWithGraphManager:(id)a3 forMemoryCategory:(unint64_t)a4 progressReporter:(id)a5 error:(id *)a6
+- (id)runWithGraphManager:(id)manager forMemoryCategory:(unint64_t)category progressReporter:(id)reporter error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = [v10 workingContextForMemories];
-  v13 = [v12 photoLibrary];
+  managerCopy = manager;
+  reporterCopy = reporter;
+  workingContextForMemories = [managerCopy workingContextForMemories];
+  photoLibrary = [workingContextForMemories photoLibrary];
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
@@ -1215,18 +1215,18 @@ void __96__PGGraphMemoriesEnrichmentProcessor_runWithGraphManager_forMemoryUUIDs
   v21[1] = 3221225472;
   v21[2] = __99__PGGraphMemoriesEnrichmentProcessor_runWithGraphManager_forMemoryCategory_progressReporter_error___block_invoke;
   v21[3] = &unk_278884610;
-  v27 = a4;
+  categoryCopy = category;
   v21[4] = self;
   v25 = &v28;
-  v14 = v13;
+  v14 = photoLibrary;
   v22 = v14;
   v26 = &v34;
-  v15 = v12;
+  v15 = workingContextForMemories;
   v23 = v15;
-  v16 = v11;
+  v16 = reporterCopy;
   v24 = v16;
   [v15 performSynchronousConcurrentGraphReadUsingBlock:v21];
-  if (a6)
+  if (error)
   {
     v17 = v29[5];
     if (v17)
@@ -1244,7 +1244,7 @@ void __96__PGGraphMemoriesEnrichmentProcessor_runWithGraphManager_forMemoryUUIDs
       v18 = [PGError errorForCode:-4];
     }
 
-    *a6 = v18;
+    *error = v18;
   }
 
 LABEL_7:
@@ -1332,14 +1332,14 @@ void __99__PGGraphMemoriesEnrichmentProcessor_runWithGraphManager_forMemoryCateg
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)runWithGraphManager:(id)a3 incrementalChange:(id)a4 progressReporter:(id)a5 error:(id *)a6
+- (BOOL)runWithGraphManager:(id)manager incrementalChange:(id)change progressReporter:(id)reporter error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v10 workingContextForMemories];
-  v14 = [v13 photoLibrary];
-  v15 = [PGGraphMemoryProcessorHelper localMemoryByUniqueIdentifierInPhotoLibrary:v14];
+  managerCopy = manager;
+  changeCopy = change;
+  reporterCopy = reporter;
+  workingContextForMemories = [managerCopy workingContextForMemories];
+  photoLibrary = [workingContextForMemories photoLibrary];
+  v15 = [PGGraphMemoryProcessorHelper localMemoryByUniqueIdentifierInPhotoLibrary:photoLibrary];
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
@@ -1349,27 +1349,27 @@ void __99__PGGraphMemoriesEnrichmentProcessor_runWithGraphManager_forMemoryCateg
   v24[2] = __99__PGGraphMemoriesEnrichmentProcessor_runWithGraphManager_incrementalChange_progressReporter_error___block_invoke;
   v24[3] = &unk_2788845E8;
   v24[4] = self;
-  v16 = v11;
+  v16 = changeCopy;
   v25 = v16;
   v17 = v15;
   v26 = v17;
-  v18 = v12;
+  v18 = reporterCopy;
   v27 = v18;
-  v19 = v14;
+  v19 = photoLibrary;
   v28 = v19;
-  v20 = v13;
+  v20 = workingContextForMemories;
   v29 = v20;
   v30 = &v31;
   [v20 performSynchronousConcurrentGraphReadUsingBlock:v24];
   v21 = [v18 isCancelled] ^ 1;
-  if (!a6)
+  if (!error)
   {
     LOBYTE(v21) = 1;
   }
 
   if ((v21 & 1) == 0)
   {
-    *a6 = [PGError errorForCode:-4];
+    *error = [PGError errorForCode:-4];
   }
 
   v22 = *(v32 + 24);
@@ -1534,7 +1534,7 @@ void __99__PGGraphMemoriesEnrichmentProcessor_runWithGraphManager_incrementalCha
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (PGGraphMemoriesEnrichmentProcessor)initWithNumberOfMemoriesToEnrich:(unint64_t)a3
+- (PGGraphMemoriesEnrichmentProcessor)initWithNumberOfMemoriesToEnrich:(unint64_t)enrich
 {
   v9.receiver = self;
   v9.super_class = PGGraphMemoriesEnrichmentProcessor;
@@ -1542,7 +1542,7 @@ void __99__PGGraphMemoriesEnrichmentProcessor_runWithGraphManager_incrementalCha
   v5 = v4;
   if (v4)
   {
-    v4->_numberOfMemoriesToEnrich = a3;
+    v4->_numberOfMemoriesToEnrich = enrich;
     v6 = os_log_create("com.apple.PhotosGraph", "MemoriesEnrichment");
     loggingConnection = v5->_loggingConnection;
     v5->_loggingConnection = v6;

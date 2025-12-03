@@ -1,15 +1,15 @@
 @interface ENUIExposureCheckCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation ENUIExposureCheckCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ENUIExposureCheckCell" hasInstanceMethod:@"sectionLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ENUIExposureCheckCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ENUIExposureCheckCell" hasInstanceMethod:@"subtitleLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ENUIExposureCheckCell" hasInstanceMethod:@"sectionLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ENUIExposureCheckCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ENUIExposureCheckCell" hasInstanceMethod:@"subtitleLabel" withFullSignature:{"@", 0}];
 }
 
 @end

@@ -1,16 +1,16 @@
 @interface SRUIFSpeechSynthesisUtility
-+ (BOOL)isSpeechSynthesisErrorUserCancelled:(id)a3;
++ (BOOL)isSpeechSynthesisErrorUserCancelled:(id)cancelled;
 @end
 
 @implementation SRUIFSpeechSynthesisUtility
 
-+ (BOOL)isSpeechSynthesisErrorUserCancelled:(id)a3
++ (BOOL)isSpeechSynthesisErrorUserCancelled:(id)cancelled
 {
-  v3 = a3;
-  v4 = [v3 code];
-  v5 = [v3 domain];
+  cancelledCopy = cancelled;
+  code = [cancelledCopy code];
+  domain = [cancelledCopy domain];
 
-  v6 = v4 == 1 && ([v5 isEqualToString:@"TTSError"] & 1) != 0;
+  v6 = code == 1 && ([domain isEqualToString:@"TTSError"] & 1) != 0;
   return v6;
 }
 

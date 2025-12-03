@@ -27,67 +27,67 @@
 
 - (uint64_t)isUnanimated
 {
-  [a1 deceleration];
+  [self deceleration];
   if (!BSFloatIsZero())
   {
     return 0;
   }
 
-  [a1 dampingRatio];
+  [self dampingRatio];
   if (!BSFloatIsZero())
   {
     return 0;
   }
 
-  [a1 response];
+  [self response];
   if (!BSFloatIsZero())
   {
     return 0;
   }
 
-  [a1 trackingDampingRatio];
+  [self trackingDampingRatio];
   if (!BSFloatIsZero())
   {
     return 0;
   }
 
-  [a1 trackingResponse];
+  [self trackingResponse];
   if (!BSFloatIsZero())
   {
     return 0;
   }
 
-  [a1 retargetImpulse];
+  [self retargetImpulse];
   if (!BSFloatIsZero())
   {
     return 0;
   }
 
-  [a1 trackingRetargetImpulse];
+  [self trackingRetargetImpulse];
   if (!BSFloatIsZero())
   {
     return 0;
   }
 
-  [a1 dampingRatioSmoothing];
+  [self dampingRatioSmoothing];
   if (!BSFloatIsZero())
   {
     return 0;
   }
 
-  [a1 responseSmoothing];
+  [self responseSmoothing];
   if (!BSFloatIsZero())
   {
     return 0;
   }
 
-  [a1 trackingDampingRatioSmoothing];
+  [self trackingDampingRatioSmoothing];
   if (!BSFloatIsZero())
   {
     return 0;
   }
 
-  [a1 trackingResponseSmoothing];
+  [self trackingResponseSmoothing];
 
   return BSFloatIsZero();
 }

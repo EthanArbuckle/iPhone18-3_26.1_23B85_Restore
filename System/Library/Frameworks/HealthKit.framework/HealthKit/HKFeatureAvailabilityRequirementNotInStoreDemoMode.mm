@@ -1,6 +1,6 @@
 @interface HKFeatureAvailabilityRequirementNotInStoreDemoMode
-- (BOOL)isEqual:(id)a3;
-- (id)isSatisfiedWithDataSource:(id)a3 error:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (id)isSatisfiedWithDataSource:(id)source error:(id *)error;
 - (id)requiredEntitlements;
 - (unint64_t)hash;
 @end
@@ -19,23 +19,23 @@
   return v3;
 }
 
-- (id)isSatisfiedWithDataSource:(id)a3 error:(id *)a4
+- (id)isSatisfiedWithDataSource:(id)source error:(id *)error
 {
-  v4 = a3;
-  v5 = [v4 behavior];
-  v6 = [v5 isAppleWatch];
+  sourceCopy = source;
+  behavior = [sourceCopy behavior];
+  isAppleWatch = [behavior isAppleWatch];
 
   v7 = MEMORY[0x1E696AD98];
-  v8 = [v4 behavior];
-  v9 = [v8 isRunningStoreDemoMode];
-  if (!v6)
+  behavior2 = [sourceCopy behavior];
+  isRunningStoreDemoMode = [behavior2 isRunningStoreDemoMode];
+  if (!isAppleWatch)
   {
-    v11 = v9 ^ 1u;
+    v11 = isRunningStoreDemoMode ^ 1u;
     v10 = v7;
     goto LABEL_5;
   }
 
-  if (v9)
+  if (isRunningStoreDemoMode)
   {
     v10 = v7;
     v11 = 0;
@@ -44,17 +44,17 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  v13 = [v4 behavior];
-  v12 = [v7 numberWithInt:{objc_msgSend(v13, "runningInStoreDemoModeF201") ^ 1}];
+  behavior3 = [sourceCopy behavior];
+  v12 = [v7 numberWithInt:{objc_msgSend(behavior3, "runningInStoreDemoModeF201") ^ 1}];
 
 LABEL_7:
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

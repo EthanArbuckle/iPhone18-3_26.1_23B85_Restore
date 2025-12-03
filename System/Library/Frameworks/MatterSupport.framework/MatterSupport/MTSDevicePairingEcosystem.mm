@@ -1,31 +1,31 @@
 @interface MTSDevicePairingEcosystem
-+ (id)UUIDFromRootPublicKey:(id)a3 vendor:(id)a4;
++ (id)UUIDFromRootPublicKey:(id)key vendor:(id)vendor;
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (MTSDevicePairingEcosystem)initWithCoder:(id)a3;
-- (MTSDevicePairingEcosystem)initWithRootPublicKey:(id)a3 vendor:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (MTSDevicePairingEcosystem)initWithCoder:(id)coder;
+- (MTSDevicePairingEcosystem)initWithRootPublicKey:(id)key vendor:(id)vendor;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MTSDevicePairingEcosystem
 
 - (NSArray)attributeDescriptions
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = objc_alloc(MEMORY[0x277D0F778]);
-  v5 = [(MTSDevicePairingEcosystem *)self rootPublicKey];
-  v6 = [v4 initWithName:@"Root Public Key" value:v5];
-  [v3 addObject:v6];
+  rootPublicKey = [(MTSDevicePairingEcosystem *)self rootPublicKey];
+  v6 = [v4 initWithName:@"Root Public Key" value:rootPublicKey];
+  [array addObject:v6];
 
   v7 = objc_alloc(MEMORY[0x277D0F778]);
-  v8 = [(MTSDevicePairingEcosystem *)self vendor];
-  v9 = [v7 initWithName:@"Vendor" value:v8];
-  [v3 addObject:v9];
+  vendor = [(MTSDevicePairingEcosystem *)self vendor];
+  v9 = [v7 initWithName:@"Vendor" value:vendor];
+  [array addObject:v9];
 
-  v10 = [v3 copy];
+  v10 = [array copy];
 
   return v10;
 }
@@ -37,12 +37,12 @@
   return [v2 shortDescription];
 }
 
-- (MTSDevicePairingEcosystem)initWithCoder:(id)a3
+- (MTSDevicePairingEcosystem)initWithCoder:(id)coder
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTSDPE.ck.rootPublicKey"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTSDPE.ck.vendor"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSDPE.ck.rootPublicKey"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSDPE.ck.vendor"];
   v7 = v6;
   if (v5)
   {
@@ -57,7 +57,7 @@
   if (v8)
   {
     v9 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -77,39 +77,39 @@
 
   else
   {
-    v12 = [(MTSDevicePairingEcosystem *)self initWithRootPublicKey:v5 vendor:v6];
-    v13 = v12;
+    selfCopy = [(MTSDevicePairingEcosystem *)self initWithRootPublicKey:v5 vendor:v6];
+    v13 = selfCopy;
   }
 
   v14 = *MEMORY[0x277D85DE8];
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MTSDevicePairingEcosystem *)self rootPublicKey];
-  [v4 encodeObject:v5 forKey:@"MTSDPE.ck.rootPublicKey"];
+  coderCopy = coder;
+  rootPublicKey = [(MTSDevicePairingEcosystem *)self rootPublicKey];
+  [coderCopy encodeObject:rootPublicKey forKey:@"MTSDPE.ck.rootPublicKey"];
 
-  v6 = [(MTSDevicePairingEcosystem *)self vendor];
-  [v4 encodeObject:v6 forKey:@"MTSDPE.ck.vendor"];
+  vendor = [(MTSDevicePairingEcosystem *)self vendor];
+  [coderCopy encodeObject:vendor forKey:@"MTSDPE.ck.vendor"];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(MTSDevicePairingEcosystem *)self rootPublicKey];
-  v3 = [v2 hash];
+  rootPublicKey = [(MTSDevicePairingEcosystem *)self rootPublicKey];
+  v3 = [rootPublicKey hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -120,13 +120,13 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(MTSDevicePairingEcosystem *)self rootPublicKey];
-    v8 = [v6 rootPublicKey];
-    if ([v7 isEqualToData:v8])
+    rootPublicKey = [(MTSDevicePairingEcosystem *)self rootPublicKey];
+    rootPublicKey2 = [v6 rootPublicKey];
+    if ([rootPublicKey isEqualToData:rootPublicKey2])
     {
-      v9 = [(MTSDevicePairingEcosystem *)self vendor];
-      v10 = [v6 vendor];
-      v11 = [v9 isEqual:v10];
+      vendor = [(MTSDevicePairingEcosystem *)self vendor];
+      vendor2 = [v6 vendor];
+      v11 = [vendor isEqual:vendor2];
     }
 
     else
@@ -143,18 +143,18 @@
   return v11;
 }
 
-- (MTSDevicePairingEcosystem)initWithRootPublicKey:(id)a3 vendor:(id)a4
+- (MTSDevicePairingEcosystem)initWithRootPublicKey:(id)key vendor:(id)vendor
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  keyCopy = key;
+  vendorCopy = vendor;
+  if (!keyCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = vendorCopy;
+  if (!vendorCopy)
   {
 LABEL_7:
     v17 = _HMFPreconditionFailure();
@@ -166,7 +166,7 @@ LABEL_7:
   v9 = [(MTSDevicePairingEcosystem *)&v19 init];
   if (v9)
   {
-    v10 = [v6 copy];
+    v10 = [keyCopy copy];
     rootPublicKey = v9->_rootPublicKey;
     v9->_rootPublicKey = v10;
 
@@ -174,7 +174,7 @@ LABEL_7:
     vendor = v9->_vendor;
     v9->_vendor = v12;
 
-    v14 = [MTSDevicePairingEcosystem UUIDFromRootPublicKey:v6 vendor:v8];
+    v14 = [MTSDevicePairingEcosystem UUIDFromRootPublicKey:keyCopy vendor:v8];
     uuid = v9->_uuid;
     v9->_uuid = v14;
   }
@@ -189,12 +189,12 @@ LABEL_7:
   return NSStringFromClass(v2);
 }
 
-+ (id)UUIDFromRootPublicKey:(id)a3 vendor:(id)a4
++ (id)UUIDFromRootPublicKey:(id)key vendor:(id)vendor
 {
   v5 = MEMORY[0x277CCAD78];
-  v6 = a3;
-  v7 = [a4 uuid];
-  v8 = [v5 hmf_UUIDWithNamespace:v7 data:v6];
+  keyCopy = key;
+  uuid = [vendor uuid];
+  v8 = [v5 hmf_UUIDWithNamespace:uuid data:keyCopy];
 
   return v8;
 }

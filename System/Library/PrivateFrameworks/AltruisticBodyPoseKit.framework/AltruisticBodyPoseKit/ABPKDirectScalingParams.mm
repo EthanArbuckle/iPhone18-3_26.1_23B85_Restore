@@ -1,15 +1,15 @@
 @interface ABPKDirectScalingParams
-- (ABPKDirectScalingParams)initWithInputResolution:(CGSize)a3 andOutputResolution:(CGSize)a4;
+- (ABPKDirectScalingParams)initWithInputResolution:(CGSize)resolution andOutputResolution:(CGSize)outputResolution;
 @end
 
 @implementation ABPKDirectScalingParams
 
-- (ABPKDirectScalingParams)initWithInputResolution:(CGSize)a3 andOutputResolution:(CGSize)a4
+- (ABPKDirectScalingParams)initWithInputResolution:(CGSize)resolution andOutputResolution:(CGSize)outputResolution
 {
-  width = a4.width;
-  height = a4.height;
-  v10 = a3.height;
-  v9 = a3.width;
+  width = outputResolution.width;
+  height = outputResolution.height;
+  v10 = resolution.height;
+  v9 = resolution.width;
   v11.receiver = self;
   v11.super_class = ABPKDirectScalingParams;
   result = [(ABPKDirectScalingParams *)&v11 init];

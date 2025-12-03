@@ -1,20 +1,20 @@
 @interface SportsManagementViewController
-- (BOOL)tableView:(id)a3 shouldIndentWhileEditingRowAtIndexPath:(id)a4;
-- (_TtC7NewsUI230SportsManagementViewController)initWithCoder:(id)a3;
-- (_TtC7NewsUI230SportsManagementViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)tableView:(id)view shouldIndentWhileEditingRowAtIndexPath:(id)path;
+- (_TtC7NewsUI230SportsManagementViewController)initWithCoder:(id)coder;
+- (_TtC7NewsUI230SportsManagementViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)dismissVC;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarCancelButtonClicked:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarCancelButtonClicked:(id)clicked;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation SportsManagementViewController
 
-- (_TtC7NewsUI230SportsManagementViewController)initWithCoder:(id)a3
+- (_TtC7NewsUI230SportsManagementViewController)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   *(&self->super.super._responderFlags + OBJC_IVAR____TtC7NewsUI230SportsManagementViewController_selectionProvider) = 0;
@@ -26,7 +26,7 @@
   return result;
 }
 
-- (_TtC7NewsUI230SportsManagementViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7NewsUI230SportsManagementViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -35,38 +35,38 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_218F71D04();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v4.receiver = self;
   v4.super_class = swift_getObjectType();
-  [(SportsManagementViewController *)&v4 viewDidAppear:v3];
+  [(SportsManagementViewController *)&v4 viewDidAppear:appearCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_218F72334(a3);
+  selfCopy = self;
+  sub_218F72334(appear);
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_218F7252C();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
+  changeCopy = change;
   v5 = v7.receiver;
-  [(SportsManagementViewController *)&v7 traitCollectionDidChange:v4];
-  v6 = [v5 traitCollection];
+  [(SportsManagementViewController *)&v7 traitCollectionDidChange:changeCopy];
+  traitCollection = [v5 traitCollection];
   sub_218F738D0();
 }
 
@@ -74,11 +74,11 @@
 {
   v3 = off_282A89C70;
   type metadata accessor for SportsManagementEventHandler();
-  v4 = self;
+  selfCopy = self;
   v3();
 }
 
-- (BOOL)tableView:(id)a3 shouldIndentWhileEditingRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldIndentWhileEditingRowAtIndexPath:(id)path
 {
   v4 = sub_219BDC104();
   v5 = *(v4 - 8);
@@ -89,23 +89,23 @@
   return 0;
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
   sub_219BF5414();
-  v6 = a3;
-  v7 = self;
-  sub_218F735B0(v6);
+  barCopy = bar;
+  selfCopy = self;
+  sub_218F735B0(barCopy);
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC7NewsUI230SportsManagementViewController_searchController);
-  v5 = a3;
-  v10 = self;
-  v6 = [v4 searchResultsController];
-  if (v6)
+  clickedCopy = clicked;
+  selfCopy = self;
+  searchResultsController = [v4 searchResultsController];
+  if (searchResultsController)
   {
-    v7 = v6;
+    v7 = searchResultsController;
     v8 = swift_dynamicCastObjCProtocolConditional();
     if (v8)
     {

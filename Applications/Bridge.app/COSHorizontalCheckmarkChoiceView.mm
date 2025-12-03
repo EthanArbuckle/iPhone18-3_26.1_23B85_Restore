@@ -1,18 +1,18 @@
 @interface COSHorizontalCheckmarkChoiceView
 - (CGSize)intrinsicContentSize;
-- (COSHorizontalCheckmarkChoiceView)initWithLeftTitle:(id)a3 rightTitle:(id)a4;
+- (COSHorizontalCheckmarkChoiceView)initWithLeftTitle:(id)title rightTitle:(id)rightTitle;
 - (COSHorizontalCheckmarkChoiceViewDelegate)delegate;
-- (void)didTapChoiceView:(id)a3;
+- (void)didTapChoiceView:(id)view;
 - (void)layoutSubviews;
-- (void)setSelectedChoice:(unint64_t)a3;
+- (void)setSelectedChoice:(unint64_t)choice;
 @end
 
 @implementation COSHorizontalCheckmarkChoiceView
 
-- (COSHorizontalCheckmarkChoiceView)initWithLeftTitle:(id)a3 rightTitle:(id)a4
+- (COSHorizontalCheckmarkChoiceView)initWithLeftTitle:(id)title rightTitle:(id)rightTitle
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  rightTitleCopy = rightTitle;
   v16.receiver = self;
   v16.super_class = COSHorizontalCheckmarkChoiceView;
   v8 = [(COSHorizontalCheckmarkChoiceView *)&v16 init];
@@ -20,13 +20,13 @@
   if (v8)
   {
     v8->_selectedChoice = 0;
-    v10 = [[CheckmarkChoiceView alloc] initWithTitle:v6];
+    v10 = [[CheckmarkChoiceView alloc] initWithTitle:titleCopy];
     leftChoice = v9->_leftChoice;
     v9->_leftChoice = v10;
 
     [(CheckmarkChoiceView *)v9->_leftChoice sizeToFit];
     [(COSHorizontalCheckmarkChoiceView *)v9 addSubview:v9->_leftChoice];
-    v12 = [[CheckmarkChoiceView alloc] initWithTitle:v7];
+    v12 = [[CheckmarkChoiceView alloc] initWithTitle:rightTitleCopy];
     rightChoice = v9->_rightChoice;
     v9->_rightChoice = v12;
 
@@ -63,9 +63,9 @@
   return result;
 }
 
-- (void)didTapChoiceView:(id)a3
+- (void)didTapChoiceView:(id)view
 {
-  [a3 locationInView:self];
+  [view locationInView:self];
   v5 = v4;
   [(COSHorizontalCheckmarkChoiceView *)self bounds];
   v6 = CGRectGetWidth(v9) * 0.5;
@@ -82,18 +82,18 @@
   [(COSHorizontalCheckmarkChoiceView *)self setSelectedChoice:v7];
 }
 
-- (void)setSelectedChoice:(unint64_t)a3
+- (void)setSelectedChoice:(unint64_t)choice
 {
-  self->_selectedChoice = a3;
+  self->_selectedChoice = choice;
   leftChoice = self->_leftChoice;
-  v6 = a3 == 2;
-  v7 = a3 == 1;
-  v8 = a3 == 1;
+  v6 = choice == 2;
+  v7 = choice == 1;
+  v8 = choice == 1;
   v9 = !v7 && v6;
   [(CheckmarkChoiceView *)leftChoice setSelected:v8];
   [(CheckmarkChoiceView *)self->_rightChoice setSelected:v9];
-  v10 = [(COSHorizontalCheckmarkChoiceView *)self delegate];
-  [v10 choiceView:self didSelectChoice:a3];
+  delegate = [(COSHorizontalCheckmarkChoiceView *)self delegate];
+  [delegate choiceView:self didSelectChoice:choice];
 }
 
 - (COSHorizontalCheckmarkChoiceViewDelegate)delegate

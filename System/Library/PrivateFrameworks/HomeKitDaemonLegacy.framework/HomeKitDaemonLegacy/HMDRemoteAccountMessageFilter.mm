@@ -1,9 +1,9 @@
 @interface HMDRemoteAccountMessageFilter
 + (id)logCategory;
-- (BOOL)acceptMessage:(id)a3 target:(id)a4 errorReason:(id *)a5;
-- (HMDRemoteAccountMessageFilter)initWithName:(id)a3;
-- (HMDRemoteAccountMessageFilter)initWithTarget:(id)a3 allowedMessages:(id)a4;
-- (HMDRemoteAccountMessageFilter)initWithTarget:(id)a3 allowedMessages:(id)a4 appleAccountManager:(id)a5 systemKeychainStore:(id)a6;
+- (BOOL)acceptMessage:(id)message target:(id)target errorReason:(id *)reason;
+- (HMDRemoteAccountMessageFilter)initWithName:(id)name;
+- (HMDRemoteAccountMessageFilter)initWithTarget:(id)target allowedMessages:(id)messages;
+- (HMDRemoteAccountMessageFilter)initWithTarget:(id)target allowedMessages:(id)messages appleAccountManager:(id)manager systemKeychainStore:(id)store;
 - (id)logIdentifier;
 @end
 
@@ -11,19 +11,19 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDRemoteAccountMessageFilter *)self target];
-  v3 = [v2 target];
-  v4 = [v3 UUIDString];
+  target = [(HMDRemoteAccountMessageFilter *)self target];
+  v2Target = [target target];
+  uUIDString = [v2Target UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
-- (BOOL)acceptMessage:(id)a3 target:(id)a4 errorReason:(id *)a5
+- (BOOL)acceptMessage:(id)message target:(id)target errorReason:(id *)reason
 {
   v94 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = v8;
+  messageCopy = message;
+  targetCopy = target;
+  v10 = messageCopy;
   v11 = v10;
   if (!self || ![v10 isRemote])
   {
@@ -55,7 +55,7 @@ LABEL_16:
   }
 
   v18 = objc_autoreleasePoolPush();
-  v19 = self;
+  selfCopy = self;
   v20 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {
@@ -68,14 +68,14 @@ LABEL_16:
   }
 
   objc_autoreleasePoolPop(v18);
-  v22 = [(HMDRemoteAccountMessageFilter *)v19 allowedMessages];
-  v23 = [v12 name];
-  v24 = [v22 containsObject:v23];
+  allowedMessages = [(HMDRemoteAccountMessageFilter *)selfCopy allowedMessages];
+  name = [v12 name];
+  v24 = [allowedMessages containsObject:name];
 
   if (v24)
   {
     v25 = objc_autoreleasePoolPush();
-    v26 = v19;
+    v26 = selfCopy;
     v27 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
     {
@@ -92,11 +92,11 @@ LABEL_16:
   }
 
   v32 = v12;
-  v33 = [v32 destination];
+  destination = [v32 destination];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v34 = v33;
+    v34 = destination;
   }
 
   else
@@ -106,10 +106,10 @@ LABEL_16:
 
   v35 = v34;
 
-  v36 = [v35 device];
-  v37 = [v36 account];
+  device = [v35 device];
+  account = [device account];
 
-  if (!v37)
+  if (!account)
   {
     if (![v32 isSecureRemote])
     {
@@ -118,19 +118,19 @@ LABEL_16:
     }
 
     v88 = v35;
-    v46 = [v32 remoteSenderContext];
-    v47 = [v46 mergeID];
+    remoteSenderContext = [v32 remoteSenderContext];
+    mergeID = [remoteSenderContext mergeID];
 
-    v86 = v47;
-    if (v47)
+    v86 = mergeID;
+    if (mergeID)
     {
-      v48 = [(HMDRemoteAccountMessageFilter *)v19 appleAccountManager];
-      v49 = [v48 account];
+      appleAccountManager = [(HMDRemoteAccountMessageFilter *)selfCopy appleAccountManager];
+      account2 = [appleAccountManager account];
 
-      v50 = [v49 senderCorrelationIdentifier];
-      if (v50)
+      senderCorrelationIdentifier = [account2 senderCorrelationIdentifier];
+      if (senderCorrelationIdentifier)
       {
-        if ([v47 isEqualToString:v50])
+        if ([mergeID isEqualToString:senderCorrelationIdentifier])
         {
 
           goto LABEL_50;
@@ -140,7 +140,7 @@ LABEL_16:
       else
       {
         v52 = objc_autoreleasePoolPush();
-        v53 = v19;
+        v53 = selfCopy;
         v54 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
         {
@@ -149,7 +149,7 @@ LABEL_16:
           *buf = 138543618;
           v91 = v55;
           v92 = 2112;
-          v93 = v49;
+          v93 = account2;
           _os_log_impl(&dword_2531F8000, v54, OS_LOG_TYPE_ERROR, "%{public}@MergeID is not set for the current account: %@", buf, 0x16u);
 
           v52 = v84;
@@ -159,16 +159,16 @@ LABEL_16:
       }
     }
 
-    v56 = [(HMDRemoteAccountMessageFilter *)v19 systemKeychainStore];
+    systemKeychainStore = [(HMDRemoteAccountMessageFilter *)selfCopy systemKeychainStore];
     v89 = 0;
-    v57 = [v56 getLocalPairingIdentity:&v89];
+    v57 = [systemKeychainStore getLocalPairingIdentity:&v89];
     v58 = v89;
 
     if (!v57)
     {
       v59 = v58;
       v60 = objc_autoreleasePoolPush();
-      v61 = v19;
+      v61 = selfCopy;
       v62 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v62, OS_LOG_TYPE_ERROR))
       {
@@ -185,19 +185,19 @@ LABEL_16:
       v57 = 0;
     }
 
-    v64 = [v32 remoteSenderContext];
-    v65 = [v64 pairingIdentityIdentifier];
+    remoteSenderContext2 = [v32 remoteSenderContext];
+    pairingIdentityIdentifier = [remoteSenderContext2 pairingIdentityIdentifier];
 
-    if (!v65 || ([v57 identifier], v66 = objc_claimAutoreleasedReturnValue(), v67 = objc_msgSend(v65, "isEqualToString:", v66), v66, !v67))
+    if (!pairingIdentityIdentifier || ([v57 identifier], v66 = objc_claimAutoreleasedReturnValue(), v67 = objc_msgSend(pairingIdentityIdentifier, "isEqualToString:", v66), v66, !v67))
     {
-      v68 = [v32 remoteUserPairingIdentity];
-      v69 = v68;
-      if (!v68 || ![v68 isEqual:v57])
+      remoteUserPairingIdentity = [v32 remoteUserPairingIdentity];
+      v69 = remoteUserPairingIdentity;
+      if (!remoteUserPairingIdentity || ![remoteUserPairingIdentity isEqual:v57])
       {
         v83 = v58;
         v85 = v57;
         v70 = objc_autoreleasePoolPush();
-        v71 = v19;
+        v71 = selfCopy;
         v72 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v72, OS_LOG_TYPE_ERROR))
         {
@@ -223,19 +223,19 @@ LABEL_16:
 LABEL_50:
     v45 = 1;
 LABEL_54:
-    v37 = 0;
+    account = 0;
     v35 = v88;
     goto LABEL_55;
   }
 
   v87 = v35;
-  v38 = v37;
-  v39 = [v37 isCurrentAccount];
+  v38 = account;
+  isCurrentAccount = [account isCurrentAccount];
   v40 = objc_autoreleasePoolPush();
-  v41 = v19;
+  v41 = selfCopy;
   v42 = HMFGetOSLogHandle();
   v43 = v42;
-  if (v39)
+  if (isCurrentAccount)
   {
     if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
     {
@@ -268,11 +268,11 @@ LABEL_54:
   }
 
   v35 = v87;
-  v37 = v38;
+  account = v38;
 LABEL_55:
 
   v75 = objc_autoreleasePoolPush();
-  v76 = v19;
+  v76 = selfCopy;
   v77 = HMFGetOSLogHandle();
   v78 = v77;
   if (v45)
@@ -280,11 +280,11 @@ LABEL_55:
     if (os_log_type_enabled(v77, OS_LOG_TYPE_DEBUG))
     {
       v79 = HMFGetLogIdentifier();
-      v80 = [v32 shortDescription];
+      shortDescription = [v32 shortDescription];
       *buf = 138543618;
       v91 = v79;
       v92 = 2112;
-      v93 = v80;
+      v93 = shortDescription;
       _os_log_impl(&dword_2531F8000, v78, OS_LOG_TYPE_DEBUG, "%{public}@Authenticated sender of message: %@", buf, 0x16u);
     }
 
@@ -303,10 +303,10 @@ LABEL_55:
   }
 
   objc_autoreleasePoolPop(v75);
-  if (a5)
+  if (reason)
   {
     [MEMORY[0x277CCA9B8] hmErrorWithCode:17];
-    *a5 = v29 = 0;
+    *reason = v29 = 0;
   }
 
   else
@@ -320,22 +320,22 @@ LABEL_17:
   return v29;
 }
 
-- (HMDRemoteAccountMessageFilter)initWithTarget:(id)a3 allowedMessages:(id)a4 appleAccountManager:(id)a5 systemKeychainStore:(id)a6
+- (HMDRemoteAccountMessageFilter)initWithTarget:(id)target allowedMessages:(id)messages appleAccountManager:(id)manager systemKeychainStore:(id)store
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  targetCopy = target;
+  messagesCopy = messages;
+  managerCopy = manager;
+  storeCopy = store;
   v19.receiver = self;
   v19.super_class = HMDRemoteAccountMessageFilter;
   v15 = [(HMDMessageFilter *)&v19 initWithName:@"RemoteAccount"];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_target, a3);
-    if (v12)
+    objc_storeStrong(&v15->_target, target);
+    if (messagesCopy)
     {
-      v17 = [v12 copy];
+      v17 = [messagesCopy copy];
     }
 
     else
@@ -344,31 +344,31 @@ LABEL_17:
     }
 
     objc_storeStrong(&v16->_allowedMessages, v17);
-    if (v12)
+    if (messagesCopy)
     {
     }
 
-    objc_storeStrong(&v16->_appleAccountManager, a5);
-    objc_storeStrong(&v16->_systemKeychainStore, a6);
+    objc_storeStrong(&v16->_appleAccountManager, manager);
+    objc_storeStrong(&v16->_systemKeychainStore, store);
   }
 
   return v16;
 }
 
-- (HMDRemoteAccountMessageFilter)initWithTarget:(id)a3 allowedMessages:(id)a4
+- (HMDRemoteAccountMessageFilter)initWithTarget:(id)target allowedMessages:(id)messages
 {
-  v6 = a4;
-  v7 = a3;
+  messagesCopy = messages;
+  targetCopy = target;
   v8 = +[HMDAppleAccountManager sharedManager];
-  v9 = [MEMORY[0x277CFEC78] systemStore];
-  v10 = [(HMDRemoteAccountMessageFilter *)self initWithTarget:v7 allowedMessages:v6 appleAccountManager:v8 systemKeychainStore:v9];
+  systemStore = [MEMORY[0x277CFEC78] systemStore];
+  v10 = [(HMDRemoteAccountMessageFilter *)self initWithTarget:targetCopy allowedMessages:messagesCopy appleAccountManager:v8 systemKeychainStore:systemStore];
 
   return v10;
 }
 
-- (HMDRemoteAccountMessageFilter)initWithName:(id)a3
+- (HMDRemoteAccountMessageFilter)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];

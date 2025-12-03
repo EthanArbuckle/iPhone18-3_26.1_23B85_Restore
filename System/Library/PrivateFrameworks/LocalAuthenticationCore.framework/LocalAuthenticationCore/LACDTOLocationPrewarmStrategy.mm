@@ -1,34 +1,34 @@
 @interface LACDTOLocationPrewarmStrategy
-- (LACDTOLocationPrewarmStrategy)initWithFeatureStateProvider:(id)a3 trustStateProvider:(id)a4 device:(id)a5 keybag:(id)a6;
-- (void)checkNeedsPrewarmWithCompletion:(id)a3;
+- (LACDTOLocationPrewarmStrategy)initWithFeatureStateProvider:(id)provider trustStateProvider:(id)stateProvider device:(id)device keybag:(id)keybag;
+- (void)checkNeedsPrewarmWithCompletion:(id)completion;
 @end
 
 @implementation LACDTOLocationPrewarmStrategy
 
-- (LACDTOLocationPrewarmStrategy)initWithFeatureStateProvider:(id)a3 trustStateProvider:(id)a4 device:(id)a5 keybag:(id)a6
+- (LACDTOLocationPrewarmStrategy)initWithFeatureStateProvider:(id)provider trustStateProvider:(id)stateProvider device:(id)device keybag:(id)keybag
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  providerCopy = provider;
+  stateProviderCopy = stateProvider;
+  deviceCopy = device;
+  keybagCopy = keybag;
   v18.receiver = self;
   v18.super_class = LACDTOLocationPrewarmStrategy;
   v15 = [(LACDTOLocationPrewarmStrategy *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_featureStateProvider, a3);
-    objc_storeStrong(&v16->_trustStateProvider, a4);
-    objc_storeStrong(&v16->_device, a5);
-    objc_storeStrong(&v16->_keybag, a6);
+    objc_storeStrong(&v15->_featureStateProvider, provider);
+    objc_storeStrong(&v16->_trustStateProvider, stateProvider);
+    objc_storeStrong(&v16->_device, device);
+    objc_storeStrong(&v16->_keybag, keybag);
   }
 
   return v16;
 }
 
-- (void)checkNeedsPrewarmWithCompletion:(id)a3
+- (void)checkNeedsPrewarmWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(LACKeyBag *)self->_keybag state]!= 5)
   {
     v6 = LACLogDTOLocation();
@@ -42,7 +42,7 @@ LABEL_8:
 
 LABEL_9:
 
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_10;
   }
 
@@ -66,7 +66,7 @@ LABEL_9:
   v8[2] = __65__LACDTOLocationPrewarmStrategy_checkNeedsPrewarmWithCompletion___block_invoke;
   v8[3] = &unk_1E7A95838;
   objc_copyWeak(&v10, location);
-  v9 = v4;
+  v9 = completionCopy;
   [(LACDTOFeatureStateProviding *)featureStateProvider fetchStateWithCompletion:v8];
 
   objc_destroyWeak(&v10);

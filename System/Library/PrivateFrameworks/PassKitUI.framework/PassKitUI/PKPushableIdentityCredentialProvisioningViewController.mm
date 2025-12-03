@@ -1,54 +1,54 @@
 @interface PKPushableIdentityCredentialProvisioningViewController
 - (PKPushableCredentialProvisioningViewControllerCoordinator)coordinator;
-- (PKPushableIdentityCredentialProvisioningViewController)initWithContext:(int64_t)a3 credentials:(id)a4 configuration:(id)a5 reporter:(id)a6;
-- (id)_provisioningErrorWithNumberOfPassesFailed:(int64_t)a3 error:(id)a4;
+- (PKPushableIdentityCredentialProvisioningViewController)initWithContext:(int64_t)context credentials:(id)credentials configuration:(id)configuration reporter:(id)reporter;
+- (id)_provisioningErrorWithNumberOfPassesFailed:(int64_t)failed error:(id)error;
 - (void)_continueProvisioning;
 - (void)_loadPassThumbnail;
 - (void)_setContinueButtonText;
 - (void)_setTitleAndBodyText;
 - (void)_showExitingLostModeUI;
 - (void)_startProvisioning;
-- (void)_terminateSetupFlowWithPasses:(id)a3 error:(id)a4;
+- (void)_terminateSetupFlowWithPasses:(id)passes error:(id)error;
 - (void)cancelButtonPressed;
 - (void)continueButtonPressed;
-- (void)didTransitionTo:(int64_t)a3 loading:(BOOL)a4;
-- (void)setPassThumbnailImage:(id)a3;
+- (void)didTransitionTo:(int64_t)to loading:(BOOL)loading;
+- (void)setPassThumbnailImage:(id)image;
 - (void)showLoadingUI;
 - (void)showStartingUI;
 - (void)showSuccessUI;
-- (void)showWithProvisioningError:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)showWithProvisioningError:(id)error;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation PKPushableIdentityCredentialProvisioningViewController
 
-- (PKPushableIdentityCredentialProvisioningViewController)initWithContext:(int64_t)a3 credentials:(id)a4 configuration:(id)a5 reporter:(id)a6
+- (PKPushableIdentityCredentialProvisioningViewController)initWithContext:(int64_t)context credentials:(id)credentials configuration:(id)configuration reporter:(id)reporter
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  credentialsCopy = credentials;
+  configurationCopy = configuration;
+  reporterCopy = reporter;
   v19.receiver = self;
   v19.super_class = PKPushableIdentityCredentialProvisioningViewController;
   v14 = [(PKPassShareRedemptionViewController *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    v14->_context = a3;
-    objc_storeStrong(&v14->_credentials, a4);
-    objc_storeStrong(&v15->_configuration, a5);
-    objc_storeStrong(&v15->_reporter, a6);
+    v14->_context = context;
+    objc_storeStrong(&v14->_credentials, credentials);
+    objc_storeStrong(&v15->_configuration, configuration);
+    objc_storeStrong(&v15->_reporter, reporter);
     v15->_isRunningInForeground = 1;
     v15->_isUnifiedAccessPass = [(PKPushableIdentityCredentialProvisioningViewController *)v15 _unifiedAccessPassStatus];
-    v16 = [(NSArray *)v15->_credentials firstObject];
-    v17 = [v16 cardType];
-    if (v17 <= 4)
+    firstObject = [(NSArray *)v15->_credentials firstObject];
+    cardType = [firstObject cardType];
+    if (cardType <= 4)
     {
-      a5 = **(&unk_1E8019BA0 + v17);
+      configuration = **(&unk_1E8019BA0 + cardType);
     }
 
-    [(PKProvisioningAnalyticsSessionUIReporter *)v15->_reporter setProductType:a5 subtype:0];
+    [(PKProvisioningAnalyticsSessionUIReporter *)v15->_reporter setProductType:configuration subtype:0];
   }
 
   return v15;
@@ -63,19 +63,19 @@
   [(PKPushableIdentityCredentialProvisioningViewController *)self _loadPassThumbnail];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKPushableIdentityCredentialProvisioningViewController;
-  [(PKPaymentSetupOptionsViewController *)&v4 viewDidAppear:a3];
+  [(PKPaymentSetupOptionsViewController *)&v4 viewDidAppear:appear];
   [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportViewAppeared];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKPushableIdentityCredentialProvisioningViewController;
-  [(PKPushableIdentityCredentialProvisioningViewController *)&v4 viewDidDisappear:a3];
+  [(PKPushableIdentityCredentialProvisioningViewController *)&v4 viewDidDisappear:disappear];
   if ([(PKPushableIdentityCredentialProvisioningViewController *)self isMovingFromParentViewController])
   {
     [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter resetProductTypes];
@@ -141,14 +141,14 @@
       objc_destroyWeak(&v11);
     }
 
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __76__PKPushableIdentityCredentialProvisioningViewController__startProvisioning__block_invoke_5;
     v8[3] = &unk_1E8019B30;
     objc_copyWeak(&v9, buf);
     v8[4] = self;
-    v7 = [v5 evaluateWithInput:v6 completion:v8];
+    v7 = [v5 evaluateWithInput:null completion:v8];
 
     objc_destroyWeak(&v9);
     objc_destroyWeak(buf);
@@ -297,8 +297,8 @@ void __76__PKPushableIdentityCredentialProvisioningViewController__startProvisio
 
 - (void)_loadPassThumbnail
 {
-  v3 = [(PKPassShareRedemptionViewController *)self cardHeaderView];
-  [v3 showLoadingContent];
+  cardHeaderView = [(PKPassShareRedemptionViewController *)self cardHeaderView];
+  [cardHeaderView showLoadingContent];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __76__PKPushableIdentityCredentialProvisioningViewController__loadPassThumbnail__block_invoke;
@@ -309,7 +309,7 @@ void __76__PKPushableIdentityCredentialProvisioningViewController__startProvisio
   if (self->_provisioningTemplateIdentifier)
   {
     objc_initWeak(&location, self);
-    v6 = [MEMORY[0x1E69B90D8] sharedInstance];
+    mEMORY[0x1E69B90D8] = [MEMORY[0x1E69B90D8] sharedInstance];
     provisioningTemplateIdentifier = self->_provisioningTemplateIdentifier;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
@@ -317,7 +317,7 @@ void __76__PKPushableIdentityCredentialProvisioningViewController__startProvisio
     v8[3] = &unk_1E8019B80;
     objc_copyWeak(&v10, &location);
     v9 = v5;
-    [v6 cardArtworkForTemplateIdentifier:provisioningTemplateIdentifier completion:v8];
+    [mEMORY[0x1E69B90D8] cardArtworkForTemplateIdentifier:provisioningTemplateIdentifier completion:v8];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
@@ -405,14 +405,14 @@ void __76__PKPushableIdentityCredentialProvisioningViewController__loadPassThumb
   }
 }
 
-- (void)setPassThumbnailImage:(id)a3
+- (void)setPassThumbnailImage:(id)image
 {
-  objc_storeStrong(&self->_passThumbnailImage, a3);
-  v5 = a3;
-  v6 = [(PKPassShareRedemptionViewController *)self cardHeaderView];
-  [v6 setCardImage:self->_passThumbnailImage];
+  objc_storeStrong(&self->_passThumbnailImage, image);
+  imageCopy = image;
+  cardHeaderView = [(PKPassShareRedemptionViewController *)self cardHeaderView];
+  [cardHeaderView setCardImage:self->_passThumbnailImage];
 
-  [v6 hideLoadingContent];
+  [cardHeaderView hideLoadingContent];
 }
 
 - (void)showStartingUI
@@ -429,8 +429,8 @@ void __76__PKPushableIdentityCredentialProvisioningViewController__loadPassThumb
 
 - (void)_setTitleAndBodyText
 {
-  v3 = [MEMORY[0x1E69B90D8] sharedInstance];
-  v4 = [v3 provisioningString:@"PROVISION_PUSHABLE_IDENTITY_PASS_TITLE" templateIdentifier:self->_provisioningTemplateIdentifier];
+  mEMORY[0x1E69B90D8] = [MEMORY[0x1E69B90D8] sharedInstance];
+  v4 = [mEMORY[0x1E69B90D8] provisioningString:@"PROVISION_PUSHABLE_IDENTITY_PASS_TITLE" templateIdentifier:self->_provisioningTemplateIdentifier];
   v5 = v4;
   if (v4)
   {
@@ -445,8 +445,8 @@ void __76__PKPushableIdentityCredentialProvisioningViewController__loadPassThumb
   v12 = v6;
 
   [(PKPaymentSetupOptionsViewController *)self setTitleText:v12];
-  v7 = [MEMORY[0x1E69B90D8] sharedInstance];
-  v8 = [v7 provisioningString:@"PROVISION_PUSHABLE_IDENTITY_PASS_BODY" templateIdentifier:self->_provisioningTemplateIdentifier];
+  mEMORY[0x1E69B90D8]2 = [MEMORY[0x1E69B90D8] sharedInstance];
+  v8 = [mEMORY[0x1E69B90D8]2 provisioningString:@"PROVISION_PUSHABLE_IDENTITY_PASS_BODY" templateIdentifier:self->_provisioningTemplateIdentifier];
   v9 = v8;
   if (v8)
   {
@@ -465,8 +465,8 @@ void __76__PKPushableIdentityCredentialProvisioningViewController__loadPassThumb
 
 - (void)_setContinueButtonText
 {
-  v3 = [MEMORY[0x1E69B90D8] sharedInstance];
-  v4 = [v3 provisioningString:@"ADD_PUSHABLE_IDENTITY_PASS_CONTINUE_TITLE" templateIdentifier:self->_provisioningTemplateIdentifier];
+  mEMORY[0x1E69B90D8] = [MEMORY[0x1E69B90D8] sharedInstance];
+  v4 = [mEMORY[0x1E69B90D8] provisioningString:@"ADD_PUSHABLE_IDENTITY_PASS_CONTINUE_TITLE" templateIdentifier:self->_provisioningTemplateIdentifier];
   v5 = v4;
   if (v4)
   {
@@ -486,8 +486,8 @@ void __76__PKPushableIdentityCredentialProvisioningViewController__loadPassThumb
 - (void)_showExitingLostModeUI
 {
   [(PKPushableIdentityCredentialProvisioningViewController *)self showLoadingUI];
-  v3 = [MEMORY[0x1E69B90D8] sharedInstance];
-  v4 = [v3 provisioningString:@"EXITING_LOST_MODE_SHAREABLE_CREDENTIAL_PASS" templateIdentifier:self->_provisioningTemplateIdentifier];
+  mEMORY[0x1E69B90D8] = [MEMORY[0x1E69B90D8] sharedInstance];
+  v4 = [mEMORY[0x1E69B90D8] provisioningString:@"EXITING_LOST_MODE_SHAREABLE_CREDENTIAL_PASS" templateIdentifier:self->_provisioningTemplateIdentifier];
   v5 = v4;
   if (v4)
   {
@@ -509,8 +509,8 @@ void __76__PKPushableIdentityCredentialProvisioningViewController__loadPassThumb
   v8.receiver = self;
   v8.super_class = PKPushableIdentityCredentialProvisioningViewController;
   [(PKPassShareRedemptionViewController *)&v8 showLoadingUI];
-  v3 = [MEMORY[0x1E69B90D8] sharedInstance];
-  v4 = [v3 provisioningString:@"ADDING_PUSHABLE_IDENTITY_PASS" templateIdentifier:self->_provisioningTemplateIdentifier];
+  mEMORY[0x1E69B90D8] = [MEMORY[0x1E69B90D8] sharedInstance];
+  v4 = [mEMORY[0x1E69B90D8] provisioningString:@"ADDING_PUSHABLE_IDENTITY_PASS" templateIdentifier:self->_provisioningTemplateIdentifier];
   v5 = v4;
   if (v4)
   {
@@ -532,32 +532,32 @@ void __76__PKPushableIdentityCredentialProvisioningViewController__loadPassThumb
 - (void)showSuccessUI
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PKPassShareRedemptionViewController *)self analyticsReporter];
+  analyticsReporter = [(PKPassShareRedemptionViewController *)self analyticsReporter];
   v7 = *MEMORY[0x1E69BB5D0];
   v8[0] = *MEMORY[0x1E69BA7B0];
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
-  [v3 sendEventForPage:2 specifics:v4];
+  [analyticsReporter sendEventForPage:2 specifics:v4];
 
   [(PKPaymentSetupOptionsViewController *)self setShowHeaderSpinner:0];
-  v5 = [(PKPaymentSetupOptionsViewController *)self headerView];
-  [v5 setShowCheckmark:1];
+  headerView = [(PKPaymentSetupOptionsViewController *)self headerView];
+  [headerView setShowCheckmark:1];
 
   v6 = PKLocalizedIdentityString(&cfstr_AddingPushable.isa);
   [(PKPaymentSetupOptionsViewController *)self setTitleText:v6];
 }
 
-- (void)showWithProvisioningError:(id)a3
+- (void)showWithProvisioningError:(id)error
 {
-  v4 = a3;
-  v5 = v4;
-  if (([v4 hasLocalizedTitleAndMessage] & 1) == 0)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (([errorCopy hasLocalizedTitleAndMessage] & 1) == 0)
   {
     v6 = [(NSArray *)self->_credentials count];
-    v7 = [(PKAddIdentityDocumentConfiguration *)self->_configuration metadataProviders];
-    v8 = fmax(v6, [v7 count]);
+    metadataProviders = [(PKAddIdentityDocumentConfiguration *)self->_configuration metadataProviders];
+    v8 = fmax(v6, [metadataProviders count]);
 
-    v9 = [v4 underlyingError];
-    v5 = [(PKPushableIdentityCredentialProvisioningViewController *)self _provisioningErrorWithNumberOfPassesFailed:v8 error:v9];
+    underlyingError = [errorCopy underlyingError];
+    v5 = [(PKPushableIdentityCredentialProvisioningViewController *)self _provisioningErrorWithNumberOfPassesFailed:v8 error:underlyingError];
   }
 
   v10 = MEMORY[0x1E69DC650];
@@ -567,12 +567,12 @@ void __76__PKPushableIdentityCredentialProvisioningViewController__loadPassThumb
   v14[2] = __84__PKPushableIdentityCredentialProvisioningViewController_showWithProvisioningError___block_invoke_2;
   v14[3] = &unk_1E8010A10;
   v14[4] = self;
-  v15 = v4;
+  v15 = errorCopy;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __84__PKPushableIdentityCredentialProvisioningViewController_showWithProvisioningError___block_invoke_3;
   v13[3] = &unk_1E8010970;
-  v11 = v4;
+  v11 = errorCopy;
   v12 = [v10 alertForErrorWithError:v5 acknowledgeButtonText:0 exitButtonText:0 onAcknowledge:&__block_literal_global_113 onExit:v14 onTryAgain:v13];
   [(PKPushableIdentityCredentialProvisioningViewController *)self presentViewController:v12 animated:1 completion:0];
 }
@@ -597,11 +597,11 @@ void __84__PKPushableIdentityCredentialProvisioningViewController_showWithProvis
   [WeakRetained cancel];
 }
 
-- (void)didTransitionTo:(int64_t)a3 loading:(BOOL)a4
+- (void)didTransitionTo:(int64_t)to loading:(BOOL)loading
 {
-  if (a4)
+  if (loading)
   {
-    if (a3 == 1)
+    if (to == 1)
     {
       [(PKPushableIdentityCredentialProvisioningViewController *)self _showExitingLostModeUI];
     }
@@ -612,7 +612,7 @@ void __84__PKPushableIdentityCredentialProvisioningViewController_showWithProvis
     }
   }
 
-  else if (a3 == 8)
+  else if (to == 8)
   {
     [(PKPushableIdentityCredentialProvisioningViewController *)self showSuccessUI];
   }
@@ -623,30 +623,30 @@ void __84__PKPushableIdentityCredentialProvisioningViewController_showWithProvis
   }
 }
 
-- (void)_terminateSetupFlowWithPasses:(id)a3 error:(id)a4
+- (void)_terminateSetupFlowWithPasses:(id)passes error:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  passesCopy = passes;
+  errorCopy = error;
   v8 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v17 = [v6 count];
+    v17 = [passesCopy count];
     v18 = 2112;
-    v19 = v7;
+    v19 = errorCopy;
     _os_log_impl(&dword_1BD026000, v8, OS_LOG_TYPE_DEFAULT, "Pushable Identity Credential VC - Terminating setup flow with passes: %lu error: %@", buf, 0x16u);
   }
 
-  v9 = [(PKPassShareRedemptionViewController *)self analyticsReporter];
-  if (v7)
+  analyticsReporter = [(PKPassShareRedemptionViewController *)self analyticsReporter];
+  if (errorCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    v10 = v6 == 0;
+    v10 = passesCopy == 0;
   }
 
   v14 = *MEMORY[0x1E69BB5D0];
@@ -662,18 +662,18 @@ void __84__PKPushableIdentityCredentialProvisioningViewController_showWithProvis
 
   v15 = *v11;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v15 forKeys:&v14 count:1];
-  [v9 sendEventForPage:2 error:v7 specifics:{v12, v14}];
+  [analyticsReporter sendEventForPage:2 error:errorCopy specifics:{v12, v14}];
 
   WeakRetained = objc_loadWeakRetained(&self->_coordinator);
-  [WeakRetained pushableViewController:self didFailWithError:v7];
+  [WeakRetained pushableViewController:self didFailWithError:errorCopy];
 }
 
-- (id)_provisioningErrorWithNumberOfPassesFailed:(int64_t)a3 error:(id)a4
+- (id)_provisioningErrorWithNumberOfPassesFailed:(int64_t)failed error:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   v16 = 1;
-  v7 = [(PKPushableIdentityCredentialProvisioningViewController *)self _accessPassType];
-  v8 = PKAddSEPassDisplayableError(v6, a3, v7, &v16);
+  _accessPassType = [(PKPushableIdentityCredentialProvisioningViewController *)self _accessPassType];
+  v8 = PKAddSEPassDisplayableError(errorCopy, failed, _accessPassType, &v16);
   v9 = v8;
   if (v8)
   {
@@ -682,7 +682,7 @@ void __84__PKPushableIdentityCredentialProvisioningViewController_showWithProvis
 
   else
   {
-    v10 = PKAddSEPassGenericDisplayableError(a3, v7);
+    v10 = PKAddSEPassGenericDisplayableError(failed, _accessPassType);
   }
 
   v11 = v10;
@@ -704,7 +704,7 @@ void __84__PKPushableIdentityCredentialProvisioningViewController_showWithProvis
 
   else
   {
-    v13 = v6;
+    v13 = errorCopy;
   }
 
   v14 = [MEMORY[0x1E69B90E8] errorWithUnderlyingError:v13 defaultSeverity:v12];

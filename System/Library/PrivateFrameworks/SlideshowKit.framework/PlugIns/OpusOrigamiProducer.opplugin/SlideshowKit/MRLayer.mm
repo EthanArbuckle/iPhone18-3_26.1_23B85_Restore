@@ -1,61 +1,61 @@
 @interface MRLayer
-+ (MRLayer)layerWithPlug:(id)a3 andParameters:(id)a4 inSuperlayer:(id)a5;
-- (BOOL)_setStateValue:(id)a3 forKey:(id)a4;
++ (MRLayer)layerWithPlug:(id)plug andParameters:(id)parameters inSuperlayer:(id)superlayer;
+- (BOOL)_setStateValue:(id)value forKey:(id)key;
 - (BOOL)isFlatAndSquare;
 - (BOOL)isNative3D;
-- (BOOL)prerenderForTime:(double)a3 inContext:(id)a4 withArguments:(id)a5;
-- (BOOL)shouldBeActivatedAtTime:(double)a3;
-- (BOOL)shouldBePreactivatedAtTime:(double)a3;
-- (CGPoint)convertGlobalPoint:(CGPoint)a3;
-- (CGPoint)convertLocalPoint:(CGPoint)a3;
+- (BOOL)prerenderForTime:(double)time inContext:(id)context withArguments:(id)arguments;
+- (BOOL)shouldBeActivatedAtTime:(double)time;
+- (BOOL)shouldBePreactivatedAtTime:(double)time;
+- (CGPoint)convertGlobalPoint:(CGPoint)point;
+- (CGPoint)convertLocalPoint:(CGPoint)point;
 - (CGSize)pixelSize;
 - (MCTransitionTrigger)nextTransition;
 - (MCTransitionTrigger)previousTransition;
-- (MRLayer)initWithParameters:(id)a3;
-- (MRLayer)initWithPlug:(id)a3 andParameters:(id)a4 inSuperlayer:(id)a5;
-- (double)_serial_gotoNextWithObject:(id)a3;
-- (double)_serial_gotoPreviousWithObject:(id)a3;
-- (double)doActionTrigger:(id)a3;
-- (double)doAnimationTrigger:(id)a3;
-- (double)doGenericAction:(id)a3;
-- (double)doMotionTrigger:(id)a3;
-- (double)doStateOperation:(id)a3;
+- (MRLayer)initWithParameters:(id)parameters;
+- (MRLayer)initWithPlug:(id)plug andParameters:(id)parameters inSuperlayer:(id)superlayer;
+- (double)_serial_gotoNextWithObject:(id)object;
+- (double)_serial_gotoPreviousWithObject:(id)object;
+- (double)doActionTrigger:(id)trigger;
+- (double)doAnimationTrigger:(id)trigger;
+- (double)doGenericAction:(id)action;
+- (double)doMotionTrigger:(id)trigger;
+- (double)doStateOperation:(id)operation;
 - (double)duration;
 - (double)opacity;
 - (double)phaseInDuration;
 - (double)phaseOutDuration;
-- (id)__retainedByUserRenderedImageAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5;
+- (id)__retainedByUserRenderedImageAtTime:(double)time inContext:(id)context withArguments:(id)arguments;
 - (id)_currentState;
-- (id)_dumpLayerWithOptions:(unint64_t)a3;
-- (id)patchworkAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5;
-- (id)retainedByUserRenderedImageAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5;
-- (void)_applyState:(id)a3;
+- (id)_dumpLayerWithOptions:(unint64_t)options;
+- (id)patchworkAtTime:(double)time inContext:(id)context withArguments:(id)arguments;
+- (id)retainedByUserRenderedImageAtTime:(double)time inContext:(id)context withArguments:(id)arguments;
+- (void)_applyState:(id)state;
 - (void)_observePlug;
 - (void)_observePlugOnPreactivate;
-- (void)_queueLayerCommand:(int)a3 object:(id)a4;
+- (void)_queueLayerCommand:(int)command object:(id)object;
 - (void)_rebuildAudio;
-- (void)_sendAction:(id)a3 withStates:(id)a4 async:(BOOL)a5 yesterday:(BOOL)a6;
-- (void)_setPlug:(id)a3 andSuperlayer:(id)a4;
-- (void)_setScissorRectOnContext:(id)a3 saveTo:(int *)a4;
+- (void)_sendAction:(id)action withStates:(id)states async:(BOOL)async yesterday:(BOOL)yesterday;
+- (void)_setPlug:(id)plug andSuperlayer:(id)superlayer;
+- (void)_setScissorRectOnContext:(id)context saveTo:(int *)to;
 - (void)_unobservePlug;
 - (void)_unobservePlugOnDepreactivate;
-- (void)_updateStateWithContext:(id)a3;
+- (void)_updateStateWithContext:(id)context;
 - (void)activate;
-- (void)animateOpacityTo:(double)a3 withDuration:(double)a4;
+- (void)animateOpacityTo:(double)to withDuration:(double)duration;
 - (void)cleanup;
 - (void)deactivate;
 - (void)dealloc;
-- (void)depreactivate:(BOOL)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)depreactivate:(BOOL)depreactivate;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)preactivate;
-- (void)renderAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5;
-- (void)resumeOrPause:(BOOL)a3;
+- (void)renderAtTime:(double)time inContext:(id)context withArguments:(id)arguments;
+- (void)resumeOrPause:(BOOL)pause;
 - (void)scheduleForDestruction;
-- (void)setDuration:(double)a3;
-- (void)setOpacity:(double)a3;
-- (void)setPhaseInDuration:(double)a3;
-- (void)setPhaseOutDuration:(double)a3;
-- (void)setPixelSize:(CGSize)a3;
+- (void)setDuration:(double)duration;
+- (void)setOpacity:(double)opacity;
+- (void)setPhaseInDuration:(double)duration;
+- (void)setPhaseOutDuration:(double)duration;
+- (void)setPixelSize:(CGSize)size;
 - (void)stampTime;
 - (void)synchronizeTime;
 - (void)updateGeometry;
@@ -63,7 +63,7 @@
 
 @implementation MRLayer
 
-- (MRLayer)initWithPlug:(id)a3 andParameters:(id)a4 inSuperlayer:(id)a5
+- (MRLayer)initWithPlug:(id)plug andParameters:(id)parameters inSuperlayer:(id)superlayer
 {
   v8 = [(MRLayer *)self init];
   if (!v8)
@@ -71,12 +71,12 @@
     return v8;
   }
 
-  v8->mSuperlayer = a5;
-  v8->mUUID = [objc_msgSend(a3 "objectID")];
+  v8->mSuperlayer = superlayer;
+  v8->mUUID = [objc_msgSend(plug "objectID")];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && ([-[NSDictionary objectForKey:](v8->mParameters objectForKey:{@"readonly", "BOOLValue"}] & 1) == 0)
   {
-    v10 = [a4 mutableCopy];
+    v10 = [parameters mutableCopy];
     v8->mParameters = v10;
     [(NSDictionary *)v10 setObject:&__kCFBooleanTrue forKey:@"readonly"];
     mParameters = v8->mParameters;
@@ -84,7 +84,7 @@
 
   else
   {
-    mParameters = a4;
+    mParameters = parameters;
     v8->mParameters = mParameters;
   }
 
@@ -114,7 +114,7 @@
   }
 
   v8->mDoAudio = v12;
-  v15 = [objc_msgSend(a3 "container")];
+  v15 = [objc_msgSend(plug "container")];
   if (v15)
   {
     v8->mPersistentState = [[NSMutableDictionary alloc] initWithDictionary:v15];
@@ -130,7 +130,7 @@
   *&v8->mTimeStamp = xmmword_163380;
   v8->mLayerCommandQueue = objc_alloc_init(NSMutableArray);
   v8->mIsScheduledForDestruction = 0;
-  v8->mPlug = a3;
+  v8->mPlug = plug;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -179,7 +179,7 @@ LABEL_28:
     goto LABEL_26;
   }
 
-  if (a5)
+  if (superlayer)
   {
     v8->mTimeIn = 1.0e36;
 LABEL_26:
@@ -200,7 +200,7 @@ LABEL_26:
   return v8;
 }
 
-- (MRLayer)initWithParameters:(id)a3
+- (MRLayer)initWithParameters:(id)parameters
 {
   v4 = [(MRLayer *)self init];
   if (v4)
@@ -210,9 +210,9 @@ LABEL_26:
     v4->mUUID = [[NSString alloc] initWithFormat:@"/%@", v6];
     CFRelease(v6);
     CFRelease(v5);
-    v7 = a3;
-    v4->mParameters = v7;
-    v4->mRenderer = [(NSDictionary *)v7 objectForKey:@"renderer"];
+    parametersCopy = parameters;
+    v4->mParameters = parametersCopy;
+    v4->mRenderer = [(NSDictionary *)parametersCopy objectForKey:@"renderer"];
     v8 = [-[NSDictionary objectForKey:](v4->mParameters objectForKey:{@"precomputing", "BOOLValue"}];
     v4->mIsPrecomputing = v8;
     if (v8)
@@ -300,23 +300,23 @@ LABEL_26:
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if ([a3 isEqualToString:{@"positionRotationAndSize", a4, a5, a6}] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"animationPaths") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"opacity") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"transition"))
+  if ([path isEqualToString:{@"positionRotationAndSize", object, change, context}] & 1) != 0 || (objc_msgSend(path, "isEqualToString:", @"animationPaths") & 1) != 0 || (objc_msgSend(path, "isEqualToString:", @"opacity") & 1) != 0 || (objc_msgSend(path, "isEqualToString:", @"transition"))
   {
     goto LABEL_15;
   }
 
-  if (![a3 isEqualToString:@"timeIn"])
+  if (![path isEqualToString:@"timeIn"])
   {
-    if ([a3 isEqualToString:@"size"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"currentLayoutIndex"))
+    if ([path isEqualToString:@"size"] & 1) != 0 || (objc_msgSend(path, "isEqualToString:", @"currentLayoutIndex"))
     {
       mDoAudio = 1;
       v11 = 193;
       goto LABEL_14;
     }
 
-    if ([a3 isEqualToString:@"fullDuration"])
+    if ([path isEqualToString:@"fullDuration"])
     {
       self->mNeedsToResyncClockToPlug = 1;
       mPlugAsParallel = self->mPlugAsParallel;
@@ -328,24 +328,24 @@ LABEL_26:
       goto LABEL_15;
     }
 
-    if ([a3 isEqualToString:@"container.initialState"])
+    if ([path isEqualToString:@"container.initialState"])
     {
       mDoAudio = 1;
       v11 = 194;
       goto LABEL_14;
     }
 
-    if ([a3 isEqualToString:@"audioPlaylist.audioNoVolume"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"numberOfLoops"))
+    if ([path isEqualToString:@"audioPlaylist.audioNoVolume"] & 1) != 0 || (objc_msgSend(path, "isEqualToString:", @"numberOfLoops"))
     {
       v13 = 195;
     }
 
     else
     {
-      if (([a3 isEqualToString:@"audioPlaylist.builtVolume"] & 1) == 0)
+      if (([path isEqualToString:@"audioPlaylist.builtVolume"] & 1) == 0)
       {
 LABEL_16:
-        if (![a3 isEqualToString:@"timeStamp"])
+        if (![path isEqualToString:@"timeStamp"])
         {
           return;
         }
@@ -384,9 +384,9 @@ LABEL_19:
   [(MRLayer *)self stampTime];
 }
 
-+ (MRLayer)layerWithPlug:(id)a3 andParameters:(id)a4 inSuperlayer:(id)a5
++ (MRLayer)layerWithPlug:(id)plug andParameters:(id)parameters inSuperlayer:(id)superlayer
 {
-  [a3 container];
+  [plug container];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -395,12 +395,12 @@ LABEL_19:
 
   else
   {
-    [a3 container];
+    [plug container];
     objc_opt_class();
     v8 = off_1A4CD8;
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      [a3 container];
+      [plug container];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -409,12 +409,12 @@ LABEL_19:
     }
   }
 
-  v9 = [objc_alloc(*v8) initWithPlug:a3 andParameters:a4 inSuperlayer:a5];
+  v9 = [objc_alloc(*v8) initWithPlug:plug andParameters:parameters inSuperlayer:superlayer];
 
   return v9;
 }
 
-- (void)_setPlug:(id)a3 andSuperlayer:(id)a4
+- (void)_setPlug:(id)plug andSuperlayer:(id)superlayer
 {
   mPlug = self->mPlug;
   if (mPlug)
@@ -426,12 +426,12 @@ LABEL_19:
     }
   }
 
-  v8 = a3;
-  self->mPlug = v8;
+  plugCopy = plug;
+  self->mPlug = plugCopy;
   self->mPlugAsSerial = 0;
   self->mPlugAsParallel = 0;
   self->mPlugAsHaven = 0;
-  if (v8)
+  if (plugCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -463,14 +463,14 @@ LABEL_19:
     }
   }
 
-  self->mSuperlayer = a4;
+  self->mSuperlayer = superlayer;
 }
 
-- (void)setPixelSize:(CGSize)a3
+- (void)setPixelSize:(CGSize)size
 {
-  if (a3.width != self->mPixelSize.width || a3.height != self->mPixelSize.height)
+  if (size.width != self->mPixelSize.width || size.height != self->mPixelSize.height)
   {
-    self->mPixelSize = a3;
+    self->mPixelSize = size;
     if (!self->mIsPrecomputing)
     {
       [(MRLayer *)self stampTime];
@@ -522,21 +522,21 @@ LABEL_9:
   self->mNeedsToUpdateGeometry = 0;
 }
 
-- (void)resumeOrPause:(BOOL)a3
+- (void)resumeOrPause:(BOOL)pause
 {
   if (self->mDoAudio)
   {
     mAudioPlayer = self->mAudioPlayer;
     if (mAudioPlayer)
     {
-      v5 = a3;
-      if (a3)
+      pauseCopy = pause;
+      if (pause)
       {
         [(MRAudioPlayer *)mAudioPlayer resyncAudioItem];
         mAudioPlayer = self->mAudioPlayer;
       }
 
-      [(MRAudioPlayer *)mAudioPlayer setShouldBePlaying:v5];
+      [(MRAudioPlayer *)mAudioPlayer setShouldBePlaying:pauseCopy];
     }
   }
 }
@@ -562,18 +562,18 @@ LABEL_9:
   return result;
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
   mClock = self->mClock;
   if (mClock)
   {
 
-    [(MRLayerClock *)mClock setFullDuration:a3];
+    [(MRLayerClock *)mClock setFullDuration:duration];
   }
 
   else
   {
-    NSLog(@"Inconsistency error: setting duration on depreactivated layer", a2, a3);
+    NSLog(@"Inconsistency error: setting duration on depreactivated layer", a2, duration);
   }
 }
 
@@ -589,14 +589,14 @@ LABEL_9:
   return result;
 }
 
-- (void)setPhaseInDuration:(double)a3
+- (void)setPhaseInDuration:(double)duration
 {
   [(MCPlug *)self->mPlug setPhaseInDuration:?];
   mClock = self->mClock;
   if (mClock)
   {
 
-    [(MRLayerClock *)mClock setPhaseInDuration:a3];
+    [(MRLayerClock *)mClock setPhaseInDuration:duration];
   }
 }
 
@@ -612,14 +612,14 @@ LABEL_9:
   return result;
 }
 
-- (void)setPhaseOutDuration:(double)a3
+- (void)setPhaseOutDuration:(double)duration
 {
   [(MCPlug *)self->mPlug setPhaseOutDuration:?];
   mClock = self->mClock;
   if (mClock)
   {
 
-    [(MRLayerClock *)mClock setPhaseOutDuration:a3];
+    [(MRLayerClock *)mClock setPhaseOutDuration:duration];
   }
 }
 
@@ -635,7 +635,7 @@ LABEL_9:
   return result;
 }
 
-- (void)setOpacity:(double)a3
+- (void)setOpacity:(double)opacity
 {
   mParentHelper = self->mParentHelper;
   [(MCPlugParallel *)self->mPlugAsParallel setOpacity:?];
@@ -644,14 +644,14 @@ LABEL_9:
   mRenderingState = self->mRenderingState;
   if (mRenderingState)
   {
-    v7 = a3;
-    mRenderingState->var11 = v7;
+    opacityCopy = opacity;
+    mRenderingState->var11 = opacityCopy;
   }
 }
 
-- (void)animateOpacityTo:(double)a3 withDuration:(double)a4
+- (void)animateOpacityTo:(double)to withDuration:(double)duration
 {
-  if (a4 <= 0.0)
+  if (duration <= 0.0)
   {
 
     [(MRLayer *)self setOpacity:?];
@@ -678,9 +678,9 @@ LABEL_9:
     *&v12 = var11;
     [v8 createKeyframeWithScalar:100 atTime:v12 offsetKind:v13];
     [(MRLayerClock *)self->mClock externalTime];
-    v16 = v15 + a4;
-    v14 = a3;
-    *&v15 = v14;
+    v16 = v15 + duration;
+    toCopy = to;
+    *&v15 = toCopy;
     [v8 createKeyframeWithScalar:100 atTime:v15 offsetKind:v16];
 
     [mParentHelper setOpacityAnimationPath:v8];
@@ -751,7 +751,7 @@ LABEL_9:
   }
 }
 
-- (void)depreactivate:(BOOL)a3
+- (void)depreactivate:(BOOL)depreactivate
 {
   self->mIsPreactivated = 0;
 
@@ -793,37 +793,37 @@ LABEL_9:
   }
 }
 
-- (BOOL)shouldBePreactivatedAtTime:(double)a3
+- (BOOL)shouldBePreactivatedAtTime:(double)time
 {
-  if (a3 < -6.0)
+  if (time < -6.0)
   {
     return 0;
   }
 
   [(MRLayer *)self duration];
-  return v5 + 0.1 > a3;
+  return v5 + 0.1 > time;
 }
 
-- (BOOL)shouldBeActivatedAtTime:(double)a3
+- (BOOL)shouldBeActivatedAtTime:(double)time
 {
-  if (a3 < 0.0)
+  if (time < 0.0)
   {
     return 0;
   }
 
   [(MRLayer *)self duration];
-  return v5 > a3;
+  return v5 > time;
 }
 
 - (BOOL)isNative3D
 {
-  v3 = [(MRLayer *)self _isNative3D];
-  if (v3)
+  _isNative3D = [(MRLayer *)self _isNative3D];
+  if (_isNative3D)
   {
-    LOBYTE(v3) = self->_filterID == 0;
+    LOBYTE(_isNative3D) = self->_filterID == 0;
   }
 
-  return v3;
+  return _isNative3D;
 }
 
 - (BOOL)isFlatAndSquare
@@ -842,7 +842,7 @@ LABEL_9:
   return result;
 }
 
-- (void)_setScissorRectOnContext:(id)a3 saveTo:(int *)a4
+- (void)_setScissorRectOnContext:(id)context saveTo:(int *)to
 {
   v6 = self->mPixelSize.height / self->mPixelSize.width;
   memset(v26, 0, sizeof(v26));
@@ -850,19 +850,19 @@ LABEL_9:
   v7 = MRMatrix_ProjectPoint(v26, -1.0, -v6);
   v9 = v8;
   v10 = (v7 + 1.0) * 0.5;
-  [a3 pixelSize];
+  [context pixelSize];
   v12 = v11 * v10;
-  [a3 pixelSize];
+  [context pixelSize];
   v14 = (v9 + 1.0) * 0.5 * v13;
   v15 = MRMatrix_ProjectPoint(v26, 1.0, v6);
   v17 = v16;
   v18 = (v15 + 1.0) * 0.5;
-  [a3 pixelSize];
+  [context pixelSize];
   v20 = v19 * v18;
-  [a3 pixelSize];
+  [context pixelSize];
   v22 = (v17 + 1.0) * 0.5 * v21;
   v27[0] = v12;
-  if ([a3 isFlipped])
+  if ([context isFlipped])
   {
     v23 = v22;
   }
@@ -874,18 +874,18 @@ LABEL_9:
 
   v27[1] = v23;
   v27[2] = (v20 - v12);
-  v24 = [a3 isFlipped];
+  isFlipped = [context isFlipped];
   v25 = v14 - v22;
-  if (!v24)
+  if (!isFlipped)
   {
     v25 = v22 - v14;
   }
 
   v27[3] = v25;
-  [a3 setScissorRect:v27 saveTo:a4];
+  [context setScissorRect:v27 saveTo:to];
 }
 
-- (BOOL)prerenderForTime:(double)a3 inContext:(id)a4 withArguments:(id)a5
+- (BOOL)prerenderForTime:(double)time inContext:(id)context withArguments:(id)arguments
 {
   mPlugAsParallel = self->mPlugAsParallel;
   if (mPlugAsParallel)
@@ -932,12 +932,12 @@ LABEL_7:
   if (self->mNeedsToUpdateInitialState)
   {
     self->mNeedsToUpdateInitialState = 0;
-    v13 = [(MCContainer *)[(MCPlug *)self->mPlug container] initialState];
+    initialState = [(MCContainer *)[(MCPlug *)self->mPlug container] initialState];
     v59 = 0u;
     v60 = 0u;
     v61 = 0u;
     v62 = 0u;
-    v14 = [(NSDictionary *)v13 countByEnumeratingWithState:&v59 objects:v64 count:16];
+    v14 = [(NSDictionary *)initialState countByEnumeratingWithState:&v59 objects:v64 count:16];
     if (v14)
     {
       v15 = v14;
@@ -948,13 +948,13 @@ LABEL_7:
         {
           if (*v60 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(initialState);
           }
 
-          [(MRLayer *)self _setStateValue:[(NSDictionary *)v13 objectForKey:*(*(&v59 + 1) + 8 * i)] forKey:*(*(&v59 + 1) + 8 * i)];
+          [(MRLayer *)self _setStateValue:[(NSDictionary *)initialState objectForKey:*(*(&v59 + 1) + 8 * i)] forKey:*(*(&v59 + 1) + 8 * i)];
         }
 
-        v15 = [(NSDictionary *)v13 countByEnumeratingWithState:&v59 objects:v64 count:16];
+        v15 = [(NSDictionary *)initialState countByEnumeratingWithState:&v59 objects:v64 count:16];
       }
 
       while (v15);
@@ -963,30 +963,30 @@ LABEL_7:
 
   v18 = self->mIsActivated && self->mNeedsRendering;
   self->mNeedsRendering = 0;
-  v19 = [(MRLayerClock *)self->mClock currentLoopIndex];
-  v20 = [(MRLayerClock *)self->mClock _isPaused];
-  v21 = [(MRLayerClock *)self->mClock isInPhaseOut];
+  currentLoopIndex = [(MRLayerClock *)self->mClock currentLoopIndex];
+  _isPaused = [(MRLayerClock *)self->mClock _isPaused];
+  isInPhaseOut = [(MRLayerClock *)self->mClock isInPhaseOut];
   if (self->mNeedsToResyncClockToPlug)
   {
     self->mNeedsToResyncClockToPlug = 0;
     [(MRLayerClock *)self->mClock syncToPlug:self->mPlug];
   }
 
-  [(MRLayerClock *)self->mClock updateForExternalTime:a3];
+  [(MRLayerClock *)self->mClock updateForExternalTime:time];
   mSuperlayer = self->mSuperlayer;
   if (mSuperlayer)
   {
     [(MRLayerClock *)self->mClock setParentIsPaused:[(MRLayerClock *)[(MRLayer *)mSuperlayer clock] isPaused]];
   }
 
-  if ([a5 forcedState])
+  if ([arguments forcedState])
   {
     v57 = 0u;
     v58 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v23 = [objc_msgSend(a5 forcedState];
-    v24 = [v23 countByEnumeratingWithState:&v55 objects:v63 count:16];
+    forcedState = [objc_msgSend(arguments forcedState];
+    v24 = [forcedState countByEnumeratingWithState:&v55 objects:v63 count:16];
     if (v24)
     {
       v25 = v24;
@@ -997,7 +997,7 @@ LABEL_7:
         {
           if (*v56 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(forcedState);
           }
 
           v28 = [(MCPlug *)self->mPlug actionForKey:*(*(&v55 + 1) + 8 * j)];
@@ -1007,7 +1007,7 @@ LABEL_7:
           }
         }
 
-        v25 = [v23 countByEnumeratingWithState:&v55 objects:v63 count:16];
+        v25 = [forcedState countByEnumeratingWithState:&v55 objects:v63 count:16];
       }
 
       while (v25);
@@ -1026,7 +1026,7 @@ LABEL_7:
     [(MRLayer *)self updateGeometry];
   }
 
-  v31 = [(MRLayerClock *)self->mClock isPaused];
+  isPaused = [(MRLayerClock *)self->mClock isPaused];
   if (self->mDoAudio)
   {
     if (self->mNeedsToRequestRebuildAudio && ![(MRRenderer *)self->mRenderer ignoresBackgroundAudio])
@@ -1040,7 +1040,7 @@ LABEL_7:
       if (self->mAudioPlayer)
       {
         [(MRRenderer *)self->mRenderer addAudioObject:?];
-        if (!(v31 & 1 | !self->mIsActivated))
+        if (!(isPaused & 1 | !self->mIsActivated))
         {
           [(MRAudioPlayer *)self->mAudioPlayer resyncAudioItem];
           [(MRAudioPlayer *)self->mAudioPlayer setShouldBePlaying:1];
@@ -1073,12 +1073,12 @@ LABEL_7:
   {
     self->mRenderingState->var15 = 1;
     v34 = self->mPlugAsSerial;
-    if (!((v34 == 0) | v31 & 1))
+    if (!((v34 == 0) | isPaused & 1))
     {
       v35 = self->mSuperlayer;
-      v36 = [(MCPlugSerial *)v34 transitionID];
+      transitionID = [(MCPlugSerial *)v34 transitionID];
       v37 = self->mPlugAsSerial;
-      if (v36)
+      if (transitionID)
       {
         [(MCPlugSerial *)v37 transitionDuration];
       }
@@ -1107,9 +1107,9 @@ LABEL_7:
         v49 = [(MCPlugSerial *)self->mPlugAsSerial index]+ 1;
         if (v49 >= [-[MRLayer sublayers](v48 "sublayers")])
         {
-          v50 = [(MRLayerClock *)[(MRLayer *)v48 clock] currentLoopIndex];
+          currentLoopIndex2 = [(MRLayerClock *)[(MRLayer *)v48 clock] currentLoopIndex];
           [(MRLayerClock *)[(MRLayer *)v48 clock] numberOfLoops];
-          if (v51 + -1.0 <= v50 || ([(MRRenderer *)self->mRenderer renderingDelegate], (objc_opt_respondsToSelector() & 1) == 0) || ([(MRRenderingDelegate *)[(MRRenderer *)self->mRenderer renderingDelegate] slideshowShouldWrap]& 1) == 0)
+          if (v51 + -1.0 <= currentLoopIndex2 || ([(MRRenderer *)self->mRenderer renderingDelegate], (objc_opt_respondsToSelector() & 1) == 0) || ([(MRRenderingDelegate *)[(MRRenderer *)self->mRenderer renderingDelegate] slideshowShouldWrap]& 1) == 0)
           {
             v47 = v47 - v40;
             v45 = -0.002;
@@ -1130,7 +1130,7 @@ LABEL_7:
       }
     }
 
-    if (v21 != [(MRLayerClock *)self->mClock isInPhaseOut])
+    if (isInPhaseOut != [(MRLayerClock *)self->mClock isInPhaseOut])
     {
       v53 = [(MCPlug *)self->mPlug actionForKey:@"onPhaseOut"];
       if (v53)
@@ -1139,7 +1139,7 @@ LABEL_7:
       }
     }
 
-    if (v20 == v31)
+    if (_isPaused == isPaused)
     {
       if (self->mNeedsToSynchronizeTime)
       {
@@ -1149,11 +1149,11 @@ LABEL_7:
 
     else
     {
-      [(MRLayer *)self resumeOrPause:v20];
+      [(MRLayer *)self resumeOrPause:_isPaused];
     }
 
     self->mNeedsToSynchronizeTime = 0;
-    if (!self->mIsPrecomputing && [(MRLayerClock *)self->mClock currentLoopIndex]!= v19)
+    if (!self->mIsPrecomputing && [(MRLayerClock *)self->mClock currentLoopIndex]!= currentLoopIndex)
     {
       v54 = +[NSNotificationCenter defaultCenter];
       [(NSNotificationCenter *)v54 postNotificationName:kMRNotificationLayerLooped object:self];
@@ -1169,35 +1169,35 @@ LABEL_7:
   return v18;
 }
 
-- (id)__retainedByUserRenderedImageAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5
+- (id)__retainedByUserRenderedImageAtTime:(double)time inContext:(id)context withArguments:(id)arguments
 {
   *&self->mRenderingState->var17 = 257;
   v22[0] = 0;
   v22[1] = 0;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || (v9 = [(MRLayer *)self backgroundColor]) == 0)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || (backColor = [(MRLayer *)self backgroundColor]) == 0)
   {
     if (self->mRenderingState->var19)
     {
-      v9 = [a4 backColor];
+      backColor = [context backColor];
     }
 
     else
     {
-      v9 = v22;
+      backColor = v22;
     }
   }
 
   v18[0] = 0;
   v18[1] = 0;
-  v19 = *v9;
-  v10 = v9[3];
+  v19 = *backColor;
+  v10 = backColor[3];
   if (self->mRenderingState->var19)
   {
     v10 = 1.0;
   }
 
-  v20 = *(v9 + 2);
+  v20 = *(backColor + 2);
   v21 = v10;
   if ([(MRLayer *)self isOpaque]&& !self->mRenderingState->var19)
   {
@@ -1209,7 +1209,7 @@ LABEL_7:
     v11 = &v19;
   }
 
-  v12 = [a4 beginLocalContextWithSize:v11 backgroundColor:v18 state:{self->mPixelSize.width, self->mPixelSize.height}];
+  v12 = [context beginLocalContextWithSize:v11 backgroundColor:v18 state:{self->mPixelSize.width, self->mPixelSize.height}];
   v13 = +[EAGLContext currentContext];
   v14 = v13;
   if (v13 != [v12 glContext])
@@ -1220,30 +1220,30 @@ LABEL_7:
   v15 = self->mPixelSize.width / self->mPixelSize.height;
   *&v15 = v15;
   [v12 setLocalAspectRatio:v15];
-  [v12 setBackColor:objc_msgSend(a4 saveTo:{"backColor"), 0}];
-  [(MRLayer *)self _renderAtTime:v12 inContext:a5 withArguments:a3];
+  [v12 setBackColor:objc_msgSend(context saveTo:{"backColor"), 0}];
+  [(MRLayer *)self _renderAtTime:v12 inContext:arguments withArguments:time];
   if (+[EAGLContext currentContext]!= v13)
   {
     [EAGLContext setCurrentContext:v13];
   }
 
-  v16 = [a4 retainedByUserImageByEndingLocalContext:v12 andRestoreState:v18];
+  v16 = [context retainedByUserImageByEndingLocalContext:v12 andRestoreState:v18];
   [v16 setSourceTimestamp:self->mTimeStamp];
-  [v16 setRenderTime:a3];
+  [v16 setRenderTime:time];
   return v16;
 }
 
-- (void)renderAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5
+- (void)renderAtTime:(double)time inContext:(id)context withArguments:(id)arguments
 {
   if (![(MRLayer *)self hasSomethingToRender])
   {
     return;
   }
 
-  [(MRLayer *)self _updateStateWithContext:a4];
-  v9 = [(MRLayer *)self isNative3D];
+  [(MRLayer *)self _updateStateWithContext:context];
+  isNative3D = [(MRLayer *)self isNative3D];
   mRenderingState = self->mRenderingState;
-  mRenderingState->var16 = v9 ^ 1;
+  mRenderingState->var16 = isNative3D ^ 1;
   *&mRenderingState->var17 = 0;
   if (![(MRLayer *)self isInfinite])
   {
@@ -1305,16 +1305,16 @@ LABEL_7:
 
   v13 = [EAGLContext currentContext:*&v36];
   v14 = v13;
-  if (v13 != [a4 glContext])
+  if (v13 != [context glContext])
   {
-    +[EAGLContext setCurrentContext:](EAGLContext, "setCurrentContext:", [a4 glContext]);
+    +[EAGLContext setCurrentContext:](EAGLContext, "setCurrentContext:", [context glContext]);
   }
 
   if (self->mIsDimmed)
   {
-    v15 = [(MRLayer *)self->mSuperlayer isDimmed];
+    isDimmed = [(MRLayer *)self->mSuperlayer isDimmed];
     v16 = self->mRenderingState;
-    if ((v15 & 1) == 0)
+    if ((isDimmed & 1) == 0)
     {
       v16->var10 = v16->var10 * 0.5;
     }
@@ -1329,18 +1329,18 @@ LABEL_7:
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  [a4 setModelViewMatrix:v16->var13 saveTo:&v62];
+  [context setModelViewMatrix:v16->var13 saveTo:&v62];
   v17 = self->mRenderingState;
   *&v18 = v17->var10;
   *&v19 = v17->var11;
   LODWORD(v20) = LODWORD(v18);
   LODWORD(v21) = LODWORD(v18);
-  [a4 composeForeColorRed:&v43 green:v18 blue:v20 alpha:v21 saveTo:v19];
-  [a4 localAspectRatio];
+  [context composeForeColorRed:&v43 green:v18 blue:v20 alpha:v21 saveTo:v19];
+  [context localAspectRatio];
   v23 = v22;
   v24 = self->mPixelSize.width / self->mPixelSize.height;
   *&v24 = v24;
-  [a4 setLocalAspectRatio:v24];
+  [context setLocalAspectRatio:v24];
   v25 = self->mRenderingState;
   v26 = *(&v44 + 1) * v25->var11;
   if (!v25->var16)
@@ -1355,22 +1355,22 @@ LABEL_7:
       v29 = 0;
     }
 
-    [a4 blend:v29];
+    [context blend:v29];
     if ([(MCPlugParallel *)self->mPlugAsParallel clipsContainer]&& [(MRLayer *)self isFlatAndSquare])
     {
-      [(MRLayer *)self _setScissorRectOnContext:a4 saveTo:v42];
-      [(MRLayer *)self _renderAtTime:a4 inContext:a5 withArguments:a3];
-      [a4 restoreScissorRect:v42];
+      [(MRLayer *)self _setScissorRectOnContext:context saveTo:v42];
+      [(MRLayer *)self _renderAtTime:context inContext:arguments withArguments:time];
+      [context restoreScissorRect:v42];
     }
 
     else
     {
-      [(MRLayer *)self _renderAtTime:a4 inContext:a5 withArguments:a3];
+      [(MRLayer *)self _renderAtTime:context inContext:arguments withArguments:time];
     }
 
     if (v26 < 1.0)
     {
-      [a4 blend:0];
+      [context blend:0];
     }
 
     goto LABEL_35;
@@ -1378,12 +1378,12 @@ LABEL_7:
 
   if ([(MRLayer *)self _isNative3D])
   {
-    v27 = [(MRLayer *)self __retainedByUserRenderedImageAtTime:a4 inContext:a5 withArguments:a3];
+    v27 = [(MRLayer *)self __retainedByUserRenderedImageAtTime:context inContext:arguments withArguments:time];
   }
 
   else
   {
-    v27 = [(MRLayer *)self _retainedByUserRenderedImageAtTime:a4 inContext:a5 withArguments:a3];
+    v27 = [(MRLayer *)self _retainedByUserRenderedImageAtTime:context inContext:arguments withArguments:time];
   }
 
   v30 = v27;
@@ -1391,9 +1391,9 @@ LABEL_7:
   {
     v31 = v26 >= 1.0;
     [v27 setFilterID:self->_filterID];
-    v32 = [(MRLayer *)self isOpaque];
-    v33 = v31 & v32;
-    if ((v31 & v32) != 0)
+    isOpaque = [(MRLayer *)self isOpaque];
+    v33 = v31 & isOpaque;
+    if ((v31 & isOpaque) != 0)
     {
       v34 = 0;
     }
@@ -1403,10 +1403,10 @@ LABEL_7:
       v34 = 2;
     }
 
-    [a4 blend:v34];
+    [context blend:v34];
     if ([v30 filterID] || objc_msgSend(v30, "shader"))
     {
-      [MRCroppingSprite renderImage:v30 inContext:a4 atPosition:CGPointZero.x andSize:CGPointZero.y, 2.0, 2.0];
+      [MRCroppingSprite renderImage:v30 inContext:context atPosition:CGPointZero.x andSize:CGPointZero.y, 2.0, 2.0];
       if (v33)
       {
 LABEL_34:
@@ -1427,46 +1427,46 @@ LABEL_34:
         v35 = @"PlainTexture";
       }
 
-      [a4 setShader:v35];
-      [MRCroppingSprite renderImage:v30 inContext:a4 atPosition:CGPointZero.x andSize:CGPointZero.y, 2.0, 2.0];
-      [a4 unsetShader];
+      [context setShader:v35];
+      [MRCroppingSprite renderImage:v30 inContext:context atPosition:CGPointZero.x andSize:CGPointZero.y, 2.0, 2.0];
+      [context unsetShader];
       if (v33)
       {
         goto LABEL_34;
       }
     }
 
-    [a4 blend:0];
+    [context blend:0];
     goto LABEL_34;
   }
 
 LABEL_35:
   LODWORD(v28) = v23;
-  [a4 setLocalAspectRatio:v28];
-  [a4 restoreForeColor:&v43];
-  [a4 restoreModelViewMatrix:&v62];
+  [context setLocalAspectRatio:v28];
+  [context restoreForeColor:&v43];
+  [context restoreModelViewMatrix:&v62];
   if (+[EAGLContext currentContext]!= v13)
   {
     [EAGLContext setCurrentContext:v13];
   }
 }
 
-- (id)retainedByUserRenderedImageAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5
+- (id)retainedByUserRenderedImageAtTime:(double)time inContext:(id)context withArguments:(id)arguments
 {
   if ([(MRLayer *)self hasSomethingToRender])
   {
-    [(MRLayer *)self _updateStateWithContext:a4];
+    [(MRLayer *)self _updateStateWithContext:context];
     mRenderingState = self->mRenderingState;
     *&mRenderingState->var16 = 1;
     mRenderingState->var18 = 0;
     if ([(MRLayer *)self _isNative3D])
     {
-      v10 = [(MRLayer *)self __retainedByUserRenderedImageAtTime:a4 inContext:a5 withArguments:a3];
+      v10 = [(MRLayer *)self __retainedByUserRenderedImageAtTime:context inContext:arguments withArguments:time];
     }
 
     else
     {
-      v10 = [(MRLayer *)self _retainedByUserRenderedImageAtTime:a4 inContext:a5 withArguments:a3];
+      v10 = [(MRLayer *)self _retainedByUserRenderedImageAtTime:context inContext:arguments withArguments:time];
     }
 
     v17 = v10;
@@ -1476,42 +1476,42 @@ LABEL_35:
   else
   {
     var19 = self->mRenderingState->var19;
-    v12 = [a4 imageManager];
-    v13 = v12;
+    imageManager = [context imageManager];
+    v13 = imageManager;
     if (var19)
     {
-      v14 = [a4 backColor];
+      backColor = [context backColor];
       width = 1.0;
       height = 1.0;
-      v12 = v13;
+      imageManager = v13;
     }
 
     else
     {
       width = CGSizeZero.width;
       height = CGSizeZero.height;
-      v14 = 0;
+      backColor = 0;
     }
 
-    v17 = [v12 retainedByUserImageWithSize:v14 andColor:{width, height}];
+    v17 = [imageManager retainedByUserImageWithSize:backColor andColor:{width, height}];
     [v17 setLabel:@"Marimba Layer Background"];
     [v17 setClampMode:2];
   }
 
   [v17 setSourceTimestamp:self->mTimeStamp];
-  [v17 setRenderTime:a3];
+  [v17 setRenderTime:time];
   return v17;
 }
 
-- (id)patchworkAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5
+- (id)patchworkAtTime:(double)time inContext:(id)context withArguments:(id)arguments
 {
   if (self->mPixelSize.width <= 0.0 || self->mPixelSize.height <= 0.0)
   {
     return 0;
   }
 
-  v6 = [(MRLayer *)self retainedByUserRenderedImageAtTime:a4 inContext:a5 withArguments:a3];
-  [a4 localAspectRatio];
+  v6 = [(MRLayer *)self retainedByUserRenderedImageAtTime:context inContext:arguments withArguments:time];
+  [context localAspectRatio];
   v8 = [[NSDictionary alloc] initWithObjectsAndKeys:{objc_msgSend(v6, "insertingInCollection"), @"image", +[NSValue valueWithCGRect:](NSValue, "valueWithCGRect:", -1.0, 2.0 / v7 * -0.5, 2.0, 2.0 / v7), @"rectangle", 0}];
   v9 = [NSArray arrayWithObject:v8];
 
@@ -1538,12 +1538,12 @@ LABEL_35:
   self->mIsScheduledForDestruction = 1;
 }
 
-- (CGPoint)convertLocalPoint:(CGPoint)a3
+- (CGPoint)convertLocalPoint:(CGPoint)point
 {
   if (self->mIsActivated)
   {
-    x = a3.x;
-    v4 = a3.y * (self->mPixelSize.height / self->mPixelSize.width);
+    x = point.x;
+    v4 = point.y * (self->mPixelSize.height / self->mPixelSize.width);
     memset(v7, 0, sizeof(v7));
     MRMatrix_MultiplyWithMatrix(self->mRenderingState->var13, self->mRenderingState->var14, v7);
     v5 = MRMatrix_ProjectPoint(v7, x, v4);
@@ -1560,12 +1560,12 @@ LABEL_35:
   return result;
 }
 
-- (CGPoint)convertGlobalPoint:(CGPoint)a3
+- (CGPoint)convertGlobalPoint:(CGPoint)point
 {
   if (self->mIsActivated)
   {
-    y = a3.y;
-    x = a3.x;
+    y = point.y;
+    x = point.x;
     memset(v10, 0, sizeof(v10));
     memset(v9, 0, sizeof(v9));
     MRMatrix_MultiplyWithMatrix(self->mRenderingState->var13, self->mRenderingState->var14, v10);
@@ -1585,13 +1585,13 @@ LABEL_35:
   return result;
 }
 
-- (void)_applyState:(id)a3
+- (void)_applyState:(id)state
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [state countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1603,13 +1603,13 @@ LABEL_35:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(state);
         }
 
-        v7 |= -[MRLayer _setStateValue:forKey:](self, "_setStateValue:forKey:", [a3 objectForKey:*(*(&v11 + 1) + 8 * i)], *(*(&v11 + 1) + 8 * i));
+        v7 |= -[MRLayer _setStateValue:forKey:](self, "_setStateValue:forKey:", [state objectForKey:*(*(&v11 + 1) + 8 * i)], *(*(&v11 + 1) + 8 * i));
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [state countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -1624,20 +1624,20 @@ LABEL_35:
   }
 }
 
-- (double)doAnimationTrigger:(id)a3
+- (double)doAnimationTrigger:(id)trigger
 {
   v3 = 0.0;
   if (self->mIsActivated)
   {
-    v6 = -[MCPlug animationPathForKey:](self->mPlug, "animationPathForKey:", [objc_msgSend(a3 "mcAction")]);
+    v6 = -[MCPlug animationPathForKey:](self->mPlug, "animationPathForKey:", [objc_msgSend(trigger "mcAction")]);
     if (!v6)
     {
       v24 = 0u;
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v12 = [(MCPlug *)self->mPlug animationPaths];
-      v13 = [(NSSet *)v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      animationPaths = [(MCPlug *)self->mPlug animationPaths];
+      v13 = [(NSSet *)animationPaths countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (!v13)
       {
         return v3;
@@ -1651,14 +1651,14 @@ LABEL_11:
       {
         if (*v23 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(animationPaths);
         }
 
         v17 = *(*(&v22 + 1) + 8 * v16);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v6 = [v17 animationPathForKey:{objc_msgSend(objc_msgSend(a3, "mcAction"), "animationKey")}];
+          v6 = [v17 animationPathForKey:{objc_msgSend(objc_msgSend(trigger, "mcAction"), "animationKey")}];
           if (v6)
           {
             break;
@@ -1667,7 +1667,7 @@ LABEL_11:
 
         if (v14 == ++v16)
         {
-          v14 = [(NSSet *)v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
+          v14 = [(NSSet *)animationPaths countByEnumeratingWithState:&v22 objects:v26 count:16];
           if (v14)
           {
             goto LABEL_11;
@@ -1679,13 +1679,13 @@ LABEL_11:
     }
 
     v7 = v6;
-    [a3 time];
+    [trigger time];
     if (v8 != -1.0e10)
     {
       [(MRLayerClock *)self->mClock externalTime];
     }
 
-    [a3 setTime:?];
+    [trigger setTime:?];
     mAnimationTriggers = self->mAnimationTriggers;
     if (!mAnimationTriggers)
     {
@@ -1697,13 +1697,13 @@ LABEL_11:
     if (v10)
     {
       v11 = v10;
-      [v10 setAction:a3];
+      [v10 setAction:trigger];
       [v11 disarm];
     }
 
     else
     {
-      -[NSMutableDictionary setObject:forKey:](self->mAnimationTriggers, "setObject:forKey:", -[MRAnimationTrigger initWithAction:]([MRAnimationTrigger alloc], "initWithAction:", a3), [v7 key]);
+      -[NSMutableDictionary setObject:forKey:](self->mAnimationTriggers, "setObject:forKey:", -[MRAnimationTrigger initWithAction:]([MRAnimationTrigger alloc], "initWithAction:", trigger), [v7 key]);
     }
 
     v18 = [objc_msgSend(v7 orderedKeyframesWithPlugTiming:{self->mPlug), "lastObject"}];
@@ -1730,11 +1730,11 @@ LABEL_11:
   return v3;
 }
 
-- (double)_serial_gotoNextWithObject:(id)a3
+- (double)_serial_gotoNextWithObject:(id)object
 {
-  v5 = [(MCPlugSerial *)self->mPlugAsSerial index];
+  index = [(MCPlugSerial *)self->mPlugAsSerial index];
   mSuperlayer = self->mSuperlayer;
-  v7 = v5 + 1;
+  v7 = index + 1;
   v8 = [-[MRLayer sublayers](mSuperlayer "sublayers")];
   [objc_msgSend(-[MRLayer currentSublayer](mSuperlayer "currentSublayer")];
   mPlugAsSerial = self->mPlugAsSerial;
@@ -1754,20 +1754,20 @@ LABEL_11:
 
   [v10 setTransitionDestinationPlugID:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%u", v11)}];
 
-  [(MRLayer *)mSuperlayer doTransition:v10 backwards:0 pzr:a3];
+  [(MRLayer *)mSuperlayer doTransition:v10 backwards:0 pzr:object];
   return result;
 }
 
-- (double)_serial_gotoPreviousWithObject:(id)a3
+- (double)_serial_gotoPreviousWithObject:(id)object
 {
-  v5 = [(MCPlugSerial *)self->mPlugAsSerial index];
+  index = [(MCPlugSerial *)self->mPlugAsSerial index];
   mSuperlayer = self->mSuperlayer;
-  if (!v5)
+  if (!index)
   {
-    v5 = [-[MRLayer sublayers](mSuperlayer "sublayers")];
+    index = [-[MRLayer sublayers](mSuperlayer "sublayers")];
   }
 
-  v7 = v5 - 1;
+  v7 = index - 1;
   [objc_msgSend(-[MRLayer currentSublayer](mSuperlayer "currentSublayer")];
   v8 = [(MCContainer *)[(MCPlug *)[(MRLayer *)mSuperlayer plug] container] plugAtIndex:v7];
   v9 = +[MCTransitionTrigger transitionForTargetPlugObjectID:withTransitionID:](MCTransitionTrigger, "transitionForTargetPlugObjectID:withTransitionID:", 0, [v8 transitionID]);
@@ -1776,7 +1776,7 @@ LABEL_11:
   [v9 setTransitionDuration:?];
   [v9 setTransitionDestinationPlugID:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%u", v7)}];
 
-  [(MRLayer *)mSuperlayer doTransition:v9 backwards:1 pzr:a3];
+  [(MRLayer *)mSuperlayer doTransition:v9 backwards:1 pzr:object];
   return result;
 }
 
@@ -1789,9 +1789,9 @@ LABEL_11:
     mSuperlayer = self->mSuperlayer;
     if (v4 >= [-[MRLayer sublayers](mSuperlayer "sublayers")])
     {
-      v10 = [(MRLayerClock *)[(MRLayer *)mSuperlayer clock] currentLoopIndex];
+      currentLoopIndex = [(MRLayerClock *)[(MRLayer *)mSuperlayer clock] currentLoopIndex];
       [(MRLayerClock *)[(MRLayer *)mSuperlayer clock] numberOfLoops];
-      if (v11 + -1.0 <= v10)
+      if (v11 + -1.0 <= currentLoopIndex)
       {
         return 0;
       }
@@ -1831,9 +1831,9 @@ LABEL_11:
   mPlugAsSerial = self->mPlugAsSerial;
   if (mPlugAsSerial)
   {
-    v4 = [(MCPlugSerial *)mPlugAsSerial index];
+    index = [(MCPlugSerial *)mPlugAsSerial index];
     mSuperlayer = self->mSuperlayer;
-    if (!v4)
+    if (!index)
     {
       [(MRRenderer *)self->mRenderer renderingDelegate];
       if ((objc_opt_respondsToSelector() & 1) == 0 || ![(MRRenderingDelegate *)[(MRRenderer *)self->mRenderer renderingDelegate] slideshowShouldWrap])
@@ -1841,11 +1841,11 @@ LABEL_11:
         return 0;
       }
 
-      v4 = [-[MRLayer sublayers](mSuperlayer "sublayers")];
+      index = [-[MRLayer sublayers](mSuperlayer "sublayers")];
     }
 
-    v6 = v4 - 1;
-    v7 = [(MCContainer *)[(MCPlug *)[(MRLayer *)mSuperlayer plug] container] plugAtIndex:v4 - 1];
+    v6 = index - 1;
+    v7 = [(MCContainer *)[(MCPlug *)[(MRLayer *)mSuperlayer plug] container] plugAtIndex:index - 1];
     v8 = +[MCTransitionTrigger transitionForTargetPlugObjectID:withTransitionID:](MCTransitionTrigger, "transitionForTargetPlugObjectID:withTransitionID:", 0, [v7 transitionID]);
     -[MCTransitionTrigger setTransitionAttributes:](v8, "setTransitionAttributes:", [v7 transitionAttributes]);
     [v7 transitionDuration];
@@ -1859,33 +1859,33 @@ LABEL_11:
   return [(MCPlug *)mPlug actionForKey:@"onPrevious"];
 }
 
-- (double)doActionTrigger:(id)a3
+- (double)doActionTrigger:(id)trigger
 {
   if (self->mIsActivated)
   {
-    v5 = -[MCPlug actionForKey:](self->mPlug, "actionForKey:", [objc_msgSend(a3 "mcAction")]);
+    v5 = -[MCPlug actionForKey:](self->mPlug, "actionForKey:", [objc_msgSend(trigger "mcAction")]);
     if (v5)
     {
-      -[MRLayer _sendAction:withStates:async:yesterday:](self, "_sendAction:withStates:async:yesterday:", v5, [a3 states], 0, 0);
+      -[MRLayer _sendAction:withStates:async:yesterday:](self, "_sendAction:withStates:async:yesterday:", v5, [trigger states], 0, 0);
     }
 
     else
     {
-      NSLog(@"Error: couldn't find action %@ on layer %@", [objc_msgSend(a3 "mcAction")], self);
+      NSLog(@"Error: couldn't find action %@ on layer %@", [objc_msgSend(trigger "mcAction")], self);
     }
   }
 
   return 0.0;
 }
 
-- (double)doStateOperation:(id)a3
+- (double)doStateOperation:(id)operation
 {
-  v5 = [a3 mcAction];
-  v6 = [v5 stateKey];
+  mcAction = [operation mcAction];
+  stateKey = [mcAction stateKey];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v5 string];
+    string = [mcAction string];
   }
 
   else
@@ -1893,11 +1893,11 @@ LABEL_11:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = -[MUMathExpressionFloatBased initWithString:error:]([MUMathExpressionFloatBased alloc], "initWithString:error:", [v5 expression], 0);
-      v9 = [a3 states];
-      if (v9)
+      v8 = -[MUMathExpressionFloatBased initWithString:error:]([MUMathExpressionFloatBased alloc], "initWithString:error:", [mcAction expression], 0);
+      states = [operation states];
+      if (states)
       {
-        [(MUMathExpressionFloatBased *)v8 setVariableValues:v9];
+        [(MUMathExpressionFloatBased *)v8 setVariableValues:states];
       }
 
       if (self->mPersistentState)
@@ -1911,16 +1911,16 @@ LABEL_11:
 
     else
     {
-      [v5 scalar];
+      [mcAction scalar];
       v11 = v12;
     }
 
     *&v12 = v11;
-    v7 = [NSNumber numberWithFloat:v12];
+    string = [NSNumber numberWithFloat:v12];
   }
 
-  v13 = [(MRLayer *)self _setStateValue:v7 forKey:v6];
-  if ([v5 recordsTime])
+  v13 = [(MRLayer *)self _setStateValue:string forKey:stateKey];
+  if ([mcAction recordsTime])
   {
     mClock = self->mClock;
     if (mClock)
@@ -1934,10 +1934,10 @@ LABEL_11:
       LODWORD(v14) = -803929351;
     }
 
-    -[MRLayer _setStateValue:forKey:](self, "_setStateValue:forKey:", +[NSNumber numberWithFloat:](NSNumber, "numberWithFloat:", v14), [v6 stringByAppendingString:@"Time"]);
+    -[MRLayer _setStateValue:forKey:](self, "_setStateValue:forKey:", +[NSNumber numberWithFloat:](NSNumber, "numberWithFloat:", v14), [stateKey stringByAppendingString:@"Time"]);
   }
 
-  if ((v13 & 1) != 0 || [v5 alwaysNotifies])
+  if ((v13 & 1) != 0 || [mcAction alwaysNotifies])
   {
     v16 = [(MCPlug *)self->mPlug actionForKey:@"onStateChange"];
     if (v16)
@@ -1949,25 +1949,25 @@ LABEL_11:
   return 0.0;
 }
 
-- (double)doMotionTrigger:(id)a3
+- (double)doMotionTrigger:(id)trigger
 {
-  v5 = [a3 mcAction];
-  [v5 duration];
+  mcAction = [trigger mcAction];
+  [mcAction duration];
   v7 = v6;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v5 value];
+    [mcAction value];
     v9 = v8;
   }
 
   else
   {
-    v10 = -[MUMathExpressionFloatBased initWithString:error:]([MUMathExpressionFloatBased alloc], "initWithString:error:", [v5 expression], 0);
-    v11 = [a3 states];
-    if (v11)
+    v10 = -[MUMathExpressionFloatBased initWithString:error:]([MUMathExpressionFloatBased alloc], "initWithString:error:", [mcAction expression], 0);
+    states = [trigger states];
+    if (states)
     {
-      [(MUMathExpressionFloatBased *)v10 setVariableValues:v11];
+      [(MUMathExpressionFloatBased *)v10 setVariableValues:states];
     }
 
     if (self->mPersistentState)
@@ -1975,10 +1975,10 @@ LABEL_11:
       [(MUMathExpressionFloatBased *)v10 setVariableValues:?];
     }
 
-    v12 = [v5 attributes];
-    if (v12)
+    attributes = [mcAction attributes];
+    if (attributes)
     {
-      [(MUMathExpressionFloatBased *)v10 setVariableValues:v12];
+      [(MUMathExpressionFloatBased *)v10 setVariableValues:attributes];
     }
 
     [(MUMathExpressionFloatBased *)v10 evaluate];
@@ -1986,15 +1986,15 @@ LABEL_11:
   }
 
   v14 = [MRMotion alloc];
-  v15 = [v5 key];
-  [v5 easeIn];
+  v15 = [mcAction key];
+  [mcAction easeIn];
   v17 = v16;
-  [v5 easeOut];
+  [mcAction easeOut];
   v19 = [(MRMotion *)v14 initWithKey:v15 value:v9 duration:v7 easeIn:v17 easeOut:v18];
   mMotions = self->mMotions;
   if (mMotions)
   {
-    v21 = -[NSMutableDictionary objectForKey:](mMotions, "objectForKey:", [v5 key]);
+    v21 = -[NSMutableDictionary objectForKey:](mMotions, "objectForKey:", [mcAction key]);
     if (v21)
     {
       v22 = v21;
@@ -2005,25 +2005,25 @@ LABEL_11:
       [(MRMotion *)v19 setStartValue:?];
     }
 
-    -[NSMutableDictionary setObject:forKey:](self->mMotions, "setObject:forKey:", v19, [v5 key]);
+    -[NSMutableDictionary setObject:forKey:](self->mMotions, "setObject:forKey:", v19, [mcAction key]);
   }
 
   else
   {
-    self->mMotions = [[NSMutableDictionary alloc] initWithObjectsAndKeys:{v19, objc_msgSend(v5, "key"), 0}];
+    self->mMotions = [[NSMutableDictionary alloc] initWithObjectsAndKeys:{v19, objc_msgSend(mcAction, "key"), 0}];
   }
 
   return v7;
 }
 
-- (double)doGenericAction:(id)a3
+- (double)doGenericAction:(id)action
 {
   if (!self->mIsActivated)
   {
     return 0.0;
   }
 
-  v5 = [objc_msgSend(a3 "mcAction")];
+  v5 = [objc_msgSend(action "mcAction")];
   v6 = [v5 objectForKey:@"type"];
   if ([v6 isEqualToString:@"stateForward"])
   {
@@ -2036,7 +2036,7 @@ LABEL_11:
     v8 = v7;
     v9 = [v5 objectForKey:@"destinationStateKey"];
     v10 = v9 ? v9 : v8;
-    if (!-[MRLayer _setStateValue:forKey:](self, "_setStateValue:forKey:", [objc_msgSend(a3 "states")], v10))
+    if (!-[MRLayer _setStateValue:forKey:](self, "_setStateValue:forKey:", [objc_msgSend(action "states")], v10))
     {
       return 0.0;
     }
@@ -2048,10 +2048,10 @@ LABEL_11:
     }
 
     v12 = v11;
-    v13 = self;
+    selfCopy = self;
     v14 = 0;
 LABEL_10:
-    [(MRLayer *)v13 _sendAction:v12 withStates:0 async:0 yesterday:v14];
+    [(MRLayer *)selfCopy _sendAction:v12 withStates:0 async:0 yesterday:v14];
     return 0.0;
   }
 
@@ -2090,7 +2090,7 @@ LABEL_10:
     {
       if ([v6 isEqualToString:@"setState"])
       {
-        v17 = [objc_msgSend(objc_msgSend(a3 "mcAction")];
+        v17 = [objc_msgSend(objc_msgSend(action "mcAction")];
         if (v17)
         {
           [(MRLayer *)self _applyState:v17];
@@ -2103,14 +2103,14 @@ LABEL_10:
       {
         if ([v6 isEqualToString:@"saveState"])
         {
-          [a3 sender];
+          [action sender];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v24 = [objc_msgSend(a3 "mcAction")];
+            v24 = [objc_msgSend(action "mcAction")];
             v25 = objc_alloc_init(NSMutableDictionary);
             v26 = [v24 objectForKey:@"stateKeys"];
-            v27 = [objc_msgSend(a3 "sender")];
+            v27 = [objc_msgSend(action "sender")];
             v46 = 0u;
             v47 = 0u;
             v48 = 0u;
@@ -2165,7 +2165,7 @@ LABEL_10:
         return 0.0;
       }
 
-      [a3 sender];
+      [action sender];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -2173,8 +2173,8 @@ LABEL_10:
         return 0.0;
       }
 
-      v18 = [a3 sender];
-      v19 = [objc_msgSend(a3 "mcAction")];
+      sender = [action sender];
+      v19 = [objc_msgSend(action "mcAction")];
       v20 = [v19 objectForKey:@"blobKey"];
       if (v20 && (v21 = v20, (v22 = self->mPersistentState) != 0))
       {
@@ -2226,7 +2226,7 @@ LABEL_10:
             v43 = [v35 objectForKey:*(*(&v50 + 1) + 8 * j)];
           }
 
-          [(MRLayer *)v18 _setStateValue:v43 forKey:v41];
+          [(MRLayer *)sender _setStateValue:v43 forKey:v41];
         }
 
         v37 = [v35 countByEnumeratingWithState:&v50 objects:v55 count:16];
@@ -2238,14 +2238,14 @@ LABEL_10:
         return 0.0;
       }
 
-      v44 = [(MCPlug *)[(MRLayer *)v18 plug] actionForKey:@"onStateChange"];
+      v44 = [(MCPlug *)[(MRLayer *)sender plug] actionForKey:@"onStateChange"];
       if (!v44)
       {
         return 0.0;
       }
 
       v12 = v44;
-      v13 = v18;
+      selfCopy = sender;
       v14 = 1;
       goto LABEL_10;
     }
@@ -2263,7 +2263,7 @@ LABEL_10:
   return result;
 }
 
-- (void)_updateStateWithContext:(id)a3
+- (void)_updateStateWithContext:(id)context
 {
   MRMatrix_SetRotationFromAnglesYXZDeg(self->mRenderingState->var12, self->mRenderingState->var8, self->mRenderingState->var7, self->mRenderingState->var9);
   mRenderingState = self->mRenderingState;
@@ -2289,7 +2289,7 @@ LABEL_10:
   mRenderingState[12] = mRenderingState[1];
   if (self->mSuperlayer)
   {
-    [a3 localAspectRatio];
+    [context localAspectRatio];
     mRenderingState = self->mRenderingState;
     mRenderingState[12].f32[1] = mRenderingState[12].f32[1] / v8;
   }
@@ -2302,37 +2302,37 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v10 = [(MRLayer *)mSuperlayer renderingState];
+  renderingState = [(MRLayer *)mSuperlayer renderingState];
   var12 = self->mRenderingState->var12;
-  if (v10->var17)
+  if (renderingState->var17)
   {
 LABEL_11:
-    *&v14 = MRMatrix_MultiplyWithMatrix(var12, [a3 modelViewMatrix], self->mRenderingState->var13);
-    v13 = [a3 projectionMatrix];
+    *&v14 = MRMatrix_MultiplyWithMatrix(var12, [context modelViewMatrix], self->mRenderingState->var13);
+    projectionMatrix = [context projectionMatrix];
     goto LABEL_12;
   }
 
   *&v12 = MRMatrix_MultiplyWithMatrix(var12, [(MRLayer *)self->mSuperlayer renderingState]+ 28, self->mRenderingState->var13);
-  v13 = ([(MRLayer *)self->mSuperlayer renderingState]+ 176);
+  projectionMatrix = ([(MRLayer *)self->mSuperlayer renderingState]+ 176);
 LABEL_12:
   v15 = self->mRenderingState;
-  v16 = *v13;
-  v17 = v13[1];
-  v18 = v13[3];
-  *&v15->var14[8] = v13[2];
+  v16 = *projectionMatrix;
+  v17 = projectionMatrix[1];
+  v18 = projectionMatrix[3];
+  *&v15->var14[8] = projectionMatrix[2];
   *&v15->var14[12] = v18;
   *v15->var14 = v16;
   *&v15->var14[4] = v17;
 }
 
-- (void)_sendAction:(id)a3 withStates:(id)a4 async:(BOOL)a5 yesterday:(BOOL)a6
+- (void)_sendAction:(id)action withStates:(id)states async:(BOOL)async yesterday:(BOOL)yesterday
 {
-  v7 = a5;
-  v14 = [[MRAction alloc] initWithAction:a3 inRenderer:self->mRenderer];
+  asyncCopy = async;
+  v14 = [[MRAction alloc] initWithAction:action inRenderer:self->mRenderer];
   [(MRAction *)v14 setSender:self];
-  if (a4)
+  if (states)
   {
-    v10 = [NSMutableDictionary dictionaryWithDictionary:a4];
+    v10 = [NSMutableDictionary dictionaryWithDictionary:states];
     v11 = v10;
     if (self->mPersistentState)
     {
@@ -2351,7 +2351,7 @@ LABEL_12:
   }
 
   [(MRAction *)v14 setStates:v11];
-  if (a6)
+  if (yesterday)
   {
     v12 = -1.0e10;
   }
@@ -2363,7 +2363,7 @@ LABEL_12:
 
   [(MRAction *)v14 setTime:v12];
   mRenderer = self->mRenderer;
-  if (v7)
+  if (asyncCopy)
   {
     [(MRRenderer *)mRenderer performSelectorOnMainThread:"doAction:" withObject:v14 waitUntilDone:0];
   }
@@ -2374,29 +2374,29 @@ LABEL_12:
   }
 }
 
-- (BOOL)_setStateValue:(id)a3 forKey:(id)a4
+- (BOOL)_setStateValue:(id)value forKey:(id)key
 {
   mPersistentState = self->mPersistentState;
   if (mPersistentState)
   {
-    v8 = [(NSMutableDictionary *)mPersistentState objectForKey:a4];
-    [(NSMutableDictionary *)self->mPersistentState setObject:a3 forKey:a4];
+    v8 = [(NSMutableDictionary *)mPersistentState objectForKey:key];
+    [(NSMutableDictionary *)self->mPersistentState setObject:value forKey:key];
   }
 
   else
   {
     v8 = 0;
-    self->mPersistentState = [[NSMutableDictionary alloc] initWithObjectsAndKeys:{a3, a4, 0}];
+    self->mPersistentState = [[NSMutableDictionary alloc] initWithObjectsAndKeys:{value, key, 0}];
   }
 
-  if (v8 == a3)
+  if (v8 == value)
   {
     return 0;
   }
 
   else
   {
-    return [a3 isEqual:v8] ^ 1;
+    return [value isEqual:v8] ^ 1;
   }
 }
 
@@ -2409,20 +2409,20 @@ LABEL_12:
     self->mAudioPlayer = 0;
   }
 
-  v4 = [(MCContainer *)[(MCPlug *)self->mPlug container] audioPlaylist];
-  if (v4)
+  audioPlaylist = [(MCContainer *)[(MCPlug *)self->mPlug container] audioPlaylist];
+  if (audioPlaylist)
   {
-    v5 = v4;
-    if ([(MCAudioPlaylist *)v4 countOfSongs])
+    v5 = audioPlaylist;
+    if ([(MCAudioPlaylist *)audioPlaylist countOfSongs])
     {
       v6 = objc_alloc_init(NSMutableArray);
       v27 = v5;
-      v7 = [(MCAudioPlaylist *)v5 orderedSongs];
+      orderedSongs = [(MCAudioPlaylist *)v5 orderedSongs];
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v8 = [(NSArray *)v7 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v8 = [(NSArray *)orderedSongs countByEnumeratingWithState:&v28 objects:v32 count:16];
       if (v8)
       {
         v9 = v8;
@@ -2435,7 +2435,7 @@ LABEL_12:
           {
             if (*v29 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(orderedSongs);
             }
 
             v13 = *(*(&v28 + 1) + 8 * v12);
@@ -2488,7 +2488,7 @@ LABEL_19:
           }
 
           while (v9 != v12);
-          v9 = [(NSArray *)v7 countByEnumeratingWithState:&v28 objects:v32 count:16];
+          v9 = [(NSArray *)orderedSongs countByEnumeratingWithState:&v28 objects:v32 count:16];
         }
 
         while (v9);
@@ -2496,18 +2496,18 @@ LABEL_19:
 
       self->mAudioPlayer = [[MRAudioPlayer alloc] initWithAudioItems:v6 andAudioPlaylist:v27];
 
-      for (i = self; ; i = v26)
+      for (i = self; ; i = superlayer)
       {
-        v26 = [(MRLayer *)i superlayer];
-        if (![[(MRLayer *)v26 superlayer] superlayer])
+        superlayer = [(MRLayer *)i superlayer];
+        if (![[(MRLayer *)superlayer superlayer] superlayer])
         {
           break;
         }
       }
 
-      if ([(MRLayer *)v26 plugAsParallel])
+      if ([(MRLayer *)superlayer plugAsParallel])
       {
-        [(MRAudioPlayer *)self->mAudioPlayer setPriority:[(MCPlugParallel *)[(MRLayer *)v26 plugAsParallel] audioPriority]];
+        [(MRAudioPlayer *)self->mAudioPlayer setPriority:[(MCPlugParallel *)[(MRLayer *)superlayer plugAsParallel] audioPriority]];
       }
 
       [(MCPlug *)self->mPlug fullDuration];
@@ -2529,10 +2529,10 @@ LABEL_19:
   return v4;
 }
 
-- (id)_dumpLayerWithOptions:(unint64_t)a3
+- (id)_dumpLayerWithOptions:(unint64_t)options
 {
-  v4 = BYTE1(a3);
-  if (BYTE1(a3))
+  v4 = BYTE1(options);
+  if (BYTE1(options))
   {
     __memset_chk();
   }
@@ -2574,9 +2574,9 @@ LABEL_8:
   return result;
 }
 
-- (void)_queueLayerCommand:(int)a3 object:(id)a4
+- (void)_queueLayerCommand:(int)command object:(id)object
 {
-  v6 = [[MRLayerCommand alloc] initWithCommand:*&a3 andObject:a4];
+  v6 = [[MRLayerCommand alloc] initWithCommand:*&command andObject:object];
   mLayerCommandQueue = self->mLayerCommandQueue;
   objc_sync_enter(mLayerCommandQueue);
   self->mLayerCommandQueueNeedsAttention = 1;

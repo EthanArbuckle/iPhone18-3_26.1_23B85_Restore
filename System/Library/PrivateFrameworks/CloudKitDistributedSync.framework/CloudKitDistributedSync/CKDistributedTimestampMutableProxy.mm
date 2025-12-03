@@ -1,22 +1,22 @@
 @interface CKDistributedTimestampMutableProxy
 - (id)distributedSiteIdentifier;
-- (void)assignDistributedSiteIdentifierFromProxy:(id)a3;
-- (void)copyFromReadProxy:(id)a3;
-- (void)copyFromTimestamp:(id)a3;
-- (void)setClock:(unint64_t)a3;
-- (void)setSiteIdentifier:(id)a3;
-- (void)setSiteIdentifierBytes:(void *)a3 length:(unint64_t)a4;
+- (void)assignDistributedSiteIdentifierFromProxy:(id)proxy;
+- (void)copyFromReadProxy:(id)proxy;
+- (void)copyFromTimestamp:(id)timestamp;
+- (void)setClock:(unint64_t)clock;
+- (void)setSiteIdentifier:(id)identifier;
+- (void)setSiteIdentifierBytes:(void *)bytes length:(unint64_t)length;
 @end
 
 @implementation CKDistributedTimestampMutableProxy
 
-- (void)copyFromReadProxy:(id)a3
+- (void)copyFromReadProxy:(id)proxy
 {
-  v111 = a3;
+  proxyCopy = proxy;
   v11 = objc_msgSend_backingStore(self, v5, v6, v7, v8, v9, v10);
   if (v11)
   {
-    v18 = v111;
+    v18 = proxyCopy;
     if (v18)
     {
       v19 = objc_msgSend_binding(v11, v12, v13, v14, v15, v16, v17);
@@ -72,17 +72,17 @@
   return v27;
 }
 
-- (void)assignDistributedSiteIdentifierFromProxy:(id)a3
+- (void)assignDistributedSiteIdentifierFromProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   v11 = objc_msgSend_backingStore(self, v5, v6, v7, v8, v9, v10);
   v17 = v11;
   if (v11)
   {
     v24 = objc_msgSend_writerForProxy_(v11, v12, self, v13, v14, v15, v16);
-    if (v4)
+    if (proxyCopy)
     {
-      objc_msgSend_structInstance(v4, v18, v19, v20, v21, v22, v23);
+      objc_msgSend_structInstance(proxyCopy, v18, v19, v20, v21, v22, v23);
     }
 
     else
@@ -97,16 +97,16 @@
   }
 }
 
-- (void)setSiteIdentifier:(id)a3
+- (void)setSiteIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v28 = 0;
-  v6 = v5;
+  v6 = identifierCopy;
   v13 = objc_msgSend_bytes(v6, v7, v8, v9, v10, v11, v12);
   v20 = v13;
-  if (v5 && !v13)
+  if (identifierCopy && !v13)
   {
-    if (objc_msgSend_length(v5, v14, v15, v16, v17, v18, v19))
+    if (objc_msgSend_length(identifierCopy, v14, v15, v16, v17, v18, v19))
     {
       v26 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v14, v15, v16, v17, v18, v19);
       objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v26, v27, a2, self, @"CKAtomSerialization.mm", 806, @"Non-zero-length NSData has empty bytes");
@@ -115,13 +115,13 @@
     v20 = &v28;
   }
 
-  v21 = objc_msgSend_length(v5, v14, v15, v16, v17, v18, v19);
+  v21 = objc_msgSend_length(identifierCopy, v14, v15, v16, v17, v18, v19);
   objc_msgSend_setSiteIdentifierBytes_length_(self, v22, v20, v21, v23, v24, v25);
 }
 
-- (void)setSiteIdentifierBytes:(void *)a3 length:(unint64_t)a4
+- (void)setSiteIdentifierBytes:(void *)bytes length:(unint64_t)length
 {
-  v10 = objc_msgSend_backingStore(self, a2, a3, a4, v4, v5, v6);
+  v10 = objc_msgSend_backingStore(self, a2, bytes, length, v4, v5, v6);
   v17 = v10;
   if (v10)
   {
@@ -133,37 +133,37 @@
     v29 = objc_msgSend_writerForProxy_(v17, v24, self, v25, v26, v27, v28);
     v33[0] = v34;
     v33[1] = v35;
-    objc_msgSend_setData_withLength_forList_(v29, v30, a3, a4, v33, v31, v32);
+    objc_msgSend_setData_withLength_forList_(v29, v30, bytes, length, v33, v31, v32);
   }
 }
 
-- (void)setClock:(unint64_t)a3
+- (void)setClock:(unint64_t)clock
 {
-  v9 = objc_msgSend_backingStore(self, a2, a3, v3, v4, v5, v6);
+  v9 = objc_msgSend_backingStore(self, a2, clock, v3, v4, v5, v6);
   v15 = v9;
   if (v9)
   {
-    v34 = a3;
+    clockCopy = clock;
     v16 = objc_msgSend_writerForProxy_(v9, v10, self, v11, v12, v13, v14);
     v23 = objc_msgSend_binding(v15, v17, v18, v19, v20, v21, v22);
     v24 = v23[6];
     objc_msgSend_structInstance(self, v25, v26, v27, v28, v29, v30);
-    objc_msgSend_setData_withEncoding_forField_inStruct_(v16, v31, &v34, "Q", v24, &v33, v32);
+    objc_msgSend_setData_withEncoding_forField_inStruct_(v16, v31, &clockCopy, "Q", v24, &v33, v32);
   }
 }
 
-- (void)copyFromTimestamp:(id)a3
+- (void)copyFromTimestamp:(id)timestamp
 {
-  v54 = a3;
+  timestampCopy = timestamp;
   v10 = objc_msgSend_distributedSiteIdentifier(self, v4, v5, v6, v7, v8, v9);
-  v17 = objc_msgSend_siteIdentifierObject(v54, v11, v12, v13, v14, v15, v16);
+  v17 = objc_msgSend_siteIdentifierObject(timestampCopy, v11, v12, v13, v14, v15, v16);
   objc_msgSend_copyFromSiteIdentifier_(v10, v18, v17, v19, v20, v21, v22);
 
-  v29 = objc_msgSend_siteIdentifierObject(v54, v23, v24, v25, v26, v27, v28);
+  v29 = objc_msgSend_siteIdentifierObject(timestampCopy, v23, v24, v25, v26, v27, v28);
   v36 = objc_msgSend_identifier(v29, v30, v31, v32, v33, v34, v35);
   objc_msgSend_setSiteIdentifier_(self, v37, v36, v38, v39, v40, v41);
 
-  v48 = objc_msgSend_clockValue(v54, v42, v43, v44, v45, v46, v47);
+  v48 = objc_msgSend_clockValue(timestampCopy, v42, v43, v44, v45, v46, v47);
   objc_msgSend_setClock_(self, v49, v48, v50, v51, v52, v53);
 }
 

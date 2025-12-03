@@ -1,73 +1,73 @@
 @interface RCRecordingDescriptionView
-+ (RCRecordingDescriptionView)descriptionViewWithStyle:(int64_t)a3;
++ (RCRecordingDescriptionView)descriptionViewWithStyle:(int64_t)style;
 - (BOOL)_setupMoreButtonIfNeeded;
 - (BOOL)isTitleAccessible;
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
 - (NSString)axCreationDateString;
 - (NSString)axDurationString;
 - (NSString)axMultiTrackIndicatorString;
 - (NSString)axTranscriptAvailableString;
 - (RCControlsActionDelegate)actionDelegate;
-- (RCRecordingDescriptionView)initWithCoder:(id)a3;
-- (RCRecordingDescriptionView)initWithFrame:(CGRect)a3;
-- (RCRecordingDescriptionView)initWithStyle:(int64_t)a3;
+- (RCRecordingDescriptionView)initWithCoder:(id)coder;
+- (RCRecordingDescriptionView)initWithFrame:(CGRect)frame;
+- (RCRecordingDescriptionView)initWithStyle:(int64_t)style;
 - (RCRecordingDescriptionViewDelegate)recordingDescriptionViewDelegate;
 - (id)accessibilityElements;
 - (void)_applyLabelConfiguration;
-- (void)_commonInitWithStyle:(int64_t)a3;
+- (void)_commonInitWithStyle:(int64_t)style;
 - (void)_endEditingTitleDueToNotification;
 - (void)_maybeSelectAllTextFieldText;
-- (void)_menuActionTriggeredByMoreButton:(id)a3;
-- (void)_setArrangedSubviewsWithTitleDateDurationStack:(id)a3 moreButton:(id)a4;
-- (void)_setupConfigurationForStyle:(int64_t)a3;
-- (void)_setupStackForStyle:(int64_t)a3;
+- (void)_menuActionTriggeredByMoreButton:(id)button;
+- (void)_setArrangedSubviewsWithTitleDateDurationStack:(id)stack moreButton:(id)button;
+- (void)_setupConfigurationForStyle:(int64_t)style;
+- (void)_setupStackForStyle:(int64_t)style;
 - (void)_setupTitleLabel;
 - (void)_setupTitleTextField;
 - (void)_styleTitle;
 - (void)_styleView;
 - (void)_switchToTitleTextField;
 - (void)_syncDurationVisibility;
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4;
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection;
 - (void)_updateCreationDateOrDownloadingLabel;
 - (void)_updateForPresentedControlsOptions;
 - (void)_updateMoreButtonMenu;
 - (void)_updateMultitrackIndicatorViewVisibility;
 - (void)_updateStackIfNeeded;
-- (void)_updateTextFieldFocusabilityForStyle:(int64_t)a3;
+- (void)_updateTextFieldFocusabilityForStyle:(int64_t)style;
 - (void)_updateTranscriptAvailableViewVisibility;
-- (void)addTitleAccessibilityTraits:(unint64_t)a3;
+- (void)addTitleAccessibilityTraits:(unint64_t)traits;
 - (void)beginEditingTitle;
-- (void)configureLineBreakMode:(BOOL)a3 force:(BOOL)a4;
-- (void)deviceTranscriptionSupportDidChange:(BOOL)a3;
+- (void)configureLineBreakMode:(BOOL)mode force:(BOOL)force;
+- (void)deviceTranscriptionSupportDidChange:(BOOL)change;
 - (void)endEditingTitle;
-- (void)removeTitleAccessibilityTraits:(unint64_t)a3;
+- (void)removeTitleAccessibilityTraits:(unint64_t)traits;
 - (void)restyle;
-- (void)setCreationDate:(id)a3;
-- (void)setDurationLabelAccessible:(BOOL)a3;
-- (void)setHasMultipleTracks:(BOOL)a3;
-- (void)setLabelConfiguration:(id)a3;
-- (void)setPresentedControl:(int64_t)a3;
-- (void)setRecordingDuration:(double)a3 withHiddenLabel:(BOOL)a4 isDurationLabelAX:(BOOL)a5;
-- (void)setRecordingTitle:(id)a3;
-- (void)setShowDownloading:(BOOL)a3;
-- (void)setShowSaving:(BOOL)a3;
-- (void)setStyle:(int64_t)a3;
-- (void)setTitleAccessible:(BOOL)a3;
-- (void)setTitleEditingAllowed:(BOOL)a3;
-- (void)setUUID:(id)a3;
-- (void)setWasManuallyRenamed:(BOOL)a3;
+- (void)setCreationDate:(id)date;
+- (void)setDurationLabelAccessible:(BOOL)accessible;
+- (void)setHasMultipleTracks:(BOOL)tracks;
+- (void)setLabelConfiguration:(id)configuration;
+- (void)setPresentedControl:(int64_t)control;
+- (void)setRecordingDuration:(double)duration withHiddenLabel:(BOOL)label isDurationLabelAX:(BOOL)x;
+- (void)setRecordingTitle:(id)title;
+- (void)setShowDownloading:(BOOL)downloading;
+- (void)setShowSaving:(BOOL)saving;
+- (void)setStyle:(int64_t)style;
+- (void)setTitleAccessible:(BOOL)accessible;
+- (void)setTitleEditingAllowed:(BOOL)allowed;
+- (void)setUUID:(id)d;
+- (void)setWasManuallyRenamed:(BOOL)renamed;
 - (void)setupTitleTextFieldAlignment;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
-- (void)updateForDisplayMode:(int64_t)a3;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidEndEditing:(id)editing;
+- (void)updateForDisplayMode:(int64_t)mode;
 @end
 
 @implementation RCRecordingDescriptionView
 
 - (void)_setupTitleTextField
 {
-  v3 = [(RCRecordingDescriptionView *)self titleTextField];
-  if (!v3)
+  titleTextField = [(RCRecordingDescriptionView *)self titleTextField];
+  if (!titleTextField)
   {
     v11 = [[RCTextField alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
     [(RCRecordingDescriptionView *)self setTitleTextField:v11];
@@ -93,22 +93,22 @@
     {
 
 LABEL_12:
-      v3 = v11;
+      titleTextField = v11;
       goto LABEL_13;
     }
 
-    v7 = [(RCRecordingDescriptionView *)self titleTextField];
-    v8 = [v7 text];
-    if ([v8 isEqualToString:&stru_100295BB8])
+    titleTextField2 = [(RCRecordingDescriptionView *)self titleTextField];
+    text = [titleTextField2 text];
+    if ([text isEqualToString:&stru_100295BB8])
     {
     }
 
     else
     {
-      v9 = [(RCRecordingDescriptionView *)self titleTextField];
-      v10 = [v9 text];
+      titleTextField3 = [(RCRecordingDescriptionView *)self titleTextField];
+      text2 = [titleTextField3 text];
 
-      if (v10)
+      if (text2)
       {
         goto LABEL_12;
       }
@@ -119,7 +119,7 @@ LABEL_12:
   }
 
 LABEL_13:
-  v12 = v3;
+  v12 = titleTextField;
   [(RCRecordingDescriptionView *)self _styleTitle];
   [(RCRecordingDescriptionView *)self _applyLabelConfiguration];
 }
@@ -127,26 +127,26 @@ LABEL_13:
 - (void)_switchToTitleTextField
 {
   [(RCRecordingDescriptionView *)self _setupTitleTextField];
-  v3 = [(RCRecordingDescriptionView *)self titleTextField];
-  v4 = [(NUIContainerStackView *)self->_titleDateDurationStack arrangedSubviews];
-  v5 = [v4 count];
+  titleTextField = [(RCRecordingDescriptionView *)self titleTextField];
+  arrangedSubviews = [(NUIContainerStackView *)self->_titleDateDurationStack arrangedSubviews];
+  v5 = [arrangedSubviews count];
 
   if (!v5)
   {
     goto LABEL_6;
   }
 
-  v6 = [(NUIContainerStackView *)self->_titleDateDurationStack arrangedSubviews];
-  v7 = [v6 objectAtIndexedSubscript:0];
+  arrangedSubviews2 = [(NUIContainerStackView *)self->_titleDateDurationStack arrangedSubviews];
+  v7 = [arrangedSubviews2 objectAtIndexedSubscript:0];
 
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v8 = [(RCRecordingDescriptionView *)self titleLabel];
-    v9 = [v8 text];
-    [v3 setText:v9];
+    titleLabel = [(RCRecordingDescriptionView *)self titleLabel];
+    text = [titleLabel text];
+    [titleTextField setText:text];
 
     dateAndDurationStack = self->_dateAndDurationStack;
-    v12[0] = v3;
+    v12[0] = titleTextField;
     v12[1] = dateAndDurationStack;
     v11 = [NSArray arrayWithObjects:v12 count:2];
     [(NUIContainerStackView *)self->_titleDateDurationStack setArrangedSubviews:v11];
@@ -163,8 +163,8 @@ LABEL_7:
 - (void)_styleTitle
 {
   v6 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v3 = [(RCRecordingDescriptionView *)self titleLabel];
-  v4 = [(RCRecordingDescriptionView *)self titleTextField];
+  titleLabel = [(RCRecordingDescriptionView *)self titleLabel];
+  titleTextField = [(RCRecordingDescriptionView *)self titleTextField];
   if ([(RCRecordingDescriptionView *)self style]== 1)
   {
     [v6 descriptionViewScalableTitleFontForRecordingCollectionViewCell];
@@ -175,54 +175,54 @@ LABEL_7:
     [v6 descriptionViewScalableTitleFontForCardView];
   }
   v5 = ;
-  [v4 setFont:v5];
-  [v3 setFont:v5];
+  [titleTextField setFont:v5];
+  [titleLabel setFont:v5];
 }
 
 - (void)_applyLabelConfiguration
 {
-  v3 = [(RCRecordingDescriptionView *)self labelConfiguration];
-  v4 = [v3 recordingTitleEditingTintColor];
-  v5 = [(RCRecordingDescriptionView *)self titleTextField];
-  [v5 setTintColor:v4];
+  labelConfiguration = [(RCRecordingDescriptionView *)self labelConfiguration];
+  recordingTitleEditingTintColor = [labelConfiguration recordingTitleEditingTintColor];
+  titleTextField = [(RCRecordingDescriptionView *)self titleTextField];
+  [titleTextField setTintColor:recordingTitleEditingTintColor];
 
-  v6 = [(RCRecordingDescriptionView *)self labelConfiguration];
-  v7 = [v6 recordingTitleTextColor];
-  v8 = [(RCRecordingDescriptionView *)self titleTextField];
-  [v8 setTextColor:v7];
+  labelConfiguration2 = [(RCRecordingDescriptionView *)self labelConfiguration];
+  recordingTitleTextColor = [labelConfiguration2 recordingTitleTextColor];
+  titleTextField2 = [(RCRecordingDescriptionView *)self titleTextField];
+  [titleTextField2 setTextColor:recordingTitleTextColor];
 
-  v9 = [(RCRecordingDescriptionView *)self labelConfiguration];
-  v10 = [v9 recordingTitleTextColor];
-  v11 = [(RCRecordingDescriptionView *)self titleLabel];
-  [v11 setTextColor:v10];
+  labelConfiguration3 = [(RCRecordingDescriptionView *)self labelConfiguration];
+  recordingTitleTextColor2 = [labelConfiguration3 recordingTitleTextColor];
+  titleLabel = [(RCRecordingDescriptionView *)self titleLabel];
+  [titleLabel setTextColor:recordingTitleTextColor2];
 
-  v12 = [(RCRecordingDescriptionView *)self labelConfiguration];
-  v13 = [v12 subtitleTextColor];
-  v14 = [(RCRecordingDescriptionView *)self durationLabel];
-  [v14 setTextColor:v13];
+  labelConfiguration4 = [(RCRecordingDescriptionView *)self labelConfiguration];
+  subtitleTextColor = [labelConfiguration4 subtitleTextColor];
+  durationLabel = [(RCRecordingDescriptionView *)self durationLabel];
+  [durationLabel setTextColor:subtitleTextColor];
 
-  v15 = [(RCRecordingDescriptionView *)self labelConfiguration];
-  v16 = [v15 subtitleTextColor];
-  v17 = [(RCRecordingDescriptionView *)self creationDateOrDownloadingLabel];
-  [v17 setTextColor:v16];
+  labelConfiguration5 = [(RCRecordingDescriptionView *)self labelConfiguration];
+  subtitleTextColor2 = [labelConfiguration5 subtitleTextColor];
+  creationDateOrDownloadingLabel = [(RCRecordingDescriptionView *)self creationDateOrDownloadingLabel];
+  [creationDateOrDownloadingLabel setTextColor:subtitleTextColor2];
 
-  v18 = [(RCRecordingDescriptionView *)self labelConfiguration];
-  v19 = [v18 subtitleTextColor];
-  v20 = [(RCRecordingDescriptionView *)self transcriptAvailableImageView];
-  [v20 setTintColor:v19];
+  labelConfiguration6 = [(RCRecordingDescriptionView *)self labelConfiguration];
+  subtitleTextColor3 = [labelConfiguration6 subtitleTextColor];
+  transcriptAvailableImageView = [(RCRecordingDescriptionView *)self transcriptAvailableImageView];
+  [transcriptAvailableImageView setTintColor:subtitleTextColor3];
 
-  v23 = [(RCRecordingDescriptionView *)self labelConfiguration];
-  v21 = [v23 subtitleTextColor];
-  v22 = [(RCRecordingDescriptionView *)self multiTrackIndicatorImageView];
-  [v22 setTintColor:v21];
+  labelConfiguration7 = [(RCRecordingDescriptionView *)self labelConfiguration];
+  subtitleTextColor4 = [labelConfiguration7 subtitleTextColor];
+  multiTrackIndicatorImageView = [(RCRecordingDescriptionView *)self multiTrackIndicatorImageView];
+  [multiTrackIndicatorImageView setTintColor:subtitleTextColor4];
 }
 
 - (void)_updateStackIfNeeded
 {
   v6 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v3 = [v6 isAccessibilityLargerTextSizeEnabled];
-  v4 = ([(RCRecordingDescriptionView *)self style]== 1) & v3;
-  if (v3)
+  isAccessibilityLargerTextSizeEnabled = [v6 isAccessibilityLargerTextSizeEnabled];
+  v4 = ([(RCRecordingDescriptionView *)self style]== 1) & isAccessibilityLargerTextSizeEnabled;
+  if (isAccessibilityLargerTextSizeEnabled)
   {
     v5 = 4.0;
   }
@@ -232,7 +232,7 @@ LABEL_7:
     v5 = 8.0;
   }
 
-  [(NUIContainerStackView *)self->_dateAndDurationStack setAxis:v3];
+  [(NUIContainerStackView *)self->_dateAndDurationStack setAxis:isAccessibilityLargerTextSizeEnabled];
   [(NUIContainerStackView *)self->_dateAndDurationStack setSpacing:v5];
   [(NUIContainerStackView *)self->_dateAndDurationStack setAlignment:v4];
   [(UIView *)self->_dateAndDurationEmptySpacerView setHidden:v4];
@@ -241,38 +241,38 @@ LABEL_7:
 - (void)_styleView
 {
   v9 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v3 = [(RCRecordingDescriptionView *)self style];
-  v4 = [(RCRecordingDescriptionView *)self creationDateOrDownloadingLabel];
-  if (v3 == 1)
+  style = [(RCRecordingDescriptionView *)self style];
+  creationDateOrDownloadingLabel = [(RCRecordingDescriptionView *)self creationDateOrDownloadingLabel];
+  if (style == 1)
   {
-    v5 = [v9 creationDateLabelFontForRecordingCollectionViewCell];
-    [v4 setFont:v5];
+    creationDateLabelFontForRecordingCollectionViewCell = [v9 creationDateLabelFontForRecordingCollectionViewCell];
+    [creationDateOrDownloadingLabel setFont:creationDateLabelFontForRecordingCollectionViewCell];
 
     [v9 durationLabelFontForRecordingCollectionViewCell];
   }
 
   else
   {
-    v6 = [v9 creationDateLabelFontForCardView];
-    [v4 setFont:v6];
+    creationDateLabelFontForCardView = [v9 creationDateLabelFontForCardView];
+    [creationDateOrDownloadingLabel setFont:creationDateLabelFontForCardView];
 
     [v9 durationLabelFontForCardView];
   }
   v7 = ;
-  v8 = [(RCRecordingDescriptionView *)self durationLabel];
-  [v8 setFont:v7];
+  durationLabel = [(RCRecordingDescriptionView *)self durationLabel];
+  [durationLabel setFont:v7];
 
   [(RCRecordingDescriptionView *)self _styleTitle];
-  [(RCRecordingDescriptionView *)self setStyle:v3];
+  [(RCRecordingDescriptionView *)self setStyle:style];
 }
 
 - (void)_updateTranscriptAvailableViewVisibility
 {
   v3 = +[_TtC10VoiceMemos33TranscriptionAvailabilityProvider shared];
-  v4 = [v3 deviceIsSupported];
+  deviceIsSupported = [v3 deviceIsSupported];
 
   transcriptAvailableImageView = self->_transcriptAvailableImageView;
-  v6 = (self->_displayTranscriptAvailableIcon & v4 & 1) == 0;
+  v6 = (self->_displayTranscriptAvailableIcon & deviceIsSupported & 1) == 0;
 
   [(UIImageView *)transcriptAvailableImageView setHidden:v6];
 }
@@ -287,14 +287,14 @@ LABEL_7:
 
 - (void)_updateMoreButtonMenu
 {
-  v3 = [(RCRecordingDescriptionView *)self moreButton];
+  moreButton = [(RCRecordingDescriptionView *)self moreButton];
 
-  if (v3)
+  if (moreButton)
   {
     v4 = +[_TtC10VoiceMemos33TranscriptionAvailabilityProvider shared];
-    v5 = [v4 deviceIsSupported];
+    deviceIsSupported = [v4 deviceIsSupported];
 
-    if (v5)
+    if (deviceIsSupported)
     {
       displayTranscriptAvailableIcon = self->_displayTranscriptAvailableIcon;
     }
@@ -305,25 +305,25 @@ LABEL_7:
     }
 
     v7 = [_TtC10VoiceMemos36RCRecordingCellMoreButtonMenuCreator alloc];
-    v8 = [(RCRecordingDescriptionView *)self UUID];
+    uUID = [(RCRecordingDescriptionView *)self UUID];
     WeakRetained = objc_loadWeakRetained(&self->_actionDelegate);
-    v10 = [(RCRecordingCellMoreButtonMenuCreator *)v7 initWithRecordingUUID:v8 actionDelegate:WeakRetained source:self];
+    v10 = [(RCRecordingCellMoreButtonMenuCreator *)v7 initWithRecordingUUID:uUID actionDelegate:WeakRetained source:self];
     [(RCRecordingDescriptionView *)self setMoreButtonMenuCreator:v10];
 
-    v11 = [(RCRecordingDescriptionView *)self moreButtonMenuCreator];
-    v12 = [v11 createMenuWithDisplayShowTranscriptAction:v5 displayCopyTranscriptAction:displayTranscriptAvailableIcon hasMultipleTracks:-[RCRecordingDescriptionView hasMultipleTracks](self isSpatialRecording:{"hasMultipleTracks"), -[RCRecordingDescriptionView isSpatialRecording](self, "isSpatialRecording")}];
-    v13 = [(RCRecordingDescriptionView *)self moreButton];
-    [v13 setMenu:v12];
+    moreButtonMenuCreator = [(RCRecordingDescriptionView *)self moreButtonMenuCreator];
+    v12 = [moreButtonMenuCreator createMenuWithDisplayShowTranscriptAction:deviceIsSupported displayCopyTranscriptAction:displayTranscriptAvailableIcon hasMultipleTracks:-[RCRecordingDescriptionView hasMultipleTracks](self isSpatialRecording:{"hasMultipleTracks"), -[RCRecordingDescriptionView isSpatialRecording](self, "isSpatialRecording")}];
+    moreButton2 = [(RCRecordingDescriptionView *)self moreButton];
+    [moreButton2 setMenu:v12];
 
-    v14 = [(RCRecordingDescriptionView *)self moreButton];
-    [v14 setShowsMenuAsPrimaryAction:1];
+    moreButton3 = [(RCRecordingDescriptionView *)self moreButton];
+    [moreButton3 setShowsMenuAsPrimaryAction:1];
   }
 }
 
 - (void)_setupTitleLabel
 {
-  v3 = [(RCRecordingDescriptionView *)self titleLabel];
-  if (!v3)
+  titleLabel = [(RCRecordingDescriptionView *)self titleLabel];
+  if (!titleLabel)
   {
     v6 = objc_opt_new();
     if (![(RCRecordingDescriptionView *)self style])
@@ -342,44 +342,44 @@ LABEL_7:
     }
 
     [(RCRecordingDescriptionView *)self configureLineBreakMode:self->_wasManuallyRenamed force:1];
-    v3 = v6;
+    titleLabel = v6;
   }
 }
 
 - (void)_updateForPresentedControlsOptions
 {
   v3 = [(RCRecordingDescriptionView *)self presentedControl]!= 2;
-  v4 = [(RCRecordingDescriptionView *)self moreButton];
-  [v4 setHidden:v3];
+  moreButton = [(RCRecordingDescriptionView *)self moreButton];
+  [moreButton setHidden:v3];
 
   v5 = [(RCRecordingDescriptionView *)self presentedControl]!= 1;
-  v6 = [(RCRecordingDescriptionView *)self durationLabel];
-  [v6 setHidden:v5];
+  durationLabel = [(RCRecordingDescriptionView *)self durationLabel];
+  [durationLabel setHidden:v5];
 }
 
 - (void)_updateCreationDateOrDownloadingLabel
 {
-  v22 = [(RCRecordingDescriptionView *)self creationDate];
+  creationDate = [(RCRecordingDescriptionView *)self creationDate];
   if ([(RCRecordingDescriptionView *)self showDownloading])
   {
     v3 = +[NSBundle mainBundle];
     v4 = v3;
     v5 = @"MEMO_IS_DOWNLOADING";
 LABEL_5:
-    v6 = [v3 localizedStringForKey:v5 value:&stru_100295BB8 table:0];
+    creationDateOrDownloadingLabel9 = [v3 localizedStringForKey:v5 value:&stru_100295BB8 table:0];
 
-    v7 = [(RCRecordingDescriptionView *)self creationDateOrDownloadingLabel];
-    v8 = [v7 text];
-    v9 = [v6 isEqualToString:v8];
+    creationDateOrDownloadingLabel = [(RCRecordingDescriptionView *)self creationDateOrDownloadingLabel];
+    text = [creationDateOrDownloadingLabel text];
+    v9 = [creationDateOrDownloadingLabel9 isEqualToString:text];
 
     if ((v9 & 1) == 0)
     {
-      v10 = [(RCRecordingDescriptionView *)self creationDateOrDownloadingLabel];
-      [v10 setText:v6];
+      creationDateOrDownloadingLabel2 = [(RCRecordingDescriptionView *)self creationDateOrDownloadingLabel];
+      [creationDateOrDownloadingLabel2 setText:creationDateOrDownloadingLabel9];
     }
 
-    v11 = [(RCRecordingDescriptionView *)self creationDateOrDownloadingLabel];
-    [v11 setAccessibilityLabel:v6];
+    creationDateOrDownloadingLabel3 = [(RCRecordingDescriptionView *)self creationDateOrDownloadingLabel];
+    [creationDateOrDownloadingLabel3 setAccessibilityLabel:creationDateOrDownloadingLabel9];
 
     goto LABEL_8;
   }
@@ -392,67 +392,67 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  if (v22)
+  if (creationDate)
   {
     v12 = +[RCRecorderStyleProvider sharedStyleProvider];
-    v13 = [(RCRecordingDescriptionView *)self UUID];
-    v6 = [v12 formattedDateStringFromDate:v22 forUUID:v13];
+    uUID = [(RCRecordingDescriptionView *)self UUID];
+    creationDateOrDownloadingLabel9 = [v12 formattedDateStringFromDate:creationDate forUUID:uUID];
 
-    v14 = [(RCRecordingDescriptionView *)self creationDateOrDownloadingLabel];
-    v15 = [v14 text];
-    v16 = [v6 isEqualToString:v15];
+    creationDateOrDownloadingLabel4 = [(RCRecordingDescriptionView *)self creationDateOrDownloadingLabel];
+    text2 = [creationDateOrDownloadingLabel4 text];
+    v16 = [creationDateOrDownloadingLabel9 isEqualToString:text2];
 
     if ((v16 & 1) == 0)
     {
-      v17 = [(RCRecordingDescriptionView *)self creationDateOrDownloadingLabel];
-      [v17 setText:v6];
+      creationDateOrDownloadingLabel5 = [(RCRecordingDescriptionView *)self creationDateOrDownloadingLabel];
+      [creationDateOrDownloadingLabel5 setText:creationDateOrDownloadingLabel9];
     }
 
-    v18 = [(RCRecordingDescriptionView *)self creationDateOrDownloadingLabel];
-    [v18 setIsAccessibilityElement:1];
+    creationDateOrDownloadingLabel6 = [(RCRecordingDescriptionView *)self creationDateOrDownloadingLabel];
+    [creationDateOrDownloadingLabel6 setIsAccessibilityElement:1];
 
-    v19 = [(RCRecordingDescriptionView *)self creationDateOrDownloadingLabel];
-    v20 = [v19 text];
-    v21 = [(RCRecordingDescriptionView *)self creationDateOrDownloadingLabel];
-    [v21 setAccessibilityLabel:v20];
+    creationDateOrDownloadingLabel7 = [(RCRecordingDescriptionView *)self creationDateOrDownloadingLabel];
+    text3 = [creationDateOrDownloadingLabel7 text];
+    creationDateOrDownloadingLabel8 = [(RCRecordingDescriptionView *)self creationDateOrDownloadingLabel];
+    [creationDateOrDownloadingLabel8 setAccessibilityLabel:text3];
   }
 
   else
   {
-    v6 = [(RCRecordingDescriptionView *)self creationDateOrDownloadingLabel];
-    [v6 setIsAccessibilityElement:0];
+    creationDateOrDownloadingLabel9 = [(RCRecordingDescriptionView *)self creationDateOrDownloadingLabel];
+    [creationDateOrDownloadingLabel9 setIsAccessibilityElement:0];
   }
 
 LABEL_8:
 }
 
-- (void)setRecordingTitle:(id)a3
+- (void)setRecordingTitle:(id)title
 {
-  v11 = a3;
-  v4 = [v11 copy];
+  titleCopy = title;
+  v4 = [titleCopy copy];
   recordingTitle = self->_recordingTitle;
   self->_recordingTitle = v4;
 
-  v6 = [(RCRecordingDescriptionView *)self titleTextField];
-  v7 = [v6 text];
-  v8 = v7;
-  if (v6 && (!v7 || ([v7 isEqualToString:v11] & 1) == 0))
+  titleTextField = [(RCRecordingDescriptionView *)self titleTextField];
+  text = [titleTextField text];
+  v8 = text;
+  if (titleTextField && (!text || ([text isEqualToString:titleCopy] & 1) == 0))
   {
-    [v6 setText:v11];
+    [titleTextField setText:titleCopy];
   }
 
-  v9 = [(RCRecordingDescriptionView *)self titleLabel];
-  [v9 setText:v11];
+  titleLabel = [(RCRecordingDescriptionView *)self titleLabel];
+  [titleLabel setText:titleCopy];
 
-  if (v11)
+  if (titleCopy)
   {
-    if (![v11 isEqualToString:&stru_100295BB8])
+    if (![titleCopy isEqualToString:&stru_100295BB8])
     {
       v10 = 1;
       goto LABEL_10;
     }
 
-    if (![v11 isEqualToString:&stru_100295BB8])
+    if (![titleCopy isEqualToString:&stru_100295BB8])
     {
       goto LABEL_11;
     }
@@ -464,34 +464,34 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)setUUID:(id)a3
+- (void)setUUID:(id)d
 {
-  objc_storeStrong(&self->_UUID, a3);
-  v5 = a3;
-  v6 = [(RCRecordingDescriptionView *)self moreButtonMenuCreator];
-  [v6 setRecordingUUID:v5];
+  objc_storeStrong(&self->_UUID, d);
+  dCopy = d;
+  moreButtonMenuCreator = [(RCRecordingDescriptionView *)self moreButtonMenuCreator];
+  [moreButtonMenuCreator setRecordingUUID:dCopy];
 }
 
-- (void)setCreationDate:(id)a3
+- (void)setCreationDate:(id)date
 {
-  objc_storeStrong(&self->_creationDate, a3);
+  objc_storeStrong(&self->_creationDate, date);
 
   [(RCRecordingDescriptionView *)self _updateCreationDateOrDownloadingLabel];
 }
 
-- (void)setHasMultipleTracks:(BOOL)a3
+- (void)setHasMultipleTracks:(BOOL)tracks
 {
-  self->_hasMultipleTracks = a3;
+  self->_hasMultipleTracks = tracks;
   [(RCRecordingDescriptionView *)self _updateMultitrackIndicatorViewVisibility];
 
   [(RCRecordingDescriptionView *)self _updateMoreButtonMenu];
 }
 
-- (void)setShowDownloading:(BOOL)a3
+- (void)setShowDownloading:(BOOL)downloading
 {
-  if (self->_showDownloading != a3)
+  if (self->_showDownloading != downloading)
   {
-    self->_showDownloading = a3;
+    self->_showDownloading = downloading;
     [(RCRecordingDescriptionView *)self _syncDurationVisibility];
     [(RCRecordingDescriptionView *)self _updateCreationDateOrDownloadingLabel];
 
@@ -499,20 +499,20 @@ LABEL_11:
   }
 }
 
-- (void)setShowSaving:(BOOL)a3
+- (void)setShowSaving:(BOOL)saving
 {
-  if (self->_showSaving != a3)
+  if (self->_showSaving != saving)
   {
-    self->_showSaving = a3;
+    self->_showSaving = saving;
     [(RCRecordingDescriptionView *)self _syncDurationVisibility];
 
     [(RCRecordingDescriptionView *)self _updateCreationDateOrDownloadingLabel];
   }
 }
 
-- (void)setLabelConfiguration:(id)a3
+- (void)setLabelConfiguration:(id)configuration
 {
-  objc_storeStrong(&self->_labelConfiguration, a3);
+  objc_storeStrong(&self->_labelConfiguration, configuration);
 
   [(RCRecordingDescriptionView *)self _applyLabelConfiguration];
 }
@@ -533,8 +533,8 @@ LABEL_11:
     }
   }
 
-  v4 = [(RCRecordingDescriptionView *)self durationLabel];
-  [v4 alpha];
+  durationLabel = [(RCRecordingDescriptionView *)self durationLabel];
+  [durationLabel alpha];
   v6 = v5;
 
   if (v6 != v3)
@@ -551,24 +551,24 @@ LABEL_11:
 
     else
     {
-      v7 = [(RCRecordingDescriptionView *)self durationLabel];
-      [v7 setAlpha:v3];
+      durationLabel2 = [(RCRecordingDescriptionView *)self durationLabel];
+      [durationLabel2 setAlpha:v3];
     }
   }
 }
 
-- (void)setWasManuallyRenamed:(BOOL)a3
+- (void)setWasManuallyRenamed:(BOOL)renamed
 {
-  if (self->_wasManuallyRenamed != a3)
+  if (self->_wasManuallyRenamed != renamed)
   {
-    self->_wasManuallyRenamed = a3;
+    self->_wasManuallyRenamed = renamed;
     [RCRecordingDescriptionView configureLineBreakMode:"configureLineBreakMode:force:" force:?];
   }
 }
 
-- (void)configureLineBreakMode:(BOOL)a3 force:(BOOL)a4
+- (void)configureLineBreakMode:(BOOL)mode force:(BOOL)force
 {
-  if (a3)
+  if (mode)
   {
     v4 = 4;
   }
@@ -578,73 +578,73 @@ LABEL_11:
     v4 = 5;
   }
 
-  if (v4 != self->_lineBreakMode || a4)
+  if (v4 != self->_lineBreakMode || force)
   {
     self->_lineBreakMode = v4;
-    v7 = [(RCRecordingDescriptionView *)self titleLabel];
-    [v7 setLineBreakMode:v4];
+    titleLabel = [(RCRecordingDescriptionView *)self titleLabel];
+    [titleLabel setLineBreakMode:v4];
 
-    v8 = [(RCRecordingDescriptionView *)self titleTextField];
-    if (v8)
+    titleTextField = [(RCRecordingDescriptionView *)self titleTextField];
+    if (titleTextField)
     {
-      v18 = v8;
-      v9 = [v8 defaultTextAttributes];
-      v10 = v9;
-      if (v9)
+      v18 = titleTextField;
+      defaultTextAttributes = [titleTextField defaultTextAttributes];
+      v10 = defaultTextAttributes;
+      if (defaultTextAttributes)
       {
-        v11 = [v9 objectForKeyedSubscript:NSParagraphStyleAttributeName];
+        v11 = [defaultTextAttributes objectForKeyedSubscript:NSParagraphStyleAttributeName];
         v12 = v11;
         if (!v11 || [v11 lineBreakMode] != self->_lineBreakMode)
         {
           v13 = objc_alloc_init(NSMutableParagraphStyle);
           [v13 setLineBreakMode:self->_lineBreakMode];
-          v14 = [(RCRecordingDescriptionView *)self titleTextField];
-          v15 = [v14 defaultTextAttributes];
-          v16 = [v15 mutableCopy];
+          titleTextField2 = [(RCRecordingDescriptionView *)self titleTextField];
+          defaultTextAttributes2 = [titleTextField2 defaultTextAttributes];
+          v16 = [defaultTextAttributes2 mutableCopy];
 
           [v16 setObject:v13 forKeyedSubscript:NSParagraphStyleAttributeName];
-          v17 = [(RCRecordingDescriptionView *)self titleTextField];
-          [v17 setDefaultTextAttributes:v16];
+          titleTextField3 = [(RCRecordingDescriptionView *)self titleTextField];
+          [titleTextField3 setDefaultTextAttributes:v16];
         }
       }
 
-      v8 = v18;
+      titleTextField = v18;
     }
   }
 }
 
-- (void)setRecordingDuration:(double)a3 withHiddenLabel:(BOOL)a4 isDurationLabelAX:(BOOL)a5
+- (void)setRecordingDuration:(double)duration withHiddenLabel:(BOOL)label isDurationLabelAX:(BOOL)x
 {
-  v5 = a4;
-  self->_recordingDuration = a3;
-  if (a5)
+  labelCopy = label;
+  self->_recordingDuration = duration;
+  if (x)
   {
-    v7 = round(a3);
-    v8 = [(RCRecordingDescriptionView *)self durationLabel];
-    [v8 setIsAccessibilityElement:1];
+    v7 = round(duration);
+    durationLabel = [(RCRecordingDescriptionView *)self durationLabel];
+    [durationLabel setIsAccessibilityElement:1];
 
     v9 = +[NSBundle mainBundle];
     v10 = [v9 localizedStringForKey:@"DURATION" value:&stru_100295BB8 table:0];
-    v11 = [(RCRecordingDescriptionView *)self durationLabel];
-    [v11 setAccessibilityLabel:v10];
+    durationLabel2 = [(RCRecordingDescriptionView *)self durationLabel];
+    [durationLabel2 setAccessibilityLabel:v10];
 
-    v12 = [(RCRecordingDescriptionView *)self durationLabel];
+    durationLabel3 = [(RCRecordingDescriptionView *)self durationLabel];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_1000513E0;
     v17[3] = &unk_10028ADB8;
     *&v17[4] = v7;
-    [v12 _setAccessibilityValueBlock:v17];
+    [durationLabel3 _setAccessibilityValueBlock:v17];
   }
 
   else
   {
-    v12 = [(RCRecordingDescriptionView *)self durationLabel];
-    [v12 setIsAccessibilityElement:0];
+    durationLabel3 = [(RCRecordingDescriptionView *)self durationLabel];
+    [durationLabel3 setIsAccessibilityElement:0];
   }
 
-  v13 = [(RCRecordingDescriptionView *)self durationLabel];
-  if (v5)
+  durationLabel4 = [(RCRecordingDescriptionView *)self durationLabel];
+  if (labelCopy)
   {
     [(RCRecordingDescriptionView *)self recordingDuration];
     RCLocalizedPlaybackTime();
@@ -655,50 +655,50 @@ LABEL_11:
     RCLocalizedDurationWithHiddenComponents();
   }
   v14 = ;
-  v15 = [v13 text];
-  v16 = [v14 isEqualToString:v15];
+  text = [durationLabel4 text];
+  v16 = [v14 isEqualToString:text];
 
   if ((v16 & 1) == 0)
   {
-    [v13 setText:v14];
+    [durationLabel4 setText:v14];
   }
 
-  if ([(UILabel *)self->_creationDateOrDownloadingLabel isHidden]!= v5)
+  if ([(UILabel *)self->_creationDateOrDownloadingLabel isHidden]!= labelCopy)
   {
-    [(UILabel *)self->_creationDateOrDownloadingLabel setHidden:v5];
+    [(UILabel *)self->_creationDateOrDownloadingLabel setHidden:labelCopy];
   }
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  self->_style = a3;
+  self->_style = style;
   [(RCRecordingDescriptionView *)self _setupConfigurationForStyle:?];
 
-  [(RCRecordingDescriptionView *)self _updateTextFieldFocusabilityForStyle:a3];
+  [(RCRecordingDescriptionView *)self _updateTextFieldFocusabilityForStyle:style];
 }
 
-- (void)_updateTextFieldFocusabilityForStyle:(int64_t)a3
+- (void)_updateTextFieldFocusabilityForStyle:(int64_t)style
 {
   v6 = 0;
-  if (!a3)
+  if (!style)
   {
     v4 = +[RCRecorderStyleProvider sharedStyleProvider];
-    v5 = [v4 disablesFocusInRecordingViewTitle];
+    disablesFocusInRecordingViewTitle = [v4 disablesFocusInRecordingViewTitle];
 
-    if (v5)
+    if (disablesFocusInRecordingViewTitle)
     {
       v6 = 1;
     }
   }
 
-  v7 = [(RCRecordingDescriptionView *)self titleTextField];
-  [v7 setFocusDisabled:v6];
+  titleTextField = [(RCRecordingDescriptionView *)self titleTextField];
+  [titleTextField setFocusDisabled:v6];
 }
 
-- (void)setPresentedControl:(int64_t)a3
+- (void)setPresentedControl:(int64_t)control
 {
-  self->_presentedControl = a3;
-  if (a3 == 2 && [(RCRecordingDescriptionView *)self _setupMoreButtonIfNeeded])
+  self->_presentedControl = control;
+  if (control == 2 && [(RCRecordingDescriptionView *)self _setupMoreButtonIfNeeded])
   {
     [(RCRecordingDescriptionView *)self _setArrangedSubviewsWithTitleDateDurationStack:self->_titleDateDurationStack moreButton:self->_moreButton];
   }
@@ -706,17 +706,17 @@ LABEL_11:
   [(RCRecordingDescriptionView *)self _updateForPresentedControlsOptions];
 }
 
-+ (RCRecordingDescriptionView)descriptionViewWithStyle:(int64_t)a3
++ (RCRecordingDescriptionView)descriptionViewWithStyle:(int64_t)style
 {
-  v3 = [[RCRecordingDescriptionView alloc] initWithStyle:a3];
+  v3 = [[RCRecordingDescriptionView alloc] initWithStyle:style];
 
   return v3;
 }
 
-- (void)setTitleEditingAllowed:(BOOL)a3
+- (void)setTitleEditingAllowed:(BOOL)allowed
 {
-  self->_titleEditingAllowed = a3;
-  if (a3)
+  self->_titleEditingAllowed = allowed;
+  if (allowed)
   {
     [(RCRecordingDescriptionView *)self _switchToTitleTextField];
     titleEditingAllowed = self->_titleEditingAllowed;
@@ -727,13 +727,13 @@ LABEL_11:
     titleEditingAllowed = 0;
   }
 
-  v5 = [(RCRecordingDescriptionView *)self titleTextField];
-  [v5 setEnabled:titleEditingAllowed];
+  titleTextField = [(RCRecordingDescriptionView *)self titleTextField];
+  [titleTextField setEnabled:titleEditingAllowed];
 
   [(RCRecordingDescriptionView *)self setupTitleTextFieldAlignment];
 }
 
-- (RCRecordingDescriptionView)initWithStyle:(int64_t)a3
+- (RCRecordingDescriptionView)initWithStyle:(int64_t)style
 {
   v7.receiver = self;
   v7.super_class = RCRecordingDescriptionView;
@@ -741,17 +741,17 @@ LABEL_11:
   v5 = v4;
   if (v4)
   {
-    [(RCRecordingDescriptionView *)v4 _commonInitWithStyle:a3];
+    [(RCRecordingDescriptionView *)v4 _commonInitWithStyle:style];
   }
 
   return v5;
 }
 
-- (RCRecordingDescriptionView)initWithCoder:(id)a3
+- (RCRecordingDescriptionView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = RCRecordingDescriptionView;
-  v3 = [(RCRecordingDescriptionView *)&v6 initWithCoder:a3];
+  v3 = [(RCRecordingDescriptionView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -761,11 +761,11 @@ LABEL_11:
   return v4;
 }
 
-- (RCRecordingDescriptionView)initWithFrame:(CGRect)a3
+- (RCRecordingDescriptionView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = RCRecordingDescriptionView;
-  v3 = [(RCRecordingDescriptionView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(RCRecordingDescriptionView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -775,7 +775,7 @@ LABEL_11:
   return v4;
 }
 
-- (void)_commonInitWithStyle:(int64_t)a3
+- (void)_commonInitWithStyle:(int64_t)style
 {
   [(RCRecordingDescriptionView *)self setArrangedSubviewRemovalPolicy:2];
   v5 = +[NSNotificationCenter defaultCenter];
@@ -790,7 +790,7 @@ LABEL_11:
   v8 = objc_opt_new();
   [(RCRecordingDescriptionView *)self setCreationDateOrDownloadingLabel:v8];
   [v8 setAdjustsFontForContentSizeCategory:1];
-  if (a3 == 1)
+  if (style == 1)
   {
     LODWORD(v9) = 1148846080;
     [v8 setContentHuggingPriority:0 forAxis:v9];
@@ -801,17 +801,17 @@ LABEL_11:
   [(RCRecordingDescriptionView *)self setDurationLabel:v10];
   [v10 setAdjustsFontForContentSizeCategory:1];
   [v10 setNumberOfLines:0];
-  if (a3 == 1)
+  if (style == 1)
   {
     LODWORD(v11) = 1144750080;
     [v10 setContentHuggingPriority:0 forAxis:v11];
   }
 
   v12 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v13 = [v12 transcriptionImage];
+  transcriptionImage = [v12 transcriptionImage];
 
-  v38 = v13;
-  v14 = [[UIImageView alloc] initWithImage:v13];
+  v38 = transcriptionImage;
+  v14 = [[UIImageView alloc] initWithImage:transcriptionImage];
   LODWORD(v15) = 1148846080;
   [v14 setContentHuggingPriority:0 forAxis:v15];
   [v14 setContentMode:1];
@@ -825,9 +825,9 @@ LABEL_11:
   [v14 setAccessibilityTraits:UIAccessibilityTraitNone];
   [(RCRecordingDescriptionView *)self setTranscriptAvailableImageView:v14];
   v19 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v20 = [v19 multiTrackIndicatorImage];
+  multiTrackIndicatorImage = [v19 multiTrackIndicatorImage];
 
-  v21 = [[UIImageView alloc] initWithImage:v20];
+  v21 = [[UIImageView alloc] initWithImage:multiTrackIndicatorImage];
   LODWORD(v22) = 1148846080;
   [v21 setContentHuggingPriority:0 forAxis:v22];
   [v21 setContentMode:1];
@@ -848,9 +848,9 @@ LABEL_11:
   v28 = +[NSNotificationCenter defaultCenter];
   [v28 addObserver:self selector:"didChangePreferredContentSize" name:UIContentSizeCategoryDidChangeNotification object:0];
 
-  v29 = [(RCRecordingDescriptionView *)self titleTextField];
-  v30 = [v29 text];
-  v31 = [v30 isEqualToString:&stru_100295BB8];
+  titleTextField = [(RCRecordingDescriptionView *)self titleTextField];
+  text = [titleTextField text];
+  v31 = [text isEqualToString:&stru_100295BB8];
 
   if (v31)
   {
@@ -873,11 +873,11 @@ LABEL_11:
   v36 = [(RCRecordingDescriptionView *)self registerForTraitChanges:v35 withAction:"_traitCollectionDidChange:previousTraitCollection:"];
 }
 
-- (void)_setupConfigurationForStyle:(int64_t)a3
+- (void)_setupConfigurationForStyle:(int64_t)style
 {
-  if (a3)
+  if (style)
   {
-    if (a3 != 1)
+    if (style != 1)
     {
       return;
     }
@@ -897,11 +897,11 @@ LABEL_11:
 - (void)setupTitleTextFieldAlignment
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [v3 userInterfaceLayoutDirection];
 
-  v5 = [(RCRecordingDescriptionView *)self titleTextField];
-  v7 = v5;
-  if (v4 == 1)
+  titleTextField = [(RCRecordingDescriptionView *)self titleTextField];
+  v7 = titleTextField;
+  if (userInterfaceLayoutDirection == 1)
   {
     v6 = 2;
   }
@@ -911,21 +911,21 @@ LABEL_11:
     v6 = 4;
   }
 
-  [v5 setTextAlignment:v6];
+  [titleTextField setTextAlignment:v6];
 }
 
 - (BOOL)_setupMoreButtonIfNeeded
 {
-  v3 = [(RCRecordingDescriptionView *)self moreButton];
+  moreButton = [(RCRecordingDescriptionView *)self moreButton];
 
-  if (!v3)
+  if (!moreButton)
   {
     v4 = [UIButton buttonWithType:1];
     [(RCRecordingDescriptionView *)self setMoreButton:v4];
     v5 = +[RCRecorderStyleProvider sharedStyleProvider];
-    v6 = [v5 ellipsisImage];
-    v7 = [v5 shuttleBarImageSymbolConfiguration];
-    v8 = [v6 imageWithConfiguration:v7];
+    ellipsisImage = [v5 ellipsisImage];
+    shuttleBarImageSymbolConfiguration = [v5 shuttleBarImageSymbolConfiguration];
+    v8 = [ellipsisImage imageWithConfiguration:shuttleBarImageSymbolConfiguration];
     [v4 setImage:v8 forState:0];
 
     [v4 setTitle:0 forState:0];
@@ -940,26 +940,26 @@ LABEL_11:
     v12 = objc_alloc_init(UILargeContentViewerInteraction);
     [v4 addInteraction:v12];
 
-    v13 = [v4 accessibilityLabel];
-    [v4 setLargeContentTitle:v13];
+    accessibilityLabel = [v4 accessibilityLabel];
+    [v4 setLargeContentTitle:accessibilityLabel];
 
     [v4 setShowsLargeContentViewer:1];
     [(RCRecordingDescriptionView *)self _updateMoreButtonMenu];
     [v4 addTarget:self action:"_menuActionTriggeredByMoreButton:" forControlEvents:0x4000];
   }
 
-  return v3 == 0;
+  return moreButton == 0;
 }
 
-- (void)_setArrangedSubviewsWithTitleDateDurationStack:(id)a3 moreButton:(id)a4
+- (void)_setArrangedSubviewsWithTitleDateDurationStack:(id)stack moreButton:(id)button
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  stackCopy = stack;
+  buttonCopy = button;
+  v8 = buttonCopy;
+  if (stackCopy && buttonCopy)
   {
-    v13 = v6;
-    v14 = v7;
+    v13 = stackCopy;
+    v14 = buttonCopy;
     v9 = &v13;
     v10 = 2;
 LABEL_6:
@@ -969,9 +969,9 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (v6)
+  if (stackCopy)
   {
-    v12 = v6;
+    v12 = stackCopy;
     v9 = &v12;
     v10 = 1;
     goto LABEL_6;
@@ -987,40 +987,40 @@ LABEL_7:
   [(RCRecordingDescriptionView *)self _applyLabelConfiguration];
 }
 
-- (void)_setupStackForStyle:(int64_t)a3
+- (void)_setupStackForStyle:(int64_t)style
 {
   v5 = +[RCRecorderStyleProvider sharedStyleProvider];
   v6 = v5;
-  if (a3 == 1 && [v5 usesTitleLabelPerfOptimization])
+  if (style == 1 && [v5 usesTitleLabelPerfOptimization])
   {
     [(RCRecordingDescriptionView *)self _setupTitleLabel];
-    v7 = [(RCRecordingDescriptionView *)self titleLabel];
+    titleLabel = [(RCRecordingDescriptionView *)self titleLabel];
   }
 
   else
   {
     [(RCRecordingDescriptionView *)self _setupTitleTextField];
     [(RCRecordingDescriptionView *)self setTitleEditingAllowed:1];
-    v7 = [(RCRecordingDescriptionView *)self titleTextField];
+    titleLabel = [(RCRecordingDescriptionView *)self titleTextField];
   }
 
-  v8 = v7;
+  v8 = titleLabel;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10005212C;
   v11[3] = &unk_10028ADE0;
   v11[4] = self;
-  v12 = v7;
+  v12 = titleLabel;
   v13 = v6;
-  v14 = a3;
+  styleCopy = style;
   v9 = v6;
   v10 = v8;
   [(RCRecordingDescriptionView *)self performBatchUpdates:v11];
 }
 
-- (void)updateForDisplayMode:(int64_t)a3
+- (void)updateForDisplayMode:(int64_t)mode
 {
-  self->_isInCompactDisplayMode = a3 == 0;
+  self->_isInCompactDisplayMode = mode == 0;
   v7 = +[RCRecorderStyleProvider sharedStyleProvider];
   if ([(RCRecordingDescriptionView *)self style]== 1)
   {
@@ -1033,31 +1033,31 @@ LABEL_7:
   }
   v5 = ;
   [v7 descriptionViewTitleToSecondaryPadding];
-  if (!a3)
+  if (!mode)
   {
     [v7 descriptionCompactViewTitleToSecondaryPadding];
   }
 
   [(NUIContainerStackView *)self->_titleDateDurationStack setSpacing:?];
-  [(UILabel *)self->_creationDateOrDownloadingLabel setHidden:a3 == 0];
-  v6 = [(RCRecordingDescriptionView *)self durationLabel];
-  [v6 setFont:v5];
+  [(UILabel *)self->_creationDateOrDownloadingLabel setHidden:mode == 0];
+  durationLabel = [(RCRecordingDescriptionView *)self durationLabel];
+  [durationLabel setFont:v5];
 
   [(RCRecordingDescriptionView *)self _updateTranscriptAvailableViewVisibility];
   [(RCRecordingDescriptionView *)self _updateMultitrackIndicatorViewVisibility];
   [(RCRecordingDescriptionView *)self _styleView];
 }
 
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection
 {
-  v8 = a4;
+  collectionCopy = collection;
   if ([(RCRecordingDescriptionView *)self style]== 1)
   {
-    v5 = [(RCRecordingDescriptionView *)self traitCollection];
-    v6 = [v5 userInterfaceStyle];
-    v7 = [v8 userInterfaceStyle];
+    traitCollection = [(RCRecordingDescriptionView *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
+    userInterfaceStyle2 = [collectionCopy userInterfaceStyle];
 
-    if (v6 != v7)
+    if (userInterfaceStyle != userInterfaceStyle2)
     {
       [(RCRecordingDescriptionView *)self _applyLabelConfiguration];
     }
@@ -1066,19 +1066,19 @@ LABEL_7:
   [(RCRecordingDescriptionView *)self _updateStackIfNeeded];
 }
 
-- (void)_menuActionTriggeredByMoreButton:(id)a3
+- (void)_menuActionTriggeredByMoreButton:(id)button
 {
-  v4 = [(RCRecordingDescriptionView *)self titleTextField];
-  v5 = [v4 isEditing];
+  titleTextField = [(RCRecordingDescriptionView *)self titleTextField];
+  isEditing = [titleTextField isEditing];
 
-  if (v5)
+  if (isEditing)
   {
 
     [(RCRecordingDescriptionView *)self endEditingTitle];
   }
 }
 
-- (void)deviceTranscriptionSupportDidChange:(BOOL)a3
+- (void)deviceTranscriptionSupportDidChange:(BOOL)change
 {
   [(RCRecordingDescriptionView *)self _updateMoreButtonMenu];
 
@@ -1093,21 +1093,21 @@ LABEL_7:
   if (v4)
   {
     v5 = objc_loadWeakRetained(&self->_recordingDescriptionViewDelegate);
-    v6 = [v5 shouldSelectFullTitleAtBeginEditing];
+    shouldSelectFullTitleAtBeginEditing = [v5 shouldSelectFullTitleAtBeginEditing];
 
-    if (v6)
+    if (shouldSelectFullTitleAtBeginEditing)
     {
-      v7 = [(RCRecordingDescriptionView *)self titleTextField];
-      [v7 selectAll:0];
+      titleTextField = [(RCRecordingDescriptionView *)self titleTextField];
+      [titleTextField selectAll:0];
     }
   }
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
-  v8 = a3;
-  v4 = [v8 text];
-  [(RCRecordingDescriptionView *)self setPreEditingName:v4];
+  editingCopy = editing;
+  text = [editingCopy text];
+  [(RCRecordingDescriptionView *)self setPreEditingName:text];
 
   [(RCRecordingDescriptionView *)self _maybeSelectAllTextFieldText];
   WeakRetained = objc_loadWeakRetained(&self->_recordingDescriptionViewDelegate);
@@ -1116,29 +1116,29 @@ LABEL_7:
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_recordingDescriptionViewDelegate);
-    [v7 didBeginEditingInTextField:v8];
+    [v7 didBeginEditingInTextField:editingCopy];
   }
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a5;
-  v9 = a3;
-  if ([v8 isEqualToString:@"\n"])
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  fieldCopy = field;
+  if ([stringCopy isEqualToString:@"\n"])
   {
-    [v9 resignFirstResponder];
+    [fieldCopy resignFirstResponder];
 
     v10 = 0;
   }
 
   else
   {
-    v11 = [v9 text];
+    text = [fieldCopy text];
 
-    v12 = [v11 length];
-    v13 = [v8 length];
+    v12 = [text length];
+    v13 = [stringCopy length];
     v14 = v13 + v12 - length;
     v16 = (v13 - length) < 0 || v14 < 0x65;
     if (v14 < 0)
@@ -1152,9 +1152,9 @@ LABEL_7:
   return v10;
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v12 = a3;
+  editingCopy = editing;
   WeakRetained = objc_loadWeakRetained(&self->_recordingDescriptionViewDelegate);
   v5 = objc_opt_respondsToSelector();
 
@@ -1164,98 +1164,98 @@ LABEL_7:
     [v6 didEndEditingInTextField];
   }
 
-  v7 = [v12 text];
-  if ([v7 length] && (objc_msgSend(v12, "text"), v8 = objc_claimAutoreleasedReturnValue(), -[RCRecordingDescriptionView preEditingName](self, "preEditingName"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "isEqualToString:", v9), v9, v8, (v10 & 1) == 0))
+  text = [editingCopy text];
+  if ([text length] && (objc_msgSend(editingCopy, "text"), v8 = objc_claimAutoreleasedReturnValue(), -[RCRecordingDescriptionView preEditingName](self, "preEditingName"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "isEqualToString:", v9), v9, v8, (v10 & 1) == 0))
   {
-    v11 = objc_loadWeakRetained(&self->_recordingDescriptionViewDelegate);
-    [v11 handleUpdateTitle:v7];
+    preEditingName = objc_loadWeakRetained(&self->_recordingDescriptionViewDelegate);
+    [preEditingName handleUpdateTitle:text];
   }
 
   else
   {
-    v11 = [(RCRecordingDescriptionView *)self preEditingName];
-    [v12 setText:v11];
+    preEditingName = [(RCRecordingDescriptionView *)self preEditingName];
+    [editingCopy setText:preEditingName];
   }
 }
 
 - (id)accessibilityElements
 {
   v3 = +[NSMutableArray array];
-  v4 = [(RCRecordingDescriptionView *)self titleTextField];
+  titleTextField = [(RCRecordingDescriptionView *)self titleTextField];
 
-  if (v4)
+  if (titleTextField)
   {
-    v5 = [(RCRecordingDescriptionView *)self titleTextField];
-    [v3 addObject:v5];
+    titleTextField2 = [(RCRecordingDescriptionView *)self titleTextField];
+    [v3 addObject:titleTextField2];
   }
 
-  v6 = [(RCRecordingDescriptionView *)self creationDateOrDownloadingLabel];
+  creationDateOrDownloadingLabel = [(RCRecordingDescriptionView *)self creationDateOrDownloadingLabel];
 
-  if (v6)
+  if (creationDateOrDownloadingLabel)
   {
-    v7 = [(RCRecordingDescriptionView *)self creationDateOrDownloadingLabel];
-    v8 = [v7 isHidden];
+    creationDateOrDownloadingLabel2 = [(RCRecordingDescriptionView *)self creationDateOrDownloadingLabel];
+    isHidden = [creationDateOrDownloadingLabel2 isHidden];
 
-    if ((v8 & 1) == 0)
+    if ((isHidden & 1) == 0)
     {
-      v9 = [(RCRecordingDescriptionView *)self creationDateOrDownloadingLabel];
-      [v3 addObject:v9];
+      creationDateOrDownloadingLabel3 = [(RCRecordingDescriptionView *)self creationDateOrDownloadingLabel];
+      [v3 addObject:creationDateOrDownloadingLabel3];
     }
   }
 
-  v10 = [(RCRecordingDescriptionView *)self transcriptAvailableImageView];
-  if (v10)
+  transcriptAvailableImageView = [(RCRecordingDescriptionView *)self transcriptAvailableImageView];
+  if (transcriptAvailableImageView)
   {
-    v11 = v10;
-    v12 = [(RCRecordingDescriptionView *)self transcriptAvailableImageView];
-    v13 = [v12 isHidden];
+    v11 = transcriptAvailableImageView;
+    transcriptAvailableImageView2 = [(RCRecordingDescriptionView *)self transcriptAvailableImageView];
+    isHidden2 = [transcriptAvailableImageView2 isHidden];
 
-    if ((v13 & 1) == 0)
+    if ((isHidden2 & 1) == 0)
     {
-      v14 = [(RCRecordingDescriptionView *)self transcriptAvailableImageView];
-      [v3 addObject:v14];
+      transcriptAvailableImageView3 = [(RCRecordingDescriptionView *)self transcriptAvailableImageView];
+      [v3 addObject:transcriptAvailableImageView3];
     }
   }
 
-  v15 = [(RCRecordingDescriptionView *)self multiTrackIndicatorImageView];
-  if (v15)
+  multiTrackIndicatorImageView = [(RCRecordingDescriptionView *)self multiTrackIndicatorImageView];
+  if (multiTrackIndicatorImageView)
   {
-    v16 = v15;
-    v17 = [(RCRecordingDescriptionView *)self multiTrackIndicatorImageView];
-    v18 = [v17 isHidden];
+    v16 = multiTrackIndicatorImageView;
+    multiTrackIndicatorImageView2 = [(RCRecordingDescriptionView *)self multiTrackIndicatorImageView];
+    isHidden3 = [multiTrackIndicatorImageView2 isHidden];
 
-    if ((v18 & 1) == 0)
+    if ((isHidden3 & 1) == 0)
     {
-      v19 = [(RCRecordingDescriptionView *)self multiTrackIndicatorImageView];
-      [v3 addObject:v19];
+      multiTrackIndicatorImageView3 = [(RCRecordingDescriptionView *)self multiTrackIndicatorImageView];
+      [v3 addObject:multiTrackIndicatorImageView3];
     }
   }
 
-  v20 = [(RCRecordingDescriptionView *)self durationLabel];
-  if (v20)
+  durationLabel = [(RCRecordingDescriptionView *)self durationLabel];
+  if (durationLabel)
   {
-    v21 = v20;
-    v22 = [(RCRecordingDescriptionView *)self durationLabel];
-    v23 = [v22 isHidden];
+    v21 = durationLabel;
+    durationLabel2 = [(RCRecordingDescriptionView *)self durationLabel];
+    isHidden4 = [durationLabel2 isHidden];
 
-    if ((v23 & 1) == 0)
+    if ((isHidden4 & 1) == 0)
     {
-      v24 = [(RCRecordingDescriptionView *)self durationLabel];
-      [v3 addObject:v24];
+      durationLabel3 = [(RCRecordingDescriptionView *)self durationLabel];
+      [v3 addObject:durationLabel3];
     }
   }
 
-  v25 = [(RCRecordingDescriptionView *)self moreButton];
-  if (v25)
+  moreButton = [(RCRecordingDescriptionView *)self moreButton];
+  if (moreButton)
   {
-    v26 = v25;
-    v27 = [(RCRecordingDescriptionView *)self moreButton];
-    v28 = [v27 isHidden];
+    v26 = moreButton;
+    moreButton2 = [(RCRecordingDescriptionView *)self moreButton];
+    isHidden5 = [moreButton2 isHidden];
 
-    if ((v28 & 1) == 0)
+    if ((isHidden5 & 1) == 0)
     {
-      v29 = [(RCRecordingDescriptionView *)self moreButton];
-      [v3 addObject:v29];
+      moreButton3 = [(RCRecordingDescriptionView *)self moreButton];
+      [v3 addObject:moreButton3];
     }
   }
 
@@ -1264,110 +1264,110 @@ LABEL_7:
 
 - (NSString)axCreationDateString
 {
-  v2 = [(RCRecordingDescriptionView *)self creationDateOrDownloadingLabel];
-  v3 = [v2 accessibilityLabel];
+  creationDateOrDownloadingLabel = [(RCRecordingDescriptionView *)self creationDateOrDownloadingLabel];
+  accessibilityLabel = [creationDateOrDownloadingLabel accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (NSString)axTranscriptAvailableString
 {
-  v2 = [(RCRecordingDescriptionView *)self transcriptAvailableImageView];
-  v3 = [v2 accessibilityLabel];
+  transcriptAvailableImageView = [(RCRecordingDescriptionView *)self transcriptAvailableImageView];
+  accessibilityLabel = [transcriptAvailableImageView accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (NSString)axMultiTrackIndicatorString
 {
-  v2 = [(RCRecordingDescriptionView *)self multiTrackIndicatorImageView];
-  v3 = [v2 accessibilityLabel];
+  multiTrackIndicatorImageView = [(RCRecordingDescriptionView *)self multiTrackIndicatorImageView];
+  accessibilityLabel = [multiTrackIndicatorImageView accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (NSString)axDurationString
 {
-  v2 = [(RCRecordingDescriptionView *)self durationLabel];
-  v3 = [v2 accessibilityLabel];
+  durationLabel = [(RCRecordingDescriptionView *)self durationLabel];
+  accessibilityLabel = [durationLabel accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
-- (void)setDurationLabelAccessible:(BOOL)a3
+- (void)setDurationLabelAccessible:(BOOL)accessible
 {
-  v3 = a3;
-  v4 = [(RCRecordingDescriptionView *)self durationLabel];
-  [v4 setIsAccessibilityElement:v3];
+  accessibleCopy = accessible;
+  durationLabel = [(RCRecordingDescriptionView *)self durationLabel];
+  [durationLabel setIsAccessibilityElement:accessibleCopy];
 }
 
 - (BOOL)isTitleAccessible
 {
-  v3 = [(RCRecordingDescriptionView *)self titleTextField];
-  if ([v3 isAccessibilityElement])
+  titleTextField = [(RCRecordingDescriptionView *)self titleTextField];
+  if ([titleTextField isAccessibilityElement])
   {
-    v4 = 1;
+    isAccessibilityElement = 1;
   }
 
   else
   {
-    v5 = [(RCRecordingDescriptionView *)self titleLabel];
-    v4 = [v5 isAccessibilityElement];
+    titleLabel = [(RCRecordingDescriptionView *)self titleLabel];
+    isAccessibilityElement = [titleLabel isAccessibilityElement];
   }
 
-  return v4;
+  return isAccessibilityElement;
 }
 
-- (void)setTitleAccessible:(BOOL)a3
+- (void)setTitleAccessible:(BOOL)accessible
 {
-  v3 = a3;
-  v5 = [(RCRecordingDescriptionView *)self titleTextField];
-  [v5 setIsAccessibilityElement:v3];
+  accessibleCopy = accessible;
+  titleTextField = [(RCRecordingDescriptionView *)self titleTextField];
+  [titleTextField setIsAccessibilityElement:accessibleCopy];
 
-  v6 = [(RCRecordingDescriptionView *)self titleLabel];
-  [v6 setIsAccessibilityElement:v3];
+  titleLabel = [(RCRecordingDescriptionView *)self titleLabel];
+  [titleLabel setIsAccessibilityElement:accessibleCopy];
 }
 
-- (void)addTitleAccessibilityTraits:(unint64_t)a3
+- (void)addTitleAccessibilityTraits:(unint64_t)traits
 {
-  v5 = [(RCRecordingDescriptionView *)self titleTextField];
-  [v5 setAccessibilityTraits:{objc_msgSend(v5, "accessibilityTraits") | a3}];
+  titleTextField = [(RCRecordingDescriptionView *)self titleTextField];
+  [titleTextField setAccessibilityTraits:{objc_msgSend(titleTextField, "accessibilityTraits") | traits}];
 
-  v6 = [(RCRecordingDescriptionView *)self titleLabel];
-  [v6 setAccessibilityTraits:{objc_msgSend(v6, "accessibilityTraits") | a3}];
+  titleLabel = [(RCRecordingDescriptionView *)self titleLabel];
+  [titleLabel setAccessibilityTraits:{objc_msgSend(titleLabel, "accessibilityTraits") | traits}];
 }
 
-- (void)removeTitleAccessibilityTraits:(unint64_t)a3
+- (void)removeTitleAccessibilityTraits:(unint64_t)traits
 {
-  v5 = [(RCRecordingDescriptionView *)self titleTextField];
-  [v5 setAccessibilityTraits:{objc_msgSend(v5, "accessibilityTraits") & ~a3}];
+  titleTextField = [(RCRecordingDescriptionView *)self titleTextField];
+  [titleTextField setAccessibilityTraits:{objc_msgSend(titleTextField, "accessibilityTraits") & ~traits}];
 
-  v6 = [(RCRecordingDescriptionView *)self titleLabel];
-  [v6 setAccessibilityTraits:{objc_msgSend(v6, "accessibilityTraits") & ~a3}];
+  titleLabel = [(RCRecordingDescriptionView *)self titleLabel];
+  [titleLabel setAccessibilityTraits:{objc_msgSend(titleLabel, "accessibilityTraits") & ~traits}];
 }
 
 - (void)beginEditingTitle
 {
-  v2 = [(RCRecordingDescriptionView *)self titleTextField];
-  [v2 becomeFirstResponder];
+  titleTextField = [(RCRecordingDescriptionView *)self titleTextField];
+  [titleTextField becomeFirstResponder];
 }
 
 - (void)_endEditingTitleDueToNotification
 {
-  v3 = [(RCRecordingDescriptionView *)self titleTextField];
-  v4 = [v3 isEditing];
+  titleTextField = [(RCRecordingDescriptionView *)self titleTextField];
+  isEditing = [titleTextField isEditing];
 
-  if (v4)
+  if (isEditing)
   {
-    v5 = [(RCRecordingDescriptionView *)self titleTextField];
-    [v5 endEditing:0];
+    titleTextField2 = [(RCRecordingDescriptionView *)self titleTextField];
+    [titleTextField2 endEditing:0];
   }
 }
 
 - (void)endEditingTitle
 {
-  v2 = [(RCRecordingDescriptionView *)self titleTextField];
-  [v2 endEditing:1];
+  titleTextField = [(RCRecordingDescriptionView *)self titleTextField];
+  [titleTextField endEditing:1];
 }
 
 - (RCRecordingDescriptionViewDelegate)recordingDescriptionViewDelegate

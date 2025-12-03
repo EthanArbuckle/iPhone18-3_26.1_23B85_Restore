@@ -1,22 +1,22 @@
 @interface BannerCell
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
 - (void)layoutSubviews;
 @end
 
 @implementation BannerCell
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  sub_21697AEDC(v4);
+  attributesCopy = attributes;
+  selfCopy = self;
+  sub_21697AEDC(attributesCopy);
 
-  return v4;
+  return attributesCopy;
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_21697B094();
 }
 

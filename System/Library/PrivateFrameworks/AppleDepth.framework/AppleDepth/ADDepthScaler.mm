@@ -1,23 +1,23 @@
 @interface ADDepthScaler
 + (id)defaultScaler;
-+ (id)scalerWithInterpThreshold:(float)a3 andNoDepthOutputValue:(float)a4;
-- (int64_t)scaleDepthBuffer:(__CVBuffer *)a3 withCropRect:(CGRect)a4 toBuffer:(__CVBuffer *)a5;
-- (int64_t)scaleDepthBuffer:(__CVBuffer *)a3 withZoomFactor:(float)a4 toBuffer:(__CVBuffer *)a5;
++ (id)scalerWithInterpThreshold:(float)threshold andNoDepthOutputValue:(float)value;
+- (int64_t)scaleDepthBuffer:(__CVBuffer *)buffer withCropRect:(CGRect)rect toBuffer:(__CVBuffer *)toBuffer;
+- (int64_t)scaleDepthBuffer:(__CVBuffer *)buffer withZoomFactor:(float)factor toBuffer:(__CVBuffer *)toBuffer;
 @end
 
 @implementation ADDepthScaler
 
-- (int64_t)scaleDepthBuffer:(__CVBuffer *)a3 withZoomFactor:(float)a4 toBuffer:(__CVBuffer *)a5
+- (int64_t)scaleDepthBuffer:(__CVBuffer *)buffer withZoomFactor:(float)factor toBuffer:(__CVBuffer *)toBuffer
 {
-  if (a4 >= 1.0)
+  if (factor >= 1.0)
   {
-    Width = CVPixelBufferGetWidth(a3);
-    Height = CVPixelBufferGetHeight(a3);
-    v12 = (vcvts_n_f32_u64(Width, 1uLL) - ((Width / a4) * 0.5));
-    v13 = Height / a4;
+    Width = CVPixelBufferGetWidth(buffer);
+    Height = CVPixelBufferGetHeight(buffer);
+    v12 = (vcvts_n_f32_u64(Width, 1uLL) - ((Width / factor) * 0.5));
+    v13 = Height / factor;
     v14 = (vcvts_n_f32_u64(Height, 1uLL) - (v13 * 0.5));
 
-    return [(ADDepthScaler *)self scaleDepthBuffer:a3 withCropRect:a5 toBuffer:v12, v14, (Width / a4), v13];
+    return [(ADDepthScaler *)self scaleDepthBuffer:buffer withCropRect:toBuffer toBuffer:v12, v14, (Width / factor), v13];
   }
 
   else
@@ -32,14 +32,14 @@
   }
 }
 
-- (int64_t)scaleDepthBuffer:(__CVBuffer *)a3 withCropRect:(CGRect)a4 toBuffer:(__CVBuffer *)a5
+- (int64_t)scaleDepthBuffer:(__CVBuffer *)buffer withCropRect:(CGRect)rect toBuffer:(__CVBuffer *)toBuffer
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = CVPixelBufferGetWidth(a3);
-  v13 = CVPixelBufferGetHeight(a3);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v12 = CVPixelBufferGetWidth(buffer);
+  v13 = CVPixelBufferGetHeight(buffer);
   v499.size.width = v12;
   v499.size.height = v13;
   v499.origin.x = 0.0;
@@ -63,8 +63,8 @@ LABEL_803:
     return -22953;
   }
 
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
-  if (PixelFormatType != CVPixelBufferGetPixelFormatType(a5))
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
+  if (PixelFormatType != CVPixelBufferGetPixelFormatType(toBuffer))
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
@@ -85,15 +85,15 @@ LABEL_803:
       {
         interpThreshold = self->_interpThreshold;
         noDepthOutputValue = self->_noDepthOutputValue;
-        v17 = CVPixelBufferGetWidth(a5);
-        v18 = CVPixelBufferGetHeight(a5);
-        CVPixelBufferLockBaseAddress(a3, 1uLL);
-        CVPixelBufferLockBaseAddress(a5, 0);
+        v17 = CVPixelBufferGetWidth(toBuffer);
+        v18 = CVPixelBufferGetHeight(toBuffer);
+        CVPixelBufferLockBaseAddress(buffer, 1uLL);
+        CVPixelBufferLockBaseAddress(toBuffer, 0);
         memset(&buf, 0, sizeof(buf));
         v19 = MEMORY[0x277CBF3A0];
-        PixelBufferUtils::asVImageBuffer(a3, *MEMORY[0x277CBF3A0], &buf);
+        PixelBufferUtils::asVImageBuffer(buffer, *MEMORY[0x277CBF3A0], &buf);
         memset(&v497, 0, sizeof(v497));
-        PixelBufferUtils::asVImageBuffer(a5, *v19, &v497);
+        PixelBufferUtils::asVImageBuffer(toBuffer, *v19, &v497);
         v21 = v497.height;
         if (v497.height)
         {
@@ -361,15 +361,15 @@ LABEL_12:
 
     v260 = self->_interpThreshold;
     v259 = self->_noDepthOutputValue;
-    v261 = CVPixelBufferGetWidth(a5);
-    v262 = CVPixelBufferGetHeight(a5);
-    CVPixelBufferLockBaseAddress(a3, 1uLL);
-    CVPixelBufferLockBaseAddress(a5, 0);
+    v261 = CVPixelBufferGetWidth(toBuffer);
+    v262 = CVPixelBufferGetHeight(toBuffer);
+    CVPixelBufferLockBaseAddress(buffer, 1uLL);
+    CVPixelBufferLockBaseAddress(toBuffer, 0);
     memset(&buf, 0, sizeof(buf));
     v263 = MEMORY[0x277CBF3A0];
-    PixelBufferUtils::asVImageBuffer(a3, *MEMORY[0x277CBF3A0], &buf);
+    PixelBufferUtils::asVImageBuffer(buffer, *MEMORY[0x277CBF3A0], &buf);
     memset(&v497, 0, sizeof(v497));
-    PixelBufferUtils::asVImageBuffer(a5, *v263, &v497);
+    PixelBufferUtils::asVImageBuffer(toBuffer, *v263, &v497);
     v265 = v497.height;
     if (v497.height)
     {
@@ -624,8 +624,8 @@ LABEL_414:
     }
 
 LABEL_801:
-    CVPixelBufferUnlockBaseAddress(a3, 1uLL);
-    CVPixelBufferUnlockBaseAddress(a5, 0);
+    CVPixelBufferUnlockBaseAddress(buffer, 1uLL);
+    CVPixelBufferUnlockBaseAddress(toBuffer, 0);
     return 0;
   }
 
@@ -633,15 +633,15 @@ LABEL_801:
   {
     v355 = self->_interpThreshold;
     _S13 = self->_noDepthOutputValue;
-    v357 = CVPixelBufferGetWidth(a5);
-    v358 = CVPixelBufferGetHeight(a5);
-    CVPixelBufferLockBaseAddress(a3, 1uLL);
-    CVPixelBufferLockBaseAddress(a5, 0);
+    v357 = CVPixelBufferGetWidth(toBuffer);
+    v358 = CVPixelBufferGetHeight(toBuffer);
+    CVPixelBufferLockBaseAddress(buffer, 1uLL);
+    CVPixelBufferLockBaseAddress(toBuffer, 0);
     memset(&buf, 0, sizeof(buf));
     v359 = MEMORY[0x277CBF3A0];
-    PixelBufferUtils::asVImageBuffer(a3, *MEMORY[0x277CBF3A0], &buf);
+    PixelBufferUtils::asVImageBuffer(buffer, *MEMORY[0x277CBF3A0], &buf);
     memset(&v497, 0, sizeof(v497));
-    PixelBufferUtils::asVImageBuffer(a5, *v359, &v497);
+    PixelBufferUtils::asVImageBuffer(toBuffer, *v359, &v497);
     v361 = v497.height;
     if (!v497.height)
     {
@@ -1034,15 +1034,15 @@ LABEL_788:
   {
     v118 = self->_interpThreshold;
     _S13 = self->_noDepthOutputValue;
-    v120 = CVPixelBufferGetWidth(a5);
-    v121 = CVPixelBufferGetHeight(a5);
-    CVPixelBufferLockBaseAddress(a3, 1uLL);
-    CVPixelBufferLockBaseAddress(a5, 0);
+    v120 = CVPixelBufferGetWidth(toBuffer);
+    v121 = CVPixelBufferGetHeight(toBuffer);
+    CVPixelBufferLockBaseAddress(buffer, 1uLL);
+    CVPixelBufferLockBaseAddress(toBuffer, 0);
     memset(&buf, 0, sizeof(buf));
     v122 = MEMORY[0x277CBF3A0];
-    PixelBufferUtils::asVImageBuffer(a3, *MEMORY[0x277CBF3A0], &buf);
+    PixelBufferUtils::asVImageBuffer(buffer, *MEMORY[0x277CBF3A0], &buf);
     memset(&v497, 0, sizeof(v497));
-    PixelBufferUtils::asVImageBuffer(a5, *v122, &v497);
+    PixelBufferUtils::asVImageBuffer(toBuffer, *v122, &v497);
     v124 = v497.height;
     if (!v497.height)
     {
@@ -1458,11 +1458,11 @@ LABEL_405:
   return v7;
 }
 
-+ (id)scalerWithInterpThreshold:(float)a3 andNoDepthOutputValue:(float)a4
++ (id)scalerWithInterpThreshold:(float)threshold andNoDepthOutputValue:(float)value
 {
   v6 = objc_opt_new();
-  v6[2] = a3;
-  v6[3] = a4;
+  v6[2] = threshold;
+  v6[3] = value;
 
   return v6;
 }

@@ -1,31 +1,31 @@
 @interface PKPassBannerTrailingView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (uint64_t)_initWithStyle:(void *)a3 configuration:;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (uint64_t)_initWithStyle:(void *)style configuration:;
 - (void)_updateImage;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PKPassBannerTrailingView
 
-- (uint64_t)_initWithStyle:(void *)a3 configuration:
+- (uint64_t)_initWithStyle:(void *)style configuration:
 {
-  v6 = a3;
-  if (a1)
+  styleCopy = style;
+  if (self)
   {
-    v15.receiver = a1;
+    v15.receiver = self;
     v15.super_class = PKPassBannerTrailingView;
     v7 = objc_msgSendSuper2(&v15, sel_initWithFrame_, *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24));
-    a1 = v7;
+    self = v7;
     if (v7)
     {
       *(v7 + 51) = a2;
-      objc_storeStrong(v7 + 52, a3);
-      v8 = *(a1 + 416);
+      objc_storeStrong(v7 + 52, style);
+      v8 = *(self + 416);
       if (!v8)
       {
 LABEL_10:
-        [(PKPassBannerTrailingView *)a1 _updateImage];
+        [(PKPassBannerTrailingView *)self _updateImage];
         goto LABEL_11;
       }
 
@@ -34,30 +34,30 @@ LABEL_10:
         __break(1u);
       }
 
-      else if (v6)
+      else if (styleCopy)
       {
-        v9 = v6[3];
+        v9 = styleCopy[3];
         goto LABEL_7;
       }
 
       v9 = 0;
 LABEL_7:
-      objc_storeStrong((a1 + 432), v9);
+      objc_storeStrong((self + 432), v9);
       v10 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:0];
-      v11 = *(a1 + 440);
-      *(a1 + 440) = v10;
+      v11 = *(self + 440);
+      *(self + 440) = v10;
 
-      [a1 addSubview:*(a1 + 440)];
-      v12 = *(a1 + 440);
-      if (*(a1 + 432))
+      [self addSubview:*(self + 440)];
+      v12 = *(self + 440);
+      if (*(self + 432))
       {
-        [*(a1 + 440) setTintColor:?];
+        [*(self + 440) setTintColor:?];
       }
 
       else
       {
-        v13 = [MEMORY[0x1E69DC888] labelColor];
-        [v12 setTintColor:v13];
+        labelColor = [MEMORY[0x1E69DC888] labelColor];
+        [v12 setTintColor:labelColor];
       }
 
       goto LABEL_10;
@@ -66,39 +66,39 @@ LABEL_7:
 
 LABEL_11:
 
-  return a1;
+  return self;
 }
 
 - (void)_updateImage
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 408))
+    if (*(self + 408))
     {
-      v11 = [a1 traitCollection];
-      v2 = [MEMORY[0x1E69DCAD8] sbui_systemApertureDefaultConfiguration];
+      traitCollection = [self traitCollection];
+      sbui_systemApertureDefaultConfiguration = [MEMORY[0x1E69DCAD8] sbui_systemApertureDefaultConfiguration];
       v3 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:*MEMORY[0x1E69DDDB8] scale:2];
-      v4 = [v2 configurationByApplyingConfiguration:v3];
+      v4 = [sbui_systemApertureDefaultConfiguration configurationByApplyingConfiguration:v3];
     }
 
     else
     {
-      if (*(a1 + 424))
+      if (*(self + 424))
       {
         return;
       }
 
-      v11 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:*MEMORY[0x1E69DDC70]];
+      traitCollection = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:*MEMORY[0x1E69DDC70]];
       v3 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD58] compatibleWithTraitCollection:?];
       v4 = [MEMORY[0x1E69DCAD8] configurationWithFont:v3 scale:3];
     }
 
-    if (v11 && v4)
+    if (traitCollection && v4)
     {
       v5 = [v4 configurationWithTraitCollection:?];
 
       v6 = MEMORY[0x1E69DCAB8];
-      v7 = *(a1 + 416);
+      v7 = *(self + 416);
       if (v7)
       {
         v7 = v7[2];
@@ -106,36 +106,36 @@ LABEL_11:
 
       v8 = v7;
       v9 = [v6 _systemImageNamed:v8 withConfiguration:v5];
-      v10 = *(a1 + 424);
-      *(a1 + 424) = v9;
+      v10 = *(self + 424);
+      *(self + 424) = v9;
     }
 
     else
     {
-      v8 = *(a1 + 424);
-      *(a1 + 424) = 0;
+      v8 = *(self + 424);
+      *(self + 424) = 0;
       v5 = v4;
     }
 
-    [*(a1 + 440) setImage:*(a1 + 424)];
-    [a1 setNeedsLayout];
+    [*(self + 440) setImage:*(self + 424)];
+    [self setNeedsLayout];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = PKPassBannerTrailingView;
-  [(PKPassBannerTrailingView *)&v9 traitCollectionDidChange:v4];
-  v5 = [(PKPassBannerTrailingView *)self traitCollection];
-  if (!v4 || ([v4 preferredContentSizeCategory], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "preferredContentSizeCategory"), v7 = objc_claimAutoreleasedReturnValue(), v8 = UIContentSizeCategoryCompareToCategory(v6, v7), v7, v6, v8))
+  [(PKPassBannerTrailingView *)&v9 traitCollectionDidChange:changeCopy];
+  traitCollection = [(PKPassBannerTrailingView *)self traitCollection];
+  if (!changeCopy || ([changeCopy preferredContentSizeCategory], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(traitCollection, "preferredContentSizeCategory"), v7 = objc_claimAutoreleasedReturnValue(), v8 = UIContentSizeCategoryCompareToCategory(v6, v7), v7, v6, v8))
   {
     [(PKPassBannerTrailingView *)self _updateImage];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   style = self->_style;
   image = self->_image;
@@ -156,7 +156,7 @@ LABEL_11:
     goto LABEL_8;
   }
 
-  [(UIImage *)image pkui_alignmentSize:a3.width];
+  [(UIImage *)image pkui_alignmentSize:fits.width];
   PKSizeRoundToPixel();
 LABEL_8:
   result.height = v6;

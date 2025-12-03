@@ -1,11 +1,11 @@
 @interface _UITextLayoutControllerBase
-+ (_UITextKit2LayoutController)layoutControllerWithTextView:(void *)a3 textContainer:;
++ (_UITextKit2LayoutController)layoutControllerWithTextView:(void *)view textContainer:;
 - (NSTextContainer)firstTextContainer;
 - (UITextInputController)textInputController;
 - (UITextRange)unobscuredRange;
-- (_UITextLayoutBaselineCalculator)baselineCalculatorForView:(uint64_t)a1 typingAttributes:(void *)a2 usesLineFragmentOrigin:(void *)a3 fallbackTextContainerOrigin:(uint64_t)a4;
-- (id)positionFromPosition:(uint64_t)a3 offset:;
-- (void)adoptTextInputController:(id)a3;
+- (_UITextLayoutBaselineCalculator)baselineCalculatorForView:(uint64_t)view typingAttributes:(void *)attributes usesLineFragmentOrigin:(void *)origin fallbackTextContainerOrigin:(uint64_t)containerOrigin;
+- (id)positionFromPosition:(uint64_t)position offset:;
+- (void)adoptTextInputController:(id)controller;
 - (void)detachFromTextInputController;
 @end
 
@@ -13,32 +13,32 @@
 
 - (NSTextContainer)firstTextContainer
 {
-  v2 = [(_UITextLayoutControllerBase *)self textContainers];
-  v3 = [v2 firstObject];
+  textContainers = [(_UITextLayoutControllerBase *)self textContainers];
+  firstObject = [textContainers firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (UITextInputController)textInputController
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    inputDelegate = a1->_inputDelegate;
+    selfCopy = self;
+    inputDelegate = self->_inputDelegate;
     if (inputDelegate)
     {
-      a1 = [(UITextInputDelegate *)inputDelegate textInputController];
+      self = [(UITextInputDelegate *)inputDelegate textInputController];
     }
 
     else
     {
-      a1 = [[UITextInputController alloc] initWithTextLayoutController:v2];
+      self = [[UITextInputController alloc] initWithTextLayoutController:selfCopy];
     }
 
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (UITextRange)unobscuredRange
@@ -51,28 +51,28 @@
 
   else
   {
-    v4 = self;
-    v5 = [(_UITextLayoutControllerBase *)v4 beginningOfDocument];
-    v3 = [(_UITextLayoutControllerBase *)v4 emptyTextRangeAtPosition:v5];
+    selfCopy = self;
+    beginningOfDocument = [(_UITextLayoutControllerBase *)selfCopy beginningOfDocument];
+    v3 = [(_UITextLayoutControllerBase *)selfCopy emptyTextRangeAtPosition:beginningOfDocument];
   }
 
   return v3;
 }
 
-+ (_UITextKit2LayoutController)layoutControllerWithTextView:(void *)a3 textContainer:
++ (_UITextKit2LayoutController)layoutControllerWithTextView:(void *)view textContainer:
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = a2;
   objc_opt_self();
-  v6 = [v4 textLayoutManager];
-  if (v6)
+  textLayoutManager = [viewCopy textLayoutManager];
+  if (textLayoutManager)
   {
-    v7 = [[_UITextKit2LayoutController alloc] initWithTextView:v5 textContainer:v4];
+    v7 = [[_UITextKit2LayoutController alloc] initWithTextView:v5 textContainer:viewCopy];
   }
 
   else
   {
-    v7 = [[_UITextKit1LayoutController alloc] initWithTextView:v5 textContainer:v4];
+    v7 = [[_UITextKit1LayoutController alloc] initWithTextView:v5 textContainer:viewCopy];
   }
 
   v8 = v7;
@@ -80,26 +80,26 @@
   return v8;
 }
 
-- (id)positionFromPosition:(uint64_t)a3 offset:
+- (id)positionFromPosition:(uint64_t)position offset:
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1 positionFromPosition:a2 offset:a3 affinity:0];
+    self = [self positionFromPosition:a2 offset:position affinity:0];
     v3 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (_UITextLayoutBaselineCalculator)baselineCalculatorForView:(uint64_t)a1 typingAttributes:(void *)a2 usesLineFragmentOrigin:(void *)a3 fallbackTextContainerOrigin:(uint64_t)a4
+- (_UITextLayoutBaselineCalculator)baselineCalculatorForView:(uint64_t)view typingAttributes:(void *)attributes usesLineFragmentOrigin:(void *)origin fallbackTextContainerOrigin:(uint64_t)containerOrigin
 {
-  if (a1)
+  if (view)
   {
-    v7 = a3;
-    v8 = a2;
+    originCopy = origin;
+    attributesCopy = attributes;
     v9 = [_UITextLayoutBaselineCalculator alloc];
-    [v8 _currentScreenScale];
-    v10 = [_UITextLayoutBaselineCalculator initWithTextLayoutController:v9 typingAttributes:"initWithTextLayoutController:typingAttributes:usesLineFragmentOrigin:coordinateSpace:scale:fallbackTextContainerOrigin:" usesLineFragmentOrigin:a1 coordinateSpace:v7 scale:a4 fallbackTextContainerOrigin:v8];
+    [attributesCopy _currentScreenScale];
+    v10 = [_UITextLayoutBaselineCalculator initWithTextLayoutController:v9 typingAttributes:"initWithTextLayoutController:typingAttributes:usesLineFragmentOrigin:coordinateSpace:scale:fallbackTextContainerOrigin:" usesLineFragmentOrigin:view coordinateSpace:originCopy scale:containerOrigin fallbackTextContainerOrigin:attributesCopy];
   }
 
   else
@@ -138,11 +138,11 @@
   }
 
   v5 = os_variant_has_internal_diagnostics();
-  v6 = [(_UITextInputControllerLayoutManagerConnection *)self->_textInputControllerConnection textInputController];
+  textInputController = [(_UITextInputControllerLayoutManagerConnection *)self->_textInputControllerConnection textInputController];
 
   if (v5)
   {
-    if (!v6)
+    if (!textInputController)
     {
       v8 = __UIFaultDebugAssertLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
@@ -153,7 +153,7 @@
     }
   }
 
-  else if (!v6)
+  else if (!textInputController)
   {
     v10 = *(__UILogGetCategoryCachedImpl("Assert", &qword_1ED4A1098) + 8);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -166,20 +166,20 @@
   [(_UITextInputControllerLayoutManagerConnection *)self->_textInputControllerConnection setTextInputController:0];
 }
 
-- (void)adoptTextInputController:(id)a3
+- (void)adoptTextInputController:(id)controller
 {
   textInputControllerConnection = self->_textInputControllerConnection;
   if (textInputControllerConnection)
   {
-    v8 = a3;
-    [(_UITextInputControllerLayoutManagerConnection *)textInputControllerConnection setTextInputController:v8];
-    v4 = v8;
+    controllerCopy = controller;
+    [(_UITextInputControllerLayoutManagerConnection *)textInputControllerConnection setTextInputController:controllerCopy];
+    v4 = controllerCopy;
   }
 
   else
   {
-    v6 = a3;
-    v7 = [[_UITextInputControllerLayoutManagerConnection alloc] initWithTextInputController:v6];
+    controllerCopy2 = controller;
+    v7 = [[_UITextInputControllerLayoutManagerConnection alloc] initWithTextInputController:controllerCopy2];
 
     v4 = self->_textInputControllerConnection;
     self->_textInputControllerConnection = v7;

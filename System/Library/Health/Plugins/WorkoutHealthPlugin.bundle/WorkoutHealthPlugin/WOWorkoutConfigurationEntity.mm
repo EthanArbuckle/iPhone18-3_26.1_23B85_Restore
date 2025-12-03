@@ -1,5 +1,5 @@
 @interface WOWorkoutConfigurationEntity
-+ (BOOL)isPropertyFatal:(id)a3 version:(int64_t)a4;
++ (BOOL)isPropertyFatal:(id)fatal version:(int64_t)version;
 + (id)dateProperties;
 + (id)integerProperties;
 @end
@@ -8,9 +8,9 @@
 
 + (id)integerProperties
 {
-  v8 = a1;
+  selfCopy = self;
   v7 = a2;
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___WOWorkoutConfigurationEntity;
   v5 = objc_msgSendSuper2(&v6, "integerProperties");
   v9[0] = @"configuration_type";
@@ -24,9 +24,9 @@
 
 + (id)dateProperties
 {
-  v8 = a1;
+  selfCopy = self;
   v7 = a2;
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___WOWorkoutConfigurationEntity;
   v5 = objc_msgSendSuper2(&v6, "dateProperties");
   v9[0] = @"occurrence_count_modification_date";
@@ -38,12 +38,12 @@
   return v4;
 }
 
-+ (BOOL)isPropertyFatal:(id)a3 version:(int64_t)a4
++ (BOOL)isPropertyFatal:(id)fatal version:(int64_t)version
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, fatal);
   v6 = ([location[0] isEqualToString:@"goal_type"] & 1) == 0 && (objc_msgSend(location[0], "isEqualToString:", @"occurrence_count") & 1) == 0 && (objc_msgSend(location[0], "isEqualToString:", @"occurrence_count_modification_date") & 1) == 0 && (objc_msgSend(location[0], "isEqualToString:", @"occurrence_creation_date") & 1) == 0 && (objc_msgSend(location[0], "isEqualToString:", @"occurrence_modification_date") & 1) == 0;
   objc_storeStrong(location, 0);
   return v6;

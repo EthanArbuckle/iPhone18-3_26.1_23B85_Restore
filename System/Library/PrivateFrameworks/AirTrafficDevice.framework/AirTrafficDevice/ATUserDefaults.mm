@@ -6,14 +6,14 @@
 - (NSDictionary)diskUsageInfo;
 - (NSNumber)minimumNetworkLinkQualityForDownloads;
 - (id)allHosts;
-- (id)hostInfoForIdentifier:(id)a3;
+- (id)hostInfoForIdentifier:(id)identifier;
 - (void)_updateDefaults;
-- (void)removeHost:(id)a3;
-- (void)setDiskUsageInfo:(id)a3;
-- (void)setHasCompletedDataMigration:(BOOL)a3;
-- (void)setMinimumNetworkLinkQualityForDownloads:(id)a3;
-- (void)updateHostInfo:(id)a3 disabledAssetTypes:(id)a4;
-- (void)updateLastSyncWithHostLibrary:(id)a3;
+- (void)removeHost:(id)host;
+- (void)setDiskUsageInfo:(id)info;
+- (void)setHasCompletedDataMigration:(BOOL)migration;
+- (void)setMinimumNetworkLinkQualityForDownloads:(id)downloads;
+- (void)updateHostInfo:(id)info disabledAssetTypes:(id)types;
+- (void)updateLastSyncWithHostLibrary:(id)library;
 @end
 
 @implementation ATUserDefaults
@@ -21,26 +21,26 @@
 - (void)_updateDefaults
 {
   v5 = _atcStandardDefaults();
-  v3 = [(ATUserDefaults *)self allHosts];
-  if (v3)
+  allHosts = [(ATUserDefaults *)self allHosts];
+  if (allHosts)
   {
-    [v5 setObject:v3 forKey:@"Hosts"];
+    [v5 setObject:allHosts forKey:@"Hosts"];
   }
 
-  v4 = [(ATUserDefaults *)self diskUsageInfo];
-  if (v4)
+  diskUsageInfo = [(ATUserDefaults *)self diskUsageInfo];
+  if (diskUsageInfo)
   {
-    [v5 setObject:v4 forKey:@"DiskUsage"];
+    [v5 setObject:diskUsageInfo forKey:@"DiskUsage"];
   }
 
   [objc_opt_class() synchronize];
 }
 
-- (void)setMinimumNetworkLinkQualityForDownloads:(id)a3
+- (void)setMinimumNetworkLinkQualityForDownloads:(id)downloads
 {
-  v3 = a3;
+  downloadsCopy = downloads;
   v4 = _atcStandardDefaults();
-  [v4 setObject:v3 forKey:@"MinimumNetworkLinkQualityForDownloads"];
+  [v4 setObject:downloadsCopy forKey:@"MinimumNetworkLinkQualityForDownloads"];
 }
 
 - (NSNumber)minimumNetworkLinkQualityForDownloads
@@ -61,26 +61,26 @@
   return v4;
 }
 
-- (void)setDiskUsageInfo:(id)a3
+- (void)setDiskUsageInfo:(id)info
 {
-  v7 = a3;
+  infoCopy = info;
   v4 = self->_defaults;
   objc_sync_enter(v4);
   defaults = self->_defaults;
-  v6 = [v7 deepMutableObject];
-  [(NSMutableDictionary *)defaults setObject:v6 forKey:@"DiskUsage"];
+  deepMutableObject = [infoCopy deepMutableObject];
+  [(NSMutableDictionary *)defaults setObject:deepMutableObject forKey:@"DiskUsage"];
 
   [(ATUserDefaults *)self _updateDefaults];
   objc_sync_exit(v4);
 }
 
-- (void)setHasCompletedDataMigration:(BOOL)a3
+- (void)setHasCompletedDataMigration:(BOOL)migration
 {
-  v3 = a3;
+  migrationCopy = migration;
   obj = self->_defaults;
   objc_sync_enter(obj);
   defaults = self->_defaults;
-  v6 = [MEMORY[0x277CCABB0] numberWithBool:v3];
+  v6 = [MEMORY[0x277CCABB0] numberWithBool:migrationCopy];
   [(NSMutableDictionary *)defaults setObject:v6 forKey:@"DataMigrated"];
 
   [(ATUserDefaults *)self _updateDefaults];
@@ -97,46 +97,46 @@
   return v4;
 }
 
-- (id)hostInfoForIdentifier:(id)a3
+- (id)hostInfoForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = self->_defaults;
   objc_sync_enter(v5);
   v6 = [(NSMutableDictionary *)self->_defaults objectForKey:@"Hosts"];
-  v7 = [v6 objectForKey:v4];
+  v7 = [v6 objectForKey:identifierCopy];
 
   objc_sync_exit(v5);
 
   return v7;
 }
 
-- (void)removeHost:(id)a3
+- (void)removeHost:(id)host
 {
-  v6 = a3;
+  hostCopy = host;
   v4 = self->_defaults;
   objc_sync_enter(v4);
   v5 = [(NSMutableDictionary *)self->_defaults objectForKey:@"Hosts"];
-  [v5 removeObjectForKey:v6];
+  [v5 removeObjectForKey:hostCopy];
 
   [(ATUserDefaults *)self _updateDefaults];
   objc_sync_exit(v4);
 }
 
-- (void)updateLastSyncWithHostLibrary:(id)a3
+- (void)updateLastSyncWithHostLibrary:(id)library
 {
-  v12 = a3;
+  libraryCopy = library;
   v4 = self->_defaults;
   objc_sync_enter(v4);
   v5 = [(NSMutableDictionary *)self->_defaults objectForKey:@"Hosts"];
-  v6 = [v5 objectForKey:v12];
+  v6 = [v5 objectForKey:libraryCopy];
 
   if (v6)
   {
     v7 = [(NSMutableDictionary *)self->_defaults objectForKey:@"Hosts"];
-    v8 = [v7 objectForKey:v12];
+    v8 = [v7 objectForKey:libraryCopy];
     v9 = MEMORY[0x277CCABB0];
-    v10 = [MEMORY[0x277CBEAA8] date];
-    [v10 timeIntervalSinceReferenceDate];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceReferenceDate];
     v11 = [v9 numberWithDouble:?];
     [v8 setObject:v11 forKey:@"LastSync"];
   }
@@ -145,58 +145,58 @@
   objc_sync_exit(v4);
 }
 
-- (void)updateHostInfo:(id)a3 disabledAssetTypes:(id)a4
+- (void)updateHostInfo:(id)info disabledAssetTypes:(id)types
 {
   v97 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v67 = a4;
-  v75 = self;
+  infoCopy = info;
+  typesCopy = types;
+  selfCopy = self;
   v66 = self->_defaults;
   objc_sync_enter(v66);
-  v73 = v6;
-  v7 = [v6 objectForKey:@"LibraryID"];
+  v73 = infoCopy;
+  v7 = [infoCopy objectForKey:@"LibraryID"];
 
   if (v7)
   {
     v8 = [(NSMutableDictionary *)self->_defaults objectForKey:@"Hosts"];
-    v9 = [v6 objectForKey:@"LibraryID"];
+    v9 = [infoCopy objectForKey:@"LibraryID"];
     v10 = [v8 objectForKey:v9];
     v11 = v10;
     if (v10)
     {
-      v76 = v10;
+      dictionary = v10;
     }
 
     else
     {
-      v76 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
     }
 
     v12 = [v73 objectForKey:@"Wakeable"];
     if (v12)
     {
-      [v76 setObject:v12 forKey:@"Wakeable"];
+      [dictionary setObject:v12 forKey:@"Wakeable"];
     }
 
     else
     {
-      [v76 removeObjectForKey:@"Wakeable"];
+      [dictionary removeObjectForKey:@"Wakeable"];
     }
 
     v65 = v12;
     v13 = [v73 objectForKey:@"SyncHostName"];
     if (v13)
     {
-      [v76 setObject:v13 forKey:@"SyncHostName"];
+      [dictionary setObject:v13 forKey:@"SyncHostName"];
     }
 
     v64 = v13;
     v14 = [v73 objectForKey:@"SyncedAssetTypes"];
-    v68 = [v14 deepMutableObject];
+    deepMutableObject = [v14 deepMutableObject];
 
-    [v68 removeObjectsInArray:v67];
-    v15 = [MEMORY[0x277CBEB38] dictionary];
-    [v76 setObject:v15 forKey:@"SyncedDataclasses"];
+    [deepMutableObject removeObjectsInArray:typesCopy];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+    [dictionary setObject:dictionary2 forKey:@"SyncedDataclasses"];
 
     v91 = 0u;
     v92 = 0u;
@@ -217,9 +217,9 @@
           }
 
           v20 = *(*(&v89 + 1) + 8 * i);
-          v21 = [v76 objectForKey:@"SyncedDataclasses"];
-          v22 = [MEMORY[0x277CBEB18] array];
-          [v21 setObject:v22 forKey:v20];
+          v21 = [dictionary objectForKey:@"SyncedDataclasses"];
+          array = [MEMORY[0x277CBEB18] array];
+          [v21 setObject:array forKey:v20];
         }
 
         v17 = [v16 countByEnumeratingWithState:&v89 objects:v96 count:16];
@@ -228,20 +228,20 @@
       while (v17);
     }
 
-    if (v68)
+    if (deepMutableObject)
     {
-      v23 = [v76 objectForKey:@"SyncedDataclasses"];
-      [v23 setObject:v68 forKey:@"Media"];
+      v23 = [dictionary objectForKey:@"SyncedDataclasses"];
+      [v23 setObject:deepMutableObject forKey:@"Media"];
     }
 
     v24 = [v73 objectForKey:@"LibraryID"];
-    [v76 setObject:v24 forKey:@"LibraryID"];
+    [dictionary setObject:v24 forKey:@"LibraryID"];
 
     v25 = [v73 objectForKey:@"MacOSVersion"];
     if (v25)
     {
-      [v76 setObject:@"MacOS" forKey:@"OSType"];
-      [v76 setObject:v25 forKey:@"OSVersion"];
+      [dictionary setObject:@"MacOS" forKey:@"OSType"];
+      [dictionary setObject:v25 forKey:@"OSVersion"];
     }
 
     else
@@ -249,34 +249,34 @@
       v25 = [v73 objectForKey:@"WindowsOSVersion"];
       if (v25)
       {
-        [v76 setObject:@"Windows" forKey:@"OSType"];
-        [v76 setObject:v25 forKey:@"OSVersion"];
+        [dictionary setObject:@"Windows" forKey:@"OSType"];
+        [dictionary setObject:v25 forKey:@"OSVersion"];
       }
     }
 
-    v26 = [(NSMutableDictionary *)v75->_defaults objectForKey:@"Hosts"];
+    v26 = [(NSMutableDictionary *)selfCopy->_defaults objectForKey:@"Hosts"];
     v62 = v25;
     v27 = v26 == 0;
 
     if (v27)
     {
-      defaults = v75->_defaults;
+      defaults = selfCopy->_defaults;
       v29 = objc_opt_new();
       [(NSMutableDictionary *)defaults setObject:v29 forKey:@"Hosts", v62];
     }
 
-    v30 = [(NSMutableDictionary *)v75->_defaults objectForKey:@"Hosts", v62];
+    v30 = [(NSMutableDictionary *)selfCopy->_defaults objectForKey:@"Hosts", v62];
     v31 = [v73 objectForKey:@"LibraryID"];
-    [v30 setObject:v76 forKey:v31];
+    [v30 setObject:dictionary forKey:v31];
 
-    v32 = [v76 objectForKey:@"SyncedDataclasses"];
-    v69 = [v32 allKeys];
+    v32 = [dictionary objectForKey:@"SyncedDataclasses"];
+    allKeys = [v32 allKeys];
 
     v87 = 0u;
     v88 = 0u;
     v85 = 0u;
     v86 = 0u;
-    v33 = [(NSMutableDictionary *)v75->_defaults objectForKey:@"Hosts"];
+    v33 = [(NSMutableDictionary *)selfCopy->_defaults objectForKey:@"Hosts"];
     obj = [v33 allKeys];
 
     v34 = [obj countByEnumeratingWithState:&v85 objects:v95 count:16];
@@ -296,7 +296,7 @@
 
           v74 = v35;
           v36 = *(*(&v85 + 1) + 8 * v35);
-          v37 = [(NSMutableDictionary *)v75->_defaults objectForKey:@"Hosts"];
+          v37 = [(NSMutableDictionary *)selfCopy->_defaults objectForKey:@"Hosts"];
           v38 = [v37 objectForKey:v36];
           v39 = [v38 objectForKey:@"SyncedDataclasses"];
 
@@ -309,7 +309,7 @@
             v84 = 0u;
             v81 = 0u;
             v82 = 0u;
-            v41 = v69;
+            v41 = allKeys;
             v42 = [v41 countByEnumeratingWithState:&v81 objects:v94 count:16];
             if (v42)
             {
@@ -328,7 +328,7 @@
 
                   if (v46)
                   {
-                    v47 = [v76 objectForKey:@"SyncedDataclasses"];
+                    v47 = [dictionary objectForKey:@"SyncedDataclasses"];
                     v48 = [v47 objectForKey:v45];
 
                     if (![v48 count] || (objc_msgSend(v39, "objectForKey:", v45), v49 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v49, "removeObjectsInArray:", v48), v49, objc_msgSend(v39, "objectForKey:", v45), v50 = objc_claimAutoreleasedReturnValue(), v51 = objc_msgSend(v50, "count") == 0, v50, v51))
@@ -359,10 +359,10 @@
     v80 = 0u;
     v77 = 0u;
     v78 = 0u;
-    v52 = [(NSMutableDictionary *)v75->_defaults objectForKey:@"Hosts"];
-    v53 = [v52 allKeys];
+    v52 = [(NSMutableDictionary *)selfCopy->_defaults objectForKey:@"Hosts"];
+    allKeys2 = [v52 allKeys];
 
-    v54 = [v53 countByEnumeratingWithState:&v77 objects:v93 count:16];
+    v54 = [allKeys2 countByEnumeratingWithState:&v77 objects:v93 count:16];
     if (v54)
     {
       v55 = *v78;
@@ -372,28 +372,28 @@
         {
           if (*v78 != v55)
           {
-            objc_enumerationMutation(v53);
+            objc_enumerationMutation(allKeys2);
           }
 
           v57 = *(*(&v77 + 1) + 8 * k);
-          v58 = [(NSMutableDictionary *)v75->_defaults objectForKey:@"Hosts"];
+          v58 = [(NSMutableDictionary *)selfCopy->_defaults objectForKey:@"Hosts"];
           v59 = [v58 objectForKey:v57];
           v60 = [v59 objectForKey:@"SyncedDataclasses"];
 
           if (![v60 count])
           {
-            v61 = [(NSMutableDictionary *)v75->_defaults objectForKey:@"Hosts"];
+            v61 = [(NSMutableDictionary *)selfCopy->_defaults objectForKey:@"Hosts"];
             [v61 removeObjectForKey:v57];
           }
         }
 
-        v54 = [v53 countByEnumeratingWithState:&v77 objects:v93 count:16];
+        v54 = [allKeys2 countByEnumeratingWithState:&v77 objects:v93 count:16];
       }
 
       while (v54);
     }
 
-    [(ATUserDefaults *)v75 _updateDefaults];
+    [(ATUserDefaults *)selfCopy _updateDefaults];
   }
 
   objc_sync_exit(v66);
@@ -406,19 +406,19 @@
   v4 = [(NSMutableDictionary *)self->_defaults objectForKey:@"DataMigrated"];
   if ([v4 BOOLValue])
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
   else
   {
     v6 = _atcStandardDefaults();
-    v7 = [v6 dictionaryRepresentation];
-    v8 = [v7 objectForKey:@"DataMigrated"];
-    v5 = [v8 BOOLValue];
+    dictionaryRepresentation = [v6 dictionaryRepresentation];
+    v8 = [dictionaryRepresentation objectForKey:@"DataMigrated"];
+    bOOLValue = [v8 BOOLValue];
   }
 
   objc_sync_exit(v3);
-  return v5;
+  return bOOLValue;
 }
 
 - (ATUserDefaults)init
@@ -432,9 +432,9 @@
     v4 = v3;
     if (v3)
     {
-      v5 = [v3 deepMutableObject];
+      deepMutableObject = [v3 deepMutableObject];
       defaults = v2->_defaults;
-      v2->_defaults = v5;
+      v2->_defaults = deepMutableObject;
     }
 
     else
@@ -458,15 +458,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = v2;
+    dictionary = v2;
   }
 
   else
   {
-    v4 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
   }
 
-  v5 = v4;
+  v5 = dictionary;
 
   return v5;
 }

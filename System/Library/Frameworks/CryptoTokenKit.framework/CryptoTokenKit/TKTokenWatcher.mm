@@ -1,13 +1,13 @@
 @interface TKTokenWatcher
-- (TKTokenWatcher)initWithCTKDConnection:(id)a3;
-- (TKTokenWatcher)initWithEndpoint:(id)a3;
+- (TKTokenWatcher)initWithCTKDConnection:(id)connection;
+- (TKTokenWatcher)initWithEndpoint:(id)endpoint;
 - (TKTokenWatcher)initWithInsertionHandler:(void *)insertionHandler;
 - (TKTokenWatcherTokenInfo)tokenInfoForTokenID:(NSString *)tokenID;
 - (void)addRemovalHandler:(void *)removalHandler forTokenID:(NSString *)tokenID;
 - (void)dealloc;
-- (void)insertedToken:(id)a3;
+- (void)insertedToken:(id)token;
 - (void)removeAllTokens;
-- (void)removedToken:(id)a3;
+- (void)removedToken:(id)token;
 - (void)setInsertionHandler:(void *)insertionHandler;
 - (void)startWatching;
 @end
@@ -86,17 +86,17 @@ void __31__TKTokenWatcher_startWatching__block_invoke_2(uint64_t a1, void *a2)
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (TKTokenWatcher)initWithCTKDConnection:(id)a3
+- (TKTokenWatcher)initWithCTKDConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v22.receiver = self;
   v22.super_class = TKTokenWatcher;
   v5 = [(TKTokenWatcher *)&v22 init];
   if (v5)
   {
-    if (v4)
+    if (connectionCopy)
     {
-      v6 = v4;
+      v6 = connectionCopy;
     }
 
     else
@@ -113,9 +113,9 @@ void __31__TKTokenWatcher_startWatching__block_invoke_2(uint64_t a1, void *a2)
     v9 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F5A8DC50];
     [(TKCTKDConnection *)v5->_ctkdConnection setExportedInterface:v9];
 
-    v10 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     removalHandlers = v5->_removalHandlers;
-    v5->_removalHandlers = v10;
+    v5->_removalHandlers = dictionary;
 
     v12 = [MEMORY[0x1E695E0F8] mutableCopy];
     tokenInfos = v5->_tokenInfos;
@@ -123,14 +123,14 @@ void __31__TKTokenWatcher_startWatching__block_invoke_2(uint64_t a1, void *a2)
 
     [(TKTokenWatcher *)v5 startWatching];
     objc_initWeak(&location, v5);
-    v14 = [@"com.apple.ctkd.watcher-started" UTF8String];
+    uTF8String = [@"com.apple.ctkd.watcher-started" UTF8String];
     v15 = dispatch_queue_create("server-start-notify-q", 0);
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __41__TKTokenWatcher_initWithCTKDConnection___block_invoke;
     v19[3] = &unk_1E86B83A8;
     objc_copyWeak(&v20, &location);
-    v16 = notify_register_dispatch(v14, &v5->_notifyToken, v15, v19);
+    v16 = notify_register_dispatch(uTF8String, &v5->_notifyToken, v15, v19);
 
     if (v16)
     {
@@ -154,10 +154,10 @@ void __41__TKTokenWatcher_initWithCTKDConnection___block_invoke(uint64_t a1)
   [WeakRetained startWatching];
 }
 
-- (TKTokenWatcher)initWithEndpoint:(id)a3
+- (TKTokenWatcher)initWithEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v5 = [[TKCTKDConnection alloc] initWithCTKDEndpoint:v4 targetUID:0];
+  endpointCopy = endpoint;
+  v5 = [[TKCTKDConnection alloc] initWithCTKDEndpoint:endpointCopy targetUID:0];
 
   v6 = [(TKTokenWatcher *)self initWithCTKDConnection:v5];
   return v6;
@@ -179,15 +179,15 @@ void __41__TKTokenWatcher_initWithCTKDConnection___block_invoke(uint64_t a1)
   v6 = v5;
   if (v5)
   {
-    v7 = [(TKCTKDConnection *)v5->_ctkdConnection serverConnection];
-    v8 = [v7 _queue];
+    serverConnection = [(TKCTKDConnection *)v5->_ctkdConnection serverConnection];
+    _queue = [serverConnection _queue];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __43__TKTokenWatcher_initWithInsertionHandler___block_invoke;
     v10[3] = &unk_1E86B72D8;
     v11 = v6;
     v12 = v4;
-    dispatch_async(v8, v10);
+    dispatch_async(_queue, v10);
   }
 
   return v6;
@@ -197,19 +197,19 @@ void __41__TKTokenWatcher_initWithCTKDConnection___block_invoke(uint64_t a1)
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = insertionHandler;
-  v5 = self;
-  objc_sync_enter(v5);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = MEMORY[0x1E12D5690](v4);
-  v7 = v5->_insertionHandler;
-  v5->_insertionHandler = v6;
+  v7 = selfCopy->_insertionHandler;
+  selfCopy->_insertionHandler = v6;
 
-  if (v5->_insertionHandler)
+  if (selfCopy->_insertionHandler)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = v5->_tokenInfos;
+    v8 = selfCopy->_tokenInfos;
     v9 = [(NSMutableDictionary *)v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v9)
     {
@@ -225,7 +225,7 @@ void __41__TKTokenWatcher_initWithCTKDConnection___block_invoke(uint64_t a1)
           }
 
           v12 = *(*(&v14 + 1) + 8 * v11);
-          (*(v5->_insertionHandler + 2))(v5->_insertionHandler);
+          (*(selfCopy->_insertionHandler + 2))(selfCopy->_insertionHandler);
           ++v11;
         }
 
@@ -237,7 +237,7 @@ void __41__TKTokenWatcher_initWithCTKDConnection___block_invoke(uint64_t a1)
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v13 = *MEMORY[0x1E69E9840];
 }
@@ -246,13 +246,13 @@ void __41__TKTokenWatcher_initWithCTKDConnection___block_invoke(uint64_t a1)
 {
   v11 = removalHandler;
   v6 = tokenID;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(NSMutableDictionary *)v7->_tokenInfos objectForKeyedSubscript:v6];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = [(NSMutableDictionary *)selfCopy->_tokenInfos objectForKeyedSubscript:v6];
 
   if (v8)
   {
-    removalHandlers = v7->_removalHandlers;
+    removalHandlers = selfCopy->_removalHandlers;
     v10 = MEMORY[0x1E12D5690](v11);
     [(NSMutableDictionary *)removalHandlers setObject:v10 forKey:v6];
   }
@@ -262,84 +262,84 @@ void __41__TKTokenWatcher_initWithCTKDConnection___block_invoke(uint64_t a1)
     v11[2](v11, v6);
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)insertedToken:(id)a3
+- (void)insertedToken:(id)token
 {
-  v12 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [[TKTokenWatcherTokenInfo alloc] initWithTokenInfo:v12];
+  tokenCopy = token;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [[TKTokenWatcherTokenInfo alloc] initWithTokenInfo:tokenCopy];
   v6 = NSStringFromSelector(sel_tokenIDs);
-  [(TKTokenWatcher *)v4 willChangeValueForKey:v6];
+  [(TKTokenWatcher *)selfCopy willChangeValueForKey:v6];
 
-  tokenInfos = v4->_tokenInfos;
-  v8 = [(TKTokenWatcherTokenInfo *)v5 tokenID];
-  [(NSMutableDictionary *)tokenInfos setObject:v5 forKeyedSubscript:v8];
+  tokenInfos = selfCopy->_tokenInfos;
+  tokenID = [(TKTokenWatcherTokenInfo *)v5 tokenID];
+  [(NSMutableDictionary *)tokenInfos setObject:v5 forKeyedSubscript:tokenID];
 
   v9 = NSStringFromSelector(sel_tokenIDs);
-  [(TKTokenWatcher *)v4 didChangeValueForKey:v9];
+  [(TKTokenWatcher *)selfCopy didChangeValueForKey:v9];
 
-  insertionHandler = v4->_insertionHandler;
+  insertionHandler = selfCopy->_insertionHandler;
   if (insertionHandler)
   {
-    v11 = [(TKTokenWatcherTokenInfo *)v5 tokenID];
-    insertionHandler[2](insertionHandler, v11);
+    tokenID2 = [(TKTokenWatcherTokenInfo *)v5 tokenID];
+    insertionHandler[2](insertionHandler, tokenID2);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removedToken:(id)a3
+- (void)removedToken:(id)token
 {
-  v10 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(NSMutableDictionary *)v4->_tokenInfos objectForKeyedSubscript:v10];
+  tokenCopy = token;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [(NSMutableDictionary *)selfCopy->_tokenInfos objectForKeyedSubscript:tokenCopy];
 
   if (v5)
   {
     v6 = NSStringFromSelector(sel_tokenIDs);
-    [(TKTokenWatcher *)v4 willChangeValueForKey:v6];
+    [(TKTokenWatcher *)selfCopy willChangeValueForKey:v6];
 
-    [(NSMutableDictionary *)v4->_tokenInfos removeObjectForKey:v10];
+    [(NSMutableDictionary *)selfCopy->_tokenInfos removeObjectForKey:tokenCopy];
     v7 = NSStringFromSelector(sel_tokenIDs);
-    [(TKTokenWatcher *)v4 didChangeValueForKey:v7];
+    [(TKTokenWatcher *)selfCopy didChangeValueForKey:v7];
 
-    v8 = [(NSMutableDictionary *)v4->_removalHandlers objectForKey:v10];
+    v8 = [(NSMutableDictionary *)selfCopy->_removalHandlers objectForKey:tokenCopy];
     v9 = v8;
     if (v8)
     {
-      (*(v8 + 16))(v8, v10);
-      [(NSMutableDictionary *)v4->_removalHandlers removeObjectForKey:v10];
+      (*(v8 + 16))(v8, tokenCopy);
+      [(NSMutableDictionary *)selfCopy->_removalHandlers removeObjectForKey:tokenCopy];
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)removeAllTokens
 {
   v20 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(NSMutableDictionary *)v2->_tokenInfos count])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(NSMutableDictionary *)selfCopy->_tokenInfos count])
   {
-    v3 = [(NSMutableDictionary *)v2->_tokenInfos copy];
+    v3 = [(NSMutableDictionary *)selfCopy->_tokenInfos copy];
     v4 = NSStringFromSelector(sel_tokenIDs);
-    [(TKTokenWatcher *)v2 willChangeValueForKey:v4];
+    [(TKTokenWatcher *)selfCopy willChangeValueForKey:v4];
 
-    [(NSMutableDictionary *)v2->_tokenInfos removeAllObjects];
+    [(NSMutableDictionary *)selfCopy->_tokenInfos removeAllObjects];
     v5 = NSStringFromSelector(sel_tokenIDs);
-    [(TKTokenWatcher *)v2 didChangeValueForKey:v5];
+    [(TKTokenWatcher *)selfCopy didChangeValueForKey:v5];
 
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [v3 allKeys];
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    allKeys = [v3 allKeys];
+    v7 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = *v16;
@@ -349,20 +349,20 @@ void __41__TKTokenWatcher_initWithCTKDConnection___block_invoke(uint64_t a1)
         {
           if (*v16 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allKeys);
           }
 
           v10 = *(*(&v15 + 1) + 8 * i);
-          v11 = [(NSMutableDictionary *)v2->_removalHandlers objectForKey:v10];
+          v11 = [(NSMutableDictionary *)selfCopy->_removalHandlers objectForKey:v10];
           v12 = v11;
           if (v11)
           {
             (*(v11 + 16))(v11, v10);
-            [(NSMutableDictionary *)v2->_removalHandlers removeObjectForKey:v10];
+            [(NSMutableDictionary *)selfCopy->_removalHandlers removeObjectForKey:v10];
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v7 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v7);
@@ -375,7 +375,7 @@ void __41__TKTokenWatcher_initWithCTKDConnection___block_invoke(uint64_t a1)
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v14 = *MEMORY[0x1E69E9840];
 }
@@ -383,10 +383,10 @@ void __41__TKTokenWatcher_initWithCTKDConnection___block_invoke(uint64_t a1)
 - (TKTokenWatcherTokenInfo)tokenInfoForTokenID:(NSString *)tokenID
 {
   v4 = tokenID;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_tokenInfos objectForKeyedSubscript:v4];
-  objc_sync_exit(v5);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_tokenInfos objectForKeyedSubscript:v4];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }

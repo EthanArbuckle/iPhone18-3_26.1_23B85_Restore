@@ -3,9 +3,9 @@
 - (BOOL)includeAccessoryViews;
 - (CGPoint)bezelContentCenter;
 - (CHSWatchComplicationsCurvedLabelMetrics)curvedLabelMetrics;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
 - (unint64_t)cornerPosition;
 @end
 
@@ -13,8 +13,8 @@
 
 - (unint64_t)cornerPosition
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:89888];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:89888];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -37,14 +37,14 @@
 
   v7 = v6;
 
-  v8 = [v7 unsignedIntegerValue];
-  return v8;
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
 - (CHSWatchComplicationsCurvedLabelMetrics)curvedLabelMetrics
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:89889];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:89889];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -72,8 +72,8 @@
 
 - (CGPoint)bezelContentCenter
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:89890];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:89890];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -109,8 +109,8 @@
 
 - (BOOL)includeAccessoryViews
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:89891];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:89891];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -133,14 +133,14 @@
 
   v7 = v6;
 
-  v8 = [v7 BOOLValue];
-  return v8;
+  bOOLValue = [v7 BOOLValue];
+  return bOOLValue;
 }
 
 - (BOOL)generateSnapshotMetadata
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:89892];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:89892];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -163,21 +163,21 @@
 
   v7 = v6;
 
-  v8 = [v7 BOOLValue];
-  return v8;
+  bOOLValue = [v7 BOOLValue];
+  return bOOLValue;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [CHUISMutableWatchComplicationsWidgetSceneSettings alloc];
 
   return [(FBSSettings *)v4 initWithSettings:self];
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  v5 = a3 - 89889;
-  if (a3 - 89888 > 4)
+  v5 = setting - 89889;
+  if (setting - 89888 > 4)
   {
     v9 = v3;
     v10 = v4;
@@ -199,21 +199,21 @@
   return v6;
 }
 
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  v8 = a4;
-  if (a5 - 89888 > 4)
+  objectCopy = object;
+  if (setting - 89888 > 4)
   {
     v11.receiver = self;
     v11.super_class = CHUISWatchComplicationsWidgetSceneSettings;
-    v9 = [(CHUISWidgetSceneSettings *)&v11 valueDescriptionForFlag:a3 object:v8 ofSetting:a5];
+    v9 = [(CHUISWidgetSceneSettings *)&v11 valueDescriptionForFlag:flag object:objectCopy ofSetting:setting];
   }
 
   else
   {
-    CHUISWatchComplicationsWidgetSceneSettingsValueDescription(a5, v8);
+    CHUISWatchComplicationsWidgetSceneSettingsValueDescription(setting, objectCopy);
     objc_claimAutoreleasedReturnValue();
-    v9 = v8;
+    v9 = objectCopy;
   }
 
   return v9;

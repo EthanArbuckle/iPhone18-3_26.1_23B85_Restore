@@ -1,22 +1,22 @@
 @interface DMDMDMUtilities
-+ (id)iTunesAccountHashForUniqueIdentifier:(id)a3;
++ (id)iTunesAccountHashForUniqueIdentifier:(id)identifier;
 @end
 
 @implementation DMDMDMUtilities
 
-+ (id)iTunesAccountHashForUniqueIdentifier:(id)a3
++ (id)iTunesAccountHashForUniqueIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    v3 = a3;
+    identifierCopy = identifier;
     v4 = MCUSEnglishNumberFormatter();
-    v5 = [v4 stringFromNumber:v3];
+    v5 = [v4 stringFromNumber:identifierCopy];
 
     if (v5)
     {
       v6 = [v5 dataUsingEncoding:4];
-      v7 = [v6 dmd_sha1Hash];
-      v8 = [v7 base64EncodedStringWithOptions:0];
+      dmd_sha1Hash = [v6 dmd_sha1Hash];
+      v8 = [dmd_sha1Hash base64EncodedStringWithOptions:0];
     }
 
     else

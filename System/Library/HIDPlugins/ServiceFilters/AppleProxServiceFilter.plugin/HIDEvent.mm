@@ -1,5 +1,5 @@
 @interface HIDEvent
-+ (id)proximityEvent:(unint64_t)a3 mask:(unsigned int)a4 probability:(float)a5 options:(unsigned int)a6;
++ (id)proximityEvent:(unint64_t)event mask:(unsigned int)mask probability:(float)probability options:(unsigned int)options;
 - (float)probability;
 @end
 
@@ -17,7 +17,7 @@
   return result;
 }
 
-+ (id)proximityEvent:(unint64_t)a3 mask:(unsigned int)a4 probability:(float)a5 options:(unsigned int)a6
++ (id)proximityEvent:(unint64_t)event mask:(unsigned int)mask probability:(float)probability options:(unsigned int)options
 {
   ProximtyProbabilityEvent = IOHIDEventCreateProximtyProbabilityEvent();
 

@@ -1,32 +1,32 @@
 @interface ARDepthTechnique
-+ (id)sceneDepthTechniqueForPrioritization:(int64_t)a3 temporalSmoothing:(BOOL)a4;
-- (ARDepthTechnique)initWithPrioritization:(int64_t)a3 temporalSmoothing:(BOOL)a4;
-- (BOOL)isEqual:(id)a3;
-- (__CVBuffer)_executeLKTWithFrame:(__CVBuffer *)a3;
-- (id)_rotatedPixelBufferImageData:(__CVBuffer *)a3;
-- (id)createResultDataFromTensors:(id *)a3 numberOfOutputTensors:(unint64_t)a4 imageDataForNeuralNetwork:(id)a5 inputImageData:(id)a6 rotationNeeded:(int64_t)a7 regionOfInterest:(CGSize)a8;
-- (id)networkModesForOrientation:(int64_t)a3;
++ (id)sceneDepthTechniqueForPrioritization:(int64_t)prioritization temporalSmoothing:(BOOL)smoothing;
+- (ARDepthTechnique)initWithPrioritization:(int64_t)prioritization temporalSmoothing:(BOOL)smoothing;
+- (BOOL)isEqual:(id)equal;
+- (__CVBuffer)_executeLKTWithFrame:(__CVBuffer *)frame;
+- (id)_rotatedPixelBufferImageData:(__CVBuffer *)data;
+- (id)createResultDataFromTensors:(id *)tensors numberOfOutputTensors:(unint64_t)outputTensors imageDataForNeuralNetwork:(id)network inputImageData:(id)data rotationNeeded:(int64_t)needed regionOfInterest:(CGSize)interest;
+- (id)networkModesForOrientation:(int64_t)orientation;
 - (id)resultDataClasses;
-- (int)bindInputBuffer:(unint64_t)a3 withImage:(id)a4 andOriginalImageData:(id)a5 rotationOfResultTensor:(int64_t)a6;
-- (int)prepareBindInputBuffer:(unint64_t)a3 withName:(id)a4;
+- (int)bindInputBuffer:(unint64_t)buffer withImage:(id)image andOriginalImageData:(id)data rotationOfResultTensor:(int64_t)tensor;
+- (int)prepareBindInputBuffer:(unint64_t)buffer withName:(id)name;
 - (void)_allocateLKTBuffers;
 - (void)_initLKT;
-- (void)_updateOpticalFlowOutputBufferInBackgroundFromImageData:(id)a3;
+- (void)_updateOpticalFlowOutputBufferInBackgroundFromImageData:(id)data;
 - (void)dealloc;
-- (void)networkModeDidChange:(id)a3 toMode:(id)a4;
-- (void)setOpticalFlowOutputBuffer:(__CVBuffer *)a3;
+- (void)networkModeDidChange:(id)change toMode:(id)mode;
+- (void)setOpticalFlowOutputBuffer:(__CVBuffer *)buffer;
 @end
 
 @implementation ARDepthTechnique
 
-- (ARDepthTechnique)initWithPrioritization:(int64_t)a3 temporalSmoothing:(BOOL)a4
+- (ARDepthTechnique)initWithPrioritization:(int64_t)prioritization temporalSmoothing:(BOOL)smoothing
 {
-  v4 = a4;
+  smoothingCopy = smoothing;
   v53[2] = *MEMORY[0x1E69E9840];
-  if (a3 < 5)
+  if (prioritization < 5)
   {
-    v6 = dbl_1C25C86B0[a3];
-    v7 = dbl_1C25C86D8[a3];
+    v6 = dbl_1C25C86B0[prioritization];
+    v7 = dbl_1C25C86D8[prioritization];
     goto LABEL_12;
   }
 
@@ -63,25 +63,25 @@ LABEL_10:
   v6 = 0.0;
   v7 = 0.0;
 LABEL_12:
-  obj = [objc_alloc(MEMORY[0x1E698C118]) initWithInputPrioritization:a3];
-  v14 = [obj inferenceDescriptor];
-  v15 = [v14 colorInput];
-  v16 = [v15 name];
-  v53[0] = v16;
-  v17 = [v14 jasperInput];
-  v18 = [v17 name];
-  v53[1] = v18;
+  obj = [objc_alloc(MEMORY[0x1E698C118]) initWithInputPrioritization:prioritization];
+  inferenceDescriptor = [obj inferenceDescriptor];
+  colorInput = [inferenceDescriptor colorInput];
+  name = [colorInput name];
+  v53[0] = name;
+  jasperInput = [inferenceDescriptor jasperInput];
+  name2 = [jasperInput name];
+  v53[1] = name2;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v53 count:2];
 
-  v20 = [v14 depthOutput];
-  v21 = [v20 name];
-  v52[0] = v21;
-  v22 = [v14 confidenceOutput];
-  v23 = [v22 name];
-  v52[1] = v23;
+  depthOutput = [inferenceDescriptor depthOutput];
+  name3 = [depthOutput name];
+  v52[0] = name3;
+  confidenceOutput = [inferenceDescriptor confidenceOutput];
+  name4 = [confidenceOutput name];
+  v52[1] = name4;
   v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v52 count:2];
 
-  if (v4)
+  if (smoothingCopy)
   {
     v25 = [ARKitUserDefaults integerForKey:@"com.apple.arkit.appleDepth.temporalSmoothingMethod"];
     v26 = _ARLogTechnique_0();
@@ -92,7 +92,7 @@ LABEL_12:
       *buf = 138543874;
       v47 = v28;
       v48 = 2048;
-      v49 = self;
+      selfCopy = self;
       v50 = 2048;
       v51 = v25;
       _os_log_impl(&dword_1C241C000, v26, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Temporal smoothing enabled, using method: %ld", buf, 0x20u);
@@ -105,19 +105,19 @@ LABEL_12:
   }
 
   v29 = ARCreateFixedPriorityDispatchQueue("com.apple.arkit.depthtechnique");
-  v30 = [v14 networkURL];
-  v31 = [v30 absoluteString];
+  networkURL = [inferenceDescriptor networkURL];
+  absoluteString = [networkURL absoluteString];
   v45.receiver = self;
   v45.super_class = ARDepthTechnique;
-  v32 = [(ARMLImageProcessingTechnique *)&v45 initWithDispatchQueue:v29 inputTensorNames:v19 outputTensorNames:v24 networkInputScaleBeforeRotation:v31 networkFilePath:v6, v7];
+  v32 = [(ARMLImageProcessingTechnique *)&v45 initWithDispatchQueue:v29 inputTensorNames:v19 outputTensorNames:v24 networkInputScaleBeforeRotation:absoluteString networkFilePath:v6, v7];
 
   if (v32)
   {
-    v32->_prioritization = a3;
+    v32->_prioritization = prioritization;
     v32->_outputSize.width = v6;
     v32->_outputSize.height = v7;
     objc_storeStrong(&v32->_pipeline, obj);
-    objc_storeStrong(&v32->_inferenceDescriptor, v14);
+    objc_storeStrong(&v32->_inferenceDescriptor, inferenceDescriptor);
     v32->_outputDepthPixelBufferPool = 0;
     v32->_outputConfidencePixelBufferPool = 0;
     v32->_outputConfidenceMapPixelBufferPool = 0;
@@ -157,7 +157,7 @@ LABEL_12:
       }
 
       v48 = 2048;
-      v49 = v32;
+      selfCopy = v32;
       v50 = 2112;
       v51 = v37;
       _os_log_impl(&dword_1C241C000, v33, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Compute normals: %@", buf, 0x20u);
@@ -207,26 +207,26 @@ LABEL_12:
 {
   v41 = *MEMORY[0x1E69E9840];
   self->_currentFrameIndex = 0;
-  v3 = [(ADJasperColorPipeline *)self->_pipeline LKTTexturesDescriptor];
+  lKTTexturesDescriptor = [(ADJasperColorPipeline *)self->_pipeline LKTTexturesDescriptor];
   lktDescriptor = self->_lktDescriptor;
-  self->_lktDescriptor = v3;
+  self->_lktDescriptor = lKTTexturesDescriptor;
 
   v5 = ARCreateFixedPriorityDispatchQueue("com.apple.arkit.depthtechnique.lkt");
   lktProcessingQueue = self->_lktProcessingQueue;
   self->_lktProcessingQueue = v5;
 
   self->_opticalFlowOutputBufferLock._os_unfair_lock_opaque = 0;
-  v7 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   features = self->_features;
-  self->_features = v7;
+  self->_features = array;
 
-  v9 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   derivatives = self->_derivatives;
-  self->_derivatives = v9;
+  self->_derivatives = array2;
 
-  v11 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
   pyramids = self->_pyramids;
-  self->_pyramids = v11;
+  self->_pyramids = array3;
 
   self->_storedFramesCount = [ARKitUserDefaults integerForKey:@"com.apple.arkit.appleDepth.temporalFilteringStoredFrames"];
   v13 = _ARLogTechnique_0();
@@ -238,7 +238,7 @@ LABEL_12:
     v35 = 138543874;
     v36 = v15;
     v37 = 2048;
-    v38 = self;
+    selfCopy5 = self;
     v39 = 2048;
     v40 = storedFramesCount;
     _os_log_impl(&dword_1C241C000, v13, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Using %ti stored frames for temporal filtering", &v35, 0x20u);
@@ -251,9 +251,9 @@ LABEL_12:
   v19 = self->_device;
   if (v19)
   {
-    v20 = [(MTLDevice *)v19 newCommandQueue];
+    newCommandQueue = [(MTLDevice *)v19 newCommandQueue];
     commandQueue = self->_commandQueue;
-    self->_commandQueue = v20;
+    self->_commandQueue = newCommandQueue;
 
     if (self->_commandQueue)
     {
@@ -278,7 +278,7 @@ LABEL_12:
         v35 = 138543618;
         v36 = v26;
         v37 = 2048;
-        v38 = self;
+        selfCopy5 = self;
         v27 = "%{public}@ <%p>: Couldn't create command queue for temporal filtering";
         goto LABEL_16;
       }
@@ -296,7 +296,7 @@ LABEL_12:
     v35 = 138543618;
     v36 = v26;
     v37 = 2048;
-    v38 = self;
+    selfCopy5 = self;
     v27 = "Error: %{public}@ <%p>: Couldn't create command queue for temporal filtering";
 LABEL_21:
     v31 = v24;
@@ -324,7 +324,7 @@ LABEL_21:
     v35 = 138543618;
     v36 = v26;
     v37 = 2048;
-    v38 = self;
+    selfCopy5 = self;
     v27 = "Error: %{public}@ <%p>: Couldn't create system default device for temporal filtering";
     goto LABEL_21;
   }
@@ -336,7 +336,7 @@ LABEL_21:
     v35 = 138543618;
     v36 = v26;
     v37 = 2048;
-    v38 = self;
+    selfCopy5 = self;
     v27 = "%{public}@ <%p>: Couldn't create system default device for temporal filtering";
 LABEL_16:
     v31 = v24;
@@ -388,21 +388,21 @@ LABEL_23:
       v13 = 0;
       do
       {
-        v14 = [MEMORY[0x1E695DF70] array];
-        [(NSMutableArray *)self->_features setObject:v14 atIndexedSubscript:v13];
+        array = [MEMORY[0x1E695DF70] array];
+        [(NSMutableArray *)self->_features setObject:array atIndexedSubscript:v13];
 
-        v15 = [MEMORY[0x1E695DF70] array];
-        [(NSMutableArray *)self->_derivatives setObject:v15 atIndexedSubscript:v13];
+        array2 = [MEMORY[0x1E695DF70] array];
+        [(NSMutableArray *)self->_derivatives setObject:array2 atIndexedSubscript:v13];
 
-        v16 = [MEMORY[0x1E695DF70] array];
-        [(NSMutableArray *)self->_pyramids setObject:v16 atIndexedSubscript:v13];
+        array3 = [MEMORY[0x1E695DF70] array];
+        [(NSMutableArray *)self->_pyramids setObject:array3 atIndexedSubscript:v13];
 
         v61 = 0u;
         v62 = 0u;
         v59 = 0u;
         v60 = 0u;
-        v17 = [(ADLKTTexturesDescriptor *)self->_lktDescriptor pyramidsDescriptors];
-        v18 = [v17 countByEnumeratingWithState:&v59 objects:v69 count:16];
+        pyramidsDescriptors = [(ADLKTTexturesDescriptor *)self->_lktDescriptor pyramidsDescriptors];
+        v18 = [pyramidsDescriptors countByEnumeratingWithState:&v59 objects:v69 count:16];
         if (v18)
         {
           v19 = *v60;
@@ -412,7 +412,7 @@ LABEL_23:
             {
               if (*v60 != v19)
               {
-                objc_enumerationMutation(v17);
+                objc_enumerationMutation(pyramidsDescriptors);
               }
 
               v21 = *(*(&v59 + 1) + 8 * i);
@@ -422,7 +422,7 @@ LABEL_23:
               [v22 addObject:v25];
             }
 
-            v18 = [v17 countByEnumeratingWithState:&v59 objects:v69 count:16];
+            v18 = [pyramidsDescriptors countByEnumeratingWithState:&v59 objects:v69 count:16];
           }
 
           while (v18);
@@ -432,8 +432,8 @@ LABEL_23:
         v58 = 0u;
         v55 = 0u;
         v56 = 0u;
-        v26 = [(ADLKTTexturesDescriptor *)self->_lktDescriptor featuresDescriptors];
-        v27 = [v26 countByEnumeratingWithState:&v55 objects:v68 count:16];
+        featuresDescriptors = [(ADLKTTexturesDescriptor *)self->_lktDescriptor featuresDescriptors];
+        v27 = [featuresDescriptors countByEnumeratingWithState:&v55 objects:v68 count:16];
         if (v27)
         {
           v28 = *v56;
@@ -443,7 +443,7 @@ LABEL_23:
             {
               if (*v56 != v28)
               {
-                objc_enumerationMutation(v26);
+                objc_enumerationMutation(featuresDescriptors);
               }
 
               v30 = *(*(&v55 + 1) + 8 * j);
@@ -453,7 +453,7 @@ LABEL_23:
               [v31 addObject:v34];
             }
 
-            v27 = [v26 countByEnumeratingWithState:&v55 objects:v68 count:16];
+            v27 = [featuresDescriptors countByEnumeratingWithState:&v55 objects:v68 count:16];
           }
 
           while (v27);
@@ -463,8 +463,8 @@ LABEL_23:
         v54 = 0u;
         v51 = 0u;
         v52 = 0u;
-        v35 = [(ADLKTTexturesDescriptor *)self->_lktDescriptor derivitivesDescriptors];
-        v36 = [v35 countByEnumeratingWithState:&v51 objects:v67 count:16];
+        derivitivesDescriptors = [(ADLKTTexturesDescriptor *)self->_lktDescriptor derivitivesDescriptors];
+        v36 = [derivitivesDescriptors countByEnumeratingWithState:&v51 objects:v67 count:16];
         if (v36)
         {
           v37 = *v52;
@@ -474,7 +474,7 @@ LABEL_23:
             {
               if (*v52 != v37)
               {
-                objc_enumerationMutation(v35);
+                objc_enumerationMutation(derivitivesDescriptors);
               }
 
               v39 = *(*(&v51 + 1) + 8 * k);
@@ -484,7 +484,7 @@ LABEL_23:
               [v40 addObject:v43];
             }
 
-            v36 = [v35 countByEnumeratingWithState:&v51 objects:v67 count:16];
+            v36 = [derivitivesDescriptors countByEnumeratingWithState:&v51 objects:v67 count:16];
           }
 
           while (v36);
@@ -516,7 +516,7 @@ LABEL_23:
         *buf = 138543618;
         v71 = v48;
         v72 = 2048;
-        v73 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_1C241C000, v46, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Couldn't create DFLKTOpticalFlow for temporal filtering", buf, 0x16u);
       }
     }
@@ -528,25 +528,25 @@ LABEL_23:
       *buf = 138543618;
       v71 = v50;
       v72 = 2048;
-      v73 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1C241C000, v46, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Couldn't create DFLKTOpticalFlow for temporal filtering", buf, 0x16u);
     }
   }
 }
 
-- (void)setOpticalFlowOutputBuffer:(__CVBuffer *)a3
+- (void)setOpticalFlowOutputBuffer:(__CVBuffer *)buffer
 {
   opticalFlowOutputBuffer = self->_opticalFlowOutputBuffer;
-  if (opticalFlowOutputBuffer != a3)
+  if (opticalFlowOutputBuffer != buffer)
   {
     CVPixelBufferRelease(opticalFlowOutputBuffer);
-    self->_opticalFlowOutputBuffer = a3;
+    self->_opticalFlowOutputBuffer = buffer;
 
-    CVPixelBufferRetain(a3);
+    CVPixelBufferRetain(buffer);
   }
 }
 
-- (__CVBuffer)_executeLKTWithFrame:(__CVBuffer *)a3
+- (__CVBuffer)_executeLKTWithFrame:(__CVBuffer *)frame
 {
   currentFrameIndex = self->_currentFrameIndex;
   storedFramesCount = currentFrameIndex;
@@ -556,30 +556,30 @@ LABEL_23:
   }
 
   v27 = storedFramesCount;
-  v7 = bindPixelBufferToMTL2DTextureWithMetalDevice(a3, self->_device);
-  v8 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  v7 = bindPixelBufferToMTL2DTextureWithMetalDevice(frame, self->_device);
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
   lkt = self->_lkt;
   v10 = [(NSMutableArray *)self->_pyramids objectAtIndexedSubscript:currentFrameIndex];
   v11 = [(NSMutableArray *)self->_features objectAtIndexedSubscript:currentFrameIndex];
   v12 = [(NSMutableArray *)self->_derivatives objectAtIndexedSubscript:currentFrameIndex];
   v13 = lkt;
   v14 = v7;
-  [(ADLKTOpticalFlow *)v13 encodePyramidFeaturesToCommandBuffer:v8 colorTexture:v7 outPyramidsArray:v10 outFeaturesArray:v11 outDerivitiveArray:v12];
+  [(ADLKTOpticalFlow *)v13 encodePyramidFeaturesToCommandBuffer:commandBuffer colorTexture:v7 outPyramidsArray:v10 outFeaturesArray:v11 outDerivitiveArray:v12];
 
-  [v8 commit];
+  [commandBuffer commit];
   if (!self->_previousDepthBuffer)
   {
     v17 = 0;
 LABEL_10:
-    [v8 waitUntilCompleted];
+    [commandBuffer waitUntilCompleted];
     self->_currentFrameIndex = (currentFrameIndex + 1) % self->_storedFramesCount;
     goto LABEL_11;
   }
 
-  if (a3)
+  if (frame)
   {
-    Width = CVPixelBufferGetWidth(a3);
-    Height = CVPixelBufferGetHeight(a3);
+    Width = CVPixelBufferGetWidth(frame);
+    Height = CVPixelBufferGetHeight(frame);
   }
 
   else
@@ -594,7 +594,7 @@ LABEL_10:
   {
     v19 = v27 - 1;
     v29 = bindPixelBufferToMTL2DTextureWithMetalDevice(v18, self->_device);
-    v20 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+    commandBuffer2 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
 
     v28 = self->_lkt;
     v21 = [(NSMutableArray *)self->_features objectAtIndexedSubscript:currentFrameIndex];
@@ -603,12 +603,12 @@ LABEL_10:
     v23 = v30 = v7;
     v24 = [(NSMutableArray *)self->_derivatives objectAtIndexedSubscript:v19];
     v25 = [(NSMutableArray *)self->_pyramids objectAtIndexedSubscript:currentFrameIndex];
-    [(ADLKTOpticalFlow *)v28 encodeOpticalFlowSolverToCommandBuffer:v20 currentFeaturesArray:v21 currentDerivitiveArray:v22 previousFeaturesArray:v23 previousDerivitiveArray:v24 currentPyramidsArray:v25 outShiftMap:v29];
+    [(ADLKTOpticalFlow *)v28 encodeOpticalFlowSolverToCommandBuffer:commandBuffer2 currentFeaturesArray:v21 currentDerivitiveArray:v22 previousFeaturesArray:v23 previousDerivitiveArray:v24 currentPyramidsArray:v25 outShiftMap:v29];
 
     v14 = v30;
-    [v20 commit];
+    [commandBuffer2 commit];
 
-    v8 = v20;
+    commandBuffer = commandBuffer2;
     goto LABEL_10;
   }
 
@@ -625,24 +625,24 @@ LABEL_11:
   return [v2 setWithObject:v3];
 }
 
-- (int)prepareBindInputBuffer:(unint64_t)a3 withName:(id)a4
+- (int)prepareBindInputBuffer:(unint64_t)buffer withName:(id)name
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(ADEspressoJasperColorInferenceDescriptor *)self->_inferenceDescriptor colorInput];
-  v8 = [v7 name];
-  v9 = [v6 isEqualToString:v8];
+  nameCopy = name;
+  colorInput = [(ADEspressoJasperColorInferenceDescriptor *)self->_inferenceDescriptor colorInput];
+  name = [colorInput name];
+  v9 = [nameCopy isEqualToString:name];
 
   if ((v9 & 1) == 0)
   {
-    if (a3 > 1)
+    if (buffer > 1)
     {
       v10 = -1;
       goto LABEL_16;
     }
 
     [(ARMLImageProcessingTechnique *)self espressoNetwork];
-    [v6 UTF8String];
+    [nameCopy UTF8String];
     [(ARMLImageProcessingTechnique *)self espressoInputTensorsData];
     v10 = espresso_network_bind_buffer();
     if (v10)
@@ -652,24 +652,24 @@ LABEL_11:
 
     CVPixelBufferRelease(self->_jasperInputBuffer);
     v33 = *MEMORY[0x1E695E480];
-    v36 = [(ADEspressoJasperColorInferenceDescriptor *)self->_inferenceDescriptor jasperInput];
-    v35 = [v36 imageDescriptor];
-    [v35 sizeForLayout:self->_layout];
+    jasperInput = [(ADEspressoJasperColorInferenceDescriptor *)self->_inferenceDescriptor jasperInput];
+    imageDescriptor = [jasperInput imageDescriptor];
+    [imageDescriptor sizeForLayout:self->_layout];
     v31 = v11;
-    v34 = [(ADEspressoJasperColorInferenceDescriptor *)self->_inferenceDescriptor jasperInput];
-    v32 = [v34 imageDescriptor];
-    [v32 sizeForLayout:self->_layout];
+    jasperInput2 = [(ADEspressoJasperColorInferenceDescriptor *)self->_inferenceDescriptor jasperInput];
+    imageDescriptor2 = [jasperInput2 imageDescriptor];
+    [imageDescriptor2 sizeForLayout:self->_layout];
     v30 = v12;
-    v13 = [(ADEspressoJasperColorInferenceDescriptor *)self->_inferenceDescriptor jasperInput];
-    v14 = [v13 imageDescriptor];
-    v15 = [v14 pixelFormat];
-    v16 = [(ARMLImageProcessingTechnique *)self espressoInputTensorsData][168 * a3];
-    v17 = [(ADEspressoJasperColorInferenceDescriptor *)self->_inferenceDescriptor jasperInput];
-    v18 = [v17 imageDescriptor];
-    [v18 sizeForLayout:self->_layout];
-    LODWORD(v16) = CVPixelBufferCreateWithBytes(v33, v31, v30, v15, v16, vcvtd_n_u64_f64(v19, 2uLL), 0, 0, 0, &self->_jasperInputBuffer);
+    jasperInput3 = [(ADEspressoJasperColorInferenceDescriptor *)self->_inferenceDescriptor jasperInput];
+    imageDescriptor3 = [jasperInput3 imageDescriptor];
+    pixelFormat = [imageDescriptor3 pixelFormat];
+    buffer = [(ARMLImageProcessingTechnique *)self espressoInputTensorsData][168 * buffer];
+    jasperInput4 = [(ADEspressoJasperColorInferenceDescriptor *)self->_inferenceDescriptor jasperInput];
+    imageDescriptor4 = [jasperInput4 imageDescriptor];
+    [imageDescriptor4 sizeForLayout:self->_layout];
+    LODWORD(buffer) = CVPixelBufferCreateWithBytes(v33, v31, v30, pixelFormat, buffer, vcvtd_n_u64_f64(v19, 2uLL), 0, 0, 0, &self->_jasperInputBuffer);
 
-    if (v16)
+    if (buffer)
     {
       if (ARShouldUseLogTypeError_onceToken_6 != -1)
       {
@@ -688,7 +688,7 @@ LABEL_11:
           *buf = 138543618;
           v38 = v24;
           v39 = 2048;
-          v40 = self;
+          selfCopy2 = self;
           v25 = "%{public}@ <%p>: Couldn't allocate pixel buffer for jasper point projection";
           v26 = v22;
           v27 = OS_LOG_TYPE_ERROR;
@@ -704,7 +704,7 @@ LABEL_14:
         *buf = 138543618;
         v38 = v24;
         v39 = 2048;
-        v40 = self;
+        selfCopy2 = self;
         v25 = "Error: %{public}@ <%p>: Couldn't allocate pixel buffer for jasper point projection";
         v26 = v22;
         v27 = OS_LOG_TYPE_INFO;
@@ -722,32 +722,32 @@ LABEL_16:
   return v10;
 }
 
-- (void)_updateOpticalFlowOutputBufferInBackgroundFromImageData:(id)a3
+- (void)_updateOpticalFlowOutputBufferInBackgroundFromImageData:(id)data
 {
   lktProcessingQueue = self->_lktProcessingQueue;
-  v5 = a3;
+  dataCopy = data;
   dispatch_assert_queue_V2(lktProcessingQueue);
   os_unfair_lock_lock(&self->_opticalFlowOutputBufferLock);
-  [v5 timestamp];
+  [dataCopy timestamp];
   kdebug_trace();
-  v6 = -[ARDepthTechnique _executeLKTWithFrame:](self, "_executeLKTWithFrame:", [v5 pixelBuffer]);
+  v6 = -[ARDepthTechnique _executeLKTWithFrame:](self, "_executeLKTWithFrame:", [dataCopy pixelBuffer]);
   [(ARDepthTechnique *)self setOpticalFlowOutputBuffer:v6];
   CVPixelBufferRelease(v6);
-  [v5 timestamp];
+  [dataCopy timestamp];
 
   kdebug_trace();
 
   os_unfair_lock_unlock(&self->_opticalFlowOutputBufferLock);
 }
 
-- (int)bindInputBuffer:(unint64_t)a3 withImage:(id)a4 andOriginalImageData:(id)a5 rotationOfResultTensor:(int64_t)a6
+- (int)bindInputBuffer:(unint64_t)buffer withImage:(id)image andOriginalImageData:(id)data rotationOfResultTensor:(int64_t)tensor
 {
   v62 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  if (a3 == 1)
+  imageCopy = image;
+  dataCopy = data;
+  if (buffer == 1)
   {
-    v16 = [(ARMLImageProcessingTechnique *)self getDeviceOrientationFromImageData:v11]- 1;
+    v16 = [(ARMLImageProcessingTechnique *)self getDeviceOrientationFromImageData:dataCopy]- 1;
     if (v16 > 2)
     {
       v17 = 2;
@@ -758,17 +758,17 @@ LABEL_16:
       v17 = qword_1C25C8700[v16];
     }
 
-    v20 = [v11 originalImage];
-    v26 = [v20 pointCloud];
-    v27 = [v26 depthPointCloud];
+    originalImage = [dataCopy originalImage];
+    pointCloud = [originalImage pointCloud];
+    depthPointCloud = [pointCloud depthPointCloud];
 
-    if (v27)
+    if (depthPointCloud)
     {
-      v28 = [v20 pixelBuffer];
-      if (v28)
+      pixelBuffer = [originalImage pixelBuffer];
+      if (pixelBuffer)
       {
-        v29 = v28;
-        Width = CVPixelBufferGetWidth(v28);
+        v29 = pixelBuffer;
+        Width = CVPixelBufferGetWidth(pixelBuffer);
         Height = CVPixelBufferGetHeight(v29);
       }
 
@@ -778,17 +778,17 @@ LABEL_16:
         Height = *(MEMORY[0x1E695F060] + 8);
       }
 
-      [v10 timestamp];
+      [imageCopy timestamp];
       kdebug_trace();
-      v13 = [(ADJasperColorPipeline *)self->_pipeline projectJasperPoints:v27 cropTo:v17 rotateBy:self->_jasperInputBuffer projectedPointsBuffer:0.0, 0.0, Width, Height];
+      height = [(ADJasperColorPipeline *)self->_pipeline projectJasperPoints:depthPointCloud cropTo:v17 rotateBy:self->_jasperInputBuffer projectedPointsBuffer:0.0, 0.0, Width, Height];
       adLogger = self->_adLogger;
       jasperInputBuffer = self->_jasperInputBuffer;
-      [v10 timestamp];
+      [imageCopy timestamp];
       [(ADLogManager *)adLogger logPixelBuffer:jasperInputBuffer name:"processedJasper" timestamp:?];
-      [v10 timestamp];
-      [v27 length];
+      [imageCopy timestamp];
+      [depthPointCloud length];
       kdebug_trace();
-      if (!v13)
+      if (!height)
       {
         goto LABEL_37;
       }
@@ -800,7 +800,7 @@ LABEL_16:
 
       v43 = ARShouldUseLogTypeError_internalOSVersion_6;
       v44 = _ARLogTechnique_0();
-      v13 = v44;
+      height = v44;
       if (v43 == 1)
       {
         if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
@@ -810,11 +810,11 @@ LABEL_16:
           *location = 138543874;
           *&location[4] = v46;
           v58 = 2048;
-          v59 = self;
+          selfCopy6 = self;
           v60 = 2048;
-          v61 = -1;
+          bufferCopy2 = -1;
           v47 = "%{public}@ <%p>: Couldn't project jasper points: %ld";
-          v48 = v13;
+          v48 = height;
           v49 = OS_LOG_TYPE_ERROR;
 LABEL_35:
           _os_log_impl(&dword_1C241C000, v48, v49, v47, location, 0x20u);
@@ -828,16 +828,16 @@ LABEL_35:
         *location = 138543874;
         *&location[4] = v46;
         v58 = 2048;
-        v59 = self;
+        selfCopy6 = self;
         v60 = 2048;
-        v61 = -1;
+        bufferCopy2 = -1;
         v47 = "Error: %{public}@ <%p>: Couldn't project jasper points: %ld";
-        v48 = v13;
+        v48 = height;
         v49 = OS_LOG_TYPE_INFO;
         goto LABEL_35;
       }
 
-      LODWORD(v13) = -1;
+      LODWORD(height) = -1;
 LABEL_37:
 
       goto LABEL_43;
@@ -860,7 +860,7 @@ LABEL_37:
         *location = 138543618;
         *&location[4] = v37;
         v58 = 2048;
-        v59 = self;
+        selfCopy6 = self;
         v38 = "%{public}@ <%p>: No depth point cloud found";
         v39 = v35;
         v40 = OS_LOG_TYPE_ERROR;
@@ -876,7 +876,7 @@ LABEL_40:
       *location = 138543618;
       *&location[4] = v37;
       v58 = 2048;
-      v59 = self;
+      selfCopy6 = self;
       v38 = "Error: %{public}@ <%p>: No depth point cloud found";
       v39 = v35;
       v40 = OS_LOG_TYPE_INFO;
@@ -886,7 +886,7 @@ LABEL_40:
     goto LABEL_42;
   }
 
-  if (a3)
+  if (buffer)
   {
     if (ARShouldUseLogTypeError_onceToken_6 != -1)
     {
@@ -895,7 +895,7 @@ LABEL_40:
 
     v18 = ARShouldUseLogTypeError_internalOSVersion_6;
     v19 = _ARLogTechnique_0();
-    v20 = v19;
+    originalImage = v19;
     if (v18 == 1)
     {
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -905,11 +905,11 @@ LABEL_40:
         *location = 138543874;
         *&location[4] = v22;
         v58 = 2048;
-        v59 = self;
+        selfCopy6 = self;
         v60 = 2048;
-        v61 = a3;
+        bufferCopy2 = buffer;
         v23 = "%{public}@ <%p>: Index not supported: %lu";
-        v24 = v20;
+        v24 = originalImage;
         v25 = OS_LOG_TYPE_ERROR;
 LABEL_20:
         _os_log_impl(&dword_1C241C000, v24, v25, v23, location, 0x20u);
@@ -923,22 +923,22 @@ LABEL_20:
       *location = 138543874;
       *&location[4] = v22;
       v58 = 2048;
-      v59 = self;
+      selfCopy6 = self;
       v60 = 2048;
-      v61 = a3;
+      bufferCopy2 = buffer;
       v23 = "Error: %{public}@ <%p>: Index not supported: %lu";
-      v24 = v20;
+      v24 = originalImage;
       v25 = OS_LOG_TYPE_INFO;
       goto LABEL_20;
     }
 
 LABEL_42:
 
-    LODWORD(v13) = -1;
+    LODWORD(height) = -1;
     goto LABEL_43;
   }
 
-  if (self->_temporalConsistencyMethod == 2 && [v10 pixelBuffer])
+  if (self->_temporalConsistencyMethod == 2 && [imageCopy pixelBuffer])
   {
     objc_initWeak(location, self);
     lktProcessingQueue = self->_lktProcessingQueue;
@@ -947,7 +947,7 @@ LABEL_42:
     block[2] = __90__ARDepthTechnique_bindInputBuffer_withImage_andOriginalImageData_rotationOfResultTensor___block_invoke;
     block[3] = &unk_1E817BDB0;
     objc_copyWeak(&v56, location);
-    v55 = v10;
+    v55 = imageCopy;
     dispatch_async(lktProcessingQueue, block);
 
     objc_destroyWeak(&v56);
@@ -956,14 +956,14 @@ LABEL_42:
 
   v53.receiver = self;
   v53.super_class = ARDepthTechnique;
-  LODWORD(v13) = [(ARMLImageProcessingTechnique *)&v53 bindInputBuffer:0 withImage:v10 andOriginalImageData:v11 rotationOfResultTensor:a6];
+  LODWORD(height) = [(ARMLImageProcessingTechnique *)&v53 bindInputBuffer:0 withImage:imageCopy andOriginalImageData:dataCopy rotationOfResultTensor:tensor];
   v14 = self->_adLogger;
-  v15 = [v10 pixelBuffer];
-  [v10 timestamp];
-  [(ADLogManager *)v14 logPixelBuffer:v15 name:"processedColor" timestamp:?];
+  pixelBuffer2 = [imageCopy pixelBuffer];
+  [imageCopy timestamp];
+  [(ADLogManager *)v14 logPixelBuffer:pixelBuffer2 name:"processedColor" timestamp:?];
 LABEL_43:
 
-  return v13;
+  return height;
 }
 
 void __90__ARDepthTechnique_bindInputBuffer_withImage_andOriginalImageData_rotationOfResultTensor___block_invoke(uint64_t a1)
@@ -972,16 +972,16 @@ void __90__ARDepthTechnique_bindInputBuffer_withImage_andOriginalImageData_rotat
   [WeakRetained _updateOpticalFlowOutputBufferInBackgroundFromImageData:*(a1 + 32)];
 }
 
-- (id)networkModesForOrientation:(int64_t)a3
+- (id)networkModesForOrientation:(int64_t)orientation
 {
   v18 = *MEMORY[0x1E69E9840];
-  if ((a3 - 3) <= 1)
+  if ((orientation - 3) <= 1)
   {
     self->_layout = 1;
     goto LABEL_14;
   }
 
-  if ((a3 - 1) <= 1)
+  if ((orientation - 1) <= 1)
   {
     self->_layout = 0;
     goto LABEL_14;
@@ -1006,7 +1006,7 @@ void __90__ARDepthTechnique_bindInputBuffer_withImage_andOriginalImageData_rotat
       *&v16[12] = 2048;
       *&v16[14] = self;
       *&v16[22] = 2048;
-      v17 = a3;
+      orientationCopy2 = orientation;
       v10 = "%{public}@ <%p>: Could not find a network config for the device orientation %ld";
       v11 = v7;
       v12 = OS_LOG_TYPE_ERROR;
@@ -1024,7 +1024,7 @@ LABEL_12:
     *&v16[12] = 2048;
     *&v16[14] = self;
     *&v16[22] = 2048;
-    v17 = a3;
+    orientationCopy2 = orientation;
     v10 = "Error: %{public}@ <%p>: Could not find a network config for the device orientation %ld";
     v11 = v7;
     v12 = OS_LOG_TYPE_INFO;
@@ -1032,16 +1032,16 @@ LABEL_12:
   }
 
 LABEL_14:
-  v14 = [(ADEspressoJasperColorInferenceDescriptor *)self->_inferenceDescriptor configurationNameForLayout:self->_layout, *v16, *&v16[16], v17];
+  orientationCopy2 = [(ADEspressoJasperColorInferenceDescriptor *)self->_inferenceDescriptor configurationNameForLayout:self->_layout, *v16, *&v16[16], orientationCopy2];
 
-  return v14;
+  return orientationCopy2;
 }
 
-- (void)networkModeDidChange:(id)a3 toMode:(id)a4
+- (void)networkModeDidChange:(id)change toMode:(id)mode
 {
   v5.receiver = self;
   v5.super_class = ARDepthTechnique;
-  [(ARMLImageProcessingTechnique *)&v5 networkModeDidChange:a3 toMode:a4];
+  [(ARMLImageProcessingTechnique *)&v5 networkModeDidChange:change toMode:mode];
   CVPixelBufferRelease(self->_previousDepthBuffer);
   self->_previousDepthBuffer = 0;
   CVPixelBufferRelease(self->_previousConfidenceBuffer);
@@ -1052,21 +1052,21 @@ LABEL_14:
   }
 }
 
-- (id)createResultDataFromTensors:(id *)a3 numberOfOutputTensors:(unint64_t)a4 imageDataForNeuralNetwork:(id)a5 inputImageData:(id)a6 rotationNeeded:(int64_t)a7 regionOfInterest:(CGSize)a8
+- (id)createResultDataFromTensors:(id *)tensors numberOfOutputTensors:(unint64_t)outputTensors imageDataForNeuralNetwork:(id)network inputImageData:(id)data rotationNeeded:(int64_t)needed regionOfInterest:(CGSize)interest
 {
-  height = a8.height;
-  width = a8.width;
+  height = interest.height;
+  width = interest.width;
   v361 = *MEMORY[0x1E69E9840];
-  v285 = a5;
-  v286 = a6;
-  var4 = a3->var4;
+  networkCopy = network;
+  dataCopy = data;
+  var4 = tensors->var4;
   v13 = var4;
-  var5 = a3->var5;
+  var5 = tensors->var5;
   v14 = var5;
   v357 = 0;
   v358[0] = &v357;
   v358[1] = 0x2020000000;
-  v287 = self;
+  selfCopy = self;
   v358[2] = ARCreateCVPixelBufferFromPool(&self->_outputDepthPixelBufferPool, 1717855600, self, @"Depth Output", var4, var5);
   if (!*(v358[0] + 24))
   {
@@ -1110,31 +1110,31 @@ LABEL_194:
     v340 = &v341;
     v336 = 0;
     v335 = 0;
-    v275 = [(ADEspressoJasperColorInferenceDescriptor *)self->_inferenceDescriptor depthOutput];
-    v273 = [v275 imageDescriptor];
-    [v273 sizeForLayout:self->_layout];
+    depthOutput = [(ADEspressoJasperColorInferenceDescriptor *)self->_inferenceDescriptor depthOutput];
+    imageDescriptor = [depthOutput imageDescriptor];
+    [imageDescriptor sizeForLayout:self->_layout];
     v16 = v15;
-    v17 = [(ADEspressoJasperColorInferenceDescriptor *)self->_inferenceDescriptor depthOutput];
-    v18 = [v17 imageDescriptor];
-    [v18 sizeForLayout:self->_layout];
+    depthOutput2 = [(ADEspressoJasperColorInferenceDescriptor *)self->_inferenceDescriptor depthOutput];
+    imageDescriptor2 = [depthOutput2 imageDescriptor];
+    [imageDescriptor2 sizeForLayout:self->_layout];
     v20 = v19;
-    v21 = [(ADEspressoJasperColorInferenceDescriptor *)self->_inferenceDescriptor depthOutput];
-    v22 = [v21 imageDescriptor];
-    v23 = [v22 pixelFormat];
+    depthOutput3 = [(ADEspressoJasperColorInferenceDescriptor *)self->_inferenceDescriptor depthOutput];
+    imageDescriptor3 = [depthOutput3 imageDescriptor];
+    pixelFormat = [imageDescriptor3 pixelFormat];
     v24 = *[(ARMLImageProcessingTechnique *)self espressoOutputTensorsData];
-    v25 = [(ADEspressoJasperColorInferenceDescriptor *)v287->_inferenceDescriptor depthOutput];
-    v26 = [v25 imageDescriptor];
-    [v26 sizeForLayout:v287->_layout];
+    depthOutput4 = [(ADEspressoJasperColorInferenceDescriptor *)selfCopy->_inferenceDescriptor depthOutput];
+    imageDescriptor4 = [depthOutput4 imageDescriptor];
+    [imageDescriptor4 sizeForLayout:selfCopy->_layout];
     allocator = *MEMORY[0x1E695E480];
-    v28 = CVPixelBufferCreateWithBytes(*MEMORY[0x1E695E480], v16, v20, v23, v24, vcvtd_n_u64_f64(v27, 2uLL), 0, 0, 0, &v336);
+    v28 = CVPixelBufferCreateWithBytes(*MEMORY[0x1E695E480], v16, v20, pixelFormat, v24, vcvtd_n_u64_f64(v27, 2uLL), 0, 0, 0, &v336);
 
     if (v28)
     {
-      v29 = v287;
+      v29 = selfCopy;
       if (ARShouldUseLogTypeError_onceToken_6 != -1)
       {
         [ARDepthTechnique _initLKT];
-        v29 = v287;
+        v29 = selfCopy;
       }
 
       v30 = ARShouldUseLogTypeError_internalOSVersion_6;
@@ -1174,30 +1174,30 @@ LABEL_194:
     v332 = __143__ARDepthTechnique_createResultDataFromTensors_numberOfOutputTensors_imageDataForNeuralNetwork_inputImageData_rotationNeeded_regionOfInterest___block_invoke_38;
     v333 = &__block_descriptor_40_e5_v8__0l;
     v334 = v336;
-    v276 = [(ADEspressoJasperColorInferenceDescriptor *)v287->_inferenceDescriptor confidenceOutput];
-    v274 = [v276 imageDescriptor];
-    [v274 sizeForLayout:v287->_layout];
+    confidenceOutput = [(ADEspressoJasperColorInferenceDescriptor *)selfCopy->_inferenceDescriptor confidenceOutput];
+    imageDescriptor5 = [confidenceOutput imageDescriptor];
+    [imageDescriptor5 sizeForLayout:selfCopy->_layout];
     v37 = v36;
-    v38 = [(ADEspressoJasperColorInferenceDescriptor *)v287->_inferenceDescriptor confidenceOutput];
-    v39 = [v38 imageDescriptor];
-    [v39 sizeForLayout:v287->_layout];
+    confidenceOutput2 = [(ADEspressoJasperColorInferenceDescriptor *)selfCopy->_inferenceDescriptor confidenceOutput];
+    imageDescriptor6 = [confidenceOutput2 imageDescriptor];
+    [imageDescriptor6 sizeForLayout:selfCopy->_layout];
     v41 = v40;
-    v42 = [(ADEspressoJasperColorInferenceDescriptor *)v287->_inferenceDescriptor confidenceOutput];
-    v43 = [v42 imageDescriptor];
-    v44 = [v43 pixelFormat];
-    v45 = [(ARMLImageProcessingTechnique *)v287 espressoOutputTensorsData][168];
-    v46 = [(ADEspressoJasperColorInferenceDescriptor *)v287->_inferenceDescriptor confidenceOutput];
-    v47 = [v46 imageDescriptor];
-    [v47 sizeForLayout:v287->_layout];
-    v49 = CVPixelBufferCreateWithBytes(allocator, v37, v41, v44, v45, vcvtd_n_u64_f64(v48, 2uLL), 0, 0, 0, &v335);
+    confidenceOutput3 = [(ADEspressoJasperColorInferenceDescriptor *)selfCopy->_inferenceDescriptor confidenceOutput];
+    imageDescriptor7 = [confidenceOutput3 imageDescriptor];
+    pixelFormat2 = [imageDescriptor7 pixelFormat];
+    v45 = [(ARMLImageProcessingTechnique *)selfCopy espressoOutputTensorsData][168];
+    confidenceOutput4 = [(ADEspressoJasperColorInferenceDescriptor *)selfCopy->_inferenceDescriptor confidenceOutput];
+    imageDescriptor8 = [confidenceOutput4 imageDescriptor];
+    [imageDescriptor8 sizeForLayout:selfCopy->_layout];
+    v49 = CVPixelBufferCreateWithBytes(allocator, v37, v41, pixelFormat2, v45, vcvtd_n_u64_f64(v48, 2uLL), 0, 0, 0, &v335);
 
     if (v49)
     {
-      v50 = v287;
+      v50 = selfCopy;
       if (ARShouldUseLogTypeError_onceToken_6 != -1)
       {
         [ARDepthTechnique _initLKT];
-        v50 = v287;
+        v50 = selfCopy;
       }
 
       v51 = ARShouldUseLogTypeError_internalOSVersion_6;
@@ -1237,20 +1237,20 @@ LABEL_194:
     v328 = __143__ARDepthTechnique_createResultDataFromTensors_numberOfOutputTensors_imageDataForNeuralNetwork_inputImageData_rotationNeeded_regionOfInterest___block_invoke_39;
     v329 = &__block_descriptor_40_e5_v8__0l;
     v330 = v335;
-    [v286 timestamp];
-    v58 = v287;
+    [dataCopy timestamp];
+    v58 = selfCopy;
     kdebug_trace();
     v59 = v358;
-    v60 = [(ADJasperColorPipeline *)v287->_pipeline postProcessWithDepth:v336 confidence:v335 depthOutput:*(v358[0] + 24) confidenceOutput:v350[3]];
-    adLogger = v287->_adLogger;
+    v60 = [(ADJasperColorPipeline *)selfCopy->_pipeline postProcessWithDepth:v336 confidence:v335 depthOutput:*(v358[0] + 24) confidenceOutput:v350[3]];
+    adLogger = selfCopy->_adLogger;
     v62 = v336;
-    [v286 timestamp];
+    [dataCopy timestamp];
     [(ADLogManager *)adLogger logPixelBuffer:v62 name:"depthOutRaw" timestamp:?];
-    v63 = v287->_adLogger;
+    v63 = selfCopy->_adLogger;
     v64 = v335;
-    [v286 timestamp];
+    [dataCopy timestamp];
     [(ADLogManager *)v63 logPixelBuffer:v64 name:"confidenceOutRaw" timestamp:?];
-    [v286 timestamp];
+    [dataCopy timestamp];
     kdebug_trace();
     if (v60)
     {
@@ -1271,7 +1271,7 @@ LABEL_194:
           buf.columns[0].i32[0] = 138543874;
           *(buf.columns[0].i64 + 4) = v69;
           buf.columns[0].i16[6] = 2048;
-          *(&buf.columns[0].i64[1] + 6) = v287;
+          *(&buf.columns[0].i64[1] + 6) = selfCopy;
           buf.columns[1].i16[3] = 2048;
           buf.columns[1].i64[1] = v60;
           _os_log_impl(&dword_1C241C000, v67, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Unable to post process AppleDepth pipeline output: %li", &buf, 0x20u);
@@ -1285,13 +1285,13 @@ LABEL_194:
         buf.columns[0].i32[0] = 138543874;
         *(buf.columns[0].i64 + 4) = v73;
         buf.columns[0].i16[6] = 2048;
-        *(&buf.columns[0].i64[1] + 6) = v287;
+        *(&buf.columns[0].i64[1] + 6) = selfCopy;
         buf.columns[1].i16[3] = 2048;
         buf.columns[1].i64[1] = v60;
         _os_log_impl(&dword_1C241C000, v67, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Unable to post process AppleDepth pipeline output: %li", &buf, 0x20u);
       }
 
-      v58 = v287;
+      v58 = selfCopy;
       v59 = v358;
     }
 
@@ -1301,7 +1301,7 @@ LABEL_194:
       if (ARShouldUseLogTypeError_onceToken_6 != -1)
       {
         [ARDepthTechnique _initLKT];
-        v58 = v287;
+        v58 = selfCopy;
       }
 
       v75 = ARShouldUseLogTypeError_internalOSVersion_6;
@@ -1380,7 +1380,7 @@ LABEL_193:
           if (ARShouldUseLogTypeError_onceToken_6 != -1)
           {
             [ARDepthTechnique _initLKT];
-            v58 = v287;
+            v58 = selfCopy;
           }
 
           v91 = ARShouldUseLogTypeError_internalOSVersion_6;
@@ -1415,10 +1415,10 @@ LABEL_193:
         }
 
         os_unfair_lock_lock((v58 + 624));
-        [v286 timestamp];
+        [dataCopy timestamp];
         kdebug_trace();
         v82 = [*(v58 + 344) warpAndFuseWithCurrDepth:*(v358[0] + 24) prevDepth:*(v58 + 496) opticalFlow:*(v58 + 720) alphaMap:*(buf.columns[0].i64[1] + 24) depthOutput:*(v326[0] + 24)];
-        [v286 timestamp];
+        [dataCopy timestamp];
         kdebug_trace();
         [v58 setOpticalFlowOutputBuffer:0];
         os_unfair_lock_unlock((v58 + 624));
@@ -1427,7 +1427,7 @@ LABEL_193:
           if (ARShouldUseLogTypeError_onceToken_6 != -1)
           {
             [ARDepthTechnique _initLKT];
-            v58 = v287;
+            v58 = selfCopy;
           }
 
           v83 = ARShouldUseLogTypeError_internalOSVersion_6;
@@ -1464,7 +1464,7 @@ LABEL_193:
 
 LABEL_93:
 
-          v58 = v287;
+          v58 = selfCopy;
           goto LABEL_94;
         }
 
@@ -1501,10 +1501,10 @@ LABEL_130:
       v309 = __143__ARDepthTechnique_createResultDataFromTensors_numberOfOutputTensors_imageDataForNeuralNetwork_inputImageData_rotationNeeded_regionOfInterest___block_invoke_59;
       v310 = &__block_descriptor_40_e5_v8__0l;
       v311 = v167;
-      [v286 timestamp];
+      [dataCopy timestamp];
       kdebug_trace();
       v169 = ARResizeBufferWithNearestNeighbors(*(v358[0] + 24), v168, 4uLL);
-      [v286 timestamp];
+      [dataCopy timestamp];
       kdebug_trace();
       if (v169)
       {
@@ -1525,7 +1525,7 @@ LABEL_130:
             buf.columns[0].i32[0] = 138543874;
             *(buf.columns[0].i64 + 4) = v174;
             buf.columns[0].i16[6] = 2048;
-            *(&buf.columns[0].i64[1] + 6) = v287;
+            *(&buf.columns[0].i64[1] + 6) = selfCopy;
             buf.columns[1].i16[3] = 1024;
             buf.columns[1].i32[2] = v169;
             _os_log_impl(&dword_1C241C000, v172, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Unable to resample pixel buffer: %i", &buf, 0x1Cu);
@@ -1539,13 +1539,13 @@ LABEL_130:
           buf.columns[0].i32[0] = 138543874;
           *(buf.columns[0].i64 + 4) = v196;
           buf.columns[0].i16[6] = 2048;
-          *(&buf.columns[0].i64[1] + 6) = v287;
+          *(&buf.columns[0].i64[1] + 6) = selfCopy;
           buf.columns[1].i16[3] = 1024;
           buf.columns[1].i32[2] = v169;
           _os_log_impl(&dword_1C241C000, v172, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Unable to resample pixel buffer: %i", &buf, 0x1Cu);
         }
 
-        v58 = v287;
+        v58 = selfCopy;
       }
 
       else
@@ -1595,7 +1595,7 @@ LABEL_130:
               buf.columns[0].i32[0] = 138543874;
               *(buf.columns[0].i64 + 4) = v204;
               buf.columns[0].i16[6] = 2048;
-              *(&buf.columns[0].i64[1] + 6) = v287;
+              *(&buf.columns[0].i64[1] + 6) = selfCopy;
               buf.columns[1].i16[3] = 1024;
               buf.columns[1].i32[2] = v199;
               _os_log_impl(&dword_1C241C000, v202, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Unable to resample temporally consistent depth buffer: %i", &buf, 0x1Cu);
@@ -1609,13 +1609,13 @@ LABEL_130:
             buf.columns[0].i32[0] = 138543874;
             *(buf.columns[0].i64 + 4) = v223;
             buf.columns[0].i16[6] = 2048;
-            *(&buf.columns[0].i64[1] + 6) = v287;
+            *(&buf.columns[0].i64[1] + 6) = selfCopy;
             buf.columns[1].i16[3] = 1024;
             buf.columns[1].i32[2] = v199;
             _os_log_impl(&dword_1C241C000, v202, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Unable to resample temporally consistent depth buffer: %i", &buf, 0x1Cu);
           }
 
-          v58 = v287;
+          v58 = selfCopy;
         }
 
         else
@@ -1664,7 +1664,7 @@ LABEL_130:
             buf.columns[0].i32[0] = 138543874;
             *(buf.columns[0].i64 + 4) = v231;
             buf.columns[0].i16[6] = 2048;
-            *(&buf.columns[0].i64[1] + 6) = v287;
+            *(&buf.columns[0].i64[1] + 6) = selfCopy;
             buf.columns[1].i16[3] = 1024;
             buf.columns[1].i32[2] = v226;
             _os_log_impl(&dword_1C241C000, v229, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Unable to resample pixel buffer: %i", &buf, 0x1Cu);
@@ -1678,13 +1678,13 @@ LABEL_130:
           buf.columns[0].i32[0] = 138543874;
           *(buf.columns[0].i64 + 4) = v234;
           buf.columns[0].i16[6] = 2048;
-          *(&buf.columns[0].i64[1] + 6) = v287;
+          *(&buf.columns[0].i64[1] + 6) = selfCopy;
           buf.columns[1].i16[3] = 1024;
           buf.columns[1].i32[2] = v226;
           _os_log_impl(&dword_1C241C000, v229, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Unable to resample pixel buffer: %i", &buf, 0x1Cu);
         }
 
-        v58 = v287;
+        v58 = selfCopy;
       }
 
       else
@@ -1734,7 +1734,7 @@ LABEL_130:
               buf.columns[0].i32[0] = 138543874;
               *(buf.columns[0].i64 + 4) = v242;
               buf.columns[0].i16[6] = 2048;
-              *(&buf.columns[0].i64[1] + 6) = v287;
+              *(&buf.columns[0].i64[1] + 6) = selfCopy;
               buf.columns[1].i16[3] = 1024;
               buf.columns[1].i32[2] = v237;
               _os_log_impl(&dword_1C241C000, v240, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Unable to resample temporally consistent confidence buffer: %i", &buf, 0x1Cu);
@@ -1748,7 +1748,7 @@ LABEL_130:
             buf.columns[0].i32[0] = 138543874;
             *(buf.columns[0].i64 + 4) = v245;
             buf.columns[0].i16[6] = 2048;
-            *(&buf.columns[0].i64[1] + 6) = v287;
+            *(&buf.columns[0].i64[1] + 6) = selfCopy;
             buf.columns[1].i16[3] = 1024;
             buf.columns[1].i32[2] = v237;
             _os_log_impl(&dword_1C241C000, v240, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Unable to resample temporally consistent confidence buffer: %i", &buf, 0x1Cu);
@@ -1763,7 +1763,7 @@ LABEL_130:
         }
 
         v297(v296);
-        v58 = v287;
+        v58 = selfCopy;
         if (v237)
         {
           goto LABEL_166;
@@ -1802,7 +1802,7 @@ LABEL_130:
             buf.columns[0].i32[0] = 138543874;
             *(buf.columns[0].i64 + 4) = v253;
             buf.columns[0].i16[6] = 2048;
-            *(&buf.columns[0].i64[1] + 6) = v287;
+            *(&buf.columns[0].i64[1] + 6) = selfCopy;
             buf.columns[1].i16[3] = 1024;
             buf.columns[1].i32[2] = v248;
             _os_log_impl(&dword_1C241C000, v251, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Unable to resample confidence buffer: %i", &buf, 0x1Cu);
@@ -1816,7 +1816,7 @@ LABEL_130:
           buf.columns[0].i32[0] = 138543874;
           *(buf.columns[0].i64 + 4) = v256;
           buf.columns[0].i16[6] = 2048;
-          *(&buf.columns[0].i64[1] + 6) = v287;
+          *(&buf.columns[0].i64[1] + 6) = selfCopy;
           buf.columns[1].i16[3] = 1024;
           buf.columns[1].i32[2] = v248;
           _os_log_impl(&dword_1C241C000, v251, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Unable to resample confidence buffer: %i", &buf, 0x1Cu);
@@ -1831,7 +1831,7 @@ LABEL_130:
       }
 
       v293(v292);
-      v58 = v287;
+      v58 = selfCopy;
       if (v248)
       {
 LABEL_166:
@@ -1842,26 +1842,26 @@ LABEL_166:
       {
 LABEL_132:
         v159 = *(v58 + 600);
-        if (!v159 || [v159 rotationAngle] != a7 || objc_msgSend(*(v58 + 600), "mirrorMode"))
+        if (!v159 || [v159 rotationAngle] != needed || objc_msgSend(*(v58 + 600), "mirrorMode"))
         {
-          v160 = [[ARImageRotationTechnique alloc] initWithRotation:a7 mirror:0];
+          v160 = [[ARImageRotationTechnique alloc] initWithRotation:needed mirror:0];
           v161 = *(v58 + 600);
           *(v58 + 600) = v160;
 
-          v58 = v287;
+          v58 = selfCopy;
         }
 
         v162 = *(v58 + 608);
-        if (!v162 || [v162 rotationAngle] != a7 || objc_msgSend(*(v58 + 608), "mirrorMode"))
+        if (!v162 || [v162 rotationAngle] != needed || objc_msgSend(*(v58 + 608), "mirrorMode"))
         {
-          v163 = [[ARImageRotationTechnique alloc] initWithRotation:a7 mirror:0];
+          v163 = [[ARImageRotationTechnique alloc] initWithRotation:needed mirror:0];
           v164 = *(v58 + 608);
           *(v58 + 608) = v163;
 
-          v58 = v287;
+          v58 = selfCopy;
         }
 
-        [v286 timestamp];
+        [dataCopy timestamp];
         kdebug_trace();
         v284 = [v58 _rotatedPixelBufferImageData:*(v358[0] + 24)];
         v282 = [v58 _rotatedPixelBufferImageData:v350[3]];
@@ -1870,7 +1870,7 @@ LABEL_132:
         {
           v166 = [v58 _rotatedPixelBufferImageData:?];
 
-          v58 = v287;
+          v58 = selfCopy;
         }
 
         else
@@ -1888,12 +1888,12 @@ LABEL_132:
           v175 = 0;
         }
 
-        [v286 timestamp];
+        [dataCopy timestamp];
         kdebug_trace();
         if (v166 && v175)
         {
           v176 = [ARMLDepthData alloc];
-          [v286 timestamp];
+          [dataCopy timestamp];
           v178 = -[ARMLDepthData initWithTimestamp:depthBuffer:confidenceBuffer:source:](v176, "initWithTimestamp:depthBuffer:confidenceBuffer:source:", [v166 pixelBuffer], objc_msgSend(v175, "pixelBuffer"), 2, v177);
           -[ARMLDepthData setSingleFrameDepthBuffer:](v178, "setSingleFrameDepthBuffer:", [v284 pixelBuffer]);
           -[ARMLDepthData setSingleFrameConfidenceBuffer:](v178, "setSingleFrameConfidenceBuffer:", [v282 pixelBuffer]);
@@ -1902,33 +1902,33 @@ LABEL_132:
         else
         {
           v179 = [ARMLDepthData alloc];
-          [v286 timestamp];
+          [dataCopy timestamp];
           v178 = -[ARMLDepthData initWithTimestamp:depthBuffer:confidenceBuffer:source:](v179, "initWithTimestamp:depthBuffer:confidenceBuffer:source:", [v284 pixelBuffer], objc_msgSend(v282, "pixelBuffer"), 2, v180);
         }
 
         -[ARMLDepthData setConfidenceMap:](v178, "setConfidenceMap:", [v165 pixelBuffer]);
-        v181 = [v286 originalImage];
-        [(ARMLDepthData *)v178 setSourceImageData:v181];
+        originalImage = [dataCopy originalImage];
+        [(ARMLDepthData *)v178 setSourceImageData:originalImage];
 
-        v182 = v287->_adLogger;
-        v183 = [(ARMLDepthData *)v178 depthBuffer];
-        [v286 timestamp];
-        [(ADLogManager *)v182 logPixelBuffer:v183 name:"depthOutProcessed" timestamp:?];
-        v184 = v287->_adLogger;
-        v185 = [(ARMLDepthData *)v178 confidenceBuffer];
-        [v286 timestamp];
-        [(ADLogManager *)v184 logPixelBuffer:v185 name:"confidenceOutProcessed" timestamp:?];
-        v186 = v287->_adLogger;
-        v187 = [(ARMLDepthData *)v178 confidenceMap];
-        [v286 timestamp];
-        [(ADLogManager *)v186 logPixelBuffer:v187 name:"confidenceLevels" timestamp:?];
-        if (v287->_computeNormals)
+        v182 = selfCopy->_adLogger;
+        depthBuffer = [(ARMLDepthData *)v178 depthBuffer];
+        [dataCopy timestamp];
+        [(ADLogManager *)v182 logPixelBuffer:depthBuffer name:"depthOutProcessed" timestamp:?];
+        v184 = selfCopy->_adLogger;
+        confidenceBuffer = [(ARMLDepthData *)v178 confidenceBuffer];
+        [dataCopy timestamp];
+        [(ADLogManager *)v184 logPixelBuffer:confidenceBuffer name:"confidenceOutProcessed" timestamp:?];
+        v186 = selfCopy->_adLogger;
+        confidenceMap = [(ARMLDepthData *)v178 confidenceMap];
+        [dataCopy timestamp];
+        [(ADLogManager *)v186 logPixelBuffer:confidenceMap name:"confidenceLevels" timestamp:?];
+        if (selfCopy->_computeNormals)
         {
-          v188 = [(ARMLDepthData *)v178 singleFrameDepthBuffer];
-          v189 = v188;
-          if (v188)
+          singleFrameDepthBuffer = [(ARMLDepthData *)v178 singleFrameDepthBuffer];
+          v189 = singleFrameDepthBuffer;
+          if (singleFrameDepthBuffer)
           {
-            v190 = CVPixelBufferGetWidth(v188);
+            v190 = CVPixelBufferGetWidth(singleFrameDepthBuffer);
             v191 = CVPixelBufferGetHeight(v189);
             v192 = v190;
             v193 = v191;
@@ -1940,7 +1940,7 @@ LABEL_132:
             v193 = *(MEMORY[0x1E695F060] + 8);
           }
 
-          v205 = ARCreateCVPixelBufferFromPool(&v287->_normalPixelBufferPool, 1380410945, v287, @"Normals Map", v192, v193);
+          v205 = ARCreateCVPixelBufferFromPool(&selfCopy->_normalPixelBufferPool, 1380410945, selfCopy, @"Normals Map", v192, v193);
           v288[0] = MEMORY[0x1E69E9820];
           v288[1] = 3221225472;
           v289 = __143__ARDepthTechnique_createResultDataFromTensors_numberOfOutputTensors_imageDataForNeuralNetwork_inputImageData_rotationNeeded_regionOfInterest___block_invoke_83;
@@ -1948,13 +1948,13 @@ LABEL_132:
           v291 = v205;
           if (v205)
           {
-            [v286 cameraIntrinsics];
+            [dataCopy cameraIntrinsics];
             v278 = v207;
             v280 = v206;
-            [v286 timestamp];
+            [dataCopy timestamp];
             kdebug_trace();
-            v208 = [MEMORY[0x1E698C138] normalsFromDepth:-[ARMLDepthData depthBuffer](v178 focalLength:"depthBuffer") principalPoint:v205 normalsOutput:v287->_normalsHelperBuffer withHelperBuffer:{v280, *&v278, *(&v278 + 1)}];
-            [v286 timestamp];
+            v208 = [MEMORY[0x1E698C138] normalsFromDepth:-[ARMLDepthData depthBuffer](v178 focalLength:"depthBuffer") principalPoint:v205 normalsOutput:selfCopy->_normalsHelperBuffer withHelperBuffer:{v280, *&v278, *(&v278 + 1)}];
+            [dataCopy timestamp];
             kdebug_trace();
             if (v208)
             {
@@ -1975,7 +1975,7 @@ LABEL_132:
                   buf.columns[0].i32[0] = 138543874;
                   *(buf.columns[0].i64 + 4) = v213;
                   buf.columns[0].i16[6] = 2048;
-                  *(&buf.columns[0].i64[1] + 6) = v287;
+                  *(&buf.columns[0].i64[1] + 6) = selfCopy;
                   buf.columns[1].i16[3] = 2048;
                   buf.columns[1].i64[1] = v208;
                   _os_log_impl(&dword_1C241C000, v211, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Unable to generate normal map: %li", &buf, 0x20u);
@@ -1989,7 +1989,7 @@ LABEL_132:
                 buf.columns[0].i32[0] = 138543874;
                 *(buf.columns[0].i64 + 4) = v217;
                 buf.columns[0].i16[6] = 2048;
-                *(&buf.columns[0].i64[1] + 6) = v287;
+                *(&buf.columns[0].i64[1] + 6) = selfCopy;
                 buf.columns[1].i16[3] = 2048;
                 buf.columns[1].i64[1] = v208;
                 _os_log_impl(&dword_1C241C000, v211, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Unable to generate normal map: %li", &buf, 0x20u);
@@ -1999,10 +1999,10 @@ LABEL_132:
             else
             {
               [(ARMLDepthData *)v178 setNormalsBuffer:v205];
-              v214 = v287->_adLogger;
-              v215 = [(ARMLDepthData *)v178 normalsBuffer];
-              [v286 timestamp];
-              [(ADLogManager *)v214 logPixelBuffer:v215 name:"normalsOutProcessed" timestamp:?];
+              v214 = selfCopy->_adLogger;
+              normalsBuffer = [(ARMLDepthData *)v178 normalsBuffer];
+              [dataCopy timestamp];
+              [(ADLogManager *)v214 logPixelBuffer:normalsBuffer name:"normalsOutProcessed" timestamp:?];
             }
           }
 
@@ -2012,15 +2012,15 @@ LABEL_132:
         [(ARMLDepthData *)v178 timestamp];
         kdebug_trace();
         [(ARMLDepthData *)v178 timestamp];
-        v218 = [(ARMLDepthData *)v178 sourceImageData];
-        v219 = [v218 cameraType];
-        [v219 isEqualToString:*MEMORY[0x1E6986948]];
+        sourceImageData = [(ARMLDepthData *)v178 sourceImageData];
+        cameraType = [sourceImageData cameraType];
+        [cameraType isEqualToString:*MEMORY[0x1E6986948]];
         kdebug_trace();
 
         [(ARMLDepthData *)v178 timestamp];
-        [v286 cameraIntrinsics];
-        [v286 cameraIntrinsics];
-        [v286 cameraIntrinsics];
+        [dataCopy cameraIntrinsics];
+        [dataCopy cameraIntrinsics];
+        [dataCopy cameraIntrinsics];
         kdebug_trace();
         v35 = v178;
       }
@@ -2031,19 +2031,19 @@ LABEL_132:
       goto LABEL_191;
     }
 
-    if (a7 == -90)
+    if (needed == -90)
     {
       v90 = 3;
     }
 
-    else if (a7 == 180)
+    else if (needed == 180)
     {
       v90 = 2;
     }
 
     else
     {
-      v90 = a7 == 90;
+      v90 = needed == 90;
     }
 
     *v96.i64 = matrixForImageRotation(v90);
@@ -2052,26 +2052,26 @@ LABEL_132:
     v261 = v99;
     v263 = v98;
     v100 = MEMORY[0x1E698C198];
-    [v286 visionTransform];
+    [dataCopy visionTransform];
     [v100 transformMetersToMillimiters:?];
     v277 = v101;
     v270 = v103;
     *allocatora = v102;
     v269 = v104;
-    v105 = [v286 calibrationData];
+    calibrationData = [dataCopy calibrationData];
 
-    if (v105)
+    if (calibrationData)
     {
       v106 = objc_alloc(MEMORY[0x1E698C180]);
-      v107 = [v286 calibrationData];
-      v108 = [v106 ar_initWithImageData:v286 calibrationData:v107];
+      calibrationData2 = [dataCopy calibrationData];
+      v108 = [v106 ar_initWithImageData:dataCopy calibrationData:calibrationData2];
 
       v109 = objc_opt_new();
       [v108 setDistortionModel:v109];
 
       [v108 adjustForImageRotation:v90];
       [v108 referenceDimensions];
-      v110 = v287;
+      v110 = selfCopy;
       v112 = v111;
       [v108 referenceDimensions];
       v114 = var5;
@@ -2089,7 +2089,7 @@ LABEL_132:
     else
     {
       v108 = 0;
-      v110 = v287;
+      v110 = selfCopy;
     }
 
     previousDepthBuffer = v110->_previousDepthBuffer;
@@ -2097,11 +2097,11 @@ LABEL_132:
     if (!previousDepthBuffer || !v110->_previousConfidenceBuffer)
     {
       CVPixelBufferRelease(previousDepthBuffer);
-      v287->_previousDepthBuffer = CVPixelBufferRetain(*(v358[0] + 24));
-      CVPixelBufferRelease(v287->_previousConfidenceBuffer);
+      selfCopy->_previousDepthBuffer = CVPixelBufferRetain(*(v358[0] + 24));
+      CVPixelBufferRelease(selfCopy->_previousConfidenceBuffer);
       v131 = CVPixelBufferRetain(v350[3]);
-      v132 = v287;
-      v287->_previousConfidenceBuffer = v131;
+      v132 = selfCopy;
+      selfCopy->_previousConfidenceBuffer = v131;
 LABEL_129:
       *v132->_anon_210 = v277;
       *&v132->_anon_210[16] = *allocatora;
@@ -2109,13 +2109,13 @@ LABEL_129:
       *&v132->_anon_210[48] = v269;
       objc_storeStrong((&v132->super.super.super.super.isa + v119[113]), v108);
 
-      v58 = v287;
+      v58 = selfCopy;
       goto LABEL_130;
     }
 
     v120 = ARCreateCVPixelBufferFromPool(&v110->_outputTemporalConsistentDepthPixelBufferPool, 1717855600, v110, @"temporally consistent depth buffer", v13, v14);
     *(v326[0] + 24) = v120;
-    v121 = ARCreateCVPixelBufferFromPool(&v287->_outputTemporalConsistentConfidencePixelBufferPool, 1717855600, v287, @"temporally consistent confidence buffer", v13, v14);
+    v121 = ARCreateCVPixelBufferFromPool(&selfCopy->_outputTemporalConsistentConfidencePixelBufferPool, 1717855600, selfCopy, @"temporally consistent confidence buffer", v13, v14);
     v322[3] = v121;
     if (!*(v326[0] + 24) || !v121)
     {
@@ -2136,7 +2136,7 @@ LABEL_129:
           buf.columns[0].i32[0] = 138543618;
           *(buf.columns[0].i64 + 4) = v141;
           buf.columns[0].i16[6] = 2048;
-          *(&buf.columns[0].i64[1] + 6) = v287;
+          *(&buf.columns[0].i64[1] + 6) = selfCopy;
           _os_log_impl(&dword_1C241C000, v139, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Unable to create pixel buffer for generating optical flow result pixelbuffer", &buf, 0x16u);
         }
       }
@@ -2148,18 +2148,18 @@ LABEL_129:
         buf.columns[0].i32[0] = 138543618;
         *(buf.columns[0].i64 + 4) = v143;
         buf.columns[0].i16[6] = 2048;
-        *(&buf.columns[0].i64[1] + 6) = v287;
+        *(&buf.columns[0].i64[1] + 6) = selfCopy;
         _os_log_impl(&dword_1C241C000, v139, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Unable to create pixel buffer for generating optical flow result pixelbuffer", &buf, 0x16u);
       }
 
-      v132 = v287;
+      v132 = selfCopy;
       goto LABEL_129;
     }
 
-    os_unfair_lock_lock(&v287->_opticalFlowOutputBufferLock);
-    [v286 timestamp];
+    os_unfair_lock_lock(&selfCopy->_opticalFlowOutputBufferLock);
+    [dataCopy timestamp];
     kdebug_trace();
-    v363 = __invert_f4(*v287->_anon_210);
+    v363 = __invert_f4(*selfCopy->_anon_210);
     v122 = 0;
     v359 = v363;
     memset(&buf, 0, sizeof(buf));
@@ -2206,13 +2206,13 @@ LABEL_129:
     v268 = *buf.columns[0].i64;
     v262 = *buf.columns[3].i64;
     v264 = *buf.columns[2].i64;
-    previousWarpedDepthBuffer = v287->_previousWarpedDepthBuffer;
+    previousWarpedDepthBuffer = selfCopy->_previousWarpedDepthBuffer;
     if (previousWarpedDepthBuffer)
     {
-      v126 = CVPixelBufferGetWidth(v287->_previousWarpedDepthBuffer);
+      v126 = CVPixelBufferGetWidth(selfCopy->_previousWarpedDepthBuffer);
       v127 = CVPixelBufferGetHeight(previousWarpedDepthBuffer);
       v128 = v13 == v126 && v14 == v127;
-      v129 = v287;
+      v129 = selfCopy;
       if (v128)
       {
 LABEL_106:
@@ -2221,7 +2221,7 @@ LABEL_106:
         {
           v146 = CVPixelBufferGetWidth(v129->_previousWarpedConfidenceBuffer);
           v147 = CVPixelBufferGetHeight(previousWarpedConfidenceBuffer);
-          v148 = v287->_previousWarpedConfidenceBuffer;
+          v148 = selfCopy->_previousWarpedConfidenceBuffer;
           if (v13 == v146 && v14 == v147)
           {
             goto LABEL_115;
@@ -2234,19 +2234,19 @@ LABEL_106:
         }
 
         CVPixelBufferRelease(v148);
-        v148 = ARCreateCVPixelBufferFromPool(&v287->_outputTemporalConsistentConfidencePixelBufferPool, 1717855600, v287, @"temporally consistent depth buffer", v13, v14);
-        v287->_previousWarpedConfidenceBuffer = v148;
+        v148 = ARCreateCVPixelBufferFromPool(&selfCopy->_outputTemporalConsistentConfidencePixelBufferPool, 1717855600, selfCopy, @"temporally consistent depth buffer", v13, v14);
+        selfCopy->_previousWarpedConfidenceBuffer = v148;
 LABEL_115:
-        v150 = [(ADJasperColorPipeline *)v287->_pipeline warpPreviousDepth:v287->_previousDepthBuffer intoCurrentDepth:v287->_previousWarpedDepthBuffer previousConfidence:v287->_previousConfidenceBuffer intoCurrentConfidence:v148 usingPoseDelta:v287->_previousCameraCalibration previousCalibration:v108 currentCalibration:v268, v266, v264, v262];
-        if (!v150)
+        v262 = [(ADJasperColorPipeline *)selfCopy->_pipeline warpPreviousDepth:selfCopy->_previousDepthBuffer intoCurrentDepth:selfCopy->_previousWarpedDepthBuffer previousConfidence:selfCopy->_previousConfidenceBuffer intoCurrentConfidence:v148 usingPoseDelta:selfCopy->_previousCameraCalibration previousCalibration:v108 currentCalibration:v268, v266, v264, v262];
+        if (!v262)
         {
-          v150 = [(ADJasperColorPipeline *)v287->_pipeline fuseCurrentDepth:*(v358[0] + 24) previousDepth:v287->_previousWarpedDepthBuffer intoOutputDepth:*(v326[0] + 24) currentConfidence:v350[3] previousConfidence:v287->_previousWarpedConfidenceBuffer intoOutputConfidence:v322[3]];
+          v262 = [(ADJasperColorPipeline *)selfCopy->_pipeline fuseCurrentDepth:*(v358[0] + 24) previousDepth:selfCopy->_previousWarpedDepthBuffer intoOutputDepth:*(v326[0] + 24) currentConfidence:v350[3] previousConfidence:selfCopy->_previousWarpedConfidenceBuffer intoOutputConfidence:v322[3]];
         }
 
-        [v286 timestamp];
+        [dataCopy timestamp];
         kdebug_trace();
-        os_unfair_lock_unlock(&v287->_opticalFlowOutputBufferLock);
-        if (v150)
+        os_unfair_lock_unlock(&selfCopy->_opticalFlowOutputBufferLock);
+        if (v262)
         {
           if (ARShouldUseLogTypeError_onceToken_6 != -1)
           {
@@ -2265,9 +2265,9 @@ LABEL_115:
               buf.columns[0].i32[0] = 138543874;
               *(buf.columns[0].i64 + 4) = v155;
               buf.columns[0].i16[6] = 2048;
-              *(&buf.columns[0].i64[1] + 6) = v287;
+              *(&buf.columns[0].i64[1] + 6) = selfCopy;
               buf.columns[1].i16[3] = 2048;
-              buf.columns[1].i64[1] = v150;
+              buf.columns[1].i64[1] = v262;
               _os_log_impl(&dword_1C241C000, v153, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Unable to warp and fuse AppleDepth pipeline output: %li", &buf, 0x20u);
             }
           }
@@ -2279,30 +2279,30 @@ LABEL_115:
             buf.columns[0].i32[0] = 138543874;
             *(buf.columns[0].i64 + 4) = v158;
             buf.columns[0].i16[6] = 2048;
-            *(&buf.columns[0].i64[1] + 6) = v287;
+            *(&buf.columns[0].i64[1] + 6) = selfCopy;
             buf.columns[1].i16[3] = 2048;
-            buf.columns[1].i64[1] = v150;
+            buf.columns[1].i64[1] = v262;
             _os_log_impl(&dword_1C241C000, v153, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Unable to warp and fuse AppleDepth pipeline output: %li", &buf, 0x20u);
           }
 
-          v132 = v287;
+          v132 = selfCopy;
         }
 
         else
         {
-          CVPixelBufferRelease(v287->_previousDepthBuffer);
-          v287->_previousDepthBuffer = CVPixelBufferRetain(*(v326[0] + 24));
-          CVPixelBufferRelease(v287->_previousConfidenceBuffer);
+          CVPixelBufferRelease(selfCopy->_previousDepthBuffer);
+          selfCopy->_previousDepthBuffer = CVPixelBufferRetain(*(v326[0] + 24));
+          CVPixelBufferRelease(selfCopy->_previousConfidenceBuffer);
           v156 = CVPixelBufferRetain(v322[3]);
-          v132 = v287;
-          v287->_previousConfidenceBuffer = v156;
+          v132 = selfCopy;
+          selfCopy->_previousConfidenceBuffer = v156;
         }
 
         v119 = &OBJC_IVAR___ARReplaySensorPublic__sequenceURL;
         goto LABEL_129;
       }
 
-      v130 = v287->_previousWarpedDepthBuffer;
+      v130 = selfCopy->_previousWarpedDepthBuffer;
     }
 
     else
@@ -2311,9 +2311,9 @@ LABEL_115:
     }
 
     CVPixelBufferRelease(v130);
-    v144 = ARCreateCVPixelBufferFromPool(&v287->_outputTemporalConsistentDepthPixelBufferPool, 1717855600, v287, @"temporally consistent depth buffer", v13, v14);
-    v129 = v287;
-    v287->_previousWarpedDepthBuffer = v144;
+    v144 = ARCreateCVPixelBufferFromPool(&selfCopy->_outputTemporalConsistentDepthPixelBufferPool, 1717855600, selfCopy, @"temporally consistent depth buffer", v13, v14);
+    v129 = selfCopy;
+    selfCopy->_previousWarpedDepthBuffer = v144;
     goto LABEL_106;
   }
 
@@ -2335,11 +2335,11 @@ void __143__ARDepthTechnique_createResultDataFromTensors_numberOfOutputTensors_i
   CVPixelBufferRelease(v2);
 }
 
-- (id)_rotatedPixelBufferImageData:(__CVBuffer *)a3
+- (id)_rotatedPixelBufferImageData:(__CVBuffer *)data
 {
   v5 = objc_opt_new();
-  [v5 setPixelBuffer:a3];
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  [v5 setPixelBuffer:data];
+  PixelFormatType = CVPixelBufferGetPixelFormatType(data);
   v7 = &OBJC_IVAR___ARDepthTechnique__float32RotationTechnique;
   if (PixelFormatType == 1278226488)
   {
@@ -2351,16 +2351,16 @@ void __143__ARDepthTechnique_createResultDataFromTensors_numberOfOutputTensors_i
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v9.receiver = self;
   v9.super_class = ARDepthTechnique;
-  if ([(ARTechnique *)&v9 isEqual:v4])
+  if ([(ARTechnique *)&v9 isEqual:equalCopy])
   {
-    v5 = v4;
-    v6 = [(ARDepthTechnique *)self prioritization];
-    v7 = v6 == [v5 prioritization] && self->_temporalConsistencyMethod == v5[88];
+    v5 = equalCopy;
+    prioritization = [(ARDepthTechnique *)self prioritization];
+    v7 = prioritization == [v5 prioritization] && self->_temporalConsistencyMethod == v5[88];
   }
 
   else
@@ -2371,9 +2371,9 @@ void __143__ARDepthTechnique_createResultDataFromTensors_numberOfOutputTensors_i
   return v7;
 }
 
-+ (id)sceneDepthTechniqueForPrioritization:(int64_t)a3 temporalSmoothing:(BOOL)a4
++ (id)sceneDepthTechniqueForPrioritization:(int64_t)prioritization temporalSmoothing:(BOOL)smoothing
 {
-  v4 = a4;
+  smoothingCopy = smoothing;
   v6 = [ARKitUserDefaults BOOLForKey:@"com.apple.arkit.appleDepth.useLegacyDepthTechnique"];
   v7 = off_1E817A6A8;
   if (!v6)
@@ -2381,7 +2381,7 @@ void __143__ARDepthTechnique_createResultDataFromTensors_numberOfOutputTensors_i
     v7 = off_1E817AB80;
   }
 
-  v8 = [objc_alloc(*v7) initWithPrioritization:a3 temporalSmoothing:v4];
+  v8 = [objc_alloc(*v7) initWithPrioritization:prioritization temporalSmoothing:smoothingCopy];
 
   return v8;
 }

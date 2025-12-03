@@ -1,73 +1,73 @@
 @interface ICInlineAttachmentViewController
 - (ICInlineAttachment)attachment;
-- (ICInlineAttachmentViewController)initWithCoder:(id)a3;
-- (ICInlineAttachmentViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (ICInlineAttachmentViewController)initWithTextAttachment:(id)a3 forManualRendering:(BOOL)a4 layoutManager:(id)a5;
-- (ICInlineAttachmentViewController)initWithTextAttachment:(id)a3 forManualRendering:(BOOL)a4 layoutManager:(id)a5 initialCharacterIndex:(unint64_t)a6;
+- (ICInlineAttachmentViewController)initWithCoder:(id)coder;
+- (ICInlineAttachmentViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (ICInlineAttachmentViewController)initWithTextAttachment:(id)attachment forManualRendering:(BOOL)rendering layoutManager:(id)manager;
+- (ICInlineAttachmentViewController)initWithTextAttachment:(id)attachment forManualRendering:(BOOL)rendering layoutManager:(id)manager initialCharacterIndex:(unint64_t)index;
 - (ICInlineTextAttachment)textAttachment;
 - (NSLayoutManager)displayTextLayoutManager;
 - (NSLayoutManager)layoutManager;
 - (NSTextContainer)displayTextTextContainer;
 - (NSTextStorage)displayTextTextStorage;
 - (_NSRange)attachmentRange;
-- (_NSRange)selectedRangeWithinRange:(_NSRange)a3 inFindableString:(id)a4;
+- (_NSRange)selectedRangeWithinRange:(_NSRange)range inFindableString:(id)string;
 - (_NSRange)selectedSearchRange;
 - (id)inlineAttachmentView;
-- (id)rectsForRange:(_NSRange)a3 inFindableString:(id)a4;
-- (id)viewForRange:(_NSRange)a3 inFindableString:(id)a4;
-- (void)drawCharactersInRange:(_NSRange)a3 inFindableString:(id)a4 forContentView:(id)a5;
-- (void)layoutWithStyleAttributesOfCharacterIndex:(unint64_t)a3;
+- (id)rectsForRange:(_NSRange)range inFindableString:(id)string;
+- (id)viewForRange:(_NSRange)range inFindableString:(id)string;
+- (void)drawCharactersInRange:(_NSRange)range inFindableString:(id)string forContentView:(id)view;
+- (void)layoutWithStyleAttributesOfCharacterIndex:(unint64_t)index;
 - (void)loadView;
-- (void)redrawInlineAttachmentView:(id)a3;
-- (void)relayoutInlineAttachmentView:(id)a3;
-- (void)setHighlightPatternRegexFinder:(id)a3;
+- (void)redrawInlineAttachmentView:(id)view;
+- (void)relayoutInlineAttachmentView:(id)view;
+- (void)setHighlightPatternRegexFinder:(id)finder;
 - (void)updateDisplayTextTextStorage;
 @end
 
 @implementation ICInlineAttachmentViewController
 
-- (ICInlineAttachmentViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (ICInlineAttachmentViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   [MEMORY[0x277D36198] handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICInlineAttachmentViewController initWithNibName:bundle:]" simulateCrash:1 showAlert:0 format:@"ICInlineAttachmentViewController should never be initialized from nib."];
 
   return 0;
 }
 
-- (ICInlineAttachmentViewController)initWithCoder:(id)a3
+- (ICInlineAttachmentViewController)initWithCoder:(id)coder
 {
   [MEMORY[0x277D36198] handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICInlineAttachmentViewController initWithCoder:]" simulateCrash:1 showAlert:0 format:@"ICInlineAttachmentViewController should never be archived."];
 
   return 0;
 }
 
-- (ICInlineAttachmentViewController)initWithTextAttachment:(id)a3 forManualRendering:(BOOL)a4 layoutManager:(id)a5
+- (ICInlineAttachmentViewController)initWithTextAttachment:(id)attachment forManualRendering:(BOOL)rendering layoutManager:(id)manager
 {
-  v8 = a3;
-  v9 = a5;
+  attachmentCopy = attachment;
+  managerCopy = manager;
   v14.receiver = self;
   v14.super_class = ICInlineAttachmentViewController;
   v10 = [(ICInlineAttachmentViewController *)&v14 initWithNibName:0 bundle:0];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_textAttachment, v8);
-    v12 = [v8 attachment];
-    objc_storeWeak(&v11->_attachment, v12);
+    objc_storeWeak(&v10->_textAttachment, attachmentCopy);
+    attachment = [attachmentCopy attachment];
+    objc_storeWeak(&v11->_attachment, attachment);
 
-    v11->_forManualRendering = a4;
-    objc_storeWeak(&v11->_layoutManager, v9);
+    v11->_forManualRendering = rendering;
+    objc_storeWeak(&v11->_layoutManager, managerCopy);
     v11->_initialCharIndex = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   return v11;
 }
 
-- (ICInlineAttachmentViewController)initWithTextAttachment:(id)a3 forManualRendering:(BOOL)a4 layoutManager:(id)a5 initialCharacterIndex:(unint64_t)a6
+- (ICInlineAttachmentViewController)initWithTextAttachment:(id)attachment forManualRendering:(BOOL)rendering layoutManager:(id)manager initialCharacterIndex:(unint64_t)index
 {
-  result = [(ICInlineAttachmentViewController *)self initWithTextAttachment:a3 forManualRendering:a4 layoutManager:a5];
+  result = [(ICInlineAttachmentViewController *)self initWithTextAttachment:attachment forManualRendering:rendering layoutManager:manager];
   if (result)
   {
-    result->_initialCharIndex = a6;
+    result->_initialCharIndex = index;
   }
 
   return result;
@@ -75,28 +75,28 @@
 
 - (void)loadView
 {
-  v3 = [(ICInlineAttachmentViewController *)self layoutManager];
-  v4 = [v3 textContainers];
-  v13 = [v4 lastObject];
+  layoutManager = [(ICInlineAttachmentViewController *)self layoutManager];
+  textContainers = [layoutManager textContainers];
+  lastObject = [textContainers lastObject];
 
-  LOBYTE(v4) = [(ICInlineAttachmentViewController *)self forManualRendering];
-  v5 = [(ICInlineAttachmentViewController *)self textAttachment];
-  v6 = v5;
-  if (v4)
+  LOBYTE(textContainers) = [(ICInlineAttachmentViewController *)self forManualRendering];
+  textAttachment = [(ICInlineAttachmentViewController *)self textAttachment];
+  v6 = textAttachment;
+  if (textContainers)
   {
-    [v5 newlyCreatedViewForManualRenderingInTextContainer:v13];
+    [textAttachment newlyCreatedViewForManualRenderingInTextContainer:lastObject];
   }
 
   else
   {
-    [v5 newlyCreatedViewForTextContainer:v13];
+    [textAttachment newlyCreatedViewForTextContainer:lastObject];
   }
   v7 = ;
   [(ICInlineAttachmentViewController *)self setView:v7];
 
   [(ICInlineAttachmentViewController *)self layoutWithStyleAttributesOfCharacterIndex:[(ICInlineAttachmentViewController *)self initialCharIndex]];
   objc_opt_class();
-  v8 = [(ICInlineAttachmentViewController *)self view];
+  view = [(ICInlineAttachmentViewController *)self view];
   v9 = ICDynamicCast();
 
   [v9 setDelegate:self];
@@ -116,7 +116,7 @@
   if ([(ICInlineAttachmentViewController *)self isViewLoaded])
   {
     objc_opt_class();
-    v3 = [(ICInlineAttachmentViewController *)self view];
+    view = [(ICInlineAttachmentViewController *)self view];
     v4 = ICDynamicCast();
   }
 
@@ -139,11 +139,11 @@
     }
 
     objc_opt_class();
-    v4 = [(ICInlineAttachmentViewController *)self view];
+    view = [(ICInlineAttachmentViewController *)self view];
     WeakRetained = ICDynamicCast();
 
-    v5 = [WeakRetained textAttachment];
-    objc_storeWeak(&self->_textAttachment, v5);
+    textAttachment = [WeakRetained textAttachment];
+    objc_storeWeak(&self->_textAttachment, textAttachment);
   }
 
 LABEL_5:
@@ -152,14 +152,14 @@ LABEL_5:
   return v6;
 }
 
-- (void)layoutWithStyleAttributesOfCharacterIndex:(unint64_t)a3
+- (void)layoutWithStyleAttributesOfCharacterIndex:(unint64_t)index
 {
   objc_opt_class();
-  v5 = [(ICInlineAttachmentViewController *)self layoutManager];
-  v6 = [v5 textStorage];
+  layoutManager = [(ICInlineAttachmentViewController *)self layoutManager];
+  textStorage = [layoutManager textStorage];
   v7 = ICDynamicCast();
 
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = os_log_create("com.apple.notes", "UI");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -172,19 +172,19 @@ LABEL_5:
 
   else
   {
-    v9 = [v7 attributesAtIndex:a3 effectiveRange:0];
+    v9 = [v7 attributesAtIndex:index effectiveRange:0];
   }
 
   objc_opt_class();
-  v10 = [(ICInlineAttachmentViewController *)self view];
+  view = [(ICInlineAttachmentViewController *)self view];
   v11 = ICDynamicCast();
 
   objc_opt_class();
-  v12 = [v7 styler];
+  styler = [v7 styler];
   v13 = ICDynamicCast();
 
-  v14 = [v13 authorHighlightsController];
-  v15 = [v14 isPerformingHighlightUpdatesForTextStorage:v7];
+  authorHighlightsController = [v13 authorHighlightsController];
+  v15 = [authorHighlightsController isPerformingHighlightUpdatesForTextStorage:v7];
 
   if (v15)
   {
@@ -197,14 +197,14 @@ LABEL_5:
   }
 }
 
-- (void)setHighlightPatternRegexFinder:(id)a3
+- (void)setHighlightPatternRegexFinder:(id)finder
 {
-  v4 = a3;
+  finderCopy = finder;
   objc_opt_class();
-  v5 = [(ICInlineAttachmentViewController *)self view];
+  view = [(ICInlineAttachmentViewController *)self view];
   v6 = ICDynamicCast();
 
-  [v6 setHighlightPatternRegexFinder:v4];
+  [v6 setHighlightPatternRegexFinder:finderCopy];
 }
 
 - (NSTextContainer)displayTextTextContainer
@@ -234,8 +234,8 @@ LABEL_5:
     self->_displayTextLayoutManager = v4;
 
     v6 = self->_displayTextLayoutManager;
-    v7 = [(ICInlineAttachmentViewController *)self displayTextTextContainer];
-    [(NSLayoutManager *)v6 addTextContainer:v7];
+    displayTextTextContainer = [(ICInlineAttachmentViewController *)self displayTextTextContainer];
+    [(NSLayoutManager *)v6 addTextContainer:displayTextTextContainer];
 
     displayTextLayoutManager = self->_displayTextLayoutManager;
   }
@@ -253,8 +253,8 @@ LABEL_5:
     self->_displayTextTextStorage = v4;
 
     v6 = self->_displayTextTextStorage;
-    v7 = [(ICInlineAttachmentViewController *)self displayTextLayoutManager];
-    [(NSTextStorage *)v6 addLayoutManager:v7];
+    displayTextLayoutManager = [(ICInlineAttachmentViewController *)self displayTextLayoutManager];
+    [(NSTextStorage *)v6 addLayoutManager:displayTextLayoutManager];
 
     displayTextTextStorage = self->_displayTextTextStorage;
   }
@@ -264,48 +264,48 @@ LABEL_5:
 
 - (void)updateDisplayTextTextStorage
 {
-  v3 = [(ICInlineAttachmentViewController *)self attachment];
-  v4 = [v3 uiModel];
-  v5 = [(ICInlineAttachmentViewController *)self inlineAttachmentView];
-  v6 = [v5 surroundingAttributes];
-  v28 = [v4 attributedStringWithSurroundingAttributes:v6 formatter:0];
+  attachment = [(ICInlineAttachmentViewController *)self attachment];
+  uiModel = [attachment uiModel];
+  inlineAttachmentView = [(ICInlineAttachmentViewController *)self inlineAttachmentView];
+  surroundingAttributes = [inlineAttachmentView surroundingAttributes];
+  v28 = [uiModel attributedStringWithSurroundingAttributes:surroundingAttributes formatter:0];
 
-  v7 = [(ICInlineAttachmentViewController *)self displayTextTextStorage];
-  LOBYTE(v4) = [v7 isEqual:v28];
+  displayTextTextStorage = [(ICInlineAttachmentViewController *)self displayTextTextStorage];
+  LOBYTE(uiModel) = [displayTextTextStorage isEqual:v28];
 
-  if ((v4 & 1) == 0)
+  if ((uiModel & 1) == 0)
   {
-    v8 = [(ICInlineAttachmentViewController *)self displayTextTextStorage];
-    v9 = [(ICInlineAttachmentViewController *)self displayTextTextStorage];
-    v10 = [v9 ic_range];
-    [v8 replaceCharactersInRange:v10 withAttributedString:{v11, v28}];
+    displayTextTextStorage2 = [(ICInlineAttachmentViewController *)self displayTextTextStorage];
+    displayTextTextStorage3 = [(ICInlineAttachmentViewController *)self displayTextTextStorage];
+    ic_range = [displayTextTextStorage3 ic_range];
+    [displayTextTextStorage2 replaceCharactersInRange:ic_range withAttributedString:{v11, v28}];
   }
 
-  v12 = [(ICInlineAttachmentViewController *)self displayTextTextContainer];
-  [v12 size];
+  displayTextTextContainer = [(ICInlineAttachmentViewController *)self displayTextTextContainer];
+  [displayTextTextContainer size];
   v14 = v13;
   v16 = v15;
-  v17 = [(ICInlineAttachmentViewController *)self view];
-  [v17 bounds];
+  view = [(ICInlineAttachmentViewController *)self view];
+  [view bounds];
   v19 = v18;
   v21 = v20;
 
   if (v14 != v19 || v16 != v21)
   {
-    v22 = [(ICInlineAttachmentViewController *)self view];
-    [v22 bounds];
+    view2 = [(ICInlineAttachmentViewController *)self view];
+    [view2 bounds];
     v24 = v23;
     v26 = v25;
-    v27 = [(ICInlineAttachmentViewController *)self displayTextTextContainer];
-    [v27 setSize:{v24, v26}];
+    displayTextTextContainer2 = [(ICInlineAttachmentViewController *)self displayTextTextContainer];
+    [displayTextTextContainer2 setSize:{v24, v26}];
   }
 }
 
 - (_NSRange)attachmentRange
 {
-  v3 = [(ICInlineAttachmentViewController *)self inlineAttachmentView];
-  v4 = [v3 textAttachment];
-  v5 = [v4 attachment];
+  inlineAttachmentView = [(ICInlineAttachmentViewController *)self inlineAttachmentView];
+  textAttachment = [inlineAttachmentView textAttachment];
+  attachment = [textAttachment attachment];
 
   v29 = 0;
   v30 = &v29;
@@ -314,35 +314,35 @@ LABEL_5:
   v33 = xmmword_2154BBE70;
   if ([(ICInlineAttachmentViewController *)self initialCharIndex]!= 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [(ICInlineAttachmentViewController *)self initialCharIndex];
-    v7 = [(ICInlineAttachmentViewController *)self layoutManager];
-    v8 = [v7 textStorage];
-    v9 = [v5 managedObjectContext];
+    initialCharIndex = [(ICInlineAttachmentViewController *)self initialCharIndex];
+    layoutManager = [(ICInlineAttachmentViewController *)self layoutManager];
+    textStorage = [layoutManager textStorage];
+    managedObjectContext = [attachment managedObjectContext];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __51__ICInlineAttachmentViewController_attachmentRange__block_invoke;
     v26[3] = &unk_2781AEA68;
-    v27 = v5;
+    v27 = attachment;
     v28 = &v29;
-    [v8 ic_enumerateAbstractAttachmentsInContext:v9 range:v6 options:1 usingBlock:{0x100000, v26}];
+    [textStorage ic_enumerateAbstractAttachmentsInContext:managedObjectContext range:initialCharIndex options:1 usingBlock:{0x100000, v26}];
   }
 
   if (v30[4] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v10 = [(ICInlineAttachmentViewController *)self layoutManager];
-    v11 = [v10 textStorage];
-    v12 = [v11 length];
+    layoutManager2 = [(ICInlineAttachmentViewController *)self layoutManager];
+    textStorage2 = [layoutManager2 textStorage];
+    v12 = [textStorage2 length];
 
-    v13 = [(ICInlineAttachmentViewController *)self layoutManager];
-    v14 = [v13 textStorage];
-    v15 = [v5 managedObjectContext];
+    layoutManager3 = [(ICInlineAttachmentViewController *)self layoutManager];
+    textStorage3 = [layoutManager3 textStorage];
+    managedObjectContext2 = [attachment managedObjectContext];
     v20 = MEMORY[0x277D85DD0];
     v21 = 3221225472;
     v22 = __51__ICInlineAttachmentViewController_attachmentRange__block_invoke_2;
     v23 = &unk_2781AEA68;
-    v24 = v5;
+    v24 = attachment;
     v25 = &v29;
-    [v14 ic_enumerateAbstractAttachmentsInContext:v15 range:0 options:v12 usingBlock:{0x100000, &v20}];
+    [textStorage3 ic_enumerateAbstractAttachmentsInContext:managedObjectContext2 range:0 options:v12 usingBlock:{0x100000, &v20}];
   }
 
   if ([(ICInlineAttachmentViewController *)self initialCharIndex:v20]== 0x7FFFFFFFFFFFFFFFLL)
@@ -387,38 +387,38 @@ uint64_t __51__ICInlineAttachmentViewController_attachmentRange__block_invoke_2(
   return result;
 }
 
-- (void)redrawInlineAttachmentView:(id)a3
+- (void)redrawInlineAttachmentView:(id)view
 {
-  v4 = a3;
-  v5 = [(ICInlineAttachmentViewController *)self inlineAttachmentView];
+  viewCopy = view;
+  inlineAttachmentView = [(ICInlineAttachmentViewController *)self inlineAttachmentView];
 
-  if (v5 == v4)
+  if (inlineAttachmentView == viewCopy)
   {
-    v6 = [(ICInlineAttachmentViewController *)self attachmentRange];
-    if (v6 != 0x7FFFFFFFFFFFFFFFLL)
+    attachmentRange = [(ICInlineAttachmentViewController *)self attachmentRange];
+    if (attachmentRange != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v8 = v6;
+      v8 = attachmentRange;
       v9 = v7;
-      v10 = [(ICInlineAttachmentViewController *)self layoutManager];
-      [v10 invalidateDisplayForCharacterRange:{v8, v9}];
+      layoutManager = [(ICInlineAttachmentViewController *)self layoutManager];
+      [layoutManager invalidateDisplayForCharacterRange:{v8, v9}];
     }
   }
 }
 
-- (void)relayoutInlineAttachmentView:(id)a3
+- (void)relayoutInlineAttachmentView:(id)view
 {
-  v4 = a3;
-  v5 = [(ICInlineAttachmentViewController *)self inlineAttachmentView];
+  viewCopy = view;
+  inlineAttachmentView = [(ICInlineAttachmentViewController *)self inlineAttachmentView];
 
-  if (v5 == v4)
+  if (inlineAttachmentView == viewCopy)
   {
-    v6 = [(ICInlineAttachmentViewController *)self attachmentRange];
-    if (v6 != 0x7FFFFFFFFFFFFFFFLL)
+    attachmentRange = [(ICInlineAttachmentViewController *)self attachmentRange];
+    if (attachmentRange != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v8 = v6;
+      v8 = attachmentRange;
       v9 = v7;
-      v10 = [(ICInlineAttachmentViewController *)self layoutManager];
-      [v10 invalidateLayoutForCharacterRange:v8 actualCharacterRange:{v9, 0}];
+      layoutManager = [(ICInlineAttachmentViewController *)self layoutManager];
+      [layoutManager invalidateLayoutForCharacterRange:v8 actualCharacterRange:{v9, 0}];
     }
   }
 }
@@ -447,47 +447,47 @@ uint64_t __51__ICInlineAttachmentViewController_attachmentRange__block_invoke_2(
   return result;
 }
 
-- (id)viewForRange:(_NSRange)a3 inFindableString:(id)a4
+- (id)viewForRange:(_NSRange)range inFindableString:(id)string
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
-  v8 = [(ICInlineAttachmentViewController *)self attachment];
-  [v8 displayTextRangeForSearchRange:location inSearchableString:{length, v7}];
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  attachment = [(ICInlineAttachmentViewController *)self attachment];
+  [attachment displayTextRangeForSearchRange:location inSearchableString:{length, stringCopy}];
   v10 = v9;
 
   if (v10)
   {
-    v11 = [(ICInlineAttachmentViewController *)self view];
+    view = [(ICInlineAttachmentViewController *)self view];
   }
 
   else
   {
-    v11 = 0;
+    view = 0;
   }
 
-  return v11;
+  return view;
 }
 
-- (id)rectsForRange:(_NSRange)a3 inFindableString:(id)a4
+- (id)rectsForRange:(_NSRange)range inFindableString:(id)string
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v28[1] = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = [(ICInlineAttachmentViewController *)self attachment];
-  v9 = [v8 displayTextRangeForSearchRange:location inSearchableString:{length, v7}];
+  stringCopy = string;
+  attachment = [(ICInlineAttachmentViewController *)self attachment];
+  v9 = [attachment displayTextRangeForSearchRange:location inSearchableString:{length, stringCopy}];
   v11 = v10;
 
   v26 = 0;
   v27 = 0;
   [(ICInlineAttachmentViewController *)self updateDisplayTextTextStorage];
-  v12 = [(ICInlineAttachmentViewController *)self displayTextLayoutManager];
-  [v12 characterRangeForGlyphRange:v9 actualGlyphRange:{v11, &v26}];
+  displayTextLayoutManager = [(ICInlineAttachmentViewController *)self displayTextLayoutManager];
+  [displayTextLayoutManager characterRangeForGlyphRange:v9 actualGlyphRange:{v11, &v26}];
 
-  v13 = [(ICInlineAttachmentViewController *)self displayTextLayoutManager];
-  v14 = [(ICInlineAttachmentViewController *)self displayTextTextContainer];
-  [v13 boundingRectForGlyphRange:v26 inTextContainer:{v27, v14}];
+  displayTextLayoutManager2 = [(ICInlineAttachmentViewController *)self displayTextLayoutManager];
+  displayTextTextContainer = [(ICInlineAttachmentViewController *)self displayTextTextContainer];
+  [displayTextLayoutManager2 boundingRectForGlyphRange:v26 inTextContainer:{v27, displayTextTextContainer}];
   v16 = v15;
   v18 = v17;
   v20 = v19;
@@ -500,37 +500,37 @@ uint64_t __51__ICInlineAttachmentViewController_attachmentRange__block_invoke_2(
   return v24;
 }
 
-- (void)drawCharactersInRange:(_NSRange)a3 inFindableString:(id)a4 forContentView:(id)a5
+- (void)drawCharactersInRange:(_NSRange)range inFindableString:(id)string forContentView:(id)view
 {
-  length = a3.length;
-  location = a3.location;
-  v8 = a4;
-  v9 = [(ICInlineAttachmentViewController *)self displayTextTextContainer];
-  [v9 size];
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  displayTextTextContainer = [(ICInlineAttachmentViewController *)self displayTextTextContainer];
+  [displayTextTextContainer size];
   v11 = v10 * -0.5;
-  v12 = [(ICInlineAttachmentViewController *)self displayTextTextContainer];
-  [v12 lineFragmentPadding];
+  displayTextTextContainer2 = [(ICInlineAttachmentViewController *)self displayTextTextContainer];
+  [displayTextTextContainer2 lineFragmentPadding];
   v14 = v11 - v13;
 
-  v15 = [(ICInlineAttachmentViewController *)self attachment];
-  v16 = [v15 displayTextRangeForSearchRange:location inSearchableString:{length, v8}];
+  attachment = [(ICInlineAttachmentViewController *)self attachment];
+  v16 = [attachment displayTextRangeForSearchRange:location inSearchableString:{length, stringCopy}];
   v18 = v17;
 
   v21 = 0;
   v22 = 0;
   [(ICInlineAttachmentViewController *)self updateDisplayTextTextStorage];
-  v19 = [(ICInlineAttachmentViewController *)self displayTextLayoutManager];
-  [v19 characterRangeForGlyphRange:v16 actualGlyphRange:{v18, &v21}];
+  displayTextLayoutManager = [(ICInlineAttachmentViewController *)self displayTextLayoutManager];
+  [displayTextLayoutManager characterRangeForGlyphRange:v16 actualGlyphRange:{v18, &v21}];
 
-  v20 = [(ICInlineAttachmentViewController *)self displayTextLayoutManager];
-  [v20 drawGlyphsForGlyphRange:v21 atPoint:{v22, 0.0, v14}];
+  displayTextLayoutManager2 = [(ICInlineAttachmentViewController *)self displayTextLayoutManager];
+  [displayTextLayoutManager2 drawGlyphsForGlyphRange:v21 atPoint:{v22, 0.0, v14}];
 }
 
-- (_NSRange)selectedRangeWithinRange:(_NSRange)a3 inFindableString:(id)a4
+- (_NSRange)selectedRangeWithinRange:(_NSRange)range inFindableString:(id)string
 {
-  length = a3.length;
-  location = a3.location;
-  v6.location = [(ICInlineAttachmentViewController *)self selectedSearchRange:a3.location];
+  length = range.length;
+  location = range.location;
+  v6.location = [(ICInlineAttachmentViewController *)self selectedSearchRange:range.location];
   v7.location = location;
   v7.length = length;
 

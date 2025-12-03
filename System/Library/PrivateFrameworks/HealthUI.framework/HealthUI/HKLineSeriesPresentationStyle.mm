@@ -1,22 +1,22 @@
 @interface HKLineSeriesPresentationStyle
-- (void)setSineWaveSmoothingFactor:(double)a3;
+- (void)setSineWaveSmoothingFactor:(double)factor;
 @end
 
 @implementation HKLineSeriesPresentationStyle
 
-- (void)setSineWaveSmoothingFactor:(double)a3
+- (void)setSineWaveSmoothingFactor:(double)factor
 {
-  if (a3 >= 0.5)
+  if (factor >= 0.5)
   {
     [HKLineSeriesPresentationStyle setSineWaveSmoothingFactor:];
   }
 
-  if (a3 < 0.0)
+  if (factor < 0.0)
   {
     [HKLineSeriesPresentationStyle setSineWaveSmoothingFactor:];
   }
 
-  self->_sineWaveSmoothingFactor = a3;
+  self->_sineWaveSmoothingFactor = factor;
 }
 
 - (void)setSineWaveSmoothingFactor:.cold.1()

@@ -1,6 +1,6 @@
 @interface MTRRVCOperationalStateClusterOperationalErrorEvent
 - (MTRRVCOperationalStateClusterOperationalErrorEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -21,11 +21,11 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRRVCOperationalStateClusterOperationalErrorEvent);
-  v5 = [(MTRRVCOperationalStateClusterOperationalErrorEvent *)self errorState];
-  [(MTRRVCOperationalStateClusterOperationalErrorEvent *)v4 setErrorState:v5];
+  errorState = [(MTRRVCOperationalStateClusterOperationalErrorEvent *)self errorState];
+  [(MTRRVCOperationalStateClusterOperationalErrorEvent *)v4 setErrorState:errorState];
 
   return v4;
 }

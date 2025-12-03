@@ -1,7 +1,7 @@
 @interface PXPhotoKitAssetCollectionCreateMemoryActionPerformer
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4;
-+ (id)createBarButtonItemForAssetCollectionReference:(id)a3 withTarget:(id)a4 action:(SEL)a5;
-+ (id)localizedTitleForUseCase:(unint64_t)a3 assetCollectionReference:(id)a4 withInputs:(id)a5;
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs;
++ (id)createBarButtonItemForAssetCollectionReference:(id)reference withTarget:(id)target action:(SEL)action;
++ (id)localizedTitleForUseCase:(unint64_t)case assetCollectionReference:(id)reference withInputs:(id)inputs;
 - (void)performBackgroundTask;
 - (void)performUserInteractionTask;
 @end
@@ -10,23 +10,23 @@
 
 - (void)performBackgroundTask
 {
-  v3 = [(PXAssetCollectionActionPerformer *)self assetCollection];
-  v4 = [(PXPhotoKitAssetCollectionActionPerformer *)self displayTitleInfo];
-  v5 = [(PXPhotoKitAssetCollectionActionPerformer *)self people];
+  assetCollection = [(PXAssetCollectionActionPerformer *)self assetCollection];
+  displayTitleInfo = [(PXPhotoKitAssetCollectionActionPerformer *)self displayTitleInfo];
+  people = [(PXPhotoKitAssetCollectionActionPerformer *)self people];
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x2020000000;
   v17 = 0;
-  v6 = [v3 photoLibrary];
+  photoLibrary = [assetCollection photoLibrary];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __77__PXPhotoKitAssetCollectionCreateMemoryActionPerformer_performBackgroundTask__block_invoke;
   v11[3] = &unk_1E77448A8;
-  v7 = v3;
+  v7 = assetCollection;
   v12 = v7;
-  v8 = v4;
+  v8 = displayTitleInfo;
   v13 = v8;
-  v9 = v5;
+  v9 = people;
   v14 = v9;
   v15 = v16;
   v10[0] = MEMORY[0x1E69E9820];
@@ -35,7 +35,7 @@
   v10[3] = &unk_1E7730900;
   v10[4] = self;
   v10[5] = v16;
-  [v6 performChanges:v11 completionHandler:v10];
+  [photoLibrary performChanges:v11 completionHandler:v10];
 
   _Block_object_dispose(v16, 8);
 }
@@ -67,8 +67,8 @@ uint64_t __77__PXPhotoKitAssetCollectionCreateMemoryActionPerformer_performBackg
   v9[2] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E6991F28];
   v8[0] = *MEMORY[0x1E6991E08];
-  v4 = [(PXAssetCollectionActionPerformer *)self assetCollection];
-  v9[0] = v4;
+  assetCollection = [(PXAssetCollectionActionPerformer *)self assetCollection];
+  v9[0] = assetCollection;
   v8[1] = *MEMORY[0x1E6991E20];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
@@ -79,48 +79,48 @@ uint64_t __77__PXPhotoKitAssetCollectionCreateMemoryActionPerformer_performBackg
   [(PXActionPerformer *)self completeUserInteractionTaskWithSuccess:1 error:0];
 }
 
-+ (id)localizedTitleForUseCase:(unint64_t)a3 assetCollectionReference:(id)a4 withInputs:(id)a5
++ (id)localizedTitleForUseCase:(unint64_t)case assetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  v7 = a4;
-  v8 = a5;
-  if (a3 > 2)
+  referenceCopy = reference;
+  inputsCopy = inputs;
+  if (case > 2)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = PXLocalizedStringFromTable(off_1E7730920[a3], @"PhotosUICore");
+    v9 = PXLocalizedStringFromTable(off_1E7730920[case], @"PhotosUICore");
   }
 
   return v9;
 }
 
-+ (id)createBarButtonItemForAssetCollectionReference:(id)a3 withTarget:(id)a4 action:(SEL)a5
++ (id)createBarButtonItemForAssetCollectionReference:(id)reference withTarget:(id)target action:(SEL)action
 {
   v6 = MEMORY[0x1E69DC708];
-  v7 = a4;
-  v8 = [[v6 alloc] initWithBarButtonSystemItem:4 target:v7 action:a5];
+  targetCopy = target;
+  v8 = [[v6 alloc] initWithBarButtonSystemItem:4 target:targetCopy action:action];
 
   return v8;
 }
 
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  v6 = [a3 assetCollection];
-  if (v6)
+  assetCollection = [reference assetCollection];
+  if (assetCollection)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v13 = objc_opt_class();
       v14 = NSStringFromClass(v13);
-      v15 = [v6 px_descriptionForAssertionMessage];
-      [v12 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:1429 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"assetCollectionReference.assetCollection", v14, v15}];
+      px_descriptionForAssertionMessage = [assetCollection px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:1429 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"assetCollectionReference.assetCollection", v14, px_descriptionForAssertionMessage}];
     }
 
-    if ([v6 assetCollectionType] != 7)
+    if ([assetCollection assetCollectionType] != 7)
     {
       objc_opt_class();
       v7 = objc_opt_isKindOfClass() ^ 1;
@@ -130,10 +130,10 @@ uint64_t __77__PXPhotoKitAssetCollectionCreateMemoryActionPerformer_performBackg
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    [v9 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:1429 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"assetCollectionReference.assetCollection", v11}];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:1429 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"assetCollectionReference.assetCollection", v11}];
   }
 
   v7 = 0;

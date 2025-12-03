@@ -143,92 +143,92 @@
 
 - (double)toEdgeInsets
 {
-  [objc_msgSend(a1 objectForKeyedSubscript:{@"top", "toDouble"}];
+  [objc_msgSend(self objectForKeyedSubscript:{@"top", "toDouble"}];
   v3 = v2;
-  [objc_msgSend(a1 objectForKeyedSubscript:{@"left", "toDouble"}];
-  [objc_msgSend(a1 objectForKeyedSubscript:{@"bottom", "toDouble"}];
-  [objc_msgSend(a1 objectForKeyedSubscript:{@"right", "toDouble"}];
+  [objc_msgSend(self objectForKeyedSubscript:{@"left", "toDouble"}];
+  [objc_msgSend(self objectForKeyedSubscript:{@"bottom", "toDouble"}];
+  [objc_msgSend(self objectForKeyedSubscript:{@"right", "toDouble"}];
   return v3;
 }
 
 - (double)toLocationCoordinate2D
 {
-  [objc_msgSend(a1 objectForKeyedSubscript:{@"latitude", "toDouble"}];
+  [objc_msgSend(self objectForKeyedSubscript:{@"latitude", "toDouble"}];
   v3 = v2;
-  [objc_msgSend(a1 objectForKeyedSubscript:{@"longitude", "toDouble"}];
+  [objc_msgSend(self objectForKeyedSubscript:{@"longitude", "toDouble"}];
   return v3;
 }
 
 - (double)toCoordinateRegion
 {
-  [objc_msgSend(a1 objectForKeyedSubscript:{@"latitude", "toDouble"}];
+  [objc_msgSend(self objectForKeyedSubscript:{@"latitude", "toDouble"}];
   v3 = v2;
-  [objc_msgSend(a1 objectForKeyedSubscript:{@"longitude", "toDouble"}];
-  [objc_msgSend(a1 objectForKeyedSubscript:{@"latitudeDelta", "toDouble"}];
-  [objc_msgSend(a1 objectForKeyedSubscript:{@"longitudeDelta", "toDouble"}];
+  [objc_msgSend(self objectForKeyedSubscript:{@"longitude", "toDouble"}];
+  [objc_msgSend(self objectForKeyedSubscript:{@"latitudeDelta", "toDouble"}];
+  [objc_msgSend(self objectForKeyedSubscript:{@"longitudeDelta", "toDouble"}];
   return v3;
 }
 
 - (double)toOffset
 {
-  [objc_msgSend(a1 objectForKeyedSubscript:{@"horizontal", "toDouble"}];
+  [objc_msgSend(self objectForKeyedSubscript:{@"horizontal", "toDouble"}];
   v3 = v2;
-  [objc_msgSend(a1 objectForKeyedSubscript:{@"vertical", "toDouble"}];
+  [objc_msgSend(self objectForKeyedSubscript:{@"vertical", "toDouble"}];
   return v3;
 }
 
 - (float)toVector3
 {
-  [objc_msgSend(a1 objectForKeyedSubscript:{@"x", "toDouble"}];
+  [objc_msgSend(self objectForKeyedSubscript:{@"x", "toDouble"}];
   v3 = v2;
-  [objc_msgSend(a1 objectForKeyedSubscript:{@"y", "toDouble"}];
-  [objc_msgSend(a1 objectForKeyedSubscript:{@"z", "toDouble"}];
+  [objc_msgSend(self objectForKeyedSubscript:{@"y", "toDouble"}];
+  [objc_msgSend(self objectForKeyedSubscript:{@"z", "toDouble"}];
   return v3;
 }
 
 - (float)toVector4
 {
-  [objc_msgSend(a1 objectForKeyedSubscript:{@"x", "toDouble"}];
+  [objc_msgSend(self objectForKeyedSubscript:{@"x", "toDouble"}];
   v3 = v2;
-  [objc_msgSend(a1 objectForKeyedSubscript:{@"y", "toDouble"}];
-  [objc_msgSend(a1 objectForKeyedSubscript:{@"z", "toDouble"}];
-  [objc_msgSend(a1 objectForKeyedSubscript:{@"w", "toDouble"}];
+  [objc_msgSend(self objectForKeyedSubscript:{@"y", "toDouble"}];
+  [objc_msgSend(self objectForKeyedSubscript:{@"z", "toDouble"}];
+  [objc_msgSend(self objectForKeyedSubscript:{@"w", "toDouble"}];
   return v3;
 }
 
 - (uint64_t)toCATransform3D
 {
-  [objc_msgSend(a1 objectForKeyedSubscript:{@"m11", "toDouble"}];
+  [objc_msgSend(self objectForKeyedSubscript:{@"m11", "toDouble"}];
   *a2 = v4;
-  [objc_msgSend(a1 objectForKeyedSubscript:{@"m12", "toDouble"}];
+  [objc_msgSend(self objectForKeyedSubscript:{@"m12", "toDouble"}];
   a2[1] = v5;
-  [objc_msgSend(a1 objectForKeyedSubscript:{@"m13", "toDouble"}];
+  [objc_msgSend(self objectForKeyedSubscript:{@"m13", "toDouble"}];
   a2[2] = v6;
-  [objc_msgSend(a1 objectForKeyedSubscript:{@"m14", "toDouble"}];
+  [objc_msgSend(self objectForKeyedSubscript:{@"m14", "toDouble"}];
   a2[3] = v7;
-  [objc_msgSend(a1 objectForKeyedSubscript:{@"m21", "toDouble"}];
+  [objc_msgSend(self objectForKeyedSubscript:{@"m21", "toDouble"}];
   a2[4] = v8;
-  [objc_msgSend(a1 objectForKeyedSubscript:{@"m22", "toDouble"}];
+  [objc_msgSend(self objectForKeyedSubscript:{@"m22", "toDouble"}];
   a2[5] = v9;
-  [objc_msgSend(a1 objectForKeyedSubscript:{@"m23", "toDouble"}];
+  [objc_msgSend(self objectForKeyedSubscript:{@"m23", "toDouble"}];
   a2[6] = v10;
-  [objc_msgSend(a1 objectForKeyedSubscript:{@"m24", "toDouble"}];
+  [objc_msgSend(self objectForKeyedSubscript:{@"m24", "toDouble"}];
   a2[7] = v11;
-  [objc_msgSend(a1 objectForKeyedSubscript:{@"m31", "toDouble"}];
+  [objc_msgSend(self objectForKeyedSubscript:{@"m31", "toDouble"}];
   a2[8] = v12;
-  [objc_msgSend(a1 objectForKeyedSubscript:{@"m32", "toDouble"}];
+  [objc_msgSend(self objectForKeyedSubscript:{@"m32", "toDouble"}];
   a2[9] = v13;
-  [objc_msgSend(a1 objectForKeyedSubscript:{@"m33", "toDouble"}];
+  [objc_msgSend(self objectForKeyedSubscript:{@"m33", "toDouble"}];
   a2[10] = v14;
-  [objc_msgSend(a1 objectForKeyedSubscript:{@"m34", "toDouble"}];
+  [objc_msgSend(self objectForKeyedSubscript:{@"m34", "toDouble"}];
   a2[11] = v15;
-  [objc_msgSend(a1 objectForKeyedSubscript:{@"m41", "toDouble"}];
+  [objc_msgSend(self objectForKeyedSubscript:{@"m41", "toDouble"}];
   a2[12] = v16;
-  [objc_msgSend(a1 objectForKeyedSubscript:{@"m42", "toDouble"}];
+  [objc_msgSend(self objectForKeyedSubscript:{@"m42", "toDouble"}];
   a2[13] = v17;
-  [objc_msgSend(a1 objectForKeyedSubscript:{@"m43", "toDouble"}];
+  [objc_msgSend(self objectForKeyedSubscript:{@"m43", "toDouble"}];
   a2[14] = v18;
-  result = [objc_msgSend(a1 objectForKeyedSubscript:{@"m44", "toDouble"}];
+  result = [objc_msgSend(self objectForKeyedSubscript:{@"m44", "toDouble"}];
   a2[15] = v20;
   return result;
 }

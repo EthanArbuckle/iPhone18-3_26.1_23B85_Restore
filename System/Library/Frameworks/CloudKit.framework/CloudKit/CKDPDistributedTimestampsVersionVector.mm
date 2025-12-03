@@ -1,19 +1,19 @@
 @interface CKDPDistributedTimestampsVersionVector
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)stateValuesAsString:(int)a3;
-- (int)StringAsStateValues:(id)a3;
-- (int)stateValuesAtIndex:(unint64_t)a3;
-- (unint64_t)clockValueLengthsAtIndex:(unint64_t)a3;
-- (unint64_t)clockValuesAtIndex:(unint64_t)a3;
+- (id)stateValuesAsString:(int)string;
+- (int)StringAsStateValues:(id)values;
+- (int)stateValuesAtIndex:(unint64_t)index;
+- (unint64_t)clockValueLengthsAtIndex:(unint64_t)index;
+- (unint64_t)clockValuesAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (unsigned)stateValueLengthsAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)stateValueLengthsAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPDistributedTimestampsVersionVector
@@ -29,113 +29,113 @@
   [(CKDPDistributedTimestampsVersionVector *)&v3 dealloc];
 }
 
-- (unint64_t)clockValuesAtIndex:(unint64_t)a3
+- (unint64_t)clockValuesAtIndex:(unint64_t)index
 {
   p_clockValues = &self->_clockValues;
   count = self->_clockValues.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], a2, @"idx (%lu) is out of range (%lu)", a3, count);
+    v8 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], a2, @"idx (%lu) is out of range (%lu)", index, count);
     v10 = objc_msgSend_exceptionWithName_reason_userInfo_(v6, v9, v7, v8, 0);
     objc_msgSend_raise(v10, v11, v12);
   }
 
-  return p_clockValues->list[a3];
+  return p_clockValues->list[index];
 }
 
-- (unint64_t)clockValueLengthsAtIndex:(unint64_t)a3
+- (unint64_t)clockValueLengthsAtIndex:(unint64_t)index
 {
   p_clockValueLengths = &self->_clockValueLengths;
   count = self->_clockValueLengths.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], a2, @"idx (%lu) is out of range (%lu)", a3, count);
+    v8 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], a2, @"idx (%lu) is out of range (%lu)", index, count);
     v10 = objc_msgSend_exceptionWithName_reason_userInfo_(v6, v9, v7, v8, 0);
     objc_msgSend_raise(v10, v11, v12);
   }
 
-  return p_clockValueLengths->list[a3];
+  return p_clockValueLengths->list[index];
 }
 
-- (int)stateValuesAtIndex:(unint64_t)a3
+- (int)stateValuesAtIndex:(unint64_t)index
 {
   p_stateValues = &self->_stateValues;
   count = self->_stateValues.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], a2, @"idx (%lu) is out of range (%lu)", a3, count);
+    v8 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], a2, @"idx (%lu) is out of range (%lu)", index, count);
     v10 = objc_msgSend_exceptionWithName_reason_userInfo_(v6, v9, v7, v8, 0);
     objc_msgSend_raise(v10, v11, v12);
   }
 
-  return p_stateValues->list[a3];
+  return p_stateValues->list[index];
 }
 
-- (id)stateValuesAsString:(int)a3
+- (id)stateValuesAsString:(int)string
 {
-  if (a3 >= 9)
+  if (string >= 9)
   {
-    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], a2, @"(unknown: %i)", a3);
+    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], a2, @"(unknown: %i)", string);
   }
 
   else
   {
-    v4 = off_1E70BF080[a3];
+    v4 = off_1E70BF080[string];
   }
 
   return v4;
 }
 
-- (int)StringAsStateValues:(id)a3
+- (int)StringAsStateValues:(id)values
 {
-  v3 = a3;
-  if (objc_msgSend_isEqualToString_(v3, v4, @"unknown"))
+  valuesCopy = values;
+  if (objc_msgSend_isEqualToString_(valuesCopy, v4, @"unknown"))
   {
     v6 = 0;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v5, @"regular"))
+  else if (objc_msgSend_isEqualToString_(valuesCopy, v5, @"regular"))
   {
     v6 = 1;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v7, @"regularPresent"))
+  else if (objc_msgSend_isEqualToString_(valuesCopy, v7, @"regularPresent"))
   {
     v6 = 2;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v8, @"regularTombstoned"))
+  else if (objc_msgSend_isEqualToString_(valuesCopy, v8, @"regularTombstoned"))
   {
     v6 = 3;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v9, @"regularMissing"))
+  else if (objc_msgSend_isEqualToString_(valuesCopy, v9, @"regularMissing"))
   {
     v6 = 4;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v10, @"lwwPerModifier"))
+  else if (objc_msgSend_isEqualToString_(valuesCopy, v10, @"lwwPerModifier"))
   {
     v6 = 5;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v11, @"lwwPerModifierPresent"))
+  else if (objc_msgSend_isEqualToString_(valuesCopy, v11, @"lwwPerModifierPresent"))
   {
     v6 = 6;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v12, @"lwwPerModifierTombstoned"))
+  else if (objc_msgSend_isEqualToString_(valuesCopy, v12, @"lwwPerModifierTombstoned"))
   {
     v6 = 7;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v13, @"lwwPerModifierMissing"))
+  else if (objc_msgSend_isEqualToString_(valuesCopy, v13, @"lwwPerModifierMissing"))
   {
     v6 = 8;
   }
@@ -148,20 +148,20 @@
   return v6;
 }
 
-- (unsigned)stateValueLengthsAtIndex:(unint64_t)a3
+- (unsigned)stateValueLengthsAtIndex:(unint64_t)index
 {
   p_stateValueLengths = &self->_stateValueLengths;
   count = self->_stateValueLengths.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], a2, @"idx (%lu) is out of range (%lu)", a3, count);
+    v8 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], a2, @"idx (%lu) is out of range (%lu)", index, count);
     v10 = objc_msgSend_exceptionWithName_reason_userInfo_(v6, v9, v7, v8, 0);
     objc_msgSend_raise(v10, v11, v12);
   }
 
-  return p_stateValueLengths->list[a3];
+  return p_stateValueLengths->list[index];
 }
 
 - (id)description
@@ -223,9 +223,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_clockValues.count)
   {
     PBDataWriterPlaceMark();
@@ -304,12 +304,12 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v43 = a3;
+  toCopy = to;
   if (objc_msgSend_clockValuesCount(self, v4, v5))
   {
-    objc_msgSend_clearClockValues(v43, v6, v7);
+    objc_msgSend_clearClockValues(toCopy, v6, v7);
     v10 = objc_msgSend_clockValuesCount(self, v8, v9);
     if (v10)
     {
@@ -317,14 +317,14 @@
       for (i = 0; i != v11; ++i)
       {
         v13 = objc_msgSend_clockValuesAtIndex_(self, v6, i);
-        objc_msgSend_addClockValues_(v43, v14, v13);
+        objc_msgSend_addClockValues_(toCopy, v14, v13);
       }
     }
   }
 
   if (objc_msgSend_clockValueLengthsCount(self, v6, v7))
   {
-    objc_msgSend_clearClockValueLengths(v43, v15, v16);
+    objc_msgSend_clearClockValueLengths(toCopy, v15, v16);
     v19 = objc_msgSend_clockValueLengthsCount(self, v17, v18);
     if (v19)
     {
@@ -332,14 +332,14 @@
       for (j = 0; j != v20; ++j)
       {
         v22 = objc_msgSend_clockValueLengthsAtIndex_(self, v15, j);
-        objc_msgSend_addClockValueLengths_(v43, v23, v22);
+        objc_msgSend_addClockValueLengths_(toCopy, v23, v22);
       }
     }
   }
 
   if (objc_msgSend_stateValuesCount(self, v15, v16))
   {
-    objc_msgSend_clearStateValues(v43, v24, v25);
+    objc_msgSend_clearStateValues(toCopy, v24, v25);
     v28 = objc_msgSend_stateValuesCount(self, v26, v27);
     if (v28)
     {
@@ -347,14 +347,14 @@
       for (k = 0; k != v29; ++k)
       {
         v31 = objc_msgSend_stateValuesAtIndex_(self, v24, k);
-        objc_msgSend_addStateValues_(v43, v32, v31);
+        objc_msgSend_addStateValues_(toCopy, v32, v31);
       }
     }
   }
 
   if (objc_msgSend_stateValueLengthsCount(self, v24, v25))
   {
-    objc_msgSend_clearStateValueLengths(v43, v33, v34);
+    objc_msgSend_clearStateValueLengths(toCopy, v33, v34);
     v37 = objc_msgSend_stateValueLengthsCount(self, v35, v36);
     if (v37)
     {
@@ -362,16 +362,16 @@
       for (m = 0; m != v39; ++m)
       {
         v41 = objc_msgSend_stateValueLengthsAtIndex_(self, v38, m);
-        objc_msgSend_addStateValueLengths_(v43, v42, v41);
+        objc_msgSend_addStateValueLengths_(toCopy, v42, v41);
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
-  v6 = objc_msgSend_allocWithZone_(v4, v5, a3);
+  v6 = objc_msgSend_allocWithZone_(v4, v5, zone);
   v9 = objc_msgSend_init(v6, v7, v8);
   PBRepeatedUInt64Copy();
   PBRepeatedUInt64Copy();
@@ -380,11 +380,11 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
+  equalCopy = equal;
   v4 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v3, v5, v4) && PBRepeatedUInt64IsEqual() && PBRepeatedUInt64IsEqual() && PBRepeatedInt32IsEqual())
+  if (objc_msgSend_isMemberOfClass_(equalCopy, v5, v4) && PBRepeatedUInt64IsEqual() && PBRepeatedUInt64IsEqual() && PBRepeatedInt32IsEqual())
   {
     IsEqual = PBRepeatedUInt32IsEqual();
   }
@@ -405,49 +405,49 @@
   return v3 ^ v4 ^ PBRepeatedUInt32Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v33 = a3;
-  v6 = objc_msgSend_clockValuesCount(v33, v4, v5);
+  fromCopy = from;
+  v6 = objc_msgSend_clockValuesCount(fromCopy, v4, v5);
   if (v6)
   {
     v9 = v6;
     for (i = 0; i != v9; ++i)
     {
-      v11 = objc_msgSend_clockValuesAtIndex_(v33, v7, i);
+      v11 = objc_msgSend_clockValuesAtIndex_(fromCopy, v7, i);
       objc_msgSend_addClockValues_(self, v12, v11);
     }
   }
 
-  v13 = objc_msgSend_clockValueLengthsCount(v33, v7, v8);
+  v13 = objc_msgSend_clockValueLengthsCount(fromCopy, v7, v8);
   if (v13)
   {
     v16 = v13;
     for (j = 0; j != v16; ++j)
     {
-      v18 = objc_msgSend_clockValueLengthsAtIndex_(v33, v14, j);
+      v18 = objc_msgSend_clockValueLengthsAtIndex_(fromCopy, v14, j);
       objc_msgSend_addClockValueLengths_(self, v19, v18);
     }
   }
 
-  v20 = objc_msgSend_stateValuesCount(v33, v14, v15);
+  v20 = objc_msgSend_stateValuesCount(fromCopy, v14, v15);
   if (v20)
   {
     v23 = v20;
     for (k = 0; k != v23; ++k)
     {
-      v25 = objc_msgSend_stateValuesAtIndex_(v33, v21, k);
+      v25 = objc_msgSend_stateValuesAtIndex_(fromCopy, v21, k);
       objc_msgSend_addStateValues_(self, v26, v25);
     }
   }
 
-  v27 = objc_msgSend_stateValueLengthsCount(v33, v21, v22);
+  v27 = objc_msgSend_stateValueLengthsCount(fromCopy, v21, v22);
   if (v27)
   {
     v29 = v27;
     for (m = 0; m != v29; ++m)
     {
-      v31 = objc_msgSend_stateValueLengthsAtIndex_(v33, v28, m);
+      v31 = objc_msgSend_stateValueLengthsAtIndex_(fromCopy, v28, m);
       objc_msgSend_addStateValueLengths_(self, v32, v31);
     }
   }

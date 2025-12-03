@@ -1,15 +1,15 @@
 @interface VUIConfirmationBlurEffect
-+ (id)effectWithStyle:(int64_t)a3;
++ (id)effectWithStyle:(int64_t)style;
 - (id)effectSettings;
 @end
 
 @implementation VUIConfirmationBlurEffect
 
-+ (id)effectWithStyle:(int64_t)a3
++ (id)effectWithStyle:(int64_t)style
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___VUIConfirmationBlurEffect;
-  v3 = objc_msgSendSuper2(&v5, sel_effectWithStyle_, a3);
+  v3 = objc_msgSendSuper2(&v5, sel_effectWithStyle_, style);
 
   return v3;
 }
@@ -18,31 +18,31 @@
 {
   v7.receiver = self;
   v7.super_class = VUIConfirmationBlurEffect;
-  v2 = [(UIBlurEffect *)&v7 effectSettings];
-  [v2 setScale:0.5];
+  effectSettings = [(UIBlurEffect *)&v7 effectSettings];
+  [effectSettings setScale:0.5];
   if (UIAccessibilityIsReduceTransparencyEnabled())
   {
     v3 = 0.0;
-    [v2 setBlurRadius:0.0];
+    [effectSettings setBlurRadius:0.0];
     v4 = 0.4;
   }
 
   else
   {
-    [v2 setBlurRadius:8.0];
-    v5 = [MEMORY[0x1E69DC888] blackColor];
-    [v2 setColorTint:v5];
+    [effectSettings setBlurRadius:8.0];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [effectSettings setColorTint:blackColor];
 
-    [v2 setColorTintAlpha:0.2];
+    [effectSettings setColorTintAlpha:0.2];
     v3 = 0.025;
     v4 = 0.1;
   }
 
-  [v2 setGrayscaleTintLevel:0.0];
-  [v2 setGrayscaleTintAlpha:v4];
-  [v2 setZoom:v3];
+  [effectSettings setGrayscaleTintLevel:0.0];
+  [effectSettings setGrayscaleTintAlpha:v4];
+  [effectSettings setZoom:v3];
 
-  return v2;
+  return effectSettings;
 }
 
 @end

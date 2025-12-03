@@ -5,29 +5,29 @@
 - (_UIViewAlphaOverrideAssertion)init;
 - (double)alpha;
 - (void)invalidate;
-- (void)setAlpha:(double)a3;
-- (void)setModifier:(id)a3;
+- (void)setAlpha:(double)alpha;
+- (void)setModifier:(id)modifier;
 - (void)updateBackgroundSuppressionIfNeeded;
 @end
 
 @implementation _UIViewAlphaOverrideAssertion
 
-- (void)setModifier:(id)a3
+- (void)setModifier:(id)modifier
 {
   v4 = *(self + OBJC_IVAR____UIViewAlphaOverrideAssertion_modifier);
-  *(self + OBJC_IVAR____UIViewAlphaOverrideAssertion_modifier) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____UIViewAlphaOverrideAssertion_modifier) = modifier;
+  modifierCopy = modifier;
 }
 
 - (void)updateBackgroundSuppressionIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   sub_188D84318();
 }
 
 - (double)alpha
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_188D7271C();
 
   return v3;
@@ -65,17 +65,17 @@
   return v2;
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
-  v3 = self;
+  selfCopy = self;
   sub_189017410();
 }
 
 - (void)invalidate
 {
-  v2 = self;
-  [(_UIViewAlphaOverrideAssertion *)v2 setAssertion:0];
-  [(_UIViewAlphaOverrideAssertion *)v2 setBackgroundSuppressionAssertion:0];
+  selfCopy = self;
+  [(_UIViewAlphaOverrideAssertion *)selfCopy setAssertion:0];
+  [(_UIViewAlphaOverrideAssertion *)selfCopy setBackgroundSuppressionAssertion:0];
 }
 
 @end

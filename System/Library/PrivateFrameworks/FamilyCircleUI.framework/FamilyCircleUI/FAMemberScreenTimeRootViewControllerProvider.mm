@@ -1,14 +1,14 @@
 @interface FAMemberScreenTimeRootViewControllerProvider
-+ (void)requestRootViewControllerForDSID:(id)a3 presentingViewController:(id)a4 completionHandler:(id)a5;
++ (void)requestRootViewControllerForDSID:(id)d presentingViewController:(id)controller completionHandler:(id)handler;
 @end
 
 @implementation FAMemberScreenTimeRootViewControllerProvider
 
-+ (void)requestRootViewControllerForDSID:(id)a3 presentingViewController:(id)a4 completionHandler:(id)a5
++ (void)requestRootViewControllerForDSID:(id)d presentingViewController:(id)controller completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  controllerCopy = controller;
+  handlerCopy = handler;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2050000000;
@@ -27,7 +27,7 @@
 
   v11 = v10;
   _Block_object_dispose(&v13, 8);
-  [v10 requestRootViewControllerForDSID:v7 presentingViewController:v8 completionHandler:v9];
+  [v10 requestRootViewControllerForDSID:dCopy presentingViewController:controllerCopy completionHandler:handlerCopy];
 }
 
 @end

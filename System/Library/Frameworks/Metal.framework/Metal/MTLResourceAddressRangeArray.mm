@@ -1,15 +1,15 @@
 @interface MTLResourceAddressRangeArray
-- (BOOL)isEqual:(id)a3;
-- (MTLResourceAddressRangeArray)initWithCount:(unint64_t)a3;
-- (MTLResourceAddressRangeArray)initWithRanges:(MTLAddressRange *)a3 count:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)formattedDescription:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (MTLResourceAddressRangeArray)initWithCount:(unint64_t)count;
+- (MTLResourceAddressRangeArray)initWithRanges:(MTLAddressRange *)ranges count:(unint64_t)count;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)formattedDescription:(unint64_t)description;
 - (void)dealloc;
 @end
 
 @implementation MTLResourceAddressRangeArray
 
-- (MTLResourceAddressRangeArray)initWithCount:(unint64_t)a3
+- (MTLResourceAddressRangeArray)initWithCount:(unint64_t)count
 {
   v8.receiver = self;
   v8.super_class = MTLResourceAddressRangeArray;
@@ -17,8 +17,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_count = a3;
-    v6 = malloc_type_calloc(0x10uLL, a3, 0xF9C74735uLL);
+    v4->_count = count;
+    v6 = malloc_type_calloc(0x10uLL, count, 0xF9C74735uLL);
     v5->_ranges = v6;
     if (!v6)
     {
@@ -30,13 +30,13 @@
   return v5;
 }
 
-- (MTLResourceAddressRangeArray)initWithRanges:(MTLAddressRange *)a3 count:(unint64_t)a4
+- (MTLResourceAddressRangeArray)initWithRanges:(MTLAddressRange *)ranges count:(unint64_t)count
 {
-  v6 = [(MTLResourceAddressRangeArray *)self initWithCount:a4];
+  v6 = [(MTLResourceAddressRangeArray *)self initWithCount:count];
   v7 = v6;
   if (v6)
   {
-    memcpy(v6->_ranges, a3, 16 * a4);
+    memcpy(v6->_ranges, ranges, 16 * count);
   }
 
   return v7;
@@ -51,22 +51,22 @@
   [(MTLResourceAddressRangeArray *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (a3)
+  if (equal)
   {
     Class = object_getClass(self);
-    if (Class == object_getClass(a3))
+    if (Class == object_getClass(equal))
     {
       count = self->_count;
-      if (count == [a3 count])
+      if (count == [equal count])
       {
-        return memcmp(self->_ranges, [a3 ranges], 16 * self->_count) == 0;
+        return memcmp(self->_ranges, [equal ranges], 16 * self->_count) == 0;
       }
     }
   }
@@ -74,20 +74,20 @@
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [MTLResourceAddressRangeArray allocWithZone:a3];
+  v4 = [MTLResourceAddressRangeArray allocWithZone:zone];
   count = self->_count;
   ranges = self->_ranges;
 
   return [(MTLResourceAddressRangeArray *)v4 initWithRanges:ranges count:count];
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v16[9] = *MEMORY[0x1E69E9840];
-  v5 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
-  v6 = [@"\n" stringByPaddingToLength:a3 + 8 withString:@" " startingAtIndex:0];
+  v5 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
+  v6 = [@"\n" stringByPaddingToLength:description + 8 withString:@" " startingAtIndex:0];
   v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:self->_count];
   if (self->_count)
   {

@@ -1,39 +1,39 @@
 @interface WFFolderContentItem
 + (id)contentCategories;
 + (id)contentsPropertyBuilder;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)ownedTypes;
 + (id)propertyBuilders;
-- (id)defaultSourceForRepresentation:(id)a3;
+- (id)defaultSourceForRepresentation:(id)representation;
 @end
 
 @implementation WFFolderContentItem
 
-- (id)defaultSourceForRepresentation:(id)a3
+- (id)defaultSourceForRepresentation:(id)representation
 {
   v4 = objc_alloc(MEMORY[0x277CD3A58]);
   v5 = [v4 initWithBundleIdentifier:*MEMORY[0x277D7A240]];
-  v6 = [(WFContentItem *)self cachingIdentifier];
-  v7 = [WFContentAttributionSet attributionSetWithAppDescriptor:v5 disclosureLevel:1 originalItemIdentifier:v6];
+  cachingIdentifier = [(WFContentItem *)self cachingIdentifier];
+  v7 = [WFContentAttributionSet attributionSetWithAppDescriptor:v5 disclosureLevel:1 originalItemIdentifier:cachingIdentifier];
 
   return v7;
 }
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Folders", @"Folders");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Folder", @"Folder");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -59,10 +59,10 @@
 + (id)propertyBuilders
 {
   v9[2] = *MEMORY[0x277D85DE8];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    v4 = [a1 contentsPropertyBuilder];
-    v9[0] = v4;
+    contentsPropertyBuilder = [self contentsPropertyBuilder];
+    v9[0] = contentsPropertyBuilder;
     v5 = WFLocalizedContentPropertyNameMarker(@"Number of Items");
     v6 = [WFContentPropertyBuilder block:&__block_literal_global_63 name:v5 class:objc_opt_class()];
     v7 = [v6 multipleValues:0];

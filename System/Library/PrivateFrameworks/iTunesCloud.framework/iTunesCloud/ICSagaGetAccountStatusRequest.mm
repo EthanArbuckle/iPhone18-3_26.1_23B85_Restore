@@ -1,7 +1,7 @@
 @interface ICSagaGetAccountStatusRequest
-- (ICSagaGetAccountStatusRequest)initWithStoreRequestContext:(id)a3;
+- (ICSagaGetAccountStatusRequest)initWithStoreRequestContext:(id)context;
 - (void)execute;
-- (void)performRequestWithResponseHandler:(id)a3;
+- (void)performRequestWithResponseHandler:(id)handler;
 @end
 
 @implementation ICSagaGetAccountStatusRequest
@@ -14,23 +14,23 @@
   {
     storeRequestContext = self->_storeRequestContext;
     *buf = 138543618;
-    v13 = self;
+    selfCopy2 = self;
     v14 = 2114;
     v15 = storeRequestContext;
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: Gathering iTunes match account status for context %{public}@", buf, 0x16u);
   }
 
-  v5 = [(ICStoreRequestContext *)self->_storeRequestContext identity];
-  v6 = [ICPrivacyInfo sharedPrivacyInfoForUserIdentity:v5];
-  v7 = [v6 shouldBlockPersonalizedNetworkRequestsForMusic];
+  identity = [(ICStoreRequestContext *)self->_storeRequestContext identity];
+  v6 = [ICPrivacyInfo sharedPrivacyInfoForUserIdentity:identity];
+  shouldBlockPersonalizedNetworkRequestsForMusic = [v6 shouldBlockPersonalizedNetworkRequestsForMusic];
 
-  if (v7)
+  if (shouldBlockPersonalizedNetworkRequestsForMusic)
   {
     v8 = os_log_create("com.apple.amp.iTunesCloud", "Default");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v13 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B4491000, v8, OS_LOG_TYPE_ERROR, "%{public}@: Skipping saga account status request because privacy acknowledgement is required", buf, 0xCu);
     }
 
@@ -146,16 +146,16 @@ void __40__ICSagaGetAccountStatusRequest_execute__block_invoke_6(uint64_t a1, vo
   [*(a1 + 32) finishWithError:v5];
 }
 
-- (void)performRequestWithResponseHandler:(id)a3
+- (void)performRequestWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __67__ICSagaGetAccountStatusRequest_performRequestWithResponseHandler___block_invoke;
   v6[3] = &unk_1E7BFA490;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(ICRequestOperation *)self performRequestWithCompletionHandler:v6];
 }
 
@@ -214,16 +214,16 @@ void __67__ICSagaGetAccountStatusRequest_performRequestWithResponseHandler___blo
   (*(*(a1 + 40) + 16))();
 }
 
-- (ICSagaGetAccountStatusRequest)initWithStoreRequestContext:(id)a3
+- (ICSagaGetAccountStatusRequest)initWithStoreRequestContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = ICSagaGetAccountStatusRequest;
   v6 = [(ICRequestOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_storeRequestContext, a3);
+    objc_storeStrong(&v6->_storeRequestContext, context);
   }
 
   return v7;

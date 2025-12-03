@@ -1,79 +1,79 @@
 @interface INFERENCESchemaINFERENCERequestMatchSignalSet
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCERequestMatchSignalSet)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCERequestMatchSignalSet)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCERequestMatchSignalSet)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCERequestMatchSignalSet)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAreAllPrimaryContactTokensInQuery:(BOOL)a3;
-- (void)setHasAreAllQueryTokensInContact:(BOOL)a3;
-- (void)setHasIsFamilyNameMatch:(BOOL)a3;
-- (void)setHasIsGivenNameMatch:(BOOL)a3;
-- (void)setHasIsHandleQueryLabelNameMatch:(BOOL)a3;
-- (void)setHasIsHandleQueryMatch:(BOOL)a3;
-- (void)setHasIsMiddleNameMatch:(BOOL)a3;
-- (void)setHasIsNamePrefixMatch:(BOOL)a3;
-- (void)setHasIsNameSuffixMatch:(BOOL)a3;
-- (void)setHasIsNicknameMatch:(BOOL)a3;
-- (void)setHasIsOrganizationNameMatch:(BOOL)a3;
-- (void)setHasIsWeakOrganizationMatch:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAreAllPrimaryContactTokensInQuery:(BOOL)query;
+- (void)setHasAreAllQueryTokensInContact:(BOOL)contact;
+- (void)setHasIsFamilyNameMatch:(BOOL)match;
+- (void)setHasIsGivenNameMatch:(BOOL)match;
+- (void)setHasIsHandleQueryLabelNameMatch:(BOOL)match;
+- (void)setHasIsHandleQueryMatch:(BOOL)match;
+- (void)setHasIsMiddleNameMatch:(BOOL)match;
+- (void)setHasIsNamePrefixMatch:(BOOL)match;
+- (void)setHasIsNameSuffixMatch:(BOOL)match;
+- (void)setHasIsNicknameMatch:(BOOL)match;
+- (void)setHasIsOrganizationNameMatch:(BOOL)match;
+- (void)setHasIsWeakOrganizationMatch:(BOOL)match;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCERequestMatchSignalSet
 
-- (INFERENCESchemaINFERENCERequestMatchSignalSet)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCERequestMatchSignalSet)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v28.receiver = self;
   v28.super_class = INFERENCESchemaINFERENCERequestMatchSignalSet;
   v5 = [(INFERENCESchemaINFERENCERequestMatchSignalSet *)&v28 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"numPrimaryTokens"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"numPrimaryTokens"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCERequestMatchSignalSet setNumPrimaryTokens:](v5, "setNumPrimaryTokens:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"areAllQueryTokensInContact"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"areAllQueryTokensInContact"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCERequestMatchSignalSet setAreAllQueryTokensInContact:](v5, "setAreAllQueryTokensInContact:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"areAllPrimaryContactTokensInQuery"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"areAllPrimaryContactTokensInQuery"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCERequestMatchSignalSet setAreAllPrimaryContactTokensInQuery:](v5, "setAreAllPrimaryContactTokensInQuery:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"isGivenNameMatch"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"isGivenNameMatch"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCERequestMatchSignalSet setIsGivenNameMatch:](v5, "setIsGivenNameMatch:", [v9 BOOLValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"isMiddleNameMatch"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"isMiddleNameMatch"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCERequestMatchSignalSet setIsMiddleNameMatch:](v5, "setIsMiddleNameMatch:", [v10 BOOLValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"isFamilyNameMatch"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"isFamilyNameMatch"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCERequestMatchSignalSet setIsFamilyNameMatch:](v5, "setIsFamilyNameMatch:", [v11 BOOLValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"isOrganizationNameMatch"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"isOrganizationNameMatch"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,7 +81,7 @@
     }
 
     v27 = v6;
-    v13 = [v4 objectForKeyedSubscript:{@"isWeakOrganizationMatch", v12}];
+    v13 = [dictionaryCopy objectForKeyedSubscript:{@"isWeakOrganizationMatch", v12}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -89,7 +89,7 @@
     }
 
     v26 = v7;
-    v14 = [v4 objectForKeyedSubscript:@"isNicknameMatch"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"isNicknameMatch"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -97,7 +97,7 @@
     }
 
     v25 = v8;
-    v15 = [v4 objectForKeyedSubscript:@"isNamePrefixMatch"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"isNamePrefixMatch"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -106,7 +106,7 @@
 
     v23 = v11;
     v24 = v9;
-    v16 = [v4 objectForKeyedSubscript:@"isNameSuffixMatch"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"isNameSuffixMatch"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -114,14 +114,14 @@
     }
 
     v17 = v10;
-    v18 = [v4 objectForKeyedSubscript:@"isHandleQueryMatch"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"isHandleQueryMatch"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCERequestMatchSignalSet setIsHandleQueryMatch:](v5, "setIsHandleQueryMatch:", [v18 BOOLValue]);
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"isHandleQueryLabelNameMatch"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"isHandleQueryLabelNameMatch"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -134,30 +134,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCERequestMatchSignalSet)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCERequestMatchSignalSet)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCERequestMatchSignalSet *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCERequestMatchSignalSet *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCERequestMatchSignalSet *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -170,12 +170,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCERequestMatchSignalSet areAllPrimaryContactTokensInQuery](self, "areAllPrimaryContactTokensInQuery")}];
-    [v3 setObject:v7 forKeyedSubscript:@"areAllPrimaryContactTokensInQuery"];
+    [dictionary setObject:v7 forKeyedSubscript:@"areAllPrimaryContactTokensInQuery"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -196,7 +196,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCERequestMatchSignalSet areAllQueryTokensInContact](self, "areAllQueryTokensInContact")}];
-  [v3 setObject:v8 forKeyedSubscript:@"areAllQueryTokensInContact"];
+  [dictionary setObject:v8 forKeyedSubscript:@"areAllQueryTokensInContact"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -212,7 +212,7 @@ LABEL_4:
 
 LABEL_20:
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCERequestMatchSignalSet isFamilyNameMatch](self, "isFamilyNameMatch")}];
-  [v3 setObject:v9 forKeyedSubscript:@"isFamilyNameMatch"];
+  [dictionary setObject:v9 forKeyedSubscript:@"isFamilyNameMatch"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -228,7 +228,7 @@ LABEL_5:
 
 LABEL_21:
   v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCERequestMatchSignalSet isGivenNameMatch](self, "isGivenNameMatch")}];
-  [v3 setObject:v10 forKeyedSubscript:@"isGivenNameMatch"];
+  [dictionary setObject:v10 forKeyedSubscript:@"isGivenNameMatch"];
 
   has = self->_has;
   if ((has & 0x1000) == 0)
@@ -244,7 +244,7 @@ LABEL_6:
 
 LABEL_22:
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCERequestMatchSignalSet isHandleQueryLabelNameMatch](self, "isHandleQueryLabelNameMatch")}];
-  [v3 setObject:v11 forKeyedSubscript:@"isHandleQueryLabelNameMatch"];
+  [dictionary setObject:v11 forKeyedSubscript:@"isHandleQueryLabelNameMatch"];
 
   has = self->_has;
   if ((has & 0x800) == 0)
@@ -260,7 +260,7 @@ LABEL_7:
 
 LABEL_23:
   v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCERequestMatchSignalSet isHandleQueryMatch](self, "isHandleQueryMatch")}];
-  [v3 setObject:v12 forKeyedSubscript:@"isHandleQueryMatch"];
+  [dictionary setObject:v12 forKeyedSubscript:@"isHandleQueryMatch"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -276,7 +276,7 @@ LABEL_8:
 
 LABEL_24:
   v13 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCERequestMatchSignalSet isMiddleNameMatch](self, "isMiddleNameMatch")}];
-  [v3 setObject:v13 forKeyedSubscript:@"isMiddleNameMatch"];
+  [dictionary setObject:v13 forKeyedSubscript:@"isMiddleNameMatch"];
 
   has = self->_has;
   if ((has & 0x200) == 0)
@@ -292,7 +292,7 @@ LABEL_9:
 
 LABEL_25:
   v14 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCERequestMatchSignalSet isNamePrefixMatch](self, "isNamePrefixMatch")}];
-  [v3 setObject:v14 forKeyedSubscript:@"isNamePrefixMatch"];
+  [dictionary setObject:v14 forKeyedSubscript:@"isNamePrefixMatch"];
 
   has = self->_has;
   if ((has & 0x400) == 0)
@@ -308,7 +308,7 @@ LABEL_10:
 
 LABEL_26:
   v15 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCERequestMatchSignalSet isNameSuffixMatch](self, "isNameSuffixMatch")}];
-  [v3 setObject:v15 forKeyedSubscript:@"isNameSuffixMatch"];
+  [dictionary setObject:v15 forKeyedSubscript:@"isNameSuffixMatch"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -324,7 +324,7 @@ LABEL_11:
 
 LABEL_27:
   v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCERequestMatchSignalSet isNicknameMatch](self, "isNicknameMatch")}];
-  [v3 setObject:v16 forKeyedSubscript:@"isNicknameMatch"];
+  [dictionary setObject:v16 forKeyedSubscript:@"isNicknameMatch"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -340,7 +340,7 @@ LABEL_12:
 
 LABEL_28:
   v17 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCERequestMatchSignalSet isOrganizationNameMatch](self, "isOrganizationNameMatch")}];
-  [v3 setObject:v17 forKeyedSubscript:@"isOrganizationNameMatch"];
+  [dictionary setObject:v17 forKeyedSubscript:@"isOrganizationNameMatch"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -356,19 +356,19 @@ LABEL_13:
 
 LABEL_29:
   v18 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCERequestMatchSignalSet isWeakOrganizationMatch](self, "isWeakOrganizationMatch")}];
-  [v3 setObject:v18 forKeyedSubscript:@"isWeakOrganizationMatch"];
+  [dictionary setObject:v18 forKeyedSubscript:@"isWeakOrganizationMatch"];
 
   if (*&self->_has)
   {
 LABEL_14:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[INFERENCESchemaINFERENCERequestMatchSignalSet numPrimaryTokens](self, "numPrimaryTokens")}];
-    [v3 setObject:v5 forKeyedSubscript:@"numPrimaryTokens"];
+    [dictionary setObject:v5 forKeyedSubscript:@"numPrimaryTokens"];
   }
 
 LABEL_15:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -552,16 +552,16 @@ LABEL_14:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_54;
   }
 
   has = self->_has;
-  v6 = v4[12];
+  v6 = equalCopy[12];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_54;
@@ -570,13 +570,13 @@ LABEL_14:
   if (*&has)
   {
     numPrimaryTokens = self->_numPrimaryTokens;
-    if (numPrimaryTokens != [v4 numPrimaryTokens])
+    if (numPrimaryTokens != [equalCopy numPrimaryTokens])
     {
       goto LABEL_54;
     }
 
     has = self->_has;
-    v6 = v4[12];
+    v6 = equalCopy[12];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -588,13 +588,13 @@ LABEL_14:
   if (v8)
   {
     areAllQueryTokensInContact = self->_areAllQueryTokensInContact;
-    if (areAllQueryTokensInContact != [v4 areAllQueryTokensInContact])
+    if (areAllQueryTokensInContact != [equalCopy areAllQueryTokensInContact])
     {
       goto LABEL_54;
     }
 
     has = self->_has;
-    v6 = v4[12];
+    v6 = equalCopy[12];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -606,13 +606,13 @@ LABEL_14:
   if (v10)
   {
     areAllPrimaryContactTokensInQuery = self->_areAllPrimaryContactTokensInQuery;
-    if (areAllPrimaryContactTokensInQuery != [v4 areAllPrimaryContactTokensInQuery])
+    if (areAllPrimaryContactTokensInQuery != [equalCopy areAllPrimaryContactTokensInQuery])
     {
       goto LABEL_54;
     }
 
     has = self->_has;
-    v6 = v4[12];
+    v6 = equalCopy[12];
   }
 
   v12 = (*&has >> 3) & 1;
@@ -624,13 +624,13 @@ LABEL_14:
   if (v12)
   {
     isGivenNameMatch = self->_isGivenNameMatch;
-    if (isGivenNameMatch != [v4 isGivenNameMatch])
+    if (isGivenNameMatch != [equalCopy isGivenNameMatch])
     {
       goto LABEL_54;
     }
 
     has = self->_has;
-    v6 = v4[12];
+    v6 = equalCopy[12];
   }
 
   v14 = (*&has >> 4) & 1;
@@ -642,13 +642,13 @@ LABEL_14:
   if (v14)
   {
     isMiddleNameMatch = self->_isMiddleNameMatch;
-    if (isMiddleNameMatch != [v4 isMiddleNameMatch])
+    if (isMiddleNameMatch != [equalCopy isMiddleNameMatch])
     {
       goto LABEL_54;
     }
 
     has = self->_has;
-    v6 = v4[12];
+    v6 = equalCopy[12];
   }
 
   v16 = (*&has >> 5) & 1;
@@ -660,13 +660,13 @@ LABEL_14:
   if (v16)
   {
     isFamilyNameMatch = self->_isFamilyNameMatch;
-    if (isFamilyNameMatch != [v4 isFamilyNameMatch])
+    if (isFamilyNameMatch != [equalCopy isFamilyNameMatch])
     {
       goto LABEL_54;
     }
 
     has = self->_has;
-    v6 = v4[12];
+    v6 = equalCopy[12];
   }
 
   v18 = (*&has >> 6) & 1;
@@ -678,13 +678,13 @@ LABEL_14:
   if (v18)
   {
     isOrganizationNameMatch = self->_isOrganizationNameMatch;
-    if (isOrganizationNameMatch != [v4 isOrganizationNameMatch])
+    if (isOrganizationNameMatch != [equalCopy isOrganizationNameMatch])
     {
       goto LABEL_54;
     }
 
     has = self->_has;
-    v6 = v4[12];
+    v6 = equalCopy[12];
   }
 
   v20 = (*&has >> 7) & 1;
@@ -696,13 +696,13 @@ LABEL_14:
   if (v20)
   {
     isWeakOrganizationMatch = self->_isWeakOrganizationMatch;
-    if (isWeakOrganizationMatch != [v4 isWeakOrganizationMatch])
+    if (isWeakOrganizationMatch != [equalCopy isWeakOrganizationMatch])
     {
       goto LABEL_54;
     }
 
     has = self->_has;
-    v6 = v4[12];
+    v6 = equalCopy[12];
   }
 
   v22 = (*&has >> 8) & 1;
@@ -714,13 +714,13 @@ LABEL_14:
   if (v22)
   {
     isNicknameMatch = self->_isNicknameMatch;
-    if (isNicknameMatch != [v4 isNicknameMatch])
+    if (isNicknameMatch != [equalCopy isNicknameMatch])
     {
       goto LABEL_54;
     }
 
     has = self->_has;
-    v6 = v4[12];
+    v6 = equalCopy[12];
   }
 
   v24 = (*&has >> 9) & 1;
@@ -732,13 +732,13 @@ LABEL_14:
   if (v24)
   {
     isNamePrefixMatch = self->_isNamePrefixMatch;
-    if (isNamePrefixMatch != [v4 isNamePrefixMatch])
+    if (isNamePrefixMatch != [equalCopy isNamePrefixMatch])
     {
       goto LABEL_54;
     }
 
     has = self->_has;
-    v6 = v4[12];
+    v6 = equalCopy[12];
   }
 
   v26 = (*&has >> 10) & 1;
@@ -750,13 +750,13 @@ LABEL_14:
   if (v26)
   {
     isNameSuffixMatch = self->_isNameSuffixMatch;
-    if (isNameSuffixMatch != [v4 isNameSuffixMatch])
+    if (isNameSuffixMatch != [equalCopy isNameSuffixMatch])
     {
       goto LABEL_54;
     }
 
     has = self->_has;
-    v6 = v4[12];
+    v6 = equalCopy[12];
   }
 
   v28 = (*&has >> 11) & 1;
@@ -768,10 +768,10 @@ LABEL_14:
   if (v28)
   {
     isHandleQueryMatch = self->_isHandleQueryMatch;
-    if (isHandleQueryMatch == [v4 isHandleQueryMatch])
+    if (isHandleQueryMatch == [equalCopy isHandleQueryMatch])
     {
       has = self->_has;
-      v6 = v4[12];
+      v6 = equalCopy[12];
       goto LABEL_50;
     }
 
@@ -790,7 +790,7 @@ LABEL_50:
   if (v30)
   {
     isHandleQueryLabelNameMatch = self->_isHandleQueryLabelNameMatch;
-    if (isHandleQueryLabelNameMatch != [v4 isHandleQueryLabelNameMatch])
+    if (isHandleQueryLabelNameMatch != [equalCopy isHandleQueryLabelNameMatch])
     {
       goto LABEL_54;
     }
@@ -802,9 +802,9 @@ LABEL_55:
   return v32;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -977,9 +977,9 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)setHasIsHandleQueryLabelNameMatch:(BOOL)a3
+- (void)setHasIsHandleQueryLabelNameMatch:(BOOL)match
 {
-  if (a3)
+  if (match)
   {
     v3 = 4096;
   }
@@ -992,9 +992,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasIsHandleQueryMatch:(BOOL)a3
+- (void)setHasIsHandleQueryMatch:(BOOL)match
 {
-  if (a3)
+  if (match)
   {
     v3 = 2048;
   }
@@ -1007,9 +1007,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasIsNameSuffixMatch:(BOOL)a3
+- (void)setHasIsNameSuffixMatch:(BOOL)match
 {
-  if (a3)
+  if (match)
   {
     v3 = 1024;
   }
@@ -1022,9 +1022,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasIsNamePrefixMatch:(BOOL)a3
+- (void)setHasIsNamePrefixMatch:(BOOL)match
 {
-  if (a3)
+  if (match)
   {
     v3 = 512;
   }
@@ -1037,9 +1037,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasIsNicknameMatch:(BOOL)a3
+- (void)setHasIsNicknameMatch:(BOOL)match
 {
-  if (a3)
+  if (match)
   {
     v3 = 256;
   }
@@ -1052,9 +1052,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasIsWeakOrganizationMatch:(BOOL)a3
+- (void)setHasIsWeakOrganizationMatch:(BOOL)match
 {
-  if (a3)
+  if (match)
   {
     v3 = 128;
   }
@@ -1067,9 +1067,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasIsOrganizationNameMatch:(BOOL)a3
+- (void)setHasIsOrganizationNameMatch:(BOOL)match
 {
-  if (a3)
+  if (match)
   {
     v3 = 64;
   }
@@ -1082,9 +1082,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasIsFamilyNameMatch:(BOOL)a3
+- (void)setHasIsFamilyNameMatch:(BOOL)match
 {
-  if (a3)
+  if (match)
   {
     v3 = 32;
   }
@@ -1097,9 +1097,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasIsMiddleNameMatch:(BOOL)a3
+- (void)setHasIsMiddleNameMatch:(BOOL)match
 {
-  if (a3)
+  if (match)
   {
     v3 = 16;
   }
@@ -1112,9 +1112,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasIsGivenNameMatch:(BOOL)a3
+- (void)setHasIsGivenNameMatch:(BOOL)match
 {
-  if (a3)
+  if (match)
   {
     v3 = 8;
   }
@@ -1127,9 +1127,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasAreAllPrimaryContactTokensInQuery:(BOOL)a3
+- (void)setHasAreAllPrimaryContactTokensInQuery:(BOOL)query
 {
-  if (a3)
+  if (query)
   {
     v3 = 4;
   }
@@ -1142,9 +1142,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasAreAllQueryTokensInContact:(BOOL)a3
+- (void)setHasAreAllQueryTokensInContact:(BOOL)contact
 {
-  if (a3)
+  if (contact)
   {
     v3 = 2;
   }

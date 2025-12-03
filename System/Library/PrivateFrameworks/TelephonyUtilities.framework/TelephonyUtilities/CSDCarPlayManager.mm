@@ -1,9 +1,9 @@
 @interface CSDCarPlayManager
 - (BOOL)isCarPlayConnected;
 - (id)carPlayScreenConnectionChanged;
-- (void)sessionDidConnect:(id)a3;
-- (void)sessionDidDisconnect:(id)a3;
-- (void)setCarPlayScreenConnectionChanged:(id)a3;
+- (void)sessionDidConnect:(id)connect;
+- (void)sessionDidDisconnect:(id)disconnect;
+- (void)setCarPlayScreenConnectionChanged:(id)changed;
 @end
 
 @implementation CSDCarPlayManager
@@ -30,9 +30,9 @@
   return v4;
 }
 
-- (void)setCarPlayScreenConnectionChanged:(id)a3
+- (void)setCarPlayScreenConnectionChanged:(id)changed
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(changed);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -45,30 +45,30 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   sub_1002A80CC(v4, v5);
 }
 
 - (BOOL)isCarPlayConnected
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1002A8120();
 
   return v3;
 }
 
-- (void)sessionDidConnect:(id)a3
+- (void)sessionDidConnect:(id)connect
 {
-  v4 = a3;
-  v5 = self;
-  sub_1002A8834(v5, 1);
+  connectCopy = connect;
+  selfCopy = self;
+  sub_1002A8834(selfCopy, 1);
 }
 
-- (void)sessionDidDisconnect:(id)a3
+- (void)sessionDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = self;
-  sub_1002A8834(v5, 0);
+  disconnectCopy = disconnect;
+  selfCopy = self;
+  sub_1002A8834(selfCopy, 0);
 }
 
 @end

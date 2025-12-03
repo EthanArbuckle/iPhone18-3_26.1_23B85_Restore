@@ -4,8 +4,8 @@
 - (XADDisplayManager)init;
 - (void)dealloc;
 - (void)hideVisualsSynchronously;
-- (void)setCursorFrameForElement:(id)a3;
-- (void)setCursorStyle:(unint64_t)a3;
+- (void)setCursorFrameForElement:(id)element;
+- (void)setCursorStyle:(unint64_t)style;
 @end
 
 @implementation XADDisplayManager
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = sub_100007F88;
   block[3] = &unk_100018878;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10001DD78 != -1)
   {
     dispatch_once(&qword_10001DD78, block);
@@ -54,15 +54,15 @@
   [(XADDisplayManager *)&v2 dealloc];
 }
 
-- (void)setCursorStyle:(unint64_t)a3
+- (void)setCursorStyle:(unint64_t)style
 {
   v7 = @"frameStyle";
-  v4 = [NSNumber numberWithUnsignedLongLong:a3];
+  v4 = [NSNumber numberWithUnsignedLongLong:style];
   v8 = v4;
   v5 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];
 
-  v6 = [(XADDisplayManager *)self _uiClient];
-  [v6 sendAsynchronousMessage:v5 withIdentifier:2 targetAccessQueue:0 completion:0];
+  _uiClient = [(XADDisplayManager *)self _uiClient];
+  [_uiClient sendAsynchronousMessage:v5 withIdentifier:2 targetAccessQueue:0 completion:0];
 
   [(XADDisplayManager *)self set_forceRefreshOnNextUpdate:1];
 }
@@ -80,32 +80,32 @@
   v12 = v5;
   v6 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
 
-  v7 = [(XADDisplayManager *)self _uiClient];
+  _uiClient = [(XADDisplayManager *)self _uiClient];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100008668;
   v9[3] = &unk_100018AE0;
   v10 = v3;
   v8 = v3;
-  [v7 sendAsynchronousMessage:v6 withIdentifier:1 targetAccessQueue:0 completion:v9];
+  [_uiClient sendAsynchronousMessage:v6 withIdentifier:1 targetAccessQueue:0 completion:v9];
 
   dispatch_semaphore_wait(v8, v4);
 }
 
-- (void)setCursorFrameForElement:(id)a3
+- (void)setCursorFrameForElement:(id)element
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  elementCopy = element;
+  v5 = elementCopy;
+  if (elementCopy)
   {
-    [v4 clearCachedFrame:1 cachedVisibleFrame:1];
-    v6 = [v5 uiElement];
-    [v6 updateCache:2003];
+    [elementCopy clearCachedFrame:1 cachedVisibleFrame:1];
+    uiElement = [v5 uiElement];
+    [uiElement updateCache:2003];
 
     if ([v5 path])
     {
-      v7 = [v5 uiElement];
-      [v7 updateCache:2042];
+      uiElement2 = [v5 uiElement];
+      [uiElement2 updateCache:2042];
     }
 
     [v5 frame];
@@ -124,11 +124,11 @@
   }
 
   v16 = v5;
-  v17 = [v16 uiElement];
-  v18 = [v17 numberWithAXAttribute:2021];
-  v19 = [v18 unsignedIntValue];
+  uiElement3 = [v16 uiElement];
+  v18 = [uiElement3 numberWithAXAttribute:2021];
+  unsignedIntValue = [v18 unsignedIntValue];
 
-  if (!v19)
+  if (!unsignedIntValue)
   {
     v20 = [v16 elementForAttribute:5002];
     if (v20)
@@ -136,11 +136,11 @@
       v21 = v20;
       do
       {
-        v22 = [v21 uiElement];
-        v23 = [v22 numberWithAXAttribute:2021];
-        v19 = [v23 unsignedIntValue];
+        uiElement4 = [v21 uiElement];
+        v23 = [uiElement4 numberWithAXAttribute:2021];
+        unsignedIntValue = [v23 unsignedIntValue];
 
-        if (v19)
+        if (unsignedIntValue)
         {
           break;
         }
@@ -155,12 +155,12 @@
 
     else
     {
-      v19 = 0;
+      unsignedIntValue = 0;
     }
   }
 
-  v25 = [v16 uiElement];
-  v26 = [v25 BOOLWithAXAttribute:2098];
+  uiElement5 = [v16 uiElement];
+  v26 = [uiElement5 BOOLWithAXAttribute:2098];
 
   if (v26)
   {
@@ -170,9 +170,9 @@
     v34 = width;
     v35 = height;
     v28 = AXValueCreate(kAXValueTypeCGRect, &valuePtr);
-    v29 = [v27 uiElement];
-    v30 = [NSNumber numberWithUnsignedInteger:v19];
-    v31 = [v29 objectWithAXAttribute:91505 parameter:{+[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", v28, v30, 0)}];
+    uiElement6 = [v27 uiElement];
+    v30 = [NSNumber numberWithUnsignedInteger:unsignedIntValue];
+    v31 = [uiElement6 objectWithAXAttribute:91505 parameter:{+[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", v28, v30, 0)}];
 
     if (v31)
     {
@@ -190,7 +190,7 @@
     height = v35;
   }
 
-  -[XADDisplayManager setCursorFrame:withPath:withContextId:element:forceRefresh:](self, "setCursorFrame:withPath:withContextId:element:forceRefresh:", [v16 path], v19, v16, -[XADDisplayManager _forceRefreshOnNextUpdate](self, "_forceRefreshOnNextUpdate"), x, y, width, height);
+  -[XADDisplayManager setCursorFrame:withPath:withContextId:element:forceRefresh:](self, "setCursorFrame:withPath:withContextId:element:forceRefresh:", [v16 path], unsignedIntValue, v16, -[XADDisplayManager _forceRefreshOnNextUpdate](self, "_forceRefreshOnNextUpdate"), x, y, width, height);
   [(XADDisplayManager *)self set_forceRefreshOnNextUpdate:0];
 }
 

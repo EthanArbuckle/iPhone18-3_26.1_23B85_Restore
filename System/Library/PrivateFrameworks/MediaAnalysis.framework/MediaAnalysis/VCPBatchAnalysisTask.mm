@@ -1,20 +1,20 @@
 @interface VCPBatchAnalysisTask
-+ (VCPBatchAnalysisTask)taskWithPhotoLibrary:(id)a3;
-- (BOOL)containsAsset:(id)a3;
-- (VCPBatchAnalysisTask)initWithPhotoLibrary:(id)a3;
++ (VCPBatchAnalysisTask)taskWithPhotoLibrary:(id)library;
+- (BOOL)containsAsset:(id)asset;
+- (VCPBatchAnalysisTask)initWithPhotoLibrary:(id)library;
 - (int)mainInternal;
-- (void)addAnalysis:(unint64_t)a3 withExistingAnalysis:(id)a4 forAsset:(id)a5;
-- (void)addAnalysis:(unint64_t)a3 withExistingAnalysis:(id)a4 forAsset:(id)a5 allowStreaming:(BOOL)a6;
+- (void)addAnalysis:(unint64_t)analysis withExistingAnalysis:(id)existingAnalysis forAsset:(id)asset;
+- (void)addAnalysis:(unint64_t)analysis withExistingAnalysis:(id)existingAnalysis forAsset:(id)asset allowStreaming:(BOOL)streaming;
 @end
 
 @implementation VCPBatchAnalysisTask
 
-- (VCPBatchAnalysisTask)initWithPhotoLibrary:(id)a3
+- (VCPBatchAnalysisTask)initWithPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v12.receiver = self;
   v12.super_class = VCPBatchAnalysisTask;
-  v5 = [(VCPTask *)&v12 initWithPhotoLibrary:v4];
+  v5 = [(VCPTask *)&v12 initWithPhotoLibrary:libraryCopy];
   v6 = v5;
   if (v5)
   {
@@ -37,19 +37,19 @@
   return v6;
 }
 
-+ (VCPBatchAnalysisTask)taskWithPhotoLibrary:(id)a3
++ (VCPBatchAnalysisTask)taskWithPhotoLibrary:(id)library
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithPhotoLibrary:v3];
+  libraryCopy = library;
+  v4 = [objc_alloc(objc_opt_class()) initWithPhotoLibrary:libraryCopy];
 
   return v4;
 }
 
-- (void)addAnalysis:(unint64_t)a3 withExistingAnalysis:(id)a4 forAsset:(id)a5 allowStreaming:(BOOL)a6
+- (void)addAnalysis:(unint64_t)analysis withExistingAnalysis:(id)existingAnalysis forAsset:(id)asset allowStreaming:(BOOL)streaming
 {
-  v6 = a6;
-  v10 = a4;
-  v11 = a5;
+  streamingCopy = streaming;
+  existingAnalysisCopy = existingAnalysis;
+  assetCopy = asset;
   if (([(VCPBatchAnalysisTask *)self isExecuting]& 1) != 0 || [(VCPBatchAnalysisTask *)self isFinished])
   {
     if (MediaAnalysisLogLevel() >= 4)
@@ -57,9 +57,9 @@
       v12 = VCPLogToOSLogType[4];
       if (os_log_type_enabled(&_os_log_default, v12))
       {
-        v13 = [v11 localIdentifier];
+        localIdentifier = [assetCopy localIdentifier];
         v23 = 138412290;
-        v24 = v13;
+        v24 = localIdentifier;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v12, "  [%@] Batch analysis task cannot be modified; dropping", &v23, 0xCu);
       }
     }
@@ -72,29 +72,29 @@
       v14 = VCPLogToOSLogType[7];
       if (os_log_type_enabled(&_os_log_default, v14))
       {
-        v15 = [v11 localIdentifier];
-        v16 = [v11 vcp_typeDescription];
+        localIdentifier2 = [assetCopy localIdentifier];
+        vcp_typeDescription = [assetCopy vcp_typeDescription];
         v17 = MediaAnalysisTypeShortDescription();
         v23 = 138412802;
-        v24 = v15;
+        v24 = localIdentifier2;
         v25 = 2112;
-        v26 = v16;
+        v26 = vcp_typeDescription;
         v27 = 2112;
         v28 = v17;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v14, "  [%@] Batching %@ for analysis (%@)", &v23, 0x20u);
       }
     }
 
-    v18 = [VCPAssetAnalysisTask taskWithAnalysisTypes:a3 forAsset:v11 withExistingAnalysis:v10];
-    v19 = [(VCPTask *)self cancel];
-    [v18 setCancel:v19];
+    v18 = [VCPAssetAnalysisTask taskWithAnalysisTypes:analysis forAsset:assetCopy withExistingAnalysis:existingAnalysisCopy];
+    cancel = [(VCPTask *)self cancel];
+    [v18 setCancel:cancel];
 
-    [v18 setAllowStreaming:v6];
-    v20 = [(VCPBatchAnalysisTask *)self photosChangeManager];
-    [v18 setPhotosChangeManager:v20];
+    [v18 setAllowStreaming:streamingCopy];
+    photosChangeManager = [(VCPBatchAnalysisTask *)self photosChangeManager];
+    [v18 setPhotosChangeManager:photosChangeManager];
 
-    v21 = [(VCPBatchAnalysisTask *)self embeddingChangeManager];
-    [v18 setEmbeddingChangeManager:v21];
+    embeddingChangeManager = [(VCPBatchAnalysisTask *)self embeddingChangeManager];
+    [v18 setEmbeddingChangeManager:embeddingChangeManager];
 
     [v18 cost];
     self->_cost = v22 + self->_cost;
@@ -102,16 +102,16 @@
   }
 }
 
-- (void)addAnalysis:(unint64_t)a3 withExistingAnalysis:(id)a4 forAsset:(id)a5
+- (void)addAnalysis:(unint64_t)analysis withExistingAnalysis:(id)existingAnalysis forAsset:(id)asset
 {
-  v9 = a4;
-  v8 = a5;
-  [(VCPBatchAnalysisTask *)self addAnalysis:a3 withExistingAnalysis:v9 forAsset:v8 allowStreaming:[(VCPBatchAnalysisTask *)self allowStreaming]];
+  existingAnalysisCopy = existingAnalysis;
+  assetCopy = asset;
+  [(VCPBatchAnalysisTask *)self addAnalysis:analysis withExistingAnalysis:existingAnalysisCopy forAsset:assetCopy allowStreaming:[(VCPBatchAnalysisTask *)self allowStreaming]];
 }
 
-- (BOOL)containsAsset:(id)a3
+- (BOOL)containsAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -130,10 +130,10 @@
           objc_enumerationMutation(v5);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * i) asset];
-        v10 = [v9 localIdentifier];
-        v11 = [v4 localIdentifier];
-        v12 = [v10 isEqualToString:v11];
+        asset = [*(*(&v14 + 1) + 8 * i) asset];
+        localIdentifier = [asset localIdentifier];
+        localIdentifier2 = [assetCopy localIdentifier];
+        v12 = [localIdentifier isEqualToString:localIdentifier2];
 
         if (v12)
         {
@@ -171,8 +171,8 @@ LABEL_11:
     }
   }
 
-  v5 = [(VCPTask *)self photoLibrary];
-  v56 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v5];
+  photoLibrary = [(VCPTask *)self photoLibrary];
+  v56 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:photoLibrary];
 
   v77 = 0u;
   v78 = 0u;
@@ -183,7 +183,7 @@ LABEL_11:
   if (v7)
   {
     v54 = *v76;
-    v57 = "ecTask=}32";
+    code = "ecTask=}32";
     obj = v6;
     do
     {
@@ -200,13 +200,13 @@ LABEL_11:
         v74 = 0;
         if (+[MADManagedProcessingStatus isMACDReadEnabled])
         {
-          v11 = [(VCPTask *)self photoLibrary];
-          v12 = [v11 mad_fetchRequest];
+          photoLibrary2 = [(VCPTask *)self photoLibrary];
+          mad_fetchRequest = [photoLibrary2 mad_fetchRequest];
           v72 = 0;
           v73 = 0;
-          v13 = [v10 asset];
-          v14 = [v13 localIdentifier];
-          [v12 fetchProcessingStatus:buf attempts:&v74 lastAttemptDate:&v73 nextAttemptDate:&v72 localIdentifier:v14 taskID:self->_taskID];
+          asset = [v10 asset];
+          localIdentifier = [asset localIdentifier];
+          [mad_fetchRequest fetchProcessingStatus:buf attempts:&v74 lastAttemptDate:&v73 nextAttemptDate:&v72 localIdentifier:localIdentifier taskID:self->_taskID];
           v15 = v73;
           v16 = v72;
         }
@@ -215,9 +215,9 @@ LABEL_11:
         {
           v70 = 0;
           v71 = 0;
-          v11 = [v10 asset];
-          v12 = [v11 localIdentifier];
-          [v56 queryProcessingStatus:buf attempts:&v74 lastAttemptDate:&v71 andNextAttemptDate:&v70 forLocalIdentifier:v12 andTaskID:self->_taskID];
+          photoLibrary2 = [v10 asset];
+          mad_fetchRequest = [photoLibrary2 localIdentifier];
+          [v56 queryProcessingStatus:buf attempts:&v74 lastAttemptDate:&v71 andNextAttemptDate:&v70 forLocalIdentifier:mad_fetchRequest andTaskID:self->_taskID];
           v15 = v71;
           v16 = v70;
         }
@@ -225,7 +225,7 @@ LABEL_11:
         v17 = +[NSDate now];
         if (+[MADManagedProcessingStatus isMACDPersistEnabled])
         {
-          v18 = [(VCPTask *)self photoLibrary];
+          photoLibrary3 = [(VCPTask *)self photoLibrary];
           v67[0] = _NSConcreteStackBlock;
           v67[1] = 3221225472;
           v67[2] = sub_1000D3A70;
@@ -235,12 +235,12 @@ LABEL_11:
           v67[5] = self;
           v68 = v17;
           v66 = 0;
-          v19 = [v18 mad_performAnalysisDataStoreChanges:v67 error:&v66];
+          v19 = [photoLibrary3 mad_performAnalysisDataStoreChanges:v67 error:&v66];
           v20 = v66;
 
           if ((v19 & 1) == 0)
           {
-            v57 = [v20 code];
+            code = [v20 code];
           }
 
           if ((v19 & 1) == 0)
@@ -252,8 +252,8 @@ LABEL_11:
         else
         {
           v21 = v74;
-          v22 = [v10 asset];
-          v23 = [v56 setAttempts:v21 + 1 asset:v22 taskID:self->_taskID status:1 lastAttemptDate:v17];
+          asset2 = [v10 asset];
+          v23 = [v56 setAttempts:v21 + 1 asset:asset2 taskID:self->_taskID status:1 lastAttemptDate:v17];
 
           if (v23 == -108 || v23 == -36)
           {
@@ -265,19 +265,19 @@ LABEL_11:
             v24 = v23;
             if (v23 != -23)
             {
-              v24 = v57;
+              v24 = code;
             }
           }
 
           if (v23 == -108 || v23 == -36)
           {
-            LODWORD(v57) = v24;
+            LODWORD(code) = v24;
 LABEL_35:
 
             goto LABEL_36;
           }
 
-          v57 = v24;
+          code = v24;
           if (v23 == -23)
           {
             goto LABEL_35;
@@ -298,27 +298,27 @@ LABEL_35:
 
   else
   {
-    v57 = v8;
+    code = v8;
   }
 
   if (+[VCPDatabaseWriter isLegacyPersistEnabled])
   {
-    v25 = [v56 commit];
-    if (v25 == -108 || v25 == -36)
+    commit = [v56 commit];
+    if (commit == -108 || commit == -36)
     {
-      v26 = v25;
+      v26 = commit;
     }
 
     else
     {
-      v26 = v25;
-      if (v25 != -23)
+      v26 = commit;
+      if (commit != -23)
       {
-        v26 = v57;
+        v26 = code;
       }
     }
 
-    if (v25 == -108 || v25 == -36 || v25 == -23)
+    if (commit == -108 || commit == -36 || commit == -23)
     {
       goto LABEL_37;
     }
@@ -326,7 +326,7 @@ LABEL_35:
 
   else
   {
-    v26 = v57;
+    v26 = code;
   }
 
   v64 = 0u;
@@ -338,18 +338,18 @@ LABEL_35:
   v29 = [(NSMutableArray *)v28 countByEnumeratingWithState:&v62 objects:v79 count:16];
   if (!v29)
   {
-    LODWORD(v57) = 0;
+    LODWORD(code) = 0;
     LODWORD(v30) = v26;
     goto LABEL_81;
   }
 
-  LODWORD(v57) = 0;
+  LODWORD(code) = 0;
   v55 = *v63;
   v30 = v26;
   while (2)
   {
     v31 = 0;
-    v32 = v30;
+    code2 = v30;
     v53 = v29;
     do
     {
@@ -363,28 +363,28 @@ LABEL_35:
       v35 = +[VCPWatchdog sharedWatchdog];
       [v35 pet];
 
-      if (!v57)
+      if (!code)
       {
         if (![(VCPTask *)self isCancelled])
         {
           [v33 start];
-          LODWORD(v57) = [v33 error];
+          LODWORD(code) = [v33 error];
 LABEL_59:
-          v30 = v32;
+          v30 = code2;
 LABEL_69:
           [(VCPProgressReporter *)self->_progressReporter increaseProcessedJobCountByOne];
           v40 = 1;
           goto LABEL_70;
         }
 
-        LODWORD(v57) = -128;
+        LODWORD(code) = -128;
       }
 
       if ([v33 previousAttempts])
       {
         if (+[MADManagedProcessingStatus isMACDPersistEnabled])
         {
-          v36 = [(VCPTask *)self photoLibrary];
+          photoLibrary4 = [(VCPTask *)self photoLibrary];
           v60 = 0;
           v61[0] = _NSConcreteStackBlock;
           v61[1] = 3221225472;
@@ -392,30 +392,30 @@ LABEL_69:
           v61[3] = &unk_100282938;
           v61[4] = v33;
           v61[5] = self;
-          v37 = [v36 mad_performAnalysisDataStoreChanges:v61 error:&v60];
+          v37 = [photoLibrary4 mad_performAnalysisDataStoreChanges:v61 error:&v60];
           v38 = v60;
 
           if ((v37 & 1) == 0)
           {
-            v32 = [v38 code];
+            code2 = [v38 code];
           }
 
           goto LABEL_55;
         }
 
-        v41 = [v33 previousAttempts];
-        v42 = [v33 asset];
+        previousAttempts = [v33 previousAttempts];
+        asset3 = [v33 asset];
         taskID = self->_taskID;
-        v44 = [v33 previousStatus];
-        v45 = [v33 lastAttemptDate];
-        v46 = [v56 setAttempts:v41 asset:v42 taskID:taskID status:v44 lastAttemptDate:v45];
+        previousStatus = [v33 previousStatus];
+        lastAttemptDate = [v33 lastAttemptDate];
+        v46 = [v56 setAttempts:previousAttempts asset:asset3 taskID:taskID status:previousStatus lastAttemptDate:lastAttemptDate];
       }
 
       else
       {
         if (+[MADManagedProcessingStatus isMACDPersistEnabled])
         {
-          v39 = [(VCPTask *)self photoLibrary];
+          photoLibrary5 = [(VCPTask *)self photoLibrary];
           v58 = 0;
           v59[0] = _NSConcreteStackBlock;
           v59[1] = 3221225472;
@@ -423,12 +423,12 @@ LABEL_69:
           v59[3] = &unk_100282938;
           v59[4] = v33;
           v59[5] = self;
-          v37 = [v39 mad_performAnalysisDataStoreChanges:v59 error:&v58];
+          v37 = [photoLibrary5 mad_performAnalysisDataStoreChanges:v59 error:&v58];
           v38 = v58;
 
           if ((v37 & 1) == 0)
           {
-            v32 = [v38 code];
+            code2 = [v38 code];
           }
 
 LABEL_55:
@@ -436,16 +436,16 @@ LABEL_55:
           if ((v37 & 1) == 0)
           {
             v40 = 0;
-            v30 = v32;
+            v30 = code2;
             goto LABEL_70;
           }
 
           goto LABEL_59;
         }
 
-        v47 = [v33 asset];
-        v48 = [v47 localIdentifier];
-        v46 = [v56 removeProcessingStatusForLocalIdentifier:v48 andTaskID:self->_taskID];
+        asset4 = [v33 asset];
+        localIdentifier2 = [asset4 localIdentifier];
+        v46 = [v56 removeProcessingStatusForLocalIdentifier:localIdentifier2 andTaskID:self->_taskID];
       }
 
       if (v46 == -108 || v46 == -36)
@@ -458,7 +458,7 @@ LABEL_55:
         v30 = v46;
         if (v46 != -23)
         {
-          v30 = v32;
+          v30 = code2;
         }
       }
 
@@ -472,12 +472,12 @@ LABEL_70:
       objc_autoreleasePoolPop(v34);
       if (!v40)
       {
-        LODWORD(v57) = v30;
+        LODWORD(code) = v30;
         goto LABEL_36;
       }
 
       v31 = v31 + 1;
-      v32 = v30;
+      code2 = v30;
     }
 
     while (v53 != v31);
@@ -498,22 +498,22 @@ LABEL_81:
     goto LABEL_90;
   }
 
-  v49 = [v56 commit];
-  if (v49 == -108 || v49 == -36)
+  commit2 = [v56 commit];
+  if (commit2 == -108 || commit2 == -36)
   {
-    LODWORD(v26) = v49;
+    LODWORD(v26) = commit2;
   }
 
   else
   {
-    LODWORD(v26) = v49;
-    if (v49 != -23)
+    LODWORD(v26) = commit2;
+    if (commit2 != -23)
     {
       LODWORD(v26) = v30;
     }
   }
 
-  if (v49 != -108 && v49 != -36 && v49 != -23)
+  if (commit2 != -108 && commit2 != -36 && commit2 != -23)
   {
 LABEL_90:
     obj = [(VCPTask *)self photoLibrary];
@@ -521,7 +521,7 @@ LABEL_90:
     [v50 persist];
 
 LABEL_36:
-    LODWORD(v26) = v57;
+    LODWORD(v26) = code;
   }
 
 LABEL_37:

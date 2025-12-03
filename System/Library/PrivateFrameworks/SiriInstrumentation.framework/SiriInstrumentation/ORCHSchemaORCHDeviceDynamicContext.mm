@@ -1,60 +1,60 @@
 @interface ORCHSchemaORCHDeviceDynamicContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ORCHSchemaORCHDeviceDynamicContext)initWithDictionary:(id)a3;
-- (ORCHSchemaORCHDeviceDynamicContext)initWithJSON:(id)a3;
+- (ORCHSchemaORCHDeviceDynamicContext)initWithDictionary:(id)dictionary;
+- (ORCHSchemaORCHDeviceDynamicContext)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (int)genAIAgentsEnabledAtIndex:(unint64_t)a3;
+- (int)genAIAgentsEnabledAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addGenAIAgentsEnabled:(int)a3;
-- (void)setHasAcceptProceedGesture:(BOOL)a3;
-- (void)setHasBluetoothState:(BOOL)a3;
-- (void)setHasDeclineDismissGesture:(BOOL)a3;
-- (void)setHasFlashlightLevel:(BOOL)a3;
-- (void)setHasHeadGesturesEnabled:(BOOL)a3;
-- (void)setHasHeadGesturesSupported:(BOOL)a3;
-- (void)setHasIsChatGPTEnabled:(BOOL)a3;
-- (void)setHasIsSoundAnalysisEnabled:(BOOL)a3;
-- (void)setHasIsWifiEnabled:(BOOL)a3;
-- (void)setHasMotionActivity:(BOOL)a3;
-- (void)setHasTimeSinceAssistantDaemonStartedInMs:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addGenAIAgentsEnabled:(int)enabled;
+- (void)setHasAcceptProceedGesture:(BOOL)gesture;
+- (void)setHasBluetoothState:(BOOL)state;
+- (void)setHasDeclineDismissGesture:(BOOL)gesture;
+- (void)setHasFlashlightLevel:(BOOL)level;
+- (void)setHasHeadGesturesEnabled:(BOOL)enabled;
+- (void)setHasHeadGesturesSupported:(BOOL)supported;
+- (void)setHasIsChatGPTEnabled:(BOOL)enabled;
+- (void)setHasIsSoundAnalysisEnabled:(BOOL)enabled;
+- (void)setHasIsWifiEnabled:(BOOL)enabled;
+- (void)setHasMotionActivity:(BOOL)activity;
+- (void)setHasTimeSinceAssistantDaemonStartedInMs:(BOOL)ms;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ORCHSchemaORCHDeviceDynamicContext
 
-- (ORCHSchemaORCHDeviceDynamicContext)initWithDictionary:(id)a3
+- (ORCHSchemaORCHDeviceDynamicContext)initWithDictionary:(id)dictionary
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v45.receiver = self;
   v45.super_class = ORCHSchemaORCHDeviceDynamicContext;
   v5 = [(ORCHSchemaORCHDeviceDynamicContext *)&v45 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"thermalState"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"thermalState"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ORCHSchemaORCHDeviceDynamicContext setThermalState:](v5, "setThermalState:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"motionActivity"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"motionActivity"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ORCHSchemaORCHDeviceDynamicContext setMotionActivity:](v5, "setMotionActivity:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"timeSinceAssistantDaemonStartedInMs"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"timeSinceAssistantDaemonStartedInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ORCHSchemaORCHDeviceDynamicContext setTimeSinceAssistantDaemonStartedInMs:](v5, "setTimeSinceAssistantDaemonStartedInMs:", [v8 unsignedLongLongValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"headGesturesSupported"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"headGesturesSupported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -62,14 +62,14 @@
     }
 
     v40 = v8;
-    v10 = [v4 objectForKeyedSubscript:@"headGesturesEnabled"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"headGesturesEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ORCHSchemaORCHDeviceDynamicContext setHeadGesturesEnabled:](v5, "setHeadGesturesEnabled:", [v10 BOOLValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"acceptProceedGesture"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"acceptProceedGesture"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -77,14 +77,14 @@
     }
 
     v12 = v6;
-    v13 = [v4 objectForKeyedSubscript:@"declineDismissGesture"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"declineDismissGesture"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ORCHSchemaORCHDeviceDynamicContext setDeclineDismissGesture:](v5, "setDeclineDismissGesture:", [v13 intValue]);
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"isWifiEnabled"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"isWifiEnabled"];
     objc_opt_class();
     v39 = v14;
     if (objc_opt_isKindOfClass())
@@ -92,7 +92,7 @@
       -[ORCHSchemaORCHDeviceDynamicContext setIsWifiEnabled:](v5, "setIsWifiEnabled:", [v14 BOOLValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"bluetoothState"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"bluetoothState"];
     objc_opt_class();
     v38 = v15;
     v16 = v12;
@@ -102,7 +102,7 @@
     }
 
     v37 = v10;
-    v17 = [v4 objectForKeyedSubscript:@"flashlightLevel"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"flashlightLevel"];
     objc_opt_class();
     v18 = v7;
     if (objc_opt_isKindOfClass())
@@ -113,7 +113,7 @@
     v34 = v17;
     v35 = v13;
     v36 = v11;
-    v19 = [v4 objectForKeyedSubscript:@"isChatGPTEnabled"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"isChatGPTEnabled"];
     objc_opt_class();
     v20 = v40;
     if (objc_opt_isKindOfClass())
@@ -121,7 +121,7 @@
       -[ORCHSchemaORCHDeviceDynamicContext setIsChatGPTEnabled:](v5, "setIsChatGPTEnabled:", [v19 BOOLValue]);
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"genAIAgentsEnabled"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"genAIAgentsEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -167,7 +167,7 @@
       v9 = v31;
     }
 
-    v28 = [v4 objectForKeyedSubscript:{@"isSoundAnalysisEnabled", v31, v32, v33}];
+    v28 = [dictionaryCopy objectForKeyedSubscript:{@"isSoundAnalysisEnabled", v31, v32, v33}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -180,30 +180,30 @@
   return v5;
 }
 
-- (ORCHSchemaORCHDeviceDynamicContext)initWithJSON:(id)a3
+- (ORCHSchemaORCHDeviceDynamicContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ORCHSchemaORCHDeviceDynamicContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ORCHSchemaORCHDeviceDynamicContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ORCHSchemaORCHDeviceDynamicContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -216,12 +216,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = *(&self->_isSoundAnalysisEnabled + 1);
   if ((v4 & 0x20) != 0)
   {
-    v5 = [(ORCHSchemaORCHDeviceDynamicContext *)self acceptProceedGesture];
-    if (v5 == 1)
+    acceptProceedGesture = [(ORCHSchemaORCHDeviceDynamicContext *)self acceptProceedGesture];
+    if (acceptProceedGesture == 1)
     {
       v6 = @"ORCHHEADGESTUREMAPPING_SIDE_TO_SIDE";
     }
@@ -231,7 +231,7 @@
       v6 = @"ORCHHEADGESTUREMAPPING_UNKNOWN";
     }
 
-    if (v5 == 2)
+    if (acceptProceedGesture == 2)
     {
       v7 = @"ORCHHEADGESTUREMAPPING_UP_AND_DOWN";
     }
@@ -241,7 +241,7 @@
       v7 = v6;
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"acceptProceedGesture"];
+    [dictionary setObject:v7 forKeyedSubscript:@"acceptProceedGesture"];
     v4 = *(&self->_isSoundAnalysisEnabled + 1);
     if ((v4 & 0x100) == 0)
     {
@@ -271,7 +271,7 @@ LABEL_3:
     v9 = off_1E78DE9D8[v8];
   }
 
-  [v3 setObject:v9 forKeyedSubscript:@"bluetoothState"];
+  [dictionary setObject:v9 forKeyedSubscript:@"bluetoothState"];
   v4 = *(&self->_isSoundAnalysisEnabled + 1);
   if ((v4 & 0x40) == 0)
   {
@@ -285,8 +285,8 @@ LABEL_4:
   }
 
 LABEL_17:
-  v10 = [(ORCHSchemaORCHDeviceDynamicContext *)self declineDismissGesture];
-  if (v10 == 1)
+  declineDismissGesture = [(ORCHSchemaORCHDeviceDynamicContext *)self declineDismissGesture];
+  if (declineDismissGesture == 1)
   {
     v11 = @"ORCHHEADGESTUREMAPPING_SIDE_TO_SIDE";
   }
@@ -296,7 +296,7 @@ LABEL_17:
     v11 = @"ORCHHEADGESTUREMAPPING_UNKNOWN";
   }
 
-  if (v10 == 2)
+  if (declineDismissGesture == 2)
   {
     v12 = @"ORCHHEADGESTUREMAPPING_UP_AND_DOWN";
   }
@@ -306,7 +306,7 @@ LABEL_17:
     v12 = v11;
   }
 
-  [v3 setObject:v12 forKeyedSubscript:@"declineDismissGesture"];
+  [dictionary setObject:v12 forKeyedSubscript:@"declineDismissGesture"];
   if ((*(&self->_isSoundAnalysisEnabled + 1) & 0x200) != 0)
   {
 LABEL_24:
@@ -321,22 +321,22 @@ LABEL_24:
       v14 = off_1E78DEA08[v13];
     }
 
-    [v3 setObject:v14 forKeyedSubscript:@"flashlightLevel"];
+    [dictionary setObject:v14 forKeyedSubscript:@"flashlightLevel"];
   }
 
 LABEL_28:
   if ([(NSArray *)self->_genAIAgentsEnableds count])
   {
-    v15 = [(ORCHSchemaORCHDeviceDynamicContext *)self genAIAgentsEnableds];
-    v16 = [v15 copy];
-    [v3 setObject:v16 forKeyedSubscript:@"genAIAgentsEnabled"];
+    genAIAgentsEnableds = [(ORCHSchemaORCHDeviceDynamicContext *)self genAIAgentsEnableds];
+    v16 = [genAIAgentsEnableds copy];
+    [dictionary setObject:v16 forKeyedSubscript:@"genAIAgentsEnabled"];
   }
 
   v17 = *(&self->_isSoundAnalysisEnabled + 1);
   if ((v17 & 0x10) != 0)
   {
     v20 = [MEMORY[0x1E696AD98] numberWithBool:{-[ORCHSchemaORCHDeviceDynamicContext headGesturesEnabled](self, "headGesturesEnabled")}];
-    [v3 setObject:v20 forKeyedSubscript:@"headGesturesEnabled"];
+    [dictionary setObject:v20 forKeyedSubscript:@"headGesturesEnabled"];
 
     v17 = *(&self->_isSoundAnalysisEnabled + 1);
     if ((v17 & 8) == 0)
@@ -357,7 +357,7 @@ LABEL_32:
   }
 
   v21 = [MEMORY[0x1E696AD98] numberWithBool:{-[ORCHSchemaORCHDeviceDynamicContext headGesturesSupported](self, "headGesturesSupported")}];
-  [v3 setObject:v21 forKeyedSubscript:@"headGesturesSupported"];
+  [dictionary setObject:v21 forKeyedSubscript:@"headGesturesSupported"];
 
   v17 = *(&self->_isSoundAnalysisEnabled + 1);
   if ((v17 & 0x400) == 0)
@@ -373,7 +373,7 @@ LABEL_33:
 
 LABEL_44:
   v22 = [MEMORY[0x1E696AD98] numberWithBool:{-[ORCHSchemaORCHDeviceDynamicContext isChatGPTEnabled](self, "isChatGPTEnabled")}];
-  [v3 setObject:v22 forKeyedSubscript:@"isChatGPTEnabled"];
+  [dictionary setObject:v22 forKeyedSubscript:@"isChatGPTEnabled"];
 
   v17 = *(&self->_isSoundAnalysisEnabled + 1);
   if ((v17 & 0x800) == 0)
@@ -389,7 +389,7 @@ LABEL_34:
 
 LABEL_45:
   v23 = [MEMORY[0x1E696AD98] numberWithBool:{-[ORCHSchemaORCHDeviceDynamicContext isSoundAnalysisEnabled](self, "isSoundAnalysisEnabled")}];
-  [v3 setObject:v23 forKeyedSubscript:@"isSoundAnalysisEnabled"];
+  [dictionary setObject:v23 forKeyedSubscript:@"isSoundAnalysisEnabled"];
 
   v17 = *(&self->_isSoundAnalysisEnabled + 1);
   if ((v17 & 0x80) == 0)
@@ -405,7 +405,7 @@ LABEL_35:
 
 LABEL_46:
   v24 = [MEMORY[0x1E696AD98] numberWithBool:{-[ORCHSchemaORCHDeviceDynamicContext isWifiEnabled](self, "isWifiEnabled")}];
-  [v3 setObject:v24 forKeyedSubscript:@"isWifiEnabled"];
+  [dictionary setObject:v24 forKeyedSubscript:@"isWifiEnabled"];
 
   v17 = *(&self->_isSoundAnalysisEnabled + 1);
   if ((v17 & 2) == 0)
@@ -431,7 +431,7 @@ LABEL_47:
     v26 = off_1E78DEA30[v25];
   }
 
-  [v3 setObject:v26 forKeyedSubscript:@"motionActivity"];
+  [dictionary setObject:v26 forKeyedSubscript:@"motionActivity"];
   v17 = *(&self->_isSoundAnalysisEnabled + 1);
   if ((v17 & 1) == 0)
   {
@@ -456,7 +456,7 @@ LABEL_51:
     v28 = off_1E78DEA58[v27];
   }
 
-  [v3 setObject:v28 forKeyedSubscript:@"thermalState"];
+  [dictionary setObject:v28 forKeyedSubscript:@"thermalState"];
   if ((*(&self->_isSoundAnalysisEnabled + 1) & 4) == 0)
   {
     goto LABEL_39;
@@ -464,12 +464,12 @@ LABEL_51:
 
 LABEL_38:
   v18 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[ORCHSchemaORCHDeviceDynamicContext timeSinceAssistantDaemonStartedInMs](self, "timeSinceAssistantDaemonStartedInMs")}];
-  [v3 setObject:v18 forKeyedSubscript:@"timeSinceAssistantDaemonStartedInMs"];
+  [dictionary setObject:v18 forKeyedSubscript:@"timeSinceAssistantDaemonStartedInMs"];
 
 LABEL_39:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -637,16 +637,16 @@ LABEL_24:
   return v17 ^ v18 ^ v16 ^ v15 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v12 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_55;
   }
 
   v5 = *(&self->_isSoundAnalysisEnabled + 1);
-  v6 = *(v4 + 65);
+  v6 = *(equalCopy + 65);
   if ((v5 & 1) != (v6 & 1))
   {
     goto LABEL_55;
@@ -655,13 +655,13 @@ LABEL_24:
   if (v5)
   {
     thermalState = self->_thermalState;
-    if (thermalState != [v4 thermalState])
+    if (thermalState != [equalCopy thermalState])
     {
       goto LABEL_55;
     }
 
     v5 = *(&self->_isSoundAnalysisEnabled + 1);
-    v6 = *(v4 + 65);
+    v6 = *(equalCopy + 65);
   }
 
   v8 = (v5 >> 1) & 1;
@@ -673,13 +673,13 @@ LABEL_24:
   if (v8)
   {
     motionActivity = self->_motionActivity;
-    if (motionActivity != [v4 motionActivity])
+    if (motionActivity != [equalCopy motionActivity])
     {
       goto LABEL_55;
     }
 
     v5 = *(&self->_isSoundAnalysisEnabled + 1);
-    v6 = *(v4 + 65);
+    v6 = *(equalCopy + 65);
   }
 
   v10 = (v5 >> 2) & 1;
@@ -691,13 +691,13 @@ LABEL_24:
   if (v10)
   {
     timeSinceAssistantDaemonStartedInMs = self->_timeSinceAssistantDaemonStartedInMs;
-    if (timeSinceAssistantDaemonStartedInMs != [v4 timeSinceAssistantDaemonStartedInMs])
+    if (timeSinceAssistantDaemonStartedInMs != [equalCopy timeSinceAssistantDaemonStartedInMs])
     {
       goto LABEL_55;
     }
 
     v5 = *(&self->_isSoundAnalysisEnabled + 1);
-    v6 = *(v4 + 65);
+    v6 = *(equalCopy + 65);
   }
 
   v12 = (v5 >> 3) & 1;
@@ -709,13 +709,13 @@ LABEL_24:
   if (v12)
   {
     headGesturesSupported = self->_headGesturesSupported;
-    if (headGesturesSupported != [v4 headGesturesSupported])
+    if (headGesturesSupported != [equalCopy headGesturesSupported])
     {
       goto LABEL_55;
     }
 
     v5 = *(&self->_isSoundAnalysisEnabled + 1);
-    v6 = *(v4 + 65);
+    v6 = *(equalCopy + 65);
   }
 
   v14 = (v5 >> 4) & 1;
@@ -727,13 +727,13 @@ LABEL_24:
   if (v14)
   {
     headGesturesEnabled = self->_headGesturesEnabled;
-    if (headGesturesEnabled != [v4 headGesturesEnabled])
+    if (headGesturesEnabled != [equalCopy headGesturesEnabled])
     {
       goto LABEL_55;
     }
 
     v5 = *(&self->_isSoundAnalysisEnabled + 1);
-    v6 = *(v4 + 65);
+    v6 = *(equalCopy + 65);
   }
 
   v16 = (v5 >> 5) & 1;
@@ -745,13 +745,13 @@ LABEL_24:
   if (v16)
   {
     acceptProceedGesture = self->_acceptProceedGesture;
-    if (acceptProceedGesture != [v4 acceptProceedGesture])
+    if (acceptProceedGesture != [equalCopy acceptProceedGesture])
     {
       goto LABEL_55;
     }
 
     v5 = *(&self->_isSoundAnalysisEnabled + 1);
-    v6 = *(v4 + 65);
+    v6 = *(equalCopy + 65);
   }
 
   v18 = (v5 >> 6) & 1;
@@ -763,13 +763,13 @@ LABEL_24:
   if (v18)
   {
     declineDismissGesture = self->_declineDismissGesture;
-    if (declineDismissGesture != [v4 declineDismissGesture])
+    if (declineDismissGesture != [equalCopy declineDismissGesture])
     {
       goto LABEL_55;
     }
 
     v5 = *(&self->_isSoundAnalysisEnabled + 1);
-    v6 = *(v4 + 65);
+    v6 = *(equalCopy + 65);
   }
 
   v20 = (v5 >> 7) & 1;
@@ -781,13 +781,13 @@ LABEL_24:
   if (v20)
   {
     isWifiEnabled = self->_isWifiEnabled;
-    if (isWifiEnabled != [v4 isWifiEnabled])
+    if (isWifiEnabled != [equalCopy isWifiEnabled])
     {
       goto LABEL_55;
     }
 
     v5 = *(&self->_isSoundAnalysisEnabled + 1);
-    v6 = *(v4 + 65);
+    v6 = *(equalCopy + 65);
   }
 
   v22 = (v5 >> 8) & 1;
@@ -799,13 +799,13 @@ LABEL_24:
   if (v22)
   {
     bluetoothState = self->_bluetoothState;
-    if (bluetoothState != [v4 bluetoothState])
+    if (bluetoothState != [equalCopy bluetoothState])
     {
       goto LABEL_55;
     }
 
     v5 = *(&self->_isSoundAnalysisEnabled + 1);
-    v6 = *(v4 + 65);
+    v6 = *(equalCopy + 65);
   }
 
   v24 = (v5 >> 9) & 1;
@@ -817,10 +817,10 @@ LABEL_24:
   if (v24)
   {
     flashlightLevel = self->_flashlightLevel;
-    if (flashlightLevel == [v4 flashlightLevel])
+    if (flashlightLevel == [equalCopy flashlightLevel])
     {
       v5 = *(&self->_isSoundAnalysisEnabled + 1);
-      v6 = *(v4 + 65);
+      v6 = *(equalCopy + 65);
       goto LABEL_42;
     }
 
@@ -839,28 +839,28 @@ LABEL_42:
   if (v26)
   {
     isChatGPTEnabled = self->_isChatGPTEnabled;
-    if (isChatGPTEnabled != [v4 isChatGPTEnabled])
+    if (isChatGPTEnabled != [equalCopy isChatGPTEnabled])
     {
       goto LABEL_55;
     }
   }
 
-  v28 = [(ORCHSchemaORCHDeviceDynamicContext *)self genAIAgentsEnableds];
-  v29 = [v4 genAIAgentsEnableds];
-  v30 = v29;
-  if ((v28 != 0) == (v29 == 0))
+  genAIAgentsEnableds = [(ORCHSchemaORCHDeviceDynamicContext *)self genAIAgentsEnableds];
+  genAIAgentsEnableds2 = [equalCopy genAIAgentsEnableds];
+  v30 = genAIAgentsEnableds2;
+  if ((genAIAgentsEnableds != 0) == (genAIAgentsEnableds2 == 0))
   {
 
     goto LABEL_55;
   }
 
-  v31 = [(ORCHSchemaORCHDeviceDynamicContext *)self genAIAgentsEnableds];
-  if (v31)
+  genAIAgentsEnableds3 = [(ORCHSchemaORCHDeviceDynamicContext *)self genAIAgentsEnableds];
+  if (genAIAgentsEnableds3)
   {
-    v32 = v31;
-    v33 = [(ORCHSchemaORCHDeviceDynamicContext *)self genAIAgentsEnableds];
-    v34 = [v4 genAIAgentsEnableds];
-    v35 = [v33 isEqual:v34];
+    v32 = genAIAgentsEnableds3;
+    genAIAgentsEnableds4 = [(ORCHSchemaORCHDeviceDynamicContext *)self genAIAgentsEnableds];
+    genAIAgentsEnableds5 = [equalCopy genAIAgentsEnableds];
+    v35 = [genAIAgentsEnableds4 isEqual:genAIAgentsEnableds5];
 
     if (!v35)
     {
@@ -873,7 +873,7 @@ LABEL_42:
   }
 
   v36 = (*(&self->_isSoundAnalysisEnabled + 1) >> 11) & 1;
-  if (v36 != ((*(v4 + 65) >> 11) & 1))
+  if (v36 != ((*(equalCopy + 65) >> 11) & 1))
   {
     goto LABEL_55;
   }
@@ -881,7 +881,7 @@ LABEL_42:
   if (v36)
   {
     isSoundAnalysisEnabled = self->_isSoundAnalysisEnabled;
-    if (isSoundAnalysisEnabled != [v4 isSoundAnalysisEnabled])
+    if (isSoundAnalysisEnabled != [equalCopy isSoundAnalysisEnabled])
     {
       goto LABEL_55;
     }
@@ -893,10 +893,10 @@ LABEL_56:
   return v38;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v5 = *(&self->_isSoundAnalysisEnabled + 1);
   if (v5)
   {
@@ -1074,9 +1074,9 @@ LABEL_13:
   }
 }
 
-- (void)setHasIsSoundAnalysisEnabled:(BOOL)a3
+- (void)setHasIsSoundAnalysisEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 2048;
   }
@@ -1089,23 +1089,23 @@ LABEL_13:
   *(&self->_isSoundAnalysisEnabled + 1) = *(&self->_isSoundAnalysisEnabled + 1) & 0xF7FF | v3;
 }
 
-- (int)genAIAgentsEnabledAtIndex:(unint64_t)a3
+- (int)genAIAgentsEnabledAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_genAIAgentsEnableds objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_genAIAgentsEnableds objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addGenAIAgentsEnabled:(int)a3
+- (void)addGenAIAgentsEnabled:(int)enabled
 {
-  v3 = *&a3;
+  v3 = *&enabled;
   genAIAgentsEnableds = self->_genAIAgentsEnableds;
   if (!genAIAgentsEnableds)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_genAIAgentsEnableds;
-    self->_genAIAgentsEnableds = v6;
+    self->_genAIAgentsEnableds = array;
 
     genAIAgentsEnableds = self->_genAIAgentsEnableds;
   }
@@ -1114,9 +1114,9 @@ LABEL_13:
   [(NSArray *)genAIAgentsEnableds addObject:v8];
 }
 
-- (void)setHasIsChatGPTEnabled:(BOOL)a3
+- (void)setHasIsChatGPTEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 1024;
   }
@@ -1129,9 +1129,9 @@ LABEL_13:
   *(&self->_isSoundAnalysisEnabled + 1) = *(&self->_isSoundAnalysisEnabled + 1) & 0xFBFF | v3;
 }
 
-- (void)setHasFlashlightLevel:(BOOL)a3
+- (void)setHasFlashlightLevel:(BOOL)level
 {
-  if (a3)
+  if (level)
   {
     v3 = 512;
   }
@@ -1144,9 +1144,9 @@ LABEL_13:
   *(&self->_isSoundAnalysisEnabled + 1) = *(&self->_isSoundAnalysisEnabled + 1) & 0xFDFF | v3;
 }
 
-- (void)setHasBluetoothState:(BOOL)a3
+- (void)setHasBluetoothState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 256;
   }
@@ -1159,9 +1159,9 @@ LABEL_13:
   *(&self->_isSoundAnalysisEnabled + 1) = *(&self->_isSoundAnalysisEnabled + 1) & 0xFEFF | v3;
 }
 
-- (void)setHasIsWifiEnabled:(BOOL)a3
+- (void)setHasIsWifiEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 128;
   }
@@ -1174,9 +1174,9 @@ LABEL_13:
   *(&self->_isSoundAnalysisEnabled + 1) = *(&self->_isSoundAnalysisEnabled + 1) & 0xFF7F | v3;
 }
 
-- (void)setHasDeclineDismissGesture:(BOOL)a3
+- (void)setHasDeclineDismissGesture:(BOOL)gesture
 {
-  if (a3)
+  if (gesture)
   {
     v3 = 64;
   }
@@ -1189,9 +1189,9 @@ LABEL_13:
   *(&self->_isSoundAnalysisEnabled + 1) = *(&self->_isSoundAnalysisEnabled + 1) & 0xFFBF | v3;
 }
 
-- (void)setHasAcceptProceedGesture:(BOOL)a3
+- (void)setHasAcceptProceedGesture:(BOOL)gesture
 {
-  if (a3)
+  if (gesture)
   {
     v3 = 32;
   }
@@ -1204,9 +1204,9 @@ LABEL_13:
   *(&self->_isSoundAnalysisEnabled + 1) = *(&self->_isSoundAnalysisEnabled + 1) & 0xFFDF | v3;
 }
 
-- (void)setHasHeadGesturesEnabled:(BOOL)a3
+- (void)setHasHeadGesturesEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 16;
   }
@@ -1219,9 +1219,9 @@ LABEL_13:
   *(&self->_isSoundAnalysisEnabled + 1) = *(&self->_isSoundAnalysisEnabled + 1) & 0xFFEF | v3;
 }
 
-- (void)setHasHeadGesturesSupported:(BOOL)a3
+- (void)setHasHeadGesturesSupported:(BOOL)supported
 {
-  if (a3)
+  if (supported)
   {
     v3 = 8;
   }
@@ -1234,9 +1234,9 @@ LABEL_13:
   *(&self->_isSoundAnalysisEnabled + 1) = *(&self->_isSoundAnalysisEnabled + 1) & 0xFFF7 | v3;
 }
 
-- (void)setHasTimeSinceAssistantDaemonStartedInMs:(BOOL)a3
+- (void)setHasTimeSinceAssistantDaemonStartedInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 4;
   }
@@ -1249,9 +1249,9 @@ LABEL_13:
   *(&self->_isSoundAnalysisEnabled + 1) = *(&self->_isSoundAnalysisEnabled + 1) & 0xFFFB | v3;
 }
 
-- (void)setHasMotionActivity:(BOOL)a3
+- (void)setHasMotionActivity:(BOOL)activity
 {
-  if (a3)
+  if (activity)
   {
     v3 = 2;
   }

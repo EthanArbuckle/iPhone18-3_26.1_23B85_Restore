@@ -1,42 +1,42 @@
 @interface PKPassDeleteAnimationController
-+ (void)performPassbookDeleteWithView:(id)a3 inSuperview:(id)a4 completion:(id)a5;
-- (PKPassDeleteAnimationController)initWithPassView:(id)a3 groupView:(id)a4;
++ (void)performPassbookDeleteWithView:(id)view inSuperview:(id)superview completion:(id)completion;
+- (PKPassDeleteAnimationController)initWithPassView:(id)view groupView:(id)groupView;
 - (PKPassDeleteAnimationControllerDelegate)delegate;
-- (void)_applicationDidEnterBackground:(id)a3;
+- (void)_applicationDidEnterBackground:(id)background;
 - (void)_registerForEnterBackgroundNotification;
-- (void)_startAnimationWithCompletion:(id)a3;
+- (void)_startAnimationWithCompletion:(id)completion;
 - (void)_unregisterForEnterBackgroundNotification;
 - (void)dealloc;
-- (void)finished:(BOOL)a3;
+- (void)finished:(BOOL)finished;
 - (void)forceDeleteAnimation;
-- (void)showInViewController:(id)a3 sourceView:(id)a4;
+- (void)showInViewController:(id)controller sourceView:(id)view;
 @end
 
 @implementation PKPassDeleteAnimationController
 
-+ (void)performPassbookDeleteWithView:(id)a3 inSuperview:(id)a4 completion:(id)a5
++ (void)performPassbookDeleteWithView:(id)view inSuperview:(id)superview completion:(id)completion
 {
-  v7 = a3;
-  v84 = a5;
-  v8 = a4;
-  [v7 frame];
+  viewCopy = view;
+  completionCopy = completion;
+  superviewCopy = superview;
+  [viewCopy frame];
   v13 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v9, v10, v11, v12}];
   [v13 setClipsToBounds:1];
-  [v8 addSubview:v13];
+  [superviewCopy addSubview:v13];
 
   [v13 bounds];
   v15 = v14;
   v17 = v16;
-  v86 = v7;
-  [v7 setFrame:?];
-  [v13 addSubview:v7];
-  v18 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v18 scale];
+  v86 = viewCopy;
+  [viewCopy setFrame:?];
+  [v13 addSubview:viewCopy];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v20 = 1.0 / v19;
 
   v21 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{0.0, 0.0, v15, v20}];
-  v22 = [MEMORY[0x1E69DC888] redColor];
-  [v21 setBackgroundColor:v22];
+  redColor = [MEMORY[0x1E69DC888] redColor];
+  [v21 setBackgroundColor:redColor];
 
   [v21 setAlpha:0.83];
   v23 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{0.0, v17, v15, v20}];
@@ -59,8 +59,8 @@
   [v30 setDamping:400.0];
   v83 = v30;
   [v30 setTimingFunction:v85];
-  v31 = [v13 layer];
-  v32 = [v31 valueForKey:@"bounds"];
+  layer = [v13 layer];
+  v32 = [layer valueForKey:@"bounds"];
   [v30 setFromValue:v32];
 
   v33 = *MEMORY[0x1E69797D8];
@@ -70,11 +70,11 @@
   LODWORD(v34) = 1068708659;
   [v30 setSpeed:v34];
   v79 = v13;
-  v35 = [v13 layer];
-  [v35 addAnimation:v30 forKey:@"bounds"];
+  layer2 = [v13 layer];
+  [layer2 addAnimation:v30 forKey:@"bounds"];
 
-  v36 = [v13 layer];
-  [v36 setBounds:{0.0, 0.0, v15, 0.5}];
+  layer3 = [v13 layer];
+  [layer3 setBounds:{0.0, 0.0, v15, 0.5}];
 
   v37 = v15 * 0.5;
   v38 = [MEMORY[0x1E69794A8] animationWithKeyPath:@"position"];
@@ -89,15 +89,15 @@
   [v38 setSpeed:v39];
   v40 = [v38 copy];
   [MEMORY[0x1E69DD250] _setAnimationAttributes:v40];
-  v41 = [v7 valueForKey:@"position"];
+  v41 = [viewCopy valueForKey:@"position"];
   v82 = v40;
   [v40 setFromValue:v41];
 
-  v42 = [v7 layer];
-  [v42 addAnimation:v40 forKey:@"position"];
+  layer4 = [viewCopy layer];
+  [layer4 addAnimation:v40 forKey:@"position"];
 
-  v43 = [v7 layer];
-  [v43 setPosition:{v37, 0.0}];
+  layer5 = [viewCopy layer];
+  [layer5 setPosition:{v37, 0.0}];
 
   v44 = [v38 copy];
   [MEMORY[0x1E69DD250] _setAnimationAttributes:v44];
@@ -105,8 +105,8 @@
   v81 = v44;
   [v44 setFromValue:v45];
 
-  v46 = [v21 layer];
-  [v46 addAnimation:v44 forKey:@"position"];
+  layer6 = [v21 layer];
+  [layer6 addAnimation:v44 forKey:@"position"];
 
   v47 = [v38 copy];
   [MEMORY[0x1E69DD250] _setAnimationAttributes:v47];
@@ -115,14 +115,14 @@
   v80 = v47;
   [v47 setFromValue:v49];
 
-  v50 = [v23 layer];
-  [v50 addAnimation:v47 forKey:@"position"];
+  layer7 = [v23 layer];
+  [layer7 addAnimation:v47 forKey:@"position"];
 
-  v51 = [v21 layer];
-  [v51 setPosition:{v37, 0.0}];
+  layer8 = [v21 layer];
+  [layer8 setPosition:{v37, 0.0}];
 
-  v52 = [v23 layer];
-  [v52 setPosition:{v37, 0.0}];
+  layer9 = [v23 layer];
+  [layer9 setPosition:{v37, 0.0}];
 
   v53 = objc_alloc(MEMORY[0x1E69793D0]);
   LODWORD(v54) = 1036831949;
@@ -134,41 +134,41 @@
   v59 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
   [MEMORY[0x1E69DD250] _setAnimationAttributes:v59];
   [v59 setDuration:0.41];
-  v60 = [v21 layer];
-  v61 = [v60 valueForKey:@"opacity"];
+  layer10 = [v21 layer];
+  v61 = [layer10 valueForKey:@"opacity"];
   [v59 setFromValue:v61];
 
   [v59 setFillMode:v78];
   [v59 setBeginTime:CACurrentMediaTime() + 0.5];
   v77 = v58;
   [v59 setTimingFunction:v58];
-  v62 = [v21 layer];
-  [v62 addAnimation:v59 forKey:@"opacity"];
+  layer11 = [v21 layer];
+  [layer11 addAnimation:v59 forKey:@"opacity"];
 
-  v63 = [v48 layer];
-  [v63 addAnimation:v59 forKey:@"opacity"];
+  layer12 = [v48 layer];
+  [layer12 addAnimation:v59 forKey:@"opacity"];
 
-  v64 = [v21 layer];
-  [v64 setOpacity:0.0];
+  layer13 = [v21 layer];
+  [layer13 setOpacity:0.0];
 
-  v65 = [v48 layer];
-  [v65 setOpacity:0.0];
+  layer14 = [v48 layer];
+  [layer14 setOpacity:0.0];
 
   v66 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
   [MEMORY[0x1E69DD250] _setAnimationAttributes:v66];
   [v66 setDuration:0.115];
-  v67 = [v86 layer];
-  v68 = [v67 valueForKey:@"opacity"];
+  layer15 = [v86 layer];
+  v68 = [layer15 valueForKey:@"opacity"];
   [v66 setFromValue:v68];
 
   [v66 setFillMode:v78];
   [v66 setBeginTime:CACurrentMediaTime() + 0.28];
   [v66 setTimingFunction:v58];
-  v69 = [v86 layer];
-  [v69 addAnimation:v66 forKey:@"opacity"];
+  layer16 = [v86 layer];
+  [layer16 addAnimation:v66 forKey:@"opacity"];
 
-  v70 = [v86 layer];
-  [v70 setOpacity:0.0];
+  layer17 = [v86 layer];
+  [layer17 setOpacity:0.0];
 
   v71 = dispatch_time(0, 740000000);
   block[0] = MEMORY[0x1E69E9820];
@@ -179,8 +179,8 @@
   v89 = v21;
   v90 = v48;
   v91 = v79;
-  v92 = v84;
-  v72 = v84;
+  v92 = completionCopy;
+  v72 = completionCopy;
   v73 = v79;
   v74 = v90;
   v75 = v21;
@@ -199,18 +199,18 @@ uint64_t __88__PKPassDeleteAnimationController_performPassbookDeleteWithView_inS
   return v2();
 }
 
-- (PKPassDeleteAnimationController)initWithPassView:(id)a3 groupView:(id)a4
+- (PKPassDeleteAnimationController)initWithPassView:(id)view groupView:(id)groupView
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  groupViewCopy = groupView;
   v12.receiver = self;
   v12.super_class = PKPassDeleteAnimationController;
   v9 = [(PKPassDeleteAnimationController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_passView, a3);
-    objc_storeStrong(&v10->_groupView, a4);
+    objc_storeStrong(&v9->_passView, view);
+    objc_storeStrong(&v10->_groupView, groupView);
   }
 
   return v10;
@@ -224,71 +224,71 @@ uint64_t __88__PKPassDeleteAnimationController_performPassbookDeleteWithView_inS
   [(PKPassDeleteAnimationController *)&v3 dealloc];
 }
 
-- (void)showInViewController:(id)a3 sourceView:(id)a4
+- (void)showInViewController:(id)controller sourceView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKPassView *)self->_passView pass];
-  v32 = v7;
-  if ([v8 passType] != 1)
+  controllerCopy = controller;
+  viewCopy = view;
+  pass = [(PKPassView *)self->_passView pass];
+  v32 = viewCopy;
+  if ([pass passType] != 1)
   {
-    v12 = v6;
+    v12 = controllerCopy;
     v11 = PKLocalizedString(&cfstr_RemoveSheetTit.isa);
     v13 = PKLocalizedString(&cfstr_RemoveSheetCan.isa);
     v14 = PKLocalizedString(&cfstr_RemoveSheetCon.isa);
     goto LABEL_26;
   }
 
-  v9 = [v8 paymentPass];
-  if (![v9 isAccessPass])
+  paymentPass = [pass paymentPass];
+  if (![paymentPass isAccessPass])
   {
-    if ([v9 supportsBarcodePayment])
+    if ([paymentPass supportsBarcodePayment])
     {
       v15 = PKLocalizedAquamanString(&cfstr_DeleteAccountS.isa);
 LABEL_14:
-      v10 = v15;
+      localizedDescription3 = v15;
       goto LABEL_24;
     }
 
-    if (![v9 isIdentityPass])
+    if (![paymentPass isIdentityPass])
     {
       v15 = PKLocalizedPaymentString(&cfstr_DeleteCardShee_1.isa);
       goto LABEL_14;
     }
 
-    v16 = [v9 identityType];
-    v10 = 0;
-    if (v16 > 2)
+    identityType = [paymentPass identityType];
+    localizedDescription3 = 0;
+    if (identityType > 2)
     {
-      if (v16 != 3)
+      if (identityType != 3)
       {
-        if (v16 == 4)
+        if (identityType == 4)
         {
-          v18 = [v8 localizedDescription];
+          localizedDescription = [pass localizedDescription];
           v19 = @"DELETE_ID_CARD_ADD_AGAIN_LATER_WITH_ISSUERS_APP_SHEET_MESSAGE";
           goto LABEL_22;
         }
 
-        if (v16 != 5)
+        if (identityType != 5)
         {
           goto LABEL_24;
         }
       }
     }
 
-    else if (v16)
+    else if (identityType)
     {
-      if (v16 == 1)
+      if (identityType == 1)
       {
         v17 = @"DELETE_DL_SHEET_MESSAGE";
       }
 
       else
       {
-        if (v16 != 2)
+        if (identityType != 2)
         {
 LABEL_24:
-          v31 = [v9 localizedDescription];
+          localizedDescription2 = [paymentPass localizedDescription];
           v11 = PKStringWithValidatedFormat();
 
           goto LABEL_25;
@@ -297,32 +297,32 @@ LABEL_24:
         v17 = @"DELETE_STATE_ID_SHEET_MESSAGE";
       }
 
-      v18 = PKDeviceSpecificLocalizedStringKeyForKey(v17, 0);
-      v10 = PKLocalizedIdentityString(v18);
+      localizedDescription = PKDeviceSpecificLocalizedStringKeyForKey(v17, 0);
+      localizedDescription3 = PKLocalizedIdentityString(localizedDescription);
 LABEL_23:
 
       goto LABEL_24;
     }
 
-    v18 = [v8 localizedDescription];
+    localizedDescription = [pass localizedDescription];
     v19 = @"DELETE_ID_CARD_SHEET_MESSAGE";
 LABEL_22:
     v20 = PKDeviceSpecificLocalizedStringKeyForKey(v19, 0);
-    v10 = PKLocalizedIdentityString(v20, &stru_1F3BD6370.isa, v18, v18);
+    localizedDescription3 = PKLocalizedIdentityString(v20, &stru_1F3BD6370.isa, localizedDescription, localizedDescription);
 
     goto LABEL_23;
   }
 
-  v10 = [v9 localizedDescription];
-  v11 = PKLocalizedPaymentString(&cfstr_DeleteCardShee_0.isa, &stru_1F3BD5BF0.isa, v10);
+  localizedDescription3 = [paymentPass localizedDescription];
+  v11 = PKLocalizedPaymentString(&cfstr_DeleteCardShee_0.isa, &stru_1F3BD5BF0.isa, localizedDescription3);
 LABEL_25:
-  v12 = v6;
+  v12 = controllerCopy;
 
   v13 = PKLocalizedPaymentString(&cfstr_DeleteCardShee_2.isa);
   v14 = PKLocalizedPaymentString(&cfstr_DeleteCardShee.isa);
 LABEL_26:
   v21 = v14;
-  v22 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v11 message:0 preferredStyle:{0, v31}];
+  v22 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v11 message:0 preferredStyle:{0, localizedDescription2}];
   alertController = self->_alertController;
   self->_alertController = v22;
 
@@ -350,8 +350,8 @@ LABEL_26:
   PKAccessibilityIDAlertSet(self->_alertController, *MEMORY[0x1E69B9958]);
   if (v32)
   {
-    v30 = [(UIAlertController *)self->_alertController popoverPresentationController];
-    [v30 setSourceView:v32];
+    popoverPresentationController = [(UIAlertController *)self->_alertController popoverPresentationController];
+    [popoverPresentationController setSourceView:v32];
   }
 
   [v12 presentViewController:self->_alertController animated:1 completion:0];
@@ -422,23 +422,23 @@ LABEL_6:
 
 - (void)forceDeleteAnimation
 {
-  v3 = [(PKPassGroupView *)self->_groupView beginSuppressingPageControl];
-  [(PKPassDeleteAnimationController *)self _startAnimationWithCompletion:v3];
+  beginSuppressingPageControl = [(PKPassGroupView *)self->_groupView beginSuppressingPageControl];
+  [(PKPassDeleteAnimationController *)self _startAnimationWithCompletion:beginSuppressingPageControl];
 }
 
-- (void)finished:(BOOL)a3
+- (void)finished:(BOOL)finished
 {
-  v3 = a3;
+  finishedCopy = finished;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained deleteAnimationController:self didComplete:v3];
+    [WeakRetained deleteAnimationController:self didComplete:finishedCopy];
   }
 }
 
-- (void)_startAnimationWithCompletion:(id)a3
+- (void)_startAnimationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
@@ -447,7 +447,7 @@ LABEL_6:
 
   [(PKPassView *)self->_passView sizeToFit];
   v6 = [(PKPassView *)self->_passView snapshotViewOfVisibleFaceAfterScreenUpdates:0];
-  v7 = [(PKPassView *)self->_passView superview];
+  superview = [(PKPassView *)self->_passView superview];
   [(PKPassView *)self->_passView removeFromSuperview];
   v8 = objc_opt_class();
   v10[0] = MEMORY[0x1E69E9820];
@@ -455,9 +455,9 @@ LABEL_6:
   v10[2] = __65__PKPassDeleteAnimationController__startAnimationWithCompletion___block_invoke;
   v10[3] = &unk_1E80158C0;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
-  [v8 performPassbookDeleteWithView:v6 inSuperview:v7 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [v8 performPassbookDeleteWithView:v6 inSuperview:superview completion:v10];
 }
 
 uint64_t __65__PKPassDeleteAnimationController__startAnimationWithCompletion___block_invoke(uint64_t a1, uint64_t a2)
@@ -476,17 +476,17 @@ uint64_t __65__PKPassDeleteAnimationController__startAnimationWithCompletion___b
 
 - (void)_registerForEnterBackgroundNotification
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__applicationDidEnterBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__applicationDidEnterBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
 }
 
 - (void)_unregisterForEnterBackgroundNotification
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDAC8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDAC8] object:0];
 }
 
-- (void)_applicationDidEnterBackground:(id)a3
+- (void)_applicationDidEnterBackground:(id)background
 {
   [(PKPassDeleteAnimationController *)self _unregisterForEnterBackgroundNotification];
   [(PKPassDeleteAnimationController *)self finished:0];

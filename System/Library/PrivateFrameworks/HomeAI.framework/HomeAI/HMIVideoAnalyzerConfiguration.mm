@@ -1,14 +1,14 @@
 @interface HMIVideoAnalyzerConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HMIVideoAnalyzerConfiguration)init;
-- (HMIVideoAnalyzerConfiguration)initWithCoder:(id)a3;
+- (HMIVideoAnalyzerConfiguration)initWithCoder:(id)coder;
 - (id)attributeDescriptions;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAnalysisFPS:(double)a3;
-- (void)setMinFrameQuality:(double)a3;
-- (void)setMinFrameScale:(double)a3;
-- (void)setTimelapseVideo:(BOOL)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAnalysisFPS:(double)s;
+- (void)setMinFrameQuality:(double)quality;
+- (void)setMinFrameScale:(double)scale;
+- (void)setTimelapseVideo:(BOOL)video;
 @end
 
 @implementation HMIVideoAnalyzerConfiguration
@@ -102,14 +102,14 @@
   v55 = [v13 initWithName:@"Max Fragment Analysis Duration" value:v56];
   v70[6] = v55;
   v15 = objc_alloc(MEMORY[0x277D0F778]);
-  v16 = [(HMIVideoAnalyzerConfiguration *)self initialDecodeMode];
+  initialDecodeMode = [(HMIVideoAnalyzerConfiguration *)self initialDecodeMode];
   v17 = @"IFrameOnly";
-  if (v16 != 1)
+  if (initialDecodeMode != 1)
   {
     v17 = @"None";
   }
 
-  if (v16 == 2)
+  if (initialDecodeMode == 2)
   {
     v17 = @"Full";
   }
@@ -149,12 +149,12 @@
   v27 = [v24 initWithName:@"Min Frame Scale" value:v26];
   v70[13] = v27;
   v28 = objc_alloc(MEMORY[0x277D0F778]);
-  v29 = [(HMIVideoAnalyzerConfiguration *)self camera];
-  v30 = [v28 initWithName:@"Camera" value:v29];
+  camera = [(HMIVideoAnalyzerConfiguration *)self camera];
+  v30 = [v28 initWithName:@"Camera" value:camera];
   v70[14] = v30;
   v31 = objc_alloc(MEMORY[0x277D0F778]);
-  v32 = [(HMIVideoAnalyzerConfiguration *)self homeUUID];
-  v33 = [v31 initWithName:@"Home UUID" value:v32];
+  homeUUID = [(HMIVideoAnalyzerConfiguration *)self homeUUID];
+  v33 = [v31 initWithName:@"Home UUID" value:homeUUID];
   v70[15] = v33;
   v34 = objc_alloc(MEMORY[0x277D0F778]);
   if ([(HMIVideoAnalyzerConfiguration *)self packageClassifierMode])
@@ -180,10 +180,10 @@
   return v41;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -193,7 +193,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(HMIVideoAnalyzerConfiguration *)self thumbnailInterval];
       if (v5)
       {
@@ -206,8 +206,8 @@
       }
 
       v7 = CMTimeCompare(&time1, &v54);
-      v8 = [(HMIVideoAnalyzerConfiguration *)self thumbnailHeight];
-      v9 = [(HMIVideoAnalyzerConfiguration *)v5 thumbnailHeight];
+      thumbnailHeight = [(HMIVideoAnalyzerConfiguration *)self thumbnailHeight];
+      thumbnailHeight2 = [(HMIVideoAnalyzerConfiguration *)v5 thumbnailHeight];
       [(HMIVideoAnalyzerConfiguration *)self timelapseInterval];
       if (v5)
       {
@@ -232,9 +232,9 @@
       }
 
       v11 = CMTimeCompare(&time1, &v54);
-      v12 = [(HMIVideoAnalyzerConfiguration *)self timelapseCodecType];
-      v13 = [(HMIVideoAnalyzerConfiguration *)v5 timelapseCodecType];
-      v16 = v8 == v9 && (v10 | v11) == 0 && v12 == v13;
+      timelapseCodecType = [(HMIVideoAnalyzerConfiguration *)self timelapseCodecType];
+      timelapseCodecType2 = [(HMIVideoAnalyzerConfiguration *)v5 timelapseCodecType];
+      v16 = thumbnailHeight == thumbnailHeight2 && (v10 | v11) == 0 && timelapseCodecType == timelapseCodecType2;
       [(HMIVideoAnalyzerConfiguration *)self maxFragmentDuration:v54.value];
       if (v5)
       {
@@ -255,30 +255,30 @@
       v18 = v17;
       [(HMIVideoAnalyzerConfiguration *)v5 maxFragmentAnalysisDuration];
       v20 = v18 == v19 && v16;
-      v21 = [(HMIVideoAnalyzerConfiguration *)self initialDecodeMode];
-      if (v21 != [(HMIVideoAnalyzerConfiguration *)v5 initialDecodeMode])
+      initialDecodeMode = [(HMIVideoAnalyzerConfiguration *)self initialDecodeMode];
+      if (initialDecodeMode != [(HMIVideoAnalyzerConfiguration *)v5 initialDecodeMode])
       {
         v20 = 0;
       }
 
-      v22 = [(HMIVideoAnalyzerConfiguration *)self transcode];
-      v23 = v20 & ~(v22 ^ [(HMIVideoAnalyzerConfiguration *)v5 transcode]);
-      v24 = [(HMIVideoAnalyzerConfiguration *)self transcodeCodecType];
-      if (v24 != [(HMIVideoAnalyzerConfiguration *)v5 transcodeCodecType])
+      transcode = [(HMIVideoAnalyzerConfiguration *)self transcode];
+      v23 = v20 & ~(transcode ^ [(HMIVideoAnalyzerConfiguration *)v5 transcode]);
+      transcodeCodecType = [(HMIVideoAnalyzerConfiguration *)self transcodeCodecType];
+      if (transcodeCodecType != [(HMIVideoAnalyzerConfiguration *)v5 transcodeCodecType])
       {
         v23 = 0;
       }
 
-      v25 = [(HMIVideoAnalyzerConfiguration *)self passthroughAudio];
-      v26 = v25 ^ [(HMIVideoAnalyzerConfiguration *)v5 passthroughAudio];
-      v27 = [(HMIVideoAnalyzerConfiguration *)self redactFrames];
-      v28 = v26 | v27 ^ [(HMIVideoAnalyzerConfiguration *)v5 redactFrames];
-      v29 = [(HMIVideoAnalyzerConfiguration *)self allowReducedConfiguration];
-      v30 = v29 ^ [(HMIVideoAnalyzerConfiguration *)v5 allowReducedConfiguration];
-      v31 = [(HMIVideoAnalyzerConfiguration *)self enableTemporalEventFiltering];
-      v32 = v28 | v30 | v31 ^ [(HMIVideoAnalyzerConfiguration *)v5 enableTemporalEventFiltering];
-      v33 = [(HMIVideoAnalyzerConfiguration *)self saveAnalyzerResultsToDisk];
-      v34 = v23 & ~(v32 | v33 ^ [(HMIVideoAnalyzerConfiguration *)v5 saveAnalyzerResultsToDisk]);
+      passthroughAudio = [(HMIVideoAnalyzerConfiguration *)self passthroughAudio];
+      v26 = passthroughAudio ^ [(HMIVideoAnalyzerConfiguration *)v5 passthroughAudio];
+      redactFrames = [(HMIVideoAnalyzerConfiguration *)self redactFrames];
+      v28 = v26 | redactFrames ^ [(HMIVideoAnalyzerConfiguration *)v5 redactFrames];
+      allowReducedConfiguration = [(HMIVideoAnalyzerConfiguration *)self allowReducedConfiguration];
+      v30 = allowReducedConfiguration ^ [(HMIVideoAnalyzerConfiguration *)v5 allowReducedConfiguration];
+      enableTemporalEventFiltering = [(HMIVideoAnalyzerConfiguration *)self enableTemporalEventFiltering];
+      v32 = v28 | v30 | enableTemporalEventFiltering ^ [(HMIVideoAnalyzerConfiguration *)v5 enableTemporalEventFiltering];
+      saveAnalyzerResultsToDisk = [(HMIVideoAnalyzerConfiguration *)self saveAnalyzerResultsToDisk];
+      v34 = v23 & ~(v32 | saveAnalyzerResultsToDisk ^ [(HMIVideoAnalyzerConfiguration *)v5 saveAnalyzerResultsToDisk]);
       [(HMIVideoAnalyzerConfiguration *)self minFrameQuality];
       v36 = v35;
       [(HMIVideoAnalyzerConfiguration *)v5 minFrameQuality];
@@ -300,8 +300,8 @@
         v41 = 0;
       }
 
-      v42 = [(HMIVideoAnalyzerConfiguration *)self packageClassifierMode];
-      if (v42 == [(HMIVideoAnalyzerConfiguration *)v5 packageClassifierMode])
+      packageClassifierMode = [(HMIVideoAnalyzerConfiguration *)self packageClassifierMode];
+      if (packageClassifierMode == [(HMIVideoAnalyzerConfiguration *)v5 packageClassifierMode])
       {
         v43 = v41;
       }
@@ -324,15 +324,15 @@
         v47 = 0;
       }
 
-      v48 = [(HMIVideoAnalyzerConfiguration *)self camera];
-      v49 = [(HMIVideoAnalyzerConfiguration *)v5 camera];
+      camera = [(HMIVideoAnalyzerConfiguration *)self camera];
+      camera2 = [(HMIVideoAnalyzerConfiguration *)v5 camera];
       v50 = HMFEqualObjects();
 
-      v51 = [(HMIVideoAnalyzerConfiguration *)self homeUUID];
-      v52 = [(HMIVideoAnalyzerConfiguration *)v5 homeUUID];
-      LOBYTE(v49) = HMFEqualObjects();
+      homeUUID = [(HMIVideoAnalyzerConfiguration *)self homeUUID];
+      homeUUID2 = [(HMIVideoAnalyzerConfiguration *)v5 homeUUID];
+      LOBYTE(camera2) = HMFEqualObjects();
 
-      v6 = v47 & v50 & v49;
+      v6 = v47 & v50 & camera2;
     }
 
     else
@@ -344,9 +344,9 @@
   return v6;
 }
 
-- (void)setMinFrameQuality:(double)a3
+- (void)setMinFrameQuality:(double)quality
 {
-  if (a3 <= 0.0 || a3 > 1.0)
+  if (quality <= 0.0 || quality > 1.0)
   {
     v4 = [HMIVideoAnalyzerConfiguration setMinFrameQuality:];
     [(HMIVideoAnalyzerConfiguration *)v4 minFrameQuality];
@@ -354,13 +354,13 @@
 
   else
   {
-    self->_minFrameQuality = a3;
+    self->_minFrameQuality = quality;
   }
 }
 
-- (void)setMinFrameScale:(double)a3
+- (void)setMinFrameScale:(double)scale
 {
-  if (a3 <= 0.0 || a3 > 1.0)
+  if (scale <= 0.0 || scale > 1.0)
   {
     v4 = [HMIVideoAnalyzerConfiguration setMinFrameScale:];
     [(HMIVideoAnalyzerConfiguration *)v4 minFrameScale];
@@ -368,13 +368,13 @@
 
   else
   {
-    self->_minFrameScale = a3;
+    self->_minFrameScale = scale;
   }
 }
 
-- (void)setTimelapseVideo:(BOOL)a3
+- (void)setTimelapseVideo:(BOOL)video
 {
-  if (a3)
+  if (video)
   {
     CMTimeMake(&v5, 1, 1);
   }
@@ -388,9 +388,9 @@
   [(HMIVideoAnalyzerConfiguration *)self setTimelapseInterval:&v4];
 }
 
-- (void)setAnalysisFPS:(double)a3
+- (void)setAnalysisFPS:(double)s
 {
-  if (a3 <= 0.0)
+  if (s <= 0.0)
   {
     v3 = [HMIVideoAnalyzerConfiguration setAnalysisFPS:];
     [(HMIVideoAnalyzerConfiguration *)v3 copyWithZone:v4, v5];
@@ -398,11 +398,11 @@
 
   else
   {
-    self->_analysisFPS = a3;
+    self->_analysisFPS = s;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(HMIVideoAnalyzerConfiguration);
   [(HMIVideoAnalyzerConfiguration *)self thumbnailInterval];
@@ -429,11 +429,11 @@
   [(HMIVideoAnalyzerConfiguration *)v4 setTranscode:[(HMIVideoAnalyzerConfiguration *)self transcode]];
   [(HMIVideoAnalyzerConfiguration *)v4 setTranscodeCodecType:[(HMIVideoAnalyzerConfiguration *)self transcodeCodecType]];
   [(HMIVideoAnalyzerConfiguration *)v4 setPassthroughAudio:[(HMIVideoAnalyzerConfiguration *)self passthroughAudio]];
-  v5 = [(HMIVideoAnalyzerConfiguration *)self camera];
-  [(HMIVideoAnalyzerConfiguration *)v4 setCamera:v5];
+  camera = [(HMIVideoAnalyzerConfiguration *)self camera];
+  [(HMIVideoAnalyzerConfiguration *)v4 setCamera:camera];
 
-  v6 = [(HMIVideoAnalyzerConfiguration *)self homeUUID];
-  [(HMIVideoAnalyzerConfiguration *)v4 setHomeUUID:v6];
+  homeUUID = [(HMIVideoAnalyzerConfiguration *)self homeUUID];
+  [(HMIVideoAnalyzerConfiguration *)v4 setHomeUUID:homeUUID];
 
   [(HMIVideoAnalyzerConfiguration *)self minFrameQuality];
   [(HMIVideoAnalyzerConfiguration *)v4 setMinFrameQuality:?];
@@ -449,14 +449,14 @@
   return v4;
 }
 
-- (HMIVideoAnalyzerConfiguration)initWithCoder:(id)a3
+- (HMIVideoAnalyzerConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(HMIVideoAnalyzerConfiguration *)self init];
   v6 = NSStringFromSelector(sel_thumbnailInterval);
-  if (v4)
+  if (coderCopy)
   {
-    [v4 decodeCMTimeForKey:v6];
+    [coderCopy decodeCMTimeForKey:v6];
   }
 
   else
@@ -470,12 +470,12 @@
   [(HMIVideoAnalyzerConfiguration *)v5 setThumbnailInterval:&v38];
 
   v7 = NSStringFromSelector(sel_thumbnailHeight);
-  -[HMIVideoAnalyzerConfiguration setThumbnailHeight:](v5, "setThumbnailHeight:", [v4 decodeIntegerForKey:v7]);
+  -[HMIVideoAnalyzerConfiguration setThumbnailHeight:](v5, "setThumbnailHeight:", [coderCopy decodeIntegerForKey:v7]);
 
   v8 = NSStringFromSelector(sel_timelapseInterval);
-  if (v4)
+  if (coderCopy)
   {
-    [v4 decodeCMTimeForKey:v8];
+    [coderCopy decodeCMTimeForKey:v8];
   }
 
   else
@@ -489,9 +489,9 @@
   [(HMIVideoAnalyzerConfiguration *)v5 setTimelapseInterval:&v38];
 
   v9 = NSStringFromSelector(sel_timelapsePreferredFragmentDuration);
-  if (v4)
+  if (coderCopy)
   {
-    [v4 decodeCMTimeForKey:v9];
+    [coderCopy decodeCMTimeForKey:v9];
   }
 
   else
@@ -505,16 +505,16 @@
   [(HMIVideoAnalyzerConfiguration *)v5 setTimelapsePreferredFragmentDuration:&v38];
 
   v10 = NSStringFromSelector(sel_timelapseCodecType);
-  -[HMIVideoAnalyzerConfiguration setTimelapseCodecType:](v5, "setTimelapseCodecType:", [v4 decodeIntegerForKey:v10]);
+  -[HMIVideoAnalyzerConfiguration setTimelapseCodecType:](v5, "setTimelapseCodecType:", [coderCopy decodeIntegerForKey:v10]);
 
   v11 = NSStringFromSelector(sel_maxFragmentAnalysisDuration);
-  [v4 decodeDoubleForKey:v11];
+  [coderCopy decodeDoubleForKey:v11];
   [(HMIVideoAnalyzerConfiguration *)v5 setMaxFragmentAnalysisDuration:?];
 
   v12 = NSStringFromSelector(sel_maxFragmentDuration);
-  if (v4)
+  if (coderCopy)
   {
-    [v4 decodeCMTimeForKey:v12];
+    [coderCopy decodeCMTimeForKey:v12];
   }
 
   else
@@ -528,147 +528,147 @@
   [(HMIVideoAnalyzerConfiguration *)v5 setMaxFragmentDuration:&v38];
 
   v13 = NSStringFromSelector(sel_initialDecodeMode);
-  -[HMIVideoAnalyzerConfiguration setInitialDecodeMode:](v5, "setInitialDecodeMode:", [v4 decodeIntegerForKey:v13]);
+  -[HMIVideoAnalyzerConfiguration setInitialDecodeMode:](v5, "setInitialDecodeMode:", [coderCopy decodeIntegerForKey:v13]);
 
   v14 = NSStringFromSelector(sel_transcode);
-  -[HMIVideoAnalyzerConfiguration setTranscode:](v5, "setTranscode:", [v4 decodeBoolForKey:v14]);
+  -[HMIVideoAnalyzerConfiguration setTranscode:](v5, "setTranscode:", [coderCopy decodeBoolForKey:v14]);
 
   v15 = NSStringFromSelector(sel_transcodeCodecType);
-  -[HMIVideoAnalyzerConfiguration setTranscodeCodecType:](v5, "setTranscodeCodecType:", [v4 decodeIntegerForKey:v15]);
+  -[HMIVideoAnalyzerConfiguration setTranscodeCodecType:](v5, "setTranscodeCodecType:", [coderCopy decodeIntegerForKey:v15]);
 
   v16 = NSStringFromSelector(sel_passthroughAudio);
-  -[HMIVideoAnalyzerConfiguration setPassthroughAudio:](v5, "setPassthroughAudio:", [v4 decodeBoolForKey:v16]);
+  -[HMIVideoAnalyzerConfiguration setPassthroughAudio:](v5, "setPassthroughAudio:", [coderCopy decodeBoolForKey:v16]);
 
   v17 = NSStringFromSelector(sel_redactFrames);
-  -[HMIVideoAnalyzerConfiguration setRedactFrames:](v5, "setRedactFrames:", [v4 decodeBoolForKey:v17]);
+  -[HMIVideoAnalyzerConfiguration setRedactFrames:](v5, "setRedactFrames:", [coderCopy decodeBoolForKey:v17]);
 
   v18 = NSStringFromSelector(sel_allowReducedConfiguration);
-  -[HMIVideoAnalyzerConfiguration setAllowReducedConfiguration:](v5, "setAllowReducedConfiguration:", [v4 decodeBoolForKey:v18]);
+  -[HMIVideoAnalyzerConfiguration setAllowReducedConfiguration:](v5, "setAllowReducedConfiguration:", [coderCopy decodeBoolForKey:v18]);
 
   v19 = NSStringFromSelector(sel_enableTemporalEventFiltering);
-  -[HMIVideoAnalyzerConfiguration setEnableTemporalEventFiltering:](v5, "setEnableTemporalEventFiltering:", [v4 decodeBoolForKey:v19]);
+  -[HMIVideoAnalyzerConfiguration setEnableTemporalEventFiltering:](v5, "setEnableTemporalEventFiltering:", [coderCopy decodeBoolForKey:v19]);
 
   v20 = NSStringFromSelector(sel_saveAnalyzerResultsToDisk);
-  -[HMIVideoAnalyzerConfiguration setSaveAnalyzerResultsToDisk:](v5, "setSaveAnalyzerResultsToDisk:", [v4 decodeBoolForKey:v20]);
+  -[HMIVideoAnalyzerConfiguration setSaveAnalyzerResultsToDisk:](v5, "setSaveAnalyzerResultsToDisk:", [coderCopy decodeBoolForKey:v20]);
 
   v21 = NSStringFromSelector(sel_minFrameQuality);
-  [v4 decodeDoubleForKey:v21];
+  [coderCopy decodeDoubleForKey:v21];
   [(HMIVideoAnalyzerConfiguration *)v5 setMinFrameQuality:?];
 
   v22 = NSStringFromSelector(sel_minFrameScale);
-  [v4 decodeDoubleForKey:v22];
+  [coderCopy decodeDoubleForKey:v22];
   [(HMIVideoAnalyzerConfiguration *)v5 setMinFrameScale:?];
 
   v23 = objc_opt_class();
   v24 = NSStringFromSelector(sel_camera);
-  v25 = [v4 decodeObjectOfClass:v23 forKey:v24];
+  v25 = [coderCopy decodeObjectOfClass:v23 forKey:v24];
   [(HMIVideoAnalyzerConfiguration *)v5 setCamera:v25];
 
   v26 = objc_opt_class();
   v27 = NSStringFromSelector(sel_homeUUID);
-  v28 = [v4 decodeObjectOfClass:v26 forKey:v27];
+  v28 = [coderCopy decodeObjectOfClass:v26 forKey:v27];
   [(HMIVideoAnalyzerConfiguration *)v5 setHomeUUID:v28];
 
   v29 = NSStringFromSelector(sel_packageClassifierMode);
-  -[HMIVideoAnalyzerConfiguration setPackageClassifierMode:](v5, "setPackageClassifierMode:", [v4 decodeIntegerForKey:v29]);
+  -[HMIVideoAnalyzerConfiguration setPackageClassifierMode:](v5, "setPackageClassifierMode:", [coderCopy decodeIntegerForKey:v29]);
 
   v30 = NSStringFromSelector(sel_analysisFPS);
-  [v4 decodeDoubleForKey:v30];
+  [coderCopy decodeDoubleForKey:v30];
   [(HMIVideoAnalyzerConfiguration *)v5 setAnalysisFPS:?];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(HMIVideoAnalyzerConfiguration *)self thumbnailInterval];
   v5 = NSStringFromSelector(sel_thumbnailInterval);
-  [v4 encodeCMTime:v47 forKey:v5];
+  [coderCopy encodeCMTime:v47 forKey:v5];
 
-  v6 = [(HMIVideoAnalyzerConfiguration *)self thumbnailHeight];
+  thumbnailHeight = [(HMIVideoAnalyzerConfiguration *)self thumbnailHeight];
   v7 = NSStringFromSelector(sel_thumbnailHeight);
-  [v4 encodeInteger:v6 forKey:v7];
+  [coderCopy encodeInteger:thumbnailHeight forKey:v7];
 
   [(HMIVideoAnalyzerConfiguration *)self timelapseInterval];
   v8 = NSStringFromSelector(sel_timelapseInterval);
-  [v4 encodeCMTime:v47 forKey:v8];
+  [coderCopy encodeCMTime:v47 forKey:v8];
 
   [(HMIVideoAnalyzerConfiguration *)self timelapsePreferredFragmentDuration];
   v9 = NSStringFromSelector(sel_timelapsePreferredFragmentDuration);
-  [v4 encodeCMTime:v47 forKey:v9];
+  [coderCopy encodeCMTime:v47 forKey:v9];
 
-  v10 = [(HMIVideoAnalyzerConfiguration *)self timelapseCodecType];
+  timelapseCodecType = [(HMIVideoAnalyzerConfiguration *)self timelapseCodecType];
   v11 = NSStringFromSelector(sel_timelapseCodecType);
-  [v4 encodeInteger:v10 forKey:v11];
+  [coderCopy encodeInteger:timelapseCodecType forKey:v11];
 
   [(HMIVideoAnalyzerConfiguration *)self maxFragmentAnalysisDuration];
   v13 = v12;
   v14 = NSStringFromSelector(sel_maxFragmentAnalysisDuration);
-  [v4 encodeDouble:v14 forKey:v13];
+  [coderCopy encodeDouble:v14 forKey:v13];
 
   [(HMIVideoAnalyzerConfiguration *)self maxFragmentDuration];
   v15 = NSStringFromSelector(sel_maxFragmentDuration);
-  [v4 encodeCMTime:v47 forKey:v15];
+  [coderCopy encodeCMTime:v47 forKey:v15];
 
-  v16 = [(HMIVideoAnalyzerConfiguration *)self initialDecodeMode];
+  initialDecodeMode = [(HMIVideoAnalyzerConfiguration *)self initialDecodeMode];
   v17 = NSStringFromSelector(sel_initialDecodeMode);
-  [v4 encodeInteger:v16 forKey:v17];
+  [coderCopy encodeInteger:initialDecodeMode forKey:v17];
 
-  v18 = [(HMIVideoAnalyzerConfiguration *)self transcode];
+  transcode = [(HMIVideoAnalyzerConfiguration *)self transcode];
   v19 = NSStringFromSelector(sel_transcode);
-  [v4 encodeBool:v18 forKey:v19];
+  [coderCopy encodeBool:transcode forKey:v19];
 
-  v20 = [(HMIVideoAnalyzerConfiguration *)self transcodeCodecType];
+  transcodeCodecType = [(HMIVideoAnalyzerConfiguration *)self transcodeCodecType];
   v21 = NSStringFromSelector(sel_transcodeCodecType);
-  [v4 encodeInteger:v20 forKey:v21];
+  [coderCopy encodeInteger:transcodeCodecType forKey:v21];
 
-  v22 = [(HMIVideoAnalyzerConfiguration *)self passthroughAudio];
+  passthroughAudio = [(HMIVideoAnalyzerConfiguration *)self passthroughAudio];
   v23 = NSStringFromSelector(sel_passthroughAudio);
-  [v4 encodeBool:v22 forKey:v23];
+  [coderCopy encodeBool:passthroughAudio forKey:v23];
 
-  v24 = [(HMIVideoAnalyzerConfiguration *)self redactFrames];
+  redactFrames = [(HMIVideoAnalyzerConfiguration *)self redactFrames];
   v25 = NSStringFromSelector(sel_redactFrames);
-  [v4 encodeBool:v24 forKey:v25];
+  [coderCopy encodeBool:redactFrames forKey:v25];
 
-  v26 = [(HMIVideoAnalyzerConfiguration *)self allowReducedConfiguration];
+  allowReducedConfiguration = [(HMIVideoAnalyzerConfiguration *)self allowReducedConfiguration];
   v27 = NSStringFromSelector(sel_allowReducedConfiguration);
-  [v4 encodeBool:v26 forKey:v27];
+  [coderCopy encodeBool:allowReducedConfiguration forKey:v27];
 
-  v28 = [(HMIVideoAnalyzerConfiguration *)self enableTemporalEventFiltering];
+  enableTemporalEventFiltering = [(HMIVideoAnalyzerConfiguration *)self enableTemporalEventFiltering];
   v29 = NSStringFromSelector(sel_enableTemporalEventFiltering);
-  [v4 encodeBool:v28 forKey:v29];
+  [coderCopy encodeBool:enableTemporalEventFiltering forKey:v29];
 
-  v30 = [(HMIVideoAnalyzerConfiguration *)self saveAnalyzerResultsToDisk];
+  saveAnalyzerResultsToDisk = [(HMIVideoAnalyzerConfiguration *)self saveAnalyzerResultsToDisk];
   v31 = NSStringFromSelector(sel_saveAnalyzerResultsToDisk);
-  [v4 encodeBool:v30 forKey:v31];
+  [coderCopy encodeBool:saveAnalyzerResultsToDisk forKey:v31];
 
   [(HMIVideoAnalyzerConfiguration *)self minFrameQuality];
   v33 = v32;
   v34 = NSStringFromSelector(sel_minFrameQuality);
-  [v4 encodeDouble:v34 forKey:v33];
+  [coderCopy encodeDouble:v34 forKey:v33];
 
   [(HMIVideoAnalyzerConfiguration *)self minFrameScale];
   v36 = v35;
   v37 = NSStringFromSelector(sel_minFrameScale);
-  [v4 encodeDouble:v37 forKey:v36];
+  [coderCopy encodeDouble:v37 forKey:v36];
 
-  v38 = [(HMIVideoAnalyzerConfiguration *)self camera];
+  camera = [(HMIVideoAnalyzerConfiguration *)self camera];
   v39 = NSStringFromSelector(sel_camera);
-  [v4 encodeObject:v38 forKey:v39];
+  [coderCopy encodeObject:camera forKey:v39];
 
-  v40 = [(HMIVideoAnalyzerConfiguration *)self homeUUID];
+  homeUUID = [(HMIVideoAnalyzerConfiguration *)self homeUUID];
   v41 = NSStringFromSelector(sel_homeUUID);
-  [v4 encodeObject:v40 forKey:v41];
+  [coderCopy encodeObject:homeUUID forKey:v41];
 
-  v42 = [(HMIVideoAnalyzerConfiguration *)self packageClassifierMode];
+  packageClassifierMode = [(HMIVideoAnalyzerConfiguration *)self packageClassifierMode];
   v43 = NSStringFromSelector(sel_packageClassifierMode);
-  [v4 encodeInteger:v42 forKey:v43];
+  [coderCopy encodeInteger:packageClassifierMode forKey:v43];
 
   [(HMIVideoAnalyzerConfiguration *)self analysisFPS];
   v45 = v44;
   v46 = NSStringFromSelector(sel_analysisFPS);
-  [v4 encodeDouble:v46 forKey:v45];
+  [coderCopy encodeDouble:v46 forKey:v45];
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface MKRouteContextBuilder
 - (float)_defaultPuckRadius;
-- (id)buildRouteContextForAnchorPoints:(id)a3;
-- (id)buildRouteContextForRoutes:(id)a3 selectedRouteIndex:(unint64_t)a4;
+- (id)buildRouteContextForAnchorPoints:(id)points;
+- (id)buildRouteContextForRoutes:(id)routes selectedRouteIndex:(unint64_t)index;
 @end
 
 @implementation MKRouteContextBuilder
@@ -13,53 +13,53 @@
   return *&v2 * 0.5;
 }
 
-- (id)buildRouteContextForAnchorPoints:(id)a3
+- (id)buildRouteContextForAnchorPoints:(id)points
 {
-  v4 = a3;
+  pointsCopy = points;
   v5 = objc_alloc(MEMORY[0x1E69DF488]);
-  v6 = [v4 firstObject];
-  v7 = [v5 initWithAnchorPoint:v6 useType:1];
+  firstObject = [pointsCopy firstObject];
+  v7 = [v5 initWithAnchorPoint:firstObject useType:1];
 
   [(MKRouteContextBuilder *)self _defaultPuckRadius];
   [v7 setPuckRadius:?];
-  v8 = [MEMORY[0x1E695DF58] preferredLanguages];
-  v9 = [v8 firstObject];
-  [v7 setLocale:v9];
+  preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+  firstObject2 = [preferredLanguages firstObject];
+  [v7 setLocale:firstObject2];
 
   return v7;
 }
 
-- (id)buildRouteContextForRoutes:(id)a3 selectedRouteIndex:(unint64_t)a4
+- (id)buildRouteContextForRoutes:(id)routes selectedRouteIndex:(unint64_t)index
 {
   v103 = *MEMORY[0x1E69E9840];
-  v93 = a3;
-  if ([v93 count] <= a4)
+  routesCopy = routes;
+  if ([routesCopy count] <= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [v93 objectAtIndexedSubscript:a4];
+    v5 = [routesCopy objectAtIndexedSubscript:index];
   }
 
   v92 = v5;
   if ([v5 transportType] == 1)
   {
-    v6 = 1;
+    isWalkingOnlyTransitRoute = 1;
   }
 
   else
   {
-    v6 = [v92 isWalkingOnlyTransitRoute];
+    isWalkingOnlyTransitRoute = [v92 isWalkingOnlyTransitRoute];
   }
 
-  v94 = [objc_alloc(MEMORY[0x1E69DF488]) initWithComposedRoute:v92 useType:v6 ^ 1u];
+  v94 = [objc_alloc(MEMORY[0x1E69DF488]) initWithComposedRoute:v92 useType:isWalkingOnlyTransitRoute ^ 1u];
   [(MKRouteContextBuilder *)self _defaultPuckRadius];
   [v94 setPuckRadius:?];
-  v7 = [MEMORY[0x1E695DF58] preferredLanguages];
-  v8 = [v7 firstObject];
-  [v94 setLocale:v8];
+  preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+  firstObject = [preferredLanguages firstObject];
+  [v94 setLocale:firstObject];
 
   v9 = _MKLocalizedStringFromThisBundle(@"AccessPointEntryName");
   [v94 setAccessPointEntryName:v9];
@@ -68,7 +68,7 @@
   [v94 setAccessPointExitName:v10];
 
   v88 = objc_opt_new();
-  v11 = [v93 count];
+  v11 = [routesCopy count];
   memset(v99, 0, sizeof(v99));
   *buf = v99;
   buf[8] = 0;
@@ -82,20 +82,20 @@
     std::vector<VKRouteInfo * {__strong}>::__throw_length_error[abi:ne200100]();
   }
 
-  v12 = [v94 routeInfo];
-  v13 = *(v99[0] + 8 * a4);
-  *(v99[0] + 8 * a4) = v12;
+  routeInfo = [v94 routeInfo];
+  v13 = *(v99[0] + 8 * index);
+  *(v99[0] + 8 * index) = routeInfo;
 
-  if ([v93 count] == 1)
+  if ([routesCopy count] == 1)
   {
-    std::vector<RouteSection>::vector[abi:ne200100](buf, [v93 count]);
+    std::vector<RouteSection>::vector[abi:ne200100](buf, [routesCopy count]);
     v14 = *v99[0];
-    v15 = [v93 objectAtIndexedSubscript:0];
-    v16 = [v15 endRouteCoordinate];
+    v15 = [routesCopy objectAtIndexedSubscript:0];
+    endRouteCoordinate = [v15 endRouteCoordinate];
     v17 = *buf;
     **buf = v14;
     *(v17 + 8) = 0;
-    *(v17 + 16) = v16;
+    *(v17 + 16) = endRouteCoordinate;
 
     [v94 addShareSections:? shareCount:?];
     v18 = v94;
@@ -118,9 +118,9 @@
     }
 
     v87 = objc_alloc_init(MEMORY[0x1E69B3758]);
-    for (i = 0; i < [v93 count]; ++i)
+    for (i = 0; i < [routesCopy count]; ++i)
     {
-      v22 = [v93 objectAtIndex:i];
+      v22 = [routesCopy objectAtIndex:i];
       v23 = v22;
       if (v22 != v92)
       {
@@ -132,29 +132,29 @@
         v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v24];
         v27 = [(NSCache *)v25 objectForKey:v26];
 
-        v28 = [v27 overlapResults];
-        LOBYTE(v26) = v28 == 0;
+        overlapResults = [v27 overlapResults];
+        LOBYTE(v26) = overlapResults == 0;
 
         if (v26)
         {
           v35 = MKGetMKRouteContextBuilderLog();
           if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
           {
-            v36 = [v23 uniqueRouteID];
-            v37 = [v36 UUIDString];
-            v38 = [v92 uniqueRouteID];
-            v39 = [v38 UUIDString];
+            uniqueRouteID = [v23 uniqueRouteID];
+            uUIDString = [uniqueRouteID UUIDString];
+            uniqueRouteID2 = [v92 uniqueRouteID];
+            uUIDString2 = [uniqueRouteID2 UUIDString];
             *buf = 138412546;
-            *&buf[4] = v37;
+            *&buf[4] = uUIDString;
             *&buf[12] = 2112;
-            *&buf[14] = v39;
+            *&buf[14] = uUIDString2;
             _os_log_impl(&dword_1A2EA0000, v35, OS_LOG_TYPE_INFO, "Calling findFirstUniqueRangeBetweenRoutes because no cache entry was found for route pair %@, %@", buf, 0x16u);
           }
 
-          v29 = [v87 findFirstUniqueRangeBetweenRoute:v23 andRoute:v92];
+          overlapResults2 = [v87 findFirstUniqueRangeBetweenRoute:v23 andRoute:v92];
           v40 = [[_MKRouteContextBuilderCacheEntry alloc] initWithRoutes:v90];
 
-          [(_MKRouteContextBuilderCacheEntry *)v40 setOverlapResults:v29];
+          [(_MKRouteContextBuilderCacheEntry *)v40 setOverlapResults:overlapResults2];
           v41 = self->_routeOverlapCache;
           v30 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v24];
           [(NSCache *)v41 setObject:v40 forKey:v30];
@@ -163,25 +163,25 @@
 
         else
         {
-          v29 = [v27 overlapResults];
+          overlapResults2 = [v27 overlapResults];
           v30 = MKGetMKRouteContextBuilderLog();
           if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
           {
-            v31 = [v23 uniqueRouteID];
-            v32 = [v31 UUIDString];
-            v33 = [v92 uniqueRouteID];
-            v34 = [v33 UUIDString];
+            uniqueRouteID3 = [v23 uniqueRouteID];
+            uUIDString3 = [uniqueRouteID3 UUIDString];
+            uniqueRouteID4 = [v92 uniqueRouteID];
+            uUIDString4 = [uniqueRouteID4 UUIDString];
             *buf = 138412546;
-            *&buf[4] = v32;
+            *&buf[4] = uUIDString3;
             *&buf[12] = 2112;
-            *&buf[14] = v34;
+            *&buf[14] = uUIDString4;
             _os_log_impl(&dword_1A2EA0000, v30, OS_LOG_TYPE_INFO, "Cache entry was found for route pair %@, %@", buf, 0x16u);
           }
         }
 
-        v42 = v29;
+        v42 = overlapResults2;
 
-        if (![v29 count] || (objc_msgSend(v29, "objectAtIndexedSubscript:", 0), v43 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v43, "uniqueRanges"), v44 = objc_claimAutoreleasedReturnValue(), v45 = objc_msgSend(v44, "count") == 0, v44, v43, v45))
+        if (![overlapResults2 count] || (objc_msgSend(overlapResults2, "objectAtIndexedSubscript:", 0), v43 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v43, "uniqueRanges"), v44 = objc_claimAutoreleasedReturnValue(), v45 = objc_msgSend(v44, "count") == 0, v44, v43, v45))
         {
           v52 = 0;
           v53 = 0;
@@ -191,9 +191,9 @@
 
         else
         {
-          v46 = [v29 objectAtIndexedSubscript:0];
-          v47 = [v46 uniqueRanges];
-          v48 = [v47 coordinateRangeAtIndex:0];
+          v46 = [overlapResults2 objectAtIndexedSubscript:0];
+          uniqueRanges = [v46 uniqueRanges];
+          v48 = [uniqueRanges coordinateRangeAtIndex:0];
           v53 = v49;
 
           v50 = v48 & 0xFFFFFFFF00000000;
@@ -210,13 +210,13 @@
     }
 
     [v94 setAlternateRoutes:v88];
-    v56 = _MKRouteContextBuilderCacheEntryKey(v93);
+    v56 = _MKRouteContextBuilderCacheEntryKey(routesCopy);
     v57 = self->_routeOverlapCache;
     v58 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v56];
     v91 = [(NSCache *)v57 objectForKey:v58];
 
-    v59 = [v91 overlappingSections];
-    LOBYTE(v58) = v59 == 0;
+    overlappingSections = [v91 overlappingSections];
+    LOBYTE(v58) = overlappingSections == 0;
 
     v60 = MKGetMKRouteContextBuilderLog();
     v61 = os_log_type_enabled(v60, OS_LOG_TYPE_INFO);
@@ -224,16 +224,16 @@
     {
       if (v61)
       {
-        v64 = [v93 valueForKey:@"uniqueRouteID"];
+        v64 = [routesCopy valueForKey:@"uniqueRouteID"];
         *buf = 138412290;
         *&buf[4] = v64;
         _os_log_impl(&dword_1A2EA0000, v60, OS_LOG_TYPE_INFO, "Calling findOverlappingSectionsForRoutes because no cache entry was found for route set %@", buf, 0xCu);
       }
 
-      v63 = [v87 findOverlappingSectionsForRoutes:v93];
-      v65 = [[_MKRouteContextBuilderCacheEntry alloc] initWithRoutes:v93];
+      overlappingSections2 = [v87 findOverlappingSectionsForRoutes:routesCopy];
+      v65 = [[_MKRouteContextBuilderCacheEntry alloc] initWithRoutes:routesCopy];
 
-      [(_MKRouteContextBuilderCacheEntry *)v65 setOverlappingSections:v63];
+      [(_MKRouteContextBuilderCacheEntry *)v65 setOverlappingSections:overlappingSections2];
       v66 = self->_routeOverlapCache;
       v67 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v56];
       [(NSCache *)v66 setObject:v65 forKey:v67];
@@ -245,20 +245,20 @@
     {
       if (v61)
       {
-        v62 = [v93 valueForKey:@"uniqueRouteID"];
+        v62 = [routesCopy valueForKey:@"uniqueRouteID"];
         *buf = 138412290;
         *&buf[4] = v62;
         _os_log_impl(&dword_1A2EA0000, v60, OS_LOG_TYPE_INFO, "Cache entry was found for route set %@", buf, 0xCu);
       }
 
-      v63 = [v91 overlappingSections];
+      overlappingSections2 = [v91 overlappingSections];
     }
 
     v97 = 0u;
     v98 = 0u;
     v95 = 0u;
     v96 = 0u;
-    v68 = v63;
+    v68 = overlappingSections2;
     v69 = [v68 countByEnumeratingWithState:&v95 objects:v100 count:16];
     if (v69)
     {
@@ -273,30 +273,30 @@
           }
 
           v72 = *(*(&v95 + 1) + 8 * j);
-          v73 = [v72 components];
-          std::vector<RouteSection>::vector[abi:ne200100](buf, [v73 count]);
+          components = [v72 components];
+          std::vector<RouteSection>::vector[abi:ne200100](buf, [components count]);
 
           v74 = 0;
           for (k = 0; ; ++k)
           {
-            v76 = [v72 components];
-            v77 = k < [v76 count];
+            components2 = [v72 components];
+            v77 = k < [components2 count];
 
             if (!v77)
             {
               break;
             }
 
-            v78 = [v72 components];
-            v79 = [v78 objectAtIndexedSubscript:k];
+            components3 = [v72 components];
+            v79 = [components3 objectAtIndexedSubscript:k];
 
-            v80 = [v79 routeIndex];
-            v81 = *(v99[0] + 8 * v80);
-            v82 = [v79 range];
+            routeIndex = [v79 routeIndex];
+            v81 = *(v99[0] + 8 * routeIndex);
+            range = [v79 range];
             [v79 range];
             v83 = (*buf + v74);
             *v83 = v81;
-            v83[1] = v82;
+            v83[1] = range;
             v83[2] = v84;
 
             v74 += 24;

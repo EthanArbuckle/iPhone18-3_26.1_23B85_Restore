@@ -1,11 +1,11 @@
 @interface VoiceOverRotorSettingsController
 - (VoiceOverRotorSettingsController)init;
-- (id)editAppsActionEnabled:(id)a3;
+- (id)editAppsActionEnabled:(id)enabled;
 - (id)specifiers;
-- (id)updateRotorWithElement:(id)a3;
-- (void)setEditAppsActionEnabled:(id)a3 specifier:(id)a4;
-- (void)setUpdateRotorWithElement:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)updateRotorWithElement:(id)element;
+- (void)setEditAppsActionEnabled:(id)enabled specifier:(id)specifier;
+- (void)setUpdateRotorWithElement:(id)element specifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation VoiceOverRotorSettingsController
@@ -18,8 +18,8 @@
   if (v2)
   {
     v3 = settingsLocString(@"ROTOR_GROUP_HEADING", @"VoiceOverSettings");
-    v4 = [(VoiceOverRotorSettingsController *)v2 navigationItem];
-    [v4 setTitle:v3];
+    navigationItem = [(VoiceOverRotorSettingsController *)v2 navigationItem];
+    [navigationItem setTitle:v3];
 
     v5 = v2;
   }
@@ -77,14 +77,14 @@
   return v4;
 }
 
-- (void)setUpdateRotorWithElement:(id)a3 specifier:(id)a4
+- (void)setUpdateRotorWithElement:(id)element specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [element BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setVoiceOverRotorUpdatesWithElement:v4];
+  [v5 setVoiceOverRotorUpdatesWithElement:bOOLValue];
 }
 
-- (id)updateRotorWithElement:(id)a3
+- (id)updateRotorWithElement:(id)element
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 voiceOverRotorUpdatesWithElement]);
@@ -92,14 +92,14 @@
   return v4;
 }
 
-- (void)setEditAppsActionEnabled:(id)a3 specifier:(id)a4
+- (void)setEditAppsActionEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setVoiceOverEditAppsActionEnabled:v4];
+  [v5 setVoiceOverEditAppsActionEnabled:bOOLValue];
 }
 
-- (id)editAppsActionEnabled:(id)a3
+- (id)editAppsActionEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 voiceOverEditAppsActionEnabled]);
@@ -107,19 +107,19 @@
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VoiceOverRotorSettingsController *)self specifierAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(VoiceOverRotorSettingsController *)self specifierAtIndexPath:pathCopy];
   v9 = [v8 propertyForKey:PSIDKey];
   v10 = [v9 isEqualToString:@"apps"];
 
   if (v10)
   {
     v11 = objc_alloc_init(AXAppSelectionController);
-    v12 = [(VoiceOverRotorSettingsController *)self rootController];
-    [(AXAppSelectionController *)v11 setRootController:v12];
+    rootController = [(VoiceOverRotorSettingsController *)self rootController];
+    [(AXAppSelectionController *)v11 setRootController:rootController];
 
     [(AXAppSelectionController *)v11 setSpecifier:v8];
     [(AXAppSelectionController *)v11 setParentController:self];
@@ -141,7 +141,7 @@
   {
     v13.receiver = self;
     v13.super_class = VoiceOverRotorSettingsController;
-    [(VoiceOverRotorSettingsController *)&v13 tableView:v6 didSelectRowAtIndexPath:v7];
+    [(VoiceOverRotorSettingsController *)&v13 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   }
 }
 

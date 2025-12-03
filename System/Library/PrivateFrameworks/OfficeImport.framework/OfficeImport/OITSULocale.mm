@@ -1,57 +1,57 @@
 @interface OITSULocale
-+ (BOOL)localeIsAutoUpdating:(id)a3;
++ (BOOL)localeIsAutoUpdating:(id)updating;
 + (id)allSupportedTemplatePickerLanguages;
 + (id)allSupportedTier1Languages;
 + (id)allSupportedTier3Languages;
 + (id)applicationLocale;
-+ (id)cacheKeyForLocale:(id)a3;
-+ (id)canonicalizeLocaleIdentifier:(id)a3;
-+ (id)canonicalizeLocaleIdentifierWithLanguageAndRegionOnly:(id)a3;
-+ (id)canonicalizeLocaleIdentifierWithLanguageAndScriptOnly:(id)a3;
-+ (id)canonicalizeLocaleIdentifierWithLanguageOnly:(id)a3;
-+ (id)canonicalizeLocaleIdentifierWithLanguageScriptAndRegionOnly:(id)a3;
++ (id)cacheKeyForLocale:(id)locale;
++ (id)canonicalizeLocaleIdentifier:(id)identifier;
++ (id)canonicalizeLocaleIdentifierWithLanguageAndRegionOnly:(id)only;
++ (id)canonicalizeLocaleIdentifierWithLanguageAndScriptOnly:(id)only;
++ (id)canonicalizeLocaleIdentifierWithLanguageOnly:(id)only;
++ (id)canonicalizeLocaleIdentifierWithLanguageScriptAndRegionOnly:(id)only;
 + (id)currentLocale;
-+ (id)deducedScriptForLocale:(id)a3;
-+ (id)displayNameForCode:(id)a3 ofType:(id)a4 displayStandalone:(BOOL)a5;
-+ (id)localeForLocaleIdentifier:(id)a3 documentLanguageIdentifier:(id)a4;
-+ (id)localeIDWithDefaultRegionCode:(id)a3;
-+ (id)localeIDWithoutDefaultRegionCode:(id)a3 avoidAmbiguousCases:(BOOL)a4;
++ (id)deducedScriptForLocale:(id)locale;
++ (id)displayNameForCode:(id)code ofType:(id)type displayStandalone:(BOOL)standalone;
++ (id)localeForLocaleIdentifier:(id)identifier documentLanguageIdentifier:(id)languageIdentifier;
++ (id)localeIDWithDefaultRegionCode:(id)code;
++ (id)localeIDWithoutDefaultRegionCode:(id)code avoidAmbiguousCases:(BOOL)cases;
 + (id)preferredLanguages;
 + (id)preferredLocale;
-+ (id)simplifiedDisplayNameForLocaleID:(id)a3 displayStandalone:(BOOL)a4;
++ (id)simplifiedDisplayNameForLocaleID:(id)d displayStandalone:(BOOL)standalone;
 + (unint64_t)autoupdatingCurrentLocaleChangeCount;
 + (void)initialize;
-+ (void)saveLocaleForReuse:(id)a3;
-+ (void)setLocalizedStringBundle:(__CFBundle *)a3;
-- (BOOL)isEqual:(id)a3;
-- (OITSULocale)initWithLocale:(id)a3 documentLanguageIdentifier:(id)a4 useAutoupdating:(BOOL)a5;
++ (void)saveLocaleForReuse:(id)reuse;
++ (void)setLocalizedStringBundle:(__CFBundle *)bundle;
+- (BOOL)isEqual:(id)equal;
+- (OITSULocale)initWithLocale:(id)locale documentLanguageIdentifier:(id)identifier useAutoupdating:(BOOL)autoupdating;
 - (__CFNumberFormatter)checkoutNumberFormatter;
 - (__CFNumberFormatter)checkoutScientificNumberFormatter;
-- (id)URLForResource:(id)a3 withExtension:(id)a4 subdirectory:(id)a5 inBundle:(__CFBundle *)a6;
-- (id)URLForResource:(id)a3 withExtension:(id)a4 subdirectory:(id)a5 inBundleWithURL:(id)a6;
-- (id)copyWithDocumentLanguageIdentifier:(id)a3;
+- (id)URLForResource:(id)resource withExtension:(id)extension subdirectory:(id)subdirectory inBundle:(__CFBundle *)bundle;
+- (id)URLForResource:(id)resource withExtension:(id)extension subdirectory:(id)subdirectory inBundleWithURL:(id)l;
+- (id)copyWithDocumentLanguageIdentifier:(id)identifier;
 - (id)description;
-- (id)displayLanguageNameWithStandalone:(BOOL)a3;
+- (id)displayLanguageNameWithStandalone:(BOOL)standalone;
 - (id)localeIdentifierWithLanguageAndRegionOnly;
 - (id)localeIdentifierWithLanguageScriptAndRegionOnly;
-- (id)localeSpecificStorageForKey:(id)a3;
-- (id)localizedStringForKey:(id)a3 value:(id)a4 table:(id)a5;
-- (id)numberFormatterStringFromDouble:(double)a3 withFormat:(id)a4 useDecimalPlaces:(BOOL)a5 minDecimalPlaces:(unsigned __int16)a6 decimalPlaces:(unsigned __int16)a7 showThousandsSeparator:(BOOL)a8 currencyCode:(id)a9 suppressMinusSign:(BOOL)a10;
-- (int64_t)localizedCaseInsensitiveCompare:(id)a3 toString:(id)a4;
-- (int64_t)localizedCompare:(id)a3 toString:(id)a4;
+- (id)localeSpecificStorageForKey:(id)key;
+- (id)localizedStringForKey:(id)key value:(id)value table:(id)table;
+- (id)numberFormatterStringFromDouble:(double)double withFormat:(id)format useDecimalPlaces:(BOOL)places minDecimalPlaces:(unsigned __int16)decimalPlaces decimalPlaces:(unsigned __int16)a7 showThousandsSeparator:(BOOL)separator currencyCode:(id)code suppressMinusSign:(BOOL)self0;
+- (int64_t)localizedCaseInsensitiveCompare:(id)compare toString:(id)string;
+- (int64_t)localizedCompare:(id)compare toString:(id)string;
 - (unint64_t)hash;
 - (void)_initializeNumberFormatterStringFromDoubleCache;
 - (void)dealloc;
-- (void)returnNumberFormatter:(__CFNumberFormatter *)a3;
-- (void)returnScientificNumberFormatter:(__CFNumberFormatter *)a3;
-- (void)setLocaleSpecificStorage:(id)a3 forKey:(id)a4;
+- (void)returnNumberFormatter:(__CFNumberFormatter *)formatter;
+- (void)returnScientificNumberFormatter:(__CFNumberFormatter *)formatter;
+- (void)setLocaleSpecificStorage:(id)storage forKey:(id)key;
 @end
 
 @implementation OITSULocale
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     sStaticLocaleLock = objc_opt_new();
     sOtherLocales = objc_opt_new();
@@ -72,16 +72,16 @@ uint64_t __25__OITSULocale_initialize__block_invoke()
   return [v0 unlock];
 }
 
-+ (void)setLocalizedStringBundle:(__CFBundle *)a3
++ (void)setLocalizedStringBundle:(__CFBundle *)bundle
 {
   if (sLocalizedStringBundle)
   {
     CFRelease(sLocalizedStringBundle);
   }
 
-  sLocalizedStringBundle = a3;
+  sLocalizedStringBundle = bundle;
 
-  CFRetain(a3);
+  CFRetain(bundle);
 }
 
 + (unint64_t)autoupdatingCurrentLocaleChangeCount
@@ -92,7 +92,7 @@ uint64_t __25__OITSULocale_initialize__block_invoke()
   return v2;
 }
 
-+ (id)cacheKeyForLocale:(id)a3
++ (id)cacheKeyForLocale:(id)locale
 {
   if ([OITSULocale localeIsAutoUpdating:?])
   {
@@ -101,14 +101,14 @@ uint64_t __25__OITSULocale_initialize__block_invoke()
 
   else
   {
-    return [MEMORY[0x277CCACA8] stringWithFormat:@"CFLocale:%@", objc_msgSend(a3, "localeIdentifier")];
+    return [MEMORY[0x277CCACA8] stringWithFormat:@"CFLocale:%@", objc_msgSend(locale, "localeIdentifier")];
   }
 }
 
 + (id)preferredLanguages
 {
   v3[1] = *MEMORY[0x277D85DE8];
-  v3[0] = [objc_msgSend(a1 "currentLocale")];
+  v3[0] = [objc_msgSend(self "currentLocale")];
   return [MEMORY[0x277CBEA60] arrayWithObjects:v3 count:1];
 }
 
@@ -117,15 +117,15 @@ uint64_t __25__OITSULocale_initialize__block_invoke()
   v2 = sCurrentLocale;
   if (!sCurrentLocale)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
     if (!sCurrentLocale)
     {
       v4 = [OITSULocale alloc];
-      v5 = [MEMORY[0x277CBEAF8] currentLocale];
-      sCurrentLocale = -[OITSULocale initWithLocale:documentLanguageIdentifier:useAutoupdating:](v4, "initWithLocale:documentLanguageIdentifier:useAutoupdating:", v5, [MEMORY[0x277CBEAF8] tsu_firstPreferredLocalization], 1);
+      currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+      sCurrentLocale = -[OITSULocale initWithLocale:documentLanguageIdentifier:useAutoupdating:](v4, "initWithLocale:documentLanguageIdentifier:useAutoupdating:", currentLocale, [MEMORY[0x277CBEAF8] tsu_firstPreferredLocalization], 1);
     }
 
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
     v2 = sCurrentLocale;
   }
 
@@ -139,14 +139,14 @@ uint64_t __25__OITSULocale_initialize__block_invoke()
   v2 = sPreferredLocale;
   if (!sPreferredLocale)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
     if (!sPreferredLocale)
     {
       v4 = [OITSULocale alloc];
       sPreferredLocale = -[OITSULocale initWithLocale:documentLanguageIdentifier:useAutoupdating:](v4, "initWithLocale:documentLanguageIdentifier:useAutoupdating:", TSUPreferredLocale(), [MEMORY[0x277CBEAF8] tsu_firstPreferredLocalization], 1);
     }
 
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
     v2 = sPreferredLocale;
   }
 
@@ -162,9 +162,9 @@ uint64_t __25__OITSULocale_initialize__block_invoke()
   return [v2 locale];
 }
 
-+ (id)canonicalizeLocaleIdentifier:(id)a3
++ (id)canonicalizeLocaleIdentifier:(id)identifier
 {
-  v3 = [objc_msgSend(MEMORY[0x277CBEAF8] componentsFromLocaleIdentifier:{a3), "mutableCopy"}];
+  v3 = [objc_msgSend(MEMORY[0x277CBEAF8] componentsFromLocaleIdentifier:{identifier), "mutableCopy"}];
   v4 = *MEMORY[0x277CBE720];
   if ([objc_msgSend(objc_msgSend(v3 objectForKeyedSubscript:{*MEMORY[0x277CBE720]), "uppercaseString"), "isEqualToString:", @"POSIX"}])
   {
@@ -177,87 +177,87 @@ uint64_t __25__OITSULocale_initialize__block_invoke()
   return [v5 canonicalLocaleIdentifierFromString:v6];
 }
 
-+ (id)canonicalizeLocaleIdentifierWithLanguageOnly:(id)a3
++ (id)canonicalizeLocaleIdentifierWithLanguageOnly:(id)only
 {
-  v3 = [MEMORY[0x277CBEAF8] componentsFromLocaleIdentifier:a3];
+  v3 = [MEMORY[0x277CBEAF8] componentsFromLocaleIdentifier:only];
   v4 = *MEMORY[0x277CBE6C8];
 
   return [v3 objectForKeyedSubscript:v4];
 }
 
-+ (id)canonicalizeLocaleIdentifierWithLanguageAndRegionOnly:(id)a3
++ (id)canonicalizeLocaleIdentifierWithLanguageAndRegionOnly:(id)only
 {
-  v3 = [MEMORY[0x277CBEAF8] componentsFromLocaleIdentifier:a3];
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  v3 = [MEMORY[0x277CBEAF8] componentsFromLocaleIdentifier:only];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v5 = *MEMORY[0x277CBE6C8];
   if ([v3 objectForKeyedSubscript:*MEMORY[0x277CBE6C8]])
   {
-    [v4 setObject:objc_msgSend(v3 forKeyedSubscript:{"objectForKeyedSubscript:", v5), v5}];
+    [dictionary setObject:objc_msgSend(v3 forKeyedSubscript:{"objectForKeyedSubscript:", v5), v5}];
   }
 
   v6 = *MEMORY[0x277CBE690];
   if ([v3 objectForKeyedSubscript:*MEMORY[0x277CBE690]])
   {
-    [v4 setObject:objc_msgSend(v3 forKeyedSubscript:{"objectForKeyedSubscript:", v6), v6}];
+    [dictionary setObject:objc_msgSend(v3 forKeyedSubscript:{"objectForKeyedSubscript:", v6), v6}];
   }
 
   v7 = MEMORY[0x277CBEAF8];
-  v8 = [MEMORY[0x277CBEAF8] localeIdentifierFromComponents:v4];
+  v8 = [MEMORY[0x277CBEAF8] localeIdentifierFromComponents:dictionary];
 
   return [v7 canonicalLocaleIdentifierFromString:v8];
 }
 
-+ (id)canonicalizeLocaleIdentifierWithLanguageAndScriptOnly:(id)a3
++ (id)canonicalizeLocaleIdentifierWithLanguageAndScriptOnly:(id)only
 {
-  v3 = [MEMORY[0x277CBEAF8] componentsFromLocaleIdentifier:a3];
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  v3 = [MEMORY[0x277CBEAF8] componentsFromLocaleIdentifier:only];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v5 = *MEMORY[0x277CBE6C8];
   if ([v3 objectForKeyedSubscript:*MEMORY[0x277CBE6C8]])
   {
-    [v4 setObject:objc_msgSend(v3 forKeyedSubscript:{"objectForKeyedSubscript:", v5), v5}];
+    [dictionary setObject:objc_msgSend(v3 forKeyedSubscript:{"objectForKeyedSubscript:", v5), v5}];
   }
 
   v6 = *MEMORY[0x277CBE6F8];
   if ([v3 objectForKeyedSubscript:*MEMORY[0x277CBE6F8]])
   {
-    [v4 setObject:objc_msgSend(v3 forKeyedSubscript:{"objectForKeyedSubscript:", v6), v6}];
+    [dictionary setObject:objc_msgSend(v3 forKeyedSubscript:{"objectForKeyedSubscript:", v6), v6}];
   }
 
   v7 = MEMORY[0x277CBEAF8];
-  v8 = [MEMORY[0x277CBEAF8] localeIdentifierFromComponents:v4];
+  v8 = [MEMORY[0x277CBEAF8] localeIdentifierFromComponents:dictionary];
 
   return [v7 canonicalLocaleIdentifierFromString:v8];
 }
 
-+ (id)canonicalizeLocaleIdentifierWithLanguageScriptAndRegionOnly:(id)a3
++ (id)canonicalizeLocaleIdentifierWithLanguageScriptAndRegionOnly:(id)only
 {
-  v3 = [MEMORY[0x277CBEAF8] componentsFromLocaleIdentifier:a3];
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  v3 = [MEMORY[0x277CBEAF8] componentsFromLocaleIdentifier:only];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v5 = *MEMORY[0x277CBE6C8];
   if ([v3 objectForKeyedSubscript:*MEMORY[0x277CBE6C8]])
   {
-    [v4 setObject:objc_msgSend(v3 forKeyedSubscript:{"objectForKeyedSubscript:", v5), v5}];
+    [dictionary setObject:objc_msgSend(v3 forKeyedSubscript:{"objectForKeyedSubscript:", v5), v5}];
   }
 
   v6 = *MEMORY[0x277CBE690];
   if ([v3 objectForKeyedSubscript:*MEMORY[0x277CBE690]])
   {
-    [v4 setObject:objc_msgSend(v3 forKeyedSubscript:{"objectForKeyedSubscript:", v6), v6}];
+    [dictionary setObject:objc_msgSend(v3 forKeyedSubscript:{"objectForKeyedSubscript:", v6), v6}];
   }
 
   v7 = *MEMORY[0x277CBE6F8];
   if ([v3 objectForKeyedSubscript:*MEMORY[0x277CBE6F8]])
   {
-    [v4 setObject:objc_msgSend(v3 forKeyedSubscript:{"objectForKeyedSubscript:", v7), v7}];
+    [dictionary setObject:objc_msgSend(v3 forKeyedSubscript:{"objectForKeyedSubscript:", v7), v7}];
   }
 
   v8 = MEMORY[0x277CBEAF8];
-  v9 = [MEMORY[0x277CBEAF8] localeIdentifierFromComponents:v4];
+  v9 = [MEMORY[0x277CBEAF8] localeIdentifierFromComponents:dictionary];
 
   return [v8 canonicalLocaleIdentifierFromString:v9];
 }
 
-+ (id)deducedScriptForLocale:(id)a3
++ (id)deducedScriptForLocale:(id)locale
 {
   v17 = *MEMORY[0x277D85DE8];
   v4 = [objc_msgSend(MEMORY[0x277CBEAF8] "componentsFromLocaleIdentifier:"mutableCopy"")];
@@ -285,7 +285,7 @@ LABEL_3:
 
     v10 = *(*(&v12 + 1) + 8 * v9);
     [v4 setObject:v10 forKeyedSubscript:v8];
-    if ([objc_msgSend(MEMORY[0x277CBEAF8] canonicalLocaleIdentifierFromString:{objc_msgSend(MEMORY[0x277CBEAF8], "localeIdentifierFromComponents:", v4)), "isEqualToString:", a3}])
+    if ([objc_msgSend(MEMORY[0x277CBEAF8] canonicalLocaleIdentifierFromString:{objc_msgSend(MEMORY[0x277CBEAF8], "localeIdentifierFromComponents:", v4)), "isEqualToString:", locale}])
     {
       return v10;
     }
@@ -303,10 +303,10 @@ LABEL_3:
   }
 }
 
-+ (id)localeIDWithDefaultRegionCode:(id)a3
++ (id)localeIDWithDefaultRegionCode:(id)code
 {
   v26[3] = *MEMORY[0x277D85DE8];
-  v3 = [objc_msgSend(MEMORY[0x277CBEAF8] componentsFromLocaleIdentifier:{a3), "mutableCopy"}];
+  v3 = [objc_msgSend(MEMORY[0x277CBEAF8] componentsFromLocaleIdentifier:{code), "mutableCopy"}];
   v4 = *MEMORY[0x277CBE6C8];
   v5 = [objc_msgSend(v3 objectForKeyedSubscript:{*MEMORY[0x277CBE6C8]), "isEqualToString:", @"zh"}];
   v6 = MEMORY[0x277CBE6F8];
@@ -370,7 +370,7 @@ LABEL_17:
     }
   }
 
-  v13 = [v3 allKeys];
+  allKeys = [v3 allKeys];
   v26[0] = v4;
   v26[1] = v9;
   v26[2] = *v6;
@@ -379,7 +379,7 @@ LABEL_17:
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v15 = [v13 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v15 = [allKeys countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v15)
   {
     v16 = v15;
@@ -390,7 +390,7 @@ LABEL_17:
       {
         if (*v22 != v17)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(allKeys);
         }
 
         v19 = *(*(&v21 + 1) + 8 * i);
@@ -400,7 +400,7 @@ LABEL_17:
         }
       }
 
-      v16 = [v13 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v16 = [allKeys countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v16);
@@ -409,15 +409,15 @@ LABEL_17:
   return [MEMORY[0x277CBEAF8] localeIdentifierFromComponents:v3];
 }
 
-+ (id)localeIDWithoutDefaultRegionCode:(id)a3 avoidAmbiguousCases:(BOOL)a4
++ (id)localeIDWithoutDefaultRegionCode:(id)code avoidAmbiguousCases:(BOOL)cases
 {
-  v4 = a4;
+  casesCopy = cases;
   v6 = [objc_msgSend(MEMORY[0x277CBEAF8] "componentsFromLocaleIdentifier:"mutableCopy"")];
   v7 = v6;
   v8 = *MEMORY[0x277CBE6C8];
-  if (v4 && ([&unk_286F6D290 containsObject:{objc_msgSend(v6, "objectForKeyedSubscript:", *MEMORY[0x277CBE6C8])}] & 1) != 0)
+  if (casesCopy && ([&unk_286F6D290 containsObject:{objc_msgSend(v6, "objectForKeyedSubscript:", *MEMORY[0x277CBE6C8])}] & 1) != 0)
   {
-    return a3;
+    return code;
   }
 
   if ([@"zh" isEqualToString:{objc_msgSend(v7, "objectForKeyedSubscript:", v8)}])
@@ -446,11 +446,11 @@ LABEL_10:
   return [v12 localeIdentifierFromComponents:v7];
 }
 
-+ (id)simplifiedDisplayNameForLocaleID:(id)a3 displayStandalone:(BOOL)a4
++ (id)simplifiedDisplayNameForLocaleID:(id)d displayStandalone:(BOOL)standalone
 {
-  v4 = a4;
-  v5 = [OITSULocale localeIDWithoutDefaultRegionCode:[OITSULocale localeIDWithDefaultRegionCode:a3] avoidAmbiguousCases:1];
-  result = [OITSULocale displayNameForCode:v5 ofType:*MEMORY[0x277CBE6C0] displayStandalone:v4];
+  standaloneCopy = standalone;
+  v5 = [OITSULocale localeIDWithoutDefaultRegionCode:[OITSULocale localeIDWithDefaultRegionCode:d] avoidAmbiguousCases:1];
+  result = [OITSULocale displayNameForCode:v5 ofType:*MEMORY[0x277CBE6C0] displayStandalone:standaloneCopy];
   if (!result)
   {
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[OITSULocale simplifiedDisplayNameForLocaleID:displayStandalone:]"];
@@ -462,23 +462,23 @@ LABEL_10:
   return result;
 }
 
-+ (id)displayNameForCode:(id)a3 ofType:(id)a4 displayStandalone:(BOOL)a5
++ (id)displayNameForCode:(id)code ofType:(id)type displayStandalone:(BOOL)standalone
 {
-  v5 = a4;
-  v7 = [OITSULocale applicationLocale:a3];
+  typeCopy = type;
+  v7 = [OITSULocale applicationLocale:code];
   v8 = *MEMORY[0x277CBE6C0];
   v9 = *MEMORY[0x277CBE6C8];
-  if (*MEMORY[0x277CBE690] != v5 && v9 != v5 && v8 != v5)
+  if (*MEMORY[0x277CBE690] != typeCopy && v9 != typeCopy && v8 != typeCopy)
   {
-    v5 = *MEMORY[0x277CBE6C0];
+    typeCopy = *MEMORY[0x277CBE6C0];
   }
 
-  if (v5 == v9 && [a3 containsString:@"-"])
+  if (typeCopy == v9 && [code containsString:@"-"])
   {
-    v5 = v8;
+    typeCopy = v8;
   }
 
-  return [v7 displayNameForKey:v5 value:a3];
+  return [v7 displayNameForKey:typeCopy value:code];
 }
 
 + (id)allSupportedTier1Languages
@@ -613,7 +613,7 @@ id __50__OITSULocale_allSupportedTemplatePickerLanguages__block_invoke()
   return v1;
 }
 
-+ (BOOL)localeIsAutoUpdating:(id)a3
++ (BOOL)localeIsAutoUpdating:(id)updating
 {
   if (localeIsAutoUpdating__onceToken != -1)
   {
@@ -631,26 +631,26 @@ uint64_t __36__OITSULocale_localeIsAutoUpdating___block_invoke()
   return result;
 }
 
-+ (id)localeForLocaleIdentifier:(id)a3 documentLanguageIdentifier:(id)a4
++ (id)localeForLocaleIdentifier:(id)identifier documentLanguageIdentifier:(id)languageIdentifier
 {
-  if (!a3 || !a4)
+  if (!identifier || !languageIdentifier)
   {
     return 0;
   }
 
   [sStaticLocaleLock lock];
-  v6 = [sOtherLocales objectForKey:{objc_msgSend(a3, "stringByAppendingFormat:", @", %@", a4)}];
+  v6 = [sOtherLocales objectForKey:{objc_msgSend(identifier, "stringByAppendingFormat:", @", %@", languageIdentifier)}];
   [sStaticLocaleLock unlock];
 
   return v6;
 }
 
-+ (void)saveLocaleForReuse:(id)a3
++ (void)saveLocaleForReuse:(id)reuse
 {
   [sStaticLocaleLock lock];
-  if (![sOtherLocales objectForKey:{objc_msgSend(a3, "localeIdentifier")}])
+  if (![sOtherLocales objectForKey:{objc_msgSend(reuse, "localeIdentifier")}])
   {
-    [sOtherLocales setObject:a3 forKey:{objc_msgSend(objc_msgSend(a3, "localeIdentifier"), "stringByAppendingFormat:", @", %@", objc_msgSend(a3, "documentLanguageIdentifier"))}];
+    [sOtherLocales setObject:reuse forKey:{objc_msgSend(objc_msgSend(reuse, "localeIdentifier"), "stringByAppendingFormat:", @", %@", objc_msgSend(reuse, "documentLanguageIdentifier"))}];
   }
 
   v4 = sStaticLocaleLock;
@@ -658,9 +658,9 @@ uint64_t __36__OITSULocale_localeIsAutoUpdating___block_invoke()
   [v4 unlock];
 }
 
-- (OITSULocale)initWithLocale:(id)a3 documentLanguageIdentifier:(id)a4 useAutoupdating:(BOOL)a5
+- (OITSULocale)initWithLocale:(id)locale documentLanguageIdentifier:(id)identifier useAutoupdating:(BOOL)autoupdating
 {
-  v5 = a5;
+  autoupdatingCopy = autoupdating;
   v19.receiver = self;
   v19.super_class = OITSULocale;
   v8 = [(OITSULocale *)&v19 init];
@@ -669,9 +669,9 @@ uint64_t __36__OITSULocale_localeIsAutoUpdating___block_invoke()
     return v8;
   }
 
-  if (a4)
+  if (identifier)
   {
-    if (!a3)
+    if (!locale)
     {
       goto LABEL_10;
     }
@@ -679,8 +679,8 @@ uint64_t __36__OITSULocale_localeIsAutoUpdating___block_invoke()
 
   else
   {
-    a4 = [MEMORY[0x277CBEAF8] tsu_firstPreferredLocalization];
-    if (!a3)
+    identifier = [MEMORY[0x277CBEAF8] tsu_firstPreferredLocalization];
+    if (!locale)
     {
 LABEL_10:
 
@@ -688,30 +688,30 @@ LABEL_10:
     }
   }
 
-  if (!a4)
+  if (!identifier)
   {
     goto LABEL_10;
   }
 
-  v9 = [MEMORY[0x277CBEAF8] canonicalLanguageIdentifierFromString:a4];
-  v10 = +[OITSULocale canonicalizeLocaleIdentifier:](OITSULocale, "canonicalizeLocaleIdentifier:", [a3 localeIdentifier]);
-  if (v5 || (v11 = [OITSULocale localeForLocaleIdentifier:v10 documentLanguageIdentifier:v9]) == 0)
+  v9 = [MEMORY[0x277CBEAF8] canonicalLanguageIdentifierFromString:identifier];
+  v10 = +[OITSULocale canonicalizeLocaleIdentifier:](OITSULocale, "canonicalizeLocaleIdentifier:", [locale localeIdentifier]);
+  if (autoupdatingCopy || (v11 = [OITSULocale localeForLocaleIdentifier:v10 documentLanguageIdentifier:v9]) == 0)
   {
     pthread_mutex_init(&v8->_formattersMutex, 0);
     v8->_localeIdentifier = v10;
-    if (v5)
+    if (autoupdatingCopy)
     {
-      v13 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
+      autoupdatingCurrentLocale = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
     }
 
     else
     {
-      v13 = [objc_alloc(MEMORY[0x277CBEAF8]) initWithLocaleIdentifier:v8->_localeIdentifier];
+      autoupdatingCurrentLocale = [objc_alloc(MEMORY[0x277CBEAF8]) initWithLocaleIdentifier:v8->_localeIdentifier];
     }
 
-    v8->_locale = v13;
-    v8->_isAutoUpdating = v5;
-    v8->_languageCode = [(NSLocale *)v13 objectForKey:*MEMORY[0x277CBE6C8]];
+    v8->_locale = autoupdatingCurrentLocale;
+    v8->_isAutoUpdating = autoupdatingCopy;
+    v8->_languageCode = [(NSLocale *)autoupdatingCurrentLocale objectForKey:*MEMORY[0x277CBE6C8]];
     v8->_documentLanguageIdentifier = v9;
     v8->_numberFormatters = objc_opt_new();
     v8->_scientificNumberFormatters = objc_opt_new();
@@ -734,7 +734,7 @@ LABEL_10:
     v8->_groupingSize = [OITSUNumberFormatter groupingSizeForLocale:v8->_locale];
     v8->_localeSpecificStorageLock = objc_opt_new();
     v8->_localeSpecificStorage = objc_opt_new();
-    v8->_dateComponentOrdering = TSUDateComponentOrderingForLocale([a3 localeIdentifier]);
+    v8->_dateComponentOrdering = TSUDateComponentOrderingForLocale([locale localeIdentifier]);
     v8->_gregorianCalendarLocale = TSUCopyLocaleWithGregorianCalendarFromLocale(v8->_locale);
     UsingHarmonizedSymbols = TSUDateFormatterCFDateFormatterCreateUsingHarmonizedSymbols(0, v8->_locale, kCFDateFormatterMediumStyle, kCFDateFormatterMediumStyle);
     v8->_monthSymbols = CFDateFormatterCopyProperty(UsingHarmonizedSymbols, *MEMORY[0x277CBED98]);
@@ -753,7 +753,7 @@ LABEL_10:
     v17 = objc_opt_new();
     v8->_cachedLocalizedStrings = v17;
     [(NSCache *)v17 setName:@"Docuemnt-language localized strings cache"];
-    if (!v5)
+    if (!autoupdatingCopy)
     {
       [OITSULocale saveLocaleForReuse:v8];
     }
@@ -771,25 +771,25 @@ LABEL_10:
 
 - (id)localeIdentifierWithLanguageAndRegionOnly
 {
-  v2 = [(OITSULocale *)self localeIdentifier];
+  localeIdentifier = [(OITSULocale *)self localeIdentifier];
 
-  return [OITSULocale canonicalizeLocaleIdentifierWithLanguageAndRegionOnly:v2];
+  return [OITSULocale canonicalizeLocaleIdentifierWithLanguageAndRegionOnly:localeIdentifier];
 }
 
 - (id)localeIdentifierWithLanguageScriptAndRegionOnly
 {
-  v2 = [(OITSULocale *)self localeIdentifier];
+  localeIdentifier = [(OITSULocale *)self localeIdentifier];
 
-  return [OITSULocale canonicalizeLocaleIdentifierWithLanguageScriptAndRegionOnly:v2];
+  return [OITSULocale canonicalizeLocaleIdentifierWithLanguageScriptAndRegionOnly:localeIdentifier];
 }
 
-- (id)copyWithDocumentLanguageIdentifier:(id)a3
+- (id)copyWithDocumentLanguageIdentifier:(id)identifier
 {
   v5 = [OITSULocale alloc];
-  v6 = [(OITSULocale *)self locale];
-  v7 = [(OITSULocale *)self isAutoUpdating];
+  locale = [(OITSULocale *)self locale];
+  isAutoUpdating = [(OITSULocale *)self isAutoUpdating];
 
-  return [(OITSULocale *)v5 initWithLocale:v6 documentLanguageIdentifier:a3 useAutoupdating:v7];
+  return [(OITSULocale *)v5 initWithLocale:locale documentLanguageIdentifier:identifier useAutoupdating:isAutoUpdating];
 }
 
 - (void)dealloc
@@ -829,9 +829,9 @@ LABEL_10:
   [(OITSULocale *)&v7 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v6) = 1;
   }
@@ -839,15 +839,15 @@ LABEL_10:
   else
   {
     v5 = objc_opt_class();
-    v6 = TSUDynamicCast(v5, a3);
+    v6 = TSUDynamicCast(v5, equal);
     if (v6)
     {
       v7 = v6;
       LODWORD(v6) = -[NSString isEqualToString:](-[OITSULocale localeIdentifier](self, "localeIdentifier"), "isEqualToString:", [v6 localeIdentifier]);
       if (v6)
       {
-        v8 = [(OITSULocale *)self isAutoUpdating];
-        LOBYTE(v6) = v8 ^ [v7 isAutoUpdating] ^ 1;
+        isAutoUpdating = [(OITSULocale *)self isAutoUpdating];
+        LOBYTE(v6) = isAutoUpdating ^ [v7 isAutoUpdating] ^ 1;
       }
     }
   }
@@ -857,9 +857,9 @@ LABEL_10:
 
 - (unint64_t)hash
 {
-  v2 = [(OITSULocale *)self localeIdentifier];
+  localeIdentifier = [(OITSULocale *)self localeIdentifier];
 
-  return [(NSString *)v2 hash];
+  return [(NSString *)localeIdentifier hash];
 }
 
 - (id)description
@@ -879,9 +879,9 @@ LABEL_10:
   return [v3 stringWithFormat:@"<%@: %p>: for %@ language %@ autoupdating: %@", v4, self, self->_localeIdentifier, self->_documentLanguageIdentifier, v5];
 }
 
-- (id)displayLanguageNameWithStandalone:(BOOL)a3
+- (id)displayLanguageNameWithStandalone:(BOOL)standalone
 {
-  v3 = a3;
+  standaloneCopy = standalone;
   v5 = *MEMORY[0x277CBE6C8];
   v6 = [(NSLocale *)self->_locale objectForKey:*MEMORY[0x277CBE6C8]];
   if ([v6 isEqualToString:@"zh"] && ((v7 = -[NSLocale objectForKey:](self->_locale, "objectForKey:", *MEMORY[0x277CBE6F8])) != 0 || (v7 = +[OITSULocale deducedScriptForLocale:](OITSULocale, "deducedScriptForLocale:", self->_localeIdentifier)) != 0))
@@ -896,7 +896,7 @@ LABEL_10:
     v9 = v5;
   }
 
-  return [OITSULocale displayNameForCode:v8 ofType:v9 displayStandalone:v3];
+  return [OITSULocale displayNameForCode:v8 ofType:v9 displayStandalone:standaloneCopy];
 }
 
 - (__CFNumberFormatter)checkoutNumberFormatter
@@ -904,10 +904,10 @@ LABEL_10:
   pthread_mutex_lock(&self->_formattersMutex);
   if ([(NSMutableArray *)self->_numberFormatters count])
   {
-    v3 = [(NSMutableArray *)self->_numberFormatters lastObject];
+    lastObject = [(NSMutableArray *)self->_numberFormatters lastObject];
     [(NSMutableArray *)self->_numberFormatters removeLastObject];
     pthread_mutex_unlock(&self->_formattersMutex);
-    if (v3)
+    if (lastObject)
     {
       goto LABEL_6;
     }
@@ -918,26 +918,26 @@ LABEL_10:
     pthread_mutex_unlock(&self->_formattersMutex);
   }
 
-  v3 = TSUHarmonizedCFNumberFormatterCreate([(OITSULocale *)self locale], 0);
-  CFNumberFormatterSetFormat(v3, @"0");
-  CFNumberFormatterSetProperty(v3, *MEMORY[0x277CBEF58], [MEMORY[0x277CCABB0] numberWithInt:0]);
-  CFNumberFormatterSetProperty(v3, *MEMORY[0x277CBEF48], [MEMORY[0x277CCABB0] numberWithInt:0x7FFFFFFFLL]);
-  if (!v3)
+  lastObject = TSUHarmonizedCFNumberFormatterCreate([(OITSULocale *)self locale], 0);
+  CFNumberFormatterSetFormat(lastObject, @"0");
+  CFNumberFormatterSetProperty(lastObject, *MEMORY[0x277CBEF58], [MEMORY[0x277CCABB0] numberWithInt:0]);
+  CFNumberFormatterSetProperty(lastObject, *MEMORY[0x277CBEF48], [MEMORY[0x277CCABB0] numberWithInt:0x7FFFFFFFLL]);
+  if (!lastObject)
   {
     return 0;
   }
 
 LABEL_6:
 
-  return v3;
+  return lastObject;
 }
 
-- (void)returnNumberFormatter:(__CFNumberFormatter *)a3
+- (void)returnNumberFormatter:(__CFNumberFormatter *)formatter
 {
-  if (a3)
+  if (formatter)
   {
     pthread_mutex_lock(&self->_formattersMutex);
-    [(NSMutableArray *)self->_numberFormatters addObject:a3];
+    [(NSMutableArray *)self->_numberFormatters addObject:formatter];
 
     pthread_mutex_unlock(&self->_formattersMutex);
   }
@@ -948,10 +948,10 @@ LABEL_6:
   pthread_mutex_lock(&self->_formattersMutex);
   if ([(NSMutableArray *)self->_scientificNumberFormatters count])
   {
-    v3 = [(NSMutableArray *)self->_scientificNumberFormatters lastObject];
+    lastObject = [(NSMutableArray *)self->_scientificNumberFormatters lastObject];
     [(NSMutableArray *)self->_scientificNumberFormatters removeLastObject];
     pthread_mutex_unlock(&self->_formattersMutex);
-    if (v3)
+    if (lastObject)
     {
       goto LABEL_6;
     }
@@ -962,26 +962,26 @@ LABEL_6:
     pthread_mutex_unlock(&self->_formattersMutex);
   }
 
-  v3 = TSUHarmonizedCFNumberFormatterCreate([(OITSULocale *)self locale], 4);
-  CFNumberFormatterSetFormat(v3, @"0E+0");
-  CFNumberFormatterSetProperty(v3, *MEMORY[0x277CBEF58], [MEMORY[0x277CCABB0] numberWithInt:0]);
-  CFNumberFormatterSetProperty(v3, *MEMORY[0x277CBEF48], [MEMORY[0x277CCABB0] numberWithInt:0x7FFFFFFFLL]);
-  if (!v3)
+  lastObject = TSUHarmonizedCFNumberFormatterCreate([(OITSULocale *)self locale], 4);
+  CFNumberFormatterSetFormat(lastObject, @"0E+0");
+  CFNumberFormatterSetProperty(lastObject, *MEMORY[0x277CBEF58], [MEMORY[0x277CCABB0] numberWithInt:0]);
+  CFNumberFormatterSetProperty(lastObject, *MEMORY[0x277CBEF48], [MEMORY[0x277CCABB0] numberWithInt:0x7FFFFFFFLL]);
+  if (!lastObject)
   {
     return 0;
   }
 
 LABEL_6:
 
-  return v3;
+  return lastObject;
 }
 
-- (void)returnScientificNumberFormatter:(__CFNumberFormatter *)a3
+- (void)returnScientificNumberFormatter:(__CFNumberFormatter *)formatter
 {
-  if (a3)
+  if (formatter)
   {
     pthread_mutex_lock(&self->_formattersMutex);
-    [(NSMutableArray *)self->_scientificNumberFormatters addObject:a3];
+    [(NSMutableArray *)self->_scientificNumberFormatters addObject:formatter];
 
     pthread_mutex_unlock(&self->_formattersMutex);
   }
@@ -1027,22 +1027,22 @@ LABEL_6:
   [(NSLock *)numberFormatterStringFromDoubleWithFormatLock unlock];
 }
 
-- (id)numberFormatterStringFromDouble:(double)a3 withFormat:(id)a4 useDecimalPlaces:(BOOL)a5 minDecimalPlaces:(unsigned __int16)a6 decimalPlaces:(unsigned __int16)a7 showThousandsSeparator:(BOOL)a8 currencyCode:(id)a9 suppressMinusSign:(BOOL)a10
+- (id)numberFormatterStringFromDouble:(double)double withFormat:(id)format useDecimalPlaces:(BOOL)places minDecimalPlaces:(unsigned __int16)decimalPlaces decimalPlaces:(unsigned __int16)a7 showThousandsSeparator:(BOOL)separator currencyCode:(id)code suppressMinusSign:(BOOL)self0
 {
-  v11 = a8;
+  separatorCopy = separator;
   v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v31 = a3;
+  decimalPlacesCopy = decimalPlaces;
+  placesCopy = places;
+  doubleCopy = double;
   if (!self->_plainFormatter)
   {
     [(OITSULocale *)self _initializeNumberFormatterStringFromDoubleCache];
   }
 
   [(NSLock *)self->_numberFormatterStringFromDoubleWithFormatLock lock];
-  if (a9 && [a9 length])
+  if (code && [code length])
   {
-    if (a10)
+    if (sign)
     {
       v17 = 320;
     }
@@ -1053,21 +1053,21 @@ LABEL_6:
     }
 
     v18 = 296;
-    if (a10)
+    if (sign)
     {
       v18 = 304;
     }
 
     noMinusSignPlainFormatter = *(&self->super.isa + v18);
-    if (([a9 isEqualToString:*(&self->super.isa + v17)] & 1) == 0)
+    if (([code isEqualToString:*(&self->super.isa + v17)] & 1) == 0)
     {
-      TSUHarmonizedCFNumberFormatterSetCurrency(noMinusSignPlainFormatter, a9);
+      TSUHarmonizedCFNumberFormatterSetCurrency(noMinusSignPlainFormatter, code);
 
-      *(&self->super.isa + v17) = [a9 copy];
+      *(&self->super.isa + v17) = [code copy];
     }
   }
 
-  else if (a10)
+  else if (sign)
   {
     noMinusSignPlainFormatter = self->_noMinusSignPlainFormatter;
   }
@@ -1077,8 +1077,8 @@ LABEL_6:
     noMinusSignPlainFormatter = self->_plainFormatter;
   }
 
-  CFNumberFormatterSetFormat(noMinusSignPlainFormatter, a4);
-  if (v14)
+  CFNumberFormatterSetFormat(noMinusSignPlainFormatter, format);
+  if (placesCopy)
   {
     if (kTSUNumberFormatterDecimalPlacesAsManyAsNecessary == v12)
     {
@@ -1090,7 +1090,7 @@ LABEL_6:
 
     else
     {
-      v22 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:v13];
+      v22 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:decimalPlacesCopy];
       CFNumberFormatterSetProperty(noMinusSignPlainFormatter, *MEMORY[0x277CBEF58], v22);
 
       v23 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:v12];
@@ -1098,19 +1098,19 @@ LABEL_6:
     }
   }
 
-  if (a10)
+  if (sign)
   {
     CFNumberFormatterSetProperty(noMinusSignPlainFormatter, *MEMORY[0x277CBEF70], &stru_286EE1130);
   }
 
   v24 = MEMORY[0x277CBED10];
-  if (v11)
+  if (separatorCopy)
   {
     v24 = MEMORY[0x277CBED28];
   }
 
   CFNumberFormatterSetProperty(noMinusSignPlainFormatter, *MEMORY[0x277CBEFE8], *v24);
-  if (v11)
+  if (separatorCopy)
   {
     v25 = *MEMORY[0x277CBEF30];
     v26 = CFNumberFormatterCopyProperty(noMinusSignPlainFormatter, *MEMORY[0x277CBEF30]);
@@ -1123,38 +1123,38 @@ LABEL_6:
     }
   }
 
-  v28 = CFNumberFormatterCreateStringWithValue(*MEMORY[0x277CBECE8], noMinusSignPlainFormatter, kCFNumberDoubleType, &v31);
+  v28 = CFNumberFormatterCreateStringWithValue(*MEMORY[0x277CBECE8], noMinusSignPlainFormatter, kCFNumberDoubleType, &doubleCopy);
   [(NSLock *)self->_numberFormatterStringFromDoubleWithFormatLock unlock];
   return v28;
 }
 
-- (id)localeSpecificStorageForKey:(id)a3
+- (id)localeSpecificStorageForKey:(id)key
 {
-  if (!a3)
+  if (!key)
   {
     return 0;
   }
 
   [(NSLock *)self->_localeSpecificStorageLock lock];
-  v5 = [(NSMutableDictionary *)self->_localeSpecificStorage objectForKey:a3];
+  v5 = [(NSMutableDictionary *)self->_localeSpecificStorage objectForKey:key];
   [(NSLock *)self->_localeSpecificStorageLock unlock];
   return v5;
 }
 
-- (void)setLocaleSpecificStorage:(id)a3 forKey:(id)a4
+- (void)setLocaleSpecificStorage:(id)storage forKey:(id)key
 {
-  if (a4)
+  if (key)
   {
     [(NSLock *)self->_localeSpecificStorageLock lock];
     localeSpecificStorage = self->_localeSpecificStorage;
-    if (a3)
+    if (storage)
     {
-      [(NSMutableDictionary *)localeSpecificStorage setObject:a3 forKey:a4];
+      [(NSMutableDictionary *)localeSpecificStorage setObject:storage forKey:key];
     }
 
     else
     {
-      [(NSMutableDictionary *)localeSpecificStorage removeObjectForKey:a4];
+      [(NSMutableDictionary *)localeSpecificStorage removeObjectForKey:key];
     }
 
     localeSpecificStorageLock = self->_localeSpecificStorageLock;
@@ -1163,23 +1163,23 @@ LABEL_6:
   }
 }
 
-- (int64_t)localizedCompare:(id)a3 toString:(id)a4
+- (int64_t)localizedCompare:(id)compare toString:(id)string
 {
-  v7 = [a3 length];
-  v8 = [(OITSULocale *)self locale];
+  v7 = [compare length];
+  locale = [(OITSULocale *)self locale];
 
-  return [a3 compare:a4 options:0 range:0 locale:{v7, v8}];
+  return [compare compare:string options:0 range:0 locale:{v7, locale}];
 }
 
-- (int64_t)localizedCaseInsensitiveCompare:(id)a3 toString:(id)a4
+- (int64_t)localizedCaseInsensitiveCompare:(id)compare toString:(id)string
 {
-  v7 = [a3 length];
-  v8 = [(OITSULocale *)self locale];
+  v7 = [compare length];
+  locale = [(OITSULocale *)self locale];
 
-  return [a3 compare:a4 options:1 range:0 locale:{v7, v8}];
+  return [compare compare:string options:1 range:0 locale:{v7, locale}];
 }
 
-- (id)localizedStringForKey:(id)a3 value:(id)a4 table:(id)a5
+- (id)localizedStringForKey:(id)key value:(id)value table:(id)table
 {
   objc_sync_enter(self);
   if (!sLocalizedStringBundle)
@@ -1191,25 +1191,25 @@ LABEL_6:
   }
 
   objc_sync_exit(self);
-  return a3;
+  return key;
 }
 
-- (id)URLForResource:(id)a3 withExtension:(id)a4 subdirectory:(id)a5 inBundleWithURL:(id)a6
+- (id)URLForResource:(id)resource withExtension:(id)extension subdirectory:(id)subdirectory inBundleWithURL:(id)l
 {
-  v10 = CFBundleCreate(*MEMORY[0x277CBECE8], a6);
-  v11 = [(OITSULocale *)self URLForResource:a3 withExtension:a4 subdirectory:a5 inBundle:v10];
+  v10 = CFBundleCreate(*MEMORY[0x277CBECE8], l);
+  v11 = [(OITSULocale *)self URLForResource:resource withExtension:extension subdirectory:subdirectory inBundle:v10];
   CFRelease(v10);
   return v11;
 }
 
-- (id)URLForResource:(id)a3 withExtension:(id)a4 subdirectory:(id)a5 inBundle:(__CFBundle *)a6
+- (id)URLForResource:(id)resource withExtension:(id)extension subdirectory:(id)subdirectory inBundle:(__CFBundle *)bundle
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v11 = CFBundleCopyBundleLocalizations(a6);
+  v11 = CFBundleCopyBundleLocalizations(bundle);
   v16[0] = [(OITSULocale *)self localeIdentifierWithLanguageAndRegionOnly];
   v12 = CFBundleCopyLocalizationsForPreferences(v11, [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1]);
   ValueAtIndex = CFArrayGetValueAtIndex(v12, 0);
-  v14 = CFBundleCopyResourceURLForLocalization(a6, a3, a4, a5, ValueAtIndex);
+  v14 = CFBundleCopyResourceURLForLocalization(bundle, resource, extension, subdirectory, ValueAtIndex);
   CFRelease(v11);
   CFRelease(v12);
   return v14;

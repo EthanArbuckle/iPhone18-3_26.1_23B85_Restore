@@ -1,29 +1,29 @@
 @interface AAAvailabilityResponse
-- (AAAvailabilityResponse)initWithHTTPResponse:(id)a3 data:(id)a4;
+- (AAAvailabilityResponse)initWithHTTPResponse:(id)response data:(id)data;
 @end
 
 @implementation AAAvailabilityResponse
 
-- (AAAvailabilityResponse)initWithHTTPResponse:(id)a3 data:(id)a4
+- (AAAvailabilityResponse)initWithHTTPResponse:(id)response data:(id)data
 {
   v16.receiver = self;
   v16.super_class = AAAvailabilityResponse;
-  v4 = [(AAResponse *)&v16 initWithHTTPResponse:a3 data:a4];
+  v4 = [(AAResponse *)&v16 initWithHTTPResponse:response data:data];
   v5 = v4;
   if (v4)
   {
-    v6 = [(AAResponse *)v4 responseDictionary];
-    v7 = [v6 objectForKeyedSubscript:@"status"];
+    responseDictionary = [(AAResponse *)v4 responseDictionary];
+    v7 = [responseDictionary objectForKeyedSubscript:@"status"];
     status = v5->_status;
     v5->_status = v7;
 
-    v9 = [(AAResponse *)v5 responseDictionary];
-    v10 = [v9 objectForKeyedSubscript:@"eta"];
+    responseDictionary2 = [(AAResponse *)v5 responseDictionary];
+    v10 = [responseDictionary2 objectForKeyedSubscript:@"eta"];
     eta = v5->_eta;
     v5->_eta = v10;
 
-    v12 = [(AAResponse *)v5 responseDictionary];
-    v13 = [v12 objectForKeyedSubscript:@"feature"];
+    responseDictionary3 = [(AAResponse *)v5 responseDictionary];
+    v13 = [responseDictionary3 objectForKeyedSubscript:@"feature"];
     feature = v5->_feature;
     v5->_feature = v13;
   }

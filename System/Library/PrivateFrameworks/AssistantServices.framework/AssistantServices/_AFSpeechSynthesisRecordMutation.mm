@@ -1,5 +1,5 @@
 @interface _AFSpeechSynthesisRecordMutation
-- (_AFSpeechSynthesisRecordMutation)initWithBase:(id)a3;
+- (_AFSpeechSynthesisRecordMutation)initWithBase:(id)base;
 - (id)getUtterance;
 - (unint64_t)getBeginTimestamp;
 - (unint64_t)getEndTimestamp;
@@ -11,15 +11,15 @@
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_utterance;
+    utterance = self->_utterance;
   }
 
   else
   {
-    v2 = [(AFSpeechSynthesisRecord *)self->_base utterance];
+    utterance = [(AFSpeechSynthesisRecord *)self->_base utterance];
   }
 
-  return v2;
+  return utterance;
 }
 
 - (unint64_t)getEndTimestamp
@@ -48,16 +48,16 @@
   }
 }
 
-- (_AFSpeechSynthesisRecordMutation)initWithBase:(id)a3
+- (_AFSpeechSynthesisRecordMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFSpeechSynthesisRecordMutation;
   v6 = [(_AFSpeechSynthesisRecordMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

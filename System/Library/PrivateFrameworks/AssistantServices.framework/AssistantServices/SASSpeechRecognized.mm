@@ -10,25 +10,25 @@
 
 - (id)ad_endTime
 {
-  v2 = [(SASSpeechRecognized *)self recognition];
-  v3 = [v2 phrases];
-  v4 = [v3 lastObject];
-  v5 = [v4 interpretations];
-  v6 = [v5 firstObject];
-  v7 = [v6 tokens];
-  v8 = [v7 lastObject];
-  v9 = [v8 endTime];
+  recognition = [(SASSpeechRecognized *)self recognition];
+  phrases = [recognition phrases];
+  lastObject = [phrases lastObject];
+  interpretations = [lastObject interpretations];
+  firstObject = [interpretations firstObject];
+  tokens = [firstObject tokens];
+  lastObject2 = [tokens lastObject];
+  endTime = [lastObject2 endTime];
 
-  return v9;
+  return endTime;
 }
 
 - (id)ad_trailingSilence
 {
-  v3 = [(SASSpeechRecognized *)self ad_endTime];
-  [v3 doubleValue];
+  ad_endTime = [(SASSpeechRecognized *)self ad_endTime];
+  [ad_endTime doubleValue];
   v5 = v4;
-  v6 = [(SASSpeechRecognized *)self ad_speechEndTime];
-  [v6 doubleValue];
+  ad_speechEndTime = [(SASSpeechRecognized *)self ad_speechEndTime];
+  [ad_speechEndTime doubleValue];
   v8 = [NSNumber numberWithDouble:v5 - v7];
 
   return v8;
@@ -36,30 +36,30 @@
 
 - (id)ad_speechEndTime
 {
-  v2 = [(SASSpeechRecognized *)self recognition];
-  v3 = [v2 phrases];
-  v4 = [v3 lastObject];
-  v5 = [v4 interpretations];
-  v6 = [v5 firstObject];
-  v7 = [v6 tokens];
-  v8 = [v7 lastObject];
-  v9 = [v8 silenceStartTime];
+  recognition = [(SASSpeechRecognized *)self recognition];
+  phrases = [recognition phrases];
+  lastObject = [phrases lastObject];
+  interpretations = [lastObject interpretations];
+  firstObject = [interpretations firstObject];
+  tokens = [firstObject tokens];
+  lastObject2 = [tokens lastObject];
+  silenceStartTime = [lastObject2 silenceStartTime];
 
-  return v9;
+  return silenceStartTime;
 }
 
 - (id)ad_leadingSilence
 {
-  v2 = [(SASSpeechRecognized *)self recognition];
-  v3 = [v2 phrases];
-  v4 = [v3 firstObject];
-  v5 = [v4 interpretations];
-  v6 = [v5 firstObject];
-  v7 = [v6 tokens];
-  v8 = [v7 firstObject];
-  v9 = [v8 startTime];
+  recognition = [(SASSpeechRecognized *)self recognition];
+  phrases = [recognition phrases];
+  firstObject = [phrases firstObject];
+  interpretations = [firstObject interpretations];
+  firstObject2 = [interpretations firstObject];
+  tokens = [firstObject2 tokens];
+  firstObject3 = [tokens firstObject];
+  startTime = [firstObject3 startTime];
 
-  return v9;
+  return startTime;
 }
 
 - (id)description
@@ -68,8 +68,8 @@
   v8.receiver = self;
   v8.super_class = SASSpeechRecognized;
   v4 = [(SASSpeechRecognized *)&v8 description];
-  v5 = [(SASSpeechRecognized *)self af_bestTextInterpretation];
-  v6 = [v3 initWithFormat:@"%@ Recognition Text: %@", v4, v5];
+  af_bestTextInterpretation = [(SASSpeechRecognized *)self af_bestTextInterpretation];
+  v6 = [v3 initWithFormat:@"%@ Recognition Text: %@", v4, af_bestTextInterpretation];
 
   return v6;
 }

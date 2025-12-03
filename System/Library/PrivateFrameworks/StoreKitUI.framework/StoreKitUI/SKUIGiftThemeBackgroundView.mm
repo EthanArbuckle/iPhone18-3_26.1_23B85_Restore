@@ -1,14 +1,14 @@
 @interface SKUIGiftThemeBackgroundView
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation SKUIGiftThemeBackgroundView
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = SKUIGiftThemeBackgroundView;
-  v5 = [(SKUIGiftThemeBackgroundView *)&v8 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(SKUIGiftThemeBackgroundView *)&v8 hitTest:event withEvent:test.x, test.y];
   if (v5 == self)
   {
     v6 = self->_scrollView;

@@ -1,15 +1,15 @@
 @interface BaseCollectionCompositionalLayout
 + (Class)layoutAttributesClass;
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
-- (_TtC20ProductPageExtension33BaseCollectionCompositionalLayout)initWithCoder:(id)a3;
-- (_TtC20ProductPageExtension33BaseCollectionCompositionalLayout)initWithSection:(id)a3;
-- (_TtC20ProductPageExtension33BaseCollectionCompositionalLayout)initWithSection:(id)a3 configuration:(id)a4;
-- (_TtC20ProductPageExtension33BaseCollectionCompositionalLayout)initWithSection:(id)a3 sectionProvider:(id)a4 configuration:(id)a5;
-- (_TtC20ProductPageExtension33BaseCollectionCompositionalLayout)initWithSectionProvider:(id)a3;
-- (_TtC20ProductPageExtension33BaseCollectionCompositionalLayout)initWithSectionProvider:(id)a3 configuration:(id)a4;
-- (id)invalidationContextForBoundsChange:(CGRect)a3;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
+- (_TtC20ProductPageExtension33BaseCollectionCompositionalLayout)initWithCoder:(id)coder;
+- (_TtC20ProductPageExtension33BaseCollectionCompositionalLayout)initWithSection:(id)section;
+- (_TtC20ProductPageExtension33BaseCollectionCompositionalLayout)initWithSection:(id)section configuration:(id)configuration;
+- (_TtC20ProductPageExtension33BaseCollectionCompositionalLayout)initWithSection:(id)section sectionProvider:(id)provider configuration:(id)configuration;
+- (_TtC20ProductPageExtension33BaseCollectionCompositionalLayout)initWithSectionProvider:(id)provider;
+- (_TtC20ProductPageExtension33BaseCollectionCompositionalLayout)initWithSectionProvider:(id)provider configuration:(id)configuration;
+- (id)invalidationContextForBoundsChange:(CGRect)change;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
 - (void)prepareLayout;
 @end
 
@@ -22,15 +22,15 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC20ProductPageExtension33BaseCollectionCompositionalLayout)initWithSectionProvider:(id)a3 configuration:(id)a4
+- (_TtC20ProductPageExtension33BaseCollectionCompositionalLayout)initWithSectionProvider:(id)provider configuration:(id)configuration
 {
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(provider);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
-  return sub_1003B60D4(sub_1003B7DBC, v6, a4);
+  return sub_1003B60D4(sub_1003B7DBC, v6, configuration);
 }
 
-- (_TtC20ProductPageExtension33BaseCollectionCompositionalLayout)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension33BaseCollectionCompositionalLayout)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension33BaseCollectionCompositionalLayout_indexPathsRequiringRubberbanding) = &_swiftEmptySetSingleton;
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension33BaseCollectionCompositionalLayout_pendingPrepareObserver);
@@ -41,13 +41,13 @@
   return result;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   v8 = sub_1003B66AC(x, y, width, height);
 
   if (v8)
@@ -64,17 +64,17 @@
   return v9.super.isa;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   v4 = sub_10075E11C();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v14 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_10075E06C();
-  v8 = self;
+  selfCopy = self;
   isa = sub_10075E02C().super.isa;
   v10 = type metadata accessor for BaseCollectionCompositionalLayout();
-  v14.receiver = v8;
+  v14.receiver = selfCopy;
   v14.super_class = v10;
   v11 = [(BaseCollectionCompositionalLayout *)&v14 layoutAttributesForItemAtIndexPath:isa];
 
@@ -82,7 +82,7 @@
   {
     v12 = sub_1003B59A0(v11);
 
-    v8 = v11;
+    selfCopy = v11;
   }
 
   else
@@ -121,53 +121,53 @@
   sub_1000167E0(v5);
 }
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
+  selfCopy = self;
   v8 = sub_1003B6C9C(x, y, width, height);
 
   return v8 & 1;
 }
 
-- (id)invalidationContextForBoundsChange:(CGRect)a3
+- (id)invalidationContextForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
+  selfCopy = self;
   v8 = sub_1003B6F34(x, y, width, height);
 
   return v8;
 }
 
-- (_TtC20ProductPageExtension33BaseCollectionCompositionalLayout)initWithSection:(id)a3
+- (_TtC20ProductPageExtension33BaseCollectionCompositionalLayout)initWithSection:(id)section
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC20ProductPageExtension33BaseCollectionCompositionalLayout)initWithSection:(id)a3 configuration:(id)a4
+- (_TtC20ProductPageExtension33BaseCollectionCompositionalLayout)initWithSection:(id)section configuration:(id)configuration
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC20ProductPageExtension33BaseCollectionCompositionalLayout)initWithSectionProvider:(id)a3
+- (_TtC20ProductPageExtension33BaseCollectionCompositionalLayout)initWithSectionProvider:(id)provider
 {
-  _Block_copy(a3);
+  _Block_copy(provider);
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC20ProductPageExtension33BaseCollectionCompositionalLayout)initWithSection:(id)a3 sectionProvider:(id)a4 configuration:(id)a5
+- (_TtC20ProductPageExtension33BaseCollectionCompositionalLayout)initWithSection:(id)section sectionProvider:(id)provider configuration:(id)configuration
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

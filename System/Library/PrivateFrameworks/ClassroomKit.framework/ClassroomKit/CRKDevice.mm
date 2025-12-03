@@ -1,21 +1,21 @@
 @interface CRKDevice
 + (NSDictionary)keyTranslations;
-+ (id)CRKKeyForDMFKey:(id)a3;
++ (id)CRKKeyForDMFKey:(id)key;
 + (id)allPropertyKeys;
-- (BOOL)isApplicationInstalled:(id)a3;
-- (BOOL)isApplicationOpen:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDevice:(id)a3;
-- (CRKDevice)initWithCoder:(id)a3;
-- (CRKDevice)initWithIdentifier:(id)a3;
+- (BOOL)isApplicationInstalled:(id)installed;
+- (BOOL)isApplicationOpen:(id)open;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDevice:(id)device;
+- (CRKDevice)initWithCoder:(id)coder;
+- (CRKDevice)initWithIdentifier:(id)identifier;
 - (NSArray)installedApplications;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)valueForUndefinedKey:(id)a3;
+- (id)valueForUndefinedKey:(id)key;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setInstalledApplications:(id)a3;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)setInstalledApplications:(id)applications;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 @end
 
 @implementation CRKDevice
@@ -121,11 +121,11 @@ void __42__CRKDevice_Translations__keyTranslations__block_invoke()
   keyTranslations_translations = v15;
 }
 
-+ (id)CRKKeyForDMFKey:(id)a3
++ (id)CRKKeyForDMFKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[CRKDevice keyTranslations];
-  v5 = [v4 objectForKeyedSubscript:v3];
+  v5 = [v4 objectForKeyedSubscript:keyCopy];
 
   return v5;
 }
@@ -192,39 +192,39 @@ void __42__CRKDevice_Translations__keyTranslations__block_invoke()
 
 - (NSArray)installedApplications
 {
-  v2 = [(CRKDevice *)self installedApplicationInfo];
-  v3 = [CRKApplicationInfo bundleIdentifiersFromDictionaryRepresentations:v2];
+  installedApplicationInfo = [(CRKDevice *)self installedApplicationInfo];
+  v3 = [CRKApplicationInfo bundleIdentifiersFromDictionaryRepresentations:installedApplicationInfo];
 
   return v3;
 }
 
-- (void)setInstalledApplications:(id)a3
+- (void)setInstalledApplications:(id)applications
 {
-  v4 = a3;
-  v5 = [objc_opt_class() applicationInfoFromBundleIdentifiers:v4];
+  applicationsCopy = applications;
+  v5 = [objc_opt_class() applicationInfoFromBundleIdentifiers:applicationsCopy];
 
   [(CRKDevice *)self setInstalledApplicationInfo:v5];
 }
 
-- (BOOL)isApplicationOpen:(id)a3
+- (BOOL)isApplicationOpen:(id)open
 {
-  v4 = a3;
-  v5 = [(CRKDevice *)self allOpenApplications];
-  v6 = [v5 containsObject:v4];
+  openCopy = open;
+  allOpenApplications = [(CRKDevice *)self allOpenApplications];
+  v6 = [allOpenApplications containsObject:openCopy];
 
   return v6;
 }
 
-- (BOOL)isApplicationInstalled:(id)a3
+- (BOOL)isApplicationInstalled:(id)installed
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  installedCopy = installed;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(CRKDevice *)self installedApplicationInfo];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  installedApplicationInfo = [(CRKDevice *)self installedApplicationInfo];
+  v6 = [installedApplicationInfo countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -234,11 +234,11 @@ void __42__CRKDevice_Translations__keyTranslations__block_invoke()
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(installedApplicationInfo);
         }
 
         v9 = [CRKApplicationInfo bundleIdentifierFromDictionaryRepresentation:*(*(&v12 + 1) + 8 * i)];
-        v10 = [v9 isEqualToString:v4];
+        v10 = [v9 isEqualToString:installedCopy];
 
         if (v10)
         {
@@ -247,7 +247,7 @@ void __42__CRKDevice_Translations__keyTranslations__block_invoke()
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [installedApplicationInfo countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -268,25 +268,25 @@ LABEL_11:
   v9.receiver = self;
   v9.super_class = CRKDevice;
   v4 = [(CRKDevice *)&v9 description];
-  v5 = [(CRKDevice *)self identifier];
-  v6 = [(CRKDevice *)self name];
-  v7 = [v3 stringWithFormat:@"%@ (identifier: %@ name: %@)", v4, v5, v6];
+  identifier = [(CRKDevice *)self identifier];
+  name = [(CRKDevice *)self name];
+  v7 = [v3 stringWithFormat:@"%@ (identifier: %@ name: %@)", v4, identifier, name];
 
   return v7;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(CRKDevice *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(CRKDevice *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -294,21 +294,21 @@ LABEL_11:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CRKDevice *)self isEqualToDevice:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CRKDevice *)self isEqualToDevice:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToDevice:(id)a3
+- (BOOL)isEqualToDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(CRKDevice *)self identifier];
-  v6 = [v4 identifier];
+  deviceCopy = device;
+  identifier = [(CRKDevice *)self identifier];
+  identifier2 = [deviceCopy identifier];
 
-  if (v5 | v6)
+  if (identifier | identifier2)
   {
-    v7 = [v5 isEqual:v6];
+    v7 = [identifier isEqual:identifier2];
   }
 
   else
@@ -319,28 +319,28 @@ LABEL_11:
   return v7;
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [CRKDevice CRKKeyForDMFKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  v8 = [CRKDevice CRKKeyForDMFKey:keyCopy];
   if (v8)
   {
-    [(CRKDevice *)self setValue:v7 forKey:v8];
+    [(CRKDevice *)self setValue:valueCopy forKey:v8];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = CRKDevice;
-    [(CRKDevice *)&v9 setValue:v7 forUndefinedKey:v6];
+    [(CRKDevice *)&v9 setValue:valueCopy forUndefinedKey:keyCopy];
   }
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  v4 = a3;
-  v5 = [CRKDevice CRKKeyForDMFKey:v4];
+  keyCopy = key;
+  v5 = [CRKDevice CRKKeyForDMFKey:keyCopy];
   if (v5)
   {
     v6 = [(CRKDevice *)self valueForKey:v5];
@@ -350,7 +350,7 @@ LABEL_11:
   {
     v9.receiver = self;
     v9.super_class = CRKDevice;
-    v6 = [(CRKDevice *)&v9 valueForUndefinedKey:v4];
+    v6 = [(CRKDevice *)&v9 valueForUndefinedKey:keyCopy];
   }
 
   v7 = v6;
@@ -358,35 +358,35 @@ LABEL_11:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(CRKDevice *)self identifier];
-  v6 = [v4 initWithIdentifier:v5];
+  identifier = [(CRKDevice *)self identifier];
+  v6 = [v4 initWithIdentifier:identifier];
 
   if (v6)
   {
-    v7 = [(CRKDevice *)self serialNumber];
-    [v6 setSerialNumber:v7];
+    serialNumber = [(CRKDevice *)self serialNumber];
+    [v6 setSerialNumber:serialNumber];
 
-    v8 = [(CRKDevice *)self trustedExchangeIdentifier];
-    [v6 setTrustedExchangeIdentifier:v8];
+    trustedExchangeIdentifier = [(CRKDevice *)self trustedExchangeIdentifier];
+    [v6 setTrustedExchangeIdentifier:trustedExchangeIdentifier];
 
     [v6 setPlatform:{-[CRKDevice platform](self, "platform")}];
-    v9 = [(CRKDevice *)self model];
-    [v6 setModel:v9];
+    model = [(CRKDevice *)self model];
+    [v6 setModel:model];
 
-    v10 = [(CRKDevice *)self name];
-    [v6 setName:v10];
+    name = [(CRKDevice *)self name];
+    [v6 setName:name];
 
-    v11 = [(CRKDevice *)self systemName];
-    [v6 setSystemName:v11];
+    systemName = [(CRKDevice *)self systemName];
+    [v6 setSystemName:systemName];
 
-    v12 = [(CRKDevice *)self systemVersion];
-    [v6 setSystemVersion:v12];
+    systemVersion = [(CRKDevice *)self systemVersion];
+    [v6 setSystemVersion:systemVersion];
 
-    v13 = [(CRKDevice *)self buildVersion];
-    [v6 setBuildVersion:v13];
+    buildVersion = [(CRKDevice *)self buildVersion];
+    [v6 setBuildVersion:buildVersion];
 
     [v6 setSupervised:{-[CRKDevice isSupervised](self, "isSupervised")}];
     [v6 setEphemeralMultiUser:{-[CRKDevice isEphemeralMultiUser](self, "isEphemeralMultiUser")}];
@@ -403,8 +403,8 @@ LABEL_11:
     [v6 setAvailableBytes:{-[CRKDevice availableBytes](self, "availableBytes")}];
     [v6 setDeviceOrientation:{-[CRKDevice deviceOrientation](self, "deviceOrientation")}];
     [v6 setInterfaceOrientation:{-[CRKDevice interfaceOrientation](self, "interfaceOrientation")}];
-    v14 = [(CRKDevice *)self displays];
-    [v6 setDisplays:v14];
+    displays = [(CRKDevice *)self displays];
+    [v6 setDisplays:displays];
 
     [(CRKDevice *)self displayBackingScaleFactor];
     [v6 setDisplayBackingScaleFactor:?];
@@ -412,79 +412,79 @@ LABEL_11:
     [v6 setDisplayWidth:?];
     [(CRKDevice *)self displayHeight];
     [v6 setDisplayHeight:?];
-    v15 = [(CRKDevice *)self primaryOpenApplication];
-    [v6 setPrimaryOpenApplication:v15];
+    primaryOpenApplication = [(CRKDevice *)self primaryOpenApplication];
+    [v6 setPrimaryOpenApplication:primaryOpenApplication];
 
-    v16 = [(CRKDevice *)self secondaryOpenApplication];
-    [v6 setSecondaryOpenApplication:v16];
+    secondaryOpenApplication = [(CRKDevice *)self secondaryOpenApplication];
+    [v6 setSecondaryOpenApplication:secondaryOpenApplication];
 
-    v17 = [(CRKDevice *)self pipOpenApplication];
-    [v6 setPipOpenApplication:v17];
+    pipOpenApplication = [(CRKDevice *)self pipOpenApplication];
+    [v6 setPipOpenApplication:pipOpenApplication];
 
-    v18 = [(CRKDevice *)self allOpenApplications];
-    [v6 setAllOpenApplications:v18];
+    allOpenApplications = [(CRKDevice *)self allOpenApplications];
+    [v6 setAllOpenApplications:allOpenApplications];
 
     [v6 setAppLocked:{-[CRKDevice isAppLocked](self, "isAppLocked")}];
-    v19 = [(CRKDevice *)self installedApplicationInfo];
-    [v6 setInstalledApplicationInfo:v19];
+    installedApplicationInfo = [(CRKDevice *)self installedApplicationInfo];
+    [v6 setInstalledApplicationInfo:installedApplicationInfo];
 
-    v20 = [(CRKDevice *)self stagedAdHocIdentityCertificateFingerprint];
-    [v6 setStagedAdHocIdentityCertificateFingerprint:v20];
+    stagedAdHocIdentityCertificateFingerprint = [(CRKDevice *)self stagedAdHocIdentityCertificateFingerprint];
+    [v6 setStagedAdHocIdentityCertificateFingerprint:stagedAdHocIdentityCertificateFingerprint];
 
-    v21 = [(CRKDevice *)self trustedAnchorCertificateFingerprints];
-    [v6 setTrustedAnchorCertificateFingerprints:v21];
+    trustedAnchorCertificateFingerprints = [(CRKDevice *)self trustedAnchorCertificateFingerprints];
+    [v6 setTrustedAnchorCertificateFingerprints:trustedAnchorCertificateFingerprints];
 
-    v22 = [(CRKDevice *)self userIdentifier];
-    [v6 setUserIdentifier:v22];
+    userIdentifier = [(CRKDevice *)self userIdentifier];
+    [v6 setUserIdentifier:userIdentifier];
 
-    v23 = [(CRKDevice *)self userDisplayName];
-    [v6 setUserDisplayName:v23];
+    userDisplayName = [(CRKDevice *)self userDisplayName];
+    [v6 setUserDisplayName:userDisplayName];
 
-    v24 = [(CRKDevice *)self userGivenName];
-    [v6 setUserGivenName:v24];
+    userGivenName = [(CRKDevice *)self userGivenName];
+    [v6 setUserGivenName:userGivenName];
 
-    v25 = [(CRKDevice *)self userFamilyName];
-    [v6 setUserFamilyName:v25];
+    userFamilyName = [(CRKDevice *)self userFamilyName];
+    [v6 setUserFamilyName:userFamilyName];
 
-    v26 = [(CRKDevice *)self userPhoneticGivenName];
-    [v6 setUserPhoneticGivenName:v26];
+    userPhoneticGivenName = [(CRKDevice *)self userPhoneticGivenName];
+    [v6 setUserPhoneticGivenName:userPhoneticGivenName];
 
-    v27 = [(CRKDevice *)self userPhoneticFamilyName];
-    [v6 setUserPhoneticFamilyName:v27];
+    userPhoneticFamilyName = [(CRKDevice *)self userPhoneticFamilyName];
+    [v6 setUserPhoneticFamilyName:userPhoneticFamilyName];
 
-    v28 = [(CRKDevice *)self userImageURL];
-    [v6 setUserImageURL:v28];
+    userImageURL = [(CRKDevice *)self userImageURL];
+    [v6 setUserImageURL:userImageURL];
 
     [v6 setLoginState:{-[CRKDevice loginState](self, "loginState")}];
     [v6 setPasscodeEnabled:{-[CRKDevice isPasscodeEnabled](self, "isPasscodeEnabled")}];
-    v29 = [(CRKDevice *)self studentImageIdentifier];
-    [v6 setStudentImageIdentifier:v29];
+    studentImageIdentifier = [(CRKDevice *)self studentImageIdentifier];
+    [v6 setStudentImageIdentifier:studentImageIdentifier];
 
-    v30 = [(CRKDevice *)self instructorImageIdentifier];
-    [v6 setInstructorImageIdentifier:v30];
+    instructorImageIdentifier = [(CRKDevice *)self instructorImageIdentifier];
+    [v6 setInstructorImageIdentifier:instructorImageIdentifier];
 
     [v6 setRequestingUnenroll:{-[CRKDevice isRequestingUnenroll](self, "isRequestingUnenroll")}];
-    v31 = [(CRKDevice *)self currentLocaleIdentifier];
-    [v6 setCurrentLocaleIdentifier:v31];
+    currentLocaleIdentifier = [(CRKDevice *)self currentLocaleIdentifier];
+    [v6 setCurrentLocaleIdentifier:currentLocaleIdentifier];
 
-    v32 = [(CRKDevice *)self activeAirPlayRoute];
-    [v6 setActiveAirPlayRoute:v32];
+    activeAirPlayRoute = [(CRKDevice *)self activeAirPlayRoute];
+    [v6 setActiveAirPlayRoute:activeAirPlayRoute];
 
-    v33 = [(CRKDevice *)self availableAirPlayRoutes];
-    [v6 setAvailableAirPlayRoutes:v33];
+    availableAirPlayRoutes = [(CRKDevice *)self availableAirPlayRoutes];
+    [v6 setAvailableAirPlayRoutes:availableAirPlayRoutes];
 
-    v34 = [(CRKDevice *)self managementLockPasscode];
-    [v6 setManagementLockPasscode:v34];
+    managementLockPasscode = [(CRKDevice *)self managementLockPasscode];
+    [v6 setManagementLockPasscode:managementLockPasscode];
   }
 
   return v6;
 }
 
-- (CRKDevice)initWithCoder:(id)a3
+- (CRKDevice)initWithCoder:(id)coder
 {
   v167[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   if (v5)
   {
     v6 = [(CRKDevice *)self initWithIdentifier:v5];
@@ -492,79 +492,79 @@ LABEL_11:
     {
       v166 = v5;
       v7 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-      v8 = [v4 decodeObjectOfClasses:v7 forKey:@"serialNumber"];
+      v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"serialNumber"];
       serialNumber = v6->_serialNumber;
       v6->_serialNumber = v8;
 
-      v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"platform"];
+      v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"platform"];
       v6->_platform = [v10 integerValue];
 
       v11 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-      v12 = [v4 decodeObjectOfClasses:v11 forKey:@"model"];
+      v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"model"];
       model = v6->_model;
       v6->_model = v12;
 
       v14 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-      v15 = [v4 decodeObjectOfClasses:v14 forKey:@"name"];
+      v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"name"];
       name = v6->_name;
       v6->_name = v15;
 
       v17 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-      v18 = [v4 decodeObjectOfClasses:v17 forKey:@"systemName"];
+      v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"systemName"];
       systemName = v6->_systemName;
       v6->_systemName = v18;
 
       v20 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-      v21 = [v4 decodeObjectOfClasses:v20 forKey:@"systemVersion"];
+      v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"systemVersion"];
       systemVersion = v6->_systemVersion;
       v6->_systemVersion = v21;
 
       v23 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-      v24 = [v4 decodeObjectOfClasses:v23 forKey:@"buildVersion"];
+      v24 = [coderCopy decodeObjectOfClasses:v23 forKey:@"buildVersion"];
       buildVersion = v6->_buildVersion;
       v6->_buildVersion = v24;
 
-      v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"supervised"];
+      v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"supervised"];
       v6->_supervised = [v26 BOOLValue];
 
-      v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ephemeralMultiUser"];
+      v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ephemeralMultiUser"];
       v6->_ephemeralMultiUser = [v27 BOOLValue];
 
-      v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"batteryLevel"];
+      v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"batteryLevel"];
       [v28 doubleValue];
       *&v29 = v29;
       v6->_batteryLevel = *&v29;
 
-      v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lowBattery"];
+      v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lowBattery"];
       v6->_lowBattery = [v30 BOOLValue];
 
-      v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"chargingState"];
+      v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"chargingState"];
       v6->_chargingState = [v31 integerValue];
 
-      v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lockState"];
+      v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lockState"];
       v6->_lockState = [v32 integerValue];
 
-      v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"screenState"];
+      v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"screenState"];
       v6->_screenState = [v33 integerValue];
 
-      v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"screenSaverActive"];
+      v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"screenSaverActive"];
       v6->_screenSaverActive = [v34 BOOLValue];
 
-      v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"volume"];
+      v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"volume"];
       [v35 doubleValue];
       *&v36 = v36;
       v6->_volume = *&v36;
 
-      v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"muted"];
+      v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"muted"];
       v6->_muted = [v37 BOOLValue];
 
-      v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"availableBytes"];
+      v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"availableBytes"];
       v6->_availableBytes = [v38 unsignedLongLongValue];
 
-      v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceOrientation"];
+      v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceOrientation"];
       v6->_deviceOrientation = [v39 integerValue];
 
-      v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"interfaceOrientation"];
+      v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"interfaceOrientation"];
       v6->_interfaceOrientation = [v40 integerValue];
 
       v41 = MEMORY[0x277CBEB98];
@@ -572,51 +572,51 @@ LABEL_11:
       v43 = objc_opt_class();
       v44 = objc_opt_class();
       v45 = [v41 setWithObjects:{v42, v43, v44, objc_opt_class(), 0}];
-      v46 = [v4 decodeObjectOfClasses:v45 forKey:@"displays"];
+      v46 = [coderCopy decodeObjectOfClasses:v45 forKey:@"displays"];
       displays = v6->_displays;
       v6->_displays = v46;
 
-      v48 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayBackingScaleFactor"];
+      v48 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayBackingScaleFactor"];
       [v48 doubleValue];
       *&v49 = v49;
       v6->_displayBackingScaleFactor = *&v49;
 
-      v50 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayWidth"];
+      v50 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayWidth"];
       [v50 doubleValue];
       *&v51 = v51;
       v6->_displayWidth = *&v51;
 
-      v52 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayHeight"];
+      v52 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayHeight"];
       [v52 doubleValue];
       *&v53 = v53;
       v6->_displayHeight = *&v53;
 
       v54 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-      v55 = [v4 decodeObjectOfClasses:v54 forKey:@"primaryOpenApplication"];
+      v55 = [coderCopy decodeObjectOfClasses:v54 forKey:@"primaryOpenApplication"];
       primaryOpenApplication = v6->_primaryOpenApplication;
       v6->_primaryOpenApplication = v55;
 
       v57 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-      v58 = [v4 decodeObjectOfClasses:v57 forKey:@"secondaryOpenApplication"];
+      v58 = [coderCopy decodeObjectOfClasses:v57 forKey:@"secondaryOpenApplication"];
       secondaryOpenApplication = v6->_secondaryOpenApplication;
       v6->_secondaryOpenApplication = v58;
 
       v60 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-      v61 = [v4 decodeObjectOfClasses:v60 forKey:@"pipOpenApplication"];
+      v61 = [coderCopy decodeObjectOfClasses:v60 forKey:@"pipOpenApplication"];
       pipOpenApplication = v6->_pipOpenApplication;
       v6->_pipOpenApplication = v61;
 
       v63 = MEMORY[0x277CBEB98];
       v64 = objc_opt_class();
       v65 = [v63 setWithObjects:{v64, objc_opt_class(), 0}];
-      v66 = [v4 decodeObjectOfClasses:v65 forKey:@"allOpenApplications"];
+      v66 = [coderCopy decodeObjectOfClasses:v65 forKey:@"allOpenApplications"];
       allOpenApplications = v6->_allOpenApplications;
       v6->_allOpenApplications = v66;
 
-      v68 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appLocked"];
+      v68 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appLocked"];
       v6->_appLocked = [v68 BOOLValue];
 
-      if ([v4 containsValueForKey:@"installedApplicationInfo"])
+      if ([coderCopy containsValueForKey:@"installedApplicationInfo"])
       {
         v163 = MEMORY[0x277CBEB98];
         v160 = objc_opt_class();
@@ -630,7 +630,7 @@ LABEL_11:
         v74 = objc_opt_class();
         v75 = objc_opt_class();
         v76 = [v163 setWithObjects:{v160, v157, v154, v69, v70, v71, v72, v73, v74, v75, objc_opt_class(), 0}];
-        v77 = [v4 decodeObjectOfClasses:v76 forKey:@"installedApplicationInfo"];
+        v77 = [coderCopy decodeObjectOfClasses:v76 forKey:@"installedApplicationInfo"];
         installedApplicationInfo = v6->_installedApplicationInfo;
         v6->_installedApplicationInfo = v77;
       }
@@ -642,7 +642,7 @@ LABEL_11:
         v167[1] = objc_opt_class();
         v80 = [MEMORY[0x277CBEA60] arrayWithObjects:v167 count:2];
         v81 = [v79 setWithArray:v80];
-        v82 = [v4 decodeObjectOfClasses:v81 forKey:@"installedApplications"];
+        v82 = [coderCopy decodeObjectOfClasses:v81 forKey:@"installedApplications"];
 
         v83 = [objc_opt_class() applicationInfoFromBundleIdentifiers:v82];
         v84 = v6->_installedApplicationInfo;
@@ -650,73 +650,73 @@ LABEL_11:
       }
 
       v85 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-      v86 = [v4 decodeObjectOfClasses:v85 forKey:@"stagedAdHocIdentityCertificateFingerprint"];
+      v86 = [coderCopy decodeObjectOfClasses:v85 forKey:@"stagedAdHocIdentityCertificateFingerprint"];
       stagedAdHocIdentityCertificateFingerprint = v6->_stagedAdHocIdentityCertificateFingerprint;
       v6->_stagedAdHocIdentityCertificateFingerprint = v86;
 
       v88 = MEMORY[0x277CBEB98];
       v89 = objc_opt_class();
       v90 = [v88 setWithObjects:{v89, objc_opt_class(), 0}];
-      v91 = [v4 decodeObjectOfClasses:v90 forKey:@"trustedAnchorCertificateFingerprints"];
+      v91 = [coderCopy decodeObjectOfClasses:v90 forKey:@"trustedAnchorCertificateFingerprints"];
       trustedAnchorCertificateFingerprints = v6->_trustedAnchorCertificateFingerprints;
       v6->_trustedAnchorCertificateFingerprints = v91;
 
       v93 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-      v94 = [v4 decodeObjectOfClasses:v93 forKey:@"userIdentifier"];
+      v94 = [coderCopy decodeObjectOfClasses:v93 forKey:@"userIdentifier"];
       userIdentifier = v6->_userIdentifier;
       v6->_userIdentifier = v94;
 
       v96 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-      v97 = [v4 decodeObjectOfClasses:v96 forKey:@"userDisplayName"];
+      v97 = [coderCopy decodeObjectOfClasses:v96 forKey:@"userDisplayName"];
       userDisplayName = v6->_userDisplayName;
       v6->_userDisplayName = v97;
 
       v99 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-      v100 = [v4 decodeObjectOfClasses:v99 forKey:@"userGivenName"];
+      v100 = [coderCopy decodeObjectOfClasses:v99 forKey:@"userGivenName"];
       userGivenName = v6->_userGivenName;
       v6->_userGivenName = v100;
 
       v102 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-      v103 = [v4 decodeObjectOfClasses:v102 forKey:@"userFamilyName"];
+      v103 = [coderCopy decodeObjectOfClasses:v102 forKey:@"userFamilyName"];
       userFamilyName = v6->_userFamilyName;
       v6->_userFamilyName = v103;
 
       v105 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-      v106 = [v4 decodeObjectOfClasses:v105 forKey:@"userPhoneticGivenName"];
+      v106 = [coderCopy decodeObjectOfClasses:v105 forKey:@"userPhoneticGivenName"];
       userPhoneticGivenName = v6->_userPhoneticGivenName;
       v6->_userPhoneticGivenName = v106;
 
       v108 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-      v109 = [v4 decodeObjectOfClasses:v108 forKey:@"userPhoneticFamilyName"];
+      v109 = [coderCopy decodeObjectOfClasses:v108 forKey:@"userPhoneticFamilyName"];
       userPhoneticFamilyName = v6->_userPhoneticFamilyName;
       v6->_userPhoneticFamilyName = v109;
 
       v111 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-      v112 = [v4 decodeObjectOfClasses:v111 forKey:@"userImageURL"];
+      v112 = [coderCopy decodeObjectOfClasses:v111 forKey:@"userImageURL"];
       userImageURL = v6->_userImageURL;
       v6->_userImageURL = v112;
 
-      v114 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"loginState"];
+      v114 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"loginState"];
       v6->_loginState = [v114 integerValue];
 
-      v115 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passcodeEnabled"];
+      v115 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passcodeEnabled"];
       v6->_passcodeEnabled = [v115 BOOLValue];
 
       v116 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-      v117 = [v4 decodeObjectOfClasses:v116 forKey:@"studentImageIdentifier"];
+      v117 = [coderCopy decodeObjectOfClasses:v116 forKey:@"studentImageIdentifier"];
       studentImageIdentifier = v6->_studentImageIdentifier;
       v6->_studentImageIdentifier = v117;
 
       v119 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-      v120 = [v4 decodeObjectOfClasses:v119 forKey:@"instructorImageIdentifier"];
+      v120 = [coderCopy decodeObjectOfClasses:v119 forKey:@"instructorImageIdentifier"];
       instructorImageIdentifier = v6->_instructorImageIdentifier;
       v6->_instructorImageIdentifier = v120;
 
-      v122 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestingUnenroll"];
+      v122 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestingUnenroll"];
       v6->_requestingUnenroll = [v122 BOOLValue];
 
       v123 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-      v124 = [v4 decodeObjectOfClasses:v123 forKey:@"currentLocaleIdentifier"];
+      v124 = [coderCopy decodeObjectOfClasses:v123 forKey:@"currentLocaleIdentifier"];
       currentLocaleIdentifier = v6->_currentLocaleIdentifier;
       v6->_currentLocaleIdentifier = v124;
 
@@ -732,7 +732,7 @@ LABEL_11:
       v131 = objc_opt_class();
       v132 = objc_opt_class();
       v133 = [v164 setWithObjects:{v161, v158, v155, v126, v127, v128, v129, v130, v131, v132, objc_opt_class(), 0}];
-      v134 = [v4 decodeObjectOfClasses:v133 forKey:@"activeAirPlayRoute"];
+      v134 = [coderCopy decodeObjectOfClasses:v133 forKey:@"activeAirPlayRoute"];
       activeAirPlayRoute = v6->_activeAirPlayRoute;
       v6->_activeAirPlayRoute = v134;
 
@@ -748,17 +748,17 @@ LABEL_11:
       v141 = objc_opt_class();
       v142 = objc_opt_class();
       v143 = [v165 setWithObjects:{v162, v159, v156, v136, v137, v138, v139, v140, v141, v142, objc_opt_class(), 0}];
-      v144 = [v4 decodeObjectOfClasses:v143 forKey:@"availableAirPlayRoutes"];
+      v144 = [coderCopy decodeObjectOfClasses:v143 forKey:@"availableAirPlayRoutes"];
       availableAirPlayRoutes = v6->_availableAirPlayRoutes;
       v6->_availableAirPlayRoutes = v144;
 
       v146 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-      v147 = [v4 decodeObjectOfClasses:v146 forKey:@"managementLockPasscode"];
+      v147 = [coderCopy decodeObjectOfClasses:v146 forKey:@"managementLockPasscode"];
       managementLockPasscode = v6->_managementLockPasscode;
       v6->_managementLockPasscode = v147;
 
       v149 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-      v150 = [v4 decodeObjectOfClasses:v149 forKey:@"trustedExchangeIdentifier"];
+      v150 = [coderCopy decodeObjectOfClasses:v149 forKey:@"trustedExchangeIdentifier"];
       trustedExchangeIdentifier = v6->_trustedExchangeIdentifier;
       v6->_trustedExchangeIdentifier = v150;
 
@@ -766,182 +766,182 @@ LABEL_11:
     }
 
     self = v6;
-    v152 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v152 = 0;
+    selfCopy = 0;
   }
 
-  return v152;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CRKDevice *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(CRKDevice *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(CRKDevice *)self serialNumber];
-  [v4 encodeObject:v6 forKey:@"serialNumber"];
+  serialNumber = [(CRKDevice *)self serialNumber];
+  [coderCopy encodeObject:serialNumber forKey:@"serialNumber"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[CRKDevice platform](self, "platform")}];
-  [v4 encodeObject:v7 forKey:@"platform"];
+  [coderCopy encodeObject:v7 forKey:@"platform"];
 
-  v8 = [(CRKDevice *)self model];
-  [v4 encodeObject:v8 forKey:@"model"];
+  model = [(CRKDevice *)self model];
+  [coderCopy encodeObject:model forKey:@"model"];
 
-  v9 = [(CRKDevice *)self name];
-  [v4 encodeObject:v9 forKey:@"name"];
+  name = [(CRKDevice *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v10 = [(CRKDevice *)self systemName];
-  [v4 encodeObject:v10 forKey:@"systemName"];
+  systemName = [(CRKDevice *)self systemName];
+  [coderCopy encodeObject:systemName forKey:@"systemName"];
 
-  v11 = [(CRKDevice *)self systemVersion];
-  [v4 encodeObject:v11 forKey:@"systemVersion"];
+  systemVersion = [(CRKDevice *)self systemVersion];
+  [coderCopy encodeObject:systemVersion forKey:@"systemVersion"];
 
-  v12 = [(CRKDevice *)self buildVersion];
-  [v4 encodeObject:v12 forKey:@"buildVersion"];
+  buildVersion = [(CRKDevice *)self buildVersion];
+  [coderCopy encodeObject:buildVersion forKey:@"buildVersion"];
 
   v13 = [MEMORY[0x277CCABB0] numberWithBool:{-[CRKDevice isSupervised](self, "isSupervised")}];
-  [v4 encodeObject:v13 forKey:@"supervised"];
+  [coderCopy encodeObject:v13 forKey:@"supervised"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithBool:{-[CRKDevice isEphemeralMultiUser](self, "isEphemeralMultiUser")}];
-  [v4 encodeObject:v14 forKey:@"ephemeralMultiUser"];
+  [coderCopy encodeObject:v14 forKey:@"ephemeralMultiUser"];
 
   v15 = MEMORY[0x277CCABB0];
   [(CRKDevice *)self batteryLevel];
   v16 = [v15 numberWithFloat:?];
-  [v4 encodeObject:v16 forKey:@"batteryLevel"];
+  [coderCopy encodeObject:v16 forKey:@"batteryLevel"];
 
   v17 = [MEMORY[0x277CCABB0] numberWithBool:{-[CRKDevice isLowBattery](self, "isLowBattery")}];
-  [v4 encodeObject:v17 forKey:@"lowBattery"];
+  [coderCopy encodeObject:v17 forKey:@"lowBattery"];
 
   v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[CRKDevice chargingState](self, "chargingState")}];
-  [v4 encodeObject:v18 forKey:@"chargingState"];
+  [coderCopy encodeObject:v18 forKey:@"chargingState"];
 
   v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[CRKDevice lockState](self, "lockState")}];
-  [v4 encodeObject:v19 forKey:@"lockState"];
+  [coderCopy encodeObject:v19 forKey:@"lockState"];
 
   v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[CRKDevice screenState](self, "screenState")}];
-  [v4 encodeObject:v20 forKey:@"screenState"];
+  [coderCopy encodeObject:v20 forKey:@"screenState"];
 
   v21 = [MEMORY[0x277CCABB0] numberWithBool:{-[CRKDevice isScreenSaverActive](self, "isScreenSaverActive")}];
-  [v4 encodeObject:v21 forKey:@"screenSaverActive"];
+  [coderCopy encodeObject:v21 forKey:@"screenSaverActive"];
 
   v22 = MEMORY[0x277CCABB0];
   [(CRKDevice *)self volume];
   v23 = [v22 numberWithFloat:?];
-  [v4 encodeObject:v23 forKey:@"volume"];
+  [coderCopy encodeObject:v23 forKey:@"volume"];
 
   v24 = [MEMORY[0x277CCABB0] numberWithBool:{-[CRKDevice isMuted](self, "isMuted")}];
-  [v4 encodeObject:v24 forKey:@"muted"];
+  [coderCopy encodeObject:v24 forKey:@"muted"];
 
   v25 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[CRKDevice availableBytes](self, "availableBytes")}];
-  [v4 encodeObject:v25 forKey:@"availableBytes"];
+  [coderCopy encodeObject:v25 forKey:@"availableBytes"];
 
   v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[CRKDevice deviceOrientation](self, "deviceOrientation")}];
-  [v4 encodeObject:v26 forKey:@"deviceOrientation"];
+  [coderCopy encodeObject:v26 forKey:@"deviceOrientation"];
 
   v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[CRKDevice interfaceOrientation](self, "interfaceOrientation")}];
-  [v4 encodeObject:v27 forKey:@"interfaceOrientation"];
+  [coderCopy encodeObject:v27 forKey:@"interfaceOrientation"];
 
-  v28 = [(CRKDevice *)self displays];
-  [v4 encodeObject:v28 forKey:@"displays"];
+  displays = [(CRKDevice *)self displays];
+  [coderCopy encodeObject:displays forKey:@"displays"];
 
   v29 = MEMORY[0x277CCABB0];
   [(CRKDevice *)self displayBackingScaleFactor];
   v30 = [v29 numberWithFloat:?];
-  [v4 encodeObject:v30 forKey:@"displayBackingScaleFactor"];
+  [coderCopy encodeObject:v30 forKey:@"displayBackingScaleFactor"];
 
   v31 = MEMORY[0x277CCABB0];
   [(CRKDevice *)self displayWidth];
   v32 = [v31 numberWithFloat:?];
-  [v4 encodeObject:v32 forKey:@"displayWidth"];
+  [coderCopy encodeObject:v32 forKey:@"displayWidth"];
 
   v33 = MEMORY[0x277CCABB0];
   [(CRKDevice *)self displayHeight];
   v34 = [v33 numberWithFloat:?];
-  [v4 encodeObject:v34 forKey:@"displayHeight"];
+  [coderCopy encodeObject:v34 forKey:@"displayHeight"];
 
-  v35 = [(CRKDevice *)self primaryOpenApplication];
-  [v4 encodeObject:v35 forKey:@"primaryOpenApplication"];
+  primaryOpenApplication = [(CRKDevice *)self primaryOpenApplication];
+  [coderCopy encodeObject:primaryOpenApplication forKey:@"primaryOpenApplication"];
 
-  v36 = [(CRKDevice *)self secondaryOpenApplication];
-  [v4 encodeObject:v36 forKey:@"secondaryOpenApplication"];
+  secondaryOpenApplication = [(CRKDevice *)self secondaryOpenApplication];
+  [coderCopy encodeObject:secondaryOpenApplication forKey:@"secondaryOpenApplication"];
 
-  v37 = [(CRKDevice *)self pipOpenApplication];
-  [v4 encodeObject:v37 forKey:@"pipOpenApplication"];
+  pipOpenApplication = [(CRKDevice *)self pipOpenApplication];
+  [coderCopy encodeObject:pipOpenApplication forKey:@"pipOpenApplication"];
 
-  v38 = [(CRKDevice *)self allOpenApplications];
-  [v4 encodeObject:v38 forKey:@"allOpenApplications"];
+  allOpenApplications = [(CRKDevice *)self allOpenApplications];
+  [coderCopy encodeObject:allOpenApplications forKey:@"allOpenApplications"];
 
   v39 = [MEMORY[0x277CCABB0] numberWithBool:{-[CRKDevice isAppLocked](self, "isAppLocked")}];
-  [v4 encodeObject:v39 forKey:@"appLocked"];
+  [coderCopy encodeObject:v39 forKey:@"appLocked"];
 
-  v40 = [(CRKDevice *)self installedApplications];
-  [v4 encodeObject:v40 forKey:@"installedApplications"];
+  installedApplications = [(CRKDevice *)self installedApplications];
+  [coderCopy encodeObject:installedApplications forKey:@"installedApplications"];
 
-  v41 = [(CRKDevice *)self installedApplicationInfo];
-  [v4 encodeObject:v41 forKey:@"installedApplicationInfo"];
+  installedApplicationInfo = [(CRKDevice *)self installedApplicationInfo];
+  [coderCopy encodeObject:installedApplicationInfo forKey:@"installedApplicationInfo"];
 
-  v42 = [(CRKDevice *)self stagedAdHocIdentityCertificateFingerprint];
-  [v4 encodeObject:v42 forKey:@"stagedAdHocIdentityCertificateFingerprint"];
+  stagedAdHocIdentityCertificateFingerprint = [(CRKDevice *)self stagedAdHocIdentityCertificateFingerprint];
+  [coderCopy encodeObject:stagedAdHocIdentityCertificateFingerprint forKey:@"stagedAdHocIdentityCertificateFingerprint"];
 
-  v43 = [(CRKDevice *)self trustedAnchorCertificateFingerprints];
-  [v4 encodeObject:v43 forKey:@"trustedAnchorCertificateFingerprints"];
+  trustedAnchorCertificateFingerprints = [(CRKDevice *)self trustedAnchorCertificateFingerprints];
+  [coderCopy encodeObject:trustedAnchorCertificateFingerprints forKey:@"trustedAnchorCertificateFingerprints"];
 
-  v44 = [(CRKDevice *)self userIdentifier];
-  [v4 encodeObject:v44 forKey:@"userIdentifier"];
+  userIdentifier = [(CRKDevice *)self userIdentifier];
+  [coderCopy encodeObject:userIdentifier forKey:@"userIdentifier"];
 
-  v45 = [(CRKDevice *)self userDisplayName];
-  [v4 encodeObject:v45 forKey:@"userDisplayName"];
+  userDisplayName = [(CRKDevice *)self userDisplayName];
+  [coderCopy encodeObject:userDisplayName forKey:@"userDisplayName"];
 
-  v46 = [(CRKDevice *)self userGivenName];
-  [v4 encodeObject:v46 forKey:@"userGivenName"];
+  userGivenName = [(CRKDevice *)self userGivenName];
+  [coderCopy encodeObject:userGivenName forKey:@"userGivenName"];
 
-  v47 = [(CRKDevice *)self userFamilyName];
-  [v4 encodeObject:v47 forKey:@"userFamilyName"];
+  userFamilyName = [(CRKDevice *)self userFamilyName];
+  [coderCopy encodeObject:userFamilyName forKey:@"userFamilyName"];
 
-  v48 = [(CRKDevice *)self userPhoneticGivenName];
-  [v4 encodeObject:v48 forKey:@"userPhoneticGivenName"];
+  userPhoneticGivenName = [(CRKDevice *)self userPhoneticGivenName];
+  [coderCopy encodeObject:userPhoneticGivenName forKey:@"userPhoneticGivenName"];
 
-  v49 = [(CRKDevice *)self userPhoneticFamilyName];
-  [v4 encodeObject:v49 forKey:@"userPhoneticFamilyName"];
+  userPhoneticFamilyName = [(CRKDevice *)self userPhoneticFamilyName];
+  [coderCopy encodeObject:userPhoneticFamilyName forKey:@"userPhoneticFamilyName"];
 
-  v50 = [(CRKDevice *)self userImageURL];
-  [v4 encodeObject:v50 forKey:@"userImageURL"];
+  userImageURL = [(CRKDevice *)self userImageURL];
+  [coderCopy encodeObject:userImageURL forKey:@"userImageURL"];
 
   v51 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[CRKDevice loginState](self, "loginState")}];
-  [v4 encodeObject:v51 forKey:@"loginState"];
+  [coderCopy encodeObject:v51 forKey:@"loginState"];
 
   v52 = [MEMORY[0x277CCABB0] numberWithBool:{-[CRKDevice isPasscodeEnabled](self, "isPasscodeEnabled")}];
-  [v4 encodeObject:v52 forKey:@"passcodeEnabled"];
+  [coderCopy encodeObject:v52 forKey:@"passcodeEnabled"];
 
-  v53 = [(CRKDevice *)self studentImageIdentifier];
-  [v4 encodeObject:v53 forKey:@"studentImageIdentifier"];
+  studentImageIdentifier = [(CRKDevice *)self studentImageIdentifier];
+  [coderCopy encodeObject:studentImageIdentifier forKey:@"studentImageIdentifier"];
 
-  v54 = [(CRKDevice *)self instructorImageIdentifier];
-  [v4 encodeObject:v54 forKey:@"instructorImageIdentifier"];
+  instructorImageIdentifier = [(CRKDevice *)self instructorImageIdentifier];
+  [coderCopy encodeObject:instructorImageIdentifier forKey:@"instructorImageIdentifier"];
 
   v55 = [MEMORY[0x277CCABB0] numberWithBool:{-[CRKDevice isRequestingUnenroll](self, "isRequestingUnenroll")}];
-  [v4 encodeObject:v55 forKey:@"requestingUnenroll"];
+  [coderCopy encodeObject:v55 forKey:@"requestingUnenroll"];
 
-  v56 = [(CRKDevice *)self currentLocaleIdentifier];
-  [v4 encodeObject:v56 forKey:@"currentLocaleIdentifier"];
+  currentLocaleIdentifier = [(CRKDevice *)self currentLocaleIdentifier];
+  [coderCopy encodeObject:currentLocaleIdentifier forKey:@"currentLocaleIdentifier"];
 
-  v57 = [(CRKDevice *)self activeAirPlayRoute];
-  [v4 encodeObject:v57 forKey:@"activeAirPlayRoute"];
+  activeAirPlayRoute = [(CRKDevice *)self activeAirPlayRoute];
+  [coderCopy encodeObject:activeAirPlayRoute forKey:@"activeAirPlayRoute"];
 
-  v58 = [(CRKDevice *)self availableAirPlayRoutes];
-  [v4 encodeObject:v58 forKey:@"availableAirPlayRoutes"];
+  availableAirPlayRoutes = [(CRKDevice *)self availableAirPlayRoutes];
+  [coderCopy encodeObject:availableAirPlayRoutes forKey:@"availableAirPlayRoutes"];
 
-  v59 = [(CRKDevice *)self managementLockPasscode];
-  [v4 encodeObject:v59 forKey:@"managementLockPasscode"];
+  managementLockPasscode = [(CRKDevice *)self managementLockPasscode];
+  [coderCopy encodeObject:managementLockPasscode forKey:@"managementLockPasscode"];
 
-  v60 = [(CRKDevice *)self trustedExchangeIdentifier];
-  [v4 encodeObject:v60 forKey:@"trustedExchangeIdentifier"];
+  trustedExchangeIdentifier = [(CRKDevice *)self trustedExchangeIdentifier];
+  [coderCopy encodeObject:trustedExchangeIdentifier forKey:@"trustedExchangeIdentifier"];
 }
 
 id __50__CRKDevice_applicationInfoFromBundleIdentifiers___block_invoke(uint64_t a1, void *a2)
@@ -954,10 +954,10 @@ id __50__CRKDevice_applicationInfoFromBundleIdentifiers___block_invoke(uint64_t 
   return v4;
 }
 
-- (CRKDevice)initWithIdentifier:(id)a3
+- (CRKDevice)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [(CRKDevice(Private) *)a2 initWithIdentifier:?];
   }
@@ -967,7 +967,7 @@ id __50__CRKDevice_applicationInfoFromBundleIdentifiers___block_invoke(uint64_t 
   v6 = [(CRKDevice *)&v10 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [identifierCopy copy];
     identifier = v6->_identifier;
     v6->_identifier = v7;
   }

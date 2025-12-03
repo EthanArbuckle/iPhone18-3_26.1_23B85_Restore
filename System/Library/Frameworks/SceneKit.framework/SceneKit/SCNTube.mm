@@ -1,31 +1,31 @@
 @interface SCNTube
 + (SCNTube)tubeWithInnerRadius:(CGFloat)innerRadius outerRadius:(CGFloat)outerRadius height:(CGFloat)height;
-- (BOOL)getBoundingBoxMin:(SCNVector3 *)a3 max:(SCNVector3 *)a4;
-- (BOOL)getBoundingSphereCenter:(SCNVector3 *)a3 radius:(double *)a4;
+- (BOOL)getBoundingBoxMin:(SCNVector3 *)min max:(SCNVector3 *)max;
+- (BOOL)getBoundingSphereCenter:(SCNVector3 *)center radius:(double *)radius;
 - (CGFloat)height;
 - (CGFloat)innerRadius;
 - (CGFloat)outerRadius;
 - (NSInteger)heightSegmentCount;
 - (NSInteger)radialSegmentCount;
 - (SCNTube)init;
-- (SCNTube)initWithCoder:(id)a3;
-- (SCNTube)initWithParametricGeometryRef:(__C3DParametricGeometry *)a3;
+- (SCNTube)initWithCoder:(id)coder;
+- (SCNTube)initWithParametricGeometryRef:(__C3DParametricGeometry *)ref;
 - (double)radialSpan;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initPresentationParametricGeometryWithParametricGeometryRef:(__C3DParametricGeometry *)a3;
+- (id)initPresentationParametricGeometryWithParametricGeometryRef:(__C3DParametricGeometry *)ref;
 - (id)presentationTube;
 - (int64_t)primitiveType;
-- (void)_setupObjCModelFrom:(id)a3;
-- (void)_syncObjCModel:(__C3DParametricGeometry *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setupObjCModelFrom:(id)from;
+- (void)_syncObjCModel:(__C3DParametricGeometry *)model;
+- (void)encodeWithCoder:(id)coder;
 - (void)setHeight:(CGFloat)height;
 - (void)setHeightSegmentCount:(NSInteger)heightSegmentCount;
 - (void)setInnerRadius:(CGFloat)innerRadius;
 - (void)setOuterRadius:(CGFloat)outerRadius;
-- (void)setPrimitiveType:(int64_t)a3;
+- (void)setPrimitiveType:(int64_t)type;
 - (void)setRadialSegmentCount:(NSInteger)radialSegmentCount;
-- (void)setRadialSpan:(double)a3;
+- (void)setRadialSpan:(double)span;
 @end
 
 @implementation SCNTube
@@ -49,11 +49,11 @@
   return v5;
 }
 
-- (SCNTube)initWithParametricGeometryRef:(__C3DParametricGeometry *)a3
+- (SCNTube)initWithParametricGeometryRef:(__C3DParametricGeometry *)ref
 {
   v7.receiver = self;
   v7.super_class = SCNTube;
-  v3 = [(SCNGeometry *)&v7 initWithGeometryRef:a3];
+  v3 = [(SCNGeometry *)&v7 initWithGeometryRef:ref];
   v4 = v3;
   if (v3)
   {
@@ -66,11 +66,11 @@
   return v4;
 }
 
-- (id)initPresentationParametricGeometryWithParametricGeometryRef:(__C3DParametricGeometry *)a3
+- (id)initPresentationParametricGeometryWithParametricGeometryRef:(__C3DParametricGeometry *)ref
 {
   v4.receiver = self;
   v4.super_class = SCNTube;
-  return [(SCNGeometry *)&v4 initPresentationGeometryWithGeometryRef:a3];
+  return [(SCNGeometry *)&v4 initPresentationGeometryWithGeometryRef:ref];
 }
 
 - (id)presentationTube
@@ -80,15 +80,15 @@
   return v2;
 }
 
-- (void)_syncObjCModel:(__C3DParametricGeometry *)a3
+- (void)_syncObjCModel:(__C3DParametricGeometry *)model
 {
-  self->_tubeinnerRadius = C3DParametricGeometryGetFloatValue(a3, 7);
-  self->_tubeouterRadius = C3DParametricGeometryGetFloatValue(a3, 8);
-  self->_tubeheight = C3DParametricGeometryGetFloatValue(a3, 1);
-  self->_tuberadialSpan = C3DParametricGeometryGetFloatValue(a3, 21);
-  self->_tubeheightSegmentCount = C3DParametricGeometryGetIntValue(a3, 12);
-  self->_tuberadialSegmentCount = C3DParametricGeometryGetIntValue(a3, 15);
-  self->_tubeprimitiveType = C3DParametricGeometryGetIntValue(a3, 20);
+  self->_tubeinnerRadius = C3DParametricGeometryGetFloatValue(model, 7);
+  self->_tubeouterRadius = C3DParametricGeometryGetFloatValue(model, 8);
+  self->_tubeheight = C3DParametricGeometryGetFloatValue(model, 1);
+  self->_tuberadialSpan = C3DParametricGeometryGetFloatValue(model, 21);
+  self->_tubeheightSegmentCount = C3DParametricGeometryGetIntValue(model, 12);
+  self->_tuberadialSegmentCount = C3DParametricGeometryGetIntValue(model, 15);
+  self->_tubeprimitiveType = C3DParametricGeometryGetIntValue(model, 20);
 }
 
 - (CGFloat)height
@@ -98,11 +98,11 @@
     return self->_tubeheight;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   Height = C3DParametricGeometryGetHeight([(SCNGeometry *)self geometryRef]);
@@ -128,14 +128,14 @@
   else if (self->_tubeheight != height)
   {
     self->_tubeheight = height;
-    v6 = [(SCNGeometry *)self sceneRef];
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __21__SCNTube_setHeight___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = height;
-    [SCNTransaction postCommandWithContext:v6 object:self key:@"height" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"height" applyBlock:v7];
   }
 }
 
@@ -154,11 +154,11 @@ void __21__SCNTube_setHeight___block_invoke(uint64_t a1)
     return self->_tubeheightSegmentCount;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   HeightSegmentCount = C3DParametricGeometryGetHeightSegmentCount([(SCNGeometry *)self geometryRef]);
@@ -184,14 +184,14 @@ void __21__SCNTube_setHeight___block_invoke(uint64_t a1)
   else if (self->_tubeheightSegmentCount != heightSegmentCount)
   {
     self->_tubeheightSegmentCount = heightSegmentCount;
-    v6 = [(SCNGeometry *)self sceneRef];
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __33__SCNTube_setHeightSegmentCount___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     v7[5] = heightSegmentCount;
-    [SCNTransaction postCommandWithContext:v6 object:self key:@"heightSegmentCount" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"heightSegmentCount" applyBlock:v7];
   }
 }
 
@@ -210,11 +210,11 @@ void __33__SCNTube_setHeightSegmentCount___block_invoke(uint64_t a1)
     return self->_tubeinnerRadius;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   InnerRadius = C3DParametricGeometryGetInnerRadius([(SCNGeometry *)self geometryRef]);
@@ -240,14 +240,14 @@ void __33__SCNTube_setHeightSegmentCount___block_invoke(uint64_t a1)
   else if (self->_tubeinnerRadius != innerRadius)
   {
     self->_tubeinnerRadius = innerRadius;
-    v6 = [(SCNGeometry *)self sceneRef];
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __26__SCNTube_setInnerRadius___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = innerRadius;
-    [SCNTransaction postCommandWithContext:v6 object:self key:@"innerRadius" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"innerRadius" applyBlock:v7];
   }
 }
 
@@ -266,11 +266,11 @@ void __26__SCNTube_setInnerRadius___block_invoke(uint64_t a1)
     return self->_tubeouterRadius;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   OuterRadius = C3DParametricGeometryGetOuterRadius([(SCNGeometry *)self geometryRef]);
@@ -296,14 +296,14 @@ void __26__SCNTube_setInnerRadius___block_invoke(uint64_t a1)
   else if (self->_tubeouterRadius != outerRadius)
   {
     self->_tubeouterRadius = outerRadius;
-    v6 = [(SCNGeometry *)self sceneRef];
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __26__SCNTube_setOuterRadius___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = outerRadius;
-    [SCNTransaction postCommandWithContext:v6 object:self key:@"outerRadius" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"outerRadius" applyBlock:v7];
   }
 }
 
@@ -322,11 +322,11 @@ void __26__SCNTube_setOuterRadius___block_invoke(uint64_t a1)
     return self->_tubeprimitiveType;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   PrimitiveType = C3DParametricGeometryGetPrimitiveType([(SCNGeometry *)self geometryRef]);
@@ -338,7 +338,7 @@ void __26__SCNTube_setOuterRadius___block_invoke(uint64_t a1)
   return PrimitiveType;
 }
 
-- (void)setPrimitiveType:(int64_t)a3
+- (void)setPrimitiveType:(int64_t)type
 {
   if ([(SCNGeometry *)self isPresentationInstance])
   {
@@ -349,17 +349,17 @@ void __26__SCNTube_setOuterRadius___block_invoke(uint64_t a1)
     }
   }
 
-  else if (self->_tubeprimitiveType != a3)
+  else if (self->_tubeprimitiveType != type)
   {
-    self->_tubeprimitiveType = a3;
-    v6 = [(SCNGeometry *)self sceneRef];
+    self->_tubeprimitiveType = type;
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __28__SCNTube_setPrimitiveType___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
-    v7[5] = a3;
-    [SCNTransaction postCommandWithContext:v6 object:self applyBlock:v7];
+    v7[5] = type;
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
   }
 }
 
@@ -378,11 +378,11 @@ void __28__SCNTube_setPrimitiveType___block_invoke(uint64_t a1)
     return self->_tuberadialSegmentCount;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   RadialSegmentCount = C3DParametricGeometryGetRadialSegmentCount([(SCNGeometry *)self geometryRef]);
@@ -408,14 +408,14 @@ void __28__SCNTube_setPrimitiveType___block_invoke(uint64_t a1)
   else if (self->_tuberadialSegmentCount != radialSegmentCount)
   {
     self->_tuberadialSegmentCount = radialSegmentCount;
-    v6 = [(SCNGeometry *)self sceneRef];
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __33__SCNTube_setRadialSegmentCount___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     v7[5] = radialSegmentCount;
-    [SCNTransaction postCommandWithContext:v6 object:self key:@"radialSegmentCount" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"radialSegmentCount" applyBlock:v7];
   }
 }
 
@@ -434,11 +434,11 @@ void __33__SCNTube_setRadialSegmentCount___block_invoke(uint64_t a1)
     return self->_tuberadialSpan;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   RadialSpan = C3DParametricGeometryGetRadialSpan([(SCNGeometry *)self geometryRef]);
@@ -450,7 +450,7 @@ void __33__SCNTube_setRadialSegmentCount___block_invoke(uint64_t a1)
   return RadialSpan;
 }
 
-- (void)setRadialSpan:(double)a3
+- (void)setRadialSpan:(double)span
 {
   if ([(SCNGeometry *)self isPresentationInstance])
   {
@@ -461,17 +461,17 @@ void __33__SCNTube_setRadialSegmentCount___block_invoke(uint64_t a1)
     }
   }
 
-  else if (self->_tuberadialSpan != a3)
+  else if (self->_tuberadialSpan != span)
   {
-    self->_tuberadialSpan = a3;
-    v6 = [(SCNGeometry *)self sceneRef];
+    self->_tuberadialSpan = span;
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __25__SCNTube_setRadialSpan___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
-    *&v7[5] = a3;
-    [SCNTransaction postCommandWithContext:v6 object:self key:@"radialSpan" applyBlock:v7];
+    *&v7[5] = span;
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"radialSpan" applyBlock:v7];
   }
 }
 
@@ -483,7 +483,7 @@ void __25__SCNTube_setRadialSpan___block_invoke(uint64_t a1)
   C3DParametricGeometrySetRadialSpan(v2, v3);
 }
 
-- (BOOL)getBoundingBoxMin:(SCNVector3 *)a3 max:(SCNVector3 *)a4
+- (BOOL)getBoundingBoxMin:(SCNVector3 *)min max:(SCNVector3 *)max
 {
   v24 = 0.0;
   v23 = 0;
@@ -491,11 +491,11 @@ void __25__SCNTube_setRadialSpan___block_invoke(uint64_t a1)
   v21 = 0;
   if ([(SCNGeometry *)self isPresentationInstance])
   {
-    v7 = [(SCNGeometry *)self sceneRef];
-    v8 = v7;
-    if (v7)
+    sceneRef = [(SCNGeometry *)self sceneRef];
+    v8 = sceneRef;
+    if (sceneRef)
     {
-      C3DSceneLock(v7);
+      C3DSceneLock(sceneRef);
     }
 
     if ([(SCNGeometry *)self geometryRef])
@@ -524,7 +524,7 @@ LABEL_11:
     {
       v20.receiver = self;
       v20.super_class = SCNTube;
-      return [(SCNGeometry *)&v20 getBoundingBoxMin:a3 max:a4];
+      return [(SCNGeometry *)&v20 getBoundingBoxMin:min max:max];
     }
 
     [(SCNTube *)self outerRadius];
@@ -537,47 +537,47 @@ LABEL_11:
   }
 
 LABEL_12:
-  if (a3)
+  if (min)
   {
     v17 = v24;
-    *&a3->x = v23;
-    a3->z = v17;
+    *&min->x = v23;
+    min->z = v17;
   }
 
-  if (a4)
+  if (max)
   {
     v18 = v22;
-    *&a4->x = v21;
-    a4->z = v18;
+    *&max->x = v21;
+    max->z = v18;
   }
 
   return v10;
 }
 
-- (BOOL)getBoundingSphereCenter:(SCNVector3 *)a3 radius:(double *)a4
+- (BOOL)getBoundingSphereCenter:(SCNVector3 *)center radius:(double *)radius
 {
   v16 = 0uLL;
   if ([(SCNGeometry *)self isPresentationInstance])
   {
-    v7 = [(SCNGeometry *)self sceneRef];
-    v8 = v7;
-    if (v7)
+    sceneRef = [(SCNGeometry *)self sceneRef];
+    v8 = sceneRef;
+    if (sceneRef)
     {
-      C3DSceneLock(v7);
+      C3DSceneLock(sceneRef);
     }
 
     if ([(SCNGeometry *)self geometryRef]&& C3DTubeGetBoundingSphere([(SCNGeometry *)self geometryRef], &v16))
     {
-      if (a3)
+      if (center)
       {
         v9 = *(&v16 + 2);
-        *&a3->x = v16;
-        a3->z = v9;
+        *&center->x = v16;
+        center->z = v9;
       }
 
-      if (a4)
+      if (radius)
       {
-        *a4 = *(&v16 + 3);
+        *radius = *(&v16 + 3);
       }
 
       v10 = 1;
@@ -608,16 +608,16 @@ LABEL_12:
     return 0;
   }
 
-  if (a3)
+  if (center)
   {
     v14 = *(&v16 + 2);
-    *&a3->x = v16;
-    a3->z = v14;
+    *&center->x = v16;
+    center->z = v14;
   }
 
-  if (a4)
+  if (radius)
   {
-    *a4 = *(&v16 + 3);
+    *radius = *(&v16 + 3);
   }
 
   return 1;
@@ -625,7 +625,7 @@ LABEL_12:
 
 + (SCNTube)tubeWithInnerRadius:(CGFloat)innerRadius outerRadius:(CGFloat)outerRadius height:(CGFloat)height
 {
-  v8 = objc_alloc_init(a1);
+  v8 = objc_alloc_init(self);
   [v8 setInnerRadius:innerRadius];
   [v8 setOuterRadius:outerRadius];
   [v8 setHeight:height];
@@ -636,37 +636,37 @@ LABEL_12:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SCNGeometry *)self geometryDescription];
+  geometryDescription = [(SCNGeometry *)self geometryDescription];
   [(SCNTube *)self innerRadius];
   v6 = v5;
   [(SCNTube *)self outerRadius];
   v8 = v7;
   [(SCNTube *)self height];
-  return [v3 stringWithFormat:@"<%@ | innerRadius=%.3f outerRadius=%.3f height=%.3f>", v4, v6, v8, v9];
+  return [v3 stringWithFormat:@"<%@ | innerRadius=%.3f outerRadius=%.3f height=%.3f>", geometryDescription, v6, v8, v9];
 }
 
-- (void)_setupObjCModelFrom:(id)a3
+- (void)_setupObjCModelFrom:(id)from
 {
   v5.receiver = self;
   v5.super_class = SCNTube;
   [(SCNGeometry *)&v5 _setupObjCModelFrom:?];
   +[SCNTransaction begin];
   [SCNTransaction setImmediateMode:1];
-  [a3 innerRadius];
+  [from innerRadius];
   [(SCNTube *)self setInnerRadius:?];
-  [a3 outerRadius];
+  [from outerRadius];
   [(SCNTube *)self setOuterRadius:?];
-  [a3 height];
+  [from height];
   [(SCNTube *)self setHeight:?];
-  [a3 radialSpan];
+  [from radialSpan];
   [(SCNTube *)self setRadialSpan:?];
-  -[SCNTube setHeightSegmentCount:](self, "setHeightSegmentCount:", [a3 heightSegmentCount]);
-  -[SCNTube setRadialSegmentCount:](self, "setRadialSegmentCount:", [a3 radialSegmentCount]);
-  -[SCNTube setPrimitiveType:](self, "setPrimitiveType:", [a3 primitiveType]);
+  -[SCNTube setHeightSegmentCount:](self, "setHeightSegmentCount:", [from heightSegmentCount]);
+  -[SCNTube setRadialSegmentCount:](self, "setRadialSegmentCount:", [from radialSegmentCount]);
+  -[SCNTube setPrimitiveType:](self, "setPrimitiveType:", [from primitiveType]);
   +[SCNTransaction commitImmediate];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 _setupObjCModelFrom:self];
@@ -674,7 +674,7 @@ LABEL_12:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SCNTube;
@@ -684,16 +684,16 @@ LABEL_12:
     [(SCNTube *)self _syncObjCModel:[(SCNGeometry *)self geometryRef]];
   }
 
-  [a3 encodeDouble:@"tubeinnerRadius" forKey:self->_tubeinnerRadius];
-  [a3 encodeDouble:@"tubeouterRadius" forKey:self->_tubeouterRadius];
-  [a3 encodeDouble:@"tubeheight" forKey:self->_tubeheight];
-  [a3 encodeDouble:@"tuberadialSpan" forKey:self->_tuberadialSpan];
-  [a3 encodeInteger:self->_tubeheightSegmentCount forKey:@"tubeheightSegmentCount"];
-  [a3 encodeInteger:self->_tuberadialSegmentCount forKey:@"tuberadialSegmentCount"];
-  [a3 encodeInteger:self->_tubeprimitiveType forKey:@"tubeprimitiveType"];
+  [coder encodeDouble:@"tubeinnerRadius" forKey:self->_tubeinnerRadius];
+  [coder encodeDouble:@"tubeouterRadius" forKey:self->_tubeouterRadius];
+  [coder encodeDouble:@"tubeheight" forKey:self->_tubeheight];
+  [coder encodeDouble:@"tuberadialSpan" forKey:self->_tuberadialSpan];
+  [coder encodeInteger:self->_tubeheightSegmentCount forKey:@"tubeheightSegmentCount"];
+  [coder encodeInteger:self->_tuberadialSegmentCount forKey:@"tuberadialSegmentCount"];
+  [coder encodeInteger:self->_tubeprimitiveType forKey:@"tubeprimitiveType"];
 }
 
-- (SCNTube)initWithCoder:(id)a3
+- (SCNTube)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = SCNTube;
@@ -702,17 +702,17 @@ LABEL_12:
   {
     v5 = +[SCNTransaction immediateMode];
     [SCNTransaction setImmediateMode:1];
-    [a3 decodeDoubleForKey:@"tubeinnerRadius"];
+    [coder decodeDoubleForKey:@"tubeinnerRadius"];
     [(SCNTube *)v4 setInnerRadius:?];
-    [a3 decodeDoubleForKey:@"tubeouterRadius"];
+    [coder decodeDoubleForKey:@"tubeouterRadius"];
     [(SCNTube *)v4 setOuterRadius:?];
-    [a3 decodeDoubleForKey:@"tubeheight"];
+    [coder decodeDoubleForKey:@"tubeheight"];
     [(SCNTube *)v4 setHeight:?];
-    [a3 decodeDoubleForKey:@"tuberadialSpan"];
+    [coder decodeDoubleForKey:@"tuberadialSpan"];
     [(SCNTube *)v4 setRadialSpan:?];
-    -[SCNTube setHeightSegmentCount:](v4, "setHeightSegmentCount:", [a3 decodeIntegerForKey:@"tubeheightSegmentCount"]);
-    -[SCNTube setRadialSegmentCount:](v4, "setRadialSegmentCount:", [a3 decodeIntegerForKey:@"tuberadialSegmentCount"]);
-    -[SCNTube setPrimitiveType:](v4, "setPrimitiveType:", [a3 decodeIntegerForKey:@"tubeprimitiveType"]);
+    -[SCNTube setHeightSegmentCount:](v4, "setHeightSegmentCount:", [coder decodeIntegerForKey:@"tubeheightSegmentCount"]);
+    -[SCNTube setRadialSegmentCount:](v4, "setRadialSegmentCount:", [coder decodeIntegerForKey:@"tuberadialSegmentCount"]);
+    -[SCNTube setPrimitiveType:](v4, "setPrimitiveType:", [coder decodeIntegerForKey:@"tubeprimitiveType"]);
     [SCNTransaction setImmediateMode:v5];
   }
 

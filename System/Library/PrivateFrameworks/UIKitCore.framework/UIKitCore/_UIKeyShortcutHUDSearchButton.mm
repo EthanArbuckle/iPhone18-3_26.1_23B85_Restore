@@ -1,23 +1,23 @@
 @interface _UIKeyShortcutHUDSearchButton
 - (_UIKeyShortcutHUDCollectionViewManager)collectionViewManager;
 - (_UIKeyShortcutHUDIndexPath)searchButtonIndexPath;
-- (_UIKeyShortcutHUDSearchButton)initWithFrame:(CGRect)a3;
+- (_UIKeyShortcutHUDSearchButton)initWithFrame:(CGRect)frame;
 - (_UIKeyShortcutHUDSearchButtonDelegate)delegate;
 - (_UIKeyShortcutHUDToolbarViewController)toolbarVC;
 - (id)_collectionViewLayout;
 - (void)_configureCollectionView;
 - (void)_setupSubviews;
-- (void)performActionForSelectingCellAtIndexPath:(id)a3;
-- (void)setSearching:(BOOL)a3;
+- (void)performActionForSelectingCellAtIndexPath:(id)path;
+- (void)setSearching:(BOOL)searching;
 @end
 
 @implementation _UIKeyShortcutHUDSearchButton
 
-- (_UIKeyShortcutHUDSearchButton)initWithFrame:(CGRect)a3
+- (_UIKeyShortcutHUDSearchButton)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _UIKeyShortcutHUDSearchButton;
-  v3 = [(UIView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -36,8 +36,8 @@
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(_UIKeyShortcutHUDSearchButton *)self _collectionViewLayout];
-  v13 = [(UICollectionView *)v3 initWithFrame:v12 collectionViewLayout:v5, v7, v9, v11];
+  _collectionViewLayout = [(_UIKeyShortcutHUDSearchButton *)self _collectionViewLayout];
+  v13 = [(UICollectionView *)v3 initWithFrame:_collectionViewLayout collectionViewLayout:v5, v7, v9, v11];
   collectionView = self->_collectionView;
   self->_collectionView = v13;
 
@@ -71,10 +71,10 @@
   self->_dataSource = v8;
 
   objc_storeStrong(&self->_searchCellRegistration, v4);
-  v10 = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
-  [v10 appendSectionsWithIdentifiers:&unk_1EFE2DBA0];
-  [v10 appendItemsWithIdentifiers:&unk_1EFE2DBB8];
-  [(UICollectionViewDiffableDataSource *)self->_dataSource applySnapshot:v10 animatingDifferences:0];
+  snapshot = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
+  [snapshot appendSectionsWithIdentifiers:&unk_1EFE2DBA0];
+  [snapshot appendItemsWithIdentifiers:&unk_1EFE2DBB8];
+  [(UICollectionViewDiffableDataSource *)self->_dataSource applySnapshot:snapshot animatingDifferences:0];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -103,10 +103,10 @@
   return v14;
 }
 
-- (void)performActionForSelectingCellAtIndexPath:(id)a3
+- (void)performActionForSelectingCellAtIndexPath:(id)path
 {
-  v4 = [(_UIKeyShortcutHUDSearchButton *)self delegate];
-  [v4 searchButtonDidPress:self];
+  delegate = [(_UIKeyShortcutHUDSearchButton *)self delegate];
+  [delegate searchButtonDidPress:self];
 }
 
 - (_UIKeyShortcutHUDIndexPath)searchButtonIndexPath
@@ -117,20 +117,20 @@
   return v4;
 }
 
-- (void)setSearching:(BOOL)a3
+- (void)setSearching:(BOOL)searching
 {
-  if (self->_searching != a3)
+  if (self->_searching != searching)
   {
-    v4 = a3;
-    self->_searching = a3;
+    searchingCopy = searching;
+    self->_searching = searching;
     collectionView = self->_collectionView;
-    v6 = [(_UIKeyShortcutHUDSearchButton *)self searchButtonIndexPath];
-    v7 = [v6 indexPath];
-    v11 = [(UICollectionView *)collectionView cellForItemAtIndexPath:v7];
+    searchButtonIndexPath = [(_UIKeyShortcutHUDSearchButton *)self searchButtonIndexPath];
+    indexPath = [searchButtonIndexPath indexPath];
+    v11 = [(UICollectionView *)collectionView cellForItemAtIndexPath:indexPath];
 
     v8 = +[UIKeyShortcutHUDMetrics currentMetrics];
     v9 = v8;
-    if (v4)
+    if (searchingCopy)
     {
       [v8 searchHUDTextColor];
     }

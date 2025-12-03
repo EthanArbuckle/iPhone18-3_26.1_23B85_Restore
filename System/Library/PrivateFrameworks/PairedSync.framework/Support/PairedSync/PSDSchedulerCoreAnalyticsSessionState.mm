@@ -1,16 +1,16 @@
 @interface PSDSchedulerCoreAnalyticsSessionState
-- (BOOL)hasDurationForActivity:(id)a3 milestone:(unint64_t)a4;
+- (BOOL)hasDurationForActivity:(id)activity milestone:(unint64_t)milestone;
 - (PSDSchedulerCoreAnalyticsSessionState)init;
-- (PSDSchedulerCoreAnalyticsSessionState)initWithCoder:(id)a3;
-- (double)durationForActivity:(id)a3 milestone:(unint64_t)a4;
-- (id)_keyForAmountOfTimeSpentOnGivenLinkType:(int64_t)a3;
-- (id)_keyForMilestone:(unint64_t)a3;
-- (id)linkDurationsForActivity:(id)a3;
-- (id)stateDictionaryForActivity:(id)a3;
-- (void)noteActivityCompletedSending:(id)a3;
-- (void)noteActivityFinished:(id)a3;
-- (void)noteActivityStarted:(id)a3;
-- (void)updateLinkDurationForActivity:(id)a3 withLinkType:(int64_t)a4 linkStartTime:(id)a5 endTime:(id)a6;
+- (PSDSchedulerCoreAnalyticsSessionState)initWithCoder:(id)coder;
+- (double)durationForActivity:(id)activity milestone:(unint64_t)milestone;
+- (id)_keyForAmountOfTimeSpentOnGivenLinkType:(int64_t)type;
+- (id)_keyForMilestone:(unint64_t)milestone;
+- (id)linkDurationsForActivity:(id)activity;
+- (id)stateDictionaryForActivity:(id)activity;
+- (void)noteActivityCompletedSending:(id)sending;
+- (void)noteActivityFinished:(id)finished;
+- (void)noteActivityStarted:(id)started;
+- (void)updateLinkDurationForActivity:(id)activity withLinkType:(int64_t)type linkStartTime:(id)time endTime:(id)endTime;
 @end
 
 @implementation PSDSchedulerCoreAnalyticsSessionState
@@ -30,9 +30,9 @@
   return v2;
 }
 
-- (PSDSchedulerCoreAnalyticsSessionState)initWithCoder:(id)a3
+- (PSDSchedulerCoreAnalyticsSessionState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = PSDSchedulerCoreAnalyticsSessionState;
   v5 = [(PSDSchedulerCoreAnalyticsSessionState *)&v17 init];
@@ -44,7 +44,7 @@
     v18[3] = objc_opt_class();
     v6 = [NSArray arrayWithObjects:v18 count:4];
     v7 = [NSSet setWithArray:v6];
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:@"sessionState"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"sessionState"];
     v9 = [v8 mutableCopy];
     stateDictionary = v5->_stateDictionary;
     v5->_stateDictionary = v9;
@@ -72,9 +72,9 @@
   return v5;
 }
 
-- (void)noteActivityStarted:(id)a3
+- (void)noteActivityStarted:(id)started
 {
-  v5 = [(PSDSchedulerCoreAnalyticsSessionState *)self stateDictionaryForActivity:a3];
+  v5 = [(PSDSchedulerCoreAnalyticsSessionState *)self stateDictionaryForActivity:started];
   v3 = [v5 objectForKeyedSubscript:@"startDate"];
 
   if (!v3)
@@ -84,9 +84,9 @@
   }
 }
 
-- (void)noteActivityCompletedSending:(id)a3
+- (void)noteActivityCompletedSending:(id)sending
 {
-  v7 = [(PSDSchedulerCoreAnalyticsSessionState *)self stateDictionaryForActivity:a3];
+  v7 = [(PSDSchedulerCoreAnalyticsSessionState *)self stateDictionaryForActivity:sending];
   v4 = [(PSDSchedulerCoreAnalyticsSessionState *)self _keyForMilestone:0];
   v5 = [v7 objectForKeyedSubscript:v4];
 
@@ -97,9 +97,9 @@
   }
 }
 
-- (void)noteActivityFinished:(id)a3
+- (void)noteActivityFinished:(id)finished
 {
-  v7 = [(PSDSchedulerCoreAnalyticsSessionState *)self stateDictionaryForActivity:a3];
+  v7 = [(PSDSchedulerCoreAnalyticsSessionState *)self stateDictionaryForActivity:finished];
   v4 = [(PSDSchedulerCoreAnalyticsSessionState *)self _keyForMilestone:1];
   v5 = [v7 objectForKeyedSubscript:v4];
 
@@ -110,10 +110,10 @@
   }
 }
 
-- (BOOL)hasDurationForActivity:(id)a3 milestone:(unint64_t)a4
+- (BOOL)hasDurationForActivity:(id)activity milestone:(unint64_t)milestone
 {
-  v6 = [(PSDSchedulerCoreAnalyticsSessionState *)self stateDictionaryForActivity:a3];
-  v7 = [(PSDSchedulerCoreAnalyticsSessionState *)self _keyForMilestone:a4];
+  v6 = [(PSDSchedulerCoreAnalyticsSessionState *)self stateDictionaryForActivity:activity];
+  v7 = [(PSDSchedulerCoreAnalyticsSessionState *)self _keyForMilestone:milestone];
   v8 = [v6 objectForKeyedSubscript:@"startDate"];
   if (v8)
   {
@@ -129,17 +129,17 @@
   return v10;
 }
 
-- (void)updateLinkDurationForActivity:(id)a3 withLinkType:(int64_t)a4 linkStartTime:(id)a5 endTime:(id)a6
+- (void)updateLinkDurationForActivity:(id)activity withLinkType:(int64_t)type linkStartTime:(id)time endTime:(id)endTime
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = [(PSDSchedulerCoreAnalyticsSessionState *)self stateDictionaryForActivity:a3];
-  v13 = [(PSDSchedulerCoreAnalyticsSessionState *)self _keyForAmountOfTimeSpentOnGivenLinkType:a4];
+  timeCopy = time;
+  endTimeCopy = endTime;
+  v12 = [(PSDSchedulerCoreAnalyticsSessionState *)self stateDictionaryForActivity:activity];
+  v13 = [(PSDSchedulerCoreAnalyticsSessionState *)self _keyForAmountOfTimeSpentOnGivenLinkType:type];
   v14 = [v12 objectForKeyedSubscript:@"startDate"];
-  v15 = v10;
+  v15 = timeCopy;
   v16 = v15;
   v23 = v15;
-  if (v11)
+  if (endTimeCopy)
   {
     v16 = v15;
     if (v15)
@@ -153,7 +153,7 @@
           v16 = v14;
         }
 
-        [v11 timeIntervalSinceDate:v16];
+        [endTimeCopy timeIntervalSinceDate:v16];
         if (v17 > 0.0)
         {
           v18 = v17;
@@ -169,9 +169,9 @@
   }
 }
 
-- (id)linkDurationsForActivity:(id)a3
+- (id)linkDurationsForActivity:(id)activity
 {
-  v3 = [(PSDSchedulerCoreAnalyticsSessionState *)self stateDictionaryForActivity:a3];
+  v3 = [(PSDSchedulerCoreAnalyticsSessionState *)self stateDictionaryForActivity:activity];
   v4 = objc_alloc_init(NSMutableDictionary);
   v5 = [v3 objectForKeyedSubscript:@"amountOfTimeLinkOnBT"];
   [v4 setObject:v5 forKeyedSubscript:@"amountOfTimeLinkOnBT"];
@@ -191,23 +191,23 @@
   return v4;
 }
 
-- (id)_keyForAmountOfTimeSpentOnGivenLinkType:(int64_t)a3
+- (id)_keyForAmountOfTimeSpentOnGivenLinkType:(int64_t)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
     return @"amountOfTimeLinkOnOther";
   }
 
   else
   {
-    return off_10002CC70[a3];
+    return off_10002CC70[type];
   }
 }
 
-- (double)durationForActivity:(id)a3 milestone:(unint64_t)a4
+- (double)durationForActivity:(id)activity milestone:(unint64_t)milestone
 {
-  v6 = [(PSDSchedulerCoreAnalyticsSessionState *)self stateDictionaryForActivity:a3];
-  v7 = [(PSDSchedulerCoreAnalyticsSessionState *)self _keyForMilestone:a4];
+  v6 = [(PSDSchedulerCoreAnalyticsSessionState *)self stateDictionaryForActivity:activity];
+  v7 = [(PSDSchedulerCoreAnalyticsSessionState *)self _keyForMilestone:milestone];
   v8 = [v6 objectForKeyedSubscript:@"startDate"];
   v9 = [v6 objectForKeyedSubscript:v7];
   v10 = v9;
@@ -221,29 +221,29 @@
   return v11;
 }
 
-- (id)stateDictionaryForActivity:(id)a3
+- (id)stateDictionaryForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_stateDictionary objectForKeyedSubscript:v4];
+  activityCopy = activity;
+  v5 = [(NSMutableDictionary *)self->_stateDictionary objectForKeyedSubscript:activityCopy];
   v6 = v5;
-  if (v4 && !v5)
+  if (activityCopy && !v5)
   {
     v6 = objc_alloc_init(NSMutableDictionary);
-    [(NSMutableDictionary *)self->_stateDictionary setObject:v6 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_stateDictionary setObject:v6 forKeyedSubscript:activityCopy];
   }
 
   return v6;
 }
 
-- (id)_keyForMilestone:(unint64_t)a3
+- (id)_keyForMilestone:(unint64_t)milestone
 {
   v3 = @"endDate";
-  if (a3 != 1)
+  if (milestone != 1)
   {
     v3 = 0;
   }
 
-  if (a3)
+  if (milestone)
   {
     return v3;
   }

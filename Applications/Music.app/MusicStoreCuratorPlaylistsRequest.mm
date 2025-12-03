@@ -1,40 +1,40 @@
 @interface MusicStoreCuratorPlaylistsRequest
-- (MusicStoreCuratorPlaylistsRequest)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)newOperationWithResponseHandler:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (MusicStoreCuratorPlaylistsRequest)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)newOperationWithResponseHandler:(id)handler;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MusicStoreCuratorPlaylistsRequest
 
-- (MusicStoreCuratorPlaylistsRequest)initWithCoder:(id)a3
+- (MusicStoreCuratorPlaylistsRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = MusicStoreCuratorPlaylistsRequest;
-  v5 = [(MusicStoreCuratorPlaylistsRequest *)&v7 initWithCoder:v4];
+  v5 = [(MusicStoreCuratorPlaylistsRequest *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_curatorStoreAdamID = [v4 decodeInt64ForKey:@"MusicStoreCuratorPlaylistsRequestCuratorStoreAdamID"];
+    v5->_curatorStoreAdamID = [coderCopy decodeInt64ForKey:@"MusicStoreCuratorPlaylistsRequestCuratorStoreAdamID"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MusicStoreCuratorPlaylistsRequest;
-  v4 = a3;
-  [(MusicStoreCuratorPlaylistsRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt64:self->_curatorStoreAdamID forKey:{@"MusicStoreCuratorPlaylistsRequestCuratorStoreAdamID", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(MusicStoreCuratorPlaylistsRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt64:self->_curatorStoreAdamID forKey:{@"MusicStoreCuratorPlaylistsRequestCuratorStoreAdamID", v5.receiver, v5.super_class}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = MusicStoreCuratorPlaylistsRequest;
-  result = [(MusicStoreCuratorPlaylistsRequest *)&v5 copyWithZone:a3];
+  result = [(MusicStoreCuratorPlaylistsRequest *)&v5 copyWithZone:zone];
   if (result)
   {
     *(result + 1) = self->_curatorStoreAdamID;
@@ -43,12 +43,12 @@
   return result;
 }
 
-- (id)newOperationWithResponseHandler:(id)a3
+- (id)newOperationWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [MusicStoreCuratorPlaylistsRequestOperation alloc];
   v6 = [(MusicStoreCuratorPlaylistsRequest *)self copy];
-  v7 = [(MusicStoreCuratorPlaylistsRequestOperation *)v5 initWithRequest:v6 responseHandler:v4];
+  v7 = [(MusicStoreCuratorPlaylistsRequestOperation *)v5 initWithRequest:v6 responseHandler:handlerCopy];
 
   return v7;
 }

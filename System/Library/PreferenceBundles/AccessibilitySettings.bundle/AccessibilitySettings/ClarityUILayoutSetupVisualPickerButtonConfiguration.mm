@@ -1,24 +1,24 @@
 @interface ClarityUILayoutSetupVisualPickerButtonConfiguration
-- (ClarityUILayoutSetupVisualPickerButtonConfiguration)initWithTitle:(id)a3 preferenceValue:(id)a4;
+- (ClarityUILayoutSetupVisualPickerButtonConfiguration)initWithTitle:(id)title preferenceValue:(id)value;
 - (NSDictionary)_dictionaryRepresentation;
 @end
 
 @implementation ClarityUILayoutSetupVisualPickerButtonConfiguration
 
-- (ClarityUILayoutSetupVisualPickerButtonConfiguration)initWithTitle:(id)a3 preferenceValue:(id)a4
+- (ClarityUILayoutSetupVisualPickerButtonConfiguration)initWithTitle:(id)title preferenceValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  valueCopy = value;
   v15.receiver = self;
   v15.super_class = ClarityUILayoutSetupVisualPickerButtonConfiguration;
   v8 = [(ClarityUILayoutSetupVisualPickerButtonConfiguration *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [titleCopy copy];
     title = v8->_title;
     v8->_title = v9;
 
-    v11 = [v7 copy];
+    v11 = [valueCopy copy];
     preferenceValue = v8->_preferenceValue;
     v8->_preferenceValue = v11;
 

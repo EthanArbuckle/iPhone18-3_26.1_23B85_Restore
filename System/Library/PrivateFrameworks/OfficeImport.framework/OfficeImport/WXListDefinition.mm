@@ -1,7 +1,7 @@
 @interface WXListDefinition
 + (id)listTypeEnumMap;
 + (void)listTypeEnumMap;
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 state:(id)a5;
++ (void)readFrom:(_xmlNode *)from to:(id)to state:(id)state;
 @end
 
 @implementation WXListDefinition
@@ -29,46 +29,46 @@ void __35__WXListDefinition_listTypeEnumMap__block_invoke()
   +[WXListDefinition listTypeEnumMap]::sListTypeEnumMap = v0;
 }
 
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 state:(id)a5
++ (void)readFrom:(_xmlNode *)from to:(id)to state:(id)state
 {
-  v8 = a4;
-  v9 = a5;
+  toCopy = to;
+  stateCopy = state;
   v22 = 1;
-  v10 = [a1 listTypeEnumMap];
-  readEnumProperty<WDListType>(a3, "multiLevelType", "val", v10, &v22, v9);
+  listTypeEnumMap = [self listTypeEnumMap];
+  readEnumProperty<WDListType>(from, "multiLevelType", "val", listTypeEnumMap, &v22, stateCopy);
 
-  [v8 setType:v22];
-  v11 = [v9 WXMainNamespace];
-  Child = OCXFindChild(a3, v11, "lvl");
+  [toCopy setType:v22];
+  wXMainNamespace = [stateCopy WXMainNamespace];
+  Child = OCXFindChild(from, wXMainNamespace, "lvl");
 
   while (Child)
   {
-    v13 = [v9 WXMainNamespace];
-    v14 = CXRequiredLongAttribute(Child, v13, "ilvl");
+    wXMainNamespace2 = [stateCopy WXMainNamespace];
+    v14 = CXRequiredLongAttribute(Child, wXMainNamespace2, "ilvl");
 
     if (v14 <= 8)
     {
-      while ([v8 levelCount] <= v14)
+      while ([toCopy levelCount] <= v14)
       {
-        v15 = [v8 addLevel];
+        addLevel = [toCopy addLevel];
       }
 
-      v16 = [v8 levelAt:v14];
-      [WXListLevel readFrom:Child to:v16 state:v9];
-      v17 = [v9 WXMainNamespace];
-      Child = OCXFindNextChild(Child, v17, "lvl");
+      v16 = [toCopy levelAt:v14];
+      [WXListLevel readFrom:Child to:v16 state:stateCopy];
+      wXMainNamespace3 = [stateCopy WXMainNamespace];
+      Child = OCXFindNextChild(Child, wXMainNamespace3, "lvl");
     }
   }
 
-  v18 = [v9 WXMainNamespace];
-  v19 = OCXFindChild(a3, v18, "numStyleLink");
+  wXMainNamespace4 = [stateCopy WXMainNamespace];
+  v19 = OCXFindChild(from, wXMainNamespace4, "numStyleLink");
 
   if (v19)
   {
-    v20 = [v9 WXMainNamespace];
-    v21 = CXDefaultStringAttribute(v19, v20, "val", 0);
+    wXMainNamespace5 = [stateCopy WXMainNamespace];
+    v21 = CXDefaultStringAttribute(v19, wXMainNamespace5, "val", 0);
 
-    [v8 setStyleRefId:v21];
+    [toCopy setStyleRefId:v21];
   }
 }
 

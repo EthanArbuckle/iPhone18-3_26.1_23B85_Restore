@@ -1,12 +1,12 @@
 @interface APPromotedContentDaemon
-- (APPromotedContentDaemon)initWithInstanceWrapper:(id)a3;
+- (APPromotedContentDaemon)initWithInstanceWrapper:(id)wrapper;
 @end
 
 @implementation APPromotedContentDaemon
 
-- (APPromotedContentDaemon)initWithInstanceWrapper:(id)a3
+- (APPromotedContentDaemon)initWithInstanceWrapper:(id)wrapper
 {
-  v4 = a3;
+  wrapperCopy = wrapper;
   v5 = +[NSDate now];
   v6 = qword_1004DD9D0;
   qword_1004DD9D0 = v5;
@@ -56,9 +56,9 @@
     +[MetricsModule setup];
     +[APPCBaseEventListener startListeners];
     v22 = +[MetricsModule storage];
-    v23 = [v22 notificationRegistrar];
+    notificationRegistrar = [v22 notificationRegistrar];
 
-    v24 = [[APCacheStatusUpdater alloc] initWithNotificationRegister:v23];
+    v24 = [[APCacheStatusUpdater alloc] initWithNotificationRegister:notificationRegistrar];
     updater = v7->_updater;
     v7->_updater = v24;
 
@@ -90,7 +90,7 @@
     rotatingIdentifierXPCListener = v7->_rotatingIdentifierXPCListener;
     v7->_rotatingIdentifierXPCListener = v39;
 
-    [APGlobalState prepareDevicePipelinesWithMetricNotificationRegister:v23];
+    [APGlobalState prepareDevicePipelinesWithMetricNotificationRegister:notificationRegistrar];
     +[MetricsModule start];
     [(ObservabilityXPCTimerActivity *)v7->_observabilityTimerActivity checkin];
     [(APPersistentCache *)v7->_cache start];
@@ -117,17 +117,17 @@
     v7->_timeSpentReportActivity = v52;
 
     [(APXPCActivity *)v7->_timeSpentReportActivity checkin];
-    v54 = [v4 configSystemRequestTask];
+    configSystemRequestTask = [wrapperCopy configSystemRequestTask];
     configSystemRequestTask = v7->_configSystemRequestTask;
-    v7->_configSystemRequestTask = v54;
+    v7->_configSystemRequestTask = configSystemRequestTask;
 
     [(APConfigSystemBackgroundTask *)v7->_configSystemRequestTask registerTask];
     +[APGlobalState startDevicePipelines];
     +[APGlobalState startWorkCoordinator];
-    v56 = [v4 migrationContext];
-    [APGlobalState registerJetPackCacheRequestTaskWithMigrationContext:v56];
+    migrationContext = [wrapperCopy migrationContext];
+    [APGlobalState registerJetPackCacheRequestTaskWithMigrationContext:migrationContext];
     +[APGlobalState startPeriodicFetch];
-    if ([v56 hasOSVersionChanged])
+    if ([migrationContext hasOSVersionChanged])
     {
       [(APConfigSystemBackgroundTask *)v7->_configSystemRequestTask request];
       v57 = +[APDatabaseManager mainDatabase];

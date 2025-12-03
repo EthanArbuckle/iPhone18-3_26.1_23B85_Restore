@@ -1,32 +1,32 @@
 @interface HMDEventTriggerModel
 + (id)properties;
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5;
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5;
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info;
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context;
 - (id)createPayload;
-- (id)createPayloadWithCondition:(id)a3;
+- (id)createPayloadWithCondition:(id)condition;
 @end
 
 @implementation HMDEventTriggerModel
 
-- (id)createPayloadWithCondition:(id)a3
+- (id)createPayloadWithCondition:(id)condition
 {
-  v4 = a3;
+  conditionCopy = condition;
   v12.receiver = self;
   v12.super_class = HMDEventTriggerModel;
-  v5 = [(HMDTriggerModel *)&v12 createPayload];
-  v6 = [v5 mutableCopy];
+  createPayload = [(HMDTriggerModel *)&v12 createPayload];
+  v6 = [createPayload mutableCopy];
 
-  if (v4)
+  if (conditionCopy)
   {
-    v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:0];
+    v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:conditionCopy requiringSecureCoding:1 error:0];
     [v6 setObject:v7 forKeyedSubscript:*MEMORY[0x277CD2298]];
   }
 
-  v8 = [(HMDEventTriggerModel *)self recurrences];
-  [v6 setObject:v8 forKeyedSubscript:*MEMORY[0x277CD22C8]];
+  recurrences = [(HMDEventTriggerModel *)self recurrences];
+  [v6 setObject:recurrences forKeyedSubscript:*MEMORY[0x277CD22C8]];
 
-  v9 = [(HMDEventTriggerModel *)self executeOnce];
-  [v6 setObject:v9 forKeyedSubscript:*MEMORY[0x277CD22B8]];
+  executeOnce = [(HMDEventTriggerModel *)self executeOnce];
+  [v6 setObject:executeOnce forKeyedSubscript:*MEMORY[0x277CD22B8]];
 
   v10 = [v6 copy];
 
@@ -37,27 +37,27 @@
 {
   v12.receiver = self;
   v12.super_class = HMDEventTriggerModel;
-  v3 = [(HMDTriggerModel *)&v12 createPayload];
-  v4 = [v3 mutableCopy];
+  createPayload = [(HMDTriggerModel *)&v12 createPayload];
+  v4 = [createPayload mutableCopy];
 
-  v5 = [(HMDEventTriggerModel *)self evaluationCondition];
+  evaluationCondition = [(HMDEventTriggerModel *)self evaluationCondition];
 
-  if (v5)
+  if (evaluationCondition)
   {
-    v6 = [(HMDEventTriggerModel *)self evaluationCondition];
-    [v4 setObject:v6 forKeyedSubscript:*MEMORY[0x277CD2298]];
+    evaluationCondition2 = [(HMDEventTriggerModel *)self evaluationCondition];
+    [v4 setObject:evaluationCondition2 forKeyedSubscript:*MEMORY[0x277CD2298]];
   }
 
-  v7 = [(HMDEventTriggerModel *)self recurrences];
+  recurrences = [(HMDEventTriggerModel *)self recurrences];
 
-  if (v7)
+  if (recurrences)
   {
-    v8 = [(HMDEventTriggerModel *)self recurrences];
-    [v4 setObject:v8 forKeyedSubscript:*MEMORY[0x277CD22C8]];
+    recurrences2 = [(HMDEventTriggerModel *)self recurrences];
+    [v4 setObject:recurrences2 forKeyedSubscript:*MEMORY[0x277CD22C8]];
   }
 
-  v9 = [(HMDEventTriggerModel *)self executeOnce];
-  [v4 setObject:v9 forKeyedSubscript:*MEMORY[0x277CD22B8]];
+  executeOnce = [(HMDEventTriggerModel *)self executeOnce];
+  [v4 setObject:executeOnce forKeyedSubscript:*MEMORY[0x277CD22B8]];
 
   v10 = [v4 copy];
 
@@ -70,7 +70,7 @@
   block[1] = 3221225472;
   block[2] = __34__HMDEventTriggerModel_properties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (properties_onceToken_46652 != -1)
   {
     dispatch_once(&properties_onceToken_46652, block);
@@ -108,19 +108,19 @@ void __34__HMDEventTriggerModel_properties__block_invoke(uint64_t a1)
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:@"evaluationCondition"])
+  propertyCopy = property;
+  fieldCopy = field;
+  contextCopy = context;
+  if ([fieldCopy isEqualToString:@"evaluationCondition"])
   {
     if ([(HMDBackingStoreModelObject *)self propertyWasSet:@"evaluationCondition"])
     {
-      v11 = [(HMDEventTriggerModel *)self evaluationCondition];
-      if (v11)
+      evaluationCondition = [(HMDEventTriggerModel *)self evaluationCondition];
+      if (evaluationCondition)
       {
-        [HMDPredicateUtilities unarchiveFromData:v11 error:0];
+        [HMDPredicateUtilities unarchiveFromData:evaluationCondition error:0];
       }
 
       else
@@ -135,7 +135,7 @@ void __34__HMDEventTriggerModel_properties__block_invoke(uint64_t a1)
     goto LABEL_11;
   }
 
-  if ([v9 isEqualToString:@"recurrences"])
+  if ([fieldCopy isEqualToString:@"recurrences"])
   {
     if (![(HMDBackingStoreModelObject *)self propertyWasSet:@"recurrences"])
     {
@@ -144,18 +144,18 @@ LABEL_11:
       goto LABEL_16;
     }
 
-    v12 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
   else
   {
-    if ([v9 isEqualToString:@"recurrenceDays"])
+    if ([fieldCopy isEqualToString:@"recurrenceDays"])
     {
       if ([(HMDBackingStoreModelObject *)self propertyWasSet:@"recurrences"])
       {
         v13 = MEMORY[0x277CCABB0];
-        v14 = [(HMDEventTriggerModel *)self recurrences];
-        v15 = [v14 decodeArrayOfDateComponents];
+        recurrences = [(HMDEventTriggerModel *)self recurrences];
+        decodeArrayOfDateComponents = [recurrences decodeArrayOfDateComponents];
         v16 = [v13 numberWithUnsignedInteger:HMDaysOfTheWeekFromDateComponents()];
 
         goto LABEL_16;
@@ -166,26 +166,26 @@ LABEL_11:
 
     v18.receiver = self;
     v18.super_class = HMDEventTriggerModel;
-    v12 = [(HMDTriggerModel *)&v18 cd_generateValueForProperty:v8 managedObjectField:v9 context:v10];
+    null = [(HMDTriggerModel *)&v18 cd_generateValueForProperty:propertyCopy managedObjectField:fieldCopy context:contextCopy];
   }
 
-  v16 = v12;
+  v16 = null;
 LABEL_16:
 
   return v16;
 }
 
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:@"evaluationCondition"])
+  objectCopy = object;
+  fieldCopy = field;
+  infoCopy = info;
+  if ([fieldCopy isEqualToString:@"evaluationCondition"])
   {
-    v11 = [v8 evaluationCondition];
-    if (v11)
+    evaluationCondition = [objectCopy evaluationCondition];
+    if (evaluationCondition)
     {
-      [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v11 requiringSecureCoding:1 error:0];
+      [MEMORY[0x277CCAAB0] archivedDataWithRootObject:evaluationCondition requiringSecureCoding:1 error:0];
     }
 
     else
@@ -197,12 +197,12 @@ LABEL_16:
     goto LABEL_12;
   }
 
-  if ([v9 isEqualToString:@"recurrences"])
+  if ([fieldCopy isEqualToString:@"recurrences"])
   {
-    v12 = [v8 recurrenceDays];
-    v13 = [v12 unsignedIntegerValue];
+    recurrenceDays = [objectCopy recurrenceDays];
+    unsignedIntegerValue = [recurrenceDays unsignedIntegerValue];
 
-    if (v13)
+    if (unsignedIntegerValue)
     {
       v14 = MEMORY[0x277CCAAB0];
       v15 = HMDaysOfTheWeekToDateComponents();
@@ -211,17 +211,17 @@ LABEL_16:
       goto LABEL_12;
     }
 
-    v17 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
   else
   {
     v19.receiver = self;
     v19.super_class = HMDEventTriggerModel;
-    v17 = [(HMDTriggerModel *)&v19 cd_generateValueForModelObjectFromManagedObject:v8 modelObjectField:v9 modelFieldInfo:v10];
+    null = [(HMDTriggerModel *)&v19 cd_generateValueForModelObjectFromManagedObject:objectCopy modelObjectField:fieldCopy modelFieldInfo:infoCopy];
   }
 
-  v16 = v17;
+  v16 = null;
 LABEL_12:
 
   return v16;

@@ -3,7 +3,7 @@
 - (BOOL)isTemporarilyBlocked;
 - (BOOL)isWipePending;
 - (double)timeUntilUnblockedSinceReferenceDate;
-- (id)_lockStateValueForKey:(id)a3 ofType:(Class)a4;
+- (id)_lockStateValueForKey:(id)key ofType:(Class)type;
 - (unint64_t)failedPasscodeAttempts;
 - (void)_loadLockState;
 - (void)_persistentStateQueue_beginSpeculativeFailureCharge;
@@ -12,7 +12,7 @@
 - (void)_persistentStateQueue_rollbackSpeculativeFailureCharge;
 - (void)_persistentStateQueue_unlockFailed;
 - (void)_persistentStateQueue_unlockSucceeded;
-- (void)_setLockStateValue:(id)a3 forKey:(id)a4;
+- (void)_setLockStateValue:(id)value forKey:(id)key;
 - (void)dealloc;
 - (void)notePasscodeEntryBegan;
 - (void)notePasscodeEntryCancelled;
@@ -279,16 +279,16 @@
   }
 }
 
-- (id)_lockStateValueForKey:(id)a3 ofType:(Class)a4
+- (id)_lockStateValueForKey:(id)key ofType:(Class)type
 {
   lockStateCache = self->_lockStateCache;
   if (!lockStateCache)
   {
-    [(MKBDeviceLockModelEducationalMode *)self _loadLockState:a3];
+    [(MKBDeviceLockModelEducationalMode *)self _loadLockState:key];
     lockStateCache = self->_lockStateCache;
   }
 
-  v7 = [-[NSMutableDictionary objectForKeyedSubscript:](lockStateCache objectForKeyedSubscript:{self->_uid, a4), "objectForKeyedSubscript:", a3}];
+  v7 = [-[NSMutableDictionary objectForKeyedSubscript:](lockStateCache objectForKeyedSubscript:{self->_uid, type), "objectForKeyedSubscript:", key}];
   if (objc_opt_isKindOfClass())
   {
     return v7;
@@ -300,22 +300,22 @@
   }
 }
 
-- (void)_setLockStateValue:(id)a3 forKey:(id)a4
+- (void)_setLockStateValue:(id)value forKey:(id)key
 {
   v7 = [(NSMutableDictionary *)self->_lockStateCache objectForKeyedSubscript:self->_uid];
-  if (a3)
+  if (value)
   {
     if (!v7)
     {
       [(NSMutableDictionary *)self->_lockStateCache setObject:+[NSMutableDictionary forKeyedSubscript:"dictionary"], self->_uid];
     }
 
-    [-[NSMutableDictionary objectForKeyedSubscript:](self->_lockStateCache objectForKeyedSubscript:{self->_uid), "setObject:forKeyedSubscript:", a3, a4}];
+    [-[NSMutableDictionary objectForKeyedSubscript:](self->_lockStateCache objectForKeyedSubscript:{self->_uid), "setObject:forKeyedSubscript:", value, key}];
   }
 
   else
   {
-    [v7 removeObjectForKey:a4];
+    [v7 removeObjectForKey:key];
   }
 
   [(NSMutableDictionary *)self->_lockStateCache writeToFile:self->_lockStatePath atomically:1];

@@ -1,12 +1,12 @@
 @interface AXPointerControllerVoiceOverSpeakUnderPointerOptions
-- (id)localizedTextForValue:(double)a3;
+- (id)localizedTextForValue:(double)value;
 @end
 
 @implementation AXPointerControllerVoiceOverSpeakUnderPointerOptions
 
-- (id)localizedTextForValue:(double)a3
+- (id)localizedTextForValue:(double)value
 {
-  v3 = [NSNumber numberWithDouble:a3];
+  v3 = [NSNumber numberWithDouble:value];
   v4 = AXFormatNumberWithOptions();
 
   return v4;

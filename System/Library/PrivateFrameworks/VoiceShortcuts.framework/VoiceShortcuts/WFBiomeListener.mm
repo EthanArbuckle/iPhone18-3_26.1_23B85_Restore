@@ -1,30 +1,30 @@
 @interface WFBiomeListener
 + (id)registrationError;
-- (BOOL)isTransactionEventDuplicate:(id)a3 forTrigger:(id)a4 withSeenTransactionIdentifiers:(id)a5;
-- (WFBiomeListener)initWithEventQueue:(id)a3;
-- (void)fireTriggerWithIdentifier:(id)a3 force:(BOOL)a4 eventInfo:(id)a5 completion:(id)a6;
-- (void)queue_handleEvent:(id)a3 forTrigger:(id)a4;
-- (void)queue_unregisterConfiguredTriggerWithIdentifier:(id)a3;
-- (void)registerConfiguredTrigger:(id)a3 completion:(id)a4;
-- (void)unregisterConfiguredTriggerWithIdentifier:(id)a3;
+- (BOOL)isTransactionEventDuplicate:(id)duplicate forTrigger:(id)trigger withSeenTransactionIdentifiers:(id)identifiers;
+- (WFBiomeListener)initWithEventQueue:(id)queue;
+- (void)fireTriggerWithIdentifier:(id)identifier force:(BOOL)force eventInfo:(id)info completion:(id)completion;
+- (void)queue_handleEvent:(id)event forTrigger:(id)trigger;
+- (void)queue_unregisterConfiguredTriggerWithIdentifier:(id)identifier;
+- (void)registerConfiguredTrigger:(id)trigger completion:(id)completion;
+- (void)unregisterConfiguredTriggerWithIdentifier:(id)identifier;
 @end
 
 @implementation WFBiomeListener
 
-- (BOOL)isTransactionEventDuplicate:(id)a3 forTrigger:(id)a4 withSeenTransactionIdentifiers:(id)a5
+- (BOOL)isTransactionEventDuplicate:(id)duplicate forTrigger:(id)trigger withSeenTransactionIdentifiers:(id)identifiers
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 trigger];
-  if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  duplicateCopy = duplicate;
+  triggerCopy = trigger;
+  identifiersCopy = identifiers;
+  trigger = [triggerCopy trigger];
+  if (trigger && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v11 = [v10 transactionIdentifierWithEvent:v7];
+    v11 = [trigger transactionIdentifierWithEvent:duplicateCopy];
     if ([v11 length])
     {
-      v12 = [v8 identifier];
-      v13 = [v9 objectForKeyedSubscript:v12];
+      identifier = [triggerCopy identifier];
+      v13 = [identifiersCopy objectForKeyedSubscript:identifier];
       v14 = v13;
       if (v13)
       {
@@ -41,22 +41,22 @@
       v16 = [v17 containsObject:v11];
       if (v16)
       {
-        v18 = getWFTriggersLogObject();
-        if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+        identifier2 = getWFTriggersLogObject();
+        if (os_log_type_enabled(identifier2, OS_LOG_TYPE_DEFAULT))
         {
           v21 = 136315394;
           v22 = "[WFBiomeListener isTransactionEventDuplicate:forTrigger:withSeenTransactionIdentifiers:]";
           v23 = 2112;
           v24 = v11;
-          _os_log_impl(&dword_23103C000, v18, OS_LOG_TYPE_DEFAULT, "%s Ignoring duplicate transaction identifier %@", &v21, 0x16u);
+          _os_log_impl(&dword_23103C000, identifier2, OS_LOG_TYPE_DEFAULT, "%s Ignoring duplicate transaction identifier %@", &v21, 0x16u);
         }
       }
 
       else
       {
         [v17 addObject:v11];
-        v18 = [v8 identifier];
-        [v9 setObject:v17 forKeyedSubscript:v18];
+        identifier2 = [triggerCopy identifier];
+        [identifiersCopy setObject:v17 forKeyedSubscript:identifier2];
       }
     }
 
@@ -76,51 +76,51 @@
   return v16;
 }
 
-- (void)queue_handleEvent:(id)a3 forTrigger:(id)a4
+- (void)queue_handleEvent:(id)event forTrigger:(id)trigger
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(WFBiomeListener *)self queue];
-  dispatch_assert_queue_V2(v9);
+  eventCopy = event;
+  triggerCopy = trigger;
+  queue = [(WFBiomeListener *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (!v8)
+  if (!triggerCopy)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"WFBiomeListener.m" lineNumber:172 description:{@"Invalid parameter not satisfying: %@", @"configuredTrigger"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFBiomeListener.m" lineNumber:172 description:{@"Invalid parameter not satisfying: %@", @"configuredTrigger"}];
   }
 
-  v10 = [v8 trigger];
+  trigger = [triggerCopy trigger];
   v11 = getWFTriggersLogObject();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 identifier];
+    identifier = [triggerCopy identifier];
     *buf = 136315906;
     v24 = "[WFBiomeListener queue_handleEvent:forTrigger:]";
     v25 = 2112;
-    v26 = v10;
+    v26 = trigger;
     v27 = 2114;
-    v28 = v12;
+    v28 = identifier;
     v29 = 2112;
-    v30 = v7;
+    v30 = eventCopy;
     _os_log_impl(&dword_23103C000, v11, OS_LOG_TYPE_DEFAULT, "%s 🤖 Handling event for trigger with identifier (%@, %{public}@) and event: %@", buf, 0x2Au);
   }
 
-  v13 = [(WFBiomeListener *)self seenTransactionIdentifiers];
-  v14 = [(WFBiomeListener *)self isTransactionEventDuplicate:v7 forTrigger:v8 withSeenTransactionIdentifiers:v13];
+  seenTransactionIdentifiers = [(WFBiomeListener *)self seenTransactionIdentifiers];
+  v14 = [(WFBiomeListener *)self isTransactionEventDuplicate:eventCopy forTrigger:triggerCopy withSeenTransactionIdentifiers:seenTransactionIdentifiers];
 
   if (!v14)
   {
-    v15 = [v8 identifier];
+    identifier2 = [triggerCopy identifier];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __48__WFBiomeListener_queue_handleEvent_forTrigger___block_invoke;
     v18[3] = &unk_278900058;
-    v19 = v10;
-    v20 = v8;
-    v21 = v7;
-    v22 = self;
-    [v19 shouldFireInResponseToEvent:v21 triggerIdentifier:v15 completion:v18];
+    v19 = trigger;
+    v20 = triggerCopy;
+    v21 = eventCopy;
+    selfCopy = self;
+    [v19 shouldFireInResponseToEvent:v21 triggerIdentifier:identifier2 completion:v18];
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -229,33 +229,33 @@ void __48__WFBiomeListener_queue_handleEvent_forTrigger___block_invoke_3(uint64_
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fireTriggerWithIdentifier:(id)a3 force:(BOOL)a4 eventInfo:(id)a5 completion:(id)a6
+- (void)fireTriggerWithIdentifier:(id)identifier force:(BOOL)force eventInfo:(id)info completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(WFBiomeListener *)self queue];
+  identifierCopy = identifier;
+  infoCopy = info;
+  completionCopy = completion;
+  queue = [(WFBiomeListener *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__WFBiomeListener_fireTriggerWithIdentifier_force_eventInfo_completion___block_invoke;
   block[3] = &unk_2788FFFE8;
   block[4] = self;
-  v18 = v10;
-  v21 = a4;
-  v19 = v11;
-  v20 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_async(v13, block);
+  v18 = identifierCopy;
+  forceCopy = force;
+  v19 = infoCopy;
+  v20 = completionCopy;
+  v14 = completionCopy;
+  v15 = infoCopy;
+  v16 = identifierCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)queue_unregisterConfiguredTriggerWithIdentifier:(id)a3
+- (void)queue_unregisterConfiguredTriggerWithIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFBiomeListener *)self queue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  queue = [(WFBiomeListener *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = getWFTriggersLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -263,26 +263,26 @@ void __48__WFBiomeListener_queue_handleEvent_forTrigger___block_invoke_3(uint64_
     v17 = 136315394;
     v18 = "[WFBiomeListener queue_unregisterConfiguredTriggerWithIdentifier:]";
     v19 = 2114;
-    v20 = v4;
+    v20 = identifierCopy;
     _os_log_impl(&dword_23103C000, v6, OS_LOG_TYPE_DEFAULT, "%s [Biome] Unregistering trigger with identifier: %{public}@", &v17, 0x16u);
   }
 
-  v7 = [(WFBiomeListener *)self triggerIDToSinks];
-  v8 = [v7 objectForKey:v4];
+  triggerIDToSinks = [(WFBiomeListener *)self triggerIDToSinks];
+  v8 = [triggerIDToSinks objectForKey:identifierCopy];
 
-  v9 = [(WFBiomeListener *)self remoteTriggerIDToSinks];
-  v10 = [v9 objectForKey:v4];
+  remoteTriggerIDToSinks = [(WFBiomeListener *)self remoteTriggerIDToSinks];
+  v10 = [remoteTriggerIDToSinks objectForKey:identifierCopy];
 
   if (!(v8 | v10))
   {
-    v15 = getWFTriggersLogObject();
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    remoteTriggerIDToSinks3 = getWFTriggersLogObject();
+    if (os_log_type_enabled(remoteTriggerIDToSinks3, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 136315394;
       v18 = "[WFBiomeListener queue_unregisterConfiguredTriggerWithIdentifier:]";
       v19 = 2114;
-      v20 = v4;
-      _os_log_impl(&dword_23103C000, v15, OS_LOG_TYPE_DEFAULT, "%s [Biome] No sink associated with identifier: %{public}@, nothing to unregister", &v17, 0x16u);
+      v20 = identifierCopy;
+      _os_log_impl(&dword_23103C000, remoteTriggerIDToSinks3, OS_LOG_TYPE_DEFAULT, "%s [Biome] No sink associated with identifier: %{public}@, nothing to unregister", &v17, 0x16u);
     }
 
     goto LABEL_12;
@@ -291,15 +291,15 @@ void __48__WFBiomeListener_queue_handleEvent_forTrigger___block_invoke_3(uint64_
   if (v8)
   {
     [v8 cancel];
-    v11 = [(WFBiomeListener *)self triggerIDToSinks];
-    [v11 removeObjectForKey:v4];
+    triggerIDToSinks2 = [(WFBiomeListener *)self triggerIDToSinks];
+    [triggerIDToSinks2 removeObjectForKey:identifierCopy];
   }
 
   if (v10)
   {
-    v12 = [(WFBiomeListener *)self remoteTriggerIDToSinks];
-    v13 = [v12 allValues];
-    v14 = [v13 count];
+    remoteTriggerIDToSinks2 = [(WFBiomeListener *)self remoteTriggerIDToSinks];
+    allValues = [remoteTriggerIDToSinks2 allValues];
+    v14 = [allValues count];
 
     if (v14 <= 1)
     {
@@ -307,43 +307,43 @@ void __48__WFBiomeListener_queue_handleEvent_forTrigger___block_invoke_3(uint64_
     }
 
     [v10 cancel];
-    v15 = [(WFBiomeListener *)self remoteTriggerIDToSinks];
-    [v15 removeObjectForKey:v4];
+    remoteTriggerIDToSinks3 = [(WFBiomeListener *)self remoteTriggerIDToSinks];
+    [remoteTriggerIDToSinks3 removeObjectForKey:identifierCopy];
 LABEL_12:
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unregisterConfiguredTriggerWithIdentifier:(id)a3
+- (void)unregisterConfiguredTriggerWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(WFBiomeListener *)self queue];
+  identifierCopy = identifier;
+  queue = [(WFBiomeListener *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__WFBiomeListener_unregisterConfiguredTriggerWithIdentifier___block_invoke;
   v7[3] = &unk_2788FFFC0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = identifierCopy;
+  v6 = identifierCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)registerConfiguredTrigger:(id)a3 completion:(id)a4
+- (void)registerConfiguredTrigger:(id)trigger completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFBiomeListener *)self queue];
+  triggerCopy = trigger;
+  completionCopy = completion;
+  queue = [(WFBiomeListener *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__WFBiomeListener_registerConfiguredTrigger_completion___block_invoke;
   block[3] = &unk_2788FFF98;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = triggerCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = triggerCopy;
+  dispatch_async(queue, block);
 }
 
 void __56__WFBiomeListener_registerConfiguredTrigger_completion___block_invoke(uint64_t a1)
@@ -625,9 +625,9 @@ void __56__WFBiomeListener_registerConfiguredTrigger_completion___block_invoke_1
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (WFBiomeListener)initWithEventQueue:(id)a3
+- (WFBiomeListener)initWithEventQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v19.receiver = self;
   v19.super_class = WFBiomeListener;
   v6 = [(WFBiomeListener *)&v19 init];
@@ -639,7 +639,7 @@ void __56__WFBiomeListener_registerConfiguredTrigger_completion___block_invoke_1
     queue = v6->_queue;
     v6->_queue = v9;
 
-    objc_storeStrong(&v6->_eventQueue, a3);
+    objc_storeStrong(&v6->_eventQueue, queue);
     v11 = objc_opt_new();
     triggerIDToSinks = v6->_triggerIDToSinks;
     v6->_triggerIDToSinks = v11;

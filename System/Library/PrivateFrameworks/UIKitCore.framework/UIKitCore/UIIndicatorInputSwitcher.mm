@@ -1,36 +1,36 @@
 @interface UIIndicatorInputSwitcher
 - (BOOL)isVisibleOrHiding;
-- (BOOL)switchMode:(id)a3 withHUD:(BOOL)a4 withDelay:(BOOL)a5;
-- (void)dismissSwitcher:(BOOL)a3;
-- (void)dismissSwitcherWithDelay:(double)a3;
+- (BOOL)switchMode:(id)mode withHUD:(BOOL)d withDelay:(BOOL)delay;
+- (void)dismissSwitcher:(BOOL)switcher;
+- (void)dismissSwitcherWithDelay:(double)delay;
 @end
 
 @implementation UIIndicatorInputSwitcher
 
 - (BOOL)isVisibleOrHiding
 {
-  v2 = [(UIIndicatorInputSwitcher *)self inputModeSelectorAssertion];
-  v3 = v2 != 0;
+  inputModeSelectorAssertion = [(UIIndicatorInputSwitcher *)self inputModeSelectorAssertion];
+  v3 = inputModeSelectorAssertion != 0;
 
   return v3;
 }
 
-- (void)dismissSwitcher:(BOOL)a3
+- (void)dismissSwitcher:(BOOL)switcher
 {
-  v4 = [(UIIndicatorInputSwitcher *)self inputModeSelectorAssertion];
-  [v4 invalidate];
+  inputModeSelectorAssertion = [(UIIndicatorInputSwitcher *)self inputModeSelectorAssertion];
+  [inputModeSelectorAssertion invalidate];
 
   [(UIIndicatorInputSwitcher *)self setInputModeSelectorAssertion:0];
-  v5 = [(UIIndicatorInputSwitcher *)self inputModeAssertion];
-  [v5 invalidate];
+  inputModeAssertion = [(UIIndicatorInputSwitcher *)self inputModeAssertion];
+  [inputModeAssertion invalidate];
 
   [(UIIndicatorInputSwitcher *)self setInputModeAssertion:0];
 }
 
-- (void)dismissSwitcherWithDelay:(double)a3
+- (void)dismissSwitcherWithDelay:(double)delay
 {
   self->super.super.m_state = 0;
-  v4 = dispatch_time(0, (a3 * 1000000000.0));
+  v4 = dispatch_time(0, (delay * 1000000000.0));
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __53__UIIndicatorInputSwitcher_dismissSwitcherWithDelay___block_invoke;
@@ -39,21 +39,21 @@
   dispatch_after(v4, MEMORY[0x1E69E96A0], block);
 }
 
-- (BOOL)switchMode:(id)a3 withHUD:(BOOL)a4 withDelay:(BOOL)a5
+- (BOOL)switchMode:(id)mode withHUD:(BOOL)d withDelay:(BOOL)delay
 {
-  v5 = a4;
+  dCopy = d;
   v26[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  [(UIInlineInputSwitcher *)self updateInputModes:v7 withHUD:v5];
-  v8 = [(UIInlineInputSwitcher *)self availableInputModes];
-  v9 = [v8 count];
+  modeCopy = mode;
+  [(UIInlineInputSwitcher *)self updateInputModes:modeCopy withHUD:dCopy];
+  availableInputModes = [(UIInlineInputSwitcher *)self availableInputModes];
+  v9 = [availableInputModes count];
 
   if (!v9)
   {
     goto LABEL_15;
   }
 
-  [(UIInputSwitcher *)self setLoadedIdentifier:v7];
+  [(UIInputSwitcher *)self setLoadedIdentifier:modeCopy];
   m_state = self->super.super.m_state;
   if (m_state != 2)
   {
@@ -73,18 +73,18 @@
 
   [(UIInputSwitcher *)self cancelShowSwitcherTimer];
 LABEL_8:
-  v11 = [(UIIndicatorInputSwitcher *)self inputModeAssertion];
+  inputModeAssertion = [(UIIndicatorInputSwitcher *)self inputModeAssertion];
 
-  if (!v11)
+  if (!inputModeAssertion)
   {
     v12 = +[UIKeyboardImpl activeInstance];
-    v13 = [v12 _activeAssertionController];
-    v14 = [v13 activeInputModeAssertionWithReason:@"UIInputSwitcher"];
+    _activeAssertionController = [v12 _activeAssertionController];
+    v14 = [_activeAssertionController activeInputModeAssertionWithReason:@"UIInputSwitcher"];
     [(UIIndicatorInputSwitcher *)self setInputModeAssertion:v14];
   }
 
-  v15 = [(UIIndicatorInputSwitcher *)self inputModeSelectorAssertion];
-  if (v15)
+  inputModeSelectorAssertion = [(UIIndicatorInputSwitcher *)self inputModeSelectorAssertion];
+  if (inputModeSelectorAssertion)
   {
   }
 
@@ -92,20 +92,20 @@ LABEL_8:
   {
     v16 = +[UIDictationController isRunning];
     v17 = +[UIKeyboardImpl activeInstance];
-    v18 = [v17 _activeAssertionController];
+    _activeAssertionController2 = [v17 _activeAssertionController];
     v25[0] = @"_UITextCursorKeyboardIndicatorUserInfoKey";
     v19 = [MEMORY[0x1E696AD98] numberWithBool:v16];
     v25[1] = @"_UITextCursorInputModeSwitcherUserInfoKey";
     v26[0] = v19;
     v26[1] = MEMORY[0x1E695E118];
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:2];
-    v21 = [v18 inputModeSelectorAssertionWithReason:@"UIInputSwticher" userInfo:v20];
+    v21 = [_activeAssertionController2 inputModeSelectorAssertionWithReason:@"UIInputSwticher" userInfo:v20];
     [(UIIndicatorInputSwitcher *)self setInputModeSelectorAssertion:v21];
   }
 
   v22 = +[UIKeyboardImpl activeInstance];
-  v23 = [v22 _activeAssertionController];
-  [v23 _updateSubjectWithAssertionState];
+  _activeAssertionController3 = [v22 _activeAssertionController];
+  [_activeAssertionController3 _updateSubjectWithAssertionState];
 
 LABEL_15:
   return v9 != 0;

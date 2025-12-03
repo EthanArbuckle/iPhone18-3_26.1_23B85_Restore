@@ -1,16 +1,16 @@
 @interface MXSessionManagerSidekick
 + (id)sharedInstance;
-- (BOOL)isSomeOtherSessionPlaying:(id)a3;
+- (BOOL)isSomeOtherSessionPlaying:(id)playing;
 - (MXSessionManagerSidekick)init;
-- (id)copyMXCoreSessionForAudioSessionID:(unsigned int)a3;
-- (id)copyMXSessionList:(id)a3;
-- (int)postInterruptionEndedNotificationForAudioSessionID:(unsigned int)a3 resumable:(BOOL)a4;
+- (id)copyMXCoreSessionForAudioSessionID:(unsigned int)d;
+- (id)copyMXSessionList:(id)list;
+- (int)postInterruptionEndedNotificationForAudioSessionID:(unsigned int)d resumable:(BOOL)resumable;
 - (void)dealloc;
 - (void)dumpCoreSessionList;
 - (void)dumpVersionNumbersFromSidekickSessionBehavioursPlist;
-- (void)postNotification:(id)a3 toSession:(id)a4 payload:(id)a5;
-- (void)registerMXCoreSessionSidekick:(id)a3;
-- (void)unregisterMXCoreSessionSidekick:(id)a3;
+- (void)postNotification:(id)notification toSession:(id)session payload:(id)payload;
+- (void)registerMXCoreSessionSidekick:(id)sidekick;
+- (void)unregisterMXCoreSessionSidekick:(id)sidekick;
 @end
 
 @implementation MXSessionManagerSidekick
@@ -25,7 +25,7 @@
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v31 = self;
+  selfCopy = self;
   obj = self->mCoreSessionList;
   v32 = [(NSPointerArray *)obj countByEnumeratingWithState:&v40 objects:v51 count:16];
   if (v32)
@@ -42,7 +42,7 @@
         }
 
         v4 = *(*(&v40 + 1) + 8 * v3);
-        v5 = [(MXSessionManagerSidekick *)v31 copyMXSessionList:v4, v25, v27];
+        v5 = [(MXSessionManagerSidekick *)selfCopy copyMXSessionList:v4, v25, v27];
         if (dword_1EB75DE40)
         {
           v39 = 0;
@@ -61,12 +61,12 @@
 
           if (v8)
           {
-            v9 = [v4 clientName];
+            clientName = [v4 clientName];
             v10 = [v5 count];
             v45 = 136315650;
             v46 = "[MXSessionManagerSidekick dumpCoreSessionList]";
             v47 = 2114;
-            v48 = v9;
+            v48 = clientName;
             v49 = 2048;
             v50 = v10;
             LODWORD(v28) = 32;
@@ -93,11 +93,11 @@
 
             if (v13)
             {
-              v14 = [v4 info];
+              info = [v4 info];
               v45 = 136315394;
               v46 = "[MXSessionManagerSidekick dumpCoreSessionList]";
               v47 = 2114;
-              v48 = v14;
+              v48 = info;
               LODWORD(v28) = 22;
               v26 = &v45;
               _os_log_send_and_compose_impl();
@@ -145,11 +145,11 @@
 
                 if (v22)
                 {
-                  v23 = [v19 info];
+                  info2 = [v19 info];
                   v45 = 136315394;
                   v46 = "[MXSessionManagerSidekick dumpCoreSessionList]";
                   v47 = 2114;
-                  v48 = v23;
+                  v48 = info2;
                   LODWORD(v27) = 22;
                   v25 = &v45;
                   _os_log_send_and_compose_impl();
@@ -175,7 +175,7 @@
     while (v32);
   }
 
-  [(NSRecursiveLock *)[(MXSessionManagerSidekick *)v31 recursiveLock:v25] unlock];
+  [(NSRecursiveLock *)[(MXSessionManagerSidekick *)selfCopy recursiveLock:v25] unlock];
   v24 = *MEMORY[0x1E69E9840];
 }
 
@@ -254,7 +254,7 @@
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isSomeOtherSessionPlaying:(id)a3
+- (BOOL)isSomeOtherSessionPlaying:(id)playing
 {
   v19 = *MEMORY[0x1E69E9840];
   [(NSRecursiveLock *)[(MXSessionManagerSidekick *)self recursiveLock] lock];
@@ -280,7 +280,7 @@
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        if (v10 != a3 && [*(*(&v14 + 1) + 8 * i) isPlaying] && (objc_msgSend(objc_msgSend(a3, "remoteDeviceID"), "isEqualToString:", objc_msgSend(v10, "remoteDeviceID")) & 1) != 0)
+        if (v10 != playing && [*(*(&v14 + 1) + 8 * i) isPlaying] && (objc_msgSend(objc_msgSend(playing, "remoteDeviceID"), "isEqualToString:", objc_msgSend(v10, "remoteDeviceID")) & 1) != 0)
         {
           v11 = 1;
           goto LABEL_13;
@@ -375,7 +375,7 @@ uint64_t __32__MXSessionManagerSidekick_init__block_invoke_2(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __42__MXSessionManagerSidekick_sharedInstance__block_invoke;
   block[3] = &unk_1E7AE7CE0;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_9 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_9, block);
@@ -393,7 +393,7 @@ uint64_t __42__MXSessionManagerSidekick_sharedInstance__block_invoke(uint64_t a1
   return result;
 }
 
-- (id)copyMXCoreSessionForAudioSessionID:(unsigned int)a3
+- (id)copyMXCoreSessionForAudioSessionID:(unsigned int)d
 {
   v19 = *MEMORY[0x1E69E9840];
   [(NSRecursiveLock *)[(MXSessionManagerSidekick *)self recursiveLock] lock];
@@ -417,7 +417,7 @@ uint64_t __42__MXSessionManagerSidekick_sharedInstance__block_invoke(uint64_t a1
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        if ([v10 audioSessionID] == a3)
+        if ([v10 audioSessionID] == d)
         {
           v11 = v10;
           goto LABEL_11;
@@ -441,19 +441,19 @@ LABEL_11:
   return v10;
 }
 
-- (void)registerMXCoreSessionSidekick:(id)a3
+- (void)registerMXCoreSessionSidekick:(id)sidekick
 {
   [(NSRecursiveLock *)[(MXSessionManagerSidekick *)self recursiveLock] lock];
-  v5 = -[NSMapTable objectForKey:](-[MXSessionManagerSidekick remoteDeviceIDToCoreSessionIDList](self, "remoteDeviceIDToCoreSessionIDList"), "objectForKey:", [a3 remoteDeviceID]);
+  v5 = -[NSMapTable objectForKey:](-[MXSessionManagerSidekick remoteDeviceIDToCoreSessionIDList](self, "remoteDeviceIDToCoreSessionIDList"), "objectForKey:", [sidekick remoteDeviceID]);
   v6 = v5;
   if (!v5)
   {
     v6 = [objc_alloc(MEMORY[0x1E696AE08]) initWithOptions:5];
   }
 
-  objc_initWeak(&location, a3);
+  objc_initWeak(&location, sidekick);
   [v6 addPointer:objc_loadWeak(&location)];
-  -[NSMapTable setObject:forKey:](-[MXSessionManagerSidekick remoteDeviceIDToCoreSessionIDList](self, "remoteDeviceIDToCoreSessionIDList"), "setObject:forKey:", v6, [a3 remoteDeviceID]);
+  -[NSMapTable setObject:forKey:](-[MXSessionManagerSidekick remoteDeviceIDToCoreSessionIDList](self, "remoteDeviceIDToCoreSessionIDList"), "setObject:forKey:", v6, [sidekick remoteDeviceID]);
   [(NSPointerArray *)self->mCoreSessionList addPointer:objc_loadWeak(&location)];
   [(NSRecursiveLock *)[(MXSessionManagerSidekick *)self recursiveLock] unlock];
   if (!v5)
@@ -463,28 +463,28 @@ LABEL_11:
   objc_destroyWeak(&location);
 }
 
-- (void)unregisterMXCoreSessionSidekick:(id)a3
+- (void)unregisterMXCoreSessionSidekick:(id)sidekick
 {
   [(NSRecursiveLock *)[(MXSessionManagerSidekick *)self recursiveLock] lock];
   [(NSPointerArray *)self->mCoreSessionList addPointer:0];
   [(NSPointerArray *)self->mCoreSessionList compact];
-  v5 = -[NSMapTable objectForKey:](-[MXSessionManagerSidekick remoteDeviceIDToCoreSessionIDList](self, "remoteDeviceIDToCoreSessionIDList"), "objectForKey:", [a3 remoteDeviceID]);
+  v5 = -[NSMapTable objectForKey:](-[MXSessionManagerSidekick remoteDeviceIDToCoreSessionIDList](self, "remoteDeviceIDToCoreSessionIDList"), "objectForKey:", [sidekick remoteDeviceID]);
   [v5 addPointer:0];
   [v5 compact];
   if (![v5 count])
   {
-    -[NSMapTable removeObjectForKey:](-[MXSessionManagerSidekick remoteDeviceIDToCoreSessionIDList](self, "remoteDeviceIDToCoreSessionIDList"), "removeObjectForKey:", [a3 remoteDeviceID]);
+    -[NSMapTable removeObjectForKey:](-[MXSessionManagerSidekick remoteDeviceIDToCoreSessionIDList](self, "remoteDeviceIDToCoreSessionIDList"), "removeObjectForKey:", [sidekick remoteDeviceID]);
   }
 
-  v6 = [(MXSessionManagerSidekick *)self recursiveLock];
+  recursiveLock = [(MXSessionManagerSidekick *)self recursiveLock];
 
-  [(NSRecursiveLock *)v6 unlock];
+  [(NSRecursiveLock *)recursiveLock unlock];
 }
 
-- (id)copyMXSessionList:(id)a3
+- (id)copyMXSessionList:(id)list
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (list)
   {
     v5 = objc_autoreleasePoolPush();
     [(NSRecursiveLock *)[(MXSessionManagerSidekick *)self recursiveLock] lock];
@@ -505,7 +505,7 @@ LABEL_11:
   }
 }
 
-- (int)postInterruptionEndedNotificationForAudioSessionID:(unsigned int)a3 resumable:(BOOL)a4
+- (int)postInterruptionEndedNotificationForAudioSessionID:(unsigned int)d resumable:(BOOL)resumable
 {
   v17 = *MEMORY[0x1E69E9840];
   v6 = [(MXSessionManagerSidekick *)self copyMXCoreSessionForAudioSessionID:?];
@@ -531,7 +531,7 @@ LABEL_11:
       v13[1] = 3221225472;
       v13[2] = __89__MXSessionManagerSidekick_postInterruptionEndedNotificationForAudioSessionID_resumable___block_invoke;
       v13[3] = &unk_1E7AEB958;
-      v14 = a4;
+      resumableCopy = resumable;
       v13[4] = v7;
       v13[5] = self;
       MXDispatchAsync("[MXSessionManagerSidekick postInterruptionEndedNotificationForAudioSessionID:resumable:]", "MXSessionManagerSidekick.m", 287, 0, 0, v10, v13);
@@ -581,11 +581,11 @@ void __89__MXSessionManagerSidekick_postInterruptionEndedNotificationForAudioSes
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)postNotification:(id)a3 toSession:(id)a4 payload:(id)a5
+- (void)postNotification:(id)notification toSession:(id)session payload:(id)payload
 {
   v20 = *MEMORY[0x1E69E9840];
   [objc_msgSend(MEMORY[0x1E696AD88] "defaultCenter")];
-  v9 = [(MXSessionManagerSidekick *)self copyMXSessionList:a4];
+  v9 = [(MXSessionManagerSidekick *)self copyMXSessionList:session];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;

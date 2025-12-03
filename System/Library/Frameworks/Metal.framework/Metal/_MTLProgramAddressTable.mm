@@ -1,20 +1,20 @@
 @interface _MTLProgramAddressTable
-- (_MTLProgramAddressTable)initWithEncoderMappings:(id)a3 perInvocationMappings:(id)a4 internalMappings:(id)a5;
+- (_MTLProgramAddressTable)initWithEncoderMappings:(id)mappings perInvocationMappings:(id)invocationMappings internalMappings:(id)internalMappings;
 - (void)dealloc;
 @end
 
 @implementation _MTLProgramAddressTable
 
-- (_MTLProgramAddressTable)initWithEncoderMappings:(id)a3 perInvocationMappings:(id)a4 internalMappings:(id)a5
+- (_MTLProgramAddressTable)initWithEncoderMappings:(id)mappings perInvocationMappings:(id)invocationMappings internalMappings:(id)internalMappings
 {
   v10.receiver = self;
   v10.super_class = _MTLProgramAddressTable;
   v8 = [(_MTLProgramAddressTable *)&v10 init];
   if (v8)
   {
-    v8->_binaryMappingsEncoderInternal = [a3 copy];
-    v8->_binaryMappingsPerInvocation = [a4 copy];
-    v8->_encoderInternalBinaries = [a5 copy];
+    v8->_binaryMappingsEncoderInternal = [mappings copy];
+    v8->_binaryMappingsPerInvocation = [invocationMappings copy];
+    v8->_encoderInternalBinaries = [internalMappings copy];
   }
 
   return v8;

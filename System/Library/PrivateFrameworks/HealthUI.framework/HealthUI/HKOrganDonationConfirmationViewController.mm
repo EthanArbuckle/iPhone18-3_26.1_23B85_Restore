@@ -1,31 +1,31 @@
 @interface HKOrganDonationConfirmationViewController
-- (HKOrganDonationConfirmationViewController)initWithRegistrant:(id)a3 medicalIDData:(id)a4 connectionManager:(id)a5;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (HKOrganDonationConfirmationViewController)initWithRegistrant:(id)registrant medicalIDData:(id)data connectionManager:(id)manager;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)_createTableFooterView;
 - (id)_createTableHeaderView;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)confirmSubmissionIfNecessaryWithConfirmHandler:(id)a3 andCancelHandler:(id)a4;
-- (void)submitButtonTapped:(id)a3;
-- (void)titledBuddyHeaderViewDidTapLinkButton:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)confirmSubmissionIfNecessaryWithConfirmHandler:(id)handler andCancelHandler:(id)cancelHandler;
+- (void)submitButtonTapped:(id)tapped;
+- (void)titledBuddyHeaderViewDidTapLinkButton:(id)button;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation HKOrganDonationConfirmationViewController
 
-- (HKOrganDonationConfirmationViewController)initWithRegistrant:(id)a3 medicalIDData:(id)a4 connectionManager:(id)a5
+- (HKOrganDonationConfirmationViewController)initWithRegistrant:(id)registrant medicalIDData:(id)data connectionManager:(id)manager
 {
-  v7 = a3;
-  v8 = a5;
+  registrantCopy = registrant;
+  managerCopy = manager;
   v14.receiver = self;
   v14.super_class = HKOrganDonationConfirmationViewController;
   v9 = [(HKOrganDonationConfirmationViewController *)&v14 initWithNibName:0 bundle:0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_connectionManager, a5);
-    v11 = [v7 copy];
+    objc_storeStrong(&v9->_connectionManager, manager);
+    v11 = [registrantCopy copy];
     registrant = v10->_registrant;
     v10->_registrant = v11;
   }
@@ -52,48 +52,48 @@
   self->_loadingIndicatorBarButtonItem = v7;
 
   [(UIBarButtonItem *)self->_loadingIndicatorBarButtonItem setHidden:1];
-  v9 = [(HKOrganDonationConfirmationViewController *)self navigationItem];
-  [v9 setRightBarButtonItem:self->_loadingIndicatorBarButtonItem];
+  navigationItem = [(HKOrganDonationConfirmationViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:self->_loadingIndicatorBarButtonItem];
 
   v10 = objc_alloc(MEMORY[0x1E69DD020]);
-  v11 = [(HKOrganDonationConfirmationViewController *)self view];
-  [v11 bounds];
+  view = [(HKOrganDonationConfirmationViewController *)self view];
+  [view bounds];
   v12 = [v10 initWithFrame:2 style:?];
 
   [v12 setAutoresizingMask:18];
   [v12 setDataSource:self];
   [v12 setDelegate:self];
   [(HKOrganDonationConfirmationViewController *)self setTableView:v12];
-  v13 = [(HKOrganDonationConfirmationViewController *)self view];
-  [v13 addSubview:v12];
+  view2 = [(HKOrganDonationConfirmationViewController *)self view];
+  [view2 addSubview:v12];
 
-  v14 = [(HKOrganDonationConfirmationViewController *)self tableView];
-  v15 = [(HKOrganDonationConfirmationViewController *)self _createTableHeaderView];
-  [v14 setTableHeaderView:v15];
+  tableView = [(HKOrganDonationConfirmationViewController *)self tableView];
+  _createTableHeaderView = [(HKOrganDonationConfirmationViewController *)self _createTableHeaderView];
+  [tableView setTableHeaderView:_createTableHeaderView];
 
-  v16 = [(HKOrganDonationConfirmationViewController *)self _createTableFooterView];
+  _createTableFooterView = [(HKOrganDonationConfirmationViewController *)self _createTableFooterView];
   footerView = self->_footerView;
-  self->_footerView = v16;
+  self->_footerView = _createTableFooterView;
 
-  v18 = [(HKOrganDonationConfirmationViewController *)self view];
-  [v18 addSubview:self->_footerView];
+  view3 = [(HKOrganDonationConfirmationViewController *)self view];
+  [view3 addSubview:self->_footerView];
 
-  v19 = [(UIVisualEffectView *)self->_footerView leadingAnchor];
-  v20 = [(HKOrganDonationConfirmationViewController *)self view];
-  v21 = [v20 leadingAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21];
+  leadingAnchor = [(UIVisualEffectView *)self->_footerView leadingAnchor];
+  view4 = [(HKOrganDonationConfirmationViewController *)self view];
+  leadingAnchor2 = [view4 leadingAnchor];
+  v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v22 setActive:1];
 
-  v23 = [(UIVisualEffectView *)self->_footerView trailingAnchor];
-  v24 = [(HKOrganDonationConfirmationViewController *)self view];
-  v25 = [v24 trailingAnchor];
-  v26 = [v23 constraintEqualToAnchor:v25];
+  trailingAnchor = [(UIVisualEffectView *)self->_footerView trailingAnchor];
+  view5 = [(HKOrganDonationConfirmationViewController *)self view];
+  trailingAnchor2 = [view5 trailingAnchor];
+  v26 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v26 setActive:1];
 
-  v27 = [(UIVisualEffectView *)self->_footerView bottomAnchor];
-  v28 = [(HKOrganDonationConfirmationViewController *)self view];
-  v29 = [v28 bottomAnchor];
-  v30 = [v27 constraintEqualToAnchor:v29];
+  bottomAnchor = [(UIVisualEffectView *)self->_footerView bottomAnchor];
+  view6 = [(HKOrganDonationConfirmationViewController *)self view];
+  bottomAnchor2 = [view6 bottomAnchor];
+  v30 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v30 setActive:1];
 
   v31 = [(HKOrganDonationRegistrant *)self->_registrant dataEntryItemsValidOnly:1];
@@ -106,36 +106,36 @@
   v16.receiver = self;
   v16.super_class = HKOrganDonationConfirmationViewController;
   [(HKOrganDonationConfirmationViewController *)&v16 viewDidLayoutSubviews];
-  v3 = [(HKOrganDonationConfirmationViewController *)self tableView];
-  [v3 contentInset];
+  tableView = [(HKOrganDonationConfirmationViewController *)self tableView];
+  [tableView contentInset];
   v5 = v4;
   v7 = v6;
   v9 = v8;
 
   [(UIVisualEffectView *)self->_footerView frame];
   Height = CGRectGetHeight(v17);
-  v11 = [(HKOrganDonationConfirmationViewController *)self tableView];
-  [v11 safeAreaInsets];
+  tableView2 = [(HKOrganDonationConfirmationViewController *)self tableView];
+  [tableView2 safeAreaInsets];
   v13 = Height - v12;
 
-  v14 = [(HKOrganDonationConfirmationViewController *)self tableView];
-  [v14 setContentInset:{v5, v7, v13, v9}];
+  tableView3 = [(HKOrganDonationConfirmationViewController *)self tableView];
+  [tableView3 setContentInset:{v5, v7, v13, v9}];
 
-  v15 = [(HKOrganDonationConfirmationViewController *)self tableView];
-  [v15 setScrollIndicatorInsets:{v5, v7, v13, v9}];
+  tableView4 = [(HKOrganDonationConfirmationViewController *)self tableView];
+  [tableView4 setScrollIndicatorInsets:{v5, v7, v13, v9}];
 }
 
 - (id)_createTableHeaderView
 {
-  v3 = [(HKOrganDonationConfirmationViewController *)self view];
-  [v3 frame];
+  view = [(HKOrganDonationConfirmationViewController *)self view];
+  [view frame];
   CGRectGetHeight(v21);
-  v4 = [(HKOrganDonationConfirmationViewController *)self view];
+  view2 = [(HKOrganDonationConfirmationViewController *)self view];
   UIRoundToViewScale();
   v6 = v5;
 
-  v7 = [(HKOrganDonationConfirmationViewController *)self tableView];
-  [v7 frame];
+  tableView = [(HKOrganDonationConfirmationViewController *)self tableView];
+  [tableView frame];
   Width = CGRectGetWidth(v22);
 
   v9 = [HKTitledBuddyHeaderView alloc];
@@ -144,8 +144,8 @@
   v12 = [(HKTitledBuddyHeaderView *)v9 initWithTopInset:v11 linkButtonTitle:v6];
 
   [(HKTitledBuddyHeaderView *)v12 setDelegate:self];
-  v13 = [(HKTitledBuddyHeaderView *)v12 widthAnchor];
-  v14 = [v13 constraintEqualToConstant:Width];
+  widthAnchor = [(HKTitledBuddyHeaderView *)v12 widthAnchor];
+  v14 = [widthAnchor constraintEqualToConstant:Width];
   [v14 setActive:1];
 
   v15 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
@@ -172,42 +172,42 @@
   v8 = [MEMORY[0x1E69DC730] effectWithStyle:1];
   v9 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:v8];
   [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v10 = [v9 contentView];
-  [v10 addSubview:v7];
+  contentView = [v9 contentView];
+  [contentView addSubview:v7];
 
-  v11 = [v7 topAnchor];
-  v12 = [v9 topAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12 constant:32.0];
+  topAnchor = [v7 topAnchor];
+  topAnchor2 = [v9 topAnchor];
+  v13 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:32.0];
   [v13 setActive:1];
 
-  v14 = [v7 bottomAnchor];
-  v15 = [v9 bottomAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15 constant:-24.0];
+  bottomAnchor = [v7 bottomAnchor];
+  bottomAnchor2 = [v9 bottomAnchor];
+  v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-24.0];
   [v16 setActive:1];
 
-  v17 = [v7 centerXAnchor];
-  v18 = [v9 centerXAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  centerXAnchor = [v7 centerXAnchor];
+  centerXAnchor2 = [v9 centerXAnchor];
+  v19 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v19 setActive:1];
 
   return v9;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(HKOrganDonationConfirmationViewController *)self dataEntryItems];
-  v7 = [v5 row];
+  pathCopy = path;
+  dataEntryItems = [(HKOrganDonationConfirmationViewController *)self dataEntryItems];
+  v7 = [pathCopy row];
 
-  v8 = [v6 objectAtIndex:v7];
+  v8 = [dataEntryItems objectAtIndex:v7];
 
-  v9 = [v8 cell];
-  [v9 setEditDisabled:1];
+  cell = [v8 cell];
+  [cell setEditDisabled:1];
 
-  return v9;
+  return cell;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
   bodyFont = self->_bodyFont;
   IsUsingAccessibilityContentSizeCategory = HKUIApplicationIsUsingAccessibilityContentSizeCategory();
@@ -221,12 +221,12 @@
   return result;
 }
 
-- (void)submitButtonTapped:(id)a3
+- (void)submitButtonTapped:(id)tapped
 {
-  v4 = a3;
-  [v4 setEnabled:0];
-  v5 = [(HKOrganDonationConfirmationViewController *)self navigationItem];
-  [v5 setHidesBackButton:1 animated:1];
+  tappedCopy = tapped;
+  [tappedCopy setEnabled:0];
+  navigationItem = [(HKOrganDonationConfirmationViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1 animated:1];
 
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x1E69E9820];
@@ -235,7 +235,7 @@
   v11[3] = &unk_1E81B80C0;
   v11[4] = self;
   objc_copyWeak(&v13, &location);
-  v6 = v4;
+  v6 = tappedCopy;
   v12 = v6;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -350,15 +350,15 @@ void __64__HKOrganDonationConfirmationViewController_submitButtonTapped___block_
   }
 }
 
-- (void)confirmSubmissionIfNecessaryWithConfirmHandler:(id)a3 andCancelHandler:(id)a4
+- (void)confirmSubmissionIfNecessaryWithConfirmHandler:(id)handler andCancelHandler:(id)cancelHandler
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  cancelHandlerCopy = cancelHandler;
   if (+[HKOrganDonationConnectionManager registrationSubmissionHostConfiguration]== 2)
   {
-    if (v6)
+    if (handlerCopy)
     {
-      v6[2](v6);
+      handlerCopy[2](handlerCopy);
     }
   }
 
@@ -370,7 +370,7 @@ void __64__HKOrganDonationConfirmationViewController_submitButtonTapped___block_
     v18[1] = 3221225472;
     v18[2] = __109__HKOrganDonationConfirmationViewController_confirmSubmissionIfNecessaryWithConfirmHandler_andCancelHandler___block_invoke;
     v18[3] = &unk_1E81B8440;
-    v19 = v7;
+    v19 = cancelHandlerCopy;
     v10 = [v9 actionWithTitle:@"Cancel" style:1 handler:v18];
     [v8 addAction:v10];
 
@@ -379,7 +379,7 @@ void __64__HKOrganDonationConfirmationViewController_submitButtonTapped___block_
     v14 = 3221225472;
     v15 = __109__HKOrganDonationConfirmationViewController_confirmSubmissionIfNecessaryWithConfirmHandler_andCancelHandler___block_invoke_2;
     v16 = &unk_1E81B8440;
-    v17 = v6;
+    v17 = handlerCopy;
     v12 = [v11 actionWithTitle:@"Submit" style:0 handler:&v13];
     [v8 addAction:{v12, v13, v14, v15, v16}];
 
@@ -409,26 +409,26 @@ uint64_t __109__HKOrganDonationConfirmationViewController_confirmSubmissionIfNec
   return result;
 }
 
-- (void)titledBuddyHeaderViewDidTapLinkButton:(id)a3
+- (void)titledBuddyHeaderViewDidTapLinkButton:(id)button
 {
   v6 = objc_alloc_init(HKOrganDonationMoreAboutPrivacyViewController);
   v4 = [[HKNavigationController alloc] initWithRootViewController:v6];
-  v5 = [(HKOrganDonationConfirmationViewController *)self navigationController];
-  [v5 presentViewController:v4 animated:1 completion:0];
+  navigationController = [(HKOrganDonationConfirmationViewController *)self navigationController];
+  [navigationController presentViewController:v4 animated:1 completion:0];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v12.receiver = self;
   v12.super_class = HKOrganDonationConfirmationViewController;
-  [(HKOrganDonationConfirmationViewController *)&v12 traitCollectionDidChange:v4];
-  if (v4)
+  [(HKOrganDonationConfirmationViewController *)&v12 traitCollectionDidChange:changeCopy];
+  if (changeCopy)
   {
-    v5 = [(HKOrganDonationConfirmationViewController *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
-    v7 = [v4 preferredContentSizeCategory];
-    v8 = [v6 isEqualToString:v7];
+    traitCollection = [(HKOrganDonationConfirmationViewController *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+    v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
     if ((v8 & 1) == 0)
     {

@@ -1,17 +1,17 @@
 @interface SISchemaServerEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (SISchemaConversationTrace)serverConversationTrace;
 - (SISchemaDeviceFixedContext)serverDeviceFixedContext;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (SISchemaServerEvent)initWithDictionary:(id)a3;
-- (SISchemaServerEvent)initWithJSON:(id)a3;
+- (SISchemaServerEvent)initWithDictionary:(id)dictionary;
+- (SISchemaServerEvent)initWithJSON:(id)n;
 - (SISchemaServerGeneratedDismissal)serverGeneratedDismissal;
 - (SISchemaSpeechResultSelected)speechResultSelected;
 - (SISchemaTurnInteraction)turnInteraction;
 - (SISchemaUserSpeechDuration)userSpeechDuration;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)qualifiedMessageName;
@@ -24,26 +24,26 @@
 - (void)deleteSpeechResultSelected;
 - (void)deleteTurnInteraction;
 - (void)deleteUserSpeechDuration;
-- (void)setServerConversationTrace:(id)a3;
-- (void)setServerDeviceFixedContext:(id)a3;
-- (void)setServerGeneratedDismissal:(id)a3;
-- (void)setSpeechResultSelected:(id)a3;
-- (void)setTurnInteraction:(id)a3;
-- (void)setUserSpeechDuration:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setServerConversationTrace:(id)trace;
+- (void)setServerDeviceFixedContext:(id)context;
+- (void)setServerGeneratedDismissal:(id)dismissal;
+- (void)setSpeechResultSelected:(id)selected;
+- (void)setTurnInteraction:(id)interaction;
+- (void)setUserSpeechDuration:(id)duration;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaServerEvent
 
-- (SISchemaServerEvent)initWithDictionary:(id)a3
+- (SISchemaServerEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = SISchemaServerEvent;
   v5 = [(SISchemaServerEvent *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -51,7 +51,7 @@
       [(SISchemaServerEvent *)v5 setEventMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"userSpeechDuration"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"userSpeechDuration"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -59,7 +59,7 @@
       [(SISchemaServerEvent *)v5 setUserSpeechDuration:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"serverConversationTrace"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"serverConversationTrace"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -67,7 +67,7 @@
       [(SISchemaServerEvent *)v5 setServerConversationTrace:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"turnInteraction"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"turnInteraction"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -75,7 +75,7 @@
       [(SISchemaServerEvent *)v5 setTurnInteraction:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"speechResultSelected"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"speechResultSelected"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -83,7 +83,7 @@
       [(SISchemaServerEvent *)v5 setSpeechResultSelected:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"serverDeviceFixedContext"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"serverDeviceFixedContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -91,7 +91,7 @@
       [(SISchemaServerEvent *)v5 setServerDeviceFixedContext:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"serverGeneratedDismissal"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"serverGeneratedDismissal"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -105,30 +105,30 @@
   return v5;
 }
 
-- (SISchemaServerEvent)initWithJSON:(id)a3
+- (SISchemaServerEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaServerEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaServerEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaServerEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -141,122 +141,122 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_eventMetadata)
   {
-    v4 = [(SISchemaServerEvent *)self eventMetadata];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    eventMetadata = [(SISchemaServerEvent *)self eventMetadata];
+    dictionaryRepresentation = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"eventMetadata"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"eventMetadata"];
     }
   }
 
   if (self->_serverConversationTrace)
   {
-    v7 = [(SISchemaServerEvent *)self serverConversationTrace];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    serverConversationTrace = [(SISchemaServerEvent *)self serverConversationTrace];
+    dictionaryRepresentation2 = [serverConversationTrace dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"serverConversationTrace"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"serverConversationTrace"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"serverConversationTrace"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"serverConversationTrace"];
     }
   }
 
   if (self->_serverDeviceFixedContext)
   {
-    v10 = [(SISchemaServerEvent *)self serverDeviceFixedContext];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    serverDeviceFixedContext = [(SISchemaServerEvent *)self serverDeviceFixedContext];
+    dictionaryRepresentation3 = [serverDeviceFixedContext dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"serverDeviceFixedContext"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"serverDeviceFixedContext"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"serverDeviceFixedContext"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"serverDeviceFixedContext"];
     }
   }
 
   if (self->_serverGeneratedDismissal)
   {
-    v13 = [(SISchemaServerEvent *)self serverGeneratedDismissal];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    serverGeneratedDismissal = [(SISchemaServerEvent *)self serverGeneratedDismissal];
+    dictionaryRepresentation4 = [serverGeneratedDismissal dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"serverGeneratedDismissal"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"serverGeneratedDismissal"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"serverGeneratedDismissal"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"serverGeneratedDismissal"];
     }
   }
 
   if (self->_speechResultSelected)
   {
-    v16 = [(SISchemaServerEvent *)self speechResultSelected];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    speechResultSelected = [(SISchemaServerEvent *)self speechResultSelected];
+    dictionaryRepresentation5 = [speechResultSelected dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"speechResultSelected"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"speechResultSelected"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"speechResultSelected"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"speechResultSelected"];
     }
   }
 
   if (self->_turnInteraction)
   {
-    v19 = [(SISchemaServerEvent *)self turnInteraction];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    turnInteraction = [(SISchemaServerEvent *)self turnInteraction];
+    dictionaryRepresentation6 = [turnInteraction dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"turnInteraction"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"turnInteraction"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"turnInteraction"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"turnInteraction"];
     }
   }
 
   if (self->_userSpeechDuration)
   {
-    v22 = [(SISchemaServerEvent *)self userSpeechDuration];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    userSpeechDuration = [(SISchemaServerEvent *)self userSpeechDuration];
+    dictionaryRepresentation7 = [userSpeechDuration dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"userSpeechDuration"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"userSpeechDuration"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"userSpeechDuration"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"userSpeechDuration"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -270,34 +270,34 @@
   return v6 ^ v8 ^ [(SISchemaServerGeneratedDismissal *)self->_serverGeneratedDismissal hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_38;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_38;
   }
 
-  v6 = [(SISchemaServerEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaServerEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_37;
   }
 
-  v8 = [(SISchemaServerEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(SISchemaServerEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(SISchemaServerEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(SISchemaServerEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -309,20 +309,20 @@
   {
   }
 
-  v6 = [(SISchemaServerEvent *)self userSpeechDuration];
-  v7 = [v4 userSpeechDuration];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaServerEvent *)self userSpeechDuration];
+  eventMetadata2 = [equalCopy userSpeechDuration];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_37;
   }
 
-  v13 = [(SISchemaServerEvent *)self userSpeechDuration];
-  if (v13)
+  userSpeechDuration = [(SISchemaServerEvent *)self userSpeechDuration];
+  if (userSpeechDuration)
   {
-    v14 = v13;
-    v15 = [(SISchemaServerEvent *)self userSpeechDuration];
-    v16 = [v4 userSpeechDuration];
-    v17 = [v15 isEqual:v16];
+    v14 = userSpeechDuration;
+    userSpeechDuration2 = [(SISchemaServerEvent *)self userSpeechDuration];
+    userSpeechDuration3 = [equalCopy userSpeechDuration];
+    v17 = [userSpeechDuration2 isEqual:userSpeechDuration3];
 
     if (!v17)
     {
@@ -334,20 +334,20 @@
   {
   }
 
-  v6 = [(SISchemaServerEvent *)self serverConversationTrace];
-  v7 = [v4 serverConversationTrace];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaServerEvent *)self serverConversationTrace];
+  eventMetadata2 = [equalCopy serverConversationTrace];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_37;
   }
 
-  v18 = [(SISchemaServerEvent *)self serverConversationTrace];
-  if (v18)
+  serverConversationTrace = [(SISchemaServerEvent *)self serverConversationTrace];
+  if (serverConversationTrace)
   {
-    v19 = v18;
-    v20 = [(SISchemaServerEvent *)self serverConversationTrace];
-    v21 = [v4 serverConversationTrace];
-    v22 = [v20 isEqual:v21];
+    v19 = serverConversationTrace;
+    serverConversationTrace2 = [(SISchemaServerEvent *)self serverConversationTrace];
+    serverConversationTrace3 = [equalCopy serverConversationTrace];
+    v22 = [serverConversationTrace2 isEqual:serverConversationTrace3];
 
     if (!v22)
     {
@@ -359,20 +359,20 @@
   {
   }
 
-  v6 = [(SISchemaServerEvent *)self turnInteraction];
-  v7 = [v4 turnInteraction];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaServerEvent *)self turnInteraction];
+  eventMetadata2 = [equalCopy turnInteraction];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_37;
   }
 
-  v23 = [(SISchemaServerEvent *)self turnInteraction];
-  if (v23)
+  turnInteraction = [(SISchemaServerEvent *)self turnInteraction];
+  if (turnInteraction)
   {
-    v24 = v23;
-    v25 = [(SISchemaServerEvent *)self turnInteraction];
-    v26 = [v4 turnInteraction];
-    v27 = [v25 isEqual:v26];
+    v24 = turnInteraction;
+    turnInteraction2 = [(SISchemaServerEvent *)self turnInteraction];
+    turnInteraction3 = [equalCopy turnInteraction];
+    v27 = [turnInteraction2 isEqual:turnInteraction3];
 
     if (!v27)
     {
@@ -384,20 +384,20 @@
   {
   }
 
-  v6 = [(SISchemaServerEvent *)self speechResultSelected];
-  v7 = [v4 speechResultSelected];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaServerEvent *)self speechResultSelected];
+  eventMetadata2 = [equalCopy speechResultSelected];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_37;
   }
 
-  v28 = [(SISchemaServerEvent *)self speechResultSelected];
-  if (v28)
+  speechResultSelected = [(SISchemaServerEvent *)self speechResultSelected];
+  if (speechResultSelected)
   {
-    v29 = v28;
-    v30 = [(SISchemaServerEvent *)self speechResultSelected];
-    v31 = [v4 speechResultSelected];
-    v32 = [v30 isEqual:v31];
+    v29 = speechResultSelected;
+    speechResultSelected2 = [(SISchemaServerEvent *)self speechResultSelected];
+    speechResultSelected3 = [equalCopy speechResultSelected];
+    v32 = [speechResultSelected2 isEqual:speechResultSelected3];
 
     if (!v32)
     {
@@ -409,20 +409,20 @@
   {
   }
 
-  v6 = [(SISchemaServerEvent *)self serverDeviceFixedContext];
-  v7 = [v4 serverDeviceFixedContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaServerEvent *)self serverDeviceFixedContext];
+  eventMetadata2 = [equalCopy serverDeviceFixedContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_37;
   }
 
-  v33 = [(SISchemaServerEvent *)self serverDeviceFixedContext];
-  if (v33)
+  serverDeviceFixedContext = [(SISchemaServerEvent *)self serverDeviceFixedContext];
+  if (serverDeviceFixedContext)
   {
-    v34 = v33;
-    v35 = [(SISchemaServerEvent *)self serverDeviceFixedContext];
-    v36 = [v4 serverDeviceFixedContext];
-    v37 = [v35 isEqual:v36];
+    v34 = serverDeviceFixedContext;
+    serverDeviceFixedContext2 = [(SISchemaServerEvent *)self serverDeviceFixedContext];
+    serverDeviceFixedContext3 = [equalCopy serverDeviceFixedContext];
+    v37 = [serverDeviceFixedContext2 isEqual:serverDeviceFixedContext3];
 
     if (!v37)
     {
@@ -434,12 +434,12 @@
   {
   }
 
-  v6 = [(SISchemaServerEvent *)self serverGeneratedDismissal];
-  v7 = [v4 serverGeneratedDismissal];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(SISchemaServerEvent *)self serverGeneratedDismissal];
+  eventMetadata2 = [equalCopy serverGeneratedDismissal];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v38 = [(SISchemaServerEvent *)self serverGeneratedDismissal];
-    if (!v38)
+    serverGeneratedDismissal = [(SISchemaServerEvent *)self serverGeneratedDismissal];
+    if (!serverGeneratedDismissal)
     {
 
 LABEL_41:
@@ -447,10 +447,10 @@ LABEL_41:
       goto LABEL_39;
     }
 
-    v39 = v38;
-    v40 = [(SISchemaServerEvent *)self serverGeneratedDismissal];
-    v41 = [v4 serverGeneratedDismissal];
-    v42 = [v40 isEqual:v41];
+    v39 = serverGeneratedDismissal;
+    serverGeneratedDismissal2 = [(SISchemaServerEvent *)self serverGeneratedDismissal];
+    serverGeneratedDismissal3 = [equalCopy serverGeneratedDismissal];
+    v42 = [serverGeneratedDismissal2 isEqual:serverGeneratedDismissal3];
 
     if (v42)
     {
@@ -470,66 +470,66 @@ LABEL_39:
   return v43;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v19 = a3;
-  v4 = [(SISchemaServerEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(SISchemaServerEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(SISchemaServerEvent *)self eventMetadata];
+    eventMetadata2 = [(SISchemaServerEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(SISchemaServerEvent *)self userSpeechDuration];
+  userSpeechDuration = [(SISchemaServerEvent *)self userSpeechDuration];
 
-  if (v6)
+  if (userSpeechDuration)
   {
-    v7 = [(SISchemaServerEvent *)self userSpeechDuration];
+    userSpeechDuration2 = [(SISchemaServerEvent *)self userSpeechDuration];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(SISchemaServerEvent *)self serverConversationTrace];
+  serverConversationTrace = [(SISchemaServerEvent *)self serverConversationTrace];
 
-  if (v8)
+  if (serverConversationTrace)
   {
-    v9 = [(SISchemaServerEvent *)self serverConversationTrace];
+    serverConversationTrace2 = [(SISchemaServerEvent *)self serverConversationTrace];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(SISchemaServerEvent *)self turnInteraction];
+  turnInteraction = [(SISchemaServerEvent *)self turnInteraction];
 
-  if (v10)
+  if (turnInteraction)
   {
-    v11 = [(SISchemaServerEvent *)self turnInteraction];
+    turnInteraction2 = [(SISchemaServerEvent *)self turnInteraction];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(SISchemaServerEvent *)self speechResultSelected];
+  speechResultSelected = [(SISchemaServerEvent *)self speechResultSelected];
 
-  if (v12)
+  if (speechResultSelected)
   {
-    v13 = [(SISchemaServerEvent *)self speechResultSelected];
+    speechResultSelected2 = [(SISchemaServerEvent *)self speechResultSelected];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(SISchemaServerEvent *)self serverDeviceFixedContext];
+  serverDeviceFixedContext = [(SISchemaServerEvent *)self serverDeviceFixedContext];
 
-  if (v14)
+  if (serverDeviceFixedContext)
   {
-    v15 = [(SISchemaServerEvent *)self serverDeviceFixedContext];
+    serverDeviceFixedContext2 = [(SISchemaServerEvent *)self serverDeviceFixedContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(SISchemaServerEvent *)self serverGeneratedDismissal];
+  serverGeneratedDismissal = [(SISchemaServerEvent *)self serverGeneratedDismissal];
 
-  v17 = v19;
-  if (v16)
+  v17 = toCopy;
+  if (serverGeneratedDismissal)
   {
-    v18 = [(SISchemaServerEvent *)self serverGeneratedDismissal];
+    serverGeneratedDismissal2 = [(SISchemaServerEvent *)self serverGeneratedDismissal];
     PBDataWriterWriteSubmessage();
 
-    v17 = v19;
+    v17 = toCopy;
   }
 }
 
@@ -558,9 +558,9 @@ LABEL_39:
   return v3;
 }
 
-- (void)setServerGeneratedDismissal:(id)a3
+- (void)setServerGeneratedDismissal:(id)dismissal
 {
-  v4 = a3;
+  dismissalCopy = dismissal;
   userSpeechDuration = self->_userSpeechDuration;
   self->_userSpeechDuration = 0;
 
@@ -577,14 +577,14 @@ LABEL_39:
   self->_serverDeviceFixedContext = 0;
 
   v10 = 106;
-  if (!v4)
+  if (!dismissalCopy)
   {
     v10 = 0;
   }
 
   self->_whichEvent_Type = v10;
   serverGeneratedDismissal = self->_serverGeneratedDismissal;
-  self->_serverGeneratedDismissal = v4;
+  self->_serverGeneratedDismissal = dismissalCopy;
 }
 
 - (void)deleteServerDeviceFixedContext
@@ -612,9 +612,9 @@ LABEL_39:
   return v3;
 }
 
-- (void)setServerDeviceFixedContext:(id)a3
+- (void)setServerDeviceFixedContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   userSpeechDuration = self->_userSpeechDuration;
   self->_userSpeechDuration = 0;
 
@@ -631,14 +631,14 @@ LABEL_39:
   self->_serverGeneratedDismissal = 0;
 
   v10 = 105;
-  if (!v4)
+  if (!contextCopy)
   {
     v10 = 0;
   }
 
   self->_whichEvent_Type = v10;
   serverDeviceFixedContext = self->_serverDeviceFixedContext;
-  self->_serverDeviceFixedContext = v4;
+  self->_serverDeviceFixedContext = contextCopy;
 }
 
 - (void)deleteSpeechResultSelected
@@ -666,9 +666,9 @@ LABEL_39:
   return v3;
 }
 
-- (void)setSpeechResultSelected:(id)a3
+- (void)setSpeechResultSelected:(id)selected
 {
-  v4 = a3;
+  selectedCopy = selected;
   userSpeechDuration = self->_userSpeechDuration;
   self->_userSpeechDuration = 0;
 
@@ -685,14 +685,14 @@ LABEL_39:
   self->_serverGeneratedDismissal = 0;
 
   v10 = 104;
-  if (!v4)
+  if (!selectedCopy)
   {
     v10 = 0;
   }
 
   self->_whichEvent_Type = v10;
   speechResultSelected = self->_speechResultSelected;
-  self->_speechResultSelected = v4;
+  self->_speechResultSelected = selectedCopy;
 }
 
 - (void)deleteTurnInteraction
@@ -720,9 +720,9 @@ LABEL_39:
   return v3;
 }
 
-- (void)setTurnInteraction:(id)a3
+- (void)setTurnInteraction:(id)interaction
 {
-  v4 = a3;
+  interactionCopy = interaction;
   userSpeechDuration = self->_userSpeechDuration;
   self->_userSpeechDuration = 0;
 
@@ -739,14 +739,14 @@ LABEL_39:
   self->_serverGeneratedDismissal = 0;
 
   v10 = 103;
-  if (!v4)
+  if (!interactionCopy)
   {
     v10 = 0;
   }
 
   self->_whichEvent_Type = v10;
   turnInteraction = self->_turnInteraction;
-  self->_turnInteraction = v4;
+  self->_turnInteraction = interactionCopy;
 }
 
 - (void)deleteServerConversationTrace
@@ -774,9 +774,9 @@ LABEL_39:
   return v3;
 }
 
-- (void)setServerConversationTrace:(id)a3
+- (void)setServerConversationTrace:(id)trace
 {
-  v4 = a3;
+  traceCopy = trace;
   userSpeechDuration = self->_userSpeechDuration;
   self->_userSpeechDuration = 0;
 
@@ -793,14 +793,14 @@ LABEL_39:
   self->_serverGeneratedDismissal = 0;
 
   v10 = 102;
-  if (!v4)
+  if (!traceCopy)
   {
     v10 = 0;
   }
 
   self->_whichEvent_Type = v10;
   serverConversationTrace = self->_serverConversationTrace;
-  self->_serverConversationTrace = v4;
+  self->_serverConversationTrace = traceCopy;
 }
 
 - (void)deleteUserSpeechDuration
@@ -828,9 +828,9 @@ LABEL_39:
   return v3;
 }
 
-- (void)setUserSpeechDuration:(id)a3
+- (void)setUserSpeechDuration:(id)duration
 {
-  v4 = a3;
+  durationCopy = duration;
   serverConversationTrace = self->_serverConversationTrace;
   self->_serverConversationTrace = 0;
 
@@ -847,95 +847,95 @@ LABEL_39:
   self->_serverGeneratedDismissal = 0;
 
   v10 = 101;
-  if (!v4)
+  if (!durationCopy)
   {
     v10 = 0;
   }
 
   self->_whichEvent_Type = v10;
   userSpeechDuration = self->_userSpeechDuration;
-  self->_userSpeechDuration = v4;
+  self->_userSpeechDuration = durationCopy;
 }
 
 - (id)qualifiedMessageName
 {
-  v2 = [(SISchemaServerEvent *)self whichEvent_Type];
-  if (v2 - 101 > 5)
+  whichEvent_Type = [(SISchemaServerEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 5)
   {
     return @"com.apple.aiml.siri.uei.ServerEvent";
   }
 
   else
   {
-    return off_1E78E6460[v2 - 101];
+    return off_1E78E6460[whichEvent_Type - 101];
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v28.receiver = self;
   v28.super_class = SISchemaServerEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v28 applySensitiveConditionsPolicy:v4];
-  v6 = [(SISchemaServerEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v28 applySensitiveConditionsPolicy:policyCopy];
+  eventMetadata = [(SISchemaServerEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(SISchemaServerEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(SISchemaServerEvent *)self userSpeechDuration];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  userSpeechDuration = [(SISchemaServerEvent *)self userSpeechDuration];
+  v10 = [userSpeechDuration applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(SISchemaServerEvent *)self deleteUserSpeechDuration];
   }
 
-  v12 = [(SISchemaServerEvent *)self serverConversationTrace];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  serverConversationTrace = [(SISchemaServerEvent *)self serverConversationTrace];
+  v13 = [serverConversationTrace applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(SISchemaServerEvent *)self deleteServerConversationTrace];
   }
 
-  v15 = [(SISchemaServerEvent *)self turnInteraction];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  turnInteraction = [(SISchemaServerEvent *)self turnInteraction];
+  v16 = [turnInteraction applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(SISchemaServerEvent *)self deleteTurnInteraction];
   }
 
-  v18 = [(SISchemaServerEvent *)self speechResultSelected];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  speechResultSelected = [(SISchemaServerEvent *)self speechResultSelected];
+  v19 = [speechResultSelected applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(SISchemaServerEvent *)self deleteSpeechResultSelected];
   }
 
-  v21 = [(SISchemaServerEvent *)self serverDeviceFixedContext];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  serverDeviceFixedContext = [(SISchemaServerEvent *)self serverDeviceFixedContext];
+  v22 = [serverDeviceFixedContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(SISchemaServerEvent *)self deleteServerDeviceFixedContext];
   }
 
-  v24 = [(SISchemaServerEvent *)self serverGeneratedDismissal];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  serverGeneratedDismissal = [(SISchemaServerEvent *)self serverGeneratedDismissal];
+  v25 = [serverGeneratedDismissal applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(SISchemaServerEvent *)self deleteServerGeneratedDismissal];
   }
@@ -954,93 +954,93 @@ LABEL_39:
 - (int)componentName
 {
   v3 = [SISchemaUUID alloc];
-  v4 = [(SISchemaServerEvent *)self eventMetadata];
-  v5 = [v4 turnID];
-  v6 = [(SISchemaUUID *)v3 initWithBytesAsData:v5];
+  eventMetadata = [(SISchemaServerEvent *)self eventMetadata];
+  turnID = [eventMetadata turnID];
+  v6 = [(SISchemaUUID *)v3 initWithBytesAsData:turnID];
 
   if (v6)
   {
-    v7 = [(SISchemaUUID *)v6 value];
-    if (v7)
+    value = [(SISchemaUUID *)v6 value];
+    if (value)
     {
-      v8 = [(SISchemaUUID *)v6 value];
-      v9 = [v8 length] != 0;
+      value2 = [(SISchemaUUID *)v6 value];
+      v9 = [value2 length] != 0;
 
-      LODWORD(v7) = 2 * v9;
+      LODWORD(value) = 2 * v9;
     }
   }
 
   else
   {
-    LODWORD(v7) = 0;
+    LODWORD(value) = 0;
   }
 
-  return v7;
+  return value;
 }
 
 - (id)getComponentId
 {
   v3 = [SISchemaUUID alloc];
-  v4 = [(SISchemaServerEvent *)self eventMetadata];
-  v5 = [v4 turnID];
-  v6 = [(SISchemaUUID *)v3 initWithBytesAsData:v5];
+  eventMetadata = [(SISchemaServerEvent *)self eventMetadata];
+  turnID = [eventMetadata turnID];
+  v6 = [(SISchemaUUID *)v3 initWithBytesAsData:turnID];
 
   if (!v6)
   {
     goto LABEL_5;
   }
 
-  v7 = [(SISchemaUUID *)v6 value];
-  if (!v7)
+  value = [(SISchemaUUID *)v6 value];
+  if (!value)
   {
     goto LABEL_6;
   }
 
-  v8 = [(SISchemaUUID *)v6 value];
-  v9 = [v8 length];
+  value2 = [(SISchemaUUID *)v6 value];
+  v9 = [value2 length];
 
   if (v9)
   {
-    v7 = v6;
+    value = v6;
   }
 
   else
   {
 LABEL_5:
-    v7 = 0;
+    value = 0;
   }
 
 LABEL_6:
 
-  return v7;
+  return value;
 }
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(SISchemaServerEvent *)self whichEvent_Type];
-  if (v3 - 101 > 5)
+  whichEvent_Type = [(SISchemaServerEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 5)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.super.super.super.isa + *off_1E78EB2C8[v3 - 101]);
+    v4 = *(&self->super.super.super.super.isa + *off_1E78EB2C8[whichEvent_Type - 101]);
   }
 
   return v4;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 - 101 > 5)
+  if (tag - 101 > 5)
   {
     return 0;
   }
 
   else
   {
-    return off_1E78EB2F8[a3 - 101];
+    return off_1E78EB2F8[tag - 101];
   }
 }
 

@@ -1,7 +1,7 @@
 @interface WLKSystemPreferencesStore
 + (BOOL)isSystemPreferencesStoreInitializing;
 + (id)sharedPreferences;
-+ (void)_synchronizeSettingsDefaultsForKeys:(id)a3;
++ (void)_synchronizeSettingsDefaultsForKeys:(id)keys;
 - (BOOL)downloadsCompatibleWithAVAdapter;
 - (BOOL)hasAVAdapterEvenBeenConnected;
 - (BOOL)hasPostPlayAutoPlayNextVideoPreferences;
@@ -19,15 +19,15 @@
 - (NSNumber)preferredPlaybackDimensionality;
 - (NSString)audioLanguageCodeIncludingSentinel;
 - (WLKSystemPreferencesStore)init;
-- (id)_getPreferencesValue:(id)a3 fallbackValue:(id)a4;
+- (id)_getPreferencesValue:(id)value fallbackValue:(id)fallbackValue;
 - (void)_publishCrossProcessPreferencesChangedNotification;
-- (void)_setDefaultsValue:(id)a3 key:(id)a4 syncNPS:(BOOL)a5;
-- (void)_setPreferencesValue:(id)a3 forKey:(id)a4;
+- (void)_setDefaultsValue:(id)value key:(id)key syncNPS:(BOOL)s;
+- (void)_setPreferencesValue:(id)value forKey:(id)key;
 - (void)dealloc;
-- (void)migratePrivateModeFromDiskIfNeeded:(id)a3;
-- (void)migrateSportsSpoilersFromDiskIfNeeded:(id)a3;
+- (void)migratePrivateModeFromDiskIfNeeded:(id)needed;
+- (void)migrateSportsSpoilersFromDiskIfNeeded:(id)needed;
 - (void)removePostPlayAutoPlayNextVideoPreferences;
-- (void)setAudioLanguageCode:(id)a3;
+- (void)setAudioLanguageCode:(id)code;
 @end
 
 @implementation WLKSystemPreferencesStore
@@ -77,9 +77,9 @@ void __46__WLKSystemPreferencesStore_sharedPreferences__block_invoke()
 
     if (WLKIsTVApp())
     {
-      v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
       defaultsAccessor = v2->_defaultsAccessor;
-      v2->_defaultsAccessor = v6;
+      v2->_defaultsAccessor = standardUserDefaults;
     }
 
     else
@@ -106,25 +106,25 @@ void __46__WLKSystemPreferencesStore_sharedPreferences__block_invoke()
 - (BOOL)useCellularDataPlayback
 {
   v2 = [(WLKSystemPreferencesStore *)self _getPreferencesValue:@"CellularDataMode" fallbackValue:MEMORY[0x277CBEC28]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)useCellularDataDownload
 {
   v2 = [(WLKSystemPreferencesStore *)self _getPreferencesValue:@"DownloadUseCellular" fallbackValue:MEMORY[0x277CBEC28]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)downloadsCompatibleWithAVAdapter
 {
   v2 = [(WLKSystemPreferencesStore *)self _getPreferencesValue:@"DownloadsCompatibleWithAVAdapter" fallbackValue:MEMORY[0x277CBEC28]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSArray)selectedAudioLanguagesDownload
@@ -138,9 +138,9 @@ void __46__WLKSystemPreferencesStore_sharedPreferences__block_invoke()
 - (BOOL)subtitleDefaultLanguageEnabledDownload
 {
   v2 = [(WLKSystemPreferencesStore *)self _getPreferencesValue:@"UseDefaultSubtitleLanguages" fallbackValue:MEMORY[0x277CBEC38]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSArray)subtitleAudioLanguagesDownload
@@ -176,9 +176,9 @@ void __46__WLKSystemPreferencesStore_sharedPreferences__block_invoke()
 - (BOOL)useAutomaticDownloads
 {
   v2 = [(WLKSystemPreferencesStore *)self _getPreferencesValue:@"AutoDownloads" fallbackValue:MEMORY[0x277CBEC28]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)hasPostPlayAutoPlayNextVideoPreferences
@@ -224,10 +224,10 @@ void __33__WLKSystemPreferencesStore_init__block_invoke(uint64_t a1)
   [(WLKSystemPreferencesStore *)&v4 dealloc];
 }
 
-- (void)setAudioLanguageCode:(id)a3
+- (void)setAudioLanguageCode:(id)code
 {
-  v5 = a3;
-  if ([v5 isEqualToString:@"AUTO_SENTINEL_VALUE"])
+  codeCopy = code;
+  if ([codeCopy isEqualToString:@"AUTO_SENTINEL_VALUE"])
   {
 
     v4 = 0;
@@ -235,7 +235,7 @@ void __33__WLKSystemPreferencesStore_init__block_invoke(uint64_t a1)
 
   else
   {
-    v4 = v5;
+    v4 = codeCopy;
   }
 
   v6 = v4;
@@ -244,13 +244,13 @@ void __33__WLKSystemPreferencesStore_init__block_invoke(uint64_t a1)
 
 - (NSString)audioLanguageCodeIncludingSentinel
 {
-  v2 = [(WLKSystemPreferencesStore *)self audioLanguageCode];
-  if (!v2)
+  audioLanguageCode = [(WLKSystemPreferencesStore *)self audioLanguageCode];
+  if (!audioLanguageCode)
   {
-    v2 = @"AUTO_SENTINEL_VALUE";
+    audioLanguageCode = @"AUTO_SENTINEL_VALUE";
   }
 
-  return v2;
+  return audioLanguageCode;
 }
 
 - (NSArray)supplementaryAvailableAudioLanguages
@@ -264,9 +264,9 @@ void __33__WLKSystemPreferencesStore_init__block_invoke(uint64_t a1)
 - (BOOL)hasAVAdapterEvenBeenConnected
 {
   v2 = [(WLKSystemPreferencesStore *)self _getPreferencesValue:@"HasAVAdapterEverBeenConnected" fallbackValue:MEMORY[0x277CBEC28]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSNumber)preferredPlaybackDimensionality
@@ -395,21 +395,21 @@ void __79__WLKSystemPreferencesStore__publishCrossProcessPreferencesChangedNotif
   }
 }
 
-- (void)_setDefaultsValue:(id)a3 key:(id)a4 syncNPS:(BOOL)a5
+- (void)_setDefaultsValue:(id)value key:(id)key syncNPS:(BOOL)s
 {
-  v8 = a3;
-  v9 = a4;
+  valueCopy = value;
+  keyCopy = key;
   accessQueue = self->_accessQueue;
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __59__WLKSystemPreferencesStore__setDefaultsValue_key_syncNPS___block_invoke;
   v16 = &unk_279E5F9F8;
-  v17 = self;
-  v18 = v8;
-  v19 = v9;
-  v20 = a5;
-  v11 = v9;
-  v12 = v8;
+  selfCopy = self;
+  v18 = valueCopy;
+  v19 = keyCopy;
+  sCopy = s;
+  v11 = keyCopy;
+  v12 = valueCopy;
   dispatch_sync(accessQueue, &v13);
   [(WLKSystemPreferencesStore *)self _publishCrossProcessPreferencesChangedNotification:v13];
 }
@@ -444,20 +444,20 @@ void __59__WLKSystemPreferencesStore__setDefaultsValue_key_syncNPS___block_invok
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setPreferencesValue:(id)a3 forKey:(id)a4
+- (void)_setPreferencesValue:(id)value forKey:(id)key
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  CFPreferencesSetAppValue(v7, v6, @"com.apple.videos-preferences");
+  valueCopy = value;
+  keyCopy = key;
+  CFPreferencesSetAppValue(keyCopy, valueCopy, @"com.apple.videos-preferences");
   CFPreferencesAppSynchronize(@"com.apple.videos-preferences");
   v8 = WLKSystemLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412802;
-    v11 = v6;
+    v11 = valueCopy;
     v12 = 2112;
-    v13 = v7;
+    v13 = keyCopy;
     v14 = 2112;
     v15 = @"com.apple.videos-preferences";
     _os_log_impl(&dword_272A0F000, v8, OS_LOG_TYPE_DEFAULT, "WLKSystemPreferencesStore - set CFPrefs value %@ for key %@ in domain %@", &v10, 0x20u);
@@ -467,16 +467,16 @@ void __59__WLKSystemPreferencesStore__setDefaultsValue_key_syncNPS___block_invok
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_getPreferencesValue:(id)a3 fallbackValue:(id)a4
+- (id)_getPreferencesValue:(id)value fallbackValue:(id)fallbackValue
 {
-  v5 = a4;
-  v6 = CFPreferencesCopyAppValue(a3, @"com.apple.videos-preferences");
+  fallbackValueCopy = fallbackValue;
+  v6 = CFPreferencesCopyAppValue(value, @"com.apple.videos-preferences");
   if (v6)
   {
-    v7 = [MEMORY[0x277CBEB68] null];
-    if ([v6 isEqual:v7])
+    null = [MEMORY[0x277CBEB68] null];
+    if ([v6 isEqual:null])
     {
-      v8 = v5;
+      v8 = fallbackValueCopy;
     }
 
     else
@@ -489,19 +489,19 @@ void __59__WLKSystemPreferencesStore__setDefaultsValue_key_syncNPS___block_invok
 
   else
   {
-    v9 = v5;
+    v9 = fallbackValueCopy;
   }
 
   return v9;
 }
 
-- (void)migratePrivateModeFromDiskIfNeeded:(id)a3
+- (void)migratePrivateModeFromDiskIfNeeded:(id)needed
 {
-  v8 = a3;
+  neededCopy = needed;
   v4 = [(WLKSystemPreferencesStore *)self _getPreferencesValue:@"PrivateModeEnabled" fallbackValue:0];
   if (!v4)
   {
-    v5 = [v8 objectForKeyedSubscript:@"PrivateModeEnabled"];
+    v5 = [neededCopy objectForKeyedSubscript:@"PrivateModeEnabled"];
 
     if (!v5)
     {
@@ -509,7 +509,7 @@ void __59__WLKSystemPreferencesStore__setDefaultsValue_key_syncNPS___block_invok
     }
 
     v6 = MEMORY[0x277CCABB0];
-    v4 = [v8 objectForKeyedSubscript:@"PrivateModeEnabled"];
+    v4 = [neededCopy objectForKeyedSubscript:@"PrivateModeEnabled"];
     v7 = [v6 numberWithBool:{objc_msgSend(v4, "BOOLValue")}];
     [(WLKSystemPreferencesStore *)self _setPreferencesValue:v7 forKey:@"PrivateModeEnabled"];
   }
@@ -517,13 +517,13 @@ void __59__WLKSystemPreferencesStore__setDefaultsValue_key_syncNPS___block_invok
 LABEL_5:
 }
 
-- (void)migrateSportsSpoilersFromDiskIfNeeded:(id)a3
+- (void)migrateSportsSpoilersFromDiskIfNeeded:(id)needed
 {
-  v8 = a3;
+  neededCopy = needed;
   v4 = [(WLKSystemPreferencesStore *)self _getPreferencesValue:@"SportsScoreSpoilersAllowed" fallbackValue:0];
   if (!v4)
   {
-    v5 = [v8 objectForKeyedSubscript:@"SportsScoreSpoilersAllowed"];
+    v5 = [neededCopy objectForKeyedSubscript:@"SportsScoreSpoilersAllowed"];
 
     if (!v5)
     {
@@ -531,7 +531,7 @@ LABEL_5:
     }
 
     v6 = MEMORY[0x277CCABB0];
-    v4 = [v8 objectForKeyedSubscript:@"SportsScoreSpoilersAllowed"];
+    v4 = [neededCopy objectForKeyedSubscript:@"SportsScoreSpoilersAllowed"];
     v7 = [v6 numberWithBool:{objc_msgSend(v4, "BOOLValue")}];
     [(WLKSystemPreferencesStore *)self _setPreferencesValue:v7 forKey:@"SportsScoreSpoilersAllowed"];
   }
@@ -539,16 +539,16 @@ LABEL_5:
 LABEL_5:
 }
 
-+ (void)_synchronizeSettingsDefaultsForKeys:(id)a3
++ (void)_synchronizeSettingsDefaultsForKeys:(id)keys
 {
-  v3 = a3;
+  keysCopy = keys;
   v4 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__WLKSystemPreferencesStore__synchronizeSettingsDefaultsForKeys___block_invoke;
   block[3] = &unk_279E5EE08;
-  v7 = v3;
-  v5 = v3;
+  v7 = keysCopy;
+  v5 = keysCopy;
   dispatch_async(v4, block);
 }
 

@@ -1,6 +1,6 @@
 @interface MacRAPEditLocationMapView
-- (MacRAPEditLocationMapView)initWithMapRect:(id)a3 viewMode:(int64_t)a4 markerViewAttributes:(id)a5;
-- (id)mapActionForViewMode:(int64_t)a3;
+- (MacRAPEditLocationMapView)initWithMapRect:(id)rect viewMode:(int64_t)mode markerViewAttributes:(id)attributes;
+- (id)mapActionForViewMode:(int64_t)mode;
 - (void)setupDescriptionViewAndAdditionalConstraints;
 - (void)setupMenuActions;
 @end
@@ -9,23 +9,23 @@
 
 - (void)setupDescriptionViewAndAdditionalConstraints
 {
-  v18 = [(RAPEditLocationMapView *)self descriptionView];
-  v16 = [v18 leadingAnchor];
-  v17 = [(RAPEditLocationMapView *)self mapView];
-  v15 = [v17 leadingAnchor];
-  v14 = [v16 constraintEqualToAnchor:v15 constant:30.0];
+  descriptionView = [(RAPEditLocationMapView *)self descriptionView];
+  leadingAnchor = [descriptionView leadingAnchor];
+  mapView = [(RAPEditLocationMapView *)self mapView];
+  leadingAnchor2 = [mapView leadingAnchor];
+  v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:30.0];
   v19[0] = v14;
-  v13 = [(RAPEditLocationMapView *)self descriptionView];
-  v3 = [v13 trailingAnchor];
-  v4 = [(RAPEditLocationMapView *)self mapView];
-  v5 = [v4 trailingAnchor];
-  v6 = [v3 constraintLessThanOrEqualToAnchor:v5 constant:-30.0];
+  descriptionView2 = [(RAPEditLocationMapView *)self descriptionView];
+  trailingAnchor = [descriptionView2 trailingAnchor];
+  mapView2 = [(RAPEditLocationMapView *)self mapView];
+  trailingAnchor2 = [mapView2 trailingAnchor];
+  v6 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2 constant:-30.0];
   v19[1] = v6;
-  v7 = [(RAPEditLocationMapView *)self descriptionView];
-  v8 = [v7 bottomAnchor];
-  v9 = [(RAPEditLocationMapView *)self mapView];
-  v10 = [v9 bottomAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10 constant:-15.0];
+  descriptionView3 = [(RAPEditLocationMapView *)self descriptionView];
+  bottomAnchor = [descriptionView3 bottomAnchor];
+  mapView3 = [(RAPEditLocationMapView *)self mapView];
+  bottomAnchor2 = [mapView3 bottomAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-15.0];
   v19[2] = v11;
   v12 = [NSArray arrayWithObjects:v19 count:3];
   [NSLayoutConstraint activateConstraints:v12];
@@ -68,16 +68,16 @@
 
   v9 = [v3 copy];
   v10 = [UIMenu menuWithTitle:&stru_1016631F0 children:v9];
-  v11 = [(MacRAPEditLocationMapView *)self mapModeButton];
-  [v11 setMenu:v10];
+  mapModeButton = [(MacRAPEditLocationMapView *)self mapModeButton];
+  [mapModeButton setMenu:v10];
 }
 
-- (id)mapActionForViewMode:(int64_t)a3
+- (id)mapActionForViewMode:(int64_t)mode
 {
-  if (a3 <= 7 && ((0x8Du >> a3) & 1) != 0)
+  if (mode <= 7 && ((0x8Du >> mode) & 1) != 0)
   {
-    v5 = *(&off_101632510 + a3);
-    v6 = *(&off_101632550 + a3);
+    v5 = *(&off_101632510 + mode);
+    v6 = *(&off_101632550 + mode);
     v7 = +[NSBundle mainBundle];
     v8 = [v7 localizedStringForKey:v5 value:@"localized string not found" table:0];
 
@@ -101,9 +101,9 @@
       v14[2] = sub_100A39340;
       v14[3] = &unk_101658B58;
       objc_copyWeak(v15, &location);
-      v15[1] = a3;
+      v15[1] = mode;
       v12 = [UIAction actionWithTitle:v8 image:v10 identifier:0 handler:v14];
-      [v12 setState:{-[RAPEditLocationMapView viewMode](self, "viewMode") == a3}];
+      [v12 setState:{-[RAPEditLocationMapView viewMode](self, "viewMode") == mode}];
       objc_destroyWeak(v15);
       objc_destroyWeak(&location);
       goto LABEL_10;
@@ -122,24 +122,24 @@ LABEL_10:
   return v12;
 }
 
-- (MacRAPEditLocationMapView)initWithMapRect:(id)a3 viewMode:(int64_t)a4 markerViewAttributes:(id)a5
+- (MacRAPEditLocationMapView)initWithMapRect:(id)rect viewMode:(int64_t)mode markerViewAttributes:(id)attributes
 {
   v47.receiver = self;
   v47.super_class = MacRAPEditLocationMapView;
-  v5 = [(RAPEditLocationMapView *)&v47 initWithMapRect:a4 viewMode:a5 markerViewAttributes:a3.var0.var0, a3.var0.var1, a3.var1.var0, a3.var1.var1];
+  v5 = [(RAPEditLocationMapView *)&v47 initWithMapRect:mode viewMode:attributes markerViewAttributes:rect.var0.var0, rect.var0.var1, rect.var1.var0, rect.var1.var1];
   v6 = v5;
   if (v5)
   {
-    v7 = [(RAPEditLocationMapView *)v5 floatingControlsView];
-    [v7 setHidden:1];
+    floatingControlsView = [(RAPEditLocationMapView *)v5 floatingControlsView];
+    [floatingControlsView setHidden:1];
 
-    v8 = [(RAPEditLocationMapView *)v6 descriptionView];
-    v9 = [v8 layer];
-    [v9 setCornerRadius:20.0];
+    descriptionView = [(RAPEditLocationMapView *)v6 descriptionView];
+    layer = [descriptionView layer];
+    [layer setCornerRadius:20.0];
 
-    v10 = [(RAPEditLocationMapView *)v6 descriptionView];
-    v11 = [v10 layer];
-    [v11 setMasksToBounds:1];
+    descriptionView2 = [(RAPEditLocationMapView *)v6 descriptionView];
+    layer2 = [descriptionView2 layer];
+    [layer2 setMasksToBounds:1];
 
     v12 = [MapsThemeButton buttonWithType:0];
     [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -156,44 +156,44 @@ LABEL_10:
     v17 = [[CardView alloc] initAllowingBlurredForButton:1 buttonBackgroundType:0];
     [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v17 setLayoutStyle:6];
-    v18 = [v17 contentView];
-    [v18 addSubview:v12];
+    contentView = [v17 contentView];
+    [contentView addSubview:v12];
 
-    v19 = [(RAPEditLocationMapView *)v6 mapView];
-    [v19 addSubview:v17];
+    mapView = [(RAPEditLocationMapView *)v6 mapView];
+    [mapView addSubview:v17];
 
-    v46 = [v12 topAnchor];
-    v45 = [v17 topAnchor];
-    v44 = [v46 constraintEqualToAnchor:v45];
+    topAnchor = [v12 topAnchor];
+    topAnchor2 = [v17 topAnchor];
+    v44 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v48[0] = v44;
-    v43 = [v12 bottomAnchor];
-    v42 = [v17 bottomAnchor];
-    v41 = [v43 constraintEqualToAnchor:v42];
+    bottomAnchor = [v12 bottomAnchor];
+    bottomAnchor2 = [v17 bottomAnchor];
+    v41 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v48[1] = v41;
-    v40 = [v12 leadingAnchor];
-    v39 = [v17 leadingAnchor];
-    v38 = [v40 constraintEqualToAnchor:v39];
+    leadingAnchor = [v12 leadingAnchor];
+    leadingAnchor2 = [v17 leadingAnchor];
+    v38 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v48[2] = v38;
-    v37 = [v12 trailingAnchor];
-    v36 = [v17 trailingAnchor];
-    v35 = [v37 constraintEqualToAnchor:v36];
+    trailingAnchor = [v12 trailingAnchor];
+    trailingAnchor2 = [v17 trailingAnchor];
+    v35 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v48[3] = v35;
-    v33 = [v17 bottomAnchor];
-    v34 = [(RAPEditLocationMapView *)v6 mapView];
-    v32 = [v34 bottomAnchor];
-    v31 = [v33 constraintEqualToAnchor:v32 constant:-15.0];
+    bottomAnchor3 = [v17 bottomAnchor];
+    mapView2 = [(RAPEditLocationMapView *)v6 mapView];
+    bottomAnchor4 = [mapView2 bottomAnchor];
+    v31 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-15.0];
     v48[4] = v31;
-    v30 = [v17 widthAnchor];
-    v29 = [v30 constraintEqualToConstant:30.0];
+    widthAnchor = [v17 widthAnchor];
+    v29 = [widthAnchor constraintEqualToConstant:30.0];
     v48[5] = v29;
-    v28 = [v17 widthAnchor];
-    v20 = [v17 heightAnchor];
-    v21 = [v28 constraintEqualToAnchor:v20];
+    widthAnchor2 = [v17 widthAnchor];
+    heightAnchor = [v17 heightAnchor];
+    v21 = [widthAnchor2 constraintEqualToAnchor:heightAnchor];
     v48[6] = v21;
-    v22 = [v17 trailingAnchor];
-    v23 = [(RAPEditLocationMapView *)v6 mapView];
-    v24 = [v23 trailingAnchor];
-    v25 = [v22 constraintEqualToAnchor:v24 constant:-15.0];
+    trailingAnchor3 = [v17 trailingAnchor];
+    mapView3 = [(RAPEditLocationMapView *)v6 mapView];
+    trailingAnchor4 = [mapView3 trailingAnchor];
+    v25 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-15.0];
     v48[7] = v25;
     v26 = [NSArray arrayWithObjects:v48 count:8];
     [NSLayoutConstraint activateConstraints:v26];

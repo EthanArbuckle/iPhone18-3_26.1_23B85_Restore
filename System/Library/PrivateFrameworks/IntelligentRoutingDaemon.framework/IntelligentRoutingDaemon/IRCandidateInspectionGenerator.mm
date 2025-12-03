@@ -1,50 +1,50 @@
 @interface IRCandidateInspectionGenerator
-- (IRCandidateInspectionGenerator)initWithClassification:(int64_t)a3 ClassificationDescription:(id)a4 sameSpaceBasedOnMiLo:(BOOL)a5 sameSpaceBasedOnBrokeredLOI:(BOOL)a6 sameSpaceBasedOnPDRFence:(BOOL)a7 sameSpaceBasedOnUWB:(BOOL)a8 sameSpaceBasedOnBLE:(BOOL)a9 sameSpaceBasedOnHistory:(BOOL)a10 candidateSelectorReasons:(id)a11 forCandidate:(id)a12;
+- (IRCandidateInspectionGenerator)initWithClassification:(int64_t)classification ClassificationDescription:(id)description sameSpaceBasedOnMiLo:(BOOL)lo sameSpaceBasedOnBrokeredLOI:(BOOL)i sameSpaceBasedOnPDRFence:(BOOL)fence sameSpaceBasedOnUWB:(BOOL)b sameSpaceBasedOnBLE:(BOOL)e sameSpaceBasedOnHistory:(BOOL)self0 candidateSelectorReasons:(id)self1 forCandidate:(id)self2;
 - (id)exportCandidateInspectionAsDictionary;
-- (id)initClassification:(int64_t)a3 andClassificationDescription:(id)a4 forCandidate:(id)a5;
+- (id)initClassification:(int64_t)classification andClassificationDescription:(id)description forCandidate:(id)candidate;
 @end
 
 @implementation IRCandidateInspectionGenerator
 
-- (id)initClassification:(int64_t)a3 andClassificationDescription:(id)a4 forCandidate:(id)a5
+- (id)initClassification:(int64_t)classification andClassificationDescription:(id)description forCandidate:(id)candidate
 {
-  v9 = a4;
-  v10 = a5;
+  descriptionCopy = description;
+  candidateCopy = candidate;
   v14.receiver = self;
   v14.super_class = IRCandidateInspectionGenerator;
   v11 = [(IRCandidateInspectionGenerator *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_candidate, a5);
-    v12->_classification = a3;
-    objc_storeStrong(&v12->_classificationDescription, a4);
+    objc_storeStrong(&v11->_candidate, candidate);
+    v12->_classification = classification;
+    objc_storeStrong(&v12->_classificationDescription, description);
   }
 
   return v12;
 }
 
-- (IRCandidateInspectionGenerator)initWithClassification:(int64_t)a3 ClassificationDescription:(id)a4 sameSpaceBasedOnMiLo:(BOOL)a5 sameSpaceBasedOnBrokeredLOI:(BOOL)a6 sameSpaceBasedOnPDRFence:(BOOL)a7 sameSpaceBasedOnUWB:(BOOL)a8 sameSpaceBasedOnBLE:(BOOL)a9 sameSpaceBasedOnHistory:(BOOL)a10 candidateSelectorReasons:(id)a11 forCandidate:(id)a12
+- (IRCandidateInspectionGenerator)initWithClassification:(int64_t)classification ClassificationDescription:(id)description sameSpaceBasedOnMiLo:(BOOL)lo sameSpaceBasedOnBrokeredLOI:(BOOL)i sameSpaceBasedOnPDRFence:(BOOL)fence sameSpaceBasedOnUWB:(BOOL)b sameSpaceBasedOnBLE:(BOOL)e sameSpaceBasedOnHistory:(BOOL)self0 candidateSelectorReasons:(id)self1 forCandidate:(id)self2
 {
-  v18 = a4;
-  v19 = a11;
-  v24 = a12;
+  descriptionCopy = description;
+  reasonsCopy = reasons;
+  candidateCopy = candidate;
   v25.receiver = self;
   v25.super_class = IRCandidateInspectionGenerator;
   v20 = [(IRCandidateInspectionGenerator *)&v25 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_candidate, a12);
-    v21->_classification = a3;
-    objc_storeStrong(&v21->_classificationDescription, a4);
-    v21->_sameSpaceBasedOnMiLo = a5;
-    v21->_sameSpaceBasedOnBrokeredLOI = a6;
-    v21->_sameSpaceBasedOnPDRFence = a7;
-    v21->_sameSpaceBasedOnUWB = a8;
-    v21->_sameSpaceBasedOnBLE = a9;
-    v21->_sameSpaceBasedOnHistory = a10;
-    objc_storeStrong(&v21->_candidateSelectorReasons, a11);
+    objc_storeStrong(&v20->_candidate, candidate);
+    v21->_classification = classification;
+    objc_storeStrong(&v21->_classificationDescription, description);
+    v21->_sameSpaceBasedOnMiLo = lo;
+    v21->_sameSpaceBasedOnBrokeredLOI = i;
+    v21->_sameSpaceBasedOnPDRFence = fence;
+    v21->_sameSpaceBasedOnUWB = b;
+    v21->_sameSpaceBasedOnBLE = e;
+    v21->_sameSpaceBasedOnHistory = history;
+    objc_storeStrong(&v21->_candidateSelectorReasons, reasons);
   }
 
   return v21;
@@ -124,8 +124,8 @@
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = [(IRCandidateInspectionGenerator *)self candidateSelectorReasons];
-  v11 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  candidateSelectorReasons = [(IRCandidateInspectionGenerator *)self candidateSelectorReasons];
+  v11 = [candidateSelectorReasons countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v11)
   {
     v12 = v11;
@@ -136,12 +136,12 @@
       {
         if (*v22 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(candidateSelectorReasons);
         }
 
         v15 = *(*(&v21 + 1) + 8 * i);
-        v16 = [(IRCandidateInspectionGenerator *)self candidateSelectorReasons];
-        v17 = [v16 objectForKeyedSubscript:v15];
+        candidateSelectorReasons2 = [(IRCandidateInspectionGenerator *)self candidateSelectorReasons];
+        v17 = [candidateSelectorReasons2 objectForKeyedSubscript:v15];
         if (v17)
         {
           v18 = @"YES";
@@ -155,7 +155,7 @@
         [v3 setObject:v18 forKeyedSubscript:v15];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v12 = [candidateSelectorReasons countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v12);

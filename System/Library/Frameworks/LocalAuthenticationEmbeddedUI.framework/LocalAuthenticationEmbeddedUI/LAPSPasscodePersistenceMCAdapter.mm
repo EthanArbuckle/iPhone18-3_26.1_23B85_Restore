@@ -1,22 +1,22 @@
 @interface LAPSPasscodePersistenceMCAdapter
 - (BOOL)canChangePasscode;
-- (BOOL)canRemovePasscode:(id *)a3;
-- (BOOL)changePasscode:(id)a3 to:(id)a4 enableRecovery:(BOOL)a5 error:(id *)a6;
+- (BOOL)canRemovePasscode:(id *)passcode;
+- (BOOL)changePasscode:(id)passcode to:(id)to enableRecovery:(BOOL)recovery error:(id *)error;
 - (BOOL)hasPasscode;
 - (BOOL)isPasscodeRecoveryAvailable;
 - (BOOL)isPasscodeRecoveryEnabled;
 - (BOOL)isPasscodeRecoveryRestricted;
 - (BOOL)isPasscodeRecoverySupported;
-- (BOOL)performRecovery:(id)a3 newPasscode:(id)a4 enableRecovery:(BOOL)a5 error:(id *)a6;
-- (BOOL)verifyNewPasscodeMeetsPlatformRequirements:(id)a3 error:(id *)a4;
-- (id)_passcodeTypeForQuery:(id)a3;
+- (BOOL)performRecovery:(id)recovery newPasscode:(id)passcode enableRecovery:(BOOL)enableRecovery error:(id *)error;
+- (BOOL)verifyNewPasscodeMeetsPlatformRequirements:(id)requirements error:(id *)error;
+- (id)_passcodeTypeForQuery:(id)query;
 - (id)clearRecoveryPasscode;
 - (id)defaultNewPasscodeType;
 - (id)localizedPasscodeRequirements;
 - (id)passcodeCreationDate;
 - (id)passcodeType;
 - (id)recoveryPasscodeType;
-- (id)setPasscodeRecoveryEnabled:(BOOL)a3;
+- (id)setPasscodeRecoveryEnabled:(BOOL)enabled;
 - (id)simplestAllowedNewPasscodeType;
 @end
 
@@ -24,36 +24,36 @@
 
 - (BOOL)hasPasscode
 {
-  v2 = [(LAPSPasscodePersistenceMCAdapter *)self _mcProfileConnection];
-  v3 = [v2 isPasscodeSet];
+  _mcProfileConnection = [(LAPSPasscodePersistenceMCAdapter *)self _mcProfileConnection];
+  isPasscodeSet = [_mcProfileConnection isPasscodeSet];
 
-  return v3;
+  return isPasscodeSet;
 }
 
 - (id)passcodeCreationDate
 {
-  v2 = [(LAPSPasscodePersistenceMCAdapter *)self _mcProfileConnection];
-  v3 = [v2 passcodeCreationDate];
+  _mcProfileConnection = [(LAPSPasscodePersistenceMCAdapter *)self _mcProfileConnection];
+  passcodeCreationDate = [_mcProfileConnection passcodeCreationDate];
 
-  return v3;
+  return passcodeCreationDate;
 }
 
 - (BOOL)canChangePasscode
 {
-  v2 = [(LAPSPasscodePersistenceMCAdapter *)self _mcProfileConnection];
-  v3 = [v2 isPasscodeModificationAllowed];
+  _mcProfileConnection = [(LAPSPasscodePersistenceMCAdapter *)self _mcProfileConnection];
+  isPasscodeModificationAllowed = [_mcProfileConnection isPasscodeModificationAllowed];
 
-  return v3;
+  return isPasscodeModificationAllowed;
 }
 
-- (BOOL)canRemovePasscode:(id *)a3
+- (BOOL)canRemovePasscode:(id *)passcode
 {
   if ([(LAPSPasscodePersistenceMCAdapter *)self canChangePasscode])
   {
-    v5 = [(LAPSPasscodePersistenceMCAdapter *)self _mcProfileConnection];
-    v6 = [v5 isPasscodeRequired] ^ 1;
+    _mcProfileConnection = [(LAPSPasscodePersistenceMCAdapter *)self _mcProfileConnection];
+    v6 = [_mcProfileConnection isPasscodeRequired] ^ 1;
 
-    if (!a3)
+    if (!passcode)
     {
       return v6;
     }
@@ -62,7 +62,7 @@
   else
   {
     LOBYTE(v6) = 0;
-    if (!a3)
+    if (!passcode)
     {
       return v6;
     }
@@ -70,7 +70,7 @@
 
   if ((v6 & 1) == 0)
   {
-    *a3 = +[LAPSErrorBuilder deniedByMDMError];
+    *passcode = +[LAPSErrorBuilder deniedByMDMError];
   }
 
   return v6;
@@ -104,15 +104,15 @@ uint64_t __48__LAPSPasscodePersistenceMCAdapter_passcodeType__block_invoke(uint6
   return v4;
 }
 
-- (BOOL)changePasscode:(id)a3 to:(id)a4 enableRecovery:(BOOL)a5 error:(id *)a6
+- (BOOL)changePasscode:(id)passcode to:(id)to enableRecovery:(BOOL)recovery error:(id *)error
 {
-  v7 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [(LAPSPasscodePersistenceMCAdapter *)self _mcProfileConnection];
-  LOBYTE(a6) = [v12 changePasscodeFrom:v11 to:v10 skipRecovery:!v7 outError:a6];
+  recoveryCopy = recovery;
+  toCopy = to;
+  passcodeCopy = passcode;
+  _mcProfileConnection = [(LAPSPasscodePersistenceMCAdapter *)self _mcProfileConnection];
+  LOBYTE(error) = [_mcProfileConnection changePasscodeFrom:passcodeCopy to:toCopy skipRecovery:!recoveryCopy outError:error];
 
-  return a6;
+  return error;
 }
 
 - (id)simplestAllowedNewPasscodeType
@@ -157,19 +157,19 @@ uint64_t __58__LAPSPasscodePersistenceMCAdapter_defaultNewPasscodeType__block_in
 
 - (id)localizedPasscodeRequirements
 {
-  v2 = [(LAPSPasscodePersistenceMCAdapter *)self _mcProfileConnection];
-  v3 = [v2 localizedDescriptionOfDefaultNewPasscodeConstraints];
+  _mcProfileConnection = [(LAPSPasscodePersistenceMCAdapter *)self _mcProfileConnection];
+  localizedDescriptionOfDefaultNewPasscodeConstraints = [_mcProfileConnection localizedDescriptionOfDefaultNewPasscodeConstraints];
 
-  return v3;
+  return localizedDescriptionOfDefaultNewPasscodeConstraints;
 }
 
-- (BOOL)verifyNewPasscodeMeetsPlatformRequirements:(id)a3 error:(id *)a4
+- (BOOL)verifyNewPasscodeMeetsPlatformRequirements:(id)requirements error:(id *)error
 {
-  v6 = a3;
-  v7 = [(LAPSPasscodePersistenceMCAdapter *)self _mcProfileConnection];
-  LOBYTE(a4) = [v7 passcode:v6 meetsCurrentConstraintsOutError:a4];
+  requirementsCopy = requirements;
+  _mcProfileConnection = [(LAPSPasscodePersistenceMCAdapter *)self _mcProfileConnection];
+  LOBYTE(error) = [_mcProfileConnection passcode:requirementsCopy meetsCurrentConstraintsOutError:error];
 
-  return a4;
+  return error;
 }
 
 - (id)recoveryPasscodeType
@@ -194,29 +194,29 @@ uint64_t __56__LAPSPasscodePersistenceMCAdapter_recoveryPasscodeType__block_invo
 
 - (BOOL)isPasscodeRecoveryAvailable
 {
-  v2 = [(LAPSPasscodePersistenceMCAdapter *)self _mcProfileConnection];
-  v3 = [v2 recoveryPasscodeAvailable];
+  _mcProfileConnection = [(LAPSPasscodePersistenceMCAdapter *)self _mcProfileConnection];
+  recoveryPasscodeAvailable = [_mcProfileConnection recoveryPasscodeAvailable];
 
-  return v3;
+  return recoveryPasscodeAvailable;
 }
 
 - (BOOL)isPasscodeRecoveryEnabled
 {
-  v2 = [(LAPSPasscodePersistenceMCAdapter *)self _mcProfileConnection];
-  v3 = [v2 isPasscodeRecoveryAllowed];
+  _mcProfileConnection = [(LAPSPasscodePersistenceMCAdapter *)self _mcProfileConnection];
+  isPasscodeRecoveryAllowed = [_mcProfileConnection isPasscodeRecoveryAllowed];
 
-  return v3;
+  return isPasscodeRecoveryAllowed;
 }
 
-- (id)setPasscodeRecoveryEnabled:(BOOL)a3
+- (id)setPasscodeRecoveryEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v10 = *MEMORY[0x277D85DE8];
   v4 = LACLogPasscodeService();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = "NO";
-    if (v3)
+    if (enabledCopy)
     {
       v5 = "YES";
     }
@@ -232,43 +232,43 @@ uint64_t __56__LAPSPasscodePersistenceMCAdapter_recoveryPasscodeType__block_invo
 
 - (BOOL)isPasscodeRecoverySupported
 {
-  v2 = [(LAPSPasscodePersistenceMCAdapter *)self _mcProfileConnection];
-  v3 = [v2 isPasscodeRecoverySupported];
+  _mcProfileConnection = [(LAPSPasscodePersistenceMCAdapter *)self _mcProfileConnection];
+  isPasscodeRecoverySupported = [_mcProfileConnection isPasscodeRecoverySupported];
 
-  return v3;
+  return isPasscodeRecoverySupported;
 }
 
 - (BOOL)isPasscodeRecoveryRestricted
 {
-  v2 = [(LAPSPasscodePersistenceMCAdapter *)self _mcProfileConnection];
-  v3 = [v2 isPasscodeRecoveryRestricted];
+  _mcProfileConnection = [(LAPSPasscodePersistenceMCAdapter *)self _mcProfileConnection];
+  isPasscodeRecoveryRestricted = [_mcProfileConnection isPasscodeRecoveryRestricted];
 
-  return v3;
+  return isPasscodeRecoveryRestricted;
 }
 
-- (BOOL)performRecovery:(id)a3 newPasscode:(id)a4 enableRecovery:(BOOL)a5 error:(id *)a6
+- (BOOL)performRecovery:(id)recovery newPasscode:(id)passcode enableRecovery:(BOOL)enableRecovery error:(id *)error
 {
-  v7 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [(LAPSPasscodePersistenceMCAdapter *)self _mcProfileConnection];
-  LOBYTE(a6) = [v12 changePasscodeWithRecoveryPasscode:v11 to:v10 skipRecovery:!v7 outError:a6];
+  enableRecoveryCopy = enableRecovery;
+  passcodeCopy = passcode;
+  recoveryCopy = recovery;
+  _mcProfileConnection = [(LAPSPasscodePersistenceMCAdapter *)self _mcProfileConnection];
+  LOBYTE(error) = [_mcProfileConnection changePasscodeWithRecoveryPasscode:recoveryCopy to:passcodeCopy skipRecovery:!enableRecoveryCopy outError:error];
 
-  return a6;
+  return error;
 }
 
 - (id)clearRecoveryPasscode
 {
-  v2 = [(LAPSPasscodePersistenceMCAdapter *)self _mcProfileConnection];
-  v3 = [v2 clearRecoveryPasscode];
+  _mcProfileConnection = [(LAPSPasscodePersistenceMCAdapter *)self _mcProfileConnection];
+  clearRecoveryPasscode = [_mcProfileConnection clearRecoveryPasscode];
 
-  return v3;
+  return clearRecoveryPasscode;
 }
 
-- (id)_passcodeTypeForQuery:(id)a3
+- (id)_passcodeTypeForQuery:(id)query
 {
   v6 = -1;
-  v3 = (*(a3 + 2))(a3, &v6);
+  v3 = (*(query + 2))(query, &v6);
   if (v3 == 2)
   {
     goto LABEL_8;

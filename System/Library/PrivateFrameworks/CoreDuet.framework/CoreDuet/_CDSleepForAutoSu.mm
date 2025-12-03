@@ -1,23 +1,23 @@
 @interface _CDSleepForAutoSu
 + (id)defaultTuningConfiguration;
 + (id)readConfigurationFromDefaults;
-+ (id)sanitizeTuningConfiguration:(id)a3;
++ (id)sanitizeTuningConfiguration:(id)configuration;
 + (id)tuningDictionary;
 - (_CDSleepForAutoSu)init;
-- (_CDSleepForAutoSu)initWithKnowledgeStore:(id)a3;
-- (id)defaultTimesWhenPredictionUnavailable:(id)a3;
-- (id)defaultTimesWhenPredictionUnavailable:(id)a3 withConfig:(id)a4;
+- (_CDSleepForAutoSu)initWithKnowledgeStore:(id)store;
+- (id)defaultTimesWhenPredictionUnavailable:(id)unavailable;
+- (id)defaultTimesWhenPredictionUnavailable:(id)unavailable withConfig:(id)config;
 - (id)getUnlockAndSoftwareUpdateTimes;
-- (id)getUnlockAndSoftwareUpdateTimesWithConfig:(id)a3 referenceDate:(id)a4;
-- (id)makeDictionaryForEventStreamWhenPredictionTemporarilyUnavailable:(id)a3;
-- (id)predicitLastUnlockForDay:(id)a3;
-- (id)predictForDate:(id)a3 fromState:(id)a4;
-- (id)predictForDate:(id)a3 fromState:(id)a4 withConfig:(id)a5;
+- (id)getUnlockAndSoftwareUpdateTimesWithConfig:(id)config referenceDate:(id)date;
+- (id)makeDictionaryForEventStreamWhenPredictionTemporarilyUnavailable:(id)unavailable;
+- (id)predicitLastUnlockForDay:(id)day;
+- (id)predictForDate:(id)date fromState:(id)state;
+- (id)predictForDate:(id)date fromState:(id)state withConfig:(id)config;
 - (id)predictNextDateForLastUnlockAttemptOfTheDay;
-- (id)predictedSleepDictionaryForDate:(id)a3;
-- (id)predictedSleepDictionaryForDate:(id)a3 usingKnowledge:(id)a4;
-- (id)proposeTimesFromRelativeOffsetsForDate:(id)a3 lastUnlock:(int)a4 suStart:(int)a5 suEnd:(int)a6 unrestrictedSleepEnd:(int)a7 config:(id)a8;
-- (id)retrieveSleepProbabilities:(id)a3;
+- (id)predictedSleepDictionaryForDate:(id)date;
+- (id)predictedSleepDictionaryForDate:(id)date usingKnowledge:(id)knowledge;
+- (id)proposeTimesFromRelativeOffsetsForDate:(id)date lastUnlock:(int)unlock suStart:(int)start suEnd:(int)end unrestrictedSleepEnd:(int)sleepEnd config:(id)config;
+- (id)retrieveSleepProbabilities:(id)probabilities;
 @end
 
 @implementation _CDSleepForAutoSu
@@ -35,38 +35,38 @@
   return result;
 }
 
-- (_CDSleepForAutoSu)initWithKnowledgeStore:(id)a3
+- (_CDSleepForAutoSu)initWithKnowledgeStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v6 = [(_CDSleepForAutoSu *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_knowledgeStore, a3);
+    objc_storeStrong(&v6->_knowledgeStore, store);
   }
 
   return v7;
 }
 
-- (id)proposeTimesFromRelativeOffsetsForDate:(id)a3 lastUnlock:(int)a4 suStart:(int)a5 suEnd:(int)a6 unrestrictedSleepEnd:(int)a7 config:(id)a8
+- (id)proposeTimesFromRelativeOffsetsForDate:(id)date lastUnlock:(int)unlock suStart:(int)start suEnd:(int)end unrestrictedSleepEnd:(int)sleepEnd config:(id)config
 {
   v43[6] = *MEMORY[0x1E69E9840];
-  v13 = a3;
+  dateCopy = date;
   v14 = MEMORY[0x1E695DFE8];
-  v15 = a8;
-  v16 = [v14 localTimeZone];
-  LODWORD(v14) = [v16 secondsFromGMT];
+  configCopy = config;
+  localTimeZone = [v14 localTimeZone];
+  LODWORD(v14) = [localTimeZone secondsFromGMT];
 
-  [v13 timeIntervalSinceReferenceDate];
-  v18 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:((v17 + 300) + 3600.0 + (((900 * a6 + 57600) % 86400 + 86400 + 86400 * ((v14 + v17 + 3900) / 86400) - (v14 + v17 + 3900)) % 86400))];
-  v19 = 900 * (a5 - a6);
-  v20 = 900 * (a7 - a6);
+  [dateCopy timeIntervalSinceReferenceDate];
+  v18 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:((v17 + 300) + 3600.0 + (((900 * end + 57600) % 86400 + 86400 + 86400 * ((v14 + v17 + 3900) / 86400) - (v14 + v17 + 3900)) % 86400))];
+  v19 = 900 * (start - end);
+  v20 = 900 * (sleepEnd - end);
   v21 = [v18 dateByAddingTimeInterval:v19];
-  v22 = [v18 dateByAddingTimeInterval:(900 * (a4 - a6))];
+  v22 = [v18 dateByAddingTimeInterval:(900 * (unlock - end))];
   v23 = [v18 dateByAddingTimeInterval:v20];
-  LOBYTE(a4) = [v15 allowUnlockBeforeNow];
+  LOBYTE(unlock) = [configCopy allowUnlockBeforeNow];
 
-  if ((a4 & 1) == 0 && [v22 compare:v13] == -1)
+  if ((unlock & 1) == 0 && [v22 compare:dateCopy] == -1)
   {
     v24 = +[_CDLogging autoSUChannel];
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
@@ -75,11 +75,11 @@
       _os_log_impl(&dword_191750000, v24, OS_LOG_TYPE_INFO, "unlock_start overriden", v41, 2u);
     }
 
-    v25 = v13;
+    v25 = dateCopy;
     v22 = v25;
   }
 
-  v26 = [v13 dateByAddingTimeInterval:300.0];
+  v26 = [dateCopy dateByAddingTimeInterval:300.0];
   v27 = [v21 compare:v26];
 
   if (v27 == -1)
@@ -91,7 +91,7 @@
       _os_log_impl(&dword_191750000, v28, OS_LOG_TYPE_INFO, "su_start overriden", v41, 2u);
     }
 
-    v29 = [v13 dateByAddingTimeInterval:300.0];
+    v29 = [dateCopy dateByAddingTimeInterval:300.0];
 
     v21 = v29;
   }
@@ -121,31 +121,31 @@
   return v31;
 }
 
-- (id)defaultTimesWhenPredictionUnavailable:(id)a3
+- (id)defaultTimesWhenPredictionUnavailable:(id)unavailable
 {
-  v4 = a3;
-  v5 = [(_CDSleepForAutoSu *)self autoSuConfig];
-  v6 = [(_CDSleepForAutoSu *)self defaultTimesWhenPredictionUnavailable:v4 withConfig:v5];
+  unavailableCopy = unavailable;
+  autoSuConfig = [(_CDSleepForAutoSu *)self autoSuConfig];
+  v6 = [(_CDSleepForAutoSu *)self defaultTimesWhenPredictionUnavailable:unavailableCopy withConfig:autoSuConfig];
 
   return v6;
 }
 
-- (id)defaultTimesWhenPredictionUnavailable:(id)a3 withConfig:(id)a4
+- (id)defaultTimesWhenPredictionUnavailable:(id)unavailable withConfig:(id)config
 {
   v28[5] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  unavailableCopy = unavailable;
   v6 = MEMORY[0x1E695DFE8];
-  v7 = a4;
-  v8 = [v6 localTimeZone];
-  v9 = [v8 secondsFromGMT];
+  configCopy = config;
+  localTimeZone = [v6 localTimeZone];
+  secondsFromGMT = [localTimeZone secondsFromGMT];
 
-  [v5 timeIntervalSinceReferenceDate];
+  [unavailableCopy timeIntervalSinceReferenceDate];
   v11 = v10;
-  v12 = v9 + v10;
-  v13 = [v7 suStartDefaultTime];
-  v14 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:(v11 + 86400 + v13 - v12 + 86400 * ((v12 - v13) / 86400))];
-  v15 = v5;
-  LODWORD(v12) = [v7 suEndDefaultTimeOffsetFromSuStart];
+  v12 = secondsFromGMT + v10;
+  suStartDefaultTime = [configCopy suStartDefaultTime];
+  v14 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:(v11 + 86400 + suStartDefaultTime - v12 + 86400 * ((v12 - suStartDefaultTime) / 86400))];
+  v15 = unavailableCopy;
+  LODWORD(v12) = [configCopy suEndDefaultTimeOffsetFromSuStart];
 
   v16 = [v14 dateByAddingTimeInterval:v12];
   v27[0] = @"sleep_query_status";
@@ -170,17 +170,17 @@
   return v17;
 }
 
-- (id)makeDictionaryForEventStreamWhenPredictionTemporarilyUnavailable:(id)a3
+- (id)makeDictionaryForEventStreamWhenPredictionTemporarilyUnavailable:(id)unavailable
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
-  v6 = [v4 dictionary];
-  v7 = [(_CDSleepForAutoSu *)self defaultTimesWhenPredictionUnavailable:v5];
+  unavailableCopy = unavailable;
+  dictionary = [v4 dictionary];
+  v7 = [(_CDSleepForAutoSu *)self defaultTimesWhenPredictionUnavailable:unavailableCopy];
 
-  [v6 setDictionary:v7];
-  [v6 setValue:@"temporarily_not_available" forKey:@"sleep_query_status"];
+  [dictionary setDictionary:v7];
+  [dictionary setValue:@"temporarily_not_available" forKey:@"sleep_query_status"];
 
-  return v6;
+  return dictionary;
 }
 
 - (id)getUnlockAndSoftwareUpdateTimes
@@ -191,9 +191,9 @@
 
   [(_CDAutoSuConfig *)self->_autoSuConfig setParam];
   v5 = objc_autoreleasePoolPush();
-  v6 = [(_CDSleepForAutoSu *)self autoSuConfig];
-  v7 = [MEMORY[0x1E695DF00] date];
-  v8 = [(_CDSleepForAutoSu *)self getUnlockAndSoftwareUpdateTimesWithConfig:v6 referenceDate:v7];
+  autoSuConfig = [(_CDSleepForAutoSu *)self autoSuConfig];
+  date = [MEMORY[0x1E695DF00] date];
+  v8 = [(_CDSleepForAutoSu *)self getUnlockAndSoftwareUpdateTimesWithConfig:autoSuConfig referenceDate:date];
 
   objc_autoreleasePoolPop(v5);
 
@@ -215,21 +215,21 @@
   return v2;
 }
 
-+ (id)sanitizeTuningConfiguration:(id)a3
++ (id)sanitizeTuningConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  configurationCopy = configuration;
+  v5 = configurationCopy;
+  if (configurationCopy)
   {
-    v6 = v4;
+    defaultTuningConfiguration = configurationCopy;
   }
 
   else
   {
-    v6 = [a1 defaultTuningConfiguration];
+    defaultTuningConfiguration = [self defaultTuningConfiguration];
   }
 
-  v7 = v6;
+  v7 = defaultTuningConfiguration;
 
   return v7;
 }
@@ -248,7 +248,7 @@
   block[1] = 3221225472;
   block[2] = __37___CDSleepForAutoSu_tuningDictionary__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (tuningDictionary_onceToken != -1)
   {
     dispatch_once(&tuningDictionary_onceToken, block);
@@ -259,19 +259,19 @@
   return v2;
 }
 
-- (id)predictedSleepDictionaryForDate:(id)a3
+- (id)predictedSleepDictionaryForDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = objc_autoreleasePoolPush();
   if (self->_knowledgeStore)
   {
-    v6 = [(_CDSleepForAutoSu *)self predictedSleepDictionaryForDate:v4 usingKnowledge:?];
+    v6 = [(_CDSleepForAutoSu *)self predictedSleepDictionaryForDate:dateCopy usingKnowledge:?];
   }
 
   else
   {
     v7 = +[_DKKnowledgeStore knowledgeStore];
-    v6 = [(_CDSleepForAutoSu *)self predictedSleepDictionaryForDate:v4 usingKnowledge:v7];
+    v6 = [(_CDSleepForAutoSu *)self predictedSleepDictionaryForDate:dateCopy usingKnowledge:v7];
   }
 
   objc_autoreleasePoolPop(v5);
@@ -279,15 +279,15 @@
   return v6;
 }
 
-- (id)predictedSleepDictionaryForDate:(id)a3 usingKnowledge:(id)a4
+- (id)predictedSleepDictionaryForDate:(id)date usingKnowledge:(id)knowledge
 {
   v54[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  knowledgeCopy = knowledge;
   if ([(_CDSleepForAutoSu *)self enableCaching])
   {
-    v8 = +[_CDAutoSuCache sharedCache];
-    v9 = [v8 cachedPredictedSleepDictionaryForDate:v6];
+    localTimeZone = +[_CDAutoSuCache sharedCache];
+    v9 = [localTimeZone cachedPredictedSleepDictionaryForDate:dateCopy];
     if (v9)
     {
       v10 = v9;
@@ -301,11 +301,11 @@
     }
   }
 
-  v8 = [MEMORY[0x1E695DFE8] localTimeZone];
-  v11 = [v6 cd_dateWithCeilingForAlignment:v8 withOffset:86400.0 inTimeZone:16.0 * 3600.0];
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  v11 = [dateCopy cd_dateWithCeilingForAlignment:localTimeZone withOffset:86400.0 inTimeZone:16.0 * 3600.0];
   v39 = [v11 dateByAddingTimeInterval:-(21.0 * 86400.0)];
   v38 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v39 duration:21.0 * 86400.0];
-  v18 = [_CDSleepPredictor gatherBitmapHistoryFromStore:v7 forPeriod:?];
+  v18 = [_CDSleepPredictor gatherBitmapHistoryFromStore:knowledgeCopy forPeriod:?];
   v19 = v18;
   if (!v18 || ![v18 count])
   {
@@ -331,11 +331,11 @@ LABEL_11:
   }
 
   v20 = objc_opt_new();
-  v21 = [objc_opt_class() tuningDictionary];
-  v22 = [v20 predictFrom:v19 withTuning:v21 usingVersion:2];
+  tuningDictionary = [objc_opt_class() tuningDictionary];
+  v22 = [v20 predictFrom:v19 withTuning:tuningDictionary usingVersion:2];
 
   v23 = [_CDSleepPredictor findSleepPeriodInDayStarting:v11 FromActivityProbabilities:v22];
-  v40 = v6;
+  v40 = dateCopy;
   v24 = [v40 dateByAddingTimeInterval:86400.0];
   if (!v23)
   {
@@ -343,31 +343,31 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v37 = [v23 endDate];
+  endDate = [v23 endDate];
 
   v36 = +[_DKPeriodMetadataKey periodStart];
   v49[0] = v36;
-  v35 = [v23 startDate];
-  v50[0] = v35;
+  startDate = [v23 startDate];
+  v50[0] = startDate;
   v34 = +[_DKPeriodMetadataKey periodEnd];
   v49[1] = v34;
-  v33 = [v23 endDate];
-  v50[1] = v33;
+  endDate2 = [v23 endDate];
+  v50[1] = endDate2;
   v49[2] = @"_DKDebugMetadataKey-debug";
   v47[0] = @"probabilityVector";
   v47[1] = @"predictionPeriodStart";
   v48[0] = v22;
   v48[1] = v11;
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v48 forKeys:v47 count:2];
-  v25 = v6;
-  v27 = v26 = v7;
+  v25 = dateCopy;
+  v27 = v26 = knowledgeCopy;
   v50[2] = v27;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v50 forKeys:v49 count:3];
 
-  v7 = v26;
-  v6 = v25;
+  knowledgeCopy = v26;
+  dateCopy = v25;
 
-  v24 = v37;
+  v24 = endDate;
 LABEL_14:
 
   if ([(_CDSleepForAutoSu *)self enableCaching])
@@ -394,30 +394,30 @@ LABEL_19:
   return v10;
 }
 
-- (id)getUnlockAndSoftwareUpdateTimesWithConfig:(id)a3 referenceDate:(id)a4
+- (id)getUnlockAndSoftwareUpdateTimesWithConfig:(id)config referenceDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_CDSleepForAutoSu *)self predictedSleepDictionaryForDate:v7];
+  configCopy = config;
+  dateCopy = date;
+  v8 = [(_CDSleepForAutoSu *)self predictedSleepDictionaryForDate:dateCopy];
   if (v8)
   {
-    v9 = [(_CDSleepForAutoSu *)self predictForDate:v7 fromState:v8 withConfig:v6];
+    v9 = [(_CDSleepForAutoSu *)self predictForDate:dateCopy fromState:v8 withConfig:configCopy];
   }
 
   else
   {
-    v10 = [MEMORY[0x1E695DF00] date];
-    v9 = [(_CDSleepForAutoSu *)self makeDictionaryForEventStreamWhenPredictionTemporarilyUnavailable:v10];
+    date = [MEMORY[0x1E695DF00] date];
+    v9 = [(_CDSleepForAutoSu *)self makeDictionaryForEventStreamWhenPredictionTemporarilyUnavailable:date];
   }
 
   return v9;
 }
 
-- (id)retrieveSleepProbabilities:(id)a3
+- (id)retrieveSleepProbabilities:(id)probabilities
 {
-  if (a3)
+  if (probabilities)
   {
-    v3 = [a3 objectForKeyedSubscript:@"_DKDebugMetadataKey-debug"];
+    v3 = [probabilities objectForKeyedSubscript:@"_DKDebugMetadataKey-debug"];
     v4 = v3;
     if (v3)
     {
@@ -488,22 +488,22 @@ LABEL_21:
   return v7;
 }
 
-- (id)predictForDate:(id)a3 fromState:(id)a4
+- (id)predictForDate:(id)date fromState:(id)state
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_CDSleepForAutoSu *)self autoSuConfig];
-  v9 = [(_CDSleepForAutoSu *)self predictForDate:v7 fromState:v6 withConfig:v8];
+  stateCopy = state;
+  dateCopy = date;
+  autoSuConfig = [(_CDSleepForAutoSu *)self autoSuConfig];
+  v9 = [(_CDSleepForAutoSu *)self predictForDate:dateCopy fromState:stateCopy withConfig:autoSuConfig];
 
   return v9;
 }
 
-- (id)predictForDate:(id)a3 fromState:(id)a4 withConfig:(id)a5
+- (id)predictForDate:(id)date fromState:(id)state withConfig:(id)config
 {
   v35[96] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(_CDSleepForAutoSu *)self retrieveSleepProbabilities:a4];
+  dateCopy = date;
+  configCopy = config;
+  v10 = [(_CDSleepForAutoSu *)self retrieveSleepProbabilities:state];
   if (v10)
   {
     v11 = +[_CDLogging autoSUChannel];
@@ -533,15 +533,15 @@ LABEL_21:
     *buf = 0;
     v27 = 0;
     v28 = 0;
-    if (findAutoSuPlanByProbability(v35, buf, &v28 + 1, &v28, &v27 + 1, &v27, v9) != -1 && ![v9 alwaysFallBackToDefault])
+    if (findAutoSuPlanByProbability(v35, buf, &v28 + 1, &v28, &v27 + 1, &v27, configCopy) != -1 && ![configCopy alwaysFallBackToDefault])
     {
-      v21 = [(_CDSleepForAutoSu *)self proposeTimesFromRelativeOffsetsForDate:v8 lastUnlock:*buf suStart:HIDWORD(v28) suEnd:v28 unrestrictedSleepEnd:v27 config:v9];
-      if ([v9 alwaysReturnUnlockNow])
+      v21 = [(_CDSleepForAutoSu *)self proposeTimesFromRelativeOffsetsForDate:dateCopy lastUnlock:*buf suStart:HIDWORD(v28) suEnd:v28 unrestrictedSleepEnd:v27 config:configCopy];
+      if ([configCopy alwaysReturnUnlockNow])
       {
         v29[0] = @"sleep_query_status";
         v22 = [v21 objectForKeyedSubscript:?];
         v30[0] = v22;
-        v30[1] = v8;
+        v30[1] = dateCopy;
         v29[1] = @"unlock_start";
         v29[2] = @"su_start";
         v23 = [v21 objectForKeyedSubscript:?];
@@ -573,7 +573,7 @@ LABEL_21:
     }
   }
 
-  v18 = [(_CDSleepForAutoSu *)self defaultTimesWhenPredictionUnavailable:v8];
+  v18 = [(_CDSleepForAutoSu *)self defaultTimesWhenPredictionUnavailable:dateCopy];
 LABEL_14:
 
   v19 = *MEMORY[0x1E69E9840];
@@ -581,14 +581,14 @@ LABEL_14:
   return v18;
 }
 
-- (id)predicitLastUnlockForDay:(id)a3
+- (id)predicitLastUnlockForDay:(id)day
 {
-  v4 = a3;
+  dayCopy = day;
   v5 = objc_alloc_init(_CDAutoSuConfig);
   [(_CDAutoSuConfig *)v5 setParam];
   [(_CDAutoSuConfig *)v5 setAlwaysReturnUnlockNow:0];
   [(_CDAutoSuConfig *)v5 setAllowUnlockBeforeNow:1];
-  v6 = [(_CDSleepForAutoSu *)self getUnlockAndSoftwareUpdateTimesWithConfig:v5 referenceDate:v4];
+  v6 = [(_CDSleepForAutoSu *)self getUnlockAndSoftwareUpdateTimesWithConfig:v5 referenceDate:dayCopy];
   v7 = [v6 objectForKeyedSubscript:@"sleep_query_status"];
   v8 = [v7 isEqualToString:@"ok"];
 
@@ -607,18 +607,18 @@ LABEL_14:
 
 - (id)predictNextDateForLastUnlockAttemptOfTheDay
 {
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [(_CDSleepForAutoSu *)self predicitLastUnlockForDay:v3];
+  date = [MEMORY[0x1E695DF00] date];
+  v4 = [(_CDSleepForAutoSu *)self predicitLastUnlockForDay:date];
   v5 = v4;
-  if (v4 && ([v4 earlierDate:v3], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqualToDate:", v5), v6, !v7))
+  if (v4 && ([v4 earlierDate:date], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqualToDate:", v5), v6, !v7))
   {
     v10 = v5;
   }
 
   else
   {
-    v8 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v9 = [v8 dateByAddingUnit:16 value:1 toDate:v3 options:0];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    v9 = [currentCalendar dateByAddingUnit:16 value:1 toDate:date options:0];
 
     v10 = [(_CDSleepForAutoSu *)self predicitLastUnlockForDay:v9];
   }

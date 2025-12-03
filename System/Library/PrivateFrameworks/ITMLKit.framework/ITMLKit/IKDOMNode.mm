@@ -1,8 +1,8 @@
 @interface IKDOMNode
 - (id)ik_nodePath;
-- (id)ik_nodeWithId:(int64_t)a3;
-- (id)ik_nodesWithIds:(id)a3;
-- (id)ik_pathsForSearchQuery:(id)a3 compareOptions:(unint64_t)a4 currentPath:(id)a5;
+- (id)ik_nodeWithId:(int64_t)id;
+- (id)ik_nodesWithIds:(id)ids;
+- (id)ik_pathsForSearchQuery:(id)query compareOptions:(unint64_t)options currentPath:(id)path;
 @end
 
 @implementation IKDOMNode
@@ -17,9 +17,9 @@
 
   else
   {
-    v4 = self;
-    v5 = [MEMORY[0x277CCAA70] indexPathWithIndex:{-[IKDOMNode ITMLID](v4, "ITMLID")}];
-    if (v4)
+    selfCopy = self;
+    v5 = [MEMORY[0x277CCAA70] indexPathWithIndex:{-[IKDOMNode ITMLID](selfCopy, "ITMLID")}];
+    if (selfCopy)
     {
       v7 = 0x279798000uLL;
       *&v6 = 138412546;
@@ -32,9 +32,9 @@
           break;
         }
 
-        v8 = [(IKDOMNode *)v4 parentNode];
-        v9 = [(IKDOMNode *)v8 childNodesAsArray];
-        v10 = [v9 indexOfObject:v4];
+        parentNode = [(IKDOMNode *)selfCopy parentNode];
+        childNodesAsArray = [(IKDOMNode *)parentNode childNodesAsArray];
+        v10 = [childNodesAsArray indexOfObject:selfCopy];
 
         if (v10 == 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -51,7 +51,7 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [(IKDOMNode *)v4 tagName];
+            [(IKDOMNode *)selfCopy tagName];
           }
 
           else
@@ -71,9 +71,9 @@
 
         v12 = [v5 indexPathByAddingIndex:v10];
 
-        v4 = v8;
+        selfCopy = parentNode;
         v5 = v12;
-        if (!v8)
+        if (!parentNode)
         {
           v5 = v12;
           break;
@@ -109,7 +109,7 @@ LABEL_19:
   return v3;
 }
 
-- (id)ik_nodeWithId:(int64_t)a3
+- (id)ik_nodeWithId:(int64_t)id
 {
   v6 = 0;
   v7 = &v6;
@@ -122,7 +122,7 @@ LABEL_19:
   v5[2] = __42__IKDOMNode_IKJSInspector__ik_nodeWithId___block_invoke;
   v5[3] = &unk_27979B5B0;
   v5[4] = &v6;
-  v5[5] = a3;
+  v5[5] = id;
   [(IKDOMNode *)self _enumerateNodesWithBlock:v5];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -143,18 +143,18 @@ BOOL __42__IKDOMNode_IKJSInspector__ik_nodeWithId___block_invoke(uint64_t a1, vo
   return v5 == v6;
 }
 
-- (id)ik_nodesWithIds:(id)a3
+- (id)ik_nodesWithIds:(id)ids
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  idsCopy = ids;
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(idsCopy, "count")}];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __44__IKDOMNode_IKJSInspector__ik_nodesWithIds___block_invoke;
   v11[3] = &unk_27979B5D8;
-  v12 = v4;
+  v12 = idsCopy;
   v6 = v5;
   v13 = v6;
-  v7 = v4;
+  v7 = idsCopy;
   [(IKDOMNode *)self _enumerateNodesWithBlock:v11];
   v8 = v13;
   v9 = v6;
@@ -177,20 +177,20 @@ uint64_t __44__IKDOMNode_IKJSInspector__ik_nodesWithIds___block_invoke(uint64_t 
   return 0;
 }
 
-- (id)ik_pathsForSearchQuery:(id)a3 compareOptions:(unint64_t)a4 currentPath:(id)a5
+- (id)ik_pathsForSearchQuery:(id)query compareOptions:(unint64_t)options currentPath:(id)path
 {
   v43 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  queryCopy = query;
+  pathCopy = path;
   v10 = [MEMORY[0x277CBEB40] orderedSetWithCapacity:0];
-  v11 = [(IKDOMNode *)self nodeName];
-  v12 = [v11 rangeOfString:v8 options:a4];
+  nodeName = [(IKDOMNode *)self nodeName];
+  v12 = [nodeName rangeOfString:queryCopy options:options];
 
-  v13 = [(IKDOMNode *)self nodeValue];
-  if (v13)
+  nodeValue = [(IKDOMNode *)self nodeValue];
+  if (nodeValue)
   {
-    v14 = [(IKDOMNode *)self nodeValue];
-    v36 = [v14 rangeOfString:v8 options:a4] != 0x7FFFFFFFFFFFFFFFLL;
+    nodeValue2 = [(IKDOMNode *)self nodeValue];
+    v36 = [nodeValue2 rangeOfString:queryCopy options:options] != 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
@@ -202,7 +202,7 @@ uint64_t __44__IKDOMNode_IKJSInspector__ik_nodesWithIds___block_invoke(uint64_t 
   if (objc_opt_isKindOfClass())
   {
     v33 = v12;
-    v34 = v9;
+    v34 = pathCopy;
     v35 = v10;
     [(IKDOMNode *)self _attributes];
     v38 = 0u;
@@ -224,13 +224,13 @@ LABEL_7:
         }
 
         v19 = *(*(&v38 + 1) + 8 * v18);
-        v20 = [v19 rangeOfString:v8 options:a4];
+        v20 = [v19 rangeOfString:queryCopy options:options];
         v21 = [v15 objectForKey:v19];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           v22 = [v15 objectForKey:v19];
-          v23 = [v22 rangeOfString:v8 options:a4] != 0x7FFFFFFFFFFFFFFFLL;
+          v23 = [v22 rangeOfString:queryCopy options:options] != 0x7FFFFFFFFFFFFFFFLL;
         }
 
         else
@@ -263,7 +263,7 @@ LABEL_17:
       v24 = 0;
     }
 
-    v9 = v34;
+    pathCopy = v34;
     v10 = v35;
     v12 = v33;
   }
@@ -275,25 +275,25 @@ LABEL_17:
 
   if (v12 != 0x7FFFFFFFFFFFFFFFLL || v36 || v24)
   {
-    v25 = [v9 indexPathByAddingIndex:{-[IKDOMNode ITMLID](self, "ITMLID")}];
+    v25 = [pathCopy indexPathByAddingIndex:{-[IKDOMNode ITMLID](self, "ITMLID")}];
     [v10 addObject:v25];
   }
 
-  v26 = [(IKDOMNode *)self childNodesAsArray];
-  if ([v26 count])
+  childNodesAsArray = [(IKDOMNode *)self childNodesAsArray];
+  if ([childNodesAsArray count])
   {
     v27 = 0;
     do
     {
-      v28 = [v26 objectAtIndex:v27];
-      v29 = [v9 indexPathByAddingIndex:v27];
-      v30 = [v28 ik_pathsForSearchQuery:v8 compareOptions:a4 currentPath:v29];
+      v28 = [childNodesAsArray objectAtIndex:v27];
+      v29 = [pathCopy indexPathByAddingIndex:v27];
+      v30 = [v28 ik_pathsForSearchQuery:queryCopy compareOptions:options currentPath:v29];
       [v10 unionOrderedSet:v30];
 
       ++v27;
     }
 
-    while ([v26 count] > v27);
+    while ([childNodesAsArray count] > v27);
   }
 
   v31 = *MEMORY[0x277D85DE8];

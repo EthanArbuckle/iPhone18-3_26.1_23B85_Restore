@@ -3,28 +3,28 @@
 - (BOOL)_isToolbars;
 - (BOOL)_supportsSplit;
 - (BOOL)_suppressBackgroundStyling;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGSize)_defaultSize;
 - (CGSize)leftContentViewSize;
 - (CGSize)rightContentViewSize;
 - (UIEdgeInsets)backgroundEdgeInsets;
 - (UIInputView)initWithCoder:(NSCoder *)coder;
 - (UIInputView)initWithFrame:(CGRect)frame inputViewStyle:(UIInputViewStyle)inputViewStyle;
-- (id)_splitBorderedBackgroundWithCorners:(unint64_t)a3;
+- (id)_splitBorderedBackgroundWithCorners:(unint64_t)corners;
 - (id)_toolbarBorderedBackground;
 - (id)tintColor;
-- (unint64_t)_clipCornersOfView:(id)a3;
-- (void)_beginSplitTransitionIfNeeded:(double)a3 gapWidth:(double)a4;
-- (void)_endSplitTransitionIfNeeded:(BOOL)a3;
-- (void)_setLeftOffset:(double)a3 gapWidth:(double)a4;
-- (void)_setProgress:(double)a3 boundedBy:(double)a4;
-- (void)_setRenderConfig:(id)a3;
+- (unint64_t)_clipCornersOfView:(id)view;
+- (void)_beginSplitTransitionIfNeeded:(double)needed gapWidth:(double)width;
+- (void)_endSplitTransitionIfNeeded:(BOOL)needed;
+- (void)_setLeftOffset:(double)offset gapWidth:(double)width;
+- (void)_setProgress:(double)progress boundedBy:(double)by;
+- (void)_setRenderConfig:(id)config;
 - (void)_updateClipCorners;
-- (void)_updateWithSize:(CGSize)a3;
+- (void)_updateWithSize:(CGSize)size;
 - (void)setAllowsSelfSizing:(BOOL)allowsSelfSizing;
-- (void)setAssertSizingWithPredictionBar:(BOOL)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setAssertSizingWithPredictionBar:(BOOL)bar;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation UIInputView
@@ -43,24 +43,24 @@
   [(_UIInputViewContent *)self->_leftContentView _updateCornerClipping];
   [(_UIInputViewContent *)self->_rightContentView _updateCornerClipping];
   gapWidth = self->_gapWidth;
-  v4 = [(UIView *)self _inheritedRenderConfig];
-  v5 = [v4 lightKeyboard];
+  _inheritedRenderConfig = [(UIView *)self _inheritedRenderConfig];
+  lightKeyboard = [_inheritedRenderConfig lightKeyboard];
 
   if (gapWidth <= 0.0)
   {
-    if (v5)
+    if (lightKeyboard)
     {
-      v8 = [(UIInputView *)self _toolbarBorderedBackground];
-      [(_UIInputViewContent *)self->_leftContentView _setToolbarBackgroundViewWithImage:v8];
-      [(_UIInputViewContent *)self->_rightContentView _setToolbarBackgroundViewWithImage:v8];
+      _toolbarBorderedBackground = [(UIInputView *)self _toolbarBorderedBackground];
+      [(_UIInputViewContent *)self->_leftContentView _setToolbarBackgroundViewWithImage:_toolbarBorderedBackground];
+      [(_UIInputViewContent *)self->_rightContentView _setToolbarBackgroundViewWithImage:_toolbarBorderedBackground];
       goto LABEL_6;
     }
   }
 
-  else if (v5)
+  else if (lightKeyboard)
   {
-    v8 = [(UIInputView *)self _splitBorderedBackgroundWithCorners:2];
-    [(_UIInputViewContent *)self->_leftContentView _setToolbarBackgroundViewWithImage:v8];
+    _toolbarBorderedBackground = [(UIInputView *)self _splitBorderedBackgroundWithCorners:2];
+    [(_UIInputViewContent *)self->_leftContentView _setToolbarBackgroundViewWithImage:_toolbarBorderedBackground];
     v6 = [(UIInputView *)self _splitBorderedBackgroundWithCorners:1];
     [(_UIInputViewContent *)self->_rightContentView _setToolbarBackgroundViewWithImage:v6];
 
@@ -103,10 +103,10 @@ LABEL_6:
       v10 = 1.0 / UIKBScale();
       v11 = [UIKBRenderGeometry geometryWithFrame:0.0 paddedFrame:0.0, 1.0, v9, 0.0, v10 + 0.0, 1.0, v9 - v10];
       v12 = [UIKBRenderTraits traitsWithGeometry:v11];
-      v13 = [[_UIBackdropViewSettingsUltraLight alloc] initWithDefaultValues];
-      [(_UIBackdropViewSettings *)v13 grayscaleTintLevel];
+      initWithDefaultValues = [[_UIBackdropViewSettingsUltraLight alloc] initWithDefaultValues];
+      [(_UIBackdropViewSettings *)initWithDefaultValues grayscaleTintLevel];
       v15 = v14;
-      [(_UIBackdropViewSettings *)v13 grayscaleTintAlpha];
+      [(_UIBackdropViewSettings *)initWithDefaultValues grayscaleTintAlpha];
       v17 = [UIColor colorWithWhite:v15 alpha:v16];
       v18 = [UIKBColorGradient gradientWithUIColor:v17];
       [v12 setBackgroundGradient:v18];
@@ -117,8 +117,8 @@ LABEL_6:
       v20 = UIKBScale();
       v21 = [UIKBRenderer rendererWithContext:0 withSize:0 withScale:7 opaque:UIKeyboardGetCurrentIdiom() renderFlags:1.0 assetIdiom:v9, v20];
       [v21 renderBackgroundTraits:v12];
-      v22 = [v21 renderedImage];
-      v3 = [v22 resizableImageWithCapInsets:{0.0, 0.0, 0.0, 0.0}];
+      renderedImage = [v21 renderedImage];
+      v3 = [renderedImage resizableImageWithCapInsets:{0.0, 0.0, 0.0, 0.0}];
 
       v23 = qword_1ED49AC90;
       v24 = MEMORY[0x1E696AD98];
@@ -201,21 +201,21 @@ void __42__UIInputView__setupAppearanceIfNecessary__block_invoke()
   {
     v7 = +[UIKBKeyplaneChangeContext keyplaneChangeContext];
     [v7 setSelfSizingChanged:1];
-    v6 = [(UIView *)self superview];
-    [v6 _didChangeKeyplaneWithContext:v7];
+    superview = [(UIView *)self superview];
+    [superview _didChangeKeyplaneWithContext:v7];
   }
 }
 
-- (void)setAssertSizingWithPredictionBar:(BOOL)a3
+- (void)setAssertSizingWithPredictionBar:(BOOL)bar
 {
   assertSizingWithPredictionBar = self->_assertSizingWithPredictionBar;
-  self->_assertSizingWithPredictionBar = a3;
-  if (assertSizingWithPredictionBar != a3)
+  self->_assertSizingWithPredictionBar = bar;
+  if (assertSizingWithPredictionBar != bar)
   {
     v7 = +[UIKBKeyplaneChangeContext keyplaneChangeContext];
     [v7 setSelfSizingChanged:1];
-    v6 = [(UIView *)self superview];
-    [v6 _didChangeKeyplaneWithContext:v7];
+    superview = [(UIView *)self superview];
+    [superview _didChangeKeyplaneWithContext:v7];
   }
 }
 
@@ -237,20 +237,20 @@ void __42__UIInputView__setupAppearanceIfNecessary__block_invoke()
 
 - (BOOL)_suppressBackgroundStyling
 {
-  v3 = [(UIView *)self _inheritedRenderConfig];
-  v4 = [v3 colorAdaptiveBackground];
+  _inheritedRenderConfig = [(UIView *)self _inheritedRenderConfig];
+  colorAdaptiveBackground = [_inheritedRenderConfig colorAdaptiveBackground];
 
-  return (v4 & 1) != 0 || self->_suppressBackgroundStyling;
+  return (colorAdaptiveBackground & 1) != 0 || self->_suppressBackgroundStyling;
 }
 
-- (void)_setRenderConfig:(id)a3
+- (void)_setRenderConfig:(id)config
 {
-  v5 = a3;
+  configCopy = config;
   renderConfig = self->_renderConfig;
   if (renderConfig)
   {
-    v7 = [(UIKBRenderConfig *)renderConfig lightKeyboard];
-    v8 = v7 ^ [v5 lightKeyboard];
+    lightKeyboard = [(UIKBRenderConfig *)renderConfig lightKeyboard];
+    v8 = lightKeyboard ^ [configCopy lightKeyboard];
   }
 
   else
@@ -258,17 +258,17 @@ void __42__UIInputView__setupAppearanceIfNecessary__block_invoke()
     v8 = 1;
   }
 
-  objc_storeStrong(&self->_renderConfig, a3);
-  [(UIView *)self->_leftContentView _setRenderConfig:v5];
-  [(UIView *)self->_rightContentView _setRenderConfig:v5];
+  objc_storeStrong(&self->_renderConfig, config);
+  [(UIView *)self->_leftContentView _setRenderConfig:configCopy];
+  [(UIView *)self->_rightContentView _setRenderConfig:configCopy];
   if (v8)
   {
     [(UIInputView *)self _updateClipCorners];
   }
 
-  v9 = [(UIView *)self _rootInputWindowController];
-  v10 = [v9 _inputAssistantView];
-  v11 = [(UIView *)self isDescendantOfView:v10];
+  _rootInputWindowController = [(UIView *)self _rootInputWindowController];
+  _inputAssistantView = [_rootInputWindowController _inputAssistantView];
+  v11 = [(UIView *)self isDescendantOfView:_inputAssistantView];
 
   if (!v11)
   {
@@ -288,27 +288,27 @@ void __32__UIInputView__setRenderConfig___block_invoke(uint64_t a1)
   [v1 _didChangeFromIdiom:objc_msgSend(v2 onScreen:"_userInterfaceIdiom") traverseHierarchy:{0, 1}];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   if (self->_disableSplitSupport || (leftContentView = self->_leftContentView) == 0 || !self->_rightContentView)
   {
     v13.receiver = self;
     v13.super_class = UIInputView;
-    v10 = [(UIView *)&v13 pointInside:v7 withEvent:x, y];
+    v10 = [(UIView *)&v13 pointInside:eventCopy withEvent:x, y];
 LABEL_7:
     v9 = v10;
     goto LABEL_8;
   }
 
   [(UIView *)self convertPoint:self->_leftContentView toView:x, y];
-  if (![(UIView *)leftContentView pointInside:v7 withEvent:?])
+  if (![(UIView *)leftContentView pointInside:eventCopy withEvent:?])
   {
     rightContentView = self->_rightContentView;
     [(UIView *)self convertPoint:rightContentView toView:x, y];
-    v10 = [(UIView *)rightContentView pointInside:v7 withEvent:?];
+    v10 = [(UIView *)rightContentView pointInside:eventCopy withEvent:?];
     goto LABEL_7;
   }
 
@@ -352,10 +352,10 @@ LABEL_8:
   return v5 != 0.0;
 }
 
-- (void)_setLeftOffset:(double)a3 gapWidth:(double)a4
+- (void)_setLeftOffset:(double)offset gapWidth:(double)width
 {
-  self->_gapWidth = a4;
-  self->_leftOffset = a3;
+  self->_gapWidth = width;
+  self->_leftOffset = offset;
   if (!self->_disableSplitSupport)
   {
     if (self->_gapWidth == 0.0)
@@ -380,7 +380,7 @@ LABEL_8:
     else
     {
       [(UIView *)self frame];
-      v19 = v18 - a3 - a4;
+      v19 = v18 - offset - width;
       [(UIInputView *)self leftContentViewSize];
       v15 = v20;
       [(UIInputView *)self rightContentViewSize];
@@ -416,7 +416,7 @@ LABEL_8:
       }
 
       v23 = 1.0 / UIKBScale();
-      v9 = a3 - v23;
+      v9 = offset - v23;
       [(UIView *)self bounds];
       MaxX = v23 + v24 - v19;
       v11 = v19 - v23;
@@ -455,23 +455,23 @@ LABEL_8:
   }
 }
 
-- (void)_setProgress:(double)a3 boundedBy:(double)a4
+- (void)_setProgress:(double)progress boundedBy:(double)by
 {
-  if (a3 >= 0.0)
+  if (progress >= 0.0)
   {
-    v6 = a3;
+    progressCopy = progress;
     [(UIInputView *)self contentRatio];
     self->_transitionRatio = v8;
-    if (a4 <= 0.0)
+    if (by <= 0.0)
     {
       v12 = v8;
     }
 
     else
     {
-      if (1.0 / (1.0 - a4) * v6 - 1.0 / (1.0 - a4) * a4 >= 0.0)
+      if (1.0 / (1.0 - by) * progressCopy - 1.0 / (1.0 - by) * by >= 0.0)
       {
-        v9 = 1.0 / (1.0 - a4) * v6 - 1.0 / (1.0 - a4) * a4;
+        v9 = 1.0 / (1.0 - by) * progressCopy - 1.0 / (1.0 - by) * by;
       }
 
       else
@@ -479,9 +479,9 @@ LABEL_8:
         v9 = 0.0;
       }
 
-      if (v6 < a4)
+      if (progressCopy < by)
       {
-        v10 = 1.0 / a4 * v6;
+        v10 = 1.0 / by * progressCopy;
       }
 
       else
@@ -492,36 +492,36 @@ LABEL_8:
       [(UIInputView *)self contentRatio];
       v12 = (1.0 - v10) * (v11 + -0.5) + 0.5;
       self->_transitionRatio = v12;
-      v6 = v9;
+      progressCopy = v9;
     }
 
-    v13 = round(v6 * self->_transitionGap);
+    v13 = round(progressCopy * self->_transitionGap);
     [(UIView *)self frame];
-    v15 = round(self->_transitionLeftOffset + (1.0 - v6) * (ceil(v12 * v14) - self->_transitionLeftOffset));
+    v15 = round(self->_transitionLeftOffset + (1.0 - progressCopy) * (ceil(v12 * v14) - self->_transitionLeftOffset));
 
     [(UIInputView *)self _setLeftOffset:v15 gapWidth:v13];
   }
 }
 
-- (void)_beginSplitTransitionIfNeeded:(double)a3 gapWidth:(double)a4
+- (void)_beginSplitTransitionIfNeeded:(double)needed gapWidth:(double)width
 {
   if (![(UIInputView *)self _isTransitioning])
   {
-    self->_transitionGap = a4;
-    self->_transitionLeftOffset = a3;
+    self->_transitionGap = width;
+    self->_transitionLeftOffset = needed;
     self->_isTransitioning = 1;
 
     [(UIInputView *)self willBeginSplitTransition];
   }
 }
 
-- (void)_endSplitTransitionIfNeeded:(BOOL)a3
+- (void)_endSplitTransitionIfNeeded:(BOOL)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   if ([(UIInputView *)self _isTransitioning])
   {
     self->_isTransitioning = 0;
-    if (v3)
+    if (neededCopy)
     {
       [(UIInputView *)self _setLeftOffset:self->_transitionLeftOffset gapWidth:self->_transitionGap];
       [(UIInputView *)self didEndSplitTransition];
@@ -541,7 +541,7 @@ LABEL_8:
   }
 }
 
-- (void)_updateWithSize:(CGSize)a3
+- (void)_updateWithSize:(CGSize)size
 {
   if (self->_gapWidth == 0.0)
   {
@@ -549,27 +549,27 @@ LABEL_8:
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v6.receiver = self;
   v6.super_class = UIInputView;
-  [(UIView *)&v6 setFrame:a3.origin.x, a3.origin.y];
+  [(UIView *)&v6 setFrame:frame.origin.x, frame.origin.y];
   [(UIInputView *)self _updateWithSize:width, height];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = bounds.size.height;
+  width = bounds.size.width;
   v6.receiver = self;
   v6.super_class = UIInputView;
-  [(UIView *)&v6 setBounds:a3.origin.x, a3.origin.y];
+  [(UIView *)&v6 setBounds:bounds.origin.x, bounds.origin.y];
   [(UIInputView *)self _updateWithSize:width, height];
 }
 
-- (id)_splitBorderedBackgroundWithCorners:(unint64_t)a3
+- (id)_splitBorderedBackgroundWithCorners:(unint64_t)corners
 {
   [(UIView *)self frame];
   if (CGRectIsEmpty(v43))
@@ -585,7 +585,7 @@ LABEL_8:
     }
 
     v6 = _MergedGlobals_7_3;
-    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:corners];
     v8 = [v6 objectForKey:v7];
 
     if (v8)
@@ -596,34 +596,34 @@ LABEL_8:
     else
     {
       v9 = +[UIKeyboardPreferencesController sharedPreferencesController];
-      v10 = [v9 preferencesActions];
-      [v10 rivenSizeFactor:10.0];
+      preferencesActions = [v9 preferencesActions];
+      [preferencesActions rivenSizeFactor:10.0];
       v12 = v11;
 
       v13 = v12 + v12;
       [(UIView *)self frame];
       v15 = v14;
       v16 = UIKBScale();
-      if (a3 == 1)
+      if (corners == 1)
       {
         v17 = 2;
       }
 
       else
       {
-        v17 = 8 * (a3 == 2);
+        v17 = 8 * (corners == 2);
       }
 
       v18 = 1.0 / v16;
       v19 = UIRectInsetEdges(v17 | 1u, 0.0, 0.0, v12 + v12, v15, 1.0 / v16);
       v23 = [UIKBRenderGeometry geometryWithFrame:0.0 paddedFrame:0.0, v12 + v12, v15, v19, v20, v21, v22];
       [v23 setRoundRectRadius:v12];
-      [v23 setRoundRectCorners:a3];
+      [v23 setRoundRectCorners:corners];
       v24 = [UIKBRenderTraits traitsWithGeometry:v23];
-      v25 = [[_UIBackdropViewSettingsUltraLight alloc] initWithDefaultValues];
-      [(_UIBackdropViewSettings *)v25 grayscaleTintLevel];
+      initWithDefaultValues = [[_UIBackdropViewSettingsUltraLight alloc] initWithDefaultValues];
+      [(_UIBackdropViewSettings *)initWithDefaultValues grayscaleTintLevel];
       v27 = v26;
-      [(_UIBackdropViewSettings *)v25 grayscaleTintAlpha];
+      [(_UIBackdropViewSettings *)initWithDefaultValues grayscaleTintAlpha];
       v29 = [UIColor colorWithWhite:v27 alpha:v28];
       v30 = [UIKBColorGradient gradientWithUIColor:v29];
       [v24 setBackgroundGradient:v30];
@@ -634,10 +634,10 @@ LABEL_8:
       v32 = UIKBScale();
       v33 = [UIKBRenderer rendererWithContext:0 withSize:0 withScale:7 opaque:UIKeyboardGetCurrentIdiom() renderFlags:v13 assetIdiom:v15, v32];
       [v33 renderBackgroundTraits:v24];
-      v34 = [v33 renderedImage];
-      if (v34)
+      renderedImage = [v33 renderedImage];
+      if (renderedImage)
       {
-        v35 = v34;
+        v35 = renderedImage;
         if ((v17 & 2) != 0)
         {
           v36 = v13;
@@ -658,10 +658,10 @@ LABEL_8:
           v37 = 0.0;
         }
 
-        v38 = [v34 resizableImageWithCapInsets:{0.0, v36, 0.0, v37}];
+        v38 = [renderedImage resizableImageWithCapInsets:{0.0, v36, 0.0, v37}];
 
         v39 = _MergedGlobals_7_3;
-        v40 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+        v40 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:corners];
         [v39 setObject:v38 forKey:v40];
       }
 
@@ -691,16 +691,16 @@ void __41__UIInputView__toolbarBorderedBackground__block_invoke()
   qword_1ED49AC90 = v0;
 }
 
-- (unint64_t)_clipCornersOfView:(id)a3
+- (unint64_t)_clipCornersOfView:(id)view
 {
   if (self->_gapWidth == 0.0)
   {
     return 0;
   }
 
-  v5 = a3;
-  v6 = [(UIView *)self superview];
-  v7 = [v6 _clipCornersOfView:v5];
+  viewCopy = view;
+  superview = [(UIView *)self superview];
+  v7 = [superview _clipCornersOfView:viewCopy];
 
   return v7;
 }

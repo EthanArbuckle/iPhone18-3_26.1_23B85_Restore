@@ -1,21 +1,21 @@
 @interface PKViewWithHitTestHandler
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation PKViewWithHitTestHandler
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v13.receiver = self;
   v13.super_class = PKViewWithHitTestHandler;
-  v8 = [(PKViewWithHitTestHandler *)&v13 hitTest:v7 withEvent:x, y];
+  v8 = [(PKViewWithHitTestHandler *)&v13 hitTest:eventCopy withEvent:x, y];
   hitTestHandler = self->_hitTestHandler;
   if (hitTestHandler)
   {
-    v10 = hitTestHandler[2](hitTestHandler, v8, v7, x, y);
+    v10 = hitTestHandler[2](hitTestHandler, v8, eventCopy, x, y);
   }
 
   else

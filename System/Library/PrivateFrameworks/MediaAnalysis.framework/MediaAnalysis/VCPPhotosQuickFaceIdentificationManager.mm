@@ -1,38 +1,38 @@
 @interface VCPPhotosQuickFaceIdentificationManager
-- (BOOL)_faceProcessingPassGoalWithExtendTimeout:(id)a3;
-- (BOOL)_keepCurrentPersonsModelWithExtendTimeout:(id)a3;
-- (BOOL)_modelLastGenerationDidExceedTimeIntervalForType:(unint64_t)a3;
-- (BOOL)_needToGenerateModelWithType:(unint64_t)a3 ignoreLastGenerationTime:(BOOL)a4 withExtendTimeout:(id)a5;
-- (BOOL)_persistPersonsModel:(id)a3 evaluationMode:(BOOL)a4 error:(id *)a5;
-- (BOOL)_persistPetsModel:(id)a3 error:(id *)a4;
-- (VCPPhotosQuickFaceIdentificationManager)initWithPhotoLibrary:(id)a3;
-- (id)_fetchPersonsToFeedVIPModel:(BOOL)a3 allowUnverifiedPerson:(BOOL)a4;
+- (BOOL)_faceProcessingPassGoalWithExtendTimeout:(id)timeout;
+- (BOOL)_keepCurrentPersonsModelWithExtendTimeout:(id)timeout;
+- (BOOL)_modelLastGenerationDidExceedTimeIntervalForType:(unint64_t)type;
+- (BOOL)_needToGenerateModelWithType:(unint64_t)type ignoreLastGenerationTime:(BOOL)time withExtendTimeout:(id)timeout;
+- (BOOL)_persistPersonsModel:(id)model evaluationMode:(BOOL)mode error:(id *)error;
+- (BOOL)_persistPetsModel:(id)model error:(id *)error;
+- (VCPPhotosQuickFaceIdentificationManager)initWithPhotoLibrary:(id)library;
+- (id)_fetchPersonsToFeedVIPModel:(BOOL)model allowUnverifiedPerson:(BOOL)person;
 - (id)_fetchPetsToFeedVIPModel;
-- (id)fetchEntityForModelType:(unint64_t)a3 evaluationMode:(BOOL)a4 allowUnverifiedPerson:(BOOL)a5;
-- (int)_classifyFaces:(id)a3 forAsset:(id)a4 detectedPersons:(id *)a5;
-- (int)_generatePersonsModelWithExtendTimeoutBlock:(id)a3 cancel:(id)a4 evaluationMode:(BOOL)a5 allowUnverifiedPerson:(BOOL)a6;
-- (int)_generatePetsModelWithExtendTimeoutBlock:(id)a3 cancel:(id)a4;
+- (id)fetchEntityForModelType:(unint64_t)type evaluationMode:(BOOL)mode allowUnverifiedPerson:(BOOL)person;
+- (int)_classifyFaces:(id)faces forAsset:(id)asset detectedPersons:(id *)persons;
+- (int)_generatePersonsModelWithExtendTimeoutBlock:(id)block cancel:(id)cancel evaluationMode:(BOOL)mode allowUnverifiedPerson:(BOOL)person;
+- (int)_generatePetsModelWithExtendTimeoutBlock:(id)block cancel:(id)cancel;
 - (int)_loadPersonsModelAndInitializeFaceAnalyzer;
 - (int)_loadPetsModel;
 - (int)classifyVIPPets;
-- (int)generateVIPModelWithType:(unint64_t)a3 ignoreLastGenerationTime:(BOOL)a4 evaluationMode:(BOOL)a5 allowUnverifiedPerson:(BOOL)a6 modelGenerated:(BOOL *)a7 extendTimeout:(id)a8 andCancel:(id)a9;
+- (int)generateVIPModelWithType:(unint64_t)type ignoreLastGenerationTime:(BOOL)time evaluationMode:(BOOL)mode allowUnverifiedPerson:(BOOL)person modelGenerated:(BOOL *)generated extendTimeout:(id)timeout andCancel:(id)cancel;
 - (int)loadPersonsModelAndInitializeFaceAnalyzerWrapper;
-- (int)processAsset:(id)a3 onDemandDetection:(BOOL)a4 detectedFaces:(id *)a5 detectedPersons:(id *)a6;
-- (void)personIdentificationForSyndicationPhotoLibrary:(id)a3 withCancelOrExtendTimeoutBlock:(id)a4;
+- (int)processAsset:(id)asset onDemandDetection:(BOOL)detection detectedFaces:(id *)faces detectedPersons:(id *)persons;
+- (void)personIdentificationForSyndicationPhotoLibrary:(id)library withCancelOrExtendTimeoutBlock:(id)block;
 @end
 
 @implementation VCPPhotosQuickFaceIdentificationManager
 
-- (VCPPhotosQuickFaceIdentificationManager)initWithPhotoLibrary:(id)a3
+- (VCPPhotosQuickFaceIdentificationManager)initWithPhotoLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v11.receiver = self;
   v11.super_class = VCPPhotosQuickFaceIdentificationManager;
   v6 = [(VCPPhotosQuickFaceIdentificationManager *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_photoLibrary, a3);
+    objc_storeStrong(&v6->_photoLibrary, library);
     v8 = dispatch_queue_create("com.apple.mediaanalysis.quickfaceid.management", 0);
     management = v7->_management;
     v7->_management = v8;
@@ -78,9 +78,9 @@ void *__91__VCPPhotosQuickFaceIdentificationManager_loadPersonsModelAndInitializ
   v3 = [VCPPhotosFaceProcessingContext contextWithPhotoLibrary:self->_photoLibrary];
   if (_os_feature_enabled_impl())
   {
-    v4 = [(PHPhotoLibrary *)self->_photoLibrary vcp_visionCacheStorageDirectoryURL];
+    vcp_visionCacheStorageDirectoryURL = [(PHPhotoLibrary *)self->_photoLibrary vcp_visionCacheStorageDirectoryURL];
     v35 = 0;
-    v5 = [objc_alloc(MEMORY[0x1E69E0678]) initWithClient:0 path:v4 error:&v35];
+    v5 = [objc_alloc(MEMORY[0x1E69E0678]) initWithClient:0 path:vcp_visionCacheStorageDirectoryURL error:&v35];
     v6 = v35;
     gallery = self->_gallery;
     self->_gallery = v5;
@@ -98,15 +98,15 @@ void *__91__VCPPhotosQuickFaceIdentificationManager_loadPersonsModelAndInitializ
       goto LABEL_43;
     }
 
-    v9 = [(VUWGallery *)v8 faceprintRevision];
+    faceprintRevision = [(VUWGallery *)v8 faceprintRevision];
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
       *buf = 134217984;
-      v37 = v9;
+      v37 = faceprintRevision;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "Gallery uses faceprint with revision %ld", buf, 0xCu);
     }
 
-    if (v9 == 3737841669)
+    if (faceprintRevision == 3737841669)
     {
       v10 = 15;
     }
@@ -153,11 +153,11 @@ LABEL_43:
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v15, OS_SIGNPOST_INTERVAL_BEGIN, v13, "VCPPersonVIPLoadModel", "", buf, 2u);
   }
 
-  v4 = [(PHPhotoLibrary *)self->_photoLibrary vcp_vipModelFilepathForVIPType:0];
-  if (v4)
+  vcp_visionCacheStorageDirectoryURL = [(PHPhotoLibrary *)self->_photoLibrary vcp_vipModelFilepathForVIPType:0];
+  if (vcp_visionCacheStorageDirectoryURL)
   {
     v34 = 0;
-    v16 = [VCPFaceIDModel loadVIPModelAtPath:v4 withVIPType:0 error:&v34];
+    v16 = [VCPFaceIDModel loadVIPModelAtPath:vcp_visionCacheStorageDirectoryURL withVIPType:0 error:&v34];
     v6 = v34;
     personsModel = self->_personsModel;
     self->_personsModel = v16;
@@ -188,33 +188,33 @@ LABEL_43:
       VCPPerformance_LogMeasurement();
     }
 
-    v20 = [(VNPersonsModel *)self->_personsModel configuration];
-    v21 = [v20 faceprintRequestRevision];
+    configuration = [(VNPersonsModel *)self->_personsModel configuration];
+    faceprintRequestRevision = [configuration faceprintRequestRevision];
 
-    [v3 setProcessingVersion:{-[VCPPhotosQuickFaceIdentificationManager faceProcessingVersionFromVNFaceprintRequestRevision:](self, "faceProcessingVersionFromVNFaceprintRequestRevision:", v21)}];
+    [v3 setProcessingVersion:{-[VCPPhotosQuickFaceIdentificationManager faceProcessingVersionFromVNFaceprintRequestRevision:](self, "faceProcessingVersionFromVNFaceprintRequestRevision:", faceprintRequestRevision)}];
     if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
-      v22 = [(VNPersonsModel *)self->_personsModel configuration];
-      v23 = [v22 faceprintRequestRevision];
-      v24 = [v3 processingVersion];
+      configuration2 = [(VNPersonsModel *)self->_personsModel configuration];
+      faceprintRequestRevision2 = [configuration2 faceprintRequestRevision];
+      processingVersion = [v3 processingVersion];
       *buf = 134218240;
-      v37 = v23;
+      v37 = faceprintRequestRevision2;
       v38 = 1024;
-      v39 = v24;
+      v39 = processingVersion;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "QuickFaceID Model: model with VNCreateFaceprintRequest revision %lu (FaceProcessing Version%d)", buf, 0x12u);
     }
 
     v25 = [VCPFaceProcessingVersionManager sharedManagerForPhotoLibrary:self->_photoLibrary];
-    v26 = [v25 currentProcessingVersion];
+    currentProcessingVersion = [v25 currentProcessingVersion];
 
     if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
       v27 = objc_opt_class();
-      v28 = VCPMAGetRevisionForVisionModel(v27, v26);
+      v28 = VCPMAGetRevisionForVisionModel(v27, currentProcessingVersion);
       *buf = 134218240;
       v37 = v28;
       v38 = 1024;
-      v39 = v26;
+      v39 = currentProcessingVersion;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "QuickFaceID Model: system is using VNCreateFaceprintRequest revision %lu (FaceProcessing Version%d)", buf, 0x12u);
     }
 
@@ -303,24 +303,24 @@ LABEL_44:
   return v3;
 }
 
-- (int)_classifyFaces:(id)a3 forAsset:(id)a4 detectedPersons:(id *)a5
+- (int)_classifyFaces:(id)faces forAsset:(id)asset detectedPersons:(id *)persons
 {
   v92 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v48 = a4;
-  v49 = v7;
-  if (![v7 count])
+  facesCopy = faces;
+  assetCopy = asset;
+  v49 = facesCopy;
+  if (![facesCopy count])
   {
     goto LABEL_31;
   }
 
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [v48 localIdentifier];
-  v55 = [v8 stringWithFormat:@"[%@][QuickFaceID Classify]", v9];
+  localIdentifier = [assetCopy localIdentifier];
+  v55 = [v8 stringWithFormat:@"[%@][QuickFaceID Classify]", localIdentifier];
 
   v51 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v49, "count")}];
   v53 = [(PHPhotoLibrary *)self->_photoLibrary mad_allPersonsFetchOptionsWithDetectionTypes:0 andVerifiedTypes:&unk_1F49BECF8];
-  v47 = a5;
+  personsCopy = persons;
   v80 = 0u;
   v81 = 0u;
   v78 = 0u;
@@ -346,13 +346,13 @@ LABEL_44:
       v12 = *(*(&v78 + 1) + 8 * v11);
       v13 = objc_autoreleasePoolPush();
       v14 = MEMORY[0x1E696AEC0];
-      v15 = [v12 localIdentifier];
-      v16 = [v14 stringWithFormat:@"%@[%@]", v55, v15];
+      localIdentifier2 = [v12 localIdentifier];
+      v16 = [v14 stringWithFormat:@"%@[%@]", v55, localIdentifier2];
 
-      v17 = [v12 imageprintWrapper];
-      v18 = [v17 data];
+      imageprintWrapper = [v12 imageprintWrapper];
+      data = [imageprintWrapper data];
 
-      v19 = [VCPFaceIDModel faceObservationFromFaceprintData:v18];
+      v19 = [VCPFaceIDModel faceObservationFromFaceprintData:data];
       v72 = 0;
       v73 = &v72;
       v74 = 0x3032000000;
@@ -453,9 +453,9 @@ LABEL_21:
   while (v35);
 LABEL_23:
 
-  v36 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-  v37 = [MEMORY[0x1E6978978] fetchPersonsWithLocalIdentifiers:v51 options:v36];
-  v38 = [MEMORY[0x1E695DF90] dictionary];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  v37 = [MEMORY[0x1E6978978] fetchPersonsWithLocalIdentifiers:v51 options:librarySpecificFetchOptions];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v58 = 0u;
   v59 = 0u;
   v56 = 0u;
@@ -475,8 +475,8 @@ LABEL_23:
         }
 
         v43 = *(*(&v56 + 1) + 8 * i);
-        v44 = [v43 localIdentifier];
-        [v38 setObject:v43 forKeyedSubscript:v44];
+        localIdentifier3 = [v43 localIdentifier];
+        [dictionary setObject:v43 forKeyedSubscript:localIdentifier3];
       }
 
       v40 = [v39 countByEnumeratingWithState:&v56 objects:v82 count:16];
@@ -485,8 +485,8 @@ LABEL_23:
     while (v40);
   }
 
-  v45 = v38;
-  *v47 = v38;
+  v45 = dictionary;
+  *personsCopy = dictionary;
 
 LABEL_31:
   return 0;
@@ -595,14 +595,14 @@ void __83__VCPPhotosQuickFaceIdentificationManager__classifyFaces_forAsset_detec
   }
 }
 
-- (int)processAsset:(id)a3 onDemandDetection:(BOOL)a4 detectedFaces:(id *)a5 detectedPersons:(id *)a6
+- (int)processAsset:(id)asset onDemandDetection:(BOOL)detection detectedFaces:(id *)faces detectedPersons:(id *)persons
 {
-  v7 = a4;
+  detectionCopy = detection;
   v48[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  assetCopy = asset;
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [v9 localIdentifier];
-  v12 = [v10 stringWithFormat:@"[%@] QuickFaceID Analysis", v11];
+  localIdentifier = [assetCopy localIdentifier];
+  v12 = [v10 stringWithFormat:@"[%@] QuickFaceID Analysis", localIdentifier];
 
   v13 = _os_feature_enabled_impl();
   management = self->_management;
@@ -630,15 +630,15 @@ void __83__VCPPhotosQuickFaceIdentificationManager__classifyFaces_forAsset_detec
 LABEL_9:
     if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
-      v16 = [v9 deferredProcessingNeeded];
+      deferredProcessingNeeded = [assetCopy deferredProcessingNeeded];
       *buf = 138412546;
       v45 = v12;
       v46 = 1024;
-      LODWORD(v47) = v16;
+      LODWORD(v47) = deferredProcessingNeeded;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "%@ Analyzing asset (deferType: %d)", buf, 0x12u);
     }
 
-    v38 = a6;
+    personsCopy = persons;
     v17 = VCPSignPostLog();
     spid = os_signpost_id_generate(v17);
 
@@ -650,8 +650,8 @@ LABEL_9:
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v19, OS_SIGNPOST_INTERVAL_BEGIN, spid, "VCPPersonVIPAssetProcessing", "", buf, 2u);
     }
 
-    v20 = [MEMORY[0x1E695DF70] array];
-    if (v7)
+    array = [MEMORY[0x1E695DF70] array];
+    if (detectionCopy)
     {
       if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
       {
@@ -662,7 +662,7 @@ LABEL_9:
 
       faceAnalyzer = self->_faceAnalyzer;
       v41 = 0;
-      v22 = [(VCPFaceAnalyzer *)faceAnalyzer quickAnalyzeAsset:v9 results:&v41];
+      v22 = [(VCPFaceAnalyzer *)faceAnalyzer quickAnalyzeAsset:assetCopy results:&v41];
       v23 = v41;
       v24 = v23;
       if (v22)
@@ -672,29 +672,29 @@ LABEL_9:
 
       v25 = [v23 objectForKeyedSubscript:@"FaceResults"];
       v26 = [v25 objectForKeyedSubscript:@"FacesToPersist"];
-      [v20 addObjectsFromArray:v26];
+      [array addObjectsFromArray:v26];
     }
 
     else
     {
-      v27 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+      librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
       v48[0] = *MEMORY[0x1E6978D68];
       v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:1];
-      [v27 setFetchPropertySets:v28];
+      [librarySpecificFetchOptions setFetchPropertySets:v28];
 
-      [v27 setIncludeNonvisibleFaces:1];
-      [v27 setIncludeTorsoAndFaceDetectionData:1];
-      v29 = [MEMORY[0x1E69787D0] fetchFacesInAsset:v9 options:v27];
+      [librarySpecificFetchOptions setIncludeNonvisibleFaces:1];
+      [librarySpecificFetchOptions setIncludeTorsoAndFaceDetectionData:1];
+      v29 = [MEMORY[0x1E69787D0] fetchFacesInAsset:assetCopy options:librarySpecificFetchOptions];
       for (i = 0; i < [v29 count]; ++i)
       {
         v31 = [v29 objectAtIndexedSubscript:i];
         v32 = [VCPPhotosFace faceFromPHFace:v31 copyOption:1];
-        [v20 addObject:v32];
+        [array addObject:v32];
       }
 
       if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
       {
-        v33 = [v20 count];
+        v33 = [array count];
         *buf = 138412546;
         v45 = v12;
         v46 = 2048;
@@ -702,7 +702,7 @@ LABEL_9:
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "%@ %lu detected faces", buf, 0x16u);
       }
 
-      v22 = [(VCPFaceAnalyzer *)self->_faceAnalyzer updateMissingFaceprintForFaces:v20 withAsset:v9];
+      v22 = [(VCPFaceAnalyzer *)self->_faceAnalyzer updateMissingFaceprintForFaces:array withAsset:assetCopy];
 
       if (v22)
       {
@@ -710,7 +710,7 @@ LABEL_9:
       }
     }
 
-    v22 = [(VCPPhotosQuickFaceIdentificationManager *)self _classifyFaces:v20 forAsset:v9 detectedPersons:v38];
+    v22 = [(VCPPhotosQuickFaceIdentificationManager *)self _classifyFaces:array forAsset:assetCopy detectedPersons:personsCopy];
     if (v22)
     {
 LABEL_42:
@@ -718,11 +718,11 @@ LABEL_42:
       goto LABEL_43;
     }
 
-    v34 = v20;
-    *a5 = v20;
+    v34 = array;
+    *faces = array;
     if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
-      v35 = [v20 count];
+      v35 = [array count];
       *buf = 138412546;
       v45 = v12;
       v46 = 2048;
@@ -806,20 +806,20 @@ void *__104__VCPPhotosQuickFaceIdentificationManager_processAsset_onDemandDetect
   dispatch_sync(management, block);
   if (self->_petsModel)
   {
-    v56 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-    [v56 setIncludedDetectionTypes:&unk_1F49BED10];
+    librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+    [librarySpecificFetchOptions setIncludedDetectionTypes:&unk_1F49BED10];
     v4 = *MEMORY[0x1E6978D70];
     v92[0] = *MEMORY[0x1E6978D80];
     v92[1] = v4;
     v92[2] = *MEMORY[0x1E6978D68];
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v92 count:3];
-    v58 = self;
-    [v56 setFetchPropertySets:v5];
+    selfCopy = self;
+    [librarySpecificFetchOptions setFetchPropertySets:v5];
 
-    v6 = [MEMORY[0x1E69787D0] fetchFacesWithOptions:v56];
-    v53 = [MEMORY[0x1E695DF70] array];
-    v57 = [MEMORY[0x1E695DF70] array];
-    v54 = [MEMORY[0x1E695DF90] dictionary];
+    v6 = [MEMORY[0x1E69787D0] fetchFacesWithOptions:librarySpecificFetchOptions];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     for (i = 0; i < [v6 count]; ++i)
     {
       v8 = objc_autoreleasePoolPush();
@@ -828,15 +828,15 @@ void *__104__VCPPhotosQuickFaceIdentificationManager_processAsset_onDemandDetect
       {
         if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
         {
-          v10 = [v9 localIdentifier];
-          v11 = [v9 nameSource];
-          v12 = [v9 personLocalIdentifier];
+          localIdentifier = [v9 localIdentifier];
+          nameSource = [v9 nameSource];
+          personLocalIdentifier = [v9 personLocalIdentifier];
           *buf = 138412802;
-          *&buf[4] = v10;
+          *&buf[4] = localIdentifier;
           *&buf[12] = 2048;
-          *&buf[14] = v11;
+          *&buf[14] = nameSource;
           *&buf[22] = 2112;
-          v89 = v12;
+          v89 = personLocalIdentifier;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "QuickFaceID Pet: pet (PHFace) %@ already has a nameSource %ld for petPerson %@; skip", buf, 0x20u);
         }
       }
@@ -845,21 +845,21 @@ void *__104__VCPPhotosQuickFaceIdentificationManager_processAsset_onDemandDetect
       {
         if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
         {
-          v13 = [v9 localIdentifier];
-          v14 = [v9 personLocalIdentifier];
+          localIdentifier2 = [v9 localIdentifier];
+          personLocalIdentifier2 = [v9 personLocalIdentifier];
           *buf = 138412546;
-          *&buf[4] = v13;
+          *&buf[4] = localIdentifier2;
           *&buf[12] = 2112;
-          *&buf[14] = v14;
+          *&buf[14] = personLocalIdentifier2;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "QuickFaceID Pet: pet (PHFace) %@ is used to train this VIP model with petPerson %@; skip", buf, 0x16u);
         }
       }
 
       else
       {
-        v15 = [v9 faceClusteringProperties];
-        v16 = [v15 faceprint];
-        v17 = [v16 faceprintData];
+        faceClusteringProperties = [v9 faceClusteringProperties];
+        faceprint = [faceClusteringProperties faceprint];
+        faceprintData = [faceprint faceprintData];
 
         *buf = 0;
         *&buf[8] = buf;
@@ -870,7 +870,7 @@ void *__104__VCPPhotosQuickFaceIdentificationManager_processAsset_onDemandDetect
         v18 = objc_alloc(MEMORY[0x1E6984408]);
         v19 = *&buf[8];
         obj = *(*&buf[8] + 40);
-        v20 = [v18 initWithState:v17 error:&obj];
+        v20 = [v18 initWithState:faceprintData error:&obj];
         objc_storeStrong((v19 + 40), obj);
         if (v20 && !*(*&buf[8] + 40))
         {
@@ -883,7 +883,7 @@ void *__104__VCPPhotosQuickFaceIdentificationManager_processAsset_onDemandDetect
           v85 = __Block_byref_object_copy__39;
           v86 = __Block_byref_object_dispose__39;
           v87 = 0;
-          v25 = v58->_management;
+          v25 = selfCopy->_management;
           v70[0] = MEMORY[0x1E69E9820];
           v70[1] = 3221225472;
           v70[2] = __58__VCPPhotosQuickFaceIdentificationManager_classifyVIPPets__block_invoke_463;
@@ -891,17 +891,17 @@ void *__104__VCPPhotosQuickFaceIdentificationManager_processAsset_onDemandDetect
           v73 = v84;
           v55 = v24;
           v71 = v55;
-          v72 = v58;
+          v72 = selfCopy;
           v74 = buf;
           dispatch_sync(v25, v70);
           if (*(*&buf[8] + 40))
           {
             if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
             {
-              v26 = [v9 localIdentifier];
+              localIdentifier3 = [v9 localIdentifier];
               v27 = *(*&buf[8] + 40);
               *v78 = 138412546;
-              v79 = v26;
+              v79 = localIdentifier3;
               v80 = 2112;
               v81 = v27;
               _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "QuickFaceID Pet: Failed to classify %@ - %@; skip", v78, 0x16u);
@@ -912,31 +912,31 @@ void *__104__VCPPhotosQuickFaceIdentificationManager_processAsset_onDemandDetect
           {
             if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
             {
-              v28 = [v9 localIdentifier];
+              localIdentifier4 = [v9 localIdentifier];
               v29 = *(*&v84[8] + 40);
               *v78 = 138412546;
-              v79 = v28;
+              v79 = localIdentifier4;
               v80 = 2112;
               v81 = v29;
               _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "QuickFaceID Pet: classified %@ to petPerson %@", v78, 0x16u);
             }
 
             v30 = *(*&v84[8] + 40);
-            v31 = [v9 localIdentifier];
-            [v54 setObject:v30 forKeyedSubscript:v31];
+            localIdentifier5 = [v9 localIdentifier];
+            [dictionary setObject:v30 forKeyedSubscript:localIdentifier5];
 
-            [v57 addObject:*(*&v84[8] + 40)];
-            [v53 addObject:v9];
+            [array2 addObject:*(*&v84[8] + 40)];
+            [array addObject:v9];
           }
 
           else if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
           {
-            v32 = [v9 localIdentifier];
+            localIdentifier6 = [v9 localIdentifier];
             [v9 centerX];
             v34 = v33;
             [v9 centerY];
             *v78 = 138412802;
-            v79 = v32;
+            v79 = localIdentifier6;
             v80 = 2048;
             v81 = v34;
             v82 = 2048;
@@ -963,10 +963,10 @@ void *__104__VCPPhotosQuickFaceIdentificationManager_processAsset_onDemandDetect
       objc_autoreleasePoolPop(v8);
     }
 
-    v60 = [(PHPhotoLibrary *)v58->_photoLibrary librarySpecificFetchOptions];
-    [v60 setIncludedDetectionTypes:&unk_1F49BED28];
-    v59 = [MEMORY[0x1E6978978] fetchPersonsWithLocalIdentifiers:v57 options:v60];
-    v36 = [MEMORY[0x1E695DF90] dictionary];
+    librarySpecificFetchOptions2 = [(PHPhotoLibrary *)selfCopy->_photoLibrary librarySpecificFetchOptions];
+    [librarySpecificFetchOptions2 setIncludedDetectionTypes:&unk_1F49BED28];
+    v59 = [MEMORY[0x1E6978978] fetchPersonsWithLocalIdentifiers:array2 options:librarySpecificFetchOptions2];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     v68 = 0u;
     v69 = 0u;
     v66 = 0u;
@@ -986,8 +986,8 @@ void *__104__VCPPhotosQuickFaceIdentificationManager_processAsset_onDemandDetect
           }
 
           v41 = *(*(&v66 + 1) + 8 * j);
-          v42 = [v41 localIdentifier];
-          [v36 setObject:v41 forKeyedSubscript:v42];
+          localIdentifier7 = [v41 localIdentifier];
+          [dictionary2 setObject:v41 forKeyedSubscript:localIdentifier7];
         }
 
         v38 = [v37 countByEnumeratingWithState:&v66 objects:v77 count:16];
@@ -1000,14 +1000,14 @@ void *__104__VCPPhotosQuickFaceIdentificationManager_processAsset_onDemandDetect
     aBlock[1] = 3221225472;
     aBlock[2] = __58__VCPPhotosQuickFaceIdentificationManager_classifyVIPPets__block_invoke_467;
     aBlock[3] = &unk_1E834D020;
-    v43 = v53;
+    v43 = array;
     v63 = v43;
-    v44 = v54;
+    v44 = dictionary;
     v64 = v44;
-    v45 = v36;
+    v45 = dictionary2;
     v65 = v45;
     v46 = _Block_copy(aBlock);
-    photoLibrary = v58->_photoLibrary;
+    photoLibrary = selfCopy->_photoLibrary;
     v61 = 0;
     v48 = [(PHPhotoLibrary *)photoLibrary performChangesAndWait:v46 error:&v61];
     v49 = v61;
@@ -1021,7 +1021,7 @@ void *__104__VCPPhotosQuickFaceIdentificationManager_processAsset_onDemandDetect
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "QuickFaceID Pet: classified and persisted %lu Pet PHFace", buf, 0xCu);
       }
 
-      v51 = 0;
+      code = 0;
     }
 
     else
@@ -1033,7 +1033,7 @@ void *__104__VCPPhotosQuickFaceIdentificationManager_processAsset_onDemandDetect
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "QuickFaceID Pet: failed to persist pet classification results: %@", buf, 0xCu);
       }
 
-      v51 = [v49 code];
+      code = [v49 code];
     }
   }
 
@@ -1048,7 +1048,7 @@ void *__104__VCPPhotosQuickFaceIdentificationManager_processAsset_onDemandDetect
     return 0;
   }
 
-  return v51;
+  return code;
 }
 
 void *__58__VCPPhotosQuickFaceIdentificationManager_classifyVIPPets__block_invoke(uint64_t a1)
@@ -1152,17 +1152,17 @@ LABEL_11:
   }
 }
 
-- (void)personIdentificationForSyndicationPhotoLibrary:(id)a3 withCancelOrExtendTimeoutBlock:(id)a4
+- (void)personIdentificationForSyndicationPhotoLibrary:(id)library withCancelOrExtendTimeoutBlock:(id)block
 {
   v94[3] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v77 = a4;
+  libraryCopy = library;
+  blockCopy = block;
   v6 = MEMORY[0x1E696AEC0];
-  v72 = v5;
-  v7 = [v5 vcp_description];
-  v75 = [v6 stringWithFormat:@"[PersonIdentification][%@]", v7];
+  v72 = libraryCopy;
+  vcp_description = [libraryCopy vcp_description];
+  v75 = [v6 stringWithFormat:@"[PersonIdentification][%@]", vcp_description];
 
-  if (([v5 vcp_isSyndicationLibrary] & 1) == 0)
+  if (([libraryCopy vcp_isSyndicationLibrary] & 1) == 0)
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -1174,29 +1174,29 @@ LABEL_11:
     goto LABEL_104;
   }
 
-  if (v77 && (v77[2]() & 1) != 0)
+  if (blockCopy && (blockCopy[2]() & 1) != 0)
   {
     goto LABEL_104;
   }
 
   v69 = [(PHPhotoLibrary *)self->_photoLibrary mad_allPersonsFetchOptionsWithDetectionTypes:0 andVerifiedTypes:&unk_1F49BED40];
-  v74 = [v5 librarySpecificFetchOptions];
-  [v74 setIncludeOnlyFacesWithFaceprints:1];
-  [v74 setIncludeMediaAnalysisProcessingRangeTypes:3];
+  librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setIncludeOnlyFacesWithFaceprints:1];
+  [librarySpecificFetchOptions setIncludeMediaAnalysisProcessingRangeTypes:3];
   v8 = *MEMORY[0x1E6978D70];
   v94[0] = *MEMORY[0x1E6978D80];
   v94[1] = v8;
   v94[2] = *MEMORY[0x1E6978D68];
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v94 count:3];
-  [v74 setFetchPropertySets:v9];
+  [librarySpecificFetchOptions setFetchPropertySets:v9];
 
-  v10 = [MEMORY[0x1E69789B0] mediaProcessingFacesSortDescriptorsForGeneratingPersonModel];
-  [v74 setInternalSortDescriptors:v10];
+  mediaProcessingFacesSortDescriptorsForGeneratingPersonModel = [MEMORY[0x1E69789B0] mediaProcessingFacesSortDescriptorsForGeneratingPersonModel];
+  [librarySpecificFetchOptions setInternalSortDescriptors:mediaProcessingFacesSortDescriptorsForGeneratingPersonModel];
 
   v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"nameSource == %ld", 0];
-  [v74 setPredicate:v11];
+  [librarySpecificFetchOptions setPredicate:v11];
 
-  v76 = [MEMORY[0x1E69787D0] fetchFacesWithOptions:v74];
+  v76 = [MEMORY[0x1E69787D0] fetchFacesWithOptions:librarySpecificFetchOptions];
   if (![v76 count])
   {
     if (MediaAnalysisLogLevel() < 6)
@@ -1228,7 +1228,7 @@ LABEL_21:
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "%@ Identifying %lu faces", buf, 0x16u);
   }
 
-  if (v77 && (v77[2]() & 1) != 0)
+  if (blockCopy && (blockCopy[2]() & 1) != 0)
   {
     goto LABEL_103;
   }
@@ -1293,7 +1293,7 @@ LABEL_21:
   }
 
 LABEL_23:
-  v68 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v17 = 0;
   v18 = MEMORY[0x1E69E9C10];
   v19 = 0;
@@ -1302,17 +1302,17 @@ LABEL_23:
     v20 = v19;
     v21 = v18;
     v22 = objc_autoreleasePoolPush();
-    if (!v77 || (v77[2]() & 1) == 0)
+    if (!blockCopy || (blockCopy[2]() & 1) == 0)
     {
       v24 = [v76 objectAtIndexedSubscript:v17];
       v25 = MEMORY[0x1E696AEC0];
-      v26 = [v24 localIdentifier];
-      v73 = [v25 stringWithFormat:@"%@[%@]", v75, v26];
+      localIdentifier = [v24 localIdentifier];
+      v73 = [v25 stringWithFormat:@"%@[%@]", v75, localIdentifier];
 
-      v27 = [v24 faceClusteringProperties];
-      v28 = [v27 faceprint];
+      faceClusteringProperties = [v24 faceClusteringProperties];
+      faceprint = [faceClusteringProperties faceprint];
 
-      if (!v28)
+      if (!faceprint)
       {
         if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
@@ -1325,8 +1325,8 @@ LABEL_23:
         goto LABEL_81;
       }
 
-      v29 = [v28 faceprintData];
-      v30 = [VCPFaceIDModel faceObservationFromFaceprintData:v29];
+      faceprintData = [faceprint faceprintData];
+      v30 = [VCPFaceIDModel faceObservationFromFaceprintData:faceprintData];
 
       if (!v30)
       {
@@ -1371,50 +1371,50 @@ LABEL_81:
           goto LABEL_82;
         }
 
-        v35 = [v70 firstObject];
-        if (v35)
+        firstObject = [v70 firstObject];
+        if (firstObject)
         {
           v36 = MEMORY[0x1E696AEC0];
-          v65 = v35;
-          v37 = [v35 entityIdentifier];
-          v66 = [v36 stringWithFormat:@"md:%ld", objc_msgSend(v37, "value")];
+          v65 = firstObject;
+          entityIdentifier = [firstObject entityIdentifier];
+          v66 = [v36 stringWithFormat:@"md:%ld", objc_msgSend(entityIdentifier, "value")];
 
           v38 = MEMORY[0x1E6978978];
           v93 = v66;
           v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v93 count:1];
           v40 = [v38 fetchPersonsWithMdIDs:v39 options:v69];
-          v41 = [v40 firstObject];
+          firstObject2 = [v40 firstObject];
 
-          if (v41)
+          if (firstObject2)
           {
             if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
             {
-              v42 = [v41 localIdentifier];
-              v43 = [v65 confidence];
+              localIdentifier2 = [firstObject2 localIdentifier];
+              confidence = [v65 confidence];
               *buf = 138413058;
               v86 = v73;
               v87 = 2112;
-              v88 = v42;
+              v88 = localIdentifier2;
               v89 = 2112;
               v90 = *&v66;
               v91 = 2112;
-              v92 = v43;
+              v92 = confidence;
               _os_log_impl(&dword_1C9B70000, v21, OS_LOG_TYPE_DEBUG, "%@[VU] Identified as %@ (%@) with confidence:%@", buf, 0x2Au);
             }
 
-            v44 = [v41 localIdentifier];
-            [v68 setObject:v44 forKeyedSubscript:v24];
+            localIdentifier3 = [firstObject2 localIdentifier];
+            [dictionary setObject:localIdentifier3 forKeyedSubscript:v24];
           }
 
           else if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
           {
-            v54 = [v65 confidence];
+            confidence2 = [v65 confidence];
             *buf = 138412802;
             v86 = v73;
             v87 = 2112;
             v88 = v66;
             v89 = 2112;
-            v90 = *&v54;
+            v90 = *&confidence2;
             _os_log_impl(&dword_1C9B70000, v21, OS_LOG_TYPE_DEBUG, "%@[VU] Identified as %@ with confidence:%@, but invalid person", buf, 0x20u);
           }
 
@@ -1454,40 +1454,40 @@ LABEL_72:
         goto LABEL_49;
       }
 
-      v67 = [v33 firstObject];
-      [v67 confidence];
+      firstObject3 = [v33 firstObject];
+      [firstObject3 confidence];
       if (v45 > VCPPersonFaceVIPMatchingThreshold())
       {
         if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
         {
-          v46 = [v67 predictedPersonUniqueIdentifier];
-          [v67 confidence];
+          predictedPersonUniqueIdentifier = [firstObject3 predictedPersonUniqueIdentifier];
+          [firstObject3 confidence];
           *buf = 138412802;
           v86 = v73;
           v87 = 2112;
-          v88 = v46;
+          v88 = predictedPersonUniqueIdentifier;
           v89 = 2048;
           v90 = v47;
           _os_log_impl(&dword_1C9B70000, v21, OS_LOG_TYPE_DEBUG, "%@ Face identified as %@ confidence:%.2f", buf, 0x20u);
         }
 
-        v48 = [v33 firstObject];
-        v49 = [v48 predictedPersonUniqueIdentifier];
-        [v68 setObject:v49 forKeyedSubscript:v24];
+        firstObject4 = [v33 firstObject];
+        predictedPersonUniqueIdentifier2 = [firstObject4 predictedPersonUniqueIdentifier];
+        [dictionary setObject:predictedPersonUniqueIdentifier2 forKeyedSubscript:v24];
 
         goto LABEL_77;
       }
 
       if (MediaAnalysisLogLevel() >= 7)
       {
-        v48 = v21;
+        firstObject4 = v21;
         v50 = v21;
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
         {
-          if (v67)
+          if (firstObject3)
           {
             v51 = MEMORY[0x1E696AD98];
-            [v67 confidence];
+            [firstObject3 confidence];
             v52 = [v51 numberWithFloat:?];
             v53 = v52;
           }
@@ -1504,11 +1504,11 @@ LABEL_72:
           v87 = 2112;
           v88 = v53;
           _os_log_impl(&dword_1C9B70000, v21, OS_LOG_TYPE_DEBUG, "%@ Face not identified, confidence:%@", buf, 0x16u);
-          if (v67)
+          if (firstObject3)
           {
           }
 
-          v48 = v21;
+          firstObject4 = v21;
         }
 
 LABEL_77:
@@ -1531,7 +1531,7 @@ LABEL_82:
 
   if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
-    v55 = [v68 count];
+    v55 = [dictionary count];
     v56 = [v76 count];
     *buf = 138412802;
     v86 = v75;
@@ -1542,13 +1542,13 @@ LABEL_82:
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "%@ Identified %lu out of %lu faces", buf, 0x20u);
   }
 
-  if ([v68 count])
+  if ([dictionary count])
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __121__VCPPhotosQuickFaceIdentificationManager_personIdentificationForSyndicationPhotoLibrary_withCancelOrExtendTimeoutBlock___block_invoke_486;
     aBlock[3] = &unk_1E834BDC0;
-    v80 = v68;
+    v80 = dictionary;
     v57 = _Block_copy(aBlock);
     v78 = 0;
     v58 = [v72 performChangesAndWait:v57 error:&v78];
@@ -1648,42 +1648,42 @@ void __121__VCPPhotosQuickFaceIdentificationManager_personIdentificationForSyndi
   }
 }
 
-- (BOOL)_persistPersonsModel:(id)a3 evaluationMode:(BOOL)a4 error:(id *)a5
+- (BOOL)_persistPersonsModel:(id)model evaluationMode:(BOOL)mode error:(id *)error
 {
-  v7 = a3;
+  modelCopy = model;
   v8 = [(PHPhotoLibrary *)self->_photoLibrary vcp_vipModelFilepathForVIPType:0];
-  LOBYTE(a5) = [VCPFaceIDModel persistModel:v7 toPath:v8 error:a5];
+  LOBYTE(error) = [VCPFaceIDModel persistModel:modelCopy toPath:v8 error:error];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)_persistPetsModel:(id)a3 error:(id *)a4
+- (BOOL)_persistPetsModel:(id)model error:(id *)error
 {
-  v6 = a3;
+  modelCopy = model;
   v7 = [(PHPhotoLibrary *)self->_photoLibrary vcp_vipModelFilepathForVIPType:1];
-  LOBYTE(a4) = [VCPFaceIDModel persistPetsModel:v6 toPath:v7 error:a4];
+  LOBYTE(error) = [VCPFaceIDModel persistPetsModel:modelCopy toPath:v7 error:error];
 
-  return a4;
+  return error;
 }
 
-- (id)_fetchPersonsToFeedVIPModel:(BOOL)a3 allowUnverifiedPerson:(BOOL)a4
+- (id)_fetchPersonsToFeedVIPModel:(BOOL)model allowUnverifiedPerson:(BOOL)person
 {
-  v4 = a4;
+  personCopy = person;
   v17[2] = *MEMORY[0x1E69E9840];
-  v5 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
   v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"verifiedType = %@ OR verifiedType = %@", &unk_1F49BD798, &unk_1F49BD7B0];
-  [v5 setPredicate:v6];
+  [librarySpecificFetchOptions setPredicate:v6];
 
-  if (v4)
+  if (personCopy)
   {
     v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"verifiedType = %@", &unk_1F49BD7F8];
-    v8 = [v5 predicate];
-    v17[0] = v8;
+    predicate = [librarySpecificFetchOptions predicate];
+    v17[0] = predicate;
     v17[1] = v7;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
 
     v10 = [MEMORY[0x1E696AB28] orPredicateWithSubpredicates:v9];
-    [v5 setPredicate:v10];
+    [librarySpecificFetchOptions setPredicate:v10];
   }
 
   v11 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"faceCount" ascending:0];
@@ -1691,9 +1691,9 @@ void __121__VCPPhotosQuickFaceIdentificationManager_personIdentificationForSyndi
   v12 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"uuid" ascending:0];
   v16[1] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
-  [v5 setSortDescriptors:v13];
+  [librarySpecificFetchOptions setSortDescriptors:v13];
 
-  v14 = [MEMORY[0x1E6978978] fetchPersonsWithOptions:v5];
+  v14 = [MEMORY[0x1E6978978] fetchPersonsWithOptions:librarySpecificFetchOptions];
 
   return v14;
 }
@@ -1701,38 +1701,38 @@ void __121__VCPPhotosQuickFaceIdentificationManager_personIdentificationForSyndi
 - (id)_fetchPetsToFeedVIPModel
 {
   v8[2] = *MEMORY[0x1E69E9840];
-  v2 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-  [v2 setFetchLimit:100];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setFetchLimit:100];
   v3 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"faceCount" ascending:0];
   v8[0] = v3;
   v4 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"uuid" ascending:0];
   v8[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:2];
-  [v2 setSortDescriptors:v5];
+  [librarySpecificFetchOptions setSortDescriptors:v5];
 
-  [v2 setIncludedDetectionTypes:&unk_1F49BED58];
-  [v2 setMinimumVerifiedFaceCount:0];
-  [v2 setMinimumUnverifiedFaceCount:0];
-  [v2 setIncludeTorsoOnlyPerson:0];
-  v6 = [MEMORY[0x1E6978978] fetchPersonsWithOptions:v2];
+  [librarySpecificFetchOptions setIncludedDetectionTypes:&unk_1F49BED58];
+  [librarySpecificFetchOptions setMinimumVerifiedFaceCount:0];
+  [librarySpecificFetchOptions setMinimumUnverifiedFaceCount:0];
+  [librarySpecificFetchOptions setIncludeTorsoOnlyPerson:0];
+  v6 = [MEMORY[0x1E6978978] fetchPersonsWithOptions:librarySpecificFetchOptions];
 
   return v6;
 }
 
-- (id)fetchEntityForModelType:(unint64_t)a3 evaluationMode:(BOOL)a4 allowUnverifiedPerson:(BOOL)a5
+- (id)fetchEntityForModelType:(unint64_t)type evaluationMode:(BOOL)mode allowUnverifiedPerson:(BOOL)person
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a3 == 1)
+  if (type == 1)
   {
     v6 = [(VCPPhotosQuickFaceIdentificationManager *)self _fetchPetsToFeedVIPModel:1];
   }
 
-  else if (a3)
+  else if (type)
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v8 = 134217984;
-      v9 = a3;
+      typeCopy = type;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[QuickFaceID] Unknown VIP type (%lu); no entity fetched", &v8, 0xCu);
     }
 
@@ -1741,17 +1741,17 @@ void __121__VCPPhotosQuickFaceIdentificationManager_personIdentificationForSyndi
 
   else
   {
-    v6 = [(VCPPhotosQuickFaceIdentificationManager *)self _fetchPersonsToFeedVIPModel:a4 allowUnverifiedPerson:a5];
+    v6 = [(VCPPhotosQuickFaceIdentificationManager *)self _fetchPersonsToFeedVIPModel:mode allowUnverifiedPerson:person];
   }
 
   return v6;
 }
 
-- (int)_generatePetsModelWithExtendTimeoutBlock:(id)a3 cancel:(id)a4
+- (int)_generatePetsModelWithExtendTimeoutBlock:(id)block cancel:(id)cancel
 {
   v162[1] = *MEMORY[0x1E69E9840];
-  v111 = a3;
-  v115 = a4;
+  blockCopy = block;
+  cancelCopy = cancel;
   if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
@@ -1760,7 +1760,7 @@ void __121__VCPPhotosQuickFaceIdentificationManager_personIdentificationForSyndi
   }
 
   v89 = mach_absolute_time();
-  v97 = self;
+  selfCopy = self;
   v6 = VCPSignPostLog();
   spid = os_signpost_id_generate(v6);
 
@@ -1773,20 +1773,20 @@ void __121__VCPPhotosQuickFaceIdentificationManager_personIdentificationForSyndi
   }
 
   v93 = [(VCPPhotosQuickFaceIdentificationManager *)self fetchEntityForModelType:1 evaluationMode:0 allowUnverifiedPerson:0];
-  v102 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
   v162[0] = *MEMORY[0x1E6978D68];
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v162 count:1];
-  [v102 setFetchPropertySets:v9];
+  [librarySpecificFetchOptions setFetchPropertySets:v9];
 
-  [v102 setIncludeOnlyFacesWithFaceprints:1];
-  [v102 setFetchLimit:512];
-  v10 = [MEMORY[0x1E69789B0] mediaProcessingFacesSortDescriptorsForGeneratingPersonModel];
-  [v102 setInternalSortDescriptors:v10];
+  [librarySpecificFetchOptions setIncludeOnlyFacesWithFaceprints:1];
+  [librarySpecificFetchOptions setFetchLimit:512];
+  mediaProcessingFacesSortDescriptorsForGeneratingPersonModel = [MEMORY[0x1E69789B0] mediaProcessingFacesSortDescriptorsForGeneratingPersonModel];
+  [librarySpecificFetchOptions setInternalSortDescriptors:mediaProcessingFacesSortDescriptorsForGeneratingPersonModel];
 
   v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"nameSource != %ld", 6];
-  [v102 setPredicate:v11];
+  [librarySpecificFetchOptions setPredicate:v11];
 
-  [v102 setIncludedDetectionTypes:&unk_1F49BED70];
+  [librarySpecificFetchOptions setIncludedDetectionTypes:&unk_1F49BED70];
   v95 = [[VCPPhotosFaceProcessingContext alloc] initWithPhotoLibrary:self->_photoLibrary];
   v12 = objc_alloc_init(MEMORY[0x1E6984470]);
   v149 = v12;
@@ -1847,7 +1847,7 @@ void __121__VCPPhotosQuickFaceIdentificationManager_personIdentificationForSyndi
 
       else
       {
-        v19 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
         v145 = 0u;
         v146 = 0u;
         v143 = 0u;
@@ -1871,7 +1871,7 @@ void __121__VCPPhotosQuickFaceIdentificationManager_personIdentificationForSyndi
 
               v99 = *(*(&v143 + 1) + 8 * v101);
               context = objc_autoreleasePoolPush();
-              if (v115 && v115[2]())
+              if (cancelCopy && cancelCopy[2]())
               {
                 if (MediaAnalysisLogLevel() >= 4)
                 {
@@ -1890,20 +1890,20 @@ void __121__VCPPhotosQuickFaceIdentificationManager_personIdentificationForSyndi
 
               else
               {
-                if (v111)
+                if (blockCopy)
                 {
-                  v111[2]();
+                  blockCopy[2]();
                 }
 
-                v116 = [MEMORY[0x1E69787D0] fetchFacesForPerson:v99 options:v102];
+                v116 = [MEMORY[0x1E69787D0] fetchFacesForPerson:v99 options:librarySpecificFetchOptions];
                 if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
                 {
-                  v23 = [v99 localIdentifier];
+                  localIdentifier = [v99 localIdentifier];
                   v24 = [v116 count];
                   *buf = 138412802;
                   v156 = @"[QuickFaceID][PetsModelGeneration]";
                   v157 = 2112;
-                  v158 = v23;
+                  v158 = localIdentifier;
                   v159 = 2048;
                   v160 = v24;
                   _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "%@ Fetched entity %@ with %lu faces", buf, 0x20u);
@@ -1920,7 +1920,7 @@ void __121__VCPPhotosQuickFaceIdentificationManager_personIdentificationForSyndi
                   }
 
                   v26 = objc_autoreleasePoolPush();
-                  if (v115 && v115[2]())
+                  if (cancelCopy && cancelCopy[2]())
                   {
                     if (MediaAnalysisLogLevel() >= 4)
                     {
@@ -1939,19 +1939,19 @@ void __121__VCPPhotosQuickFaceIdentificationManager_personIdentificationForSyndi
 
                   else
                   {
-                    if (v111)
+                    if (blockCopy)
                     {
-                      v111[2]();
+                      blockCopy[2]();
                     }
 
                     v29 = [v116 objectAtIndexedSubscript:i];
-                    v112 = [v29 faceClusteringProperties];
-                    v30 = [v112 faceprint];
-                    v31 = [v30 faceprintData];
+                    faceClusteringProperties = [v29 faceClusteringProperties];
+                    faceprint = [faceClusteringProperties faceprint];
+                    faceprintData = [faceprint faceprintData];
 
                     v32 = objc_alloc(MEMORY[0x1E6984408]);
                     v142 = 0;
-                    v33 = [v32 initWithState:v31 error:&v142];
+                    v33 = [v32 initWithState:faceprintData error:&v142];
                     v34 = v142;
                     v35 = v34;
                     if (!v33 || v34)
@@ -1982,10 +1982,10 @@ void __121__VCPPhotosQuickFaceIdentificationManager_personIdentificationForSyndi
                       if (v38)
                       {
                         [v103 addObject:v38];
-                        v39 = [v29 localIdentifier];
-                        v40 = [v38 uuid];
-                        v41 = [v40 UUIDString];
-                        [v19 setObject:v39 forKeyedSubscript:v41];
+                        localIdentifier2 = [v29 localIdentifier];
+                        uuid = [v38 uuid];
+                        uUIDString = [uuid UUIDString];
+                        [dictionary setObject:localIdentifier2 forKeyedSubscript:uUIDString];
 
                         v28 = 0;
                       }
@@ -2029,9 +2029,9 @@ void __121__VCPPhotosQuickFaceIdentificationManager_personIdentificationForSyndi
 
                 if ([v103 count])
                 {
-                  v45 = [v99 localIdentifier];
+                  localIdentifier3 = [v99 localIdentifier];
                   v141 = 0;
-                  v46 = [v100 addObservations:v103 toEntityWithUniqueIdentifier:v45 error:&v141];
+                  v46 = [v100 addObservations:v103 toEntityWithUniqueIdentifier:localIdentifier3 error:&v141];
                   v47 = v141;
 
                   if ((v46 & 1) == 0 && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -2093,7 +2093,7 @@ LABEL_67:
         }
 
         v140 = 0;
-        v50 = [(VCPPhotosQuickFaceIdentificationManager *)v97 _persistPetsModel:v100 error:&v140];
+        v50 = [(VCPPhotosQuickFaceIdentificationManager *)selfCopy _persistPetsModel:v100 error:&v140];
         type = v140;
         if (v50)
         {
@@ -2120,20 +2120,20 @@ LABEL_67:
 
                 v54 = *(*(&v136 + 1) + 8 * v53);
                 v113 = objc_autoreleasePoolPush();
-                v55 = [v54 localIdentifier];
+                localIdentifier4 = [v54 localIdentifier];
                 v135 = 0;
-                v117 = [v100 trainingObservationsForEntityWithUniqueIdentifier:v55 canceller:0 error:&v135];
+                v117 = [v100 trainingObservationsForEntityWithUniqueIdentifier:localIdentifier4 canceller:0 error:&v135];
                 v120 = v135;
 
                 if (v120)
                 {
                   if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
                   {
-                    v56 = [v54 localIdentifier];
+                    localIdentifier5 = [v54 localIdentifier];
                     *buf = 138412802;
                     v156 = @"[QuickFaceID][PetsModelGeneration]";
                     v157 = 2112;
-                    v158 = v56;
+                    v158 = localIdentifier5;
                     v159 = 2112;
                     v160 = v120;
                     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "%@ Failed to load observations for %@ from model - %@; skipping ...", buf, 0x20u);
@@ -2160,9 +2160,9 @@ LABEL_67:
                           objc_enumerationMutation(v57);
                         }
 
-                        v61 = [*(*(&v131 + 1) + 8 * j) uuid];
-                        v62 = [v61 UUIDString];
-                        v63 = [v19 objectForKeyedSubscript:v62];
+                        uuid2 = [*(*(&v131 + 1) + 8 * j) uuid];
+                        uUIDString2 = [uuid2 UUIDString];
+                        v63 = [dictionary objectForKeyedSubscript:uUIDString2];
 
                         if (v63)
                         {
@@ -2188,17 +2188,17 @@ LABEL_67:
             while (v52);
           }
 
-          v64 = [(PHPhotoLibrary *)v97->_photoLibrary librarySpecificFetchOptions];
+          librarySpecificFetchOptions2 = [(PHPhotoLibrary *)selfCopy->_photoLibrary librarySpecificFetchOptions];
           v65 = *MEMORY[0x1E6978D80];
           v152 = *MEMORY[0x1E6978D80];
           v66 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v152 count:1];
-          [v64 setFetchPropertySets:v66];
+          [librarySpecificFetchOptions2 setFetchPropertySets:v66];
 
           v67 = [MEMORY[0x1E696AE18] predicateWithFormat:@"isInVIPModel == YES"];
-          [v64 setPredicate:v67];
+          [librarySpecificFetchOptions2 setPredicate:v67];
 
-          [v64 setIncludedDetectionTypes:&unk_1F49BED88];
-          v110 = [MEMORY[0x1E69787D0] fetchFacesWithOptions:v64];
+          [librarySpecificFetchOptions2 setIncludedDetectionTypes:&unk_1F49BED88];
+          v110 = [MEMORY[0x1E69787D0] fetchFacesWithOptions:librarySpecificFetchOptions2];
           v68 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v110, "count")}];
           v129 = 0u;
           v130 = 0u;
@@ -2218,8 +2218,8 @@ LABEL_67:
                   objc_enumerationMutation(v69);
                 }
 
-                v73 = [*(*(&v127 + 1) + 8 * k) localIdentifier];
-                [v68 addObject:v73];
+                localIdentifier6 = [*(*(&v127 + 1) + 8 * k) localIdentifier];
+                [v68 addObject:localIdentifier6];
               }
 
               v70 = [v69 countByEnumeratingWithState:&v127 objects:v151 count:16];
@@ -2232,27 +2232,27 @@ LABEL_67:
           [v121 minusSet:v51];
           v74 = [v51 mutableCopy];
           [v74 minusSet:v68];
-          v75 = [v121 allObjects];
-          v76 = [v74 allObjects];
-          v77 = [v75 arrayByAddingObjectsFromArray:v76];
+          allObjects = [v121 allObjects];
+          allObjects2 = [v74 allObjects];
+          v77 = [allObjects arrayByAddingObjectsFromArray:allObjects2];
 
           if ([v77 count])
           {
             v114 = objc_autoreleasePoolPush();
-            v78 = [(PHPhotoLibrary *)v97->_photoLibrary librarySpecificFetchOptions];
+            librarySpecificFetchOptions3 = [(PHPhotoLibrary *)selfCopy->_photoLibrary librarySpecificFetchOptions];
             v150 = v65;
-            v118 = v64;
+            v118 = librarySpecificFetchOptions2;
             v79 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v150 count:1];
-            [v78 setFetchPropertySets:v79];
+            [librarySpecificFetchOptions3 setFetchPropertySets:v79];
 
-            [v78 setIncludedDetectionTypes:&unk_1F49BEDA0];
-            photoLibrary = v97->_photoLibrary;
+            [librarySpecificFetchOptions3 setIncludedDetectionTypes:&unk_1F49BEDA0];
+            photoLibrary = selfCopy->_photoLibrary;
             v123[0] = MEMORY[0x1E69E9820];
             v123[1] = 3221225472;
             v123[2] = __91__VCPPhotosQuickFaceIdentificationManager__generatePetsModelWithExtendTimeoutBlock_cancel___block_invoke;
             v123[3] = &unk_1E834D020;
             v124 = v77;
-            v81 = v78;
+            v81 = librarySpecificFetchOptions3;
             v125 = v81;
             v126 = v74;
             v122 = 0;
@@ -2268,7 +2268,7 @@ LABEL_67:
               v84 = v82;
             }
 
-            v64 = v118;
+            librarySpecificFetchOptions2 = v118;
             if (!v84 && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
             {
               *buf = 138412546;
@@ -2281,7 +2281,7 @@ LABEL_67:
             objc_autoreleasePoolPop(v114);
           }
 
-          v85 = v97->_photoLibrary;
+          v85 = selfCopy->_photoLibrary;
           v86 = [MEMORY[0x1E695DF00] now];
           [(PHPhotoLibrary *)v85 vcp_setAnalysisPreferencesValue:v86 forKey:@"PetIDModelLastGenerationKey"];
 
@@ -2352,13 +2352,13 @@ void __91__VCPPhotosQuickFaceIdentificationManager__generatePetsModelWithExtendT
   }
 }
 
-- (int)_generatePersonsModelWithExtendTimeoutBlock:(id)a3 cancel:(id)a4 evaluationMode:(BOOL)a5 allowUnverifiedPerson:(BOOL)a6
+- (int)_generatePersonsModelWithExtendTimeoutBlock:(id)block cancel:(id)cancel evaluationMode:(BOOL)mode allowUnverifiedPerson:(BOOL)person
 {
-  v6 = a6;
-  v102 = a5;
+  personCopy = person;
+  modeCopy = mode;
   v163[4] = *MEMORY[0x1E69E9840];
-  v121 = a3;
-  v124 = a4;
+  blockCopy = block;
+  cancelCopy = cancel;
   if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
@@ -2367,7 +2367,7 @@ void __91__VCPPhotosQuickFaceIdentificationManager__generatePetsModelWithExtendT
   }
 
   v100 = mach_absolute_time();
-  v103 = self;
+  selfCopy = self;
   v9 = VCPSignPostLog();
   spid = os_signpost_id_generate(v9);
 
@@ -2379,8 +2379,8 @@ void __91__VCPPhotosQuickFaceIdentificationManager__generatePetsModelWithExtendT
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v11, OS_SIGNPOST_INTERVAL_BEGIN, spid, "VCPPersonVIPGenerateModel", "", buf, 2u);
   }
 
-  v107 = [(VCPPhotosQuickFaceIdentificationManager *)self _fetchPersonsToFeedVIPModel:v102 allowUnverifiedPerson:v6];
-  v105 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  v107 = [(VCPPhotosQuickFaceIdentificationManager *)self _fetchPersonsToFeedVIPModel:modeCopy allowUnverifiedPerson:personCopy];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
   v12 = *MEMORY[0x1E6978D70];
   v99 = *MEMORY[0x1E6978D80];
   v163[0] = *MEMORY[0x1E6978D80];
@@ -2389,20 +2389,20 @@ void __91__VCPPhotosQuickFaceIdentificationManager__generatePetsModelWithExtendT
   v163[2] = *MEMORY[0x1E6978D68];
   v163[3] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v163 count:4];
-  [v105 setFetchPropertySets:v14];
+  [librarySpecificFetchOptions setFetchPropertySets:v14];
 
-  [v105 setIncludeOnlyFacesWithFaceprints:1];
-  [v105 setIncludeNonvisibleFaces:1];
-  [v105 setFetchLimit:5120];
-  v15 = [MEMORY[0x1E69789B0] mediaProcessingFacesSortDescriptorsForGeneratingPersonModel];
-  [v105 setInternalSortDescriptors:v15];
+  [librarySpecificFetchOptions setIncludeOnlyFacesWithFaceprints:1];
+  [librarySpecificFetchOptions setIncludeNonvisibleFaces:1];
+  [librarySpecificFetchOptions setFetchLimit:5120];
+  mediaProcessingFacesSortDescriptorsForGeneratingPersonModel = [MEMORY[0x1E69789B0] mediaProcessingFacesSortDescriptorsForGeneratingPersonModel];
+  [librarySpecificFetchOptions setInternalSortDescriptors:mediaProcessingFacesSortDescriptorsForGeneratingPersonModel];
 
-  v104 = [v105 copy];
+  v104 = [librarySpecificFetchOptions copy];
   v16 = [MEMORY[0x1E696AE18] predicateWithFormat:@"roll == 0.0"];
-  [v105 setInternalPredicate:v16];
+  [librarySpecificFetchOptions setInternalPredicate:v16];
 
   v118 = +[VCPFaceIDModel newMutablePersonsModel];
-  v17 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v111 = 0;
   while (2)
   {
@@ -2430,7 +2430,7 @@ void __91__VCPPhotosQuickFaceIdentificationManager__generatePetsModelWithExtendT
       }
 
       v147 = 0;
-      v63 = [(VCPPhotosQuickFaceIdentificationManager *)v103 _persistPersonsModel:v118 evaluationMode:v102 error:&v147];
+      v63 = [(VCPPhotosQuickFaceIdentificationManager *)selfCopy _persistPersonsModel:v118 evaluationMode:modeCopy error:&v147];
       v112 = v147;
       if (v63)
       {
@@ -2457,20 +2457,20 @@ void __91__VCPPhotosQuickFaceIdentificationManager__generatePetsModelWithExtendT
 
               v67 = *(*(&v143 + 1) + 8 * v66);
               v120 = objc_autoreleasePoolPush();
-              v68 = [v67 localIdentifier];
+              localIdentifier = [v67 localIdentifier];
               v142 = 0;
-              v122 = [v118 trainingFaceObservationsForPersonWithUniqueIdentifier:v68 canceller:0 error:&v142];
+              v122 = [v118 trainingFaceObservationsForPersonWithUniqueIdentifier:localIdentifier canceller:0 error:&v142];
               v127 = v142;
 
               if (v127)
               {
                 if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
                 {
-                  v69 = [v67 localIdentifier];
+                  localIdentifier2 = [v67 localIdentifier];
                   *buf = 138412802;
                   v156 = @"[QuickFaceID][PeopleModelGeneration]";
                   v157 = 2112;
-                  v158 = v69;
+                  v158 = localIdentifier2;
                   v159 = 2112;
                   v160 = v127;
                   _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "%@ Failed to get face observations for person %@ - %@", buf, 0x20u);
@@ -2497,9 +2497,9 @@ void __91__VCPPhotosQuickFaceIdentificationManager__generatePetsModelWithExtendT
                         objc_enumerationMutation(v70);
                       }
 
-                      v74 = [*(*(&v138 + 1) + 8 * i) uuid];
-                      v75 = [v74 UUIDString];
-                      v76 = [v17 objectForKeyedSubscript:v75];
+                      uuid = [*(*(&v138 + 1) + 8 * i) uuid];
+                      uUIDString = [uuid UUIDString];
+                      v76 = [dictionary objectForKeyedSubscript:uUIDString];
 
                       if (v76)
                       {
@@ -2525,15 +2525,15 @@ void __91__VCPPhotosQuickFaceIdentificationManager__generatePetsModelWithExtendT
           while (v65);
         }
 
-        v128 = [(PHPhotoLibrary *)v103->_photoLibrary librarySpecificFetchOptions];
+        librarySpecificFetchOptions2 = [(PHPhotoLibrary *)selfCopy->_photoLibrary librarySpecificFetchOptions];
         v152 = v99;
         v77 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v152 count:1];
-        [v128 setFetchPropertySets:v77];
+        [librarySpecificFetchOptions2 setFetchPropertySets:v77];
 
         v78 = [MEMORY[0x1E696AE18] predicateWithFormat:@"isInVIPModel == YES"];
-        [v128 setPredicate:v78];
+        [librarySpecificFetchOptions2 setPredicate:v78];
 
-        v123 = [MEMORY[0x1E69787D0] fetchFacesWithOptions:v128];
+        v123 = [MEMORY[0x1E69787D0] fetchFacesWithOptions:librarySpecificFetchOptions2];
         v79 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v123, "count")}];
         v136 = 0u;
         v137 = 0u;
@@ -2553,8 +2553,8 @@ void __91__VCPPhotosQuickFaceIdentificationManager__generatePetsModelWithExtendT
                 objc_enumerationMutation(v80);
               }
 
-              v84 = [*(*(&v134 + 1) + 8 * j) localIdentifier];
-              [v79 addObject:v84];
+              localIdentifier3 = [*(*(&v134 + 1) + 8 * j) localIdentifier];
+              [v79 addObject:localIdentifier3];
             }
 
             v81 = [v80 countByEnumeratingWithState:&v134 objects:v151 count:16];
@@ -2567,24 +2567,24 @@ void __91__VCPPhotosQuickFaceIdentificationManager__generatePetsModelWithExtendT
         [v85 minusSet:v64];
         v86 = [v64 mutableCopy];
         [v86 minusSet:v79];
-        v87 = [v85 allObjects];
-        v88 = [v86 allObjects];
-        v89 = [v87 arrayByAddingObjectsFromArray:v88];
+        allObjects = [v85 allObjects];
+        allObjects2 = [v86 allObjects];
+        v89 = [allObjects arrayByAddingObjectsFromArray:allObjects2];
 
         if ([v89 count])
         {
-          v90 = [(PHPhotoLibrary *)v103->_photoLibrary librarySpecificFetchOptions];
+          librarySpecificFetchOptions3 = [(PHPhotoLibrary *)selfCopy->_photoLibrary librarySpecificFetchOptions];
           v150 = v99;
           v91 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v150 count:1];
-          [v90 setFetchPropertySets:v91];
+          [librarySpecificFetchOptions3 setFetchPropertySets:v91];
 
-          photoLibrary = v103->_photoLibrary;
+          photoLibrary = selfCopy->_photoLibrary;
           v130[0] = MEMORY[0x1E69E9820];
           v130[1] = 3221225472;
           v130[2] = __131__VCPPhotosQuickFaceIdentificationManager__generatePersonsModelWithExtendTimeoutBlock_cancel_evaluationMode_allowUnverifiedPerson___block_invoke;
           v130[3] = &unk_1E834D020;
           v131 = v89;
-          v93 = v90;
+          v93 = librarySpecificFetchOptions3;
           v132 = v93;
           v133 = v86;
           v129 = 0;
@@ -2600,9 +2600,9 @@ void __91__VCPPhotosQuickFaceIdentificationManager__generatePetsModelWithExtendT
           }
         }
 
-        v95 = v103->_photoLibrary;
-        v96 = [MEMORY[0x1E695DF00] date];
-        [(PHPhotoLibrary *)v95 vcp_setAnalysisPreferencesValue:v96 forKey:@"FaceIDModelLastGenerationKey"];
+        v95 = selfCopy->_photoLibrary;
+        date = [MEMORY[0x1E695DF00] date];
+        [(PHPhotoLibrary *)v95 vcp_setAnalysisPreferencesValue:date forKey:@"FaceIDModelLastGenerationKey"];
 
         if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
         {
@@ -2633,7 +2633,7 @@ void __91__VCPPhotosQuickFaceIdentificationManager__generatePetsModelWithExtendT
 
     context = objc_autoreleasePoolPush();
     v18 = MEMORY[0x1E69E9C10];
-    if (v124 && v124[2]())
+    if (cancelCopy && cancelCopy[2]())
     {
       if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
@@ -2646,9 +2646,9 @@ void __91__VCPPhotosQuickFaceIdentificationManager__generatePetsModelWithExtendT
       goto LABEL_81;
     }
 
-    if (v121)
+    if (blockCopy)
     {
-      v121[2]();
+      blockCopy[2]();
     }
 
     v110 = [v107 objectAtIndexedSubscript:v111];
@@ -2664,20 +2664,20 @@ void __91__VCPPhotosQuickFaceIdentificationManager__generatePetsModelWithExtendT
         v20 = @"user";
       }
 
-      v21 = [v110 name];
-      v22 = [v110 localIdentifier];
+      name = [v110 name];
+      localIdentifier4 = [v110 localIdentifier];
       *buf = 138413058;
       v156 = @"[QuickFaceID][PeopleModelGeneration]";
       v157 = 2112;
       v158 = v20;
       v159 = 2112;
-      v160 = v21;
+      v160 = name;
       v161 = 2112;
-      v162 = v22;
+      v162 = localIdentifier4;
       _os_log_impl(&dword_1C9B70000, v18, OS_LOG_TYPE_DEBUG, "%@ Building %@-confirmed person %@ (%@)", buf, 0x2Au);
     }
 
-    v23 = [MEMORY[0x1E69787D0] fetchFacesForPerson:v110 options:v105];
+    v23 = [MEMORY[0x1E69787D0] fetchFacesForPerson:v110 options:librarySpecificFetchOptions];
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
       v24 = [v23 count];
@@ -2719,11 +2719,11 @@ void __91__VCPPhotosQuickFaceIdentificationManager__generatePetsModelWithExtendT
     while (v29 < [v126 count])
     {
       v30 = objc_autoreleasePoolPush();
-      if (!v124 || !v124[2]())
+      if (!cancelCopy || !cancelCopy[2]())
       {
-        if (v121)
+        if (blockCopy)
         {
-          v121[2]();
+          blockCopy[2]();
         }
 
         v32 = [v126 objectAtIndexedSubscript:v29];
@@ -2736,24 +2736,24 @@ LABEL_66:
         }
 
         obj = [v32 faceClusteringProperties];
-        v33 = [obj faceprint];
-        v119 = [v33 faceprintData];
+        faceprint = [obj faceprint];
+        faceprintData = [faceprint faceprintData];
 
         v34 = objc_alloc(MEMORY[0x1E6984520]);
         v149 = 0;
-        v35 = [v34 initWithState:v119 error:&v149];
+        v35 = [v34 initWithState:faceprintData error:&v149];
         v115 = v149;
         if (v35)
         {
           v36 = objc_alloc_init(MEMORY[0x1E6984518]);
           [v36 setFaceTorsoprint:v35];
-          v37 = [v35 faceprint];
-          [v36 setFaceprint:v37];
+          faceprint2 = [v35 faceprint];
+          [v36 setFaceprint:faceprint2];
 
           if (v36)
           {
-            v38 = [v36 faceprint];
-            v39 = v38 == 0;
+            faceprint3 = [v36 faceprint];
+            v39 = faceprint3 == 0;
 
             if (v39)
             {
@@ -2762,31 +2762,31 @@ LABEL_66:
 
             else
             {
-              v40 = [v118 configuration];
-              if ([v40 faceprintRequestRevision])
+              configuration = [v118 configuration];
+              if ([configuration faceprintRequestRevision])
               {
-                v41 = [v36 faceprint];
-                v42 = [v41 requestRevision];
-                v43 = [v118 configuration];
-                LOBYTE(v42) = v42 == [v43 faceprintRequestRevision];
+                faceprint4 = [v36 faceprint];
+                requestRevision = [faceprint4 requestRevision];
+                configuration2 = [v118 configuration];
+                LOBYTE(requestRevision) = requestRevision == [configuration2 faceprintRequestRevision];
 
-                if ((v42 & 1) == 0)
+                if ((requestRevision & 1) == 0)
                 {
                   if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
                   {
-                    v44 = [v32 localIdentifier];
-                    v45 = [v36 faceprint];
-                    v46 = [v45 requestRevision];
-                    v47 = [v118 configuration];
-                    v48 = [v47 faceprintRequestRevision];
+                    localIdentifier5 = [v32 localIdentifier];
+                    faceprint5 = [v36 faceprint];
+                    requestRevision2 = [faceprint5 requestRevision];
+                    configuration3 = [v118 configuration];
+                    faceprintRequestRevision = [configuration3 faceprintRequestRevision];
                     *buf = 138413058;
                     v156 = @"[QuickFaceID][PeopleModelGeneration]";
                     v157 = 2112;
-                    v158 = v44;
+                    v158 = localIdentifier5;
                     v159 = 2048;
-                    v160 = v46;
+                    v160 = requestRevision2;
                     v161 = 2048;
-                    v162 = v48;
+                    v162 = faceprintRequestRevision;
                     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%@[%@]: Mismatched faceprint version %lu (expected %lu); skipping ...", buf, 0x2Au);
                   }
 
@@ -2799,10 +2799,10 @@ LABEL_66:
               }
 
               [v109 addObject:v36];
-              v51 = [v32 localIdentifier];
-              v52 = [v36 uuid];
-              v53 = [v52 UUIDString];
-              [v17 setObject:v51 forKeyedSubscript:v53];
+              localIdentifier6 = [v32 localIdentifier];
+              uuid2 = [v36 uuid];
+              uUIDString2 = [uuid2 UUIDString];
+              [dictionary setObject:localIdentifier6 forKeyedSubscript:uUIDString2];
 
               v19 = 0;
               ++v106;
@@ -2878,9 +2878,9 @@ LABEL_67:
     v55 = MEMORY[0x1E69E9C10];
     if (v54)
     {
-      v56 = [v110 localIdentifier];
+      localIdentifier7 = [v110 localIdentifier];
       v148 = 0;
-      v57 = [VCPFaceIDModel addFaceObservations:v109 forPersonIdentifier:v56 toModel:v118 error:&v148];
+      v57 = [VCPFaceIDModel addFaceObservations:v109 forPersonIdentifier:localIdentifier7 toModel:v118 error:&v148];
       v58 = v148;
 
       if (!v57 && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -2897,16 +2897,16 @@ LABEL_67:
 
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(v55, OS_LOG_TYPE_DEBUG))
     {
-      v59 = [v110 name];
-      v60 = [v110 localIdentifier];
+      name2 = [v110 name];
+      localIdentifier8 = [v110 localIdentifier];
       *buf = 138413058;
       v156 = @"[QuickFaceID][PeopleModelGeneration]";
       v157 = 2048;
       v158 = v106;
       v159 = 2112;
-      v160 = v59;
+      v160 = name2;
       v161 = 2112;
-      v162 = v60;
+      v162 = localIdentifier8;
       _os_log_impl(&dword_1C9B70000, v55, OS_LOG_TYPE_DEBUG, "%@ Prepared %lu faces for person %@ (%@)", buf, 0x2Au);
     }
 
@@ -2965,31 +2965,31 @@ void __131__VCPPhotosQuickFaceIdentificationManager__generatePersonsModelWithExt
   }
 }
 
-- (BOOL)_modelLastGenerationDidExceedTimeIntervalForType:(unint64_t)a3
+- (BOOL)_modelLastGenerationDidExceedTimeIntervalForType:(unint64_t)type
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = [(PHPhotoLibrary *)self->_photoLibrary vcp_analysisPreferences];
+  vcp_analysisPreferences = [(PHPhotoLibrary *)self->_photoLibrary vcp_analysisPreferences];
   v5 = @"PetIDModelLastGenerationKey";
-  if (!a3)
+  if (!type)
   {
     v5 = @"FaceIDModelLastGenerationKey";
   }
 
   v6 = v5;
-  v7 = [v4 objectForKeyedSubscript:v6];
-  if (!v7)
+  distantPast = [vcp_analysisPreferences objectForKeyedSubscript:v6];
+  if (!distantPast)
   {
-    v7 = [MEMORY[0x1E695DF00] distantPast];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
   }
 
-  v8 = [MEMORY[0x1E695DF00] date];
-  [v8 timeIntervalSinceDate:v7];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSinceDate:distantPast];
   v10 = v9;
 
   v11 = 0x15180uLL;
   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
-    v12 = VCPMAVIPTypeDescription(a3);
+    v12 = VCPMAVIPTypeDescription(type);
     v13 = @"No";
     v15 = 138412802;
     v16 = v12;
@@ -3008,34 +3008,34 @@ void __131__VCPPhotosQuickFaceIdentificationManager__generatePersonsModelWithExt
   return v10 > v11;
 }
 
-- (BOOL)_faceProcessingPassGoalWithExtendTimeout:(id)a3
+- (BOOL)_faceProcessingPassGoalWithExtendTimeout:(id)timeout
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  timeoutCopy = timeout;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __84__VCPPhotosQuickFaceIdentificationManager__faceProcessingPassGoalWithExtendTimeout___block_invoke;
   aBlock[3] = &unk_1E834C9F0;
-  v23 = v4;
+  v23 = timeoutCopy;
   v27 = v23;
   v24 = _Block_copy(aBlock);
   v25 = 0;
   [VCPAnalysisProgressQuery queryProgressDetail:&v25 photoLibrary:self->_photoLibrary taskID:3 cancelOrExtendTimeoutBlock:v24];
   v5 = v25;
   v6 = [v5 objectForKeyedSubscript:@"total-allowed"];
-  v7 = [v6 integerValue];
+  integerValue = [v6 integerValue];
 
   v8 = [v5 objectForKeyedSubscript:@"processed"];
-  v9 = [v8 integerValue];
+  integerValue2 = [v8 integerValue];
 
   v10 = [v5 objectForKeyedSubscript:@"failed"];
-  v11 = [v10 integerValue];
+  integerValue3 = [v10 integerValue];
 
-  v12 = 100 * (v11 + v9);
-  v13 = 90 * v7;
-  v14 = 100 * v11;
-  v15 = 10 * v7;
-  if (v7)
+  v12 = 100 * (integerValue3 + integerValue2);
+  v13 = 90 * integerValue;
+  v14 = 100 * integerValue3;
+  v15 = 10 * integerValue;
+  if (integerValue)
   {
     v16 = v12 <= v13;
   }
@@ -3049,11 +3049,11 @@ void __131__VCPPhotosQuickFaceIdentificationManager__generatePersonsModelWithExt
   if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
     *buf = 134218496;
-    v29 = v7;
+    v29 = integerValue;
     v30 = 2048;
-    v31 = v9;
+    v31 = integerValue2;
     v32 = 2048;
-    v33 = v11;
+    v33 = integerValue3;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "QuickFaceID [FastMigration]: asset processing progress: total: %ld, processed: %ld, failed: %ld", buf, 0x20u);
   }
 
@@ -3097,9 +3097,9 @@ void __131__VCPPhotosQuickFaceIdentificationManager__generatePersonsModelWithExt
   return v18;
 }
 
-- (BOOL)_keepCurrentPersonsModelWithExtendTimeout:(id)a3
+- (BOOL)_keepCurrentPersonsModelWithExtendTimeout:(id)timeout
 {
-  v4 = a3;
+  timeoutCopy = timeout;
   if ([objc_opt_class() _fastFaceMigrationEnabled])
   {
     v11 = 0;
@@ -3112,7 +3112,7 @@ void __131__VCPPhotosQuickFaceIdentificationManager__generatePersonsModelWithExt
     block[2] = __85__VCPPhotosQuickFaceIdentificationManager__keepCurrentPersonsModelWithExtendTimeout___block_invoke;
     block[3] = &unk_1E834FE78;
     block[4] = self;
-    v9 = v4;
+    v9 = timeoutCopy;
     v10 = &v11;
     dispatch_sync(management, block);
     v6 = *(v12 + 24);
@@ -3167,11 +3167,11 @@ void __85__VCPPhotosQuickFaceIdentificationManager__keepCurrentPersonsModelWithE
   }
 }
 
-- (BOOL)_needToGenerateModelWithType:(unint64_t)a3 ignoreLastGenerationTime:(BOOL)a4 withExtendTimeout:(id)a5
+- (BOOL)_needToGenerateModelWithType:(unint64_t)type ignoreLastGenerationTime:(BOOL)time withExtendTimeout:(id)timeout
 {
-  v5 = a4;
+  timeCopy = time;
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  timeoutCopy = timeout;
   if (([(PHPhotoLibrary *)self->_photoLibrary isSystemPhotoLibrary]& 1) == 0)
   {
     goto LABEL_10;
@@ -3179,10 +3179,10 @@ void __85__VCPPhotosQuickFaceIdentificationManager__keepCurrentPersonsModelWithE
 
   if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
-    v9 = VCPMAVIPTypeDescription(a3);
+    v9 = VCPMAVIPTypeDescription(type);
     v10 = v9;
     v11 = "NO";
-    if (v5)
+    if (timeCopy)
     {
       v11 = "YES";
     }
@@ -3194,16 +3194,16 @@ void __85__VCPPhotosQuickFaceIdentificationManager__keepCurrentPersonsModelWithE
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "QuickFaceID %@ Model: ignoreLastGenerationTime: %s", &v15, 0x16u);
   }
 
-  if ([(VCPPhotosQuickFaceIdentificationManager *)self _modelLastGenerationDidExceedTimeIntervalForType:a3]|| v5)
+  if ([(VCPPhotosQuickFaceIdentificationManager *)self _modelLastGenerationDidExceedTimeIntervalForType:type]|| timeCopy)
   {
-    if (a3)
+    if (type)
     {
       v12 = 0;
     }
 
     else
     {
-      v12 = [(VCPPhotosQuickFaceIdentificationManager *)self _keepCurrentPersonsModelWithExtendTimeout:v8];
+      v12 = [(VCPPhotosQuickFaceIdentificationManager *)self _keepCurrentPersonsModelWithExtendTimeout:timeoutCopy];
     }
 
     v13 = !v12;
@@ -3218,30 +3218,30 @@ LABEL_10:
   return v13;
 }
 
-- (int)generateVIPModelWithType:(unint64_t)a3 ignoreLastGenerationTime:(BOOL)a4 evaluationMode:(BOOL)a5 allowUnverifiedPerson:(BOOL)a6 modelGenerated:(BOOL *)a7 extendTimeout:(id)a8 andCancel:(id)a9
+- (int)generateVIPModelWithType:(unint64_t)type ignoreLastGenerationTime:(BOOL)time evaluationMode:(BOOL)mode allowUnverifiedPerson:(BOOL)person modelGenerated:(BOOL *)generated extendTimeout:(id)timeout andCancel:(id)cancel
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
+  personCopy = person;
+  modeCopy = mode;
+  timeCopy = time;
   v23 = *MEMORY[0x1E69E9840];
-  v15 = a8;
-  v16 = a9;
-  if ([(VCPPhotosQuickFaceIdentificationManager *)self _needToGenerateModelWithType:a3 ignoreLastGenerationTime:v12 withExtendTimeout:v15])
+  timeoutCopy = timeout;
+  cancelCopy = cancel;
+  if ([(VCPPhotosQuickFaceIdentificationManager *)self _needToGenerateModelWithType:type ignoreLastGenerationTime:timeCopy withExtendTimeout:timeoutCopy])
   {
-    if (a7)
+    if (generated)
     {
-      *a7 = 1;
+      *generated = 1;
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
-      v17 = [(VCPPhotosQuickFaceIdentificationManager *)self _generatePetsModelWithExtendTimeoutBlock:v15 cancel:v16];
+      v17 = [(VCPPhotosQuickFaceIdentificationManager *)self _generatePetsModelWithExtendTimeoutBlock:timeoutCopy cancel:cancelCopy];
       goto LABEL_13;
     }
 
-    if (!a3)
+    if (!type)
     {
-      v17 = [(VCPPhotosQuickFaceIdentificationManager *)self _generatePersonsModelWithExtendTimeoutBlock:v15 cancel:v16 evaluationMode:v11 allowUnverifiedPerson:v10];
+      v17 = [(VCPPhotosQuickFaceIdentificationManager *)self _generatePersonsModelWithExtendTimeoutBlock:timeoutCopy cancel:cancelCopy evaluationMode:modeCopy allowUnverifiedPerson:personCopy];
 LABEL_13:
       v19 = v17;
       goto LABEL_18;
@@ -3250,7 +3250,7 @@ LABEL_13:
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v21 = 134217984;
-      v22 = a3;
+      typeCopy = type;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "QuickFaceID Model: unknown VIP type (%lu); no model generated", &v21, 0xCu);
     }
 
@@ -3261,16 +3261,16 @@ LABEL_13:
   {
     if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
-      v18 = VCPMAVIPTypeDescription(a3);
+      v18 = VCPMAVIPTypeDescription(type);
       v21 = 138412290;
-      v22 = v18;
+      typeCopy = v18;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "QuickFaceID %@ Model: No need to generate model", &v21, 0xCu);
     }
 
     v19 = 0;
-    if (a7)
+    if (generated)
     {
-      *a7 = 0;
+      *generated = 0;
     }
   }
 

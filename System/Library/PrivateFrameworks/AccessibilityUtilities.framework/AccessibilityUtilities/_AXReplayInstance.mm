@@ -1,5 +1,5 @@
 @interface _AXReplayInstance
-+ (id)replayBlock:(id)a3 name:(id)a4 attempts:(int64_t)a5 interval:(double)a6 async:(BOOL)a7 queue:(id)a8 completion:(id)a9;
++ (id)replayBlock:(id)block name:(id)name attempts:(int64_t)attempts interval:(double)interval async:(BOOL)async queue:(id)queue completion:(id)completion;
 - (OS_dispatch_queue)queue;
 - (id)_genericFailError;
 - (void)_dispatchAsynchronously;
@@ -9,28 +9,28 @@
 
 @implementation _AXReplayInstance
 
-+ (id)replayBlock:(id)a3 name:(id)a4 attempts:(int64_t)a5 interval:(double)a6 async:(BOOL)a7 queue:(id)a8 completion:(id)a9
++ (id)replayBlock:(id)block name:(id)name attempts:(int64_t)attempts interval:(double)interval async:(BOOL)async queue:(id)queue completion:(id)completion
 {
-  v10 = a7;
-  v15 = a9;
-  v16 = a8;
-  v17 = a4;
-  v18 = a3;
+  asyncCopy = async;
+  completionCopy = completion;
+  queueCopy = queue;
+  nameCopy = name;
+  blockCopy = block;
   v19 = objc_alloc_init(_AXReplayInstance);
-  [(_AXReplayInstance *)v19 setName:v17];
+  [(_AXReplayInstance *)v19 setName:nameCopy];
 
-  [(_AXReplayInstance *)v19 setReplayBlock:v18];
-  [(_AXReplayInstance *)v19 setCompletionBlock:v15];
+  [(_AXReplayInstance *)v19 setReplayBlock:blockCopy];
+  [(_AXReplayInstance *)v19 setCompletionBlock:completionCopy];
 
-  [(_AXReplayInstance *)v19 setAttemptsRemaining:a5];
-  [(_AXReplayInstance *)v19 setMaxAttempts:a5];
-  [(_AXReplayInstance *)v19 setInterval:a6];
-  [(_AXReplayInstance *)v19 setAsync:v10];
-  [(_AXReplayInstance *)v19 setQueue:v16];
+  [(_AXReplayInstance *)v19 setAttemptsRemaining:attempts];
+  [(_AXReplayInstance *)v19 setMaxAttempts:attempts];
+  [(_AXReplayInstance *)v19 setInterval:interval];
+  [(_AXReplayInstance *)v19 setAsync:asyncCopy];
+  [(_AXReplayInstance *)v19 setQueue:queueCopy];
 
-  v20 = [(_AXReplayInstance *)v19 queue];
+  queue = [(_AXReplayInstance *)v19 queue];
 
-  if (!v20)
+  if (!queue)
   {
     [(_AXReplayInstance *)v19 setQueue:MEMORY[0x1E69E96A0]];
   }
@@ -42,13 +42,13 @@
 {
   if ([(_AXReplayInstance *)self async])
   {
-    v3 = [(_AXReplayInstance *)self queue];
+    queue = [(_AXReplayInstance *)self queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __29___AXReplayInstance_dispatch__block_invoke;
     block[3] = &unk_1E71E9B98;
     block[4] = self;
-    dispatch_async(v3, block);
+    dispatch_async(queue, block);
   }
 
   else
@@ -66,10 +66,10 @@
     do
     {
       self->_attemptsRemaining = attemptsRemaining - 1;
-      v4 = [(_AXReplayInstance *)self replayBlock];
+      replayBlock = [(_AXReplayInstance *)self replayBlock];
       v17 = 0;
       v18 = 0;
-      v5 = (v4)[2](v4, &v18, &v17);
+      v5 = (replayBlock)[2](replayBlock, &v18, &v17);
       v6 = v18;
       v7 = v17;
 
@@ -102,9 +102,9 @@
 
   else
   {
-    v12 = [(_AXReplayInstance *)self underlyingError];
+    underlyingError = [(_AXReplayInstance *)self underlyingError];
 
-    if (v12)
+    if (underlyingError)
     {
       [(_AXReplayInstance *)self underlyingError];
     }
@@ -116,24 +116,24 @@
     v11 = ;
   }
 
-  v13 = [(_AXReplayInstance *)self completionBlock];
+  completionBlock = [(_AXReplayInstance *)self completionBlock];
 
-  if (v13)
+  if (completionBlock)
   {
-    v14 = [(_AXReplayInstance *)self completionBlock];
+    completionBlock2 = [(_AXReplayInstance *)self completionBlock];
     didSucceed = self->_didSucceed;
-    v16 = [(_AXReplayInstance *)self underlyingResult];
-    (v14)[2](v14, didSucceed, v16, v11);
+    underlyingResult = [(_AXReplayInstance *)self underlyingResult];
+    (completionBlock2)[2](completionBlock2, didSucceed, underlyingResult, v11);
   }
 }
 
 - (void)_dispatchAsynchronously
 {
   --self->_attemptsRemaining;
-  v3 = [(_AXReplayInstance *)self replayBlock];
+  replayBlock = [(_AXReplayInstance *)self replayBlock];
   v19 = 0;
   v20 = 0;
-  v4 = (v3)[2](v3, &v20, &v19);
+  v4 = (replayBlock)[2](replayBlock, &v20, &v19);
   v5 = v20;
   v6 = v19;
   self->_didSucceed = v4;
@@ -142,13 +142,13 @@
   [(_AXReplayInstance *)self setUnderlyingResult:v5];
   if (self->_didSucceed)
   {
-    v7 = [(_AXReplayInstance *)self completionBlock];
+    completionBlock = [(_AXReplayInstance *)self completionBlock];
 
-    if (v7)
+    if (completionBlock)
     {
-      v8 = [(_AXReplayInstance *)self completionBlock];
-      v9 = [(_AXReplayInstance *)self underlyingResult];
-      (v8)[2](v8, 1, v9, 0);
+      completionBlock2 = [(_AXReplayInstance *)self completionBlock];
+      underlyingResult = [(_AXReplayInstance *)self underlyingResult];
+      (completionBlock2)[2](completionBlock2, 1, underlyingResult, 0);
 
 LABEL_11:
     }
@@ -158,8 +158,8 @@ LABEL_11:
   {
     if (self->_attemptsRemaining < 1)
     {
-      v13 = [(_AXReplayInstance *)self underlyingError];
-      if (v13)
+      underlyingError = [(_AXReplayInstance *)self underlyingError];
+      if (underlyingError)
       {
         [(_AXReplayInstance *)self underlyingError];
       }
@@ -168,16 +168,16 @@ LABEL_11:
       {
         [(_AXReplayInstance *)self _genericFailError];
       }
-      v8 = ;
+      completionBlock2 = ;
 
-      v14 = [(_AXReplayInstance *)self completionBlock];
+      completionBlock3 = [(_AXReplayInstance *)self completionBlock];
 
-      if (v14)
+      if (completionBlock3)
       {
-        v15 = [(_AXReplayInstance *)self completionBlock];
+        completionBlock4 = [(_AXReplayInstance *)self completionBlock];
         didSucceed = self->_didSucceed;
-        v17 = [(_AXReplayInstance *)self underlyingResult];
-        (v15)[2](v15, didSucceed, v17, v8);
+        underlyingResult2 = [(_AXReplayInstance *)self underlyingResult];
+        (completionBlock4)[2](completionBlock4, didSucceed, underlyingResult2, completionBlock2);
       }
 
       goto LABEL_11;
@@ -185,21 +185,21 @@ LABEL_11:
 
     [(_AXReplayInstance *)self interval];
     v11 = dispatch_time(0, (v10 * 1000000000.0));
-    v12 = [(_AXReplayInstance *)self queue];
+    queue = [(_AXReplayInstance *)self queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __44___AXReplayInstance__dispatchAsynchronously__block_invoke;
     block[3] = &unk_1E71E9B98;
     block[4] = self;
-    dispatch_after(v11, v12, block);
+    dispatch_after(v11, queue, block);
   }
 }
 
 - (id)_genericFailError
 {
   v2 = MEMORY[0x1E696ABC0];
-  v3 = [(_AXReplayInstance *)self name];
-  v4 = [v2 ax_errorWithDomain:@"AXReplayer" description:{@"Exhausted retry attempts for block: %@", v3}];
+  name = [(_AXReplayInstance *)self name];
+  v4 = [v2 ax_errorWithDomain:@"AXReplayer" description:{@"Exhausted retry attempts for block: %@", name}];
 
   return v4;
 }

@@ -1,5 +1,5 @@
 @interface CNContact
-+ (id)_gkContactFromCacheObject:(id)a3;
++ (id)_gkContactFromCacheObject:(id)object;
 - (id)_gkAllHandles;
 @end
 
@@ -12,8 +12,8 @@
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v4 = [(CNContact *)self phoneNumbers];
-  v5 = [v4 countByEnumeratingWithState:&v25 objects:v30 count:16];
+  phoneNumbers = [(CNContact *)self phoneNumbers];
+  v5 = [phoneNumbers countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v5)
   {
     v6 = v5;
@@ -24,11 +24,11 @@
       {
         if (*v26 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(phoneNumbers);
         }
 
-        v9 = [*(*(&v25 + 1) + 8 * i) value];
-        v10 = [v9 stringValue];
+        value = [*(*(&v25 + 1) + 8 * i) value];
+        stringValue = [value stringValue];
         v11 = IDSCopyIDForPhoneNumber();
 
         if ([v11 length])
@@ -37,7 +37,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      v6 = [phoneNumbers countByEnumeratingWithState:&v25 objects:v30 count:16];
     }
 
     while (v6);
@@ -47,8 +47,8 @@
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v12 = [(CNContact *)self emailAddresses];
-  v13 = [v12 countByEnumeratingWithState:&v21 objects:v29 count:16];
+  emailAddresses = [(CNContact *)self emailAddresses];
+  v13 = [emailAddresses countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v13)
   {
     v14 = v13;
@@ -59,10 +59,10 @@
       {
         if (*v22 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(emailAddresses);
         }
 
-        v17 = [*(*(&v21 + 1) + 8 * j) value];
+        value2 = [*(*(&v21 + 1) + 8 * j) value];
         v18 = IDSCopyBestGuessIDForID();
 
         if ([v18 length])
@@ -71,7 +71,7 @@
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v21 objects:v29 count:16];
+      v14 = [emailAddresses countByEnumeratingWithState:&v21 objects:v29 count:16];
     }
 
     while (v14);
@@ -82,44 +82,44 @@
   return v19;
 }
 
-+ (id)_gkContactFromCacheObject:(id)a3
++ (id)_gkContactFromCacheObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   v4 = objc_alloc_init(CNMutableContact);
-  v5 = [v3 givenName];
-  [v4 setGivenName:v5];
+  givenName = [objectCopy givenName];
+  [v4 setGivenName:givenName];
 
-  v6 = [v3 familyName];
-  [v4 setFamilyName:v6];
+  familyName = [objectCopy familyName];
+  [v4 setFamilyName:familyName];
 
-  v7 = [v3 namePrefix];
-  [v4 setNamePrefix:v7];
+  namePrefix = [objectCopy namePrefix];
+  [v4 setNamePrefix:namePrefix];
 
-  v8 = [v3 nameSuffix];
-  [v4 setNameSuffix:v8];
+  nameSuffix = [objectCopy nameSuffix];
+  [v4 setNameSuffix:nameSuffix];
 
-  v9 = [v3 nickname];
-  [v4 setNickname:v9];
+  nickname = [objectCopy nickname];
+  [v4 setNickname:nickname];
 
-  v10 = [v3 handle];
+  handle = [objectCopy handle];
 
-  v11 = [IDSURI URIWithPrefixedURI:v10];
+  v11 = [IDSURI URIWithPrefixedURI:handle];
 
-  v12 = [v11 unprefixedURI];
-  v13 = [v11 IDSIDType];
-  if (v13 == 1)
+  unprefixedURI = [v11 unprefixedURI];
+  iDSIDType = [v11 IDSIDType];
+  if (iDSIDType == 1)
   {
-    v15 = [[CNLabeledValue alloc] initWithLabel:0 value:v12];
+    v15 = [[CNLabeledValue alloc] initWithLabel:0 value:unprefixedURI];
     v22 = v15;
     v16 = [NSArray arrayWithObjects:&v22 count:1];
     [v4 setEmailAddresses:v16];
     goto LABEL_5;
   }
 
-  v14 = v13;
-  if (!v13)
+  v14 = iDSIDType;
+  if (!iDSIDType)
   {
-    v15 = [[CNPhoneNumber alloc] initWithStringValue:v12];
+    v15 = [[CNPhoneNumber alloc] initWithStringValue:unprefixedURI];
     v16 = [[CNLabeledValue alloc] initWithLabel:0 value:v15];
     v23 = v16;
     v17 = [NSArray arrayWithObjects:&v23 count:1];

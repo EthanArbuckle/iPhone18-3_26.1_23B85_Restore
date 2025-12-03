@@ -1,31 +1,31 @@
 @interface AVHapticPlayerParameterCurveControlPoint
-- (AVHapticPlayerParameterCurveControlPoint)initWithCoder:(id)a3;
-- (AVHapticPlayerParameterCurveControlPoint)initWithTime:(double)a3 value:(float)a4;
-- (void)encodeWithCoder:(id)a3;
+- (AVHapticPlayerParameterCurveControlPoint)initWithCoder:(id)coder;
+- (AVHapticPlayerParameterCurveControlPoint)initWithTime:(double)time value:(float)value;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AVHapticPlayerParameterCurveControlPoint
 
-- (AVHapticPlayerParameterCurveControlPoint)initWithCoder:(id)a3
+- (AVHapticPlayerParameterCurveControlPoint)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"time"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"time"];
   self->_time = v5;
-  [v4 decodeFloatForKey:@"value"];
+  [coderCopy decodeFloatForKey:@"value"];
   self->_value = v6;
 
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeDouble:@"time" forKey:self->_time];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"time" forKey:self->_time];
   *&v4 = self->_value;
-  [v5 encodeFloat:@"value" forKey:v4];
+  [coderCopy encodeFloat:@"value" forKey:v4];
 }
 
-- (AVHapticPlayerParameterCurveControlPoint)initWithTime:(double)a3 value:(float)a4
+- (AVHapticPlayerParameterCurveControlPoint)initWithTime:(double)time value:(float)value
 {
   v10.receiver = self;
   v10.super_class = AVHapticPlayerParameterCurveControlPoint;
@@ -33,8 +33,8 @@
   v7 = v6;
   if (v6)
   {
-    [(AVHapticPlayerParameterCurveControlPoint *)v6 setTime:a3];
-    *&v8 = a4;
+    [(AVHapticPlayerParameterCurveControlPoint *)v6 setTime:time];
+    *&v8 = value;
     [(AVHapticPlayerParameterCurveControlPoint *)v7 setValue:v8];
   }
 

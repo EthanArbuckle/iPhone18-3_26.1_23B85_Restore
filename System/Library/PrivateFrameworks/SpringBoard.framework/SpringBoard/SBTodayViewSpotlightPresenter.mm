@@ -1,37 +1,37 @@
 @interface SBTodayViewSpotlightPresenter
-- (BOOL)searchPresenterCanPresent:(id)a3;
-- (SBTodayViewSpotlightPresenter)initWithSearchBarViewController:(id)a3 containerView:(id)a4 scrollView:(id)a5 delegate:(id)a6;
+- (BOOL)searchPresenterCanPresent:(id)present;
+- (SBTodayViewSpotlightPresenter)initWithSearchBarViewController:(id)controller containerView:(id)view scrollView:(id)scrollView delegate:(id)delegate;
 - (SBTodayViewSpotlightPresenterDelegate)delegate;
 - (double)_topOffset;
 - (id)_newSearchBackdropView;
-- (id)backdropViewForLegacyTodayViewSpotlightPresentableViewController:(id)a3;
-- (id)backgroundViewForSpotlightPresentableViewController:(id)a3;
-- (id)searchPresentablesForPresenter:(id)a3;
+- (id)backdropViewForLegacyTodayViewSpotlightPresentableViewController:(id)controller;
+- (id)backgroundViewForSpotlightPresentableViewController:(id)controller;
+- (id)searchPresentablesForPresenter:(id)presenter;
 - (void)_configureFeatherBlurMatchMoveAnimations;
 - (void)_setUpFeatherBlur;
 - (void)_setUpStartingScrollOffset;
 - (void)_updateFeatherBlurMaskLayers;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
 - (void)searchBarDidFocus;
-- (void)searchPresenterDidDismissSearch:(id)a3;
-- (void)searchPresenterDidPresentSearch:(id)a3;
-- (void)searchPresenterWillDismissSearch:(id)a3 animated:(BOOL)a4;
-- (void)searchPresenterWillPresentSearch:(id)a3 animated:(BOOL)a4;
+- (void)searchPresenterDidDismissSearch:(id)search;
+- (void)searchPresenterDidPresentSearch:(id)search;
+- (void)searchPresenterWillDismissSearch:(id)search animated:(BOOL)animated;
+- (void)searchPresenterWillPresentSearch:(id)search animated:(BOOL)animated;
 @end
 
 @implementation SBTodayViewSpotlightPresenter
 
-- (SBTodayViewSpotlightPresenter)initWithSearchBarViewController:(id)a3 containerView:(id)a4 scrollView:(id)a5 delegate:(id)a6
+- (SBTodayViewSpotlightPresenter)initWithSearchBarViewController:(id)controller containerView:(id)view scrollView:(id)scrollView delegate:(id)delegate
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = v15;
-  if (v13)
+  controllerCopy = controller;
+  viewCopy = view;
+  scrollViewCopy = scrollView;
+  delegateCopy = delegate;
+  v16 = delegateCopy;
+  if (viewCopy)
   {
-    if (v15)
+    if (delegateCopy)
     {
       goto LABEL_3;
     }
@@ -54,15 +54,15 @@ LABEL_3:
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_searchBarViewController, a3);
-    objc_storeStrong(&v18->_containerView, a4);
-    objc_storeStrong(&v18->_scrollView, a5);
+    objc_storeStrong(&v17->_searchBarViewController, controller);
+    objc_storeStrong(&v18->_containerView, view);
+    objc_storeStrong(&v18->_scrollView, scrollView);
     objc_storeWeak(&v18->_delegate, v16);
-    [v12 setDelegate:v18];
+    [controllerCopy setDelegate:v18];
     v19 = [SBSearchPresenter alloc];
-    v20 = [MEMORY[0x277D661A0] rootSettings];
-    v21 = [v20 todayViewPullToSearchSettings];
-    v22 = [(SBSearchPresenter *)v19 initWithSettings:v21 identifier:@"TodayView"];
+    rootSettings = [MEMORY[0x277D661A0] rootSettings];
+    todayViewPullToSearchSettings = [rootSettings todayViewPullToSearchSettings];
+    v22 = [(SBSearchPresenter *)v19 initWithSettings:todayViewPullToSearchSettings identifier:@"TodayView"];
     presenter = v18->_presenter;
     v18->_presenter = v22;
 
@@ -73,21 +73,21 @@ LABEL_3:
   return v18;
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = a3;
+  draggingCopy = dragging;
   [(SBTodayViewSpotlightPresenter *)self _setUpStartingScrollOffset];
-  [(SBSearchPresenter *)self->_presenter scrollViewWillBeginDragging:v4];
+  [(SBSearchPresenter *)self->_presenter scrollViewWillBeginDragging:draggingCopy];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
+  scrollCopy = scroll;
   [(SBTodayViewSpotlightPresenter *)self _updateFeatherBlurMaskLayers];
-  [(SBSearchPresenter *)self->_presenter scrollViewDidScroll:v4];
+  [(SBSearchPresenter *)self->_presenter scrollViewDidScroll:scrollCopy];
 }
 
-- (id)searchPresentablesForPresenter:(id)a3
+- (id)searchPresentablesForPresenter:(id)presenter
 {
   v5[1] = *MEMORY[0x277D85DE8];
   if (self->_spotlightViewController)
@@ -104,18 +104,18 @@ LABEL_3:
   return v3;
 }
 
-- (BOOL)searchPresenterCanPresent:(id)a3
+- (BOOL)searchPresenterCanPresent:(id)present
 {
-  v3 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(v3) = [WeakRetained spotlightPresenterAllowsPullToSearch:v3];
+  LOBYTE(selfCopy) = [WeakRetained spotlightPresenterAllowsPullToSearch:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)searchPresenterWillPresentSearch:(id)a3 animated:(BOOL)a4
+- (void)searchPresenterWillPresentSearch:(id)search animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained spotlightPresenterWillPresentSpotlight:self];
   v6 = [WeakRetained parentViewControllerForSpotlightPresenter:self];
@@ -123,7 +123,7 @@ LABEL_3:
   spotlightViewController = self->_spotlightViewController;
   if (spotlightViewController)
   {
-    [v6 bs_beginAppearanceTransitionForChildViewController:spotlightViewController toVisible:1 animated:v4];
+    [v6 bs_beginAppearanceTransitionForChildViewController:spotlightViewController toVisible:1 animated:animatedCopy];
   }
 
   else
@@ -131,7 +131,7 @@ LABEL_3:
     v9 = self->_containerView;
     [WeakRetained todayViewControllerLocationForSpotlightPresenter:self];
     v11 = v10;
-    v12 = [(SBTodayViewSpotlightPresenter *)self legibilitySettings];
+    legibilitySettings = [(SBTodayViewSpotlightPresenter *)self legibilitySettings];
     v13 = SBUIDeriveUILegibilitySettings();
 
     if (!v13)
@@ -145,9 +145,9 @@ LABEL_3:
 
     [(SBSpotlightMultiplexingViewController *)self->_spotlightMultiplexingViewController setLegibilitySettings:v13];
     [(_SBTodaySpotlightViewController *)self->_spotlightMultiplexingViewController setLocation:v11];
-    v16 = [(_SBTodaySpotlightViewController *)self->_spotlightMultiplexingViewController view];
+    view = [(_SBTodaySpotlightViewController *)self->_spotlightMultiplexingViewController view];
     [(UIView *)v9 bounds];
-    [v16 setFrame:?];
+    [view setFrame:?];
 
     if (MEMORY[0x223D6D4D0]())
     {
@@ -164,28 +164,28 @@ LABEL_3:
     v19 = self->_spotlightViewController;
     self->_spotlightViewController = p_super;
 
-    v20 = [(UIViewController *)self->_spotlightViewController view];
-    [v20 setAutoresizingMask:18];
+    view2 = [(UIViewController *)self->_spotlightViewController view];
+    [view2 setAutoresizingMask:18];
     [(UIView *)v9 bounds];
-    [v20 setFrame:?];
+    [view2 setFrame:?];
     [v7 addChildViewController:self->_spotlightViewController];
     [v7 bs_beginAppearanceTransitionForChildViewController:self->_spotlightViewController toVisible:1 animated:0];
-    [(UIView *)v9 addSubview:v20];
+    [(UIView *)v9 addSubview:view2];
   }
 
-  v21 = [(UIViewController *)self->_spotlightViewController view];
-  [v21 bs_setHitTestingDisabled:0];
+  view3 = [(UIViewController *)self->_spotlightViewController view];
+  [view3 bs_setHitTestingDisabled:0];
 }
 
-- (void)searchPresenterDidPresentSearch:(id)a3
+- (void)searchPresenterDidPresentSearch:(id)search
 {
-  v5 = a3;
+  searchCopy = search;
   if (!self->_spotlightViewController)
   {
     [(SBTodayViewSpotlightPresenter *)a2 searchPresenterDidPresentSearch:?];
   }
 
-  v8 = v5;
+  v8 = searchCopy;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = [WeakRetained parentViewControllerForSpotlightPresenter:self];
   [v7 bs_endAppearanceTransitionForChildViewController:self->_spotlightViewController toVisible:1];
@@ -193,23 +193,23 @@ LABEL_3:
   [WeakRetained spotlightPresenterDidPresentSpotlight:self];
 }
 
-- (void)searchPresenterWillDismissSearch:(id)a3 animated:(BOOL)a4
+- (void)searchPresenterWillDismissSearch:(id)search animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   [(UIViewController *)self->_spotlightViewController willMoveToParentViewController:0];
-  v6 = [(UIViewController *)self->_spotlightViewController view];
-  [v6 bs_setHitTestingDisabled:1];
+  view = [(UIViewController *)self->_spotlightViewController view];
+  [view bs_setHitTestingDisabled:1];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = [WeakRetained parentViewControllerForSpotlightPresenter:self];
 
-  [v8 bs_beginAppearanceTransitionForChildViewController:self->_spotlightViewController toVisible:0 animated:v4];
+  [v8 bs_beginAppearanceTransitionForChildViewController:self->_spotlightViewController toVisible:0 animated:animatedCopy];
 }
 
-- (void)searchPresenterDidDismissSearch:(id)a3
+- (void)searchPresenterDidDismissSearch:(id)search
 {
-  v4 = [(UIViewController *)self->_spotlightViewController view];
-  [v4 removeFromSuperview];
+  view = [(UIViewController *)self->_spotlightViewController view];
+  [view removeFromSuperview];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = [WeakRetained parentViewControllerForSpotlightPresenter:self];
@@ -227,8 +227,8 @@ LABEL_3:
 
 - (double)_topOffset
 {
-  v3 = [(UIViewController *)self->_spotlightViewController view];
-  [v3 safeAreaInsets];
+  view = [(UIViewController *)self->_spotlightViewController view];
+  [view safeAreaInsets];
   v5 = v4;
   [(SBSearchPresenter *)self->_presenter interactivePresentationMetrics];
   v7 = v5 - v6;
@@ -261,7 +261,7 @@ LABEL_3:
   [(SBTodayViewSpotlightPresenter *)self presentSpotlightAnimated:1];
 }
 
-- (id)backgroundViewForSpotlightPresentableViewController:(id)a3
+- (id)backgroundViewForSpotlightPresentableViewController:(id)controller
 {
   v4 = objc_alloc(MEMORY[0x277D66438]);
   [(UIView *)self->_containerView bounds];
@@ -271,11 +271,11 @@ LABEL_3:
   return v5;
 }
 
-- (id)backdropViewForLegacyTodayViewSpotlightPresentableViewController:(id)a3
+- (id)backdropViewForLegacyTodayViewSpotlightPresentableViewController:(id)controller
 {
-  v3 = [(SBTodayViewSpotlightPresenter *)self _newSearchBackdropView];
+  _newSearchBackdropView = [(SBTodayViewSpotlightPresenter *)self _newSearchBackdropView];
 
-  return v3;
+  return _newSearchBackdropView;
 }
 
 - (id)_newSearchBackdropView
@@ -299,22 +299,22 @@ LABEL_3:
     [(SBFFeatherBlurView *)self->_featherBlurView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v4 addSubview:self->_featherBlurView];
     v17 = MEMORY[0x277CCAAD0];
-    v22 = [(SBFFeatherBlurView *)self->_featherBlurView bottomAnchor];
-    v23 = [(UIView *)v4 safeAreaLayoutGuide];
-    v21 = [v23 topAnchor];
-    v20 = [v22 constraintEqualToAnchor:v21];
+    bottomAnchor = [(SBFFeatherBlurView *)self->_featherBlurView bottomAnchor];
+    safeAreaLayoutGuide = [(UIView *)v4 safeAreaLayoutGuide];
+    topAnchor = [safeAreaLayoutGuide topAnchor];
+    v20 = [bottomAnchor constraintEqualToAnchor:topAnchor];
     v24[0] = v20;
-    v19 = [(SBFFeatherBlurView *)self->_featherBlurView topAnchor];
-    v18 = [(UIView *)v4 topAnchor];
-    v7 = [v19 constraintEqualToAnchor:v18];
+    topAnchor2 = [(SBFFeatherBlurView *)self->_featherBlurView topAnchor];
+    topAnchor3 = [(UIView *)v4 topAnchor];
+    v7 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
     v24[1] = v7;
-    v8 = [(SBFFeatherBlurView *)self->_featherBlurView leadingAnchor];
-    v9 = [(UIView *)v4 leadingAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9];
+    leadingAnchor = [(SBFFeatherBlurView *)self->_featherBlurView leadingAnchor];
+    leadingAnchor2 = [(UIView *)v4 leadingAnchor];
+    v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v24[2] = v10;
-    v11 = [(SBFFeatherBlurView *)self->_featherBlurView trailingAnchor];
-    v12 = [(UIView *)v4 trailingAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    trailingAnchor = [(SBFFeatherBlurView *)self->_featherBlurView trailingAnchor];
+    trailingAnchor2 = [(UIView *)v4 trailingAnchor];
+    v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v24[3] = v13;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:4];
     [v17 activateConstraints:v14];
@@ -336,10 +336,10 @@ LABEL_3:
       v3 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:1];
     }
 
-    v4 = [(SBFFeatherBlurView *)self->_featherBlurView layer];
-    [v3 addObject:v4];
+    layer = [(SBFFeatherBlurView *)self->_featherBlurView layer];
+    [v3 addObject:layer];
 
-    v5 = [(UIView *)self->_containerView window];
+    window = [(UIView *)self->_containerView window];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
@@ -361,11 +361,11 @@ LABEL_3:
           }
 
           v11 = *(*(&v14 + 1) + 8 * v10);
-          if (v5)
+          if (window)
           {
             v12 = MEMORY[0x277D65E58];
             [*(*(&v14 + 1) + 8 * v10) frame];
-            v13 = [v12 matchMoveAnimationForFrame:v5 relativeToView:?];
+            v13 = [v12 matchMoveAnimationForFrame:window relativeToView:?];
             [v11 addAnimation:v13 forKey:@"SBTodayViewFeatherBlurMatchMoveAnimation"];
           }
 

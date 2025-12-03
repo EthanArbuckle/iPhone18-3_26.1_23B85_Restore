@@ -1,102 +1,102 @@
 @interface PUPhotoDecoration
 + (id)defaultDecoration;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)photoDecorationVariantsWithIncreasingAlpha:(int64_t)a3;
-- (id)photoDecorationVariantsWithIncreasingBorderBrightness:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)photoDecorationVariantsWithIncreasingAlpha:(int64_t)alpha;
+- (id)photoDecorationVariantsWithIncreasingBorderBrightness:(int64_t)brightness;
 - (unint64_t)hash;
 @end
 
 @implementation PUPhotoDecoration
 
-- (id)photoDecorationVariantsWithIncreasingBorderBrightness:(int64_t)a3
+- (id)photoDecorationVariantsWithIncreasingBorderBrightness:(int64_t)brightness
 {
-  if (a3 < 1)
+  if (brightness < 1)
   {
-    v5 = 0;
+    array = 0;
   }
 
   else
   {
-    v3 = a3;
-    v5 = [MEMORY[0x1E695DF70] array];
-    v6 = 0;
+    brightnessCopy = brightness;
+    array = [MEMORY[0x1E695DF70] array];
+    borderColor = 0;
     do
     {
       v7 = [(PUPhotoDecoration *)self copy];
-      if (v6)
+      if (borderColor)
       {
-        v8 = [v6 pu_colorWithIncreasedBrightness];
+        pu_colorWithIncreasedBrightness = [borderColor pu_colorWithIncreasedBrightness];
 
-        v6 = v8;
+        borderColor = pu_colorWithIncreasedBrightness;
       }
 
       else
       {
-        v6 = [(PUPhotoDecoration *)self borderColor];
+        borderColor = [(PUPhotoDecoration *)self borderColor];
       }
 
-      [v7 setBorderColor:v6];
-      [v5 addObject:v7];
+      [v7 setBorderColor:borderColor];
+      [array addObject:v7];
 
-      --v3;
+      --brightnessCopy;
     }
 
-    while (v3);
+    while (brightnessCopy);
   }
 
-  return v5;
+  return array;
 }
 
-- (id)photoDecorationVariantsWithIncreasingAlpha:(int64_t)a3
+- (id)photoDecorationVariantsWithIncreasingAlpha:(int64_t)alpha
 {
-  if (a3 < 1)
+  if (alpha < 1)
   {
-    v5 = 0;
+    array = 0;
   }
 
   else
   {
-    v3 = a3;
-    v5 = [MEMORY[0x1E695DF70] array];
-    v6 = 0;
+    alphaCopy = alpha;
+    array = [MEMORY[0x1E695DF70] array];
+    foregroundColor = 0;
     do
     {
       v7 = [(PUPhotoDecoration *)self copy];
-      if (v6)
+      if (foregroundColor)
       {
-        v8 = [v6 pu_colorWithIncreasedAlpha];
+        pu_colorWithIncreasedAlpha = [foregroundColor pu_colorWithIncreasedAlpha];
 
-        v6 = v8;
+        foregroundColor = pu_colorWithIncreasedAlpha;
       }
 
       else
       {
-        v6 = [(PUPhotoDecoration *)self foregroundColor];
+        foregroundColor = [(PUPhotoDecoration *)self foregroundColor];
       }
 
-      [v7 setForegroundColor:v6];
-      [v5 addObject:v7];
+      [v7 setForegroundColor:foregroundColor];
+      [array addObject:v7];
 
-      --v3;
+      --alphaCopy;
     }
 
-    while (v3);
+    while (alphaCopy);
   }
 
-  return v5;
+  return array;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(PUPhotoDecoration *)self borderColor];
-  [v4 setBorderColor:v5];
+  borderColor = [(PUPhotoDecoration *)self borderColor];
+  [v4 setBorderColor:borderColor];
 
   [(PUPhotoDecoration *)self borderWidth];
   [v4 setBorderWidth:?];
-  v6 = [(PUPhotoDecoration *)self foregroundColor];
-  [v4 setForegroundColor:v6];
+  foregroundColor = [(PUPhotoDecoration *)self foregroundColor];
+  [v4 setForegroundColor:foregroundColor];
 
   return v4;
 }
@@ -104,12 +104,12 @@
 - (unint64_t)hash
 {
   v3 = MEMORY[0x1E69DC888];
-  v4 = [(PUPhotoDecoration *)self borderColor];
-  v5 = [v3 colorWithCGColor:{objc_msgSend(v4, "CGColor")}];
+  borderColor = [(PUPhotoDecoration *)self borderColor];
+  v5 = [v3 colorWithCGColor:{objc_msgSend(borderColor, "CGColor")}];
 
   v6 = MEMORY[0x1E69DC888];
-  v7 = [(PUPhotoDecoration *)self foregroundColor];
-  v8 = [v6 colorWithCGColor:{objc_msgSend(v7, "CGColor")}];
+  foregroundColor = [(PUPhotoDecoration *)self foregroundColor];
+  v8 = [v6 colorWithCGColor:{objc_msgSend(foregroundColor, "CGColor")}];
 
   [(PUPhotoDecoration *)self borderWidth];
   v10 = 1319 * ((1319 * (v9 * 1319.0)) ^ [v5 hash]);
@@ -118,21 +118,21 @@
   return v10 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(PUPhotoDecoration *)self borderWidth];
     v7 = v6;
     [v5 borderWidth];
     if (v7 == v8 && (-[PUPhotoDecoration borderColor](self, "borderColor"), v9 = objc_claimAutoreleasedReturnValue(), [v5 borderColor], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v9, "isEqual:", v10), v10, v9, v11))
     {
-      v12 = [(PUPhotoDecoration *)self foregroundColor];
-      v13 = [v5 foregroundColor];
-      v14 = [v12 isEqual:v13];
+      foregroundColor = [(PUPhotoDecoration *)self foregroundColor];
+      foregroundColor2 = [v5 foregroundColor];
+      v14 = [foregroundColor isEqual:foregroundColor2];
     }
 
     else
@@ -152,13 +152,13 @@
 + (id)defaultDecoration
 {
   v2 = objc_alloc_init(PUPhotoDecoration);
-  v3 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [(PUPhotoDecoration *)v2 setBorderColor:v3];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [(PUPhotoDecoration *)v2 setBorderColor:systemBackgroundColor];
 
   PLPhysicalScreenScale();
   [(PUPhotoDecoration *)v2 setBorderWidth:1.0 / v4];
-  v5 = [MEMORY[0x1E69DC888] clearColor];
-  [(PUPhotoDecoration *)v2 setForegroundColor:v5];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(PUPhotoDecoration *)v2 setForegroundColor:clearColor];
 
   return v2;
 }

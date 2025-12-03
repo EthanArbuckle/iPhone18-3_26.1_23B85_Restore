@@ -1,16 +1,16 @@
 @interface UISoftwareDimmingWindow
-- (UISoftwareDimmingWindow)initWithFrame:(CGRect)a3;
-- (void)setOverlayLevel:(float)a3;
+- (UISoftwareDimmingWindow)initWithFrame:(CGRect)frame;
+- (void)setOverlayLevel:(float)level;
 - (void)updateOverlayColor;
 @end
 
 @implementation UISoftwareDimmingWindow
 
-- (UISoftwareDimmingWindow)initWithFrame:(CGRect)a3
+- (UISoftwareDimmingWindow)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = UISoftwareDimmingWindow;
-  v3 = [(UIWindow *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIWindow *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -36,18 +36,18 @@
   [(UIView *)self setBackgroundColor:v5];
 }
 
-- (void)setOverlayLevel:(float)a3
+- (void)setOverlayLevel:(float)level
 {
-  v6 = a3;
-  if (a3 < -1.0 || a3 >= 0.0)
+  levelCopy = level;
+  if (level < -1.0 || level >= 0.0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UIScreen.m" lineNumber:336 description:{@"%f is not a valid overlay level value", *&v6}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIScreen.m" lineNumber:336 description:{@"%f is not a valid overlay level value", *&levelCopy}];
   }
 
-  self->_overlayLevel = a3;
+  self->_overlayLevel = level;
 
-  [(UIView *)self setAlpha:-v6];
+  [(UIView *)self setAlpha:-levelCopy];
 }
 
 @end

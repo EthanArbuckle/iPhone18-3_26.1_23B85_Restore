@@ -1,11 +1,11 @@
 @interface _UISimplePressGestureRecognizer
-- (_UISimplePressGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (_UISimplePressGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (void)_cancelOrFail;
 - (void)_endOrFail;
 - (void)dealloc;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
+- (void)pressesBegan:(id)began withEvent:(id)event;
 - (void)reset;
-- (void)setTriggers:(id)a3;
+- (void)setTriggers:(id)triggers;
 @end
 
 @implementation _UISimplePressGestureRecognizer
@@ -21,11 +21,11 @@
   [(UIGestureRecognizer *)&v4 dealloc];
 }
 
-- (_UISimplePressGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_UISimplePressGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v8.receiver = self;
   v8.super_class = _UISimplePressGestureRecognizer;
-  v4 = [(UIGestureRecognizer *)&v8 initWithTarget:a3 action:a4];
+  v4 = [(UIGestureRecognizer *)&v8 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -37,17 +37,17 @@
   return v5;
 }
 
-- (void)setTriggers:(id)a3
+- (void)setTriggers:(id)triggers
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_triggers, a3);
-  v6 = [MEMORY[0x1E695DF70] array];
+  triggersCopy = triggers;
+  objc_storeStrong(&self->_triggers, triggers);
+  array = [MEMORY[0x1E695DF70] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = v5;
+  v7 = triggersCopy;
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
@@ -77,7 +77,7 @@
         }
 
         v14 = [MEMORY[0x1E696AD98] numberWithInteger:v13];
-        [v6 addObject:v14];
+        [array addObject:v14];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -88,21 +88,21 @@
 
   v15.receiver = self;
   v15.super_class = _UISimplePressGestureRecognizer;
-  [(UIGestureRecognizer *)&v15 setAllowedPressTypes:v6];
+  [(UIGestureRecognizer *)&v15 setAllowedPressTypes:array];
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  beganCopy = began;
+  eventCopy = event;
   if (self->_activeTrigger)
   {
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v8 = [v6 countByEnumeratingWithState:&v29 objects:v34 count:16];
+    v8 = [beganCopy countByEnumeratingWithState:&v29 objects:v34 count:16];
     if (v8)
     {
       v9 = v8;
@@ -113,22 +113,22 @@
         {
           if (*v30 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(beganCopy);
           }
 
-          [(UIGestureRecognizer *)self ignorePress:*(*(&v29 + 1) + 8 * i) forEvent:v7];
+          [(UIGestureRecognizer *)self ignorePress:*(*(&v29 + 1) + 8 * i) forEvent:eventCopy];
         }
 
-        v9 = [v6 countByEnumeratingWithState:&v29 objects:v34 count:16];
+        v9 = [beganCopy countByEnumeratingWithState:&v29 objects:v34 count:16];
       }
 
       while (v9);
     }
   }
 
-  else if ([v6 count] < 2)
+  else if ([beganCopy count] < 2)
   {
-    v12 = [v6 anyObject];
+    anyObject = [beganCopy anyObject];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
@@ -156,15 +156,15 @@
             [v17 _UIPressTriggerValue];
           }
 
-          if (![v12 type])
+          if (![anyObject type])
           {
-            [v12 key];
+            [anyObject key];
             v19 = v18 = v15;
-            v20 = [v19 modifierFlags];
+            modifierFlags = [v19 modifierFlags];
 
             v15 = v18;
             v14 = v23;
-            if (!v20)
+            if (!modifierFlags)
             {
               objc_storeStrong(&self->_activeTrigger, v17);
               if (fabs(0.0) >= 2.22044605e-16)

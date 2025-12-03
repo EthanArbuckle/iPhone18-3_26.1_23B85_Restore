@@ -1,76 +1,76 @@
 @interface COSActivationResponseManager
 - (COSSetupController)setupController;
 - (id)viewControllerForAlertPresentation;
-- (void)awaitActivationWhileHoldingFlow:(BOOL)a3;
+- (void)awaitActivationWhileHoldingFlow:(BOOL)flow;
 - (void)clearActivationState;
-- (void)loader:(id)a3 didFailWithError:(id)a4;
-- (void)loader:(id)a3 didReceiveHTTPResponse:(id)a4;
-- (void)loader:(id)a3 receivedObjectModel:(id)a4 actionSignal:(unint64_t)a5;
-- (void)objectModel:(id)a3 elementDidChange:(id)a4;
-- (void)objectModel:(id)a3 pressedLink:(id)a4 httpMethod:(id)a5 completion:(id)a6;
-- (void)objectModelPressedBack:(id)a3;
+- (void)loader:(id)loader didFailWithError:(id)error;
+- (void)loader:(id)loader didReceiveHTTPResponse:(id)response;
+- (void)loader:(id)loader receivedObjectModel:(id)model actionSignal:(unint64_t)signal;
+- (void)objectModel:(id)model elementDidChange:(id)change;
+- (void)objectModel:(id)model pressedLink:(id)link httpMethod:(id)method completion:(id)completion;
+- (void)objectModelPressedBack:(id)back;
 - (void)presentFlow;
-- (void)setAwaitingActivation:(BOOL)a3;
+- (void)setAwaitingActivation:(BOOL)activation;
 @end
 
 @implementation COSActivationResponseManager
 
-- (void)loader:(id)a3 didFailWithError:(id)a4
+- (void)loader:(id)loader didFailWithError:(id)error
 {
-  v5 = a3;
-  v6 = a4;
+  loaderCopy = loader;
+  errorCopy = error;
   v7 = pbb_activation_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    sub_10018AC34(v5, v6, v7);
+    sub_10018AC34(loaderCopy, errorCopy, v7);
   }
 }
 
-- (void)loader:(id)a3 receivedObjectModel:(id)a4 actionSignal:(unint64_t)a5
+- (void)loader:(id)loader receivedObjectModel:(id)model actionSignal:(unint64_t)signal
 {
-  v8 = a3;
-  v9 = a4;
+  loaderCopy = loader;
+  modelCopy = model;
   v10 = pbb_activation_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v24 = 138412802;
-    v25 = v8;
+    v25 = loaderCopy;
     v26 = 2112;
-    v27 = v9;
+    v27 = modelCopy;
     v28 = 1024;
-    v29 = a5;
+    signalCopy = signal;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "receivedObj %@ %@ %d", &v24, 0x1Cu);
   }
 
   rootObjectModel = self->_rootObjectModel;
   if (rootObjectModel)
   {
-    v12 = [(RUIObjectModel *)rootObjectModel visiblePage];
-    v13 = [v12 view];
-    [v13 setAlpha:1.0];
+    visiblePage = [(RUIObjectModel *)rootObjectModel visiblePage];
+    view = [visiblePage view];
+    [view setAlpha:1.0];
 
-    v14 = [(RUIObjectModel *)self->_rootObjectModel visiblePage];
-    v15 = [v14 view];
-    [v15 setUserInteractionEnabled:1];
+    visiblePage2 = [(RUIObjectModel *)self->_rootObjectModel visiblePage];
+    view2 = [visiblePage2 view];
+    [view2 setUserInteractionEnabled:1];
 
     WeakRetained = objc_loadWeakRetained(&self->_setupController);
     [WeakRetained showBusyIndicator:1];
   }
 
-  v17 = [v9 defaultPages];
-  v18 = [v17 count];
+  defaultPages = [modelCopy defaultPages];
+  v18 = [defaultPages count];
 
   if (v18)
   {
-    objc_storeStrong(&self->_currentObjectModel, a4);
+    objc_storeStrong(&self->_currentObjectModel, model);
     if (self->_rootObjectModel)
     {
-      if (a5 == 3)
+      if (signal == 3)
       {
         v19 = objc_loadWeakRetained(&self->_setupController);
         [v19 popRUIObject:self->_rootObjectModel animated:0];
 
-        objc_storeStrong(&self->_rootObjectModel, a4);
+        objc_storeStrong(&self->_rootObjectModel, model);
         [(RUIObjectModel *)self->_rootObjectModel setDelegate:self];
         v20 = objc_loadWeakRetained(&self->_setupController);
         [v20 pushRUIObject:self->_rootObjectModel animated:0 completion:0];
@@ -78,14 +78,14 @@
         goto LABEL_16;
       }
 
-      [v9 setDelegate:self];
-      v23 = objc_loadWeakRetained(&self->_setupController);
-      [v23 pushRUIObject:v9 animated:1 completion:&stru_10026C130];
+      [modelCopy setDelegate:self];
+      bridgeController = objc_loadWeakRetained(&self->_setupController);
+      [bridgeController pushRUIObject:modelCopy animated:1 completion:&stru_10026C130];
     }
 
     else
     {
-      objc_storeStrong(&self->_rootObjectModel, a4);
+      objc_storeStrong(&self->_rootObjectModel, model);
       [(RUIObjectModel *)self->_rootObjectModel setDelegate:self];
       v21 = pbb_activation_log();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -104,45 +104,45 @@
         goto LABEL_16;
       }
 
-      v23 = [UIApp bridgeController];
-      [v23 beganWaitingForPresentationOfActivationEvent];
+      bridgeController = [UIApp bridgeController];
+      [bridgeController beganWaitingForPresentationOfActivationEvent];
     }
   }
 
 LABEL_16:
 }
 
-- (void)loader:(id)a3 didReceiveHTTPResponse:(id)a4
+- (void)loader:(id)loader didReceiveHTTPResponse:(id)response
 {
-  v5 = a3;
-  v6 = a4;
+  loaderCopy = loader;
+  responseCopy = response;
   v7 = pbb_activation_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412546;
-    v9 = v5;
+    v9 = loaderCopy;
     v10 = 2112;
-    v11 = v6;
+    v11 = responseCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "didReceiveHTTPResponse %@ %@", &v8, 0x16u);
   }
 }
 
-- (void)objectModel:(id)a3 elementDidChange:(id)a4
+- (void)objectModel:(id)model elementDidChange:(id)change
 {
-  v5 = a3;
-  v6 = a4;
+  modelCopy = model;
+  changeCopy = change;
   v7 = pbb_activation_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412546;
-    v16 = v5;
+    v16 = modelCopy;
     v17 = 2112;
-    v18 = v6;
+    v18 = changeCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "elementDidChange %@ %@", &v15, 0x16u);
   }
 
-  v8 = [v6 name];
-  v9 = [v8 isEqualToString:@"tryAgain"];
+  name = [changeCopy name];
+  v9 = [name isEqualToString:@"tryAgain"];
 
   if (v9)
   {
@@ -153,17 +153,17 @@ LABEL_16:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Retry Activation button pressed", &v15, 2u);
     }
 
-    v11 = [UIApp bridgeController];
-    [v11 tellGizmoToRetryActivation];
+    bridgeController = [UIApp bridgeController];
+    [bridgeController tellGizmoToRetryActivation];
 
-    v12 = [UIApp bridgeController];
-    [v12 tellGizmoToKeepAliveForActivationEvent];
+    bridgeController2 = [UIApp bridgeController];
+    [bridgeController2 tellGizmoToKeepAliveForActivationEvent];
   }
 
   else
   {
-    v13 = [v6 name];
-    v14 = [v13 isEqualToString:@"reset"];
+    name2 = [changeCopy name];
+    v14 = [name2 isEqualToString:@"reset"];
 
     if (v14)
     {
@@ -172,26 +172,26 @@ LABEL_16:
   }
 }
 
-- (void)objectModel:(id)a3 pressedLink:(id)a4 httpMethod:(id)a5 completion:(id)a6
+- (void)objectModel:(id)model pressedLink:(id)link httpMethod:(id)method completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  modelCopy = model;
+  linkCopy = link;
+  methodCopy = method;
+  completionCopy = completion;
   v14 = pbb_activation_log();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v36 = v10;
+    v36 = modelCopy;
     v37 = 2112;
-    v38 = v11;
+    v38 = linkCopy;
     v39 = 2112;
-    v40 = v12;
+    v40 = methodCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "pressedLink (%@) (%@) (%@)", buf, 0x20u);
   }
 
-  v15 = [v10 clientInfo];
-  v16 = [v15 objectForKeyedSubscript:@"elementIdForiCloudAppleId"];
+  clientInfo = [modelCopy clientInfo];
+  v16 = [clientInfo objectForKeyedSubscript:@"elementIdForiCloudAppleId"];
 
   if (![(__CFString *)v16 length])
   {
@@ -199,41 +199,41 @@ LABEL_16:
     v16 = @"login";
   }
 
-  v17 = [v10 rowForFormField:v16];
+  v17 = [modelCopy rowForFormField:v16];
   if (v17)
   {
     v18 = objc_alloc_init(NSMutableDictionary);
     [v17 populatePostbackDictionary:v18];
   }
 
-  v19 = [v12 lowercaseString];
-  v20 = [v19 isEqualToString:@"post"];
+  lowercaseString = [methodCopy lowercaseString];
+  v20 = [lowercaseString isEqualToString:@"post"];
 
   if (v20)
   {
-    v21 = [v10 postbackData];
+    postbackData = [modelCopy postbackData];
   }
 
   else
   {
-    v21 = 0;
+    postbackData = 0;
   }
 
   v22 = pbb_activation_log();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v36 = v11;
+    v36 = linkCopy;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "loading URL: %@", buf, 0xCu);
   }
 
-  v34 = v12;
+  v34 = methodCopy;
 
-  v23 = [[NSMutableURLRequest alloc] initWithURL:v11 cachePolicy:1 timeoutInterval:240.0];
+  v23 = [[NSMutableURLRequest alloc] initWithURL:linkCopy cachePolicy:1 timeoutInterval:240.0];
   v24 = v23;
-  if (v21)
+  if (postbackData)
   {
-    [v23 setHTTPBody:v21];
+    [v23 setHTTPBody:postbackData];
     [v24 setHTTPMethod:@"POST"];
     [v24 setValue:@"application/x-plist" forHTTPHeaderField:@"Content-Type"];
     v25 = pbb_activation_log();
@@ -244,22 +244,22 @@ LABEL_16:
     }
   }
 
-  v26 = [UIApp bridgeController];
-  [v26 sendProxyActivationWithCustomRequest:v24];
+  bridgeController = [UIApp bridgeController];
+  [bridgeController sendProxyActivationWithCustomRequest:v24];
 
-  v27 = [UIApp bridgeController];
-  [v27 tellGizmoToKeepAliveForActivationEvent];
+  bridgeController2 = [UIApp bridgeController];
+  [bridgeController2 tellGizmoToKeepAliveForActivationEvent];
 
   rootObjectModel = self->_rootObjectModel;
   if (rootObjectModel)
   {
-    v29 = [(RUIObjectModel *)rootObjectModel visiblePage];
-    v30 = [v29 view];
-    [v30 setAlpha:0.65];
+    visiblePage = [(RUIObjectModel *)rootObjectModel visiblePage];
+    view = [visiblePage view];
+    [view setAlpha:0.65];
 
-    v31 = [(RUIObjectModel *)self->_rootObjectModel visiblePage];
-    v32 = [v31 view];
-    [v32 setUserInteractionEnabled:0];
+    visiblePage2 = [(RUIObjectModel *)self->_rootObjectModel visiblePage];
+    view2 = [visiblePage2 view];
+    [view2 setUserInteractionEnabled:0];
 
     WeakRetained = objc_loadWeakRetained(&self->_setupController);
     [WeakRetained showBusyIndicator:1];
@@ -267,27 +267,27 @@ LABEL_16:
     self->_hasStashedALFlow = 0;
   }
 
-  v13[2](v13, 1, 0);
+  completionCopy[2](completionCopy, 1, 0);
 }
 
-- (void)objectModelPressedBack:(id)a3
+- (void)objectModelPressedBack:(id)back
 {
-  v4 = a3;
+  backCopy = back;
   v5 = pbb_activation_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = backCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "objectModelPressedBack %@", &v7, 0xCu);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_setupController);
-  [WeakRetained popRUIObject:v4 animated:1];
+  [WeakRetained popRUIObject:backCopy animated:1];
 }
 
-- (void)setAwaitingActivation:(BOOL)a3
+- (void)setAwaitingActivation:(BOOL)activation
 {
-  if (a3)
+  if (activation)
   {
 
     [(COSActivationResponseManager *)self awaitActivationWhileHoldingFlow:0];
@@ -307,18 +307,18 @@ LABEL_16:
   }
 }
 
-- (void)awaitActivationWhileHoldingFlow:(BOOL)a3
+- (void)awaitActivationWhileHoldingFlow:(BOOL)flow
 {
-  v3 = a3;
+  flowCopy = flow;
   v5 = pbb_activation_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109120;
-    v6[1] = v3;
+    v6[1] = flowCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Awaiting Activation while holding: %d", v6, 8u);
   }
 
-  self->_isFlowOnHold = v3;
+  self->_isFlowOnHold = flowCopy;
   self->_awaitingActivation = 1;
   if (self->_rootObjectModel)
   {
@@ -355,10 +355,10 @@ LABEL_16:
 - (id)viewControllerForAlertPresentation
 {
   WeakRetained = objc_loadWeakRetained(&self->_setupController);
-  v3 = [WeakRetained navigationController];
-  v4 = [v3 topViewController];
+  navigationController = [WeakRetained navigationController];
+  topViewController = [navigationController topViewController];
 
-  return v4;
+  return topViewController;
 }
 
 - (void)clearActivationState

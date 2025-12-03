@@ -1,40 +1,40 @@
 @interface _DPReportGenerator
-+ (id)filterNonConformingRecordsFrom:(id)a3;
-+ (id)queryKeysForPattern:(id)a3 storage:(id)a4;
-+ (id)queryRecordsForKey:(id)a3 storage:(id)a4;
-+ (id)randomizeKeys:(id)a3 andSortByPriority:(BOOL)a4;
-+ (unint64_t)queryRecordCountForKey:(id)a3 withPredicate:(id)a4 storage:(id)a5;
-- (BOOL)markSubmitted:(id)a3 storage:(id)a4;
++ (id)filterNonConformingRecordsFrom:(id)from;
++ (id)queryKeysForPattern:(id)pattern storage:(id)storage;
++ (id)queryRecordsForKey:(id)key storage:(id)storage;
++ (id)randomizeKeys:(id)keys andSortByPriority:(BOOL)priority;
++ (unint64_t)queryRecordCountForKey:(id)key withPredicate:(id)predicate storage:(id)storage;
+- (BOOL)markSubmitted:(id)submitted storage:(id)storage;
 - (_DPReportGenerator)init;
-- (_DPReportGenerator)initWithMetricsCollector:(id)a3;
-- (id)generateReportForKeys:(id)a3 storage:(id)a4;
-- (id)generateReportUsing:(id)a3;
-- (void)reportMetricsForKey:(id)a3 toBeSubmitted:(id)a4 currentDate:(id)a5 storage:(id)a6;
-- (void)scheduleMaintenanceWithName:(id)a3 database:(id)a4;
+- (_DPReportGenerator)initWithMetricsCollector:(id)collector;
+- (id)generateReportForKeys:(id)keys storage:(id)storage;
+- (id)generateReportUsing:(id)using;
+- (void)reportMetricsForKey:(id)key toBeSubmitted:(id)submitted currentDate:(id)date storage:(id)storage;
+- (void)scheduleMaintenanceWithName:(id)name database:(id)database;
 @end
 
 @implementation _DPReportGenerator
 
-+ (id)filterNonConformingRecordsFrom:(id)a3
++ (id)filterNonConformingRecordsFrom:(id)from
 {
-  v3 = a3;
-  v4 = [v3 indexesOfObjectsPassingTest:&__block_literal_global_14];
-  v5 = [v3 mutableCopy];
+  fromCopy = from;
+  v4 = [fromCopy indexesOfObjectsPassingTest:&__block_literal_global_14];
+  v5 = [fromCopy mutableCopy];
 
   [v5 removeObjectsAtIndexes:v4];
 
   return v5;
 }
 
-+ (unint64_t)queryRecordCountForKey:(id)a3 withPredicate:(id)a4 storage:(id)a5
++ (unint64_t)queryRecordCountForKey:(id)key withPredicate:(id)predicate storage:(id)storage
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  keyCopy = key;
+  predicateCopy = predicate;
+  storageCopy = storage;
+  if (storageCopy)
   {
-    v11 = [_DPKeyNames keyPropertiesForKey:v8];
-    v12 = [_DPRecordQueryPredicates entityForKey:v8];
+    v11 = [_DPKeyNames keyPropertiesForKey:keyCopy];
+    v12 = [_DPRecordQueryPredicates entityForKey:keyCopy];
     v13 = v12;
     if (v11)
     {
@@ -66,7 +66,7 @@
       v22 = a2;
       v16 = v15;
       v20 = v16;
-      [v10 fetchRecordCountForEntity:v13 predicate:v9 completion:v19];
+      [storageCopy fetchRecordCountForEntity:v13 predicate:predicateCopy completion:v19];
       dispatch_semaphore_wait(v16, 0xFFFFFFFFFFFFFFFFLL);
       v17 = v24[3];
 
@@ -82,32 +82,32 @@
   return v17;
 }
 
-+ (id)queryRecordsForKey:(id)a3 storage:(id)a4
++ (id)queryRecordsForKey:(id)key storage:(id)storage
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  keyCopy = key;
+  storageCopy = storage;
+  if (storageCopy)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = [_DPKeyNames keyPropertiesForKey:v6];
+    v9 = [_DPKeyNames keyPropertiesForKey:keyCopy];
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 budget];
-      v12 = [v11 name];
+      budget = [v9 budget];
+      name = [budget name];
 
-      v13 = [_DPPrivacyBudgetProperties budgetPropertiesForKey:v12];
-      v14 = [v13 intervalBudgetValue];
-      v15 = [v14 unsignedIntegerValue];
+      v13 = [_DPPrivacyBudgetProperties budgetPropertiesForKey:name];
+      intervalBudgetValue = [v13 intervalBudgetValue];
+      unsignedIntegerValue = [intervalBudgetValue unsignedIntegerValue];
 
-      if (v15 >= 0x28)
+      if (unsignedIntegerValue >= 0x28)
       {
         v16 = 40;
       }
 
       else
       {
-        v16 = v15;
+        v16 = unsignedIntegerValue;
       }
     }
 
@@ -116,10 +116,10 @@
       v16 = 40;
     }
 
-    v18 = [_DPRecordQueryPredicates entityForKey:v6];
+    v18 = [_DPRecordQueryPredicates entityForKey:keyCopy];
     if (v18)
     {
-      v19 = [_DPRecordQueryPredicates predicateForRecordsNotSubmittedForKeyBeginsWith:v6];
+      v19 = [_DPRecordQueryPredicates predicateForRecordsNotSubmittedForKeyBeginsWith:keyCopy];
       v27 = 0;
       v28 = &v27;
       v29 = 0x3032000000;
@@ -135,7 +135,7 @@
       v26 = a2;
       v21 = v20;
       v24 = v21;
-      [v7 fetchRecordsFor:v18 predicate:v19 fetchLimit:v16 fetchOffset:0 randomizeOrder:1 withCompletion:v23];
+      [storageCopy fetchRecordsFor:v18 predicate:v19 fetchLimit:v16 fetchOffset:0 randomizeOrder:1 withCompletion:v23];
       dispatch_semaphore_wait(v21, 0xFFFFFFFFFFFFFFFFLL);
       v17 = v28[5];
 
@@ -158,17 +158,17 @@
   return v17;
 }
 
-+ (id)queryKeysForPattern:(id)a3 storage:(id)a4
++ (id)queryKeysForPattern:(id)pattern storage:(id)storage
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  patternCopy = pattern;
+  storageCopy = storage;
+  if (storageCopy)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = [_DPRecordQueryPredicates entityForKey:v6];
+    v9 = [_DPRecordQueryPredicates entityForKey:patternCopy];
     if (v9)
     {
-      v10 = [_DPRecordQueryPredicates predicateForRecordsNotSubmittedForKeyBeginsWith:v6];
+      v10 = [_DPRecordQueryPredicates predicateForRecordsNotSubmittedForKeyBeginsWith:patternCopy];
       v19 = 0;
       v20 = &v19;
       v21 = 0x3032000000;
@@ -184,7 +184,7 @@
       v18 = a2;
       v12 = v11;
       v16 = v12;
-      [v7 fetchKeynamesFor:v9 predicate:v10 fetchLimit:100 fetchOffset:0 withCompletion:v15];
+      [storageCopy fetchKeynamesFor:v9 predicate:v10 fetchLimit:100 fetchOffset:0 withCompletion:v15];
       dispatch_semaphore_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
       v13 = v20[5];
 
@@ -215,34 +215,34 @@
   return v4;
 }
 
-- (_DPReportGenerator)initWithMetricsCollector:(id)a3
+- (_DPReportGenerator)initWithMetricsCollector:(id)collector
 {
-  v5 = a3;
+  collectorCopy = collector;
   v9.receiver = self;
   v9.super_class = _DPReportGenerator;
   v6 = [(_DPReportGenerator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_metricsCollector, a3);
+    objc_storeStrong(&v6->_metricsCollector, collector);
   }
 
   return v7;
 }
 
-- (BOOL)markSubmitted:(id)a3 storage:(id)a4
+- (BOOL)markSubmitted:(id)submitted storage:(id)storage
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  submittedCopy = submitted;
+  storageCopy = storage;
+  if (storageCopy)
   {
     v7 = objc_autoreleasePoolPush();
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = v5;
+    v8 = submittedCopy;
     v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v9)
     {
@@ -268,18 +268,18 @@
       while (v10);
     }
 
-    [v6 updateRecords:v8 withCompletion:0];
+    [storageCopy updateRecords:v8 withCompletion:0];
     objc_autoreleasePoolPop(v7);
   }
 
   v13 = *MEMORY[0x277D85DE8];
-  return v6 != 0;
+  return storageCopy != 0;
 }
 
-- (id)generateReportUsing:(id)a3
+- (id)generateReportUsing:(id)using
 {
   v46 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  usingCopy = using;
   v6 = +[_DPLog daemon];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -315,8 +315,8 @@ LABEL_9:
   v9 = +[_DPKeyNames keyNamesGroupedByPropertyName];
   v10 = [MEMORY[0x277CBEBF8] mutableCopy];
   v32 = v9;
-  v28 = [v9 allKeys];
-  [objc_opt_class() randomizeKeys:v28 andSortByPriority:1];
+  allKeys = [v9 allKeys];
+  [objc_opt_class() randomizeKeys:allKeys andSortByPriority:1];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
@@ -363,7 +363,7 @@ LABEL_9:
 
               v21 = *(*(&v36 + 1) + 8 * i);
               [v15 addObject:v21];
-              v22 = [objc_opt_class() queryKeysForPattern:v21 storage:v5];
+              v22 = [objc_opt_class() queryKeysForPattern:v21 storage:usingCopy];
               if ([v22 count])
               {
                 v23 = [objc_opt_class() randomizeKeys:v22 andSortByPriority:0];
@@ -396,7 +396,7 @@ LABEL_9:
     while (v33);
   }
 
-  v8 = [(_DPReportGenerator *)self generateReportForKeys:v10 storage:v5];
+  v8 = [(_DPReportGenerator *)self generateReportForKeys:v10 storage:usingCopy];
 
   objc_autoreleasePoolPop(v29);
 LABEL_29:
@@ -406,13 +406,13 @@ LABEL_29:
   return v8;
 }
 
-+ (id)randomizeKeys:(id)a3 andSortByPriority:(BOOL)a4
++ (id)randomizeKeys:(id)keys andSortByPriority:(BOOL)priority
 {
-  v4 = a4;
-  v5 = a3;
+  priorityCopy = priority;
+  keysCopy = keys;
   v6 = objc_autoreleasePoolPush();
-  v7 = [v5 count];
-  v8 = [v5 mutableCopy];
+  v7 = [keysCopy count];
+  v8 = [keysCopy mutableCopy];
   for (i = [MEMORY[0x277CBEBF8] mutableCopy]; objc_msgSend(v8, "count"); --v7)
   {
     v10 = arc4random_uniform(v7);
@@ -421,7 +421,7 @@ LABEL_29:
     [i addObject:v11];
   }
 
-  if (v4)
+  if (priorityCopy)
   {
     v12 = [i sortedArrayWithOptions:16 usingComparator:&__block_literal_global_13];
   }
@@ -438,25 +438,25 @@ LABEL_29:
   return v13;
 }
 
-- (void)reportMetricsForKey:(id)a3 toBeSubmitted:(id)a4 currentDate:(id)a5 storage:(id)a6
+- (void)reportMetricsForKey:(id)key toBeSubmitted:(id)submitted currentDate:(id)date storage:(id)storage
 {
   v47[2] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  keyCopy = key;
+  submittedCopy = submitted;
+  dateCopy = date;
+  storageCopy = storage;
   if (+[_DPDeviceInfo isInternalBuild])
   {
-    v14 = [_DPKeyNames keyPropertiesForKey:v10];
+    v14 = [_DPKeyNames keyPropertiesForKey:keyCopy];
     if (v14)
     {
-      v33 = self;
+      selfCopy = self;
       v42 = v14;
-      v41 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:v12 sinceDate:-604800.0];
-      v40 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:v12 sinceDate:-86400.0];
-      v38 = [_DPRecordQueryPredicates predicateForRecordsInDateRangeStart:v41 end:v12];
-      v39 = [_DPRecordQueryPredicates predicateForRecordsInDateRangeStart:v40 end:v12];
-      v15 = [_DPRecordQueryPredicates predicateForRecordsMatchingKey:v10];
+      v41 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:dateCopy sinceDate:-604800.0];
+      v40 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:dateCopy sinceDate:-86400.0];
+      v38 = [_DPRecordQueryPredicates predicateForRecordsInDateRangeStart:v41 end:dateCopy];
+      v39 = [_DPRecordQueryPredicates predicateForRecordsInDateRangeStart:v40 end:dateCopy];
+      v15 = [_DPRecordQueryPredicates predicateForRecordsMatchingKey:keyCopy];
       v16 = MEMORY[0x277CCA920];
       v47[0] = v15;
       v47[1] = v39;
@@ -470,8 +470,8 @@ LABEL_29:
       v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v46 count:2];
       v35 = [v18 andPredicateWithSubpredicates:v19];
 
-      v34 = [objc_opt_class() queryRecordCountForKey:v10 withPredicate:v37 storage:v13];
-      v20 = [objc_opt_class() queryRecordCountForKey:v10 withPredicate:v35 storage:v13];
+      v34 = [objc_opt_class() queryRecordCountForKey:keyCopy withPredicate:v37 storage:storageCopy];
+      v20 = [objc_opt_class() queryRecordCountForKey:keyCopy withPredicate:v35 storage:storageCopy];
       v21 = MEMORY[0x277CCA920];
       v45[0] = v15;
       v22 = +[_DPRecordQueryPredicates predicateForRecordsNotSubmitted];
@@ -479,9 +479,9 @@ LABEL_29:
       v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v45 count:2];
       v24 = [v21 andPredicateWithSubpredicates:v23];
 
-      v25 = [objc_opt_class() queryRecordCountForKey:v10 withPredicate:v24 storage:v13];
-      v26 = [v11 count] / v25;
-      v44[0] = v10;
+      v25 = [objc_opt_class() queryRecordCountForKey:keyCopy withPredicate:v24 storage:storageCopy];
+      v26 = [submittedCopy count] / v25;
+      v44[0] = keyCopy;
       v43[0] = @"useCase";
       v43[1] = @"countLastWeek";
       v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v20];
@@ -494,8 +494,8 @@ LABEL_29:
       v44[3] = v29;
       v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v44 forKeys:v43 count:4];
 
-      v31 = [(_DPReportGenerator *)v33 metricsCollector];
-      [v31 reportMetricsForEvent:@"com.apple.DifferentialPrivacy.usage" withMetrics:v30];
+      metricsCollector = [(_DPReportGenerator *)selfCopy metricsCollector];
+      [metricsCollector reportMetricsForEvent:@"com.apple.DifferentialPrivacy.usage" withMetrics:v30];
 
       v14 = v42;
     }
@@ -504,12 +504,12 @@ LABEL_29:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (id)generateReportForKeys:(id)a3 storage:(id)a4
+- (id)generateReportForKeys:(id)keys storage:(id)storage
 {
   v79 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  keysCopy = keys;
+  storageCopy = storage;
+  if (!storageCopy)
   {
     v38 = &stru_2839671C8;
     goto LABEL_51;
@@ -526,8 +526,8 @@ LABEL_29:
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v57 = v5;
-  v8 = v5;
+  v57 = keysCopy;
+  v8 = keysCopy;
   v9 = [v8 countByEnumeratingWithState:&v73 objects:v78 count:16];
   if (!v9)
   {
@@ -536,7 +536,7 @@ LABEL_29:
 
   v10 = v9;
   v62 = 40;
-  v63 = v6;
+  v63 = storageCopy;
   v11 = 0x27858A000uLL;
   v12 = *v74;
   v65 = v8;
@@ -558,17 +558,17 @@ LABEL_29:
       v17 = v16;
       if (v16 && [v16 transport] != 4)
       {
-        v18 = [v17 budget];
-        [v18 initializeBudgetRecordFrom:v6];
+        budget = [v17 budget];
+        [budget initializeBudgetRecordFrom:storageCopy];
 
-        v19 = [v17 budget];
-        v20 = [v19 name];
+        budget2 = [v17 budget];
+        name = [budget2 name];
 
-        v21 = [_DPPrivacyBudget balanceForBudgetWithName:v20];
-        v22 = [v68 objectForKeyedSubscript:v20];
-        v23 = [v22 unsignedIntegerValue];
+        v21 = [_DPPrivacyBudget balanceForBudgetWithName:name];
+        v22 = [v68 objectForKeyedSubscript:name];
+        unsignedIntegerValue = [v22 unsignedIntegerValue];
 
-        v24 = v21 - v23;
+        v24 = v21 - unsignedIntegerValue;
         if (v24 < 1)
         {
 LABEL_27:
@@ -579,9 +579,9 @@ LABEL_27:
           goto LABEL_28;
         }
 
-        v25 = [v17 transport];
+        transport = [v17 transport];
         v26 = objc_autoreleasePoolPush();
-        v27 = [objc_opt_class() queryRecordsForKey:v14 storage:v6];
+        v27 = [objc_opt_class() queryRecordsForKey:v14 storage:storageCopy];
         v28 = [objc_opt_class() filterNonConformingRecordsFrom:v27];
         if ([v28 count])
         {
@@ -608,36 +608,36 @@ LABEL_27:
           {
 
             objc_autoreleasePoolPop(v15);
-            v6 = v63;
+            storageCopy = v63;
             goto LABEL_33;
           }
 
           v62 -= v29;
           v30 = [_DPJSONSegment alloc];
-          v31 = [v17 serverAlgorithmString];
-          v32 = [v17 parameterDictionary];
-          v33 = [(_DPJSONSegment *)v30 initWithKey:v14 serverAlgorithmString:v31 parameterDictionary:v32 records:v27];
+          serverAlgorithmString = [v17 serverAlgorithmString];
+          parameterDictionary = [v17 parameterDictionary];
+          v33 = [(_DPJSONSegment *)v30 initWithKey:v14 serverAlgorithmString:serverAlgorithmString parameterDictionary:parameterDictionary records:v27];
 
           if (v33)
           {
             [v61 addObjectsFromArray:v27];
-            if (v25 == 2)
+            if (transport == 2)
             {
               [v58 addObject:v33];
             }
 
             [(_DPReportGenerator *)self reportMetricsForKey:v14 toBeSubmitted:v27 currentDate:v60 storage:v63];
-            if (+[_DPDeviceInfo isInternalBuild]|| v25 != 2)
+            if (+[_DPDeviceInfo isInternalBuild]|| transport != 2)
             {
               [v59 addObject:v33];
             }
 
-            v34 = [v68 objectForKeyedSubscript:v20];
-            v35 = [v34 unsignedIntegerValue];
+            v34 = [v68 objectForKeyedSubscript:name];
+            unsignedIntegerValue2 = [v34 unsignedIntegerValue];
 
             v36 = [v27 count];
-            v37 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v36 + v35];
-            [v68 setObject:v37 forKeyedSubscript:v20];
+            v37 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v36 + unsignedIntegerValue2];
+            [v68 setObject:v37 forKeyedSubscript:name];
           }
         }
 
@@ -650,7 +650,7 @@ LABEL_27:
         v8 = v65;
 LABEL_26:
 
-        v6 = v63;
+        storageCopy = v63;
         goto LABEL_27;
       }
 
@@ -676,7 +676,7 @@ LABEL_33:
   if (![v59 count])
   {
     v38 = 0;
-    v5 = v57;
+    keysCopy = v57;
     v41 = v58;
     goto LABEL_50;
   }
@@ -697,11 +697,11 @@ LABEL_33:
   if (!v38)
   {
 LABEL_48:
-    v5 = v57;
+    keysCopy = v57;
     goto LABEL_50;
   }
 
-  [(_DPReportGenerator *)self markSubmitted:v61 storage:v6];
+  [(_DPReportGenerator *)self markSubmitted:v61 storage:storageCopy];
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
@@ -733,10 +733,10 @@ LABEL_48:
   }
 
   v51 = objc_autoreleasePoolPush();
-  [_DPPrivacyBudget updateAllBudgetsIn:v6];
+  [_DPPrivacyBudget updateAllBudgetsIn:storageCopy];
   objc_autoreleasePoolPop(v51);
   v41 = v58;
-  v5 = v57;
+  keysCopy = v57;
   if ([v58 count])
   {
     v52 = [_DPJSONOutputHelper submissionContentForSegments:v58];
@@ -754,21 +754,21 @@ LABEL_51:
   return v38;
 }
 
-- (void)scheduleMaintenanceWithName:(id)a3 database:(id)a4
+- (void)scheduleMaintenanceWithName:(id)name database:(id)database
 {
-  v6 = a4;
+  databaseCopy = database;
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __59___DPReportGenerator_scheduleMaintenanceWithName_database___block_invoke;
   v14 = &unk_27858AF18;
-  v15 = self;
-  v16 = v6;
-  v7 = v6;
-  v8 = a3;
+  selfCopy = self;
+  v16 = databaseCopy;
+  v7 = databaseCopy;
+  nameCopy = name;
   v9 = MEMORY[0x22AA7A8C0](&v11);
-  v10 = [_DPPeriodicTask taskWithName:v8 period:kSecondsIn18Hours handler:v9 networkingRequired:1, v11, v12, v13, v14, v15];
+  selfCopy = [_DPPeriodicTask taskWithName:nameCopy period:kSecondsIn18Hours handler:v9 networkingRequired:1, v11, v12, v13, v14, selfCopy];
 
-  [_DPPeriodicTaskManager registerTask:v10];
+  [_DPPeriodicTaskManager registerTask:selfCopy];
 }
 
 - (void)generateReportUsing:(const char *)a1 .cold.1(const char *a1, NSObject *a2)

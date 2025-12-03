@@ -1,21 +1,21 @@
 @interface SSDatabaseCacheEntry
 + (id)allPropertyKeys;
-+ (unint64_t)_fetchPersistentID:(id)a3 inDatabase:(id)a4;
-- (SSDatabaseCacheEntry)initWithLookupKey:(id)a3 inDatabase:(id)a4;
-- (id)dataBlob:(BOOL *)a3;
++ (unint64_t)_fetchPersistentID:(id)d inDatabase:(id)database;
+- (SSDatabaseCacheEntry)initWithLookupKey:(id)key inDatabase:(id)database;
+- (id)dataBlob:(BOOL *)blob;
 - (void)dealloc;
-- (void)setPersistentCache:(id)a3;
+- (void)setPersistentCache:(id)cache;
 @end
 
 @implementation SSDatabaseCacheEntry
 
-- (SSDatabaseCacheEntry)initWithLookupKey:(id)a3 inDatabase:(id)a4
+- (SSDatabaseCacheEntry)initWithLookupKey:(id)key inDatabase:(id)database
 {
-  v6 = [objc_opt_class() _fetchPersistentID:a3 inDatabase:a4];
+  v6 = [objc_opt_class() _fetchPersistentID:key inDatabase:database];
   if (v6)
   {
 
-    return [(SSSQLiteEntity *)self initWithPersistentID:v6 inDatabase:a4];
+    return [(SSSQLiteEntity *)self initWithPersistentID:v6 inDatabase:database];
   }
 
   else
@@ -32,17 +32,17 @@
   [(SSDatabaseCacheEntry *)&v3 dealloc];
 }
 
-- (void)setPersistentCache:(id)a3
+- (void)setPersistentCache:(id)cache
 {
   persistentCache = self->_persistentCache;
-  if (persistentCache != a3)
+  if (persistentCache != cache)
   {
 
-    self->_persistentCache = a3;
+    self->_persistentCache = cache;
   }
 }
 
-- (id)dataBlob:(BOOL *)a3
+- (id)dataBlob:(BOOL *)blob
 {
   v13[5] = *MEMORY[0x1E69E9840];
   result = [(SSSQLiteEntity *)self persistentID];
@@ -61,9 +61,9 @@
       v7 = v6;
       if ([v12 longLongValue] <= v6)
       {
-        if (a3)
+        if (blob)
         {
-          *a3 = 1;
+          *blob = 1;
         }
 
         [(SSSQLiteEntity *)self deleteFromDatabase];
@@ -72,10 +72,10 @@
 
       else
       {
-        v8 = [v11 longLongValue];
-        if (a3)
+        longLongValue = [v11 longLongValue];
+        if (blob)
         {
-          *a3 = v8 <= v7;
+          *blob = longLongValue <= v7;
         }
 
         result = v10;
@@ -90,24 +90,24 @@
   return result;
 }
 
-+ (unint64_t)_fetchPersistentID:(id)a3 inDatabase:(id)a4
++ (unint64_t)_fetchPersistentID:(id)d inDatabase:(id)database
 {
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  if ([a3 length])
+  if ([d length])
   {
     v6 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v7 = [v6 initWithFormat:@"SELECT %@ FROM %@ WHERE %@ = ? LIMIT 1;", SSDatabaseCacheEntryPID, objc_msgSend(objc_opt_class(), "databaseTable"), SSDatabaseCacheEntryLookupKey];
+    sSDatabaseCacheEntryLookupKey = [v6 initWithFormat:@"SELECT %@ FROM %@ WHERE %@ = ? LIMIT 1;", SSDatabaseCacheEntryPID, objc_msgSend(objc_opt_class(), "databaseTable"), SSDatabaseCacheEntryLookupKey];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __54__SSDatabaseCacheEntry__fetchPersistentID_inDatabase___block_invoke;
     v10[3] = &unk_1E84B1E40;
-    v10[4] = a3;
-    v10[5] = a4;
+    v10[4] = d;
+    v10[5] = database;
     v10[6] = &v11;
-    [a4 prepareStatementForSQL:v7 cache:1 usingBlock:v10];
+    [database prepareStatementForSQL:sSDatabaseCacheEntryLookupKey cache:1 usingBlock:v10];
   }
 
   v8 = v12[3];

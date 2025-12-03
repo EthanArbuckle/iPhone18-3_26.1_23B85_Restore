@@ -1,18 +1,18 @@
 @interface MPServerObjectDatabaseSINFImportRequest
-- (BOOL)performWithDatabaseOperations:(id)a3 error:(id *)a4;
-- (MPServerObjectDatabaseSINFImportRequest)initWithPayload:(id)a3 requestPayload:(id)a4 hashedPersonID:(id)a5;
+- (BOOL)performWithDatabaseOperations:(id)operations error:(id *)error;
+- (MPServerObjectDatabaseSINFImportRequest)initWithPayload:(id)payload requestPayload:(id)requestPayload hashedPersonID:(id)d;
 @end
 
 @implementation MPServerObjectDatabaseSINFImportRequest
 
-- (BOOL)performWithDatabaseOperations:(id)a3 error:(id *)a4
+- (BOOL)performWithDatabaseOperations:(id)operations error:(id *)error
 {
   v41 = *MEMORY[0x1E69E9840];
-  v30 = a3;
-  v24 = [(MPServerObjectDatabaseImportRequest *)self payload];
+  operationsCopy = operations;
+  payload = [(MPServerObjectDatabaseImportRequest *)self payload];
   v29 = [&stru_1F14B8848 dataUsingEncoding:4];
   v5 = [self->_requestPayload objectForKeyedSubscript:@"adamIds"];
-  v28 = self;
+  selfCopy = self;
   v23 = [self->_requestPayload objectForKeyedSubscript:@"flavors"];
   v35 = 0u;
   v36 = 0u;
@@ -36,7 +36,7 @@
 
         v26 = v7;
         v8 = *(*(&v35 + 1) + 8 * v7);
-        v9 = [v24 objectForKeyedSubscript:v8];
+        v9 = [payload objectForKeyedSubscript:v8];
         v31 = 0u;
         v32 = 0u;
         v33 = 0u;
@@ -92,7 +92,7 @@
                 v19 = 0;
               }
 
-              v6 &= [v30 importAssetSinf:v15 type:2 forIdentifier:v8 hashedPersonID:v28->_hashedPersonID flavor:v19 sinfPayload:0];
+              v6 &= [operationsCopy importAssetSinf:v15 type:2 forIdentifier:v8 hashedPersonID:selfCopy->_hashedPersonID flavor:v19 sinfPayload:0];
             }
 
             v11 = [v27 countByEnumeratingWithState:&v31 objects:v39 count:16];
@@ -119,18 +119,18 @@
   return v6 & 1;
 }
 
-- (MPServerObjectDatabaseSINFImportRequest)initWithPayload:(id)a3 requestPayload:(id)a4 hashedPersonID:(id)a5
+- (MPServerObjectDatabaseSINFImportRequest)initWithPayload:(id)payload requestPayload:(id)requestPayload hashedPersonID:(id)d
 {
-  v9 = a4;
-  v10 = a5;
+  requestPayloadCopy = requestPayload;
+  dCopy = d;
   v14.receiver = self;
   v14.super_class = MPServerObjectDatabaseSINFImportRequest;
-  v11 = [(MPServerObjectDatabaseImportRequest *)&v14 _initWithPayload:a3];
+  v11 = [(MPServerObjectDatabaseImportRequest *)&v14 _initWithPayload:payload];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(v11 + 5, a4);
-    objc_storeStrong(&v12->_hashedPersonID, a5);
+    objc_storeStrong(v11 + 5, requestPayload);
+    objc_storeStrong(&v12->_hashedPersonID, d);
   }
 
   return v12;

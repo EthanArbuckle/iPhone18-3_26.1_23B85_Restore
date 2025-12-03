@@ -1,30 +1,30 @@
 @interface WFCalendarSubstitutableState
-+ (id)serializedRepresentationFromValue:(id)a3;
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
-- (WFCalendarSubstitutableState)initWithCalendar:(id)a3;
-- (WFCalendarSubstitutableState)initWithRemindersList:(id)a3;
++ (id)serializedRepresentationFromValue:(id)value;
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
+- (WFCalendarSubstitutableState)initWithCalendar:(id)calendar;
+- (WFCalendarSubstitutableState)initWithRemindersList:(id)list;
 - (id)legacySerializedRepresentation;
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5;
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler;
 @end
 
 @implementation WFCalendarSubstitutableState
 
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler
 {
-  v8 = a3;
-  v9 = a5;
+  contextCopy = context;
+  valueHandlerCopy = valueHandler;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __89__WFCalendarSubstitutableState_processWithContext_userInputRequiredHandler_valueHandler___block_invoke;
   v13[3] = &unk_1E837DA10;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
+  v14 = contextCopy;
+  v15 = valueHandlerCopy;
   v12.receiver = self;
   v12.super_class = WFCalendarSubstitutableState;
-  v10 = v9;
-  v11 = v8;
-  [(WFVariableSubstitutableParameterState *)&v12 processWithContext:v11 userInputRequiredHandler:a4 valueHandler:v13];
+  v10 = valueHandlerCopy;
+  v11 = contextCopy;
+  [(WFVariableSubstitutableParameterState *)&v12 processWithContext:v11 userInputRequiredHandler:handler valueHandler:v13];
 }
 
 void __89__WFCalendarSubstitutableState_processWithContext_userInputRequiredHandler_valueHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -70,15 +70,15 @@ void __89__WFCalendarSubstitutableState_processWithContext_userInputRequiredHand
   }
 }
 
-- (WFCalendarSubstitutableState)initWithRemindersList:(id)a3
+- (WFCalendarSubstitutableState)initWithRemindersList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v5 = [WFEKCalendarDescriptor alloc];
-  v6 = [v4 name];
-  v7 = [v4 objectID];
+  name = [listCopy name];
+  objectID = [listCopy objectID];
 
-  v8 = [v7 stringRepresentation];
-  v9 = [(WFEKCalendarDescriptor *)v5 initWithCalendarTitle:v6 identifier:v8 RGBAValue:0];
+  stringRepresentation = [objectID stringRepresentation];
+  v9 = [(WFEKCalendarDescriptor *)v5 initWithCalendarTitle:name identifier:stringRepresentation RGBAValue:0];
 
   v12.receiver = self;
   v12.super_class = WFCalendarSubstitutableState;
@@ -87,19 +87,19 @@ void __89__WFCalendarSubstitutableState_processWithContext_userInputRequiredHand
   return v10;
 }
 
-- (WFCalendarSubstitutableState)initWithCalendar:(id)a3
+- (WFCalendarSubstitutableState)initWithCalendar:(id)calendar
 {
-  v4 = a3;
+  calendarCopy = calendar;
   v5 = [WFEKCalendarDescriptor alloc];
-  v6 = [v4 title];
-  v7 = [v4 calendarIdentifier];
+  title = [calendarCopy title];
+  calendarIdentifier = [calendarCopy calendarIdentifier];
   v8 = MEMORY[0x1E696AD98];
   v9 = MEMORY[0x1E69E09E0];
-  v10 = [v4 CGColor];
+  cGColor = [calendarCopy CGColor];
 
-  v11 = [v9 colorWithCGColor:v10];
+  v11 = [v9 colorWithCGColor:cGColor];
   v12 = [v8 numberWithUnsignedInt:{objc_msgSend(v11, "RGBAValue")}];
-  v13 = [(WFEKCalendarDescriptor *)v5 initWithCalendarTitle:v6 identifier:v7 RGBAValue:v12];
+  v13 = [(WFEKCalendarDescriptor *)v5 initWithCalendarTitle:title identifier:calendarIdentifier RGBAValue:v12];
 
   v16.receiver = self;
   v16.super_class = WFCalendarSubstitutableState;
@@ -110,57 +110,57 @@ void __89__WFCalendarSubstitutableState_processWithContext_userInputRequiredHand
 
 - (id)legacySerializedRepresentation
 {
-  v3 = [(WFVariableSubstitutableParameterState *)self value];
-  if ([v3 allCalendars])
+  value = [(WFVariableSubstitutableParameterState *)self value];
+  if ([value allCalendars])
   {
-    v4 = &stru_1F4A1C408;
+    calendarTitle = &stru_1F4A1C408;
   }
 
   else
   {
-    v5 = [(WFVariableSubstitutableParameterState *)self value];
-    v4 = [v5 calendarTitle];
+    value2 = [(WFVariableSubstitutableParameterState *)self value];
+    calendarTitle = [value2 calendarTitle];
   }
 
-  return v4;
+  return calendarTitle;
 }
 
-+ (id)serializedRepresentationFromValue:(id)a3
++ (id)serializedRepresentationFromValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"WFCalendarSubstitutableState.m" lineNumber:211 description:{@"Invalid parameter not satisfying: %@", @"[value isKindOfClass:[WFEKCalendarDescriptor class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFCalendarSubstitutableState.m" lineNumber:211 description:{@"Invalid parameter not satisfying: %@", @"[value isKindOfClass:[WFEKCalendarDescriptor class]]"}];
   }
 
   v6 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:4];
-  v7 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v5, "allCalendars")}];
+  v7 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(valueCopy, "allCalendars")}];
   [v6 setObject:v7 forKeyedSubscript:@"IsAllCalendar"];
 
-  if (([v5 allCalendars] & 1) == 0)
+  if (([valueCopy allCalendars] & 1) == 0)
   {
-    v8 = [v5 calendarTitle];
-    [v6 if_setObjectIfNonNil:v8 forKey:@"Title"];
+    calendarTitle = [valueCopy calendarTitle];
+    [v6 if_setObjectIfNonNil:calendarTitle forKey:@"Title"];
 
-    v9 = [v5 calendarIdentifier];
-    [v6 if_setObjectIfNonNil:v9 forKey:@"Identifier"];
+    calendarIdentifier = [valueCopy calendarIdentifier];
+    [v6 if_setObjectIfNonNil:calendarIdentifier forKey:@"Identifier"];
 
-    v10 = [v5 calendarRGBAValue];
-    [v6 if_setObjectIfNonNil:v10 forKey:@"RGBAValue"];
+    calendarRGBAValue = [valueCopy calendarRGBAValue];
+    [v6 if_setObjectIfNonNil:calendarRGBAValue forKey:@"RGBAValue"];
   }
 
   return v6;
 }
 
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
   v41 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v7;
+  representationCopy = representation;
+  providerCopy = provider;
+  parameterCopy = parameter;
+  v10 = representationCopy;
   if (v10)
   {
     objc_opt_class();
@@ -188,10 +188,10 @@ void __89__WFCalendarSubstitutableState_processWithContext_userInputRequiredHand
 
       v20 = v12;
 
-      v21 = [v20 BOOLValue];
-      if (v21)
+      bOOLValue = [v20 BOOLValue];
+      if (bOOLValue)
       {
-        v19 = [[WFEKCalendarDescriptor alloc] initWithAllCalendars];
+        initWithAllCalendars = [[WFEKCalendarDescriptor alloc] initWithAllCalendars];
       }
 
       else
@@ -262,7 +262,7 @@ void __89__WFCalendarSubstitutableState_processWithContext_userInputRequiredHand
 
         v30 = v29;
 
-        v19 = [[WFEKCalendarDescriptor alloc] initWithCalendarTitle:v24 identifier:v27 RGBAValue:v30];
+        initWithAllCalendars = [[WFEKCalendarDescriptor alloc] initWithCalendarTitle:v24 identifier:v27 RGBAValue:v30];
       }
 
       v15 = v10;
@@ -299,24 +299,24 @@ void __89__WFCalendarSubstitutableState_processWithContext_userInputRequiredHand
 
   if ([v15 isEqualToString:&stru_1F4A1C408])
   {
-    v18 = [[WFEKCalendarDescriptor alloc] initWithAllCalendars];
+    initWithAllCalendars2 = [[WFEKCalendarDescriptor alloc] initWithAllCalendars];
 LABEL_17:
-    v19 = v18;
+    initWithAllCalendars = initWithAllCalendars2;
     goto LABEL_39;
   }
 
   if (v15)
   {
-    v18 = [[WFEKCalendarDescriptor alloc] initWithCalendarTitle:v15 identifier:0 RGBAValue:0];
+    initWithAllCalendars2 = [[WFEKCalendarDescriptor alloc] initWithCalendarTitle:v15 identifier:0 RGBAValue:0];
     goto LABEL_17;
   }
 
-  v19 = 0;
+  initWithAllCalendars = 0;
 LABEL_39:
 
   v31 = *MEMORY[0x1E69E9840];
 
-  return v19;
+  return initWithAllCalendars;
 }
 
 @end

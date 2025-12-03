@@ -1,7 +1,7 @@
 @interface BonjourBrowse_Entity
-- (BOOL)isEqual:(id)a3;
-- (BonjourBrowse_Entity)initWithBrowseResult:(id)a3;
-- (BonjourBrowse_Entity)initWithEndpoint:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BonjourBrowse_Entity)initWithBrowseResult:(id)result;
+- (BonjourBrowse_Entity)initWithEndpoint:(id)endpoint;
 - (id)bonjourName;
 - (id)description;
 - (id)displayName;
@@ -14,34 +14,34 @@
 
 @implementation BonjourBrowse_Entity
 
-- (BonjourBrowse_Entity)initWithBrowseResult:(id)a3
+- (BonjourBrowse_Entity)initWithBrowseResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   v10.receiver = self;
   v10.super_class = BonjourBrowse_Entity;
   v6 = [(BonjourBrowse_Entity *)&v10 init];
   if (v6)
   {
-    v7 = nw_browse_result_copy_endpoint(v5);
+    v7 = nw_browse_result_copy_endpoint(resultCopy);
     endpoint = v6->_endpoint;
     v6->_endpoint = v7;
 
-    objc_storeStrong(&v6->_browseResult, a3);
+    objc_storeStrong(&v6->_browseResult, result);
   }
 
   return v6;
 }
 
-- (BonjourBrowse_Entity)initWithEndpoint:(id)a3
+- (BonjourBrowse_Entity)initWithEndpoint:(id)endpoint
 {
-  v5 = a3;
+  endpointCopy = endpoint;
   v10.receiver = self;
   v10.super_class = BonjourBrowse_Entity;
   v6 = [(BonjourBrowse_Entity *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_endpoint, a3);
+    objc_storeStrong(&v6->_endpoint, endpoint);
     browseResult = v7->_browseResult;
     v7->_browseResult = 0;
   }
@@ -51,11 +51,11 @@
 
 - (id)description
 {
-  v3 = [(BonjourBrowse_Entity *)self nw_txt_record];
-  v4 = v3;
-  if (v3)
+  nw_txt_record = [(BonjourBrowse_Entity *)self nw_txt_record];
+  v4 = nw_txt_record;
+  if (nw_txt_record)
   {
-    v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"(%d keys in txt record"), nw_txt_record_get_key_count(v3);
+    v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"(%d keys in txt record"), nw_txt_record_get_key_count(nw_txt_record);
   }
 
   else
@@ -68,8 +68,8 @@
   v12.receiver = self;
   v12.super_class = BonjourBrowse_Entity;
   v8 = [(BonjourBrowse_Entity *)&v12 description];
-  v9 = [(BonjourBrowse_Entity *)self displayName];
-  v10 = [NSString stringWithFormat:@"%@ { %@ / %s / %s (%@) }", v8, v9, bonjour_service_type, bonjour_service_domain, v5];
+  displayName = [(BonjourBrowse_Entity *)self displayName];
+  v10 = [NSString stringWithFormat:@"%@ { %@ / %s / %s (%@) }", v8, displayName, bonjour_service_type, bonjour_service_domain, v5];
 
   return v10;
 }
@@ -107,8 +107,8 @@
 {
   v3 = [PKPrinterBonjourEndpoint alloc];
   endpoint = self->_endpoint;
-  v5 = [(BonjourBrowse_Entity *)self serviceType];
-  v6 = [v3 initWithEndpoint:endpoint provenance:4 provenanceIdentifier:v5];
+  serviceType = [(BonjourBrowse_Entity *)self serviceType];
+  v6 = [v3 initWithEndpoint:endpoint provenance:4 provenanceIdentifier:serviceType];
 
   return v6;
 }
@@ -122,22 +122,22 @@
 
 - (id)txtRecordDictionary
 {
-  v2 = [(BonjourBrowse_Entity *)self nw_txt_record];
-  v3 = [PKTXTRecord txtRecordDictionaryForTxtRecord:v2];
+  nw_txt_record = [(BonjourBrowse_Entity *)self nw_txt_record];
+  v3 = [PKTXTRecord txtRecordDictionaryForTxtRecord:nw_txt_record];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BonjourBrowse_Entity *)self bonjourName];
-    v7 = [v5 bonjourName];
-    v8 = [v6 isEqual:v7];
+    v5 = equalCopy;
+    bonjourName = [(BonjourBrowse_Entity *)self bonjourName];
+    bonjourName2 = [v5 bonjourName];
+    v8 = [bonjourName isEqual:bonjourName2];
   }
 
   else
@@ -150,8 +150,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(BonjourBrowse_Entity *)self bonjourName];
-  v3 = [v2 hash];
+  bonjourName = [(BonjourBrowse_Entity *)self bonjourName];
+  v3 = [bonjourName hash];
 
   return v3;
 }

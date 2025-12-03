@@ -9,18 +9,18 @@
 {
   v4.receiver = self;
   v4.super_class = TUActivity;
-  v2 = [(UIActivity *)&v4 _systemImageName];
+  _systemImageName = [(UIActivity *)&v4 _systemImageName];
 
-  return v2;
+  return _systemImageName;
 }
 
 - (id)_bundleIdentifierForActivityImageCreation
 {
   v4.receiver = self;
   v4.super_class = TUActivity;
-  v2 = [(UIActivity *)&v4 _bundleIdentifierForActivityImageCreation];
+  _bundleIdentifierForActivityImageCreation = [(UIActivity *)&v4 _bundleIdentifierForActivityImageCreation];
 
-  return v2;
+  return _bundleIdentifierForActivityImageCreation;
 }
 
 @end

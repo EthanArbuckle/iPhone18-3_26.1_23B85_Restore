@@ -1,15 +1,15 @@
 @interface NotificationSourceMonitorLSObserver
 - (_TtC21UserNotificationsCore35NotificationSourceMonitorLSObserver)init;
-- (void)cache:(id)a3 willEvictObject:(id)a4;
+- (void)cache:(id)cache willEvictObject:(id)object;
 @end
 
 @implementation NotificationSourceMonitorLSObserver
 
-- (void)cache:(id)a3 willEvictObject:(id)a4
+- (void)cache:(id)cache willEvictObject:(id)object
 {
-  v5 = a3;
+  cacheCopy = cache;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   sub_1DA941154();
   swift_unknownObjectRelease();
   sub_1DA8C0530(v7);

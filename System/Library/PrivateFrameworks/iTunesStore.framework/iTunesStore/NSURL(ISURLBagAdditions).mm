@@ -10,7 +10,7 @@
   v3 = +[ISURLBagCache sharedCache];
   v4 = [v3 URLBagForContext:v2];
 
-  v5 = [v4 sanitizedURLForURL:a1];
+  v5 = [v4 sanitizedURLForURL:self];
 
   return v5;
 }

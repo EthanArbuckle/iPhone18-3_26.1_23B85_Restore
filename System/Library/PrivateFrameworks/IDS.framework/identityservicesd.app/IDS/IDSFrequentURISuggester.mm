@@ -1,8 +1,8 @@
 @interface IDSFrequentURISuggester
-- (BOOL)checkContactsForDestination:(id)a3;
+- (BOOL)checkContactsForDestination:(id)destination;
 - (IDSFrequentURISuggester)init;
-- (id)matchingContactsForURI:(id)a3;
-- (id)predicateForURI:(id)a3;
+- (id)matchingContactsForURI:(id)i;
+- (id)predicateForURI:(id)i;
 @end
 
 @implementation IDSFrequentURISuggester
@@ -14,30 +14,30 @@
   return [(IDSFrequentURISuggester *)&v3 init];
 }
 
-- (id)predicateForURI:(id)a3
+- (id)predicateForURI:(id)i
 {
-  v3 = [a3 _stripPotentialTokenURIWithToken:0];
-  v4 = [v3 _FZIDType];
+  v3 = [i _stripPotentialTokenURIWithToken:0];
+  _FZIDType = [v3 _FZIDType];
   v5 = IMWeakLinkClass();
-  if (v4)
+  if (_FZIDType)
   {
     v6 = 0;
-    if (v4 != 1)
+    if (_FZIDType != 1)
     {
       goto LABEL_6;
     }
 
-    v7 = [v3 _stripFZIDPrefix];
-    v8 = [v5 predicateForContactsMatchingEmailAddress:v7];
+    _stripFZIDPrefix = [v3 _stripFZIDPrefix];
+    v8 = [v5 predicateForContactsMatchingEmailAddress:_stripFZIDPrefix];
   }
 
   else
   {
     v9 = IMWeakLinkClass();
-    v10 = [v3 _stripFZIDPrefix];
-    v7 = [v9 phoneNumberWithStringValue:v10];
+    _stripFZIDPrefix2 = [v3 _stripFZIDPrefix];
+    _stripFZIDPrefix = [v9 phoneNumberWithStringValue:_stripFZIDPrefix2];
 
-    v8 = [v5 predicateForContactsMatchingPhoneNumber:v7];
+    v8 = [v5 predicateForContactsMatchingPhoneNumber:_stripFZIDPrefix];
   }
 
   v6 = v8;
@@ -47,10 +47,10 @@ LABEL_6:
   return v6;
 }
 
-- (id)matchingContactsForURI:(id)a3
+- (id)matchingContactsForURI:(id)i
 {
-  v4 = a3;
-  v5 = [(IDSFrequentURISuggester *)self predicateForURI:v4];
+  iCopy = i;
+  v5 = [(IDSFrequentURISuggester *)self predicateForURI:iCopy];
   if (v5)
   {
     v14 = 0;
@@ -98,14 +98,14 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)checkContactsForDestination:(id)a3
+- (BOOL)checkContactsForDestination:(id)destination
 {
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [a3 destinationURIs];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  destinationURIs = [destination destinationURIs];
+  v5 = [destinationURIs countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -116,7 +116,7 @@ LABEL_6:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(destinationURIs);
         }
 
         v9 = [(IDSFrequentURISuggester *)self matchingContactsForURI:*(*(&v13 + 1) + 8 * i)];
@@ -129,7 +129,7 @@ LABEL_6:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [destinationURIs countByEnumeratingWithState:&v13 objects:v17 count:16];
       v11 = 1;
       if (v6)
       {

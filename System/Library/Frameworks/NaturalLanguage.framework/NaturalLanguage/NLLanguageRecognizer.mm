@@ -1,24 +1,24 @@
 @interface NLLanguageRecognizer
-+ (BOOL)_candidate:(id)a3 matchesDominantLanguage:(id)a4;
-+ (BOOL)_isString:(id)a3 words:(id)a4 plausiblyInLanguage:(id)a5 increasedThreshold:(BOOL)a6;
-+ (BOOL)_isWord:(id)a3 acceptableInLexicon:(id)a4;
++ (BOOL)_candidate:(id)_candidate matchesDominantLanguage:(id)language;
++ (BOOL)_isString:(id)string words:(id)words plausiblyInLanguage:(id)language increasedThreshold:(BOOL)threshold;
++ (BOOL)_isWord:(id)word acceptableInLexicon:(id)lexicon;
 + (NLLanguage)dominantLanguageForString:(NSString *)string;
-+ (id)_filteredLexiconForLanguage:(id)a3 waitUntilLoaded:(BOOL)a4;
-+ (id)_lexiconForLanguage:(id)a3 waitUntilLoaded:(BOOL)a4;
-+ (id)_loadLexiconForLanguage:(id)a3;
-+ (id)_orderedCandidateLanguagesForCandidateLanguages:(id)a3 preferredLanguages:(id)a4;
-+ (id)arabicCharacterContent:(id)a3;
-+ (id)chineseCharacterContent:(id)a3;
-+ (id)greekCharacterContent:(id)a3;
-+ (id)hebrewCharacterContent:(id)a3;
-+ (id)japaneseCharacterContent:(id)a3;
-+ (id)koreanCharacterContent:(id)a3;
-+ (id)mostAppropriateLanguageForString:(id)a3 candidateLanguages:(id)a4 preferredLanguages:(id)a5;
-+ (id)specialCharacterContent:(id)a3;
-+ (id)thaiCharacterContent:(id)a3;
++ (id)_filteredLexiconForLanguage:(id)language waitUntilLoaded:(BOOL)loaded;
++ (id)_lexiconForLanguage:(id)language waitUntilLoaded:(BOOL)loaded;
++ (id)_loadLexiconForLanguage:(id)language;
++ (id)_orderedCandidateLanguagesForCandidateLanguages:(id)languages preferredLanguages:(id)preferredLanguages;
++ (id)arabicCharacterContent:(id)content;
++ (id)chineseCharacterContent:(id)content;
++ (id)greekCharacterContent:(id)content;
++ (id)hebrewCharacterContent:(id)content;
++ (id)japaneseCharacterContent:(id)content;
++ (id)koreanCharacterContent:(id)content;
++ (id)mostAppropriateLanguageForString:(id)string candidateLanguages:(id)languages preferredLanguages:(id)preferredLanguages;
++ (id)specialCharacterContent:(id)content;
++ (id)thaiCharacterContent:(id)content;
 + (void)releaseDictionaries;
-+ (void)releaseDictionariesExceptForLanguages:(id)a3;
-+ (void)releaseDictionariesWithPreferredLanguages:(id)a3;
++ (void)releaseDictionariesExceptForLanguages:(id)languages;
++ (void)releaseDictionariesWithPreferredLanguages:(id)languages;
 - (NLLanguage)dominantLanguage;
 - (NLLanguageRecognizer)init;
 - (NSArray)languageConstraints;
@@ -82,7 +82,7 @@
 
 - (NSDictionary)languageHypothesesWithMaximum:(NSUInteger)maxHypotheses
 {
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (maxHypotheses >= 0x45)
   {
     v6 = 69;
@@ -124,7 +124,7 @@
       if (v13)
       {
         v14 = [MEMORY[0x1E696AD98] numberWithDouble:*v12];
-        [v5 setObject:v14 forKey:v13];
+        [dictionary setObject:v14 forKey:v13];
       }
 
       v12 += 2;
@@ -137,7 +137,7 @@
   free(v8);
 LABEL_15:
 
-  return v5;
+  return dictionary;
 }
 
 - (void)processString:(NSString *)string
@@ -162,8 +162,8 @@ LABEL_15:
 - (void)setLanguageHints:(NSDictionary *)languageHints
 {
   v4 = languageHints;
-  v21 = [(NSDictionary *)v4 allKeys];
-  v5 = [v21 count];
+  allKeys = [(NSDictionary *)v4 allKeys];
+  v5 = [allKeys count];
   if (v5 >= 0x45)
   {
     v6 = 69;
@@ -180,7 +180,7 @@ LABEL_15:
     v8 = 0;
     do
     {
-      v9 = [v21 objectAtIndex:v8];
+      v9 = [allKeys objectAtIndex:v8];
       v10 = [(NSDictionary *)v4 objectForKey:v9];
       [v10 doubleValue];
       v12 = v11;
@@ -292,10 +292,10 @@ LABEL_15:
   self->_languageConstraints = v4;
 }
 
-+ (void)releaseDictionariesExceptForLanguages:(id)a3
++ (void)releaseDictionariesExceptForLanguages:(id)languages
 {
-  v3 = a3;
-  v4 = v3;
+  languagesCopy = languages;
+  v4 = languagesCopy;
   v5 = _lexiconDictionaryQueue;
   if (_lexiconDictionary)
   {
@@ -313,7 +313,7 @@ LABEL_15:
     block[1] = 3221225472;
     block[2] = __75__NLLanguageRecognizer_Preferences__releaseDictionariesExceptForLanguages___block_invoke;
     block[3] = &unk_1E7628FC8;
-    v8 = v3;
+    v8 = languagesCopy;
     dispatch_sync(v5, block);
   }
 }
@@ -361,14 +361,14 @@ void __75__NLLanguageRecognizer_Preferences__releaseDictionariesExceptForLanguag
   v10 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)releaseDictionariesWithPreferredLanguages:(id)a3
++ (void)releaseDictionariesWithPreferredLanguages:(id)languages
 {
   v54 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = [MEMORY[0x1E695DF70] array];
-  v35 = v3;
-  v6 = [MEMORY[0x1E695DF70] arrayWithArray:v3];
+  languagesCopy = languages;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  v35 = languagesCopy;
+  v6 = [MEMORY[0x1E695DF70] arrayWithArray:languagesCopy];
   v7 = _lexiconDictionaryQueue;
   if (_lexiconDictionary)
   {
@@ -386,28 +386,28 @@ void __75__NLLanguageRecognizer_Preferences__releaseDictionariesExceptForLanguag
     block[1] = 3221225472;
     block[2] = __79__NLLanguageRecognizer_Preferences__releaseDictionariesWithPreferredLanguages___block_invoke;
     block[3] = &unk_1E7628FC8;
-    v51 = v5;
+    v51 = array2;
     dispatch_sync(v7, block);
   }
 
-  if ([v4 count] <= 2)
+  if ([array count] <= 2)
   {
     v37 = v6;
-    v38 = v5;
-    v36 = v4;
+    v38 = array2;
+    v36 = array;
     do
     {
-      if (![v6 count] || !objc_msgSend(v5, "count"))
+      if (![v6 count] || !objc_msgSend(array2, "count"))
       {
         break;
       }
 
-      v9 = [MEMORY[0x1E695DF58] mostPreferredLanguageOf:v5 withPreferredLanguages:v6 forUsage:2 options:0];
+      v9 = [MEMORY[0x1E695DF58] mostPreferredLanguageOf:array2 withPreferredLanguages:v6 forUsage:2 options:0];
       v40 = v9;
       if (v9)
       {
         v10 = v9;
-        if (([v4 containsObject:v9] & 1) == 0)
+        if (([array containsObject:v9] & 1) == 0)
         {
           v11 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v10];
           v46 = 0u;
@@ -430,13 +430,13 @@ void __75__NLLanguageRecognizer_Preferences__releaseDictionariesExceptForLanguag
                 }
 
                 v17 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:*(*(&v46 + 1) + 8 * i)];
-                v18 = [v11 languageCode];
-                v19 = [v17 languageCode];
-                v20 = [v18 isEqualToString:v19];
+                languageCode = [v11 languageCode];
+                languageCode2 = [v17 languageCode];
+                v20 = [languageCode isEqualToString:languageCode2];
 
                 if (v20)
                 {
-                  [v4 addObject:v40];
+                  [array addObject:v40];
 
                   goto LABEL_22;
                 }
@@ -455,18 +455,18 @@ void __75__NLLanguageRecognizer_Preferences__releaseDictionariesExceptForLanguag
 LABEL_22:
 
           v6 = v37;
-          v5 = v38;
+          array2 = v38;
         }
       }
 
-      v39 = [v6 firstObject];
+      firstObject = [v6 firstObject];
       v21 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:?];
-      v41 = [MEMORY[0x1E695DF70] array];
+      array3 = [MEMORY[0x1E695DF70] array];
       v42 = 0u;
       v43 = 0u;
       v44 = 0u;
       v45 = 0u;
-      v22 = v5;
+      v22 = array2;
       v23 = [v22 countByEnumeratingWithState:&v42 objects:v52 count:16];
       if (v23)
       {
@@ -483,13 +483,13 @@ LABEL_22:
 
             v27 = *(*(&v42 + 1) + 8 * j);
             v28 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v27];
-            v29 = [v28 languageCode];
-            v30 = [v21 languageCode];
-            v31 = [v29 isEqualToString:v30];
+            languageCode3 = [v28 languageCode];
+            languageCode4 = [v21 languageCode];
+            v31 = [languageCode3 isEqualToString:languageCode4];
 
             if (v31)
             {
-              [v41 addObject:v27];
+              [array3 addObject:v27];
             }
           }
 
@@ -499,18 +499,18 @@ LABEL_22:
         while (v24);
       }
 
-      [v22 removeObjectsInArray:v41];
+      [v22 removeObjectsInArray:array3];
       v6 = v37;
       [v37 removeObjectAtIndex:0];
 
-      v4 = v36;
-      v5 = v38;
+      array = v36;
+      array2 = v38;
     }
 
     while ([v36 count] < 3);
   }
 
-  [v34 releaseDictionariesExceptForLanguages:v4];
+  [v34 releaseDictionariesExceptForLanguages:array];
 
   v32 = *MEMORY[0x1E69E9840];
 }
@@ -524,13 +524,13 @@ void __79__NLLanguageRecognizer_Preferences__releaseDictionariesWithPreferredLan
 
 + (void)releaseDictionaries
 {
-  v3 = [MEMORY[0x1E695DF58] preferredLanguages];
-  [a1 releaseDictionariesWithPreferredLanguages:v3];
+  preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+  [self releaseDictionariesWithPreferredLanguages:preferredLanguages];
 }
 
-+ (id)_loadLexiconForLanguage:(id)a3
++ (id)_loadLexiconForLanguage:(id)language
 {
-  v3 = a3;
+  languageCopy = language;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -543,7 +543,7 @@ void __79__NLLanguageRecognizer_Preferences__releaseDictionariesWithPreferredLan
   block[2] = __61__NLLanguageRecognizer_Preferences___loadLexiconForLanguage___block_invoke;
   block[3] = &unk_1E7629B48;
   v20 = &v21;
-  v5 = v3;
+  v5 = languageCopy;
   v19 = v5;
   dispatch_sync(v4, block);
   v6 = v22[5];
@@ -598,10 +598,10 @@ void __61__NLLanguageRecognizer_Preferences___loadLexiconForLanguage___block_inv
   }
 }
 
-+ (id)_lexiconForLanguage:(id)a3 waitUntilLoaded:(BOOL)a4
++ (id)_lexiconForLanguage:(id)language waitUntilLoaded:(BOOL)loaded
 {
-  v4 = a4;
-  v6 = a3;
+  loadedCopy = loaded;
+  languageCopy = language;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -619,16 +619,16 @@ void __61__NLLanguageRecognizer_Preferences___loadLexiconForLanguage___block_inv
   block[2] = __73__NLLanguageRecognizer_Preferences___lexiconForLanguage_waitUntilLoaded___block_invoke_2;
   block[3] = &unk_1E7629B48;
   v22 = &v23;
-  v8 = v6;
+  v8 = languageCopy;
   v21 = v8;
   dispatch_sync(v7, block);
   v9 = v24[5];
-  if (v9 || !v4)
+  if (v9 || !loadedCopy)
   {
     if (v9)
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      v13 = [v9 isEqual:v12];
+      null = [MEMORY[0x1E695DFB0] null];
+      v13 = [v9 isEqual:null];
 
       if (!v13)
       {
@@ -646,7 +646,7 @@ void __61__NLLanguageRecognizer_Preferences___loadLexiconForLanguage___block_inv
       v17[1] = 3221225472;
       v17[2] = __73__NLLanguageRecognizer_Preferences___lexiconForLanguage_waitUntilLoaded___block_invoke_3;
       v17[3] = &unk_1E7629B70;
-      v19 = a1;
+      selfCopy = self;
       v18 = v8;
       dispatch_async(v14, v17);
       v11 = v18;
@@ -655,7 +655,7 @@ void __61__NLLanguageRecognizer_Preferences___loadLexiconForLanguage___block_inv
 
   else
   {
-    v10 = [a1 _loadLexiconForLanguage:v8];
+    v10 = [self _loadLexiconForLanguage:v8];
     v11 = v24[5];
     v24[5] = v10;
   }
@@ -711,51 +711,51 @@ void __73__NLLanguageRecognizer_Preferences___lexiconForLanguage_waitUntilLoaded
   objc_autoreleasePoolPop(v2);
 }
 
-+ (id)_filteredLexiconForLanguage:(id)a3 waitUntilLoaded:(BOOL)a4
++ (id)_filteredLexiconForLanguage:(id)language waitUntilLoaded:(BOOL)loaded
 {
-  v23 = a4;
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v4];
-  v6 = [v5 languageCode];
-  v7 = [v6 isEqualToString:@"zh"];
+  loadedCopy = loaded;
+  languageCopy = language;
+  v5 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:languageCopy];
+  languageCode = [v5 languageCode];
+  v7 = [languageCode isEqualToString:@"zh"];
 
-  v8 = [v5 languageCode];
-  v9 = [v8 isEqualToString:@"ja"];
+  languageCode2 = [v5 languageCode];
+  v9 = [languageCode2 isEqualToString:@"ja"];
 
-  v10 = [v5 languageCode];
-  v11 = [v10 isEqualToString:@"ko"];
+  languageCode3 = [v5 languageCode];
+  v11 = [languageCode3 isEqualToString:@"ko"];
 
-  v12 = [v5 languageCode];
-  v13 = [v12 isEqualToString:@"ar"];
+  languageCode4 = [v5 languageCode];
+  v13 = [languageCode4 isEqualToString:@"ar"];
 
-  v14 = [v5 languageCode];
-  v15 = [v14 isEqualToString:@"el"];
+  languageCode5 = [v5 languageCode];
+  v15 = [languageCode5 isEqualToString:@"el"];
 
-  v16 = [v5 languageCode];
-  v17 = [v16 isEqualToString:@"he"];
+  languageCode6 = [v5 languageCode];
+  v17 = [languageCode6 isEqualToString:@"he"];
 
-  v18 = [v5 languageCode];
-  v19 = [v18 isEqualToString:@"th"];
+  languageCode7 = [v5 languageCode];
+  v19 = [languageCode7 isEqualToString:@"th"];
 
   v20 = 0;
   if ((v7 & 1) == 0 && (v9 & 1) == 0 && (v11 & 1) == 0 && (v13 & 1) == 0 && (v15 & 1) == 0 && (v17 & 1) == 0 && (v19 & 1) == 0)
   {
-    v20 = [a1 _lexiconForLanguage:v4 waitUntilLoaded:v23];
+    v20 = [self _lexiconForLanguage:languageCopy waitUntilLoaded:loadedCopy];
   }
 
   return v20;
 }
 
-+ (id)specialCharacterContent:(id)a3
++ (id)specialCharacterContent:(id)content
 {
   v3 = specialCharacterContent__onceToken;
-  v4 = a3;
+  contentCopy = content;
   if (v3 != -1)
   {
     +[NLLanguageRecognizer(Preferences) specialCharacterContent:];
   }
 
-  v5 = [v4 componentsSeparatedByCharactersInSet:specialCharacterContent__unexpectedCharacterSet];
+  v5 = [contentCopy componentsSeparatedByCharactersInSet:specialCharacterContent__unexpectedCharacterSet];
 
   v6 = [v5 componentsJoinedByString:&stru_1F10C6540];
 
@@ -776,16 +776,16 @@ void __61__NLLanguageRecognizer_Preferences__specialCharacterContent___block_inv
   specialCharacterContent__unexpectedCharacterSet = v0;
 }
 
-+ (id)chineseCharacterContent:(id)a3
++ (id)chineseCharacterContent:(id)content
 {
   v3 = chineseCharacterContent__onceToken;
-  v4 = a3;
+  contentCopy = content;
   if (v3 != -1)
   {
     +[NLLanguageRecognizer(Preferences) chineseCharacterContent:];
   }
 
-  v5 = [v4 componentsSeparatedByCharactersInSet:chineseCharacterContent__unexpectedCharacterSet];
+  v5 = [contentCopy componentsSeparatedByCharactersInSet:chineseCharacterContent__unexpectedCharacterSet];
 
   v6 = [v5 componentsJoinedByString:&stru_1F10C6540];
 
@@ -801,16 +801,16 @@ void __61__NLLanguageRecognizer_Preferences__chineseCharacterContent___block_inv
   chineseCharacterContent__unexpectedCharacterSet = v0;
 }
 
-+ (id)japaneseCharacterContent:(id)a3
++ (id)japaneseCharacterContent:(id)content
 {
   v3 = japaneseCharacterContent__onceToken;
-  v4 = a3;
+  contentCopy = content;
   if (v3 != -1)
   {
     +[NLLanguageRecognizer(Preferences) japaneseCharacterContent:];
   }
 
-  v5 = [v4 componentsSeparatedByCharactersInSet:japaneseCharacterContent__unexpectedCharacterSet];
+  v5 = [contentCopy componentsSeparatedByCharactersInSet:japaneseCharacterContent__unexpectedCharacterSet];
 
   v6 = [v5 componentsJoinedByString:&stru_1F10C6540];
 
@@ -828,16 +828,16 @@ void __62__NLLanguageRecognizer_Preferences__japaneseCharacterContent___block_in
   japaneseCharacterContent__unexpectedCharacterSet = v0;
 }
 
-+ (id)koreanCharacterContent:(id)a3
++ (id)koreanCharacterContent:(id)content
 {
   v3 = koreanCharacterContent__onceToken;
-  v4 = a3;
+  contentCopy = content;
   if (v3 != -1)
   {
     +[NLLanguageRecognizer(Preferences) koreanCharacterContent:];
   }
 
-  v5 = [v4 componentsSeparatedByCharactersInSet:koreanCharacterContent__unexpectedCharacterSet];
+  v5 = [contentCopy componentsSeparatedByCharactersInSet:koreanCharacterContent__unexpectedCharacterSet];
 
   v6 = [v5 componentsJoinedByString:&stru_1F10C6540];
 
@@ -855,16 +855,16 @@ void __60__NLLanguageRecognizer_Preferences__koreanCharacterContent___block_invo
   koreanCharacterContent__unexpectedCharacterSet = v0;
 }
 
-+ (id)arabicCharacterContent:(id)a3
++ (id)arabicCharacterContent:(id)content
 {
   v3 = arabicCharacterContent__onceToken;
-  v4 = a3;
+  contentCopy = content;
   if (v3 != -1)
   {
     +[NLLanguageRecognizer(Preferences) arabicCharacterContent:];
   }
 
-  v5 = [v4 componentsSeparatedByCharactersInSet:arabicCharacterContent__unexpectedCharacterSet];
+  v5 = [contentCopy componentsSeparatedByCharactersInSet:arabicCharacterContent__unexpectedCharacterSet];
 
   v6 = [v5 componentsJoinedByString:&stru_1F10C6540];
 
@@ -881,16 +881,16 @@ void __60__NLLanguageRecognizer_Preferences__arabicCharacterContent___block_invo
   arabicCharacterContent__unexpectedCharacterSet = v0;
 }
 
-+ (id)greekCharacterContent:(id)a3
++ (id)greekCharacterContent:(id)content
 {
   v3 = greekCharacterContent__onceToken;
-  v4 = a3;
+  contentCopy = content;
   if (v3 != -1)
   {
     +[NLLanguageRecognizer(Preferences) greekCharacterContent:];
   }
 
-  v5 = [v4 componentsSeparatedByCharactersInSet:greekCharacterContent__unexpectedCharacterSet];
+  v5 = [contentCopy componentsSeparatedByCharactersInSet:greekCharacterContent__unexpectedCharacterSet];
 
   v6 = [v5 componentsJoinedByString:&stru_1F10C6540];
 
@@ -906,16 +906,16 @@ void __59__NLLanguageRecognizer_Preferences__greekCharacterContent___block_invok
   greekCharacterContent__unexpectedCharacterSet = v0;
 }
 
-+ (id)hebrewCharacterContent:(id)a3
++ (id)hebrewCharacterContent:(id)content
 {
   v3 = hebrewCharacterContent__onceToken;
-  v4 = a3;
+  contentCopy = content;
   if (v3 != -1)
   {
     +[NLLanguageRecognizer(Preferences) hebrewCharacterContent:];
   }
 
-  v5 = [v4 componentsSeparatedByCharactersInSet:hebrewCharacterContent__unexpectedCharacterSet];
+  v5 = [contentCopy componentsSeparatedByCharactersInSet:hebrewCharacterContent__unexpectedCharacterSet];
 
   v6 = [v5 componentsJoinedByString:&stru_1F10C6540];
 
@@ -931,16 +931,16 @@ void __60__NLLanguageRecognizer_Preferences__hebrewCharacterContent___block_invo
   hebrewCharacterContent__unexpectedCharacterSet = v0;
 }
 
-+ (id)thaiCharacterContent:(id)a3
++ (id)thaiCharacterContent:(id)content
 {
   v3 = thaiCharacterContent__onceToken;
-  v4 = a3;
+  contentCopy = content;
   if (v3 != -1)
   {
     +[NLLanguageRecognizer(Preferences) thaiCharacterContent:];
   }
 
-  v5 = [v4 componentsSeparatedByCharactersInSet:thaiCharacterContent__unexpectedCharacterSet];
+  v5 = [contentCopy componentsSeparatedByCharactersInSet:thaiCharacterContent__unexpectedCharacterSet];
 
   v6 = [v5 componentsJoinedByString:&stru_1F10C6540];
 
@@ -955,11 +955,11 @@ void __58__NLLanguageRecognizer_Preferences__thaiCharacterContent___block_invoke
   thaiCharacterContent__unexpectedCharacterSet = v0;
 }
 
-+ (BOOL)_isWord:(id)a3 acceptableInLexicon:(id)a4
++ (BOOL)_isWord:(id)word acceptableInLexicon:(id)lexicon
 {
   v35 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v5 = a4;
+  wordCopy = word;
+  lexiconCopy = lexicon;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -970,23 +970,23 @@ void __58__NLLanguageRecognizer_Preferences__thaiCharacterContent___block_invoke
   }
 
   v6 = *(v31 + 24);
-  if (v5 && (v31[3] & 1) == 0)
+  if (lexiconCopy && (v31[3] & 1) == 0)
   {
-    v7 = [[NLLexiconCursor alloc] initWithLexicon:v5 string:v17];
+    v7 = [[NLLexiconCursor alloc] initWithLexicon:lexiconCopy string:wordCopy];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __65__NLLanguageRecognizer_Preferences___isWord_acceptableInLexicon___block_invoke_2;
     v27[3] = &unk_1E7629B98;
-    v28 = v17;
+    v28 = wordCopy;
     v29 = &v30;
     [(NLLexiconCursor *)v7 enumerateEntriesUsingBlock:v27];
 
     v6 = *(v31 + 24);
   }
 
-  if (v5 && (v6 & 1) == 0)
+  if (lexiconCopy && (v6 & 1) == 0)
   {
-    v8 = [v17 componentsSeparatedByCharactersInSet:_isWord_acceptableInLexicon__separatorCharacterSet];
+    v8 = [wordCopy componentsSeparatedByCharactersInSet:_isWord_acceptableInLexicon__separatorCharacterSet];
     if ([v8 count] >= 2)
     {
       v25 = 0u;
@@ -1012,7 +1012,7 @@ void __58__NLLanguageRecognizer_Preferences__thaiCharacterContent___block_invoke
             v20 = &v19;
             v21 = 0x2020000000;
             v22 = 0;
-            v14 = [[NLLexiconCursor alloc] initWithLexicon:v5 string:v13];
+            v14 = [[NLLexiconCursor alloc] initWithLexicon:lexiconCopy string:v13];
             v18[0] = MEMORY[0x1E69E9820];
             v18[1] = 3221225472;
             v18[2] = __65__NLLanguageRecognizer_Preferences___isWord_acceptableInLexicon___block_invoke_3;
@@ -1087,41 +1087,41 @@ void __65__NLLanguageRecognizer_Preferences___isWord_acceptableInLexicon___block
   }
 }
 
-+ (BOOL)_isString:(id)a3 words:(id)a4 plausiblyInLanguage:(id)a5 increasedThreshold:(BOOL)a6
++ (BOOL)_isString:(id)string words:(id)words plausiblyInLanguage:(id)language increasedThreshold:(BOOL)threshold
 {
-  v50 = a6;
+  thresholdCopy = threshold;
   v75 = *MEMORY[0x1E69E9840];
-  v52 = a3;
-  v9 = a4;
-  v51 = a5;
+  stringCopy = string;
+  wordsCopy = words;
+  languageCopy = language;
   v53 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:?];
-  v10 = [v53 languageCode];
-  v11 = [v10 isEqualToString:@"zh"];
+  languageCode = [v53 languageCode];
+  v11 = [languageCode isEqualToString:@"zh"];
 
-  v12 = [v53 languageCode];
-  v13 = [v12 isEqualToString:@"ja"];
+  languageCode2 = [v53 languageCode];
+  v13 = [languageCode2 isEqualToString:@"ja"];
 
-  v14 = [v53 languageCode];
-  v15 = [v14 isEqualToString:@"ko"];
+  languageCode3 = [v53 languageCode];
+  v15 = [languageCode3 isEqualToString:@"ko"];
 
-  v16 = [v53 languageCode];
-  v55 = [v16 isEqualToString:@"ar"];
+  languageCode4 = [v53 languageCode];
+  v55 = [languageCode4 isEqualToString:@"ar"];
 
-  v17 = [v53 languageCode];
-  v18 = [v17 isEqualToString:@"el"];
+  languageCode5 = [v53 languageCode];
+  v18 = [languageCode5 isEqualToString:@"el"];
 
-  v19 = [v53 languageCode];
-  v20 = [v19 isEqualToString:@"he"];
+  languageCode6 = [v53 languageCode];
+  v20 = [languageCode6 isEqualToString:@"he"];
 
-  v21 = [v53 languageCode];
-  v22 = [v21 isEqualToString:@"th"];
+  languageCode7 = [v53 languageCode];
+  v22 = [languageCode7 isEqualToString:@"th"];
 
-  v23 = [a1 _filteredLexiconForLanguage:v51];
+  v23 = [self _filteredLexiconForLanguage:languageCopy];
   v72 = 0u;
   v73 = 0u;
   v70 = 0u;
   v71 = 0u;
-  obj = v9;
+  obj = wordsCopy;
   v24 = [obj countByEnumeratingWithState:&v70 objects:v74 count:16];
   if (v24)
   {
@@ -1148,7 +1148,7 @@ void __65__NLLanguageRecognizer_Preferences___isWord_acceptableInLexicon___block
         v67 = &v66;
         v68 = 0x2020000000;
         v69 = 0;
-        v30 = [a1 specialCharacterContent:v29];
+        v30 = [self specialCharacterContent:v29];
         if (v30 && [v29 isEqualToString:v30])
         {
           *(v67 + 24) = 1;
@@ -1164,7 +1164,7 @@ void __65__NLLanguageRecognizer_Preferences___isWord_acceptableInLexicon___block
             block[1] = 3221225472;
             block[2] = __92__NLLanguageRecognizer_Preferences___isString_words_plausiblyInLanguage_increasedThreshold___block_invoke;
             block[3] = &unk_1E7629BC0;
-            v65 = a1;
+            selfCopy = self;
             block[4] = v29;
             v63 = v23;
             v64 = &v66;
@@ -1176,7 +1176,7 @@ void __65__NLLanguageRecognizer_Preferences___isWord_acceptableInLexicon___block
 
         if (((v31 | v58) & 1) == 0)
         {
-          v33 = [a1 chineseCharacterContent:v29];
+          v33 = [self chineseCharacterContent:v29];
           if (v33 && [v29 isEqualToString:v33])
           {
             *(v67 + 24) = 1;
@@ -1187,7 +1187,7 @@ void __65__NLLanguageRecognizer_Preferences___isWord_acceptableInLexicon___block
 
         if (((v31 | v13 ^ 1) & 1) == 0)
         {
-          v34 = [a1 japaneseCharacterContent:v29];
+          v34 = [self japaneseCharacterContent:v29];
           if (v34 && [v29 isEqualToString:v34])
           {
             *(v67 + 24) = 1;
@@ -1198,7 +1198,7 @@ void __65__NLLanguageRecognizer_Preferences___isWord_acceptableInLexicon___block
 
         if (((v31 | v57) & 1) == 0)
         {
-          v35 = [a1 koreanCharacterContent:v29];
+          v35 = [self koreanCharacterContent:v29];
           if (v35 && [v29 isEqualToString:v35])
           {
             *(v67 + 24) = 1;
@@ -1209,7 +1209,7 @@ void __65__NLLanguageRecognizer_Preferences___isWord_acceptableInLexicon___block
 
         if (((v31 | v56) & 1) == 0)
         {
-          v36 = [a1 arabicCharacterContent:v29];
+          v36 = [self arabicCharacterContent:v29];
           if (v36 && [v29 isEqualToString:v36])
           {
             *(v67 + 24) = 1;
@@ -1220,7 +1220,7 @@ void __65__NLLanguageRecognizer_Preferences___isWord_acceptableInLexicon___block
 
         if (((v31 | v25) & 1) == 0)
         {
-          v37 = [a1 greekCharacterContent:v29];
+          v37 = [self greekCharacterContent:v29];
           if (v37 && [v29 isEqualToString:v37])
           {
             *(v67 + 24) = 1;
@@ -1231,7 +1231,7 @@ void __65__NLLanguageRecognizer_Preferences___isWord_acceptableInLexicon___block
 
         if (((v31 | v26) & 1) == 0)
         {
-          v38 = [a1 hebrewCharacterContent:v29];
+          v38 = [self hebrewCharacterContent:v29];
           if (v38 && [v29 isEqualToString:v38])
           {
             *(v67 + 24) = 1;
@@ -1242,7 +1242,7 @@ void __65__NLLanguageRecognizer_Preferences___isWord_acceptableInLexicon___block
 
         if (((v31 | v27) & 1) == 0)
         {
-          v39 = [a1 thaiCharacterContent:v29];
+          v39 = [self thaiCharacterContent:v29];
           if (v39 && [v29 isEqualToString:v39])
           {
             *(v67 + 24) = 1;
@@ -1277,15 +1277,15 @@ void __65__NLLanguageRecognizer_Preferences___isWord_acceptableInLexicon___block
   }
 
   v40 = v60 + v61;
-  v41 = 2 * [v52 length] / 3uLL;
+  v41 = 2 * [stringCopy length] / 3uLL;
   v42 = 2 * v61;
-  if (v50)
+  if (thresholdCopy)
   {
     v42 = 3 * v61;
   }
 
   v44 = v60 > v42 && v40 > v41;
-  v45 = [v52 length] >> 1;
+  v45 = [stringCopy length] >> 1;
   v47 = v60 > 8 * v61 && v40 > v45;
 
   v48 = *MEMORY[0x1E69E9840];
@@ -1303,16 +1303,16 @@ uint64_t __92__NLLanguageRecognizer_Preferences___isString_words_plausiblyInLang
   return result;
 }
 
-+ (id)_orderedCandidateLanguagesForCandidateLanguages:(id)a3 preferredLanguages:(id)a4
++ (id)_orderedCandidateLanguagesForCandidateLanguages:(id)languages preferredLanguages:(id)preferredLanguages
 {
   v85 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v62 = [MEMORY[0x1E695DF70] array];
-  v57 = v5;
-  v7 = [MEMORY[0x1E695DF70] arrayWithArray:v5];
-  v56 = v6;
-  v8 = [MEMORY[0x1E695DF70] arrayWithArray:v6];
+  languagesCopy = languages;
+  preferredLanguagesCopy = preferredLanguages;
+  array = [MEMORY[0x1E695DF70] array];
+  v57 = languagesCopy;
+  v7 = [MEMORY[0x1E695DF70] arrayWithArray:languagesCopy];
+  v56 = preferredLanguagesCopy;
+  v8 = [MEMORY[0x1E695DF70] arrayWithArray:preferredLanguagesCopy];
   v61 = v7;
   v58 = v8;
   if ([v8 count])
@@ -1326,16 +1326,16 @@ uint64_t __92__NLLanguageRecognizer_Preferences___isString_words_plausiblyInLang
       }
 
       v10 = [MEMORY[0x1E695DF58] mostPreferredLanguageOf:v7 withPreferredLanguages:v8 forUsage:2 options:0];
-      if (v10 && ([v62 containsObject:v10] & 1) == 0)
+      if (v10 && ([array containsObject:v10] & 1) == 0)
       {
-        [v62 addObject:v10];
+        [array addObject:v10];
       }
 
       v60 = v10;
       [v8 firstObject];
       v59 = v11 = 0x1E695D000uLL;
       v12 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:?];
-      v63 = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
       v79 = 0u;
       v80 = 0u;
       v81 = 0u;
@@ -1349,7 +1349,7 @@ uint64_t __92__NLLanguageRecognizer_Preferences___isString_words_plausiblyInLang
 
 LABEL_26:
 
-      [obj removeObjectsInArray:v63];
+      [obj removeObjectsInArray:array2];
       v8 = v58;
       [v58 removeObjectAtIndex:0];
 
@@ -1374,45 +1374,45 @@ LABEL_9:
 
       v15 = *(*(&v79 + 1) + 8 * v14);
       v16 = [*(v11 + 3928) localeWithLocaleIdentifier:v15];
-      v17 = [v16 languageCode];
-      v73 = [v17 isEqualToString:v9];
+      languageCode = [v16 languageCode];
+      v73 = [languageCode isEqualToString:v9];
 
-      v18 = [v16 languageCode];
-      v19 = [v12 languageCode];
-      v20 = [v18 isEqualToString:v19];
+      languageCode2 = [v16 languageCode];
+      languageCode3 = [v12 languageCode];
+      v20 = [languageCode2 isEqualToString:languageCode3];
 
       if (!v20)
       {
         goto LABEL_24;
       }
 
-      v21 = [v16 scriptCode];
-      v22 = [v12 scriptCode];
-      if (v21 == v22)
+      scriptCode = [v16 scriptCode];
+      scriptCode2 = [v12 scriptCode];
+      if (scriptCode == scriptCode2)
       {
         v25 = 1;
       }
 
       else
       {
-        v23 = [v16 scriptCode];
-        v24 = [v12 scriptCode];
-        v25 = [v23 isEqualToString:v24];
+        scriptCode3 = [v16 scriptCode];
+        scriptCode4 = [v12 scriptCode];
+        v25 = [scriptCode3 isEqualToString:scriptCode4];
       }
 
-      v26 = [v16 countryCode];
-      v27 = [v12 countryCode];
-      if (v26 == v27)
+      countryCode = [v16 countryCode];
+      countryCode2 = [v12 countryCode];
+      if (countryCode == countryCode2)
       {
         v31 = 1;
       }
 
       else
       {
-        v28 = [v16 countryCode];
+        countryCode3 = [v16 countryCode];
         [v12 countryCode];
         v30 = v29 = v9;
-        v31 = [v28 isEqualToString:v30];
+        v31 = [countryCode3 isEqualToString:v30];
 
         v9 = v29;
       }
@@ -1453,7 +1453,7 @@ LABEL_24:
     }
 
 LABEL_23:
-    [v63 addObject:v15];
+    [array2 addObject:v15];
     goto LABEL_24;
   }
 
@@ -1463,15 +1463,15 @@ LABEL_27:
   {
     while (1)
     {
-      v33 = [v7 firstObject];
-      if (([v62 containsObject:v33] & 1) == 0)
+      firstObject = [v7 firstObject];
+      if (([array containsObject:firstObject] & 1) == 0)
       {
-        [v62 addObject:v33];
+        [array addObject:firstObject];
       }
 
-      v34 = [*(v32 + 3928) localeWithLocaleIdentifier:v33];
-      v64 = v33;
-      v66 = [MEMORY[0x1E695DF70] arrayWithObject:v33];
+      v34 = [*(v32 + 3928) localeWithLocaleIdentifier:firstObject];
+      v64 = firstObject;
+      v66 = [MEMORY[0x1E695DF70] arrayWithObject:firstObject];
       v75 = 0u;
       v76 = 0u;
       v77 = 0u;
@@ -1506,36 +1506,36 @@ LABEL_32:
 
       v36 = *(*(&v75 + 1) + 8 * v35);
       v37 = [*(v32 + 3928) localeWithLocaleIdentifier:v36];
-      v38 = [v37 languageCode];
-      v39 = [v38 isEqualToString:@"zh"];
+      languageCode4 = [v37 languageCode];
+      v39 = [languageCode4 isEqualToString:@"zh"];
 
-      v40 = [v37 languageCode];
-      v41 = [v34 languageCode];
-      v42 = [v40 isEqualToString:v41];
+      languageCode5 = [v37 languageCode];
+      languageCode6 = [v34 languageCode];
+      v42 = [languageCode5 isEqualToString:languageCode6];
 
       if (!v42)
       {
         goto LABEL_47;
       }
 
-      v43 = [v37 scriptCode];
+      scriptCode5 = [v37 scriptCode];
       [v34 scriptCode];
       v45 = v44 = v34;
-      if (v43 == v45)
+      if (scriptCode5 == v45)
       {
         v48 = 1;
       }
 
       else
       {
-        v46 = [v37 scriptCode];
-        v47 = [v44 scriptCode];
-        v48 = [v46 isEqualToString:v47];
+        scriptCode6 = [v37 scriptCode];
+        scriptCode7 = [v44 scriptCode];
+        v48 = [scriptCode6 isEqualToString:scriptCode7];
       }
 
-      v49 = [v37 countryCode];
-      v50 = [v44 countryCode];
-      if (v49 == v50)
+      countryCode4 = [v37 countryCode];
+      countryCode5 = [v44 countryCode];
+      if (countryCode4 == countryCode5)
       {
         v53 = 1;
         v32 = 0x1E695D000;
@@ -1543,9 +1543,9 @@ LABEL_32:
 
       else
       {
-        v51 = [v37 countryCode];
-        v52 = [v44 countryCode];
-        v53 = [v51 isEqualToString:v52];
+        countryCode6 = [v37 countryCode];
+        countryCode7 = [v44 countryCode];
+        v53 = [countryCode6 isEqualToString:countryCode7];
 
         v32 = 0x1E695D000;
       }
@@ -1590,38 +1590,38 @@ LABEL_50:
 
   v54 = *MEMORY[0x1E69E9840];
 
-  return v62;
+  return array;
 }
 
-+ (BOOL)_candidate:(id)a3 matchesDominantLanguage:(id)a4
++ (BOOL)_candidate:(id)_candidate matchesDominantLanguage:(id)language
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v5];
-  v8 = [v7 languageCode];
-  v9 = [v7 languageIdentifier];
-  v10 = [v5 isEqualToString:v6];
-  if (!v10 && v8)
+  _candidateCopy = _candidate;
+  languageCopy = language;
+  v7 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:_candidateCopy];
+  languageCode = [v7 languageCode];
+  languageIdentifier = [v7 languageIdentifier];
+  v10 = [_candidateCopy isEqualToString:languageCopy];
+  if (!v10 && languageCode)
   {
-    v10 = [v8 isEqualToString:v6];
+    v10 = [languageCode isEqualToString:languageCopy];
   }
 
-  if ((v10 & 1) == 0 && v9)
+  if ((v10 & 1) == 0 && languageIdentifier)
   {
-    v10 = [v9 isEqualToString:v6];
+    v10 = [languageIdentifier isEqualToString:languageCopy];
   }
 
-  if (!v10 && v8 && [v8 isEqualToString:@"zh"])
+  if (!v10 && languageCode && [languageCode isEqualToString:@"zh"])
   {
     v11 = MEMORY[0x1E695DF58];
-    v16[0] = v5;
+    v16[0] = _candidateCopy;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
     v13 = [v11 mostPreferredLanguageOf:&unk_1F10D1400 withPreferredLanguages:v12 forUsage:2 options:0];
 
     if (v13)
     {
-      LOBYTE(v10) = [v13 isEqualToString:v6];
+      LOBYTE(v10) = [v13 isEqualToString:languageCopy];
     }
   }
 
@@ -1629,16 +1629,16 @@ LABEL_50:
   return v10;
 }
 
-+ (id)mostAppropriateLanguageForString:(id)a3 candidateLanguages:(id)a4 preferredLanguages:(id)a5
++ (id)mostAppropriateLanguageForString:(id)string candidateLanguages:(id)languages preferredLanguages:(id)preferredLanguages
 {
   v70[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v35 = a4;
-  v36 = a5;
-  v9 = [a1 _orderedCandidateLanguagesForCandidateLanguages:v35 preferredLanguages:?];
+  stringCopy = string;
+  languagesCopy = languages;
+  preferredLanguagesCopy = preferredLanguages;
+  v9 = [self _orderedCandidateLanguagesForCandidateLanguages:languagesCopy preferredLanguages:?];
   v39 = objc_alloc_init(NLLanguageRecognizer);
   v38 = objc_alloc_init(NLCFROLanguageRecognizer);
-  v10 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v11 = [NLTagger alloc];
   v70[0] = @"TokenType";
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v70 count:1];
@@ -1649,27 +1649,27 @@ LABEL_50:
   v66[2] = 0x3010000000;
   v66[3] = "";
   v67 = xmmword_19D4E9310;
-  [(NLTagger *)v37 setString:v8];
-  v13 = [v8 length];
+  [(NLTagger *)v37 setString:stringCopy];
+  v13 = [stringCopy length];
   v62[0] = MEMORY[0x1E69E9820];
   v62[1] = 3221225472;
   v62[2] = __108__NLLanguageRecognizer_Preferences__mostAppropriateLanguageForString_candidateLanguages_preferredLanguages___block_invoke;
   v62[3] = &unk_1E7629BE8;
-  v46 = v10;
+  v46 = array;
   v63 = v46;
   v65 = v66;
-  v43 = v8;
+  v43 = stringCopy;
   v64 = v43;
   [(NLTagger *)v37 enumerateTagsInRange:0 unit:v13 scheme:0 options:@"TokenType" usingBlock:38, v62];
   [(NLTagger *)v37 setString:&stru_1F10C6540];
   [(NLLanguageRecognizer *)v39 processString:v43];
   [(NLCFROLanguageRecognizer *)v38 processString:v43];
-  v14 = [(NLLanguageRecognizer *)v39 dominantLanguage];
+  dominantLanguage = [(NLLanguageRecognizer *)v39 dominantLanguage];
   v40 = [(NLLanguageRecognizer *)v39 languageHypothesesWithMaximum:3];
-  v41 = [(NLCFROLanguageRecognizer *)v38 dominantLanguage];
-  if (v14)
+  dominantLanguage2 = [(NLCFROLanguageRecognizer *)v38 dominantLanguage];
+  if (dominantLanguage)
   {
-    v48 = [&unk_1F10D1418 containsObject:v14];
+    v48 = [&unk_1F10D1418 containsObject:dominantLanguage];
   }
 
   else
@@ -1683,7 +1683,7 @@ LABEL_50:
   v59 = 0u;
   obj = v9;
   v15 = [obj countByEnumeratingWithState:&v58 objects:v69 count:16];
-  v47 = v14;
+  v47 = dominantLanguage;
   if (v15)
   {
     v44 = v15;
@@ -1699,21 +1699,21 @@ LABEL_50:
 
         v16 = *(*(&v58 + 1) + 8 * i);
         v17 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v16];
-        v51 = [v17 languageCode];
+        languageCode = [v17 languageCode];
         v53 = v17;
-        v18 = [v17 languageCode];
-        v50 = [v18 isEqualToString:@"zh"];
+        languageCode2 = [v17 languageCode];
+        v50 = [languageCode2 isEqualToString:@"zh"];
 
-        v19 = [v17 languageCode];
-        v49 = [v19 isEqualToString:@"ja"];
+        languageCode3 = [v17 languageCode];
+        v49 = [languageCode3 isEqualToString:@"ja"];
 
-        v20 = [a1 _candidate:v16 matchesDominantLanguage:v47];
+        v20 = [self _candidate:v16 matchesDominantLanguage:v47];
         if (((v20 | v48) & 1) == 0)
         {
-          LOBYTE(v20) = [a1 _candidate:v16 matchesDominantLanguage:v41];
+          LOBYTE(v20) = [self _candidate:v16 matchesDominantLanguage:dominantLanguage2];
         }
 
-        if ((v20 & 1) == 0 && v51)
+        if ((v20 & 1) == 0 && languageCode)
         {
           v56 = 0u;
           v57 = 0u;
@@ -1736,7 +1736,7 @@ LABEL_50:
 
                 v25 = *(*(&v54 + 1) + 8 * j);
                 v26 = [v21 objectForKey:v25];
-                v27 = [a1 _candidate:v16 matchesDominantLanguage:v25];
+                v27 = [self _candidate:v16 matchesDominantLanguage:v25];
                 if (v26)
                 {
                   v28 = v27;
@@ -1771,7 +1771,7 @@ LABEL_50:
             goto LABEL_34;
           }
 
-          LOBYTE(v20) = [a1 _isString:v43 words:v46 plausiblyInLanguage:v16 increasedThreshold:v48];
+          LOBYTE(v20) = [self _isString:v43 words:v46 plausiblyInLanguage:v16 increasedThreshold:v48];
         }
 
         if (v20)

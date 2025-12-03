@@ -1,8 +1,8 @@
 @interface BWFencedAnimationQueue
-- (BWFencedAnimationQueue)initWithQueueSize:(unsigned int)a3;
+- (BWFencedAnimationQueue)initWithQueueSize:(unsigned int)size;
 - (id)dequeueFencedAnimation;
 - (void)dealloc;
-- (void)enqueueFencedAnimation:(id)a3;
+- (void)enqueueFencedAnimation:(id)animation;
 - (void)flush;
 @end
 
@@ -11,10 +11,10 @@
 - (id)dequeueFencedAnimation
 {
   os_unfair_lock_lock(&self->_queueLock);
-  v3 = [(NSMutableArray *)self->_fencedAnimationQueue firstObject];
-  if (v3)
+  firstObject = [(NSMutableArray *)self->_fencedAnimationQueue firstObject];
+  if (firstObject)
   {
-    [(NSMutableArray *)self->_fencedAnimationQueue removeObject:v3];
+    [(NSMutableArray *)self->_fencedAnimationQueue removeObject:firstObject];
     os_unfair_lock_unlock(&self->_queueLock);
     dispatch_semaphore_signal(self->_fencedAnimationQueueSemaphore);
   }
@@ -24,10 +24,10 @@
     os_unfair_lock_unlock(&self->_queueLock);
   }
 
-  return v3;
+  return firstObject;
 }
 
-- (BWFencedAnimationQueue)initWithQueueSize:(unsigned int)a3
+- (BWFencedAnimationQueue)initWithQueueSize:(unsigned int)size
 {
   v6.receiver = self;
   v6.super_class = BWFencedAnimationQueue;
@@ -35,7 +35,7 @@
   if (v4)
   {
     v4->_fencedAnimationQueue = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v4->_fencedAnimationQueueSemaphore = dispatch_semaphore_create(a3);
+    v4->_fencedAnimationQueueSemaphore = dispatch_semaphore_create(size);
     v4->_fencedAnimationFramerateThrottle = 0;
     v4->_timeOfLastFencedAnimation = 0.0;
     v4->_queueLock._os_unfair_lock_opaque = 0;
@@ -54,7 +54,7 @@
   [(BWFencedAnimationQueue *)&v3 dealloc];
 }
 
-- (void)enqueueFencedAnimation:(id)a3
+- (void)enqueueFencedAnimation:(id)animation
 {
   if (self->_fencedAnimationFramerateThrottle)
   {
@@ -71,7 +71,7 @@
   if (!dispatch_semaphore_wait(fencedAnimationQueueSemaphore, v8))
   {
     os_unfair_lock_lock(&self->_queueLock);
-    [(NSMutableArray *)self->_fencedAnimationQueue addObject:a3];
+    [(NSMutableArray *)self->_fencedAnimationQueue addObject:animation];
     os_unfair_lock_unlock(&self->_queueLock);
     self->_timeOfLastFencedAnimation = CFAbsoluteTimeGetCurrent();
   }

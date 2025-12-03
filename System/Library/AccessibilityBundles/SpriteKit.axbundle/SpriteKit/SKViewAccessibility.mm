@@ -6,19 +6,19 @@
 
 - (id)accessibilityElements
 {
-  v3 = [(SKViewAccessibility *)self _accessibilitySpriteKitScene];
-  v4 = [v3 accessibilityContainer];
+  _accessibilitySpriteKitScene = [(SKViewAccessibility *)self _accessibilitySpriteKitScene];
+  accessibilityContainer = [_accessibilitySpriteKitScene accessibilityContainer];
 
-  if (!v4)
+  if (!accessibilityContainer)
   {
-    [v3 setAccessibilityContainer:self];
+    [_accessibilitySpriteKitScene setAccessibilityContainer:self];
   }
 
-  v5 = [MEMORY[0x29EDB8DE8] axArrayByIgnoringNilElementsWithCount:{1, v3}];
-  v6 = [(SKViewAccessibility *)self _accessibilitySortedElementsWithin];
-  if (v6)
+  v5 = [MEMORY[0x29EDB8DE8] axArrayByIgnoringNilElementsWithCount:{1, _accessibilitySpriteKitScene}];
+  _accessibilitySortedElementsWithin = [(SKViewAccessibility *)self _accessibilitySortedElementsWithin];
+  if (_accessibilitySortedElementsWithin)
   {
-    [v5 addObjectsFromArray:v6];
+    [v5 addObjectsFromArray:_accessibilitySortedElementsWithin];
   }
 
   return v5;

@@ -1,20 +1,20 @@
 @interface ASDTIOPAudioCMEnableProperty
-+ (id)ioServiceDependenciesForConfig:(id)a3;
-- (ASDTIOPAudioCMEnableProperty)initWithConfig:(id)a3;
-- (BOOL)storePropertyValue:(id)a3;
++ (id)ioServiceDependenciesForConfig:(id)config;
+- (ASDTIOPAudioCMEnableProperty)initWithConfig:(id)config;
+- (BOOL)storePropertyValue:(id)value;
 - (id)retrievePropertyValue;
-- (int)checkPropertyValue:(id)a3;
+- (int)checkPropertyValue:(id)value;
 - (void)dealloc;
 @end
 
 @implementation ASDTIOPAudioCMEnableProperty
 
-+ (id)ioServiceDependenciesForConfig:(id)a3
++ (id)ioServiceDependenciesForConfig:(id)config
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 asdtServiceID];
-  v5 = [(ASDTIOServiceManager *)ASDTIOPAudioCMServiceManager dependencyForID:v4 andConfiguration:v3];
+  configCopy = config;
+  asdtServiceID = [configCopy asdtServiceID];
+  v5 = [(ASDTIOServiceManager *)ASDTIOPAudioCMServiceManager dependencyForID:asdtServiceID andConfiguration:configCopy];
 
   if (v5)
   {
@@ -32,12 +32,12 @@
   return v6;
 }
 
-- (ASDTIOPAudioCMEnableProperty)initWithConfig:(id)a3
+- (ASDTIOPAudioCMEnableProperty)initWithConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v16.receiver = self;
   v16.super_class = ASDTIOPAudioCMEnableProperty;
-  v5 = [(ASDTCustomProperty *)&v16 initWithConfig:v4 propertyDataType:1918990199 qualifierDataType:0];
+  v5 = [(ASDTCustomProperty *)&v16 initWithConfig:configCopy propertyDataType:1918990199 qualifierDataType:0];
   v6 = v5;
   if (!v5)
   {
@@ -46,11 +46,11 @@
 
   [(ASDTCustomProperty *)v5 setPropertyValueSize:4];
   [(ASDTCustomProperty *)v6 setCacheMode:0];
-  v7 = [v4 asdtServiceID];
-  v8 = [(ASDTIOServiceManager *)ASDTIOPAudioCMServiceManager matchedIOServiceForID:v7];
+  asdtServiceID = [configCopy asdtServiceID];
+  v8 = [(ASDTIOServiceManager *)ASDTIOPAudioCMServiceManager matchedIOServiceForID:asdtServiceID];
   [(ASDTIOPAudioCMEnableProperty *)v6 setClientManager:v8];
 
-  v9 = [(ASDTIOPAudioCMEnableProperty *)v6 clientManager];
+  clientManager = [(ASDTIOPAudioCMEnableProperty *)v6 clientManager];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -65,10 +65,10 @@
     goto LABEL_10;
   }
 
-  v11 = [(ASDTIOPAudioCMEnableProperty *)v6 clientManager];
-  v12 = [v11 open];
+  clientManager2 = [(ASDTIOPAudioCMEnableProperty *)v6 clientManager];
+  open = [clientManager2 open];
 
-  if ((v12 & 1) == 0)
+  if ((open & 1) == 0)
   {
     v14 = ASDTIOPLogType();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -82,7 +82,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  -[ASDTIOPAudioCMEnableProperty setEnableDirection:](v6, "setEnableDirection:", [v4 asdtIOPAudioCMEnablePropertyDirection]);
+  -[ASDTIOPAudioCMEnableProperty setEnableDirection:](v6, "setEnableDirection:", [configCopy asdtIOPAudioCMEnablePropertyDirection]);
 
 LABEL_5:
   v13 = v6;
@@ -93,23 +93,23 @@ LABEL_11:
 
 - (void)dealloc
 {
-  v3 = [(ASDTIOPAudioCMEnableProperty *)self clientManager];
-  [v3 close];
+  clientManager = [(ASDTIOPAudioCMEnableProperty *)self clientManager];
+  [clientManager close];
 
   v4.receiver = self;
   v4.super_class = ASDTIOPAudioCMEnableProperty;
   [(ASDTIOPAudioCMEnableProperty *)&v4 dealloc];
 }
 
-- (int)checkPropertyValue:(id)a3
+- (int)checkPropertyValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v10.receiver = self;
   v10.super_class = ASDTIOPAudioCMEnableProperty;
-  v5 = [(ASDTCustomProperty *)&v10 checkPropertyValue:v4];
+  v5 = [(ASDTCustomProperty *)&v10 checkPropertyValue:valueCopy];
   if (!v5)
   {
-    v6 = v4;
+    v6 = valueCopy;
     v7 = [v6 length];
     if (v7 == [(ASDTCustomProperty *)self propertyValueSize])
     {
@@ -134,8 +134,8 @@ LABEL_11:
 - (id)retrievePropertyValue
 {
   v6 = 0;
-  v2 = [(ASDTIOPAudioCMEnableProperty *)self clientManager];
-  [v2 getEnableState:&v6];
+  clientManager = [(ASDTIOPAudioCMEnableProperty *)self clientManager];
+  [clientManager getEnableState:&v6];
 
   v5 = v6;
   v3 = [MEMORY[0x277CBEA90] dataWithBytes:&v5 length:4];
@@ -143,17 +143,17 @@ LABEL_11:
   return v3;
 }
 
-- (BOOL)storePropertyValue:(id)a3
+- (BOOL)storePropertyValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v13 = 0;
-  [v4 getBytes:&v13 length:4];
+  [valueCopy getBytes:&v13 length:4];
   v5 = v13;
-  v6 = [(ASDTIOPAudioCMEnableProperty *)self clientManager];
-  v7 = [(ASDTIOPAudioCMEnableProperty *)self enableDirection];
+  clientManager = [(ASDTIOPAudioCMEnableProperty *)self clientManager];
+  enableDirection = [(ASDTIOPAudioCMEnableProperty *)self enableDirection];
   if (!v5)
   {
-    v10 = [v6 disableInDirection:v7];
+    v10 = [clientManager disableInDirection:enableDirection];
 
     if (v10)
     {
@@ -165,7 +165,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v8 = [v6 enableInDirection:v7];
+  v8 = [clientManager enableInDirection:enableDirection];
 
   if ((v8 & 1) == 0)
   {
@@ -175,7 +175,7 @@ LABEL_5:
 LABEL_3:
   v12.receiver = self;
   v12.super_class = ASDTIOPAudioCMEnableProperty;
-  v9 = [(ASDTCustomProperty *)&v12 storePropertyValue:v4];
+  v9 = [(ASDTCustomProperty *)&v12 storePropertyValue:valueCopy];
 LABEL_6:
 
   return v9;

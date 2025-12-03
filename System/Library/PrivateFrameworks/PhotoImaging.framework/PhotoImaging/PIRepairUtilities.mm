@@ -1,32 +1,32 @@
 @interface PIRepairUtilities
-+ (BOOL)applyRepairMLStrokeToMutableBuffer:(id)a3 brushStroke:(id)a4 detectedFaces:(id)a5 context:(id)a6 error:(id *)a7;
-+ (BOOL)transcodePixelBuffer:(id)a3 toBuffer:(id)a4 error:(id *)a5;
-+ (CGImage)newWatchInfillFromImage:(CGImage *)a3 mask:(CGImage *)a4;
-+ (id)brushStrokeFromRetouchStrokeDictionary:(id)a3;
-+ (id)extractRGBAfPixelsFromImage:(id)a3 fromROI:(id *)a4;
-+ (id)prepareForCIFilterWithFaces:(id)a3 cropRect:(id *)a4;
-+ (void)applyRepairStrokeToMutableBuffer:(id)a3 brushStroke:(id)a4 sourceOffset:(CGPoint)a5 repairEdges:(BOOL)a6;
-+ (void)calcExtentsForStrokeRadius:(double)a3 offset:(id)a4 inputImageExtent:(id *)a5 maskExtent:(id *)a6 repairExtent:(id *)a7 textureExtent:(id *)a8 sourceExtent:(id *)a9;
++ (BOOL)applyRepairMLStrokeToMutableBuffer:(id)buffer brushStroke:(id)stroke detectedFaces:(id)faces context:(id)context error:(id *)error;
++ (BOOL)transcodePixelBuffer:(id)buffer toBuffer:(id)toBuffer error:(id *)error;
++ (CGImage)newWatchInfillFromImage:(CGImage *)image mask:(CGImage *)mask;
++ (id)brushStrokeFromRetouchStrokeDictionary:(id)dictionary;
++ (id)extractRGBAfPixelsFromImage:(id)image fromROI:(id *)i;
++ (id)prepareForCIFilterWithFaces:(id)faces cropRect:(id *)rect;
++ (void)applyRepairStrokeToMutableBuffer:(id)buffer brushStroke:(id)stroke sourceOffset:(CGPoint)offset repairEdges:(BOOL)edges;
++ (void)calcExtentsForStrokeRadius:(double)radius offset:(id)offset inputImageExtent:(id *)extent maskExtent:(id *)maskExtent repairExtent:(id *)repairExtent textureExtent:(id *)textureExtent sourceExtent:(id *)sourceExtent;
 @end
 
 @implementation PIRepairUtilities
 
-+ (CGImage)newWatchInfillFromImage:(CGImage *)a3 mask:(CGImage *)a4
++ (CGImage)newWatchInfillFromImage:(CGImage *)image mask:(CGImage *)mask
 {
   v4 = 0;
-  if (a3)
+  if (image)
   {
-    if (a4)
+    if (mask)
     {
-      Width = CGImageGetWidth(a3);
-      Height = CGImageGetHeight(a3);
+      Width = CGImageGetWidth(image);
+      Height = CGImageGetHeight(image);
       v4 = 0;
       if (Width - 8193 >= 0xFFFFFFFFFFFFE036)
       {
         v9 = Height;
         if (Height - 8193 >= 0xFFFFFFFFFFFFE036)
         {
-          if (Width == CGImageGetWidth(a4) && v9 == CGImageGetHeight(a4))
+          if (Width == CGImageGetWidth(mask) && v9 == CGImageGetHeight(mask))
           {
             v10 = malloc_type_malloc(4 * v9 * Width, 0x100004052888210uLL);
             name = *MEMORY[0x1E695F1C0];
@@ -39,7 +39,7 @@
             v235.origin.y = 0.0;
             v235.size.width = Width;
             v235.size.height = v9;
-            CGContextDrawImage(v13, v235, a3);
+            CGContextDrawImage(v13, v235, image);
             CGContextRelease(v13);
             v14 = malloc_type_malloc(v9 * Width, 0x100004077774924uLL);
             v15 = CGColorSpaceCreateWithName(*MEMORY[0x1E695F120]);
@@ -50,7 +50,7 @@
             v236.origin.y = 0.0;
             v236.size.width = Width;
             v236.size.height = v9;
-            CGContextDrawImage(v16, v236, a4);
+            CGContextDrawImage(v16, v236, mask);
             CGContextRelease(v16);
             v207 = v14;
             v208 = v10;
@@ -711,9 +711,9 @@ LABEL_138:
             v187 = v223;
             v188 = v224;
             v189 = 4 * v223;
-            v190 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:4 * v223 * v224];
+            v224 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:4 * v223 * v224];
             v191 = v230[1];
-            v192 = [v190 mutableBytes];
+            mutableBytes = [v224 mutableBytes];
             if (v188 >= 1)
             {
               v193 = 0;
@@ -734,7 +734,7 @@ LABEL_138:
                     v201 = *v200.i32;
                     v200.i32[0] = vextq_s8(v200, v200, 8uLL).i32[1];
                     *v200.i8 = vshl_u32(vcvt_s32_f32(*v200.i8), 0x800000018);
-                    *v192++ = v200.i32[0] | (*&v200.i32[2] << 16) | v201 | v200.i32[1];
+                    *mutableBytes++ = v200.i32[0] | (*&v200.i32[2] << 16) | v201 | v200.i32[1];
                     --v197;
                   }
 
@@ -748,7 +748,7 @@ LABEL_138:
               while (v193 != v188);
             }
 
-            v202 = CGDataProviderCreateWithCFData(v190);
+            v202 = CGDataProviderCreateWithCFData(v224);
             v203 = CGColorSpaceCreateWithName(name);
             v4 = CGImageCreate(v187, v188, 8uLL, 0x20uLL, v189, v203, 0, v202, 0, 0, kCGRenderingIntentDefault);
             CGDataProviderRelease(v202);
@@ -805,18 +805,18 @@ LABEL_138:
   return v4;
 }
 
-+ (void)applyRepairStrokeToMutableBuffer:(id)a3 brushStroke:(id)a4 sourceOffset:(CGPoint)a5 repairEdges:(BOOL)a6
++ (void)applyRepairStrokeToMutableBuffer:(id)buffer brushStroke:(id)stroke sourceOffset:(CGPoint)offset repairEdges:(BOOL)edges
 {
   v218[97] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = [v9 size];
+  bufferCopy = buffer;
+  strokeCopy = stroke;
+  v11 = [bufferCopy size];
   v13 = v12;
   v153 = 0u;
   v154 = 0u;
-  if (v10)
+  if (strokeCopy)
   {
-    [v10 extent];
+    [strokeCopy extent];
   }
 
   else
@@ -832,7 +832,7 @@ LABEL_138:
   *&buf[16] = v154;
   if ((NUPixelRectIsEmpty() & 1) == 0)
   {
-    [v10 radius];
+    [strokeCopy radius];
     v15 = v14;
     v16 = NUPixelPointFromCGPoint();
     *&buf[8] = 0;
@@ -863,36 +863,36 @@ LABEL_138:
           *(&v208 + 1) = v13;
           NUPixelRectFlipYOrigin();
           memset(buf, 0, sizeof(buf));
-          v142 = [a1 extractRGBAfPixelsFromImage:v9 fromROI:buf];
+          v142 = [self extractRGBAfPixelsFromImage:bufferCopy fromROI:buf];
           v207 = v147;
           v208 = v148;
           v204 = 0uLL;
           *&v205 = v11;
           *(&v205 + 1) = v13;
           NUPixelRectFlipYOrigin();
-          v140 = [a1 extractRGBAfPixelsFromImage:v9 fromROI:buf];
+          v140 = [self extractRGBAfPixelsFromImage:bufferCopy fromROI:buf];
           v207 = v149;
           v208 = v150;
           v204 = 0uLL;
           *&v205 = v11;
           *(&v205 + 1) = v13;
           NUPixelRectFlipYOrigin();
-          v141 = [a1 extractRGBAfPixelsFromImage:v9 fromROI:buf];
-          v133 = a1;
+          v141 = [self extractRGBAfPixelsFromImage:bufferCopy fromROI:buf];
+          selfCopy = self;
           v18 = objc_alloc(MEMORY[0x1E69B3BA8]);
           v19 = v154;
           v20 = [MEMORY[0x1E69B3BF0] R8];
           v143 = [v18 initWithSize:v19 format:v20];
 
-          [MEMORY[0x1E69B3978] rasterizeBrushStroke:v10 atPoint:v153 toBuffer:v143];
-          v21 = [v140 bytes];
-          v22 = [v140 rowBytes];
-          v23 = [v141 bytes];
-          v24 = [v141 rowBytes];
-          v137 = [v143 bytes];
-          v135 = [v143 rowBytes];
-          v136 = [v142 mutableBytes];
-          v134 = [v142 rowBytes];
+          [MEMORY[0x1E69B3978] rasterizeBrushStroke:strokeCopy atPoint:v153 toBuffer:v143];
+          bytes = [v140 bytes];
+          rowBytes = [v140 rowBytes];
+          bytes2 = [v141 bytes];
+          rowBytes2 = [v141 rowBytes];
+          bytes3 = [v143 bytes];
+          rowBytes3 = [v143 rowBytes];
+          mutableBytes = [v142 mutableBytes];
+          rowBytes4 = [v142 rowBytes];
           *buf = v151;
           *&buf[16] = v152;
           v204 = v147;
@@ -909,9 +909,9 @@ LABEL_138:
             *&buf[16] = v148;
             v26 = NUHeight();
             v181[1] = 0;
-            v182 = v21;
+            v182 = bytes;
             v184 = xmmword_1C7845E00;
-            v183 = v22;
+            v183 = rowBytes;
             v185 = v25;
             v186 = v26;
             v187 = 1;
@@ -924,9 +924,9 @@ LABEL_138:
             *&buf[16] = v150;
             v28 = NUHeight();
             v173[1] = 0;
-            v174 = v23;
+            v174 = bytes2;
             v176 = xmmword_1C7845E00;
-            v175 = v24;
+            v175 = rowBytes2;
             v177 = v27;
             v178 = v28;
             v179 = 1;
@@ -939,9 +939,9 @@ LABEL_138:
             *&buf[16] = v152;
             v30 = NUHeight();
             v165[1] = 0;
-            v166 = v136;
+            v166 = mutableBytes;
             v168 = xmmword_1C7845E00;
-            v167 = v134;
+            v167 = rowBytes4;
             v169 = v29;
             v170 = v30;
             v171 = 1;
@@ -954,9 +954,9 @@ LABEL_138:
             *&buf[16] = v154;
             v32 = NUHeight();
             v157[1] = 0;
-            v158 = v137;
+            v158 = bytes3;
             v160 = xmmword_1C7845E10;
-            v159 = v135;
+            v159 = rowBytes3;
             v161 = v31;
             v162 = v32;
             v163 = 1;
@@ -1121,7 +1121,7 @@ LABEL_138:
                 else if (!CInwardBlur::InwardBlur(buf))
                 {
 LABEL_34:
-                  HIBYTE(v216) = a6;
+                  HIBYTE(v216) = edges;
                   if (!CInwardBlur::InwardBlur(buf))
                   {
                     switch(v160)
@@ -1306,18 +1306,18 @@ LABEL_34:
 
             v82 = objc_alloc(MEMORY[0x1E69B3BA8]);
             v83 = v152;
-            v84 = [v9 format];
-            v85 = [v82 initWithSize:v83 format:v84];
+            format = [bufferCopy format];
+            v85 = [v82 initWithSize:v83 format:format];
 
             v144 = 0;
-            LOBYTE(v84) = [v133 transcodePixelBuffer:v142 toBuffer:v85 error:&v144];
+            LOBYTE(format) = [selfCopy transcodePixelBuffer:v142 toBuffer:v85 error:&v144];
             v86 = v144;
-            if (v84)
+            if (format)
             {
               *&buf[8] = 0;
               *buf = 0;
               *&buf[16] = v146;
-              [MEMORY[0x1E69B3B38] copyPixelsToImage:v9 atPoint:v145 fromBuffer:v85 inRect:buf];
+              [MEMORY[0x1E69B3B38] copyPixelsToImage:bufferCopy atPoint:v145 fromBuffer:v85 inRect:buf];
 
               goto LABEL_57;
             }
@@ -1340,8 +1340,8 @@ LABEL_34:
               if (v124)
               {
                 v130 = dispatch_get_specific(*v121);
-                v131 = [MEMORY[0x1E696AF00] callStackSymbols];
-                v132 = [v131 componentsJoinedByString:@"\n"];
+                callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+                v132 = [callStackSymbols componentsJoinedByString:@"\n"];
                 *buf = 138543618;
                 *&buf[4] = v130;
                 *&buf[12] = 2114;
@@ -1352,8 +1352,8 @@ LABEL_34:
 
             else if (v124)
             {
-              v125 = [MEMORY[0x1E696AF00] callStackSymbols];
-              v126 = [v125 componentsJoinedByString:@"\n"];
+              callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+              v126 = [callStackSymbols2 componentsJoinedByString:@"\n"];
               *buf = 138543362;
               *&buf[4] = v126;
               _os_log_error_impl(&dword_1C7694000, v123, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1382,8 +1382,8 @@ LABEL_34:
               if (v116)
               {
                 v127 = dispatch_get_specific(*v113);
-                v128 = [MEMORY[0x1E696AF00] callStackSymbols];
-                v129 = [v128 componentsJoinedByString:@"\n"];
+                callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+                v129 = [callStackSymbols3 componentsJoinedByString:@"\n"];
                 *buf = 138543618;
                 *&buf[4] = v127;
                 *&buf[12] = 2114;
@@ -1394,8 +1394,8 @@ LABEL_34:
 
             else if (v116)
             {
-              v117 = [MEMORY[0x1E696AF00] callStackSymbols];
-              v118 = [v117 componentsJoinedByString:@"\n"];
+              callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+              v118 = [callStackSymbols4 componentsJoinedByString:@"\n"];
               *buf = 138543362;
               *&buf[4] = v118;
               _os_log_error_impl(&dword_1C7694000, v115, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1413,24 +1413,24 @@ LABEL_34:
 LABEL_57:
 }
 
-+ (BOOL)applyRepairMLStrokeToMutableBuffer:(id)a3 brushStroke:(id)a4 detectedFaces:(id)a5 context:(id)a6 error:(id *)a7
++ (BOOL)applyRepairMLStrokeToMutableBuffer:(id)buffer brushStroke:(id)stroke detectedFaces:(id)faces context:(id)context error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v55 = a6;
-  v57 = v11;
-  v50 = v13;
-  v14 = [v11 format];
-  v56 = v14;
-  v15 = [MEMORY[0x1E69B3B10] newCIImageFromBufferImage:v11];
+  bufferCopy = buffer;
+  strokeCopy = stroke;
+  facesCopy = faces;
+  contextCopy = context;
+  v57 = bufferCopy;
+  v50 = facesCopy;
+  format = [bufferCopy format];
+  v56 = format;
+  v15 = [MEMORY[0x1E69B3B10] newCIImageFromBufferImage:bufferCopy];
   v59 = v15;
-  v62 = [v12 ciImageTiled:0 closed:1 pressureMode:1];
+  v62 = [strokeCopy ciImageTiled:0 closed:1 pressureMode:1];
   v74 = 0u;
   v75 = 0u;
-  if (v12)
+  if (strokeCopy)
   {
-    [v12 clipRect];
+    [strokeCopy clipRect];
   }
 
   v72 = 0u;
@@ -1494,8 +1494,8 @@ LABEL_57:
   v68 = *&v64.a;
   v69 = *&v64.c;
   v33 = MEMORY[0x1E695F658];
-  v34 = [MEMORY[0x1E695F610] whiteColor];
-  v35 = [v33 imageWithColor:v34];
+  whiteColor = [MEMORY[0x1E695F610] whiteColor];
+  v35 = [v33 imageWithColor:whiteColor];
   [v60 extent];
   v54 = [v35 imageByCroppingToRect:?];
 
@@ -1504,7 +1504,7 @@ LABEL_57:
 
   *&v64.a = __PAIR128__(*&b, *&a);
   *&v64.c = __PAIR128__(*&d, *&c);
-  v58 = [a1 prepareForCIFilterWithFaces:v13 cropRect:&v64];
+  v58 = [self prepareForCIFilterWithFaces:facesCopy cropRect:&v64];
   v37 = [MEMORY[0x1E695F648] filterWithName:@"CIInpaintingFilter"];
   [v37 setValue:v60 forKey:@"inputImage"];
   [v37 setValue:v53 forKey:@"inputMaskImage"];
@@ -1520,19 +1520,19 @@ LABEL_57:
     [v37 setValue:v58 forKey:@"inputFaceBoundingBoxes"];
   }
 
-  v51 = [v37 outputImage];
+  outputImage = [v37 outputImage];
   v64.a = a;
   v64.b = b;
   v64.c = c;
   v64.d = d;
-  v40 = [v14 alignedRowBytesForWidth:NUWidth()];
+  v40 = [format alignedRowBytesForWidth:NUWidth()];
   v64.a = a;
   v64.b = b;
   v64.c = c;
   v64.d = d;
   v41 = [MEMORY[0x1E695DF88] dataWithLength:NUHeight() * v40];
   v42 = objc_alloc(MEMORY[0x1E695F678]);
-  v43 = [v41 mutableBytes];
+  mutableBytes = [v41 mutableBytes];
   v64.a = a;
   v64.b = b;
   v64.c = c;
@@ -1542,13 +1542,13 @@ LABEL_57:
   v64.b = b;
   v64.c = c;
   v64.d = d;
-  v45 = [v42 initWithBitmapData:v43 width:v44 height:NUHeight() bytesPerRow:v40 format:{objc_msgSend(v56, "CIFormat")}];
-  v46 = [v57 colorSpace];
-  [v45 setColorSpace:{objc_msgSend(v46, "CGColorSpace")}];
+  v45 = [v42 initWithBitmapData:mutableBytes width:v44 height:NUHeight() bytesPerRow:v40 format:{objc_msgSend(v56, "CIFormat")}];
+  colorSpace = [v57 colorSpace];
+  [v45 setColorSpace:{objc_msgSend(colorSpace, "CGColorSpace")}];
 
   [v45 setLabel:@"PIRepair-applyRepairMLStrokeToMutableBuffer"];
-  v47 = [v55 startTaskToRender:v51 toDestination:v45 error:a7];
-  v48 = [v47 waitUntilCompletedAndReturnError:a7];
+  v47 = [contextCopy startTaskToRender:outputImage toDestination:v45 error:error];
+  v48 = [v47 waitUntilCompletedAndReturnError:error];
 
   memset(&v64, 0, 32);
   *&v66 = a;
@@ -1564,13 +1564,13 @@ LABEL_57:
   return 1;
 }
 
-+ (id)prepareForCIFilterWithFaces:(id)a3 cropRect:(id *)a4
++ (id)prepareForCIFilterWithFaces:(id)faces cropRect:(id *)rect
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 && (v7 = [v5 count]) != 0)
+  facesCopy = faces;
+  v6 = facesCopy;
+  if (facesCopy && (v7 = [facesCopy count]) != 0)
   {
-    var0 = a4->var0;
+    var0 = rect->var0;
     v19 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v7];
     for (i = 0; i != v7; ++i)
     {
@@ -1617,31 +1617,31 @@ LABEL_57:
   return v16;
 }
 
-+ (id)extractRGBAfPixelsFromImage:(id)a3 fromROI:(id *)a4
++ (id)extractRGBAfPixelsFromImage:(id)image fromROI:(id *)i
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  imageCopy = image;
   v7 = objc_alloc(MEMORY[0x1E69B3BA8]);
-  var0 = a4->var1.var0;
-  var1 = a4->var1.var1;
-  v10 = [MEMORY[0x1E69B3BF0] RGBAf];
-  v11 = [v7 initWithSize:var0 format:{var1, v10}];
+  var0 = i->var1.var0;
+  var1 = i->var1.var1;
+  rGBAf = [MEMORY[0x1E69B3BF0] RGBAf];
+  v11 = [v7 initWithSize:var0 format:{var1, rGBAf}];
 
   v12 = objc_alloc(MEMORY[0x1E69B3BA8]);
-  v13 = a4->var1.var0;
-  v14 = a4->var1.var1;
-  v15 = [v6 format];
-  v16 = [v12 initWithSize:v13 format:{v14, v15}];
+  v13 = i->var1.var0;
+  v14 = i->var1.var1;
+  format = [imageCopy format];
+  v16 = [v12 initWithSize:v13 format:{v14, format}];
 
-  v17 = a4->var1;
-  *buf = a4->var0;
+  v17 = i->var1;
+  *buf = i->var0;
   *&buf[16] = v17;
-  [MEMORY[0x1E69B3B38] copyPixelsFromImage:v6 rect:buf destPtr:objc_msgSend(v16 destPtrRowBytes:{"mutableBytes"), objc_msgSend(v16, "rowBytes")}];
+  [MEMORY[0x1E69B3B38] copyPixelsFromImage:imageCopy rect:buf destPtr:objc_msgSend(v16 destPtrRowBytes:{"mutableBytes"), objc_msgSend(v16, "rowBytes")}];
   v32 = 0;
-  LOBYTE(a1) = [a1 transcodePixelBuffer:v16 toBuffer:v11 error:&v32];
+  LOBYTE(self) = [self transcodePixelBuffer:v16 toBuffer:v11 error:&v32];
   v18 = v32;
   v19 = v18;
-  if ((a1 & 1) == 0)
+  if ((self & 1) == 0)
   {
     v21 = NUAssertLogger();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -1661,8 +1661,8 @@ LABEL_57:
       if (v26)
       {
         v29 = dispatch_get_specific(*v23);
-        v30 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v31 = [v30 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v31 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v29;
         *&buf[12] = 2114;
@@ -1673,8 +1673,8 @@ LABEL_57:
 
     else if (v26)
     {
-      v27 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v28 = [v27 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v28 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v28;
       _os_log_error_impl(&dword_1C7694000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1687,41 +1687,41 @@ LABEL_57:
   return v11;
 }
 
-+ (BOOL)transcodePixelBuffer:(id)a3 toBuffer:(id)a4 error:(id *)a5
++ (BOOL)transcodePixelBuffer:(id)buffer toBuffer:(id)toBuffer error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  if (!a5)
+  bufferCopy = buffer;
+  toBufferCopy = toBuffer;
+  if (!error)
   {
-    v52 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v52 handleFailureInMethod:a2 object:a1 file:@"PIRepair.mm" lineNumber:203 description:{@"Invalid parameter not satisfying: %@", @"error"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PIRepair.mm" lineNumber:203 description:{@"Invalid parameter not satisfying: %@", @"error"}];
   }
 
-  v11 = [v9 format];
-  v12 = [MEMORY[0x1E69B3BF0] RGBAh];
-  if (([v11 isEqualToPixelFormat:v12] & 1) == 0)
+  format = [bufferCopy format];
+  rGBAh = [MEMORY[0x1E69B3BF0] RGBAh];
+  if (([format isEqualToPixelFormat:rGBAh] & 1) == 0)
   {
 
 LABEL_8:
-    v21 = [v9 format];
-    v22 = [MEMORY[0x1E69B3BF0] RGBAf];
-    if ([v21 isEqualToPixelFormat:v22])
+    format2 = [bufferCopy format];
+    rGBAf = [MEMORY[0x1E69B3BF0] RGBAf];
+    if ([format2 isEqualToPixelFormat:rGBAf])
     {
-      v23 = [v10 format];
-      v24 = [MEMORY[0x1E69B3BF0] RGBAh];
-      v25 = [v23 isEqualToPixelFormat:v24];
+      format3 = [toBufferCopy format];
+      rGBAh2 = [MEMORY[0x1E69B3BF0] RGBAh];
+      v25 = [format3 isEqualToPixelFormat:rGBAh2];
 
       if (v25)
       {
-        src.data = [v9 bytes];
-        [v9 size];
+        src.data = [bufferCopy bytes];
+        [bufferCopy size];
         src.height = v26;
-        src.width = 4 * [v9 size];
-        src.rowBytes = [v9 rowBytes];
+        src.width = 4 * [bufferCopy size];
+        src.rowBytes = [bufferCopy rowBytes];
         dest.height = src.height;
         dest.width = src.width;
-        dest.data = [v10 mutableBytes];
-        dest.rowBytes = [v10 rowBytes];
+        dest.data = [toBufferCopy mutableBytes];
+        dest.rowBytes = [toBufferCopy rowBytes];
         v27 = vImageConvert_PlanarFtoPlanar16F(&src, &dest, 0);
         if (v27)
         {
@@ -1742,15 +1742,15 @@ LABEL_23:
     }
 
     src.data = 0;
-    v29 = [v9 size];
-    [v9 size];
+    v29 = [bufferCopy size];
+    [bufferCopy size];
     v31 = v30;
-    v32 = [v9 format];
-    v33 = [v32 CVPixelFormat];
-    v34 = [v9 bytes];
-    v35 = [v9 rowBytes];
+    format4 = [bufferCopy format];
+    cVPixelFormat = [format4 CVPixelFormat];
+    bytes = [bufferCopy bytes];
+    rowBytes = [bufferCopy rowBytes];
     v36 = *MEMORY[0x1E695E480];
-    v37 = CVPixelBufferCreateWithBytes(*MEMORY[0x1E695E480], v29, v31, v33, v34, v35, 0, 0, 0, &src);
+    v37 = CVPixelBufferCreateWithBytes(*MEMORY[0x1E695E480], v29, v31, cVPixelFormat, bytes, rowBytes, 0, 0, 0, &src);
 
     if (v37)
     {
@@ -1761,11 +1761,11 @@ LABEL_23:
     }
 
     dest.data = 0;
-    v39 = [v10 size];
-    [v10 size];
+    v39 = [toBufferCopy size];
+    [toBufferCopy size];
     v41 = v40;
-    v42 = [v10 format];
-    v43 = CVPixelBufferCreateWithBytes(v36, v39, v41, [v42 CVPixelFormat], objc_msgSend(v10, "mutableBytes"), objc_msgSend(v10, "rowBytes"), 0, 0, 0, &dest);
+    format5 = [toBufferCopy format];
+    v43 = CVPixelBufferCreateWithBytes(v36, v39, v41, [format5 CVPixelFormat], objc_msgSend(toBufferCopy, "mutableBytes"), objc_msgSend(toBufferCopy, "rowBytes"), 0, 0, 0, &dest);
 
     if (v43)
     {
@@ -1778,12 +1778,12 @@ LABEL_23:
     v19 = [MEMORY[0x1E695F658] imageWithCVPixelBuffer:src.data];
     v47 = objc_alloc(MEMORY[0x1E695F678]);
     v48 = [v47 initWithPixelBuffer:dest.data];
-    v49 = [MEMORY[0x1E695F620] context];
-    v50 = [v49 startTaskToRender:v19 toDestination:v48 error:a5];
+    context = [MEMORY[0x1E695F620] context];
+    v50 = [context startTaskToRender:v19 toDestination:v48 error:error];
 
     if (v50)
     {
-      v51 = [v50 waitUntilCompletedAndReturnError:a5];
+      v51 = [v50 waitUntilCompletedAndReturnError:error];
       if (v51)
       {
         CVPixelBufferRelease(src.data);
@@ -1796,24 +1796,24 @@ LABEL_23:
     goto LABEL_18;
   }
 
-  v13 = [v10 format];
-  v14 = [MEMORY[0x1E69B3BF0] RGBAf];
-  v15 = [v13 isEqualToPixelFormat:v14];
+  format6 = [toBufferCopy format];
+  rGBAf2 = [MEMORY[0x1E69B3BF0] RGBAf];
+  v15 = [format6 isEqualToPixelFormat:rGBAf2];
 
   if (!v15)
   {
     goto LABEL_8;
   }
 
-  src.data = [v9 bytes];
-  [v9 size];
+  src.data = [bufferCopy bytes];
+  [bufferCopy size];
   src.height = v16;
-  src.width = 4 * [v9 size];
-  src.rowBytes = [v9 rowBytes];
+  src.width = 4 * [bufferCopy size];
+  src.rowBytes = [bufferCopy rowBytes];
   dest.height = src.height;
   dest.width = src.width;
-  dest.data = [v10 mutableBytes];
-  dest.rowBytes = [v10 rowBytes];
+  dest.data = [toBufferCopy mutableBytes];
+  dest.rowBytes = [toBufferCopy rowBytes];
   v17 = vImageConvert_Planar16FtoPlanarF(&src, &dest, 0);
   if (!v17)
   {
@@ -1824,7 +1824,7 @@ LABEL_23:
   v19 = [MEMORY[0x1E696AD98] numberWithLong:v17];
   v20 = [v18 failureError:@"Bad half->float conversion" object:v19];
 LABEL_17:
-  *a5 = v20;
+  *error = v20;
 LABEL_18:
 
   v45 = 0;
@@ -1833,13 +1833,13 @@ LABEL_19:
   return v45;
 }
 
-+ (id)brushStrokeFromRetouchStrokeDictionary:(id)a3
++ (id)brushStrokeFromRetouchStrokeDictionary:(id)dictionary
 {
   v40 = *MEMORY[0x1E69E9840];
-  v32 = a3;
-  v29 = [v32 objectForKeyedSubscript:@"radius"];
-  v30 = [v32 objectForKeyedSubscript:@"softness"];
-  v3 = [v32 objectForKeyedSubscript:@"clipRect"];
+  dictionaryCopy = dictionary;
+  v29 = [dictionaryCopy objectForKeyedSubscript:@"radius"];
+  v30 = [dictionaryCopy objectForKeyedSubscript:@"softness"];
+  v3 = [dictionaryCopy objectForKeyedSubscript:@"clipRect"];
   NUPixelRectFromArray();
 
   v4 = objc_alloc(MEMORY[0x1E69B3B90]);
@@ -1849,14 +1849,14 @@ LABEL_19:
   LODWORD(v8) = v7;
   memset(v38, 0, sizeof(v38));
   v31 = [v4 initWithRadius:v38 softness:0 opacity:COERCE_DOUBLE(v6) clipRect:v8 pressureMode:COERCE_DOUBLE(COERCE_UNSIGNED_INT(1.0))];
-  v28 = [v32 objectForKeyedSubscript:@"points"];
+  v28 = [dictionaryCopy objectForKeyedSubscript:@"points"];
   v27 = [v28 count];
   v9 = [MEMORY[0x1E695DF88] dataWithLength:12 * v27];
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = [v32 objectForKeyedSubscript:@"points"];
+  obj = [dictionaryCopy objectForKeyedSubscript:@"points"];
   v10 = [obj countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v10)
   {
@@ -1906,10 +1906,10 @@ LABEL_19:
   return v25;
 }
 
-+ (void)calcExtentsForStrokeRadius:(double)a3 offset:(id)a4 inputImageExtent:(id *)a5 maskExtent:(id *)a6 repairExtent:(id *)a7 textureExtent:(id *)a8 sourceExtent:(id *)a9
++ (void)calcExtentsForStrokeRadius:(double)radius offset:(id)offset inputImageExtent:(id *)extent maskExtent:(id *)maskExtent repairExtent:(id *)repairExtent textureExtent:(id *)textureExtent sourceExtent:(id *)sourceExtent
 {
   v56 = *MEMORY[0x1E69E9840];
-  if (!a7)
+  if (!repairExtent)
   {
     v26 = NUAssertLogger();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -1929,8 +1929,8 @@ LABEL_19:
       if (v31)
       {
         v44 = dispatch_get_specific(*v28);
-        v45 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v46 = [v45 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v46 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v44;
         *&buf[12] = 2114;
@@ -1947,8 +1947,8 @@ LABEL_19:
     }
 
 LABEL_23:
-    v42 = [MEMORY[0x1E696AF00] callStackSymbols];
-    v43 = [v42 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+    v43 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543362;
     *&buf[4] = v43;
     _os_log_error_impl(&dword_1C7694000, v30, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1956,7 +1956,7 @@ LABEL_23:
     goto LABEL_32;
   }
 
-  if (!a8)
+  if (!textureExtent)
   {
     v32 = NUAssertLogger();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -1976,8 +1976,8 @@ LABEL_23:
       if (v36)
       {
         v47 = dispatch_get_specific(*v34);
-        v48 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v49 = [v48 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v49 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v47;
         *&buf[12] = 2114;
@@ -1996,7 +1996,7 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  if (!a9)
+  if (!sourceExtent)
   {
     v37 = NUAssertLogger();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -2024,8 +2024,8 @@ LABEL_23:
     if (v41)
     {
       v50 = dispatch_get_specific(*v39);
-      v51 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v52 = [v51 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v52 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       *&buf[4] = v50;
       *&buf[12] = 2114;
@@ -2039,33 +2039,33 @@ LABEL_32:
     __break(1u);
   }
 
-  var1 = a6->var1;
-  a7->var0 = a6->var0;
-  a7->var1 = var1;
+  var1 = maskExtent->var1;
+  repairExtent->var0 = maskExtent->var0;
+  repairExtent->var1 = var1;
   NUPixelRectIntersection();
   v12 = *&buf[16];
-  a7->var0 = *buf;
-  a7->var1 = v12;
+  repairExtent->var0 = *buf;
+  repairExtent->var1 = v12;
   NUPixelRectSetOrigin();
   v13 = *&buf[16];
-  a8->var0 = *buf;
-  a8->var1 = v13;
+  textureExtent->var0 = *buf;
+  textureExtent->var1 = v13;
   NUPixelRectConstrainToRect();
   v14 = *&buf[16];
-  a8->var0 = *buf;
-  a8->var1 = v14;
-  v15 = a7->var1;
-  *buf = a7->var0;
+  textureExtent->var0 = *buf;
+  textureExtent->var1 = v14;
+  v15 = repairExtent->var1;
+  *buf = repairExtent->var0;
   *&buf[16] = v15;
-  if (NUPixelRectIsEmpty() & 1) != 0 || (v16 = a8->var1, *buf = a8->var0, *&buf[16] = v16, (NUPixelRectIsEmpty()))
+  if (NUPixelRectIsEmpty() & 1) != 0 || (v16 = textureExtent->var1, *buf = textureExtent->var0, *&buf[16] = v16, (NUPixelRectIsEmpty()))
   {
     v17 = MEMORY[0x1E69B3908];
     v18 = *(MEMORY[0x1E69B3908] + 16);
-    a8->var0 = *MEMORY[0x1E69B3908];
-    a8->var1 = v18;
+    textureExtent->var0 = *MEMORY[0x1E69B3908];
+    textureExtent->var1 = v18;
     v19 = v17[1];
-    a7->var0 = *v17;
-    a7->var1 = v19;
+    repairExtent->var0 = *v17;
+    repairExtent->var1 = v19;
     v20 = *v17;
     v21 = v17[1];
   }
@@ -2088,14 +2088,14 @@ LABEL_32:
     v53.var1 = NUMinY() + v24 - v25;
     v54.var0 = NUWidth();
     v54.var1 = NUHeight();
-    a8->var0 = v53;
-    a8->var1 = v54;
+    textureExtent->var0 = v53;
+    textureExtent->var1 = v54;
     v20 = 0;
     v21 = 0;
   }
 
-  a9->var0 = v20;
-  a9->var1 = v21;
+  sourceExtent->var0 = v20;
+  sourceExtent->var1 = v21;
 }
 
 @end

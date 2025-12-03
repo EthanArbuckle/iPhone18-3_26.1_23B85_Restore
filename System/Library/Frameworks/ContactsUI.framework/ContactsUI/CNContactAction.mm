@@ -1,12 +1,12 @@
 @interface CNContactAction
-+ (id)contactActionWithTitle:(id)a3 target:(id)a4 selector:(SEL)a5 destructive:(BOOL)a6;
-- (CNContactAction)initWithContact:(id)a3;
-- (CNContactAction)initWithTitle:(id)a3 target:(id)a4 selector:(SEL)a5 destructive:(BOOL)a6;
++ (id)contactActionWithTitle:(id)title target:(id)target selector:(SEL)selector destructive:(BOOL)destructive;
+- (CNContactAction)initWithContact:(id)contact;
+- (CNContactAction)initWithTitle:(id)title target:(id)target selector:(SEL)selector destructive:(BOOL)destructive;
 - (CNContactActionDelegate)delegate;
 - (CNMutableContact)mutableContact;
 - (SEL)selector;
 - (id)description;
-- (void)performActionWithSender:(id)a3;
+- (void)performActionWithSender:(id)sender;
 @end
 
 @implementation CNContactAction
@@ -33,122 +33,122 @@
 
 - (id)description
 {
-  v3 = [(CNContactAction *)self target];
-  if (v3 && (v4 = v3, v5 = [(CNContactAction *)self selector], v4, v5))
+  target = [(CNContactAction *)self target];
+  if (target && (v4 = target, v5 = [(CNContactAction *)self selector], v4, v5))
   {
     v6 = MEMORY[0x1E696AEC0];
     v7 = objc_opt_class();
-    v8 = [(CNContactAction *)self title];
-    v9 = [(CNContactAction *)self target];
+    title = [(CNContactAction *)self title];
+    target2 = [(CNContactAction *)self target];
     v10 = objc_opt_class();
     v11 = NSStringFromSelector([(CNContactAction *)self selector]);
-    v12 = [v6 stringWithFormat:@"<%@ %p> %@: -[%@ %@]", v7, self, v8, v10, v11];
+    v12 = [v6 stringWithFormat:@"<%@ %p> %@: -[%@ %@]", v7, self, title, v10, v11];
   }
 
   else
   {
     v13 = MEMORY[0x1E696AEC0];
     v14 = objc_opt_class();
-    v8 = [(CNContactAction *)self contact];
-    v12 = [v13 stringWithFormat:@"<%@ %p> : %@", v14, self, v8];
+    title = [(CNContactAction *)self contact];
+    v12 = [v13 stringWithFormat:@"<%@ %p> : %@", v14, self, title];
   }
 
   return v12;
 }
 
-- (void)performActionWithSender:(id)a3
+- (void)performActionWithSender:(id)sender
 {
-  v9 = a3;
-  v4 = [(CNContactAction *)self target];
-  if (v4)
+  senderCopy = sender;
+  target = [(CNContactAction *)self target];
+  if (target)
   {
-    v5 = v4;
-    v6 = [(CNContactAction *)self selector];
+    v5 = target;
+    selector = [(CNContactAction *)self selector];
 
-    if (v6)
+    if (selector)
     {
-      v7 = [(CNContactAction *)self target];
-      [v7 -[CNContactAction selector](self];
+      target2 = [(CNContactAction *)self target];
+      [target2 -[CNContactAction selector](self];
     }
   }
 
-  v8 = [(CNContactAction *)self delegate];
-  [v8 actionDidFinish:self];
+  delegate = [(CNContactAction *)self delegate];
+  [delegate actionDidFinish:self];
 }
 
 - (CNMutableContact)mutableContact
 {
-  v3 = [(CNContactAction *)self contact];
+  contact = [(CNContactAction *)self contact];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(CNContactAction *)self contact];
+    contact2 = [(CNContactAction *)self contact];
   }
 
   else
   {
-    v5 = 0;
+    contact2 = 0;
   }
 
-  return v5;
+  return contact2;
 }
 
-- (CNContactAction)initWithTitle:(id)a3 target:(id)a4 selector:(SEL)a5 destructive:(BOOL)a6
+- (CNContactAction)initWithTitle:(id)title target:(id)target selector:(SEL)selector destructive:(BOOL)destructive
 {
-  v10 = a3;
-  v11 = a4;
+  titleCopy = title;
+  targetCopy = target;
   v17.receiver = self;
   v17.super_class = CNContactAction;
   v12 = [(CNContactAction *)&v17 init];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [titleCopy copy];
     title = v12->_title;
     v12->_title = v13;
 
-    objc_storeStrong(&v12->_target, a4);
-    if (a5)
+    objc_storeStrong(&v12->_target, target);
+    if (selector)
     {
-      v15 = a5;
+      selectorCopy = selector;
     }
 
     else
     {
-      v15 = 0;
+      selectorCopy = 0;
     }
 
-    v12->_selector = v15;
-    v12->_destructive = a6;
+    v12->_selector = selectorCopy;
+    v12->_destructive = destructive;
     v12->_showBackgroundPlatter = 1;
   }
 
   return v12;
 }
 
-- (CNContactAction)initWithContact:(id)a3
+- (CNContactAction)initWithContact:(id)contact
 {
-  v5 = a3;
+  contactCopy = contact;
   v9.receiver = self;
   v9.super_class = CNContactAction;
   v6 = [(CNContactAction *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contact, a3);
+    objc_storeStrong(&v6->_contact, contact);
     v7->_showBackgroundPlatter = 1;
   }
 
   return v7;
 }
 
-+ (id)contactActionWithTitle:(id)a3 target:(id)a4 selector:(SEL)a5 destructive:(BOOL)a6
++ (id)contactActionWithTitle:(id)title target:(id)target selector:(SEL)selector destructive:(BOOL)destructive
 {
-  v6 = a6;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[CNContactAction alloc] initWithTitle:v10 target:v9 selector:a5 destructive:v6];
+  destructiveCopy = destructive;
+  targetCopy = target;
+  titleCopy = title;
+  v11 = [[CNContactAction alloc] initWithTitle:titleCopy target:targetCopy selector:selector destructive:destructiveCopy];
 
   return v11;
 }

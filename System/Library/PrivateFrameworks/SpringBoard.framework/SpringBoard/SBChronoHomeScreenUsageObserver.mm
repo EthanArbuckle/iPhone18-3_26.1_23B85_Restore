@@ -1,42 +1,42 @@
 @interface SBChronoHomeScreenUsageObserver
 - (SBChronoHomeScreenUsageObserver)init;
-- (SBChronoHomeScreenUsageObserver)initWithIconManager:(id)a3;
+- (SBChronoHomeScreenUsageObserver)initWithIconManager:(id)manager;
 - (UIViewController)appearanceChangeObservedViewController;
-- (id)_containerDescriptorForWidgetIcon:(id)a3 atLocation:(int64_t)a4 page:(unint64_t)a5;
-- (id)_descriptionForArray:(id)a3 name:(id)a4;
+- (id)_containerDescriptorForWidgetIcon:(id)icon atLocation:(int64_t)location page:(unint64_t)page;
+- (id)_descriptionForArray:(id)array name:(id)name;
 - (unint64_t)_supportedFamilies;
 - (void)_rebuildAndTransmitConfiguredWidgetData;
-- (void)_rebuildAndTransmitConfiguredWidgetData:(id)a3;
+- (void)_rebuildAndTransmitConfiguredWidgetData:(id)data;
 - (void)_startObservingAppearanceChanges;
-- (void)homeScreenUsageAggregator:(id)a3 didNoteCurrentPageIndexChanged:(unint64_t)a4;
-- (void)homeScreenUsageAggregator:(id)a3 didNoteUserAddedWidgetIconStackSuggestion:(id)a4;
-- (void)homeScreenUsageAggregator:(id)a3 didNoteUserDislikedSiriSuggestionOnWidgetIconStackSuggestion:(id)a4;
-- (void)homeScreenUsageAggregator:(id)a3 didNoteUserDislikedWidgetIconStackSuggestion:(id)a4;
-- (void)homeScreenUsageAggregator:(id)a3 didNoteUserTappedWidgetIcon:(id)a4 withURL:(id)a5;
-- (void)homeScreenUsageAggregator:(id)a3 didNoteWidgetIconAdded:(id)a4;
-- (void)homeScreenUsageAggregator:(id)a3 didNoteWidgetIconRemoved:(id)a4;
-- (void)homeScreenUsageAggregator:(id)a3 didNoteWidgetIconStackChangedActiveWidget:(id)a4;
-- (void)homeScreenUsageAggregatorAddWidgetSheetWillPresent:(id)a3;
-- (void)homeScreenUsageAggregatorDidNoteEditingModeEnded:(id)a3;
-- (void)homeScreenUsageAggregatorDidNoteEditingModeEntered:(id)a3;
-- (void)homeScreenUsageAggregatorDidNoteIconStylePickerDidDismiss:(id)a3;
-- (void)homeScreenUsageAggregatorDidNoteListLayoutProviderChanged:(id)a3;
+- (void)homeScreenUsageAggregator:(id)aggregator didNoteCurrentPageIndexChanged:(unint64_t)changed;
+- (void)homeScreenUsageAggregator:(id)aggregator didNoteUserAddedWidgetIconStackSuggestion:(id)suggestion;
+- (void)homeScreenUsageAggregator:(id)aggregator didNoteUserDislikedSiriSuggestionOnWidgetIconStackSuggestion:(id)suggestion;
+- (void)homeScreenUsageAggregator:(id)aggregator didNoteUserDislikedWidgetIconStackSuggestion:(id)suggestion;
+- (void)homeScreenUsageAggregator:(id)aggregator didNoteUserTappedWidgetIcon:(id)icon withURL:(id)l;
+- (void)homeScreenUsageAggregator:(id)aggregator didNoteWidgetIconAdded:(id)added;
+- (void)homeScreenUsageAggregator:(id)aggregator didNoteWidgetIconRemoved:(id)removed;
+- (void)homeScreenUsageAggregator:(id)aggregator didNoteWidgetIconStackChangedActiveWidget:(id)widget;
+- (void)homeScreenUsageAggregatorAddWidgetSheetWillPresent:(id)present;
+- (void)homeScreenUsageAggregatorDidNoteEditingModeEnded:(id)ended;
+- (void)homeScreenUsageAggregatorDidNoteEditingModeEntered:(id)entered;
+- (void)homeScreenUsageAggregatorDidNoteIconStylePickerDidDismiss:(id)dismiss;
+- (void)homeScreenUsageAggregatorDidNoteListLayoutProviderChanged:(id)changed;
 @end
 
 @implementation SBChronoHomeScreenUsageObserver
 
 - (SBChronoHomeScreenUsageObserver)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SBChronoHomeScreenUsageObserver.m" lineNumber:49 description:@"use -initWithSBHIconManager:"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBChronoHomeScreenUsageObserver.m" lineNumber:49 description:@"use -initWithSBHIconManager:"];
 
   return 0;
 }
 
-- (SBChronoHomeScreenUsageObserver)initWithIconManager:(id)a3
+- (SBChronoHomeScreenUsageObserver)initWithIconManager:(id)manager
 {
-  v6 = a3;
-  if (!v6)
+  managerCopy = manager;
+  if (!managerCopy)
   {
     [(SBChronoHomeScreenUsageObserver *)a2 initWithIconManager:?];
   }
@@ -47,13 +47,13 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_iconManager, a3);
+    objc_storeStrong(&v7->_iconManager, manager);
     [(SBHIconManager *)v8->_iconManager setUsageMonitoringEnabled:1];
-    v9 = [(SBHIconManager *)v8->_iconManager usageMonitor];
-    [v9 addObserver:v8];
+    usageMonitor = [(SBHIconManager *)v8->_iconManager usageMonitor];
+    [usageMonitor addObserver:v8];
 
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:v8 selector:sel_rootViewControllerDidChange_ name:*MEMORY[0x277D66578] object:v8->_iconManager];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel_rootViewControllerDidChange_ name:*MEMORY[0x277D66578] object:v8->_iconManager];
 
     [(SBChronoHomeScreenUsageObserver *)v8 _startObservingAppearanceChanges];
     v11 = [objc_alloc(MEMORY[0x277CFA3D0]) initWithIdentifier:@"SpringBoard-Homescreen"];
@@ -66,9 +66,9 @@
   return v8;
 }
 
-- (void)homeScreenUsageAggregatorDidNoteEditingModeEntered:(id)a3
+- (void)homeScreenUsageAggregatorDidNoteEditingModeEntered:(id)entered
 {
-  v4 = a3;
+  enteredCopy = entered;
   v5 = SBLogChrono();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -76,14 +76,14 @@
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Editing mode entered", v7, 2u);
   }
 
-  v6 = [v4 iconManager];
+  iconManager = [enteredCopy iconManager];
 
-  [(SBChronoHomeScreenUsageObserver *)self _rebuildAndTransmitConfiguredWidgetData:v6];
+  [(SBChronoHomeScreenUsageObserver *)self _rebuildAndTransmitConfiguredWidgetData:iconManager];
 }
 
-- (void)homeScreenUsageAggregatorDidNoteEditingModeEnded:(id)a3
+- (void)homeScreenUsageAggregatorDidNoteEditingModeEnded:(id)ended
 {
-  v4 = a3;
+  endedCopy = ended;
   v5 = SBLogChrono();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -91,14 +91,14 @@
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Editing mode exited", v7, 2u);
   }
 
-  v6 = [v4 iconManager];
+  iconManager = [endedCopy iconManager];
 
-  [(SBChronoHomeScreenUsageObserver *)self _rebuildAndTransmitConfiguredWidgetData:v6];
+  [(SBChronoHomeScreenUsageObserver *)self _rebuildAndTransmitConfiguredWidgetData:iconManager];
 }
 
-- (void)homeScreenUsageAggregatorDidNoteIconStylePickerDidDismiss:(id)a3
+- (void)homeScreenUsageAggregatorDidNoteIconStylePickerDidDismiss:(id)dismiss
 {
-  v4 = a3;
+  dismissCopy = dismiss;
   v5 = SBLogChrono();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -106,26 +106,26 @@
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Icon style picker did dismiss", v7, 2u);
   }
 
-  v6 = [v4 iconManager];
+  iconManager = [dismissCopy iconManager];
 
-  [(SBChronoHomeScreenUsageObserver *)self _rebuildAndTransmitConfiguredWidgetData:v6];
+  [(SBChronoHomeScreenUsageObserver *)self _rebuildAndTransmitConfiguredWidgetData:iconManager];
 }
 
-- (void)homeScreenUsageAggregator:(id)a3 didNoteCurrentPageIndexChanged:(unint64_t)a4
+- (void)homeScreenUsageAggregator:(id)aggregator didNoteCurrentPageIndexChanged:(unint64_t)changed
 {
   v8 = *MEMORY[0x277D85DE8];
   v5 = SBLogChrono();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = a4;
+    changedCopy = changed;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Current home screen page changed to: %lu", &v6, 0xCu);
   }
 }
 
-- (void)homeScreenUsageAggregatorDidNoteListLayoutProviderChanged:(id)a3
+- (void)homeScreenUsageAggregatorDidNoteListLayoutProviderChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = SBLogChrono();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -133,128 +133,128 @@
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "List layout provider changed", v7, 2u);
   }
 
-  v6 = [v4 iconManager];
+  iconManager = [changedCopy iconManager];
 
-  [(SBChronoHomeScreenUsageObserver *)self _rebuildAndTransmitConfiguredWidgetData:v6];
+  [(SBChronoHomeScreenUsageObserver *)self _rebuildAndTransmitConfiguredWidgetData:iconManager];
 }
 
-- (void)homeScreenUsageAggregator:(id)a3 didNoteWidgetIconAdded:(id)a4
+- (void)homeScreenUsageAggregator:(id)aggregator didNoteWidgetIconAdded:(id)added
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  addedCopy = added;
+  aggregatorCopy = aggregator;
   v8 = SBLogChrono();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 widgets];
+    widgets = [addedCopy widgets];
     v11 = 138412290;
-    v12 = v9;
+    v12 = widgets;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Widget icon added: %@", &v11, 0xCu);
   }
 
-  v10 = [v7 iconManager];
+  iconManager = [aggregatorCopy iconManager];
 
-  [(SBChronoHomeScreenUsageObserver *)self _rebuildAndTransmitConfiguredWidgetData:v10];
+  [(SBChronoHomeScreenUsageObserver *)self _rebuildAndTransmitConfiguredWidgetData:iconManager];
 }
 
-- (void)homeScreenUsageAggregator:(id)a3 didNoteWidgetIconRemoved:(id)a4
+- (void)homeScreenUsageAggregator:(id)aggregator didNoteWidgetIconRemoved:(id)removed
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  removedCopy = removed;
+  aggregatorCopy = aggregator;
   v8 = SBLogChrono();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 widgets];
+    widgets = [removedCopy widgets];
     v11 = 138412290;
-    v12 = v9;
+    v12 = widgets;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Widget icon removed: %@", &v11, 0xCu);
   }
 
-  v10 = [v7 iconManager];
+  iconManager = [aggregatorCopy iconManager];
 
-  [(SBChronoHomeScreenUsageObserver *)self _rebuildAndTransmitConfiguredWidgetData:v10];
+  [(SBChronoHomeScreenUsageObserver *)self _rebuildAndTransmitConfiguredWidgetData:iconManager];
 }
 
-- (void)homeScreenUsageAggregator:(id)a3 didNoteWidgetIconStackChangedActiveWidget:(id)a4
+- (void)homeScreenUsageAggregator:(id)aggregator didNoteWidgetIconStackChangedActiveWidget:(id)widget
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  widgetCopy = widget;
+  aggregatorCopy = aggregator;
   v8 = SBLogChrono();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 activeDataSource];
-    v10 = [v6 widgets];
+    activeDataSource = [widgetCopy activeDataSource];
+    widgets = [widgetCopy widgets];
     v12 = 138412546;
-    v13 = v9;
+    v13 = activeDataSource;
     v14 = 2112;
-    v15 = v10;
+    v15 = widgets;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Widget icon stack changed active widget: %@ all widgets: %@", &v12, 0x16u);
   }
 
-  v11 = [v7 iconManager];
+  iconManager = [aggregatorCopy iconManager];
 
-  [(SBChronoHomeScreenUsageObserver *)self _rebuildAndTransmitConfiguredWidgetData:v11];
+  [(SBChronoHomeScreenUsageObserver *)self _rebuildAndTransmitConfiguredWidgetData:iconManager];
 }
 
-- (void)homeScreenUsageAggregator:(id)a3 didNoteUserAddedWidgetIconStackSuggestion:(id)a4
+- (void)homeScreenUsageAggregator:(id)aggregator didNoteUserAddedWidgetIconStackSuggestion:(id)suggestion
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  suggestionCopy = suggestion;
   v5 = SBLogChrono();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 widgets];
+    widgets = [suggestionCopy widgets];
     v7 = 138412290;
-    v8 = v6;
+    v8 = widgets;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Widget icon stack noted user added suggestion: %@", &v7, 0xCu);
   }
 }
 
-- (void)homeScreenUsageAggregator:(id)a3 didNoteUserDislikedWidgetIconStackSuggestion:(id)a4
+- (void)homeScreenUsageAggregator:(id)aggregator didNoteUserDislikedWidgetIconStackSuggestion:(id)suggestion
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  suggestionCopy = suggestion;
   v5 = SBLogChrono();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 widgets];
+    widgets = [suggestionCopy widgets];
     v7 = 138412290;
-    v8 = v6;
+    v8 = widgets;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Widget icon stack noted user dislike of suggestion: %@", &v7, 0xCu);
   }
 }
 
-- (void)homeScreenUsageAggregator:(id)a3 didNoteUserDislikedSiriSuggestionOnWidgetIconStackSuggestion:(id)a4
+- (void)homeScreenUsageAggregator:(id)aggregator didNoteUserDislikedSiriSuggestionOnWidgetIconStackSuggestion:(id)suggestion
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  suggestionCopy = suggestion;
   v5 = SBLogChrono();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 widgets];
+    widgets = [suggestionCopy widgets];
     v7 = 138412290;
-    v8 = v6;
+    v8 = widgets;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Widget icon stack noted dislike of Siri Suggestion on suggestion: %@", &v7, 0xCu);
   }
 }
 
-- (void)homeScreenUsageAggregator:(id)a3 didNoteUserTappedWidgetIcon:(id)a4 withURL:(id)a5
+- (void)homeScreenUsageAggregator:(id)aggregator didNoteUserTappedWidgetIcon:(id)icon withURL:(id)l
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  iconCopy = icon;
   v6 = SBLogChrono();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 widgets];
+    widgets = [iconCopy widgets];
     v8 = 138412290;
-    v9 = v7;
+    v9 = widgets;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "Widget icon tapped: %@", &v8, 0xCu);
   }
 }
 
-- (void)homeScreenUsageAggregatorAddWidgetSheetWillPresent:(id)a3
+- (void)homeScreenUsageAggregatorAddWidgetSheetWillPresent:(id)present
 {
   v4 = SBLogChrono();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -264,9 +264,9 @@
   }
 
   v5 = objc_alloc_init(MEMORY[0x277CFA280]);
-  v6 = [(SBChronoHomeScreenUsageObserver *)self widgetHost];
-  v7 = [v6 identifier];
-  [v5 userEnteredAddGalleryForHost:v7];
+  widgetHost = [(SBChronoHomeScreenUsageObserver *)self widgetHost];
+  identifier = [widgetHost identifier];
+  [v5 userEnteredAddGalleryForHost:identifier];
 }
 
 - (unint64_t)_supportedFamilies
@@ -285,13 +285,13 @@
 
 - (void)_rebuildAndTransmitConfiguredWidgetData
 {
-  v3 = [(SBChronoHomeScreenUsageObserver *)self iconManager];
-  [(SBChronoHomeScreenUsageObserver *)self _rebuildAndTransmitConfiguredWidgetData:v3];
+  iconManager = [(SBChronoHomeScreenUsageObserver *)self iconManager];
+  [(SBChronoHomeScreenUsageObserver *)self _rebuildAndTransmitConfiguredWidgetData:iconManager];
 }
 
-- (void)_rebuildAndTransmitConfiguredWidgetData:(id)a3
+- (void)_rebuildAndTransmitConfiguredWidgetData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = [(SBChronoHomeScreenUsageObserver *)self widgetDataGeneration]+ 1;
   [(SBChronoHomeScreenUsageObserver *)self setWidgetDataGeneration:v6];
   v8[0] = MEMORY[0x277D85DD0];
@@ -299,10 +299,10 @@
   v8[2] = __75__SBChronoHomeScreenUsageObserver__rebuildAndTransmitConfiguredWidgetData___block_invoke;
   v8[3] = &unk_2783AB9E0;
   v8[4] = self;
-  v9 = v5;
+  v9 = dataCopy;
   v10 = v6;
   v11 = a2;
-  v7 = v5;
+  v7 = dataCopy;
   [v7 performAfterCachingWidgetIntentsUsingBlock:v8];
 }
 
@@ -386,33 +386,33 @@ void __75__SBChronoHomeScreenUsageObserver__rebuildAndTransmitConfiguredWidgetDa
   }
 }
 
-- (id)_containerDescriptorForWidgetIcon:(id)a3 atLocation:(int64_t)a4 page:(unint64_t)a5
+- (id)_containerDescriptorForWidgetIcon:(id)icon atLocation:(int64_t)location page:(unint64_t)page
 {
   v66 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v49 = [MEMORY[0x277CBEB18] array];
-  v46 = [v6 gridSizeClass];
+  iconCopy = icon;
+  array = [MEMORY[0x277CBEB18] array];
+  gridSizeClass = [iconCopy gridSizeClass];
   v56 = CHSWidgetFamilyForSBHIconGridSizeClass();
-  v7 = [v6 widgets];
-  v52 = [(SBHIconManager *)self->_iconManager widgetExtensionProvider];
-  v55 = self;
-  v54 = [(SBChronoHomeScreenUsageObserver *)self iconManager];
-  v8 = [v54 rootFolderController];
-  v9 = [v8 traitCollection];
+  widgets = [iconCopy widgets];
+  widgetExtensionProvider = [(SBHIconManager *)self->_iconManager widgetExtensionProvider];
+  selfCopy = self;
+  iconManager = [(SBChronoHomeScreenUsageObserver *)self iconManager];
+  rootFolderController = [iconManager rootFolderController];
+  traitCollection = [rootFolderController traitCollection];
 
-  v45 = v9;
-  v44 = [MEMORY[0x277D75C80] sbh_iconImageAppearanceFromTraitCollection:v9];
-  v47 = [v44 appearanceType];
+  v45 = traitCollection;
+  v44 = [MEMORY[0x277D75C80] sbh_iconImageAppearanceFromTraitCollection:traitCollection];
+  appearanceType = [v44 appearanceType];
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  obj = v7;
+  obj = widgets;
   v53 = [obj countByEnumeratingWithState:&v57 objects:v65 count:16];
   if (v53)
   {
     v50 = *v58;
-    v51 = v6;
+    v51 = iconCopy;
     do
     {
       v10 = 0;
@@ -424,35 +424,35 @@ void __75__SBChronoHomeScreenUsageObserver__rebuildAndTransmitConfiguredWidgetDa
         }
 
         v11 = *(*(&v57 + 1) + 8 * v10);
-        v12 = [(SBChronoHomeScreenUsageObserver *)v55 iconManager];
-        v13 = [v12 intentForWidget:v11 ofIcon:v6];
+        iconManager2 = [(SBChronoHomeScreenUsageObserver *)selfCopy iconManager];
+        v13 = [iconManager2 intentForWidget:v11 ofIcon:iconCopy];
 
         v14 = objc_alloc(MEMORY[0x277CFA258]);
-        v15 = [v11 extensionBundleIdentifier];
-        v16 = [v11 containerBundleIdentifier];
-        v17 = [v14 initWithExtensionBundleIdentifier:v15 containerBundleIdentifier:v16 deviceIdentifier:0];
+        extensionBundleIdentifier = [v11 extensionBundleIdentifier];
+        containerBundleIdentifier = [v11 containerBundleIdentifier];
+        v17 = [v14 initWithExtensionBundleIdentifier:extensionBundleIdentifier containerBundleIdentifier:containerBundleIdentifier deviceIdentifier:0];
 
         v18 = objc_alloc(MEMORY[0x277CFA358]);
-        v19 = [v11 kind];
-        v20 = [v18 initWithExtensionIdentity:v17 kind:v19 family:v56 intent:v13 activityIdentifier:0];
+        kind = [v11 kind];
+        v20 = [v18 initWithExtensionIdentity:v17 kind:kind family:v56 intent:v13 activityIdentifier:0];
 
-        v21 = [v52 sbh_descriptorForWidgetIdentifiable:v20];
-        v22 = [(SBChronoHomeScreenUsageObserver *)v55 iconManager];
-        v23 = [v22 widgetMetricsProvider];
-        v24 = [v23 systemMetricsForWidget:v20];
+        v21 = [widgetExtensionProvider sbh_descriptorForWidgetIdentifiable:v20];
+        iconManager3 = [(SBChronoHomeScreenUsageObserver *)selfCopy iconManager];
+        widgetMetricsProvider = [iconManager3 widgetMetricsProvider];
+        v24 = [widgetMetricsProvider systemMetricsForWidget:v20];
 
         v25 = objc_alloc(MEMORY[0x277CFA288]);
-        v26 = [v11 uniqueIdentifier];
-        v27 = [v25 initWithUniqueIdentifier:v26 widget:v20 metrics:v24];
+        uniqueIdentifier = [v11 uniqueIdentifier];
+        v27 = [v25 initWithUniqueIdentifier:uniqueIdentifier widget:v20 metrics:v24];
 
         [v27 setSuggestion:{objc_msgSend(v11, "suggestionSource") == 1}];
         [v27 setSystemConfigured:{objc_msgSend(v11, "suggestionSource") == 2}];
-        if (([v54 isEditing] & 1) != 0 || objc_msgSend(v54, "isIconStylePickerVisible"))
+        if (([iconManager isEditing] & 1) != 0 || objc_msgSend(iconManager, "isIconStylePickerVisible"))
         {
           v28 = [objc_alloc(MEMORY[0x277CFA430]) initWithRenderingMode:0 backgroundViewPolicy:0];
           v29 = MEMORY[0x277D66338];
-          v30 = [(SBHIconManager *)v55->_iconManager widgetExtensionProvider];
-          v31 = [v29 tintedRenderSchemeForWidgetDescriptor:v21 family:v56 widgetExtensionProvider:v30];
+          widgetExtensionProvider2 = [(SBHIconManager *)selfCopy->_iconManager widgetExtensionProvider];
+          v31 = [v29 tintedRenderSchemeForWidgetDescriptor:v21 family:v56 widgetExtensionProvider:widgetExtensionProvider2];
 
           v64[0] = v28;
           v64[1] = v31;
@@ -462,9 +462,9 @@ void __75__SBChronoHomeScreenUsageObserver__rebuildAndTransmitConfiguredWidgetDa
 
         else
         {
-          if (v47 - 2 >= 5)
+          if (appearanceType - 2 >= 5)
           {
-            if (v47 > 1)
+            if (appearanceType > 1)
             {
               v28 = 0;
             }
@@ -478,8 +478,8 @@ void __75__SBChronoHomeScreenUsageObserver__rebuildAndTransmitConfiguredWidgetDa
           else
           {
             v33 = MEMORY[0x277D66338];
-            v34 = [(SBHIconManager *)v55->_iconManager widgetExtensionProvider];
-            v28 = [v33 tintedRenderSchemeForWidgetDescriptor:v21 family:v56 widgetExtensionProvider:v34];
+            widgetExtensionProvider3 = [(SBHIconManager *)selfCopy->_iconManager widgetExtensionProvider];
+            v28 = [v33 tintedRenderSchemeForWidgetDescriptor:v21 family:v56 widgetExtensionProvider:widgetExtensionProvider3];
           }
 
           v63 = v28;
@@ -489,7 +489,7 @@ void __75__SBChronoHomeScreenUsageObserver__rebuildAndTransmitConfiguredWidgetDa
 
         if (v27)
         {
-          [v49 addObject:v27];
+          [array addObject:v27];
           v35 = SBLogChronoVerbose();
           if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
           {
@@ -500,7 +500,7 @@ void __75__SBChronoHomeScreenUsageObserver__rebuildAndTransmitConfiguredWidgetDa
         }
 
         ++v10;
-        v6 = v51;
+        iconCopy = v51;
       }
 
       while (v53 != v10);
@@ -510,13 +510,13 @@ void __75__SBChronoHomeScreenUsageObserver__rebuildAndTransmitConfiguredWidgetDa
     while (v53);
   }
 
-  if ([v49 count])
+  if ([array count])
   {
     v36 = objc_alloc(MEMORY[0x277CFA1E0]);
-    v37 = [v6 uniqueIdentifier];
-    v38 = [v6 activeWidget];
-    v39 = [v38 uniqueIdentifier];
-    v40 = [v36 initWithUniqueIdentifier:v37 location:a4 canAppearInSecureEnvironment:a4 == 2 page:a5 family:v56 widgets:v49 activeWidget:v39];
+    uniqueIdentifier2 = [iconCopy uniqueIdentifier];
+    activeWidget = [iconCopy activeWidget];
+    uniqueIdentifier3 = [activeWidget uniqueIdentifier];
+    v40 = [v36 initWithUniqueIdentifier:uniqueIdentifier2 location:location canAppearInSecureEnvironment:location == 2 page:page family:v56 widgets:array activeWidget:uniqueIdentifier3];
   }
 
   else
@@ -527,41 +527,41 @@ void __75__SBChronoHomeScreenUsageObserver__rebuildAndTransmitConfiguredWidgetDa
   return v40;
 }
 
-- (id)_descriptionForArray:(id)a3 name:(id)a4
+- (id)_descriptionForArray:(id)array name:(id)name
 {
   v5 = MEMORY[0x277CF0C00];
-  v6 = a4;
-  v7 = a3;
+  nameCopy = name;
+  arrayCopy = array;
   v8 = [v5 builderWithObject:0];
-  [v8 appendArraySection:v7 withName:v6 skipIfEmpty:0];
+  [v8 appendArraySection:arrayCopy withName:nameCopy skipIfEmpty:0];
 
-  v9 = [v8 build];
+  build = [v8 build];
 
-  return v9;
+  return build;
 }
 
 - (void)_startObservingAppearanceChanges
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v3 = [(SBChronoHomeScreenUsageObserver *)self appearanceChangeObservedViewController];
-  v4 = [(SBChronoHomeScreenUsageObserver *)self iconManager];
-  v5 = [v4 rootViewController];
-  if (v3 != v5)
+  appearanceChangeObservedViewController = [(SBChronoHomeScreenUsageObserver *)self appearanceChangeObservedViewController];
+  iconManager = [(SBChronoHomeScreenUsageObserver *)self iconManager];
+  rootViewController = [iconManager rootViewController];
+  if (appearanceChangeObservedViewController != rootViewController)
   {
-    v6 = [(SBChronoHomeScreenUsageObserver *)self appearanceChangeRegistration];
-    v7 = v6;
-    if (v3 && v6)
+    appearanceChangeRegistration = [(SBChronoHomeScreenUsageObserver *)self appearanceChangeRegistration];
+    v7 = appearanceChangeRegistration;
+    if (appearanceChangeObservedViewController && appearanceChangeRegistration)
     {
-      [v3 unregisterForTraitChanges:v6];
+      [appearanceChangeObservedViewController unregisterForTraitChanges:appearanceChangeRegistration];
     }
 
     v8 = objc_opt_self();
     v11[0] = v8;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
-    v10 = [v5 registerForTraitChanges:v9 withTarget:self action:sel_rootViewControllerAppearanceDidChange];
+    v10 = [rootViewController registerForTraitChanges:v9 withTarget:self action:sel_rootViewControllerAppearanceDidChange];
 
     [(SBChronoHomeScreenUsageObserver *)self setAppearanceChangeRegistration:v10];
-    [(SBChronoHomeScreenUsageObserver *)self setAppearanceChangeObservedViewController:v5];
+    [(SBChronoHomeScreenUsageObserver *)self setAppearanceChangeObservedViewController:rootViewController];
   }
 }
 

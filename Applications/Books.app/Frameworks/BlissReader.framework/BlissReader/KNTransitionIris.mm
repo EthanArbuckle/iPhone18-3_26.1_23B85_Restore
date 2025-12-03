@@ -1,6 +1,6 @@
 @interface KNTransitionIris
 + (id)defaultAttributes;
-- (void)renderFrameWithContext:(id)a3;
+- (void)renderFrameWithContext:(id)context;
 @end
 
 @implementation KNTransitionIris
@@ -14,11 +14,11 @@
   return v2;
 }
 
-- (void)renderFrameWithContext:(id)a3
+- (void)renderFrameWithContext:(id)context
 {
   v3.receiver = self;
   v3.super_class = KNTransitionIris;
-  [(KNIrisBase *)&v3 renderFrameWithContext:a3];
+  [(KNIrisBase *)&v3 renderFrameWithContext:context];
 }
 
 @end

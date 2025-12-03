@@ -1,10 +1,10 @@
 @interface PBCodable
 - (NSData)data;
 - (PBCodable)init;
-- (PBCodable)initWithCoder:(id)a3;
-- (PBCodable)initWithData:(id)a3;
+- (PBCodable)initWithCoder:(id)coder;
+- (PBCodable)initWithData:(id)data;
 - (id)formattedText;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PBCodable
@@ -20,42 +20,42 @@
 {
   v3 = objc_alloc_init(PBDataWriter);
   [(PBCodable *)self writeTo:v3];
-  v4 = [(PBDataWriter *)v3 immutableData];
+  immutableData = [(PBDataWriter *)v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
 - (id)formattedText
 {
-  v2 = [(PBCodable *)self dictionaryRepresentation];
-  v7 = [MEMORY[0x1E696AD60] string];
+  dictionaryRepresentation = [(PBCodable *)self dictionaryRepresentation];
+  string = [MEMORY[0x1E696AD60] string];
   v3 = objc_autoreleasePoolPush();
-  _textFormatDictionary(v2, 0, &v6);
+  _textFormatDictionary(dictionaryRepresentation, 0, &v6);
   objc_autoreleasePoolPop(v3);
-  v4 = v7;
+  v4 = string;
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PBCodable *)self data];
-  [v4 encodeObject:v5 forKey:@"data"];
+  coderCopy = coder;
+  data = [(PBCodable *)self data];
+  [coderCopy encodeObject:data forKey:@"data"];
 }
 
-- (PBCodable)initWithCoder:(id)a3
+- (PBCodable)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
 
   v6 = [(PBCodable *)self initWithData:v5];
   return v6;
 }
 
-- (PBCodable)initWithData:(id)a3
+- (PBCodable)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v10.receiver = self;
   v10.super_class = PBCodable;
   v5 = [(PBCodable *)&v10 init];
@@ -64,16 +64,16 @@
     goto LABEL_4;
   }
 
-  v6 = [[PBDataReader alloc] initWithData:v4];
+  v6 = [[PBDataReader alloc] initWithData:dataCopy];
   if (![(PBCodable *)v5 readFrom:v6])
   {
 
     goto LABEL_6;
   }
 
-  v7 = [(PBDataReader *)v6 hasError];
+  hasError = [(PBDataReader *)v6 hasError];
 
-  if (v7)
+  if (hasError)
   {
 LABEL_6:
     v8 = 0;

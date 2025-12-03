@@ -1,66 +1,66 @@
 @interface CRSUIMutableProxyApplicationSceneSettings
 - (NSString)proxiedApplicationBundleIdentifier;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)frameRateLimit;
 - (int64_t)mapStyle;
-- (void)setFrameRateLimit:(id)a3;
-- (void)setMapStyle:(int64_t)a3;
-- (void)setProxiedApplicationBundleIdentifier:(id)a3;
+- (void)setFrameRateLimit:(id)limit;
+- (void)setMapStyle:(int64_t)style;
+- (void)setProxiedApplicationBundleIdentifier:(id)identifier;
 @end
 
 @implementation CRSUIMutableProxyApplicationSceneSettings
 
 - (NSString)proxiedApplicationBundleIdentifier
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:1885817706];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:1885817706];
 
   return v3;
 }
 
-- (void)setProxiedApplicationBundleIdentifier:(id)a3
+- (void)setProxiedApplicationBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v6 = [(FBSSettings *)self otherSettings];
-  v5 = [v4 copy];
+  identifierCopy = identifier;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v5 = [identifierCopy copy];
 
-  [v6 setObject:v5 forSetting:1885817706];
+  [otherSettings setObject:v5 forSetting:1885817706];
 }
 
 - (int64_t)mapStyle
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:3152422721];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:3152422721];
 
-  v4 = [v3 integerValue];
-  return v4;
+  integerValue = [v3 integerValue];
+  return integerValue;
 }
 
-- (void)setMapStyle:(int64_t)a3
+- (void)setMapStyle:(int64_t)style
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  [v5 setObject:v4 forSetting:3152422721];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:style];
+  [otherSettings setObject:v4 forSetting:3152422721];
 }
 
 - (id)frameRateLimit
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:3152422722];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:3152422722];
 
   return v3;
 }
 
-- (void)setFrameRateLimit:(id)a3
+- (void)setFrameRateLimit:(id)limit
 {
-  v4 = a3;
-  v5 = [(FBSSettings *)self otherSettings];
-  [v5 setObject:v4 forSetting:3152422722];
+  limitCopy = limit;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setObject:limitCopy forSetting:3152422722];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CRSUIProxyApplicationSceneSettings allocWithZone:a3];
+  v4 = [CRSUIProxyApplicationSceneSettings allocWithZone:zone];
 
   return [(FBSSettings *)v4 initWithSettings:self];
 }

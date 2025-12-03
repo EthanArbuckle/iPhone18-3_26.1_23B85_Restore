@@ -1,16 +1,16 @@
 @interface SSRTriggerPhraseDetector
-+ (id)filterVTAudioFiles:(id)a3 withLocale:(id)a4 withAsset:(id)a5;
-- (SSRTriggerPhraseDetector)initWithLocale:(id)a3 asset:(id)a4;
-- (void)computeTriggerConfidenceForAudio:(id)a3 withCompletion:(id)a4;
++ (id)filterVTAudioFiles:(id)files withLocale:(id)locale withAsset:(id)asset;
+- (SSRTriggerPhraseDetector)initWithLocale:(id)locale asset:(id)asset;
+- (void)computeTriggerConfidenceForAudio:(id)audio withCompletion:(id)completion;
 @end
 
 @implementation SSRTriggerPhraseDetector
 
-- (void)computeTriggerConfidenceForAudio:(id)a3 withCompletion:(id)a4
+- (void)computeTriggerConfidenceForAudio:(id)audio withCompletion:(id)completion
 {
   v77[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  audioCopy = audio;
+  completionCopy = completion;
   v58 = 0;
   v59 = &v58;
   v60 = 0x3032000000;
@@ -35,11 +35,11 @@
   v9 = *MEMORY[0x277D01970];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v6 lastPathComponent];
+    lastPathComponent = [audioCopy lastPathComponent];
     *buf = 136315394;
     v65 = "[SSRTriggerPhraseDetector computeTriggerConfidenceForAudio:withCompletion:]";
     v66 = 2114;
-    v67 = v10;
+    v67 = lastPathComponent;
     _os_log_impl(&dword_225E12000, v9, OS_LOG_TYPE_DEFAULT, "%s Processing %{public}@ for trigger word detection", buf, 0x16u);
   }
 
@@ -56,13 +56,13 @@
   v34 = 3221225472;
   v35 = __76__SSRTriggerPhraseDetector_computeTriggerConfidenceForAudio_withCompletion___block_invoke;
   v36 = &unk_2785782C8;
-  v11 = v6;
+  v11 = audioCopy;
   v39 = &v46;
   v40 = v45;
   v41 = v44;
   v42 = &v52;
   v37 = v11;
-  v38 = self;
+  selfCopy = self;
   v43 = &v58;
   [SSRUtils streamAudioFromFileUrl:v11 audioStreamBasicDescriptor:buf samplesPerStreamChunk:640 audioDataAvailableHandler:&v33];
   v12 = v47[5];
@@ -82,11 +82,11 @@
         v23 = *v8;
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
-          v24 = [v11 lastPathComponent];
+          lastPathComponent2 = [v11 lastPathComponent];
           *buf = 136316162;
           v65 = "[SSRTriggerPhraseDetector computeTriggerConfidenceForAudio:withCompletion:]";
           v66 = 2114;
-          v67 = v24;
+          v67 = lastPathComponent2;
           v68 = 2050;
           v69 = v22;
           v70 = 2050;
@@ -96,9 +96,9 @@
           _os_log_impl(&dword_225E12000, v23, OS_LOG_TYPE_DEFAULT, "%s Best trigger score for %{public}@ is %{public}f (%{public}f, %{public}f)", buf, 0x34u);
         }
 
-        if (v7)
+        if (completionCopy)
         {
-          v7[2](v7, 0, v22);
+          completionCopy[2](completionCopy, 0, v22);
         }
 
         goto LABEL_24;
@@ -113,7 +113,7 @@
         v66 = 2114;
         v67 = v25;
         _os_log_error_impl(&dword_225E12000, v26, OS_LOG_TYPE_ERROR, "%s ERR: %{public}@", buf, 0x16u);
-        if (!v7)
+        if (!completionCopy)
         {
           goto LABEL_23;
         }
@@ -121,7 +121,7 @@
         goto LABEL_18;
       }
 
-      if (v7)
+      if (completionCopy)
       {
 LABEL_18:
         v27 = MEMORY[0x277CCA9B8];
@@ -129,7 +129,7 @@ LABEL_18:
         v75 = v25;
         v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v75 forKeys:&v74 count:1];
         v29 = [v27 errorWithDomain:@"com.apple.speakerrecognition" code:112 userInfo:v28];
-        (v7)[2](v7, v29, -1000.0);
+        (completionCopy)[2](completionCopy, v29, -1000.0);
 LABEL_22:
       }
 
@@ -147,13 +147,13 @@ LABEL_23:
       v66 = 2114;
       v67 = v25;
       _os_log_error_impl(&dword_225E12000, v30, OS_LOG_TYPE_ERROR, "%s ERR: %{public}@", buf, 0x16u);
-      if (!v7)
+      if (!completionCopy)
       {
         goto LABEL_23;
       }
     }
 
-    else if (!v7)
+    else if (!completionCopy)
     {
       goto LABEL_23;
     }
@@ -163,7 +163,7 @@ LABEL_23:
     v77[0] = v25;
     v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v77 forKeys:&v76 count:1];
     v29 = [v31 errorWithDomain:@"com.apple.speakerrecognition" code:112 userInfo:v28];
-    (v7)[2](v7, v29, -1000.0);
+    (completionCopy)[2](completionCopy, v29, -1000.0);
     goto LABEL_22;
   }
 
@@ -177,7 +177,7 @@ LABEL_23:
     v68 = 2114;
     v69 = v12;
     _os_log_error_impl(&dword_225E12000, v13, OS_LOG_TYPE_ERROR, "%s ERR: Failed processing %{public}@ with error %{public}@", buf, 0x20u);
-    if (!v7)
+    if (!completionCopy)
     {
       goto LABEL_24;
     }
@@ -185,10 +185,10 @@ LABEL_23:
     goto LABEL_6;
   }
 
-  if (v7)
+  if (completionCopy)
   {
 LABEL_6:
-    v7[2](v7, *(v47 + 5), -1000.0);
+    completionCopy[2](completionCopy, *(v47 + 5), -1000.0);
   }
 
 LABEL_24:
@@ -255,11 +255,11 @@ void __76__SSRTriggerPhraseDetector_computeTriggerConfidenceForAudio_withComplet
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (SSRTriggerPhraseDetector)initWithLocale:(id)a3 asset:(id)a4
+- (SSRTriggerPhraseDetector)initWithLocale:(id)locale asset:(id)asset
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  localeCopy = locale;
+  assetCopy = asset;
   v28.receiver = self;
   v28.super_class = SSRTriggerPhraseDetector;
   v8 = [(SSRTriggerPhraseDetector *)&v28 init];
@@ -268,11 +268,11 @@ void __76__SSRTriggerPhraseDetector_computeTriggerConfidenceForAudio_withComplet
     goto LABEL_9;
   }
 
-  v9 = [MEMORY[0x277D01958] decodeConfigFrom:v7 forFirstPassSource:0];
-  v10 = [v7 resourcePath];
+  v9 = [MEMORY[0x277D01958] decodeConfigFrom:assetCopy forFirstPassSource:0];
+  resourcePath = [assetCopy resourcePath];
   v11 = [SSRTriggerPhraseDetectorNDAPI alloc];
-  v12 = [v7 keywordDetectorNDAPIConfigFilePath];
-  v13 = [(SSRTriggerPhraseDetectorNDAPI *)v11 initWithConfigPath:v12 resourcePath:v10 phId:0];
+  keywordDetectorNDAPIConfigFilePath = [assetCopy keywordDetectorNDAPIConfigFilePath];
+  v13 = [(SSRTriggerPhraseDetectorNDAPI *)v11 initWithConfigPath:keywordDetectorNDAPIConfigFilePath resourcePath:resourcePath phId:0];
   detectorNDAPI = v8->_detectorNDAPI;
   v8->_detectorNDAPI = v13;
 
@@ -281,14 +281,14 @@ void __76__SSRTriggerPhraseDetector_computeTriggerConfidenceForAudio_withComplet
     if ([v9 useRecognizerCombination])
     {
       v15 = [SSRTriggerPhraseDetectorQuasar alloc];
-      v16 = [v7 keywordDetectorQuasarConfigFilePath];
-      v17 = [(SSRTriggerPhraseDetectorQuasar *)v15 initWithLocale:v6 configPath:v16 resourcePath:v10];
+      keywordDetectorQuasarConfigFilePath = [assetCopy keywordDetectorQuasarConfigFilePath];
+      v17 = [(SSRTriggerPhraseDetectorQuasar *)v15 initWithLocale:localeCopy configPath:keywordDetectorQuasarConfigFilePath resourcePath:resourcePath];
       detectorQuasar = v8->_detectorQuasar;
       v8->_detectorQuasar = v17;
 
-      v19 = [v9 phraseConfigs];
-      v20 = [v19 firstObject];
-      [v20 recognizerScoreScaleFactor];
+      phraseConfigs = [v9 phraseConfigs];
+      firstObject = [phraseConfigs firstObject];
+      [firstObject recognizerScoreScaleFactor];
       v8->_recognizerScoreScaleFactor = v21;
 
       v22 = *MEMORY[0x277D01970];
@@ -327,23 +327,23 @@ LABEL_10:
   return v23;
 }
 
-+ (id)filterVTAudioFiles:(id)a3 withLocale:(id)a4 withAsset:(id)a5
++ (id)filterVTAudioFiles:(id)files withLocale:(id)locale withAsset:(id)asset
 {
   v50 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v28 = a5;
-  v27 = [[SSRTriggerPhraseDetector alloc] initWithLocale:v8 asset:v28];
-  v24 = v7;
-  v25 = v8;
+  filesCopy = files;
+  localeCopy = locale;
+  assetCopy = asset;
+  v27 = [[SSRTriggerPhraseDetector alloc] initWithLocale:localeCopy asset:assetCopy];
+  v24 = filesCopy;
+  v25 = localeCopy;
   if (v27)
   {
-    v29 = [v7 mutableCopy];
+    v29 = [filesCopy mutableCopy];
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    obj = v7;
+    obj = filesCopy;
     v9 = [obj countByEnumeratingWithState:&v35 objects:v49 count:16];
     if (v9)
     {
@@ -396,7 +396,7 @@ LABEL_10:
             [v29 removeObject:v12];
           }
 
-          [v28 satVTImplicitThreshold];
+          [assetCopy satVTImplicitThreshold];
           v15 = v14;
           v16 = v32[6];
           if (v16 < v14)
@@ -448,13 +448,13 @@ LABEL_10:
       *v45 = 136315650;
       *&v45[4] = "+[SSRTriggerPhraseDetector filterVTAudioFiles:withLocale:withAsset:]";
       *&v45[12] = 2114;
-      *&v45[14] = v8;
+      *&v45[14] = localeCopy;
       *&v45[22] = 2114;
-      v46 = v28;
+      v46 = assetCopy;
       _os_log_error_impl(&dword_225E12000, v21, OS_LOG_TYPE_ERROR, "%s ERR: Failed to create TriggerPhraseDetector in %{public}@ with %{public}@", v45, 0x20u);
     }
 
-    v20 = v7;
+    v20 = filesCopy;
   }
 
   v22 = *MEMORY[0x277D85DE8];

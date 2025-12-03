@@ -1,15 +1,15 @@
 @interface CyclingSensorsStore.CentralManagerDelegate
 - (_TtCC11WorkoutCore19CyclingSensorsStoreP33_BFB47E54904849BCE37B11B0EFE4650622CentralManagerDelegate)init;
-- (void)centralManagerDidUpdateState:(id)a3;
+- (void)centralManagerDidUpdateState:(id)state;
 @end
 
 @implementation CyclingSensorsStore.CentralManagerDelegate
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  CyclingSensorsStore.CentralManagerDelegate.centralManagerDidUpdateState(_:)(v4);
+  stateCopy = state;
+  selfCopy = self;
+  CyclingSensorsStore.CentralManagerDelegate.centralManagerDidUpdateState(_:)(stateCopy);
 }
 
 - (_TtCC11WorkoutCore19CyclingSensorsStoreP33_BFB47E54904849BCE37B11B0EFE4650622CentralManagerDelegate)init

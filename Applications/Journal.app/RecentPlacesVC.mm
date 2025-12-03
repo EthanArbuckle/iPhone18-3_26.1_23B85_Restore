@@ -1,7 +1,7 @@
 @interface RecentPlacesVC
-- (_TtC7Journal14RecentPlacesVC)initWithCoder:(id)a3;
-- (_TtC7Journal14RecentPlacesVC)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC7Journal14RecentPlacesVC)initWithStyle:(int64_t)a3;
+- (_TtC7Journal14RecentPlacesVC)initWithCoder:(id)coder;
+- (_TtC7Journal14RecentPlacesVC)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC7Journal14RecentPlacesVC)initWithStyle:(int64_t)style;
 - (void)refreshData;
 - (void)viewDidLoad;
 @end
@@ -10,7 +10,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10074C7FC();
 }
 
@@ -22,32 +22,32 @@
   v6 = type metadata accessor for TaskPriority();
   (*(*(v6 - 8) + 56))(v5, 1, 1, v6);
   type metadata accessor for MainActor();
-  v7 = self;
+  selfCopy = self;
   v8 = static MainActor.shared.getter();
   v9 = swift_allocObject();
   v9[2] = v8;
   v9[3] = &protocol witness table for MainActor;
-  v9[4] = v7;
+  v9[4] = selfCopy;
   sub_1003E9628(0, 0, v5, &unk_100966D18, v9);
 }
 
-- (_TtC7Journal14RecentPlacesVC)initWithStyle:(int64_t)a3
+- (_TtC7Journal14RecentPlacesVC)initWithStyle:(int64_t)style
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7Journal14RecentPlacesVC_dataSource) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7Journal14RecentPlacesVC_cancellable) = 0;
   v5.receiver = self;
   v5.super_class = type metadata accessor for RecentPlacesVC();
-  return [(RecentPlacesVC *)&v5 initWithStyle:a3];
+  return [(RecentPlacesVC *)&v5 initWithStyle:style];
 }
 
-- (_TtC7Journal14RecentPlacesVC)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7Journal14RecentPlacesVC)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7Journal14RecentPlacesVC_dataSource) = 0;
     *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7Journal14RecentPlacesVC_cancellable) = 0;
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = String._bridgeToObjectiveC()();
   }
 
@@ -55,25 +55,25 @@
   {
     *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7Journal14RecentPlacesVC_dataSource) = 0;
     *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7Journal14RecentPlacesVC_cancellable) = 0;
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for RecentPlacesVC();
-  v9 = [(RecentPlacesVC *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(RecentPlacesVC *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (_TtC7Journal14RecentPlacesVC)initWithCoder:(id)a3
+- (_TtC7Journal14RecentPlacesVC)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7Journal14RecentPlacesVC_dataSource) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7Journal14RecentPlacesVC_cancellable) = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for RecentPlacesVC();
-  v4 = a3;
-  v5 = [(RecentPlacesVC *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(RecentPlacesVC *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

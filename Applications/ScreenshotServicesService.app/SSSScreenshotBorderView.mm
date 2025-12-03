@@ -1,16 +1,16 @@
 @interface SSSScreenshotBorderView
 - (CGRect)extent;
 - (CGRect)unitRectForContent;
-- (SSSScreenshotBorderView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (SSSScreenshotBorderView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)setBorderStyle:(int64_t)a3;
-- (void)setGeometryMultiplier:(double)a3;
+- (void)setBorderStyle:(int64_t)style;
+- (void)setGeometryMultiplier:(double)multiplier;
 @end
 
 @implementation SSSScreenshotBorderView
 
-- (SSSScreenshotBorderView)initWithFrame:(CGRect)a3
+- (SSSScreenshotBorderView)initWithFrame:(CGRect)frame
 {
   v16.receiver = self;
   v16.super_class = SSSScreenshotBorderView;
@@ -41,15 +41,15 @@
 
 - (void)layoutSubviews
 {
-  v3 = [(SSSScreenshotBorderView *)self borderStyle];
+  borderStyle = [(SSSScreenshotBorderView *)self borderStyle];
   [(SSSScreenshotBorderView *)self bounds];
   if (!CGRectIsEmpty(v43))
   {
     [(SSSScreenshotBorderView *)self geometryMultiplier];
     v42 = 0;
     memset(v41, 0, sizeof(v41));
-    v4 = [(SSSScreenshotBorderView *)self traitCollection];
-    sub_10000F490(v4, v41);
+    traitCollection = [(SSSScreenshotBorderView *)self traitCollection];
+    sub_10000F490(traitCollection, v41);
 
     [(SSSScreenshotBorderView *)self unitRectForContent];
     if (SSRectIsValid())
@@ -78,7 +78,7 @@
       [(_SSSAnimatableBorderCornerRadiusView *)self->_outerHairlineView setFrame:v40, v39, v38, v37];
       [(_SSSAnimatableBorderCornerRadiusView *)self->_thickBorderView setFrame:v12, v14, v36, v35];
       [(_SSSAnimatableBorderCornerRadiusView *)self->_innerHairlineView setFrame:v18, v20, v22, v24];
-      if (v3 == 2)
+      if (borderStyle == 2)
       {
         v25 = 0.0;
       }
@@ -92,7 +92,7 @@
       [(_SSSAnimatableBorderCornerRadiusView *)self->_thickBorderView setAlpha:v25];
       [(_SSSAnimatableBorderCornerRadiusView *)self->_innerHairlineView setAlpha:v25];
       v26 = [UIColor colorWithWhite:0.82 alpha:1.0];
-      if (v3 == 1)
+      if (borderStyle == 1)
       {
         +[UIColor sss_miniatureBorderColor];
       }
@@ -183,33 +183,33 @@
   return result;
 }
 
-- (void)setBorderStyle:(int64_t)a3
+- (void)setBorderStyle:(int64_t)style
 {
-  if (self->_borderStyle != a3)
+  if (self->_borderStyle != style)
   {
-    self->_borderStyle = a3;
+    self->_borderStyle = style;
     [(SSSScreenshotBorderView *)self setNeedsLayout];
 
     [(SSSScreenshotBorderView *)self layoutIfNeeded];
   }
 }
 
-- (void)setGeometryMultiplier:(double)a3
+- (void)setGeometryMultiplier:(double)multiplier
 {
-  if (self->_geometryMultiplier != a3)
+  if (self->_geometryMultiplier != multiplier)
   {
-    self->_geometryMultiplier = a3;
+    self->_geometryMultiplier = multiplier;
     [(SSSScreenshotBorderView *)self setNeedsLayout];
 
     [(SSSScreenshotBorderView *)self layoutIfNeeded];
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = SSSScreenshotBorderView;
-  v5 = [(SSSScreenshotBorderView *)&v9 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(SSSScreenshotBorderView *)&v9 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {

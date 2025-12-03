@@ -1,16 +1,16 @@
 @interface AVInfoMenuCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation AVInfoMenuCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVInfoMenuCell" isKindOfClass:@"UICollectionViewCell"];
-  [v3 validateClass:@"AVInfoMenuCell" hasInstanceMethod:@"floatingView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVInfoMenuCell" isKindOfClass:@"UICollectionViewCell"];
+  [validationsCopy validateClass:@"AVInfoMenuCell" hasInstanceMethod:@"floatingView" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)isAccessibilityElement

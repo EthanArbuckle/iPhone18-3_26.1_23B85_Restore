@@ -1,5 +1,5 @@
 @interface SUUIRunLoopDelay
-- (SUUIRunLoopDelay)initWithRunLoopMode:(id)a3 timeout:(double)a4;
+- (SUUIRunLoopDelay)initWithRunLoopMode:(id)mode timeout:(double)timeout;
 - (void)dealloc;
 - (void)delayRunLoop;
 - (void)endDelay;
@@ -7,19 +7,19 @@
 
 @implementation SUUIRunLoopDelay
 
-- (SUUIRunLoopDelay)initWithRunLoopMode:(id)a3 timeout:(double)a4
+- (SUUIRunLoopDelay)initWithRunLoopMode:(id)mode timeout:(double)timeout
 {
-  v6 = a3;
+  modeCopy = mode;
   v12.receiver = self;
   v12.super_class = SUUIRunLoopDelay;
   v7 = [(SUUIRunLoopDelay *)&v12 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [modeCopy copy];
     mode = v7->_mode;
     v7->_mode = v8;
 
-    v7->_timeout = a4;
+    v7->_timeout = timeout;
     v7->_runLoop = CFRunLoopGetCurrent();
     memset(&v11, 0, sizeof(v11));
     v7->_runLoopSource = CFRunLoopSourceCreate(0, 0, &v11);

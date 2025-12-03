@@ -1,23 +1,23 @@
 @interface SHServerResourcesResponse
 - (SHServerLyricsResponse)lyricsResponse;
 - (SHServerMusicVideoResponse)musicVideoResponse;
-- (SHServerResourcesResponse)initWithResourcesDictionary:(id)a3;
+- (SHServerResourcesResponse)initWithResourcesDictionary:(id)dictionary;
 - (SHServerShazamResponse)shazamResponse;
 - (SHServerSongsResponse)songsResponse;
 @end
 
 @implementation SHServerResourcesResponse
 
-- (SHServerResourcesResponse)initWithResourcesDictionary:(id)a3
+- (SHServerResourcesResponse)initWithResourcesDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = SHServerResourcesResponse;
   v6 = [(SHServerResourcesResponse *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_resourcesDictionary, a3);
+    objc_storeStrong(&v6->_resourcesDictionary, dictionary);
   }
 
   return v7;
@@ -25,14 +25,14 @@
 
 - (SHServerSongsResponse)songsResponse
 {
-  v3 = [(SHServerResourcesResponse *)self resourcesDictionary];
-  v4 = [v3 objectForKeyedSubscript:@"songs"];
+  resourcesDictionary = [(SHServerResourcesResponse *)self resourcesDictionary];
+  v4 = [resourcesDictionary objectForKeyedSubscript:@"songs"];
 
   if (v4)
   {
     v5 = [SHServerSongsResponse alloc];
-    v6 = [(SHServerResourcesResponse *)self resourcesDictionary];
-    v7 = [v6 objectForKeyedSubscript:@"songs"];
+    resourcesDictionary2 = [(SHServerResourcesResponse *)self resourcesDictionary];
+    v7 = [resourcesDictionary2 objectForKeyedSubscript:@"songs"];
     v8 = [(SHServerSongsResponse *)v5 initWithSongsDictionary:v7];
   }
 
@@ -46,14 +46,14 @@
 
 - (SHServerShazamResponse)shazamResponse
 {
-  v3 = [(SHServerResourcesResponse *)self resourcesDictionary];
-  v4 = [v3 objectForKeyedSubscript:@"shazam-songs"];
+  resourcesDictionary = [(SHServerResourcesResponse *)self resourcesDictionary];
+  v4 = [resourcesDictionary objectForKeyedSubscript:@"shazam-songs"];
 
   if (v4)
   {
     v5 = [SHServerShazamResponse alloc];
-    v6 = [(SHServerResourcesResponse *)self resourcesDictionary];
-    v7 = [v6 objectForKeyedSubscript:@"shazam-songs"];
+    resourcesDictionary2 = [(SHServerResourcesResponse *)self resourcesDictionary];
+    v7 = [resourcesDictionary2 objectForKeyedSubscript:@"shazam-songs"];
     v8 = [(SHServerShazamResponse *)v5 initWithShazamDictionary:v7];
   }
 
@@ -67,14 +67,14 @@
 
 - (SHServerLyricsResponse)lyricsResponse
 {
-  v3 = [(SHServerResourcesResponse *)self resourcesDictionary];
-  v4 = [v3 objectForKeyedSubscript:@"lyrics"];
+  resourcesDictionary = [(SHServerResourcesResponse *)self resourcesDictionary];
+  v4 = [resourcesDictionary objectForKeyedSubscript:@"lyrics"];
 
   if (v4)
   {
     v5 = [SHServerLyricsResponse alloc];
-    v6 = [(SHServerResourcesResponse *)self resourcesDictionary];
-    v7 = [v6 objectForKeyedSubscript:@"lyrics"];
+    resourcesDictionary2 = [(SHServerResourcesResponse *)self resourcesDictionary];
+    v7 = [resourcesDictionary2 objectForKeyedSubscript:@"lyrics"];
     v8 = [(SHServerLyricsResponse *)v5 initWithLyricsDictionary:v7];
   }
 
@@ -88,14 +88,14 @@
 
 - (SHServerMusicVideoResponse)musicVideoResponse
 {
-  v3 = [(SHServerResourcesResponse *)self resourcesDictionary];
-  v4 = [v3 objectForKeyedSubscript:@"music-videos"];
+  resourcesDictionary = [(SHServerResourcesResponse *)self resourcesDictionary];
+  v4 = [resourcesDictionary objectForKeyedSubscript:@"music-videos"];
 
   if (v4)
   {
     v5 = [SHServerMusicVideoResponse alloc];
-    v6 = [(SHServerResourcesResponse *)self resourcesDictionary];
-    v7 = [v6 objectForKeyedSubscript:@"music-videos"];
+    resourcesDictionary2 = [(SHServerResourcesResponse *)self resourcesDictionary];
+    v7 = [resourcesDictionary2 objectForKeyedSubscript:@"music-videos"];
     v8 = [(SHServerMusicVideoResponse *)v5 initWithMusicVideoDictionary:v7];
   }
 

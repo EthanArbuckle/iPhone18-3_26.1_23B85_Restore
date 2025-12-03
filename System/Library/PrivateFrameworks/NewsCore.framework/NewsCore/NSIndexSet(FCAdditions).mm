@@ -12,13 +12,13 @@
 - (uint64_t)fc_countOfContiguousIndexesGreaterThanOrEqualToIndex:()FCAdditions
 {
   v5 = 0;
-  if ([a1 containsIndex:?])
+  if ([self containsIndex:?])
   {
     v6 = a3 + 1;
     do
     {
       ++v5;
-      v7 = [a1 containsIndex:v6++];
+      v7 = [self containsIndex:v6++];
     }
 
     while ((v7 & 1) != 0);
@@ -38,7 +38,7 @@
   v5 = -1;
   do
   {
-    v6 = [a1 containsIndex:v4];
+    v6 = [self containsIndex:v4];
     ++v5;
     --v4;
   }
@@ -49,52 +49,52 @@
 
 - (uint64_t)fc_enclosingRange
 {
-  if ([a1 firstIndex] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([self firstIndex] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v2 = 0;
+    firstIndex = 0;
   }
 
   else
   {
-    v2 = [a1 firstIndex];
+    firstIndex = [self firstIndex];
   }
 
-  if ([a1 lastIndex] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([self lastIndex] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [a1 lastIndex];
+    [self lastIndex];
   }
 
-  return v2;
+  return firstIndex;
 }
 
 - (BOOL)fc_isContiguous
 {
-  v2 = [a1 firstIndex];
+  firstIndex = [self firstIndex];
   do
   {
-    v3 = v2;
-    if (v2 == 0x7FFFFFFFFFFFFFFFLL)
+    v3 = firstIndex;
+    if (firstIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
       break;
     }
 
-    v2 = [a1 indexGreaterThanIndex:v2];
+    firstIndex = [self indexGreaterThanIndex:firstIndex];
   }
 
-  while (v2 == 0x7FFFFFFFFFFFFFFFLL || v2 <= v3 + 1);
+  while (firstIndex == 0x7FFFFFFFFFFFFFFFLL || firstIndex <= v3 + 1);
   return v3 == 0x7FFFFFFFFFFFFFFFLL;
 }
 
 - (id)fc_indexSetWithGapsInRange:()FCAdditions
 {
-  v7 = [MEMORY[0x1E696AD50] indexSet];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   if (a3 < a3 + a4)
   {
     do
     {
-      if (([a1 containsIndex:a3] & 1) == 0)
+      if (([self containsIndex:a3] & 1) == 0)
       {
-        [v7 addIndex:a3];
+        [indexSet addIndex:a3];
       }
 
       ++a3;
@@ -104,13 +104,13 @@
     while (a4);
   }
 
-  return v7;
+  return indexSet;
 }
 
 - (void)fc_enumerateGapsInRange:()FCAdditions usingBlock:
 {
   v8 = a5;
-  v9 = [a1 fc_indexSetWithGapsInRange:{a3, a4}];
+  v9 = [self fc_indexSetWithGapsInRange:{a3, a4}];
   [v9 enumerateRangesUsingBlock:v8];
 }
 

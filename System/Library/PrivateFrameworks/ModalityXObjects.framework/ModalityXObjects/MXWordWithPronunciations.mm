@@ -1,33 +1,33 @@
 @interface MXWordWithPronunciations
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addPronunciations:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addPronunciations:(id)pronunciations;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MXWordWithPronunciations
 
-- (void)addPronunciations:(id)a3
+- (void)addPronunciations:(id)pronunciations
 {
-  v4 = a3;
+  pronunciationsCopy = pronunciations;
   pronunciations = self->_pronunciations;
-  v8 = v4;
+  v8 = pronunciationsCopy;
   if (!pronunciations)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_pronunciations;
     self->_pronunciations = v6;
 
-    v4 = v8;
+    pronunciationsCopy = v8;
     pronunciations = self->_pronunciations;
   }
 
-  [(NSMutableArray *)pronunciations addObject:v4];
+  [(NSMutableArray *)pronunciations addObject:pronunciationsCopy];
 }
 
 - (id)description
@@ -36,20 +36,20 @@
   v8.receiver = self;
   v8.super_class = MXWordWithPronunciations;
   v4 = [(MXWordWithPronunciations *)&v8 description];
-  v5 = [(MXWordWithPronunciations *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MXWordWithPronunciations *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   orthography = self->_orthography;
   if (orthography)
   {
-    [v3 setObject:orthography forKey:@"orthography"];
+    [dictionary setObject:orthography forKey:@"orthography"];
   }
 
   pronunciations = self->_pronunciations;
@@ -73,10 +73,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_orthography)
   {
     PBDataWriterWriteStringField();
@@ -128,48 +128,48 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (self->_orthography)
   {
-    [v9 setOrthography:?];
+    [toCopy setOrthography:?];
   }
 
   if ([(MXWordWithPronunciations *)self pronunciationsCount])
   {
-    [v9 clearPronunciations];
-    v4 = [(MXWordWithPronunciations *)self pronunciationsCount];
-    if (v4)
+    [toCopy clearPronunciations];
+    pronunciationsCount = [(MXWordWithPronunciations *)self pronunciationsCount];
+    if (pronunciationsCount)
     {
-      v5 = v4;
+      v5 = pronunciationsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(MXWordWithPronunciations *)self pronunciationsAtIndex:i];
-        [v9 addPronunciations:v7];
+        [toCopy addPronunciations:v7];
       }
     }
   }
 
-  v8 = v9;
+  v8 = toCopy;
   if (*&self->_has)
   {
-    *(v9 + 2) = self->_frequency;
-    *(v9 + 40) |= 1u;
+    *(toCopy + 2) = self->_frequency;
+    *(toCopy + 40) |= 1u;
   }
 
   if (self->_tag)
   {
-    [v9 setTag:?];
-    v8 = v9;
+    [toCopy setTag:?];
+    v8 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_orthography copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_orthography copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -193,7 +193,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v18 + 1) + 8 * v12) copyWithZone:{a3, v18}];
+        v13 = [*(*(&v18 + 1) + 8 * v12) copyWithZone:{zone, v18}];
         [v5 addPronunciations:v13];
 
         ++v12;
@@ -212,7 +212,7 @@
     *(v5 + 40) |= 1u;
   }
 
-  v14 = [(NSString *)self->_tag copyWithZone:a3, v18];
+  v14 = [(NSString *)self->_tag copyWithZone:zone, v18];
   v15 = *(v5 + 32);
   *(v5 + 32) = v14;
 
@@ -220,16 +220,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   orthography = self->_orthography;
-  if (orthography | *(v4 + 2))
+  if (orthography | *(equalCopy + 2))
   {
     if (![(NSString *)orthography isEqual:?])
     {
@@ -238,7 +238,7 @@
   }
 
   pronunciations = self->_pronunciations;
-  if (pronunciations | *(v4 + 3))
+  if (pronunciations | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)pronunciations isEqual:?])
     {
@@ -246,16 +246,16 @@
     }
   }
 
-  v7 = *(v4 + 40);
+  v7 = *(equalCopy + 40);
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_frequency != *(v4 + 2))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_frequency != *(equalCopy + 2))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_13:
     v9 = 0;
@@ -263,7 +263,7 @@ LABEL_13:
   }
 
   tag = self->_tag;
-  if (tag | *(v4 + 4))
+  if (tag | *(equalCopy + 4))
   {
     v9 = [(NSString *)tag isEqual:?];
   }
@@ -295,11 +295,11 @@ LABEL_14:
   return v4 ^ v3 ^ v5 ^ [(NSString *)self->_tag hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
     [(MXWordWithPronunciations *)self setOrthography:?];
   }
@@ -308,7 +308,7 @@ LABEL_14:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 3);
+  v5 = *(fromCopy + 3);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -332,13 +332,13 @@ LABEL_14:
     while (v7);
   }
 
-  if (*(v4 + 40))
+  if (*(fromCopy + 40))
   {
-    self->_frequency = *(v4 + 2);
+    self->_frequency = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(MXWordWithPronunciations *)self setTag:?];
   }

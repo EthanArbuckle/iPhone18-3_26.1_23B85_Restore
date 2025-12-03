@@ -1,15 +1,15 @@
 @interface PABSPearlInterlockHeaderView
-- (PABSPearlInterlockHeaderView)initWithFrame:(CGRect)a3;
-- (double)heightForWidth:(double)a3;
+- (PABSPearlInterlockHeaderView)initWithFrame:(CGRect)frame;
+- (double)heightForWidth:(double)width;
 @end
 
 @implementation PABSPearlInterlockHeaderView
 
-- (PABSPearlInterlockHeaderView)initWithFrame:(CGRect)a3
+- (PABSPearlInterlockHeaderView)initWithFrame:(CGRect)frame
 {
   v41.receiver = self;
   v41.super_class = PABSPearlInterlockHeaderView;
-  v3 = [(PABSPearlInterlockHeaderView *)&v41 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PABSPearlInterlockHeaderView *)&v41 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = MEMORY[0x277CBEBC0];
@@ -41,8 +41,8 @@
     [(PABSPearlInterlockHeaderView *)v3 addSubview:v13];
     v16 = objc_opt_new();
     [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v17 = [MEMORY[0x277D75348] clearColor];
-    [v16 setBackgroundColor:v17];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [v16 setBackgroundColor:clearColor];
 
     [v16 setShowsVerticalScrollIndicator:0];
     [v16 setEditable:0];
@@ -61,12 +61,12 @@
     [v19 addAttribute:v20 value:v21 range:{0, v18}];
 
     v22 = *MEMORY[0x277D740C0];
-    v23 = [MEMORY[0x277D75348] systemBlueColor];
-    [v19 addAttribute:v22 value:v23 range:{0, v18}];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    [v19 addAttribute:v22 value:systemBlueColor range:{0, v18}];
 
     v24 = *MEMORY[0x277D740E8];
-    v25 = [(PABSPearlInterlockHeaderView *)v3 interlockURL];
-    [v19 addAttribute:v24 value:v25 range:{0, v18}];
+    interlockURL = [(PABSPearlInterlockHeaderView *)v3 interlockURL];
+    [v19 addAttribute:v24 value:interlockURL range:{0, v18}];
 
     [v19 addAttribute:*MEMORY[0x277D741F0] value:MEMORY[0x277CBEC28] range:{0, v18}];
     [v16 setAttributedText:v19];
@@ -88,11 +88,11 @@
   return v3;
 }
 
-- (double)heightForWidth:(double)a3
+- (double)heightForWidth:(double)width
 {
   LODWORD(v3) = 1148846080;
   LODWORD(v4) = 1112014848;
-  [(PABSPearlInterlockHeaderView *)self systemLayoutSizeFittingSize:a3 withHorizontalFittingPriority:0.0 verticalFittingPriority:v3, v4];
+  [(PABSPearlInterlockHeaderView *)self systemLayoutSizeFittingSize:width withHorizontalFittingPriority:0.0 verticalFittingPriority:v3, v4];
   return v5;
 }
 

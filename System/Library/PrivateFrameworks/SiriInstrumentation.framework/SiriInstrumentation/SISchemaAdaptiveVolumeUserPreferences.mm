@@ -1,41 +1,41 @@
 @interface SISchemaAdaptiveVolumeUserPreferences
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaAdaptiveVolumeUserPreferences)initWithDictionary:(id)a3;
-- (SISchemaAdaptiveVolumeUserPreferences)initWithJSON:(id)a3;
+- (SISchemaAdaptiveVolumeUserPreferences)initWithDictionary:(id)dictionary;
+- (SISchemaAdaptiveVolumeUserPreferences)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsPermanentOffsetEnabled:(BOOL)a3;
-- (void)setHasPermanentOffsetFactor:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsPermanentOffsetEnabled:(BOOL)enabled;
+- (void)setHasPermanentOffsetFactor:(BOOL)factor;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaAdaptiveVolumeUserPreferences
 
-- (SISchemaAdaptiveVolumeUserPreferences)initWithDictionary:(id)a3
+- (SISchemaAdaptiveVolumeUserPreferences)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = SISchemaAdaptiveVolumeUserPreferences;
   v5 = [(SISchemaAdaptiveVolumeUserPreferences *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"mostRecentIntent"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"mostRecentIntent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaAdaptiveVolumeUserPreferences setMostRecentIntent:](v5, "setMostRecentIntent:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"isPermanentOffsetEnabled"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"isPermanentOffsetEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaAdaptiveVolumeUserPreferences setIsPermanentOffsetEnabled:](v5, "setIsPermanentOffsetEnabled:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"permanentOffsetFactor"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"permanentOffsetFactor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (SISchemaAdaptiveVolumeUserPreferences)initWithJSON:(id)a3
+- (SISchemaAdaptiveVolumeUserPreferences)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaAdaptiveVolumeUserPreferences *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaAdaptiveVolumeUserPreferences *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaAdaptiveVolumeUserPreferences *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,12 +85,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaAdaptiveVolumeUserPreferences isPermanentOffsetEnabled](self, "isPermanentOffsetEnabled")}];
-    [v3 setObject:v8 forKeyedSubscript:@"isPermanentOffsetEnabled"];
+    [dictionary setObject:v8 forKeyedSubscript:@"isPermanentOffsetEnabled"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -121,7 +121,7 @@ LABEL_3:
     v10 = off_1E78E2E38[v9];
   }
 
-  [v3 setObject:v10 forKeyedSubscript:@"mostRecentIntent"];
+  [dictionary setObject:v10 forKeyedSubscript:@"mostRecentIntent"];
   if ((*&self->_has & 4) == 0)
   {
     goto LABEL_5;
@@ -131,12 +131,12 @@ LABEL_4:
   v5 = MEMORY[0x1E696AD98];
   [(SISchemaAdaptiveVolumeUserPreferences *)self permanentOffsetFactor];
   v6 = [v5 numberWithFloat:?];
-  [v3 setObject:v6 forKeyedSubscript:@"permanentOffsetFactor"];
+  [dictionary setObject:v6 forKeyedSubscript:@"permanentOffsetFactor"];
 
 LABEL_5:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -208,16 +208,16 @@ LABEL_4:
   return v5 ^ v4 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   has = self->_has;
-  v6 = v4[20];
+  v6 = equalCopy[20];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_13;
@@ -226,13 +226,13 @@ LABEL_4:
   if (*&has)
   {
     mostRecentIntent = self->_mostRecentIntent;
-    if (mostRecentIntent != [v4 mostRecentIntent])
+    if (mostRecentIntent != [equalCopy mostRecentIntent])
     {
       goto LABEL_13;
     }
 
     has = self->_has;
-    v6 = v4[20];
+    v6 = equalCopy[20];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -241,19 +241,19 @@ LABEL_4:
     if (v8)
     {
       isPermanentOffsetEnabled = self->_isPermanentOffsetEnabled;
-      if (isPermanentOffsetEnabled != [v4 isPermanentOffsetEnabled])
+      if (isPermanentOffsetEnabled != [equalCopy isPermanentOffsetEnabled])
       {
         goto LABEL_13;
       }
 
       has = self->_has;
-      v6 = v4[20];
+      v6 = equalCopy[20];
     }
 
     v10 = (*&has >> 2) & 1;
     if (v10 == ((v6 >> 2) & 1))
     {
-      if (!v10 || (permanentOffsetFactor = self->_permanentOffsetFactor, [v4 permanentOffsetFactor], permanentOffsetFactor == v12))
+      if (!v10 || (permanentOffsetFactor = self->_permanentOffsetFactor, [equalCopy permanentOffsetFactor], permanentOffsetFactor == v12))
       {
         v13 = 1;
         goto LABEL_14;
@@ -268,15 +268,15 @@ LABEL_14:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if (has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -296,20 +296,20 @@ LABEL_3:
   }
 
   PBDataWriterWriteBOOLField();
-  v4 = v6;
+  toCopy = v6;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     PBDataWriterWriteFloatField();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_5:
 }
 
-- (void)setHasPermanentOffsetFactor:(BOOL)a3
+- (void)setHasPermanentOffsetFactor:(BOOL)factor
 {
-  if (a3)
+  if (factor)
   {
     v3 = 4;
   }
@@ -322,9 +322,9 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasIsPermanentOffsetEnabled:(BOOL)a3
+- (void)setHasIsPermanentOffsetEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 2;
   }

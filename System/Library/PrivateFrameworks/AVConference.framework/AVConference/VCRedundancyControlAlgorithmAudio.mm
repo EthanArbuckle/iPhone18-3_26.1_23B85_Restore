@@ -1,19 +1,19 @@
 @interface VCRedundancyControlAlgorithmAudio
-- (VCRedundancyControlAlgorithmAudio)initWithMode:(int)a3 experimentManager:(id)a4;
-- (double)decayFactorBasedOnABTestingGroupNumber:(id)a3;
+- (VCRedundancyControlAlgorithmAudio)initWithMode:(int)mode experimentManager:(id)manager;
+- (double)decayFactorBasedOnABTestingGroupNumber:(id)number;
 - (double)plrDecayFactor;
-- (unsigned)updateRedundancyPercentageWithPLRThresholds:(double *)a3;
+- (unsigned)updateRedundancyPercentageWithPLRThresholds:(double *)thresholds;
 - (void)computeRedundancyInfo;
 - (void)dealloc;
 - (void)plrDecayFactor;
-- (void)processNWConnectionStatistics:(tagVCStatisticsMessage *)a3;
-- (void)processRCNetworkStatistics:(tagVCStatisticsMessage *)a3;
-- (void)updateRedundancyStrategyWithNetworkStatistics:(tagVCStatisticsMessage *)a3;
+- (void)processNWConnectionStatistics:(tagVCStatisticsMessage *)statistics;
+- (void)processRCNetworkStatistics:(tagVCStatisticsMessage *)statistics;
+- (void)updateRedundancyStrategyWithNetworkStatistics:(tagVCStatisticsMessage *)statistics;
 @end
 
 @implementation VCRedundancyControlAlgorithmAudio
 
-- (VCRedundancyControlAlgorithmAudio)initWithMode:(int)a3 experimentManager:(id)a4
+- (VCRedundancyControlAlgorithmAudio)initWithMode:(int)mode experimentManager:(id)manager
 {
   v42 = *MEMORY[0x1E69E9840];
   v23.receiver = self;
@@ -26,7 +26,7 @@
   }
 
   v6->_plrDecayFactor = 0.0015;
-  v6->_experimentManager = a4;
+  v6->_experimentManager = manager;
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v8 = VRTraceErrorLogLevelToCSTR();
@@ -40,12 +40,12 @@
       v28 = 1024;
       v29 = 64;
       v30 = 1024;
-      LODWORD(v31) = a3;
+      LODWORD(v31) = mode;
       _os_log_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Initialize VCRedundancyControlAlgorithmAudio with mode=%d", buf, 0x22u);
     }
   }
 
-  if (a3 == 3)
+  if (mode == 3)
   {
     v10 = 16.0;
     v11 = 4.0;
@@ -54,7 +54,7 @@
     goto LABEL_9;
   }
 
-  if (a3 == 2)
+  if (mode == 2)
   {
     v10 = 6.0;
     v11 = 3.0;
@@ -125,61 +125,61 @@ LABEL_9:
   [(VCRedundancyControlAlgorithmAudio *)&v3 dealloc];
 }
 
-- (void)updateRedundancyStrategyWithNetworkStatistics:(tagVCStatisticsMessage *)a3
+- (void)updateRedundancyStrategyWithNetworkStatistics:(tagVCStatisticsMessage *)statistics
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (a3->type == 11)
+  if (statistics->type == 11)
   {
-    v9 = *(&a3->var0.addRemoveEndPoint + 19);
-    v25 = *(&a3->var0.addRemoveEndPoint + 17);
+    v9 = *(&statistics->var0.addRemoveEndPoint + 19);
+    v25 = *(&statistics->var0.addRemoveEndPoint + 17);
     v26 = v9;
-    v27 = *(&a3->var0.addRemoveEndPoint + 21);
-    v10 = *(&a3->var0.addRemoveEndPoint + 11);
-    v21 = *(&a3->var0.addRemoveEndPoint + 9);
+    v27 = *(&statistics->var0.addRemoveEndPoint + 21);
+    v10 = *(&statistics->var0.addRemoveEndPoint + 11);
+    v21 = *(&statistics->var0.addRemoveEndPoint + 9);
     v22 = v10;
-    v11 = *(&a3->var0.addRemoveEndPoint + 15);
-    v23 = *(&a3->var0.addRemoveEndPoint + 13);
+    v11 = *(&statistics->var0.addRemoveEndPoint + 15);
+    v23 = *(&statistics->var0.addRemoveEndPoint + 13);
     v24 = v11;
-    v12 = *(&a3->var0.addRemoveEndPoint + 3);
-    v17 = *&a3->var0.rtcpRR.lastSequenceNumber;
+    v12 = *(&statistics->var0.addRemoveEndPoint + 3);
+    v17 = *&statistics->var0.rtcpRR.lastSequenceNumber;
     v18 = v12;
-    v13 = *(&a3->var0.addRemoveEndPoint + 7);
-    v19 = *(&a3->var0.addRemoveEndPoint + 5);
+    v13 = *(&statistics->var0.addRemoveEndPoint + 7);
+    v19 = *(&statistics->var0.addRemoveEndPoint + 5);
     v20 = v13;
-    v14 = *&a3->isVCRCInternal;
-    v15 = *&a3->type;
+    v14 = *&statistics->isVCRCInternal;
+    v15 = *&statistics->type;
     v16 = v14;
     [(VCRedundancyControlAlgorithmAudio *)self processNWConnectionStatistics:&v15];
   }
 
-  else if (a3->type == 3)
+  else if (statistics->type == 3)
   {
-    v3 = *(&a3->var0.addRemoveEndPoint + 19);
-    v25 = *(&a3->var0.addRemoveEndPoint + 17);
+    v3 = *(&statistics->var0.addRemoveEndPoint + 19);
+    v25 = *(&statistics->var0.addRemoveEndPoint + 17);
     v26 = v3;
-    v27 = *(&a3->var0.addRemoveEndPoint + 21);
-    v4 = *(&a3->var0.addRemoveEndPoint + 11);
-    v21 = *(&a3->var0.addRemoveEndPoint + 9);
+    v27 = *(&statistics->var0.addRemoveEndPoint + 21);
+    v4 = *(&statistics->var0.addRemoveEndPoint + 11);
+    v21 = *(&statistics->var0.addRemoveEndPoint + 9);
     v22 = v4;
-    v5 = *(&a3->var0.addRemoveEndPoint + 15);
-    v23 = *(&a3->var0.addRemoveEndPoint + 13);
+    v5 = *(&statistics->var0.addRemoveEndPoint + 15);
+    v23 = *(&statistics->var0.addRemoveEndPoint + 13);
     v24 = v5;
-    v6 = *(&a3->var0.addRemoveEndPoint + 3);
-    v17 = *&a3->var0.rtcpRR.lastSequenceNumber;
+    v6 = *(&statistics->var0.addRemoveEndPoint + 3);
+    v17 = *&statistics->var0.rtcpRR.lastSequenceNumber;
     v18 = v6;
-    v7 = *(&a3->var0.addRemoveEndPoint + 7);
-    v19 = *(&a3->var0.addRemoveEndPoint + 5);
+    v7 = *(&statistics->var0.addRemoveEndPoint + 7);
+    v19 = *(&statistics->var0.addRemoveEndPoint + 5);
     v20 = v7;
-    v8 = *&a3->isVCRCInternal;
-    v15 = *&a3->type;
+    v8 = *&statistics->isVCRCInternal;
+    v15 = *&statistics->type;
     v16 = v8;
     [(VCRedundancyControlAlgorithmAudio *)self processRCNetworkStatistics:&v15];
   }
 }
 
-- (double)decayFactorBasedOnABTestingGroupNumber:(id)a3
+- (double)decayFactorBasedOnABTestingGroupNumber:(id)number
 {
-  v3 = [a3 intValue] - 1;
+  v3 = [number intValue] - 1;
   if (v3 > 3)
   {
     return 0.0015;
@@ -191,11 +191,11 @@ LABEL_9:
   }
 }
 
-- (void)processNWConnectionStatistics:(tagVCStatisticsMessage *)a3
+- (void)processNWConnectionStatistics:(tagVCStatisticsMessage *)statistics
 {
-  if (a3->type == 11)
+  if (statistics->type == 11)
   {
-    offChannelTimeRatio = a3->var0.nwConnection.var0.wifi.offChannelTimeRatio;
+    offChannelTimeRatio = statistics->var0.nwConnection.var0.wifi.offChannelTimeRatio;
     self->_offChannelTimeRatio = offChannelTimeRatio;
     if (self->_isOffChannelActivityHigh)
     {
@@ -278,13 +278,13 @@ LABEL_9:
   return v2;
 }
 
-- (void)processRCNetworkStatistics:(tagVCStatisticsMessage *)a3
+- (void)processRCNetworkStatistics:(tagVCStatisticsMessage *)statistics
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (a3->type == 3)
+  if (statistics->type == 3)
   {
-    p_statisticsID = &a3->var0.network.statisticsID;
-    if (a3->var0.network.statisticsID)
+    p_statisticsID = &statistics->var0.network.statisticsID;
+    if (statistics->var0.network.statisticsID)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 8)
       {
@@ -342,7 +342,7 @@ LABEL_9:
         }
       }
 
-      packetLossPercentageAudio = a3->var0.network.packetLossPercentageAudio;
+      packetLossPercentageAudio = statistics->var0.network.packetLossPercentageAudio;
       packetLossPercentage = self->_packetLossPercentage;
       if (packetLossPercentageAudio <= packetLossPercentage)
       {
@@ -356,8 +356,8 @@ LABEL_9:
 
       self->_isPacketLossIncreasing = v16 >= self->_packetLossPercentageThreshold;
       self->_packetLossPercentage = v16;
-      self->_burstLossPacketCount = a3->var0.baseband.transmittedBytes;
-      self->_isUplinkRecentlyCongested = a3->var0.feedback.videoReceivedPackets != 0;
+      self->_burstLossPacketCount = statistics->var0.baseband.transmittedBytes;
+      self->_isUplinkRecentlyCongested = statistics->var0.feedback.videoReceivedPackets != 0;
       [(VCRedundancyControlAlgorithmAudio *)self computeRedundancyInfo];
     }
   }
@@ -402,13 +402,13 @@ LABEL_6:
   self->_redundancyInterval = v5;
 }
 
-- (unsigned)updateRedundancyPercentageWithPLRThresholds:(double *)a3
+- (unsigned)updateRedundancyPercentageWithPLRThresholds:(double *)thresholds
 {
   v4 = 0;
   v27 = *MEMORY[0x1E69E9840];
   do
   {
-    if (self->_packetLossPercentage < a3[v4])
+    if (self->_packetLossPercentage < thresholds[v4])
     {
       break;
     }
@@ -426,7 +426,7 @@ LABEL_6:
       v6 = 2;
     }
 
-    self->_packetLossPercentageThreshold = a3[v6];
+    self->_packetLossPercentageThreshold = thresholds[v6];
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v7 = VRTraceErrorLogLevelToCSTR();
@@ -490,7 +490,7 @@ LABEL_6:
       v10 = 1024;
       v11 = 156;
       v12 = 2112;
-      v13 = a1;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v5, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d VCFeatureExperimentSetting: Experiment value not found for %@", &v6, 0x26u);
     }
   }

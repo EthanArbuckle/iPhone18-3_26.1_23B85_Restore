@@ -1,23 +1,23 @@
 @interface MenuManager
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (void)buildMenuWithBuilder:(id)a3;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (void)buildMenuWithBuilder:(id)builder;
 @end
 
 @implementation MenuManager
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  MenuManager.buildMenu(with:)(a3);
+  selfCopy = self;
+  MenuManager.buildMenu(with:)(builder);
   swift_unknownObjectRelease();
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v5 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1D8191F34();
     swift_unknownObjectRelease();
@@ -26,7 +26,7 @@
   else
   {
     memset(v9, 0, sizeof(v9));
-    v6 = self;
+    selfCopy2 = self;
   }
 
   v7 = MenuManager.canPerformAction(_:withSender:)();

@@ -1,36 +1,36 @@
 @interface SBCycleContinuousExposeGroupAppLayoutsSwitcherModifier
-- (SBCycleContinuousExposeGroupAppLayoutsSwitcherModifier)initWithAppLayout:(id)a3 behindAppLayout:(id)a4 generationCount:(unint64_t)a5;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
-- (id)_completeIfNeededIgnoringHover:(BOOL)a3;
+- (SBCycleContinuousExposeGroupAppLayoutsSwitcherModifier)initWithAppLayout:(id)layout behindAppLayout:(id)appLayout generationCount:(unint64_t)count;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
+- (id)_completeIfNeededIgnoringHover:(BOOL)hover;
 - (id)_timeoutReason;
-- (id)appLayoutsForContinuousExposeIdentifier:(id)a3;
-- (id)handleContinuousExposeIdentifiersChangedEvent:(id)a3;
-- (id)handleHighlightEvent:(id)a3;
-- (id)handleTimerEvent:(id)a3;
-- (id)handleTransitionEvent:(id)a3;
+- (id)appLayoutsForContinuousExposeIdentifier:(id)identifier;
+- (id)handleContinuousExposeIdentifiersChangedEvent:(id)event;
+- (id)handleHighlightEvent:(id)event;
+- (id)handleTimerEvent:(id)event;
+- (id)handleTransitionEvent:(id)event;
 - (id)visibleAppLayouts;
 @end
 
 @implementation SBCycleContinuousExposeGroupAppLayoutsSwitcherModifier
 
-- (SBCycleContinuousExposeGroupAppLayoutsSwitcherModifier)initWithAppLayout:(id)a3 behindAppLayout:(id)a4 generationCount:(unint64_t)a5
+- (SBCycleContinuousExposeGroupAppLayoutsSwitcherModifier)initWithAppLayout:(id)layout behindAppLayout:(id)appLayout generationCount:(unint64_t)count
 {
-  v10 = a3;
-  v11 = a4;
+  layoutCopy = layout;
+  appLayoutCopy = appLayout;
   v14.receiver = self;
   v14.super_class = SBCycleContinuousExposeGroupAppLayoutsSwitcherModifier;
   v12 = [(SBSwitcherModifier *)&v14 init];
   if (v12)
   {
-    if (v10)
+    if (layoutCopy)
     {
-      if (v11)
+      if (appLayoutCopy)
       {
 LABEL_4:
-        objc_storeStrong(&v12->_appLayout, a3);
-        objc_storeStrong(&v12->_behindAppLayout, a4);
-        v12->_generationCount = a5;
-        v12->_initialGenerationCount = a5;
+        objc_storeStrong(&v12->_appLayout, layout);
+        objc_storeStrong(&v12->_behindAppLayout, appLayout);
+        v12->_generationCount = count;
+        v12->_initialGenerationCount = count;
         goto LABEL_5;
       }
     }
@@ -38,7 +38,7 @@ LABEL_4:
     else
     {
       [SBCycleContinuousExposeGroupAppLayoutsSwitcherModifier initWithAppLayout:a2 behindAppLayout:v12 generationCount:?];
-      if (v11)
+      if (appLayoutCopy)
       {
         goto LABEL_4;
       }
@@ -58,38 +58,38 @@ LABEL_5:
   v9[2] = *MEMORY[0x277D85DE8];
   v8.receiver = self;
   v8.super_class = SBCycleContinuousExposeGroupAppLayoutsSwitcherModifier;
-  v3 = [(SBCycleContinuousExposeGroupAppLayoutsSwitcherModifier *)&v8 visibleAppLayouts];
+  visibleAppLayouts = [(SBCycleContinuousExposeGroupAppLayoutsSwitcherModifier *)&v8 visibleAppLayouts];
   behindAppLayout = self->_behindAppLayout;
   v9[0] = self->_appLayout;
   v9[1] = behindAppLayout;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:2];
-  v6 = [v3 setByAddingObjectsFromArray:v5];
+  v6 = [visibleAppLayouts setByAddingObjectsFromArray:v5];
 
   return v6;
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  v8 = a4;
+  layoutCopy = layout;
   v9 = 0.0;
-  if (([v8 isEqual:self->_appLayout] & 1) == 0)
+  if (([layoutCopy isEqual:self->_appLayout] & 1) == 0)
   {
     v12.receiver = self;
     v12.super_class = SBCycleContinuousExposeGroupAppLayoutsSwitcherModifier;
-    [(SBCycleContinuousExposeGroupAppLayoutsSwitcherModifier *)&v12 opacityForLayoutRole:a3 inAppLayout:v8 atIndex:a5];
+    [(SBCycleContinuousExposeGroupAppLayoutsSwitcherModifier *)&v12 opacityForLayoutRole:role inAppLayout:layoutCopy atIndex:index];
     v9 = v10;
   }
 
   return v9;
 }
 
-- (id)appLayoutsForContinuousExposeIdentifier:(id)a3
+- (id)appLayoutsForContinuousExposeIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = SBCycleContinuousExposeGroupAppLayoutsSwitcherModifier;
-  v5 = [(SBCycleContinuousExposeGroupAppLayoutsSwitcherModifier *)&v10 appLayoutsForContinuousExposeIdentifier:v4];
-  if ([v5 count] >= 2 && (-[SBAppLayout continuousExposeIdentifier](self->_appLayout, "continuousExposeIdentifier"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqualToString:", v4), v6, v7) && !-[SBAppLayout isEqual:](self->_appLayout, "isEqual:", self->_behindAppLayout))
+  v5 = [(SBCycleContinuousExposeGroupAppLayoutsSwitcherModifier *)&v10 appLayoutsForContinuousExposeIdentifier:identifierCopy];
+  if ([v5 count] >= 2 && (-[SBAppLayout continuousExposeIdentifier](self->_appLayout, "continuousExposeIdentifier"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqualToString:", identifierCopy), v6, v7) && !-[SBAppLayout isEqual:](self->_appLayout, "isEqual:", self->_behindAppLayout))
   {
     v8 = [v5 mutableCopy];
     if ([v8 containsObject:self->_appLayout] && objc_msgSend(v8, "containsObject:", self->_behindAppLayout))
@@ -106,11 +106,11 @@ LABEL_5:
   return v8;
 }
 
-- (id)handleTransitionEvent:(id)a3
+- (id)handleTransitionEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 appLayoutsWithRemovalContexts];
-  v6 = [v5 containsObject:self->_appLayoutToOrderFront];
+  eventCopy = event;
+  appLayoutsWithRemovalContexts = [eventCopy appLayoutsWithRemovalContexts];
+  v6 = [appLayoutsWithRemovalContexts containsObject:self->_appLayoutToOrderFront];
 
   if (v6)
   {
@@ -120,47 +120,47 @@ LABEL_5:
 
   v10.receiver = self;
   v10.super_class = SBCycleContinuousExposeGroupAppLayoutsSwitcherModifier;
-  v8 = [(SBSwitcherModifier *)&v10 handleTransitionEvent:v4];
+  v8 = [(SBSwitcherModifier *)&v10 handleTransitionEvent:eventCopy];
 
   return v8;
 }
 
-- (id)handleContinuousExposeIdentifiersChangedEvent:(id)a3
+- (id)handleContinuousExposeIdentifiersChangedEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v23.receiver = self;
   v23.super_class = SBCycleContinuousExposeGroupAppLayoutsSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v23 handleContinuousExposeIdentifiersChangedEvent:v4];
-  if ([v4 isAnimated])
+  v5 = [(SBSwitcherModifier *)&v23 handleContinuousExposeIdentifiersChangedEvent:eventCopy];
+  if ([eventCopy isAnimated])
   {
-    v6 = [(SBCycleContinuousExposeGroupAppLayoutsSwitcherModifier *)self continuousExposeIdentifiersGenerationCount];
-    self->_generationCount = v6;
-    if (v6 == self->_initialGenerationCount)
+    continuousExposeIdentifiersGenerationCount = [(SBCycleContinuousExposeGroupAppLayoutsSwitcherModifier *)self continuousExposeIdentifiersGenerationCount];
+    self->_generationCount = continuousExposeIdentifiersGenerationCount;
+    if (continuousExposeIdentifiersGenerationCount == self->_initialGenerationCount)
     {
       v7 = [SBTimerEventSwitcherEventResponse alloc];
-      v8 = [(SBCycleContinuousExposeGroupAppLayoutsSwitcherModifier *)self _timeoutReason];
-      v9 = [(SBTimerEventSwitcherEventResponse *)v7 initWithDelay:0 validator:v8 reason:1.5];
+      _timeoutReason = [(SBCycleContinuousExposeGroupAppLayoutsSwitcherModifier *)self _timeoutReason];
+      v9 = [(SBTimerEventSwitcherEventResponse *)v7 initWithDelay:0 validator:_timeoutReason reason:1.5];
 
       v10 = SBAppendSwitcherModifierResponse(v9, v5);
 
       v5 = v10;
     }
 
-    v11 = [v4 transitioningToAppLayout];
-    v12 = [v11 continuousExposeIdentifier];
-    v13 = [(SBAppLayout *)self->_appLayout continuousExposeIdentifier];
-    v14 = [v12 isEqual:v13];
+    transitioningToAppLayout = [eventCopy transitioningToAppLayout];
+    continuousExposeIdentifier = [transitioningToAppLayout continuousExposeIdentifier];
+    continuousExposeIdentifier2 = [(SBAppLayout *)self->_appLayout continuousExposeIdentifier];
+    v14 = [continuousExposeIdentifier isEqual:continuousExposeIdentifier2];
 
     if (v14)
     {
-      v15 = [v4 transitioningToAppLayout];
+      transitioningToAppLayout2 = [eventCopy transitioningToAppLayout];
       appLayoutToOrderFront = self->_appLayoutToOrderFront;
-      self->_appLayoutToOrderFront = v15;
+      self->_appLayoutToOrderFront = transitioningToAppLayout2;
 
       if (![(SBAppLayout *)self->_appLayout isEqual:self->_behindAppLayout])
       {
-        v17 = [v4 transitioningToAppLayout];
-        v18 = [v17 isEqual:self->_behindAppLayout];
+        transitioningToAppLayout3 = [eventCopy transitioningToAppLayout];
+        v18 = [transitioningToAppLayout3 isEqual:self->_behindAppLayout];
 
         if ((v18 & 1) == 0)
         {
@@ -186,24 +186,24 @@ LABEL_10:
   return v5;
 }
 
-- (id)handleTimerEvent:(id)a3
+- (id)handleTimerEvent:(id)event
 {
   v13.receiver = self;
   v13.super_class = SBCycleContinuousExposeGroupAppLayoutsSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBSwitcherModifier *)&v13 handleTimerEvent:v4];
-  v6 = [v4 reason];
+  eventCopy = event;
+  v5 = [(SBSwitcherModifier *)&v13 handleTimerEvent:eventCopy];
+  reason = [eventCopy reason];
 
-  v7 = [(SBCycleContinuousExposeGroupAppLayoutsSwitcherModifier *)self _timeoutReason];
-  v8 = [v6 isEqualToString:v7];
+  _timeoutReason = [(SBCycleContinuousExposeGroupAppLayoutsSwitcherModifier *)self _timeoutReason];
+  v8 = [reason isEqualToString:_timeoutReason];
 
   if (v8)
   {
-    v9 = [(SBAppLayout *)self->_appLayout continuousExposeIdentifier];
-    self->_isDelayingCompletionForHover = [(SBCycleContinuousExposeGroupAppLayoutsSwitcherModifier *)self anyHighlightedAppLayoutsForContinuousExposeIdentifier:v9];
+    continuousExposeIdentifier = [(SBAppLayout *)self->_appLayout continuousExposeIdentifier];
+    self->_isDelayingCompletionForHover = [(SBCycleContinuousExposeGroupAppLayoutsSwitcherModifier *)self anyHighlightedAppLayoutsForContinuousExposeIdentifier:continuousExposeIdentifier];
 
-    v10 = [(SBCycleContinuousExposeGroupAppLayoutsSwitcherModifier *)self _completeIfNeeded];
-    v11 = SBAppendSwitcherModifierResponse(v10, v5);
+    _completeIfNeeded = [(SBCycleContinuousExposeGroupAppLayoutsSwitcherModifier *)self _completeIfNeeded];
+    v11 = SBAppendSwitcherModifierResponse(_completeIfNeeded, v5);
 
     v5 = v11;
   }
@@ -211,18 +211,18 @@ LABEL_10:
   return v5;
 }
 
-- (id)handleHighlightEvent:(id)a3
+- (id)handleHighlightEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = SBCycleContinuousExposeGroupAppLayoutsSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBSwitcherModifier *)&v10 handleHighlightEvent:v4];
-  v6 = [v4 isHoverEvent];
+  eventCopy = event;
+  v5 = [(SBSwitcherModifier *)&v10 handleHighlightEvent:eventCopy];
+  isHoverEvent = [eventCopy isHoverEvent];
 
-  if (v6 && self->_isDelayingCompletionForHover)
+  if (isHoverEvent && self->_isDelayingCompletionForHover)
   {
-    v7 = [(SBCycleContinuousExposeGroupAppLayoutsSwitcherModifier *)self _completeIfNeeded];
-    v8 = SBAppendSwitcherModifierResponse(v7, v5);
+    _completeIfNeeded = [(SBCycleContinuousExposeGroupAppLayoutsSwitcherModifier *)self _completeIfNeeded];
+    v8 = SBAppendSwitcherModifierResponse(_completeIfNeeded, v5);
 
     v5 = v8;
   }
@@ -230,9 +230,9 @@ LABEL_10:
   return v5;
 }
 
-- (id)_completeIfNeededIgnoringHover:(BOOL)a3
+- (id)_completeIfNeededIgnoringHover:(BOOL)hover
 {
-  if ([(SBChainableModifier *)self state]== 1 || self->_isDelayingCompletionForHover && !a3 && ([(SBAppLayout *)self->_appLayout continuousExposeIdentifier], v6 = objc_claimAutoreleasedReturnValue(), v7 = [(SBCycleContinuousExposeGroupAppLayoutsSwitcherModifier *)self anyHighlightedAppLayoutsForContinuousExposeIdentifier:v6], v6, (v7 & 1) != 0))
+  if ([(SBChainableModifier *)self state]== 1 || self->_isDelayingCompletionForHover && !hover && ([(SBAppLayout *)self->_appLayout continuousExposeIdentifier], v6 = objc_claimAutoreleasedReturnValue(), v7 = [(SBCycleContinuousExposeGroupAppLayoutsSwitcherModifier *)self anyHighlightedAppLayoutsForContinuousExposeIdentifier:v6], v6, (v7 & 1) != 0))
   {
     v5 = 0;
   }

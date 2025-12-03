@@ -1,43 +1,43 @@
 @interface CDPDAccountRecoveryValidator
-- (CDPDAccountRecoveryValidator)initWithContext:(id)a3 authProvider:(id)a4 octagonTrustProxy:(id)a5;
-- (id)_cdpErrorFromAuthKitError:(id)a3;
-- (void)confirmRecoveryKey:(id)a3 completion:(id)a4;
-- (void)generateRecoveryKey:(id)a3;
+- (CDPDAccountRecoveryValidator)initWithContext:(id)context authProvider:(id)provider octagonTrustProxy:(id)proxy;
+- (id)_cdpErrorFromAuthKitError:(id)error;
+- (void)confirmRecoveryKey:(id)key completion:(id)completion;
+- (void)generateRecoveryKey:(id)key;
 @end
 
 @implementation CDPDAccountRecoveryValidator
 
-- (CDPDAccountRecoveryValidator)initWithContext:(id)a3 authProvider:(id)a4 octagonTrustProxy:(id)a5
+- (CDPDAccountRecoveryValidator)initWithContext:(id)context authProvider:(id)provider octagonTrustProxy:(id)proxy
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contextCopy = context;
+  providerCopy = provider;
+  proxyCopy = proxy;
   v12 = [(CDPDAccountRecoveryValidator *)self init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_authProvider, a4);
-    objc_storeStrong(&v13->_context, a3);
-    objc_storeStrong(&v13->_octagonTrustProxy, a5);
+    objc_storeStrong(&v12->_authProvider, provider);
+    objc_storeStrong(&v13->_context, context);
+    objc_storeStrong(&v13->_octagonTrustProxy, proxy);
   }
 
   return v13;
 }
 
-- (void)confirmRecoveryKey:(id)a3 completion:(id)a4
+- (void)confirmRecoveryKey:(id)key completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  completionCopy = completion;
   v8 = _CDPLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_24510B000, v8, OS_LOG_TYPE_DEFAULT, "%@ : Confirming recovery key", buf, 0xCu);
   }
 
-  if (!v7)
+  if (!completionCopy)
   {
     [CDPDAccountRecoveryValidator confirmRecoveryKey:completion:];
   }
@@ -55,12 +55,12 @@
   v16[2] = __62__CDPDAccountRecoveryValidator_confirmRecoveryKey_completion___block_invoke;
   v16[3] = &unk_278E244A8;
   v16[4] = self;
-  v17 = v6;
+  v17 = keyCopy;
   v18 = v9;
-  v19 = v7;
-  v12 = v7;
+  v19 = completionCopy;
+  v12 = completionCopy;
   v13 = v9;
-  v14 = v6;
+  v14 = keyCopy;
   [(CDPAuthProviderInternal *)authProvider cdpContext:context verifyMasterKey:v14 completion:v16];
 
   v15 = *MEMORY[0x277D85DE8];
@@ -132,30 +132,30 @@ void __62__CDPDAccountRecoveryValidator_confirmRecoveryKey_completion___block_in
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)generateRecoveryKey:(id)a3
+- (void)generateRecoveryKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = _CDPLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
     [CDPDAccountRecoveryValidator generateRecoveryKey:v4];
   }
 
-  if (v3)
+  if (keyCopy)
   {
     v5 = _CDPStateError();
-    v3[2](v3, 0, v5);
+    keyCopy[2](keyCopy, 0, v5);
   }
 }
 
-- (id)_cdpErrorFromAuthKitError:(id)a3
+- (id)_cdpErrorFromAuthKitError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (errorCopy)
   {
-    v5 = [v3 domain];
-    if ([v5 isEqualToString:*MEMORY[0x277CEFF48]])
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:*MEMORY[0x277CEFF48]])
     {
       [v4 code];
     }

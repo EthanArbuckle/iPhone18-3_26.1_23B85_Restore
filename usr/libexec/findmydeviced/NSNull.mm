@@ -1,17 +1,17 @@
 @interface NSNull
-- (BOOL)encodeWithFMDCoder:(id)a3 error:(id *)a4;
-- (NSNull)initWithFMDCoder:(id)a3 error:(id *)a4;
+- (BOOL)encodeWithFMDCoder:(id)coder error:(id *)error;
+- (NSNull)initWithFMDCoder:(id)coder error:(id *)error;
 @end
 
 @implementation NSNull
 
-- (BOOL)encodeWithFMDCoder:(id)a3 error:(id *)a4
+- (BOOL)encodeWithFMDCoder:(id)coder error:(id *)error
 {
-  v5 = a3;
+  coderCopy = coder;
   v6 = +[NSNull null];
   v7 = +[NSNull objectType];
   v12 = 0;
-  [v5 encodeObject:v6 forKey:v7 error:&v12];
+  [coderCopy encodeObject:v6 forKey:v7 error:&v12];
 
   v8 = v12;
   if (v8)
@@ -22,23 +22,23 @@
       sub_100227DB4(v8, v9);
     }
 
-    if (a4)
+    if (error)
     {
       v10 = v8;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
   return v8 == 0;
 }
 
-- (NSNull)initWithFMDCoder:(id)a3 error:(id *)a4
+- (NSNull)initWithFMDCoder:(id)coder error:(id *)error
 {
-  v6 = a3;
+  coderCopy = coder;
   v7 = objc_opt_class();
   v8 = +[NSNull objectType];
   v16 = 0;
-  v9 = [v6 decodeObjectOfClass:v7 forKey:v8 error:&v16];
+  v9 = [coderCopy decodeObjectOfClass:v7 forKey:v8 error:&v16];
 
   v10 = v16;
   if (!v10)
@@ -46,12 +46,12 @@
     if (v9)
     {
       self = [(NSNull *)self init];
-      v13 = self;
+      selfCopy = self;
       goto LABEL_9;
     }
 
 LABEL_8:
-    v13 = 0;
+    selfCopy = 0;
     goto LABEL_9;
   }
 
@@ -61,16 +61,16 @@ LABEL_8:
     sub_100227E2C(v9, v11);
   }
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_8;
   }
 
   v12 = v10;
-  v13 = 0;
-  *a4 = v10;
+  selfCopy = 0;
+  *error = v10;
 LABEL_9:
-  v14 = v13;
+  v14 = selfCopy;
 
   return v14;
 }

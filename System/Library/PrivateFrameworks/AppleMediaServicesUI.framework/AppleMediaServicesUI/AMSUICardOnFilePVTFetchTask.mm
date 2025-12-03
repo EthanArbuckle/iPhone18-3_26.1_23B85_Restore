@@ -1,8 +1,8 @@
 @interface AMSUICardOnFilePVTFetchTask
-+ (id)_accountToUseFromGivenAccount:(id)a3 accountParameters:(id)a4 activeiTunesAccount:(id)a5;
-- (AMSUICardOnFilePVTFetchTask)initWithAccount:(id)a3 accountParameters:(id)a4 bag:(id)a5 displayName:(id)a6 metrics:(id)a7 viewController:(id)a8;
-- (id)_promiseToFetchCardOnStackBooleanURL:(id)a3;
-- (id)_promiseToFetchCardOnStackTokenURL:(id)a3;
++ (id)_accountToUseFromGivenAccount:(id)account accountParameters:(id)parameters activeiTunesAccount:(id)tunesAccount;
+- (AMSUICardOnFilePVTFetchTask)initWithAccount:(id)account accountParameters:(id)parameters bag:(id)bag displayName:(id)name metrics:(id)metrics viewController:(id)controller;
+- (id)_promiseToFetchCardOnStackBooleanURL:(id)l;
+- (id)_promiseToFetchCardOnStackTokenURL:(id)l;
 - (id)_promiseToLoadBooleanURL;
 - (id)_promiseToLoadPVTURL;
 - (id)_promiseToPromptAfterCancel;
@@ -12,26 +12,26 @@
 
 @implementation AMSUICardOnFilePVTFetchTask
 
-- (AMSUICardOnFilePVTFetchTask)initWithAccount:(id)a3 accountParameters:(id)a4 bag:(id)a5 displayName:(id)a6 metrics:(id)a7 viewController:(id)a8
+- (AMSUICardOnFilePVTFetchTask)initWithAccount:(id)account accountParameters:(id)parameters bag:(id)bag displayName:(id)name metrics:(id)metrics viewController:(id)controller
 {
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  accountCopy = account;
+  parametersCopy = parameters;
+  bagCopy = bag;
+  nameCopy = name;
+  metricsCopy = metrics;
+  controllerCopy = controller;
   v24.receiver = self;
   v24.super_class = AMSUICardOnFilePVTFetchTask;
   v18 = [(AMSTask *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_originalAccount, a3);
-    objc_storeStrong(&v19->_accountParameters, a4);
-    objc_storeStrong(&v19->_bag, a5);
-    objc_storeStrong(&v19->_displayName, a6);
-    objc_storeStrong(&v19->_metrics, a7);
-    objc_storeStrong(&v19->_viewController, a8);
+    objc_storeStrong(&v18->_originalAccount, account);
+    objc_storeStrong(&v19->_accountParameters, parameters);
+    objc_storeStrong(&v19->_bag, bag);
+    objc_storeStrong(&v19->_displayName, name);
+    objc_storeStrong(&v19->_metrics, metrics);
+    objc_storeStrong(&v19->_viewController, controller);
   }
 
   return v19;
@@ -40,14 +40,14 @@
 - (id)performTask
 {
   v38[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E698C968] sharedConfig];
-  if (!v3)
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v3 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
     v6 = AMSLogKey();
@@ -55,15 +55,15 @@
     v32 = v5;
     v33 = 2114;
     v34 = v6;
-    _os_log_impl(&dword_1BB036000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Running AMSUICardOnFilePVTFetchTask", buf, 0x16u);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Running AMSUICardOnFilePVTFetchTask", buf, 0x16u);
   }
 
   v7 = [MEMORY[0x1E6959A48] ams_sharedAccountStoreForMediaType:*MEMORY[0x1E698C4C0]];
   v8 = objc_opt_class();
-  v9 = [(AMSUICardOnFilePVTFetchTask *)self originalAccount];
-  v10 = [(AMSUICardOnFilePVTFetchTask *)self accountParameters];
-  v11 = [v7 ams_activeiTunesAccount];
-  v12 = [v8 _accountToUseFromGivenAccount:v9 accountParameters:v10 activeiTunesAccount:v11];
+  originalAccount = [(AMSUICardOnFilePVTFetchTask *)self originalAccount];
+  accountParameters = [(AMSUICardOnFilePVTFetchTask *)self accountParameters];
+  ams_activeiTunesAccount = [v7 ams_activeiTunesAccount];
+  v12 = [v8 _accountToUseFromGivenAccount:originalAccount accountParameters:accountParameters activeiTunesAccount:ams_activeiTunesAccount];
 
   v37 = @"AMSUICardOnFilePVTPreconditionsNotMet";
   v38[0] = MEMORY[0x1E695E118];
@@ -71,31 +71,31 @@
   if (v12)
   {
     v14 = [objc_alloc(MEMORY[0x1E698C800]) initWithAccount:v12 forSignaturePurpose:1];
-    v15 = [v14 perform];
+    perform = [v14 perform];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __42__AMSUICardOnFilePVTFetchTask_performTask__block_invoke;
     v27[3] = &unk_1E7F248A0;
     v28 = v13;
-    v29 = self;
+    selfCopy = self;
     v30 = v12;
-    v16 = [v15 continueWithPromiseBlock:v27];
+    v16 = [perform continueWithPromiseBlock:v27];
 
-    v17 = v28;
+    metrics = v28;
   }
 
   else
   {
     v18 = *MEMORY[0x1E698C548];
     v14 = AMSCustomError();
-    v19 = [MEMORY[0x1E698C968] sharedConfig];
-    if (!v19)
+    mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
+    if (!mEMORY[0x1E698C968]2)
     {
-      v19 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v20 = [v19 OSLogObject];
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [mEMORY[0x1E698C968]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v21 = objc_opt_class();
       v22 = AMSLogKey();
@@ -105,12 +105,12 @@
       v34 = v22;
       v35 = 2114;
       v36 = v14;
-      _os_log_impl(&dword_1BB036000, v20, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_1BB036000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] %{public}@", buf, 0x20u);
     }
 
     v16 = [MEMORY[0x1E698CAD0] promiseWithError:v14];
-    v17 = [(AMSUICardOnFilePVTFetchTask *)self metrics];
-    [v17 setDisplayReason:@"Active iTunes account mismatch"];
+    metrics = [(AMSUICardOnFilePVTFetchTask *)self metrics];
+    [metrics setDisplayReason:@"Active iTunes account mismatch"];
   }
 
   v26[0] = MEMORY[0x1E69E9820];
@@ -232,24 +232,24 @@ LABEL_12:
   v3 = [(AMSUICardOnFilePVTFetchTask *)self bag];
   v4 = [v3 URLForKey:@"verifyPaymentApplePayAurumOnStackBoolean"];
 
-  v5 = [v4 valuePromise];
+  valuePromise = [v4 valuePromise];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __55__AMSUICardOnFilePVTFetchTask__promiseToLoadBooleanURL__block_invoke;
   v8[3] = &unk_1E7F248F0;
   v8[4] = self;
-  v6 = [v5 thenWithBlock:v8];
+  v6 = [valuePromise thenWithBlock:v8];
 
   return v6;
 }
 
-- (id)_promiseToFetchCardOnStackBooleanURL:(id)a3
+- (id)_promiseToFetchCardOnStackBooleanURL:(id)l
 {
-  v4 = a3;
-  v5 = [(AMSUICardOnFilePVTFetchTask *)self account];
-  v6 = [(AMSUICardOnFilePVTFetchTask *)self accountParameters];
+  lCopy = l;
+  account = [(AMSUICardOnFilePVTFetchTask *)self account];
+  accountParameters = [(AMSUICardOnFilePVTFetchTask *)self accountParameters];
   v7 = [(AMSUICardOnFilePVTFetchTask *)self bag];
-  v8 = [AMSUIPaymentVerificationProtocolHandler _promiseToFetchURLResponseForAccount:v5 accountParameters:v6 url:v4 bag:v7 requestBody:0 bodyEncoding:0 contentType:0];
+  v8 = [AMSUIPaymentVerificationProtocolHandler _promiseToFetchURLResponseForAccount:account accountParameters:accountParameters url:lCopy bag:v7 requestBody:0 bodyEncoding:0 contentType:0];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -363,30 +363,30 @@ void __68__AMSUICardOnFilePVTFetchTask__promiseToFetchCardOnStackBooleanURL___bl
 
 - (id)_promiseToLoadPVTURL
 {
-  v3 = [(AMSUICardOnFilePVTFetchTask *)self metrics];
-  [v3 enqueueEventWithPageId:@"ParentBiometric" displayReason:0];
+  metrics = [(AMSUICardOnFilePVTFetchTask *)self metrics];
+  [metrics enqueueEventWithPageId:@"ParentBiometric" displayReason:0];
 
   v4 = [(AMSUICardOnFilePVTFetchTask *)self bag];
   v5 = [v4 URLForKey:@"verifyPaymentApplePayAurumOnStackPVT"];
 
-  v6 = [v5 valuePromise];
+  valuePromise = [v5 valuePromise];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __51__AMSUICardOnFilePVTFetchTask__promiseToLoadPVTURL__block_invoke;
   v9[3] = &unk_1E7F248F0;
   v9[4] = self;
-  v7 = [v6 thenWithBlock:v9];
+  v7 = [valuePromise thenWithBlock:v9];
 
   return v7;
 }
 
-- (id)_promiseToFetchCardOnStackTokenURL:(id)a3
+- (id)_promiseToFetchCardOnStackTokenURL:(id)l
 {
-  v4 = a3;
-  v5 = [(AMSUICardOnFilePVTFetchTask *)self account];
-  v6 = [(AMSUICardOnFilePVTFetchTask *)self accountParameters];
+  lCopy = l;
+  account = [(AMSUICardOnFilePVTFetchTask *)self account];
+  accountParameters = [(AMSUICardOnFilePVTFetchTask *)self accountParameters];
   v7 = [(AMSUICardOnFilePVTFetchTask *)self bag];
-  v8 = [AMSUIPaymentVerificationProtocolHandler _promiseToFetchURLResponseForAccount:v5 accountParameters:v6 url:v4 bag:v7 requestBody:0 bodyEncoding:0 contentType:0];
+  v8 = [AMSUIPaymentVerificationProtocolHandler _promiseToFetchURLResponseForAccount:account accountParameters:accountParameters url:lCopy bag:v7 requestBody:0 bodyEncoding:0 contentType:0];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -463,10 +463,10 @@ void __66__AMSUICardOnFilePVTFetchTask__promiseToFetchCardOnStackTokenURL___bloc
 
 - (id)_promiseToPromptAfterCancel
 {
-  v3 = [MEMORY[0x1E698C7F8] type];
+  type = [MEMORY[0x1E698C7F8] type];
   v4 = [(AMSUICardOnFilePVTFetchTask *)self bag];
   v5 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleMediaServicesUI"];
-  if (v3 == 3)
+  if (type == 3)
   {
     v6 = @"FACE_ID";
   }
@@ -509,13 +509,13 @@ void __66__AMSUICardOnFilePVTFetchTask__promiseToFetchCardOnStackTokenURL___bloc
   [v22 addButtonAction:v28];
 
   v29 = [AMSUIAlertDialogTask alloc];
-  v30 = [(AMSUICardOnFilePVTFetchTask *)self viewController];
-  v31 = [(AMSUIAlertDialogTask *)v29 initWithRequest:v22 presentingViewController:v30];
+  viewController = [(AMSUICardOnFilePVTFetchTask *)self viewController];
+  v31 = [(AMSUIAlertDialogTask *)v29 initWithRequest:v22 presentingViewController:viewController];
 
-  v32 = [(AMSUICardOnFilePVTFetchTask *)self metrics];
-  [v32 enqueueEventWithPageId:@"ContinueNoBiometric" displayReason:0];
+  metrics = [(AMSUICardOnFilePVTFetchTask *)self metrics];
+  [metrics enqueueEventWithPageId:@"ContinueNoBiometric" displayReason:0];
 
-  v33 = [(AMSUIAlertDialogTask *)v31 present];
+  present = [(AMSUIAlertDialogTask *)v31 present];
   v41[0] = MEMORY[0x1E69E9820];
   v41[1] = 3221225472;
   v41[2] = __58__AMSUICardOnFilePVTFetchTask__promiseToPromptAfterCancel__block_invoke;
@@ -523,10 +523,10 @@ void __66__AMSUICardOnFilePVTFetchTask__promiseToFetchCardOnStackTokenURL___bloc
   v42 = v22;
   v43 = @"cancelConfirmId";
   v44 = v21;
-  v45 = self;
+  selfCopy = self;
   v34 = v21;
   v35 = v22;
-  [v33 addFinishBlock:v41];
+  [present addFinishBlock:v41];
 
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
@@ -571,50 +571,50 @@ void __58__AMSUICardOnFilePVTFetchTask__promiseToPromptAfterCancel__block_invoke
   v13 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_accountToUseFromGivenAccount:(id)a3 accountParameters:(id)a4 activeiTunesAccount:(id)a5
++ (id)_accountToUseFromGivenAccount:(id)account accountParameters:(id)parameters activeiTunesAccount:(id)tunesAccount
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [v8 ams_altDSID];
-  v11 = [v7 ams_altDSID];
-  v12 = [v11 isEqualToString:v10];
+  accountCopy = account;
+  tunesAccountCopy = tunesAccount;
+  parametersCopy = parameters;
+  ams_altDSID = [tunesAccountCopy ams_altDSID];
+  ams_altDSID2 = [accountCopy ams_altDSID];
+  v12 = [ams_altDSID2 isEqualToString:ams_altDSID];
 
-  v13 = [v9 objectForKeyedSubscript:@"altDsId"];
+  v13 = [parametersCopy objectForKeyedSubscript:@"altDsId"];
 
-  v14 = [v13 isEqualToString:v10];
-  v15 = [MEMORY[0x1E698C968] sharedConfig];
-  if (!v15)
+  v14 = [v13 isEqualToString:ams_altDSID];
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v15 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v16 = [v15 OSLogObject];
-  if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v17 = objc_opt_class();
     AMSLogKey();
     v18 = v23 = v12;
-    v19 = [v7 ams_altDSID];
+    ams_altDSID3 = [accountCopy ams_altDSID];
     *buf = 138544386;
     v25 = v17;
     v26 = 2114;
     v27 = v18;
     v28 = 2114;
-    v29 = v10;
+    v29 = ams_altDSID;
     v30 = 2114;
-    v31 = v19;
+    v31 = ams_altDSID3;
     v32 = 2114;
     v33 = v13;
-    _os_log_impl(&dword_1BB036000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Active iTunes: %{public}@, provided account: %{public}@, provided parameters: %{public}@", buf, 0x34u);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Active iTunes: %{public}@, provided account: %{public}@, provided parameters: %{public}@", buf, 0x34u);
 
     v12 = v23;
   }
 
   if ((v12 | v14))
   {
-    v20 = v8;
+    v20 = tunesAccountCopy;
   }
 
   else

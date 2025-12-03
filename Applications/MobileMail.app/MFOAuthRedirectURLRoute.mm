@@ -1,8 +1,8 @@
 @interface MFOAuthRedirectURLRoute
-- (BOOL)canRouteRequest:(id)a3;
+- (BOOL)canRouteRequest:(id)request;
 - (MFOAuthRedirectURLRoute)init;
-- (MFOAuthRedirectURLRoute)initWithRedirectController:(id)a3;
-- (id)routeRequest:(id)a3;
+- (MFOAuthRedirectURLRoute)initWithRedirectController:(id)controller;
+- (id)routeRequest:(id)request;
 @end
 
 @implementation MFOAuthRedirectURLRoute
@@ -15,9 +15,9 @@
   return v4;
 }
 
-- (MFOAuthRedirectURLRoute)initWithRedirectController:(id)a3
+- (MFOAuthRedirectURLRoute)initWithRedirectController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = MFOAuthRedirectURLRoute;
   v6 = [(MFOAuthRedirectURLRoute *)&v9 init];
@@ -25,39 +25,39 @@
   if (v6)
   {
     v6->_priority = 1;
-    objc_storeStrong(&v6->_redirectController, a3);
+    objc_storeStrong(&v6->_redirectController, controller);
   }
 
   return v7;
 }
 
-- (BOOL)canRouteRequest:(id)a3
+- (BOOL)canRouteRequest:(id)request
 {
-  v3 = [a3 URL];
-  v4 = [v3 mf_isOAuthRedirectURL];
+  v3 = [request URL];
+  mf_isOAuthRedirectURL = [v3 mf_isOAuthRedirectURL];
 
-  return v4;
+  return mf_isOAuthRedirectURL;
 }
 
-- (id)routeRequest:(id)a3
+- (id)routeRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = +[EFPromise promise];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10020425C;
   v11[3] = &unk_10064C6B0;
   v11[4] = self;
-  v6 = v4;
+  v6 = requestCopy;
   v12 = v6;
   v7 = v5;
   v13 = v7;
   v8 = +[EFScheduler mainThreadScheduler];
   [v8 performBlock:v11];
 
-  v9 = [v7 future];
+  future = [v7 future];
 
-  return v9;
+  return future;
 }
 
 @end

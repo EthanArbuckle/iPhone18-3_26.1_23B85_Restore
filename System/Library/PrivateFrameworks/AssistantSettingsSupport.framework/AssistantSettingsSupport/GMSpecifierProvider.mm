@@ -1,59 +1,59 @@
 @interface GMSpecifierProvider
 - (BOOL)fetchGMCapability;
-- (GMSpecifierProvider)initWithPresenter:(id)a3;
-- (GMSpecifierProvider)initWithPresenter:(id)a3 eligibilityProvider:(id)a4;
+- (GMSpecifierProvider)initWithPresenter:(id)presenter;
+- (GMSpecifierProvider)initWithPresenter:(id)presenter eligibilityProvider:(id)provider;
 - (id)_configuredGMSpecifier;
 - (id)_downloadingSpecifier;
 - (id)_rampedPreparingSpecifier;
 - (id)_rampedSpecifier;
-- (id)fetchGMRampSpecifierWith:(id)a3;
-- (id)gmUserOptInStatus:(id)a3;
-- (id)valueForGMPreparingSpecifier:(id)a3;
-- (id)valueForGMRampSpecifier:(id)a3;
-- (void)GMJoinWaitlistTapped:(id)a3;
+- (id)fetchGMRampSpecifierWith:(id)with;
+- (id)gmUserOptInStatus:(id)status;
+- (id)valueForGMPreparingSpecifier:(id)specifier;
+- (id)valueForGMRampSpecifier:(id)specifier;
+- (void)GMJoinWaitlistTapped:(id)tapped;
 - (void)dismissGMIntroViewController;
 - (void)fetchGMRampStatus;
 - (void)presentGMEnrollmentView;
 - (void)presentToggleOffAlert;
 - (void)reloadADMSpecifier;
 - (void)reloadGMSpecifier;
-- (void)setGMUserOptInStatus:(id)a3;
+- (void)setGMUserOptInStatus:(id)status;
 - (void)showNetworkUnavailableAlert;
-- (void)siriGMIntroViewControllerContinuePressed:(id)a3;
-- (void)siriGMIntroViewControllerNotNowPressed:(id)a3;
-- (void)siriGMIntroViewControllerPresented:(id)a3 withEnrollmentType:(unint64_t)a4;
-- (void)turnOnGmTapped:(id)a3;
+- (void)siriGMIntroViewControllerContinuePressed:(id)pressed;
+- (void)siriGMIntroViewControllerNotNowPressed:(id)pressed;
+- (void)siriGMIntroViewControllerPresented:(id)presented withEnrollmentType:(unint64_t)type;
+- (void)turnOnGmTapped:(id)tapped;
 - (void)updateADMState;
-- (void)updateWithContext:(int64_t)a3;
+- (void)updateWithContext:(int64_t)context;
 @end
 
 @implementation GMSpecifierProvider
 
-- (GMSpecifierProvider)initWithPresenter:(id)a3
+- (GMSpecifierProvider)initWithPresenter:(id)presenter
 {
-  v4 = a3;
+  presenterCopy = presenter;
   v5 = +[_TtC24AssistantSettingsSupport21GMEligibilityProvider shared];
-  v6 = [(GMSpecifierProvider *)self initWithPresenter:v4 eligibilityProvider:v5];
+  v6 = [(GMSpecifierProvider *)self initWithPresenter:presenterCopy eligibilityProvider:v5];
 
   return v6;
 }
 
-- (GMSpecifierProvider)initWithPresenter:(id)a3 eligibilityProvider:(id)a4
+- (GMSpecifierProvider)initWithPresenter:(id)presenter eligibilityProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  presenterCopy = presenter;
+  providerCopy = provider;
   v15.receiver = self;
   v15.super_class = GMSpecifierProvider;
   v8 = [(GMSpecifierProvider *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_listController, v6);
+    objc_storeWeak(&v8->_listController, presenterCopy);
     v9->_requestState = 0;
-    objc_storeStrong(&v9->_gmEligibilityProvider, a4);
-    v10 = [(GMEligibilityProviderProtocol *)v9->_gmEligibilityProvider gmSpecifierController];
+    objc_storeStrong(&v9->_gmEligibilityProvider, provider);
+    gmSpecifierController = [(GMEligibilityProviderProtocol *)v9->_gmEligibilityProvider gmSpecifierController];
     gmSpecifierController = v9->_gmSpecifierController;
-    v9->_gmSpecifierController = v10;
+    v9->_gmSpecifierController = gmSpecifierController;
 
     v9->_gmEligibilityContext = 0;
     v12 = objc_alloc_init(GMAnalyticsProvider);
@@ -85,25 +85,25 @@
     case 0x15:
     case 0x19:
     case 0x1ALL:
-      v4 = [(GMSpecifierProvider *)self _rampedSpecifier];
+      _rampedSpecifier = [(GMSpecifierProvider *)self _rampedSpecifier];
       goto LABEL_9;
     case 7:
       v6 = 0;
 LABEL_6:
-      v4 = [(GMSpecifierProvider *)self _inWaitlistSpecifierWithEnablement:v6];
+      _rampedSpecifier = [(GMSpecifierProvider *)self _inWaitlistSpecifierWithEnablement:v6];
       goto LABEL_9;
     case 8:
       v5 = 0;
 LABEL_8:
-      v4 = [(GMSpecifierProvider *)self _joinWaitlistSpecifierWithEnablement:v5];
+      _rampedSpecifier = [(GMSpecifierProvider *)self _joinWaitlistSpecifierWithEnablement:v5];
       goto LABEL_9;
     case 9:
-      v4 = [(GMSpecifierProvider *)self _rampedSpecifierWithEnablement:0];
+      _rampedSpecifier = [(GMSpecifierProvider *)self _rampedSpecifierWithEnablement:0];
       goto LABEL_9;
     case 0x18:
-      v4 = [(GMSpecifierProvider *)self _downloadingSpecifier];
+      _rampedSpecifier = [(GMSpecifierProvider *)self _downloadingSpecifier];
 LABEL_9:
-      v3 = v4;
+      v3 = _rampedSpecifier;
       break;
     default:
       break;
@@ -117,7 +117,7 @@ LABEL_9:
     v12 = 136315394;
     v13 = "[GMSpecifierProvider _configuredGMSpecifier]";
     v14 = 2048;
-    v15 = [(GMEligibilityProviderProtocol *)gmEligibilityProvider eligibility];
+    eligibility = [(GMEligibilityProviderProtocol *)gmEligibilityProvider eligibility];
     _os_log_impl(&dword_2413B9000, v9, OS_LOG_TYPE_DEFAULT, "%s #gmenrollment Enrollment returning specifier for context %ld", &v12, 0x16u);
   }
 
@@ -184,13 +184,13 @@ LABEL_9:
       gmEligibilityProvider = self->_gmEligibilityProvider;
       v7 = v4;
       LODWORD(gmEligibilityProvider) = [(GMEligibilityProviderProtocol *)gmEligibilityProvider eligibility]== 18;
-      v8 = [(GMSpecifierControllerProcotol *)self->_gmSpecifierController gmFFEnabled];
+      gmFFEnabled = [(GMSpecifierControllerProcotol *)self->_gmSpecifierController gmFFEnabled];
       v10 = 136315650;
       v11 = "[GMSpecifierProvider fetchGMCapability]";
       v12 = 1024;
       v13 = gmEligibilityProvider;
       v14 = 1024;
-      v15 = v8;
+      v15 = gmFFEnabled;
       _os_log_impl(&dword_2413B9000, v7, OS_LOG_TYPE_DEFAULT, "%s #gmenrollment GMEligibilityContextDeviceNotCapable: %d and CSFAnyFFEnabled: %d", &v10, 0x18u);
 
       result = 0;
@@ -206,7 +206,7 @@ LABEL_9:
   return result;
 }
 
-- (id)fetchGMRampSpecifierWith:(id)a3
+- (id)fetchGMRampSpecifierWith:(id)with
 {
   v18 = *MEMORY[0x277D85DE8];
   if ([(GMEligibilityProviderProtocol *)self->_gmEligibilityProvider eligibility]== 18 || ([(GMSpecifierControllerProcotol *)self->_gmSpecifierController gmFFEnabled]& 1) == 0)
@@ -217,13 +217,13 @@ LABEL_9:
       gmEligibilityProvider = self->_gmEligibilityProvider;
       v8 = v6;
       LODWORD(gmEligibilityProvider) = [(GMEligibilityProviderProtocol *)gmEligibilityProvider eligibility]== 18;
-      v9 = [(GMSpecifierControllerProcotol *)self->_gmSpecifierController gmFFEnabled];
+      gmFFEnabled = [(GMSpecifierControllerProcotol *)self->_gmSpecifierController gmFFEnabled];
       v12 = 136315650;
       v13 = "[GMSpecifierProvider fetchGMRampSpecifierWith:]";
       v14 = 1024;
       v15 = gmEligibilityProvider;
       v16 = 1024;
-      v17 = v9;
+      v17 = gmFFEnabled;
       _os_log_impl(&dword_2413B9000, v8, OS_LOG_TYPE_DEFAULT, "%s #gmenrollment GMEligibilityContextDeviceNotCapable: %d and CSFAnyFFEnabled: %d", &v12, 0x18u);
     }
 
@@ -233,11 +233,11 @@ LABEL_9:
   else
   {
     self->_gmEligibilityContext = [(GMEligibilityProviderProtocol *)self->_gmEligibilityProvider eligibility];
-    v4 = [(GMSpecifierProvider *)self _configuredGMSpecifier];
-    if (v4 && [(GMEligibilityProviderProtocol *)self->_gmEligibilityProvider eligibility])
+    _configuredGMSpecifier = [(GMSpecifierProvider *)self _configuredGMSpecifier];
+    if (_configuredGMSpecifier && [(GMEligibilityProviderProtocol *)self->_gmEligibilityProvider eligibility])
     {
       [(GMEligibilityProviderProtocol *)self->_gmEligibilityProvider setRequestState:0];
-      v5 = v4;
+      v5 = _configuredGMSpecifier;
     }
 
     else
@@ -262,13 +262,13 @@ LABEL_9:
       gmEligibilityProvider = self->_gmEligibilityProvider;
       v6 = v4;
       LODWORD(gmEligibilityProvider) = [(GMEligibilityProviderProtocol *)gmEligibilityProvider eligibility]== 18;
-      v7 = [(GMSpecifierControllerProcotol *)self->_gmSpecifierController gmFFEnabled];
+      gmFFEnabled = [(GMSpecifierControllerProcotol *)self->_gmSpecifierController gmFFEnabled];
       *buf = 136315650;
       v14 = "[GMSpecifierProvider fetchGMRampStatus]";
       v15 = 1024;
       v16 = gmEligibilityProvider;
       v17 = 1024;
-      v18 = v7;
+      v18 = gmFFEnabled;
       _os_log_impl(&dword_2413B9000, v6, OS_LOG_TYPE_DEFAULT, "%s #gmenrollment GMEligibilityContextDeviceNotCapable: %d and CSFAnyFFEnabled: %d", buf, 0x18u);
     }
   }
@@ -392,7 +392,7 @@ void __46__GMSpecifierProvider_presentGMEnrollmentView__block_invoke()
   v1 = *MEMORY[0x277D85DE8];
 }
 
-- (id)valueForGMRampSpecifier:(id)a3
+- (id)valueForGMRampSpecifier:(id)specifier
 {
   v3 = +[AssistantController bundle];
   v4 = [v3 localizedStringForKey:@"GM_RAMP_SPECIFIER_STATUS_TITLE" value:&stru_285317CF0 table:@"AssistantSettings-GM"];
@@ -400,7 +400,7 @@ void __46__GMSpecifierProvider_presentGMEnrollmentView__block_invoke()
   return v4;
 }
 
-- (id)valueForGMPreparingSpecifier:(id)a3
+- (id)valueForGMPreparingSpecifier:(id)specifier
 {
   v3 = +[AssistantController bundle];
   v4 = [v3 localizedStringForKey:@"GM_RAMP_SPECIFIER_STATUS_PREPARING_TITLE" value:&stru_285317CF0 table:@"AssistantSettings-GM"];
@@ -408,7 +408,7 @@ void __46__GMSpecifierProvider_presentGMEnrollmentView__block_invoke()
   return v4;
 }
 
-- (id)gmUserOptInStatus:(id)a3
+- (id)gmUserOptInStatus:(id)status
 {
   if ([(GMEligibilityProviderProtocol *)self->_gmEligibilityProvider eligibility]== 9)
   {
@@ -423,9 +423,9 @@ void __46__GMSpecifierProvider_presentGMEnrollmentView__block_invoke()
   return v4;
 }
 
-- (void)setGMUserOptInStatus:(id)a3
+- (void)setGMUserOptInStatus:(id)status
 {
-  if ([a3 BOOLValue])
+  if ([status BOOLValue])
   {
 
     [(GMSpecifierProvider *)self _setGMUserOptInStatus:1];
@@ -449,10 +449,10 @@ void __46__GMSpecifierProvider_presentGMEnrollmentView__block_invoke()
     _os_log_impl(&dword_2413B9000, v2, OS_LOG_TYPE_DEFAULT, "%s #gmenrollment presentToggleOffAlert", buf, 0xCu);
   }
 
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v5 = +[AssistantController bundle];
     v6 = [v5 localizedStringForKey:@"GM_TURN_OFF_ALERT_TITLE" value:&stru_285317CF0 table:@"AssistantSettings-GM"];
@@ -578,7 +578,7 @@ uint64_t __44__GMSpecifierProvider_presentToggleOffAlert__block_invoke_64(uint64
   [WeakRetained presentViewController:v7 animated:1 completion:0];
 }
 
-- (void)GMJoinWaitlistTapped:(id)a3
+- (void)GMJoinWaitlistTapped:(id)tapped
 {
   if ([MEMORY[0x277CEF218] isNetworkAvailable])
   {
@@ -595,7 +595,7 @@ uint64_t __44__GMSpecifierProvider_presentToggleOffAlert__block_invoke_64(uint64
   }
 }
 
-- (void)turnOnGmTapped:(id)a3
+- (void)turnOnGmTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->_listController);
   objc_opt_class();
@@ -608,21 +608,21 @@ uint64_t __44__GMSpecifierProvider_presentToggleOffAlert__block_invoke_64(uint64
   }
 }
 
-- (void)siriGMIntroViewControllerPresented:(id)a3 withEnrollmentType:(unint64_t)a4
+- (void)siriGMIntroViewControllerPresented:(id)presented withEnrollmentType:(unint64_t)type
 {
-  v6 = a3;
-  switch(a4)
+  presentedCopy = presented;
+  switch(type)
   {
     case 1uLL:
-      v8 = v6;
+      v8 = presentedCopy;
       v7 = 7;
       break;
     case 4uLL:
-      v8 = v6;
+      v8 = presentedCopy;
       v7 = 3;
       break;
     case 3uLL:
-      v8 = v6;
+      v8 = presentedCopy;
       v7 = 0;
       break;
     default:
@@ -630,13 +630,13 @@ uint64_t __44__GMSpecifierProvider_presentToggleOffAlert__block_invoke_64(uint64
   }
 
   [(GMAnalyticsProvider *)self->_gmAnalyticsProvider sendAction:v7];
-  v6 = v8;
+  presentedCopy = v8;
 LABEL_8:
 }
 
-- (void)siriGMIntroViewControllerContinuePressed:(id)a3
+- (void)siriGMIntroViewControllerContinuePressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   if ([(GMEligibilityProviderProtocol *)self->_gmEligibilityProvider eligibility]== 5)
   {
     [(GMSpecifierControllerProcotol *)self->_gmSpecifierController setFeatureOptInStatusWithEnabled:1];
@@ -693,14 +693,14 @@ void __64__GMSpecifierProvider_siriGMIntroViewControllerContinuePressed___block_
   }
 }
 
-- (void)siriGMIntroViewControllerNotNowPressed:(id)a3
+- (void)siriGMIntroViewControllerNotNowPressed:(id)pressed
 {
   [(GMSpecifierProvider *)self dismissGMIntroViewController];
   v4 = +[_TtC24AssistantSettingsSupport21GMEligibilityProvider shared];
-  v5 = [v4 eligibility];
+  eligibility = [v4 eligibility];
 
   gmAnalyticsProvider = self->_gmAnalyticsProvider;
-  if (v5 == 5)
+  if (eligibility == 5)
   {
     v7 = 8;
   }
@@ -758,11 +758,11 @@ void __31__GMSpecifierProvider_clearCFU__block_invoke(uint64_t a1, void *a2)
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateWithContext:(int64_t)a3
+- (void)updateWithContext:(int64_t)context
 {
   objc_initWeak(&location, self);
-  self->_gmEligibilityContext = a3;
-  [(GMEligibilityProviderProtocol *)self->_gmEligibilityProvider setEligibility:a3];
+  self->_gmEligibilityContext = context;
+  [(GMEligibilityProviderProtocol *)self->_gmEligibilityProvider setEligibility:context];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __41__GMSpecifierProvider_updateWithContext___block_invoke;

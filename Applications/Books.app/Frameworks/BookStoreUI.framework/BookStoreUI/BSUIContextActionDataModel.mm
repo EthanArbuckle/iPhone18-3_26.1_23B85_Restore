@@ -3,17 +3,17 @@
 - (BOOL)shouldReportFigaro;
 - (BOOL)supportsSuggestionContextMenu;
 - (BSUIContextActionDataModel)init;
-- (BSUIContextActionDataModel)initWithAssetModel:(id)a3 sourceView:(id)a4;
-- (BSUIContextActionDataModel)initWithAssetModels:(id)a3;
+- (BSUIContextActionDataModel)initWithAssetModel:(id)model sourceView:(id)view;
+- (BSUIContextActionDataModel)initWithAssetModels:(id)models;
 - (NSValue)sourcePoint;
 - (UIBarButtonItem)sourceBarButtonItem;
 - (id)originatingLocation;
-- (void)setIsAnODPRecommendation:(BOOL)a3;
-- (void)setODPAnalyticsWithAttributes:(id)a3;
-- (void)setOriginatingLocation:(id)a3;
-- (void)setShouldReportFigaro:(BOOL)a3;
-- (void)setSourcePoint:(id)a3;
-- (void)setSupportsSuggestionContextMenu:(BOOL)a3;
+- (void)setIsAnODPRecommendation:(BOOL)recommendation;
+- (void)setODPAnalyticsWithAttributes:(id)attributes;
+- (void)setOriginatingLocation:(id)location;
+- (void)setShouldReportFigaro:(BOOL)figaro;
+- (void)setSourcePoint:(id)point;
+- (void)setSupportsSuggestionContextMenu:(BOOL)menu;
 @end
 
 @implementation BSUIContextActionDataModel
@@ -44,11 +44,11 @@
   return v10;
 }
 
-- (void)setOriginatingLocation:(id)a3
+- (void)setOriginatingLocation:(id)location
 {
-  if (a3)
+  if (location)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_2C6128();
     swift_unknownObjectRelease();
@@ -57,7 +57,7 @@
   else
   {
     memset(v7, 0, sizeof(v7));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = OBJC_IVAR___BSUIContextActionDataModel_originatingLocation;
@@ -73,11 +73,11 @@
   return *(self + v3);
 }
 
-- (void)setShouldReportFigaro:(BOOL)a3
+- (void)setShouldReportFigaro:(BOOL)figaro
 {
   v5 = OBJC_IVAR___BSUIContextActionDataModel_shouldReportFigaro;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = figaro;
 }
 
 - (BOOL)isAnODPRecommendation
@@ -87,11 +87,11 @@
   return *(self + v3);
 }
 
-- (void)setIsAnODPRecommendation:(BOOL)a3
+- (void)setIsAnODPRecommendation:(BOOL)recommendation
 {
   v5 = OBJC_IVAR___BSUIContextActionDataModel_isAnODPRecommendation;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = recommendation;
 }
 
 - (BOOL)supportsSuggestionContextMenu
@@ -101,11 +101,11 @@
   return *(self + v3);
 }
 
-- (void)setSupportsSuggestionContextMenu:(BOOL)a3
+- (void)setSupportsSuggestionContextMenu:(BOOL)menu
 {
   v5 = OBJC_IVAR___BSUIContextActionDataModel_supportsSuggestionContextMenu;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = menu;
 }
 
 - (UIBarButtonItem)sourceBarButtonItem
@@ -123,33 +123,33 @@
   return *(self + v3);
 }
 
-- (void)setSourcePoint:(id)a3
+- (void)setSourcePoint:(id)point
 {
   v5 = OBJC_IVAR___BSUIContextActionDataModel_sourcePoint;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = point;
+  pointCopy = point;
 }
 
-- (BSUIContextActionDataModel)initWithAssetModels:(id)a3
+- (BSUIContextActionDataModel)initWithAssetModels:(id)models
 {
   type metadata accessor for ContextActionDataModel.Asset();
   v3 = sub_2C5B28();
   return ContextActionDataModel.init(assets:)(v3);
 }
 
-- (BSUIContextActionDataModel)initWithAssetModel:(id)a3 sourceView:(id)a4
+- (BSUIContextActionDataModel)initWithAssetModel:(id)model sourceView:(id)view
 {
-  v5 = a3;
-  v6 = a4;
-  return ContextActionDataModel.init(asset:sourceView:)(v5, a4);
+  modelCopy = model;
+  viewCopy = view;
+  return ContextActionDataModel.init(asset:sourceView:)(modelCopy, view);
 }
 
-- (void)setODPAnalyticsWithAttributes:(id)a3
+- (void)setODPAnalyticsWithAttributes:(id)attributes
 {
   v4 = sub_2C57E8();
-  v5 = self;
+  selfCopy = self;
   sub_192CCC(v4);
 }
 

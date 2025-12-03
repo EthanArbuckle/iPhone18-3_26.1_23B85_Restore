@@ -1,10 +1,10 @@
 @interface MusicUsageStorageReporter
 - (MusicUsageStorageReporter)init;
-- (float)sizeForCategory:(id)a3;
-- (id)queryForCategoryIdentifier:(id)a3;
+- (float)sizeForCategory:(id)category;
+- (id)queryForCategoryIdentifier:(id)identifier;
 - (id)usageBundleApps;
-- (void)reloadSizeForCategoryIdentifier:(id)a3;
-- (void)usageBundleApp:(id)a3 willDisplaySpecifier:(id *)a4;
+- (void)reloadSizeForCategoryIdentifier:(id)identifier;
+- (void)usageBundleApp:(id)app willDisplaySpecifier:(id *)specifier;
 @end
 
 @implementation MusicUsageStorageReporter
@@ -18,8 +18,8 @@
   {
     [MPMediaQuery setFilteringDisabled:1];
     v3 = +[MPMediaLibrary deviceMediaLibrary];
-    v4 = [v3 libraryDataProvider];
-    [MPMediaLibrary reloadDynamicPropertiesForLibraryDataProvider:v4];
+    libraryDataProvider = [v3 libraryDataProvider];
+    [MPMediaLibrary reloadDynamicPropertiesForLibraryDataProvider:libraryDataProvider];
   }
 
   return v2;
@@ -97,29 +97,29 @@
   return v23;
 }
 
-- (void)reloadSizeForCategoryIdentifier:(id)a3
+- (void)reloadSizeForCategoryIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"MusicUsageCategoryLocalMusic"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"MusicUsageCategoryLocalMusic"])
   {
     self->_localSongsFileSize = MusicUsageFileSizeForMediaQuery(self->_localSongsQuery);
   }
 
-  if ([v4 isEqualToString:@"MusicUsageCategoryMusicMovies"])
+  if ([identifierCopy isEqualToString:@"MusicUsageCategoryMusicMovies"])
   {
     self->_localMusicMoviesFileSize = MusicUsageFileSizeForMediaQuery(self->_localMusicMoviesQuery);
   }
 
-  if ([v4 isEqualToString:@"MusicUsageCategoryMusicShows"])
+  if ([identifierCopy isEqualToString:@"MusicUsageCategoryMusicShows"])
   {
     self->_localMusicShowsFileSize = MusicUsageFileSizeForMediaQuery(self->_localMusicShowsQuery);
   }
 }
 
-- (float)sizeForCategory:(id)a3
+- (float)sizeForCategory:(id)category
 {
-  v4 = [a3 identifier];
-  if ([v4 isEqualToString:@"MusicUsageCategoryLocalMusic"])
+  identifier = [category identifier];
+  if ([identifier isEqualToString:@"MusicUsageCategoryLocalMusic"])
   {
     localSongsFileSize = self->_localSongsFileSize;
   }
@@ -129,12 +129,12 @@
     localSongsFileSize = 0;
   }
 
-  if ([v4 isEqualToString:@"MusicUsageCategoryMusicMovies"])
+  if ([identifier isEqualToString:@"MusicUsageCategoryMusicMovies"])
   {
     localSongsFileSize = self->_localMusicMoviesFileSize;
   }
 
-  if ([v4 isEqualToString:@"MusicUsageCategoryMusicShows"])
+  if ([identifier isEqualToString:@"MusicUsageCategoryMusicShows"])
   {
     localSongsFileSize = self->_localMusicShowsFileSize;
   }
@@ -142,10 +142,10 @@
   return localSongsFileSize;
 }
 
-- (id)queryForCategoryIdentifier:(id)a3
+- (id)queryForCategoryIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"MusicUsageCategoryLocalMusic"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"MusicUsageCategoryLocalMusic"])
   {
     v5 = self->_localSongsQuery;
   }
@@ -155,14 +155,14 @@
     v5 = 0;
   }
 
-  if ([v4 isEqualToString:@"MusicUsageCategoryMusicMovies"])
+  if ([identifierCopy isEqualToString:@"MusicUsageCategoryMusicMovies"])
   {
     v6 = self->_localMusicMoviesQuery;
 
     v5 = v6;
   }
 
-  if ([v4 isEqualToString:@"MusicUsageCategoryMusicShows"])
+  if ([identifierCopy isEqualToString:@"MusicUsageCategoryMusicShows"])
   {
     v7 = self->_localMusicShowsQuery;
 
@@ -172,18 +172,18 @@
   return v5;
 }
 
-- (void)usageBundleApp:(id)a3 willDisplaySpecifier:(id *)a4
+- (void)usageBundleApp:(id)app willDisplaySpecifier:(id *)specifier
 {
-  v5 = [a3 bundleIdentifier];
-  v6 = [v5 isEqualToString:@"com.apple.MusicUsage"];
+  bundleIdentifier = [app bundleIdentifier];
+  v6 = [bundleIdentifier isEqualToString:@"com.apple.MusicUsage"];
 
   if (v6)
   {
-    v7 = *a4;
+    v7 = *specifier;
     v8 = [NSNumber numberWithBool:1];
     [v7 setProperty:v8 forKey:PSLazyIconLoading];
 
-    v9 = *a4;
+    v9 = *specifier;
     v10 = PSLazyIconAppID;
 
     [v9 setProperty:@"com.apple.Music" forKey:v10];

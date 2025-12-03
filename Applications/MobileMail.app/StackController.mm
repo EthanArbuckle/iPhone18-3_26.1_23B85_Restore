@@ -1,33 +1,33 @@
 @interface StackController
 - (BOOL)isAnyStackElementBeingStacked;
-- (BOOL)isDataAvailableForStackElement:(id)a3 loadIfNeeded:(BOOL)a4;
+- (BOOL)isDataAvailableForStackElement:(id)element loadIfNeeded:(BOOL)needed;
 - (StackController)init;
 - (StackDataSource)dataSource;
 - (StackDelegate)delegate;
 - (UIEdgeInsets)stackContainerViewEdgeInsets;
-- (id)keyForItem:(id)a3;
-- (id)stackElementForItem:(id)a3 createIfNeeded:(BOOL)a4;
-- (id)stackedViewForItem:(id)a3;
-- (id)viewBelowStackElement:(id)a3;
-- (id)viewForStackElement:(id)a3;
-- (void)_updateStackedViewFrameForElement:(id)a3;
-- (void)addStackedItem:(id)a3;
-- (void)displayStackedViewsForItems:(id)a3 animated:(BOOL)a4;
+- (id)keyForItem:(id)item;
+- (id)stackElementForItem:(id)item createIfNeeded:(BOOL)needed;
+- (id)stackedViewForItem:(id)item;
+- (id)viewBelowStackElement:(id)element;
+- (id)viewForStackElement:(id)element;
+- (void)_updateStackedViewFrameForElement:(id)element;
+- (void)addStackedItem:(id)item;
+- (void)displayStackedViewsForItems:(id)items animated:(BOOL)animated;
 - (void)endTransaction;
-- (void)removeStackElement:(id)a3;
-- (void)removeStackedViews:(BOOL)a3;
-- (void)setIsAnimating:(BOOL)a3;
-- (void)setNeedsToUpdateDisplayedItems:(BOOL)a3 immediately:(BOOL)a4;
+- (void)removeStackElement:(id)element;
+- (void)removeStackedViews:(BOOL)views;
+- (void)setIsAnimating:(BOOL)animating;
+- (void)setNeedsToUpdateDisplayedItems:(BOOL)items immediately:(BOOL)immediately;
 - (void)setNeedsToUpdateStackElements;
-- (void)stackDataSourceDidLoadItemData:(id)a3;
-- (void)stackElement:(id)a3 currentStateDidChangeFrom:(int64_t)a4 to:(int64_t)a5;
-- (void)stackElement:(id)a3 targetStateDidChangeFrom:(int64_t)a4 to:(int64_t)a5;
-- (void)stackElement:(id)a3 willRemoveView:(id)a4;
+- (void)stackDataSourceDidLoadItemData:(id)data;
+- (void)stackElement:(id)element currentStateDidChangeFrom:(int64_t)from to:(int64_t)to;
+- (void)stackElement:(id)element targetStateDidChangeFrom:(int64_t)from to:(int64_t)to;
+- (void)stackElement:(id)element willRemoveView:(id)view;
 - (void)updateDisplayedItems;
 - (void)updateIsAnimating;
-- (void)updateStackElement:(id)a3;
+- (void)updateStackElement:(id)element;
 - (void)updateStackElements;
-- (void)updateStackedViewFrameForItem:(id)a3;
+- (void)updateStackedViewFrameForItem:(id)item;
 - (void)updateStackedViewsFrame;
 @end
 
@@ -63,54 +63,54 @@
   return v2;
 }
 
-- (void)displayStackedViewsForItems:(id)a3 animated:(BOOL)a4
+- (void)displayStackedViewsForItems:(id)items animated:(BOOL)animated
 {
-  v4 = a4;
-  v18 = a3;
+  animatedCopy = animated;
+  itemsCopy = items;
   self->_isTerminating = 0;
   stackContainerView = self->_stackContainerView;
   if (!stackContainerView)
   {
-    v7 = [(StackController *)self delegate];
+    delegate = [(StackController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v7 stackControllerWillStartStackingViews:self];
+      [delegate stackControllerWillStartStackingViews:self];
     }
 
-    v8 = [(StackController *)self dataSource];
-    v9 = [v8 stackContainerViewForStackController:self];
+    dataSource = [(StackController *)self dataSource];
+    v9 = [dataSource stackContainerViewForStackController:self];
     v10 = self->_stackContainerView;
     self->_stackContainerView = v9;
 
-    v11 = [(UIView *)self->_stackContainerView window];
-    v12 = [v11 windowScene];
-    v13 = [v12 interfaceOrientation];
+    window = [(UIView *)self->_stackContainerView window];
+    windowScene = [window windowScene];
+    interfaceOrientation = [windowScene interfaceOrientation];
 
-    if ((v13 - 3) <= 1)
+    if ((interfaceOrientation - 3) <= 1)
     {
       [(UIView *)self->_stackContainerView setClipsToBounds:1];
     }
 
-    [v8 stackContainerViewEdgeInsetsForStackController:self];
+    [dataSource stackContainerViewEdgeInsetsForStackController:self];
     self->_stackContainerViewEdgeInsets.top = v14;
     self->_stackContainerViewEdgeInsets.left = v15;
     self->_stackContainerViewEdgeInsets.bottom = v16;
     self->_stackContainerViewEdgeInsets.right = v17;
   }
 
-  [(StackController *)self setAnimateStateTransitions:v4];
-  [(StackController *)self setItemsToDisplay:v18];
+  [(StackController *)self setAnimateStateTransitions:animatedCopy];
+  [(StackController *)self setItemsToDisplay:itemsCopy];
   [(StackController *)self setNeedsToUpdateDisplayedItems:1 immediately:stackContainerView == 0];
 }
 
-- (void)setNeedsToUpdateDisplayedItems:(BOOL)a3 immediately:(BOOL)a4
+- (void)setNeedsToUpdateDisplayedItems:(BOOL)items immediately:(BOOL)immediately
 {
-  v4 = a4;
-  v5 = a3;
+  immediatelyCopy = immediately;
+  itemsCopy = items;
   [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"updateDisplayedItems" object:0];
-  if (v5)
+  if (itemsCopy)
   {
-    if (v4)
+    if (immediatelyCopy)
     {
 
       [(StackController *)self updateDisplayedItems];
@@ -142,14 +142,14 @@
   }
 }
 
-- (void)addStackedItem:(id)a3
+- (void)addStackedItem:(id)item
 {
-  v9 = a3;
+  itemCopy = item;
   v4 = [(NSMutableArray *)self->_orderedItems indexOfObject:?];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(NSMutableArray *)self->_stackedItems addObject:v9];
-    [(NSMutableArray *)self->_orderedItems addObject:v9];
+    [(NSMutableArray *)self->_stackedItems addObject:itemCopy];
+    [(NSMutableArray *)self->_orderedItems addObject:itemCopy];
   }
 
   else
@@ -169,20 +169,20 @@
     }
 
     while (v8 <= v4);
-    [(NSMutableArray *)self->_stackedItems insertObject:v9 atIndex:v6];
+    [(NSMutableArray *)self->_stackedItems insertObject:itemCopy atIndex:v6];
   }
 }
 
 - (void)updateDisplayedItems
 {
   self->_isSuspended = 0;
-  v33 = [(StackController *)self itemsToDisplay];
+  itemsToDisplay = [(StackController *)self itemsToDisplay];
   v32 = [(NSMutableArray *)self->_stackedItems copy];
   v60 = 0u;
   v61 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v3 = v33;
+  v3 = itemsToDisplay;
   v4 = [v3 countByEnumeratingWithState:&v58 objects:v67 count:16];
   v5 = 0;
   if (v4)
@@ -317,8 +317,8 @@
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v36 = [(NSMutableArray *)self->_stackedItems reverseObjectEnumerator];
-    v22 = [v36 countByEnumeratingWithState:&v38 objects:v62 count:16];
+    reverseObjectEnumerator = [(NSMutableArray *)self->_stackedItems reverseObjectEnumerator];
+    v22 = [reverseObjectEnumerator countByEnumeratingWithState:&v38 objects:v62 count:16];
     if (v22)
     {
       v23 = 0;
@@ -330,7 +330,7 @@
         {
           if (*v39 != v25)
           {
-            objc_enumerationMutation(v36);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v27 = [(StackController *)self stackElementForItem:*(*(&v38 + 1) + 8 * n) createIfNeeded:0, v32];
@@ -349,7 +349,7 @@
           ++v24;
         }
 
-        v22 = [v36 countByEnumeratingWithState:&v38 objects:v62 count:16];
+        v22 = [reverseObjectEnumerator countByEnumeratingWithState:&v38 objects:v62 count:16];
       }
 
       while (v22);
@@ -362,8 +362,8 @@
     v53 = 0uLL;
     v50 = 0uLL;
     v51 = 0uLL;
-    v36 = v9;
-    v28 = [v36 countByEnumeratingWithState:&v50 objects:v65 count:16];
+    reverseObjectEnumerator = v9;
+    v28 = [reverseObjectEnumerator countByEnumeratingWithState:&v50 objects:v65 count:16];
     if (v28)
     {
       v29 = *v51;
@@ -373,14 +373,14 @@
         {
           if (*v51 != v29)
           {
-            objc_enumerationMutation(v36);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v31 = [(StackController *)self stackElementForItem:*(*(&v50 + 1) + 8 * ii) createIfNeeded:0, v32];
           [v31 setTargetState:5];
         }
 
-        v28 = [v36 countByEnumeratingWithState:&v50 objects:v65 count:16];
+        v28 = [reverseObjectEnumerator countByEnumeratingWithState:&v50 objects:v65 count:16];
       }
 
       while (v28);
@@ -390,13 +390,13 @@
   [(StackController *)self endTransaction];
 }
 
-- (void)removeStackedViews:(BOOL)a3
+- (void)removeStackedViews:(BOOL)views
 {
-  v3 = a3;
+  viewsCopy = views;
   self->_isTerminating = 1;
   v5 = [(NSMutableArray *)self->_stackedItems copy];
   [(NSMutableArray *)self->_stackedItems removeAllObjects];
-  [(StackController *)self setAnimateStateTransitions:v3];
+  [(StackController *)self setAnimateStateTransitions:viewsCopy];
   [(StackController *)self setItemsToDisplay:0];
   [(StackController *)self setNeedsToUpdateDisplayedItems:0 immediately:1];
   [(StackController *)self beginTransaction];
@@ -439,11 +439,11 @@
   [(StackController *)self endTransaction];
   if (![v6 count])
   {
-    v11 = [(StackController *)self delegate];
-    v12 = self;
+    delegate = [(StackController *)self delegate];
+    selfCopy = self;
     if (objc_opt_respondsToSelector())
     {
-      [v11 stackControllerDidStopStackingViews:v12];
+      [delegate stackControllerDidStopStackingViews:selfCopy];
     }
   }
 }
@@ -456,8 +456,8 @@
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v4 = [v3 reverseObjectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  reverseObjectEnumerator = [v3 reverseObjectEnumerator];
+  v5 = [reverseObjectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = *v10;
@@ -468,7 +468,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v8 = [(StackController *)self stackElementForItem:*(*(&v9 + 1) + 8 * v7) createIfNeeded:0];
@@ -481,7 +481,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [reverseObjectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -490,55 +490,55 @@
   [(StackController *)self endTransaction];
 }
 
-- (void)updateStackedViewFrameForItem:(id)a3
+- (void)updateStackedViewFrameForItem:(id)item
 {
-  v4 = [(StackController *)self stackElementForItem:a3 createIfNeeded:0];
+  v4 = [(StackController *)self stackElementForItem:item createIfNeeded:0];
   [(StackController *)self _updateStackedViewFrameForElement:?];
 }
 
-- (void)_updateStackedViewFrameForElement:(id)a3
+- (void)_updateStackedViewFrameForElement:(id)element
 {
-  v14 = a3;
-  v4 = [(StackController *)self dataSource];
-  v5 = [v14 item];
-  [v4 stackController:self rectForItem:v5];
+  elementCopy = element;
+  dataSource = [(StackController *)self dataSource];
+  item = [elementCopy item];
+  [dataSource stackController:self rectForItem:item];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  [v14 updateViewFrame:{v7, v9, v11, v13}];
+  [elementCopy updateViewFrame:{v7, v9, v11, v13}];
 }
 
-- (id)stackedViewForItem:(id)a3
+- (id)stackedViewForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(StackController *)self dataSource];
-  v6 = [v5 stackController:self viewForItem:v4];
+  itemCopy = item;
+  dataSource = [(StackController *)self dataSource];
+  v6 = [dataSource stackController:self viewForItem:itemCopy];
 
-  v7 = [v6 superview];
+  superview = [v6 superview];
 
-  if (!v7)
+  if (!superview)
   {
-    v8 = [(StackController *)self stackContainerView];
-    [v8 addSubview:v6];
+    stackContainerView = [(StackController *)self stackContainerView];
+    [stackContainerView addSubview:v6];
 
     [v6 setAlpha:0.0];
   }
 
-  v9 = [v6 layer];
-  [v9 setCornerRadius:0.0];
+  layer = [v6 layer];
+  [layer setCornerRadius:0.0];
 
   return v6;
 }
 
-- (id)keyForItem:(id)a3
+- (id)keyForItem:(id)item
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  itemCopy = item;
+  v4 = itemCopy;
+  if (itemCopy)
   {
-    v5 = v3;
+    v5 = itemCopy;
   }
 
   else
@@ -551,11 +551,11 @@
   return v6;
 }
 
-- (id)stackElementForItem:(id)a3 createIfNeeded:(BOOL)a4
+- (id)stackElementForItem:(id)item createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(StackController *)self keyForItem:v6];
+  neededCopy = needed;
+  itemCopy = item;
+  v7 = [(StackController *)self keyForItem:itemCopy];
   v8 = [(NSMutableDictionary *)self->_stackElementsByItem objectForKeyedSubscript:v7];
   if (v8)
   {
@@ -564,12 +564,12 @@
 
   else
   {
-    v9 = !v4;
+    v9 = !neededCopy;
   }
 
   if (!v9)
   {
-    v8 = [[StackElement alloc] initWithItem:v6 state:1];
+    v8 = [[StackElement alloc] initWithItem:itemCopy state:1];
     [(StackElement *)v8 setDelegate:self];
     [(NSMutableDictionary *)self->_stackElementsByItem setObject:v8 forKeyedSubscript:v7];
   }
@@ -577,10 +577,10 @@
   return v8;
 }
 
-- (void)removeStackElement:(id)a3
+- (void)removeStackElement:(id)element
 {
-  v4 = [a3 item];
-  v8 = [(StackController *)self keyForItem:v4];
+  item = [element item];
+  v8 = [(StackController *)self keyForItem:item];
 
   [(NSMutableDictionary *)self->_stackElementsByItem removeObjectForKey:v8];
   if (![(NSMutableDictionary *)self->_stackElementsByItem count])
@@ -589,31 +589,31 @@
     stackContainerView = self->_stackContainerView;
     self->_stackContainerView = 0;
 
-    v6 = [(StackController *)self delegate];
-    v7 = self;
+    delegate = [(StackController *)self delegate];
+    selfCopy = self;
     if (objc_opt_respondsToSelector())
     {
-      [v6 stackControllerDidStopStackingViews:v7];
+      [delegate stackControllerDidStopStackingViews:selfCopy];
     }
   }
 }
 
-- (BOOL)isDataAvailableForStackElement:(id)a3 loadIfNeeded:(BOOL)a4
+- (BOOL)isDataAvailableForStackElement:(id)element loadIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 item];
-  v8 = [(NSMutableArray *)self->_orderedItems lastObject];
+  neededCopy = needed;
+  elementCopy = element;
+  item = [elementCopy item];
+  lastObject = [(NSMutableArray *)self->_orderedItems lastObject];
 
-  if (v7 == v8)
+  if (item == lastObject)
   {
-    v10 = [(StackController *)self dataSource];
-    v11 = [(StackController *)self keyForItem:v7];
-    v12 = [v6 itemView];
-    v9 = [v10 stackController:self isDataLoadedForItem:v7 inView:v12];
-    if (((v9 | !v4) & 1) == 0)
+    dataSource = [(StackController *)self dataSource];
+    v11 = [(StackController *)self keyForItem:item];
+    itemView = [elementCopy itemView];
+    v9 = [dataSource stackController:self isDataLoadedForItem:item inView:itemView];
+    if (((v9 | !neededCopy) & 1) == 0)
     {
-      [v10 stackController:self loadDataForItem:v7 inView:v12];
+      [dataSource stackController:self loadDataForItem:item inView:itemView];
     }
 
     v13 = [(NSMutableDictionary *)self->_loadRequestDatesByItem objectForKey:v11];
@@ -635,10 +635,10 @@ LABEL_15:
         goto LABEL_15;
       }
 
-      v16 = [(StackController *)self delegate];
+      delegate = [(StackController *)self delegate];
       if (objc_opt_respondsToSelector())
       {
-        [v16 stackController:self dataLoadTimedOutInView:v12 forItem:v7];
+        [delegate stackController:self dataLoadTimedOutInView:itemView forItem:item];
       }
 
       LOBYTE(v9) = 1;
@@ -647,8 +647,8 @@ LABEL_15:
     else
     {
       loadRequestDatesByItem = self->_loadRequestDatesByItem;
-      v16 = +[NSDate date];
-      [(NSMutableDictionary *)loadRequestDatesByItem setObject:v16 forKey:v11];
+      delegate = +[NSDate date];
+      [(NSMutableDictionary *)loadRequestDatesByItem setObject:delegate forKey:v11];
     }
 
     goto LABEL_15;
@@ -690,15 +690,15 @@ LABEL_16:
   {
     self->_loadingData = 0;
     self->_itemsBecameStacked = 0;
-    v3 = [(NSMutableDictionary *)self->_stackElementsByItem allValues];
-    if ([v3 count])
+    allValues = [(NSMutableDictionary *)self->_stackElementsByItem allValues];
+    if ([allValues count])
     {
       [(StackController *)self beginTransaction];
       v10 = 0u;
       v11 = 0u;
       v8 = 0u;
       v9 = 0u;
-      v4 = v3;
+      v4 = allValues;
       v5 = [v4 countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v5)
       {
@@ -737,27 +737,27 @@ LABEL_16:
   }
 }
 
-- (void)updateStackElement:(id)a3
+- (void)updateStackElement:(id)element
 {
-  v16 = a3;
-  v4 = [v16 nextState];
-  v5 = [v16 targetState];
-  v6 = [v16 nextDepth];
-  v7 = [v16 targetDepth];
-  v8 = v7;
-  if (v4 != v5 || v6 != v7)
+  elementCopy = element;
+  nextState = [elementCopy nextState];
+  targetState = [elementCopy targetState];
+  nextDepth = [elementCopy nextDepth];
+  targetDepth = [elementCopy targetDepth];
+  maximumStackElementDepth = targetDepth;
+  if (nextState != targetState || nextDepth != targetDepth)
   {
-    v9 = [(StackController *)self animateStateTransitions];
-    if ([v16 isAnimating])
+    animateStateTransitions = [(StackController *)self animateStateTransitions];
+    if ([elementCopy isAnimating])
     {
-      v8 = v6;
+      maximumStackElementDepth = nextDepth;
     }
 
-    if (v5 > 3)
+    if (targetState > 3)
     {
-      if (v5 == 4)
+      if (targetState == 4)
       {
-        if (![(StackController *)self isDataAvailableForStackElement:v16 loadIfNeeded:[(StackController *)self _shouldLoadDataForElement:v16]])
+        if (![(StackController *)self isDataAvailableForStackElement:elementCopy loadIfNeeded:[(StackController *)self _shouldLoadDataForElement:elementCopy]])
         {
           self->_loadingData = 1;
           goto LABEL_22;
@@ -766,36 +766,36 @@ LABEL_16:
         v10 = 4;
       }
 
-      else if (v5 == 5)
+      else if (targetState == 5)
       {
         v10 = 5;
-        if (v4 == 6 && v8 >= 5)
+        if (nextState == 6 && maximumStackElementDepth >= 5)
         {
-          v8 = [(StackController *)self maximumStackElementDepth];
+          maximumStackElementDepth = [(StackController *)self maximumStackElementDepth];
           v10 = 5;
         }
       }
 
       else
       {
-        v10 = v5;
-        if (v5 != 6)
+        v10 = targetState;
+        if (targetState != 6)
         {
           goto LABEL_22;
         }
       }
     }
 
-    else if ((v5 - 1) >= 2)
+    else if ((targetState - 1) >= 2)
     {
-      if (v5 != 3)
+      if (targetState != 3)
       {
         goto LABEL_22;
       }
 
       if ([(StackController *)self isAnyStackElementBeingStacked])
       {
-        v10 = v4;
+        v10 = nextState;
       }
 
       else
@@ -806,34 +806,34 @@ LABEL_16:
 
     else
     {
-      v10 = v5;
+      v10 = targetState;
     }
 
-    if (v10 != v4)
+    if (v10 != nextState)
     {
-      if (v10 == 4 && v5 == 4)
+      if (v10 == 4 && targetState == 4)
       {
         self->_itemsBecameStacked = 1;
-        v13 = [(StackController *)self delegate];
+        delegate = [(StackController *)self delegate];
         if (objc_opt_respondsToSelector())
         {
-          v14 = [v16 itemView];
-          v15 = [v16 item];
-          [v13 stackController:self willDisplayView:v14 forItem:v15];
+          itemView = [elementCopy itemView];
+          item = [elementCopy item];
+          [delegate stackController:self willDisplayView:itemView forItem:item];
         }
 
         v10 = 4;
       }
 
 LABEL_35:
-      [v16 setNextState:v10 nextDepth:v8 animated:v9];
+      [elementCopy setNextState:v10 nextDepth:maximumStackElementDepth animated:animateStateTransitions];
       goto LABEL_36;
     }
 
 LABEL_22:
-    v12 = v4 != 4 || v8 == v6;
-    v10 = v4;
-    if (v12 && v9)
+    v12 = nextState != 4 || maximumStackElementDepth == nextDepth;
+    v10 = nextState;
+    if (v12 && animateStateTransitions)
     {
       goto LABEL_36;
     }
@@ -844,9 +844,9 @@ LABEL_22:
 LABEL_36:
 }
 
-- (void)stackDataSourceDidLoadItemData:(id)a3
+- (void)stackDataSourceDidLoadItemData:(id)data
 {
-  v5 = [a3 object];
+  object = [data object];
   v4 = [StackController stackElementForItem:"stackElementForItem:createIfNeeded:" createIfNeeded:?];
 
   if (v4)
@@ -861,8 +861,8 @@ LABEL_36:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(NSMutableArray *)self->_stackedItems reverseObjectEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  reverseObjectEnumerator = [(NSMutableArray *)self->_stackedItems reverseObjectEnumerator];
+  v4 = [reverseObjectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = *v12;
@@ -872,7 +872,7 @@ LABEL_36:
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v7 = [(StackController *)self stackElementForItem:*(*(&v11 + 1) + 8 * i) createIfNeeded:0];
@@ -885,7 +885,7 @@ LABEL_36:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [reverseObjectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v4)
       {
         continue;
@@ -901,14 +901,14 @@ LABEL_13:
   return v9;
 }
 
-- (void)setIsAnimating:(BOOL)a3
+- (void)setIsAnimating:(BOOL)animating
 {
-  if (self->_isAnimating != a3)
+  if (self->_isAnimating != animating)
   {
-    v3 = a3;
-    self->_isAnimating = a3;
+    animatingCopy = animating;
+    self->_isAnimating = animating;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    if (v3)
+    if (animatingCopy)
     {
       if (objc_opt_respondsToSelector())
       {
@@ -936,8 +936,8 @@ LABEL_13:
     v10 = 0u;
     v7 = 0u;
     v8 = 0u;
-    v4 = [(NSMutableDictionary *)self->_stackElementsByItem allValues];
-    v3 = [v4 countByEnumeratingWithState:&v7 objects:v11 count:16];
+    allValues = [(NSMutableDictionary *)self->_stackElementsByItem allValues];
+    v3 = [allValues countByEnumeratingWithState:&v7 objects:v11 count:16];
     if (v3)
     {
       v5 = *v8;
@@ -947,7 +947,7 @@ LABEL_13:
         {
           if (*v8 != v5)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allValues);
           }
 
           if ([*(*(&v7 + 1) + 8 * i) isAnimating])
@@ -957,7 +957,7 @@ LABEL_13:
           }
         }
 
-        v3 = [v4 countByEnumeratingWithState:&v7 objects:v11 count:16];
+        v3 = [allValues countByEnumeratingWithState:&v7 objects:v11 count:16];
         if (v3)
         {
           continue;
@@ -986,23 +986,23 @@ LABEL_13:
   return result;
 }
 
-- (id)viewForStackElement:(id)a3
+- (id)viewForStackElement:(id)element
 {
-  v4 = [a3 item];
-  v5 = [(StackController *)self stackedViewForItem:v4];
+  item = [element item];
+  v5 = [(StackController *)self stackedViewForItem:item];
 
   return v5;
 }
 
-- (id)viewBelowStackElement:(id)a3
+- (id)viewBelowStackElement:(id)element
 {
-  v4 = [a3 item];
+  item = [element item];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(NSMutableArray *)self->_orderedItems reverseObjectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  reverseObjectEnumerator = [(NSMutableArray *)self->_orderedItems reverseObjectEnumerator];
+  v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = 0;
@@ -1013,7 +1013,7 @@ LABEL_13:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
@@ -1032,11 +1032,11 @@ LABEL_13:
 
         else
         {
-          v7 = v10 == v4;
+          v7 = v10 == item;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -1048,80 +1048,80 @@ LABEL_13:
   return v12;
 }
 
-- (void)stackElement:(id)a3 willRemoveView:(id)a4
+- (void)stackElement:(id)element willRemoveView:(id)view
 {
-  v12 = a3;
-  v5 = [v12 item];
-  v6 = [(StackController *)self delegate];
+  elementCopy = element;
+  item = [elementCopy item];
+  delegate = [(StackController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 stackController:self willRemoveViewForItem:v5];
+    [delegate stackController:self willRemoveViewForItem:item];
   }
 
-  if (([(NSMutableArray *)self->_stackedItems containsObject:v5]& 1) == 0)
+  if (([(NSMutableArray *)self->_stackedItems containsObject:item]& 1) == 0)
   {
-    [(NSMutableArray *)self->_orderedItems removeObject:v5];
+    [(NSMutableArray *)self->_orderedItems removeObject:item];
     if ([(NSMutableArray *)self->_stackedItems count])
     {
-      v7 = [(NSMutableArray *)self->_stackedItems lastObject];
-      v8 = [(StackController *)self stackElementForItem:v7 createIfNeeded:0];
+      lastObject = [(NSMutableArray *)self->_stackedItems lastObject];
+      v8 = [(StackController *)self stackElementForItem:lastObject createIfNeeded:0];
       v9 = v8;
       if (v8)
       {
-        v10 = [v8 itemView];
-        v11 = [(StackController *)self dataSource];
-        if (([v11 stackController:self isDataLoadedForItem:v7 inView:v10] & 1) == 0 && -[StackController _shouldLoadDataForElement:](self, "_shouldLoadDataForElement:", v12))
+        itemView = [v8 itemView];
+        dataSource = [(StackController *)self dataSource];
+        if (([dataSource stackController:self isDataLoadedForItem:lastObject inView:itemView] & 1) == 0 && -[StackController _shouldLoadDataForElement:](self, "_shouldLoadDataForElement:", elementCopy))
         {
-          [v11 stackController:self loadDataForItem:v7 inView:v10];
+          [dataSource stackController:self loadDataForItem:lastObject inView:itemView];
         }
       }
     }
   }
 }
 
-- (void)stackElement:(id)a3 currentStateDidChangeFrom:(int64_t)a4 to:(int64_t)a5
+- (void)stackElement:(id)element currentStateDidChangeFrom:(int64_t)from to:(int64_t)to
 {
-  v8 = a3;
-  if ([v8 targetState] != a5)
+  elementCopy = element;
+  if ([elementCopy targetState] != to)
   {
     goto LABEL_21;
   }
 
-  if (a5 > 4)
+  if (to > 4)
   {
-    if ((a5 - 5) >= 2)
+    if ((to - 5) >= 2)
     {
       goto LABEL_21;
     }
 
 LABEL_14:
-    v9 = [v8 item];
-    [v8 removeView];
-    if (([(NSMutableArray *)self->_stackedItems containsObject:v9]& 1) == 0)
+    item = [elementCopy item];
+    [elementCopy removeView];
+    if (([(NSMutableArray *)self->_stackedItems containsObject:item]& 1) == 0)
     {
-      [(StackController *)self removeStackElement:v8];
+      [(StackController *)self removeStackElement:elementCopy];
     }
 
-    if (v9 && ([(NSMutableArray *)self->_stackedItems containsObject:v9]& 1) == 0)
+    if (item && ([(NSMutableArray *)self->_stackedItems containsObject:item]& 1) == 0)
     {
-      [(NSMutableArray *)self->_orderedItems removeObject:v9];
+      [(NSMutableArray *)self->_orderedItems removeObject:item];
     }
 
     goto LABEL_19;
   }
 
-  if (a5 == 1)
+  if (to == 1)
   {
     goto LABEL_14;
   }
 
-  if (a5 == 2)
+  if (to == 2)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10024E770;
     block[3] = &unk_10064C7E8;
-    v13 = v8;
+    v13 = elementCopy;
     v15 = v13;
     dispatch_async(&_dispatch_main_q, block);
     [(StackController *)self removeStackElement:v13];
@@ -1129,18 +1129,18 @@ LABEL_14:
     goto LABEL_21;
   }
 
-  if (a5 == 4 && (a4 & 0xFFFFFFFFFFFFFFFBLL) == 1 && [(NSMutableArray *)self->_orderedItems count])
+  if (to == 4 && (from & 0xFFFFFFFFFFFFFFFBLL) == 1 && [(NSMutableArray *)self->_orderedItems count])
   {
-    v9 = [v8 item];
-    v10 = [(NSMutableArray *)self->_orderedItems lastObject];
+    item = [elementCopy item];
+    lastObject = [(NSMutableArray *)self->_orderedItems lastObject];
 
-    if (v9 == v10)
+    if (item == lastObject)
     {
-      v11 = [(StackController *)self dataSource];
-      v12 = [v8 itemView];
-      if (([v11 stackController:self isDataLoadedForItem:v9 inView:v12] & 1) == 0 && -[StackController _shouldLoadDataForElement:](self, "_shouldLoadDataForElement:", v8))
+      dataSource = [(StackController *)self dataSource];
+      itemView = [elementCopy itemView];
+      if (([dataSource stackController:self isDataLoadedForItem:item inView:itemView] & 1) == 0 && -[StackController _shouldLoadDataForElement:](self, "_shouldLoadDataForElement:", elementCopy))
       {
-        [v11 stackController:self loadDataForItem:v9 inView:v12];
+        [dataSource stackController:self loadDataForItem:item inView:itemView];
       }
     }
 
@@ -1151,17 +1151,17 @@ LABEL_21:
   [(StackController *)self setNeedsToUpdateStackElements];
 }
 
-- (void)stackElement:(id)a3 targetStateDidChangeFrom:(int64_t)a4 to:(int64_t)a5
+- (void)stackElement:(id)element targetStateDidChangeFrom:(int64_t)from to:(int64_t)to
 {
-  v11 = a3;
-  if (a4 == 1 && a5 == 4)
+  elementCopy = element;
+  if (from == 1 && to == 4)
   {
-    v8 = [(StackController *)self delegate];
+    delegate = [(StackController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v9 = [v11 itemView];
-      v10 = [v11 item];
-      [v8 stackController:self willStackView:v9 forItem:v10];
+      itemView = [elementCopy itemView];
+      item = [elementCopy item];
+      [delegate stackController:self willStackView:itemView forItem:item];
     }
   }
 

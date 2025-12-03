@@ -1,8 +1,8 @@
 @interface OSLogEventStreamBase
 - (OSLogEventStreamBase)init;
-- (void)setEventHandler:(id)a3;
-- (void)setFilterPredicate:(id)a3;
-- (void)setInvalidationHandler:(id)a3;
+- (void)setEventHandler:(id)handler;
+- (void)setFilterPredicate:(id)predicate;
+- (void)setInvalidationHandler:(id)handler;
 @end
 
 @implementation OSLogEventStreamBase
@@ -28,17 +28,17 @@
   return v2;
 }
 
-- (void)setInvalidationHandler:(id)a3
+- (void)setInvalidationHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__OSLogEventStreamBase_setInvalidationHandler___block_invoke;
   v7[3] = &unk_2787AE370;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -52,45 +52,45 @@ uint64_t __47__OSLogEventStreamBase_setInvalidationHandler___block_invoke(uint64
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (void)setEventHandler:(id)a3
+- (void)setEventHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__OSLogEventStreamBase_setEventHandler___block_invoke;
   v7[3] = &unk_2787AE370;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)setFilterPredicate:(id)a3
+- (void)setFilterPredicate:(id)predicate
 {
-  v14 = a3;
-  if (v14)
+  predicateCopy = predicate;
+  if (predicateCopy)
   {
-    v4 = [[_OSLogPredicateMapper alloc] initWithPredicate:v14];
-    v5 = [(_OSLogPredicateMapper *)v4 mappedPredicate];
+    v4 = [[_OSLogPredicateMapper alloc] initWithPredicate:predicateCopy];
+    mappedPredicate = [(_OSLogPredicateMapper *)v4 mappedPredicate];
 
-    if (!v5)
+    if (!mappedPredicate)
     {
       v10 = MEMORY[0x277CBEAD8];
-      v11 = [(_OSLogPredicateMapper *)v4 validationErrors];
-      v12 = [v11 componentsJoinedByString:@"\n"];
+      validationErrors = [(_OSLogPredicateMapper *)v4 validationErrors];
+      v12 = [validationErrors componentsJoinedByString:@"\n"];
       v13 = [v10 exceptionWithName:@"OSLogInvalidPredicateException" reason:v12 userInfo:0];
 
       objc_exception_throw(v13);
     }
 
-    v6 = [(_OSLogPredicateMapper *)v4 mappedPredicate];
+    mappedPredicate2 = [(_OSLogPredicateMapper *)v4 mappedPredicate];
     filterPredicate = self->_filterPredicate;
-    self->_filterPredicate = v6;
+    self->_filterPredicate = mappedPredicate2;
 
-    v8 = [(_OSLogPredicateMapper *)v4 compiledPredicate];
+    compiledPredicate = [(_OSLogPredicateMapper *)v4 compiledPredicate];
     compiledPredicate = self->_compiledPredicate;
-    self->_compiledPredicate = v8;
+    self->_compiledPredicate = compiledPredicate;
 
     [(NSPredicate *)self->_filterPredicate allowEvaluation];
     [(NSPredicate *)self->_compiledPredicate allowEvaluation];

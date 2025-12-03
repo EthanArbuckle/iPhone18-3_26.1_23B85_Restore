@@ -1,36 +1,36 @@
 @interface ValidDelegate
-- (int64_t)versionFromTask:(id)a3;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
+- (int64_t)versionFromTask:(id)task;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
 - (void)reschedule;
-- (void)updateDb:(int64_t)a3;
+- (void)updateDb:(int64_t)db;
 @end
 
 @implementation ValidDelegate
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  taskCopy = task;
+  errorCopy = error;
   v11 = sub_1000027AC("validupdate");
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-  if (v10)
+  if (errorCopy)
   {
     if (v12)
     {
       v18 = 138412802;
-      Current = *&v8;
+      Current = *&sessionCopy;
       v20 = 2112;
-      v21 = v9;
+      v21 = taskCopy;
       v22 = 2112;
-      v23 = v10;
+      v23 = errorCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Session %@ task %@ failed with error %@", &v18, 0x20u);
     }
 
     v13 = +[TrustAnalytics logger];
-    [v13 logResultForEvent:@"ValidUpdateEvent" hardFailure:0 result:v10];
+    [v13 logResultForEvent:@"ValidUpdateEvent" hardFailure:0 result:errorCopy];
 
     [(ValidDelegate *)self reschedule];
     [(NSFileHandle *)self->_currentUpdateFile closeFile];
@@ -54,7 +54,7 @@
     }
 
     self->_finishedDownloading = 1;
-    [(ValidDelegate *)self updateDb:[(ValidDelegate *)self versionFromTask:v9]];
+    [(ValidDelegate *)self updateDb:[(ValidDelegate *)self versionFromTask:taskCopy]];
   }
 
   transaction = self->_transaction;
@@ -64,15 +64,15 @@
   }
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  taskCopy = task;
+  dataCopy = data;
   currentUpdateFile = self->_currentUpdateFile;
   if (currentUpdateFile)
   {
-    [(NSFileHandle *)currentUpdateFile writeData:v10];
+    [(NSFileHandle *)currentUpdateFile writeData:dataCopy];
   }
 
   else
@@ -84,50 +84,50 @@
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "received data, but output file is not open", v13, 2u);
     }
 
-    [v9 cancel];
+    [taskCopy cancel];
     [(ValidDelegate *)self reschedule];
   }
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  sessionCopy = session;
+  taskCopy = task;
+  responseCopy = response;
+  handlerCopy = handler;
   v14 = os_transaction_create();
   transaction = self->_transaction;
   self->_transaction = v14;
 
-  v16 = [v12 statusCode];
+  statusCode = [responseCopy statusCode];
   v17 = sub_1000027AC("validupdate");
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
-    v39 = [v12 MIMEType];
+    mIMEType = [responseCopy MIMEType];
     *buf = 138413314;
-    v42 = *&v10;
+    v42 = *&sessionCopy;
     v43 = 2112;
-    v44 = v11;
+    v44 = taskCopy;
     v45 = 2048;
-    v46 = v16;
+    v46 = statusCode;
     v47 = 2112;
-    v48 = v39;
+    v48 = mIMEType;
     v49 = 2048;
-    v50 = [v12 expectedContentLength];
+    expectedContentLength = [responseCopy expectedContentLength];
     _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "Session %@ data task %@ returned response %ld (%@), expecting %lld bytes", buf, 0x34u);
   }
 
-  if (sub_1000511C0() == qword_100092920 && v16 == 403)
+  if (sub_1000511C0() == qword_100092920 && statusCode == 403)
   {
     v18 = sub_1000027AC("validupdate");
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v42 = *&v11;
+      v42 = *&taskCopy;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "failed to connect to URL. canceling task %@", buf, 0xCu);
     }
 
-    v13[2](v13, 0);
+    handlerCopy[2](handlerCopy, 0);
     qword_100092920 = 4;
 LABEL_17:
     [(ValidDelegate *)self reschedule];
@@ -148,23 +148,23 @@ LABEL_17:
   currentUpdateFileURL = self->_currentUpdateFileURL;
   self->_currentUpdateFileURL = v20;
 
-  v22 = [(NSURL *)self->_currentUpdateFileURL fileSystemRepresentation];
-  if (!v22)
+  fileSystemRepresentation = [(NSURL *)self->_currentUpdateFileURL fileSystemRepresentation];
+  if (!fileSystemRepresentation)
   {
     v26 = sub_1000027AC("validupdate");
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v42 = *&v11;
+      v42 = *&taskCopy;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "failed to find revocation info directory. canceling task %@", buf, 0xCu);
     }
 
-    v13[2](v13, 0);
+    handlerCopy[2](handlerCopy, 0);
     goto LABEL_17;
   }
 
-  v24 = v22;
-  remove(v22, v23);
+  v24 = fileSystemRepresentation;
+  remove(fileSystemRepresentation, v23);
   v25 = open(v24, 1538, 420);
   if (v25 < 0)
   {
@@ -204,7 +204,7 @@ LABEL_17:
 
   if (self->_currentUpdateFile)
   {
-    v13[2](v13, 1);
+    handlerCopy[2](handlerCopy, 1);
   }
 
   else
@@ -218,29 +218,29 @@ LABEL_17:
       v43 = 2112;
       v44 = v34;
       v45 = 2112;
-      v46 = v11;
+      v46 = taskCopy;
       _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "failed to open %@: %@. canceling task %@", buf, 0x20u);
     }
 
     v38 = +[TrustAnalytics logger];
     [v38 logResultForEvent:@"ValidUpdateEvent" hardFailure:0 result:v34];
 
-    v13[2](v13, 0);
+    handlerCopy[2](handlerCopy, 0);
     [(ValidDelegate *)self reschedule];
   }
 
 LABEL_29:
 }
 
-- (int64_t)versionFromTask:(id)a3
+- (int64_t)versionFromTask:(id)task
 {
-  v3 = [a3 taskDescription];
-  v4 = atol([v3 cStringUsingEncoding:4]);
+  taskDescription = [task taskDescription];
+  v4 = atol([taskDescription cStringUsingEncoding:4]);
 
   return v4;
 }
 
-- (void)updateDb:(int64_t)a3
+- (void)updateDb:(int64_t)db
 {
   v26[0] = 0;
   v26[1] = v26;
@@ -300,7 +300,7 @@ LABEL_29:
     v12[7] = v20;
     v12[8] = v24;
     v12[9] = v22;
-    v12[10] = a3;
+    v12[10] = db;
     dispatch_async(revDbUpdateQueue, v12);
     _Block_object_dispose(&v14, 8);
 

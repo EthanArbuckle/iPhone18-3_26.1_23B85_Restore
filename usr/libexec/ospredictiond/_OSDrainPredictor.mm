@@ -2,8 +2,8 @@
 + (id)sharedInstance;
 - (_OSDrainPredictor)init;
 - (id)getInputFeatures;
-- (id)highDayDrainAroundCurrentDateWithError:(id *)a3;
-- (id)timeTillDischargeWithError:(id *)a3;
+- (id)highDayDrainAroundCurrentDateWithError:(id *)error;
+- (id)timeTillDischargeWithError:(id *)error;
 @end
 
 @implementation _OSDrainPredictor
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = sub_100013B60;
   block[3] = &unk_100094818;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000B6A10 != -1)
   {
     dispatch_once(&qword_1000B6A10, block);
@@ -49,7 +49,7 @@
   return v2;
 }
 
-- (id)highDayDrainAroundCurrentDateWithError:(id *)a3
+- (id)highDayDrainAroundCurrentDateWithError:(id *)error
 {
   v5 = os_transaction_create();
   v10 = 0;
@@ -64,7 +64,7 @@
   v9[2] = sub_100013D78;
   v9[3] = &unk_100094D48;
   v9[4] = &v10;
-  v9[5] = a3;
+  v9[5] = error;
   dispatch_sync(queue, v9);
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -72,7 +72,7 @@
   return v7;
 }
 
-- (id)timeTillDischargeWithError:(id *)a3
+- (id)timeTillDischargeWithError:(id *)error
 {
   v4 = os_transaction_create();
   v9 = 0;
@@ -150,13 +150,13 @@
   v129 = v10;
   [v12 mergeWithTimeSeries:{v16, v17}];
   v125 = v12;
-  v19 = [v12 array];
+  array = [v12 array];
   v137 = objc_opt_new();
   v154 = 0u;
   v155 = 0u;
   v156 = 0u;
   v157 = 0u;
-  obj = v19;
+  obj = array;
   v20 = [obj countByEnumeratingWithState:&v154 objects:v165 count:16];
   if (!v20)
   {
@@ -183,11 +183,11 @@
       [v24 epochTimestamp];
       v27 = [NSDate dateWithTimeIntervalSince1970:?];
       v28 = [NSDate dateWithTimeIntervalSince1970:v26];
-      v29 = [v24 metricKeysAndValues];
-      v30 = v29;
-      if (v29)
+      metricKeysAndValues = [v24 metricKeysAndValues];
+      v30 = metricKeysAndValues;
+      if (metricKeysAndValues)
       {
-        v31 = [v29 objectForKey:@"CurrentCapacity"];
+        v31 = [metricKeysAndValues objectForKey:@"CurrentCapacity"];
         v32 = [v31 copy];
 
         v33 = [v30 objectForKey:@"StateOfCharge"];
@@ -270,22 +270,22 @@ LABEL_29:
         }
 
         v46 = *(*(&v150 + 1) + 8 * v45);
-        v47 = [v46 dischargeEvents];
-        v48 = [v46 getLastEvent];
-        if (v48)
+        dischargeEvents = [v46 dischargeEvents];
+        getLastEvent = [v46 getLastEvent];
+        if (getLastEvent)
         {
-          v140 = v48;
-          [v48 currentCapacity];
-          v49 = v138 = v47;
+          v140 = getLastEvent;
+          [getLastEvent currentCapacity];
+          v49 = v138 = dischargeEvents;
           [v49 doubleValue];
           v51 = v50;
 
-          v47 = v138;
-          v48 = v140;
+          dischargeEvents = v138;
+          getLastEvent = v140;
           if (v51 <= 20.0)
           {
             v52 = [v46 findEventWithCurrentCapacity:&off_10009B580];
-            v48 = v140;
+            getLastEvent = v140;
             if (v52)
             {
               v134 = v45;
@@ -309,21 +309,21 @@ LABEL_29:
                     }
 
                     v58 = *(*(&v146 + 1) + 8 * j);
-                    v59 = [v58 currentCapacity];
-                    [v59 doubleValue];
+                    currentCapacity = [v58 currentCapacity];
+                    [currentCapacity doubleValue];
                     v61 = v60;
 
                     if (v61 >= 20.0)
                     {
-                      v62 = [v52 timestamp];
-                      v63 = [v58 timestamp];
-                      [v62 timeIntervalSinceDate:v63];
+                      timestamp = [v52 timestamp];
+                      timestamp2 = [v58 timestamp];
+                      [timestamp timeIntervalSinceDate:timestamp2];
                       v65 = v64;
 
                       v66 = [_OSDischargeInterval alloc];
-                      v67 = [v58 currentCapacity];
-                      v68 = [v52 currentCapacity];
-                      v69 = [(_OSDischargeInterval *)v66 initWithStartSoC:v67 andEndSoC:v68 andDurationToDischarge:v65];
+                      currentCapacity2 = [v58 currentCapacity];
+                      currentCapacity3 = [v52 currentCapacity];
+                      v69 = [(_OSDischargeInterval *)v66 initWithStartSoC:currentCapacity2 andEndSoC:currentCapacity3 andDurationToDischarge:v65];
 
                       [v40 addObject:v69];
                     }
@@ -339,8 +339,8 @@ LABEL_29:
               v41 = v132;
               v43 = v133;
               v45 = v134;
-              v47 = v138;
-              v48 = v140;
+              dischargeEvents = v138;
+              getLastEvent = v140;
             }
           }
         }
@@ -385,8 +385,8 @@ LABEL_29:
         }
 
         v78 = *(*(&v142 + 1) + 8 * k);
-        v79 = [v78 startSoC];
-        [v79 doubleValue];
+        startSoC = [v78 startSoC];
+        [startSoC doubleValue];
         v81 = vabdd_f64(v80, v6);
 
         if (v81 <= 2.0)

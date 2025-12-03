@@ -1,49 +1,49 @@
 @interface SKUIStorePageSection
-- (BOOL)containsElementWithIndexBarEntryID:(id)a3;
-- (BOOL)performDefaultActionForViewElement:(id)a3;
-- (CGSize)cellSizeForIndexPath:(id)a3;
+- (BOOL)containsElementWithIndexBarEntryID:(id)d;
+- (BOOL)performDefaultActionForViewElement:(id)element;
+- (CGSize)cellSizeForIndexPath:(id)path;
 - (CGSize)preferredContentSize;
 - (NSArray)indexPathsForPinningItems;
 - (NSSet)relevantEntityProviders;
-- (SKUIStorePageSection)initWithPageComponent:(id)a3;
+- (SKUIStorePageSection)initWithPageComponent:(id)component;
 - (UIEdgeInsets)sectionContentInset;
-- (_NSRange)itemRangeForIndexPathRange:(SKUIIndexPathRange *)a3;
-- (id)_clickEventWithElementName:(id)a3 index:(int64_t)a4 fieldData:(id)a5;
-- (id)backgroundColorForIndexPath:(id)a3;
-- (id)clickEventWithItem:(id)a3 elementName:(id)a4 index:(int64_t)a5;
-- (id)clickEventWithLink:(id)a3 elementName:(id)a4 index:(int64_t)a5;
-- (id)clickEventWithMedia:(id)a3 elementName:(id)a4 index:(int64_t)a5;
-- (id)itemOfferClickEventWithItem:(id)a3 elementName:(id)a4 index:(int64_t)a5;
-- (id)performItemOfferActionForItem:(id)a3;
-- (id)targetScrollingIndexPathForElementWithIndexBarEntryID:(id)a3 relativeSectionIndex:(int64_t)a4;
+- (_NSRange)itemRangeForIndexPathRange:(SKUIIndexPathRange *)range;
+- (id)_clickEventWithElementName:(id)name index:(int64_t)index fieldData:(id)data;
+- (id)backgroundColorForIndexPath:(id)path;
+- (id)clickEventWithItem:(id)item elementName:(id)name index:(int64_t)index;
+- (id)clickEventWithLink:(id)link elementName:(id)name index:(int64_t)index;
+- (id)clickEventWithMedia:(id)media elementName:(id)name index:(int64_t)index;
+- (id)itemOfferClickEventWithItem:(id)item elementName:(id)name index:(int64_t)index;
+- (id)performItemOfferActionForItem:(id)item;
+- (id)targetScrollingIndexPathForElementWithIndexBarEntryID:(id)d relativeSectionIndex:(int64_t)index;
 - (int64_t)_itemPinningGroup;
 - (int64_t)_itemPinningStyle;
-- (int64_t)applyUpdateType:(int64_t)a3;
-- (int64_t)pinningTransitionStyleForItemAtIndexPath:(id)a3;
-- (int64_t)updateWithContext:(id)a3 pageComponent:(id)a4;
-- (void)_recursivelyAddRelevantEntityProvidersForViewElement:(id)a3 toSet:(id)a4;
-- (void)_sendXEventWithDictionary:(id)a3 completionBlock:(id)a4;
-- (void)_setContext:(id)a3;
-- (void)collectionViewDidConfirmButtonElement:(id)a3 withClickInfo:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionViewDidLongPressItemAtIndexPath:(id)a3;
-- (void)collectionViewWillApplyLayoutAttributes:(id)a3;
+- (int64_t)applyUpdateType:(int64_t)type;
+- (int64_t)pinningTransitionStyleForItemAtIndexPath:(id)path;
+- (int64_t)updateWithContext:(id)context pageComponent:(id)component;
+- (void)_recursivelyAddRelevantEntityProvidersForViewElement:(id)element toSet:(id)set;
+- (void)_sendXEventWithDictionary:(id)dictionary completionBlock:(id)block;
+- (void)_setContext:(id)context;
+- (void)collectionViewDidConfirmButtonElement:(id)element withClickInfo:(id)info forItemAtIndexPath:(id)path;
+- (void)collectionViewDidLongPressItemAtIndexPath:(id)path;
+- (void)collectionViewWillApplyLayoutAttributes:(id)attributes;
 - (void)dealloc;
-- (void)entityProvider:(id)a3 didInvalidateWithContext:(id)a4;
-- (void)playVideoForElement:(id)a3;
-- (void)playVideoWithURL:(id)a3;
-- (void)productPageOverlayDidDismiss:(id)a3;
-- (void)reloadVisibleCellsWithReason:(int64_t)a3;
-- (void)sendXEventWithItem:(id)a3 completionBlock:(id)a4;
-- (void)sendXEventWithLink:(id)a3 completionBlock:(id)a4;
-- (void)showPageWithLink:(id)a3;
-- (void)showProductViewControllerWithItem:(id)a3;
+- (void)entityProvider:(id)provider didInvalidateWithContext:(id)context;
+- (void)playVideoForElement:(id)element;
+- (void)playVideoWithURL:(id)l;
+- (void)productPageOverlayDidDismiss:(id)dismiss;
+- (void)reloadVisibleCellsWithReason:(int64_t)reason;
+- (void)sendXEventWithItem:(id)item completionBlock:(id)block;
+- (void)sendXEventWithLink:(id)link completionBlock:(id)block;
+- (void)showPageWithLink:(id)link;
+- (void)showProductViewControllerWithItem:(id)item;
 @end
 
 @implementation SKUIStorePageSection
 
-- (SKUIStorePageSection)initWithPageComponent:(id)a3
+- (SKUIStorePageSection)initWithPageComponent:(id)component
 {
-  v5 = a3;
+  componentCopy = component;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIStorePageSection initWithPageComponent:];
@@ -55,7 +55,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_component, a3);
+    objc_storeStrong(&v6->_component, component);
   }
 
   return v7;
@@ -69,9 +69,9 @@
   [(SKUIStorePageSection *)&v3 dealloc];
 }
 
-- (int64_t)applyUpdateType:(int64_t)a3
+- (int64_t)applyUpdateType:(int64_t)type
 {
-  if (a3 != 2)
+  if (type != 2)
   {
     relevantEntityProviders = self->_relevantEntityProviders;
     self->_relevantEntityProviders = 0;
@@ -79,35 +79,35 @@
     self->_hasValidRelevantEntityProviders = 0;
   }
 
-  v6 = [(SKUIStorePageSection *)self context];
-  [(SKUIStorePageSection *)self willAppearInContext:v6];
+  context = [(SKUIStorePageSection *)self context];
+  [(SKUIStorePageSection *)self willAppearInContext:context];
 
-  return a3;
+  return type;
 }
 
-- (id)backgroundColorForIndexPath:(id)a3
+- (id)backgroundColorForIndexPath:(id)path
 {
-  v3 = [(SKUIStorePageSection *)self context];
-  v4 = [v3 colorScheme];
+  context = [(SKUIStorePageSection *)self context];
+  colorScheme = [context colorScheme];
 
-  v5 = [v4 backgroundColor];
-  v6 = v5;
-  if (v5)
+  backgroundColor = [colorScheme backgroundColor];
+  v6 = backgroundColor;
+  if (backgroundColor)
   {
-    v7 = v5;
+    systemBackgroundColor = backgroundColor;
   }
 
   else
   {
-    v7 = [MEMORY[0x277D75348] systemBackgroundColor];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
   }
 
-  v8 = v7;
+  v8 = systemBackgroundColor;
 
   return v8;
 }
 
-- (CGSize)cellSizeForIndexPath:(id)a3
+- (CGSize)cellSizeForIndexPath:(id)path
 {
   v3 = *MEMORY[0x277CBF3A8];
   v4 = *(MEMORY[0x277CBF3A8] + 8);
@@ -116,79 +116,79 @@
   return result;
 }
 
-- (id)clickEventWithItem:(id)a3 elementName:(id)a4 index:(int64_t)a5
+- (id)clickEventWithItem:(id)item elementName:(id)name index:(int64_t)index
 {
-  v8 = a3;
-  v9 = [(SKUIStorePageSection *)self _clickEventWithElementName:a4 index:a5 fieldData:v8];
+  itemCopy = item;
+  v9 = [(SKUIStorePageSection *)self _clickEventWithElementName:name index:index fieldData:itemCopy];
   if (v9)
   {
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", objc_msgSend(v8, "itemIdentifier")];
+    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", objc_msgSend(itemCopy, "itemIdentifier")];
     [v9 setTargetIdentifier:v10];
 
-    v11 = [v8 productPageURLString];
-    [v9 setTargetURL:v11];
+    productPageURLString = [itemCopy productPageURLString];
+    [v9 setTargetURL:productPageURLString];
   }
 
   return v9;
 }
 
-- (id)clickEventWithLink:(id)a3 elementName:(id)a4 index:(int64_t)a5
+- (id)clickEventWithLink:(id)link elementName:(id)name index:(int64_t)index
 {
-  v8 = a3;
-  v9 = [(SKUIStorePageSection *)self _clickEventWithElementName:a4 index:a5 fieldData:v8];
+  linkCopy = link;
+  v9 = [(SKUIStorePageSection *)self _clickEventWithElementName:name index:index fieldData:linkCopy];
   if (v9)
   {
-    v10 = [v8 item];
-    v11 = v10;
-    if (v10)
+    item = [linkCopy item];
+    v11 = item;
+    if (item)
     {
-      v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", objc_msgSend(v10, "itemIdentifier")];
+      v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", objc_msgSend(item, "itemIdentifier")];
       [v9 setTargetIdentifier:v12];
 
-      v13 = [v11 productPageURLString];
-      [v9 setTargetURL:v13];
+      productPageURLString = [v11 productPageURLString];
+      [v9 setTargetURL:productPageURLString];
     }
 
     else
     {
-      v13 = [v8 URL];
-      v14 = [v13 absoluteString];
-      [v9 setTargetURL:v14];
+      productPageURLString = [linkCopy URL];
+      absoluteString = [productPageURLString absoluteString];
+      [v9 setTargetURL:absoluteString];
     }
   }
 
   return v9;
 }
 
-- (id)clickEventWithMedia:(id)a3 elementName:(id)a4 index:(int64_t)a5
+- (id)clickEventWithMedia:(id)media elementName:(id)name index:(int64_t)index
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 mediaType])
+  mediaCopy = media;
+  nameCopy = name;
+  if ([mediaCopy mediaType])
   {
-    v10 = [(SKUIStorePageSection *)self _clickEventWithElementName:v9 index:a5 fieldData:v8];
+    v10 = [(SKUIStorePageSection *)self _clickEventWithElementName:nameCopy index:index fieldData:mediaCopy];
     if (!v10)
     {
       goto LABEL_10;
     }
 
-    v11 = [v8 mediaIdentifier];
-    if (v11)
+    mediaIdentifier = [mediaCopy mediaIdentifier];
+    if (mediaIdentifier)
     {
-      v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", v11];
+      v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", mediaIdentifier];
       [v10 setTargetIdentifier:v12];
     }
 
-    v13 = [v8 mediaURLString];
-    [v10 setTargetURL:v13];
+    mediaURLString = [mediaCopy mediaURLString];
+    [v10 setTargetURL:mediaURLString];
   }
 
   else
   {
-    v13 = [v8 link];
-    if (v13)
+    mediaURLString = [mediaCopy link];
+    if (mediaURLString)
     {
-      v10 = [(SKUIStorePageSection *)self clickEventWithLink:v13 elementName:v9 index:a5];
+      v10 = [(SKUIStorePageSection *)self clickEventWithLink:mediaURLString elementName:nameCopy index:index];
     }
 
     else
@@ -202,53 +202,53 @@ LABEL_10:
   return v10;
 }
 
-- (void)collectionViewDidConfirmButtonElement:(id)a3 withClickInfo:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionViewDidConfirmButtonElement:(id)element withClickInfo:(id)info forItemAtIndexPath:(id)path
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 itemIdentifier];
-  if (v8)
+  elementCopy = element;
+  infoCopy = info;
+  itemIdentifier = [elementCopy itemIdentifier];
+  if (itemIdentifier)
   {
-    v9 = v8;
+    v9 = itemIdentifier;
     v10 = +[SKUIItemStateCenter defaultCenter];
     v11 = [v10 stateForItemWithIdentifier:v9];
 
     if (v11)
     {
-      v12 = [v6 buyButtonDescriptor];
-      v13 = [v12 canPerformLocalActionWithItemState:v11];
+      buyButtonDescriptor = [elementCopy buyButtonDescriptor];
+      v13 = [buyButtonDescriptor canPerformLocalActionWithItemState:v11];
 
       if (v13)
       {
-        v14 = [v11 state];
-        if ((v14 & 2) != 0)
+        state = [v11 state];
+        if ((state & 2) != 0)
         {
-          v15 = +[SKUIItemStateCenter defaultCenter];
-          [v15 cancelDownloadForItemWithIdentifier:v9];
+          anyObject = +[SKUIItemStateCenter defaultCenter];
+          [anyObject cancelDownloadForItemWithIdentifier:v9];
 LABEL_14:
 
           v18 = 6;
           goto LABEL_10;
         }
 
-        if ((v14 & 0x40) != 0)
+        if ((state & 0x40) != 0)
         {
-          v19 = [v6 personalizationLibraryItems];
-          v15 = [v19 anyObject];
+          personalizationLibraryItems = [elementCopy personalizationLibraryItems];
+          anyObject = [personalizationLibraryItems anyObject];
 
           v16 = +[SKUIItemStateCenter defaultCenter];
-          [v16 performActionForLibraryItem:v15];
+          [v16 performActionForLibraryItem:anyObject];
           goto LABEL_13;
         }
 
-        if ((v14 & 0x24) == 4)
+        if ((state & 0x24) == 4)
         {
-          v15 = objc_alloc_init(MEMORY[0x277D69C68]);
+          anyObject = objc_alloc_init(MEMORY[0x277D69C68]);
           v16 = [MEMORY[0x277CCABB0] numberWithLongLong:v9];
           v20[0] = v16;
           v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
-          [v15 getLibraryItemsForITunesStoreItemIdentifiers:v17 completionBlock:&__block_literal_global_10];
+          [anyObject getLibraryItemsForITunesStoreItemIdentifiers:v17 completionBlock:&__block_literal_global_10];
 
 LABEL_13:
           goto LABEL_14;
@@ -264,7 +264,7 @@ LABEL_13:
 
   v18 = 2;
 LABEL_10:
-  [v6 dispatchEventOfType:v18 canBubble:1 isCancelable:1 extraInfo:v7 completionBlock:0];
+  [elementCopy dispatchEventOfType:v18 canBubble:1 isCancelable:1 extraInfo:infoCopy completionBlock:0];
 }
 
 void __95__SKUIStorePageSection_collectionViewDidConfirmButtonElement_withClickInfo_forItemAtIndexPath___block_invoke(uint64_t a1, void *a2)
@@ -280,50 +280,50 @@ void __95__SKUIStorePageSection_collectionViewDidConfirmButtonElement_withClickI
   }
 }
 
-- (void)collectionViewDidLongPressItemAtIndexPath:(id)a3
+- (void)collectionViewDidLongPressItemAtIndexPath:(id)path
 {
-  v3 = [(SKUIStorePageSection *)self pageComponent];
-  v4 = [v3 viewElement];
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  [v4 dispatchEventOfType:3 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
+  [viewElement dispatchEventOfType:3 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
 }
 
-- (void)collectionViewWillApplyLayoutAttributes:(id)a3
+- (void)collectionViewWillApplyLayoutAttributes:(id)attributes
 {
-  v11 = a3;
+  attributesCopy = attributes;
   if ([(SKUIStorePageSection *)self fitsToHeight])
   {
-    v4 = [(SKUIStorePageSectionContext *)self->_context collectionView];
-    [v4 bounds];
+    collectionView = [(SKUIStorePageSectionContext *)self->_context collectionView];
+    [collectionView bounds];
     v6 = v5;
     v8 = v7;
-    [v4 contentInset];
-    [v11 frame];
-    [v11 setFrame:?];
-    [v11 setSize:{v6, v8}];
+    [collectionView contentInset];
+    [attributesCopy frame];
+    [attributesCopy setFrame:?];
+    [attributesCopy setSize:{v6, v8}];
   }
 
-  v9 = [v11 indexPath];
-  v10 = [(SKUIStorePageSection *)self backgroundColorForIndexPath:v9];
-  [v11 setBackgroundColor:v10];
+  indexPath = [attributesCopy indexPath];
+  v10 = [(SKUIStorePageSection *)self backgroundColorForIndexPath:indexPath];
+  [attributesCopy setBackgroundColor:v10];
 }
 
-- (BOOL)containsElementWithIndexBarEntryID:(id)a3
+- (BOOL)containsElementWithIndexBarEntryID:(id)d
 {
-  v4 = a3;
-  v5 = [(SKUIStorePageSection *)self pageComponent];
-  v6 = [v5 viewElement];
-  v7 = [v6 firstDescendentWithIndexBarEntryID:v4];
+  dCopy = d;
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  v7 = [viewElement firstDescendentWithIndexBarEntryID:dCopy];
 
   return v7 != 0;
 }
 
-- (void)entityProvider:(id)a3 didInvalidateWithContext:(id)a4
+- (void)entityProvider:(id)provider didInvalidateWithContext:(id)context
 {
-  v7 = [(SKUIStorePageSection *)self context:a3];
-  v5 = [v7 collectionView];
+  v7 = [(SKUIStorePageSection *)self context:provider];
+  collectionView = [v7 collectionView];
   v6 = [MEMORY[0x277CCAA78] indexSetWithIndex:{-[SKUIStorePageSection sectionIndex](self, "sectionIndex")}];
-  [v5 reloadSections:v6];
+  [collectionView reloadSections:v6];
 }
 
 - (NSArray)indexPathsForPinningItems
@@ -344,21 +344,21 @@ void __95__SKUIStorePageSection_collectionViewDidConfirmButtonElement_withClickI
   return v4;
 }
 
-- (id)itemOfferClickEventWithItem:(id)a3 elementName:(id)a4 index:(int64_t)a5
+- (id)itemOfferClickEventWithItem:(id)item elementName:(id)name index:(int64_t)index
 {
   v24[3] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(SKUIStorePageSection *)self context];
-  v11 = [v10 metricsController];
-  v12 = [v11 itemOfferClickEventWithItem:v8 locationPosition:a5];
+  itemCopy = item;
+  nameCopy = name;
+  context = [(SKUIStorePageSection *)self context];
+  metricsController = [context metricsController];
+  v12 = [metricsController itemOfferClickEventWithItem:itemCopy locationPosition:index];
   if (v12)
   {
-    v13 = [v11 locationWithPosition:0 type:*MEMORY[0x277D6A4D0] fieldData:0];
-    v14 = [(SKUIStorePageSection *)self pageComponent];
-    v15 = [v11 locationWithPageComponent:v14];
+    v13 = [metricsController locationWithPosition:0 type:*MEMORY[0x277D6A4D0] fieldData:0];
+    pageComponent = [(SKUIStorePageSection *)self pageComponent];
+    v15 = [metricsController locationWithPageComponent:pageComponent];
 
-    v16 = [v11 locationWithPosition:a5 type:v9 fieldData:v8];
+    v16 = [metricsController locationWithPosition:index type:nameCopy fieldData:itemCopy];
     v17 = v16;
     if (v13)
     {
@@ -379,20 +379,20 @@ void __95__SKUIStorePageSection_collectionViewDidConfirmButtonElement_withClickI
       [v12 setLocationWithEventLocations:v20];
     }
 
-    v21 = [v10 parentViewController];
-    v22 = [v21 _visibleMetricsImpressionsString];
-    [v12 setImpressions:v22];
+    parentViewController = [context parentViewController];
+    _visibleMetricsImpressionsString = [parentViewController _visibleMetricsImpressionsString];
+    [v12 setImpressions:_visibleMetricsImpressionsString];
   }
 
   return v12;
 }
 
-- (_NSRange)itemRangeForIndexPathRange:(SKUIIndexPathRange *)a3
+- (_NSRange)itemRangeForIndexPathRange:(SKUIIndexPathRange *)range
 {
-  v5 = [(SKUIStorePageSection *)self sectionIndex];
-  if (a3->var0 >= v5)
+  sectionIndex = [(SKUIStorePageSection *)self sectionIndex];
+  if (range->var0 >= sectionIndex)
   {
-    var1 = a3->var1;
+    var1 = range->var1;
   }
 
   else
@@ -400,47 +400,47 @@ void __95__SKUIStorePageSection_collectionViewDidConfirmButtonElement_withClickI
     var1 = 0;
   }
 
-  if (a3->var2 == v5)
+  if (range->var2 == sectionIndex)
   {
-    v7 = a3->var3 + 1;
+    numberOfCells = range->var3 + 1;
   }
 
   else
   {
-    v7 = [(SKUIStorePageSection *)self numberOfCells];
+    numberOfCells = [(SKUIStorePageSection *)self numberOfCells];
   }
 
-  v8 = v7 - var1;
+  v8 = numberOfCells - var1;
   v9 = var1;
   result.length = v8;
   result.location = v9;
   return result;
 }
 
-- (BOOL)performDefaultActionForViewElement:(id)a3
+- (BOOL)performDefaultActionForViewElement:(id)element
 {
-  v4 = a3;
-  v5 = [v4 elementType];
-  if (v5 == 14)
+  elementCopy = element;
+  elementType = [elementCopy elementType];
+  if (elementType == 14)
   {
 LABEL_4:
-    v6 = [v4 firstChildForElementType:152];
+    v6 = [elementCopy firstChildForElementType:152];
     goto LABEL_6;
   }
 
-  if (v5 != 152)
+  if (elementType != 152)
   {
-    if (v5 != 66)
+    if (elementType != 66)
     {
 LABEL_9:
-      LOBYTE(v8) = 0;
+      LOBYTE(isEnabled) = 0;
       goto LABEL_12;
     }
 
     goto LABEL_4;
   }
 
-  v6 = v4;
+  v6 = elementCopy;
 LABEL_6:
   v7 = v6;
   if (!v6)
@@ -448,73 +448,73 @@ LABEL_6:
     goto LABEL_9;
   }
 
-  v8 = [v6 isEnabled];
-  if (v8)
+  isEnabled = [v6 isEnabled];
+  if (isEnabled)
   {
     [(SKUIStorePageSection *)self playVideoForElement:v7];
   }
 
   else
   {
-    [v4 dispatchEvent:0x28280CC48 eventAttribute:0x28280CC68 canBubble:1 isCancelable:0 extraInfo:0 completionBlock:0];
+    [elementCopy dispatchEvent:0x28280CC48 eventAttribute:0x28280CC68 canBubble:1 isCancelable:0 extraInfo:0 completionBlock:0];
   }
 
 LABEL_12:
-  return v8;
+  return isEnabled;
 }
 
-- (id)performItemOfferActionForItem:(id)a3
+- (id)performItemOfferActionForItem:(id)item
 {
-  v4 = a3;
-  if (SKUIItemKindIsSoftwareKind([v4 itemKind]))
+  itemCopy = item;
+  if (SKUIItemKindIsSoftwareKind([itemCopy itemKind]))
   {
-    v5 = [(SKUIStorePageSection *)self context];
-    v6 = [v5 parentViewController];
-    v7 = [v6 clientContext];
+    context = [(SKUIStorePageSection *)self context];
+    parentViewController = [context parentViewController];
+    clientContext = [parentViewController clientContext];
 
-    v8 = [v5 metricsController];
-    v9 = v8;
-    if (v8)
+    metricsController = [context metricsController];
+    v9 = metricsController;
+    if (metricsController)
     {
-      v10 = [v8 performActionForItem:v4 clientContext:v7];
+      v10 = [metricsController performActionForItem:itemCopy clientContext:clientContext];
     }
 
     else
     {
       v11 = +[SKUIItemStateCenter defaultCenter];
-      v10 = [v11 performActionForItem:v4 clientContext:v7];
+      v10 = [v11 performActionForItem:itemCopy clientContext:clientContext];
     }
   }
 
   else
   {
-    [(SKUIStorePageSection *)self showProductViewControllerWithItem:v4];
+    [(SKUIStorePageSection *)self showProductViewControllerWithItem:itemCopy];
     v10 = 0;
   }
 
   return v10;
 }
 
-- (int64_t)pinningTransitionStyleForItemAtIndexPath:(id)a3
+- (int64_t)pinningTransitionStyleForItemAtIndexPath:(id)path
 {
-  v3 = [(SKUIStorePageSection *)self context];
-  v4 = [v3 defaultPinningTransitionStyle];
+  context = [(SKUIStorePageSection *)self context];
+  defaultPinningTransitionStyle = [context defaultPinningTransitionStyle];
 
-  return v4;
+  return defaultPinningTransitionStyle;
 }
 
-- (void)playVideoForElement:(id)a3
+- (void)playVideoForElement:(id)element
 {
-  v4 = a3;
-  v5 = [v4 assets];
-  v6 = [v5 copy];
+  elementCopy = element;
+  assets = [elementCopy assets];
+  v6 = [assets copy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __44__SKUIStorePageSection_playVideoForElement___block_invoke;
   v8[3] = &unk_2781FB538;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = elementCopy;
+  selfCopy = self;
+  v7 = elementCopy;
   [v6 enumerateObjectsUsingBlock:v8];
 }
 
@@ -539,23 +539,23 @@ void __44__SKUIStorePageSection_playVideoForElement___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)playVideoWithURL:(id)a3
+- (void)playVideoWithURL:(id)l
 {
-  if (a3)
+  if (l)
   {
-    v4 = a3;
-    v10 = [[SKUIPlayableAsset alloc] initWithContentURL:v4];
+    lCopy = l;
+    v10 = [[SKUIPlayableAsset alloc] initWithContentURL:lCopy];
 
-    v5 = [(SKUIStorePageSection *)self context];
-    v6 = [v5 clientContext];
-    v7 = SKUIVideoPreviewPlayPlayableAsset(v10, v6);
+    context = [(SKUIStorePageSection *)self context];
+    clientContext = [context clientContext];
+    v7 = SKUIVideoPreviewPlayPlayableAsset(v10, clientContext);
 
     if (v7)
     {
-      v8 = [(SKUIStorePageSection *)self context];
-      v9 = [v8 parentViewController];
+      context2 = [(SKUIStorePageSection *)self context];
+      parentViewController = [context2 parentViewController];
 
-      [v9 presentViewController:v7 animated:1 completion:0];
+      [parentViewController presentViewController:v7 animated:1 completion:0];
       SKUIVideoPreviewDismissOnEnterBackground(v7);
     }
   }
@@ -575,13 +575,13 @@ void __44__SKUIStorePageSection_playVideoForElement___block_invoke(uint64_t a1, 
   if (!self->_hasValidRelevantEntityProviders)
   {
     self->_hasValidRelevantEntityProviders = 1;
-    v3 = [(SKUIStorePageSection *)self pageComponent];
-    v4 = [v3 viewElement];
+    pageComponent = [(SKUIStorePageSection *)self pageComponent];
+    viewElement = [pageComponent viewElement];
 
-    if (v4)
+    if (viewElement)
     {
       v5 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:0];
-      [(SKUIStorePageSection *)self _recursivelyAddRelevantEntityProvidersForViewElement:v4 toSet:v5];
+      [(SKUIStorePageSection *)self _recursivelyAddRelevantEntityProvidersForViewElement:viewElement toSet:v5];
     }
 
     else
@@ -607,21 +607,21 @@ void __44__SKUIStorePageSection_playVideoForElement___block_invoke(uint64_t a1, 
   return relevantEntityProviders;
 }
 
-- (void)reloadVisibleCellsWithReason:(int64_t)a3
+- (void)reloadVisibleCellsWithReason:(int64_t)reason
 {
-  v5 = [(SKUIStorePageSection *)self context];
-  v6 = [v5 collectionView];
+  context = [(SKUIStorePageSection *)self context];
+  collectionView = [context collectionView];
 
-  v7 = [v6 indexPathsForVisibleItems];
-  v8 = [(SKUIStorePageSection *)self sectionIndex];
+  indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
+  sectionIndex = [(SKUIStorePageSection *)self sectionIndex];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __53__SKUIStorePageSection_reloadVisibleCellsWithReason___block_invoke;
   v9[3] = &unk_2781FB560;
   v9[4] = self;
-  v9[5] = v8;
-  v9[6] = a3;
-  [v7 enumerateObjectsUsingBlock:v9];
+  v9[5] = sectionIndex;
+  v9[6] = reason;
+  [indexPathsForVisibleItems enumerateObjectsUsingBlock:v9];
 }
 
 void __53__SKUIStorePageSection_reloadVisibleCellsWithReason___block_invoke(uint64_t a1, void *a2)
@@ -635,10 +635,10 @@ void __53__SKUIStorePageSection_reloadVisibleCellsWithReason___block_invoke(uint
 
 - (UIEdgeInsets)sectionContentInset
 {
-  v2 = [(SKUIStorePageSection *)self pageComponent];
-  v3 = [v2 viewElement];
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  if (v3)
+  if (viewElement)
   {
     v4 = 15.0;
     v5 = 0.0;
@@ -661,50 +661,50 @@ void __53__SKUIStorePageSection_reloadVisibleCellsWithReason___block_invoke(uint
   return result;
 }
 
-- (void)sendXEventWithItem:(id)a3 completionBlock:(id)a4
+- (void)sendXEventWithItem:(id)item completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = [a3 lookupDictionary];
-  [(SKUIStorePageSection *)self _sendXEventWithDictionary:v7 completionBlock:v6];
+  blockCopy = block;
+  lookupDictionary = [item lookupDictionary];
+  [(SKUIStorePageSection *)self _sendXEventWithDictionary:lookupDictionary completionBlock:blockCopy];
 }
 
-- (void)sendXEventWithLink:(id)a3 completionBlock:(id)a4
+- (void)sendXEventWithLink:(id)link completionBlock:(id)block
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [v9 item];
-  if (v7)
+  linkCopy = link;
+  blockCopy = block;
+  item = [linkCopy item];
+  if (item)
   {
-    [(SKUIStorePageSection *)self sendXEventWithItem:v7 completionBlock:v6];
+    [(SKUIStorePageSection *)self sendXEventWithItem:item completionBlock:blockCopy];
   }
 
   else
   {
-    v8 = [v9 linkDictionary];
-    [(SKUIStorePageSection *)self _sendXEventWithDictionary:v8 completionBlock:v6];
+    linkDictionary = [linkCopy linkDictionary];
+    [(SKUIStorePageSection *)self _sendXEventWithDictionary:linkDictionary completionBlock:blockCopy];
   }
 }
 
-- (void)showPageWithLink:(id)a3
+- (void)showPageWithLink:(id)link
 {
-  v4 = a3;
-  v5 = [v4 item];
-  v6 = [v4 URL];
+  linkCopy = link;
+  item = [linkCopy item];
+  v6 = [linkCopy URL];
   v7 = v6;
-  if (!v5)
+  if (!item)
   {
     if (!v6)
     {
       goto LABEL_17;
     }
 
-    v8 = [(SKUIStorePageSection *)self context];
-    v9 = [v8 parentViewController];
+    context = [(SKUIStorePageSection *)self context];
+    parentViewController = [context parentViewController];
 
-    v10 = [v9 delegate];
+    delegate = [parentViewController delegate];
     if (objc_opt_respondsToSelector())
     {
-      if ([v10 sectionsViewController:v9 showStorePageForURL:v7])
+      if ([delegate sectionsViewController:parentViewController showStorePageForURL:v7])
       {
         goto LABEL_16;
       }
@@ -712,8 +712,8 @@ void __53__SKUIStorePageSection_reloadVisibleCellsWithReason___block_invoke(uint
 
     else
     {
-      v11 = [v4 targetString];
-      v12 = [v11 isEqualToString:@"external"];
+      targetString = [linkCopy targetString];
+      v12 = [targetString isEqualToString:@"external"];
 
       if (v12)
       {
@@ -728,24 +728,24 @@ LABEL_16:
     }
 
     v14 = [[SKUIURL alloc] initWithURL:v7];
-    v15 = [(SKUIURL *)v14 actionString];
+    actionString = [(SKUIURL *)v14 actionString];
 
-    if (v15)
+    if (actionString)
     {
-      v16 = [MEMORY[0x277D75128] sharedApplication];
-      v17 = [v16 delegate];
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+      delegate2 = [mEMORY[0x277D75128] delegate];
 
       if (objc_opt_respondsToSelector())
       {
-        v18 = [MEMORY[0x277D75128] sharedApplication];
-        [v17 application:v18 openURL:v7 sourceApplication:0 annotation:MEMORY[0x277CBEC10]];
+        mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+        [delegate2 application:mEMORY[0x277D75128]2 openURL:v7 sourceApplication:0 annotation:MEMORY[0x277CBEC10]];
       }
 
       else
       {
         v19 = SKUIMobileCoreServicesFramework();
-        v18 = [SKUIWeakLinkedClassForString(&cfstr_Lsapplicationw.isa v19)];
-        [v18 openSensitiveURL:v7 withOptions:0];
+        mEMORY[0x277D75128]2 = [SKUIWeakLinkedClassForString(&cfstr_Lsapplicationw.isa v19)];
+        [mEMORY[0x277D75128]2 openSensitiveURL:v7 withOptions:0];
       }
     }
 
@@ -755,8 +755,8 @@ LABEL_16:
       v20[1] = 3221225472;
       v20[2] = __41__SKUIStorePageSection_showPageWithLink___block_invoke;
       v20[3] = &unk_2781FB588;
-      v21 = v9;
-      v22 = v4;
+      v21 = parentViewController;
+      v22 = linkCopy;
       v23 = v7;
       [(SKUIStorePageSection *)self sendXEventWithLink:v22 completionBlock:v20];
     }
@@ -764,7 +764,7 @@ LABEL_16:
     goto LABEL_15;
   }
 
-  [(SKUIStorePageSection *)self showProductViewControllerWithItem:v5];
+  [(SKUIStorePageSection *)self showProductViewControllerWithItem:item];
 LABEL_17:
 }
 
@@ -785,22 +785,22 @@ void __41__SKUIStorePageSection_showPageWithLink___block_invoke(uint64_t a1, cha
   }
 }
 
-- (void)showProductViewControllerWithItem:(id)a3
+- (void)showProductViewControllerWithItem:(id)item
 {
-  v4 = a3;
-  v5 = [(SKUIStorePageSection *)self context];
-  v6 = [v5 parentViewController];
+  itemCopy = item;
+  context = [(SKUIStorePageSection *)self context];
+  parentViewController = [context parentViewController];
 
-  v7 = [v6 delegate];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v7 sectionsViewController:v6 showProductPageForItem:v4] & 1) == 0)
+  delegate = [parentViewController delegate];
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([delegate sectionsViewController:parentViewController showProductPageForItem:itemCopy] & 1) == 0)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __58__SKUIStorePageSection_showProductViewControllerWithItem___block_invoke;
     v8[3] = &unk_2781FB588;
-    v9 = v4;
-    v10 = v6;
-    v11 = self;
+    v9 = itemCopy;
+    v10 = parentViewController;
+    selfCopy = self;
     [(SKUIStorePageSection *)self sendXEventWithItem:v9 completionBlock:v8];
   }
 }
@@ -877,43 +877,43 @@ uint64_t __58__SKUIStorePageSection_showProductViewControllerWithItem___block_in
   return result;
 }
 
-- (id)targetScrollingIndexPathForElementWithIndexBarEntryID:(id)a3 relativeSectionIndex:(int64_t)a4
+- (id)targetScrollingIndexPathForElementWithIndexBarEntryID:(id)d relativeSectionIndex:(int64_t)index
 {
-  v6 = [(SKUIStorePageSection *)self numberOfCells];
-  if (v6 < 1)
+  numberOfCells = [(SKUIStorePageSection *)self numberOfCells];
+  if (numberOfCells < 1)
   {
     v7 = 0;
   }
 
   else
   {
-    if (v6 - 1 < a4)
+    if (numberOfCells - 1 < index)
     {
-      a4 = v6 - 1;
+      index = numberOfCells - 1;
     }
 
-    v7 = [MEMORY[0x277CCAA70] indexPathForItem:a4 inSection:{-[SKUIStorePageSection sectionIndex](self, "sectionIndex")}];
+    v7 = [MEMORY[0x277CCAA70] indexPathForItem:index inSection:{-[SKUIStorePageSection sectionIndex](self, "sectionIndex")}];
   }
 
   return v7;
 }
 
-- (int64_t)updateWithContext:(id)a3 pageComponent:(id)a4
+- (int64_t)updateWithContext:(id)context pageComponent:(id)component
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SKUIPageComponent *)v7 viewElement];
-  if ([v8 updateType])
+  contextCopy = context;
+  componentCopy = component;
+  viewElement = [(SKUIPageComponent *)componentCopy viewElement];
+  if ([viewElement updateType])
   {
     v9 = 0;
   }
 
   else
   {
-    [v6 activePageWidth];
+    [contextCopy activePageWidth];
     v11 = v10;
-    v12 = [(SKUIStorePageSection *)self context];
-    [v12 activePageWidth];
+    context = [(SKUIStorePageSection *)self context];
+    [context activePageWidth];
     v14 = vabdd_f64(v11, v13);
 
     if (v14 > 0.00000011920929)
@@ -927,53 +927,53 @@ uint64_t __58__SKUIStorePageSection_showProductViewControllerWithItem___block_in
     }
   }
 
-  [(SKUIStorePageSection *)self _setContext:v6];
+  [(SKUIStorePageSection *)self _setContext:contextCopy];
   component = self->_component;
-  self->_component = v7;
+  self->_component = componentCopy;
 
   v16 = [(SKUIStorePageSection *)self applyUpdateType:v9];
   return v16;
 }
 
-- (void)productPageOverlayDidDismiss:(id)a3
+- (void)productPageOverlayDidDismiss:(id)dismiss
 {
-  v4 = [(SKUIStorePageSection *)self context];
-  v5 = [v4 parentViewController];
-  [v5 _pageSectionDidDismissOverlayController:self->_overlayController];
+  context = [(SKUIStorePageSection *)self context];
+  parentViewController = [context parentViewController];
+  [parentViewController _pageSectionDidDismissOverlayController:self->_overlayController];
 
   [(SKUIProductPageOverlayController *)self->_overlayController setDelegate:0];
   overlayController = self->_overlayController;
   self->_overlayController = 0;
 }
 
-- (void)_setContext:(id)a3
+- (void)_setContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   context = self->_context;
   p_context = &self->_context;
-  if (context != v5)
+  if (context != contextCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_context, a3);
-    v5 = v8;
+    v8 = contextCopy;
+    objc_storeStrong(p_context, context);
+    contextCopy = v8;
   }
 }
 
-- (id)_clickEventWithElementName:(id)a3 index:(int64_t)a4 fieldData:(id)a5
+- (id)_clickEventWithElementName:(id)name index:(int64_t)index fieldData:(id)data
 {
   v21[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(SKUIStorePageSection *)self context];
-  v11 = [v10 metricsController];
-  if ([v11 canRecordEventWithType:*MEMORY[0x277D6A478]])
+  nameCopy = name;
+  dataCopy = data;
+  context = [(SKUIStorePageSection *)self context];
+  metricsController = [context metricsController];
+  if ([metricsController canRecordEventWithType:*MEMORY[0x277D6A478]])
   {
     v12 = objc_alloc_init(MEMORY[0x277D69B68]);
-    [v12 setTargetType:v8];
-    v13 = [(SKUIStorePageSection *)self pageComponent];
-    v14 = [v11 locationWithPageComponent:v13];
+    [v12 setTargetType:nameCopy];
+    pageComponent = [(SKUIStorePageSection *)self pageComponent];
+    v14 = [metricsController locationWithPageComponent:pageComponent];
 
-    v15 = [v11 locationWithPosition:a4 type:v8 fieldData:v9];
+    v15 = [metricsController locationWithPosition:index type:nameCopy fieldData:dataCopy];
     v16 = v15;
     if (v14 && v15)
     {
@@ -983,9 +983,9 @@ uint64_t __58__SKUIStorePageSection_showProductViewControllerWithItem___block_in
       [v12 setLocationWithEventLocations:v17];
     }
 
-    v18 = [v10 parentViewController];
-    v19 = [v18 _visibleMetricsImpressionsString];
-    [v12 setImpressions:v19];
+    parentViewController = [context parentViewController];
+    _visibleMetricsImpressionsString = [parentViewController _visibleMetricsImpressionsString];
+    [v12 setImpressions:_visibleMetricsImpressionsString];
   }
 
   else
@@ -998,76 +998,76 @@ uint64_t __58__SKUIStorePageSection_showProductViewControllerWithItem___block_in
 
 - (int64_t)_itemPinningStyle
 {
-  v3 = [(SKUIStorePageSection *)self pageComponent];
-  v4 = [v3 viewElement];
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  if (!v4)
+  if (!viewElement)
   {
     goto LABEL_11;
   }
 
-  v5 = [v4 pinStyle];
-  if (v5 > 2)
+  pinStyle = [viewElement pinStyle];
+  if (pinStyle > 2)
   {
-    switch(v5)
+    switch(pinStyle)
     {
       case 3:
-        v6 = 2;
+        defaultItemPinningStyle = 2;
         goto LABEL_12;
       case 4:
-        v6 = 3;
+        defaultItemPinningStyle = 3;
         goto LABEL_12;
       case 5:
-        v6 = 4;
+        defaultItemPinningStyle = 4;
         goto LABEL_12;
     }
 
 LABEL_11:
-    v6 = [(SKUIStorePageSection *)self defaultItemPinningStyle];
+    defaultItemPinningStyle = [(SKUIStorePageSection *)self defaultItemPinningStyle];
     goto LABEL_12;
   }
 
-  if (!v5)
+  if (!pinStyle)
   {
     goto LABEL_11;
   }
 
-  if (v5 == 1)
+  if (pinStyle == 1)
   {
-    v6 = 0;
+    defaultItemPinningStyle = 0;
     goto LABEL_12;
   }
 
-  if (v5 != 2)
+  if (pinStyle != 2)
   {
     goto LABEL_11;
   }
 
-  v6 = 1;
+  defaultItemPinningStyle = 1;
 LABEL_12:
 
-  return v6;
+  return defaultItemPinningStyle;
 }
 
 - (int64_t)_itemPinningGroup
 {
-  v2 = [(SKUIStorePageSection *)self pageComponent];
-  v3 = [v2 viewElement];
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  v4 = [v3 pinGroup];
-  return v4;
+  pinGroup = [viewElement pinGroup];
+  return pinGroup;
 }
 
-- (void)_recursivelyAddRelevantEntityProvidersForViewElement:(id)a3 toSet:(id)a4
+- (void)_recursivelyAddRelevantEntityProvidersForViewElement:(id)element toSet:(id)set
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  elementCopy = element;
+  setCopy = set;
+  if (elementCopy)
   {
-    v8 = [v6 explicitEntityProvider];
-    if (v8)
+    explicitEntityProvider = [elementCopy explicitEntityProvider];
+    if (explicitEntityProvider)
     {
-      [v7 addObject:v8];
+      [setCopy addObject:explicitEntityProvider];
     }
 
     v9[0] = MEMORY[0x277D85DD0];
@@ -1075,33 +1075,33 @@ LABEL_12:
     v9[2] = __83__SKUIStorePageSection__recursivelyAddRelevantEntityProvidersForViewElement_toSet___block_invoke;
     v9[3] = &unk_2781FA478;
     v9[4] = self;
-    v10 = v7;
-    [v6 enumerateChildrenUsingBlock:v9];
+    v10 = setCopy;
+    [elementCopy enumerateChildrenUsingBlock:v9];
   }
 }
 
-- (void)_sendXEventWithDictionary:(id)a3 completionBlock:(id)a4
+- (void)_sendXEventWithDictionary:(id)dictionary completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SKUIStorePageSection *)self context];
-  v9 = [v8 parentViewController];
-  v10 = [v9 clientContext];
+  dictionaryCopy = dictionary;
+  blockCopy = block;
+  context = [(SKUIStorePageSection *)self context];
+  parentViewController = [context parentViewController];
+  clientContext = [parentViewController clientContext];
 
-  if (v10)
+  if (clientContext)
   {
-    v11 = SKUIXEventSidepackDictionary(v6);
+    v11 = SKUIXEventSidepackDictionary(dictionaryCopy);
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __66__SKUIStorePageSection__sendXEventWithDictionary_completionBlock___block_invoke;
     v12[3] = &unk_2781F85B8;
-    v13 = v7;
-    [v10 sendOnXEventWithDictionary:v11 completionBlock:v12];
+    v13 = blockCopy;
+    [clientContext sendOnXEventWithDictionary:v11 completionBlock:v12];
   }
 
-  else if (v7)
+  else if (blockCopy)
   {
-    (*(v7 + 2))(v7, 0);
+    (*(blockCopy + 2))(blockCopy, 0);
   }
 }
 

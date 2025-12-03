@@ -1,8 +1,8 @@
 @interface Endpoint
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_TtC7Network8Endpoint)init;
 - (id)copy;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)hash;
 - (void)dealloc;
 @end
@@ -13,7 +13,7 @@
 {
   ObjectType = swift_getObjectType();
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC7Network8Endpoint_addressStorage);
-  v5 = self;
+  selfCopy = self;
   if (v4)
   {
     MEMORY[0x1865DF520](v4, -1, -1);
@@ -32,17 +32,17 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = _s7Network8EndpointC4hashSivg_0();
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_182AD3AA8();
     swift_unknownObjectRelease();
@@ -51,7 +51,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = Endpoint.isEqual(_:)(v8);
@@ -62,15 +62,15 @@
 
 - (id)copy
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_181B440D4();
 
   return v3;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_181B440D4();
 
   return v4;

@@ -1,12 +1,12 @@
 @interface PDDPStateChangeGroup
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPStateChangeGroup
@@ -16,8 +16,8 @@
   v7.receiver = self;
   v7.super_class = PDDPStateChangeGroup;
   v3 = [(PDDPStateChangeGroup *)&v7 description];
-  v4 = [(PDDPStateChangeGroup *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPStateChangeGroup *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -41,45 +41,45 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_groupId)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     roles = self->_roles;
     PBDataWriterWriteUint32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_groupId)
   {
-    v5 = v4;
-    [v4 setGroupId:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setGroupId:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 4) = self->_roles;
-    *(v4 + 20) |= 1u;
+    *(toCopy + 4) = self->_roles;
+    *(toCopy + 20) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_groupId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_groupId copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -92,16 +92,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
   groupId = self->_groupId;
-  if (groupId | *(v4 + 1))
+  if (groupId | *(equalCopy + 1))
   {
     if (![(NSString *)groupId isEqual:?])
     {
@@ -109,10 +109,10 @@
     }
   }
 
-  v6 = (*(v4 + 20) & 1) == 0;
+  v6 = (*(equalCopy + 20) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) != 0 && self->_roles == *(v4 + 4))
+    if ((*(equalCopy + 20) & 1) != 0 && self->_roles == *(equalCopy + 4))
     {
       v6 = 1;
       goto LABEL_9;
@@ -143,19 +143,19 @@ LABEL_9:
   return v4 ^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(PDDPStateChangeGroup *)self setGroupId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[5])
+  if (fromCopy[5])
   {
-    self->_roles = v4[4];
+    self->_roles = fromCopy[4];
     *&self->_has |= 1u;
   }
 }

@@ -1,9 +1,9 @@
 @interface PKMapsSnapshotManager
 - (PKMapsSnapshotManager)init;
-- (id)_iconForCacheKey:(id)a3;
-- (id)_iconFromDiskForCacheKey:(id)a3;
-- (id)placeholderWithTraitCollection:(id)a3 completion:(id)a4;
-- (id)snapshotForDisplayRegion:(id *)a3 size:(CGSize)a4 traitCollection:(id)a5 completion:(id)a6;
+- (id)_iconForCacheKey:(id)key;
+- (id)_iconFromDiskForCacheKey:(id)key;
+- (id)placeholderWithTraitCollection:(id)collection completion:(id)completion;
+- (id)snapshotForDisplayRegion:(id *)region size:(CGSize)size traitCollection:(id)collection completion:(id)completion;
 - (void)_processNextRequest;
 @end
 
@@ -16,9 +16,9 @@
   v2 = [(PKMapsSnapshotManager *)&v20 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     fileManager = v2->_fileManager;
-    v2->_fileManager = v3;
+    v2->_fileManager = defaultManager;
 
     v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
     snapshotCache = v2->_snapshotCache;
@@ -57,18 +57,18 @@
   return v2;
 }
 
-- (id)placeholderWithTraitCollection:(id)a3 completion:(id)a4
+- (id)placeholderWithTraitCollection:(id)collection completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = *MEMORY[0x1E6985CC0];
   v8 = *(MEMORY[0x1E6985CC0] + 8);
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __67__PKMapsSnapshotManager_placeholderWithTraitCollection_completion___block_invoke;
   v12[3] = &unk_1E801A888;
-  v13 = v6;
-  v9 = v6;
-  v10 = [(PKMapsSnapshotManager *)self snapshotForDisplayRegion:a3 size:v12 traitCollection:v7 completion:v8, 0.0, 0.0, 100.0, 100.0];
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = [(PKMapsSnapshotManager *)self snapshotForDisplayRegion:collection size:v12 traitCollection:v7 completion:v8, 0.0, 0.0, 100.0, 100.0];
 
   return v10;
 }
@@ -84,22 +84,22 @@ uint64_t __67__PKMapsSnapshotManager_placeholderWithTraitCollection_completion__
   return result;
 }
 
-- (id)snapshotForDisplayRegion:(id *)a3 size:(CGSize)a4 traitCollection:(id)a5 completion:(id)a6
+- (id)snapshotForDisplayRegion:(id *)region size:(CGSize)size traitCollection:(id)collection completion:(id)completion
 {
   v11 = v9;
   v12 = v8;
   v13 = v7;
   v14 = v6;
-  height = a4.height;
-  width = a4.width;
-  v18 = a3;
-  v19 = a5;
+  height = size.height;
+  width = size.width;
+  regionCopy = region;
+  collectionCopy = collection;
   objc_initWeak(location, self);
   v54.latitude = width;
   v54.longitude = height;
   v20 = CLLocationCoordinate2DIsValid(v54);
   v21 = MEMORY[0x1E696AEC0];
-  v22 = [($40F2142F4D10A659356C1DB5220133C1 *)v18 userInterfaceStyle];
+  userInterfaceStyle = [($40F2142F4D10A659356C1DB5220133C1 *)regionCopy userInterfaceStyle];
   v23 = *MEMORY[0x1E6985CC0];
   v24 = *(MEMORY[0x1E6985CC0] + 8);
   if (v20)
@@ -108,11 +108,11 @@ uint64_t __67__PKMapsSnapshotManager_placeholderWithTraitCollection_completion__
     v24 = height;
   }
 
-  v25 = [v21 stringWithFormat:@"%.7f-%.7f-%.7f-%.7f-%.2f-%.2f-%ld", *&v23, *&v24, v14, v13, v12, v11, v22];
+  v25 = [v21 stringWithFormat:@"%.7f-%.7f-%.7f-%.7f-%.2f-%.2f-%ld", *&v23, *&v24, v14, v13, v12, v11, userInterfaceStyle];
   v26 = [v25 dataUsingEncoding:4];
-  v27 = [v26 fileSafeBase64Encoding];
+  fileSafeBase64Encoding = [v26 fileSafeBase64Encoding];
 
-  v28 = [(PKMapsSnapshotManager *)self _iconForCacheKey:v27];
+  v28 = [(PKMapsSnapshotManager *)self _iconForCacheKey:fileSafeBase64Encoding];
   if (v28)
   {
     v29 = v28;
@@ -120,18 +120,18 @@ uint64_t __67__PKMapsSnapshotManager_placeholderWithTraitCollection_completion__
 
   else
   {
-    v30 = [(PKMapsSnapshotManager *)self _iconFromDiskForCacheKey:v27];
+    v30 = [(PKMapsSnapshotManager *)self _iconFromDiskForCacheKey:fileSafeBase64Encoding];
     if (v30)
     {
       os_unfair_lock_lock(&self->_cacheLock);
-      [(NSMutableArray *)self->_snapshotCacheKeys addObject:v27];
-      [(NSMutableDictionary *)self->_snapshotCache setObject:v30 forKey:v27];
+      [(NSMutableArray *)self->_snapshotCacheKeys addObject:fileSafeBase64Encoding];
+      [(NSMutableDictionary *)self->_snapshotCache setObject:v30 forKey:fileSafeBase64Encoding];
       os_unfair_lock_unlock(&self->_cacheLock);
     }
 
     else
     {
-      if (!v20 || (v48[0] = MEMORY[0x1E69E9820], v48[1] = 3221225472, v48[2] = __82__PKMapsSnapshotManager_snapshotForDisplayRegion_size_traitCollection_completion___block_invoke, v48[3] = &unk_1E801A8B0, objc_copyWeak(&v51, location), v49 = v27, v50 = v19, [(PKMapsSnapshotManager *)self placeholderWithTraitCollection:v18 completion:v48], v30 = objc_claimAutoreleasedReturnValue(), v50, v49, objc_destroyWeak(&v51), !v30))
+      if (!v20 || (v48[0] = MEMORY[0x1E69E9820], v48[1] = 3221225472, v48[2] = __82__PKMapsSnapshotManager_snapshotForDisplayRegion_size_traitCollection_completion___block_invoke, v48[3] = &unk_1E801A8B0, objc_copyWeak(&v51, location), v49 = fileSafeBase64Encoding, v50 = collectionCopy, [(PKMapsSnapshotManager *)self placeholderWithTraitCollection:regionCopy completion:v48], v30 = objc_claimAutoreleasedReturnValue(), v50, v49, objc_destroyWeak(&v51), !v30))
       {
         v32 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:{*&v12, *&v11}];
         v47[0] = MEMORY[0x1E69E9820];
@@ -143,13 +143,13 @@ uint64_t __67__PKMapsSnapshotManager_placeholderWithTraitCollection_completion__
         v30 = [v32 imageWithActions:v47];
       }
 
-      if (v19)
+      if (collectionCopy)
       {
         os_unfair_lock_lock(&self->_cacheLock);
-        v33 = [(NSMutableDictionary *)self->_completionBlockByKey objectForKey:v27];
+        v33 = [(NSMutableDictionary *)self->_completionBlockByKey objectForKey:fileSafeBase64Encoding];
         if (v33)
         {
-          v34 = _Block_copy(v19);
+          v34 = _Block_copy(collectionCopy);
           [v33 addObject:v34];
 
           os_unfair_lock_unlock(&self->_cacheLock);
@@ -168,16 +168,16 @@ uint64_t __67__PKMapsSnapshotManager_placeholderWithTraitCollection_completion__
           objc_copyWeak(v45, location);
           v45[1] = v12;
           v45[2] = v11;
-          v38 = v18;
+          v38 = regionCopy;
           v46 = v36;
           v45[3] = *&width;
           v45[4] = *&height;
           v45[5] = v14;
           v45[6] = v13;
           v41 = v38;
-          v42 = self;
-          v43 = v27;
-          v44 = v19;
+          selfCopy = self;
+          v43 = fileSafeBase64Encoding;
+          v44 = collectionCopy;
           dispatch_async(snapshotQueue, block);
           v39 = v30;
 
@@ -307,10 +307,10 @@ LABEL_12:
 {
   v16 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_cacheLock);
-  v3 = [(NSMutableArray *)self->_snapshotsKeysToPerform firstObject];
-  v4 = [(NSMutableDictionary *)self->_snapshotOptionsByKey objectForKey:v3];
+  firstObject = [(NSMutableArray *)self->_snapshotsKeysToPerform firstObject];
+  v4 = [(NSMutableDictionary *)self->_snapshotOptionsByKey objectForKey:firstObject];
   os_unfair_lock_unlock(&self->_cacheLock);
-  if (v3)
+  if (firstObject)
   {
     v5 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -330,7 +330,7 @@ LABEL_12:
     v9[4] = self;
     objc_copyWeak(&v13, buf);
     v10 = v4;
-    v11 = v3;
+    v11 = firstObject;
     v8 = v6;
     v12 = v8;
     [v8 startWithQueue:snapshotQueue completionHandler:v9];
@@ -470,21 +470,21 @@ void __44__PKMapsSnapshotManager__processNextRequest__block_invoke_38(uint64_t a
   [v4 writeToURL:v3 atomically:1];
 }
 
-- (id)_iconForCacheKey:(id)a3
+- (id)_iconForCacheKey:(id)key
 {
-  if (a3)
+  if (key)
   {
-    v4 = a3;
+    keyCopy = key;
     os_unfair_lock_lock(&self->_cacheLock);
-    v5 = [(NSMutableDictionary *)self->_snapshotCache objectForKey:v4];
-    [(NSMutableArray *)self->_snapshotCacheKeys removeObject:v4];
-    [(NSMutableArray *)self->_snapshotCacheKeys addObject:v4];
+    v5 = [(NSMutableDictionary *)self->_snapshotCache objectForKey:keyCopy];
+    [(NSMutableArray *)self->_snapshotCacheKeys removeObject:keyCopy];
+    [(NSMutableArray *)self->_snapshotCacheKeys addObject:keyCopy];
 
     if ([(NSMutableArray *)self->_snapshotCacheKeys count]>= 0x33)
     {
-      v6 = [(NSMutableArray *)self->_snapshotCacheKeys firstObject];
-      [(NSMutableArray *)self->_snapshotCacheKeys removeObject:v6];
-      [(NSMutableDictionary *)self->_snapshotCache removeObjectForKey:v6];
+      firstObject = [(NSMutableArray *)self->_snapshotCacheKeys firstObject];
+      [(NSMutableArray *)self->_snapshotCacheKeys removeObject:firstObject];
+      [(NSMutableDictionary *)self->_snapshotCache removeObjectForKey:firstObject];
     }
 
     os_unfair_lock_unlock(&self->_cacheLock);
@@ -498,16 +498,16 @@ void __44__PKMapsSnapshotManager__processNextRequest__block_invoke_38(uint64_t a
   return v5;
 }
 
-- (id)_iconFromDiskForCacheKey:(id)a3
+- (id)_iconFromDiskForCacheKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v7 = 0;
   v8 = &v7;
   v9 = 0x3032000000;
   v10 = __Block_byref_object_copy__30;
   v11 = __Block_byref_object_dispose__30;
   v12 = 0;
-  v4 = [v3 stringByAppendingPathExtension:@"png"];
+  v4 = [keyCopy stringByAppendingPathExtension:@"png"];
   PKMapsSnapshotsCacheCreateFileURLForWriting();
   v5 = v8[5];
 

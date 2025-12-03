@@ -1,5 +1,5 @@
 @interface BEPage
-+ (id)generatePagesFrom:(id)a3;
++ (id)generatePagesFrom:(id)from;
 - (BEPage)init;
 - (NSString)description;
 @end
@@ -15,7 +15,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   Page.description.getter();
 
   v3 = sub_139990();
@@ -23,10 +23,10 @@
   return v3;
 }
 
-+ (id)generatePagesFrom:(id)a3
++ (id)generatePagesFrom:(id)from
 {
   swift_unknownObjectRetain();
-  _s13AEBookPlugins4PageC13generatePages4fromSayACGAA30DocumentPaginationDataProvider_p_tFZ_0(a3);
+  _s13AEBookPlugins4PageC13generatePages4fromSayACGAA30DocumentPaginationDataProvider_p_tFZ_0(from);
   swift_unknownObjectRelease();
   type metadata accessor for Page();
   v4.super.isa = sub_139A30().super.isa;

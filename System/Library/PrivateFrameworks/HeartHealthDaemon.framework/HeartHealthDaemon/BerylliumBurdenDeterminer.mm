@@ -1,13 +1,13 @@
 @interface BerylliumBurdenDeterminer
-- (BerylliumBurdenDeterminer)initWithAnalyticsEventSubmissionManager:(id)a3;
-- (id)burdenForTachogramClassifications:(id)a3 calculationType:(int64_t)a4 calculationTypeContext:(id)a5 error:(id *)a6;
+- (BerylliumBurdenDeterminer)initWithAnalyticsEventSubmissionManager:(id)manager;
+- (id)burdenForTachogramClassifications:(id)classifications calculationType:(int64_t)type calculationTypeContext:(id)context error:(id *)error;
 @end
 
 @implementation BerylliumBurdenDeterminer
 
-- (BerylliumBurdenDeterminer)initWithAnalyticsEventSubmissionManager:(id)a3
+- (BerylliumBurdenDeterminer)initWithAnalyticsEventSubmissionManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v10.receiver = self;
   v10.super_class = BerylliumBurdenDeterminer;
   v6 = [(BerylliumBurdenDeterminer *)&v10 init];
@@ -17,17 +17,17 @@
     analyzer = v6->_analyzer;
     v6->_analyzer = v7;
 
-    objc_storeStrong(&v6->_analyticsEventSubmissionManager, a3);
+    objc_storeStrong(&v6->_analyticsEventSubmissionManager, manager);
   }
 
   return v6;
 }
 
-- (id)burdenForTachogramClassifications:(id)a3 calculationType:(int64_t)a4 calculationTypeContext:(id)a5 error:(id *)a6
+- (id)burdenForTachogramClassifications:(id)classifications calculationType:(int64_t)type calculationTypeContext:(id)context error:(id *)error
 {
   v67 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
+  classificationsCopy = classifications;
+  contextCopy = context;
   if (![MEMORY[0x277CCDD30] isAppleInternalInstall])
   {
     goto LABEL_17;
@@ -45,10 +45,10 @@
     v15 = v14;
     if (v14)
     {
-      v16 = a6;
-      v17 = [v14 integerValue];
-      v18 = v17;
-      if (v17 >= 0x65)
+      errorCopy = error;
+      integerValue = [v14 integerValue];
+      v18 = integerValue;
+      if (integerValue >= 0x65)
       {
         _HKInitializeLogging();
         v25 = HKHRAFibBurdenLogForCategory();
@@ -62,19 +62,19 @@
 
       else
       {
-        v19 = v17 < 3;
-        v20 = v17 >= 3 ? v17 : 2;
+        v19 = integerValue < 3;
+        v20 = integerValue >= 3 ? integerValue : 2;
         v21 = objc_alloc(MEMORY[0x277D12F28]);
         [MEMORY[0x277CCABB0] numberWithDouble:v20 / 100.0];
-        v22 = v11;
-        v24 = v23 = a4;
+        v22 = contextCopy;
+        v24 = v23 = type;
         v13 = [v21 initWithBurdenPercentage:v24 burdenPercentageWasClampedToLowerBound:v19 unavailabilityReason:0];
 
-        a4 = v23;
-        v11 = v22;
+        type = v23;
+        contextCopy = v22;
       }
 
-      a6 = v16;
+      error = errorCopy;
     }
 
     else
@@ -86,15 +86,15 @@
   if (!v13)
   {
 LABEL_17:
-    v61 = v11;
-    v26 = a4;
-    v27 = [v10 hk_map:{&__block_literal_global_2, a6}];
+    v61 = contextCopy;
+    typeCopy = type;
+    v27 = [classificationsCopy hk_map:{&__block_literal_global_2, error}];
     v28 = [(ABAfibBurdenAnalyzer *)self->_analyzer determineBurdenForTachogramClassificationBuckets:v27];
     v62 = 0u;
     v63 = 0u;
     v64 = 0u;
     v65 = 0u;
-    v29 = v10;
+    v29 = classificationsCopy;
     v30 = [v29 countByEnumeratingWithState:&v62 objects:v66 count:16];
     if (v30)
     {
@@ -134,8 +134,8 @@ LABEL_17:
       }
 
       v48 = [HDHRAFibBurdenAnalysisAnalyticsEvent alloc];
-      v49 = v26;
-      v11 = v61;
+      v49 = typeCopy;
+      contextCopy = v61;
       v46 = [(HDHRAFibBurdenAnalysisAnalyticsEvent *)v48 initWithResult:0 calculationType:v49 calculationTypeDetails:v61 numberOfTachograms:v32 additionalPayloadFromAlgorithm:0];
       [(HKAnalyticsEventSubmissionManager *)self->_analyticsEventSubmissionManager submitEvent:v46 error:0];
       v50 = [MEMORY[0x277CCA9B8] hk_error:100 description:@"Infrastructure error when determining AFib Burden value"];
@@ -157,12 +157,12 @@ LABEL_17:
       goto LABEL_46;
     }
 
-    v35 = [v28 burdenPercentage];
+    burdenPercentage = [v28 burdenPercentage];
 
-    if (v35)
+    if (burdenPercentage)
     {
-      v36 = [v28 burdenPercentage];
-      [v36 floatValue];
+      burdenPercentage2 = [v28 burdenPercentage];
+      [burdenPercentage2 floatValue];
       v38 = v37 - *MEMORY[0x277CE9B58];
 
       v39 = -v38;
@@ -173,8 +173,8 @@ LABEL_17:
 
       v40 = v39 < 2.2204e-16;
       v41 = objc_alloc(MEMORY[0x277D12F28]);
-      v42 = [v28 burdenPercentage];
-      v13 = [v41 initWithBurdenPercentage:v42 burdenPercentageWasClampedToLowerBound:v40 unavailabilityReason:0];
+      burdenPercentage3 = [v28 burdenPercentage];
+      v13 = [v41 initWithBurdenPercentage:burdenPercentage3 burdenPercentageWasClampedToLowerBound:v40 unavailabilityReason:0];
 
       if (v13)
       {
@@ -184,10 +184,10 @@ LABEL_17:
       goto LABEL_61;
     }
 
-    v53 = [v28 unavailabilityReason];
-    if (v53 <= 1)
+    unavailabilityReason = [v28 unavailabilityReason];
+    if (unavailabilityReason <= 1)
     {
-      if (!v53)
+      if (!unavailabilityReason)
       {
         _HKInitializeLogging();
         v58 = HKHRAFibBurdenLogForCategory();
@@ -199,7 +199,7 @@ LABEL_17:
         goto LABEL_56;
       }
 
-      if (v53 == 1)
+      if (unavailabilityReason == 1)
       {
         v54 = objc_alloc(MEMORY[0x277D12F28]);
         v55 = 1;
@@ -217,7 +217,7 @@ LABEL_52:
 LABEL_56:
 
       v46 = [MEMORY[0x277CCA9B8] hk_error:100 description:@"Unknown error occurred in AFib Burden infrastructure"];
-      v11 = v61;
+      contextCopy = v61;
       if (v46)
       {
         if (v60)
@@ -237,7 +237,7 @@ LABEL_46:
       goto LABEL_47;
     }
 
-    if (v53 == 2)
+    if (unavailabilityReason == 2)
     {
       v54 = objc_alloc(MEMORY[0x277D12F28]);
       v55 = 2;
@@ -245,7 +245,7 @@ LABEL_46:
 
     else
     {
-      if (v53 != 3)
+      if (unavailabilityReason != 3)
       {
         goto LABEL_52;
       }
@@ -260,10 +260,10 @@ LABEL_60:
     {
 LABEL_31:
       v43 = [HDHRAFibBurdenAnalysisAnalyticsEvent alloc];
-      v44 = [v28 metricsForCoreAnalytics];
-      v45 = v26;
-      v11 = v61;
-      v46 = [(HDHRAFibBurdenAnalysisAnalyticsEvent *)v43 initWithResult:v13 calculationType:v45 calculationTypeDetails:v61 numberOfTachograms:v32 additionalPayloadFromAlgorithm:v44];
+      metricsForCoreAnalytics = [v28 metricsForCoreAnalytics];
+      v45 = typeCopy;
+      contextCopy = v61;
+      v46 = [(HDHRAFibBurdenAnalysisAnalyticsEvent *)v43 initWithResult:v13 calculationType:v45 calculationTypeDetails:v61 numberOfTachograms:v32 additionalPayloadFromAlgorithm:metricsForCoreAnalytics];
 
       [(HKAnalyticsEventSubmissionManager *)self->_analyticsEventSubmissionManager submitEvent:v46 error:0];
 LABEL_47:
@@ -273,7 +273,7 @@ LABEL_48:
     }
 
 LABEL_61:
-    v11 = v61;
+    contextCopy = v61;
     goto LABEL_48;
   }
 

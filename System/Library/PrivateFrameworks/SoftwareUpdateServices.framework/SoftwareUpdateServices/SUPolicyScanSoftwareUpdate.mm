@@ -9,12 +9,12 @@
 
 - (BOOL)restrictToIncremental
 {
-  v3 = [(SUPolicyScan *)self scanOptions];
-  if ([v3 containsType:1])
+  scanOptions = [(SUPolicyScan *)self scanOptions];
+  if ([scanOptions containsType:1])
   {
-    v4 = [(SUPolicyScan *)self scanOptions];
-    v5 = [v4 types];
-    v6 = [v5 count] == 1;
+    scanOptions2 = [(SUPolicyScan *)self scanOptions];
+    types = [scanOptions2 types];
+    v6 = [types count] == 1;
   }
 
   else
@@ -35,12 +35,12 @@
 
   else
   {
-    v5 = [(SUPolicyScan *)self scanOptions];
-    if ([v5 containsType:2])
+    scanOptions = [(SUPolicyScan *)self scanOptions];
+    if ([scanOptions containsType:2])
     {
-      v6 = [(SUPolicyScan *)self scanOptions];
-      v7 = [v6 types];
-      v4 = [v7 count] == 1;
+      scanOptions2 = [(SUPolicyScan *)self scanOptions];
+      types = [scanOptions2 types];
+      v4 = [types count] == 1;
     }
 
     else
@@ -54,12 +54,12 @@
 
 - (BOOL)isSplatOnlyScan
 {
-  v3 = [(SUPolicyScan *)self scanOptions];
-  if ([v3 containsType:4])
+  scanOptions = [(SUPolicyScan *)self scanOptions];
+  if ([scanOptions containsType:4])
   {
-    v4 = [(SUPolicyScan *)self scanOptions];
-    v5 = [v4 types];
-    v6 = [v5 count] == 1;
+    scanOptions2 = [(SUPolicyScan *)self scanOptions];
+    types = [scanOptions2 types];
+    v6 = [types count] == 1;
   }
 
   else
@@ -73,9 +73,9 @@
 - (BOOL)allowSameVersion
 {
   v2 = +[SUPreferences sharedInstance];
-  v3 = [v2 allowSameBuildUpdates];
+  allowSameBuildUpdates = [v2 allowSameBuildUpdates];
 
-  return v3;
+  return allowSameBuildUpdates;
 }
 
 @end

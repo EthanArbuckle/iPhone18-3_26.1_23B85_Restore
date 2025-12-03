@@ -1,5 +1,5 @@
 @interface CBDigitizerHotspot
-- (BOOL)isClearedAt:(float)a3;
+- (BOOL)isClearedAt:(float)at;
 - (CBDigitizerHotspot)init;
 - (id)description;
 @end
@@ -8,26 +8,26 @@
 
 - (CBDigitizerHotspot)init
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = CBDigitizerHotspot;
-  v5 = [(CBDigitizerHotspot *)&v3 init];
-  if (v5)
+  selfCopy = [(CBDigitizerHotspot *)&v3 init];
+  if (selfCopy)
   {
-    v5->_touchReleaseTime = 0.0;
-    v5->_touchTriggerDelay = 5.0;
+    selfCopy->_touchReleaseTime = 0.0;
+    selfCopy->_touchTriggerDelay = 5.0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (BOOL)isClearedAt:(float)a3
+- (BOOL)isClearedAt:(float)at
 {
   v4 = 0;
   if (self->_triggered == 2)
   {
-    return (a3 - self->_touchReleaseTime) > self->_touchTriggerDelay;
+    return (at - self->_touchReleaseTime) > self->_touchTriggerDelay;
   }
 
   return v4;
@@ -35,11 +35,11 @@
 
 - (id)description
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
   v5 = MEMORY[0x1E696AEC0];
   v4 = (&kTouchStateStr)[[(CBDigitizerHotspot *)self triggered]];
-  [(CBDigitizerHotspot *)v7 touchReleaseTime];
+  [(CBDigitizerHotspot *)selfCopy touchReleaseTime];
   return [v5 stringWithFormat:@"state=%s touchReleased=%.2f", v4, v2];
 }
 

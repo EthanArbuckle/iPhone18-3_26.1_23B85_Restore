@@ -1,9 +1,9 @@
 @interface DAContactSearchResultElement
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDAContactSearchResultElement:(id)a3;
-- (DAContactSearchResultElement)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDAContactSearchResultElement:(id)element;
+- (DAContactSearchResultElement)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DAContactSearchResultElement
@@ -12,30 +12,30 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(DAContactSearchResultElement *)self firstName];
-  v6 = [(DAContactSearchResultElement *)self lastName];
-  v7 = [(DAContactSearchResultElement *)self displayName];
-  v8 = [(DAContactSearchResultElement *)self emailAddress];
-  v9 = [v3 stringWithFormat:@"<%@ %p> %@ %@ (%@): %@", v4, self, v5, v6, v7, v8];
+  firstName = [(DAContactSearchResultElement *)self firstName];
+  lastName = [(DAContactSearchResultElement *)self lastName];
+  displayName = [(DAContactSearchResultElement *)self displayName];
+  emailAddress = [(DAContactSearchResultElement *)self emailAddress];
+  v9 = [v3 stringWithFormat:@"<%@ %p> %@ %@ (%@): %@", v4, self, firstName, lastName, displayName, emailAddress];
 
   return v9;
 }
 
-- (BOOL)isEqualToDAContactSearchResultElement:(id)a3
+- (BOOL)isEqualToDAContactSearchResultElement:(id)element
 {
-  v4 = a3;
-  if (v4 == self)
+  elementCopy = element;
+  if (elementCopy == self)
   {
     goto LABEL_69;
   }
 
-  v5 = [(DAContactSearchResultElement *)self firstName];
-  if (v5)
+  firstName = [(DAContactSearchResultElement *)self firstName];
+  if (firstName)
   {
-    v6 = v5;
-    v7 = [(DAContactSearchResultElement *)self firstName];
-    v8 = [(DAContactSearchResultElement *)v4 firstName];
-    v9 = [v7 isEqualToString:v8];
+    v6 = firstName;
+    firstName2 = [(DAContactSearchResultElement *)self firstName];
+    firstName3 = [(DAContactSearchResultElement *)elementCopy firstName];
+    v9 = [firstName2 isEqualToString:firstName3];
 
     if (!v9)
     {
@@ -43,13 +43,13 @@
     }
   }
 
-  v10 = [(DAContactSearchResultElement *)self lastName];
-  if (v10)
+  lastName = [(DAContactSearchResultElement *)self lastName];
+  if (lastName)
   {
-    v11 = v10;
-    v12 = [(DAContactSearchResultElement *)self lastName];
-    v13 = [(DAContactSearchResultElement *)v4 lastName];
-    v14 = [v12 isEqualToString:v13];
+    v11 = lastName;
+    lastName2 = [(DAContactSearchResultElement *)self lastName];
+    lastName3 = [(DAContactSearchResultElement *)elementCopy lastName];
+    v14 = [lastName2 isEqualToString:lastName3];
 
     if (!v14)
     {
@@ -57,13 +57,13 @@
     }
   }
 
-  v15 = [(DAContactSearchResultElement *)self emailAddress];
-  if (v15)
+  emailAddress = [(DAContactSearchResultElement *)self emailAddress];
+  if (emailAddress)
   {
-    v16 = v15;
-    v17 = [(DAContactSearchResultElement *)self emailAddress];
-    v18 = [(DAContactSearchResultElement *)v4 emailAddress];
-    v19 = [v17 isEqualToString:v18];
+    v16 = emailAddress;
+    emailAddress2 = [(DAContactSearchResultElement *)self emailAddress];
+    emailAddress3 = [(DAContactSearchResultElement *)elementCopy emailAddress];
+    v19 = [emailAddress2 isEqualToString:emailAddress3];
 
     if (!v19)
     {
@@ -71,13 +71,13 @@
     }
   }
 
-  v20 = [(DAContactSearchResultElement *)self workPhone];
-  if (v20)
+  workPhone = [(DAContactSearchResultElement *)self workPhone];
+  if (workPhone)
   {
-    v21 = v20;
-    v22 = [(DAContactSearchResultElement *)self workPhone];
-    v23 = [(DAContactSearchResultElement *)v4 workPhone];
-    v24 = [v22 isEqualToString:v23];
+    v21 = workPhone;
+    workPhone2 = [(DAContactSearchResultElement *)self workPhone];
+    workPhone3 = [(DAContactSearchResultElement *)elementCopy workPhone];
+    v24 = [workPhone2 isEqualToString:workPhone3];
 
     if (!v24)
     {
@@ -85,13 +85,13 @@
     }
   }
 
-  v25 = [(DAContactSearchResultElement *)self mobilePhone];
-  if (v25)
+  mobilePhone = [(DAContactSearchResultElement *)self mobilePhone];
+  if (mobilePhone)
   {
-    v26 = v25;
-    v27 = [(DAContactSearchResultElement *)self mobilePhone];
-    v28 = [(DAContactSearchResultElement *)v4 mobilePhone];
-    v29 = [v27 isEqualToString:v28];
+    v26 = mobilePhone;
+    mobilePhone2 = [(DAContactSearchResultElement *)self mobilePhone];
+    mobilePhone3 = [(DAContactSearchResultElement *)elementCopy mobilePhone];
+    v29 = [mobilePhone2 isEqualToString:mobilePhone3];
 
     if (!v29)
     {
@@ -99,13 +99,13 @@
     }
   }
 
-  v30 = [(DAContactSearchResultElement *)self company];
-  if (v30)
+  company = [(DAContactSearchResultElement *)self company];
+  if (company)
   {
-    v31 = v30;
-    v32 = [(DAContactSearchResultElement *)self company];
-    v33 = [(DAContactSearchResultElement *)v4 company];
-    v34 = [v32 isEqualToString:v33];
+    v31 = company;
+    company2 = [(DAContactSearchResultElement *)self company];
+    company3 = [(DAContactSearchResultElement *)elementCopy company];
+    v34 = [company2 isEqualToString:company3];
 
     if (!v34)
     {
@@ -113,13 +113,13 @@
     }
   }
 
-  v35 = [(DAContactSearchResultElement *)self title];
-  if (v35)
+  title = [(DAContactSearchResultElement *)self title];
+  if (title)
   {
-    v36 = v35;
-    v37 = [(DAContactSearchResultElement *)self title];
-    v38 = [(DAContactSearchResultElement *)v4 title];
-    v39 = [v37 isEqualToString:v38];
+    v36 = title;
+    title2 = [(DAContactSearchResultElement *)self title];
+    title3 = [(DAContactSearchResultElement *)elementCopy title];
+    v39 = [title2 isEqualToString:title3];
 
     if (!v39)
     {
@@ -127,13 +127,13 @@
     }
   }
 
-  v40 = [(DAContactSearchResultElement *)self alias];
-  if (v40)
+  alias = [(DAContactSearchResultElement *)self alias];
+  if (alias)
   {
-    v41 = v40;
-    v42 = [(DAContactSearchResultElement *)self alias];
-    v43 = [(DAContactSearchResultElement *)v4 alias];
-    v44 = [v42 isEqualToString:v43];
+    v41 = alias;
+    alias2 = [(DAContactSearchResultElement *)self alias];
+    alias3 = [(DAContactSearchResultElement *)elementCopy alias];
+    v44 = [alias2 isEqualToString:alias3];
 
     if (!v44)
     {
@@ -141,13 +141,13 @@
     }
   }
 
-  v45 = [(DAContactSearchResultElement *)self homePhone];
-  if (v45)
+  homePhone = [(DAContactSearchResultElement *)self homePhone];
+  if (homePhone)
   {
-    v46 = v45;
-    v47 = [(DAContactSearchResultElement *)self homePhone];
-    v48 = [(DAContactSearchResultElement *)v4 homePhone];
-    v49 = [v47 isEqualToString:v48];
+    v46 = homePhone;
+    homePhone2 = [(DAContactSearchResultElement *)self homePhone];
+    homePhone3 = [(DAContactSearchResultElement *)elementCopy homePhone];
+    v49 = [homePhone2 isEqualToString:homePhone3];
 
     if (!v49)
     {
@@ -155,13 +155,13 @@
     }
   }
 
-  v50 = [(DAContactSearchResultElement *)self office];
-  if (v50)
+  office = [(DAContactSearchResultElement *)self office];
+  if (office)
   {
-    v51 = v50;
-    v52 = [(DAContactSearchResultElement *)self office];
-    v53 = [(DAContactSearchResultElement *)v4 office];
-    v54 = [v52 isEqualToString:v53];
+    v51 = office;
+    office2 = [(DAContactSearchResultElement *)self office];
+    office3 = [(DAContactSearchResultElement *)elementCopy office];
+    v54 = [office2 isEqualToString:office3];
 
     if (!v54)
     {
@@ -169,13 +169,13 @@
     }
   }
 
-  v55 = [(DAContactSearchResultElement *)self serverSource];
-  if (v55)
+  serverSource = [(DAContactSearchResultElement *)self serverSource];
+  if (serverSource)
   {
-    v56 = v55;
-    v57 = [(DAContactSearchResultElement *)self serverSource];
-    v58 = [(DAContactSearchResultElement *)v4 serverSource];
-    v59 = [v57 isEqualToString:v58];
+    v56 = serverSource;
+    serverSource2 = [(DAContactSearchResultElement *)self serverSource];
+    serverSource3 = [(DAContactSearchResultElement *)elementCopy serverSource];
+    v59 = [serverSource2 isEqualToString:serverSource3];
 
     if (!v59)
     {
@@ -183,13 +183,13 @@
     }
   }
 
-  v60 = [(DAContactSearchResultElement *)self recordName];
-  if (v60)
+  recordName = [(DAContactSearchResultElement *)self recordName];
+  if (recordName)
   {
-    v61 = v60;
-    v62 = [(DAContactSearchResultElement *)self recordName];
-    v63 = [(DAContactSearchResultElement *)v4 recordName];
-    v64 = [v62 isEqualToString:v63];
+    v61 = recordName;
+    recordName2 = [(DAContactSearchResultElement *)self recordName];
+    recordName3 = [(DAContactSearchResultElement *)elementCopy recordName];
+    v64 = [recordName2 isEqualToString:recordName3];
 
     if (!v64)
     {
@@ -197,13 +197,13 @@
     }
   }
 
-  v65 = [(DAContactSearchResultElement *)self faxPhone];
-  if (v65)
+  faxPhone = [(DAContactSearchResultElement *)self faxPhone];
+  if (faxPhone)
   {
-    v66 = v65;
-    v67 = [(DAContactSearchResultElement *)self faxPhone];
-    v68 = [(DAContactSearchResultElement *)v4 faxPhone];
-    v69 = [v67 isEqualToString:v68];
+    v66 = faxPhone;
+    faxPhone2 = [(DAContactSearchResultElement *)self faxPhone];
+    faxPhone3 = [(DAContactSearchResultElement *)elementCopy faxPhone];
+    v69 = [faxPhone2 isEqualToString:faxPhone3];
 
     if (!v69)
     {
@@ -211,13 +211,13 @@
     }
   }
 
-  v70 = [(DAContactSearchResultElement *)self department];
-  if (v70)
+  department = [(DAContactSearchResultElement *)self department];
+  if (department)
   {
-    v71 = v70;
-    v72 = [(DAContactSearchResultElement *)self department];
-    v73 = [(DAContactSearchResultElement *)v4 department];
-    v74 = [v72 isEqualToString:v73];
+    v71 = department;
+    department2 = [(DAContactSearchResultElement *)self department];
+    department3 = [(DAContactSearchResultElement *)elementCopy department];
+    v74 = [department2 isEqualToString:department3];
 
     if (!v74)
     {
@@ -225,13 +225,13 @@
     }
   }
 
-  v75 = [(DAContactSearchResultElement *)self street];
-  if (v75)
+  street = [(DAContactSearchResultElement *)self street];
+  if (street)
   {
-    v76 = v75;
-    v77 = [(DAContactSearchResultElement *)self street];
-    v78 = [(DAContactSearchResultElement *)v4 street];
-    v79 = [v77 isEqualToString:v78];
+    v76 = street;
+    street2 = [(DAContactSearchResultElement *)self street];
+    street3 = [(DAContactSearchResultElement *)elementCopy street];
+    v79 = [street2 isEqualToString:street3];
 
     if (!v79)
     {
@@ -239,13 +239,13 @@
     }
   }
 
-  v80 = [(DAContactSearchResultElement *)self city];
-  if (v80)
+  city = [(DAContactSearchResultElement *)self city];
+  if (city)
   {
-    v81 = v80;
-    v82 = [(DAContactSearchResultElement *)self city];
-    v83 = [(DAContactSearchResultElement *)v4 city];
-    v84 = [v82 isEqualToString:v83];
+    v81 = city;
+    city2 = [(DAContactSearchResultElement *)self city];
+    city3 = [(DAContactSearchResultElement *)elementCopy city];
+    v84 = [city2 isEqualToString:city3];
 
     if (!v84)
     {
@@ -253,13 +253,13 @@
     }
   }
 
-  v85 = [(DAContactSearchResultElement *)self state];
-  if (v85)
+  state = [(DAContactSearchResultElement *)self state];
+  if (state)
   {
-    v86 = v85;
-    v87 = [(DAContactSearchResultElement *)self state];
-    v88 = [(DAContactSearchResultElement *)v4 state];
-    v89 = [v87 isEqualToString:v88];
+    v86 = state;
+    state2 = [(DAContactSearchResultElement *)self state];
+    state3 = [(DAContactSearchResultElement *)elementCopy state];
+    v89 = [state2 isEqualToString:state3];
 
     if (!v89)
     {
@@ -272,7 +272,7 @@
   {
     v91 = v90;
     v92 = [(DAContactSearchResultElement *)self zip];
-    v93 = [(DAContactSearchResultElement *)v4 zip];
+    v93 = [(DAContactSearchResultElement *)elementCopy zip];
     v94 = [v92 isEqualToString:v93];
 
     if (!v94)
@@ -281,13 +281,13 @@
     }
   }
 
-  v95 = [(DAContactSearchResultElement *)self country];
-  if (v95)
+  country = [(DAContactSearchResultElement *)self country];
+  if (country)
   {
-    v96 = v95;
-    v97 = [(DAContactSearchResultElement *)self country];
-    v98 = [(DAContactSearchResultElement *)v4 country];
-    v99 = [v97 isEqualToString:v98];
+    v96 = country;
+    country2 = [(DAContactSearchResultElement *)self country];
+    country3 = [(DAContactSearchResultElement *)elementCopy country];
+    v99 = [country2 isEqualToString:country3];
 
     if (!v99)
     {
@@ -295,13 +295,13 @@
     }
   }
 
-  v100 = [(DAContactSearchResultElement *)self jpegPhoto];
-  if (v100)
+  jpegPhoto = [(DAContactSearchResultElement *)self jpegPhoto];
+  if (jpegPhoto)
   {
-    v101 = v100;
-    v102 = [(DAContactSearchResultElement *)self jpegPhoto];
-    v103 = [(DAContactSearchResultElement *)v4 jpegPhoto];
-    v104 = [v102 isEqualToData:v103];
+    v101 = jpegPhoto;
+    jpegPhoto2 = [(DAContactSearchResultElement *)self jpegPhoto];
+    jpegPhoto3 = [(DAContactSearchResultElement *)elementCopy jpegPhoto];
+    v104 = [jpegPhoto2 isEqualToData:jpegPhoto3];
 
     if (!v104)
     {
@@ -309,13 +309,13 @@
     }
   }
 
-  v105 = [(DAContactSearchResultElement *)self imService];
-  if (v105)
+  imService = [(DAContactSearchResultElement *)self imService];
+  if (imService)
   {
-    v106 = v105;
-    v107 = [(DAContactSearchResultElement *)self imService];
-    v108 = [(DAContactSearchResultElement *)v4 imService];
-    v109 = [v107 isEqualToString:v108];
+    v106 = imService;
+    imService2 = [(DAContactSearchResultElement *)self imService];
+    imService3 = [(DAContactSearchResultElement *)elementCopy imService];
+    v109 = [imService2 isEqualToString:imService3];
 
     if (!v109)
     {
@@ -323,13 +323,13 @@
     }
   }
 
-  v110 = [(DAContactSearchResultElement *)self imUsername];
-  if (v110)
+  imUsername = [(DAContactSearchResultElement *)self imUsername];
+  if (imUsername)
   {
-    v111 = v110;
-    v112 = [(DAContactSearchResultElement *)self imUsername];
-    v113 = [(DAContactSearchResultElement *)v4 imUsername];
-    v114 = [v112 isEqualToString:v113];
+    v111 = imUsername;
+    imUsername2 = [(DAContactSearchResultElement *)self imUsername];
+    imUsername3 = [(DAContactSearchResultElement *)elementCopy imUsername];
+    v114 = [imUsername2 isEqualToString:imUsername3];
 
     if (!v114)
     {
@@ -342,7 +342,7 @@
   {
     v116 = v115;
     v117 = [(DAContactSearchResultElement *)self uri];
-    v118 = [(DAContactSearchResultElement *)v4 uri];
+    v118 = [(DAContactSearchResultElement *)elementCopy uri];
     v119 = [v117 isEqualToString:v118];
 
     if (!v119)
@@ -351,13 +351,13 @@
     }
   }
 
-  v120 = [(DAContactSearchResultElement *)self buildingName];
-  if (v120)
+  buildingName = [(DAContactSearchResultElement *)self buildingName];
+  if (buildingName)
   {
-    v121 = v120;
-    v122 = [(DAContactSearchResultElement *)self buildingName];
-    v123 = [(DAContactSearchResultElement *)v4 buildingName];
-    v124 = [v122 isEqualToString:v123];
+    v121 = buildingName;
+    buildingName2 = [(DAContactSearchResultElement *)self buildingName];
+    buildingName3 = [(DAContactSearchResultElement *)elementCopy buildingName];
+    v124 = [buildingName2 isEqualToString:buildingName3];
 
     if (!v124)
     {
@@ -365,13 +365,13 @@
     }
   }
 
-  v125 = [(DAContactSearchResultElement *)self appleFloor];
-  if (v125)
+  appleFloor = [(DAContactSearchResultElement *)self appleFloor];
+  if (appleFloor)
   {
-    v126 = v125;
-    v127 = [(DAContactSearchResultElement *)self appleFloor];
-    v128 = [(DAContactSearchResultElement *)v4 appleFloor];
-    v129 = [v127 isEqualToString:v128];
+    v126 = appleFloor;
+    appleFloor2 = [(DAContactSearchResultElement *)self appleFloor];
+    appleFloor3 = [(DAContactSearchResultElement *)elementCopy appleFloor];
+    v129 = [appleFloor2 isEqualToString:appleFloor3];
 
     if (!v129)
     {
@@ -379,13 +379,13 @@
     }
   }
 
-  v130 = [(DAContactSearchResultElement *)self pagerNumber];
-  if (v130)
+  pagerNumber = [(DAContactSearchResultElement *)self pagerNumber];
+  if (pagerNumber)
   {
-    v131 = v130;
-    v132 = [(DAContactSearchResultElement *)self pagerNumber];
-    v133 = [(DAContactSearchResultElement *)v4 pagerNumber];
-    v134 = [v132 isEqualToString:v133];
+    v131 = pagerNumber;
+    pagerNumber2 = [(DAContactSearchResultElement *)self pagerNumber];
+    pagerNumber3 = [(DAContactSearchResultElement *)elementCopy pagerNumber];
+    v134 = [pagerNumber2 isEqualToString:pagerNumber3];
 
     if (!v134)
     {
@@ -393,13 +393,13 @@
     }
   }
 
-  v135 = [(DAContactSearchResultElement *)self postalAddress];
-  if (v135)
+  postalAddress = [(DAContactSearchResultElement *)self postalAddress];
+  if (postalAddress)
   {
-    v136 = v135;
-    v137 = [(DAContactSearchResultElement *)self postalAddress];
-    v138 = [(DAContactSearchResultElement *)v4 postalAddress];
-    v139 = [v137 isEqualToString:v138];
+    v136 = postalAddress;
+    postalAddress2 = [(DAContactSearchResultElement *)self postalAddress];
+    postalAddress3 = [(DAContactSearchResultElement *)elementCopy postalAddress];
+    v139 = [postalAddress2 isEqualToString:postalAddress3];
 
     if (!v139)
     {
@@ -407,13 +407,13 @@
     }
   }
 
-  v140 = [(DAContactSearchResultElement *)self homePostalAddress];
-  if (v140)
+  homePostalAddress = [(DAContactSearchResultElement *)self homePostalAddress];
+  if (homePostalAddress)
   {
-    v141 = v140;
-    v142 = [(DAContactSearchResultElement *)self homePostalAddress];
-    v143 = [(DAContactSearchResultElement *)v4 homePostalAddress];
-    v144 = [v142 isEqualToString:v143];
+    v141 = homePostalAddress;
+    homePostalAddress2 = [(DAContactSearchResultElement *)self homePostalAddress];
+    homePostalAddress3 = [(DAContactSearchResultElement *)elementCopy homePostalAddress];
+    v144 = [homePostalAddress2 isEqualToString:homePostalAddress3];
 
     if (!v144)
     {
@@ -421,13 +421,13 @@
     }
   }
 
-  v145 = [(DAContactSearchResultElement *)self principalPath];
-  if (v145)
+  principalPath = [(DAContactSearchResultElement *)self principalPath];
+  if (principalPath)
   {
-    v146 = v145;
-    v147 = [(DAContactSearchResultElement *)self principalPath];
-    v148 = [(DAContactSearchResultElement *)v4 principalPath];
-    v149 = [v147 isEqualToString:v148];
+    v146 = principalPath;
+    principalPath2 = [(DAContactSearchResultElement *)self principalPath];
+    principalPath3 = [(DAContactSearchResultElement *)elementCopy principalPath];
+    v149 = [principalPath2 isEqualToString:principalPath3];
 
     if (!v149)
     {
@@ -435,13 +435,13 @@
     }
   }
 
-  v150 = [(DAContactSearchResultElement *)self iPhone];
-  if (v150)
+  iPhone = [(DAContactSearchResultElement *)self iPhone];
+  if (iPhone)
   {
-    v151 = v150;
-    v152 = [(DAContactSearchResultElement *)self iPhone];
-    v153 = [(DAContactSearchResultElement *)v4 iPhone];
-    v154 = [v152 isEqualToString:v153];
+    v151 = iPhone;
+    iPhone2 = [(DAContactSearchResultElement *)self iPhone];
+    iPhone3 = [(DAContactSearchResultElement *)elementCopy iPhone];
+    v154 = [iPhone2 isEqualToString:iPhone3];
 
     if (!v154)
     {
@@ -449,13 +449,13 @@
     }
   }
 
-  v155 = [(DAContactSearchResultElement *)self mainPhone];
-  if (v155)
+  mainPhone = [(DAContactSearchResultElement *)self mainPhone];
+  if (mainPhone)
   {
-    v156 = v155;
-    v157 = [(DAContactSearchResultElement *)self mainPhone];
-    v158 = [(DAContactSearchResultElement *)v4 mainPhone];
-    v159 = [v157 isEqualToString:v158];
+    v156 = mainPhone;
+    mainPhone2 = [(DAContactSearchResultElement *)self mainPhone];
+    mainPhone3 = [(DAContactSearchResultElement *)elementCopy mainPhone];
+    v159 = [mainPhone2 isEqualToString:mainPhone3];
 
     if (!v159)
     {
@@ -463,13 +463,13 @@
     }
   }
 
-  v160 = [(DAContactSearchResultElement *)self workFaxPhone];
-  if (v160)
+  workFaxPhone = [(DAContactSearchResultElement *)self workFaxPhone];
+  if (workFaxPhone)
   {
-    v161 = v160;
-    v162 = [(DAContactSearchResultElement *)self workFaxPhone];
-    v163 = [(DAContactSearchResultElement *)v4 workFaxPhone];
-    v164 = [v162 isEqualToString:v163];
+    v161 = workFaxPhone;
+    workFaxPhone2 = [(DAContactSearchResultElement *)self workFaxPhone];
+    workFaxPhone3 = [(DAContactSearchResultElement *)elementCopy workFaxPhone];
+    v164 = [workFaxPhone2 isEqualToString:workFaxPhone3];
 
     if (!v164)
     {
@@ -479,269 +479,269 @@ LABEL_68:
     }
   }
 
-  v165 = [(DAContactSearchResultElement *)self cuAddresses];
-  if (!v165)
+  cuAddresses = [(DAContactSearchResultElement *)self cuAddresses];
+  if (!cuAddresses)
   {
 LABEL_69:
     v169 = 1;
     goto LABEL_70;
   }
 
-  v166 = v165;
-  v167 = [(DAContactSearchResultElement *)self cuAddresses];
-  v168 = [(DAContactSearchResultElement *)v4 cuAddresses];
-  v169 = [v167 isEqual:v168];
+  v166 = cuAddresses;
+  cuAddresses2 = [(DAContactSearchResultElement *)self cuAddresses];
+  cuAddresses3 = [(DAContactSearchResultElement *)elementCopy cuAddresses];
+  v169 = [cuAddresses2 isEqual:cuAddresses3];
 
 LABEL_70:
   return v169 & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(DAContactSearchResultElement *)self isEqualToDAContactSearchResultElement:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(DAContactSearchResultElement *)self isEqualToDAContactSearchResultElement:v5];
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(DAContactSearchResultElement *)self displayName];
-  [v4 encodeObject:v5 forKey:@"DisplayNameKey"];
+  coderCopy = coder;
+  displayName = [(DAContactSearchResultElement *)self displayName];
+  [coderCopy encodeObject:displayName forKey:@"DisplayNameKey"];
 
-  v6 = [(DAContactSearchResultElement *)self firstName];
-  [v4 encodeObject:v6 forKey:@"FirstNameKey"];
+  firstName = [(DAContactSearchResultElement *)self firstName];
+  [coderCopy encodeObject:firstName forKey:@"FirstNameKey"];
 
-  v7 = [(DAContactSearchResultElement *)self lastName];
-  [v4 encodeObject:v7 forKey:@"LastNameKey"];
+  lastName = [(DAContactSearchResultElement *)self lastName];
+  [coderCopy encodeObject:lastName forKey:@"LastNameKey"];
 
-  v8 = [(DAContactSearchResultElement *)self emailAddress];
-  [v4 encodeObject:v8 forKey:@"EmailAddressKey"];
+  emailAddress = [(DAContactSearchResultElement *)self emailAddress];
+  [coderCopy encodeObject:emailAddress forKey:@"EmailAddressKey"];
 
-  v9 = [(DAContactSearchResultElement *)self workPhone];
-  [v4 encodeObject:v9 forKey:@"WorkPhoneKey"];
+  workPhone = [(DAContactSearchResultElement *)self workPhone];
+  [coderCopy encodeObject:workPhone forKey:@"WorkPhoneKey"];
 
-  v10 = [(DAContactSearchResultElement *)self mobilePhone];
-  [v4 encodeObject:v10 forKey:@"MobilePhoneKey"];
+  mobilePhone = [(DAContactSearchResultElement *)self mobilePhone];
+  [coderCopy encodeObject:mobilePhone forKey:@"MobilePhoneKey"];
 
-  v11 = [(DAContactSearchResultElement *)self company];
-  [v4 encodeObject:v11 forKey:@"CompanyKey"];
+  company = [(DAContactSearchResultElement *)self company];
+  [coderCopy encodeObject:company forKey:@"CompanyKey"];
 
-  v12 = [(DAContactSearchResultElement *)self title];
-  [v4 encodeObject:v12 forKey:@"TitleKey"];
+  title = [(DAContactSearchResultElement *)self title];
+  [coderCopy encodeObject:title forKey:@"TitleKey"];
 
-  v13 = [(DAContactSearchResultElement *)self alias];
-  [v4 encodeObject:v13 forKey:@"AliasKey"];
+  alias = [(DAContactSearchResultElement *)self alias];
+  [coderCopy encodeObject:alias forKey:@"AliasKey"];
 
-  v14 = [(DAContactSearchResultElement *)self homePhone];
-  [v4 encodeObject:v14 forKey:@"HomePhoneKey"];
+  homePhone = [(DAContactSearchResultElement *)self homePhone];
+  [coderCopy encodeObject:homePhone forKey:@"HomePhoneKey"];
 
-  v15 = [(DAContactSearchResultElement *)self office];
-  [v4 encodeObject:v15 forKey:@"OfficeKey"];
+  office = [(DAContactSearchResultElement *)self office];
+  [coderCopy encodeObject:office forKey:@"OfficeKey"];
 
-  v16 = [(DAContactSearchResultElement *)self serverSource];
-  [v4 encodeObject:v16 forKey:@"ServerSourceKey"];
+  serverSource = [(DAContactSearchResultElement *)self serverSource];
+  [coderCopy encodeObject:serverSource forKey:@"ServerSourceKey"];
 
-  v17 = [(DAContactSearchResultElement *)self recordName];
-  [v4 encodeObject:v17 forKey:@"RecordNameKey"];
+  recordName = [(DAContactSearchResultElement *)self recordName];
+  [coderCopy encodeObject:recordName forKey:@"RecordNameKey"];
 
-  v18 = [(DAContactSearchResultElement *)self faxPhone];
-  [v4 encodeObject:v18 forKey:@"FaxPhoneKey"];
+  faxPhone = [(DAContactSearchResultElement *)self faxPhone];
+  [coderCopy encodeObject:faxPhone forKey:@"FaxPhoneKey"];
 
-  v19 = [(DAContactSearchResultElement *)self department];
-  [v4 encodeObject:v19 forKey:@"DepartmentKey"];
+  department = [(DAContactSearchResultElement *)self department];
+  [coderCopy encodeObject:department forKey:@"DepartmentKey"];
 
-  v20 = [(DAContactSearchResultElement *)self street];
-  [v4 encodeObject:v20 forKey:@"StreetKey"];
+  street = [(DAContactSearchResultElement *)self street];
+  [coderCopy encodeObject:street forKey:@"StreetKey"];
 
-  v21 = [(DAContactSearchResultElement *)self city];
-  [v4 encodeObject:v21 forKey:@"CityKey"];
+  city = [(DAContactSearchResultElement *)self city];
+  [coderCopy encodeObject:city forKey:@"CityKey"];
 
-  v22 = [(DAContactSearchResultElement *)self state];
-  [v4 encodeObject:v22 forKey:@"StateKey"];
+  state = [(DAContactSearchResultElement *)self state];
+  [coderCopy encodeObject:state forKey:@"StateKey"];
 
   v23 = [(DAContactSearchResultElement *)self zip];
-  [v4 encodeObject:v23 forKey:@"ZipKey"];
+  [coderCopy encodeObject:v23 forKey:@"ZipKey"];
 
-  v24 = [(DAContactSearchResultElement *)self country];
-  [v4 encodeObject:v24 forKey:@"CountryKey"];
+  country = [(DAContactSearchResultElement *)self country];
+  [coderCopy encodeObject:country forKey:@"CountryKey"];
 
-  v25 = [(DAContactSearchResultElement *)self jpegPhoto];
-  [v4 encodeObject:v25 forKey:@"JpegPhotoKey"];
+  jpegPhoto = [(DAContactSearchResultElement *)self jpegPhoto];
+  [coderCopy encodeObject:jpegPhoto forKey:@"JpegPhotoKey"];
 
-  v26 = [(DAContactSearchResultElement *)self imService];
-  [v4 encodeObject:v26 forKey:@"ImServiceKey"];
+  imService = [(DAContactSearchResultElement *)self imService];
+  [coderCopy encodeObject:imService forKey:@"ImServiceKey"];
 
-  v27 = [(DAContactSearchResultElement *)self imUsername];
-  [v4 encodeObject:v27 forKey:@"ImUsernameKey"];
+  imUsername = [(DAContactSearchResultElement *)self imUsername];
+  [coderCopy encodeObject:imUsername forKey:@"ImUsernameKey"];
 
   v28 = [(DAContactSearchResultElement *)self uri];
-  [v4 encodeObject:v28 forKey:@"UriKey"];
+  [coderCopy encodeObject:v28 forKey:@"UriKey"];
 
-  v29 = [(DAContactSearchResultElement *)self buildingName];
-  [v4 encodeObject:v29 forKey:@"BuildingNameKey"];
+  buildingName = [(DAContactSearchResultElement *)self buildingName];
+  [coderCopy encodeObject:buildingName forKey:@"BuildingNameKey"];
 
-  v30 = [(DAContactSearchResultElement *)self appleFloor];
-  [v4 encodeObject:v30 forKey:@"AppleFloorKey"];
+  appleFloor = [(DAContactSearchResultElement *)self appleFloor];
+  [coderCopy encodeObject:appleFloor forKey:@"AppleFloorKey"];
 
-  v31 = [(DAContactSearchResultElement *)self pagerNumber];
-  [v4 encodeObject:v31 forKey:@"PagerNumberKey"];
+  pagerNumber = [(DAContactSearchResultElement *)self pagerNumber];
+  [coderCopy encodeObject:pagerNumber forKey:@"PagerNumberKey"];
 
-  v32 = [(DAContactSearchResultElement *)self postalAddress];
-  [v4 encodeObject:v32 forKey:@"PostalAddressKey"];
+  postalAddress = [(DAContactSearchResultElement *)self postalAddress];
+  [coderCopy encodeObject:postalAddress forKey:@"PostalAddressKey"];
 
-  v33 = [(DAContactSearchResultElement *)self homePostalAddress];
-  [v4 encodeObject:v33 forKey:@"HomePostalAddressKey"];
+  homePostalAddress = [(DAContactSearchResultElement *)self homePostalAddress];
+  [coderCopy encodeObject:homePostalAddress forKey:@"HomePostalAddressKey"];
 
-  v34 = [(DAContactSearchResultElement *)self principalPath];
-  [v4 encodeObject:v34 forKey:@"PrincipalPathKey"];
+  principalPath = [(DAContactSearchResultElement *)self principalPath];
+  [coderCopy encodeObject:principalPath forKey:@"PrincipalPathKey"];
 
-  v35 = [(DAContactSearchResultElement *)self preferredUserAddress];
-  [v4 encodeObject:v35 forKey:@"PreferredUserAddressKey"];
+  preferredUserAddress = [(DAContactSearchResultElement *)self preferredUserAddress];
+  [coderCopy encodeObject:preferredUserAddress forKey:@"PreferredUserAddressKey"];
 
-  v36 = [(DAContactSearchResultElement *)self cuAddresses];
-  [v4 encodeObject:v36 forKey:@"CUAddressesKey"];
+  cuAddresses = [(DAContactSearchResultElement *)self cuAddresses];
+  [coderCopy encodeObject:cuAddresses forKey:@"CUAddressesKey"];
 
-  v37 = [(DAContactSearchResultElement *)self iPhone];
-  [v4 encodeObject:v37 forKey:@"IPhone"];
+  iPhone = [(DAContactSearchResultElement *)self iPhone];
+  [coderCopy encodeObject:iPhone forKey:@"IPhone"];
 
-  v38 = [(DAContactSearchResultElement *)self mainPhone];
-  [v4 encodeObject:v38 forKey:@"MainPhone"];
+  mainPhone = [(DAContactSearchResultElement *)self mainPhone];
+  [coderCopy encodeObject:mainPhone forKey:@"MainPhone"];
 
-  v39 = [(DAContactSearchResultElement *)self workFaxPhone];
-  [v4 encodeObject:v39 forKey:@"WorkFaxPhone"];
+  workFaxPhone = [(DAContactSearchResultElement *)self workFaxPhone];
+  [coderCopy encodeObject:workFaxPhone forKey:@"WorkFaxPhone"];
 
-  v40 = [(DAContactSearchResultElement *)self identifierOnServer];
-  [v4 encodeObject:v40 forKey:@"IdentifierOnServerKey"];
+  identifierOnServer = [(DAContactSearchResultElement *)self identifierOnServer];
+  [coderCopy encodeObject:identifierOnServer forKey:@"IdentifierOnServerKey"];
 }
 
-- (DAContactSearchResultElement)initWithCoder:(id)a3
+- (DAContactSearchResultElement)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v46.receiver = self;
   v46.super_class = DAContactSearchResultElement;
   v5 = [(DAContactSearchResultElement *)&v46 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DisplayNameKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DisplayNameKey"];
     [(DAContactSearchResultElement *)v5 setDisplayName:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FirstNameKey"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FirstNameKey"];
     [(DAContactSearchResultElement *)v5 setFirstName:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LastNameKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LastNameKey"];
     [(DAContactSearchResultElement *)v5 setLastName:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EmailAddressKey"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EmailAddressKey"];
     [(DAContactSearchResultElement *)v5 setEmailAddress:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WorkPhoneKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WorkPhoneKey"];
     [(DAContactSearchResultElement *)v5 setWorkPhone:v10];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MobilePhoneKey"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MobilePhoneKey"];
     [(DAContactSearchResultElement *)v5 setMobilePhone:v11];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CompanyKey"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CompanyKey"];
     [(DAContactSearchResultElement *)v5 setCompany:v12];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TitleKey"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TitleKey"];
     [(DAContactSearchResultElement *)v5 setTitle:v13];
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AliasKey"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AliasKey"];
     [(DAContactSearchResultElement *)v5 setAlias:v14];
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HomePhoneKey"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HomePhoneKey"];
     [(DAContactSearchResultElement *)v5 setHomePhone:v15];
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"OfficeKey"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"OfficeKey"];
     [(DAContactSearchResultElement *)v5 setOffice:v16];
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ServerSourceKey"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ServerSourceKey"];
     [(DAContactSearchResultElement *)v5 setServerSource:v17];
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RecordNameKey"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RecordNameKey"];
     [(DAContactSearchResultElement *)v5 setRecordName:v18];
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FaxPhoneKey"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FaxPhoneKey"];
     [(DAContactSearchResultElement *)v5 setFaxPhone:v19];
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DepartmentKey"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DepartmentKey"];
     [(DAContactSearchResultElement *)v5 setDepartment:v20];
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"StreetKey"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"StreetKey"];
     [(DAContactSearchResultElement *)v5 setStreet:v21];
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CityKey"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CityKey"];
     [(DAContactSearchResultElement *)v5 setCity:v22];
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"StateKey"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"StateKey"];
     [(DAContactSearchResultElement *)v5 setState:v23];
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ZipKey"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ZipKey"];
     [(DAContactSearchResultElement *)v5 setZip:v24];
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CountryKey"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CountryKey"];
     [(DAContactSearchResultElement *)v5 setCountry:v25];
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"JpegPhotoKey"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"JpegPhotoKey"];
     [(DAContactSearchResultElement *)v5 setJpegPhoto:v26];
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ImServiceKey"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ImServiceKey"];
     [(DAContactSearchResultElement *)v5 setImService:v27];
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ImUsernameKey"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ImUsernameKey"];
     [(DAContactSearchResultElement *)v5 setImUsername:v28];
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UriKey"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UriKey"];
     [(DAContactSearchResultElement *)v5 setUri:v29];
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BuildingNameKey"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BuildingNameKey"];
     [(DAContactSearchResultElement *)v5 setBuildingName:v30];
 
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AppleFloorKey"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AppleFloorKey"];
     [(DAContactSearchResultElement *)v5 setAppleFloor:v31];
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PagerNumberKey"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PagerNumberKey"];
     [(DAContactSearchResultElement *)v5 setPagerNumber:v32];
 
-    v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PostalAddressKey"];
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PostalAddressKey"];
     [(DAContactSearchResultElement *)v5 setPostalAddress:v33];
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HomePostalAddressKey"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HomePostalAddressKey"];
     [(DAContactSearchResultElement *)v5 setHomePostalAddress:v34];
 
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PrincipalPathKey"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PrincipalPathKey"];
     [(DAContactSearchResultElement *)v5 setPrincipalPath:v35];
 
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PreferredUserAddressKey"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PreferredUserAddressKey"];
     [(DAContactSearchResultElement *)v5 setPreferredUserAddress:v36];
 
     v37 = MEMORY[0x277CBEB98];
     v38 = objc_opt_class();
     v39 = [v37 setWithObjects:{v38, objc_opt_class(), 0}];
-    v40 = [v4 decodeObjectOfClasses:v39 forKey:@"CUAddressesKey"];
+    v40 = [coderCopy decodeObjectOfClasses:v39 forKey:@"CUAddressesKey"];
     [(DAContactSearchResultElement *)v5 setCuAddresses:v40];
 
-    v41 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IPhone"];
+    v41 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IPhone"];
     [(DAContactSearchResultElement *)v5 setIPhone:v41];
 
-    v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MainPhone"];
+    v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MainPhone"];
     [(DAContactSearchResultElement *)v5 setMainPhone:v42];
 
-    v43 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WorkFaxPhone"];
+    v43 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WorkFaxPhone"];
     [(DAContactSearchResultElement *)v5 setWorkFaxPhone:v43];
 
-    v44 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IdentifierOnServerKey"];
+    v44 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IdentifierOnServerKey"];
     [(DAContactSearchResultElement *)v5 setIdentifierOnServer:v44];
   }
 

@@ -34,18 +34,18 @@
 
 - (uint64_t)safari_isHTTPFamilyURL
 {
-  if ([a1 safari_hasScheme:@"http"])
+  if ([self safari_hasScheme:@"http"])
   {
     return 1;
   }
 
-  return [a1 safari_hasScheme:@"https"];
+  return [self safari_hasScheme:@"https"];
 }
 
 + (CFURLRef)safari_urlWithDataAsString:()SafariCoreExtras
 {
-  v3 = [a3 safari_stringByTrimmingWhitespace];
-  v4 = [v3 dataUsingEncoding:5];
+  safari_stringByTrimmingWhitespace = [a3 safari_stringByTrimmingWhitespace];
+  v4 = [safari_stringByTrimmingWhitespace dataUsingEncoding:5];
 
   v5 = [v4 length];
   if (v5)
@@ -80,37 +80,37 @@ LABEL_6:
 - (uint64_t)safari_isSubdomainOfDomain:()SafariCoreExtras
 {
   v4 = a3;
-  v5 = [a1 safari_hostComponentsEnumerator];
-  v6 = [v4 safari_hostComponentsEnumerator];
+  safari_hostComponentsEnumerator = [self safari_hostComponentsEnumerator];
+  safari_hostComponentsEnumerator2 = [v4 safari_hostComponentsEnumerator];
   v7 = 0;
   v8 = 0;
   do
   {
-    v9 = [v5 nextObject];
+    nextObject = [safari_hostComponentsEnumerator nextObject];
 
-    v10 = [v6 nextObject];
+    nextObject2 = [safari_hostComponentsEnumerator2 nextObject];
 
-    v7 = v9;
-    v8 = v10;
+    v7 = nextObject;
+    v8 = nextObject2;
   }
 
-  while (([v9 isEqualToString:v10] & 1) != 0);
-  if (v10)
+  while (([nextObject isEqualToString:nextObject2] & 1) != 0);
+  if (nextObject2)
   {
-    v11 = [v6 nextObject];
-    if (v11)
+    nextObject3 = [safari_hostComponentsEnumerator2 nextObject];
+    if (nextObject3)
     {
       v12 = 0;
     }
 
-    else if ([v10 safari_isCaseInsensitiveEqualToString:@"www"])
+    else if ([nextObject2 safari_isCaseInsensitiveEqualToString:@"www"])
     {
       v12 = 1;
     }
 
     else
     {
-      v12 = [v10 safari_isCaseInsensitiveEqualToString:@"m"];
+      v12 = [nextObject2 safari_isCaseInsensitiveEqualToString:@"m"];
     }
   }
 
@@ -128,8 +128,8 @@ LABEL_6:
   v5 = a4;
   if ((enumeratePossibleURLsForUserTypedStringWithBlockInternal(v7, v5) & 1) == 0)
   {
-    v6 = [v7 safari_possibleTopLevelDomainCorrectionForUserTypedString];
-    enumeratePossibleURLsForUserTypedStringWithBlockInternal(v6, v5);
+    safari_possibleTopLevelDomainCorrectionForUserTypedString = [v7 safari_possibleTopLevelDomainCorrectionForUserTypedString];
+    enumeratePossibleURLsForUserTypedStringWithBlockInternal(safari_possibleTopLevelDomainCorrectionForUserTypedString, v5);
   }
 }
 
@@ -196,13 +196,13 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  v7 = [a1 scheme];
-  v8 = [v6 scheme];
-  v9 = [v7 isEqualToString:v8];
+  scheme = [self scheme];
+  scheme2 = [v6 scheme];
+  v9 = [scheme isEqualToString:scheme2];
 
   if ((v9 & 1) == 0)
   {
-    if (a4 && [a1 safari_isHTTPFamilyURL] && (objc_msgSend(v6, "safari_isHTTPFamilyURL") & 1) != 0)
+    if (a4 && [self safari_isHTTPFamilyURL] && (objc_msgSend(v6, "safari_isHTTPFamilyURL") & 1) != 0)
     {
       goto LABEL_4;
     }
@@ -214,24 +214,24 @@ LABEL_8:
 
   if (!a4)
   {
-    v11 = [a1 host];
-    v13 = [v6 host];
+    host = [self host];
+    host2 = [v6 host];
     goto LABEL_10;
   }
 
 LABEL_4:
-  v10 = [a1 host];
-  v11 = [v10 safari_stringByRemovingWwwDotPrefix];
+  host3 = [self host];
+  host = [host3 safari_stringByRemovingWwwDotPrefix];
 
-  v12 = [v6 host];
-  v13 = [v12 safari_stringByRemovingWwwDotPrefix];
+  host4 = [v6 host];
+  host2 = [host4 safari_stringByRemovingWwwDotPrefix];
 
 LABEL_10:
-  if ([v11 isEqualToString:v13])
+  if ([host isEqualToString:host2])
   {
-    v15 = [a1 port];
-    v16 = [v6 port];
-    v14 = v15 == v16;
+    port = [self port];
+    port2 = [v6 port];
+    v14 = port == port2;
   }
 
   else
@@ -251,19 +251,19 @@ LABEL_14:
     goto LABEL_6;
   }
 
-  if (([a1 safari_hasSameOriginAsURL:v4] & 1) == 0)
+  if (([self safari_hasSameOriginAsURL:v4] & 1) == 0)
   {
-    v6 = [a1 scheme];
-    v7 = [v4 scheme];
-    v8 = [v6 isEqualToString:v7];
+    scheme = [self scheme];
+    scheme2 = [v4 scheme];
+    v8 = [scheme isEqualToString:scheme2];
 
     if (v8)
     {
-      v9 = [a1 host];
-      v10 = [v9 safari_highLevelDomainFromHost];
-      v11 = [v4 host];
-      v12 = [v11 safari_highLevelDomainFromHost];
-      v5 = [v10 isEqualToString:v12];
+      host = [self host];
+      safari_highLevelDomainFromHost = [host safari_highLevelDomainFromHost];
+      host2 = [v4 host];
+      safari_highLevelDomainFromHost2 = [host2 safari_highLevelDomainFromHost];
+      v5 = [safari_highLevelDomainFromHost isEqualToString:safari_highLevelDomainFromHost2];
 
       goto LABEL_7;
     }
@@ -282,16 +282,16 @@ LABEL_7:
 - (uint64_t)safari_isSameAsURLRemovingFragment:()SafariCoreExtras
 {
   v4 = a3;
-  v5 = [a1 safari_absoluteStringWithoutFragment];
-  v6 = [v4 safari_absoluteStringWithoutFragment];
-  v7 = [v5 isEqualToString:v6];
+  safari_absoluteStringWithoutFragment = [self safari_absoluteStringWithoutFragment];
+  safari_absoluteStringWithoutFragment2 = [v4 safari_absoluteStringWithoutFragment];
+  v7 = [safari_absoluteStringWithoutFragment isEqualToString:safari_absoluteStringWithoutFragment2];
 
   return v7;
 }
 
 - (id)safari_canonicalURL
 {
-  v2 = [objc_alloc(MEMORY[0x1E695AC68]) initWithURL:a1];
+  v2 = [objc_alloc(MEMORY[0x1E695AC68]) initWithURL:self];
   if (objc_opt_respondsToSelector())
   {
     v3 = [MEMORY[0x1E695AC60] _protocolClassForRequest:v2 skipAppSSO:1];
@@ -305,24 +305,24 @@ LABEL_7:
   if (v3)
   {
     v4 = [v3 canonicalRequestForRequest:v2];
-    v5 = [v4 URL];
+    selfCopy = [v4 URL];
   }
 
   else
   {
-    v5 = a1;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)safari_absoluteStringWithoutFragment
 {
-  v2 = [a1 fragment];
-  [a1 absoluteString];
-  if (v2)
+  fragment = [self fragment];
+  [self absoluteString];
+  if (fragment)
     v3 = {;
-    v4 = [@"#" stringByAppendingString:v2];
+    v4 = [@"#" stringByAppendingString:fragment];
     v5 = [v3 stringByReplacingOccurrencesOfString:v4 withString:&stru_1F3064D08];
   }
 
@@ -335,37 +335,37 @@ LABEL_7:
 
 - (id)safari_highLevelDomain
 {
-  v1 = [a1 host];
-  v2 = [v1 safari_highLevelDomainFromHost];
+  host = [self host];
+  safari_highLevelDomainFromHost = [host safari_highLevelDomainFromHost];
 
-  return v2;
+  return safari_highLevelDomainFromHost;
 }
 
 - (id)safari_highLevelDomainFromHostFallingBackToHostOrAbsoluteString
 {
-  v2 = [a1 host];
-  v3 = [v2 safari_highLevelDomainFromHost];
-  v4 = v3;
-  if (v3)
+  host = [self host];
+  safari_highLevelDomainFromHost = [host safari_highLevelDomainFromHost];
+  v4 = safari_highLevelDomainFromHost;
+  if (safari_highLevelDomainFromHost)
   {
-    v5 = v3;
+    v5 = safari_highLevelDomainFromHost;
   }
 
   else
   {
-    v6 = [a1 host];
-    v7 = v6;
-    if (v6)
+    host2 = [self host];
+    v7 = host2;
+    if (host2)
     {
-      v8 = v6;
+      absoluteString = host2;
     }
 
     else
     {
-      v8 = [a1 absoluteString];
+      absoluteString = [self absoluteString];
     }
 
-    v5 = v8;
+    v5 = absoluteString;
   }
 
   return v5;
@@ -374,66 +374,66 @@ LABEL_7:
 - (uint64_t)safari_hostCompare:()SafariCoreExtras
 {
   v4 = a3;
-  v5 = [a1 safari_hostComponentsEnumerator];
-  v6 = [v4 safari_hostComponentsEnumerator];
-  v7 = [v5 nextObject];
-  v8 = [v6 nextObject];
-  if (![v7 length] && objc_msgSend(v8, "length"))
+  safari_hostComponentsEnumerator = [self safari_hostComponentsEnumerator];
+  safari_hostComponentsEnumerator2 = [v4 safari_hostComponentsEnumerator];
+  nextObject = [safari_hostComponentsEnumerator nextObject];
+  nextObject2 = [safari_hostComponentsEnumerator2 nextObject];
+  if (![nextObject length] && objc_msgSend(nextObject2, "length"))
   {
     goto LABEL_10;
   }
 
-  if ([v7 length] && !objc_msgSend(v8, "length"))
+  if ([nextObject length] && !objc_msgSend(nextObject2, "length"))
   {
     goto LABEL_8;
   }
 
-  v9 = [v5 kind];
-  v10 = [v6 kind];
-  if (!v9 && v10)
+  kind = [safari_hostComponentsEnumerator kind];
+  kind2 = [safari_hostComponentsEnumerator2 kind];
+  if (!kind && kind2)
   {
     goto LABEL_10;
   }
 
-  if (v9 && !v10)
+  if (kind && !kind2)
   {
     goto LABEL_8;
   }
 
-  if (!(v9 | v10))
+  if (!(kind | kind2))
   {
-    v13 = [v5 ipv4Address];
-    v14 = [v6 ipv4Address];
-    if (v13 < v14)
+    ipv4Address = [safari_hostComponentsEnumerator ipv4Address];
+    ipv4Address2 = [safari_hostComponentsEnumerator2 ipv4Address];
+    if (ipv4Address < ipv4Address2)
     {
       v11 = -1;
     }
 
     else
     {
-      v11 = v13 > v14;
+      v11 = ipv4Address > ipv4Address2;
     }
 
     goto LABEL_11;
   }
 
-  if (v9 == 1 && v10 != 1)
+  if (kind == 1 && kind2 != 1)
   {
     goto LABEL_10;
   }
 
-  if (v9 != 1 && v10 == 1)
+  if (kind != 1 && kind2 == 1)
   {
     goto LABEL_8;
   }
 
-  if (v9 == 1 && v10 == 1)
+  if (kind == 1 && kind2 == 1)
   {
-    v27[0] = [v5 ipv6Address];
+    v27[0] = [safari_hostComponentsEnumerator ipv6Address];
     v27[1] = v15;
-    v16 = [v6 ipv6Address];
+    ipv6Address = [safari_hostComponentsEnumerator2 ipv6Address];
     v17 = 0;
-    v26[0] = v16;
+    v26[0] = ipv6Address;
     v26[1] = v18;
     v11 = 1;
     while (1)
@@ -458,14 +458,14 @@ LABEL_7:
     }
   }
 
-  if (v9 == 2 && v10 != 2)
+  if (kind == 2 && kind2 != 2)
   {
 LABEL_10:
     v11 = -1;
     goto LABEL_11;
   }
 
-  if (v9 != 2 && v10 == 2)
+  if (kind != 2 && kind2 == 2)
   {
 LABEL_8:
     v11 = 1;
@@ -473,14 +473,14 @@ LABEL_8:
   }
 
   v21 = 0;
-  v22 = v8 != 0;
-  if (v7 && v8)
+  v22 = nextObject2 != 0;
+  if (nextObject && nextObject2)
   {
     v21 = 0;
     do
     {
-      v11 = [v7 caseInsensitiveCompare:v8];
-      if ([v5 kind] == 3 && objc_msgSend(v6, "kind") == 3)
+      v11 = [nextObject caseInsensitiveCompare:nextObject2];
+      if ([safari_hostComponentsEnumerator kind] == 3 && objc_msgSend(safari_hostComponentsEnumerator2, "kind") == 3)
       {
         v21 = v11;
       }
@@ -490,40 +490,40 @@ LABEL_8:
         goto LABEL_11;
       }
 
-      v23 = [v5 nextObject];
+      nextObject3 = [safari_hostComponentsEnumerator nextObject];
 
-      v24 = [v6 nextObject];
+      nextObject4 = [safari_hostComponentsEnumerator2 nextObject];
 
-      v22 = v24 != 0;
-      if (!v23)
+      v22 = nextObject4 != 0;
+      if (!nextObject3)
       {
         break;
       }
 
-      v7 = v23;
-      v8 = v24;
+      nextObject = nextObject3;
+      nextObject2 = nextObject4;
     }
 
-    while (v24);
+    while (nextObject4);
   }
 
   else
   {
-    v24 = v8;
-    v23 = v7;
+    nextObject4 = nextObject2;
+    nextObject3 = nextObject;
   }
 
-  if (!v23 || v22)
+  if (!nextObject3 || v22)
   {
-    v25 = v23 == 0;
+    v25 = nextObject3 == 0;
     if (v25 && v22)
     {
-      v7 = 0;
+      nextObject = 0;
     }
 
     else
     {
-      v7 = v23;
+      nextObject = nextObject3;
     }
 
     if (v25 && v22)
@@ -536,14 +536,14 @@ LABEL_8:
       v11 = v21;
     }
 
-    v8 = v24;
+    nextObject2 = nextObject4;
   }
 
   else
   {
-    v8 = 0;
+    nextObject2 = 0;
     v11 = 1;
-    v7 = v23;
+    nextObject = nextObject3;
   }
 
 LABEL_11:
@@ -554,37 +554,37 @@ LABEL_11:
 - (uint64_t)safari_hasScheme:()SafariCoreExtras
 {
   v4 = a3;
-  v5 = [a1 scheme];
-  v6 = [v5 safari_isCaseInsensitiveEqualToString:v4];
+  scheme = [self scheme];
+  v6 = [scheme safari_isCaseInsensitiveEqualToString:v4];
 
   return v6;
 }
 
 - (uint64_t)safari_isAppleNewsURL
 {
-  v1 = [a1 host];
-  v2 = [v1 safari_isCaseInsensitiveEqualToString:@"apple.news"];
+  host = [self host];
+  v2 = [host safari_isCaseInsensitiveEqualToString:@"apple.news"];
 
   return v2;
 }
 
 - (uint64_t)safari_isAppleOneURL
 {
-  if (![a1 safari_hasScheme:@"ams-ui"])
+  if (![self safari_hasScheme:@"ams-ui"])
   {
     return 0;
   }
 
-  v2 = [a1 host];
-  v3 = [v2 safari_isCaseInsensitiveEqualToString:@"one.apple.com"];
+  host = [self host];
+  v3 = [host safari_isCaseInsensitiveEqualToString:@"one.apple.com"];
 
   return v3;
 }
 
 - (uint64_t)safari_isBlobURL
 {
-  v1 = [a1 absoluteString];
-  v2 = [v1 safari_hasCaseInsensitivePrefix:@"blob:"];
+  absoluteString = [self absoluteString];
+  v2 = [absoluteString safari_hasCaseInsensitivePrefix:@"blob:"];
 
   return v2;
 }
@@ -593,20 +593,20 @@ LABEL_11:
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 scheme];
-  v9 = WBSIsEqual(v8, v6);
+  scheme = [self scheme];
+  v9 = WBSIsEqual(scheme, v6);
 
   if (v9)
   {
-    v10 = [a1 safari_URLByReplacingSchemeWithString:v7];
+    selfCopy = [self safari_URLByReplacingSchemeWithString:v7];
   }
 
   else
   {
-    v10 = a1;
+    selfCopy = self;
   }
 
-  v11 = v10;
+  v11 = selfCopy;
 
   return v11;
 }
@@ -614,7 +614,7 @@ LABEL_11:
 - (id)safari_URLByReplacingSchemeWithString:()SafariCoreExtras
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E696AF20] componentsWithURL:a1 resolvingAgainstBaseURL:1];
+  v5 = [MEMORY[0x1E696AF20] componentsWithURL:self resolvingAgainstBaseURL:1];
   [v5 setScheme:v4];
   v6 = [v5 URL];
 
@@ -624,7 +624,7 @@ LABEL_11:
 - (uint64_t)safari_isEligibleforDirectSSO
 {
   v36 = *MEMORY[0x1E69E9840];
-  v27 = [MEMORY[0x1E696AF20] componentsWithURL:a1 resolvingAgainstBaseURL:0];
+  v27 = [MEMORY[0x1E696AF20] componentsWithURL:self resolvingAgainstBaseURL:0];
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
@@ -648,44 +648,44 @@ LABEL_11:
         }
 
         v6 = *(*(&v31 + 1) + 8 * i);
-        v7 = [v6 name];
-        v8 = [v7 lowercaseString];
-        if ([v8 isEqualToString:@"client_id"])
+        name = [v6 name];
+        lowercaseString = [name lowercaseString];
+        if ([lowercaseString isEqualToString:@"client_id"])
         {
-          v9 = [v6 value];
-          v10 = [v9 length] != 0;
+          value = [v6 value];
+          v10 = [value length] != 0;
 
           v3 |= v10;
         }
 
-        v11 = [v6 name];
-        v12 = [v11 lowercaseString];
-        if ([v12 isEqualToString:@"response_type"])
+        name2 = [v6 name];
+        lowercaseString2 = [name2 lowercaseString];
+        if ([lowercaseString2 isEqualToString:@"response_type"])
         {
-          v13 = [v6 value];
-          v14 = [v13 isEqualToString:@"code"];
+          value2 = [v6 value];
+          v14 = [value2 isEqualToString:@"code"];
 
           v2 |= v14;
         }
 
-        v15 = [v6 name];
-        v16 = [v15 lowercaseString];
-        if ([v16 isEqualToString:@"redirect_uri"])
+        name3 = [v6 name];
+        lowercaseString3 = [name3 lowercaseString];
+        if ([lowercaseString3 isEqualToString:@"redirect_uri"])
         {
-          v17 = [v6 value];
-          v18 = [v17 hasPrefix:@"http"];
+          value3 = [v6 value];
+          v18 = [value3 hasPrefix:@"http"];
 
           BYTE4(v30) |= v18 ^ 1;
         }
 
-        v19 = [v6 name];
-        v20 = [v19 lowercaseString];
-        v21 = [v20 isEqualToString:@"response_mode"];
+        name4 = [v6 name];
+        lowercaseString4 = [name4 lowercaseString];
+        v21 = [lowercaseString4 isEqualToString:@"response_mode"];
 
         if (v21)
         {
-          v22 = [v6 value];
-          v23 = [v22 isEqualToString:@"query"];
+          value4 = [v6 value];
+          v23 = [value4 isEqualToString:@"query"];
 
           LOBYTE(v30) = v23 | v30;
           v28 = 1;
@@ -712,7 +712,7 @@ LABEL_11:
 
 - (id)safari_URLByRemovingUserPasswordPathQueryAndFragment
 {
-  v1 = [MEMORY[0x1E696AF20] componentsWithURL:a1 resolvingAgainstBaseURL:0];
+  v1 = [MEMORY[0x1E696AF20] componentsWithURL:self resolvingAgainstBaseURL:0];
   [v1 setUser:0];
   [v1 setPassword:0];
   [v1 setPath:0];
@@ -737,7 +737,7 @@ LABEL_11:
 
 - (id)safari_URLByRemovingUserPasswordQueryAndFragment
 {
-  v1 = [MEMORY[0x1E696AF20] componentsWithURL:a1 resolvingAgainstBaseURL:0];
+  v1 = [MEMORY[0x1E696AF20] componentsWithURL:self resolvingAgainstBaseURL:0];
   [v1 setUser:0];
   [v1 setPassword:0];
   [v1 setQuery:0];
@@ -761,29 +761,29 @@ LABEL_11:
 
 - (id)safari_URLByNormalizingBlobURL
 {
-  if ([a1 safari_isBlobURL])
+  if ([self safari_isBlobURL])
   {
     v2 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v3 = [a1 dataRepresentation];
-    v4 = [v2 initWithData:v3 encoding:4];
+    dataRepresentation = [self dataRepresentation];
+    v4 = [v2 initWithData:dataRepresentation encoding:4];
 
     v5 = [v4 stringByReplacingOccurrencesOfString:@"blob:" withString:&stru_1F3064D08 options:9 range:{0, 5}];
     v6 = MEMORY[0x1E695DFF8];
     v7 = [v5 dataUsingEncoding:4];
-    v8 = [v6 URLWithDataRepresentation:v7 relativeToURL:0];
+    selfCopy2 = [v6 URLWithDataRepresentation:v7 relativeToURL:0];
 
-    if (v8)
+    if (selfCopy2)
     {
-      if ([v8 safari_isHTTPFamilyURL])
+      if ([selfCopy2 safari_isHTTPFamilyURL])
       {
-        v9 = [MEMORY[0x1E696AF20] componentsWithURL:v8 resolvingAgainstBaseURL:0];
+        v9 = [MEMORY[0x1E696AF20] componentsWithURL:selfCopy2 resolvingAgainstBaseURL:0];
         [v9 setUser:0];
         [v9 setPassword:0];
         [v9 setPath:0];
         [v9 setQuery:0];
         [v9 setFragment:0];
-        v10 = [v9 host];
-        [v9 setHost:v10];
+        host = [v9 host];
+        [v9 setHost:host];
 
         v11 = [v9 URL];
         v12 = v11;
@@ -794,55 +794,55 @@ LABEL_11:
 
         else
         {
-          v13 = v8;
+          v13 = selfCopy2;
         }
 
         v14 = v13;
 
-        v8 = v14;
+        selfCopy2 = v14;
       }
     }
 
     else
     {
-      v8 = a1;
+      selfCopy2 = self;
     }
   }
 
   else
   {
-    v8 = a1;
+    selfCopy2 = self;
   }
 
-  return v8;
+  return selfCopy2;
 }
 
 - (uint64_t)safari_isWellKnownChangePasswordURL
 {
-  v2 = [a1 safari_wellKnownChangePasswordURL];
-  v3 = [a1 isEqual:v2];
+  safari_wellKnownChangePasswordURL = [self safari_wellKnownChangePasswordURL];
+  v3 = [self isEqual:safari_wellKnownChangePasswordURL];
 
   return v3;
 }
 
 - (id)safari_wellKnownChangePasswordURL
 {
-  if ([a1 safari_isHTTPFamilyURL])
+  if ([self safari_isHTTPFamilyURL])
   {
-    v2 = a1;
-    v3 = [v2 host];
-    v4 = [v3 safari_highLevelDomainFromHost];
-    v5 = [v4 safari_isCaseInsensitiveEqualToString:@"google.com"];
+    selfCopy = self;
+    host = [selfCopy host];
+    safari_highLevelDomainFromHost = [host safari_highLevelDomainFromHost];
+    v5 = [safari_highLevelDomainFromHost safari_isCaseInsensitiveEqualToString:@"google.com"];
 
     if (v5)
     {
       v6 = [MEMORY[0x1E695DFF8] URLWithString:@"https://accounts.google.com/"];
 
-      v2 = v6;
+      selfCopy = v6;
     }
 
-    v7 = [v2 safari_URLByRemovingUserPasswordPathQueryAndFragment];
-    v8 = [v7 URLByAppendingPathComponent:@".well-known/change-password"];
+    safari_URLByRemovingUserPasswordPathQueryAndFragment = [selfCopy safari_URLByRemovingUserPasswordPathQueryAndFragment];
+    v8 = [safari_URLByRemovingUserPasswordPathQueryAndFragment URLByAppendingPathComponent:@".well-known/change-password"];
     v9 = [v8 safari_URLByReplacingSchemeWithString:@"https"];
   }
 
@@ -856,10 +856,10 @@ LABEL_11:
 
 - (id)safari_wellKnownPasskeyEndpointsURL
 {
-  if ([a1 safari_isHTTPFamilyURL])
+  if ([self safari_isHTTPFamilyURL])
   {
-    v2 = [a1 safari_URLByRemovingUserPasswordPathQueryAndFragment];
-    v3 = [v2 URLByAppendingPathComponent:@".well-known/passkey-endpoints"];
+    safari_URLByRemovingUserPasswordPathQueryAndFragment = [self safari_URLByRemovingUserPasswordPathQueryAndFragment];
+    v3 = [safari_URLByRemovingUserPasswordPathQueryAndFragment URLByAppendingPathComponent:@".well-known/passkey-endpoints"];
     v4 = [v3 safari_URLByReplacingSchemeWithString:@"https"];
   }
 
@@ -874,12 +874,12 @@ LABEL_11:
 - (NSURL)safari_URLWithUniqueFilename
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (fileExists(a1))
+  if (fileExists(self))
   {
-    v2 = [(NSURL *)a1 URLByDeletingLastPathComponent];
+    uRLByDeletingLastPathComponent = [(NSURL *)self URLByDeletingLastPathComponent];
     v3 = [WBSUniqueFilenameEnumerator alloc];
-    v4 = [(NSURL *)a1 lastPathComponent];
-    v5 = [(WBSUniqueFilenameEnumerator *)v3 initWithFilename:v4];
+    lastPathComponent = [(NSURL *)self lastPathComponent];
+    v5 = [(WBSUniqueFilenameEnumerator *)v3 initWithFilename:lastPathComponent];
 
     v18 = 0u;
     v19 = 0u;
@@ -899,10 +899,10 @@ LABEL_4:
           objc_enumerationMutation(v6);
         }
 
-        v10 = [v2 URLByAppendingPathComponent:*(*(&v16 + 1) + 8 * v9) isDirectory:{0, v16}];
-        v11 = fileExists(v10);
+        selfCopy = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:*(*(&v16 + 1) + 8 * v9) isDirectory:{0, v16}];
+        v11 = fileExists(selfCopy);
         v12 = v11;
-        v13 = v11 ? v10 : 0;
+        v13 = v11 ? selfCopy : 0;
 
         if (!v12)
         {
@@ -925,28 +925,28 @@ LABEL_4:
     else
     {
 LABEL_13:
-      v10 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v10 = a1;
+    selfCopy = self;
   }
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v10;
+  return selfCopy;
 }
 
 - (void)safari_accessingSecurityScopedResource:()SafariCoreExtras
 {
   v5 = a3;
-  v4 = [a1 startAccessingSecurityScopedResource];
+  startAccessingSecurityScopedResource = [self startAccessingSecurityScopedResource];
   v5[2]();
-  if (v4)
+  if (startAccessingSecurityScopedResource)
   {
-    [a1 stopAccessingSecurityScopedResource];
+    [self stopAccessingSecurityScopedResource];
   }
 }
 

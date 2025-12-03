@@ -1,48 +1,48 @@
 @interface _ICQUIHelperFunctions
 + (double)highestScreenScale;
-+ (id)appIconWithSize:(CGSize)a3 forBundleID:(id)a4 drawBorder:(BOOL)a5;
-+ (id)scaledImageURL:(id)a3;
-+ (int64_t)purchaseTypeForQueryParams:(id)a3;
-+ (void)addHeadersForRequest:(id)a3 completion:(id)a4;
++ (id)appIconWithSize:(CGSize)size forBundleID:(id)d drawBorder:(BOOL)border;
++ (id)scaledImageURL:(id)l;
++ (int64_t)purchaseTypeForQueryParams:(id)params;
++ (void)addHeadersForRequest:(id)request completion:(id)completion;
 @end
 
 @implementation _ICQUIHelperFunctions
 
-+ (id)scaledImageURL:(id)a3
++ (id)scaledImageURL:(id)l
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 scale];
+  lCopy = l;
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v6 = v5;
 
   if (v6 < 3)
   {
     if (v6 == 2)
     {
-      [v3 URL2x];
+      [lCopy URL2x];
     }
 
     else
     {
-      [v3 URL1x];
+      [lCopy URL1x];
     }
-    v7 = ;
+    uRL3x = ;
   }
 
   else
   {
-    v7 = [v3 URL3x];
+    uRL3x = [lCopy URL3x];
   }
 
-  v8 = v7;
+  v8 = uRL3x;
 
   return v8;
 }
 
-+ (int64_t)purchaseTypeForQueryParams:(id)a3
++ (int64_t)purchaseTypeForQueryParams:(id)params
 {
   v26 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!params)
   {
     return 1;
   }
@@ -53,8 +53,8 @@
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = [v4 queryItems];
-  v6 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  queryItems = [v4 queryItems];
+  v6 = [queryItems countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v6)
   {
     v7 = v6;
@@ -67,15 +67,15 @@
       {
         if (*v22 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(queryItems);
         }
 
         v10 = *(*(&v21 + 1) + 8 * i);
-        v11 = [v10 name];
-        if ([v11 isEqualToString:@"framework"])
+        name = [v10 name];
+        if ([name isEqualToString:@"framework"])
         {
-          v12 = [v10 value];
-          v13 = [v12 isEqualToString:@"dynamicUI"];
+          value = [v10 value];
+          v13 = [value isEqualToString:@"dynamicUI"];
 
           if (v13)
           {
@@ -90,11 +90,11 @@
         {
         }
 
-        v14 = [v10 name];
-        if ([v14 isEqualToString:@"deviceOffers"])
+        name2 = [v10 name];
+        if ([name2 isEqualToString:@"deviceOffers"])
         {
-          v15 = [v10 value];
-          v16 = [v15 isEqualToString:@"true"];
+          value2 = [v10 value];
+          v16 = [value2 isEqualToString:@"true"];
 
           if (v16)
           {
@@ -108,7 +108,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v7 = [queryItems countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v7);
@@ -128,10 +128,10 @@ LABEL_21:
   return v17;
 }
 
-+ (void)addHeadersForRequest:(id)a3 completion:(id)a4
++ (void)addHeadersForRequest:(id)request completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2050000000;
@@ -155,40 +155,40 @@ LABEL_21:
   v12[1] = 3221225472;
   v12[2] = __57___ICQUIHelperFunctions_addHeadersForRequest_completion___block_invoke;
   v12[3] = &unk_27A65ABF8;
-  v13 = v5;
-  v14 = v6;
-  v10 = v6;
-  v11 = v5;
+  v13 = requestCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = requestCopy;
   [v9 commonHeadersForRequest:v11 withCompletion:v12];
 }
 
-+ (id)appIconWithSize:(CGSize)a3 forBundleID:(id)a4 drawBorder:(BOOL)a5
++ (id)appIconWithSize:(CGSize)size forBundleID:(id)d drawBorder:(BOOL)border
 {
-  v5 = a5;
-  height = a3.height;
-  width = a3.width;
-  v8 = a4;
+  borderCopy = border;
+  height = size.height;
+  width = size.width;
+  dCopy = d;
   v23 = 0;
-  v9 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v8 allowPlaceholder:0 error:&v23];
+  v9 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:dCopy allowPlaceholder:0 error:&v23];
   if (v9)
   {
-    v10 = [objc_alloc(MEMORY[0x277D1B1A8]) initWithBundleIdentifier:v8];
+    v10 = [objc_alloc(MEMORY[0x277D1B1A8]) initWithBundleIdentifier:dCopy];
     v11 = objc_alloc(MEMORY[0x277D1B1C8]);
-    v12 = [MEMORY[0x277D759A0] mainScreen];
-    [v12 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v14 = [v11 initWithSize:width scale:{height, v13}];
 
-    [v14 setDrawBorder:v5];
+    [v14 setDrawBorder:borderCopy];
     v15 = [v10 prepareImageForDescriptor:v14];
     v16 = [v10 imageForDescriptor:v14];
     v17 = v16;
     if (v16)
     {
       v18 = MEMORY[0x277D755B8];
-      v19 = [v16 CGImage];
-      v20 = [MEMORY[0x277D759A0] mainScreen];
-      [v20 scale];
-      v21 = [v18 imageWithCGImage:v19 scale:0 orientation:?];
+      cGImage = [v16 CGImage];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 scale];
+      v21 = [v18 imageWithCGImage:cGImage scale:0 orientation:?];
     }
 
     else
@@ -207,8 +207,8 @@ LABEL_21:
 
 + (double)highestScreenScale
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v4 = v3;
 
   return v4;

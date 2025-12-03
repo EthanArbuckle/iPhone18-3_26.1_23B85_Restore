@@ -1,10 +1,10 @@
 @interface OnboardingIntroViewController
-- (_TtC29FamilyOutOfProcessUIExtension29OnboardingIntroViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC29FamilyOutOfProcessUIExtension29OnboardingIntroViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (_TtC29FamilyOutOfProcessUIExtension29OnboardingIntroViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC29FamilyOutOfProcessUIExtension29OnboardingIntroViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (void)cancelFlow;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation OnboardingIntroViewController
@@ -16,32 +16,32 @@
   [(OnboardingIntroViewController *)&v2 viewDidLoad];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10000F918(a3);
+  selfCopy = self;
+  sub_10000F918(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10000FB5C(a3);
+  selfCopy = self;
+  sub_10000FB5C(appear);
 }
 
 - (void)cancelFlow
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000100D4();
 }
 
-- (_TtC29FamilyOutOfProcessUIExtension29OnboardingIntroViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC29FamilyOutOfProcessUIExtension29OnboardingIntroViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC29FamilyOutOfProcessUIExtension29OnboardingIntroViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC29FamilyOutOfProcessUIExtension29OnboardingIntroViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,25 +1,25 @@
 @interface HKWristDetectionSettingManager
 + (BOOL)isWristDetectEnabled;
 - (BOOL)isWristDetectEnabled;
-- (HKWristDetectionSettingManager)initWithPairedDeviceRegistry:(id)a3;
+- (HKWristDetectionSettingManager)initWithPairedDeviceRegistry:(id)registry;
 - (id)_activeWatchNotifications;
 - (id)pairedDeviceRegistry;
 - (void)_activeWatchNotifications;
-- (void)_pairedOrActiveDevicesDidChange:(id)a3;
+- (void)_pairedOrActiveDevicesDidChange:(id)change;
 - (void)_queue_notifyObservers;
 - (void)_queue_settingDidChange;
 - (void)_startObserving;
 - (void)_stopObserving;
 - (void)dealloc;
-- (void)registerObserver:(id)a3 queue:(id)a4;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer queue:(id)queue;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation HKWristDetectionSettingManager
 
-- (HKWristDetectionSettingManager)initWithPairedDeviceRegistry:(id)a3
+- (HKWristDetectionSettingManager)initWithPairedDeviceRegistry:(id)registry
 {
-  v5 = a3;
+  registryCopy = registry;
   v15.receiver = self;
   v15.super_class = HKWristDetectionSettingManager;
   v6 = [(HKWristDetectionSettingManager *)&v15 init];
@@ -37,7 +37,7 @@
     observers = v7->_observers;
     v7->_observers = v12;
 
-    objc_storeStrong(&v7->_pairedDeviceRegistry, a3);
+    objc_storeStrong(&v7->_pairedDeviceRegistry, registry);
     v7->_disableWristDetectionSettingChangeNotificationToken = -1;
   }
 
@@ -62,7 +62,7 @@
   pairedDeviceRegistry = self->_pairedDeviceRegistry;
   if (pairedDeviceRegistry)
   {
-    v3 = pairedDeviceRegistry;
+    sharedInstance = pairedDeviceRegistry;
   }
 
   else
@@ -85,10 +85,10 @@
 
     v5 = v4;
     _Block_object_dispose(&v8, 8);
-    v3 = [v4 sharedInstance];
+    sharedInstance = [v4 sharedInstance];
   }
 
-  return v3;
+  return sharedInstance;
 }
 
 + (BOOL)isWristDetectEnabled
@@ -108,7 +108,7 @@
     if (os_log_type_enabled(HKLogDefault, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543362;
-      v10 = a1;
+      selfCopy = self;
       _os_log_impl(&dword_19197B000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Unable to retrieve wrist detect setting, defaulting to YES.", &v9, 0xCu);
     }
 
@@ -126,7 +126,7 @@
   return [v2 isWristDetectEnabled];
 }
 
-- (void)registerObserver:(id)a3 queue:(id)a4
+- (void)registerObserver:(id)observer queue:(id)queue
 {
   observers = self->_observers;
   v5[0] = MEMORY[0x1E69E9820];
@@ -134,10 +134,10 @@
   v5[2] = __57__HKWristDetectionSettingManager_registerObserver_queue___block_invoke;
   v5[3] = &unk_1E7376780;
   v5[4] = self;
-  [(HKObserverSet *)observers registerObserver:a3 queue:a4 runIfFirstObserver:v5];
+  [(HKObserverSet *)observers registerObserver:observer queue:queue runIfFirstObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
   observers = self->_observers;
   v4[0] = MEMORY[0x1E69E9820];
@@ -145,7 +145,7 @@
   v4[2] = __53__HKWristDetectionSettingManager_unregisterObserver___block_invoke;
   v4[3] = &unk_1E7376780;
   v4[4] = self;
-  [(HKObserverSet *)observers unregisterObserver:a3 runIfLastObserver:v4];
+  [(HKObserverSet *)observers unregisterObserver:observer runIfLastObserver:v4];
 }
 
 - (void)_startObserving
@@ -156,7 +156,7 @@
   if (os_log_type_enabled(loggingCategory, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v23 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19197B000, loggingCategory, OS_LOG_TYPE_DEFAULT, "[%{public}@] Starting observation", buf, 0xCu);
   }
 
@@ -175,17 +175,17 @@
   }
 
   v5 = +[_HKBehavior sharedBehavior];
-  v6 = [v5 isAppleWatch];
+  isAppleWatch = [v5 isAppleWatch];
 
-  if ((v6 & 1) == 0)
+  if ((isAppleWatch & 1) == 0)
   {
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = [(HKWristDetectionSettingManager *)self _activeWatchNotifications];
-    v9 = [v8 countByEnumeratingWithState:&v15 objects:v21 count:16];
+    _activeWatchNotifications = [(HKWristDetectionSettingManager *)self _activeWatchNotifications];
+    v9 = [_activeWatchNotifications countByEnumeratingWithState:&v15 objects:v21 count:16];
     if (v9)
     {
       v10 = *v16;
@@ -195,15 +195,15 @@
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(_activeWatchNotifications);
           }
 
           v12 = *(*(&v15 + 1) + 8 * i);
-          v13 = [(HKWristDetectionSettingManager *)self pairedDeviceRegistry];
-          [v7 addObserver:self selector:sel__pairedOrActiveDevicesDidChange_ name:v12 object:v13];
+          pairedDeviceRegistry = [(HKWristDetectionSettingManager *)self pairedDeviceRegistry];
+          [defaultCenter addObserver:self selector:sel__pairedOrActiveDevicesDidChange_ name:v12 object:pairedDeviceRegistry];
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v15 objects:v21 count:16];
+        v9 = [_activeWatchNotifications countByEnumeratingWithState:&v15 objects:v21 count:16];
       }
 
       while (v9);
@@ -301,7 +301,7 @@ void __49__HKWristDetectionSettingManager__startObserving__block_invoke(uint64_t
   if (os_log_type_enabled(loggingCategory, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v22 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19197B000, loggingCategory, OS_LOG_TYPE_DEFAULT, "[%{public}@] Stopping observation", buf, 0xCu);
   }
 
@@ -312,17 +312,17 @@ void __49__HKWristDetectionSettingManager__startObserving__block_invoke(uint64_t
   }
 
   v5 = +[_HKBehavior sharedBehavior];
-  v6 = [v5 isAppleWatch];
+  isAppleWatch = [v5 isAppleWatch];
 
-  if ((v6 & 1) == 0)
+  if ((isAppleWatch & 1) == 0)
   {
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v8 = [(HKWristDetectionSettingManager *)self _activeWatchNotifications];
-    v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    _activeWatchNotifications = [(HKWristDetectionSettingManager *)self _activeWatchNotifications];
+    v9 = [_activeWatchNotifications countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v9)
     {
       v10 = v9;
@@ -333,15 +333,15 @@ void __49__HKWristDetectionSettingManager__startObserving__block_invoke(uint64_t
         {
           if (*v17 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(_activeWatchNotifications);
           }
 
           v13 = *(*(&v16 + 1) + 8 * i);
-          v14 = [(HKWristDetectionSettingManager *)self pairedDeviceRegistry];
-          [v7 removeObserver:self name:v13 object:v14];
+          pairedDeviceRegistry = [(HKWristDetectionSettingManager *)self pairedDeviceRegistry];
+          [defaultCenter removeObserver:self name:v13 object:pairedDeviceRegistry];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v10 = [_activeWatchNotifications countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v10);
@@ -370,10 +370,10 @@ void __49__HKWristDetectionSettingManager__startObserving__block_invoke(uint64_t
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_pairedOrActiveDevicesDidChange:(id)a3
+- (void)_pairedOrActiveDevicesDidChange:(id)change
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   _HKInitializeLogging();
   loggingCategory = self->_loggingCategory;
   if (os_log_type_enabled(loggingCategory, OS_LOG_TYPE_DEFAULT))
@@ -381,11 +381,11 @@ void __49__HKWristDetectionSettingManager__startObserving__block_invoke(uint64_t
     v6 = loggingCategory;
     v7 = objc_opt_class();
     v8 = v7;
-    v9 = [v4 name];
+    name = [changeCopy name];
     *buf = 138543618;
     v14 = v7;
     v15 = 2114;
-    v16 = v9;
+    v16 = name;
     _os_log_impl(&dword_19197B000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received pairing/active notification: %{public}@", buf, 0x16u);
   }
 
@@ -414,9 +414,9 @@ void __49__HKWristDetectionSettingManager__startObserving__block_invoke(uint64_t
 
 - (void)_activeWatchNotifications
 {
-  v0 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v1 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getNRPairedDeviceRegistryDeviceIsSetupNotification(void)"];
-  [v0 handleFailureInFunction:v1 file:@"HKWristDetectionSettingManager.m" lineNumber:27 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"HKWristDetectionSettingManager.m" lineNumber:27 description:{@"%s", dlerror()}];
 
   __break(1u);
 }

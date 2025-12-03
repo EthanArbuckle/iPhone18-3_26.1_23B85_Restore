@@ -1,36 +1,36 @@
 @interface ECAccountFactory
-+ (id)accountWithSystemAccount:(id)a3;
++ (id)accountWithSystemAccount:(id)account;
 @end
 
 @implementation ECAccountFactory
 
-+ (id)accountWithSystemAccount:(id)a3
++ (id)accountWithSystemAccount:(id)account
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  accountCopy = account;
+  v4 = accountCopy;
+  if (accountCopy)
   {
-    v5 = [v3 accountType];
-    v6 = [v5 identifier];
+    accountType = [accountCopy accountType];
+    identifier = [accountType identifier];
 
-    if ([v6 isEqualToString:*MEMORY[0x277CB8C60]])
+    if ([identifier isEqualToString:*MEMORY[0x277CB8C60]])
     {
       v7 = off_27874AF30;
     }
 
-    else if ([v6 isEqualToString:*MEMORY[0x277CB8C00]])
+    else if ([identifier isEqualToString:*MEMORY[0x277CB8C00]])
     {
       v7 = off_27874AED8;
     }
 
-    else if ([v6 isEqualToString:*MEMORY[0x277CB8CD8]])
+    else if ([identifier isEqualToString:*MEMORY[0x277CB8CD8]])
     {
       v7 = off_27874AFA0;
     }
 
     else
     {
-      v9 = [v6 isEqualToString:*MEMORY[0x277CB8CF8]];
+      v9 = [identifier isEqualToString:*MEMORY[0x277CB8CF8]];
       v7 = off_27874AE20;
       if (v9)
       {

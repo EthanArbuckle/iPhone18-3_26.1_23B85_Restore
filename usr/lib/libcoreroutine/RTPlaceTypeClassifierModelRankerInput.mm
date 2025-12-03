@@ -1,45 +1,45 @@
 @interface RTPlaceTypeClassifierModelRankerInput
-- (RTPlaceTypeClassifierModelRankerInput)initWithMean_daily_longest_charging_duration_bucketed:(double)a3 mean_daily_longest_screen_lock_duration_bucketed:(double)a4 mean_daily_longest_uninterrupted_WiFi_connection_duration_bucketed:(double)a5 mean_daily_total_charging_duration_bucketed:(double)a6 mean_daily_total_screen_lock_duration_bucketed:(double)a7 mean_daily_total_uninterrupted_WiFi_connection_duration_bucketed:(double)a8 mean_daily_uninterrupted_WiFi_connection_stability_ratio_bucketed:(double)a9 median_daily_longest_charging_duration_bucketed:(double)a10 median_daily_longest_screen_lock_duration_bucketed:(double)a11 median_daily_longest_uninterrupted_WiFi_connection_duration_bucketed:(double)a12 median_daily_total_charging_duration_bucketed:(double)a13 median_daily_total_screen_lock_duration_bucketed:(double)a14 median_daily_total_uninterrupted_WiFi_connection_duration_bucketed:(double)a15 percentage_of_days_with_charging_bucketed:(double)a16 percentage_of_days_with_screen_lock_bucketed:(double)a17 percentage_of_days_with_uninterrupted_WiFi_connection_bucketed:(double)a18 is_iPhone:(double)a19 is_iPad:(double)a20 is_Watch:(double)a21;
-- (id)featureValueForName:(id)a3;
+- (RTPlaceTypeClassifierModelRankerInput)initWithMean_daily_longest_charging_duration_bucketed:(double)mean_daily_longest_charging_duration_bucketed mean_daily_longest_screen_lock_duration_bucketed:(double)mean_daily_longest_screen_lock_duration_bucketed mean_daily_longest_uninterrupted_WiFi_connection_duration_bucketed:(double)fi_connection_duration_bucketed mean_daily_total_charging_duration_bucketed:(double)mean_daily_total_charging_duration_bucketed mean_daily_total_screen_lock_duration_bucketed:(double)mean_daily_total_screen_lock_duration_bucketed mean_daily_total_uninterrupted_WiFi_connection_duration_bucketed:(double)wiFi_connection_duration_bucketed mean_daily_uninterrupted_WiFi_connection_stability_ratio_bucketed:(double)fi_connection_stability_ratio_bucketed median_daily_longest_charging_duration_bucketed:(double)self0 median_daily_longest_screen_lock_duration_bucketed:(double)self1 median_daily_longest_uninterrupted_WiFi_connection_duration_bucketed:(double)self2 median_daily_total_charging_duration_bucketed:(double)self3 median_daily_total_screen_lock_duration_bucketed:(double)self4 median_daily_total_uninterrupted_WiFi_connection_duration_bucketed:(double)self5 percentage_of_days_with_charging_bucketed:(double)self6 percentage_of_days_with_screen_lock_bucketed:(double)self7 percentage_of_days_with_uninterrupted_WiFi_connection_bucketed:(double)self8 is_iPhone:(double)self9 is_iPad:(double)pad is_Watch:(double)watch;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation RTPlaceTypeClassifierModelRankerInput
 
-- (RTPlaceTypeClassifierModelRankerInput)initWithMean_daily_longest_charging_duration_bucketed:(double)a3 mean_daily_longest_screen_lock_duration_bucketed:(double)a4 mean_daily_longest_uninterrupted_WiFi_connection_duration_bucketed:(double)a5 mean_daily_total_charging_duration_bucketed:(double)a6 mean_daily_total_screen_lock_duration_bucketed:(double)a7 mean_daily_total_uninterrupted_WiFi_connection_duration_bucketed:(double)a8 mean_daily_uninterrupted_WiFi_connection_stability_ratio_bucketed:(double)a9 median_daily_longest_charging_duration_bucketed:(double)a10 median_daily_longest_screen_lock_duration_bucketed:(double)a11 median_daily_longest_uninterrupted_WiFi_connection_duration_bucketed:(double)a12 median_daily_total_charging_duration_bucketed:(double)a13 median_daily_total_screen_lock_duration_bucketed:(double)a14 median_daily_total_uninterrupted_WiFi_connection_duration_bucketed:(double)a15 percentage_of_days_with_charging_bucketed:(double)a16 percentage_of_days_with_screen_lock_bucketed:(double)a17 percentage_of_days_with_uninterrupted_WiFi_connection_bucketed:(double)a18 is_iPhone:(double)a19 is_iPad:(double)a20 is_Watch:(double)a21
+- (RTPlaceTypeClassifierModelRankerInput)initWithMean_daily_longest_charging_duration_bucketed:(double)mean_daily_longest_charging_duration_bucketed mean_daily_longest_screen_lock_duration_bucketed:(double)mean_daily_longest_screen_lock_duration_bucketed mean_daily_longest_uninterrupted_WiFi_connection_duration_bucketed:(double)fi_connection_duration_bucketed mean_daily_total_charging_duration_bucketed:(double)mean_daily_total_charging_duration_bucketed mean_daily_total_screen_lock_duration_bucketed:(double)mean_daily_total_screen_lock_duration_bucketed mean_daily_total_uninterrupted_WiFi_connection_duration_bucketed:(double)wiFi_connection_duration_bucketed mean_daily_uninterrupted_WiFi_connection_stability_ratio_bucketed:(double)fi_connection_stability_ratio_bucketed median_daily_longest_charging_duration_bucketed:(double)self0 median_daily_longest_screen_lock_duration_bucketed:(double)self1 median_daily_longest_uninterrupted_WiFi_connection_duration_bucketed:(double)self2 median_daily_total_charging_duration_bucketed:(double)self3 median_daily_total_screen_lock_duration_bucketed:(double)self4 median_daily_total_uninterrupted_WiFi_connection_duration_bucketed:(double)self5 percentage_of_days_with_charging_bucketed:(double)self6 percentage_of_days_with_screen_lock_bucketed:(double)self7 percentage_of_days_with_uninterrupted_WiFi_connection_bucketed:(double)self8 is_iPhone:(double)self9 is_iPad:(double)pad is_Watch:(double)watch
 {
   v30.receiver = self;
   v30.super_class = RTPlaceTypeClassifierModelRankerInput;
   result = [(RTPlaceTypeClassifierModelRankerInput *)&v30 init];
   if (result)
   {
-    result->_mean_daily_longest_charging_duration_bucketed = a3;
-    result->_mean_daily_longest_screen_lock_duration_bucketed = a4;
-    result->_mean_daily_longest_uninterrupted_WiFi_connection_duration_bucketed = a5;
-    result->_mean_daily_total_charging_duration_bucketed = a6;
-    result->_mean_daily_total_screen_lock_duration_bucketed = a7;
-    result->_mean_daily_total_uninterrupted_WiFi_connection_duration_bucketed = a8;
-    result->_mean_daily_uninterrupted_WiFi_connection_stability_ratio_bucketed = a9;
-    result->_median_daily_longest_charging_duration_bucketed = a10;
-    result->_median_daily_longest_screen_lock_duration_bucketed = a11;
-    result->_median_daily_longest_uninterrupted_WiFi_connection_duration_bucketed = a12;
-    result->_median_daily_total_charging_duration_bucketed = a13;
-    result->_median_daily_total_screen_lock_duration_bucketed = a14;
-    result->_median_daily_total_uninterrupted_WiFi_connection_duration_bucketed = a15;
-    result->_percentage_of_days_with_charging_bucketed = a16;
-    result->_percentage_of_days_with_screen_lock_bucketed = a17;
-    result->_percentage_of_days_with_uninterrupted_WiFi_connection_bucketed = a18;
-    result->_is_iPhone = a19;
-    result->_is_iPad = a20;
-    result->_is_Watch = a21;
+    result->_mean_daily_longest_charging_duration_bucketed = mean_daily_longest_charging_duration_bucketed;
+    result->_mean_daily_longest_screen_lock_duration_bucketed = mean_daily_longest_screen_lock_duration_bucketed;
+    result->_mean_daily_longest_uninterrupted_WiFi_connection_duration_bucketed = fi_connection_duration_bucketed;
+    result->_mean_daily_total_charging_duration_bucketed = mean_daily_total_charging_duration_bucketed;
+    result->_mean_daily_total_screen_lock_duration_bucketed = mean_daily_total_screen_lock_duration_bucketed;
+    result->_mean_daily_total_uninterrupted_WiFi_connection_duration_bucketed = wiFi_connection_duration_bucketed;
+    result->_mean_daily_uninterrupted_WiFi_connection_stability_ratio_bucketed = fi_connection_stability_ratio_bucketed;
+    result->_median_daily_longest_charging_duration_bucketed = median_daily_longest_charging_duration_bucketed;
+    result->_median_daily_longest_screen_lock_duration_bucketed = median_daily_longest_screen_lock_duration_bucketed;
+    result->_median_daily_longest_uninterrupted_WiFi_connection_duration_bucketed = median_daily_longest_uninterrupted_WiFi_connection_duration_bucketed;
+    result->_median_daily_total_charging_duration_bucketed = median_daily_total_charging_duration_bucketed;
+    result->_median_daily_total_screen_lock_duration_bucketed = median_daily_total_screen_lock_duration_bucketed;
+    result->_median_daily_total_uninterrupted_WiFi_connection_duration_bucketed = median_daily_total_uninterrupted_WiFi_connection_duration_bucketed;
+    result->_percentage_of_days_with_charging_bucketed = percentage_of_days_with_charging_bucketed;
+    result->_percentage_of_days_with_screen_lock_bucketed = percentage_of_days_with_screen_lock_bucketed;
+    result->_percentage_of_days_with_uninterrupted_WiFi_connection_bucketed = fi_connection_bucketed;
+    result->_is_iPhone = phone;
+    result->_is_iPad = pad;
+    result->_is_Watch = watch;
   }
 
   return result;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"mean_daily_longest_charging_duration_bucketed"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"mean_daily_longest_charging_duration_bucketed"])
   {
     v5 = MEMORY[0x277CBFEF8];
     [(RTPlaceTypeClassifierModelRankerInput *)self mean_daily_longest_charging_duration_bucketed];
@@ -48,126 +48,126 @@ LABEL_39:
     goto LABEL_40;
   }
 
-  if ([v4 isEqualToString:@"mean_daily_longest_screen_lock_duration_bucketed"])
+  if ([nameCopy isEqualToString:@"mean_daily_longest_screen_lock_duration_bucketed"])
   {
     v5 = MEMORY[0x277CBFEF8];
     [(RTPlaceTypeClassifierModelRankerInput *)self mean_daily_longest_screen_lock_duration_bucketed];
     goto LABEL_39;
   }
 
-  if ([v4 isEqualToString:@"mean_daily_longest_uninterrupted_WiFi_connection_duration_bucketed"])
+  if ([nameCopy isEqualToString:@"mean_daily_longest_uninterrupted_WiFi_connection_duration_bucketed"])
   {
     v5 = MEMORY[0x277CBFEF8];
     [(RTPlaceTypeClassifierModelRankerInput *)self mean_daily_longest_uninterrupted_WiFi_connection_duration_bucketed];
     goto LABEL_39;
   }
 
-  if ([v4 isEqualToString:@"mean_daily_total_charging_duration_bucketed"])
+  if ([nameCopy isEqualToString:@"mean_daily_total_charging_duration_bucketed"])
   {
     v5 = MEMORY[0x277CBFEF8];
     [(RTPlaceTypeClassifierModelRankerInput *)self mean_daily_total_charging_duration_bucketed];
     goto LABEL_39;
   }
 
-  if ([v4 isEqualToString:@"mean_daily_total_screen_lock_duration_bucketed"])
+  if ([nameCopy isEqualToString:@"mean_daily_total_screen_lock_duration_bucketed"])
   {
     v5 = MEMORY[0x277CBFEF8];
     [(RTPlaceTypeClassifierModelRankerInput *)self mean_daily_total_screen_lock_duration_bucketed];
     goto LABEL_39;
   }
 
-  if ([v4 isEqualToString:@"mean_daily_total_uninterrupted_WiFi_connection_duration_bucketed"])
+  if ([nameCopy isEqualToString:@"mean_daily_total_uninterrupted_WiFi_connection_duration_bucketed"])
   {
     v5 = MEMORY[0x277CBFEF8];
     [(RTPlaceTypeClassifierModelRankerInput *)self mean_daily_total_uninterrupted_WiFi_connection_duration_bucketed];
     goto LABEL_39;
   }
 
-  if ([v4 isEqualToString:@"mean_daily_uninterrupted_WiFi_connection_stability_ratio_bucketed"])
+  if ([nameCopy isEqualToString:@"mean_daily_uninterrupted_WiFi_connection_stability_ratio_bucketed"])
   {
     v5 = MEMORY[0x277CBFEF8];
     [(RTPlaceTypeClassifierModelRankerInput *)self mean_daily_uninterrupted_WiFi_connection_stability_ratio_bucketed];
     goto LABEL_39;
   }
 
-  if ([v4 isEqualToString:@"median_daily_longest_charging_duration_bucketed"])
+  if ([nameCopy isEqualToString:@"median_daily_longest_charging_duration_bucketed"])
   {
     v5 = MEMORY[0x277CBFEF8];
     [(RTPlaceTypeClassifierModelRankerInput *)self median_daily_longest_charging_duration_bucketed];
     goto LABEL_39;
   }
 
-  if ([v4 isEqualToString:@"median_daily_longest_screen_lock_duration_bucketed"])
+  if ([nameCopy isEqualToString:@"median_daily_longest_screen_lock_duration_bucketed"])
   {
     v5 = MEMORY[0x277CBFEF8];
     [(RTPlaceTypeClassifierModelRankerInput *)self median_daily_longest_screen_lock_duration_bucketed];
     goto LABEL_39;
   }
 
-  if ([v4 isEqualToString:@"median_daily_longest_uninterrupted_WiFi_connection_duration_bucketed"])
+  if ([nameCopy isEqualToString:@"median_daily_longest_uninterrupted_WiFi_connection_duration_bucketed"])
   {
     v5 = MEMORY[0x277CBFEF8];
     [(RTPlaceTypeClassifierModelRankerInput *)self median_daily_longest_uninterrupted_WiFi_connection_duration_bucketed];
     goto LABEL_39;
   }
 
-  if ([v4 isEqualToString:@"median_daily_total_charging_duration_bucketed"])
+  if ([nameCopy isEqualToString:@"median_daily_total_charging_duration_bucketed"])
   {
     v5 = MEMORY[0x277CBFEF8];
     [(RTPlaceTypeClassifierModelRankerInput *)self median_daily_total_charging_duration_bucketed];
     goto LABEL_39;
   }
 
-  if ([v4 isEqualToString:@"median_daily_total_screen_lock_duration_bucketed"])
+  if ([nameCopy isEqualToString:@"median_daily_total_screen_lock_duration_bucketed"])
   {
     v5 = MEMORY[0x277CBFEF8];
     [(RTPlaceTypeClassifierModelRankerInput *)self median_daily_total_screen_lock_duration_bucketed];
     goto LABEL_39;
   }
 
-  if ([v4 isEqualToString:@"median_daily_total_uninterrupted_WiFi_connection_duration_bucketed"])
+  if ([nameCopy isEqualToString:@"median_daily_total_uninterrupted_WiFi_connection_duration_bucketed"])
   {
     v5 = MEMORY[0x277CBFEF8];
     [(RTPlaceTypeClassifierModelRankerInput *)self median_daily_total_uninterrupted_WiFi_connection_duration_bucketed];
     goto LABEL_39;
   }
 
-  if ([v4 isEqualToString:@"percentage_of_days_with_charging_bucketed"])
+  if ([nameCopy isEqualToString:@"percentage_of_days_with_charging_bucketed"])
   {
     v5 = MEMORY[0x277CBFEF8];
     [(RTPlaceTypeClassifierModelRankerInput *)self percentage_of_days_with_charging_bucketed];
     goto LABEL_39;
   }
 
-  if ([v4 isEqualToString:@"percentage_of_days_with_screen_lock_bucketed"])
+  if ([nameCopy isEqualToString:@"percentage_of_days_with_screen_lock_bucketed"])
   {
     v5 = MEMORY[0x277CBFEF8];
     [(RTPlaceTypeClassifierModelRankerInput *)self percentage_of_days_with_screen_lock_bucketed];
     goto LABEL_39;
   }
 
-  if ([v4 isEqualToString:@"percentage_of_days_with_uninterrupted_WiFi_connection_bucketed"])
+  if ([nameCopy isEqualToString:@"percentage_of_days_with_uninterrupted_WiFi_connection_bucketed"])
   {
     v5 = MEMORY[0x277CBFEF8];
     [(RTPlaceTypeClassifierModelRankerInput *)self percentage_of_days_with_uninterrupted_WiFi_connection_bucketed];
     goto LABEL_39;
   }
 
-  if ([v4 isEqualToString:@"is_iPhone"])
+  if ([nameCopy isEqualToString:@"is_iPhone"])
   {
     v5 = MEMORY[0x277CBFEF8];
     [(RTPlaceTypeClassifierModelRankerInput *)self is_iPhone];
     goto LABEL_39;
   }
 
-  if ([v4 isEqualToString:@"is_iPad"])
+  if ([nameCopy isEqualToString:@"is_iPad"])
   {
     v5 = MEMORY[0x277CBFEF8];
     [(RTPlaceTypeClassifierModelRankerInput *)self is_iPad];
     goto LABEL_39;
   }
 
-  if ([v4 isEqualToString:@"is_Watch"])
+  if ([nameCopy isEqualToString:@"is_Watch"])
   {
     v5 = MEMORY[0x277CBFEF8];
     [(RTPlaceTypeClassifierModelRankerInput *)self is_Watch];

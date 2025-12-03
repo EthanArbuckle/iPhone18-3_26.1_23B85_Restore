@@ -1,15 +1,15 @@
 @interface AUPasscodeCodecCapability
-- (AUPasscodeCodecCapability)initWithAlgorithmName:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPasscodeCodecCapability:(id)a3;
+- (AUPasscodeCodecCapability)initWithAlgorithmName:(id)name;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPasscodeCodecCapability:(id)capability;
 - (_NSRange)numChannelRange;
 @end
 
 @implementation AUPasscodeCodecCapability
 
-- (AUPasscodeCodecCapability)initWithAlgorithmName:(id)a3
+- (AUPasscodeCodecCapability)initWithAlgorithmName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = AUPasscodeCodecCapability;
   v6 = [(AUPasscodeCodecCapability *)&v13 init];
@@ -23,36 +23,36 @@
     *(v6 + 2) = v10;
 
     *(v6 + 24) = xmmword_2415ACC30;
-    objc_storeStrong(v6 + 1, a3);
+    objc_storeStrong(v6 + 1, name);
   }
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AUPasscodeCodecCapability *)self isEqualToPasscodeCodecCapability:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AUPasscodeCodecCapability *)self isEqualToPasscodeCodecCapability:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToPasscodeCodecCapability:(id)a3
+- (BOOL)isEqualToPasscodeCodecCapability:(id)capability
 {
-  v4 = a3;
-  v5 = [(AUPasscodeCodecCapability *)self supportedSampleRates];
-  v6 = [v4 supportedSampleRates];
-  if ([v5 isEqual:v6])
+  capabilityCopy = capability;
+  supportedSampleRates = [(AUPasscodeCodecCapability *)self supportedSampleRates];
+  supportedSampleRates2 = [capabilityCopy supportedSampleRates];
+  if ([supportedSampleRates isEqual:supportedSampleRates2])
   {
-    v7 = [(AUPasscodeCodecCapability *)self numChannelRange];
+    numChannelRange = [(AUPasscodeCodecCapability *)self numChannelRange];
     v9 = v8;
     v11 = 0;
-    if (v7 == [v4 numChannelRange] && v9 == v10)
+    if (numChannelRange == [capabilityCopy numChannelRange] && v9 == v10)
     {
-      v12 = [(AUPasscodeCodecCapability *)self algorithmName];
-      v13 = [v4 algorithmName];
-      v11 = [v12 isEqual:v13];
+      algorithmName = [(AUPasscodeCodecCapability *)self algorithmName];
+      algorithmName2 = [capabilityCopy algorithmName];
+      v11 = [algorithmName isEqual:algorithmName2];
     }
   }
 

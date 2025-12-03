@@ -2,40 +2,40 @@
 - (NFCNDEFReaderSession)initWithDelegate:(id)delegate queue:(dispatch_queue_t)queue invalidateAfterFirstRead:(BOOL)invalidateAfterFirstRead;
 - (void)_callbackDidBecomeActive;
 - (void)connectToTag:(id)tag completionHandler:(void *)completionHandler;
-- (void)didDetectNDEFMessages:(id)a3 fromTags:(id)a4 connectedTagIndex:(unint64_t)a5 updateUICallback:(id)a6;
-- (void)didTerminate:(id)a3;
+- (void)didDetectNDEFMessages:(id)messages fromTags:(id)tags connectedTagIndex:(unint64_t)index updateUICallback:(id)callback;
+- (void)didTerminate:(id)terminate;
 - (void)restartPolling;
 @end
 
 @implementation NFCNDEFReaderSession
 
-- (void)didTerminate:(id)a3
+- (void)didTerminate:(id)terminate
 {
   v3.receiver = self;
   v3.super_class = NFCNDEFReaderSession;
-  [(NFCReaderSession *)&v3 didTerminate:a3];
+  [(NFCReaderSession *)&v3 didTerminate:terminate];
 }
 
-- (void)didDetectNDEFMessages:(id)a3 fromTags:(id)a4 connectedTagIndex:(unint64_t)a5 updateUICallback:(id)a6
+- (void)didDetectNDEFMessages:(id)messages fromTags:(id)tags connectedTagIndex:(unint64_t)index updateUICallback:(id)callback
 {
   v108 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  messagesCopy = messages;
+  tagsCopy = tags;
+  callbackCopy = callback;
   v14 = 0x277CBE000uLL;
-  v76 = v13;
-  v77 = v12;
+  v76 = callbackCopy;
+  v77 = tagsCopy;
   if ([(NFCReaderSession *)self delegateType]== 5)
   {
-    v15 = v11;
-    v13[2](v13, 0);
-    [(NFCReaderSession *)self didDetectTags:v12 connectedTagIndex:a5];
+    v15 = messagesCopy;
+    callbackCopy[2](callbackCopy, 0);
+    [(NFCReaderSession *)self didDetectTags:tagsCopy connectedTagIndex:index];
     v16 = objc_opt_new();
     v94 = 0u;
     v95 = 0u;
     v96 = 0u;
     v97 = 0u;
-    v17 = v12;
+    v17 = tagsCopy;
     v18 = [v17 countByEnumeratingWithState:&v94 objects:v107 count:16];
     if (v18)
     {
@@ -129,15 +129,15 @@
 
   else
   {
-    v74 = self;
+    selfCopy = self;
     v79 = objc_opt_new();
-    v13[2](v13, 1);
+    callbackCopy[2](callbackCopy, 1);
     v90 = 0u;
     v91 = 0u;
     v88 = 0u;
     v89 = 0u;
-    v75 = v11;
-    obj = v11;
+    v75 = messagesCopy;
+    obj = messagesCopy;
     v81 = [obj countByEnumeratingWithState:&v88 objects:v98 count:16];
     if (v81)
     {
@@ -156,8 +156,8 @@
           v25 = *(*(&v88 + 1) + 8 * v24);
           v26 = *(v14 + 2840);
           v83 = objc_opt_new();
-          v27 = [v25 records];
-          v28 = [v27 count];
+          records = [v25 records];
+          v28 = [records count];
 
           if (v28)
           {
@@ -165,17 +165,17 @@
             v30 = 0;
             do
             {
-              v31 = [v25 records];
-              v32 = [v31 objectAtIndexedSubscript:v29];
+              records2 = [v25 records];
+              v32 = [records2 objectAtIndexedSubscript:v29];
 
-              v33 = [v32 typeNameFormat];
-              v34 = [v32 type];
-              v85 = [v32 identifier];
+              typeNameFormat = [v32 typeNameFormat];
+              type = [v32 type];
+              identifier = [v32 identifier];
               v35 = objc_alloc(MEMORY[0x277CBEB28]);
-              v36 = [v32 payload];
-              v37 = [v35 initWithData:v36];
+              payload = [v32 payload];
+              v37 = [v35 initWithData:payload];
 
-              if ([v32 chunked] && objc_msgSend(v34, "length"))
+              if ([v32 chunked] && objc_msgSend(type, "length"))
               {
                 v38 = v30 + 1;
                 [v25 records];
@@ -188,18 +188,18 @@
                   v41 = v38;
                   while (1)
                   {
-                    v42 = [v25 records];
-                    v43 = [v42 objectAtIndexedSubscript:v41];
+                    records3 = [v25 records];
+                    v43 = [records3 objectAtIndexedSubscript:v41];
 
-                    v44 = [v43 identifier];
-                    if ([v44 length])
+                    identifier2 = [v43 identifier];
+                    if ([identifier2 length])
                     {
                       goto LABEL_32;
                     }
 
                     v45 = v25;
-                    v46 = [v43 type];
-                    if ([v46 length])
+                    type2 = [v43 type];
+                    if ([type2 length])
                     {
 
                       v25 = v45;
@@ -208,17 +208,17 @@ LABEL_32:
                       goto LABEL_36;
                     }
 
-                    v47 = v33;
-                    v48 = [v43 typeNameFormat];
+                    v47 = typeNameFormat;
+                    typeNameFormat2 = [v43 typeNameFormat];
 
-                    if (v48 != 6)
+                    if (typeNameFormat2 != 6)
                     {
                       v25 = v45;
                       goto LABEL_35;
                     }
 
-                    v49 = [v43 payload];
-                    [v84 appendData:v49];
+                    payload2 = [v43 payload];
+                    [v84 appendData:payload2];
 
                     v25 = v45;
                     if (([v43 chunked] & 1) == 0)
@@ -227,11 +227,11 @@ LABEL_32:
                     }
 
                     ++v41;
-                    v50 = [v45 records];
-                    v51 = [v50 count];
+                    records4 = [v45 records];
+                    v51 = [records4 count];
 
                     ++v30;
-                    v33 = v47;
+                    typeNameFormat = v47;
                     if (v51 <= v41)
                     {
                       v38 = v30 + 1;
@@ -241,7 +241,7 @@ LABEL_32:
 
                   ++v30;
 LABEL_35:
-                  v33 = v47;
+                  typeNameFormat = v47;
 LABEL_36:
 
                   v38 = v30;
@@ -255,21 +255,21 @@ LABEL_37:
                 v38 = v30;
               }
 
-              v52 = [[NFCNDEFPayload alloc] initWithFormat:v33 type:v34 identifier:v85 payload:v37 chunkSize:0];
+              v52 = [[NFCNDEFPayload alloc] initWithFormat:typeNameFormat type:type identifier:identifier payload:v37 chunkSize:0];
               [v83 addObject:v52];
 
               v30 = v38 + 1;
               v29 = v38 + 1;
-              v53 = [v25 records];
-              v54 = [v53 count];
+              records5 = [v25 records];
+              v54 = [records5 count];
             }
 
             while (v54 > v29);
           }
 
           v55 = [[NFCNDEFMessage alloc] initWithNDEFRecords:v83];
-          v56 = [(NFCNDEFMessage *)v55 records];
-          v57 = [v56 count];
+          records6 = [(NFCNDEFMessage *)v55 records];
+          v57 = [records6 count];
 
           if (v57)
           {
@@ -291,24 +291,24 @@ LABEL_37:
     v58 = v77;
     if ([v79 count])
     {
-      v74->_tagsRead += [v77 count];
-      if ([(NFCReaderSession *)v74 delegateType]== 4)
+      selfCopy->_tagsRead += [v77 count];
+      if ([(NFCReaderSession *)selfCopy delegateType]== 4)
       {
         v86[0] = MEMORY[0x277D85DD0];
         v86[1] = 3221225472;
         v86[2] = sub_2372B7554;
         v86[3] = &unk_278A29E60;
-        v86[4] = v74;
+        v86[4] = selfCopy;
         v87 = v79;
-        [(NFCReaderSession *)v74 submitBlockOnDelegateQueue:v86];
+        [(NFCReaderSession *)selfCopy submitBlockOnDelegateQueue:v86];
       }
     }
 
     v15 = v75;
     v59 = v76;
-    if (v74->_invalidateAfterFirstRead)
+    if (selfCopy->_invalidateAfterFirstRead)
     {
-      [(NFCReaderSession *)v74 invalidateSessionWithReason:204];
+      [(NFCReaderSession *)selfCopy invalidateSessionWithReason:204];
     }
   }
 
@@ -569,14 +569,14 @@ LABEL_37:
       isMetaClass = class_isMetaClass(Class);
       ClassName = object_getClassName(self);
       Name = sel_getName(a2);
-      v29 = [(NFCReaderSession *)self delegateType];
+      delegateType = [(NFCReaderSession *)self delegateType];
       v24 = 45;
       if (isMetaClass)
       {
         v24 = 43;
       }
 
-      v19(4, "%c[%{public}s %{public}s]:%i Unknown delegate type: %ld", v24, ClassName, Name, 226, v29);
+      v19(4, "%c[%{public}s %{public}s]:%i Unknown delegate type: %ld", v24, ClassName, Name, 226, delegateType);
     }
 
     v12 = NFSharedLogGetLogger();
@@ -605,14 +605,14 @@ LABEL_37:
     v37 = 1024;
     v38 = 226;
     v39 = 2048;
-    v40 = [(NFCReaderSession *)self delegateType];
+    delegateType2 = [(NFCReaderSession *)self delegateType];
     v15 = "%c[%{public}s %{public}s]:%i Unknown delegate type: %ld";
     v16 = v12;
     v17 = 44;
     goto LABEL_23;
   }
 
-  v4 = [(NFCReaderSession *)self delegate];
+  delegate = [(NFCReaderSession *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if ((v5 & 1) == 0)

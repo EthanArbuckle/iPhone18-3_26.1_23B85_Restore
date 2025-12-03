@@ -1,16 +1,16 @@
 @interface SBKeyboardFocusCoalitionMemberPreferences
-+ (id)build:(id)a3;
++ (id)build:(id)build;
 + (id)new;
-+ (id)preferencesWithPolicy:(id)a3 lockReasons:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)preferencesWithPolicy:(id)policy lockReasons:(id)reasons;
+- (BOOL)isEqual:(id)equal;
 - (id)_init;
-- (id)_initWithCopyOf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_initWithCopyOf:(id)of;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (int64_t)focusLockReasonStrength;
 - (unint64_t)hash;
 - (void)_init;
-- (void)appendDescriptionToStream:(id)a3;
+- (void)appendDescriptionToStream:(id)stream;
 @end
 
 @implementation SBKeyboardFocusCoalitionMemberPreferences
@@ -32,19 +32,19 @@
   return [(SBKeyboardFocusCoalitionMemberPreferences *)&v7 init];
 }
 
-+ (id)preferencesWithPolicy:(id)a3 lockReasons:(id)a4
++ (id)preferencesWithPolicy:(id)policy lockReasons:(id)reasons
 {
-  v6 = a3;
-  v7 = a4;
+  policyCopy = policy;
+  reasonsCopy = reasons;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __79__SBKeyboardFocusCoalitionMemberPreferences_preferencesWithPolicy_lockReasons___block_invoke;
   v12[3] = &unk_2783AF588;
-  v13 = v6;
-  v14 = v7;
-  v8 = v7;
-  v9 = v6;
-  v10 = [a1 build:v12];
+  v13 = policyCopy;
+  v14 = reasonsCopy;
+  v8 = reasonsCopy;
+  v9 = policyCopy;
+  v10 = [self build:v12];
 
   return v10;
 }
@@ -58,13 +58,13 @@ void __79__SBKeyboardFocusCoalitionMemberPreferences_preferencesWithPolicy_lockR
   [v4 setLockReasons:v5];
 }
 
-+ (id)build:(id)a3
++ (id)build:(id)build
 {
-  v3 = a3;
-  v4 = [(SBKeyboardFocusCoalitionMemberPreferences *)[SBMutableKeyboardFocusCoalitionPreferences alloc] _init];
-  v3[2](v3, v4);
+  buildCopy = build;
+  _init = [(SBKeyboardFocusCoalitionMemberPreferences *)[SBMutableKeyboardFocusCoalitionPreferences alloc] _init];
+  buildCopy[2](buildCopy, _init);
 
-  v5 = [v4 copy];
+  v5 = [_init copy];
 
   return v5;
 }
@@ -76,22 +76,22 @@ void __79__SBKeyboardFocusCoalitionMemberPreferences_preferencesWithPolicy_lockR
   return [v2 _init];
 }
 
-- (id)_initWithCopyOf:(id)a3
+- (id)_initWithCopyOf:(id)of
 {
-  v4 = a3;
-  v5 = [(SBKeyboardFocusCoalitionMemberPreferences *)self _init];
-  if (v5)
+  ofCopy = of;
+  _init = [(SBKeyboardFocusCoalitionMemberPreferences *)self _init];
+  if (_init)
   {
-    v6 = [v4[1] copy];
-    v7 = v5[1];
-    v5[1] = v6;
+    v6 = [ofCopy[1] copy];
+    v7 = _init[1];
+    _init[1] = v6;
 
-    v8 = [v4[2] copy];
-    v9 = v5[2];
-    v5[2] = v8;
+    v8 = [ofCopy[2] copy];
+    v9 = _init[2];
+    _init[2] = v8;
   }
 
-  return v5;
+  return _init;
 }
 
 - (unint64_t)hash
@@ -106,13 +106,13 @@ void __79__SBKeyboardFocusCoalitionMemberPreferences_preferencesWithPolicy_lockR
   return MEMORY[0x282143900](v3);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = equalCopy;
     if (BSEqualObjects())
     {
       v5 = BSEqualObjects();
@@ -132,30 +132,30 @@ void __79__SBKeyboardFocusCoalitionMemberPreferences_preferencesWithPolicy_lockR
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SBKeyboardFocusCoalitionMemberPreferences alloc];
 
   return [(SBKeyboardFocusCoalitionMemberPreferences *)v4 _initWithCopyOf:self];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [SBMutableKeyboardFocusCoalitionPreferences alloc];
 
   return [(SBKeyboardFocusCoalitionMemberPreferences *)v4 _initWithCopyOf:self];
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __71__SBKeyboardFocusCoalitionMemberPreferences_appendDescriptionToStream___block_invoke;
   v6[3] = &unk_2783A92D8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = streamCopy;
+  selfCopy = self;
+  v5 = streamCopy;
   [v5 appendBodySectionWithName:0 block:v6];
 }
 
@@ -176,7 +176,7 @@ void __79__SBKeyboardFocusCoalitionMemberPreferences_preferencesWithPolicy_lockR
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"SBKeyboardFocusCoalitionMemberPreferences cannot be subclassed"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v5 = NSStringFromSelector(a1);
+    v5 = NSStringFromSelector(self);
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     v9 = 138544642;

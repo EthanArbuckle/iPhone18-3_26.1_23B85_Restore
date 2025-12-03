@@ -1,15 +1,15 @@
 @interface VCPMobileAssetManager
-+ (id)assetName:(int64_t)a3;
-+ (id)assetVersion:(int64_t)a3;
++ (id)assetName:(int64_t)name;
++ (id)assetVersion:(int64_t)version;
 + (id)sharedManager;
-+ (int64_t)assetTypeForName:(id)a3;
++ (int64_t)assetTypeForName:(id)name;
 - (VCPMobileAssetManager)init;
-- (id)cloneAsset:(id)a3 to:(id)a4;
-- (id)downloadMobileAssetIfNeeded:(id)a3 petWatchDog:(id)a4;
+- (id)cloneAsset:(id)asset to:(id)to;
+- (id)downloadMobileAssetIfNeeded:(id)needed petWatchDog:(id)dog;
 - (id)queryMobileAssets;
-- (id)retrieveAssetLocalURL:(id)a3 assetVersion:(id)a4 petWatchDog:(id)a5 cancelBlock:(id)a6;
-- (id)retrieveAssetLocalURL:(int64_t)a3 petWatchDog:(id)a4 cancelBlock:(id)a5;
-- (id)retrieveAssetOnce:(int64_t)a3 petWatchDog:(id)a4 cancelBlock:(id)a5;
+- (id)retrieveAssetLocalURL:(id)l assetVersion:(id)version petWatchDog:(id)dog cancelBlock:(id)block;
+- (id)retrieveAssetLocalURL:(int64_t)l petWatchDog:(id)dog cancelBlock:(id)block;
+- (id)retrieveAssetOnce:(int64_t)once petWatchDog:(id)dog cancelBlock:(id)block;
 - (int)purgeAllInstalledAssets;
 @end
 
@@ -30,9 +30,9 @@
     retrieveAssetOnceQueue = v2->_retrieveAssetOnceQueue;
     v2->_retrieveAssetOnceQueue = v5;
 
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     assetsURL = v2->_assetsURL;
-    v2->_assetsURL = v7;
+    v2->_assetsURL = dictionary;
 
     v9 = [MEMORY[0x1E695DFA8] set];
     assetsNotAvailable = v2->_assetsNotAvailable;
@@ -59,55 +59,55 @@ VCPMobileAssetManager *__38__VCPMobileAssetManager_sharedManager__block_invoke()
   return v0;
 }
 
-+ (id)assetName:(int64_t)a3
++ (id)assetName:(int64_t)name
 {
-  if (a3 >= 7)
+  if (name >= 7)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"UnknownType(%lu)", a3];
+    name = [MEMORY[0x1E696AEC0] stringWithFormat:@"UnknownType(%lu)", name];
   }
 
   else
   {
-    v4 = off_1E8351FE0[a3];
+    name = off_1E8351FE0[name];
   }
 
-  return v4;
+  return name;
 }
 
-+ (int64_t)assetTypeForName:(id)a3
++ (int64_t)assetTypeForName:(id)name
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"AXImageCaption"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"AXImageCaption"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"AXImageCaptionCSU"])
+  else if ([nameCopy isEqualToString:@"AXImageCaptionCSU"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"AXVideoCaptionEncoder"])
+  else if ([nameCopy isEqualToString:@"AXVideoCaptionEncoder"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"AXVideoCaptionDecoder"])
+  else if ([nameCopy isEqualToString:@"AXVideoCaptionDecoder"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"MiCaImageCaptionDecoder"])
+  else if ([nameCopy isEqualToString:@"MiCaImageCaptionDecoder"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"MiCaVideoCaptionDecoder"])
+  else if ([nameCopy isEqualToString:@"MiCaVideoCaptionDecoder"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Pissarro"])
+  else if ([nameCopy isEqualToString:@"Pissarro"])
   {
     v4 = 6;
   }
@@ -120,14 +120,14 @@ VCPMobileAssetManager *__38__VCPMobileAssetManager_sharedManager__block_invoke()
   return v4;
 }
 
-+ (id)assetVersion:(int64_t)a3
++ (id)assetVersion:(int64_t)version
 {
-  v4 = @"9.5";
-  if (a3 > 2)
+  version = @"9.5";
+  if (version > 2)
   {
-    if (a3 <= 4)
+    if (version <= 4)
     {
-      if (a3 == 3)
+      if (version == 3)
       {
         goto LABEL_18;
       }
@@ -135,61 +135,61 @@ VCPMobileAssetManager *__38__VCPMobileAssetManager_sharedManager__block_invoke()
 LABEL_12:
       if (+[VCPVideoTransformerBackbone revision]== 3)
       {
-        v4 = @"3.0.0";
+        version = @"3.0.0";
         goto LABEL_18;
       }
 
       if (+[VCPVideoTransformerBackbone revision]== 4)
       {
-        v4 = @"4.0.0";
+        version = @"4.0.0";
         goto LABEL_18;
       }
 
       goto LABEL_16;
     }
 
-    if (a3 == 5)
+    if (version == 5)
     {
       goto LABEL_12;
     }
 
-    if (a3 == 6)
+    if (version == 6)
     {
-      v4 = @"LatestVersion";
+      version = @"LatestVersion";
       goto LABEL_18;
     }
 
 LABEL_16:
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"UnknownType(%lu)", a3];
+    version = [MEMORY[0x1E696AEC0] stringWithFormat:@"UnknownType(%lu)", version];
     goto LABEL_18;
   }
 
-  if (!a3)
+  if (!version)
   {
     goto LABEL_18;
   }
 
-  if (a3 != 1)
+  if (version != 1)
   {
-    if (a3 == 2)
+    if (version == 2)
     {
-      v4 = @"3.0";
+      version = @"3.0";
       goto LABEL_18;
     }
 
     goto LABEL_16;
   }
 
-  v4 = @"8.3";
+  version = @"8.3";
 LABEL_18:
 
-  return v4;
+  return version;
 }
 
-- (id)cloneAsset:(id)a3 to:(id)a4
+- (id)cloneAsset:(id)asset to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  toCopy = to;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -201,11 +201,11 @@ LABEL_18:
   block[1] = 3221225472;
   block[2] = __39__VCPMobileAssetManager_cloneAsset_to___block_invoke;
   block[3] = &unk_1E8351ED0;
-  v14 = v7;
-  v15 = v6;
+  v14 = toCopy;
+  v15 = assetCopy;
   v16 = &v17;
-  v9 = v6;
-  v10 = v7;
+  v9 = assetCopy;
+  v10 = toCopy;
   dispatch_sync(assetQueue, block);
   v11 = v18[5];
 
@@ -511,11 +511,11 @@ void __42__VCPMobileAssetManager_queryMobileAssets__block_invoke_547(uint64_t a1
   }
 }
 
-- (id)downloadMobileAssetIfNeeded:(id)a3 petWatchDog:(id)a4
+- (id)downloadMobileAssetIfNeeded:(id)needed petWatchDog:(id)dog
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  neededCopy = needed;
+  dogCopy = dog;
+  if (neededCopy)
   {
     *buf = 0;
     v16 = buf;
@@ -528,8 +528,8 @@ void __42__VCPMobileAssetManager_queryMobileAssets__block_invoke_547(uint64_t a1
     block[1] = 3221225472;
     block[2] = __65__VCPMobileAssetManager_downloadMobileAssetIfNeeded_petWatchDog___block_invoke;
     block[3] = &unk_1E8351F70;
-    v12 = v6;
-    v13 = v7;
+    v12 = neededCopy;
+    v13 = dogCopy;
     v14 = buf;
     dispatch_sync(assetQueue, block);
     v9 = *(v16 + 5);
@@ -733,13 +733,13 @@ void __65__VCPMobileAssetManager_downloadMobileAssetIfNeeded_petWatchDog___block
   }
 }
 
-- (id)retrieveAssetLocalURL:(id)a3 assetVersion:(id)a4 petWatchDog:(id)a5 cancelBlock:(id)a6
+- (id)retrieveAssetLocalURL:(id)l assetVersion:(id)version petWatchDog:(id)dog cancelBlock:(id)block
 {
   v63 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lCopy = l;
+  versionCopy = version;
+  dogCopy = dog;
+  blockCopy = block;
   if ([objc_opt_class() isOTAFailTestEnabled])
   {
     if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
@@ -752,14 +752,14 @@ void __65__VCPMobileAssetManager_downloadMobileAssetIfNeeded_petWatchDog___block
     goto LABEL_52;
   }
 
-  v44 = self;
+  selfCopy = self;
   if (VCPMAIsAppleInternal())
   {
-    v15 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
-    v16 = [v15 resourceURL];
+    vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+    resourceURL = [vcp_mediaAnalysisBundle resourceURL];
 
-    v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@", v10, v11];
-    v18 = [MEMORY[0x1E695DFF8] URLWithString:v17 relativeToURL:v16];
+    versionCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@", lCopy, versionCopy];
+    v18 = [MEMORY[0x1E695DFF8] URLWithString:versionCopy relativeToURL:resourceURL];
     v55 = 0;
     v19 = [v18 checkResourceIsReachableAndReturnError:&v55];
     v20 = v55;
@@ -768,9 +768,9 @@ void __65__VCPMobileAssetManager_downloadMobileAssetIfNeeded_petWatchDog___block
       if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
       {
         *buf = 138412802;
-        v58 = v10;
+        v58 = lCopy;
         v59 = 2112;
-        v60 = v11;
+        v60 = versionCopy;
         v61 = 2112;
         v62 = v18;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[MobileAssetManager] In-framework asset (%@-%@) available at %@", buf, 0x20u);
@@ -790,13 +790,13 @@ void __65__VCPMobileAssetManager_downloadMobileAssetIfNeeded_petWatchDog___block
   if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v58 = v10;
+    v58 = lCopy;
     v59 = 2112;
-    v60 = v11;
+    v60 = versionCopy;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[MobileAssetManager] Retrieving (download if not present) mobile asset: %@-%@", buf, 0x16u);
   }
 
-  if (v13 && v13[2](v13))
+  if (blockCopy && blockCopy[2](blockCopy))
   {
     if (MediaAnalysisLogLevel() < 3 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -815,13 +815,13 @@ LABEL_49:
     goto LABEL_50;
   }
 
-  if (v12)
+  if (dogCopy)
   {
-    v12[2](v12);
+    dogCopy[2](dogCopy);
   }
 
-  v23 = [(VCPMobileAssetManager *)v44 queryMobileAssets];
-  if (!v23)
+  queryMobileAssets = [(VCPMobileAssetManager *)selfCopy queryMobileAssets];
+  if (!queryMobileAssets)
   {
     if (MediaAnalysisLogLevel() < 3 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -834,19 +834,19 @@ LABEL_49:
     goto LABEL_48;
   }
 
-  v43 = v12;
+  v43 = dogCopy;
   v53 = 0u;
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  obj = v23;
+  obj = queryMobileAssets;
   v50 = [obj countByEnumeratingWithState:&v51 objects:v56 count:16];
   v24 = 0;
   if (v50)
   {
     v49 = *v52;
-    v48 = v10;
-    v45 = v11;
+    v48 = lCopy;
+    v45 = versionCopy;
     v42 = v18;
 LABEL_27:
     v46 = v24;
@@ -860,32 +860,32 @@ LABEL_27:
 
       v26 = *(*(&v51 + 1) + 8 * v25);
       v27 = objc_autoreleasePoolPush();
-      if (v13 && v13[2](v13))
+      if (blockCopy && blockCopy[2](blockCopy))
       {
         if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
-          v41 = [v26 assetId];
+          assetId = [v26 assetId];
           *buf = 138412290;
-          v58 = v41;
+          v58 = assetId;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MobileAssetManager] Cancelled processing %@", buf, 0xCu);
         }
 
         objc_autoreleasePoolPop(v27);
 
         v36 = 0;
-        v11 = v45;
+        versionCopy = v45;
         v24 = v46;
-        v12 = v43;
+        dogCopy = v43;
         v18 = v42;
         goto LABEL_50;
       }
 
-      v28 = v13;
-      v29 = [v26 attributes];
-      v30 = [v29 objectForKey:@"Model"];
+      v28 = blockCopy;
+      attributes = [v26 attributes];
+      v30 = [attributes objectForKey:@"Model"];
       v31 = [v30 objectForKey:@"AssetName"];
       v32 = [v30 objectForKey:@"Version"];
-      if ([v31 isEqualToString:v10] && ((objc_msgSend(v45, "isEqualToString:", @"LatestVersion") & 1) != 0 || objc_msgSend(v32, "isEqualToString:", v45)))
+      if ([v31 isEqualToString:lCopy] && ((objc_msgSend(v45, "isEqualToString:", @"LatestVersion") & 1) != 0 || objc_msgSend(v32, "isEqualToString:", v45)))
       {
         if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
         {
@@ -918,11 +918,11 @@ LABEL_27:
       }
 
       ++v25;
-      v10 = v48;
-      v13 = v28;
+      lCopy = v48;
+      blockCopy = v28;
       if (v50 == v25)
       {
-        v11 = v45;
+        versionCopy = v45;
         v24 = v46;
         v18 = v42;
         v50 = [obj countByEnumeratingWithState:&v51 objects:v56 count:16];
@@ -935,24 +935,24 @@ LABEL_27:
       }
     }
 
-    v11 = v45;
-    v13 = v28;
+    versionCopy = v45;
+    blockCopy = v28;
     if (!v35)
     {
       v37 = 0;
       v18 = v42;
       v14 = v42;
-      v10 = v48;
-      v12 = v43;
+      lCopy = v48;
+      dogCopy = v43;
       v24 = v46;
       goto LABEL_51;
     }
 
-    v10 = v48;
-    v12 = v43;
+    lCopy = v48;
+    dogCopy = v43;
     v18 = v42;
     v24 = v46;
-    if (!v13)
+    if (!blockCopy)
     {
       goto LABEL_62;
     }
@@ -962,11 +962,11 @@ LABEL_27:
   {
 LABEL_43:
 
-    v12 = v43;
-    if (!v13)
+    dogCopy = v43;
+    if (!blockCopy)
     {
 LABEL_62:
-      v39 = [(VCPMobileAssetManager *)v44 downloadMobileAssetIfNeeded:v24 petWatchDog:v12];
+      v39 = [(VCPMobileAssetManager *)selfCopy downloadMobileAssetIfNeeded:v24 petWatchDog:dogCopy];
 
       v40 = MediaAnalysisLogLevel();
       if (v39)
@@ -974,15 +974,15 @@ LABEL_62:
         if (v40 >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412802;
-          v58 = v10;
+          v58 = lCopy;
           v59 = 2112;
-          v60 = v11;
+          v60 = versionCopy;
           v61 = 2112;
           v62 = v39;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[MobileAssetManager] Asset %@-%@ local url: %@", buf, 0x20u);
         }
 
-        if (v13 && v13[2](v13))
+        if (blockCopy && blockCopy[2](blockCopy))
         {
           if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
@@ -995,13 +995,13 @@ LABEL_62:
 
         else
         {
-          v36 = [(VCPMobileAssetManager *)v44 cloneAsset:v39 to:v10];
+          v36 = [(VCPMobileAssetManager *)selfCopy cloneAsset:v39 to:lCopy];
           if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
           {
             *buf = 138412802;
-            v58 = v10;
+            v58 = lCopy;
             v59 = 2112;
-            v60 = v11;
+            v60 = versionCopy;
             v61 = 2112;
             v62 = v36;
             _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[MobileAssetManager] Retrieved asset %@-%@ at: %@", buf, 0x20u);
@@ -1022,9 +1022,9 @@ LABEL_62:
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v58 = v10;
+          v58 = lCopy;
           v59 = 2112;
-          v60 = v11;
+          v60 = versionCopy;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MobileAssetManager] Failed to download asset: %@-%@", buf, 0x16u);
         }
 
@@ -1036,7 +1036,7 @@ LABEL_62:
     }
   }
 
-  if (!v13[2](v13))
+  if (!blockCopy[2](blockCopy))
   {
     goto LABEL_62;
   }
@@ -1058,21 +1058,21 @@ LABEL_52:
   return v14;
 }
 
-- (id)retrieveAssetLocalURL:(int64_t)a3 petWatchDog:(id)a4 cancelBlock:(id)a5
+- (id)retrieveAssetLocalURL:(int64_t)l petWatchDog:(id)dog cancelBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [objc_opt_class() assetName:a3];
-  v11 = [objc_opt_class() assetVersion:a3];
-  v12 = [(VCPMobileAssetManager *)self retrieveAssetLocalURL:v10 assetVersion:v11 petWatchDog:v9 cancelBlock:v8];
+  blockCopy = block;
+  dogCopy = dog;
+  v10 = [objc_opt_class() assetName:l];
+  v11 = [objc_opt_class() assetVersion:l];
+  v12 = [(VCPMobileAssetManager *)self retrieveAssetLocalURL:v10 assetVersion:v11 petWatchDog:dogCopy cancelBlock:blockCopy];
 
   return v12;
 }
 
-- (id)retrieveAssetOnce:(int64_t)a3 petWatchDog:(id)a4 cancelBlock:(id)a5
+- (id)retrieveAssetOnce:(int64_t)once petWatchDog:(id)dog cancelBlock:(id)block
 {
-  v8 = a4;
-  v9 = a5;
+  dogCopy = dog;
+  blockCopy = block;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -1085,12 +1085,12 @@ LABEL_52:
   block[2] = __67__VCPMobileAssetManager_retrieveAssetOnce_petWatchDog_cancelBlock___block_invoke;
   block[3] = &unk_1E8351F98;
   v18 = &v20;
-  v19 = a3;
+  onceCopy = once;
   block[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v11 = v9;
-  v12 = v8;
+  v16 = dogCopy;
+  v17 = blockCopy;
+  v11 = blockCopy;
+  v12 = dogCopy;
   dispatch_sync(retrieveAssetOnceQueue, block);
   v13 = v21[5];
 

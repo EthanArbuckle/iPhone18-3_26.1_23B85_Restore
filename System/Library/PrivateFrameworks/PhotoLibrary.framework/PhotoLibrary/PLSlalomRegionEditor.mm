@@ -1,46 +1,46 @@
 @interface PLSlalomRegionEditor
-- (BOOL)_isTouch:(id)a3 inHandleIsStart:(BOOL)a4 outTouchOffset:(double *)a5;
+- (BOOL)_isTouch:(id)touch inHandleIsStart:(BOOL)start outTouchOffset:(double *)offset;
 - (BOOL)_isZoomed;
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (CGRect)_handleFrameForValue:(double)a3 isStart:(BOOL)a4;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (CGRect)_handleFrameForValue:(double)value isStart:(BOOL)start;
 - (CGRect)_trackFrame;
 - (CGRect)_trackFrameNoZoom;
 - (CGRect)endHandleFrame;
 - (CGRect)startHandleFrame;
 - (CGSize)intrinsicContentSize;
 - (CGSize)sizeThatFits:(CGSize)result;
-- (PLSlalomRegionEditor)initWithFrame:(CGRect)a3;
+- (PLSlalomRegionEditor)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)trackInsets;
 - (double)_trackScale;
 - (double)_trimHandleWidth;
-- (double)_valueFromHandleFrame:(CGRect)a3 isStart:(BOOL)a4;
+- (double)_valueFromHandleFrame:(CGRect)frame isStart:(BOOL)start;
 - (double)_zoomMaxValue;
 - (id)_handleImage;
 - (id)_handleTintColor;
 - (id)_tickColor;
 - (id)_trackColor;
-- (id)_trackImageForZoom:(BOOL)a3;
-- (void)_beginTrackingZoomWithTouch:(id)a3;
+- (id)_trackImageForZoom:(BOOL)zoom;
+- (void)_beginTrackingZoomWithTouch:(id)touch;
 - (void)_cancelTrackingZoom;
 - (void)_cancelZoom;
-- (void)_cancelZoomTrackingIfNeccessaryWithTouch:(id)a3;
-- (void)_drawCurveWithFlatEndsFromX:(double)a3 fromY:(double)a4 toX:(double)a5 toY:(double)a6;
-- (void)_stopTrackingAndSendControlEvents:(unint64_t)a3;
-- (void)_updateSlidersWithTouch:(id)a3;
+- (void)_cancelZoomTrackingIfNeccessaryWithTouch:(id)touch;
+- (void)_drawCurveWithFlatEndsFromX:(double)x fromY:(double)y toX:(double)toX toY:(double)toY;
+- (void)_stopTrackingAndSendControlEvents:(unint64_t)events;
+- (void)_updateSlidersWithTouch:(id)touch;
 - (void)_updateTrack;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)setEnabled:(BOOL)a3;
-- (void)setEndValue:(double)minValue notify:(BOOL)a4;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setEndValue:(double)minValue notify:(BOOL)notify;
 - (void)setMaxValue:(double)maxValue;
 - (void)setMinValue:(double)minValue;
-- (void)setRegionEditorStyle:(unint64_t)a3;
-- (void)setStartValue:(double)minValue notify:(BOOL)a4;
-- (void)setTrackInsets:(UIEdgeInsets)a3;
-- (void)setZoomAnimating:(BOOL)a3;
-- (void)setZoomMinValue:(double)a3 maxValue:(double)a4;
+- (void)setRegionEditorStyle:(unint64_t)style;
+- (void)setStartValue:(double)minValue notify:(BOOL)notify;
+- (void)setTrackInsets:(UIEdgeInsets)insets;
+- (void)setZoomAnimating:(BOOL)animating;
+- (void)setZoomMinValue:(double)value maxValue:(double)maxValue;
 @end
 
 @implementation PLSlalomRegionEditor
@@ -67,52 +67,52 @@
   return v4;
 }
 
-- (void)_drawCurveWithFlatEndsFromX:(double)a3 fromY:(double)a4 toX:(double)a5 toY:(double)a6
+- (void)_drawCurveWithFlatEndsFromX:(double)x fromY:(double)y toX:(double)toX toY:(double)toY
 {
   CurrentContext = UIGraphicsGetCurrentContext();
 
-  CGContextAddCurveToPoint(CurrentContext, a5 * 0.5 + a3 * 0.5, a4, a5 * 0.5 + a3 * 0.5, a6, a5, a6);
+  CGContextAddCurveToPoint(CurrentContext, toX * 0.5 + x * 0.5, y, toX * 0.5 + x * 0.5, toY, toX, toY);
 }
 
 - (id)_handleTintColor
 {
-  v2 = [(PLSlalomRegionEditor *)self regionEditorStyle];
-  if (v2)
+  regionEditorStyle = [(PLSlalomRegionEditor *)self regionEditorStyle];
+  if (regionEditorStyle)
   {
-    if (v2 == 1)
+    if (regionEditorStyle == 1)
     {
-      v3 = [MEMORY[0x277D75348] whiteColor];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
     }
 
     else
     {
-      v3 = 0;
+      whiteColor = 0;
     }
   }
 
   else
   {
-    v3 = [MEMORY[0x277D75348] blackColor];
+    whiteColor = [MEMORY[0x277D75348] blackColor];
   }
 
-  return v3;
+  return whiteColor;
 }
 
 - (id)_trackColor
 {
-  v2 = [(PLSlalomRegionEditor *)self regionEditorStyle];
-  if (!v2)
+  regionEditorStyle = [(PLSlalomRegionEditor *)self regionEditorStyle];
+  if (!regionEditorStyle)
   {
-    v3 = [MEMORY[0x277D75348] colorWithRed:0.0 green:0.478431373 blue:1.0 alpha:1.0];
+    whiteColor = [MEMORY[0x277D75348] colorWithRed:0.0 green:0.478431373 blue:1.0 alpha:1.0];
     goto LABEL_5;
   }
 
-  if (v2 == 1)
+  if (regionEditorStyle == 1)
   {
-    v3 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
 LABEL_5:
-    v4 = v3;
-    v5 = [v3 colorWithAlphaComponent:0.1];
+    v4 = whiteColor;
+    v5 = [whiteColor colorWithAlphaComponent:0.1];
 
     goto LABEL_7;
   }
@@ -125,29 +125,29 @@ LABEL_7:
 
 - (id)_tickColor
 {
-  v2 = [(PLSlalomRegionEditor *)self regionEditorStyle];
-  if (v2)
+  regionEditorStyle = [(PLSlalomRegionEditor *)self regionEditorStyle];
+  if (regionEditorStyle)
   {
-    if (v2 == 1)
+    if (regionEditorStyle == 1)
     {
-      v3 = [MEMORY[0x277D75348] whiteColor];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
     }
 
     else
     {
-      v3 = 0;
+      whiteColor = 0;
     }
   }
 
   else
   {
-    v3 = [MEMORY[0x277D75348] colorWithRed:0.0 green:0.478431373 blue:1.0 alpha:1.0];
+    whiteColor = [MEMORY[0x277D75348] colorWithRed:0.0 green:0.478431373 blue:1.0 alpha:1.0];
   }
 
-  return v3;
+  return whiteColor;
 }
 
-- (id)_trackImageForZoom:(BOOL)a3
+- (id)_trackImageForZoom:(BOOL)zoom
 {
   [(PLSlalomRegionEditor *)self _trackFrame];
   v5 = v4;
@@ -170,16 +170,16 @@ LABEL_7:
   v24 = *(MEMORY[0x277CBF348] + 8);
   [(PLSlalomRegionEditor *)self _trackScale];
   v27 = v26;
-  v28 = [(PLSlalomRegionEditor *)self px_screen];
-  [v28 scale];
+  px_screen = [(PLSlalomRegionEditor *)self px_screen];
+  [px_screen scale];
   v30 = v29;
   v60.width = v9;
   v60.height = v11;
   UIGraphicsBeginImageContextWithOptions(v60, 0, v30);
 
   CurrentContext = UIGraphicsGetCurrentContext();
-  v32 = [(PLSlalomRegionEditor *)self _trackColor];
-  [v32 setFill];
+  _trackColor = [(PLSlalomRegionEditor *)self _trackColor];
+  [_trackColor setFill];
 
   v61.origin.x = v25;
   v61.origin.y = v24;
@@ -257,8 +257,8 @@ LABEL_7:
     }
   }
 
-  v49 = [(PLSlalomRegionEditor *)self _tickColor];
-  [v49 setStroke];
+  _tickColor = [(PLSlalomRegionEditor *)self _tickColor];
+  [_tickColor setStroke];
 
   CGContextStrokePath(CurrentContext);
   v50 = UIGraphicsGetImageFromCurrentImageContext();
@@ -273,18 +273,18 @@ LABEL_7:
   [(UIImageView *)self->_trackImageView setImage:v3];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = v4;
+  beginCopy = begin;
+  v5 = beginCopy;
   if (!self->_draggingStart && !self->_draggingEnd)
   {
     goto LABEL_15;
   }
 
-  v6 = [v4 view];
+  view = [beginCopy view];
 
-  if (v6 == self)
+  if (view == self)
   {
     goto LABEL_15;
   }
@@ -305,13 +305,13 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v7 = [v5 view];
-  [(PLSlalomRegionEditor *)self convertPoint:v7 toView:10.0, 10.0];
+  view2 = [v5 view];
+  [(PLSlalomRegionEditor *)self convertPoint:view2 toView:10.0, 10.0];
   v9 = v8;
   v11 = v10;
 
-  v12 = [v5 view];
-  [(PLSlalomRegionEditor *)self convertPoint:v12 toView:20.0, 10.0];
+  view3 = [v5 view];
+  [(PLSlalomRegionEditor *)self convertPoint:view3 toView:20.0, 10.0];
   v14 = v13;
   v16 = v15;
 
@@ -343,9 +343,9 @@ LABEL_16:
   }
 }
 
-- (void)_cancelZoomTrackingIfNeccessaryWithTouch:(id)a3
+- (void)_cancelZoomTrackingIfNeccessaryWithTouch:(id)touch
 {
-  [a3 locationInView:self];
+  [touch locationInView:self];
   if (vabdd_f64(v4, self->_touchLocationWhenTrackingZoomBegan.x) > 4.0)
   {
 
@@ -353,27 +353,27 @@ LABEL_16:
   }
 }
 
-- (void)_beginTrackingZoomWithTouch:(id)a3
+- (void)_beginTrackingZoomWithTouch:(id)touch
 {
-  v4 = a3;
+  touchCopy = touch;
   if (!self->_trackingZoom && !self->_zoomed)
   {
     self->_trackingZoom = 1;
-    v7 = v4;
-    [v4 locationInView:self];
+    v7 = touchCopy;
+    [touchCopy locationInView:self];
     self->_touchLocationWhenTrackingZoomBegan.x = v5;
     self->_touchLocationWhenTrackingZoomBegan.y = v6;
     [(PLSlalomRegionEditor *)self performSelector:sel__zoomPressWasHeld withObject:0 afterDelay:self->_zoomDelay];
-    v4 = v7;
+    touchCopy = v7;
   }
 }
 
-- (void)_updateSlidersWithTouch:(id)a3
+- (void)_updateSlidersWithTouch:(id)touch
 {
-  v4 = a3;
-  if (v4 && (self->_draggingStart || self->_draggingEnd))
+  touchCopy = touch;
+  if (touchCopy && (self->_draggingStart || self->_draggingEnd))
   {
-    v16 = v4;
+    v16 = touchCopy;
     if (![(PLSlalomRegionEditor *)self isZoomAnimating])
     {
       if (self->_draggingStart)
@@ -414,7 +414,7 @@ LABEL_16:
   MEMORY[0x2821F96F8]();
 }
 
-- (void)_stopTrackingAndSendControlEvents:(unint64_t)a3
+- (void)_stopTrackingAndSendControlEvents:(unint64_t)events
 {
   if (self->_draggingStart)
   {
@@ -434,40 +434,40 @@ LABEL_16:
   }
 
   [(PLSlalomRegionEditorDelegate *)self->_delegate slalomRegionEditorDidEndEditing:self];
-  [(PLSlalomRegionEditor *)self sendActionsForControlEvents:a3];
+  [(PLSlalomRegionEditor *)self sendActionsForControlEvents:events];
 LABEL_5:
   [(PLSlalomRegionEditor *)self _cancelTrackingZoom];
 
   [(PLSlalomRegionEditor *)self _cancelZoom];
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  [(PLSlalomRegionEditor *)self _updateSlidersWithTouch:a3, a4];
+  [(PLSlalomRegionEditor *)self _updateSlidersWithTouch:touch, event];
 
   [(PLSlalomRegionEditor *)self _stopTrackingAndSendControlEvents:64];
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v5 = a3;
-  [(PLSlalomRegionEditor *)self _updateSlidersWithTouch:v5];
+  touchCopy = touch;
+  [(PLSlalomRegionEditor *)self _updateSlidersWithTouch:touchCopy];
   if (self->_draggingStart || self->_draggingEnd)
   {
-    [(PLSlalomRegionEditor *)self _cancelZoomTrackingIfNeccessaryWithTouch:v5];
-    [(PLSlalomRegionEditor *)self _beginTrackingZoomWithTouch:v5];
+    [(PLSlalomRegionEditor *)self _cancelZoomTrackingIfNeccessaryWithTouch:touchCopy];
+    [(PLSlalomRegionEditor *)self _beginTrackingZoomWithTouch:touchCopy];
   }
 
   return 1;
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v5 = a3;
+  touchCopy = touch;
   v17 = 1.79769313e308;
   v18 = 1.79769313e308;
-  v6 = [(PLSlalomRegionEditor *)self _isTouch:v5 inHandleIsStart:1 outTouchOffset:&v18];
-  v7 = [(PLSlalomRegionEditor *)self _isTouch:v5 inHandleIsStart:0 outTouchOffset:&v17];
+  v6 = [(PLSlalomRegionEditor *)self _isTouch:touchCopy inHandleIsStart:1 outTouchOffset:&v18];
+  v7 = [(PLSlalomRegionEditor *)self _isTouch:touchCopy inHandleIsStart:0 outTouchOffset:&v17];
   v9 = v17;
   v8 = v18;
   v10 = fabs(v18);
@@ -505,7 +505,7 @@ LABEL_5:
   self->_touchOffset = v8;
   if (self->_draggingStart || v14)
   {
-    [(PLSlalomRegionEditor *)self _beginTrackingZoomWithTouch:v5];
+    [(PLSlalomRegionEditor *)self _beginTrackingZoomWithTouch:touchCopy];
     [(PLSlalomRegionEditorDelegate *)self->_delegate slalomRegionEditorDidBeginEditing:self withStartHandle:self->_draggingStart];
     [(PLSlalomRegionEditor *)self sendActionsForControlEvents:1];
   }
@@ -513,14 +513,14 @@ LABEL_5:
   return 1;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(PLSlalomRegionEditor *)self isEnabled]!= a3)
+  enabledCopy = enabled;
+  if ([(PLSlalomRegionEditor *)self isEnabled]!= enabled)
   {
     v6.receiver = self;
     v6.super_class = PLSlalomRegionEditor;
-    [(PLSlalomRegionEditor *)&v6 setEnabled:v3];
+    [(PLSlalomRegionEditor *)&v6 setEnabled:enabledCopy];
     if ([(PLSlalomRegionEditor *)self isEnabled])
     {
       v5 = 1.0;
@@ -538,13 +538,13 @@ LABEL_5:
   }
 }
 
-- (BOOL)_isTouch:(id)a3 inHandleIsStart:(BOOL)a4 outTouchOffset:(double *)a5
+- (BOOL)_isTouch:(id)touch inHandleIsStart:(BOOL)start outTouchOffset:(double *)offset
 {
-  v6 = a4;
-  [a3 locationInView:self];
+  startCopy = start;
+  [touch locationInView:self];
   v9 = v8;
   v11 = v10;
-  if (v6)
+  if (startCopy)
   {
     [(PLSlalomRegionEditor *)self startHandleFrame];
   }
@@ -566,16 +566,16 @@ LABEL_5:
   MidY = CGRectGetMidY(v24);
   v22 = vabdd_f64(v9, MidX) <= 44.0;
   result = vabdd_f64(v11, MidY) <= 44.0 && v22;
-  *a5 = v9 - MidX;
+  *offset = v9 - MidX;
   return result;
 }
 
-- (double)_valueFromHandleFrame:(CGRect)a3 isStart:(BOOL)a4
+- (double)_valueFromHandleFrame:(CGRect)frame isStart:(BOOL)start
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(PLSlalomRegionEditor *)self _trackFrame];
   if (v10 <= 0.0)
   {
@@ -594,7 +594,7 @@ LABEL_5:
   return self->_minValue + (CGRectGetMidX(v17) - (v11 + v14)) / v15 * (self->_maxValue - self->_minValue);
 }
 
-- (CGRect)_handleFrameForValue:(double)a3 isStart:(BOOL)a4
+- (CGRect)_handleFrameForValue:(double)value isStart:(BOOL)start
 {
   [(PLSlalomRegionEditor *)self _trackFrame];
   v7 = v6;
@@ -610,11 +610,11 @@ LABEL_5:
 
   else
   {
-    v16 = (a3 - minValue) / (maxValue - minValue);
+    v16 = (value - minValue) / (maxValue - minValue);
   }
 
-  v17 = [(UIImageView *)self->_startHandleView image];
-  [v17 size];
+  image = [(UIImageView *)self->_startHandleView image];
+  [image size];
   v19 = v18;
   v21 = v20;
 
@@ -734,26 +734,26 @@ LABEL_5:
   return result;
 }
 
-- (void)setRegionEditorStyle:(unint64_t)a3
+- (void)setRegionEditorStyle:(unint64_t)style
 {
-  if (self->_regionEditorStyle != a3)
+  if (self->_regionEditorStyle != style)
   {
-    self->_regionEditorStyle = a3;
-    v5 = [(PLSlalomRegionEditor *)self _handleTintColor];
-    [(UIImageView *)self->_startHandleView setTintColor:v5];
-    [(UIImageView *)self->_endHandleView setTintColor:v5];
+    self->_regionEditorStyle = style;
+    _handleTintColor = [(PLSlalomRegionEditor *)self _handleTintColor];
+    [(UIImageView *)self->_startHandleView setTintColor:_handleTintColor];
+    [(UIImageView *)self->_endHandleView setTintColor:_handleTintColor];
     self->_forceLayout = 1;
     [(PLSlalomRegionEditor *)self setNeedsLayout];
     [(PLSlalomRegionEditor *)self layoutIfNeeded];
   }
 }
 
-- (void)setZoomAnimating:(BOOL)a3
+- (void)setZoomAnimating:(BOOL)animating
 {
-  if (self->_zoomAnimating != a3)
+  if (self->_zoomAnimating != animating)
   {
-    self->_zoomAnimating = a3;
-    if (!a3)
+    self->_zoomAnimating = animating;
+    if (!animating)
     {
       [(UIImageView *)self->_trackSnapshotView setImage:0];
     }
@@ -779,12 +779,12 @@ LABEL_5:
   return result;
 }
 
-- (void)setZoomMinValue:(double)a3 maxValue:(double)a4
+- (void)setZoomMinValue:(double)value maxValue:(double)maxValue
 {
-  if (self->_zoomMinValue == a3)
+  if (self->_zoomMinValue == value)
   {
     p_zoomMaxValue = &self->_zoomMaxValue;
-    if (self->_zoomMaxValue == a4)
+    if (self->_zoomMaxValue == maxValue)
     {
       return;
     }
@@ -792,15 +792,15 @@ LABEL_5:
 
   else
   {
-    self->_zoomMinValue = a3;
+    self->_zoomMinValue = value;
     p_zoomMaxValue = &self->_zoomMaxValue;
-    if (self->_zoomMaxValue == a4)
+    if (self->_zoomMaxValue == maxValue)
     {
       goto LABEL_6;
     }
   }
 
-  *p_zoomMaxValue = a4;
+  *p_zoomMaxValue = maxValue;
 LABEL_6:
   v6 = self->_trackSnapshotView;
   objc_storeStrong(&self->_trackSnapshotView, self->_trackImageView);
@@ -815,7 +815,7 @@ LABEL_6:
   [(UIImageView *)self->_trackSnapshotView setAlpha:0.0];
 }
 
-- (void)setEndValue:(double)minValue notify:(BOOL)a4
+- (void)setEndValue:(double)minValue notify:(BOOL)notify
 {
   if (self->_minValue > minValue)
   {
@@ -829,15 +829,15 @@ LABEL_6:
 
   if (self->_endValue != minValue)
   {
-    v4 = a4;
+    notifyCopy = notify;
     self->_endValue = minValue;
     if (self->_startValue > minValue)
     {
-      [(PLSlalomRegionEditor *)self setStartValue:a4 notify:?];
+      [(PLSlalomRegionEditor *)self setStartValue:notify notify:?];
     }
 
     [(PLSlalomRegionEditor *)self setNeedsLayout];
-    if (v4)
+    if (notifyCopy)
     {
       delegate = self->_delegate;
 
@@ -846,7 +846,7 @@ LABEL_6:
   }
 }
 
-- (void)setStartValue:(double)minValue notify:(BOOL)a4
+- (void)setStartValue:(double)minValue notify:(BOOL)notify
 {
   if (self->_minValue > minValue)
   {
@@ -860,15 +860,15 @@ LABEL_6:
 
   if (self->_startValue != minValue)
   {
-    v4 = a4;
+    notifyCopy = notify;
     self->_startValue = minValue;
     if (self->_endValue < minValue)
     {
-      [(PLSlalomRegionEditor *)self setEndValue:a4 notify:?];
+      [(PLSlalomRegionEditor *)self setEndValue:notify notify:?];
     }
 
     [(PLSlalomRegionEditor *)self setNeedsLayout];
-    if (v4)
+    if (notifyCopy)
     {
       delegate = self->_delegate;
 
@@ -917,15 +917,15 @@ LABEL_6:
   }
 }
 
-- (void)setTrackInsets:(UIEdgeInsets)a3
+- (void)setTrackInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_trackInsets.top), vceqq_f64(v4, *&self->_trackInsets.bottom)))) & 1) == 0)
   {
-    self->_trackInsets = a3;
+    self->_trackInsets = insets;
     [(PLSlalomRegionEditor *)self setNeedsLayout];
   }
 }
@@ -972,17 +972,17 @@ LABEL_6:
   }
 }
 
-- (PLSlalomRegionEditor)initWithFrame:(CGRect)a3
+- (PLSlalomRegionEditor)initWithFrame:(CGRect)frame
 {
   v24.receiver = self;
   v24.super_class = PLSlalomRegionEditor;
-  v3 = [(PLSlalomRegionEditor *)&v24 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PLSlalomRegionEditor *)&v24 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(PLSlalomRegionEditor *)v3 setOpaque:0];
     v4->_regionEditorStyle = 0;
-    v5 = [(PLSlalomRegionEditor *)v4 _handleImage];
+    _handleImage = [(PLSlalomRegionEditor *)v4 _handleImage];
     v6 = objc_alloc(MEMORY[0x277D755E8]);
     v7 = *MEMORY[0x277CBF3A0];
     v8 = *(MEMORY[0x277CBF3A0] + 8);
@@ -999,22 +999,22 @@ LABEL_6:
     v4->_trackImageView = v13;
 
     [(PLSlalomRegionEditor *)v4 addSubview:v4->_trackImageView];
-    v15 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v5];
+    v15 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:_handleImage];
     startHandleView = v4->_startHandleView;
     v4->_startHandleView = v15;
 
     v17 = v4->_startHandleView;
-    v18 = [(PLSlalomRegionEditor *)v4 _handleTintColor];
-    [(UIImageView *)v17 setTintColor:v18];
+    _handleTintColor = [(PLSlalomRegionEditor *)v4 _handleTintColor];
+    [(UIImageView *)v17 setTintColor:_handleTintColor];
 
     [(PLSlalomRegionEditor *)v4 addSubview:v4->_startHandleView];
-    v19 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v5];
+    v19 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:_handleImage];
     endHandleView = v4->_endHandleView;
     v4->_endHandleView = v19;
 
     v21 = v4->_endHandleView;
-    v22 = [(PLSlalomRegionEditor *)v4 _handleTintColor];
-    [(UIImageView *)v21 setTintColor:v22];
+    _handleTintColor2 = [(PLSlalomRegionEditor *)v4 _handleTintColor];
+    [(UIImageView *)v21 setTintColor:_handleTintColor2];
 
     [(PLSlalomRegionEditor *)v4 addSubview:v4->_endHandleView];
     v4->_minValue = 0.0;

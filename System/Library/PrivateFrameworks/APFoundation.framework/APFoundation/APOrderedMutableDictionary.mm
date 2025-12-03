@@ -1,14 +1,14 @@
 @interface APOrderedMutableDictionary
 + (id)dictionary;
-+ (id)dictionaryWithCapacity:(unint64_t)a3;
++ (id)dictionaryWithCapacity:(unint64_t)capacity;
 - (APOrderedMutableDictionary)init;
-- (APOrderedMutableDictionary)initWithCapacity:(unint64_t)a3;
+- (APOrderedMutableDictionary)initWithCapacity:(unint64_t)capacity;
 - (NSArray)allKeys;
 - (id)firstObject;
 - (id)lastObject;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)setValue:(id)a3 forKey:(id)a4;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)setValue:(id)value forKey:(id)key;
 @end
 
 @implementation APOrderedMutableDictionary
@@ -32,18 +32,18 @@
   return v2;
 }
 
-- (APOrderedMutableDictionary)initWithCapacity:(unint64_t)a3
+- (APOrderedMutableDictionary)initWithCapacity:(unint64_t)capacity
 {
   v14.receiver = self;
   v14.super_class = APOrderedMutableDictionary;
   v6 = [(APOrderedMutableDictionary *)&v14 init];
   if (v6)
   {
-    v7 = objc_msgSend_dictionaryWithCapacity_(MEMORY[0x1E695DF90], v4, a3, v5);
+    v7 = objc_msgSend_dictionaryWithCapacity_(MEMORY[0x1E695DF90], v4, capacity, v5);
     dictionary = v6->_dictionary;
     v6->_dictionary = v7;
 
-    v11 = objc_msgSend_orderedSetWithCapacity_(MEMORY[0x1E695DFA0], v9, a3, v10);
+    v11 = objc_msgSend_orderedSetWithCapacity_(MEMORY[0x1E695DFA0], v9, capacity, v10);
     mutableOrderedSet = v6->_mutableOrderedSet;
     v6->_mutableOrderedSet = v11;
   }
@@ -58,10 +58,10 @@
   return v2;
 }
 
-+ (id)dictionaryWithCapacity:(unint64_t)a3
++ (id)dictionaryWithCapacity:(unint64_t)capacity
 {
   v4 = [APOrderedMutableDictionary alloc];
-  v7 = objc_msgSend_initWithCapacity_(v4, v5, a3, v6);
+  v7 = objc_msgSend_initWithCapacity_(v4, v5, capacity, v6);
 
   return v7;
 }
@@ -74,36 +74,36 @@
   return v8;
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
-  v8 = a3;
-  v7 = a4;
-  if (v7)
+  valueCopy = value;
+  keyCopy = key;
+  if (keyCopy)
   {
-    if (v8)
+    if (valueCopy)
     {
-      objc_msgSend_setObject_forKey_(self, v8, v8, v7);
+      objc_msgSend_setObject_forKey_(self, valueCopy, valueCopy, keyCopy);
     }
 
     else
     {
-      objc_msgSend_removeObjectForKey_(self, 0, v7, v6);
+      objc_msgSend_removeObjectForKey_(self, 0, keyCopy, v6);
     }
   }
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  if (a3 && a4)
+  if (object && key)
   {
     mutableOrderedSet = self->_mutableOrderedSet;
-    v7 = a4;
-    v21 = a3;
-    v10 = objc_msgSend_indexOfObject_(mutableOrderedSet, v8, v7, v9);
+    keyCopy = key;
+    objectCopy = object;
+    v10 = objc_msgSend_indexOfObject_(mutableOrderedSet, v8, keyCopy, v9);
     v13 = self->_mutableOrderedSet;
     if (v10 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      objc_msgSend_addObject_(self->_mutableOrderedSet, v11, v7, v12);
+      objc_msgSend_addObject_(self->_mutableOrderedSet, v11, keyCopy, v12);
     }
 
     else
@@ -113,18 +113,18 @@
       objc_msgSend_moveObjectsAtIndexes_toIndex_(v13, v20, v15, v19 - 1);
     }
 
-    objc_msgSend_setObject_forKey_(self->_dictionary, v14, v21, v7);
+    objc_msgSend_setObject_forKey_(self->_dictionary, v14, objectCopy, keyCopy);
   }
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     mutableOrderedSet = self->_mutableOrderedSet;
-    v9 = a3;
-    objc_msgSend_removeObject_(mutableOrderedSet, v5, v9, v6);
-    objc_msgSend_removeObjectForKey_(self->_dictionary, v7, v9, v8);
+    keyCopy = key;
+    objc_msgSend_removeObject_(mutableOrderedSet, v5, keyCopy, v6);
+    objc_msgSend_removeObjectForKey_(self->_dictionary, v7, keyCopy, v8);
   }
 }
 

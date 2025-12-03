@@ -1,29 +1,29 @@
 @interface HKSleepDaySummaryDurationStrategy
-+ (id)bestFitDurationStrategyForSleepDayInterval:(id)a3;
-+ (id)bestFitDurationStrategyForSleepDayInterval:(id)a3 considerationInterval:(id)a4;
-+ (id)clippedDurationStrategyForSleepDayInterval:(id)a3;
-+ (id)completeDurationStrategyForSleepDayInterval:(id)a3;
-+ (id)standardStrategiesForSleepDayInterval:(id)a3;
-- (BOOL)isEqualTo:(id)a3;
-- (HKSleepDaySummaryDurationStrategy)initWithSleepDayInterval:(id)a3 considerationInterval:(id)a4;
-- (id)computeDurationsFromPeriod:(id)a3;
++ (id)bestFitDurationStrategyForSleepDayInterval:(id)interval;
++ (id)bestFitDurationStrategyForSleepDayInterval:(id)interval considerationInterval:(id)considerationInterval;
++ (id)clippedDurationStrategyForSleepDayInterval:(id)interval;
++ (id)completeDurationStrategyForSleepDayInterval:(id)interval;
++ (id)standardStrategiesForSleepDayInterval:(id)interval;
+- (BOOL)isEqualTo:(id)to;
+- (HKSleepDaySummaryDurationStrategy)initWithSleepDayInterval:(id)interval considerationInterval:(id)considerationInterval;
+- (id)computeDurationsFromPeriod:(id)period;
 - (int64_t)strategyType;
 @end
 
 @implementation HKSleepDaySummaryDurationStrategy
 
-- (HKSleepDaySummaryDurationStrategy)initWithSleepDayInterval:(id)a3 considerationInterval:(id)a4
+- (HKSleepDaySummaryDurationStrategy)initWithSleepDayInterval:(id)interval considerationInterval:(id)considerationInterval
 {
-  v7 = a3;
-  v8 = a4;
+  intervalCopy = interval;
+  considerationIntervalCopy = considerationInterval;
   v12.receiver = self;
   v12.super_class = HKSleepDaySummaryDurationStrategy;
   v9 = [(HKSleepDaySummaryDurationStrategy *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_sleepDayInterval, a3);
-    objc_storeStrong(&v10->_considerationInterval, a4);
+    objc_storeStrong(&v9->_sleepDayInterval, interval);
+    objc_storeStrong(&v10->_considerationInterval, considerationInterval);
   }
 
   return v10;
@@ -42,31 +42,31 @@
   objc_exception_throw(v7);
 }
 
-- (id)computeDurationsFromPeriod:(id)a3
+- (id)computeDurationsFromPeriod:(id)period
 {
-  v4 = a3;
-  v5 = [(HKSleepDaySummaryDurationStrategy *)self considerationInterval];
-  [v4 durationForCategory:1 overlappingDateInterval:v5];
+  periodCopy = period;
+  considerationInterval = [(HKSleepDaySummaryDurationStrategy *)self considerationInterval];
+  [periodCopy durationForCategory:1 overlappingDateInterval:considerationInterval];
   v7 = v6;
 
-  v8 = [(HKSleepDaySummaryDurationStrategy *)self considerationInterval];
-  [v4 durationForCategory:3 overlappingDateInterval:v8];
+  considerationInterval2 = [(HKSleepDaySummaryDurationStrategy *)self considerationInterval];
+  [periodCopy durationForCategory:3 overlappingDateInterval:considerationInterval2];
   v10 = v9;
 
-  v11 = [(HKSleepDaySummaryDurationStrategy *)self considerationInterval];
-  [v4 durationForCategory:4 overlappingDateInterval:v11];
+  considerationInterval3 = [(HKSleepDaySummaryDurationStrategy *)self considerationInterval];
+  [periodCopy durationForCategory:4 overlappingDateInterval:considerationInterval3];
   v13 = v12;
 
-  v14 = [(HKSleepDaySummaryDurationStrategy *)self considerationInterval];
-  [v4 durationForCategory:5 overlappingDateInterval:v14];
+  considerationInterval4 = [(HKSleepDaySummaryDurationStrategy *)self considerationInterval];
+  [periodCopy durationForCategory:5 overlappingDateInterval:considerationInterval4];
   v16 = v15;
 
-  v17 = [(HKSleepDaySummaryDurationStrategy *)self considerationInterval];
-  [v4 durationForCategory:2 overlappingDateInterval:v17];
+  considerationInterval5 = [(HKSleepDaySummaryDurationStrategy *)self considerationInterval];
+  [periodCopy durationForCategory:2 overlappingDateInterval:considerationInterval5];
   v19 = v18;
 
-  v20 = [(HKSleepDaySummaryDurationStrategy *)self considerationInterval];
-  [v4 durationForCategory:0 overlappingDateInterval:v20];
+  considerationInterval6 = [(HKSleepDaySummaryDurationStrategy *)self considerationInterval];
+  [periodCopy durationForCategory:0 overlappingDateInterval:considerationInterval6];
   v22 = v21;
 
   v23 = [[HKSleepDaySummaryDurations alloc] initWithInBedDuration:v22 sleepDuration:v7 + v10 + v13 + v16 unspecifiedSleepDuration:v7 coreSleepDuration:v10 deepSleepDuration:v13 remSleepDuration:v16 awakeDuration:v19];
@@ -74,19 +74,19 @@
   return v23;
 }
 
-- (BOOL)isEqualTo:(id)a3
+- (BOOL)isEqualTo:(id)to
 {
-  v4 = a3;
-  v5 = [(HKSleepDaySummaryDurationStrategy *)self sleepDayInterval];
-  v6 = [v4 sleepDayInterval];
-  if ([v5 isEqualToDateInterval:v6])
+  toCopy = to;
+  sleepDayInterval = [(HKSleepDaySummaryDurationStrategy *)self sleepDayInterval];
+  sleepDayInterval2 = [toCopy sleepDayInterval];
+  if ([sleepDayInterval isEqualToDateInterval:sleepDayInterval2])
   {
-    v7 = [(HKSleepDaySummaryDurationStrategy *)self considerationInterval];
-    v8 = [v4 considerationInterval];
-    if ([v7 isEqualToDateInterval:v8])
+    considerationInterval = [(HKSleepDaySummaryDurationStrategy *)self considerationInterval];
+    considerationInterval2 = [toCopy considerationInterval];
+    if ([considerationInterval isEqualToDateInterval:considerationInterval2])
     {
-      v9 = [(HKSleepDaySummaryDurationStrategy *)self strategyType];
-      v10 = v9 == [v4 strategyType];
+      strategyType = [(HKSleepDaySummaryDurationStrategy *)self strategyType];
+      v10 = strategyType == [toCopy strategyType];
     }
 
     else
@@ -103,54 +103,54 @@
   return v10;
 }
 
-+ (id)clippedDurationStrategyForSleepDayInterval:(id)a3
++ (id)clippedDurationStrategyForSleepDayInterval:(id)interval
 {
-  v3 = a3;
-  v4 = [[_HKSleepDaySummaryDurationComputationStrategyClipped alloc] initWithSleepDayInterval:v3];
+  intervalCopy = interval;
+  v4 = [[_HKSleepDaySummaryDurationComputationStrategyClipped alloc] initWithSleepDayInterval:intervalCopy];
 
   return v4;
 }
 
-+ (id)completeDurationStrategyForSleepDayInterval:(id)a3
++ (id)completeDurationStrategyForSleepDayInterval:(id)interval
 {
-  v3 = a3;
-  v4 = [[_HKSleepDaySummaryDurationComputationStrategyComplete alloc] initWithSleepDayInterval:v3];
+  intervalCopy = interval;
+  v4 = [[_HKSleepDaySummaryDurationComputationStrategyComplete alloc] initWithSleepDayInterval:intervalCopy];
 
   return v4;
 }
 
-+ (id)bestFitDurationStrategyForSleepDayInterval:(id)a3
++ (id)bestFitDurationStrategyForSleepDayInterval:(id)interval
 {
   v4 = MEMORY[0x1E696AB80];
-  v5 = a3;
-  v6 = [v4 hk_allTime];
-  v7 = [a1 bestFitDurationStrategyForSleepDayInterval:v5 considerationInterval:v6];
+  intervalCopy = interval;
+  hk_allTime = [v4 hk_allTime];
+  v7 = [self bestFitDurationStrategyForSleepDayInterval:intervalCopy considerationInterval:hk_allTime];
 
   return v7;
 }
 
-+ (id)bestFitDurationStrategyForSleepDayInterval:(id)a3 considerationInterval:(id)a4
++ (id)bestFitDurationStrategyForSleepDayInterval:(id)interval considerationInterval:(id)considerationInterval
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [(HKSleepDaySummaryDurationStrategy *)[_HKSleepDaySummaryDurationComputationStrategyBestFit alloc] initWithSleepDayInterval:v6 considerationInterval:v5];
+  considerationIntervalCopy = considerationInterval;
+  intervalCopy = interval;
+  v7 = [(HKSleepDaySummaryDurationStrategy *)[_HKSleepDaySummaryDurationComputationStrategyBestFit alloc] initWithSleepDayInterval:intervalCopy considerationInterval:considerationIntervalCopy];
 
   return v7;
 }
 
-+ (id)standardStrategiesForSleepDayInterval:(id)a3
++ (id)standardStrategiesForSleepDayInterval:(id)interval
 {
   v14[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  intervalCopy = interval;
   v5 = [HKSleepDaySummaryDurationStrategySet alloc];
   v13[0] = &unk_1F06859D0;
-  v6 = [a1 clippedDurationStrategyForSleepDayInterval:v4];
+  v6 = [self clippedDurationStrategyForSleepDayInterval:intervalCopy];
   v14[0] = v6;
   v13[1] = &unk_1F06859E8;
-  v7 = [a1 completeDurationStrategyForSleepDayInterval:v4];
+  v7 = [self completeDurationStrategyForSleepDayInterval:intervalCopy];
   v14[1] = v7;
   v13[2] = &unk_1F0685A00;
-  v8 = [a1 bestFitDurationStrategyForSleepDayInterval:v4];
+  v8 = [self bestFitDurationStrategyForSleepDayInterval:intervalCopy];
 
   v14[2] = v8;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:3];

@@ -1,27 +1,27 @@
 @interface _UIOServiceConnection
-+ (id)connectionWithBSServiceConnection:(id)a3 toServer:(id)a4;
-- (BOOL)clientHasEntitlement:(id)a3;
++ (id)connectionWithBSServiceConnection:(id)connection toServer:(id)server;
+- (BOOL)clientHasEntitlement:(id)entitlement;
 - (BSServiceConnectionHost)connection;
 - (NSString)bundleIdentifier;
 - (UIOServer)server;
 - (int64_t)pid;
 - (unint64_t)hash;
-- (void)addObserver:(id)a3;
-- (void)performOverlayServerAction:(id)a3;
-- (void)sendAction:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)performOverlayServerAction:(id)action;
+- (void)sendAction:(id)action;
 - (void)serviceConnectionDidInvalidate;
 @end
 
 @implementation _UIOServiceConnection
 
-+ (id)connectionWithBSServiceConnection:(id)a3 toServer:(id)a4
++ (id)connectionWithBSServiceConnection:(id)connection toServer:(id)server
 {
-  v5 = a4;
-  v6 = a3;
+  serverCopy = server;
+  connectionCopy = connection;
   v7 = objc_opt_new();
-  objc_storeWeak(v7 + 2, v6);
+  objc_storeWeak(v7 + 2, connectionCopy);
 
-  objc_storeWeak(v7 + 3, v5);
+  objc_storeWeak(v7 + 3, serverCopy);
 
   return v7;
 }
@@ -29,28 +29,28 @@
 - (int64_t)pid
 {
   WeakRetained = objc_loadWeakRetained(&self->_connection);
-  v3 = [WeakRetained remoteProcess];
-  v4 = [v3 auditToken];
-  v5 = [v4 versionedPID];
+  remoteProcess = [WeakRetained remoteProcess];
+  auditToken = [remoteProcess auditToken];
+  versionedPID = [auditToken versionedPID];
 
-  return v5;
+  return versionedPID;
 }
 
 - (NSString)bundleIdentifier
 {
   WeakRetained = objc_loadWeakRetained(&self->_connection);
-  v3 = [WeakRetained remoteProcess];
-  v4 = [v3 bundleIdentifier];
+  remoteProcess = [WeakRetained remoteProcess];
+  bundleIdentifier = [remoteProcess bundleIdentifier];
 
-  return v4;
+  return bundleIdentifier;
 }
 
-- (void)performOverlayServerAction:(id)a3
+- (void)performOverlayServerAction:(id)action
 {
-  v4 = a3;
-  if ([v4 isPermitted])
+  actionCopy = action;
+  if ([actionCopy isPermitted])
   {
-    [v4 performActionFromConnection:self];
+    [actionCopy performActionFromConnection:self];
   }
 
   else
@@ -64,41 +64,41 @@
   }
 }
 
-- (void)sendAction:(id)a3
+- (void)sendAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   WeakRetained = objc_loadWeakRetained(&self->_connection);
-  v5 = [WeakRetained remoteTarget];
-  [v5 performOverlayClientAction:v4];
+  remoteTarget = [WeakRetained remoteTarget];
+  [remoteTarget performOverlayClientAction:actionCopy];
 }
 
-- (BOOL)clientHasEntitlement:(id)a3
+- (BOOL)clientHasEntitlement:(id)entitlement
 {
-  v4 = a3;
-  v5 = [(_UIOServiceConnection *)self connection];
-  v6 = [v5 remoteProcess];
-  v7 = [v6 auditToken];
-  v8 = [v7 hasEntitlement:v4];
+  entitlementCopy = entitlement;
+  connection = [(_UIOServiceConnection *)self connection];
+  remoteProcess = [connection remoteProcess];
+  auditToken = [remoteProcess auditToken];
+  v8 = [auditToken hasEntitlement:entitlementCopy];
 
   return v8;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
 - (void)serviceConnectionDidInvalidate

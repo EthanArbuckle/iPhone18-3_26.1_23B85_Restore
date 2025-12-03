@@ -1,29 +1,29 @@
 @interface CAFUISwitchView
-- (_TtC5CAFUI15CAFUISwitchView)initWithCoder:(id)a3;
-- (_TtC5CAFUI15CAFUISwitchView)initWithFrame:(CGRect)a3;
-- (void)switchChangedWithSender:(id)a3;
+- (_TtC5CAFUI15CAFUISwitchView)initWithCoder:(id)coder;
+- (_TtC5CAFUI15CAFUISwitchView)initWithFrame:(CGRect)frame;
+- (void)switchChangedWithSender:(id)sender;
 @end
 
 @implementation CAFUISwitchView
 
-- (_TtC5CAFUI15CAFUISwitchView)initWithCoder:(id)a3
+- (_TtC5CAFUI15CAFUISwitchView)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
   return result;
 }
 
-- (void)switchChangedWithSender:(id)a3
+- (void)switchChangedWithSender:(id)sender
 {
-  v4 = a3;
-  v7 = self;
-  v5 = [v4 isOn];
-  v6 = *(&v7->super.super.super.isa + OBJC_IVAR____TtC5CAFUI15CAFUISwitchView_handler);
+  senderCopy = sender;
+  selfCopy = self;
+  isOn = [senderCopy isOn];
+  v6 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC5CAFUI15CAFUISwitchView_handler);
 
-  v6(v5);
+  v6(isOn);
 }
 
-- (_TtC5CAFUI15CAFUISwitchView)initWithFrame:(CGRect)a3
+- (_TtC5CAFUI15CAFUISwitchView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

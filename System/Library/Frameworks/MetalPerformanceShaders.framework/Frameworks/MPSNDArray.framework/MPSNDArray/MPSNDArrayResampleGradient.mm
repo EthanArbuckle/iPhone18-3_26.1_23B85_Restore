@@ -1,18 +1,18 @@
 @interface MPSNDArrayResampleGradient
-- (MPSNDArrayResampleGradient)initWithCoder:(id)a3 device:(id)a4;
-- (MPSNDArrayResampleGradient)initWithDevice:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)setScaleTransform:(const MPSScaleTransform *)a3;
+- (MPSNDArrayResampleGradient)initWithCoder:(id)coder device:(id)device;
+- (MPSNDArrayResampleGradient)initWithDevice:(id)device;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (void)encodeWithCoder:(id)coder;
+- (void)setScaleTransform:(const MPSScaleTransform *)transform;
 @end
 
 @implementation MPSNDArrayResampleGradient
 
-- (MPSNDArrayResampleGradient)initWithDevice:(id)a3
+- (MPSNDArrayResampleGradient)initWithDevice:(id)device
 {
   v5.receiver = self;
   v5.super_class = MPSNDArrayResampleGradient;
-  result = [(MPSNDArrayUnaryGradientKernel *)&v5 initWithDevice:a3];
+  result = [(MPSNDArrayUnaryGradientKernel *)&v5 initWithDevice:device];
   if (result)
   {
     result->_scaleTransform = 0;
@@ -29,11 +29,11 @@
   return result;
 }
 
-- (MPSNDArrayResampleGradient)initWithCoder:(id)a3 device:(id)a4
+- (MPSNDArrayResampleGradient)initWithCoder:(id)coder device:(id)device
 {
   v14.receiver = self;
   v14.super_class = MPSNDArrayResampleGradient;
-  v5 = [(MPSNDArrayUnaryGradientKernel *)&v14 initWithCoder:a3 device:a4];
+  v5 = [(MPSNDArrayUnaryGradientKernel *)&v14 initWithCoder:coder device:device];
   v6 = v5;
   if (v5)
   {
@@ -42,15 +42,15 @@
     v8 = vdupq_n_s64(0x7FF8000000000000uLL);
     *&v5->_transformStorage.scaleX = v8;
     *&v5->_transformStorage.translateX = v8;
-    if ([a3 containsValueForKey:@"MPSNDArrayResampleGradientScaleX"])
+    if ([coder containsValueForKey:@"MPSNDArrayResampleGradientScaleX"])
     {
-      [a3 decodeDoubleForKey:@"MPSNDArrayResampleGradientScaleX"];
+      [coder decodeDoubleForKey:@"MPSNDArrayResampleGradientScaleX"];
       p_transformStorage->scaleX = v10;
       v6->_scaleTransform = p_transformStorage;
-      if (![a3 containsValueForKey:@"MPSNDArrayResampleGradientScaleY"])
+      if (![coder containsValueForKey:@"MPSNDArrayResampleGradientScaleY"])
       {
 LABEL_4:
-        if (![a3 containsValueForKey:@"MPSNDArrayResampleGradientTranslateX"])
+        if (![coder containsValueForKey:@"MPSNDArrayResampleGradientTranslateX"])
         {
           goto LABEL_5;
         }
@@ -59,18 +59,18 @@ LABEL_4:
       }
     }
 
-    else if (![a3 containsValueForKey:@"MPSNDArrayResampleGradientScaleY"])
+    else if (![coder containsValueForKey:@"MPSNDArrayResampleGradientScaleY"])
     {
       goto LABEL_4;
     }
 
-    [a3 decodeDoubleForKey:@"MPSNDArrayResampleGradientScaleY"];
+    [coder decodeDoubleForKey:@"MPSNDArrayResampleGradientScaleY"];
     v6->_transformStorage.scaleY = v11;
     v6->_scaleTransform = p_transformStorage;
-    if (![a3 containsValueForKey:@"MPSNDArrayResampleGradientTranslateX"])
+    if (![coder containsValueForKey:@"MPSNDArrayResampleGradientTranslateX"])
     {
 LABEL_5:
-      if (![a3 containsValueForKey:@"MPSNDArrayResampleGradientTranslateY"])
+      if (![coder containsValueForKey:@"MPSNDArrayResampleGradientTranslateY"])
       {
         goto LABEL_6;
       }
@@ -79,13 +79,13 @@ LABEL_5:
     }
 
 LABEL_14:
-    [a3 decodeDoubleForKey:@"MPSNDArrayResampleGradientTranslateX"];
+    [coder decodeDoubleForKey:@"MPSNDArrayResampleGradientTranslateX"];
     v6->_transformStorage.translateX = v12;
     v6->_scaleTransform = p_transformStorage;
-    if (![a3 containsValueForKey:@"MPSNDArrayResampleGradientTranslateY"])
+    if (![coder containsValueForKey:@"MPSNDArrayResampleGradientTranslateY"])
     {
 LABEL_6:
-      if (![a3 containsValueForKey:@"MPSNDArrayResampleGradientModeKey"])
+      if (![coder containsValueForKey:@"MPSNDArrayResampleGradientModeKey"])
       {
         goto LABEL_7;
       }
@@ -94,13 +94,13 @@ LABEL_6:
     }
 
 LABEL_15:
-    [a3 decodeDoubleForKey:@"MPSNDArrayResampleGradientTranslateY"];
+    [coder decodeDoubleForKey:@"MPSNDArrayResampleGradientTranslateY"];
     v6->_transformStorage.translateY = v13;
     v6->_scaleTransform = p_transformStorage;
-    if (![a3 containsValueForKey:@"MPSNDArrayResampleGradientModeKey"])
+    if (![coder containsValueForKey:@"MPSNDArrayResampleGradientModeKey"])
     {
 LABEL_7:
-      if (![a3 containsValueForKey:@"MPSNDArrayResampleGradientDataFormatKey"])
+      if (![coder containsValueForKey:@"MPSNDArrayResampleGradientDataFormatKey"])
       {
         goto LABEL_8;
       }
@@ -109,11 +109,11 @@ LABEL_7:
     }
 
 LABEL_16:
-    v6->_resampleMode = [a3 decodeInt64ForKey:@"MPSNDArrayResampleGradientModeKey"];
-    if (![a3 containsValueForKey:@"MPSNDArrayResampleGradientDataFormatKey"])
+    v6->_resampleMode = [coder decodeInt64ForKey:@"MPSNDArrayResampleGradientModeKey"];
+    if (![coder containsValueForKey:@"MPSNDArrayResampleGradientDataFormatKey"])
     {
 LABEL_8:
-      if (![a3 containsValueForKey:@"MPSNDArrayResampleGradientNearestModeKey"])
+      if (![coder containsValueForKey:@"MPSNDArrayResampleGradientNearestModeKey"])
       {
 LABEL_10:
         v6->super.super.super._encodeGradient = EncodeResampleGradient;
@@ -122,13 +122,13 @@ LABEL_10:
       }
 
 LABEL_9:
-      v6->_nearestMode = [a3 decodeInt64ForKey:@"MPSNDArrayResampleGradientNearestModeKey"];
+      v6->_nearestMode = [coder decodeInt64ForKey:@"MPSNDArrayResampleGradientNearestModeKey"];
       goto LABEL_10;
     }
 
 LABEL_17:
-    v6->_dataFormat = [a3 decodeInt64ForKey:@"MPSNDArrayResampleGradientDataFormatKey"];
-    if (![a3 containsValueForKey:@"MPSNDArrayResampleGradientNearestModeKey"])
+    v6->_dataFormat = [coder decodeInt64ForKey:@"MPSNDArrayResampleGradientDataFormatKey"];
+    if (![coder containsValueForKey:@"MPSNDArrayResampleGradientNearestModeKey"])
     {
       goto LABEL_10;
     }
@@ -139,7 +139,7 @@ LABEL_17:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = MPSNDArrayResampleGradient;
@@ -147,21 +147,21 @@ LABEL_17:
   scaleTransform = self->_scaleTransform;
   if (scaleTransform)
   {
-    [a3 encodeDouble:@"MPSNDArrayResampleGradientScaleX" forKey:scaleTransform->scaleX];
-    [a3 encodeDouble:@"MPSNDArrayResampleGradientScaleY" forKey:self->_scaleTransform->scaleY];
-    [a3 encodeDouble:@"MPSNDArrayResampleGradientTranslateX" forKey:self->_scaleTransform->translateX];
-    [a3 encodeDouble:@"MPSNDArrayResampleGradientTranslateY" forKey:self->_scaleTransform->translateY];
-    [a3 encodeInt64:self->_resampleMode forKey:@"MPSNDArrayResampleGradientModeKey"];
-    [a3 encodeInt64:self->_dataFormat forKey:@"MPSNDArrayResampleGradientDataFormatKey"];
-    [a3 encodeInt64:self->_nearestMode forKey:@"MPSNDArrayResampleGradientNearestModeKey"];
+    [coder encodeDouble:@"MPSNDArrayResampleGradientScaleX" forKey:scaleTransform->scaleX];
+    [coder encodeDouble:@"MPSNDArrayResampleGradientScaleY" forKey:self->_scaleTransform->scaleY];
+    [coder encodeDouble:@"MPSNDArrayResampleGradientTranslateX" forKey:self->_scaleTransform->translateX];
+    [coder encodeDouble:@"MPSNDArrayResampleGradientTranslateY" forKey:self->_scaleTransform->translateY];
+    [coder encodeInt64:self->_resampleMode forKey:@"MPSNDArrayResampleGradientModeKey"];
+    [coder encodeInt64:self->_dataFormat forKey:@"MPSNDArrayResampleGradientDataFormatKey"];
+    [coder encodeInt64:self->_nearestMode forKey:@"MPSNDArrayResampleGradientNearestModeKey"];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v8.receiver = self;
   v8.super_class = MPSNDArrayResampleGradient;
-  result = [(MPSNDArrayMultiaryGradientKernel *)&v8 copyWithZone:a3 device:a4];
+  result = [(MPSNDArrayMultiaryGradientKernel *)&v8 copyWithZone:zone device:device];
   if (result)
   {
     if (self->_scaleTransform)
@@ -186,12 +186,12 @@ LABEL_17:
   return result;
 }
 
-- (void)setScaleTransform:(const MPSScaleTransform *)a3
+- (void)setScaleTransform:(const MPSScaleTransform *)transform
 {
-  if (a3)
+  if (transform)
   {
-    v3 = *&a3->translateX;
-    *&self->_transformStorage.scaleX = *&a3->scaleX;
+    v3 = *&transform->translateX;
+    *&self->_transformStorage.scaleX = *&transform->scaleX;
     *&self->_transformStorage.translateX = v3;
     self->_scaleTransform = &self->_transformStorage;
   }

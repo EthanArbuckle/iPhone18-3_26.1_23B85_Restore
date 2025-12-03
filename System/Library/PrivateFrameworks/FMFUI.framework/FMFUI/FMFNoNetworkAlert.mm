@@ -1,7 +1,7 @@
 @interface FMFNoNetworkAlert
 + (BOOL)isAirplaneModeEnabled;
 + (BOOL)isGlobalCellularEnabled;
-+ (id)alertInfoForInternetUnavailableReason:(unint64_t)a3;
++ (id)alertInfoForInternetUnavailableReason:(unint64_t)reason;
 + (id)newAlertController;
 + (unint64_t)reasonForNoInternet;
 @end
@@ -10,19 +10,19 @@
 
 + (id)newAlertController
 {
-  v2 = [objc_opt_class() reasonForNoInternet];
-  v3 = [objc_opt_class() alertInfoForInternetUnavailableReason:v2];
+  reasonForNoInternet = [objc_opt_class() reasonForNoInternet];
+  v3 = [objc_opt_class() alertInfoForInternetUnavailableReason:reasonForNoInternet];
   v4 = v3;
   if (v3)
   {
     v5 = MEMORY[0x277D75110];
-    v6 = [v3 title];
-    v7 = [v4 message];
-    v8 = [v5 alertControllerWithTitle:v6 message:v7 preferredStyle:1];
+    title = [v3 title];
+    message = [v4 message];
+    v8 = [v5 alertControllerWithTitle:title message:message preferredStyle:1];
 
-    v9 = [v4 actionURL];
+    actionURL = [v4 actionURL];
 
-    if (v9)
+    if (actionURL)
     {
       v10 = MEMORY[0x277D750F8];
       v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -62,12 +62,12 @@ void __39__FMFNoNetworkAlert_newAlertController__block_invoke(uint64_t a1)
 
 + (unint64_t)reasonForNoInternet
 {
-  if ([a1 isAirplaneModeEnabled])
+  if ([self isAirplaneModeEnabled])
   {
     return 1;
   }
 
-  if (([a1 isGlobalCellularEnabled] & 1) != 0 || (objc_msgSend(MEMORY[0x277D3F9B0], "deviceSupportsCellularData") & 1) == 0)
+  if (([self isGlobalCellularEnabled] & 1) != 0 || (objc_msgSend(MEMORY[0x277D3F9B0], "deviceSupportsCellularData") & 1) == 0)
   {
     return 3;
   }
@@ -75,34 +75,34 @@ void __39__FMFNoNetworkAlert_newAlertController__block_invoke(uint64_t a1)
   return 2;
 }
 
-+ (id)alertInfoForInternetUnavailableReason:(unint64_t)a3
++ (id)alertInfoForInternetUnavailableReason:(unint64_t)reason
 {
   v4 = objc_opt_new();
-  if (a3 > 1)
+  if (reason > 1)
   {
-    if (a3 == 2)
+    if (reason == 2)
     {
       v15 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v16 = [v15 localizedStringForKey:@"ALERT_NO_NETWORK_TITLE_CELLULAR_DISABLED" value:&stru_285D99658 table:@"LocalizableUI"];
-      v17 = [v16 fm_wifiToWLAN];
-      [v4 setTitle:v17];
+      fm_wifiToWLAN = [v16 fm_wifiToWLAN];
+      [v4 setTitle:fm_wifiToWLAN];
 
       v18 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v19 = [v18 localizedStringForKey:@"ALERT_NO_NETWORK_MESSAGE_CELLULAR_DISABLED" value:&stru_285D99658 table:@"LocalizableUI"];
-      v20 = [v19 fm_wifiToWLAN];
-      [v4 setMessage:v20];
+      fm_wifiToWLAN2 = [v19 fm_wifiToWLAN];
+      [v4 setMessage:fm_wifiToWLAN2];
 
       v8 = MEMORY[0x277CBEBC0];
       v9 = @"prefs:root=MOBILE_DATA_SETTINGS_ID";
       goto LABEL_12;
     }
 
-    if (a3 == 3)
+    if (reason == 3)
     {
       v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v11 = [v10 localizedStringForKey:@"ALERT_NO_NETWORK_TITLE_NO_INTERNET" value:&stru_285D99658 table:@"LocalizableUI"];
-      v12 = [v11 fm_wifiToWLAN];
-      [v4 setTitle:v12];
+      fm_wifiToWLAN3 = [v11 fm_wifiToWLAN];
+      [v4 setTitle:fm_wifiToWLAN3];
 
 LABEL_13:
     }
@@ -112,14 +112,14 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (a3)
+  if (reason)
   {
-    if (a3 == 1)
+    if (reason == 1)
     {
       v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v6 = [v5 localizedStringForKey:@"ALERT_NO_NETWORK_TITLE_AIRPLANE_MODE" value:&stru_285D99658 table:@"LocalizableUI"];
-      v7 = [v6 fm_wifiToWLAN];
-      [v4 setTitle:v7];
+      fm_wifiToWLAN4 = [v6 fm_wifiToWLAN];
+      [v4 setTitle:fm_wifiToWLAN4];
 
       v8 = MEMORY[0x277CBEBC0];
       v9 = @"prefs:root=ROOT#AIRPLANE_MODE";
@@ -155,22 +155,22 @@ LABEL_15:
     LOBYTE(v3) = 0;
   }
 
-  v4 = [MEMORY[0x277D3F9B0] isEnabled];
-  if (v4)
+  isEnabled = [MEMORY[0x277D3F9B0] isEnabled];
+  if (isEnabled)
   {
-    LOBYTE(v4) = [MEMORY[0x277D3F9B0] deviceSupportsCellularData];
+    LOBYTE(isEnabled) = [MEMORY[0x277D3F9B0] deviceSupportsCellularData];
   }
 
-  return v3 & v4;
+  return v3 & isEnabled;
 }
 
 + (BOOL)isAirplaneModeEnabled
 {
   v2 = objc_alloc_init(MEMORY[0x277CEC5D0]);
   [v2 refresh];
-  v3 = [v2 airplaneMode];
+  airplaneMode = [v2 airplaneMode];
 
-  return v3;
+  return airplaneMode;
 }
 
 @end

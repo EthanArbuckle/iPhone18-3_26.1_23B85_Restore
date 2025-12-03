@@ -3,15 +3,15 @@
 - (BOOL)hasAcceptedDisplayNameAcknowledgement;
 - (BOOL)hasAcceptedPrivacyAcknowledgement;
 - (BOOL)identitySupportsCollaboration;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToUserState:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToUserState:(id)state;
 - (BOOL)isFullSubscriber;
 - (BOOL)isMinor;
-- (MRDMediaUserState)initWithUserState:(id)a3;
+- (MRDMediaUserState)initWithUserState:(id)state;
 - (MRUserIdentity)userIdentity;
 - (NSString)storefrontCountryCode;
 - (id)frameworkState;
-- (id)userIdentityWithDisplayName:(id)a3;
+- (id)userIdentityWithDisplayName:(id)name;
 - (unint64_t)hash;
 @end
 
@@ -19,32 +19,32 @@
 
 - (BOOL)isMinor
 {
-  v2 = [(MRDMediaUserState *)self userState];
-  v3 = [v2 music];
-  v4 = [v3 subscriptionStatus];
+  userState = [(MRDMediaUserState *)self userState];
+  music = [userState music];
+  subscriptionStatus = [music subscriptionStatus];
 
-  if (v4)
+  if (subscriptionStatus)
   {
-    v5 = [v4 isMinorAccountHolder];
+    isMinorAccountHolder = [subscriptionStatus isMinorAccountHolder];
   }
 
   else
   {
-    v5 = 1;
+    isMinorAccountHolder = 1;
   }
 
-  return v5;
+  return isMinorAccountHolder;
 }
 
 - (BOOL)isFullSubscriber
 {
-  v2 = [(MRDMediaUserState *)self userState];
-  v3 = [v2 music];
-  v4 = [v3 subscriptionStatus];
+  userState = [(MRDMediaUserState *)self userState];
+  music = [userState music];
+  subscriptionStatus = [music subscriptionStatus];
 
-  if (v4)
+  if (subscriptionStatus)
   {
-    v5 = [v4 hasCapability:1];
+    v5 = [subscriptionStatus hasCapability:1];
   }
 
   else
@@ -58,8 +58,8 @@
 - (id)frameworkState
 {
   v3 = objc_alloc_init(MRMediaUserState);
-  v4 = [(MRDMediaUserState *)self identifier];
-  [v3 setIdentifier:v4];
+  identifier = [(MRDMediaUserState *)self identifier];
+  [v3 setIdentifier:identifier];
 
   [v3 setIsMinor:{-[MRDMediaUserState isMinor](self, "isMinor")}];
   [v3 setIsFullSubscriber:{-[MRDMediaUserState isFullSubscriber](self, "isFullSubscriber")}];
@@ -67,11 +67,11 @@
   [v3 setHasAcceptedDisplayNameAcknowledgement:{-[MRDMediaUserState hasAcceptedDisplayNameAcknowledgement](self, "hasAcceptedDisplayNameAcknowledgement")}];
   [v3 setIdentitySupportsCollaboration:{-[MRDMediaUserState identitySupportsCollaboration](self, "identitySupportsCollaboration")}];
   [v3 setGroupSessionsSupportedForAccountRegion:{-[MRDMediaUserState groupSessionsSupportedForAccountRegion](self, "groupSessionsSupportedForAccountRegion")}];
-  v5 = [(MRDMediaUserState *)self storefrontCountryCode];
-  [v3 setStorefrontCountryCode:v5];
+  storefrontCountryCode = [(MRDMediaUserState *)self storefrontCountryCode];
+  [v3 setStorefrontCountryCode:storefrontCountryCode];
 
-  v6 = [(MRDMediaUserState *)self userIdentity];
-  [v3 setUserIdentity:v6];
+  userIdentity = [(MRDMediaUserState *)self userIdentity];
+  [v3 setUserIdentity:userIdentity];
 
   return v3;
 }
@@ -85,79 +85,79 @@
 
 - (BOOL)hasAcceptedPrivacyAcknowledgement
 {
-  v2 = [(MRDMediaUserState *)self userState];
-  v3 = [v2 dsid];
-  v4 = [ICUserIdentity specificAccountWithDSID:v3];
+  userState = [(MRDMediaUserState *)self userState];
+  dsid = [userState dsid];
+  v4 = [ICUserIdentity specificAccountWithDSID:dsid];
   v5 = [ICPrivacyInfo sharedPrivacyInfoForUserIdentity:v4];
-  v6 = [v5 privacyAcknowledgementRequiredForMusic];
+  privacyAcknowledgementRequiredForMusic = [v5 privacyAcknowledgementRequiredForMusic];
 
-  return v6 ^ 1;
+  return privacyAcknowledgementRequiredForMusic ^ 1;
 }
 
 - (BOOL)hasAcceptedDisplayNameAcknowledgement
 {
-  v2 = [(MRDMediaUserState *)self userState];
-  v3 = [v2 music];
-  v4 = [v3 userProfile];
-  v5 = [v4 displayNameAccepted];
+  userState = [(MRDMediaUserState *)self userState];
+  music = [userState music];
+  userProfile = [music userProfile];
+  displayNameAccepted = [userProfile displayNameAccepted];
 
-  return v5;
+  return displayNameAccepted;
 }
 
 - (BOOL)identitySupportsCollaboration
 {
-  v2 = [(MRDMediaUserState *)self userState];
-  v3 = [v2 music];
-  v4 = [v3 userProfile];
+  userState = [(MRDMediaUserState *)self userState];
+  music = [userState music];
+  userProfile = [music userProfile];
 
-  if (v4)
+  if (userProfile)
   {
-    v5 = [v4 collaborationAllowed];
+    collaborationAllowed = [userProfile collaborationAllowed];
   }
 
   else
   {
-    v5 = 0;
+    collaborationAllowed = 0;
   }
 
-  return v5;
+  return collaborationAllowed;
 }
 
 - (NSString)storefrontCountryCode
 {
-  v2 = [(MRDMediaUserState *)self userState];
-  v3 = [v2 countryCode];
+  userState = [(MRDMediaUserState *)self userState];
+  countryCode = [userState countryCode];
 
-  return v3;
+  return countryCode;
 }
 
 - (MRUserIdentity)userIdentity
 {
-  v3 = [(MRDMediaUserState *)self userState];
-  v4 = [v3 music];
-  v5 = [v4 userProfile];
+  userState = [(MRDMediaUserState *)self userState];
+  music = [userState music];
+  userProfile = [music userProfile];
 
-  v6 = [v5 socialProfile];
-  v7 = [v6 socialProfileID];
+  socialProfile = [userProfile socialProfile];
+  socialProfileID = [socialProfile socialProfileID];
 
-  if (v7)
+  if (socialProfileID)
   {
-    v8 = [v5 socialProfile];
-    v9 = [v8 socialProfileID];
-    v10 = [v5 socialProfile];
-    v11 = [v10 name];
-    v12 = [MRUserIdentity resolvableIdentityWithIdentifier:v9 displayName:v11];
+    socialProfile2 = [userProfile socialProfile];
+    socialProfileID2 = [socialProfile2 socialProfileID];
+    socialProfile3 = [userProfile socialProfile];
+    name = [socialProfile3 name];
+    v12 = [MRUserIdentity resolvableIdentityWithIdentifier:socialProfileID2 displayName:name];
 
 LABEL_5:
     goto LABEL_6;
   }
 
-  v13 = [v5 name];
+  name2 = [userProfile name];
 
-  if (v13)
+  if (name2)
   {
-    v8 = [v5 name];
-    v12 = [(MRDMediaUserState *)self userIdentityWithDisplayName:v8];
+    socialProfile2 = [userProfile name];
+    v12 = [(MRDMediaUserState *)self userIdentityWithDisplayName:socialProfile2];
     goto LABEL_5;
   }
 
@@ -173,10 +173,10 @@ LABEL_6:
   return v12;
 }
 
-- (MRDMediaUserState)initWithUserState:(id)a3
+- (MRDMediaUserState)initWithUserState:(id)state
 {
-  v5 = a3;
-  if (v5)
+  stateCopy = state;
+  if (stateCopy)
   {
     v10.receiver = self;
     v10.super_class = MRDMediaUserState;
@@ -184,22 +184,22 @@ LABEL_6:
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_userState, a3);
+      objc_storeStrong(&v6->_userState, state);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (id)userIdentityWithDisplayName:(id)a3
+- (id)userIdentityWithDisplayName:(id)name
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -207,30 +207,30 @@ LABEL_6:
   block[3] = &unk_1004B6D08;
   block[4] = self;
   v3 = qword_100529200;
-  v4 = a3;
+  nameCopy = name;
   if (v3 != -1)
   {
     dispatch_once(&qword_100529200, block);
   }
 
-  v5 = [MRUserIdentity basicIdentityWithIdentifier:qword_100529208 displayName:v4];
+  v5 = [MRUserIdentity basicIdentityWithIdentifier:qword_100529208 displayName:nameCopy];
 
   return v5;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(MRDMediaUserState *)self userState];
-  v3 = [v2 identifier];
-  v4 = [v3 hash];
+  userState = [(MRDMediaUserState *)self userState];
+  identifier = [userState identifier];
+  v4 = [identifier hash];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -240,7 +240,7 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(MRDMediaUserState *)self isEqualToUserState:v4];
+      v5 = [(MRDMediaUserState *)self isEqualToUserState:equalCopy];
     }
 
     else
@@ -252,19 +252,19 @@ LABEL_6:
   return v5;
 }
 
-- (BOOL)isEqualToUserState:(id)a3
+- (BOOL)isEqualToUserState:(id)state
 {
-  if (self == a3)
+  if (self == state)
   {
     return 1;
   }
 
-  v4 = a3;
-  v5 = [(MRDMediaUserState *)self userState];
-  v6 = [v4 userState];
+  stateCopy = state;
+  userState = [(MRDMediaUserState *)self userState];
+  userState2 = [stateCopy userState];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(stateCopy) = [userState isEqual:userState2];
+  return stateCopy;
 }
 
 @end

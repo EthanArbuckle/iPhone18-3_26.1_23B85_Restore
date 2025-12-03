@@ -1,10 +1,10 @@
 @interface CAMControlDrawer
 - ($F24F406B2B787EFB06265DBA3D28CBD5)_scrubberGradientEdgeInsets;
-- (BOOL)isControlExpandedForType:(int64_t)a3;
-- (BOOL)shouldAccessibilityGestureBeginForHUDManager:(id)a3;
-- (CAMControlDrawer)initWithCoder:(id)a3;
-- (CAMControlDrawer)initWithFrame:(CGRect)a3;
-- (CAMControlDrawer)initWithLayoutStyle:(int64_t)a3;
+- (BOOL)isControlExpandedForType:(int64_t)type;
+- (BOOL)shouldAccessibilityGestureBeginForHUDManager:(id)manager;
+- (CAMControlDrawer)initWithCoder:(id)coder;
+- (CAMControlDrawer)initWithFrame:(CGRect)frame;
+- (CAMControlDrawer)initWithLayoutStyle:(int64_t)style;
 - (CAMControlDrawerDelegate)delegate;
 - (CAMControlDrawerPresentationDelegate)presentationDelegate;
 - (CAMDrawerApertureButton)apertureButton;
@@ -23,38 +23,38 @@
 - (CAMDrawerSmartStyleButton)smartStyleButton;
 - (CAMDrawerTimerButton)timerButton;
 - (CAMDrawerVideoStabilizationButton)videoStabilizationButton;
-- (CGSize)_scrollingContentSizeForControlCount:(unint64_t)a3;
-- (double)_controlCenterSpacingForControlCount:(unint64_t)a3;
-- (id)_createControlForType:(int64_t)a3;
-- (id)buttonForType:(int64_t)a3;
-- (id)hudItemForAccessibilityHUDManager:(id)a3;
+- (CGSize)_scrollingContentSizeForControlCount:(unint64_t)count;
+- (double)_controlCenterSpacingForControlCount:(unint64_t)count;
+- (id)_createControlForType:(int64_t)type;
+- (id)buttonForType:(int64_t)type;
+- (id)hudItemForAccessibilityHUDManager:(id)manager;
 - (id)touchingRecognizersToCancel;
 - (int64_t)expandedControlType;
 - (unint64_t)_sliderFontStyle;
 - (unint64_t)_viewportMaximumControlCount;
 - (void)_apertureSliderDidChangeValue;
-- (void)_commonInitializationWithLayoutStyle:(int64_t)a3;
+- (void)_commonInitializationWithLayoutStyle:(int64_t)style;
 - (void)_ensureVisibleControls;
 - (void)_exposureSliderDidChangeValue;
 - (void)_filterScrubberDidChangeValue;
-- (void)_handleControlReleased:(id)a3;
-- (void)_handleControlValueChanged:(id)a3;
-- (void)_installControlIfNeededForType:(int64_t)a3;
+- (void)_handleControlReleased:(id)released;
+- (void)_handleControlValueChanged:(id)changed;
+- (void)_installControlIfNeededForType:(int64_t)type;
 - (void)_intensitySliderDidChangeValue;
-- (void)_iterateViewsForHUDManager:(id)a3 withItemFoundBlock:(id)a4;
+- (void)_iterateViewsForHUDManager:(id)manager withItemFoundBlock:(id)block;
 - (void)_layoutApertureSlider;
 - (void)_layoutExposureSlider;
 - (void)_layoutFilterScrubberView;
-- (void)_layoutFullWidthCustomView:(id)a3 forAssociatedControl:(id)a4 expanded:(BOOL)a5;
-- (void)_layoutFullWidthCustomView:(id)a3 withAlignmentRect:(CGRect)a4 forAssociatedControl:(id)a5 expanded:(BOOL)a6;
+- (void)_layoutFullWidthCustomView:(id)view forAssociatedControl:(id)control expanded:(BOOL)expanded;
+- (void)_layoutFullWidthCustomView:(id)view withAlignmentRect:(CGRect)rect forAssociatedControl:(id)control expanded:(BOOL)expanded;
 - (void)_layoutIntensitySlider;
 - (void)_layoutNightModeSlider;
-- (void)_layoutScrubberView:(id)a3 forAssociatedControl:(id)a4 expanded:(BOOL)a5;
+- (void)_layoutScrubberView:(id)view forAssociatedControl:(id)control expanded:(BOOL)expanded;
 - (void)_layoutSemanticStyleControl;
-- (void)_layoutVisibleControlForType:(int64_t)a3 visibleControlTypes:(id)a4;
+- (void)_layoutVisibleControlForType:(int64_t)type visibleControlTypes:(id)types;
 - (void)_loadApertureSliderIfNeeded;
-- (void)_loadControlIfNeededForType:(int64_t)a3;
-- (void)_loadCustomUIIfNeededForControlType:(int64_t)a3;
+- (void)_loadControlIfNeededForType:(int64_t)type;
+- (void)_loadCustomUIIfNeededForControlType:(int64_t)type;
 - (void)_loadExposureSliderIfNeeded;
 - (void)_loadFilterScrubberIfNeeded;
 - (void)_loadIntensitySliderIfNeeded;
@@ -62,24 +62,24 @@
 - (void)_loadSemanticStyleControlIfNeeded;
 - (void)_nightModeSliderDidChangeValue;
 - (void)_semanticStyleControlDidChangeValue;
-- (void)_setExpandedControl:(id)a3 animated:(BOOL)a4 updatePreferredDrawerControl:(BOOL)a5;
-- (void)_updateControlsScaleAnimated:(BOOL)a3;
-- (void)_updateControlsVisibilityAnimated:(BOOL)a3;
-- (void)_updateExpansionInsetsForExpandableButton:(id)a3;
-- (void)expandableButton:(id)a3 willChangeExpanded:(BOOL)a4;
+- (void)_setExpandedControl:(id)control animated:(BOOL)animated updatePreferredDrawerControl:(BOOL)drawerControl;
+- (void)_updateControlsScaleAnimated:(BOOL)animated;
+- (void)_updateControlsVisibilityAnimated:(BOOL)animated;
+- (void)_updateExpansionInsetsForExpandableButton:(id)button;
+- (void)expandableButton:(id)button willChangeExpanded:(BOOL)expanded;
 - (void)layoutSubviews;
-- (void)menuButtonDidSelectItem:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)selectedByAccessibilityHUDManager:(id)a3;
-- (void)setExpanded:(BOOL)a3 forControlType:(int64_t)a4 animated:(BOOL)a5 updatePreferredDrawerControl:(BOOL)a6;
-- (void)setLayoutStyle:(int64_t)a3;
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4;
-- (void)setVisibleControlTypes:(id)a3 animated:(BOOL)a4;
+- (void)menuButtonDidSelectItem:(id)item;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)selectedByAccessibilityHUDManager:(id)manager;
+- (void)setExpanded:(BOOL)expanded forControlType:(int64_t)type animated:(BOOL)animated updatePreferredDrawerControl:(BOOL)control;
+- (void)setLayoutStyle:(int64_t)style;
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated;
+- (void)setVisibleControlTypes:(id)types animated:(BOOL)animated;
 @end
 
 @implementation CAMControlDrawer
 
-- (CAMControlDrawer)initWithLayoutStyle:(int64_t)a3
+- (CAMControlDrawer)initWithLayoutStyle:(int64_t)style
 {
   v7.receiver = self;
   v7.super_class = CAMControlDrawer;
@@ -87,18 +87,18 @@
   v5 = v4;
   if (v4)
   {
-    [(CAMControlDrawer *)v4 _commonInitializationWithLayoutStyle:a3];
+    [(CAMControlDrawer *)v4 _commonInitializationWithLayoutStyle:style];
   }
 
   return v5;
 }
 
-- (void)_commonInitializationWithLayoutStyle:(int64_t)a3
+- (void)_commonInitializationWithLayoutStyle:(int64_t)style
 {
-  self->_layoutStyle = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  self->_layoutStyle = style;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   controlMap = self->__controlMap;
-  self->__controlMap = v4;
+  self->__controlMap = dictionary;
 
   v6 = objc_alloc_init(MEMORY[0x1E69DCEF8]);
   scrollView = self->__scrollView;
@@ -114,33 +114,33 @@
   [(CAMControlDrawer *)self addSubview:v8];
 }
 
-- (CAMControlDrawer)initWithFrame:(CGRect)a3
+- (CAMControlDrawer)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CAMControlDrawer;
-  v3 = [(CAMControlDrawer *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMControlDrawer *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC938] currentDevice];
-    v5 = [v4 cam_initialLayoutStyle];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    cam_initialLayoutStyle = [currentDevice cam_initialLayoutStyle];
 
-    [(CAMControlDrawer *)v3 _commonInitializationWithLayoutStyle:v5];
+    [(CAMControlDrawer *)v3 _commonInitializationWithLayoutStyle:cam_initialLayoutStyle];
   }
 
   return v3;
 }
 
-- (CAMControlDrawer)initWithCoder:(id)a3
+- (CAMControlDrawer)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CAMControlDrawer;
-  v3 = [(CAMControlDrawer *)&v7 initWithCoder:a3];
+  v3 = [(CAMControlDrawer *)&v7 initWithCoder:coder];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC938] currentDevice];
-    v5 = [v4 cam_initialLayoutStyle];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    cam_initialLayoutStyle = [currentDevice cam_initialLayoutStyle];
 
-    [(CAMControlDrawer *)v3 _commonInitializationWithLayoutStyle:v5];
+    [(CAMControlDrawer *)v3 _commonInitializationWithLayoutStyle:cam_initialLayoutStyle];
   }
 
   return v3;
@@ -149,9 +149,9 @@
 - (void)layoutSubviews
 {
   v49 = *MEMORY[0x1E69E9840];
-  v3 = [(CAMControlDrawer *)self visibleControlTypes];
-  v4 = [(CAMControlDrawer *)self _scrollView];
-  [v4 frame];
+  visibleControlTypes = [(CAMControlDrawer *)self visibleControlTypes];
+  _scrollView = [(CAMControlDrawer *)self _scrollView];
+  [_scrollView frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -174,29 +174,29 @@
     v21 = v20;
     v23 = v22;
     v25 = v24;
-    v26 = [(CAMControlDrawer *)self _scrollView];
-    [v26 setFrame:{v19, v21, v23, v25}];
+    _scrollView2 = [(CAMControlDrawer *)self _scrollView];
+    [_scrollView2 setFrame:{v19, v21, v23, v25}];
   }
 
-  -[CAMControlDrawer _scrollingContentSizeForControlCount:](self, "_scrollingContentSizeForControlCount:", [v3 count]);
+  -[CAMControlDrawer _scrollingContentSizeForControlCount:](self, "_scrollingContentSizeForControlCount:", [visibleControlTypes count]);
   v28 = v27;
   v30 = v29;
-  v31 = [(CAMControlDrawer *)self _scrollView];
-  [v31 contentSize];
+  _scrollView3 = [(CAMControlDrawer *)self _scrollView];
+  [_scrollView3 contentSize];
   v33 = v32;
   v35 = v34;
 
   if (v33 != v28 || v35 != v30)
   {
-    v36 = [(CAMControlDrawer *)self _scrollView];
-    [v36 setContentSize:{v28, v30}];
+    _scrollView4 = [(CAMControlDrawer *)self _scrollView];
+    [_scrollView4 setContentSize:{v28, v30}];
   }
 
   v46 = 0u;
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v37 = v3;
+  v37 = visibleControlTypes;
   v38 = [v37 countByEnumeratingWithState:&v44 objects:v48 count:16];
   if (v38)
   {
@@ -222,12 +222,12 @@
     while (v39);
   }
 
-  v42 = [(CAMControlDrawer *)self expandedControl];
+  expandedControl = [(CAMControlDrawer *)self expandedControl];
 
-  if (v42)
+  if (expandedControl)
   {
-    v43 = [(CAMControlDrawer *)self expandedControl];
-    [(CAMControlDrawer *)self _updateExpansionInsetsForExpandableButton:v43];
+    expandedControl2 = [(CAMControlDrawer *)self expandedControl];
+    [(CAMControlDrawer *)self _updateExpansionInsetsForExpandableButton:expandedControl2];
   }
 
   [(CAMControlDrawer *)self _layoutFilterScrubberView];
@@ -240,16 +240,16 @@
   [(CAMControlDrawer *)self _updateControlsVisibilityAnimated:0];
 }
 
-- (id)_createControlForType:(int64_t)a3
+- (id)_createControlForType:(int64_t)type
 {
-  if (a3 > 0xF)
+  if (type > 0xF)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [objc_alloc(*off_1E76F8470[a3]) initWithLayoutStyle:{-[CAMControlDrawer layoutStyle](self, "layoutStyle")}];
+    v4 = [objc_alloc(*off_1E76F8470[type]) initWithLayoutStyle:{-[CAMControlDrawer layoutStyle](self, "layoutStyle")}];
   }
 
   [v4 addTarget:self action:sel__handleControlValueChanged_ forControlEvents:4096];
@@ -259,233 +259,233 @@
   return v4;
 }
 
-- (id)buttonForType:(int64_t)a3
+- (id)buttonForType:(int64_t)type
 {
-  v4 = [(CAMControlDrawer *)self _controlMap];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  _controlMap = [(CAMControlDrawer *)self _controlMap];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+  v6 = [_controlMap objectForKeyedSubscript:v5];
 
   return v6;
 }
 
 - (CAMDrawerFlashButton)flashButton
 {
-  v2 = [(CAMControlDrawer *)self _controlMap];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F16C71D8];
+  _controlMap = [(CAMControlDrawer *)self _controlMap];
+  v3 = [_controlMap objectForKeyedSubscript:&unk_1F16C71D8];
 
   return v3;
 }
 
 - (CAMDrawerLivePhotoButton)livePhotoButton
 {
-  v2 = [(CAMControlDrawer *)self _controlMap];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F16C71F0];
+  _controlMap = [(CAMControlDrawer *)self _controlMap];
+  v3 = [_controlMap objectForKeyedSubscript:&unk_1F16C71F0];
 
   return v3;
 }
 
 - (CAMDrawerAspectRatioButton)aspectRatioButton
 {
-  v2 = [(CAMControlDrawer *)self _controlMap];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F16C7208];
+  _controlMap = [(CAMControlDrawer *)self _controlMap];
+  v3 = [_controlMap objectForKeyedSubscript:&unk_1F16C7208];
 
   return v3;
 }
 
 - (CAMDrawerTimerButton)timerButton
 {
-  v2 = [(CAMControlDrawer *)self _controlMap];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F16C7220];
+  _controlMap = [(CAMControlDrawer *)self _controlMap];
+  v3 = [_controlMap objectForKeyedSubscript:&unk_1F16C7220];
 
   return v3;
 }
 
 - (CAMDrawerFilterButton)filterButton
 {
-  v2 = [(CAMControlDrawer *)self _controlMap];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F16C7238];
+  _controlMap = [(CAMControlDrawer *)self _controlMap];
+  v3 = [_controlMap objectForKeyedSubscript:&unk_1F16C7238];
 
   return v3;
 }
 
 - (CAMDrawerApertureButton)apertureButton
 {
-  v2 = [(CAMControlDrawer *)self _controlMap];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F16C7250];
+  _controlMap = [(CAMControlDrawer *)self _controlMap];
+  v3 = [_controlMap objectForKeyedSubscript:&unk_1F16C7250];
 
   return v3;
 }
 
 - (CAMDrawerIntensityButton)intensityButton
 {
-  v2 = [(CAMControlDrawer *)self _controlMap];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F16C7268];
+  _controlMap = [(CAMControlDrawer *)self _controlMap];
+  v3 = [_controlMap objectForKeyedSubscript:&unk_1F16C7268];
 
   return v3;
 }
 
 - (CAMDrawerExposureButton)exposureButton
 {
-  v2 = [(CAMControlDrawer *)self _controlMap];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F16C7280];
+  _controlMap = [(CAMControlDrawer *)self _controlMap];
+  v3 = [_controlMap objectForKeyedSubscript:&unk_1F16C7280];
 
   return v3;
 }
 
 - (CAMDrawerHDRButton)hdrButton
 {
-  v2 = [(CAMControlDrawer *)self _controlMap];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F16C7298];
+  _controlMap = [(CAMControlDrawer *)self _controlMap];
+  v3 = [_controlMap objectForKeyedSubscript:&unk_1F16C7298];
 
   return v3;
 }
 
 - (CAMDrawerNightModeButton)nightModeButton
 {
-  v2 = [(CAMControlDrawer *)self _controlMap];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F16C72B0];
+  _controlMap = [(CAMControlDrawer *)self _controlMap];
+  v3 = [_controlMap objectForKeyedSubscript:&unk_1F16C72B0];
 
   return v3;
 }
 
 - (CAMDrawerSemanticStyleButton)semanticStyleButton
 {
-  v2 = [(CAMControlDrawer *)self _controlMap];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F16C72C8];
+  _controlMap = [(CAMControlDrawer *)self _controlMap];
+  v3 = [_controlMap objectForKeyedSubscript:&unk_1F16C72C8];
 
   return v3;
 }
 
 - (CAMDrawerSmartStyleButton)smartStyleButton
 {
-  v2 = [(CAMControlDrawer *)self _controlMap];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F16C72E0];
+  _controlMap = [(CAMControlDrawer *)self _controlMap];
+  v3 = [_controlMap objectForKeyedSubscript:&unk_1F16C72E0];
 
   return v3;
 }
 
 - (CAMDrawerRAWButton)rawButton
 {
-  v2 = [(CAMControlDrawer *)self _controlMap];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F16C72F8];
+  _controlMap = [(CAMControlDrawer *)self _controlMap];
+  v3 = [_controlMap objectForKeyedSubscript:&unk_1F16C72F8];
 
   return v3;
 }
 
 - (CAMDrawerProResButton)proResButton
 {
-  v2 = [(CAMControlDrawer *)self _controlMap];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F16C7310];
+  _controlMap = [(CAMControlDrawer *)self _controlMap];
+  v3 = [_controlMap objectForKeyedSubscript:&unk_1F16C7310];
 
   return v3;
 }
 
 - (CAMDrawerSharedLibraryButton)sharedLibraryButton
 {
-  v2 = [(CAMControlDrawer *)self _controlMap];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F16C7328];
+  _controlMap = [(CAMControlDrawer *)self _controlMap];
+  v3 = [_controlMap objectForKeyedSubscript:&unk_1F16C7328];
 
   return v3;
 }
 
 - (CAMDrawerVideoStabilizationButton)videoStabilizationButton
 {
-  v2 = [(CAMControlDrawer *)self _controlMap];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F16C7340];
+  _controlMap = [(CAMControlDrawer *)self _controlMap];
+  v3 = [_controlMap objectForKeyedSubscript:&unk_1F16C7340];
 
   return v3;
 }
 
-- (void)_handleControlValueChanged:(id)a3
+- (void)_handleControlValueChanged:(id)changed
 {
-  v4 = [a3 controlType];
-  v5 = [(CAMControlDrawer *)self delegate];
-  [v5 controlDrawer:self didChangeValueForControlType:v4];
+  controlType = [changed controlType];
+  delegate = [(CAMControlDrawer *)self delegate];
+  [delegate controlDrawer:self didChangeValueForControlType:controlType];
 
-  if (v4 <= 4)
+  if (controlType <= 4)
   {
-    if (v4 > 1)
+    if (controlType > 1)
     {
-      if (v4 == 2)
+      if (controlType == 2)
       {
-        v7 = [(CAMControlDrawer *)self delegate];
-        v6 = [(CAMControlDrawer *)self aspectRatioButton];
-        [v7 controlDrawer:self didChangeAspectRatio:{objc_msgSend(v6, "aspectRatio")}];
+        delegate2 = [(CAMControlDrawer *)self delegate];
+        aspectRatioButton = [(CAMControlDrawer *)self aspectRatioButton];
+        [delegate2 controlDrawer:self didChangeAspectRatio:{objc_msgSend(aspectRatioButton, "aspectRatio")}];
       }
 
       else
       {
-        if (v4 != 3)
+        if (controlType != 3)
         {
           return;
         }
 
-        v7 = [(CAMControlDrawer *)self delegate];
-        v6 = [(CAMControlDrawer *)self timerButton];
-        [v7 controlDrawer:self didChangeTimerDuration:{objc_msgSend(v6, "timerDuration")}];
+        delegate2 = [(CAMControlDrawer *)self delegate];
+        aspectRatioButton = [(CAMControlDrawer *)self timerButton];
+        [delegate2 controlDrawer:self didChangeTimerDuration:{objc_msgSend(aspectRatioButton, "timerDuration")}];
       }
     }
 
-    else if (v4)
+    else if (controlType)
     {
-      if (v4 != 1)
+      if (controlType != 1)
       {
         return;
       }
 
-      v7 = [(CAMControlDrawer *)self delegate];
-      v6 = [(CAMControlDrawer *)self livePhotoButton];
-      [v7 controlDrawer:self didChangeLivePhotoMode:{objc_msgSend(v6, "livePhotoMode")}];
+      delegate2 = [(CAMControlDrawer *)self delegate];
+      aspectRatioButton = [(CAMControlDrawer *)self livePhotoButton];
+      [delegate2 controlDrawer:self didChangeLivePhotoMode:{objc_msgSend(aspectRatioButton, "livePhotoMode")}];
     }
 
     else
     {
-      v7 = [(CAMControlDrawer *)self delegate];
-      v6 = [(CAMControlDrawer *)self flashButton];
-      [v7 controlDrawer:self didChangeFlashMode:{objc_msgSend(v6, "flashMode")}];
+      delegate2 = [(CAMControlDrawer *)self delegate];
+      aspectRatioButton = [(CAMControlDrawer *)self flashButton];
+      [delegate2 controlDrawer:self didChangeFlashMode:{objc_msgSend(aspectRatioButton, "flashMode")}];
     }
   }
 
-  else if (v4 <= 12)
+  else if (controlType <= 12)
   {
-    if (v4 == 5)
+    if (controlType == 5)
     {
-      v7 = [(CAMControlDrawer *)self delegate];
-      v6 = [(CAMControlDrawer *)self hdrButton];
-      [v7 controlDrawer:self didChangeHDRMode:{objc_msgSend(v6, "hdrMode")}];
+      delegate2 = [(CAMControlDrawer *)self delegate];
+      aspectRatioButton = [(CAMControlDrawer *)self hdrButton];
+      [delegate2 controlDrawer:self didChangeHDRMode:{objc_msgSend(aspectRatioButton, "hdrMode")}];
     }
 
     else
     {
-      if (v4 != 12)
+      if (controlType != 12)
       {
         return;
       }
 
-      v7 = [(CAMControlDrawer *)self delegate];
-      v6 = [(CAMControlDrawer *)self rawButton];
-      [v7 controlDrawer:self didChangeRAWMode:{objc_msgSend(v6, "rawMode")}];
+      delegate2 = [(CAMControlDrawer *)self delegate];
+      aspectRatioButton = [(CAMControlDrawer *)self rawButton];
+      [delegate2 controlDrawer:self didChangeRAWMode:{objc_msgSend(aspectRatioButton, "rawMode")}];
     }
   }
 
   else
   {
-    switch(v4)
+    switch(controlType)
     {
       case 13:
-        v7 = [(CAMControlDrawer *)self delegate];
-        v6 = [(CAMControlDrawer *)self proResButton];
-        [v7 controlDrawer:self didChangeProResVideoMode:{objc_msgSend(v6, "proResVideoMode")}];
+        delegate2 = [(CAMControlDrawer *)self delegate];
+        aspectRatioButton = [(CAMControlDrawer *)self proResButton];
+        [delegate2 controlDrawer:self didChangeProResVideoMode:{objc_msgSend(aspectRatioButton, "proResVideoMode")}];
         break;
       case 14:
-        v7 = [(CAMControlDrawer *)self delegate];
-        v6 = [(CAMControlDrawer *)self sharedLibraryButton];
-        [v7 controlDrawer:self didChangeSharedLibraryMode:{objc_msgSend(v6, "sharedLibraryMode")}];
+        delegate2 = [(CAMControlDrawer *)self delegate];
+        aspectRatioButton = [(CAMControlDrawer *)self sharedLibraryButton];
+        [delegate2 controlDrawer:self didChangeSharedLibraryMode:{objc_msgSend(aspectRatioButton, "sharedLibraryMode")}];
         break;
       case 15:
-        v7 = [(CAMControlDrawer *)self delegate];
-        v6 = [(CAMControlDrawer *)self videoStabilizationButton];
-        [v7 controlDrawer:self didChangeVideoStabilizationMode:{objc_msgSend(v6, "videoStabilizationMode")}];
+        delegate2 = [(CAMControlDrawer *)self delegate];
+        aspectRatioButton = [(CAMControlDrawer *)self videoStabilizationButton];
+        [delegate2 controlDrawer:self didChangeVideoStabilizationMode:{objc_msgSend(aspectRatioButton, "videoStabilizationMode")}];
         break;
       default:
         return;
@@ -493,42 +493,42 @@
   }
 }
 
-- (void)_handleControlReleased:(id)a3
+- (void)_handleControlReleased:(id)released
 {
-  v4 = [a3 controlType];
-  [(CAMControlDrawer *)self _loadCustomUIIfNeededForControlType:v4];
-  if (v4 == 4)
+  controlType = [released controlType];
+  [(CAMControlDrawer *)self _loadCustomUIIfNeededForControlType:controlType];
+  if (controlType == 4)
   {
-    v8 = [(CAMControlDrawer *)self delegate];
-    v7 = [(CAMControlDrawer *)self filterButton];
-    [v8 controlDrawer:self wantsFilterScrubberVisible:{objc_msgSend(v7, "isExpanded") ^ 1}];
+    delegate = [(CAMControlDrawer *)self delegate];
+    filterButton = [(CAMControlDrawer *)self filterButton];
+    [delegate controlDrawer:self wantsFilterScrubberVisible:{objc_msgSend(filterButton, "isExpanded") ^ 1}];
   }
 
   else
   {
-    if (v4)
+    if (controlType)
     {
       return;
     }
 
-    v5 = [(CAMControlDrawer *)self flashButton];
-    v6 = [v5 isFlashUnavailable];
+    flashButton = [(CAMControlDrawer *)self flashButton];
+    isFlashUnavailable = [flashButton isFlashUnavailable];
 
-    if (!v6)
+    if (!isFlashUnavailable)
     {
       return;
     }
 
-    v8 = [(CAMControlDrawer *)self delegate];
-    [v8 controlDrawerFlashButtonUnavailable:self];
+    delegate = [(CAMControlDrawer *)self delegate];
+    [delegate controlDrawerFlashButtonUnavailable:self];
   }
 }
 
-- (void)_loadCustomUIIfNeededForControlType:(int64_t)a3
+- (void)_loadCustomUIIfNeededForControlType:(int64_t)type
 {
-  if (a3 > 7)
+  if (type > 7)
   {
-    switch(a3)
+    switch(type)
     {
       case 8:
         [(CAMControlDrawer *)self _loadExposureSliderIfNeeded];
@@ -544,7 +544,7 @@
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 4:
         [(CAMControlDrawer *)self _loadFilterScrubberIfNeeded];
@@ -582,12 +582,12 @@
     [(CEKWheelScrubberView *)self->_filterScrubberView setTransparentGradients];
     [(CAMControlDrawer *)self _scrubberGradientEdgeInsets];
     [(CEKWheelScrubberView *)self->_filterScrubberView setGradientInsets:?];
-    v6 = [(CAMControlDrawer *)self _scrollView];
-    [v6 insertSubview:self->_filterScrubberView atIndex:0];
+    _scrollView = [(CAMControlDrawer *)self _scrollView];
+    [_scrollView insertSubview:self->_filterScrubberView atIndex:0];
 
     [(CEKWheelScrubberView *)self->_filterScrubberView addTarget:self action:sel__filterScrubberDidChangeValue forControlEvents:4096];
-    v7 = [(CAMControlDrawer *)self delegate];
-    [v7 controlDrawerDidCreateFilterScrubber:self];
+    delegate = [(CAMControlDrawer *)self delegate];
+    [delegate controlDrawerDidCreateFilterScrubber:self];
 
     [(CAMControlDrawer *)self _layoutFilterScrubberView];
 
@@ -597,8 +597,8 @@
 
 - (void)_filterScrubberDidChangeValue
 {
-  v3 = [(CAMControlDrawer *)self delegate];
-  [v3 controlDrawer:self didChangeValueForControlType:4];
+  delegate = [(CAMControlDrawer *)self delegate];
+  [delegate controlDrawer:self didChangeValueForControlType:4];
 }
 
 - (void)_loadApertureSliderIfNeeded
@@ -613,21 +613,21 @@
     [(CEKApertureSlider *)self->_apertureSlider setGradientInsets:?];
     [(CEKApertureSlider *)self->_apertureSlider setTitleAlignment:2];
     [(CEKApertureSlider *)self->_apertureSlider setFontStyle:[(CAMControlDrawer *)self _sliderFontStyle]];
-    v5 = [(CAMControlDrawer *)self _scrollView];
-    [v5 insertSubview:self->_apertureSlider atIndex:0];
+    _scrollView = [(CAMControlDrawer *)self _scrollView];
+    [_scrollView insertSubview:self->_apertureSlider atIndex:0];
 
     [(CAMControlDrawer *)self _layoutApertureSlider];
     [(CAMControlDrawer *)self _updateControlsVisibilityAnimated:0];
     [(CEKApertureSlider *)self->_apertureSlider addTarget:self action:sel__apertureSliderDidChangeValue forControlEvents:4096];
-    v6 = [(CAMControlDrawer *)self delegate];
-    [v6 controlDrawerDidCreateApertureSlider:self];
+    delegate = [(CAMControlDrawer *)self delegate];
+    [delegate controlDrawerDidCreateApertureSlider:self];
   }
 }
 
 - (void)_apertureSliderDidChangeValue
 {
-  v3 = [(CAMControlDrawer *)self delegate];
-  [v3 controlDrawer:self didChangeValueForControlType:6];
+  delegate = [(CAMControlDrawer *)self delegate];
+  [delegate controlDrawer:self didChangeValueForControlType:6];
 }
 
 - (void)_loadIntensitySliderIfNeeded
@@ -646,24 +646,24 @@
     [(CEKSlider *)self->_intensitySlider setTitleAlignment:2];
     [(CEKSlider *)self->_intensitySlider setFontStyle:[(CAMControlDrawer *)self _sliderFontStyle]];
     v5 = self->_intensitySlider;
-    v6 = [MEMORY[0x1E69DC888] blackColor];
-    [(CEKSlider *)v5 setOpaqueGradientsWithColor:v6];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(CEKSlider *)v5 setOpaqueGradientsWithColor:blackColor];
 
-    v7 = [(CAMControlDrawer *)self _scrollView];
-    [v7 insertSubview:self->_intensitySlider atIndex:0];
+    _scrollView = [(CAMControlDrawer *)self _scrollView];
+    [_scrollView insertSubview:self->_intensitySlider atIndex:0];
 
     [(CAMControlDrawer *)self _layoutIntensitySlider];
     [(CAMControlDrawer *)self _updateControlsVisibilityAnimated:0];
     [(CEKSlider *)self->_intensitySlider addTarget:self action:sel__intensitySliderDidChangeValue forControlEvents:4096];
-    v8 = [(CAMControlDrawer *)self delegate];
-    [v8 controlDrawerDidCreateIntensitySlider:self];
+    delegate = [(CAMControlDrawer *)self delegate];
+    [delegate controlDrawerDidCreateIntensitySlider:self];
   }
 }
 
 - (void)_intensitySliderDidChangeValue
 {
-  v3 = [(CAMControlDrawer *)self delegate];
-  [v3 controlDrawer:self didChangeValueForControlType:7];
+  delegate = [(CAMControlDrawer *)self delegate];
+  [delegate controlDrawer:self didChangeValueForControlType:7];
 }
 
 - (void)_loadNightModeSliderIfNeeded
@@ -679,21 +679,21 @@
     [(CEKDiscreteSlider *)self->_nightModeSlider setTitleAlignment:2];
     [(CEKDiscreteSlider *)self->_nightModeSlider setFontStyle:[(CAMControlDrawer *)self _sliderFontStyle]];
     [(CEKDiscreteSlider *)self->_nightModeSlider setTransparentGradients];
-    v5 = [(CAMControlDrawer *)self _scrollView];
-    [v5 insertSubview:self->_nightModeSlider atIndex:0];
+    _scrollView = [(CAMControlDrawer *)self _scrollView];
+    [_scrollView insertSubview:self->_nightModeSlider atIndex:0];
 
     [(CAMControlDrawer *)self _layoutNightModeSlider];
     [(CAMControlDrawer *)self _updateControlsVisibilityAnimated:0];
     [(CAMNightModeSlider *)self->_nightModeSlider addTarget:self action:sel__nightModeSliderDidChangeValue forControlEvents:4096];
-    v6 = [(CAMControlDrawer *)self delegate];
-    [v6 controlDrawerDidCreateNightModeSlider:self];
+    delegate = [(CAMControlDrawer *)self delegate];
+    [delegate controlDrawerDidCreateNightModeSlider:self];
   }
 }
 
 - (void)_nightModeSliderDidChangeValue
 {
-  v3 = [(CAMControlDrawer *)self delegate];
-  [v3 controlDrawer:self didChangeValueForControlType:9];
+  delegate = [(CAMControlDrawer *)self delegate];
+  [delegate controlDrawer:self didChangeValueForControlType:9];
 }
 
 - (void)_loadExposureSliderIfNeeded
@@ -709,21 +709,21 @@
     [(CEKDiscreteSlider *)self->_exposureSlider setTitleAlignment:2];
     [(CEKDiscreteSlider *)self->_exposureSlider setFontStyle:[(CAMControlDrawer *)self _sliderFontStyle]];
     [(CEKDiscreteSlider *)self->_exposureSlider setTransparentGradients];
-    v5 = [(CAMControlDrawer *)self _scrollView];
-    [v5 insertSubview:self->_exposureSlider atIndex:0];
+    _scrollView = [(CAMControlDrawer *)self _scrollView];
+    [_scrollView insertSubview:self->_exposureSlider atIndex:0];
 
     [(CAMControlDrawer *)self _layoutExposureSlider];
     [(CAMControlDrawer *)self _updateControlsVisibilityAnimated:0];
     [(CAMExposureSlider *)self->_exposureSlider addTarget:self action:sel__exposureSliderDidChangeValue forControlEvents:4096];
-    v6 = [(CAMControlDrawer *)self delegate];
-    [v6 controlDrawerDidCreateExposureSlider:self];
+    delegate = [(CAMControlDrawer *)self delegate];
+    [delegate controlDrawerDidCreateExposureSlider:self];
   }
 }
 
 - (void)_exposureSliderDidChangeValue
 {
-  v3 = [(CAMControlDrawer *)self delegate];
-  [v3 controlDrawer:self didChangeValueForControlType:8];
+  delegate = [(CAMControlDrawer *)self delegate];
+  [delegate controlDrawer:self didChangeValueForControlType:8];
 }
 
 - (void)_loadSemanticStyleControlIfNeeded
@@ -736,29 +736,29 @@
 
     [(CAMControlDrawer *)self _scrubberGradientEdgeInsets];
     [(CAMSemanticStyleControl *)self->_semanticStyleControl setGradientInsets:?];
-    v5 = [(CAMControlDrawer *)self _scrollView];
-    [v5 insertSubview:self->_semanticStyleControl atIndex:0];
+    _scrollView = [(CAMControlDrawer *)self _scrollView];
+    [_scrollView insertSubview:self->_semanticStyleControl atIndex:0];
 
     [(CAMControlDrawer *)self _layoutSemanticStyleControl];
     [(CAMControlDrawer *)self _updateControlsVisibilityAnimated:0];
     [(CAMSemanticStyleControl *)self->_semanticStyleControl addTarget:self action:sel__semanticStyleControlDidChangeValue forControlEvents:4096];
-    v6 = [(CAMControlDrawer *)self delegate];
-    [v6 controlDrawerDidCreateSemanticStyleControl:self];
+    delegate = [(CAMControlDrawer *)self delegate];
+    [delegate controlDrawerDidCreateSemanticStyleControl:self];
   }
 }
 
 - (void)_semanticStyleControlDidChangeValue
 {
-  v3 = [(CAMControlDrawer *)self delegate];
-  [v3 controlDrawer:self didChangeValueForControlType:10];
+  delegate = [(CAMControlDrawer *)self delegate];
+  [delegate controlDrawer:self didChangeValueForControlType:10];
 }
 
 - (unint64_t)_sliderFontStyle
 {
   v2 = +[CAMCaptureCapabilities capabilities];
-  v3 = [v2 sfCameraFontSupported];
+  sfCameraFontSupported = [v2 sfCameraFontSupported];
 
-  return v3;
+  return sfCameraFontSupported;
 }
 
 - (unint64_t)_viewportMaximumControlCount
@@ -775,39 +775,39 @@
   }
 }
 
-- (double)_controlCenterSpacingForControlCount:(unint64_t)a3
+- (double)_controlCenterSpacingForControlCount:(unint64_t)count
 {
   [(CAMControlDrawer *)self _viewportLength];
   v6 = v5;
-  v7 = [(CAMControlDrawer *)self _viewportMaximumControlCount];
+  _viewportMaximumControlCount = [(CAMControlDrawer *)self _viewportMaximumControlCount];
   result = 0.0;
-  if (a3 >= 2)
+  if (count >= 2)
   {
-    if (v7 >= a3)
+    if (_viewportMaximumControlCount >= count)
     {
-      v9 = a3;
+      countCopy = count;
     }
 
     else
     {
-      v9 = v7;
+      countCopy = _viewportMaximumControlCount;
     }
 
-    return (v6 + -44.0 + -44.0) / (v9 - 1);
+    return (v6 + -44.0 + -44.0) / (countCopy - 1);
   }
 
   return result;
 }
 
-- (CGSize)_scrollingContentSizeForControlCount:(unint64_t)a3
+- (CGSize)_scrollingContentSizeForControlCount:(unint64_t)count
 {
   [(CAMControlDrawer *)self bounds];
   v6 = v5;
   v8 = v7;
-  if ([(CAMControlDrawer *)self _viewportMaximumControlCount]< a3)
+  if ([(CAMControlDrawer *)self _viewportMaximumControlCount]< count)
   {
-    [(CAMControlDrawer *)self _controlCenterSpacingForControlCount:a3];
-    v6 = v9 * (a3 - 1) + 88.0;
+    [(CAMControlDrawer *)self _controlCenterSpacingForControlCount:count];
+    v6 = v9 * (count - 1) + 88.0;
   }
 
   v10 = v6;
@@ -817,25 +817,25 @@
   return result;
 }
 
-- (void)_layoutVisibleControlForType:(int64_t)a3 visibleControlTypes:(id)a4
+- (void)_layoutVisibleControlForType:(int64_t)type visibleControlTypes:(id)types
 {
-  v27 = a4;
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v27 indexOfObject:v6];
+  typesCopy = types;
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+  [typesCopy indexOfObject:v6];
 
-  v7 = [(CAMControlDrawer *)self expandedControl];
-  v8 = v7;
-  if (v7)
+  expandedControl = [(CAMControlDrawer *)self expandedControl];
+  v8 = expandedControl;
+  if (expandedControl)
   {
-    v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v7, "controlType")}];
-    [v27 indexOfObject:v9];
+    v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(expandedControl, "controlType")}];
+    [typesCopy indexOfObject:v9];
   }
 
   [(CAMControlDrawer *)self bounds];
-  v10 = [v27 count];
-  v11 = [(CAMControlDrawer *)self _controlMap];
-  v12 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v13 = [v11 objectForKeyedSubscript:v12];
+  v10 = [typesCopy count];
+  _controlMap = [(CAMControlDrawer *)self _controlMap];
+  v12 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+  v13 = [_controlMap objectForKeyedSubscript:v12];
 
   if (v8)
   {
@@ -856,8 +856,8 @@
   v21 = v20;
   if (v8)
   {
-    v22 = [(CAMControlDrawer *)self _scrollView];
-    [(CAMControlDrawer *)self convertRect:v22 toView:v15, v17, v19, v21];
+    _scrollView = [(CAMControlDrawer *)self _scrollView];
+    [(CAMControlDrawer *)self convertRect:_scrollView toView:v15, v17, v19, v21];
     v15 = v23;
     v17 = v24;
     v19 = v25;
@@ -867,11 +867,11 @@
   CAMViewSetBoundsAndCenterForFrame(v13, v15, v17, v19, v21);
 }
 
-- (void)_updateExpansionInsetsForExpandableButton:(id)a3
+- (void)_updateExpansionInsetsForExpandableButton:(id)button
 {
-  v35 = a3;
-  [v35 frame];
-  [v35 alignmentRectForFrame:?];
+  buttonCopy = button;
+  [buttonCopy frame];
+  [buttonCopy alignmentRectForFrame:?];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -882,8 +882,8 @@
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [(CAMControlDrawer *)self _scrollView];
-  [(CAMControlDrawer *)self convertRect:v19 toView:v12, v14, v16, v18];
+  _scrollView = [(CAMControlDrawer *)self _scrollView];
+  [(CAMControlDrawer *)self convertRect:_scrollView toView:v12, v14, v16, v18];
   v21 = v20;
   v23 = v22;
   v25 = v24;
@@ -911,35 +911,35 @@
   v40.origin.y = v7;
   v40.size.width = v9;
   v40.size.height = v32;
-  [v35 setExpansionInsets:{v33, v30, v34, MaxX - CGRectGetMaxX(v40)}];
+  [buttonCopy setExpansionInsets:{v33, v30, v34, MaxX - CGRectGetMaxX(v40)}];
 }
 
-- (void)_layoutFullWidthCustomView:(id)a3 forAssociatedControl:(id)a4 expanded:(BOOL)a5
+- (void)_layoutFullWidthCustomView:(id)view forAssociatedControl:(id)control expanded:(BOOL)expanded
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
+  expandedCopy = expanded;
+  controlCopy = control;
+  viewCopy = view;
   [(CAMControlDrawer *)self bounds];
   v12 = CGRectInset(v11, 0.0, 2.0);
-  [(CAMControlDrawer *)self _layoutFullWidthCustomView:v9 withAlignmentRect:v8 forAssociatedControl:v5 expanded:v12.origin.x, v12.origin.y, v12.size.width, v12.size.height];
+  [(CAMControlDrawer *)self _layoutFullWidthCustomView:viewCopy withAlignmentRect:controlCopy forAssociatedControl:expandedCopy expanded:v12.origin.x, v12.origin.y, v12.size.width, v12.size.height];
 }
 
-- (void)_layoutFullWidthCustomView:(id)a3 withAlignmentRect:(CGRect)a4 forAssociatedControl:(id)a5 expanded:(BOOL)a6
+- (void)_layoutFullWidthCustomView:(id)view withAlignmentRect:(CGRect)rect forAssociatedControl:(id)control expanded:(BOOL)expanded
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v38 = a3;
-  if (!a6)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  if (!expanded)
   {
-    v13 = a5;
-    [v13 center];
+    controlCopy = control;
+    [controlCopy center];
     v15 = v14;
     v17 = v16;
-    v18 = [v13 superview];
+    superview = [controlCopy superview];
 
-    [(CAMControlDrawer *)self convertPoint:v18 fromView:v15, v17];
+    [(CAMControlDrawer *)self convertPoint:superview fromView:v15, v17];
     v20 = v19;
 
     v40.origin.x = x;
@@ -949,95 +949,95 @@
     x = v20 - CGRectGetMidX(v40);
   }
 
-  [v38 frameForAlignmentRect:{x, y, width, height}];
+  [viewCopy frameForAlignmentRect:{x, y, width, height}];
   v22 = v21;
   v24 = v23;
   v26 = v25;
   v28 = v27;
-  v29 = [v38 superview];
-  [(CAMControlDrawer *)self convertRect:v29 toView:v22, v24, v26, v28];
+  superview2 = [viewCopy superview];
+  [(CAMControlDrawer *)self convertRect:superview2 toView:v22, v24, v26, v28];
   v31 = v30;
   v33 = v32;
   v35 = v34;
   v37 = v36;
 
-  [v38 setFrame:{v31, v33, v35, v37}];
+  [viewCopy setFrame:{v31, v33, v35, v37}];
 }
 
 - (void)_layoutApertureSlider
 {
-  v4 = [(CAMControlDrawer *)self apertureSlider];
-  v3 = [(CAMControlDrawer *)self apertureButton];
-  [(CAMControlDrawer *)self _layoutFullWidthCustomView:v4 forAssociatedControl:v3 expanded:[(CAMControlDrawer *)self isApertureSliderExpanded]];
+  apertureSlider = [(CAMControlDrawer *)self apertureSlider];
+  apertureButton = [(CAMControlDrawer *)self apertureButton];
+  [(CAMControlDrawer *)self _layoutFullWidthCustomView:apertureSlider forAssociatedControl:apertureButton expanded:[(CAMControlDrawer *)self isApertureSliderExpanded]];
 }
 
 - (void)_layoutIntensitySlider
 {
-  v4 = [(CAMControlDrawer *)self intensitySlider];
-  v3 = [(CAMControlDrawer *)self intensityButton];
-  [(CAMControlDrawer *)self _layoutFullWidthCustomView:v4 forAssociatedControl:v3 expanded:[(CAMControlDrawer *)self isIntensitySliderExpanded]];
+  intensitySlider = [(CAMControlDrawer *)self intensitySlider];
+  intensityButton = [(CAMControlDrawer *)self intensityButton];
+  [(CAMControlDrawer *)self _layoutFullWidthCustomView:intensitySlider forAssociatedControl:intensityButton expanded:[(CAMControlDrawer *)self isIntensitySliderExpanded]];
 }
 
 - (void)_layoutExposureSlider
 {
-  v4 = [(CAMControlDrawer *)self exposureSlider];
-  v3 = [(CAMControlDrawer *)self exposureButton];
-  [(CAMControlDrawer *)self _layoutFullWidthCustomView:v4 forAssociatedControl:v3 expanded:[(CAMControlDrawer *)self isExposureSliderExpanded]];
+  exposureSlider = [(CAMControlDrawer *)self exposureSlider];
+  exposureButton = [(CAMControlDrawer *)self exposureButton];
+  [(CAMControlDrawer *)self _layoutFullWidthCustomView:exposureSlider forAssociatedControl:exposureButton expanded:[(CAMControlDrawer *)self isExposureSliderExpanded]];
 }
 
 - (void)_layoutNightModeSlider
 {
-  v4 = [(CAMControlDrawer *)self nightModeSlider];
-  v3 = [(CAMControlDrawer *)self nightModeButton];
-  [(CAMControlDrawer *)self _layoutFullWidthCustomView:v4 forAssociatedControl:v3 expanded:[(CAMControlDrawer *)self isNightModeSliderExpanded]];
+  nightModeSlider = [(CAMControlDrawer *)self nightModeSlider];
+  nightModeButton = [(CAMControlDrawer *)self nightModeButton];
+  [(CAMControlDrawer *)self _layoutFullWidthCustomView:nightModeSlider forAssociatedControl:nightModeButton expanded:[(CAMControlDrawer *)self isNightModeSliderExpanded]];
 }
 
 - (void)_layoutSemanticStyleControl
 {
-  v4 = [(CAMControlDrawer *)self semanticStyleControl];
-  v3 = [(CAMControlDrawer *)self semanticStyleButton];
-  [(CAMControlDrawer *)self _layoutFullWidthCustomView:v4 forAssociatedControl:v3 expanded:[(CAMControlDrawer *)self isSemanticStyleControlExpanded]];
+  semanticStyleControl = [(CAMControlDrawer *)self semanticStyleControl];
+  semanticStyleButton = [(CAMControlDrawer *)self semanticStyleButton];
+  [(CAMControlDrawer *)self _layoutFullWidthCustomView:semanticStyleControl forAssociatedControl:semanticStyleButton expanded:[(CAMControlDrawer *)self isSemanticStyleControlExpanded]];
 }
 
 - (void)_layoutFilterScrubberView
 {
-  v4 = [(CAMControlDrawer *)self filterScrubberView];
-  v3 = [(CAMControlDrawer *)self filterButton];
-  [(CAMControlDrawer *)self _layoutScrubberView:v4 forAssociatedControl:v3 expanded:[(CAMControlDrawer *)self isFilterScrubberExpanded]];
+  filterScrubberView = [(CAMControlDrawer *)self filterScrubberView];
+  filterButton = [(CAMControlDrawer *)self filterButton];
+  [(CAMControlDrawer *)self _layoutScrubberView:filterScrubberView forAssociatedControl:filterButton expanded:[(CAMControlDrawer *)self isFilterScrubberExpanded]];
 }
 
-- (void)_layoutScrubberView:(id)a3 forAssociatedControl:(id)a4 expanded:(BOOL)a5
+- (void)_layoutScrubberView:(id)view forAssociatedControl:(id)control expanded:(BOOL)expanded
 {
-  if (a3)
+  if (view)
   {
-    v5 = a5;
-    v8 = a4;
-    v9 = a3;
-    [v9 thumbnailSize];
+    expandedCopy = expanded;
+    controlCopy = control;
+    viewCopy = view;
+    [viewCopy thumbnailSize];
     [(CAMControlDrawer *)self bounds];
     UIRectCenteredYInRectScale();
-    [(CAMControlDrawer *)self _layoutFullWidthCustomView:v9 withAlignmentRect:v8 forAssociatedControl:v5 expanded:0];
+    [(CAMControlDrawer *)self _layoutFullWidthCustomView:viewCopy withAlignmentRect:controlCopy forAssociatedControl:expandedCopy expanded:0];
 
-    [v9 selectedThumbnailBorderWidth];
+    [viewCopy selectedThumbnailBorderWidth];
     UIFloorToViewScale();
-    [v9 setSelectionDotCenterTopSpacing:?];
+    [viewCopy setSelectionDotCenterTopSpacing:?];
   }
 }
 
-- (void)setLayoutStyle:(int64_t)a3
+- (void)setLayoutStyle:(int64_t)style
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (self->_layoutStyle != a3)
+  if (self->_layoutStyle != style)
   {
-    self->_layoutStyle = a3;
+    self->_layoutStyle = style;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(CAMControlDrawer *)self _controlMap];
-    v5 = [v4 allValues];
+    _controlMap = [(CAMControlDrawer *)self _controlMap];
+    allValues = [_controlMap allValues];
 
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    v6 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1048,13 +1048,13 @@
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allValues);
           }
 
-          [*(*(&v10 + 1) + 8 * i) setLayoutStyle:a3];
+          [*(*(&v10 + 1) + 8 * i) setLayoutStyle:style];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v7 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v7);
@@ -1062,32 +1062,32 @@
   }
 }
 
-- (void)setVisibleControlTypes:(id)a3 animated:(BOOL)a4
+- (void)setVisibleControlTypes:(id)types animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v39 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = v7;
-  v28 = self;
-  if (self->_visibleControlTypes != v7 && ![(NSArray *)v7 isEqualToArray:?])
+  typesCopy = types;
+  v8 = typesCopy;
+  selfCopy = self;
+  if (self->_visibleControlTypes != typesCopy && ![(NSArray *)typesCopy isEqualToArray:?])
   {
     v9 = self->_visibleControlTypes;
-    objc_storeStrong(&self->_visibleControlTypes, a3);
+    objc_storeStrong(&self->_visibleControlTypes, types);
     [(CAMControlDrawer *)self _ensureVisibleControls];
-    v10 = [(CAMControlDrawer *)self expandedControl];
-    v11 = v10;
-    if (v10)
+    expandedControl = [(CAMControlDrawer *)self expandedControl];
+    v11 = expandedControl;
+    if (expandedControl)
     {
-      v12 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v10, "controlType")}];
+      v12 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(expandedControl, "controlType")}];
       v13 = [(NSArray *)v8 containsObject:v12];
 
       if (!v13)
       {
-        [(CAMControlDrawer *)v28 _setExpandedControl:0 animated:v4 updatePreferredDrawerControl:0];
+        [(CAMControlDrawer *)selfCopy _setExpandedControl:0 animated:animatedCopy updatePreferredDrawerControl:0];
       }
     }
 
-    if (v4)
+    if (animatedCopy)
     {
       v26 = v11;
       v27 = v9;
@@ -1116,14 +1116,14 @@
             }
 
             v22 = *(*(&v34 + 1) + 8 * i);
-            v23 = [v22 integerValue];
+            integerValue = [v22 integerValue];
             v24 = MEMORY[0x1E69DD250];
             v30[0] = MEMORY[0x1E69E9820];
             v30[1] = 3221225472;
             v30[2] = __52__CAMControlDrawer_setVisibleControlTypes_animated___block_invoke;
             v30[3] = &unk_1E76F8400;
-            v30[4] = v28;
-            v33 = v23;
+            v30[4] = selfCopy;
+            v33 = integerValue;
             v31 = v15;
             v32 = v22;
             [v24 performWithoutAnimation:v30];
@@ -1135,12 +1135,12 @@
         while (v19);
       }
 
-      [(CAMControlDrawer *)v28 setNeedsLayout];
+      [(CAMControlDrawer *)selfCopy setNeedsLayout];
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
       v29[2] = __52__CAMControlDrawer_setVisibleControlTypes_animated___block_invoke_2;
       v29[3] = &unk_1E76F77B0;
-      v29[4] = v28;
+      v29[4] = selfCopy;
       [MEMORY[0x1E69DD250] animateWithDuration:2 delay:v29 usingSpringWithDamping:0 initialSpringVelocity:0.5 options:0.0 animations:1.0 completion:1.0];
       v8 = v15;
       v11 = v26;
@@ -1149,7 +1149,7 @@
 
     else
     {
-      [(CAMControlDrawer *)v28 setNeedsLayout];
+      [(CAMControlDrawer *)selfCopy setNeedsLayout];
     }
   }
 }
@@ -1162,21 +1162,21 @@ void __52__CAMControlDrawer_setVisibleControlTypes_animated___block_invoke(uint6
   [v2 layoutIfNeeded];
 }
 
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (self->_orientation != a3)
+  if (self->_orientation != orientation)
   {
-    v4 = a4;
-    self->_orientation = a3;
+    animatedCopy = animated;
+    self->_orientation = orientation;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [(CAMControlDrawer *)self _controlMap];
-    v7 = [v6 allValues];
+    _controlMap = [(CAMControlDrawer *)self _controlMap];
+    allValues = [_controlMap allValues];
 
-    v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v8 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1187,13 +1187,13 @@ void __52__CAMControlDrawer_setVisibleControlTypes_animated___block_invoke(uint6
         {
           if (*v13 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allValues);
           }
 
-          [*(*(&v12 + 1) + 8 * i) setOrientation:a3 animated:v4];
+          [*(*(&v12 + 1) + 8 * i) setOrientation:orientation animated:animatedCopy];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v9 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v9);
@@ -1201,21 +1201,21 @@ void __52__CAMControlDrawer_setVisibleControlTypes_animated___block_invoke(uint6
   }
 }
 
-- (void)setExpanded:(BOOL)a3 forControlType:(int64_t)a4 animated:(BOOL)a5 updatePreferredDrawerControl:(BOOL)a6
+- (void)setExpanded:(BOOL)expanded forControlType:(int64_t)type animated:(BOOL)animated updatePreferredDrawerControl:(BOOL)control
 {
-  v6 = a6;
-  v7 = a5;
-  v11 = [(CAMControlDrawer *)self _controlMap];
-  v12 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  v13 = [v11 objectForKeyedSubscript:v12];
+  controlCopy = control;
+  animatedCopy = animated;
+  _controlMap = [(CAMControlDrawer *)self _controlMap];
+  v12 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+  v13 = [_controlMap objectForKeyedSubscript:v12];
 
   if ([v13 isExpandable])
   {
     v14 = v13;
     v15 = v14;
-    if (!a3)
+    if (!expanded)
     {
-      if (![(CAMControlDrawer *)self isControlExpandedForType:a4])
+      if (![(CAMControlDrawer *)self isControlExpandedForType:type])
       {
 LABEL_6:
 
@@ -1225,7 +1225,7 @@ LABEL_6:
       v15 = 0;
     }
 
-    [(CAMControlDrawer *)self _setExpandedControl:v15 animated:v7 updatePreferredDrawerControl:v6];
+    [(CAMControlDrawer *)self _setExpandedControl:v15 animated:animatedCopy updatePreferredDrawerControl:controlCopy];
     goto LABEL_6;
   }
 
@@ -1238,13 +1238,13 @@ LABEL_6:
 LABEL_10:
 }
 
-- (BOOL)isControlExpandedForType:(int64_t)a3
+- (BOOL)isControlExpandedForType:(int64_t)type
 {
-  v5 = [(CAMControlDrawer *)self expandedControl];
-  if (v5)
+  expandedControl = [(CAMControlDrawer *)self expandedControl];
+  if (expandedControl)
   {
-    v6 = [(CAMControlDrawer *)self expandedControl];
-    v7 = [v6 controlType] == a3;
+    expandedControl2 = [(CAMControlDrawer *)self expandedControl];
+    v7 = [expandedControl2 controlType] == type;
   }
 
   else
@@ -1257,19 +1257,19 @@ LABEL_10:
 
 - (int64_t)expandedControlType
 {
-  v3 = [(CAMControlDrawer *)self expandedControl];
-  if (v3)
+  expandedControl = [(CAMControlDrawer *)self expandedControl];
+  if (expandedControl)
   {
-    v4 = [(CAMControlDrawer *)self expandedControl];
-    v5 = [v4 controlType];
+    expandedControl2 = [(CAMControlDrawer *)self expandedControl];
+    controlType = [expandedControl2 controlType];
   }
 
   else
   {
-    v5 = -1;
+    controlType = -1;
   }
 
-  return v5;
+  return controlType;
 }
 
 - (void)_ensureVisibleControls
@@ -1279,8 +1279,8 @@ LABEL_10:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(CAMControlDrawer *)self visibleControlTypes];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  visibleControlTypes = [(CAMControlDrawer *)self visibleControlTypes];
+  v4 = [visibleControlTypes countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1292,78 +1292,78 @@ LABEL_10:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(visibleControlTypes);
         }
 
-        v8 = [*(*(&v9 + 1) + 8 * v7) integerValue];
-        [(CAMControlDrawer *)self _loadControlIfNeededForType:v8];
-        [(CAMControlDrawer *)self _installControlIfNeededForType:v8];
+        integerValue = [*(*(&v9 + 1) + 8 * v7) integerValue];
+        [(CAMControlDrawer *)self _loadControlIfNeededForType:integerValue];
+        [(CAMControlDrawer *)self _installControlIfNeededForType:integerValue];
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [visibleControlTypes countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_loadControlIfNeededForType:(int64_t)a3
+- (void)_loadControlIfNeededForType:(int64_t)type
 {
-  v9 = [(CAMControlDrawer *)self _controlMap];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v6 = [v9 objectForKeyedSubscript:v5];
+  _controlMap = [(CAMControlDrawer *)self _controlMap];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+  v6 = [_controlMap objectForKeyedSubscript:v5];
 
   if (!v6)
   {
-    v6 = [(CAMControlDrawer *)self _createControlForType:a3];
+    v6 = [(CAMControlDrawer *)self _createControlForType:type];
     [v6 setOrientation:{-[CAMControlDrawer orientation](self, "orientation")}];
-    v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-    [v9 setObject:v6 forKeyedSubscript:v7];
+    v7 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+    [_controlMap setObject:v6 forKeyedSubscript:v7];
 
     if ([v6 isExpandable])
     {
       [v6 setDelegate:self];
     }
 
-    v8 = [(CAMControlDrawer *)self delegate];
-    [v8 controlDrawer:self didCreateControlForType:a3];
+    delegate = [(CAMControlDrawer *)self delegate];
+    [delegate controlDrawer:self didCreateControlForType:type];
   }
 }
 
-- (void)_installControlIfNeededForType:(int64_t)a3
+- (void)_installControlIfNeededForType:(int64_t)type
 {
-  v9 = [(CAMControlDrawer *)self _scrollView];
-  v5 = [(CAMControlDrawer *)self _controlMap];
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  _scrollView = [(CAMControlDrawer *)self _scrollView];
+  _controlMap = [(CAMControlDrawer *)self _controlMap];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+  v7 = [_controlMap objectForKeyedSubscript:v6];
 
   if (v7)
   {
-    v8 = [v7 superview];
+    superview = [v7 superview];
 
-    if (v8 != v9)
+    if (superview != _scrollView)
     {
-      [v9 addSubview:v7];
+      [_scrollView addSubview:v7];
     }
   }
 }
 
-- (void)_updateControlsScaleAnimated:(BOOL)a3
+- (void)_updateControlsScaleAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(CAMControlDrawer *)self bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(CAMControlDrawer *)self expandedControl];
+  expandedControl = [(CAMControlDrawer *)self expandedControl];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __49__CAMControlDrawer__updateControlsScaleAnimated___block_invoke;
   v16[3] = &unk_1E76F8428;
-  if (v3)
+  if (animatedCopy)
   {
     v14 = 0.5;
   }
@@ -1378,8 +1378,8 @@ LABEL_10:
   v20 = v10;
   v21 = v12;
   v16[4] = self;
-  v17 = v13;
-  v15 = v13;
+  v17 = expandedControl;
+  v15 = expandedControl;
   [CAMView animateIfNeededWithDuration:2 usingSpringWithDamping:v16 initialSpringVelocity:0 options:v14 animations:1.0 completion:1.0];
 }
 
@@ -1426,19 +1426,19 @@ void __49__CAMControlDrawer__updateControlsScaleAnimated___block_invoke(uint64_t
   }
 }
 
-- (void)_updateControlsVisibilityAnimated:(BOOL)a3
+- (void)_updateControlsVisibilityAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(CAMControlDrawer *)self expandedControl];
+  animatedCopy = animated;
+  expandedControl = [(CAMControlDrawer *)self expandedControl];
   v6 = MEMORY[0x1E695DFD8];
-  v7 = [(CAMControlDrawer *)self visibleControlTypes];
-  v8 = [v6 setWithArray:v7];
+  visibleControlTypes = [(CAMControlDrawer *)self visibleControlTypes];
+  v8 = [v6 setWithArray:visibleControlTypes];
 
   v12[1] = 3221225472;
   v12[0] = MEMORY[0x1E69E9820];
   v12[2] = __54__CAMControlDrawer__updateControlsVisibilityAnimated___block_invoke;
   v12[3] = &unk_1E76F7938;
-  if (v3)
+  if (animatedCopy)
   {
     v9 = 0.5;
   }
@@ -1450,8 +1450,8 @@ void __49__CAMControlDrawer__updateControlsScaleAnimated___block_invoke(uint64_t
 
   v12[4] = self;
   v13 = v8;
-  v14 = v5;
-  v10 = v5;
+  v14 = expandedControl;
+  v10 = expandedControl;
   v11 = v8;
   [CAMView animateIfNeededWithDuration:2 usingSpringWithDamping:v12 initialSpringVelocity:0 options:v9 animations:1.0 completion:1.0];
 }
@@ -1566,18 +1566,18 @@ void __54__CAMControlDrawer__updateControlsVisibilityAnimated___block_invoke_2(u
   [v9 setUserInteractionEnabled:v8];
 }
 
-- (void)_setExpandedControl:(id)a3 animated:(BOOL)a4 updatePreferredDrawerControl:(BOOL)a5
+- (void)_setExpandedControl:(id)control animated:(BOOL)animated updatePreferredDrawerControl:(BOOL)drawerControl
 {
-  v5 = a5;
-  v6 = a4;
-  v9 = a3;
+  drawerControlCopy = drawerControl;
+  animatedCopy = animated;
+  controlCopy = control;
   expandedControl = self->_expandedControl;
-  if (expandedControl == v9)
+  if (expandedControl == controlCopy)
   {
     goto LABEL_23;
   }
 
-  if (v6)
+  if (animatedCopy)
   {
     [(CAMControlDrawer *)self layoutIfNeeded];
     expandedControl = self->_expandedControl;
@@ -1589,56 +1589,56 @@ void __54__CAMControlDrawer__updateControlsVisibilityAnimated___block_invoke_2(u
     self->_expandedControl = 0;
     v12 = expandedControl;
 
-    [(CAMControlDrawerExpandableButton *)v12 setExpanded:0 animated:v6];
-    if (v9)
+    [(CAMControlDrawerExpandableButton *)v12 setExpanded:0 animated:animatedCopy];
+    if (controlCopy)
     {
       v13 = 0;
     }
 
     else
     {
-      v13 = v5;
+      v13 = drawerControlCopy;
     }
 
-    v14 = [(CAMControlDrawer *)self presentationDelegate];
-    [v14 controlDrawer:self didChangeExpanded:0 forControlType:-[CAMControlDrawerExpandableButton controlType](v12 animated:"controlType") updatePreferredDrawerControl:{v6, v13}];
+    presentationDelegate = [(CAMControlDrawer *)self presentationDelegate];
+    [presentationDelegate controlDrawer:self didChangeExpanded:0 forControlType:-[CAMControlDrawerExpandableButton controlType](v12 animated:"controlType") updatePreferredDrawerControl:{animatedCopy, v13}];
   }
 
-  if (v9)
+  if (controlCopy)
   {
-    [(CAMControlDrawer *)self _loadCustomUIIfNeededForControlType:[(CAMControlDrawerExpandableButton *)v9 controlType]];
-    if (v6)
+    [(CAMControlDrawer *)self _loadCustomUIIfNeededForControlType:[(CAMControlDrawerExpandableButton *)controlCopy controlType]];
+    if (animatedCopy)
     {
       [(CAMControlDrawer *)self layoutIfNeeded];
     }
   }
 
-  objc_storeStrong(&self->_expandedControl, a3);
+  objc_storeStrong(&self->_expandedControl, control);
   [(CAMControlDrawer *)self setNeedsLayout];
   if (!self->_expandedControl)
   {
-    v28 = [(CAMControlDrawer *)self _scrollView];
-    [v28 setScrollEnabled:1];
+    _scrollView = [(CAMControlDrawer *)self _scrollView];
+    [_scrollView setScrollEnabled:1];
 LABEL_18:
 
     goto LABEL_19;
   }
 
   [(CAMControlDrawer *)self bringSubviewToFront:?];
-  [(CAMControlDrawerExpandableButton *)self->_expandedControl setExpanded:1 animated:v6];
-  v15 = [(CAMControlDrawer *)self _scrollView];
-  [v15 setScrollEnabled:0];
+  [(CAMControlDrawerExpandableButton *)self->_expandedControl setExpanded:1 animated:animatedCopy];
+  _scrollView2 = [(CAMControlDrawer *)self _scrollView];
+  [_scrollView2 setScrollEnabled:0];
 
-  v16 = [(CAMControlDrawer *)self _scrollView];
-  [v16 stopScrollingAndZooming];
+  _scrollView3 = [(CAMControlDrawer *)self _scrollView];
+  [_scrollView3 stopScrollingAndZooming];
 
-  [(CAMControlDrawerExpandableButton *)v9 frame];
+  [(CAMControlDrawerExpandableButton *)controlCopy frame];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
-  v25 = [(CAMControlDrawer *)self _scrollView];
-  v26 = [v25 _isRectFullyVisible:{v18, v20, v22, v24}];
+  _scrollView4 = [(CAMControlDrawer *)self _scrollView];
+  v26 = [_scrollView4 _isRectFullyVisible:{v18, v20, v22, v24}];
 
   if ((v26 & 1) == 0)
   {
@@ -1649,13 +1649,13 @@ LABEL_18:
       _os_log_impl(&dword_1A3640000, v27, OS_LOG_TYPE_DEFAULT, "Scrolling control drawer to make control visible before expansion", buf, 2u);
     }
 
-    v28 = [(CAMControlDrawer *)self _scrollView];
-    [v28 scrollRectToVisible:0 animated:{v18, v20, v22, v24}];
+    _scrollView = [(CAMControlDrawer *)self _scrollView];
+    [_scrollView scrollRectToVisible:0 animated:{v18, v20, v22, v24}];
     goto LABEL_18;
   }
 
 LABEL_19:
-  if (v6)
+  if (animatedCopy)
   {
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
@@ -1665,73 +1665,73 @@ LABEL_19:
     [MEMORY[0x1E69DD250] animateWithDuration:2 delay:v30 usingSpringWithDamping:0 initialSpringVelocity:0.5 options:0.0 animations:1.0 completion:1.0];
   }
 
-  [(CAMControlDrawer *)self _updateControlsScaleAnimated:v6];
-  [(CAMControlDrawer *)self _updateControlsVisibilityAnimated:v6];
-  if (v9)
+  [(CAMControlDrawer *)self _updateControlsScaleAnimated:animatedCopy];
+  [(CAMControlDrawer *)self _updateControlsVisibilityAnimated:animatedCopy];
+  if (controlCopy)
   {
-    v29 = [(CAMControlDrawer *)self presentationDelegate];
-    [v29 controlDrawer:self didChangeExpanded:1 forControlType:-[CAMControlDrawerExpandableButton controlType](self->_expandedControl animated:"controlType") updatePreferredDrawerControl:{v6, v5}];
+    presentationDelegate2 = [(CAMControlDrawer *)self presentationDelegate];
+    [presentationDelegate2 controlDrawer:self didChangeExpanded:1 forControlType:-[CAMControlDrawerExpandableButton controlType](self->_expandedControl animated:"controlType") updatePreferredDrawerControl:{animatedCopy, drawerControlCopy}];
   }
 
 LABEL_23:
 }
 
-- (void)expandableButton:(id)a3 willChangeExpanded:(BOOL)a4
+- (void)expandableButton:(id)button willChangeExpanded:(BOOL)expanded
 {
-  v4 = a4;
-  v6 = [a3 controlType];
+  expandedCopy = expanded;
+  controlType = [button controlType];
 
-  [(CAMControlDrawer *)self setExpanded:v4 forControlType:v6 animated:1 updatePreferredDrawerControl:1];
+  [(CAMControlDrawer *)self setExpanded:expandedCopy forControlType:controlType animated:1 updatePreferredDrawerControl:1];
 }
 
-- (void)menuButtonDidSelectItem:(id)a3
+- (void)menuButtonDidSelectItem:(id)item
 {
-  v4 = a3;
-  v6 = [(CAMControlDrawer *)self delegate];
-  v5 = [v4 controlType];
+  itemCopy = item;
+  delegate = [(CAMControlDrawer *)self delegate];
+  controlType = [itemCopy controlType];
 
-  [v6 controlDrawer:self didSelectMenuItemForControlType:v5];
+  [delegate controlDrawer:self didSelectMenuItemForControlType:controlType];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = [(CAMControlDrawer *)self expandedControl];
-  if (v4)
+  expandedControl = [(CAMControlDrawer *)self expandedControl];
+  if (expandedControl)
   {
-    v5 = v4;
+    v5 = expandedControl;
     [(CAMControlDrawer *)self setNeedsLayout];
-    v4 = v5;
+    expandedControl = v5;
   }
 }
 
 - (id)touchingRecognizersToCancel
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(CAMControlDrawer *)self _scrollView];
-  v3 = [v2 panGestureRecognizer];
-  v6[0] = v3;
+  _scrollView = [(CAMControlDrawer *)self _scrollView];
+  panGestureRecognizer = [_scrollView panGestureRecognizer];
+  v6[0] = panGestureRecognizer;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   return v4;
 }
 
-- (void)_iterateViewsForHUDManager:(id)a3 withItemFoundBlock:(id)a4
+- (void)_iterateViewsForHUDManager:(id)manager withItemFoundBlock:(id)block
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CAMControlDrawer *)self expandedControl];
+  managerCopy = manager;
+  blockCopy = block;
+  expandedControl = [(CAMControlDrawer *)self expandedControl];
 
-  if (v8)
+  if (expandedControl)
   {
-    v9 = [(CAMControlDrawer *)self expandedControl];
-    v7[2](v7, v9);
+    expandedControl2 = [(CAMControlDrawer *)self expandedControl];
+    blockCopy[2](blockCopy, expandedControl2);
   }
 
   else
   {
-    v10 = [(CAMControlDrawer *)self _scrollView];
-    [v6 locationOfAccessibilityGestureInView:v10];
+    _scrollView = [(CAMControlDrawer *)self _scrollView];
+    [managerCopy locationOfAccessibilityGestureInView:_scrollView];
     v12 = v11;
     v14 = v13;
 
@@ -1739,8 +1739,8 @@ LABEL_23:
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v15 = [(CAMControlDrawer *)self visibleControlTypes];
-    v16 = [v15 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    visibleControlTypes = [(CAMControlDrawer *)self visibleControlTypes];
+    v16 = [visibleControlTypes countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v16)
     {
       v17 = v16;
@@ -1751,25 +1751,25 @@ LABEL_23:
         {
           if (*v24 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(visibleControlTypes);
           }
 
           v20 = *(*(&v23 + 1) + 8 * i);
-          v21 = [(CAMControlDrawer *)self _controlMap];
-          v22 = [v21 objectForKeyedSubscript:v20];
+          _controlMap = [(CAMControlDrawer *)self _controlMap];
+          v22 = [_controlMap objectForKeyedSubscript:v20];
 
           [v22 frame];
           v29.x = v12;
           v29.y = v14;
           if (CGRectContainsPoint(v30, v29))
           {
-            v7[2](v7, v22);
+            blockCopy[2](blockCopy, v22);
 
             goto LABEL_13;
           }
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v17 = [visibleControlTypes countByEnumeratingWithState:&v23 objects:v27 count:16];
         if (v17)
         {
           continue;
@@ -1783,9 +1783,9 @@ LABEL_13:
   }
 }
 
-- (id)hudItemForAccessibilityHUDManager:(id)a3
+- (id)hudItemForAccessibilityHUDManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -1797,7 +1797,7 @@ LABEL_13:
   v8[2] = __54__CAMControlDrawer_hudItemForAccessibilityHUDManager___block_invoke;
   v8[3] = &unk_1E76F79B0;
   v10 = &v11;
-  v5 = v4;
+  v5 = managerCopy;
   v9 = v5;
   [(CAMControlDrawer *)self _iterateViewsForHUDManager:v5 withItemFoundBlock:v8];
   v6 = v12[5];
@@ -1817,21 +1817,21 @@ uint64_t __54__CAMControlDrawer_hudItemForAccessibilityHUDManager___block_invoke
   return MEMORY[0x1EEE66BB8](v3, v5);
 }
 
-- (void)selectedByAccessibilityHUDManager:(id)a3
+- (void)selectedByAccessibilityHUDManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __54__CAMControlDrawer_selectedByAccessibilityHUDManager___block_invoke;
   v6[3] = &unk_1E76F79D8;
-  v7 = v4;
-  v5 = v4;
+  v7 = managerCopy;
+  v5 = managerCopy;
   [(CAMControlDrawer *)self _iterateViewsForHUDManager:v5 withItemFoundBlock:v6];
 }
 
-- (BOOL)shouldAccessibilityGestureBeginForHUDManager:(id)a3
+- (BOOL)shouldAccessibilityGestureBeginForHUDManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -1841,7 +1841,7 @@ uint64_t __54__CAMControlDrawer_hudItemForAccessibilityHUDManager___block_invoke
   v7[2] = __65__CAMControlDrawer_shouldAccessibilityGestureBeginForHUDManager___block_invoke;
   v7[3] = &unk_1E76F79B0;
   v9 = &v10;
-  v5 = v4;
+  v5 = managerCopy;
   v8 = v5;
   [(CAMControlDrawer *)self _iterateViewsForHUDManager:v5 withItemFoundBlock:v7];
   LOBYTE(self) = *(v11 + 24);

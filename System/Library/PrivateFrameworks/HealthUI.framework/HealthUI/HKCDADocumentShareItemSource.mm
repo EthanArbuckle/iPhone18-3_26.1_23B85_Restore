@@ -1,19 +1,19 @@
 @interface HKCDADocumentShareItemSource
-- (HKCDADocumentShareItemSource)initWithDocumentSample:(id)a3 healthStore:(id)a4;
-- (id)_simpleError:(id)a3;
+- (HKCDADocumentShareItemSource)initWithDocumentSample:(id)sample healthStore:(id)store;
+- (id)_simpleError:(id)error;
 - (id)item;
-- (void)_buildZipArchiveWithCDA:(id)a3 generatedPDF:(id)a4 completion:(id)a5;
-- (void)_generatePDFforCDA:(id)a3 completion:(id)a4;
-- (void)_loadShareDataWithHealthStore:(id)a3 completion:(id)a4;
+- (void)_buildZipArchiveWithCDA:(id)a generatedPDF:(id)f completion:(id)completion;
+- (void)_generatePDFforCDA:(id)a completion:(id)completion;
+- (void)_loadShareDataWithHealthStore:(id)store completion:(id)completion;
 - (void)dealloc;
 @end
 
 @implementation HKCDADocumentShareItemSource
 
-- (HKCDADocumentShareItemSource)initWithDocumentSample:(id)a3 healthStore:(id)a4
+- (HKCDADocumentShareItemSource)initWithDocumentSample:(id)sample healthStore:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  sampleCopy = sample;
+  storeCopy = store;
   v9 = MEMORY[0x1E696AEC0];
   v10 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v11 = [v10 localizedStringForKey:@"CDA_EXPORT_ARCHIVE_FOLDER_NAME" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
@@ -26,21 +26,21 @@
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_documentSample, a3);
-    objc_storeStrong(&v15->_healthStore, a4);
-    v16 = [(HKCDADocumentSample *)v15->_documentSample document];
+    objc_storeStrong(&v14->_documentSample, sample);
+    objc_storeStrong(&v15->_healthStore, store);
+    document = [(HKCDADocumentSample *)v15->_documentSample document];
 
-    if (v16)
+    if (document)
     {
-      v17 = [(HKCDADocumentSample *)v15->_documentSample document];
-      v18 = [v17 documentData];
+      document2 = [(HKCDADocumentSample *)v15->_documentSample document];
+      documentData = [document2 documentData];
       shareData = v15->_shareData;
-      v15->_shareData = v18;
+      v15->_shareData = documentData;
     }
 
     else
     {
-      v17 = v15->_shareData;
+      document2 = v15->_shareData;
       v15->_shareData = 0;
     }
 
@@ -59,11 +59,11 @@
 {
   if (self->_exportArchiveURL)
   {
-    v3 = [MEMORY[0x1E696AC08] defaultManager];
-    v4 = [(NSURL *)self->_exportArchiveURL path];
-    [v3 removeItemAtPath:v4 error:0];
-    v5 = [v4 stringByDeletingLastPathComponent];
-    [v3 removeItemAtPath:v5 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [(NSURL *)self->_exportArchiveURL path];
+    [defaultManager removeItemAtPath:path error:0];
+    stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
+    [defaultManager removeItemAtPath:stringByDeletingLastPathComponent error:0];
   }
 
   v6.receiver = self;
@@ -71,25 +71,25 @@
   [(HKCDADocumentShareItemSource *)&v6 dealloc];
 }
 
-- (id)_simpleError:(id)a3
+- (id)_simpleError:(id)error
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v8 = *MEMORY[0x1E696A578];
-  v9[0] = a3;
+  v9[0] = error;
   v3 = MEMORY[0x1E695DF20];
-  v4 = a3;
+  errorCopy = error;
   v5 = [v3 dictionaryWithObjects:v9 forKeys:&v8 count:1];
   v6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ExportHealthReport" code:100 userInfo:v5];
 
   return v6;
 }
 
-- (void)_buildZipArchiveWithCDA:(id)a3 generatedPDF:(id)a4 completion:(id)a5
+- (void)_buildZipArchiveWithCDA:(id)a generatedPDF:(id)f completion:(id)completion
 {
   v44[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  aCopy = a;
+  fCopy = f;
+  completionCopy = completion;
   v11 = NSTemporaryDirectory();
   v44[0] = v11;
   v44[1] = @"ccd_export_dir_XXXXXX";
@@ -122,8 +122,8 @@
     {
       v36 = v19;
       [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-      v37 = v9;
-      v24 = v23 = v8;
+      v37 = fCopy;
+      v24 = v23 = aCopy;
       v25 = [v24 localizedStringForKey:@"CDA_EXPORT_FILE_NAME" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
 
       v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@", v17, v25];
@@ -132,7 +132,7 @@
       v29 = [v27 fileURLWithPath:v28];
       v38 = v23;
       v30 = v23;
-      v9 = v37;
+      fCopy = v37;
       [v22 addDataToArchive:v30 pathInArchive:v29];
 
       v31 = MEMORY[0x1E695DFF8];
@@ -143,23 +143,23 @@
       if ([v22 archiveIsValid])
       {
         [v22 closeArchive];
-        v10[2](v10, 1, 0);
+        completionCopy[2](completionCopy, 1, 0);
       }
 
       else
       {
         v35 = [(HKCDADocumentShareItemSource *)self _simpleError:@"Unable to add files to archive for Clinical Document export"];
-        (v10)[2](v10, 0, v35);
+        (completionCopy)[2](completionCopy, 0, v35);
       }
 
-      v8 = v38;
+      aCopy = v38;
       v19 = v36;
     }
 
     else
     {
       v25 = [(HKCDADocumentShareItemSource *)self _simpleError:@"Unable to create archive for Clinical Document export."];
-      (v10)[2](v10, 0, v25);
+      (completionCopy)[2](completionCopy, 0, v25);
     }
 
     v34 = v40;
@@ -169,24 +169,24 @@
   else
   {
     v34 = [(HKCDADocumentShareItemSource *)self _simpleError:@"Unable to create temporary directory for exported Health Report."];
-    (v10)[2](v10, 0, v34);
+    (completionCopy)[2](completionCopy, 0, v34);
   }
 }
 
-- (void)_generatePDFforCDA:(id)a3 completion:(id)a4
+- (void)_generatePDFforCDA:(id)a completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  aCopy = a;
+  completionCopy = completion;
   generator = self->_generator;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __62__HKCDADocumentShareItemSource__generatePDFforCDA_completion___block_invoke;
   v11[3] = &unk_1E81BAFA0;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = aCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = aCopy;
   [(HKCDAPDFGenerator *)generator generatePDFForCDAXML:v10 completionHandler:v11];
 }
 
@@ -203,14 +203,14 @@ uint64_t __62__HKCDADocumentShareItemSource__generatePDFforCDA_completion___bloc
   }
 }
 
-- (void)_loadShareDataWithHealthStore:(id)a3 completion:(id)a4
+- (void)_loadShareDataWithHealthStore:(id)store completion:(id)completion
 {
-  v6 = a4;
-  v7 = v6;
+  completionCopy = completion;
+  v7 = completionCopy;
   shareData = self->_shareData;
   if (shareData)
   {
-    [(HKCDADocumentShareItemSource *)self _generatePDFforCDA:shareData completion:v6];
+    [(HKCDADocumentShareItemSource *)self _generatePDFforCDA:shareData completion:completionCopy];
   }
 
   else
@@ -221,8 +221,8 @@ uint64_t __62__HKCDADocumentShareItemSource__generatePDFforCDA_completion___bloc
     v10[2] = __73__HKCDADocumentShareItemSource__loadShareDataWithHealthStore_completion___block_invoke;
     v10[3] = &unk_1E81BAFC8;
     v10[4] = self;
-    v11 = v6;
-    [(HKCDADocumentSample *)documentSample fetchDetailedReportWithHealthStore:a3 reportDataBlock:v10];
+    v11 = completionCopy;
+    [(HKCDADocumentSample *)documentSample fetchDetailedReportWithHealthStore:store reportDataBlock:v10];
   }
 }
 

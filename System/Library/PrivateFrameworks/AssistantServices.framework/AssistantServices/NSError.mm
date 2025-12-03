@@ -1,7 +1,7 @@
 @interface NSError
-+ (id)_ad_alarmStoreErrorWithCode:(int64_t)a3;
-+ (id)_ad_timerStoreErrorWithCode:(int64_t)a3;
-+ (id)ad_siriTaskHandlerErrorWithCode:(int64_t)a3;
++ (id)_ad_alarmStoreErrorWithCode:(int64_t)code;
++ (id)_ad_timerStoreErrorWithCode:(int64_t)code;
++ (id)ad_siriTaskHandlerErrorWithCode:(int64_t)code;
 - (BOOL)ad_isAssistantNotReadyError;
 - (BOOL)ad_isInAssistantErrorDomain;
 - (BOOL)ad_isNetworkDownError;
@@ -14,48 +14,48 @@
 - (BOOL)ad_isStricterUnreachableError;
 - (BOOL)ad_isUnreachableError;
 - (BOOL)ad_isUnrecoverablePeerError;
-- (BOOL)ad_requiresDampedRetry:(int64_t *)a3;
+- (BOOL)ad_requiresDampedRetry:(int64_t *)retry;
 @end
 
 @implementation NSError
 
-+ (id)_ad_timerStoreErrorWithCode:(int64_t)a3
++ (id)_ad_timerStoreErrorWithCode:(int64_t)code
 {
-  v3 = [[a1 alloc] initWithDomain:@"com.apple.siri.TimerStore" code:a3 userInfo:&__NSDictionary0__struct];
+  v3 = [[self alloc] initWithDomain:@"com.apple.siri.TimerStore" code:code userInfo:&__NSDictionary0__struct];
 
   return v3;
 }
 
 - (BOOL)ad_isNetworkDownError
 {
-  v3 = [(NSError *)self userInfo];
-  v4 = [v3 objectForKey:NSUnderlyingErrorKey];
+  userInfo = [(NSError *)self userInfo];
+  v4 = [userInfo objectForKey:NSUnderlyingErrorKey];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    selfCopy = v4;
   }
 
   else
   {
-    v6 = self;
+    selfCopy = self;
   }
 
-  v7 = v6;
+  v7 = selfCopy;
 
   if ([(NSError *)v7 code]== 50)
   {
-    v8 = [(NSError *)v7 domain];
-    if ([v8 isEqualToString:kNWErrorDomainPOSIX])
+    domain = [(NSError *)v7 domain];
+    if ([domain isEqualToString:kNWErrorDomainPOSIX])
     {
 
 LABEL_8:
-      v11 = 1;
+      sn_isNetworkDown = 1;
       goto LABEL_10;
     }
 
-    v9 = [(NSError *)v7 domain];
-    v10 = [v9 isEqualToString:NSPOSIXErrorDomain];
+    domain2 = [(NSError *)v7 domain];
+    v10 = [domain2 isEqualToString:NSPOSIXErrorDomain];
 
     if (v10)
     {
@@ -63,7 +63,7 @@ LABEL_8:
     }
   }
 
-  v11 = [(NSError *)self sn_isNetworkDown];
+  sn_isNetworkDown = [(NSError *)self sn_isNetworkDown];
 LABEL_10:
   v12 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
@@ -72,8 +72,8 @@ LABEL_10:
     v15 = 136315650;
     v16 = "[NSError(ADSiriUtilities) ad_isNetworkDownError]";
     v17 = 2112;
-    v18 = self;
-    if (v11)
+    selfCopy2 = self;
+    if (sn_isNetworkDown)
     {
       v13 = @"YES";
     }
@@ -83,20 +83,20 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%s Error %@ is network down: %@", &v15, 0x20u);
   }
 
-  return v11;
+  return sn_isNetworkDown;
 }
 
-- (BOOL)ad_requiresDampedRetry:(int64_t *)a3
+- (BOOL)ad_requiresDampedRetry:(int64_t *)retry
 {
-  v5 = [(NSError *)self domain];
-  if (([v5 isEqualToString:NSPOSIXErrorDomain] & 1) != 0 || objc_msgSend(v5, "isEqualToString:", kNWErrorDomainPOSIX))
+  domain = [(NSError *)self domain];
+  if (([domain isEqualToString:NSPOSIXErrorDomain] & 1) != 0 || objc_msgSend(domain, "isEqualToString:", kNWErrorDomainPOSIX))
   {
-    v6 = [(NSError *)self code];
-    if (v6 <= 0x37 && ((1 << v6) & 0xC4000000000000) != 0)
+    code = [(NSError *)self code];
+    if (code <= 0x37 && ((1 << code) & 0xC4000000000000) != 0)
     {
-      if (a3)
+      if (retry)
       {
-        *a3 = [(NSError *)self code];
+        *retry = [(NSError *)self code];
       }
 
       goto LABEL_7;
@@ -105,23 +105,23 @@ LABEL_10:
 
   else
   {
-    v8 = [(NSError *)self userInfo];
-    v9 = [v8 objectForKey:NSUnderlyingErrorKey];
+    userInfo = [(NSError *)self userInfo];
+    v9 = [userInfo objectForKey:NSUnderlyingErrorKey];
 
     if (v9)
     {
-      v10 = [v9 ad_requiresDampedRetry:a3];
+      v10 = [v9 ad_requiresDampedRetry:retry];
 
       if (v10)
       {
 LABEL_7:
-        v7 = 1;
+        sn_isNetworkConnectionRetryableAfterDelay = 1;
         goto LABEL_11;
       }
     }
   }
 
-  v7 = [(NSError *)self sn_isNetworkConnectionRetryableAfterDelay];
+  sn_isNetworkConnectionRetryableAfterDelay = [(NSError *)self sn_isNetworkConnectionRetryableAfterDelay];
 LABEL_11:
   v11 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
@@ -130,8 +130,8 @@ LABEL_11:
     v14 = 136315650;
     v15 = "[NSError(ADSiriUtilities) ad_requiresDampedRetry:]";
     v16 = 2112;
-    v17 = self;
-    if (v7)
+    selfCopy = self;
+    if (sn_isNetworkConnectionRetryableAfterDelay)
     {
       v12 = @"YES";
     }
@@ -141,23 +141,23 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s Error %@ requires damped retry: %@", &v14, 0x20u);
   }
 
-  return v7;
+  return sn_isNetworkConnectionRetryableAfterDelay;
 }
 
 - (BOOL)ad_isPeerRemoteError
 {
-  v3 = [(NSError *)self ad_isUnreachableError];
-  v4 = [(NSError *)self domain];
-  v5 = v4;
-  if (v3)
+  ad_isUnreachableError = [(NSError *)self ad_isUnreachableError];
+  domain = [(NSError *)self domain];
+  v5 = domain;
+  if (ad_isUnreachableError)
   {
     v6 = 1;
   }
 
-  else if (([v4 isEqualToString:NSPOSIXErrorDomain] & 1) != 0 || objc_msgSend(v5, "isEqualToString:", kNWErrorDomainPOSIX))
+  else if (([domain isEqualToString:NSPOSIXErrorDomain] & 1) != 0 || objc_msgSend(v5, "isEqualToString:", kNWErrorDomainPOSIX))
   {
-    v7 = [(NSError *)self code];
-    v6 = v7 == 54 || v7 == 32;
+    code = [(NSError *)self code];
+    v6 = code == 54 || code == 32;
   }
 
   else
@@ -172,7 +172,7 @@ LABEL_11:
     v12 = 136315650;
     v13 = "[NSError(ADSiriUtilities) ad_isPeerRemoteError]";
     v14 = 2112;
-    v15 = self;
+    selfCopy = self;
     if (v6)
     {
       v10 = @"YES";
@@ -188,7 +188,7 @@ LABEL_11:
 
 - (BOOL)ad_isPeerNotNearbyError
 {
-  v3 = [(NSError *)self domain];
+  domain = [(NSError *)self domain];
   if (([(NSError *)self code]& 0xFFFFFFFFFFFFFFFDLL) != 0)
   {
     v4 = 0;
@@ -196,7 +196,7 @@ LABEL_11:
 
   else
   {
-    v4 = [v3 isEqualToString:@"ADPeerStreamConnectionErrorDomain"];
+    v4 = [domain isEqualToString:@"ADPeerStreamConnectionErrorDomain"];
   }
 
   v5 = AFSiriLogContextSession;
@@ -206,7 +206,7 @@ LABEL_11:
     v8 = 136315650;
     v9 = "[NSError(ADSiriUtilities) ad_isPeerNotNearbyError]";
     v10 = 2112;
-    v11 = self;
+    selfCopy = self;
     if (v4)
     {
       v6 = @"YES";
@@ -222,18 +222,18 @@ LABEL_11:
 
 - (BOOL)ad_isPeerConnectionError
 {
-  v3 = [(NSError *)self domain];
-  v4 = [(NSError *)self code];
-  if ([v3 isEqualToString:@"ADPeerStreamConnectionErrorDomain"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", IDSErrorDomain))
+  domain = [(NSError *)self domain];
+  code = [(NSError *)self code];
+  if ([domain isEqualToString:@"ADPeerStreamConnectionErrorDomain"] & 1) != 0 || (objc_msgSend(domain, "isEqualToString:", IDSErrorDomain))
   {
     v5 = 1;
   }
 
   else
   {
-    if ([v3 isEqualToString:SiriCoreSiriConnectionErrorDomain])
+    if ([domain isEqualToString:SiriCoreSiriConnectionErrorDomain])
     {
-      v6 = v4 > 0x1C;
+      v6 = code > 0x1C;
     }
 
     else
@@ -248,7 +248,7 @@ LABEL_11:
 
     else
     {
-      v5 = 0x10030010u >> v4;
+      v5 = 0x10030010u >> code;
     }
   }
 
@@ -259,7 +259,7 @@ LABEL_11:
     v10 = 136315650;
     v11 = "[NSError(ADSiriUtilities) ad_isPeerConnectionError]";
     v12 = 2112;
-    v13 = self;
+    selfCopy = self;
     if (v5)
     {
       v8 = @"YES";
@@ -275,20 +275,20 @@ LABEL_11:
 
 - (BOOL)ad_isRetryableSessionError
 {
-  v3 = [(NSError *)self ad_isRetryableConnectionError];
-  v4 = [(NSError *)self domain];
-  v5 = [(NSError *)self code];
-  if (v3)
+  ad_isRetryableConnectionError = [(NSError *)self ad_isRetryableConnectionError];
+  domain = [(NSError *)self domain];
+  code = [(NSError *)self code];
+  if (ad_isRetryableConnectionError)
   {
-    v6 = v5;
-    if ((([v4 isEqualToString:NSPOSIXErrorDomain] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", kNWErrorDomainPOSIX)) && v6 == 60)
+    v6 = code;
+    if ((([domain isEqualToString:NSPOSIXErrorDomain] & 1) != 0 || objc_msgSend(domain, "isEqualToString:", kNWErrorDomainPOSIX)) && v6 == 60)
     {
-      v3 = 0;
+      ad_isRetryableConnectionError = 0;
     }
 
-    else if (![v4 isEqualToString:kAFAssistantErrorDomain] || ((v3 = 0, v6 > 0x19) || ((1 << v6) & 0x2000042) == 0) && v6 - 300 >= 2 && v6 != 7000)
+    else if (![domain isEqualToString:kAFAssistantErrorDomain] || ((ad_isRetryableConnectionError = 0, v6 > 0x19) || ((1 << v6) & 0x2000042) == 0) && v6 - 300 >= 2 && v6 != 7000)
     {
-      v3 = [(NSError *)self sn_isNetworkOperationRetryable];
+      ad_isRetryableConnectionError = [(NSError *)self sn_isNetworkOperationRetryable];
     }
   }
 
@@ -299,8 +299,8 @@ LABEL_11:
     v10 = 136315650;
     v11 = "[NSError(ADSiriUtilities) ad_isRetryableSessionError]";
     v12 = 2112;
-    v13 = self;
-    if (v3)
+    selfCopy = self;
+    if (ad_isRetryableConnectionError)
     {
       v8 = @"YES";
     }
@@ -310,15 +310,15 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s Error %@ is retryable session error: %@", &v10, 0x20u);
   }
 
-  return v3;
+  return ad_isRetryableConnectionError;
 }
 
 - (BOOL)ad_isUnrecoverablePeerError
 {
-  v3 = [(NSError *)self domain];
-  v4 = [(NSError *)self code];
-  v5 = [v3 isEqualToString:@"ADPeerStreamConnectionErrorDomain"];
-  if ((v4 & 0xFFFFFFFFFFFFFFFDLL) != 0)
+  domain = [(NSError *)self domain];
+  code = [(NSError *)self code];
+  v5 = [domain isEqualToString:@"ADPeerStreamConnectionErrorDomain"];
+  if ((code & 0xFFFFFFFFFFFFFFFDLL) != 0)
   {
     v6 = 0;
   }
@@ -333,8 +333,8 @@ LABEL_11:
 
 - (BOOL)ad_isStricterRetryableConnectionError
 {
-  v3 = [(NSError *)self domain];
-  if (-[NSError ad_isStricterUnreachableError](self, "ad_isStricterUnreachableError") || [v3 isEqualToString:SiriCoreSiriConnectionErrorDomain] && (-[NSError userInfo](self, "userInfo"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "objectForKey:", NSUnderlyingErrorKey), v6 = objc_claimAutoreleasedReturnValue(), v5, v6) && (v7 = objc_msgSend(v6, "ad_isStricterUnreachableError"), v6, (v7 & 1) != 0))
+  domain = [(NSError *)self domain];
+  if (-[NSError ad_isStricterUnreachableError](self, "ad_isStricterUnreachableError") || [domain isEqualToString:SiriCoreSiriConnectionErrorDomain] && (-[NSError userInfo](self, "userInfo"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "objectForKey:", NSUnderlyingErrorKey), v6 = objc_claimAutoreleasedReturnValue(), v5, v6) && (v7 = objc_msgSend(v6, "ad_isStricterUnreachableError"), v6, (v7 & 1) != 0))
   {
     v4 = 0;
   }
@@ -351,7 +351,7 @@ LABEL_11:
     v11 = 136315650;
     v12 = "[NSError(ADSiriUtilities) ad_isStricterRetryableConnectionError]";
     v13 = 2112;
-    v14 = self;
+    selfCopy = self;
     if (v4)
     {
       v9 = @"YES";
@@ -367,36 +367,36 @@ LABEL_11:
 
 - (BOOL)ad_isStricterUnreachableError
 {
-  v3 = [(NSError *)self domain];
-  v4 = [(NSError *)self code];
-  if ((([v3 isEqualToString:NSPOSIXErrorDomain] & 1) != 0 || objc_msgSend(v3, "isEqualToString:", kNWErrorDomainPOSIX)) && v4 <= 0x3D && ((1 << v4) & 0x2060000000000000) != 0 || (objc_msgSend(v3, "isEqualToString:", SiriCoreSiriConnectionErrorDomain) ? (v5 = v4 - 5 >= 2) : (v5 = 1), !v5))
+  domain = [(NSError *)self domain];
+  code = [(NSError *)self code];
+  if ((([domain isEqualToString:NSPOSIXErrorDomain] & 1) != 0 || objc_msgSend(domain, "isEqualToString:", kNWErrorDomainPOSIX)) && code <= 0x3D && ((1 << code) & 0x2060000000000000) != 0 || (objc_msgSend(domain, "isEqualToString:", SiriCoreSiriConnectionErrorDomain) ? (v5 = code - 5 >= 2) : (v5 = 1), !v5))
   {
-    v6 = 1;
+    sn_isNetworkUnreachableForServerCause = 1;
   }
 
   else
   {
-    v6 = [(NSError *)self sn_isNetworkUnreachableForServerCause];
+    sn_isNetworkUnreachableForServerCause = [(NSError *)self sn_isNetworkUnreachableForServerCause];
   }
 
-  return v6;
+  return sn_isNetworkUnreachableForServerCause;
 }
 
 - (BOOL)ad_isRetryableConnectionError
 {
-  v3 = [(NSError *)self domain];
-  v4 = [(NSError *)self code];
+  domain = [(NSError *)self domain];
+  code = [(NSError *)self code];
   if ([(NSError *)self ad_isUnreachableError])
   {
     goto LABEL_2;
   }
 
-  if ([v3 isEqualToString:kAFAssistantErrorDomain])
+  if ([domain isEqualToString:kAFAssistantErrorDomain])
   {
-    if ((v4 & 0xFFFFFFFFFFFFFFFELL) == 0x3E8)
+    if ((code & 0xFFFFFFFFFFFFFFFELL) == 0x3E8)
     {
-      v6 = [(NSError *)self userInfo];
-      v7 = [v6 objectForKey:NSUnderlyingErrorKey];
+      userInfo = [(NSError *)self userInfo];
+      v7 = [userInfo objectForKey:NSUnderlyingErrorKey];
 
       if (v7)
       {
@@ -404,13 +404,13 @@ LABEL_11:
         {
 
 LABEL_2:
-          v5 = 0;
+          sn_isNetworkConnectionRetryable = 0;
           goto LABEL_13;
         }
 
-        v8 = [v7 ad_isUnreachableError];
+        ad_isUnreachableError = [v7 ad_isUnreachableError];
 
-        if (v8)
+        if (ad_isUnreachableError)
         {
           goto LABEL_2;
         }
@@ -418,23 +418,23 @@ LABEL_2:
     }
   }
 
-  if ([v3 isEqualToString:SiriCoreSiriConnectionErrorDomain])
+  if ([domain isEqualToString:SiriCoreSiriConnectionErrorDomain])
   {
-    v9 = [(NSError *)self userInfo];
-    v10 = [v9 objectForKey:NSUnderlyingErrorKey];
+    userInfo2 = [(NSError *)self userInfo];
+    v10 = [userInfo2 objectForKey:NSUnderlyingErrorKey];
 
     if (v10)
     {
-      v11 = [v10 ad_isUnreachableError];
+      ad_isUnreachableError2 = [v10 ad_isUnreachableError];
 
-      if (v11)
+      if (ad_isUnreachableError2)
       {
         goto LABEL_2;
       }
     }
   }
 
-  v5 = [(NSError *)self sn_isNetworkConnectionRetryable];
+  sn_isNetworkConnectionRetryable = [(NSError *)self sn_isNetworkConnectionRetryable];
 LABEL_13:
   v12 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
@@ -443,8 +443,8 @@ LABEL_13:
     v15 = 136315650;
     v16 = "[NSError(ADSiriUtilities) ad_isRetryableConnectionError]";
     v17 = 2112;
-    v18 = self;
-    if (v5)
+    selfCopy = self;
+    if (sn_isNetworkConnectionRetryable)
     {
       v13 = @"YES";
     }
@@ -454,23 +454,23 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%s Error %@ is retryable: %@", &v15, 0x20u);
   }
 
-  return v5;
+  return sn_isNetworkConnectionRetryable;
 }
 
 - (BOOL)ad_isUnreachableError
 {
-  v3 = [(NSError *)self domain];
-  v4 = [(NSError *)self code];
-  if ((([v3 isEqualToString:NSPOSIXErrorDomain] & 1) != 0 || objc_msgSend(v3, "isEqualToString:", kNWErrorDomainPOSIX)) && ((v4 - 49) & 0xFFFFFFFFFFFFFFFDLL) == 0)
+  domain = [(NSError *)self domain];
+  code = [(NSError *)self code];
+  if ((([domain isEqualToString:NSPOSIXErrorDomain] & 1) != 0 || objc_msgSend(domain, "isEqualToString:", kNWErrorDomainPOSIX)) && ((code - 49) & 0xFFFFFFFFFFFFFFFDLL) == 0)
   {
     goto LABEL_25;
   }
 
-  if (![v3 isEqualToString:kNWErrorDomainDNS] || (v5 = 1, v4 != -65554) && v4 != -65537)
+  if (![domain isEqualToString:kNWErrorDomainDNS] || (sn_isNetworkUnreachable = 1, code != -65554) && code != -65537)
   {
-    if ([v3 isEqualToString:kCFErrorDomainCFNetwork])
+    if ([domain isEqualToString:kCFErrorDomainCFNetwork])
     {
-      v6 = (v4 - 1) >= 2;
+      v6 = (code - 1) >= 2;
     }
 
     else
@@ -483,20 +483,20 @@ LABEL_13:
       goto LABEL_25;
     }
 
-    if ([v3 isEqualToString:SiriCoreSiriConnectionErrorDomain])
+    if ([domain isEqualToString:SiriCoreSiriConnectionErrorDomain])
     {
-      v5 = 1;
-      if (v4 > 21)
+      sn_isNetworkUnreachable = 1;
+      if (code > 21)
       {
-        if ((v4 - 22) < 2)
+        if ((code - 22) < 2)
         {
           goto LABEL_26;
         }
       }
 
-      else if (v4)
+      else if (code)
       {
-        if (v4 == 4 || v4 == 16 && [(NSError *)self ad_isNetworkDownError])
+        if (code == 4 || code == 16 && [(NSError *)self ad_isNetworkDownError])
         {
           goto LABEL_26;
         }
@@ -504,26 +504,26 @@ LABEL_13:
 
       else
       {
-        v7 = [(NSError *)self userInfo];
-        v8 = [v7 objectForKey:SiriCoreSiriConnectionHTTPErrorStatusCodeKey];
-        v9 = [v8 intValue];
+        userInfo = [(NSError *)self userInfo];
+        v8 = [userInfo objectForKey:SiriCoreSiriConnectionHTTPErrorStatusCodeKey];
+        intValue = [v8 intValue];
 
-        v5 = 1;
-        if (v9 == 406 || v9 == 503)
+        sn_isNetworkUnreachable = 1;
+        if (intValue == 406 || intValue == 503)
         {
           goto LABEL_26;
         }
       }
     }
 
-    if ([v3 isEqualToString:kAFAssistantErrorDomain] && v4 == 14)
+    if ([domain isEqualToString:kAFAssistantErrorDomain] && code == 14)
     {
 LABEL_25:
-      v5 = 1;
+      sn_isNetworkUnreachable = 1;
       goto LABEL_26;
     }
 
-    v5 = [(NSError *)self sn_isNetworkUnreachable];
+    sn_isNetworkUnreachable = [(NSError *)self sn_isNetworkUnreachable];
   }
 
 LABEL_26:
@@ -534,8 +534,8 @@ LABEL_26:
     v13 = 136315650;
     v14 = "[NSError(ADSiriUtilities) ad_isUnreachableError]";
     v15 = 2112;
-    v16 = self;
-    if (v5)
+    selfCopy = self;
+    if (sn_isNetworkUnreachable)
     {
       v11 = @"YES";
     }
@@ -545,38 +545,38 @@ LABEL_26:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s Error %@ is unreachable: %@", &v13, 0x20u);
   }
 
-  return v5;
+  return sn_isNetworkUnreachable;
 }
 
 - (BOOL)ad_isAssistantNotReadyError
 {
-  v3 = [(NSError *)self ad_isInAssistantErrorDomain];
-  if (v3)
+  ad_isInAssistantErrorDomain = [(NSError *)self ad_isInAssistantErrorDomain];
+  if (ad_isInAssistantErrorDomain)
   {
-    LOBYTE(v3) = [(NSError *)self code]== 6;
+    LOBYTE(ad_isInAssistantErrorDomain) = [(NSError *)self code]== 6;
   }
 
-  return v3;
+  return ad_isInAssistantErrorDomain;
 }
 
 - (BOOL)ad_isInAssistantErrorDomain
 {
-  v2 = [(NSError *)self domain];
-  v3 = [v2 isEqualToString:kAFAssistantErrorDomain];
+  domain = [(NSError *)self domain];
+  v3 = [domain isEqualToString:kAFAssistantErrorDomain];
 
   return v3;
 }
 
-+ (id)_ad_alarmStoreErrorWithCode:(int64_t)a3
++ (id)_ad_alarmStoreErrorWithCode:(int64_t)code
 {
-  v3 = [[a1 alloc] initWithDomain:@"com.apple.siri.AlarmStore" code:a3 userInfo:&__NSDictionary0__struct];
+  v3 = [[self alloc] initWithDomain:@"com.apple.siri.AlarmStore" code:code userInfo:&__NSDictionary0__struct];
 
   return v3;
 }
 
-+ (id)ad_siriTaskHandlerErrorWithCode:(int64_t)a3
++ (id)ad_siriTaskHandlerErrorWithCode:(int64_t)code
 {
-  v3 = [[a1 alloc] initWithDomain:@"com.apple.siri.TaskServiceErrorDomain" code:a3 userInfo:0];
+  v3 = [[self alloc] initWithDomain:@"com.apple.siri.TaskServiceErrorDomain" code:code userInfo:0];
 
   return v3;
 }

@@ -1,31 +1,31 @@
 @interface kjAS9HuCdR1m5txL
-+ (id)Xw2iAzNBHudJx7Ph:(id)a3;
++ (id)Xw2iAzNBHudJx7Ph:(id)ph;
 + (id)cR9LfsxC1Nz4IZKu;
 - (id)serializeDataframeWithSecureCoding;
-- (kjAS9HuCdR1m5txL)initWithCoder:(id)a3;
-- (kjAS9HuCdR1m5txL)initWithGyF0atX3JpCKc9pK:(id)a3 qfSDGTGvqd3Hruzg:(int64_t)a4;
-- (void)encodeWithCoder:(id)a3;
+- (kjAS9HuCdR1m5txL)initWithCoder:(id)coder;
+- (kjAS9HuCdR1m5txL)initWithGyF0atX3JpCKc9pK:(id)k qfSDGTGvqd3Hruzg:(int64_t)hruzg;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation kjAS9HuCdR1m5txL
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(kjAS9HuCdR1m5txL *)self wgZJLy8f4tn41Pge];
-  [v6 encodeObject:v4 forKey:@"eV93XIm2DFoleW67"];
+  coderCopy = coder;
+  wgZJLy8f4tn41Pge = [(kjAS9HuCdR1m5txL *)self wgZJLy8f4tn41Pge];
+  [coderCopy encodeObject:wgZJLy8f4tn41Pge forKey:@"eV93XIm2DFoleW67"];
 
-  [v6 encodeInteger:-[kjAS9HuCdR1m5txL yOtBxuHAYKqZrNQN](self forKey:{"yOtBxuHAYKqZrNQN"), @"PVyDYKUBXCVAefL3"}];
-  [v6 encodeInteger:-[kjAS9HuCdR1m5txL qfSDGTGvqd3Hruzg](self forKey:{"qfSDGTGvqd3Hruzg"), @"unDWoRY4KcYFWF2p"}];
-  v5 = [(kjAS9HuCdR1m5txL *)self GyF0atX3JpCKc9pK];
-  [v6 encodeObject:v5 forKey:@"z3Urd7zeB4LQNdm7"];
+  [coderCopy encodeInteger:-[kjAS9HuCdR1m5txL yOtBxuHAYKqZrNQN](self forKey:{"yOtBxuHAYKqZrNQN"), @"PVyDYKUBXCVAefL3"}];
+  [coderCopy encodeInteger:-[kjAS9HuCdR1m5txL qfSDGTGvqd3Hruzg](self forKey:{"qfSDGTGvqd3Hruzg"), @"unDWoRY4KcYFWF2p"}];
+  gyF0atX3JpCKc9pK = [(kjAS9HuCdR1m5txL *)self GyF0atX3JpCKc9pK];
+  [coderCopy encodeObject:gyF0atX3JpCKc9pK forKey:@"z3Urd7zeB4LQNdm7"];
 
-  [v6 encodeInteger:-[kjAS9HuCdR1m5txL JmiV9VW8P3Gxz1H7](self forKey:{"JmiV9VW8P3Gxz1H7"), @"t5wyajVqKFbSCYB6"}];
+  [coderCopy encodeInteger:-[kjAS9HuCdR1m5txL JmiV9VW8P3Gxz1H7](self forKey:{"JmiV9VW8P3Gxz1H7"), @"t5wyajVqKFbSCYB6"}];
 }
 
-- (kjAS9HuCdR1m5txL)initWithCoder:(id)a3
+- (kjAS9HuCdR1m5txL)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = kjAS9HuCdR1m5txL;
   v5 = [(kjAS9HuCdR1m5txL *)&v11 init];
@@ -42,15 +42,15 @@
     v6 = [NSArray arrayWithObjects:v12 count:8];
     v7 = [NSSet setWithArray:v6];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"eV93XIm2DFoleW67"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eV93XIm2DFoleW67"];
     [(kjAS9HuCdR1m5txL *)v5 setWgZJLy8f4tn41Pge:v8];
 
-    -[kjAS9HuCdR1m5txL setYOtBxuHAYKqZrNQN:](v5, "setYOtBxuHAYKqZrNQN:", [v4 decodeIntegerForKey:@"PVyDYKUBXCVAefL3"]);
-    -[kjAS9HuCdR1m5txL setQfSDGTGvqd3Hruzg:](v5, "setQfSDGTGvqd3Hruzg:", [v4 decodeIntegerForKey:@"unDWoRY4KcYFWF2p"]);
-    v9 = [v4 decodeObjectOfClasses:v7 forKey:@"z3Urd7zeB4LQNdm7"];
+    -[kjAS9HuCdR1m5txL setYOtBxuHAYKqZrNQN:](v5, "setYOtBxuHAYKqZrNQN:", [coderCopy decodeIntegerForKey:@"PVyDYKUBXCVAefL3"]);
+    -[kjAS9HuCdR1m5txL setQfSDGTGvqd3Hruzg:](v5, "setQfSDGTGvqd3Hruzg:", [coderCopy decodeIntegerForKey:@"unDWoRY4KcYFWF2p"]);
+    v9 = [coderCopy decodeObjectOfClasses:v7 forKey:@"z3Urd7zeB4LQNdm7"];
     [(kjAS9HuCdR1m5txL *)v5 setGyF0atX3JpCKc9pK:v9];
 
-    -[kjAS9HuCdR1m5txL setJmiV9VW8P3Gxz1H7:](v5, "setJmiV9VW8P3Gxz1H7:", [v4 decodeIntegerForKey:@"t5wyajVqKFbSCYB6"]);
+    -[kjAS9HuCdR1m5txL setJmiV9VW8P3Gxz1H7:](v5, "setJmiV9VW8P3Gxz1H7:", [coderCopy decodeIntegerForKey:@"t5wyajVqKFbSCYB6"]);
   }
 
   return v5;
@@ -63,12 +63,12 @@
   return v2;
 }
 
-+ (id)Xw2iAzNBHudJx7Ph:(id)a3
++ (id)Xw2iAzNBHudJx7Ph:(id)ph
 {
-  if (a3)
+  if (ph)
   {
-    v3 = a3;
-    v4 = [[NSData alloc] initWithBase64EncodedString:v3 options:3];
+    phCopy = ph;
+    v4 = [[NSData alloc] initWithBase64EncodedString:phCopy options:3];
 
     v5 = objc_opt_class();
     v6 = [NSSet setWithObjects:v5, objc_opt_class(), 0];
@@ -128,10 +128,10 @@
   return v26;
 }
 
-- (kjAS9HuCdR1m5txL)initWithGyF0atX3JpCKc9pK:(id)a3 qfSDGTGvqd3Hruzg:(int64_t)a4
+- (kjAS9HuCdR1m5txL)initWithGyF0atX3JpCKc9pK:(id)k qfSDGTGvqd3Hruzg:(int64_t)hruzg
 {
-  objc_storeStrong(&self->_GyF0atX3JpCKc9pK, a3);
-  self->_qfSDGTGvqd3Hruzg = a4;
+  objc_storeStrong(&self->_GyF0atX3JpCKc9pK, k);
+  self->_qfSDGTGvqd3Hruzg = hruzg;
   self->_yOtBxuHAYKqZrNQN = 0;
   self->_JmiV9VW8P3Gxz1H7 = -1;
   return self;

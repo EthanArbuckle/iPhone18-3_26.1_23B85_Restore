@@ -1,10 +1,10 @@
 @interface ContentRatingSystemSymbolDescriptionView
-- (_TtC9SeymourUI40ContentRatingSystemSymbolDescriptionView)initWithFrame:(CGRect)a3;
+- (_TtC9SeymourUI40ContentRatingSystemSymbolDescriptionView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ContentRatingSystemSymbolDescriptionView
 
-- (_TtC9SeymourUI40ContentRatingSystemSymbolDescriptionView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI40ContentRatingSystemSymbolDescriptionView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

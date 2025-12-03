@@ -6,11 +6,11 @@
 
 - (void)layoutSubviews
 {
-  v3 = [(COSShrinkingTextCell *)self titleLabel];
-  [v3 setAdjustsFontSizeToFitWidth:1];
+  titleLabel = [(COSShrinkingTextCell *)self titleLabel];
+  [titleLabel setAdjustsFontSizeToFitWidth:1];
 
-  v4 = [(COSShrinkingTextCell *)self titleLabel];
-  [v4 setEnabled:0];
+  titleLabel2 = [(COSShrinkingTextCell *)self titleLabel];
+  [titleLabel2 setEnabled:0];
 
   v5.receiver = self;
   v5.super_class = COSShrinkingTextCell;

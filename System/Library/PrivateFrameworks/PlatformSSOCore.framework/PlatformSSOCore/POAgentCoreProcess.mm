@@ -3,26 +3,26 @@
 - (BOOL)verifyLoginUserEntitlement;
 - (BOOL)verifyPasswordChangeEntitlement;
 - (BOOL)verifySecurityEntitlement;
-- (POAgentCoreProcess)initWithXPCConnection:(id)a3 identifierProvider:(id)a4 jwksStroageProvider:(id)a5;
-- (void)_verifyLogin:(id)a3 passwordContext:(id)a4 smartCardContext:(id)a5 tokenId:(id)a6 deviceConfiguration:(id)a7 loginConfiguration:(id)a8 forAuthorization:(BOOL)a9 completion:(id)a10;
+- (POAgentCoreProcess)initWithXPCConnection:(id)connection identifierProvider:(id)provider jwksStroageProvider:(id)stroageProvider;
+- (void)_verifyLogin:(id)login passwordContext:(id)context smartCardContext:(id)cardContext tokenId:(id)id deviceConfiguration:(id)configuration loginConfiguration:(id)loginConfiguration forAuthorization:(BOOL)authorization completion:(id)self0;
 - (void)connectionInvalidated;
-- (void)getLoginTypeForUser:(id)a3 completion:(id)a4;
+- (void)getLoginTypeForUser:(id)user completion:(id)completion;
 - (void)verifyAgentEntitlement;
-- (void)verifyPasswordLogin:(id)a3 passwordContext:(id)a4 completion:(id)a5;
-- (void)verifyPasswordUser:(id)a3 passwordContext:(id)a4 completion:(id)a5;
+- (void)verifyPasswordLogin:(id)login passwordContext:(id)context completion:(id)completion;
+- (void)verifyPasswordUser:(id)user passwordContext:(id)context completion:(id)completion;
 @end
 
 @implementation POAgentCoreProcess
 
-- (POAgentCoreProcess)initWithXPCConnection:(id)a3 identifierProvider:(id)a4 jwksStroageProvider:(id)a5
+- (POAgentCoreProcess)initWithXPCConnection:(id)connection identifierProvider:(id)provider jwksStroageProvider:(id)stroageProvider
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  connectionCopy = connection;
+  providerCopy = provider;
+  stroageProviderCopy = stroageProvider;
   v11 = PO_LOG_POAgentCoreProcess();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    [POAgentCoreProcess initWithXPCConnection:v8 identifierProvider:self jwksStroageProvider:v11];
+    [POAgentCoreProcess initWithXPCConnection:connectionCopy identifierProvider:self jwksStroageProvider:v11];
   }
 
   v22.receiver = self;
@@ -36,9 +36,9 @@
 
     [(POAuthenticationProcess *)v12->_authenticationProcess setWaitForConnectivity:1];
     [(POAuthenticationProcess *)v12->_authenticationProcess setTimeoutIntervalForResource:15.0];
-    objc_storeWeak(&v12->_xpcConnection, v8);
-    objc_storeStrong(&v12->_userIdentifierProvider, a4);
-    objc_storeStrong(&v12->_jwksStorageProvider, a5);
+    objc_storeWeak(&v12->_xpcConnection, connectionCopy);
+    objc_storeStrong(&v12->_userIdentifierProvider, provider);
+    objc_storeStrong(&v12->_jwksStorageProvider, stroageProvider);
     v15 = [[POTokenHelper alloc] initWithIdentifierProvider:v12->_userIdentifierProvider];
     tokenHelper = v12->_tokenHelper;
     v12->_tokenHelper = v15;
@@ -47,7 +47,7 @@
     keychainHelper = v12->_keychainHelper;
     v12->_keychainHelper = v17;
 
-    v12->_callerUid = [v8 effectiveUserIdentifier];
+    v12->_callerUid = [connectionCopy effectiveUserIdentifier];
   }
 
   if ([(POAgentCoreProcess *)v12 verifyAgentEntitlement]|| [(POAgentCoreProcess *)v12 verifyLoginUserEntitlement]|| [(POAgentCoreProcess *)v12 verifyPasswordChangeEntitlement]|| [(POAgentCoreProcess *)v12 verifySecurityEntitlement])
@@ -218,21 +218,21 @@ void __44__POAgentCoreProcess_verifyAgentEntitlement__block_invoke()
     v5 = 136315394;
     v6 = "[POAgentCoreProcess connectionInvalidated]";
     v7 = 2112;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E8B1000, v3, OS_LOG_TYPE_DEFAULT, "%s  on %@", &v5, 0x16u);
   }
 
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getLoginTypeForUser:(id)a3 completion:(id)a4
+- (void)getLoginTypeForUser:(id)user completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  userCopy = user;
+  completionCopy = completion;
   if (![(POAgentCoreProcess *)self verifyAgentEntitlement]&& ![(POAgentCoreProcess *)self verifyPasswordChangeEntitlement])
   {
     v10 = __83__POAgentCoreProcess_initWithXPCConnection_identifierProvider_jwksStroageProvider___block_invoke();
-    v7[2](v7, 0, v10);
+    completionCopy[2](completionCopy, 0, v10);
 LABEL_18:
 
     goto LABEL_19;
@@ -241,22 +241,22 @@ LABEL_18:
   if (+[POCoreConfigurationUtil platformSSOEnabled])
   {
     v8 = [POConfigurationCoreManager alloc];
-    v9 = [(POAgentCoreProcess *)self userIdentifierProvider];
-    v10 = [(POConfigurationCoreManager *)v8 initWithUserName:v6 identifierProvider:v9 sharedOnly:0];
+    userIdentifierProvider = [(POAgentCoreProcess *)self userIdentifierProvider];
+    v10 = [(POConfigurationCoreManager *)v8 initWithUserName:userCopy identifierProvider:userIdentifierProvider sharedOnly:0];
 
     v11 = PO_LOG_POAgentCoreProcess();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      [(POAgentCoreProcess *)v6 getLoginTypeForUser:v11 completion:?];
+      [(POAgentCoreProcess *)userCopy getLoginTypeForUser:v11 completion:?];
     }
 
-    v12 = [(POConfigurationCoreManager *)v10 currentUserConfiguration];
-    v13 = v12;
-    if (v12)
+    currentUserConfiguration = [(POConfigurationCoreManager *)v10 currentUserConfiguration];
+    v13 = currentUserConfiguration;
+    if (currentUserConfiguration)
     {
-      if (v7)
+      if (completionCopy)
       {
-        v7[2](v7, [v12 loginType], 0);
+        completionCopy[2](completionCopy, [currentUserConfiguration loginType], 0);
       }
     }
 
@@ -266,11 +266,11 @@ LABEL_18:
       v16[1] = 3221225472;
       v16[2] = __53__POAgentCoreProcess_getLoginTypeForUser_completion___block_invoke_24;
       v16[3] = &unk_279A3DC48;
-      v17 = v6;
+      v17 = userCopy;
       v15 = __53__POAgentCoreProcess_getLoginTypeForUser_completion___block_invoke_24(v16);
-      if (v7)
+      if (completionCopy)
       {
-        v7[2](v7, 0, v15);
+        completionCopy[2](completionCopy, 0, v15);
       }
     }
 
@@ -283,9 +283,9 @@ LABEL_18:
     [POAgentCoreProcess getLoginTypeForUser:completion:];
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7, 0, 0);
+    completionCopy[2](completionCopy, 0, 0);
   }
 
 LABEL_19:
@@ -303,38 +303,38 @@ id __53__POAgentCoreProcess_getLoginTypeForUser_completion___block_invoke_24(uin
   return v2;
 }
 
-- (void)verifyPasswordLogin:(id)a3 passwordContext:(id)a4 completion:(id)a5
+- (void)verifyPasswordLogin:(id)login passwordContext:(id)context completion:(id)completion
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  loginCopy = login;
+  contextCopy = context;
+  completionCopy = completion;
   v11 = PO_LOG_POAgentCoreProcess();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v23 = [POCredentialUtil maskName:v8];
+    v23 = [POCredentialUtil maskName:loginCopy];
     *buf = 136315906;
     v32 = "[POAgentCoreProcess verifyPasswordLogin:passwordContext:completion:]";
     v33 = 2114;
     v34 = v23;
     v35 = 2114;
-    v36 = v9;
+    v36 = contextCopy;
     v37 = 2112;
-    v38 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_25E8B1000, v11, OS_LOG_TYPE_DEBUG, "%s loginUserName = %{public}@, passwordContext = %{public}@ on %@", buf, 0x2Au);
   }
 
   v12 = [POConfigurationCoreManager alloc];
-  v13 = [(POAgentCoreProcess *)self userIdentifierProvider];
-  v14 = [(POConfigurationCoreManager *)v12 initWithUserName:0 identifierProvider:v13 sharedOnly:1];
+  userIdentifierProvider = [(POAgentCoreProcess *)self userIdentifierProvider];
+  v14 = [(POConfigurationCoreManager *)v12 initWithUserName:0 identifierProvider:userIdentifierProvider sharedOnly:1];
 
-  v15 = [(POConfigurationCoreManager *)v14 currentDeviceConfiguration];
-  if (v15)
+  currentDeviceConfiguration = [(POConfigurationCoreManager *)v14 currentDeviceConfiguration];
+  if (currentDeviceConfiguration)
   {
-    v16 = [(POConfigurationCoreManager *)v14 currentLoginConfiguration];
-    if (v16)
+    currentLoginConfiguration = [(POConfigurationCoreManager *)v14 currentLoginConfiguration];
+    if (currentLoginConfiguration)
     {
-      v17 = [objc_alloc(MEMORY[0x277CD4790]) initWithExternalizedContext:v9];
+      v17 = [objc_alloc(MEMORY[0x277CD4790]) initWithExternalizedContext:contextCopy];
       v18 = [POCredentialUtil passwordDataFromContext:v17 error:0];
       v19 = v18;
       if (v18 && [v18 length])
@@ -343,12 +343,12 @@ id __53__POAgentCoreProcess_getLoginTypeForUser_completion___block_invoke_24(uin
         v25[1] = 3221225472;
         v25[2] = __69__POAgentCoreProcess_verifyPasswordLogin_passwordContext_completion___block_invoke_45;
         v25[3] = &unk_279A3E3E0;
-        v28 = v10;
-        v26 = v15;
+        v28 = completionCopy;
+        v26 = currentDeviceConfiguration;
         v27 = v17;
         LOBYTE(v24) = 1;
         v20 = &v28;
-        [(POAgentCoreProcess *)self _verifyLogin:v8 passwordContext:v9 smartCardContext:0 tokenId:0 deviceConfiguration:v26 loginConfiguration:v16 forAuthorization:v24 completion:v25];
+        [(POAgentCoreProcess *)self _verifyLogin:loginCopy passwordContext:contextCopy smartCardContext:0 tokenId:0 deviceConfiguration:v26 loginConfiguration:currentLoginConfiguration forAuthorization:v24 completion:v25];
 
         v21 = v26;
       }
@@ -360,23 +360,23 @@ id __53__POAgentCoreProcess_getLoginTypeForUser_completion___block_invoke_24(uin
         v29[2] = __69__POAgentCoreProcess_verifyPasswordLogin_passwordContext_completion___block_invoke_41;
         v29[3] = &unk_279A3DC48;
         v20 = &v30;
-        v30 = v8;
+        v30 = loginCopy;
         v21 = __69__POAgentCoreProcess_verifyPasswordLogin_passwordContext_completion___block_invoke_41(v29);
-        (*(v10 + 2))(v10, 2, v21);
+        (*(completionCopy + 2))(completionCopy, 2, v21);
       }
     }
 
     else
     {
       v17 = __69__POAgentCoreProcess_verifyPasswordLogin_passwordContext_completion___block_invoke_34();
-      (*(v10 + 2))(v10, 2, v17);
+      (*(completionCopy + 2))(completionCopy, 2, v17);
     }
   }
 
   else
   {
-    v16 = __69__POAgentCoreProcess_verifyPasswordLogin_passwordContext_completion___block_invoke();
-    (*(v10 + 2))(v10, 2, v16);
+    currentLoginConfiguration = __69__POAgentCoreProcess_verifyPasswordLogin_passwordContext_completion___block_invoke();
+    (*(completionCopy + 2))(completionCopy, 2, currentLoginConfiguration);
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -486,59 +486,59 @@ id __69__POAgentCoreProcess_verifyPasswordLogin_passwordContext_completion___blo
   return v0;
 }
 
-- (void)verifyPasswordUser:(id)a3 passwordContext:(id)a4 completion:(id)a5
+- (void)verifyPasswordUser:(id)user passwordContext:(id)context completion:(id)completion
 {
   v44 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  userCopy = user;
+  contextCopy = context;
+  completionCopy = completion;
   v11 = PO_LOG_POAgentCoreProcess();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v23 = [POCredentialUtil maskName:v8];
+    v23 = [POCredentialUtil maskName:userCopy];
     *buf = 136315906;
     v37 = "[POAgentCoreProcess verifyPasswordUser:passwordContext:completion:]";
     v38 = 2114;
     v39 = v23;
     v40 = 2114;
-    v41 = v9;
+    v41 = contextCopy;
     v42 = 2112;
-    v43 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_25E8B1000, v11, OS_LOG_TYPE_DEBUG, "%s loginUserName = %{public}@, passwordContext = %{public}@ on %@", buf, 0x2Au);
   }
 
   v12 = [POConfigurationCoreManager alloc];
-  v13 = [(POAgentCoreProcess *)self userIdentifierProvider];
-  v14 = [(POConfigurationCoreManager *)v12 initWithUserName:v8 identifierProvider:v13 sharedOnly:1];
+  userIdentifierProvider = [(POAgentCoreProcess *)self userIdentifierProvider];
+  v14 = [(POConfigurationCoreManager *)v12 initWithUserName:userCopy identifierProvider:userIdentifierProvider sharedOnly:1];
 
-  v15 = [(POConfigurationCoreManager *)v14 currentDeviceConfiguration];
-  if (v15)
+  currentDeviceConfiguration = [(POConfigurationCoreManager *)v14 currentDeviceConfiguration];
+  if (currentDeviceConfiguration)
   {
-    v16 = [(POConfigurationCoreManager *)v14 currentLoginConfiguration];
-    if (v16)
+    currentLoginConfiguration = [(POConfigurationCoreManager *)v14 currentLoginConfiguration];
+    if (currentLoginConfiguration)
     {
-      v17 = [(POConfigurationCoreManager *)v14 currentUserConfiguration];
-      if (v17)
+      currentUserConfiguration = [(POConfigurationCoreManager *)v14 currentUserConfiguration];
+      if (currentUserConfiguration)
       {
-        v18 = [objc_alloc(MEMORY[0x277CD4790]) initWithExternalizedContext:v9];
+        v18 = [objc_alloc(MEMORY[0x277CD4790]) initWithExternalizedContext:contextCopy];
         v19 = [POCredentialUtil passwordDataFromContext:v18 error:0];
         v20 = v19;
         if (v19 && [v19 length])
         {
-          v26 = [v17 userLoginConfiguration];
-          v25 = [v26 loginUserName];
+          userLoginConfiguration = [currentUserConfiguration userLoginConfiguration];
+          loginUserName = [userLoginConfiguration loginUserName];
           v28[0] = MEMORY[0x277D85DD0];
           v28[1] = 3221225472;
           v28[2] = __68__POAgentCoreProcess_verifyPasswordUser_passwordContext_completion___block_invoke_73;
           v28[3] = &unk_279A3E408;
           v27 = &v33;
-          v33 = v10;
+          v33 = completionCopy;
           v29 = v14;
-          v30 = v8;
-          v31 = v15;
+          v30 = userCopy;
+          v31 = currentDeviceConfiguration;
           v32 = v18;
           LOBYTE(v24) = 1;
-          [(POAgentCoreProcess *)self _verifyLogin:v25 passwordContext:v9 smartCardContext:0 tokenId:0 deviceConfiguration:v31 loginConfiguration:v16 forAuthorization:v24 completion:v28];
+          [(POAgentCoreProcess *)self _verifyLogin:loginUserName passwordContext:contextCopy smartCardContext:0 tokenId:0 deviceConfiguration:v31 loginConfiguration:currentLoginConfiguration forAuthorization:v24 completion:v28];
 
           v21 = v29;
         }
@@ -550,30 +550,30 @@ id __69__POAgentCoreProcess_verifyPasswordLogin_passwordContext_completion___blo
           v34[2] = __68__POAgentCoreProcess_verifyPasswordUser_passwordContext_completion___block_invoke_69;
           v34[3] = &unk_279A3DC48;
           v27 = &v35;
-          v35 = v8;
+          v35 = userCopy;
           v21 = __68__POAgentCoreProcess_verifyPasswordUser_passwordContext_completion___block_invoke_69(v34);
-          (*(v10 + 2))(v10, 2, 0, 0, 0, 0, v21);
+          (*(completionCopy + 2))(completionCopy, 2, 0, 0, 0, 0, v21);
         }
       }
 
       else
       {
         v18 = __68__POAgentCoreProcess_verifyPasswordUser_passwordContext_completion___block_invoke_63();
-        (*(v10 + 2))(v10, 2, 0, 0, 0, 0, v18);
+        (*(completionCopy + 2))(completionCopy, 2, 0, 0, 0, 0, v18);
       }
     }
 
     else
     {
-      v17 = __69__POAgentCoreProcess_verifyPasswordLogin_passwordContext_completion___block_invoke_34();
-      (*(v10 + 2))(v10, 2, 0, 0, 0, 0, v17);
+      currentUserConfiguration = __69__POAgentCoreProcess_verifyPasswordLogin_passwordContext_completion___block_invoke_34();
+      (*(completionCopy + 2))(completionCopy, 2, 0, 0, 0, 0, currentUserConfiguration);
     }
   }
 
   else
   {
-    v16 = __69__POAgentCoreProcess_verifyPasswordLogin_passwordContext_completion___block_invoke();
-    (*(v10 + 2))(v10, 2, 0, 0, 0, 0, v16);
+    currentLoginConfiguration = __69__POAgentCoreProcess_verifyPasswordLogin_passwordContext_completion___block_invoke();
+    (*(completionCopy + 2))(completionCopy, 2, 0, 0, 0, 0, currentLoginConfiguration);
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -705,51 +705,51 @@ id __68__POAgentCoreProcess_verifyPasswordUser_passwordContext_completion___bloc
   return v0;
 }
 
-- (void)_verifyLogin:(id)a3 passwordContext:(id)a4 smartCardContext:(id)a5 tokenId:(id)a6 deviceConfiguration:(id)a7 loginConfiguration:(id)a8 forAuthorization:(BOOL)a9 completion:(id)a10
+- (void)_verifyLogin:(id)login passwordContext:(id)context smartCardContext:(id)cardContext tokenId:(id)id deviceConfiguration:(id)configuration loginConfiguration:(id)loginConfiguration forAuthorization:(BOOL)authorization completion:(id)self0
 {
   v119 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a10;
+  loginCopy = login;
+  contextCopy = context;
+  cardContextCopy = cardContext;
+  idCopy = id;
+  configurationCopy = configuration;
+  loginConfigurationCopy = loginConfiguration;
+  completionCopy = completion;
   v23 = PO_LOG_POAgentCoreProcess();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
   {
-    [POCredentialUtil maskName:v16];
-    v69 = v16;
-    v59 = v21;
-    v61 = v60 = v20;
+    [POCredentialUtil maskName:loginCopy];
+    v69 = loginCopy;
+    v59 = loginConfigurationCopy;
+    v61 = v60 = configurationCopy;
     *buf = 136316418;
     *&buf[4] = "[POAgentCoreProcess _verifyLogin:passwordContext:smartCardContext:tokenId:deviceConfiguration:loginConfiguration:forAuthorization:completion:]";
     v109 = 2114;
     v110 = v61;
     v111 = 2114;
-    v112 = v17;
+    v112 = contextCopy;
     v113 = 2114;
-    v114 = v18;
+    v114 = cardContextCopy;
     v115 = 2114;
-    v116 = v19;
+    v116 = idCopy;
     v117 = 2112;
-    v118 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_25E8B1000, v23, OS_LOG_TYPE_DEBUG, "%s loginUserName = %{public}@, passwordContext = %{public}@, smartcardContext = %{public}@, tokenId = %{public}@ on %@", buf, 0x3Eu);
 
-    v20 = v60;
-    v21 = v59;
-    v16 = v69;
+    configurationCopy = v60;
+    loginConfigurationCopy = v59;
+    loginCopy = v69;
   }
 
   if ([(POAgentCoreProcess *)self verifyAgentEntitlement])
   {
     v24 = objc_alloc_init(POAuthenticationProcess);
-    v80 = v18;
-    if (!v17 || v18)
+    v80 = cardContextCopy;
+    if (!contextCopy || cardContextCopy)
     {
-      if ([POTokenHelper tokenIsAccessKey:v19])
+      if ([POTokenHelper tokenIsAccessKey:idCopy])
       {
-        v73 = v21;
+        v73 = loginConfigurationCopy;
         v35 = PO_LOG_POAgentCoreProcess();
         v36 = os_signpost_id_generate(v35);
 
@@ -764,25 +764,25 @@ id __68__POAgentCoreProcess_verifyPasswordUser_passwordContext_completion___bloc
         v66 = v36;
 
         *buf = 92;
-        v39 = [objc_alloc(MEMORY[0x277CD4790]) initWithExternalizedContext:v18 userSession:buf];
+        v39 = [objc_alloc(MEMORY[0x277CD4790]) initWithExternalizedContext:cardContextCopy userSession:buf];
         v98 = 0;
         v70 = [objc_alloc(MEMORY[0x277CD47B8]) initWithDomain:0 authenticationContext:v39];
         v40 = [v70 dataForKey:26 error:&v98];
         v41 = v98;
         [v39 invalidate];
-        v76 = v20;
+        v76 = configurationCopy;
         if (v40)
         {
           v79 = v41;
-          v42 = [(POAuthenticationProcess *)v24 createAuthenticationContextUsingLoginConfiguration:v73 deviceConfiguration:v20 userName:v16 resumeData:v40];
-          v43 = [(POAgentCoreProcess *)self jwksStorageProvider];
-          [v42 setJwksStorageProvider:v43];
+          v42 = [(POAuthenticationProcess *)v24 createAuthenticationContextUsingLoginConfiguration:v73 deviceConfiguration:configurationCopy userName:loginCopy resumeData:v40];
+          jwksStorageProvider = [(POAgentCoreProcess *)self jwksStorageProvider];
+          [v42 setJwksStorageProvider:jwksStorageProvider];
 
           [v42 addRequiredScope:@"profile"];
-          if (a9)
+          if (authorization)
           {
-            v44 = [v73 additionalAuthorizationScopes];
-            [v42 addRequiredScope:v44];
+            additionalAuthorizationScopes = [v73 additionalAuthorizationScopes];
+            [v42 addRequiredScope:additionalAuthorizationScopes];
           }
 
           v92[0] = MEMORY[0x277D85DD0];
@@ -791,7 +791,7 @@ id __68__POAgentCoreProcess_verifyPasswordUser_passwordContext_completion___bloc
           v92[3] = &unk_279A3E430;
           v95 = v66;
           v93 = v24;
-          v94 = v22;
+          v94 = completionCopy;
           [(POAuthenticationProcess *)v93 completeAccessTokenLoginUsingContext:v42 completion:v92];
 
           v41 = v79;
@@ -805,20 +805,20 @@ id __68__POAgentCoreProcess_verifyPasswordUser_passwordContext_completion___bloc
           v96[3] = &unk_279A3DC48;
           v97 = v41;
           v62 = __143__POAgentCoreProcess__verifyLogin_passwordContext_smartCardContext_tokenId_deviceConfiguration_loginConfiguration_forAuthorization_completion___block_invoke_111(v96);
-          (*(v22 + 2))(v22, 3, 0, 0, 0, 0, v62);
+          (*(completionCopy + 2))(completionCopy, 3, 0, 0, 0, 0, v62);
 
           v42 = v97;
         }
 
-        v21 = v73;
-        v20 = v76;
+        loginConfigurationCopy = v73;
+        configurationCopy = v76;
         goto LABEL_43;
       }
 
-      if (!v18 || !v19)
+      if (!cardContextCopy || !idCopy)
       {
         v41 = __143__POAgentCoreProcess__verifyLogin_passwordContext_smartCardContext_tokenId_deviceConfiguration_loginConfiguration_forAuthorization_completion___block_invoke_133();
-        (*(v22 + 2))(v22, 2, 0, 0, 0, 0, v41);
+        (*(completionCopy + 2))(completionCopy, 2, 0, 0, 0, 0, v41);
         goto LABEL_43;
       }
 
@@ -826,22 +826,22 @@ id __68__POAgentCoreProcess_verifyPasswordUser_passwordContext_completion___bloc
       v74 = objc_alloc_init(MEMORY[0x277CD4790]);
       [v74 setInteractionNotAllowed:1];
       v90 = 0;
-      v71 = [objc_alloc(MEMORY[0x277CD4790]) initWithExternalizedContext:v18 userSession:&v91];
+      v71 = [objc_alloc(MEMORY[0x277CD4790]) initWithExternalizedContext:cardContextCopy userSession:&v91];
       v46 = [POCredentialUtil passwordDataFromContext:"passwordDataFromContext:error:" error:?];
       v78 = 0;
       if (v46)
       {
-        v77 = v20;
+        v77 = configurationCopy;
         [v74 setCredential:v46 type:-3];
         v67 = v46;
         memset_s([v46 mutableBytes], objc_msgSend(v46, "length"), 0, objc_msgSend(v46, "length"));
         *buf = 0;
         v88[0] = 0;
-        v47 = [(POAgentCoreProcess *)self tokenHelper];
-        v48 = [v47 retrieveCertAndKeyForTokenId:v19 context:v74 certificate:v88 privateKey:buf];
+        tokenHelper = [(POAgentCoreProcess *)self tokenHelper];
+        v48 = [tokenHelper retrieveCertAndKeyForTokenId:idCopy context:v74 certificate:v88 privateKey:buf];
 
-        v68 = v16;
-        if (v48 & 1) != 0 || (-[POAgentCoreProcess keychainHelper](self, "keychainHelper"), v49 = objc_claimAutoreleasedReturnValue(), v50 = [v49 retrieveCertAndKeyForTokenId:v19 context:v74 forSigning:1 hash:0 certificate:v88 privateKey:buf], v49, (v50))
+        v68 = loginCopy;
+        if (v48 & 1) != 0 || (-[POAgentCoreProcess keychainHelper](self, "keychainHelper"), v49 = objc_claimAutoreleasedReturnValue(), v50 = [v49 retrieveCertAndKeyForTokenId:idCopy context:v74 forSigning:1 hash:0 certificate:v88 privateKey:buf], v49, (v50))
         {
           v51 = PO_LOG_POAgentCoreProcess();
           v52 = os_signpost_id_generate(v51);
@@ -854,18 +854,18 @@ id __68__POAgentCoreProcess_verifyPasswordUser_passwordContext_completion___bloc
             _os_signpost_emit_with_name_impl(&dword_25E8B1000, v54, OS_SIGNPOST_INTERVAL_BEGIN, v52, "PlatformSSO_SmartCardAuth", " enableTelemetry=YES ", v85, 2u);
           }
 
-          v55 = v21;
-          v56 = [(POAuthenticationProcess *)v24 createAuthenticationContextUsingLoginConfiguration:v21 deviceConfiguration:v77 userName:v68];
+          v55 = loginConfigurationCopy;
+          v56 = [(POAuthenticationProcess *)v24 createAuthenticationContextUsingLoginConfiguration:loginConfigurationCopy deviceConfiguration:v77 userName:v68];
           [v56 setEmbeddedAssertionSigningKey:*buf];
           [v56 setEmbeddedAssertionCertificate:v88[0]];
-          v57 = [(POAgentCoreProcess *)self jwksStorageProvider];
-          [v56 setJwksStorageProvider:v57];
+          jwksStorageProvider2 = [(POAgentCoreProcess *)self jwksStorageProvider];
+          [v56 setJwksStorageProvider:jwksStorageProvider2];
 
           [v56 addRequiredScope:@"profile"];
-          if (a9)
+          if (authorization)
           {
-            v58 = [v55 additionalAuthorizationScopes];
-            [v56 addRequiredScope:v58];
+            additionalAuthorizationScopes2 = [v55 additionalAuthorizationScopes];
+            [v56 addRequiredScope:additionalAuthorizationScopes2];
           }
 
           v81[0] = MEMORY[0x277D85DD0];
@@ -874,29 +874,29 @@ id __68__POAgentCoreProcess_verifyPasswordUser_passwordContext_completion___bloc
           v81[3] = &unk_279A3E430;
           v84 = v52;
           v82 = v24;
-          v83 = v22;
+          v83 = completionCopy;
           [(POAuthenticationProcess *)v82 performSmartCardLoginUsingContext:v56 completion:v81];
         }
 
         else
         {
-          v55 = v21;
+          v55 = loginConfigurationCopy;
           v86[0] = MEMORY[0x277D85DD0];
           v86[1] = 3221225472;
           v86[2] = __143__POAgentCoreProcess__verifyLogin_passwordContext_smartCardContext_tokenId_deviceConfiguration_loginConfiguration_forAuthorization_completion___block_invoke_124;
           v86[3] = &unk_279A3DC48;
-          v87 = v19;
+          v87 = idCopy;
           v64 = __143__POAgentCoreProcess__verifyLogin_passwordContext_smartCardContext_tokenId_deviceConfiguration_loginConfiguration_forAuthorization_completion___block_invoke_124(v86);
-          (*(v22 + 2))(v22, 3, 0, 0, 0, 0, v64);
+          (*(completionCopy + 2))(completionCopy, 3, 0, 0, 0, 0, v64);
 
           v56 = v87;
         }
 
-        v20 = v77;
+        configurationCopy = v77;
         v41 = v78;
 
-        v21 = v55;
-        v16 = v68;
+        loginConfigurationCopy = v55;
+        loginCopy = v68;
         goto LABEL_43;
       }
 
@@ -904,21 +904,21 @@ id __68__POAgentCoreProcess_verifyPasswordUser_passwordContext_completion___bloc
       v88[2] = 3221225472;
       v88[3] = __143__POAgentCoreProcess__verifyLogin_passwordContext_smartCardContext_tokenId_deviceConfiguration_loginConfiguration_forAuthorization_completion___block_invoke_120;
       v88[4] = &unk_279A3DC48;
-      v89 = v16;
+      v89 = loginCopy;
       v63 = __143__POAgentCoreProcess__verifyLogin_passwordContext_smartCardContext_tokenId_deviceConfiguration_loginConfiguration_forAuthorization_completion___block_invoke_120();
-      (*(v22 + 2))(v22, 3, 0, 0, 0, 0, v63);
+      (*(completionCopy + 2))(completionCopy, 3, 0, 0, 0, 0, v63);
     }
 
     else
     {
-      v72 = v19;
-      v25 = v21;
-      v78 = [objc_alloc(MEMORY[0x277CD4790]) initWithExternalizedContext:v17];
+      v72 = idCopy;
+      v25 = loginConfigurationCopy;
+      v78 = [objc_alloc(MEMORY[0x277CD4790]) initWithExternalizedContext:contextCopy];
       v26 = [POCredentialUtil passwordDataFromContext:"passwordDataFromContext:error:" error:?];
       v27 = v26;
       if (v26 && [v26 length])
       {
-        v75 = v20;
+        v75 = configurationCopy;
         v28 = PO_LOG_POAgentCoreProcess();
         v29 = os_signpost_id_generate(v28);
 
@@ -930,16 +930,16 @@ id __68__POAgentCoreProcess_verifyPasswordUser_passwordContext_completion___bloc
           _os_signpost_emit_with_name_impl(&dword_25E8B1000, v31, OS_SIGNPOST_INTERVAL_BEGIN, v29, "PlatformSSO_PasswordAuth", " enableTelemetry=YES ", buf, 2u);
         }
 
-        v32 = [(POAuthenticationProcess *)v24 createAuthenticationContextUsingLoginConfiguration:v25 deviceConfiguration:v75 userName:v16];
+        v32 = [(POAuthenticationProcess *)v24 createAuthenticationContextUsingLoginConfiguration:v25 deviceConfiguration:v75 userName:loginCopy];
         [v32 setPassword:v27];
-        v33 = [(POAgentCoreProcess *)self jwksStorageProvider];
-        [v32 setJwksStorageProvider:v33];
+        jwksStorageProvider3 = [(POAgentCoreProcess *)self jwksStorageProvider];
+        [v32 setJwksStorageProvider:jwksStorageProvider3];
 
         [v32 addRequiredScope:@"profile"];
-        if (a9)
+        if (authorization)
         {
-          v34 = [v25 additionalAuthorizationScopes];
-          [v32 addRequiredScope:v34];
+          additionalAuthorizationScopes3 = [v25 additionalAuthorizationScopes];
+          [v32 addRequiredScope:additionalAuthorizationScopes3];
         }
 
         v99[0] = MEMORY[0x277D85DD0];
@@ -948,10 +948,10 @@ id __68__POAgentCoreProcess_verifyPasswordUser_passwordContext_completion___bloc
         v99[3] = &unk_279A3E430;
         v102 = v29;
         v100 = v24;
-        v101 = v22;
+        v101 = completionCopy;
         [(POAuthenticationProcess *)v100 performPasswordLoginUsingContext:v32 completion:v99];
 
-        v20 = v75;
+        configurationCopy = v75;
       }
 
       else
@@ -960,24 +960,24 @@ id __68__POAgentCoreProcess_verifyPasswordUser_passwordContext_completion___bloc
         v104 = 3221225472;
         v105 = __143__POAgentCoreProcess__verifyLogin_passwordContext_smartCardContext_tokenId_deviceConfiguration_loginConfiguration_forAuthorization_completion___block_invoke_94;
         v106 = &unk_279A3DC48;
-        v107 = v16;
+        v107 = loginCopy;
         v45 = __143__POAgentCoreProcess__verifyLogin_passwordContext_smartCardContext_tokenId_deviceConfiguration_loginConfiguration_forAuthorization_completion___block_invoke_94();
-        (*(v22 + 2))(v22, 3, 0, 0, 0, 0, v45);
+        (*(completionCopy + 2))(completionCopy, 3, 0, 0, 0, 0, v45);
       }
 
-      v21 = v25;
-      v19 = v72;
+      loginConfigurationCopy = v25;
+      idCopy = v72;
     }
 
     v41 = v78;
 LABEL_43:
 
-    v18 = v80;
+    cardContextCopy = v80;
     goto LABEL_44;
   }
 
   v24 = __83__POAgentCoreProcess_initWithXPCConnection_identifierProvider_jwksStroageProvider___block_invoke();
-  (*(v22 + 2))(v22, 2, 0, 0, 0, 0, v24);
+  (*(completionCopy + 2))(completionCopy, 2, 0, 0, 0, 0, v24);
 LABEL_44:
 
   v65 = *MEMORY[0x277D85DE8];

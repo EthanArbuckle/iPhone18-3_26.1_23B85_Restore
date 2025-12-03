@@ -1,5 +1,5 @@
 @interface HMDHouseholdNetworkStabilityLogEvent
-- (HMDHouseholdNetworkStabilityLogEvent)initWithHomeUUID:(id)a3 numStabilityReporters:(unint64_t)a4 WifiAssociations:(unint64_t)a5 wifiDisassociations:(unint64_t)a6 apChanges:(unint64_t)a7 gatewayChanges:(unint64_t)a8 numReadWrites:(unint64_t)a9 numReadErrors:(unint64_t)a10 numWriteErrors:(unint64_t)a11 numSessionErrors:(unint64_t)a12 numNetworkSignatures:(unint64_t)a13;
+- (HMDHouseholdNetworkStabilityLogEvent)initWithHomeUUID:(id)d numStabilityReporters:(unint64_t)reporters WifiAssociations:(unint64_t)associations wifiDisassociations:(unint64_t)disassociations apChanges:(unint64_t)changes gatewayChanges:(unint64_t)gatewayChanges numReadWrites:(unint64_t)writes numReadErrors:(unint64_t)self0 numWriteErrors:(unint64_t)self1 numSessionErrors:(unint64_t)self2 numNetworkSignatures:(unint64_t)self3;
 - (NSDictionary)coreAnalyticsEventDictionary;
 @end
 
@@ -45,23 +45,23 @@
   return v12;
 }
 
-- (HMDHouseholdNetworkStabilityLogEvent)initWithHomeUUID:(id)a3 numStabilityReporters:(unint64_t)a4 WifiAssociations:(unint64_t)a5 wifiDisassociations:(unint64_t)a6 apChanges:(unint64_t)a7 gatewayChanges:(unint64_t)a8 numReadWrites:(unint64_t)a9 numReadErrors:(unint64_t)a10 numWriteErrors:(unint64_t)a11 numSessionErrors:(unint64_t)a12 numNetworkSignatures:(unint64_t)a13
+- (HMDHouseholdNetworkStabilityLogEvent)initWithHomeUUID:(id)d numStabilityReporters:(unint64_t)reporters WifiAssociations:(unint64_t)associations wifiDisassociations:(unint64_t)disassociations apChanges:(unint64_t)changes gatewayChanges:(unint64_t)gatewayChanges numReadWrites:(unint64_t)writes numReadErrors:(unint64_t)self0 numWriteErrors:(unint64_t)self1 numSessionErrors:(unint64_t)self2 numNetworkSignatures:(unint64_t)self3
 {
   v19.receiver = self;
   v19.super_class = HMDHouseholdNetworkStabilityLogEvent;
-  result = [(HMMHomeLogEvent *)&v19 initWithHomeUUID:a3];
+  result = [(HMMHomeLogEvent *)&v19 initWithHomeUUID:d];
   if (result)
   {
-    result->_numStabilityReporters = a4;
-    result->_numWifiAssociations = a5;
-    result->_numWifiDisassociations = a6;
-    result->_numAPChanges = a7;
-    result->_numGatewayChanges = a8;
-    result->_numReadWrites = a9;
-    result->_numReadErrors = a10;
-    result->_numWriteErrors = a11;
-    result->_numSessionErrors = a12;
-    result->_numNetworkSignatures = a13;
+    result->_numStabilityReporters = reporters;
+    result->_numWifiAssociations = associations;
+    result->_numWifiDisassociations = disassociations;
+    result->_numAPChanges = changes;
+    result->_numGatewayChanges = gatewayChanges;
+    result->_numReadWrites = writes;
+    result->_numReadErrors = errors;
+    result->_numWriteErrors = writeErrors;
+    result->_numSessionErrors = sessionErrors;
+    result->_numNetworkSignatures = signatures;
   }
 
   return result;

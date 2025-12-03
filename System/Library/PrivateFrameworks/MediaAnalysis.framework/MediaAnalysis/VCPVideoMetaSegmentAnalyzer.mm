@@ -1,7 +1,7 @@
 @interface VCPVideoMetaSegmentAnalyzer
 - (VCPVideoMetaSegmentAnalyzer)init;
 - (id)privateResults;
-- (int)processMetadataGroup:(id)a3 flags:(unint64_t *)a4;
+- (int)processMetadataGroup:(id)group flags:(unint64_t *)flags;
 @end
 
 @implementation VCPVideoMetaSegmentAnalyzer
@@ -13,9 +13,9 @@
   v2 = [(VCPVideoMetaSegmentAnalyzer *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     results = v2->_results;
-    v2->_results = v3;
+    v2->_results = array;
 
     if (v2->_results)
     {
@@ -38,20 +38,20 @@
   return v6;
 }
 
-- (int)processMetadataGroup:(id)a3 flags:(unint64_t *)a4
+- (int)processMetadataGroup:(id)group flags:(unint64_t *)flags
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v17 = v5;
-  if (v5)
+  groupCopy = group;
+  v17 = groupCopy;
+  if (groupCopy)
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v6 = [v5 items];
-    obj = v6;
-    v7 = [v6 countByEnumeratingWithState:&v20 objects:v27 count:16];
+    items = [groupCopy items];
+    obj = items;
+    v7 = [items countByEnumeratingWithState:&v20 objects:v27 count:16];
     if (v7)
     {
       v8 = *v21;
@@ -98,7 +98,7 @@
           [(NSMutableArray *)results addObject:v14];
         }
 
-        v6 = obj;
+        items = obj;
         v7 = [obj countByEnumeratingWithState:&v20 objects:v27 count:16];
       }
 

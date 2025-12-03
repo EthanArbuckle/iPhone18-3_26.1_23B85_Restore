@@ -1,12 +1,12 @@
 @interface SearchUICollectionViewLayout
-+ (void)applyForcedFrameToAttributes:(id)a3 frame:(CGRect)a4;
-+ (void)applyForcedMaxHeightToAttributes:(id)a3 maxHeight:(double)a4;
-- (CGRect)sectionContentFrameFromCellAttributes:(id)a3;
++ (void)applyForcedFrameToAttributes:(id)attributes frame:(CGRect)frame;
++ (void)applyForcedMaxHeightToAttributes:(id)attributes maxHeight:(double)height;
+- (CGRect)sectionContentFrameFromCellAttributes:(id)attributes;
 - (SearchUICollectionViewSizingDelegate)sizingDelegate;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
-- (void)invalidateLayoutWithContext:(id)a3;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
+- (void)invalidateLayoutWithContext:(id)context;
 - (void)prepareLayout;
 @end
 
@@ -14,10 +14,10 @@
 
 - (void)prepareLayout
 {
-  v3 = [(SearchUICollectionViewLayout *)self sizingDelegate];
-  v4 = [v3 currentSnapshotLayoutConfiguration];
+  sizingDelegate = [(SearchUICollectionViewLayout *)self sizingDelegate];
+  currentSnapshotLayoutConfiguration = [sizingDelegate currentSnapshotLayoutConfiguration];
   snapshotConfiguration = self->_snapshotConfiguration;
-  self->_snapshotConfiguration = v4;
+  self->_snapshotConfiguration = currentSnapshotLayoutConfiguration;
 
   v6.receiver = self;
   v6.super_class = SearchUICollectionViewLayout;
@@ -31,15 +31,15 @@
   return WeakRetained;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
   v78 = *MEMORY[0x1E69E9840];
   v74.receiver = self;
   v74.super_class = SearchUICollectionViewLayout;
-  v4 = [(SearchUICollectionViewLayout *)&v74 layoutAttributesForElementsInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v5 = [(SearchUICollectionViewLayout *)self snapshotConfiguration];
+  v4 = [(SearchUICollectionViewLayout *)&v74 layoutAttributesForElementsInRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
+  snapshotConfiguration = [(SearchUICollectionViewLayout *)self snapshotConfiguration];
 
-  if (v5)
+  if (snapshotConfiguration)
   {
     v6 = objc_opt_new();
     v59 = objc_opt_new();
@@ -65,15 +65,15 @@
 
           v11 = *(*(&v70 + 1) + 8 * i);
           v12 = MEMORY[0x1E696AD98];
-          v13 = [v11 indexPath];
-          v14 = [v12 numberWithInteger:{objc_msgSend(v13, "section")}];
+          indexPath = [v11 indexPath];
+          v14 = [v12 numberWithInteger:{objc_msgSend(indexPath, "section")}];
 
-          v15 = [v11 representedElementKind];
+          representedElementKind = [v11 representedElementKind];
 
-          if (v15)
+          if (representedElementKind)
           {
-            v16 = [v11 representedElementKind];
-            v17 = [v16 isEqualToString:@"SearchUIBackgroundReuseIdentifer"];
+            representedElementKind2 = [v11 representedElementKind];
+            v17 = [representedElementKind2 isEqualToString:@"SearchUIBackgroundReuseIdentifer"];
 
             if (v17)
             {
@@ -149,9 +149,9 @@
                 }
 
                 v37 = *(*(&v62 + 1) + 8 * j);
-                v38 = [(SearchUICollectionViewLayout *)self snapshotConfiguration];
-                v39 = [v38 sectionIndexesForHeightMatching];
-                v40 = [v39 containsObject:v23];
+                snapshotConfiguration2 = [(SearchUICollectionViewLayout *)self snapshotConfiguration];
+                sectionIndexesForHeightMatching = [snapshotConfiguration2 sectionIndexesForHeightMatching];
+                v40 = [sectionIndexesForHeightMatching containsObject:v23];
 
                 if (v40)
                 {
@@ -209,28 +209,28 @@
   return v4;
 }
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v26.receiver = self;
   v26.super_class = SearchUICollectionViewLayout;
-  v7 = [(SearchUICollectionViewLayout *)&v26 layoutAttributesForSupplementaryViewOfKind:a3 atIndexPath:v6];
-  v8 = [v7 representedElementKind];
-  v9 = [v8 isEqualToString:@"SearchUIBackgroundReuseIdentifer"];
+  v7 = [(SearchUICollectionViewLayout *)&v26 layoutAttributesForSupplementaryViewOfKind:kind atIndexPath:pathCopy];
+  representedElementKind = [v7 representedElementKind];
+  v9 = [representedElementKind isEqualToString:@"SearchUIBackgroundReuseIdentifer"];
 
   if (v9)
   {
-    if (([MEMORY[0x1E69D9240] isMacOS] & 1) != 0 || (-[SearchUICollectionViewLayout snapshotConfiguration](self, "snapshotConfiguration"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "sectionIndexesUsingListLayout"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", objc_msgSend(v6, "section")), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v11, "containsObject:", v12), v12, v11, v10, v13))
+    if (([MEMORY[0x1E69D9240] isMacOS] & 1) != 0 || (-[SearchUICollectionViewLayout snapshotConfiguration](self, "snapshotConfiguration"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "sectionIndexesUsingListLayout"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", objc_msgSend(pathCopy, "section")), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v11, "containsObject:", v12), v12, v11, v10, v13))
     {
       v14 = objc_opt_new();
-      v15 = [(SearchUICollectionViewLayout *)self collectionView];
-      v16 = [v15 numberOfItemsInSection:{objc_msgSend(v6, "section")}];
+      collectionView = [(SearchUICollectionViewLayout *)self collectionView];
+      v16 = [collectionView numberOfItemsInSection:{objc_msgSend(pathCopy, "section")}];
 
       if (v16 >= 1)
       {
         for (i = 0; i != v16; ++i)
         {
-          v18 = [MEMORY[0x1E696AC88] indexPathForItem:i inSection:{objc_msgSend(v6, "section")}];
+          v18 = [MEMORY[0x1E696AC88] indexPathForItem:i inSection:{objc_msgSend(pathCopy, "section")}];
           v19 = [(SearchUICollectionViewLayout *)self layoutAttributesForItemAtIndexPath:v18];
           [v14 addObject:v19];
         }
@@ -243,7 +243,7 @@
 
       else
       {
-        -[SearchUICollectionViewLayout _contentFrameForSection:](self, "_contentFrameForSection:", [v6 section]);
+        -[SearchUICollectionViewLayout _contentFrameForSection:](self, "_contentFrameForSection:", [pathCopy section]);
       }
 
       [objc_opt_class() applyForcedFrameToAttributes:v7 frame:{v20, v21, v22, v23}];
@@ -252,7 +252,7 @@
     else
     {
       v24 = objc_opt_class();
-      -[SearchUICollectionViewLayout _contentFrameForSection:](self, "_contentFrameForSection:", [v6 section]);
+      -[SearchUICollectionViewLayout _contentFrameForSection:](self, "_contentFrameForSection:", [pathCopy section]);
       [v24 applyForcedFrameToAttributes:v7 frame:?];
     }
   }
@@ -260,66 +260,66 @@
   return v7;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v12.receiver = self;
   v12.super_class = SearchUICollectionViewLayout;
-  v5 = [(SearchUICollectionViewLayout *)&v12 layoutAttributesForItemAtIndexPath:v4];
-  v6 = [(SearchUICollectionViewLayout *)self snapshotConfiguration];
-  v7 = [v6 sectionIndexesForHeightMatching];
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "section")}];
-  v9 = [v7 containsObject:v8];
+  v5 = [(SearchUICollectionViewLayout *)&v12 layoutAttributesForItemAtIndexPath:pathCopy];
+  snapshotConfiguration = [(SearchUICollectionViewLayout *)self snapshotConfiguration];
+  sectionIndexesForHeightMatching = [snapshotConfiguration sectionIndexesForHeightMatching];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(pathCopy, "section")}];
+  v9 = [sectionIndexesForHeightMatching containsObject:v8];
 
   if (v9)
   {
-    -[SearchUICollectionViewLayout _contentFrameForSection:](self, "_contentFrameForSection:", [v4 section]);
+    -[SearchUICollectionViewLayout _contentFrameForSection:](self, "_contentFrameForSection:", [pathCopy section]);
     [objc_opt_class() applyForcedMaxHeightToAttributes:v5 maxHeight:v10];
   }
 
   return v5;
 }
 
-+ (void)applyForcedFrameToAttributes:(id)a3 frame:(CGRect)a4
++ (void)applyForcedFrameToAttributes:(id)attributes frame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3;
-  [v8 setFrame:{x, y, width, height}];
-  [v8 setIsForcingHeight:1];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  attributesCopy = attributes;
+  [attributesCopy setFrame:{x, y, width, height}];
+  [attributesCopy setIsForcingHeight:1];
 }
 
-+ (void)applyForcedMaxHeightToAttributes:(id)a3 maxHeight:(double)a4
++ (void)applyForcedMaxHeightToAttributes:(id)attributes maxHeight:(double)height
 {
-  v16 = a3;
-  [v16 frame];
+  attributesCopy = attributes;
+  [attributesCopy frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  if (v11 != 1.0 || ([v16 representedElementKind], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isEqualToString:", @"SearchUIBackgroundReuseIdentifer"), v13, v14))
+  if (v11 != 1.0 || ([attributesCopy representedElementKind], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isEqualToString:", @"SearchUIBackgroundReuseIdentifer"), v13, v14))
   {
-    if (v12 >= a4)
+    if (v12 >= height)
     {
-      v15 = v12;
+      heightCopy = v12;
     }
 
     else
     {
-      v15 = a4;
+      heightCopy = height;
     }
 
-    [v16 setFrame:{v6, v8, v10, v15}];
-    [v16 setIsForcingHeight:1];
+    [attributesCopy setFrame:{v6, v8, v10, heightCopy}];
+    [attributesCopy setIsForcingHeight:1];
   }
 }
 
-- (CGRect)sectionContentFrameFromCellAttributes:(id)a3
+- (CGRect)sectionContentFrameFromCellAttributes:(id)attributes
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  attributesCopy = attributes;
   v4 = *MEMORY[0x1E695F058];
   v5 = *(MEMORY[0x1E695F058] + 8);
   v6 = *(MEMORY[0x1E695F058] + 16);
@@ -328,7 +328,7 @@
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v8 = [v3 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  v8 = [attributesCopy countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v8)
   {
     v9 = v8;
@@ -340,18 +340,18 @@
       {
         if (*v27 != v10)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(attributesCopy);
         }
 
         v12 = *(*(&v26 + 1) + 8 * v11);
-        v13 = [v3 firstObject];
+        firstObject = [attributesCopy firstObject];
 
         [v12 frame];
         v18 = v14;
         v19 = v15;
         v20 = v16;
         v21 = v17;
-        if (v12 != v13)
+        if (v12 != firstObject)
         {
           v32.origin.x = v4;
           v32.origin.y = v5;
@@ -368,7 +368,7 @@
       }
 
       while (v9 != v11);
-      v9 = [v3 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v9 = [attributesCopy countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v9);
@@ -385,17 +385,17 @@
   return result;
 }
 
-- (void)invalidateLayoutWithContext:(id)a3
+- (void)invalidateLayoutWithContext:(id)context
 {
   v6.receiver = self;
   v6.super_class = SearchUICollectionViewLayout;
-  [(SearchUICollectionViewLayout *)&v6 invalidateLayoutWithContext:a3];
+  [(SearchUICollectionViewLayout *)&v6 invalidateLayoutWithContext:context];
   [(SearchUICollectionViewLayout *)self collectionViewContentSize];
   if (v4 > 0.0)
   {
-    v5 = [(SearchUICollectionViewLayout *)self sizingDelegate];
+    sizingDelegate = [(SearchUICollectionViewLayout *)self sizingDelegate];
     [(SearchUICollectionViewLayout *)self collectionViewContentSize];
-    [v5 contentSizeDidChange:?];
+    [sizingDelegate contentSizeDidChange:?];
   }
 }
 

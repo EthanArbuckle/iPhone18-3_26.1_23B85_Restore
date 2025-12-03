@@ -3,66 +3,66 @@
 + (NSString)bagSubProfile;
 + (NSString)bagSubProfileVersion;
 + (id)createBagForSubProfile;
-+ (id)pollingIntervalFromBag:(id)a3;
-- (AMSCarrierOfferRegistrationTask)initWithAccount:(id)a3 bag:(id)a4;
-- (AMSCarrierOfferRegistrationTask)initWithAccount:(id)a3 bag:(id)a4 carriers:(id)a5 checkOfferRequestEncoder:(id)a6 deviceGUID:(id)a7 msisdn:(id)a8 pacTokenPromise:(id)a9 privacyMappingResolver:(Class)a10 registrationRequestEncoder:(id)a11 urlSession:(id)a12;
-- (AMSCarrierOfferRegistrationTask)initWithAccount:(id)a3 bag:(id)a4 carriers:(id)a5 deviceGUID:(id)a6 msisdn:(id)a7;
-- (id)_allowedServiceIdentifiersFromPrivacyMapping:(id)a3;
-- (id)_checkOffersBodyLimitedByAllowedServiceIdentifiers:(id)a3;
-- (id)_checkOffersRequestLimitedByAllowedServiceIdentifiers:(id)a3;
++ (id)pollingIntervalFromBag:(id)bag;
+- (AMSCarrierOfferRegistrationTask)initWithAccount:(id)account bag:(id)bag;
+- (AMSCarrierOfferRegistrationTask)initWithAccount:(id)account bag:(id)bag carriers:(id)carriers checkOfferRequestEncoder:(id)encoder deviceGUID:(id)d msisdn:(id)msisdn pacTokenPromise:(id)promise privacyMappingResolver:(Class)self0 registrationRequestEncoder:(id)self1 urlSession:(id)self2;
+- (AMSCarrierOfferRegistrationTask)initWithAccount:(id)account bag:(id)bag carriers:(id)carriers deviceGUID:(id)d msisdn:(id)msisdn;
+- (id)_allowedServiceIdentifiersFromPrivacyMapping:(id)mapping;
+- (id)_checkOffersBodyLimitedByAllowedServiceIdentifiers:(id)identifiers;
+- (id)_checkOffersRequestLimitedByAllowedServiceIdentifiers:(id)identifiers;
 - (id)_evaluationRequiredPrivacyMappingPair;
-- (id)_hasOffersLimitedByAllowedServiceIdentifiers:(id)a3;
+- (id)_hasOffersLimitedByAllowedServiceIdentifiers:(id)identifiers;
 - (id)_includesAllowedCarrier;
 - (id)_pacToken;
-- (id)_parseCheckOffersResult:(id)a3;
-- (id)_performRegistrationFlowLimitedByAllowedServiceIdentifiers:(id)a3;
-- (id)_registerCarrierOffersToAccountLimitedByAllowedServiceIdentifiers:(id)a3;
-- (id)_registrationBodyLimitedByAllowedServiceIdentifiers:(id)a3;
-- (id)_registrationRequestLimitedByAllowedServiceIdentifiers:(id)a3;
+- (id)_parseCheckOffersResult:(id)result;
+- (id)_performRegistrationFlowLimitedByAllowedServiceIdentifiers:(id)identifiers;
+- (id)_registerCarrierOffersToAccountLimitedByAllowedServiceIdentifiers:(id)identifiers;
+- (id)_registrationBodyLimitedByAllowedServiceIdentifiers:(id)identifiers;
+- (id)_registrationRequestLimitedByAllowedServiceIdentifiers:(id)identifiers;
 - (id)perform;
 @end
 
 @implementation AMSCarrierOfferRegistrationTask
 
-- (AMSCarrierOfferRegistrationTask)initWithAccount:(id)a3 bag:(id)a4
+- (AMSCarrierOfferRegistrationTask)initWithAccount:(id)account bag:(id)bag
 {
-  v5 = a4;
-  v6 = a3;
+  bagCopy = bag;
+  accountCopy = account;
   v7 = +[AMSDevice carrierNames];
-  v8 = [[AMSURLRequestEncoder alloc] initWithBag:v5];
+  v8 = [[AMSURLRequestEncoder alloc] initWithBag:bagCopy];
   v9 = +[AMSDevice deviceGUID];
   v10 = +[AMSDevice phoneNumber];
   v11 = +[AMSDevice voicePreferredPACToken];
   v12 = objc_opt_class();
-  v13 = [[AMSURLRequestEncoder alloc] initWithBag:v5];
+  v13 = [[AMSURLRequestEncoder alloc] initWithBag:bagCopy];
   v14 = +[AMSURLSession defaultSession];
-  v15 = [(AMSCarrierOfferRegistrationTask *)self initWithAccount:v6 bag:v5 carriers:v7 checkOfferRequestEncoder:v8 deviceGUID:v9 msisdn:v10 pacTokenPromise:v11 privacyMappingResolver:v12 registrationRequestEncoder:v13 urlSession:v14];
+  v15 = [(AMSCarrierOfferRegistrationTask *)self initWithAccount:accountCopy bag:bagCopy carriers:v7 checkOfferRequestEncoder:v8 deviceGUID:v9 msisdn:v10 pacTokenPromise:v11 privacyMappingResolver:v12 registrationRequestEncoder:v13 urlSession:v14];
 
   return v15;
 }
 
-- (AMSCarrierOfferRegistrationTask)initWithAccount:(id)a3 bag:(id)a4 carriers:(id)a5 deviceGUID:(id)a6 msisdn:(id)a7
+- (AMSCarrierOfferRegistrationTask)initWithAccount:(id)account bag:(id)bag carriers:(id)carriers deviceGUID:(id)d msisdn:(id)msisdn
 {
-  v26 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v24 = v12;
-  if (!v12)
+  accountCopy = account;
+  bagCopy = bag;
+  carriersCopy = carriers;
+  dCopy = d;
+  msisdnCopy = msisdn;
+  v24 = carriersCopy;
+  if (!carriersCopy)
   {
     v24 = +[AMSDevice carrierNames];
   }
 
-  v25 = [[AMSURLRequestEncoder alloc] initWithBag:v11];
-  v15 = v13;
-  if (v13)
+  v25 = [[AMSURLRequestEncoder alloc] initWithBag:bagCopy];
+  v15 = dCopy;
+  if (dCopy)
   {
-    if (v14)
+    if (msisdnCopy)
     {
 LABEL_5:
       v16 = 0;
-      v17 = v14;
+      v17 = msisdnCopy;
       goto LABEL_8;
     }
   }
@@ -70,7 +70,7 @@ LABEL_5:
   else
   {
     v15 = +[AMSDevice deviceGUID];
-    if (v14)
+    if (msisdnCopy)
     {
       goto LABEL_5;
     }
@@ -80,13 +80,13 @@ LABEL_5:
   v16 = +[AMSDevice voicePreferredPACToken];
 LABEL_8:
   v18 = objc_opt_class();
-  v19 = [[AMSURLRequestEncoder alloc] initWithBag:v11];
+  v19 = [[AMSURLRequestEncoder alloc] initWithBag:bagCopy];
   v20 = +[AMSURLSession defaultSession];
-  v21 = [(AMSCarrierOfferRegistrationTask *)self initWithAccount:v26 bag:v11 carriers:v24 checkOfferRequestEncoder:v25 deviceGUID:v15 msisdn:v17 pacTokenPromise:v16 privacyMappingResolver:v18 registrationRequestEncoder:v19 urlSession:v20];
+  v21 = [(AMSCarrierOfferRegistrationTask *)self initWithAccount:accountCopy bag:bagCopy carriers:v24 checkOfferRequestEncoder:v25 deviceGUID:v15 msisdn:v17 pacTokenPromise:v16 privacyMappingResolver:v18 registrationRequestEncoder:v19 urlSession:v20];
 
-  if (v14)
+  if (msisdnCopy)
   {
-    if (v13)
+    if (dCopy)
     {
       goto LABEL_10;
     }
@@ -95,50 +95,50 @@ LABEL_8:
   else
   {
 
-    if (v13)
+    if (dCopy)
     {
       goto LABEL_10;
     }
   }
 
 LABEL_10:
-  if (!v12)
+  if (!carriersCopy)
   {
   }
 
   return v21;
 }
 
-- (AMSCarrierOfferRegistrationTask)initWithAccount:(id)a3 bag:(id)a4 carriers:(id)a5 checkOfferRequestEncoder:(id)a6 deviceGUID:(id)a7 msisdn:(id)a8 pacTokenPromise:(id)a9 privacyMappingResolver:(Class)a10 registrationRequestEncoder:(id)a11 urlSession:(id)a12
+- (AMSCarrierOfferRegistrationTask)initWithAccount:(id)account bag:(id)bag carriers:(id)carriers checkOfferRequestEncoder:(id)encoder deviceGUID:(id)d msisdn:(id)msisdn pacTokenPromise:(id)promise privacyMappingResolver:(Class)self0 registrationRequestEncoder:(id)self1 urlSession:(id)self2
 {
-  v18 = a3;
-  v33 = a4;
-  v27 = a5;
-  v32 = a5;
-  v31 = a6;
-  v28 = a7;
-  v30 = a7;
-  v29 = a8;
-  v19 = a8;
-  v20 = a9;
-  v21 = a11;
-  v22 = a12;
+  accountCopy = account;
+  bagCopy = bag;
+  carriersCopy = carriers;
+  carriersCopy2 = carriers;
+  encoderCopy = encoder;
+  dCopy = d;
+  dCopy2 = d;
+  msisdnCopy = msisdn;
+  msisdnCopy2 = msisdn;
+  promiseCopy = promise;
+  requestEncoderCopy = requestEncoder;
+  sessionCopy = session;
   v34.receiver = self;
   v34.super_class = AMSCarrierOfferRegistrationTask;
   v23 = [(AMSTask *)&v34 init];
   v24 = v23;
   if (v23)
   {
-    objc_storeStrong(&v23->_account, a3);
-    objc_storeStrong(&v24->_bag, a4);
-    objc_storeStrong(&v24->_carriers, v27);
-    objc_storeStrong(&v24->_checkOfferRequestEncoder, a6);
-    objc_storeStrong(&v24->_deviceGUID, v28);
-    objc_storeStrong(&v24->_msisdn, v29);
-    objc_storeStrong(&v24->_pacTokenPromise, a9);
-    objc_storeStrong(&v24->_privacyMappingResolver, a10);
-    objc_storeStrong(&v24->_registrationRequestEncoder, a11);
-    objc_storeStrong(&v24->_urlSession, a12);
+    objc_storeStrong(&v23->_account, account);
+    objc_storeStrong(&v24->_bag, bag);
+    objc_storeStrong(&v24->_carriers, carriersCopy);
+    objc_storeStrong(&v24->_checkOfferRequestEncoder, encoder);
+    objc_storeStrong(&v24->_deviceGUID, dCopy);
+    objc_storeStrong(&v24->_msisdn, msisdnCopy);
+    objc_storeStrong(&v24->_pacTokenPromise, promise);
+    objc_storeStrong(&v24->_privacyMappingResolver, resolver);
+    objc_storeStrong(&v24->_registrationRequestEncoder, requestEncoder);
+    objc_storeStrong(&v24->_urlSession, session);
   }
 
   return v24;
@@ -146,28 +146,28 @@ LABEL_10:
 
 - (id)perform
 {
-  v3 = [(AMSCarrierOfferRegistrationTask *)self carriers];
-  if (v3 && (v4 = v3, -[AMSCarrierOfferRegistrationTask carriers](self, "carriers"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v4, v6))
+  carriers = [(AMSCarrierOfferRegistrationTask *)self carriers];
+  if (carriers && (v4 = carriers, -[AMSCarrierOfferRegistrationTask carriers](self, "carriers"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v4, v6))
   {
-    v7 = [(AMSCarrierOfferRegistrationTask *)self msisdn];
+    msisdn = [(AMSCarrierOfferRegistrationTask *)self msisdn];
 
-    if (v7)
+    if (msisdn)
     {
-      v8 = [(AMSCarrierOfferRegistrationTask *)self deviceGUID];
+      deviceGUID = [(AMSCarrierOfferRegistrationTask *)self deviceGUID];
 
-      if (v8)
+      if (deviceGUID)
       {
-        v9 = [(AMSCarrierOfferRegistrationTask *)self account];
+        account = [(AMSCarrierOfferRegistrationTask *)self account];
 
-        if (v9)
+        if (account)
         {
-          v10 = [(AMSCarrierOfferRegistrationTask *)self _evaluationRequiredPrivacyMappingPair];
+          _evaluationRequiredPrivacyMappingPair = [(AMSCarrierOfferRegistrationTask *)self _evaluationRequiredPrivacyMappingPair];
           v15[0] = MEMORY[0x1E69E9820];
           v15[1] = 3221225472;
           v15[2] = __42__AMSCarrierOfferRegistrationTask_perform__block_invoke;
           v15[3] = &unk_1E73B5B10;
           v15[4] = self;
-          v11 = [v10 thenWithBlock:v15];
+          v11 = [_evaluationRequiredPrivacyMappingPair thenWithBlock:v15];
           goto LABEL_9;
         }
 
@@ -199,8 +199,8 @@ LABEL_10:
     v13 = @"Task is missing carrier names";
   }
 
-  v10 = [v12 invalidParameterError:v13];
-  [v11 finishWithError:v10];
+  _evaluationRequiredPrivacyMappingPair = [v12 invalidParameterError:v13];
+  [v11 finishWithError:_evaluationRequiredPrivacyMappingPair];
 LABEL_9:
 
   return v11;
@@ -307,11 +307,11 @@ LABEL_21:
   return v20;
 }
 
-+ (id)pollingIntervalFromBag:(id)a3
++ (id)pollingIntervalFromBag:(id)bag
 {
-  v3 = [a3 doubleForKey:@"channelOfferCheckFrequency"];
-  v4 = [v3 valuePromise];
-  v5 = [v4 thenWithBlock:&__block_literal_global_28];
+  v3 = [bag doubleForKey:@"channelOfferCheckFrequency"];
+  valuePromise = [v3 valuePromise];
+  v5 = [valuePromise thenWithBlock:&__block_literal_global_28];
 
   return v5;
 }
@@ -326,16 +326,16 @@ id __58__AMSCarrierOfferRegistrationTask_pollingIntervalFromBag___block_invoke(u
   return v5;
 }
 
-- (id)_performRegistrationFlowLimitedByAllowedServiceIdentifiers:(id)a3
+- (id)_performRegistrationFlowLimitedByAllowedServiceIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __94__AMSCarrierOfferRegistrationTask__performRegistrationFlowLimitedByAllowedServiceIdentifiers___block_invoke;
   v8[3] = &unk_1E73B5B38;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = identifiersCopy;
+  v5 = identifiersCopy;
   v6 = [(AMSTask *)self performTaskWithBlock:v8];
 
   return v6;
@@ -541,34 +541,34 @@ id __94__AMSCarrierOfferRegistrationTask__performRegistrationFlowLimitedByAllowe
   return v14;
 }
 
-- (id)_checkOffersRequestLimitedByAllowedServiceIdentifiers:(id)a3
+- (id)_checkOffersRequestLimitedByAllowedServiceIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(AMSCarrierOfferRegistrationTask *)self checkOfferRequestEncoder];
-  [v5 setRequestEncoding:3];
+  identifiersCopy = identifiers;
+  checkOfferRequestEncoder = [(AMSCarrierOfferRegistrationTask *)self checkOfferRequestEncoder];
+  [checkOfferRequestEncoder setRequestEncoding:3];
 
-  v6 = [(AMSCarrierOfferRegistrationTask *)self clientInfo];
-  v7 = [(AMSCarrierOfferRegistrationTask *)self checkOfferRequestEncoder];
-  [v7 setClientInfo:v6];
+  clientInfo = [(AMSCarrierOfferRegistrationTask *)self clientInfo];
+  checkOfferRequestEncoder2 = [(AMSCarrierOfferRegistrationTask *)self checkOfferRequestEncoder];
+  [checkOfferRequestEncoder2 setClientInfo:clientInfo];
 
-  v8 = [(AMSCarrierOfferRegistrationTask *)self _checkOffersBodyLimitedByAllowedServiceIdentifiers:v4];
+  v8 = [(AMSCarrierOfferRegistrationTask *)self _checkOffersBodyLimitedByAllowedServiceIdentifiers:identifiersCopy];
 
   v9 = [(AMSCarrierOfferRegistrationTask *)self bag];
   v10 = [v9 URLForKey:@"checkChannelOffers"];
 
-  v11 = [(AMSCarrierOfferRegistrationTask *)self checkOfferRequestEncoder];
-  v12 = [v11 requestWithMethod:4 bagURL:v10 parameters:v8];
+  checkOfferRequestEncoder3 = [(AMSCarrierOfferRegistrationTask *)self checkOfferRequestEncoder];
+  v12 = [checkOfferRequestEncoder3 requestWithMethod:4 bagURL:v10 parameters:v8];
 
   return v12;
 }
 
-- (id)_hasOffersLimitedByAllowedServiceIdentifiers:(id)a3
+- (id)_hasOffersLimitedByAllowedServiceIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(AMSCarrierOfferRegistrationTask *)self urlSession];
-  v6 = [(AMSCarrierOfferRegistrationTask *)self _checkOffersRequestLimitedByAllowedServiceIdentifiers:v4];
+  identifiersCopy = identifiers;
+  urlSession = [(AMSCarrierOfferRegistrationTask *)self urlSession];
+  v6 = [(AMSCarrierOfferRegistrationTask *)self _checkOffersRequestLimitedByAllowedServiceIdentifiers:identifiersCopy];
 
-  v7 = [v5 dataTaskPromiseWithRequestPromise:v6];
+  v7 = [urlSession dataTaskPromiseWithRequestPromise:v6];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -593,15 +593,15 @@ id __80__AMSCarrierOfferRegistrationTask__hasOffersLimitedByAllowedServiceIdenti
   v3 = objc_opt_new();
   v4 = [(AMSCarrierOfferRegistrationTask *)self bag];
   v5 = [v4 arrayForKey:@"channelSupportedCarriers"];
-  v6 = [v5 valuePromise];
+  valuePromise = [v5 valuePromise];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __58__AMSCarrierOfferRegistrationTask__includesAllowedCarrier__block_invoke;
   v10[3] = &unk_1E73B5B60;
   v7 = v3;
   v11 = v7;
-  v12 = self;
-  [v6 addFinishBlock:v10];
+  selfCopy = self;
+  [valuePromise addFinishBlock:v10];
 
   v8 = v7;
   return v7;
@@ -661,16 +661,16 @@ void __58__AMSCarrierOfferRegistrationTask__includesAllowedCarrier__block_invoke
   }
 }
 
-- (id)_checkOffersBodyLimitedByAllowedServiceIdentifiers:(id)a3
+- (id)_checkOffersBodyLimitedByAllowedServiceIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = objc_opt_new();
-  v6 = [(AMSCarrierOfferRegistrationTask *)self msisdn];
-  [v5 setObject:v6 forKeyedSubscript:@"msisdn"];
+  msisdn = [(AMSCarrierOfferRegistrationTask *)self msisdn];
+  [v5 setObject:msisdn forKeyedSubscript:@"msisdn"];
 
-  v7 = [v4 array];
+  array = [identifiersCopy array];
 
-  [v5 setObject:v7 forKeyedSubscript:@"validLobs"];
+  [v5 setObject:array forKeyedSubscript:@"validLobs"];
   v8 = [v5 copy];
 
   return v8;
@@ -680,19 +680,19 @@ void __58__AMSCarrierOfferRegistrationTask__includesAllowedCarrier__block_invoke
 {
   v18 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(AMSCarrierOfferRegistrationTask *)self pacTokenPromise];
+  pacTokenPromise = [(AMSCarrierOfferRegistrationTask *)self pacTokenPromise];
 
-  if (v4)
+  if (pacTokenPromise)
   {
     objc_initWeak(location, self);
-    v5 = [(AMSCarrierOfferRegistrationTask *)self pacTokenPromise];
+    pacTokenPromise2 = [(AMSCarrierOfferRegistrationTask *)self pacTokenPromise];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __44__AMSCarrierOfferRegistrationTask__pacToken__block_invoke;
     v12[3] = &unk_1E73B5B88;
     objc_copyWeak(&v14, location);
     v13 = v3;
-    [v5 addFinishBlock:v12];
+    [pacTokenPromise2 addFinishBlock:v12];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(location);
@@ -706,8 +706,8 @@ void __58__AMSCarrierOfferRegistrationTask__includesAllowedCarrier__block_invoke
       v6 = +[AMSLogConfig sharedConfig];
     }
 
-    v7 = [v6 OSLogObject];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v6 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v8 = objc_opt_class();
       v9 = AMSLogKey();
@@ -715,7 +715,7 @@ void __58__AMSCarrierOfferRegistrationTask__includesAllowedCarrier__block_invoke
       *&location[4] = v8;
       v16 = 2114;
       v17 = v9;
-      _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] No PAC token available", location, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] No PAC token available", location, 0x16u);
     }
 
     v10 = +[AMSOptional optionalWithNil];
@@ -768,13 +768,13 @@ void __44__AMSCarrierOfferRegistrationTask__pacToken__block_invoke(uint64_t a1, 
   [v13 finishWithResult:v14];
 }
 
-- (id)_parseCheckOffersResult:(id)a3
+- (id)_parseCheckOffersResult:(id)result
 {
-  v4 = [a3 object];
+  object = [result object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = object;
   }
 
   else
@@ -795,34 +795,34 @@ void __44__AMSCarrierOfferRegistrationTask__pacToken__block_invoke(uint64_t a1, 
   }
 
   v8 = MEMORY[0x1E696AD98];
-  v9 = [(AMSCarrierOfferRegistrationTask *)self msisdn];
-  v10 = [v8 numberWithBool:{objc_msgSend(v7, "containsObject:", v9)}];
+  msisdn = [(AMSCarrierOfferRegistrationTask *)self msisdn];
+  v10 = [v8 numberWithBool:{objc_msgSend(v7, "containsObject:", msisdn)}];
 
   return v10;
 }
 
-- (id)_registrationBodyLimitedByAllowedServiceIdentifiers:(id)a3
+- (id)_registrationBodyLimitedByAllowedServiceIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = objc_opt_new();
   v6 = objc_opt_new();
-  v7 = [(AMSCarrierOfferRegistrationTask *)self msisdn];
-  [v6 setObject:v7 forKeyedSubscript:@"msisdn"];
+  msisdn = [(AMSCarrierOfferRegistrationTask *)self msisdn];
+  [v6 setObject:msisdn forKeyedSubscript:@"msisdn"];
 
-  v8 = [(AMSCarrierOfferRegistrationTask *)self deviceGUID];
-  [v6 setObject:v8 forKeyedSubscript:@"guid"];
+  deviceGUID = [(AMSCarrierOfferRegistrationTask *)self deviceGUID];
+  [v6 setObject:deviceGUID forKeyedSubscript:@"guid"];
 
-  v9 = [v4 array];
+  array = [identifiersCopy array];
 
-  [v6 setObject:v9 forKeyedSubscript:@"lobs"];
-  v10 = [(AMSCarrierOfferRegistrationTask *)self _pacToken];
+  [v6 setObject:array forKeyedSubscript:@"lobs"];
+  _pacToken = [(AMSCarrierOfferRegistrationTask *)self _pacToken];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __87__AMSCarrierOfferRegistrationTask__registrationBodyLimitedByAllowedServiceIdentifiers___block_invoke;
   v14[3] = &unk_1E73B5BB0;
   v15 = v6;
   v11 = v6;
-  v12 = [v10 thenWithBlock:v14];
+  v12 = [_pacToken thenWithBlock:v14];
 
   return v12;
 }
@@ -837,14 +837,14 @@ AMSPromise *__87__AMSCarrierOfferRegistrationTask__registrationBodyLimitedByAllo
   return [AMSPromise promiseWithResult:v4];
 }
 
-- (id)_registerCarrierOffersToAccountLimitedByAllowedServiceIdentifiers:(id)a3
+- (id)_registerCarrierOffersToAccountLimitedByAllowedServiceIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = objc_opt_new();
-  v6 = [(AMSCarrierOfferRegistrationTask *)self urlSession];
-  v7 = [(AMSCarrierOfferRegistrationTask *)self _registrationRequestLimitedByAllowedServiceIdentifiers:v4];
+  urlSession = [(AMSCarrierOfferRegistrationTask *)self urlSession];
+  v7 = [(AMSCarrierOfferRegistrationTask *)self _registrationRequestLimitedByAllowedServiceIdentifiers:identifiersCopy];
 
-  v8 = [v6 dataTaskPromiseWithRequestPromise:v7];
+  v8 = [urlSession dataTaskPromiseWithRequestPromise:v7];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -877,14 +877,14 @@ uint64_t __101__AMSCarrierOfferRegistrationTask__registerCarrierOffersToAccountL
   v4 = [(AMSCarrierOfferRegistrationTask *)self bag];
   v5 = [v4 dictionaryForKey:@"channelRegisterPrivacyMapping"];
 
-  v6 = [v5 valuePromise];
+  valuePromise = [v5 valuePromise];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __72__AMSCarrierOfferRegistrationTask__evaluationRequiredPrivacyMappingPair__block_invoke;
   v9[3] = &unk_1E73B5C00;
   v7 = v3;
   v10 = v7;
-  [v6 addFinishBlock:v9];
+  [valuePromise addFinishBlock:v9];
 
   return v7;
 }
@@ -925,31 +925,31 @@ LABEL_5:
 LABEL_7:
 }
 
-- (id)_allowedServiceIdentifiersFromPrivacyMapping:(id)a3
+- (id)_allowedServiceIdentifiersFromPrivacyMapping:(id)mapping
 {
-  v4 = a3;
-  v5 = [(AMSCarrierOfferRegistrationTask *)self privacyMappingResolver];
-  v6 = [(AMSCarrierOfferRegistrationTask *)self account];
-  v7 = [(objc_class *)v5 allowedIdentifiersFrom:v4 forAccount:v6];
+  mappingCopy = mapping;
+  privacyMappingResolver = [(AMSCarrierOfferRegistrationTask *)self privacyMappingResolver];
+  account = [(AMSCarrierOfferRegistrationTask *)self account];
+  v7 = [(objc_class *)privacyMappingResolver allowedIdentifiersFrom:mappingCopy forAccount:account];
 
   return v7;
 }
 
-- (id)_registrationRequestLimitedByAllowedServiceIdentifiers:(id)a3
+- (id)_registrationRequestLimitedByAllowedServiceIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(AMSCarrierOfferRegistrationTask *)self registrationRequestEncoder];
-  [v5 setRequestEncoding:3];
+  identifiersCopy = identifiers;
+  registrationRequestEncoder = [(AMSCarrierOfferRegistrationTask *)self registrationRequestEncoder];
+  [registrationRequestEncoder setRequestEncoding:3];
 
-  v6 = [(AMSCarrierOfferRegistrationTask *)self account];
-  v7 = [(AMSCarrierOfferRegistrationTask *)self registrationRequestEncoder];
-  [v7 setAccount:v6];
+  account = [(AMSCarrierOfferRegistrationTask *)self account];
+  registrationRequestEncoder2 = [(AMSCarrierOfferRegistrationTask *)self registrationRequestEncoder];
+  [registrationRequestEncoder2 setAccount:account];
 
-  v8 = [(AMSCarrierOfferRegistrationTask *)self clientInfo];
-  v9 = [(AMSCarrierOfferRegistrationTask *)self registrationRequestEncoder];
-  [v9 setClientInfo:v8];
+  clientInfo = [(AMSCarrierOfferRegistrationTask *)self clientInfo];
+  registrationRequestEncoder3 = [(AMSCarrierOfferRegistrationTask *)self registrationRequestEncoder];
+  [registrationRequestEncoder3 setClientInfo:clientInfo];
 
-  v10 = [(AMSCarrierOfferRegistrationTask *)self _registrationBodyLimitedByAllowedServiceIdentifiers:v4];
+  v10 = [(AMSCarrierOfferRegistrationTask *)self _registrationBodyLimitedByAllowedServiceIdentifiers:identifiersCopy];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -1012,9 +1012,9 @@ void __55__AMSCarrierOfferRegistrationTask_bagSubProfileVersion__block_invoke()
 
 + (id)createBagForSubProfile
 {
-  v2 = [objc_opt_class() bagSubProfile];
-  v3 = [objc_opt_class() bagSubProfileVersion];
-  v4 = [AMSBag bagForProfile:v2 profileVersion:v3];
+  bagSubProfile = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion = [objc_opt_class() bagSubProfileVersion];
+  v4 = [AMSBag bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   return v4;
 }

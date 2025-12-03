@@ -6,11 +6,11 @@
 
 - (void)updateSystemTime
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   if (!self->_status)
   {
-    v10->_status = 1;
+    selfCopy->_status = 1;
     location[0] = _BYLoggingFacility();
     v8 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(location[0], OS_LOG_TYPE_DEFAULT))
@@ -23,7 +23,7 @@
 
     objc_storeStrong(location, 0);
     v4 = &_dispatch_main_q;
-    v6 = v10;
+    v6 = selfCopy;
     TMSetupTime();
 
     v5 = &_dispatch_main_q;

@@ -1,7 +1,7 @@
 @interface LIDDisambiguationView.Coordinator
 - (_TtCV17SequoiaTranslator21LIDDisambiguationView11Coordinator)init;
 - (void)cancelConfirmation;
-- (void)lidConfirmedWithLocale:(id)a3;
+- (void)lidConfirmedWithLocale:(id)locale;
 @end
 
 @implementation LIDDisambiguationView.Coordinator
@@ -14,12 +14,12 @@
   v6 = *(&self->super.isa + OBJC_IVAR____TtCV17SequoiaTranslator21LIDDisambiguationView11Coordinator_onDismiss);
   v7 = type metadata accessor for Locale();
   (*(*(v7 - 8) + 56))(v5, 1, 1, v7);
-  v8 = self;
+  selfCopy = self;
   v6(v5);
   sub_1000E20D4(v5);
 }
 
-- (void)lidConfirmedWithLocale:(id)a3
+- (void)lidConfirmedWithLocale:(id)locale
 {
   v4 = sub_100005AD4(&qword_1003AFCE0);
   __chkstk_darwin(v4 - 8);
@@ -32,7 +32,7 @@
   v11 = *(&self->super.isa + OBJC_IVAR____TtCV17SequoiaTranslator21LIDDisambiguationView11Coordinator_onDismiss);
   (*(v8 + 16))(v6, v10, v7);
   (*(v8 + 56))(v6, 0, 1, v7);
-  v12 = self;
+  selfCopy = self;
   v11(v6);
   sub_1000E20D4(v6);
   (*(v8 + 8))(v10, v7);

@@ -1,21 +1,21 @@
 @interface AGXG18PFamilyIndirectComputeCommand
 - ($BABEB1BE14C5C6B6BE38662F6CD5FDF9)getStageInRegion;
-- (AGXG18PFamilyIndirectComputeCommand)initWithEncoder:(void *)a3 withIndex:(unsigned int)a4;
+- (AGXG18PFamilyIndirectComputeCommand)initWithEncoder:(void *)encoder withIndex:(unsigned int)index;
 - (id)dispatchThreadgroupsArguments;
 - (id)dispatchThreadsArguments;
 - (id)getImageBlockSize;
 - (unint64_t)getCommandType;
-- (unint64_t)getKernelAttributeStrideAtIndex:(unint64_t)a3;
+- (unint64_t)getKernelAttributeStrideAtIndex:(unint64_t)index;
 - (unint64_t)getPipelineStateUniqueIdentifier;
-- (void)concurrentDispatchThreadgroups:(id *)a3 threadsPerThreadgroup:(id *)a4;
-- (void)concurrentDispatchThreads:(id *)a3 threadsPerThreadgroup:(id *)a4;
+- (void)concurrentDispatchThreadgroups:(id *)threadgroups threadsPerThreadgroup:(id *)threadgroup;
+- (void)concurrentDispatchThreads:(id *)threads threadsPerThreadgroup:(id *)threadgroup;
 - (void)reset;
-- (void)setComputePipelineState:(id)a3;
-- (void)setImageblockWidth:(unint64_t)a3 height:(unint64_t)a4;
-- (void)setKernelBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setKernelBuffer:(id)a3 offset:(unint64_t)a4 attributeStride:(unint64_t)a5 atIndex:(unint64_t)a6;
-- (void)setStageInRegion:(id *)a3;
-- (void)setThreadgroupMemoryLength:(unint64_t)a3 atIndex:(unint64_t)a4;
+- (void)setComputePipelineState:(id)state;
+- (void)setImageblockWidth:(unint64_t)width height:(unint64_t)height;
+- (void)setKernelBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setKernelBuffer:(id)buffer offset:(unint64_t)offset attributeStride:(unint64_t)stride atIndex:(unint64_t)index;
+- (void)setStageInRegion:(id *)region;
+- (void)setThreadgroupMemoryLength:(unint64_t)length atIndex:(unint64_t)index;
 @end
 
 @implementation AGXG18PFamilyIndirectComputeCommand
@@ -78,7 +78,7 @@
   return 32;
 }
 
-- (unint64_t)getKernelAttributeStrideAtIndex:(unint64_t)a3
+- (unint64_t)getKernelAttributeStrideAtIndex:(unint64_t)index
 {
   encoder = self->_encoder;
   v4 = encoder[1];
@@ -87,7 +87,7 @@
     return -1;
   }
 
-  result = *(*(*encoder + *MEMORY[0x29EDC5638] + 24) + *(v4 + 124) + *(v4 + 128) * self->_index + 4 * a3);
+  result = *(*(*encoder + *MEMORY[0x29EDC5638] + 24) + *(v4 + 124) + *(v4 + 128) * self->_index + 4 * index);
   if (result == -1)
   {
     return -1;
@@ -147,18 +147,18 @@
   return self;
 }
 
-- (void)concurrentDispatchThreads:(id *)a3 threadsPerThreadgroup:(id *)a4
+- (void)concurrentDispatchThreads:(id *)threads threadsPerThreadgroup:(id *)threadgroup
 {
   encoder = self->_encoder;
   index = self->_index;
-  var1 = a3->var1;
-  var2 = a3->var2;
-  v8 = a4->var2;
+  var1 = threads->var1;
+  var2 = threads->var2;
+  v8 = threadgroup->var2;
   v9 = MEMORY[0x29EDC5638];
   v10 = (*(*encoder + *MEMORY[0x29EDC5638] + 24) + *(encoder[1] + 52) + *(encoder[1] + 56) * index);
-  v11 = a3->var0 | (var1 << 32);
-  v12 = vmovn_s64(*&a4->var0);
-  v10[2].i32[1] = a3->var0;
+  v11 = threads->var0 | (var1 << 32);
+  v12 = vmovn_s64(*&threadgroup->var0);
+  v10[2].i32[1] = threads->var0;
   v10[3].i32[0] = var1;
   v10[3].i32[1] = var2;
   v10[4] = vand_s8(v12, 0x700000007);
@@ -173,36 +173,36 @@
   *(v14 + v15) |= 1u;
 }
 
-- (void)setImageblockWidth:(unint64_t)a3 height:(unint64_t)a4
+- (void)setImageblockWidth:(unint64_t)width height:(unint64_t)height
 {
-  v4 = a3;
+  widthCopy = width;
   encoder = self->_encoder;
   index = self->_index;
   v7 = *encoder;
   v8 = encoder[1];
   v9 = *(*encoder + *MEMORY[0x29EDC5638] + 24) + *(v8 + 108) + *(v8 + 112) * index;
-  *(v9 + 24) = v4;
-  *(v9 + 28) = a4;
+  *(v9 + 24) = widthCopy;
+  *(v9 + 28) = height;
   if ((*(v8 + 24) & 1) == 0)
   {
     AGX::IndirectComputeCommandEncoderGen4<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::recalculateThreadgroupOffsets(v7, v8, index);
   }
 }
 
-- (void)setStageInRegion:(id *)a3
+- (void)setStageInRegion:(id *)region
 {
   v3 = *(*self->_encoder + *MEMORY[0x29EDC5638] + 24) + *(*(self->_encoder + 1) + 68) + *(*(self->_encoder + 1) + 72) * self->_index;
-  *(v3 + 48) = vuzp1q_s32(*&a3->var0.var0, *&a3->var0.var2);
-  *(v3 + 64) = vmovn_s64(*&a3->var1.var1);
+  *(v3 + 48) = vuzp1q_s32(*&region->var0.var0, *&region->var0.var2);
+  *(v3 + 64) = vmovn_s64(*&region->var1.var1);
 }
 
-- (void)setThreadgroupMemoryLength:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setThreadgroupMemoryLength:(unint64_t)length atIndex:(unint64_t)index
 {
   encoder = self->_encoder;
   index = self->_index;
   v6 = *encoder;
   v7 = encoder[1];
-  *(*(*encoder + *MEMORY[0x29EDC5638] + 24) + v7[23] + v7[24] * index + 4 * a4) = a3;
+  *(*(*encoder + *MEMORY[0x29EDC5638] + 24) + v7[23] + v7[24] * index + 4 * index) = length;
   AGX::IndirectComputeCommandEncoderGen4<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::recalculateThreadgroupOffsets(v6, v7, index);
 }
 
@@ -253,20 +253,20 @@
   }
 }
 
-- (void)concurrentDispatchThreadgroups:(id *)a3 threadsPerThreadgroup:(id *)a4
+- (void)concurrentDispatchThreadgroups:(id *)threadgroups threadsPerThreadgroup:(id *)threadgroup
 {
   encoder = self->_encoder;
   index = self->_index;
-  var0 = a3->var0;
-  var1 = a3->var1;
-  var2 = a3->var2;
-  v9 = a4->var0;
-  v10 = a4->var1;
-  v11 = a4->var2;
+  var0 = threadgroups->var0;
+  var1 = threadgroups->var1;
+  var2 = threadgroups->var2;
+  v9 = threadgroup->var0;
+  v10 = threadgroup->var1;
+  v11 = threadgroup->var2;
   v12 = MEMORY[0x29EDC5638];
   v13 = (*(*encoder + *MEMORY[0x29EDC5638] + 24) + *(encoder[1] + 52) + *(encoder[1] + 56) * index);
-  v14 = a4->var0 * a3->var0;
-  v15 = a4->var0 & 0x7FF;
+  v14 = threadgroup->var0 * threadgroups->var0;
+  v15 = threadgroup->var0 & 0x7FF;
   v13[5] = v14;
   v13[6] = (v10 * (var1 << 32)) >> 32;
   v13[7] = v11 * var2;
@@ -284,14 +284,14 @@
   *(v18 + v19) &= ~1u;
 }
 
-- (void)setComputePipelineState:(id)a3
+- (void)setComputePipelineState:(id)state
 {
   encoder = self->_encoder;
   index = self->_index;
   v5 = MEMORY[0x29EDC5638];
   v6 = *(*encoder + *MEMORY[0x29EDC5638] + 24) + *(encoder[1] + 52) + *(encoder[1] + 56) * index;
-  v7 = a3 + 112;
-  v8 = *(a3 + 16);
+  v7 = state + 112;
+  v8 = *(state + 16);
   v9 = *(v8 + 3272);
   v10 = *(v6 + 8);
   *(v6 + 4) = *(v6 + 4) & 0xFFFF8007 | (8 * (*(v9 + 324) & 0xFFF));
@@ -322,7 +322,7 @@
   v21[2] = v20[13];
 }
 
-- (void)setKernelBuffer:(id)a3 offset:(unint64_t)a4 attributeStride:(unint64_t)a5 atIndex:(unint64_t)a6
+- (void)setKernelBuffer:(id)buffer offset:(unint64_t)offset attributeStride:(unint64_t)stride atIndex:(unint64_t)index
 {
   encoder = self->_encoder;
   index = self->_index;
@@ -331,9 +331,9 @@
   v11 = *encoder;
   v10 = encoder[1];
   v12 = *(v11 + v9 + 24) + *(v10 + 60) + *(v10 + 64) * index;
-  if (a3)
+  if (buffer)
   {
-    v13 = *(a3 + v9 + 8);
+    v13 = *(buffer + v9 + 8);
   }
 
   else
@@ -341,14 +341,14 @@
     v13 = 0;
   }
 
-  *(v12 + 8 * a6) = v13 + a4;
+  *(v12 + 8 * index) = v13 + offset;
   if (*(v10 + 160) == 1)
   {
-    *(*(v11 + *v8 + 24) + *(v10 + 124) + *(v10 + 128) * index + 4 * a6) = a5;
+    *(*(v11 + *v8 + 24) + *(v10 + 124) + *(v10 + 128) * index + 4 * index) = stride;
   }
 }
 
-- (void)setKernelBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setKernelBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
   encoder = self->_encoder;
   index = self->_index;
@@ -357,9 +357,9 @@
   v10 = *encoder;
   v9 = encoder[1];
   v11 = *(v10 + v8 + 24) + *(v9 + 60) + *(v9 + 64) * index;
-  if (a3)
+  if (buffer)
   {
-    v12 = *(a3 + v8 + 8);
+    v12 = *(buffer + v8 + 8);
   }
 
   else
@@ -367,17 +367,17 @@
     v12 = 0;
   }
 
-  *(v11 + 8 * a5) = v12 + a4;
+  *(v11 + 8 * index) = v12 + offset;
   if (*(v9 + 160) == 1)
   {
-    *(*(v10 + *v7 + 24) + *(v9 + 124) + *(v9 + 128) * index + 4 * a5) = -1;
+    *(*(v10 + *v7 + 24) + *(v9 + 124) + *(v9 + 128) * index + 4 * index) = -1;
   }
 }
 
-- (AGXG18PFamilyIndirectComputeCommand)initWithEncoder:(void *)a3 withIndex:(unsigned int)a4
+- (AGXG18PFamilyIndirectComputeCommand)initWithEncoder:(void *)encoder withIndex:(unsigned int)index
 {
-  self->_encoder = a3;
-  self->_index = a4;
+  self->_encoder = encoder;
+  self->_index = index;
   return self;
 }
 

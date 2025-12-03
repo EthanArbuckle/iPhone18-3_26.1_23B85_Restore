@@ -1,12 +1,12 @@
 @interface HRCBluetoothLESourceObserverCollator
-- (HRCBluetoothLESourceObserverCollator)initWithDelegate:(id)a3 onQueue:(id)a4;
+- (HRCBluetoothLESourceObserverCollator)initWithDelegate:(id)delegate onQueue:(id)queue;
 - (HRCBluetoothLESourceObserverCollatorDelegate)delegate;
-- (void)_addBluetoothLESourceObserverClient:(id)a3;
+- (void)_addBluetoothLESourceObserverClient:(id)client;
 - (void)_recomputeCollatedBluetoothDiscoveryModeRequest;
-- (void)_removeBluetoothLESourceObserverClient:(id)a3;
-- (void)addBluetoothLESourceObserverClient:(id)a3;
-- (void)handleSourceListUpdate:(id)a3;
-- (void)removeBluetoothLESourceObserverClient:(id)a3;
+- (void)_removeBluetoothLESourceObserverClient:(id)client;
+- (void)addBluetoothLESourceObserverClient:(id)client;
+- (void)handleSourceListUpdate:(id)update;
+- (void)removeBluetoothLESourceObserverClient:(id)client;
 @end
 
 @implementation HRCBluetoothLESourceObserverCollator
@@ -14,15 +14,15 @@
 - (void)_recomputeCollatedBluetoothDiscoveryModeRequest
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(HRCBluetoothLESourceObserverCollator *)self sourceObserverClientList];
-  v4 = [v3 count];
+  sourceObserverClientList = [(HRCBluetoothLESourceObserverCollator *)self sourceObserverClientList];
+  v4 = [sourceObserverClientList count];
 
   v5 = sub_10000132C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(HRCBluetoothLESourceObserverCollator *)self sourceObserverClientList];
+    sourceObserverClientList2 = [(HRCBluetoothLESourceObserverCollator *)self sourceObserverClientList];
     v10 = 134217984;
-    v11 = [v6 count];
+    v11 = [sourceObserverClientList2 count];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "HRCBluetoothLESourceObserver client count : %lu", &v10, 0xCu);
   }
 
@@ -37,14 +37,14 @@
     v7 = sub_10000132C();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [(HRCBluetoothLESourceObserverCollator *)self bluetoothDiscoveryEnabled];
+      bluetoothDiscoveryEnabled = [(HRCBluetoothLESourceObserverCollator *)self bluetoothDiscoveryEnabled];
       v10 = 67240192;
-      LODWORD(v11) = v8;
+      LODWORD(v11) = bluetoothDiscoveryEnabled;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "updated bluetooth le source discovery request : %{public, BOOL}d", &v10, 8u);
     }
 
-    v9 = [(HRCBluetoothLESourceObserverCollator *)self delegate];
-    [v9 updateBluetoothDiscoveryEnabledRequest:{-[HRCBluetoothLESourceObserverCollator bluetoothDiscoveryEnabled](self, "bluetoothDiscoveryEnabled")}];
+    delegate = [(HRCBluetoothLESourceObserverCollator *)self delegate];
+    [delegate updateBluetoothDiscoveryEnabledRequest:{-[HRCBluetoothLESourceObserverCollator bluetoothDiscoveryEnabled](self, "bluetoothDiscoveryEnabled")}];
   }
 }
 
@@ -55,62 +55,62 @@
   return WeakRetained;
 }
 
-- (HRCBluetoothLESourceObserverCollator)initWithDelegate:(id)a3 onQueue:(id)a4
+- (HRCBluetoothLESourceObserverCollator)initWithDelegate:(id)delegate onQueue:(id)queue
 {
-  v6 = a4;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = HRCBluetoothLESourceObserverCollator;
-  v7 = a3;
+  delegateCopy = delegate;
   v8 = [(HRCBluetoothLESourceObserverCollator *)&v13 init];
   v9 = objc_opt_new();
   sourceObserverClientList = v8->_sourceObserverClientList;
   v8->_sourceObserverClientList = v9;
 
   queue = v8->_queue;
-  v8->_queue = v6;
+  v8->_queue = queueCopy;
 
-  objc_storeWeak(&v8->_delegate, v7);
+  objc_storeWeak(&v8->_delegate, delegateCopy);
   return v8;
 }
 
-- (void)addBluetoothLESourceObserverClient:(id)a3
+- (void)addBluetoothLESourceObserverClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000A3E8;
   v7[3] = &unk_100040A58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = clientCopy;
+  v6 = clientCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)removeBluetoothLESourceObserverClient:(id)a3
+- (void)removeBluetoothLESourceObserverClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000A4C0;
   v7[3] = &unk_100040A58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = clientCopy;
+  v6 = clientCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)handleSourceListUpdate:(id)a3
+- (void)handleSourceListUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(HRCBluetoothLESourceObserverCollator *)self sourceObserverClientList];
-  v6 = [v5 count];
+  updateCopy = update;
+  sourceObserverClientList = [(HRCBluetoothLESourceObserverCollator *)self sourceObserverClientList];
+  v6 = [sourceObserverClientList count];
 
   if (v6)
   {
-    v28 = self;
-    [(HRCBluetoothLESourceObserverCollator *)self setLastUpdatedSourceList:v4];
+    selfCopy = self;
+    [(HRCBluetoothLESourceObserverCollator *)self setLastUpdatedSourceList:updateCopy];
     v7 = sub_10000132C();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -122,8 +122,8 @@
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v29 = v4;
-    v8 = v4;
+    v29 = updateCopy;
+    v8 = updateCopy;
     v9 = [v8 countByEnumeratingWithState:&v37 objects:v58 count:16];
     if (v9)
     {
@@ -146,30 +146,30 @@
           v14 = sub_10000132C();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
           {
-            v15 = [v13 name];
-            v16 = [v13 manufacturer];
-            v17 = [v13 model];
-            v18 = [v13 hardwareVersion];
-            v19 = [v13 firmwareVersion];
-            v20 = [v13 softwareVersion];
-            v21 = [v13 localIdentifier];
-            v22 = [v13 UDIDeviceIdentifier];
+            name = [v13 name];
+            manufacturer = [v13 manufacturer];
+            model = [v13 model];
+            hardwareVersion = [v13 hardwareVersion];
+            firmwareVersion = [v13 firmwareVersion];
+            softwareVersion = [v13 softwareVersion];
+            localIdentifier = [v13 localIdentifier];
+            uDIDeviceIdentifier = [v13 UDIDeviceIdentifier];
             *buf = 138741763;
-            v43 = v15;
+            v43 = name;
             v44 = 2114;
-            v45 = v16;
+            v45 = manufacturer;
             v46 = 2114;
-            v47 = v17;
+            v47 = model;
             v48 = 2114;
-            v49 = v18;
+            v49 = hardwareVersion;
             v50 = 2114;
-            v51 = v19;
+            v51 = firmwareVersion;
             v52 = 2114;
-            v53 = v20;
+            v53 = softwareVersion;
             v54 = 2114;
-            v55 = v21;
+            v55 = localIdentifier;
             v56 = 2113;
-            v57 = v22;
+            v57 = uDIDeviceIdentifier;
             _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "name : %{sensitive}@ , manufacturer : %{public}@ , model : %{public}@ , hardwareVersion : %{public}@ , firmwareVersion : %{public}@ , softwareVersion : %{public}@  , localIdentifier : %{public}@ , UDIDeviceIdentifier : %{private}@ ", buf, 0x52u);
 
             v8 = v30;
@@ -192,8 +192,8 @@
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v23 = [(HRCBluetoothLESourceObserverCollator *)v28 sourceObserverClientList];
-    v24 = [v23 countByEnumeratingWithState:&v33 objects:v41 count:16];
+    sourceObserverClientList2 = [(HRCBluetoothLESourceObserverCollator *)selfCopy sourceObserverClientList];
+    v24 = [sourceObserverClientList2 countByEnumeratingWithState:&v33 objects:v41 count:16];
     if (v24)
     {
       v25 = v24;
@@ -204,25 +204,25 @@
         {
           if (*v34 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(sourceObserverClientList2);
           }
 
           [*(*(&v33 + 1) + 8 * i) handleSourceListUpdate:v8];
         }
 
-        v25 = [v23 countByEnumeratingWithState:&v33 objects:v41 count:16];
+        v25 = [sourceObserverClientList2 countByEnumeratingWithState:&v33 objects:v41 count:16];
       }
 
       while (v25);
     }
 
-    v4 = v29;
+    updateCopy = v29;
   }
 }
 
-- (void)_addBluetoothLESourceObserverClient:(id)a3
+- (void)_addBluetoothLESourceObserverClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   dispatch_assert_queue_V2(self->_queue);
   v5 = sub_10000132C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -231,48 +231,48 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "adding bluetooth le source observer client", v11, 2u);
   }
 
-  v6 = [(HRCBluetoothLESourceObserverCollator *)self sourceObserverClientList];
-  [v6 addObject:v4];
+  sourceObserverClientList = [(HRCBluetoothLESourceObserverCollator *)self sourceObserverClientList];
+  [sourceObserverClientList addObject:clientCopy];
 
-  v7 = [(HRCBluetoothLESourceObserverCollator *)self sourceObserverClientList];
-  v8 = [v7 count];
+  sourceObserverClientList2 = [(HRCBluetoothLESourceObserverCollator *)self sourceObserverClientList];
+  v8 = [sourceObserverClientList2 count];
 
   if (v8 >= 2)
   {
-    v9 = [(HRCBluetoothLESourceObserverCollator *)self lastUpdatedSourceList];
+    lastUpdatedSourceList = [(HRCBluetoothLESourceObserverCollator *)self lastUpdatedSourceList];
 
-    if (v9)
+    if (lastUpdatedSourceList)
     {
-      v10 = [(HRCBluetoothLESourceObserverCollator *)self lastUpdatedSourceList];
-      [v4 handleSourceListUpdate:v10];
+      lastUpdatedSourceList2 = [(HRCBluetoothLESourceObserverCollator *)self lastUpdatedSourceList];
+      [clientCopy handleSourceListUpdate:lastUpdatedSourceList2];
     }
 
     else
     {
-      v10 = sub_10000132C();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
+      lastUpdatedSourceList2 = sub_10000132C();
+      if (os_log_type_enabled(lastUpdatedSourceList2, OS_LOG_TYPE_FAULT))
       {
-        sub_10000AB04(v10);
+        sub_10000AB04(lastUpdatedSourceList2);
       }
     }
   }
 }
 
-- (void)_removeBluetoothLESourceObserverClient:(id)a3
+- (void)_removeBluetoothLESourceObserverClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   dispatch_assert_queue_V2(self->_queue);
   v5 = sub_10000132C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 processName];
+    processName = [clientCopy processName];
     v8 = 138543362;
-    v9 = v6;
+    v9 = processName;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "removing bluetooth le source observer client with processName : %{public}@", &v8, 0xCu);
   }
 
-  v7 = [(HRCBluetoothLESourceObserverCollator *)self sourceObserverClientList];
-  [v7 removeObject:v4];
+  sourceObserverClientList = [(HRCBluetoothLESourceObserverCollator *)self sourceObserverClientList];
+  [sourceObserverClientList removeObject:clientCopy];
 }
 
 @end

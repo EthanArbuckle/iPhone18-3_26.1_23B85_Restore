@@ -2,7 +2,7 @@
 + (id)copyParseRules;
 - (BOOL)hasPropertyError;
 - (id)description;
-- (void)addPropStat:(id)a3;
+- (void)addPropStat:(id)stat;
 @end
 
 @implementation CoreDAVMkcolResponseItem
@@ -15,8 +15,8 @@
   v4 = [(CoreDAVItem *)&v7 description];
   [v3 appendFormat:@"[%@]", v4];
 
-  v5 = [(CoreDAVMkcolResponseItem *)self propStats];
-  [v3 appendFormat:@"\n  Number of prop stats: [%lu]", objc_msgSend(v5, "count")];
+  propStats = [(CoreDAVMkcolResponseItem *)self propStats];
+  [v3 appendFormat:@"\n  Number of prop stats: [%lu]", objc_msgSend(propStats, "count")];
 
   return v3;
 }
@@ -24,7 +24,7 @@
 + (id)copyParseRules
 {
   v3 = +[CoreDAVItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -35,26 +35,26 @@
     v5 = [v6 initWithObjectsAndKeys:{v7, v8, 0}];
 
     v9 = +[CoreDAVItem parseRuleCache];
-    v10 = NSStringFromClass(a1);
+    v10 = NSStringFromClass(self);
     [v9 setObject:v5 forKey:v10];
   }
 
   return v5;
 }
 
-- (void)addPropStat:(id)a3
+- (void)addPropStat:(id)stat
 {
-  v4 = a3;
-  v5 = [(CoreDAVMkcolResponseItem *)self propStats];
+  statCopy = stat;
+  propStats = [(CoreDAVMkcolResponseItem *)self propStats];
 
-  if (!v5)
+  if (!propStats)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
     [(CoreDAVMkcolResponseItem *)self setPropStats:v6];
   }
 
-  v7 = [(CoreDAVMkcolResponseItem *)self propStats];
-  [v7 addObject:v4];
+  propStats2 = [(CoreDAVMkcolResponseItem *)self propStats];
+  [propStats2 addObject:statCopy];
 }
 
 - (BOOL)hasPropertyError
@@ -64,8 +64,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(CoreDAVMkcolResponseItem *)self propStats];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  propStats = [(CoreDAVMkcolResponseItem *)self propStats];
+  v3 = [propStats countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = *v12;
@@ -75,12 +75,12 @@
       {
         if (*v12 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(propStats);
         }
 
-        v6 = [*(*(&v11 + 1) + 8 * i) status];
-        v7 = [v6 payloadAsString];
-        v8 = [v7 CDVIsHTTPStatusLineWithStatusCode:200];
+        status = [*(*(&v11 + 1) + 8 * i) status];
+        payloadAsString = [status payloadAsString];
+        v8 = [payloadAsString CDVIsHTTPStatusLineWithStatusCode:200];
 
         if (!v8)
         {
@@ -89,7 +89,7 @@
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v3 = [propStats countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v3)
       {
         continue;

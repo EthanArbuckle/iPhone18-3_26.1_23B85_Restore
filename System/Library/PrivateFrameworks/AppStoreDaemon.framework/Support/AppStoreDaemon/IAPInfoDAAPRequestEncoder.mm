@@ -1,28 +1,28 @@
 @interface IAPInfoDAAPRequestEncoder
-- (id)dataForRequestWithError:(id *)a3;
+- (id)dataForRequestWithError:(id *)error;
 @end
 
 @implementation IAPInfoDAAPRequestEncoder
 
-- (id)dataForRequestWithError:(id *)a3
+- (id)dataForRequestWithError:(id *)error
 {
   revision = self->_revision;
   if (revision)
   {
-    v5 = [(NSNumber *)revision intValue];
+    intValue = [(NSNumber *)revision intValue];
   }
 
   else
   {
-    v5 = 0;
+    intValue = 0;
   }
 
   v6 = self->_knownIAPs;
   objc_opt_self();
-  v7 = [[NSOutputStream alloc] initToMemory];
-  v8 = [[DKDAAPWriter alloc] initWithStream:v7];
+  initToMemory = [[NSOutputStream alloc] initToMemory];
+  v8 = [[DKDAAPWriter alloc] initWithStream:initToMemory];
   [v8 startContainerWithCode:1633973106];
-  [v8 writeUInt32:v5 withCode:1836413810];
+  [v8 writeUInt32:intValue withCode:1836413810];
   objc_opt_self();
   v34[0] = @"daap.databasesongs";
   v34[1] = @"dmap.status";
@@ -69,15 +69,15 @@
 
         v16 = *(*(&v28 + 1) + 8 * i);
         [v8 startContainerWithCode:1634038889];
-        v17 = [v16 purchaseDate];
-        [v17 timeIntervalSince1970];
+        purchaseDate = [v16 purchaseDate];
+        [purchaseDate timeIntervalSince1970];
         v19 = v18;
 
         [v8 writeUInt32:v19 withCode:1634038895];
-        v20 = [v16 adamId];
-        v21 = [v20 unsignedLongLongValue];
+        adamId = [v16 adamId];
+        unsignedLongLongValue = [adamId unsignedLongLongValue];
 
-        [v8 writeUInt64:v21 withCode:1835625572];
+        [v8 writeUInt64:unsignedLongLongValue withCode:1835625572];
         [v8 endContainerWithCode:1634038889];
       }
 
@@ -90,7 +90,7 @@
   [v8 endContainerWithCode:1634038892];
   [v8 endContainerWithCode:1633973106];
   [v8 close];
-  v22 = [v7 propertyForKey:NSStreamDataWrittenToMemoryStreamKey];
+  v22 = [initToMemory propertyForKey:NSStreamDataWrittenToMemoryStreamKey];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

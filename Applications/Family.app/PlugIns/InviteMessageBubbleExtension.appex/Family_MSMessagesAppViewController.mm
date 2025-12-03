@@ -1,24 +1,24 @@
 @interface Family_MSMessagesAppViewController
-- (void)family_presentAlertSheetWithTitle:(id)a3 message:(id)a4 buttonTitles:(id)a5 styles:(id)a6 completion:(id)a7;
+- (void)family_presentAlertSheetWithTitle:(id)title message:(id)message buttonTitles:(id)titles styles:(id)styles completion:(id)completion;
 @end
 
 @implementation Family_MSMessagesAppViewController
 
-- (void)family_presentAlertSheetWithTitle:(id)a3 message:(id)a4 buttonTitles:(id)a5 styles:(id)a6 completion:(id)a7
+- (void)family_presentAlertSheetWithTitle:(id)title message:(id)message buttonTitles:(id)titles styles:(id)styles completion:(id)completion
 {
-  v16 = a3;
-  v12 = a4;
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
+  titleCopy = title;
+  messageCopy = message;
+  completionCopy = completion;
+  stylesCopy = styles;
+  titlesCopy = titles;
   if (objc_opt_respondsToSelector())
   {
-    [(Family_MSMessagesAppViewController *)self _presentAlertSheetWithTitle:v16 message:v12 buttonTitles:v15 styles:v14 completion:v13];
+    [(Family_MSMessagesAppViewController *)self _presentAlertSheetWithTitle:titleCopy message:messageCopy buttonTitles:titlesCopy styles:stylesCopy completion:completionCopy];
   }
 
   else
   {
-    [(Family_MSMessagesAppViewController *)self _presentAlertSheetWith:v15 styles:v14 completion:v13];
+    [(Family_MSMessagesAppViewController *)self _presentAlertSheetWith:titlesCopy styles:stylesCopy completion:completionCopy];
   }
 }
 

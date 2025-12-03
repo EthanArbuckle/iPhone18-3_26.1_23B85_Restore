@@ -1,10 +1,10 @@
 @interface _ICLLQueueSyncAction
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _ICLLQueueSyncAction
@@ -26,16 +26,16 @@
   return v4 ^ v3 ^ v5 ^ [(_ICLLPlaybackControlSettings *)self->_controlSettings hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   queue = self->_queue;
-  if (queue | *(v4 + 2))
+  if (queue | *(equalCopy + 2))
   {
     if (![(_ICLLQueue *)queue isEqual:?])
     {
@@ -44,7 +44,7 @@
   }
 
   queueContext = self->_queueContext;
-  if (queueContext | *(v4 + 3))
+  if (queueContext | *(equalCopy + 3))
   {
     if (![(NSString *)queueContext isEqual:?])
     {
@@ -54,13 +54,13 @@
 
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_revision != *(v4 + 8))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_revision != *(equalCopy + 8))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
 LABEL_13:
     v8 = 0;
@@ -68,7 +68,7 @@ LABEL_13:
   }
 
   controlSettings = self->_controlSettings;
-  if (controlSettings | *(v4 + 1))
+  if (controlSettings | *(equalCopy + 1))
   {
     v8 = [(_ICLLPlaybackControlSettings *)controlSettings isEqual:?];
   }
@@ -83,14 +83,14 @@ LABEL_14:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(_ICLLQueue *)self->_queue copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(_ICLLQueue *)self->_queue copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(NSString *)self->_queueContext copyWithZone:a3];
+  v8 = [(NSString *)self->_queueContext copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
@@ -100,72 +100,72 @@ LABEL_14:
     *(v5 + 36) |= 1u;
   }
 
-  v10 = [(_ICLLPlaybackControlSettings *)self->_controlSettings copyWithZone:a3];
+  v10 = [(_ICLLPlaybackControlSettings *)self->_controlSettings copyWithZone:zone];
   v11 = *(v5 + 8);
   *(v5 + 8) = v10;
 
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_queue)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_queueContext)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_controlSettings)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   queue = self->_queue;
   if (queue)
   {
-    v5 = [(_ICLLQueue *)queue dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"queue"];
+    dictionaryRepresentation = [(_ICLLQueue *)queue dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"queue"];
   }
 
   queueContext = self->_queueContext;
   if (queueContext)
   {
-    [v3 setObject:queueContext forKey:@"queueContext"];
+    [dictionary setObject:queueContext forKey:@"queueContext"];
   }
 
   if (*&self->_has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithInt:self->_revision];
-    [v3 setObject:v7 forKey:@"revision"];
+    [dictionary setObject:v7 forKey:@"revision"];
   }
 
   controlSettings = self->_controlSettings;
   if (controlSettings)
   {
-    v9 = [(_ICLLPlaybackControlSettings *)controlSettings dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"controlSettings"];
+    dictionaryRepresentation2 = [(_ICLLPlaybackControlSettings *)controlSettings dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"controlSettings"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -174,8 +174,8 @@ LABEL_14:
   v8.receiver = self;
   v8.super_class = _ICLLQueueSyncAction;
   v4 = [(_ICLLQueueSyncAction *)&v8 description];
-  v5 = [(_ICLLQueueSyncAction *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_ICLLQueueSyncAction *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

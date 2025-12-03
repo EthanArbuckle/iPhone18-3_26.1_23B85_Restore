@@ -1,18 +1,18 @@
 @interface SCMLLocale
-+ (BOOL)isEnglishLocale:(id)a3;
-+ (BOOL)isSupportedWithLocale:(id)a3;
++ (BOOL)isEnglishLocale:(id)locale;
++ (BOOL)isSupportedWithLocale:(id)locale;
 - (_TtC26SensitiveContentAnalysisML10SCMLLocale)init;
 @end
 
 @implementation SCMLLocale
 
-+ (BOOL)isSupportedWithLocale:(id)a3
++ (BOOL)isSupportedWithLocale:(id)locale
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBA96528, &unk_1B8AF64B0);
   v5 = *(*(v4 - 8) + 64);
   MEMORY[0x1EEE9AC00](v4 - 8);
   v7 = &v12 - v6;
-  if (a3)
+  if (locale)
   {
     sub_1B8AEFC58();
     v8 = sub_1B8AEFCC8();
@@ -30,7 +30,7 @@
   return v10 & 1;
 }
 
-+ (BOOL)isEnglishLocale:(id)a3
++ (BOOL)isEnglishLocale:(id)locale
 {
   v3 = sub_1B8AEFCC8();
   v4 = *(v3 - 8);

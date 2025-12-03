@@ -1,13 +1,13 @@
 @interface SUUIMobileDownload
 - (BOOL)isAutoDownload;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isUninitialized;
 - (SUUIMobileDownload)init;
-- (SUUIMobileDownload)initWithCoder:(id)a3;
-- (SUUIMobileDownload)initWithDownload:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SUUIMobileDownload)initWithCoder:(id)coder;
+- (SUUIMobileDownload)initWithDownload:(id)download;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUUIMobileDownload
@@ -26,89 +26,89 @@
   objc_exception_throw(v8);
 }
 
-- (SUUIMobileDownload)initWithDownload:(id)a3
+- (SUUIMobileDownload)initWithDownload:(id)download
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v21;
-  v21 = 0;
+  objc_storeStrong(location, download);
+  v3 = selfCopy;
+  selfCopy = 0;
   v19.receiver = v3;
   v19.super_class = SUUIMobileDownload;
-  v21 = [(SUUIMobileDownload *)&v19 init];
-  objc_storeStrong(&v21, v21);
-  if (v21)
+  selfCopy = [(SUUIMobileDownload *)&v19 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v21->_underlyingDownload, location[0]);
+    objc_storeStrong(&selfCopy->_underlyingDownload, location[0]);
     v12 = [SUUIMobileDescriptor alloc];
-    v13 = [location[0] descriptor];
+    descriptor = [location[0] descriptor];
     v4 = [(SUUIMobileDescriptor *)v12 initWithDescriptor:?];
-    mobileDescriptor = v21->_mobileDescriptor;
-    v21->_mobileDescriptor = v4;
+    mobileDescriptor = selfCopy->_mobileDescriptor;
+    selfCopy->_mobileDescriptor = v4;
     MEMORY[0x277D82BD8](mobileDescriptor);
-    MEMORY[0x277D82BD8](v13);
+    MEMORY[0x277D82BD8](descriptor);
     v14 = [SUUIMobileDownloadProgress alloc];
-    v15 = [location[0] progress];
+    progress = [location[0] progress];
     v6 = [(SUUIMobileDownloadProgress *)v14 initWithOperationProgress:?];
-    mobileDownloadProgress = v21->_mobileDownloadProgress;
-    v21->_mobileDownloadProgress = v6;
+    mobileDownloadProgress = selfCopy->_mobileDownloadProgress;
+    selfCopy->_mobileDownloadProgress = v6;
     MEMORY[0x277D82BD8](mobileDownloadProgress);
-    MEMORY[0x277D82BD8](v15);
-    v17 = [(SUUIMobileDownload *)v21 underlyingDownload];
-    v16 = [(SUDownload *)v17 downloadOptions];
-    v18 = [(SUDownloadOptions *)v16 activeDownloadPolicy];
-    MEMORY[0x277D82BD8](v16);
-    MEMORY[0x277D82BD8](v17);
-    if (v18)
+    MEMORY[0x277D82BD8](progress);
+    underlyingDownload = [(SUUIMobileDownload *)selfCopy underlyingDownload];
+    downloadOptions = [(SUDownload *)underlyingDownload downloadOptions];
+    activeDownloadPolicy = [(SUDownloadOptions *)downloadOptions activeDownloadPolicy];
+    MEMORY[0x277D82BD8](downloadOptions);
+    MEMORY[0x277D82BD8](underlyingDownload);
+    if (activeDownloadPolicy)
     {
-      v8 = [[SUUIMobileDownloadPolicy alloc] initWithPolicy:v18];
-      mobilePolicy = v21->_mobilePolicy;
-      v21->_mobilePolicy = v8;
+      v8 = [[SUUIMobileDownloadPolicy alloc] initWithPolicy:activeDownloadPolicy];
+      mobilePolicy = selfCopy->_mobilePolicy;
+      selfCopy->_mobilePolicy = v8;
       MEMORY[0x277D82BD8](mobilePolicy);
     }
 
-    objc_storeStrong(&v18, 0);
+    objc_storeStrong(&activeDownloadPolicy, 0);
   }
 
-  v11 = MEMORY[0x277D82BE0](v21);
+  v11 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v21, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v11;
 }
 
 - (BOOL)isAutoDownload
 {
-  v4 = [(SUUIMobileDownload *)self underlyingDownload];
-  v3 = [(SUDownload *)v4 downloadOptions];
-  v5 = [(SUDownloadOptions *)v3 isAutoDownload];
-  MEMORY[0x277D82BD8](v3);
-  MEMORY[0x277D82BD8](v4);
-  return v5;
+  underlyingDownload = [(SUUIMobileDownload *)self underlyingDownload];
+  downloadOptions = [(SUDownload *)underlyingDownload downloadOptions];
+  isAutoDownload = [(SUDownloadOptions *)downloadOptions isAutoDownload];
+  MEMORY[0x277D82BD8](downloadOptions);
+  MEMORY[0x277D82BD8](underlyingDownload);
+  return isAutoDownload;
 }
 
 - (BOOL)isUninitialized
 {
-  v3 = [(SUUIMobileDownload *)self underlyingDownload];
+  underlyingDownload = [(SUUIMobileDownload *)self underlyingDownload];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  MEMORY[0x277D82BD8](v3);
+  MEMORY[0x277D82BD8](underlyingDownload);
   return isKindOfClass & 1;
 }
 
-- (SUUIMobileDownload)initWithCoder:(id)a3
+- (SUUIMobileDownload)initWithCoder:(id)coder
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, coder);
   v5 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"download"];
   if (v5)
   {
-    v3 = v7;
-    v7 = 0;
-    v7 = [v3 initWithDownload:v5];
-    v8 = MEMORY[0x277D82BE0](v7);
+    v3 = selfCopy;
+    selfCopy = 0;
+    selfCopy = [v3 initWithDownload:v5];
+    v8 = MEMORY[0x277D82BE0](selfCopy);
   }
 
   else
@@ -118,31 +118,31 @@
 
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v7, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, coder);
   v3 = location[0];
-  v4 = [(SUUIMobileDownload *)v6 underlyingDownload];
+  underlyingDownload = [(SUUIMobileDownload *)selfCopy underlyingDownload];
   [v3 encodeObject:? forKey:?];
-  MEMORY[0x277D82BD8](v4);
+  MEMORY[0x277D82BD8](underlyingDownload);
   objc_storeStrong(location, 0);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
-  v13 = [(SUUIMobileDownload *)self underlyingDownload];
-  v14 = [(SUDownload *)v13 copyWithZone:v15];
-  MEMORY[0x277D82BD8](v13);
+  zoneCopy = zone;
+  underlyingDownload = [(SUUIMobileDownload *)self underlyingDownload];
+  v14 = [(SUDownload *)underlyingDownload copyWithZone:zoneCopy];
+  MEMORY[0x277D82BD8](underlyingDownload);
   if (!v14)
   {
     v9 = MEMORY[0x277CBEAD8];
@@ -163,13 +163,13 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v9 == location[0])
+  objc_storeStrong(location, equal);
+  if (selfCopy == location[0])
   {
     v10 = 1;
     v7 = 1;
@@ -181,11 +181,11 @@
     if (objc_opt_isKindOfClass())
     {
       v6 = MEMORY[0x277D82BE0](location[0]);
-      v5 = [(SUUIMobileDownload *)v9 underlyingDownload];
-      v4 = [v6 underlyingDownload];
-      v10 = [(SUDownload *)v5 isEqual:?]& 1;
-      MEMORY[0x277D82BD8](v4);
-      MEMORY[0x277D82BD8](v5);
+      underlyingDownload = [(SUUIMobileDownload *)selfCopy underlyingDownload];
+      underlyingDownload2 = [v6 underlyingDownload];
+      v10 = [(SUDownload *)underlyingDownload isEqual:?]& 1;
+      MEMORY[0x277D82BD8](underlyingDownload2);
+      MEMORY[0x277D82BD8](underlyingDownload);
       v7 = 1;
       objc_storeStrong(&v6, 0);
     }
@@ -203,9 +203,9 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SUUIMobileDownload *)self underlyingDownload];
-  v4 = [(SUDownload *)v3 hash];
-  MEMORY[0x277D82BD8](v3);
+  underlyingDownload = [(SUUIMobileDownload *)self underlyingDownload];
+  v4 = [(SUDownload *)underlyingDownload hash];
+  MEMORY[0x277D82BD8](underlyingDownload);
   return v4;
 }
 

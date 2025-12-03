@@ -1,23 +1,23 @@
 @interface GPBStringEnumDictionary
-- (BOOL)getEnum:(int *)a3 forKey:(id)a4;
-- (BOOL)getRawValue:(int *)a3 forKey:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (GPBStringEnumDictionary)initWithDictionary:(id)a3;
-- (GPBStringEnumDictionary)initWithValidationFunction:(void *)a3 rawValues:(const int *)a4 forKeys:(id *)a5 count:(unint64_t)a6;
-- (id)copyWithZone:(_NSZone *)a3;
-- (unint64_t)computeSerializedSizeAsField:(id)a3;
-- (void)addRawEntriesFromDictionary:(id)a3;
+- (BOOL)getEnum:(int *)enum forKey:(id)key;
+- (BOOL)getRawValue:(int *)value forKey:(id)key;
+- (BOOL)isEqual:(id)equal;
+- (GPBStringEnumDictionary)initWithDictionary:(id)dictionary;
+- (GPBStringEnumDictionary)initWithValidationFunction:(void *)function rawValues:(const int *)values forKeys:(id *)keys count:(unint64_t)count;
+- (id)copyWithZone:(_NSZone *)zone;
+- (unint64_t)computeSerializedSizeAsField:(id)field;
+- (void)addRawEntriesFromDictionary:(id)dictionary;
 - (void)dealloc;
-- (void)enumerateForTextFormat:(id)a3;
-- (void)enumerateKeysAndEnumsUsingBlock:(id)a3;
-- (void)enumerateKeysAndRawValuesUsingBlock:(id)a3;
-- (void)setGPBGenericValue:(id *)a3 forGPBGenericValueKey:(id *)a4;
-- (void)writeToCodedOutputStream:(id)a3 asField:(id)a4;
+- (void)enumerateForTextFormat:(id)format;
+- (void)enumerateKeysAndEnumsUsingBlock:(id)block;
+- (void)enumerateKeysAndRawValuesUsingBlock:(id)block;
+- (void)setGPBGenericValue:(id *)value forGPBGenericValueKey:(id *)key;
+- (void)writeToCodedOutputStream:(id)stream asField:(id)field;
 @end
 
 @implementation GPBStringEnumDictionary
 
-- (GPBStringEnumDictionary)initWithValidationFunction:(void *)a3 rawValues:(const int *)a4 forKeys:(id *)a5 count:(unint64_t)a6
+- (GPBStringEnumDictionary)initWithValidationFunction:(void *)function rawValues:(const int *)values forKeys:(id *)keys count:(unint64_t)count
 {
   v18.receiver = self;
   v18.super_class = GPBStringEnumDictionary;
@@ -25,29 +25,29 @@
   if (v10)
   {
     v11 = objc_alloc_init(NSMutableDictionary);
-    v12 = a3 ? a3 : sub_100321780;
+    v12 = function ? function : sub_100321780;
     v10->_dictionary = v11;
     v10->_validationFunc = v12;
-    if (a5)
+    if (keys)
     {
-      if (a4 && a6)
+      if (values && count)
       {
         do
         {
-          if (!*a5)
+          if (!*keys)
           {
             [NSException raise:NSInvalidArgumentException format:@"Attempting to add nil key to a Dictionary"];
           }
 
           dictionary = v10->_dictionary;
-          v14 = *a4++;
+          v14 = *values++;
           v15 = [NSNumber numberWithInt:v14];
-          v16 = *a5++;
+          v16 = *keys++;
           [(NSMutableDictionary *)dictionary setObject:v15 forKey:v16];
-          --a6;
+          --count;
         }
 
-        while (a6);
+        while (count);
       }
     }
   }
@@ -55,13 +55,13 @@
   return v10;
 }
 
-- (GPBStringEnumDictionary)initWithDictionary:(id)a3
+- (GPBStringEnumDictionary)initWithDictionary:(id)dictionary
 {
-  v4 = -[GPBStringEnumDictionary initWithValidationFunction:rawValues:forKeys:count:](self, "initWithValidationFunction:rawValues:forKeys:count:", [a3 validationFunc], 0, 0, 0);
+  v4 = -[GPBStringEnumDictionary initWithValidationFunction:rawValues:forKeys:count:](self, "initWithValidationFunction:rawValues:forKeys:count:", [dictionary validationFunc], 0, 0, 0);
   v5 = v4;
-  if (a3 && v4)
+  if (dictionary && v4)
   {
-    [(NSMutableDictionary *)v4->_dictionary addEntriesFromDictionary:*(a3 + 2)];
+    [(NSMutableDictionary *)v4->_dictionary addEntriesFromDictionary:*(dictionary + 2)];
   }
 
   return v5;
@@ -79,16 +79,16 @@
   [(GPBStringEnumDictionary *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [GPBStringEnumDictionary allocWithZone:a3];
+  v4 = [GPBStringEnumDictionary allocWithZone:zone];
 
   return [(GPBStringEnumDictionary *)v4 initWithDictionary:self];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -100,55 +100,55 @@
   }
 
   dictionary = self->_dictionary;
-  v6 = *(a3 + 2);
+  v6 = *(equal + 2);
 
   return [(NSMutableDictionary *)dictionary isEqual:v6];
 }
 
-- (void)enumerateKeysAndRawValuesUsingBlock:(id)a3
+- (void)enumerateKeysAndRawValuesUsingBlock:(id)block
 {
   v7 = 0;
   dictionary = self->_dictionary;
-  v5 = [(NSMutableDictionary *)dictionary keyEnumerator];
+  keyEnumerator = [(NSMutableDictionary *)dictionary keyEnumerator];
   do
   {
-    v6 = [v5 nextObject];
-    if (!v6)
+    nextObject = [keyEnumerator nextObject];
+    if (!nextObject)
     {
       break;
     }
 
-    (*(a3 + 2))(a3, v6, [-[NSMutableDictionary objectForKeyedSubscript:](dictionary objectForKeyedSubscript:{v6), "intValue"}], &v7);
+    (*(block + 2))(block, nextObject, [-[NSMutableDictionary objectForKeyedSubscript:](dictionary objectForKeyedSubscript:{nextObject), "intValue"}], &v7);
   }
 
   while (v7 != 1);
 }
 
-- (unint64_t)computeSerializedSizeAsField:(id)a3
+- (unint64_t)computeSerializedSizeAsField:(id)field
 {
   dictionary = self->_dictionary;
   result = [(NSMutableDictionary *)dictionary count];
   if (result)
   {
     v6 = result;
-    v7 = *(*(a3 + 1) + 30);
-    v8 = [a3 mapKeyDataType];
-    v9 = [(NSMutableDictionary *)dictionary keyEnumerator];
-    v10 = [v9 nextObject];
-    if (v10)
+    v7 = *(*(field + 1) + 30);
+    mapKeyDataType = [field mapKeyDataType];
+    keyEnumerator = [(NSMutableDictionary *)dictionary keyEnumerator];
+    nextObject = [keyEnumerator nextObject];
+    if (nextObject)
     {
-      v11 = v10;
+      nextObject2 = nextObject;
       v12 = 0;
       do
       {
-        v13 = [(NSMutableDictionary *)dictionary objectForKeyedSubscript:v11];
-        v14 = sub_100332660(v11, v8);
+        v13 = [(NSMutableDictionary *)dictionary objectForKeyedSubscript:nextObject2];
+        v14 = sub_100332660(nextObject2, mapKeyDataType);
         v15 = &v14[sub_100321B38([v13 intValue], v7)];
         v12 += &v15[GPBComputeRawVarint32SizeForInteger(v15)];
-        v11 = [v9 nextObject];
+        nextObject2 = [keyEnumerator nextObject];
       }
 
-      while (v11);
+      while (nextObject2);
     }
 
     else
@@ -156,68 +156,68 @@
       v12 = 0;
     }
 
-    return v12 + GPBComputeWireFormatTagSize(*(*(a3 + 1) + 16), 15) * v6;
+    return v12 + GPBComputeWireFormatTagSize(*(*(field + 1) + 16), 15) * v6;
   }
 
   return result;
 }
 
-- (void)writeToCodedOutputStream:(id)a3 asField:(id)a4
+- (void)writeToCodedOutputStream:(id)stream asField:(id)field
 {
-  v7 = *(*(a4 + 1) + 30);
-  v8 = [a4 mapKeyDataType];
-  Tag = GPBWireFormatMakeTag(*(*(a4 + 1) + 16), 2);
+  v7 = *(*(field + 1) + 30);
+  mapKeyDataType = [field mapKeyDataType];
+  Tag = GPBWireFormatMakeTag(*(*(field + 1) + 16), 2);
   dictionary = self->_dictionary;
-  v11 = [(NSMutableDictionary *)dictionary keyEnumerator];
-  v12 = [v11 nextObject];
-  if (v12)
+  keyEnumerator = [(NSMutableDictionary *)dictionary keyEnumerator];
+  nextObject = [keyEnumerator nextObject];
+  if (nextObject)
   {
-    v13 = v12;
+    nextObject2 = nextObject;
     do
     {
-      v14 = [(NSMutableDictionary *)dictionary objectForKeyedSubscript:v13];
-      [a3 writeInt32NoTag:Tag];
-      v15 = [v14 intValue];
-      v16 = sub_100332660(v13, v8);
-      [a3 writeInt32NoTag:{sub_100321B38(v15, v7) + v16}];
-      sub_1003327D0(a3, v13, v8);
-      sub_100321CB4(a3, v15, v7);
-      v13 = [v11 nextObject];
+      v14 = [(NSMutableDictionary *)dictionary objectForKeyedSubscript:nextObject2];
+      [stream writeInt32NoTag:Tag];
+      intValue = [v14 intValue];
+      v16 = sub_100332660(nextObject2, mapKeyDataType);
+      [stream writeInt32NoTag:{sub_100321B38(intValue, v7) + v16}];
+      sub_1003327D0(stream, nextObject2, mapKeyDataType);
+      sub_100321CB4(stream, intValue, v7);
+      nextObject2 = [keyEnumerator nextObject];
     }
 
-    while (v13);
+    while (nextObject2);
   }
 }
 
-- (void)setGPBGenericValue:(id *)a3 forGPBGenericValueKey:(id *)a4
+- (void)setGPBGenericValue:(id *)value forGPBGenericValueKey:(id *)key
 {
   dictionary = self->_dictionary;
-  v6 = [NSNumber numberWithInt:a3->var3];
-  var2 = a4->var2;
+  v6 = [NSNumber numberWithInt:value->var3];
+  var2 = key->var2;
 
   [(NSMutableDictionary *)dictionary setObject:v6 forKey:var2];
 }
 
-- (void)enumerateForTextFormat:(id)a3
+- (void)enumerateForTextFormat:(id)format
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100336230;
   v3[3] = &unk_100435BE8;
-  v3[4] = a3;
+  v3[4] = format;
   [(GPBStringEnumDictionary *)self enumerateKeysAndRawValuesUsingBlock:v3];
 }
 
-- (BOOL)getEnum:(int *)a3 forKey:(id)a4
+- (BOOL)getEnum:(int *)enum forKey:(id)key
 {
-  v6 = [(NSMutableDictionary *)self->_dictionary objectForKey:a4];
+  v6 = [(NSMutableDictionary *)self->_dictionary objectForKey:key];
   v7 = v6;
-  if (a3 && v6)
+  if (enum && v6)
   {
-    v8 = [v6 intValue];
+    intValue = [v6 intValue];
     if ((self->_validationFunc)())
     {
-      v9 = v8;
+      v9 = intValue;
     }
 
     else
@@ -225,51 +225,51 @@
       v9 = -72499473;
     }
 
-    *a3 = v9;
+    *enum = v9;
   }
 
   return v7 != 0;
 }
 
-- (BOOL)getRawValue:(int *)a3 forKey:(id)a4
+- (BOOL)getRawValue:(int *)value forKey:(id)key
 {
-  v5 = [(NSMutableDictionary *)self->_dictionary objectForKey:a4];
+  v5 = [(NSMutableDictionary *)self->_dictionary objectForKey:key];
   v6 = v5;
-  if (a3 && v5)
+  if (value && v5)
   {
-    *a3 = [v5 intValue];
+    *value = [v5 intValue];
   }
 
   return v6 != 0;
 }
 
-- (void)enumerateKeysAndEnumsUsingBlock:(id)a3
+- (void)enumerateKeysAndEnumsUsingBlock:(id)block
 {
   v11 = 0;
   validationFunc = self->_validationFunc;
-  v6 = [(NSMutableDictionary *)self->_dictionary keyEnumerator];
+  keyEnumerator = [(NSMutableDictionary *)self->_dictionary keyEnumerator];
   do
   {
-    v7 = [v6 nextObject];
-    if (!v7)
+    nextObject = [keyEnumerator nextObject];
+    if (!nextObject)
     {
       break;
     }
 
-    v8 = v7;
-    v9 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_dictionary objectForKeyedSubscript:{v7), "intValue"}];
+    v8 = nextObject;
+    v9 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_dictionary objectForKeyedSubscript:{nextObject), "intValue"}];
     v10 = validationFunc() ? v9 : 4222467823;
-    (*(a3 + 2))(a3, v8, v10, &v11);
+    (*(block + 2))(block, v8, v10, &v11);
   }
 
   while (v11 != 1);
 }
 
-- (void)addRawEntriesFromDictionary:(id)a3
+- (void)addRawEntriesFromDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
-    [(NSMutableDictionary *)self->_dictionary addEntriesFromDictionary:*(a3 + 2)];
+    [(NSMutableDictionary *)self->_dictionary addEntriesFromDictionary:*(dictionary + 2)];
     autocreator = self->_autocreator;
     if (autocreator)
     {

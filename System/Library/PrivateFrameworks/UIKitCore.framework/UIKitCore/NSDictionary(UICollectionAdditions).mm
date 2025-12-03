@@ -6,7 +6,7 @@
 
 - (uint64_t)_BOOLForKey:()UICollectionAdditions
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (!v1)
   {
     return 0;

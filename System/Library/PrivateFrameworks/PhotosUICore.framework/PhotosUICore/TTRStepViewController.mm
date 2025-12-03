@@ -1,5 +1,5 @@
 @interface TTRStepViewController
-- (_TtC12PhotosUICoreP33_C3281DCD2CB9CD0A743AAAFB526C0D5E21TTRStepViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC12PhotosUICoreP33_C3281DCD2CB9CD0A743AAAFB526C0D5E21TTRStepViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)handleBack;
 @end
 
@@ -7,15 +7,15 @@
 
 - (void)handleBack
 {
-  v4 = self;
-  v2 = [(TTRStepViewController *)v4 navigationController];
-  if (v2)
+  selfCopy = self;
+  navigationController = [(TTRStepViewController *)selfCopy navigationController];
+  if (navigationController)
   {
-    v3 = v2;
+    v3 = navigationController;
   }
 }
 
-- (_TtC12PhotosUICoreP33_C3281DCD2CB9CD0A743AAAFB526C0D5E21TTRStepViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12PhotosUICoreP33_C3281DCD2CB9CD0A743AAAFB526C0D5E21TTRStepViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

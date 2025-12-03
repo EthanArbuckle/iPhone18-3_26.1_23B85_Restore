@@ -1,9 +1,9 @@
 @interface NanoRoutePlanningState
-- (NanoRoutePlanningState)initWithStateManager:(id)a3 isolationQueue:(id)a4;
+- (NanoRoutePlanningState)initWithStateManager:(id)manager isolationQueue:(id)queue;
 - (NanoRoutePlanningStateManager)manager;
-- (void)enterToState:(int64_t)a3 fromState:(int64_t)a4;
-- (void)leaveToState:(int64_t)a3;
-- (void)setActive:(BOOL)a3;
+- (void)enterToState:(int64_t)state fromState:(int64_t)fromState;
+- (void)leaveToState:(int64_t)state;
+- (void)setActive:(BOOL)active;
 - (void)stop;
 @end
 
@@ -16,7 +16,7 @@
   return WeakRetained;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
   isolationQueue = self->_isolationQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -24,7 +24,7 @@
   v4[2] = sub_100C1AE80;
   v4[3] = &unk_101661AE0;
   v4[4] = self;
-  v5 = a3;
+  activeCopy = active;
   dispatch_async(isolationQueue, v4);
 }
 
@@ -48,21 +48,21 @@
   }
 }
 
-- (void)leaveToState:(int64_t)a3
+- (void)leaveToState:(int64_t)state
 {
-  v5 = [(NanoRoutePlanningState *)self sessionState];
-  self->_nextState = a3;
+  sessionState = [(NanoRoutePlanningState *)self sessionState];
+  self->_nextState = state;
   v6 = sub_100798A3C();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    if (v5 > 4)
+    if (sessionState > 4)
     {
       v7 = @"unknown";
     }
 
     else
     {
-      v7 = off_10164F5A8[v5];
+      v7 = off_10164F5A8[sessionState];
     }
 
     v8 = v7;
@@ -81,25 +81,25 @@
   v12[2] = sub_100C1B1E8;
   v12[3] = &unk_101661650;
   v12[4] = self;
-  v12[5] = v5;
+  v12[5] = sessionState;
   dispatch_async(isolationQueue, v12);
 }
 
-- (void)enterToState:(int64_t)a3 fromState:(int64_t)a4
+- (void)enterToState:(int64_t)state fromState:(int64_t)fromState
 {
-  self->_sessionState = a3;
-  self->_previousState = a4;
+  self->_sessionState = state;
+  self->_previousState = fromState;
   v6 = sub_100798A3C();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    if (a3 > 4)
+    if (state > 4)
     {
       v7 = @"unknown";
     }
 
     else
     {
-      v7 = off_10164F5A8[a3];
+      v7 = off_10164F5A8[state];
     }
 
     v8 = v7;
@@ -116,23 +116,23 @@
   v11[2] = sub_100C1B414;
   v11[3] = &unk_101661650;
   v11[4] = self;
-  v11[5] = a3;
+  v11[5] = state;
   dispatch_async(isolationQueue, v11);
 }
 
-- (NanoRoutePlanningState)initWithStateManager:(id)a3 isolationQueue:(id)a4
+- (NanoRoutePlanningState)initWithStateManager:(id)manager isolationQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = NanoRoutePlanningState;
   v8 = [(NanoRoutePlanningState *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_manager, v6);
+    objc_storeWeak(&v8->_manager, managerCopy);
     v9->_sessionState = -1;
-    objc_storeStrong(&v9->_isolationQueue, a4);
+    objc_storeStrong(&v9->_isolationQueue, queue);
   }
 
   return v9;

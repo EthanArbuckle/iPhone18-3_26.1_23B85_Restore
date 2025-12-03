@@ -1,13 +1,13 @@
 @interface MFMailDeviceStorage
-- (int64_t)freeSpaceGuidanceForSpaceIncrease:(int64_t)a3 urgency:(int64_t)a4;
+- (int64_t)freeSpaceGuidanceForSpaceIncrease:(int64_t)increase urgency:(int64_t)urgency;
 @end
 
 @implementation MFMailDeviceStorage
 
-- (int64_t)freeSpaceGuidanceForSpaceIncrease:(int64_t)a3 urgency:(int64_t)a4
+- (int64_t)freeSpaceGuidanceForSpaceIncrease:(int64_t)increase urgency:(int64_t)urgency
 {
   MFMailDirectoryURL();
-  [NSNumber numberWithLongLong:a3];
+  [NSNumber numberWithLongLong:increase];
   v5 = CacheDeleteRequestCacheableSpaceGuidance();
   v6 = [v5 objectForKeyedSubscript:@"CACHE_DELETE_GUIDANCE"];
   if ([v6 isEqualToString:@"CACHE_DELETE_GUIDANCE_CAN_EXPAND_CACHE"])

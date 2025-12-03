@@ -1,17 +1,17 @@
 @interface SDAirDropSession
 - (BOOL)send;
-- (SDAirDropSession)initWithPerson:(__SFNode *)a3 items:(id)a4 sandboxExtensions:(id)a5;
+- (SDAirDropSession)initWithPerson:(__SFNode *)person items:(id)items sandboxExtensions:(id)extensions;
 - (SDAirDropSessionDelegate)delegate;
-- (void)airDropClient:(id)a3 event:(int64_t)a4 withResults:(id)a5;
+- (void)airDropClient:(id)client event:(int64_t)event withResults:(id)results;
 - (void)consumeSandboxExtensions;
 - (void)dealloc;
-- (void)handleConversionProgress:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)postNotificationForTransferStatus:(int64_t)a3 progress:(double)a4;
+- (void)handleConversionProgress:(id)progress;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)postNotificationForTransferStatus:(int64_t)status progress:(double)progress;
 - (void)releaseSandboxExtensions;
 - (void)removeClientAlerts;
-- (void)serversChanged:(id)a3;
-- (void)setProperty:(id)a3 forKey:(id)a4;
+- (void)serversChanged:(id)changed;
+- (void)setProperty:(id)property forKey:(id)key;
 - (void)start;
 - (void)startProgress;
 - (void)stop;
@@ -19,10 +19,10 @@
 
 @implementation SDAirDropSession
 
-- (SDAirDropSession)initWithPerson:(__SFNode *)a3 items:(id)a4 sandboxExtensions:(id)a5
+- (SDAirDropSession)initWithPerson:(__SFNode *)person items:(id)items sandboxExtensions:(id)extensions
 {
-  v9 = a4;
-  v10 = a5;
+  itemsCopy = items;
+  extensionsCopy = extensions;
   v36.receiver = self;
   v36.super_class = SDAirDropSession;
   v11 = [(SDAirDropSession *)&v36 init];
@@ -42,11 +42,11 @@
     v11->_currentNames = v16;
 
     objc_storeWeak(&v11->_delegate, 0);
-    v18 = [SDAirDropDiscoveryLogger discoverabilityMetricsForNode:a3];
+    v18 = [SDAirDropDiscoveryLogger discoverabilityMetricsForNode:person];
     discoveryMetrics = v11->_discoveryMetrics;
     v11->_discoveryMetrics = v18;
 
-    objc_storeStrong(&v11->_items, a4);
+    objc_storeStrong(&v11->_items, items);
     v11->_lastEvent = 1;
     Copy = SFNodeCreateCopy();
     progress = v11->_progress;
@@ -65,7 +65,7 @@
     rootNodeName = v11->_rootNodeName;
     v11->_rootNodeName = v26;
 
-    objc_storeStrong(&v11->_sandboxExtensions, a5);
+    objc_storeStrong(&v11->_sandboxExtensions, extensions);
     v28 = objc_opt_new();
     sandboxExtensionHandles = v11->_sandboxExtensionHandles;
     v11->_sandboxExtensionHandles = v28;
@@ -83,28 +83,28 @@
   return v11;
 }
 
-- (void)setProperty:(id)a3 forKey:(id)a4
+- (void)setProperty:(id)property forKey:(id)key
 {
   properties = self->_properties;
-  if (a3)
+  if (property)
   {
-    [(NSMutableDictionary *)properties setObject:a3 forKeyedSubscript:a4];
+    [(NSMutableDictionary *)properties setObject:property forKeyedSubscript:key];
   }
 
   else
   {
-    [(NSMutableDictionary *)properties removeObjectForKey:a4];
+    [(NSMutableDictionary *)properties removeObjectForKey:key];
   }
 }
 
 - (void)consumeSandboxExtensions
 {
-  v3 = [(NSDictionary *)self->_sandboxExtensions allValues];
+  allValues = [(NSDictionary *)self->_sandboxExtensions allValues];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v17 objects:v25 count:16];
+  v4 = [allValues countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v4)
   {
     v6 = v4;
@@ -117,7 +117,7 @@
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
@@ -145,7 +145,7 @@
         }
       }
 
-      v6 = [v3 countByEnumeratingWithState:&v17 objects:v25 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v17 objects:v25 count:16];
     }
 
     while (v6);
@@ -314,7 +314,7 @@
   return v5 & 1;
 }
 
-- (void)serversChanged:(id)a3
+- (void)serversChanged:(id)changed
 {
   v4 = +[SDServerBrowser sharedBrowser];
   v5 = [v4 airDropNodesForDomain:@"local"];
@@ -503,15 +503,15 @@ LABEL_14:
   }
 }
 
-- (void)airDropClient:(id)a3 event:(int64_t)a4 withResults:(id)a5
+- (void)airDropClient:(id)client event:(int64_t)event withResults:(id)results
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = [v10 mutableCopy];
+  clientCopy = client;
+  resultsCopy = results;
+  v11 = [resultsCopy mutableCopy];
   [v11 addEntriesFromDictionary:self->_results];
-  if (a4 == 7)
+  if (event == 7)
   {
-    v12 = [v10 objectForKeyedSubscript:kSFOperationBytesCopiedKey];
+    v12 = [resultsCopy objectForKeyedSubscript:kSFOperationBytesCopiedKey];
     -[NSProgress setCompletedUnitCount:](self->_transferProgress, "setCompletedUnitCount:", [v12 longLongValue]);
 
     LODWORD(v12) = self->_hadConversion;
@@ -524,11 +524,11 @@ LABEL_14:
 
     [(NSProgress *)self->_progress setCompletedUnitCount:v14];
     progress = self->_progress;
-    v16 = [v10 objectForKeyedSubscript:kSFOperationTimeRemainingKey];
+    v16 = [resultsCopy objectForKeyedSubscript:kSFOperationTimeRemainingKey];
     [(NSProgress *)progress setUserInfoObject:v16 forKey:NSProgressEstimatedTimeRemainingKey];
 
-    v17 = [(NSProgress *)self->_progress completedUnitCount];
-    v18 = self;
+    completedUnitCount = [(NSProgress *)self->_progress completedUnitCount];
+    selfCopy6 = self;
     v19 = 7;
     goto LABEL_5;
   }
@@ -536,14 +536,14 @@ LABEL_14:
   v21 = airdrop_log();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
   {
-    sub_100056ED0(a4, v11, v21);
+    sub_100056ED0(event, v11, v21);
   }
 
-  if (a4 > 8)
+  if (event > 8)
   {
-    if (a4 <= 10)
+    if (event <= 10)
     {
-      if (a4 == 9)
+      if (event == 9)
       {
         v25 = airdrop_log();
         v26 = os_signpost_id_make_with_pointer(v25, self);
@@ -565,36 +565,36 @@ LABEL_14:
         }
 
         [(NSProgress *)self->_progress setSf_transferState:6];
-        v31 = [(NSProgress *)self->_progress sf_personRealName];
+        sf_personRealName = [(NSProgress *)self->_progress sf_personRealName];
 
-        if (!v31)
+        if (!sf_personRealName)
         {
           goto LABEL_6;
         }
 
-        v17 = 0.0;
-        v18 = self;
+        completedUnitCount = 0.0;
+        selfCopy6 = self;
         v19 = 9;
       }
 
       else
       {
         v22 = self->_progress;
-        v23 = [v10 objectForKeyedSubscript:kSFOperationErrorKey];
-        v24 = [v23 localizedDescription];
-        [(NSProgress *)v22 sf_failedWithError:v24];
+        v23 = [resultsCopy objectForKeyedSubscript:kSFOperationErrorKey];
+        localizedDescription = [v23 localizedDescription];
+        [(NSProgress *)v22 sf_failedWithError:localizedDescription];
 
-        v17 = 0.0;
-        v18 = self;
+        completedUnitCount = 0.0;
+        selfCopy6 = self;
         v19 = 10;
       }
 
 LABEL_5:
-      [(SDAirDropSession *)v18 postNotificationForTransferStatus:v19 progress:v17];
+      [(SDAirDropSession *)selfCopy6 postNotificationForTransferStatus:v19 progress:completedUnitCount];
       goto LABEL_6;
     }
 
-    if (a4 == 11)
+    if (event == 11)
     {
       if (self->_conversionActive)
       {
@@ -602,13 +602,13 @@ LABEL_5:
       }
 
       [(NSProgress *)self->_progress setSf_transferState:2];
-      v17 = 0.0;
-      v18 = self;
+      completedUnitCount = 0.0;
+      selfCopy6 = self;
       v19 = 11;
       goto LABEL_5;
     }
 
-    if (a4 == 15)
+    if (event == 15)
     {
       [(NSProgress *)self->_progress setSf_transferState:1];
       [(NSProgress *)self->_progress setCompletedUnitCount:0];
@@ -617,9 +617,9 @@ LABEL_5:
 
   else
   {
-    if (a4 <= 4)
+    if (event <= 4)
     {
-      if (a4 == 3)
+      if (event == 3)
       {
         if (self->_conversionActive)
         {
@@ -628,32 +628,32 @@ LABEL_5:
 
         self->_allowedWaiting = 1;
         [(NSProgress *)self->_progress setSf_transferState:2];
-        v17 = 0.0;
-        v18 = self;
+        completedUnitCount = 0.0;
+        selfCopy6 = self;
         v19 = 3;
       }
 
       else
       {
-        if (a4 != 4)
+        if (event != 4)
         {
           goto LABEL_6;
         }
 
-        objc_storeStrong(&self->_responseClient, a3);
+        objc_storeStrong(&self->_responseClient, client);
         [(SDAirDropSession *)self removeClientAlerts];
         [(NSProgress *)self->_progress setSf_transferState:4];
-        v17 = 0.0;
-        v18 = self;
+        completedUnitCount = 0.0;
+        selfCopy6 = self;
         v19 = 4;
       }
 
       goto LABEL_5;
     }
 
-    if (a4 == 5)
+    if (event == 5)
     {
-      objc_storeStrong(&self->_responseClient, a3);
+      objc_storeStrong(&self->_responseClient, client);
       [(SDAirDropSession *)self removeClientAlerts];
       if (self->_conversionObserver)
       {
@@ -677,8 +677,8 @@ LABEL_5:
       v34 = os_signpost_id_make_with_pointer(v33, self);
 
       v35 = kSFOperationTotalBytesKey;
-      v36 = [v10 objectForKeyedSubscript:kSFOperationTotalBytesKey];
-      v37 = [v36 longLongValue];
+      v36 = [resultsCopy objectForKeyedSubscript:kSFOperationTotalBytesKey];
+      longLongValue = [v36 longLongValue];
 
       v38 = airdrop_log();
       v39 = v38;
@@ -693,12 +693,12 @@ LABEL_5:
       if (v34 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v40))
       {
         v43 = 134349056;
-        v44 = 102400 * (v37 / 102400);
+        v44 = 102400 * (longLongValue / 102400);
         _os_signpost_emit_with_name_impl(&_mh_execute_header, v41, OS_SIGNPOST_INTERVAL_BEGIN, v34, "TransferTimeBytes", "totalBytes=%{public, signpost.telemetry:number1}lld", &v43, 0xCu);
       }
 
       [(NSProgress *)self->_progress setSf_transferState:3];
-      v42 = [v10 objectForKeyedSubscript:v35];
+      v42 = [resultsCopy objectForKeyedSubscript:v35];
       -[NSProgress setTotalUnitCount:](self->_transferProgress, "setTotalUnitCount:", [v42 longLongValue]);
 
       [(NSProgress *)self->_transferProgress setCompletedUnitCount:0];
@@ -707,26 +707,26 @@ LABEL_5:
   }
 
 LABEL_6:
-  self->_lastEvent = a4;
+  self->_lastEvent = event;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained airDropSession:self event:a4 withResults:v11];
+  [WeakRetained airDropSession:self event:event withResults:v11];
 }
 
-- (void)postNotificationForTransferStatus:(int64_t)a3 progress:(double)a4
+- (void)postNotificationForTransferStatus:(int64_t)status progress:(double)progress
 {
-  v6 = [NSNumber numberWithDouble:a4];
+  v6 = [NSNumber numberWithDouble:progress];
   progress = self->_progress;
   if (progress)
   {
-    v8 = [(NSProgress *)progress sf_personRealName];
+    sf_personRealName = [(NSProgress *)progress sf_personRealName];
   }
 
   else
   {
-    v8 = self->_rootNodeName;
+    sf_personRealName = self->_rootNodeName;
   }
 
-  v9 = v8;
+  v9 = sf_personRealName;
   v10 = [(NSMutableDictionary *)self->_properties objectForKeyedSubscript:kSFOperationSessionIDKey];
   v11 = v10;
   if (self->_siblingNodes)
@@ -751,7 +751,7 @@ LABEL_6:
       v18[2] = v11;
       v17[2] = @"SessionID";
       v17[3] = @"TransferText";
-      v15 = [NSNumber numberWithLong:a3];
+      v15 = [NSNumber numberWithLong:status];
       v18[3] = v15;
       v16 = [NSDictionary dictionaryWithObjects:v18 forKeys:v17 count:4];
       [v14 postNotificationName:@"TransferUpdated" object:self userInfo:v16];
@@ -801,9 +801,9 @@ LABEL_6:
   }
 }
 
-- (void)handleConversionProgress:(id)a3
+- (void)handleConversionProgress:(id)progress
 {
-  v7 = a3;
+  progressCopy = progress;
   conversionProgress = self->_conversionProgress;
   if (!conversionProgress)
   {
@@ -816,7 +816,7 @@ LABEL_6:
 
   self->_conversionActive = 1;
   [(NSProgress *)conversionProgress setTotalUnitCount:[(NSProgress *)conversionProgress totalUnitCount]+ 100];
-  [(NSProgress *)self->_conversionProgress addChild:v7 withPendingUnitCount:100];
+  [(NSProgress *)self->_conversionProgress addChild:progressCopy withPendingUnitCount:100];
   if (!self->_conversionObserver && !self->_allowedWaiting)
   {
     self->_conversionObserver = 1;
@@ -824,11 +824,11 @@ LABEL_6:
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   v13 = +[NSThread mainThread];
 
   if (v13)
@@ -836,7 +836,7 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = v11;
+      v14 = objectCopy;
       v15 = v14;
       if (!self->_conversionNotified && ([v14 isCancelled] & 1) == 0 && self->_conversionActive)
       {
@@ -874,10 +874,10 @@ LABEL_6:
     block[2] = sub_100056D3C;
     block[3] = &unk_1008CDC58;
     block[4] = self;
-    v20 = v10;
-    v21 = v11;
-    v22 = v12;
-    v23 = a6;
+    v20 = pathCopy;
+    v21 = objectCopy;
+    v22 = changeCopy;
+    contextCopy = context;
     dispatch_async(&_dispatch_main_q, block);
   }
 }

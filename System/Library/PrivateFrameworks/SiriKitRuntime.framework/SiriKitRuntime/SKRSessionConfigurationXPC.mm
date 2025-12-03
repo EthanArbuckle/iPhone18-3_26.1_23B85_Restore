@@ -1,15 +1,15 @@
 @interface SKRSessionConfigurationXPC
 - (SKRSessionConfigurationXPC)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SKRSessionConfigurationXPC
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  SessionConfigurationXPC.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  SessionConfigurationXPC.encode(with:)(coderCopy);
 }
 
 - (SKRSessionConfigurationXPC)init

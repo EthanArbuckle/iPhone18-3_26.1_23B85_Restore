@@ -1,10 +1,10 @@
 @interface _NSAttributedStringGrammar
 + (_NSAttributedStringGrammar)identityGrammar;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_NSAttributedStringGrammar)init;
-- (_NSAttributedStringGrammar)initWithMorphology:(id)a3;
-- (id)_initWithMarkdownDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_NSAttributedStringGrammar)initWithMorphology:(id)morphology;
+- (id)_initWithMarkdownDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -20,12 +20,12 @@
 
 + (_NSAttributedStringGrammar)identityGrammar
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(_NSAttributedStringGrammar);
   v4->_aspect = [(_NSAttributedStringGrammar *)self aspect];
@@ -44,20 +44,20 @@
 
 - (unint64_t)hash
 {
-  v3 = [(_NSAttributedStringGrammar *)self aspect];
-  v4 = [(_NSAttributedStringGrammar *)self deictic]^ v3;
-  v5 = [(_NSAttributedStringGrammar *)self determinationType];
-  v6 = v4 ^ v5 ^ [(_NSAttributedStringGrammar *)self gender];
-  v7 = [(_NSAttributedStringGrammar *)self grammaticalCase];
-  v8 = v7 ^ [(_NSAttributedStringGrammar *)self mood];
+  aspect = [(_NSAttributedStringGrammar *)self aspect];
+  v4 = [(_NSAttributedStringGrammar *)self deictic]^ aspect;
+  determinationType = [(_NSAttributedStringGrammar *)self determinationType];
+  v6 = v4 ^ determinationType ^ [(_NSAttributedStringGrammar *)self gender];
+  grammaticalCase = [(_NSAttributedStringGrammar *)self grammaticalCase];
+  v8 = grammaticalCase ^ [(_NSAttributedStringGrammar *)self mood];
   v9 = v6 ^ v8 ^ [(_NSAttributedStringGrammar *)self number];
-  v10 = [(_NSAttributedStringGrammar *)self person];
-  v11 = v10 ^ [(_NSAttributedStringGrammar *)self position];
+  person = [(_NSAttributedStringGrammar *)self person];
+  v11 = person ^ [(_NSAttributedStringGrammar *)self position];
   v12 = v11 ^ [(_NSAttributedStringGrammar *)self tense];
   return v9 ^ v12 ^ [(_NSAttributedStringGrammar *)self verbForm];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -65,71 +65,71 @@
     return 0;
   }
 
-  v5 = [(_NSAttributedStringGrammar *)self aspect];
-  if (v5 != [a3 aspect])
+  aspect = [(_NSAttributedStringGrammar *)self aspect];
+  if (aspect != [equal aspect])
   {
     return 0;
   }
 
-  v6 = [(_NSAttributedStringGrammar *)self deictic];
-  if (v6 != [a3 deictic])
+  deictic = [(_NSAttributedStringGrammar *)self deictic];
+  if (deictic != [equal deictic])
   {
     return 0;
   }
 
-  v7 = [(_NSAttributedStringGrammar *)self determinationType];
-  if (v7 != [a3 determinationType])
+  determinationType = [(_NSAttributedStringGrammar *)self determinationType];
+  if (determinationType != [equal determinationType])
   {
     return 0;
   }
 
-  v8 = [(_NSAttributedStringGrammar *)self gender];
-  if (v8 != [a3 gender])
+  gender = [(_NSAttributedStringGrammar *)self gender];
+  if (gender != [equal gender])
   {
     return 0;
   }
 
-  v9 = [(_NSAttributedStringGrammar *)self grammaticalCase];
-  if (v9 != [a3 grammaticalCase])
+  grammaticalCase = [(_NSAttributedStringGrammar *)self grammaticalCase];
+  if (grammaticalCase != [equal grammaticalCase])
   {
     return 0;
   }
 
-  v10 = [(_NSAttributedStringGrammar *)self mood];
-  if (v10 != [a3 mood])
+  mood = [(_NSAttributedStringGrammar *)self mood];
+  if (mood != [equal mood])
   {
     return 0;
   }
 
-  v11 = [(_NSAttributedStringGrammar *)self number];
-  if (v11 != [a3 number])
+  number = [(_NSAttributedStringGrammar *)self number];
+  if (number != [equal number])
   {
     return 0;
   }
 
-  v12 = [(_NSAttributedStringGrammar *)self person];
-  if (v12 != [a3 person])
+  person = [(_NSAttributedStringGrammar *)self person];
+  if (person != [equal person])
   {
     return 0;
   }
 
-  v13 = [(_NSAttributedStringGrammar *)self position];
-  if (v13 != [a3 position])
+  position = [(_NSAttributedStringGrammar *)self position];
+  if (position != [equal position])
   {
     return 0;
   }
 
-  v14 = [(_NSAttributedStringGrammar *)self tense];
-  if (v14 != [a3 tense])
+  tense = [(_NSAttributedStringGrammar *)self tense];
+  if (tense != [equal tense])
   {
     return 0;
   }
 
-  v15 = [(_NSAttributedStringGrammar *)self verbForm];
-  return v15 == [a3 verbForm];
+  verbForm = [(_NSAttributedStringGrammar *)self verbForm];
+  return verbForm == [equal verbForm];
 }
 
-- (_NSAttributedStringGrammar)initWithMorphology:(id)a3
+- (_NSAttributedStringGrammar)initWithMorphology:(id)morphology
 {
   v15 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
@@ -137,25 +137,25 @@
   v4 = [(_NSAttributedStringGrammar *)&v14 init];
   if (v4)
   {
-    v5 = [a3 grammaticalGender];
-    if (v5 <= 3)
+    grammaticalGender = [morphology grammaticalGender];
+    if (grammaticalGender <= 3)
     {
-      [(_NSAttributedStringGrammar *)v4 setGender:qword_1814462E0[v5]];
+      [(_NSAttributedStringGrammar *)v4 setGender:qword_1814462E0[grammaticalGender]];
     }
 
-    v6 = [a3 number];
-    if (v6 <= 6)
+    number = [morphology number];
+    if (number <= 6)
     {
-      [(_NSAttributedStringGrammar *)v4 setNumber:qword_181446300[v6]];
+      [(_NSAttributedStringGrammar *)v4 setNumber:qword_181446300[number]];
     }
 
-    v7 = [a3 partOfSpeech];
-    if (v7 <= 0xE)
+    partOfSpeech = [morphology partOfSpeech];
+    if (partOfSpeech <= 0xE)
     {
-      [(_NSAttributedStringGrammar *)v4 setPosition:v7];
+      [(_NSAttributedStringGrammar *)v4 setPosition:partOfSpeech];
     }
 
-    v8 = [a3 grammaticalCase] - 1;
+    v8 = [morphology grammaticalCase] - 1;
     if (v8 > 0xC)
     {
       v9 = 0;
@@ -167,14 +167,14 @@
     }
 
     [(_NSAttributedStringGrammar *)v4 setGrammaticalCase:v9];
-    v10 = [a3 definiteness];
+    definiteness = [morphology definiteness];
     v11 = 3;
-    if (v10 != 1)
+    if (definiteness != 1)
     {
       v11 = 0;
     }
 
-    if (v10 == 2)
+    if (definiteness == 2)
     {
       v12 = 2;
     }
@@ -190,12 +190,12 @@
   return v4;
 }
 
-- (id)_initWithMarkdownDictionary:(id)a3
+- (id)_initWithMarkdownDictionary:(id)dictionary
 {
   v4 = [(_NSAttributedStringGrammar *)self init];
   if (v4)
   {
-    v5 = [a3 objectForKeyedSubscript:@"aspect"];
+    v5 = [dictionary objectForKeyedSubscript:@"aspect"];
     if (v5 && (v6 = v5, ([v5 isEqual:@"none"] & 1) == 0))
     {
       if ([v6 isEqual:@"perfect"])
@@ -220,7 +220,7 @@
     }
 
     [(_NSAttributedStringGrammar *)v4 setAspect:v7];
-    v8 = [a3 objectForKeyedSubscript:@"deictic"];
+    v8 = [dictionary objectForKeyedSubscript:@"deictic"];
     if (v8 && (v9 = v8, ([v8 isEqual:@"none"] & 1) == 0))
     {
       if ([v9 isEqual:@"distal"])
@@ -245,7 +245,7 @@
     }
 
     [(_NSAttributedStringGrammar *)v4 setDeictic:v10];
-    v11 = [a3 objectForKeyedSubscript:@"determinationType"];
+    v11 = [dictionary objectForKeyedSubscript:@"determinationType"];
     if (v11 && (v12 = v11, ([v11 isEqual:@"none"] & 1) == 0))
     {
       if ([v12 isEqual:@"demonstrative"])
@@ -275,7 +275,7 @@
     }
 
     [(_NSAttributedStringGrammar *)v4 setDeterminationType:v13];
-    v14 = [a3 objectForKeyedSubscript:@"grammaticalGender"];
+    v14 = [dictionary objectForKeyedSubscript:@"grammaticalGender"];
     if (v14 && (v15 = v14, ([v14 isEqual:@"none"] & 1) == 0))
     {
       if ([v15 isEqual:@"masculine"])
@@ -310,7 +310,7 @@
     }
 
     [(_NSAttributedStringGrammar *)v4 setGender:v16];
-    v17 = [a3 objectForKeyedSubscript:@"grammaticalCase"];
+    v17 = [dictionary objectForKeyedSubscript:@"grammaticalCase"];
     if (v17 && (v18 = v17, ([v17 isEqual:@"none"] & 1) == 0))
     {
       if ([v18 isEqual:@"accusative"])
@@ -380,7 +380,7 @@
     }
 
     [(_NSAttributedStringGrammar *)v4 setGrammaticalCase:v19];
-    v20 = [a3 objectForKeyedSubscript:@"mood"];
+    v20 = [dictionary objectForKeyedSubscript:@"mood"];
     if (v20 && (v21 = v20, ([v20 isEqual:@"none"] & 1) == 0))
     {
       if ([v21 isEqual:@"conditional"])
@@ -415,7 +415,7 @@
     }
 
     [(_NSAttributedStringGrammar *)v4 setMood:v22];
-    v23 = [a3 objectForKeyedSubscript:@"number"];
+    v23 = [dictionary objectForKeyedSubscript:@"number"];
     if (v23 && (v24 = v23, ([v23 isEqual:@"none"] & 1) == 0))
     {
       if ([v24 isEqual:@"one"])
@@ -460,7 +460,7 @@
     }
 
     [(_NSAttributedStringGrammar *)v4 setNumber:v25];
-    v26 = [a3 objectForKeyedSubscript:@"person"];
+    v26 = [dictionary objectForKeyedSubscript:@"person"];
     if (v26 && (v27 = v26, ([v26 isEqual:@"none"] & 1) == 0))
     {
       if ([v27 isEqual:@"first"])
@@ -490,7 +490,7 @@
     }
 
     [(_NSAttributedStringGrammar *)v4 setPerson:v28];
-    v29 = [a3 objectForKeyedSubscript:@"partOfSpeech"];
+    v29 = [dictionary objectForKeyedSubscript:@"partOfSpeech"];
     if (v29 && (v30 = v29, ([v29 isEqual:@"none"] & 1) == 0))
     {
       if ([v30 isEqual:@"determiner"])
@@ -575,7 +575,7 @@
     }
 
     [(_NSAttributedStringGrammar *)v4 setPosition:v31];
-    v32 = [a3 objectForKeyedSubscript:@"tense"];
+    v32 = [dictionary objectForKeyedSubscript:@"tense"];
     if (v32 && (v33 = v32, ([v32 isEqual:@"none"] & 1) == 0))
     {
       if ([v33 isEqual:@"past"])
@@ -605,7 +605,7 @@
     }
 
     [(_NSAttributedStringGrammar *)v4 setTense:v34];
-    v35 = [a3 objectForKeyedSubscript:@"verbForm"];
+    v35 = [dictionary objectForKeyedSubscript:@"verbForm"];
     if (!v35)
     {
       v38 = v4;

@@ -1,13 +1,13 @@
 @interface HMDAccessorySettingsLocalMessageHandler
 + (id)logCategory;
-- (HMDAccessorySettingsLocalMessageHandler)initWithHomeUUID:(id)a3 languageValuesDataProvider:(id)a4;
+- (HMDAccessorySettingsLocalMessageHandler)initWithHomeUUID:(id)d languageValuesDataProvider:(id)provider;
 - (HMDAccessorySettingsLocalMessageHandlerDataSource)dataSource;
 - (HMDAccessorySettingsLocalMessageHandlerDelegate)delegate;
-- (id)callerVersionForMessage:(id)a3;
+- (id)callerVersionForMessage:(id)message;
 - (id)siriAvailableLanguagesSetting;
-- (unint64_t)dataSourceCallerPrivilegeWithMessage:(id)a3 error:(id *)a4;
-- (void)handleAccessorySettingsFetchRequestMessage:(id)a3;
-- (void)handleAccessorySettingsUpdateRequestMessage:(id)a3;
+- (unint64_t)dataSourceCallerPrivilegeWithMessage:(id)message error:(id *)error;
+- (void)handleAccessorySettingsFetchRequestMessage:(id)message;
+- (void)handleAccessorySettingsUpdateRequestMessage:(id)message;
 @end
 
 @implementation HMDAccessorySettingsLocalMessageHandler
@@ -26,24 +26,24 @@
   return WeakRetained;
 }
 
-- (id)callerVersionForMessage:(id)a3
+- (id)callerVersionForMessage:(id)message
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isRemote])
+  messageCopy = message;
+  if ([messageCopy isRemote])
   {
-    v5 = [v4 remoteSourceDevice];
-    v6 = [v5 version];
-    v7 = v6;
-    if (v6)
+    remoteSourceDevice = [messageCopy remoteSourceDevice];
+    version = [remoteSourceDevice version];
+    v7 = version;
+    if (version)
     {
-      v8 = v6;
+      v8 = version;
     }
 
     else
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = self;
+      selfCopy = self;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
@@ -51,7 +51,7 @@
         v15 = 138543618;
         v16 = v12;
         v17 = 2112;
-        v18 = v5;
+        v18 = remoteSourceDevice;
         _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_ERROR, "%{public}@Failed to get caller version from remote source device: %@", &v15, 0x16u);
       }
 
@@ -69,22 +69,22 @@
   return v7;
 }
 
-- (unint64_t)dataSourceCallerPrivilegeWithMessage:(id)a3 error:(id *)a4
+- (unint64_t)dataSourceCallerPrivilegeWithMessage:(id)message error:(id *)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(HMDAccessorySettingsLocalMessageHandler *)self dataSource];
-  v8 = v7;
-  if (v7)
+  messageCopy = message;
+  dataSource = [(HMDAccessorySettingsLocalMessageHandler *)self dataSource];
+  v8 = dataSource;
+  if (dataSource)
   {
-    v9 = [v7 accessorySettingsLocalMessageHandler:self callerPrivilegeWithMessage:v6];
+    v9 = [dataSource accessorySettingsLocalMessageHandler:self callerPrivilegeWithMessage:messageCopy];
     if (v9 != 2)
     {
       goto LABEL_11;
     }
 
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy2 = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -100,7 +100,7 @@ LABEL_7:
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy2 = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -113,9 +113,9 @@ LABEL_7:
   }
 
   objc_autoreleasePoolPop(v10);
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:15];
+    *error = [MEMORY[0x277CCA9B8] hmfErrorWithCode:15];
   }
 
   v9 = 2;
@@ -125,12 +125,12 @@ LABEL_11:
   return v9;
 }
 
-- (void)handleAccessorySettingsUpdateRequestMessage:(id)a3
+- (void)handleAccessorySettingsUpdateRequestMessage:(id)message
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -138,36 +138,36 @@ LABEL_11:
     *buf = 138543618;
     v39 = v8;
     v40 = 2112;
-    v41 = v4;
+    v41 = messageCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Handling accessory settings update request message: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [v4 messagePayload];
-  if (v9)
+  messagePayload = [messageCopy messagePayload];
+  if (messagePayload)
   {
-    v10 = [objc_alloc(MEMORY[0x277CD17B8]) initWithPayload:v9];
+    v10 = [objc_alloc(MEMORY[0x277CD17B8]) initWithPayload:messagePayload];
     if (v10)
     {
-      v11 = [(HMDAccessorySettingsLocalMessageHandler *)v6 callerVersionForMessage:v4];
+      v11 = [(HMDAccessorySettingsLocalMessageHandler *)selfCopy callerVersionForMessage:messageCopy];
       if (v11)
       {
-        v12 = [v10 settingValue];
-        if (v12)
+        settingValue = [v10 settingValue];
+        if (settingValue)
         {
-          v13 = [(HMDAccessorySettingsLocalMessageHandler *)v6 delegate];
-          if (v13)
+          delegate = [(HMDAccessorySettingsLocalMessageHandler *)selfCopy delegate];
+          if (delegate)
           {
-            v14 = [(HMDAccessorySettingsLocalMessageHandler *)v6 homeUUID];
-            v15 = [v10 accessoryUUID];
-            v16 = [v10 keyPath];
-            [v13 accessorySettingsLocalMessageHandler:v6 didReceiveUpdateRequestMessage:v4 withHomeUUID:v14 accessoryUUID:v15 keyPath:v16 value:v12 callerVersion:v11];
+            homeUUID = [(HMDAccessorySettingsLocalMessageHandler *)selfCopy homeUUID];
+            accessoryUUID = [v10 accessoryUUID];
+            keyPath = [v10 keyPath];
+            [delegate accessorySettingsLocalMessageHandler:selfCopy didReceiveUpdateRequestMessage:messageCopy withHomeUUID:homeUUID accessoryUUID:accessoryUUID keyPath:keyPath value:settingValue callerVersion:v11];
           }
 
           else
           {
             v33 = objc_autoreleasePoolPush();
-            v34 = v6;
+            v34 = selfCopy;
             v35 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
             {
@@ -178,15 +178,15 @@ LABEL_11:
             }
 
             objc_autoreleasePoolPop(v33);
-            v14 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:4];
-            [v4 respondWithError:v14];
+            homeUUID = [MEMORY[0x277CCA9B8] hmfErrorWithCode:4];
+            [messageCopy respondWithError:homeUUID];
           }
         }
 
         else
         {
           v29 = objc_autoreleasePoolPush();
-          v30 = v6;
+          v30 = selfCopy;
           v31 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
           {
@@ -197,15 +197,15 @@ LABEL_11:
           }
 
           objc_autoreleasePoolPop(v29);
-          v13 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:15];
-          [v4 respondWithError:v13];
+          delegate = [MEMORY[0x277CCA9B8] hmfErrorWithCode:15];
+          [messageCopy respondWithError:delegate];
         }
       }
 
       else
       {
         v25 = objc_autoreleasePoolPush();
-        v26 = v6;
+        v26 = selfCopy;
         v27 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
         {
@@ -216,15 +216,15 @@ LABEL_11:
         }
 
         objc_autoreleasePoolPop(v25);
-        v12 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:4];
-        [v4 respondWithError:v12];
+        settingValue = [MEMORY[0x277CCA9B8] hmfErrorWithCode:4];
+        [messageCopy respondWithError:settingValue];
       }
     }
 
     else
     {
       v21 = objc_autoreleasePoolPush();
-      v22 = v6;
+      v22 = selfCopy;
       v23 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
@@ -232,20 +232,20 @@ LABEL_11:
         *buf = 138543618;
         v39 = v24;
         v40 = 2112;
-        v41 = v9;
+        v41 = messagePayload;
         _os_log_impl(&dword_229538000, v23, OS_LOG_TYPE_ERROR, "%{public}@Failed to create update request payload with message payload: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v21);
       v11 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:3];
-      [v4 respondWithError:v11];
+      [messageCopy respondWithError:v11];
     }
   }
 
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = v6;
+    v18 = selfCopy;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -257,7 +257,7 @@ LABEL_11:
 
     objc_autoreleasePoolPop(v17);
     v10 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:8];
-    [v4 respondWithError:v10];
+    [messageCopy respondWithError:v10];
   }
 
   v37 = *MEMORY[0x277D85DE8];
@@ -265,20 +265,20 @@ LABEL_11:
 
 - (id)siriAvailableLanguagesSetting
 {
-  v2 = [(HMDAccessorySettingsLocalMessageHandler *)self languageValuesDataProvider];
-  v3 = [v2 languageValueList];
+  languageValuesDataProvider = [(HMDAccessorySettingsLocalMessageHandler *)self languageValuesDataProvider];
+  languageValueList = [languageValuesDataProvider languageValueList];
 
-  v4 = [objc_alloc(MEMORY[0x277CD1B00]) initWithKeyPath:@"root.siri.availableLanguages" readOnly:1 languageValues:v3];
+  v4 = [objc_alloc(MEMORY[0x277CD1B00]) initWithKeyPath:@"root.siri.availableLanguages" readOnly:1 languageValues:languageValueList];
 
   return v4;
 }
 
-- (void)handleAccessorySettingsFetchRequestMessage:(id)a3
+- (void)handleAccessorySettingsFetchRequestMessage:(id)message
 {
   v55 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -286,19 +286,19 @@ LABEL_11:
     *buf = 138543618;
     v52 = v8;
     v53 = 2112;
-    v54 = v4;
+    v54 = messageCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Handling accessory settings fetch request message: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [v4 messagePayload];
-  if (v9)
+  messagePayload = [messageCopy messagePayload];
+  if (messagePayload)
   {
-    v10 = [objc_alloc(MEMORY[0x277CD17A0]) initWithPayload:v9];
+    v10 = [objc_alloc(MEMORY[0x277CD17A0]) initWithPayload:messagePayload];
     if (!v10)
     {
       v23 = objc_autoreleasePoolPush();
-      v24 = v6;
+      v24 = selfCopy;
       v25 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
@@ -306,34 +306,34 @@ LABEL_11:
         *buf = 138543618;
         v52 = v26;
         v53 = 2112;
-        v54 = v9;
+        v54 = messagePayload;
         _os_log_impl(&dword_229538000, v25, OS_LOG_TYPE_ERROR, "%{public}@Failed to create fetch request payload with message payload: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v23);
       v11 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:3];
-      [v4 respondWithError:v11];
+      [messageCopy respondWithError:v11];
       goto LABEL_32;
     }
 
-    v11 = [(HMDAccessorySettingsLocalMessageHandler *)v6 callerVersionForMessage:v4];
+    v11 = [(HMDAccessorySettingsLocalMessageHandler *)selfCopy callerVersionForMessage:messageCopy];
     if (v11)
     {
       v50 = 0;
-      v12 = [(HMDAccessorySettingsLocalMessageHandler *)v6 dataSourceCallerPrivilegeWithMessage:v4 error:&v50];
+      v12 = [(HMDAccessorySettingsLocalMessageHandler *)selfCopy dataSourceCallerPrivilegeWithMessage:messageCopy error:&v50];
       v13 = v50;
       if (!v13)
       {
-        v49 = [(HMDAccessorySettingsLocalMessageHandler *)v6 delegate];
-        if (v49)
+        delegate = [(HMDAccessorySettingsLocalMessageHandler *)selfCopy delegate];
+        if (delegate)
         {
-          v31 = [v10 keyPaths];
-          v32 = [v31 mutableCopy];
+          keyPaths = [v10 keyPaths];
+          v32 = [keyPaths mutableCopy];
 
           if ([v32 containsObject:@"root.siri.availableLanguages"])
           {
             v33 = objc_autoreleasePoolPush();
-            v34 = v6;
+            v34 = selfCopy;
             v35 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
             {
@@ -348,25 +348,25 @@ LABEL_11:
             }
 
             objc_autoreleasePoolPop(v33);
-            v38 = [(HMDAccessorySettingsLocalMessageHandler *)v34 siriAvailableLanguagesSetting];
+            siriAvailableLanguagesSetting = [(HMDAccessorySettingsLocalMessageHandler *)v34 siriAvailableLanguagesSetting];
           }
 
           else
           {
-            v38 = 0;
+            siriAvailableLanguagesSetting = 0;
           }
 
-          v44 = [(HMDAccessorySettingsLocalMessageHandler *)v6 homeUUID];
-          v45 = [v10 accessoryUUID];
+          homeUUID = [(HMDAccessorySettingsLocalMessageHandler *)selfCopy homeUUID];
+          accessoryUUID = [v10 accessoryUUID];
           v47 = v12;
-          v43 = v49;
-          [v49 accessorySettingsLocalMessageHandler:v6 didReceiveFetchRequestMessage:v4 withHomeUUID:v44 accessoryUUID:v45 keyPaths:v32 callerVersion:v11 callerPrivilege:v47 siriAvailableLanguagesSetting:v38];
+          v43 = delegate;
+          [delegate accessorySettingsLocalMessageHandler:selfCopy didReceiveFetchRequestMessage:messageCopy withHomeUUID:homeUUID accessoryUUID:accessoryUUID keyPaths:v32 callerVersion:v11 callerPrivilege:v47 siriAvailableLanguagesSetting:siriAvailableLanguagesSetting];
         }
 
         else
         {
           v39 = objc_autoreleasePoolPush();
-          v40 = v6;
+          v40 = selfCopy;
           v41 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
           {
@@ -378,7 +378,7 @@ LABEL_11:
 
           objc_autoreleasePoolPop(v39);
           v32 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:4];
-          [v4 respondWithError:v32];
+          [messageCopy respondWithError:v32];
           v43 = 0;
         }
 
@@ -388,7 +388,7 @@ LABEL_11:
 
       v14 = v13;
       v15 = objc_autoreleasePoolPush();
-      v16 = v6;
+      v16 = selfCopy;
       v17 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
@@ -406,7 +406,7 @@ LABEL_11:
     else
     {
       v27 = objc_autoreleasePoolPush();
-      v28 = v6;
+      v28 = selfCopy;
       v29 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
@@ -420,7 +420,7 @@ LABEL_11:
       v14 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:4];
     }
 
-    [v4 respondWithError:v14];
+    [messageCopy respondWithError:v14];
 LABEL_31:
 
 LABEL_32:
@@ -428,7 +428,7 @@ LABEL_32:
   }
 
   v19 = objc_autoreleasePoolPush();
-  v20 = v6;
+  v20 = selfCopy;
   v21 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
   {
@@ -440,24 +440,24 @@ LABEL_32:
 
   objc_autoreleasePoolPop(v19);
   v10 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:8];
-  [v4 respondWithError:v10];
+  [messageCopy respondWithError:v10];
 LABEL_33:
 
   v46 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDAccessorySettingsLocalMessageHandler)initWithHomeUUID:(id)a3 languageValuesDataProvider:(id)a4
+- (HMDAccessorySettingsLocalMessageHandler)initWithHomeUUID:(id)d languageValuesDataProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = HMDAccessorySettingsLocalMessageHandler;
   v9 = [(HMDAccessorySettingsLocalMessageHandler *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_homeUUID, a3);
-    objc_storeStrong(&v10->_languageValuesDataProvider, a4);
+    objc_storeStrong(&v9->_homeUUID, d);
+    objc_storeStrong(&v10->_languageValuesDataProvider, provider);
   }
 
   return v10;

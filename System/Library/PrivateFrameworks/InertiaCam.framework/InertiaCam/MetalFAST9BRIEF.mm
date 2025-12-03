@@ -1,22 +1,22 @@
 @interface MetalFAST9BRIEF
-+ (id)_createMTLBufferFromRectRegionsDesiredKeypoints:(id)a3 device:(id)a4 storageMode:(unint64_t)a5 maxAllowedDescriptors:(unint64_t *)a6;
-+ (id)_createMTLBufferFromRects:(id)a3 device:(id)a4 storageMode:(unint64_t)a5 maxRectWidth:(unint64_t *)a6 maxRectHeight:(unint64_t *)a7;
++ (id)_createMTLBufferFromRectRegionsDesiredKeypoints:(id)keypoints device:(id)device storageMode:(unint64_t)mode maxAllowedDescriptors:(unint64_t *)descriptors;
++ (id)_createMTLBufferFromRects:(id)rects device:(id)device storageMode:(unint64_t)mode maxRectWidth:(unint64_t *)width maxRectHeight:(unint64_t *)height;
 - (MetalFAST9BRIEF)init;
-- (id)_textureFromPixelBuffer:(__CVBuffer *)a3 forcedMetalPixelFormat:(unint64_t)a4 forcedWidthDivisior:(int)a5;
-- (void)ORBDescriptorsFromPixelBuffer_metal:(id)a3 inputBuffer:(__CVBuffer *)a4 descriptorBuffer:(id)a5 refinedKeypointsBuffer:(id)a6 responseBuffer:(id)a7 cumulativeKeypointsPerRegionBuffer:(id)a8 intermediateBuffers:(id)a9;
-- (void)_ORBDescriptorsFromTextures_part1_metal:(id)a3 inputTexture_RGBA8Uint:(id)a4 inputTexture_R8Unorm:(id)a5 responseBuffer:(id)a6 cumulativeKeypointsPerRegionBuffer:(id)a7 intermediateBuffers:(id)a8;
-- (void)_ORBDescriptorsFromTextures_part2_metal:(id)a3 inputTexture_RGBA8Uint:(id)a4 inputTexture_R8Unorm:(id)a5 descriptorBuffer:(id)a6 refinedKeypointsBuffer:(id)a7 cumulativeKeypointsPerRegionBuffer:(id)a8 intermediateBuffers:(id)a9 keypointCount:(int)a10;
-- (void)_boxBlur_metal:(id)a3 inputImageTexture:(id)a4 boxBlurredTexture:(id)a5;
-- (void)_computeResponseMap_metal:(id)a3 inputTexture:(id)a4 outputTexture:(id)a5 garbagePixelCount:(unsigned int)a6;
-- (void)_cumulativeSum_metal:(id)a3 expectedPointsBuffer:(id)a4 cumulativePointsBuffer:(id)a5 regionCountBuffer:(id)a6 keypointCountBuffer:(id)a7 regionCount:(unint64_t)a8;
-- (void)_extractORB_metal:(id)a3 boxBlurredTexture:(id)a4 keypointLocationsBuffer:(id)a5 outputORBDescriptorBuffer:(id)a6 keypointCountBuffer:(id)a7 keypointCount:(unint64_t)a8;
-- (void)_gaussianishBlur_metal:(id)a3 inputTexture:(id)a4 outputTexture:(id)a5 offset:(CGPoint)a6;
-- (void)_generateHistograms_metal:(id)a3 suppressedTexture:(id)a4 tileBuffer:(id)a5 desiredKeypointCountsBuffer:(id)a6 thresholdsBuffer:(id)a7 histogramBuffer:(id)a8 thresholdRangeBuffer:(id)a9 keypointsAtChosenThresholdBuffer:(id)a10 truncatedRegionsBuffer:(id)a11 tileCount:(unint64_t)a12 maxTileHeight:(unint64_t)a13;
-- (void)_listKeypoints2_metal:(id)a3 suppressedResponseMapTexture:(id)a4 tileBuffer:(id)a5 tileCountBuffer:(id)a6 tileCount:(unint64_t)a7 thresholdsBuffer:(id)a8 cumulativePointsBuffer:(id)a9 keypointLocationsBuffer:(id)a10 keypointResponsesBuffer:(id)a11 maxRegionHeight:(double)a12;
-- (void)_listKeypoints3_metal:(id)a3 suppressedResponseMapTexture:(id)a4 tileBuffer:(id)a5 tileCountBuffer:(id)a6 tileCount:(unint64_t)a7 thresholdsBuffer:(id)a8 cumulativePointsBuffer:(id)a9 keypointLocationsBuffer:(id)a10 keypointResponsesBuffer:(id)a11 maxRegionHeight:(double)a12 maxRegionWidth:(double)a13;
-- (void)_listKeypointsSimple_metal:(id)a3 suppressedResponseMapTexture:(id)a4 tileBuffer:(id)a5 tileCountBuffer:(id)a6 tileCount:(unint64_t)a7 thresholdsBuffer:(id)a8 cumulativePointsBuffer:(id)a9 keypointLocationsBuffer:(id)a10 keypointResponsesBuffer:(id)a11 desiredKeypointsBuffer:(id)a12 indexBuffer:(id)a13;
-- (void)_refineKeypoints_metal:(id)a3 inputImageTexture:(id)a4 keypointLocationsBuffer:(id)a5 refinedLocationsBuffer:(id)a6 keypointCountBuffer:(id)a7 keypointCount:(unint64_t)a8 debugIntermediatesBuffer:(id)a9 cumulativePointsBuffer:(id)a10 tileCountBuffer:(id)a11;
-- (void)_suppressResponseMap_metal:(id)a3 unsuppressedTexture:(id)a4 suppressedTexture:(id)a5 garbagePixelCount:(unsigned int)a6;
+- (id)_textureFromPixelBuffer:(__CVBuffer *)buffer forcedMetalPixelFormat:(unint64_t)format forcedWidthDivisior:(int)divisior;
+- (void)ORBDescriptorsFromPixelBuffer_metal:(id)buffer_metal inputBuffer:(__CVBuffer *)buffer descriptorBuffer:(id)descriptorBuffer refinedKeypointsBuffer:(id)keypointsBuffer responseBuffer:(id)responseBuffer cumulativeKeypointsPerRegionBuffer:(id)regionBuffer intermediateBuffers:(id)buffers;
+- (void)_ORBDescriptorsFromTextures_part1_metal:(id)textures_part1_metal inputTexture_RGBA8Uint:(id)uint inputTexture_R8Unorm:(id)unorm responseBuffer:(id)buffer cumulativeKeypointsPerRegionBuffer:(id)regionBuffer intermediateBuffers:(id)buffers;
+- (void)_ORBDescriptorsFromTextures_part2_metal:(id)textures_part2_metal inputTexture_RGBA8Uint:(id)uint inputTexture_R8Unorm:(id)unorm descriptorBuffer:(id)buffer refinedKeypointsBuffer:(id)keypointsBuffer cumulativeKeypointsPerRegionBuffer:(id)regionBuffer intermediateBuffers:(id)buffers keypointCount:(int)self0;
+- (void)_boxBlur_metal:(id)blur_metal inputImageTexture:(id)texture boxBlurredTexture:(id)blurredTexture;
+- (void)_computeResponseMap_metal:(id)map_metal inputTexture:(id)texture outputTexture:(id)outputTexture garbagePixelCount:(unsigned int)count;
+- (void)_cumulativeSum_metal:(id)sum_metal expectedPointsBuffer:(id)buffer cumulativePointsBuffer:(id)pointsBuffer regionCountBuffer:(id)countBuffer keypointCountBuffer:(id)keypointCountBuffer regionCount:(unint64_t)count;
+- (void)_extractORB_metal:(id)b_metal boxBlurredTexture:(id)texture keypointLocationsBuffer:(id)buffer outputORBDescriptorBuffer:(id)descriptorBuffer keypointCountBuffer:(id)countBuffer keypointCount:(unint64_t)count;
+- (void)_gaussianishBlur_metal:(id)blur_metal inputTexture:(id)texture outputTexture:(id)outputTexture offset:(CGPoint)offset;
+- (void)_generateHistograms_metal:(id)histograms_metal suppressedTexture:(id)texture tileBuffer:(id)buffer desiredKeypointCountsBuffer:(id)countsBuffer thresholdsBuffer:(id)thresholdsBuffer histogramBuffer:(id)histogramBuffer thresholdRangeBuffer:(id)rangeBuffer keypointsAtChosenThresholdBuffer:(id)self0 truncatedRegionsBuffer:(id)self1 tileCount:(unint64_t)self2 maxTileHeight:(unint64_t)self3;
+- (void)_listKeypoints2_metal:(id)keypoints2_metal suppressedResponseMapTexture:(id)texture tileBuffer:(id)buffer tileCountBuffer:(id)countBuffer tileCount:(unint64_t)count thresholdsBuffer:(id)thresholdsBuffer cumulativePointsBuffer:(id)pointsBuffer keypointLocationsBuffer:(id)self0 keypointResponsesBuffer:(id)self1 maxRegionHeight:(double)self2;
+- (void)_listKeypoints3_metal:(id)keypoints3_metal suppressedResponseMapTexture:(id)texture tileBuffer:(id)buffer tileCountBuffer:(id)countBuffer tileCount:(unint64_t)count thresholdsBuffer:(id)thresholdsBuffer cumulativePointsBuffer:(id)pointsBuffer keypointLocationsBuffer:(id)self0 keypointResponsesBuffer:(id)self1 maxRegionHeight:(double)self2 maxRegionWidth:(double)self3;
+- (void)_listKeypointsSimple_metal:(id)simple_metal suppressedResponseMapTexture:(id)texture tileBuffer:(id)buffer tileCountBuffer:(id)countBuffer tileCount:(unint64_t)count thresholdsBuffer:(id)thresholdsBuffer cumulativePointsBuffer:(id)pointsBuffer keypointLocationsBuffer:(id)self0 keypointResponsesBuffer:(id)self1 desiredKeypointsBuffer:(id)self2 indexBuffer:(id)self3;
+- (void)_refineKeypoints_metal:(id)keypoints_metal inputImageTexture:(id)texture keypointLocationsBuffer:(id)buffer refinedLocationsBuffer:(id)locationsBuffer keypointCountBuffer:(id)countBuffer keypointCount:(unint64_t)count debugIntermediatesBuffer:(id)intermediatesBuffer cumulativePointsBuffer:(id)self0 tileCountBuffer:(id)self1;
+- (void)_suppressResponseMap_metal:(id)map_metal unsuppressedTexture:(id)texture suppressedTexture:(id)suppressedTexture garbagePixelCount:(unsigned int)count;
 - (void)dealloc;
 @end
 
@@ -60,9 +60,9 @@
       device = v2->_device;
       v2->_device = v6;
 
-      v8 = [(MTLDevice *)v2->_device newCommandQueue];
+      newCommandQueue = [(MTLDevice *)v2->_device newCommandQueue];
       queue = v2->_queue;
-      v2->_queue = v8;
+      v2->_queue = newCommandQueue;
 
       v10 = dispatch_data_create(&inertiaCamMetalLibStart, &inertiaCamMetalLibEnd - &inertiaCamMetalLibStart, 0, 0);
       v11 = v2->_device;
@@ -178,15 +178,15 @@
       clampedLinearNonNormSamplerState = v2->_clampedLinearNonNormSamplerState;
       v2->_clampedLinearNonNormSamplerState = v59;
 
-      v61 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v62 = v2->_suppress4MapKernel;
       v72[0] = v2->_response4MapKernel;
       v72[1] = v62;
       v63 = [MEMORY[0x277CBEA60] arrayWithObjects:v72 count:2];
-      [v61 addObjectsFromArray:v63];
+      [array addObjectsFromArray:v63];
 
-      [v61 addObject:v2->_gaussianishBlurKernel];
-      v64 = sub_254B41B50(v2->_device, v61);
+      [array addObject:v2->_gaussianishBlurKernel];
+      v64 = sub_254B41B50(v2->_device, array);
       pipelineStates = v2->_pipelineStates;
       v2->_pipelineStates = v64;
 
@@ -227,39 +227,39 @@ LABEL_19:
   [(MetalFAST9BRIEF *)&v4 dealloc];
 }
 
-- (id)_textureFromPixelBuffer:(__CVBuffer *)a3 forcedMetalPixelFormat:(unint64_t)a4 forcedWidthDivisior:(int)a5
+- (id)_textureFromPixelBuffer:(__CVBuffer *)buffer forcedMetalPixelFormat:(unint64_t)format forcedWidthDivisior:(int)divisior
 {
-  v8 = a5;
-  v9 = a5 - 1;
-  if (CVPixelBufferIsPlanar(a3))
+  divisiorCopy = divisior;
+  v9 = divisior - 1;
+  if (CVPixelBufferIsPlanar(buffer))
   {
-    BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a3, 0);
-    WidthOfPlane = CVPixelBufferGetWidthOfPlane(a3, 0);
-    HeightOfPlane = CVPixelBufferGetHeightOfPlane(a3, 0);
+    BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(buffer, 0);
+    WidthOfPlane = CVPixelBufferGetWidthOfPlane(buffer, 0);
+    HeightOfPlane = CVPixelBufferGetHeightOfPlane(buffer, 0);
   }
 
   else
   {
-    BytesPerRowOfPlane = CVPixelBufferGetBytesPerRow(a3);
-    WidthOfPlane = CVPixelBufferGetWidth(a3);
-    HeightOfPlane = CVPixelBufferGetHeight(a3);
+    BytesPerRowOfPlane = CVPixelBufferGetBytesPerRow(buffer);
+    WidthOfPlane = CVPixelBufferGetWidth(buffer);
+    HeightOfPlane = CVPixelBufferGetHeight(buffer);
   }
 
   v13 = HeightOfPlane;
-  v14 = (v9 + WidthOfPlane) / v8;
-  if (a4)
+  v14 = (v9 + WidthOfPlane) / divisiorCopy;
+  if (format)
   {
     goto LABEL_15;
   }
 
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
-  a4 = 13;
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
+  format = 13;
   if (PixelFormatType > 1111970368)
   {
     if (PixelFormatType == 1380401729)
     {
 LABEL_13:
-      a4 = 73;
+      format = 73;
       goto LABEL_15;
     }
 
@@ -286,10 +286,10 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  a4 = 0;
+  format = 0;
 LABEL_15:
   image = 0;
-  if (CVMetalTextureCacheCreateTextureFromImage(*MEMORY[0x277CBECE8], self->_textureCache, a3, MEMORY[0x277CBEC10], a4, v14, v13, 0, &image))
+  if (CVMetalTextureCacheCreateTextureFromImage(*MEMORY[0x277CBECE8], self->_textureCache, buffer, MEMORY[0x277CBEC10], format, v14, v13, 0, &image))
   {
     v17 = 1;
   }
@@ -302,26 +302,26 @@ LABEL_15:
   if (v17 || (CFAutorelease(image), CVMetalTextureGetTexture(image), (v18 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v18 = 0;
-    if (!CVPixelBufferLockBaseAddress(a3, 0))
+    if (!CVPixelBufferLockBaseAddress(buffer, 0))
     {
-      if (CVPixelBufferIsPlanar(a3))
+      if (CVPixelBufferIsPlanar(buffer))
       {
-        BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a3, 0);
+        BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(buffer, 0);
       }
 
       else
       {
-        BaseAddressOfPlane = CVPixelBufferGetBaseAddress(a3);
+        BaseAddressOfPlane = CVPixelBufferGetBaseAddress(buffer);
       }
 
       v20 = BaseAddressOfPlane;
-      v21 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:a4 width:v14 height:v13 mipmapped:0];
+      v21 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:format width:v14 height:v13 mipmapped:0];
       device = self->_device;
       v25[0] = MEMORY[0x277D85DD0];
       v25[1] = 3221225472;
       v25[2] = sub_254B427C4;
       v25[3] = &unk_2797A99F8;
-      v25[4] = a3;
+      v25[4] = buffer;
       v23 = [(MTLDevice *)device newBufferWithBytesNoCopy:v20 length:v13 * BytesPerRowOfPlane options:0 deallocator:v25];
       [v21 setStorageMode:0];
       v18 = [v23 newTextureWithDescriptor:v21 offset:0 bytesPerRow:BytesPerRowOfPlane];
@@ -331,169 +331,169 @@ LABEL_15:
   return v18;
 }
 
-- (void)_computeResponseMap_metal:(id)a3 inputTexture:(id)a4 outputTexture:(id)a5 garbagePixelCount:(unsigned int)a6
+- (void)_computeResponseMap_metal:(id)map_metal inputTexture:(id)texture outputTexture:(id)outputTexture garbagePixelCount:(unsigned int)count
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v21 = a6;
+  map_metalCopy = map_metal;
+  textureCopy = texture;
+  outputTextureCopy = outputTexture;
+  countCopy = count;
   if (![(PipelineStatePromise *)self->_pipelineStates groupWasSuccessful])
   {
     v18 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE648] reason:@"Failed to create compute pipeline state" userInfo:0];
     objc_exception_throw(v18);
   }
 
-  v13 = [v10 computeCommandEncoder];
+  computeCommandEncoder = [map_metalCopy computeCommandEncoder];
   v14 = [(PipelineStatePromise *)self->_pipelineStates pipelineStateForFunction:self->_response4MapKernel];
-  [v13 setComputePipelineState:v14];
-  [v13 setTexture:v11 atIndex:0];
-  [v13 setTexture:v12 atIndex:1];
-  [v13 setBytes:&v21 length:4 atIndex:0];
-  v15 = [v14 threadExecutionWidth];
-  v16 = [v14 maxTotalThreadsPerThreadgroup];
-  v17 = v16 / [v14 threadExecutionWidth];
-  v20[0] = (v15 + [v11 width] - 1) / v15;
-  v20[1] = (v17 + [v11 height] - 1) / v17;
+  [computeCommandEncoder setComputePipelineState:v14];
+  [computeCommandEncoder setTexture:textureCopy atIndex:0];
+  [computeCommandEncoder setTexture:outputTextureCopy atIndex:1];
+  [computeCommandEncoder setBytes:&countCopy length:4 atIndex:0];
+  threadExecutionWidth = [v14 threadExecutionWidth];
+  maxTotalThreadsPerThreadgroup = [v14 maxTotalThreadsPerThreadgroup];
+  v17 = maxTotalThreadsPerThreadgroup / [v14 threadExecutionWidth];
+  v20[0] = (threadExecutionWidth + [textureCopy width] - 1) / threadExecutionWidth;
+  v20[1] = (v17 + [textureCopy height] - 1) / v17;
   v20[2] = 1;
-  v19[0] = v15;
+  v19[0] = threadExecutionWidth;
   v19[1] = v17;
   v19[2] = 1;
-  [v13 dispatchThreadgroups:v20 threadsPerThreadgroup:v19];
-  [v13 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v20 threadsPerThreadgroup:v19];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)_suppressResponseMap_metal:(id)a3 unsuppressedTexture:(id)a4 suppressedTexture:(id)a5 garbagePixelCount:(unsigned int)a6
+- (void)_suppressResponseMap_metal:(id)map_metal unsuppressedTexture:(id)texture suppressedTexture:(id)suppressedTexture garbagePixelCount:(unsigned int)count
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v21 = a6;
+  map_metalCopy = map_metal;
+  textureCopy = texture;
+  suppressedTextureCopy = suppressedTexture;
+  countCopy = count;
   if (![(PipelineStatePromise *)self->_pipelineStates groupWasSuccessful])
   {
     v18 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE648] reason:@"Failed to create compute pipeline state" userInfo:0];
     objc_exception_throw(v18);
   }
 
-  v13 = [v10 computeCommandEncoder];
+  computeCommandEncoder = [map_metalCopy computeCommandEncoder];
   v14 = [(PipelineStatePromise *)self->_pipelineStates pipelineStateForFunction:self->_suppress4MapKernel];
-  [v13 setComputePipelineState:v14];
-  [v13 setTexture:v11 atIndex:0];
-  [v13 setTexture:v12 atIndex:2];
-  [v13 setBytes:&v21 length:4 atIndex:0];
-  v15 = [v14 threadExecutionWidth];
-  v16 = [v14 maxTotalThreadsPerThreadgroup];
-  v17 = v16 / [v14 threadExecutionWidth];
-  v20[0] = (v15 + [v11 width] - 1) / v15;
-  v20[1] = (v17 + [v11 height] - 1) / v17;
+  [computeCommandEncoder setComputePipelineState:v14];
+  [computeCommandEncoder setTexture:textureCopy atIndex:0];
+  [computeCommandEncoder setTexture:suppressedTextureCopy atIndex:2];
+  [computeCommandEncoder setBytes:&countCopy length:4 atIndex:0];
+  threadExecutionWidth = [v14 threadExecutionWidth];
+  maxTotalThreadsPerThreadgroup = [v14 maxTotalThreadsPerThreadgroup];
+  v17 = maxTotalThreadsPerThreadgroup / [v14 threadExecutionWidth];
+  v20[0] = (threadExecutionWidth + [textureCopy width] - 1) / threadExecutionWidth;
+  v20[1] = (v17 + [textureCopy height] - 1) / v17;
   v20[2] = 1;
-  v19[0] = v15;
+  v19[0] = threadExecutionWidth;
   v19[1] = v17;
   v19[2] = 1;
-  [v13 dispatchThreadgroups:v20 threadsPerThreadgroup:v19];
-  [v13 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v20 threadsPerThreadgroup:v19];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)_generateHistograms_metal:(id)a3 suppressedTexture:(id)a4 tileBuffer:(id)a5 desiredKeypointCountsBuffer:(id)a6 thresholdsBuffer:(id)a7 histogramBuffer:(id)a8 thresholdRangeBuffer:(id)a9 keypointsAtChosenThresholdBuffer:(id)a10 truncatedRegionsBuffer:(id)a11 tileCount:(unint64_t)a12 maxTileHeight:(unint64_t)a13
+- (void)_generateHistograms_metal:(id)histograms_metal suppressedTexture:(id)texture tileBuffer:(id)buffer desiredKeypointCountsBuffer:(id)countsBuffer thresholdsBuffer:(id)thresholdsBuffer histogramBuffer:(id)histogramBuffer thresholdRangeBuffer:(id)rangeBuffer keypointsAtChosenThresholdBuffer:(id)self0 truncatedRegionsBuffer:(id)self1 tileCount:(unint64_t)self2 maxTileHeight:(unint64_t)self3
 {
-  v19 = a3;
-  v20 = a4;
-  v33 = a5;
-  v32 = a6;
-  v31 = a7;
-  v21 = a8;
-  v30 = a9;
-  v29 = a10;
-  v28 = a11;
+  histograms_metalCopy = histograms_metal;
+  textureCopy = texture;
+  bufferCopy = buffer;
+  countsBufferCopy = countsBuffer;
+  thresholdsBufferCopy = thresholdsBuffer;
+  histogramBufferCopy = histogramBuffer;
+  rangeBufferCopy = rangeBuffer;
+  thresholdBufferCopy = thresholdBuffer;
+  regionsBufferCopy = regionsBuffer;
   if (![(PipelineStatePromise *)self->_pipelineStates groupWasSuccessful])
   {
     v26 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE648] reason:@"Failed to create compute pipeline state" userInfo:0];
     objc_exception_throw(v26);
   }
 
-  v22 = [v19 blitCommandEncoder];
-  [v22 fillBuffer:v21 range:0 value:{objc_msgSend(v21, "length"), 0}];
-  [v22 endEncoding];
-  v23 = [v19 computeCommandEncoder];
+  blitCommandEncoder = [histograms_metalCopy blitCommandEncoder];
+  [blitCommandEncoder fillBuffer:histogramBufferCopy range:0 value:{objc_msgSend(histogramBufferCopy, "length"), 0}];
+  [blitCommandEncoder endEncoding];
+  computeCommandEncoder = [histograms_metalCopy computeCommandEncoder];
   v24 = [(PipelineStatePromise *)self->_pipelineStates pipelineStateForFunction:self->_computeHistogramKernel];
-  [v23 setComputePipelineState:v24];
+  [computeCommandEncoder setComputePipelineState:v24];
 
-  [v23 setTexture:v20 atIndex:0];
-  [v23 setBuffer:v33 offset:0 atIndex:0];
-  [v23 setBuffer:v21 offset:0 atIndex:1];
+  [computeCommandEncoder setTexture:textureCopy atIndex:0];
+  [computeCommandEncoder setBuffer:bufferCopy offset:0 atIndex:0];
+  [computeCommandEncoder setBuffer:histogramBufferCopy offset:0 atIndex:1];
   v27 = vdupq_n_s64(1uLL);
-  v36 = a12;
+  countCopy2 = count;
   v37 = v27;
   v34 = xmmword_254B8B120;
   v35 = 1;
-  [v23 dispatchThreadgroups:&v36 threadsPerThreadgroup:&v34];
-  [v23 endEncoding];
-  v25 = [v19 computeCommandEncoder];
-  [v25 setComputePipelineState:self->_histogramThresholdPipelineState];
-  [v25 setBuffer:v32 offset:0 atIndex:0];
-  [v25 setBuffer:v21 offset:0 atIndex:1];
-  [v25 setBuffer:v31 offset:0 atIndex:2];
-  [v25 setBuffer:v30 offset:0 atIndex:3];
-  [v25 setBuffer:v29 offset:0 atIndex:4];
-  [v25 setBuffer:v28 offset:0 atIndex:5];
-  v36 = a12;
+  [computeCommandEncoder dispatchThreadgroups:&countCopy2 threadsPerThreadgroup:&v34];
+  [computeCommandEncoder endEncoding];
+  computeCommandEncoder2 = [histograms_metalCopy computeCommandEncoder];
+  [computeCommandEncoder2 setComputePipelineState:self->_histogramThresholdPipelineState];
+  [computeCommandEncoder2 setBuffer:countsBufferCopy offset:0 atIndex:0];
+  [computeCommandEncoder2 setBuffer:histogramBufferCopy offset:0 atIndex:1];
+  [computeCommandEncoder2 setBuffer:thresholdsBufferCopy offset:0 atIndex:2];
+  [computeCommandEncoder2 setBuffer:rangeBufferCopy offset:0 atIndex:3];
+  [computeCommandEncoder2 setBuffer:thresholdBufferCopy offset:0 atIndex:4];
+  [computeCommandEncoder2 setBuffer:regionsBufferCopy offset:0 atIndex:5];
+  countCopy2 = count;
   v37 = v27;
   v34 = v27;
   v35 = 1;
-  [v25 dispatchThreadgroups:&v36 threadsPerThreadgroup:&v34];
-  [v25 endEncoding];
+  [computeCommandEncoder2 dispatchThreadgroups:&countCopy2 threadsPerThreadgroup:&v34];
+  [computeCommandEncoder2 endEncoding];
 }
 
-- (void)_cumulativeSum_metal:(id)a3 expectedPointsBuffer:(id)a4 cumulativePointsBuffer:(id)a5 regionCountBuffer:(id)a6 keypointCountBuffer:(id)a7 regionCount:(unint64_t)a8
+- (void)_cumulativeSum_metal:(id)sum_metal expectedPointsBuffer:(id)buffer cumulativePointsBuffer:(id)pointsBuffer regionCountBuffer:(id)countBuffer keypointCountBuffer:(id)keypointCountBuffer regionCount:(unint64_t)count
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  sum_metalCopy = sum_metal;
+  bufferCopy = buffer;
+  pointsBufferCopy = pointsBuffer;
+  countBufferCopy = countBuffer;
+  keypointCountBufferCopy = keypointCountBuffer;
   if (![(PipelineStatePromise *)self->_pipelineStates groupWasSuccessful])
   {
     v19 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE648] reason:@"Failed to create compute pipeline state" userInfo:0];
     objc_exception_throw(v19);
   }
 
-  v18 = [v13 computeCommandEncoder];
-  [v18 setComputePipelineState:self->_cumulativeSumSimplePipelineState];
-  [v18 setBuffer:v14 offset:0 atIndex:0];
-  [v18 setBuffer:v15 offset:0 atIndex:1];
-  [v18 setBuffer:v16 offset:0 atIndex:2];
-  [v18 setBuffer:v17 offset:0 atIndex:3];
+  computeCommandEncoder = [sum_metalCopy computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_cumulativeSumSimplePipelineState];
+  [computeCommandEncoder setBuffer:bufferCopy offset:0 atIndex:0];
+  [computeCommandEncoder setBuffer:pointsBufferCopy offset:0 atIndex:1];
+  [computeCommandEncoder setBuffer:countBufferCopy offset:0 atIndex:2];
+  [computeCommandEncoder setBuffer:keypointCountBufferCopy offset:0 atIndex:3];
   v22 = vdupq_n_s64(1uLL);
   v23 = 1;
   v20 = v22;
   v21 = 1;
-  [v18 dispatchThreadgroups:&v22 threadsPerThreadgroup:&v20];
-  [v18 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:&v22 threadsPerThreadgroup:&v20];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)_listKeypointsSimple_metal:(id)a3 suppressedResponseMapTexture:(id)a4 tileBuffer:(id)a5 tileCountBuffer:(id)a6 tileCount:(unint64_t)a7 thresholdsBuffer:(id)a8 cumulativePointsBuffer:(id)a9 keypointLocationsBuffer:(id)a10 keypointResponsesBuffer:(id)a11 desiredKeypointsBuffer:(id)a12 indexBuffer:(id)a13
+- (void)_listKeypointsSimple_metal:(id)simple_metal suppressedResponseMapTexture:(id)texture tileBuffer:(id)buffer tileCountBuffer:(id)countBuffer tileCount:(unint64_t)count thresholdsBuffer:(id)thresholdsBuffer cumulativePointsBuffer:(id)pointsBuffer keypointLocationsBuffer:(id)self0 keypointResponsesBuffer:(id)self1 desiredKeypointsBuffer:(id)self2 indexBuffer:(id)self3
 {
-  v42 = a3;
-  v41 = a4;
-  v19 = a5;
-  v34 = a6;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
-  v24 = a12;
-  v25 = a13;
+  simple_metalCopy = simple_metal;
+  textureCopy = texture;
+  bufferCopy = buffer;
+  countBufferCopy = countBuffer;
+  thresholdsBufferCopy = thresholdsBuffer;
+  pointsBufferCopy = pointsBuffer;
+  locationsBufferCopy = locationsBuffer;
+  responsesBufferCopy = responsesBuffer;
+  keypointsBufferCopy = keypointsBuffer;
+  indexBufferCopy = indexBuffer;
   if (![(PipelineStatePromise *)self->_pipelineStates groupWasSuccessful])
   {
     v33 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE648] reason:@"Failed to create compute pipeline state" userInfo:0];
     objc_exception_throw(v33);
   }
 
-  v36 = self;
-  v37 = v24;
-  v40 = v20;
-  v38 = v23;
-  v39 = v22;
-  if (a7)
+  selfCopy = self;
+  v37 = keypointsBufferCopy;
+  v40 = thresholdsBufferCopy;
+  v38 = responsesBufferCopy;
+  v39 = locationsBufferCopy;
+  if (count)
   {
     v26 = 0;
     v27 = 0;
@@ -501,319 +501,319 @@ LABEL_15:
     v35 = vdupq_n_s64(1uLL);
     do
     {
-      v29 = [v19 contents];
-      v30 = ((*(v29 + v27 + 12) * *(v29 + 4 * v28)) + 511) >> 9;
-      v31 = [v42 blitCommandEncoder];
-      [v31 fillBuffer:v25 range:0 value:{objc_msgSend(v25, "length"), 0}];
-      [v31 endEncoding];
-      v32 = [v42 computeCommandEncoder];
-      [v32 setComputePipelineState:v36->_listKeypointsSimplePipelineState];
-      [v32 setBuffer:v37 offset:v26 atIndex:0];
-      [v32 setBuffer:v19 offset:v27 atIndex:1];
-      [v32 setBuffer:v40 offset:v28 - 2 atIndex:2];
-      [v32 setBuffer:v38 offset:0 atIndex:3];
-      [v32 setBuffer:v39 offset:0 atIndex:4];
-      [v32 setBuffer:v21 offset:v28 - 2 atIndex:5];
-      [v32 setBuffer:v25 offset:0 atIndex:6];
-      [v32 setTexture:v41 atIndex:0];
+      contents = [bufferCopy contents];
+      v30 = ((*(contents + v27 + 12) * *(contents + 4 * v28)) + 511) >> 9;
+      blitCommandEncoder = [simple_metalCopy blitCommandEncoder];
+      [blitCommandEncoder fillBuffer:indexBufferCopy range:0 value:{objc_msgSend(indexBufferCopy, "length"), 0}];
+      [blitCommandEncoder endEncoding];
+      computeCommandEncoder = [simple_metalCopy computeCommandEncoder];
+      [computeCommandEncoder setComputePipelineState:selfCopy->_listKeypointsSimplePipelineState];
+      [computeCommandEncoder setBuffer:v37 offset:v26 atIndex:0];
+      [computeCommandEncoder setBuffer:bufferCopy offset:v27 atIndex:1];
+      [computeCommandEncoder setBuffer:v40 offset:v28 - 2 atIndex:2];
+      [computeCommandEncoder setBuffer:v38 offset:0 atIndex:3];
+      [computeCommandEncoder setBuffer:v39 offset:0 atIndex:4];
+      [computeCommandEncoder setBuffer:pointsBufferCopy offset:v28 - 2 atIndex:5];
+      [computeCommandEncoder setBuffer:indexBufferCopy offset:0 atIndex:6];
+      [computeCommandEncoder setTexture:textureCopy atIndex:0];
       v45 = v30;
       v46 = v35;
       v43 = xmmword_254B8B130;
       v44 = 1;
-      [v32 dispatchThreadgroups:&v45 threadsPerThreadgroup:&v43];
-      [v32 endEncoding];
+      [computeCommandEncoder dispatchThreadgroups:&v45 threadsPerThreadgroup:&v43];
+      [computeCommandEncoder endEncoding];
 
       v27 += 16;
       v26 += 12;
       v28 += 4;
-      --a7;
+      --count;
     }
 
-    while (a7);
+    while (count);
   }
 }
 
-- (void)_listKeypoints2_metal:(id)a3 suppressedResponseMapTexture:(id)a4 tileBuffer:(id)a5 tileCountBuffer:(id)a6 tileCount:(unint64_t)a7 thresholdsBuffer:(id)a8 cumulativePointsBuffer:(id)a9 keypointLocationsBuffer:(id)a10 keypointResponsesBuffer:(id)a11 maxRegionHeight:(double)a12
+- (void)_listKeypoints2_metal:(id)keypoints2_metal suppressedResponseMapTexture:(id)texture tileBuffer:(id)buffer tileCountBuffer:(id)countBuffer tileCount:(unint64_t)count thresholdsBuffer:(id)thresholdsBuffer cumulativePointsBuffer:(id)pointsBuffer keypointLocationsBuffer:(id)self0 keypointResponsesBuffer:(id)self1 maxRegionHeight:(double)self2
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
+  keypoints2_metalCopy = keypoints2_metal;
+  textureCopy = texture;
+  bufferCopy = buffer;
+  countBufferCopy = countBuffer;
+  thresholdsBufferCopy = thresholdsBuffer;
+  pointsBufferCopy = pointsBuffer;
+  locationsBufferCopy = locationsBuffer;
+  responsesBufferCopy = responsesBuffer;
   if (![(PipelineStatePromise *)self->_pipelineStates groupWasSuccessful])
   {
     v26 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE648] reason:@"Failed to create compute pipeline state" userInfo:0];
     objc_exception_throw(v26);
   }
 
-  v25 = [v17 computeCommandEncoder];
-  [v25 setComputePipelineState:self->_listKeypoints2PipelineState];
-  [v25 setThreadgroupMemoryLength:128 atIndex:0];
-  [v25 setBuffer:v19 offset:0 atIndex:0];
-  [v25 setBuffer:v21 offset:0 atIndex:1];
-  [v25 setBuffer:v24 offset:0 atIndex:2];
-  [v25 setBuffer:v23 offset:0 atIndex:3];
-  [v25 setBuffer:v22 offset:0 atIndex:4];
-  [v25 setBuffer:v20 offset:0 atIndex:5];
-  [v25 setTexture:v18 atIndex:0];
-  v30 = a7;
+  computeCommandEncoder = [keypoints2_metalCopy computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_listKeypoints2PipelineState];
+  [computeCommandEncoder setThreadgroupMemoryLength:128 atIndex:0];
+  [computeCommandEncoder setBuffer:bufferCopy offset:0 atIndex:0];
+  [computeCommandEncoder setBuffer:thresholdsBufferCopy offset:0 atIndex:1];
+  [computeCommandEncoder setBuffer:responsesBufferCopy offset:0 atIndex:2];
+  [computeCommandEncoder setBuffer:locationsBufferCopy offset:0 atIndex:3];
+  [computeCommandEncoder setBuffer:pointsBufferCopy offset:0 atIndex:4];
+  [computeCommandEncoder setBuffer:countBufferCopy offset:0 atIndex:5];
+  [computeCommandEncoder setTexture:textureCopy atIndex:0];
+  countCopy = count;
   v31 = vdupq_n_s64(1uLL);
   v28 = 32;
   v29 = v31;
-  [v25 dispatchThreadgroups:&v30 threadsPerThreadgroup:&v28];
-  [v25 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:&countCopy threadsPerThreadgroup:&v28];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)_listKeypoints3_metal:(id)a3 suppressedResponseMapTexture:(id)a4 tileBuffer:(id)a5 tileCountBuffer:(id)a6 tileCount:(unint64_t)a7 thresholdsBuffer:(id)a8 cumulativePointsBuffer:(id)a9 keypointLocationsBuffer:(id)a10 keypointResponsesBuffer:(id)a11 maxRegionHeight:(double)a12 maxRegionWidth:(double)a13
+- (void)_listKeypoints3_metal:(id)keypoints3_metal suppressedResponseMapTexture:(id)texture tileBuffer:(id)buffer tileCountBuffer:(id)countBuffer tileCount:(unint64_t)count thresholdsBuffer:(id)thresholdsBuffer cumulativePointsBuffer:(id)pointsBuffer keypointLocationsBuffer:(id)self0 keypointResponsesBuffer:(id)self1 maxRegionHeight:(double)self2 maxRegionWidth:(double)self3
 {
-  v20 = a3;
-  v31 = a4;
-  v21 = a5;
-  v22 = a6;
-  v23 = a8;
-  v24 = a9;
-  v25 = a10;
-  v26 = a11;
+  keypoints3_metalCopy = keypoints3_metal;
+  textureCopy = texture;
+  bufferCopy = buffer;
+  countBufferCopy = countBuffer;
+  thresholdsBufferCopy = thresholdsBuffer;
+  pointsBufferCopy = pointsBuffer;
+  locationsBufferCopy = locationsBuffer;
+  responsesBufferCopy = responsesBuffer;
   if (![(PipelineStatePromise *)self->_pipelineStates groupWasSuccessful])
   {
     v28 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE648] reason:@"Failed to create compute pipeline state" userInfo:0];
     objc_exception_throw(v28);
   }
 
-  [v20 computeCommandEncoder];
-  v27 = v29 = v20;
+  [keypoints3_metalCopy computeCommandEncoder];
+  v27 = v29 = keypoints3_metalCopy;
   [v27 setComputePipelineState:self->_listKeypoints3PipelineState];
   [v27 setThreadgroupMemoryLength:256 atIndex:0];
-  [v27 setBuffer:v21 offset:0 atIndex:0];
-  [v27 setBuffer:v23 offset:0 atIndex:1];
-  [v27 setBuffer:v26 offset:0 atIndex:2];
-  [v27 setBuffer:v25 offset:0 atIndex:3];
-  [v27 setBuffer:v24 offset:0 atIndex:4];
-  [v27 setBuffer:v22 offset:0 atIndex:5];
-  [v27 setTexture:v31 atIndex:0];
-  v34[0] = (a13 + 31) >> 5;
-  v34[1] = (a12 + 1) >> 1;
-  v34[2] = a7;
+  [v27 setBuffer:bufferCopy offset:0 atIndex:0];
+  [v27 setBuffer:thresholdsBufferCopy offset:0 atIndex:1];
+  [v27 setBuffer:responsesBufferCopy offset:0 atIndex:2];
+  [v27 setBuffer:locationsBufferCopy offset:0 atIndex:3];
+  [v27 setBuffer:pointsBufferCopy offset:0 atIndex:4];
+  [v27 setBuffer:countBufferCopy offset:0 atIndex:5];
+  [v27 setTexture:textureCopy atIndex:0];
+  v34[0] = (width + 31) >> 5;
+  v34[1] = (height + 1) >> 1;
+  v34[2] = count;
   v32 = xmmword_254B8B140;
   v33 = 1;
   [v27 dispatchThreadgroups:v34 threadsPerThreadgroup:&v32];
   [v27 endEncoding];
 }
 
-- (void)_refineKeypoints_metal:(id)a3 inputImageTexture:(id)a4 keypointLocationsBuffer:(id)a5 refinedLocationsBuffer:(id)a6 keypointCountBuffer:(id)a7 keypointCount:(unint64_t)a8 debugIntermediatesBuffer:(id)a9 cumulativePointsBuffer:(id)a10 tileCountBuffer:(id)a11
+- (void)_refineKeypoints_metal:(id)keypoints_metal inputImageTexture:(id)texture keypointLocationsBuffer:(id)buffer refinedLocationsBuffer:(id)locationsBuffer keypointCountBuffer:(id)countBuffer keypointCount:(unint64_t)count debugIntermediatesBuffer:(id)intermediatesBuffer cumulativePointsBuffer:(id)self0 tileCountBuffer:(id)self1
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
+  keypoints_metalCopy = keypoints_metal;
+  textureCopy = texture;
+  bufferCopy = buffer;
+  locationsBufferCopy = locationsBuffer;
+  countBufferCopy = countBuffer;
+  intermediatesBufferCopy = intermediatesBuffer;
+  pointsBufferCopy = pointsBuffer;
+  tileCountBufferCopy = tileCountBuffer;
   if (![(PipelineStatePromise *)self->_pipelineStates groupWasSuccessful])
   {
     v25 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE648] reason:@"Failed to create compute pipeline state" userInfo:0];
     objc_exception_throw(v25);
   }
 
-  v24 = [v16 computeCommandEncoder];
-  [v24 setComputePipelineState:self->_refineKeypointPipelineState];
-  [v24 setTexture:v17 atIndex:0];
-  [v24 setBuffer:v18 offset:0 atIndex:0];
-  [v24 setBuffer:v19 offset:0 atIndex:1];
-  [v24 setBuffer:v20 offset:0 atIndex:2];
-  [v24 setBuffer:v22 offset:0 atIndex:3];
-  [v24 setBuffer:v23 offset:0 atIndex:4];
-  [v24 setBuffer:v21 offset:0 atIndex:5];
-  [v24 setSamplerState:self->_clampedLinearNonNormSamplerState atIndex:0];
-  if (a8)
+  computeCommandEncoder = [keypoints_metalCopy computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_refineKeypointPipelineState];
+  [computeCommandEncoder setTexture:textureCopy atIndex:0];
+  [computeCommandEncoder setBuffer:bufferCopy offset:0 atIndex:0];
+  [computeCommandEncoder setBuffer:locationsBufferCopy offset:0 atIndex:1];
+  [computeCommandEncoder setBuffer:countBufferCopy offset:0 atIndex:2];
+  [computeCommandEncoder setBuffer:pointsBufferCopy offset:0 atIndex:3];
+  [computeCommandEncoder setBuffer:tileCountBufferCopy offset:0 atIndex:4];
+  [computeCommandEncoder setBuffer:intermediatesBufferCopy offset:0 atIndex:5];
+  [computeCommandEncoder setSamplerState:self->_clampedLinearNonNormSamplerState atIndex:0];
+  if (count)
   {
     v28 = 1;
-    v29 = (a8 + 31) >> 5;
+    v29 = (count + 31) >> 5;
     v30 = vdupq_n_s64(1uLL);
     v27 = xmmword_254B8B120;
-    [v24 dispatchThreadgroups:&v29 threadsPerThreadgroup:&v27];
+    [computeCommandEncoder dispatchThreadgroups:&v29 threadsPerThreadgroup:&v27];
   }
 
   else
   {
     v29 = 32;
     v30 = vdupq_n_s64(1uLL);
-    [v24 dispatchThreadgroupsWithIndirectBuffer:v20 indirectBufferOffset:4 threadsPerThreadgroup:&v29];
+    [computeCommandEncoder dispatchThreadgroupsWithIndirectBuffer:countBufferCopy indirectBufferOffset:4 threadsPerThreadgroup:&v29];
   }
 
-  [v24 endEncoding];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)_extractORB_metal:(id)a3 boxBlurredTexture:(id)a4 keypointLocationsBuffer:(id)a5 outputORBDescriptorBuffer:(id)a6 keypointCountBuffer:(id)a7 keypointCount:(unint64_t)a8
+- (void)_extractORB_metal:(id)b_metal boxBlurredTexture:(id)texture keypointLocationsBuffer:(id)buffer outputORBDescriptorBuffer:(id)descriptorBuffer keypointCountBuffer:(id)countBuffer keypointCount:(unint64_t)count
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  b_metalCopy = b_metal;
+  textureCopy = texture;
+  bufferCopy = buffer;
+  descriptorBufferCopy = descriptorBuffer;
+  countBufferCopy = countBuffer;
   if (![(PipelineStatePromise *)self->_pipelineStates groupWasSuccessful])
   {
     v20 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE648] reason:@"Failed to create compute pipeline state" userInfo:0];
     objc_exception_throw(v20);
   }
 
-  v19 = [v14 computeCommandEncoder];
-  [v19 setComputePipelineState:self->_extractORBPipelineState];
-  [v19 setTexture:v15 atIndex:0];
-  [v19 setBuffer:v18 offset:0 atIndex:0];
-  [v19 setBuffer:v16 offset:0 atIndex:1];
-  [v19 setBuffer:v17 offset:0 atIndex:2];
-  if (a8)
+  computeCommandEncoder = [b_metalCopy computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_extractORBPipelineState];
+  [computeCommandEncoder setTexture:textureCopy atIndex:0];
+  [computeCommandEncoder setBuffer:countBufferCopy offset:0 atIndex:0];
+  [computeCommandEncoder setBuffer:bufferCopy offset:0 atIndex:1];
+  [computeCommandEncoder setBuffer:descriptorBufferCopy offset:0 atIndex:2];
+  if (count)
   {
-    *v23 = (a8 + 31) >> 5;
+    *v23 = (count + 31) >> 5;
     *&v23[8] = vdupq_n_s64(1uLL);
     v21 = xmmword_254B8B120;
     v22 = 1;
-    [v19 dispatchThreadgroups:v23 threadsPerThreadgroup:&v21];
+    [computeCommandEncoder dispatchThreadgroups:v23 threadsPerThreadgroup:&v21];
   }
 
   else
   {
     *v23 = xmmword_254B8B120;
     *&v23[16] = 1;
-    [v19 dispatchThreadgroupsWithIndirectBuffer:v18 indirectBufferOffset:4 threadsPerThreadgroup:v23];
+    [computeCommandEncoder dispatchThreadgroupsWithIndirectBuffer:countBufferCopy indirectBufferOffset:4 threadsPerThreadgroup:v23];
   }
 
-  [v19 endEncoding];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)_boxBlur_metal:(id)a3 inputImageTexture:(id)a4 boxBlurredTexture:(id)a5
+- (void)_boxBlur_metal:(id)blur_metal inputImageTexture:(id)texture boxBlurredTexture:(id)blurredTexture
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  blur_metalCopy = blur_metal;
+  textureCopy = texture;
+  blurredTextureCopy = blurredTexture;
   if (![(PipelineStatePromise *)self->_pipelineStates groupWasSuccessful])
   {
     v14 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE648] reason:@"Failed to create compute pipeline state" userInfo:0];
     objc_exception_throw(v14);
   }
 
-  v11 = ((([v10 width] + 3) >> 2) + 7) >> 3;
-  v12 = ((([v10 height] + 1) >> 1) + 1) >> 1;
-  v13 = [v8 computeCommandEncoder];
-  [v13 setComputePipelineState:self->_boxBlurPipelineState];
-  [v13 setTexture:v9 atIndex:0];
-  [v13 setTexture:v10 atIndex:1];
+  v11 = ((([blurredTextureCopy width] + 3) >> 2) + 7) >> 3;
+  v12 = ((([blurredTextureCopy height] + 1) >> 1) + 1) >> 1;
+  computeCommandEncoder = [blur_metalCopy computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_boxBlurPipelineState];
+  [computeCommandEncoder setTexture:textureCopy atIndex:0];
+  [computeCommandEncoder setTexture:blurredTextureCopy atIndex:1];
   v17[0] = v11;
   v17[1] = v12;
   v17[2] = 1;
   v15 = xmmword_254B8B150;
   v16 = 1;
-  [v13 dispatchThreadgroups:v17 threadsPerThreadgroup:&v15];
-  [v13 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v17 threadsPerThreadgroup:&v15];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)_ORBDescriptorsFromTextures_part1_metal:(id)a3 inputTexture_RGBA8Uint:(id)a4 inputTexture_R8Unorm:(id)a5 responseBuffer:(id)a6 cumulativeKeypointsPerRegionBuffer:(id)a7 intermediateBuffers:(id)a8
+- (void)_ORBDescriptorsFromTextures_part1_metal:(id)textures_part1_metal inputTexture_RGBA8Uint:(id)uint inputTexture_R8Unorm:(id)unorm responseBuffer:(id)buffer cumulativeKeypointsPerRegionBuffer:(id)regionBuffer intermediateBuffers:(id)buffers
 {
-  v14 = a8;
-  v37 = a7;
-  v38 = a6;
-  v15 = a4;
-  v16 = a3;
-  LODWORD(a7) = -[a5 width];
-  v17 = [v14 responseTexture];
-  v39 = v16;
-  [(MetalFAST9BRIEF *)self _computeResponseMap_metal:v16 inputTexture:v15 outputTexture:v17 garbagePixelCount:a7 & 3];
+  buffersCopy = buffers;
+  regionBufferCopy = regionBuffer;
+  bufferCopy = buffer;
+  uintCopy = uint;
+  textures_part1_metalCopy = textures_part1_metal;
+  LODWORD(regionBuffer) = -[unorm width];
+  responseTexture = [buffersCopy responseTexture];
+  v39 = textures_part1_metalCopy;
+  [(MetalFAST9BRIEF *)self _computeResponseMap_metal:textures_part1_metalCopy inputTexture:uintCopy outputTexture:responseTexture garbagePixelCount:regionBuffer & 3];
 
-  v18 = [v14 responseTexture];
-  v19 = [v14 suppressedResponseTexture_RGBA8Uint];
-  v20 = self;
-  [(MetalFAST9BRIEF *)self _suppressResponseMap_metal:v16 unsuppressedTexture:v18 suppressedTexture:v19 garbagePixelCount:a7 & 3];
+  responseTexture2 = [buffersCopy responseTexture];
+  suppressedResponseTexture_RGBA8Uint = [buffersCopy suppressedResponseTexture_RGBA8Uint];
+  selfCopy = self;
+  [(MetalFAST9BRIEF *)self _suppressResponseMap_metal:textures_part1_metalCopy unsuppressedTexture:responseTexture2 suppressedTexture:suppressedResponseTexture_RGBA8Uint garbagePixelCount:regionBuffer & 3];
 
-  v21 = [v14 suppressedResponseTexture_R8Unorm];
-  v40 = [v14 rectRegionsBuffer];
-  v22 = [v14 rectRegionsDesiredKeypoints];
-  v23 = [v14 thresholdsBuffer];
-  v24 = [v14 histogramsBuffer];
-  v25 = [v14 thresholdRangeBuffer];
-  v26 = [v14 countOfKeypointsPerRegion];
-  v27 = [v14 truncatedRegionsBuffer];
-  -[MetalFAST9BRIEF _generateHistograms_metal:suppressedTexture:tileBuffer:desiredKeypointCountsBuffer:thresholdsBuffer:histogramBuffer:thresholdRangeBuffer:keypointsAtChosenThresholdBuffer:truncatedRegionsBuffer:tileCount:maxTileHeight:](v20, "_generateHistograms_metal:suppressedTexture:tileBuffer:desiredKeypointCountsBuffer:thresholdsBuffer:histogramBuffer:thresholdRangeBuffer:keypointsAtChosenThresholdBuffer:truncatedRegionsBuffer:tileCount:maxTileHeight:", v39, v21, v40, v22, v23, v24, v25, v26, v27, [v14 countOfRectRegions], objc_msgSend(v14, "maxRegionHeight"));
+  suppressedResponseTexture_R8Unorm = [buffersCopy suppressedResponseTexture_R8Unorm];
+  rectRegionsBuffer = [buffersCopy rectRegionsBuffer];
+  rectRegionsDesiredKeypoints = [buffersCopy rectRegionsDesiredKeypoints];
+  thresholdsBuffer = [buffersCopy thresholdsBuffer];
+  histogramsBuffer = [buffersCopy histogramsBuffer];
+  thresholdRangeBuffer = [buffersCopy thresholdRangeBuffer];
+  countOfKeypointsPerRegion = [buffersCopy countOfKeypointsPerRegion];
+  truncatedRegionsBuffer = [buffersCopy truncatedRegionsBuffer];
+  -[MetalFAST9BRIEF _generateHistograms_metal:suppressedTexture:tileBuffer:desiredKeypointCountsBuffer:thresholdsBuffer:histogramBuffer:thresholdRangeBuffer:keypointsAtChosenThresholdBuffer:truncatedRegionsBuffer:tileCount:maxTileHeight:](selfCopy, "_generateHistograms_metal:suppressedTexture:tileBuffer:desiredKeypointCountsBuffer:thresholdsBuffer:histogramBuffer:thresholdRangeBuffer:keypointsAtChosenThresholdBuffer:truncatedRegionsBuffer:tileCount:maxTileHeight:", v39, suppressedResponseTexture_R8Unorm, rectRegionsBuffer, rectRegionsDesiredKeypoints, thresholdsBuffer, histogramsBuffer, thresholdRangeBuffer, countOfKeypointsPerRegion, truncatedRegionsBuffer, [buffersCopy countOfRectRegions], objc_msgSend(buffersCopy, "maxRegionHeight"));
 
-  v28 = [v14 countOfKeypointsPerRegion];
-  v29 = [v14 rectRegionCount];
-  v30 = [v14 keypointCountBuffer];
-  v31 = v20;
-  [(MetalFAST9BRIEF *)v20 _cumulativeSum_metal:v39 expectedPointsBuffer:v28 cumulativePointsBuffer:v37 regionCountBuffer:v29 keypointCountBuffer:v30 regionCount:0];
+  countOfKeypointsPerRegion2 = [buffersCopy countOfKeypointsPerRegion];
+  rectRegionCount = [buffersCopy rectRegionCount];
+  keypointCountBuffer = [buffersCopy keypointCountBuffer];
+  v31 = selfCopy;
+  [(MetalFAST9BRIEF *)selfCopy _cumulativeSum_metal:v39 expectedPointsBuffer:countOfKeypointsPerRegion2 cumulativePointsBuffer:regionBufferCopy regionCountBuffer:rectRegionCount keypointCountBuffer:keypointCountBuffer regionCount:0];
 
-  v41 = [v14 suppressedResponseTexture_R8Uint];
-  v32 = [v14 rectRegionsBuffer];
-  v33 = [v14 rectRegionCount];
-  v34 = [v14 countOfRectRegions];
-  v35 = [v14 thresholdsBuffer];
-  v36 = [v14 compactKeypointsBuffer];
-  LODWORD(v20) = [v14 maxRegionHeight];
+  suppressedResponseTexture_R8Uint = [buffersCopy suppressedResponseTexture_R8Uint];
+  rectRegionsBuffer2 = [buffersCopy rectRegionsBuffer];
+  rectRegionCount2 = [buffersCopy rectRegionCount];
+  countOfRectRegions = [buffersCopy countOfRectRegions];
+  thresholdsBuffer2 = [buffersCopy thresholdsBuffer];
+  compactKeypointsBuffer = [buffersCopy compactKeypointsBuffer];
+  LODWORD(selfCopy) = [buffersCopy maxRegionHeight];
 
-  [(MetalFAST9BRIEF *)v31 _listKeypoints2_metal:v39 suppressedResponseMapTexture:v41 tileBuffer:v32 tileCountBuffer:v33 tileCount:v34 thresholdsBuffer:v35 cumulativePointsBuffer:v20 keypointLocationsBuffer:v37 keypointResponsesBuffer:v36 maxRegionHeight:v38];
+  [(MetalFAST9BRIEF *)v31 _listKeypoints2_metal:v39 suppressedResponseMapTexture:suppressedResponseTexture_R8Uint tileBuffer:rectRegionsBuffer2 tileCountBuffer:rectRegionCount2 tileCount:countOfRectRegions thresholdsBuffer:thresholdsBuffer2 cumulativePointsBuffer:selfCopy keypointLocationsBuffer:regionBufferCopy keypointResponsesBuffer:compactKeypointsBuffer maxRegionHeight:bufferCopy];
 }
 
-- (void)_ORBDescriptorsFromTextures_part2_metal:(id)a3 inputTexture_RGBA8Uint:(id)a4 inputTexture_R8Unorm:(id)a5 descriptorBuffer:(id)a6 refinedKeypointsBuffer:(id)a7 cumulativeKeypointsPerRegionBuffer:(id)a8 intermediateBuffers:(id)a9 keypointCount:(int)a10
+- (void)_ORBDescriptorsFromTextures_part2_metal:(id)textures_part2_metal inputTexture_RGBA8Uint:(id)uint inputTexture_R8Unorm:(id)unorm descriptorBuffer:(id)buffer refinedKeypointsBuffer:(id)keypointsBuffer cumulativeKeypointsPerRegionBuffer:(id)regionBuffer intermediateBuffers:(id)buffers keypointCount:(int)self0
 {
-  v16 = a9;
-  v17 = a8;
-  v27 = a7;
-  v28 = a6;
-  v18 = a5;
-  v29 = a4;
-  v19 = a3;
-  v20 = [v16 compactKeypointsBuffer];
-  v21 = [v16 keypointCountBuffer];
-  v22 = [v16 refinementIntermediatesBuffer];
-  v23 = [v16 rectRegionCount];
-  [(MetalFAST9BRIEF *)self _refineKeypoints_metal:v19 inputImageTexture:v18 keypointLocationsBuffer:v20 refinedLocationsBuffer:v27 keypointCountBuffer:v21 keypointCount:a10 debugIntermediatesBuffer:v22 cumulativePointsBuffer:v17 tileCountBuffer:v23];
+  buffersCopy = buffers;
+  regionBufferCopy = regionBuffer;
+  keypointsBufferCopy = keypointsBuffer;
+  bufferCopy = buffer;
+  unormCopy = unorm;
+  uintCopy = uint;
+  textures_part2_metalCopy = textures_part2_metal;
+  compactKeypointsBuffer = [buffersCopy compactKeypointsBuffer];
+  keypointCountBuffer = [buffersCopy keypointCountBuffer];
+  refinementIntermediatesBuffer = [buffersCopy refinementIntermediatesBuffer];
+  rectRegionCount = [buffersCopy rectRegionCount];
+  [(MetalFAST9BRIEF *)self _refineKeypoints_metal:textures_part2_metalCopy inputImageTexture:unormCopy keypointLocationsBuffer:compactKeypointsBuffer refinedLocationsBuffer:keypointsBufferCopy keypointCountBuffer:keypointCountBuffer keypointCount:count debugIntermediatesBuffer:refinementIntermediatesBuffer cumulativePointsBuffer:regionBufferCopy tileCountBuffer:rectRegionCount];
 
-  v24 = [v16 boxBlurredTexture_R8Uint];
-  [(MetalFAST9BRIEF *)self _boxBlur_metal:v19 inputImageTexture:v29 boxBlurredTexture:v24];
+  boxBlurredTexture_R8Uint = [buffersCopy boxBlurredTexture_R8Uint];
+  [(MetalFAST9BRIEF *)self _boxBlur_metal:textures_part2_metalCopy inputImageTexture:uintCopy boxBlurredTexture:boxBlurredTexture_R8Uint];
 
-  v30 = [v16 boxBlurredTexture_R8Uint];
-  v25 = [v16 keypointCountBuffer];
+  boxBlurredTexture_R8Uint2 = [buffersCopy boxBlurredTexture_R8Uint];
+  keypointCountBuffer2 = [buffersCopy keypointCountBuffer];
 
-  [(MetalFAST9BRIEF *)self _extractORB_metal:v19 boxBlurredTexture:v30 keypointLocationsBuffer:v27 outputORBDescriptorBuffer:v28 keypointCountBuffer:v25 keypointCount:a10];
+  [(MetalFAST9BRIEF *)self _extractORB_metal:textures_part2_metalCopy boxBlurredTexture:boxBlurredTexture_R8Uint2 keypointLocationsBuffer:keypointsBufferCopy outputORBDescriptorBuffer:bufferCopy keypointCountBuffer:keypointCountBuffer2 keypointCount:count];
 }
 
-- (void)ORBDescriptorsFromPixelBuffer_metal:(id)a3 inputBuffer:(__CVBuffer *)a4 descriptorBuffer:(id)a5 refinedKeypointsBuffer:(id)a6 responseBuffer:(id)a7 cumulativeKeypointsPerRegionBuffer:(id)a8 intermediateBuffers:(id)a9
+- (void)ORBDescriptorsFromPixelBuffer_metal:(id)buffer_metal inputBuffer:(__CVBuffer *)buffer descriptorBuffer:(id)descriptorBuffer refinedKeypointsBuffer:(id)keypointsBuffer responseBuffer:(id)responseBuffer cumulativeKeypointsPerRegionBuffer:(id)regionBuffer intermediateBuffers:(id)buffers
 {
-  v15 = a3;
-  v32 = a5;
-  v16 = a6;
-  v33 = a7;
-  v17 = a8;
-  v18 = a9;
+  buffer_metalCopy = buffer_metal;
+  descriptorBufferCopy = descriptorBuffer;
+  keypointsBufferCopy = keypointsBuffer;
+  responseBufferCopy = responseBuffer;
+  regionBufferCopy = regionBuffer;
+  buffersCopy = buffers;
   if (![(PipelineStatePromise *)self->_pipelineStates groupWasSuccessful])
   {
     v30 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE648] reason:@"Failed to create compute pipeline state" userInfo:0];
     objc_exception_throw(v30);
   }
 
-  v19 = [(MetalFAST9BRIEF *)self _textureFromPixelBuffer:a4 forcedMetalPixelFormat:10 forcedWidthDivisior:1];
+  v19 = [(MetalFAST9BRIEF *)self _textureFromPixelBuffer:buffer forcedMetalPixelFormat:10 forcedWidthDivisior:1];
   v20 = [(MTLDevice *)self->_device supportsFeatureSet:4];
-  v34 = v15;
-  v21 = v34;
+  v34 = buffer_metalCopy;
+  commandBuffer = v34;
   if ((v20 & 1) == 0)
   {
-    v21 = [(MTLCommandQueue *)self->_queue commandBuffer];
+    commandBuffer = [(MTLCommandQueue *)self->_queue commandBuffer];
   }
 
-  v22 = v16;
-  CleanRect = CVImageBufferGetCleanRect(a4);
+  v22 = keypointsBufferCopy;
+  CleanRect = CVImageBufferGetCleanRect(buffer);
   x = CleanRect.origin.x;
-  v24 = CVImageBufferGetEncodedSize(a4).height - (CleanRect.origin.y + CleanRect.size.height);
-  v25 = [v18 gaussianBlurredTexture_R8Unorm];
+  v24 = CVImageBufferGetEncodedSize(buffer).height - (CleanRect.origin.y + CleanRect.size.height);
+  gaussianBlurredTexture_R8Unorm = [buffersCopy gaussianBlurredTexture_R8Unorm];
   *&x = x;
-  [(MetalFAST9BRIEF *)self _gaussianishBlur_metal:v21 inputTexture:v19 outputTexture:v25 offset:*&x, v24];
+  [(MetalFAST9BRIEF *)self _gaussianishBlur_metal:commandBuffer inputTexture:v19 outputTexture:gaussianBlurredTexture_R8Unorm offset:*&x, v24];
 
-  v26 = [v18 gaussianBlurredTexture_RGBA8Uint];
-  v27 = [v18 gaussianBlurredTexture_R8Unorm];
-  [(MetalFAST9BRIEF *)self _ORBDescriptorsFromTextures_part1_metal:v21 inputTexture_RGBA8Uint:v26 inputTexture_R8Unorm:v27 responseBuffer:v33 cumulativeKeypointsPerRegionBuffer:v17 intermediateBuffers:v18];
+  gaussianBlurredTexture_RGBA8Uint = [buffersCopy gaussianBlurredTexture_RGBA8Uint];
+  gaussianBlurredTexture_R8Unorm2 = [buffersCopy gaussianBlurredTexture_R8Unorm];
+  [(MetalFAST9BRIEF *)self _ORBDescriptorsFromTextures_part1_metal:commandBuffer inputTexture_RGBA8Uint:gaussianBlurredTexture_RGBA8Uint inputTexture_R8Unorm:gaussianBlurredTexture_R8Unorm2 responseBuffer:responseBufferCopy cumulativeKeypointsPerRegionBuffer:regionBufferCopy intermediateBuffers:buffersCopy];
   if (v20)
   {
     v28 = 0;
@@ -821,71 +821,71 @@ LABEL_15:
 
   else
   {
-    [v21 commit];
-    [v21 waitUntilCompleted];
-    v29 = [v18 keypointCountBuffer];
-    v28 = *[v29 contents];
+    [commandBuffer commit];
+    [commandBuffer waitUntilCompleted];
+    keypointCountBuffer = [buffersCopy keypointCountBuffer];
+    v28 = *[keypointCountBuffer contents];
   }
 
   LODWORD(v31) = v28;
-  [(MetalFAST9BRIEF *)self _ORBDescriptorsFromTextures_part2_metal:v34 inputTexture_RGBA8Uint:v26 inputTexture_R8Unorm:v27 descriptorBuffer:v32 refinedKeypointsBuffer:v22 cumulativeKeypointsPerRegionBuffer:v17 intermediateBuffers:v18 keypointCount:v31];
+  [(MetalFAST9BRIEF *)self _ORBDescriptorsFromTextures_part2_metal:v34 inputTexture_RGBA8Uint:gaussianBlurredTexture_RGBA8Uint inputTexture_R8Unorm:gaussianBlurredTexture_R8Unorm2 descriptorBuffer:descriptorBufferCopy refinedKeypointsBuffer:v22 cumulativeKeypointsPerRegionBuffer:regionBufferCopy intermediateBuffers:buffersCopy keypointCount:v31];
 }
 
-- (void)_gaussianishBlur_metal:(id)a3 inputTexture:(id)a4 outputTexture:(id)a5 offset:(CGPoint)a6
+- (void)_gaussianishBlur_metal:(id)blur_metal inputTexture:(id)texture outputTexture:(id)outputTexture offset:(CGPoint)offset
 {
-  y = a6.y;
-  x = a6.x;
+  y = offset.y;
+  x = offset.x;
   v24 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  blur_metalCopy = blur_metal;
+  textureCopy = texture;
+  outputTextureCopy = outputTexture;
   if (![(PipelineStatePromise *)self->_pipelineStates groupWasSuccessful])
   {
     v19 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE648] reason:@"Failed to create compute pipeline state" userInfo:0];
     objc_exception_throw(v19);
   }
 
-  v14 = [v11 computeCommandEncoder];
+  computeCommandEncoder = [blur_metalCopy computeCommandEncoder];
   v22[0] = rint(x);
   v22[1] = rint(y);
   v23 = 0;
   v15 = [(PipelineStatePromise *)self->_pipelineStates pipelineStateForFunction:self->_gaussianishBlurKernel];
-  [v14 setComputePipelineState:v15];
-  [v14 setTexture:v12 atIndex:0];
-  [v14 setTexture:v13 atIndex:1];
-  [v14 setBytes:v22 length:16 atIndex:0];
-  v16 = [v15 threadExecutionWidth];
-  v17 = [v15 maxTotalThreadsPerThreadgroup];
-  v18 = v17 / [v15 threadExecutionWidth];
-  v21[0] = (v16 + [v13 width] - 1) / v16;
-  v21[1] = (v18 + [v13 height] - 1) / v18;
+  [computeCommandEncoder setComputePipelineState:v15];
+  [computeCommandEncoder setTexture:textureCopy atIndex:0];
+  [computeCommandEncoder setTexture:outputTextureCopy atIndex:1];
+  [computeCommandEncoder setBytes:v22 length:16 atIndex:0];
+  threadExecutionWidth = [v15 threadExecutionWidth];
+  maxTotalThreadsPerThreadgroup = [v15 maxTotalThreadsPerThreadgroup];
+  v18 = maxTotalThreadsPerThreadgroup / [v15 threadExecutionWidth];
+  v21[0] = (threadExecutionWidth + [outputTextureCopy width] - 1) / threadExecutionWidth;
+  v21[1] = (v18 + [outputTextureCopy height] - 1) / v18;
   v21[2] = 1;
-  v20[0] = v16;
+  v20[0] = threadExecutionWidth;
   v20[1] = v18;
   v20[2] = 1;
-  [v14 dispatchThreadgroups:v21 threadsPerThreadgroup:v20];
-  [v14 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v21 threadsPerThreadgroup:v20];
+  [computeCommandEncoder endEncoding];
 }
 
-+ (id)_createMTLBufferFromRects:(id)a3 device:(id)a4 storageMode:(unint64_t)a5 maxRectWidth:(unint64_t *)a6 maxRectHeight:(unint64_t *)a7
++ (id)_createMTLBufferFromRects:(id)rects device:(id)device storageMode:(unint64_t)mode maxRectWidth:(unint64_t *)width maxRectHeight:(unint64_t *)height
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = [v12 newBufferWithLength:48 * objc_msgSend(v11 options:{"count"), 16 * a5}];
-  v14 = [v13 contents];
-  if ([v11 count])
+  rectsCopy = rects;
+  deviceCopy = device;
+  v13 = [deviceCopy newBufferWithLength:48 * objc_msgSend(rectsCopy options:{"count"), 16 * mode}];
+  contents = [v13 contents];
+  if ([rectsCopy count])
   {
     v15 = 0;
     v20 = 0u;
     do
     {
-      v16 = [v11 objectAtIndex:{v15, v20.i64[0]}];
+      v16 = [rectsCopy objectAtIndex:{v15, v20.i64[0]}];
       v21 = 0u;
       v22 = 0u;
       [v16 getValue:&v21 size:32];
       v17 = vcvtq_u64_f64(v22);
       v18 = vmovn_s64(v17);
-      *(v14 + 16 * v15) = vuzp1q_s32(vcvtq_u64_f64(v21), v17);
+      *(contents + 16 * v15) = vuzp1q_s32(vcvtq_u64_f64(v21), v17);
       v17.i64[1] = v20.i64[1];
       *v17.i8 = vmax_u32(*v20.i8, v18);
       v20 = v17;
@@ -893,7 +893,7 @@ LABEL_15:
       ++v15;
     }
 
-    while ([v11 count] > v15);
+    while ([rectsCopy count] > v15);
   }
 
   else
@@ -901,37 +901,37 @@ LABEL_15:
     v20.i64[0] = 0;
   }
 
-  if (a6)
+  if (width)
   {
-    *a6 = v20.u32[0];
+    *width = v20.u32[0];
   }
 
-  if (a7)
+  if (height)
   {
-    *a7 = v20.u32[1];
+    *height = v20.u32[1];
   }
 
   return v13;
 }
 
-+ (id)_createMTLBufferFromRectRegionsDesiredKeypoints:(id)a3 device:(id)a4 storageMode:(unint64_t)a5 maxAllowedDescriptors:(unint64_t *)a6
++ (id)_createMTLBufferFromRectRegionsDesiredKeypoints:(id)keypoints device:(id)device storageMode:(unint64_t)mode maxAllowedDescriptors:(unint64_t *)descriptors
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [v10 newBufferWithLength:12 * objc_msgSend(v9 options:{"count"), 16 * a5}];
-  v12 = [v11 contents];
-  if ([v9 count] >= 2)
+  keypointsCopy = keypoints;
+  deviceCopy = device;
+  v11 = [deviceCopy newBufferWithLength:12 * objc_msgSend(keypointsCopy options:{"count"), 16 * mode}];
+  contents = [v11 contents];
+  if ([keypointsCopy count] >= 2)
   {
     v14 = 0;
     v13 = 0;
-    v15 = (v12 + 4);
+    v15 = (contents + 4);
     v16 = 1;
     do
     {
-      v17 = [v9 objectAtIndex:v16 - 1];
+      v17 = [keypointsCopy objectAtIndex:v16 - 1];
       *(v15 - 1) = [v17 unsignedIntValue];
 
-      v18 = [v9 objectAtIndex:v16];
+      v18 = [keypointsCopy objectAtIndex:v16];
       *v15 = [v18 unsignedIntValue];
 
       v19 = (*v15 + *(v15 - 1));
@@ -942,7 +942,7 @@ LABEL_15:
       v16 += 2;
     }
 
-    while (v14 < [v9 count] >> 1);
+    while (v14 < [keypointsCopy count] >> 1);
   }
 
   else
@@ -950,9 +950,9 @@ LABEL_15:
     v13 = 0;
   }
 
-  if (a6)
+  if (descriptors)
   {
-    *a6 = v13;
+    *descriptors = v13;
   }
 
   return v11;

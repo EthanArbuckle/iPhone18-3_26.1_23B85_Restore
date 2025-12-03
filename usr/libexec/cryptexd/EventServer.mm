@@ -1,18 +1,18 @@
 @interface EventServer
-- (EventServer)initWithEventStream:(const char *)a3;
-- (id)broadcastEvent:(unint64_t)a3 forCryptex:(id)a4 withInfo:(id)a5;
-- (id)broadcastEvent:(unint64_t)a3 forCryptex:(id)a4 withInfo:(id)a5 toClients:(id)a6;
+- (EventServer)initWithEventStream:(const char *)stream;
+- (id)broadcastEvent:(unint64_t)event forCryptex:(id)cryptex withInfo:(id)info;
+- (id)broadcastEvent:(unint64_t)event forCryptex:(id)cryptex withInfo:(id)info toClients:(id)clients;
 - (void)activate;
-- (void)handlePublisherAddToken:(unint64_t)a3 descriptor:(id)a4;
-- (void)handlePublisherError:(int)a3;
-- (void)handlePublisherRemoveToken:(unint64_t)a3;
-- (void)sendAlreadyInstalledCryptexesToClient:(id)a3;
-- (void)withInstalledCryptexList:(id)a3;
+- (void)handlePublisherAddToken:(unint64_t)token descriptor:(id)descriptor;
+- (void)handlePublisherError:(int)error;
+- (void)handlePublisherRemoveToken:(unint64_t)token;
+- (void)sendAlreadyInstalledCryptexesToClient:(id)client;
+- (void)withInstalledCryptexList:(id)list;
 @end
 
 @implementation EventServer
 
-- (EventServer)initWithEventStream:(const char *)a3
+- (EventServer)initWithEventStream:(const char *)stream
 {
   v16.receiver = self;
   v16.super_class = EventServer;
@@ -32,11 +32,11 @@
     clients = v3->_clients;
     v3->_clients = v9;
 
-    v11 = [(EventServer *)v3 publisher];
+    publisher = [(EventServer *)v3 publisher];
     v15 = v3;
     xpc_event_publisher_set_handler();
 
-    v12 = [(EventServer *)v15 publisher];
+    publisher2 = [(EventServer *)v15 publisher];
     v14 = v15;
     xpc_event_publisher_set_error_handler();
   }
@@ -81,30 +81,30 @@ void __35__EventServer_initWithEventStream___block_invoke(uint64_t a1, int a2, u
 
 - (void)activate
 {
-  v2 = [(EventServer *)self publisher];
+  publisher = [(EventServer *)self publisher];
   xpc_event_publisher_activate();
 }
 
-- (void)withInstalledCryptexList:(id)a3
+- (void)withInstalledCryptexList:(id)list
 {
-  v3 = a3;
+  listCopy = list;
   v5 = codex_copy_system();
-  v4 = [v3 copy];
+  v4 = [listCopy copy];
 
   codex_list_installed(v5, v4, _codex_list_installed_callback);
 }
 
-- (void)sendAlreadyInstalledCryptexesToClient:(id)a3
+- (void)sendAlreadyInstalledCryptexesToClient:(id)client
 {
-  v4 = a3;
-  if ([v4 eventMask])
+  clientCopy = client;
+  if ([clientCopy eventMask])
   {
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = __53__EventServer_sendAlreadyInstalledCryptexesToClient___block_invoke;
     v5[3] = &unk_100072780;
     v5[4] = self;
-    v6 = v4;
+    v6 = clientCopy;
     [(EventServer *)self withInstalledCryptexList:v5];
   }
 }
@@ -143,12 +143,12 @@ uint64_t __53__EventServer_sendAlreadyInstalledCryptexesToClient___block_invoke_
   return 1;
 }
 
-- (void)handlePublisherAddToken:(unint64_t)a3 descriptor:(id)a4
+- (void)handlePublisherAddToken:(unint64_t)token descriptor:(id)descriptor
 {
-  v6 = a4;
+  descriptorCopy = descriptor;
   v21 = 0;
   v22 = 0;
-  string = _xpc_dictionary_try_get_string(v6, "CryptexEventClientName", &v22);
+  string = _xpc_dictionary_try_get_string(descriptorCopy, "CryptexEventClientName", &v22);
   if (string)
   {
     v8 = *__error();
@@ -168,7 +168,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  uint64 = _xpc_dictionary_try_get_uint64(v6, "CryptexEventMask", &v21);
+  uint64 = _xpc_dictionary_try_get_uint64(descriptorCopy, "CryptexEventMask", &v21);
   if (uint64)
   {
     v8 = *__error();
@@ -180,7 +180,7 @@ LABEL_9:
       v25 = 2082;
       v26 = "CryptexEventMask";
       v27 = 1024;
-      LODWORD(v28) = uint64;
+      LODWORD(tokenCopy) = uint64;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Subscriber '%s' missing expected key '%{public}s'. Ignoring.: %{darwin.errno}d", buf, 0x1Cu);
     }
 
@@ -190,15 +190,15 @@ LABEL_9:
 
   v13 = [EventClient alloc];
   v14 = [NSString stringWithUTF8String:v22];
-  v15 = [(EventClient *)v13 initWithToken:a3 name:v14 eventMask:v21];
+  v15 = [(EventClient *)v13 initWithToken:token name:v14 eventMask:v21];
 
-  v16 = [(EventServer *)self clients];
-  objc_sync_enter(v16);
-  v17 = [(EventServer *)self clients];
-  v18 = [NSNumber numberWithUnsignedLongLong:a3];
-  [v17 setObject:v15 forKeyedSubscript:v18];
+  clients = [(EventServer *)self clients];
+  objc_sync_enter(clients);
+  clients2 = [(EventServer *)self clients];
+  v18 = [NSNumber numberWithUnsignedLongLong:token];
+  [clients2 setObject:v15 forKeyedSubscript:v18];
 
-  objc_sync_exit(v16);
+  objc_sync_exit(clients);
   v19 = *__error();
   v20 = [(EventServer *)self log];
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
@@ -208,7 +208,7 @@ LABEL_9:
     v25 = 2048;
     v26 = v21;
     v27 = 2048;
-    v28 = a3;
+    tokenCopy = token;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "'%s' subscribed with event mask 0x%llx, token %llu", buf, 0x20u);
   }
 
@@ -218,61 +218,61 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)handlePublisherRemoveToken:(unint64_t)a3
+- (void)handlePublisherRemoveToken:(unint64_t)token
 {
-  v5 = [(EventServer *)self clients];
-  objc_sync_enter(v5);
-  v6 = [(EventServer *)self clients];
-  v7 = [NSNumber numberWithUnsignedLongLong:a3];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  clients = [(EventServer *)self clients];
+  objc_sync_enter(clients);
+  clients2 = [(EventServer *)self clients];
+  v7 = [NSNumber numberWithUnsignedLongLong:token];
+  v8 = [clients2 objectForKeyedSubscript:v7];
 
-  v9 = [(EventServer *)self clients];
-  v10 = [NSNumber numberWithUnsignedLongLong:a3];
-  [v9 removeObjectForKey:v10];
+  clients3 = [(EventServer *)self clients];
+  v10 = [NSNumber numberWithUnsignedLongLong:token];
+  [clients3 removeObjectForKey:v10];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(clients);
   v11 = *__error();
   v12 = [(EventServer *)self log];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v13 = [v8 clientName];
+    clientName = [v8 clientName];
     v14 = 138412546;
-    v15 = v13;
+    v15 = clientName;
     v16 = 2048;
-    v17 = a3;
+    tokenCopy = token;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "'%@' unsubscribed with token %llu", &v14, 0x16u);
   }
 
   *__error() = v11;
 }
 
-- (void)handlePublisherError:(int)a3
+- (void)handlePublisherError:(int)error
 {
   v5 = *__error();
   v6 = [(EventServer *)self log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
     v7[0] = 67109120;
-    v7[1] = a3;
+    v7[1] = error;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "XPC publisher error: %{darwin.errno}d", v7, 8u);
   }
 
   *__error() = v5;
 }
 
-- (id)broadcastEvent:(unint64_t)a3 forCryptex:(id)a4 withInfo:(id)a5
+- (id)broadcastEvent:(unint64_t)event forCryptex:(id)cryptex withInfo:(id)info
 {
-  v19 = a4;
-  v20 = a5;
+  cryptexCopy = cryptex;
+  infoCopy = info;
   v8 = objc_alloc_init(NSMutableArray);
-  v9 = [(EventServer *)self clients];
-  objc_sync_enter(v9);
+  clients = [(EventServer *)self clients];
+  objc_sync_enter(clients);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v10 = [(EventServer *)self clients];
-  v11 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  clients2 = [(EventServer *)self clients];
+  v11 = [clients2 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v11)
   {
     v12 = *v22;
@@ -282,52 +282,52 @@ LABEL_10:
       {
         if (*v22 != v12)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(clients2);
         }
 
         v14 = *(*(&v21 + 1) + 8 * i);
-        v15 = [(EventServer *)self clients];
-        v16 = [v15 objectForKeyedSubscript:v14];
+        clients3 = [(EventServer *)self clients];
+        v16 = [clients3 objectForKeyedSubscript:v14];
 
-        if (([v16 eventMask] & a3) != 0)
+        if (([v16 eventMask] & event) != 0)
         {
           [v8 addObject:v16];
         }
       }
 
-      v11 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v11 = [clients2 countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v11);
   }
 
-  objc_sync_exit(v9);
-  v17 = [(EventServer *)self broadcastEvent:a3 forCryptex:v19 withInfo:v20 toClients:v8];
+  objc_sync_exit(clients);
+  v17 = [(EventServer *)self broadcastEvent:event forCryptex:cryptexCopy withInfo:infoCopy toClients:v8];
 
   return v17;
 }
 
-- (id)broadcastEvent:(unint64_t)a3 forCryptex:(id)a4 withInfo:(id)a5 toClients:(id)a6
+- (id)broadcastEvent:(unint64_t)event forCryptex:(id)cryptex withInfo:(id)info toClients:(id)clients
 {
-  v10 = a4;
-  v11 = a5;
-  v34 = a6;
+  cryptexCopy = cryptex;
+  infoCopy = info;
+  clientsCopy = clients;
   v12 = xpc_dictionary_create(0, 0, 0);
-  v36 = a3;
-  xpc_dictionary_set_uint64(v12, "CRYPTEX_EVENT_TYPE", a3);
-  v37 = v10;
+  eventCopy = event;
+  xpc_dictionary_set_uint64(v12, "CRYPTEX_EVENT_TYPE", event);
+  v37 = cryptexCopy;
   xdict = v12;
-  xpc_dictionary_set_string(v12, "CRYPTEX_EVENT_CRYPTEX_NAME", [v10 UTF8String]);
-  v33 = v11;
-  if (v11)
+  xpc_dictionary_set_string(v12, "CRYPTEX_EVENT_CRYPTEX_NAME", [cryptexCopy UTF8String]);
+  v33 = infoCopy;
+  if (infoCopy)
   {
     v43 = 0;
-    v35 = [NSPropertyListSerialization dataWithPropertyList:v11 format:100 options:0 error:&v43];
+    v35 = [NSPropertyListSerialization dataWithPropertyList:infoCopy format:100 options:0 error:&v43];
     v13 = v43;
     if (!v35)
     {
       v26 = v13;
-      v27 = [v13 code];
+      code = [v13 code];
       v28 = [(EventServer *)self log];
 
       if (v28)
@@ -344,7 +344,7 @@ LABEL_10:
         v30 = _os_log_send_and_compose_impl();
       }
 
-      Error = createError("[EventServer broadcastEvent:forCryptex:withInfo:toClients:]", "event_server.m", 220, "com.apple.security.cryptex", v27, v26, v30);
+      Error = createError("[EventServer broadcastEvent:forCryptex:withInfo:toClients:]", "event_server.m", 220, "com.apple.security.cryptex", code, v26, v30);
       free(v30);
       goto LABEL_19;
     }
@@ -364,7 +364,7 @@ LABEL_10:
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v15 = v34;
+  v15 = clientsCopy;
   v16 = [v15 countByEnumeratingWithState:&v39 objects:v50 count:16];
   if (v16)
   {
@@ -383,20 +383,20 @@ LABEL_10:
         v21 = [(EventServer *)self log];
         if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
         {
-          v22 = [v19 clientName];
+          clientName = [v19 clientName];
           *buf = 134218498;
-          v45 = v36;
+          v45 = eventCopy;
           v46 = 2112;
           v47 = v37;
           v48 = 2112;
-          v49 = v22;
+          v49 = clientName;
           _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "event 0x%llx for cryptex '%@' sent to '%@'", buf, 0x20u);
         }
 
         *__error() = v20;
-        v23 = [(EventServer *)self publisher];
-        v24 = [v19 token];
-        [v24 unsignedLongLongValue];
+        publisher = [(EventServer *)self publisher];
+        token = [v19 token];
+        [token unsignedLongLongValue];
         xpc_event_publisher_fire();
       }
 

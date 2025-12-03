@@ -1,8 +1,8 @@
 @interface FigCaptureSessionProxy
 + (void)initialize;
 - ($115C4C562B26FF47E01F9F4EA65B5887)clientAuditToken;
-- (FigCaptureSessionProxy)initWithFigCaptureSession:(OpaqueFigCaptureSession *)a3 identifier:(int64_t)a4 clientAuditToken:(id *)a5 containsVideoSource:(BOOL)a6 containsStillImageSink:(BOOL)a7 containsMovieFileSink:(BOOL)a8;
-- (int)openPreviewTapWithDelegate:(id)a3;
+- (FigCaptureSessionProxy)initWithFigCaptureSession:(OpaqueFigCaptureSession *)session identifier:(int64_t)identifier clientAuditToken:(id *)token containsVideoSource:(BOOL)source containsStillImageSink:(BOOL)sink containsMovieFileSink:(BOOL)fileSink;
+- (int)openPreviewTapWithDelegate:(id)delegate;
 - (uint64_t)closePreviewTap;
 - (void)closePreviewTap;
 - (void)dealloc;
@@ -20,7 +20,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -29,9 +29,9 @@
   }
 }
 
-- (FigCaptureSessionProxy)initWithFigCaptureSession:(OpaqueFigCaptureSession *)a3 identifier:(int64_t)a4 clientAuditToken:(id *)a5 containsVideoSource:(BOOL)a6 containsStillImageSink:(BOOL)a7 containsMovieFileSink:(BOOL)a8
+- (FigCaptureSessionProxy)initWithFigCaptureSession:(OpaqueFigCaptureSession *)session identifier:(int64_t)identifier clientAuditToken:(id *)token containsVideoSource:(BOOL)source containsStillImageSink:(BOOL)sink containsMovieFileSink:(BOOL)fileSink
 {
-  if (!a3)
+  if (!session)
   {
     [FigCaptureSessionProxy initWithFigCaptureSession:identifier:clientAuditToken:containsVideoSource:containsStillImageSink:containsMovieFileSink:];
 LABEL_10:
@@ -39,14 +39,14 @@ LABEL_10:
     return 0;
   }
 
-  if (a4 <= 0)
+  if (identifier <= 0)
   {
     [FigCaptureSessionProxy initWithFigCaptureSession:identifier:clientAuditToken:containsVideoSource:containsStillImageSink:containsMovieFileSink:];
     goto LABEL_10;
   }
 
-  v15 = *&a5->var0[4];
-  v20[0] = *a5->var0;
+  v15 = *&token->var0[4];
+  v20[0] = *token->var0;
   v20[1] = v15;
   if (!FigCaptureAuditTokenIsValid(v20))
   {
@@ -59,14 +59,14 @@ LABEL_10:
   v16 = [(FigCaptureSessionProxy *)&v19 init];
   if (v16)
   {
-    *(v16 + 1) = CFRetain(a3);
-    *(v16 + 2) = a4;
-    v17 = *&a5->var0[4];
-    *(v16 + 24) = *a5->var0;
+    *(v16 + 1) = CFRetain(session);
+    *(v16 + 2) = identifier;
+    v17 = *&token->var0[4];
+    *(v16 + 24) = *token->var0;
     *(v16 + 40) = v17;
-    v16[56] = a6;
-    v16[57] = a7;
-    v16[58] = a8;
+    v16[56] = source;
+    v16[57] = sink;
+    v16[58] = fileSink;
   }
 
   return v16;
@@ -85,7 +85,7 @@ LABEL_10:
   [(FigCaptureSessionProxy *)&v4 dealloc];
 }
 
-- (int)openPreviewTapWithDelegate:(id)a3
+- (int)openPreviewTapWithDelegate:(id)delegate
 {
   if (self->_previewTapOpened)
   {
@@ -100,7 +100,7 @@ LABEL_9:
     return v4;
   }
 
-  self->_previewTapDelegate = a3;
+  self->_previewTapDelegate = delegate;
   v4 = FigCaptureSessionSetVideoPreviewTapCallback(self->_session, csp_previewTapCallback, self);
   if (v4)
   {

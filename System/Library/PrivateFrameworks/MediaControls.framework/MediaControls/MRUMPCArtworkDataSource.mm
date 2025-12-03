@@ -1,119 +1,119 @@
 @interface MRUMPCArtworkDataSource
-- (MRUMPCArtworkDataSource)initWithEndpointController:(id)a3;
+- (MRUMPCArtworkDataSource)initWithEndpointController:(id)controller;
 - (MRUMPCArtworkDataSourceDelegate)delegate;
-- (id)artworkForSong:(id)a3 animatedArtworkSong:(id)a4;
+- (id)artworkForSong:(id)song animatedArtworkSong:(id)artworkSong;
 - (void)clearPendingArtwork;
 - (void)configureAllowsAutomaticResponseLoading;
-- (void)configureAnimatedArtworkEndpointControllerForPlayerPath:(id)a3;
-- (void)endpointController:(id)a3 didAllowAutomaticResponseLoading:(BOOL)a4;
-- (void)endpointController:(id)a3 didChangeResponse:(id)a4;
-- (void)publishArtwork:(id)a3 publishingDelay:(double)a4;
+- (void)configureAnimatedArtworkEndpointControllerForPlayerPath:(id)path;
+- (void)endpointController:(id)controller didAllowAutomaticResponseLoading:(BOOL)loading;
+- (void)endpointController:(id)controller didChangeResponse:(id)response;
+- (void)publishArtwork:(id)artwork publishingDelay:(double)delay;
 - (void)updateArtwork;
-- (void)updateArtwork:(id)a3 publishImmediately:(BOOL)a4;
+- (void)updateArtwork:(id)artwork publishImmediately:(BOOL)immediately;
 @end
 
 @implementation MRUMPCArtworkDataSource
 
-- (MRUMPCArtworkDataSource)initWithEndpointController:(id)a3
+- (MRUMPCArtworkDataSource)initWithEndpointController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = MRUMPCArtworkDataSource;
   v6 = [(MRUMPCArtworkDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_endpointController, a3);
-    [v5 addObserver:v7];
+    objc_storeStrong(&v6->_endpointController, controller);
+    [controllerCopy addObserver:v7];
     [(MRUMPCArtworkDataSource *)v7 updateArtwork];
   }
 
   return v7;
 }
 
-- (void)endpointController:(id)a3 didChangeResponse:(id)a4
+- (void)endpointController:(id)controller didChangeResponse:(id)response
 {
-  v8 = a3;
-  v6 = a4;
-  if (self->_endpointController == v8)
+  controllerCopy = controller;
+  responseCopy = response;
+  if (self->_endpointController == controllerCopy)
   {
-    [(MRUMPCArtworkDataSource *)self setResponse:v6];
-    v7 = [v6 playerPath];
-    [(MRUMPCArtworkDataSource *)self configureAnimatedArtworkEndpointControllerForPlayerPath:v7];
+    [(MRUMPCArtworkDataSource *)self setResponse:responseCopy];
+    playerPath = [responseCopy playerPath];
+    [(MRUMPCArtworkDataSource *)self configureAnimatedArtworkEndpointControllerForPlayerPath:playerPath];
   }
 
-  else if (self->_animatedArtworkEndpointController == v8)
+  else if (self->_animatedArtworkEndpointController == controllerCopy)
   {
-    [(MRUMPCArtworkDataSource *)self setAnimatedArtworkResponse:v6];
+    [(MRUMPCArtworkDataSource *)self setAnimatedArtworkResponse:responseCopy];
   }
 
   [(MRUMPCArtworkDataSource *)self updateArtwork];
 }
 
-- (void)endpointController:(id)a3 didAllowAutomaticResponseLoading:(BOOL)a4
+- (void)endpointController:(id)controller didAllowAutomaticResponseLoading:(BOOL)loading
 {
-  if (self->_endpointController == a3)
+  if (self->_endpointController == controller)
   {
-    self->_allowsAutomaticResponseLoading = a4;
+    self->_allowsAutomaticResponseLoading = loading;
     [(MRUMPCArtworkDataSource *)self configureAllowsAutomaticResponseLoading];
   }
 }
 
 - (void)updateArtwork
 {
-  v3 = [(MPCPlayerResponse *)self->_response tracklist];
-  v4 = [v3 playingItem];
-  v5 = [v4 metadataObject];
-  v21 = [v5 song];
+  tracklist = [(MPCPlayerResponse *)self->_response tracklist];
+  playingItem = [tracklist playingItem];
+  metadataObject = [playingItem metadataObject];
+  song = [metadataObject song];
 
-  v6 = [(MPCPlayerResponse *)self->_animatedArtworkResponse tracklist];
-  v7 = [v6 playingItem];
-  v8 = [v7 metadataObject];
-  v9 = [v8 song];
+  tracklist2 = [(MPCPlayerResponse *)self->_animatedArtworkResponse tracklist];
+  playingItem2 = [tracklist2 playingItem];
+  metadataObject2 = [playingItem2 metadataObject];
+  song2 = [metadataObject2 song];
 
-  v10 = [v21 identifiers];
-  v11 = [v10 contentItemID];
+  identifiers = [song identifiers];
+  contentItemID = [identifiers contentItemID];
 
-  v12 = [v9 identifiers];
-  v13 = [v12 contentItemID];
+  identifiers2 = [song2 identifiers];
+  contentItemID2 = [identifiers2 contentItemID];
 
-  if (!v11)
+  if (!contentItemID)
   {
     goto LABEL_4;
   }
 
-  v14 = [MEMORY[0x1E69B09F0] animatedArtworkItemIdentifierFromSourceIdentifier:v11];
+  v14 = [MEMORY[0x1E69B09F0] animatedArtworkItemIdentifierFromSourceIdentifier:contentItemID];
   v15 = v14;
-  if (v14 == v13)
+  if (v14 == contentItemID2)
   {
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  v16 = [v14 isEqual:v13];
+  v16 = [v14 isEqual:contentItemID2];
 
   if ((v16 & 1) == 0)
   {
 LABEL_4:
-    v15 = v9;
-    v9 = 0;
+    v15 = song2;
+    song2 = 0;
     goto LABEL_5;
   }
 
 LABEL_6:
-  v17 = [(MRUMPCArtworkDataSource *)self artworkForSong:v21 animatedArtworkSong:v9];
+  v17 = [(MRUMPCArtworkDataSource *)self artworkForSong:song animatedArtworkSong:song2];
   if (_os_feature_enabled_impl() && _os_feature_enabled_impl() && self->_animatedArtworkEndpointController)
   {
-    v18 = [v17 catalog];
-    if (v9)
+    catalog = [v17 catalog];
+    if (song2)
     {
       v19 = 1;
     }
 
     else
     {
-      v19 = v18 == 0;
+      v19 = catalog == 0;
     }
 
     v20 = v19;
@@ -127,36 +127,36 @@ LABEL_6:
   [(MRUMPCArtworkDataSource *)self updateArtwork:v17 publishImmediately:v20];
 }
 
-- (id)artworkForSong:(id)a3 animatedArtworkSong:(id)a4
+- (id)artworkForSong:(id)song animatedArtworkSong:(id)artworkSong
 {
-  v6 = a3;
-  v7 = a4;
+  songCopy = song;
+  artworkSongCopy = artworkSong;
   v8 = [MRUArtwork alloc];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __62__MRUMPCArtworkDataSource_artworkForSong_animatedArtworkSong___block_invoke;
   v22[3] = &unk_1E7663910;
-  v23 = v6;
+  v23 = songCopy;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __62__MRUMPCArtworkDataSource_artworkForSong_animatedArtworkSong___block_invoke_2;
   v19[3] = &unk_1E7664330;
   v20 = v23;
-  v21 = v7;
-  v9 = v7;
+  v21 = artworkSongCopy;
+  v9 = artworkSongCopy;
   v10 = v23;
   v11 = [(MRUArtwork *)v8 initWithCatalogBlock:v22 animatedCatalogBlock:v19];
-  v12 = [(MRUArtwork *)v11 catalog];
+  catalog = [(MRUArtwork *)v11 catalog];
   v13 = objc_opt_class();
   v14 = NSStringFromClass(v13);
-  [v12 setCacheIdentifier:v14 forCacheReference:self];
+  [catalog setCacheIdentifier:v14 forCacheReference:self];
 
   if (_os_feature_enabled_impl())
   {
-    v15 = [(MRUArtwork *)v11 animatedCatalog];
+    animatedCatalog = [(MRUArtwork *)v11 animatedCatalog];
     v16 = objc_opt_class();
     v17 = NSStringFromClass(v16);
-    [v15 setCacheIdentifier:v17 forCacheReference:self];
+    [animatedCatalog setCacheIdentifier:v17 forCacheReference:self];
   }
 
   return v11;
@@ -181,30 +181,30 @@ id __62__MRUMPCArtworkDataSource_artworkForSong_animatedArtworkSong___block_invo
   return v7;
 }
 
-- (void)updateArtwork:(id)a3 publishImmediately:(BOOL)a4
+- (void)updateArtwork:(id)artwork publishImmediately:(BOOL)immediately
 {
-  v4 = a4;
-  v7 = a3;
-  v8 = v7;
-  if (v4)
+  immediatelyCopy = immediately;
+  artworkCopy = artwork;
+  v8 = artworkCopy;
+  if (immediatelyCopy)
   {
-    if (self->_publishedArtwork != v7 && ![(MRUArtwork *)v7 isEqual:?])
+    if (self->_publishedArtwork != artworkCopy && ![(MRUArtwork *)artworkCopy isEqual:?])
     {
       v9 = 0.0;
       if (self->_pendingArtworkDate)
       {
-        v10 = [(MRUArtwork *)v8 catalog];
-        v11 = [v10 visualIdenticalityIdentifier];
-        v12 = [(MRUArtwork *)self->_pendingArtwork catalog];
-        v13 = [v12 visualIdenticalityIdentifier];
-        v14 = v13;
-        if (v11 == v13)
+        catalog = [(MRUArtwork *)v8 catalog];
+        visualIdenticalityIdentifier = [catalog visualIdenticalityIdentifier];
+        catalog2 = [(MRUArtwork *)self->_pendingArtwork catalog];
+        visualIdenticalityIdentifier2 = [catalog2 visualIdenticalityIdentifier];
+        v14 = visualIdenticalityIdentifier2;
+        if (visualIdenticalityIdentifier == visualIdenticalityIdentifier2)
         {
         }
 
         else
         {
-          v15 = [v11 isEqual:v13];
+          v15 = [visualIdenticalityIdentifier isEqual:visualIdenticalityIdentifier2];
 
           if ((v15 & 1) == 0)
           {
@@ -212,8 +212,8 @@ id __62__MRUMPCArtworkDataSource_artworkForSong_animatedArtworkSong___block_invo
           }
         }
 
-        v21 = [MEMORY[0x1E695DF00] date];
-        [v21 timeIntervalSinceDate:self->_pendingArtworkDate];
+        date = [MEMORY[0x1E695DF00] date];
+        [date timeIntervalSinceDate:self->_pendingArtworkDate];
         v9 = v22;
       }
 
@@ -223,14 +223,14 @@ LABEL_13:
     }
   }
 
-  else if (self->_pendingArtwork != v7 && ![(MRUArtwork *)v7 isEqual:?])
+  else if (self->_pendingArtwork != artworkCopy && ![(MRUArtwork *)artworkCopy isEqual:?])
   {
     [(MRUMPCArtworkDataSource *)self clearPendingArtwork];
-    v16 = [MEMORY[0x1E695DF00] date];
+    date2 = [MEMORY[0x1E695DF00] date];
     pendingArtworkDate = self->_pendingArtworkDate;
-    self->_pendingArtworkDate = v16;
+    self->_pendingArtworkDate = date2;
 
-    objc_storeStrong(&self->_pendingArtwork, a3);
+    objc_storeStrong(&self->_pendingArtwork, artwork);
     objc_initWeak(&location, self);
     v18 = MEMORY[0x1E69B14D8];
     v23[0] = MEMORY[0x1E69E9820];
@@ -267,21 +267,21 @@ void __60__MRUMPCArtworkDataSource_updateArtwork_publishImmediately___block_invo
   [(MSVTimer *)publishArtworkTimer invalidate];
 }
 
-- (void)publishArtwork:(id)a3 publishingDelay:(double)a4
+- (void)publishArtwork:(id)artwork publishingDelay:(double)delay
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (a4 == 0.3)
+  artworkCopy = artwork;
+  if (delay == 0.3)
   {
     v7 = MCLogCategoryDefault();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138543874;
-      v16 = self;
+      selfCopy3 = self;
       v17 = 2114;
-      v18 = v6;
+      v18 = artworkCopy;
       v19 = 2048;
-      v20 = 0.3;
+      delayCopy = 0.3;
       v8 = "%{public}@ update artwork: %{public}@. delay: %.2fs (timeout)";
 LABEL_9:
       v10 = v7;
@@ -294,16 +294,16 @@ LABEL_9:
   {
     v7 = MCLogCategoryDefault();
     v9 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-    if (a4 >= 0.005)
+    if (delay >= 0.005)
     {
       if (v9)
       {
         v15 = 138543874;
-        v16 = self;
+        selfCopy3 = self;
         v17 = 2114;
-        v18 = v6;
+        v18 = artworkCopy;
         v19 = 2048;
-        v20 = a4;
+        delayCopy = delay;
         v8 = "%{public}@ update artwork: %{public}@. delay: %.2fs";
         goto LABEL_9;
       }
@@ -312,9 +312,9 @@ LABEL_9:
     else if (v9)
     {
       v15 = 138543618;
-      v16 = self;
+      selfCopy3 = self;
       v17 = 2114;
-      v18 = v6;
+      v18 = artworkCopy;
       v8 = "%{public}@ update artwork: %{public}@";
       v10 = v7;
       v11 = 22;
@@ -324,8 +324,8 @@ LABEL_10:
   }
 
   publishedArtwork = self->_publishedArtwork;
-  self->_publishedArtwork = v6;
-  v13 = v6;
+  self->_publishedArtwork = artworkCopy;
+  v13 = artworkCopy;
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained artworkDataSource:self didChangeArtwork:v13];
@@ -333,44 +333,44 @@ LABEL_10:
 
 - (void)configureAllowsAutomaticResponseLoading
 {
-  v3 = [(MRUEndpointController *)self->_animatedArtworkEndpointController endpointController];
-  [v3 setAllowsAutomaticResponseLoading:self->_allowsAutomaticResponseLoading];
-  [v3 setOnScreen:self->_allowsAutomaticResponseLoading];
-  [v3 setDeviceUnlocked:self->_allowsAutomaticResponseLoading];
+  endpointController = [(MRUEndpointController *)self->_animatedArtworkEndpointController endpointController];
+  [endpointController setAllowsAutomaticResponseLoading:self->_allowsAutomaticResponseLoading];
+  [endpointController setOnScreen:self->_allowsAutomaticResponseLoading];
+  [endpointController setDeviceUnlocked:self->_allowsAutomaticResponseLoading];
 }
 
-- (void)configureAnimatedArtworkEndpointControllerForPlayerPath:(id)a3
+- (void)configureAnimatedArtworkEndpointControllerForPlayerPath:(id)path
 {
-  v22 = a3;
+  pathCopy = path;
   if (_os_feature_enabled_impl() && _os_feature_enabled_impl())
   {
-    if ([v22 isLocalDevice])
+    if ([pathCopy isLocalDevice])
     {
-      v4 = [v22 isSystemMusicPath];
+      isSystemMusicPath = [pathCopy isSystemMusicPath];
     }
 
     else
     {
-      v4 = 0;
+      isSystemMusicPath = 0;
     }
 
     v5 = [MEMORY[0x1E69B0B10] systemMediaBundleIDForBundle:0 type:1];
     v6 = objc_alloc(MEMORY[0x1E69B0AD0]);
-    v7 = [MEMORY[0x1E69B0AA0] localOrigin];
+    localOrigin = [MEMORY[0x1E69B0AA0] localOrigin];
     v8 = [objc_alloc(MEMORY[0x1E69B09D8]) initWithBundleIdentifier:v5];
-    v9 = [MEMORY[0x1E69B0AC8] defaultPlayer];
-    v10 = [v6 initWithOrigin:v7 client:v8 player:v9];
+    defaultPlayer = [MEMORY[0x1E69B0AC8] defaultPlayer];
+    v10 = [v6 initWithOrigin:localOrigin client:v8 player:defaultPlayer];
 
-    if (v4 && v10 && ([v22 mrPlayerPath], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEqual:", v10), v11, (v12 & 1) == 0))
+    if (isSystemMusicPath && v10 && ([pathCopy mrPlayerPath], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEqual:", v10), v11, (v12 & 1) == 0))
     {
       if (!self->_animatedArtworkEndpointController)
       {
         v15 = [MRUEndpointController alloc];
-        v16 = [v10 client];
-        v17 = [v16 bundleIdentifier];
-        v18 = [v10 player];
-        v19 = [v18 identifier];
-        v20 = [(MRUEndpointController *)v15 initWithRouteUID:0 client:v17 player:v19];
+        client = [v10 client];
+        bundleIdentifier = [client bundleIdentifier];
+        player = [v10 player];
+        identifier = [player identifier];
+        v20 = [(MRUEndpointController *)v15 initWithRouteUID:0 client:bundleIdentifier player:identifier];
         animatedArtworkEndpointController = self->_animatedArtworkEndpointController;
         self->_animatedArtworkEndpointController = v20;
 

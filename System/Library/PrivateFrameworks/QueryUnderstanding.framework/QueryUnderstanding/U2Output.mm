@@ -8,13 +8,13 @@
 - (NSArray)argIds
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(U2Output *)self argIdsForTokens];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  argIdsForTokens = [(U2Output *)self argIdsForTokens];
+  v5 = [argIdsForTokens countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = *v13;
@@ -24,20 +24,20 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(argIdsForTokens);
         }
 
         v8 = [*(*(&v12 + 1) + 8 * i) objectAtIndexedSubscript:0];
-        [v3 addObject:v8];
+        [array addObject:v8];
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [argIdsForTokens countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
   }
 
-  v9 = [v3 copy];
+  v9 = [array copy];
   v10 = *MEMORY[0x277D85DE8];
 
   return v9;
@@ -46,13 +46,13 @@
 - (NSArray)argScores
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(U2Output *)self argScoresForTokens];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  argScoresForTokens = [(U2Output *)self argScoresForTokens];
+  v5 = [argScoresForTokens countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = *v13;
@@ -62,20 +62,20 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(argScoresForTokens);
         }
 
         v8 = [*(*(&v12 + 1) + 8 * i) objectAtIndexedSubscript:0];
-        [v3 addObject:v8];
+        [array addObject:v8];
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [argScoresForTokens countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
   }
 
-  v9 = [v3 copy];
+  v9 = [array copy];
   v10 = *MEMORY[0x277D85DE8];
 
   return v9;

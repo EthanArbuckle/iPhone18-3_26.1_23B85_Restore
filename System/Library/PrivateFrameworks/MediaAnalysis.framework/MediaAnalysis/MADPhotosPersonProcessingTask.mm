@@ -1,37 +1,37 @@
 @interface MADPhotosPersonProcessingTask
-+ (id)taskWithPhotoLibrary:(id)a3 requirement:(unint64_t)a4 gallery:(id)a5 andContext:(id)a6;
-- (BOOL)_buildAndPromotePersonWithError:(id *)a3 needReclustering:(BOOL *)a4;
-- (BOOL)_updateGalleryWithError:(id *)a3;
++ (id)taskWithPhotoLibrary:(id)library requirement:(unint64_t)requirement gallery:(id)gallery andContext:(id)context;
+- (BOOL)_buildAndPromotePersonWithError:(id *)error needReclustering:(BOOL *)reclustering;
+- (BOOL)_updateGalleryWithError:(id *)error;
 - (BOOL)isCanceled;
-- (MADPhotosPersonProcessingTask)initWithPhotoLibrary:(id)a3 requirement:(unint64_t)a4 gallery:(id)a5 andContext:(id)a6;
+- (MADPhotosPersonProcessingTask)initWithPhotoLibrary:(id)library requirement:(unint64_t)requirement gallery:(id)gallery andContext:(id)context;
 - (int)_updateVIPModels;
-- (int64_t)databaseValueForKey:(id)a3;
-- (void)photoLibraryDidBecomeUnavailable:(id)a3;
+- (int64_t)databaseValueForKey:(id)key;
+- (void)photoLibraryDidBecomeUnavailable:(id)unavailable;
 - (void)process;
 - (void)processGallery;
 @end
 
 @implementation MADPhotosPersonProcessingTask
 
-- (MADPhotosPersonProcessingTask)initWithPhotoLibrary:(id)a3 requirement:(unint64_t)a4 gallery:(id)a5 andContext:(id)a6
+- (MADPhotosPersonProcessingTask)initWithPhotoLibrary:(id)library requirement:(unint64_t)requirement gallery:(id)gallery andContext:(id)context
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  libraryCopy = library;
+  galleryCopy = gallery;
+  contextCopy = context;
   v32.receiver = self;
   v32.super_class = MADPhotosPersonProcessingTask;
   v14 = [(MADProcessingTask *)&v32 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_photoLibrary, a3);
-    v15->_requirement = a4;
-    objc_storeStrong(&v15->_gallery, a5);
-    v16 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v11];
+    objc_storeStrong(&v14->_photoLibrary, library);
+    v15->_requirement = requirement;
+    objc_storeStrong(&v15->_gallery, gallery);
+    v16 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:libraryCopy];
     analysisDatabase = v15->_analysisDatabase;
     v15->_analysisDatabase = v16;
 
-    objc_storeStrong(&v15->_context, a6);
+    objc_storeStrong(&v15->_context, context);
     v18 = [[VCPPhotosPersistenceDelegate alloc] initWithPhotoLibrary:v15->_photoLibrary];
     persistenceDelegate = v15->_persistenceDelegate;
     v15->_persistenceDelegate = v18;
@@ -44,8 +44,8 @@
     petPromoter = v15->_petPromoter;
     v15->_petPromoter = v22;
 
-    v24 = [(PHPhotoLibrary *)v15->_photoLibrary vcp_description];
-    v25 = [NSString stringWithFormat:@"[GalleryPerson][%@]", v24];
+    vcp_description = [(PHPhotoLibrary *)v15->_photoLibrary vcp_description];
+    v25 = [NSString stringWithFormat:@"[GalleryPerson][%@]", vcp_description];
     logPrefix = v15->_logPrefix;
     v15->_logPrefix = v25;
 
@@ -66,12 +66,12 @@
   return v15;
 }
 
-+ (id)taskWithPhotoLibrary:(id)a3 requirement:(unint64_t)a4 gallery:(id)a5 andContext:(id)a6
++ (id)taskWithPhotoLibrary:(id)library requirement:(unint64_t)requirement gallery:(id)gallery andContext:(id)context
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [[a1 alloc] initWithPhotoLibrary:v10 requirement:a4 gallery:v11 andContext:v12];
+  libraryCopy = library;
+  galleryCopy = gallery;
+  contextCopy = context;
+  v13 = [[self alloc] initWithPhotoLibrary:libraryCopy requirement:requirement gallery:galleryCopy andContext:contextCopy];
 
   return v13;
 }
@@ -84,11 +84,11 @@
     return 1;
   }
 
-  v5 = [(MADProcessingTask *)self cancelBlock];
-  if (v5)
+  cancelBlock = [(MADProcessingTask *)self cancelBlock];
+  if (cancelBlock)
   {
-    v6 = [(MADProcessingTask *)self cancelBlock];
-    v3 = v6[2]();
+    cancelBlock2 = [(MADProcessingTask *)self cancelBlock];
+    v3 = cancelBlock2[2]();
   }
 
   else
@@ -180,24 +180,24 @@ LABEL_20:
   return v6;
 }
 
-- (int64_t)databaseValueForKey:(id)a3
+- (int64_t)databaseValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if (+[MADManagedKeyValueStore isMACDReadEnabled])
   {
-    v5 = [(PHPhotoLibrary *)self->_photoLibrary mad_fetchRequest];
-    v6 = [v5 dataStoreValueForKey:v4];
+    mad_fetchRequest = [(PHPhotoLibrary *)self->_photoLibrary mad_fetchRequest];
+    v6 = [mad_fetchRequest dataStoreValueForKey:keyCopy];
   }
 
   else
   {
-    v6 = [(VCPDatabaseWriter *)self->_analysisDatabase valueForKey:v4];
+    v6 = [(VCPDatabaseWriter *)self->_analysisDatabase valueForKey:keyCopy];
   }
 
   return v6;
 }
 
-- (BOOL)_updateGalleryWithError:(id *)a3
+- (BOOL)_updateGalleryWithError:(id *)error
 {
   v46[0] = _NSConcreteStackBlock;
   v46[1] = 3221225472;
@@ -293,13 +293,13 @@ LABEL_20:
 
     if ((v41[2])(v20))
     {
-      if (a3)
+      if (error)
       {
         v47 = NSLocalizedDescriptionKey;
         v24 = [NSString stringWithFormat:@"%@ Canceled during Gallery updating", self->_logPrefix];
         v48 = v24;
         v25 = [NSDictionary dictionaryWithObjects:&v48 forKeys:&v47 count:1];
-        *a3 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:v25];
+        *error = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:v25];
       }
     }
 
@@ -370,10 +370,10 @@ LABEL_20:
         }
       }
 
-      if (a3)
+      if (error)
       {
         v5 = 0;
-        *a3 = [(__CFString *)v4 copy];
+        *error = [(__CFString *)v4 copy];
 LABEL_46:
 
         goto LABEL_47;
@@ -384,14 +384,14 @@ LABEL_46:
     goto LABEL_46;
   }
 
-  if (a3)
+  if (error)
   {
     v53 = NSLocalizedDescriptionKey;
     v39 = [NSString stringWithFormat:@"%@ Gallery updating cancelled before clustering started", self->_logPrefix];
     v54 = v39;
     v4 = [NSDictionary dictionaryWithObjects:&v54 forKeys:&v53 count:1];
     [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:v4];
-    *a3 = v5 = 0;
+    *error = v5 = 0;
 LABEL_47:
 
     goto LABEL_48;
@@ -403,9 +403,9 @@ LABEL_48:
   return v5;
 }
 
-- (BOOL)_buildAndPromotePersonWithError:(id *)a3 needReclustering:(BOOL *)a4
+- (BOOL)_buildAndPromotePersonWithError:(id *)error needReclustering:(BOOL *)reclustering
 {
-  if (a4)
+  if (reclustering)
   {
     v169[0] = _NSConcreteStackBlock;
     v169[1] = 3221225472;
@@ -416,7 +416,7 @@ LABEL_48:
     v7 = (v137 + 16);
     if ((*(v137 + 2))())
     {
-      if (!a3)
+      if (!error)
       {
         v9 = 0;
 LABEL_135:
@@ -429,7 +429,7 @@ LABEL_135:
       v136 = v197;
       v8 = [NSDictionary dictionaryWithObjects:&v197 forKeys:&v196 count:1];
       [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:v8];
-      *a3 = v9 = 0;
+      *error = v9 = 0;
 LABEL_134:
 
       goto LABEL_135;
@@ -437,9 +437,9 @@ LABEL_134:
 
     if (+[MADManagedChangeToken isMACDReadEnabled])
     {
-      v12 = [(PHPhotoLibrary *)self->_photoLibrary mad_fetchRequest];
+      mad_fetchRequest = [(PHPhotoLibrary *)self->_photoLibrary mad_fetchRequest];
       v168 = 0;
-      [v12 fetchChangeToken:&v168 taskID:3 changeTokenType:4];
+      [mad_fetchRequest fetchChangeToken:&v168 taskID:3 changeTokenType:4];
       v13 = v168;
     }
 
@@ -465,7 +465,7 @@ LABEL_15:
         v164[3] = &unk_1002875D8;
         v8 = v135;
         v165 = v8;
-        v166 = self;
+        selfCopy = self;
         v19 = objc_retainBlock(v164);
         gallery = self->_gallery;
         v163 = 0;
@@ -553,7 +553,7 @@ LABEL_37:
         v136 = v13;
         if ((*(v137 + 2))())
         {
-          if (!a3)
+          if (!error)
           {
             v9 = 0;
 LABEL_133:
@@ -566,7 +566,7 @@ LABEL_133:
           v195 = v134;
           v133 = [NSDictionary dictionaryWithObjects:&v195 forKeys:&v194 count:1];
           [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:v133];
-          *a3 = v9 = 0;
+          *error = v9 = 0;
 LABEL_132:
 
           goto LABEL_133;
@@ -664,7 +664,7 @@ LABEL_132:
         {
           if ((*v7)(v124))
           {
-            if (!a3)
+            if (!error)
             {
               v9 = 0;
 LABEL_131:
@@ -677,7 +677,7 @@ LABEL_131:
             v47 = [NSString stringWithFormat:@"%@ Person updating cancelled", self->_logPrefix];
             v193 = v47;
             v48 = [NSDictionary dictionaryWithObjects:&v193 forKeys:&v192 count:1];
-            *a3 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:v48];
+            *error = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:v48];
 
             goto LABEL_100;
           }
@@ -731,8 +731,8 @@ LABEL_131:
             else
             {
               v59 = self->_analysisDatabase;
-              v60 = [(PHPhotoLibrary *)self->_photoLibrary currentToken];
-              [(VCPDatabaseWriter *)v59 updateChangeToken:v60 forTaskID:3 andChangeTokenType:3];
+              currentToken = [(PHPhotoLibrary *)self->_photoLibrary currentToken];
+              [(VCPDatabaseWriter *)v59 updateChangeToken:currentToken forTaskID:3 andChangeTokenType:3];
             }
           }
 
@@ -787,8 +787,8 @@ LABEL_131:
             else
             {
               v62 = self->_analysisDatabase;
-              v63 = [(PHPhotoLibrary *)self->_photoLibrary currentToken];
-              [(VCPDatabaseWriter *)v62 setChangeToken:v63 forTaskID:3 andChangeTokenType:3 date:v56];
+              currentToken2 = [(PHPhotoLibrary *)self->_photoLibrary currentToken];
+              [(VCPDatabaseWriter *)v62 setChangeToken:currentToken2 forTaskID:3 andChangeTokenType:3 date:v56];
             }
           }
 
@@ -825,7 +825,7 @@ LABEL_131:
         [v134 timeIntervalSinceNow];
         [v47 accumulateDoubleValue:@"PersonBuildingElapsedTimeInSeconds" forField:self->_runSession andEvent:-v66];
         [v47 accumulateInt64Value:1 forField:@"NumberOfPersonBuildingEvents" andEvent:self->_runSession];
-        *a4 = 0;
+        *reclustering = 0;
         if ([(PHPhotoLibrary *)self->_photoLibrary vcp_isSyndicationLibrary])
         {
           if (MediaAnalysisLogLevel() >= 6)
@@ -846,13 +846,13 @@ LABEL_131:
 
         if ((*v7)(v124))
         {
-          if (a3)
+          if (error)
           {
             v190 = NSLocalizedDescriptionKey;
             v69 = [NSString stringWithFormat:@"%@ Person promoting cancelled", self->_logPrefix];
             v191 = v69;
             v70 = [NSDictionary dictionaryWithObjects:&v191 forKeys:&v190 count:1];
-            *a3 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:v70];
+            *error = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:v70];
           }
 
 LABEL_100:
@@ -909,7 +909,7 @@ LABEL_130:
         v142[1] = 3221225472;
         v142[2] = sub_1001616D0;
         v142[3] = &unk_100287648;
-        v144 = self;
+        selfCopy2 = self;
         v145 = buf;
         v117 = v120;
         v143 = v117;
@@ -917,7 +917,7 @@ LABEL_130:
         v47 = v121;
         if ((*v7)(v124))
         {
-          if (a3)
+          if (error)
           {
             v184 = NSLocalizedDescriptionKey;
             v185 = [NSString stringWithFormat:@"%@ Person promoting cancelled", self->_logPrefix];
@@ -926,7 +926,7 @@ LABEL_130:
             v81 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:?];
 LABEL_126:
             v9 = 0;
-            *a3 = v81;
+            *error = v81;
 LABEL_127:
 
 LABEL_129:
@@ -979,7 +979,7 @@ LABEL_129:
               v47 = v121;
             }
 
-            *a4 |= v86 != v118;
+            *reclustering |= v86 != v118;
             if (!(*v7)(v124))
             {
               v119 = [(PHPhotoLibrary *)self->_photoLibrary mad_allPersonsFetchOptionsWithDetectionTypes:&off_100296428 andVerifiedTypes:&off_100296440];
@@ -1029,7 +1029,7 @@ LABEL_129:
               v138[1] = 3221225472;
               v138[2] = sub_100161968;
               v138[3] = &unk_100287670;
-              v140 = self;
+              selfCopy3 = self;
               v141 = v176;
               v111 = v112;
               v139 = v111;
@@ -1038,13 +1038,13 @@ LABEL_129:
               v99 = (*v7)(v124);
               if (v99)
               {
-                if (a3)
+                if (error)
                 {
                   v170 = NSLocalizedDescriptionKey;
                   v100 = [NSString stringWithFormat:@"%@ Pet promoting cancelled", self->_logPrefix];
                   v171 = v100;
                   v101 = [NSDictionary dictionaryWithObjects:&v171 forKeys:&v170 count:1];
-                  *a3 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:v101];
+                  *error = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:v101];
                 }
               }
 
@@ -1088,7 +1088,7 @@ LABEL_129:
                   v47 = v121;
                 }
 
-                *a4 |= v106 != v114;
+                *reclustering |= v106 != v114;
                 [MADProgressManager cacheProcessedAssetCountAfterPromoter:[(MADPhotosPersonProcessingTask *)self databaseValueForKey:VCPKeyValueNumberOfAssetsAnalyzedForPhotosFaceProcessing] photoLibrary:self->_photoLibrary];
               }
 
@@ -1097,7 +1097,7 @@ LABEL_129:
               goto LABEL_127;
             }
 
-            if (a3)
+            if (error)
             {
               v180 = NSLocalizedDescriptionKey;
               v181 = [NSString stringWithFormat:@"%@ Pet promoting cancelled", self->_logPrefix];
@@ -1108,7 +1108,7 @@ LABEL_129:
             }
           }
 
-          else if (a3)
+          else if (error)
           {
             v182 = NSLocalizedDescriptionKey;
             v183 = [NSString stringWithFormat:@"%@ Failed during person promoting", self->_logPrefix];
@@ -1123,7 +1123,7 @@ LABEL_129:
         goto LABEL_129;
       }
 
-      v12 = &_os_log_default;
+      mad_fetchRequest = &_os_log_default;
       v16 = &_os_log_default;
       v17 = VCPLogToOSLogType[3];
       if (os_log_type_enabled(&_os_log_default, v17))
@@ -1140,13 +1140,13 @@ LABEL_129:
     goto LABEL_15;
   }
 
-  if (a3)
+  if (error)
   {
     v198 = NSLocalizedDescriptionKey;
     v10 = [NSString stringWithFormat:@"needReclustering is nil"];
     v199 = v10;
     v11 = [NSDictionary dictionaryWithObjects:&v199 forKeys:&v198 count:1];
-    *a3 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-50 userInfo:v11];
+    *error = [NSError errorWithDomain:NSOSStatusErrorDomain code:-50 userInfo:v11];
   }
 
   return 0;
@@ -1156,7 +1156,7 @@ LABEL_129:
 {
   if (self->_requirement == 10)
   {
-    v3 = [(PHPhotoLibrary *)self->_photoLibrary mad_countOfUnclusteredFaces];
+    mad_countOfUnclusteredFaces = [(PHPhotoLibrary *)self->_photoLibrary mad_countOfUnclusteredFaces];
     if (MediaAnalysisLogLevel() >= 7)
     {
       v4 = &_os_log_default;
@@ -1167,12 +1167,12 @@ LABEL_129:
         *buf = 138412546;
         v189 = logPrefix;
         v190 = 2048;
-        v191 = v3;
+        v191 = mad_countOfUnclusteredFaces;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v5, "%@ Found %lu faces to add to Gallery for clustering", buf, 0x16u);
       }
     }
 
-    if (v3 < +[MADVUUtilities clusterFaceCountThreshold])
+    if (mad_countOfUnclusteredFaces < +[MADVUUtilities clusterFaceCountThreshold])
     {
       if (MediaAnalysisLogLevel() >= 6)
       {
@@ -1363,7 +1363,7 @@ LABEL_41:
       goto LABEL_210;
     }
 
-    v38 = [(PHPhotoLibrary *)self->_photoLibrary countOfFaceCropsToBeGenerated];
+    countOfFaceCropsToBeGenerated = [(PHPhotoLibrary *)self->_photoLibrary countOfFaceCropsToBeGenerated];
     if (MediaAnalysisLogLevel() >= 6)
     {
       v39 = &_os_log_default;
@@ -1373,12 +1373,12 @@ LABEL_41:
         *buf = 138412546;
         v189 = v40;
         v190 = 2048;
-        v191 = v38;
+        v191 = countOfFaceCropsToBeGenerated;
         _os_log_impl(&_mh_execute_header, &_os_log_default, type, "%@ Found %lu facecrops to generate", buf, 0x16u);
       }
     }
 
-    if (v38)
+    if (countOfFaceCropsToBeGenerated)
     {
       v41 = mach_absolute_time();
       v42 = VCPSignPostLog();
@@ -1399,8 +1399,8 @@ LABEL_41:
       v182[3] = &unk_100283000;
       v182[4] = self;
       [(MADProcessingTask *)v46 setCancelBlock:v182];
-      v47 = [(PHPhotoLibrary *)self->_photoLibrary newFaceCropsToBeGeneratedFetchOptions];
-      v48 = [PHFace fetchFacesWithOptions:v47];
+      newFaceCropsToBeGeneratedFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary newFaceCropsToBeGeneratedFetchOptions];
+      v48 = [PHFace fetchFacesWithOptions:newFaceCropsToBeGeneratedFetchOptions];
       for (i = 0; i < [v48 count]; ++i)
       {
         v50 = objc_autoreleasePoolPush();
@@ -1447,7 +1447,7 @@ LABEL_41:
         VCPPerformance_LogMeasurement();
       }
 
-      v55 = [(PHPhotoLibrary *)self->_photoLibrary countOfFaceCropsToBeGenerated];
+      countOfFaceCropsToBeGenerated2 = [(PHPhotoLibrary *)self->_photoLibrary countOfFaceCropsToBeGenerated];
       if (MediaAnalysisLogLevel() >= 7)
       {
         v56 = &_os_log_default;
@@ -1457,7 +1457,7 @@ LABEL_41:
           *buf = 138412546;
           v189 = v57;
           v190 = 2048;
-          v191 = v55;
+          v191 = countOfFaceCropsToBeGenerated2;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v167, "%@ Found %lu facecrops yet to generate", buf, 0x16u);
         }
       }
@@ -1468,7 +1468,7 @@ LABEL_41:
       goto LABEL_141;
     }
 
-    v58 = [(PHPhotoLibrary *)self->_photoLibrary countOfUnprocessedFaceCrops];
+    countOfUnprocessedFaceCrops = [(PHPhotoLibrary *)self->_photoLibrary countOfUnprocessedFaceCrops];
     if (MediaAnalysisLogLevel() >= 6)
     {
       v59 = &_os_log_default;
@@ -1478,12 +1478,12 @@ LABEL_41:
         *buf = 138412546;
         v189 = v60;
         v190 = 2048;
-        v191 = v58;
+        v191 = countOfUnprocessedFaceCrops;
         _os_log_impl(&_mh_execute_header, &_os_log_default, type, "%@ Found %lu facecrops to process", buf, 0x16u);
       }
     }
 
-    if (v58)
+    if (countOfUnprocessedFaceCrops)
     {
       v61 = mach_absolute_time();
       v62 = VCPSignPostLog();
@@ -1519,7 +1519,7 @@ LABEL_41:
         VCPPerformance_LogMeasurement();
       }
 
-      v69 = [(PHPhotoLibrary *)self->_photoLibrary countOfUnprocessedFaceCrops];
+      countOfUnprocessedFaceCrops2 = [(PHPhotoLibrary *)self->_photoLibrary countOfUnprocessedFaceCrops];
       if (MediaAnalysisLogLevel() >= 7)
       {
         v70 = &_os_log_default;
@@ -1529,7 +1529,7 @@ LABEL_41:
           *buf = 138412546;
           v189 = v71;
           v190 = 2048;
-          v191 = v69;
+          v191 = countOfUnprocessedFaceCrops2;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v167, "%@ Found %lu facecrops yet to process", buf, 0x16u);
         }
       }
@@ -1548,7 +1548,7 @@ LABEL_41:
       goto LABEL_141;
     }
 
-    v73 = [(PHPhotoLibrary *)self->_photoLibrary mad_countOfUnclusteredFaces];
+    mad_countOfUnclusteredFaces2 = [(PHPhotoLibrary *)self->_photoLibrary mad_countOfUnclusteredFaces];
     if (MediaAnalysisLogLevel() >= 6)
     {
       v74 = &_os_log_default;
@@ -1558,12 +1558,12 @@ LABEL_41:
         *buf = 138412546;
         v189 = v75;
         v190 = 2048;
-        v191 = v73;
+        v191 = mad_countOfUnclusteredFaces2;
         _os_log_impl(&_mh_execute_header, &_os_log_default, type, "%@ Found %lu faces to add to Gallery", buf, 0x16u);
       }
     }
 
-    if (v73)
+    if (mad_countOfUnclusteredFaces2)
     {
       v76 = objc_alloc_init(VCPTimeMeasurement);
       [v76 start];
@@ -1579,7 +1579,7 @@ LABEL_41:
         _os_signpost_emit_with_name_impl(&_mh_execute_header, v81, OS_SIGNPOST_INTERVAL_BEGIN, v79, "MADPhotosPersonProcessingTaskClusterFaceSendFaces", "", buf, 2u);
       }
 
-      v166 = [(PHPhotoLibrary *)self->_photoLibrary mad_unclusteredFacesFetchOptions];
+      mad_unclusteredFacesFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary mad_unclusteredFacesFetchOptions];
       v82 = [PHFace fetchFacesWithOptions:?];
       v83 = +[MADVUUtilities sharedInstance];
       gallery = self->_gallery;
@@ -1615,7 +1615,7 @@ LABEL_41:
         VCPPerformance_LogMeasurement();
       }
 
-      v91 = [(PHPhotoLibrary *)self->_photoLibrary mad_countOfUnclusteredFaces];
+      mad_countOfUnclusteredFaces3 = [(PHPhotoLibrary *)self->_photoLibrary mad_countOfUnclusteredFaces];
       if (MediaAnalysisLogLevel() >= 6)
       {
         v92 = &_os_log_default;
@@ -1625,7 +1625,7 @@ LABEL_41:
           *buf = 138412546;
           v189 = v93;
           v190 = 2048;
-          v191 = v91;
+          v191 = mad_countOfUnclusteredFaces3;
           _os_log_impl(&_mh_execute_header, &_os_log_default, type, "%@ Found %lu (expected 0) faces yet to add to Gallery", buf, 0x16u);
         }
       }
@@ -1634,7 +1634,7 @@ LABEL_41:
       analyticsManager = self->_analyticsManager;
       [v76 elapsedTimeSeconds];
       [(VCPMADCoreAnalyticsManager *)analyticsManager accumulateDoubleValue:@"FaceClusteringElapsedTimeInSeconds" forField:self->_runSession andEvent:?];
-      [(VCPMADCoreAnalyticsManager *)self->_analyticsManager accumulateInt64Value:v73 forField:@"NumberOfClusteredFaces" andEvent:self->_runSession];
+      [(VCPMADCoreAnalyticsManager *)self->_analyticsManager accumulateInt64Value:mad_countOfUnclusteredFaces2 forField:@"NumberOfClusteredFaces" andEvent:self->_runSession];
     }
 
     v95 = +[MADVUUtilities sharedInstance];
@@ -1758,9 +1758,9 @@ LABEL_141:
     if ([(PHPhotoLibrary *)self->_photoLibrary vcp_isSyndicationLibrary]&& (_os_feature_enabled_impl() & 1) == 0)
     {
       v111 = +[VCPDefaultPhotoLibraryManager sharedManager];
-      v112 = [v111 defaultPhotoLibrary];
+      defaultPhotoLibrary = [v111 defaultPhotoLibrary];
 
-      v113 = [[VCPPhotosQuickFaceIdentificationManager alloc] initWithPhotoLibrary:v112];
+      v113 = [[VCPPhotosQuickFaceIdentificationManager alloc] initWithPhotoLibrary:defaultPhotoLibrary];
       v114 = self->_photoLibrary;
       v176[0] = _NSConcreteStackBlock;
       v176[1] = 3221225472;
@@ -2092,8 +2092,8 @@ LABEL_210:
       v54[4] = self;
       [(MADProcessingTask *)v15 setCancelBlock:v54];
       [(MADContactsPersonProcessingTask *)v15 process];
-      v16 = [(MADPhotosPersonProcessingTask *)self isCanceled];
-      if ((v16 & 1) == 0)
+      isCanceled = [(MADPhotosPersonProcessingTask *)self isCanceled];
+      if ((isCanceled & 1) == 0)
       {
         v17 = +[NSDate now];
         [v17 timeIntervalSinceReferenceDate];
@@ -2130,7 +2130,7 @@ LABEL_210:
       }
 
       objc_autoreleasePoolPop(v14);
-      if (v16)
+      if (isCanceled)
       {
         goto LABEL_54;
       }
@@ -2197,8 +2197,8 @@ LABEL_210:
       v52[4] = self;
       [(MADProcessingTask *)v33 setCancelBlock:v52];
       [(MADHomePersonProcessingTask *)v33 process];
-      v34 = [(MADPhotosPersonProcessingTask *)self isCanceled];
-      if ((v34 & 1) == 0)
+      isCanceled2 = [(MADPhotosPersonProcessingTask *)self isCanceled];
+      if ((isCanceled2 & 1) == 0)
       {
         v35 = +[NSDate now];
         [v35 timeIntervalSinceReferenceDate];
@@ -2235,7 +2235,7 @@ LABEL_210:
       }
 
       objc_autoreleasePoolPop(v32);
-      if (v34)
+      if (isCanceled2)
       {
         goto LABEL_54;
       }
@@ -2282,12 +2282,12 @@ LABEL_54:
 LABEL_55:
 }
 
-- (void)photoLibraryDidBecomeUnavailable:(id)a3
+- (void)photoLibraryDidBecomeUnavailable:(id)unavailable
 {
-  v4 = a3;
-  v5 = [(PHPhotoLibrary *)self->_photoLibrary photoLibraryURL];
-  v6 = [v4 photoLibraryURL];
-  v7 = [v5 isEqual:v6];
+  unavailableCopy = unavailable;
+  photoLibraryURL = [(PHPhotoLibrary *)self->_photoLibrary photoLibraryURL];
+  photoLibraryURL2 = [unavailableCopy photoLibraryURL];
+  v7 = [photoLibraryURL isEqual:photoLibraryURL2];
 
   if (v7)
   {
@@ -2300,7 +2300,7 @@ LABEL_55:
         v10 = 138412546;
         v11 = logPrefix;
         v12 = 2112;
-        v13 = v4;
+        v13 = unavailableCopy;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v8, "%@ Photo Library unavailable (%@); cancelling person processing", &v10, 0x16u);
       }
     }

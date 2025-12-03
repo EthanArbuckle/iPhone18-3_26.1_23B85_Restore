@@ -1,18 +1,18 @@
 @interface TPSCommonDefines
-+ (BOOL)callerIsTipsdWithSource:(id)a3;
++ (BOOL)callerIsTipsdWithSource:(id)source;
 + (BOOL)hardwareChanged;
-+ (BOOL)isAppRestrictedWithBundleIdentifier:(id)a3;
-+ (BOOL)isAppValidWithBundleIdentifier:(id)a3;
++ (BOOL)isAppRestrictedWithBundleIdentifier:(id)identifier;
++ (BOOL)isAppValidWithBundleIdentifier:(id)identifier;
 + (BOOL)isCellularChinaSKUDevice;
-+ (BOOL)isChecklistCollectionWithIdentifier:(id)a3;
++ (BOOL)isChecklistCollectionWithIdentifier:(id)identifier;
 + (BOOL)isMacUI;
 + (BOOL)isPadUI;
 + (BOOL)isPhoneUI;
-+ (BOOL)isRecordValid:(id)a3;
++ (BOOL)isRecordValid:(id)valid;
 + (BOOL)isSeniorUser;
 + (BOOL)isVisionUI;
 + (BOOL)isWatchUI;
-+ (BOOL)supportsEntitlement:(id)a3;
++ (BOOL)supportsEntitlement:(id)entitlement;
 + (BOOL)supportsOpenSensitiveURL;
 + (id)_tipStatusArchivalURL;
 + (id)deviceClass;
@@ -31,27 +31,27 @@
 - (NSMutableDictionary)collectionStatusMap;
 - (NSString)userLanguage;
 - (TPSCommonDefines)init;
-- (id)appBundleIDForInstalledAppWithIdentifier:(id)a3;
+- (id)appBundleIDForInstalledAppWithIdentifier:(id)identifier;
 - (id)archivedTipStatuses;
 - (id)collectionIdentifierForCurrentUserType;
-- (id)collectionIdentifierToUseForCollectionIdentifiers:(id)a3;
-- (id)collectionStatusForCollectionIdentifier:(id)a3;
-- (id)dateForCollectionIdentifier:(id)a3 dateType:(unint64_t)a4;
+- (id)collectionIdentifierToUseForCollectionIdentifiers:(id)identifiers;
+- (id)collectionStatusForCollectionIdentifier:(id)identifier;
+- (id)dateForCollectionIdentifier:(id)identifier dateType:(unint64_t)type;
 - (id)reloadAppGroupDefaults;
 - (int64_t)daysSinceLastMajorVersionUpdate;
 - (int64_t)userType;
-- (void)activatedCollection:(id)a3;
+- (void)activatedCollection:(id)collection;
 - (void)archivedTipStatuses;
 - (void)clearDataCache;
 - (void)deleteTipStatusArchivalDirectory;
-- (void)featuredCollection:(id)a3;
-- (void)notifiedCollection:(id)a3;
+- (void)featuredCollection:(id)collection;
+- (void)notifiedCollection:(id)collection;
 - (void)reloadModelInformation;
 - (void)resetCollectionStatusMap;
-- (void)setUserLanguage:(id)a3;
+- (void)setUserLanguage:(id)language;
 - (void)syncCollectionStatusMap;
-- (void)updateCollectionStatus:(unint64_t)a3 collections:(id)a4;
-- (void)viewedCollection:(id)a3;
+- (void)updateCollectionStatus:(unint64_t)status collections:(id)collections;
+- (void)viewedCollection:(id)collection;
 @end
 
 @implementation TPSCommonDefines
@@ -83,7 +83,7 @@ uint64_t __34__TPSCommonDefines_sharedInstance__block_invoke()
   block[1] = 3221225472;
   block[2] = __43__TPSCommonDefines_tipsCoreFrameworkBundle__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (tipsCoreFrameworkBundle_predicate != -1)
   {
     dispatch_once(&tipsCoreFrameworkBundle_predicate, block);
@@ -106,40 +106,40 @@ uint64_t __43__TPSCommonDefines_tipsCoreFrameworkBundle__block_invoke(uint64_t a
 
 + (BOOL)isPhoneUI
 {
-  v2 = [objc_opt_class() deviceClass];
-  v3 = [v2 isEqualToString:@"iPhone"];
+  deviceClass = [objc_opt_class() deviceClass];
+  v3 = [deviceClass isEqualToString:@"iPhone"];
 
   return v3;
 }
 
 + (BOOL)isPadUI
 {
-  v2 = [objc_opt_class() deviceClass];
-  v3 = [v2 isEqualToString:@"iPad"];
+  deviceClass = [objc_opt_class() deviceClass];
+  v3 = [deviceClass isEqualToString:@"iPad"];
 
   return v3;
 }
 
 + (BOOL)isMacUI
 {
-  v2 = [objc_opt_class() deviceClass];
-  v3 = [v2 isEqualToString:@"Mac"];
+  deviceClass = [objc_opt_class() deviceClass];
+  v3 = [deviceClass isEqualToString:@"Mac"];
 
   return v3;
 }
 
 + (BOOL)isVisionUI
 {
-  v2 = [objc_opt_class() deviceClass];
-  v3 = [v2 isEqualToString:@"apple-vision-pro"];
+  deviceClass = [objc_opt_class() deviceClass];
+  v3 = [deviceClass isEqualToString:@"apple-vision-pro"];
 
   return v3;
 }
 
 + (BOOL)isWatchUI
 {
-  v2 = [objc_opt_class() deviceClass];
-  v3 = [v2 isEqualToString:@"Watch"];
+  deviceClass = [objc_opt_class() deviceClass];
+  v3 = [deviceClass isEqualToString:@"Watch"];
 
   return v3;
 }
@@ -210,34 +210,34 @@ void __27__TPSCommonDefines_osBuild__block_invoke()
 
 + (BOOL)hardwareChanged
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v3 = MGCopyAnswer();
   v4 = [v3 hash];
-  v5 = [v2 objectForKey:@"CurrentProductHash"];
-  v6 = [v5 unsignedIntegerValue];
+  v5 = [standardUserDefaults objectForKey:@"CurrentProductHash"];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  if (v6 != v4)
+  if (unsignedIntegerValue != v4)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v4];
-    [v2 setObject:v7 forKey:@"CurrentProductHash"];
+    [standardUserDefaults setObject:v7 forKey:@"CurrentProductHash"];
 
-    [v2 synchronize];
+    [standardUserDefaults synchronize];
   }
 
-  return v6 != v4;
+  return unsignedIntegerValue != v4;
 }
 
-+ (BOOL)callerIsTipsdWithSource:(id)a3
++ (BOOL)callerIsTipsdWithSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __44__TPSCommonDefines_callerIsTipsdWithSource___block_invoke;
   v9[3] = &unk_1E8102698;
-  v10 = v4;
-  v11 = a1;
+  v10 = sourceCopy;
+  selfCopy = self;
   v5 = callerIsTipsdWithSource__predicate;
-  v6 = v4;
+  v6 = sourceCopy;
   if (v5 != -1)
   {
     dispatch_once(&callerIsTipsdWithSource__predicate, v9);
@@ -286,11 +286,11 @@ void __32__TPSCommonDefines_isSeniorUser__block_invoke()
   isSeniorUser_kIsSeniorUser = [v1 userIsSeniorForAccount:v0];
 }
 
-+ (BOOL)isChecklistCollectionWithIdentifier:(id)a3
++ (BOOL)isChecklistCollectionWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[TPSCommonDefines checklistCollectionIdentifier];
-  v5 = [v3 isEqualToString:v4];
+  v5 = [identifierCopy isEqualToString:v4];
 
   return v5;
 }
@@ -329,10 +329,10 @@ void __31__TPSCommonDefines_deviceClass__block_invoke()
 
 + (id)deviceGuideIdentifier
 {
-  v2 = [a1 deviceClass];
-  v3 = [v2 lowercaseString];
+  deviceClass = [self deviceClass];
+  lowercaseString = [deviceClass lowercaseString];
 
-  return v3;
+  return lowercaseString;
 }
 
 + (id)deviceName
@@ -345,15 +345,15 @@ void __31__TPSCommonDefines_deviceClass__block_invoke()
 + (id)deviceSymbol
 {
   v3 = MEMORY[0x1E696AD60];
-  v4 = [a1 deviceGuideIdentifier];
-  v5 = [v3 stringWithString:v4];
+  deviceGuideIdentifier = [self deviceGuideIdentifier];
+  v5 = [v3 stringWithString:deviceGuideIdentifier];
 
-  if ([a1 isPadUI])
+  if ([self isPadUI])
   {
-    if (([a1 supportsFaceID] & 1) == 0)
+    if (([self supportsFaceID] & 1) == 0)
     {
-      v6 = [a1 buttonType];
-      if (v6 < 2)
+      buttonType = [self buttonType];
+      if (buttonType < 2)
       {
         v7 = @".gen1";
 LABEL_7:
@@ -361,7 +361,7 @@ LABEL_7:
         goto LABEL_8;
       }
 
-      if (v6 == 2)
+      if (buttonType == 2)
       {
         v7 = @".gen2";
         goto LABEL_7;
@@ -381,7 +381,7 @@ LABEL_8:
   block[1] = 3221225472;
   block[2] = __44__TPSCommonDefines_supportsOpenSensitiveURL__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (supportsOpenSensitiveURL_onceToken != -1)
   {
     dispatch_once(&supportsOpenSensitiveURL_onceToken, block);
@@ -398,14 +398,14 @@ uint64_t __44__TPSCommonDefines_supportsOpenSensitiveURL__block_invoke(uint64_t 
   return result;
 }
 
-+ (BOOL)supportsEntitlement:(id)a3
++ (BOOL)supportsEntitlement:(id)entitlement
 {
-  v3 = a3;
+  entitlementCopy = entitlement;
   v4 = SecTaskCreateFromSelf(*MEMORY[0x1E695E480]);
   if (v4)
   {
     v5 = v4;
-    v6 = SecTaskCopyValueForEntitlement(v4, v3, 0);
+    v6 = SecTaskCopyValueForEntitlement(v4, entitlementCopy, 0);
     if (v6)
     {
       v7 = v6;
@@ -447,9 +447,9 @@ uint64_t __44__TPSCommonDefines_supportsOpenSensitiveURL__block_invoke(uint64_t 
     v2->_maxVersion = +[TPSCommonDefines maxRequestVersion];
     v6 = MGCopyAnswer();
     v7 = [v6 componentsSeparatedByString:@"."];
-    v8 = [v7 firstObject];
+    firstObject = [v7 firstObject];
     majorVersion = v2->_majorVersion;
-    v2->_majorVersion = v8;
+    v2->_majorVersion = firstObject;
 
     if ([(NSString *)v2->_majorVersion intValue]> v2->_maxVersion)
     {
@@ -463,8 +463,8 @@ uint64_t __44__TPSCommonDefines_supportsOpenSensitiveURL__block_invoke(uint64_t 
       goto LABEL_26;
     }
 
-    v12 = [MEMORY[0x1E696AC08] defaultManager];
-    v13 = [v12 containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.tips"];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v13 = [defaultManager containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.tips"];
 
     v14 = +[TPSLogger data];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -484,32 +484,32 @@ uint64_t __44__TPSCommonDefines_supportsOpenSensitiveURL__block_invoke(uint64_t 
 
     v19 = MGCopyAnswer();
     v20 = [v19 componentsSeparatedByString:@"."];
-    v21 = [v20 firstObject];
-    v22 = [v21 integerValue];
+    firstObject2 = [v20 firstObject];
+    integerValue = [firstObject2 integerValue];
 
-    if (v22 >= v2->_maxVersion)
+    if (integerValue >= v2->_maxVersion)
     {
       maxVersion = v2->_maxVersion;
     }
 
     else
     {
-      maxVersion = v22;
+      maxVersion = integerValue;
     }
 
-    v24 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     appBundleIDMap = v2->_appBundleIDMap;
-    v2->_appBundleIDMap = v24;
+    v2->_appBundleIDMap = dictionary;
 
     [(TPSCommonDefines *)v2 reloadModelInformation];
     v26 = +[TPSDefaultsManager assetRatioIdentifier];
     v27 = v26;
     if (v26)
     {
-      v28 = [v26 integerValue];
-      if (v28 <= 1)
+      integerValue2 = [v26 integerValue];
+      if (integerValue2 <= 1)
       {
-        v29 = v28;
+        v29 = integerValue2;
       }
 
       else
@@ -546,8 +546,8 @@ LABEL_17:
       }
 
       v33 = v2->_appGroupDefaults;
-      v34 = [MEMORY[0x1E695DF58] tps_userLanguageCode];
-      [(NSUserDefaults *)v33 setObject:v34 forKey:@"TPSUserLanguage"];
+      tps_userLanguageCode = [MEMORY[0x1E695DF58] tps_userLanguageCode];
+      [(NSUserDefaults *)v33 setObject:tps_userLanguageCode forKey:@"TPSUserLanguage"];
 
       v35 = v2->_appGroupDefaults;
       v36 = [MEMORY[0x1E696AD98] numberWithInteger:maxVersion];
@@ -589,13 +589,13 @@ LABEL_26:
 - (BOOL)hasLocaleChanged
 {
   v3 = [(NSUserDefaults *)self->_appGroupDefaults objectForKey:@"lastViewedLocale"];
-  v4 = [MEMORY[0x1E695DF58] preferredLanguages];
-  v5 = [v4 firstObject];
+  preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+  firstObject = [preferredLanguages firstObject];
 
-  v6 = [v3 isEqualToString:v5];
+  v6 = [v3 isEqualToString:firstObject];
   if ((v6 & 1) == 0)
   {
-    [(NSUserDefaults *)self->_appGroupDefaults setObject:v5 forKey:@"lastViewedLocale"];
+    [(NSUserDefaults *)self->_appGroupDefaults setObject:firstObject forKey:@"lastViewedLocale"];
     [(NSUserDefaults *)self->_appGroupDefaults synchronize];
   }
 
@@ -608,8 +608,8 @@ LABEL_26:
   {
     if (!self->_appGroupDefaults)
     {
-      v4 = [MEMORY[0x1E696AC08] defaultManager];
-      v5 = [v4 containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.tips"];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      v5 = [defaultManager containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.tips"];
 
       v6 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"group.com.apple.tips"];
       appGroupDefaults = self->_appGroupDefaults;
@@ -621,13 +621,13 @@ LABEL_26:
       [(TPSCommonDefines *)self clearDataCache];
     }
 
-    v8 = [(TPSCommonDefines *)self syncQueue];
+    syncQueue = [(TPSCommonDefines *)self syncQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __42__TPSCommonDefines_reloadAppGroupDefaults__block_invoke;
     block[3] = &unk_1E8101340;
     block[4] = self;
-    dispatch_async(v8, block);
+    dispatch_async(syncQueue, block);
 
     [(TPSTipStatusController *)self->_tipStatusController setAppGroupDefaults:self->_appGroupDefaults];
     v9 = self->_appGroupDefaults;
@@ -656,12 +656,12 @@ LABEL_26:
   return userLanguage;
 }
 
-- (void)setUserLanguage:(id)a3
+- (void)setUserLanguage:(id)language
 {
-  v5 = a3;
+  languageCopy = language;
   if (![(NSString *)self->_userLanguage isEqualToString:?])
   {
-    objc_storeStrong(&self->_userLanguage, a3);
+    objc_storeStrong(&self->_userLanguage, language);
     [(NSUserDefaults *)self->_appGroupDefaults setObject:self->_userLanguage forKey:@"TPSUserLanguage"];
     [(NSUserDefaults *)self->_appGroupDefaults synchronize];
   }
@@ -685,9 +685,9 @@ LABEL_26:
   [(NSUserDefaults *)appGroupDefaults synchronize];
 }
 
-- (id)collectionIdentifierToUseForCollectionIdentifiers:(id)a3
+- (id)collectionIdentifierToUseForCollectionIdentifiers:(id)identifiers
 {
-  v3 = a3;
+  identifiersCopy = identifiers;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -710,7 +710,7 @@ LABEL_26:
   v16 = &v21;
   v7 = v5;
   v13 = v7;
-  v8 = v3;
+  v8 = identifiersCopy;
   v14 = v8;
   [v8 enumerateObjectsUsingBlock:v11];
   if (*(v18 + 24) == 1)
@@ -782,50 +782,50 @@ uint64_t __70__TPSCommonDefines_collectionIdentifierToUseForCollectionIdentifier
   return collectionStatusMap;
 }
 
-- (void)notifiedCollection:(id)a3
+- (void)notifiedCollection:(id)collection
 {
-  if (a3)
+  if (collection)
   {
-    v4 = [(TPSCommonDefines *)self collectionStatusForCollectionIdentifier:?];
-    v5 = v4;
-    if (v4)
+    canNotify = [(TPSCommonDefines *)self collectionStatusForCollectionIdentifier:?];
+    v5 = canNotify;
+    if (canNotify)
     {
-      v6 = v4;
-      v4 = [v4 canNotify];
+      v6 = canNotify;
+      canNotify = [canNotify canNotify];
       v5 = v6;
-      if (v4)
+      if (canNotify)
       {
         [v6 setCanNotify:0];
-        v4 = [(TPSCommonDefines *)self syncCollectionStatusMap];
+        canNotify = [(TPSCommonDefines *)self syncCollectionStatusMap];
         v5 = v6;
       }
     }
 
-    MEMORY[0x1EEE66BB8](v4, v5);
+    MEMORY[0x1EEE66BB8](canNotify, v5);
   }
 }
 
-- (void)featuredCollection:(id)a3
+- (void)featuredCollection:(id)collection
 {
-  if (a3)
+  if (collection)
   {
     v4 = [MEMORY[0x1E695DFD8] setWithObject:?];
     [(TPSCommonDefines *)self updateCollectionStatus:2 collections:v4];
   }
 }
 
-- (void)viewedCollection:(id)a3
+- (void)viewedCollection:(id)collection
 {
-  if (a3)
+  if (collection)
   {
     v4 = [MEMORY[0x1E695DFD8] setWithObject:?];
     [(TPSCommonDefines *)self updateCollectionStatus:1 collections:v4];
   }
 }
 
-- (void)activatedCollection:(id)a3
+- (void)activatedCollection:(id)collection
 {
-  if (a3)
+  if (collection)
   {
     v4 = [MEMORY[0x1E695DFD8] setWithObject:?];
     [(TPSCommonDefines *)self updateCollectionStatus:0 collections:v4];
@@ -855,11 +855,11 @@ uint64_t __70__TPSCommonDefines_collectionIdentifierToUseForCollectionIdentifier
   }
 }
 
-- (void)updateCollectionStatus:(unint64_t)a3 collections:(id)a4
+- (void)updateCollectionStatus:(unint64_t)status collections:(id)collections
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (![v6 count])
+  collectionsCopy = collections;
+  if (![collectionsCopy count])
   {
     goto LABEL_27;
   }
@@ -868,7 +868,7 @@ uint64_t __70__TPSCommonDefines_collectionIdentifierToUseForCollectionIdentifier
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = v6;
+  v7 = collectionsCopy;
   v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (!v8)
   {
@@ -877,7 +877,7 @@ uint64_t __70__TPSCommonDefines_collectionIdentifierToUseForCollectionIdentifier
   }
 
   v9 = v8;
-  v20 = v6;
+  v20 = collectionsCopy;
   v21 = 0;
   v10 = *v23;
   do
@@ -890,53 +890,53 @@ uint64_t __70__TPSCommonDefines_collectionIdentifierToUseForCollectionIdentifier
       }
 
       v12 = *(*(&v22 + 1) + 8 * i);
-      v13 = [(TPSCommonDefines *)self dateForCollectionIdentifier:v12 dateType:a3, v20];
+      v13 = [(TPSCommonDefines *)self dateForCollectionIdentifier:v12 dateType:status, v20];
       if (v13)
       {
-        v14 = v13;
+        date = v13;
         goto LABEL_22;
       }
 
       v15 = [(TPSCommonDefines *)self collectionStatusForCollectionIdentifier:v12];
       if (v15)
       {
-        v14 = [MEMORY[0x1E695DF00] date];
-        if (a3 == 2)
+        date = [MEMORY[0x1E695DF00] date];
+        if (status == 2)
         {
-          v18 = [v15 featuredDate];
+          featuredDate = [v15 featuredDate];
 
-          if (!v18)
+          if (!featuredDate)
           {
-            [v15 setFeaturedDate:v14];
+            [v15 setFeaturedDate:date];
             goto LABEL_20;
           }
         }
 
         else
         {
-          if (a3 != 1)
+          if (status != 1)
           {
-            if (a3)
+            if (status)
             {
               goto LABEL_21;
             }
 
-            v16 = [v15 activatedDate];
+            activatedDate = [v15 activatedDate];
 
-            if (v16)
+            if (activatedDate)
             {
               goto LABEL_21;
             }
 
-            [v15 setActivatedDate:v14];
+            [v15 setActivatedDate:date];
             goto LABEL_20;
           }
 
-          v17 = [v15 firstViewedDate];
+          firstViewedDate = [v15 firstViewedDate];
 
-          if (!v17)
+          if (!firstViewedDate)
           {
-            [v15 setFirstViewedDate:v14];
+            [v15 setFirstViewedDate:date];
 LABEL_20:
             v21 = 1;
           }
@@ -945,7 +945,7 @@ LABEL_20:
 
       else
       {
-        v14 = 0;
+        date = 0;
       }
 
 LABEL_21:
@@ -958,7 +958,7 @@ LABEL_22:
 
   while (v9);
 
-  v6 = v20;
+  collectionsCopy = v20;
   if (v21)
   {
     [(TPSCommonDefines *)self syncCollectionStatusMap];
@@ -985,14 +985,14 @@ LABEL_27:
   v8 = __Block_byref_object_copy__3;
   v9 = __Block_byref_object_dispose__3;
   v10 = 0;
-  v3 = [(TPSCommonDefines *)self syncQueue];
+  syncQueue = [(TPSCommonDefines *)self syncQueue];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __43__TPSCommonDefines_syncCollectionStatusMap__block_invoke;
   v4[3] = &unk_1E8101368;
   v4[4] = self;
   v4[5] = &v5;
-  dispatch_sync(v3, v4);
+  dispatch_sync(syncQueue, v4);
 
   [TPSSecureArchivingUtilities archivedDataWithRootObject:v6[5] forKey:@"collectionStatusMap" userDefaults:self->_appGroupDefaults];
   _Block_object_dispose(&v5, 8);
@@ -1008,25 +1008,25 @@ uint64_t __43__TPSCommonDefines_syncCollectionStatusMap__block_invoke(uint64_t a
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (id)collectionStatusForCollectionIdentifier:(id)a3
+- (id)collectionStatusForCollectionIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__3;
   v16 = __Block_byref_object_dispose__3;
   v17 = 0;
-  v5 = [(TPSCommonDefines *)self syncQueue];
+  syncQueue = [(TPSCommonDefines *)self syncQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__TPSCommonDefines_collectionStatusForCollectionIdentifier___block_invoke;
   block[3] = &unk_1E8101EE0;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = identifierCopy;
+  dispatch_sync(syncQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -1074,61 +1074,61 @@ void __60__TPSCommonDefines_collectionStatusForCollectionIdentifier___block_invo
   [v3 setObject:v2 forKeyedSubscript:*(a1 + 40)];
 }
 
-- (id)dateForCollectionIdentifier:(id)a3 dateType:(unint64_t)a4
+- (id)dateForCollectionIdentifier:(id)identifier dateType:(unint64_t)type
 {
-  v5 = [(TPSCommonDefines *)self collectionStatusForCollectionIdentifier:a3];
+  v5 = [(TPSCommonDefines *)self collectionStatusForCollectionIdentifier:identifier];
   v6 = v5;
   if (!v5)
   {
     goto LABEL_6;
   }
 
-  if (a4 == 2)
+  if (type == 2)
   {
-    v7 = [v5 featuredDate];
+    featuredDate = [v5 featuredDate];
     goto LABEL_9;
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
-    v7 = [v5 firstViewedDate];
+    featuredDate = [v5 firstViewedDate];
     goto LABEL_9;
   }
 
-  if (a4)
+  if (type)
   {
 LABEL_6:
     v8 = 0;
     goto LABEL_10;
   }
 
-  v7 = [v5 activatedDate];
+  featuredDate = [v5 activatedDate];
 LABEL_9:
-  v8 = v7;
+  v8 = featuredDate;
 LABEL_10:
 
   return v8;
 }
 
-- (id)appBundleIDForInstalledAppWithIdentifier:(id)a3
+- (id)appBundleIDForInstalledAppWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__3;
   v16 = __Block_byref_object_dispose__3;
   v17 = 0;
-  v5 = [(TPSCommonDefines *)self syncQueue];
+  syncQueue = [(TPSCommonDefines *)self syncQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __61__TPSCommonDefines_appBundleIDForInstalledAppWithIdentifier___block_invoke;
   block[3] = &unk_1E8101EE0;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = identifierCopy;
+  dispatch_sync(syncQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -1231,15 +1231,15 @@ void __28__TPSCommonDefines_userType__block_invoke()
 
 - (id)collectionIdentifierForCurrentUserType
 {
-  v2 = [(TPSCommonDefines *)self userType];
-  if (v2 == 2)
+  userType = [(TPSCommonDefines *)self userType];
+  if (userType == 2)
   {
     v3 = +[TPSCommonDefines switcherWelcomeCollectionIdentifier];
   }
 
   else
   {
-    if (v2)
+    if (userType)
     {
       +[TPSCommonDefines softwareWelcomeCollectionIdentifier];
     }
@@ -1267,12 +1267,12 @@ void __28__TPSCommonDefines_userType__block_invoke()
 
 - (int64_t)daysSinceLastMajorVersionUpdate
 {
-  v2 = [(TPSCommonDefines *)self lastMajorVersionUpdateDate];
-  if (v2)
+  lastMajorVersionUpdateDate = [(TPSCommonDefines *)self lastMajorVersionUpdateDate];
+  if (lastMajorVersionUpdateDate)
   {
-    v3 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v4 = [MEMORY[0x1E695DF00] date];
-    v5 = [v3 components:16 fromDate:v2 toDate:v4 options:0];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    date = [MEMORY[0x1E695DF00] date];
+    v5 = [currentCalendar components:16 fromDate:lastMajorVersionUpdateDate toDate:date options:0];
 
     v6 = [v5 day];
   }
@@ -1288,16 +1288,16 @@ void __28__TPSCommonDefines_userType__block_invoke()
 - (id)archivedTipStatuses
 {
   v37[2] = *MEMORY[0x1E69E9840];
-  v2 = [objc_opt_class() _tipStatusArchivalURL];
-  if (v2)
+  _tipStatusArchivalURL = [objc_opt_class() _tipStatusArchivalURL];
+  if (_tipStatusArchivalURL)
   {
-    v3 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v4 = *MEMORY[0x1E695DB78];
     v37[0] = *MEMORY[0x1E695DC30];
     v37[1] = v4;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:2];
-    v22 = v2;
-    v6 = [v3 enumeratorAtURL:v2 includingPropertiesForKeys:v5 options:4 errorHandler:&__block_literal_global_242];
+    v22 = _tipStatusArchivalURL;
+    v6 = [defaultManager enumeratorAtURL:_tipStatusArchivalURL includingPropertiesForKeys:v5 options:4 errorHandler:&__block_literal_global_242];
 
     v23 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v28 = 0u;
@@ -1379,7 +1379,7 @@ void __28__TPSCommonDefines_userType__block_invoke()
       v9 = 0;
     }
 
-    v2 = v22;
+    _tipStatusArchivalURL = v22;
   }
 
   else
@@ -1412,15 +1412,15 @@ uint64_t __39__TPSCommonDefines_archivedTipStatuses__block_invoke(uint64_t a1, v
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1C00A7000, a2, OS_LOG_TYPE_ERROR, "Failed to remove item with error: %@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }
 
 + (id)_tipStatusArchivalURL
 {
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
-  v3 = [v2 containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.tips"];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v3 = [defaultManager containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.tips"];
 
   v4 = [v3 URLByAppendingPathComponent:@"Library/Archived" isDirectory:1];
 
@@ -1465,7 +1465,7 @@ void __40__TPSCommonDefines_mainBundleIdentifier__block_invoke()
 LABEL_6:
 }
 
-+ (BOOL)isAppValidWithBundleIdentifier:(id)a3
++ (BOOL)isAppValidWithBundleIdentifier:(id)identifier
 {
   v4 = sub_1C014C230();
   v6 = v5;
@@ -1477,12 +1477,12 @@ LABEL_6:
   }
 
   v10 = v8;
-  v11 = [a1 isRecordValid_];
+  isRecordValid_ = [self isRecordValid_];
 
-  return v11;
+  return isRecordValid_;
 }
 
-+ (BOOL)isAppRestrictedWithBundleIdentifier:(id)a3
++ (BOOL)isAppRestrictedWithBundleIdentifier:(id)identifier
 {
   v3 = sub_1C014C230();
   v5 = v4;
@@ -1494,32 +1494,32 @@ LABEL_6:
   }
 
   v9 = v7;
-  v10 = [v7 applicationState];
-  v11 = [v10 isRestricted];
+  applicationState = [v7 applicationState];
+  isRestricted = [applicationState isRestricted];
 
-  return v11;
+  return isRestricted;
 }
 
-+ (BOOL)isRecordValid:(id)a3
++ (BOOL)isRecordValid:(id)valid
 {
-  v3 = a3;
-  v4 = [v3 applicationState];
-  if ([v4 isRestricted])
+  validCopy = valid;
+  applicationState = [validCopy applicationState];
+  if ([applicationState isRestricted])
   {
-    v5 = 0;
+    isPlaceholder = 0;
   }
 
-  else if ([v4 isInstalled])
+  else if ([applicationState isInstalled])
   {
-    v5 = 1;
+    isPlaceholder = 1;
   }
 
   else
   {
-    v5 = [v4 isPlaceholder];
+    isPlaceholder = [applicationState isPlaceholder];
   }
 
-  return v5;
+  return isPlaceholder;
 }
 
 void __44__TPSCommonDefines_callerIsTipsdWithSource___block_invoke_cold_1(uint64_t a1, uint64_t a2, os_log_t log)
@@ -1546,10 +1546,10 @@ void __44__TPSCommonDefines_callerIsTipsdWithSource___block_invoke_cold_2(uint64
 
 - (void)archivedTipStatuses
 {
-  v7 = [a2 path];
-  *a1 = 138412290;
-  *a3 = v7;
-  _os_log_debug_impl(&dword_1C00A7000, a4, OS_LOG_TYPE_DEBUG, "Skipping unrecognized archive: %@", a1, 0xCu);
+  path = [a2 path];
+  *self = 138412290;
+  *a3 = path;
+  _os_log_debug_impl(&dword_1C00A7000, a4, OS_LOG_TYPE_DEBUG, "Skipping unrecognized archive: %@", self, 0xCu);
 }
 
 void __39__TPSCommonDefines_archivedTipStatuses__block_invoke_cold_1(uint64_t a1, uint64_t a2, os_log_t log)

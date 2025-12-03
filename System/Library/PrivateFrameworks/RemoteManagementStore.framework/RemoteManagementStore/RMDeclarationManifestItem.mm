@@ -1,27 +1,27 @@
 @interface RMDeclarationManifestItem
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToManifestItem:(id)a3;
-- (RMDeclarationManifestItem)initWithCoder:(id)a3;
-- (RMDeclarationManifestItem)initWithIdentifier:(id)a3 version:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToManifestItem:(id)item;
+- (RMDeclarationManifestItem)initWithCoder:(id)coder;
+- (RMDeclarationManifestItem)initWithIdentifier:(id)identifier version:(id)version;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RMDeclarationManifestItem
 
-- (RMDeclarationManifestItem)initWithIdentifier:(id)a3 version:(id)a4
+- (RMDeclarationManifestItem)initWithIdentifier:(id)identifier version:(id)version
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  versionCopy = version;
   v14.receiver = self;
   v14.super_class = RMDeclarationManifestItem;
   v8 = [(RMDeclarationManifestItem *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    v11 = [v7 copy];
+    v11 = [versionCopy copy];
     version = v8->_version;
     v8->_version = v11;
   }
@@ -29,30 +29,30 @@
   return v8;
 }
 
-- (RMDeclarationManifestItem)initWithCoder:(id)a3
+- (RMDeclarationManifestItem)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"version"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"version"];
 
   v7 = [(RMDeclarationManifestItem *)self initWithIdentifier:v5 version:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(RMDeclarationManifestItem *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(RMDeclarationManifestItem *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(RMDeclarationManifestItem *)self version];
-  [v4 encodeObject:v6 forKey:@"version"];
+  version = [(RMDeclarationManifestItem *)self version];
+  [coderCopy encodeObject:version forKey:@"version"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -60,22 +60,22 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(RMDeclarationManifestItem *)self isEqualToManifestItem:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(RMDeclarationManifestItem *)self isEqualToManifestItem:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToManifestItem:(id)a3
+- (BOOL)isEqualToManifestItem:(id)item
 {
-  v4 = a3;
-  v5 = [(RMDeclarationManifestItem *)self identifier];
-  v6 = [v4 identifier];
-  if ([v5 isEqualToString:v6])
+  itemCopy = item;
+  identifier = [(RMDeclarationManifestItem *)self identifier];
+  identifier2 = [itemCopy identifier];
+  if ([identifier isEqualToString:identifier2])
   {
-    v7 = [(RMDeclarationManifestItem *)self version];
-    v8 = [v4 version];
-    v9 = [v7 isEqualToString:v8];
+    version = [(RMDeclarationManifestItem *)self version];
+    version2 = [itemCopy version];
+    v9 = [version isEqualToString:version2];
   }
 
   else

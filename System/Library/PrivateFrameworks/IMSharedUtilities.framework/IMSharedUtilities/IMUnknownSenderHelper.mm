@@ -1,26 +1,26 @@
 @interface IMUnknownSenderHelper
-+ (BOOL)accountCountryIsCandidateForInternationalFiltering:(id)a3;
-+ (BOOL)accountRegionIsCandidateForInternationalFiltering:(id)a3;
-+ (BOOL)receiverIsCandidateForInternationalFiltering:(id)a3;
-+ (BOOL)receivingID:(id)a3 isCountryCode:(id)a4;
-+ (BOOL)shouldShowInternationalSenderWarningForHandleID:(id)a3;
-+ (id)mapID:(id)a3 usingKey:(id)a4;
++ (BOOL)accountCountryIsCandidateForInternationalFiltering:(id)filtering;
++ (BOOL)accountRegionIsCandidateForInternationalFiltering:(id)filtering;
++ (BOOL)receiverIsCandidateForInternationalFiltering:(id)filtering;
++ (BOOL)receivingID:(id)d isCountryCode:(id)code;
++ (BOOL)shouldShowInternationalSenderWarningForHandleID:(id)d;
++ (id)mapID:(id)d usingKey:(id)key;
 @end
 
 @implementation IMUnknownSenderHelper
 
-+ (BOOL)receiverIsCandidateForInternationalFiltering:(id)a3
++ (BOOL)receiverIsCandidateForInternationalFiltering:(id)filtering
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [IMUnknownSenderHelper receivingID:v3 isCountryCode:@"tw"];
+  filteringCopy = filtering;
+  v4 = [IMUnknownSenderHelper receivingID:filteringCopy isCountryCode:@"tw"];
   if (v4 && IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v7 = 138412546;
-      v8 = v3;
+      v8 = filteringCopy;
       v9 = 2112;
       v10 = @"tw";
       _os_log_impl(&dword_1A85E5000, v5, OS_LOG_TYPE_INFO, "Receiving id (%@) with country code (%@) is a candidate for international filtering.", &v7, 0x16u);
@@ -30,11 +30,11 @@
   return v4;
 }
 
-+ (BOOL)accountRegionIsCandidateForInternationalFiltering:(id)a3
++ (BOOL)accountRegionIsCandidateForInternationalFiltering:(id)filtering
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 isEqualToString:@"R:TW"])
+  filteringCopy = filtering;
+  if ([filteringCopy isEqualToString:@"R:TW"])
   {
     if (IMOSLoggingEnabled())
     {
@@ -42,7 +42,7 @@
       if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
       {
         v7 = 138412290;
-        v8 = v3;
+        v8 = filteringCopy;
         _os_log_impl(&dword_1A85E5000, v4, OS_LOG_TYPE_INFO, "Region (%@) is a candidate for international filtering.", &v7, 0xCu);
       }
 
@@ -77,11 +77,11 @@ LABEL_13:
   return v5;
 }
 
-+ (BOOL)accountCountryIsCandidateForInternationalFiltering:(id)a3
++ (BOOL)accountCountryIsCandidateForInternationalFiltering:(id)filtering
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 isEqualToString:@"tw"])
+  filteringCopy = filtering;
+  if ([filteringCopy isEqualToString:@"tw"])
   {
     if (IMOSLoggingEnabled())
     {
@@ -89,7 +89,7 @@ LABEL_13:
       if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
       {
         v7 = 138412290;
-        v8 = v3;
+        v8 = filteringCopy;
         _os_log_impl(&dword_1A85E5000, v4, OS_LOG_TYPE_INFO, "Country (%@) is a candidate for international filtering.", &v7, 0xCu);
       }
 
@@ -124,13 +124,13 @@ LABEL_13:
   return v5;
 }
 
-+ (BOOL)shouldShowInternationalSenderWarningForHandleID:(id)a3
++ (BOOL)shouldShowInternationalSenderWarningForHandleID:(id)d
 {
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
-    v5 = MEMORY[0x1AC570A80](v4);
-    v6 = [a1 mapID:v5 usingKey:@"mapSendingIDForSpamFilter"];
+    v5 = MEMORY[0x1AC570A80](dCopy);
+    v6 = [self mapID:v5 usingKey:@"mapSendingIDForSpamFilter"];
 
     if ((IMStringIsEmail() & 1) != 0 || !MEMORY[0x1AC570A50](v6))
     {
@@ -152,19 +152,19 @@ LABEL_13:
   return v8;
 }
 
-+ (BOOL)receivingID:(id)a3 isCountryCode:(id)a4
++ (BOOL)receivingID:(id)d isCountryCode:(id)code
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  dCopy = d;
+  codeCopy = code;
+  if ([dCopy length])
   {
-    v8 = MEMORY[0x1AC570A80](v6);
-    v9 = [a1 mapID:v8 usingKey:@"mapSendingIDForSpamFilter"];
+    v8 = MEMORY[0x1AC570A80](dCopy);
+    v9 = [self mapID:v8 usingKey:@"mapSendingIDForSpamFilter"];
 
     if (MEMORY[0x1AC570A50](v9))
     {
       v10 = IMCountryCodeForNumber();
-      v11 = [v10 isEqualToString:v7];
+      v11 = [v10 isEqualToString:codeCopy];
     }
 
     else
@@ -181,14 +181,14 @@ LABEL_13:
   return v11;
 }
 
-+ (id)mapID:(id)a3 usingKey:(id)a4
++ (id)mapID:(id)d usingKey:(id)key
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  keyCopy = key;
   v7 = IMGetCachedDomainValueForKey();
   v8 = v7;
-  if (v7 && ([v7 objectForKey:v5], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (v7 && ([v7 objectForKey:dCopy], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     if (IMOSLoggingEnabled())
     {
@@ -196,7 +196,7 @@ LABEL_13:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         v12 = 138412546;
-        v13 = v5;
+        v13 = dCopy;
         v14 = 2112;
         v15 = v9;
         _os_log_impl(&dword_1A85E5000, v10, OS_LOG_TYPE_INFO, "Mapping id (%@) to (%@).", &v12, 0x16u);
@@ -206,7 +206,7 @@ LABEL_13:
 
   else
   {
-    v9 = v5;
+    v9 = dCopy;
   }
 
   return v9;

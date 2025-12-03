@@ -1,35 +1,35 @@
 @interface NNMKMessageContentSyncServiceClient
-- (NNMKMessageContentSyncServiceClient)initWithQueue:(id)a3;
+- (NNMKMessageContentSyncServiceClient)initWithQueue:(id)queue;
 - (NNMKMessageContentSyncServiceClientDelegate)delegate;
-- (void)readProtobufData:(id)a3 type:(unint64_t)a4;
+- (void)readProtobufData:(id)data type:(unint64_t)type;
 @end
 
 @implementation NNMKMessageContentSyncServiceClient
 
-- (NNMKMessageContentSyncServiceClient)initWithQueue:(id)a3
+- (NNMKMessageContentSyncServiceClient)initWithQueue:(id)queue
 {
   v4.receiver = self;
   v4.super_class = NNMKMessageContentSyncServiceClient;
-  return [(NNMKSyncServiceEndpoint *)&v4 initWithIDSServiceName:@"com.apple.private.alloy.mail.sync.content" queue:a3];
+  return [(NNMKSyncServiceEndpoint *)&v4 initWithIDSServiceName:@"com.apple.private.alloy.mail.sync.content" queue:queue];
 }
 
-- (void)readProtobufData:(id)a3 type:(unint64_t)a4
+- (void)readProtobufData:(id)data type:(unint64_t)type
 {
-  v8 = a3;
-  switch(a4)
+  dataCopy = data;
+  switch(type)
   {
     case 3uLL:
-      v6 = [[NNMKProtoInitialContentSyncCompletedNotification alloc] initWithData:v8];
+      v6 = [[NNMKProtoInitialContentSyncCompletedNotification alloc] initWithData:dataCopy];
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       [WeakRetained messageContentSyncServiceClient:self didNotifyInitialContentSyncCompleted:v6];
       break;
     case 2uLL:
-      v6 = [[NNMKProtoAttachmentSync alloc] initWithData:v8];
+      v6 = [[NNMKProtoAttachmentSync alloc] initWithData:dataCopy];
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       [WeakRetained messageContentSyncServiceClient:self didSyncAttachment:v6];
       break;
     case 1uLL:
-      v6 = [[NNMKProtoMessageContentSync alloc] initWithData:v8];
+      v6 = [[NNMKProtoMessageContentSync alloc] initWithData:dataCopy];
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       [WeakRetained messageContentSyncServiceClient:self didSyncMessageContent:v6];
       break;

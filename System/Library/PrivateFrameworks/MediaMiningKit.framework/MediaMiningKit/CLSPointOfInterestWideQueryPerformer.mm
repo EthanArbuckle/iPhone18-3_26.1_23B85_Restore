@@ -1,19 +1,19 @@
 @interface CLSPointOfInterestWideQueryPerformer
-- (BOOL)shouldQueryItemsForRegion:(id)a3 selectedRegions:(id)a4;
-- (CLSPointOfInterestWideQueryPerformer)initWithPOICache:(id)a3 locationCache:(id)a4;
+- (BOOL)shouldQueryItemsForRegion:(id)region selectedRegions:(id)regions;
+- (CLSPointOfInterestWideQueryPerformer)initWithPOICache:(id)cache locationCache:(id)locationCache;
 @end
 
 @implementation CLSPointOfInterestWideQueryPerformer
 
-- (BOOL)shouldQueryItemsForRegion:(id)a3 selectedRegions:(id)a4
+- (BOOL)shouldQueryItemsForRegion:(id)region selectedRegions:(id)regions
 {
-  v6 = a3;
-  v7 = a4;
-  if (_os_feature_enabled_impl() && ([v6 radius], v8 <= 500.0))
+  regionCopy = region;
+  regionsCopy = regions;
+  if (_os_feature_enabled_impl() && ([regionCopy radius], v8 <= 500.0))
   {
     v11.receiver = self;
     v11.super_class = CLSPointOfInterestWideQueryPerformer;
-    v9 = [(CLSBusinessItemGenericQueryPerformer *)&v11 shouldQueryItemsForRegion:v6 selectedRegions:v7];
+    v9 = [(CLSBusinessItemGenericQueryPerformer *)&v11 shouldQueryItemsForRegion:regionCopy selectedRegions:regionsCopy];
   }
 
   else
@@ -24,11 +24,11 @@
   return v9;
 }
 
-- (CLSPointOfInterestWideQueryPerformer)initWithPOICache:(id)a3 locationCache:(id)a4
+- (CLSPointOfInterestWideQueryPerformer)initWithPOICache:(id)cache locationCache:(id)locationCache
 {
   v5.receiver = self;
   v5.super_class = CLSPointOfInterestWideQueryPerformer;
-  return [(CLSBusinessItemGenericQueryPerformer *)&v5 initWithBusinessCategoryCache:a3 locationCache:a4];
+  return [(CLSBusinessItemGenericQueryPerformer *)&v5 initWithBusinessCategoryCache:cache locationCache:locationCache];
 }
 
 @end

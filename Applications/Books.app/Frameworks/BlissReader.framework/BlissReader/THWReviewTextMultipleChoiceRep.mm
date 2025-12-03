@@ -1,14 +1,14 @@
 @interface THWReviewTextMultipleChoiceRep
 - (id)additionalLayersOverLayer;
 - (id)p_questionHost;
-- (id)p_repForChoiceIndex:(unint64_t)a3;
-- (int)reviewQuestionStateForChoiceIndex:(unint64_t)a3;
+- (id)p_repForChoiceIndex:(unint64_t)index;
+- (int)reviewQuestionStateForChoiceIndex:(unint64_t)index;
 - (void)dealloc;
 - (void)p_updateMoreAnswersLayer;
 - (void)reviewQuestionAnswerUpdated;
-- (void)reviewQuestionUpdateChoiceIndex:(unint64_t)a3 withState:(int)a4;
+- (void)reviewQuestionUpdateChoiceIndex:(unint64_t)index withState:(int)state;
 - (void)screenScaleDidChange;
-- (void)setQuestionState:(int)a3;
+- (void)setQuestionState:(int)state;
 - (void)updateChildrenFromLayout;
 @end
 
@@ -64,10 +64,10 @@
 
 - (void)p_updateMoreAnswersLayer
 {
-  v3 = [(THWReviewTextMultipleChoiceRep *)self canvas];
-  [v3 viewScale];
+  canvas = [(THWReviewTextMultipleChoiceRep *)self canvas];
+  [canvas viewScale];
   v5 = v4;
-  [v3 contentsScale];
+  [canvas contentsScale];
   v7 = v6;
   if (!self->_moreAnswersLayer)
   {
@@ -91,17 +91,17 @@
   [(THWReviewMoreAnswersLayer *)moreAnswersLayer setPosition:v10, v12];
 }
 
-- (int)reviewQuestionStateForChoiceIndex:(unint64_t)a3
+- (int)reviewQuestionStateForChoiceIndex:(unint64_t)index
 {
-  v3 = [(THWReviewTextMultipleChoiceRep *)self p_repForChoiceIndex:a3];
+  v3 = [(THWReviewTextMultipleChoiceRep *)self p_repForChoiceIndex:index];
 
   return [v3 state];
 }
 
-- (void)reviewQuestionUpdateChoiceIndex:(unint64_t)a3 withState:(int)a4
+- (void)reviewQuestionUpdateChoiceIndex:(unint64_t)index withState:(int)state
 {
-  v4 = *&a4;
-  v5 = [(THWReviewTextMultipleChoiceRep *)self p_repForChoiceIndex:a3];
+  v4 = *&state;
+  v5 = [(THWReviewTextMultipleChoiceRep *)self p_repForChoiceIndex:index];
 
   [v5 setState:v4];
 }
@@ -119,11 +119,11 @@
   }
 }
 
-- (void)setQuestionState:(int)a3
+- (void)setQuestionState:(int)state
 {
-  if (self->_questionState != a3)
+  if (self->_questionState != state)
   {
-    self->_questionState = a3;
+    self->_questionState = state;
     [-[THWReviewTextMultipleChoiceRep canvas](self "canvas")];
     if (self->_questionState <= 2u)
     {
@@ -135,7 +135,7 @@
         {
           v8 = [(THWReviewTextMultipleChoiceRep *)self p_repForChoiceIndex:i];
           v9 = v8;
-          if (a3 < 2 || [v8 state] != 1)
+          if (state < 2 || [v8 state] != 1)
           {
             [v9 setState:0];
             [v9 updateRadioState];
@@ -144,13 +144,13 @@
       }
     }
 
-    v10 = [(THWReviewTextMultipleChoiceRep *)self p_questionHost];
+    p_questionHost = [(THWReviewTextMultipleChoiceRep *)self p_questionHost];
 
-    [v10 reviewQuestionDidUpdateState:self];
+    [p_questionHost reviewQuestionDidUpdateState:self];
   }
 }
 
-- (id)p_repForChoiceIndex:(unint64_t)a3
+- (id)p_repForChoiceIndex:(unint64_t)index
 {
   objc_opt_class();
   [-[THWReviewTextMultipleChoiceRep interactiveCanvasController](self "interactiveCanvasController")];
@@ -160,9 +160,9 @@
 
 - (id)p_questionHost
 {
-  v3 = [(THWReviewTextMultipleChoiceRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWReviewTextMultipleChoiceRep *)self interactiveCanvasController];
 
-  return [v3 ancestorRepOfRep:self orDelegateConformingToProtocol:&OBJC_PROTOCOL___THWReviewQuestionHosting];
+  return [interactiveCanvasController ancestorRepOfRep:self orDelegateConformingToProtocol:&OBJC_PROTOCOL___THWReviewQuestionHosting];
 }
 
 @end

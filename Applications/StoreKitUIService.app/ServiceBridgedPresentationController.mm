@@ -19,10 +19,10 @@
 
 - (id)removeSavedViewController
 {
-  v3 = [(ServiceBridgedPresentationController *)self savedViewController];
+  savedViewController = [(ServiceBridgedPresentationController *)self savedViewController];
   [(ServiceBridgedPresentationController *)self setSavedViewController:0];
 
-  return v3;
+  return savedViewController;
 }
 
 @end

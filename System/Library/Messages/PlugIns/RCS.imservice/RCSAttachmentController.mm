@@ -1,15 +1,15 @@
 @interface RCSAttachmentController
 - (RCSAttachmentController)init;
-- (RCSAttachmentController)initWithSession:(id)a3;
+- (RCSAttachmentController)initWithSession:(id)session;
 @end
 
 @implementation RCSAttachmentController
 
-- (RCSAttachmentController)initWithSession:(id)a3
+- (RCSAttachmentController)initWithSession:(id)session
 {
   v4.receiver = self;
   v4.super_class = RCSAttachmentController;
-  return [(RCSAttachmentController *)&v4 initWithSession:a3];
+  return [(RCSAttachmentController *)&v4 initWithSession:session];
 }
 
 - (RCSAttachmentController)init

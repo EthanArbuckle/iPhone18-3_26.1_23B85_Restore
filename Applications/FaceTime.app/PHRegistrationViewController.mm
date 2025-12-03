@@ -3,18 +3,18 @@
 + (BOOL)shouldShowRegistration;
 + (id)_inProgressRegisteringNonPhoneAccount;
 - (PHRegistrationViewController)init;
-- (void)_handleRegistrarCompletion:(BOOL)a3 errorAlertController:(id)a4;
-- (void)_keyboardWillAppear:(id)a3;
-- (void)_keyboardWillDisappear:(id)a3;
-- (void)_registrationStatusChanged:(id)a3;
-- (void)_registrationTimedOut:(id)a3;
+- (void)_handleRegistrarCompletion:(BOOL)completion errorAlertController:(id)controller;
+- (void)_keyboardWillAppear:(id)appear;
+- (void)_keyboardWillDisappear:(id)disappear;
+- (void)_registrationStatusChanged:(id)changed;
+- (void)_registrationTimedOut:(id)out;
 - (void)_startListeningForKeyboardNotifications;
 - (void)_stopListeningToKeyboardNotifications;
 - (void)dealloc;
-- (void)registrationViewSignInPhoneAccount:(id)a3;
-- (void)tapToSignInViewController:(id)a3 didAuthenticateWithResults:(id)a4 error:(id)a5;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)registrationViewSignInPhoneAccount:(id)account;
+- (void)tapToSignInViewController:(id)controller didAuthenticateWithResults:(id)results error:(id)error;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PHRegistrationViewController
@@ -22,9 +22,9 @@
 + (BOOL)shouldShowRegistration
 {
   v2 = PHPreferencesGetValue();
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  if (v3 & 1) != 0 || [UIApp showsTelephonyCalls] && (objc_msgSend(UIApp, "telephonyCallingIsAvailable") & 1) != 0 || objc_msgSend(UIApp, "showsFaceTimeVideo") && (objc_msgSend(UIApp, "faceTimeVideoIsAvailable"))
+  if (bOOLValue & 1) != 0 || [UIApp showsTelephonyCalls] && (objc_msgSend(UIApp, "telephonyCallingIsAvailable") & 1) != 0 || objc_msgSend(UIApp, "showsFaceTimeVideo") && (objc_msgSend(UIApp, "faceTimeVideoIsAvailable"))
   {
     return 0;
   }
@@ -113,9 +113,9 @@ LABEL_11:
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 accountType];
-        v11 = [v9 registrationStatus];
-        if (v11 != 5 && v10 != 2 && (v11 - 2) <= 2)
+        accountType = [v9 accountType];
+        registrationStatus = [v9 registrationStatus];
+        if (registrationStatus != 5 && accountType != 2 && (registrationStatus - 2) <= 2)
         {
           v6 = v9;
           goto LABEL_14;
@@ -196,24 +196,24 @@ LABEL_10:
       v6 = objc_alloc_init(CUTWeakLinkClass());
       [v6 setPresentingViewController:v2];
       v13 = objc_alloc_init(CUTWeakLinkClass());
-      v14 = [v13 aa_primaryAppleAccount];
-      v15 = [v14 username];
-      if ([v15 length])
+      aa_primaryAppleAccount = [v13 aa_primaryAppleAccount];
+      username = [aa_primaryAppleAccount username];
+      if ([username length])
       {
-        [v6 setUsername:v15];
+        [v6 setUsername:username];
       }
 
       [(AKTapToSignInViewController *)v2->_akSignInVC setContext:v6];
-      v16 = [(AKTapToSignInViewController *)v2->_akSignInVC view];
-      [(PHRegistrationView *)v3 setAuthKitSignInView:v16];
+      view = [(AKTapToSignInViewController *)v2->_akSignInVC view];
+      [(PHRegistrationView *)v3 setAuthKitSignInView:view];
 
       v17 = [OBPrivacyLinkController linkWithBundleIdentifier:@"com.apple.onboarding.facetime"];
       privacyLinkController = v2->_privacyLinkController;
       v2->_privacyLinkController = v17;
 
       [(PHRegistrationViewController *)v2 addChildViewController:v2->_privacyLinkController];
-      v19 = [(OBPrivacyLinkController *)v2->_privacyLinkController view];
-      [(PHRegistrationView *)v3 setPrivacyLinkView:v19];
+      view2 = [(OBPrivacyLinkController *)v2->_privacyLinkController view];
+      [(PHRegistrationView *)v3 setPrivacyLinkView:view2];
 
       [(OBPrivacyLinkController *)v2->_privacyLinkController didMoveToParentViewController:v2];
     }
@@ -232,11 +232,11 @@ LABEL_10:
   [(PHRegistrationViewController *)&v3 dealloc];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v14.receiver = self;
   v14.super_class = PHRegistrationViewController;
-  [(PHRegistrationViewController *)&v14 viewWillAppear:a3];
+  [(PHRegistrationViewController *)&v14 viewWillAppear:appear];
   [(PHRegistrationViewController *)self _startListeningForKeyboardNotifications];
   v4 = +[PHRegistrationViewController _inProgressRegisteringNonPhoneAccount];
   if (v4)
@@ -265,26 +265,26 @@ LABEL_10:
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PHRegistrationViewController;
-  [(PHRegistrationViewController *)&v4 viewWillDisappear:a3];
+  [(PHRegistrationViewController *)&v4 viewWillDisappear:disappear];
   [(PHRegistrationViewController *)self _stopListeningToKeyboardNotifications];
 }
 
-- (void)tapToSignInViewController:(id)a3 didAuthenticateWithResults:(id)a4 error:(id)a5
+- (void)tapToSignInViewController:(id)controller didAuthenticateWithResults:(id)results error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  resultsCopy = results;
+  errorCopy = error;
   v11 = sub_100003B9C();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     sub_1000C49FC();
   }
 
-  if (v10)
+  if (errorCopy)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -295,7 +295,7 @@ LABEL_10:
     v12 = sub_100003B9C();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      sub_1000C4A30(v10, v12);
+      sub_1000C4A30(errorCopy, v12);
     }
   }
 
@@ -317,8 +317,8 @@ LABEL_10:
       sub_1000C4B04();
     }
 
-    v14 = [v9 objectForKey:qword_1001269E8];
-    v15 = [v9 objectForKey:qword_1001269F8];
+    v14 = [resultsCopy objectForKey:qword_1001269E8];
+    v15 = [resultsCopy objectForKey:qword_1001269F8];
     v16 = v15;
     if (v14 && v15)
     {
@@ -376,17 +376,17 @@ LABEL_10:
   }
 }
 
-- (void)_handleRegistrarCompletion:(BOOL)a3 errorAlertController:(id)a4
+- (void)_handleRegistrarCompletion:(BOOL)completion errorAlertController:(id)controller
 {
-  v4 = a3;
-  v6 = a4;
+  completionCopy = completion;
+  controllerCopy = controller;
   v7 = sub_100003B9C();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     sub_1000C4BD4();
   }
 
-  if (v4)
+  if (completionCopy)
   {
     v8 = sub_100003B9C();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -394,16 +394,16 @@ LABEL_10:
       sub_1000C4C3C();
     }
 
-    v9 = [(PHRegistrationViewController *)self completionBlock];
+    completionBlock = [(PHRegistrationViewController *)self completionBlock];
 
-    if (v9)
+    if (completionBlock)
     {
-      v10 = [(PHRegistrationViewController *)self completionBlock];
-      v10[2](v10, 1);
+      completionBlock2 = [(PHRegistrationViewController *)self completionBlock];
+      completionBlock2[2](completionBlock2, 1);
     }
   }
 
-  else if (v6)
+  else if (controllerCopy)
   {
     v11 = sub_100003B9C();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -411,7 +411,7 @@ LABEL_10:
       sub_1000C4C08();
     }
 
-    [(PHRegistrationViewController *)self presentViewController:v6 animated:1 completion:0];
+    [(PHRegistrationViewController *)self presentViewController:controllerCopy animated:1 completion:0];
   }
 
   block[0] = _NSConcreteStackBlock;
@@ -422,7 +422,7 @@ LABEL_10:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)registrationViewSignInPhoneAccount:(id)a3
+- (void)registrationViewSignInPhoneAccount:(id)account
 {
   v4 = sub_100003B9C();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -486,9 +486,9 @@ LABEL_10:
   }
 }
 
-- (void)_registrationTimedOut:(id)a3
+- (void)_registrationTimedOut:(id)out
 {
-  v4 = a3;
+  outCopy = out;
   v5 = sub_100003B9C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -496,19 +496,19 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Registration timed out", v10, 2u);
   }
 
-  [v4 invalidate];
+  [outCopy invalidate];
   [(PHRegistrationViewController *)self setRegistrationTimeout:0];
   v6 = +[NSNotificationCenter defaultCenter];
   [v6 removeObserver:self name:IMAccountRegistrationStatusChangedNotification object:0];
 
-  v7 = [(PHRegistrationViewController *)self completionBlock];
+  completionBlock = [(PHRegistrationViewController *)self completionBlock];
 
-  if (v7)
+  if (completionBlock)
   {
-    v8 = [(PHRegistrationViewController *)self view];
-    [v8 setSigningIn:0];
-    v9 = [(PHRegistrationViewController *)self completionBlock];
-    v9[2](v9, 0);
+    view = [(PHRegistrationViewController *)self view];
+    [view setSigningIn:0];
+    completionBlock2 = [(PHRegistrationViewController *)self completionBlock];
+    completionBlock2[2](completionBlock2, 0);
   }
 }
 
@@ -528,47 +528,47 @@ LABEL_10:
   [v4 removeObserver:self name:UIKeyboardWillHideNotification object:0];
 }
 
-- (void)_keyboardWillAppear:(id)a3
+- (void)_keyboardWillAppear:(id)appear
 {
-  v17 = a3;
-  v4 = [(PHRegistrationViewController *)self view];
-  if (v4)
+  appearCopy = appear;
+  view = [(PHRegistrationViewController *)self view];
+  if (view)
   {
-    v5 = [v17 userInfo];
-    v6 = [v5 objectForKey:UIKeyboardFrameEndUserInfoKey];
+    userInfo = [appearCopy userInfo];
+    v6 = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
     [v6 CGRectValue];
     v8 = v7;
 
-    [v4 bounds];
+    [view bounds];
     v10 = v9;
-    [v4 contentSize];
+    [view contentSize];
     if (v8 > v10 - v11)
     {
-      [v4 contentInset];
-      [v4 setContentInset:?];
-      [v4 contentSize];
+      [view contentInset];
+      [view setContentInset:?];
+      [view contentSize];
       v13 = v12;
-      [v4 bounds];
+      [view bounds];
       v15 = v13 - v14;
-      [v4 contentInset];
-      [v4 setContentOffset:1 animated:{0.0, fabs(v16 + v15)}];
+      [view contentInset];
+      [view setContentOffset:1 animated:{0.0, fabs(v16 + v15)}];
     }
   }
 }
 
-- (void)_keyboardWillDisappear:(id)a3
+- (void)_keyboardWillDisappear:(id)disappear
 {
-  v3 = [(PHRegistrationViewController *)self view];
-  if (v3)
+  view = [(PHRegistrationViewController *)self view];
+  if (view)
   {
-    v4 = v3;
-    [v3 setContentInset:{UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right}];
+    v4 = view;
+    [view setContentInset:{UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right}];
     [v4 setContentOffset:{CGPointZero.x, CGPointZero.y}];
-    v3 = v4;
+    view = v4;
   }
 }
 
-- (void)_registrationStatusChanged:(id)a3
+- (void)_registrationStatusChanged:(id)changed
 {
   v4 = sub_100003B9C();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -606,9 +606,9 @@ LABEL_10:
       v13 = *(*(&v26 + 1) + 8 * i);
       if ([v13 accountType] == 2)
       {
-        v14 = [v13 registrationStatus];
-        v15 = v14;
-        if (v14 == 5)
+        registrationStatus = [v13 registrationStatus];
+        v15 = registrationStatus;
+        if (registrationStatus == 5)
         {
           v16 = sub_100003B9C();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -620,7 +620,7 @@ LABEL_10:
 
         else
         {
-          if (v14 != -1)
+          if (registrationStatus != -1)
           {
             continue;
           }
@@ -647,13 +647,13 @@ LABEL_10:
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Registration status change handled", buf, 2u);
         }
 
-        v19 = [(PHRegistrationViewController *)self registrationTimeout];
-        [v19 invalidate];
+        registrationTimeout = [(PHRegistrationViewController *)self registrationTimeout];
+        [registrationTimeout invalidate];
 
         [(PHRegistrationViewController *)self setRegistrationTimeout:0];
-        v20 = [(PHRegistrationViewController *)self completionBlock];
+        completionBlock = [(PHRegistrationViewController *)self completionBlock];
 
-        if (v20)
+        if (completionBlock)
         {
           v21 = sub_100003B9C();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -669,8 +669,8 @@ LABEL_10:
             _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Calling completion block with result: %@", buf, 0xCu);
           }
 
-          v23 = [(PHRegistrationViewController *)self completionBlock];
-          (v23)[2](v23, v15 == 5);
+          completionBlock2 = [(PHRegistrationViewController *)self completionBlock];
+          (completionBlock2)[2](completionBlock2, v15 == 5);
         }
 
         v24 = +[NSNotificationCenter defaultCenter];

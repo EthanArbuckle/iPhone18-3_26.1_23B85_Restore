@@ -2,26 +2,26 @@
 - (BOOL)isDeviceSupported;
 - (BOOL)isTinkerModeEnabled;
 - (NSString)selectedCountry;
-- (_HKRPWatchAppInstallabilityDataSource)initWithDevice:(id)a3;
+- (_HKRPWatchAppInstallabilityDataSource)initWithDevice:(id)device;
 - (void)isDeviceSupported;
 @end
 
 @implementation _HKRPWatchAppInstallabilityDataSource
 
-- (_HKRPWatchAppInstallabilityDataSource)initWithDevice:(id)a3
+- (_HKRPWatchAppInstallabilityDataSource)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v12.receiver = self;
   v12.super_class = _HKRPWatchAppInstallabilityDataSource;
   v6 = [(_HKRPWatchAppInstallabilityDataSource *)&v12 init];
   if (v6)
   {
-    v7 = [MEMORY[0x277CBEBD0] hkrp_respiratoryDefaults];
+    hkrp_respiratoryDefaults = [MEMORY[0x277CBEBD0] hkrp_respiratoryDefaults];
     userDefaults = v6->_userDefaults;
-    v6->_userDefaults = v7;
+    v6->_userDefaults = hkrp_respiratoryDefaults;
 
-    objc_storeStrong(&v6->_device, a3);
-    v9 = [[HKRPOxygenSaturationAvailability alloc] initWithDevice:v5];
+    objc_storeStrong(&v6->_device, device);
+    v9 = [[HKRPOxygenSaturationAvailability alloc] initWithDevice:deviceCopy];
     availability = v6->_availability;
     v6->_availability = v9;
   }
@@ -34,17 +34,17 @@
   device = self->_device;
   if (device)
   {
-    v3 = [(NRDevice *)device valueForProperty:*MEMORY[0x277D2BB28]];
-    v4 = [v3 BOOLValue];
+    mEMORY[0x277CCDD30] = [(NRDevice *)device valueForProperty:*MEMORY[0x277D2BB28]];
+    bOOLValue = [mEMORY[0x277CCDD30] BOOLValue];
   }
 
   else
   {
-    v3 = [MEMORY[0x277CCDD30] sharedBehavior];
-    v4 = [v3 tinkerModeEnabled];
+    mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+    bOOLValue = [mEMORY[0x277CCDD30] tinkerModeEnabled];
   }
 
-  v5 = v4;
+  v5 = bOOLValue;
 
   return v5;
 }
@@ -73,10 +73,10 @@
 
 - (NSString)selectedCountry
 {
-  v2 = [MEMORY[0x277CBEAF8] currentLocale];
-  v3 = [v2 countryCode];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  countryCode = [currentLocale countryCode];
 
-  return v3;
+  return countryCode;
 }
 
 - (void)isDeviceSupported

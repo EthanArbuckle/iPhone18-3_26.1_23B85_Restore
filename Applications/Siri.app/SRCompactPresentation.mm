@@ -1,131 +1,131 @@
 @interface SRCompactPresentation
 - (BOOL)alwaysShowRecognizedSpeech;
-- (BOOL)shouldResumeInterruptedAudioPlaybackForAttendingState:(BOOL)a3;
-- (BOOL)siriDeviceLockedForViewModelController:(id)a3;
-- (BOOL)supportsVisualPresentationForConversationItem:(id)a3;
+- (BOOL)shouldResumeInterruptedAudioPlaybackForAttendingState:(BOOL)state;
+- (BOOL)siriDeviceLockedForViewModelController:(id)controller;
+- (BOOL)supportsVisualPresentationForConversationItem:(id)item;
 - (CGRect)effectiveContentFrame;
 - (CGSize)maxSizeForSnippet;
 - (SASRequestOptions)_activeRequestOptions;
-- (SRCompactPresentation)initWithDelegate:(id)a3 dataSource:(id)a4;
+- (SRCompactPresentation)initWithDelegate:(id)delegate dataSource:(id)source;
 - (SiriUIPresentationDataSource)dataSource;
 - (SiriUIPresentationDelegate)delegate;
 - (double)expectedContentWidth;
 - (id)_activeConversation;
 - (id)_conversationIdentifiers;
-- (id)_dismissalContextWithDismissalReason:(int64_t)a3 dismissalOptions:(id)a4;
+- (id)_dismissalContextWithDismissalReason:(int64_t)reason dismissalOptions:(id)options;
 - (id)_identifierOfPreviousConversation;
-- (id)bugReportPresenterRequestsBugReportKeywordIdentifiers:(id)a3;
-- (id)bugReportPresenterRequestsBugReportPrefixForTitle:(id)a3;
-- (id)compactViewModelController:(id)a3 requestsTranscriptItemForAceObject:(id)a4;
+- (id)bugReportPresenterRequestsBugReportKeywordIdentifiers:(id)identifiers;
+- (id)bugReportPresenterRequestsBugReportPrefixForTitle:(id)title;
+- (id)compactViewModelController:(id)controller requestsTranscriptItemForAceObject:(id)object;
 - (id)dismissalUserInfo;
-- (id)effectiveCoreLocationBundleForCompactViewController:(id)a3;
-- (id)localeForCompactViewController:(id)a3;
-- (int64_t)_viewModelInputTypeForRequestInputType:(int64_t)a3;
-- (int64_t)inputTypeForCompactViewModelController:(id)a3;
-- (unint64_t)lockStateForCompactViewController:(id)a3;
+- (id)effectiveCoreLocationBundleForCompactViewController:(id)controller;
+- (id)localeForCompactViewController:(id)controller;
+- (int64_t)_viewModelInputTypeForRequestInputType:(int64_t)type;
+- (int64_t)inputTypeForCompactViewModelController:(id)controller;
+- (unint64_t)lockStateForCompactViewController:(id)controller;
 - (void)_activeConversationDidChange;
 - (void)_dismissVideoPlayerViewController;
-- (void)_setInputType:(int64_t)a3;
+- (void)_setInputType:(int64_t)type;
 - (void)_setupBugReportingPresenterIfNecessary;
 - (void)_showFullScreenDimmingLayer;
 - (void)activeRequestOptionsDidChange;
-- (void)autoDismissControllerRequestsDismissal:(id)a3;
-- (void)autoDismissControllerRequestsStopAttending:(id)a3;
-- (void)bugReportPresenter:(id)a3 requestsSiriDismissalWithReason:(int64_t)a4;
-- (void)bugReportPresenter:(id)a3 requestsToHandlePasscodeUnlockWithCompletion:(id)a4;
-- (void)bugReportPresenter:(id)a3 requestsToOpenURL:(id)a4 withCompletion:(id)a5;
-- (void)bugReportPresenter:(id)a3 requestsToPerformAceCommand:(id)a4;
-- (void)bugReportPresenter:(id)a3 requestsToTakeScreenshotWithCompletion:(id)a4;
-- (void)bugReportPresenter:(id)a3 setBugReportingAvailable:(BOOL)a4;
-- (void)bugReportPresenter:(id)a3 setStatusViewHidden:(BOOL)a4;
-- (void)bugReportPresenterRequestsInvalidateAutoDismissal:(id)a3;
-- (void)bugReportPresenterRequestsSiriSessionToFinishCurrentRequest:(id)a3;
-- (void)cancelRequestForViewController:(id)a3;
-- (void)compactViewController:(id)a3 handleStartLocalRequest:(id)a4 turnIdentifier:(id)a5;
-- (void)compactViewController:(id)a3 preventOutsideTouchesFromDismissingSiri:(BOOL)a4;
-- (void)compactViewController:(id)a3 requestsKeyboardWithCompletion:(id)a4;
-- (void)compactViewController:(id)a3 setStatusViewHidden:(BOOL)a4;
-- (void)compactViewController:(id)a3 speakText:(id)a4 isPhonetic:(BOOL)a5 completion:(id)a6;
-- (void)compactViewController:(id)a3 viewDidAppearForAceObject:(id)a4;
-- (void)compactViewController:(id)a3 viewDidDisappearForAceObject:(id)a4;
-- (void)compactViewController:(id)a3 willBeginEditingOfType:(int64_t)a4;
-- (void)compactViewControllerCancelHIDEventDefferal:(id)a3;
-- (void)compactViewControllerDidEndEditing:(id)a3;
-- (void)compactViewControllerRequestsHIDEventDefferal:(id)a3;
-- (void)compactViewModelController:(id)a3 didProcessConversationItemsWithIdentifiers:(id)a4;
-- (void)configureForRequestOptions:(id)a3;
-- (void)conversation:(id)a3 didChangeWithTransaction:(id)a4;
+- (void)autoDismissControllerRequestsDismissal:(id)dismissal;
+- (void)autoDismissControllerRequestsStopAttending:(id)attending;
+- (void)bugReportPresenter:(id)presenter requestsSiriDismissalWithReason:(int64_t)reason;
+- (void)bugReportPresenter:(id)presenter requestsToHandlePasscodeUnlockWithCompletion:(id)completion;
+- (void)bugReportPresenter:(id)presenter requestsToOpenURL:(id)l withCompletion:(id)completion;
+- (void)bugReportPresenter:(id)presenter requestsToPerformAceCommand:(id)command;
+- (void)bugReportPresenter:(id)presenter requestsToTakeScreenshotWithCompletion:(id)completion;
+- (void)bugReportPresenter:(id)presenter setBugReportingAvailable:(BOOL)available;
+- (void)bugReportPresenter:(id)presenter setStatusViewHidden:(BOOL)hidden;
+- (void)bugReportPresenterRequestsInvalidateAutoDismissal:(id)dismissal;
+- (void)bugReportPresenterRequestsSiriSessionToFinishCurrentRequest:(id)request;
+- (void)cancelRequestForViewController:(id)controller;
+- (void)compactViewController:(id)controller handleStartLocalRequest:(id)request turnIdentifier:(id)identifier;
+- (void)compactViewController:(id)controller preventOutsideTouchesFromDismissingSiri:(BOOL)siri;
+- (void)compactViewController:(id)controller requestsKeyboardWithCompletion:(id)completion;
+- (void)compactViewController:(id)controller setStatusViewHidden:(BOOL)hidden;
+- (void)compactViewController:(id)controller speakText:(id)text isPhonetic:(BOOL)phonetic completion:(id)completion;
+- (void)compactViewController:(id)controller viewDidAppearForAceObject:(id)object;
+- (void)compactViewController:(id)controller viewDidDisappearForAceObject:(id)object;
+- (void)compactViewController:(id)controller willBeginEditingOfType:(int64_t)type;
+- (void)compactViewControllerCancelHIDEventDefferal:(id)defferal;
+- (void)compactViewControllerDidEndEditing:(id)editing;
+- (void)compactViewControllerRequestsHIDEventDefferal:(id)defferal;
+- (void)compactViewModelController:(id)controller didProcessConversationItemsWithIdentifiers:(id)identifiers;
+- (void)configureForRequestOptions:(id)options;
+- (void)conversation:(id)conversation didChangeWithTransaction:(id)transaction;
 - (void)dealloc;
 - (void)didBeginProcessingConversationItems;
-- (void)didPresentContentForCompactViewController:(id)a3;
+- (void)didPresentContentForCompactViewController:(id)controller;
 - (void)didPresentSystemUI;
 - (void)didReceiveBugButtonLongPress;
 - (void)didReceiveReportBugAction;
-- (void)didReceiveRevealRecognizedSpeechCommand:(id)a3;
-- (void)endSiriSessionForViewController:(id)a3 withDismissalReason:(int64_t)a4;
-- (void)handlePlayContentCommand:(id)a3 completion:(id)a4;
-- (void)handleRequestEndBehavior:(id)a3 isAttending:(BOOL)a4;
-- (void)hasContentAtPoint:(CGPoint)a3 completion:(id)a4;
-- (void)immersiveExperienceRequestedForViewModelController:(id)a3;
-- (void)modalContainerViewControllerViewDidDisappear:(id)a3;
-- (void)modalContainerViewControllerViewWillDisappear:(id)a3;
-- (void)requestToHandlePasscodeUnlockWithClient:(unint64_t)a3 withCompletion:(id)a4;
-- (void)setActiveViewModelController:(id)a3;
-- (void)siriCompactViewController:(id)a3 willDismissViewController:(id)a4;
-- (void)siriCompactViewController:(id)a3 willPresentViewController:(id)a4;
-- (void)siriDidActivateFromSource:(int64_t)a3;
-- (void)siriDidDeactivateWithCompletion:(id)a3;
-- (void)siriDidStartNewConversationWithIdentifier:(id)a3;
-- (void)siriDidTransitionFromState:(int64_t)a3 event:(int64_t)a4;
-- (void)siriIsIdleAndQuietStatusDidChange:(BOOL)a3 isAttending:(BOOL)a4;
-- (void)siriRequestWillStartWithRequestOptions:(id)a3;
-- (void)siriResponseModeDidChange:(unint64_t)a3 isAttending:(BOOL)a4;
-- (void)siriWillBeginTearDownForDismissalReason:(int64_t)a3 withOriginalDismissalOptions:(id)a4;
-- (void)speechRecordingDidBeginOnRecordRoute:(id)a3;
-- (void)stopRecordingForViewController:(id)a3;
-- (void)stopSpeakingForCompactViewController:(id)a3;
+- (void)didReceiveRevealRecognizedSpeechCommand:(id)command;
+- (void)endSiriSessionForViewController:(id)controller withDismissalReason:(int64_t)reason;
+- (void)handlePlayContentCommand:(id)command completion:(id)completion;
+- (void)handleRequestEndBehavior:(id)behavior isAttending:(BOOL)attending;
+- (void)hasContentAtPoint:(CGPoint)point completion:(id)completion;
+- (void)immersiveExperienceRequestedForViewModelController:(id)controller;
+- (void)modalContainerViewControllerViewDidDisappear:(id)disappear;
+- (void)modalContainerViewControllerViewWillDisappear:(id)disappear;
+- (void)requestToHandlePasscodeUnlockWithClient:(unint64_t)client withCompletion:(id)completion;
+- (void)setActiveViewModelController:(id)controller;
+- (void)siriCompactViewController:(id)controller willDismissViewController:(id)viewController;
+- (void)siriCompactViewController:(id)controller willPresentViewController:(id)viewController;
+- (void)siriDidActivateFromSource:(int64_t)source;
+- (void)siriDidDeactivateWithCompletion:(id)completion;
+- (void)siriDidStartNewConversationWithIdentifier:(id)identifier;
+- (void)siriDidTransitionFromState:(int64_t)state event:(int64_t)event;
+- (void)siriIsIdleAndQuietStatusDidChange:(BOOL)change isAttending:(BOOL)attending;
+- (void)siriRequestWillStartWithRequestOptions:(id)options;
+- (void)siriResponseModeDidChange:(unint64_t)change isAttending:(BOOL)attending;
+- (void)siriWillBeginTearDownForDismissalReason:(int64_t)reason withOriginalDismissalOptions:(id)options;
+- (void)speechRecordingDidBeginOnRecordRoute:(id)route;
+- (void)stopRecordingForViewController:(id)controller;
+- (void)stopSpeakingForCompactViewController:(id)controller;
 - (void)tapToEditPresented;
 - (void)userDrilledIntoSnippet;
 - (void)userTouchedSnippet;
-- (void)viewController:(id)a3 didFinishEditingUtteranceWithText:(id)a4 originalUserUtterance:(id)a5 selectionResults:(id)a6;
-- (void)viewController:(id)a3 openURL:(id)a4 completion:(id)a5;
-- (void)viewController:(id)a3 performAceCommands:(id)a4 completion:(id)a5;
-- (void)viewController:(id)a3 reduceOrbOpacity:(BOOL)a4;
-- (void)viewController:(id)a3 requestsHostBackgroundBlurVisible:(BOOL)a4 reason:(int64_t)a5 fence:(id)a6;
-- (void)viewController:(id)a3 siriRequestEnteredWithText:(id)a4;
-- (void)viewControllerDidPresentUserInterface:(id)a3;
+- (void)viewController:(id)controller didFinishEditingUtteranceWithText:(id)text originalUserUtterance:(id)utterance selectionResults:(id)results;
+- (void)viewController:(id)controller openURL:(id)l completion:(id)completion;
+- (void)viewController:(id)controller performAceCommands:(id)commands completion:(id)completion;
+- (void)viewController:(id)controller reduceOrbOpacity:(BOOL)opacity;
+- (void)viewController:(id)controller requestsHostBackgroundBlurVisible:(BOOL)visible reason:(int64_t)reason fence:(id)fence;
+- (void)viewController:(id)controller siriRequestEnteredWithText:(id)text;
+- (void)viewControllerDidPresentUserInterface:(id)interface;
 @end
 
 @implementation SRCompactPresentation
 
-- (SRCompactPresentation)initWithDelegate:(id)a3 dataSource:(id)a4
+- (SRCompactPresentation)initWithDelegate:(id)delegate dataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  sourceCopy = source;
   v19.receiver = self;
   v19.super_class = SRCompactPresentation;
   v8 = [(SRCompactPresentation *)&v19 init];
   v9 = v8;
   if (v8)
   {
-    [(SRCompactPresentation *)v8 setDelegate:v6];
-    [(SRCompactPresentation *)v9 setDataSource:v7];
+    [(SRCompactPresentation *)v8 setDelegate:delegateCopy];
+    [(SRCompactPresentation *)v9 setDataSource:sourceCopy];
     v9->_inputType = 0;
     v10 = objc_alloc_init(SRCompactViewController);
     compactViewController = v9->_compactViewController;
     v9->_compactViewController = v10;
 
     [(SRCompactViewController *)v9->_compactViewController setDelegate:v9];
-    v12 = [(SRCompactPresentation *)v9 delegate];
-    v13 = [v12 siriDeviceLockStateForSiriPresentation:v9];
+    delegate = [(SRCompactPresentation *)v9 delegate];
+    v13 = [delegate siriDeviceLockStateForSiriPresentation:v9];
 
     v14 = [[SRCompactAutoDismissController alloc] initWithDelegate:v9 andLockState:v13];
     autoDismissController = v9->_autoDismissController;
     v9->_autoDismissController = v14;
 
     v16 = +[AFPreferences sharedPreferences];
-    v17 = [v16 languageCode];
-    [SiriUISashItem _setLanguageCode:v17];
+    languageCode = [v16 languageCode];
+    [SiriUISashItem _setLanguageCode:languageCode];
 
     [(SRCompactPresentation *)v9 _activeConversationDidChange];
   }
@@ -135,16 +135,16 @@
 
 - (id)_conversationIdentifiers
 {
-  v3 = [(SRCompactPresentation *)self dataSource];
-  v4 = [v3 conversationIdentifiersForSiriPresentation:self];
+  dataSource = [(SRCompactPresentation *)self dataSource];
+  v4 = [dataSource conversationIdentifiersForSiriPresentation:self];
 
   return v4;
 }
 
 - (id)_identifierOfPreviousConversation
 {
-  v2 = [(SRCompactPresentation *)self _conversationIdentifiers];
-  if ([v2 count] < 2)
+  _conversationIdentifiers = [(SRCompactPresentation *)self _conversationIdentifiers];
+  if ([_conversationIdentifiers count] < 2)
   {
     v4 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
@@ -159,7 +159,7 @@
 
   else
   {
-    v3 = [v2 objectAtIndexedSubscript:{objc_msgSend(v2, "count") - 2}];
+    v3 = [_conversationIdentifiers objectAtIndexedSubscript:{objc_msgSend(_conversationIdentifiers, "count") - 2}];
   }
 
   return v3;
@@ -167,26 +167,26 @@
 
 - (id)_activeConversation
 {
-  v3 = [(SRCompactPresentation *)self dataSource];
-  v4 = [(SRCompactPresentation *)self _conversationIdentifiers];
-  v5 = [v4 lastObject];
-  v6 = [v3 siriPresentation:self conversationWithIdentifier:v5];
+  dataSource = [(SRCompactPresentation *)self dataSource];
+  _conversationIdentifiers = [(SRCompactPresentation *)self _conversationIdentifiers];
+  lastObject = [_conversationIdentifiers lastObject];
+  v6 = [dataSource siriPresentation:self conversationWithIdentifier:lastObject];
 
   return v6;
 }
 
-- (void)configureForRequestOptions:(id)a3
+- (void)configureForRequestOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   if (AFIsInternalInstall())
   {
-    [v4 requestSource];
+    [optionsCopy requestSource];
     IsTesting = SASRequestSourceIsTesting();
-    v6 = [v4 testingContext];
-    v7 = [v6 objectForKey:SUICPPTTestNameKey];
+    testingContext = [optionsCopy testingContext];
+    v7 = [testingContext objectForKey:SUICPPTTestNameKey];
     v8 = v7;
     v9 = 1;
-    if (IsTesting && v6 && v7)
+    if (IsTesting && testingContext && v7)
     {
       v9 = [v7 hasPrefix:SUICPPTSiriBringupTestPrefix];
     }
@@ -194,13 +194,13 @@
     [(SRCompactAutoDismissController *)self->_autoDismissController setEnabled:v9];
   }
 
-  if ([v4 isVisualIntelligenceRequest])
+  if ([optionsCopy isVisualIntelligenceRequest])
   {
     v10 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
     {
       v11 = v10;
-      [v4 requestSource];
+      [optionsCopy requestSource];
       v12 = SASRequestSourceGetName();
       v15 = 136315394;
       v16 = "[SRCompactPresentation configureForRequestOptions:]";
@@ -225,36 +225,36 @@
   }
 }
 
-- (void)conversation:(id)a3 didChangeWithTransaction:(id)a4
+- (void)conversation:(id)conversation didChangeWithTransaction:(id)transaction
 {
-  v5 = a4;
-  v6 = [(SRCompactPresentation *)self activeViewModelController];
-  [v6 conversationDidChangeWithTransaction:v5];
+  transactionCopy = transaction;
+  activeViewModelController = [(SRCompactPresentation *)self activeViewModelController];
+  [activeViewModelController conversationDidChangeWithTransaction:transactionCopy];
 }
 
-- (void)didReceiveRevealRecognizedSpeechCommand:(id)a3
+- (void)didReceiveRevealRecognizedSpeechCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 136315394;
     v14 = "[SRCompactPresentation didReceiveRevealRecognizedSpeechCommand:]";
     v15 = 2112;
-    v16 = v4;
+    v16 = commandCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s #compact: received revealRecognizedSpeech:%@", &v13, 0x16u);
   }
 
-  v6 = [v4 recognition];
-  v7 = [(SRCompactPresentation *)self dataSource];
-  v8 = [v7 sessionInfoForSiriPresentation:self];
+  recognition = [commandCopy recognition];
+  dataSource = [(SRCompactPresentation *)self dataSource];
+  v8 = [dataSource sessionInfoForSiriPresentation:self];
 
-  v9 = [v4 refId];
-  v10 = [v8 identifier];
-  v11 = [v6 af_userUtteranceValueWithRefId:v9 sessionId:v10];
+  refId = [commandCopy refId];
+  identifier = [v8 identifier];
+  v11 = [recognition af_userUtteranceValueWithRefId:refId sessionId:identifier];
 
-  v12 = [(SRCompactPresentation *)self activeViewModelController];
-  [v12 revealUserUtterance:v11 backingAceObject:v4];
+  activeViewModelController = [(SRCompactPresentation *)self activeViewModelController];
+  [activeViewModelController revealUserUtterance:v11 backingAceObject:commandCopy];
 }
 
 - (void)dealloc
@@ -267,8 +267,8 @@
 
 - (void)activeRequestOptionsDidChange
 {
-  v4 = [(SRCompactPresentation *)self _activeRequestOptions];
-  if ([v4 isTypeToSiriRequest] && objc_msgSend(v4, "inputType") != 2)
+  _activeRequestOptions = [(SRCompactPresentation *)self _activeRequestOptions];
+  if ([_activeRequestOptions isTypeToSiriRequest] && objc_msgSend(_activeRequestOptions, "inputType") != 2)
   {
     v3 = 1;
   }
@@ -278,13 +278,13 @@
     v3 = 2;
   }
 
-  [(SRCompactViewController *)self->_compactViewController setActiveRequestOptions:v4];
+  [(SRCompactViewController *)self->_compactViewController setActiveRequestOptions:_activeRequestOptions];
   [(SRCompactPresentation *)self _setInputType:v3];
 }
 
-- (void)siriRequestWillStartWithRequestOptions:(id)a3
+- (void)siriRequestWillStartWithRequestOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
   {
@@ -302,17 +302,17 @@
 
   self->_shouldMuteSiriFeedbackBanner = 0;
   self->_shouldPauseAutoDismissal = 0;
-  if ([v4 requestSource] != 9)
+  if ([optionsCopy requestSource] != 9)
   {
-    self->_requestIsWiredMicOrBTHeadsetOrWx = [v4 isWiredMicOrBTHeadsetOrWx];
+    self->_requestIsWiredMicOrBTHeadsetOrWx = [optionsCopy isWiredMicOrBTHeadsetOrWx];
   }
 
   [(SRCompactViewController *)self->_compactViewController siriWillStartRequest];
 }
 
-- (void)siriResponseModeDidChange:(unint64_t)a3 isAttending:(BOOL)a4
+- (void)siriResponseModeDidChange:(unint64_t)change isAttending:(BOOL)attending
 {
-  v4 = a4;
+  attendingCopy = attending;
   v7 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
   {
@@ -320,23 +320,23 @@
     v11 = 136315906;
     v12 = "[SRCompactPresentation siriResponseModeDidChange:isAttending:]";
     v13 = 2048;
-    v14 = a3;
+    changeCopy = change;
     v15 = 1024;
     v16 = requestIsWiredMicOrBTHeadsetOrWx;
     v17 = 1024;
-    v18 = v4;
+    v18 = attendingCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s #compact mode updated to %lu, _requestIsWiredMicOrBTHeadsetOrWx: %d, isAttending: %d", &v11, 0x22u);
   }
 
-  [(SRCompactAutoDismissController *)self->_autoDismissController siriResponseModeDidChange:a3 isWiredMicOrBTHeadsetOrWx:self->_requestIsWiredMicOrBTHeadsetOrWx isAttending:v4];
+  [(SRCompactAutoDismissController *)self->_autoDismissController siriResponseModeDidChange:change isWiredMicOrBTHeadsetOrWx:self->_requestIsWiredMicOrBTHeadsetOrWx isAttending:attendingCopy];
   v9 = MDModeGetName();
   responseMode = self->_responseMode;
   self->_responseMode = v9;
 }
 
-- (void)siriDidActivateFromSource:(int64_t)a3
+- (void)siriDidActivateFromSource:(int64_t)source
 {
-  if (a3 == 21)
+  if (source == 21)
   {
     v5 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
@@ -346,57 +346,57 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s #compact Loading previous conversation because we activated from a breadcrumb", &v9, 0xCu);
     }
 
-    v6 = [(SRCompactPresentation *)self dataSource];
-    v7 = [(SRCompactPresentation *)self _identifierOfPreviousConversation];
-    [v6 siriPresentation:self activateConversationWithIdentifier:v7];
+    dataSource = [(SRCompactPresentation *)self dataSource];
+    _identifierOfPreviousConversation = [(SRCompactPresentation *)self _identifierOfPreviousConversation];
+    [dataSource siriPresentation:self activateConversationWithIdentifier:_identifierOfPreviousConversation];
 
     [(SRCompactPresentation *)self _activeConversationDidChange];
-    v8 = [(SRCompactPresentation *)self delegate];
-    [v8 siriPresentationDidPresentConversationFromBreadcrumb:self];
+    delegate = [(SRCompactPresentation *)self delegate];
+    [delegate siriPresentationDidPresentConversationFromBreadcrumb:self];
   }
 
   [(SRCompactViewController *)self->_compactViewController siriDidActivate];
   *&self->_userCancelledRequestViaOrbViewTap = 0;
   self->_isPresentingSystemUI = 0;
-  self->_initialRequestSource = a3;
+  self->_initialRequestSource = source;
 }
 
-- (void)siriDidStartNewConversationWithIdentifier:(id)a3
+- (void)siriDidStartNewConversationWithIdentifier:(id)identifier
 {
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [a3 UUIDString];
+    uUIDString = [identifier UUIDString];
     v8 = 136315394;
     v9 = "[SRCompactPresentation siriDidStartNewConversationWithIdentifier:]";
     v10 = 2112;
-    v11 = v7;
+    v11 = uUIDString;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s #compact Starting a new conversation %@", &v8, 0x16u);
   }
 
   [(SRCompactPresentation *)self _activeConversationDidChange];
 }
 
-- (void)speechRecordingDidBeginOnRecordRoute:(id)a3
+- (void)speechRecordingDidBeginOnRecordRoute:(id)route
 {
-  v4 = a3;
+  routeCopy = route;
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136315394;
     v7 = "[SRCompactPresentation speechRecordingDidBeginOnRecordRoute:]";
     v8 = 2112;
-    v9 = v4;
+    v9 = routeCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s #compact recording started on recordRoute: %@", &v6, 0x16u);
   }
 
   self->_recordingFromWxDevice = AFRecordRouteIsHearst();
 }
 
-- (BOOL)shouldResumeInterruptedAudioPlaybackForAttendingState:(BOOL)a3
+- (BOOL)shouldResumeInterruptedAudioPlaybackForAttendingState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
   {
@@ -405,7 +405,7 @@
     v13 = 136315906;
     v14 = "[SRCompactPresentation shouldResumeInterruptedAudioPlaybackForAttendingState:]";
     v15 = 1024;
-    v16 = v3;
+    v16 = stateCopy;
     v17 = 2112;
     v18 = responseMode;
     v19 = 1024;
@@ -413,7 +413,7 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s #compact isAttending: %d, responseMode: %@, requestIsWiredMicOrBTHeadsetOrWx: %d", &v13, 0x22u);
   }
 
-  if (!v3)
+  if (!stateCopy)
   {
     return 1;
   }
@@ -435,26 +435,26 @@
   return self->_shouldResumeMediaOnIdle;
 }
 
-- (void)handlePlayContentCommand:(id)a3 completion:(id)a4
+- (void)handlePlayContentCommand:(id)command completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[SRPlayContentViewController alloc] initWithPlayContent:v6];
-  v9 = [(SRPlayContentViewController *)v8 player];
+  commandCopy = command;
+  completionCopy = completion;
+  v8 = [[SRPlayContentViewController alloc] initWithPlayContent:commandCopy];
+  player = [(SRPlayContentViewController *)v8 player];
 
-  if (v9)
+  if (player)
   {
     [(SRPlayContentViewController *)v8 setVideoPlayerControllerDelegate:self];
-    v10 = [(SRCompactPresentation *)self delegate];
-    [v10 siriPresentation:self setStatusBarHidden:1 animated:1];
+    delegate = [(SRCompactPresentation *)self delegate];
+    [delegate siriPresentation:self setStatusBarHidden:1 animated:1];
 
-    v11 = [(SRCompactPresentation *)self delegate];
-    [v11 siriPresentation:self setStatusViewHidden:1];
+    delegate2 = [(SRCompactPresentation *)self delegate];
+    [delegate2 siriPresentation:self setStatusViewHidden:1];
 
     v12 = [[SiriUIModalContainerViewController alloc] initWithContentViewController:v8];
     [v12 setDelegate:self];
-    v13 = [(SRCompactPresentation *)self delegate];
-    [v13 siriPresentation:self willPresentViewController:v12];
+    delegate3 = [(SRCompactPresentation *)self delegate];
+    [delegate3 siriPresentation:self willPresentViewController:v12];
 
     objc_initWeak(&location, self);
     compactViewController = self->_compactViewController;
@@ -466,13 +466,13 @@
     v15 = v12;
     v20 = v15;
     [(SRCompactViewController *)compactViewController presentViewController:v15 animated:1 completion:v19];
-    if (v7)
+    if (completionCopy)
     {
       v16 = objc_alloc_init(SACommandSucceeded);
-      v17 = [v6 aceId];
-      [v16 setRefId:v17];
+      aceId = [commandCopy aceId];
+      [v16 setRefId:aceId];
 
-      v7[2](v7, v16);
+      completionCopy[2](completionCopy, v16);
     }
 
     objc_destroyWeak(&v21);
@@ -480,20 +480,20 @@
     goto LABEL_7;
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v15 = [[SACommandFailed alloc] initWithReason:@"No AVPlayer for PlayContent command"];
-    v18 = [v6 aceId];
-    [v15 setRefId:v18];
+    aceId2 = [commandCopy aceId];
+    [v15 setRefId:aceId2];
 
-    v7[2](v7, v15);
+    completionCopy[2](completionCopy, v15);
 LABEL_7:
   }
 }
 
-- (BOOL)supportsVisualPresentationForConversationItem:(id)a3
+- (BOOL)supportsVisualPresentationForConversationItem:(id)item
 {
-  if ([a3 type] - 1 > 1)
+  if ([item type] - 1 > 1)
   {
     return 1;
   }
@@ -501,12 +501,12 @@ LABEL_7:
   return [(SRCompactPresentation *)self alwaysShowRecognizedSpeech];
 }
 
-- (void)siriDidDeactivateWithCompletion:(id)a3
+- (void)siriDidDeactivateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SRCompactViewController *)self->_compactViewController presentedViewController];
+  completionCopy = completion;
+  presentedViewController = [(SRCompactViewController *)self->_compactViewController presentedViewController];
 
-  if (v5)
+  if (presentedViewController)
   {
     [(SRCompactViewController *)self->_compactViewController dismissViewControllerAnimated:1 completion:0];
   }
@@ -531,9 +531,9 @@ LABEL_7:
   v15 = v6;
   v16 = v7;
   v19 = v8;
-  v17 = v4;
+  v17 = completionCopy;
   v18 = inputType;
-  v11 = v4;
+  v11 = completionCopy;
   v12 = v7;
   v13 = v6;
   [(SRDismissalClassificationController *)v13 requestMitigationStatusBasedOnRequestClassification:v8 withRequestSource:initialRequestSource withCompletion:v14];
@@ -552,9 +552,9 @@ LABEL_7:
   self->_isPresentingSystemUI = 1;
 }
 
-- (void)siriDidTransitionFromState:(int64_t)a3 event:(int64_t)a4
+- (void)siriDidTransitionFromState:(int64_t)state event:(int64_t)event
 {
-  if (a4 == 13)
+  if (event == 13)
   {
     v8 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
@@ -587,13 +587,13 @@ LABEL_16:
       v11 = 58;
     }
 
-    v12 = [(SRCompactPresentation *)self delegate];
-    [v12 dismissSiriPresentation:self withReason:v11];
+    delegate = [(SRCompactPresentation *)self delegate];
+    [delegate dismissSiriPresentation:self withReason:v11];
 
     goto LABEL_16;
   }
 
-  if (a4 == 12)
+  if (event == 12)
   {
     v7 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
@@ -606,7 +606,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (a4 != 11)
+  if (event != 11)
   {
     return;
   }
@@ -626,80 +626,80 @@ LABEL_17:
 
 - (void)_activeConversationDidChange
 {
-  v4 = [(SRCompactPresentation *)self _activeConversation];
-  v3 = [[SiriSharedUICompactViewModelController alloc] initWithConversation:v4 delegate:self];
+  _activeConversation = [(SRCompactPresentation *)self _activeConversation];
+  v3 = [[SiriSharedUICompactViewModelController alloc] initWithConversation:_activeConversation delegate:self];
   [(SRCompactPresentation *)self setActiveViewModelController:v3];
 }
 
-- (void)setActiveViewModelController:(id)a3
+- (void)setActiveViewModelController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   [(SiriSharedUICompactViewModelController *)self->_activeViewModelController setDelegate:0];
   activeViewModelController = self->_activeViewModelController;
-  self->_activeViewModelController = v4;
-  v6 = v4;
+  self->_activeViewModelController = controllerCopy;
+  v6 = controllerCopy;
 
   [(SiriSharedUICompactViewModelController *)self->_activeViewModelController setViewModelChangeObserver:self->_compactViewController];
 }
 
-- (int64_t)inputTypeForCompactViewModelController:(id)a3
+- (int64_t)inputTypeForCompactViewModelController:(id)controller
 {
-  v4 = [(SRCompactPresentation *)self _inputType];
+  _inputType = [(SRCompactPresentation *)self _inputType];
 
-  return [(SRCompactPresentation *)self _viewModelInputTypeForRequestInputType:v4];
+  return [(SRCompactPresentation *)self _viewModelInputTypeForRequestInputType:_inputType];
 }
 
-- (void)compactViewModelController:(id)a3 didProcessConversationItemsWithIdentifiers:(id)a4
+- (void)compactViewModelController:(id)controller didProcessConversationItemsWithIdentifiers:(id)identifiers
 {
-  v5 = a4;
-  v6 = [(SRCompactPresentation *)self delegate];
-  [v6 siriPresentation:self didPresentConversationItemsWithIdentifiers:v5];
+  identifiersCopy = identifiers;
+  delegate = [(SRCompactPresentation *)self delegate];
+  [delegate siriPresentation:self didPresentConversationItemsWithIdentifiers:identifiersCopy];
 }
 
-- (BOOL)siriDeviceLockedForViewModelController:(id)a3
+- (BOOL)siriDeviceLockedForViewModelController:(id)controller
 {
-  v4 = [(SRCompactPresentation *)self delegate];
-  v5 = ([v4 siriDeviceLockStateForSiriPresentation:self] >> 1) & 1;
+  delegate = [(SRCompactPresentation *)self delegate];
+  v5 = ([delegate siriDeviceLockStateForSiriPresentation:self] >> 1) & 1;
 
   return v5;
 }
 
-- (id)compactViewModelController:(id)a3 requestsTranscriptItemForAceObject:(id)a4
+- (id)compactViewModelController:(id)controller requestsTranscriptItemForAceObject:(id)object
 {
-  v4 = a4;
-  v5 = [SRLocalSnippetManager transcriptItemForObject:v4];
+  objectCopy = object;
+  v5 = [SRLocalSnippetManager transcriptItemForObject:objectCopy];
   if (!v5)
   {
     v6 = +[SiriUISnippetManager sharedInstance];
-    v5 = [v6 transcriptItemForObject:v4 sizeClass:1];
+    v5 = [v6 transcriptItemForObject:objectCopy sizeClass:1];
   }
 
   return v5;
 }
 
-- (void)immersiveExperienceRequestedForViewModelController:(id)a3
+- (void)immersiveExperienceRequestedForViewModelController:(id)controller
 {
-  v4 = [(SRCompactPresentation *)self delegate];
-  [v4 siriPresentation:self requestHostBlurVisible:1 reason:3 fence:0];
+  delegate = [(SRCompactPresentation *)self delegate];
+  [delegate siriPresentation:self requestHostBlurVisible:1 reason:3 fence:0];
 }
 
-- (void)handleRequestEndBehavior:(id)a3 isAttending:(BOOL)a4
+- (void)handleRequestEndBehavior:(id)behavior isAttending:(BOOL)attending
 {
-  v4 = a4;
-  v6 = a3;
+  attendingCopy = attending;
+  behaviorCopy = behavior;
   v7 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 136315394;
     v17 = "[SRCompactPresentation handleRequestEndBehavior:isAttending:]";
     v18 = 1024;
-    LODWORD(v19) = v4;
+    LODWORD(v19) = attendingCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s handling request end behavior in presentation: isAttending: %d", &v16, 0x12u);
   }
 
-  if (v4)
+  if (attendingCopy)
   {
-    if ([v6 premptivelyResumeMedia])
+    if ([behaviorCopy premptivelyResumeMedia])
     {
       v8 = AFSiriLogContextConnection;
       if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
@@ -712,41 +712,41 @@ LABEL_17:
       self->_shouldResumeMediaOnIdle = 1;
     }
 
-    v9 = [v6 minimumAutoDismissalTimeInMs];
+    minimumAutoDismissalTimeInMs = [behaviorCopy minimumAutoDismissalTimeInMs];
 
-    if (v9)
+    if (minimumAutoDismissalTimeInMs)
     {
       v10 = AFSiriLogContextConnection;
       if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
       {
         v11 = v10;
-        v12 = [v6 minimumAutoDismissalTimeInMs];
-        v13 = [v12 longValue];
+        minimumAutoDismissalTimeInMs2 = [behaviorCopy minimumAutoDismissalTimeInMs];
+        longValue = [minimumAutoDismissalTimeInMs2 longValue];
         v16 = 136315394;
         v17 = "[SRCompactPresentation handleRequestEndBehavior:isAttending:]";
         v18 = 2048;
-        v19 = v13;
+        v19 = longValue;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s #autodismiss Setting delay dismissal for compact presentation by %ld milliseconds.", &v16, 0x16u);
       }
 
-      v14 = [v6 minimumAutoDismissalTimeInMs];
+      minimumAutoDismissalTimeInMs3 = [behaviorCopy minimumAutoDismissalTimeInMs];
       delayDismissalMs = self->_delayDismissalMs;
-      self->_delayDismissalMs = v14;
+      self->_delayDismissalMs = minimumAutoDismissalTimeInMs3;
     }
   }
 }
 
-- (void)hasContentAtPoint:(CGPoint)a3 completion:(id)a4
+- (void)hasContentAtPoint:(CGPoint)point completion:(id)completion
 {
-  y = a3.y;
-  x = a3.x;
-  v13 = a4;
-  v7 = [(SRCompactViewController *)self->_compactViewController view];
-  v8 = [v7 window];
-  v9 = [v8 screen];
+  y = point.y;
+  x = point.x;
+  completionCopy = completion;
+  view = [(SRCompactViewController *)self->_compactViewController view];
+  window = [view window];
+  screen = [window screen];
 
-  v10 = [v9 coordinateSpace];
-  [v7 convertPoint:v10 fromCoordinateSpace:{x, y}];
+  coordinateSpace = [screen coordinateSpace];
+  [view convertPoint:coordinateSpace fromCoordinateSpace:{x, y}];
   v11 = [(SRCompactViewController *)self->_compactViewController hasContentAtPoint:?];
   bugReportingPresenter = self->_bugReportingPresenter;
   if (bugReportingPresenter)
@@ -754,21 +754,21 @@ LABEL_17:
     v11 |= [(AFUIBugReportPresenting *)bugReportingPresenter hasContentAtPoint:x, y];
   }
 
-  if (v13)
+  if (completionCopy)
   {
-    v13[2](v13, v11 & 1);
+    completionCopy[2](completionCopy, v11 & 1);
   }
 }
 
-- (void)siriWillBeginTearDownForDismissalReason:(int64_t)a3 withOriginalDismissalOptions:(id)a4
+- (void)siriWillBeginTearDownForDismissalReason:(int64_t)reason withOriginalDismissalOptions:(id)options
 {
-  v10 = a4;
-  self->_lastDismissalReason = a3;
-  objc_storeStrong(&self->_lastDismissalOptions, a4);
-  v7 = [(SRCompactPresentation *)self delegate];
-  v8 = [v7 siriDeviceLockStateForSiriPresentation:self];
+  optionsCopy = options;
+  self->_lastDismissalReason = reason;
+  objc_storeStrong(&self->_lastDismissalOptions, options);
+  delegate = [(SRCompactPresentation *)self delegate];
+  v8 = [delegate siriDeviceLockStateForSiriPresentation:self];
 
-  if (a3 == 67 || a3 == 13)
+  if (reason == 67 || reason == 13)
   {
     if (v8)
     {
@@ -784,14 +784,14 @@ LABEL_17:
   }
 }
 
-- (id)_dismissalContextWithDismissalReason:(int64_t)a3 dismissalOptions:(id)a4
+- (id)_dismissalContextWithDismissalReason:(int64_t)reason dismissalOptions:(id)options
 {
-  v6 = a4;
-  v7 = [(SRCompactPresentation *)self delegate];
-  v8 = [v7 siriDeviceLockStateForSiriPresentation:self];
+  optionsCopy = options;
+  delegate = [(SRCompactPresentation *)self delegate];
+  v8 = [delegate siriDeviceLockStateForSiriPresentation:self];
 
-  v9 = [(SRCompactPresentation *)self dataSource];
-  v10 = [v9 siriStateForSiriPresentation:self];
+  dataSource = [(SRCompactPresentation *)self dataSource];
+  v10 = [dataSource siriStateForSiriPresentation:self];
 
   if (self->_hasPresentedContent || self->_hasOmittedDialogFromPresenting)
   {
@@ -809,17 +809,17 @@ LABEL_17:
   }
 
   v12 = [SRDismissalClassificationContext alloc];
-  v13 = [v6 reason];
+  reason = [optionsCopy reason];
 
-  v14 = [(SRDismissalClassificationContext *)v12 initWithCancellationReason:v13 contentPresentationState:v11 dismissalReason:a3 isDeviceUnlocked:v8 == 0 siriState:v10 requestSource:self->_initialRequestSource];
+  v14 = [(SRDismissalClassificationContext *)v12 initWithCancellationReason:reason contentPresentationState:v11 dismissalReason:reason isDeviceUnlocked:v8 == 0 siriState:v10 requestSource:self->_initialRequestSource];
 
   return v14;
 }
 
 - (double)expectedContentWidth
 {
-  v3 = [(SRCompactPresentation *)self delegate];
-  [v3 contentWidthForForSiriPresentation:self];
+  delegate = [(SRCompactPresentation *)self delegate];
+  [delegate contentWidthForForSiriPresentation:self];
   v5 = v4;
 
   return v5;
@@ -827,8 +827,8 @@ LABEL_17:
 
 - (void)tapToEditPresented
 {
-  v3 = [(SRCompactPresentation *)self delegate];
-  [v3 tapToEditPresented:self];
+  delegate = [(SRCompactPresentation *)self delegate];
+  [delegate tapToEditPresented:self];
 }
 
 - (CGSize)maxSizeForSnippet
@@ -841,8 +841,8 @@ LABEL_17:
 
 - (CGRect)effectiveContentFrame
 {
-  v2 = [(SRCompactViewController *)self->_compactViewController view];
-  [v2 frame];
+  view = [(SRCompactViewController *)self->_compactViewController view];
+  [view frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -859,21 +859,21 @@ LABEL_17:
   return result;
 }
 
-- (void)viewController:(id)a3 openURL:(id)a4 completion:(id)a5
+- (void)viewController:(id)controller openURL:(id)l completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(SRCompactPresentation *)self delegate];
-  [v9 siriPresentation:self openURL:v8 conversationId:0 completion:v7];
+  completionCopy = completion;
+  lCopy = l;
+  delegate = [(SRCompactPresentation *)self delegate];
+  [delegate siriPresentation:self openURL:lCopy conversationId:0 completion:completionCopy];
 }
 
-- (void)viewController:(id)a3 performAceCommands:(id)a4 completion:(id)a5
+- (void)viewController:(id)controller performAceCommands:(id)commands completion:(id)completion
 {
-  v24 = a3;
-  v8 = a4;
-  v26 = v8;
-  v27 = a5;
-  if (v27)
+  controllerCopy = controller;
+  commandsCopy = commands;
+  v26 = commandsCopy;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v43[0] = 0;
     v43[1] = v43;
@@ -884,8 +884,8 @@ LABEL_17:
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
-    obj = v8;
-    v10 = [obj countByEnumeratingWithState:&v39 objects:v46 count:{16, v24, v8}];
+    obj = commandsCopy;
+    v10 = [obj countByEnumeratingWithState:&v39 objects:v46 count:{16, controllerCopy, commandsCopy}];
     if (v10)
     {
       v11 = *v40;
@@ -900,14 +900,14 @@ LABEL_17:
 
           v13 = *(*(&v39 + 1) + 8 * i);
           dispatch_group_enter(v9);
-          v14 = [(SRCompactPresentation *)self delegate];
+          delegate = [(SRCompactPresentation *)self delegate];
           v36[0] = _NSConcreteStackBlock;
           v36[1] = 3221225472;
           v36[2] = sub_100049C5C;
           v36[3] = &unk_100167948;
           v38 = v43;
           v37 = v9;
-          [v14 siriPresentation:self performAceCommand:v13 conversationItemIdentifier:0 completion:v36];
+          [delegate siriPresentation:self performAceCommand:v13 conversationItemIdentifier:0 completion:v36];
         }
 
         v10 = [obj countByEnumeratingWithState:&v39 objects:v46 count:16];
@@ -920,7 +920,7 @@ LABEL_17:
     block[1] = 3221225472;
     block[2] = sub_100049C74;
     block[3] = &unk_100167970;
-    v34 = v27;
+    v34 = completionCopy;
     v35 = v43;
     dispatch_group_notify(v9, &_dispatch_main_q, block);
 
@@ -930,14 +930,14 @@ LABEL_17:
   else
   {
     v15 = +[SRUIFInstrumentationManager sharedManager];
-    v16 = [v15 currentInstrumentationTurnContext];
-    v17 = [v16 turnIdentifier];
+    currentInstrumentationTurnContext = [v15 currentInstrumentationTurnContext];
+    turnIdentifier = [currentInstrumentationTurnContext turnIdentifier];
 
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v18 = v8;
+    v18 = commandsCopy;
     v19 = [v18 countByEnumeratingWithState:&v29 objects:v45 count:16];
     if (v19)
     {
@@ -952,8 +952,8 @@ LABEL_17:
           }
 
           v22 = *(*(&v29 + 1) + 8 * j);
-          v23 = [(SRCompactPresentation *)self delegate];
-          [v23 siriPresentation:self performAceCommand:v22 conversationItemIdentifier:0 turnIdentifier:v17 completion:0];
+          delegate2 = [(SRCompactPresentation *)self delegate];
+          [delegate2 siriPresentation:self performAceCommand:v22 conversationItemIdentifier:0 turnIdentifier:turnIdentifier completion:0];
         }
 
         v19 = [v18 countByEnumeratingWithState:&v29 objects:v45 count:16];
@@ -964,47 +964,47 @@ LABEL_17:
   }
 }
 
-- (void)compactViewController:(id)a3 speakText:(id)a4 isPhonetic:(BOOL)a5 completion:(id)a6
+- (void)compactViewController:(id)controller speakText:(id)text isPhonetic:(BOOL)phonetic completion:(id)completion
 {
-  v6 = a5;
-  v9 = a6;
-  v10 = a4;
-  v11 = [(SRCompactPresentation *)self delegate];
-  v12 = v11;
-  if (v6)
+  phoneticCopy = phonetic;
+  completionCopy = completion;
+  textCopy = text;
+  delegate = [(SRCompactPresentation *)self delegate];
+  v12 = delegate;
+  if (phoneticCopy)
   {
-    [v11 siriPresentation:self synthesizeSpeechWithPhoneticText:v10 completion:v9];
+    [delegate siriPresentation:self synthesizeSpeechWithPhoneticText:textCopy completion:completionCopy];
   }
 
   else
   {
-    [v11 siriPresentation:self synthesizeSpeechWithText:v10 completion:v9];
+    [delegate siriPresentation:self synthesizeSpeechWithText:textCopy completion:completionCopy];
   }
 }
 
-- (void)stopSpeakingForCompactViewController:(id)a3
+- (void)stopSpeakingForCompactViewController:(id)controller
 {
-  v4 = [(SRCompactPresentation *)self delegate];
-  [v4 stopSpeakingForSiriPresentation:self];
+  delegate = [(SRCompactPresentation *)self delegate];
+  [delegate stopSpeakingForSiriPresentation:self];
 }
 
-- (unint64_t)lockStateForCompactViewController:(id)a3
+- (unint64_t)lockStateForCompactViewController:(id)controller
 {
-  v4 = [(SRCompactPresentation *)self delegate];
-  v5 = [v4 siriDeviceLockStateForSiriPresentation:self];
+  delegate = [(SRCompactPresentation *)self delegate];
+  v5 = [delegate siriDeviceLockStateForSiriPresentation:self];
 
   return v5;
 }
 
-- (id)localeForCompactViewController:(id)a3
+- (id)localeForCompactViewController:(id)controller
 {
-  v4 = [(SRCompactPresentation *)self delegate];
-  v5 = [v4 localeForSiriPresentation:self];
+  delegate = [(SRCompactPresentation *)self delegate];
+  v5 = [delegate localeForSiriPresentation:self];
 
   return v5;
 }
 
-- (void)viewControllerDidPresentUserInterface:(id)a3
+- (void)viewControllerDidPresentUserInterface:(id)interface
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained siriPresentationDidPresentUserInterface:self];
@@ -1012,69 +1012,69 @@ LABEL_17:
 
 - (void)userTouchedSnippet
 {
-  v2 = [(SRCompactPresentation *)self delegate];
-  [v2 userTouchedSnippet];
+  delegate = [(SRCompactPresentation *)self delegate];
+  [delegate userTouchedSnippet];
 }
 
-- (void)compactViewController:(id)a3 handleStartLocalRequest:(id)a4 turnIdentifier:(id)a5
+- (void)compactViewController:(id)controller handleStartLocalRequest:(id)request turnIdentifier:(id)identifier
 {
-  v11 = a4;
-  v7 = a5;
-  v8 = [(SRCompactPresentation *)self delegate];
+  requestCopy = request;
+  identifierCopy = identifier;
+  delegate = [(SRCompactPresentation *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(SRCompactPresentation *)self delegate];
-    [v10 siriPresentation:self handleStartLocalRequest:v11 turnIdentifier:v7];
+    delegate2 = [(SRCompactPresentation *)self delegate];
+    [delegate2 siriPresentation:self handleStartLocalRequest:requestCopy turnIdentifier:identifierCopy];
   }
 }
 
-- (void)compactViewController:(id)a3 setStatusViewHidden:(BOOL)a4
+- (void)compactViewController:(id)controller setStatusViewHidden:(BOOL)hidden
 {
-  v4 = a4;
-  v6 = [(SRCompactPresentation *)self delegate];
-  [v6 siriPresentation:self setStatusViewHidden:v4];
+  hiddenCopy = hidden;
+  delegate = [(SRCompactPresentation *)self delegate];
+  [delegate siriPresentation:self setStatusViewHidden:hiddenCopy];
 }
 
-- (void)viewController:(id)a3 requestsHostBackgroundBlurVisible:(BOOL)a4 reason:(int64_t)a5 fence:(id)a6
+- (void)viewController:(id)controller requestsHostBackgroundBlurVisible:(BOOL)visible reason:(int64_t)reason fence:(id)fence
 {
-  v7 = a4;
-  v9 = a6;
-  v10 = [(SRCompactPresentation *)self delegate];
-  [v10 siriPresentation:self requestHostBlurVisible:v7 reason:a5 fence:v9];
+  visibleCopy = visible;
+  fenceCopy = fence;
+  delegate = [(SRCompactPresentation *)self delegate];
+  [delegate siriPresentation:self requestHostBlurVisible:visibleCopy reason:reason fence:fenceCopy];
 }
 
-- (void)viewController:(id)a3 reduceOrbOpacity:(BOOL)a4
+- (void)viewController:(id)controller reduceOrbOpacity:(BOOL)opacity
 {
-  v4 = a4;
-  v6 = [(SRCompactPresentation *)self delegate];
-  [v6 siriPresentation:self reduceOrbOpacity:v4];
+  opacityCopy = opacity;
+  delegate = [(SRCompactPresentation *)self delegate];
+  [delegate siriPresentation:self reduceOrbOpacity:opacityCopy];
 }
 
-- (void)endSiriSessionForViewController:(id)a3 withDismissalReason:(int64_t)a4
+- (void)endSiriSessionForViewController:(id)controller withDismissalReason:(int64_t)reason
 {
-  v6 = [(SRCompactPresentation *)self delegate];
-  [v6 dismissSiriPresentation:self withReason:a4];
+  delegate = [(SRCompactPresentation *)self delegate];
+  [delegate dismissSiriPresentation:self withReason:reason];
 }
 
-- (void)stopRecordingForViewController:(id)a3
+- (void)stopRecordingForViewController:(id)controller
 {
-  v4 = [(SRCompactPresentation *)self delegate];
-  [v4 stopRecordingSpeechForSiriPresentation:self];
+  delegate = [(SRCompactPresentation *)self delegate];
+  [delegate stopRecordingSpeechForSiriPresentation:self];
 }
 
-- (void)cancelRequestForViewController:(id)a3
+- (void)cancelRequestForViewController:(id)controller
 {
-  v4 = [(SRCompactPresentation *)self delegate];
-  [v4 cancelRequestForSiriPresentation:self];
+  delegate = [(SRCompactPresentation *)self delegate];
+  [delegate cancelRequestForSiriPresentation:self];
 }
 
-- (void)didPresentContentForCompactViewController:(id)a3
+- (void)didPresentContentForCompactViewController:(id)controller
 {
   self->_hasPresentedContent = 1;
-  v4 = [(SRCompactPresentation *)self delegate];
-  v5 = [v4 siriDeviceLockStateForSiriPresentation:self];
+  delegate = [(SRCompactPresentation *)self delegate];
+  v5 = [delegate siriDeviceLockStateForSiriPresentation:self];
 
   if ([(SRCompactViewController *)self->_compactViewController isInAmbient])
   {
@@ -1096,59 +1096,59 @@ LABEL_2:
     goto LABEL_2;
   }
 
-  v8 = [(SRCompactPresentation *)self delegate];
-  [v8 siriPresentation:self requestHostBlurVisible:1 reason:2 fence:0];
+  delegate2 = [(SRCompactPresentation *)self delegate];
+  [delegate2 siriPresentation:self requestHostBlurVisible:1 reason:2 fence:0];
 }
 
-- (id)effectiveCoreLocationBundleForCompactViewController:(id)a3
+- (id)effectiveCoreLocationBundleForCompactViewController:(id)controller
 {
-  v4 = [(SRCompactPresentation *)self delegate];
-  v5 = [v4 effectiveCoreLocationBundleForSiriPresentation:self];
+  delegate = [(SRCompactPresentation *)self delegate];
+  v5 = [delegate effectiveCoreLocationBundleForSiriPresentation:self];
 
   return v5;
 }
 
-- (void)siriCompactViewController:(id)a3 willPresentViewController:(id)a4
+- (void)siriCompactViewController:(id)controller willPresentViewController:(id)viewController
 {
-  v5 = a4;
-  v6 = [(SRCompactPresentation *)self delegate];
-  [v6 siriPresentation:self willPresentViewController:v5];
+  viewControllerCopy = viewController;
+  delegate = [(SRCompactPresentation *)self delegate];
+  [delegate siriPresentation:self willPresentViewController:viewControllerCopy];
 }
 
 - (void)didBeginProcessingConversationItems
 {
-  v2 = [(SRCompactPresentation *)self delegate];
-  [v2 didBeginProcessingConversationItems];
+  delegate = [(SRCompactPresentation *)self delegate];
+  [delegate didBeginProcessingConversationItems];
 }
 
-- (void)siriCompactViewController:(id)a3 willDismissViewController:(id)a4
+- (void)siriCompactViewController:(id)controller willDismissViewController:(id)viewController
 {
-  v5 = a4;
-  v6 = [(SRCompactPresentation *)self delegate];
-  [v6 siriPresentation:self willDismissViewController:v5];
+  viewControllerCopy = viewController;
+  delegate = [(SRCompactPresentation *)self delegate];
+  [delegate siriPresentation:self willDismissViewController:viewControllerCopy];
 }
 
-- (void)compactViewController:(id)a3 viewDidAppearForAceObject:(id)a4
+- (void)compactViewController:(id)controller viewDidAppearForAceObject:(id)object
 {
-  v5 = a4;
-  v6 = [(SRCompactPresentation *)self delegate];
-  [v6 siriPresentation:self viewDidAppearWithAceObject:v5];
+  objectCopy = object;
+  delegate = [(SRCompactPresentation *)self delegate];
+  [delegate siriPresentation:self viewDidAppearWithAceObject:objectCopy];
 }
 
-- (void)compactViewController:(id)a3 viewDidDisappearForAceObject:(id)a4
+- (void)compactViewController:(id)controller viewDidDisappearForAceObject:(id)object
 {
-  v5 = a4;
-  v8 = [(SRCompactPresentation *)self delegate];
-  v6 = [v5 encodedClassName];
-  v7 = [v5 aceId];
+  objectCopy = object;
+  delegate = [(SRCompactPresentation *)self delegate];
+  encodedClassName = [objectCopy encodedClassName];
+  aceId = [objectCopy aceId];
 
-  [v8 siriPresentation:self viewDidDisappearWithClassDescriptor:v6 identifier:v7];
+  [delegate siriPresentation:self viewDidDisappearWithClassDescriptor:encodedClassName identifier:aceId];
 }
 
 - (void)userDrilledIntoSnippet
 {
-  v2 = [(SRCompactPresentation *)self delegate];
-  [v2 userDrilledIntoSnippet];
+  delegate = [(SRCompactPresentation *)self delegate];
+  [delegate userDrilledIntoSnippet];
 }
 
 - (void)didReceiveBugButtonLongPress
@@ -1187,43 +1187,43 @@ LABEL_2:
   }
 }
 
-- (void)bugReportPresenter:(id)a3 requestsToHandlePasscodeUnlockWithCompletion:(id)a4
+- (void)bugReportPresenter:(id)presenter requestsToHandlePasscodeUnlockWithCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = [(SRCompactPresentation *)self delegate];
-  [v6 handlePasscodeUnlockForSiriPresentation:self withClient:0 withCompletion:v5];
+  completionCopy = completion;
+  delegate = [(SRCompactPresentation *)self delegate];
+  [delegate handlePasscodeUnlockForSiriPresentation:self withClient:0 withCompletion:completionCopy];
 }
 
-- (void)bugReportPresenter:(id)a3 requestsToOpenURL:(id)a4 withCompletion:(id)a5
+- (void)bugReportPresenter:(id)presenter requestsToOpenURL:(id)l withCompletion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(SRCompactPresentation *)self delegate];
-  [v9 siriPresentation:self openURL:v8 conversationId:0 completion:v7];
+  completionCopy = completion;
+  lCopy = l;
+  delegate = [(SRCompactPresentation *)self delegate];
+  [delegate siriPresentation:self openURL:lCopy conversationId:0 completion:completionCopy];
 }
 
-- (void)bugReportPresenter:(id)a3 requestsToPerformAceCommand:(id)a4
+- (void)bugReportPresenter:(id)presenter requestsToPerformAceCommand:(id)command
 {
-  v5 = a4;
-  v6 = [(SRCompactPresentation *)self delegate];
-  [v6 siriPresentation:self performAceCommand:v5 conversationItemIdentifier:0 completion:0];
+  commandCopy = command;
+  delegate = [(SRCompactPresentation *)self delegate];
+  [delegate siriPresentation:self performAceCommand:commandCopy conversationItemIdentifier:0 completion:0];
 }
 
-- (void)bugReportPresenter:(id)a3 requestsToTakeScreenshotWithCompletion:(id)a4
+- (void)bugReportPresenter:(id)presenter requestsToTakeScreenshotWithCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = [(SRCompactPresentation *)self delegate];
-  [v6 getScreenshotImageForSiriPresentation:self withCompletion:v5];
+  completionCopy = completion;
+  delegate = [(SRCompactPresentation *)self delegate];
+  [delegate getScreenshotImageForSiriPresentation:self withCompletion:completionCopy];
 }
 
-- (void)bugReportPresenter:(id)a3 setBugReportingAvailable:(BOOL)a4
+- (void)bugReportPresenter:(id)presenter setBugReportingAvailable:(BOOL)available
 {
-  v4 = a4;
-  v6 = [(SRCompactPresentation *)self delegate];
-  [v6 siriPresentation:self setBugReportingAvailable:v4];
+  availableCopy = available;
+  delegate = [(SRCompactPresentation *)self delegate];
+  [delegate siriPresentation:self setBugReportingAvailable:availableCopy];
 }
 
-- (id)bugReportPresenterRequestsBugReportKeywordIdentifiers:(id)a3
+- (id)bugReportPresenterRequestsBugReportKeywordIdentifiers:(id)identifiers
 {
   v5 = @"1229562";
   v3 = [NSArray arrayWithObjects:&v5 count:1];
@@ -1231,24 +1231,24 @@ LABEL_2:
   return v3;
 }
 
-- (id)bugReportPresenterRequestsBugReportPrefixForTitle:(id)a3
+- (id)bugReportPresenterRequestsBugReportPrefixForTitle:(id)title
 {
   v3 = objc_alloc_init(UIDevice);
-  v4 = [v3 buildVersion];
+  buildVersion = [v3 buildVersion];
 
-  v5 = [NSString stringWithFormat:@"[%@]", v4];
+  v5 = [NSString stringWithFormat:@"[%@]", buildVersion];
 
   return v5;
 }
 
-- (void)bugReportPresenter:(id)a3 setStatusViewHidden:(BOOL)a4
+- (void)bugReportPresenter:(id)presenter setStatusViewHidden:(BOOL)hidden
 {
-  v4 = a4;
-  v6 = [(SRCompactPresentation *)self delegate];
-  [v6 siriPresentation:self setStatusViewHidden:v4];
+  hiddenCopy = hidden;
+  delegate = [(SRCompactPresentation *)self delegate];
+  [delegate siriPresentation:self setStatusViewHidden:hiddenCopy];
 }
 
-- (void)bugReportPresenterRequestsInvalidateAutoDismissal:(id)a3
+- (void)bugReportPresenterRequestsInvalidateAutoDismissal:(id)dismissal
 {
   [(SRCompactAutoDismissController *)self->_autoDismissController setEnabled:0];
   v3 = AFSiriLogContextConnection;
@@ -1260,10 +1260,10 @@ LABEL_2:
   }
 }
 
-- (void)bugReportPresenterRequestsSiriSessionToFinishCurrentRequest:(id)a3
+- (void)bugReportPresenterRequestsSiriSessionToFinishCurrentRequest:(id)request
 {
-  v3 = [(SRCompactPresentation *)self delegate];
-  [v3 siriSessionWillCancelRequest];
+  delegate = [(SRCompactPresentation *)self delegate];
+  [delegate siriSessionWillCancelRequest];
 
   v4 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
@@ -1274,7 +1274,7 @@ LABEL_2:
   }
 }
 
-- (void)bugReportPresenter:(id)a3 requestsSiriDismissalWithReason:(int64_t)a4
+- (void)bugReportPresenter:(id)presenter requestsSiriDismissalWithReason:(int64_t)reason
 {
   v6 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
@@ -1282,47 +1282,47 @@ LABEL_2:
     v8 = 136315394;
     v9 = "[SRCompactPresentation bugReportPresenter:requestsSiriDismissalWithReason:]";
     v10 = 2048;
-    v11 = a4;
+    reasonCopy = reason;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s #SiriTTR #dismissal Dismissing Siri with SASDismissalReason: %ld", &v8, 0x16u);
   }
 
-  v7 = [(SRCompactPresentation *)self delegate];
-  [v7 dismissSiriPresentation:self withReason:a4];
+  delegate = [(SRCompactPresentation *)self delegate];
+  [delegate dismissSiriPresentation:self withReason:reason];
 }
 
-- (void)compactViewController:(id)a3 requestsKeyboardWithCompletion:(id)a4
+- (void)compactViewController:(id)controller requestsKeyboardWithCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = [(SRCompactPresentation *)self delegate];
-  [v6 siriPresentation:self requestsKeyboardWithCompletion:v5];
+  completionCopy = completion;
+  delegate = [(SRCompactPresentation *)self delegate];
+  [delegate siriPresentation:self requestsKeyboardWithCompletion:completionCopy];
 }
 
-- (void)compactViewController:(id)a3 willBeginEditingOfType:(int64_t)a4
+- (void)compactViewController:(id)controller willBeginEditingOfType:(int64_t)type
 {
-  v5 = a4 == 1;
-  v6 = [(SRCompactPresentation *)self delegate];
-  [v6 siriPresentation:self willBeginEditingOfType:v5];
+  v5 = type == 1;
+  delegate = [(SRCompactPresentation *)self delegate];
+  [delegate siriPresentation:self willBeginEditingOfType:v5];
 }
 
-- (void)compactViewControllerDidEndEditing:(id)a3
+- (void)compactViewControllerDidEndEditing:(id)editing
 {
-  v4 = [(SRCompactPresentation *)self delegate];
-  [v4 siriPresentationDidResignFirstResponder:self];
+  delegate = [(SRCompactPresentation *)self delegate];
+  [delegate siriPresentationDidResignFirstResponder:self];
 }
 
-- (void)viewController:(id)a3 siriRequestEnteredWithText:(id)a4
+- (void)viewController:(id)controller siriRequestEnteredWithText:(id)text
 {
-  v5 = a4;
-  v6 = [(SRCompactPresentation *)self delegate];
-  [v6 siriPresentation:self startRequestForText:v5];
+  textCopy = text;
+  delegate = [(SRCompactPresentation *)self delegate];
+  [delegate siriPresentation:self startRequestForText:textCopy];
 }
 
-- (void)viewController:(id)a3 didFinishEditingUtteranceWithText:(id)a4 originalUserUtterance:(id)a5 selectionResults:(id)a6
+- (void)viewController:(id)controller didFinishEditingUtteranceWithText:(id)text originalUserUtterance:(id)utterance selectionResults:(id)results
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  if (([SiriUIUtilities string:v9 isSameAsUserUtterance:v10]& 1) != 0)
+  textCopy = text;
+  utteranceCopy = utterance;
+  resultsCopy = results;
+  if (([SiriUIUtilities string:textCopy isSameAsUserUtterance:utteranceCopy]& 1) != 0)
   {
     v12 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
@@ -1335,9 +1335,9 @@ LABEL_2:
 
   else
   {
-    v13 = [(SRCompactPresentation *)self delegate];
-    v14 = [v10 correctionIdentifier];
-    [v13 siriPresentation:self startEditedRequestWithText:v9 correctionIdentifier:v14 userSelectionResults:v11];
+    delegate = [(SRCompactPresentation *)self delegate];
+    correctionIdentifier = [utteranceCopy correctionIdentifier];
+    [delegate siriPresentation:self startEditedRequestWithText:textCopy correctionIdentifier:correctionIdentifier userSelectionResults:resultsCopy];
 
     v15 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
@@ -1348,55 +1348,55 @@ LABEL_2:
     }
 
     v16 = [AFUserUtterance alloc];
-    v17 = [v10 correctionIdentifier];
-    v18 = [v16 initWithString:v9 correctionIdentifier:v17];
+    correctionIdentifier2 = [utteranceCopy correctionIdentifier];
+    v18 = [v16 initWithString:textCopy correctionIdentifier:correctionIdentifier2];
 
-    v19 = [(SRCompactPresentation *)self activeViewModelController];
-    [v19 revealUserUtterance:v18 backingAceObject:0];
+    activeViewModelController = [(SRCompactPresentation *)self activeViewModelController];
+    [activeViewModelController revealUserUtterance:v18 backingAceObject:0];
   }
 
-  v20 = [(SRCompactPresentation *)self delegate];
-  [v20 siriPresentationDidEndEditing:self];
+  delegate2 = [(SRCompactPresentation *)self delegate];
+  [delegate2 siriPresentationDidEndEditing:self];
 }
 
-- (void)compactViewControllerRequestsHIDEventDefferal:(id)a3
+- (void)compactViewControllerRequestsHIDEventDefferal:(id)defferal
 {
-  v4 = [(SRCompactPresentation *)self delegate];
-  [v4 siriPresentationRequestsHIDEventDefferal:self];
+  delegate = [(SRCompactPresentation *)self delegate];
+  [delegate siriPresentationRequestsHIDEventDefferal:self];
 }
 
-- (void)compactViewControllerCancelHIDEventDefferal:(id)a3
+- (void)compactViewControllerCancelHIDEventDefferal:(id)defferal
 {
-  v4 = [(SRCompactPresentation *)self delegate];
-  [v4 siriPresentationCancelHIDEventDefferal:self];
+  delegate = [(SRCompactPresentation *)self delegate];
+  [delegate siriPresentationCancelHIDEventDefferal:self];
 }
 
-- (void)compactViewController:(id)a3 preventOutsideTouchesFromDismissingSiri:(BOOL)a4
+- (void)compactViewController:(id)controller preventOutsideTouchesFromDismissingSiri:(BOOL)siri
 {
-  v4 = a4;
-  v6 = [(SRCompactPresentation *)self delegate];
-  [v6 siriPresentation:self preventOutsideTouchesFromDismissingSiri:v4];
+  siriCopy = siri;
+  delegate = [(SRCompactPresentation *)self delegate];
+  [delegate siriPresentation:self preventOutsideTouchesFromDismissingSiri:siriCopy];
 }
 
-- (void)requestToHandlePasscodeUnlockWithClient:(unint64_t)a3 withCompletion:(id)a4
+- (void)requestToHandlePasscodeUnlockWithClient:(unint64_t)client withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = [(SRCompactPresentation *)self delegate];
-  [v7 handlePasscodeUnlockForSiriPresentation:self withClient:a3 withCompletion:v6];
+  completionCopy = completion;
+  delegate = [(SRCompactPresentation *)self delegate];
+  [delegate handlePasscodeUnlockForSiriPresentation:self withClient:client withCompletion:completionCopy];
 }
 
 - (SASRequestOptions)_activeRequestOptions
 {
-  v3 = [(SRCompactPresentation *)self delegate];
-  v4 = [v3 activeRequestOptionsForSiriPresentation:self];
+  delegate = [(SRCompactPresentation *)self delegate];
+  v4 = [delegate activeRequestOptionsForSiriPresentation:self];
 
   return v4;
 }
 
-- (void)siriIsIdleAndQuietStatusDidChange:(BOOL)a3 isAttending:(BOOL)a4
+- (void)siriIsIdleAndQuietStatusDidChange:(BOOL)change isAttending:(BOOL)attending
 {
-  v4 = a4;
-  v5 = a3;
+  attendingCopy = attending;
+  changeCopy = change;
   v7 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
   {
@@ -1405,9 +1405,9 @@ LABEL_2:
     *v18 = 136316162;
     *&v18[4] = "[SRCompactPresentation siriIsIdleAndQuietStatusDidChange:isAttending:]";
     *&v18[12] = 1024;
-    *&v18[14] = v5;
+    *&v18[14] = changeCopy;
     *&v18[18] = 1024;
-    *&v18[20] = v4;
+    *&v18[20] = attendingCopy;
     v19 = 2112;
     v20 = responseMode;
     v21 = 1024;
@@ -1416,10 +1416,10 @@ LABEL_2:
   }
 
   [(SRCompactAutoDismissController *)self->_autoDismissController stopAutoDismissalAttentionController];
-  if (v5)
+  if (changeCopy)
   {
     [(SRCompactViewController *)self->_compactViewController siriIsIdleAndQuiet];
-    if (v4)
+    if (attendingCopy)
     {
       delayDismissalMs = self->_delayDismissalMs;
       if (delayDismissalMs)
@@ -1508,25 +1508,25 @@ LABEL_18:
 
 - (void)_showFullScreenDimmingLayer
 {
-  v3 = [(SRCompactPresentation *)self delegate];
-  [v3 siriPresentation:self setFullScreenDimmingLayerVisible:1 animated:1];
+  delegate = [(SRCompactPresentation *)self delegate];
+  [delegate siriPresentation:self setFullScreenDimmingLayerVisible:1 animated:1];
 }
 
-- (void)_setInputType:(int64_t)a3
+- (void)_setInputType:(int64_t)type
 {
-  self->_inputType = a3;
-  if (a3 == 1)
+  self->_inputType = type;
+  if (type == 1)
   {
     [(SRCompactPresentation *)self _showFullScreenDimmingLayer];
   }
 
-  v4 = [(SRCompactPresentation *)self activeViewModelController];
-  [v4 inputTypeDidChange];
+  activeViewModelController = [(SRCompactPresentation *)self activeViewModelController];
+  [activeViewModelController inputTypeDidChange];
 }
 
-- (void)autoDismissControllerRequestsDismissal:(id)a3
+- (void)autoDismissControllerRequestsDismissal:(id)dismissal
 {
-  v4 = a3;
+  dismissalCopy = dismissal;
   if (self->_shouldPauseAutoDismissal)
   {
     v5 = AFSiriLogContextConnection;
@@ -1542,29 +1542,29 @@ LABEL_18:
 
   else
   {
-    v6 = [(SRCompactPresentation *)self delegate];
-    [v6 dismissSiriPresentation:self withReason:4];
+    delegate = [(SRCompactPresentation *)self delegate];
+    [delegate dismissSiriPresentation:self withReason:4];
   }
 }
 
-- (void)autoDismissControllerRequestsStopAttending:(id)a3
+- (void)autoDismissControllerRequestsStopAttending:(id)attending
 {
-  v4 = [(SRCompactPresentation *)self delegate];
-  [v4 siriWillStopAttending:self];
+  delegate = [(SRCompactPresentation *)self delegate];
+  [delegate siriWillStopAttending:self];
 }
 
-- (void)modalContainerViewControllerViewWillDisappear:(id)a3
+- (void)modalContainerViewControllerViewWillDisappear:(id)disappear
 {
-  v4 = a3;
-  v5 = [(SRCompactPresentation *)self delegate];
-  [v5 siriPresentation:self willDismissViewController:v4];
+  disappearCopy = disappear;
+  delegate = [(SRCompactPresentation *)self delegate];
+  [delegate siriPresentation:self willDismissViewController:disappearCopy];
 }
 
-- (void)modalContainerViewControllerViewDidDisappear:(id)a3
+- (void)modalContainerViewControllerViewDidDisappear:(id)disappear
 {
-  v4 = a3;
-  v5 = [(SRCompactPresentation *)self delegate];
-  [v5 siriPresentation:self didDismissViewController:v4];
+  disappearCopy = disappear;
+  delegate = [(SRCompactPresentation *)self delegate];
+  [delegate siriPresentation:self didDismissViewController:disappearCopy];
 }
 
 - (void)_dismissVideoPlayerViewController
@@ -1578,25 +1578,25 @@ LABEL_18:
   [UIView animateWithDuration:v3 animations:0.2];
 }
 
-- (int64_t)_viewModelInputTypeForRequestInputType:(int64_t)a3
+- (int64_t)_viewModelInputTypeForRequestInputType:(int64_t)type
 {
-  if ((a3 - 1) >= 3)
+  if ((type - 1) >= 3)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return type;
   }
 }
 
 - (BOOL)alwaysShowRecognizedSpeech
 {
   v2 = +[AFPreferences sharedPreferences];
-  v3 = [v2 alwaysShowRecognizedSpeech];
+  alwaysShowRecognizedSpeech = [v2 alwaysShowRecognizedSpeech];
 
-  return v3;
+  return alwaysShowRecognizedSpeech;
 }
 
 - (SiriUIPresentationDataSource)dataSource

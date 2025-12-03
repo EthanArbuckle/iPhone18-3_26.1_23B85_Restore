@@ -1,9 +1,9 @@
 @interface SCROBrailleDisplayHistory
 + (void)initialize;
-- (BOOL)_moveIndexBy:(int64_t)a3;
+- (BOOL)_moveIndexBy:(int64_t)by;
 - (SCROBrailleDisplayHistory)init;
 - (id)currentString;
-- (void)addString:(id)a3;
+- (void)addString:(id)string;
 - (void)dealloc;
 - (void)markSnapshotAsRead;
 - (void)snapshotUnread;
@@ -15,7 +15,7 @@
 {
   v3 = objc_opt_self();
 
-  if (v3 == a1)
+  if (v3 == self)
   {
     v4 = objc_alloc(MEMORY[0x277CBEAC0]);
     v12 = [v4 initWithObjectsAndKeys:{MEMORY[0x277CBEC38], kSCROHistoryAttribute, MEMORY[0x277CBEC28], kSCROUnreadAttribute, 0}];
@@ -58,9 +58,9 @@
   [(SCROBrailleDisplayHistory *)&v3 dealloc];
 }
 
-- (void)addString:(id)a3
+- (void)addString:(id)string
 {
-  value = [a3 mutableCopy];
+  value = [string mutableCopy];
   if ([value length])
   {
     [value removeAttribute:kSCROAlertAttribute[0] range:{0, 1}];
@@ -174,7 +174,7 @@
   return v9;
 }
 
-- (BOOL)_moveIndexBy:(int64_t)a3
+- (BOOL)_moveIndexBy:(int64_t)by
 {
   currentIndex = self->_currentIndex;
   Count = CFArrayGetCount(self->_announcements);
@@ -185,12 +185,12 @@
   }
 
   v8 = self->_currentIndex;
-  if (v8 + a3 < Count)
+  if (v8 + by < Count)
   {
-    v7 = v8 + a3;
+    v7 = v8 + by;
   }
 
-  if (v8 + a3 < 0)
+  if (v8 + by < 0)
   {
     v7 = 0;
   }

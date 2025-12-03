@@ -1,14 +1,14 @@
 @interface NWNetworkOfInterest
-- (BOOL)_isEqualToNOI:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (NWNetworkOfInterest)initWithCoder:(id)a3;
-- (id)_descriptionFull:(BOOL)a3;
+- (BOOL)_isEqualToNOI:(id)i;
+- (BOOL)isEqual:(id)equal;
+- (NWNetworkOfInterest)initWithCoder:(id)coder;
+- (id)_descriptionFull:(BOOL)full;
 - (id)_thinCopy;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)addObserverForAllKeyPaths:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeObserverForAllKeyPaths:(id)a3;
+- (void)addObserverForAllKeyPaths:(id)paths;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeObserverForAllKeyPaths:(id)paths;
 @end
 
 @implementation NWNetworkOfInterest
@@ -36,45 +36,45 @@
   return v3;
 }
 
-- (NWNetworkOfInterest)initWithCoder:(id)a3
+- (NWNetworkOfInterest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = NWNetworkOfInterest;
   v5 = [(NWNetworkOfInterest *)&v24 init];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    v5->_version = [v4 decodeIntegerForKey:@"version"];
-    v7 = [v4 decodeIntegerForKey:@"interfaceType"];
+    v5->_version = [coderCopy decodeIntegerForKey:@"version"];
+    v7 = [coderCopy decodeIntegerForKey:@"interfaceType"];
     v5->_functionalInterfaceType = v7;
     v5->_interface = [FunctionalInterfaceUtils nwInterfaceTypeForNWFunctionalInterfaceType:v7];
     v5->_interfaceSubtype = [FunctionalInterfaceUtils nwInterfaceSubtypeForNWFunctionalInterfaceType:v5->_functionalInterfaceType];
-    v5->_isAny = [v4 decodeBoolForKey:@"isAny"];
-    v5->_isBuiltin = [v4 decodeBoolForKey:@"isBuiltin"];
-    v5->_scopedToLOI = [v4 decodeIntegerForKey:@"scopedToLOI"];
-    v5->_flags = [v4 decodeIntegerForKey:@"flags"];
-    v8 = [v4 decodeObjectForKey:@"customSignature"];
+    v5->_isAny = [coderCopy decodeBoolForKey:@"isAny"];
+    v5->_isBuiltin = [coderCopy decodeBoolForKey:@"isBuiltin"];
+    v5->_scopedToLOI = [coderCopy decodeIntegerForKey:@"scopedToLOI"];
+    v5->_flags = [coderCopy decodeIntegerForKey:@"flags"];
+    v8 = [coderCopy decodeObjectForKey:@"customSignature"];
     customSignature = v5->_customSignature;
     v5->_customSignature = v8;
 
-    v5->_isTrafficEligible = [v4 decodeBoolForKey:@"isTrafficEligible"];
-    v5->_willGetDiscretionaryTrafficInvites = [v4 decodeBoolForKey:@"willGetDiscretionaryTrafficInvites"];
-    v5->_discretionaryTrafficInvited = [v4 decodeBoolForKey:@"discretionaryTrafficInvited"];
-    v5->_interfaceClass = [v4 decodeIntegerForKey:@"interfaceClass"];
-    v5->_considerAlternate = [v4 decodeIntegerForKey:@"considerAlternate"];
+    v5->_isTrafficEligible = [coderCopy decodeBoolForKey:@"isTrafficEligible"];
+    v5->_willGetDiscretionaryTrafficInvites = [coderCopy decodeBoolForKey:@"willGetDiscretionaryTrafficInvites"];
+    v5->_discretionaryTrafficInvited = [coderCopy decodeBoolForKey:@"discretionaryTrafficInvited"];
+    v5->_interfaceClass = [coderCopy decodeIntegerForKey:@"interfaceClass"];
+    v5->_considerAlternate = [coderCopy decodeIntegerForKey:@"considerAlternate"];
     v10 = objc_alloc(MEMORY[0x277CBEB98]);
     v11 = objc_opt_class();
     v12 = objc_opt_class();
     v13 = [v10 initWithObjects:{v11, v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"considerAlternateUpdate"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"considerAlternateUpdate"];
     considerAlternateUpdate = v5->_considerAlternateUpdate;
     v5->_considerAlternateUpdate = v14;
 
-    v5->_linkQuality = [v4 decodeIntegerForKey:@"linkQuality"];
-    v5->_powerCostDL = [v4 decodeIntegerForKey:@"powerCostDL"];
-    v5->_powerCostUL = [v4 decodeIntegerForKey:@"powerCostUL"];
-    v16 = [v4 decodeObjectForKey:@"predictionsGeneratedAt"];
+    v5->_linkQuality = [coderCopy decodeIntegerForKey:@"linkQuality"];
+    v5->_powerCostDL = [coderCopy decodeIntegerForKey:@"powerCostDL"];
+    v5->_powerCostUL = [coderCopy decodeIntegerForKey:@"powerCostUL"];
+    v16 = [coderCopy decodeObjectForKey:@"predictionsGeneratedAt"];
     predictionsGeneratedAt = v5->_predictionsGeneratedAt;
     v5->_predictionsGeneratedAt = v16;
 
@@ -82,7 +82,7 @@
     v19 = objc_opt_class();
     v20 = [v18 initWithObjects:{v19, objc_opt_class(), 0}];
 
-    v21 = [v4 decodeObjectOfClasses:v20 forKey:@"predictions"];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"predictions"];
     predictions = v5->_predictions;
     v5->_predictions = v21;
 
@@ -92,49 +92,49 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
-  [v9 encodeInteger:-[NWNetworkOfInterest version](self forKey:{"version"), @"version"}];
-  [v9 encodeInteger:-[NWNetworkOfInterest functionalInterfaceType](self forKey:{"functionalInterfaceType"), @"interfaceType"}];
-  [v9 encodeBool:-[NWNetworkOfInterest isAny](self forKey:{"isAny"), @"isAny"}];
-  [v9 encodeBool:-[NWNetworkOfInterest isBuiltin](self forKey:{"isBuiltin"), @"isBuiltin"}];
-  [v9 encodeInteger:-[NWNetworkOfInterest scopedToLOI](self forKey:{"scopedToLOI"), @"scopedToLOI"}];
-  [v9 encodeInteger:-[NWNetworkOfInterest flags](self forKey:{"flags"), @"flags"}];
-  v5 = [(NWNetworkOfInterest *)self customSignature];
-  [v9 encodeObject:v5 forKey:@"customSignature"];
+  [coderCopy encodeInteger:-[NWNetworkOfInterest version](self forKey:{"version"), @"version"}];
+  [coderCopy encodeInteger:-[NWNetworkOfInterest functionalInterfaceType](self forKey:{"functionalInterfaceType"), @"interfaceType"}];
+  [coderCopy encodeBool:-[NWNetworkOfInterest isAny](self forKey:{"isAny"), @"isAny"}];
+  [coderCopy encodeBool:-[NWNetworkOfInterest isBuiltin](self forKey:{"isBuiltin"), @"isBuiltin"}];
+  [coderCopy encodeInteger:-[NWNetworkOfInterest scopedToLOI](self forKey:{"scopedToLOI"), @"scopedToLOI"}];
+  [coderCopy encodeInteger:-[NWNetworkOfInterest flags](self forKey:{"flags"), @"flags"}];
+  customSignature = [(NWNetworkOfInterest *)self customSignature];
+  [coderCopy encodeObject:customSignature forKey:@"customSignature"];
 
-  [v9 encodeBool:-[NWNetworkOfInterest isTrafficEligible](self forKey:{"isTrafficEligible"), @"isTrafficEligible"}];
-  [v9 encodeBool:-[NWNetworkOfInterest willGetDiscretionaryTrafficInvites](self forKey:{"willGetDiscretionaryTrafficInvites"), @"willGetDiscretionaryTrafficInvites"}];
-  [v9 encodeBool:-[NWNetworkOfInterest discretionaryTrafficInvited](self forKey:{"discretionaryTrafficInvited"), @"discretionaryTrafficInvited"}];
-  [v9 encodeInteger:-[NWNetworkOfInterest interfaceClass](self forKey:{"interfaceClass"), @"interfaceClass"}];
-  [v9 encodeInteger:-[NWNetworkOfInterest considerAlternate](self forKey:{"considerAlternate"), @"considerAlternate"}];
-  v6 = [(NWNetworkOfInterest *)self considerAlternateUpdate];
-  [v9 encodeObject:v6 forKey:@"considerAlternateUpdate"];
+  [coderCopy encodeBool:-[NWNetworkOfInterest isTrafficEligible](self forKey:{"isTrafficEligible"), @"isTrafficEligible"}];
+  [coderCopy encodeBool:-[NWNetworkOfInterest willGetDiscretionaryTrafficInvites](self forKey:{"willGetDiscretionaryTrafficInvites"), @"willGetDiscretionaryTrafficInvites"}];
+  [coderCopy encodeBool:-[NWNetworkOfInterest discretionaryTrafficInvited](self forKey:{"discretionaryTrafficInvited"), @"discretionaryTrafficInvited"}];
+  [coderCopy encodeInteger:-[NWNetworkOfInterest interfaceClass](self forKey:{"interfaceClass"), @"interfaceClass"}];
+  [coderCopy encodeInteger:-[NWNetworkOfInterest considerAlternate](self forKey:{"considerAlternate"), @"considerAlternate"}];
+  considerAlternateUpdate = [(NWNetworkOfInterest *)self considerAlternateUpdate];
+  [coderCopy encodeObject:considerAlternateUpdate forKey:@"considerAlternateUpdate"];
 
-  [v9 encodeInteger:-[NWNetworkOfInterest linkQuality](self forKey:{"linkQuality"), @"linkQuality"}];
-  [v9 encodeInteger:-[NWNetworkOfInterest powerCostDL](self forKey:{"powerCostDL"), @"powerCostDL"}];
-  [v9 encodeInteger:-[NWNetworkOfInterest powerCostUL](self forKey:{"powerCostUL"), @"powerCostUL"}];
-  v7 = [(NWNetworkOfInterest *)self predictionsGeneratedAt];
-  [v9 encodeObject:v7 forKey:@"predictionsGeneratedAt"];
+  [coderCopy encodeInteger:-[NWNetworkOfInterest linkQuality](self forKey:{"linkQuality"), @"linkQuality"}];
+  [coderCopy encodeInteger:-[NWNetworkOfInterest powerCostDL](self forKey:{"powerCostDL"), @"powerCostDL"}];
+  [coderCopy encodeInteger:-[NWNetworkOfInterest powerCostUL](self forKey:{"powerCostUL"), @"powerCostUL"}];
+  predictionsGeneratedAt = [(NWNetworkOfInterest *)self predictionsGeneratedAt];
+  [coderCopy encodeObject:predictionsGeneratedAt forKey:@"predictionsGeneratedAt"];
 
-  v8 = [(NWNetworkOfInterest *)self predictions];
-  [v9 encodeObject:v8 forKey:@"predictions"];
+  predictions = [(NWNetworkOfInterest *)self predictions];
+  [coderCopy encodeObject:predictions forKey:@"predictions"];
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (id)_descriptionFull:(BOOL)a3
+- (id)_descriptionFull:(BOOL)full
 {
   v5 = [FunctionalInterfaceUtils stringForFunctionalInterfaceType:[(NWNetworkOfInterest *)self functionalInterfaceType]];
   v6 = v5;
-  if (a3)
+  if (full)
   {
     v7 = objc_alloc(MEMORY[0x277CCACA8]);
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = [(NWNetworkOfInterest *)self version];
+    version = [(NWNetworkOfInterest *)self version];
     v11 = "yes";
     if ([(NWNetworkOfInterest *)self isAny])
     {
@@ -151,7 +151,7 @@
       v11 = "no";
     }
 
-    v13 = [v7 initWithFormat:@"NOI(%@): v:%ld type:%@, isAny:%s, isBuiltin:%s, loi:%ld, flags:%lu", v9, v10, v6, v12, v11, -[NWNetworkOfInterest scopedToLOI](self, "scopedToLOI"), -[NWNetworkOfInterest flags](self, "flags")];
+    v13 = [v7 initWithFormat:@"NOI(%@): v:%ld type:%@, isAny:%s, isBuiltin:%s, loi:%ld, flags:%lu", v9, version, v6, v12, v11, -[NWNetworkOfInterest scopedToLOI](self, "scopedToLOI"), -[NWNetworkOfInterest flags](self, "flags")];
   }
 
   else
@@ -162,10 +162,10 @@
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -173,41 +173,41 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NWNetworkOfInterest *)self _isEqualToNOI:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NWNetworkOfInterest *)self _isEqualToNOI:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)_isEqualToNOI:(id)a3
+- (BOOL)_isEqualToNOI:(id)i
 {
-  v5 = a3;
-  v6 = [(NWNetworkOfInterest *)self version];
-  if (v6 == [v5 version])
+  iCopy = i;
+  version = [(NWNetworkOfInterest *)self version];
+  if (version == [iCopy version])
   {
-    v7 = [(NWNetworkOfInterest *)self functionalInterfaceType];
-    if (v7 == [v5 functionalInterfaceType])
+    functionalInterfaceType = [(NWNetworkOfInterest *)self functionalInterfaceType];
+    if (functionalInterfaceType == [iCopy functionalInterfaceType])
     {
-      v8 = [(NWNetworkOfInterest *)self isAny];
-      if (v8 == [v5 isAny])
+      isAny = [(NWNetworkOfInterest *)self isAny];
+      if (isAny == [iCopy isAny])
       {
-        v9 = [(NWNetworkOfInterest *)self isBuiltin];
-        if (v9 == [v5 isBuiltin])
+        isBuiltin = [(NWNetworkOfInterest *)self isBuiltin];
+        if (isBuiltin == [iCopy isBuiltin])
         {
-          v10 = [(NWNetworkOfInterest *)self scopedToLOI];
-          if (v10 == [v5 scopedToLOI])
+          scopedToLOI = [(NWNetworkOfInterest *)self scopedToLOI];
+          if (scopedToLOI == [iCopy scopedToLOI])
           {
-            v11 = [(NWNetworkOfInterest *)self flags];
-            if (v11 == [v5 flags])
+            flags = [(NWNetworkOfInterest *)self flags];
+            if (flags == [iCopy flags])
             {
-              v12 = [(NWNetworkOfInterest *)self customSignature];
-              if (v12 || ([v5 customSignature], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+              customSignature = [(NWNetworkOfInterest *)self customSignature];
+              if (customSignature || ([iCopy customSignature], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
               {
-                v13 = [(NWNetworkOfInterest *)self customSignature];
-                v14 = [v5 customSignature];
-                v15 = [v13 isEqual:v14];
+                customSignature2 = [(NWNetworkOfInterest *)self customSignature];
+                customSignature3 = [iCopy customSignature];
+                v15 = [customSignature2 isEqual:customSignature3];
 
-                if (v12)
+                if (customSignature)
                 {
 LABEL_15:
 
@@ -234,7 +234,7 @@ LABEL_12:
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(NWNetworkOfInterest);
   v4->_version = self->_version;
@@ -252,52 +252,52 @@ LABEL_12:
   v4->_linkQuality = self->_linkQuality;
   v4->_powerCostDL = self->_powerCostDL;
   v4->_powerCostUL = self->_powerCostUL;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NWNetworkAdviceUpdate *)v5->_considerAlternateUpdate copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NWNetworkAdviceUpdate *)selfCopy->_considerAlternateUpdate copy];
   considerAlternateUpdate = v4->_considerAlternateUpdate;
   v4->_considerAlternateUpdate = v6;
 
-  v8 = [(NSDate *)v5->_predictionsGeneratedAt copy];
+  v8 = [(NSDate *)selfCopy->_predictionsGeneratedAt copy];
   predictionsGeneratedAt = v4->_predictionsGeneratedAt;
   v4->_predictionsGeneratedAt = v8;
 
-  v10 = [(NSArray *)v5->_predictions copy];
+  v10 = [(NSArray *)selfCopy->_predictions copy];
   predictions = v4->_predictions;
   v4->_predictions = v10;
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v4;
 }
 
-- (void)addObserverForAllKeyPaths:(id)a3
+- (void)addObserverForAllKeyPaths:(id)paths
 {
-  v4 = a3;
-  [(NWNetworkOfInterest *)self addObserver:v4 forKeyPath:@"isTrafficEligible" options:1 context:1];
-  [(NWNetworkOfInterest *)self addObserver:v4 forKeyPath:@"willGetDiscretionaryTrafficInvites" options:1 context:2];
-  [(NWNetworkOfInterest *)self addObserver:v4 forKeyPath:@"discretionaryTrafficInvited" options:1 context:3];
-  [(NWNetworkOfInterest *)self addObserver:v4 forKeyPath:@"interfaceClass" options:1 context:4];
-  [(NWNetworkOfInterest *)self addObserver:v4 forKeyPath:@"considerAlternate" options:1 context:5];
-  [(NWNetworkOfInterest *)self addObserver:v4 forKeyPath:@"considerAlternateUpdate" options:1 context:6];
-  [(NWNetworkOfInterest *)self addObserver:v4 forKeyPath:@"linkQuality" options:1 context:7];
-  [(NWNetworkOfInterest *)self addObserver:v4 forKeyPath:@"powerCostDL" options:1 context:8];
-  [(NWNetworkOfInterest *)self addObserver:v4 forKeyPath:@"powerCostUL" options:1 context:9];
-  [(NWNetworkOfInterest *)self addObserver:v4 forKeyPath:@"predictionsGeneratedAt" options:1 context:0];
+  pathsCopy = paths;
+  [(NWNetworkOfInterest *)self addObserver:pathsCopy forKeyPath:@"isTrafficEligible" options:1 context:1];
+  [(NWNetworkOfInterest *)self addObserver:pathsCopy forKeyPath:@"willGetDiscretionaryTrafficInvites" options:1 context:2];
+  [(NWNetworkOfInterest *)self addObserver:pathsCopy forKeyPath:@"discretionaryTrafficInvited" options:1 context:3];
+  [(NWNetworkOfInterest *)self addObserver:pathsCopy forKeyPath:@"interfaceClass" options:1 context:4];
+  [(NWNetworkOfInterest *)self addObserver:pathsCopy forKeyPath:@"considerAlternate" options:1 context:5];
+  [(NWNetworkOfInterest *)self addObserver:pathsCopy forKeyPath:@"considerAlternateUpdate" options:1 context:6];
+  [(NWNetworkOfInterest *)self addObserver:pathsCopy forKeyPath:@"linkQuality" options:1 context:7];
+  [(NWNetworkOfInterest *)self addObserver:pathsCopy forKeyPath:@"powerCostDL" options:1 context:8];
+  [(NWNetworkOfInterest *)self addObserver:pathsCopy forKeyPath:@"powerCostUL" options:1 context:9];
+  [(NWNetworkOfInterest *)self addObserver:pathsCopy forKeyPath:@"predictionsGeneratedAt" options:1 context:0];
 }
 
-- (void)removeObserverForAllKeyPaths:(id)a3
+- (void)removeObserverForAllKeyPaths:(id)paths
 {
-  v4 = a3;
-  [(NWNetworkOfInterest *)self removeObserver:v4 forKeyPath:@"isTrafficEligible"];
-  [(NWNetworkOfInterest *)self removeObserver:v4 forKeyPath:@"willGetDiscretionaryTrafficInvites"];
-  [(NWNetworkOfInterest *)self removeObserver:v4 forKeyPath:@"discretionaryTrafficInvited"];
-  [(NWNetworkOfInterest *)self removeObserver:v4 forKeyPath:@"interfaceClass"];
-  [(NWNetworkOfInterest *)self removeObserver:v4 forKeyPath:@"considerAlternate"];
-  [(NWNetworkOfInterest *)self removeObserver:v4 forKeyPath:@"considerAlternateUpdate"];
-  [(NWNetworkOfInterest *)self removeObserver:v4 forKeyPath:@"linkQuality"];
-  [(NWNetworkOfInterest *)self removeObserver:v4 forKeyPath:@"powerCostDL"];
-  [(NWNetworkOfInterest *)self removeObserver:v4 forKeyPath:@"powerCostUL"];
-  [(NWNetworkOfInterest *)self removeObserver:v4 forKeyPath:@"predictionsGeneratedAt"];
+  pathsCopy = paths;
+  [(NWNetworkOfInterest *)self removeObserver:pathsCopy forKeyPath:@"isTrafficEligible"];
+  [(NWNetworkOfInterest *)self removeObserver:pathsCopy forKeyPath:@"willGetDiscretionaryTrafficInvites"];
+  [(NWNetworkOfInterest *)self removeObserver:pathsCopy forKeyPath:@"discretionaryTrafficInvited"];
+  [(NWNetworkOfInterest *)self removeObserver:pathsCopy forKeyPath:@"interfaceClass"];
+  [(NWNetworkOfInterest *)self removeObserver:pathsCopy forKeyPath:@"considerAlternate"];
+  [(NWNetworkOfInterest *)self removeObserver:pathsCopy forKeyPath:@"considerAlternateUpdate"];
+  [(NWNetworkOfInterest *)self removeObserver:pathsCopy forKeyPath:@"linkQuality"];
+  [(NWNetworkOfInterest *)self removeObserver:pathsCopy forKeyPath:@"powerCostDL"];
+  [(NWNetworkOfInterest *)self removeObserver:pathsCopy forKeyPath:@"powerCostUL"];
+  [(NWNetworkOfInterest *)self removeObserver:pathsCopy forKeyPath:@"predictionsGeneratedAt"];
 }
 
 @end

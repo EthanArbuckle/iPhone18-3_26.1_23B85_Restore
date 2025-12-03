@@ -1,24 +1,24 @@
 @interface FMCopyableLabel
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (void)copy:(id)a3;
-- (void)showMenuWithSender:(id)a3;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (void)copy:(id)copy;
+- (void)showMenuWithSender:(id)sender;
 @end
 
 @implementation FMCopyableLabel
 
-- (void)showMenuWithSender:(id)a3
+- (void)showMenuWithSender:(id)sender
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1001AD55C();
   swift_unknownObjectRelease();
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  if (a3)
+  if (copy)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -27,20 +27,20 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
-  v6 = [objc_opt_self() generalPasteboard];
-  v7 = [(FMCopyableLabel *)self text];
-  [v6 setString:v7];
+  generalPasteboard = [objc_opt_self() generalPasteboard];
+  text = [(FMCopyableLabel *)self text];
+  [generalPasteboard setString:text];
 
   [*(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC6FindMy15FMCopyableLabel_menuController) hideMenuFromView:self];
   sub_10000D2C0(v8);
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();

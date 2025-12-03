@@ -1,11 +1,11 @@
 @interface CRKShareTargetCollector
 - (CRKShareTargetCollector)init;
 - (CRKShareTargetCollectorDelegate)delegate;
-- (void)didFindTargets:(id)a3;
-- (void)didRemoveTargets:(id)a3;
-- (void)diffNewTargets:(id)a3 againstOldTargets:(id)a4;
-- (void)instructorTargetsDidChange:(id)a3;
-- (void)studentTargetsDidChange:(id)a3;
+- (void)didFindTargets:(id)targets;
+- (void)didRemoveTargets:(id)targets;
+- (void)diffNewTargets:(id)targets againstOldTargets:(id)oldTargets;
+- (void)instructorTargetsDidChange:(id)change;
+- (void)studentTargetsDidChange:(id)change;
 @end
 
 @implementation CRKShareTargetCollector
@@ -29,9 +29,9 @@
   return v2;
 }
 
-- (void)studentTargetsDidChange:(id)a3
+- (void)studentTargetsDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = _CRKLogGeneral_13();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -39,16 +39,16 @@
     _os_log_impl(&dword_243550000, v5, OS_LOG_TYPE_DEFAULT, "Classroom: Share target browser student targets did change", v8, 2u);
   }
 
-  v6 = [(CRKShareTargetCollector *)self studentTargets];
-  v7 = [MEMORY[0x277CBEB98] setWithArray:v4];
+  studentTargets = [(CRKShareTargetCollector *)self studentTargets];
+  v7 = [MEMORY[0x277CBEB98] setWithArray:changeCopy];
 
   [(CRKShareTargetCollector *)self setStudentTargets:v7];
-  [(CRKShareTargetCollector *)self diffNewTargets:v7 againstOldTargets:v6];
+  [(CRKShareTargetCollector *)self diffNewTargets:v7 againstOldTargets:studentTargets];
 }
 
-- (void)instructorTargetsDidChange:(id)a3
+- (void)instructorTargetsDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = _CRKLogGeneral_13();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -56,61 +56,61 @@
     _os_log_impl(&dword_243550000, v5, OS_LOG_TYPE_DEFAULT, "Classroom: Share target browser instructor targets did change", v8, 2u);
   }
 
-  v6 = [(CRKShareTargetCollector *)self instructorTargets];
-  v7 = [MEMORY[0x277CBEB98] setWithArray:v4];
+  instructorTargets = [(CRKShareTargetCollector *)self instructorTargets];
+  v7 = [MEMORY[0x277CBEB98] setWithArray:changeCopy];
 
   [(CRKShareTargetCollector *)self setInstructorTargets:v7];
-  [(CRKShareTargetCollector *)self diffNewTargets:v7 againstOldTargets:v6];
+  [(CRKShareTargetCollector *)self diffNewTargets:v7 againstOldTargets:instructorTargets];
 }
 
-- (void)diffNewTargets:(id)a3 againstOldTargets:(id)a4
+- (void)diffNewTargets:(id)targets againstOldTargets:(id)oldTargets
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [v6 crk_setBySubtractingSet:v7];
-  v8 = [v7 crk_setBySubtractingSet:v6];
+  oldTargetsCopy = oldTargets;
+  targetsCopy = targets;
+  v9 = [oldTargetsCopy crk_setBySubtractingSet:targetsCopy];
+  v8 = [targetsCopy crk_setBySubtractingSet:oldTargetsCopy];
 
   [(CRKShareTargetCollector *)self didRemoveTargets:v9];
   [(CRKShareTargetCollector *)self didFindTargets:v8];
 }
 
-- (void)didFindTargets:(id)a3
+- (void)didFindTargets:(id)targets
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  targetsCopy = targets;
+  if ([targetsCopy count])
   {
     v5 = _CRKLogGeneral_13();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138543362;
-      v9 = v4;
+      v9 = targetsCopy;
       _os_log_impl(&dword_243550000, v5, OS_LOG_TYPE_DEFAULT, "Classroom: Share target browser did find targets: %{public}@", &v8, 0xCu);
     }
 
-    v6 = [(CRKShareTargetCollector *)self delegate];
-    v7 = [v4 allObjects];
-    [v6 shareTargetCollector:self didFindTargets:v7];
+    delegate = [(CRKShareTargetCollector *)self delegate];
+    allObjects = [targetsCopy allObjects];
+    [delegate shareTargetCollector:self didFindTargets:allObjects];
   }
 }
 
-- (void)didRemoveTargets:(id)a3
+- (void)didRemoveTargets:(id)targets
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  targetsCopy = targets;
+  if ([targetsCopy count])
   {
     v5 = _CRKLogGeneral_13();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138543362;
-      v9 = v4;
+      v9 = targetsCopy;
       _os_log_impl(&dword_243550000, v5, OS_LOG_TYPE_DEFAULT, "Classroom: Share target browser did remove targets: %{public}@", &v8, 0xCu);
     }
 
-    v6 = [(CRKShareTargetCollector *)self delegate];
-    v7 = [v4 allObjects];
-    [v6 shareTargetCollector:self didRemoveTargets:v7];
+    delegate = [(CRKShareTargetCollector *)self delegate];
+    allObjects = [targetsCopy allObjects];
+    [delegate shareTargetCollector:self didRemoveTargets:allObjects];
   }
 }
 

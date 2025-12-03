@@ -1,37 +1,37 @@
 @interface UIFlickingAssistantViewSupport
 - (BOOL)isInputAssistantItemHidden;
 - (BOOL)isRTL;
-- (CGPoint)barOriginFromTouchPoint:(CGPoint)a3;
-- (CGPoint)keyboardOriginFromAssistantViewPosition:(int64_t)a3;
-- (CGPoint)projectedLandingPointForGestureRecognizerEnd:(id)a3;
+- (CGPoint)barOriginFromTouchPoint:(CGPoint)point;
+- (CGPoint)keyboardOriginFromAssistantViewPosition:(int64_t)position;
+- (CGPoint)projectedLandingPointForGestureRecognizerEnd:(id)end;
 - (CGRect)assistantFrame;
 - (CGRect)calculatedAssistantFrame;
 - (unint64_t)assistantPosition;
-- (unint64_t)rectEdgeFromPosition:(int64_t)a3;
-- (void)_connectController:(id)a3;
-- (void)_disconnectingController:(id)a3;
-- (void)_geometryChanged:(id *)a3 forAncestor:(id)a4;
+- (unint64_t)rectEdgeFromPosition:(int64_t)position;
+- (void)_connectController:(id)controller;
+- (void)_disconnectingController:(id)controller;
+- (void)_geometryChanged:(id *)changed forAncestor:(id)ancestor;
 - (void)_initalizePosition;
-- (void)_updateKeyboardLayoutGuideForAssistantFrame:(CGRect)a3;
+- (void)_updateKeyboardLayoutGuideForAssistantFrame:(CGRect)frame;
 - (void)_updateKeyboardLayoutGuideForCurrentAssistantFrame;
 - (void)_updateTrackingCoordinatorForFloatingAssistant;
 - (void)_updatedController;
 - (void)didUpdateTransition;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)panGestureHandler:(id)a3;
-- (void)setCompact:(BOOL)a3;
-- (void)setPositionAndVisualStateByPersistentLocation:(BOOL)a3 minimize:(BOOL)a4;
-- (void)transitToDraggingVisualState:(int64_t)a3 withTouchLocation:(CGPoint)a4;
-- (void)updateTransition:(CGPoint)a3 animated:(BOOL)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)panGestureHandler:(id)handler;
+- (void)setCompact:(BOOL)compact;
+- (void)setPositionAndVisualStateByPersistentLocation:(BOOL)location minimize:(BOOL)minimize;
+- (void)transitToDraggingVisualState:(int64_t)state withTouchLocation:(CGPoint)location;
+- (void)updateTransition:(CGPoint)transition animated:(BOOL)animated;
 @end
 
 @implementation UIFlickingAssistantViewSupport
 
-- (void)_disconnectingController:(id)a3
+- (void)_disconnectingController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 draggableView];
-  [v5 removeGestureRecognizer:self->_panRecognizer];
+  controllerCopy = controller;
+  draggableView = [controllerCopy draggableView];
+  [draggableView removeGestureRecognizer:self->_panRecognizer];
 
   panRecognizer = self->_panRecognizer;
   self->_panRecognizer = 0;
@@ -39,29 +39,29 @@
   remotePlacement = self->_remotePlacement;
   self->_remotePlacement = 0;
 
-  v8 = [(UISplitKeyboardSource *)self->super._controller view];
-  [(UIView *)v8 _removeGeometryChangeObserver:?];
+  view = [(UISplitKeyboardSource *)self->super._controller view];
+  [(UIView *)view _removeGeometryChangeObserver:?];
 
   v9 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v10 = [v9 systemInputAssistantViewController];
+  systemInputAssistantViewController = [v9 systemInputAssistantViewController];
 
-  v11 = [v10 view];
-  v12 = [v11 layer];
-  [v12 removeObserver:self forKeyPath:@"bounds"];
+  view2 = [systemInputAssistantViewController view];
+  layer = [view2 layer];
+  [layer removeObserver:self forKeyPath:@"bounds"];
 
   v13.receiver = self;
   v13.super_class = UIFlickingAssistantViewSupport;
-  [(UIKeyboardMotionSupport *)&v13 _disconnectingController:v4];
+  [(UIKeyboardMotionSupport *)&v13 _disconnectingController:controllerCopy];
 }
 
-- (void)_connectController:(id)a3
+- (void)_connectController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v13.receiver = self;
   v13.super_class = UIFlickingAssistantViewSupport;
-  [(UIKeyboardMotionSupport *)&v13 _connectController:v4];
-  v5 = [(UISplitKeyboardSource *)self->super._controller view];
-  [(UIView *)v5 _addGeometryChangeObserver:?];
+  [(UIKeyboardMotionSupport *)&v13 _connectController:controllerCopy];
+  view = [(UISplitKeyboardSource *)self->super._controller view];
+  [(UIView *)view _addGeometryChangeObserver:?];
 
   if (!+[UIKeyboardImpl isFloatingForced])
   {
@@ -80,16 +80,16 @@
   [(UIFlickingAssistantViewSupport *)self _initalizePosition];
   if (self->_panRecognizer)
   {
-    v8 = [v4 draggableView];
-    [v8 addGestureRecognizer:self->_panRecognizer];
+    draggableView = [controllerCopy draggableView];
+    [draggableView addGestureRecognizer:self->_panRecognizer];
   }
 
   v9 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v10 = [v9 systemInputAssistantViewController];
+  systemInputAssistantViewController = [v9 systemInputAssistantViewController];
 
-  v11 = [v10 view];
-  v12 = [v11 layer];
-  [v12 addObserver:self forKeyPath:@"bounds" options:3 context:0];
+  view2 = [systemInputAssistantViewController view];
+  layer = [view2 layer];
+  [layer addObserver:self forKeyPath:@"bounds" options:3 context:0];
 }
 
 - (void)_updatedController
@@ -100,44 +100,44 @@
   panRecognizer = self->_panRecognizer;
   if (panRecognizer)
   {
-    v4 = [(UIGestureRecognizer *)panRecognizer view];
-    v5 = [(UIKeyboardMotionSupport *)self masterController];
-    v6 = [v5 draggableView];
+    view = [(UIGestureRecognizer *)panRecognizer view];
+    masterController = [(UIKeyboardMotionSupport *)self masterController];
+    draggableView = [masterController draggableView];
 
-    if (v4 != v6)
+    if (view != draggableView)
     {
-      v7 = [(UIGestureRecognizer *)self->_panRecognizer view];
-      [v7 removeGestureRecognizer:self->_panRecognizer];
+      view2 = [(UIGestureRecognizer *)self->_panRecognizer view];
+      [view2 removeGestureRecognizer:self->_panRecognizer];
 
-      v8 = [(UIKeyboardMotionSupport *)self masterController];
-      v9 = [v8 draggableView];
+      masterController2 = [(UIKeyboardMotionSupport *)self masterController];
+      draggableView2 = [masterController2 draggableView];
 
-      [v9 addGestureRecognizer:self->_panRecognizer];
+      [draggableView2 addGestureRecognizer:self->_panRecognizer];
     }
   }
 
   [(UIFlickingAssistantViewSupport *)self _initalizePosition];
 }
 
-- (void)setPositionAndVisualStateByPersistentLocation:(BOOL)a3 minimize:(BOOL)a4
+- (void)setPositionAndVisualStateByPersistentLocation:(BOOL)location minimize:(BOOL)minimize
 {
-  v4 = a4;
-  v5 = a3;
+  minimizeCopy = minimize;
+  locationCopy = location;
   v7 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v8 = [v7 preferencesActions];
-  v9 = [v8 compactAssistantBarPersistentLocation];
+  preferencesActions = [v7 preferencesActions];
+  compactAssistantBarPersistentLocation = [preferencesActions compactAssistantBarPersistentLocation];
 
   v10 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v11 = [v10 systemInputAssistantViewController];
-  v23 = [v11 systemInputAssistantView];
+  systemInputAssistantViewController = [v10 systemInputAssistantViewController];
+  systemInputAssistantView = [systemInputAssistantViewController systemInputAssistantView];
 
-  if (v9)
+  if (compactAssistantBarPersistentLocation)
   {
-    if ([v23 isInputAssistantItemHidden])
+    if ([systemInputAssistantView isInputAssistantItemHidden])
     {
-      v12 = [v23 centerViewHidden];
-      v13 = v9 & 4;
-      if ((v12 & 1) != 0 || (v9 & 4) != 0)
+      centerViewHidden = [systemInputAssistantView centerViewHidden];
+      v13 = compactAssistantBarPersistentLocation & 4;
+      if ((centerViewHidden & 1) != 0 || (compactAssistantBarPersistentLocation & 4) != 0)
       {
 LABEL_14:
         v15 = v13 == 0;
@@ -153,17 +153,17 @@ LABEL_14:
         }
 
         self->_visualState = v17;
-        v14 = v23;
-        if ((v9 & 1) == 0)
+        v14 = systemInputAssistantView;
+        if ((compactAssistantBarPersistentLocation & 1) == 0)
         {
-          if ((v9 & 2) == 0)
+          if ((compactAssistantBarPersistentLocation & 2) == 0)
           {
             v18 = +[UIKeyboardImpl activeInstance];
-            v19 = [v18 inputDelegate];
-            v20 = [v19 textInputView];
-            v21 = [v20 _shouldReverseLayoutDirection];
+            inputDelegate = [v18 inputDelegate];
+            textInputView = [inputDelegate textInputView];
+            _shouldReverseLayoutDirection = [textInputView _shouldReverseLayoutDirection];
             v22 = 2;
-            if (v21)
+            if (_shouldReverseLayoutDirection)
             {
               v22 = 3;
             }
@@ -181,24 +181,24 @@ LABEL_14:
       }
     }
 
-    else if ((v9 & 4) != 0)
+    else if ((compactAssistantBarPersistentLocation & 4) != 0)
     {
-      v13 = v9 & 4;
+      v13 = compactAssistantBarPersistentLocation & 4;
       goto LABEL_14;
     }
   }
 
-  if (UIAssistantViewAllowsMinimization() && v4)
+  if (UIAssistantViewAllowsMinimization() && minimizeCopy)
   {
     self->_position = self->_lastMinimizedPosition;
     self->_visualState = 1;
 LABEL_10:
-    v14 = v23;
+    v14 = systemInputAssistantView;
     goto LABEL_24;
   }
 
-  v14 = v23;
-  if (v5)
+  v14 = systemInputAssistantView;
+  if (locationCopy)
   {
     self->_visualState = 2;
     self->_position = 1;
@@ -247,21 +247,21 @@ LABEL_24:
   [(UIFlickingAssistantViewSupport *)self updateTransition:0 animated:?];
 }
 
-- (void)panGestureHandler:(id)a3
+- (void)panGestureHandler:(id)handler
 {
   v107[2] = *MEMORY[0x1E69E9840];
-  v105 = a3;
-  v4 = [(UISplitKeyboardSource *)self->super._controller hostView];
-  if (!v4)
+  handlerCopy = handler;
+  hostView = [(UISplitKeyboardSource *)self->super._controller hostView];
+  if (!hostView)
   {
     goto LABEL_10;
   }
 
-  v5 = v4;
+  v5 = hostView;
   v6 = +[UIInputSwitcherView activeInstance];
-  v7 = [v6 isVisible];
+  isVisible = [v6 isVisible];
 
-  if (v7)
+  if (isVisible)
   {
     goto LABEL_10;
   }
@@ -270,18 +270,18 @@ LABEL_24:
   controller = self->super._controller;
   if (v8)
   {
-    v10 = [(UISplitKeyboardSource *)controller draggableView];
-    v11 = v10 == 0;
+    draggableView = [(UISplitKeyboardSource *)controller draggableView];
+    v11 = draggableView == 0;
   }
 
   else
   {
-    v10 = [(UISplitKeyboardSource *)controller inputViewSet];
-    v12 = [v10 inputAccessoryView];
-    if (v12)
+    draggableView = [(UISplitKeyboardSource *)controller inputViewSet];
+    inputAccessoryView = [draggableView inputAccessoryView];
+    if (inputAccessoryView)
     {
-      v13 = [(UISplitKeyboardSource *)self->super._controller inputViewSet];
-      v11 = [v13 isInputAccessoryViewPlaceholder] ^ 1;
+      inputViewSet = [(UISplitKeyboardSource *)self->super._controller inputViewSet];
+      v11 = [inputViewSet isInputAccessoryViewPlaceholder] ^ 1;
     }
 
     else
@@ -304,7 +304,7 @@ LABEL_24:
     v20 = v19;
     v22 = v21;
     v23 = +[UIKeyboardImpl activeInstance];
-    [v105 locationInView:v23];
+    [handlerCopy locationInView:v23];
     v109.x = v24;
     v109.y = v25;
     v110.origin.x = v16;
@@ -319,24 +319,24 @@ LABEL_24:
     }
   }
 
-  v27 = [v105 state];
-  if ((v27 - 3) >= 2)
+  state = [handlerCopy state];
+  if ((state - 3) >= 2)
   {
-    if (v27 == 2)
+    if (state == 2)
     {
       v61 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-      v62 = [v61 systemInputAssistantViewController];
-      v63 = [v62 predictionViewController];
-      v64 = [v63 predictionView];
-      [v64 cancelTapGestureRecognizer];
+      systemInputAssistantViewController = [v61 systemInputAssistantViewController];
+      predictionViewController = [systemInputAssistantViewController predictionViewController];
+      predictionView = [predictionViewController predictionView];
+      [predictionView cancelTapGestureRecognizer];
 
-      v65 = [(UISplitKeyboardSource *)self->super._controller view];
-      [v105 locationInView:v65];
+      view = [(UISplitKeyboardSource *)self->super._controller view];
+      [handlerCopy locationInView:view];
       v67 = v66;
       v69 = v68;
 
-      v70 = [(UISplitKeyboardSource *)self->super._controller view];
-      [v70 bounds];
+      view2 = [(UISplitKeyboardSource *)self->super._controller view];
+      [view2 bounds];
       v75 = UIAssistantViewVisualStateForPointInRect(self->_visualState == 3, v71, v72, v73, v74, v67, v69);
 
       if ((v75 | 2) == 3)
@@ -344,8 +344,8 @@ LABEL_24:
         [(UIFlickingAssistantViewSupport *)self transitToDraggingVisualState:v75 withTouchLocation:v67, v69];
       }
 
-      v76 = [v105 view];
-      [v76 setNeedsLayout];
+      view3 = [handlerCopy view];
+      [view3 setNeedsLayout];
 
       [(UIFlickingAssistantViewSupport *)self barOriginFromTouchPoint:v67, v69];
       v78 = v77;
@@ -353,8 +353,8 @@ LABEL_24:
       if (v75 == 3)
       {
         v81 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-        v82 = [v81 systemInputAssistantViewController];
-        v83 = [v82 updateFloatingAssistantRectEdge:2 position:{v78, v80}];
+        systemInputAssistantViewController2 = [v81 systemInputAssistantViewController];
+        v83 = [systemInputAssistantViewController2 updateFloatingAssistantRectEdge:2 position:{v78, v80}];
 
         if (v83)
         {
@@ -365,18 +365,18 @@ LABEL_24:
       [(UIFlickingAssistantViewSupport *)self updateTransition:1 animated:v78, v80];
     }
 
-    else if (v27 == 1)
+    else if (state == 1)
     {
-      v28 = [(UISplitKeyboardSource *)self->super._controller view];
-      [v105 locationInView:v28];
+      view4 = [(UISplitKeyboardSource *)self->super._controller view];
+      [handlerCopy locationInView:view4];
       self->_initalTouchPoint.x = v29;
       self->_initalTouchPoint.y = v30;
 
       if (self->_visualState >= 2uLL)
       {
-        v31 = [(UIFlickingAssistantViewSupport *)self isInputAssistantItemHidden];
+        isInputAssistantItemHidden = [(UIFlickingAssistantViewSupport *)self isInputAssistantItemHidden];
         v32 = 2;
-        if (v31)
+        if (isInputAssistantItemHidden)
         {
           v32 = 3;
         }
@@ -394,14 +394,14 @@ LABEL_24:
   }
 
   v33 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v34 = [v33 visualModeManager];
-  v35 = [v34 shouldShowWithinAppWindow];
+  visualModeManager = [v33 visualModeManager];
+  shouldShowWithinAppWindow = [visualModeManager shouldShowWithinAppWindow];
 
-  [(UIFlickingAssistantViewSupport *)self projectedLandingPointForGestureRecognizerEnd:v105];
+  [(UIFlickingAssistantViewSupport *)self projectedLandingPointForGestureRecognizerEnd:handlerCopy];
   v37 = v36;
   v39 = v38;
-  v40 = [(UISplitKeyboardSource *)self->super._controller view];
-  [v40 bounds];
+  view5 = [(UISplitKeyboardSource *)self->super._controller view];
+  [view5 bounds];
   v112 = CGRectInset(v111, 16.0, 16.0);
   x = v112.origin.x;
   y = v112.origin.y;
@@ -500,12 +500,12 @@ LABEL_42:
     v86 = v33;
     v87 = v46 == 1;
     v88 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v89 = [v88 preferencesActions];
-    v90 = v35;
-    v91 = [v89 compactAssistantBarPersistentLocation];
+    preferencesActions = [v88 preferencesActions];
+    v90 = shouldShowWithinAppWindow;
+    compactAssistantBarPersistentLocation = [preferencesActions compactAssistantBarPersistentLocation];
 
     v92 = 4 * v87;
-    v93 = v91 & 0xFFFFFFFFFFFFFFFBLL | (4 * v87);
+    v93 = compactAssistantBarPersistentLocation & 0xFFFFFFFFFFFFFFFBLL | (4 * v87);
     v33 = v86;
     p_position = v85;
     v94 = v92 | 2;
@@ -515,7 +515,7 @@ LABEL_42:
       v95 = v93;
     }
 
-    v35 = v90;
+    shouldShowWithinAppWindow = v90;
     if (v57 == 2)
     {
       v96 = v94;
@@ -527,18 +527,18 @@ LABEL_42:
     }
 
     v97 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v98 = [v97 preferencesActions];
-    [v98 setCompactAssistantBarPersistentLocation:v96];
+    preferencesActions2 = [v97 preferencesActions];
+    [preferencesActions2 setCompactAssistantBarPersistentLocation:v96];
 
     v99 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v100 = [v99 preferencesActions];
-    [v100 synchronizePreferences];
+    preferencesActions3 = [v99 preferencesActions];
+    [preferencesActions3 synchronizePreferences];
   }
 
-  v101 = [v33 visualModeManager];
-  v102 = [v101 shouldShowWithinAppWindow];
+  visualModeManager2 = [v33 visualModeManager];
+  shouldShowWithinAppWindow2 = [visualModeManager2 shouldShowWithinAppWindow];
 
-  if (v35 == v102)
+  if (shouldShowWithinAppWindow == shouldShowWithinAppWindow2)
   {
     if (v84)
     {
@@ -559,14 +559,14 @@ LABEL_42:
       [(UIFlickingAssistantViewSupport *)self _updateKeyboardLayoutGuideForAssistantFrame:?];
     }
 
-    v103 = +[UIKeyboardImpl activeInstance];
-    [v103 updateAssistantView];
+    responder = +[UIKeyboardImpl activeInstance];
+    [responder updateAssistantView];
   }
 
   else
   {
-    v103 = [v33 responder];
-    [v33 _reloadInputViewsForResponder:v103];
+    responder = [v33 responder];
+    [v33 _reloadInputViewsForResponder:responder];
   }
 
 LABEL_10:
@@ -575,20 +575,20 @@ LABEL_10:
 - (BOOL)isInputAssistantItemHidden
 {
   v2 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v3 = [v2 systemInputAssistantViewController];
-  v4 = [v3 isInputAssistantItemEmpty];
+  systemInputAssistantViewController = [v2 systemInputAssistantViewController];
+  isInputAssistantItemEmpty = [systemInputAssistantViewController isInputAssistantItemEmpty];
 
-  return v4;
+  return isInputAssistantItemEmpty;
 }
 
-- (void)transitToDraggingVisualState:(int64_t)a3 withTouchLocation:(CGPoint)a4
+- (void)transitToDraggingVisualState:(int64_t)state withTouchLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  if ([(UIFlickingAssistantViewSupport *)self draggingState]!= a3)
+  y = location.y;
+  x = location.x;
+  if ([(UIFlickingAssistantViewSupport *)self draggingState]!= state)
   {
-    [(UIFlickingAssistantViewSupport *)self setDraggingState:a3];
-    v9 = UIInputViewSetPlacementFromAssistantViewVisualState(a3, 0, 1);
+    [(UIFlickingAssistantViewSupport *)self setDraggingState:state];
+    v9 = UIInputViewSetPlacementFromAssistantViewVisualState(state, 0, 1);
     if ([v9 isMemberOfClass:objc_opt_class()])
     {
       v8 = v9;
@@ -603,23 +603,23 @@ LABEL_10:
   }
 }
 
-- (CGPoint)projectedLandingPointForGestureRecognizerEnd:(id)a3
+- (CGPoint)projectedLandingPointForGestureRecognizerEnd:(id)end
 {
   v51[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UISplitKeyboardSource *)self->super._controller view];
-  [v4 locationInView:v5];
+  endCopy = end;
+  view = [(UISplitKeyboardSource *)self->super._controller view];
+  [endCopy locationInView:view];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(UISplitKeyboardSource *)self->super._controller view];
-  [v4 velocityInView:v10];
+  view2 = [(UISplitKeyboardSource *)self->super._controller view];
+  [endCopy velocityInView:view2];
   v12 = v11;
   v14 = v13;
 
   v15 = sqrt(v12 * v12 + v14 * v14);
-  v16 = [(UISplitKeyboardSource *)self->super._controller view];
-  [v16 bounds];
+  view3 = [(UISplitKeyboardSource *)self->super._controller view];
+  [view3 bounds];
   v55 = CGRectInset(v54, 16.0, 16.0);
   x = v55.origin.x;
   y = v55.origin.y;
@@ -719,8 +719,8 @@ LABEL_10:
       {
         v35 = v9 + v32 * v34;
         v36 = v7 + v31 * v34;
-        v37 = [(UISplitKeyboardSource *)self->super._controller view];
-        [v37 bounds];
+        view4 = [(UISplitKeyboardSource *)self->super._controller view];
+        [view4 bounds];
         v53.x = v36;
         v53.y = v35;
         v38 = CGRectContainsPoint(v68, v53);
@@ -758,45 +758,45 @@ LABEL_10:
 - (BOOL)isRTL
 {
   v2 = +[UIKeyboardImpl activeInstance];
-  v3 = [v2 remoteTextInputPartner];
-  v4 = [v3 rtiDocumentTraits];
+  remoteTextInputPartner = [v2 remoteTextInputPartner];
+  rtiDocumentTraits = [remoteTextInputPartner rtiDocumentTraits];
 
   if (+[UIKeyboard isInputSystemUI]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v5 = [v4 shouldReverseLayoutDirection];
+    shouldReverseLayoutDirection = [rtiDocumentTraits shouldReverseLayoutDirection];
   }
 
   else
   {
     v6 = +[UIKeyboardImpl activeInstance];
-    v7 = [v6 inputDelegate];
-    v8 = [v7 textInputView];
-    v5 = [v8 _shouldReverseLayoutDirection];
+    inputDelegate = [v6 inputDelegate];
+    textInputView = [inputDelegate textInputView];
+    shouldReverseLayoutDirection = [textInputView _shouldReverseLayoutDirection];
   }
 
-  return v5;
+  return shouldReverseLayoutDirection;
 }
 
-- (CGPoint)barOriginFromTouchPoint:(CGPoint)a3
+- (CGPoint)barOriginFromTouchPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(UISplitKeyboardSource *)self->super._controller view];
-  [v6 bounds];
+  y = point.y;
+  x = point.x;
+  view = [(UISplitKeyboardSource *)self->super._controller view];
+  [view bounds];
   v8 = v7;
   v10 = v9;
 
   v11 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v12 = [v11 systemInputAssistantViewController];
-  [v12 barFrame];
+  systemInputAssistantViewController = [v11 systemInputAssistantViewController];
+  [systemInputAssistantViewController barFrame];
   v14 = v13;
   v16 = v15;
 
   v17 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v18 = [v17 visualModeManager];
-  v19 = [v18 shouldShowWithinAppWindow];
+  visualModeManager = [v17 visualModeManager];
+  shouldShowWithinAppWindow = [visualModeManager shouldShowWithinAppWindow];
 
-  if (v19)
+  if (shouldShowWithinAppWindow)
   {
     v20 = v8 + -16.0;
     if (x < v8 + -16.0)
@@ -814,12 +814,12 @@ LABEL_10:
     y = fmax(v21, 16.0);
   }
 
-  v22 = [(UIFlickingAssistantViewSupport *)self draggingState];
-  if (v22 <= 1)
+  draggingState = [(UIFlickingAssistantViewSupport *)self draggingState];
+  if (draggingState <= 1)
   {
-    if (v22)
+    if (draggingState)
     {
-      if (v22 == 1)
+      if (draggingState == 1)
       {
         v23 = x + v8 * -0.5;
       }
@@ -832,16 +832,16 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (v22 == 2)
+  if (draggingState == 2)
   {
     goto LABEL_16;
   }
 
-  if (v22 == 3)
+  if (draggingState == 3)
   {
-    v24 = [(UIFlickingAssistantViewSupport *)self isRTL];
+    isRTL = [(UIFlickingAssistantViewSupport *)self isRTL];
     v25 = v8 - x;
-    if (!v24)
+    if (!isRTL)
     {
       v25 = x;
     }
@@ -856,16 +856,16 @@ LABEL_17:
   return result;
 }
 
-- (void)updateTransition:(CGPoint)a3 animated:(BOOL)a4
+- (void)updateTransition:(CGPoint)transition animated:(BOOL)animated
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
-  if (self->_visualState == 3 && a3.x != 0.0)
+  animatedCopy = animated;
+  y = transition.y;
+  x = transition.x;
+  if (self->_visualState == 3 && transition.x != 0.0)
   {
     v8 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v9 = [v8 systemInputAssistantViewController];
-    v10 = [v9 updateFloatingAssistantRectEdge:-[UIFlickingAssistantViewSupport rectEdgeFromPosition:](self position:{"rectEdgeFromPosition:", self->_position), x, y}];
+    systemInputAssistantViewController = [v8 systemInputAssistantViewController];
+    v10 = [systemInputAssistantViewController updateFloatingAssistantRectEdge:-[UIFlickingAssistantViewSupport rectEdgeFromPosition:](self position:{"rectEdgeFromPosition:", self->_position), x, y}];
 
     if (v10)
     {
@@ -874,14 +874,14 @@ LABEL_17:
   }
 
   v11 = @"_UIFlickingAssistantViewGestureWithoutAnimation";
-  if (v4)
+  if (animatedCopy)
   {
     v11 = @"_UIFlickingAssistantViewGesture";
   }
 
   v12 = v11;
   v13 = [UIInputViewSetPlacementAssistantOnScreen infoWithPoint:self->_visualState == 1 isCompact:0 frame:x position:y, *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-  if (!v4)
+  if (!animatedCopy)
   {
     if (+[UIInputWindowController useMetronomeTracking])
     {
@@ -907,25 +907,25 @@ LABEL_17:
   [v14 performOnLocalDistributedControllers:v17];
 }
 
-- (CGPoint)keyboardOriginFromAssistantViewPosition:(int64_t)a3
+- (CGPoint)keyboardOriginFromAssistantViewPosition:(int64_t)position
 {
-  v5 = [(UISplitKeyboardSource *)self->super._controller view];
-  [v5 bounds];
+  view = [(UISplitKeyboardSource *)self->super._controller view];
+  [view bounds];
 
-  v6 = UIInputViewSetPlacementFromAssistantViewVisualState(self->_visualState, a3, 0);
-  v7 = [(UISplitKeyboardSource *)self->super._controller inputViewSet];
-  [v6 inputAssistantViewHeightForInputViewSet:v7];
+  v6 = UIInputViewSetPlacementFromAssistantViewVisualState(self->_visualState, position, 0);
+  inputViewSet = [(UISplitKeyboardSource *)self->super._controller inputViewSet];
+  [v6 inputAssistantViewHeightForInputViewSet:inputViewSet];
 
   if (self->_visualState == 3)
   {
     v8 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v9 = [v8 systemInputAssistantViewController];
+    systemInputAssistantViewController = [v8 systemInputAssistantViewController];
 
     v10 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v11 = [v10 preferencesActions];
-    [v11 compactAssistantBarPersistentLocation];
+    preferencesActions = [v10 preferencesActions];
+    [preferencesActions compactAssistantBarPersistentLocation];
 
-    if (a3 == 1)
+    if (position == 1)
     {
       if (os_variant_has_internal_diagnostics())
       {
@@ -955,7 +955,7 @@ LABEL_17:
 
   else
   {
-    if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+    if ((position & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
       v13 = 16.0;
     }
@@ -965,7 +965,7 @@ LABEL_17:
       v13 = *&UIFloatingAssistantBottomMargin;
     }
 
-    if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+    if ((position & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
       v14 = 16.0;
     }
@@ -983,31 +983,31 @@ LABEL_17:
   return result;
 }
 
-- (void)setCompact:(BOOL)a3
+- (void)setCompact:(BOOL)compact
 {
-  [(UIFlickingAssistantViewSupport *)self setPositionAndVisualStateByPersistentLocation:1 minimize:a3];
+  [(UIFlickingAssistantViewSupport *)self setPositionAndVisualStateByPersistentLocation:1 minimize:compact];
   v10 = UIInputViewSetPlacementFromAssistantViewVisualState(self->_visualState, self->_position, 0);
   v5 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v6 = [v5 systemInputAssistantViewController];
-  v7 = [v6 systemInputAssistantView];
+  systemInputAssistantViewController = [v5 systemInputAssistantViewController];
+  systemInputAssistantView = [systemInputAssistantViewController systemInputAssistantView];
 
-  v8 = [v7 centerViewHidden];
-  v9 = [v7 isInputAssistantItemHidden];
+  centerViewHidden = [systemInputAssistantView centerViewHidden];
+  isInputAssistantItemHidden = [systemInputAssistantView isInputAssistantItemHidden];
   if (v10)
   {
-    [(UIKeyboardMotionSupport *)self translateToPlacement:v10 animated:v8 ^ 1u];
+    [(UIKeyboardMotionSupport *)self translateToPlacement:v10 animated:centerViewHidden ^ 1u];
   }
 
-  if (!a3 && self->_position == 1 && v9 != [v7 isInputAssistantItemHidden])
+  if (!compact && self->_position == 1 && isInputAssistantItemHidden != [systemInputAssistantView isInputAssistantItemHidden])
   {
     [(UIFlickingAssistantViewSupport *)self setPositionAndVisualStateByPersistentLocation:1 minimize:0];
   }
 
   [(UIFlickingAssistantViewSupport *)self keyboardOriginFromAssistantViewPosition:self->_position];
-  [(UIFlickingAssistantViewSupport *)self updateTransition:v8 ^ 1u animated:?];
+  [(UIFlickingAssistantViewSupport *)self updateTransition:centerViewHidden ^ 1u animated:?];
   if (+[UIInputWindowController useMetronomeTracking])
   {
-    if ((v8 & 1) == 0)
+    if ((centerViewHidden & 1) == 0)
     {
       [(UIFlickingAssistantViewSupport *)self _updateTrackingCoordinatorForFloatingAssistant];
     }
@@ -1038,17 +1038,17 @@ LABEL_17:
 - (CGRect)assistantFrame
 {
   v3 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v4 = [v3 systemInputAssistantViewController];
+  systemInputAssistantViewController = [v3 systemInputAssistantViewController];
 
-  [v4 barFrame];
+  [systemInputAssistantViewController barFrame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(UIKeyboardMotionSupport *)self masterController];
-  v14 = [v13 view];
-  v15 = [v4 view];
-  [v14 convertRect:v15 fromView:{v6, v8, v10, v12}];
+  masterController = [(UIKeyboardMotionSupport *)self masterController];
+  view = [masterController view];
+  view2 = [systemInputAssistantViewController view];
+  [view convertRect:view2 fromView:{v6, v8, v10, v12}];
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -1067,22 +1067,22 @@ LABEL_17:
 
 - (CGRect)calculatedAssistantFrame
 {
-  v2 = [(UIKeyboardMotionSupport *)self masterController];
-  v3 = [v2 view];
-  v4 = [v3 window];
+  masterController = [(UIKeyboardMotionSupport *)self masterController];
+  view = [masterController view];
+  window = [view window];
 
   v5 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v6 = [v5 systemInputAssistantViewController];
+  systemInputAssistantViewController = [v5 systemInputAssistantViewController];
 
-  [v6 barFrame];
+  [systemInputAssistantViewController barFrame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [v6 view];
-  [v13 safeAreaInsets];
+  view2 = [systemInputAssistantViewController view];
+  [view2 safeAreaInsets];
   v15 = v14 + *&UIFloatingAssistantBottomMargin;
 
-  [v4 bounds];
+  [window bounds];
   v17 = v16 - (v12 + v15);
 
   v18 = v8;
@@ -1107,8 +1107,8 @@ LABEL_17:
     if (visualState == 3)
     {
       v8 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-      v9 = [v8 systemInputAssistantViewController];
-      v10 = [v9 updateFloatingAssistantRectEdge:-[UIFlickingAssistantViewSupport rectEdgeFromPosition:](self position:{"rectEdgeFromPosition:", self->_position), v4, v6}];
+      systemInputAssistantViewController = [v8 systemInputAssistantViewController];
+      v10 = [systemInputAssistantViewController updateFloatingAssistantRectEdge:-[UIFlickingAssistantViewSupport rectEdgeFromPosition:](self position:{"rectEdgeFromPosition:", self->_position), v4, v6}];
 
       if (v10)
       {
@@ -1134,9 +1134,9 @@ LABEL_17:
   }
 }
 
-- (unint64_t)rectEdgeFromPosition:(int64_t)a3
+- (unint64_t)rectEdgeFromPosition:(int64_t)position
 {
-  if (a3 == 2)
+  if (position == 2)
   {
     v3 = ![(UIFlickingAssistantViewSupport *)self isRTL];
     v4 = 8;
@@ -1145,7 +1145,7 @@ LABEL_17:
 
   else
   {
-    if (a3 != 3)
+    if (position != 3)
     {
       return 4;
     }
@@ -1191,12 +1191,12 @@ LABEL_17:
   v11 = v5;
   v12 = v6;
   v13 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v14 = [v13 keyboardTrackingProvider];
-  v15 = [(UIKeyboardMotionSupport *)self masterController];
-  v16 = [v15 view];
-  v17 = [v16 window];
+  keyboardTrackingProvider = [v13 keyboardTrackingProvider];
+  masterController = [(UIKeyboardMotionSupport *)self masterController];
+  view = [masterController view];
+  window = [view window];
 
-  v18 = [v43 keyboardState];
+  keyboardState = [v43 keyboardState];
   position = self->_position;
   if (position == 3)
   {
@@ -1210,35 +1210,35 @@ LABEL_17:
 LABEL_13:
     v21 = [getTUIKeyboardStateClass_0() compactFloatingAssistantStateForEdge:v20];
 
-    v18 = v21;
+    keyboardState = v21;
   }
 
-  v22 = [(UISplitKeyboardSource *)self->super._controller inputViewSet];
-  v23 = [v22 inputAccessoryView];
+  inputViewSet = [(UISplitKeyboardSource *)self->super._controller inputViewSet];
+  inputAccessoryView = [inputViewSet inputAccessoryView];
 
-  if (v23)
+  if (inputAccessoryView)
   {
-    [v18 setHasAccessoryView:1];
+    [keyboardState setHasAccessoryView:1];
   }
 
-  v24 = [(UIFlickingAssistantViewSupport *)self draggingState];
-  v25 = [getTUIKeyboardAnimationInfoClass() defaultInfo];
-  v26 = v25;
-  v27 = v24 == 0;
-  v28 = v24 != 0;
+  draggingState = [(UIFlickingAssistantViewSupport *)self draggingState];
+  defaultInfo = [getTUIKeyboardAnimationInfoClass() defaultInfo];
+  v26 = defaultInfo;
+  v27 = draggingState == 0;
+  v28 = draggingState != 0;
   v29 = 0.25;
   if (!v27)
   {
     v29 = 0.0;
   }
 
-  [v25 setDuration:v29];
+  [defaultInfo setDuration:v29];
   [v26 setOptions:458752];
   [v26 setIsInteractive:v28];
-  v30 = [v14 keyboardScene];
-  v31 = [v30 _coordinateSpace];
-  v32 = [v17 coordinateSpace];
-  [v31 convertRect:v32 fromCoordinateSpace:{v8, v10, v11, v12}];
+  keyboardScene = [keyboardTrackingProvider keyboardScene];
+  _coordinateSpace = [keyboardScene _coordinateSpace];
+  coordinateSpace = [window coordinateSpace];
+  [_coordinateSpace convertRect:coordinateSpace fromCoordinateSpace:{v8, v10, v11, v12}];
   v34 = v33;
   v36 = v35;
   v38 = v37;
@@ -1256,17 +1256,17 @@ LABEL_13:
     v42 = v40;
   }
 
-  [v14 keyboardWillChangeState:v18 endFrame:v26 animationInfo:{v34, v41, v38, v42}];
+  [keyboardTrackingProvider keyboardWillChangeState:keyboardState endFrame:v26 animationInfo:{v34, v41, v38, v42}];
 
 LABEL_22:
 }
 
-- (void)_updateKeyboardLayoutGuideForAssistantFrame:(CGRect)a3
+- (void)_updateKeyboardLayoutGuideForAssistantFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (!+[UIInputWindowController useMetronomeTracking])
   {
     if ([(UIFlickingAssistantViewSupport *)self draggingState])
@@ -1292,9 +1292,9 @@ LABEL_22:
     v10 = UIInputViewSetPlacementFromAssistantViewVisualState(visualState, self->_position, 0);
     if (y > 0.0 && height <= width * 1.5)
     {
-      v11 = [(UIKeyboardMotionSupport *)self masterController];
-      v12 = [v11 view];
-      v13 = [v12 window];
+      masterController = [(UIKeyboardMotionSupport *)self masterController];
+      view = [masterController view];
+      window = [view window];
 
       v22.origin.x = x;
       v22.origin.y = y;
@@ -1306,7 +1306,7 @@ LABEL_22:
         v14[1] = 3221225472;
         v14[2] = __78__UIFlickingAssistantViewSupport__updateKeyboardLayoutGuideForAssistantFrame___block_invoke;
         v14[3] = &unk_1E7117A48;
-        v15 = v13;
+        v15 = window;
         v17 = x;
         v18 = y;
         v19 = width;
@@ -1506,31 +1506,31 @@ void __78__UIFlickingAssistantViewSupport__updateKeyboardLayoutGuideForAssistant
   [v5 updateTrackingElementsForOffset:{a1[6], a1[7]}];
 }
 
-- (void)_geometryChanged:(id *)a3 forAncestor:(id)a4
+- (void)_geometryChanged:(id *)changed forAncestor:(id)ancestor
 {
   if (!self->_isHandlingGeometryChange)
   {
     self->_isHandlingGeometryChange = 1;
-    [(UIFlickingAssistantViewSupport *)self keyboardOriginFromAssistantViewPosition:self->_position, a4];
+    [(UIFlickingAssistantViewSupport *)self keyboardOriginFromAssistantViewPosition:self->_position, ancestor];
     [(UIFlickingAssistantViewSupport *)self updateTransition:0 animated:?];
     [(UIFlickingAssistantViewSupport *)self _updateKeyboardLayoutGuideForCurrentAssistantFrame];
     self->_isHandlingGeometryChange = 0;
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v26 = a5;
-  if ([a3 isEqualToString:@"bounds"])
+  changeCopy = change;
+  if ([path isEqualToString:@"bounds"])
   {
-    v8 = [v26 objectForKey:*MEMORY[0x1E696A4F0]];
+    v8 = [changeCopy objectForKey:*MEMORY[0x1E696A4F0]];
     [v8 CGRectValue];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
 
-    v17 = [v26 objectForKey:*MEMORY[0x1E696A500]];
+    v17 = [changeCopy objectForKey:*MEMORY[0x1E696A500]];
     [v17 CGRectValue];
     v19 = v18;
     v21 = v20;

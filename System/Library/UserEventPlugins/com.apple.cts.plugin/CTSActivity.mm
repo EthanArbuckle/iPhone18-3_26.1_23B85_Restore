@@ -5,7 +5,7 @@
 - (int64_t)totalElapsed;
 - (void)advanceBaseTime;
 - (void)loadBaseTime;
-- (void)markStopped:(int64_t)a3;
+- (void)markStopped:(int64_t)stopped;
 - (void)resetBaseTime;
 @end
 
@@ -33,16 +33,16 @@ LABEL_24:
     return;
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_2A58();
-  v4 = [(CTSActivity *)v3 name];
+  name = [(CTSActivity *)selfCopy name];
 
-  if (!v4)
+  if (!name)
   {
     goto LABEL_13;
   }
 
-  Value = CFDictionaryGetValue(qword_15400, v4);
+  Value = CFDictionaryGetValue(qword_15400, name);
   if (!Value)
   {
     goto LABEL_13;
@@ -50,9 +50,9 @@ LABEL_24:
 
   AbsoluteTime = CFDateGetAbsoluteTime(Value);
   v7 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
-  v8 = [(CTSActivity *)v3 random_initial_delay];
-  v9 = 1000000000 * v8;
-  if ((v8 * 1000000000) >> 64 != (1000000000 * v8) >> 63)
+  random_initial_delay = [(CTSActivity *)selfCopy random_initial_delay];
+  v9 = 1000000000 * random_initial_delay;
+  if ((random_initial_delay * 1000000000) >> 64 != (1000000000 * random_initial_delay) >> 63)
   {
     v9 = 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -71,7 +71,7 @@ LABEL_24:
   {
 LABEL_13:
     v15 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
-    v16 = sub_3FDC(v3);
+    v16 = sub_3FDC(selfCopy);
     if (__OFADD__(v15, v16))
     {
       v17 = 0x7FFFFFFFFFFFFFFFLL;
@@ -82,21 +82,21 @@ LABEL_13:
       v17 = v15 + v16;
     }
 
-    v18 = [(CTSActivity *)v3 name];
-    sub_4A54(v18, v17);
+    name2 = [(CTSActivity *)selfCopy name];
+    sub_4A54(name2, v17);
   }
 
-  [(CTSActivity *)v3 setBaseTime:v17];
+  [(CTSActivity *)selfCopy setBaseTime:v17];
   v19 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
-  v20 = [(CTSActivity *)v3 interval];
-  v21 = 1000000000 * v20;
-  if ((v20 * 1000000000) >> 64 != (1000000000 * v20) >> 63)
+  interval = [(CTSActivity *)selfCopy interval];
+  v21 = 1000000000 * interval;
+  if ((interval * 1000000000) >> 64 != (1000000000 * interval) >> 63)
   {
     v21 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   v22 = v19 - v21;
-  if ([(CTSActivity *)v3 baseTime]< v22)
+  if ([(CTSActivity *)selfCopy baseTime]< v22)
   {
     goto LABEL_24;
   }
@@ -104,29 +104,29 @@ LABEL_13:
 
 - (id)description
 {
-  v3 = [(CTSActivity *)self name];
-  v4 = [NSString stringWithFormat:@"%@ (%p)", v3, self];
+  name = [(CTSActivity *)self name];
+  v4 = [NSString stringWithFormat:@"%@ (%p)", name, self];
 
   return v4;
 }
 
 - (int64_t)eligibleTime
 {
-  v3 = [(CTSActivity *)self baseTime];
-  v4 = [(CTSActivity *)self tempDelay];
-  if (!v4)
+  baseTime = [(CTSActivity *)self baseTime];
+  tempDelay = [(CTSActivity *)self tempDelay];
+  if (!tempDelay)
   {
-    v4 = [(CTSActivity *)self delay];
+    tempDelay = [(CTSActivity *)self delay];
   }
 
-  v5 = 1000000000 * v4;
-  if ((v4 * 1000000000) >> 64 != (1000000000 * v4) >> 63)
+  v5 = 1000000000 * tempDelay;
+  if ((tempDelay * 1000000000) >> 64 != (1000000000 * tempDelay) >> 63)
   {
     v5 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v6 = __OFADD__(v3, v5);
-  v7 = v3 + v5;
+  v6 = __OFADD__(baseTime, v5);
+  v7 = baseTime + v5;
   if (v6)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
@@ -140,28 +140,28 @@ LABEL_13:
 
 - (int64_t)deadlineTime
 {
-  v3 = [(CTSActivity *)self eligibleTime];
+  eligibleTime = [(CTSActivity *)self eligibleTime];
   if ([(CTSActivity *)self grace_period]== 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v5 = [(CTSActivity *)self repeating];
-  v6 = [(CTSActivity *)self baseTime];
-  if (v5)
+  repeating = [(CTSActivity *)self repeating];
+  baseTime = [(CTSActivity *)self baseTime];
+  if (repeating)
   {
-    v7 = [(CTSActivity *)self interval];
+    interval = [(CTSActivity *)self interval];
   }
 
   else
   {
-    v7 = [(CTSActivity *)self delay];
+    interval = [(CTSActivity *)self delay];
   }
 
-  v8 = v7;
-  v9 = [(CTSActivity *)self grace_period];
-  v10 = v8 + v9;
-  v11 = __OFADD__(v8, v9);
+  v8 = interval;
+  grace_period = [(CTSActivity *)self grace_period];
+  v10 = v8 + grace_period;
+  v11 = __OFADD__(v8, grace_period);
   v12 = v10;
   v13 = v10 != v10 || v11;
   v14 = v13 == 0;
@@ -186,16 +186,16 @@ LABEL_13:
     v17 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v18 = __OFADD__(v6, v17);
-  v19 = v6 + v17;
+  v18 = __OFADD__(baseTime, v17);
+  v19 = baseTime + v17;
   if (!v18)
   {
     v15 = v19;
   }
 
-  if (v15 <= v3)
+  if (v15 <= eligibleTime)
   {
-    return v3;
+    return eligibleTime;
   }
 
   else
@@ -206,20 +206,20 @@ LABEL_13:
 
 - (void)advanceBaseTime
 {
-  v3 = [(CTSActivity *)self repeating];
+  repeating = [(CTSActivity *)self repeating];
   v4 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
   v5 = v4;
-  if (!v3)
+  if (!repeating)
   {
     v11 = 0;
     v12 = v4;
     goto LABEL_49;
   }
 
-  v6 = [(CTSActivity *)self interval];
-  if ((v6 * 1000000000) >> 64 == (1000000000 * v6) >> 63)
+  interval = [(CTSActivity *)self interval];
+  if ((interval * 1000000000) >> 64 == (1000000000 * interval) >> 63)
   {
-    v7 = 1000000000 * v6;
+    v7 = 1000000000 * interval;
   }
 
   else
@@ -227,10 +227,10 @@ LABEL_13:
     v7 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v8 = [(CTSActivity *)self delay];
-  if ((v8 * 1000000000) >> 64 == (1000000000 * v8) >> 63)
+  delay = [(CTSActivity *)self delay];
+  if ((delay * 1000000000) >> 64 == (1000000000 * delay) >> 63)
   {
-    v9 = 1000000000 * v8;
+    v9 = 1000000000 * delay;
   }
 
   else
@@ -245,10 +245,10 @@ LABEL_13:
 
   else
   {
-    v13 = [(CTSActivity *)self grace_period];
-    if ((v13 * 1000000000) >> 64 == (1000000000 * v13) >> 63)
+    grace_period = [(CTSActivity *)self grace_period];
+    if ((grace_period * 1000000000) >> 64 == (1000000000 * grace_period) >> 63)
     {
-      v10 = 1000000000 * v13;
+      v10 = 1000000000 * grace_period;
     }
 
     else
@@ -257,15 +257,15 @@ LABEL_13:
     }
   }
 
-  v14 = [(CTSActivity *)self baseTime];
-  if (__OFADD__(v14, v7))
+  baseTime = [(CTSActivity *)self baseTime];
+  if (__OFADD__(baseTime, v7))
   {
     v12 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    v12 = v14 + v7;
+    v12 = baseTime + v7;
   }
 
   v15 = v7 + v10;
@@ -293,9 +293,9 @@ LABEL_13:
     if (os_log_type_enabled(qword_154A0, OS_LOG_TYPE_INFO))
     {
       v18 = v22;
-      v19 = [(CTSActivity *)self name];
+      name = [(CTSActivity *)self name];
       *v36 = 138543362;
-      *&v36[4] = v19;
+      *&v36[4] = name;
       v20 = "newBaseTime is greater than 2*interval from now, moving back for %{public}@";
       goto LABEL_29;
     }
@@ -307,9 +307,9 @@ LABEL_13:
     if (os_log_type_enabled(qword_154A0, OS_LOG_TYPE_INFO))
     {
       v18 = v17;
-      v19 = [(CTSActivity *)self name];
+      name = [(CTSActivity *)self name];
       *v36 = 138543362;
-      *&v36[4] = v19;
+      *&v36[4] = name;
       v20 = "newBaseTime is less than interval+gracePeriod ago, moving forward for %{public}@";
 LABEL_29:
       _os_log_impl(&dword_0, v18, OS_LOG_TYPE_INFO, v20, v36, 0xCu);
@@ -320,11 +320,11 @@ LABEL_29:
 LABEL_31:
   if (v9)
   {
-    v23 = [(CTSActivity *)self startTime];
+    startTime = [(CTSActivity *)self startTime];
     v11 = 0;
-    if (v23)
+    if (startTime)
     {
-      v24 = v23;
+      v24 = startTime;
     }
 
     else
@@ -336,10 +336,10 @@ LABEL_31:
     v26 = v24 - v12;
     if (!v25 && v26 >= 1)
     {
-      v27 = [(CTSActivity *)self startTime];
-      if (v27)
+      startTime2 = [(CTSActivity *)self startTime];
+      if (startTime2)
       {
-        v28 = v27;
+        v28 = startTime2;
       }
 
       else
@@ -371,11 +371,11 @@ LABEL_31:
       if (os_log_type_enabled(qword_154A0, OS_LOG_TYPE_INFO))
       {
         v33 = v32;
-        v34 = [(CTSActivity *)self name];
+        name2 = [(CTSActivity *)self name];
         *v36 = 134218242;
         *&v36[4] = v11;
         *&v36[12] = 2114;
-        *&v36[14] = v34;
+        *&v36[14] = name2;
         _os_log_impl(&dword_0, v33, OS_LOG_TYPE_INFO, "Using temporary delay of %lld seconds to account for late fire of %{public}@", v36, 0x16u);
       }
     }
@@ -386,8 +386,8 @@ LABEL_31:
     v11 = 0;
   }
 
-  v35 = [(CTSActivity *)self name];
-  sub_4A54(v35, v12);
+  name3 = [(CTSActivity *)self name];
+  sub_4A54(name3, v12);
 
 LABEL_49:
   [(CTSActivity *)self setBaseTime:v12];
@@ -397,8 +397,8 @@ LABEL_49:
 - (void)resetBaseTime
 {
   v3 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
-  v4 = [(CTSActivity *)self name];
-  sub_4A54(v4, v3);
+  name = [(CTSActivity *)self name];
+  sub_4A54(name, v3);
 
   [(CTSActivity *)self setBaseTime:v3];
   [(CTSActivity *)self setElapsedTime:0];
@@ -406,16 +406,16 @@ LABEL_49:
   [(CTSActivity *)self setStartTime:0];
 }
 
-- (void)markStopped:(int64_t)a3
+- (void)markStopped:(int64_t)stopped
 {
-  [(CTSActivity *)self setElapsedTime:[(CTSActivity *)self elapsedTime]+ a3 - [(CTSActivity *)self startTime]];
+  [(CTSActivity *)self setElapsedTime:[(CTSActivity *)self elapsedTime]+ stopped - [(CTSActivity *)self startTime]];
 
   [(CTSActivity *)self setStartTime:0];
 }
 
 - (int64_t)totalElapsed
 {
-  v3 = [(CTSActivity *)self elapsedTime];
+  elapsedTime = [(CTSActivity *)self elapsedTime];
   if ([(CTSActivity *)self startTime])
   {
     v4 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
@@ -427,7 +427,7 @@ LABEL_49:
     v5 = 0;
   }
 
-  return v5 + v3;
+  return v5 + elapsedTime;
 }
 
 @end

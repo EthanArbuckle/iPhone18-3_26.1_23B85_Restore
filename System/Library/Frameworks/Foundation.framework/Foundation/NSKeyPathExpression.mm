@@ -1,12 +1,12 @@
 @interface NSKeyPathExpression
-- (NSKeyPathExpression)initWithKeyPath:(id)a3;
-- (NSKeyPathExpression)initWithOperand:(id)a3 andKeyPath:(id)a4;
-- (id)expressionValueWithObject:(id)a3 context:(id)a4;
+- (NSKeyPathExpression)initWithKeyPath:(id)path;
+- (NSKeyPathExpression)initWithOperand:(id)operand andKeyPath:(id)path;
+- (id)expressionValueWithObject:(id)object context:(id)context;
 - (id)keyPath;
 - (id)pathExpression;
 - (id)predicateFormat;
 - (unint64_t)expressionType;
-- (void)acceptVisitor:(id)a3 flags:(unint64_t)a4;
+- (void)acceptVisitor:(id)visitor flags:(unint64_t)flags;
 - (void)dealloc;
 @end
 
@@ -35,9 +35,9 @@
 
 - (id)pathExpression
 {
-  v2 = [(NSFunctionExpression *)self arguments];
+  arguments = [(NSFunctionExpression *)self arguments];
 
-  return [v2 objectAtIndex:0];
+  return [arguments objectAtIndex:0];
 }
 
 - (id)keyPath
@@ -61,25 +61,25 @@
 
 - (id)predicateFormat
 {
-  v3 = [(NSKeyPathExpression *)self pathExpression];
+  pathExpression = [(NSKeyPathExpression *)self pathExpression];
   [(NSFunctionExpression *)self operand];
   if ((objc_opt_isKindOfClass() & 1) == 0 || (objc_opt_isKindOfClass() & 1) == 0)
   {
-    return +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@.%@", [-[NSFunctionExpression operand](self "operand")], objc_msgSend(v3, "predicateFormat"));
+    return +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@.%@", [-[NSFunctionExpression operand](self "operand")], objc_msgSend(pathExpression, "predicateFormat"));
   }
 
-  return [v3 predicateFormat];
+  return [pathExpression predicateFormat];
 }
 
-- (NSKeyPathExpression)initWithKeyPath:(id)a3
+- (NSKeyPathExpression)initWithKeyPath:(id)path
 {
   v12 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(NSSelfExpression);
-  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{a3, 0}];
+  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{path, 0}];
   v7 = sel_valueForKeyPath_;
   if (objc_opt_isKindOfClass())
   {
-    [objc_msgSend(a3 "keyPath")];
+    [objc_msgSend(path "keyPath")];
     if (!v8)
     {
       v7 = sel_valueForKey_;
@@ -93,26 +93,26 @@
   return v9;
 }
 
-- (NSKeyPathExpression)initWithOperand:(id)a3 andKeyPath:(id)a4
+- (NSKeyPathExpression)initWithOperand:(id)operand andKeyPath:(id)path
 {
   v10 = *MEMORY[0x1E69E9840];
-  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{a4, 0}];
+  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{path, 0}];
   v9.receiver = self;
   v9.super_class = NSKeyPathExpression;
-  v7 = [(NSFunctionExpression *)&v9 initWithExpressionType:4 operand:a3 selector:sel_valueForKeyPath_ argumentArray:v6];
+  v7 = [(NSFunctionExpression *)&v9 initWithExpressionType:4 operand:operand selector:sel_valueForKeyPath_ argumentArray:v6];
 
   return v7;
 }
 
-- (void)acceptVisitor:(id)a3 flags:(unint64_t)a4
+- (void)acceptVisitor:(id)visitor flags:(unint64_t)flags
 {
   v5 = *MEMORY[0x1E69E9840];
   v4.receiver = self;
   v4.super_class = NSKeyPathExpression;
-  [(NSFunctionExpression *)&v4 acceptVisitor:a3 flags:a4];
+  [(NSFunctionExpression *)&v4 acceptVisitor:visitor flags:flags];
 }
 
-- (id)expressionValueWithObject:(id)a3 context:(id)a4
+- (id)expressionValueWithObject:(id)object context:(id)context
 {
   v15 = *MEMORY[0x1E69E9840];
   if (![(NSFunctionExpression *)self _allowsEvaluation])
@@ -121,8 +121,8 @@
   }
 
   v7 = [[_NSPerformanceMeter alloc] initWithTarget:self, 0];
-  v8 = [(NSFunctionExpression *)self selector];
-  if (v8 != sel_valueForKeyPath_ && v8 != sel_valueForKey_)
+  selector = [(NSFunctionExpression *)self selector];
+  if (selector != sel_valueForKeyPath_ && selector != sel_valueForKey_)
   {
     objc_opt_self();
     if ((_CFPredicatePolicyData_getFlags() & 8) != 0)
@@ -141,7 +141,7 @@
 
   v13.receiver = self;
   v13.super_class = NSKeyPathExpression;
-  v11 = [(NSFunctionExpression *)&v13 expressionValueWithObject:a3 context:a4];
+  v11 = [(NSFunctionExpression *)&v13 expressionValueWithObject:object context:context];
   if (v7)
   {
     [(_NSPerformanceMeter *)v7 invalidate];

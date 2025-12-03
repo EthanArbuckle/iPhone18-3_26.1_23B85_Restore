@@ -11,37 +11,37 @@
   v2 = MTLogForCategory(0);
   if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
   {
-    v3 = [a1 mt_Description];
+    mt_Description = [self mt_Description];
     v18 = 138412290;
-    v19 = v3;
+    v19 = mt_Description;
     _os_log_impl(&dword_1B1F9F000, v2, OS_LOG_TYPE_DEFAULT, "[Sound] Converting %@ to MTSound", &v18, 0xCu);
   }
 
-  v4 = [a1 toneIdentifier];
+  toneIdentifier = [self toneIdentifier];
 
-  if (v4)
+  if (toneIdentifier)
   {
-    v5 = [a1 toneIdentifier];
-    v6 = [a1 vibrationIdentifier];
-    v7 = [a1 audioVolume];
-    v8 = [MTSound toneSoundWithIdentifier:v5 vibrationIdentifer:v6 volume:v7];
+    toneIdentifier2 = [self toneIdentifier];
+    vibrationIdentifier = [self vibrationIdentifier];
+    audioVolume = [self audioVolume];
+    v8 = [MTSound toneSoundWithIdentifier:toneIdentifier2 vibrationIdentifer:vibrationIdentifier volume:audioVolume];
 LABEL_7:
     v9 = v8;
 
     goto LABEL_8;
   }
 
-  if ([a1 toneMediaLibraryItemIdentifier])
+  if ([self toneMediaLibraryItemIdentifier])
   {
-    v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(a1, "toneMediaLibraryItemIdentifier")}];
-    v6 = [a1 vibrationIdentifier];
-    v7 = [a1 audioVolume];
-    v8 = [MTSound songSoundWithIdentifier:v5 vibrationIdentifier:v6 volume:v7];
+    toneIdentifier2 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(self, "toneMediaLibraryItemIdentifier")}];
+    vibrationIdentifier = [self vibrationIdentifier];
+    audioVolume = [self audioVolume];
+    v8 = [MTSound songSoundWithIdentifier:toneIdentifier2 vibrationIdentifier:vibrationIdentifier volume:audioVolume];
     goto LABEL_7;
   }
 
-  v13 = [a1 alertTopic];
-  v14 = [v13 isEqualToString:*MEMORY[0x1E69DA908]];
+  alertTopic = [self alertTopic];
+  v14 = [alertTopic isEqualToString:*MEMORY[0x1E69DA908]];
 
   if (v14)
   {
@@ -50,8 +50,8 @@ LABEL_7:
 
   else
   {
-    v16 = [a1 alertTopic];
-    v17 = [v16 isEqualToString:*MEMORY[0x1E69DA910]];
+    alertTopic2 = [self alertTopic];
+    v17 = [alertTopic2 isEqualToString:*MEMORY[0x1E69DA910]];
 
     if (v17)
     {
@@ -60,7 +60,7 @@ LABEL_7:
 
     else
     {
-      v15 = 4 * ([a1 alertType] == 17);
+      v15 = 4 * ([self alertType] == 17);
     }
   }
 
@@ -83,12 +83,12 @@ LABEL_8:
 {
   v2 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
-  v4 = [a1 alertTopic];
-  v5 = [a1 toneIdentifier];
-  v6 = [a1 toneMediaLibraryItemIdentifier];
-  v7 = [a1 vibrationIdentifier];
-  v8 = [a1 audioVolume];
-  v9 = [v2 stringWithFormat:@"<%@:%p alertTopic: %@, toneID: %@, mediaItemID: %llu, vibeID: %@, volume: %@", v3, a1, v4, v5, v6, v7, v8];
+  alertTopic = [self alertTopic];
+  toneIdentifier = [self toneIdentifier];
+  toneMediaLibraryItemIdentifier = [self toneMediaLibraryItemIdentifier];
+  vibrationIdentifier = [self vibrationIdentifier];
+  audioVolume = [self audioVolume];
+  v9 = [v2 stringWithFormat:@"<%@:%p alertTopic: %@, toneID: %@, mediaItemID: %llu, vibeID: %@, volume: %@", v3, self, alertTopic, toneIdentifier, toneMediaLibraryItemIdentifier, vibrationIdentifier, audioVolume];
 
   return v9;
 }

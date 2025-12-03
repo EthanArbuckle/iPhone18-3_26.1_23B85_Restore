@@ -1,16 +1,16 @@
 @interface RKSentenceClassifier_tr_TR
-- (id)addSentenceTerminatorQuestion:(id)a3;
+- (id)addSentenceTerminatorQuestion:(id)question;
 - (id)classifySentence;
 - (void)analyzeSentence;
 @end
 
 @implementation RKSentenceClassifier_tr_TR
 
-- (id)addSentenceTerminatorQuestion:(id)a3
+- (id)addSentenceTerminatorQuestion:(id)question
 {
   v6.receiver = self;
   v6.super_class = RKSentenceClassifier_tr_TR;
-  v3 = [(RKSentenceClassifier *)&v6 addSentenceTerminatorQuestion:a3];
+  v3 = [(RKSentenceClassifier *)&v6 addSentenceTerminatorQuestion:question];
   v4 = [v3 stringByAppendingString:@"?"];
 
   return v4;
@@ -27,24 +27,24 @@
 {
   v19.receiver = self;
   v19.super_class = RKSentenceClassifier_tr_TR;
-  v3 = [(RKSentenceClassifier *)&v19 classifySentence];
-  if (![v3 sentenceType])
+  classifySentence = [(RKSentenceClassifier *)&v19 classifySentence];
+  if (![classifySentence sentenceType])
   {
-    v4 = [(RKSentenceClassifier *)self interrogatives];
+    interrogatives = [(RKSentenceClassifier *)self interrogatives];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __46__RKSentenceClassifier_tr_TR_classifySentence__block_invoke;
     v17[3] = &unk_279B0FD90;
-    v18 = v3;
-    [v4 enumerateObjectsUsingBlock:v17];
+    v18 = classifySentence;
+    [interrogatives enumerateObjectsUsingBlock:v17];
   }
 
-  if (![v3 sentenceType])
+  if (![classifySentence sentenceType])
   {
     v5 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"m[ıiuü][ ]*\\?" options:1 error:0];
-    v6 = [(RKSentenceClassifier *)self sentenceString];
-    v7 = [(RKSentenceClassifier *)self sentenceString];
-    v8 = [v5 firstMatchInString:v6 options:0 range:{0, objc_msgSend(v7, "length")}];
+    sentenceString = [(RKSentenceClassifier *)self sentenceString];
+    sentenceString2 = [(RKSentenceClassifier *)self sentenceString];
+    v8 = [v5 firstMatchInString:sentenceString options:0 range:{0, objc_msgSend(sentenceString2, "length")}];
 
     if (v8)
     {
@@ -63,36 +63,36 @@ LABEL_9:
       v9 = 1;
     }
 
-    [v3 setSentenceType:v9];
+    [classifySentence setSentenceType:v9];
     goto LABEL_9;
   }
 
 LABEL_10:
-  if ([v3 sentenceType] == 11)
+  if ([classifySentence sentenceType] == 11)
   {
     v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(string == 'neredesin')"];
-    v11 = [(RKSentenceClassifier *)self sentenceEntities];
-    v12 = [v11 filteredArrayUsingPredicate:v10];
+    sentenceEntities = [(RKSentenceClassifier *)self sentenceEntities];
+    v12 = [sentenceEntities filteredArrayUsingPredicate:v10];
     v13 = [v12 count];
 
     if (v13)
     {
-      [v3 setSentenceType:12];
+      [classifySentence setSentenceType:12];
     }
   }
 
-  if (![v3 sentenceType] || objc_msgSend(v3, "sentenceType") == 31)
+  if (![classifySentence sentenceType] || objc_msgSend(classifySentence, "sentenceType") == 31)
   {
-    v14 = [(RKSentenceClassifier *)self appreciations];
-    v15 = [v14 count];
+    appreciations = [(RKSentenceClassifier *)self appreciations];
+    v15 = [appreciations count];
 
     if (v15)
     {
-      [v3 setSentenceType:34];
+      [classifySentence setSentenceType:34];
     }
   }
 
-  return v3;
+  return classifySentence;
 }
 
 @end

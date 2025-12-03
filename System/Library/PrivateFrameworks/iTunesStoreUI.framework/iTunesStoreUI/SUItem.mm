@@ -1,6 +1,6 @@
 @interface SUItem
-- (BOOL)BOOLValueForProperty:(id)a3;
-- (BOOL)isDisplayable:(id *)a3;
+- (BOOL)BOOLValueForProperty:(id)property;
+- (BOOL)isDisplayable:(id *)displayable;
 - (BOOL)isDownloadable;
 - (BOOL)isInstalled;
 - (NSString)itemMediaKind;
@@ -12,45 +12,45 @@
 - (NSString)unmodifiedTitle;
 - (NSURL)tellAFriendBodyURL;
 - (NSURL)tweetURL;
-- (SUItem)initWithDictionary:(id)a3;
+- (SUItem)initWithDictionary:(id)dictionary;
 - (SUItemLink)externalArtistPageLink;
-- (id)_newItemLinkWithType:(int64_t)a3 URLKey:(id)a4 titleKey:(id)a5;
-- (id)_newItemLinkWithType:(int64_t)a3 dictionary:(id)a4;
+- (id)_newItemLinkWithType:(int64_t)type URLKey:(id)key titleKey:(id)titleKey;
+- (id)_newItemLinkWithType:(int64_t)type dictionary:(id)dictionary;
 - (id)_newPrimaryItemLink;
-- (id)_squishImageForSquishDictionary:(id)a3;
-- (id)_valueForFirstAvailableKey:(id)a3;
-- (id)copyReleaseDateStringWithStyle:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)dateValueForProperty:(id)a3;
-- (id)firstItemLinkForType:(int64_t)a3;
-- (id)itemLinksForType:(int64_t)a3;
-- (id)relatedItemsForRelationType:(id)a3;
-- (id)storeOfferForIdentifier:(id)a3;
-- (id)stringValueForProperty:(id)a3;
-- (id)valueForProperty:(id)a3;
-- (int64_t)_linkTargetForTargetString:(id)a3 typeString:(id)a4;
-- (int64_t)_linkTypeForString:(id)a3;
-- (int64_t)integerValueForProperty:(id)a3;
+- (id)_squishImageForSquishDictionary:(id)dictionary;
+- (id)_valueForFirstAvailableKey:(id)key;
+- (id)copyReleaseDateStringWithStyle:(int64_t)style;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)dateValueForProperty:(id)property;
+- (id)firstItemLinkForType:(int64_t)type;
+- (id)itemLinksForType:(int64_t)type;
+- (id)relatedItemsForRelationType:(id)type;
+- (id)storeOfferForIdentifier:(id)identifier;
+- (id)stringValueForProperty:(id)property;
+- (id)valueForProperty:(id)property;
+- (int64_t)_linkTargetForTargetString:(id)string typeString:(id)typeString;
+- (int64_t)_linkTypeForString:(id)string;
+- (int64_t)integerValueForProperty:(id)property;
 - (void)_reloadDefaultStoreOffer;
-- (void)_reloadImagesAndLinksFromSquishes:(id)a3;
+- (void)_reloadImagesAndLinksFromSquishes:(id)squishes;
 - (void)_reloadItemImages;
 - (void)_reloadItemLinks;
 - (void)_reloadProperties;
 - (void)_reloadStoreOffers;
 - (void)dealloc;
-- (void)setStoreOffers:(id)a3;
+- (void)setStoreOffers:(id)offers;
 @end
 
 @implementation SUItem
 
-- (SUItem)initWithDictionary:(id)a3
+- (SUItem)initWithDictionary:(id)dictionary
 {
   v7.receiver = self;
   v7.super_class = SUItem;
   v4 = [(SUItem *)&v7 init];
   if (v4)
   {
-    v5 = [objc_alloc(MEMORY[0x1E69D4990]) initWithDictionary:a3];
+    v5 = [objc_alloc(MEMORY[0x1E69D4990]) initWithDictionary:dictionary];
     v4->_dictionary = [objc_msgSend(v5 "dictionaryByEvaluatingConditions")];
     v4->_isInstalled = -1;
 
@@ -67,48 +67,48 @@
   [(SUItem *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  *(v5 + 8) = [(NSString *)self->_artistName copyWithZone:a3];
-  *(v5 + 16) = [(NSString *)self->_bundleIdentifier copyWithZone:a3];
-  *(v5 + 24) = [(NSString *)self->_bundleVersion copyWithZone:a3];
-  *(v5 + 32) = [(NSString *)self->_collectionName copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  *(v5 + 8) = [(NSString *)self->_artistName copyWithZone:zone];
+  *(v5 + 16) = [(NSString *)self->_bundleIdentifier copyWithZone:zone];
+  *(v5 + 24) = [(NSString *)self->_bundleVersion copyWithZone:zone];
+  *(v5 + 32) = [(NSString *)self->_collectionName copyWithZone:zone];
   *(v5 + 40) = self->_containerItem;
-  *(v5 + 48) = [(NSString *)self->_containerName copyWithZone:a3];
-  *(v5 + 56) = [(SUItemContentRating *)self->_contentRating copyWithZone:a3];
-  *(v5 + 64) = [(NSString *)self->_copyrightString copyWithZone:a3];
-  *(v5 + 72) = [(SSItemOffer *)self->_defaultStoreOffer copyWithZone:a3];
-  *(v5 + 80) = [(NSDictionary *)self->_dictionary copyWithZone:a3];
-  *(v5 + 88) = [(NSString *)self->_disclaimerString copyWithZone:a3];
+  *(v5 + 48) = [(NSString *)self->_containerName copyWithZone:zone];
+  *(v5 + 56) = [(SUItemContentRating *)self->_contentRating copyWithZone:zone];
+  *(v5 + 64) = [(NSString *)self->_copyrightString copyWithZone:zone];
+  *(v5 + 72) = [(SSItemOffer *)self->_defaultStoreOffer copyWithZone:zone];
+  *(v5 + 80) = [(NSDictionary *)self->_dictionary copyWithZone:zone];
+  *(v5 + 88) = [(NSString *)self->_disclaimerString copyWithZone:zone];
   *(v5 + 96) = self->_gameCenterEnabled;
-  *(v5 + 104) = [(NSString *)self->_genreName copyWithZone:a3];
-  *(v5 + 112) = [(NSString *)self->_humanReadableDescription copyWithZone:a3];
+  *(v5 + 104) = [(NSString *)self->_genreName copyWithZone:zone];
+  *(v5 + 112) = [(NSString *)self->_humanReadableDescription copyWithZone:zone];
   *(v5 + 120) = self->_isInstalled;
   *(v5 + 128) = *&self->_itemDisplayType;
-  *(v5 + 144) = [(SSItemImageCollection *)self->_itemImageCollection copyWithZone:a3];
-  *(v5 + 152) = [(NSArray *)self->_itemLinks copyWithZone:a3];
-  *(v5 + 160) = [(NSString *)self->_itemMediaKind copyWithZone:a3];
+  *(v5 + 144) = [(SSItemImageCollection *)self->_itemImageCollection copyWithZone:zone];
+  *(v5 + 152) = [(NSArray *)self->_itemLinks copyWithZone:zone];
+  *(v5 + 160) = [(NSString *)self->_itemMediaKind copyWithZone:zone];
   *(v5 + 168) = self->_itemType;
   *(v5 + 176) = self->_releaseDate;
-  *(v5 + 184) = [(NSString *)self->_releaseDateString copyWithZone:a3];
+  *(v5 + 184) = [(NSString *)self->_releaseDateString copyWithZone:zone];
   *(v5 + 192) = self->_representedItemCount;
-  *(v5 + 200) = [(SUItemReviewStatistics *)self->_reviewStatistics copyWithZone:a3];
-  *(v5 + 208) = [(NSString *)self->_secondaryTitle copyWithZone:a3];
-  *(v5 + 216) = [(NSString *)self->_softwareType copyWithZone:a3];
-  *(v5 + 224) = [(NSArray *)self->_storeOffers copyWithZone:a3];
-  *(v5 + 232) = [(NSDictionary *)self->_tellAFriendDictionary copyWithZone:a3];
-  *(v5 + 240) = [(NSString *)self->_title copyWithZone:a3];
-  *(v5 + 248) = [(NSDictionary *)self->_tweetDictionary copyWithZone:a3];
-  *(v5 + 256) = [(NSString *)self->_unmodifiedTitle copyWithZone:a3];
-  *(v5 + 264) = [(NSNumber *)self->_versionIdentifier copyWithZone:a3];
-  *(v5 + 272) = [(NSArray *)self->_versionOrdering copyWithZone:a3];
+  *(v5 + 200) = [(SUItemReviewStatistics *)self->_reviewStatistics copyWithZone:zone];
+  *(v5 + 208) = [(NSString *)self->_secondaryTitle copyWithZone:zone];
+  *(v5 + 216) = [(NSString *)self->_softwareType copyWithZone:zone];
+  *(v5 + 224) = [(NSArray *)self->_storeOffers copyWithZone:zone];
+  *(v5 + 232) = [(NSDictionary *)self->_tellAFriendDictionary copyWithZone:zone];
+  *(v5 + 240) = [(NSString *)self->_title copyWithZone:zone];
+  *(v5 + 248) = [(NSDictionary *)self->_tweetDictionary copyWithZone:zone];
+  *(v5 + 256) = [(NSString *)self->_unmodifiedTitle copyWithZone:zone];
+  *(v5 + 264) = [(NSNumber *)self->_versionIdentifier copyWithZone:zone];
+  *(v5 + 272) = [(NSArray *)self->_versionOrdering copyWithZone:zone];
   return v5;
 }
 
-- (BOOL)BOOLValueForProperty:(id)a3
+- (BOOL)BOOLValueForProperty:(id)property
 {
-  v3 = [(NSDictionary *)self->_dictionary objectForKey:a3];
+  v3 = [(NSDictionary *)self->_dictionary objectForKey:property];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;
@@ -117,22 +117,22 @@
   return [v3 BOOLValue];
 }
 
-- (id)copyReleaseDateStringWithStyle:(int64_t)a3
+- (id)copyReleaseDateStringWithStyle:(int64_t)style
 {
   result = [(SUItem *)self stringValueForProperty:@"release-date-string"];
   if (!result)
   {
-    v6 = [(SUItem *)self releaseDate];
+    releaseDate = [(SUItem *)self releaseDate];
 
-    return SUCopyDateStringForDate(v6, a3);
+    return SUCopyDateStringForDate(releaseDate, style);
   }
 
   return result;
 }
 
-- (id)dateValueForProperty:(id)a3
+- (id)dateValueForProperty:(id)property
 {
-  v3 = [(NSDictionary *)self->_dictionary objectForKey:a3];
+  v3 = [(NSDictionary *)self->_dictionary objectForKey:property];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -204,9 +204,9 @@ LABEL_3:
   }
 }
 
-- (id)firstItemLinkForType:(int64_t)a3
+- (id)firstItemLinkForType:(int64_t)type
 {
-  v3 = [(SUItem *)self itemLinksForType:a3];
+  v3 = [(SUItem *)self itemLinksForType:type];
   result = [v3 count];
   if (result)
   {
@@ -217,9 +217,9 @@ LABEL_3:
   return result;
 }
 
-- (int64_t)integerValueForProperty:(id)a3
+- (int64_t)integerValueForProperty:(id)property
 {
-  v3 = [(NSDictionary *)self->_dictionary objectForKey:a3];
+  v3 = [(NSDictionary *)self->_dictionary objectForKey:property];
   if (objc_opt_respondsToSelector())
   {
     return [v3 intValue];
@@ -231,7 +231,7 @@ LABEL_3:
   }
 }
 
-- (BOOL)isDisplayable:(id *)a3
+- (BOOL)isDisplayable:(id *)displayable
 {
   v10 = 0;
   v5 = [+[SUItemDataSource sharedDataSource](SUItemDataSource "sharedDataSource")];
@@ -248,9 +248,9 @@ LABEL_3:
     v8 = 1;
   }
 
-  if (a3)
+  if (displayable)
   {
-    *a3 = v10;
+    *displayable = v10;
   }
 
   return v8;
@@ -309,10 +309,10 @@ LABEL_3:
   return isInstalled != 0;
 }
 
-- (id)itemLinksForType:(int64_t)a3
+- (id)itemLinksForType:(int64_t)type
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -333,9 +333,9 @@ LABEL_3:
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
-        if ([v11 linkType] == a3)
+        if ([v11 linkType] == type)
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -345,7 +345,7 @@ LABEL_3:
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
 - (NSString)itemMediaKind
@@ -360,14 +360,14 @@ LABEL_3:
 
   else
   {
-    v6 = [(SUItem *)self defaultStoreOffer];
+    defaultStoreOffer = [(SUItem *)self defaultStoreOffer];
     [(SUItem *)self itemTypeString];
-    [(SSItemOffer *)v6 offerIdentifier];
+    [(SSItemOffer *)defaultStoreOffer offerIdentifier];
     v7 = SSItemMediaKindForItemKind();
     v8 = *MEMORY[0x1E69D4CF8];
     if ([v7 isEqualToString:*MEMORY[0x1E69D4CF8]])
     {
-      v7 = [-[SSItemOffer offerMedia](v6 "offerMedia")];
+      v7 = [-[SSItemOffer offerMedia](defaultStoreOffer "offerMedia")];
     }
 
     if (v7)
@@ -382,7 +382,7 @@ LABEL_3:
   }
 }
 
-- (id)relatedItemsForRelationType:(id)a3
+- (id)relatedItemsForRelationType:(id)type
 {
   v21 = *MEMORY[0x1E69E9840];
   v4 = [(NSDictionary *)self->_dictionary objectForKey:@"related-items"];
@@ -392,7 +392,7 @@ LABEL_3:
     return 0;
   }
 
-  v5 = [v4 objectForKey:a3];
+  v5 = [v4 objectForKey:type];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -400,7 +400,7 @@ LABEL_3:
   }
 
   v6 = +[SUItemDataSource sharedDataSource];
-  v7 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -427,7 +427,7 @@ LABEL_3:
           if (v13)
           {
             v14 = v13;
-            [v7 addObject:v13];
+            [array addObject:v13];
           }
         }
       }
@@ -438,22 +438,22 @@ LABEL_3:
     while (v9);
   }
 
-  return v7;
+  return array;
 }
 
-- (void)setStoreOffers:(id)a3
+- (void)setStoreOffers:(id)offers
 {
   storeOffers = self->_storeOffers;
-  if (storeOffers != a3)
+  if (storeOffers != offers)
   {
 
-    self->_storeOffers = [a3 copy];
+    self->_storeOffers = [offers copy];
 
     [(SUItem *)self _reloadDefaultStoreOffer];
   }
 }
 
-- (id)storeOfferForIdentifier:(id)a3
+- (id)storeOfferForIdentifier:(id)identifier
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
@@ -500,9 +500,9 @@ LABEL_3:
   return result;
 }
 
-- (id)stringValueForProperty:(id)a3
+- (id)stringValueForProperty:(id)property
 {
-  v3 = [(NSDictionary *)self->_dictionary objectForKey:a3];
+  v3 = [(NSDictionary *)self->_dictionary objectForKey:property];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -615,9 +615,9 @@ LABEL_3:
   }
 }
 
-- (id)valueForProperty:(id)a3
+- (id)valueForProperty:(id)property
 {
-  v3 = [(NSDictionary *)self->_dictionary objectForKey:a3];
+  v3 = [(NSDictionary *)self->_dictionary objectForKey:property];
 
   return v3;
 }
@@ -653,7 +653,7 @@ LABEL_3:
   return v8;
 }
 
-- (int64_t)_linkTargetForTargetString:(id)a3 typeString:(id)a4
+- (int64_t)_linkTargetForTargetString:(id)string typeString:(id)typeString
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -667,7 +667,7 @@ LABEL_3:
   {
     v8 = v7;
     v9 = &kLinkTargets + 2 * v6;
-    if ([(__CFString *)*v9 isEqualToString:a3])
+    if ([(__CFString *)*v9 isEqualToString:string])
     {
       break;
     }
@@ -687,7 +687,7 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      return [a4 isEqualToString:@"safari"];
+      return [typeString isEqualToString:@"safari"];
     }
 
     else
@@ -699,7 +699,7 @@ LABEL_7:
   return result;
 }
 
-- (int64_t)_linkTypeForString:(id)a3
+- (int64_t)_linkTypeForString:(id)string
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -708,14 +708,14 @@ LABEL_7:
   }
 
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && ([a3 hasPrefix:@"account"])
+  if (objc_opt_isKindOfClass() & 1) != 0 && ([string hasPrefix:@"account"])
   {
     return 1;
   }
 
   v5 = &qword_1E8166A00;
   v6 = 3;
-  while (![*(v5 - 1) isEqualToString:a3])
+  while (![*(v5 - 1) isEqualToString:string])
   {
     v5 += 2;
     if (!--v6)
@@ -727,7 +727,7 @@ LABEL_7:
   return *v5;
 }
 
-- (id)_newItemLinkWithType:(int64_t)a3 dictionary:(id)a4
+- (id)_newItemLinkWithType:(int64_t)type dictionary:(id)dictionary
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -735,7 +735,7 @@ LABEL_7:
     return 0;
   }
 
-  v7 = [a4 objectForKey:@"url"];
+  v7 = [dictionary objectForKey:@"url"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -750,10 +750,10 @@ LABEL_7:
 
   v9 = v8;
   v10 = objc_alloc_init(SUItemLink);
-  -[SUItemLink setLinkTarget:](v10, "setLinkTarget:", -[SUItem _linkTargetForTargetString:typeString:](self, "_linkTargetForTargetString:typeString:", 0, [a4 objectForKey:@"url-page-type"]));
-  [(SUItemLink *)v10 setLinkType:a3];
+  -[SUItemLink setLinkTarget:](v10, "setLinkTarget:", -[SUItem _linkTargetForTargetString:typeString:](self, "_linkTargetForTargetString:typeString:", 0, [dictionary objectForKey:@"url-page-type"]));
+  [(SUItemLink *)v10 setLinkType:type];
   [(SUItemLink *)v10 setURL:v9];
-  v11 = [a4 objectForKey:@"title"];
+  v11 = [dictionary objectForKey:@"title"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -763,9 +763,9 @@ LABEL_7:
   return v10;
 }
 
-- (id)_newItemLinkWithType:(int64_t)a3 URLKey:(id)a4 titleKey:(id)a5
+- (id)_newItemLinkWithType:(int64_t)type URLKey:(id)key titleKey:(id)titleKey
 {
-  v8 = [(SUItem *)self _valueForFirstAvailableKey:a4, 0];
+  v8 = [(SUItem *)self _valueForFirstAvailableKey:key, 0];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -780,9 +780,9 @@ LABEL_7:
 
   v10 = v9;
   v11 = objc_alloc_init(SUItemLink);
-  [(SUItemLink *)v11 setLinkType:a3];
+  [(SUItemLink *)v11 setLinkType:type];
   [(SUItemLink *)v11 setURL:v10];
-  v12 = [(SUItem *)self _valueForFirstAvailableKey:a5, 0];
+  v12 = [(SUItem *)self _valueForFirstAvailableKey:titleKey, 0];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -860,7 +860,7 @@ LABEL_7:
   self->_defaultStoreOffer = v5;
 }
 
-- (void)_reloadImagesAndLinksFromSquishes:(id)a3
+- (void)_reloadImagesAndLinksFromSquishes:(id)squishes
 {
   v32 = *MEMORY[0x1E69E9840];
   v25 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -869,7 +869,7 @@ LABEL_7:
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  v5 = [squishes countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v5)
   {
     v6 = v5;
@@ -882,7 +882,7 @@ LABEL_7:
       {
         if (*v28 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(squishes);
         }
 
         v11 = *(*(&v27 + 1) + 8 * i);
@@ -897,14 +897,14 @@ LABEL_7:
             v13 = v6;
             v14 = v7;
             v15 = v9;
-            v16 = a3;
+            squishesCopy = squishes;
             v17 = v8;
             v18 = [v11 objectForKey:@"url-page-type"];
             v19 = objc_alloc_init(SUItemLink);
             [(SUItemLink *)v19 setLinkTarget:[(SUItem *)self _linkTargetForTargetString:0 typeString:v18]];
             v20 = v18;
             v8 = v17;
-            a3 = v16;
+            squishes = squishesCopy;
             v9 = v15;
             v7 = v14;
             v6 = v13;
@@ -925,7 +925,7 @@ LABEL_7:
         }
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v6 = [squishes countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v6);
@@ -975,11 +975,11 @@ LABEL_7:
 - (void)_reloadItemLinks
 {
   v22 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v3 = [(SUItem *)self _newPrimaryItemLink];
-  if (v3)
+  _newPrimaryItemLink = [(SUItem *)self _newPrimaryItemLink];
+  if (_newPrimaryItemLink)
   {
-    v4 = v3;
-    [v22 addObject:v3];
+    v4 = _newPrimaryItemLink;
+    [v22 addObject:_newPrimaryItemLink];
   }
 
   v5 = [(SUItem *)self _newItemLinkWithType:2 dictionary:[(SUItem *)self _valueForFirstAvailableKey:@"company", 0]];
@@ -1250,20 +1250,20 @@ LABEL_7:
     if (objc_opt_respondsToSelector())
     {
 LABEL_46:
-      v26 = [v25 intValue];
+      intValue = [v25 intValue];
       goto LABEL_51;
     }
 
-    v26 = 0;
+    intValue = 0;
   }
 
   else
   {
-    v26 = -1;
+    intValue = -1;
   }
 
 LABEL_51:
-  self->_representedItemCount = v26;
+  self->_representedItemCount = intValue;
   self->_itemDisplayType = 0;
   v28 = [(SUItem *)self _valueForFirstAvailableKey:@"display-type", 0];
   objc_opt_class();
@@ -1319,7 +1319,7 @@ LABEL_57:
 {
   v20 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v14 = self;
+  selfCopy = self;
   v4 = [(SUItem *)self _valueForFirstAvailableKey:*MEMORY[0x1E69D4D18], 0];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1377,27 +1377,27 @@ LABEL_57:
     v13 = 0;
   }
 
-  [(SUItem *)v14 setStoreOffers:v13];
+  [(SUItem *)selfCopy setStoreOffers:v13];
 }
 
-- (id)_squishImageForSquishDictionary:(id)a3
+- (id)_squishImageForSquishDictionary:(id)dictionary
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = [a3 objectForKey:@"artwork-urls"];
+  v4 = [dictionary objectForKey:@"artwork-urls"];
   if (!v4)
   {
-    v4 = [a3 objectForKey:@"artwork-url"];
+    v4 = [dictionary objectForKey:@"artwork-url"];
   }
 
   v5 = [objc_alloc(MEMORY[0x1E69D4920]) initWithImageCollection:v4];
-  v6 = [v5 itemImages];
+  itemImages = [v5 itemImages];
   [objc_msgSend(MEMORY[0x1E69DCEB0] "mainScreen")];
   v8 = v7;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v9 = [itemImages countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1408,7 +1408,7 @@ LABEL_5:
     {
       if (*v18 != v11)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(itemImages);
       }
 
       v13 = *(*(&v17 + 1) + 8 * v12);
@@ -1420,7 +1420,7 @@ LABEL_5:
 
       if (v10 == ++v12)
       {
-        v10 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v10 = [itemImages countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v10)
         {
           goto LABEL_5;
@@ -1438,9 +1438,9 @@ LABEL_5:
   }
 
 LABEL_13:
-  if ([v6 count])
+  if ([itemImages count])
   {
-    v15 = [v6 objectAtIndex:0];
+    v15 = [itemImages objectAtIndex:0];
   }
 
   else
@@ -1453,10 +1453,10 @@ LABEL_16:
   return v15;
 }
 
-- (id)_valueForFirstAvailableKey:(id)a3
+- (id)_valueForFirstAvailableKey:(id)key
 {
   v7 = &v8;
-  if (!a3)
+  if (!key)
   {
     return 0;
   }

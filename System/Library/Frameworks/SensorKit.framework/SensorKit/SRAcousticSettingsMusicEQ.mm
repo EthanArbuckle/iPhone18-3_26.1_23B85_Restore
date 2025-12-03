@@ -1,33 +1,33 @@
 @interface SRAcousticSettingsMusicEQ
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (SRAcousticSettingsMusicEQ)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5;
-- (SRAcousticSettingsMusicEQ)initWithCoder:(id)a3;
-- (SRAcousticSettingsMusicEQ)initWithSoundCheckEnabled:(BOOL)a3 lateNightModeEnabled:(BOOL)a4;
+- (SRAcousticSettingsMusicEQ)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp;
+- (SRAcousticSettingsMusicEQ)initWithCoder:(id)coder;
+- (SRAcousticSettingsMusicEQ)initWithSoundCheckEnabled:(BOOL)enabled lateNightModeEnabled:(BOOL)modeEnabled;
 - (id)binarySampleRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SRAcousticSettingsMusicEQ
 
-- (SRAcousticSettingsMusicEQ)initWithSoundCheckEnabled:(BOOL)a3 lateNightModeEnabled:(BOOL)a4
+- (SRAcousticSettingsMusicEQ)initWithSoundCheckEnabled:(BOOL)enabled lateNightModeEnabled:(BOOL)modeEnabled
 {
   v7.receiver = self;
   v7.super_class = SRAcousticSettingsMusicEQ;
   result = [(SRAcousticSettingsMusicEQ *)&v7 init];
   if (result)
   {
-    result->_soundCheckEnabled = a3;
-    result->_lateNightModeEnabled = a4;
+    result->_soundCheckEnabled = enabled;
+    result->_lateNightModeEnabled = modeEnabled;
   }
 
   return result;
 }
 
-- (SRAcousticSettingsMusicEQ)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5
+- (SRAcousticSettingsMusicEQ)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (![a3 length])
+  if (![representation length])
   {
     goto LABEL_7;
   }
@@ -39,7 +39,7 @@
   {
     self = result;
     v12 = 0;
-    v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:a3 error:&v12];
+    v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:representation error:&v12];
     if (v8)
     {
       v9 = v8;
@@ -97,9 +97,9 @@ LABEL_8:
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -111,13 +111,13 @@ LABEL_8:
   }
 
   soundCheckEnabled = self->_soundCheckEnabled;
-  if (soundCheckEnabled != [a3 isSoundCheckEnabled])
+  if (soundCheckEnabled != [equal isSoundCheckEnabled])
   {
     return 0;
   }
 
   lateNightModeEnabled = self->_lateNightModeEnabled;
-  return lateNightModeEnabled == [a3 isLateNightModeEnabled];
+  return lateNightModeEnabled == [equal isLateNightModeEnabled];
 }
 
 - (NSString)description
@@ -127,28 +127,28 @@ LABEL_8:
   return [v3 stringWithFormat:@"%@ (%p) {Music EQ Settings soundCheckEnabled: %d, lateNightModeEnabled: %d}", NSStringFromClass(v4), self, -[SRAcousticSettingsMusicEQ isSoundCheckEnabled](self, "isSoundCheckEnabled"), -[SRAcousticSettingsMusicEQ isLateNightModeEnabled](self, "isLateNightModeEnabled")];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  [a3 encodeBool:-[SRAcousticSettingsMusicEQ isSoundCheckEnabled](self forKey:{"isSoundCheckEnabled"), @"soundCheckEnabled"}];
-  v6 = [(SRAcousticSettingsMusicEQ *)self isLateNightModeEnabled];
+  [coder encodeBool:-[SRAcousticSettingsMusicEQ isSoundCheckEnabled](self forKey:{"isSoundCheckEnabled"), @"soundCheckEnabled"}];
+  isLateNightModeEnabled = [(SRAcousticSettingsMusicEQ *)self isLateNightModeEnabled];
 
-  [a3 encodeBool:v6 forKey:@"lateNightModeEnabled"];
+  [coder encodeBool:isLateNightModeEnabled forKey:@"lateNightModeEnabled"];
 }
 
-- (SRAcousticSettingsMusicEQ)initWithCoder:(id)a3
+- (SRAcousticSettingsMusicEQ)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  v6 = [a3 decodeBoolForKey:@"soundCheckEnabled"];
-  v7 = [a3 decodeBoolForKey:@"lateNightModeEnabled"];
+  v6 = [coder decodeBoolForKey:@"soundCheckEnabled"];
+  v7 = [coder decodeBoolForKey:@"lateNightModeEnabled"];
 
   v8 = [SRAcousticSettingsMusicEQ alloc];
 

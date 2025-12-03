@@ -1,7 +1,7 @@
 @interface THBookOpener
 + (id)loadingQueue;
 - (BOOL)isSuccessful;
-- (THBookOpener)initWithDocumentRoot:(id)a3;
+- (THBookOpener)initWithDocumentRoot:(id)root;
 - (void)dealloc;
 - (void)main;
 @end
@@ -13,7 +13,7 @@
   result = qword_567780;
   if (!qword_567780)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
     if (!qword_567780)
     {
       v4 = objc_alloc_init(NSOperationQueue);
@@ -28,14 +28,14 @@
       [v4 setMaxConcurrentOperationCount:1];
     }
 
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
     return qword_567780;
   }
 
   return result;
 }
 
-- (THBookOpener)initWithDocumentRoot:(id)a3
+- (THBookOpener)initWithDocumentRoot:(id)root
 {
   v7.receiver = self;
   v7.super_class = THBookOpener;
@@ -43,7 +43,7 @@
   v5 = v4;
   if (v4)
   {
-    [(THBookOpener *)v4 setDocumentRoot:a3];
+    [(THBookOpener *)v4 setDocumentRoot:root];
   }
 
   return v5;
@@ -65,8 +65,8 @@
 - (void)main
 {
   v3 = objc_alloc_init(NSAutoreleasePool);
-  v4 = [(THBookDescription *)[(THDocumentRoot *)[(THBookOpener *)self documentRoot] bookDescription] tspObjectContextPath];
-  if (v4)
+  tspObjectContextPath = [(THBookDescription *)[(THDocumentRoot *)[(THBookOpener *)self documentRoot] bookDescription] tspObjectContextPath];
+  if (tspObjectContextPath)
   {
     v11 = 0;
     if ([+[NSFileManager fileExistsAtPath:"fileExistsAtPath:isDirectory:"]
@@ -76,17 +76,17 @@
         [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
         if ((v11 & 1) == 0)
         {
-          [(THBookOpener *)self setError:[NSError errorWithDomain:@"com.apple.iWork.Thunderfish" code:101 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:v4, NSFilePathErrorKey, 0]]];
+          [(THBookOpener *)self setError:[NSError errorWithDomain:@"com.apple.iWork.Thunderfish" code:101 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:tspObjectContextPath, NSFilePathErrorKey, 0]]];
         }
       }
     }
 
     if ([(THBookOpener *)self isSuccessful])
     {
-      v5 = [(THBookDescription *)[(THDocumentRoot *)[(THBookOpener *)self documentRoot] bookDescription] bookBundleUrl];
-      v6 = v5;
+      bookBundleUrl = [(THBookDescription *)[(THDocumentRoot *)[(THBookOpener *)self documentRoot] bookDescription] bookBundleUrl];
+      v6 = bookBundleUrl;
       v10 = 0;
-      if (v5 && [(NSURL *)v5 path]&& [(NSString *)[(NSURL *)v6 path] length])
+      if (bookBundleUrl && [(NSURL *)bookBundleUrl path]&& [(NSString *)[(NSURL *)v6 path] length])
       {
         if ([THApplePubController readAppPubFileToDocumentRoot:[(THBookOpener *)self documentRoot] url:v6 error:&v10])
         {

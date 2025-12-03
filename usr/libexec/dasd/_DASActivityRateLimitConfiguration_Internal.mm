@@ -1,34 +1,34 @@
 @interface _DASActivityRateLimitConfiguration_Internal
-+ (id)rateLimitConfiguration:(id)a3 withIdentifier:(id)a4;
-- (BOOL)containsPendingActivity:(id)a3;
-- (BOOL)isInactiveAtDate:(id)a3;
-- (_DASActivityRateLimitConfiguration_Internal)initWithConfigurationName:(id)a3 andIdentifier:(id)a4;
-- (_DASActivityRateLimitConfiguration_Internal)initWithRateLimit:(id)a3 withIdentifier:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)rateLimitConfiguration:(id)configuration withIdentifier:(id)identifier;
+- (BOOL)containsPendingActivity:(id)activity;
+- (BOOL)isInactiveAtDate:(id)date;
+- (_DASActivityRateLimitConfiguration_Internal)initWithConfigurationName:(id)name andIdentifier:(id)identifier;
+- (_DASActivityRateLimitConfiguration_Internal)initWithRateLimit:(id)limit withIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)evaluationResultsWithLPMState:(BOOL)a3;
-- (void)addPendingActivity:(id)a3;
-- (void)executeActivity:(id)a3 atDate:(id)a4;
-- (void)removePendingActivity:(id)a3;
-- (void)replaceRateLimitConfiguration:(id)a3;
+- (id)evaluationResultsWithLPMState:(BOOL)state;
+- (void)addPendingActivity:(id)activity;
+- (void)executeActivity:(id)activity atDate:(id)date;
+- (void)removePendingActivity:(id)activity;
+- (void)replaceRateLimitConfiguration:(id)configuration;
 @end
 
 @implementation _DASActivityRateLimitConfiguration_Internal
 
-- (_DASActivityRateLimitConfiguration_Internal)initWithRateLimit:(id)a3 withIdentifier:(id)a4
+- (_DASActivityRateLimitConfiguration_Internal)initWithRateLimit:(id)limit withIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  limitCopy = limit;
+  identifierCopy = identifier;
   v27.receiver = self;
   v27.super_class = _DASActivityRateLimitConfiguration_Internal;
   v8 = [(_DASActivityRateLimitConfiguration_Internal *)&v27 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_uniqueGroupName, a4);
-    v10 = [v6 name];
+    objc_storeStrong(&v8->_uniqueGroupName, identifier);
+    name = [limitCopy name];
     configurationName = v9->_configurationName;
-    v9->_configurationName = v10;
+    v9->_configurationName = name;
 
     v12 = +[NSMutableArray array];
     ratelimitTrackers = v9->_ratelimitTrackers;
@@ -42,8 +42,8 @@
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v16 = [v6 rateLimits];
-    v17 = [v16 countByEnumeratingWithState:&v23 objects:v28 count:16];
+    rateLimits = [limitCopy rateLimits];
+    v17 = [rateLimits countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v17)
     {
       v18 = v17;
@@ -55,7 +55,7 @@
         {
           if (*v24 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(rateLimits);
           }
 
           v21 = [[_DASActivityRateLimitTracker alloc] initWithRateLimit:*(*(&v23 + 1) + 8 * v20)];
@@ -65,7 +65,7 @@
         }
 
         while (v18 != v20);
-        v18 = [v16 countByEnumeratingWithState:&v23 objects:v28 count:16];
+        v18 = [rateLimits countByEnumeratingWithState:&v23 objects:v28 count:16];
       }
 
       while (v18);
@@ -75,18 +75,18 @@
   return v9;
 }
 
-- (_DASActivityRateLimitConfiguration_Internal)initWithConfigurationName:(id)a3 andIdentifier:(id)a4
+- (_DASActivityRateLimitConfiguration_Internal)initWithConfigurationName:(id)name andIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = _DASActivityRateLimitConfiguration_Internal;
   v9 = [(_DASActivityRateLimitConfiguration_Internal *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_uniqueGroupName, a4);
-    objc_storeStrong(&v10->_configurationName, a3);
+    objc_storeStrong(&v9->_uniqueGroupName, identifier);
+    objc_storeStrong(&v10->_configurationName, name);
     v11 = +[NSMutableArray array];
     ratelimitTrackers = v10->_ratelimitTrackers;
     v10->_ratelimitTrackers = v11;
@@ -99,27 +99,27 @@
   return v10;
 }
 
-+ (id)rateLimitConfiguration:(id)a3 withIdentifier:(id)a4
++ (id)rateLimitConfiguration:(id)configuration withIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) initWithRateLimit:v6 withIdentifier:v5];
+  identifierCopy = identifier;
+  configurationCopy = configuration;
+  v7 = [objc_alloc(objc_opt_class()) initWithRateLimit:configurationCopy withIdentifier:identifierCopy];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(_DASActivityRateLimitConfiguration_Internal *)self configurationName];
-  v6 = [(_DASActivityRateLimitConfiguration_Internal *)self uniqueGroupName];
-  v7 = [v4 initWithConfigurationName:v5 andIdentifier:v6];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  configurationName = [(_DASActivityRateLimitConfiguration_Internal *)self configurationName];
+  uniqueGroupName = [(_DASActivityRateLimitConfiguration_Internal *)self uniqueGroupName];
+  v7 = [v4 initWithConfigurationName:configurationName andIdentifier:uniqueGroupName];
 
-  v8 = [(_DASActivityRateLimitConfiguration_Internal *)self ratelimitTrackers];
-  [v7 setRatelimitTrackers:v8];
+  ratelimitTrackers = [(_DASActivityRateLimitConfiguration_Internal *)self ratelimitTrackers];
+  [v7 setRatelimitTrackers:ratelimitTrackers];
 
-  v9 = [(_DASActivityRateLimitConfiguration_Internal *)self pendingActivities];
-  [v7 setPendingActivities:v9];
+  pendingActivities = [(_DASActivityRateLimitConfiguration_Internal *)self pendingActivities];
+  [v7 setPendingActivities:pendingActivities];
 
   return v7;
 }
@@ -134,11 +134,11 @@
   return v5;
 }
 
-- (BOOL)isInactiveAtDate:(id)a3
+- (BOOL)isInactiveAtDate:(id)date
 {
-  v4 = a3;
-  v5 = [(_DASActivityRateLimitConfiguration_Internal *)self pendingActivities];
-  v6 = [v5 count];
+  dateCopy = date;
+  pendingActivities = [(_DASActivityRateLimitConfiguration_Internal *)self pendingActivities];
+  v6 = [pendingActivities count];
 
   if (v6)
   {
@@ -151,8 +151,8 @@
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = [(_DASActivityRateLimitConfiguration_Internal *)self ratelimitTrackers];
-    v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    ratelimitTrackers = [(_DASActivityRateLimitConfiguration_Internal *)self ratelimitTrackers];
+    v9 = [ratelimitTrackers countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v9)
     {
       v10 = v9;
@@ -163,17 +163,17 @@
         {
           if (*v15 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(ratelimitTrackers);
           }
 
-          if (![*(*(&v14 + 1) + 8 * i) onlyExpiredOccurrencesAtDate:v4])
+          if (![*(*(&v14 + 1) + 8 * i) onlyExpiredOccurrencesAtDate:dateCopy])
           {
             v7 = 0;
             goto LABEL_13;
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v10 = [ratelimitTrackers countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v10)
         {
           continue;
@@ -190,9 +190,9 @@ LABEL_13:
   return v7;
 }
 
-- (void)replaceRateLimitConfiguration:(id)a3
+- (void)replaceRateLimitConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = +[NSMutableSet set];
   v26 = 0u;
   v27 = 0u;
@@ -214,8 +214,8 @@ LABEL_13:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v26 + 1) + 8 * v10) occurrences];
-        [v5 addObjectsFromArray:v11];
+        occurrences = [*(*(&v26 + 1) + 8 * v10) occurrences];
+        [v5 addObjectsFromArray:occurrences];
 
         v10 = v10 + 1;
       }
@@ -227,9 +227,9 @@ LABEL_13:
     while (v8);
   }
 
-  v12 = [v4 name];
+  name = [configurationCopy name];
   configurationName = self->_configurationName;
-  self->_configurationName = v12;
+  self->_configurationName = name;
 
   v14 = +[NSMutableArray array];
   ratelimitTrackers = self->_ratelimitTrackers;
@@ -239,8 +239,8 @@ LABEL_13:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v16 = [v4 rateLimits];
-  v17 = [v16 countByEnumeratingWithState:&v22 objects:v30 count:16];
+  rateLimits = [configurationCopy rateLimits];
+  v17 = [rateLimits countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v17)
   {
     v18 = v17;
@@ -252,7 +252,7 @@ LABEL_13:
       {
         if (*v23 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(rateLimits);
         }
 
         v21 = [[_DASActivityRateLimitTracker alloc] initWithRateLimit:*(*(&v22 + 1) + 8 * v20) andOccurrences:v5];
@@ -262,24 +262,24 @@ LABEL_13:
       }
 
       while (v18 != v20);
-      v18 = [v16 countByEnumeratingWithState:&v22 objects:v30 count:16];
+      v18 = [rateLimits countByEnumeratingWithState:&v22 objects:v30 count:16];
     }
 
     while (v18);
   }
 }
 
-- (id)evaluationResultsWithLPMState:(BOOL)a3
+- (id)evaluationResultsWithLPMState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v5 = +[NSMutableArray array];
   v6 = +[NSDate now];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [(_DASActivityRateLimitConfiguration_Internal *)self ratelimitTrackers];
-  v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  ratelimitTrackers = [(_DASActivityRateLimitConfiguration_Internal *)self ratelimitTrackers];
+  v8 = [ratelimitTrackers countByEnumeratingWithState:&v20 objects:v24 count:16];
   v9 = v6;
   if (v8)
   {
@@ -292,23 +292,23 @@ LABEL_13:
       {
         if (*v21 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(ratelimitTrackers);
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
         [v13 window];
         v15 = v14 == 900.0 && [v13 maximum] == 1;
-        if (([v13 timewiseEligibleAtDate:v6 withLPMWindowExtension:v15 & v3] & 1) == 0)
+        if (([v13 timewiseEligibleAtDate:v6 withLPMWindowExtension:v15 & stateCopy] & 1) == 0)
         {
           [v5 addObject:v13];
-          v16 = [v13 nextTimewiseEligibleDateFromDate:v6 withLPMWindowExtension:v15 & v3];
-          v17 = [v9 laterDate:v16];
+          stateCopy = [v13 nextTimewiseEligibleDateFromDate:v6 withLPMWindowExtension:v15 & stateCopy];
+          v17 = [v9 laterDate:stateCopy];
 
           v9 = v17;
         }
       }
 
-      v10 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v10 = [ratelimitTrackers countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v10);
@@ -319,16 +319,16 @@ LABEL_13:
   return v18;
 }
 
-- (void)executeActivity:(id)a3 atDate:(id)a4
+- (void)executeActivity:(id)activity atDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  dateCopy = date;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [(_DASActivityRateLimitConfiguration_Internal *)self ratelimitTrackers];
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  ratelimitTrackers = [(_DASActivityRateLimitConfiguration_Internal *)self ratelimitTrackers];
+  v9 = [ratelimitTrackers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -340,45 +340,45 @@ LABEL_13:
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(ratelimitTrackers);
         }
 
-        [*(*(&v13 + 1) + 8 * v12) executeAtDate:v7];
+        [*(*(&v13 + 1) + 8 * v12) executeAtDate:dateCopy];
         v12 = v12 + 1;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [ratelimitTrackers countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);
   }
 
-  if ([(_DASActivityRateLimitConfiguration_Internal *)self containsPendingActivity:v6])
+  if ([(_DASActivityRateLimitConfiguration_Internal *)self containsPendingActivity:activityCopy])
   {
-    [(_DASActivityRateLimitConfiguration_Internal *)self removePendingActivity:v6];
+    [(_DASActivityRateLimitConfiguration_Internal *)self removePendingActivity:activityCopy];
   }
 }
 
-- (void)addPendingActivity:(id)a3
+- (void)addPendingActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(_DASActivityRateLimitConfiguration_Internal *)self pendingActivities];
-  [v5 addObject:v4];
+  activityCopy = activity;
+  pendingActivities = [(_DASActivityRateLimitConfiguration_Internal *)self pendingActivities];
+  [pendingActivities addObject:activityCopy];
 }
 
-- (void)removePendingActivity:(id)a3
+- (void)removePendingActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(_DASActivityRateLimitConfiguration_Internal *)self pendingActivities];
-  [v5 removeObject:v4];
+  activityCopy = activity;
+  pendingActivities = [(_DASActivityRateLimitConfiguration_Internal *)self pendingActivities];
+  [pendingActivities removeObject:activityCopy];
 }
 
-- (BOOL)containsPendingActivity:(id)a3
+- (BOOL)containsPendingActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(_DASActivityRateLimitConfiguration_Internal *)self pendingActivities];
-  v6 = [v5 containsObject:v4];
+  activityCopy = activity;
+  pendingActivities = [(_DASActivityRateLimitConfiguration_Internal *)self pendingActivities];
+  v6 = [pendingActivities containsObject:activityCopy];
 
   return v6;
 }

@@ -1,44 +1,44 @@
 @interface NPHMMClassifier
-- (BOOL)formCompoundFamilyName:(id)a3;
-- (BOOL)formCompoundGivenName:(id)a3;
-- (BOOL)isCoupleName:(id)a3;
-- (BOOL)isInitial:(id)a3;
-- (BOOL)validSequence:(id)a3 compoundsConstraints:(id)a4 labelsConstraints:(id)a5;
-- (NPHMMClassifier)initWithHMMProbabilities:(id *)a3 nameComponentsDate:(id)a4;
-- (double)emissionProbability:(id)a3 hiddenState:(unint64_t)a4 isOOV:(BOOL *)a5;
-- (double)startProbability:(id)a3;
-- (double)stateTransitionProbabilityFrom:(id)a3 to:(id)a4;
-- (id)candidatesBasedOnCommaDelimiterIndex:(unint64_t)a3 sequenceSize:(unint64_t)a4;
-- (id)candidatesBasedOnFormatSequence:(id)a3;
-- (id)candidatesOfSize:(unint64_t)a3 constraints:(unint64_t)a4 compoundsConstraints:(id)a5 labelsContraints:(id)a6;
-- (id)compoundsFromName:(id)a3 includeSpaceAsDelimiter:(BOOL)a4;
-- (id)hiddenStatesFromObservationSequence:(id)a3;
-- (id)probabilityForHiddenSequence:(id)a3 knowingObservationSequence:(id)a4 boost:(unint64_t)a5;
-- (unint64_t)extractMetricForType:(unint64_t)a3;
-- (unint64_t)frequencyForName:(id)a3 type:(unint64_t)a4;
-- (unint64_t)genderMajorityForGivenName:(id)a3;
-- (unint64_t)payloadForName:(id)a3 type:(unint64_t)a4;
+- (BOOL)formCompoundFamilyName:(id)name;
+- (BOOL)formCompoundGivenName:(id)name;
+- (BOOL)isCoupleName:(id)name;
+- (BOOL)isInitial:(id)initial;
+- (BOOL)validSequence:(id)sequence compoundsConstraints:(id)constraints labelsConstraints:(id)labelsConstraints;
+- (NPHMMClassifier)initWithHMMProbabilities:(id *)probabilities nameComponentsDate:(id)date;
+- (double)emissionProbability:(id)probability hiddenState:(unint64_t)state isOOV:(BOOL *)v;
+- (double)startProbability:(id)probability;
+- (double)stateTransitionProbabilityFrom:(id)from to:(id)to;
+- (id)candidatesBasedOnCommaDelimiterIndex:(unint64_t)index sequenceSize:(unint64_t)size;
+- (id)candidatesBasedOnFormatSequence:(id)sequence;
+- (id)candidatesOfSize:(unint64_t)size constraints:(unint64_t)constraints compoundsConstraints:(id)compoundsConstraints labelsContraints:(id)contraints;
+- (id)compoundsFromName:(id)name includeSpaceAsDelimiter:(BOOL)delimiter;
+- (id)hiddenStatesFromObservationSequence:(id)sequence;
+- (id)probabilityForHiddenSequence:(id)sequence knowingObservationSequence:(id)observationSequence boost:(unint64_t)boost;
+- (unint64_t)extractMetricForType:(unint64_t)type;
+- (unint64_t)frequencyForName:(id)name type:(unint64_t)type;
+- (unint64_t)genderMajorityForGivenName:(id)name;
+- (unint64_t)payloadForName:(id)name type:(unint64_t)type;
 - (void)dealloc;
 @end
 
 @implementation NPHMMClassifier
 
-- (NPHMMClassifier)initWithHMMProbabilities:(id *)a3 nameComponentsDate:(id)a4
+- (NPHMMClassifier)initWithHMMProbabilities:(id *)probabilities nameComponentsDate:(id)date
 {
-  v8 = a4;
+  dateCopy = date;
   v18.receiver = self;
   v18.super_class = NPHMMClassifier;
   v9 = [(NPHMMClassifier *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    v11 = *&a3->var0.var2;
-    v16[0] = *&a3->var0.var0;
+    v11 = *&probabilities->var0.var2;
+    v16[0] = *&probabilities->var0.var0;
     v16[1] = v11;
-    v16[2] = *&a3->var1.var1;
-    var2 = a3->var2;
+    v16[2] = *&probabilities->var1.var1;
+    var2 = probabilities->var2;
     [(NPHMMClassifier *)v9 setStateProbabilities:v16];
-    objc_storeStrong(&v10->_nameComponentsData, a4);
+    objc_storeStrong(&v10->_nameComponentsData, date);
     pthread_mutex_lock(&_NPHMMClassifierLock);
     v12 = _NPHMMClassifierInstanceCount;
     if (!_nameFrequencyTrie && !_NPHMMClassifierInstanceCount)
@@ -66,18 +66,18 @@
   return v10;
 }
 
-- (unint64_t)payloadForName:(id)a3 type:(unint64_t)a4
+- (unint64_t)payloadForName:(id)name type:(unint64_t)type
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  nameCopy = name;
+  v6 = nameCopy;
+  if (type)
   {
-    v7 = v5;
+    v7 = nameCopy;
   }
 
   else
   {
-    v7 = [v5 stringByAppendingString:@"!"];
+    v7 = [nameCopy stringByAppendingString:@"!"];
   }
 
   v8 = v7;
@@ -95,14 +95,14 @@
   return v9;
 }
 
-- (unint64_t)frequencyForName:(id)a3 type:(unint64_t)a4
+- (unint64_t)frequencyForName:(id)name type:(unint64_t)type
 {
-  v5 = [(NPHMMClassifier *)self payloadForName:a3 type:?];
+  v5 = [(NPHMMClassifier *)self payloadForName:name type:?];
   v6 = 0x7FFFFFFFFFFFFFFFLL;
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = v5 / 0xA + 1;
-    if (a4)
+    if (type)
     {
       return v5 + 1;
     }
@@ -137,11 +137,11 @@
   [(NPHMMClassifier *)&v5 dealloc];
 }
 
-- (unint64_t)extractMetricForType:(unint64_t)a3
+- (unint64_t)extractMetricForType:(unint64_t)type
 {
-  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v4 = [v3 stringValue];
-  v5 = [v4 stringByAppendingString:@"#"];
+  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
+  stringValue = [v3 stringValue];
+  v5 = [stringValue stringByAppendingString:@"#"];
 
   [v5 length];
   CFBurstTrieContains();
@@ -149,26 +149,26 @@
   return 0;
 }
 
-- (id)hiddenStatesFromObservationSequence:(id)a3
+- (id)hiddenStatesFromObservationSequence:(id)sequence
 {
   v95 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 count];
+  sequenceCopy = sequence;
+  v5 = [sequenceCopy count];
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v71 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v73 = v4;
-  v82 = self;
+  v73 = sequenceCopy;
+  selfCopy = self;
   if (v5)
   {
     for (i = 0; v5 != i; ++i)
     {
-      v9 = [v4 objectAtIndexedSubscript:i];
+      v9 = [sequenceCopy objectAtIndexedSubscript:i];
       v10 = [v9 isEqualToString:{@", "}];
 
       if (v10)
       {
-        self = v82;
+        self = selfCopy;
         if (!i || v5 - 1 == i)
         {
           goto LABEL_11;
@@ -180,23 +180,23 @@
 
       else
       {
-        v12 = [v4 objectAtIndexedSubscript:i];
+        v12 = [sequenceCopy objectAtIndexedSubscript:i];
         v11 = _NPTrimNonLetters(v12);
 
         if ([v11 length])
         {
-          v13 = [v4 objectAtIndexedSubscript:i];
+          v13 = [sequenceCopy objectAtIndexedSubscript:i];
           [v6 addObject:v13];
 
-          v14 = [v11 lowercaseString];
-          [v7 addObject:v14];
+          lowercaseString = [v11 lowercaseString];
+          [v7 addObject:lowercaseString];
         }
 
-        self = v82;
+        self = selfCopy;
       }
 
 LABEL_11:
-      v4 = v73;
+      sequenceCopy = v73;
     }
   }
 
@@ -246,10 +246,10 @@ LABEL_11:
 
         else
         {
-          v28 = [v25 uppercaseString];
-          v27 = [v28 isEqualToString:v25];
+          uppercaseString = [v25 uppercaseString];
+          v27 = [uppercaseString isEqualToString:v25];
 
-          self = v82;
+          self = selfCopy;
           v26 = v27 ^ 1;
           v22 = v27;
         }
@@ -311,14 +311,14 @@ LABEL_36:
     {
       v37 = objc_autoreleasePoolPush();
       v38 = [v7 subarrayWithRange:{k, 2}];
-      v39 = [(NPHMMClassifier *)v82 formCompoundGivenName:v38];
+      v39 = [(NPHMMClassifier *)selfCopy formCompoundGivenName:v38];
       if (v39)
       {
         v40 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:k];
         [v74 setObject:&unk_2858DB810 forKeyedSubscript:v40];
       }
 
-      if ([(NPHMMClassifier *)v82 formCompoundFamilyName:v38])
+      if ([(NPHMMClassifier *)selfCopy formCompoundFamilyName:v38])
       {
         v41 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:k];
         [v74 setObject:&unk_2858DB828 forKeyedSubscript:v41];
@@ -347,7 +347,7 @@ LABEL_36:
         }
 
         v43 = [v73 objectAtIndexedSubscript:k];
-        v44 = [(NPHMMClassifier *)v82 isParticle:v43];
+        v44 = [(NPHMMClassifier *)selfCopy isParticle:v43];
 
         if (!v44)
         {
@@ -360,9 +360,9 @@ LABEL_36:
 
 LABEL_49:
       v46 = [v80 objectAtIndexedSubscript:k];
-      v47 = [v46 integerValue];
+      integerValue = [v46 integerValue];
 
-      if (v47 == 3)
+      if (integerValue == 3)
       {
         v48 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:k];
         [v72 setObject:&unk_2858DB810 forKeyedSubscript:v48];
@@ -373,8 +373,8 @@ LABEL_49:
   }
 
   v49 = [v7 count];
-  v50 = v82;
-  v70 = -[NPHMMClassifier candidatesOfSize:constraints:compoundsConstraints:labelsContraints:](v82, "candidatesOfSize:constraints:compoundsConstraints:labelsContraints:", v49, (v49 - [v74 count]) > 1, v74, v72);
+  v50 = selfCopy;
+  v70 = -[NPHMMClassifier candidatesOfSize:constraints:compoundsConstraints:labelsContraints:](selfCopy, "candidatesOfSize:constraints:compoundsConstraints:labelsContraints:", v49, (v49 - [v74 count]) > 1, v74, v72);
   [v32 unionSet:?];
   v87 = 0u;
   v88 = 0u;
@@ -438,17 +438,17 @@ LABEL_49:
 
         if ([v56 count] > 1)
         {
-          v63 = [v56 lastObject];
-          v64 = [v63 integerValue];
+          lastObject = [v56 lastObject];
+          integerValue2 = [lastObject integerValue];
 
-          if (![(NPHMMClassifier *)v82 isCoupleName:v57])
+          if (![(NPHMMClassifier *)selfCopy isCoupleName:v57])
           {
-            v65 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v64 - 1];
+            v65 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:integerValue2 - 1];
             v66 = [v74 objectForKey:v65];
 
             if (!v66)
             {
-              [v54 setValue:&unk_2858DB840 atSequenceIndex:v64];
+              [v54 setValue:&unk_2858DB840 atSequenceIndex:integerValue2];
             }
           }
         }
@@ -456,7 +456,7 @@ LABEL_49:
         [v78 addObject:v54];
 
         objc_autoreleasePoolPop(contexta);
-        v50 = v82;
+        v50 = selfCopy;
         v51 = v77;
       }
 
@@ -472,10 +472,10 @@ LABEL_49:
   return v67;
 }
 
-- (BOOL)isCoupleName:(id)a3
+- (BOOL)isCoupleName:(id)name
 {
-  v4 = a3;
-  v5 = [v4 count];
+  nameCopy = name;
+  v5 = [nameCopy count];
   v6 = v5 - 3;
   if (v5 >= 3)
   {
@@ -483,7 +483,7 @@ LABEL_49:
     do
     {
       v9 = v6;
-      v10 = [v4 objectAtIndexedSubscript:v8];
+      v10 = [nameCopy objectAtIndexedSubscript:v8];
       v7 = [(NPHMMClassifier *)self isLinkingToken:v10];
 
       if (v7)
@@ -506,16 +506,16 @@ LABEL_49:
   return v7;
 }
 
-- (id)candidatesBasedOnFormatSequence:(id)a3
+- (id)candidatesBasedOnFormatSequence:(id)sequence
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  sequenceCopy = sequence;
   v4 = objc_opt_new();
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = v3;
+  v5 = sequenceCopy;
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v6)
   {
@@ -571,15 +571,15 @@ LABEL_24:
   return v4;
 }
 
-- (id)candidatesBasedOnCommaDelimiterIndex:(unint64_t)a3 sequenceSize:(unint64_t)a4
+- (id)candidatesBasedOnCommaDelimiterIndex:(unint64_t)index sequenceSize:(unint64_t)size
 {
   v6 = objc_opt_new();
-  if (a4)
+  if (size)
   {
     v7 = 0;
     do
     {
-      if (v7 >= a3)
+      if (v7 >= index)
       {
         v8 = &unk_2858DB810;
       }
@@ -593,24 +593,24 @@ LABEL_24:
       ++v7;
     }
 
-    while (a4 != v7);
+    while (size != v7);
   }
 
   return v6;
 }
 
-- (BOOL)validSequence:(id)a3 compoundsConstraints:(id)a4 labelsConstraints:(id)a5
+- (BOOL)validSequence:(id)sequence compoundsConstraints:(id)constraints labelsConstraints:(id)labelsConstraints
 {
   v47 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v36 = a5;
+  sequenceCopy = sequence;
+  constraintsCopy = constraints;
+  labelsConstraintsCopy = labelsConstraints;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v9 = [v8 allKeys];
-  v10 = [v9 countByEnumeratingWithState:&v41 objects:v46 count:16];
+  allKeys = [constraintsCopy allKeys];
+  v10 = [allKeys countByEnumeratingWithState:&v41 objects:v46 count:16];
   if (v10)
   {
     v11 = v10;
@@ -621,49 +621,49 @@ LABEL_24:
       {
         if (*v42 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allKeys);
         }
 
         v14 = *(*(&v41 + 1) + 8 * i);
-        v15 = [v14 integerValue];
-        v16 = [v8 objectForKeyedSubscript:v14];
-        v17 = [v16 integerValue];
+        integerValue = [v14 integerValue];
+        v16 = [constraintsCopy objectForKeyedSubscript:v14];
+        integerValue2 = [v16 integerValue];
 
-        v18 = [v7 objectAtIndexedSubscript:v15];
-        v19 = [v7 objectAtIndexedSubscript:v15 + 1];
+        v18 = [sequenceCopy objectAtIndexedSubscript:integerValue];
+        v19 = [sequenceCopy objectAtIndexedSubscript:integerValue + 1];
 
         if (v18 != v19)
         {
 LABEL_23:
           v33 = 0;
-          v24 = v36;
+          v24 = labelsConstraintsCopy;
           goto LABEL_26;
         }
 
-        if (v17 == 2)
+        if (integerValue2 == 2)
         {
-          v22 = [v7 objectAtIndexedSubscript:v15];
-          v23 = [v22 integerValue];
+          v22 = [sequenceCopy objectAtIndexedSubscript:integerValue];
+          integerValue3 = [v22 integerValue];
 
-          if (v23 != 2)
+          if (integerValue3 != 2)
           {
             goto LABEL_23;
           }
         }
 
-        else if (v17 == 1)
+        else if (integerValue2 == 1)
         {
-          v20 = [v7 objectAtIndexedSubscript:v15];
-          v21 = [v20 integerValue];
+          v20 = [sequenceCopy objectAtIndexedSubscript:integerValue];
+          integerValue4 = [v20 integerValue];
 
-          if (v21)
+          if (integerValue4)
           {
             goto LABEL_23;
           }
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v41 objects:v46 count:16];
+      v11 = [allKeys countByEnumeratingWithState:&v41 objects:v46 count:16];
       if (v11)
       {
         continue;
@@ -677,9 +677,9 @@ LABEL_23:
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v24 = v36;
-  v9 = [v36 allKeys];
-  v25 = [v9 countByEnumeratingWithState:&v37 objects:v45 count:16];
+  v24 = labelsConstraintsCopy;
+  allKeys = [labelsConstraintsCopy allKeys];
+  v25 = [allKeys countByEnumeratingWithState:&v37 objects:v45 count:16];
   if (v25)
   {
     v26 = v25;
@@ -690,12 +690,12 @@ LABEL_23:
       {
         if (*v38 != v27)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allKeys);
         }
 
         v29 = *(*(&v37 + 1) + 8 * j);
-        v30 = [v7 objectAtIndexedSubscript:{objc_msgSend(v29, "integerValue")}];
-        v31 = [v36 objectForKeyedSubscript:v29];
+        v30 = [sequenceCopy objectAtIndexedSubscript:{objc_msgSend(v29, "integerValue")}];
+        v31 = [labelsConstraintsCopy objectForKeyedSubscript:v29];
         v32 = [v30 isEqual:v31];
 
         if (!v32)
@@ -705,7 +705,7 @@ LABEL_23:
         }
       }
 
-      v26 = [v9 countByEnumeratingWithState:&v37 objects:v45 count:16];
+      v26 = [allKeys countByEnumeratingWithState:&v37 objects:v45 count:16];
       v33 = 1;
       if (v26)
       {
@@ -727,14 +727,14 @@ LABEL_26:
   return v33;
 }
 
-- (id)candidatesOfSize:(unint64_t)a3 constraints:(unint64_t)a4 compoundsConstraints:(id)a5 labelsContraints:(id)a6
+- (id)candidatesOfSize:(unint64_t)size constraints:(unint64_t)constraints compoundsConstraints:(id)compoundsConstraints labelsContraints:(id)contraints
 {
-  v27 = a5;
-  v10 = a6;
+  compoundsConstraintsCopy = compoundsConstraints;
+  contraintsCopy = contraints;
   v26 = objc_opt_new();
-  v11 = a4 == 1;
-  v12 = a3 - v11;
-  if (a3 != v11)
+  v11 = constraints == 1;
+  v12 = size - v11;
+  if (size != v11)
   {
     v13 = 1;
     do
@@ -748,7 +748,7 @@ LABEL_26:
         }
       }
 
-      if (a3 != v13)
+      if (size != v13)
       {
         v16 = 1;
         do
@@ -757,10 +757,10 @@ LABEL_26:
           ++v16;
         }
 
-        while (v16 <= a3 - v13);
+        while (v16 <= size - v13);
       }
 
-      if ([(NPHMMClassifier *)self validSequence:v14 compoundsConstraints:v27 labelsConstraints:v10, v26])
+      if ([(NPHMMClassifier *)self validSequence:v14 compoundsConstraints:compoundsConstraintsCopy labelsConstraints:contraintsCopy, v26])
       {
         v17 = [v14 copy];
         [v26 addObject:v17];
@@ -783,7 +783,7 @@ LABEL_26:
           }
         }
 
-        if (a3 != j)
+        if (size != j)
         {
           v21 = 1;
           do
@@ -792,10 +792,10 @@ LABEL_26:
             ++v21;
           }
 
-          while (v21 <= a3 - j);
+          while (v21 <= size - j);
         }
 
-        if ([(NPHMMClassifier *)self validSequence:v19 compoundsConstraints:v27 labelsConstraints:v10])
+        if ([(NPHMMClassifier *)self validSequence:v19 compoundsConstraints:compoundsConstraintsCopy labelsConstraints:contraintsCopy])
         {
           v22 = [v19 copy];
           [v26 addObject:v22];
@@ -810,19 +810,19 @@ LABEL_26:
   return v24;
 }
 
-- (id)probabilityForHiddenSequence:(id)a3 knowingObservationSequence:(id)a4 boost:(unint64_t)a5
+- (id)probabilityForHiddenSequence:(id)sequence knowingObservationSequence:(id)observationSequence boost:(unint64_t)boost
 {
   v51[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v47 = a4;
-  v9 = [v47 count];
-  if (v9 != [v8 count])
+  sequenceCopy = sequence;
+  observationSequenceCopy = observationSequence;
+  v9 = [observationSequenceCopy count];
+  if (v9 != [sequenceCopy count])
   {
     [NPHMMClassifier probabilityForHiddenSequence:a2 knowingObservationSequence:self boost:?];
   }
 
   v45 = objc_opt_new();
-  v10 = [v47 count];
+  v10 = [observationSequenceCopy count];
   if (v10)
   {
     v11 = v10;
@@ -834,11 +834,11 @@ LABEL_26:
     do
     {
       context = objc_autoreleasePoolPush();
-      v17 = [v8 objectAtIndexedSubscript:v12];
-      v18 = [v47 objectAtIndexedSubscript:v12];
+      v17 = [sequenceCopy objectAtIndexedSubscript:v12];
+      v18 = [observationSequenceCopy objectAtIndexedSubscript:v12];
       if (v12)
       {
-        v19 = [v8 objectAtIndexedSubscript:v12 - 1];
+        v19 = [sequenceCopy objectAtIndexedSubscript:v12 - 1];
         [(NPHMMClassifier *)self stateTransitionProbabilityFrom:v19 to:v17];
         v21 = v20;
       }
@@ -858,7 +858,7 @@ LABEL_26:
       v24 = [*(v15 + 2952) objectForKey:v23];
       v25 = v18;
       v26 = v24;
-      v50 = 0;
+      bOOLValue = 0;
       v48 = v25;
       if (v24)
       {
@@ -867,33 +867,33 @@ LABEL_26:
         v29 = v28;
 
         v30 = [v26 objectAtIndexedSubscript:1];
-        v50 = [v30 BOOLValue];
+        bOOLValue = [v30 BOOLValue];
       }
 
       else
       {
         [v17 doubleValue];
-        [(NPHMMClassifier *)self emissionProbability:v25 hiddenState:v31 isOOV:&v50];
+        [(NPHMMClassifier *)self emissionProbability:v25 hiddenState:v31 isOOV:&bOOLValue];
         v29 = v32;
         v46 = *(v15 + 2952);
         v30 = [MEMORY[0x277CCABB0] numberWithDouble:?];
         v51[0] = v30;
-        [MEMORY[0x277CCABB0] numberWithBool:v50];
+        [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
         v33 = v11;
-        v34 = self;
-        v36 = v35 = v8;
+        selfCopy = self;
+        v36 = v35 = sequenceCopy;
         v51[1] = v36;
         v37 = [MEMORY[0x277CBEA60] arrayWithObjects:v51 count:2];
         [v46 setObject:v37 forKey:v23];
 
         v15 = 0x280C3F000;
-        v8 = v35;
-        self = v34;
+        sequenceCopy = v35;
+        self = selfCopy;
         v11 = v33;
         v14 = 0x280C3F000;
       }
 
-      if (v50 == 1)
+      if (bOOLValue == 1)
       {
         v38 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v12];
         [v45 addObject:v38];
@@ -919,7 +919,7 @@ LABEL_26:
 
   v39 = [NPComponentSequence alloc];
   v40 = [v45 copy];
-  v41 = [(NPComponentSequence *)v39 initWithObservationSequence:v47 hiddenSequence:v8 oovIndices:v40 emissionModelScore:v16 stateModelScore:v13 boost:log(a5)];
+  v41 = [(NPComponentSequence *)v39 initWithObservationSequence:observationSequenceCopy hiddenSequence:sequenceCopy oovIndices:v40 emissionModelScore:v16 stateModelScore:v13 boost:log(boost)];
 
   v42 = *MEMORY[0x277D85DE8];
 
@@ -937,9 +937,9 @@ uint64_t __81__NPHMMClassifier_probabilityForHiddenSequence_knowingObservationSe
   return [v2 setCountLimit:100];
 }
 
-- (double)startProbability:(id)a3
+- (double)startProbability:(id)probability
 {
-  if ([a3 unsignedIntegerValue])
+  if ([probability unsignedIntegerValue])
   {
     [(NPHMMClassifier *)self stateProbabilities];
     v4 = &v7;
@@ -956,10 +956,10 @@ uint64_t __81__NPHMMClassifier_probabilityForHiddenSequence_knowingObservationSe
   return log(v5);
 }
 
-- (double)stateTransitionProbabilityFrom:(id)a3 to:(id)a4
+- (double)stateTransitionProbabilityFrom:(id)from to:(id)to
 {
-  v6 = a4;
-  if ([a3 unsignedIntegerValue])
+  toCopy = to;
+  if ([from unsignedIntegerValue])
   {
     [(NPHMMClassifier *)self stateProbabilities];
     v7 = v13;
@@ -974,9 +974,9 @@ uint64_t __81__NPHMMClassifier_probabilityForHiddenSequence_knowingObservationSe
   }
 
   v9 = *v8;
-  v10 = [v6 unsignedIntegerValue];
+  unsignedIntegerValue = [toCopy unsignedIntegerValue];
 
-  if (v10)
+  if (unsignedIntegerValue)
   {
     v11 = v9;
   }
@@ -989,27 +989,27 @@ uint64_t __81__NPHMMClassifier_probabilityForHiddenSequence_knowingObservationSe
   return log(v11);
 }
 
-- (double)emissionProbability:(id)a3 hiddenState:(unint64_t)a4 isOOV:(BOOL *)a5
+- (double)emissionProbability:(id)probability hiddenState:(unint64_t)state isOOV:(BOOL *)v
 {
-  v8 = a3;
-  if (a5)
+  probabilityCopy = probability;
+  if (v)
   {
-    *a5 = 0;
+    *v = 0;
   }
 
   v9 = 0.0;
-  if (![(NPHMMClassifier *)self isInitial:v8]&& ![(NPNameComponentsData *)self->_nameComponentsData collectionForEntry:6 contains:v8])
+  if (![(NPHMMClassifier *)self isInitial:probabilityCopy]&& ![(NPNameComponentsData *)self->_nameComponentsData collectionForEntry:6 contains:probabilityCopy])
   {
-    v11 = _NPStripDiatritics(v8, v10);
+    v11 = _NPStripDiatritics(probabilityCopy, v10);
     v12 = [(NPHMMClassifier *)self compoundsFromName:v11];
     v13 = [v12 componentsJoinedByString:@"*"];
 
-    v14 = [(NPHMMClassifier *)self frequencyForName:v13 type:a4];
+    v14 = [(NPHMMClassifier *)self frequencyForName:v13 type:state];
     if (v14 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      if (a5)
+      if (v)
       {
-        *a5 = 1;
+        *v = 1;
       }
 
       v9 = 0.0 - log((self->_totalFamilyNamesCount + self->_totalGivenNamesCount));
@@ -1017,7 +1017,7 @@ uint64_t __81__NPHMMClassifier_probabilityForHiddenSequence_knowingObservationSe
     }
 
     v9 = v14;
-    if (a4 == 2)
+    if (state == 2)
     {
       v15 = log(v14);
       totalFamilyNamesCount = self->_totalFamilyNamesCount;
@@ -1025,7 +1025,7 @@ uint64_t __81__NPHMMClassifier_probabilityForHiddenSequence_knowingObservationSe
 
     else
     {
-      if (a4)
+      if (state)
       {
 LABEL_14:
 
@@ -1045,16 +1045,16 @@ LABEL_15:
   return v9;
 }
 
-- (BOOL)isInitial:(id)a3
+- (BOOL)isInitial:(id)initial
 {
   v3 = isInitial__onceToken;
-  v4 = a3;
+  initialCopy = initial;
   if (v3 != -1)
   {
     [NPHMMClassifier isInitial:];
   }
 
-  v5 = [v4 stringByTrimmingCharactersInSet:isInitial__initialDelimiterSet];
+  v5 = [initialCopy stringByTrimmingCharactersInSet:isInitial__initialDelimiterSet];
 
   v6 = [v5 length] == 1;
   return v6;
@@ -1067,28 +1067,28 @@ uint64_t __29__NPHMMClassifier_isInitial___block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)formCompoundGivenName:(id)a3
+- (BOOL)formCompoundGivenName:(id)name
 {
-  v4 = [a3 componentsJoinedByString:@"*"];
+  v4 = [name componentsJoinedByString:@"*"];
   v5 = [(NPHMMClassifier *)self frequencyForName:v4 type:0];
   v7 = v5 != 0x7FFFFFFFFFFFFFFFLL && v5 > 0xA;
 
   return v7;
 }
 
-- (BOOL)formCompoundFamilyName:(id)a3
+- (BOOL)formCompoundFamilyName:(id)name
 {
-  v4 = [a3 componentsJoinedByString:@"*"];
+  v4 = [name componentsJoinedByString:@"*"];
   LOBYTE(self) = [(NPHMMClassifier *)self frequencyForName:v4 type:2]!= 0x7FFFFFFFFFFFFFFFLL;
 
   return self;
 }
 
-- (id)compoundsFromName:(id)a3 includeSpaceAsDelimiter:(BOOL)a4
+- (id)compoundsFromName:(id)name includeSpaceAsDelimiter:(BOOL)delimiter
 {
-  v4 = a4;
-  v5 = a3;
-  if (v4)
+  delimiterCopy = delimiter;
+  nameCopy = name;
+  if (delimiterCopy)
   {
     if (compoundsFromName_includeSpaceAsDelimiter__onceToken != -1)
     {
@@ -1108,7 +1108,7 @@ uint64_t __29__NPHMMClassifier_isInitial___block_invoke()
     v6 = &compoundsFromName_includeSpaceAsDelimiter__compoundsCharacterDelimiterSet;
   }
 
-  v7 = [v5 componentsSeparatedByCharactersInSet:*v6];
+  v7 = [nameCopy componentsSeparatedByCharactersInSet:*v6];
 
   return v7;
 }
@@ -1127,9 +1127,9 @@ uint64_t __61__NPHMMClassifier_compoundsFromName_includeSpaceAsDelimiter___block
   return MEMORY[0x2821F96F8]();
 }
 
-- (unint64_t)genderMajorityForGivenName:(id)a3
+- (unint64_t)genderMajorityForGivenName:(id)name
 {
-  v4 = _NPStripDiatritics(a3, a2);
+  v4 = _NPStripDiatritics(name, a2);
   v5 = [(NPHMMClassifier *)self compoundsFromName:v4 includeSpaceAsDelimiter:1];
   v6 = [v5 componentsJoinedByString:@"*"];
 
